@@ -1,29 +1,29 @@
 @interface CNChangeHistoryPreferredContactForNameEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryPreferredContactForNameEvent)init;
-- (CNChangeHistoryPreferredContactForNameEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryPreferredContactForNameEvent)initWithPreferredContact:(id)a3 unifiedContact:(id)a4;
+- (CNChangeHistoryPreferredContactForNameEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryPreferredContactForNameEvent)initWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryPreferredContactForNameEvent
 
 - (CNChangeHistoryPreferredContactForNameEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryPreferredContactForNameEvent)initWithPreferredContact:(id)a3 unifiedContact:(id)a4
+- (CNChangeHistoryPreferredContactForNameEvent)initWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  contactCopy = contact;
+  unifiedContactCopy = unifiedContact;
+  if (contactCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -41,7 +41,7 @@
   if (!os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
 LABEL_6:
-    if (!v8)
+    if (!unifiedContactCopy)
     {
       goto LABEL_12;
     }
@@ -50,7 +50,7 @@ LABEL_6:
   else
   {
     [CNChangeHistoryPreferredContactForNameEvent initWithPreferredContact:v9 unifiedContact:?];
-    if (!v8)
+    if (!unifiedContactCopy)
     {
       goto LABEL_12;
     }
@@ -78,51 +78,51 @@ LABEL_12:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_preferredContact, a3);
-    objc_storeStrong(&v12->_unifiedContact, a4);
+    objc_storeStrong(&v11->_preferredContact, contact);
+    objc_storeStrong(&v12->_unifiedContact, unifiedContact);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (CNChangeHistoryPreferredContactForNameEvent)initWithCoder:(id)a3
+- (CNChangeHistoryPreferredContactForNameEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredContact"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_unifiedContact"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredContact"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_unifiedContact"];
 
   v7 = [(CNChangeHistoryPreferredContactForNameEvent *)self initWithPreferredContact:v5 unifiedContact:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   preferredContact = self->_preferredContact;
-  v5 = a3;
-  [v5 encodeObject:preferredContact forKey:@"_preferredContact"];
-  [v5 encodeObject:self->_unifiedContact forKey:@"_unifiedContact"];
+  coderCopy = coder;
+  [coderCopy encodeObject:preferredContact forKey:@"_preferredContact"];
+  [coderCopy encodeObject:self->_unifiedContact forKey:@"_unifiedContact"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__CNChangeHistoryPreferredContactForNameEvent_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __55__CNChangeHistoryPreferredContactForNameEvent_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -193,41 +193,41 @@ uint64_t __51__CNChangeHistoryPreferredContactForNameEvent_hash__block_invoke_2(
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryPreferredContactForNameEvent *)self preferredContact];
-  v5 = [v3 appendName:@"preferredContact" object:v4];
+  preferredContact = [(CNChangeHistoryPreferredContactForNameEvent *)self preferredContact];
+  v5 = [v3 appendName:@"preferredContact" object:preferredContact];
 
-  v6 = [(CNChangeHistoryPreferredContactForNameEvent *)self unifiedContact];
-  v7 = [v3 appendName:@"unifiedContact" object:v6];
+  unifiedContact = [(CNChangeHistoryPreferredContactForNameEvent *)self unifiedContact];
+  v7 = [v3 appendName:@"unifiedContact" object:unifiedContact];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitPreferredContactForNameEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryPreferredContactForNameEvent *)self unifiedContact];
-  v6 = [v5 identifier];
-  v7 = [v4 unifiedContact];
-  v8 = [v7 identifier];
-  v9 = [v6 compare:v8];
+  classCopy = class;
+  unifiedContact = [(CNChangeHistoryPreferredContactForNameEvent *)self unifiedContact];
+  identifier = [unifiedContact identifier];
+  unifiedContact2 = [classCopy unifiedContact];
+  identifier2 = [unifiedContact2 identifier];
+  v9 = [identifier compare:identifier2];
 
   if (!v9)
   {
-    v10 = [(CNChangeHistoryPreferredContactForNameEvent *)self preferredContact];
-    v11 = [v10 identifier];
-    v12 = [v4 preferredContact];
-    v13 = [v12 identifier];
-    v9 = [v11 compare:v13];
+    preferredContact = [(CNChangeHistoryPreferredContactForNameEvent *)self preferredContact];
+    identifier3 = [preferredContact identifier];
+    preferredContact2 = [classCopy preferredContact];
+    identifier4 = [preferredContact2 identifier];
+    v9 = [identifier3 compare:identifier4];
   }
 
   return v9;

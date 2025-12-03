@@ -1,9 +1,9 @@
 @interface MuxNotificationSink
 + (id)notificationSink;
 - (MuxNotificationSinkDelegate)delegate;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)clientDidTriggerFault:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)clientDidTriggerFault:(id)fault;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MuxNotificationSink
@@ -15,24 +15,24 @@
   return v2;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v6 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    [v5 sink:self handleNotification:v6];
+    [v5 sink:self handleNotification:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v4 = 8;
   v5 = &byte_18304DF81;
   while (1)
   {
-    MethodDescription = protocol_getMethodDescription(&unk_1EF0671B8, a3, *(v5 - 1), *v5);
+    MethodDescription = protocol_getMethodDescription(&unk_1EF0671B8, selector, *(v5 - 1), *v5);
     if (MethodDescription.name)
     {
       break;
@@ -53,9 +53,9 @@ LABEL_6:
   return v7;
 }
 
-- (void)clientDidTriggerFault:(id)a3
+- (void)clientDidTriggerFault:(id)fault
 {
-  v3 = a3;
+  faultCopy = fault;
   v4 = CTLogClient();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {

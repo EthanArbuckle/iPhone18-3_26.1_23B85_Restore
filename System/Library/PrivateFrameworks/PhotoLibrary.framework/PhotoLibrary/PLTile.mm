@@ -1,8 +1,8 @@
 @interface PLTile
 - (CGRect)imageRect;
 - (void)dealloc;
-- (void)setDecodedSurface:(__IOSurface *)a3;
-- (void)setTileId:(id)a3;
+- (void)setDecodedSurface:(__IOSurface *)surface;
+- (void)setTileId:(id)id;
 @end
 
 @implementation PLTile
@@ -21,24 +21,24 @@
   [(PLTile *)&v4 dealloc];
 }
 
-- (void)setTileId:(id)a3
+- (void)setTileId:(id)id
 {
-  if (self->_tileId != a3)
+  if (self->_tileId != id)
   {
-    v5 = a3;
+    idCopy = id;
 
-    self->_tileId = a3;
+    self->_tileId = id;
   }
 }
 
-- (void)setDecodedSurface:(__IOSurface *)a3
+- (void)setDecodedSurface:(__IOSurface *)surface
 {
   decodedSurface = self->_decodedSurface;
-  if (decodedSurface != a3)
+  if (decodedSurface != surface)
   {
-    if (a3)
+    if (surface)
     {
-      CFRetain(a3);
+      CFRetain(surface);
       decodedSurface = self->_decodedSurface;
     }
 
@@ -48,7 +48,7 @@
       CFRelease(self->_decodedSurface);
     }
 
-    self->_decodedSurface = a3;
+    self->_decodedSurface = surface;
   }
 }
 

@@ -1,7 +1,7 @@
 @interface _HDSourceEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -10,8 +10,8 @@
 - (id)orderedProperties
 {
   v9[10] = *MEMORY[0x277D85DE8];
-  v2 = [(HDEntityEncoder *)self purpose];
-  if (v2 == 1)
+  purpose = [(HDEntityEncoder *)self purpose];
+  if (purpose == 1)
   {
     v8[0] = @"name";
     v8[1] = @"source_options";
@@ -28,7 +28,7 @@
 
   else
   {
-    if (v2)
+    if (purpose)
     {
       goto LABEL_6;
     }
@@ -48,14 +48,14 @@
     v5 = 10;
   }
 
-  v2 = [v3 arrayWithObjects:v4 count:v5];
+  purpose = [v3 arrayWithObjects:v4 count:v5];
 LABEL_6:
   v6 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return purpose;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v6 = objc_alloc_init(HDCodableSource);
   v7 = HDSQLiteColumnWithNameAsData();
@@ -91,50 +91,50 @@ LABEL_6:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:1401 description:@"Bundle identifier not present in Source codable"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:1401 description:@"Bundle identifier not present in Source codable"];
     v13 = 0;
   }
 
   return v13;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCDA00]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCDA00]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v9 = a3;
-  v10 = [(HDEntityEncoder *)self superclassEncoder];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
 
-  if (v10)
+  if (superclassEncoder)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDSourceEntity.m" lineNumber:855 description:{@"Invalid parameter not satisfying: %@", @"[self superclassEncoder] == nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceEntity.m" lineNumber:855 description:{@"Invalid parameter not satisfying: %@", @"[self superclassEncoder] == nil"}];
   }
 
   v11 = HDSQLiteColumnWithNameAsString();
-  [v9 _setName:v11];
+  [objectCopy _setName:v11];
 
-  [v9 _setOptions:HDSQLiteColumnWithNameAsInt64()];
-  [v9 _setLocalDevice:HDSQLiteColumnWithNameAsBoolean()];
+  [objectCopy _setOptions:HDSQLiteColumnWithNameAsInt64()];
+  [objectCopy _setLocalDevice:HDSQLiteColumnWithNameAsBoolean()];
   v12 = HDSQLiteColumnWithNameAsString();
-  [v9 _setProductType:v12];
+  [objectCopy _setProductType:v12];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
-  [v9 _setSourceID:v13];
+  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+  [objectCopy _setSourceID:v13];
 
   v14 = HDSQLiteColumnWithNameAsString();
-  [v9 _setBundleIdentifier:v14];
+  [objectCopy _setBundleIdentifier:v14];
 
   v15 = HDSQLiteColumnWithNameAsString();
-  [v9 _setOwningAppBundleIdentifier:v15];
+  [objectCopy _setOwningAppBundleIdentifier:v15];
 
   v16 = HDSQLiteColumnWithNameAsDate();
-  [v9 _setModificationDate:v16];
+  [objectCopy _setModificationDate:v16];
 
   return 1;
 }

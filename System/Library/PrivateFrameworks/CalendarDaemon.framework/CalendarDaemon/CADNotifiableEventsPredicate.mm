@@ -1,6 +1,6 @@
 @interface CADNotifiableEventsPredicate
 + (id)predicate;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)defaultPropertiesToLoad;
 - (id)predicateFormat;
 @end
@@ -40,7 +40,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = CalDatabaseCopyOfAllNotifiableEventsInStore();

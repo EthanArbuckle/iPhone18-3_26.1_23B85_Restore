@@ -1,21 +1,21 @@
 @interface PUAirPlayScreen
 + (PUAirPlayScreen)new;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAirPlayScreen:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAirPlayScreen:(id)screen;
 - (BOOL)isValid;
 - (CGSize)size;
 - (NSString)_typeName;
 - (NSString)debugDescription;
 - (NSString)description;
 - (PUAirPlayScreen)init;
-- (PUAirPlayScreen)initWithScreen:(id)a3;
+- (PUAirPlayScreen)initWithScreen:(id)screen;
 - (id)_associatedWindowScene;
 - (unint64_t)hash;
 - (unint64_t)placeholderType;
 - (void)_updateWindow;
 - (void)dealloc;
-- (void)setRootViewController:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setRootViewController:(id)controller;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PUAirPlayScreen
@@ -29,21 +29,21 @@
   return result;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  settingsCopy = settings;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUAirPlayScreen.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"[settings isKindOfClass:[PUAirPlaySettings class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAirPlayScreen.m" lineNumber:209 description:{@"Invalid parameter not satisfying: %@", @"[settings isKindOfClass:[PUAirPlaySettings class]]"}];
   }
 
   v10 = NSStringFromSelector(sel_compensateForOverscan);
-  v11 = [v7 isEqual:v10];
+  v11 = [keyCopy isEqual:v10];
 
   if (v11)
   {
@@ -61,29 +61,29 @@
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Updating PUAirPlayScreen", buf, 2u);
   }
 
-  v4 = [(PUAirPlayScreen *)self screen];
-  v5 = [(PUAirPlayScreen *)self _associatedWindowScene];
-  v6 = [(PUAirPlayScreen *)self _window];
-  v7 = [(PUAirPlayScreen *)self rootViewController];
-  [v4 setOverscanCompensation:2];
-  [v4 bounds];
+  screen = [(PUAirPlayScreen *)self screen];
+  _associatedWindowScene = [(PUAirPlayScreen *)self _associatedWindowScene];
+  _window = [(PUAirPlayScreen *)self _window];
+  rootViewController = [(PUAirPlayScreen *)self rootViewController];
+  [screen setOverscanCompensation:2];
+  [screen bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v16 = +[PUAirPlaySettings sharedInstance];
-  v17 = [v16 compensateForOverscan];
+  compensateForOverscan = [v16 compensateForOverscan];
 
-  if (v17)
+  if (compensateForOverscan)
   {
-    [v4 overscanCompensationInsets];
+    [screen overscanCompensationInsets];
     v9 = v9 + v18;
     v11 = v11 + v19;
     v13 = v13 - (v18 + v20);
     v15 = v15 - (v19 + v21);
   }
 
-  if (!v4 || !v5)
+  if (!screen || !_associatedWindowScene)
   {
     v27 = PLAirPlayGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -93,11 +93,11 @@
     }
 
     [(PUAirPlayScreen *)self _setWindow:0];
-    v7 = 0;
+    rootViewController = 0;
     goto LABEL_17;
   }
 
-  if (!v6 && v7)
+  if (!_window && rootViewController)
   {
     v22 = PLAirPlayGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -106,18 +106,18 @@
       _os_log_impl(&dword_1B36F3000, v22, OS_LOG_TYPE_DEFAULT, "\tAirPlay screen has content but no window; creating one", v34, 2u);
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69DD2E8]) initWithWindowScene:v5];
-    [(PUAirPlayScreen *)self _setWindow:v6];
+    _window = [objc_alloc(MEMORY[0x1E69DD2E8]) initWithWindowScene:_associatedWindowScene];
+    [(PUAirPlayScreen *)self _setWindow:_window];
     goto LABEL_12;
   }
 
-  if (!v6 || v7)
+  if (!_window || rootViewController)
   {
-    if (v6 && v7)
+    if (_window && rootViewController)
     {
-      v30 = [v6 rootViewController];
+      rootViewController2 = [_window rootViewController];
 
-      if (v30 != v7)
+      if (rootViewController2 != rootViewController)
       {
         v31 = PLAirPlayGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@
       }
     }
 
-    else if (!v7)
+    else if (!rootViewController)
     {
 LABEL_17:
       v28 = 0;
@@ -136,14 +136,14 @@ LABEL_17:
     }
 
 LABEL_12:
-    v23 = [v6 rootViewController];
+    rootViewController3 = [_window rootViewController];
 
-    if (v23 != v7)
+    if (rootViewController3 != rootViewController)
     {
       v24 = *MEMORY[0x1E695EFF8];
       v25 = *(MEMORY[0x1E695EFF8] + 8);
-      v26 = [v7 view];
-      [v26 setFrame:{v24, v25, v13, v15}];
+      view = [rootViewController view];
+      [view setFrame:{v24, v25, v13, v15}];
     }
 
     goto LABEL_17;
@@ -157,28 +157,28 @@ LABEL_12:
   }
 
   [(PUAirPlayScreen *)self _setWindow:0];
-  v7 = 0;
+  rootViewController = 0;
   v28 = 1;
 LABEL_18:
-  [v6 setFrame:{v9, v11, v13, v15}];
-  [v6 setRootViewController:v7];
-  [v6 setHidden:v28];
+  [_window setFrame:{v9, v11, v13, v15}];
+  [_window setRootViewController:rootViewController];
+  [_window setHidden:v28];
 }
 
 - (id)_associatedWindowScene
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PUAirPlayScreen *)self screen];
-  if (v2)
+  screen = [(PUAirPlayScreen *)self screen];
+  if (screen)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4 = [v3 connectedScenes];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
 
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -189,7 +189,7 @@ LABEL_18:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(connectedScenes);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
@@ -197,16 +197,16 @@ LABEL_18:
           if (objc_opt_isKindOfClass())
           {
             v10 = v9;
-            v11 = [v10 screen];
+            screen2 = [v10 screen];
 
-            if (v11 == v2)
+            if (screen2 == screen)
             {
               goto LABEL_13;
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -226,11 +226,11 @@ LABEL_13:
 
 - (BOOL)isValid
 {
-  v3 = [(PUAirPlayScreen *)self screen];
-  if (v3)
+  screen = [(PUAirPlayScreen *)self screen];
+  if (screen)
   {
-    v4 = [(PUAirPlayScreen *)self _associatedWindowScene];
-    v5 = v4 != 0;
+    _associatedWindowScene = [(PUAirPlayScreen *)self _associatedWindowScene];
+    v5 = _associatedWindowScene != 0;
   }
 
   else
@@ -243,15 +243,15 @@ LABEL_13:
 
 - (NSString)_typeName
 {
-  v2 = [(PUAirPlayScreen *)self type];
-  if (v2 > 2)
+  type = [(PUAirPlayScreen *)self type];
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return &off_1E7B74C50[v2]->isa;
+    return &off_1E7B74C50[type]->isa;
   }
 }
 
@@ -262,31 +262,31 @@ LABEL_13:
   v3 = [(PUAirPlayScreen *)&v24 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PUAirPlayScreen *)self _typeName];
-  [v4 appendFormat:@"\n\tType: %@", v5];
+  _typeName = [(PUAirPlayScreen *)self _typeName];
+  [v4 appendFormat:@"\n\tType: %@", _typeName];
 
   [(PUAirPlayScreen *)self size];
   v6 = NSStringFromCGSize(v26);
   [v4 appendFormat:@"\n\tSize: %@", v6];
 
-  v7 = [(PUAirPlayScreen *)self rootViewController];
-  [v4 appendFormat:@"\n\tRoot: %@", v7];
+  rootViewController = [(PUAirPlayScreen *)self rootViewController];
+  [v4 appendFormat:@"\n\tRoot: %@", rootViewController];
 
-  v8 = [(PUAirPlayScreen *)self screen];
-  v9 = [v8 pl_briefDescription];
-  [v4 appendFormat:@"\n\tBacking screen: %@", v9];
+  screen = [(PUAirPlayScreen *)self screen];
+  pl_briefDescription = [screen pl_briefDescription];
+  [v4 appendFormat:@"\n\tBacking screen: %@", pl_briefDescription];
 
-  v10 = [(PUAirPlayScreen *)self _window];
-  v11 = [v10 pl_briefDescription];
-  [v4 appendFormat:@"\n\tWindow: %@", v11];
+  _window = [(PUAirPlayScreen *)self _window];
+  pl_briefDescription2 = [_window pl_briefDescription];
+  [v4 appendFormat:@"\n\tWindow: %@", pl_briefDescription2];
 
-  v12 = [(PUAirPlayScreen *)self _window];
-  [v12 frame];
+  _window2 = [(PUAirPlayScreen *)self _window];
+  [_window2 frame];
   v13 = NSStringFromCGRect(v27);
   [v4 appendFormat:@"\n\t\tFrame: %@", v13];
 
-  v14 = [(PUAirPlayScreen *)self _window];
-  if ([v14 isHidden])
+  _window3 = [(PUAirPlayScreen *)self _window];
+  if ([_window3 isHidden])
   {
     v15 = @"YES";
   }
@@ -298,15 +298,15 @@ LABEL_13:
 
   [v4 appendFormat:@"\n\t\tHidden: %@", v15];
 
-  v16 = [(PUAirPlayScreen *)self _window];
-  v17 = [v16 screen];
-  v18 = [v17 pl_briefDescription];
-  [v4 appendFormat:@"\n\t\tScreen: %@", v18];
+  _window4 = [(PUAirPlayScreen *)self _window];
+  screen2 = [_window4 screen];
+  pl_briefDescription3 = [screen2 pl_briefDescription];
+  [v4 appendFormat:@"\n\t\tScreen: %@", pl_briefDescription3];
 
-  v19 = [(PUAirPlayScreen *)self screen];
-  v20 = [(PUAirPlayScreen *)self _window];
-  v21 = [v20 screen];
-  if (v19 == v21)
+  screen3 = [(PUAirPlayScreen *)self screen];
+  _window5 = [(PUAirPlayScreen *)self _window];
+  screen4 = [_window5 screen];
+  if (screen3 == screen4)
   {
     v22 = @"YES";
   }
@@ -326,79 +326,79 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PUAirPlayScreen *)self _typeName];
+  _typeName = [(PUAirPlayScreen *)self _typeName];
   [(PUAirPlayScreen *)self size];
   v7 = NSStringFromCGSize(v14);
-  v8 = [(PUAirPlayScreen *)self rootViewController];
-  v9 = v8;
+  rootViewController = [(PUAirPlayScreen *)self rootViewController];
+  v9 = rootViewController;
   v10 = @"nil";
-  if (v8)
+  if (rootViewController)
   {
-    v10 = v8;
+    v10 = rootViewController;
   }
 
-  v11 = [v3 stringWithFormat:@"<%@: %p type = %@; size = %@; rootViewController = %@>", v5, self, v6, v7, v10];;
+  v11 = [v3 stringWithFormat:@"<%@: %p type = %@; size = %@; rootViewController = %@>", v5, self, _typeName, v7, v10];;
 
   return v11;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_rootViewController = &self->_rootViewController;
-  if (self->_rootViewController != v5)
+  if (self->_rootViewController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_rootViewController, a3);
+    v7 = controllerCopy;
+    objc_storeStrong(p_rootViewController, controller);
     p_rootViewController = [(PUAirPlayScreen *)self _updateWindow];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_rootViewController, v5);
+  MEMORY[0x1EEE66BB8](p_rootViewController, controllerCopy);
 }
 
 - (unint64_t)placeholderType
 {
-  v2 = [(PUAirPlayScreen *)self type];
+  type = [(PUAirPlayScreen *)self type];
   v3 = +[PUAirPlaySettings sharedInstance];
   v4 = v3;
-  if (v2 == 2)
+  if (type == 2)
   {
-    v5 = [v3 placeholderForMirroredScreen];
+    placeholderForMirroredScreen = [v3 placeholderForMirroredScreen];
   }
 
   else
   {
-    v5 = [v3 placeholderForSecondScreen];
+    placeholderForMirroredScreen = [v3 placeholderForSecondScreen];
   }
 
-  v6 = v5;
+  v6 = placeholderForMirroredScreen;
 
   return v6;
 }
 
-- (BOOL)isEqualToAirPlayScreen:(id)a3
+- (BOOL)isEqualToAirPlayScreen:(id)screen
 {
-  v4 = [a3 screen];
-  v5 = [(PUAirPlayScreen *)self screen];
-  LOBYTE(self) = v4 == v5;
+  screen = [screen screen];
+  screen2 = [(PUAirPlayScreen *)self screen];
+  LOBYTE(self) = screen == screen2;
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUAirPlayScreen *)self isEqualToAirPlayScreen:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUAirPlayScreen *)self isEqualToAirPlayScreen:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PUAirPlayScreen *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PUAirPlayScreen *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -412,30 +412,30 @@ LABEL_13:
   [(PUAirPlayScreen *)&v3 dealloc];
 }
 
-- (PUAirPlayScreen)initWithScreen:(id)a3
+- (PUAirPlayScreen)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v16.receiver = self;
   v16.super_class = PUAirPlayScreen;
   v6 = [(PUAirPlayScreen *)&v16 init];
   if (v6)
   {
-    if (!v5)
+    if (!screenCopy)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v6 file:@"PUAirPlayScreen.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"screen"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PUAirPlayScreen.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"screen"}];
     }
 
-    [(PUAirPlayScreen *)v6 _setScreen:v5];
-    v7 = [v5 _displayID];
-    [(PUAirPlayScreen *)v6 _setIdentifier:v7];
+    [(PUAirPlayScreen *)v6 _setScreen:screenCopy];
+    _displayID = [screenCopy _displayID];
+    [(PUAirPlayScreen *)v6 _setIdentifier:_displayID];
 
-    [v5 bounds];
+    [screenCopy bounds];
     [(PUAirPlayScreen *)v6 _setSize:v8, v9];
-    v10 = [(PUAirPlayScreen *)v6 screen];
-    v11 = [v10 mirroredScreen];
+    screen = [(PUAirPlayScreen *)v6 screen];
+    mirroredScreen = [screen mirroredScreen];
 
-    if (v11)
+    if (mirroredScreen)
     {
       v12 = 2;
     }
@@ -455,16 +455,16 @@ LABEL_13:
 
 - (PUAirPlayScreen)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAirPlayScreen.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PUAirPlayScreen init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAirPlayScreen.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PUAirPlayScreen init]"}];
 
   abort();
 }
 
 + (PUAirPlayScreen)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PUAirPlayScreen.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PUAirPlayScreen new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAirPlayScreen.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PUAirPlayScreen new]"}];
 
   abort();
 }

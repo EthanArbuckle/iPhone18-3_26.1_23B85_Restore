@@ -7,8 +7,8 @@
 - (id)analyticsDict
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(NSPProxyAgentStats *)self tierType];
-  [v3 setObject:v4 forKeyedSubscript:@"TierType"];
+  tierType = [(NSPProxyAgentStats *)self tierType];
+  [v3 setObject:tierType forKeyedSubscript:@"TierType"];
 
   v5 = [NSNumber numberWithUnsignedInteger:[(NSPProxyAgentStats *)self ingressProxyTokensAdded]];
   [v3 setObject:v5 forKeyedSubscript:@"IngressProxyTokensAdded"];

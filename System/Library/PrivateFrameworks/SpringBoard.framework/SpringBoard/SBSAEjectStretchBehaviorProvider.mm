@@ -1,13 +1,13 @@
 @interface SBSAEjectStretchBehaviorProvider
-- (BOOL)_checkContextForExpiredContractionMilestone:(id)a3;
-- (BOOL)_isTimerExpired:(id)a3;
-- (id)preferencesFromContext:(id)a3;
-- (void)_startTimerIfNecessary:(id)a3 context:(id)a4;
+- (BOOL)_checkContextForExpiredContractionMilestone:(id)milestone;
+- (BOOL)_isTimerExpired:(id)expired;
+- (id)preferencesFromContext:(id)context;
+- (void)_startTimerIfNecessary:(id)necessary context:(id)context;
 @end
 
 @implementation SBSAEjectStretchBehaviorProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v46 = 0;
   v47 = &v46;
@@ -15,11 +15,11 @@
   v49 = __Block_byref_object_copy__65;
   v50 = __Block_byref_object_dispose__65;
   v51 = 0;
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -59,9 +59,9 @@
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__65;
   v44 = __Block_byref_object_dispose__65;
-  v11 = [v47[5] preferences];
+  preferences = [v47[5] preferences];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = preferences;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -83,7 +83,7 @@
   v15 = v14;
 
   v45 = v15;
-  v16 = [objc_opt_class() settings];
+  settings = [objc_opt_class() settings];
   v17 = v41[5];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -92,7 +92,7 @@
   v39 = a2;
   v35[4] = self;
   v37 = &v46;
-  v18 = v16;
+  v18 = settings;
   v36 = v18;
   v38 = &v40;
   v19 = [v17 copyWithBlock:v35];
@@ -442,18 +442,18 @@ void __59__SBSAEjectStretchBehaviorProvider_preferencesFromContext___block_invok
   [v6 setPreferences:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (BOOL)_isTimerExpired:(id)a3
+- (BOOL)_isTimerExpired:(id)expired
 {
-  v4 = a3;
-  v5 = [v4 elapsedTimerDescriptions];
-  if ([v5 count])
+  expiredCopy = expired;
+  elapsedTimerDescriptions = [expiredCopy elapsedTimerDescriptions];
+  if ([elapsedTimerDescriptions count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke;
     v11[3] = &unk_2783B2950;
     v11[4] = self;
-    v6 = [v5 indexOfObjectPassingTest:v11];
+    v6 = [elapsedTimerDescriptions indexOfObjectPassingTest:v11];
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -463,7 +463,7 @@ void __59__SBSAEjectStretchBehaviorProvider_preferencesFromContext___block_invok
       v9 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        [SBSAEjectStretchBehaviorProvider _isTimerExpired:v4];
+        [SBSAEjectStretchBehaviorProvider _isTimerExpired:expiredCopy];
       }
     }
   }
@@ -484,26 +484,26 @@ uint64_t __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke(u
   return v3;
 }
 
-- (void)_startTimerIfNecessary:(id)a3 context:(id)a4
+- (void)_startTimerIfNecessary:(id)necessary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  necessaryCopy = necessary;
+  contextCopy = context;
   if (!self->_identifierOfActiveTimer)
   {
     v8 = [SBSATimerDescription alloc];
-    v9 = [objc_opt_class() settings];
-    [v9 ejectionStretchDuration];
+    settings = [objc_opt_class() settings];
+    [settings ejectionStretchDuration];
     v10 = [(SBSATimerDescription *)v8 initWithTimeInterval:?];
 
-    v11 = [(SBSATimerDescription *)v10 timerDescriptionIdentifier];
+    timerDescriptionIdentifier = [(SBSATimerDescription *)v10 timerDescriptionIdentifier];
     identifierOfActiveTimer = self->_identifierOfActiveTimer;
-    self->_identifierOfActiveTimer = v11;
+    self->_identifierOfActiveTimer = timerDescriptionIdentifier;
 
-    v13 = [v6 timerDescriptions];
-    if (v13)
+    timerDescriptions = [necessaryCopy timerDescriptions];
+    if (timerDescriptions)
     {
-      v14 = [v6 timerDescriptions];
-      v15 = [v14 mutableCopy];
+      timerDescriptions2 = [necessaryCopy timerDescriptions];
+      v15 = [timerDescriptions2 mutableCopy];
     }
 
     else
@@ -512,16 +512,16 @@ uint64_t __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke(u
     }
 
     [v15 addObject:v10];
-    [v6 setTimerDescriptions:v15];
+    [necessaryCopy setTimerDescriptions:v15];
     v16 = SBLogSystemAperturePreferencesStackDynamicsAnimations();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [SBSAEjectStretchBehaviorProvider _startTimerIfNecessary:v7 context:?];
+      [SBSAEjectStretchBehaviorProvider _startTimerIfNecessary:contextCopy context:?];
     }
   }
 }
 
-- (BOOL)_checkContextForExpiredContractionMilestone:(id)a3
+- (BOOL)_checkContextForExpiredContractionMilestone:(id)milestone
 {
   v20 = *MEMORY[0x277D85DE8];
   if (!self->_pendingCollapsePropertyIdentity)
@@ -533,8 +533,8 @@ uint64_t __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke(u
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 animatedTransitionResults];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  animatedTransitionResults = [milestone animatedTransitionResults];
+  v5 = [animatedTransitionResults countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -545,16 +545,16 @@ uint64_t __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke(u
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animatedTransitionResults);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 associatedInterfaceElementPropertyIdentity];
+        associatedInterfaceElementPropertyIdentity = [v9 associatedInterfaceElementPropertyIdentity];
         if (BSEqualObjects())
         {
-          v11 = [v9 isTransitionEndTargeted];
+          isTransitionEndTargeted = [v9 isTransitionEndTargeted];
 
-          if (v11)
+          if (isTransitionEndTargeted)
           {
             pendingCollapsePropertyIdentity = self->_pendingCollapsePropertyIdentity;
             self->_pendingCollapsePropertyIdentity = 0;
@@ -569,7 +569,7 @@ uint64_t __52__SBSAEjectStretchBehaviorProvider__isTimerExpired___block_invoke(u
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [animatedTransitionResults countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

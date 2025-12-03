@@ -3,7 +3,7 @@
 - (void)createAssertion;
 - (void)dealloc;
 - (void)delayCreateAssertion;
-- (void)setAssertion:(id)a3;
+- (void)setAssertion:(id)assertion;
 @end
 
 @implementation MRDLockScreenAssertion
@@ -22,12 +22,12 @@
   return v3;
 }
 
-- (void)setAssertion:(id)a3
+- (void)setAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = _MRLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (assertionCopy)
   {
     if (v6)
     {
@@ -56,7 +56,7 @@
   }
 
   assertion = self->_assertion;
-  self->_assertion = v4;
+  self->_assertion = assertionCopy;
 }
 
 - (void)createAssertion

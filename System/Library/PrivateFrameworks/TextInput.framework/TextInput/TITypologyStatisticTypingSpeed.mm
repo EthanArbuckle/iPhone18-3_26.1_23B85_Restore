@@ -1,6 +1,6 @@
 @interface TITypologyStatisticTypingSpeed
 + (id)statistic;
-- (TITypologyStatisticTypingSpeed)initWithTimeElapsed:(id)a3 basicCounts:(id)a4;
+- (TITypologyStatisticTypingSpeed)initWithTimeElapsed:(id)elapsed basicCounts:(id)counts;
 - (float)typingSpeed;
 - (id)aggregateReport;
 @end
@@ -21,8 +21,8 @@
   v3 = MEMORY[0x1E695DF90];
   v9.receiver = self;
   v9.super_class = TITypologyStatisticTypingSpeed;
-  v4 = [(TITypologyStatisticComposite *)&v9 aggregateReport];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  aggregateReport = [(TITypologyStatisticComposite *)&v9 aggregateReport];
+  v5 = [v3 dictionaryWithDictionary:aggregateReport];
 
   [(TITypologyStatisticTypingSpeed *)self typingSpeed];
   if (v6 > 0.0)
@@ -36,30 +36,30 @@
 
 - (float)typingSpeed
 {
-  v3 = [(TITypologyStatisticTypingSpeed *)self timeElapsed];
-  [v3 adjustedElapsedTime];
+  timeElapsed = [(TITypologyStatisticTypingSpeed *)self timeElapsed];
+  [timeElapsed adjustedElapsedTime];
   v5 = v4;
 
-  v6 = [(TITypologyStatisticTypingSpeed *)self basicCounts];
-  v7 = [v6 characterCount];
+  basicCounts = [(TITypologyStatisticTypingSpeed *)self basicCounts];
+  characterCount = [basicCounts characterCount];
 
   result = 0.0;
-  if (v5 > 0.0 && v7 >= 6)
+  if (v5 > 0.0 && characterCount >= 6)
   {
-    v10 = (v7 - 1) / v5;
+    v10 = (characterCount - 1) / v5;
     return fminf(v10, 18.0);
   }
 
   return result;
 }
 
-- (TITypologyStatisticTypingSpeed)initWithTimeElapsed:(id)a3 basicCounts:(id)a4
+- (TITypologyStatisticTypingSpeed)initWithTimeElapsed:(id)elapsed basicCounts:(id)counts
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v13[0] = v7;
-  v13[1] = v8;
+  elapsedCopy = elapsed;
+  countsCopy = counts;
+  v13[0] = elapsedCopy;
+  v13[1] = countsCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v12.receiver = self;
   v12.super_class = TITypologyStatisticTypingSpeed;
@@ -67,8 +67,8 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_timeElapsed, a3);
-    objc_storeStrong(&v10->_basicCounts, a4);
+    objc_storeStrong(&v10->_timeElapsed, elapsed);
+    objc_storeStrong(&v10->_basicCounts, counts);
   }
 
   return v10;

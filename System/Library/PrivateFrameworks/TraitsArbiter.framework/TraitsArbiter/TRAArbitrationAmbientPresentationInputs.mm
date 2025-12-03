@@ -1,32 +1,32 @@
 @interface TRAArbitrationAmbientPresentationInputs
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAmbientPresentationInputs:(id)a3;
-- (TRAArbitrationAmbientPresentationInputs)initWithAmbientPresented:(BOOL)a3 ambientDisplayStyle:(int64_t)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAmbientPresentationInputs:(id)inputs;
+- (TRAArbitrationAmbientPresentationInputs)initWithAmbientPresented:(BOOL)presented ambientDisplayStyle:(int64_t)style;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationAmbientPresentationInputs
 
-- (TRAArbitrationAmbientPresentationInputs)initWithAmbientPresented:(BOOL)a3 ambientDisplayStyle:(int64_t)a4
+- (TRAArbitrationAmbientPresentationInputs)initWithAmbientPresented:(BOOL)presented ambientDisplayStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = TRAArbitrationAmbientPresentationInputs;
   result = [(TRAArbitrationAmbientPresentationInputs *)&v7 init];
   if (result)
   {
-    result->_ambientPresented = a3;
-    result->_ambientDisplayStyle = a4;
+    result->_ambientPresented = presented;
+    result->_ambientDisplayStyle = style;
   }
 
   return result;
 }
 
-- (BOOL)isEqualToAmbientPresentationInputs:(id)a3
+- (BOOL)isEqualToAmbientPresentationInputs:(id)inputs
 {
-  v4 = a3;
-  if (!v4)
+  inputsCopy = inputs;
+  if (!inputsCopy)
   {
     goto LABEL_7;
   }
@@ -37,17 +37,17 @@
     [TRAArbitrationAmbientPresentationInputs isEqualToAmbientPresentationInputs:];
   }
 
-  if (self == v4)
+  if (self == inputsCopy)
   {
     v7 = 1;
     goto LABEL_9;
   }
 
   ambientPresented = self->_ambientPresented;
-  if (ambientPresented == [(TRAArbitrationAmbientPresentationInputs *)v4 isAmbientPresented])
+  if (ambientPresented == [(TRAArbitrationAmbientPresentationInputs *)inputsCopy isAmbientPresented])
   {
     ambientDisplayStyle = self->_ambientDisplayStyle;
-    v7 = ambientDisplayStyle == [(TRAArbitrationAmbientPresentationInputs *)v4 ambientDisplayStyle];
+    v7 = ambientDisplayStyle == [(TRAArbitrationAmbientPresentationInputs *)inputsCopy ambientDisplayStyle];
   }
 
   else
@@ -61,10 +61,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -72,7 +72,7 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationAmbientPresentationInputs *)self isEqualToAmbientPresentationInputs:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationAmbientPresentationInputs *)self isEqualToAmbientPresentationInputs:equalCopy];
   }
 
   return v5;
@@ -80,10 +80,10 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationAmbientPresentationInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationAmbientPresentationInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -95,12 +95,12 @@ LABEL_9:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationAmbientPresentationInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationAmbientPresentationInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToAmbientPresentationInputs:.cold.1()

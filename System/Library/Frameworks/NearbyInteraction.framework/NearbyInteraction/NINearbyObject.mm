@@ -1,25 +1,25 @@
 @interface NINearbyObject
-+ (id)fauxObjectWithDiscoveryToken:(id)a3 name:(id)a4 deviceIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (NINearbyObject)initWithCoder:(id)a3;
-- (NINearbyObject)initWithNearbyObject:(id)a3;
-- (NINearbyObject)initWithToken:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fauxObjectWithDiscoveryToken:(id)token name:(id)name deviceIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (NINearbyObject)initWithCoder:(id)coder;
+- (NINearbyObject)initWithNearbyObject:(id)object;
+- (NINearbyObject)initWithToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NINearbyObject
 
-- (NINearbyObject)initWithToken:(id)a3
+- (NINearbyObject)initWithToken:(id)token
 {
-  v6 = a3;
-  if (!v6)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"NINearbyObject.mm" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"token"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NINearbyObject.mm" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"token"}];
   }
 
   v26.receiver = self;
@@ -28,7 +28,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_discoveryToken, a3);
+    objc_storeStrong(&v7->_discoveryToken, token);
     v8->_distance = NINearbyObjectDistanceNotAvailable;
     v9 = NINearbyObjectDirectionNotAvailable;
     v8->_distanceMeasurementQuality = 0;
@@ -91,13 +91,13 @@
   return v8;
 }
 
-- (NINearbyObject)initWithNearbyObject:(id)a3
+- (NINearbyObject)initWithNearbyObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"NINearbyObject.mm" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NINearbyObject.mm" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"object"}];
   }
 
   v43.receiver = self;
@@ -105,203 +105,203 @@
   v6 = [(NINearbyObject *)&v43 init];
   if (v6)
   {
-    v7 = [v5 discoveryToken];
+    discoveryToken = [objectCopy discoveryToken];
     discoveryToken = v6->_discoveryToken;
-    v6->_discoveryToken = v7;
+    v6->_discoveryToken = discoveryToken;
 
-    [v5 distance];
+    [objectCopy distance];
     v6->_distance = v9;
-    [v5 direction];
+    [objectCopy direction];
     *v6->_direction = v10;
-    v6->_distanceMeasurementQuality = [v5 distanceMeasurementQuality];
-    [v5 azimuth];
+    v6->_distanceMeasurementQuality = [objectCopy distanceMeasurementQuality];
+    [objectCopy azimuth];
     v6->_azimuth = v11;
-    [v5 elevation];
+    [objectCopy elevation];
     v6->_elevation = v12;
-    [v5 quaternion];
+    [objectCopy quaternion];
     *v6->_anon_e0 = v13;
-    v6->_relationship = [v5 relationship];
-    v14 = [v5 deviceIdentifier];
+    v6->_relationship = [objectCopy relationship];
+    deviceIdentifier = [objectCopy deviceIdentifier];
     deviceIdentifier = v6->_deviceIdentifier;
-    v6->_deviceIdentifier = v14;
+    v6->_deviceIdentifier = deviceIdentifier;
 
-    [v5 timestamp];
+    [objectCopy timestamp];
     v6->_timestamp = v16;
-    v6->_motionState = [v5 motionState];
-    v17 = [v5 name];
+    v6->_motionState = [objectCopy motionState];
+    name = [objectCopy name];
     name = v6->_name;
-    v6->_name = v17;
+    v6->_name = name;
 
-    v6->_verticalDirectionEstimate = [v5 verticalDirectionEstimate];
-    [v5 horizontalAngle];
+    v6->_verticalDirectionEstimate = [objectCopy verticalDirectionEstimate];
+    [objectCopy horizontalAngle];
     v6->_horizontalAngle = v19;
-    [v5 horizontalAngleAccuracy];
+    [objectCopy horizontalAngleAccuracy];
     v6->_horizontalAngleAccuracy = v20;
-    [v5 horizontalDistance];
+    [objectCopy horizontalDistance];
     v6->_horizontalDistance = v21;
-    v6->_itemState = [v5 itemState];
-    v22 = [v5 location];
-    v23 = [v22 copy];
+    v6->_itemState = [objectCopy itemState];
+    location = [objectCopy location];
+    v23 = [location copy];
     location = v6->_location;
     v6->_location = v23;
 
-    v25 = [v5 spatialScore];
+    spatialScore = [objectCopy spatialScore];
     spatialScore = v6->_spatialScore;
-    v6->_spatialScore = v25;
+    v6->_spatialScore = spatialScore;
 
-    v27 = [v5 bluetoothAdvertisingAddress];
+    bluetoothAdvertisingAddress = [objectCopy bluetoothAdvertisingAddress];
     bluetoothAdvertisingAddress = v6->_bluetoothAdvertisingAddress;
-    v6->_bluetoothAdvertisingAddress = v27;
+    v6->_bluetoothAdvertisingAddress = bluetoothAdvertisingAddress;
 
-    v29 = [v5 bluetoothPeerIdentifier];
+    bluetoothPeerIdentifier = [objectCopy bluetoothPeerIdentifier];
     bluetoothPeerIdentifier = v6->_bluetoothPeerIdentifier;
-    v6->_bluetoothPeerIdentifier = v29;
+    v6->_bluetoothPeerIdentifier = bluetoothPeerIdentifier;
 
-    [v5 signalStrength];
+    [objectCopy signalStrength];
     v6->_signalStrength = v31;
-    v6->_remoteTxAntennaMask = [v5 remoteTxAntennaMask];
-    [v5 rangeBiasEstimate];
+    v6->_remoteTxAntennaMask = [objectCopy remoteTxAntennaMask];
+    [objectCopy rangeBiasEstimate];
     v6->_rangeBiasEstimate = v32;
-    [v5 rangeUncertainty];
+    [objectCopy rangeUncertainty];
     v6->_rangeUncertainty = v33;
-    [v5 worldPosition];
+    [objectCopy worldPosition];
     *v6->_worldPosition = v34;
-    v6->_requiresBiasCorrection = [v5 requiresBiasCorrection];
-    v35 = [v5 uwbSignalFeatures];
+    v6->_requiresBiasCorrection = [objectCopy requiresBiasCorrection];
+    uwbSignalFeatures = [objectCopy uwbSignalFeatures];
     uwbSignalFeatures = v6->_uwbSignalFeatures;
-    v6->_uwbSignalFeatures = v35;
+    v6->_uwbSignalFeatures = uwbSignalFeatures;
 
-    v6->_nbRxStatus = [v5 nbRxStatus];
-    v6->_mmsRxStatus = [v5 mmsRxStatus];
-    [v5 nbRssi];
+    v6->_nbRxStatus = [objectCopy nbRxStatus];
+    v6->_mmsRxStatus = [objectCopy mmsRxStatus];
+    [objectCopy nbRssi];
     v6->_nbRssi = v37;
-    v6->_canInteract = [v5 canInteract];
-    v6->_resetARSession = [v5 resetARSession];
-    v6->_revokeFindingExperience = [v5 revokeFindingExperience];
-    [v5 boundedRegionRange];
+    v6->_canInteract = [objectCopy canInteract];
+    v6->_resetARSession = [objectCopy resetARSession];
+    v6->_revokeFindingExperience = [objectCopy revokeFindingExperience];
+    [objectCopy boundedRegionRange];
     v6->_boundedRegionRange = v38;
-    v6->_algorithmSource = [v5 algorithmSource];
-    v39 = [v5 debugDisplayInfo];
+    v6->_algorithmSource = [objectCopy algorithmSource];
+    debugDisplayInfo = [objectCopy debugDisplayInfo];
     debugDisplayInfo = v6->_debugDisplayInfo;
-    v6->_debugDisplayInfo = v39;
+    v6->_debugDisplayInfo = debugDisplayInfo;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithNearbyObject:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeObject:self->_discoveryToken forKey:@"discoveryToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_discoveryToken forKey:@"discoveryToken"];
   *&v4 = self->_distance;
-  [v11 encodeFloat:@"distance" forKey:v4];
-  [v11 encodeVector3:@"direction" forKey:*self->_direction];
+  [coderCopy encodeFloat:@"distance" forKey:v4];
+  [coderCopy encodeVector3:@"direction" forKey:*self->_direction];
   *&v5 = self->_azimuth;
-  [v11 encodeFloat:@"azimuth" forKey:v5];
+  [coderCopy encodeFloat:@"azimuth" forKey:v5];
   *&v6 = self->_elevation;
-  [v11 encodeFloat:@"elevation" forKey:v6];
-  [v11 encodeQuat:@"quaternion" forKey:*self->_anon_e0];
-  [v11 encodeInteger:self->_relationship forKey:@"relationship"];
-  [v11 encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
-  [v11 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v11 encodeInteger:self->_distanceMeasurementQuality forKey:@"measurementQuality"];
-  [v11 encodeInteger:self->_motionState forKey:@"motionState"];
-  [v11 encodeObject:self->_name forKey:@"name"];
-  [v11 encodeInteger:self->_verticalDirectionEstimate forKey:@"verticalDirectionEstimate"];
+  [coderCopy encodeFloat:@"elevation" forKey:v6];
+  [coderCopy encodeQuat:@"quaternion" forKey:*self->_anon_e0];
+  [coderCopy encodeInteger:self->_relationship forKey:@"relationship"];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeInteger:self->_distanceMeasurementQuality forKey:@"measurementQuality"];
+  [coderCopy encodeInteger:self->_motionState forKey:@"motionState"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_verticalDirectionEstimate forKey:@"verticalDirectionEstimate"];
   *&v7 = self->_horizontalAngle;
-  [v11 encodeFloat:@"horizontalAngle" forKey:v7];
+  [coderCopy encodeFloat:@"horizontalAngle" forKey:v7];
   *&v8 = self->_horizontalAngleAccuracy;
-  [v11 encodeFloat:@"horizontalAngleAccuracy" forKey:v8];
+  [coderCopy encodeFloat:@"horizontalAngleAccuracy" forKey:v8];
   *&v9 = self->_horizontalDistance;
-  [v11 encodeFloat:@"horizontalDistance" forKey:v9];
-  [v11 encodeInteger:self->_itemState forKey:@"itemState"];
-  [v11 encodeObject:self->_spatialScore forKey:@"spatialScore"];
-  [v11 encodeObject:self->_bluetoothAdvertisingAddress forKey:@"bluetoothAdvertisingAddress"];
-  [v11 encodeObject:self->_bluetoothPeerIdentifier forKey:@"bluetoothPeerIdentifier"];
-  [v11 encodeObject:self->_location forKey:@"location"];
-  [v11 encodeDouble:@"signalStrength" forKey:self->_signalStrength];
-  [v11 encodeInteger:self->_remoteTxAntennaMask forKey:@"remoteTxAntennaMask"];
-  [v11 encodeDouble:@"rangeBiasEstimate" forKey:self->_rangeBiasEstimate];
-  [v11 encodeDouble:@"rangeUncertainty" forKey:self->_rangeUncertainty];
-  [v11 encodeVector3:@"worldPosition" forKey:*self->_worldPosition];
-  [v11 encodeBool:self->_requiresBiasCorrection forKey:@"requiresBiasCorrection"];
-  [v11 encodeObject:self->_uwbSignalFeatures forKey:@"uwbSignalFeatures"];
-  [v11 encodeInteger:self->_nbRxStatus forKey:@"nbRxStatus"];
-  [v11 encodeInteger:self->_mmsRxStatus forKey:@"mmsRxStatus"];
-  [v11 encodeDouble:@"nbRssi" forKey:self->_nbRssi];
-  [v11 encodeBool:self->_canInteract forKey:@"canInteract"];
-  [v11 encodeBool:self->_resetARSession forKey:@"resetARSession"];
-  [v11 encodeBool:self->_revokeFindingExperience forKey:@"revokeFindingExperience"];
+  [coderCopy encodeFloat:@"horizontalDistance" forKey:v9];
+  [coderCopy encodeInteger:self->_itemState forKey:@"itemState"];
+  [coderCopy encodeObject:self->_spatialScore forKey:@"spatialScore"];
+  [coderCopy encodeObject:self->_bluetoothAdvertisingAddress forKey:@"bluetoothAdvertisingAddress"];
+  [coderCopy encodeObject:self->_bluetoothPeerIdentifier forKey:@"bluetoothPeerIdentifier"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeDouble:@"signalStrength" forKey:self->_signalStrength];
+  [coderCopy encodeInteger:self->_remoteTxAntennaMask forKey:@"remoteTxAntennaMask"];
+  [coderCopy encodeDouble:@"rangeBiasEstimate" forKey:self->_rangeBiasEstimate];
+  [coderCopy encodeDouble:@"rangeUncertainty" forKey:self->_rangeUncertainty];
+  [coderCopy encodeVector3:@"worldPosition" forKey:*self->_worldPosition];
+  [coderCopy encodeBool:self->_requiresBiasCorrection forKey:@"requiresBiasCorrection"];
+  [coderCopy encodeObject:self->_uwbSignalFeatures forKey:@"uwbSignalFeatures"];
+  [coderCopy encodeInteger:self->_nbRxStatus forKey:@"nbRxStatus"];
+  [coderCopy encodeInteger:self->_mmsRxStatus forKey:@"mmsRxStatus"];
+  [coderCopy encodeDouble:@"nbRssi" forKey:self->_nbRssi];
+  [coderCopy encodeBool:self->_canInteract forKey:@"canInteract"];
+  [coderCopy encodeBool:self->_resetARSession forKey:@"resetARSession"];
+  [coderCopy encodeBool:self->_revokeFindingExperience forKey:@"revokeFindingExperience"];
   *&v10 = self->_boundedRegionRange;
-  [v11 encodeFloat:@"boundedRegionRange" forKey:v10];
-  [v11 encodeInteger:self->_algorithmSource forKey:@"algorithmSource"];
-  [v11 encodeObject:self->_debugDisplayInfo forKey:@"debugDisplayInfo"];
+  [coderCopy encodeFloat:@"boundedRegionRange" forKey:v10];
+  [coderCopy encodeInteger:self->_algorithmSource forKey:@"algorithmSource"];
+  [coderCopy encodeObject:self->_debugDisplayInfo forKey:@"debugDisplayInfo"];
 }
 
-- (NINearbyObject)initWithCoder:(id)a3
+- (NINearbyObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveryToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveryToken"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v4 decodeFloatForKey:@"distance"];
+    [coderCopy decodeFloatForKey:@"distance"];
     v56 = v6;
-    [v4 decodeVector3ForKey:@"direction"];
+    [coderCopy decodeVector3ForKey:@"direction"];
     v55 = v7;
-    [v4 decodeFloatForKey:@"azimuth"];
+    [coderCopy decodeFloatForKey:@"azimuth"];
     v54 = v8;
-    [v4 decodeFloatForKey:@"elevation"];
+    [coderCopy decodeFloatForKey:@"elevation"];
     v53 = v9;
-    [v4 decodeQuatForKey:@"quaternion"];
+    [coderCopy decodeQuatForKey:@"quaternion"];
     v52 = v10;
-    obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
-    v11 = [v4 decodeIntegerForKey:@"relationship"];
-    [v4 decodeDoubleForKey:@"timestamp"];
+    obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v11 = [coderCopy decodeIntegerForKey:@"relationship"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v51 = v12;
-    v13 = [v4 decodeIntegerForKey:@"measurementQuality"];
-    v14 = [v4 decodeIntegerForKey:@"motionState"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spatialScore"];
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothAdvertisingAddress"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothPeerIdentifier"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-    v50 = [v4 decodeIntegerForKey:@"verticalDirectionEstimate"];
-    [v4 decodeFloatForKey:@"horizontalAngle"];
+    v13 = [coderCopy decodeIntegerForKey:@"measurementQuality"];
+    v14 = [coderCopy decodeIntegerForKey:@"motionState"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spatialScore"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothAdvertisingAddress"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothPeerIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v50 = [coderCopy decodeIntegerForKey:@"verticalDirectionEstimate"];
+    [coderCopy decodeFloatForKey:@"horizontalAngle"];
     v19 = v18;
-    [v4 decodeFloatForKey:@"horizontalAngleAccuracy"];
+    [coderCopy decodeFloatForKey:@"horizontalAngleAccuracy"];
     v21 = v20;
-    [v4 decodeFloatForKey:@"horizontalDistance"];
+    [coderCopy decodeFloatForKey:@"horizontalDistance"];
     v23 = v22;
-    v49 = [v4 decodeIntegerForKey:@"itemState"];
-    [v4 decodeDoubleForKey:@"signalStrength"];
+    v49 = [coderCopy decodeIntegerForKey:@"itemState"];
+    [coderCopy decodeDoubleForKey:@"signalStrength"];
     v25 = v24;
-    v48 = [v4 decodeIntForKey:@"remoteTxAntennaMask"];
-    [v4 decodeDoubleForKey:@"rangeBiasEstimate"];
+    v48 = [coderCopy decodeIntForKey:@"remoteTxAntennaMask"];
+    [coderCopy decodeDoubleForKey:@"rangeBiasEstimate"];
     v27 = v26;
-    [v4 decodeDoubleForKey:@"rangeUncertainty"];
+    [coderCopy decodeDoubleForKey:@"rangeUncertainty"];
     v29 = v28;
-    [v4 decodeVector3ForKey:@"worldPosition"];
+    [coderCopy decodeVector3ForKey:@"worldPosition"];
     v47 = v30;
-    v46 = [v4 decodeBoolForKey:@"requiresBiasCorrection"];
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uwbSignalFeatures"];
-    v45 = [v4 decodeIntForKey:@"nbRxStatus"];
-    v44 = [v4 decodeIntForKey:@"mmsRxStatus"];
-    [v4 decodeDoubleForKey:@"nbRssi"];
+    v46 = [coderCopy decodeBoolForKey:@"requiresBiasCorrection"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uwbSignalFeatures"];
+    v45 = [coderCopy decodeIntForKey:@"nbRxStatus"];
+    v44 = [coderCopy decodeIntForKey:@"mmsRxStatus"];
+    [coderCopy decodeDoubleForKey:@"nbRssi"];
     v32 = v31;
-    v43 = [v4 decodeBoolForKey:@"canInteract"];
-    v42 = [v4 decodeBoolForKey:@"resetARSession"];
-    v41 = [v4 decodeBoolForKey:@"revokeFindingExperience"];
-    [v4 decodeFloatForKey:@"boundedRegionRange"];
+    v43 = [coderCopy decodeBoolForKey:@"canInteract"];
+    v42 = [coderCopy decodeBoolForKey:@"resetARSession"];
+    v41 = [coderCopy decodeBoolForKey:@"revokeFindingExperience"];
+    [coderCopy decodeFloatForKey:@"boundedRegionRange"];
     v34 = v33;
-    v40 = [v4 decodeIntegerForKey:@"algorithmSource"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"debugDisplayInfo"];
+    v40 = [coderCopy decodeIntegerForKey:@"algorithmSource"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"debugDisplayInfo"];
     v61.receiver = self;
     v61.super_class = NINearbyObject;
     v36 = [(NINearbyObject *)&v61 init];
@@ -349,24 +349,24 @@
 
     self = v37;
 
-    v38 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v38 = 0;
+    selfCopy = 0;
   }
 
-  return v38;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -377,21 +377,21 @@ LABEL_63:
     }
 
     discoveryToken = self->_discoveryToken;
-    v127 = v4;
+    v127 = equalCopy;
     if (!discoveryToken)
     {
-      v8 = [(NINearbyObject *)v5 discoveryToken];
+      discoveryToken = [(NINearbyObject *)v5 discoveryToken];
 
-      if (!v8)
+      if (!discoveryToken)
       {
         v11 = 0;
 LABEL_7:
         deviceIdentifier = self->_deviceIdentifier;
         if (!deviceIdentifier)
         {
-          v13 = [(NINearbyObject *)v6 deviceIdentifier];
+          deviceIdentifier = [(NINearbyObject *)v6 deviceIdentifier];
 
-          if (!v13)
+          if (!deviceIdentifier)
           {
             v16 = 0;
 LABEL_11:
@@ -402,34 +402,34 @@ LABEL_11:
             [(NINearbyObject *)v6 direction];
             v125 = v20;
             distanceMeasurementQuality = self->_distanceMeasurementQuality;
-            v22 = [(NINearbyObject *)v6 distanceMeasurementQuality];
+            distanceMeasurementQuality = [(NINearbyObject *)v6 distanceMeasurementQuality];
             relationship = self->_relationship;
-            v24 = [(NINearbyObject *)v6 relationship];
+            relationship = [(NINearbyObject *)v6 relationship];
             timestamp = self->_timestamp;
             [(NINearbyObject *)v6 timestamp];
             v27 = v26;
             motionState = self->_motionState;
-            v123 = [(NINearbyObject *)v6 motionState];
+            motionState = [(NINearbyObject *)v6 motionState];
             signalStrength = self->_signalStrength;
             [(NINearbyObject *)v6 signalStrength];
             v30 = v29;
             remoteTxAntennaMask = self->_remoteTxAntennaMask;
-            v121 = [(NINearbyObject *)v6 remoteTxAntennaMask];
+            remoteTxAntennaMask = [(NINearbyObject *)v6 remoteTxAntennaMask];
             rangeBiasEstimate = self->_rangeBiasEstimate;
             [(NINearbyObject *)v6 rangeBiasEstimate];
             v33 = v32;
-            v118 = v24;
+            v118 = relationship;
             v119 = relationship;
-            v120 = v22;
+            v120 = distanceMeasurementQuality;
             rangeUncertainty = self->_rangeUncertainty;
             [(NINearbyObject *)v6 rangeUncertainty];
             v116 = v34;
             name = self->_name;
             if (!name)
             {
-              v36 = [(NINearbyObject *)v6 name];
+              name = [(NINearbyObject *)v6 name];
 
-              if (!v36)
+              if (!name)
               {
                 goto LABEL_15;
               }
@@ -437,13 +437,13 @@ LABEL_11:
               name = self->_name;
             }
 
-            v37 = [(NINearbyObject *)v6 name];
-            v38 = [(NSString *)name isEqualToString:v37];
+            name2 = [(NINearbyObject *)v6 name];
+            v38 = [(NSString *)name isEqualToString:name2];
 
-            LOBYTE(v36) = !v38;
+            LOBYTE(name) = !v38;
 LABEL_15:
             verticalDirectionEstimate = self->_verticalDirectionEstimate;
-            v40 = [(NINearbyObject *)v6 verticalDirectionEstimate];
+            verticalDirectionEstimate = [(NINearbyObject *)v6 verticalDirectionEstimate];
             horizontalAngle = self->_horizontalAngle;
             [(NINearbyObject *)v6 horizontalAngle];
             v114 = v41;
@@ -453,44 +453,44 @@ LABEL_15:
             horizontalDistance = self->_horizontalDistance;
             [(NINearbyObject *)v6 horizontalDistance];
             v110 = v43;
-            v107 = v40;
+            v107 = verticalDirectionEstimate;
             v108 = verticalDirectionEstimate;
-            v109 = v36;
+            v109 = name;
             itemState = self->_itemState;
-            v105 = [(NINearbyObject *)v6 itemState];
+            itemState = [(NINearbyObject *)v6 itemState];
             spatialScore = self->_spatialScore;
             if (!spatialScore)
             {
-              v45 = [(NINearbyObject *)v6 spatialScore];
+              spatialScore = [(NINearbyObject *)v6 spatialScore];
 
-              if (!v45)
+              if (!spatialScore)
               {
                 v104 = 0;
 LABEL_19:
                 bluetoothAdvertisingAddress = self->_bluetoothAdvertisingAddress;
                 if (!bluetoothAdvertisingAddress)
                 {
-                  v49 = [(NINearbyObject *)v6 bluetoothAdvertisingAddress];
+                  bluetoothAdvertisingAddress = [(NINearbyObject *)v6 bluetoothAdvertisingAddress];
 
-                  if (!v49)
+                  if (!bluetoothAdvertisingAddress)
                   {
                     v103 = 0;
 LABEL_23:
                     bluetoothPeerIdentifier = self->_bluetoothPeerIdentifier;
                     if (!bluetoothPeerIdentifier)
                     {
-                      v53 = [(NINearbyObject *)v6 bluetoothPeerIdentifier];
+                      bluetoothPeerIdentifier = [(NINearbyObject *)v6 bluetoothPeerIdentifier];
 
-                      if (!v53)
+                      if (!bluetoothPeerIdentifier)
                       {
                         v102 = 0;
 LABEL_27:
                         location = self->_location;
                         if (!location)
                         {
-                          v57 = [(NINearbyObject *)v6 location];
+                          location = [(NINearbyObject *)v6 location];
 
-                          if (!v57)
+                          if (!location)
                           {
                             goto LABEL_31;
                           }
@@ -498,51 +498,51 @@ LABEL_27:
                           location = self->_location;
                         }
 
-                        v58 = [(NINearbyObject *)v6 location];
-                        v59 = [(NILocation *)location isEqual:v58];
+                        location2 = [(NINearbyObject *)v6 location];
+                        v59 = [(NILocation *)location isEqual:location2];
 
-                        LOBYTE(v57) = !v59;
+                        LOBYTE(location) = !v59;
 LABEL_31:
                         v101 = *self->_worldPosition;
                         [(NINearbyObject *)v6 worldPosition];
                         v100 = v60;
                         requiresBiasCorrection = self->_requiresBiasCorrection;
-                        v99 = v57;
-                        v97 = [(NINearbyObject *)v6 requiresBiasCorrection];
+                        v99 = location;
+                        requiresBiasCorrection = [(NINearbyObject *)v6 requiresBiasCorrection];
                         uwbSignalFeatures = self->_uwbSignalFeatures;
                         v96 = distanceMeasurementQuality;
                         if (!uwbSignalFeatures)
                         {
-                          v62 = [(NINearbyObject *)v6 uwbSignalFeatures];
+                          uwbSignalFeatures = [(NINearbyObject *)v6 uwbSignalFeatures];
 
-                          if (!v62)
+                          if (!uwbSignalFeatures)
                           {
                             v65 = 0;
 LABEL_35:
                             nbRxStatus = self->_nbRxStatus;
-                            v67 = [(NINearbyObject *)v6 nbRxStatus];
+                            nbRxStatus = [(NINearbyObject *)v6 nbRxStatus];
                             mmsRxStatus = self->_mmsRxStatus;
-                            v94 = [(NINearbyObject *)v6 mmsRxStatus];
+                            mmsRxStatus = [(NINearbyObject *)v6 mmsRxStatus];
                             nbRssi = self->_nbRssi;
                             [(NINearbyObject *)v6 nbRssi];
                             v92 = v68;
                             canInteract = self->_canInteract;
-                            v90 = [(NINearbyObject *)v6 canInteract];
+                            canInteract = [(NINearbyObject *)v6 canInteract];
                             resetARSession = self->_resetARSession;
-                            v88 = [(NINearbyObject *)v6 resetARSession];
+                            resetARSession = [(NINearbyObject *)v6 resetARSession];
                             revokeFindingExperience = self->_revokeFindingExperience;
-                            v86 = [(NINearbyObject *)v6 revokeFindingExperience];
+                            revokeFindingExperience = [(NINearbyObject *)v6 revokeFindingExperience];
                             boundedRegionRange = self->_boundedRegionRange;
                             [(NINearbyObject *)v6 boundedRegionRange];
                             v84 = v69;
                             algorithmSource = self->_algorithmSource;
-                            v70 = [(NINearbyObject *)v6 algorithmSource];
+                            algorithmSource = [(NINearbyObject *)v6 algorithmSource];
                             debugDisplayInfo = self->_debugDisplayInfo;
                             if (!debugDisplayInfo)
                             {
-                              v72 = [(NINearbyObject *)v6 debugDisplayInfo];
+                              debugDisplayInfo = [(NINearbyObject *)v6 debugDisplayInfo];
 
-                              if (!v72)
+                              if (!debugDisplayInfo)
                               {
                                 v74 = 1;
                                 goto LABEL_39;
@@ -551,8 +551,8 @@ LABEL_35:
                               debugDisplayInfo = self->_debugDisplayInfo;
                             }
 
-                            v73 = [(NINearbyObject *)v6 debugDisplayInfo];
-                            v74 = [(NSString *)debugDisplayInfo isEqualToString:v73];
+                            debugDisplayInfo2 = [(NINearbyObject *)v6 debugDisplayInfo];
+                            v74 = [(NSString *)debugDisplayInfo isEqualToString:debugDisplayInfo2];
 
 LABEL_39:
                             v75 = vceqq_f32(v101, v100);
@@ -581,8 +581,8 @@ LABEL_39:
                               v79 = 1;
                             }
 
-                            v80 = (nbRxStatus == v67) & ~(v79 | (v16 || v119 != v118 || timestamp != v27 || motionState != v123) | v109 | (v108 != v107) | (horizontalAngle != v114) | (horizontalAngleAccuracy != v112) | (horizontalDistance != v110) | (itemState != v105) | v104 | v103 | v102 | v99 | (signalStrength != v30) | (remoteTxAntennaMask != v121) | v76 | (requiresBiasCorrection != v97) | (rangeUncertainty != v116 || rangeBiasEstimate != v33 || v65));
-                            if (mmsRxStatus != v94)
+                            v80 = (nbRxStatus == nbRxStatus) & ~(v79 | (v16 || v119 != v118 || timestamp != v27 || motionState != motionState) | v109 | (v108 != v107) | (horizontalAngle != v114) | (horizontalAngleAccuracy != v112) | (horizontalDistance != v110) | (itemState != itemState) | v104 | v103 | v102 | v99 | (signalStrength != v30) | (remoteTxAntennaMask != remoteTxAntennaMask) | v76 | (requiresBiasCorrection != requiresBiasCorrection) | (rangeUncertainty != v116 || rangeBiasEstimate != v33 || v65));
+                            if (mmsRxStatus != mmsRxStatus)
                             {
                               v80 = 0;
                             }
@@ -592,17 +592,17 @@ LABEL_39:
                               v80 = 0;
                             }
 
-                            if (canInteract != v90)
+                            if (canInteract != canInteract)
                             {
                               v80 = 0;
                             }
 
-                            if (resetARSession != v88)
+                            if (resetARSession != resetARSession)
                             {
                               v80 = 0;
                             }
 
-                            if (revokeFindingExperience != v86)
+                            if (revokeFindingExperience != revokeFindingExperience)
                             {
                               v80 = 0;
                             }
@@ -612,21 +612,21 @@ LABEL_39:
                               v80 = 0;
                             }
 
-                            if (algorithmSource != v70)
+                            if (algorithmSource != algorithmSource)
                             {
                               v80 = 0;
                             }
 
                             v81 = v80 & v74;
-                            v4 = v127;
+                            equalCopy = v127;
                             goto LABEL_63;
                           }
 
                           uwbSignalFeatures = self->_uwbSignalFeatures;
                         }
 
-                        v63 = [(NINearbyObject *)v6 uwbSignalFeatures];
-                        v64 = [(UWBSignalFeatures *)uwbSignalFeatures isEqual:v63];
+                        uwbSignalFeatures2 = [(NINearbyObject *)v6 uwbSignalFeatures];
+                        v64 = [(UWBSignalFeatures *)uwbSignalFeatures isEqual:uwbSignalFeatures2];
 
                         v65 = !v64;
                         goto LABEL_35;
@@ -635,8 +635,8 @@ LABEL_39:
                       bluetoothPeerIdentifier = self->_bluetoothPeerIdentifier;
                     }
 
-                    v54 = [(NINearbyObject *)v6 bluetoothPeerIdentifier];
-                    v55 = [(NSUUID *)bluetoothPeerIdentifier isEqual:v54];
+                    bluetoothPeerIdentifier2 = [(NINearbyObject *)v6 bluetoothPeerIdentifier];
+                    v55 = [(NSUUID *)bluetoothPeerIdentifier isEqual:bluetoothPeerIdentifier2];
 
                     v102 = v55 ^ 1;
                     goto LABEL_27;
@@ -645,8 +645,8 @@ LABEL_39:
                   bluetoothAdvertisingAddress = self->_bluetoothAdvertisingAddress;
                 }
 
-                v50 = [(NINearbyObject *)v6 bluetoothAdvertisingAddress];
-                v51 = [(NSData *)bluetoothAdvertisingAddress isEqualToData:v50];
+                bluetoothAdvertisingAddress2 = [(NINearbyObject *)v6 bluetoothAdvertisingAddress];
+                v51 = [(NSData *)bluetoothAdvertisingAddress isEqualToData:bluetoothAdvertisingAddress2];
 
                 v103 = !v51;
                 goto LABEL_23;
@@ -655,8 +655,8 @@ LABEL_39:
               spatialScore = self->_spatialScore;
             }
 
-            v46 = [(NINearbyObject *)v6 spatialScore];
-            v47 = [(NSNumber *)spatialScore isEqualToNumber:v46];
+            spatialScore2 = [(NINearbyObject *)v6 spatialScore];
+            v47 = [(NSNumber *)spatialScore isEqualToNumber:spatialScore2];
 
             v104 = !v47;
             goto LABEL_19;
@@ -665,8 +665,8 @@ LABEL_39:
           deviceIdentifier = self->_deviceIdentifier;
         }
 
-        v14 = [(NINearbyObject *)v6 deviceIdentifier];
-        v15 = [(NSString *)deviceIdentifier isEqualToString:v14];
+        deviceIdentifier2 = [(NINearbyObject *)v6 deviceIdentifier];
+        v15 = [(NSString *)deviceIdentifier isEqualToString:deviceIdentifier2];
 
         v16 = !v15;
         goto LABEL_11;
@@ -675,8 +675,8 @@ LABEL_39:
       discoveryToken = self->_discoveryToken;
     }
 
-    v9 = [(NINearbyObject *)v6 discoveryToken];
-    v10 = [(NIDiscoveryToken *)discoveryToken isEqual:v9];
+    discoveryToken2 = [(NINearbyObject *)v6 discoveryToken];
+    v10 = [(NIDiscoveryToken *)discoveryToken isEqual:discoveryToken2];
 
     v11 = !v10;
     goto LABEL_7;
@@ -877,8 +877,8 @@ LABEL_64:
   discoveryToken = self->_discoveryToken;
   if (discoveryToken)
   {
-    v8 = [(NIDiscoveryToken *)discoveryToken descriptionInternal];
-    [v6 appendFormat:@"Token: %@", v8];
+    descriptionInternal = [(NIDiscoveryToken *)discoveryToken descriptionInternal];
+    [v6 appendFormat:@"Token: %@", descriptionInternal];
   }
 
   else
@@ -943,22 +943,22 @@ LABEL_64:
   v7 = [(NINearbyObject *)self description];
   [v6 appendString:v7];
 
-  v8 = [(NINearbyObject *)self deviceIdentifer];
-  [v6 appendFormat:@", deviceIdentifier: %@", v8];
+  deviceIdentifer = [(NINearbyObject *)self deviceIdentifer];
+  [v6 appendFormat:@", deviceIdentifier: %@", deviceIdentifer];
 
   horizontalAngleAccuracy = self->_horizontalAngleAccuracy;
   v10 = NINearbyObjectAngleNotAvailable;
   if (horizontalAngleAccuracy == NINearbyObjectAngleNotAvailable)
   {
-    v11 = @"-";
+    horizontalAngleAccuracy = @"-";
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2frad", horizontalAngleAccuracy];
+    horizontalAngleAccuracy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2frad", horizontalAngleAccuracy];
   }
 
-  [v6 appendFormat:@", HorizAngleAcc: %@", v11];
+  [v6 appendFormat:@", HorizAngleAcc: %@", horizontalAngleAccuracy];
   if (horizontalAngleAccuracy != v10)
   {
   }
@@ -967,15 +967,15 @@ LABEL_64:
   v13 = NINearbyObjectDistanceNotAvailable;
   if (horizontalDistance == NINearbyObjectDistanceNotAvailable)
   {
-    v14 = @"-";
+    horizontalDistance = @"-";
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2fm", horizontalDistance];
+    horizontalDistance = [MEMORY[0x1E696AEC0] stringWithFormat:@"%0.2fm", horizontalDistance];
   }
 
-  [v6 appendFormat:@", Horiz Distance: %@", v14];
+  [v6 appendFormat:@", Horiz Distance: %@", horizontalDistance];
   if (horizontalDistance != v13)
   {
   }
@@ -1170,14 +1170,14 @@ LABEL_64:
   return v6;
 }
 
-+ (id)fauxObjectWithDiscoveryToken:(id)a3 name:(id)a4 deviceIdentifier:(id)a5
++ (id)fauxObjectWithDiscoveryToken:(id)token name:(id)name deviceIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[NINearbyObject alloc] initWithToken:v7];
-  [(NINearbyObject *)v10 setName:v8];
-  [(NINearbyObject *)v10 setDeviceIdentifier:v9];
+  tokenCopy = token;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v10 = [[NINearbyObject alloc] initWithToken:tokenCopy];
+  [(NINearbyObject *)v10 setName:nameCopy];
+  [(NINearbyObject *)v10 setDeviceIdentifier:identifierCopy];
 
   return v10;
 }

@@ -1,22 +1,22 @@
 @interface TSCH3DChartLineSceneObject
-+ (id)createMeshForSeries:(id)a3;
-- (BOOL)shouldRenderSeries:(id)a3;
-- (void)updateTilingEffect:(void *)a3 properties:(id)a4 textureTiling:(id)a5 size:(void *)a6;
++ (id)createMeshForSeries:(id)series;
+- (BOOL)shouldRenderSeries:(id)series;
+- (void)updateTilingEffect:(void *)effect properties:(id)properties textureTiling:(id)tiling size:(void *)size;
 @end
 
 @implementation TSCH3DChartLineSceneObject
 
-+ (id)createMeshForSeries:(id)a3
++ (id)createMeshForSeries:(id)series
 {
-  v3 = a3;
-  v8 = objc_msgSend_model(v3, v4, v5, v6, v7);
+  seriesCopy = series;
+  v8 = objc_msgSend_model(seriesCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_chartInfo(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_chartType(v13, v14, v15, v16, v17);
-  v23 = objc_msgSend_seriesType(v3, v19, v20, v21, v22);
+  v23 = objc_msgSend_seriesType(seriesCopy, v19, v20, v21, v22);
   v28 = objc_msgSend_enumeratorWithModel_chartType_seriesType_(TSCH3DChartModelEnumerator, v24, v25, v26, v27, v8, v18, v23);
 
   v33 = objc_msgSend_seriesEnumerator(v28, v29, v30, v31, v32);
-  v38 = objc_msgSend_seriesIndex(v3, v34, v35, v36, v37);
+  v38 = objc_msgSend_seriesIndex(seriesCopy, v34, v35, v36, v37);
   v43 = objc_msgSend_nextSeries_(v33, v39, v40, v41, v42, v38);
   v44 = +[TSCH3DChartLineSceneObject chartSeriesDepth]_0();
   v45 = +[TSCH3DChartLineSceneObject chartSeriesDepth]_0();
@@ -84,14 +84,14 @@
   return v103;
 }
 
-- (void)updateTilingEffect:(void *)a3 properties:(id)a4 textureTiling:(id)a5 size:(void *)a6
+- (void)updateTilingEffect:(void *)effect properties:(id)properties textureTiling:(id)tiling size:(void *)size
 {
-  v8 = a4;
-  v9 = a5;
-  v15 = v9;
-  if (v9)
+  propertiesCopy = properties;
+  tilingCopy = tiling;
+  v15 = tilingCopy;
+  if (tilingCopy)
   {
-    objc_msgSend_scale(v9, v10, v11, v13, v14);
+    objc_msgSend_scale(tilingCopy, v10, v11, v13, v14);
     v16 = COERCE_DOUBLE(vadd_f32(v37, v37));
     objc_msgSend_mode(v15, v17, v16, v19, v20, *&v16, v18);
   }
@@ -100,7 +100,7 @@
   {
     __asm { FMOV            V0.2S, #1.0 }
 
-    objc_msgSend_mode(v9, v10, _D0, v13, v14, *&_D0, v12);
+    objc_msgSend_mode(tilingCopy, v10, _D0, v13, v14, *&_D0, v12);
   }
 
   v43 = 0uLL;
@@ -121,20 +121,20 @@
   v31 = v42.i32[3];
   LODWORD(v32) = v43.i32[0];
   v33 = vdup_lane_s32(*v43.f32, 1).u32[0];
-  *(a3 + 5) = v43.i64[0];
+  *(effect + 5) = v43.i64[0];
   DWORD1(v32) = v43.i32[3];
   *(&v32 + 1) = __PAIR64__(v29.u32[0], v30);
   v29.i32[2] = v33;
-  *(a3 + 4) = v30;
-  *(a3 + 5) = v31;
+  *(effect + 4) = v30;
+  *(effect + 5) = v31;
   v29.i32[3] = v43.i32[2];
-  *a3 = vrev64q_s32(v29);
-  *(a3 + 24) = v32;
+  *effect = vrev64q_s32(v29);
+  *(effect + 24) = v32;
 }
 
-- (BOOL)shouldRenderSeries:(id)a3
+- (BOOL)shouldRenderSeries:(id)series
 {
-  v6 = objc_msgSend_series(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_series(series, a2, v3, v4, v5);
   v11 = objc_msgSend_numberOfValues(v6, v7, v8, v9, v10) > 1;
 
   return v11;

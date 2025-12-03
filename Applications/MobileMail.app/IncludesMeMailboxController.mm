@@ -1,6 +1,6 @@
 @interface IncludesMeMailboxController
 - (CGPoint)iconOffset;
-- (id)_iconImageWithBackgroundColor:(id)a3;
+- (id)_iconImageWithBackgroundColor:(id)color;
 - (id)applicationShortcutIconImage;
 - (id)iconImage;
 - (id)mailboxTitle;
@@ -71,24 +71,24 @@
   return v3;
 }
 
-- (id)_iconImageWithBackgroundColor:(id)a3
+- (id)_iconImageWithBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
 
-  v6 = sub_10014A0BC(2, v5, 36.0);
-  v7 = sub_10014A0BC(3, v5, 36.0);
+  v6 = sub_10014A0BC(2, preferredContentSizeCategory, 36.0);
+  v7 = sub_10014A0BC(3, preferredContentSizeCategory, 36.0);
   if (v6 < v7)
   {
     v6 = v7;
   }
 
   v8 = +[NSBundle mainBundle];
-  v9 = sub_100149B0C(2, v5, v8, v3, 0, v6);
+  v9 = sub_100149B0C(2, preferredContentSizeCategory, v8, colorCopy, 0, v6);
 
   v10 = +[NSBundle mainBundle];
-  v11 = sub_100149B0C(3, v5, v10, v3, 0, v6);
+  v11 = sub_100149B0C(3, preferredContentSizeCategory, v10, colorCopy, 0, v6);
 
   [v9 size];
   v13 = v12;

@@ -1,101 +1,101 @@
 @interface CPZone
-- (BOOL)canContain:(CGRect)a3;
-- (BOOL)contains:(id)a3;
-- (BOOL)hasNeighborShape:(id)a3;
-- (BOOL)mapToWordPairs:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWordPairsWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWords:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWordsWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)rectangleBordersAtLeft:(id *)a3 top:(id *)a4 right:(id *)a5 bottom:(id *)a6;
+- (BOOL)canContain:(CGRect)contain;
+- (BOOL)contains:(id)contains;
+- (BOOL)hasNeighborShape:(id)shape;
+- (BOOL)mapToWordPairs:(void *)pairs passing:(void *)passing;
+- (BOOL)mapToWordPairsWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)mapToWords:(void *)words passing:(void *)passing;
+- (BOOL)mapToWordsWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)rectangleBordersAtLeft:(id *)left top:(id *)top right:(id *)right bottom:(id *)bottom;
 - (CGColor)newBackgroundColor;
 - (CGPoint)outerVertices;
 - (CGPoint)swollenOuterVertices;
 - (CGRect)swollenZoneBounds;
 - (CGRect)zoneBounds;
-- (CGRect)zoneBoundsFromVertices:(CGPoint *)a3 ofCount:(unsigned int)a4;
+- (CGRect)zoneBoundsFromVertices:(CGPoint *)vertices ofCount:(unsigned int)count;
 - (CPZone)init;
 - (double)area;
 - (id)backgroundGraphics;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)graphicsInZone;
 - (int64_t)borderZOrder;
-- (int64_t)compareArea:(id)a3;
+- (int64_t)compareArea:(id)area;
 - (int64_t)neighborZOrder;
 - (unsigned)vertexCount;
 - (unsigned)wordCount;
-- (void)addContentFrom:(id)a3;
-- (void)addPDFChar:(void *)a3;
+- (void)addContentFrom:(id)from;
+- (void)addPDFChar:(void *)char;
 - (void)dealloc;
 - (void)removeUnfilledNeighborShapes;
-- (void)setCharactersInZone:(id)a3;
-- (void)setGutters:(id)a3;
-- (void)setLeftGuides:(id)a3;
-- (void)setRightGuides:(id)a3;
-- (void)setSpacers:(id)a3;
-- (void)setZoneBorders:(id)a3;
-- (void)setZoneProfile:(id)a3;
-- (void)updatedCharSequenceFrom:(unsigned int)a3 length:(unsigned int)a4;
+- (void)setCharactersInZone:(id)zone;
+- (void)setGutters:(id)gutters;
+- (void)setLeftGuides:(id)guides;
+- (void)setRightGuides:(id)guides;
+- (void)setSpacers:(id)spacers;
+- (void)setZoneBorders:(id)borders;
+- (void)setZoneProfile:(id)profile;
+- (void)updatedCharSequenceFrom:(unsigned int)from length:(unsigned int)length;
 @end
 
 @implementation CPZone
 
-- (void)setSpacers:(id)a3
+- (void)setSpacers:(id)spacers
 {
   spacers = self->spacers;
-  if (spacers != a3)
+  if (spacers != spacers)
   {
 
-    self->spacers = a3;
+    self->spacers = spacers;
   }
 }
 
-- (void)setGutters:(id)a3
+- (void)setGutters:(id)gutters
 {
   gutters = self->gutters;
-  if (gutters != a3)
+  if (gutters != gutters)
   {
 
-    self->gutters = a3;
+    self->gutters = gutters;
   }
 }
 
-- (void)setRightGuides:(id)a3
+- (void)setRightGuides:(id)guides
 {
   rightGuides = self->rightGuides;
-  if (rightGuides != a3)
+  if (rightGuides != guides)
   {
 
-    self->rightGuides = a3;
+    self->rightGuides = guides;
   }
 }
 
-- (void)setLeftGuides:(id)a3
+- (void)setLeftGuides:(id)guides
 {
   leftGuides = self->leftGuides;
-  if (leftGuides != a3)
+  if (leftGuides != guides)
   {
 
-    self->leftGuides = a3;
+    self->leftGuides = guides;
   }
 }
 
-- (void)setZoneProfile:(id)a3
+- (void)setZoneProfile:(id)profile
 {
   zoneProfile = self->zoneProfile;
-  if (zoneProfile != a3)
+  if (zoneProfile != profile)
   {
 
-    self->zoneProfile = a3;
+    self->zoneProfile = profile;
   }
 }
 
-- (int64_t)compareArea:(id)a3
+- (int64_t)compareArea:(id)area
 {
   [(CPZone *)self area];
   v6 = v5;
-  [a3 area];
+  [area area];
   v8 = v7;
-  v9 = vcvts_n_f32_u32([a3 vertexCount] + -[CPZone vertexCount](self, "vertexCount"), 0x17uLL);
+  v9 = vcvts_n_f32_u32([area vertexCount] + -[CPZone vertexCount](self, "vertexCount"), 0x17uLL);
   if (v6 < v8 && v8 - v6 > v8 * v9)
   {
     return -1;
@@ -128,15 +128,15 @@
   }
 }
 
-- (void)addContentFrom:(id)a3
+- (void)addContentFrom:(id)from
 {
-  v5 = [a3 count];
+  v5 = [from count];
   if (v5)
   {
     v6 = v5 - 1;
     do
     {
-      v7 = [a3 objectAtIndex:v6];
+      v7 = [from objectAtIndex:v6];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -146,7 +146,7 @@
           if ([(CPZone *)self contains:v7])
           {
             [(CPChunk *)self add:v7];
-            [a3 removeObjectAtIndex:v6];
+            [from removeObjectAtIndex:v6];
           }
         }
       }
@@ -158,18 +158,18 @@
   }
 }
 
-- (void)updatedCharSequenceFrom:(unsigned int)a3 length:(unsigned int)a4
+- (void)updatedCharSequenceFrom:(unsigned int)from length:(unsigned int)length
 {
   if (!self->hasRotatedCharacters)
   {
-    v4 = a4;
-    v5 = *&a3;
-    if (a4 + a3 > a3)
+    lengthCopy = length;
+    v5 = *&from;
+    if (length + from > from)
     {
       while ([(CPCharSequence *)self->charactersInZone charAtIndex:v5][168] == 0.0)
       {
         v5 = (v5 + 1);
-        if (!--v4)
+        if (!--lengthCopy)
         {
           return;
         }
@@ -180,21 +180,21 @@
   }
 }
 
-- (void)setCharactersInZone:(id)a3
+- (void)setCharactersInZone:(id)zone
 {
   charactersInZone = self->charactersInZone;
-  if (charactersInZone != a3)
+  if (charactersInZone != zone)
   {
 
-    v6 = a3;
-    self->charactersInZone = v6;
-    v7 = [(CPCharSequence *)v6 length];
+    zoneCopy = zone;
+    self->charactersInZone = zoneCopy;
+    v7 = [(CPCharSequence *)zoneCopy length];
 
     [(CPZone *)self updatedCharSequenceFrom:0 length:v7];
   }
 }
 
-- (void)addPDFChar:(void *)a3
+- (void)addPDFChar:(void *)char
 {
   charactersInZone = self->charactersInZone;
   if (!charactersInZone)
@@ -203,46 +203,46 @@
     self->charactersInZone = charactersInZone;
   }
 
-  [(CPCharSequence *)charactersInZone addChar:a3];
-  if (*(a3 + 21) != 0.0)
+  [(CPCharSequence *)charactersInZone addChar:char];
+  if (*(char + 21) != 0.0)
   {
     self->hasRotatedCharacters = 1;
   }
 }
 
-- (BOOL)canContain:(CGRect)a3
+- (BOOL)canContain:(CGRect)contain
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CPZone *)self swollenOuterVertices];
-  v9 = [(CPZone *)self vertexCount];
+  height = contain.size.height;
+  width = contain.size.width;
+  y = contain.origin.y;
+  x = contain.origin.x;
+  swollenOuterVertices = [(CPZone *)self swollenOuterVertices];
+  vertexCount = [(CPZone *)self vertexCount];
 
-  return CPUprightRectilinearShapeWithVerticesContainingRect(&v8->x, v9, x, y, width, height);
+  return CPUprightRectilinearShapeWithVerticesContainingRect(&swollenOuterVertices->x, vertexCount, x, y, width, height);
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v5 = [(CPZone *)self swollenOuterVertices];
-  if (v5)
+  swollenOuterVertices = [(CPZone *)self swollenOuterVertices];
+  if (swollenOuterVertices)
   {
-    p_x = &v5->x;
+    p_x = &swollenOuterVertices->x;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 hasBorders])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [contains hasBorders])
     {
-      v7 = [a3 vertexCount];
-      v8 = [a3 zoneBorders];
-      if (v7)
+      vertexCount = [contains vertexCount];
+      zoneBorders = [contains zoneBorders];
+      if (vertexCount)
       {
-        v9 = v8;
+        v9 = zoneBorders;
         v10 = 0;
-        v11 = v7 - 1;
+        v11 = vertexCount - 1;
         do
         {
           [objc_msgSend(v9 objectAtIndex:{v10), "bounds"}];
-          LODWORD(v5) = CPUprightRectilinearShapeWithVerticesContainingRect(p_x, [(CPZone *)self vertexCount], v12, v13, v14, v15);
-          if (!v5)
+          LODWORD(swollenOuterVertices) = CPUprightRectilinearShapeWithVerticesContainingRect(p_x, [(CPZone *)self vertexCount], v12, v13, v14, v15);
+          if (!swollenOuterVertices)
           {
             break;
           }
@@ -253,26 +253,26 @@
 
       else
       {
-        LOBYTE(v5) = 1;
+        LOBYTE(swollenOuterVertices) = 1;
       }
     }
 
     else
     {
-      v17 = [(CPZone *)self vertexCount];
-      [a3 renderedBounds];
+      vertexCount2 = [(CPZone *)self vertexCount];
+      [contains renderedBounds];
 
-      LOBYTE(v5) = CPUprightRectilinearShapeWithVerticesContainingRect(p_x, v17, v18, v19, v20, v21);
+      LOBYTE(swollenOuterVertices) = CPUprightRectilinearShapeWithVerticesContainingRect(p_x, vertexCount2, v18, v19, v20, v21);
     }
   }
 
-  return v5;
+  return swollenOuterVertices;
 }
 
-- (BOOL)rectangleBordersAtLeft:(id *)a3 top:(id *)a4 right:(id *)a5 bottom:(id *)a6
+- (BOOL)rectangleBordersAtLeft:(id *)left top:(id *)top right:(id *)right bottom:(id *)bottom
 {
-  v32 = [(CPZone *)self isRectangular];
-  if (v32)
+  isRectangular = [(CPZone *)self isRectangular];
+  if (isRectangular)
   {
     v11 = 0;
     v12 = 0;
@@ -291,8 +291,8 @@
           v20 = v19;
           v22 = v21;
           v23 = v13;
-          v24 = a4;
-          v25 = a6;
+          rightCopy = top;
+          leftCopy = bottom;
 LABEL_8:
           v28 = v16 + v18 * 0.5;
           v29 = v20 + v22 * 0.5;
@@ -311,8 +311,8 @@ LABEL_8:
             v23 = v14;
           }
 
-          *v24 = v30;
-          *v25 = v23;
+          *rightCopy = v30;
+          *leftCopy = v23;
           goto LABEL_16;
         }
 
@@ -328,8 +328,8 @@ LABEL_8:
           v18 = v27;
           [v14 bounds];
           v23 = v12;
-          v24 = a5;
-          v25 = a3;
+          rightCopy = right;
+          leftCopy = left;
           goto LABEL_8;
         }
 
@@ -343,15 +343,15 @@ LABEL_16:
     while (v11 != 4);
   }
 
-  return v32;
+  return isRectangular;
 }
 
 - (CGRect)swollenZoneBounds
 {
-  v3 = [(CPZone *)self vertexCount];
-  if (v3)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
-    [(CPZone *)self zoneBoundsFromVertices:[(CPZone *)self swollenOuterVertices] ofCount:v3];
+    [(CPZone *)self zoneBoundsFromVertices:[(CPZone *)self swollenOuterVertices] ofCount:vertexCount];
   }
 
   else
@@ -374,10 +374,10 @@ LABEL_16:
 
 - (CGRect)zoneBounds
 {
-  v3 = [(CPZone *)self vertexCount];
-  if (v3)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
-    [(CPZone *)self zoneBoundsFromVertices:[(CPZone *)self outerVertices] ofCount:v3];
+    [(CPZone *)self zoneBoundsFromVertices:[(CPZone *)self outerVertices] ofCount:vertexCount];
   }
 
   else
@@ -394,19 +394,19 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)zoneBoundsFromVertices:(CGPoint *)a3 ofCount:(unsigned int)a4
+- (CGRect)zoneBoundsFromVertices:(CGPoint *)vertices ofCount:(unsigned int)count
 {
-  v4 = *a3;
-  if (a4 < 2)
+  v4 = *vertices;
+  if (count < 2)
   {
-    v7 = *a3;
+    v7 = *vertices;
   }
 
   else
   {
-    v5 = a4 - 1;
-    v6 = a3 + 1;
-    v7 = *a3;
+    v5 = count - 1;
+    v6 = vertices + 1;
+    v7 = *vertices;
     do
     {
       v8 = *v6++;
@@ -433,18 +433,18 @@ LABEL_16:
   result = self->area;
   if (result < 0.0)
   {
-    v4 = [(CPZone *)self outerVertices];
-    if (v4)
+    outerVertices = [(CPZone *)self outerVertices];
+    if (outerVertices)
     {
-      v5 = v4;
-      v6 = [(CPZone *)self vertexCount];
-      if (v6)
+      v5 = outerVertices;
+      vertexCount = [(CPZone *)self vertexCount];
+      if (vertexCount)
       {
         v7 = 0.0;
         v8 = 1;
         do
         {
-          if (v8 == v6)
+          if (v8 == vertexCount)
           {
             v9 = 0;
           }
@@ -458,7 +458,7 @@ LABEL_16:
           ++v8;
         }
 
-        while (v8 - v6 != 1);
+        while (v8 - vertexCount != 1);
         v10 = v7 * 0.5;
       }
 
@@ -526,29 +526,29 @@ LABEL_16:
 
 - (int64_t)neighborZOrder
 {
-  v3 = [(CPZone *)self vertexCount];
-  if (v3)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
     v4 = 0;
     v5 = 0;
-    v6 = v3;
+    v6 = vertexCount;
     do
     {
       v7 = [(NSMutableArray *)self->zoneBorders objectAtIndex:v4];
-      v8 = [v7 neighborCount];
-      if (v8)
+      neighborCount = [v7 neighborCount];
+      if (neighborCount)
       {
-        v9 = v8;
+        v9 = neighborCount;
         v10 = 0;
         do
         {
           v11 = [objc_msgSend(v7 neighborAtIndex:{v10), "neighborShape"}];
           if (v11)
           {
-            v12 = [v11 zOrder];
-            if (v12 > v5)
+            zOrder = [v11 zOrder];
+            if (zOrder > v5)
             {
-              v5 = v12;
+              v5 = zOrder;
             }
           }
 
@@ -583,10 +583,10 @@ LABEL_16:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v17 = [v16 neighborZOrder];
-          if (v17 > v5)
+          neighborZOrder = [v16 neighborZOrder];
+          if (neighborZOrder > v5)
           {
-            v5 = v17;
+            v5 = neighborZOrder;
           }
         }
       }
@@ -602,12 +602,12 @@ LABEL_16:
 
 - (int64_t)borderZOrder
 {
-  v3 = [(CPZone *)self vertexCount];
-  if (v3)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
     v4 = 0;
     v5 = 0;
-    v6 = v3;
+    v6 = vertexCount;
     do
     {
       v7 = [-[NSMutableArray objectAtIndex:](self->zoneBorders objectAtIndex:{v4), "zOrder"}];
@@ -641,10 +641,10 @@ LABEL_16:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v12 = [v11 borderZOrder];
-          if (v12 > v5)
+          borderZOrder = [v11 borderZOrder];
+          if (borderZOrder > v5)
           {
-            v5 = v12;
+            v5 = borderZOrder;
           }
         }
       }
@@ -671,18 +671,18 @@ LABEL_16:
 
 - (void)removeUnfilledNeighborShapes
 {
-  v3 = [(CPZone *)self vertexCount];
-  if (v3)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
     v4 = 0;
-    v5 = v3;
+    v5 = vertexCount;
     do
     {
       v6 = [(NSMutableArray *)self->zoneBorders objectAtIndex:v4];
-      v7 = [v6 neighborCount];
-      if (v7)
+      neighborCount = [v6 neighborCount];
+      if (neighborCount)
       {
-        v8 = v7;
+        v8 = neighborCount;
         v9 = 0;
         do
         {
@@ -710,11 +710,11 @@ LABEL_16:
   if (!self->backgroundGraphics)
   {
     self->backgroundGraphics = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v3 = [(CPZone *)self vertexCount];
-    if (v3)
+    vertexCount = [(CPZone *)self vertexCount];
+    if (vertexCount)
     {
-      v4 = v3;
-      v32 = [(CPZone *)self bordersWindClockwise];
+      v4 = vertexCount;
+      bordersWindClockwise = [(CPZone *)self bordersWindClockwise];
       v5 = [(NSMutableArray *)self->zoneBorders objectAtIndex:v4 - 1];
       v6 = 0;
       v7 = v4;
@@ -723,10 +723,10 @@ LABEL_16:
         v8 = v5;
         v5 = [(NSMutableArray *)self->zoneBorders objectAtIndex:v6];
         LODWORD(v8) = [v5 indexOfIntersectionWith:v8];
-        v9 = [v5 isHorizontal];
+        isHorizontal = [v5 isHorizontal];
         v10 = v8 == 0;
-        v11 = v32 == v10;
-        if (v32 != v10)
+        v11 = bordersWindClockwise == v10;
+        if (bordersWindClockwise != v10)
         {
           v12 = 1;
         }
@@ -746,7 +746,7 @@ LABEL_16:
           v13 = 4;
         }
 
-        if (v9)
+        if (isHorizontal)
         {
           v14 = v12;
         }
@@ -779,22 +779,22 @@ LABEL_16:
 
         else
         {
-          v17 = [v5 neighborCount];
-          if (v17)
+          neighborCount = [v5 neighborCount];
+          if (neighborCount)
           {
-            v18 = v17;
+            v18 = neighborCount;
             v19 = 0;
             do
             {
               v20 = [v5 neighborAtIndex:v19];
-              v21 = [v20 neighborShape];
-              v22 = [v21 fillColor];
-              if (v22)
+              neighborShape = [v20 neighborShape];
+              fillColor = [neighborShape fillColor];
+              if (fillColor)
               {
-                v30 = (v22 & 0x8000000000000000) != 0 ? CGTaggedColorGetAlpha(v22, v23, v24, v25, v26, v27, v28, v29) : *(v22 + 8 * *(v22 + 56) + 64);
+                v30 = (fillColor & 0x8000000000000000) != 0 ? CGTaggedColorGetAlpha(fillColor, v23, v24, v25, v26, v27, v28, v29) : *(fillColor + 8 * *(fillColor + 56) + 64);
                 if (v30 > 0.0 && [v20 shapeSide] == v14)
                 {
-                  [(NSMutableArray *)self->backgroundGraphics addObject:v21];
+                  [(NSMutableArray *)self->backgroundGraphics addObject:neighborShape];
                 }
               }
 
@@ -894,15 +894,15 @@ LABEL_16:
   return CopyWithAlpha;
 }
 
-- (BOOL)hasNeighborShape:(id)a3
+- (BOOL)hasNeighborShape:(id)shape
 {
-  v5 = [(CPZone *)self vertexCount];
-  if (v5)
+  vertexCount = [(CPZone *)self vertexCount];
+  if (vertexCount)
   {
-    v6 = v5;
-    if ([-[NSMutableArray objectAtIndex:](self->zoneBorders objectAtIndex:{0), "hasNeighborShape:", a3}])
+    v6 = vertexCount;
+    if ([-[NSMutableArray objectAtIndex:](self->zoneBorders objectAtIndex:{0), "hasNeighborShape:", shape}])
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(vertexCount) = 1;
     }
 
     else
@@ -911,7 +911,7 @@ LABEL_16:
       v8 = 1;
       while (v7 != v8)
       {
-        if ([-[NSMutableArray objectAtIndex:](self->zoneBorders objectAtIndex:{v8++), "hasNeighborShape:", a3}])
+        if ([-[NSMutableArray objectAtIndex:](self->zoneBorders objectAtIndex:{v8++), "hasNeighborShape:", shape}])
         {
           v10 = v8 - 1;
           goto LABEL_9;
@@ -920,22 +920,22 @@ LABEL_16:
 
       v10 = v7;
 LABEL_9:
-      LOBYTE(v5) = v10 < v7;
+      LOBYTE(vertexCount) = v10 < v7;
     }
   }
 
-  return v5;
+  return vertexCount;
 }
 
-- (void)setZoneBorders:(id)a3
+- (void)setZoneBorders:(id)borders
 {
   zoneBorders = self->zoneBorders;
-  if (zoneBorders != a3)
+  if (zoneBorders != borders)
   {
 
-    v6 = a3;
-    self->zoneBorders = v6;
-    v7 = [(NSMutableArray *)v6 count];
+    bordersCopy = borders;
+    self->zoneBorders = bordersCopy;
+    v7 = [(NSMutableArray *)bordersCopy count];
     if (v7 >= 1)
     {
       v8 = 0;
@@ -943,10 +943,10 @@ LABEL_9:
       do
       {
         v10 = [(NSMutableArray *)self->zoneBorders objectAtIndex:v8];
-        v11 = [v10 graphicObjectCount];
-        if (v11 >= 1)
+        graphicObjectCount = [v10 graphicObjectCount];
+        if (graphicObjectCount >= 1)
         {
-          v12 = v11;
+          v12 = graphicObjectCount;
           v13 = 0;
           do
           {
@@ -965,9 +965,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)mapToWordPairsWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordPairsWithIndex:(void *)index passing:(void *)passing
 {
-  v6 = self;
+  selfCopy = self;
   v7 = [(NSMutableArray *)self->textLinesInZone count];
   v21 = v7;
   if (!v7)
@@ -980,12 +980,12 @@ LABEL_9:
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v20 = v6;
+  v20 = selfCopy;
   while (1)
   {
-    v13 = [(NSMutableArray *)v6->textLinesInZone objectAtIndex:v8];
-    v14 = [v13 wordCount];
-    if (v14)
+    v13 = [(NSMutableArray *)selfCopy->textLinesInZone objectAtIndex:v8];
+    wordCount = [v13 wordCount];
+    if (wordCount)
     {
       break;
     }
@@ -998,12 +998,12 @@ LABEL_11:
     }
   }
 
-  v15 = v14;
-  v16 = [v13 charSequence];
-  v17 = [v13 wordArray];
+  v15 = wordCount;
+  charSequence = [v13 charSequence];
+  wordArray = [v13 wordArray];
   if (v12)
   {
-    if (!(a3)(v10, v12, v17, v11, v16, a4))
+    if (!(index)(v10, v12, wordArray, v11, charSequence, passing))
     {
       return v9;
     }
@@ -1011,20 +1011,20 @@ LABEL_11:
     v10 = (v10 + 1);
   }
 
-  v12 = v17 + 48 * (v15 - 1);
+  v12 = wordArray + 48 * (v15 - 1);
   if (v15 == 1)
   {
 LABEL_10:
-    v11 = v16;
-    v6 = v20;
+    v11 = charSequence;
+    selfCopy = v20;
     goto LABEL_11;
   }
 
-  while ((a3)(v10, v17, v17 + 48, v16, v16, a4))
+  while ((index)(v10, wordArray, wordArray + 48, charSequence, charSequence, passing))
   {
     v10 = (v10 + 1);
-    v18 = v17 + 96;
-    v17 += 48;
+    v18 = wordArray + 96;
+    wordArray += 48;
     if (v18 > v12)
     {
       goto LABEL_10;
@@ -1034,9 +1034,9 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)mapToWordPairs:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordPairs:(void *)pairs passing:(void *)passing
 {
-  v6 = self;
+  selfCopy = self;
   v7 = 224;
   v8 = [(NSMutableArray *)self->textLinesInZone count];
   v22 = v8;
@@ -1052,9 +1052,9 @@ LABEL_10:
   v21 = 224;
   while (1)
   {
-    v13 = [*(&v6->super.super.super.super.isa + v7) objectAtIndex:{v9, v21}];
-    v14 = [v13 wordCount];
-    if (v14)
+    v13 = [*(&selfCopy->super.super.super.super.isa + v7) objectAtIndex:{v9, v21}];
+    wordCount = [v13 wordCount];
+    if (wordCount)
     {
       break;
     }
@@ -1067,29 +1067,29 @@ LABEL_10:
     }
   }
 
-  v15 = v14;
-  v16 = v6;
-  v17 = [v13 charSequence];
-  v18 = [v13 wordArray];
-  if (v11 && !(a3)(v11, v18, v12, v17, a4))
+  v15 = wordCount;
+  v16 = selfCopy;
+  charSequence = [v13 charSequence];
+  wordArray = [v13 wordArray];
+  if (v11 && !(pairs)(v11, wordArray, v12, charSequence, passing))
   {
     return v10;
   }
 
-  v11 = v18 + 48 * (v15 - 1);
+  v11 = wordArray + 48 * (v15 - 1);
   if (v15 == 1)
   {
 LABEL_9:
-    v12 = v17;
-    v6 = v16;
+    v12 = charSequence;
+    selfCopy = v16;
     v7 = v21;
     goto LABEL_10;
   }
 
-  while (((a3)(v18, v18 + 48, v17, v17, a4) & 1) != 0)
+  while (((pairs)(wordArray, wordArray + 48, charSequence, charSequence, passing) & 1) != 0)
   {
-    v19 = v18 + 96;
-    v18 += 48;
+    v19 = wordArray + 96;
+    wordArray += 48;
     if (v19 > v11)
     {
       goto LABEL_9;
@@ -1099,7 +1099,7 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)mapToWordsWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordsWithIndex:(void *)index passing:(void *)passing
 {
   v6 = [(NSMutableArray *)self->textLinesInZone count];
   v17 = v6;
@@ -1111,10 +1111,10 @@ LABEL_9:
     while (1)
     {
       v10 = [(NSMutableArray *)self->textLinesInZone objectAtIndex:v7, v17];
-      v11 = [v10 charSequence];
-      v12 = [v10 wordCount];
-      v13 = (v12 + v9);
-      v14 = [v10 wordArray];
+      charSequence = [v10 charSequence];
+      wordCount = [v10 wordCount];
+      v13 = (wordCount + v9);
+      wordArray = [v10 wordArray];
       if (v9 < v13)
       {
         break;
@@ -1128,12 +1128,12 @@ LABEL_8:
       }
     }
 
-    v15 = v14;
-    while ((a3)(v9, v15, v11, a4))
+    v15 = wordArray;
+    while ((index)(v9, v15, charSequence, passing))
     {
       v15 += 48;
       v9 = (v9 + 1);
-      if (!--v12)
+      if (!--wordCount)
       {
         v9 = v13;
         goto LABEL_8;
@@ -1149,19 +1149,19 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)mapToWords:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWords:(void *)words passing:(void *)passing
 {
   v7 = [(NSMutableArray *)self->textLinesInZone count];
   v8 = v7;
   if (v7)
   {
-    v9 = [-[NSMutableArray objectAtIndex:](self->textLinesInZone objectAtIndex:{0), "mapToWords:passing:", a3, a4}];
+    v9 = [-[NSMutableArray objectAtIndex:](self->textLinesInZone objectAtIndex:{0), "mapToWords:passing:", words, passing}];
     if (v9)
     {
       v10 = 1;
       while (v8 != v10)
       {
-        v11 = [-[NSMutableArray objectAtIndex:](self->textLinesInZone objectAtIndex:{v10++), "mapToWords:passing:", a3, a4}];
+        v11 = [-[NSMutableArray objectAtIndex:](self->textLinesInZone objectAtIndex:{v10++), "mapToWords:passing:", words, passing}];
         if ((v11 & 1) == 0)
         {
           v12 = v10 - 1;
@@ -1215,22 +1215,22 @@ LABEL_9:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = CPZone;
   v5 = [(CPRegion *)&v15 copyWithZone:?];
   if (v5)
   {
-    v5[16] = [(NSMutableArray *)self->zoneBorders copyWithZone:a3];
+    v5[16] = [(NSMutableArray *)self->zoneBorders copyWithZone:zone];
     v5[21] = self->zoneProfile;
     if (self->outerVertices)
     {
-      v6 = [(CPZone *)self vertexCount];
-      v5[17] = NSZoneMalloc(0, 16 * v6);
-      if (v6)
+      vertexCount = [(CPZone *)self vertexCount];
+      v5[17] = NSZoneMalloc(0, 16 * vertexCount);
+      if (vertexCount)
       {
-        for (i = 0; i != v6; ++i)
+        for (i = 0; i != vertexCount; ++i)
         {
           *(v5[17] + i * 16) = self->outerVertices[i];
         }
@@ -1239,11 +1239,11 @@ LABEL_9:
 
     if (self->swollenOuterVertices)
     {
-      v8 = [(CPZone *)self vertexCount];
-      v5[18] = NSZoneMalloc(0, 16 * v8);
-      if (v8)
+      vertexCount2 = [(CPZone *)self vertexCount];
+      v5[18] = NSZoneMalloc(0, 16 * vertexCount2);
+      if (vertexCount2)
       {
-        for (j = 0; j != v8; ++j)
+        for (j = 0; j != vertexCount2; ++j)
         {
           *(v5[18] + j * 16) = self->swollenOuterVertices[j];
         }
@@ -1274,7 +1274,7 @@ LABEL_9:
       v5[25] = spacers;
     }
 
-    v5[26] = [(CPCharSequence *)self->charactersInZone copyWithZone:a3];
+    v5[26] = [(CPCharSequence *)self->charactersInZone copyWithZone:zone];
     *(v5 + 216) = self->hasRotatedCharacters;
     v5[28] = [(NSMutableArray *)self->textLinesInZone mutableCopy];
     v5[29] = [(NSArray *)self->graphicsInZone copy];

@@ -1,45 +1,45 @@
 @interface _UIViewControllerAnimatedTransitionHandoffData
-- (_UIViewControllerAnimatedTransitionHandoffData)initWithFromViewControllerHandoffData:(id)a3 toViewControllerHandoffData:(id)a4 progressValue:(id)a5 captureBackdropView:(id)a6 isPush:(BOOL)a7;
-- (id)handoffDataForViewController:(id)a3;
+- (_UIViewControllerAnimatedTransitionHandoffData)initWithFromViewControllerHandoffData:(id)data toViewControllerHandoffData:(id)handoffData progressValue:(id)value captureBackdropView:(id)view isPush:(BOOL)push;
+- (id)handoffDataForViewController:(id)controller;
 @end
 
 @implementation _UIViewControllerAnimatedTransitionHandoffData
 
-- (_UIViewControllerAnimatedTransitionHandoffData)initWithFromViewControllerHandoffData:(id)a3 toViewControllerHandoffData:(id)a4 progressValue:(id)a5 captureBackdropView:(id)a6 isPush:(BOOL)a7
+- (_UIViewControllerAnimatedTransitionHandoffData)initWithFromViewControllerHandoffData:(id)data toViewControllerHandoffData:(id)handoffData progressValue:(id)value captureBackdropView:(id)view isPush:(BOOL)push
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dataCopy = data;
+  handoffDataCopy = handoffData;
+  valueCopy = value;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = _UIViewControllerAnimatedTransitionHandoffData;
   v17 = [(_UIViewControllerAnimatedTransitionHandoffData *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fromViewControllerHandoffData, a3);
-    objc_storeStrong(&v18->_toViewControllerHandoffData, a4);
-    objc_storeStrong(&v18->_progressValue, a5);
-    objc_storeStrong(&v18->_captureBackdropView, a6);
-    v18->_isPush = a7;
+    objc_storeStrong(&v17->_fromViewControllerHandoffData, data);
+    objc_storeStrong(&v18->_toViewControllerHandoffData, handoffData);
+    objc_storeStrong(&v18->_progressValue, value);
+    objc_storeStrong(&v18->_captureBackdropView, view);
+    v18->_isPush = push;
   }
 
   return v18;
 }
 
-- (id)handoffDataForViewController:(id)a3
+- (id)handoffDataForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   p_fromViewControllerHandoffData = &self->_fromViewControllerHandoffData;
-  v6 = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)self->_fromViewControllerHandoffData viewController];
+  viewController = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)self->_fromViewControllerHandoffData viewController];
 
-  if (v6 != v4)
+  if (viewController != controllerCopy)
   {
     toViewControllerHandoffData = self->_toViewControllerHandoffData;
     p_toViewControllerHandoffData = &self->_toViewControllerHandoffData;
-    v9 = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)toViewControllerHandoffData viewController];
+    viewController2 = [(_UIViewControllerAnimatedTransitionViewControllerHandoffData *)toViewControllerHandoffData viewController];
 
-    if (v9 != v4)
+    if (viewController2 != controllerCopy)
     {
       v10 = 0;
       goto LABEL_6;

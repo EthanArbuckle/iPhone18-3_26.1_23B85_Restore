@@ -1,30 +1,30 @@
 @interface FilteredImageProvider
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (void)cancelImageRequest:(int64_t)a3;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int64_t)request;
 @end
 
 @implementation FilteredImageProvider
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = _Block_copy(a7);
+  height = size.height;
+  width = size.width;
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   swift_unknownObjectRetain();
-  v15 = a6;
-  v16 = self;
-  v17 = sub_1B3FBA18C(a3, a5, a6, sub_1B3FBD220, v14, width, height);
+  optionsCopy = options;
+  selfCopy = self;
+  v17 = sub_1B3FBA18C(asset, mode, options, sub_1B3FBD220, v14, width, height);
   swift_unknownObjectRelease();
 
   return v17;
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v4 = self;
-  sub_1B3FBA6C4(a3);
+  selfCopy = self;
+  sub_1B3FBA6C4(request);
 }
 
 @end

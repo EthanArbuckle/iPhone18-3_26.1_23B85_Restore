@@ -1,12 +1,12 @@
 @interface CMDiagramShapeCycleMapper
 - (CGRect)circumscribedBounds;
-- (CGRect)nodeBoundsWithIndex:(unint64_t)a3;
+- (CGRect)nodeBoundsWithIndex:(unint64_t)index;
 - (CGSize)nodeSize;
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (CMDiagramShapeCycleMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
-- (void)mapTransitionArrowsAt:(id)a3 index:(unsigned int)a4 withState:(id)a5;
-- (void)mapTransitionPointAt:(id)a3 index:(unsigned int)a4 withState:(id)a5;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (CMDiagramShapeCycleMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent;
+- (void)mapChildrenAt:(id)at withState:(id)state;
+- (void)mapTransitionArrowsAt:(id)at index:(unsigned int)index withState:(id)state;
+- (void)mapTransitionPointAt:(id)at index:(unsigned int)index withState:(id)state;
 @end
 
 @implementation CMDiagramShapeCycleMapper
@@ -82,35 +82,35 @@ LABEL_11:
   return result;
 }
 
-- (CMDiagramShapeCycleMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7
+- (CMDiagramShapeCycleMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  diagramCopy = diagram;
+  contextCopy = context;
+  boundsCopy = bounds;
+  identifierCopy = identifier;
+  parentCopy = parent;
   v23.receiver = self;
   v23.super_class = CMDiagramShapeCycleMapper;
-  v17 = [(CMDiagramShapeMapper *)&v23 initWithOddDiagram:v12 drawingContext:v13 orientedBounds:v14 identifier:v15 parent:v16];
+  v17 = [(CMDiagramShapeMapper *)&v23 initWithOddDiagram:diagramCopy drawingContext:contextCopy orientedBounds:boundsCopy identifier:identifierCopy parent:parentCopy];
   v18 = v17;
   if (v17)
   {
     LOBYTE(v17->mScale) = 0;
-    if ([v15 isEqualToString:@"cycle1"])
+    if ([identifierCopy isEqualToString:@"cycle1"])
     {
       LOBYTE(v18->mScale) = 0;
       *&v18->mCircularArrows = 6;
       v18->mDiagramType = 251;
     }
 
-    if ([v15 isEqualToString:@"cycle2"])
+    if ([identifierCopy isEqualToString:@"cycle2"])
     {
       LOBYTE(v18->mScale) = 0;
       v19 = 247;
       v20 = 7;
     }
 
-    else if ([v15 isEqualToString:@"cycle5"])
+    else if ([identifierCopy isEqualToString:@"cycle5"])
     {
       v19 = 251;
       v20 = 8;
@@ -118,7 +118,7 @@ LABEL_11:
 
     else
     {
-      if (![v15 isEqualToString:@"cycle7"])
+      if (![identifierCopy isEqualToString:@"cycle7"])
       {
 LABEL_11:
         *(&v18->super.mDefaultScale + 1) = 1065353216;
@@ -140,12 +140,12 @@ LABEL_12:
   return v18;
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v21 = [v7 children];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
 
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   CGRectGetWidth(v24);
@@ -155,19 +155,19 @@ LABEL_12:
   CGRectGetWidth(v26);
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   CGRectGetHeight(v27);
-  v20 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   v9 = v8;
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
-  [v20 translateXBy:v9 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v20];
+  [transform translateXBy:v9 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
   if (self->super.mChildCount)
   {
     v10 = 0;
     while (1)
     {
-      v11 = [v21 objectAtIndex:v10];
+      v11 = [children objectAtIndex:v10];
       [(CMDiagramShapeCycleMapper *)self nodeBoundsWithIndex:v10];
       [CMShapeUtils transformRect:"transformRect:scale:offsetX:offsetY:" scale:? offsetX:? offsetY:?];
       v16 = [[OADOrientedBounds alloc] initWithBounds:v12, v13, v14, v15];
@@ -179,8 +179,8 @@ LABEL_12:
       }
 
       v19 = [objc_alloc(*off_2799CE0A0[v18]) initWithPoint:v11 drawingContext:self->super.super.mDrawingContext orientedBounds:v16 parent:self];
-      [v19 mapAt:v22 withState:v6];
-      [(CMDiagramShapeCycleMapper *)self mapTransitionPointAt:v22 index:v10 withState:v6];
+      [v19 mapAt:atCopy withState:stateCopy];
+      [(CMDiagramShapeCycleMapper *)self mapTransitionPointAt:atCopy index:v10 withState:stateCopy];
 
       if (self->super.mChildCount <= ++v10)
       {
@@ -192,13 +192,13 @@ LABEL_12:
 LABEL_7:
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   Width = CGRectGetWidth(v20);
   [(CMDiagramShapeCycleMapper *)self circumscribedBounds];
   v7 = CGRectGetWidth(v21);
-  [(CMDiagramShapeCycleMapper *)self nodeBoundsWithIndex:a4];
+  [(CMDiagramShapeCycleMapper *)self nodeBoundsWithIndex:index];
   x = v22.origin.x;
   y = v22.origin.y;
   v10 = v22.size.width;
@@ -219,9 +219,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)nodeBoundsWithIndex:(unint64_t)a3
+- (CGRect)nodeBoundsWithIndex:(unint64_t)index
 {
-  v4 = (2 * a3) * 3.14159265 / self->super.mChildCount + -1.57079633;
+  v4 = (2 * index) * 3.14159265 / self->super.mChildCount + -1.57079633;
   v5 = __sincosf_stret(v4);
   [(CMDiagramShapeCycleMapper *)self nodeSize];
 
@@ -233,23 +233,23 @@ LABEL_7:
   return result;
 }
 
-- (void)mapTransitionPointAt:(id)a3 index:(unsigned int)a4 withState:(id)a5
+- (void)mapTransitionPointAt:(id)at index:(unsigned int)index withState:(id)state
 {
-  v6 = *&a4;
-  v22 = a3;
-  v8 = a5;
+  v6 = *&index;
+  atCopy = at;
+  stateCopy = state;
   v9 = *&self->mCircularArrows;
   if (v9 == 8 || v9 == 6)
   {
-    [(CMDiagramShapeCycleMapper *)self mapTransitionArrowsAt:v22 index:v6 withState:v8];
+    [(CMDiagramShapeCycleMapper *)self mapTransitionArrowsAt:atCopy index:v6 withState:stateCopy];
   }
 
   else
   {
-    v11 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-    v12 = [v11 children];
-    v13 = [v12 objectAtIndex:v6];
-    v14 = [v13 siblingTransition];
+    documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+    children = [documentPoint children];
+    v13 = [children objectAtIndex:v6];
+    siblingTransition = [v13 siblingTransition];
 
     [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
     [(CMDiagramShapeCycleMapper *)self circumscribedBounds];
@@ -269,19 +269,19 @@ LABEL_7:
     sin(3.14159265 / self->super.mChildCount);
     TSURectWithOriginAndSize(v19);
     v20 = [OADOrientedBounds orientedBoundsWithBounds:"orientedBoundsWithBounds:rotation:flipX:flipY:" rotation:0 flipX:0 flipY:?];
-    v21 = [[CMDiagramPointTransitionMapper alloc] initWithPoint:v14 drawingContext:self->super.super.mDrawingContext orientedBounds:v20 shapeType:self->mDiagramType adjustValues:0 parent:self];
-    [(CMDiagramPointTransitionMapper *)v21 mapAt:v22 withState:v8];
+    v21 = [[CMDiagramPointTransitionMapper alloc] initWithPoint:siblingTransition drawingContext:self->super.super.mDrawingContext orientedBounds:v20 shapeType:self->mDiagramType adjustValues:0 parent:self];
+    [(CMDiagramPointTransitionMapper *)v21 mapAt:atCopy withState:stateCopy];
   }
 }
 
-- (void)mapTransitionArrowsAt:(id)a3 index:(unsigned int)a4 withState:(id)a5
+- (void)mapTransitionArrowsAt:(id)at index:(unsigned int)index withState:(id)state
 {
-  v56 = a3;
-  v55 = a5;
-  v8 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v9 = [v8 children];
-  v10 = [v9 objectAtIndex:a4];
-  v11 = [v10 siblingTransition];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
+  v10 = [children objectAtIndex:index];
+  siblingTransition = [v10 siblingTransition];
 
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   Width = CGRectGetWidth(v58);
@@ -290,14 +290,14 @@ LABEL_7:
   mChildCount = self->super.mChildCount;
   [(CMDiagramShapeCycleMapper *)self nodeSize];
   v16 = v15;
-  v17 = a4 * 360.0 / mChildCount + -90.0;
+  v17 = index * 360.0 / mChildCount + -90.0;
   *&v17 = v17;
   [CMShapeUtils intersectionAngleNextToAngle:1 isAfter:v17 nodeSize:v16, v18];
   v20 = v19;
   v21 = self->super.mChildCount;
   [(CMDiagramShapeCycleMapper *)self nodeSize];
   v23 = v22;
-  v24 = (a4 + 1) * 360.0 / v21 + -90.0;
+  v24 = (index + 1) * 360.0 / v21 + -90.0;
   *&v24 = v24;
   [CMShapeUtils intersectionAngleNextToAngle:0 isAfter:v24 nodeSize:v23, v25];
   v27 = Width / v13;
@@ -345,8 +345,8 @@ LABEL_7:
   v60.size.height = v48;
   v61 = CGRectInset(v60, v52, v52);
   v53 = [OADOrientedBounds orientedBoundsWithBounds:v61.origin.x, v61.origin.y, v61.size.width, v61.size.height];
-  v54 = [[CMDiagramPointTransitionMapper alloc] initWithPoint:v11 drawingContext:self->super.super.mDrawingContext orientedBounds:v53 shapeType:self->mDiagramType adjustValues:v44 parent:self];
-  [(CMDiagramPointTransitionMapper *)v54 mapAt:v56 withState:v55];
+  v54 = [[CMDiagramPointTransitionMapper alloc] initWithPoint:siblingTransition drawingContext:self->super.super.mDrawingContext orientedBounds:v53 shapeType:self->mDiagramType adjustValues:v44 parent:self];
+  [(CMDiagramPointTransitionMapper *)v54 mapAt:atCopy withState:stateCopy];
 }
 
 @end

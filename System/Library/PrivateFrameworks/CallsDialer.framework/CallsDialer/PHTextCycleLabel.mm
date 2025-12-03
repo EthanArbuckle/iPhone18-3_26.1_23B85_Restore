@@ -1,7 +1,7 @@
 @interface PHTextCycleLabel
 - (void)cycleToNextString;
 - (void)dealloc;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 - (void)startCyclingStrings;
 @end
 
@@ -9,8 +9,8 @@
 
 - (void)startCyclingStrings
 {
-  v3 = [(PHTextCycleLabel *)self cycleStrings];
-  v4 = [v3 count];
+  cycleStrings = [(PHTextCycleLabel *)self cycleStrings];
+  v4 = [cycleStrings count];
 
   if (v4)
   {
@@ -20,12 +20,12 @@
     v10.super_class = PHTextCycleLabel;
     [(PHTextCycleLabel *)&v10 setText:v5];
 
-    v6 = [(PHTextCycleLabel *)self cycleTimer];
+    cycleTimer = [(PHTextCycleLabel *)self cycleTimer];
 
-    if (v6)
+    if (cycleTimer)
     {
-      v7 = [(PHTextCycleLabel *)self cycleTimer];
-      [v7 invalidate];
+      cycleTimer2 = [(PHTextCycleLabel *)self cycleTimer];
+      [cycleTimer2 invalidate];
 
       [(PHTextCycleLabel *)self setCycleTimer:0];
     }
@@ -38,8 +38,8 @@
 
 - (void)cycleToNextString
 {
-  v3 = [(PHTextCycleLabel *)self cycleStrings];
-  v4 = [v3 count];
+  cycleStrings = [(PHTextCycleLabel *)self cycleStrings];
+  v4 = [cycleStrings count];
 
   if (v4)
   {
@@ -49,17 +49,17 @@
       [(PHTextCycleLabel *)self setCurrentCycleStringIndex:0];
     }
 
-    v5 = [(PHTextCycleLabel *)self cycleStrings];
-    v6 = [v5 objectAtIndex:{-[PHTextCycleLabel currentCycleStringIndex](self, "currentCycleStringIndex")}];
+    cycleStrings2 = [(PHTextCycleLabel *)self cycleStrings];
+    v6 = [cycleStrings2 objectAtIndex:{-[PHTextCycleLabel currentCycleStringIndex](self, "currentCycleStringIndex")}];
 
-    v7 = [MEMORY[0x277CDA000] animation];
-    [v7 setDuration:0.699999988];
-    [v7 setType:*MEMORY[0x277CDA928]];
+    animation = [MEMORY[0x277CDA000] animation];
+    [animation setDuration:0.699999988];
+    [animation setType:*MEMORY[0x277CDA928]];
     v8 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-    [v7 setTimingFunction:v8];
+    [animation setTimingFunction:v8];
 
-    v9 = [(PHTextCycleLabel *)self layer];
-    [v9 addAnimation:v7 forKey:@"labelTextChangeTransition"];
+    layer = [(PHTextCycleLabel *)self layer];
+    [layer addAnimation:animation forKey:@"labelTextChangeTransition"];
 
     v10.receiver = self;
     v10.super_class = PHTextCycleLabel;
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v6.receiver = self;
   v6.super_class = PHTextCycleLabel;
-  [(PHTextCycleLabel *)&v6 setText:a3];
+  [(PHTextCycleLabel *)&v6 setText:text];
   [(PHTextCycleLabel *)self setNumberOfLines:2];
   [(PHTextCycleLabel *)self setAdjustsFontSizeToFitWidth:1];
   cycleTimer = self->_cycleTimer;

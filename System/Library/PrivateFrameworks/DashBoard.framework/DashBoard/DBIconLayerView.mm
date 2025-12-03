@@ -1,10 +1,10 @@
 @interface DBIconLayerView
 - (_TtC9DashBoard15DBIconLayerView)init;
-- (_TtC9DashBoard15DBIconLayerView)initWithCoder:(id)a3;
-- (_TtC9DashBoard15DBIconLayerView)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard15DBIconLayerView)initWithCoder:(id)coder;
+- (_TtC9DashBoard15DBIconLayerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIconLayer:(id)a3;
-- (void)setIconLayer:(id)a3 animated:(BOOL)a4;
+- (void)setIconLayer:(id)layer;
+- (void)setIconLayer:(id)layer animated:(BOOL)animated;
 @end
 
 @implementation DBIconLayerView
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (_TtC9DashBoard15DBIconLayerView)initWithCoder:(id)a3
+- (_TtC9DashBoard15DBIconLayerView)initWithCoder:(id)coder
 {
   result = sub_248384580();
   __break(1u);
@@ -27,33 +27,33 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DBIconLayerView.layoutSubviews()();
 }
 
-- (void)setIconLayer:(id)a3
+- (void)setIconLayer:(id)layer
 {
-  v5 = a3;
-  v6 = self;
-  v7 = v6;
-  v8 = v6;
-  v10.value.super.isa = a3;
+  layerCopy = layer;
+  selfCopy = self;
+  v7 = selfCopy;
+  v8 = selfCopy;
+  v10.value.super.isa = layer;
   v10.is_nil = 1;
   DBIconLayerView.set(_:animated:)(v10, v7);
 }
 
-- (void)setIconLayer:(id)a3 animated:(BOOL)a4
+- (void)setIconLayer:(id)layer animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  v9 = v8;
-  v10 = v8;
-  v12.value.super.isa = a3;
-  v12.is_nil = a4;
+  layerCopy = layer;
+  selfCopy = self;
+  v9 = selfCopy;
+  v10 = selfCopy;
+  v12.value.super.isa = layer;
+  v12.is_nil = animated;
   DBIconLayerView.set(_:animated:)(v12, v9);
 }
 
-- (_TtC9DashBoard15DBIconLayerView)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard15DBIconLayerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,38 +1,38 @@
 @interface VNVYvzEtX1JlUdu8xx5qhDI
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
-+ (id)knownClassificationsForRevision:(unint64_t)a3 error:(id *)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
++ (id)knownClassificationsForRevision:(unint64_t)revision error:(id *)error;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedIdentifiersAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedIdentifiersAndReturnError:(id *)error;
 - (unint64_t)imageCropAndScaleOption;
-- (void)setImageCropAndScaleOption:(unint64_t)a3;
+- (void)setImageCropAndScaleOption:(unint64_t)option;
 @end
 
 @implementation VNVYvzEtX1JlUdu8xx5qhDI
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnsupportedRevision:a3 ofRequest:self];
+    *error = [VNError errorForUnsupportedRevision:revision ofRequest:self];
   }
 
   return 0;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 imageCropAndScaleOption];
-  if (v5 == [(VNVYvzEtX1JlUdu8xx5qhDI *)self imageCropAndScaleOption])
+  configurationCopy = configuration;
+  imageCropAndScaleOption = [configurationCopy imageCropAndScaleOption];
+  if (imageCropAndScaleOption == [(VNVYvzEtX1JlUdu8xx5qhDI *)self imageCropAndScaleOption])
   {
     v8.receiver = self;
     v8.super_class = VNVYvzEtX1JlUdu8xx5qhDI;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -43,15 +43,15 @@
   return v6;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v12.receiver = self;
   v12.super_class = VNVYvzEtX1JlUdu8xx5qhDI;
-  v6 = [(VNRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNVYvzEtX1JlUdu8xx5qhDI imageCropAndScaleOption](self, "imageCropAndScaleOption")}];
   [v6 setObject:v7 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 
-  v8 = [VNImageAnalyzerMultiDetector modelForRequestClass:[(VNRequest *)self frameworkClass] revision:a3];
+  v8 = [VNImageAnalyzerMultiDetector modelForRequestClass:[(VNRequest *)self frameworkClass] revision:revision];
   if (v8)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
@@ -64,18 +64,18 @@
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841665 || a3 == 1)
+  if (revision == 3737841665 || revision == 1)
   {
     v5 = @"VNImageAnalyzerMultiDetectorType";
     v6 = @"VNImageAnalyzerMultiDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -86,25 +86,25 @@
   return v5;
 }
 
-- (void)setImageCropAndScaleOption:(unint64_t)a3
+- (void)setImageCropAndScaleOption:(unint64_t)option
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageCropAndScaleOption:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageCropAndScaleOption:option];
 }
 
 - (unint64_t)imageCropAndScaleOption
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageCropAndScaleOption];
+  configuration = [(VNRequest *)self configuration];
+  imageCropAndScaleOption = [configuration imageCropAndScaleOption];
 
-  return v3;
+  return imageCropAndScaleOption;
 }
 
-- (id)supportedIdentifiersAndReturnError:(id *)a3
+- (id)supportedIdentifiersAndReturnError:(id *)error
 {
   v10[11] = *MEMORY[0x1E69E9840];
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 == 3737841665 || v5 == 1)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 3737841665 || resolvedRevision == 1)
   {
     v10[0] = @"VN62b042cc67e0a7d589ecdb58232fe23d";
     v10[1] = @"VN9bdc36cda32be948a5089e37392596ec";
@@ -120,12 +120,12 @@
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:11];
   }
 
-  else if (a3)
+  else if (error)
   {
-    v7 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+    v7 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
     v8 = v7;
     v6 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -136,28 +136,28 @@
   return v6;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNVYvzEtX1JlUdu8xx5qhDI;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v5 = @"VNJ4fWm08v8TFm5lmRVji9G";
   }
 
-  else if (a3 == 3737841665)
+  else if (revision == 3737841665)
   {
     v5 = @"VNBcvG8BSEpHsJWme0UsCjT";
   }
@@ -166,7 +166,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNVYvzEtX1JlUdu8xx5qhDI;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
@@ -193,16 +193,16 @@ uint64_t __46__VNVYvzEtX1JlUdu8xx5qhDI_privateRevisionsSet__block_invoke(uint64_
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)knownClassificationsForRevision:(unint64_t)a3 error:(id *)a4
++ (id)knownClassificationsForRevision:(unint64_t)revision error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = objc_alloc_init(a1);
-  if ([v6 setRevision:a3 error:a4])
+  v6 = objc_alloc_init(self);
+  if ([v6 setRevision:revision error:error])
   {
-    v7 = [v6 supportedIdentifiersAndReturnError:a4];
+    v7 = [v6 supportedIdentifiersAndReturnError:error];
     if (v7)
     {
-      v8 = [v6 specifier];
+      specifier = [v6 specifier];
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
       v21 = 0u;
       v22 = 0u;
@@ -225,7 +225,7 @@ uint64_t __46__VNVYvzEtX1JlUdu8xx5qhDI_privateRevisionsSet__block_invoke(uint64_
             v14 = *(*(&v19 + 1) + 8 * i);
             v15 = [VNClassificationObservation alloc];
             LODWORD(v16) = 1.0;
-            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:v8 identifier:v14 confidence:v16, v19];
+            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:specifier identifier:v14 confidence:v16, v19];
             [v9 addObject:v17];
           }
 

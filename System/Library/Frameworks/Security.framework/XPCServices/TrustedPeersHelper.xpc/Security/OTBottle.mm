@@ -1,52 +1,52 @@
 @interface OTBottle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTBottle
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v6 = a3;
-  if (v6[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(OTBottle *)self setPeerID:?];
   }
 
-  if (v6[1])
+  if (fromCopy[1])
   {
     [(OTBottle *)self setBottleID:?];
   }
 
-  if (v6[4])
+  if (fromCopy[4])
   {
     [(OTBottle *)self setEscrowedSigningSPKI:?];
   }
 
-  if (v6[3])
+  if (fromCopy[3])
   {
     [(OTBottle *)self setEscrowedEncryptionSPKI:?];
   }
 
-  if (v6[7])
+  if (fromCopy[7])
   {
     [(OTBottle *)self setPeerSigningSPKI:?];
   }
 
-  if (v6[5])
+  if (fromCopy[5])
   {
     [(OTBottle *)self setPeerEncryptionSPKI:?];
   }
 
   contents = self->_contents;
-  v5 = v6[2];
+  v5 = fromCopy[2];
   if (contents)
   {
     if (v5)
@@ -72,13 +72,13 @@
   return v6 ^ v8 ^ [(OTAuthenticatedCiphertext *)self->_contents hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((peerID = self->_peerID, !(peerID | v4[6])) || -[NSString isEqual:](peerID, "isEqual:")) && ((bottleID = self->_bottleID, !(bottleID | v4[1])) || -[NSString isEqual:](bottleID, "isEqual:")) && ((escrowedSigningSPKI = self->_escrowedSigningSPKI, !(escrowedSigningSPKI | v4[4])) || -[NSData isEqual:](escrowedSigningSPKI, "isEqual:")) && ((escrowedEncryptionSPKI = self->_escrowedEncryptionSPKI, !(escrowedEncryptionSPKI | v4[3])) || -[NSData isEqual:](escrowedEncryptionSPKI, "isEqual:")) && ((peerSigningSPKI = self->_peerSigningSPKI, !(peerSigningSPKI | v4[7])) || -[NSData isEqual:](peerSigningSPKI, "isEqual:")) && ((peerEncryptionSPKI = self->_peerEncryptionSPKI, !(peerEncryptionSPKI | v4[5])) || -[NSData isEqual:](peerEncryptionSPKI, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((peerID = self->_peerID, !(peerID | equalCopy[6])) || -[NSString isEqual:](peerID, "isEqual:")) && ((bottleID = self->_bottleID, !(bottleID | equalCopy[1])) || -[NSString isEqual:](bottleID, "isEqual:")) && ((escrowedSigningSPKI = self->_escrowedSigningSPKI, !(escrowedSigningSPKI | equalCopy[4])) || -[NSData isEqual:](escrowedSigningSPKI, "isEqual:")) && ((escrowedEncryptionSPKI = self->_escrowedEncryptionSPKI, !(escrowedEncryptionSPKI | equalCopy[3])) || -[NSData isEqual:](escrowedEncryptionSPKI, "isEqual:")) && ((peerSigningSPKI = self->_peerSigningSPKI, !(peerSigningSPKI | equalCopy[7])) || -[NSData isEqual:](peerSigningSPKI, "isEqual:")) && ((peerEncryptionSPKI = self->_peerEncryptionSPKI, !(peerEncryptionSPKI | equalCopy[5])) || -[NSData isEqual:](peerEncryptionSPKI, "isEqual:")))
   {
     contents = self->_contents;
-    if (contents | v4[2])
+    if (contents | equalCopy[2])
     {
       v12 = [(OTAuthenticatedCiphertext *)contents isEqual:?];
     }
@@ -97,144 +97,144 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_peerID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_peerID copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_bottleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bottleID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_escrowedSigningSPKI copyWithZone:a3];
+  v10 = [(NSData *)self->_escrowedSigningSPKI copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSData *)self->_escrowedEncryptionSPKI copyWithZone:a3];
+  v12 = [(NSData *)self->_escrowedEncryptionSPKI copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSData *)self->_peerSigningSPKI copyWithZone:a3];
+  v14 = [(NSData *)self->_peerSigningSPKI copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
-  v16 = [(NSData *)self->_peerEncryptionSPKI copyWithZone:a3];
+  v16 = [(NSData *)self->_peerEncryptionSPKI copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
-  v18 = [(OTAuthenticatedCiphertext *)self->_contents copyWithZone:a3];
+  v18 = [(OTAuthenticatedCiphertext *)self->_contents copyWithZone:zone];
   v19 = v5[2];
   v5[2] = v18;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_peerID)
   {
-    [v4 setPeerID:?];
-    v4 = v5;
+    [toCopy setPeerID:?];
+    toCopy = v5;
   }
 
   if (self->_bottleID)
   {
     [v5 setBottleID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowedSigningSPKI)
   {
     [v5 setEscrowedSigningSPKI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowedEncryptionSPKI)
   {
     [v5 setEscrowedEncryptionSPKI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerSigningSPKI)
   {
     [v5 setPeerSigningSPKI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerEncryptionSPKI)
   {
     [v5 setPeerEncryptionSPKI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contents)
   {
     [v5 setContents:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_peerID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bottleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowedSigningSPKI)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowedEncryptionSPKI)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerSigningSPKI)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerEncryptionSPKI)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -243,18 +243,18 @@
       while (1)
       {
         LOBYTE(v20[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v20 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v20 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v20[0] & 0x7F) << v6;
@@ -271,11 +271,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -313,7 +313,7 @@ LABEL_15:
           objc_storeStrong(&self->_contents, v17);
           v20[0] = 0xAAAAAAAAAAAAAAAALL;
           v20[1] = 0xAAAAAAAAAAAAAAAALL;
-          if (!PBReaderPlaceMark() || !sub_1002069B0(v17, a3))
+          if (!PBReaderPlaceMark() || !sub_1002069B0(v17, from))
           {
 
             return 0;
@@ -352,13 +352,13 @@ LABEL_38:
       }
 
 LABEL_39:
-      v18 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v18 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -404,8 +404,8 @@ LABEL_39:
   contents = self->_contents;
   if (contents)
   {
-    v12 = [(OTAuthenticatedCiphertext *)contents dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"contents"];
+    dictionaryRepresentation = [(OTAuthenticatedCiphertext *)contents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"contents"];
   }
 
   return v4;
@@ -416,8 +416,8 @@ LABEL_39:
   v7.receiver = self;
   v7.super_class = OTBottle;
   v3 = [(OTBottle *)&v7 description];
-  v4 = [(OTBottle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTBottle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

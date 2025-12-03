@@ -1,26 +1,26 @@
 @interface _UIDocumentLaunchView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIDocumentLaunchView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v15.receiver = self;
   v15.super_class = _UIDocumentLaunchView;
   v8 = [UIView hitTest:sel_hitTest_withEvent_ withEvent:?];
-  v9 = [(UIView *)&self->super.super.super.isa __viewDelegate];
-  v10 = v9;
-  if (v9 && (*(v9 + 1112) & 1) != 0)
+  __viewDelegate = [(UIView *)&self->super.super.super.isa __viewDelegate];
+  v10 = __viewDelegate;
+  if (__viewDelegate && (*(__viewDelegate + 1112) & 1) != 0)
   {
-    if (v8 && (*(v9 + 1016) == v8 || *(v9 + 1008) == v8))
+    if (v8 && (*(__viewDelegate + 1016) == v8 || *(__viewDelegate + 1008) == v8))
     {
-      v12 = *(v9 + 1000);
-      v13 = [v9 view];
-      [v13 convertPoint:v10[125] toView:{x, y}];
-      v11 = [v12 hitTest:a4 withEvent:?];
+      v12 = *(__viewDelegate + 1000);
+      view = [__viewDelegate view];
+      [view convertPoint:v10[125] toView:{x, y}];
+      v11 = [v12 hitTest:event withEvent:?];
     }
 
     else

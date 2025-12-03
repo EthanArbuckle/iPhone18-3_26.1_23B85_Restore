@@ -1,18 +1,18 @@
 @interface SASBookendNextAnimationData
 - (SASBookendNextAnimationData)init;
-- (SASBookendNextAnimationData)initWithLanguage:(id)a3 animationDuration:(double)a4 delayTillNextAnimation:(double)a5;
+- (SASBookendNextAnimationData)initWithLanguage:(id)language animationDuration:(double)duration delayTillNextAnimation:(double)animation;
 @end
 
 @implementation SASBookendNextAnimationData
 
-- (SASBookendNextAnimationData)initWithLanguage:(id)a3 animationDuration:(double)a4 delayTillNextAnimation:(double)a5
+- (SASBookendNextAnimationData)initWithLanguage:(id)language animationDuration:(double)duration delayTillNextAnimation:(double)animation
 {
   v8 = sub_265AA7570();
   v9 = (self + OBJC_IVAR___SASBookendNextAnimationData_language);
   *v9 = v8;
   v9[1] = v10;
-  *(self + OBJC_IVAR___SASBookendNextAnimationData_animationDuration) = a4;
-  *(self + OBJC_IVAR___SASBookendNextAnimationData_delayTillNextAnimation) = a5;
+  *(self + OBJC_IVAR___SASBookendNextAnimationData_animationDuration) = duration;
+  *(self + OBJC_IVAR___SASBookendNextAnimationData_delayTillNextAnimation) = animation;
   v12.receiver = self;
   v12.super_class = SASBookendNextAnimationData;
   return [(SASBookendNextAnimationData *)&v12 init];

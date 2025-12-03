@@ -1,12 +1,12 @@
 @interface OffsetCircles
 - (CGSize)intrinsicContentSize;
-- (_TtC16CommunicationsUI13OffsetCircles)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI13OffsetCircles)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI13OffsetCircles)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI13OffsetCircles)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OffsetCircles
 
-- (_TtC16CommunicationsUI13OffsetCircles)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI13OffsetCircles)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI13OffsetCircles_imageCount) = 0;
   result = sub_1C2E766F4();
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (_TtC16CommunicationsUI13OffsetCircles)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI13OffsetCircles)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

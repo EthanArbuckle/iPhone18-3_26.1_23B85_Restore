@@ -32,13 +32,13 @@ uint64_t __33__CRKSystemInfo_sharedSystemInfo__block_invoke()
 - (void)populateVersions
 {
   v3 = +[CRKMobileGestalt sharedGestalt];
-  v6 = [v3 buildVersion];
+  buildVersion = [v3 buildVersion];
 
   v4 = +[CRKMobileGestalt sharedGestalt];
-  v5 = [v4 productVersion];
+  productVersion = [v4 productVersion];
 
-  [(CRKSystemInfo *)self setBuildVersion:v6];
-  [(CRKSystemInfo *)self setSystemVersion:v5];
+  [(CRKSystemInfo *)self setBuildVersion:buildVersion];
+  [(CRKSystemInfo *)self setSystemVersion:productVersion];
 }
 
 - (NSString)buildVersion
@@ -87,16 +87,16 @@ uint64_t __33__CRKSystemInfo_sharedSystemInfo__block_invoke()
 
 - (BOOL)isEphemeralMultiUser
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isEphemeralMultiUser];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isEphemeralMultiUser = [mEMORY[0x277D262A0] isEphemeralMultiUser];
 
-  return v3;
+  return isEphemeralMultiUser;
 }
 
 - (BOOL)cloudConfigEnablesEphemeralMultiUser
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 userMode] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] userMode] == 1;
 
   return v3;
 }

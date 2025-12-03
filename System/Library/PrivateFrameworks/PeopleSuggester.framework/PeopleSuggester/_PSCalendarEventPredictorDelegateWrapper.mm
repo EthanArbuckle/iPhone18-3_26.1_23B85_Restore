@@ -1,67 +1,67 @@
 @interface _PSCalendarEventPredictorDelegateWrapper
-- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)a3 config:(id)a4;
-- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)a3 startSecondsFromQuery:(double)a4 endSecondsFromQuery:(double)a5 maxParticipants:(unint64_t)a6 isEnabled:(BOOL)a7 defaultConfidenceCategory:(int64_t)a8;
-- (id)getSuggestionsWithPredictionContext:(id)a3;
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)updateWithConfig:(id)a3;
+- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)predictor config:(id)config;
+- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)predictor startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery maxParticipants:(unint64_t)participants isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category;
+- (id)getSuggestionsWithPredictionContext:(id)context;
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)updateWithConfig:(id)config;
 @end
 
 @implementation _PSCalendarEventPredictorDelegateWrapper
 
-- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)a3 startSecondsFromQuery:(double)a4 endSecondsFromQuery:(double)a5 maxParticipants:(unint64_t)a6 isEnabled:(BOOL)a7 defaultConfidenceCategory:(int64_t)a8
+- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)predictor startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery maxParticipants:(unint64_t)participants isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category
 {
-  v15 = a3;
+  predictorCopy = predictor;
   v19.receiver = self;
   v19.super_class = _PSCalendarEventPredictorDelegateWrapper;
   v16 = [(_PSCalendarEventPredictorDelegateWrapper *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_calendarEventPredictor, a3);
-    v17->_startSecondsFromQuery = a4;
-    v17->_endSecondsFromQuery = a5;
-    v17->_maxParticipants = a6;
-    v17->_isEnabled = a7;
-    v17->_defaultConfidenceCategory = a8;
+    objc_storeStrong(&v16->_calendarEventPredictor, predictor);
+    v17->_startSecondsFromQuery = query;
+    v17->_endSecondsFromQuery = fromQuery;
+    v17->_maxParticipants = participants;
+    v17->_isEnabled = enabled;
+    v17->_defaultConfidenceCategory = category;
   }
 
   return v17;
 }
 
-- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)a3 config:(id)a4
+- (_PSCalendarEventPredictorDelegateWrapper)initWithCalendarEventPredictor:(id)predictor config:(id)config
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 startSecondsFromQuery];
+  configCopy = config;
+  predictorCopy = predictor;
+  [configCopy startSecondsFromQuery];
   v9 = v8;
-  [v6 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   v11 = v10;
-  v12 = [v6 maxOtherParticipants];
-  v13 = [v6 isEnabled];
-  v14 = [v6 defaultConfidenceCategory];
+  maxOtherParticipants = [configCopy maxOtherParticipants];
+  isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  v15 = [(_PSCalendarEventPredictorDelegateWrapper *)self initWithCalendarEventPredictor:v7 startSecondsFromQuery:v12 endSecondsFromQuery:v13 maxParticipants:v14 isEnabled:v9 defaultConfidenceCategory:v11];
+  v15 = [(_PSCalendarEventPredictorDelegateWrapper *)self initWithCalendarEventPredictor:predictorCopy startSecondsFromQuery:maxOtherParticipants endSecondsFromQuery:isEnabled maxParticipants:defaultConfidenceCategory isEnabled:v9 defaultConfidenceCategory:v11];
   return v15;
 }
 
-- (void)updateWithConfig:(id)a3
+- (void)updateWithConfig:(id)config
 {
-  v4 = a3;
-  [v4 startSecondsFromQuery];
+  configCopy = config;
+  [configCopy startSecondsFromQuery];
   self->_startSecondsFromQuery = v5;
-  [v4 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   self->_endSecondsFromQuery = v6;
-  self->_maxParticipants = [v4 maxOtherParticipants];
-  self->_isEnabled = [v4 isEnabled];
-  v7 = [v4 defaultConfidenceCategory];
+  self->_maxParticipants = [configCopy maxOtherParticipants];
+  self->_isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  self->_defaultConfidenceCategory = v7;
+  self->_defaultConfidenceCategory = defaultConfidenceCategory;
 }
 
-- (id)getSuggestionsWithPredictionContext:(id)a3
+- (id)getSuggestionsWithPredictionContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if (self->_isEnabled)
   {
     v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-self->_startSecondsFromQuery];
@@ -73,7 +73,7 @@
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSCalendarModelTotalTime", " enableTelemetry=YES ", &v13, 2u);
     }
 
-    v8 = [(_PSCalendarEventPredictor *)self->_calendarEventPredictor zkwSuggestionsFromCalendarWithPredictionContext:v4 startDate:v5 endDate:v6 maxParticipants:self->_maxParticipants];
+    v8 = [(_PSCalendarEventPredictor *)self->_calendarEventPredictor zkwSuggestionsFromCalendarWithPredictionContext:contextCopy startDate:v5 endDate:v6 maxParticipants:self->_maxParticipants];
     v9 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v9))
     {
@@ -107,33 +107,33 @@
   return v8;
 }
 
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
   v77 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v52 = a4;
-  v50 = a5;
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
   v7 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [_PSCalendarEventPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:v54 clientModelId:v7 reply:?];
+    [_PSCalendarEventPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:requestCopy clientModelId:v7 reply:?];
   }
 
-  v53 = [v54 psPredictionContext];
+  psPredictionContext = [requestCopy psPredictionContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [_PSCalendarEventPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:v53 clientModelId:v8 reply:?];
+      [_PSCalendarEventPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:psPredictionContext clientModelId:v8 reply:?];
     }
   }
 
   v51 = [getATXProactiveSuggestionClientModelClass() clientModelIdFromClientModelType:29];
-  if ([v52 isEqualToString:v51])
+  if ([idCopy isEqualToString:v51])
   {
-    v9 = [(_PSCalendarEventPredictorDelegateWrapper *)self getSuggestionsWithPredictionContext:v53];
+    v9 = [(_PSCalendarEventPredictorDelegateWrapper *)self getSuggestionsWithPredictionContext:psPredictionContext];
     v57 = objc_opt_new();
     v65 = 0u;
     v66 = 0u;
@@ -203,8 +203,8 @@
           v21 = [v18 alloc];
           v22 = [v11 description];
           v23 = objc_opt_new();
-          v24 = [v23 UUIDString];
-          v25 = [v21 initWithExecutableObject:v11 executableDescription:v22 executableIdentifier:v24 suggestionExecutableType:6];
+          uUIDString = [v23 UUIDString];
+          v25 = [v21 initWithExecutableObject:v11 executableDescription:v22 executableIdentifier:uUIDString suggestionExecutableType:6];
 
           v72 = 0;
           v73 = &v72;
@@ -228,14 +228,14 @@
           v28 = v26;
           _Block_object_dispose(&v72, 8);
           v29 = [v26 alloc];
-          v30 = [v11 groupName];
-          v31 = v30;
-          if (!v30)
+          groupName = [v11 groupName];
+          v31 = groupName;
+          if (!groupName)
           {
-            v62 = [v11 recipients];
-            v61 = [v62 firstObject];
-            v60 = [v61 handle];
-            v31 = v60;
+            recipients = [v11 recipients];
+            firstObject = [recipients firstObject];
+            handle = [firstObject handle];
+            v31 = handle;
           }
 
           v72 = 0;
@@ -262,7 +262,7 @@
           v35 = [v32 layoutConfigurationsForLayoutOptions:2];
           v36 = [v29 initWithTitle:v31 subtitle:0 preferredLayoutConfigs:v35 allowedOnLockscreen:1 allowedOnHomeScreen:1 allowedOnSpotlight:1];
 
-          if (!v30)
+          if (!groupName)
           {
           }
 
@@ -340,14 +340,14 @@
 
     v47 = v45;
     _Block_object_dispose(&v72, 8);
-    v48 = [[v45 alloc] initWithSuggestions:v57 feedbackMetadata:0 originalRequest:v54 responseCode:2 error:0];
-    v50[2](v50, v48);
+    v48 = [[v45 alloc] initWithSuggestions:v57 feedbackMetadata:0 originalRequest:requestCopy responseCode:2 error:0];
+    replyCopy[2](replyCopy, v48);
   }
 
   else
   {
-    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:v54 requestedClientModelId:v52 actualClientModelId:v51];
-    v50[2](v50, obj);
+    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:requestCopy requestedClientModelId:idCopy actualClientModelId:v51];
+    replyCopy[2](replyCopy, obj);
   }
 
   v49 = *MEMORY[0x1E69E9840];

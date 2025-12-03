@@ -1,8 +1,8 @@
 @interface PKIssuerProvisioningExtensionStatus
 - (PKIssuerProvisioningExtensionStatus)init;
-- (PKIssuerProvisioningExtensionStatus)initWithCoder:(id)a3;
+- (PKIssuerProvisioningExtensionStatus)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIssuerProvisioningExtensionStatus
@@ -20,29 +20,29 @@
   return result;
 }
 
-- (PKIssuerProvisioningExtensionStatus)initWithCoder:(id)a3
+- (PKIssuerProvisioningExtensionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKIssuerProvisioningExtensionStatus;
   v5 = [(PKIssuerProvisioningExtensionStatus *)&v7 init];
   if (v5)
   {
-    v5->_requiresAuthentication = [v4 decodeBoolForKey:@"requiresAuthentication"];
-    v5->_passEntriesAvailable = [v4 decodeBoolForKey:@"passEntriesAvailable"];
-    v5->_remotePassEntriesAvailable = [v4 decodeBoolForKey:@"remotePassEntriesAvailable"];
+    v5->_requiresAuthentication = [coderCopy decodeBoolForKey:@"requiresAuthentication"];
+    v5->_passEntriesAvailable = [coderCopy decodeBoolForKey:@"passEntriesAvailable"];
+    v5->_remotePassEntriesAvailable = [coderCopy decodeBoolForKey:@"remotePassEntriesAvailable"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requiresAuthentication = self->_requiresAuthentication;
-  v5 = a3;
-  [v5 encodeBool:requiresAuthentication forKey:@"requiresAuthentication"];
-  [v5 encodeBool:self->_passEntriesAvailable forKey:@"passEntriesAvailable"];
-  [v5 encodeBool:self->_remotePassEntriesAvailable forKey:@"remotePassEntriesAvailable"];
+  coderCopy = coder;
+  [coderCopy encodeBool:requiresAuthentication forKey:@"requiresAuthentication"];
+  [coderCopy encodeBool:self->_passEntriesAvailable forKey:@"passEntriesAvailable"];
+  [coderCopy encodeBool:self->_remotePassEntriesAvailable forKey:@"remotePassEntriesAvailable"];
 }
 
 - (id)description

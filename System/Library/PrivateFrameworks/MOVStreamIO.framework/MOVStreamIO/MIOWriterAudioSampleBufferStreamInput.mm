@@ -1,8 +1,8 @@
 @interface MIOWriterAudioSampleBufferStreamInput
-- (BOOL)appendAudioBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
+- (BOOL)appendAudioBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
 - (MIOWriterAudioSampleBufferStreamInput)init;
-- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)a3 audioFormat:(id)a4 additionalSettings:(id)a5;
-- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)a3 audioFormatDescription:(opaqueCMFormatDescription *)a4 additionalSettings:(id)a5;
+- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)id audioFormat:(id)format additionalSettings:(id)settings;
+- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)id audioFormatDescription:(opaqueCMFormatDescription *)description additionalSettings:(id)settings;
 - (id)sampleInputOutputSettings;
 @end
 
@@ -17,26 +17,26 @@
   return 0;
 }
 
-- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)a3 audioFormat:(id)a4 additionalSettings:(id)a5
+- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)id audioFormat:(id)format additionalSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 formatDescription];
-  if (v11)
+  idCopy = id;
+  formatCopy = format;
+  settingsCopy = settings;
+  formatDescription = [formatCopy formatDescription];
+  if (formatDescription)
   {
     v20.receiver = self;
     v20.super_class = MIOWriterAudioSampleBufferStreamInput;
-    v12 = [(MIOWriterSampleBufferStreamInput *)&v20 initWithStreamId:v8 format:v11];
+    v12 = [(MIOWriterSampleBufferStreamInput *)&v20 initWithStreamId:idCopy format:formatDescription];
     if (v12)
     {
       v13 = +[MOVStreamIOUtility audioNoneEncoderConfig];
       v14 = [v13 mutableCopy];
 
-      [v14 setObject:v9 forKey:@"AudioFormatObject"];
-      if (v10)
+      [v14 setObject:formatCopy forKey:@"AudioFormatObject"];
+      if (settingsCopy)
       {
-        [v14 setObject:v10 forKey:@"AdditionalAudioSettings"];
+        [v14 setObject:settingsCopy forKey:@"AdditionalAudioSettings"];
       }
 
       v15 = [v14 copy];
@@ -45,7 +45,7 @@
     }
 
     self = v12;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -57,26 +57,26 @@
       _os_log_impl(&dword_257883000, v18, OS_LOG_TYPE_ERROR, "Invalid audioFormat, no format description found.", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)a3 audioFormatDescription:(opaqueCMFormatDescription *)a4 additionalSettings:(id)a5
+- (MIOWriterAudioSampleBufferStreamInput)initWithStreamId:(id)id audioFormatDescription:(opaqueCMFormatDescription *)description additionalSettings:(id)settings
 {
-  v8 = a5;
+  settingsCopy = settings;
   v15.receiver = self;
   v15.super_class = MIOWriterAudioSampleBufferStreamInput;
-  v9 = [(MIOWriterSampleBufferStreamInput *)&v15 initWithStreamId:a3 format:a4];
+  v9 = [(MIOWriterSampleBufferStreamInput *)&v15 initWithStreamId:id format:description];
   if (v9)
   {
     v10 = +[MOVStreamIOUtility audioNoneEncoderConfig];
     v11 = [v10 mutableCopy];
 
-    if (v8)
+    if (settingsCopy)
     {
-      [v11 setObject:v8 forKey:@"AdditionalAudioSettings"];
+      [v11 setObject:settingsCopy forKey:@"AdditionalAudioSettings"];
     }
 
     v12 = [v11 copy];
@@ -90,25 +90,25 @@
 - (id)sampleInputOutputSettings
 {
   v2 = [MIOOutputSettingsFactory outputSettingsWithConfig:self->_config formatDescription:[(MIOWriterSampleBufferStreamInput *)self formatDescription] defaultFrameRate:0 preferEncoderConfig:0 enableAVEHighPerformanceProfile:30.0];
-  v3 = [v2 settings];
+  settings = [v2 settings];
 
-  return v3;
+  return settings;
 }
 
-- (BOOL)appendAudioBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)appendAudioBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   memset(&v11, 0, sizeof(v11));
-  CMSampleBufferGetPresentationTimeStamp(&v11, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v11, buffer);
   v10 = v11;
-  v7 = [MEMORY[0x277CE6648] attachmentsMIOTimedMetadataGroupForSampleBuffer:a3 pts:&v10 error:a4];
-  if (*a4)
+  v7 = [MEMORY[0x277CE6648] attachmentsMIOTimedMetadataGroupForSampleBuffer:buffer pts:&v10 error:error];
+  if (*error)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(MIOWriterSampleBufferStreamInput *)self appendSampleBuffer:a3 metadataGroup:v7 error:a4];
+    v8 = [(MIOWriterSampleBufferStreamInput *)self appendSampleBuffer:buffer metadataGroup:v7 error:error];
   }
 
   return v8;

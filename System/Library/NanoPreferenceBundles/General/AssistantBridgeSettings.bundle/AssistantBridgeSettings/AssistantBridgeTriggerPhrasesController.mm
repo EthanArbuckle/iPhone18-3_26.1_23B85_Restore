@@ -3,9 +3,9 @@
 - (id)specifiers;
 - (void)_refreshFooters;
 - (void)_setupPhraseChoiceSpecifiers;
-- (void)_updateFootersWithFooterType:(int64_t)a3;
-- (void)setConnectedDeviceInfo:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_updateFootersWithFooterType:(int64_t)type;
+- (void)setConnectedDeviceInfo:(id)info;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantBridgeTriggerPhrasesController
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (void)setConnectedDeviceInfo:(id)a3
+- (void)setConnectedDeviceInfo:(id)info
 {
-  v5 = a3;
-  if (self->_connectedDeviceInfo != v5)
+  infoCopy = info;
+  if (self->_connectedDeviceInfo != infoCopy)
   {
-    objc_storeStrong(&self->_connectedDeviceInfo, a3);
+    objc_storeStrong(&self->_connectedDeviceInfo, info);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_377C;
@@ -74,16 +74,16 @@
   if (+[AssistantBridgeSettingsUtilities voiceTriggerEnabled])
   {
     v6 = +[AFPreferences sharedPreferences];
-    v7 = [v6 nanoVTPhraseType];
+    nanoVTPhraseType = [v6 nanoVTPhraseType];
 
-    if (v7 == &dword_0 + 1)
+    if (nanoVTPhraseType == &dword_0 + 1)
     {
       v8 = v11;
       v9 = 2;
       goto LABEL_9;
     }
 
-    if (!v7)
+    if (!nanoVTPhraseType)
     {
       v8 = v4;
       v9 = 1;
@@ -100,8 +100,8 @@
 
   v9 = 0;
 LABEL_9:
-  v10 = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
-  [v10 setProperty:v8 forKey:PSRadioGroupCheckedSpecifierKey];
+  triggerPhrasesGroupSpecifier = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
+  [triggerPhrasesGroupSpecifier setProperty:v8 forKey:PSRadioGroupCheckedSpecifierKey];
 
   [(AssistantBridgeTriggerPhrasesController *)self _updateFootersWithFooterType:v9];
 }
@@ -111,10 +111,10 @@ LABEL_9:
   v6 = +[AFPreferences sharedPreferences];
   if ([v6 nanoPhraseSpotterEnabled])
   {
-    v3 = [v6 nanoVTPhraseType];
-    if (v3)
+    nanoVTPhraseType = [v6 nanoVTPhraseType];
+    if (nanoVTPhraseType)
     {
-      v4 = 2 * (v3 == &dword_0 + 1);
+      v4 = 2 * (nanoVTPhraseType == &dword_0 + 1);
     }
 
     else
@@ -129,13 +129,13 @@ LABEL_9:
   }
 
   [(AssistantBridgeTriggerPhrasesController *)self _updateFootersWithFooterType:v4];
-  v5 = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
-  [(AssistantBridgeTriggerPhrasesController *)self reloadSpecifier:v5 animated:0];
+  triggerPhrasesGroupSpecifier = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
+  [(AssistantBridgeTriggerPhrasesController *)self reloadSpecifier:triggerPhrasesGroupSpecifier animated:0];
 }
 
-- (void)_updateFootersWithFooterType:(int64_t)a3
+- (void)_updateFootersWithFooterType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     connectedDeviceInfo = self->_connectedDeviceInfo;
     if (connectedDeviceInfo && ![(AFBluetoothDeviceInfo *)connectedDeviceInfo supportsJustSiri])
@@ -143,9 +143,9 @@ LABEL_9:
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v6 = [v4 localizedStringForKey:@"TRIGGER_PHRASE_SETTING_FOOTER_ENABLED_WITH_UNSUPPORTED_CONNECTED_HEADPHONES" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
       v8 = +[AssistantBridgeSettingsUtilities triggerPhraseChoiceHSJS];
-      v9 = [(AFBluetoothDeviceInfo *)self->_connectedDeviceInfo name];
+      name = [(AFBluetoothDeviceInfo *)self->_connectedDeviceInfo name];
       v10 = +[AssistantBridgeSettingsUtilities triggerPhraseChoiceHS];
-      [NSString stringWithFormat:v6, v8, v9, v10];
+      [NSString stringWithFormat:v6, v8, name, v10];
       v15 = LABEL_12:;
 
       goto LABEL_13;
@@ -158,9 +158,9 @@ LABEL_9:
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3)
+      if (type)
       {
         v15 = 0;
         goto LABEL_14;
@@ -173,8 +173,8 @@ LABEL_9:
       v7 = +[VTPreferences sharedPreferences];
       v8 = [v7 localizedCompactTriggerPhraseForLanguageCode:v4];
 
-      v9 = [NSBundle bundleForClass:objc_opt_class()];
-      v10 = [v9 localizedStringForKey:@"TRIGGER_PHRASE_SETTING_FOOTER_DISABLED" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
+      name = [NSBundle bundleForClass:objc_opt_class()];
+      v10 = [name localizedStringForKey:@"TRIGGER_PHRASE_SETTING_FOOTER_DISABLED" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
       [NSString stringWithFormat:v10, v8, v6, v14];
       goto LABEL_12;
     }
@@ -189,29 +189,29 @@ LABEL_9:
 LABEL_13:
 
 LABEL_14:
-  v13 = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
-  [v13 setProperty:v15 forKey:PSFooterTextGroupKey];
+  triggerPhrasesGroupSpecifier = [(AssistantBridgeTriggerPhrasesController *)self triggerPhrasesGroupSpecifier];
+  [triggerPhrasesGroupSpecifier setProperty:v15 forKey:PSFooterTextGroupKey];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AssistantBridgeTriggerPhrasesController *)self specifierAtIndex:[(AssistantBridgeTriggerPhrasesController *)self indexForIndexPath:v7]];
-  v9 = [v8 identifier];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AssistantBridgeTriggerPhrasesController *)self specifierAtIndex:[(AssistantBridgeTriggerPhrasesController *)self indexForIndexPath:pathCopy]];
+  identifier = [v8 identifier];
 
   v10 = +[AssistantBridgeSettingsUtilities voiceTriggerEnabled];
-  v11 = [v9 isEqualToString:@"VOICE_TRIGGER_DISABLED_ID"];
+  v11 = [identifier isEqualToString:@"VOICE_TRIGGER_DISABLED_ID"];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_3F88;
   v19[3] = &unk_10568;
-  v12 = v6;
+  v12 = viewCopy;
   v20 = v12;
-  v13 = v7;
+  v13 = pathCopy;
   v21 = v13;
-  v22 = self;
-  v14 = v9;
+  selfCopy = self;
+  v14 = identifier;
   v23 = v14;
   v15 = objc_retainBlock(v19);
   if (+[AssistantBridgeSettingsUtilities raiseToSpeakEnabled](AssistantBridgeSettingsUtilities, "raiseToSpeakEnabled") || +[AssistantBridgeSettingsUtilities digitalCrownEnabled]|| ((v10 ^ v11) & 1) != 0)

@@ -1,84 +1,84 @@
 @interface MapsExternalAccessoryState
 + (id)allKeys;
-- (BOOL)isEqualToState:(id)a3;
-- (MapsExternalAccessoryState)initWithAccessory:(id)a3;
-- (id)_augmentVehicleInfo:(id)a3;
-- (id)descriptionForKey:(id)a3;
-- (void)_augmentMutableVehicleInfo:(id)a3;
-- (void)updateWithInfo:(id)a3;
+- (BOOL)isEqualToState:(id)state;
+- (MapsExternalAccessoryState)initWithAccessory:(id)accessory;
+- (id)_augmentVehicleInfo:(id)info;
+- (id)descriptionForKey:(id)key;
+- (void)_augmentMutableVehicleInfo:(id)info;
+- (void)updateWithInfo:(id)info;
 @end
 
 @implementation MapsExternalAccessoryState
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
   v4.receiver = self;
   v4.super_class = MapsExternalAccessoryState;
-  return [(MapsExternalState *)&v4 isEqualToState:a3];
+  return [(MapsExternalState *)&v4 isEqualToState:state];
 }
 
-- (void)updateWithInfo:(id)a3
+- (void)updateWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = sub_100AD7D8C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v46 = v4;
+    v46 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "vehicleInfo=%@", buf, 0xCu);
   }
 
   if (GEOConfigGetBOOL())
   {
-    v6 = [(MapsExternalAccessoryState *)self _augmentVehicleInfo:v4];
+    v6 = [(MapsExternalAccessoryState *)self _augmentVehicleInfo:infoCopy];
 
-    v4 = v6;
+    infoCopy = v6;
   }
 
   v7 = EAConnectionIDKey;
-  v8 = [v4 objectForKeyedSubscript:EAConnectionIDKey];
-  if (!v8 || (v9 = v8, [v4 objectForKeyedSubscript:v7], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "unsignedIntegerValue"), v12 = -[MapsExternalAccessoryState connectionID](self, "connectionID"), v10, v9, v11 == v12))
+  v8 = [infoCopy objectForKeyedSubscript:EAConnectionIDKey];
+  if (!v8 || (v9 = v8, [infoCopy objectForKeyedSubscript:v7], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "unsignedIntegerValue"), v12 = -[MapsExternalAccessoryState connectionID](self, "connectionID"), v10, v9, v11 == v12))
   {
     v13 = EAVehicleInfoYearKey;
-    v14 = [v4 objectForKeyedSubscript:EAVehicleInfoYearKey];
+    v14 = [infoCopy objectForKeyedSubscript:EAVehicleInfoYearKey];
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:v13];
+      v15 = [infoCopy objectForKeyedSubscript:v13];
       [(MapsExternalAccessoryState *)self setYear:v15];
     }
 
     v16 = EAVehicleInfoMapsDisplayNameKey;
-    v17 = [v4 objectForKeyedSubscript:EAVehicleInfoMapsDisplayNameKey];
+    v17 = [infoCopy objectForKeyedSubscript:EAVehicleInfoMapsDisplayNameKey];
 
     if (v17)
     {
-      v18 = [v4 objectForKeyedSubscript:v16];
+      v18 = [infoCopy objectForKeyedSubscript:v16];
       [(MapsExternalAccessoryState *)self setMapsDisplayName:v18];
     }
 
     v19 = EAVehicleInfoEngineTypeBitmaskKey;
-    v20 = [v4 objectForKeyedSubscript:EAVehicleInfoEngineTypeBitmaskKey];
+    v20 = [infoCopy objectForKeyedSubscript:EAVehicleInfoEngineTypeBitmaskKey];
 
     if (!v20)
     {
       goto LABEL_18;
     }
 
-    v21 = [v4 objectForKeyedSubscript:v19];
+    v21 = [infoCopy objectForKeyedSubscript:v19];
     -[MapsExternalAccessoryState setEngineType:](self, "setEngineType:", [v21 longLongValue]);
 
-    v22 = [(MapsExternalAccessoryState *)self engineTypes];
+    engineTypes = [(MapsExternalAccessoryState *)self engineTypes];
     v23 = objc_opt_new();
-    if (v22)
+    if (engineTypes)
     {
       v37 = +[MapsCarEngineState engineStateGasoline];
       [v23 setObject:v37 forKeyedSubscript:&off_1016E8558];
 
-      if ((v22 & 0x100) == 0)
+      if ((engineTypes & 0x100) == 0)
       {
 LABEL_14:
-        if ((v22 & 0x10000) == 0)
+        if ((engineTypes & 0x10000) == 0)
         {
           goto LABEL_15;
         }
@@ -87,7 +87,7 @@ LABEL_14:
       }
     }
 
-    else if ((v22 & 0x100) == 0)
+    else if ((engineTypes & 0x100) == 0)
     {
       goto LABEL_14;
     }
@@ -95,30 +95,30 @@ LABEL_14:
     v38 = +[MapsCarEngineState engineStateDiesel];
     [v23 setObject:v38 forKeyedSubscript:&off_1016E8570];
 
-    if ((v22 & 0x10000) == 0)
+    if ((engineTypes & 0x10000) == 0)
     {
 LABEL_15:
-      if ((v22 & 0x1000000) == 0)
+      if ((engineTypes & 0x1000000) == 0)
       {
 LABEL_17:
         [(MapsExternalAccessoryState *)self setEngineStates:v23];
 
 LABEL_18:
         v25 = EAVehicleInfoHasLowDistanceRangeKey;
-        v26 = [v4 objectForKeyedSubscript:EAVehicleInfoHasLowDistanceRangeKey];
+        v26 = [infoCopy objectForKeyedSubscript:EAVehicleInfoHasLowDistanceRangeKey];
 
         if (v26)
         {
-          v27 = [v4 objectForKeyedSubscript:v25];
+          v27 = [infoCopy objectForKeyedSubscript:v25];
           -[MapsExternalAccessoryState setLowRangeWarning:](self, "setLowRangeWarning:", [v27 BOOLValue]);
         }
 
         v28 = EAVehicleInfoRangeKey;
-        v29 = [v4 objectForKeyedSubscript:EAVehicleInfoRangeKey];
+        v29 = [infoCopy objectForKeyedSubscript:EAVehicleInfoRangeKey];
 
         if (v29)
         {
-          v30 = [v4 objectForKeyedSubscript:v28];
+          v30 = [infoCopy objectForKeyedSubscript:v28];
           [(MapsExternalAccessoryState *)self setRange:v30];
         }
 
@@ -126,10 +126,10 @@ LABEL_18:
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v31 = [(MapsExternalAccessoryState *)self engineStates];
-        v32 = [v31 allValues];
+        engineStates = [(MapsExternalAccessoryState *)self engineStates];
+        allValues = [engineStates allValues];
 
-        v33 = [v32 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v33 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v33)
         {
           v34 = v33;
@@ -141,15 +141,15 @@ LABEL_18:
             {
               if (*v41 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(allValues);
               }
 
-              [*(*(&v40 + 1) + 8 * v36) updateWithVehicleInfo:v4];
+              [*(*(&v40 + 1) + 8 * v36) updateWithVehicleInfo:infoCopy];
               v36 = v36 + 1;
             }
 
             while (v34 != v36);
-            v34 = [v32 countByEnumeratingWithState:&v40 objects:v44 count:16];
+            v34 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
           }
 
           while (v34);
@@ -169,7 +169,7 @@ LABEL_33:
     v39 = +[MapsCarEngineState engineStateElectric];
     [v23 setObject:v39 forKeyedSubscript:&off_1016E8588];
 
-    if ((v22 & 0x1000000) == 0)
+    if ((engineTypes & 0x1000000) == 0)
     {
       goto LABEL_17;
     }
@@ -180,9 +180,9 @@ LABEL_33:
 LABEL_30:
 }
 
-- (id)_augmentVehicleInfo:(id)a3
+- (id)_augmentVehicleInfo:(id)info
 {
-  v4 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:info];
   v5 = sub_100AD7D8C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -203,14 +203,14 @@ LABEL_30:
   return v4;
 }
 
-- (void)_augmentMutableVehicleInfo:(id)a3
+- (void)_augmentMutableVehicleInfo:(id)info
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v7 = sub_100AD80A8;
   v8 = &unk_10163B740;
-  v9 = a3;
-  v3 = v9;
+  infoCopy = info;
+  v3 = infoCopy;
   v4 = 0;
   v10[0] = unk_101658000;
   v10[1] = unk_101658048;
@@ -231,55 +231,55 @@ LABEL_30:
   while (v4++ != 7);
 }
 
-- (MapsExternalAccessoryState)initWithAccessory:(id)a3
+- (MapsExternalAccessoryState)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v19.receiver = self;
   v19.super_class = MapsExternalAccessoryState;
   v5 = [(MapsExternalAccessoryState *)&v19 init];
   if (v5)
   {
-    v6 = [v4 serialNumber];
+    serialNumber = [accessoryCopy serialNumber];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = serialNumber;
 
-    v5->_connectionID = [v4 connectionID];
-    v8 = [v4 manufacturer];
+    v5->_connectionID = [accessoryCopy connectionID];
+    manufacturer = [accessoryCopy manufacturer];
     manufacturer = v5->_manufacturer;
-    v5->_manufacturer = v8;
+    v5->_manufacturer = manufacturer;
 
-    v10 = [v4 modelNumber];
+    modelNumber = [accessoryCopy modelNumber];
     model = v5->_model;
-    v5->_model = v10;
+    v5->_model = modelNumber;
 
-    v12 = [v4 name];
+    name = [accessoryCopy name];
     carName = v5->_carName;
-    v5->_carName = v12;
+    v5->_carName = name;
 
-    v14 = [v4 macAddress];
+    macAddress = [accessoryCopy macAddress];
     bluetoothIdentifier = v5->_bluetoothIdentifier;
-    v5->_bluetoothIdentifier = v14;
+    v5->_bluetoothIdentifier = macAddress;
 
-    v5->_destinationHandoffEnabled = [v4 pointOfInterestHandoffEnabled];
-    v16 = [v4 getVehicleInfoData];
-    [(MapsExternalAccessoryState *)v5 updateWithInfo:v16];
-    v17 = [v4 vehicleInfoInitialData];
+    v5->_destinationHandoffEnabled = [accessoryCopy pointOfInterestHandoffEnabled];
+    getVehicleInfoData = [accessoryCopy getVehicleInfoData];
+    [(MapsExternalAccessoryState *)v5 updateWithInfo:getVehicleInfoData];
+    vehicleInfoInitialData = [accessoryCopy vehicleInfoInitialData];
 
-    [(MapsExternalAccessoryState *)v5 updateWithInfo:v17];
+    [(MapsExternalAccessoryState *)v5 updateWithInfo:vehicleInfoInitialData];
   }
 
   return v5;
 }
 
-- (id)descriptionForKey:(id)a3
+- (id)descriptionForKey:(id)key
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"destinationHandoffEnabled"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"lowRangeWarning"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"destinationHandoffEnabled"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"lowRangeWarning"))
   {
-    v5 = [(MapsExternalAccessoryState *)self valueForKey:v4];
-    v6 = [v5 BOOLValue];
+    v5 = [(MapsExternalAccessoryState *)self valueForKey:keyCopy];
+    bOOLValue = [v5 BOOLValue];
     v7 = @"NO";
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"YES";
     }
@@ -289,7 +289,7 @@ LABEL_30:
 
   else
   {
-    if ([v4 isEqualToString:@"engineTypes"])
+    if ([keyCopy isEqualToString:@"engineTypes"])
     {
       v9 = sub_100AD6E38([(MapsExternalAccessoryState *)self engineTypes]);
     }
@@ -298,7 +298,7 @@ LABEL_30:
     {
       v11.receiver = self;
       v11.super_class = MapsExternalAccessoryState;
-      v9 = [(MapsExternalState *)&v11 descriptionForKey:v4];
+      v9 = [(MapsExternalState *)&v11 descriptionForKey:keyCopy];
     }
 
     v8 = v9;

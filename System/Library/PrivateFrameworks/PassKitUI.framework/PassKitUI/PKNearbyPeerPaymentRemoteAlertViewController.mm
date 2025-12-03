@@ -1,38 +1,38 @@
 @interface PKNearbyPeerPaymentRemoteAlertViewController
 - (BOOL)_allowHome;
-- (void)_dismiss:(id)a3;
+- (void)_dismiss:(id)_dismiss;
 - (void)_handleInitialHome;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKNearbyPeerPaymentRemoteAlertViewController
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKNearbyPeerPaymentRemoteAlertViewController;
-  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKNearbyPeerPaymentRemoteAlertViewController;
-  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v8 viewWillAppear:a3];
+  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v8 viewWillAppear:appear];
   [(PKNearbyPeerPaymentViewController *)self->_viewController setModalPresentationStyle:0];
   [(PKNearbyPeerPaymentViewController *)self->_viewController setModalTransitionStyle:2];
   [(PKNearbyPeerPaymentRemoteAlertViewController *)self presentViewController:self->_viewController animated:1 completion:0];
@@ -46,11 +46,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11.receiver = self;
   v11.super_class = PKNearbyPeerPaymentRemoteAlertViewController;
-  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v11 viewWillDisappear:a3];
+  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v11 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -71,26 +71,26 @@
   [(PKNearbyPeerPaymentRemoteAlertViewController *)self _dismiss:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PKNearbyPeerPaymentRemoteAlertViewController;
-  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v3 viewDidDisappear:a3];
+  [(PKNearbyPeerPaymentRemoteAlertViewController *)&v3 viewDidDisappear:disappear];
   [MEMORY[0x1E69B8540] endSubjectReporting:*MEMORY[0x1E69BB6A8]];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
-  v7 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v7 setAllowsAlertItems:1];
-  [v7 setAllowsSiri:0];
-  [v7 setAllowsBanners:1];
-  [v7 setAllowsAlertStacking:1];
-  v8 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _allowHome];
-  if (v8)
+  contextCopy = context;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  _allowHome = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _allowHome];
+  if (_allowHome)
   {
     v9 = 16;
   }
@@ -100,15 +100,15 @@
     v9 = 0;
   }
 
-  [v7 setAllowsMenuButtonDismissal:{v8, v23}];
-  [v7 setDesiredHardwareButtonEvents:v9];
-  [v7 setSwipeDismissalStyle:0];
-  [v7 setDismissalAnimationStyle:1];
-  [v7 setWallpaperStyle:0 withDuration:0.0];
-  [v7 setLaunchingInterfaceOrientation:1];
-  v10 = [v24 userInfo];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:{_allowHome, contextCopy}];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:v9];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:1];
+  userInfo = [v24 userInfo];
   userInfo = self->_userInfo;
-  self->_userInfo = v10;
+  self->_userInfo = userInfo;
 
   v12 = [(NSDictionary *)self->_userInfo valueForKey:*MEMORY[0x1E69BBFC0]];
   v13 = *MEMORY[0x1E69BB6A8];
@@ -135,10 +135,10 @@
   v25[3] = &unk_1E80221C0;
   objc_copyWeak(&v26, &location);
   v15 = _Block_copy(v25);
-  v16 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self nearbyContext];
-  if (v16)
+  nearbyContext = [(PKNearbyPeerPaymentRemoteAlertViewController *)self nearbyContext];
+  if (nearbyContext)
   {
-    if (v16 != 1)
+    if (nearbyContext != 1)
     {
       goto LABEL_16;
     }
@@ -174,9 +174,9 @@
   self->_viewController = v21;
 
 LABEL_16:
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   objc_destroyWeak(&v26);
@@ -197,15 +197,15 @@ void __80__PKNearbyPeerPaymentRemoteAlertViewController_configureWithContext_com
   [WeakRetained _dismiss:v3];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -224,7 +224,7 @@ void __80__PKNearbyPeerPaymentRemoteAlertViewController_configureWithContext_com
     v27 = *MEMORY[0x1E69BA6F0];
     v9 = &OBJC_IVAR___PKFamilyMemberTransactionsViewController__contactResolver;
     v25 = *MEMORY[0x1E69BA888];
-    v34 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -232,7 +232,7 @@ void __80__PKNearbyPeerPaymentRemoteAlertViewController_configureWithContext_com
       {
         if (*v38 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v37 + 1) + 8 * v10) events] & 0x10) != 0)
@@ -250,10 +250,10 @@ void __80__PKNearbyPeerPaymentRemoteAlertViewController_configureWithContext_com
             _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "NearbyPeerPayment/PKPeerPaymentRemoteAlertViewController: user initiated dismiss", buf, 2u);
           }
 
-          v12 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self nearbyContext];
+          nearbyContext = [(PKNearbyPeerPaymentRemoteAlertViewController *)self nearbyContext];
           v13 = v35;
           v14 = v8;
-          if (v12 == 1)
+          if (nearbyContext == 1)
           {
 LABEL_14:
             v15 = v13;
@@ -262,7 +262,7 @@ LABEL_14:
 
           else
           {
-            if (!v12)
+            if (!nearbyContext)
             {
               v14 = v23;
               v13 = v24;
@@ -276,7 +276,7 @@ LABEL_14:
           if ([v15 length] && objc_msgSend(v16, "length"))
           {
             v17 = v7;
-            v18 = v4;
+            v18 = actionsCopy;
             v19 = MEMORY[0x1E69B8540];
             v41[0] = v32;
             v41[1] = v30;
@@ -291,9 +291,9 @@ LABEL_14:
             [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:5];
             v21 = v20 = v9;
             v22 = v19;
-            v4 = v18;
+            actionsCopy = v18;
             v7 = v17;
-            self = v34;
+            self = selfCopy;
             [v22 subject:v33 sendEvent:v21];
 
             v9 = v20;
@@ -307,7 +307,7 @@ LABEL_20:
       }
 
       while (v6 != v10);
-      v6 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v6);
@@ -327,12 +327,12 @@ LABEL_20:
 - (void)_handleInitialHome
 {
   [(PKNearbyPeerPaymentViewController *)self->_viewController setHideStatusBar:0];
-  v3 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _allowHome];
-  if (!v3)
+  _allowHome = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _allowHome];
+  if (!_allowHome)
   {
-    v4 = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
-    [v4 setAllowsMenuButtonDismissal:1];
-    [v4 setDesiredHardwareButtonEvents:16];
+    _remoteViewControllerProxy = [(PKNearbyPeerPaymentRemoteAlertViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+    [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E69DCAE8]) initWithStyle:1];
@@ -342,7 +342,7 @@ LABEL_20:
   v6[2] = __66__PKNearbyPeerPaymentRemoteAlertViewController__handleInitialHome__block_invoke;
   v6[3] = &unk_1E8013F80;
   v6[4] = self;
-  v7 = v3;
+  v7 = _allowHome;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -407,9 +407,9 @@ void __66__PKNearbyPeerPaymentRemoteAlertViewController__handleInitialHome__bloc
   WeakRetained[126] = 0;
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
-  v4 = a3;
+  _dismissCopy = _dismiss;
   systemUITimer = self->_systemUITimer;
   if (systemUITimer)
   {
@@ -421,8 +421,8 @@ void __66__PKNearbyPeerPaymentRemoteAlertViewController__handleInitialHome__bloc
   v7[2] = __57__PKNearbyPeerPaymentRemoteAlertViewController__dismiss___block_invoke;
   v7[3] = &unk_1E8010DD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = _dismissCopy;
+  v6 = _dismissCopy;
   [(PKNearbyPeerPaymentRemoteAlertViewController *)self dismissViewControllerAnimated:1 completion:v7];
 }
 

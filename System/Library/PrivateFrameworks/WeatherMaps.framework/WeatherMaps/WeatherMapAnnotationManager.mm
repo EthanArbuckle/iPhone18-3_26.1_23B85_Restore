@@ -1,14 +1,14 @@
 @interface WeatherMapAnnotationManager
-- (void)didRecognizeClickOnAnnotationContentView:(id)a3;
+- (void)didRecognizeClickOnAnnotationContentView:(id)view;
 @end
 
 @implementation WeatherMapAnnotationManager
 
-- (void)didRecognizeClickOnAnnotationContentView:(id)a3
+- (void)didRecognizeClickOnAnnotationContentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
 
-  sub_220F2643C(v3);
+  sub_220F2643C(viewCopy);
 }
 
 @end

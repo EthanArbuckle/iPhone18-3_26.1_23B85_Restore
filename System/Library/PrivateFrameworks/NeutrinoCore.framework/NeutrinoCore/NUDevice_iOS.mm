@@ -1,7 +1,7 @@
 @interface NUDevice_iOS
-- (NUDevice_iOS)initWithName:(id)a3;
-- (id)_newMetalRendererWithOptions:(id)a3;
-- (id)_newRendererWithCIContextOptions:(id)a3 error:(id *)a4;
+- (NUDevice_iOS)initWithName:(id)name;
+- (id)_newMetalRendererWithOptions:(id)options;
+- (id)_newRendererWithCIContextOptions:(id)options error:(id *)error;
 - (id)debugDescription;
 - (int64_t)_preferredSampleMode;
 - (unint64_t)family;
@@ -9,20 +9,20 @@
 
 @implementation NUDevice_iOS
 
-- (id)_newMetalRendererWithOptions:(id)a3
+- (id)_newMetalRendererWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [NUMetalRenderer alloc];
-  v6 = [(NUDevice *)self metalDevice];
-  v7 = [(NUMetalRenderer *)v5 initWithMetalDevice:v6 options:v4];
+  metalDevice = [(NUDevice *)self metalDevice];
+  v7 = [(NUMetalRenderer *)v5 initWithMetalDevice:metalDevice options:optionsCopy];
 
   return v7;
 }
 
-- (id)_newRendererWithCIContextOptions:(id)a3 error:(id *)a4
+- (id)_newRendererWithCIContextOptions:(id)options error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  optionsCopy = options;
   if (![(NUDevice *)self shouldRenderUsingMetal])
   {
     v8 = NUAssertLogger_12810();
@@ -44,8 +44,8 @@
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v24 = 138543618;
         *&v24[4] = v15;
         v25 = 2114;
@@ -56,8 +56,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v24 = 138543362;
       *&v24[4] = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v24, 0xCu);
@@ -66,7 +66,7 @@
     _NUAssertFailHandler("[NUDevice_iOS _newRendererWithCIContextOptions:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Runtime/NUDevice_iOS.m", 101, @"Software renderer is unsupported", v20, v21, v22, v23, *v24);
   }
 
-  v6 = [(NUDevice_iOS *)self _newMetalRendererWithOptions:v5];
+  v6 = [(NUDevice_iOS *)self _newMetalRendererWithOptions:optionsCopy];
 
   return v6;
 }
@@ -86,45 +86,45 @@
 
 - (unint64_t)family
 {
-  v2 = [(NUDevice *)self metalDevice];
-  if ([v2 supportsFamily:1008])
+  metalDevice = [(NUDevice *)self metalDevice];
+  if ([metalDevice supportsFamily:1008])
   {
     v3 = 8;
   }
 
-  else if ([v2 supportsFamily:1007])
+  else if ([metalDevice supportsFamily:1007])
   {
     v3 = 7;
   }
 
-  else if ([v2 supportsFamily:1006])
+  else if ([metalDevice supportsFamily:1006])
   {
     v3 = 6;
   }
 
-  else if ([v2 supportsFamily:1005])
+  else if ([metalDevice supportsFamily:1005])
   {
     v3 = 5;
   }
 
-  else if ([v2 supportsFamily:1004])
+  else if ([metalDevice supportsFamily:1004])
   {
     v3 = 4;
   }
 
-  else if ([v2 supportsFamily:1003])
+  else if ([metalDevice supportsFamily:1003])
   {
     v3 = 3;
   }
 
-  else if ([v2 supportsFamily:1002])
+  else if ([metalDevice supportsFamily:1002])
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = [v2 supportsFamily:1001];
+    v3 = [metalDevice supportsFamily:1001];
   }
 
   return v3;
@@ -134,17 +134,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUDevice *)self name];
-  v6 = [(NUDevice *)self model];
-  v7 = [(NUDevice *)self metalDevice];
-  v8 = [v3 stringWithFormat:@"<%@:%p name:%@ model:%@ metal: %@>", v4, self, v5, v6, v7];
+  name = [(NUDevice *)self name];
+  model = [(NUDevice *)self model];
+  metalDevice = [(NUDevice *)self metalDevice];
+  v8 = [v3 stringWithFormat:@"<%@:%p name:%@ model:%@ metal: %@>", v4, self, name, model, metalDevice];
 
   return v8;
 }
 
-- (NUDevice_iOS)initWithName:(id)a3
+- (NUDevice_iOS)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MTLCreateSystemDefaultDevice();
   if (!v5)
   {
@@ -163,7 +163,7 @@
 
   v9.receiver = self;
   v9.super_class = NUDevice_iOS;
-  v7 = [(NUDevice *)&v9 initWithName:v4 model:@"Apple" metalDevice:v5];
+  v7 = [(NUDevice *)&v9 initWithName:nameCopy model:@"Apple" metalDevice:v5];
 
   return v7;
 }

@@ -1,44 +1,44 @@
 @interface PEGASUSSchemaPEGASUSAudioUnderstanding
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)audioAttributesAtIndex:(unint64_t)a3;
+- (int)audioAttributesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addAudioAttributes:(int)a3;
-- (void)setHasAudioDecade:(BOOL)a3;
-- (void)setHasRequestedMediaType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioAttributes:(int)attributes;
+- (void)setHasAudioDecade:(BOOL)decade;
+- (void)setHasRequestedMediaType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAudioUnderstanding
 
-- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = PEGASUSSchemaPEGASUSAudioUnderstanding;
   v5 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioVerb"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioVerb"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioUnderstanding setAudioVerb:](v5, "setAudioVerb:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"requestedMediaType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"requestedMediaType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioUnderstanding setRequestedMediaType:](v5, "setRequestedMediaType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioAttributes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioAttributes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       v6 = v18;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"audioDecade"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"audioDecade"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,30 +96,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAudioUnderstanding)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -132,12 +132,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_audioAttributes count])
   {
-    v4 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"audioAttributes"];
+    audioAttributes = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
+    v5 = [audioAttributes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioAttributes"];
   }
 
   has = self->_has;
@@ -160,7 +160,7 @@ LABEL_11:
       v10 = off_1E78DF760[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"audioVerb"];
+    [dictionary setObject:v10 forKeyedSubscript:@"audioVerb"];
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_19;
@@ -180,7 +180,7 @@ LABEL_11:
     v8 = off_1E78DF708[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"audioDecade"];
+  [dictionary setObject:v8 forKeyedSubscript:@"audioDecade"];
   has = self->_has;
   if (has)
   {
@@ -202,13 +202,13 @@ LABEL_15:
       v12 = off_1E78DF7B0[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"requestedMediaType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"requestedMediaType"];
   }
 
 LABEL_19:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -249,16 +249,16 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -267,7 +267,7 @@ LABEL_6:
   if (*&has)
   {
     audioVerb = self->_audioVerb;
-    if (audioVerb != [v4 audioVerb])
+    if (audioVerb != [equalCopy audioVerb])
     {
 LABEL_19:
       v20 = 0;
@@ -275,7 +275,7 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -287,28 +287,28 @@ LABEL_19:
   if (v8)
   {
     requestedMediaType = self->_requestedMediaType;
-    if (requestedMediaType != [v4 requestedMediaType])
+    if (requestedMediaType != [equalCopy requestedMediaType])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
-  v11 = [v4 audioAttributes];
-  v12 = v11;
-  if ((v10 != 0) == (v11 == 0))
+  audioAttributes = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
+  audioAttributes2 = [equalCopy audioAttributes];
+  v12 = audioAttributes2;
+  if ((audioAttributes != 0) == (audioAttributes2 == 0))
   {
 
     goto LABEL_19;
   }
 
-  v13 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
-  if (v13)
+  audioAttributes3 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
+  if (audioAttributes3)
   {
-    v14 = v13;
-    v15 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
-    v16 = [v4 audioAttributes];
-    v17 = [v15 isEqual:v16];
+    v14 = audioAttributes3;
+    audioAttributes4 = [(PEGASUSSchemaPEGASUSAudioUnderstanding *)self audioAttributes];
+    audioAttributes5 = [equalCopy audioAttributes];
+    v17 = [audioAttributes4 isEqual:audioAttributes5];
 
     if (!v17)
     {
@@ -321,7 +321,7 @@ LABEL_19:
   }
 
   v18 = (*&self->_has >> 2) & 1;
-  if (v18 != ((v4[28] >> 2) & 1))
+  if (v18 != ((equalCopy[28] >> 2) & 1))
   {
     goto LABEL_19;
   }
@@ -329,7 +329,7 @@ LABEL_19:
   if (v18)
   {
     audioDecade = self->_audioDecade;
-    if (audioDecade != [v4 audioDecade])
+    if (audioDecade != [equalCopy audioDecade])
     {
       goto LABEL_19;
     }
@@ -341,10 +341,10 @@ LABEL_20:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -392,9 +392,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasAudioDecade:(BOOL)a3
+- (void)setHasAudioDecade:(BOOL)decade
 {
-  if (a3)
+  if (decade)
   {
     v3 = 4;
   }
@@ -407,23 +407,23 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)audioAttributesAtIndex:(unint64_t)a3
+- (int)audioAttributesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_audioAttributes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_audioAttributes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addAudioAttributes:(int)a3
+- (void)addAudioAttributes:(int)attributes
 {
-  v3 = *&a3;
+  v3 = *&attributes;
   audioAttributes = self->_audioAttributes;
   if (!audioAttributes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_audioAttributes;
-    self->_audioAttributes = v6;
+    self->_audioAttributes = array;
 
     audioAttributes = self->_audioAttributes;
   }
@@ -432,9 +432,9 @@ LABEL_20:
   [(NSArray *)audioAttributes addObject:v8];
 }
 
-- (void)setHasRequestedMediaType:(BOOL)a3
+- (void)setHasRequestedMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

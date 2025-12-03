@@ -1,15 +1,15 @@
 @interface TSCH3DChartMutableElementProperties
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)renderingLightingModelForSeries:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)renderingLightingModelForSeries:(id)series;
 @end
 
 @implementation TSCH3DChartMutableElementProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v83.receiver = self;
   v83.super_class = TSCH3DChartMutableElementProperties;
-  v4 = [(TSCH3DChartElementProperties *)&v83 copyWithZone:a3];
+  v4 = [(TSCH3DChartElementProperties *)&v83 copyWithZone:zone];
   v9 = v4;
   if (v4)
   {
@@ -62,9 +62,9 @@
   return v9;
 }
 
-- (id)renderingLightingModelForSeries:(id)a3
+- (id)renderingLightingModelForSeries:(id)series
 {
-  v5 = a3;
+  seriesCopy = series;
   if (!self->_lightingModels)
   {
     v9 = MEMORY[0x277D81150];
@@ -76,7 +76,7 @@
   }
 
   v39[0] = 0;
-  v39[1] = objc_msgSend_seriesIndex(v5, v4, v6, v7, v8);
+  v39[1] = objc_msgSend_seriesIndex(seriesCopy, v4, v6, v7, v8);
   if (objc_msgSend_hasObjectAtIndex_(self->_lightingModels, v24, v25, v26, v27, v39))
   {
     v32 = objc_msgSend_objectAtIndex_(self->_lightingModels, v28, v29, v30, v31, v39);
@@ -86,7 +86,7 @@
   {
     v38.receiver = self;
     v38.super_class = TSCH3DChartMutableElementProperties;
-    v32 = [(TSCH3DChartElementProperties *)&v38 renderingLightingModelForSeries:v5];
+    v32 = [(TSCH3DChartElementProperties *)&v38 renderingLightingModelForSeries:seriesCopy];
     objc_msgSend_setObject_atIndex_(self->_lightingModels, v33, v34, v35, v36, v32, v39);
   }
 

@@ -1,25 +1,25 @@
 @interface MREResult
-- (MREResult)initWithTrackId:(unint64_t)a3 offset:(double)a4 timeSkew:(id)a5 freqSkew:(id)a6 score:(id)a7;
+- (MREResult)initWithTrackId:(unint64_t)id offset:(double)offset timeSkew:(id)skew freqSkew:(id)freqSkew score:(id)score;
 @end
 
 @implementation MREResult
 
-- (MREResult)initWithTrackId:(unint64_t)a3 offset:(double)a4 timeSkew:(id)a5 freqSkew:(id)a6 score:(id)a7
+- (MREResult)initWithTrackId:(unint64_t)id offset:(double)offset timeSkew:(id)skew freqSkew:(id)freqSkew score:(id)score
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  skewCopy = skew;
+  freqSkewCopy = freqSkew;
+  scoreCopy = score;
   v19.receiver = self;
   v19.super_class = MREResult;
   v16 = [(MREResult *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_offset = a4;
-    objc_storeStrong(&v16->_timeSkew, a5);
-    objc_storeStrong(&v17->_freqSkew, a6);
-    v17->_trackID = a3;
-    objc_storeStrong(&v17->_score, a7);
+    v16->_offset = offset;
+    objc_storeStrong(&v16->_timeSkew, skew);
+    objc_storeStrong(&v17->_freqSkew, freqSkew);
+    v17->_trackID = id;
+    objc_storeStrong(&v17->_score, score);
   }
 
   return v17;

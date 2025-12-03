@@ -1,43 +1,43 @@
 @interface PXGDefaultAnimationDelegate
 + (PXGDefaultAnimationDelegate)sharedInstance;
-+ (void)adjustGeometry:(id *)a3 style:(id *)a4 info:(id *)a5 forTextSpriteAnimatingFromAttributes:(id *)a6 toAttributes:(id *)a7 inRootLayout:(id)a8;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7;
++ (void)adjustGeometry:(id *)geometry style:(id *)style info:(id *)info forTextSpriteAnimatingFromAttributes:(id *)attributes toAttributes:(id *)toAttributes inRootLayout:(id)layout;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range;
 @end
 
 @implementation PXGDefaultAnimationDelegate
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  if (a7.length)
+  if (range.length)
   {
-    v7 = (a7.length + 3) & 0x1FFFFFFFCLL;
+    v7 = (range.length + 3) & 0x1FFFFFFFCLL;
     v8 = xmmword_21AE2D350;
     v9 = xmmword_21AE2D360;
-    v10 = vdupq_n_s64(a7.length - 1);
+    v10 = vdupq_n_s64(range.length - 1);
     v11 = vdupq_n_s64(4uLL);
     do
     {
       v12 = vmovn_s64(vcgeq_u64(v10, v9));
       if (vuzp1_s16(v12, *v8.i8).u8[0])
       {
-        a5->var0 = 0.0;
+        styles->var0 = 0.0;
       }
 
       if (vuzp1_s16(v12, *&v8).i8[2])
       {
-        a5[3].var4 = 0.0;
+        styles[3].var4 = 0.0;
       }
 
       if (vuzp1_s16(*&v8, vmovn_s64(vcgeq_u64(v10, *&v8))).i32[1])
       {
-        a5[7].var1.var0.var0.var2 = 0.0;
-        a5[10].var8 = 0.0;
+        styles[7].var1.var0.var0.var2 = 0.0;
+        styles[10].var8 = 0.0;
       }
 
       v8 = vaddq_s64(v8, v11);
       v9 = vaddq_s64(v9, v11);
-      a5 = (a5 + 640);
+      styles = (styles + 640);
       v7 -= 4;
     }
 
@@ -45,37 +45,37 @@
   }
 }
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  if (a7.length)
+  if (range.length)
   {
-    v7 = (a7.length + 3) & 0x1FFFFFFFCLL;
+    v7 = (range.length + 3) & 0x1FFFFFFFCLL;
     v8 = xmmword_21AE2D350;
     v9 = xmmword_21AE2D360;
-    v10 = vdupq_n_s64(a7.length - 1);
+    v10 = vdupq_n_s64(range.length - 1);
     v11 = vdupq_n_s64(4uLL);
     do
     {
       v12 = vmovn_s64(vcgeq_u64(v10, v9));
       if (vuzp1_s16(v12, *v8.i8).u8[0])
       {
-        a5->var0 = 0.0;
+        styles->var0 = 0.0;
       }
 
       if (vuzp1_s16(v12, *&v8).i8[2])
       {
-        a5[3].var4 = 0.0;
+        styles[3].var4 = 0.0;
       }
 
       if (vuzp1_s16(*&v8, vmovn_s64(vcgeq_u64(v10, *&v8))).i32[1])
       {
-        a5[7].var1.var0.var0.var2 = 0.0;
-        a5[10].var8 = 0.0;
+        styles[7].var1.var0.var0.var2 = 0.0;
+        styles[10].var8 = 0.0;
       }
 
       v8 = vaddq_s64(v8, v11);
       v9 = vaddq_s64(v9, v11);
-      a5 = (a5 + 640);
+      styles = (styles + 640);
       v7 -= 4;
     }
 
@@ -83,18 +83,18 @@
   }
 }
 
-+ (void)adjustGeometry:(id *)a3 style:(id *)a4 info:(id *)a5 forTextSpriteAnimatingFromAttributes:(id *)a6 toAttributes:(id *)a7 inRootLayout:(id)a8
++ (void)adjustGeometry:(id *)geometry style:(id *)style info:(id *)info forTextSpriteAnimatingFromAttributes:(id *)attributes toAttributes:(id *)toAttributes inRootLayout:(id)layout
 {
-  v12 = a8;
-  x = a6->var3.x;
-  y = a6->var3.y;
-  v16 = a7->var3.x;
-  v15 = a7->var3.y;
-  var2 = a7->var2;
-  v18 = a6->var2;
-  if ([v12 userInterfaceDirection] == 1)
+  layoutCopy = layout;
+  x = attributes->var3.x;
+  y = attributes->var3.y;
+  v16 = toAttributes->var3.x;
+  v15 = toAttributes->var3.y;
+  var2 = toAttributes->var2;
+  v18 = attributes->var2;
+  if ([layoutCopy userInterfaceDirection] == 1)
   {
-    [v12 referenceSize];
+    [layoutCopy referenceSize];
     x = v19 - x;
     v16 = v19 - v16;
   }
@@ -125,7 +125,7 @@
   v22 = v35.origin.y;
   width = v35.size.width;
   height = v35.size.height;
-  v25 = a3->var0.var2;
+  v25 = geometry->var0.var2;
   MidX = CGRectGetMidX(v35);
   v36.origin.x = v21;
   v36.origin.y = v22;
@@ -144,11 +144,11 @@
   v28 = CGRectGetHeight(v38);
   v29.f64[0] = v30;
   v29.f64[1] = v28;
-  a3->var0.var0 = MidX;
-  a3->var0.var1 = MidY;
-  a3->var0.var2 = v25;
-  *&a3[1].var0.var0 = vcvt_f32_f64(v29);
-  a4->var0 = 0.0;
+  geometry->var0.var0 = MidX;
+  geometry->var0.var1 = MidY;
+  geometry->var0.var2 = v25;
+  *&geometry[1].var0.var0 = vcvt_f32_f64(v29);
+  style->var0 = 0.0;
 }
 
 + (PXGDefaultAnimationDelegate)sharedInstance

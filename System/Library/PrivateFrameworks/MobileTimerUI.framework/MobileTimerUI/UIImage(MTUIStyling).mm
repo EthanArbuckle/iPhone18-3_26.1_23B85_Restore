@@ -16,7 +16,7 @@
   v5 = MEMORY[0x277D74300];
   v6 = *MEMORY[0x277D74418];
   v7 = a4;
-  v8 = [v5 systemFontOfSize:@"NSCTFontUIFontDesignCompactRounded" weight:a1 design:v6];
+  v8 = [v5 systemFontOfSize:@"NSCTFontUIFontDesignCompactRounded" weight:self design:v6];
   v9 = [MEMORY[0x277D755B8] systemImageNamed:v7];
 
   v10 = [MEMORY[0x277D755D0] configurationWithFont:v8];
@@ -59,7 +59,7 @@
   block[1] = 3221225472;
   block[2] = __39__UIImage_MTUIStyling__mtui_sleepImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mtui_sleepImage_onceToken != -1)
   {
     dispatch_once(&mtui_sleepImage_onceToken, block);
@@ -76,7 +76,7 @@
   block[1] = 3221225472;
   block[2] = __38__UIImage_MTUIStyling__mtui_wakeImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mtui_wakeImage_onceToken != -1)
   {
     dispatch_once(&mtui_wakeImage_onceToken, block);
@@ -93,7 +93,7 @@
   block[1] = 3221225472;
   block[2] = __46__UIImage_MTUIStyling__mtui_deleteButtonImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mtui_deleteButtonImage_onceToken != -1)
   {
     dispatch_once(&mtui_deleteButtonImage_onceToken, block);
@@ -120,7 +120,7 @@
 {
   v7 = MEMORY[0x277D755B8];
   v8 = a5;
-  v9 = [v7 mtui_imageWithSymbolName:a4 pointSize:a1];
+  v9 = [v7 mtui_imageWithSymbolName:a4 pointSize:self];
   v10 = [v9 mtui_imageWithTintColor:v8];
 
   return v10;

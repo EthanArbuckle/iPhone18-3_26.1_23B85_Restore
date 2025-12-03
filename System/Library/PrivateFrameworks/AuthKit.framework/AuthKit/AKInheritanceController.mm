@@ -1,65 +1,65 @@
 @interface AKInheritanceController
 - (AKInheritanceController)init;
-- (AKInheritanceController)initWithXPCSession:(id)a3;
-- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)fetchManifestOptionsWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)removeBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)setupBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
-- (void)updateBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4;
+- (AKInheritanceController)initWithXPCSession:(id)session;
+- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)context completion:(id)completion;
+- (void)fetchManifestOptionsWithInheritanceContext:(id)context completion:(id)completion;
+- (void)removeBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
+- (void)setupBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
+- (void)updateBeneficiaryWithInheritanceContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKInheritanceController
 
 - (AKInheritanceController)init
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [objc_alloc(MEMORY[0x1E6985E18]) initWithServiceName:@"com.apple.ak.inheritance.xpc" remoteProtocol:&unk_1F07B9FD8 options:0];
   v2 = objc_alloc(MEMORY[0x1E6985E10]);
-  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:v8];
-  v3 = v8;
-  v8 = 0;
-  v8 = [(AKInheritanceController *)v3 initWithXPCSession:v6];
-  objc_storeStrong(&v8, v8);
-  v5 = MEMORY[0x1E69E5928](v8);
+  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:selfCopy];
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKInheritanceController *)v3 initWithXPCSession:v6];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKInheritanceController)initWithXPCSession:(id)a3
+- (AKInheritanceController)initWithXPCSession:(id)session
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKInheritanceController;
-  v8 = [(AKInheritanceController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKInheritanceController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_remoteService, location[0]);
-    [(AAFXPCSession *)v8->_remoteService resume];
+    objc_storeStrong(&selfCopy->_remoteService, location[0]);
+    [(AAFXPCSession *)selfCopy->_remoteService resume];
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)fetchManifestOptionsWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)fetchManifestOptionsWithInheritanceContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "inheritance-authkit/fetch-dataclass-rules", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -71,7 +71,7 @@
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -80,7 +80,7 @@
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -134,14 +134,14 @@ void __81__AKInheritanceController_fetchManifestOptionsWithInheritanceContext_co
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setupBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)setupBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "inheritance-authkit/persist-manifest", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -153,7 +153,7 @@ void __81__AKInheritanceController_fetchManifestOptionsWithInheritanceContext_co
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -162,7 +162,7 @@ void __81__AKInheritanceController_fetchManifestOptionsWithInheritanceContext_co
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -213,14 +213,14 @@ void __77__AKInheritanceController_setupBeneficiaryWithInheritanceContext_comple
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)updateBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "inheritance-authkit/update-beneficiary", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -232,7 +232,7 @@ void __77__AKInheritanceController_setupBeneficiaryWithInheritanceContext_comple
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -241,7 +241,7 @@ void __77__AKInheritanceController_setupBeneficiaryWithInheritanceContext_comple
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -292,14 +292,14 @@ void __78__AKInheritanceController_updateBeneficiaryWithInheritanceContext_compl
   *MEMORY[0x1E69E9840];
 }
 
-- (void)removeBeneficiaryWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)removeBeneficiaryWithInheritanceContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "inheritance-authkit/remove-beneficiary", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -311,7 +311,7 @@ void __78__AKInheritanceController_updateBeneficiaryWithInheritanceContext_compl
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -320,7 +320,7 @@ void __78__AKInheritanceController_updateBeneficiaryWithInheritanceContext_compl
   v18[1] = v20;
   v18[0] = MEMORY[0x1E69E5928](v29);
   v19 = MEMORY[0x193B165F0](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -371,18 +371,18 @@ void __78__AKInheritanceController_removeBeneficiaryWithInheritanceContext_compl
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)a3 completion:(id)a4
+- (void)_setupBeneficiaryAliasWithInheritanceContext:(id)context completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, completion);
   v10 = +[AKDevice currentDevice];
-  v11 = [v10 isInternalBuild];
+  isInternalBuild = [v10 isInternalBuild];
   MEMORY[0x1E69E5920](v10);
-  if (v11)
+  if (isInternalBuild)
   {
     v33 = _os_activity_create(&dword_193225000, "inheritance-authkit/create-beneficiary-alias", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v34 = v33;
@@ -395,7 +395,7 @@ void __78__AKInheritanceController_removeBeneficiaryWithInheritanceContext_compl
     v28 = 48;
     v29 = __Block_byref_object_copy__1;
     v30 = __Block_byref_object_dispose__1;
-    v31 = MEMORY[0x1E69E5928](v41);
+    v31 = MEMORY[0x1E69E5928](selfCopy);
     v19 = MEMORY[0x1E69E9820];
     v20 = -1073741824;
     v21 = 0;
@@ -404,7 +404,7 @@ void __78__AKInheritanceController_removeBeneficiaryWithInheritanceContext_compl
     v24[1] = v26;
     v24[0] = MEMORY[0x1E69E5928](v39);
     v25 = MEMORY[0x193B165F0](&v19);
-    remoteService = v41->_remoteService;
+    remoteService = selfCopy->_remoteService;
     v12 = MEMORY[0x1E69E9820];
     v13 = -1073741824;
     v14 = 0;

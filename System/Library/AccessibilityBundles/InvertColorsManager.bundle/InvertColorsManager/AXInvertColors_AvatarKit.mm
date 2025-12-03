@@ -1,14 +1,14 @@
 @interface AXInvertColors_AvatarKit
-+ (void)installCategories:(id)a3;
++ (void)installCategories:(id)categories;
 @end
 
 @implementation AXInvertColors_AvatarKit
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"AVTRecordViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AVTViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"AVTRecordViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AVTViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -1,59 +1,59 @@
 @interface SNSystemAudioAnalyzer
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5;
-- (void)addRequestInBackground:(id)a3 withObserver:(id)a4;
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error;
+- (void)addRequestInBackground:(id)background withObserver:(id)observer;
 - (void)removeAllRequests;
-- (void)removeRequest:(id)a3;
+- (void)removeRequest:(id)request;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SNSystemAudioAnalyzer
 
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1C98FAA84(a3, a4);
+  selfCopy = self;
+  sub_1C98FAA84(request, observer);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (void)addRequestInBackground:(id)a3 withObserver:(id)a4
+- (void)addRequestInBackground:(id)background withObserver:(id)observer
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1C98FADD0(a3, a4);
+  selfCopy = self;
+  sub_1C98FADD0(background, observer);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C98FB118(a3);
+  selfCopy = self;
+  sub_1C98FB118(request);
   swift_unknownObjectRelease();
 }
 
 - (void)removeAllRequests
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98FB3A4();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98FB5E0("(SNSystemAudioAnalyzer:%s) start");
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C98FB5E0("(SNSystemAudioAnalyzer:%s) stop");
 }
 

@@ -1,10 +1,10 @@
 @interface BAAssetPackManifest
 - (BAAssetPackManifest)init;
-- (BAAssetPackManifest)initWithContentsOfURL:(id)a3 applicationGroupIdentifier:(id)a4 error:(id *)a5;
+- (BAAssetPackManifest)initWithContentsOfURL:(id)l applicationGroupIdentifier:(id)identifier error:(id *)error;
 - (NSSet)assetPacks;
 - (id)allDownloads;
-- (id)allDownloadsForContentRequest:(int64_t)a3;
-- (id)initFromData:(id)a3 applicationGroupIdentifier:(id)a4 error:(id *)a5;
+- (id)allDownloadsForContentRequest:(int64_t)request;
+- (id)initFromData:(id)data applicationGroupIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation BAAssetPackManifest
@@ -12,7 +12,7 @@
 - (NSSet)assetPacks
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BAAssetPackManifest_manifest);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_236E70B04(sub_236E74CAC, 0, v2);
   sub_236E56E2C(v4);
 
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (BAAssetPackManifest)initWithContentsOfURL:(id)a3 applicationGroupIdentifier:(id)a4 error:(id *)a5
+- (BAAssetPackManifest)initWithContentsOfURL:(id)l applicationGroupIdentifier:(id)identifier error:(id *)error
 {
   v6 = sub_236E819F4();
   v7 = *(v6 - 8);
@@ -49,10 +49,10 @@
   return v19;
 }
 
-- (id)initFromData:(id)a3 applicationGroupIdentifier:(id)a4 error:(id *)a5
+- (id)initFromData:(id)data applicationGroupIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v9 = sub_236E81A34();
   v11 = v10;
 
@@ -76,7 +76,7 @@
 - (id)allDownloads
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BAAssetPackManifest_manifest);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_236E705A8(v2);
   sub_236E56F8C(v4);
 
@@ -87,11 +87,11 @@
   return v5;
 }
 
-- (id)allDownloadsForContentRequest:(int64_t)a3
+- (id)allDownloadsForContentRequest:(int64_t)request
 {
   v4 = *(&self->super.isa + OBJC_IVAR___BAAssetPackManifest_manifest);
-  v5 = self;
-  v6 = sub_236E70854(v4, a3);
+  selfCopy = self;
+  v6 = sub_236E70854(v4, request);
   sub_236E56F8C(v6);
 
   sub_236E588C4(0, &qword_27DE88510, off_278A0CA20);

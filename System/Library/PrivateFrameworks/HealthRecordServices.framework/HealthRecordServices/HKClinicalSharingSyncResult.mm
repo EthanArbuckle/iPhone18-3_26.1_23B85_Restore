@@ -1,10 +1,10 @@
 @interface HKClinicalSharingSyncResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalSharingSyncResult)init;
-- (HKClinicalSharingSyncResult)initWithAccountID:(id)a3 lookupInfo:(id)a4 error:(id)a5;
-- (HKClinicalSharingSyncResult)initWithCoder:(id)a3;
+- (HKClinicalSharingSyncResult)initWithAccountID:(id)d lookupInfo:(id)info error:(id)error;
+- (HKClinicalSharingSyncResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalSharingSyncResult
@@ -19,37 +19,37 @@
   return 0;
 }
 
-- (HKClinicalSharingSyncResult)initWithAccountID:(id)a3 lookupInfo:(id)a4 error:(id)a5
+- (HKClinicalSharingSyncResult)initWithAccountID:(id)d lookupInfo:(id)info error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  infoCopy = info;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = HKClinicalSharingSyncResult;
   v11 = [(HKClinicalSharingSyncResult *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     accountID = v11->_accountID;
     v11->_accountID = v12;
 
-    v14 = [v9 copy];
+    v14 = [infoCopy copy];
     lookupInfo = v11->_lookupInfo;
     v11->_lookupInfo = v14;
 
-    objc_storeStrong(&v11->_error, a5);
+    objc_storeStrong(&v11->_error, error);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -60,20 +60,20 @@ LABEL_28:
     }
 
     accountID = self->_accountID;
-    v8 = [(HKClinicalSharingSyncResult *)v6 accountID];
-    if (accountID != v8)
+    accountID = [(HKClinicalSharingSyncResult *)v6 accountID];
+    if (accountID != accountID)
     {
-      v9 = [(HKClinicalSharingSyncResult *)v6 accountID];
-      if (!v9)
+      accountID2 = [(HKClinicalSharingSyncResult *)v6 accountID];
+      if (!accountID2)
       {
         LOBYTE(error) = 0;
         goto LABEL_27;
       }
 
-      v10 = v9;
+      v10 = accountID2;
       v11 = self->_accountID;
-      v12 = [(HKClinicalSharingSyncResult *)v6 accountID];
-      if (![(NSUUID *)v11 isEqual:v12])
+      accountID3 = [(HKClinicalSharingSyncResult *)v6 accountID];
+      if (![(NSUUID *)v11 isEqual:accountID3])
       {
         LOBYTE(error) = 0;
 LABEL_26:
@@ -81,13 +81,13 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v28 = v12;
+      v28 = accountID3;
       v29 = v10;
     }
 
     lookupInfo = self->_lookupInfo;
-    v15 = [(HKClinicalSharingSyncResult *)v6 lookupInfo];
-    if (lookupInfo != v15)
+    lookupInfo = [(HKClinicalSharingSyncResult *)v6 lookupInfo];
+    if (lookupInfo != lookupInfo)
     {
       error = [(HKClinicalSharingSyncResult *)v6 lookupInfo];
       if (!error)
@@ -96,17 +96,17 @@ LABEL_26:
       }
 
       v16 = self->_lookupInfo;
-      v17 = [(HKClinicalSharingSyncResult *)v6 lookupInfo];
+      lookupInfo2 = [(HKClinicalSharingSyncResult *)v6 lookupInfo];
       v18 = v16;
-      v19 = v17;
-      if (![(NSString *)v18 isEqualToString:v17])
+      v19 = lookupInfo2;
+      if (![(NSString *)v18 isEqualToString:lookupInfo2])
       {
 
         LOBYTE(error) = 0;
 LABEL_25:
-        v12 = v28;
+        accountID3 = v28;
         v10 = v29;
-        if (accountID != v8)
+        if (accountID != accountID)
         {
           goto LABEL_26;
         }
@@ -121,19 +121,19 @@ LABEL_27:
     }
 
     error = self->_error;
-    v20 = [(HKClinicalSharingSyncResult *)v6 error];
-    LOBYTE(error) = error == v20;
+    error = [(HKClinicalSharingSyncResult *)v6 error];
+    LOBYTE(error) = error == error;
     if (!error)
     {
-      v21 = [(HKClinicalSharingSyncResult *)v6 error];
-      if (v21)
+      error2 = [(HKClinicalSharingSyncResult *)v6 error];
+      if (error2)
       {
-        v22 = v21;
+        v22 = error2;
         error = self->_error;
-        v23 = [(HKClinicalSharingSyncResult *)v6 error];
-        LOBYTE(error) = [error isEqual:v23];
+        error3 = [(HKClinicalSharingSyncResult *)v6 error];
+        LOBYTE(error) = [error isEqual:error3];
 
-        if (lookupInfo != v15)
+        if (lookupInfo != lookupInfo)
         {
         }
 
@@ -141,7 +141,7 @@ LABEL_27:
       }
     }
 
-    if (lookupInfo == v15)
+    if (lookupInfo == lookupInfo)
     {
 LABEL_22:
 
@@ -149,10 +149,10 @@ LABEL_22:
     }
 
 LABEL_20:
-    v12 = v28;
+    accountID3 = v28;
 
     v10 = v29;
-    if (accountID == v8)
+    if (accountID == accountID)
     {
       goto LABEL_27;
     }
@@ -173,35 +173,35 @@ LABEL_29:
   return v4 ^ [(NSError *)self->_error hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountID = self->_accountID;
-  v5 = a3;
-  [v5 encodeObject:accountID forKey:@"accountID"];
-  [v5 encodeObject:self->_lookupInfo forKey:@"lookupInfo"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
+  [coderCopy encodeObject:self->_lookupInfo forKey:@"lookupInfo"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
-- (HKClinicalSharingSyncResult)initWithCoder:(id)a3
+- (HKClinicalSharingSyncResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lookupInfo"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lookupInfo"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     self = [(HKClinicalSharingSyncResult *)self initWithAccountID:v5 lookupInfo:v6 error:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

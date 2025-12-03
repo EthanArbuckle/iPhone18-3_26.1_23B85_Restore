@@ -1,32 +1,32 @@
 @interface RestorableBackupItem
-+ (RestorableBackupItem)restorableBackupItemWithBackup:(id)a3 snapshot:(id)a4;
-+ (RestorableBackupItem)restorableBackupItemWithPendingBackupUDID:(id)a3 backupUUID:(id)a4 snapshotID:(unint64_t)a5;
++ (RestorableBackupItem)restorableBackupItemWithBackup:(id)backup snapshot:(id)snapshot;
++ (RestorableBackupItem)restorableBackupItemWithPendingBackupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID;
 - (BOOL)isCompatible;
-- (BOOL)isCompatibleWithUpdateToSystemVersion:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithUpdateToSystemVersion:(id)version;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isThisDevice;
 - (NSString)accessibilityIdentifier;
 - (NSString)backupUDID;
 - (NSString)backupUUID;
 - (RestorableBackupItem)init;
-- (id)dateStringWithStyle:(unint64_t)a3;
+- (id)dateStringWithStyle:(unint64_t)style;
 - (id)description;
 - (id)deviceInfoString;
 - (id)hashString;
 - (unint64_t)snapshotID;
-- (void)fetchAccounts:(id)a3;
+- (void)fetchAccounts:(id)accounts;
 @end
 
 @implementation RestorableBackupItem
 
-+ (RestorableBackupItem)restorableBackupItemWithBackup:(id)a3 snapshot:(id)a4
++ (RestorableBackupItem)restorableBackupItemWithBackup:(id)backup snapshot:(id)snapshot
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, backup);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, snapshot);
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setBackup:location[0]];
   [v7 setSnapshot:v8];
@@ -37,19 +37,19 @@
   return v5;
 }
 
-+ (RestorableBackupItem)restorableBackupItemWithPendingBackupUDID:(id)a3 backupUUID:(id)a4 snapshotID:(unint64_t)a5
++ (RestorableBackupItem)restorableBackupItemWithPendingBackupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9[1] = a5;
+  objc_storeStrong(&v10, iD);
+  v9[1] = snapshotID;
   v9[0] = objc_alloc_init(objc_opt_class());
   [v9[0] setPendingBackupUDID:location[0]];
   [v9[0] setPendingBackupUUID:v10];
-  [v9[0] setPendingSnapshotID:a5];
+  [v9[0] setPendingSnapshotID:snapshotID];
   v7 = v9[0];
   objc_storeStrong(v9, 0);
   objc_storeStrong(&v10, 0);
@@ -77,19 +77,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v26 = location[0];
-    v3 = [(RestorableBackupItem *)v29 backupUDID];
-    v4 = [v26 backupUDID];
-    v5 = ![(NSString *)v3 isEqualToString:v4];
+    backupUDID = [(RestorableBackupItem *)selfCopy backupUDID];
+    backupUDID2 = [v26 backupUDID];
+    v5 = ![(NSString *)backupUDID isEqualToString:backupUDID2];
 
     if (v5)
     {
@@ -99,9 +99,9 @@
 
     else
     {
-      v6 = [(RestorableBackupItem *)v29 backupUUID];
-      v7 = [v26 backupUUID];
-      v8 = ![(NSString *)v6 isEqualToString:v7];
+      backupUUID = [(RestorableBackupItem *)selfCopy backupUUID];
+      backupUUID2 = [v26 backupUUID];
+      v8 = ![(NSString *)backupUUID isEqualToString:backupUUID2];
 
       if (v8)
       {
@@ -111,11 +111,11 @@
 
       else
       {
-        v9 = [(RestorableBackupItem *)v29 snapshotID];
-        if (v9 == [v26 snapshotID])
+        snapshotID = [(RestorableBackupItem *)selfCopy snapshotID];
+        if (snapshotID == [v26 snapshotID])
         {
-          v10 = [(RestorableBackupItem *)v29 snapshot];
-          v11 = [(MBSnapshot *)v10 snapshotUUID];
+          snapshot = [(RestorableBackupItem *)selfCopy snapshot];
+          snapshotUUID = [(MBSnapshot *)snapshot snapshotUUID];
           v24 = 0;
           v22 = 0;
           v20 = 0;
@@ -123,24 +123,24 @@
           v16 = 0;
           v14 = 0;
           v12 = 0;
-          if (v11)
+          if (snapshotUUID)
           {
-            v25 = [v26 snapshot];
+            snapshot2 = [v26 snapshot];
             v24 = 1;
-            v23 = [v25 snapshotUUID];
+            snapshotUUID2 = [snapshot2 snapshotUUID];
             v22 = 1;
             v12 = 0;
-            if (v23)
+            if (snapshotUUID2)
             {
-              v21 = [(RestorableBackupItem *)v29 snapshot];
+              snapshot3 = [(RestorableBackupItem *)selfCopy snapshot];
               v20 = 1;
-              v19 = [(MBSnapshot *)v21 snapshotUUID];
+              snapshotUUID3 = [(MBSnapshot *)snapshot3 snapshotUUID];
               v18 = 1;
-              v17 = [v26 snapshot];
+              snapshot4 = [v26 snapshot];
               v16 = 1;
-              v15 = [v17 snapshotUUID];
+              snapshotUUID4 = [snapshot4 snapshotUUID];
               v14 = 1;
-              v12 = [v19 isEqualToString:?] ^ 1;
+              v12 = [snapshotUUID3 isEqualToString:?] ^ 1;
             }
           }
 
@@ -196,24 +196,24 @@
 - (id)description
 {
   v2 = objc_opt_class();
-  v3 = [(RestorableBackupItem *)self backupUDID];
-  v4 = [(RestorableBackupItem *)self backupUUID];
-  v5 = [(RestorableBackupItem *)self snapshot];
+  backupUDID = [(RestorableBackupItem *)self backupUDID];
+  backupUUID = [(RestorableBackupItem *)self backupUUID];
+  snapshot = [(RestorableBackupItem *)self snapshot];
   v6 = [NSNumber numberWithUnsignedInteger:[(RestorableBackupItem *)self snapshotID]];
-  v7 = [(RestorableBackupItem *)self backup];
-  v8 = [NSString stringWithFormat:@"<%@: %p backup with UDID %@, UUID %@, snapshot %@ with ID %@ for backup %@>", v2, self, v3, v4, v5, v6, v7];
+  backup = [(RestorableBackupItem *)self backup];
+  v8 = [NSString stringWithFormat:@"<%@: %p backup with UDID %@, UUID %@, snapshot %@ with ID %@ for backup %@>", v2, self, backupUDID, backupUUID, snapshot, v6, backup];
 
   return v8;
 }
 
 - (BOOL)isThisDevice
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v7 = MGCopyAnswer();
   v5[0] = v7;
-  v2 = [(RestorableBackupItem *)v6 backupUDID];
-  v3 = [(NSString *)v2 isEqualToString:v5[0]];
+  backupUDID = [(RestorableBackupItem *)selfCopy backupUDID];
+  v3 = [(NSString *)backupUDID isEqualToString:v5[0]];
 
   objc_storeStrong(v5, 0);
   return v3 & 1;
@@ -229,86 +229,86 @@
 
 - (NSString)backupUDID
 {
-  v2 = [(RestorableBackupItem *)self backup];
-  v3 = [(MBBackup *)v2 backupUDID];
+  backup = [(RestorableBackupItem *)self backup];
+  backupUDID = [(MBBackup *)backup backupUDID];
 
-  if (v3)
+  if (backupUDID)
   {
-    v4 = [(RestorableBackupItem *)self backup];
-    v7 = [(MBBackup *)v4 backupUDID];
+    backup2 = [(RestorableBackupItem *)self backup];
+    backupUDID2 = [(MBBackup *)backup2 backupUDID];
   }
 
   else
   {
-    v7 = [(RestorableBackupItem *)self pendingBackupUDID];
+    backupUDID2 = [(RestorableBackupItem *)self pendingBackupUDID];
   }
 
-  return v7;
+  return backupUDID2;
 }
 
 - (NSString)backupUUID
 {
-  v2 = [(RestorableBackupItem *)self backup];
-  v3 = [(MBBackup *)v2 backupUUID];
+  backup = [(RestorableBackupItem *)self backup];
+  backupUUID = [(MBBackup *)backup backupUUID];
 
-  if (v3)
+  if (backupUUID)
   {
-    v4 = [(RestorableBackupItem *)self backup];
-    v7 = [(MBBackup *)v4 backupUUID];
+    backup2 = [(RestorableBackupItem *)self backup];
+    backupUUID2 = [(MBBackup *)backup2 backupUUID];
   }
 
   else
   {
-    v7 = [(RestorableBackupItem *)self pendingBackupUUID];
+    backupUUID2 = [(RestorableBackupItem *)self pendingBackupUUID];
   }
 
-  return v7;
+  return backupUUID2;
 }
 
 - (unint64_t)snapshotID
 {
-  v2 = [(RestorableBackupItem *)self snapshot];
+  snapshot = [(RestorableBackupItem *)self snapshot];
 
-  if (!v2)
+  if (!snapshot)
   {
     return [(RestorableBackupItem *)self pendingSnapshotID];
   }
 
-  v3 = [(RestorableBackupItem *)self snapshot];
-  v6 = [(MBSnapshot *)v3 snapshotID];
+  snapshot2 = [(RestorableBackupItem *)self snapshot];
+  snapshotID = [(MBSnapshot *)snapshot2 snapshotID];
 
-  return v6;
+  return snapshotID;
 }
 
-- (BOOL)isCompatibleWithUpdateToSystemVersion:(id)a3
+- (BOOL)isCompatibleWithUpdateToSystemVersion:(id)version
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(RestorableBackupItem *)v13 snapshot];
-  v11 = [(MBSnapshot *)v3 systemVersion];
+  objc_storeStrong(location, version);
+  snapshot = [(RestorableBackupItem *)selfCopy snapshot];
+  systemVersion = [(MBSnapshot *)snapshot systemVersion];
 
-  v4 = [(RestorableBackupItem *)v13 snapshot];
-  v5 = [(MBSnapshot *)v4 requiredProductVersion];
+  snapshot2 = [(RestorableBackupItem *)selfCopy snapshot];
+  requiredProductVersion = [(MBSnapshot *)snapshot2 requiredProductVersion];
 
-  if (v5)
+  if (requiredProductVersion)
   {
-    v6 = [(RestorableBackupItem *)v13 snapshot];
-    v7 = [(MBSnapshot *)v6 requiredProductVersion];
-    v8 = v11;
-    v11 = v7;
+    snapshot3 = [(RestorableBackupItem *)selfCopy snapshot];
+    requiredProductVersion2 = [(MBSnapshot *)snapshot3 requiredProductVersion];
+    v8 = systemVersion;
+    systemVersion = requiredProductVersion2;
   }
 
-  v9 = [BuddyBackupUtilities canRestoreBackupMadeOnVersion:v11 toSystemVersion:location[0] toSystemVersionFetchedFromCurrentSystemVersion:0, v11];
-  objc_storeStrong(&v11, 0);
+  v9 = [BuddyBackupUtilities canRestoreBackupMadeOnVersion:systemVersion toSystemVersion:location[0] toSystemVersionFetchedFromCurrentSystemVersion:0, systemVersion];
+  objc_storeStrong(&systemVersion, 0);
   objc_storeStrong(location, 0);
   return v9 & 1;
 }
 
-- (id)dateStringWithStyle:(unint64_t)a3
+- (id)dateStringWithStyle:(unint64_t)style
 {
-  if (!qword_1003A7158 || a3 != [qword_1003A7158 timeStyle])
+  if (!qword_1003A7158 || style != [qword_1003A7158 timeStyle])
   {
     v3 = objc_alloc_init(NSDateFormatter);
     v4 = qword_1003A7158;
@@ -316,31 +316,31 @@
 
     [qword_1003A7158 setDateStyle:3];
     [qword_1003A7158 setDoesRelativeDateFormatting:1];
-    [qword_1003A7158 setTimeStyle:a3];
+    [qword_1003A7158 setTimeStyle:style];
   }
 
   v5 = qword_1003A7158;
-  v6 = [(RestorableBackupItem *)self snapshot];
-  v7 = [(MBSnapshot *)v6 date];
-  v8 = [v5 stringFromDate:v7];
+  snapshot = [(RestorableBackupItem *)self snapshot];
+  date = [(MBSnapshot *)snapshot date];
+  v8 = [v5 stringFromDate:date];
 
   return v8;
 }
 
 - (id)deviceInfoString
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(RestorableBackupItem *)self backup];
-  location[0] = [(MBBackup *)v2 marketingName];
+  backup = [(RestorableBackupItem *)self backup];
+  location[0] = [(MBBackup *)backup marketingName];
 
   if (!location[0])
   {
-    v3 = [(RestorableBackupItem *)v16 backup];
-    location[0] = [(MBBackup *)v3 deviceClass];
+    backup2 = [(RestorableBackupItem *)selfCopy backup];
+    location[0] = [(MBBackup *)backup2 deviceClass];
   }
 
-  if ([(RestorableBackupItem *)v16 isThisDevice])
+  if ([(RestorableBackupItem *)selfCopy isThisDevice])
   {
     v4 = +[NSBundle mainBundle];
     v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"THIS_DEVICE"];
@@ -352,21 +352,21 @@
 
   v9 = +[NSBundle mainBundle];
   v10 = [(NSBundle *)v9 localizedStringForKey:@"JOIN_DEVICE_NAME_AND_INFO_%@_%@" value:&stru_10032F900 table:@"RestoreFromBackup"];
-  v11 = [(RestorableBackupItem *)v16 snapshot];
-  v12 = [(MBSnapshot *)v11 deviceName];
-  v13 = [NSString localizedStringWithFormat:v10, v12, location[0]];
+  snapshot = [(RestorableBackupItem *)selfCopy snapshot];
+  deviceName = [(MBSnapshot *)snapshot deviceName];
+  v13 = [NSString localizedStringWithFormat:v10, deviceName, location[0]];
 
   objc_storeStrong(location, 0);
 
   return v13;
 }
 
-- (void)fetchAccounts:(id)a3
+- (void)fetchAccounts:(id)accounts
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v26 = 0;
   v27 = &v26;
   v28 = 838860800;
@@ -381,16 +381,16 @@
   v23 = sub_100109198;
   v24 = sub_1001091DC;
   v25 = 0;
-  v3 = [(RestorableBackupItem *)v34 accountsQueue];
+  accountsQueue = [(RestorableBackupItem *)selfCopy accountsQueue];
   block = _NSConcreteStackBlock;
   v14 = -1073741824;
   v15 = 0;
   v16 = sub_1001091E8;
   v17 = &unk_10032CCC0;
   v18[1] = &v19;
-  v18[0] = v34;
+  v18[0] = selfCopy;
   v18[2] = &v26;
-  dispatch_sync(v3, &block);
+  dispatch_sync(accountsQueue, &block);
 
   if (v20[5])
   {
@@ -410,7 +410,7 @@
     v7 = 0;
     v8 = sub_100109268;
     v9 = &unk_10032C970;
-    v10 = v34;
+    v10 = selfCopy;
     v11[1] = &v19;
     v11[2] = &v26;
     v11[0] = location[0];
@@ -431,33 +431,33 @@
 
 - (id)hashString
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(RestorableBackupItem *)self snapshot];
-  location[0] = [(MBSnapshot *)v2 deviceName];
+  snapshot = [(RestorableBackupItem *)self snapshot];
+  location[0] = [(MBSnapshot *)snapshot deviceName];
 
   if (!location[0])
   {
     objc_storeStrong(location, &stru_10032F900);
   }
 
-  v3 = [(RestorableBackupItem *)v9 backup];
-  v7 = [(MBBackup *)v3 marketingName];
+  backup = [(RestorableBackupItem *)selfCopy backup];
+  marketingName = [(MBBackup *)backup marketingName];
 
-  if (!v7)
+  if (!marketingName)
   {
-    objc_storeStrong(&v7, &stru_10032F900);
+    objc_storeStrong(&marketingName, &stru_10032F900);
   }
 
-  v6 = [(RestorableBackupItem *)v9 dateString];
-  if (!v6)
+  dateString = [(RestorableBackupItem *)selfCopy dateString];
+  if (!dateString)
   {
-    objc_storeStrong(&v6, &stru_10032F900);
+    objc_storeStrong(&dateString, &stru_10032F900);
   }
 
-  v4 = [NSString stringWithFormat:@"(%@)(%@)(%@)", location[0], v7, v6];
-  objc_storeStrong(&v6, 0);
-  objc_storeStrong(&v7, 0);
+  v4 = [NSString stringWithFormat:@"(%@)(%@)(%@)", location[0], marketingName, dateString];
+  objc_storeStrong(&dateString, 0);
+  objc_storeStrong(&marketingName, 0);
   objc_storeStrong(location, 0);
 
   return v4;
@@ -465,18 +465,18 @@
 
 - (NSString)accessibilityIdentifier
 {
-  v2 = [(RestorableBackupItem *)self snapshot];
-  v3 = [(MBSnapshot *)v2 commitID];
+  snapshot = [(RestorableBackupItem *)self snapshot];
+  commitID = [(MBSnapshot *)snapshot commitID];
   v9 = 0;
   v7 = 0;
   v4 = 0;
-  if (v3)
+  if (commitID)
   {
-    v10 = [(RestorableBackupItem *)self snapshot];
+    snapshot2 = [(RestorableBackupItem *)self snapshot];
     v9 = 1;
-    v8 = [(MBSnapshot *)v10 commitID];
+    commitID2 = [(MBSnapshot *)snapshot2 commitID];
     v7 = 1;
-    v4 = [v8 length] != 0;
+    v4 = [commitID2 length] != 0;
   }
 
   if (v7)
@@ -487,18 +487,18 @@
   {
   }
 
-  v5 = [(RestorableBackupItem *)self snapshot];
+  snapshot3 = [(RestorableBackupItem *)self snapshot];
   if (v4)
   {
-    v12 = [(MBSnapshot *)v5 commitID];
+    commitID3 = [(MBSnapshot *)snapshot3 commitID];
   }
 
   else
   {
-    v12 = [(MBSnapshot *)v5 snapshotUUID];
+    commitID3 = [(MBSnapshot *)snapshot3 snapshotUUID];
   }
 
-  return v12;
+  return commitID3;
 }
 
 @end

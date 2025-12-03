@@ -1,18 +1,18 @@
 @interface PXCuratedLibrarySectionGeometryDescriptor
 - ($7A74DE1ADD4D9428579EDAA94466197A)headerCornerRadius;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)headerRect;
 - (CGRect)keyAssetRect;
-- (CGRect)resizeRect:(CGRect)a3 fromGeometryDesciptor:(id)a4 inContainer:(int64_t)a5 resizing:(unint64_t)a6;
+- (CGRect)resizeRect:(CGRect)rect fromGeometryDesciptor:(id)desciptor inContainer:(int64_t)container resizing:(unint64_t)resizing;
 - (CGRect)sectionRect;
 - (PXCuratedLibrarySectionGeometryDescriptor)init;
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithHeaderRect:(CGRect)a3;
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithMaximumHeightBelowHeader:(double)a3;
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithVisualPosition:(int64_t)a3;
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithHeaderRect:(CGRect)rect;
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithMaximumHeightBelowHeader:(double)header;
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithVisualPosition:(int64_t)position;
 - (id)description;
-- (id)initWithSectionRect:(double)a3 headerRect:(double)a4 keyAssetRect:(double)a5 headerCornerRadius:(double)a6 headerAsset:(double)a7 visualPosition:(double)a8;
-- (id)sectionGeometryDescriptorOffsetBy:(CGPoint)a3;
-- (id)sectionGeometryDescriptorTransformedBy:(CGAffineTransform *)a3;
+- (id)initWithSectionRect:(double)rect headerRect:(double)headerRect keyAssetRect:(double)assetRect headerCornerRadius:(double)radius headerAsset:(double)asset visualPosition:(double)position;
+- (id)sectionGeometryDescriptorOffsetBy:(CGPoint)by;
+- (id)sectionGeometryDescriptorTransformedBy:(CGAffineTransform *)by;
 - (unint64_t)hash;
 @end
 
@@ -76,11 +76,11 @@ float __65__PXCuratedLibrarySectionGeometryDescriptor_cornerRadiusForRect___bloc
   return result;
 }
 
-- (CGRect)resizeRect:(CGRect)a3 fromGeometryDesciptor:(id)a4 inContainer:(int64_t)a5 resizing:(unint64_t)a6
+- (CGRect)resizeRect:(CGRect)rect fromGeometryDesciptor:(id)desciptor inContainer:(int64_t)container resizing:(unint64_t)resizing
 {
-  v10 = a4;
-  v11 = v10;
-  if (!a6)
+  desciptorCopy = desciptor;
+  v11 = desciptorCopy;
+  if (!resizing)
   {
     goto LABEL_13;
   }
@@ -89,18 +89,18 @@ float __65__PXCuratedLibrarySectionGeometryDescriptor_cornerRadiusForRect___bloc
   v12 = *(MEMORY[0x1E695F050] + 8);
   v15 = *(MEMORY[0x1E695F050] + 16);
   v14 = *(MEMORY[0x1E695F050] + 24);
-  if (a5 <= 1)
+  if (container <= 1)
   {
-    if (a5 != 1)
+    if (container != 1)
     {
       v16 = *(MEMORY[0x1E695F050] + 24);
       v17 = *(MEMORY[0x1E695F050] + 16);
       v18 = *(MEMORY[0x1E695F050] + 8);
       v19 = *MEMORY[0x1E695F050];
-      if (!a5)
+      if (!container)
       {
-        v40 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v40 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionGeometryDescriptor.m" lineNumber:141 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySectionGeometryDescriptor.m" lineNumber:141 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -108,7 +108,7 @@ float __65__PXCuratedLibrarySectionGeometryDescriptor_cornerRadiusForRect___bloc
       goto LABEL_10;
     }
 
-    [v10 sectionRect];
+    [desciptorCopy sectionRect];
     v19 = v28;
     v18 = v29;
     v17 = v30;
@@ -117,9 +117,9 @@ float __65__PXCuratedLibrarySectionGeometryDescriptor_cornerRadiusForRect___bloc
     goto LABEL_9;
   }
 
-  if (a5 == 2)
+  if (container == 2)
   {
-    [v10 headerRect];
+    [desciptorCopy headerRect];
     v19 = v32;
     v18 = v33;
     v17 = v34;
@@ -132,9 +132,9 @@ float __65__PXCuratedLibrarySectionGeometryDescriptor_cornerRadiusForRect___bloc
   v17 = *(MEMORY[0x1E695F050] + 16);
   v18 = *(MEMORY[0x1E695F050] + 8);
   v19 = *MEMORY[0x1E695F050];
-  if (a5 == 3)
+  if (container == 3)
   {
-    [v10 keyAssetRect];
+    [desciptorCopy keyAssetRect];
     v19 = v20;
     v18 = v21;
     v17 = v22;
@@ -166,10 +166,10 @@ LABEL_10:
 
 LABEL_13:
 
-  x = a3.origin.x;
-  y = a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -177,7 +177,7 @@ LABEL_13:
   return result;
 }
 
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithHeaderRect:(CGRect)a3
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithHeaderRect:(CGRect)rect
 {
   v4 = objc_alloc(objc_opt_class());
   [(PXCuratedLibrarySectionGeometryDescriptor *)self sectionRect];
@@ -195,21 +195,21 @@ LABEL_13:
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
-  v26 = [v4 initWithSectionRect:v25 headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](self keyAssetRect:"visualPosition") headerCornerRadius:v31 headerAsset:v30 visualPosition:{v29, v28, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, v10, v12, v14, v16, __PAIR64__(v20, v18), __PAIR64__(v24, v22)}];
+  headerAsset = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
+  v26 = [v4 initWithSectionRect:headerAsset headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](self keyAssetRect:"visualPosition") headerCornerRadius:v31 headerAsset:v30 visualPosition:{v29, v28, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, v10, v12, v14, v16, __PAIR64__(v20, v18), __PAIR64__(v24, v22)}];
 
   return v26;
 }
 
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithMaximumHeightBelowHeader:(double)a3
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithMaximumHeightBelowHeader:(double)header
 {
-  v3 = self;
-  [(PXCuratedLibrarySectionGeometryDescriptor *)v3 sectionRect];
+  selfCopy = self;
+  [(PXCuratedLibrarySectionGeometryDescriptor *)selfCopy sectionRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [(PXCuratedLibrarySectionGeometryDescriptor *)v3 keyAssetRect];
+  [(PXCuratedLibrarySectionGeometryDescriptor *)selfCopy keyAssetRect];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -229,10 +229,10 @@ LABEL_13:
   v60.size.width = v17;
   v60.size.height = v19;
   v22 = MaxY - CGRectGetMaxY(v60);
-  if (v22 > a3)
+  if (v22 > header)
   {
-    v23 = v11 + a3 - v22;
-    [(PXCuratedLibrarySectionGeometryDescriptor *)v3 headerRect];
+    v23 = v11 + header - v22;
+    [(PXCuratedLibrarySectionGeometryDescriptor *)selfCopy headerRect];
     v26 = v25;
     v27 = v24;
     v48 = v28;
@@ -282,30 +282,30 @@ LABEL_13:
 
     v49 = v35;
     v36 = objc_alloc(objc_opt_class());
-    [(PXCuratedLibrarySectionGeometryDescriptor *)v3 headerCornerRadius];
+    [(PXCuratedLibrarySectionGeometryDescriptor *)selfCopy headerCornerRadius];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    v45 = [(PXCuratedLibrarySectionGeometryDescriptor *)v3 headerAsset];
-    v46 = [v36 initWithSectionRect:v45 headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](v3 keyAssetRect:"visualPosition") headerCornerRadius:rect headerAsset:rect_8 visualPosition:{v20, v51, v26, v50, v48, v49, *&v55, *&v53, *&v17, *&v52, __PAIR64__(v40, v38), __PAIR64__(v44, v42)}];
+    headerAsset = [(PXCuratedLibrarySectionGeometryDescriptor *)selfCopy headerAsset];
+    v46 = [v36 initWithSectionRect:headerAsset headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](selfCopy keyAssetRect:"visualPosition") headerCornerRadius:rect headerAsset:rect_8 visualPosition:{v20, v51, v26, v50, v48, v49, *&v55, *&v53, *&v17, *&v52, __PAIR64__(v40, v38), __PAIR64__(v44, v42)}];
 
-    v3 = v46;
+    selfCopy = v46;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)sectionGeometryDescriptorTransformedBy:(CGAffineTransform *)a3
+- (id)sectionGeometryDescriptorTransformedBy:(CGAffineTransform *)by
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptorTransformedBy___block_invoke;
   aBlock[3] = &__block_descriptor_80_e70__CGRect__CGPoint_dd__CGSize_dd__40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-  v4 = *&a3->c;
-  v42 = *&a3->a;
+  v4 = *&by->c;
+  v42 = *&by->a;
   v43 = v4;
-  v44 = *&a3->tx;
+  v44 = *&by->tx;
   v5 = _Block_copy(aBlock);
   v6 = objc_alloc(objc_opt_class());
   [(PXCuratedLibrarySectionGeometryDescriptor *)self sectionRect];
@@ -330,8 +330,8 @@ LABEL_13:
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
-  v31 = [v6 initWithSectionRect:v30 headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](self keyAssetRect:"visualPosition") headerCornerRadius:v40 headerAsset:v39 visualPosition:{v38, v37, v36, v35, v34, v33, *&v15, v17, v19, v21, __PAIR64__(v25, v23), __PAIR64__(v29, v27)}];
+  headerAsset = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
+  v31 = [v6 initWithSectionRect:headerAsset headerRect:-[PXCuratedLibrarySectionGeometryDescriptor visualPosition](self keyAssetRect:"visualPosition") headerCornerRadius:v40 headerAsset:v39 visualPosition:{v38, v37, v36, v35, v34, v33, *&v15, v17, v19, v21, __PAIR64__(v25, v23), __PAIR64__(v29, v27)}];
 
   return v31;
 }
@@ -355,15 +355,15 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
   return v8;
 }
 
-- (id)sectionGeometryDescriptorOffsetBy:(CGPoint)a3
+- (id)sectionGeometryDescriptorOffsetBy:(CGPoint)by
 {
-  CGAffineTransformMakeTranslation(&v6, a3.x, a3.y);
+  CGAffineTransformMakeTranslation(&v6, by.x, by.y);
   v4 = [(PXCuratedLibrarySectionGeometryDescriptor *)self sectionGeometryDescriptorTransformedBy:&v6];
 
   return v4;
 }
 
-- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithVisualPosition:(int64_t)a3
+- (PXCuratedLibrarySectionGeometryDescriptor)sectionGeometryDescriptorWithVisualPosition:(int64_t)position
 {
   v5 = objc_alloc(objc_opt_class());
   [(PXCuratedLibrarySectionGeometryDescriptor *)self sectionRect];
@@ -386,8 +386,8 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
-  v31 = [v5 initWithSectionRect:v30 headerRect:a3 keyAssetRect:v40 headerCornerRadius:v39 headerAsset:v38 visualPosition:{v37, v36, v35, v34, v33, v15, v17, v19, v21, __PAIR64__(v25, v23), __PAIR64__(v29, v27)}];
+  headerAsset = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
+  v31 = [v5 initWithSectionRect:headerAsset headerRect:position keyAssetRect:v40 headerCornerRadius:v39 headerAsset:v38 visualPosition:{v37, v36, v35, v34, v33, v15, v17, v19, v21, __PAIR64__(v25, v23), __PAIR64__(v29, v27)}];
 
   return v31;
 }
@@ -411,10 +411,10 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
   PXGCornerRadiusDescription();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v54 = 1;
   }
@@ -424,9 +424,9 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXCuratedLibrarySectionGeometryDescriptor *)self visualPosition];
-      if (v6 == [(PXCuratedLibrarySectionGeometryDescriptor *)v5 visualPosition]&& ([(PXCuratedLibrarySectionGeometryDescriptor *)self sectionRect], v8 = v7, v10 = v9, v12 = v11, v14 = v13, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 sectionRect], v62.origin.x = v15, v62.origin.y = v16, v62.size.width = v17, v62.size.height = v18, v59.origin.x = v8, v59.origin.y = v10, v59.size.width = v12, v59.size.height = v14, CGRectEqualToRect(v59, v62)) && ([(PXCuratedLibrarySectionGeometryDescriptor *)self headerRect], v20 = v19, v22 = v21, v24 = v23, v26 = v25, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 headerRect], v63.origin.x = v27, v63.origin.y = v28, v63.size.width = v29, v63.size.height = v30, v60.origin.x = v20, v60.origin.y = v22, v60.size.width = v24, v60.size.height = v26, CGRectEqualToRect(v60, v63)) && ([(PXCuratedLibrarySectionGeometryDescriptor *)self keyAssetRect], v32 = v31, v34 = v33, v36 = v35, v38 = v37, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 keyAssetRect], v64.origin.x = v39, v64.origin.y = v40, v64.size.width = v41, v64.size.height = v42, v61.origin.x = v32, v61.origin.y = v34, v61.size.width = v36, v61.size.height = v38, CGRectEqualToRect(v61, v64)))
+      v5 = equalCopy;
+      visualPosition = [(PXCuratedLibrarySectionGeometryDescriptor *)self visualPosition];
+      if (visualPosition == [(PXCuratedLibrarySectionGeometryDescriptor *)v5 visualPosition]&& ([(PXCuratedLibrarySectionGeometryDescriptor *)self sectionRect], v8 = v7, v10 = v9, v12 = v11, v14 = v13, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 sectionRect], v62.origin.x = v15, v62.origin.y = v16, v62.size.width = v17, v62.size.height = v18, v59.origin.x = v8, v59.origin.y = v10, v59.size.width = v12, v59.size.height = v14, CGRectEqualToRect(v59, v62)) && ([(PXCuratedLibrarySectionGeometryDescriptor *)self headerRect], v20 = v19, v22 = v21, v24 = v23, v26 = v25, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 headerRect], v63.origin.x = v27, v63.origin.y = v28, v63.size.width = v29, v63.size.height = v30, v60.origin.x = v20, v60.origin.y = v22, v60.size.width = v24, v60.size.height = v26, CGRectEqualToRect(v60, v63)) && ([(PXCuratedLibrarySectionGeometryDescriptor *)self keyAssetRect], v32 = v31, v34 = v33, v36 = v35, v38 = v37, [(PXCuratedLibrarySectionGeometryDescriptor *)v5 keyAssetRect], v64.origin.x = v39, v64.origin.y = v40, v64.size.width = v41, v64.size.height = v42, v61.origin.x = v32, v61.origin.y = v34, v61.size.width = v36, v61.size.height = v38, CGRectEqualToRect(v61, v64)))
       {
         [(PXCuratedLibrarySectionGeometryDescriptor *)self headerCornerRadius];
         v44 = v43;
@@ -437,16 +437,16 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
         v54 = 0;
         if (v44 == v55 && v46 == v51 && v48 == v52 && v50 == v53)
         {
-          v56 = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
-          v57 = [(PXCuratedLibrarySectionGeometryDescriptor *)v5 headerAsset];
-          if (v56 == v57)
+          headerAsset = [(PXCuratedLibrarySectionGeometryDescriptor *)self headerAsset];
+          headerAsset2 = [(PXCuratedLibrarySectionGeometryDescriptor *)v5 headerAsset];
+          if (headerAsset == headerAsset2)
           {
             v54 = 1;
           }
 
           else
           {
-            v54 = [v56 isEqual:v57];
+            v54 = [headerAsset isEqual:headerAsset2];
           }
         }
       }
@@ -474,22 +474,22 @@ double __84__PXCuratedLibrarySectionGeometryDescriptor_sectionGeometryDescriptor
   return v7 ^ (16 * v8);
 }
 
-- (id)initWithSectionRect:(double)a3 headerRect:(double)a4 keyAssetRect:(double)a5 headerCornerRadius:(double)a6 headerAsset:(double)a7 visualPosition:(double)a8
+- (id)initWithSectionRect:(double)rect headerRect:(double)headerRect keyAssetRect:(double)assetRect headerCornerRadius:(double)radius headerAsset:(double)asset visualPosition:(double)position
 {
   v35 = a11;
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = PXCuratedLibrarySectionGeometryDescriptor;
   v36 = objc_msgSendSuper2(&v39, sel_init);
   v37 = v36;
   if (v36)
   {
     *(v36 + 5) = a2;
-    *(v36 + 6) = a3;
-    *(v36 + 7) = a4;
-    *(v36 + 8) = a5;
-    *(v36 + 13) = a6;
-    *(v36 + 14) = a7;
-    *(v36 + 15) = a8;
+    *(v36 + 6) = rect;
+    *(v36 + 7) = headerRect;
+    *(v36 + 8) = assetRect;
+    *(v36 + 13) = radius;
+    *(v36 + 14) = asset;
+    *(v36 + 15) = position;
     *(v36 + 16) = a9;
     v36[9] = a17;
     v36[10] = a18;

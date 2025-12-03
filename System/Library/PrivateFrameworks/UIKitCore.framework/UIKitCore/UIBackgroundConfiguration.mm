@@ -7,50 +7,50 @@
 + (UIBackgroundConfiguration)listPlainHeaderFooterConfiguration;
 + (UIBackgroundConfiguration)listSidebarCellConfiguration;
 + (UIBackgroundConfiguration)listSidebarHeaderConfiguration;
-+ (id)_defaultListInsetGroupedCellConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultListInsetGroupedHeaderFooterConfigurationForState:(void *)a3 traitCollection:;
++ (id)_defaultListInsetGroupedCellConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultListInsetGroupedHeaderFooterConfigurationForState:(void *)state traitCollection:;
 + (id)_listInsetGroupedCellConfiguration;
 + (id)_listInsetGroupedHeaderFooterConfiguration;
 + (id)_sidebarPlainCellConfiguration;
 + (id)listCellConfiguration;
 + (id)listFooterConfiguration;
 + (id)listHeaderConfiguration;
-+ (void)_defaultListGroupedCellConfigurationForState:(void *)a3 traitCollection:;
-+ (void)_defaultListGroupedHeaderFooterConfigurationForState:(void *)a3 traitCollection:;
-+ (void)_defaultListPlainCellConfigurationForState:(void *)a3 traitCollection:;
-+ (void)_defaultListPlainHeaderFooterConfigurationForState:(void *)a3 traitCollection:;
-+ (void)_defaultListSidebarCellConfigurationForState:(void *)a3 traitCollection:(int)a4 isAccompanied:;
-+ (void)_defaultListSidebarHeaderConfigurationForState:(void *)a3 traitCollection:;
-+ (void)_defaultListSidebarPlainCellConfigurationForState:(void *)a3 traitCollection:;
-- (BOOL)_backgroundFillIsEqual:(id)a3 withTintColor:(id)a4;
++ (void)_defaultListGroupedCellConfigurationForState:(void *)state traitCollection:;
++ (void)_defaultListGroupedHeaderFooterConfigurationForState:(void *)state traitCollection:;
++ (void)_defaultListPlainCellConfigurationForState:(void *)state traitCollection:;
++ (void)_defaultListPlainHeaderFooterConfigurationForState:(void *)state traitCollection:;
++ (void)_defaultListSidebarCellConfigurationForState:(void *)state traitCollection:(int)collection isAccompanied:;
++ (void)_defaultListSidebarHeaderConfigurationForState:(void *)state traitCollection:;
++ (void)_defaultListSidebarPlainCellConfigurationForState:(void *)state traitCollection:;
+- (BOOL)_backgroundFillIsEqual:(id)equal withTintColor:(id)color;
 - (BOOL)_hasBackgroundColor;
 - (BOOL)_hasStroke;
-- (BOOL)_isEqualToInternalConfigurationLayoutOnly:(id)a3;
-- (BOOL)_isEqualToInternalConfigurationQuick:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToInternalConfigurationLayoutOnly:(id)only;
+- (BOOL)_isEqualToInternalConfigurationQuick:(id)quick;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)backgroundInsets;
 - (NSString)description;
-- (UIBackgroundConfiguration)initWithCoder:(id)a3;
+- (UIBackgroundConfiguration)initWithCoder:(id)coder;
 - (UIBackgroundConfiguration)updatedConfigurationForState:(id)state;
 - (UIColor)resolvedBackgroundColorForTintColor:(UIColor *)tintColor;
 - (UIColor)resolvedStrokeColorForTintColor:(UIColor *)tintColor;
 - (UIConfigurationColorTransformer)backgroundColorTransformer;
 - (UIConfigurationColorTransformer)strokeColorTransformer;
 - (UIShadowProperties)shadowProperties;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)_isEqualToConfiguration:(uint64_t)a1;
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)_isEqualToConfiguration:(uint64_t)configuration;
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick;
 - (unint64_t)hash;
-- (void)__setMaterial:(uint64_t)a1;
+- (void)__setMaterial:(uint64_t)material;
 - (void)_init;
-- (void)_setBackgroundColor:(uint64_t)a1;
-- (void)_setBackgroundColorTransformer:(uint64_t)a1;
-- (void)_setBackgroundColorTransformerIdentifier:(uint64_t)a1;
-- (void)_setCustomView:(uint64_t)a1;
-- (void)_setImage:(uint64_t)a1;
-- (void)_setStrokeColor:(uint64_t)a1;
-- (void)_setStrokeColorTransformer:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setBackgroundColor:(uint64_t)color;
+- (void)_setBackgroundColorTransformer:(uint64_t)transformer;
+- (void)_setBackgroundColorTransformerIdentifier:(uint64_t)identifier;
+- (void)_setCustomView:(uint64_t)view;
+- (void)_setImage:(uint64_t)image;
+- (void)_setStrokeColor:(uint64_t)color;
+- (void)_setStrokeColorTransformer:(uint64_t)transformer;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCustomView:(UIView *)customView;
 @end
 
@@ -58,12 +58,12 @@
 
 - (void)_init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = UIBackgroundConfiguration;
   v1 = objc_msgSendSuper2(&v8, sel_init);
   v2 = v1;
@@ -123,9 +123,9 @@
 
 + (UIBackgroundConfiguration)clearConfiguration
 {
-  v2 = [[UIBackgroundConfiguration alloc] _init];
+  _init = [[UIBackgroundConfiguration alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 + (id)listCellConfiguration
@@ -146,7 +146,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListPlainCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListPlainCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -384,22 +384,22 @@ LABEL_18:
   return v47;
 }
 
-+ (void)_defaultListPlainCellConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListPlainCellConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v5);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = +[UIBackgroundConfiguration clearConfiguration];
   v11 = 0;
   memset(v10, 0, sizeof(v10));
   if (v6)
   {
-    [v6 defaultCellBackgroundPropertiesForTableViewStyle:0 state:v4 traitCollection:v5];
+    [v6 defaultCellBackgroundPropertiesForTableViewStyle:0 state:v4 traitCollection:stateCopy];
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v9, v10);
-  _UIBackgroundConfigurationApplyProperties(v7, v9, v5);
+  _UIBackgroundConfigurationApplyProperties(v7, v9, stateCopy);
   if (v7)
   {
     v7[18] = 1;
@@ -410,12 +410,12 @@ LABEL_18:
   return v7;
 }
 
-+ (void)_defaultListPlainHeaderFooterConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListPlainHeaderFooterConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v5);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = +[UIBackgroundConfiguration clearConfiguration];
   v19 = 0;
   v17 = 0u;
@@ -426,10 +426,10 @@ LABEL_18:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v8 = [v4 isPinned];
+  isPinned = [v4 isPinned];
   if (v6)
   {
-    [v6 defaultHeaderFooterBackgroundPropertiesForTableViewStyle:0 cellConfigurationState:v4 traitCollection:v5 floating:v8];
+    [v6 defaultHeaderFooterBackgroundPropertiesForTableViewStyle:0 cellConfigurationState:v4 traitCollection:stateCopy floating:isPinned];
   }
 
   else
@@ -446,7 +446,7 @@ LABEL_18:
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v10, &v11);
-  _UIBackgroundConfigurationApplyProperties(v7, v10, v5);
+  _UIBackgroundConfigurationApplyProperties(v7, v10, stateCopy);
   if (v7)
   {
     v7[18] = 2;
@@ -471,29 +471,29 @@ LABEL_18:
   return v4;
 }
 
-+ (void)_defaultListGroupedCellConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListGroupedCellConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   v6 = objc_opt_self();
-  if ([v5 userInterfaceIdiom] == 6 && dyld_program_sdk_at_least())
+  if ([stateCopy userInterfaceIdiom] == 6 && dyld_program_sdk_at_least())
   {
-    v7 = [(UIBackgroundConfiguration *)v6 _defaultListInsetGroupedCellConfigurationForState:v4 traitCollection:v5];
+    v7 = [(UIBackgroundConfiguration *)v6 _defaultListInsetGroupedCellConfigurationForState:v4 traitCollection:stateCopy];
   }
 
   else
   {
-    v8 = _UITableConstantsForTraitCollection(v5);
+    v8 = _UITableConstantsForTraitCollection(stateCopy);
     v7 = +[UIBackgroundConfiguration clearConfiguration];
     v12 = 0;
     memset(v11, 0, sizeof(v11));
     if (v8)
     {
-      [v8 defaultCellBackgroundPropertiesForTableViewStyle:1 state:v4 traitCollection:v5];
+      [v8 defaultCellBackgroundPropertiesForTableViewStyle:1 state:v4 traitCollection:stateCopy];
     }
 
     __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v10, v11);
-    _UIBackgroundConfigurationApplyProperties(v7, v10, v5);
+    _UIBackgroundConfigurationApplyProperties(v7, v10, stateCopy);
     if (v7)
     {
       v7[18] = 3;
@@ -505,32 +505,32 @@ LABEL_18:
   return v7;
 }
 
-+ (id)_defaultListInsetGroupedCellConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultListInsetGroupedCellConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(UIBackgroundConfiguration *)v6 _defaultListGroupedCellConfigurationForState:v5 traitCollection:v4];
+  v7 = [(UIBackgroundConfiguration *)v6 _defaultListGroupedCellConfigurationForState:v5 traitCollection:stateCopy];
 
   return v7;
 }
 
-+ (void)_defaultListGroupedHeaderFooterConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListGroupedHeaderFooterConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v5);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = +[UIBackgroundConfiguration clearConfiguration];
   v11 = 0;
   memset(v10, 0, sizeof(v10));
   if (v6)
   {
-    [v6 defaultHeaderFooterBackgroundPropertiesForTableViewStyle:1 cellConfigurationState:v4 traitCollection:v5 floating:0];
+    [v6 defaultHeaderFooterBackgroundPropertiesForTableViewStyle:1 cellConfigurationState:v4 traitCollection:stateCopy floating:0];
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v9, v10);
-  _UIBackgroundConfigurationApplyProperties(v7, v9, v5);
+  _UIBackgroundConfigurationApplyProperties(v7, v9, stateCopy);
   if (v7)
   {
     v7[18] = 4;
@@ -541,12 +541,12 @@ LABEL_18:
   return v7;
 }
 
-+ (id)_defaultListInsetGroupedHeaderFooterConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultListInsetGroupedHeaderFooterConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   v6 = objc_opt_self();
-  if ([v5 userInterfaceIdiom] == 6)
+  if ([stateCopy userInterfaceIdiom] == 6)
   {
     v7 = +[UIBackgroundConfiguration clearConfiguration];
     v8 = v7;
@@ -558,16 +558,16 @@ LABEL_18:
 
   else
   {
-    v8 = [(UIBackgroundConfiguration *)v6 _defaultListGroupedHeaderFooterConfigurationForState:v4 traitCollection:v5];
+    v8 = [(UIBackgroundConfiguration *)v6 _defaultListGroupedHeaderFooterConfigurationForState:v4 traitCollection:stateCopy];
   }
 
   return v8;
 }
 
-+ (void)_defaultListSidebarHeaderConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListSidebarHeaderConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
   v6 = +[UIBackgroundConfiguration clearConfiguration];
   v19 = 0;
@@ -579,11 +579,11 @@ LABEL_18:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = _UITableConstantsForTraitCollection(v5);
+  v7 = _UITableConstantsForTraitCollection(stateCopy);
   v8 = v7;
   if (v7)
   {
-    [v7 defaultSidebarHeaderBackgroundPropertiesWithState:v4 traitCollection:v5];
+    [v7 defaultSidebarHeaderBackgroundPropertiesWithState:v4 traitCollection:stateCopy];
   }
 
   else
@@ -600,7 +600,7 @@ LABEL_18:
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v10, &v11);
-  _UIBackgroundConfigurationApplyProperties(v6, v10, v5);
+  _UIBackgroundConfigurationApplyProperties(v6, v10, stateCopy);
   if (v6)
   {
     v6[18] = 6;
@@ -615,15 +615,15 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListSidebarCellConfigurationForState:v3 traitCollection:v4 isAccompanied:1];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListSidebarCellConfigurationForState:v3 traitCollection:v4 isAccompanied:1];
 
   return v5;
 }
 
-+ (void)_defaultListSidebarCellConfigurationForState:(void *)a3 traitCollection:(int)a4 isAccompanied:
++ (void)_defaultListSidebarCellConfigurationForState:(void *)state traitCollection:(int)collection isAccompanied:
 {
   v6 = a2;
-  v7 = a3;
+  stateCopy = state;
   objc_opt_self();
   v8 = +[UIBackgroundConfiguration clearConfiguration];
   v23 = 0;
@@ -635,11 +635,11 @@ LABEL_18:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = _UITableConstantsForTraitCollection(v7);
+  v9 = _UITableConstantsForTraitCollection(stateCopy);
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (collection)
     {
       v11 = 2;
     }
@@ -649,7 +649,7 @@ LABEL_18:
       v11 = 1;
     }
 
-    [v9 defaultSidebarCellBackgroundPropertiesForStyle:v11 state:v6 traitCollection:v7];
+    [v9 defaultSidebarCellBackgroundPropertiesForStyle:v11 state:v6 traitCollection:stateCopy];
   }
 
   else
@@ -666,11 +666,11 @@ LABEL_18:
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v14, &v15);
-  _UIBackgroundConfigurationApplyProperties(v8, v14, v7);
+  _UIBackgroundConfigurationApplyProperties(v8, v14, stateCopy);
   if (v8)
   {
     v12 = 5;
-    if (a4)
+    if (collection)
     {
       v12 = 7;
     }
@@ -693,10 +693,10 @@ LABEL_18:
   return v3;
 }
 
-+ (void)_defaultListSidebarPlainCellConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultListSidebarPlainCellConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
   v6 = +[UIBackgroundConfiguration clearConfiguration];
   v19 = 0;
@@ -708,11 +708,11 @@ LABEL_18:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = _UITableConstantsForTraitCollection(v5);
+  v7 = _UITableConstantsForTraitCollection(stateCopy);
   v8 = v7;
   if (v7)
   {
-    [v7 defaultSidebarCellBackgroundPropertiesForStyle:3 state:v4 traitCollection:v5];
+    [v7 defaultSidebarCellBackgroundPropertiesForStyle:3 state:v4 traitCollection:stateCopy];
   }
 
   else
@@ -729,7 +729,7 @@ LABEL_18:
   }
 
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v10, &v11);
-  _UIBackgroundConfigurationApplyProperties(v6, v10, v5);
+  _UIBackgroundConfigurationApplyProperties(v6, v10, stateCopy);
   if (v6)
   {
     v6[18] = 10;
@@ -744,7 +744,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListPlainHeaderFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListPlainHeaderFooterConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -753,7 +753,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListGroupedCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListGroupedCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -762,7 +762,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListGroupedHeaderFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListGroupedHeaderFooterConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -771,7 +771,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListInsetGroupedCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListInsetGroupedCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -780,7 +780,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListInsetGroupedHeaderFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListInsetGroupedHeaderFooterConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -789,7 +789,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListSidebarCellConfigurationForState:v3 traitCollection:v4 isAccompanied:0];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListSidebarCellConfigurationForState:v3 traitCollection:v4 isAccompanied:0];
 
   return v5;
 }
@@ -798,7 +798,7 @@ LABEL_18:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIBackgroundConfiguration *)a1 _defaultListSidebarHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIBackgroundConfiguration *)self _defaultListSidebarHeaderConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -814,17 +814,17 @@ LABEL_18:
     v8 = objc_opt_self();
     if ((defaultStyle - 11) < 3)
     {
-      v9 = [v7 traitCollection];
+      traitCollection = [v7 traitCollection];
       v10 = [UICellConfigurationState _readonlyCellState:v7];
-      v11 = [v9 listEnvironment];
+      listEnvironment = [traitCollection listEnvironment];
       if (defaultStyle == 13)
       {
-        if (v11 > 4)
+        if (listEnvironment > 4)
         {
-          if (v11 != 5)
+          if (listEnvironment != 5)
           {
 LABEL_33:
-            v12 = [(UIBackgroundConfiguration *)v8 _defaultListPlainHeaderFooterConfigurationForState:v10 traitCollection:v9];
+            v12 = [(UIBackgroundConfiguration *)v8 _defaultListPlainHeaderFooterConfigurationForState:v10 traitCollection:traitCollection];
             goto LABEL_50;
           }
 
@@ -832,11 +832,11 @@ LABEL_33:
         }
 
 LABEL_19:
-        if (v11 != 3)
+        if (listEnvironment != 3)
         {
-          if (v11 == 4)
+          if (listEnvironment == 4)
           {
-            v12 = [(UIBackgroundConfiguration *)v8 _defaultListInsetGroupedHeaderFooterConfigurationForState:v10 traitCollection:v9];
+            v12 = [(UIBackgroundConfiguration *)v8 _defaultListInsetGroupedHeaderFooterConfigurationForState:v10 traitCollection:traitCollection];
             goto LABEL_50;
           }
 
@@ -844,17 +844,17 @@ LABEL_19:
         }
 
 LABEL_34:
-        v12 = [(UIBackgroundConfiguration *)v8 _defaultListGroupedHeaderFooterConfigurationForState:v10 traitCollection:v9];
+        v12 = [(UIBackgroundConfiguration *)v8 _defaultListGroupedHeaderFooterConfigurationForState:v10 traitCollection:traitCollection];
         goto LABEL_50;
       }
 
       if (defaultStyle == 12)
       {
-        if (v11 > 4)
+        if (listEnvironment > 4)
         {
-          if (v11 == 5)
+          if (listEnvironment == 5)
           {
-            v12 = [(UIBackgroundConfiguration *)v8 _defaultListSidebarHeaderConfigurationForState:v10 traitCollection:v9];
+            v12 = [(UIBackgroundConfiguration *)v8 _defaultListSidebarHeaderConfigurationForState:v10 traitCollection:traitCollection];
             goto LABEL_50;
           }
 
@@ -864,38 +864,38 @@ LABEL_34:
         goto LABEL_19;
       }
 
-      if (v11 > 4)
+      if (listEnvironment > 4)
       {
-        if (v11 != 5)
+        if (listEnvironment != 5)
         {
-          if (v11 == 6)
+          if (listEnvironment == 6)
           {
-            v12 = [(UIBackgroundConfiguration *)v8 _defaultListSidebarPlainCellConfigurationForState:v10 traitCollection:v9];
+            v12 = [(UIBackgroundConfiguration *)v8 _defaultListSidebarPlainCellConfigurationForState:v10 traitCollection:traitCollection];
             goto LABEL_50;
           }
 
           goto LABEL_47;
         }
 
-        v12 = +[UIBackgroundConfiguration _defaultListSidebarCellConfigurationForState:traitCollection:isAccompanied:](v8, v10, v9, [v9 _splitViewControllerContext] == 2);
+        v12 = +[UIBackgroundConfiguration _defaultListSidebarCellConfigurationForState:traitCollection:isAccompanied:](v8, v10, traitCollection, [traitCollection _splitViewControllerContext] == 2);
       }
 
       else
       {
-        if (v11 != 3)
+        if (listEnvironment != 3)
         {
-          if (v11 == 4)
+          if (listEnvironment == 4)
           {
-            v12 = [(UIBackgroundConfiguration *)v8 _defaultListInsetGroupedCellConfigurationForState:v10 traitCollection:v9];
+            v12 = [(UIBackgroundConfiguration *)v8 _defaultListInsetGroupedCellConfigurationForState:v10 traitCollection:traitCollection];
             goto LABEL_50;
           }
 
 LABEL_47:
-          v12 = [(UIBackgroundConfiguration *)v8 _defaultListPlainCellConfigurationForState:v10 traitCollection:v9];
+          v12 = [(UIBackgroundConfiguration *)v8 _defaultListPlainCellConfigurationForState:v10 traitCollection:traitCollection];
           goto LABEL_50;
         }
 
-        v12 = [(UIBackgroundConfiguration *)v8 _defaultListGroupedCellConfigurationForState:v10 traitCollection:v9];
+        v12 = [(UIBackgroundConfiguration *)v8 _defaultListGroupedCellConfigurationForState:v10 traitCollection:traitCollection];
       }
 
 LABEL_50:
@@ -1043,8 +1043,8 @@ LABEL_82:
 
                       else
                       {
-                        v30 = [v20 __visualEffectGroupName];
-                        [v5 __setVisualEffectGroupName:v30];
+                        __visualEffectGroupName = [v20 __visualEffectGroupName];
+                        [v5 __setVisualEffectGroupName:__visualEffectGroupName];
 
                         configurationFlags = self->_configurationFlags;
                         if ((*&configurationFlags & 0x100) != 0)
@@ -1181,16 +1181,16 @@ LABEL_110:
                                 [v5 __setMaskedCorners:{objc_msgSend(v20, "__maskedCorners", *&v23)}];
                               }
 
-                              v35 = [v5 _shadowProperties];
-                              if (v35)
+                              _shadowProperties = [v5 _shadowProperties];
+                              if (_shadowProperties)
                               {
                               }
 
                               else
                               {
-                                v36 = [v20 _shadowProperties];
+                                _shadowProperties2 = [v20 _shadowProperties];
 
-                                if (!v36)
+                                if (!_shadowProperties2)
                                 {
 LABEL_116:
                                   [v5 _setStrokeLocation:{objc_msgSend(v20, "_strokeLocation")}];
@@ -1199,9 +1199,9 @@ LABEL_116:
                                 }
                               }
 
-                              v37 = [v5 shadowProperties];
-                              v38 = [v20 shadowProperties];
-                              [v37 _applyPropertiesFromDefaultProperties:v38];
+                              shadowProperties = [v5 shadowProperties];
+                              shadowProperties2 = [v20 shadowProperties];
+                              [shadowProperties _applyPropertiesFromDefaultProperties:shadowProperties2];
 
                               goto LABEL_116;
                             }
@@ -1279,24 +1279,24 @@ LABEL_116:
       goto LABEL_60;
     }
 
-    v9 = v7;
+    traitCollection = v7;
     v13 = objc_opt_self();
-    v10 = [UICellConfigurationState _readonlyCellState:v9];
+    v10 = [UICellConfigurationState _readonlyCellState:traitCollection];
     if (defaultStyle > 5)
     {
       if (defaultStyle <= 7)
       {
         if (defaultStyle == 6)
         {
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListSidebarHeaderConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListSidebarHeaderConfigurationForState:v10 traitCollection:v9TraitCollection];
           goto LABEL_44;
         }
 
-        v14 = [v9 traitCollection];
+        v9TraitCollection = [traitCollection traitCollection];
         v15 = v13;
         v16 = v10;
-        v17 = v14;
+        v17 = v9TraitCollection;
         v18 = 1;
         goto LABEL_31;
       }
@@ -1304,16 +1304,16 @@ LABEL_116:
       switch(defaultStyle)
       {
         case 8:
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListInsetGroupedCellConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListInsetGroupedCellConfigurationForState:v10 traitCollection:v9TraitCollection];
           goto LABEL_44;
         case 9:
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListInsetGroupedHeaderFooterConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListInsetGroupedHeaderFooterConfigurationForState:v10 traitCollection:v9TraitCollection];
           goto LABEL_44;
         case 10:
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListSidebarPlainCellConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListSidebarPlainCellConfigurationForState:v10 traitCollection:v9TraitCollection];
 LABEL_44:
           v20 = v19;
 LABEL_45:
@@ -1328,22 +1328,22 @@ LABEL_45:
       {
         if (defaultStyle == 3)
         {
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListGroupedCellConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListGroupedCellConfigurationForState:v10 traitCollection:v9TraitCollection];
           goto LABEL_44;
         }
 
         if (defaultStyle == 4)
         {
-          v14 = [v9 traitCollection];
-          v19 = [(UIBackgroundConfiguration *)v13 _defaultListGroupedHeaderFooterConfigurationForState:v10 traitCollection:v14];
+          v9TraitCollection = [traitCollection traitCollection];
+          v19 = [(UIBackgroundConfiguration *)v13 _defaultListGroupedHeaderFooterConfigurationForState:v10 traitCollection:v9TraitCollection];
           goto LABEL_44;
         }
 
-        v14 = [v9 traitCollection];
+        v9TraitCollection = [traitCollection traitCollection];
         v15 = v13;
         v16 = v10;
-        v17 = v14;
+        v17 = v9TraitCollection;
         v18 = 0;
 LABEL_31:
         v19 = [(UIBackgroundConfiguration *)v15 _defaultListSidebarCellConfigurationForState:v16 traitCollection:v17 isAccompanied:v18];
@@ -1352,21 +1352,21 @@ LABEL_31:
 
       if (defaultStyle == 1)
       {
-        v14 = [v9 traitCollection];
-        v19 = [(UIBackgroundConfiguration *)v13 _defaultListPlainCellConfigurationForState:v10 traitCollection:v14];
+        v9TraitCollection = [traitCollection traitCollection];
+        v19 = [(UIBackgroundConfiguration *)v13 _defaultListPlainCellConfigurationForState:v10 traitCollection:v9TraitCollection];
         goto LABEL_44;
       }
 
       if (defaultStyle == 2)
       {
-        v14 = [v9 traitCollection];
-        v19 = [(UIBackgroundConfiguration *)v13 _defaultListPlainHeaderFooterConfigurationForState:v10 traitCollection:v14];
+        v9TraitCollection = [traitCollection traitCollection];
+        v19 = [(UIBackgroundConfiguration *)v13 _defaultListPlainHeaderFooterConfigurationForState:v10 traitCollection:v9TraitCollection];
         goto LABEL_44;
       }
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:sel__defaultConfigurationForFixedStyle_state_ object:v13 file:@"UIBackgroundConfiguration.m" lineNumber:624 description:{@"Unknown style: %ld", defaultStyle}];
+    v9TraitCollection = [MEMORY[0x1E696AAA8] currentHandler];
+    [v9TraitCollection handleFailureInMethod:sel__defaultConfigurationForFixedStyle_state_ object:v13 file:@"UIBackgroundConfiguration.m" lineNumber:624 description:{@"Unknown style: %ld", defaultStyle}];
     v20 = 0;
     goto LABEL_45;
   }
@@ -1376,122 +1376,122 @@ LABEL_117:
   return v5;
 }
 
-- (void)_setCustomView:(uint64_t)a1
+- (void)_setCustomView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((view + 16), a2);
   }
 }
 
-- (void)_setBackgroundColor:(uint64_t)a1
+- (void)_setBackgroundColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((color + 40), a2);
   }
 }
 
-- (void)_setBackgroundColorTransformer:(uint64_t)a1
+- (void)_setBackgroundColorTransformer:(uint64_t)transformer
 {
-  if (a1)
-  {
-    v3 = a2;
-    *(a1 + 152) = _UIConfigurationIdentifierForColorTransformer(v3);
-    v4 = [v3 copy];
-
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
-  }
-}
-
-- (void)_setImage:(uint64_t)a1
-{
-  if (a1)
-  {
-    objc_storeStrong((a1 + 72), a2);
-  }
-}
-
-- (void)_setStrokeColor:(uint64_t)a1
-{
-  if (a1)
-  {
-    objc_storeStrong((a1 + 88), a2);
-  }
-}
-
-- (void)_setStrokeColorTransformer:(uint64_t)a1
-{
-  if (a1)
+  if (transformer)
   {
     v3 = a2;
-    *(a1 + 160) = _UIConfigurationIdentifierForColorTransformer(v3);
+    *(transformer + 152) = _UIConfigurationIdentifierForColorTransformer(v3);
     v4 = [v3 copy];
 
-    v5 = *(a1 + 96);
-    *(a1 + 96) = v4;
+    v5 = *(transformer + 48);
+    *(transformer + 48) = v4;
   }
 }
 
-- (UIBackgroundConfiguration)initWithCoder:(id)a3
+- (void)_setImage:(uint64_t)image
 {
-  v4 = a3;
+  if (image)
+  {
+    objc_storeStrong((image + 72), a2);
+  }
+}
+
+- (void)_setStrokeColor:(uint64_t)color
+{
+  if (color)
+  {
+    objc_storeStrong((color + 88), a2);
+  }
+}
+
+- (void)_setStrokeColorTransformer:(uint64_t)transformer
+{
+  if (transformer)
+  {
+    v3 = a2;
+    *(transformer + 160) = _UIConfigurationIdentifierForColorTransformer(v3);
+    v4 = [v3 copy];
+
+    v5 = *(transformer + 96);
+    *(transformer + 96) = v4;
+  }
+}
+
+- (UIBackgroundConfiguration)initWithCoder:(id)coder
+{
+  coderCopy = coder;
   v73.receiver = self;
   v73.super_class = UIBackgroundConfiguration;
   v5 = [(UIBackgroundConfiguration *)&v73 init];
   if (v5)
   {
-    if (([v4 requiresSecureCoding] & 1) == 0)
+    if (([coderCopy requiresSecureCoding] & 1) == 0)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customView"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customView"];
       customView = v5->_customView;
       v5->_customView = v6;
     }
 
-    [v4 decodeDoubleForKey:@"cornerRadius"];
+    [coderCopy decodeDoubleForKey:@"cornerRadius"];
     v5->_cornerRadius = v8;
-    v5->_maskedCorners = [v4 decodeIntegerForKey:@"maskedCorners"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v5->_maskedCorners = [coderCopy decodeIntegerForKey:@"maskedCorners"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v9;
 
-    -[UIBackgroundConfiguration _setBackgroundColorTransformerIdentifier:](v5, [v4 decodeIntegerForKey:@"backgroundColorTransformerIdentifier"]);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visualEffect"];
+    -[UIBackgroundConfiguration _setBackgroundColorTransformerIdentifier:](v5, [coderCopy decodeIntegerForKey:@"backgroundColorTransformerIdentifier"]);
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visualEffect"];
     visualEffect = v5->_visualEffect;
     v5->_visualEffect = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visualEffectGroupName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visualEffectGroupName"];
     visualEffectGroupName = v5->_visualEffectGroupName;
     v5->_visualEffectGroupName = v13;
 
-    if ([v4 containsValueForKey:@"visualEffectblurClippingMode"])
+    if ([coderCopy containsValueForKey:@"visualEffectblurClippingMode"])
     {
-      v15 = [v4 decodeIntegerForKey:@"visualEffectblurClippingMode"];
+      v15 = [coderCopy decodeIntegerForKey:@"visualEffectblurClippingMode"];
     }
 
     else
     {
-      v15 = [v4 decodeBoolForKey:@"visualEffectAllowsTransparentBlurring"] ^ 1;
+      v15 = [coderCopy decodeBoolForKey:@"visualEffectAllowsTransparentBlurring"] ^ 1;
     }
 
     v5->_visualEffectblurClippingMode = v15;
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v16;
 
-    v5->_imageContentMode = [v4 decodeIntegerForKey:@"imageContentMode"];
-    [v4 decodeDirectionalEdgeInsetsForKey:@"backgroundInsets"];
+    v5->_imageContentMode = [coderCopy decodeIntegerForKey:@"imageContentMode"];
+    [coderCopy decodeDirectionalEdgeInsetsForKey:@"backgroundInsets"];
     v5->_backgroundInsets.top = v18;
     v5->_backgroundInsets.leading = v19;
     v5->_backgroundInsets.bottom = v20;
     v5->_backgroundInsets.trailing = v21;
-    v5->_edgesAddingLayoutMarginsToBackgroundInsets = [v4 decodeIntegerForKey:@"edgesAddingLayoutMarginsToBackgroundInsets"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
+    v5->_edgesAddingLayoutMarginsToBackgroundInsets = [coderCopy decodeIntegerForKey:@"edgesAddingLayoutMarginsToBackgroundInsets"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
     strokeColor = v5->_strokeColor;
     v5->_strokeColor = v22;
 
-    v24 = [v4 decodeIntegerForKey:@"strokeColorTransformerIdentifier"];
+    v24 = [coderCopy decodeIntegerForKey:@"strokeColorTransformerIdentifier"];
     v25 = _UIConfigurationColorTransformerForIdentifier(v24);
     strokeColorTransformer = v5->_strokeColorTransformer;
     v5->_strokeColorTransformer = v25;
@@ -1507,28 +1507,28 @@ LABEL_117:
     }
 
     v5->_strokeColorTransformerIdentifier = v27;
-    [v4 decodeDoubleForKey:@"strokeWidth"];
+    [coderCopy decodeDoubleForKey:@"strokeWidth"];
     v5->_strokeWidth = v28;
-    [v4 decodeDoubleForKey:@"strokeOutset"];
+    [coderCopy decodeDoubleForKey:@"strokeOutset"];
     v5->_strokeOutset = v29;
-    v5->_strokeLocation = [v4 decodeIntegerForKey:@"strokeLocation"];
-    if ([v4 containsValueForKey:@"shadowProperties"])
+    v5->_strokeLocation = [coderCopy decodeIntegerForKey:@"strokeLocation"];
+    if ([coderCopy containsValueForKey:@"shadowProperties"])
     {
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shadowProperties"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shadowProperties"];
       shadowProperties = v5->_shadowProperties;
       v5->_shadowProperties = v30;
     }
 
     else
     {
-      v32 = [v4 decodeIntegerForKey:@"shadowType"];
+      v32 = [coderCopy decodeIntegerForKey:@"shadowType"];
       shadowProperties = +[UITraitCollection _fallbackTraitCollection];
       v33 = _UIShadowPropertiesFromShadowType(v32, shadowProperties);
       v34 = v5->_shadowProperties;
       v5->_shadowProperties = v33;
     }
 
-    if ([v4 containsValueForKey:@"defaultStyle_v2"])
+    if ([coderCopy containsValueForKey:@"defaultStyle_v2"])
     {
       v35 = @"defaultStyle_v2";
     }
@@ -1538,7 +1538,7 @@ LABEL_117:
       v35 = @"defaultStyle";
     }
 
-    v36 = [v4 decodeIntegerForKey:v35];
+    v36 = [coderCopy decodeIntegerForKey:v35];
     if ((v36 - 1) >= 0xD)
     {
       v37 = 0;
@@ -1551,10 +1551,10 @@ LABEL_117:
 
     v5->_defaultStyle = v37;
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"customView"];
-    v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFE | [v4 decodeBoolForKey:v38]);
+    v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFE | [coderCopy decodeBoolForKey:v38]);
 
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-    if ([v4 decodeBoolForKey:v39])
+    if ([coderCopy decodeBoolForKey:v39])
     {
       v40 = 2;
     }
@@ -1567,7 +1567,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFD | v40);
 
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundInsets"];
-    if ([v4 decodeBoolForKey:v41])
+    if ([coderCopy decodeBoolForKey:v41])
     {
       v42 = 4;
     }
@@ -1580,7 +1580,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFB | v42);
 
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"edgesAddingLayoutMarginsToBackgroundInsets"];
-    if ([v4 decodeBoolForKey:v43])
+    if ([coderCopy decodeBoolForKey:v43])
     {
       v44 = 8;
     }
@@ -1593,7 +1593,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFF7 | v44);
 
     v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundColor"];
-    if ([v4 decodeBoolForKey:v45])
+    if ([coderCopy decodeBoolForKey:v45])
     {
       v46 = 16;
     }
@@ -1606,7 +1606,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFEF | v46);
 
     v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundColorTransformerIdentifier"];
-    if ([v4 decodeBoolForKey:v47])
+    if ([coderCopy decodeBoolForKey:v47])
     {
       v48 = 32;
     }
@@ -1619,7 +1619,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFDF | v48);
 
     v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"visualEffect"];
-    if ([v4 decodeBoolForKey:v49])
+    if ([coderCopy decodeBoolForKey:v49])
     {
       v50 = 64;
     }
@@ -1632,7 +1632,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFBF | v50);
 
     v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"visualEffectGroupName"];
-    if ([v4 decodeBoolForKey:v51])
+    if ([coderCopy decodeBoolForKey:v51])
     {
       v52 = 128;
     }
@@ -1645,7 +1645,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFF7F | v52);
 
     v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"visualEffectblurClippingMode"];
-    v54 = [v4 containsValueForKey:v53];
+    v54 = [coderCopy containsValueForKey:v53];
 
     v55 = @"visualEffectAllowsTransparentBlurring";
     if (v54)
@@ -1654,7 +1654,7 @@ LABEL_117:
     }
 
     v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", v55];
-    if ([v4 decodeBoolForKey:v56])
+    if ([coderCopy decodeBoolForKey:v56])
     {
       v57 = 256;
     }
@@ -1667,7 +1667,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFEFF | v57);
 
     v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"image"];
-    if ([v4 decodeBoolForKey:v58])
+    if ([coderCopy decodeBoolForKey:v58])
     {
       v59 = 512;
     }
@@ -1680,7 +1680,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFDFF | v59);
 
     v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageContentMode"];
-    if ([v4 decodeBoolForKey:v60])
+    if ([coderCopy decodeBoolForKey:v60])
     {
       v61 = 1024;
     }
@@ -1693,7 +1693,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFBFF | v61);
 
     v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColor"];
-    if ([v4 decodeBoolForKey:v62])
+    if ([coderCopy decodeBoolForKey:v62])
     {
       v63 = 2048;
     }
@@ -1706,7 +1706,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFF7FF | v63);
 
     v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColorTransformerIdentifier"];
-    if ([v4 decodeBoolForKey:v64])
+    if ([coderCopy decodeBoolForKey:v64])
     {
       v65 = 4096;
     }
@@ -1719,7 +1719,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFEFFF | v65);
 
     v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeWidth"];
-    if ([v4 decodeBoolForKey:v66])
+    if ([coderCopy decodeBoolForKey:v66])
     {
       v67 = 0x2000;
     }
@@ -1732,7 +1732,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFDFFF | v67);
 
     v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeOutset"];
-    if ([v4 decodeBoolForKey:v68])
+    if ([coderCopy decodeBoolForKey:v68])
     {
       v69 = 0x4000;
     }
@@ -1745,7 +1745,7 @@ LABEL_117:
     v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFBFFF | v69);
 
     v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maskedCorners"];
-    if ([v4 decodeBoolForKey:v70])
+    if ([coderCopy decodeBoolForKey:v70])
     {
       v71 = 0x8000;
     }
@@ -1761,15 +1761,15 @@ LABEL_117:
   return v5;
 }
 
-- (void)_setBackgroundColorTransformerIdentifier:(uint64_t)a1
+- (void)_setBackgroundColorTransformerIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v4 = _UIConfigurationColorTransformerForIdentifier(a2);
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
+    v5 = *(identifier + 48);
+    *(identifier + 48) = v4;
 
-    if (*(a1 + 48))
+    if (*(identifier + 48))
     {
       v6 = a2;
     }
@@ -1779,53 +1779,53 @@ LABEL_117:
       v6 = 0;
     }
 
-    *(a1 + 152) = v6;
+    *(identifier + 152) = v6;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v38 = a3;
-  if (([v38 requiresSecureCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy requiresSecureCoding] & 1) == 0)
   {
-    [v38 encodeObject:self->_customView forKey:@"customView"];
+    [coderCopy encodeObject:self->_customView forKey:@"customView"];
   }
 
-  [v38 encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
-  [v38 encodeInteger:self->_maskedCorners forKey:@"maskedCorners"];
-  [v38 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
-  [v38 encodeInteger:self->_backgroundColorTransformerIdentifier forKey:@"backgroundColorTransformerIdentifier"];
-  [v38 encodeObject:self->_visualEffect forKey:@"visualEffect"];
-  [v38 encodeObject:self->_visualEffectGroupName forKey:@"visualEffectGroupName"];
-  [v38 encodeInteger:self->_visualEffectblurClippingMode forKey:@"visualEffectblurClippingMode"];
-  [v38 encodeObject:self->_image forKey:@"image"];
-  [v38 encodeInteger:self->_imageContentMode forKey:@"imageContentMode"];
-  [v38 encodeDirectionalEdgeInsets:@"backgroundInsets" forKey:{self->_backgroundInsets.top, self->_backgroundInsets.leading, self->_backgroundInsets.bottom, self->_backgroundInsets.trailing}];
-  [v38 encodeInteger:self->_edgesAddingLayoutMarginsToBackgroundInsets forKey:@"edgesAddingLayoutMarginsToBackgroundInsets"];
-  [v38 encodeObject:self->_strokeColor forKey:@"strokeColor"];
-  [v38 encodeInteger:self->_strokeColorTransformerIdentifier forKey:@"strokeColorTransformerIdentifier"];
-  [v38 encodeDouble:@"strokeWidth" forKey:self->_strokeWidth];
-  [v38 encodeDouble:@"strokeOutset" forKey:self->_strokeOutset];
-  [v38 encodeInteger:self->_strokeLocation forKey:@"strokeLocation"];
+  [coderCopy encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
+  [coderCopy encodeInteger:self->_maskedCorners forKey:@"maskedCorners"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  [coderCopy encodeInteger:self->_backgroundColorTransformerIdentifier forKey:@"backgroundColorTransformerIdentifier"];
+  [coderCopy encodeObject:self->_visualEffect forKey:@"visualEffect"];
+  [coderCopy encodeObject:self->_visualEffectGroupName forKey:@"visualEffectGroupName"];
+  [coderCopy encodeInteger:self->_visualEffectblurClippingMode forKey:@"visualEffectblurClippingMode"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeInteger:self->_imageContentMode forKey:@"imageContentMode"];
+  [coderCopy encodeDirectionalEdgeInsets:@"backgroundInsets" forKey:{self->_backgroundInsets.top, self->_backgroundInsets.leading, self->_backgroundInsets.bottom, self->_backgroundInsets.trailing}];
+  [coderCopy encodeInteger:self->_edgesAddingLayoutMarginsToBackgroundInsets forKey:@"edgesAddingLayoutMarginsToBackgroundInsets"];
+  [coderCopy encodeObject:self->_strokeColor forKey:@"strokeColor"];
+  [coderCopy encodeInteger:self->_strokeColorTransformerIdentifier forKey:@"strokeColorTransformerIdentifier"];
+  [coderCopy encodeDouble:@"strokeWidth" forKey:self->_strokeWidth];
+  [coderCopy encodeDouble:@"strokeOutset" forKey:self->_strokeOutset];
+  [coderCopy encodeInteger:self->_strokeLocation forKey:@"strokeLocation"];
   shadowProperties = self->_shadowProperties;
   if (shadowProperties)
   {
-    [v38 encodeObject:shadowProperties forKey:@"shadowProperties"];
-    [v38 encodeInteger:-[UIShadowProperties _backgroundConfigurationShadowType](self->_shadowProperties forKey:{"_backgroundConfigurationShadowType"), @"shadowType"}];
+    [coderCopy encodeObject:shadowProperties forKey:@"shadowProperties"];
+    [coderCopy encodeInteger:-[UIShadowProperties _backgroundConfigurationShadowType](self->_shadowProperties forKey:{"_backgroundConfigurationShadowType"), @"shadowType"}];
   }
 
   defaultStyle = self->_defaultStyle;
-  [v38 encodeInteger:defaultStyle forKey:@"defaultStyle_v2"];
+  [coderCopy encodeInteger:defaultStyle forKey:@"defaultStyle_v2"];
   if ((defaultStyle & 0x8000000000000000) != 0)
   {
     defaultStyle = 0;
-    v7 = v38;
+    v7 = coderCopy;
   }
 
   else
   {
     v6 = defaultStyle - 10;
-    v7 = v38;
+    v7 = coderCopy;
     if (defaultStyle >= 0xA)
     {
       if (v6 > 3)
@@ -1843,72 +1843,72 @@ LABEL_117:
   [v7 encodeInteger:defaultStyle forKey:@"defaultStyle"];
   configurationFlags = self->_configurationFlags;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"customView"];
-  [v38 encodeBool:*&configurationFlags & 1 forKey:v9];
+  [coderCopy encodeBool:*&configurationFlags & 1 forKey:v9];
 
   v10 = (*&self->_configurationFlags >> 1) & 1;
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"cornerRadius"];
-  [v38 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:v10 forKey:v11];
 
   v12 = (*&self->_configurationFlags >> 2) & 1;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundInsets"];
-  [v38 encodeBool:v12 forKey:v13];
+  [coderCopy encodeBool:v12 forKey:v13];
 
   v14 = (*&self->_configurationFlags >> 3) & 1;
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"edgesAddingLayoutMarginsToBackgroundInsets"];
-  [v38 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:v14 forKey:v15];
 
   v16 = (*&self->_configurationFlags >> 4) & 1;
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundColor"];
-  [v38 encodeBool:v16 forKey:v17];
+  [coderCopy encodeBool:v16 forKey:v17];
 
   v18 = (*&self->_configurationFlags >> 5) & 1;
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"backgroundColorTransformerIdentifier"];
-  [v38 encodeBool:v18 forKey:v19];
+  [coderCopy encodeBool:v18 forKey:v19];
 
   v20 = (*&self->_configurationFlags >> 6) & 1;
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"visualEffect"];
-  [v38 encodeBool:v20 forKey:v21];
+  [coderCopy encodeBool:v20 forKey:v21];
 
   v22 = (*&self->_configurationFlags >> 7) & 1;
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"visualEffectGroupName"];
-  [v38 encodeBool:v22 forKey:v23];
+  [coderCopy encodeBool:v22 forKey:v23];
 
   v24 = (*&self->_configurationFlags >> 9) & 1;
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"image"];
-  [v38 encodeBool:v24 forKey:v25];
+  [coderCopy encodeBool:v24 forKey:v25];
 
   v26 = (*&self->_configurationFlags >> 10) & 1;
   v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageContentMode"];
-  [v38 encodeBool:v26 forKey:v27];
+  [coderCopy encodeBool:v26 forKey:v27];
 
   v28 = (*&self->_configurationFlags >> 11) & 1;
   v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColor"];
-  [v38 encodeBool:v28 forKey:v29];
+  [coderCopy encodeBool:v28 forKey:v29];
 
   v30 = (*&self->_configurationFlags >> 12) & 1;
   v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeColorTransformerIdentifier"];
-  [v38 encodeBool:v30 forKey:v31];
+  [coderCopy encodeBool:v30 forKey:v31];
 
   v32 = (*&self->_configurationFlags >> 13) & 1;
   v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeWidth"];
-  [v38 encodeBool:v32 forKey:v33];
+  [coderCopy encodeBool:v32 forKey:v33];
 
   v34 = (*&self->_configurationFlags >> 14) & 1;
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"strokeOutset"];
-  [v38 encodeBool:v34 forKey:v35];
+  [coderCopy encodeBool:v34 forKey:v35];
 
   v36 = (*&self->_configurationFlags >> 15) & 1;
   v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"maskedCorners"];
-  [v38 encodeBool:v36 forKey:v37];
+  [coderCopy encodeBool:v36 forKey:v37];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [+[UIBackgroundConfiguration allocWithZone:](UIBackgroundConfiguration _init];
-  v5 = v4;
-  if (v4)
+  _init = [+[UIBackgroundConfiguration allocWithZone:](UIBackgroundConfiguration _init];
+  v5 = _init;
+  if (_init)
   {
-    objc_storeStrong(v4 + 2, self->_customView);
+    objc_storeStrong(_init + 2, self->_customView);
     v5[3] = *&self->_cornerRadius;
     v5[16] = self->_maskedCorners;
     objc_storeStrong(v5 + 5, self->_backgroundColor);
@@ -1955,16 +1955,16 @@ LABEL_117:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(UIBackgroundConfiguration *)self _isEqualToConfiguration:v5];
   }
@@ -1977,74 +1977,74 @@ LABEL_117:
   return v6;
 }
 
-- (uint64_t)_isEqualToConfiguration:(uint64_t)a1
+- (uint64_t)_isEqualToConfiguration:(uint64_t)configuration
 {
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    if (v3 == a1)
+    if (v3 == configuration)
     {
-      a1 = 1;
+      configuration = 1;
     }
 
-    else if (*(a1 + 144) == v3[18] && *(a1 + 16) == v3[2] && *(a1 + 176) == v3[22] && *(a1 + 12) == *(v3 + 12) && *(a1 + 24) == *(v3 + 3) && *(a1 + 128) == v3[16] && *(a1 + 32) == v3[4] && *(a1 + 104) == *(v3 + 13) && *(a1 + 112) == *(v3 + 14) && *(a1 + 80) == v3[10] && *(a1 + 168) == v3[21] && *(a1 + 136) == v3[17])
+    else if (*(configuration + 144) == v3[18] && *(configuration + 16) == v3[2] && *(configuration + 176) == v3[22] && *(configuration + 12) == *(v3 + 12) && *(configuration + 24) == *(v3 + 3) && *(configuration + 128) == v3[16] && *(configuration + 32) == v3[4] && *(configuration + 104) == *(v3 + 13) && *(configuration + 112) == *(v3 + 14) && *(configuration + 80) == v3[10] && *(configuration + 168) == v3[21] && *(configuration + 136) == v3[17])
     {
       v7 = v3;
-      if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 192), *(v3 + 12)), vceqq_f64(*(a1 + 208), *(v3 + 13))))) & 1) != 0 && (v4 = *(a1 + 152), v4 == v3[19]) && (v4 != 1 || *(a1 + 48) == v3[6]) && (v5 = *(a1 + 160), v5 == v3[20]) && (v5 != 1 || *(a1 + 96) == v3[12]) && _deferringTokenEqualToToken(*(a1 + 40), v3[5]) && _deferringTokenEqualToToken(*(a1 + 88), v7[11]) && _deferringTokenEqualToToken(*(a1 + 64), v7[8]) && _deferringTokenEqualToToken(*(a1 + 56), v7[7]) && _deferringTokenEqualToToken(*(a1 + 72), v7[9]) && _deferringTokenEqualToToken(*(a1 + 120), v7[15]))
+      if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(configuration + 192), *(v3 + 12)), vceqq_f64(*(configuration + 208), *(v3 + 13))))) & 1) != 0 && (v4 = *(configuration + 152), v4 == v3[19]) && (v4 != 1 || *(configuration + 48) == v3[6]) && (v5 = *(configuration + 160), v5 == v3[20]) && (v5 != 1 || *(configuration + 96) == v3[12]) && _deferringTokenEqualToToken(*(configuration + 40), v3[5]) && _deferringTokenEqualToToken(*(configuration + 88), v7[11]) && _deferringTokenEqualToToken(*(configuration + 64), v7[8]) && _deferringTokenEqualToToken(*(configuration + 56), v7[7]) && _deferringTokenEqualToToken(*(configuration + 72), v7[9]) && _deferringTokenEqualToToken(*(configuration + 120), v7[15]))
       {
-        a1 = _deferringTokenEqualToToken(*(a1 + 184), v7[23]);
+        configuration = _deferringTokenEqualToToken(*(configuration + 184), v7[23]);
         v3 = v7;
       }
 
       else
       {
-        a1 = 0;
+        configuration = 0;
         v3 = v7;
       }
     }
 
     else
     {
-      a1 = 0;
+      configuration = 0;
     }
   }
 
-  return a1;
+  return configuration;
 }
 
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick
 {
   v3 = a2;
-  if (a1)
+  if (quick)
   {
-    if (v3 == a1)
+    if (v3 == quick)
     {
-      a1 = 1;
+      quick = 1;
     }
 
-    else if (*(a1 + 144) == v3[18] && *(a1 + 40) == v3[5] && *(a1 + 16) == v3[2] && *(a1 + 176) == v3[22] && *(a1 + 12) == *(v3 + 12) && *(a1 + 24) == *(v3 + 3) && *(a1 + 128) == v3[16] && *(a1 + 32) == v3[4] && *(a1 + 88) == v3[11] && *(a1 + 104) == *(v3 + 13) && *(a1 + 112) == *(v3 + 14))
+    else if (*(quick + 144) == v3[18] && *(quick + 40) == v3[5] && *(quick + 16) == v3[2] && *(quick + 176) == v3[22] && *(quick + 12) == *(v3 + 12) && *(quick + 24) == *(v3 + 3) && *(quick + 128) == v3[16] && *(quick + 32) == v3[4] && *(quick + 88) == v3[11] && *(quick + 104) == *(v3 + 13) && *(quick + 112) == *(v3 + 14))
     {
       v7 = v3;
-      if (*(a1 + 72) == v3[9] && *(a1 + 80) == v3[10] && *(a1 + 168) == v3[21] && *(a1 + 136) == v3[17] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 192), *(v3 + 12)), vceqq_f64(*(a1 + 208), *(v3 + 13))))) & 1) != 0 && (v5 = *(a1 + 152), v5 == v3[19]) && (v5 != 1 || *(a1 + 48) == v3[6]) && (v6 = *(a1 + 160), v6 == v3[20]) && (v6 != 1 || *(a1 + 96) == v3[12]) && _deferringTokenEqualToToken(*(a1 + 120), v3[15]) && _deferringTokenEqualToToken(*(a1 + 64), v7[8]) && _deferringTokenEqualToToken(*(a1 + 56), v7[7]))
+      if (*(quick + 72) == v3[9] && *(quick + 80) == v3[10] && *(quick + 168) == v3[21] && *(quick + 136) == v3[17] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(quick + 192), *(v3 + 12)), vceqq_f64(*(quick + 208), *(v3 + 13))))) & 1) != 0 && (v5 = *(quick + 152), v5 == v3[19]) && (v5 != 1 || *(quick + 48) == v3[6]) && (v6 = *(quick + 160), v6 == v3[20]) && (v6 != 1 || *(quick + 96) == v3[12]) && _deferringTokenEqualToToken(*(quick + 120), v3[15]) && _deferringTokenEqualToToken(*(quick + 64), v7[8]) && _deferringTokenEqualToToken(*(quick + 56), v7[7]))
       {
-        a1 = _deferringTokenEqualToToken(*(a1 + 184), v7[23]);
+        quick = _deferringTokenEqualToToken(*(quick + 184), v7[23]);
         v3 = v7;
       }
 
       else
       {
-        a1 = 0;
+        quick = 0;
         v3 = v7;
       }
     }
 
     else
     {
-      a1 = 0;
+      quick = 0;
     }
   }
 
-  return a1;
+  return quick;
 }
 
 - (unint64_t)hash
@@ -2057,15 +2057,15 @@ LABEL_117:
   return v7 ^ [(UIColor *)self->_strokeColor hash]^ cornerRadius ^ self->_strokeWidth;
 }
 
-- (BOOL)_backgroundFillIsEqual:(id)a3 withTintColor:(id)a4
+- (BOOL)_backgroundFillIsEqual:(id)equal withTintColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  equalCopy = equal;
+  colorCopy = color;
+  if (equalCopy)
   {
     customView = self->_customView;
-    v9 = [v6 customView];
-    if (customView != v9)
+    customView = [equalCopy customView];
+    if (customView != customView)
     {
 LABEL_29:
 
@@ -2074,8 +2074,8 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v10 = [(UIBackgroundConfiguration *)self resolvedBackgroundColorForTintColor:v7];
-    v11 = [v6 resolvedBackgroundColorForTintColor:v7];
+    v10 = [(UIBackgroundConfiguration *)self resolvedBackgroundColorForTintColor:colorCopy];
+    v11 = [equalCopy resolvedBackgroundColorForTintColor:colorCopy];
     v12 = v10;
     v13 = v11;
     v14 = v13;
@@ -2108,9 +2108,9 @@ LABEL_30:
     }
 
     visualEffect = self->_visualEffect;
-    v20 = [v6 visualEffect];
+    visualEffect = [equalCopy visualEffect];
     v15 = visualEffect;
-    v21 = v20;
+    v21 = visualEffect;
     v16 = v21;
     if (v15 == v21)
     {
@@ -2139,9 +2139,9 @@ LABEL_28:
     }
 
     image = self->_image;
-    v24 = [v6 image];
+    image = [equalCopy image];
     v25 = image;
-    v26 = v24;
+    v26 = image;
     v15 = v26;
     if (v25 == v26)
     {
@@ -2179,12 +2179,12 @@ LABEL_31:
   v9 = v5;
   if (v5)
   {
-    v7 = [(UIView *)v5 translatesAutoresizingMaskIntoConstraints];
+    translatesAutoresizingMaskIntoConstraints = [(UIView *)v5 translatesAutoresizingMaskIntoConstraints];
     v6 = v9;
-    if (!v7)
+    if (!translatesAutoresizingMaskIntoConstraints)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIBackgroundConfiguration.m" lineNumber:1108 description:{@"Custom view must have translatesAutoresizingMaskIntoConstraints enabled, even if auto layout constraints are used inside it. Custom view: %@", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIBackgroundConfiguration.m" lineNumber:1108 description:{@"Custom view must have translatesAutoresizingMaskIntoConstraints enabled, even if auto layout constraints are used inside it. Custom view: %@", v9}];
 
       v6 = v9;
     }
@@ -2201,11 +2201,11 @@ LABEL_31:
   return v2;
 }
 
-- (void)__setMaterial:(uint64_t)a1
+- (void)__setMaterial:(uint64_t)material
 {
-  if (a1)
+  if (material)
   {
-    objc_storeStrong((a1 + 184), a2);
+    objc_storeStrong((material + 184), a2);
   }
 }
 
@@ -2270,13 +2270,13 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)_isEqualToInternalConfigurationQuick:(id)a3
+- (BOOL)_isEqualToInternalConfigurationQuick:(id)quick
 {
-  v4 = a3;
+  quickCopy = quick;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIBackgroundConfiguration *)self _isEqualToConfigurationQuick:v4];
+    v5 = [(UIBackgroundConfiguration *)self _isEqualToConfigurationQuick:quickCopy];
   }
 
   else
@@ -2287,13 +2287,13 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)_isEqualToInternalConfigurationLayoutOnly:(id)a3
+- (BOOL)_isEqualToInternalConfigurationLayoutOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = onlyCopy;
     if (self)
     {
       if (v5 == self)

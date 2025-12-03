@@ -1,35 +1,35 @@
 @interface ICDocCamExtractedDocumentViewController
 + (BOOL)isLiquidGlassEnabledForEdit;
-+ (CGRect)targetRectForOrientation:(int64_t)a3 window:(id)a4;
++ (CGRect)targetRectForOrientation:(int64_t)orientation window:(id)window;
 - (BOOL)accessibilityScrollLeftPage;
 - (BOOL)accessibilityScrollRightPage;
 - (BOOL)cameraDisabled;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)currentImageHasMarkup;
-- (BOOL)filterViewControllerApplyToAll:(signed __int16)a3;
-- (BOOL)filterViewControllerCanApplyToAll:(signed __int16)a3;
-- (BOOL)filterViewControllerDidSelectFilter:(signed __int16)a3;
-- (BOOL)imageIsPortrait:(id)a3;
+- (BOOL)filterViewControllerApplyToAll:(signed __int16)all;
+- (BOOL)filterViewControllerCanApplyToAll:(signed __int16)all;
+- (BOOL)filterViewControllerDidSelectFilter:(signed __int16)filter;
+- (BOOL)imageIsPortrait:(id)portrait;
 - (BOOL)isPageViewControllerScrolled;
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)shouldDisableActions;
 - (BOOL)shouldDisableSharrow;
 - (BOOL)thumbnailContainerViewIsVisible;
-- (BOOL)thumbnailContainerViewIsVisible:(id)a3;
-- (CGRect)imageRectWithZoomAndPanForIndexPath:(id)a3;
+- (BOOL)thumbnailContainerViewIsVisible:(id)visible;
+- (CGRect)imageRectWithZoomAndPanForIndexPath:(id)path;
 - (CGRect)menuControllerTargetRect;
 - (CGRect)targetViewRect;
-- (CGRect)zoomTargetForIndexPath:(id)a3;
-- (CGSize)collectionView:(id)a3 imageSizeAtIndex:(int64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)frameSizeForImageSize:(CGSize)a3;
-- (CGSize)imageSizeForDocumentAtIndex:(int64_t)a3;
+- (CGRect)zoomTargetForIndexPath:(id)path;
+- (CGSize)collectionView:(id)view imageSizeAtIndex:(int64_t)index;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)frameSizeForImageSize:(CGSize)size;
+- (CGSize)imageSizeForDocumentAtIndex:(int64_t)index;
 - (CGSize)previousViewSize;
 - (CIContext)sharedCoreImageContext;
 - (DCScanDataDelegate)scanCollectionDataDelegate;
 - (DCScanDataDelegate)selectedScanDataDelegate;
 - (ICDocCamExtractedDocumentControllerDelegate)delegate;
-- (ICDocCamExtractedDocumentViewController)initWithDelegate:(id)a3 documentInfoCollection:(id)a4 imageCache:(id)a5 currentIndex:(int64_t)a6 mode:(int)a7;
+- (ICDocCamExtractedDocumentViewController)initWithDelegate:(id)delegate documentInfoCollection:(id)collection imageCache:(id)cache currentIndex:(int64_t)index mode:(int)mode;
 - (ICDocCamReorderingThumbnailCollectionViewLayout)thumbnailCollectionViewLayout;
 - (UIAlertController)editTitleAlert;
 - (UIImageView)currentImageView;
@@ -39,134 +39,134 @@
 - (double)normalizedPageViewControllerScrollPosition;
 - (double)thumbnailToolbarHeight;
 - (id)_accessibilitySpeakThisElementsAndStrings;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)croppedAndFilteredmageForDocumentAtIndex:(int64_t)a3;
-- (id)croppedButNotFilteredImageForDocInfo:(id)a3;
-- (id)croppedButNotFilteredImageForDocumentAtIndex:(int64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)croppedAndFilteredmageForDocumentAtIndex:(int64_t)index;
+- (id)croppedButNotFilteredImageForDocInfo:(id)info;
+- (id)croppedButNotFilteredImageForDocumentAtIndex:(int64_t)index;
 - (id)currentBackgroundColor;
 - (id)currentDocument;
 - (id)currentPageContentViewController;
-- (id)imageForDocInfo:(id)a3 newFilter:(signed __int16)a4;
+- (id)imageForDocInfo:(id)info newFilter:(signed __int16)filter;
 - (id)indexPathForCurrentDocument;
-- (id)makeUIImageFromCIImage:(id)a3;
-- (id)orientationString:(int64_t)a3;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (id)truncatedString:(id)a3 clipLength:(unint64_t)a4;
+- (id)makeUIImageFromCIImage:(id)image;
+- (id)orientationString:(int64_t)string;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (id)truncatedString:(id)string clipLength:(unint64_t)length;
 - (id)undoManager;
-- (id)viewControllerAtIndex:(unint64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)orientationRotated90DegreesFromOrientation:(int64_t)a3;
+- (id)viewControllerAtIndex:(unint64_t)index;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)orientationRotated90DegreesFromOrientation:(int64_t)orientation;
 - (unint64_t)documentCount;
-- (unint64_t)thumbnailContainerViewNumberOfItems:(id)a3;
-- (void)_pageViewControllerDidFinishTransitions:(id)a3;
-- (void)addImageAction:(id)a3;
+- (unint64_t)thumbnailContainerViewNumberOfItems:(id)items;
+- (void)_pageViewControllerDidFinishTransitions:(id)transitions;
+- (void)addImageAction:(id)action;
 - (void)alertAndDiscardMarkup;
-- (void)applyFilter:(signed __int16)a3;
-- (void)changePage:(int64_t)a3;
-- (void)collectionNameTapped:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)copy:(id)a3;
+- (void)applyFilter:(signed __int16)filter;
+- (void)changePage:(int64_t)page;
+- (void)collectionNameTapped:(id)tapped;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)defaultsChanged;
-- (void)deleteButtonAction:(id)a3;
+- (void)deleteButtonAction:(id)action;
 - (void)deleteCurrentPage;
 - (void)didDismissMarkupViewController;
-- (void)didUpdateDocumentImage:(id)a3;
-- (void)didUpdateDocumentInfoArrayNewCurrentDocument:(id)a3;
-- (void)didUpdateDocumentTitle:(id)a3;
-- (void)doneAction:(id)a3;
-- (void)handleAccessibilityLongPressOnCollectionTitle:(id)a3;
-- (void)hideBarsForZoomablePageContentViewController:(id)a3;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
-- (void)pencilDownInZoomablePageContentViewController:(id)a3;
+- (void)didUpdateDocumentImage:(id)image;
+- (void)didUpdateDocumentInfoArrayNewCurrentDocument:(id)document;
+- (void)didUpdateDocumentTitle:(id)title;
+- (void)doneAction:(id)action;
+- (void)handleAccessibilityLongPressOnCollectionTitle:(id)title;
+- (void)hideBarsForZoomablePageContentViewController:(id)controller;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
+- (void)pencilDownInZoomablePageContentViewController:(id)controller;
 - (void)prepareForDismissal;
-- (void)recreateThumbnailContainerWithWidth:(double)a3 leadingTrailingMargin:(double)a4;
-- (void)recropButtonPressed:(id)a3;
+- (void)recreateThumbnailContainerWithWidth:(double)width leadingTrailingMargin:(double)margin;
+- (void)recropButtonPressed:(id)pressed;
 - (void)resetImageCentering;
-- (void)respondToImageLongPressGesture:(id)a3;
-- (void)respondToThumbnailLongPressGesture:(id)a3;
-- (void)retakeAction:(id)a3;
-- (void)rotateAction:(id)a3;
+- (void)respondToImageLongPressGesture:(id)gesture;
+- (void)respondToThumbnailLongPressGesture:(id)gesture;
+- (void)retakeAction:(id)action;
+- (void)rotateAction:(id)action;
 - (void)rotateCurrentImage;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setCurrentThumbnailItem:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setImage:(id)a3 forCell:(id)a4 useResizedImage:(BOOL)a5;
-- (void)setIsScrollingBetweenPages:(BOOL)a3;
-- (void)setPresentationPageIndex:(int64_t)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setCurrentThumbnailItem:(unint64_t)item animated:(BOOL)animated;
+- (void)setImage:(id)image forCell:(id)cell useResizedImage:(BOOL)resizedImage;
+- (void)setIsScrollingBetweenPages:(BOOL)pages;
+- (void)setPresentationPageIndex:(int64_t)index;
 - (void)setupAccessibilityInfo;
 - (void)setupBottomToolbar;
 - (void)setupGlurBar;
 - (void)setupThumbnailViewController;
-- (void)share:(id)a3;
-- (void)shareAction:(id)a3;
-- (void)showBarsForZoomablePageContentViewController:(id)a3;
-- (void)showPrimaryControllerForNotes:(id)a3 animated:(BOOL)a4;
-- (void)showViewControllerAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)speakAccessibilityAnnouncementForMovingItemFromIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)speakAccessibilityAnnouncementForReorderIfNecessaryForProposedIndexPath:(id)a3;
+- (void)share:(id)share;
+- (void)shareAction:(id)action;
+- (void)showBarsForZoomablePageContentViewController:(id)controller;
+- (void)showPrimaryControllerForNotes:(id)notes animated:(BOOL)animated;
+- (void)showViewControllerAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)speakAccessibilityAnnouncementForMovingItemFromIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)speakAccessibilityAnnouncementForReorderIfNecessaryForProposedIndexPath:(id)path;
 - (void)startMarkupViewController;
-- (void)switchBarVisibilityForZoomablePageContentViewController:(id)a3;
-- (void)thumbnailContainerView:(id)a3 moveItemFromIndex:(int64_t)a4 toIndex:(int64_t)a5;
-- (void)thumbnailContainerViewDecrementCurrentIndex:(id)a3;
-- (void)thumbnailContainerViewIncrementCurrentIndex:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)switchBarVisibilityForZoomablePageContentViewController:(id)controller;
+- (void)thumbnailContainerView:(id)view moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)thumbnailContainerViewDecrementCurrentIndex:(id)index;
+- (void)thumbnailContainerViewIncrementCurrentIndex:(id)index;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBottomToolbarButtonsForCurrentMode;
-- (void)updateDocumentImage:(id)a3;
+- (void)updateDocumentImage:(id)image;
 - (void)updateFilterButtonItemAccessibilityInfo;
 - (void)updateFilterButtonMenu;
 - (void)updateForAccessibilityDarkerSystemColors;
-- (void)updateImage:(id)a3 document:(id)a4 withFilterType:(signed __int16)a5;
-- (void)updateImageViewAccessibilityForPageContentViewController:(id)a3;
+- (void)updateImage:(id)image document:(id)document withFilterType:(signed __int16)type;
+- (void)updateImageViewAccessibilityForPageContentViewController:(id)controller;
 - (void)updateLayout;
-- (void)updatePageIndicatorForPageIndex:(int64_t)a3;
-- (void)updatePageViewControllerConstraints:(BOOL)a3 animationBlock:(id)a4 completionBlock:(id)a5;
+- (void)updatePageIndicatorForPageIndex:(int64_t)index;
+- (void)updatePageViewControllerConstraints:(BOOL)constraints animationBlock:(id)block completionBlock:(id)completionBlock;
 - (void)updateTitleView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICDocCamExtractedDocumentViewController
 
-- (CGSize)imageSizeForDocumentAtIndex:(int64_t)a3
+- (CGSize)imageSizeForDocumentAtIndex:(int64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
   v8 = 0.0;
   v9 = 0.0;
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v11 = [v10 docInfos];
-    v12 = [v11 objectAtIndexedSubscript:a3];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v12 = [docInfos2 objectAtIndexedSubscript:index];
 
-    v13 = [v12 croppedAndFilteredImageUUID];
+    croppedAndFilteredImageUUID = [v12 croppedAndFilteredImageUUID];
 
-    if (v13)
+    if (croppedAndFilteredImageUUID)
     {
-      v14 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-      v15 = [v12 croppedAndFilteredImageUUID];
-      [v14 getImageSize:v15];
+      imageCache = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+      croppedAndFilteredImageUUID2 = [v12 croppedAndFilteredImageUUID];
+      [imageCache getImageSize:croppedAndFilteredImageUUID2];
       v8 = v16;
       v9 = v17;
     }
 
     else
     {
-      v18 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if ((v19 & 1) == 0)
@@ -176,11 +176,11 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v14 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-      v15 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v20 = [v15 docInfos];
-      v21 = [v20 objectAtIndexedSubscript:a3];
-      [v14 extractedDocumentControllerImageSizeForDocument:v21];
+      imageCache = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      croppedAndFilteredImageUUID2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos3 = [croppedAndFilteredImageUUID2 docInfos];
+      v21 = [docInfos3 objectAtIndexedSubscript:index];
+      [imageCache extractedDocumentControllerImageSizeForDocument:v21];
       v8 = v22;
       v9 = v23;
     }
@@ -196,34 +196,34 @@ LABEL_8:
   return result;
 }
 
-- (id)croppedAndFilteredmageForDocumentAtIndex:(int64_t)a3
+- (id)croppedAndFilteredmageForDocumentAtIndex:(int64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v9 = [v8 docInfos];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v10 = [docInfos2 objectAtIndexedSubscript:index];
 
-  v11 = [v10 croppedAndFilteredImageUUID];
+  croppedAndFilteredImageUUID = [v10 croppedAndFilteredImageUUID];
 
-  if (v11)
+  if (croppedAndFilteredImageUUID)
   {
-    v12 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-    v13 = [v10 croppedAndFilteredImageUUID];
-    v14 = [v12 getImage:v13];
+    imageCache = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+    croppedAndFilteredImageUUID2 = [v10 croppedAndFilteredImageUUID];
+    v14 = [imageCache getImage:croppedAndFilteredImageUUID2];
   }
 
   else
   {
-    v15 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if ((v16 & 1) == 0)
@@ -232,8 +232,8 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v12 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-    v14 = [v12 extractedDocumentControllerImageForDocument:v10];
+    imageCache = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    v14 = [imageCache extractedDocumentControllerImageForDocument:v10];
   }
 
 LABEL_8:
@@ -242,102 +242,102 @@ LABEL_9:
   return v14;
 }
 
-- (id)croppedButNotFilteredImageForDocumentAtIndex:(int64_t)a3
+- (id)croppedButNotFilteredImageForDocumentAtIndex:(int64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  if ([v6 count] <= a3)
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if ([docInfos count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v8 = [v7 docInfos];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v9 = [docInfos2 objectAtIndexedSubscript:index];
     v10 = [(ICDocCamExtractedDocumentViewController *)self croppedButNotFilteredImageForDocInfo:v9];
   }
 
   return v10;
 }
 
-- (id)croppedButNotFilteredImageForDocInfo:(id)a3
+- (id)croppedButNotFilteredImageForDocInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 croppedButNotFilteredImageUUID];
+  infoCopy = info;
+  croppedButNotFilteredImageUUID = [infoCopy croppedButNotFilteredImageUUID];
 
-  if (!v5 || (-[ICDocCamExtractedDocumentViewController imageCache](self, "imageCache"), v6 = objc_claimAutoreleasedReturnValue(), [v4 croppedButNotFilteredImageUUID], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "getImage:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
+  if (!croppedButNotFilteredImageUUID || (-[ICDocCamExtractedDocumentViewController imageCache](self, "imageCache"), v6 = objc_claimAutoreleasedReturnValue(), [infoCopy croppedButNotFilteredImageUUID], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "getImage:", v7), fullImageUUID = objc_claimAutoreleasedReturnValue(), v7, v6, !fullImageUUID))
   {
-    v9 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
-    if ((v10 & 1) == 0 || (-[ICDocCamExtractedDocumentViewController delegate](self, "delegate"), v11 = objc_claimAutoreleasedReturnValue(), [v11 extractedDocumentControllerUncroppedImageForDocument:v4], v8 = objc_claimAutoreleasedReturnValue(), v11, !v8))
+    if ((v10 & 1) == 0 || (-[ICDocCamExtractedDocumentViewController delegate](self, "delegate"), v11 = objc_claimAutoreleasedReturnValue(), [v11 extractedDocumentControllerUncroppedImageForDocument:infoCopy], fullImageUUID = objc_claimAutoreleasedReturnValue(), v11, !fullImageUUID))
     {
-      v8 = [v4 fullImageUUID];
+      fullImageUUID = [infoCopy fullImageUUID];
 
-      if (v8)
+      if (fullImageUUID)
       {
-        v12 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-        v13 = [v4 fullImageUUID];
-        v8 = [v12 getImage:v13];
+        imageCache = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+        fullImageUUID2 = [infoCopy fullImageUUID];
+        fullImageUUID = [imageCache getImage:fullImageUUID2];
       }
     }
 
-    v14 = [v4 imageQuad];
-    v15 = v14;
-    if (v8 && v14)
+    imageQuad = [infoCopy imageQuad];
+    v15 = imageQuad;
+    if (fullImageUUID && imageQuad)
     {
-      v16 = [ICDocCamImageFilters perspectiveCorrectedImageFromImage:v8 normalizedImageQuad:v14];
+      v16 = [ICDocCamImageFilters perspectiveCorrectedImageFromImage:fullImageUUID normalizedImageQuad:imageQuad];
 
-      v8 = v16;
+      fullImageUUID = v16;
     }
 
-    if (v8)
+    if (fullImageUUID)
     {
-      v17 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v18 = objc_opt_respondsToSelector();
 
       if ((v18 & 1) == 0)
       {
-        v19 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-        v20 = [v4 metaData];
-        v21 = [v19 setImage:v8 metaData:v20];
-        [v4 setCroppedButNotFilteredImageUUID:v21];
+        imageCache2 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+        metaData = [infoCopy metaData];
+        v21 = [imageCache2 setImage:fullImageUUID metaData:metaData];
+        [infoCopy setCroppedButNotFilteredImageUUID:v21];
       }
     }
   }
 
-  return v8;
+  return fullImageUUID;
 }
 
 - (CIContext)sharedCoreImageContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sharedCoreImageContext = v2->_sharedCoreImageContext;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sharedCoreImageContext = selfCopy->_sharedCoreImageContext;
   if (!sharedCoreImageContext)
   {
     v4 = +[ICDocCamImageFilters sharedCoreImageContext];
-    v5 = v2->_sharedCoreImageContext;
-    v2->_sharedCoreImageContext = v4;
+    v5 = selfCopy->_sharedCoreImageContext;
+    selfCopy->_sharedCoreImageContext = v4;
 
-    sharedCoreImageContext = v2->_sharedCoreImageContext;
+    sharedCoreImageContext = selfCopy->_sharedCoreImageContext;
   }
 
   v6 = sharedCoreImageContext;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (CGRect)targetRectForOrientation:(int64_t)a3 window:(id)a4
++ (CGRect)targetRectForOrientation:(int64_t)orientation window:(id)window
 {
-  v5 = a4;
-  [ICDocCamPageContentViewController leadingTrailingOffset:a3];
+  windowCopy = window;
+  [ICDocCamPageContentViewController leadingTrailingOffset:orientation];
   v7 = v6;
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10 = v9;
   v12 = v11;
 
@@ -349,7 +349,7 @@ LABEL_9:
 
   else
   {
-    if ((a3 - 1) < 2 || (a3 - 3) <= 1 && ![v5 dc_requiresCompactLandscapeIcons])
+    if ((orientation - 1) < 2 || (orientation - 3) <= 1 && ![windowCopy dc_requiresCompactLandscapeIcons])
     {
       v17 = 44.0;
       v13 = 113.0;
@@ -373,11 +373,11 @@ LABEL_5:
   return result;
 }
 
-- (ICDocCamExtractedDocumentViewController)initWithDelegate:(id)a3 documentInfoCollection:(id)a4 imageCache:(id)a5 currentIndex:(int64_t)a6 mode:(int)a7
+- (ICDocCamExtractedDocumentViewController)initWithDelegate:(id)delegate documentInfoCollection:(id)collection imageCache:(id)cache currentIndex:(int64_t)index mode:(int)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  delegateCopy = delegate;
+  collectionCopy = collection;
+  cacheCopy = cache;
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v18.receiver = self;
   v18.super_class = ICDocCamExtractedDocumentViewController;
@@ -385,11 +385,11 @@ LABEL_5:
 
   if (v16)
   {
-    objc_storeWeak(&v16->_delegate, v12);
-    objc_storeStrong(&v16->_documentInfoCollection, a4);
-    v16->_presentationPageIndex = a6;
-    objc_storeStrong(&v16->_imageCache, a5);
-    v16->_mode = a7;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_documentInfoCollection, collection);
+    v16->_presentationPageIndex = index;
+    objc_storeStrong(&v16->_imageCache, cache);
+    v16->_mode = mode;
   }
 
   [(ICDocCamExtractedDocumentViewController *)v16 updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)v16 presentationPageIndex]];
@@ -399,8 +399,8 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICDocCamExtractedDocumentViewController;
@@ -409,23 +409,23 @@ LABEL_5:
 
 - (id)undoManager
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-    v6 = [v5 extractedDocumentControllerUndoManager];
+    delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    extractedDocumentControllerUndoManager = [delegate2 extractedDocumentControllerUndoManager];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ICDocCamExtractedDocumentViewController;
-    v6 = [(ICDocCamExtractedDocumentViewController *)&v8 undoManager];
+    extractedDocumentControllerUndoManager = [(ICDocCamExtractedDocumentViewController *)&v8 undoManager];
   }
 
-  return v6;
+  return extractedDocumentControllerUndoManager;
 }
 
 - (void)defaultsChanged
@@ -473,8 +473,8 @@ uint64_t __58__ICDocCamExtractedDocumentViewController_defaultsChanged__block_in
 
 - (BOOL)cameraDisabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"com.apple.notes.cameraDisabled"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"com.apple.notes.cameraDisabled"];
 
   return v3;
 }
@@ -522,38 +522,38 @@ LABEL_5:
   [(ICDocCamExtractedDocumentViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
   if ([objc_opt_class() isLiquidGlassEnabledForEdit])
   {
-    v5 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
-    v6 = [v5 action];
+    doneButtonItem = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
+    action = [doneButtonItem action];
 
-    v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:101 target:self action:v6];
+    v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:101 target:self action:action];
     [(ICDocCamExtractedDocumentViewController *)self setDoneButtonItem:v7];
   }
 
   else
   {
-    v8 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-    v9 = [v8 navigationBar];
-    [v9 setBarStyle:0];
+    navigationController = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setBarStyle:0];
 
-    v10 = [MEMORY[0x277D75348] dc_barColor];
-    v11 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-    v12 = [v11 navigationBar];
-    [v12 setBarTintColor:v10];
+    dc_barColor = [MEMORY[0x277D75348] dc_barColor];
+    navigationController2 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setBarTintColor:dc_barColor];
 
-    v13 = [MEMORY[0x277D75348] dc_barColor];
-    v14 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
-    [v14 setBarTintColor:v13];
+    dc_barColor2 = [MEMORY[0x277D75348] dc_barColor];
+    bottomToolbar = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
+    [bottomToolbar setBarTintColor:dc_barColor2];
 
     [(ICDocCamExtractedDocumentViewController *)self setNeedsStatusBarAppearanceUpdate];
   }
 
-  v15 = [MEMORY[0x277D75348] DCExtractedDocumentViewControllerBackgroundColor];
-  v16 = [(ICDocCamExtractedDocumentViewController *)self view];
-  [v16 setBackgroundColor:v15];
+  dCExtractedDocumentViewControllerBackgroundColor = [MEMORY[0x277D75348] DCExtractedDocumentViewControllerBackgroundColor];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  [view setBackgroundColor:dCExtractedDocumentViewControllerBackgroundColor];
 
   [(ICDocCamExtractedDocumentViewController *)self setupBottomToolbar];
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 addObserver:self selector:sel_defaultsChanged name:*MEMORY[0x277CCA858] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_defaultsChanged name:*MEMORY[0x277CCA858] object:0];
 
   v18 = (DCDebugInterfaceEnabled() & 1) == 0 && (![MEMORY[0x277D755C8] isSourceTypeAvailable:1] || -[ICDocCamExtractedDocumentViewController cameraDisabled](self, "cameraDisabled"));
   [(ICDocCamExtractedDocumentViewController *)self setCameraRestricted:v18];
@@ -570,151 +570,151 @@ LABEL_5:
   v22 = [v20 initWithTransitionStyle:1 navigationOrientation:0 options:v21];
   [(ICDocCamExtractedDocumentViewController *)self setPageViewController:v22];
 
-  v23 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  [v23 setDataSource:self];
+  pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  [pageViewController setDataSource:self];
 
-  v24 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  [v24 setDelegate:self];
+  pageViewController2 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  [pageViewController2 setDelegate:self];
 
-  v25 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  [(ICDocCamExtractedDocumentViewController *)self addChildViewController:v25];
+  pageViewController3 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  [(ICDocCamExtractedDocumentViewController *)self addChildViewController:pageViewController3];
 
-  v26 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
-  v27 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v28 = [v27 view];
-  [v26 addSubview:v28];
+  pageViewControllerContainerView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
+  pageViewController4 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view2 = [pageViewController4 view];
+  [pageViewControllerContainerView addSubview:view2];
 
-  v29 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  [v29 didMoveToParentViewController:self];
+  pageViewController5 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  [pageViewController5 didMoveToParentViewController:self];
 
-  v30 = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
-  v31 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
-  [v31 setBackgroundColor:v30];
+  currentBackgroundColor = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
+  pageViewControllerContainerView2 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
+  [pageViewControllerContainerView2 setBackgroundColor:currentBackgroundColor];
 
   v32 = MEMORY[0x277CCAAD0];
   v88 = @"childView";
-  v33 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v34 = [v33 view];
-  v89 = v34;
+  pageViewController6 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view3 = [pageViewController6 view];
+  v89 = view3;
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
   v36 = [v32 constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v35];
 
   v37 = MEMORY[0x277CCAAD0];
   v86 = @"childView";
-  v38 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v39 = [v38 view];
-  v87 = v39;
+  pageViewController7 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view4 = [pageViewController7 view];
+  v87 = view4;
   v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
   v41 = [v37 constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v40];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v36];
   [MEMORY[0x277CCAAD0] activateConstraints:v41];
-  v42 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v43 = [v42 view];
-  [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pageViewController8 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view5 = [pageViewController8 view];
+  [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:0];
-  v44 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v44 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind"];
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind"];
 
-  v45 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v45 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamExtractedDocumentThumbnailCell"];
+  thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamExtractedDocumentThumbnailCell"];
 
   v46 = *MEMORY[0x277D76EB8];
-  v47 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v47 setDecelerationRate:v46];
+  thumbnailCollectionView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView3 setDecelerationRate:v46];
 
-  v48 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v48 setTranslatesAutoresizingMaskIntoConstraints:1];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v49 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  collectionTitleButton2 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
   LODWORD(v50) = 1132068864;
-  [v49 setContentCompressionResistancePriority:0 forAxis:v50];
+  [collectionTitleButton2 setContentCompressionResistancePriority:0 forAxis:v50];
 
-  v51 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-  [v51 setTranslatesAutoresizingMaskIntoConstraints:1];
+  pageIndexLabel = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+  [pageIndexLabel setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v52 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-  [v52 setTextAlignment:1];
+  pageIndexLabel2 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+  [pageIndexLabel2 setTextAlignment:1];
 
   v53 = [[ICDocCamReorderingThumbnailCollectionViewLayout alloc] initWithDelegate:self];
-  v54 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v54 setCollectionViewLayout:v53];
+  thumbnailCollectionView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView4 setCollectionViewLayout:v53];
 
   [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:0];
-  v55 = [(ICDocCamExtractedDocumentViewController *)self thumbnailLongPressGestureRecognizer];
+  thumbnailLongPressGestureRecognizer = [(ICDocCamExtractedDocumentViewController *)self thumbnailLongPressGestureRecognizer];
 
-  if (!v55)
+  if (!thumbnailLongPressGestureRecognizer)
   {
     v56 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_respondToThumbnailLongPressGesture_];
-    v57 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v57 addGestureRecognizer:v56];
+    thumbnailCollectionView5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView5 addGestureRecognizer:v56];
 
     [(ICDocCamExtractedDocumentViewController *)self setThumbnailLongPressGestureRecognizer:v56];
   }
 
-  v58 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
+  imageLongPressGestureRecognizer = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
 
-  if (!v58)
+  if (!imageLongPressGestureRecognizer)
   {
     v59 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_respondToImageLongPressGesture_];
-    v60 = [(ICDocCamExtractedDocumentViewController *)self view];
-    [v60 addGestureRecognizer:v59];
+    view6 = [(ICDocCamExtractedDocumentViewController *)self view];
+    [view6 addGestureRecognizer:v59];
 
     [(ICDocCamExtractedDocumentViewController *)self setImageLongPressGestureRecognizer:v59];
-    v61 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
-    [v61 setDelegate:self];
+    imageLongPressGestureRecognizer2 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
+    [imageLongPressGestureRecognizer2 setDelegate:self];
   }
 
-  v62 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+  axHUDLongPressGestureRecognizer = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
 
-  if (!v62)
+  if (!axHUDLongPressGestureRecognizer)
   {
     v63 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_handleAccessibilityLongPressOnCollectionTitle_];
     [(ICDocCamExtractedDocumentViewController *)self setAxHUDLongPressGestureRecognizer:v63];
 
-    v64 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
-    [v64 setDelegate:self];
+    axHUDLongPressGestureRecognizer2 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+    [axHUDLongPressGestureRecognizer2 setDelegate:self];
 
     v65 = DCAccessibilityAccessibilityLargerTextSizesEnabled();
-    v66 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
-    [v66 setEnabled:v65];
+    axHUDLongPressGestureRecognizer3 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+    [axHUDLongPressGestureRecognizer3 setEnabled:v65];
 
-    v67 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-    v68 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
-    [v67 addGestureRecognizer:v68];
+    collectionTitleButton3 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+    axHUDLongPressGestureRecognizer4 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+    [collectionTitleButton3 addGestureRecognizer:axHUDLongPressGestureRecognizer4];
   }
 
-  v69 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
-  v70 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
-  [v69 requireGestureRecognizerToFail:v70];
+  axHUDLongPressGestureRecognizer5 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+  imageLongPressGestureRecognizer3 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
+  [axHUDLongPressGestureRecognizer5 requireGestureRecognizerToFail:imageLongPressGestureRecognizer3];
 
-  v71 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
-  v72 = [(ICDocCamExtractedDocumentViewController *)self thumbnailLongPressGestureRecognizer];
-  [v71 requireGestureRecognizerToFail:v72];
+  imageLongPressGestureRecognizer4 = [(ICDocCamExtractedDocumentViewController *)self imageLongPressGestureRecognizer];
+  thumbnailLongPressGestureRecognizer2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailLongPressGestureRecognizer];
+  [imageLongPressGestureRecognizer4 requireGestureRecognizerToFail:thumbnailLongPressGestureRecognizer2];
 
-  v73 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v74 = [v73 view];
-  v75 = [v74 subviews];
-  v76 = [v75 dc_objectPassingTest:&__block_literal_global];
+  pageViewController9 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view7 = [pageViewController9 view];
+  subviews = [view7 subviews];
+  v76 = [subviews dc_objectPassingTest:&__block_literal_global];
   [(ICDocCamExtractedDocumentViewController *)self setPageViewControllerScrollView:v76];
 
-  v77 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
-  [v77 setContentInsetAdjustmentBehavior:2];
+  pageViewControllerScrollView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
+  [pageViewControllerScrollView setContentInsetAdjustmentBehavior:2];
 
-  v78 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
-  [v78 setDelegate:self];
+  pageViewControllerScrollView2 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
+  [pageViewControllerScrollView2 setDelegate:self];
 
   [(ICDocCamExtractedDocumentViewController *)self setupAccessibilityInfo];
-  v79 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v79 addObserver:self selector:sel_updateForAccessibilityDarkerSystemColors name:*MEMORY[0x277D76460] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_updateForAccessibilityDarkerSystemColors name:*MEMORY[0x277D76460] object:0];
 
-  v80 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v80 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
-  v81 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  collectionTitleButton4 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
   v82 = objc_alloc_init(MEMORY[0x277D75870]);
-  [v81 addInteraction:v82];
+  [collectionTitleButton4 addInteraction:v82];
 
   [(ICDocCamExtractedDocumentViewController *)self setupFilterButtonMenu];
   [(ICDocCamExtractedDocumentViewController *)self setupGlurBar];
@@ -729,9 +729,9 @@ uint64_t __54__ICDocCamExtractedDocumentViewController_viewDidLoad__block_invoke
   return isKindOfClass & 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v74[2] = *MEMORY[0x277D85DE8];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -739,117 +739,117 @@ uint64_t __54__ICDocCamExtractedDocumentViewController_viewDidLoad__block_invoke
   block[3] = &unk_278F92C70;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v5 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-    v8 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-    v9 = [v8 extractedDocumentControllerTitle];
-    [v7 setTitle:v9 forState:0];
+    collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+    delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    extractedDocumentControllerTitle = [delegate2 extractedDocumentControllerTitle];
+    [collectionTitleButton setTitle:extractedDocumentControllerTitle forState:0];
   }
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  [v10 setNavigationBarHidden:0 animated:1];
+  navigationController = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
-  v11 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  [v11 setToolbarHidden:1];
+  navigationController2 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  [navigationController2 setToolbarHidden:1];
 
-  v12 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  v13 = [v12 navigationBar];
-  [v13 setOpaque:1];
+  navigationController3 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  navigationBar = [navigationController3 navigationBar];
+  [navigationBar setOpaque:1];
 
-  v14 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  v15 = [v14 navigationBar];
-  [v15 setTranslucent:0];
+  navigationController4 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  navigationBar2 = [navigationController4 navigationBar];
+  [navigationBar2 setTranslucent:0];
 
-  v16 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
-  [v16 setOpaque:1];
+  bottomToolbar = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
+  [bottomToolbar setOpaque:1];
 
-  v17 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
-  [v17 setTranslucent:0];
+  bottomToolbar2 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
+  [bottomToolbar2 setTranslucent:0];
 
-  v18 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  titleViewWrapper = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
 
-  if (!v18)
+  if (!titleViewWrapper)
   {
     v19 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(ICDocCamExtractedDocumentViewController *)self setTitleViewWrapper:v19];
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    v21 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    [v21 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    titleViewWrapper2 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    [titleViewWrapper2 setBackgroundColor:clearColor];
 
-    v22 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleViewWrapper3 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    [titleViewWrapper3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    [v23 setUserInteractionEnabled:1];
+    titleViewWrapper4 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    [titleViewWrapper4 setUserInteractionEnabled:1];
 
-    v24 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    titleViewWrapper5 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
     LODWORD(v25) = 1132068864;
-    [v24 setContentCompressionResistancePriority:0 forAxis:v25];
+    [titleViewWrapper5 setContentCompressionResistancePriority:0 forAxis:v25];
 
     v26 = MEMORY[0x277CCAAD0];
-    v27 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v28 = [v26 constraintWithItem:v27 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:100.0];
+    titleViewWrapper6 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    v28 = [v26 constraintWithItem:titleViewWrapper6 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:100.0];
     [(ICDocCamExtractedDocumentViewController *)self setTitleViewWrapperWidthConstraint:v28];
 
-    v29 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
+    titleViewWrapperWidthConstraint = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
     LODWORD(v30) = 1140457472;
-    [v29 setPriority:v30];
+    [titleViewWrapperWidthConstraint setPriority:v30];
 
     v31 = MEMORY[0x277CCAAD0];
-    v32 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v33 = [v31 constraintWithItem:v32 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:44.0];
+    titleViewWrapper7 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    v33 = [v31 constraintWithItem:titleViewWrapper7 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:44.0];
     [(ICDocCamExtractedDocumentViewController *)self setTitleViewWrapperHeightConstraint:v33];
 
     v34 = MEMORY[0x277CCAAD0];
-    v35 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
-    v74[0] = v35;
-    v36 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperHeightConstraint];
-    v74[1] = v36;
+    titleViewWrapperWidthConstraint2 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
+    v74[0] = titleViewWrapperWidthConstraint2;
+    titleViewWrapperHeightConstraint = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperHeightConstraint];
+    v74[1] = titleViewWrapperHeightConstraint;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:2];
     [v34 activateConstraints:v37];
 
     v38 = objc_alloc_init(MEMORY[0x277D75A68]);
     [(ICDocCamExtractedDocumentViewController *)self setTitleView:v38];
 
-    v39 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    titleView = [(ICDocCamExtractedDocumentViewController *)self titleView];
     LODWORD(v40) = 1132068864;
-    [v39 setContentCompressionResistancePriority:0 forAxis:v40];
+    [titleView setContentCompressionResistancePriority:0 forAxis:v40];
 
-    v41 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleView2 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    [titleView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v42 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v43 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    [v42 addSubview:v43];
+    titleViewWrapper8 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    titleView3 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    [titleViewWrapper8 addSubview:titleView3];
 
-    v44 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v45 = [v44 leadingAnchor];
-    v46 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v47 = [v46 leadingAnchor];
-    v48 = [v45 constraintEqualToAnchor:v47 constant:0.0];
+    titleView4 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    leadingAnchor = [titleView4 leadingAnchor];
+    titleViewWrapper9 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    leadingAnchor2 = [titleViewWrapper9 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
 
-    v49 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v50 = [v49 trailingAnchor];
-    v51 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v52 = [v51 trailingAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52 constant:0.0];
+    titleView5 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    trailingAnchor = [titleView5 trailingAnchor];
+    titleViewWrapper10 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    trailingAnchor2 = [titleViewWrapper10 trailingAnchor];
+    v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
 
-    v54 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v55 = [v54 bottomAnchor];
-    v56 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v57 = [v56 bottomAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57 constant:0.0];
+    titleView6 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    bottomAnchor = [titleView6 bottomAnchor];
+    titleViewWrapper11 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    bottomAnchor2 = [titleViewWrapper11 bottomAnchor];
+    v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
 
-    v59 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v60 = [v59 topAnchor];
-    v61 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v62 = [v61 topAnchor];
-    v63 = [v60 constraintEqualToAnchor:v62 constant:0.0];
+    titleView7 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    topAnchor = [titleView7 topAnchor];
+    titleViewWrapper12 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    topAnchor2 = [titleViewWrapper12 topAnchor];
+    v63 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
 
     v64 = MEMORY[0x277CCAAD0];
     v73[0] = v48;
@@ -859,21 +859,21 @@ uint64_t __54__ICDocCamExtractedDocumentViewController_viewDidLoad__block_invoke
     v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:4];
     [v64 activateConstraints:v65];
 
-    v66 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-    v67 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-    [v67 setTitleView:v66];
+    titleViewWrapper13 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+    navigationItem = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+    [navigationItem setTitleView:titleViewWrapper13];
   }
 
-  v68 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  [(ICDocCamExtractedDocumentViewController *)self showBarsForZoomablePageContentViewController:v68];
+  currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  [(ICDocCamExtractedDocumentViewController *)self showBarsForZoomablePageContentViewController:currentPageContentViewController];
 
-  v69 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  v70 = [v69 navigationBar];
-  [v70 setNeedsLayout];
+  navigationController5 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  navigationBar3 = [navigationController5 navigationBar];
+  [navigationBar3 setNeedsLayout];
 
   v71.receiver = self;
   v71.super_class = ICDocCamExtractedDocumentViewController;
-  [(ICDocCamExtractedDocumentViewController *)&v71 viewWillAppear:v3];
+  [(ICDocCamExtractedDocumentViewController *)&v71 viewWillAppear:appearCopy];
 }
 
 void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke(uint64_t a1)
@@ -896,16 +896,16 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
-    v5 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
-    [v5 invalidateIntrinsicContentSize];
+    bottomToolbar = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
+    [bottomToolbar invalidateIntrinsicContentSize];
 
-    v6 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
-    [v6 sizeToFit];
+    bottomToolbar2 = [(ICDocCamExtractedDocumentViewController *)self bottomToolbar];
+    [bottomToolbar2 sizeToFit];
   }
 
   v7.receiver = self;
@@ -918,8 +918,8 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
   v18.receiver = self;
   v18.super_class = ICDocCamExtractedDocumentViewController;
   [(ICDocCamExtractedDocumentViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self view];
-  [v3 bounds];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -929,19 +929,19 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
     [(ICDocCamExtractedDocumentViewController *)self setPreviousViewSize:v5, v7];
     [(ICDocCamExtractedDocumentViewController *)self updateLayout];
     [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
-    v11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v11 invalidateLayout];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout invalidateLayout];
 
-    v12 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v12 layoutIfNeeded];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView layoutIfNeeded];
   }
 
-  v13 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v14 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v15 = [v14 docInfos];
-  v16 = [v15 count];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v16 = [docInfos count];
 
-  if (v13 < v16)
+  if (presentationPageIndex < v16)
   {
     v17 = [MEMORY[0x277CCAA70] indexPathForItem:-[ICDocCamExtractedDocumentViewController presentationPageIndex](self inSection:{"presentationPageIndex"), 0}];
     -[ICDocCamExtractedDocumentViewController setCurrentThumbnailItem:animated:](self, "setCurrentThumbnailItem:animated:", [v17 item], -[ICDocCamExtractedDocumentViewController layoutHasHappened](self, "layoutHasHappened"));
@@ -955,24 +955,24 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
   [(ICDocCamExtractedDocumentViewController *)self setLayoutHasHappened:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICDocCamExtractedDocumentViewController;
-  [(ICDocCamExtractedDocumentViewController *)&v4 viewDidAppear:a3];
+  [(ICDocCamExtractedDocumentViewController *)&v4 viewDidAppear:appear];
   [(ICDocCamExtractedDocumentViewController *)self becomeFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(ICDocCamExtractedDocumentViewController *)self setBarsShouldBeHidden:1];
   v5 = +[DCImageAnalyzerManager sharedInstance];
   [v5 cleanup];
 
   v6.receiver = self;
   v6.super_class = ICDocCamExtractedDocumentViewController;
-  [(ICDocCamExtractedDocumentViewController *)&v6 viewDidDisappear:v3];
+  [(ICDocCamExtractedDocumentViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -982,20 +982,20 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
     return 1;
   }
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = (v7 - 3) >= 2;
+    v9 = (interfaceOrientation - 3) >= 2;
   }
 
   v3 = !v9;
@@ -1003,19 +1003,19 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
   return v3;
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   v4 = DCAccessibilityAccessibilityLargerTextSizesEnabled();
-  v5 = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
-  [v5 setEnabled:v4];
+  axHUDLongPressGestureRecognizer = [(ICDocCamExtractedDocumentViewController *)self axHUDLongPressGestureRecognizer];
+  [axHUDLongPressGestureRecognizer setEnabled:v4];
 }
 
 - (void)prepareForDismissal
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self presentedViewController];
-  if (v2)
+  presentedViewController = [(ICDocCamExtractedDocumentViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v3 = v2;
+    v3 = presentedViewController;
     if (objc_opt_respondsToSelector())
     {
       [v3 prepareForDismissal];
@@ -1025,17 +1025,17 @@ void __58__ICDocCamExtractedDocumentViewController_viewWillAppear___block_invoke
   MEMORY[0x2821F9730]();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = ICDocCamExtractedDocumentViewController;
-  [(ICDocCamExtractedDocumentViewController *)&v7 traitCollectionDidChange:a3];
+  [(ICDocCamExtractedDocumentViewController *)&v7 traitCollectionDidChange:change];
   if (([objc_opt_class() isLiquidGlassEnabledForEdit] & 1) == 0)
   {
-    v4 = [MEMORY[0x277D75348] dc_barColor];
-    v5 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-    v6 = [v5 navigationBar];
-    [v6 setBarTintColor:v4];
+    dc_barColor = [MEMORY[0x277D75348] dc_barColor];
+    navigationController = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setBarTintColor:dc_barColor];
   }
 }
 
@@ -1069,9 +1069,9 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
   [(UIViewController *)self dc_getEffectiveInterfaceOrientation:&v36 andEffectiveInterfaceIdiom:&v35];
   if ([(ICDocCamExtractedDocumentViewController *)self mode])
   {
-    v3 = [(ICDocCamExtractedDocumentViewController *)self mode];
-    v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-    [v4 bounds];
+    mode = [(ICDocCamExtractedDocumentViewController *)self mode];
+    view = [(ICDocCamExtractedDocumentViewController *)self view];
+    [view bounds];
     v6 = v5;
 
     v7 = 56.0;
@@ -1090,46 +1090,46 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
       v8 = v7;
     }
 
-    if (v3 == 1)
+    if (mode == 1)
     {
-      v9 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
-      v44 = v9;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-      v11 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v11 setLeftBarButtonItems:v10];
+      doneButtonItem = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
+      v44 = doneButtonItem;
+      actionButtonItem = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
+      navigationItem = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItems:actionButtonItem];
 
-      v12 = [(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow];
-      if (v12)
+      shouldDisableSharrow = [(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow];
+      if (shouldDisableSharrow)
       {
         v13 = MEMORY[0x277CBEBF8];
       }
 
       else
       {
-        v10 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
-        v43 = v10;
+        actionButtonItem = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
+        v43 = actionButtonItem;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
       }
 
-      v25 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v25 setRightBarButtonItems:v13];
+      navigationItem2 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItems:v13];
 
-      if (!v12)
+      if (!shouldDisableSharrow)
       {
       }
 
       [(ICDocCamExtractedDocumentViewController *)self recreateThumbnailContainerWithWidth:v6 leadingTrailingMargin:v8];
       v26 = MEMORY[0x277CCAAD0];
       v41 = @"childView";
-      v27 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-      v42 = v27;
+      thumbnailContainerView = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+      v42 = thumbnailContainerView;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v29 = [v26 constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v28];
 
       v30 = MEMORY[0x277CCAAD0];
       v39 = @"childView";
-      v31 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-      v40 = v31;
+      thumbnailContainerView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+      v40 = thumbnailContainerView2;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v33 = [v30 constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v32];
 
@@ -1141,29 +1141,29 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
     else
     {
       [(ICDocCamExtractedDocumentViewController *)self recreateThumbnailContainerWithWidth:v6 leadingTrailingMargin:v8];
-      v20 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
-      v38 = v20;
-      v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-      v22 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v22 setLeftBarButtonItems:v21];
+      doneButtonItem2 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
+      v38 = doneButtonItem2;
+      actionButtonItem2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
+      navigationItem3 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem3 setLeftBarButtonItems:actionButtonItem2];
 
-      v23 = [(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow];
-      if (v23)
+      shouldDisableSharrow2 = [(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow];
+      if (shouldDisableSharrow2)
       {
         v24 = MEMORY[0x277CBEBF8];
       }
 
       else
       {
-        v21 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
-        v37 = v21;
+        actionButtonItem2 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
+        v37 = actionButtonItem2;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       }
 
-      v34 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v34 setRightBarButtonItems:v24];
+      navigationItem4 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem4 setRightBarButtonItems:v24];
 
-      if (!v23)
+      if (!shouldDisableSharrow2)
       {
       }
     }
@@ -1173,17 +1173,17 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
   {
     if (!v35)
     {
-      v14 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
-      v46[0] = v14;
+      doneButtonItem3 = [(ICDocCamExtractedDocumentViewController *)self doneButtonItem];
+      v46[0] = doneButtonItem3;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
-      v16 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v16 setLeftBarButtonItems:v15];
+      navigationItem5 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem5 setLeftBarButtonItems:v15];
 
-      v17 = [(ICDocCamExtractedDocumentViewController *)self retakeButtonItem];
-      v45 = v17;
+      retakeButtonItem = [(ICDocCamExtractedDocumentViewController *)self retakeButtonItem];
+      v45 = retakeButtonItem;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-      v19 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
-      [v19 setRightBarButtonItems:v18];
+      navigationItem6 = [(ICDocCamExtractedDocumentViewController *)self navigationItem];
+      [navigationItem6 setRightBarButtonItems:v18];
     }
 
     [(ICDocCamExtractedDocumentViewController *)self updateTitleView];
@@ -1195,25 +1195,25 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
 - (void)updateTitleView
 {
   v109 = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  titleViewWrapper = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
 
-  if (!v3)
+  if (!titleViewWrapper)
   {
     return;
   }
 
   [(ICDocCamExtractedDocumentViewController *)self updateForAccessibilityDarkerSystemColors];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  [v4 removeFromSuperview];
+  titleView = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  [titleView removeFromSuperview];
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v6 = [v5 arrangedSubviews];
+  titleView2 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  arrangedSubviews = [titleView2 arrangedSubviews];
 
   v105 = 0u;
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v7 = v6;
+  v7 = arrangedSubviews;
   v8 = [v7 countByEnumeratingWithState:&v103 objects:v108 count:16];
   if (v8)
   {
@@ -1229,8 +1229,8 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
         }
 
         v12 = *(*(&v103 + 1) + 8 * i);
-        v13 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-        [v13 removeArrangedSubview:v12];
+        titleView3 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+        [titleView3 removeArrangedSubview:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v103 objects:v108 count:16];
@@ -1239,11 +1239,11 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
     while (v9);
   }
 
-  v14 = [(ICDocCamExtractedDocumentViewController *)self documentCount];
-  v15 = [(ICDocCamExtractedDocumentViewController *)self mode];
-  if (!v15)
+  documentCount = [(ICDocCamExtractedDocumentViewController *)self documentCount];
+  mode = [(ICDocCamExtractedDocumentViewController *)self mode];
+  if (!mode)
   {
-    if (v14 < 2)
+    if (documentCount < 2)
     {
       v29 = 1;
       v38 = 0.0;
@@ -1260,13 +1260,13 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
 
     else
     {
-      v98 = [(ICDocCamExtractedDocumentViewController *)self view];
-      v99 = [v98 window];
-      v100 = [v99 windowScene];
-      v101 = [v100 interfaceOrientation];
+      view = [(ICDocCamExtractedDocumentViewController *)self view];
+      window = [view window];
+      windowScene = [window windowScene];
+      interfaceOrientation = [windowScene interfaceOrientation];
 
       v42 = MEMORY[0x277D74300];
-      if ((v101 - 1) > 1)
+      if ((interfaceOrientation - 1) > 1)
       {
         v43 = *MEMORY[0x277D74410];
         v44 = 14.0;
@@ -1280,26 +1280,26 @@ uint64_t __70__ICDocCamExtractedDocumentViewController_isLiquidGlassEnabledForEd
     }
 
     v45 = [v42 systemFontOfSize:v44 weight:v43];
-    v46 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-    [v46 setFont:v45];
+    pageIndexLabel = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+    [pageIndexLabel setFont:v45];
 
     v29 = 1;
     v38 = 0.0;
 LABEL_23:
-    v47 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-    [v47 sizeToFit];
+    pageIndexLabel2 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+    [pageIndexLabel2 sizeToFit];
 
-    v48 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-    [v48 size];
+    pageIndexLabel3 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+    [pageIndexLabel3 size];
     v39 = v49;
 
     goto LABEL_25;
   }
 
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v17 || (-[ICDocCamExtractedDocumentViewController view](self, "view"), v18 = objc_claimAutoreleasedReturnValue(), [v18 window], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "windowScene"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "interfaceOrientation"), v20, v19, v18, (v21 - 3) > 1))
+  if (userInterfaceIdiom || (-[ICDocCamExtractedDocumentViewController view](self, "view"), v18 = objc_claimAutoreleasedReturnValue(), [v18 window], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "windowScene"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "interfaceOrientation"), v20, v19, v18, (v21 - 3) > 1))
   {
     v25 = MEMORY[0x277D74300];
     v30 = *MEMORY[0x277D74410];
@@ -1308,13 +1308,13 @@ LABEL_23:
 
   else
   {
-    v22 = [(ICDocCamExtractedDocumentViewController *)self view];
-    v23 = [v22 window];
-    v24 = [v23 dc_requiresCompactLandscapeIcons];
+    view2 = [(ICDocCamExtractedDocumentViewController *)self view];
+    window2 = [view2 window];
+    dc_requiresCompactLandscapeIcons = [window2 dc_requiresCompactLandscapeIcons];
 
     v25 = MEMORY[0x277D74300];
     v26 = *MEMORY[0x277D74410];
-    if (v24)
+    if (dc_requiresCompactLandscapeIcons)
     {
       v27 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:*MEMORY[0x277D74410]];
       v28 = [MEMORY[0x277D74300] systemFontOfSize:14.0 weight:v26];
@@ -1330,111 +1330,111 @@ LABEL_23:
   v28 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74418]];
   v29 = 1;
 LABEL_16:
-  v32 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-  [v32 setFont:v28];
+  pageIndexLabel4 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+  [pageIndexLabel4 setFont:v28];
 
-  v33 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  v34 = [v33 titleLabel];
-  [v34 setFont:v27];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  titleLabel = [collectionTitleButton titleLabel];
+  [titleLabel setFont:v27];
 
-  v35 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v35 sizeToFit];
+  collectionTitleButton2 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton2 sizeToFit];
 
-  v36 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v36 size];
+  collectionTitleButton3 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton3 size];
   v38 = v37;
 
   v39 = 0.0;
-  if (v14 > 1)
+  if (documentCount > 1)
   {
     goto LABEL_23;
   }
 
 LABEL_25:
-  v50 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  [v50 setDistribution:0];
+  titleView4 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  [titleView4 setDistribution:0];
 
-  v51 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v52 = v51;
+  titleView5 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  v52 = titleView5;
   if (v29)
   {
-    [v51 setAxis:1];
+    [titleView5 setAxis:1];
 
-    v53 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    [v53 setDistribution:1];
+    titleView6 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    [titleView6 setDistribution:1];
 
-    v54 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    [v54 setSpacing:-16.0];
+    titleView7 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    [titleView7 setSpacing:-16.0];
 
-    if (v15)
+    if (mode)
     {
-      v55 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-      v56 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-      [v55 addArrangedSubview:v56];
+      titleView8 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+      collectionTitleButton4 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+      [titleView8 addArrangedSubview:collectionTitleButton4];
     }
 
-    if (v14 >= 2)
+    if (documentCount >= 2)
     {
-      v57 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-      v58 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-      [v57 addArrangedSubview:v58];
+      titleView9 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+      pageIndexLabel5 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+      [titleView9 addArrangedSubview:pageIndexLabel5];
 
-      v59 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-      [v59 setSpacing:-6.0];
+      titleView10 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+      [titleView10 setSpacing:-6.0];
     }
 
     goto LABEL_41;
   }
 
-  [v51 setAxis:0];
+  [titleView5 setAxis:0];
 
-  v60 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  [v60 setSpacing:4.0];
+  titleView11 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  [titleView11 setSpacing:4.0];
 
   if ([MEMORY[0x277D74248] dc_isRTL])
   {
-    if (v14 >= 2)
+    if (documentCount >= 2)
     {
-      v61 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-      v62 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-      [v61 addArrangedSubview:v62];
+      titleView12 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+      pageIndexLabel6 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+      [titleView12 addArrangedSubview:pageIndexLabel6];
     }
 
-    if (!v15)
+    if (!mode)
     {
       goto LABEL_40;
     }
 
-    v63 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v64 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+    titleView13 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    collectionTitleButton5 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
   }
 
   else
   {
-    if (v15)
+    if (mode)
     {
-      v65 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-      v66 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-      [v65 addArrangedSubview:v66];
+      titleView14 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+      collectionTitleButton6 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+      [titleView14 addArrangedSubview:collectionTitleButton6];
     }
 
-    if (v14 < 2)
+    if (documentCount < 2)
     {
       goto LABEL_40;
     }
 
-    v63 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-    v64 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+    titleView13 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+    collectionTitleButton5 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
   }
 
-  v67 = v64;
-  [v63 addArrangedSubview:v64];
+  v67 = collectionTitleButton5;
+  [titleView13 addArrangedSubview:collectionTitleButton5];
 
 LABEL_40:
   v38 = v38 + v39;
 LABEL_41:
-  v68 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
-  [v68 constant];
+  titleViewWrapperWidthConstraint = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
+  [titleViewWrapperWidthConstraint constant];
   v70 = v69;
 
   v71 = v38 + 8.0;
@@ -1448,36 +1448,36 @@ LABEL_41:
     v72 = v38 + 8.0;
   }
 
-  v73 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
-  [v73 setConstant:v72];
+  titleViewWrapperWidthConstraint2 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapperWidthConstraint];
+  [titleViewWrapperWidthConstraint2 setConstant:v72];
 
-  v74 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-  v75 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  [v74 addSubview:v75];
+  titleViewWrapper2 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  titleView15 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  [titleViewWrapper2 addSubview:titleView15];
 
-  v76 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v77 = [v76 leadingAnchor];
-  v78 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-  v79 = [v78 leadingAnchor];
-  v80 = [v77 constraintEqualToAnchor:v79 constant:0.0];
+  titleView16 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  leadingAnchor = [titleView16 leadingAnchor];
+  titleViewWrapper3 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  leadingAnchor2 = [titleViewWrapper3 leadingAnchor];
+  v80 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
 
-  v81 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v82 = [v81 trailingAnchor];
-  v83 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-  v84 = [v83 trailingAnchor];
-  v85 = [v82 constraintEqualToAnchor:v84 constant:0.0];
+  titleView17 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  trailingAnchor = [titleView17 trailingAnchor];
+  titleViewWrapper4 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  trailingAnchor2 = [titleViewWrapper4 trailingAnchor];
+  v85 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
 
-  v86 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v87 = [v86 bottomAnchor];
-  v88 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-  v89 = [v88 bottomAnchor];
-  v90 = [v87 constraintEqualToAnchor:v89 constant:0.0];
+  titleView18 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  bottomAnchor = [titleView18 bottomAnchor];
+  titleViewWrapper5 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  bottomAnchor2 = [titleViewWrapper5 bottomAnchor];
+  v90 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
 
-  v91 = [(ICDocCamExtractedDocumentViewController *)self titleView];
-  v92 = [v91 topAnchor];
-  v93 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
-  v94 = [v93 topAnchor];
-  v95 = [v92 constraintEqualToAnchor:v94 constant:0.0];
+  titleView19 = [(ICDocCamExtractedDocumentViewController *)self titleView];
+  topAnchor = [titleView19 topAnchor];
+  titleViewWrapper6 = [(ICDocCamExtractedDocumentViewController *)self titleViewWrapper];
+  topAnchor2 = [titleViewWrapper6 topAnchor];
+  v95 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
 
   v96 = MEMORY[0x277CCAAD0];
   v107[0] = v80;
@@ -1524,12 +1524,12 @@ void __58__ICDocCamExtractedDocumentViewController_updateTitleView__block_invoke
   [(UIViewController *)self dc_getEffectiveInterfaceOrientation:&v10 andEffectiveInterfaceIdiom:&v9];
   if ((v10 - 3) <= 1 && v9 == 0)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 dc_requiresCompactLandscapeIcons];
+    view = [(ICDocCamExtractedDocumentViewController *)self view];
+    window = [view window];
+    dc_requiresCompactLandscapeIcons = [window dc_requiresCompactLandscapeIcons];
 
     result = 44.0;
-    if (v8)
+    if (dc_requiresCompactLandscapeIcons)
     {
       return 32.0;
     }
@@ -1557,11 +1557,11 @@ void __58__ICDocCamExtractedDocumentViewController_updateTitleView__block_invoke
   return result;
 }
 
-- (void)recreateThumbnailContainerWithWidth:(double)a3 leadingTrailingMargin:(double)a4
+- (void)recreateThumbnailContainerWithWidth:(double)width leadingTrailingMargin:(double)margin
 {
   v49[4] = *MEMORY[0x277D85DE8];
-  v7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  [v7 removeFromSuperview];
+  thumbnailContainerView = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  [thumbnailContainerView removeFromSuperview];
 
   [(ICDocCamExtractedDocumentViewController *)self setThumbnailContainerViewItem:0];
   [(ICDocCamExtractedDocumentViewController *)self setThumbnailContainerView:0];
@@ -1569,129 +1569,129 @@ void __58__ICDocCamExtractedDocumentViewController_updateTitleView__block_invoke
   v8 = objc_alloc_init(ICDocCamExtractedThumbnailContainerView);
   [(ICDocCamExtractedDocumentViewController *)self setThumbnailContainerView:v8];
 
-  v9 = [MEMORY[0x277D75348] clearColor];
-  v10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  [v10 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  thumbnailContainerView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  [thumbnailContainerView2 setBackgroundColor:clearColor];
 
-  v11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  [v11 setDelegate:self];
+  thumbnailContainerView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  [thumbnailContainerView3 setDelegate:self];
 
   v12 = objc_alloc(MEMORY[0x277D751E0]);
-  v13 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  v14 = [v12 initWithCustomView:v13];
+  thumbnailContainerView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  v14 = [v12 initWithCustomView:thumbnailContainerView4];
   [(ICDocCamExtractedDocumentViewController *)self setThumbnailContainerViewItem:v14];
 
   if ([MEMORY[0x277D74248] dc_isRTL])
   {
     CGAffineTransformMakeScale(&v48, -1.0, 1.0);
-    v15 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+    thumbnailContainerView5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
     v47 = v48;
-    [v15 setTransform:&v47];
+    [thumbnailContainerView5 setTransform:&v47];
   }
 
-  v16 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewItem];
-  [v16 setWidth:a3 + a4 * -2.0];
+  thumbnailContainerViewItem = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewItem];
+  [thumbnailContainerViewItem setWidth:width + margin * -2.0];
 
   [(ICDocCamExtractedDocumentViewController *)self thumbnailToolbarHeight];
   v18 = v17;
-  v19 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewItem];
-  [v19 width];
+  thumbnailContainerViewItem2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewItem];
+  [thumbnailContainerViewItem2 width];
   v21 = v20;
-  v22 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  [v22 setFrame:{0.0, 0.0, v21, v18}];
+  thumbnailContainerView6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  [thumbnailContainerView6 setFrame:{0.0, 0.0, v21, v18}];
 
-  v23 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  v24 = [v23 heightAnchor];
-  v25 = [v24 constraintEqualToConstant:v18];
+  thumbnailContainerView7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  heightAnchor = [thumbnailContainerView7 heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:v18];
   [v25 setActive:1];
 
-  v26 = [(ICDocCamExtractedDocumentViewController *)self view];
-  [v26 layoutIfNeeded];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(ICDocCamExtractedDocumentViewController *)self setupThumbnailViewController];
-  v27 = [MEMORY[0x277CD9EB0] layer];
-  v28 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  [v28 bounds];
-  [v27 setFrame:?];
+  layer = [MEMORY[0x277CD9EB0] layer];
+  thumbnailContainerView8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  [thumbnailContainerView8 bounds];
+  [layer setFrame:?];
 
   v29 = MEMORY[0x277CBEA60];
   v30 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-  v31 = [v30 CGColor];
+  cGColor = [v30 CGColor];
   v32 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-  v33 = [v32 CGColor];
+  cGColor2 = [v32 CGColor];
   v34 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-  v35 = [v34 CGColor];
+  cGColor3 = [v34 CGColor];
   v36 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-  v37 = [v29 arrayWithObjects:{v31, v33, v35, objc_msgSend(v36, "CGColor"), 0}];
-  [v27 setColors:v37];
+  v37 = [v29 arrayWithObjects:{cGColor, cGColor2, cGColor3, objc_msgSend(v36, "CGColor"), 0}];
+  [layer setColors:v37];
 
   v49[0] = &unk_285C6D348;
   v38 = MEMORY[0x277CCABB0];
-  [v27 frame];
+  [layer frame];
   v40 = [v38 numberWithDouble:12.0 / v39];
   v49[1] = v40;
   v41 = MEMORY[0x277CCABB0];
-  [v27 frame];
+  [layer frame];
   v43 = [v41 numberWithDouble:1.0 - 12.0 / v42];
   v49[2] = v43;
   v49[3] = &unk_285C6D360;
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
-  [v27 setLocations:v44];
+  [layer setLocations:v44];
 
-  [v27 setStartPoint:{0.0, 0.5}];
-  [v27 setEndPoint:{1.0, 0.5}];
-  v45 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  v46 = [v45 layer];
-  [v46 setMask:v27];
+  [layer setStartPoint:{0.0, 0.5}];
+  [layer setEndPoint:{1.0, 0.5}];
+  thumbnailContainerView9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  layer2 = [thumbnailContainerView9 layer];
+  [layer2 setMask:layer];
 }
 
 - (void)setupThumbnailViewController
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+  thumbnailCollectionViewController = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
 
-  if (!v3)
+  if (!thumbnailCollectionViewController)
   {
     v4 = objc_alloc_init(MEMORY[0x277D752C8]);
     [(ICDocCamExtractedDocumentViewController *)self setThumbnailCollectionViewController:v4];
 
-    v5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    [v6 setCollectionView:v5];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    thumbnailCollectionViewController2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    [thumbnailCollectionViewController2 setCollectionView:thumbnailCollectionView];
 
-    v7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    [(ICDocCamExtractedDocumentViewController *)self addChildViewController:v7];
+    thumbnailCollectionViewController3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    [(ICDocCamExtractedDocumentViewController *)self addChildViewController:thumbnailCollectionViewController3];
 
-    v8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-    v9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v8 addSubview:v9];
+    thumbnailContainerView = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+    thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailContainerView addSubview:thumbnailCollectionView2];
 
-    v10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    [v10 didMoveToParentViewController:self];
+    thumbnailCollectionViewController4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    [thumbnailCollectionViewController4 didMoveToParentViewController:self];
 
     v11 = MEMORY[0x277CCAAD0];
     v27 = @"childView";
-    v12 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    v13 = [v12 collectionView];
-    v28[0] = v13;
+    thumbnailCollectionViewController5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    collectionView = [thumbnailCollectionViewController5 collectionView];
+    v28[0] = collectionView;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v15 = [v11 constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v14];
 
     v16 = MEMORY[0x277CCAAD0];
     v25 = @"childView";
-    v17 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    v18 = [v17 collectionView];
-    v26 = v18;
+    thumbnailCollectionViewController6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    collectionView2 = [thumbnailCollectionViewController6 collectionView];
+    v26 = collectionView2;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = [v16 constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v19];
 
-    v21 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    v22 = [v21 collectionView];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    thumbnailCollectionViewController7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    collectionView3 = [thumbnailCollectionViewController7 collectionView];
+    [collectionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
-    v24 = [v23 collectionView];
-    [v24 setContentInsetAdjustmentBehavior:2];
+    thumbnailCollectionViewController8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewController];
+    collectionView4 = [thumbnailCollectionViewController8 collectionView];
+    [collectionView4 setContentInsetAdjustmentBehavior:2];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v15];
     [MEMORY[0x277CCAAD0] activateConstraints:v20];
@@ -1700,12 +1700,12 @@ void __58__ICDocCamExtractedDocumentViewController_updateTitleView__block_invoke
   [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:0];
 }
 
-- (CGSize)frameSizeForImageSize:(CGSize)a3
+- (CGSize)frameSizeForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  [v5 itemSizeForImageSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  [thumbnailCollectionViewLayout itemSizeForImageSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -1716,65 +1716,65 @@ void __58__ICDocCamExtractedDocumentViewController_updateTitleView__block_invoke
   return result;
 }
 
-- (void)setImage:(id)a3 forCell:(id)a4 useResizedImage:(BOOL)a5
+- (void)setImage:(id)image forCell:(id)cell useResizedImage:(BOOL)resizedImage
 {
-  v5 = a5;
-  v26 = a4;
-  v8 = a3;
-  v9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v9 frame];
+  resizedImageCopy = resizedImage;
+  cellCopy = cell;
+  imageCopy = image;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView frame];
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v10 contentInset];
+  thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView2 contentInset];
 
-  if (v8 && v5)
+  if (imageCopy && resizedImageCopy)
   {
-    [v8 size];
+    [imageCopy size];
     v12 = v11;
     v14 = v13;
     [(ICDocCamExtractedDocumentViewController *)self frameSizeForImageSize:?];
     v16 = v15;
     v18 = v17;
-    v19 = [MEMORY[0x277D759A0] mainScreen];
-    [v19 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v21 = v20;
 
     v22 = fmax(v21, 1.0);
     [ICDocCamUtilities aspectFillSize:v12 targetSize:v14, v16 * v22, v18 * v22];
-    v23 = [ICDocCamUtilities resizedImage:v8 newSize:3 interpolationQuality:?];
+    v23 = [ICDocCamUtilities resizedImage:imageCopy newSize:3 interpolationQuality:?];
 
-    v24 = [v26 imageView];
-    v8 = v24;
+    imageView = [cellCopy imageView];
+    imageCopy = imageView;
     v25 = v23;
   }
 
   else
   {
-    v24 = [v26 imageView];
-    v23 = v24;
-    v25 = v8;
+    imageView = [cellCopy imageView];
+    v23 = imageView;
+    v25 = imageCopy;
   }
 
-  [v24 setImage:v25];
+  [imageView setImage:v25];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = ICDocCamExtractedDocumentViewController;
-  v7 = a4;
-  [(ICDocCamExtractedDocumentViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  [v8 setIsUndergoingOrientationChange:1];
+  coordinatorCopy = coordinator;
+  [(ICDocCamExtractedDocumentViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  [thumbnailCollectionViewLayout setIsUndergoingOrientationChange:1];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __94__ICDocCamExtractedDocumentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v9[3] = &unk_278F92D48;
   v9[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_542 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_542 completion:v9];
 }
 
 void __94__ICDocCamExtractedDocumentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -1808,25 +1808,25 @@ void __94__ICDocCamExtractedDocumentViewController_viewWillTransitionToSize_with
   [v2 setIsUndergoingOrientationChange:0];
 }
 
-- (int64_t)orientationRotated90DegreesFromOrientation:(int64_t)a3
+- (int64_t)orientationRotated90DegreesFromOrientation:(int64_t)orientation
 {
-  if (a3 >= 4)
+  if (orientation >= 4)
   {
     [ICDocCamExtractedDocumentViewController orientationRotated90DegreesFromOrientation:];
   }
 
-  return qword_2492F76E8[a3];
+  return qword_2492F76E8[orientation];
 }
 
-- (void)updatePageViewControllerConstraints:(BOOL)a3 animationBlock:(id)a4 completionBlock:(id)a5
+- (void)updatePageViewControllerConstraints:(BOOL)constraints animationBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICDocCamExtractedDocumentViewController *)self adjustPageViewControllerForMarkup];
+  constraintsCopy = constraints;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  adjustPageViewControllerForMarkup = [(ICDocCamExtractedDocumentViewController *)self adjustPageViewControllerForMarkup];
   v11 = 0.0;
   v12 = 0.0;
-  if (v10)
+  if (adjustPageViewControllerForMarkup)
   {
     [(UIViewController *)self dc_safeAreaDistanceFromTop];
     v12 = v13;
@@ -1834,19 +1834,19 @@ void __94__ICDocCamExtractedDocumentViewController_viewWillTransitionToSize_with
   }
 
   v14 = -v11;
-  v15 = [(ICDocCamExtractedDocumentViewController *)self pageViewBottomConstraint];
-  [v15 setConstant:v14];
+  pageViewBottomConstraint = [(ICDocCamExtractedDocumentViewController *)self pageViewBottomConstraint];
+  [pageViewBottomConstraint setConstant:v14];
 
-  v16 = [(ICDocCamExtractedDocumentViewController *)self pageViewTopConstraint];
-  [v16 setConstant:v12];
+  pageViewTopConstraint = [(ICDocCamExtractedDocumentViewController *)self pageViewTopConstraint];
+  [pageViewTopConstraint setConstant:v12];
 
-  v17 = [(ICDocCamExtractedDocumentViewController *)self pageViewLeadingConstraint];
-  [v17 setConstant:0.0];
+  pageViewLeadingConstraint = [(ICDocCamExtractedDocumentViewController *)self pageViewLeadingConstraint];
+  [pageViewLeadingConstraint setConstant:0.0];
 
-  v18 = [(ICDocCamExtractedDocumentViewController *)self pageViewTrailingConstraint];
-  [v18 setConstant:-0.0];
+  pageViewTrailingConstraint = [(ICDocCamExtractedDocumentViewController *)self pageViewTrailingConstraint];
+  [pageViewTrailingConstraint setConstant:-0.0];
 
-  if (v6)
+  if (constraintsCopy)
   {
     [(ICDocCamExtractedDocumentViewController *)self setIsAnimatingPageViewController:1];
     v19 = MEMORY[0x277D75D18];
@@ -1855,13 +1855,13 @@ void __94__ICDocCamExtractedDocumentViewController_viewWillTransitionToSize_with
     v22[2] = __110__ICDocCamExtractedDocumentViewController_updatePageViewControllerConstraints_animationBlock_completionBlock___block_invoke;
     v22[3] = &unk_278F92D70;
     v22[4] = self;
-    v23 = v8;
+    v23 = blockCopy;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __110__ICDocCamExtractedDocumentViewController_updatePageViewControllerConstraints_animationBlock_completionBlock___block_invoke_2;
     v20[3] = &unk_278F92D98;
     v20[4] = self;
-    v21 = v9;
+    v21 = completionBlockCopy;
     [v19 animateWithDuration:0 delay:v22 usingSpringWithDamping:v20 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:0.0];
   }
 }
@@ -1899,227 +1899,227 @@ uint64_t __110__ICDocCamExtractedDocumentViewController_updatePageViewController
   return result;
 }
 
-- (void)updateImage:(id)a3 document:(id)a4 withFilterType:(signed __int16)a5
+- (void)updateImage:(id)image document:(id)document withFilterType:(signed __int16)type
 {
-  v5 = a5;
+  typeCopy = type;
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v11 = [v10 docInfos];
-  v12 = [v11 indexOfObject:v9];
+  imageCopy = image;
+  documentCopy = document;
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v12 = [docInfos indexOfObject:documentCopy];
 
-  if ([v9 currentFilter] != v5 && v12 != 0x7FFFFFFFFFFFFFFFLL)
+  if ([documentCopy currentFilter] != typeCopy && v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 setCurrentFilter:v5];
-    v13 = [v9 croppedAndFilteredImageUUID];
+    [documentCopy setCurrentFilter:typeCopy];
+    croppedAndFilteredImageUUID = [documentCopy croppedAndFilteredImageUUID];
 
-    v14 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-    v15 = v14;
-    if (v13)
+    imageCache = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+    v15 = imageCache;
+    if (croppedAndFilteredImageUUID)
     {
-      v16 = [v9 metaData];
-      v17 = [v9 croppedAndFilteredImageUUID];
-      [v15 replaceImage:v8 metaData:v16 uuid:v17];
+      metaData = [documentCopy metaData];
+      croppedAndFilteredImageUUID2 = [documentCopy croppedAndFilteredImageUUID];
+      [v15 replaceImage:imageCopy metaData:metaData uuid:croppedAndFilteredImageUUID2];
     }
 
     else
     {
-      v16 = [v14 setImage:v8 metaData:0 addToMemoryCache:0 completion:0];
-      [v9 setCroppedAndFilteredImageUUID:v16];
+      metaData = [imageCache setImage:imageCopy metaData:0 addToMemoryCache:0 completion:0];
+      [documentCopy setCroppedAndFilteredImageUUID:metaData];
     }
 
     if (v12 == [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
     {
-      v18 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-      [v18 setImage:v8];
+      currentImageView = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+      [currentImageView setImage:imageCopy];
     }
 
-    v19 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [v9 currentFilter];
-      v22 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-      [v22 extractedDocumentControllerDidApplyFilter:v21 forDocument:v9];
+      currentFilter = [documentCopy currentFilter];
+      delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      [delegate2 extractedDocumentControllerDidApplyFilter:currentFilter forDocument:documentCopy];
     }
 
     v23 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:0];
-    v24 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
     v26[0] = v23;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    [v24 reloadItemsAtIndexPaths:v25];
+    [thumbnailCollectionView reloadItemsAtIndexPaths:v25];
   }
 }
 
-- (void)didUpdateDocumentTitle:(id)a3
+- (void)didUpdateDocumentTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v5 setTitle:v4 forState:0];
+  titleCopy = title;
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton setTitle:titleCopy forState:0];
 
   [(ICDocCamExtractedDocumentViewController *)self updateTitleView];
 }
 
-- (void)didUpdateDocumentInfoArrayNewCurrentDocument:(id)a3
+- (void)didUpdateDocumentInfoArrayNewCurrentDocument:(id)document
 {
-  v13 = a3;
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  v5 = [v4 movingItem];
+  documentCopy = document;
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  movingItem = [thumbnailCollectionViewLayout movingItem];
 
-  if (v5)
+  if (movingItem)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v6 cancelInteractiveMovement];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView cancelInteractiveMovement];
   }
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  [v7 invalidateLayout];
+  thumbnailCollectionViewLayout2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  [thumbnailCollectionViewLayout2 invalidateLayout];
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v8 reloadData];
+  thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView2 reloadData];
 
-  v9 = v13;
-  if (v13)
+  v9 = documentCopy;
+  if (documentCopy)
   {
-    v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v11 = [v10 docInfos];
-    v12 = [v11 indexOfObject:v13];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v12 = [docInfos indexOfObject:documentCopy];
 
-    v9 = v13;
+    v9 = documentCopy;
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:v12 animated:0];
       [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:v12 animated:1];
       [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonMenu];
-      v9 = v13;
+      v9 = documentCopy;
     }
   }
 }
 
-- (void)didUpdateDocumentImage:(id)a3
+- (void)didUpdateDocumentImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ([(ICDocCamExtractedDocumentViewController *)self isScrollingBetweenPages])
   {
-    v4 = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
-    [v4 addObject:v5];
+    documentsToUpdateWhenScrollingStops = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
+    [documentsToUpdateWhenScrollingStops addObject:imageCopy];
   }
 
   else
   {
-    [(ICDocCamExtractedDocumentViewController *)self updateDocumentImage:v5];
+    [(ICDocCamExtractedDocumentViewController *)self updateDocumentImage:imageCopy];
   }
 }
 
-- (void)updateDocumentImage:(id)a3
+- (void)updateDocumentImage:(id)image
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 indexOfObject:v4];
+  imageCopy = image;
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos indexOfObject:imageCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
     v9 = [MEMORY[0x277CCAA70] indexPathForItem:v7 inSection:0];
     v21[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    [v8 reloadItemsAtIndexPaths:v10];
+    [thumbnailCollectionView reloadItemsAtIndexPaths:v10];
 
     if ([(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]== v7)
     {
-      v11 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v12 = [v11 docInfos];
-      if (v7 >= [v12 count])
+      documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos2 = [documentInfoCollection2 docInfos];
+      if (v7 >= [docInfos2 count])
       {
 LABEL_6:
 
         goto LABEL_7;
       }
 
-      v13 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v14 = [v13 docInfos];
-      v15 = [v14 objectAtIndexedSubscript:v7];
+      documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos3 = [documentInfoCollection3 docInfos];
+      v15 = [docInfos3 objectAtIndexedSubscript:v7];
 
       if (v15)
       {
         v16 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:v7];
-        v17 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-        [v17 setImage:v16];
+        currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+        [currentPageContentViewController setImage:v16];
 
-        v18 = [v15 currentFilter];
-        v12 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-        [v12 setCurrentFilter:v18];
-        v11 = v15;
+        currentFilter = [v15 currentFilter];
+        docInfos2 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+        [docInfos2 setCurrentFilter:currentFilter];
+        documentInfoCollection2 = v15;
         goto LABEL_6;
       }
     }
 
 LABEL_7:
-    v19 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v19 invalidateLayout];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout invalidateLayout];
 
     [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:1];
-    v20 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    [v20 bumpModificationDate];
+    documentInfoCollection4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    [documentInfoCollection4 bumpModificationDate];
   }
 }
 
 - (id)currentDocument
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  if (v3 >= [v5 count])
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if (presentationPageIndex >= [docInfos count])
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v7 = [v6 docInfos];
-    v8 = [v7 objectAtIndexedSubscript:v3];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v8 = [docInfos2 objectAtIndexedSubscript:presentationPageIndex];
   }
 
   return v8;
 }
 
-- (void)addImageAction:(id)a3
+- (void)addImageAction:(id)action
 {
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self presentedViewController];
-    if (v7)
+    presentedViewController = [(ICDocCamExtractedDocumentViewController *)self presentedViewController];
+    if (presentedViewController)
     {
       [(ICDocCamExtractedDocumentViewController *)self dismissViewControllerAnimated:0 completion:0];
     }
 
-    v4 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-      [v6 extractedDocumentControllerDidTapAddImage];
+      delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      [delegate2 extractedDocumentControllerDidTapAddImage];
     }
   }
 }
 
-- (void)recropButtonPressed:(id)a3
+- (void)recropButtonPressed:(id)pressed
 {
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
-    v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v5 = [v4 docInfos];
-    v6 = [v5 count];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v6 = [docInfos count];
 
     if (v6)
     {
-      v7 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
@@ -2132,73 +2132,73 @@ LABEL_7:
 
         else
         {
-          v10 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-          v9 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-          [v10 extractedDocumentController:self didTapRecrop:v9 index:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+          delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+          currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+          [delegate2 extractedDocumentController:self didTapRecrop:currentDocument index:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
         }
       }
     }
   }
 }
 
-- (void)retakeAction:(id)a3
+- (void)retakeAction:(id)action
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 statusBarManager];
-  -[ICDocCamExtractedDocumentViewController setStatusBarWasHiddenWhenRetakeTapped:](self, "setStatusBarWasHiddenWhenRetakeTapped:", [v7 isStatusBarHidden]);
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  -[ICDocCamExtractedDocumentViewController setStatusBarWasHiddenWhenRetakeTapped:](self, "setStatusBarWasHiddenWhenRetakeTapped:", [statusBarManager isStatusBarHidden]);
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  [v8 extractedDocumentControllerDidTapRetake:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  [delegate extractedDocumentControllerDidTapRetake:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 statusBarManager];
-  -[ICDocCamExtractedDocumentViewController setStatusBarWasHiddenWhenDoneTapped:](self, "setStatusBarWasHiddenWhenDoneTapped:", [v7 isStatusBarHidden]);
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  -[ICDocCamExtractedDocumentViewController setStatusBarWasHiddenWhenDoneTapped:](self, "setStatusBarWasHiddenWhenDoneTapped:", [statusBarManager isStatusBarHidden]);
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  LOBYTE(window) = objc_opt_respondsToSelector();
 
-  v11 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  v9 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  if (v5)
+  delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  if (window)
   {
-    v10 = [(ICDocCamExtractedDocumentViewController *)self scanCollectionDataDelegate];
-    [v11 extractedDocumentControllerDidTapDone:v9 scanDataDelegate:v10];
+    scanCollectionDataDelegate = [(ICDocCamExtractedDocumentViewController *)self scanCollectionDataDelegate];
+    [delegate2 extractedDocumentControllerDidTapDone:presentationPageIndex scanDataDelegate:scanCollectionDataDelegate];
   }
 
   else
   {
-    [v11 extractedDocumentControllerDidTapDone:v9];
+    [delegate2 extractedDocumentControllerDidTapDone:presentationPageIndex];
   }
 }
 
-- (void)shareAction:(id)a3
+- (void)shareAction:(id)action
 {
-  v13 = a3;
+  actionCopy = action;
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
-    v4 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v7 = [v6 docInfos];
-      v8 = [v7 count];
+      documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos = [documentInfoCollection docInfos];
+      v8 = [docInfos count];
 
       if (v8)
       {
-        v9 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-        v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-        v11 = [v10 docInfos];
-        v12 = [v11 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
-        [v9 extractedDocumentController:self shareDocument:v12 sender:v13];
+        delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+        documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+        docInfos2 = [documentInfoCollection2 docInfos];
+        v12 = [docInfos2 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+        [delegate2 extractedDocumentController:self shareDocument:v12 sender:actionCopy];
       }
     }
   }
@@ -2207,58 +2207,58 @@ LABEL_7:
 - (DCScanDataDelegate)scanCollectionDataDelegate
 {
   v3 = objc_opt_class();
-  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  v6 = [v5 firstObject];
-  v7 = DCDynamicCast(v3, v6);
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  firstObject = [docInfos firstObject];
+  v7 = DCDynamicCast(v3, firstObject);
 
-  v8 = [v7 scanDataDelegate];
-  v9 = [v8 parentAttachment];
+  scanDataDelegate = [v7 scanDataDelegate];
+  parentAttachment = [scanDataDelegate parentAttachment];
 
-  return v9;
+  return parentAttachment;
 }
 
 - (DCScanDataDelegate)selectedScanDataDelegate
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-  v3 = [v2 scanDataDelegate];
+  currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+  scanDataDelegate = [currentDocument scanDataDelegate];
 
-  return v3;
+  return scanDataDelegate;
 }
 
-- (id)orientationString:(int64_t)a3
+- (id)orientationString:(int64_t)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
     [ICDocCamExtractedDocumentViewController orientationString:];
   }
 
-  return off_278F93088[a3];
+  return off_278F93088[string];
 }
 
 - (id)currentPageContentViewController
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v3 = [v2 viewControllers];
+  pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
 
-  v4 = [v3 firstObject];
+  firstObject = [viewControllers firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (UIImageView)currentImageView
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  v3 = [v2 imageView];
+  currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  imageView = [currentPageContentViewController imageView];
 
-  return v3;
+  return imageView;
 }
 
 - (void)alertAndDiscardMarkup
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v4 = [v3 docInfos];
-  v5 = [v4 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v5 = [docInfos objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
 
   v6 = [DCLocalization localizedStringForKey:@"Discard Annotations?" value:@"Discard Annotations?" table:@"Localizable"];
   v7 = [DCLocalization localizedStringForKey:@"If you rotate or crop this scan value:its Markup annotations will be discarded." table:@"If you rotate or crop this scan, its Markup annotations will be discarded.", @"Localizable"];
@@ -2272,11 +2272,11 @@ LABEL_7:
   v18 = 3221225472;
   v19 = __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_invoke;
   v20 = &unk_278F92DC0;
-  v21 = self;
+  selfCopy = self;
   v22 = v5;
   v12 = v5;
   v13 = [v10 actionWithTitle:v11 style:2 handler:&v17];
-  [v8 addAction:{v13, v17, v18, v19, v20, v21}];
+  [v8 addAction:{v13, v17, v18, v19, v20, selfCopy}];
 
   v14 = MEMORY[0x277D750F8];
   v15 = [DCLocalization localizedStringForKey:@"Cancel" value:@"Cancel" table:@"Localizable"];
@@ -2294,7 +2294,7 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
 
 - (BOOL)currentImageHasMarkup
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -2302,39 +2302,39 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
     return 0;
   }
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v7 = [v6 docInfos];
-  v8 = [v7 count];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v8 = [docInfos count];
 
-  if (v5 >= v8)
+  if (presentationPageIndex >= v8)
   {
     return 0;
   }
 
-  v9 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v10 = [v9 docInfos];
-  v11 = [v10 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v11 = [docInfos2 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
 
-  v12 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  v13 = [v12 extractedDocumentControllerMarkupModelDataForDocument:v11];
+  delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  v13 = [delegate2 extractedDocumentControllerMarkupModelDataForDocument:v11];
   v14 = [v13 length] != 0;
 
   return v14;
 }
 
-- (BOOL)imageIsPortrait:(id)a3
+- (BOOL)imageIsPortrait:(id)portrait
 {
-  v3 = a3;
-  [v3 size];
+  portraitCopy = portrait;
+  [portraitCopy size];
   v5 = v4;
-  [v3 size];
+  [portraitCopy size];
   v7 = v6;
 
   return v5 <= v7;
 }
 
-- (void)rotateAction:(id)a3
+- (void)rotateAction:(id)action
 {
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
@@ -2354,13 +2354,13 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
 
 - (void)rotateCurrentImage
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
   v88 = 0;
   v89 = &v88;
   v90 = 0x3032000000;
   v91 = __Block_byref_object_copy_;
   v92 = __Block_byref_object_dispose_;
-  v93 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:v3];
+  v93 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:presentationPageIndex];
   if (!v89[5])
   {
     v13 = os_log_create("com.apple.documentcamera", "");
@@ -2375,21 +2375,21 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
   if (![(ICDocCamExtractedDocumentViewController *)self rotationUnderWay])
   {
     [(ICDocCamExtractedDocumentViewController *)self setRotationUnderWay:1];
-    v4 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-    v5 = [v4 view];
-    v6 = [v5 subviews];
+    pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    view = [pageViewController view];
+    subviews = [view subviews];
 
     v7 = 0;
     v8 = 0;
-    while ([v6 count] > v7)
+    while ([subviews count] > v7)
     {
-      v9 = [v6 objectAtIndexedSubscript:v7];
+      v9 = [subviews objectAtIndexedSubscript:v7];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
 
       if ([v11 isEqualToString:@"_UIQueuingScrollView"])
       {
-        v12 = [v6 objectAtIndexedSubscript:v7];
+        v12 = [subviews objectAtIndexedSubscript:v7];
 
         [v12 setClipsToBounds:0];
         v8 = v12;
@@ -2398,20 +2398,20 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
       ++v7;
     }
 
-    v14 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-    v15 = [v14 view];
-    [v15 setClipsToBounds:0];
+    pageViewController2 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    view2 = [pageViewController2 view];
+    [view2 setClipsToBounds:0];
 
-    v16 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-    [v16 resetZoom];
+    currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+    [currentPageContentViewController resetZoom];
 
-    v17 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-    v18 = [v17 view];
+    currentPageContentViewController2 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+    view3 = [currentPageContentViewController2 view];
 
     v19 = -[ICDocCamExtractedDocumentViewController orientationRotated90DegreesFromOrientation:](self, "orientationRotated90DegreesFromOrientation:", [v89[5] imageOrientation]);
-    [v18 frame];
+    [view3 frame];
     v21 = v20;
-    [v18 frame];
+    [view3 frame];
     v23 = v22;
     [v89[5] size];
     v25 = v24;
@@ -2427,21 +2427,21 @@ void __64__ICDocCamExtractedDocumentViewController_alertAndDiscardMarkup__block_
       {
         if (v31 > v28)
         {
-          [v18 frame];
+          [view3 frame];
           v33 = v32;
           [v89[5] size];
           v35 = v34;
           [v89[5] size];
           v37 = v36;
-          [v18 frame];
+          [view3 frame];
 LABEL_20:
           v43 = v38 / (v33 / v35 * v37);
           goto LABEL_31;
         }
 
-        [v18 frame];
+        [view3 frame];
         v41 = v51;
-        [v18 frame];
+        [view3 frame];
 LABEL_25:
         v43 = v41 / v42;
         goto LABEL_31;
@@ -2487,23 +2487,23 @@ LABEL_31:
         v81[3] = &unk_278F92E10;
         v13 = v8;
         v82 = v13;
-        v83 = self;
-        v76 = v18;
+        selfCopy = self;
+        v76 = view3;
         v84 = v76;
         v85 = &v88;
-        v86 = v3;
+        v86 = presentationPageIndex;
         v87 = v19;
         [v75 setCompletionBlock:v81];
-        v77 = [v76 layer];
-        [v77 addAnimation:v63 forKey:@"rotate"];
+        layer = [v76 layer];
+        [layer addAnimation:v63 forKey:@"rotate"];
 
-        v78 = [v76 layer];
-        [v78 addAnimation:v69 forKey:@"scale"];
+        layer2 = [v76 layer];
+        [layer2 addAnimation:v69 forKey:@"scale"];
 
         [MEMORY[0x277CD9FF0] commit];
-        v79 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-        v80 = [v79 accessibilityTraits];
-        [v79 setAccessibilityTraits:v80 & ~*MEMORY[0x277D76580]];
+        rotateBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+        accessibilityTraits = [rotateBottomToolbarButton accessibilityTraits];
+        [rotateBottomToolbarButton setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x277D76580]];
 
 LABEL_32:
         goto LABEL_33;
@@ -2512,19 +2512,19 @@ LABEL_32:
       v44 = 1.0 / v31;
       if (1.0 / v31 > v28)
       {
-        [v18 frame];
+        [view3 frame];
         v33 = v45;
         [v89[5] size];
         v35 = v46;
         [v89[5] size];
         v37 = v47;
-        [v18 frame];
+        [view3 frame];
         goto LABEL_20;
       }
 
-      [v18 frame];
+      [view3 frame];
       v49 = v59;
-      [v18 frame];
+      [view3 frame];
 LABEL_28:
       v43 = v49 / v50;
       goto LABEL_31;
@@ -2535,19 +2535,19 @@ LABEL_28:
       v39 = 1.0 / v31;
       if (1.0 / v31 > v28)
       {
-        [v18 frame];
+        [view3 frame];
         v41 = v40;
-        [v18 frame];
+        [view3 frame];
         goto LABEL_25;
       }
 
-      [v18 frame];
+      [view3 frame];
       v53 = v52;
       [v89[5] size];
       v55 = v54;
       [v89[5] size];
       v57 = v56;
-      [v18 frame];
+      [view3 frame];
     }
 
     else
@@ -2560,19 +2560,19 @@ LABEL_28:
 
       if (v31 > v28)
       {
-        [v18 frame];
+        [view3 frame];
         v49 = v48;
-        [v18 frame];
+        [view3 frame];
         goto LABEL_28;
       }
 
-      [v18 frame];
+      [view3 frame];
       v53 = v60;
       [v89[5] size];
       v55 = v61;
       [v89[5] size];
       v57 = v62;
-      [v18 frame];
+      [view3 frame];
     }
 
     v43 = v58 / (v53 / v55 * v57);
@@ -2676,65 +2676,65 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v3 = [[DCGradientBlurBar alloc] initWithEffect:0];
   [(ICDocCamExtractedDocumentViewController *)self setGlurBar:v3];
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v5 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
-  [v4 addSubview:v5];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  glurBar = [(ICDocCamExtractedDocumentViewController *)self glurBar];
+  [view addSubview:glurBar];
 
   v19 = MEMORY[0x277CCAAD0];
-  v24 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
-  v22 = [v24 bottomAnchor];
-  v23 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  glurBar2 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
+  bottomAnchor = [glurBar2 bottomAnchor];
+  view2 = [(ICDocCamExtractedDocumentViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[0] = v20;
-  v6 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
-  v7 = [v6 widthAnchor];
-  v8 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v9 = [v8 widthAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  glurBar3 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
+  widthAnchor = [glurBar3 widthAnchor];
+  view3 = [(ICDocCamExtractedDocumentViewController *)self view];
+  widthAnchor2 = [view3 widthAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v25[1] = v10;
-  v11 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
-  v12 = [v11 heightAnchor];
+  glurBar4 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
+  heightAnchor = [glurBar4 heightAnchor];
   +[_TtC14DocumentCamera22DCLiquidGlassConstants gradientBlurBarHeight];
-  v13 = [v12 constraintEqualToConstant:?];
+  v13 = [heightAnchor constraintEqualToConstant:?];
   v25[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
   [v19 activateConstraints:v14];
 
-  v15 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v16 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
-  [v15 bringSubviewToFront:v16];
+  view4 = [(ICDocCamExtractedDocumentViewController *)self view];
+  glurBar5 = [(ICDocCamExtractedDocumentViewController *)self glurBar];
+  [view4 bringSubviewToFront:glurBar5];
 
-  v17 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v18 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v17 bringSubviewToFront:v18];
+  view5 = [(ICDocCamExtractedDocumentViewController *)self view];
+  buttonStackView = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [view5 bringSubviewToFront:buttonStackView];
 }
 
 - (void)updateFilterButtonMenu
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  v6 = [v5 count];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v6 = [docInfos count];
 
-  if (v3 >= v6)
+  if (presentationPageIndex >= v6)
   {
-    v10 = 1;
+    currentFilter = 1;
   }
 
   else
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v8 = [v7 docInfos];
-    v9 = [v8 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v9 = [docInfos2 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
 
-    v10 = [v9 currentFilter];
+    currentFilter = [v9 currentFilter];
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = MEMORY[0x277D750C8];
   v13 = [DCLocalization localizedStringForKey:@"Photo" value:@"Photo" table:@"Localizable"];
-  if (v10)
+  if (currentFilter)
   {
     v14 = 0;
   }
@@ -2750,14 +2750,14 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v36[3] = &unk_278F92E38;
   v36[4] = self;
   v15 = [v12 actionWithTitle:v13 image:v14 identifier:0 handler:v36];
-  if (!v10)
+  if (!currentFilter)
   {
   }
 
   [v11 addObject:v15];
   v16 = MEMORY[0x277D750C8];
   v17 = [DCLocalization localizedStringForKey:@"Color" value:@"Color" table:@"Localizable"];
-  if (v10 == 1)
+  if (currentFilter == 1)
   {
     v18 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
   }
@@ -2773,14 +2773,14 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v35[3] = &unk_278F92E38;
   v35[4] = self;
   v19 = [v16 actionWithTitle:v17 image:v18 identifier:0 handler:v35];
-  if (v10 == 1)
+  if (currentFilter == 1)
   {
   }
 
   [v11 addObject:v19];
   v20 = MEMORY[0x277D750C8];
   v21 = [DCLocalization localizedStringForKey:@"Grayscale" value:@"Grayscale" table:@"Localizable"];
-  if (v10 == 2)
+  if (currentFilter == 2)
   {
     v22 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
   }
@@ -2796,14 +2796,14 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v34[3] = &unk_278F92E38;
   v34[4] = self;
   v23 = [v20 actionWithTitle:v21 image:v22 identifier:0 handler:v34];
-  if (v10 == 2)
+  if (currentFilter == 2)
   {
   }
 
   [v11 addObject:v23];
   v24 = MEMORY[0x277D750C8];
   v25 = [DCLocalization localizedStringForKey:@"Black & White" value:@"Black & White" table:@"Localizable"];
-  if (v10 == 3)
+  if (currentFilter == 3)
   {
     v26 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
   }
@@ -2819,7 +2819,7 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v33[3] = &unk_278F92E38;
   v33[4] = self;
   v27 = [v24 actionWithTitle:v25 image:v26 identifier:0 handler:v33];
-  if (v10 == 3)
+  if (currentFilter == 3)
   {
   }
 
@@ -2828,25 +2828,25 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   v29 = [DCLocalization localizedStringForKey:@"Filters" value:@"Filters" table:@"Localizable"];
   v30 = [v28 menuWithTitle:v29 children:v11];
 
-  v31 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v31 setMenu:v30];
+  filterBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton setMenu:v30];
 
-  v32 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v32 setShowsMenuAsPrimaryAction:1];
+  filterBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton2 setShowsMenuAsPrimaryAction:1];
 }
 
-- (void)applyFilter:(signed __int16)a3
+- (void)applyFilter:(signed __int16)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
-    v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v6 = [v5 docInfos];
-    v7 = [v6 count];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v7 = [docInfos count];
 
     if (v7)
     {
-      [(ICDocCamExtractedDocumentViewController *)self filterViewControllerDidSelectFilter:v3];
+      [(ICDocCamExtractedDocumentViewController *)self filterViewControllerDidSelectFilter:filterCopy];
       [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonMenu];
 
       [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonItemAccessibilityInfo];
@@ -2854,20 +2854,20 @@ void __61__ICDocCamExtractedDocumentViewController_rotateCurrentImage__block_inv
   }
 }
 
-- (void)deleteButtonAction:(id)a3
+- (void)deleteButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
     if ([(ICDocCamExtractedDocumentViewController *)self mode])
     {
       v5 = objc_opt_class();
-      v6 = DCDynamicCast(v5, v4);
+      v6 = DCDynamicCast(v5, actionCopy);
       if (!v6)
       {
-        v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-        v8 = [v7 docInfos];
-        v9 = [v8 count];
+        documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+        docInfos = [documentInfoCollection docInfos];
+        v9 = [docInfos count];
 
         if (v9 >= 2)
         {
@@ -2878,16 +2878,16 @@ LABEL_18:
         }
       }
 
-      v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v11 = [v10 docInfos];
-      if ([v11 count] == 1)
+      documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos2 = [documentInfoCollection2 docInfos];
+      if ([docInfos2 count] == 1)
       {
-        v12 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+        delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v13 = [(ICDocCamExtractedDocumentViewController *)self mode];
+          mode = [(ICDocCamExtractedDocumentViewController *)self mode];
 
-          if (v13 == 1)
+          if (mode == 1)
           {
             v14 = [DCLocalization localizedStringForKey:@"Deleting the last scan in this document will remove the document from your note." value:@"Deleting the last scan in this document will remove the document from your note." table:@"Localizable"];
 LABEL_14:
@@ -2909,17 +2909,17 @@ LABEL_14:
 
             [v15 setModalPresentationStyle:7];
             [(ICDocCamExtractedDocumentViewController *)self presentViewController:v15 animated:1 completion:0];
-            v22 = [v15 popoverPresentationController];
-            v23 = v22;
+            popoverPresentationController = [v15 popoverPresentationController];
+            v23 = popoverPresentationController;
             if (v6)
             {
-              [v22 setBarButtonItem:v6];
+              [popoverPresentationController setBarButtonItem:v6];
             }
 
             else
             {
-              v24 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-              [v23 setSourceView:v24];
+              currentImageView = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+              [v23 setSourceView:currentImageView];
 
               [(ICDocCamExtractedDocumentViewController *)self menuControllerTargetRect];
               [v23 setSourceRect:?];
@@ -2945,19 +2945,19 @@ LABEL_13:
 LABEL_19:
 }
 
-- (id)makeUIImageFromCIImage:(id)a3
+- (id)makeUIImageFromCIImage:(id)image
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBF740];
   v11 = *MEMORY[0x277CBF910];
   v12[0] = MEMORY[0x277CBEC28];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v7 = [v3 contextWithOptions:v6];
 
-  [v5 extent];
-  v8 = [v7 createCGImage:v5 fromRect:?];
+  [imageCopy extent];
+  v8 = [v7 createCGImage:imageCopy fromRect:?];
 
   v9 = [MEMORY[0x277D755B8] imageWithCGImage:v8];
   CGImageRelease(v8);
@@ -2968,16 +2968,16 @@ LABEL_19:
 - (void)deleteCurrentPage
 {
   v85[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  [v3 resetZoom];
+  currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  [currentPageContentViewController resetZoom];
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  v5 = [v4 imageView];
+  currentPageContentViewController2 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  imageView = [currentPageContentViewController2 imageView];
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 _graphicsQuality];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v7 != 100)
+  if (_graphicsQuality != 100)
   {
     v8 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
     v75 = [objc_alloc(MEMORY[0x277CBF758]) initWithCGImage:{objc_msgSend(v8, "CGImage")}];
@@ -2988,9 +2988,9 @@ LABEL_19:
     width = v87.size.width;
     height = v87.size.height;
     v74 = [v75 imageByCroppingToRect:?];
-    v13 = [v74 imageByClampingToExtent];
-    [v13 extent];
-    v14 = [v13 imageBySettingAlphaOneInExtent:?];
+    imageByClampingToExtent = [v74 imageByClampingToExtent];
+    [imageByClampingToExtent extent];
+    v14 = [imageByClampingToExtent imageBySettingAlphaOneInExtent:?];
 
     v15 = MEMORY[0x277CBF750];
     v84[0] = *MEMORY[0x277CBFAF0];
@@ -2999,29 +2999,29 @@ LABEL_19:
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:40.0];
     v85[1] = v16;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v85 forKeys:v84 count:2];
-    v18 = v17 = v5;
+    v18 = v17 = imageView;
     [v15 filterWithName:@"CIGaussianBlur" withInputParameters:v18];
-    v20 = v19 = v7;
-    v21 = [v20 outputImage];
-    v22 = [v21 imageByCroppingToRect:{x, y, width, height}];
+    v20 = v19 = _graphicsQuality;
+    outputImage = [v20 outputImage];
+    v22 = [outputImage imageByCroppingToRect:{x, y, width, height}];
 
-    v5 = v17;
+    imageView = v17;
     v23 = [(ICDocCamExtractedDocumentViewController *)self makeUIImageFromCIImage:v22];
     [v8 size];
     v25 = v24;
     [v8 size];
     v26 = [v23 dc_scaledImageWithSize:v25 scale:?];
-    v27 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-    [v27 setImage:v26];
+    currentPageContentViewController3 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+    [currentPageContentViewController3 setImage:v26];
 
-    v7 = v19;
+    _graphicsQuality = v19;
   }
 
-  v28 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v28 setEnabled:0];
+  trashBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton setEnabled:0];
 
-  v29 = [(ICDocCamExtractedDocumentViewController *)self retakeButtonItem];
-  [v29 setEnabled:0];
+  retakeButtonItem = [(ICDocCamExtractedDocumentViewController *)self retakeButtonItem];
+  [retakeButtonItem setEnabled:0];
 
   [(ICDocCamExtractedDocumentViewController *)self _beginDisablingInterfaceAutorotation];
   v30 = 0x277CD9000uLL;
@@ -3033,11 +3033,11 @@ LABEL_19:
   v79[4] = self;
   [MEMORY[0x277CD9FF0] setCompletionBlock:v79];
   memset(&v78, 0, sizeof(v78));
-  v31 = [v5 layer];
-  v32 = v31;
-  if (v31)
+  layer = [imageView layer];
+  v32 = layer;
+  if (layer)
   {
-    [v31 transform];
+    [layer transform];
   }
 
   else
@@ -3045,8 +3045,8 @@ LABEL_19:
     memset(&v78, 0, sizeof(v78));
   }
 
-  v33 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  [v33 zoomScale];
+  currentPageContentViewController4 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  [currentPageContentViewController4 zoomScale];
   v35 = v34;
 
   v36 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
@@ -3081,15 +3081,15 @@ LABEL_19:
   v48 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v45 setTimingFunction:v48];
 
-  if (v7 == 100)
+  if (_graphicsQuality == 100)
   {
     v49 = *MEMORY[0x277CDA328];
     v50 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v50 setEnabled:1];
     [v50 setValue:MEMORY[0x277CBEC38] forKey:@"inputNormalizeEdges"];
     [v50 setValue:&unk_285C6D348 forKey:@"inputRadius"];
-    v51 = [MEMORY[0x277D75418] currentDevice];
-    if ([v51 _graphicsQuality] == 100)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 _graphicsQuality] == 100)
     {
       v52 = @"default";
     }
@@ -3101,17 +3101,17 @@ LABEL_19:
 
     [v50 setValue:v52 forKey:@"inputQuality"];
 
-    v53 = [v5 layer];
+    layer2 = [imageView layer];
     v83 = v50;
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
-    [v53 setFilters:v54];
+    [layer2 setFilters:v54];
 
-    v55 = [v5 layer];
-    [v55 setShouldRasterize:1];
+    layer3 = [imageView layer];
+    [layer3 setShouldRasterize:1];
 
     v56 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
-    v57 = [v5 layer];
-    v58 = [v57 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer4 = [imageView layer];
+    v58 = [layer4 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
     [v56 setFromValue:v58];
 
     [v56 setToValue:&unk_285C6D378];
@@ -3127,8 +3127,8 @@ LABEL_19:
     [v61 setEnabled:1];
     [v61 setValue:MEMORY[0x277CBEC38] forKey:@"inputNormalizeEdges"];
     [v61 setValue:&unk_285C6D378 forKey:@"inputRadius"];
-    v62 = [MEMORY[0x277D75418] currentDevice];
-    if ([v62 _graphicsQuality] == 100)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 _graphicsQuality] == 100)
     {
       v63 = @"default";
     }
@@ -3140,12 +3140,12 @@ LABEL_19:
 
     [v61 setValue:v63 forKey:@"inputQuality"];
 
-    v64 = [v5 layer];
+    layer5 = [imageView layer];
     v82 = v61;
     v65 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
-    [v64 setFilters:v65];
+    [layer5 setFilters:v65];
 
-    v7 = 100;
+    _graphicsQuality = 100;
     v30 = 0x277CD9000;
   }
 
@@ -3154,18 +3154,18 @@ LABEL_19:
     v56 = 0;
   }
 
-  v66 = [v5 layer];
-  [v66 setOpacity:0.0];
+  layer6 = [imageView layer];
+  [layer6 setOpacity:0.0];
 
   v76 = v78;
   CATransform3DScale(&v77, &v76, 0.5, 0.5, 0.5);
-  v67 = [v5 layer];
+  layer7 = [imageView layer];
   v76 = v77;
-  [v67 setTransform:&v76];
+  [layer7 setTransform:&v76];
 
-  v68 = [MEMORY[0x277CD9E00] animation];
-  [v68 setDuration:0.28];
-  if (v7 == 100 && v56)
+  animation = [MEMORY[0x277CD9E00] animation];
+  [animation setDuration:0.28];
+  if (_graphicsQuality == 100 && v56)
   {
     v81[0] = v36;
     v81[1] = v45;
@@ -3185,10 +3185,10 @@ LABEL_19:
   }
 
   v72 = [v69 arrayWithObjects:v70 count:v71];
-  [v68 setAnimations:v72];
+  [animation setAnimations:v72];
 
-  v73 = [v5 layer];
-  [v73 addAnimation:v68 forKey:@"animGroup"];
+  layer8 = [imageView layer];
+  [layer8 addAnimation:animation forKey:@"animGroup"];
 
   [*(v30 + 4080) commit];
 }
@@ -3402,20 +3402,20 @@ void __60__ICDocCamExtractedDocumentViewController_deleteCurrentPage__block_invo
   [v3 setEnabled:1];
 }
 
-- (void)showViewControllerAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)showViewControllerAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v16[1] = *MEMORY[0x277D85DE8];
   [(ICDocCamExtractedDocumentViewController *)self setPresentationPageIndex:?];
-  v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v8 = [v7 docInfos];
-  v9 = [v8 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v9 = [docInfos count];
 
-  if (v9 > a3)
+  if (v9 > index)
   {
     objc_initWeak(&location, self);
-    v10 = [(ICDocCamExtractedDocumentViewController *)self viewControllerAtIndex:a3];
-    v11 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    v10 = [(ICDocCamExtractedDocumentViewController *)self viewControllerAtIndex:index];
+    pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
     v16[0] = v10;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     v13[0] = MEMORY[0x277D85DD0];
@@ -3423,8 +3423,8 @@ void __60__ICDocCamExtractedDocumentViewController_deleteCurrentPage__block_invo
     v13[2] = __78__ICDocCamExtractedDocumentViewController_showViewControllerAtIndex_animated___block_invoke;
     v13[3] = &unk_278F92E88;
     objc_copyWeak(v14, &location);
-    v14[1] = a3;
-    [v11 setViewControllers:v12 direction:0 animated:v4 completion:v13];
+    v14[1] = index;
+    [pageViewController setViewControllers:v12 direction:0 animated:animatedCopy completion:v13];
 
     [(ICDocCamExtractedDocumentViewController *)self updateImageViewAccessibilityForPageContentViewController:v10];
     objc_destroyWeak(v14);
@@ -3441,10 +3441,10 @@ void __78__ICDocCamExtractedDocumentViewController_showViewControllerAtIndex_ani
 
 - (void)startMarkupViewController
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+  currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
   objc_initWeak(&location, self);
   [(ICDocCamExtractedDocumentViewController *)self setAdjustPageViewControllerForMarkup:1];
-  if (v3)
+  if (currentDocument)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -3452,13 +3452,13 @@ void __78__ICDocCamExtractedDocumentViewController_showViewControllerAtIndex_ani
     aBlock[3] = &unk_278F92EB0;
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
-    v5 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__ICDocCamExtractedDocumentViewController_startMarkupViewController__block_invoke_4;
     v6[3] = &unk_278F92ED8;
     objc_copyWeak(&v7, &location);
-    [v5 extractedDocumentController:self startMarkupOnDocument:v3 inkStyle:1 startPresentBlock:v4 dismissCompletionBlock:v6];
+    [delegate extractedDocumentController:self startMarkupOnDocument:currentDocument inkStyle:1 startPresentBlock:v4 dismissCompletionBlock:v6];
 
     objc_destroyWeak(&v7);
   }
@@ -3512,54 +3512,54 @@ void __68__ICDocCamExtractedDocumentViewController_startMarkupViewController__bl
   [(ICDocCamExtractedDocumentViewController *)self updatePageViewControllerConstraints:1 animationBlock:0 completionBlock:0];
 }
 
-- (id)truncatedString:(id)a3 clipLength:(unint64_t)a4
+- (id)truncatedString:(id)string clipLength:(unint64_t)length
 {
-  v5 = a3;
-  if ([v5 length] <= a4)
+  stringCopy = string;
+  if ([stringCopy length] <= length)
   {
-    v8 = v5;
+    v8 = stringCopy;
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v5 substringToIndex:a4];
+    v7 = [stringCopy substringToIndex:length];
     v8 = [v6 stringWithFormat:@"%@…", v7];
   }
 
   return v8;
 }
 
-- (void)pencilDownInZoomablePageContentViewController:(id)a3
+- (void)pencilDownInZoomablePageContentViewController:(id)controller
 {
-  if ([(ICDocCamExtractedDocumentViewController *)self isShowingBarsForZoomablePageContentViewController:a3])
+  if ([(ICDocCamExtractedDocumentViewController *)self isShowingBarsForZoomablePageContentViewController:controller])
   {
-    v4 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-    if (v4)
+    currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+    if (currentDocument)
     {
-      v7 = v4;
-      v5 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      v7 = currentDocument;
+      delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
-      v4 = v7;
+      currentDocument = v7;
       if (v6)
       {
         [(ICDocCamExtractedDocumentViewController *)self startMarkupViewController];
-        v4 = v7;
+        currentDocument = v7;
       }
     }
   }
 }
 
-- (void)hideBarsForZoomablePageContentViewController:(id)a3
+- (void)hideBarsForZoomablePageContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (![(ICDocCamExtractedDocumentViewController *)self barsShouldBeHidden])
   {
     [(ICDocCamExtractedDocumentViewController *)self setBarsShouldBeHidden:1];
-    v5 = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
-    v6 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
-    [v6 setBackgroundColor:v5];
+    currentBackgroundColor = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
+    pageViewControllerContainerView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
+    [pageViewControllerContainerView setBackgroundColor:currentBackgroundColor];
 
     v7 = MEMORY[0x277D75D18];
     v9[0] = MEMORY[0x277D85DD0];
@@ -3567,7 +3567,7 @@ void __68__ICDocCamExtractedDocumentViewController_startMarkupViewController__bl
     v9[2] = __88__ICDocCamExtractedDocumentViewController_hideBarsForZoomablePageContentViewController___block_invoke;
     v9[3] = &unk_278F92DE8;
     v9[4] = self;
-    v10 = v4;
+    v10 = controllerCopy;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __88__ICDocCamExtractedDocumentViewController_hideBarsForZoomablePageContentViewController___block_invoke_2;
@@ -3613,27 +3613,27 @@ void __88__ICDocCamExtractedDocumentViewController_hideBarsForZoomablePageConten
   UIAccessibilityPostNotification(v2, v3);
 }
 
-- (void)showBarsForZoomablePageContentViewController:(id)a3
+- (void)showBarsForZoomablePageContentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self barsShouldBeHidden];
-  if (v4 && v5)
+  controllerCopy = controller;
+  barsShouldBeHidden = [(ICDocCamExtractedDocumentViewController *)self barsShouldBeHidden];
+  if (controllerCopy && barsShouldBeHidden)
   {
     [(ICDocCamExtractedDocumentViewController *)self setBarsShouldBeHidden:0];
-    v6 = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
-    v7 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
-    [v7 setBackgroundColor:v6];
+    currentBackgroundColor = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
+    pageViewControllerContainerView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
+    [pageViewControllerContainerView setBackgroundColor:currentBackgroundColor];
 
-    v8 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-    [v8 setNavigationBarHidden:0 animated:0];
+    navigationController = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:0 animated:0];
 
-    v9 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-    v10 = [v9 navigationBar];
-    [v10 setAlpha:0.0];
+    navigationController2 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar setAlpha:0.0];
 
-    v11 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-    v12 = [v11 view];
-    [v12 setAccessibilityViewIsModal:0];
+    pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    view = [pageViewController view];
+    [view setAccessibilityViewIsModal:0];
 
     v13 = MEMORY[0x277D75D18];
     v14[0] = MEMORY[0x277D85DD0];
@@ -3641,7 +3641,7 @@ void __88__ICDocCamExtractedDocumentViewController_hideBarsForZoomablePageConten
     v14[2] = __88__ICDocCamExtractedDocumentViewController_showBarsForZoomablePageContentViewController___block_invoke;
     v14[3] = &unk_278F92DE8;
     v14[4] = self;
-    v15 = v4;
+    v15 = controllerCopy;
     [v13 animateWithDuration:v14 animations:0.2];
   }
 }
@@ -3672,17 +3672,17 @@ void __88__ICDocCamExtractedDocumentViewController_showBarsForZoomablePageConten
   UIAccessibilityPostNotification(v7, v9);
 }
 
-- (void)switchBarVisibilityForZoomablePageContentViewController:(id)a3
+- (void)switchBarVisibilityForZoomablePageContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(ICDocCamExtractedDocumentViewController *)self barsShouldBeHidden])
   {
-    [(ICDocCamExtractedDocumentViewController *)self showBarsForZoomablePageContentViewController:v4];
+    [(ICDocCamExtractedDocumentViewController *)self showBarsForZoomablePageContentViewController:controllerCopy];
   }
 
   else
   {
-    [(ICDocCamExtractedDocumentViewController *)self hideBarsForZoomablePageContentViewController:v4];
+    [(ICDocCamExtractedDocumentViewController *)self hideBarsForZoomablePageContentViewController:controllerCopy];
   }
 }
 
@@ -3710,22 +3710,22 @@ void __88__ICDocCamExtractedDocumentViewController_showBarsForZoomablePageConten
   return v3;
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [a4 pageIndex];
+  pageIndex = [viewController pageIndex];
   v6 = 0;
-  if (v5 && v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (pageIndex && pageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self viewControllerAtIndex:v5 - 1];
+    v6 = [(ICDocCamExtractedDocumentViewController *)self viewControllerAtIndex:pageIndex - 1];
   }
 
   return v6;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [a4 pageIndex];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5 + 1, -[ICDocCamExtractedDocumentViewController documentInfoCollection](self, "documentInfoCollection"), v7 = objc_claimAutoreleasedReturnValue(), [v7 docInfos], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v6 == v9))
+  pageIndex = [viewController pageIndex];
+  if (pageIndex == 0x7FFFFFFFFFFFFFFFLL || (v6 = pageIndex + 1, -[ICDocCamExtractedDocumentViewController documentInfoCollection](self, "documentInfoCollection"), v7 = objc_claimAutoreleasedReturnValue(), [v7 docInfos], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v6 == v9))
   {
     v10 = 0;
   }
@@ -3738,12 +3738,12 @@ void __88__ICDocCamExtractedDocumentViewController_showBarsForZoomablePageConten
   return v10;
 }
 
-- (void)setIsScrollingBetweenPages:(BOOL)a3
+- (void)setIsScrollingBetweenPages:(BOOL)pages
 {
-  v3 = a3;
-  self->_isScrollingBetweenPages = a3;
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  [v4 setIsScrollingBetweenPages:v3];
+  pagesCopy = pages;
+  self->_isScrollingBetweenPages = pages;
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  [thumbnailCollectionViewLayout setIsScrollingBetweenPages:pagesCopy];
 }
 
 - (BOOL)isPageViewControllerScrolled
@@ -3764,65 +3764,65 @@ void __88__ICDocCamExtractedDocumentViewController_showBarsForZoomablePageConten
     return 1;
   }
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  v5 = [v4 movingItem];
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  movingItem = [thumbnailCollectionViewLayout movingItem];
 
-  return v5;
+  return movingItem;
 }
 
 - (BOOL)shouldDisableSharrow
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self navigationController];
-  v3 = [v2 view];
-  v4 = [v3 dc_isInSecureWindow];
+  navigationController = [(ICDocCamExtractedDocumentViewController *)self navigationController];
+  view = [navigationController view];
+  dc_isInSecureWindow = [view dc_isInSecureWindow];
 
-  return v4;
+  return dc_isInSecureWindow;
 }
 
 - (double)normalizedPageViewControllerScrollPosition
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v4 = [v3 view];
-  [v4 bounds];
+  pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view = [pageViewController view];
+  [view bounds];
   v6 = v5 + 16.0;
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
-  [v7 contentOffset];
+  pageViewControllerScrollView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
+  [pageViewControllerScrollView contentOffset];
   v9 = v8 - v6;
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v11 = [v10 view];
-  [v11 bounds];
+  pageViewController2 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  view2 = [pageViewController2 view];
+  [view2 bounds];
   v13 = v9 / (v12 + 16.0);
 
   return v13;
 }
 
-- (id)viewControllerAtIndex:(unint64_t)a3
+- (id)viewControllerAtIndex:(unint64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  if (![v6 count])
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if (![docInfos count])
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v8 = [v7 docInfos];
-  v9 = [v8 count];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v9 = [docInfos2 count];
 
-  if (v9 > a3)
+  if (v9 > index)
   {
     v10 = objc_alloc_init(ICDocCamZoomablePageContentViewController);
-    v11 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:a3];
+    v11 = [(ICDocCamExtractedDocumentViewController *)self croppedAndFilteredmageForDocumentAtIndex:index];
     [(ICDocCamZoomablePageContentViewController *)v10 setImage:v11];
 
-    [(ICDocCamZoomablePageContentViewController *)v10 setPageIndex:a3];
+    [(ICDocCamZoomablePageContentViewController *)v10 setPageIndex:index];
     [(ICDocCamZoomablePageContentViewController *)v10 setPageContentDelegate:self];
-    v5 = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
-    v6 = [(ICDocCamZoomablePageContentViewController *)v10 view];
-    [v6 setBackgroundColor:v5];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
+    docInfos = [(ICDocCamZoomablePageContentViewController *)v10 view];
+    [docInfos setBackgroundColor:documentInfoCollection];
 LABEL_5:
 
     goto LABEL_7;
@@ -3834,15 +3834,15 @@ LABEL_7:
   return v10;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllersCopy = controllers;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3854,13 +3854,13 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
-        v12 = [v10 view];
-        [v12 setBackgroundColor:v11];
+        currentBackgroundColor = [(ICDocCamExtractedDocumentViewController *)self currentBackgroundColor];
+        view = [v10 view];
+        [view setBackgroundColor:currentBackgroundColor];
 
         v13 = -[ICDocCamExtractedDocumentViewController croppedAndFilteredmageForDocumentAtIndex:](self, "croppedAndFilteredmageForDocumentAtIndex:", [v10 pageIndex]);
         [v10 setImage:v13];
@@ -3870,7 +3870,7 @@ LABEL_7:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [controllersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -3879,36 +3879,36 @@ LABEL_7:
   [(ICDocCamExtractedDocumentViewController *)self setIsScrollingBetweenPages:1];
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v6 = a6;
-  v18 = a5;
-  if (v6)
+  completedCopy = completed;
+  controllersCopy = controllers;
+  if (completedCopy)
   {
-    v8 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-    v9 = [v8 viewControllers];
-    v10 = [v9 lastObject];
+    pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    viewControllers = [pageViewController viewControllers];
+    lastObject = [viewControllers lastObject];
 
-    -[ICDocCamExtractedDocumentViewController setPresentationPageIndex:](self, "setPresentationPageIndex:", [v10 pageIndex]);
+    -[ICDocCamExtractedDocumentViewController setPresentationPageIndex:](self, "setPresentationPageIndex:", [lastObject pageIndex]);
     [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
-    v11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v11 setInterPageScrollPosition:0.0];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout setInterPageScrollPosition:0.0];
 
-    v12 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v12 setCurrentItem:-[ICDocCamExtractedDocumentViewController presentationPageIndex](self animated:{"presentationPageIndex"), 0}];
+    thumbnailCollectionViewLayout2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout2 setCurrentItem:-[ICDocCamExtractedDocumentViewController presentationPageIndex](self animated:{"presentationPageIndex"), 0}];
 
-    [(ICDocCamExtractedDocumentViewController *)self updateImageViewAccessibilityForPageContentViewController:v10];
-    LODWORD(v12) = *MEMORY[0x277D76438];
-    v13 = [v10 imageView];
-    v14 = [v13 accessibilityLabel];
-    UIAccessibilityPostNotification(v12, v14);
+    [(ICDocCamExtractedDocumentViewController *)self updateImageViewAccessibilityForPageContentViewController:lastObject];
+    LODWORD(thumbnailCollectionViewLayout2) = *MEMORY[0x277D76438];
+    imageView = [lastObject imageView];
+    accessibilityLabel = [imageView accessibilityLabel];
+    UIAccessibilityPostNotification(thumbnailCollectionViewLayout2, accessibilityLabel);
 
     [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonMenu];
-    if ([v18 count])
+    if ([controllersCopy count])
     {
       v15 = objc_opt_class();
-      v16 = [v18 firstObject];
-      v17 = DCCheckedDynamicCast(v15, v16);
+      firstObject = [controllersCopy firstObject];
+      v17 = DCCheckedDynamicCast(v15, firstObject);
 
       [v17 resetZoom];
     }
@@ -3917,58 +3917,58 @@ LABEL_7:
   [(ICDocCamExtractedDocumentViewController *)self setIsScrollingBetweenPages:0];
 }
 
-- (void)setPresentationPageIndex:(int64_t)a3
+- (void)setPresentationPageIndex:(int64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
   if (v7)
   {
-    v8 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v9 = [v8 docInfos];
-    v10 = [v9 count] - 1;
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v10 = [docInfos2 count] - 1;
 
-    if (v10 >= a3)
+    if (v10 >= index)
     {
-      v11 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v11 = v10;
+      indexCopy = v10;
     }
   }
 
   else
   {
-    v11 = 0;
+    indexCopy = 0;
   }
 
-  self->_presentationPageIndex = v11;
+  self->_presentationPageIndex = indexCopy;
 
   [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonMenu];
 }
 
-- (void)setCurrentThumbnailItem:(unint64_t)a3 animated:(BOOL)a4
+- (void)setCurrentThumbnailItem:(unint64_t)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v8 = [v7 docInfos];
-  v9 = [v8 count];
+  animatedCopy = animated;
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v9 = [docInfos count];
 
-  if (v9 > a3)
+  if (v9 > item)
   {
-    v10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v10 setCurrentItem:a3 animated:v4];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout setCurrentItem:item animated:animatedCopy];
   }
 }
 
-- (void)updatePageIndicatorForPageIndex:(int64_t)a3
+- (void)updatePageIndicatorForPageIndex:(int64_t)index
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
   if (v7 < 2)
   {
@@ -3981,17 +3981,17 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v9 = [v8 window];
-  if (([v9 dc_requiresCompactLandscapeIcons] & 1) == 0)
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  window = [view window];
+  if (([window dc_requiresCompactLandscapeIcons] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self mode];
+  mode = [(ICDocCamExtractedDocumentViewController *)self mode];
 
-  if (!v10)
+  if (!mode)
   {
 LABEL_8:
     v11 = MEMORY[0x277CCACA8];
@@ -4003,62 +4003,62 @@ LABEL_8:
   v12 = @"(%d of %d)";
 LABEL_9:
   v13 = [DCLocalization localizedStringForKey:v12 value:v12 table:@"Localizable"];
-  v14 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v15 = [v14 docInfos];
-  v25 = [v11 localizedStringWithFormat:v13, a3 + 1, objc_msgSend(v15, "count")];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v25 = [v11 localizedStringWithFormat:v13, index + 1, objc_msgSend(docInfos2, "count")];
 
 LABEL_10:
-  v16 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-  [v16 setText:v25];
+  pageIndexLabel = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+  [pageIndexLabel setText:v25];
 
   [(ICDocCamExtractedDocumentViewController *)self updateTitleView];
-  v17 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v18 = [v17 docInfos];
-  v19 = [v18 count];
+  documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos3 = [documentInfoCollection3 docInfos];
+  v19 = [docInfos3 count];
 
-  if (v19 > a3)
+  if (v19 > index)
   {
-    v20 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v21 = [v20 docInfos];
-    v22 = [v21 objectAtIndexedSubscript:a3];
-    v23 = [v22 currentFilter];
-    v24 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-    [v24 setCurrentFilter:v23];
+    documentInfoCollection4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos4 = [documentInfoCollection4 docInfos];
+    v22 = [docInfos4 objectAtIndexedSubscript:index];
+    currentFilter = [v22 currentFilter];
+    currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+    [currentDocument setCurrentFilter:currentFilter];
   }
 }
 
-- (void)changePage:(int64_t)a3
+- (void)changePage:(int64_t)page
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 objectAtIndex:0];
-  v8 = [v7 pageIndex];
+  pageViewController = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
+  v7 = [viewControllers objectAtIndex:0];
+  pageIndex = [v7 pageIndex];
 
-  if (a3)
+  if (page)
   {
-    v9 = v8 - 1;
+    v9 = pageIndex - 1;
   }
 
   else
   {
-    v9 = v8 + 1;
+    v9 = pageIndex + 1;
   }
 
   v10 = [(ICDocCamExtractedDocumentViewController *)self viewControllerAtIndex:v9];
   if (v10)
   {
-    v11 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
+    pageViewController2 = [(ICDocCamExtractedDocumentViewController *)self pageViewController];
     v13[0] = v10;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v11 setViewControllers:v12 direction:a3 animated:0 completion:0];
+    [pageViewController2 setViewControllers:v12 direction:page animated:0 completion:0];
   }
 }
 
-- (id)imageForDocInfo:(id)a3 newFilter:(signed __int16)a4
+- (id)imageForDocInfo:(id)info newFilter:(signed __int16)filter
 {
-  v4 = a4;
-  v6 = a3;
+  filterCopy = filter;
+  infoCopy = info;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4076,8 +4076,8 @@ LABEL_10:
   v19 = __69__ICDocCamExtractedDocumentViewController_imageForDocInfo_newFilter___block_invoke;
   v20 = &unk_278F92F00;
   v23 = &v31;
-  v21 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = infoCopy;
   v22 = v7;
   v24 = &v25;
   dc_performBlockOnMainThread(&v17);
@@ -4086,15 +4086,15 @@ LABEL_10:
   v10 = v8[5];
   if (v10)
   {
-    v11 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:", v10, [v7 currentOrientation], v4);
+    v11 = +[ICDocCamImageFilters filteredImage:orientation:imageFilterType:](ICDocCamImageFilters, "filteredImage:orientation:imageFilterType:", v10, [v7 currentOrientation], filterCopy);
 
     if (v26[5])
     {
       v12 = [ICDocCamImageFilters imageWithRGBColorspaceFromImage:v11];
 
-      v13 = [v12 dc_JPEGData];
+      dc_JPEGData = [v12 dc_JPEGData];
       v14 = MEMORY[0x277D755B8];
-      v15 = [DCMarkupUtilities imageDataWithMarkupModelData:v26[5] sourceImageData:v13];
+      v15 = [DCMarkupUtilities imageDataWithMarkupModelData:v26[5] sourceImageData:dc_JPEGData];
       v9 = [v14 imageWithData:v15];
     }
 
@@ -4130,44 +4130,44 @@ void __69__ICDocCamExtractedDocumentViewController_imageForDocInfo_newFilter___b
   }
 }
 
-- (BOOL)filterViewControllerDidSelectFilter:(signed __int16)a3
+- (BOOL)filterViewControllerDidSelectFilter:(signed __int16)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   if ([(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
     return 0;
   }
 
-  v6 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v7 = [(ICDocCamExtractedDocumentViewController *)self croppedButNotFilteredImageForDocumentAtIndex:v6];
-  v8 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v9 = [v8 docInfos];
-  if (v6 >= [v9 count])
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  v7 = [(ICDocCamExtractedDocumentViewController *)self croppedButNotFilteredImageForDocumentAtIndex:presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if (presentationPageIndex >= [docInfos count])
   {
     v12 = 0;
   }
 
   else
   {
-    v10 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v11 = [v10 docInfos];
-    v12 = [v11 objectAtIndexedSubscript:v6];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v12 = [docInfos2 objectAtIndexedSubscript:presentationPageIndex];
   }
 
   v5 = 0;
   if (v7 && v12)
   {
-    if ([v12 currentFilter] == v3)
+    if ([v12 currentFilter] == filterCopy)
     {
       v5 = 0;
     }
 
     else
     {
-      v13 = [(ICDocCamExtractedDocumentViewController *)self imageForDocInfo:v12 newFilter:v3];
-      [(ICDocCamExtractedDocumentViewController *)self updateImage:v13 document:v12 withFilterType:v3];
-      v14 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      [v14 bumpModificationDate];
+      v13 = [(ICDocCamExtractedDocumentViewController *)self imageForDocInfo:v12 newFilter:filterCopy];
+      [(ICDocCamExtractedDocumentViewController *)self updateImage:v13 document:v12 withFilterType:filterCopy];
+      documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      [documentInfoCollection3 bumpModificationDate];
 
       v5 = 1;
     }
@@ -4176,30 +4176,30 @@ void __69__ICDocCamExtractedDocumentViewController_imageForDocInfo_newFilter___b
   return v5;
 }
 
-- (BOOL)filterViewControllerCanApplyToAll:(signed __int16)a3
+- (BOOL)filterViewControllerCanApplyToAll:(signed __int16)all
 {
   if ([(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
     return 0;
   }
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v6 = [v5 docInfos];
-  v7 = [v6 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v7 = [docInfos count];
 
   if (v7 < 2)
   {
     return 0;
   }
 
-  v9 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v10 = [v9 docInfos];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__ICDocCamExtractedDocumentViewController_filterViewControllerCanApplyToAll___block_invoke;
   v12[3] = &__block_descriptor_34_e37_B32__0__ICDocCamDocumentInfo_8Q16_B24l;
-  v13 = a3;
-  v8 = [v10 indexOfObjectPassingTest:v12] != 0x7FFFFFFFFFFFFFFFLL;
+  allCopy = all;
+  v8 = [docInfos2 indexOfObjectPassingTest:v12] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v8;
 }
@@ -4211,9 +4211,9 @@ BOOL __77__ICDocCamExtractedDocumentViewController_filterViewControllerCanApplyT
   return result;
 }
 
-- (BOOL)filterViewControllerApplyToAll:(signed __int16)a3
+- (BOOL)filterViewControllerApplyToAll:(signed __int16)all
 {
-  v3 = a3;
+  allCopy = all;
   v29 = *MEMORY[0x277D85DE8];
   if ([(ICDocCamExtractedDocumentViewController *)self shouldDisableActions])
   {
@@ -4222,17 +4222,17 @@ BOOL __77__ICDocCamExtractedDocumentViewController_filterViewControllerCanApplyT
 
   else
   {
-    v5 = [(ICDocCamExtractedDocumentViewController *)self filterViewControllerDidSelectFilter:v3];
+    v5 = [(ICDocCamExtractedDocumentViewController *)self filterViewControllerDidSelectFilter:allCopy];
     if ([(ICDocCamExtractedDocumentViewController *)self mode])
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v7 = [v6 docInfos];
+      documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos = [documentInfoCollection docInfos];
 
-      v8 = [(DCLongRunningTaskController *)v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v8 = [(DCLongRunningTaskController *)docInfos countByEnumeratingWithState:&v22 objects:v28 count:16];
       if (v8)
       {
         v9 = v8;
@@ -4243,33 +4243,33 @@ BOOL __77__ICDocCamExtractedDocumentViewController_filterViewControllerCanApplyT
           {
             if (*v23 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(docInfos);
             }
 
             v12 = *(*(&v22 + 1) + 8 * i);
-            if ([v12 currentFilter] != v3)
+            if ([v12 currentFilter] != allCopy)
             {
-              v13 = v7;
-              v14 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+              v13 = docInfos;
+              delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
               v15 = objc_opt_respondsToSelector();
 
               if (v15)
               {
-                [v12 setCurrentFilter:v3];
-                v16 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-                [v16 extractedDocumentControllerDidApplyFilter:v3 forDocument:v12];
+                [v12 setCurrentFilter:allCopy];
+                delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+                [delegate2 extractedDocumentControllerDidApplyFilter:allCopy forDocument:v12];
 
                 v5 = 1;
               }
 
-              v17 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-              [v17 bumpModificationDate];
+              documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+              [documentInfoCollection2 bumpModificationDate];
 
-              v7 = v13;
+              docInfos = v13;
             }
           }
 
-          v9 = [(DCLongRunningTaskController *)v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+          v9 = [(DCLongRunningTaskController *)docInfos countByEnumeratingWithState:&v22 objects:v28 count:16];
         }
 
         while (v9);
@@ -4279,19 +4279,19 @@ BOOL __77__ICDocCamExtractedDocumentViewController_filterViewControllerCanApplyT
     else
     {
       v18 = [DCLongRunningTaskController alloc];
-      v19 = [(ICDocCamExtractedDocumentViewController *)self view];
-      v20 = [v19 window];
-      v7 = [(DCLongRunningTaskController *)v18 initWithWindow:v20 intervalBeforeOpeningProgressDialog:0.5];
+      view = [(ICDocCamExtractedDocumentViewController *)self view];
+      window = [view window];
+      docInfos = [(DCLongRunningTaskController *)v18 initWithWindow:window intervalBeforeOpeningProgressDialog:0.5];
 
-      [(DCLongRunningTaskController *)v7 setProgressToStringTransformer:&__block_literal_global_705];
-      [(DCLongRunningTaskController *)v7 setViewControllerToPresentFrom:self];
+      [(DCLongRunningTaskController *)docInfos setProgressToStringTransformer:&__block_literal_global_705];
+      [(DCLongRunningTaskController *)docInfos setViewControllerToPresentFrom:self];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __74__ICDocCamExtractedDocumentViewController_filterViewControllerApplyToAll___block_invoke_2;
       v26[3] = &unk_278F92F90;
       v26[4] = self;
-      v27 = v3;
-      [(DCLongRunningTaskController *)v7 startTask:v26 completionBlock:0];
+      v27 = allCopy;
+      [(DCLongRunningTaskController *)docInfos startTask:v26 completionBlock:0];
     }
   }
 
@@ -4430,31 +4430,31 @@ void __74__ICDocCamExtractedDocumentViewController_filterViewControllerApplyToAl
   }
 }
 
-- (void)showPrimaryControllerForNotes:(id)a3 animated:(BOOL)a4
+- (void)showPrimaryControllerForNotes:(id)notes animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 displayMode] == 1)
+  animatedCopy = animated;
+  notesCopy = notes;
+  if ([notesCopy displayMode] == 1)
   {
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v7 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __82__ICDocCamExtractedDocumentViewController_showPrimaryControllerForNotes_animated___block_invoke;
     aBlock[3] = &unk_278F92DE8;
     aBlock[4] = self;
-    v16 = v6;
+    v16 = notesCopy;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v8)
+    if (applicationState)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = !v4;
+      v11 = !animatedCopy;
     }
 
     if (v11)
@@ -4502,10 +4502,10 @@ void __82__ICDocCamExtractedDocumentViewController_showPrimaryControllerForNotes
   }
 }
 
-- (void)collectionNameTapped:(id)a3
+- (void)collectionNameTapped:(id)tapped
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  v5 = [v4 titleForState:0];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  v5 = [collectionTitleButton titleForState:0];
 
   v6 = [[ICDocCamRenamePrompt alloc] initWithExistingTitle:v5];
   v7[0] = MEMORY[0x277D85DD0];
@@ -4555,16 +4555,16 @@ void __64__ICDocCamExtractedDocumentViewController_collectionNameTapped___block_
 - (ICDocCamReorderingThumbnailCollectionViewLayout)thumbnailCollectionViewLayout
 {
   v3 = objc_opt_class();
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  v5 = [v4 collectionViewLayout];
-  v6 = DCCheckedDynamicCast(v3, v5);
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  collectionViewLayout = [thumbnailCollectionView collectionViewLayout];
+  v6 = DCCheckedDynamicCast(v3, collectionViewLayout);
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 imageSizeAtIndex:(int64_t)a4
+- (CGSize)collectionView:(id)view imageSizeAtIndex:(int64_t)index
 {
-  [(ICDocCamExtractedDocumentViewController *)self imageSizeForDocumentAtIndex:a4];
+  [(ICDocCamExtractedDocumentViewController *)self imageSizeForDocumentAtIndex:index];
   result.height = v5;
   result.width = v4;
   return result;
@@ -4572,8 +4572,8 @@ void __64__ICDocCamExtractedDocumentViewController_collectionNameTapped___block_
 
 - (CGRect)targetViewRect
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  [v2 frame];
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  [thumbnailCollectionView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4590,75 +4590,75 @@ void __64__ICDocCamExtractedDocumentViewController_collectionNameTapped___block_
   return result;
 }
 
-- (void)respondToImageLongPressGesture:(id)a3
+- (void)respondToImageLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  currentImageView = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+  [gestureCopy locationInView:currentImageView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 == 1)
+  state = [gestureCopy state];
+  if (state == 1)
   {
-    v11 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-    [v11 bounds];
+    currentImageView2 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+    [currentImageView2 bounds];
     v23.x = v7;
     v23.y = v9;
     v12 = CGRectContainsPoint(v24, v23);
 
     if (v12)
     {
-      v21 = [MEMORY[0x277D75718] sharedMenuController];
+      mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
       v13 = DCTSDRectWithCenterAndSize(v7, v9, 10.0);
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-      [v21 showMenuFromView:v20 rect:{v13, v15, v17, v19}];
+      currentImageView3 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+      [mEMORY[0x277D75718] showMenuFromView:currentImageView3 rect:{v13, v15, v17, v19}];
 
       [(ICDocCamExtractedDocumentViewController *)self setMenuControllerTargetRect:v13, v15, v17, v19];
     }
   }
 }
 
-- (void)share:(id)a3
+- (void)share:(id)share
 {
-  v14 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
   [(ICDocCamExtractedDocumentViewController *)self menuControllerTargetRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-  [v14 extractedDocumentControllerDidSelectShareFromMenuForDocument:v4 sourceRect:v13 sourceView:{v6, v8, v10, v12}];
+  currentImageView = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+  [delegate extractedDocumentControllerDidSelectShareFromMenuForDocument:currentDocument sourceRect:currentImageView sourceView:{v6, v8, v10, v12}];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
-  [v5 extractedDocumentControllerDidSelectCopyFromMenuForDocument:v4];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  currentDocument = [(ICDocCamExtractedDocumentViewController *)self currentDocument];
+  [delegate extractedDocumentControllerDidSelectCopyFromMenuForDocument:currentDocument];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  v8 = [v7 analysisInteraction];
+  senderCopy = sender;
+  currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  analysisInteraction = [currentPageContentViewController analysisInteraction];
 
-  if (([v8 hasActiveTextSelection] & 1) == 0 && !-[ICDocCamExtractedDocumentViewController shouldDisableActions](self, "shouldDisableActions"))
+  if (([analysisInteraction hasActiveTextSelection] & 1) == 0 && !-[ICDocCamExtractedDocumentViewController shouldDisableActions](self, "shouldDisableActions"))
   {
-    if (sel_copy_ == a3 || ![(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow]&& sel_share_ == a3)
+    if (sel_copy_ == action || ![(ICDocCamExtractedDocumentViewController *)self shouldDisableSharrow]&& sel_share_ == action)
     {
-      v11 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v9 = objc_opt_respondsToSelector();
 
       goto LABEL_4;
     }
 
-    if (sel_delete_ == a3 && [(ICDocCamExtractedDocumentViewController *)self canPerformAction:sel_copy_ withSender:v6])
+    if (sel_delete_ == action && [(ICDocCamExtractedDocumentViewController *)self canPerformAction:sel_copy_ withSender:senderCopy])
     {
       v9 = [(ICDocCamExtractedDocumentViewController *)self mode]!= 2;
       goto LABEL_4;
@@ -4671,26 +4671,26 @@ LABEL_4:
   return v9 & 1;
 }
 
-- (void)respondToThumbnailLongPressGesture:(id)a3
+- (void)respondToThumbnailLongPressGesture:(id)gesture
 {
-  v44 = a3;
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  v5 = [v4 numberOfItemsInSection:0];
+  gestureCopy = gesture;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  v5 = [thumbnailCollectionView numberOfItemsInSection:0];
 
   if (v5 >= 2 && [(ICDocCamExtractedDocumentViewController *)self mode]== 1)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v44 locationInView:v6];
+    thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [gestureCopy locationInView:thumbnailCollectionView2];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    v12 = [v11 indexPathForItemAtPoint:{v8, v10}];
+    thumbnailCollectionView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    v12 = [thumbnailCollectionView3 indexPathForItemAtPoint:{v8, v10}];
 
     if (v12)
     {
-      v13 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-      v14 = [v13 cellForItemAtIndexPath:v12];
+      thumbnailCollectionView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+      v14 = [thumbnailCollectionView4 cellForItemAtIndexPath:v12];
     }
 
     else
@@ -4698,9 +4698,9 @@ LABEL_4:
       v14 = 0;
     }
 
-    v15 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    thumbnailCollectionView5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
     v16 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-    v17 = [v15 cellForItemAtIndexPath:v16];
+    v17 = [thumbnailCollectionView5 cellForItemAtIndexPath:v16];
 
     if (v17)
     {
@@ -4713,18 +4713,18 @@ LABEL_4:
     }
 
     v19 = fmax(v8, 0.0);
-    v20 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v20 contentOffset];
+    thumbnailCollectionView6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView6 contentOffset];
     v22 = v21;
 
-    v23 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v23 frame];
+    thumbnailCollectionView7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView7 frame];
     v25 = v22 + v24;
 
-    v26 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    thumbnailCollectionView8 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
     v27 = v5 - 1;
     v28 = [MEMORY[0x277CCAA70] indexPathForItem:v5 - 1 inSection:0];
-    v29 = [v26 cellForItemAtIndexPath:v28];
+    v29 = [thumbnailCollectionView8 cellForItemAtIndexPath:v28];
 
     if (v29)
     {
@@ -4741,19 +4741,19 @@ LABEL_4:
       v25 = v19;
     }
 
-    v31 = [v44 state];
-    switch(v31)
+    state = [gestureCopy state];
+    switch(state)
     {
       case 3:
-        v36 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-        [v36 endInteractiveMovement];
+        thumbnailCollectionView9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+        [thumbnailCollectionView9 endInteractiveMovement];
         break;
       case 2:
-        v34 = [(ICDocCamExtractedDocumentViewController *)self movingIndexPath];
-        if ([v34 item] || (-[ICDocCamExtractedDocumentViewController movingXPosition](self, "movingXPosition"), v25 >= v35))
+        movingIndexPath = [(ICDocCamExtractedDocumentViewController *)self movingIndexPath];
+        if ([movingIndexPath item] || (-[ICDocCamExtractedDocumentViewController movingXPosition](self, "movingXPosition"), v25 >= v35))
         {
-          v38 = [(ICDocCamExtractedDocumentViewController *)self movingIndexPath];
-          if ([v38 item] == v27)
+          movingIndexPath2 = [(ICDocCamExtractedDocumentViewController *)self movingIndexPath];
+          if ([movingIndexPath2 item] == v27)
           {
             [(ICDocCamExtractedDocumentViewController *)self movingXPosition];
             v40 = v39;
@@ -4770,8 +4770,8 @@ LABEL_4:
 
           [(ICDocCamExtractedDocumentViewController *)self movingYPosition];
           v42 = v41;
-          v43 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-          [v43 updateInteractiveMovementTargetPosition:{v25, v42}];
+          thumbnailCollectionView10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+          [thumbnailCollectionView10 updateInteractiveMovementTargetPosition:{v25, v42}];
 
           [(ICDocCamExtractedDocumentViewController *)self speakAccessibilityAnnouncementForReorderIfNecessaryForProposedIndexPath:v12];
         }
@@ -4790,24 +4790,24 @@ LABEL_30:
           [(ICDocCamExtractedDocumentViewController *)self setMovingYPosition:CGRectGetMidY(v48)];
           [(ICDocCamExtractedDocumentViewController *)self setMovingXPosition:v25];
           [(ICDocCamExtractedDocumentViewController *)self setMovingIndexPath:v12];
-          v32 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-          [v32 setMovingItem:1];
+          thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+          [thumbnailCollectionViewLayout setMovingItem:1];
 
-          v33 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-          [v33 beginInteractiveMovementForItemAtIndexPath:v12];
+          thumbnailCollectionView11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+          [thumbnailCollectionView11 beginInteractiveMovementForItemAtIndexPath:v12];
 
           -[ICDocCamExtractedDocumentViewController setLastAXProposedIndexForReordering:](self, "setLastAXProposedIndexForReordering:", [v12 item]);
         }
 
         goto LABEL_30;
       default:
-        v36 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-        [v36 cancelInteractiveMovement];
+        thumbnailCollectionView9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+        [thumbnailCollectionView9 cancelInteractiveMovement];
         break;
     }
 
-    v37 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v37 setMovingItem:0];
+    thumbnailCollectionViewLayout2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout2 setMovingItem:0];
 
     [(ICDocCamExtractedDocumentViewController *)self setMovingIndexPath:0];
     [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:1];
@@ -4817,25 +4817,25 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)handleAccessibilityLongPressOnCollectionTitle:(id)a3
+- (void)handleAccessibilityLongPressOnCollectionTitle:(id)title
 {
-  v20 = a3;
+  titleCopy = title;
   if (DCAccessibilityAccessibilityLargerTextSizesEnabled())
   {
-    v4 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-    v5 = [v4 currentTitle];
-    v6 = [(ICDocCamExtractedDocumentViewController *)self truncatedString:v5 clipLength:48];
+    collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+    currentTitle = [collectionTitleButton currentTitle];
+    v6 = [(ICDocCamExtractedDocumentViewController *)self truncatedString:currentTitle clipLength:48];
 
-    v7 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v8 = [v7 docInfos];
-    v9 = [v8 count];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos = [documentInfoCollection docInfos];
+    v9 = [docInfos count];
 
     if (v9 > 1)
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-      v13 = [v12 text];
-      v10 = [v11 stringWithFormat:@"%@\n%@", v6, v13];
+      pageIndexLabel = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+      text = [pageIndexLabel text];
+      v10 = [v11 stringWithFormat:@"%@\n%@", v6, text];
     }
 
     else
@@ -4843,25 +4843,25 @@ LABEL_31:
       v10 = v6;
     }
 
-    v14 = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
+    hudItemForAccessibilityLargerText = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
 
-    if (!v14)
+    if (!hudItemForAccessibilityLargerText)
     {
       v15 = objc_alloc(MEMORY[0x277D750B0]);
       v16 = [v15 initWithTitle:v10 image:0 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
       [(ICDocCamExtractedDocumentViewController *)self setHudItemForAccessibilityLargerText:v16];
     }
 
-    v17 = [v20 state];
-    if ((v17 - 3) >= 2)
+    state = [titleCopy state];
+    if ((state - 3) >= 2)
     {
-      if (v17 == 1)
+      if (state == 1)
       {
-        v18 = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
-        [v18 setTitle:v10];
+        hudItemForAccessibilityLargerText2 = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
+        [hudItemForAccessibilityLargerText2 setTitle:v10];
 
-        v19 = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
-        [(ICDocCamExtractedDocumentViewController *)self _showAccessibilityHUDItem:v19];
+        hudItemForAccessibilityLargerText3 = [(ICDocCamExtractedDocumentViewController *)self hudItemForAccessibilityLargerText];
+        [(ICDocCamExtractedDocumentViewController *)self _showAccessibilityHUDItem:hudItemForAccessibilityLargerText3];
       }
     }
 
@@ -4872,21 +4872,21 @@ LABEL_31:
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6 && ![(ICDocCamExtractedDocumentViewController *)self isPageViewControllerScrolled])
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy && ![(ICDocCamExtractedDocumentViewController *)self isPageViewControllerScrolled])
   {
-    -[ICDocCamExtractedDocumentViewController setCurrentThumbnailItem:animated:](self, "setCurrentThumbnailItem:animated:", [v6 item], 1);
-    -[ICDocCamExtractedDocumentViewController showViewControllerAtIndex:animated:](self, "showViewControllerAtIndex:animated:", [v6 item], 0);
+    -[ICDocCamExtractedDocumentViewController setCurrentThumbnailItem:animated:](self, "setCurrentThumbnailItem:animated:", [pathCopy item], 1);
+    -[ICDocCamExtractedDocumentViewController showViewControllerAtIndex:animated:](self, "showViewControllerAtIndex:animated:", [pathCopy item], 0);
     [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  -[ICDocCamExtractedDocumentViewController imageSizeForDocumentAtIndex:](self, "imageSizeForDocumentAtIndex:", [a5 item]);
+  -[ICDocCamExtractedDocumentViewController imageSizeForDocumentAtIndex:](self, "imageSizeForDocumentAtIndex:", [path item]);
 
   [(ICDocCamExtractedDocumentViewController *)self frameSizeForImageSize:?];
   result.height = v7;
@@ -4894,67 +4894,67 @@ LABEL_31:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection:a3];
-  v5 = [v4 docInfos];
-  v6 = [v5 count];
+  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection:view];
+  docInfos = [v4 docInfos];
+  v6 = [docInfos count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"ICDocCamExtractedDocumentThumbnailCell" forIndexPath:v7];
-  v9 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v10 = [v9 docInfos];
-  if (v10)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"ICDocCamExtractedDocumentThumbnailCell" forIndexPath:pathCopy];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if (docInfos)
   {
-    v11 = v10;
-    v12 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v13 = [v12 docInfos];
-    v14 = [v13 count];
+    v11 = docInfos;
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v14 = [docInfos2 count];
 
     if (v14)
     {
-      v15 = [v7 item];
-      v16 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-      v17 = [v16 docInfos];
-      v18 = [v17 count] - 1;
+      item = [pathCopy item];
+      documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+      docInfos3 = [documentInfoCollection3 docInfos];
+      v18 = [docInfos3 count] - 1;
 
-      if (v15 <= v18)
+      if (item <= v18)
       {
-        v21 = [v7 item];
+        item2 = [pathCopy item];
       }
 
       else
       {
-        v19 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-        v20 = [v19 docInfos];
-        v21 = [v20 count] - 1;
+        documentInfoCollection4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+        docInfos4 = [documentInfoCollection4 docInfos];
+        item2 = [docInfos4 count] - 1;
       }
 
-      v22 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+      delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
       v23 = objc_opt_respondsToSelector();
 
       if (v23)
       {
-        [v6 bounds];
+        [viewCopy bounds];
         v25 = v24;
         objc_initWeak(&v38, self);
-        v26 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-        v27 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-        v28 = [v27 docInfos];
-        v29 = [v28 objectAtIndexedSubscript:v21];
+        delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+        documentInfoCollection5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+        docInfos5 = [documentInfoCollection5 docInfos];
+        v29 = [docInfos5 objectAtIndexedSubscript:item2];
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __81__ICDocCamExtractedDocumentViewController_collectionView_cellForItemAtIndexPath___block_invoke;
         v40[3] = &unk_278F93008;
         objc_copyWeak(&v42, &v38);
         v41 = v8;
-        [v26 extractedDocumentControllerLoadThumbnailForDocument:v29 size:v40 completionBlock:{v25, v25}];
+        [delegate2 extractedDocumentControllerLoadThumbnailForDocument:v29 size:v40 completionBlock:{v25, v25}];
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(&v38);
@@ -4962,13 +4962,13 @@ LABEL_31:
 
       else
       {
-        v30 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-        v31 = [v30 docInfos];
-        v32 = [v31 objectAtIndexedSubscript:v21];
-        v33 = [v32 croppedAndFilteredImageUUID];
+        documentInfoCollection6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+        docInfos6 = [documentInfoCollection6 docInfos];
+        v32 = [docInfos6 objectAtIndexedSubscript:item2];
+        croppedAndFilteredImageUUID = [v32 croppedAndFilteredImageUUID];
 
-        v34 = [(ICDocCamExtractedDocumentViewController *)self imageCache];
-        v35 = [v34 getImage:v33];
+        imageCache = [(ICDocCamExtractedDocumentViewController *)self imageCache];
+        v35 = [imageCache getImage:croppedAndFilteredImageUUID];
 
         [(ICDocCamExtractedDocumentViewController *)self setImage:v35 forCell:v8 useResizedImage:1];
       }
@@ -4982,9 +4982,9 @@ LABEL_31:
   if ([MEMORY[0x277D74248] dc_isRTL])
   {
     CGAffineTransformMakeScale(&v39, -1.0, 1.0);
-    v36 = [v8 contentView];
+    contentView = [v8 contentView];
     v38 = v39;
-    [v36 setTransform:&v38];
+    [contentView setTransform:&v38];
   }
 
   return v8;
@@ -4997,43 +4997,43 @@ void __81__ICDocCamExtractedDocumentViewController_collectionView_cellForItemAtI
   [WeakRetained setImage:v3 forCell:*(a1 + 32) useResizedImage:1];
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 item];
-  v12 = [v10 item];
-  if (v12 == v11)
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  item = [pathCopy item];
+  item2 = [indexPathCopy item];
+  if (item2 == item)
   {
     goto LABEL_14;
   }
 
-  v13 = v12;
-  v14 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v15 = [v14 docInfos];
-  v16 = [v15 objectAtIndexedSubscript:v11];
+  v13 = item2;
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v16 = [docInfos objectAtIndexedSubscript:item];
 
-  v17 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v18 = [v17 docInfos];
-  [v18 removeObjectAtIndex:v11];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  [docInfos2 removeObjectAtIndex:item];
 
-  v19 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v20 = [v19 docInfos];
-  [v20 insertObject:v16 atIndex:v13];
+  documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos3 = [documentInfoCollection3 docInfos];
+  [docInfos3 insertObject:v16 atIndex:v13];
 
-  v21 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
   v22 = v13;
-  if (v11 != v21)
+  if (item != presentationPageIndex)
   {
-    if (v11 < [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& v13 >= [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
+    if (item < [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& v13 >= [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
     {
       v23 = -1;
     }
 
     else
     {
-      if (v11 <= [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]|| v13 > [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
+      if (item <= [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]|| v13 > [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
       {
         goto LABEL_11;
       }
@@ -5048,20 +5048,20 @@ void __81__ICDocCamExtractedDocumentViewController_collectionView_cellForItemAtI
 LABEL_11:
   [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:0];
   [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:1];
-  v24 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+  delegate = [(ICDocCamExtractedDocumentViewController *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(ICDocCamExtractedDocumentViewController *)self delegate];
-    v27 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v28 = [v27 docInfos];
-    v29 = [v28 objectAtIndexedSubscript:v11];
-    [v26 extractedDocumentControllerDidMovePageFromIndex:v11 toIndex:v13 forDocument:v29];
+    delegate2 = [(ICDocCamExtractedDocumentViewController *)self delegate];
+    documentInfoCollection4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos4 = [documentInfoCollection4 docInfos];
+    v29 = [docInfos4 objectAtIndexedSubscript:item];
+    [delegate2 extractedDocumentControllerDidMovePageFromIndex:item toIndex:v13 forDocument:v29];
   }
 
-  v30 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  [v30 bumpModificationDate];
+  documentInfoCollection5 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  [documentInfoCollection5 bumpModificationDate];
 
   objc_initWeak(&location, self);
   v31[0] = MEMORY[0x277D85DD0];
@@ -5069,8 +5069,8 @@ LABEL_11:
   v31[2] = __90__ICDocCamExtractedDocumentViewController_collectionView_moveItemAtIndexPath_toIndexPath___block_invoke;
   v31[3] = &unk_278F93030;
   objc_copyWeak(&v34, &location);
-  v32 = v9;
-  v33 = v10;
+  v32 = pathCopy;
+  v33 = indexPathCopy;
   dc_dispatchMainAfterDelay(v31, 0.5);
 
   objc_destroyWeak(&v34);
@@ -5084,49 +5084,49 @@ void __90__ICDocCamExtractedDocumentViewController_collectionView_moveItemAtInde
   [WeakRetained speakAccessibilityAnnouncementForMovingItemFromIndexPath:*(a1 + 32) toIndexPath:*(a1 + 40)];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  draggingCopy = dragging;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
 
-  if (v5 == v4)
+  if (thumbnailCollectionView == draggingCopy)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v6 setIsScrubbing:1];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout setIsScrubbing:1];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v25 = a3;
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-  if (v4 == v25 && ![(ICDocCamExtractedDocumentViewController *)self isScrollingBetweenPages])
+  scrollCopy = scroll;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  if (thumbnailCollectionView == scrollCopy && ![(ICDocCamExtractedDocumentViewController *)self isScrollingBetweenPages])
   {
-    v11 = [v25 isDragging];
+    isDragging = [scrollCopy isDragging];
 
-    if (v11)
+    if (isDragging)
     {
-      v12 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-      [v12 frame];
+      thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+      [thumbnailCollectionView2 frame];
       v14 = v13 * 0.5;
-      [v25 contentOffset];
+      [scrollCopy contentOffset];
       v16 = v15 + v14;
-      v17 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-      [v17 frame];
+      thumbnailCollectionView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+      [thumbnailCollectionView3 frame];
       v19 = v18 * 0.5;
-      [v25 contentOffset];
+      [scrollCopy contentOffset];
       v21 = v20 + v19;
 
-      v22 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-      v9 = [v22 indexPathForItemAtPoint:{v16, v21}];
+      thumbnailCollectionView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+      thumbnailCollectionViewLayout = [thumbnailCollectionView4 indexPathForItemAtPoint:{v16, v21}];
 
-      if (v9)
+      if (thumbnailCollectionViewLayout)
       {
-        v23 = [v9 item];
-        if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+        item = [thumbnailCollectionViewLayout item];
+        if (item != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v24 = v23;
-          if (v23 != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
+          v24 = item;
+          if (item != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex])
           {
             [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:v24 animated:0];
             [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:v24];
@@ -5142,56 +5142,56 @@ void __90__ICDocCamExtractedDocumentViewController_collectionView_moveItemAtInde
   {
   }
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
+  pageViewControllerScrollView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerScrollView];
 
-  v6 = v25;
-  if (v5 == v25)
+  v6 = scrollCopy;
+  if (pageViewControllerScrollView == scrollCopy)
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self isScrollingBetweenPages];
-    v6 = v25;
-    if (v7)
+    isScrollingBetweenPages = [(ICDocCamExtractedDocumentViewController *)self isScrollingBetweenPages];
+    v6 = scrollCopy;
+    if (isScrollingBetweenPages)
     {
-      v8 = [v25 effectiveUserInterfaceLayoutDirection];
-      v9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+      effectiveUserInterfaceLayoutDirection = [scrollCopy effectiveUserInterfaceLayoutDirection];
+      thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
       [(ICDocCamExtractedDocumentViewController *)self normalizedPageViewControllerScrollPosition];
-      if (v8 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v10 = -v10;
       }
 
-      [v9 setInterPageScrollPosition:v10];
+      [thumbnailCollectionViewLayout setInterPageScrollPosition:v10];
 LABEL_9:
 
-      v6 = v25;
+      v6 = scrollCopy;
     }
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v21 = a3;
-  v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  draggingCopy = dragging;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
 
-  if (v6 == v21 && !a4)
+  if (thumbnailCollectionView == draggingCopy && !decelerate)
   {
-    v7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v7 frame];
+    thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView2 frame];
     v9 = v8 * 0.5;
-    [v21 contentOffset];
+    [draggingCopy contentOffset];
     v11 = v10 + v9;
-    v12 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v12 frame];
+    thumbnailCollectionView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView3 frame];
     v14 = v13 * 0.5;
-    [v21 contentOffset];
+    [draggingCopy contentOffset];
     v16 = v15 + v14;
 
-    v17 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    v18 = [v17 indexPathForItemAtPoint:{v11, v16}];
+    thumbnailCollectionView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    v18 = [thumbnailCollectionView4 indexPathForItemAtPoint:{v11, v16}];
 
     if (v18)
     {
-      v19 = [v18 item];
-      if (v19 != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& !UIAccessibilityIsVoiceOverRunning())
+      item = [v18 item];
+      if (item != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& !UIAccessibilityIsVoiceOverRunning())
       {
         -[ICDocCamExtractedDocumentViewController showViewControllerAtIndex:animated:](self, "showViewControllerAtIndex:animated:", [v18 item], 1);
         [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
@@ -5199,37 +5199,37 @@ LABEL_9:
     }
 
     [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:1];
-    v20 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v20 setIsScrubbing:0];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout setIsScrubbing:0];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v20 = a3;
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+  deceleratingCopy = decelerating;
+  thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
 
-  v5 = v20;
-  if (v4 == v20)
+  v5 = deceleratingCopy;
+  if (thumbnailCollectionView == deceleratingCopy)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v6 frame];
+    thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView2 frame];
     v8 = v7 * 0.5;
-    [v20 contentOffset];
+    [deceleratingCopy contentOffset];
     v10 = v9 + v8;
-    v11 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v11 frame];
+    thumbnailCollectionView3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView3 frame];
     v13 = v12 * 0.5;
-    [v20 contentOffset];
+    [deceleratingCopy contentOffset];
     v15 = v14 + v13;
 
-    v16 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    v17 = [v16 indexPathForItemAtPoint:{v10, v15}];
+    thumbnailCollectionView4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    v17 = [thumbnailCollectionView4 indexPathForItemAtPoint:{v10, v15}];
 
     if (v17)
     {
-      v18 = [v17 item];
-      if (v18 != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& !UIAccessibilityIsVoiceOverRunning())
+      item = [v17 item];
+      if (item != [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]&& !UIAccessibilityIsVoiceOverRunning())
       {
         -[ICDocCamExtractedDocumentViewController showViewControllerAtIndex:animated:](self, "showViewControllerAtIndex:animated:", [v17 item], 0);
         [(ICDocCamExtractedDocumentViewController *)self updatePageIndicatorForPageIndex:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]];
@@ -5237,18 +5237,18 @@ LABEL_9:
     }
 
     [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:1];
-    v19 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-    [v19 setIsScrubbing:0];
+    thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+    [thumbnailCollectionViewLayout setIsScrubbing:0];
 
-    v5 = v20;
+    v5 = deceleratingCopy;
   }
 }
 
-- (void)_pageViewControllerDidFinishTransitions:(id)a3
+- (void)_pageViewControllerDidFinishTransitions:(id)transitions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
-  [v4 invalidateLayout];
+  thumbnailCollectionViewLayout = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionViewLayout];
+  [thumbnailCollectionViewLayout invalidateLayout];
 
   [(ICDocCamExtractedDocumentViewController *)self setIsScrollingBetweenPages:0];
   [(ICDocCamExtractedDocumentViewController *)self setCurrentThumbnailItem:[(ICDocCamExtractedDocumentViewController *)self presentationPageIndex] animated:0];
@@ -5256,8 +5256,8 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  documentsToUpdateWhenScrollingStops = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
+  v6 = [documentsToUpdateWhenScrollingStops countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5269,21 +5269,21 @@ LABEL_9:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(documentsToUpdateWhenScrollingStops);
         }
 
         [(ICDocCamExtractedDocumentViewController *)self updateDocumentImage:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [documentsToUpdateWhenScrollingStops countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
-  [v10 removeAllObjects];
+  documentsToUpdateWhenScrollingStops2 = [(ICDocCamExtractedDocumentViewController *)self documentsToUpdateWhenScrollingStops];
+  [documentsToUpdateWhenScrollingStops2 removeAllObjects];
 }
 
 - (void)setupBottomToolbar
@@ -5292,38 +5292,38 @@ LABEL_9:
   v3 = objc_alloc_init(MEMORY[0x277D75A68]);
   [(ICDocCamExtractedDocumentViewController *)self setButtonStackView:v3];
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonStackView = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [buttonStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v5 setAxis:0];
+  buttonStackView2 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [buttonStackView2 setAxis:0];
 
-  v6 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v6 setAlignment:3];
+  buttonStackView3 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [buttonStackView3 setAlignment:3];
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v7 setDistribution:1];
+  buttonStackView4 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [buttonStackView4 setDistribution:1];
 
   +[_TtC14DocumentCamera22DCLiquidGlassConstants editorBottomToolbarInterItemSpacing];
   v9 = v8;
-  v10 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v10 setSpacing:v9];
+  buttonStackView5 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [buttonStackView5 setSpacing:v9];
 
   v11 = [DCLabelledButton alloc];
   v12 = [DCLocalization localizedStringForKey:@"Add scan" value:@"Add scan" table:@"Localizable"];
   v13 = [(DCLabelledButton *)v11 initWithSymbolName:@"plus.circle" subtitle:v12];
   [(ICDocCamExtractedDocumentViewController *)self setAddLabelledButton:v13];
 
-  v14 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
-  [v14 addTarget:self action:sel_addImageAction_ forControlEvents:64];
+  addLabelledButton = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
+  [addLabelledButton addTarget:self action:sel_addImageAction_ forControlEvents:64];
 
   v15 = [DCLabelledButton alloc];
   v16 = [DCLocalization localizedStringForKey:@"Adjust" value:@"Adjust" table:@"Localizable"];
   v17 = [(DCLabelledButton *)v15 initWithSymbolName:@"skew" subtitle:v16];
   [(ICDocCamExtractedDocumentViewController *)self setRecropBottomToolbarButton:v17];
 
-  v18 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v18 addTarget:self action:sel_recropButtonPressed_ forControlEvents:64];
+  recropBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton addTarget:self action:sel_recropButtonPressed_ forControlEvents:64];
 
   v19 = [DCLabelledButton alloc];
   v20 = [DCLocalization localizedStringForKey:@"Filters" value:@"Filters" table:@"Localizable"];
@@ -5335,62 +5335,62 @@ LABEL_9:
   v24 = [(DCLabelledButton *)v22 initWithSymbolName:@"rotate.left" subtitle:v23];
   [(ICDocCamExtractedDocumentViewController *)self setRotateBottomToolbarButton:v24];
 
-  v25 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v25 addTarget:self action:sel_rotateAction_ forControlEvents:64];
+  rotateBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton addTarget:self action:sel_rotateAction_ forControlEvents:64];
 
   v26 = [DCLabelledButton alloc];
   v27 = [DCLocalization localizedStringForKey:@"Delete" value:@"Delete" table:@"Localizable"];
   v28 = [(DCLabelledButton *)v26 initWithSymbolName:@"trash" subtitle:v27];
   [(ICDocCamExtractedDocumentViewController *)self setTrashBottomToolbarButton:v28];
 
-  v29 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v29 addTarget:self action:sel_deleteButtonAction_ forControlEvents:64];
+  trashBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton addTarget:self action:sel_deleteButtonAction_ forControlEvents:64];
 
   v30 = [DCLabelledButton alloc];
   v31 = [DCLocalization localizedStringForKey:@"Share" value:@"Share" table:@"Localizable"];
   v32 = [(DCLabelledButton *)v30 initWithSymbolName:@"square.and.arrow.up" subtitle:v31];
   [(ICDocCamExtractedDocumentViewController *)self setActionLabelledButton:v32];
 
-  v33 = [(ICDocCamExtractedDocumentViewController *)self actionLabelledButton];
-  [v33 addTarget:self action:sel_shareAction_ forControlEvents:64];
+  actionLabelledButton = [(ICDocCamExtractedDocumentViewController *)self actionLabelledButton];
+  [actionLabelledButton addTarget:self action:sel_shareAction_ forControlEvents:64];
 
-  v34 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v35 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
-  [v34 addArrangedSubview:v35];
+  buttonStackView6 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  addLabelledButton2 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
+  [buttonStackView6 addArrangedSubview:addLabelledButton2];
 
-  v36 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v37 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v36 addArrangedSubview:v37];
+  buttonStackView7 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  recropBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [buttonStackView7 addArrangedSubview:recropBottomToolbarButton2];
 
-  v38 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v39 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v38 addArrangedSubview:v39];
+  buttonStackView8 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  filterBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [buttonStackView8 addArrangedSubview:filterBottomToolbarButton];
 
-  v40 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v41 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v40 addArrangedSubview:v41];
+  buttonStackView9 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  rotateBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [buttonStackView9 addArrangedSubview:rotateBottomToolbarButton2];
 
-  v42 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v43 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v42 addArrangedSubview:v43];
+  buttonStackView10 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  trashBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [buttonStackView10 addArrangedSubview:trashBottomToolbarButton2];
 
-  v44 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v45 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  [v44 addSubview:v45];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  buttonStackView11 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  [view addSubview:buttonStackView11];
 
   v55 = MEMORY[0x277CCAAD0];
-  v58 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v56 = [v58 centerXAnchor];
-  v57 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v46 = [v57 centerXAnchor];
-  v47 = [v56 constraintEqualToAnchor:v46];
+  buttonStackView12 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  centerXAnchor = [buttonStackView12 centerXAnchor];
+  view2 = [(ICDocCamExtractedDocumentViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v59[0] = v47;
-  v48 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
-  v49 = [v48 bottomAnchor];
-  v50 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v51 = [v50 safeAreaLayoutGuide];
-  v52 = [v51 bottomAnchor];
-  v53 = [v49 constraintEqualToAnchor:v52];
+  buttonStackView13 = [(ICDocCamExtractedDocumentViewController *)self buttonStackView];
+  bottomAnchor = [buttonStackView13 bottomAnchor];
+  view3 = [(ICDocCamExtractedDocumentViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v59[1] = v53;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
   [v55 activateConstraints:v54];
@@ -5400,30 +5400,30 @@ LABEL_9:
 
 - (void)updateBottomToolbarButtonsForCurrentMode
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
-  [v3 setHidden:1];
+  addLabelledButton = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
+  [addLabelledButton setHidden:1];
 
-  v4 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v4 setHidden:1];
+  recropBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton setHidden:1];
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v5 setHidden:1];
+  filterBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton setHidden:1];
 
-  v6 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v6 setHidden:1];
+  rotateBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton setHidden:1];
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v7 setHidden:1];
+  trashBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton setHidden:1];
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self actionLabelledButton];
-  [v8 setHidden:1];
+  actionLabelledButton = [(ICDocCamExtractedDocumentViewController *)self actionLabelledButton];
+  [actionLabelledButton setHidden:1];
 
   if ([(ICDocCamExtractedDocumentViewController *)self mode]== 1)
   {
     if (![(ICDocCamExtractedDocumentViewController *)self cameraRestricted])
     {
-      v9 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
-      [v9 setHidden:0];
+      addLabelledButton2 = [(ICDocCamExtractedDocumentViewController *)self addLabelledButton];
+      [addLabelledButton2 setHidden:0];
     }
   }
 
@@ -5432,80 +5432,80 @@ LABEL_9:
     return;
   }
 
-  v10 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v10 setHidden:0];
+  recropBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton2 setHidden:0];
 
-  v11 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v11 setHidden:0];
+  filterBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton2 setHidden:0];
 
-  v12 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v12 setHidden:0];
+  rotateBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton2 setHidden:0];
 
-  v13 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v13 setHidden:0];
+  trashBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton2 setHidden:0];
 }
 
 - (void)setupAccessibilityInfo
 {
   [(ICDocCamExtractedDocumentViewController *)self updateFilterButtonItemAccessibilityInfo];
   v3 = [DCLocalization localizedStringForKey:@"Rotate" value:@"Rotate" table:@"Localizable"];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v4 setTitle:v3];
+  rotateBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton setTitle:v3];
 
-  v5 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  v6 = [v5 title];
-  v7 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v7 setAccessibilityLabel:v6];
+  rotateBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  title = [rotateBottomToolbarButton2 title];
+  rotateBottomToolbarButton3 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton3 setAccessibilityLabel:title];
 
   v8 = [DCLocalization localizedStringForKey:@"Double-tap to rotate the scan counter-clockwise." value:@"Double-tap to rotate the scan counter-clockwise." table:@"Localizable"];
-  v9 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
-  [v9 setAccessibilityHint:v8];
+  rotateBottomToolbarButton4 = [(ICDocCamExtractedDocumentViewController *)self rotateBottomToolbarButton];
+  [rotateBottomToolbarButton4 setAccessibilityHint:v8];
 
   v10 = [DCLocalization localizedStringForKey:@"Double-tap to rename document" value:@"Double-tap to rename document" table:@"Localizable"];
-  v11 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v11 setAccessibilityHint:v10];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton setAccessibilityHint:v10];
 
   v12 = [DCLocalization localizedStringForKey:@"Add scan" value:@"Add scan" table:@"Localizable"];
-  v13 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
-  [v13 setTitle:v12];
+  addButtonItem = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
+  [addButtonItem setTitle:v12];
 
-  v14 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
-  v15 = [v14 title];
-  v16 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
-  [v16 setAccessibilityLabel:v15];
+  addButtonItem2 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
+  title2 = [addButtonItem2 title];
+  addButtonItem3 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
+  [addButtonItem3 setAccessibilityLabel:title2];
 
   v17 = [DCLocalization localizedStringForKey:@"Double-tap to add a new scan to this document." value:@"Double-tap to add a new scan to this document." table:@"Localizable"];
-  v18 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
-  [v18 setAccessibilityHint:v17];
+  addButtonItem4 = [(ICDocCamExtractedDocumentViewController *)self addButtonItem];
+  [addButtonItem4 setAccessibilityHint:v17];
 
   v19 = [DCLocalization localizedStringForKey:@"Share" value:@"Share" table:@"Localizable"];
-  v20 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
-  [v20 setAccessibilityLabel:v19];
+  actionButtonItem = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
+  [actionButtonItem setAccessibilityLabel:v19];
 
   v21 = [DCLocalization localizedStringForKey:@"Double-tap to share the current scan." value:@"Double-tap to share the current scan." table:@"Localizable"];
-  v22 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
-  [v22 setAccessibilityHint:v21];
+  actionButtonItem2 = [(ICDocCamExtractedDocumentViewController *)self actionButtonItem];
+  [actionButtonItem2 setAccessibilityHint:v21];
 
   v23 = [DCLocalization localizedStringForKey:@"Delete scan" value:@"Delete scan" table:@"Localizable"];
-  v24 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v24 setAccessibilityLabel:v23];
+  trashBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton setAccessibilityLabel:v23];
 
   v25 = [DCLocalization localizedStringForKey:@"Double-tap to delete the current scan." value:@"Double-tap to delete the current scan." table:@"Localizable"];
-  v26 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
-  [v26 setAccessibilityHint:v25];
+  trashBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self trashBottomToolbarButton];
+  [trashBottomToolbarButton2 setAccessibilityHint:v25];
 
   v27 = [DCLocalization localizedStringForKey:@"Adjust" value:@"Adjust" table:@"Localizable"];
-  v28 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v28 setTitle:v27];
+  recropBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton setTitle:v27];
 
-  v29 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  v30 = [v29 title];
-  v31 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v31 setAccessibilityLabel:v30];
+  recropBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  title3 = [recropBottomToolbarButton2 title];
+  recropBottomToolbarButton3 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton3 setAccessibilityLabel:title3];
 
   v32 = [DCLocalization localizedStringForKey:@"Double-tap to adjust and crop the current scan." value:@"Double-tap to adjust and crop the current scan." table:@"Localizable"];
-  v33 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
-  [v33 setAccessibilityHint:v32];
+  recropBottomToolbarButton4 = [(ICDocCamExtractedDocumentViewController *)self recropBottomToolbarButton];
+  [recropBottomToolbarButton4 setAccessibilityHint:v32];
 
   [(ICDocCamExtractedDocumentViewController *)self updateForAccessibilityDarkerSystemColors];
 }
@@ -5515,24 +5515,24 @@ LABEL_9:
   v8 = [DCLocalization localizedStringForKey:@"Filters" value:@"Filters" table:@"Localizable"];
   v3 = [DCLocalization localizedStringForKey:@"Show filters" value:@"Show filters" table:@"Localizable"];
   v4 = [DCLocalization localizedStringForKey:@"Tap to choose a filter to apply to this scan." value:@"Tap to choose a filter to apply to this scan." table:@"Localizable"];
-  v5 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v5 setTitle:v8];
+  filterBottomToolbarButton = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton setTitle:v8];
 
-  v6 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v6 setAccessibilityLabel:v3];
+  filterBottomToolbarButton2 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton2 setAccessibilityLabel:v3];
 
-  v7 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
-  [v7 setAccessibilityHint:v4];
+  filterBottomToolbarButton3 = [(ICDocCamExtractedDocumentViewController *)self filterBottomToolbarButton];
+  [filterBottomToolbarButton3 setAccessibilityHint:v4];
 }
 
-- (void)updateImageViewAccessibilityForPageContentViewController:(id)a3
+- (void)updateImageViewAccessibilityForPageContentViewController:(id)controller
 {
-  v37 = a3;
-  v4 = [v37 image];
-  [v4 size];
+  controllerCopy = controller;
+  image = [controllerCopy image];
+  [image size];
   v6 = v5;
-  v7 = [v37 image];
-  [v7 size];
+  image2 = [controllerCopy image];
+  [image2 size];
   v9 = v8;
 
   if (v6 >= v9)
@@ -5546,35 +5546,35 @@ LABEL_9:
   }
 
   v11 = [DCLocalization localizedStringForKey:v10 value:v10 table:@"Localizable"];
-  v12 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v13 = [v12 docInfos];
-  v14 = [v13 objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v14 = [docInfos objectAtIndexedSubscript:{-[ICDocCamExtractedDocumentViewController presentationPageIndex](self, "presentationPageIndex")}];
   v15 = +[ICDocCamImageFilters localizedImageFilterNameForType:](ICDocCamImageFilters, "localizedImageFilterNameForType:", [v14 currentFilter]);
 
   v16 = MEMORY[0x277CCACA8];
   v17 = [DCLocalization localizedStringForKey:@"%lu of %lu" value:@"%lu of %lu" table:@"Localizable"];
   v18 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex]+ 1;
-  v19 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v20 = [v19 docInfos];
-  v21 = [v16 localizedStringWithFormat:v17, v18, objc_msgSend(v20, "count")];
+  documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos2 = [documentInfoCollection2 docInfos];
+  v21 = [v16 localizedStringWithFormat:v17, v18, objc_msgSend(docInfos2, "count")];
 
   v22 = [DCLocalization localizedStringForKey:@"Scan" value:@"Scan" table:@"Localizable"];
-  v23 = [v37 imageView];
-  [v23 setIsAccessibilityElement:1];
+  imageView = [controllerCopy imageView];
+  [imageView setIsAccessibilityElement:1];
 
   v30 = __DCAccessibilityStringForVariables(1, v22, v24, v25, v26, v27, v28, v29, v11);
-  v31 = [v37 imageView];
-  [v31 setAccessibilityLabel:v30];
+  imageView2 = [controllerCopy imageView];
+  [imageView2 setAccessibilityLabel:v30];
 
-  v32 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v33 = [v32 docInfos];
-  v34 = [v33 count];
+  documentInfoCollection3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos3 = [documentInfoCollection3 docInfos];
+  v34 = [docInfos3 count];
 
   if (v34)
   {
     v35 = [DCLocalization localizedStringForKey:@"Three-finger swipe to scroll between scans." value:@"Three-finger swipe to scroll between scans." table:@"Localizable"];
-    v36 = [v37 imageView];
-    [v36 setAccessibilityHint:v35];
+    imageView3 = [controllerCopy imageView];
+    [imageView3 setAccessibilityHint:v35];
   }
 }
 
@@ -5590,30 +5590,30 @@ LABEL_9:
     [(ICDocCamExtractedDocumentViewController *)self defaultCollectionViewTitleTintColor];
   }
   v4 = ;
-  v3 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  [v3 setTitleColor:v4 forState:0];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  [collectionTitleButton setTitleColor:v4 forState:0];
 }
 
-- (void)speakAccessibilityAnnouncementForReorderIfNecessaryForProposedIndexPath:(id)a3
+- (void)speakAccessibilityAnnouncementForReorderIfNecessaryForProposedIndexPath:(id)path
 {
-  v4 = [a3 item];
-  if (v4 != [(ICDocCamExtractedDocumentViewController *)self lastAXProposedIndexForReordering])
+  item = [path item];
+  if (item != [(ICDocCamExtractedDocumentViewController *)self lastAXProposedIndexForReordering])
   {
     v6 = [DCLocalization localizedStringForKey:@"Position %lu" value:@"Position %lu" table:@"Localizable"];
-    v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, v4 + 1];
+    v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, item + 1];
     UIAccessibilityPostNotification(*MEMORY[0x277D76438], v5);
-    [(ICDocCamExtractedDocumentViewController *)self setLastAXProposedIndexForReordering:v4];
+    [(ICDocCamExtractedDocumentViewController *)self setLastAXProposedIndexForReordering:item];
   }
 }
 
-- (void)speakAccessibilityAnnouncementForMovingItemFromIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)speakAccessibilityAnnouncementForMovingItemFromIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v5 = a4;
-  v6 = [a3 item];
-  v7 = [v5 item];
+  indexPathCopy = indexPath;
+  item = [path item];
+  item2 = [indexPathCopy item];
 
   v9 = [DCLocalization localizedStringForKey:@"Moved item from position %lu to position %lu" value:@"Moved item from position %lu to position %lu" table:@"Localizable"];
-  v8 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v9, v6 + 1, v7 + 1];
+  v8 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v9, item + 1, item2 + 1];
   UIAccessibilityPostNotification(*MEMORY[0x277D76438], v8);
 }
 
@@ -5622,16 +5622,16 @@ LABEL_9:
   v3 = MEMORY[0x277CBEB18];
   v12.receiver = self;
   v12.super_class = ICDocCamExtractedDocumentViewController;
-  v4 = [(ICDocCamExtractedDocumentViewController *)&v12 _accessibilitySpeakThisElementsAndStrings];
-  v5 = [v3 arrayWithArray:v4];
+  _accessibilitySpeakThisElementsAndStrings = [(ICDocCamExtractedDocumentViewController *)&v12 _accessibilitySpeakThisElementsAndStrings];
+  v5 = [v3 arrayWithArray:_accessibilitySpeakThisElementsAndStrings];
 
-  v6 = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
-  v7 = [v6 accessibilityLabel];
-  [v5 insertObject:v7 atIndex:0];
+  collectionTitleButton = [(ICDocCamExtractedDocumentViewController *)self collectionTitleButton];
+  accessibilityLabel = [collectionTitleButton accessibilityLabel];
+  [v5 insertObject:accessibilityLabel atIndex:0];
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
-  v9 = [v8 accessibilityLabel];
-  [v5 insertObject:v9 atIndex:1];
+  pageIndexLabel = [(ICDocCamExtractedDocumentViewController *)self pageIndexLabel];
+  accessibilityLabel2 = [pageIndexLabel accessibilityLabel];
+  [v5 insertObject:accessibilityLabel2 atIndex:1];
 
   v10 = [v5 copy];
 
@@ -5640,11 +5640,11 @@ LABEL_9:
 
 - (BOOL)accessibilityScrollRightPage
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v4 = v3;
-  if (v3)
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  v4 = presentationPageIndex;
+  if (presentationPageIndex)
   {
-    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:v3 - 1 animated:0];
+    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:presentationPageIndex - 1 animated:0];
   }
 
   return v4 != 0;
@@ -5652,111 +5652,111 @@ LABEL_9:
 
 - (BOOL)accessibilityScrollLeftPage
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v4 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v5 = [v4 docInfos];
-  v6 = [v5 count] - 1;
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v6 = [docInfos count] - 1;
 
-  if (v3 < v6)
+  if (presentationPageIndex < v6)
   {
-    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:v3 + 1 animated:0];
+    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:presentationPageIndex + 1 animated:0];
   }
 
-  return v3 < v6;
+  return presentationPageIndex < v6;
 }
 
-- (void)thumbnailContainerViewIncrementCurrentIndex:(id)a3
+- (void)thumbnailContainerViewIncrementCurrentIndex:(id)index
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  v9 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v5 = [v9 docInfos];
-  if (v4 < [v5 count] - 1)
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  if (presentationPageIndex < [docInfos count] - 1)
   {
-    v6 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-    v7 = [v6 docInfos];
-    v8 = [v7 count];
+    documentInfoCollection2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+    docInfos2 = [documentInfoCollection2 docInfos];
+    v8 = [docInfos2 count];
 
     if (!v8)
     {
       return;
     }
 
-    v9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    v5 = [MEMORY[0x277CCAA70] indexPathForItem:v4 + 1 inSection:0];
-    [(ICDocCamExtractedDocumentViewController *)self collectionView:v9 didSelectItemAtIndexPath:v5];
+    documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    docInfos = [MEMORY[0x277CCAA70] indexPathForItem:presentationPageIndex + 1 inSection:0];
+    [(ICDocCamExtractedDocumentViewController *)self collectionView:documentInfoCollection didSelectItemAtIndexPath:docInfos];
   }
 }
 
-- (void)thumbnailContainerViewDecrementCurrentIndex:(id)a3
+- (void)thumbnailContainerViewDecrementCurrentIndex:(id)index
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
-  if (v4)
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  if (presentationPageIndex)
   {
-    v5 = v4;
-    v7 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    v5 = presentationPageIndex;
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
     v6 = [MEMORY[0x277CCAA70] indexPathForItem:v5 - 1 inSection:0];
-    [(ICDocCamExtractedDocumentViewController *)self collectionView:v7 didSelectItemAtIndexPath:v6];
+    [(ICDocCamExtractedDocumentViewController *)self collectionView:thumbnailCollectionView didSelectItemAtIndexPath:v6];
   }
 }
 
-- (unint64_t)thumbnailContainerViewNumberOfItems:(id)a3
+- (unint64_t)thumbnailContainerViewNumberOfItems:(id)items
 {
-  v3 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v4 = [v3 docInfos];
-  v5 = [v4 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v5 = [docInfos count];
 
   return v5;
 }
 
-- (void)thumbnailContainerView:(id)a3 moveItemFromIndex:(int64_t)a4 toIndex:(int64_t)a5
+- (void)thumbnailContainerView:(id)view moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  if ([(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewSupportsReordering:a3])
+  if ([(ICDocCamExtractedDocumentViewController *)self thumbnailContainerViewSupportsReordering:view])
   {
-    v11 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:0];
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:a5 inSection:0];
-    v9 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [(ICDocCamExtractedDocumentViewController *)self collectionView:v9 moveItemAtIndexPath:v11 toIndexPath:v8];
+    v11 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:toIndex inSection:0];
+    thumbnailCollectionView = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [(ICDocCamExtractedDocumentViewController *)self collectionView:thumbnailCollectionView moveItemAtIndexPath:v11 toIndexPath:v8];
 
-    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:a5 animated:0];
-    v10 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
-    [v10 reloadData];
+    [(ICDocCamExtractedDocumentViewController *)self showViewControllerAtIndex:toIndex animated:0];
+    thumbnailCollectionView2 = [(ICDocCamExtractedDocumentViewController *)self thumbnailCollectionView];
+    [thumbnailCollectionView2 reloadData];
   }
 }
 
-- (BOOL)thumbnailContainerViewIsVisible:(id)a3
+- (BOOL)thumbnailContainerViewIsVisible:(id)visible
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation] - 3;
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v7 = [windowScene interfaceOrientation] - 3;
 
-  v8 = [(ICDocCamExtractedDocumentViewController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  traitCollection = [(ICDocCamExtractedDocumentViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v7 < 0xFFFFFFFFFFFFFFFELL || v9 != 1;
+  return v7 < 0xFFFFFFFFFFFFFFFELL || horizontalSizeClass != 1;
 }
 
 - (BOOL)thumbnailContainerViewIsVisible
 {
-  v2 = self;
-  v3 = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
-  LOBYTE(v2) = [(ICDocCamExtractedDocumentViewController *)v2 thumbnailContainerViewIsVisible:v3];
+  selfCopy = self;
+  thumbnailContainerView = [(ICDocCamExtractedDocumentViewController *)self thumbnailContainerView];
+  LOBYTE(selfCopy) = [(ICDocCamExtractedDocumentViewController *)selfCopy thumbnailContainerViewIsVisible:thumbnailContainerView];
 
-  return v2;
+  return selfCopy;
 }
 
-- (CGRect)zoomTargetForIndexPath:(id)a3
+- (CGRect)zoomTargetForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
-  [v5 frame];
+  pathCopy = path;
+  pageViewControllerContainerView = [(ICDocCamExtractedDocumentViewController *)self pageViewControllerContainerView];
+  [pageViewControllerContainerView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 item];
-  [(ICDocCamExtractedDocumentViewController *)self imageSizeForDocumentAtIndex:v14];
+  item = [pathCopy item];
+  [(ICDocCamExtractedDocumentViewController *)self imageSizeForDocumentAtIndex:item];
   [ICDocCamUtilities aspectFillSize:"aspectFillSize:targetSize:" targetSize:?];
   [ICDocCamUtilities aspectFitSize:"aspectFitSize:targetSize:" targetSize:?];
   v16 = v15;
@@ -5770,17 +5770,17 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)imageRectWithZoomAndPanForIndexPath:(id)a3
+- (CGRect)imageRectWithZoomAndPanForIndexPath:(id)path
 {
-  v4 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-  v5 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
-  [v5 bounds];
+  currentImageView = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+  currentImageView2 = [(ICDocCamExtractedDocumentViewController *)self currentImageView];
+  [currentImageView2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(ICDocCamExtractedDocumentViewController *)self view];
-  [v4 convertRect:v14 toView:{v7, v9, v11, v13}];
+  view = [(ICDocCamExtractedDocumentViewController *)self view];
+  [currentImageView convertRect:view toView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -5799,9 +5799,9 @@ LABEL_9:
 
 - (unint64_t)documentCount
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
-  v3 = [v2 docInfos];
-  v4 = [v3 count];
+  documentInfoCollection = [(ICDocCamExtractedDocumentViewController *)self documentInfoCollection];
+  docInfos = [documentInfoCollection docInfos];
+  v4 = [docInfos count];
 
   return v4;
 }
@@ -5809,15 +5809,15 @@ LABEL_9:
 - (id)indexPathForCurrentDocument
 {
   v2 = MEMORY[0x277CCAA70];
-  v3 = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
+  presentationPageIndex = [(ICDocCamExtractedDocumentViewController *)self presentationPageIndex];
 
-  return [v2 indexPathForItem:v3 inSection:0];
+  return [v2 indexPathForItem:presentationPageIndex inSection:0];
 }
 
 - (void)resetImageCentering
 {
-  v2 = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
-  [v2 resetImageCentering];
+  currentPageContentViewController = [(ICDocCamExtractedDocumentViewController *)self currentPageContentViewController];
+  [currentPageContentViewController resetImageCentering];
 }
 
 - (UIView)topToolbar

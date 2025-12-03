@@ -1,18 +1,18 @@
 @interface _UIDatePickerMode_DateWithOptionalYear
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5;
-- (id)dateComponentsByRestrictingSelectedComponents:(id)a3 withLastManipulatedColumn:(int64_t)a4;
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4;
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3;
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6;
-- (int64_t)yearForRow:(int64_t)a3;
-- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)a3 usingSelectionBarValue:(BOOL)a4;
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit;
+- (id)dateComponentsByRestrictingSelectedComponents:(id)components withLastManipulatedColumn:(int64_t)column;
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component;
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit;
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row;
+- (int64_t)yearForRow:(int64_t)row;
+- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)component usingSelectionBarValue:(BOOL)value;
 @end
 
 @implementation _UIDatePickerMode_DateWithOptionalYear
 
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit
 {
-  if (a3 == 4)
+  if (unit == 4)
   {
     return [(_UIDatePickerMode *)self yearsSinceBaseDate]+ 2;
   }
@@ -22,9 +22,9 @@
   return [(_UIDatePickerMode_Date *)&v4 numberOfRowsForCalendarUnit:?];
 }
 
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component
 {
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a4]== 4 && [(_UIDatePickerMode *)self yearsSinceBaseDate]< a3)
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]== 4 && [(_UIDatePickerMode *)self yearsSinceBaseDate]< row)
   {
     v7 = @"----";
   }
@@ -33,49 +33,49 @@
   {
     v9.receiver = self;
     v9.super_class = _UIDatePickerMode_DateWithOptionalYear;
-    v7 = [(_UIDatePickerMode *)&v9 titleForRow:a3 inComponent:a4];
+    v7 = [(_UIDatePickerMode *)&v9 titleForRow:row inComponent:component];
   }
 
   return v7;
 }
 
-- (int64_t)yearForRow:(int64_t)a3
+- (int64_t)yearForRow:(int64_t)row
 {
-  if ([(_UIDatePickerMode *)self yearsSinceBaseDate]>= a3)
+  if ([(_UIDatePickerMode *)self yearsSinceBaseDate]>= row)
   {
     v7.receiver = self;
     v7.super_class = _UIDatePickerMode_DateWithOptionalYear;
-    return [(_UIDatePickerMode *)&v7 yearForRow:a3];
+    return [(_UIDatePickerMode *)&v7 yearForRow:row];
   }
 
   else
   {
-    v5 = [(_UIDatePickerMode *)self monthForRow:a3];
+    v5 = [(_UIDatePickerMode *)self monthForRow:row];
 
     return [(_UIDatePickerMode *)self _yearlessYearForMonth:v5];
   }
 }
 
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row
 {
-  v10 = a3;
-  v11 = a4;
-  if ([(_UIDatePickerMode *)self calendarUnitForComponent:a5]!= 4)
+  dateCopy = date;
+  componentsCopy = components;
+  if ([(_UIDatePickerMode *)self calendarUnitForComponent:component]!= 4)
   {
     goto LABEL_6;
   }
 
-  v12 = [(_UIDatePickerMode *)self calendar];
-  v13 = [v12 components:12 fromDate:v10];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v13 = [calendar components:12 fromDate:dateCopy];
 
-  v14 = [v13 year];
-  if (v14 != -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", [v13 month]))
+  year = [v13 year];
+  if (year != -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", [v13 month]))
   {
 
 LABEL_6:
     v17.receiver = self;
     v17.super_class = _UIDatePickerMode_DateWithOptionalYear;
-    v15 = [(_UIDatePickerMode_Date *)&v17 rowForDate:v10 dateComponents:v11 component:a5 currentRow:a6];
+    v15 = [(_UIDatePickerMode_Date *)&v17 rowForDate:dateCopy dateComponents:componentsCopy component:component currentRow:row];
     goto LABEL_7;
   }
 
@@ -91,15 +91,15 @@ LABEL_7:
   return v15;
 }
 
-- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)a3 usingSelectionBarValue:(BOOL)a4
+- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)component usingSelectionBarValue:(BOOL)value
 {
   v10.receiver = self;
   v10.super_class = _UIDatePickerMode_DateWithOptionalYear;
-  [(_UIDatePickerMode *)&v10 _updateSelectedDateComponentsWithNewValueInComponent:a3 usingSelectionBarValue:a4];
-  if (self->super.super._selectedDateComponents && (a3 == 0x7FFFFFFFFFFFFFFFLL || [(_UIDatePickerMode *)self calendarUnitForComponent:a3]== 4))
+  [(_UIDatePickerMode *)&v10 _updateSelectedDateComponentsWithNewValueInComponent:component usingSelectionBarValue:value];
+  if (self->super.super._selectedDateComponents && (component == 0x7FFFFFFFFFFFFFFFLL || [(_UIDatePickerMode *)self calendarUnitForComponent:component]== 4))
   {
-    v6 = [(_UIDatePickerMode *)self datePickerView];
-    v7 = [v6 selectedRowInComponent:{-[_UIDatePickerMode componentForCalendarUnit:](self, "componentForCalendarUnit:", 4)}];
+    datePickerView = [(_UIDatePickerMode *)self datePickerView];
+    v7 = [datePickerView selectedRowInComponent:{-[_UIDatePickerMode componentForCalendarUnit:](self, "componentForCalendarUnit:", 4)}];
 
     if (v7 > [(_UIDatePickerMode *)self yearsSinceBaseDate])
     {
@@ -111,28 +111,28 @@ LABEL_7:
   }
 }
 
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit
 {
-  if (a5 == 4 && [(_UIDatePickerMode *)self yearsSinceBaseDate]< a3)
+  if (unit == 4 && [(_UIDatePickerMode *)self yearsSinceBaseDate]< row)
   {
     return 1;
   }
 
   v10.receiver = self;
   v10.super_class = _UIDatePickerMode_DateWithOptionalYear;
-  return [(_UIDatePickerMode_Date *)&v10 _shouldEnableValueForRow:a3 inComponent:a4 calendarUnit:a5];
+  return [(_UIDatePickerMode_Date *)&v10 _shouldEnableValueForRow:row inComponent:component calendarUnit:unit];
 }
 
-- (id)dateComponentsByRestrictingSelectedComponents:(id)a3 withLastManipulatedColumn:(int64_t)a4
+- (id)dateComponentsByRestrictingSelectedComponents:(id)components withLastManipulatedColumn:(int64_t)column
 {
-  v6 = a3;
-  v7 = [v6 copy];
+  componentsCopy = components;
+  v7 = [componentsCopy copy];
   v11.receiver = self;
   v11.super_class = _UIDatePickerMode_DateWithOptionalYear;
-  v8 = [(_UIDatePickerMode *)&v11 dateComponentsByRestrictingSelectedComponents:v6 withLastManipulatedColumn:a4];
+  v8 = [(_UIDatePickerMode *)&v11 dateComponentsByRestrictingSelectedComponents:componentsCopy withLastManipulatedColumn:column];
 
-  v9 = [v7 year];
-  if (v9 == -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", [v7 month]))
+  year = [v7 year];
+  if (year == -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", [v7 month]))
   {
     [v8 setYear:{-[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", objc_msgSend(v8, "month"))}];
   }

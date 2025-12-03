@@ -1,50 +1,50 @@
 @interface UITableViewIndex
 + (id)idiomToVisualStyleClassMap;
-+ (id)visualStyleForIdiom:(uint64_t)a1;
-+ (id)visualStyleForTableViewIndex:(id)a3;
-+ (void)makeTableViewIndex:(id *)a3 containerView:(id *)a4 forTraits:(id)a5;
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)_updateSectionForTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (id)visualStyleForIdiom:(uint64_t)idiom;
++ (id)visualStyleForTableViewIndex:(id)index;
++ (void)makeTableViewIndex:(id *)index containerView:(id *)view forTraits:(id)traits;
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)_updateSectionForTouch:(id)touch withEvent:(id)event;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)canBecomeFocused;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)_effectiveBounds;
-- (CGRect)_visibleBoundsForRect:(CGRect)a3 stride:(double *)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_visibleBoundsForRect:(CGRect)rect stride:(double *)stride;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)selectedSectionTitle;
 - (UIEdgeInsets)drawingInsets;
 - (UIFont)font;
 - (UITableView)tableView;
-- (UITableViewIndex)initWithFrame:(CGRect)a3;
-- (double)_minLineSpacingForIdiom:(int64_t)a3;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
+- (UITableViewIndex)initWithFrame:(CGRect)frame;
+- (double)_minLineSpacingForIdiom:(int64_t)idiom;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
 - (id)_displayTitles;
 - (id)_dotImage;
 - (id)_externalDotImage;
 - (int64_t)_idiom;
-- (int64_t)_indexForEntryAtPoint:(CGPoint)a3;
+- (int64_t)_indexForEntryAtPoint:(CGPoint)point;
 - (void)_cacheAndMeasureTitles;
-- (void)_handleTouches:(id)a3 withEvent:(id)a4;
+- (void)_handleTouches:(id)touches withEvent:(id)event;
 - (void)_horizontalSizeClassDidChange;
 - (void)_legibilityWeightOrPreferredContentSizeTraitsDidChange;
-- (void)_setIdiom:(int64_t)a3;
+- (void)_setIdiom:(int64_t)idiom;
 - (void)_setupAXHUDGestureIfNecessary;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setDrawingInsets:(UIEdgeInsets)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIndexBackgroundColor:(id)a3;
-- (void)setIndexColor:(id)a3;
-- (void)setIndexTrackingBackgroundColor:(id)a3;
-- (void)setTitles:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setDrawingInsets:(UIEdgeInsets)insets;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setIndexBackgroundColor:(id)color;
+- (void)setIndexColor:(id)color;
+- (void)setIndexTrackingBackgroundColor:(id)color;
+- (void)setTitles:(id)titles;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITableViewIndex
@@ -56,16 +56,16 @@
     return self->_idiom;
   }
 
-  v3 = [(UIView *)self window];
-  v4 = [v3 _screen];
-  v5 = [v4 _userInterfaceIdiom];
+  window = [(UIView *)self window];
+  _screen = [window _screen];
+  _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-  return v5;
+  return _userInterfaceIdiom;
 }
 
-- (void)_setIdiom:(int64_t)a3
+- (void)_setIdiom:(int64_t)idiom
 {
-  self->_idiom = a3;
+  self->_idiom = idiom;
   v4 = [objc_opt_class() visualStyleForTableViewIndex:self];
   visualStyle = self->_visualStyle;
   self->_visualStyle = v4;
@@ -78,10 +78,10 @@
   [(UIView *)self setNeedsDisplay];
 }
 
-- (double)_minLineSpacingForIdiom:(int64_t)a3
+- (double)_minLineSpacingForIdiom:(int64_t)idiom
 {
-  v3 = [(UITableViewIndex *)self visualStyle];
-  [v3 minLineSpacing];
+  visualStyle = [(UITableViewIndex *)self visualStyle];
+  [visualStyle minLineSpacing];
   v5 = v4;
 
   return v5;
@@ -113,21 +113,21 @@
   v9 = [v3 objectAtIndex:0];
   v10 = [v9 isEqualToString:@"{search}"];
 
-  v11 = [v3 lastObject];
-  v12 = [v11 isEqualToString:@"{search}"];
+  lastObject = [v3 lastObject];
+  v12 = [lastObject isEqualToString:@"{search}"];
 
   v13 = [v3 objectAtIndex:0];
   v14 = [v13 isEqualToString:@"#"];
 
-  v15 = [v3 lastObject];
-  v16 = [v15 isEqualToString:@"#"];
+  lastObject2 = [v3 lastObject];
+  v16 = [lastObject2 isEqualToString:@"#"];
 
   v17 = [v3 count];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = v18;
+  array = [MEMORY[0x1E695DF70] array];
+  v19 = array;
   if (v10)
   {
-    [v18 addObject:@"{search}"];
+    [array addObject:@"{search}"];
   }
 
   v20 = (v14 | v16) + (v10 | v12);
@@ -152,8 +152,8 @@
   v28 = [v3 objectAtIndex:v23 + v22];
   if ([v19 containsObject:v28])
   {
-    v29 = [v19 lastObject];
-    v30 = [v29 isEqual:@"•"];
+    lastObject3 = [v19 lastObject];
+    v30 = [lastObject3 isEqual:@"•"];
 
     if (!v30)
     {
@@ -207,7 +207,7 @@ LABEL_18:
 
 - (void)_cacheAndMeasureTitles
 {
-  v2 = self;
+  selfCopy = self;
   v50 = *MEMORY[0x1E69E9840];
   entries = self->_entries;
   if (entries)
@@ -215,44 +215,44 @@ LABEL_18:
     self->_entries = 0;
   }
 
-  [(UITableViewIndex *)v2 _minLineSpacingForIdiom:[(UITableViewIndex *)v2 _idiom]];
+  [(UITableViewIndex *)selfCopy _minLineSpacingForIdiom:[(UITableViewIndex *)selfCopy _idiom]];
   v5 = v4;
-  v6 = [(UITableViewIndex *)v2 drawingInsetsMask];
-  [(UITableViewIndex *)v2 _effectiveBounds];
+  drawingInsetsMask = [(UITableViewIndex *)selfCopy drawingInsetsMask];
+  [(UITableViewIndex *)selfCopy _effectiveBounds];
   v8 = v7;
   v37 = 568;
-  if (v5 <= floor(v7 / [(NSArray *)v2->_titles count]))
+  if (v5 <= floor(v7 / [(NSArray *)selfCopy->_titles count]))
   {
-    if (v6)
+    if (drawingInsetsMask)
     {
       goto LABEL_10;
     }
 
-    [(UITableViewIndex *)v2 drawingInsets];
-    if (v5 >= floor((v8 - v10) / [(NSArray *)v2->_titles count]))
+    [(UITableViewIndex *)selfCopy drawingInsets];
+    if (v5 >= floor((v8 - v10) / [(NSArray *)selfCopy->_titles count]))
     {
       goto LABEL_10;
     }
 
-    v9 = [(UITableViewIndex *)v2 drawingInsetsMask]| 1;
+    v9 = [(UITableViewIndex *)selfCopy drawingInsetsMask]| 1;
     goto LABEL_9;
   }
 
-  if (v6)
+  if (drawingInsetsMask)
   {
-    v9 = [(UITableViewIndex *)v2 drawingInsetsMask]& 0xFFFFFFFFFFFFFFFELL;
+    v9 = [(UITableViewIndex *)selfCopy drawingInsetsMask]& 0xFFFFFFFFFFFFFFFELL;
 LABEL_9:
-    [(UITableViewIndex *)v2 setDrawingInsetsMask:v9, 568];
+    [(UITableViewIndex *)selfCopy setDrawingInsetsMask:v9, 568];
   }
 
 LABEL_10:
-  v11 = [(UITableViewIndex *)v2 _displayTitles];
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  _displayTitles = [(UITableViewIndex *)selfCopy _displayTitles];
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(_displayTitles, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v13 = v11;
+  v13 = _displayTitles;
   v14 = [v13 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (!v14)
   {
@@ -290,13 +290,13 @@ LABEL_10:
       {
         v23 = @"UITableViewIndexSearchGlyph";
 LABEL_19:
-        v24 = _UIImageWithName(v23);
+        _dotImage = _UIImageWithName(v23);
 LABEL_20:
-        v25 = v24;
-        [(_UITableViewIndexEntry *)v22 setImage:v24];
+        v25 = _dotImage;
+        [(_UITableViewIndexEntry *)v22 setImage:_dotImage];
 
-        v26 = [(_UITableViewIndexEntry *)v22 image];
-        [v26 size];
+        image = [(_UITableViewIndexEntry *)v22 image];
+        [image size];
         [(_UITableViewIndexEntry *)v22 setBounds:v18, v19, v27, v28];
 
         [(_UITableViewIndexEntry *)v22 bounds];
@@ -306,24 +306,24 @@ LABEL_20:
 
       if ([v21 isEqualToString:@"•"])
       {
-        v24 = [(UITableViewIndex *)v2 _dotImage];
+        _dotImage = [(UITableViewIndex *)selfCopy _dotImage];
         goto LABEL_20;
       }
 
       if ([v21 isEqualToString:@"{appclip}"])
       {
-        v24 = [UIImage _systemImageNamed:@"appclip"];
+        _dotImage = [UIImage _systemImageNamed:@"appclip"];
         goto LABEL_20;
       }
 
       v47[0] = v41;
-      v29 = [(UITableViewIndex *)v2 font];
+      font = [(UITableViewIndex *)selfCopy font];
       v47[1] = v40;
-      v48[0] = v29;
+      v48[0] = font;
       v48[1] = v39;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
       v30 = v17;
-      v32 = v31 = v2;
+      v32 = v31 = selfCopy;
 
       v33 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v21 attributes:v32];
       v34 = CTLineCreateWithAttributedString(v33);
@@ -335,7 +335,7 @@ LABEL_20:
       [(_UITableViewIndexEntry *)v22 setTypeBounds:v52.origin.x, v52.origin.y, v52.size.width, v52.size.height];
 
       v13 = v42;
-      v2 = v31;
+      selfCopy = v31;
       v17 = v30;
 LABEL_21:
       [v12 addObject:v22];
@@ -351,16 +351,16 @@ LABEL_21:
   while (v35);
 LABEL_29:
 
-  v36 = *(&v2->super.super.super.super.isa + v38);
-  *(&v2->super.super.super.super.isa + v38) = v12;
+  v36 = *(&selfCopy->super.super.super.super.isa + v38);
+  *(&selfCopy->super.super.super.super.isa + v38) = v12;
 }
 
-+ (void)makeTableViewIndex:(id *)a3 containerView:(id *)a4 forTraits:(id)a5
++ (void)makeTableViewIndex:(id *)index containerView:(id *)view forTraits:(id)traits
 {
-  v17 = a5;
-  if (a3)
+  traitsCopy = traits;
+  if (index)
   {
-    if (a4)
+    if (view)
     {
       goto LABEL_3;
     }
@@ -368,22 +368,22 @@ LABEL_29:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"UITableViewIndex.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"index != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableViewIndex.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"index != nil"}];
 
-    if (a4)
+    if (view)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"UITableViewIndex.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableViewIndex.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
 LABEL_3:
-  v9 = [a1 alloc];
+  v9 = [self alloc];
   v10 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v11 = +[UITableViewIndex visualStyleForIdiom:](a1, [v17 userInterfaceIdiom]);
+  v11 = +[UITableViewIndex visualStyleForIdiom:](self, [traitsCopy userInterfaceIdiom]);
   if (objc_opt_respondsToSelector())
   {
     v12 = [v11 containerViewForTableViewIndex:v10];
@@ -395,7 +395,7 @@ LABEL_3:
   }
 
   v13 = v10;
-  *a3 = v10;
+  *index = v10;
   if (v12)
   {
     v14 = v12;
@@ -406,10 +406,10 @@ LABEL_3:
     v14 = v10;
   }
 
-  *a4 = v14;
+  *view = v14;
 }
 
-+ (id)visualStyleForIdiom:(uint64_t)a1
++ (id)visualStyleForIdiom:(uint64_t)idiom
 {
   objc_opt_self();
   v3 = +[UITableViewIndex idiomToVisualStyleClassMap];
@@ -424,12 +424,12 @@ LABEL_3:
   return v5;
 }
 
-- (UITableViewIndex)initWithFrame:(CGRect)a3
+- (UITableViewIndex)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = UITableViewIndex;
-  v3 = [(UIControl *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -452,8 +452,8 @@ LABEL_3:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v9 = [(UIView *)v4 _registerForTraitTokenChanges:v8 withTarget:v4 action:sel__setupAXHUDGestureIfNecessary];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v4 selector:sel__largeContentViewerEnabledStatusDidChange_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__largeContentViewerEnabledStatusDidChange_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
 
     v18[0] = 0x1EFE32440;
     v18[1] = 0x1EFE324A0;
@@ -468,10 +468,10 @@ LABEL_3:
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v38 = *MEMORY[0x1E69E9840];
   p_cachedSize = &self->_cachedSize;
   v7 = self->_cachedSize.width;
@@ -504,8 +504,8 @@ LABEL_3:
           v18 = *(*(&v33 + 1) + 8 * i);
           [v18 bounds];
           v20 = v19;
-          v21 = [(UITableViewIndex *)self visualStyle];
-          [v21 lineSpacing];
+          visualStyle = [(UITableViewIndex *)self visualStyle];
+          [visualStyle lineSpacing];
           v23 = v22;
 
           [v18 bounds];
@@ -534,8 +534,8 @@ LABEL_3:
     self->_topPadding = v26;
     UICeilToViewScale(self);
     v28 = v27;
-    v29 = [(UITableViewIndex *)self visualStyle];
-    [v29 indexWidth];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 indexWidth];
     v31 = fmax(v28, v30);
 
     if (v31 > width)
@@ -561,11 +561,11 @@ LABEL_3:
   return result;
 }
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
-  if (self->_titles != a3)
+  if (self->_titles != titles)
   {
-    v4 = [a3 copy];
+    v4 = [titles copy];
     titles = self->_titles;
     self->_titles = v4;
 
@@ -578,12 +578,12 @@ LABEL_3:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = UITableViewIndex;
   [(UIView *)&v16 frame];
@@ -609,15 +609,15 @@ LABEL_3:
   }
 }
 
-- (void)setDrawingInsets:(UIEdgeInsets)a3
+- (void)setDrawingInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_drawingInsets.top), vceqq_f64(v4, *&self->_drawingInsets.bottom)))) & 1) == 0)
   {
-    self->_drawingInsets = a3;
+    self->_drawingInsets = insets;
     [(UITableViewIndex *)self _cacheAndMeasureTitles];
   }
 }
@@ -629,23 +629,23 @@ LABEL_3:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UITableViewIndex *)self drawingInsetsMask];
-  if ((v11 & 8) == 0)
+  drawingInsetsMask = [(UITableViewIndex *)self drawingInsetsMask];
+  if ((drawingInsetsMask & 8) == 0)
   {
     v10 = 0.0;
   }
 
-  if ((v11 & 4) == 0)
+  if ((drawingInsetsMask & 4) == 0)
   {
     v8 = 0.0;
   }
 
-  if ((v11 & 2) == 0)
+  if ((drawingInsetsMask & 2) == 0)
   {
     v6 = 0.0;
   }
 
-  if ((v11 & 1) == 0)
+  if ((drawingInsetsMask & 1) == 0)
   {
     v4 = 0.0;
   }
@@ -662,14 +662,14 @@ LABEL_3:
   return result;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(UITableViewIndex *)self visualStyle];
-  [v5 setFont:v4];
+  fontCopy = font;
+  visualStyle = [(UITableViewIndex *)self visualStyle];
+  [visualStyle setFont:fontCopy];
 
   font = self->_font;
-  if (font != v4)
+  if (font != fontCopy)
   {
 
     [(UIView *)self setNeedsDisplay];
@@ -678,10 +678,10 @@ LABEL_3:
 
 - (UIFont)font
 {
-  v2 = [(UITableViewIndex *)self visualStyle];
-  v3 = [v2 font];
+  visualStyle = [(UITableViewIndex *)self visualStyle];
+  font = [visualStyle font];
 
-  return v3;
+  return font;
 }
 
 - (NSString)selectedSectionTitle
@@ -699,17 +699,17 @@ LABEL_3:
   return v4;
 }
 
-- (CGRect)_visibleBoundsForRect:(CGRect)a3 stride:(double *)a4
+- (CGRect)_visibleBoundsForRect:(CGRect)rect stride:(double *)stride
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_entries count])
   {
-    v10 = [(UITableViewIndex *)self visualStyle];
-    [v10 lineSpacing];
+    visualStyle = [(UITableViewIndex *)self visualStyle];
+    [visualStyle lineSpacing];
     v12 = v11;
 
     v32 = 0u;
@@ -764,9 +764,9 @@ LABEL_3:
     CGRectGetHeight(v37);
     UIRoundToViewScale(self);
     v20 = v25;
-    if (a4)
+    if (stride)
     {
-      *a4 = v12;
+      *stride = v12;
     }
   }
 
@@ -789,10 +789,10 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contents"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     v5 = 0;
   }
@@ -801,7 +801,7 @@ LABEL_3:
   {
     v7.receiver = self;
     v7.super_class = UITableViewIndex;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -809,13 +809,13 @@ LABEL_3:
 
 - (void)_legibilityWeightOrPreferredContentSizeTraitsDidChange
 {
-  v3 = [(UITableViewIndex *)self visualStyle];
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UITableViewIndex *)self visualStyle];
-    [v5 legibilityWeightOrPreferredContentSizeUpdated];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 legibilityWeightOrPreferredContentSizeUpdated];
   }
 
   [(UITableViewIndex *)self _cacheAndMeasureTitles];
@@ -826,23 +826,23 @@ LABEL_3:
   v2 = *MEMORY[0x1E695F060];
   self->_cachedSizeToFit = *MEMORY[0x1E695F060];
   self->_cachedSize = v2;
-  v3 = [(UITableViewIndex *)self tableView];
-  [v3 _updateIndexFrame];
+  tableView = [(UITableViewIndex *)self tableView];
+  [tableView _updateIndexFrame];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UITableViewIndex *)self visualStyle];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v66 = [(UITableViewIndex *)self visualStyle];
-    [v66 drawRect:{x, y, width, height}];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 drawRect:{x, y, width, height}];
 
     return;
   }
@@ -870,8 +870,8 @@ LABEL_3:
 
   else
   {
-    v62 = [(UIView *)self traitCollection];
-    if ([v62 userInterfaceIdiom] == 3)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 3)
     {
 
       goto LABEL_13;
@@ -900,9 +900,9 @@ LABEL_13:
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(UITableViewIndex *)self indexColor];
+  indexColor = [(UITableViewIndex *)self indexColor];
 
-  if (v29)
+  if (indexColor)
   {
     [(UITableViewIndex *)self indexColor];
   }
@@ -914,10 +914,10 @@ LABEL_13:
   v30 = ;
   [v30 set];
   v31 = [(NSArray *)self->_entries count];
-  v32 = [(UITableViewIndex *)self visualStyle];
+  visualStyle3 = [(UITableViewIndex *)self visualStyle];
   v33 = objc_opt_respondsToSelector();
 
-  v34 = [(UITableViewIndex *)self visualStyle];
+  visualStyle4 = [(UITableViewIndex *)self visualStyle];
   v35 = objc_opt_respondsToSelector();
 
   if (v31)
@@ -932,16 +932,16 @@ LABEL_13:
       v44 = v43;
       if (v33)
       {
-        v45 = [(UITableViewIndex *)self visualStyle];
-        [v45 willDrawEntryAtIndex:i indexBounds:v19 entryBounds:v30 context:v22 originalColor:{v24, v26, v28, v39, v41, *&v67, v44}];
+        visualStyle5 = [(UITableViewIndex *)self visualStyle];
+        [visualStyle5 willDrawEntryAtIndex:i indexBounds:v19 entryBounds:v30 context:v22 originalColor:{v24, v26, v28, v39, v41, *&v67, v44}];
       }
 
-      v46 = [v37 image];
+      image = [v37 image];
 
-      if (v46)
+      if (image)
       {
-        v47 = [v37 image];
-        v48 = [v47 imageWithTintColor:v30 renderingMode:1];
+        image2 = [v37 image];
+        v48 = [image2 imageWithTintColor:v30 renderingMode:1];
 
         v72.origin.x = v22;
         v72.origin.y = v24;
@@ -972,9 +972,9 @@ LABEL_13:
 
       else
       {
-        v55 = [v37 line];
+        line = [v37 line];
 
-        if (v55)
+        if (line)
         {
           CGContextSaveGState(v19);
           v75.origin.x = v22;
@@ -1006,8 +1006,8 @@ LABEL_13:
           v68.ty = v58;
           v39 = v65;
           CGContextSetTextMatrix(v19, &v68);
-          v60 = [v37 line];
-          CTLineDraw(v60, v19);
+          line2 = [v37 line];
+          CTLineDraw(line2, v19);
 
           CGContextRestoreGState(v19);
           v28 = v59 - v24;
@@ -1016,8 +1016,8 @@ LABEL_13:
 
       if (v35)
       {
-        v61 = [(UITableViewIndex *)self visualStyle];
-        [v61 didDrawEntryAtIndex:i indexBounds:v19 entryBounds:v30 context:v22 originalColor:{v24, v26, v28, v39, v41, *&v67, v44}];
+        visualStyle6 = [(UITableViewIndex *)self visualStyle];
+        [visualStyle6 didDrawEntryAtIndex:i indexBounds:v19 entryBounds:v30 context:v22 originalColor:{v24, v26, v28, v39, v41, *&v67, v44}];
       }
 
       v24 = v24 + v28 + v69;
@@ -1025,15 +1025,15 @@ LABEL_13:
   }
 }
 
-- (BOOL)_updateSectionForTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_updateSectionForTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(UITableViewIndex *)self _effectiveBounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v15 = v14;
   v17 = v16;
 
@@ -1086,81 +1086,81 @@ LABEL_13:
   self->_selectedSection = v21;
   self->_pastTop = v23;
   self->_pastBottom = v20;
-  v25 = [(UITableViewIndex *)self visualStyle];
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
-    v27 = [(UITableViewIndex *)self visualStyle];
-    [v27 selectedSectionDidChange:self->_selectedSection];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 selectedSectionDidChange:self->_selectedSection];
   }
 
   return 1;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITableViewIndex *)self visualStyle];
+  touchCopy = touch;
+  eventCopy = event;
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(UITableViewIndex *)self visualStyle];
-    [v10 trackingDidBegin];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 trackingDidBegin];
   }
 
-  [(UITableViewIndex *)self _updateSectionForTouch:v6 withEvent:v7];
+  [(UITableViewIndex *)self _updateSectionForTouch:touchCopy withEvent:eventCopy];
   [(UIView *)self setNeedsDisplay];
 
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  if ([(UITableViewIndex *)self _updateSectionForTouch:a3 withEvent:v6])
+  eventCopy = event;
+  if ([(UITableViewIndex *)self _updateSectionForTouch:touch withEvent:eventCopy])
   {
-    [(UIControl *)self _sendActionsForEvents:4096 withEvent:v6];
+    [(UIControl *)self _sendActionsForEvents:4096 withEvent:eventCopy];
   }
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITableViewIndex *)self visualStyle];
+  eventCopy = event;
+  touchCopy = touch;
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(UITableViewIndex *)self visualStyle];
-    [v10 trackingDidEnd];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 trackingDidEnd];
   }
 
-  [(UITableViewIndex *)self _updateSectionForTouch:v7 withEvent:v6];
+  [(UITableViewIndex *)self _updateSectionForTouch:touchCopy withEvent:eventCopy];
   self->_selectedSection = 0x7FFFFFFFFFFFFFFFLL;
   self->_pastTop = 0;
   self->_pastBottom = 0;
   [(UIView *)self setNeedsDisplay];
   v11.receiver = self;
   v11.super_class = UITableViewIndex;
-  [(UIControl *)&v11 endTrackingWithTouch:v7 withEvent:v6];
+  [(UIControl *)&v11 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UITableViewIndex *)self visualStyle];
+  eventCopy = event;
+  visualStyle = [(UITableViewIndex *)self visualStyle];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UITableViewIndex *)self visualStyle];
-    [v7 trackingDidEnd];
+    visualStyle2 = [(UITableViewIndex *)self visualStyle];
+    [visualStyle2 trackingDidEnd];
   }
 
   self->_selectedSection = 0x7FFFFFFFFFFFFFFFLL;
@@ -1169,90 +1169,90 @@ LABEL_13:
   [(UIView *)self setNeedsDisplay];
   v8.receiver = self;
   v8.super_class = UITableViewIndex;
-  [(UIControl *)&v8 cancelTrackingWithEvent:v4];
+  [(UIControl *)&v8 cancelTrackingWithEvent:eventCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITableViewIndex;
-  v6 = a4;
-  v7 = a3;
-  [(UIControl *)&v8 touchesBegan:v7 withEvent:v6];
-  [(UITableViewIndex *)self _handleTouches:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  beganCopy = began;
+  [(UIControl *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
+  [(UITableViewIndex *)self _handleTouches:beganCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITableViewIndex;
-  v6 = a4;
-  v7 = a3;
-  [(UIControl *)&v8 touchesMoved:v7 withEvent:v6];
-  [(UITableViewIndex *)self _handleTouches:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  movedCopy = moved;
+  [(UIControl *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
+  [(UITableViewIndex *)self _handleTouches:movedCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UITableViewIndex;
-  v6 = a4;
-  [(UIControl *)&v7 touchesEnded:a3 withEvent:v6];
-  [(UITableViewIndex *)self _handleTouches:0 withEvent:v6, v7.receiver, v7.super_class];
+  eventCopy = event;
+  [(UIControl *)&v7 touchesEnded:ended withEvent:eventCopy];
+  [(UITableViewIndex *)self _handleTouches:0 withEvent:eventCopy, v7.receiver, v7.super_class];
 }
 
-- (void)_handleTouches:(id)a3 withEvent:(id)a4
+- (void)_handleTouches:(id)touches withEvent:(id)event
 {
-  v5 = a4;
-  v8 = [v5 _firstTouchForView:self];
+  eventCopy = event;
+  v8 = [eventCopy _firstTouchForView:self];
   [v8 locationInView:self];
   v6 = [(UITableViewIndex *)self _indexForEntryAtPoint:?];
-  v7 = [(UITableViewIndex *)self visualStyle];
-  [v7 handleTouch:v8 withEvent:v5 touchedEntryIndex:v6];
+  visualStyle = [(UITableViewIndex *)self visualStyle];
+  [visualStyle handleTouch:v8 withEvent:eventCopy touchedEntryIndex:v6];
 }
 
-- (void)setIndexColor:(id)a3
+- (void)setIndexColor:(id)color
 {
-  v5 = a3;
-  if (self->_indexColor != v5)
+  colorCopy = color;
+  if (self->_indexColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_indexColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_indexColor, color);
     [(UIView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setIndexTrackingBackgroundColor:(id)a3
+- (void)setIndexTrackingBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_indexTrackingBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_indexTrackingBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_indexTrackingBackgroundColor, a3);
-    v6 = [(UIControl *)self isTracking];
-    v5 = v7;
-    if (v6)
+    v7 = colorCopy;
+    objc_storeStrong(&self->_indexTrackingBackgroundColor, color);
+    isTracking = [(UIControl *)self isTracking];
+    colorCopy = v7;
+    if (isTracking)
     {
       [(UIView *)self setNeedsDisplay];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 }
 
-- (void)setIndexBackgroundColor:(id)a3
+- (void)setIndexBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_indexBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_indexBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_indexBackgroundColor, a3);
-    v6 = [(UIControl *)self isTracking];
-    v5 = v7;
-    if (!v6)
+    v7 = colorCopy;
+    objc_storeStrong(&self->_indexBackgroundColor, color);
+    isTracking = [(UIControl *)self isTracking];
+    colorCopy = v7;
+    if (!isTracking)
     {
       [(UIView *)self setNeedsDisplay];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 }
@@ -1267,10 +1267,10 @@ LABEL_13:
 
 - (id)_dotImage
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UITableViewIndex *)self _externalDotImage];
   }
@@ -1328,20 +1328,20 @@ void __37__UITableViewIndex__externalDotImage__block_invoke(uint64_t a1)
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = 0;
+    canBecomeFocused = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UITableViewIndex;
-    v4 = [(UIControl *)&v6 canBecomeFocused];
+    canBecomeFocused = [(UIControl *)&v6 canBecomeFocused];
   }
 
-  return v4;
+  return canBecomeFocused;
 }
 
 - (void)didMoveToWindow
@@ -1358,10 +1358,10 @@ void __37__UITableViewIndex__externalDotImage__block_invoke(uint64_t a1)
   {
     if (dyld_program_sdk_at_least())
     {
-      v3 = [(UIView *)self traitCollection];
-      v4 = [v3 _isLargeContentViewerEnabled];
+      traitCollection = [(UIView *)self traitCollection];
+      _isLargeContentViewerEnabled = [traitCollection _isLargeContentViewerEnabled];
 
-      if (v4)
+      if (_isLargeContentViewerEnabled)
       {
         v5 = [[UIAccessibilityHUDGestureManager alloc] initWithView:self delegate:self];
         axHUDGestureManager = self->_axHUDGestureManager;
@@ -1371,9 +1371,9 @@ void __37__UITableViewIndex__externalDotImage__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  v5 = [(UITableViewIndex *)self _indexForEntryAtPoint:a3, a4.x, a4.y];
+  v5 = [(UITableViewIndex *)self _indexForEntryAtPoint:manager, point.x, point.y];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -1390,9 +1390,9 @@ void __37__UITableViewIndex__externalDotImage__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (int64_t)_indexForEntryAtPoint:(CGPoint)a3
+- (int64_t)_indexForEntryAtPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(UITableViewIndex *)self _effectiveBounds];
   x = v14.origin.x;
   v6 = v14.origin.y;
@@ -1469,31 +1469,31 @@ void __46__UITableViewIndex_idiomToVisualStyleClassMap__block_invoke()
   qword_1ED49C0B8 = v1;
 }
 
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F00F2F18]& 1) == 0)
+  if (([(objc_class *)style conformsToProtocol:&unk_1F00F2F18]& 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = NSStringFromClass(a3);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"UITableViewIndex.m" lineNumber:900 description:{@"visualStyle of type %@ does not conform to UITableViewIndexVisualStyle.", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = NSStringFromClass(style);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableViewIndex.m" lineNumber:900 description:{@"visualStyle of type %@ does not conform to UITableViewIndexVisualStyle.", v10}];
   }
 
   v11 = +[UITableViewIndex idiomToVisualStyleClassMap];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v11 setObject:a3 forKey:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v11 setObject:style forKey:v8];
 }
 
-+ (id)visualStyleForTableViewIndex:(id)a3
++ (id)visualStyleForTableViewIndex:(id)index
 {
-  v4 = a3;
-  v5 = [v4 _coreIdiom];
-  if (v5 == -1)
+  indexCopy = index;
+  _coreIdiom = [indexCopy _coreIdiom];
+  if (_coreIdiom == -1)
   {
-    v6 = [v4 traitCollection];
-    v5 = [v6 userInterfaceIdiom];
+    traitCollection = [indexCopy traitCollection];
+    _coreIdiom = [traitCollection userInterfaceIdiom];
   }
 
-  v7 = [objc_alloc(+[UITableViewIndex visualStyleForIdiom:](a1 v5))];
+  v7 = [objc_alloc(+[UITableViewIndex visualStyleForIdiom:](self _coreIdiom))];
 
   return v7;
 }

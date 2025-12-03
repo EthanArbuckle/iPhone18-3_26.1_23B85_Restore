@@ -1,18 +1,18 @@
 @interface IMWatchSyncSatelliteStatus
-+ (void)synchronizeSatelliteStatus:(BOOL)a3;
++ (void)synchronizeSatelliteStatus:(BOOL)status;
 @end
 
 @implementation IMWatchSyncSatelliteStatus
 
-+ (void)synchronizeSatelliteStatus:(BOOL)a3
++ (void)synchronizeSatelliteStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v13 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1AC570AA0](@"NPSManager", @"NanoPreferencesSync");
   if (v4)
   {
     v5 = objc_alloc_init(v4);
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:statusCopy];
     CFPreferencesSetAppValue(@"SatelliteStatusActive", v6, @"com.apple.MobileSMS");
     if (IMOSLoggingEnabled())
     {
@@ -20,7 +20,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = @"NO";
-        if (v3)
+        if (statusCopy)
         {
           v8 = @"YES";
         }

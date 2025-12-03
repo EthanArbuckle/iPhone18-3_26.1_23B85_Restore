@@ -1,6 +1,6 @@
 @interface SidebarViewController
 - (id)preferredFocusEnvironments;
-- (void)setContentViewController:(id)a3;
+- (void)setContentViewController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -12,22 +12,22 @@
   v10.receiver = self;
   v10.super_class = SidebarViewController;
   [(SidebarViewController *)&v10 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v4 = [(SidebarViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  view = [(SidebarViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   verticalSeparator = self->_verticalSeparator;
   self->_verticalSeparator = v5;
 
-  v7 = [MEMORY[0x277D75348] opaqueSeparatorColor];
-  [(UIView *)self->_verticalSeparator setBackgroundColor:v7];
+  opaqueSeparatorColor = [MEMORY[0x277D75348] opaqueSeparatorColor];
+  [(UIView *)self->_verticalSeparator setBackgroundColor:opaqueSeparatorColor];
 
-  v8 = [(SidebarViewController *)self view];
-  [v8 addSubview:self->_verticalSeparator];
+  view2 = [(SidebarViewController *)self view];
+  [view2 addSubview:self->_verticalSeparator];
 
-  v9 = [(SidebarViewController *)self traitOverrides];
-  [v9 setNSIntegerValue:1 forTrait:objc_opt_class()];
+  traitOverrides = [(SidebarViewController *)self traitOverrides];
+  [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
 }
 
 - (void)viewWillLayoutSubviews
@@ -35,15 +35,15 @@
   v9.receiver = self;
   v9.super_class = SidebarViewController;
   [(SidebarViewController *)&v9 viewWillLayoutSubviews];
-  v3 = [(SidebarViewController *)self view];
-  v4 = [v3 _sf_usesLeftToRightLayout];
+  view = [(SidebarViewController *)self view];
+  _sf_usesLeftToRightLayout = [view _sf_usesLeftToRightLayout];
 
   [(SidebarViewController *)self separatorWidth];
   v6 = v5;
-  if (v4)
+  if (_sf_usesLeftToRightLayout)
   {
-    v7 = [(SidebarViewController *)self view];
-    [v7 bounds];
+    view2 = [(SidebarViewController *)self view];
+    [view2 bounds];
     Width = CGRectGetWidth(v10);
   }
 
@@ -55,31 +55,31 @@
   [(UIView *)self->_verticalSeparator setFrame:Width, v6, v6, 100000.0];
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentViewController = self->_contentViewController;
-  v11 = v5;
-  if (contentViewController != v5)
+  v11 = controllerCopy;
+  if (contentViewController != controllerCopy)
   {
     [(UIViewController *)contentViewController willMoveToParentViewController:0];
-    v7 = [(UIViewController *)self->_contentViewController view];
-    [v7 removeFromSuperview];
+    view = [(UIViewController *)self->_contentViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_contentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (self->_contentViewController)
     {
-      v8 = [(SidebarViewController *)self view];
+      view2 = [(SidebarViewController *)self view];
       [(SidebarViewController *)self addChildViewController:self->_contentViewController];
-      v9 = [(UIViewController *)self->_contentViewController view];
-      [v9 setAccessibilityIdentifier:@"Sidebar"];
-      v10 = [MEMORY[0x277D75348] clearColor];
-      [v9 setBackgroundColor:v10];
+      view3 = [(UIViewController *)self->_contentViewController view];
+      [view3 setAccessibilityIdentifier:@"Sidebar"];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [view3 setBackgroundColor:clearColor];
 
-      [v8 bounds];
-      [v9 setFrame:?];
-      [v8 addSubview:v9];
+      [view2 bounds];
+      [view3 setFrame:?];
+      [view2 addSubview:view3];
       [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
     }
   }

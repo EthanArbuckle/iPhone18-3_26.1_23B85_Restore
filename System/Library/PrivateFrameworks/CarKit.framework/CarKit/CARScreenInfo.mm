@@ -1,24 +1,24 @@
 @interface CARScreenInfo
 - (BOOL)_currentProcessHasEntitlement;
 - (BOOL)allowsSmartZoom;
-- (CARScreenInfo)initWithPropertySupplier:(id)a3 screenType:(unint64_t)a4 additionalInsets:(NSEdgeInsets)a5 displayDictionary:(id)a6 physicalDisplay:(id)a7 carCapabilities:(id)a8;
+- (CARScreenInfo)initWithPropertySupplier:(id)supplier screenType:(unint64_t)type additionalInsets:(NSEdgeInsets)insets displayDictionary:(id)dictionary physicalDisplay:(id)display carCapabilities:(id)capabilities;
 - (CGPoint)originInDisplay;
-- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)a3;
+- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)mode;
 - (CGSize)displayPixelSize;
 - (CGSize)physicalSize;
 - (CGSize)pixelSize;
 - (CGSize)squaredPixelSize;
-- (id)_descriptionForInteractionModel:(unint64_t)a3;
+- (id)_descriptionForInteractionModel:(unint64_t)model;
 - (id)description;
 - (id)descriptionForAvailableInteractionModels;
 - (id)descriptionForPrimaryInteractionModel;
-- (id)displayScaleModesForCanvasPixelSize:(CGSize)a3;
+- (id)displayScaleModesForCanvasPixelSize:(CGSize)size;
 - (int64_t)defaultDisplayMode;
 - (unint64_t)availableInteractionModels;
 - (unint64_t)primaryInteractionModel;
-- (void)limitedUIChanged:(BOOL)a3;
-- (void)nightModeChanged:(BOOL)a3;
-- (void)setPhysicalDisplay:(id)a3;
+- (void)limitedUIChanged:(BOOL)changed;
+- (void)nightModeChanged:(BOOL)changed;
+- (void)setPhysicalDisplay:(id)display;
 @end
 
 @implementation CARScreenInfo
@@ -64,9 +64,9 @@
 
 - (CGPoint)originInDisplay
 {
-  v3 = [(CARScreenInfo *)self physicalDisplay];
-  v4 = [(CARScreenInfo *)self identifier];
-  [v3 originForScreenInfoIdentifier:v4];
+  physicalDisplay = [(CARScreenInfo *)self physicalDisplay];
+  identifier = [(CARScreenInfo *)self identifier];
+  [physicalDisplay originForScreenInfoIdentifier:identifier];
   v6 = v5;
   v8 = v7;
 
@@ -79,8 +79,8 @@
 
 - (CGSize)displayPixelSize
 {
-  v2 = [(CARScreenInfo *)self physicalDisplay];
-  [v2 pixelSize];
+  physicalDisplay = [(CARScreenInfo *)self physicalDisplay];
+  [physicalDisplay pixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -99,9 +99,9 @@
   v26.receiver = self;
   v26.super_class = CARScreenInfo;
   v22 = [(CARScreenInfo *)&v26 description];
-  v21 = [(CARScreenInfo *)self identifier];
-  v20 = [(CARScreenInfo *)self descriptionForAvailableInteractionModels];
-  v3 = [(CARScreenInfo *)self descriptionForPrimaryInteractionModel];
+  identifier = [(CARScreenInfo *)self identifier];
+  descriptionForAvailableInteractionModels = [(CARScreenInfo *)self descriptionForAvailableInteractionModels];
+  descriptionForPrimaryInteractionModel = [(CARScreenInfo *)self descriptionForPrimaryInteractionModel];
   v4 = @"NO";
   if ([(CARScreenInfo *)self isLimitedUI])
   {
@@ -134,7 +134,7 @@
     v7 = @"NO";
   }
 
-  v8 = [(CARScreenInfo *)self maxFramesPerSecond];
+  maxFramesPerSecond = [(CARScreenInfo *)self maxFramesPerSecond];
   [(CARScreenInfo *)self physicalSize];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{w: %f, h: %f}", v9, v10];
   [(CARScreenInfo *)self pixelSize];
@@ -154,24 +154,24 @@
     v4 = @"YES";
   }
 
-  v16 = [(CARScreenInfo *)self viewAreas];
-  v17 = [v24 stringWithFormat:@"%@, identifier: %@, availableInteractionModels: %@, primaryInteractionModel: %@, isLimited: %@, isNightMode: %@, supportsHiFi: %@, maxFPS: %lu, physicalSize: %@, pixelSize: %@, wantsCornerMasks: %@, initialFocusOwner: %@, viewAreas: %@, displayScaleInfo: %@", v22, v21, v20, v3, v19, v6, v7, v8, v11, v14, v15, v4, v16, v23];
+  viewAreas = [(CARScreenInfo *)self viewAreas];
+  v17 = [v24 stringWithFormat:@"%@, identifier: %@, availableInteractionModels: %@, primaryInteractionModel: %@, isLimited: %@, isNightMode: %@, supportsHiFi: %@, maxFPS: %lu, physicalSize: %@, pixelSize: %@, wantsCornerMasks: %@, initialFocusOwner: %@, viewAreas: %@, displayScaleInfo: %@", v22, identifier, descriptionForAvailableInteractionModels, descriptionForPrimaryInteractionModel, v19, v6, v7, maxFramesPerSecond, v11, v14, v15, v4, viewAreas, v23];
 
   return v17;
 }
 
 - (id)descriptionForAvailableInteractionModels
 {
-  v3 = [(CARScreenInfo *)self systemAvailableInteractionModels];
+  systemAvailableInteractionModels = [(CARScreenInfo *)self systemAvailableInteractionModels];
 
-  return [(CARScreenInfo *)self _descriptionForInteractionModel:v3];
+  return [(CARScreenInfo *)self _descriptionForInteractionModel:systemAvailableInteractionModels];
 }
 
 - (id)descriptionForPrimaryInteractionModel
 {
-  v3 = [(CARScreenInfo *)self systemPrimaryInteractionModel];
+  systemPrimaryInteractionModel = [(CARScreenInfo *)self systemPrimaryInteractionModel];
 
-  return [(CARScreenInfo *)self _descriptionForInteractionModel:v3];
+  return [(CARScreenInfo *)self _descriptionForInteractionModel:systemPrimaryInteractionModel];
 }
 
 - (CGSize)pixelSize
@@ -236,39 +236,39 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
   }
 }
 
-- (CARScreenInfo)initWithPropertySupplier:(id)a3 screenType:(unint64_t)a4 additionalInsets:(NSEdgeInsets)a5 displayDictionary:(id)a6 physicalDisplay:(id)a7 carCapabilities:(id)a8
+- (CARScreenInfo)initWithPropertySupplier:(id)supplier screenType:(unint64_t)type additionalInsets:(NSEdgeInsets)insets displayDictionary:(id)dictionary physicalDisplay:(id)display carCapabilities:(id)capabilities
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  supplierCopy = supplier;
+  dictionaryCopy = dictionary;
+  displayCopy = display;
+  capabilitiesCopy = capabilities;
   v131.receiver = self;
   v131.super_class = CARScreenInfo;
   v21 = [(CARScreenInfo *)&v131 init];
   v22 = v21;
-  if (!v17 || !v21)
+  if (!supplierCopy || !v21)
   {
     goto LABEL_97;
   }
 
-  v119 = v20;
-  v23 = [v18 copy];
+  v119 = capabilitiesCopy;
+  v23 = [dictionaryCopy copy];
   screenInfoResponse = v22->_screenInfoResponse;
   v22->_screenInfoResponse = v23;
 
-  objc_storeStrong(&v22->_physicalDisplay, a7);
-  v25 = v17[2](v17, *MEMORY[0x1E6962400]);
+  objc_storeStrong(&v22->_physicalDisplay, display);
+  v25 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962400]);
   identifier = v22->_identifier;
   v22->_identifier = v25;
 
-  v22->_screenType = a4;
+  v22->_screenType = type;
   v22->_systemAvailableInteractionModels = 0;
   v22->_supportsLayerTracking = [(CARDisplayInfo *)v22->_physicalDisplay supportsDDPContent];
-  v27 = (v17)[2](v17, @"cornerMasks");
+  v27 = (supplierCopy)[2](supplierCopy, @"cornerMasks");
   objc_opt_class();
   v28 = v27;
   v29 = 0;
@@ -278,7 +278,7 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
   }
 
   v22->_wantsCornerMasks = [v29 BOOLValue];
-  v30 = [v18 objectForKey:@"accessoryGiveFocus"];
+  v30 = [dictionaryCopy objectForKey:@"accessoryGiveFocus"];
   objc_opt_class();
   v31 = v30;
   if (objc_opt_isKindOfClass())
@@ -293,7 +293,7 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
 
   v118 = v32;
   v22->_initialFocusOwner = [v32 BOOLValue];
-  v33 = [v18 objectForKey:@"features"];
+  v33 = [dictionaryCopy objectForKey:@"features"];
   objc_opt_class();
   v34 = v33;
   if (objc_opt_isKindOfClass())
@@ -309,8 +309,8 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
   v115 = v35;
   if (v35)
   {
-    v36 = [v35 unsignedIntegerValue];
-    if ((v36 & 0xFFFFFFFFFFFFFFC1) != 0)
+    unsignedIntegerValue = [v35 unsignedIntegerValue];
+    if ((unsignedIntegerValue & 0xFFFFFFFFFFFFFFC1) != 0)
     {
       v37 = CarGeneralLogging();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -319,25 +319,25 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
       }
     }
 
-    v38 = (v36 >> 1) & 2;
-    if ((v36 & 8) != 0)
+    v38 = (unsignedIntegerValue >> 1) & 2;
+    if ((unsignedIntegerValue & 8) != 0)
     {
       v38 = 2;
     }
 
-    v39 = ((2 * v36) | (v36 >> 3)) & 4 | (v36 >> 1) & 8 | v38;
+    v39 = ((2 * unsignedIntegerValue) | (unsignedIntegerValue >> 3)) & 4 | (unsignedIntegerValue >> 1) & 8 | v38;
     if (v39 <= 1)
     {
       v39 = 1;
     }
 
     v22->_systemAvailableInteractionModels = v39;
-    v22->_supportsHighFidelityTouch = (v36 & 8) != 0;
+    v22->_supportsHighFidelityTouch = (unsignedIntegerValue & 8) != 0;
   }
 
   else
   {
-    if (!a4)
+    if (!type)
     {
       v40 = CarGeneralLogging();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -350,7 +350,7 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
     v22->_supportsHighFidelityTouch = 0;
   }
 
-  v47 = [v18 objectForKey:@"primaryInputDevice"];
+  v47 = [dictionaryCopy objectForKey:@"primaryInputDevice"];
   objc_opt_class();
   v48 = v47;
   if (objc_opt_isKindOfClass())
@@ -365,16 +365,16 @@ void __46__CARScreenInfo__currentProcessHasEntitlement__block_invoke()
 
   if (v49)
   {
-    v50 = [v49 unsignedIntegerValue];
-    v51 = v50;
-    if (v50 <= 1)
+    unsignedIntegerValue2 = [v49 unsignedIntegerValue];
+    v51 = unsignedIntegerValue2;
+    if (unsignedIntegerValue2 <= 1)
     {
-      if (!v50)
+      if (!unsignedIntegerValue2)
       {
         goto LABEL_40;
       }
 
-      if (v50 == 1)
+      if (unsignedIntegerValue2 == 1)
       {
 LABEL_44:
         v54 = 2;
@@ -384,12 +384,12 @@ LABEL_44:
 
     else
     {
-      if (v50 == 4 || v50 == 3)
+      if (unsignedIntegerValue2 == 4 || unsignedIntegerValue2 == 3)
       {
         goto LABEL_45;
       }
 
-      if (v50 == 2)
+      if (unsignedIntegerValue2 == 2)
       {
 LABEL_43:
         v54 = 8;
@@ -427,7 +427,7 @@ LABEL_45:
   }
 
 LABEL_47:
-  v55 = v17[2](v17, *MEMORY[0x1E6962430]);
+  v55 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962430]);
   objc_opt_class();
   v56 = v55;
   if (objc_opt_isKindOfClass())
@@ -442,13 +442,13 @@ LABEL_47:
 
   v113 = v57;
   v22->_maxFramesPerSecond = [v57 unsignedIntegerValue];
-  v58 = (v17[2])(v17, *MEMORY[0x1E6962438]);
+  v58 = (supplierCopy[2])(supplierCopy, *MEMORY[0x1E6962438]);
   CRSizeFromDictionary(v58, &v22->_physicalSize);
-  v59 = (v17[2])(v17, *MEMORY[0x1E6962440]);
+  v59 = (supplierCopy[2])(supplierCopy, *MEMORY[0x1E6962440]);
   CRSizeFromDictionary(v59, &v22->_pixelSize);
-  v60 = (v17[2])(v17, *MEMORY[0x1E6962450]);
+  v60 = (supplierCopy[2])(supplierCopy, *MEMORY[0x1E6962450]);
   CRSizeFromDictionary(v60, &v22->_squaredPixelSize);
-  v61 = v17[2](v17, *MEMORY[0x1E6962418]);
+  v61 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962418]);
   objc_opt_class();
   v62 = v61;
   if (objc_opt_isKindOfClass())
@@ -463,7 +463,7 @@ LABEL_47:
 
   v112 = v63;
   v22->_limitedUI = [v63 BOOLValue];
-  v64 = v17[2](v17, *MEMORY[0x1E6962420]);
+  v64 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962420]);
   objc_opt_class();
   v65 = v64;
   v114 = v49;
@@ -479,7 +479,7 @@ LABEL_47:
 
   v111 = v66;
   v22->_nightMode = [v66 BOOLValue];
-  v67 = v17[2](v17, *MEMORY[0x1E6962428]);
+  v67 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962428]);
   objc_opt_class();
   v68 = v67;
   if (objc_opt_isKindOfClass())
@@ -494,11 +494,11 @@ LABEL_47:
 
   v110 = v69;
   v22->_limitedUIElements = [CARSessionConfiguration _limitableUserInterfacesFromLimitedUIValues:v69];
-  v70 = v17[2](v17, *MEMORY[0x1E6962458]);
+  v70 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962458]);
   objc_opt_class();
   v71 = v70;
   v116 = v29;
-  v117 = v19;
+  v117 = displayCopy;
   if (objc_opt_isKindOfClass())
   {
     v72 = v71;
@@ -519,7 +519,7 @@ LABEL_47:
   v130 = v120;
   v109 = v72;
   [v72 enumerateObjectsUsingBlock:v129];
-  v75 = [v18 objectForKey:@"viewAreas"];
+  v75 = [dictionaryCopy objectForKey:@"viewAreas"];
   objc_opt_class();
   v76 = v75;
   if (objc_opt_isKindOfClass())
@@ -532,7 +532,7 @@ LABEL_47:
     v77 = 0;
   }
 
-  v20 = v119;
+  capabilitiesCopy = v119;
 
   v121[0] = MEMORY[0x1E69E9820];
   v121[1] = 3221225472;
@@ -550,9 +550,9 @@ LABEL_47:
   v124 = v107;
   [v120 enumerateObjectsUsingBlock:v121];
   objc_storeStrong(&v78->_viewAreas, v74);
-  if (a4 == 1)
+  if (type == 1)
   {
-    v79 = v17[2](v17, *MEMORY[0x1E6962408]);
+    v79 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962408]);
     objc_opt_class();
     v80 = v79;
     if (objc_opt_isKindOfClass())
@@ -569,7 +569,7 @@ LABEL_47:
     v78->_initialURL = v81;
   }
 
-  v83 = [v18 objectForKey:@"uiAppearanceMode"];
+  v83 = [dictionaryCopy objectForKey:@"uiAppearanceMode"];
   objc_opt_class();
   v84 = v83;
   if (objc_opt_isKindOfClass())
@@ -584,7 +584,7 @@ LABEL_47:
 
   v105 = v85;
   v78->_supportsAppearanceMode = v85 != 0;
-  v86 = [v18 objectForKey:@"mapAppearanceMode"];
+  v86 = [dictionaryCopy objectForKey:@"mapAppearanceMode"];
   objc_opt_class();
   v87 = v86;
   if (objc_opt_isKindOfClass())
@@ -597,8 +597,8 @@ LABEL_47:
     v88 = 0;
   }
 
-  v89 = a4;
-  if (a4)
+  typeCopy = type;
+  if (type)
   {
     v90 = v88 == 0;
   }
@@ -610,7 +610,7 @@ LABEL_47:
 
   v91 = !v90;
   v78->_supportsMapAppearanceMode = v91;
-  v92 = [v18 objectForKey:{@"nightMode", v105}];
+  v92 = [dictionaryCopy objectForKey:{@"nightMode", v105}];
   objc_opt_class();
   v93 = v92;
   if (objc_opt_isKindOfClass())
@@ -625,7 +625,7 @@ LABEL_47:
 
   v95 = v118;
 
-  if (v89)
+  if (typeCopy)
   {
     v96 = v94 == 0;
   }
@@ -637,13 +637,13 @@ LABEL_47:
 
   v97 = !v96;
   v78->_supportsPerDisplayNightMode = v97;
-  v98 = [v119 zoomFactor];
+  zoomFactor = [v119 zoomFactor];
   zoomFactor = v78->_zoomFactor;
-  v78->_zoomFactor = v98;
+  v78->_zoomFactor = zoomFactor;
 
   if (!v78->_zoomFactor)
   {
-    v100 = [v18 objectForKeyedSubscript:@"zoomFactor"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"zoomFactor"];
     objc_opt_class();
     v101 = v100;
     if (objc_opt_isKindOfClass())
@@ -660,10 +660,10 @@ LABEL_47:
     v78->_zoomFactor = v102;
 
     v95 = v118;
-    v20 = v119;
+    capabilitiesCopy = v119;
   }
 
-  v19 = v117;
+  displayCopy = v117;
 LABEL_97:
 
   return v22;
@@ -716,20 +716,20 @@ void __120__CARScreenInfo_initWithPropertySupplier_screenType_additionalInsets_d
   [*(a1 + 48) addObject:v10];
 }
 
-- (id)_descriptionForInteractionModel:(unint64_t)a3
+- (id)_descriptionForInteractionModel:(unint64_t)model
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEC8] array];
-  v5 = v4;
-  if ((v3 & 2) != 0)
+  modelCopy = model;
+  array = [MEMORY[0x1E695DEC8] array];
+  v5 = array;
+  if ((modelCopy & 2) != 0)
   {
-    v6 = [v4 arrayByAddingObject:@"Touch"];
+    v6 = [array arrayByAddingObject:@"Touch"];
 
     v5 = v6;
-    if ((v3 & 4) == 0)
+    if ((modelCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v3 & 8) == 0)
+      if ((modelCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -738,7 +738,7 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((modelCopy & 4) == 0)
   {
     goto LABEL_3;
   }
@@ -746,10 +746,10 @@ LABEL_3:
   v7 = [v5 arrayByAddingObject:@"Knob"];
 
   v5 = v7;
-  if ((v3 & 8) == 0)
+  if ((modelCopy & 8) == 0)
   {
 LABEL_4:
-    if (v3)
+    if (modelCopy)
     {
       goto LABEL_10;
     }
@@ -767,7 +767,7 @@ LABEL_8:
   v8 = [v5 arrayByAddingObject:@"Touchpad"];
 
   v5 = v8;
-  if ((v3 & 1) == 0)
+  if ((modelCopy & 1) == 0)
   {
     goto LABEL_9;
   }
@@ -782,49 +782,49 @@ LABEL_11:
   return v10;
 }
 
-- (void)nightModeChanged:(BOOL)a3
+- (void)nightModeChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v12 = *MEMORY[0x1E69E9840];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(CARScreenInfo *)self identifier];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    identifier = [(CARScreenInfo *)self identifier];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:changedCopy];
     v8 = 138412546;
-    v9 = v6;
+    v9 = identifier;
     v10 = 2114;
     v11 = v7;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "Updating night mode on screen %@ to %{public}@", &v8, 0x16u);
   }
 
-  self->_nightMode = v3;
+  self->_nightMode = changedCopy;
 }
 
-- (void)limitedUIChanged:(BOOL)a3
+- (void)limitedUIChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v12 = *MEMORY[0x1E69E9840];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(CARScreenInfo *)self identifier];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    identifier = [(CARScreenInfo *)self identifier];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:changedCopy];
     v8 = 138412546;
-    v9 = v6;
+    v9 = identifier;
     v10 = 2114;
     v11 = v7;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "Updating limited UI on screen %@ to %{public}@", &v8, 0x16u);
   }
 
-  self->_limitedUI = v3;
+  self->_limitedUI = changedCopy;
 }
 
-- (void)setPhysicalDisplay:(id)a3
+- (void)setPhysicalDisplay:(id)display
 {
-  objc_storeStrong(&self->_physicalDisplay, a3);
-  v4 = [(CARScreenInfo *)self viewAreas];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_300];
+  objc_storeStrong(&self->_physicalDisplay, display);
+  viewAreas = [(CARScreenInfo *)self viewAreas];
+  [viewAreas enumerateObjectsUsingBlock:&__block_literal_global_300];
 }
 
 - (CGSize)squaredPixelSize
@@ -836,10 +836,10 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)a3
+- (CGSize)canvasPixelSizeForDisplayScaleMode:(int64_t)mode
 {
   v4 = [[CRDisplayScaleInfo alloc] initWithScreenInfo:self];
-  [(CRDisplayScaleInfo *)v4 canvasPixelSizeForDisplayScaleMode:a3];
+  [(CRDisplayScaleInfo *)v4 canvasPixelSizeForDisplayScaleMode:mode];
   v6 = v5;
   v8 = v7;
 
@@ -850,30 +850,30 @@ LABEL_11:
   return result;
 }
 
-- (id)displayScaleModesForCanvasPixelSize:(CGSize)a3
+- (id)displayScaleModesForCanvasPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [[CRDisplayScaleInfo alloc] initWithScreenInfo:self];
-  v6 = [(CRDisplayScaleInfo *)v5 displayScaleModesForCanvasPixelSize:width, height];
+  height = [(CRDisplayScaleInfo *)v5 displayScaleModesForCanvasPixelSize:width, height];
 
-  return v6;
+  return height;
 }
 
 - (BOOL)allowsSmartZoom
 {
   v2 = [[CRDisplayScaleInfo alloc] initWithScreenInfo:self];
-  v3 = [(CRDisplayScaleInfo *)v2 allowsSmartZoom];
+  allowsSmartZoom = [(CRDisplayScaleInfo *)v2 allowsSmartZoom];
 
-  return v3;
+  return allowsSmartZoom;
 }
 
 - (int64_t)defaultDisplayMode
 {
   v2 = [[CRDisplayScaleInfo alloc] initWithScreenInfo:self];
-  v3 = [(CRDisplayScaleInfo *)v2 defaultDisplayMode];
+  defaultDisplayMode = [(CRDisplayScaleInfo *)v2 defaultDisplayMode];
 
-  return v3;
+  return defaultDisplayMode;
 }
 
 - (void)initWithPropertySupplier:(uint64_t)a1 screenType:additionalInsets:displayDictionary:physicalDisplay:carCapabilities:.cold.1(uint64_t a1)

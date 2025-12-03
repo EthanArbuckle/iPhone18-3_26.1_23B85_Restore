@@ -14,7 +14,7 @@
   v11 = v6;
   v12 = a4;
   v7 = v6;
-  v8 = [a1 indexOfObjectPassingTest:v10] != 0x7FFFFFFFFFFFFFFFLL;
+  v8 = [self indexOfObjectPassingTest:v10] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v8;
 }

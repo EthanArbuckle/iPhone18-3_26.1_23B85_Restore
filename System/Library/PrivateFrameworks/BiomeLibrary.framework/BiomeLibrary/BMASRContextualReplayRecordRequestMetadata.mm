@@ -1,39 +1,39 @@
 @interface BMASRContextualReplayRecordRequestMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMASRContextualReplayRecordRequestMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMASRContextualReplayRecordRequestMetadata)initWithTask:(id)a3 language:(id)a4 samplingRate:(id)a5 requestTimestamp:(id)a6 ids:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMASRContextualReplayRecordRequestMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMASRContextualReplayRecordRequestMetadata)initWithTask:(id)task language:(id)language samplingRate:(id)rate requestTimestamp:(id)timestamp ids:(id)ids;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)requestTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMASRContextualReplayRecordRequestMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMASRContextualReplayRecordRequestMetadata *)self task];
-    v7 = [v5 task];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    task = [(BMASRContextualReplayRecordRequestMetadata *)self task];
+    task2 = [v5 task];
+    v8 = task2;
+    if (task == task2)
     {
     }
 
     else
     {
-      v9 = [(BMASRContextualReplayRecordRequestMetadata *)self task];
-      v10 = [v5 task];
-      v11 = [v9 isEqual:v10];
+      task3 = [(BMASRContextualReplayRecordRequestMetadata *)self task];
+      task4 = [v5 task];
+      v11 = [task3 isEqual:task4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMASRContextualReplayRecordRequestMetadata *)self language];
-    v14 = [v5 language];
-    v15 = v14;
-    if (v13 == v14)
+    language = [(BMASRContextualReplayRecordRequestMetadata *)self language];
+    language2 = [v5 language];
+    v15 = language2;
+    if (language == language2)
     {
     }
 
     else
     {
-      v16 = [(BMASRContextualReplayRecordRequestMetadata *)self language];
-      v17 = [v5 language];
-      v18 = [v16 isEqual:v17];
+      language3 = [(BMASRContextualReplayRecordRequestMetadata *)self language];
+      language4 = [v5 language];
+      v18 = [language3 isEqual:language4];
 
       if (!v18)
       {
@@ -72,25 +72,25 @@
         goto LABEL_18;
       }
 
-      v19 = [(BMASRContextualReplayRecordRequestMetadata *)self samplingRate];
-      if (v19 != [v5 samplingRate])
+      samplingRate = [(BMASRContextualReplayRecordRequestMetadata *)self samplingRate];
+      if (samplingRate != [v5 samplingRate])
       {
         goto LABEL_18;
       }
     }
 
-    v20 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
-    v21 = [v5 requestTimestamp];
-    v22 = v21;
-    if (v20 == v21)
+    requestTimestamp = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
+    requestTimestamp2 = [v5 requestTimestamp];
+    v22 = requestTimestamp2;
+    if (requestTimestamp == requestTimestamp2)
     {
     }
 
     else
     {
-      v23 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
-      v24 = [v5 requestTimestamp];
-      v25 = [v23 isEqual:v24];
+      requestTimestamp3 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
+      requestTimestamp4 = [v5 requestTimestamp];
+      v25 = [requestTimestamp3 isEqual:requestTimestamp4];
 
       if (!v25)
       {
@@ -145,8 +145,8 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMASRContextualReplayRecordRequestMetadata *)self task];
-  v4 = [(BMASRContextualReplayRecordRequestMetadata *)self language];
+  task = [(BMASRContextualReplayRecordRequestMetadata *)self task];
+  language = [(BMASRContextualReplayRecordRequestMetadata *)self language];
   if ([(BMASRContextualReplayRecordRequestMetadata *)self hasSamplingRate])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMASRContextualReplayRecordRequestMetadata samplingRate](self, "samplingRate")}];
@@ -157,12 +157,12 @@ LABEL_20:
     v5 = 0;
   }
 
-  v6 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
-  if (v6)
+  requestTimestamp = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
+  if (requestTimestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
-    [v8 timeIntervalSince1970];
+    requestTimestamp2 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
+    [requestTimestamp2 timeIntervalSince1970];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -172,51 +172,51 @@ LABEL_20:
   }
 
   v10 = [(BMASRContextualReplayRecordRequestMetadata *)self ids];
-  v11 = [v10 jsonDictionary];
+  jsonDictionary = [v10 jsonDictionary];
 
   v22 = @"task";
-  v12 = v3;
-  if (!v3)
+  null = task;
+  if (!task)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v27[0] = v12;
+  v20 = null;
+  v27[0] = null;
   v23 = @"language";
-  v13 = v4;
-  if (!v4)
+  null2 = language;
+  if (!language)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[1] = v13;
+  v27[1] = null2;
   v24 = @"samplingRate";
-  v14 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[2] = v14;
+  v27[2] = null3;
   v25 = @"requestTimestamp";
-  v15 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v15;
+  v27[3] = null4;
   v26 = @"ids";
-  v16 = v11;
-  if (!v11)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v16;
+  v27[4] = null5;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v22 count:{5, v20}];
-  if (v11)
+  if (jsonDictionary)
   {
     if (v9)
     {
@@ -242,14 +242,14 @@ LABEL_19:
   if (v5)
   {
 LABEL_20:
-    if (v4)
+    if (language)
     {
       goto LABEL_21;
     }
 
 LABEL_28:
 
-    if (v3)
+    if (task)
     {
       goto LABEL_22;
     }
@@ -259,13 +259,13 @@ LABEL_28:
 
 LABEL_27:
 
-  if (!v4)
+  if (!language)
   {
     goto LABEL_28;
   }
 
 LABEL_21:
-  if (v3)
+  if (task)
   {
     goto LABEL_22;
   }
@@ -278,26 +278,26 @@ LABEL_22:
   return v17;
 }
 
-- (BMASRContextualReplayRecordRequestMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMASRContextualReplayRecordRequestMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"task"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"task"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"language"];
-    v43 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"language"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v46 = 0;
-          v22 = 0;
+          selfCopy2 = 0;
           goto LABEL_46;
         }
 
@@ -308,8 +308,8 @@ LABEL_4:
         v55 = v45;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v46 = 0;
-        v22 = 0;
-        *v43 = [v23 initWithDomain:v24 code:2 userInfo:v10];
+        selfCopy2 = 0;
+        *errorCopy = [v23 initWithDomain:v24 code:2 userInfo:v10];
         goto LABEL_45;
       }
 
@@ -321,17 +321,17 @@ LABEL_4:
       v46 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"samplingRate"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"samplingRate"];
     v44 = v8;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v45 = 0;
-          v22 = 0;
+          selfCopy2 = 0;
           goto LABEL_45;
         }
 
@@ -342,8 +342,8 @@ LABEL_4:
         v53 = v12;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
         v45 = 0;
-        v22 = 0;
-        *v43 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        selfCopy2 = 0;
+        *errorCopy = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_44:
 
         v8 = v44;
@@ -360,7 +360,7 @@ LABEL_45:
       v45 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"requestTimestamp"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"requestTimestamp"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -389,26 +389,26 @@ LABEL_45:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v12 = 0;
-            v22 = 0;
+            selfCopy2 = 0;
             goto LABEL_44;
           }
 
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v42 = self;
+          selfCopy = self;
           v36 = *MEMORY[0x1E698F240];
           v50 = *MEMORY[0x1E696A578];
           v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"requestTimestamp"];
           v51 = v28;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
           v37 = v36;
-          self = v42;
+          self = selfCopy;
           v38 = [v35 initWithDomain:v37 code:2 userInfo:v29];
           v12 = 0;
-          v22 = 0;
-          *v43 = v38;
+          selfCopy2 = 0;
+          *errorCopy = v38;
           goto LABEL_42;
         }
 
@@ -424,20 +424,20 @@ LABEL_45:
     }
 
 LABEL_30:
-    v28 = [v6 objectForKeyedSubscript:@"ids"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"ids"];
     if (!v28 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v29 = 0;
 LABEL_33:
       self = [(BMASRContextualReplayRecordRequestMetadata *)self initWithTask:v44 language:v46 samplingRate:v45 requestTimestamp:v12 ids:v29];
-      v22 = self;
+      selfCopy2 = self;
 LABEL_42:
 
 LABEL_43:
       goto LABEL_44;
     }
 
-    v41 = self;
+    selfCopy3 = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -448,25 +448,25 @@ LABEL_43:
       if (!v31)
       {
 
-        self = v41;
+        self = selfCopy3;
         goto LABEL_33;
       }
 
-      if (v43)
+      if (errorCopy)
       {
         v31 = v31;
-        *v43 = v31;
+        *errorCopy = v31;
       }
 
-      v22 = 0;
+      selfCopy2 = 0;
       v28 = v30;
     }
 
     else
     {
-      if (!v43)
+      if (!errorCopy)
       {
-        v22 = 0;
+        selfCopy2 = 0;
         goto LABEL_43;
       }
 
@@ -476,12 +476,12 @@ LABEL_43:
       v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"ids"];
       v49 = v29;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-      *v43 = [v40 initWithDomain:v39 code:2 userInfo:v32];
+      *errorCopy = [v40 initWithDomain:v39 code:2 userInfo:v32];
 
-      v22 = 0;
+      selfCopy2 = 0;
     }
 
-    self = v41;
+    self = selfCopy3;
     goto LABEL_42;
   }
 
@@ -492,14 +492,14 @@ LABEL_43:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v22 = 0;
+    selfCopy2 = 0;
     goto LABEL_47;
   }
 
-  v19 = a4;
+  errorCopy2 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v56 = *MEMORY[0x1E696A578];
@@ -507,27 +507,27 @@ LABEL_43:
   v57[0] = v46;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
   v8 = 0;
-  v22 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  selfCopy2 = 0;
+  *errorCopy2 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_46:
 
 LABEL_47:
   v33 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMASRContextualReplayRecordRequestMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_task)
   {
     PBDataWriterWriteStringField();
@@ -553,14 +553,14 @@ LABEL_47:
   if (self->_ids)
   {
     PBDataWriterPlaceMark();
-    [(BMASRContextualReplayRecordJoinIds *)self->_ids writeTo:v4];
+    [(BMASRContextualReplayRecordJoinIds *)self->_ids writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMASRContextualReplayRecordRequestMetadata;
   v5 = [(BMEventBase *)&v34 init];
@@ -569,12 +569,12 @@ LABEL_47:
     goto LABEL_53;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -585,18 +585,18 @@ LABEL_47:
       while (1)
       {
         LOBYTE(v35[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v35[0] & 0x7F) << v7;
@@ -614,9 +614,9 @@ LABEL_47:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -663,18 +663,18 @@ LABEL_42:
             while (1)
             {
               LOBYTE(v35[0]) = 0;
-              v23 = [v4 position] + 1;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 1;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v25 = [v4 data];
-                [v25 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v22 |= (v35[0] & 0x7F) << v20;
@@ -692,7 +692,7 @@ LABEL_42:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v26 = 0;
             }
@@ -708,18 +708,18 @@ LABEL_47:
           case 4:
             v5->_hasRaw_requestTimestamp = 1;
             v35[0] = 0;
-            v27 = [v4 position] + 8;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 8, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 8;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 8, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:v35 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             *&v5->_raw_requestTimestamp = v35[0];
@@ -732,7 +732,7 @@ LABEL_47:
               goto LABEL_52;
             }
 
-            v16 = [[BMASRContextualReplayRecordJoinIds alloc] initByReadFrom:v4];
+            v16 = [[BMASRContextualReplayRecordJoinIds alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_52;
@@ -749,13 +749,13 @@ LABEL_47:
       }
 
 LABEL_50:
-      v31 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v31 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_52:
     v32 = 0;
@@ -773,48 +773,48 @@ LABEL_53:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMASRContextualReplayRecordRequestMetadata *)self task];
-  v5 = [(BMASRContextualReplayRecordRequestMetadata *)self language];
+  task = [(BMASRContextualReplayRecordRequestMetadata *)self task];
+  language = [(BMASRContextualReplayRecordRequestMetadata *)self language];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMASRContextualReplayRecordRequestMetadata samplingRate](self, "samplingRate")}];
-  v7 = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
+  requestTimestamp = [(BMASRContextualReplayRecordRequestMetadata *)self requestTimestamp];
   v8 = [(BMASRContextualReplayRecordRequestMetadata *)self ids];
-  v9 = [v3 initWithFormat:@"BMASRContextualReplayRecordRequestMetadata with task: %@, language: %@, samplingRate: %@, requestTimestamp: %@, ids: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMASRContextualReplayRecordRequestMetadata with task: %@, language: %@, samplingRate: %@, requestTimestamp: %@, ids: %@", task, language, v6, requestTimestamp, v8];
 
   return v9;
 }
 
-- (BMASRContextualReplayRecordRequestMetadata)initWithTask:(id)a3 language:(id)a4 samplingRate:(id)a5 requestTimestamp:(id)a6 ids:(id)a7
+- (BMASRContextualReplayRecordRequestMetadata)initWithTask:(id)task language:(id)language samplingRate:(id)rate requestTimestamp:(id)timestamp ids:(id)ids
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  taskCopy = task;
+  languageCopy = language;
+  rateCopy = rate;
+  timestampCopy = timestamp;
+  idsCopy = ids;
   v22.receiver = self;
   v22.super_class = BMASRContextualReplayRecordRequestMetadata;
   v18 = [(BMEventBase *)&v22 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_task, a3);
-    objc_storeStrong(&v18->_language, a4);
-    if (v15)
+    objc_storeStrong(&v18->_task, task);
+    objc_storeStrong(&v18->_language, language);
+    if (rateCopy)
     {
       v18->_hasSamplingRate = 1;
-      v19 = [v15 unsignedIntValue];
+      unsignedIntValue = [rateCopy unsignedIntValue];
     }
 
     else
     {
-      v19 = 0;
+      unsignedIntValue = 0;
       v18->_hasSamplingRate = 0;
     }
 
-    v18->_samplingRate = v19;
-    if (v16)
+    v18->_samplingRate = unsignedIntValue;
+    if (timestampCopy)
     {
       v18->_hasRaw_requestTimestamp = 1;
-      [v16 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -824,7 +824,7 @@ LABEL_53:
     }
 
     v18->_raw_requestTimestamp = v20;
-    objc_storeStrong(&v18->_ids, a7);
+    objc_storeStrong(&v18->_ids, ids);
   }
 
   return v18;
@@ -879,9 +879,9 @@ id __53__BMASRContextualReplayRecordRequestMetadata_columns__block_invoke(uint64
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -889,8 +889,8 @@ id __53__BMASRContextualReplayRecordRequestMetadata_columns__block_invoke(uint64
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMASRContextualReplayRecordRequestMetadata alloc] initByReadFrom:v7];
     v4 = v8;

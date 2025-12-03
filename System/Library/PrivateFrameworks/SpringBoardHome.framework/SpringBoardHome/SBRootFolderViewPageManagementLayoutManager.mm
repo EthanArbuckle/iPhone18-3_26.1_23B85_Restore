@@ -1,46 +1,46 @@
 @interface SBRootFolderViewPageManagementLayoutManager
-- (BOOL)_allowsCloseBoxForIconView:(id)a3;
-- (BOOL)_canRasterizeIconView:(id)a3;
-- (BOOL)iconDragManager:(id)a3 canBeginIconDragForIconView:(id)a4;
+- (BOOL)_allowsCloseBoxForIconView:(id)view;
+- (BOOL)_canRasterizeIconView:(id)view;
+- (BOOL)iconDragManager:(id)manager canBeginIconDragForIconView:(id)view;
 - (BOOL)isTrackingActiveOrDroppingIconDrags;
-- (BOOL)pageContainsBookmarkIcons:(id)a3;
-- (BOOL)pageManagementCellViewControllerShouldSuppressHighlight:(id)a3;
+- (BOOL)pageContainsBookmarkIcons:(id)icons;
+- (BOOL)pageManagementCellViewControllerShouldSuppressHighlight:(id)highlight;
 - (SBIconDragManager)iconDragManager;
 - (SBRootFolderView)rootFolderView;
 - (SBRootFolderViewPageManagementLayoutManager)init;
 - (UIViewController)alertPresentationViewController;
-- (id)backgroundViewForSnapshotForPageManagementCellViewController:(id)a3;
-- (id)customImageViewControllerForIconView:(id)a3;
-- (id)iconDragManager:(id)a3 dragItemsForIconView:(id)a4;
-- (id)iconDragManager:(id)a3 dragPreviewForIconView:(id)a4;
-- (id)newCellBackgroundMaterialViewInFolderView:(id)a3 initialWeighting:(double)a4;
-- (id)parentViewControllerForCustomIconImageViewControllerForIconView:(id)a3;
-- (unint64_t)folderListIndexToAnimateOutForList:(id)a3 inFolder:(id)a4 avoidingList:(id)a5;
-- (void)_removePageIcon:(id)a3;
-- (void)_updateCloseBoxVisibilityWithAnimation:(int64_t)a3;
-- (void)backgroundTapped:(id)a3;
-- (void)cleanUpViewsInFolderView:(id)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
-- (void)dominoPivotAnimator:(id)a3 didLayOutIconView:(id)a4;
-- (void)focusModeOptionsButtonTapped:(id)a3;
-- (void)iconCloseBoxTapped:(id)a3;
-- (void)iconDragManager:(id)a3 didPerformIconDrop:(id)a4 withIcons:(id)a5 inIconListView:(id)a6;
-- (void)iconDragManager:(id)a3 iconListView:(id)a4 item:(id)a5 willAnimateDropWithAnimator:(id)a6;
-- (void)iconDragManager:(id)a3 iconView:(id)a4 item:(id)a5 willAnimateDragCancelWithAnimator:(id)a6;
-- (void)iconDragManager:(id)a3 iconView:(id)a4 willAnimateDragLiftWithAnimator:(id)a5 session:(id)a6;
-- (void)iconList:(id)a3 didMoveIcon:(id)a4;
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4;
-- (void)layoutFooterViewsInFolderView:(id)a3;
-- (void)layoutHeaderViewsInFolderView:(id)a3;
-- (void)layoutScrollViewAndRootListViewInFolderView:(id)a3;
-- (void)makeRootListViewInFolderView:(id)a3 animated:(BOOL)a4;
-- (void)pageManagementCellViewControllerDidReceiveTap:(id)a3;
-- (void)presentPageDeleteConfirmationAlertForIconView:(id)a3 completion:(id)a4;
-- (void)presentSecondPageDeleteConfirmationAlertBookmarksFoundForIconView:(id)a3 completion:(id)a4;
+- (id)backgroundViewForSnapshotForPageManagementCellViewController:(id)controller;
+- (id)customImageViewControllerForIconView:(id)view;
+- (id)iconDragManager:(id)manager dragItemsForIconView:(id)view;
+- (id)iconDragManager:(id)manager dragPreviewForIconView:(id)view;
+- (id)newCellBackgroundMaterialViewInFolderView:(id)view initialWeighting:(double)weighting;
+- (id)parentViewControllerForCustomIconImageViewControllerForIconView:(id)view;
+- (unint64_t)folderListIndexToAnimateOutForList:(id)list inFolder:(id)folder avoidingList:(id)avoidingList;
+- (void)_removePageIcon:(id)icon;
+- (void)_updateCloseBoxVisibilityWithAnimation:(int64_t)animation;
+- (void)backgroundTapped:(id)tapped;
+- (void)cleanUpViewsInFolderView:(id)view;
+- (void)configureIconView:(id)view forIcon:(id)icon;
+- (void)dominoPivotAnimator:(id)animator didLayOutIconView:(id)view;
+- (void)focusModeOptionsButtonTapped:(id)tapped;
+- (void)iconCloseBoxTapped:(id)tapped;
+- (void)iconDragManager:(id)manager didPerformIconDrop:(id)drop withIcons:(id)icons inIconListView:(id)view;
+- (void)iconDragManager:(id)manager iconListView:(id)view item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)iconDragManager:(id)manager iconView:(id)view item:(id)item willAnimateDragCancelWithAnimator:(id)animator;
+- (void)iconDragManager:(id)manager iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session;
+- (void)iconList:(id)list didMoveIcon:(id)icon;
+- (void)iconList:(id)list didRemoveIcon:(id)icon;
+- (void)layoutFooterViewsInFolderView:(id)view;
+- (void)layoutHeaderViewsInFolderView:(id)view;
+- (void)layoutScrollViewAndRootListViewInFolderView:(id)view;
+- (void)makeRootListViewInFolderView:(id)view animated:(BOOL)animated;
+- (void)pageManagementCellViewControllerDidReceiveTap:(id)tap;
+- (void)presentPageDeleteConfirmationAlertForIconView:(id)view completion:(id)completion;
+- (void)presentSecondPageDeleteConfirmationAlertBookmarksFoundForIconView:(id)view completion:(id)completion;
 - (void)rasterizeIconViewsForImprovedLegibilityInScaledDownListViews;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setActiveFocusMode:(id)a3;
-- (void)transitionToActive:(BOOL)a3 inFolderView:(id)a4 usingAnimator:(id)a5;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setActiveFocusMode:(id)mode;
+- (void)transitionToActive:(BOOL)active inFolderView:(id)view usingAnimator:(id)animator;
 - (void)turnOffIconViewRazterizationForNormalSizeListViews;
 @end
 
@@ -59,34 +59,34 @@
   return result;
 }
 
-- (void)setActiveFocusMode:(id)a3
+- (void)setActiveFocusMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   p_activeFocusMode = &self->_activeFocusMode;
-  if (self->_activeFocusMode != v5)
+  if (self->_activeFocusMode != modeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_activeFocusMode, a3);
+    v7 = modeCopy;
+    objc_storeStrong(p_activeFocusMode, mode);
     p_activeFocusMode = [(SBRootFolderViewPageManagementLayoutManager *)self setAllowsPageHiding:[(SBHFocusMode *)v7 customizedHomeScreenPagesEnabled]^ 1];
-    v5 = v7;
+    modeCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_activeFocusMode, v5);
+  MEMORY[0x1EEE66BB8](p_activeFocusMode, modeCopy);
 }
 
-- (void)layoutScrollViewAndRootListViewInFolderView:(id)a3
+- (void)layoutScrollViewAndRootListViewInFolderView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v16 = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
-  [v16 setFrame:{v5, v7, v9, v11}];
-  v12 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  pageManagementScrollView = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
+  [pageManagementScrollView setFrame:{v5, v7, v9, v11}];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
   if ([(SBRootFolderViewPageManagementLayoutManager *)self layoutConfiguration]== 5)
   {
-    [v12 intrinsicContentSize];
+    [rootListView intrinsicContentSize];
     Height = v13;
   }
 
@@ -104,23 +104,23 @@
   v19.size.width = v9;
   v19.size.height = v11;
   Width = CGRectGetWidth(v19);
-  [v16 setContentSize:{Width, Height}];
-  [v12 setFrame:{0.0, 0.0, Width, Height}];
+  [pageManagementScrollView setContentSize:{Width, Height}];
+  [rootListView setFrame:{0.0, 0.0, Width, Height}];
 }
 
-- (void)layoutHeaderViewsInFolderView:(id)a3
+- (void)layoutHeaderViewsInFolderView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 traitCollection];
-  [v13 displayScale];
+  traitCollection = [viewCopy traitCollection];
+  [traitCollection displayScale];
   v30 = v14;
 
-  [v4 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -130,8 +130,8 @@
   v24 = v8 + v16;
   v25 = v10 - (v18 + v22);
   v26 = v12 - (v16 + v20);
-  v27 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  [v27 rectForIconAtIndex:0];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  [rootListView rectForIconAtIndex:0];
   memset(&slice, 0, sizeof(slice));
   memset(&remainder, 0, sizeof(remainder));
   MinY = CGRectGetMinY(v33);
@@ -150,25 +150,25 @@
   [(UIImageView *)self->_focusModeSymbolView setFrame:v30];
 }
 
-- (void)layoutFooterViewsInFolderView:(id)a3
+- (void)layoutFooterViewsInFolderView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 traitCollection];
-  [v9 displayScale];
+  traitCollection = [viewCopy traitCollection];
+  [traitCollection displayScale];
   v35 = v10;
 
-  v36 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  v11 = [v36 icons];
-  [v36 rectForIconAtIndex:{objc_msgSend(v11, "count") - 1}];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  icons = [rootListView icons];
+  [rootListView rectForIconAtIndex:{objc_msgSend(icons, "count") - 1}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  [v4 maxDockHeight];
+  [viewCopy maxDockHeight];
   v21 = v20;
 
   v22 = v21 * 0.25;
@@ -182,14 +182,14 @@
   v38.size.width = v17;
   v38.size.height = v19;
   v29 = v22 + CGRectGetMaxY(v38);
-  v30 = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
-  [v30 contentSize];
+  pageManagementScrollView = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
+  [pageManagementScrollView contentSize];
   v32 = v31;
   v39.origin.x = v24;
   v39.origin.y = v29;
   v39.size.width = v26;
   v39.size.height = v28;
-  [v30 setContentSize:{v32, v22 + CGRectGetMaxY(v39)}];
+  [pageManagementScrollView setContentSize:{v32, v22 + CGRectGetMaxY(v39)}];
   [(SBTitledHomeScreenButton *)self->_focusModeOptionsButton setBounds:v24, v29, v26, v28];
   focusModeOptionsButton = self->_focusModeOptionsButton;
   v40.origin.x = v24;
@@ -206,44 +206,44 @@
   [(SBTitledHomeScreenButton *)self->_focusModeOptionsButton layoutIfNeeded];
 }
 
-- (void)transitionToActive:(BOOL)a3 inFolderView:(id)a4 usingAnimator:(id)a5
+- (void)transitionToActive:(BOOL)active inFolderView:(id)view usingAnimator:(id)animator
 {
-  v145 = a3;
+  activeCopy = active;
   v202 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 folder];
-  v150 = [v7 scrollView];
-  v135 = [v7 widgetButton];
-  v10 = [v7 scrollAccessoryView];
-  v11 = [v7 rootFolderVisualConfiguration];
-  v141 = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeSymbolView];
-  v139 = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeOptionsButton];
-  v12 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  v13 = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
-  v14 = [(SBRootFolderViewPageManagementLayoutManager *)self backgroundTapGestureRecognizer];
-  [v11 pageManagementPageCheckboxVerticalMargin];
+  viewCopy = view;
+  animatorCopy = animator;
+  folder = [viewCopy folder];
+  scrollView = [viewCopy scrollView];
+  widgetButton = [viewCopy widgetButton];
+  scrollAccessoryView = [viewCopy scrollAccessoryView];
+  rootFolderVisualConfiguration = [viewCopy rootFolderVisualConfiguration];
+  focusModeSymbolView = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeSymbolView];
+  focusModeOptionsButton = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeOptionsButton];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  pageManagementScrollView = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementScrollView];
+  backgroundTapGestureRecognizer = [(SBRootFolderViewPageManagementLayoutManager *)self backgroundTapGestureRecognizer];
+  [rootFolderVisualConfiguration pageManagementPageCheckboxVerticalMargin];
   v16 = v15;
-  v137 = v11;
-  [v11 pageManagementPageCheckboxDiameter];
+  v137 = rootFolderVisualConfiguration;
+  [rootFolderVisualConfiguration pageManagementPageCheckboxDiameter];
   v18 = v17;
-  v131 = [(SBRootFolderViewPageManagementLayoutManager *)self activeTransitionCount];
+  activeTransitionCount = [(SBRootFolderViewPageManagementLayoutManager *)self activeTransitionCount];
   memset(__src, 0, 360);
-  [v7 getMetrics:__src];
-  v154 = v7;
-  v19 = [v7 iconListModelIndexForPageIndex:{objc_msgSend(v7, "currentPageIndex")}];
+  [viewCopy getMetrics:__src];
+  v154 = viewCopy;
+  v19 = [viewCopy iconListModelIndexForPageIndex:{objc_msgSend(viewCopy, "currentPageIndex")}];
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [v7 firstIconPageIndex];
-    [v7 setCurrentPageIndex:v20 animated:0];
-    v19 = [v7 iconListModelIndexForPageIndex:v20];
+    firstIconPageIndex = [viewCopy firstIconPageIndex];
+    [viewCopy setCurrentPageIndex:firstIconPageIndex animated:0];
+    v19 = [viewCopy iconListModelIndexForPageIndex:firstIconPageIndex];
   }
 
-  if ([v9 isTrailingEmptyListIndex:v19])
+  if ([folder isTrailingEmptyListIndex:v19])
   {
     do
     {
-      v21 = [v9 precedingVisibleListIndexBeforeIndex:v19];
+      v21 = [folder precedingVisibleListIndexBeforeIndex:v19];
       if (v21 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -254,37 +254,37 @@
       v19 = v22;
     }
 
-    while (([v9 isTrailingEmptyListIndex:v22] & 1) != 0);
+    while (([folder isTrailingEmptyListIndex:v22] & 1) != 0);
   }
 
   v152 = v16 + v18;
-  v23 = [v9 listAtIndex:v19];
+  v23 = [folder listAtIndex:v19];
   v24 = v23;
-  v138 = v10;
-  v144 = v8;
-  if (v145)
+  v138 = scrollAccessoryView;
+  v144 = animatorCopy;
+  if (activeCopy)
   {
     v133 = v23;
-    v129 = [v154 currentIconListView];
+    currentIconListView = [v154 currentIconListView];
     [v154 setIncludesHiddenIconListPages:1];
     [v154 setAutomaticallyCreatesIconListViews:0];
     if (!self->_iconViewControllersByIcon)
     {
-      v25 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       iconViewControllersByIcon = self->_iconViewControllersByIcon;
-      self->_iconViewControllersByIcon = v25;
+      self->_iconViewControllersByIcon = strongToStrongObjectsMapTable;
     }
 
     if (!self->_iconViewControllersByListModel)
     {
-      v27 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       iconViewControllersByListModel = self->_iconViewControllersByListModel;
-      self->_iconViewControllersByListModel = v27;
+      self->_iconViewControllersByListModel = strongToStrongObjectsMapTable2;
     }
 
     if (self->_pageIconsByListModel)
     {
-      if (v13)
+      if (pageManagementScrollView)
       {
         goto LABEL_13;
       }
@@ -292,30 +292,30 @@
 
     else
     {
-      v96 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       pageIconsByListModel = self->_pageIconsByListModel;
-      self->_pageIconsByListModel = v96;
+      self->_pageIconsByListModel = strongToStrongObjectsMapTable3;
 
-      if (v13)
+      if (pageManagementScrollView)
       {
 LABEL_13:
-        if (v12)
+        if (rootListView)
         {
 LABEL_14:
-          v126 = v9;
-          if (!v14)
+          v126 = folder;
+          if (!backgroundTapGestureRecognizer)
           {
-            v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_backgroundTapped_];
-            [v12 addGestureRecognizer:v14];
+            backgroundTapGestureRecognizer = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_backgroundTapped_];
+            [rootListView addGestureRecognizer:backgroundTapGestureRecognizer];
           }
 
-          v136 = v14;
+          v136 = backgroundTapGestureRecognizer;
           v197 = 0u;
           v196 = 0u;
           v195 = 0u;
           v194 = 0u;
-          v29 = [v154 additionalIconListViews];
-          v30 = [v29 countByEnumeratingWithState:&v194 objects:v201 count:16];
+          additionalIconListViews = [v154 additionalIconListViews];
+          v30 = [additionalIconListViews countByEnumeratingWithState:&v194 objects:v201 count:16];
           if (v30)
           {
             v31 = v30;
@@ -326,42 +326,42 @@ LABEL_14:
               {
                 if (*v195 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(additionalIconListViews);
                 }
 
                 v34 = *(*(&v194 + 1) + 8 * i);
                 [v34 setEditing:0];
-                [v34 updateEditingStateAnimated:v8 != 0];
+                [v34 updateEditingStateAnimated:animatorCopy != 0];
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v194 objects:v201 count:16];
+              v31 = [additionalIconListViews countByEnumeratingWithState:&v194 objects:v201 count:16];
             }
 
             while (v31);
           }
 
-          v35 = [v154 scalingView];
-          v36 = [v13 superview];
+          scalingView = [v154 scalingView];
+          superview = [pageManagementScrollView superview];
 
-          if (!v36)
+          if (!superview)
           {
-            [v35 bounds];
-            [v13 setFrame:?];
-            [v35 insertSubview:v13 aboveSubview:v150];
+            [scalingView bounds];
+            [pageManagementScrollView setFrame:?];
+            [scalingView insertSubview:pageManagementScrollView aboveSubview:scrollView];
           }
 
-          v125 = v35;
-          v37 = [v12 superview];
+          v125 = scalingView;
+          superview2 = [rootListView superview];
 
-          if (v37 != v13)
+          if (superview2 != pageManagementScrollView)
           {
-            [v13 addSubview:v12];
+            [pageManagementScrollView addSubview:rootListView];
           }
 
-          v146 = v13;
+          v146 = pageManagementScrollView;
           [(SBRootFolderViewPageManagementLayoutManager *)self layoutScrollViewAndRootListViewInFolderView:v154];
-          v148 = v12;
-          [v12 layoutIconsNow];
+          v148 = rootListView;
+          [rootListView layoutIconsNow];
           v192 = 0u;
           v193 = 0u;
           v190 = 0u;
@@ -384,14 +384,14 @@ LABEL_14:
                 v43 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:*(*(&v190 + 1) + 8 * j)];
                 [v43 bs_beginAppearanceTransition:1 animated:0];
                 [v43 bs_endAppearanceTransition:1];
-                v44 = [v43 listView];
+                listView = [v43 listView];
                 v188[0] = MEMORY[0x1E69E9820];
                 v188[1] = 3221225472;
                 v188[2] = __93__SBRootFolderViewPageManagementLayoutManager_transitionToActive_inFolderView_usingAnimator___block_invoke;
                 v188[3] = &unk_1E8089928;
                 v189 = v43;
                 v45 = v43;
-                [v44 enumerateKnownIconViewsUsingBlock:v188];
+                [listView enumerateKnownIconViewsUsingBlock:v188];
               }
 
               v40 = [(NSMapTable *)v38 countByEnumeratingWithState:&v190 objects:v200 count:16];
@@ -401,46 +401,46 @@ LABEL_14:
           }
 
           v46 = [(NSMapTable *)self->_pageIconsByListModel objectForKey:v133];
-          v13 = v146;
+          pageManagementScrollView = v146;
           if (v46)
           {
-            [v12 rectForIcon:v46];
+            [rootListView rectForIcon:v46];
             v204 = CGRectInset(v203, -8.0, -8.0);
             [v146 scrollRectToVisible:0 animated:{v204.origin.x, v204.origin.y, v204.size.width, v204.size.height}];
           }
 
-          v127 = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
-          v9 = v126;
-          v47 = v129;
-          if ([v127 customizedHomeScreenPagesEnabled])
+          activeFocusMode = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
+          folder = v126;
+          model2 = currentIconListView;
+          if ([activeFocusMode customizedHomeScreenPagesEnabled])
           {
-            v48 = v141;
-            if (!v141)
+            v48 = focusModeSymbolView;
+            if (!focusModeSymbolView)
             {
-              v142 = [v127 symbol];
+              symbol = [activeFocusMode symbol];
               v49 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDD58]];
-              v50 = [MEMORY[0x1E69DCAB8] systemImageNamed:v142 withConfiguration:v49];
+              v50 = [MEMORY[0x1E69DCAB8] systemImageNamed:symbol withConfiguration:v49];
               v121 = v46;
               v51 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v50];
-              v52 = [MEMORY[0x1E69DC888] systemWhiteColor];
-              [v51 setTintColor:v52];
+              systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+              [v51 setTintColor:systemWhiteColor];
 
               [(SBRootFolderViewPageManagementLayoutManager *)self setFocusModeSymbolView:v51];
-              v47 = v129;
+              model2 = currentIconListView;
 
               v48 = v51;
               v46 = v121;
             }
 
-            v141 = v48;
+            focusModeSymbolView = v48;
             [v146 insertSubview:? aboveSubview:?];
-            if (!v139)
+            if (!focusModeOptionsButton)
             {
               v123 = +[SBIconView componentBackgroundView];
               v53 = SBHBundle();
               v54 = [v53 localizedStringForKey:@"OPTIONS" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
 
-              v47 = v129;
+              model2 = currentIconListView;
               [v137 pageManagementFocusModeOptionsButtonSize];
               v56 = v55;
               v58 = v57;
@@ -450,40 +450,40 @@ LABEL_14:
               [(SBTitledHomeScreenButton *)v61 setPreferredContentFittingSize:v56, v58];
               [(SBTitledHomeScreenButton *)v61 addTarget:self action:sel_focusModeOptionsButtonTapped_ forControlEvents:0x2000];
               [(SBRootFolderViewPageManagementLayoutManager *)self setFocusModeOptionsButton:v61];
-              v139 = v61;
+              focusModeOptionsButton = v61;
               v62 = v61;
               v46 = v60;
-              [v146 insertSubview:v62 aboveSubview:v12];
+              [v146 insertSubview:v62 aboveSubview:rootListView];
               [(SBRootFolderViewPageManagementLayoutManager *)self layoutFooterViewsInFolderView:v154];
             }
           }
 
-          v63 = [(SBRootFolderViewPageManagementLayoutManager *)self dockOffscreenAssertion];
-          if (!v63)
+          dockOffscreenAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self dockOffscreenAssertion];
+          if (!dockOffscreenAssertion)
           {
-            v63 = [v154 beginModifyingDockOffscreenFractionForReason:@"PageEditing"];
-            [(SBRootFolderViewPageManagementLayoutManager *)self setDockOffscreenAssertion:v63];
+            dockOffscreenAssertion = [v154 beginModifyingDockOffscreenFractionForReason:@"PageEditing"];
+            [(SBRootFolderViewPageManagementLayoutManager *)self setDockOffscreenAssertion:dockOffscreenAssertion];
           }
 
-          v124 = v63;
-          v64 = [(SBRootFolderViewPageManagementLayoutManager *)self scrollAccessoryBorrowedAssertion];
+          v124 = dockOffscreenAssertion;
+          scrollAccessoryBorrowedAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self scrollAccessoryBorrowedAssertion];
 
-          if (!v64)
+          if (!scrollAccessoryBorrowedAssertion)
           {
             v65 = [v154 borrowScrollAccessoryForReason:@"PageEditing"];
             [(SBRootFolderViewPageManagementLayoutManager *)self setScrollAccessoryBorrowedAssertion:v65];
           }
 
-          v66 = [(SBRootFolderViewPageManagementLayoutManager *)self pageDotsVisibilityAssertion];
+          pageDotsVisibilityAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self pageDotsVisibilityAssertion];
 
-          if (!v66)
+          if (!pageDotsVisibilityAssertion)
           {
             v67 = [v154 requirePageDotsVisibilityForReason:@"PageEditing"];
             [(SBRootFolderViewPageManagementLayoutManager *)self setPageDotsVisibilityAssertion:v67];
           }
 
           [(SBRootFolderViewPageManagementLayoutManager *)self layoutHeaderViewsInFolderView:v154];
-          if (v8)
+          if (animatorCopy)
           {
             v122 = v46;
             v186 = 0u;
@@ -508,9 +508,9 @@ LABEL_14:
                   v73 = *(*(&v184 + 1) + 8 * k);
                   v74 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:v73];
                   [v74 setScalesListView:0];
-                  v75 = [v73 listModel];
-                  [v154 _frameForIconListAtIndex:{objc_msgSend(v126, "indexOfList:", v75)}];
-                  [v148 convertRect:v150 fromView:?];
+                  listModel = [v73 listModel];
+                  [v154 _frameForIconListAtIndex:{objc_msgSend(v126, "indexOfList:", listModel)}];
+                  [v148 convertRect:scrollView fromView:?];
                   v77 = v76;
                   v79 = v78;
                   v81 = v80;
@@ -541,26 +541,26 @@ LABEL_14:
               while (v70);
             }
 
-            [v141 setAlpha:0.0];
-            [v139 setAlpha:0.0];
-            v47 = v129;
-            v90 = [v129 model];
-            v91 = [v126 isTrailingEmptyList:v90];
+            [focusModeSymbolView setAlpha:0.0];
+            [focusModeOptionsButton setAlpha:0.0];
+            model2 = currentIconListView;
+            model = [currentIconListView model];
+            v91 = [v126 isTrailingEmptyList:model];
 
-            v8 = v144;
-            v13 = v146;
-            v12 = v148;
+            animatorCopy = v144;
+            pageManagementScrollView = v146;
+            rootListView = v148;
             v46 = v122;
             if ((v91 & 1) == 0)
             {
-              [v129 addSubview:v138];
+              [currentIconListView addSubview:v138];
             }
           }
 
           else
           {
-            [v12 setEditing:self->_allowsEditing];
-            [v12 updateEditingStateAnimated:0];
+            [rootListView setEditing:self->_allowsEditing];
+            [rootListView updateEditingStateAnimated:0];
           }
 
           v24 = v133;
@@ -568,18 +568,18 @@ LABEL_14:
         }
 
 LABEL_65:
-        [(SBRootFolderViewPageManagementLayoutManager *)self makeRootListViewInFolderView:v154 animated:v8 != 0];
-        v12 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+        [(SBRootFolderViewPageManagementLayoutManager *)self makeRootListViewInFolderView:v154 animated:animatorCopy != 0];
+        rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
         goto LABEL_14;
       }
     }
 
-    v13 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
-    [v13 setDelegate:self];
-    [v13 setShowsVerticalScrollIndicator:0];
-    [v13 setShowsHorizontalScrollIndicator:0];
-    [(SBRootFolderViewPageManagementLayoutManager *)self setPageManagementScrollView:v13];
-    if (v12)
+    pageManagementScrollView = objc_alloc_init(MEMORY[0x1E69DCEF8]);
+    [pageManagementScrollView setDelegate:self];
+    [pageManagementScrollView setShowsVerticalScrollIndicator:0];
+    [pageManagementScrollView setShowsHorizontalScrollIndicator:0];
+    [(SBRootFolderViewPageManagementLayoutManager *)self setPageManagementScrollView:pageManagementScrollView];
+    if (rootListView)
     {
       goto LABEL_14;
     }
@@ -590,32 +590,32 @@ LABEL_65:
   [(SBRootFolderViewPageManagementLayoutManager *)self turnOffIconViewRazterizationForNormalSizeListViews];
   if ([v24 isHidden])
   {
-    v92 = [v9 precedingVisibleListIndexBeforeIndex:v19];
+    v92 = [folder precedingVisibleListIndexBeforeIndex:v19];
     if (v92 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v92 = [v9 nextVisibleListIndexAfterIndex:v19];
+      v92 = [folder nextVisibleListIndexAfterIndex:v19];
     }
 
-    v93 = [v9 listAtIndex:v92];
+    v93 = [folder listAtIndex:v92];
 
     [v154 setCurrentPageIndex:objc_msgSend(v154 animated:{"pageIndexForIconListModelIndex:", v92), 0}];
     v24 = v93;
   }
 
-  v136 = v14;
-  [v12 setEditing:0];
-  [v12 updateEditingStateAnimated:v8 != 0];
-  v47 = [v12 model];
-  [v47 removeListObserver:self];
-  if (v8)
+  v136 = backgroundTapGestureRecognizer;
+  [rootListView setEditing:0];
+  [rootListView updateEditingStateAnimated:animatorCopy != 0];
+  model2 = [rootListView model];
+  [model2 removeListObserver:self];
+  if (animatorCopy)
   {
     v94 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:v24];
-    v95 = [v94 listView];
-    [v95 addSubview:v10];
-    [v10 setAlpha:0.0];
-    [v95 removeIconViewConfigurationOption:2];
-    [v95 setContentVisibility:0];
-    [v95 enumerateIconViewsUsingBlock:&__block_literal_global_55];
+    listView2 = [v94 listView];
+    [listView2 addSubview:scrollAccessoryView];
+    [scrollAccessoryView setAlpha:0.0];
+    [listView2 removeIconViewConfigurationOption:2];
+    [listView2 setContentVisibility:0];
+    [listView2 enumerateIconViewsUsingBlock:&__block_literal_global_55];
   }
 
   else
@@ -630,19 +630,19 @@ LABEL_69:
   v98 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:v24];
   v99 = [(NSMapTable *)self->_pageIconsByListModel objectForKey:v24];
   v134 = v98;
-  v128 = [v98 listView];
+  listView3 = [v98 listView];
   v149 = v99;
   [(SBIconListView *)self->_rootListView coordinateForIcon:v99];
   v101 = v100;
-  v102 = [(SBIconListView *)self->_rootListView iconColumnsForCurrentOrientation];
-  if (v102)
+  iconColumnsForCurrentOrientation = [(SBIconListView *)self->_rootListView iconColumnsForCurrentOrientation];
+  if (iconColumnsForCurrentOrientation)
   {
-    v103 = v102;
+    v103 = iconColumnsForCurrentOrientation;
     v104 = 1;
     do
     {
-      v105 = [(SBIconListView *)self->_rootListView iconViewForCoordinate:v104, v101];
-      [(SBIconListView *)self->_rootListView bringSubviewToFront:v105];
+      v101 = [(SBIconListView *)self->_rootListView iconViewForCoordinate:v104, v101];
+      [(SBIconListView *)self->_rootListView bringSubviewToFront:v101];
 
       ++v104;
       --v103;
@@ -652,14 +652,14 @@ LABEL_69:
   }
 
   v106 = v24;
-  if (v8)
+  if (animatorCopy)
   {
-    [(SBRootFolderViewPageManagementLayoutManager *)self setActiveTransitionCount:v131 + 1];
-    [(SBRootFolderViewPageManagementLayoutManager *)self setLatestActiveTransitionAnimator:v8];
+    [(SBRootFolderViewPageManagementLayoutManager *)self setActiveTransitionCount:activeTransitionCount + 1];
+    [(SBRootFolderViewPageManagementLayoutManager *)self setLatestActiveTransitionAnimator:animatorCopy];
   }
 
-  v147 = v13;
-  if (v145)
+  v147 = pageManagementScrollView;
+  if (activeCopy)
   {
     v107 = 1.0;
   }
@@ -669,7 +669,7 @@ LABEL_69:
     v107 = 0.0;
   }
 
-  if (v145)
+  if (activeCopy)
   {
     v108 = 0.0;
   }
@@ -683,29 +683,29 @@ LABEL_69:
   aBlock[1] = 3221225472;
   aBlock[2] = __93__SBRootFolderViewPageManagementLayoutManager_transitionToActive_inFolderView_usingAnimator___block_invoke_2;
   aBlock[3] = &unk_1E808E588;
-  v132 = v8;
+  v132 = animatorCopy;
   v175 = v132;
-  v176 = self;
-  v183[360] = v145;
+  selfCopy = self;
+  v183[360] = activeCopy;
   v109 = v154;
   v177 = v109;
   v181 = v108;
-  v155 = v141;
+  v155 = focusModeSymbolView;
   v178 = v155;
   v182 = v107;
-  v140 = v139;
+  v140 = focusModeOptionsButton;
   v179 = v140;
-  v143 = v135;
+  v143 = widgetButton;
   v180 = v143;
   memcpy(v183, __src, 0x168uLL);
   v110 = _Block_copy(aBlock);
-  if (v8 && v145)
+  if (animatorCopy && activeCopy)
   {
     v111 = [[SBIconListViewDominoPivotAnimator alloc] initWithPivotIcon:v149];
     [(SBIconListViewDominoPivotAnimator *)v111 setDelegate:self];
-    [v12 setIconsNeedLayout];
+    [rootListView setIconsNeedLayout];
     [(SBRootFolderViewPageManagementLayoutManager *)self setLayoutAction:1];
-    [v12 layoutIconsIfNeededUsingAnimator:v111 options:0];
+    [rootListView layoutIconsIfNeededUsingAnimator:v111 options:0];
     [(SBRootFolderViewPageManagementLayoutManager *)self setLayoutAction:0];
   }
 
@@ -713,26 +713,26 @@ LABEL_69:
   v162[1] = 3221225472;
   v162[2] = __93__SBRootFolderViewPageManagementLayoutManager_transitionToActive_inFolderView_usingAnimator___block_invoke_4;
   v162[3] = &unk_1E808E5B0;
-  v173 = v145;
+  v173 = activeCopy;
   v162[4] = self;
-  v163 = v9;
+  v163 = folder;
   v112 = v106;
   v164 = v106;
   v113 = v109;
   v165 = v113;
-  v114 = v12;
+  v114 = rootListView;
   v166 = v114;
-  v167 = v150;
+  v167 = scrollView;
   v170 = v152;
   v171 = v107;
-  v115 = v128;
+  v115 = listView3;
   v168 = v115;
   v172 = v108;
   v116 = v110;
   v169 = v116;
-  v153 = v150;
+  v153 = scrollView;
   v151 = v112;
-  v117 = v9;
+  v117 = folder;
   [v132 addAnimations:v162];
   if (!v144)
   {
@@ -749,13 +749,13 @@ LABEL_69:
   v160 = v130;
   v156[4] = self;
   v157 = v114;
-  v161 = v145;
+  v161 = activeCopy;
   v158 = v115;
   v118 = v113;
   v119 = v115;
   v120 = v114;
   [v132 addCompletion:v156];
-  if (!v144 && v145)
+  if (!v144 && activeCopy)
   {
     [(SBRootFolderViewPageManagementLayoutManager *)self rasterizeIconViewsForImprovedLegibilityInScaledDownListViews];
   }
@@ -1097,13 +1097,13 @@ void __93__SBRootFolderViewPageManagementLayoutManager_transitionToActive_inFold
         }
 
         v8 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:*(*(&v11 + 1) + 8 * v7)];
-        v9 = [v8 listView];
+        listView = [v8 listView];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImprovedLegibilityInScaledDownListViews__block_invoke;
         v10[3] = &unk_1E808AEC0;
         v10[4] = self;
-        [v9 enumerateIconViewsUsingBlock:v10];
+        [listView enumerateIconViewsUsingBlock:v10];
 
         ++v7;
       }
@@ -1174,14 +1174,14 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = [(NSMapTable *)self->_initialScalingAttributesByIconView objectForKey:v8, v12];
-        v10 = [v8 layer];
-        v11 = [v9 minificationFilter];
-        [v10 setMinificationFilter:v11];
+        layer = [v8 layer];
+        minificationFilter = [v9 minificationFilter];
+        [layer setMinificationFilter:minificationFilter];
 
-        [v10 setShouldRasterize:{objc_msgSend(v9, "shouldRasterize")}];
+        [layer setShouldRasterize:{objc_msgSend(v9, "shouldRasterize")}];
         [v9 rasterizationScale];
-        [v10 setRasterizationScale:?];
-        [v10 setAllowsEdgeAntialiasing:{objc_msgSend(v9, "allowsEdgeAntialiasing")}];
+        [layer setRasterizationScale:?];
+        [layer setAllowsEdgeAntialiasing:{objc_msgSend(v9, "allowsEdgeAntialiasing")}];
       }
 
       v5 = [(NSMapTable *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1191,40 +1191,40 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
   }
 }
 
-- (void)makeRootListViewInFolderView:(id)a3 animated:(BOOL)a4
+- (void)makeRootListViewInFolderView:(id)view animated:(BOOL)animated
 {
   v138[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 folder];
-  [v7 addFolderObserver:self];
-  v8 = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
-  v9 = [v8 customizedHomeScreenPagesEnabled];
-  if (v9)
+  viewCopy = view;
+  folder = [viewCopy folder];
+  [folder addFolderObserver:self];
+  activeFocusMode = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
+  customizedHomeScreenPagesEnabled = [activeFocusMode customizedHomeScreenPagesEnabled];
+  if (customizedHomeScreenPagesEnabled)
   {
-    v10 = [v7 visibleListCount];
+    visibleListCount = [folder visibleListCount];
   }
 
   else
   {
-    v10 = [v7 listCount];
+    visibleListCount = [folder listCount];
   }
 
-  v11 = v10;
-  v12 = [v7 hiddenListCount];
-  v13 = [v7 trailingEmptyListCount];
+  v11 = visibleListCount;
+  hiddenListCount = [folder hiddenListCount];
+  trailingEmptyListCount = [folder trailingEmptyListCount];
   v14 = 1;
-  if (v11 != v13)
+  if (v11 != trailingEmptyListCount)
   {
-    v14 = v13 + v12 == v11;
+    v14 = trailingEmptyListCount + hiddenListCount == v11;
   }
 
-  if (!v13)
+  if (!trailingEmptyListCount)
   {
     v14 = 0;
   }
 
   v100 = v14;
-  v15 = v11 - v13 + v14;
+  v15 = v11 - trailingEmptyListCount + v14;
   v16 = 2;
   if (v15 >= 5)
   {
@@ -1256,54 +1256,54 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
   [(SBIconListModel *)v19 setAllowsRotatedLayout:0];
   v102 = v19;
   [(SBIconListModel *)v19 addListObserver:self];
-  v99 = [v6 currentIconListModel];
-  v111 = [v6 traitCollection];
-  [v6 bounds];
+  currentIconListModel = [viewCopy currentIconListModel];
+  traitCollection = [viewCopy traitCollection];
+  [viewCopy bounds];
   v21 = v20;
   v97 = v23;
   v98 = v22;
   rect = v24;
-  [v6 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v108 = v25;
-  [v6 _iconListViewSize];
+  [viewCopy _iconListViewSize];
   v27 = v26;
   v113 = v28;
-  v110 = [v6 rootListLayout];
-  v29 = [v6 firstIconListView];
-  v30 = [v29 orientation];
+  rootListLayout = [viewCopy rootListLayout];
+  firstIconListView = [viewCopy firstIconListView];
+  orientation = [firstIconListView orientation];
 
-  [v110 layoutInsetsForOrientation:v30];
+  [rootListLayout layoutInsetsForOrientation:orientation];
   v106 = v31;
   v103 = v32;
   v34 = v33;
-  SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v110, v30, @"SBHIconGridSizeClassSmall");
+  SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(rootListLayout, orientation, @"SBHIconGridSizeClassSmall");
   v36 = v35;
-  v109 = v30;
-  SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v110, v30, @"SBHIconGridSizeClassDefault");
+  v109 = orientation;
+  SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(rootListLayout, orientation, @"SBHIconGridSizeClassDefault");
   v38 = v37;
-  v39 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   v40 = (v36 - v38) * 0.5;
-  v41 = [v39 userInterfaceIdiom];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v41 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v96 = v113 - v106 - v34 + v40 * 2.0 + (v106 - v40) * 2.0;
   }
 
   else
   {
-    [v6 maxDockHeight];
+    [viewCopy maxDockHeight];
     v96 = v113 - v108 - v42;
   }
 
-  v112 = [v6 rootFolderVisualConfiguration];
+  rootFolderVisualConfiguration = [viewCopy rootFolderVisualConfiguration];
   v43 = 0.0;
   v44 = 0.0;
   if ([(SBRootFolderViewPageManagementLayoutManager *)self allowsPageHiding])
   {
-    [v112 pageManagementPageCheckboxDiameter];
+    [rootFolderVisualConfiguration pageManagementPageCheckboxDiameter];
     v44 = v45;
-    [v112 pageManagementPageCheckboxVerticalMargin];
+    [rootFolderVisualConfiguration pageManagementPageCheckboxVerticalMargin];
     v43 = v46;
   }
 
@@ -1347,20 +1347,20 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
   }
 
   [(SBRootFolderViewPageManagementLayoutManager *)self setLayoutConfiguration:v47];
-  [v112 pageManagementLayoutMetricsForLayoutConfiguration:v47];
+  [rootFolderVisualConfiguration pageManagementLayoutMetricsForLayoutConfiguration:v47];
   v95 = v48;
   v104 = v49;
   v107 = v50;
   v52 = v51;
-  v53 = [MEMORY[0x1E69DC938] currentDevice];
-  v54 = self;
-  v55 = v9;
-  v56 = v8;
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  selfCopy = self;
+  v55 = customizedHomeScreenPagesEnabled;
+  v56 = activeFocusMode;
   v57 = v21;
-  v58 = [v53 userInterfaceIdiom];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v59 = 0.0;
-  if ((v58 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v59 = -(v106 * v52 - (v27 * 0.03 * 0.5 + v103 * v52));
   }
@@ -1373,13 +1373,13 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
   v115[1] = 3221225472;
   v115[2] = __85__SBRootFolderViewPageManagementLayoutManager_makeRootListViewInFolderView_animated___block_invoke;
   v115[3] = &unk_1E808E600;
-  v60 = v7;
+  v60 = folder;
   v116 = v60;
   v122 = v136;
-  v61 = v6;
+  v61 = viewCopy;
   v117 = v61;
-  v134 = a4;
-  v101 = v99;
+  animatedCopy = animated;
+  v101 = currentIconListModel;
   v118 = v101;
   v135 = v55;
   v123 = v27;
@@ -1395,38 +1395,38 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
   v133 = v43;
   v114 = v56;
   v119 = v114;
-  v120 = v54;
-  v62 = v54;
+  v120 = selfCopy;
+  v62 = selfCopy;
   v63 = v102;
   v121 = v63;
   [v60 enumerateListsWithOptions:4 usingBlock:v115];
-  v64 = [MEMORY[0x1E69DC938] currentDevice];
-  v65 = [v64 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v66 = v43 + v44;
-  if ((v65 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v67 = v66 + v96 * v52;
   }
 
   else
   {
-    [v111 displayCornerRadius];
+    [traitCollection displayCornerRadius];
     v67 = v66 + v96 * (v52 + 0.03);
     if ((BSFloatIsZero() & 1) == 0)
     {
-      [v110 iconImageInfo];
+      [rootListLayout iconImageInfo];
     }
   }
 
   v68 = v57 + 0.0;
   if (v47 > 3)
   {
-    v74 = [MEMORY[0x1E69DC938] currentDevice];
-    v75 = [v74 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
     v71 = 0.0;
-    if ((v75 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v72 = 140.0;
     }
@@ -1438,11 +1438,11 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
       v139.size.width = rect;
       v139.size.height = v97 - (v108 + 0.0);
       v76 = CGRectGetHeight(v139) - v67 - v104 - v67 - v104 - v67 - v107;
-      if (![(SBRootFolderViewPageManagementLayoutManager *)v54 allowsPageHiding])
+      if (![(SBRootFolderViewPageManagementLayoutManager *)selfCopy allowsPageHiding])
       {
-        [v112 pageManagementPageCheckboxDiameter];
+        [rootFolderVisualConfiguration pageManagementPageCheckboxDiameter];
         v78 = v77;
-        [v112 pageManagementPageCheckboxVerticalMargin];
+        [rootFolderVisualConfiguration pageManagementPageCheckboxVerticalMargin];
         v76 = v76 - (v79 * 3.0 + v78 * 3.0);
       }
 
@@ -1466,11 +1466,11 @@ void __107__SBRootFolderViewPageManagementLayoutManager_rasterizeIconViewsForImp
     v140.size.width = rect;
     v140.size.height = v97 - (v108 + 0.0);
     v80 = CGRectGetHeight(v140) - v67 - v104 - v67 - v107;
-    if (![(SBRootFolderViewPageManagementLayoutManager *)v54 allowsPageHiding])
+    if (![(SBRootFolderViewPageManagementLayoutManager *)selfCopy allowsPageHiding])
     {
-      [v112 pageManagementPageCheckboxDiameter];
+      [rootFolderVisualConfiguration pageManagementPageCheckboxDiameter];
       v82 = v81;
-      [v112 pageManagementPageCheckboxVerticalMargin];
+      [rootFolderVisualConfiguration pageManagementPageCheckboxVerticalMargin];
       v80 = v80 - (v83 + v83 + v82 * 2.0);
     }
 
@@ -1496,7 +1496,7 @@ LABEL_51:
     [(SBIconListGridLayoutConfiguration *)v85 setPortraitLayoutInsets:v72, v71, v107, v73];
   }
 
-  [v111 displayScale];
+  [traitCollection displayScale];
   UISizeRoundToScale();
   [(SBIconListGridLayoutConfiguration *)v85 setIconImageInfo:?];
   v86 = [[SBIconListGridLayout alloc] initWithLayoutConfiguration:v85];
@@ -1506,26 +1506,26 @@ LABEL_51:
   v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v138 forKeys:&v137 count:1];
   v89 = [(SBHCustomIconListLayoutProvider *)v87 initWithListLayouts:v88];
 
-  v90 = [[SBIconListView alloc] initWithModel:v63 layoutProvider:v89 iconLocation:@"SBRootFolderViewPageManagement" orientation:v109 iconViewProvider:v54];
-  v91 = [(SBRootFolderViewPageManagementLayoutManager *)v54 iconDragManager];
-  [(SBIconListView *)v90 setDragDelegate:v91];
+  v90 = [[SBIconListView alloc] initWithModel:v63 layoutProvider:v89 iconLocation:@"SBRootFolderViewPageManagement" orientation:v109 iconViewProvider:selfCopy];
+  iconDragManager = [(SBRootFolderViewPageManagementLayoutManager *)selfCopy iconDragManager];
+  [(SBIconListView *)v90 setDragDelegate:iconDragManager];
 
   [(SBIconListView *)v90 setAutomaticallyAdjustsLayoutMetricsToFit:0];
   [(SBIconListView *)v90 setIconSpacing:v95, v104];
   [(SBIconListView *)v90 setLayoutInsetsMode:2];
   [(SBIconListView *)v90 setIconViewConfigurationOptions:82];
-  if (v54->_allowsEditing)
+  if (selfCopy->_allowsEditing)
   {
     [(SBIconListView *)v90 setIconDragTypeIdentifier:@"com.apple.SpringBoardHome.PageReordering"];
   }
 
   [v61 bounds];
   [(SBIconListView *)v90 setFrame:?];
-  [(SBRootFolderViewPageManagementLayoutManager *)v54 setRootListView:v90];
-  [(SBRootFolderViewPageManagementLayoutManager *)v54 setPageManagementListModel:v63];
-  v92 = [v61 window];
-  v93 = [v92 rootViewController];
-  [(SBRootFolderViewPageManagementLayoutManager *)v62 setAlertPresentationViewController:v93];
+  [(SBRootFolderViewPageManagementLayoutManager *)selfCopy setRootListView:v90];
+  [(SBRootFolderViewPageManagementLayoutManager *)selfCopy setPageManagementListModel:v63];
+  window = [v61 window];
+  rootViewController = [window rootViewController];
+  [(SBRootFolderViewPageManagementLayoutManager *)v62 setAlertPresentationViewController:rootViewController];
 
   _Block_object_dispose(v136, 8);
 }
@@ -1637,10 +1637,10 @@ void __85__SBRootFolderViewPageManagementLayoutManager_makeRootListViewInFolderV
   }
 }
 
-- (id)newCellBackgroundMaterialViewInFolderView:(id)a3 initialWeighting:(double)a4
+- (id)newCellBackgroundMaterialViewInFolderView:(id)view initialWeighting:(double)weighting
 {
-  v5 = [a3 traitCollection];
-  v6 = [SBIconView componentBackgroundViewOfType:2 compatibleWithTraitCollection:v5 initialWeighting:a4];
+  traitCollection = [view traitCollection];
+  v6 = [SBIconView componentBackgroundViewOfType:2 compatibleWithTraitCollection:traitCollection initialWeighting:weighting];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1664,12 +1664,12 @@ double __106__SBRootFolderViewPageManagementLayoutManager_newCellBackgroundMater
   return result;
 }
 
-- (unint64_t)folderListIndexToAnimateOutForList:(id)a3 inFolder:(id)a4 avoidingList:(id)a5
+- (unint64_t)folderListIndexToAnimateOutForList:(id)list inFolder:(id)folder avoidingList:(id)avoidingList
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 indexOfList:v7];
+  listCopy = list;
+  folderCopy = folder;
+  avoidingListCopy = avoidingList;
+  v10 = [folderCopy indexOfList:listCopy];
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1677,9 +1677,9 @@ double __106__SBRootFolderViewPageManagementLayoutManager_newCellBackgroundMater
   }
 
   v12 = v10;
-  v13 = [v8 listAtIndex:v10];
+  v13 = [folderCopy listAtIndex:v10];
   v14 = v13;
-  if (v7 != v9 && v13 == v9)
+  if (listCopy != avoidingListCopy && v13 == avoidingListCopy)
   {
 LABEL_9:
 
@@ -1692,10 +1692,10 @@ LABEL_9:
     if (v15 != -1)
     {
 
-      v16 = [v8 listAtIndex:v15];
+      v16 = [folderCopy listAtIndex:v15];
       v14 = v16;
       --v15;
-      if (v7 == v9 || v16 != v9)
+      if (listCopy == avoidingListCopy || v16 != avoidingListCopy)
       {
         continue;
       }
@@ -1704,18 +1704,18 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [v8 indexOfList:v14];
+  v11 = [folderCopy indexOfList:v14];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_10:
-    v17 = [v8 listCount];
+    listCount = [folderCopy listCount];
     v18 = v12 + 1;
-    if (v18 >= v17)
+    if (v18 >= listCount)
     {
 LABEL_15:
       v11 = 0x7FFFFFFFFFFFFFFFLL;
-      if (!v9)
+      if (!avoidingListCopy)
       {
         goto LABEL_24;
       }
@@ -1723,12 +1723,12 @@ LABEL_15:
 
     else
     {
-      v19 = v17;
+      v19 = listCount;
       while (1)
       {
-        v20 = [v8 listAtIndex:v18];
+        v20 = [folderCopy listAtIndex:v18];
         v21 = v20;
-        if (v20 == v9)
+        if (v20 == avoidingListCopy)
         {
           v11 = 0x7FFFFFFFFFFFFFFFLL;
           goto LABEL_21;
@@ -1745,10 +1745,10 @@ LABEL_15:
         }
       }
 
-      v11 = [v8 indexOfList:v21];
+      v11 = [folderCopy indexOfList:v21];
 LABEL_21:
 
-      if (!v9)
+      if (!avoidingListCopy)
       {
         goto LABEL_24;
       }
@@ -1756,7 +1756,7 @@ LABEL_21:
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v8 indexOfList:v9];
+      v11 = [folderCopy indexOfList:avoidingListCopy];
     }
   }
 
@@ -1765,46 +1765,46 @@ LABEL_24:
   return v11;
 }
 
-- (void)cleanUpViewsInFolderView:(id)a3
+- (void)cleanUpViewsInFolderView:(id)view
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 folder];
-  v31 = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeSymbolView];
-  [v31 removeFromSuperview];
-  v30 = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeOptionsButton];
-  [v30 removeFromSuperview];
-  v6 = [v4 widgetButton];
+  viewCopy = view;
+  folder = [viewCopy folder];
+  focusModeSymbolView = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeSymbolView];
+  [focusModeSymbolView removeFromSuperview];
+  focusModeOptionsButton = [(SBRootFolderViewPageManagementLayoutManager *)self focusModeOptionsButton];
+  [focusModeOptionsButton removeFromSuperview];
+  widgetButton = [viewCopy widgetButton];
   v7 = *(MEMORY[0x1E695EFD0] + 16);
   v47[0] = *MEMORY[0x1E695EFD0];
   v47[1] = v7;
   v47[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v6 setTransform:v47];
-  v29 = v6;
-  [v6 setAlpha:1.0];
-  v28 = [(SBRootFolderViewPageManagementLayoutManager *)self dockOffscreenAssertion];
-  [v28 invalidate];
+  [widgetButton setTransform:v47];
+  v29 = widgetButton;
+  [widgetButton setAlpha:1.0];
+  dockOffscreenAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self dockOffscreenAssertion];
+  [dockOffscreenAssertion invalidate];
   [(SBRootFolderViewPageManagementLayoutManager *)self setDockOffscreenAssertion:0];
-  v8 = [v4 dockView];
-  [v8 setAlpha:1.0];
+  dockView = [viewCopy dockView];
+  [dockView setAlpha:1.0];
 
-  v27 = [(SBRootFolderViewPageManagementLayoutManager *)self scrollAccessoryBorrowedAssertion];
-  [v27 invalidate];
+  scrollAccessoryBorrowedAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self scrollAccessoryBorrowedAssertion];
+  [scrollAccessoryBorrowedAssertion invalidate];
   [(SBRootFolderViewPageManagementLayoutManager *)self setScrollAccessoryBorrowedAssertion:0];
-  v26 = [(SBRootFolderViewPageManagementLayoutManager *)self pageDotsVisibilityAssertion];
-  [v26 invalidate];
-  v35 = self;
+  pageDotsVisibilityAssertion = [(SBRootFolderViewPageManagementLayoutManager *)self pageDotsVisibilityAssertion];
+  [pageDotsVisibilityAssertion invalidate];
+  selfCopy = self;
   [(SBRootFolderViewPageManagementLayoutManager *)self setPageDotsVisibilityAssertion:0];
-  [v4 setPageControlAlpha:1.0];
-  v34 = [v4 currentIconListModel];
-  v36 = v4;
-  v9 = [v4 isEditing];
+  [viewCopy setPageControlAlpha:1.0];
+  currentIconListModel = [viewCopy currentIconListModel];
+  v36 = viewCopy;
+  isEditing = [viewCopy isEditing];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v32 = v5;
-  obj = [v5 visibleLists];
+  v32 = folder;
+  obj = [folder visibleLists];
   v10 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v10)
   {
@@ -1819,22 +1819,22 @@ LABEL_24:
           objc_enumerationMutation(obj);
         }
 
-        v14 = *(*(&v43 + 1) + 8 * i) != v34;
-        v15 = [(NSMapTable *)v35->_iconViewControllersByListModel objectForKey:?];
-        v16 = [v15 listView];
+        v14 = *(*(&v43 + 1) + 8 * i) != currentIconListModel;
+        v15 = [(NSMapTable *)selfCopy->_iconViewControllersByListModel objectForKey:?];
+        listView = [v15 listView];
         [v15 cleanUpListView];
-        [v4 _addIconListView:v16 atEnd:0];
-        [v16 removeIconViewConfigurationOption:22];
-        [v16 setEditing:v9];
-        [v16 updateEditingStateAnimated:1];
-        [v16 setContentVisibility:2 * v14];
+        [viewCopy _addIconListView:listView atEnd:0];
+        [listView removeIconViewConfigurationOption:22];
+        [listView setEditing:isEditing];
+        [listView updateEditingStateAnimated:1];
+        [listView setContentVisibility:2 * v14];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __72__SBRootFolderViewPageManagementLayoutManager_cleanUpViewsInFolderView___block_invoke;
         v41[3] = &unk_1E8089928;
         v42 = v15;
         v17 = v15;
-        [v16 enumerateKnownIconViewsUsingBlock:v41];
+        [listView enumerateKnownIconViewsUsingBlock:v41];
       }
 
       v11 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -1847,8 +1847,8 @@ LABEL_24:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v18 = [v4 additionalIconListViews];
-  v19 = [v18 countByEnumeratingWithState:&v37 objects:v48 count:16];
+  additionalIconListViews = [viewCopy additionalIconListViews];
+  v19 = [additionalIconListViews countByEnumeratingWithState:&v37 objects:v48 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1859,24 +1859,24 @@ LABEL_24:
       {
         if (*v38 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(additionalIconListViews);
         }
 
         v23 = *(*(&v37 + 1) + 8 * j);
-        [v23 setEditing:v9];
+        [v23 setEditing:isEditing];
         [v23 updateEditingStateAnimated:1];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v37 objects:v48 count:16];
+      v20 = [additionalIconListViews countByEnumeratingWithState:&v37 objects:v48 count:16];
     }
 
     while (v20);
   }
 
-  v24 = [(SBRootFolderViewPageManagementLayoutManager *)v35 rootListView];
-  [v24 removeFromSuperview];
-  v25 = [(SBRootFolderViewPageManagementLayoutManager *)v35 pageManagementScrollView];
-  [v25 removeFromSuperview];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)selfCopy rootListView];
+  [rootListView removeFromSuperview];
+  pageManagementScrollView = [(SBRootFolderViewPageManagementLayoutManager *)selfCopy pageManagementScrollView];
+  [pageManagementScrollView removeFromSuperview];
   [v36 setAutomaticallyCreatesIconListViews:1];
 }
 
@@ -1925,20 +1925,20 @@ void __72__SBRootFolderViewPageManagementLayoutManager_cleanUpViewsInFolderView_
   }
 }
 
-- (BOOL)pageContainsBookmarkIcons:(id)a3
+- (BOOL)pageContainsBookmarkIcons:(id)icons
 {
-  v3 = [a3 listModel];
+  listModel = [icons listModel];
   v4 = objc_opt_self();
-  v5 = [v3 iconsOfClass:v4];
+  v5 = [listModel iconsOfClass:v4];
 
   LOBYTE(v4) = [v5 count] != 0;
   return v4;
 }
 
-- (id)parentViewControllerForCustomIconImageViewControllerForIconView:(id)a3
+- (id)parentViewControllerForCustomIconImageViewControllerForIconView:(id)view
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1960,7 +1960,7 @@ LABEL_3:
       v9 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:*(*(&v21 + 1) + 8 * v8)];
       [v9 bs_beginAppearanceTransition:1 animated:0];
       [v9 bs_endAppearanceTransition:1];
-      v10 = [v9 listView];
+      listView = [v9 listView];
       v17 = 0;
       v18 = &v17;
       v19 = 0x2020000000;
@@ -1969,9 +1969,9 @@ LABEL_3:
       v14[1] = 3221225472;
       v14[2] = __111__SBRootFolderViewPageManagementLayoutManager_parentViewControllerForCustomIconImageViewControllerForIconView___block_invoke;
       v14[3] = &unk_1E8089768;
-      v15 = v4;
+      v15 = viewCopy;
       v16 = &v17;
-      [v10 enumerateKnownIconViewsUsingBlock:v14];
+      [listView enumerateKnownIconViewsUsingBlock:v14];
       v11 = *(v18 + 24);
       if (v11 == 1)
       {
@@ -2019,75 +2019,75 @@ uint64_t __111__SBRootFolderViewPageManagementLayoutManager_parentViewController
 
 - (BOOL)isTrackingActiveOrDroppingIconDrags
 {
-  v2 = [(SBRootFolderViewPageManagementLayoutManager *)self iconDragManager];
-  v3 = [v2 isTrackingActiveOrDroppingIconDrags];
+  iconDragManager = [(SBRootFolderViewPageManagementLayoutManager *)self iconDragManager];
+  isTrackingActiveOrDroppingIconDrags = [iconDragManager isTrackingActiveOrDroppingIconDrags];
 
-  return v3;
+  return isTrackingActiveOrDroppingIconDrags;
 }
 
-- (BOOL)_canRasterizeIconView:(id)a3
+- (BOOL)_canRasterizeIconView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 icon];
-  if ([v4 isFolderIcon])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isFolderIcon])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 effectiveIconImageAppearance];
-    v5 = ([v6 appearanceType] - 7) < 0xFFFFFFFFFFFFFFFBLL;
+    effectiveIconImageAppearance = [viewCopy effectiveIconImageAppearance];
+    v5 = ([effectiveIconImageAppearance appearanceType] - 7) < 0xFFFFFFFFFFFFFFFBLL;
   }
 
   return v5;
 }
 
-- (void)_removePageIcon:(id)a3
+- (void)_removePageIcon:(id)icon
 {
-  v4 = a3;
-  v11 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  v5 = [v11 model];
-  v6 = [v4 icon];
-  [v4 setAllowsEditingAnimation:0];
+  iconCopy = icon;
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  model = [rootListView model];
+  icon = [iconCopy icon];
+  [iconCopy setAllowsEditingAnimation:0];
 
-  v7 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  [v7 markIcon:v6 asNeedingAnimation:0];
-  v8 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-  v9 = [v8 folder];
-  v10 = [v9 startCoalescingContentChangesForReason:@"SBPageManagementIconCoalesceID"];
-  [v9 removeIcon:v6 options:0];
-  [v5 removeIcon:v6];
+  rootListView2 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  [rootListView2 markIcon:icon asNeedingAnimation:0];
+  rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+  folder = [rootFolderView folder];
+  v10 = [folder startCoalescingContentChangesForReason:@"SBPageManagementIconCoalesceID"];
+  [folder removeIcon:icon options:0];
+  [model removeIcon:icon];
   [v10 invalidate];
-  [v7 setIconsNeedLayout];
-  [v7 layoutIconsIfNeededWithAnimationType:2 options:1];
+  [rootListView2 setIconsNeedLayout];
+  [rootListView2 layoutIconsIfNeededWithAnimationType:2 options:1];
 }
 
-- (void)backgroundTapped:(id)a3
+- (void)backgroundTapped:(id)tapped
 {
-  v15 = a3;
-  v4 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  [v15 locationInView:v4];
-  v5 = [v4 iconAtPoint:0 index:?];
+  tappedCopy = tapped;
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  [tappedCopy locationInView:rootListView];
+  v5 = [rootListView iconAtPoint:0 index:?];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 iconViewForIcon:v5];
-  v7 = [v6 customIconImageViewController];
-  v8 = [v7 view];
+  v6 = [rootListView iconViewForIcon:v5];
+  customIconImageViewController = [v6 customIconImageViewController];
+  view = [customIconImageViewController view];
 
-  if (!v8)
+  if (!view)
   {
 
     goto LABEL_6;
   }
 
-  [v15 locationInView:v8];
+  [tappedCopy locationInView:view];
   v10 = v9;
   v12 = v11;
-  [v8 bounds];
+  [view bounds];
   v17.x = v10;
   v17.y = v12;
   v13 = CGRectContainsPoint(v18, v17);
@@ -2095,28 +2095,28 @@ uint64_t __111__SBRootFolderViewPageManagementLayoutManager_parentViewController
   if (!v13)
   {
 LABEL_6:
-    v14 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-    [v14 exitPageManagementUIWithCompletionHandler:0];
+    rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+    [rootFolderView exitPageManagementUIWithCompletionHandler:0];
   }
 }
 
-- (void)focusModeOptionsButtonTapped:(id)a3
+- (void)focusModeOptionsButtonTapped:(id)tapped
 {
-  v10 = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
+  activeFocusMode = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
   v4 = MEMORY[0x1E695DFF8];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v10 identifier];
-  v7 = [v5 stringWithFormat:@"prefs:root=DO_NOT_DISTURB&path=%@", v6];
+  identifier = [activeFocusMode identifier];
+  v7 = [v5 stringWithFormat:@"prefs:root=DO_NOT_DISTURB&path=%@", identifier];
   v8 = [v4 URLWithString:v7];
 
   [(SBRootFolderViewPageManagementLayoutManager *)self setCompletionURL:v8];
-  v9 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-  [v9 exitPageManagementUIWithCompletionHandler:0];
+  rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+  [rootFolderView exitPageManagementUIWithCompletionHandler:0];
 }
 
-- (void)presentPageDeleteConfirmationAlertForIconView:(id)a3 completion:(id)a4
+- (void)presentPageDeleteConfirmationAlertForIconView:(id)view completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E69DC650];
   v7 = SBHBundle();
   v8 = [v7 localizedStringForKey:@"REMOVE_PAGE_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -2131,25 +2131,25 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = __104__SBRootFolderViewPageManagementLayoutManager_presentPageDeleteConfirmationAlertForIconView_completion___block_invoke;
   v22[3] = &unk_1E808E628;
-  v23 = v5;
-  v15 = v5;
+  v23 = completionCopy;
+  v15 = completionCopy;
   v16 = [v12 actionWithTitle:v14 style:2 handler:v22];
 
   [v11 addAction:v16];
   v17 = MEMORY[0x1E69DC648];
-  v18 = [MEMORY[0x1E696AAE8] mainBundle];
-  v19 = [v18 localizedStringForKey:@"CANCEL" value:&stru_1F3D472A8 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v19 = [mainBundle localizedStringForKey:@"CANCEL" value:&stru_1F3D472A8 table:@"SpringBoard"];
   v20 = [v17 actionWithTitle:v19 style:1 handler:0];
 
   [v11 addAction:v20];
   [v11 setPreferredAction:v20];
-  v21 = [(SBRootFolderViewPageManagementLayoutManager *)self alertPresentationViewController];
-  [v21 presentViewController:v11 animated:1 completion:0];
+  alertPresentationViewController = [(SBRootFolderViewPageManagementLayoutManager *)self alertPresentationViewController];
+  [alertPresentationViewController presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)presentSecondPageDeleteConfirmationAlertBookmarksFoundForIconView:(id)a3 completion:(id)a4
+- (void)presentSecondPageDeleteConfirmationAlertBookmarksFoundForIconView:(id)view completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E69DC650];
   v7 = SBHBundle();
   v8 = [v7 localizedStringForKey:@"REMOVE_PAGE_BOOKMARKS_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -2164,52 +2164,52 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = __124__SBRootFolderViewPageManagementLayoutManager_presentSecondPageDeleteConfirmationAlertBookmarksFoundForIconView_completion___block_invoke;
   v22[3] = &unk_1E808E628;
-  v23 = v5;
-  v15 = v5;
+  v23 = completionCopy;
+  v15 = completionCopy;
   v16 = [v12 actionWithTitle:v14 style:2 handler:v22];
 
   [v11 addAction:v16];
   v17 = MEMORY[0x1E69DC648];
-  v18 = [MEMORY[0x1E696AAE8] mainBundle];
-  v19 = [v18 localizedStringForKey:@"CANCEL" value:&stru_1F3D472A8 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v19 = [mainBundle localizedStringForKey:@"CANCEL" value:&stru_1F3D472A8 table:@"SpringBoard"];
   v20 = [v17 actionWithTitle:v19 style:1 handler:0];
 
   [v11 addAction:v20];
   [v11 setPreferredAction:v20];
-  v21 = [(SBRootFolderViewPageManagementLayoutManager *)self alertPresentationViewController];
-  [v21 presentViewController:v11 animated:1 completion:0];
+  alertPresentationViewController = [(SBRootFolderViewPageManagementLayoutManager *)self alertPresentationViewController];
+  [alertPresentationViewController presentViewController:v11 animated:1 completion:0];
 }
 
-- (BOOL)_allowsCloseBoxForIconView:(id)a3
+- (BOOL)_allowsCloseBoxForIconView:(id)view
 {
-  v3 = [a3 icon];
+  icon = [view icon];
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 listModel];
-    v7 = [v6 isHidden];
+    listModel = [icon listModel];
+    isHidden = [listModel isHidden];
   }
 
   else
   {
-    v7 = 0;
+    isHidden = 0;
   }
 
-  return v7;
+  return isHidden;
 }
 
-- (void)_updateCloseBoxVisibilityWithAnimation:(int64_t)a3
+- (void)_updateCloseBoxVisibilityWithAnimation:(int64_t)animation
 {
-  v5 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibilityWithAnimation___block_invoke;
   v6[3] = &unk_1E808E650;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 enumerateIconViewsUsingBlock:v6];
+  v6[5] = animation;
+  [rootListView enumerateIconViewsUsingBlock:v6];
 }
 
 void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibilityWithAnimation___block_invoke(uint64_t a1, void *a2)
@@ -2219,42 +2219,42 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
   [v4 setAllowsCloseBox:objc_msgSend(v3 withAnimation:{"_allowsCloseBoxForIconView:", v4), *(a1 + 40)}];
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v5 = a3;
-  [v5 setStartsDragMoreQuickly:1];
-  [v5 setDelegate:self];
-  [v5 setEditingAnimationStrength:0.25];
-  [v5 setAllowsCloseBox:0];
+  viewCopy = view;
+  [viewCopy setStartsDragMoreQuickly:1];
+  [viewCopy setDelegate:self];
+  [viewCopy setEditingAnimationStrength:0.25];
+  [viewCopy setAllowsCloseBox:0];
 }
 
-- (id)customImageViewControllerForIconView:(id)a3
+- (id)customImageViewControllerForIconView:(id)view
 {
-  v4 = [a3 icon];
-  v5 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:v4];
+  icon = [view icon];
+  v5 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:icon];
 
   return v5;
 }
 
-- (BOOL)iconDragManager:(id)a3 canBeginIconDragForIconView:(id)a4
+- (BOOL)iconDragManager:(id)manager canBeginIconDragForIconView:(id)view
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  viewCopy = view;
   if (self->_allowsEditing)
   {
-    v6 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-    v24 = [v6 isPageManagementUIVisible];
-    v23 = [v6 isPageManagementUITransitioningOutOfVisible];
-    v22 = [(SBRootFolderViewPageManagementLayoutManager *)self isTrackingActiveOrDroppingIconDrags];
-    v25 = [v5 icon];
+    rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+    isPageManagementUIVisible = [rootFolderView isPageManagementUIVisible];
+    isPageManagementUITransitioningOutOfVisible = [rootFolderView isPageManagementUITransitioningOutOfVisible];
+    isTrackingActiveOrDroppingIconDrags = [(SBRootFolderViewPageManagementLayoutManager *)self isTrackingActiveOrDroppingIconDrags];
+    icon = [viewCopy icon];
     v7 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:?];
-    v8 = [v7 listContainerView];
+    listContainerView = [v7 listContainerView];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [v5 gestureRecognizers];
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    gestureRecognizers = [viewCopy gestureRecognizers];
+    v10 = [gestureRecognizers countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2266,23 +2266,23 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
           if ([v15 state] == 1)
           {
-            [v15 locationInView:v5];
+            [v15 locationInView:viewCopy];
             v17 = v16;
             v19 = v18;
-            [v8 bounds];
+            [listContainerView bounds];
             v32.x = v17;
             v32.y = v19;
             v13 = CGRectContainsPoint(v33, v32);
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v11 = [gestureRecognizers countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v11);
@@ -2293,14 +2293,14 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
       v13 = 1;
     }
 
-    if (v23 & 1 | ((v24 & 1) == 0))
+    if (isPageManagementUITransitioningOutOfVisible & 1 | ((isPageManagementUIVisible & 1) == 0))
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = !v22 && v13;
+      v20 = !isTrackingActiveOrDroppingIconDrags && v13;
     }
   }
 
@@ -2328,12 +2328,12 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
   return iconDragManager;
 }
 
-- (id)iconDragManager:(id)a3 dragItemsForIconView:(id)a4
+- (id)iconDragManager:(id)manager dragItemsForIconView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 icon];
-  v6 = SBHIconDragItemWithIconAndIconView(v5, v4, @"com.apple.SpringBoardHome.PageReordering");
+  viewCopy = view;
+  icon = [viewCopy icon];
+  v6 = SBHIconDragItemWithIconAndIconView(icon, viewCopy, @"com.apple.SpringBoardHome.PageReordering");
 
   v9[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
@@ -2341,37 +2341,37 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
   return v7;
 }
 
-- (void)iconDragManager:(id)a3 iconView:(id)a4 willAnimateDragLiftWithAnimator:(id)a5 session:(id)a6
+- (void)iconDragManager:(id)manager iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session
 {
-  v8 = a5;
-  v9 = [a4 icon];
-  v10 = [v9 listModel];
-  v11 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:v10];
+  animatorCopy = animator;
+  icon = [view icon];
+  listModel = [icon listModel];
+  v11 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:listModel];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __112__SBRootFolderViewPageManagementLayoutManager_iconDragManager_iconView_willAnimateDragLiftWithAnimator_session___block_invoke;
   v13[3] = &unk_1E8088C90;
   v14 = v11;
   v12 = v11;
-  [v8 addAnimations:v13];
+  [animatorCopy addAnimations:v13];
 
-  [(SBRootFolderViewPageManagementLayoutManager *)self setDraggingIcon:v9];
+  [(SBRootFolderViewPageManagementLayoutManager *)self setDraggingIcon:icon];
 }
 
-- (void)iconDragManager:(id)a3 iconView:(id)a4 item:(id)a5 willAnimateDragCancelWithAnimator:(id)a6
+- (void)iconDragManager:(id)manager iconView:(id)view item:(id)item willAnimateDragCancelWithAnimator:(id)animator
 {
   v19 = *MEMORY[0x1E69E9840];
-  [(SBRootFolderViewPageManagementLayoutManager *)self _updateCloseBoxVisibilityWithAnimation:0, a4, a5, a6];
+  [(SBRootFolderViewPageManagementLayoutManager *)self _updateCloseBoxVisibilityWithAnimation:0, view, item, animator];
   if ([(SBRootFolderViewPageManagementLayoutManager *)self allowsPageHiding])
   {
-    v7 = [(NSMapTable *)self->_iconViewControllersByListModel objectEnumerator];
-    v8 = [v7 allObjects];
+    objectEnumerator = [(NSMapTable *)self->_iconViewControllersByListModel objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v8;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -2399,33 +2399,33 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
   }
 }
 
-- (void)iconDragManager:(id)a3 didPerformIconDrop:(id)a4 withIcons:(id)a5 inIconListView:(id)a6
+- (void)iconDragManager:(id)manager didPerformIconDrop:(id)drop withIcons:(id)icons inIconListView:(id)view
 {
-  v7 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView:a3];
-  v8 = [v7 folder];
-  v9 = [(SBRootFolderViewPageManagementLayoutManager *)self draggingIcon];
-  v10 = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
-  v11 = [v10 model];
-  v12 = [v9 listModel];
-  v13 = [v8 indexOfList:v12];
+  v7 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView:manager];
+  folder = [v7 folder];
+  draggingIcon = [(SBRootFolderViewPageManagementLayoutManager *)self draggingIcon];
+  rootListView = [(SBRootFolderViewPageManagementLayoutManager *)self rootListView];
+  model = [rootListView model];
+  listModel = [draggingIcon listModel];
+  v13 = [folder indexOfList:listModel];
 
-  v14 = [v11 indexForIcon:v9];
-  v15 = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
-  if ([v15 customizedHomeScreenPagesEnabled])
+  v14 = [model indexForIcon:draggingIcon];
+  activeFocusMode = [(SBRootFolderViewPageManagementLayoutManager *)self activeFocusMode];
+  if ([activeFocusMode customizedHomeScreenPagesEnabled])
   {
-    v32 = v15;
-    v16 = [v8 lists];
-    v31 = [v16 copy];
+    v32 = activeFocusMode;
+    lists = [folder lists];
+    v31 = [lists copy];
 
-    v33 = v10;
+    v33 = rootListView;
     if (v14)
     {
-      [v11 iconAtIndex:v14 - 1];
+      [model iconAtIndex:v14 - 1];
     }
 
     else
     {
-      [v11 firstIcon];
+      [model firstIcon];
     }
     v17 = ;
     v18 = objc_opt_class();
@@ -2454,14 +2454,14 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
     v34 = v21;
     if (v21)
     {
-      if (v14 + 1 >= [v11 numberOfIcons])
+      if (v14 + 1 >= [model numberOfIcons])
       {
         v22 = 0;
       }
 
       else
       {
-        v22 = [v11 iconAtIndex:v14 + 1];
+        v22 = [model iconAtIndex:v14 + 1];
       }
 
       v23 = objc_opt_class();
@@ -2488,16 +2488,16 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
 
       if (v24)
       {
-        v27 = [v26 listModel];
-        v28 = [v8 indexOfList:v27];
+        listModel2 = [v26 listModel];
+        v28 = [folder indexOfList:listModel2];
 
         v14 = (__PAIR128__(v28, v13) - v28) >> 64;
       }
 
       else
       {
-        v29 = [v34 listModel];
-        v14 = [v8 indexOfList:v29];
+        listModel3 = [v34 listModel];
+        v14 = [folder indexOfList:listModel3];
       }
     }
 
@@ -2506,25 +2506,25 @@ void __86__SBRootFolderViewPageManagementLayoutManager__updateCloseBoxVisibility
       v14 = 0;
     }
 
-    v10 = v33;
+    rootListView = v33;
     if (v13 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v8 moveListAtIndex:v13 toIndex:v14];
+      [folder moveListAtIndex:v13 toIndex:v14];
     }
 
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __107__SBRootFolderViewPageManagementLayoutManager_iconDragManager_didPerformIconDrop_withIcons_inIconListView___block_invoke;
     v35[3] = &unk_1E808E678;
-    v36 = v8;
+    v36 = folder;
     [v31 enumerateObjectsWithOptions:2 * (v14 > v13) usingBlock:v35];
 
-    v15 = v32;
+    activeFocusMode = v32;
   }
 
   else if (v13 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v8 moveListAtIndex:v13 toIndex:v14];
+    [folder moveListAtIndex:v13 toIndex:v14];
   }
 
   if ([v7 iconListModelIndexForPageIndex:{objc_msgSend(v7, "currentPageIndex", v30)}] == v13)
@@ -2548,16 +2548,16 @@ void __107__SBRootFolderViewPageManagementLayoutManager_iconDragManager_didPerfo
   }
 }
 
-- (void)iconCloseBoxTapped:(id)a3
+- (void)iconCloseBoxTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___block_invoke;
   v6[3] = &unk_1E8088F18;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = tappedCopy;
+  selfCopy = self;
+  v5 = tappedCopy;
   [(SBRootFolderViewPageManagementLayoutManager *)self presentPageDeleteConfirmationAlertForIconView:v5 completion:v6];
 }
 
@@ -2584,13 +2584,13 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
   }
 }
 
-- (void)iconDragManager:(id)a3 iconListView:(id)a4 item:(id)a5 willAnimateDropWithAnimator:(id)a6
+- (void)iconDragManager:(id)manager iconListView:(id)view item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v8 = a6;
-  v9 = [a5 sbh_appDragLocalContext];
-  v10 = [v9 uniqueIdentifier];
-  v11 = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementListModel];
-  v12 = [v11 directlyContainedIconWithIdentifier:v10];
+  animatorCopy = animator;
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  uniqueIdentifier = [sbh_appDragLocalContext uniqueIdentifier];
+  pageManagementListModel = [(SBRootFolderViewPageManagementLayoutManager *)self pageManagementListModel];
+  v12 = [pageManagementListModel directlyContainedIconWithIdentifier:uniqueIdentifier];
   v13 = objc_opt_class();
   v14 = v12;
   if (v13)
@@ -2613,9 +2613,9 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
 
   v16 = v15;
 
-  v17 = [v16 listModel];
+  listModel = [v16 listModel];
 
-  v18 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:v17];
+  v18 = [(NSMapTable *)self->_iconViewControllersByListModel objectForKey:listModel];
   [v18 setToggleButtonAlpha:0.0];
   v19 = MEMORY[0x1E69DD250];
   v22[0] = MEMORY[0x1E69E9820];
@@ -2630,32 +2630,32 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
   v21[2] = __109__SBRootFolderViewPageManagementLayoutManager_iconDragManager_iconListView_item_willAnimateDropWithAnimator___block_invoke_2;
   v21[3] = &unk_1E8089000;
   v21[4] = self;
-  [v8 addCompletion:v21];
+  [animatorCopy addCompletion:v21];
 }
 
-- (void)pageManagementCellViewControllerDidReceiveTap:(id)a3
+- (void)pageManagementCellViewControllerDidReceiveTap:(id)tap
 {
-  v4 = a3;
-  v9 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-  v5 = [v9 folder];
-  v6 = [v4 listView];
+  tapCopy = tap;
+  rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+  folder = [rootFolderView folder];
+  listView = [tapCopy listView];
 
-  v7 = [v6 model];
-  v8 = [v5 indexOfList:v7];
+  model = [listView model];
+  v8 = [folder indexOfList:model];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 setCurrentPageIndex:objc_msgSend(v9 animated:{"pageIndexForIconListModelIndex:", v8), 0}];
+    [rootFolderView setCurrentPageIndex:objc_msgSend(rootFolderView animated:{"pageIndexForIconListModelIndex:", v8), 0}];
   }
 
-  [v9 exitPageManagementUIWithCompletionHandler:0];
+  [rootFolderView exitPageManagementUIWithCompletionHandler:0];
 }
 
-- (BOOL)pageManagementCellViewControllerShouldSuppressHighlight:(id)a3
+- (BOOL)pageManagementCellViewControllerShouldSuppressHighlight:(id)highlight
 {
-  v4 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-  v5 = [v4 isPageManagementUITransitioningOutOfVisible];
-  v6 = [(SBRootFolderViewPageManagementLayoutManager *)self latestActiveTransitionAnimator];
-  [v6 fractionComplete];
+  rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+  isPageManagementUITransitioningOutOfVisible = [rootFolderView isPageManagementUITransitioningOutOfVisible];
+  latestActiveTransitionAnimator = [(SBRootFolderViewPageManagementLayoutManager *)self latestActiveTransitionAnimator];
+  [latestActiveTransitionAnimator fractionComplete];
 
   v7 = BSFloatGreaterThanFloat();
   if (v7)
@@ -2663,28 +2663,28 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
     LOBYTE(v7) = BSFloatLessThanFloat();
   }
 
-  v8 = v5 | v7;
+  v8 = isPageManagementUITransitioningOutOfVisible | v7;
 
   return v8 & 1;
 }
 
-- (id)backgroundViewForSnapshotForPageManagementCellViewController:(id)a3
+- (id)backgroundViewForSnapshotForPageManagementCellViewController:(id)controller
 {
-  v4 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-  v5 = [(SBRootFolderViewPageManagementLayoutManager *)self newCellBackgroundMaterialViewInFolderView:v4 initialWeighting:1.0];
+  rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+  v5 = [(SBRootFolderViewPageManagementLayoutManager *)self newCellBackgroundMaterialViewInFolderView:rootFolderView initialWeighting:1.0];
 
   return v5;
 }
 
-- (id)iconDragManager:(id)a3 dragPreviewForIconView:(id)a4
+- (id)iconDragManager:(id)manager dragPreviewForIconView:(id)view
 {
-  v4 = a4;
-  v5 = [[SBHPageManagementCellDragPreview alloc] initWithReferenceIconView:v4];
-  [v4 iconImageCenter];
+  viewCopy = view;
+  v5 = [[SBHPageManagementCellDragPreview alloc] initWithReferenceIconView:viewCopy];
+  [viewCopy iconImageCenter];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 window];
-  [v4 convertPoint:v10 toView:{v7, v9}];
+  window = [viewCopy window];
+  [viewCopy convertPoint:window toView:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
@@ -2693,26 +2693,26 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
   return v5;
 }
 
-- (void)iconList:(id)a3 didMoveIcon:(id)a4
+- (void)iconList:(id)list didMoveIcon:(id)icon
 {
-  v4 = [MEMORY[0x1E69D3F90] sharedInstance];
-  [v4 emitEvent:54];
+  mEMORY[0x1E69D3F90] = [MEMORY[0x1E69D3F90] sharedInstance];
+  [mEMORY[0x1E69D3F90] emitEvent:54];
 }
 
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4
+- (void)iconList:(id)list didRemoveIcon:(id)icon
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  iconCopy = icon;
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v8 = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
-    v9 = [v8 folder];
+    rootFolderView = [(SBRootFolderViewPageManagementLayoutManager *)self rootFolderView];
+    folder = [rootFolderView folder];
     v10 = objc_opt_class();
-    v11 = v5;
-    v34 = v5;
+    v11 = iconCopy;
+    v34 = iconCopy;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -2733,11 +2733,11 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
 
     v13 = v12;
 
-    v14 = [v9 ignoredList];
+    ignoredList = [folder ignoredList];
     v33 = v13;
-    v15 = [v13 listModel];
+    listModel = [v13 listModel];
     v16 = objc_opt_self();
-    v17 = [v15 iconsOfClass:v16];
+    v17 = [listModel iconsOfClass:v16];
 
     v37 = 0u;
     v38 = 0u;
@@ -2759,18 +2759,18 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
           }
 
           v23 = *(*(&v35 + 1) + 8 * i);
-          if ([v23 isApplicationIcon] && objc_msgSend(v14, "isAllowedToContainIcon:", v23))
+          if ([v23 isApplicationIcon] && objc_msgSend(ignoredList, "isAllowedToContainIcon:", v23))
           {
-            v24 = [v14 addIcon:v23];
+            v24 = [ignoredList addIcon:v23];
           }
 
           if (([v23 isWidgetIcon] & 1) != 0 || objc_msgSend(v23, "isBookmarkIcon"))
           {
             [v23 setUninstalled];
             [v23 completeUninstall];
-            [v15 removeIcon:v23];
-            v25 = [v9 model];
-            [v25 removeIcon:v23];
+            [listModel removeIcon:v23];
+            model = [folder model];
+            [model removeIcon:v23];
           }
         }
 
@@ -2780,30 +2780,30 @@ void __66__SBRootFolderViewPageManagementLayoutManager_iconCloseBoxTapped___bloc
       while (v20);
     }
 
-    v26 = [v8 iconListModelIndexForPageIndex:{objc_msgSend(v8, "currentPageIndex")}];
-    v27 = [v9 indexOfList:v15];
+    v26 = [rootFolderView iconListModelIndexForPageIndex:{objc_msgSend(rootFolderView, "currentPageIndex")}];
+    v27 = [folder indexOfList:listModel];
     if (v26 <= v27)
     {
       v31 = v33;
-      v5 = v34;
+      iconCopy = v34;
       if (v26 != v27)
       {
 LABEL_28:
-        [v9 removeList:v15];
-        v32 = [MEMORY[0x1E69D3F90] sharedInstance];
-        [v32 emitEvent:53];
+        [folder removeList:listModel];
+        mEMORY[0x1E69D3F90] = [MEMORY[0x1E69D3F90] sharedInstance];
+        [mEMORY[0x1E69D3F90] emitEvent:53];
 
         goto LABEL_29;
       }
 
-      v28 = [v8 firstIconPageIndex];
+      firstIconPageIndex = [rootFolderView firstIconPageIndex];
     }
 
     else
     {
-      v28 = [v8 pageIndexForIconListModelIndex:v26 - 1];
-      v5 = v34;
-      if (v28 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIconPageIndex = [rootFolderView pageIndexForIconListModelIndex:v26 - 1];
+      iconCopy = v34;
+      if (firstIconPageIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
         v29 = SBLogCommon();
         v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
@@ -2817,14 +2817,14 @@ LABEL_28:
       v31 = v33;
     }
 
-    [v8 setCurrentPageIndex:v28 animated:0];
+    [rootFolderView setCurrentPageIndex:firstIconPageIndex animated:0];
     goto LABEL_28;
   }
 
 LABEL_29:
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -2861,17 +2861,17 @@ LABEL_29:
   }
 }
 
-- (void)dominoPivotAnimator:(id)a3 didLayOutIconView:(id)a4
+- (void)dominoPivotAnimator:(id)animator didLayOutIconView:(id)view
 {
-  v8 = a4;
+  viewCopy = view;
   if ([(SBRootFolderViewPageManagementLayoutManager *)self layoutAction]== 1)
   {
-    v5 = [v8 icon];
-    v6 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:v5];
+    icon = [viewCopy icon];
+    v6 = [(NSMapTable *)self->_iconViewControllersByIcon objectForKey:icon];
     [v6 setScalesListView:1];
-    [v8 clearIconImageInfo];
-    v7 = [v6 view];
-    [v7 layoutIfNeeded];
+    [viewCopy clearIconImageInfo];
+    view = [v6 view];
+    [view layoutIfNeeded];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface ASCEmptyOfferMetadata
 - (ASCEmptyOfferMetadata)init;
-- (ASCEmptyOfferMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCEmptyOfferMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASCEmptyOfferMetadata
@@ -13,18 +13,18 @@
   return [(ASCOfferMetadata *)&v3 _init];
 }
 
-- (ASCEmptyOfferMetadata)initWithCoder:(id)a3
+- (ASCEmptyOfferMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ASCEmptyOfferMetadata;
-  return [(ASCOfferMetadata *)&v4 initWithCoder:a3];
+  return [(ASCOfferMetadata *)&v4 initWithCoder:coder];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

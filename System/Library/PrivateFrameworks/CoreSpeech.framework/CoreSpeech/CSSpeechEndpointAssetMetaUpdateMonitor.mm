@@ -2,20 +2,20 @@
 + (id)sharedInstance;
 - (CSSpeechEndpointAssetMetaUpdateMonitor)init;
 - (void)_didReceiveNewSpeechEndpointAssetMetaData;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSSpeechEndpointAssetMetaUpdateMonitor
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSSpeechEndpointAssetMetaUpdateMonitor *)self notifyObserver:v4];
+  observerCopy = observer;
+  [(CSSpeechEndpointAssetMetaUpdateMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 CSSpeechEndpointAssetMetaUpdateMonitor:self didReceiveNewSpeechEndpointAssetMetaData:1];
+    [observerCopy CSSpeechEndpointAssetMetaUpdateMonitor:self didReceiveNewSpeechEndpointAssetMetaData:1];
   }
 }
 
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     if (CSIsWatch())
@@ -89,7 +89,7 @@
     handler[2] = sub_1000DAF90;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch(v5, &self->_notifyToken, v4, handler);
+    notify_register_dispatch(v5, &self->_notifyToken, queueCopy, handler);
     v6 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

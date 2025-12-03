@@ -10,15 +10,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(EKObject *)self calendar];
-    if (v4)
+    calendar = [(EKObject *)self calendar];
+    if (calendar)
     {
-      v5 = v4;
-      v6 = [v4 calendarIdentifier];
+      v5 = calendar;
+      calendarIdentifier = [calendar calendarIdentifier];
 
-      if (v6)
+      if (calendarIdentifier)
       {
-        v7 = [NSString stringWithFormat:@"%@%@%@", v3, @"::", v6];
+        v7 = [NSString stringWithFormat:@"%@%@%@", v3, @"::", calendarIdentifier];
 
         v3 = v7;
       }

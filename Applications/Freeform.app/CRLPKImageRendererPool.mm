@@ -2,8 +2,8 @@
 + (CRLPKImageRendererPool)sharedPool;
 - (CRLPKImageRendererPool)init;
 - (void)asyncFlushAllUnlockedRenderers;
-- (void)p_flushUnlockedRenderersLeavingMaxCount:(unint64_t)a3;
-- (void)provideImageRendererOfMinimumSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5 inBlock:(id)a6;
+- (void)p_flushUnlockedRenderersLeavingMaxCount:(unint64_t)count;
+- (void)provideImageRendererOfMinimumSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending inBlock:(id)block;
 @end
 
 @implementation CRLPKImageRendererPool
@@ -57,11 +57,11 @@
   dispatch_async(containerAccessQueue, block);
 }
 
-- (void)provideImageRendererOfMinimumSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5 inBlock:(id)a6
+- (void)provideImageRendererOfMinimumSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending inBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -105,22 +105,22 @@
   block[3] = &unk_101867370;
   *&block[6] = width;
   *&block[7] = height;
-  v20 = a4;
-  v21 = a5;
+  blendingCopy = blending;
+  transparentBlendingCopy = transparentBlending;
   block[4] = self;
   block[5] = &v22;
   dispatch_sync(containerAccessQueue, block);
-  v18 = [v23[5] imageRenderer];
-  v11[2](v11, v18);
+  imageRenderer = [v23[5] imageRenderer];
+  blockCopy[2](blockCopy, imageRenderer);
 
   [v23[5] unlockRenderer];
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)p_flushUnlockedRenderersLeavingMaxCount:(unint64_t)a3
+- (void)p_flushUnlockedRenderersLeavingMaxCount:(unint64_t)count
 {
   v5 = [(NSMutableArray *)self->_rendererContainers count];
-  if (v5 > a3)
+  if (v5 > count)
   {
     v6 = v5;
     v15 = +[NSMutableIndexSet indexSet];
@@ -139,11 +139,11 @@
     while (v6 != v7);
     v9 = [v15 count];
     v10 = +[NSMutableIndexSet indexSet];
-    v11 = [v15 firstIndex];
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v15 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = v11;
-      v13 = v9 - a3;
+      v12 = firstIndex;
+      v13 = v9 - count;
       do
       {
         if ([v10 count] >= v13)

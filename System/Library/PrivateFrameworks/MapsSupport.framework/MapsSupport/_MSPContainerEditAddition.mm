@@ -1,41 +1,41 @@
 @interface _MSPContainerEditAddition
 - (NSString)description;
-- (_MSPContainerEditAddition)initWithObjects:(id)a3 indexes:(id)a4 identifiersAtop:(id)a5;
-- (id)identifierForObjectAtopAddedImmutableObject:(id)a3;
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4;
+- (_MSPContainerEditAddition)initWithObjects:(id)objects indexes:(id)indexes identifiersAtop:(id)atop;
+- (id)identifierForObjectAtopAddedImmutableObject:(id)object;
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block;
 @end
 
 @implementation _MSPContainerEditAddition
 
-- (_MSPContainerEditAddition)initWithObjects:(id)a3 indexes:(id)a4 identifiersAtop:(id)a5
+- (_MSPContainerEditAddition)initWithObjects:(id)objects indexes:(id)indexes identifiersAtop:(id)atop
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  indexesCopy = indexes;
+  atopCopy = atop;
   v36.receiver = self;
   v36.super_class = _MSPContainerEditAddition;
   v31 = [(_MSPContainerEditAddition *)&v36 init];
   if (v31)
   {
-    v11 = [v8 copy];
+    v11 = [objectsCopy copy];
     objects = v31->_objects;
     v31->_objects = v11;
 
-    v13 = [v9 copy];
+    v13 = [indexesCopy copy];
     indexesOfAddedObjects = v31->_indexesOfAddedObjects;
     v31->_indexesOfAddedObjects = v13;
 
-    v15 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     identifiersAtopByIdentifier = v31->_identifiersAtopByIdentifier;
-    v31->_identifiersAtopByIdentifier = v15;
+    v31->_identifiersAtopByIdentifier = strongToStrongObjectsMapTable;
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = v8;
-    obj = v8;
+    v29 = objectsCopy;
+    obj = objectsCopy;
     v17 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v17)
     {
@@ -52,14 +52,14 @@
           }
 
           v22 = *(*(&v32 + 1) + 8 * i);
-          v23 = [v10 objectAtIndexedSubscript:v19];
-          v24 = [MEMORY[0x277CBEB68] null];
+          v23 = [atopCopy objectAtIndexedSubscript:v19];
+          null = [MEMORY[0x277CBEB68] null];
 
-          if (v23 != v24)
+          if (v23 != null)
           {
             v25 = v31->_identifiersAtopByIdentifier;
-            v26 = [v22 storageIdentifier];
-            [(NSMapTable *)v25 setObject:v23 forKey:v26];
+            storageIdentifier = [v22 storageIdentifier];
+            [(NSMapTable *)v25 setObject:v23 forKey:storageIdentifier];
           }
 
           ++v19;
@@ -71,7 +71,7 @@
       while (v18);
     }
 
-    v8 = v29;
+    objectsCopy = v29;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -84,28 +84,28 @@
   v9.receiver = self;
   v9.super_class = _MSPContainerEditAddition;
   v4 = [(_MSPContainerEditAddition *)&v9 description];
-  v5 = [(_MSPContainerEditAddition *)self addedImmutableObjects];
-  v6 = [(_MSPContainerEditAddition *)self indexesOfAddedObjects];
-  v7 = [v3 stringWithFormat:@"%@ { adds objects = %@ at indexes = %@ }", v4, v5, v6];
+  addedImmutableObjects = [(_MSPContainerEditAddition *)self addedImmutableObjects];
+  indexesOfAddedObjects = [(_MSPContainerEditAddition *)self indexesOfAddedObjects];
+  v7 = [v3 stringWithFormat:@"%@ { adds objects = %@ at indexes = %@ }", v4, addedImmutableObjects, indexesOfAddedObjects];
 
   return v7;
 }
 
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MSPContainerEditAddition *)self objects];
+  mapCopy = map;
+  blockCopy = block;
+  objects = [(_MSPContainerEditAddition *)self objects];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __95___MSPContainerEditAddition_useImmutableObjectsFromMap_intermediateMutableObjectTransferBlock___block_invoke;
   v28 = &unk_279868670;
-  v24 = v6;
+  v24 = mapCopy;
   v29 = v24;
-  v23 = v7;
+  v23 = blockCopy;
   v30 = v23;
-  v9 = v8;
+  v9 = objects;
   v10 = &v25;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
@@ -155,11 +155,11 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)identifierForObjectAtopAddedImmutableObject:(id)a3
+- (id)identifierForObjectAtopAddedImmutableObject:(id)object
 {
   identifiersAtopByIdentifier = self->_identifiersAtopByIdentifier;
-  v4 = [a3 storageIdentifier];
-  v5 = [(NSMapTable *)identifiersAtopByIdentifier objectForKey:v4];
+  storageIdentifier = [object storageIdentifier];
+  v5 = [(NSMapTable *)identifiersAtopByIdentifier objectForKey:storageIdentifier];
 
   return v5;
 }

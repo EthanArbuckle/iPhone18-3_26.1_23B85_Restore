@@ -22,31 +22,31 @@
   if ([(_DKMonitor *)&v11 instantMonitorNeedsActivation])
   {
     self->_enabled = 1;
-    v3 = [@"com.apple.locationd.vehicle.connected" UTF8String];
-    v4 = [(_DKMonitor *)self queue];
+    uTF8String = [@"com.apple.locationd.vehicle.connected" UTF8String];
+    queue = [(_DKMonitor *)self queue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __24___DKInCarMonitor_start__block_invoke;
     handler[3] = &unk_27856F408;
     handler[4] = self;
-    notify_register_dispatch(v3, &self->_connectedToken, v4, handler);
+    notify_register_dispatch(uTF8String, &self->_connectedToken, queue, handler);
 
-    v5 = [@"com.apple.locationd.vehicle.disconnected" UTF8String];
-    v6 = [(_DKMonitor *)self queue];
+    uTF8String2 = [@"com.apple.locationd.vehicle.disconnected" UTF8String];
+    queue2 = [(_DKMonitor *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __24___DKInCarMonitor_start__block_invoke_2;
     v9[3] = &unk_27856F408;
     v9[4] = self;
-    notify_register_dispatch(v5, &self->_disconnectedToken, v6, v9);
+    notify_register_dispatch(uTF8String2, &self->_disconnectedToken, queue2, v9);
 
-    v7 = [(_DKMonitor *)self queue];
+    queue3 = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __24___DKInCarMonitor_start__block_invoke_3;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(queue3, block);
   }
 }
 

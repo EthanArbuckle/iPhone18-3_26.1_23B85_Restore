@@ -1,33 +1,33 @@
 @interface FakeXPlatformD2DConnection
-- (FakeXPlatformD2DConnection)initWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4;
+- (FakeXPlatformD2DConnection)initWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue;
 - (id).cxx_construct;
-- (id)createError:(id)a3;
-- (id)parseSIMTransferItem:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferProfileNotification:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferProfileRequest:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferProfileResponse:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferSessionNotification:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferSessionRequest:(id)a3 error:(id *)a4;
-- (id)parseSIMTransferSessionResponse:(id)a3 error:(id *)a4;
-- (id)parseSimTransferStatus:(id)a3 error:(id *)a4;
+- (id)createError:(id)error;
+- (id)parseSIMTransferItem:(id)item error:(id *)error;
+- (id)parseSIMTransferProfileNotification:(id)notification error:(id *)error;
+- (id)parseSIMTransferProfileRequest:(id)request error:(id *)error;
+- (id)parseSIMTransferProfileResponse:(id)response error:(id *)error;
+- (id)parseSIMTransferSessionNotification:(id)notification error:(id *)error;
+- (id)parseSIMTransferSessionRequest:(id)request error:(id *)error;
+- (id)parseSIMTransferSessionResponse:(id)response error:(id *)error;
+- (id)parseSimTransferStatus:(id)status error:(id *)error;
 - (shared_ptr<D2DConnectionDelegate>)delegate;
-- (void)_connectEvent:(const void *)a3;
-- (void)forwardEvent:(id)a3 payload:(id)a4;
-- (void)getDCTCodeWithCompletion:(id)a3;
-- (void)onConnectionStateChanged:(int)a3;
-- (void)onReceived:(id)a3;
-- (void)send:(id)a3 completion:(id)a4;
-- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)a3 forTarget:(BOOL)a4 completion:(id)a5;
-- (void)tryConnectWithCode:(id)a3;
+- (void)_connectEvent:(const void *)event;
+- (void)forwardEvent:(id)event payload:(id)payload;
+- (void)getDCTCodeWithCompletion:(id)completion;
+- (void)onConnectionStateChanged:(int)changed;
+- (void)onReceived:(id)received;
+- (void)send:(id)send completion:(id)completion;
+- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)delegate forTarget:(BOOL)target completion:(id)completion;
+- (void)tryConnectWithCode:(id)code;
 - (weak_ptr<D2DConnectionDelegate>)weakDelegate;
 @end
 
 @implementation FakeXPlatformD2DConnection
 
-- (FakeXPlatformD2DConnection)initWithRegistry:(shared_ptr<const Registry>)a3 queue:(queue)a4
+- (FakeXPlatformD2DConnection)initWithRegistry:(shared_ptr<const Registry>)registry queue:(queue)queue
 {
-  ptr = a3.__ptr_;
-  v18 = *a3.__cntrl_;
+  ptr = registry.__ptr_;
+  v18 = *registry.__cntrl_;
   if (v18)
   {
     dispatch_retain(v18);
@@ -83,12 +83,12 @@
   return v6;
 }
 
-- (void)send:(id)a3 completion:(id)a4
+- (void)send:(id)send completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sendCopy = send;
+  completionCopy = completion;
   v8 = objc_alloc_init(CellularPlanCrossPlatformTransferMessageCodec);
-  v9 = [(CellularPlanCrossPlatformTransferMessageCodec *)v8 decodeMessage:v6];
+  v9 = [(CellularPlanCrossPlatformTransferMessageCodec *)v8 decodeMessage:sendCopy];
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v10 = *&v12[4];
   ctu::OsLogContext::~OsLogContext(&v11);
@@ -101,29 +101,29 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Send CrossPlatformEvent %@", &v11, 0x16u);
   }
 
-  [(CellularPlanCrossPlatformTransportUtility *)self->_transportUtility dumpData:v6 withLabel:@"xfer-send"];
-  v7[2](v7, 0);
+  [(CellularPlanCrossPlatformTransportUtility *)self->_transportUtility dumpData:sendCopy withLabel:@"xfer-send"];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)tryConnectWithCode:(id)a3
+- (void)tryConnectWithCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v5 = *&v7[4];
   ctu::OsLogContext::~OsLogContext(&v6);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    *v7 = v4;
+    *v7 = codeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "try connect with : %@", &v6, 0xCu);
   }
 
   [(FakeXPlatformD2DConnection *)self onConnectionStateChanged:1];
 }
 
-- (void)getDCTCodeWithCompletion:(id)a3
+- (void)getDCTCodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v5 = v7;
   ctu::OsLogContext::~OsLogContext(v6);
@@ -133,15 +133,15 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "get DCT code", v6, 2u);
   }
 
-  v4[2](v4, @"Sample-DCT-Code");
+  completionCopy[2](completionCopy, @"Sample-DCT-Code");
 }
 
-- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)a3 forTarget:(BOOL)a4 completion:(id)a5
+- (void)setDelegate:(shared_ptr<D2DConnectionDelegate>)delegate forTarget:(BOOL)target completion:(id)completion
 {
-  var0 = a3.var0;
-  v7 = a4;
+  var0 = delegate.var0;
+  targetCopy = target;
   v8 = *var0;
-  v11 = v7;
+  v11 = targetCopy;
   if (*var0)
   {
     v9 = *(var0 + 1);
@@ -156,11 +156,11 @@
     if (cntrl)
     {
       std::__shared_weak_count::__release_weak(cntrl);
-      v7 = v11;
+      targetCopy = v11;
     }
   }
 
-  (*(v7 + 2))(v7);
+  (*(targetCopy + 2))(targetCopy);
 }
 
 - (shared_ptr<D2DConnectionDelegate>)delegate
@@ -185,9 +185,9 @@
   return result;
 }
 
-- (void)onConnectionStateChanged:(int)a3
+- (void)onConnectionStateChanged:(int)changed
 {
-  v3 = *&a3;
+  v3 = *&changed;
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v5 = *&v11[4];
   ctu::OsLogContext::~OsLogContext(&v10);
@@ -216,15 +216,15 @@
   }
 }
 
-- (void)onReceived:(id)a3
+- (void)onReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v5 = *&v13[4];
   ctu::OsLogContext::~OsLogContext(&v12);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 length];
+    v6 = [receivedCopy length];
     v12 = 134217984;
     *v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "received %lu byptes", &v12, 0xCu);
@@ -241,12 +241,12 @@
       ptr = p_weakDelegate->__ptr_;
       if (ptr)
       {
-        if (![v4 length])
+        if (![receivedCopy length])
         {
           __assert_rtn("[FakeXPlatformD2DConnection onReceived:]", "FakeXPlatformD2DConnection.mm", 129, "payload.length > 0");
         }
 
-        (*(*ptr + 24))(ptr, v4);
+        (*(*ptr + 24))(ptr, receivedCopy);
       }
 
       sub_100004A34(v10);
@@ -254,62 +254,62 @@
   }
 }
 
-- (id)createError:(id)a3
+- (id)createError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v7 = NSLocalizedDescriptionKey;
-  v8 = v3;
+  v8 = errorCopy;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:22 userInfo:v4];
 
   return v5;
 }
 
-- (id)parseSIMTransferSessionRequest:(id)a3 error:(id *)a4
+- (id)parseSIMTransferSessionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(ObjcSimTransferStartSessionRequest);
-  v8 = [v6 objectForKeyedSubscript:@"versions"];
+  v8 = [requestCopy objectForKeyedSubscript:@"versions"];
   [(ObjcSimTransferStartSessionRequest *)v7 setVersions:v8];
-  v9 = [(ObjcSimTransferStartSessionRequest *)v7 versions];
-  v10 = [v9 count];
+  versions = [(ObjcSimTransferStartSessionRequest *)v7 versions];
+  v10 = [versions count];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v11 = [requestCopy objectForKeyedSubscript:@"sessionID"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v6 objectForKeyedSubscript:@"sessionID"];
+      v13 = [requestCopy objectForKeyedSubscript:@"sessionID"];
       -[ObjcSimTransferStartSessionRequest setSessionID:](v7, "setSessionID:", [v13 longLongValue]);
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"friendlyDeviceName"];
+    v14 = [requestCopy objectForKeyedSubscript:@"friendlyDeviceName"];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
 
     if (v15)
     {
-      v16 = [v6 objectForKeyedSubscript:@"friendlyDeviceName"];
+      v16 = [requestCopy objectForKeyedSubscript:@"friendlyDeviceName"];
       [(ObjcSimTransferStartSessionRequest *)v7 setFriendlyDeviceName:v16];
     }
   }
 
   else
   {
-    *a4 = [(FakeXPlatformD2DConnection *)self createError:@"No version provided in SIMTransferSessionRequest"];
+    *error = [(FakeXPlatformD2DConnection *)self createError:@"No version provided in SIMTransferSessionRequest"];
   }
 
   return v7;
 }
 
-- (id)parseSIMTransferItem:(id)a3 error:(id *)a4
+- (id)parseSIMTransferItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = objc_alloc_init(ObjcSimTransferItem);
-  v8 = [v6 objectForKeyedSubscript:@"iccid"];
+  v8 = [itemCopy objectForKeyedSubscript:@"iccid"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -317,14 +317,14 @@
   {
     v42 = [(FakeXPlatformD2DConnection *)self createError:@"No iccid provided in SIMTransferProfileResponse"];
 LABEL_24:
-    *a4 = v42;
+    *error = v42;
     goto LABEL_25;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"iccid"];
+  v10 = [itemCopy objectForKeyedSubscript:@"iccid"];
   [(ObjcSimTransferItem *)v7 setIccid:v10];
 
-  v11 = [v6 objectForKeyedSubscript:@"mcc"];
+  v11 = [itemCopy objectForKeyedSubscript:@"mcc"];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
@@ -334,10 +334,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"mcc"];
+  v13 = [itemCopy objectForKeyedSubscript:@"mcc"];
   [(ObjcSimTransferItem *)v7 setMcc:v13];
 
-  v14 = [v6 objectForKeyedSubscript:@"mnc"];
+  v14 = [itemCopy objectForKeyedSubscript:@"mnc"];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
@@ -347,10 +347,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"mnc"];
+  v16 = [itemCopy objectForKeyedSubscript:@"mnc"];
   [(ObjcSimTransferItem *)v7 setMnc:v16];
 
-  v17 = [v6 objectForKeyedSubscript:@"gid1"];
+  v17 = [itemCopy objectForKeyedSubscript:@"gid1"];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
@@ -360,10 +360,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"gid1"];
+  v19 = [itemCopy objectForKeyedSubscript:@"gid1"];
   [(ObjcSimTransferItem *)v7 setGid1:v19];
 
-  v20 = [v6 objectForKeyedSubscript:@"gid2"];
+  v20 = [itemCopy objectForKeyedSubscript:@"gid2"];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
@@ -373,10 +373,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"gid2"];
+  v22 = [itemCopy objectForKeyedSubscript:@"gid2"];
   [(ObjcSimTransferItem *)v7 setGid2:v22];
 
-  v23 = [v6 objectForKeyedSubscript:@"carrierName"];
+  v23 = [itemCopy objectForKeyedSubscript:@"carrierName"];
   objc_opt_class();
   v24 = objc_opt_isKindOfClass();
 
@@ -386,50 +386,50 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"carrierName"];
+  v25 = [itemCopy objectForKeyedSubscript:@"carrierName"];
   [(ObjcSimTransferItem *)v7 setCarrierName:v25];
 
-  v26 = [v6 objectForKeyedSubscript:@"phoneNumber"];
+  v26 = [itemCopy objectForKeyedSubscript:@"phoneNumber"];
   objc_opt_class();
   v27 = objc_opt_isKindOfClass();
 
   if (v27)
   {
-    v28 = [v6 objectForKeyedSubscript:@"phoneNumber"];
+    v28 = [itemCopy objectForKeyedSubscript:@"phoneNumber"];
     [(ObjcSimTransferItem *)v7 setPhoneNumber:v28];
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"imsi"];
+  v29 = [itemCopy objectForKeyedSubscript:@"imsi"];
   objc_opt_class();
   v30 = objc_opt_isKindOfClass();
 
   if (v30)
   {
-    v31 = [v6 objectForKeyedSubscript:@"imsi"];
+    v31 = [itemCopy objectForKeyedSubscript:@"imsi"];
     [(ObjcSimTransferItem *)v7 setImsi:v31];
   }
 
-  v32 = [v6 objectForKeyedSubscript:@"imei"];
+  v32 = [itemCopy objectForKeyedSubscript:@"imei"];
   objc_opt_class();
   v33 = objc_opt_isKindOfClass();
 
   if (v33)
   {
-    v34 = [v6 objectForKeyedSubscript:@"imei"];
+    v34 = [itemCopy objectForKeyedSubscript:@"imei"];
     [(ObjcSimTransferItem *)v7 setImei:v34];
   }
 
-  v35 = [v6 objectForKeyedSubscript:@"error"];
+  v35 = [itemCopy objectForKeyedSubscript:@"error"];
   objc_opt_class();
   v36 = objc_opt_isKindOfClass();
 
   if (v36)
   {
-    v37 = [v6 objectForKeyedSubscript:@"error"];
+    v37 = [itemCopy objectForKeyedSubscript:@"error"];
     -[ObjcSimTransferItem setError:](v7, "setError:", [v37 integerValue]);
   }
 
-  v38 = [v6 objectForKeyedSubscript:@"token"];
+  v38 = [itemCopy objectForKeyedSubscript:@"token"];
   if (v38)
   {
     v39 = objc_alloc_init(ObjcSimTransferProfileTokenInfo);
@@ -447,52 +447,52 @@ LABEL_25:
   return v7;
 }
 
-- (id)parseSIMTransferSessionResponse:(id)a3 error:(id *)a4
+- (id)parseSIMTransferSessionResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = objc_alloc_init(ObjcSimTransferStartSessionResponse);
-  v8 = [v6 objectForKeyedSubscript:@"error"];
+  v8 = [responseCopy objectForKeyedSubscript:@"error"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 objectForKeyedSubscript:@"error"];
+    v10 = [responseCopy objectForKeyedSubscript:@"error"];
     -[ObjcSimTransferStartSessionResponse setMsgError:](v7, "setMsgError:", [v10 integerValue]);
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"sessionID"];
+  v11 = [responseCopy objectForKeyedSubscript:@"sessionID"];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
   if (v12)
   {
-    v13 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v13 = [responseCopy objectForKeyedSubscript:@"sessionID"];
     [(ObjcSimTransferStartSessionResponse *)v7 setSessionID:v13];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"version"];
+  v14 = [responseCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
   if (v15)
   {
-    v16 = [v6 objectForKeyedSubscript:@"version"];
+    v16 = [responseCopy objectForKeyedSubscript:@"version"];
     [(ObjcSimTransferStartSessionResponse *)v7 setVersion:v16];
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"friendlyDeviceName"];
+  v17 = [responseCopy objectForKeyedSubscript:@"friendlyDeviceName"];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
   if (v18)
   {
-    v19 = [v6 objectForKeyedSubscript:@"friendlyDeviceName"];
+    v19 = [responseCopy objectForKeyedSubscript:@"friendlyDeviceName"];
     [(ObjcSimTransferStartSessionResponse *)v7 setFriendlyDeviceName:v19];
   }
 
   v20 = +[NSMutableArray array];
-  [v6 objectForKeyedSubscript:@"items"];
+  [responseCopy objectForKeyedSubscript:@"items"];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -510,9 +510,9 @@ LABEL_25:
           objc_enumerationMutation(v21);
         }
 
-        v25 = [(FakeXPlatformD2DConnection *)self parseSIMTransferItem:*(*(&v31 + 1) + 8 * i) error:a4, v31];
+        v25 = [(FakeXPlatformD2DConnection *)self parseSIMTransferItem:*(*(&v31 + 1) + 8 * i) error:error, v31];
         v26 = v25;
-        if (*a4)
+        if (*error)
         {
 
           goto LABEL_19;
@@ -533,14 +533,14 @@ LABEL_25:
 
 LABEL_19:
 
-  if (!*a4)
+  if (!*error)
   {
-    v27 = [(ObjcSimTransferStartSessionResponse *)v7 items];
-    v28 = [v27 count] == 0;
+    items = [(ObjcSimTransferStartSessionResponse *)v7 items];
+    v28 = [items count] == 0;
 
     if (v28)
     {
-      *a4 = [(FakeXPlatformD2DConnection *)self createError:@"No SIMTransferItem provided in SIMTransferSessionResponse"];
+      *error = [(FakeXPlatformD2DConnection *)self createError:@"No SIMTransferItem provided in SIMTransferSessionResponse"];
     }
 
     else
@@ -553,16 +553,16 @@ LABEL_19:
   return v7;
 }
 
-- (id)parseSimTransferStatus:(id)a3 error:(id *)a4
+- (id)parseSimTransferStatus:(id)status error:(id *)error
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = +[NSMutableArray array];
-  v21 = a4;
+  errorCopy = error;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = statusCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -584,7 +584,7 @@ LABEL_19:
 
         if ((isKindOfClass & 1) == 0)
         {
-          *v21 = [(FakeXPlatformD2DConnection *)self createError:@"No iccid provided in SIMTransferNotification.SIMTransferStatus"];
+          *errorCopy = [(FakeXPlatformD2DConnection *)self createError:@"No iccid provided in SIMTransferNotification.SIMTransferStatus"];
 
           goto LABEL_13;
         }
@@ -617,7 +617,7 @@ LABEL_19:
 
 LABEL_13:
 
-  if (*v21)
+  if (*errorCopy)
   {
     v18 = 0;
   }
@@ -630,29 +630,29 @@ LABEL_13:
   else
   {
     [(FakeXPlatformD2DConnection *)self createError:@"No SIMTransferStatus provided in SIMTransferNotification"];
-    *v21 = v18 = 0;
+    *errorCopy = v18 = 0;
   }
 
   return v18;
 }
 
-- (id)parseSIMTransferSessionNotification:(id)a3 error:(id *)a4
+- (id)parseSIMTransferSessionNotification:(id)notification error:(id *)error
 {
-  v6 = a3;
+  notificationCopy = notification;
   v7 = objc_alloc_init(ObjcSimTransferEndSessionRequest);
-  v8 = [v6 objectForKeyedSubscript:@"sessionID"];
+  v8 = [notificationCopy objectForKeyedSubscript:@"sessionID"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v10 = [notificationCopy objectForKeyedSubscript:@"sessionID"];
     -[ObjcSimTransferEndSessionRequest setSessionID:](v7, "setSessionID:", [v10 longLongValue]);
 
-    v11 = [v6 objectForKeyedSubscript:@"status"];
-    v12 = [(FakeXPlatformD2DConnection *)self parseSimTransferStatus:v11 error:a4];
+    v11 = [notificationCopy objectForKeyedSubscript:@"status"];
+    v12 = [(FakeXPlatformD2DConnection *)self parseSimTransferStatus:v11 error:error];
 
-    if (!*a4)
+    if (!*error)
     {
       [(ObjcSimTransferEndSessionRequest *)v7 setStatus:v12];
     }
@@ -660,32 +660,32 @@ LABEL_13:
 
   else
   {
-    *a4 = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferSessionNotification"];
+    *error = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferSessionNotification"];
   }
 
   return v7;
 }
 
-- (id)parseSIMTransferProfileRequest:(id)a3 error:(id *)a4
+- (id)parseSIMTransferProfileRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(ObjcSimTransferProfileRequest);
-  v8 = [v6 objectForKeyedSubscript:@"sessionID"];
+  v8 = [requestCopy objectForKeyedSubscript:@"sessionID"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v10 = [requestCopy objectForKeyedSubscript:@"sessionID"];
     -[ObjcSimTransferProfileRequest setSessionID:](v7, "setSessionID:", [v10 longLongValue]);
 
-    v11 = [v6 objectForKeyedSubscript:@"iccid"];
+    v11 = [requestCopy objectForKeyedSubscript:@"iccid"];
     objc_opt_class();
     v12 = objc_opt_isKindOfClass();
 
     if (v12)
     {
-      v13 = [v6 objectForKeyedSubscript:@"iccid"];
+      v13 = [requestCopy objectForKeyedSubscript:@"iccid"];
       [(ObjcSimTransferProfileRequest *)v7 setIccid:v13];
 
       goto LABEL_7;
@@ -699,37 +699,37 @@ LABEL_13:
     v14 = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferProfileRequest"];
   }
 
-  *a4 = v14;
+  *error = v14;
 LABEL_7:
 
   return v7;
 }
 
-- (id)parseSIMTransferProfileResponse:(id)a3 error:(id *)a4
+- (id)parseSIMTransferProfileResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = objc_alloc_init(ObjcSimTransferProfileResponse);
-  v8 = [v6 objectForKeyedSubscript:@"error"];
+  v8 = [responseCopy objectForKeyedSubscript:@"error"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 objectForKeyedSubscript:@"error"];
+    v10 = [responseCopy objectForKeyedSubscript:@"error"];
     -[ObjcSimTransferProfileResponse setMsgError:](v7, "setMsgError:", [v10 integerValue]);
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"sessionID"];
+  v11 = [responseCopy objectForKeyedSubscript:@"sessionID"];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
   if (v12)
   {
-    v13 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v13 = [responseCopy objectForKeyedSubscript:@"sessionID"];
     -[ObjcSimTransferProfileResponse setSessionID:](v7, "setSessionID:", [v13 longLongValue]);
 
     v14 = +[NSMutableArray array];
-    [v6 objectForKeyedSubscript:@"items"];
+    [responseCopy objectForKeyedSubscript:@"items"];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -747,9 +747,9 @@ LABEL_7:
             objc_enumerationMutation(v15);
           }
 
-          v19 = [(FakeXPlatformD2DConnection *)self parseSIMTransferItem:*(*(&v22 + 1) + 8 * i) error:a4, v22];
+          v19 = [(FakeXPlatformD2DConnection *)self parseSIMTransferItem:*(*(&v22 + 1) + 8 * i) error:error, v22];
           v20 = v19;
-          if (*a4)
+          if (*error)
           {
 
             goto LABEL_15;
@@ -774,29 +774,29 @@ LABEL_15:
 
   else
   {
-    *a4 = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferProfileResponse"];
+    *error = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferProfileResponse"];
   }
 
   return v7;
 }
 
-- (id)parseSIMTransferProfileNotification:(id)a3 error:(id *)a4
+- (id)parseSIMTransferProfileNotification:(id)notification error:(id *)error
 {
-  v6 = a3;
+  notificationCopy = notification;
   v7 = objc_alloc_init(ObjcSimTransferProfileNotification);
-  v8 = [v6 objectForKeyedSubscript:@"sessionID"];
+  v8 = [notificationCopy objectForKeyedSubscript:@"sessionID"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 objectForKeyedSubscript:@"sessionID"];
+    v10 = [notificationCopy objectForKeyedSubscript:@"sessionID"];
     -[ObjcSimTransferProfileNotification setSessionID:](v7, "setSessionID:", [v10 longLongValue]);
 
-    v11 = [v6 objectForKeyedSubscript:@"status"];
-    v12 = [(FakeXPlatformD2DConnection *)self parseSimTransferStatus:v11 error:a4];
+    v11 = [notificationCopy objectForKeyedSubscript:@"status"];
+    v12 = [(FakeXPlatformD2DConnection *)self parseSimTransferStatus:v11 error:error];
 
-    if (!*a4)
+    if (!*error)
     {
       [(ObjcSimTransferProfileNotification *)v7 setStatus:v12];
     }
@@ -804,29 +804,29 @@ LABEL_15:
 
   else
   {
-    *a4 = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferProfileNotification"];
+    *error = [(FakeXPlatformD2DConnection *)self createError:@"No sessionID provided in SIMTransferProfileNotification"];
   }
 
   return v7;
 }
 
-- (void)forwardEvent:(id)a3 payload:(id)a4
+- (void)forwardEvent:(id)event payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   [(FakeXPlatformD2DConnection *)self getLogContext];
   v8 = *&v30[4];
   ctu::OsLogContext::~OsLogContext(buf);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v30 = v6;
+    *v30 = eventCopy;
     *&v30[8] = 2112;
-    *&v30[10] = v7;
+    *&v30[10] = payloadCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "event %@ payload %@", buf, 0x16u);
   }
 
-  v9 = [v7 dataUsingEncoding:4];
+  v9 = [payloadCopy dataUsingEncoding:4];
   v28 = 0;
   v10 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:&v28];
   v11 = v28;
@@ -834,17 +834,17 @@ LABEL_15:
   if (!v11)
   {
     v13 = objc_alloc_init(CellularPlanCrossPlatformTransferMessageCodec);
-    if ([v6 caseInsensitiveCompare:@"SIMTransferSessionRequest"])
+    if ([eventCopy caseInsensitiveCompare:@"SIMTransferSessionRequest"])
     {
-      if ([v6 caseInsensitiveCompare:@"SIMTransferSessionResponse"])
+      if ([eventCopy caseInsensitiveCompare:@"SIMTransferSessionResponse"])
       {
-        if ([v6 caseInsensitiveCompare:@"SIMTransferSessionNotification"])
+        if ([eventCopy caseInsensitiveCompare:@"SIMTransferSessionNotification"])
         {
-          if ([v6 caseInsensitiveCompare:@"SIMTransferProfileRequest"])
+          if ([eventCopy caseInsensitiveCompare:@"SIMTransferProfileRequest"])
           {
-            if ([v6 caseInsensitiveCompare:@"SIMTransferProfileResponse"])
+            if ([eventCopy caseInsensitiveCompare:@"SIMTransferProfileResponse"])
             {
-              if ([v6 caseInsensitiveCompare:@"SIMTransferProfileNotification"])
+              if ([eventCopy caseInsensitiveCompare:@"SIMTransferProfileNotification"])
               {
                 v11 = 0;
                 v14 = 0;
@@ -912,8 +912,8 @@ LABEL_31:
       ctu::OsLogContext::~OsLogContext(buf);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(std::__shared_weak_count *)v11 localizedDescription];
-        sub_10177AB0C(v18, buf, v17);
+        localizedDescription = [(std::__shared_weak_count *)v11 localizedDescription];
+        sub_10177AB0C(localizedDescription, buf, v17);
       }
 
       goto LABEL_31;
@@ -927,7 +927,7 @@ LABEL_31:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v30 = v6;
+        *v30 = eventCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "parse event %@ success", buf, 0xCu);
       }
 
@@ -961,25 +961,25 @@ LABEL_31:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v30 = v7;
+    *v30 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Failed to parse JSON: %@", buf, 0xCu);
   }
 
 LABEL_32:
 }
 
-- (void)_connectEvent:(const void *)a3
+- (void)_connectEvent:(const void *)event
 {
-  Registry::createRestModuleOneTimeUseConnection(&v18, *a3);
+  Registry::createRestModuleOneTimeUseConnection(&v18, *event);
   ctu::RestModule::connect();
   if (v19)
   {
     sub_100004A34(v19);
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_10000501C(__p, "/cc/events/fake_xplatform_sim_transfer_protobuf_event");
-  v5 = v4;
+  v5 = selfCopy;
   v22 = off_101E73BF0;
   v23 = v5;
   v24 = &v22;

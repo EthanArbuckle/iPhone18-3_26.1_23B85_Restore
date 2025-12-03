@@ -1,12 +1,12 @@
 @interface VCPVideoProcessorSession
-- (BOOL)addFrameProcessingRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5;
-- (BOOL)addRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5;
+- (BOOL)addFrameProcessingRequest:(id)request withConfiguration:(id)configuration error:(id *)error;
+- (BOOL)addRequest:(id)request withConfiguration:(id)configuration error:(id *)error;
 - (BOOL)allRequestsFinished;
-- (BOOL)flushWithEndTime:(id *)a3 error:(id *)a4;
-- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)a3 withEndTime:(id *)a4 error:(id *)a5;
-- (BOOL)removeRequest:(id)a3 error:(id *)a4;
-- (BOOL)shouldProcessSampleWithTimeRange:(id *)a3 atSamplingInterval:(id *)a4;
+- (BOOL)flushWithEndTime:(id *)time error:(id *)error;
+- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
+- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)buffer withEndTime:(id *)time error:(id *)error;
+- (BOOL)removeRequest:(id)request error:(id *)error;
+- (BOOL)shouldProcessSampleWithTimeRange:(id *)range atSamplingInterval:(id *)interval;
 - (VCPVideoProcessorSession)init;
 @end
 
@@ -25,9 +25,9 @@
     queue = v3->_queue;
     v3->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     nodes = v3->_nodes;
-    v3->_nodes = v6;
+    v3->_nodes = array;
 
     v8 = MEMORY[0x1E6960C70];
     *(&v3->_modified + 4) = *MEMORY[0x1E6960C70];
@@ -37,16 +37,16 @@
   return v3;
 }
 
-- (BOOL)addRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5
+- (BOOL)addRequest:(id)request withConfiguration:(id)configuration error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 completionHandler];
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionHandler = [requestCopy completionHandler];
 
-  if (!v10)
+  if (!completionHandler)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -56,14 +56,14 @@
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processing requests must have completion handler"];
     v26[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    *a5 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v14];
+    *error = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v14];
 
 LABEL_6:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  if (![VCPVideoProcessorNode validateConfiguration:v9 withError:a5])
+  if (![VCPVideoProcessorNode validateConfiguration:configurationCopy withError:error])
   {
     goto LABEL_6;
   }
@@ -79,16 +79,16 @@ LABEL_6:
   v16[3] = &unk_1E834D350;
   v16[4] = self;
   v19 = &v21;
-  v20 = a5;
-  v17 = v8;
-  v18 = v9;
+  errorCopy = error;
+  v17 = requestCopy;
+  v18 = configurationCopy;
   dispatch_sync(queue, v16);
-  LOBYTE(a5) = *(v22 + 24);
+  LOBYTE(error) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
 LABEL_7:
 
-  return a5 & 1;
+  return error & 1;
 }
 
 void __63__VCPVideoProcessorSession_addRequest_withConfiguration_error___block_invoke(uint64_t a1)
@@ -165,9 +165,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)removeRequest:(id)a3 error:(id *)a4
+- (BOOL)removeRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -178,10 +178,10 @@ LABEL_13:
   v10[2] = __48__VCPVideoProcessorSession_removeRequest_error___block_invoke;
   v10[3] = &unk_1E834D5D8;
   v10[4] = self;
-  v11 = v6;
+  v11 = requestCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  errorCopy = error;
+  v8 = requestCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -261,11 +261,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)addFrameProcessingRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5
+- (BOOL)addFrameProcessingRequest:(id)request withConfiguration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([VCPVideoProcessorNode validateConfiguration:v9 withError:a5])
+  requestCopy = request;
+  configurationCopy = configuration;
+  if ([VCPVideoProcessorNode validateConfiguration:configurationCopy withError:error])
   {
     v19 = 0;
     v20 = &v19;
@@ -276,11 +276,11 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __78__VCPVideoProcessorSession_addFrameProcessingRequest_withConfiguration_error___block_invoke;
     block[3] = &unk_1E834D8C8;
-    v16 = v8;
+    v16 = requestCopy;
     v17 = &v19;
-    v18 = a5;
-    v14 = v9;
-    v15 = self;
+    errorCopy = error;
+    v14 = configurationCopy;
+    selfCopy = self;
     dispatch_sync(queue, block);
     v11 = *(v20 + 24);
 
@@ -321,24 +321,24 @@ void __78__VCPVideoProcessorSession_addFrameProcessingRequest_withConfiguration_
   }
 }
 
-- (BOOL)shouldProcessSampleWithTimeRange:(id *)a3 atSamplingInterval:(id *)a4
+- (BOOL)shouldProcessSampleWithTimeRange:(id *)range atSamplingInterval:(id *)interval
 {
   v21 = *MEMORY[0x1E69E9840];
   memset(&v17, 0, sizeof(v17));
-  v7 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v7;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v17, &range);
   memset(&v16, 0, sizeof(v16));
-  *&range.start.value = *&a3->var0.var0;
-  range.start.epoch = a3->var0.var3;
+  *&range.start.value = *&range->var0.var0;
+  range.start.epoch = range->var0.var3;
   *&rhs.value = *(&self->_modified + 4);
   rhs.epoch = *&self->_startTime.flags;
   CMTimeSubtract(&v16, &range.start, &rhs);
-  v8 = vcvtpd_s64_f64(a4->var1 * v16.value / (a4->var0 * v16.timescale));
+  v8 = vcvtpd_s64_f64(interval->var1 * v16.value / (interval->var0 * v16.timescale));
   memset(&start, 0, sizeof(start));
-  range.start = *a4;
+  range.start = *interval;
   CMTimeMultiply(&v18, &range.start, v8);
   *&range.start.value = *(&self->_modified + 4);
   range.start.epoch = *&self->_startTime.flags;
@@ -350,17 +350,17 @@ void __78__VCPVideoProcessorSession_addFrameProcessingRequest_withConfiguration_
   if ((v9 & 0x80000000) != 0)
   {
     rhs = start;
-    v18 = *a4;
+    v18 = *interval;
     CMTimeAdd(&range.start, &rhs, &v18);
     start = range.start;
     rhs = v17;
     if (CMTimeCompare(&range.start, &rhs) < 0 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      *&range.start.value = *&a4->var0;
-      range.start.epoch = a4->var3;
+      *&range.start.value = *&interval->var0;
+      range.start.epoch = interval->var3;
       Seconds = CMTimeGetSeconds(&range.start);
-      var0 = a3->var0.var0;
-      var1 = a3->var0.var1;
+      var0 = range->var0.var0;
+      var1 = range->var0.var1;
       LODWORD(range.start.value) = 134218496;
       *(&range.start.value + 4) = Seconds;
       LOWORD(range.start.flags) = 2048;
@@ -418,30 +418,30 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)a3 withEndTime:(id *)a4 error:(id *)a5
+- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)buffer withEndTime:(id *)time error:(id *)error
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v81[1] = *MEMORY[0x1E69E9840];
-  if (!CMSampleBufferGetImageBuffer(a3))
+  if (!CMSampleBufferGetImageBuffer(buffer))
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v80 = *MEMORY[0x1E696A578];
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sample buffer does not contain video frame"];
       v81[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:&v80 count:1];
-      *a5 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
+      *error = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v15];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
 
-    return a5;
+    return error;
   }
 
   memset(&v75, 0, sizeof(v75));
-  CMSampleBufferGetPresentationTimeStamp(&start, v7);
-  end[0] = *a4;
+  CMSampleBufferGetPresentationTimeStamp(&start, bufferCopy);
+  end[0] = *time;
   CMTimeRangeFromTimeToTime(&v75, &start, end);
   start.value = 0;
   *&start.timescale = &start;
@@ -461,10 +461,10 @@ LABEL_11:
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = objc_alloc(MEMORY[0x1E69845B8]);
-  v12 = [(VCPVideoProcessorSession *)self orientation];
-  v50 = [v11 initWithCMSampleBuffer:v7 orientation:v12 options:MEMORY[0x1E695E0F8]];
+  orientation = [(VCPVideoProcessorSession *)self orientation];
+  v50 = [v11 initWithCMSampleBuffer:bufferCopy orientation:orientation options:MEMORY[0x1E695E0F8]];
   frameCount = self->_frameCount;
   self->_frameCount = frameCount + 1;
   if (v67[3])
@@ -472,7 +472,7 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  v51 = v7;
+  v51 = bufferCopy;
   do
   {
     v64 = 0u;
@@ -498,7 +498,7 @@ LABEL_11:
         }
 
         v19 = *(*(&v62 + 1) + 8 * v18);
-        if (([v10 containsObject:v19] & 1) == 0)
+        if (([array containsObject:v19] & 1) == 0)
         {
           v58 = 0;
           v59 = &v58;
@@ -559,19 +559,19 @@ LABEL_11:
             if ([(VCPVideoProcessorSession *)self shouldProcessSampleWithTimeRange:end atSamplingInterval:&time2])
             {
 LABEL_30:
-              v22 = [v19 frameLimit];
-              v23 = v22 == 0;
+              frameLimit = [v19 frameLimit];
+              v23 = frameLimit == 0;
 
               if (v23 || (v24 = [v19 processedFrameCount], objc_msgSend(v19, "frameLimit"), v25 = objc_claimAutoreleasedReturnValue(), LOBYTE(v24) = v24 < objc_msgSend(v25, "unsignedIntegerValue"), v25, (v24 & 1) != 0))
               {
                 LOBYTE(time2.value) = 0;
-                v26 = [v19 frameProcessor];
-                v27 = v26 == 0;
+                frameProcessor = [v19 frameProcessor];
+                v27 = frameProcessor == 0;
 
                 if (v27)
                 {
-                  v34 = [v19 request];
-                  v35 = v34 == 0;
+                  request = [v19 request];
+                  v35 = request == 0;
 
                   if (v35)
                   {
@@ -583,26 +583,26 @@ LABEL_30:
 
                     _Block_object_dispose(&v58, 8);
 
-                    LOBYTE(a5) = 0;
+                    LOBYTE(error) = 0;
                     goto LABEL_57;
                   }
 
-                  v36 = [v19 request];
-                  v77 = v36;
+                  request2 = [v19 request];
+                  v77 = request2;
                   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
                   v56[0] = 0;
                   v38 = [v50 performRequests:v37 error:v56];
-                  v28 = v56[0];
+                  frameProcessor2 = v56[0];
 
-                  v7 = v51;
+                  bufferCopy = v51;
                   if ((v38 & 1) == 0 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
-                    v48 = [v19 request];
+                    request3 = [v19 request];
                     v39 = objc_opt_class();
                     v49 = NSStringFromClass(v39);
                     value = v75.start.value;
                     timescale = v75.start.timescale;
-                    v42 = [v28 description];
+                    v42 = [frameProcessor2 description];
                     LODWORD(end[0].value) = 138413058;
                     *(&end[0].value + 4) = v49;
                     LOWORD(end[0].flags) = 2048;
@@ -613,22 +613,22 @@ LABEL_30:
                     *(&end[1].value + 6) = v42;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ failed for sample at %lld/%d (%@)", end, 0x26u);
 
-                    v7 = v51;
+                    bufferCopy = v51;
                   }
                 }
 
                 else
                 {
-                  v28 = [v19 frameProcessor];
-                  (*(v28 + 2))(v28, v7, &time2);
+                  frameProcessor2 = [v19 frameProcessor];
+                  (*(frameProcessor2 + 2))(frameProcessor2, bufferCopy, &time2);
                 }
 
                 [v19 setProcessedFrameCount:{objc_msgSend(v19, "processedFrameCount") + 1}];
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  v43 = [v19 typeDescription];
+                  typeDescription = [v19 typeDescription];
                   LODWORD(end[0].value) = 138413058;
-                  *(&end[0].value + 4) = v43;
+                  *(&end[0].value + 4) = typeDescription;
                   LOWORD(end[0].flags) = 2048;
                   *(&end[0].flags + 2) = frameCount;
                   HIWORD(end[0].epoch) = 2048;
@@ -638,7 +638,7 @@ LABEL_30:
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ processed sample %llu at %lld/%d", end, 0x26u);
                 }
 
-                [v10 addObject:v19];
+                [array addObject:v19];
                 if (LOBYTE(time2.value) == 1)
                 {
                   v44 = self->_queue;
@@ -654,13 +654,13 @@ LABEL_30:
 
               else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
               {
-                v29 = [v19 typeDescription];
+                typeDescription2 = [v19 typeDescription];
                 v30 = v75.start.value;
                 v31 = v75.start.timescale;
-                v32 = [v19 frameLimit];
-                v33 = [v32 unsignedIntegerValue];
+                frameLimit2 = [v19 frameLimit];
+                unsignedIntegerValue = [frameLimit2 unsignedIntegerValue];
                 LODWORD(end[0].value) = 138413314;
-                *(&end[0].value + 4) = v29;
+                *(&end[0].value + 4) = typeDescription2;
                 LOWORD(end[0].flags) = 2048;
                 *(&end[0].flags + 2) = frameCount;
                 HIWORD(end[0].epoch) = 2048;
@@ -668,10 +668,10 @@ LABEL_30:
                 LOWORD(end[1].timescale) = 1024;
                 *(&end[1].timescale + 2) = v31;
                 HIWORD(end[1].flags) = 2048;
-                end[1].epoch = v33;
+                end[1].epoch = unsignedIntegerValue;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ skipping sample %llu at %lld/%d due to frame process limit %llu reached", end, 0x30u);
 
-                v7 = v51;
+                bufferCopy = v51;
               }
 
               goto LABEL_14;
@@ -685,9 +685,9 @@ LABEL_14:
             }
           }
 
-          v21 = [v19 typeDescription];
+          typeDescription3 = [v19 typeDescription];
           LODWORD(end[0].value) = 138413058;
-          *(&end[0].value + 4) = v21;
+          *(&end[0].value + 4) = typeDescription3;
           LOWORD(end[0].flags) = 2048;
           *(&end[0].flags + 2) = frameCount;
           HIWORD(end[0].epoch) = 2048;
@@ -729,13 +729,13 @@ LABEL_51:
 
   while ((v67[3] & 1) == 0);
 LABEL_3:
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_57:
 
   _Block_object_dispose(&v66, 8);
   _Block_object_dispose(&start, 8);
 
-  return a5;
+  return error;
 }
 
 void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___block_invoke(uint64_t a1)
@@ -793,10 +793,10 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
   }
 }
 
-- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)processSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (CMSampleBufferGetImageBuffer(a3))
+  if (CMSampleBufferGetImageBuffer(buffer))
   {
     v7 = objc_autoreleasePoolPush();
     p_nextSampleBuffer = &self->_nextSampleBuffer;
@@ -807,7 +807,7 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
     }
 
     v18 = value;
-    v17.value = CFRetain(a3);
+    v17.value = CFRetain(buffer);
     CF<__CVBuffer *>::operator=(&self->_nextSampleBuffer.value_, &v17);
     CF<__CVBuffer *>::~CF(&v17);
     v10 = v18;
@@ -831,9 +831,9 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
     objc_autoreleasePoolPop(v7);
     if (v10)
     {
-      if (a4 && v12)
+      if (error && v12)
       {
-        *a4 = [v12 copy];
+        *error = [v12 copy];
       }
     }
 
@@ -845,7 +845,7 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -855,7 +855,7 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sample buffer must contain uncompressed video"];
     v20[0] = v12;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    *a4 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v14];
+    *error = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v14];
 
     v11 = 0;
   }
@@ -863,7 +863,7 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
   return v11;
 }
 
-- (BOOL)flushWithEndTime:(id *)a3 error:(id *)a4
+- (BOOL)flushWithEndTime:(id *)time error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   value = self->_nextSampleBuffer.value_;
@@ -881,8 +881,8 @@ void __66__VCPVideoProcessorSession_processSampleBuffer_withEndTime_error___bloc
 
     if (v9)
     {
-      v16 = *&a3->var0;
-      var3 = a3->var3;
+      v16 = *&time->var0;
+      var3 = time->var3;
       v15 = 0;
       v11 = [(VCPVideoProcessorSession *)self processSampleBuffer:v9 withEndTime:&v16 error:&v15];
       v12 = v15;
@@ -910,9 +910,9 @@ LABEL_9:
     v11 = 1;
   }
 
-  else if (a4 && v12)
+  else if (error && v12)
   {
-    *a4 = [v12 copy];
+    *error = [v12 copy];
   }
 
   return v11;

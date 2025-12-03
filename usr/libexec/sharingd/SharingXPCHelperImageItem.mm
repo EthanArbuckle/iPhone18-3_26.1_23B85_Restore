@@ -1,28 +1,28 @@
 @interface SharingXPCHelperImageItem
-- (SharingXPCHelperImageItem)initWithCoder:(id)a3;
-- (SharingXPCHelperImageItem)initWithImageTitle:(id)a3 image:(CGImage *)a4 cacheLookupKey:(id)a5;
-- (SharingXPCHelperImageItem)initWithImageTitle:(id)a3 imageData:(id)a4 cacheLookupKey:(id)a5;
+- (SharingXPCHelperImageItem)initWithCoder:(id)coder;
+- (SharingXPCHelperImageItem)initWithImageTitle:(id)title image:(CGImage *)image cacheLookupKey:(id)key;
+- (SharingXPCHelperImageItem)initWithImageTitle:(id)title imageData:(id)data cacheLookupKey:(id)key;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SharingXPCHelperImageItem
 
-- (SharingXPCHelperImageItem)initWithImageTitle:(id)a3 imageData:(id)a4 cacheLookupKey:(id)a5
+- (SharingXPCHelperImageItem)initWithImageTitle:(id)title imageData:(id)data cacheLookupKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  dataCopy = data;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = SharingXPCHelperImageItem;
   v12 = [(SharingXPCHelperImageItem *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageTitle, a3);
-    objc_storeStrong(&v13->_imageData, a4);
-    objc_storeStrong(&v13->_cacheLookupKey, a5);
+    objc_storeStrong(&v12->_imageTitle, title);
+    objc_storeStrong(&v13->_imageData, data);
+    objc_storeStrong(&v13->_cacheLookupKey, key);
     contactIDs = v13->_contactIDs;
     v13->_contactIDs = &__NSArray0__struct;
   }
@@ -30,26 +30,26 @@
   return v13;
 }
 
-- (SharingXPCHelperImageItem)initWithImageTitle:(id)a3 image:(CGImage *)a4 cacheLookupKey:(id)a5
+- (SharingXPCHelperImageItem)initWithImageTitle:(id)title image:(CGImage *)image cacheLookupKey:(id)key
 {
-  v6 = [(SharingXPCHelperImageItem *)self initWithImageTitle:a3 imageData:0 cacheLookupKey:a5];
+  v6 = [(SharingXPCHelperImageItem *)self initWithImageTitle:title imageData:0 cacheLookupKey:key];
   if (v6)
   {
-    v6->_image = CFRetain(a4);
+    v6->_image = CFRetain(image);
   }
 
   return v6;
 }
 
-- (SharingXPCHelperImageItem)initWithCoder:(id)a3
+- (SharingXPCHelperImageItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SharingXPCHelperImageItem;
   v5 = [(SharingXPCHelperImageItem *)&v11 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -82,21 +82,21 @@
   [(SharingXPCHelperImageItem *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   imageTitle = self->_imageTitle;
-  v11 = v4;
+  v11 = coderCopy;
   if (imageTitle)
   {
-    [v4 encodeObject:imageTitle forKey:@"SharingXPCHelperImageItem-ImageTitle"];
-    v4 = v11;
+    [coderCopy encodeObject:imageTitle forKey:@"SharingXPCHelperImageItem-ImageTitle"];
+    coderCopy = v11;
   }
 
   imageData = self->_imageData;
   if (imageData)
   {
-    [v4 encodeObject:imageData forKey:@"SharingXPCHelperImageItem-ImageData"];
+    [coderCopy encodeObject:imageData forKey:@"SharingXPCHelperImageItem-ImageData"];
   }
 
   else if (self->_image)

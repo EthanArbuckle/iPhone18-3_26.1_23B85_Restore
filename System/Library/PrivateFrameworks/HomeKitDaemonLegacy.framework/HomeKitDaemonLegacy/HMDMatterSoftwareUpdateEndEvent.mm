@@ -1,5 +1,5 @@
 @interface HMDMatterSoftwareUpdateEndEvent
-- (HMDMatterSoftwareUpdateEndEvent)initWithAccessory:(id)a3 linkType:(id)a4 accessorySoftwareVersionNumber:(id)a5 updateSoftwareVersionNumber:(id)a6 error:(id)a7;
+- (HMDMatterSoftwareUpdateEndEvent)initWithAccessory:(id)accessory linkType:(id)type accessorySoftwareVersionNumber:(id)number updateSoftwareVersionNumber:(id)versionNumber error:(id)error;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,78 +7,78 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryLinkType];
-  [v3 setObject:v4 forKeyedSubscript:@"accessoryLinkType"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  accessoryLinkType = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryLinkType];
+  [dictionary setObject:accessoryLinkType forKeyedSubscript:@"accessoryLinkType"];
 
-  v5 = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryVendorID];
-  [v3 setObject:v5 forKeyedSubscript:@"accessoryVendorID"];
+  accessoryVendorID = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryVendorID];
+  [dictionary setObject:accessoryVendorID forKeyedSubscript:@"accessoryVendorID"];
 
-  v6 = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryProductID];
-  [v3 setObject:v6 forKeyedSubscript:@"accessoryProductID"];
+  accessoryProductID = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryProductID];
+  [dictionary setObject:accessoryProductID forKeyedSubscript:@"accessoryProductID"];
 
-  v7 = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryFirmwareVersionNumber];
-  [v3 setObject:v7 forKeyedSubscript:@"currentAccessoryFirmwareVersionNumber"];
+  accessoryFirmwareVersionNumber = [(HMDMatterSoftwareUpdateEndEvent *)self accessoryFirmwareVersionNumber];
+  [dictionary setObject:accessoryFirmwareVersionNumber forKeyedSubscript:@"currentAccessoryFirmwareVersionNumber"];
 
-  v8 = [(HMDMatterSoftwareUpdateEndEvent *)self targetFirmwareVersionNumber];
-  [v3 setObject:v8 forKeyedSubscript:@"targetAccessoryFirmwareVersionNumber"];
+  targetFirmwareVersionNumber = [(HMDMatterSoftwareUpdateEndEvent *)self targetFirmwareVersionNumber];
+  [dictionary setObject:targetFirmwareVersionNumber forKeyedSubscript:@"targetAccessoryFirmwareVersionNumber"];
 
-  v9 = [(HMMLogEvent *)self error];
-  v10 = v9;
-  if (v9)
+  error = [(HMMLogEvent *)self error];
+  v10 = error;
+  if (error)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "code")}];
-    [v3 setObject:v11 forKeyedSubscript:@"errorCode"];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(error, "code")}];
+    [dictionary setObject:v11 forKeyedSubscript:@"errorCode"];
 
-    v12 = [v10 domain];
-    [v3 setObject:v12 forKeyedSubscript:@"errorDomain"];
+    domain = [v10 domain];
+    [dictionary setObject:domain forKeyedSubscript:@"errorDomain"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDMatterSoftwareUpdateEndEvent isAutomaticThirdPartyAccessorySoftwareUpdateEnabled](self, "isAutomaticThirdPartyAccessorySoftwareUpdateEnabled")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isAutomaticFirmwareUpdateEnabled"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isAutomaticFirmwareUpdateEnabled"];
 
-  v14 = [(HMDMatterSoftwareUpdateEndEvent *)self vendorDetailsForCoreAnalytics];
-  [v3 addEntriesFromDictionary:v14];
+  vendorDetailsForCoreAnalytics = [(HMDMatterSoftwareUpdateEndEvent *)self vendorDetailsForCoreAnalytics];
+  [dictionary addEntriesFromDictionary:vendorDetailsForCoreAnalytics];
 
-  return v3;
+  return dictionary;
 }
 
-- (HMDMatterSoftwareUpdateEndEvent)initWithAccessory:(id)a3 linkType:(id)a4 accessorySoftwareVersionNumber:(id)a5 updateSoftwareVersionNumber:(id)a6 error:(id)a7
+- (HMDMatterSoftwareUpdateEndEvent)initWithAccessory:(id)accessory linkType:(id)type accessorySoftwareVersionNumber:(id)number updateSoftwareVersionNumber:(id)versionNumber error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  numberCopy = number;
+  versionNumberCopy = versionNumber;
+  errorCopy = error;
   v30.receiver = self;
   v30.super_class = HMDMatterSoftwareUpdateEndEvent;
   v17 = [(HMMLogEvent *)&v30 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_accessoryLinkType, a4);
-    v19 = [v12 chipStorage];
-    v20 = [v19 vendorID];
+    objc_storeStrong(&v17->_accessoryLinkType, type);
+    chipStorage = [accessoryCopy chipStorage];
+    vendorID = [chipStorage vendorID];
     accessoryVendorID = v18->_accessoryVendorID;
-    v18->_accessoryVendorID = v20;
+    v18->_accessoryVendorID = vendorID;
 
-    v22 = [v12 chipStorage];
-    v23 = [v22 productID];
+    chipStorage2 = [accessoryCopy chipStorage];
+    productID = [chipStorage2 productID];
     accessoryProductID = v18->_accessoryProductID;
-    v18->_accessoryProductID = v23;
+    v18->_accessoryProductID = productID;
 
-    objc_storeStrong(&v18->_accessoryFirmwareVersionNumber, a5);
-    objc_storeStrong(&v18->_targetFirmwareVersionNumber, a6);
-    [(HMMLogEvent *)v18 setError:v16];
-    v25 = [v12 home];
-    v18->_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [v25 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+    objc_storeStrong(&v18->_accessoryFirmwareVersionNumber, number);
+    objc_storeStrong(&v18->_targetFirmwareVersionNumber, versionNumber);
+    [(HMMLogEvent *)v18 setError:errorCopy];
+    home = [accessoryCopy home];
+    v18->_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [home isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     vendorDetailsForCoreAnalytics = v18->_vendorDetailsForCoreAnalytics;
-    v18->_vendorDetailsForCoreAnalytics = v26;
+    v18->_vendorDetailsForCoreAnalytics = dictionary;
 
-    v28 = [(HMDMatterSoftwareUpdateEndEvent *)v18 vendorDetailsForCoreAnalytics];
-    [v12 populateVendorDetailsForCoreAnalytics:v28 keyPrefix:@"accessory"];
+    vendorDetailsForCoreAnalytics = [(HMDMatterSoftwareUpdateEndEvent *)v18 vendorDetailsForCoreAnalytics];
+    [accessoryCopy populateVendorDetailsForCoreAnalytics:vendorDetailsForCoreAnalytics keyPrefix:@"accessory"];
   }
 
   return v18;

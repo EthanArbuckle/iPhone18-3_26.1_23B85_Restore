@@ -1,22 +1,22 @@
 @interface MXMSampleData
 + (id)data;
 - (MXMSampleData)init;
-- (MXMSampleData)initWithCoder:(id)a3;
-- (MXMSampleData)initWithSet:(id)a3;
-- (MXMSampleData)initWithSets:(id)a3;
+- (MXMSampleData)initWithCoder:(id)coder;
+- (MXMSampleData)initWithSet:(id)set;
+- (MXMSampleData)initWithSets:(id)sets;
 - (NSArray)samples;
 - (NSSet)tags;
-- (id)_dataMatchingFilter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sampleSetWithTag:(id)a3 attribute:(id)a4;
-- (id)sampleSetWithTag:(id)a3 attributes:(id)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)_dataMatchingFilter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sampleSetWithTag:(id)tag attribute:(id)attribute;
+- (id)sampleSetWithTag:(id)tag attributes:(id)attributes;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)numberOfSamples;
 - (unint64_t)numberOfSets;
-- (void)_appendAttribute:(id)a3;
-- (void)_appendData:(id)a3;
-- (void)_appendSet:(id)a3;
+- (void)_appendAttribute:(id)attribute;
+- (void)_appendData:(id)data;
+- (void)_appendSet:(id)set;
 @end
 
 @implementation MXMSampleData
@@ -29,8 +29,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_tagsToSampleSets allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_tagsToSampleSets allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -41,7 +41,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -51,7 +51,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -65,7 +65,7 @@
 - (NSArray)samples
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -105,8 +105,8 @@
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [*(*(&v18 + 1) + 8 * j) samples];
-              [v3 addObjectsFromArray:v14];
+              samples = [*(*(&v18 + 1) + 8 * j) samples];
+              [array addObjectsFromArray:samples];
             }
 
             v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -124,7 +124,7 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)numberOfSets
@@ -134,8 +134,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(MXMSampleData *)self tags];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tags = [(MXMSampleData *)self tags];
+  v4 = [tags countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -147,14 +147,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tags);
         }
 
         v9 = [(NSMutableDictionary *)self->_tagsToSampleSets objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         v6 += [v9 count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [tags countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -171,15 +171,15 @@
 
 - (unint64_t)numberOfSamples
 {
-  v2 = [(MXMSampleData *)self samples];
-  v3 = [v2 count];
+  samples = [(MXMSampleData *)self samples];
+  v3 = [samples count];
 
   return v3;
 }
 
 + (id)data
 {
-  v2 = [[a1 alloc] init];
+  v2 = [[self alloc] init];
 
   return v2;
 }
@@ -191,8 +191,8 @@
   v2 = [(MXMSampleData *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(MXMSampleData *)v2 setTagsToSampleSets:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(MXMSampleData *)v2 setTagsToSampleSets:dictionary];
 
     [(MXMSampleData *)v2 setEnumSet:0];
   }
@@ -200,23 +200,23 @@
   return v2;
 }
 
-- (MXMSampleData)initWithSet:(id)a3
+- (MXMSampleData)initWithSet:(id)set
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  setCopy = set;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  setCopy2 = set;
+  v6 = [v4 arrayWithObjects:&setCopy count:1];
 
-  v7 = [(MXMSampleData *)self initWithSets:v6, v10, v11];
+  v7 = [(MXMSampleData *)self initWithSets:v6, setCopy, v11];
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (MXMSampleData)initWithSets:(id)a3
+- (MXMSampleData)initWithSets:(id)sets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setsCopy = sets;
   v5 = [(MXMSampleData *)self init];
   if (v5)
   {
@@ -224,7 +224,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = setsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -255,21 +255,21 @@
   return v5;
 }
 
-- (id)sampleSetWithTag:(id)a3 attribute:(id)a4
+- (id)sampleSetWithTag:(id)tag attribute:(id)attribute
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [(MXMSampleData *)self sampleSetWithTag:v7 attributes:v8];
+  tagCopy = tag;
+  v8 = [v6 setWithObject:attribute];
+  v9 = [(MXMSampleData *)self sampleSetWithTag:tagCopy attributes:v8];
 
   return v9;
 }
 
-- (id)sampleSetWithTag:(id)a3 attributes:(id)a4
+- (id)sampleSetWithTag:(id)tag attributes:(id)attributes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(MXMSampleData *)self sampleSetsWithTag:a3];
+  attributesCopy = attributes;
+  [(MXMSampleData *)self sampleSetsWithTag:tag];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -289,8 +289,8 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 attributes];
-        if ([v6 isEqualToSet:v13])
+        attributes = [v12 attributes];
+        if ([attributesCopy isEqualToSet:attributes])
         {
 
 LABEL_13:
@@ -298,8 +298,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v14 = [v12 attributes];
-        v15 = [v6 isSubsetOfSet:v14];
+        attributes2 = [v12 attributes];
+        v15 = [attributesCopy isSubsetOfSet:attributes2];
 
         if (v15)
         {
@@ -330,9 +330,9 @@ LABEL_14:
   return v16;
 }
 
-- (MXMSampleData)initWithCoder:(id)a3
+- (MXMSampleData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MXMSampleData;
   v5 = [(MXMSampleData *)&v14 init];
@@ -343,7 +343,7 @@ LABEL_14:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"tagsToSampleSets"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"tagsToSampleSets"];
     tagsToSampleSets = v5->_tagsToSampleSets;
     v5->_tagsToSampleSets = v11;
   }
@@ -351,45 +351,45 @@ LABEL_14:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MXMSampleData alloc];
-  v5 = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
-  v6 = [v5 flattenArray];
-  v7 = [(MXMSampleData *)v4 initWithSets:v6];
+  allValues = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
+  flattenArray = [allValues flattenArray];
+  v7 = [(MXMSampleData *)v4 initWithSets:flattenArray];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MXMMutableSampleData alloc];
-  v5 = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
-  v6 = [v5 flattenArray];
-  v7 = [(MXMSampleData *)v4 initWithSets:v6];
+  allValues = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
+  flattenArray = [allValues flattenArray];
+  v7 = [(MXMSampleData *)v4 initWithSets:flattenArray];
 
   return v7;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = [(MXMSampleData *)self enumSet];
+  enumSet = [(MXMSampleData *)self enumSet];
 
-  if (!v9)
+  if (!enumSet)
   {
-    v25 = a4;
-    v26 = a5;
-    v10 = [MEMORY[0x277CBEB18] array];
+    objectsCopy = objects;
+    countCopy = count;
+    array = [MEMORY[0x277CBEB18] array];
     enumSet = self->_enumSet;
-    self->_enumSet = v10;
+    self->_enumSet = array;
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v12 = [(MXMSampleData *)self tags];
-    v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    tags = [(MXMSampleData *)self tags];
+    v13 = [tags countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -401,7 +401,7 @@ LABEL_14:
         {
           if (*v32 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(tags);
           }
 
           v17 = *(*(&v31 + 1) + 8 * v16);
@@ -439,33 +439,33 @@ LABEL_14:
         }
 
         while (v16 != v14);
-        v14 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v14 = [tags countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v14);
     }
 
-    a4 = v25;
-    a5 = v26;
+    objects = objectsCopy;
+    count = countCopy;
   }
 
-  result = [(NSArray *)self->_enumSet countByEnumeratingWithState:a3 objects:a4 count:a5];
+  result = [(NSArray *)self->_enumSet countByEnumeratingWithState:state objects:objects count:count];
   v24 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)_appendAttribute:(id)a3
+- (void)_appendAttribute:(id)attribute
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributeCopy = attribute;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
-  v6 = [v5 flattenArray];
+  allValues = [(NSMutableDictionary *)self->_tagsToSampleSets allValues];
+  flattenArray = [allValues flattenArray];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [flattenArray countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -477,14 +477,14 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(flattenArray);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) appendAttribute:v4];
+        [*(*(&v12 + 1) + 8 * v10++) appendAttribute:attributeCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [flattenArray countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -493,24 +493,24 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendSet:(id)a3
+- (void)_appendSet:(id)set
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = setCopy;
   }
 
   else
   {
-    v5 = [v4 mutableCopy];
+    v5 = [setCopy mutableCopy];
   }
 
   v6 = v5;
   tagsToSampleSets = self->_tagsToSampleSets;
-  v8 = [v4 tag];
+  v8 = [setCopy tag];
   v9 = [(NSMutableDictionary *)tagsToSampleSets objectForKeyedSubscript:v8];
 
   if (v9)
@@ -521,7 +521,7 @@ LABEL_14:
     v29 = 0u;
     v30 = 0u;
     v10 = self->_tagsToSampleSets;
-    v11 = [v4 tag];
+    v11 = [setCopy tag];
     v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
 
     v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -539,13 +539,13 @@ LABEL_14:
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
-          v18 = [v17 attributes];
-          v19 = [v4 attributes];
-          v20 = [v18 isEqualToSet:v19];
+          attributes = [v17 attributes];
+          attributes2 = [setCopy attributes];
+          v20 = [attributes isEqualToSet:attributes2];
 
           if (v20)
           {
-            [v17 appendSet:v4];
+            [v17 appendSet:setCopy];
 
             v6 = v28;
             goto LABEL_17;
@@ -563,7 +563,7 @@ LABEL_14:
     }
 
     v21 = self->_tagsToSampleSets;
-    v22 = [v4 tag];
+    v22 = [setCopy tag];
     v23 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:v22];
     v6 = v28;
     [v23 addObject:v28];
@@ -573,7 +573,7 @@ LABEL_14:
   {
     v24 = [MEMORY[0x277CBEB18] arrayWithObject:v6];
     v25 = self->_tagsToSampleSets;
-    v26 = [v4 tag];
+    v26 = [setCopy tag];
     [(NSMutableDictionary *)v25 setObject:v24 forKeyedSubscript:v26];
   }
 
@@ -583,17 +583,17 @@ LABEL_17:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendData:(id)a3
+- (void)_appendData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [*(a3 + 2) allValues];
-    v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allValues = [*(data + 2) allValues];
+    v5 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v5)
     {
       v6 = v5;
@@ -605,7 +605,7 @@ LABEL_17:
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v20 + 1) + 8 * v8);
@@ -643,7 +643,7 @@ LABEL_17:
         }
 
         while (v8 != v6);
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v6);
@@ -653,17 +653,17 @@ LABEL_17:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dataMatchingFilter:(id)a3
+- (id)_dataMatchingFilter:(id)filter
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filterCopy = filter;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(MXMSampleData *)self samples];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  samples = [(MXMSampleData *)self samples];
+  v7 = [samples countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -674,17 +674,17 @@ LABEL_17:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(samples);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v4 matchesSample:v11])
+        if ([filterCopy matchesSample:v11])
         {
           v12 = [v5 appendSample:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [samples countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

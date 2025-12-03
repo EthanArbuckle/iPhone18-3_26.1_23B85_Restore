@@ -1,28 +1,28 @@
 @interface PageCollectionViewController
-- (_TtC7MusicUI28PageCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC7MusicUI28PageCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PageCollectionViewController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_216AC1A24(a4, width, height);
+  selfCopy = self;
+  sub_216AC1A24(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC7MusicUI28PageCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7MusicUI28PageCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21700E514();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_216AC5704();
 }
 

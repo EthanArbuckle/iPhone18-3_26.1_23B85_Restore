@@ -1,17 +1,17 @@
 @interface CKEmojiBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKEmojiBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKEmojiBalloonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setOrientation:(char)a3;
+- (void)setOrientation:(char)orientation;
 @end
 
 @implementation CKEmojiBalloonView
 
-- (CKEmojiBalloonView)initWithFrame:(CGRect)a3
+- (CKEmojiBalloonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKEmojiBalloonView;
-  v3 = [(CKImageBalloonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,19 +37,19 @@
 
   v6 = *&CKMainScreenScale_sMainScreenScale_24;
 
-  v7 = [(CKBalloonView *)self orientation];
+  orientation = [(CKBalloonView *)self orientation];
   if (CKMainScreenScale_once_24 != -1)
   {
     [CKEmojiBalloonView layoutSubviews];
   }
 
   v8 = *&CKMainScreenScale_sMainScreenScale_24;
-  v9 = [(CKEmojiBalloonView *)self layer];
-  v10 = v9;
+  layer = [(CKEmojiBalloonView *)self layer];
+  v10 = layer;
   memset(&v17, 0, sizeof(v17));
-  if (v9)
+  if (layer)
   {
-    [v9 contentsTransform];
+    [layer contentsTransform];
   }
 
   v11 = 1.0;
@@ -70,7 +70,7 @@
 
   v13 = floor(v5 * 0.5 * v11) / v11;
   v14 = -floor(v13 * 1.5 * v12) / v12;
-  if (v7)
+  if (orientation)
   {
     v13 = -v13;
   }
@@ -80,29 +80,29 @@
   [v10 setContentsTransform:&v16];
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  v3 = a3;
-  if ([(CKBalloonView *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(CKBalloonView *)self orientation]!= orientation)
   {
     v5.receiver = self;
     v5.super_class = CKEmojiBalloonView;
-    [(CKBalloonView *)&v5 setOrientation:v3];
+    [(CKBalloonView *)&v5 setOrientation:orientationCopy];
     [(CKEmojiBalloonView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  v6 = [(CKImageBalloonView *)self animatedImage:a4];
-  v7 = v6;
-  if (!v6)
+  selfCopy = [(CKImageBalloonView *)self animatedImage:insets];
+  v7 = selfCopy;
+  if (!selfCopy)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v8 = [v6 image];
-  [v8 size];
+  image = [selfCopy image];
+  [image size];
   v10 = v9;
   v12 = v11;
 

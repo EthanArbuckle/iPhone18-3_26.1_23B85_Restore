@@ -1,7 +1,7 @@
 @interface CNHandleBlockingTestDouble
-- (BOOL)isHandleBlocked:(id)a3;
+- (BOOL)isHandleBlocked:(id)blocked;
 - (CNHandleBlockingTestDouble)init;
-- (void)setBlocked:(BOOL)a3 forHandle:(id)a4;
+- (void)setBlocked:(BOOL)blocked forHandle:(id)handle;
 @end
 
 @implementation CNHandleBlockingTestDouble
@@ -23,23 +23,23 @@
   return v2;
 }
 
-- (BOOL)isHandleBlocked:(id)a3
+- (BOOL)isHandleBlocked:(id)blocked
 {
-  v4 = a3;
-  v5 = [objc_opt_class() normalizeHandle:v4];
+  blockedCopy = blocked;
+  v5 = [objc_opt_class() normalizeHandle:blockedCopy];
 
   LOBYTE(self) = [(NSMutableSet *)self->_handles containsObject:v5];
   return self;
 }
 
-- (void)setBlocked:(BOOL)a3 forHandle:(id)a4
+- (void)setBlocked:(BOOL)blocked forHandle:(id)handle
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [objc_opt_class() normalizeHandle:v6];
+  blockedCopy = blocked;
+  handleCopy = handle;
+  v8 = [objc_opt_class() normalizeHandle:handleCopy];
 
   handles = self->_handles;
-  if (v4)
+  if (blockedCopy)
   {
     [(NSMutableSet *)handles addObject:v8];
   }

@@ -1,7 +1,7 @@
 @interface BRLTEmojiPrintPreprocessor
 - (BRLTEmojiPrintPreprocessor)init;
-- (BRLTEmojiPrintPreprocessor)initWithPrimaryLanguageCode:(id)a3;
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (BRLTEmojiPrintPreprocessor)initWithPrimaryLanguageCode:(id)code;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 - (void)_commonInit;
 - (void)_setupLocale;
 - (void)dealloc;
@@ -9,16 +9,16 @@
 
 @implementation BRLTEmojiPrintPreprocessor
 
-- (BRLTEmojiPrintPreprocessor)initWithPrimaryLanguageCode:(id)a3
+- (BRLTEmojiPrintPreprocessor)initWithPrimaryLanguageCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   v9.receiver = self;
   v9.super_class = BRLTEmojiPrintPreprocessor;
   v6 = [(BRLTEmojiPrintPreprocessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_primaryLanguageCode, a3);
+    objc_storeStrong(&v6->_primaryLanguageCode, code);
     [(BRLTEmojiPrintPreprocessor *)v7 _commonInit];
   }
 
@@ -42,20 +42,20 @@
 - (void)_commonInit
 {
   [(BRLTEmojiPrintPreprocessor *)self _setupLocale];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__setupLocale name:*MEMORY[0x277CBEEB0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__setupLocale name:*MEMORY[0x277CBEEB0] object:0];
 }
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
-  v9 = a3;
-  v10 = a6;
-  if (v9)
+  stringCopy = string;
+  rangesCopy = ranges;
+  if (stringCopy)
   {
-    v25 = v10;
-    v11 = [v9 length];
-    v12 = [MEMORY[0x277CCAB68] string];
-    if (a4)
+    v25 = rangesCopy;
+    v11 = [stringCopy length];
+    string = [MEMORY[0x277CCAB68] string];
+    if (map)
     {
       v13 = [MEMORY[0x277CBEB28] dataWithLength:0];
     }
@@ -69,10 +69,10 @@
     v27 = &v26;
     v28 = 0x2020000000;
     v29 = 0;
-    [v9 length];
+    [stringCopy length];
     locale = self->_locale;
-    v16 = v9;
-    v17 = v12;
+    v16 = stringCopy;
+    v17 = string;
     v18 = v13;
     CEMEnumerateEmojiTokensInStringWithLocaleAndBlock();
     v19 = v27[3];
@@ -93,16 +93,16 @@
       while (v11 != v19);
     }
 
-    if (a4)
+    if (map)
     {
       v23 = v18;
-      *a4 = v18;
+      *map = v18;
     }
 
     v14 = v17;
 
     _Block_object_dispose(&v26, 8);
-    v10 = v25;
+    rangesCopy = v25;
   }
 
   else
@@ -188,10 +188,10 @@ void __100__BRLTEmojiPrintPreprocessor_preprocessPrintString_withLocationMap_isE
 
   v5 = CFLocaleGetValue(v3, *MEMORY[0x277CBEED0]);
   v6 = [v5 componentsSeparatedByString:@"-"];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v8 = [(NSString *)self->_primaryLanguageCode componentsSeparatedByString:@"-"];
-  v9 = [v8 firstObject];
-  if ([v7 isEqual:v9])
+  firstObject2 = [v8 firstObject];
+  if ([firstObject isEqual:firstObject2])
   {
 
     primaryLanguageCode = v5;

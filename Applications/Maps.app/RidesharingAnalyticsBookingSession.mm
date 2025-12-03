@@ -1,27 +1,27 @@
 @interface RidesharingAnalyticsBookingSession
 - (RidesharingAnalyticsBookingSession)init;
-- (void)captureBookedApp:(id)a3 version:(id)a4;
-- (void)captureErrorMessage:(id)a3;
-- (void)captureIntent:(int)a3 withFailure:(int)a4;
-- (void)captureRideOptionCount:(unint64_t)a3;
-- (void)endSessionOnView:(int64_t)a3 state:(int64_t)a4;
+- (void)captureBookedApp:(id)app version:(id)version;
+- (void)captureErrorMessage:(id)message;
+- (void)captureIntent:(int)intent withFailure:(int)failure;
+- (void)captureRideOptionCount:(unint64_t)count;
+- (void)endSessionOnView:(int64_t)view state:(int64_t)state;
 @end
 
 @implementation RidesharingAnalyticsBookingSession
 
-- (void)endSessionOnView:(int64_t)a3 state:(int64_t)a4
+- (void)endSessionOnView:(int64_t)view state:(int64_t)state
 {
   if (!self->_sessionEnded)
   {
     self->_sessionEnded = 1;
-    self->_endState = a4;
-    self->_endView = a3;
+    self->_endState = state;
+    self->_endView = view;
     if (!self->_maximumCountOfRideOptionsReturned)
     {
       self->_noRidesAvailable = 1;
     }
 
-    if (a4 == 1)
+    if (state == 1)
     {
       v5 = +[NSDate date];
       bookingDate = self->_bookingDate;
@@ -38,13 +38,13 @@
     v14 = v13;
     [(CLLocation *)self->_destination coordinate];
     v16 = v15;
-    v17 = self;
-    objc_sync_enter(v17);
-    v49 = [(NSMutableArray *)v17->_errorMessages copy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v49 = [(NSMutableArray *)selfCopy->_errorMessages copy];
     v18 = (v12 * 100.0);
     v19 = ((v14 * 100.0) * 0.01);
     v20 = (v18 * 0.01);
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
 
     v21 = objc_alloc_init(GEOLatLng);
     [v21 setLat:((v10 * 100.0) * 0.01)];
@@ -52,11 +52,11 @@
     v22 = objc_alloc_init(GEOLatLng);
     [v22 setLat:v19];
     [v22 setLng:((v16 * 100.0) * 0.01)];
-    [(NSDate *)v17->_bookingDate timeIntervalSince1970];
+    [(NSDate *)selfCopy->_bookingDate timeIntervalSince1970];
     v24 = v23;
     v25 = +[NSProcessInfo processInfo];
-    v26 = [v25 processName];
-    v27 = [v26 isEqualToString:@"destinationd"];
+    processName = [v25 processName];
+    v27 = [processName isEqualToString:@"destinationd"];
 
     if (v27)
     {
@@ -76,68 +76,68 @@
     else
     {
       endState = self->_endState;
-      statusIssue = v17->_statusIssue;
+      statusIssue = selfCopy->_statusIssue;
       endView = self->_endView;
-      sessionId = v17->_sessionId;
-      appVersion = v17->_appVersion;
-      appIdentifier = v17->_appIdentifier;
-      v45 = [NSNumber numberWithBool:v17->_exploredOtherOptions];
-      v38 = [NSNumber numberWithDouble:v17->_distanceToPickup];
-      v48 = [NSNumber numberWithBool:v17->_paymentIsApplePay];
-      v47 = [NSNumber numberWithUnsignedInteger:v17->_numberOfInstalledExtensions];
-      v46 = [NSNumber numberWithBool:v17->_switchedApp];
-      v31 = [NSNumber numberWithBool:v17->_comparedRideOptions];
-      v37 = [NSNumber numberWithBool:v17->_showedSurgePricingAlert];
+      sessionId = selfCopy->_sessionId;
+      appVersion = selfCopy->_appVersion;
+      appIdentifier = selfCopy->_appIdentifier;
+      v45 = [NSNumber numberWithBool:selfCopy->_exploredOtherOptions];
+      v38 = [NSNumber numberWithDouble:selfCopy->_distanceToPickup];
+      v48 = [NSNumber numberWithBool:selfCopy->_paymentIsApplePay];
+      v47 = [NSNumber numberWithUnsignedInteger:selfCopy->_numberOfInstalledExtensions];
+      v46 = [NSNumber numberWithBool:selfCopy->_switchedApp];
+      v31 = [NSNumber numberWithBool:selfCopy->_comparedRideOptions];
+      v37 = [NSNumber numberWithBool:selfCopy->_showedSurgePricingAlert];
       v32 = [NSNumber numberWithDouble:-v8];
-      v33 = [NSNumber numberWithBool:v17->_installedApp];
+      v33 = [NSNumber numberWithBool:selfCopy->_installedApp];
       v34 = [NSNumber numberWithDouble:((v24 * 3600.0) * 0.00027778)];
-      v35 = [NSNumber numberWithBool:v17->_noRidesAvailable];
-      v36 = [NSNumber numberWithBool:v17->_movedPickupLocation];
-      [GEOAPPortal captureRideBookingWithRideBookingSessionId:sessionId statusIssue:statusIssue endState:endState endView:endView rideAppId:appIdentifier rideAppVersion:appVersion originBlurred:v21 destinationBlurred:v22 exploredOtherOptions:v45 distanceToPickupInMeters:v38 paymentIsApplePay:v48 numberOfAvailableExtensions:v47 switchedApp:v46 comparedRideOptions:v31 showedSurgePricingAlert:v37 durationOfSessionInSeconds:v32 installedApp:v33 timestamp:v34 unavailable:v35 movedPickupLocation:v36 errorMessages:v49 intentResponseFailures:v17->_intentResponseFailures];
+      v35 = [NSNumber numberWithBool:selfCopy->_noRidesAvailable];
+      v36 = [NSNumber numberWithBool:selfCopy->_movedPickupLocation];
+      [GEOAPPortal captureRideBookingWithRideBookingSessionId:sessionId statusIssue:statusIssue endState:endState endView:endView rideAppId:appIdentifier rideAppVersion:appVersion originBlurred:v21 destinationBlurred:v22 exploredOtherOptions:v45 distanceToPickupInMeters:v38 paymentIsApplePay:v48 numberOfAvailableExtensions:v47 switchedApp:v46 comparedRideOptions:v31 showedSurgePricingAlert:v37 durationOfSessionInSeconds:v32 installedApp:v33 timestamp:v34 unavailable:v35 movedPickupLocation:v36 errorMessages:v49 intentResponseFailures:selfCopy->_intentResponseFailures];
     }
   }
 }
 
-- (void)captureIntent:(int)a3 withFailure:(int)a4
+- (void)captureIntent:(int)intent withFailure:(int)failure
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&failure;
+  v5 = *&intent;
   v8 = objc_alloc_init(GEORideBookingIntentResponseFailure);
   [v8 setIntent:v5];
   [v8 setFailure:v4];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableArray *)v7->_intentResponseFailures addObject:v8];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_intentResponseFailures addObject:v8];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)captureErrorMessage:(id)a3
+- (void)captureErrorMessage:(id)message
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_errorMessages addObject:v5];
-  objc_sync_exit(v4);
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_errorMessages addObject:messageCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)captureBookedApp:(id)a3 version:(id)a4
+- (void)captureBookedApp:(id)app version:(id)version
 {
-  v8 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_appIdentifier, a3);
-  objc_storeStrong(&self->_appVersion, a4);
-  if (!self->_initiallySelectedApp || ([v8 isEqualToString:?] & 1) == 0)
+  appCopy = app;
+  versionCopy = version;
+  objc_storeStrong(&self->_appIdentifier, app);
+  objc_storeStrong(&self->_appVersion, version);
+  if (!self->_initiallySelectedApp || ([appCopy isEqualToString:?] & 1) == 0)
   {
     self->_switchedApp = 1;
   }
 }
 
-- (void)captureRideOptionCount:(unint64_t)a3
+- (void)captureRideOptionCount:(unint64_t)count
 {
   maximumCountOfRideOptionsReturned = self->_maximumCountOfRideOptionsReturned;
-  if (maximumCountOfRideOptionsReturned <= a3)
+  if (maximumCountOfRideOptionsReturned <= count)
   {
-    maximumCountOfRideOptionsReturned = a3;
+    maximumCountOfRideOptionsReturned = count;
   }
 
   self->_maximumCountOfRideOptionsReturned = maximumCountOfRideOptionsReturned;
@@ -151,14 +151,14 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     sessionId = v2->_sessionId;
-    v2->_sessionId = v4;
+    v2->_sessionId = uUIDString;
 
     v6 = +[RidesharingAppPreferenceManager mostRecentSelectedAppIdentifers];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     initiallySelectedApp = v2->_initiallySelectedApp;
-    v2->_initiallySelectedApp = v7;
+    v2->_initiallySelectedApp = firstObject;
 
     v9 = +[NSDate date];
     sessionStartDate = v2->_sessionStartDate;

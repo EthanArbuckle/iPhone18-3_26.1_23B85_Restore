@@ -6,10 +6,10 @@
 
 - (id)appBundleIdentifier
 {
-  v1 = [a1 attributionApp];
-  v2 = [v1 appBundleIdentifier];
+  attributionApp = [self attributionApp];
+  appBundleIdentifier = [attributionApp appBundleIdentifier];
 
-  return v2;
+  return appBundleIdentifier;
 }
 
 @end

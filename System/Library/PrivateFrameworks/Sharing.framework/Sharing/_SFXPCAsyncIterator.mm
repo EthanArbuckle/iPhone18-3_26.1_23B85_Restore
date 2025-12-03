@@ -1,17 +1,17 @@
 @interface _SFXPCAsyncIterator
 - (_SFXPCAsyncIterator)init;
 - (void)xpcCancel;
-- (void)xpcNextWithCompletion:(id)a3;
+- (void)xpcNextWithCompletion:(id)completion;
 @end
 
 @implementation _SFXPCAsyncIterator
 
-- (void)xpcNextWithCompletion:(id)a3
+- (void)xpcNextWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1A97E4B74(v5, v4);
+  selfCopy = self;
+  sub_1A97E4B74(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -20,7 +20,7 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____SFXPCAsyncIterator_currentTask))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1A9976CB0();
   }

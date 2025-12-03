@@ -1,8 +1,8 @@
 @interface _PBUIWallpaperViewControllerAssertion
 - (PBUIWallpaperViewController)wallpaperViewController;
-- (_PBUIWallpaperViewControllerAssertion)initWithWallpaperViewController:(id)a3 type:(int64_t)a4 reason:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_PBUIWallpaperViewControllerAssertion)initWithWallpaperViewController:(id)controller type:(int64_t)type reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,19 +10,19 @@
 
 @implementation _PBUIWallpaperViewControllerAssertion
 
-- (_PBUIWallpaperViewControllerAssertion)initWithWallpaperViewController:(id)a3 type:(int64_t)a4 reason:(id)a5
+- (_PBUIWallpaperViewControllerAssertion)initWithWallpaperViewController:(id)controller type:(int64_t)type reason:(id)reason
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  reasonCopy = reason;
   v15.receiver = self;
   v15.super_class = _PBUIWallpaperViewControllerAssertion;
   v10 = [(_PBUIWallpaperViewControllerAssertion *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_wallpaperViewController, v8);
-    v11->_type = a4;
-    v12 = [v9 copy];
+    objc_storeWeak(&v10->_wallpaperViewController, controllerCopy);
+    v11->_type = type;
+    v12 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v12;
   }
@@ -35,46 +35,46 @@
   if (![(_PBUIWallpaperViewControllerAssertion *)self isInvalidated])
   {
     [(_PBUIWallpaperViewControllerAssertion *)self setInvalidated:1];
-    v3 = [(_PBUIWallpaperViewControllerAssertion *)self wallpaperViewController];
-    [v3 _invalidateWallpaperAssertion:self];
+    wallpaperViewController = [(_PBUIWallpaperViewControllerAssertion *)self wallpaperViewController];
+    [wallpaperViewController _invalidateWallpaperAssertion:self];
   }
 }
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PBUIWallpaperViewController.m" lineNumber:2141 description:{@"Wallpaper assertion type %ld %@ was not invalidated before dealloc!", *(a1 + 24), *(a1 + 32)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PBUIWallpaperViewController.m" lineNumber:2141 description:{@"Wallpaper assertion type %ld %@ was not invalidated before dealloc!", *(self + 24), *(self + 32)}];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_PBUIWallpaperViewControllerAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_PBUIWallpaperViewControllerAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_PBUIWallpaperViewControllerAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_PBUIWallpaperViewControllerAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_PBUIWallpaperViewControllerAssertion *)self succinctDescriptionBuilder];
-  v5 = [(_PBUIWallpaperViewControllerAssertion *)self wallpaperViewController];
-  v6 = [v4 appendPointer:v5 withName:@"wallpaperViewController"];
+  succinctDescriptionBuilder = [(_PBUIWallpaperViewControllerAssertion *)self succinctDescriptionBuilder];
+  wallpaperViewController = [(_PBUIWallpaperViewControllerAssertion *)self wallpaperViewController];
+  v6 = [succinctDescriptionBuilder appendPointer:wallpaperViewController withName:@"wallpaperViewController"];
 
-  v7 = [v4 appendInteger:-[_PBUIWallpaperViewControllerAssertion type](self withName:{"type"), @"type"}];
-  v8 = [(_PBUIWallpaperViewControllerAssertion *)self reason];
-  v9 = [v4 appendObject:v8 withName:@"reason"];
+  v7 = [succinctDescriptionBuilder appendInteger:-[_PBUIWallpaperViewControllerAssertion type](self withName:{"type"), @"type"}];
+  reason = [(_PBUIWallpaperViewControllerAssertion *)self reason];
+  v9 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v10 = [v4 appendBool:-[_PBUIWallpaperViewControllerAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  v10 = [succinctDescriptionBuilder appendBool:-[_PBUIWallpaperViewControllerAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (PBUIWallpaperViewController)wallpaperViewController

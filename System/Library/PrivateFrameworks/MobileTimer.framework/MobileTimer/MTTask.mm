@@ -1,19 +1,19 @@
 @interface MTTask
-+ (id)taskWithIdentifier:(id)a3 delay:(double)a4 completableBlock:(id)a5;
++ (id)taskWithIdentifier:(id)identifier delay:(double)delay completableBlock:(id)block;
 - (id)description;
 @end
 
 @implementation MTTask
 
-+ (id)taskWithIdentifier:(id)a3 delay:(double)a4 completableBlock:(id)a5
++ (id)taskWithIdentifier:(id)identifier delay:(double)delay completableBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   v9 = objc_opt_new();
-  [v9 setIdentifier:v8];
+  [v9 setIdentifier:identifierCopy];
 
-  [v9 setDelay:a4];
-  [v9 setCompletableBlock:v7];
+  [v9 setDelay:delay];
+  [v9 setCompletableBlock:blockCopy];
 
   return v9;
 }
@@ -22,9 +22,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTTask *)self identifier];
+  identifier = [(MTTask *)self identifier];
   [(MTTask *)self delay];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@ delay:%f>", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@ delay:%f>", v4, self, identifier, v6];
 
   return v7;
 }

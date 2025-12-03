@@ -1,14 +1,14 @@
 @interface MKPlaceCollectionCell
 - (BOOL)canBecomeFirstResponder;
 - (CGSize)sizeForSavedPill;
-- (MKPlaceCollectionCell)initWithFrame:(CGRect)a3;
+- (MKPlaceCollectionCell)initWithFrame:(CGRect)frame;
 - (void)addCollectionNameView;
 - (void)addPublisherLogoImage;
 - (void)addSavedCollectionView;
 - (void)prepareForReuse;
 - (void)setImageMetadata;
 - (void)setTextMetadata;
-- (void)setUpCellUsingModel:(id)a3;
+- (void)setUpCellUsingModel:(id)model;
 - (void)setupAccessibility;
 - (void)setupCollectionImage;
 - (void)setupConstraints;
@@ -16,7 +16,7 @@
 - (void)setupShadows;
 - (void)setupStackView;
 - (void)setupSubviews;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKPlaceCollectionCell
@@ -24,34 +24,34 @@
 - (void)setImageMetadata
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(MKPlaceCollectionCell *)self setUpdateIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(MKPlaceCollectionCell *)self setUpdateIdentifier:uUID];
   objc_initWeak(&location, self);
-  v4 = [(MKPlaceCollectionCell *)self item];
+  item = [(MKPlaceCollectionCell *)self item];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __41__MKPlaceCollectionCell_setImageMetadata__block_invoke;
   v23[3] = &unk_1E76CCCF8;
   objc_copyWeak(&v25, &location);
-  v5 = v3;
+  v5 = uUID;
   v24 = v5;
-  [v4 publisherLogoImageWithCompletion:v23];
+  [item publisherLogoImageWithCompletion:v23];
 
   v6 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(MKPlaceCollectionCell *)self item];
-    v8 = [v7 collectionTitle];
-    v9 = [v8 string];
+    item2 = [(MKPlaceCollectionCell *)self item];
+    collectionTitle = [item2 collectionTitle];
+    string = [collectionTitle string];
     *buf = 138412290;
-    v28 = v9;
+    v28 = string;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "[⌛]Requesting image for : %@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [(MKPlaceCollectionCell *)self item];
-  v12 = [(MKPlaceCollectionCell *)self contentView];
-  [v12 frame];
+  date = [MEMORY[0x1E695DF00] date];
+  item3 = [(MKPlaceCollectionCell *)self item];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  [contentView frame];
   v14 = v13;
   v16 = v15;
   v19[0] = MEMORY[0x1E69E9820];
@@ -62,9 +62,9 @@
   v19[4] = self;
   v17 = v5;
   v20 = v17;
-  v18 = v10;
+  v18 = date;
   v21 = v18;
-  [v11 collectionImageForSize:v19 onCompletion:{v14, v16}];
+  [item3 collectionImageForSize:v19 onCompletion:{v14, v16}];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v25);
@@ -265,22 +265,22 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
 
 - (void)setTextMetadata
 {
-  v3 = [(MKPlaceCollectionCell *)self item];
-  v4 = [v3 collectionTitle];
-  v5 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v5 setAttributedText:v4];
+  item = [(MKPlaceCollectionCell *)self item];
+  collectionTitle = [item collectionTitle];
+  collectionLabel = [(MKPlaceCollectionCell *)self collectionLabel];
+  [collectionLabel setAttributedText:collectionTitle];
 
-  v6 = [(MKPlaceCollectionCell *)self item];
-  LODWORD(v4) = [v6 isSaved];
-  v7 = [(MKPlaceCollectionCell *)self savedView];
-  [v7 setHidden:v4 ^ 1];
+  item2 = [(MKPlaceCollectionCell *)self item];
+  LODWORD(collectionTitle) = [item2 isSaved];
+  savedView = [(MKPlaceCollectionCell *)self savedView];
+  [savedView setHidden:collectionTitle ^ 1];
 
-  v12 = [(MKPlaceCollectionCell *)self collectionLabel];
-  v8 = [v12 text];
-  v9 = v8;
-  if (v8)
+  collectionLabel2 = [(MKPlaceCollectionCell *)self collectionLabel];
+  text = [collectionLabel2 text];
+  v9 = text;
+  if (text)
   {
-    v10 = v8;
+    v10 = text;
   }
 
   else
@@ -288,28 +288,28 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
     v10 = &stru_1F15B23C0;
   }
 
-  v11 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v11 setAccessibilityLabel:v10];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView setAccessibilityLabel:v10];
 }
 
-- (void)setUpCellUsingModel:(id)a3
+- (void)setUpCellUsingModel:(id)model
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v5 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 collectionTitle];
-    v7 = [v6 string];
+    collectionTitle = [modelCopy collectionTitle];
+    string = [collectionTitle string];
     v10 = 138412290;
-    v11 = v7;
+    v11 = string;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "Configuring cell for Collection: %@", &v10, 0xCu);
   }
 
-  [(MKPlaceCollectionCell *)self setItem:v4];
-  v8 = [v4 backgroundColor];
-  v9 = [(MKPlaceCollectionCell *)self contentView];
-  [v9 setBackgroundColor:v8];
+  [(MKPlaceCollectionCell *)self setItem:modelCopy];
+  backgroundColor = [modelCopy backgroundColor];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  [contentView setBackgroundColor:backgroundColor];
 
   [(MKPlaceCollectionCell *)self setTextMetadata];
   [(MKPlaceCollectionCell *)self setImageMetadata];
@@ -320,20 +320,20 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v8.receiver = self;
   v8.super_class = MKPlaceCollectionCell;
   [(MKPlaceCollectionCell *)&v8 prepareForReuse];
-  v3 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v3 setImage:0];
+  publisherLogoImageView = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [publisherLogoImageView setImage:0];
 
-  v4 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v4 setAttributedText:0];
+  collectionLabel = [(MKPlaceCollectionCell *)self collectionLabel];
+  [collectionLabel setAttributedText:0];
 
-  v5 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v5 setImage:0];
+  collectionImageView = [(MKPlaceCollectionCell *)self collectionImageView];
+  [collectionImageView setImage:0];
 
-  v6 = [(MKPlaceCollectionCell *)self contentView];
-  [v6 setBackgroundColor:0];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  [contentView setBackgroundColor:0];
 
-  v7 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v7 setAccessibilityLabel:0];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView setAccessibilityLabel:0];
 
   [(MKPlaceCollectionCell *)self setItem:0];
 }
@@ -341,24 +341,24 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
 - (void)setupAccessibility
 {
   [(MKPlaceCollectionCell *)self setAccessibilityIdentifier:@"PlaceCollectionCell"];
-  v3 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v3 setIsAccessibilityElement:1];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView setIsAccessibilityElement:1];
 
   v4 = *MEMORY[0x1E69DD9B8];
-  v5 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v5 setAccessibilityTraits:v4];
+  metadataStackView2 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView2 setAccessibilityTraits:v4];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 preferredContentSizeCategory];
-  v6 = [(MKPlaceCollectionCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  traitCollection = [(MKPlaceCollectionCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(MKPlaceCollectionCell *)self item];
-    [v8 contentCategorySizeDidChange];
+    item = [(MKPlaceCollectionCell *)self item];
+    [item contentCategorySizeDidChange];
 
     [(MKPlaceCollectionCell *)self setTextMetadata];
   }
@@ -366,75 +366,75 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
 
 - (void)setupShadows
 {
-  v3 = [MEMORY[0x1E69DC888] systemBlackColor];
-  v4 = [v3 CGColor];
-  v5 = [(MKPlaceCollectionCell *)self layer];
-  [v5 setShadowColor:v4];
+  systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+  cGColor = [systemBlackColor CGColor];
+  layer = [(MKPlaceCollectionCell *)self layer];
+  [layer setShadowColor:cGColor];
 
-  v6 = [(MKPlaceCollectionCell *)self layer];
+  layer2 = [(MKPlaceCollectionCell *)self layer];
   LODWORD(v7) = 1028443341;
-  [v6 setShadowOpacity:v7];
+  [layer2 setShadowOpacity:v7];
 
-  v8 = [(MKPlaceCollectionCell *)self layer];
-  [v8 setShadowOffset:{0.0, 2.0}];
+  layer3 = [(MKPlaceCollectionCell *)self layer];
+  [layer3 setShadowOffset:{0.0, 2.0}];
 
-  v9 = [(MKPlaceCollectionCell *)self layer];
-  [v9 setShadowRadius:12.0];
+  layer4 = [(MKPlaceCollectionCell *)self layer];
+  [layer4 setShadowRadius:12.0];
 
-  v10 = [(MKPlaceCollectionCell *)self layer];
-  [v10 setShadowPathIsBounds:1];
+  layer5 = [(MKPlaceCollectionCell *)self layer];
+  [layer5 setShadowPathIsBounds:1];
 }
 
 - (void)addSavedCollectionView
 {
   v53[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DC730];
-  v4 = [(MKPlaceCollectionCell *)self traitCollection];
+  traitCollection = [(MKPlaceCollectionCell *)self traitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   v5 = [v3 effectWithBlurRadius:?];
 
   v6 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v5];
   [(MKPlaceCollectionCell *)self setSavedView:v6];
 
-  v7 = [(MKPlaceCollectionCell *)self savedView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  savedView = [(MKPlaceCollectionCell *)self savedView];
+  [savedView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  v9 = [(MKPlaceCollectionCell *)self savedView];
-  [v9 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  savedView2 = [(MKPlaceCollectionCell *)self savedView];
+  [savedView2 setBackgroundColor:clearColor];
 
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  v11 = [v10 colorWithAlphaComponent:0.24];
-  v12 = [(MKPlaceCollectionCell *)self savedView];
-  v13 = [v12 contentView];
-  [v13 setBackgroundColor:v11];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v11 = [blackColor colorWithAlphaComponent:0.24];
+  savedView3 = [(MKPlaceCollectionCell *)self savedView];
+  contentView = [savedView3 contentView];
+  [contentView setBackgroundColor:v11];
 
-  v14 = [(MKPlaceCollectionCell *)self savedView];
-  [v14 setAccessibilityIdentifier:@"PlaceCollectionSavedView"];
+  savedView4 = [(MKPlaceCollectionCell *)self savedView];
+  [savedView4 setAccessibilityIdentifier:@"PlaceCollectionSavedView"];
 
   v15 = objc_alloc(MEMORY[0x1E69DCC10]);
   v16 = [v15 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKPlaceCollectionCell *)self setSavedCollectionLabel:v16];
 
-  v17 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  savedCollectionLabel = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [MEMORY[0x1E69DC888] whiteColor];
-  v19 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v19 setTextColor:v18];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  savedCollectionLabel2 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel2 setTextColor:whiteColor];
 
-  v20 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  savedCollectionLabel3 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
   LODWORD(v21) = 1148846080;
-  [v20 setContentCompressionResistancePriority:0 forAxis:v21];
+  [savedCollectionLabel3 setContentCompressionResistancePriority:0 forAxis:v21];
 
   v22 = *MEMORY[0x1E69DDD10];
   v23 = *MEMORY[0x1E69DB970];
   v24 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD10] weight:*MEMORY[0x1E69DB970]];
-  v25 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v25 setFont:v24];
+  savedCollectionLabel4 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel4 setFont:v24];
 
-  v26 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v26 setNumberOfLines:1];
+  savedCollectionLabel5 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel5 setNumberOfLines:1];
 
   v27 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   v28 = MEMORY[0x1E69DCAB8];
@@ -442,8 +442,8 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v30 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:v22 weight:v23];
   v31 = [v29 configurationWithFont:v30];
   v32 = [v28 systemImageNamed:@"checkmark" withConfiguration:v31];
-  v33 = [MEMORY[0x1E69DC888] whiteColor];
-  v34 = [v32 imageWithTintColor:v33];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v34 = [v32 imageWithTintColor:whiteColor2];
   [v27 setImage:v34];
 
   v35 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v27];
@@ -463,23 +463,23 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v43 = [v41 initWithString:v42];
 
   [v39 appendAttributedString:v43];
-  v44 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v44 setTextAlignment:1];
+  savedCollectionLabel6 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel6 setTextAlignment:1];
 
-  v45 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v45 setAttributedText:v39];
+  savedCollectionLabel7 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel7 setAttributedText:v39];
 
-  v46 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v46 setAccessibilityIdentifier:@"PlaceCollectionSavedLabel"];
+  savedCollectionLabel8 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [savedCollectionLabel8 setAccessibilityIdentifier:@"PlaceCollectionSavedLabel"];
 
-  v47 = [(MKPlaceCollectionCell *)self savedView];
-  v48 = [v47 contentView];
-  v49 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  [v48 addSubview:v49];
+  savedView5 = [(MKPlaceCollectionCell *)self savedView];
+  contentView2 = [savedView5 contentView];
+  savedCollectionLabel9 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  [contentView2 addSubview:savedCollectionLabel9];
 
-  v50 = [(MKPlaceCollectionCell *)self contentView];
-  v51 = [(MKPlaceCollectionCell *)self savedView];
-  [v50 addSubview:v51];
+  contentView3 = [(MKPlaceCollectionCell *)self contentView];
+  savedView6 = [(MKPlaceCollectionCell *)self savedView];
+  [contentView3 addSubview:savedView6];
 }
 
 - (void)addCollectionNameView
@@ -488,19 +488,19 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKPlaceCollectionCell *)self setCollectionLabel:v4];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v6 setTextColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  collectionLabel = [(MKPlaceCollectionCell *)self collectionLabel];
+  [collectionLabel setTextColor:whiteColor];
 
-  v7 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v7 setNumberOfLines:0];
+  collectionLabel2 = [(MKPlaceCollectionCell *)self collectionLabel];
+  [collectionLabel2 setNumberOfLines:0];
 
-  v8 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v8 setAccessibilityIdentifier:@"PlaceCollectionTitle"];
+  collectionLabel3 = [(MKPlaceCollectionCell *)self collectionLabel];
+  [collectionLabel3 setAccessibilityIdentifier:@"PlaceCollectionTitle"];
 
-  v10 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v9 = [(MKPlaceCollectionCell *)self collectionLabel];
-  [v10 addArrangedSubview:v9];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  collectionLabel4 = [(MKPlaceCollectionCell *)self collectionLabel];
+  [metadataStackView addArrangedSubview:collectionLabel4];
 }
 
 - (void)addPublisherLogoImage
@@ -509,21 +509,21 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKPlaceCollectionCell *)self setPublisherLogoImageView:v4];
 
-  v5 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  publisherLogoImageView = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [publisherLogoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v6 setAccessibilityIgnoresInvertColors:1];
+  publisherLogoImageView2 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [publisherLogoImageView2 setAccessibilityIgnoresInvertColors:1];
 
-  v7 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v7 setAccessibilityIdentifier:@"PlaceCollectionPublisherLogo"];
+  publisherLogoImageView3 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [publisherLogoImageView3 setAccessibilityIdentifier:@"PlaceCollectionPublisherLogo"];
 
-  v8 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v8 setContentMode:1];
+  publisherLogoImageView4 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [publisherLogoImageView4 setContentMode:1];
 
-  v10 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v9 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  [v10 addArrangedSubview:v9];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  publisherLogoImageView5 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  [metadataStackView addArrangedSubview:publisherLogoImageView5];
 }
 
 - (void)setupStackView
@@ -532,24 +532,24 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKPlaceCollectionCell *)self setMetadataStackView:v4];
 
-  v5 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v6 setAxis:1];
+  metadataStackView2 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView2 setAxis:1];
 
-  v7 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v7 setDistribution:0];
+  metadataStackView3 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView3 setDistribution:0];
 
-  v8 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v8 setAlignment:1];
+  metadataStackView4 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView4 setAlignment:1];
 
-  v9 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v9 setAccessibilityIdentifier:@"PlaceCollectionMetadataStack"];
+  metadataStackView5 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [metadataStackView5 setAccessibilityIdentifier:@"PlaceCollectionMetadataStack"];
 
-  v10 = [(MKPlaceCollectionCell *)self contentView];
-  v11 = [(MKPlaceCollectionCell *)self metadataStackView];
-  [v10 addSubview:v11];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  metadataStackView6 = [(MKPlaceCollectionCell *)self metadataStackView];
+  [contentView addSubview:metadataStackView6];
 
   [(MKPlaceCollectionCell *)self addPublisherLogoImage];
   [(MKPlaceCollectionCell *)self addCollectionNameView];
@@ -563,34 +563,34 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(MKPlaceCollectionCell *)self setCollectionImageView:v4];
 
-  v5 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionImageView = [(MKPlaceCollectionCell *)self collectionImageView];
+  [collectionImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v6 setAccessibilityIgnoresInvertColors:1];
+  collectionImageView2 = [(MKPlaceCollectionCell *)self collectionImageView];
+  [collectionImageView2 setAccessibilityIgnoresInvertColors:1];
 
-  v7 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v7 setAccessibilityIdentifier:@"PlaceCollectionImage"];
+  collectionImageView3 = [(MKPlaceCollectionCell *)self collectionImageView];
+  [collectionImageView3 setAccessibilityIdentifier:@"PlaceCollectionImage"];
 
-  v8 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v8 setContentMode:2];
+  collectionImageView4 = [(MKPlaceCollectionCell *)self collectionImageView];
+  [collectionImageView4 setContentMode:2];
 
-  v10 = [(MKPlaceCollectionCell *)self contentView];
-  v9 = [(MKPlaceCollectionCell *)self collectionImageView];
-  [v10 addSubview:v9];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  collectionImageView5 = [(MKPlaceCollectionCell *)self collectionImageView];
+  [contentView addSubview:collectionImageView5];
 }
 
 - (void)setupCornerRadius
 {
-  v3 = [(MKPlaceCollectionCell *)self traitCollection];
+  traitCollection = [(MKPlaceCollectionCell *)self traitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   v5 = v4;
-  v6 = [(MKPlaceCollectionCell *)self contentView];
-  [v6 _setContinuousCornerRadius:v5];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  [contentView _setContinuousCornerRadius:v5];
 
-  v8 = [(MKPlaceCollectionCell *)self contentView];
-  v7 = [v8 layer];
-  [v7 setMasksToBounds:1];
+  contentView2 = [(MKPlaceCollectionCell *)self contentView];
+  layer = [contentView2 layer];
+  [layer setMasksToBounds:1];
 }
 
 - (void)setupConstraints
@@ -600,97 +600,97 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
   v4 = v3;
   v6 = v5;
   v52 = MEMORY[0x1E696ACD8];
-  v83 = [(MKPlaceCollectionCell *)self collectionImageView];
-  v81 = [v83 leadingAnchor];
-  v82 = [(MKPlaceCollectionCell *)self contentView];
-  v80 = [v82 leadingAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  collectionImageView = [(MKPlaceCollectionCell *)self collectionImageView];
+  leadingAnchor = [collectionImageView leadingAnchor];
+  contentView = [(MKPlaceCollectionCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v79 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v84[0] = v79;
-  v78 = [(MKPlaceCollectionCell *)self collectionImageView];
-  v76 = [v78 trailingAnchor];
-  v77 = [(MKPlaceCollectionCell *)self contentView];
-  v75 = [v77 trailingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  collectionImageView2 = [(MKPlaceCollectionCell *)self collectionImageView];
+  trailingAnchor = [collectionImageView2 trailingAnchor];
+  contentView2 = [(MKPlaceCollectionCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v74 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v84[1] = v74;
-  v73 = [(MKPlaceCollectionCell *)self collectionImageView];
-  v71 = [v73 topAnchor];
-  v72 = [(MKPlaceCollectionCell *)self contentView];
-  v70 = [v72 topAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  collectionImageView3 = [(MKPlaceCollectionCell *)self collectionImageView];
+  topAnchor = [collectionImageView3 topAnchor];
+  contentView3 = [(MKPlaceCollectionCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v69 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v84[2] = v69;
-  v68 = [(MKPlaceCollectionCell *)self collectionImageView];
-  v66 = [v68 bottomAnchor];
-  v67 = [(MKPlaceCollectionCell *)self contentView];
-  v65 = [v67 bottomAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  collectionImageView4 = [(MKPlaceCollectionCell *)self collectionImageView];
+  bottomAnchor = [collectionImageView4 bottomAnchor];
+  contentView4 = [(MKPlaceCollectionCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v64 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v84[3] = v64;
-  v63 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v61 = [v63 leadingAnchor];
-  v62 = [(MKPlaceCollectionCell *)self contentView];
-  v60 = [v62 leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:12.0];
+  metadataStackView = [(MKPlaceCollectionCell *)self metadataStackView];
+  leadingAnchor3 = [metadataStackView leadingAnchor];
+  contentView5 = [(MKPlaceCollectionCell *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
   v84[4] = v59;
-  v58 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v56 = [v58 trailingAnchor];
-  v57 = [(MKPlaceCollectionCell *)self contentView];
-  v55 = [v57 trailingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 constant:-20.0];
+  metadataStackView2 = [(MKPlaceCollectionCell *)self metadataStackView];
+  trailingAnchor3 = [metadataStackView2 trailingAnchor];
+  contentView6 = [(MKPlaceCollectionCell *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
   v84[5] = v54;
-  v53 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v50 = [v53 topAnchor];
-  v51 = [(MKPlaceCollectionCell *)self contentView];
-  v49 = [v51 topAnchor];
-  v48 = [v50 constraintGreaterThanOrEqualToAnchor:v49];
+  metadataStackView3 = [(MKPlaceCollectionCell *)self metadataStackView];
+  topAnchor3 = [metadataStackView3 topAnchor];
+  contentView7 = [(MKPlaceCollectionCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v48 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v84[6] = v48;
-  v47 = [(MKPlaceCollectionCell *)self metadataStackView];
-  v45 = [v47 bottomAnchor];
-  v46 = [(MKPlaceCollectionCell *)self contentView];
-  v44 = [v46 bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44 constant:-12.0];
+  metadataStackView4 = [(MKPlaceCollectionCell *)self metadataStackView];
+  bottomAnchor3 = [metadataStackView4 bottomAnchor];
+  contentView8 = [(MKPlaceCollectionCell *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
   v84[7] = v43;
-  v42 = [(MKPlaceCollectionCell *)self publisherLogoImageView];
-  v41 = [v42 heightAnchor];
-  v40 = [v41 constraintEqualToConstant:32.0];
+  publisherLogoImageView = [(MKPlaceCollectionCell *)self publisherLogoImageView];
+  heightAnchor = [publisherLogoImageView heightAnchor];
+  v40 = [heightAnchor constraintEqualToConstant:32.0];
   v84[8] = v40;
-  v39 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  v37 = [v39 centerXAnchor];
-  v38 = [(MKPlaceCollectionCell *)self savedView];
-  v36 = [v38 centerXAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  savedCollectionLabel = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  centerXAnchor = [savedCollectionLabel centerXAnchor];
+  savedView = [(MKPlaceCollectionCell *)self savedView];
+  centerXAnchor2 = [savedView centerXAnchor];
+  v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v84[9] = v35;
-  v34 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  v32 = [v34 centerYAnchor];
-  v33 = [(MKPlaceCollectionCell *)self savedView];
-  v31 = [v33 centerYAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  savedCollectionLabel2 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  centerYAnchor = [savedCollectionLabel2 centerYAnchor];
+  savedView2 = [(MKPlaceCollectionCell *)self savedView];
+  centerYAnchor2 = [savedView2 centerYAnchor];
+  v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v84[10] = v30;
-  v29 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  v28 = [v29 heightAnchor];
-  v27 = [v28 constraintEqualToConstant:v6];
+  savedCollectionLabel3 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  heightAnchor2 = [savedCollectionLabel3 heightAnchor];
+  v27 = [heightAnchor2 constraintEqualToConstant:v6];
   v84[11] = v27;
-  v26 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  v25 = [v26 widthAnchor];
-  v24 = [v25 constraintEqualToConstant:v4];
+  savedCollectionLabel4 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  widthAnchor = [savedCollectionLabel4 widthAnchor];
+  v24 = [widthAnchor constraintEqualToConstant:v4];
   v84[12] = v24;
-  v23 = [(MKPlaceCollectionCell *)self savedView];
-  v21 = [v23 topAnchor];
-  v22 = [(MKPlaceCollectionCell *)self contentView];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:8.0];
+  savedView3 = [(MKPlaceCollectionCell *)self savedView];
+  topAnchor5 = [savedView3 topAnchor];
+  contentView9 = [(MKPlaceCollectionCell *)self contentView];
+  topAnchor6 = [contentView9 topAnchor];
+  v19 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:8.0];
   v84[13] = v19;
-  v18 = [(MKPlaceCollectionCell *)self savedView];
-  v17 = [v18 trailingAnchor];
-  v7 = [(MKPlaceCollectionCell *)self contentView];
-  v8 = [v7 trailingAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8 constant:-8.0];
+  savedView4 = [(MKPlaceCollectionCell *)self savedView];
+  trailingAnchor5 = [savedView4 trailingAnchor];
+  contentView10 = [(MKPlaceCollectionCell *)self contentView];
+  trailingAnchor6 = [contentView10 trailingAnchor];
+  v9 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-8.0];
   v84[14] = v9;
-  v10 = [(MKPlaceCollectionCell *)self savedView];
-  v11 = [v10 heightAnchor];
-  v12 = [v11 constraintEqualToConstant:v6];
+  savedView5 = [(MKPlaceCollectionCell *)self savedView];
+  heightAnchor3 = [savedView5 heightAnchor];
+  v12 = [heightAnchor3 constraintEqualToConstant:v6];
   v84[15] = v12;
-  v13 = [(MKPlaceCollectionCell *)self savedView];
-  v14 = [v13 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:v4];
+  savedView6 = [(MKPlaceCollectionCell *)self savedView];
+  widthAnchor2 = [savedView6 widthAnchor];
+  v15 = [widthAnchor2 constraintEqualToConstant:v4];
   v84[16] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:17];
   [v52 activateConstraints:v16];
@@ -698,13 +698,13 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
 
 - (CGSize)sizeForSavedPill
 {
-  v3 = [(MKPlaceCollectionCell *)self savedCollectionLabel];
-  v4 = [v3 attributedText];
-  [v4 size];
+  savedCollectionLabel = [(MKPlaceCollectionCell *)self savedCollectionLabel];
+  attributedText = [savedCollectionLabel attributedText];
+  [attributedText size];
   v6 = v5;
 
-  v7 = [(MKPlaceCollectionCell *)self savedView];
-  [v7 _setContinuousCornerRadius:12.0];
+  savedView = [(MKPlaceCollectionCell *)self savedView];
+  [savedView _setContinuousCornerRadius:12.0];
 
   v8 = 24.0;
   v9 = v6 + 7.0 + 7.0;
@@ -722,18 +722,18 @@ void __41__MKPlaceCollectionCell_setImageMetadata__block_invoke_2(uint64_t a1)
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(MKPlaceCollectionCell *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 5;
+  traitCollection = [(MKPlaceCollectionCell *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 5;
 
   return v3;
 }
 
-- (MKPlaceCollectionCell)initWithFrame:(CGRect)a3
+- (MKPlaceCollectionCell)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = MKPlaceCollectionCell;
-  v3 = [(MKPlaceCollectionCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceCollectionCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,9 +1,9 @@
 @interface PKSharingDestination
-- (BOOL)isEqual:(id)a3;
-- (PKSharingDestination)initWithCoder:(id)a3;
-- (PKSharingDestination)initWithDestinationIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSharingDestination)initWithCoder:(id)coder;
+- (PKSharingDestination)initWithDestinationIdentifier:(id)identifier;
 - (id)_name;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)idsDestination;
 - (unint64_t)hash;
@@ -11,16 +11,16 @@
 
 @implementation PKSharingDestination
 
-- (PKSharingDestination)initWithDestinationIdentifier:(id)a3
+- (PKSharingDestination)initWithDestinationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKSharingDestination;
   v6 = [(PKSharingDestination *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_destinationIdentifier, a3);
+    objc_storeStrong(&v6->_destinationIdentifier, identifier);
   }
 
   return v7;
@@ -29,21 +29,21 @@
 - (id)idsDestination
 {
   destinationIdentifier = self->_destinationIdentifier;
-  v3 = [(PKSharingDestination *)self _name];
-  v4 = [PKIDSDestination destinationWithDeviceIdentifier:destinationIdentifier name:v3];
+  _name = [(PKSharingDestination *)self _name];
+  v4 = [PKIDSDestination destinationWithDeviceIdentifier:destinationIdentifier name:_name];
 
   return v4;
 }
 
-- (PKSharingDestination)initWithCoder:(id)a3
+- (PKSharingDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKSharingDestination;
   v5 = [(PKSharingDestination *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationIdentifier"];
     destinationIdentifier = v5->_destinationIdentifier;
     v5->_destinationIdentifier = v6;
   }
@@ -51,10 +51,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_destinationIdentifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_destinationIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -63,20 +63,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_destinationIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_destinationIdentifier];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

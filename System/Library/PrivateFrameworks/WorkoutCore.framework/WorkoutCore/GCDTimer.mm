@@ -12,7 +12,7 @@
   {
     v4 = *(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore8GCDTimer_source);
     swift_getObjectType();
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     OS_dispatch_source.cancel()();
     swift_unknownObjectRelease();
@@ -23,7 +23,7 @@
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

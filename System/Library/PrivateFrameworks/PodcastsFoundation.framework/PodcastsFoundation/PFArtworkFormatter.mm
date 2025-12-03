@@ -1,28 +1,28 @@
 @interface PFArtworkFormatter
-+ (id)formatArtworkUrlWithString:(id)a3 for:(CGSize)a4 cropCode:(id)a5 fileExtension:(id)a6;
-+ (id)formatArtworkUrlWithUrl:(id)a3 for:(CGSize)a4 cropCode:(id)a5 fileExtension:(id)a6;
++ (id)formatArtworkUrlWithString:(id)string for:(CGSize)for cropCode:(id)code fileExtension:(id)extension;
++ (id)formatArtworkUrlWithUrl:(id)url for:(CGSize)for cropCode:(id)code fileExtension:(id)extension;
 - (PFArtworkFormatter)init;
 @end
 
 @implementation PFArtworkFormatter
 
-+ (id)formatArtworkUrlWithString:(id)a3 for:(CGSize)a4 cropCode:(id)a5 fileExtension:(id)a6
++ (id)formatArtworkUrlWithString:(id)string for:(CGSize)for cropCode:(id)code fileExtension:(id)extension
 {
-  height = a4.height;
-  width = a4.width;
+  height = for.height;
+  width = for.width;
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECAB5910, &qword_1D9188C90);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
   sub_1D917820C();
-  if (a5)
+  if (code)
   {
     sub_1D917820C();
-    a5 = v13;
+    code = v13;
   }
 
   sub_1D917820C();
-  static ArtworkFormatter.formatArtworkUrl(string:for:cropCode:fileExtension:)(a5, v12, width, height);
+  static ArtworkFormatter.formatArtworkUrl(string:for:cropCode:fileExtension:)(code, v12, width, height);
 
   v14 = sub_1D9176C2C();
   v15 = *(v14 - 8);
@@ -38,10 +38,10 @@
   return v17;
 }
 
-+ (id)formatArtworkUrlWithUrl:(id)a3 for:(CGSize)a4 cropCode:(id)a5 fileExtension:(id)a6
++ (id)formatArtworkUrlWithUrl:(id)url for:(CGSize)for cropCode:(id)code fileExtension:(id)extension
 {
-  height = a4.height;
-  width = a4.width;
+  height = for.height;
+  width = for.width;
   v9 = sub_1D9176C2C();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
@@ -52,14 +52,14 @@
   MEMORY[0x1EEE9AC00](v14 - 8);
   v17 = &v23 - v16;
   sub_1D9176B9C();
-  if (a5)
+  if (code)
   {
     sub_1D917820C();
-    a5 = v18;
+    code = v18;
   }
 
   sub_1D917820C();
-  static ArtworkFormatter.formatArtworkUrl(url:for:cropCode:fileExtension:)(a5, v17, width, height);
+  static ArtworkFormatter.formatArtworkUrl(url:for:cropCode:fileExtension:)(code, v17, width, height);
 
   v19 = *(v10 + 8);
   v19(v13, v9);

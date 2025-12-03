@@ -1,15 +1,15 @@
 @interface _UIDocumentUnavailableBrowserContainerViewController
-- (_UIDocumentUnavailableBrowserContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_UIDocumentUnavailableBrowserContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation _UIDocumentUnavailableBrowserContainerViewController
 
-- (_UIDocumentUnavailableBrowserContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UIDocumentUnavailableBrowserContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = _UIDocumentUnavailableBrowserContainerViewController;
-  v4 = [(UIViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {

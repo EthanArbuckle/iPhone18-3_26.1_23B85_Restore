@@ -1,43 +1,43 @@
 @interface HUServiceDetailsAddGroupItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsAddGroupItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v97[1] = *MEMORY[0x277D85DE8];
   v4 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsGroupAddButton", @"HUServiceDetailsGroupAddButton", 1);
   v5 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsGroupFooter", @"HUServiceDetailsGroupFooter", 1);
   v6 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsGroupTitle", @"HUServiceDetailsGroupTitle", 1);
-  v7 = [(HUServiceDetailsAbstractItem *)self home];
-  v8 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D14090]];
-  v11 = [v7 hf_roomWithIdentifier:v10];
+  home = [(HUServiceDetailsAbstractItem *)self home];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  latestResults = [sourceServiceItem latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14090]];
+  v11 = [home hf_roomWithIdentifier:v10];
 
-  v12 = [(HUServiceDetailsAbstractItem *)self home];
-  LODWORD(v8) = [v12 hf_currentUserIsAdministrator];
+  home2 = [(HUServiceDetailsAbstractItem *)self home];
+  LODWORD(sourceServiceItem) = [home2 hf_currentUserIsAdministrator];
 
-  if (!v8 || !v11)
+  if (!sourceServiceItem || !v11)
   {
     v27 = MEMORY[0x277D2C900];
     v28 = MEMORY[0x277D14780];
     v96 = *MEMORY[0x277D13FB8];
     v97[0] = MEMORY[0x277CBEC38];
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:&v96 count:1];
-    v16 = [v28 outcomeWithResults:v13];
+    dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:&v96 count:1];
+    v16 = [v28 outcomeWithResults:dictionary];
     v29 = [v27 futureWithResult:v16];
     goto LABEL_44;
   }
 
   v78 = v5;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_class();
-  v14 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v15 = v14;
+    v15 = sourceServiceItem2;
   }
 
   else
@@ -48,10 +48,10 @@
   v16 = v15;
 
   objc_opt_class();
-  v17 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = sourceServiceItem3;
   }
 
   else
@@ -62,10 +62,10 @@
   v19 = v18;
 
   objc_opt_class();
-  v20 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v21 = v20;
+    v21 = sourceServiceItem4;
   }
 
   else
@@ -80,29 +80,29 @@
   v77 = v19;
   if (v22)
   {
-    v23 = [v22 accessory];
-    v24 = [v23 hf_visibleServices];
-    v25 = [v24 na_any:&__block_literal_global_133];
+    accessory = [v22 accessory];
+    hf_visibleServices = [accessory hf_visibleServices];
+    v25 = [hf_visibleServices na_any:&__block_literal_global_133];
 
-    v26 = ([v23 hf_canShowAsIndividualServices] ^ 1) & v25;
+    v26 = ([accessory hf_canShowAsIndividualServices] ^ 1) & v25;
   }
 
   else
   {
     if (v16 && ![(HUServiceDetailsAbstractItem *)self isAccessory])
     {
-      v50 = [v16 service];
-      v51 = [MEMORY[0x277CBEB98] setWithObject:v50];
-      [v13 setObject:v51 forKeyedSubscript:*MEMORY[0x277D13DA8]];
+      service = [v16 service];
+      v51 = [MEMORY[0x277CBEB98] setWithObject:service];
+      [dictionary setObject:v51 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
       v52 = MEMORY[0x277CBEB98];
-      v53 = [v50 hf_effectiveServiceType];
-      v54 = [v52 setWithObject:v53];
-      [v13 setObject:v54 forKeyedSubscript:*MEMORY[0x277D13DB0]];
+      hf_effectiveServiceType = [service hf_effectiveServiceType];
+      v54 = [v52 setWithObject:hf_effectiveServiceType];
+      [dictionary setObject:v54 forKeyedSubscript:*MEMORY[0x277D13DB0]];
 
-      v55 = [v50 hf_supportsGroups];
-      v56 = [(HUServiceDetailsAbstractItem *)self home];
-      v57 = [v56 hf_serviceGroupsForService:v50];
+      hf_supportsGroups = [service hf_supportsGroups];
+      home3 = [(HUServiceDetailsAbstractItem *)self home];
+      v57 = [home3 hf_serviceGroupsForService:service];
       if ([v57 count])
       {
         v58 = 0;
@@ -110,18 +110,18 @@
 
       else
       {
-        v58 = v55;
+        v58 = hf_supportsGroups;
       }
 
-      v59 = [(HUServiceDetailsAbstractItem *)self home];
-      v60 = [v59 hf_allServices];
+      home4 = [(HUServiceDetailsAbstractItem *)self home];
+      hf_allServices = [home4 hf_allServices];
       v82[0] = MEMORY[0x277D85DD0];
       v82[1] = 3221225472;
       v82[2] = __60__HUServiceDetailsAddGroupItem__subclass_updateWithOptions___block_invoke_2;
       v82[3] = &unk_277DB9560;
-      v83 = v50;
-      v30 = v50;
-      v26 = v58 & [v60 na_any:v82];
+      v83 = service;
+      mediaProfileContainer = service;
+      v26 = v58 & [hf_allServices na_any:v82];
     }
 
     else
@@ -132,40 +132,40 @@
         goto LABEL_39;
       }
 
-      v30 = [v19 mediaProfileContainer];
-      if (([MEMORY[0x277D14810] isHomePod:v30] & 1) != 0 || objc_msgSend(MEMORY[0x277D14810], "isHomePodMediaSystem:", v30))
+      mediaProfileContainer = [v19 mediaProfileContainer];
+      if (([MEMORY[0x277D14810] isHomePod:mediaProfileContainer] & 1) != 0 || objc_msgSend(MEMORY[0x277D14810], "isHomePodMediaSystem:", mediaProfileContainer))
       {
-        if ([v30 hf_supportsStereoPairing])
+        if ([mediaProfileContainer hf_supportsStereoPairing])
         {
-          v31 = [v19 accessories];
-          v32 = [v31 mutableCopy];
+          accessories = [v19 accessories];
+          v32 = [accessories mutableCopy];
 
-          v33 = [(HUServiceDetailsAbstractItem *)self home];
-          [v32 na_safeAddObject:v33];
+          home5 = [(HUServiceDetailsAbstractItem *)self home];
+          [v32 na_safeAddObject:home5];
 
           v74 = v32;
-          [v13 setObject:v32 forKeyedSubscript:*MEMORY[0x277D13DA8]];
-          v34 = [(HUServiceDetailsAbstractItem *)self home];
-          v35 = [v34 hf_accessoriesMatchingCategoryType:*MEMORY[0x277CCE8B0]];
+          [dictionary setObject:v32 forKeyedSubscript:*MEMORY[0x277D13DA8]];
+          home6 = [(HUServiceDetailsAbstractItem *)self home];
+          v35 = [home6 hf_accessoriesMatchingCategoryType:*MEMORY[0x277CCE8B0]];
           v80[0] = MEMORY[0x277D85DD0];
           v80[1] = 3221225472;
           v80[2] = __60__HUServiceDetailsAddGroupItem__subclass_updateWithOptions___block_invoke_3;
           v80[3] = &unk_277DB8EC0;
-          v36 = v30;
+          v36 = mediaProfileContainer;
           v81 = v36;
           v37 = [v35 na_filter:v80];
 
           v75 = v37;
           v38 = [v37 count];
-          v39 = [v36 settings];
-          v40 = [v39 isControllable];
-          if (v40)
+          settings = [v36 settings];
+          isControllable = [settings isControllable];
+          if (isControllable)
           {
-            LOBYTE(v40) = [v36 hf_isReachable];
+            LOBYTE(isControllable) = [v36 hf_isReachable];
           }
 
           v41 = v79;
-          v26 = (v38 > 1) & v40;
+          v26 = (v38 > 1) & isControllable;
 
           v42 = HFLogForCategory();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -178,10 +178,10 @@
 
             v73 = v43;
             v72 = [v75 count];
-            v44 = [v36 settings];
-            v45 = v30;
-            v46 = [v44 isControllable];
-            v47 = [v36 hf_isReachable];
+            settings2 = [v36 settings];
+            v45 = mediaProfileContainer;
+            isControllable2 = [settings2 isControllable];
+            hf_isReachable = [v36 hf_isReachable];
             *buf = 138413570;
             v85 = v36;
             v86 = 2112;
@@ -191,10 +191,10 @@
             v90 = 2112;
             v91 = v75;
             v92 = 1024;
-            v93 = v46;
-            v30 = v45;
+            v93 = isControllable2;
+            mediaProfileContainer = v45;
             v94 = 1024;
-            v95 = v47;
+            v95 = hf_isReachable;
             _os_log_impl(&dword_20CEB6000, v42, OS_LOG_TYPE_DEFAULT, "%@ does %@support showing 'Create Stereo Pair' button --> %lu unpairedHomePodsInHome: %@, isControllable: %{BOOL}d, hf_isReachable: %{BOOL}d", buf, 0x36u);
 
             v41 = v79;
@@ -218,7 +218,7 @@
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v85 = v30;
+          v85 = mediaProfileContainer;
           _os_log_impl(&dword_20CEB6000, v61, OS_LOG_TYPE_DEFAULT, "%@ does NOT support showing 'Create Stereo Pair' button --> hf_supportsStereoPairing: NO", buf, 0xCu);
         }
 
@@ -233,33 +233,33 @@
   }
 
 LABEL_39:
-  v62 = [v16 service];
-  v63 = [v62 accessory];
-  v64 = [v63 hf_isMultiServiceAccessory];
+  service2 = [v16 service];
+  accessory2 = [service2 accessory];
+  hf_isMultiServiceAccessory = [accessory2 hf_isMultiServiceAccessory];
 
-  v65 = [v16 service];
-  v66 = [v65 accessory];
-  v67 = [v66 hf_showAsIndividualServices];
+  service3 = [v16 service];
+  accessory3 = [service3 accessory];
+  hf_showAsIndividualServices = [accessory3 hf_showAsIndividualServices];
 
-  if (v26 && ((v64 ^ 1 | v67) & 1) != 0)
+  if (v26 && ((hf_isMultiServiceAccessory ^ 1 | hf_showAsIndividualServices) & 1) != 0)
   {
-    [v13 setObject:v79 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    [dictionary setObject:v79 forKeyedSubscript:*MEMORY[0x277D13F60]];
     v5 = v78;
-    [v13 setObject:v78 forKeyedSubscript:@"HUServiceDetailsAddGroupSectionFooterResultKey"];
+    [dictionary setObject:v78 forKeyedSubscript:@"HUServiceDetailsAddGroupSectionFooterResultKey"];
     v68 = [MEMORY[0x277CCACA8] stringWithFormat:@"AccessoryDetails.%@", v6];
-    [v13 setObject:v68 forKeyedSubscript:*MEMORY[0x277D13DC8]];
+    [dictionary setObject:v68 forKeyedSubscript:*MEMORY[0x277D13DC8]];
 
-    [v13 na_safeSetObject:v6 forKey:@"HUServiceDetailsAddGroupSectionHeaderResultKey"];
+    [dictionary na_safeSetObject:v6 forKey:@"HUServiceDetailsAddGroupSectionHeaderResultKey"];
   }
 
   else
   {
-    [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
     v5 = v78;
   }
 
   v69 = MEMORY[0x277D2C900];
-  v70 = [MEMORY[0x277D14780] outcomeWithResults:v13];
+  v70 = [MEMORY[0x277D14780] outcomeWithResults:dictionary];
   v29 = [v69 futureWithResult:v70];
 
   v4 = v79;

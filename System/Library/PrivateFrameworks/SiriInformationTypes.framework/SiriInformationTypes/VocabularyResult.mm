@@ -1,15 +1,15 @@
 @interface VocabularyResult
 - (_TtC21SiriInformationSearch16VocabularyResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VocabularyResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  VocabularyResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  VocabularyResult.encode(with:)(coderCopy);
 }
 
 - (_TtC21SiriInformationSearch16VocabularyResult)init

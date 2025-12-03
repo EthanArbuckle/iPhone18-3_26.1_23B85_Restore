@@ -1,5 +1,5 @@
 @interface AKAnnotationLayerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityExpandAnnotation;
 - (BOOL)_accessibilityShrinkAnnotation;
 - (id)accessibilityCustomActions;
@@ -7,32 +7,32 @@
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityMakeAnnotation:(id)a3 larger:(BOOL)a4;
-- (void)_accessibilityZoomIn:(BOOL)a3;
+- (void)_accessibilityMakeAnnotation:(id)annotation larger:(BOOL)larger;
+- (void)_accessibilityZoomIn:(BOOL)in;
 @end
 
 @implementation AKAnnotationLayerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"updateContents" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"updateContents" withFullSignature:{"v", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = AKAnnotationLayerAccessibility;
-  v3 = [(AKAnnotationLayerAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(AKAnnotationLayerAccessibility *)&v7 accessibilityTraits];
   v4 = [(AKAnnotationLayerAccessibility *)self safeValueForKey:@"annotation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 |= *MEMORY[0x29EDC7598];
+    accessibilityTraits |= *MEMORY[0x29EDC7598];
     if ([v4 isEditingText])
     {
-      v3 |= *MEMORY[0x29EDC7528];
+      accessibilityTraits |= *MEMORY[0x29EDC7528];
     }
   }
 
@@ -47,7 +47,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
@@ -61,16 +61,16 @@
     v4 = [v3 style] - 1;
     if (v4 <= 2)
     {
-      v5 = accessibilityLocalizedString(off_29F29D3E8[v4]);
+      displayName = accessibilityLocalizedString(off_29F29D3E8[v4]);
       goto LABEL_6;
     }
   }
 
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v5 = [v3 displayName];
+  displayName = [v3 displayName];
 LABEL_6:
-  v6 = v5;
+  v6 = displayName;
 
   return v6;
 }
@@ -79,7 +79,7 @@ LABEL_6:
 {
   v46.receiver = self;
   v46.super_class = AKAnnotationLayerAccessibility;
-  v3 = [(AKAnnotationLayerAccessibility *)&v46 accessibilityValue];
+  accessibilityValue = [(AKAnnotationLayerAccessibility *)&v46 accessibilityValue];
   v4 = [(AKAnnotationLayerAccessibility *)self safeValueForKey:@"annotation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -98,7 +98,7 @@ LABEL_6:
     v40 = @"__AXStringForVariablesSentinel";
     v11 = __UIAXStringForVariables();
 
-    v3 = v11;
+    accessibilityValue = v11;
   }
 
   objc_opt_class();
@@ -106,8 +106,8 @@ LABEL_6:
   {
     objc_opt_class();
     v12 = __UIAccessibilityCastAsClass();
-    v13 = [v12 strokeColor];
-    v14 = [v13 accessibilityLabel];
+    strokeColor = [v12 strokeColor];
+    accessibilityLabel = [strokeColor accessibilityLabel];
 
     if ([v12 isDashed])
     {
@@ -141,11 +141,11 @@ LABEL_6:
 LABEL_13:
     v42 = v15;
     v43 = @"__AXStringForVariablesSentinel";
-    v39 = v14;
+    v39 = accessibilityLabel;
     v40 = v19;
     v20 = __UIAXStringForVariables();
 
-    v3 = v20;
+    accessibilityValue = v20;
   }
 
   objc_opt_class();
@@ -153,14 +153,14 @@ LABEL_13:
   {
     objc_opt_class();
     v21 = __UIAccessibilityCastAsClass();
-    v22 = [v21 annotationText];
-    v23 = [v21 typingAttributes];
+    annotationText = [v21 annotationText];
+    typingAttributes = [v21 typingAttributes];
     objc_opt_class();
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x29EDC7638]];
+    v24 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x29EDC7638]];
     v25 = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    v26 = [v23 objectForKeyedSubscript:*MEMORY[0x29EDC7640]];
+    v26 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x29EDC7640]];
     v27 = __UIAccessibilityCastAsClass();
 
     if (v25)
@@ -169,7 +169,7 @@ LABEL_13:
       v28 = v45 = v21;
       v29 = MEMORY[0x29EDBA0F8];
       accessibilityLocalizedString(@"stroke.fontsize.value");
-      v30 = v44 = v22;
+      v30 = v44 = annotationText;
       v31 = MEMORY[0x29EDBA070];
       [v25 pointSize];
       v32 = [v31 numberWithDouble:?];
@@ -177,7 +177,7 @@ LABEL_13:
       v40 = @"__AXStringForVariablesSentinel";
       v33 = __UIAXStringForVariables();
 
-      v22 = v44;
+      annotationText = v44;
       v21 = v45;
     }
 
@@ -186,10 +186,10 @@ LABEL_13:
       v33 = 0;
     }
 
-    v41 = [v27 accessibilityLabel];
+    accessibilityLabel2 = [v27 accessibilityLabel];
     v34 = __UIAXStringForVariables();
 
-    v3 = v34;
+    accessibilityValue = v34;
   }
 
   objc_opt_class();
@@ -197,13 +197,13 @@ LABEL_13:
   {
     objc_opt_class();
     v35 = __UIAccessibilityCastAsClass();
-    v36 = [v35 color];
+    color = [v35 color];
     v37 = AXColorStringForColor();
 
-    v3 = v37;
+    accessibilityValue = v37;
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
@@ -214,29 +214,29 @@ LABEL_13:
   {
     v7.receiver = self;
     v7.super_class = AKAnnotationLayerAccessibility;
-    v4 = [(AKAnnotationLayerAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(AKAnnotationLayerAccessibility *)&v7 accessibilityHint];
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(@"reposition.hint");
+    accessibilityHint = accessibilityLocalizedString(@"reposition.hint");
   }
 
-  v5 = v4;
+  v5 = accessibilityHint;
 
   return v5;
 }
 
-- (void)_accessibilityZoomIn:(BOOL)a3
+- (void)_accessibilityZoomIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   objc_opt_class();
   v5 = [(AKAnnotationLayerAccessibility *)self safeValueForKey:@"annotation"];
   v6 = __UIAccessibilityCastAsClass();
 
   [v6 magnification];
   v8 = -1.0;
-  if (v3)
+  if (inCopy)
   {
     v8 = 1.0;
   }
@@ -253,7 +253,7 @@ LABEL_13:
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(AKAnnotationLayerAccessibility *)self safeValueForKey:@"annotation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -262,15 +262,15 @@ LABEL_13:
     v6 = accessibilityLocalizedString(@"annotation.action.expand");
     v7 = [v5 initWithName:v6 target:self selector:sel__accessibilityExpandAnnotation];
 
-    [v3 addObject:v7];
+    [array addObject:v7];
     v8 = objc_alloc(MEMORY[0x29EDC78E0]);
     v9 = accessibilityLocalizedString(@"annotation.action.shrink");
     v10 = [v8 initWithName:v9 target:self selector:sel__accessibilityShrinkAnnotation];
 
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_accessibilityExpandAnnotation
@@ -299,11 +299,11 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-- (void)_accessibilityMakeAnnotation:(id)a3 larger:(BOOL)a4
+- (void)_accessibilityMakeAnnotation:(id)annotation larger:(BOOL)larger
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 rectangle];
+  largerCopy = larger;
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
@@ -314,7 +314,7 @@ LABEL_13:
   v17.size.width = width;
   v17.size.height = height;
   v12 = CGRectGetHeight(v17) / 10.0;
-  if (v4)
+  if (largerCopy)
   {
     v13 = -v11;
   }
@@ -324,7 +324,7 @@ LABEL_13:
     v13 = v11;
   }
 
-  if (v4)
+  if (largerCopy)
   {
     v14 = -v12;
   }
@@ -339,7 +339,7 @@ LABEL_13:
   v18.size.width = width;
   v18.size.height = height;
   v19 = CGRectInset(v18, v13, v14);
-  [v6 setRectangle:{v19.origin.x, v19.origin.y, v19.size.width, v19.size.height}];
+  [annotationCopy setRectangle:{v19.origin.x, v19.origin.y, v19.size.width, v19.size.height}];
 
   v15 = [(AKAnnotationLayerAccessibility *)self safeValueForKey:@"updateContents"];
 }

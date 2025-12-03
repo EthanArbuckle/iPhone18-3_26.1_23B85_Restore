@@ -1,7 +1,7 @@
 @interface _GDBAResolver
 + (id)sharedInstance;
 - (_GDBAResolver)init;
-- (id)balancingAuthorityForLatitude:(double)a3 longitude:(double)a4 polygons:(id)a5;
+- (id)balancingAuthorityForLatitude:(double)latitude longitude:(double)longitude polygons:(id)polygons;
 @end
 
 @implementation _GDBAResolver
@@ -38,22 +38,22 @@
   return v3;
 }
 
-- (id)balancingAuthorityForLatitude:(double)a3 longitude:(double)a4 polygons:(id)a5
+- (id)balancingAuthorityForLatitude:(double)latitude longitude:(double)longitude polygons:(id)polygons
 {
-  v86 = a5;
+  polygonsCopy = polygons;
   v85 = os_transaction_create();
-  v103 = self;
+  selfCopy = self;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134283777;
-    v120 = a3;
+    latitudeCopy2 = latitude;
     v121 = 2049;
-    v122 = a4;
+    longitudeCopy2 = longitude;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Looking for (%{private}lf, %{private}lf)", buf, 0x16u);
   }
 
-  v9 = [v86 objectForKeyedSubscript:@"geoJsonDocuments"];
+  v9 = [polygonsCopy objectForKeyedSubscript:@"geoJsonDocuments"];
   v101 = +[NSMutableArray array];
   context = objc_autoreleasePoolPush();
   v115 = 0u;
@@ -93,19 +93,19 @@
         [v23 doubleValue];
         v25 = v24;
 
-        v26 = v16 >= a3 || v19 <= a3;
-        if (!v26 || (v16 > a3 ? (v27 = v19 < a3) : (v27 = 0), v27))
+        v26 = v16 >= latitude || v19 <= latitude;
+        if (!v26 || (v16 > latitude ? (v27 = v19 < latitude) : (v27 = 0), v27))
         {
-          v28 = v22 >= a4 || v25 <= a4;
-          if (!v28 || (v22 > a4 ? (v29 = v25 < a4) : (v29 = 0), v29))
+          v28 = v22 >= longitude || v25 <= longitude;
+          if (!v28 || (v22 > longitude ? (v29 = v25 < longitude) : (v29 = 0), v29))
           {
             [v12 objectForKeyedSubscript:v10];
             *&v30 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            v31 = v103->_log;
+            v31 = selfCopy->_log;
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v120 = *&v30;
+              latitudeCopy2 = *&v30;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, " Within bounding box. GeoJSON: %@", buf, 0xCu);
             }
 
@@ -177,7 +177,7 @@ LABEL_68:
       v48 = v110;
       if (v47 == 0.0)
       {
-        v82 = v103->_log;
+        v82 = selfCopy->_log;
         if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
         {
           sub_100003B3C(v82);
@@ -187,7 +187,7 @@ LABEL_68:
         goto LABEL_67;
       }
 
-      v49 = v103->_log;
+      v49 = selfCopy->_log;
       if (v48)
       {
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -204,7 +204,7 @@ LABEL_67:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v120 = v47;
+        latitudeCopy2 = v47;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Read GeoJSON %@", buf, 0xCu);
       }
 
@@ -213,34 +213,34 @@ LABEL_67:
       objc_autoreleasePoolPop(v45);
       v50 = objc_autoreleasePoolPush();
       v51 = [*&v47 objectAtIndexedSubscript:0];
-      v99 = [v51 properties];
+      properties = [v51 properties];
       v52 = [NSJSONSerialization JSONObjectWithData:"JSONObjectWithData:options:error:" options:? error:?];
       [v52 objectForKeyedSubscript:@"name"];
       *&v53 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       [v52 objectForKeyedSubscript:@"abbrev"];
       v109 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v54 = v103->_log;
+      v54 = selfCopy->_log;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v120 = *&v53;
+        latitudeCopy2 = *&v53;
         v121 = 2112;
-        v122 = v109;
+        longitudeCopy2 = v109;
         _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Name %@ %@", buf, 0x16u);
       }
 
       v107 = v53;
-      v55 = [v51 geometry];
-      if ([v55 count])
+      geometry = [v51 geometry];
+      if ([geometry count])
       {
         contexta = v51;
-        v56 = [v55 objectAtIndexedSubscript:0];
-        v57 = [v56 polygons];
+        v56 = [geometry objectAtIndexedSubscript:0];
+        polygons = [v56 polygons];
 
-        v133.latitude = a3;
-        v133.longitude = a4;
+        v133.latitude = latitude;
+        v133.longitude = longitude;
         v58 = MKMapPointForCoordinate(v133);
-        if ([v57 count])
+        if ([polygons count])
         {
           v94 = v50;
           v59 = 0;
@@ -248,35 +248,35 @@ LABEL_67:
           {
             v60 = objc_autoreleasePoolPush();
             v61 = [MKPolygonRenderer alloc];
-            v62 = [v57 objectAtIndexedSubscript:v59];
+            v62 = [polygons objectAtIndexedSubscript:v59];
             v63 = [v61 initWithPolygon:v62];
 
             [v63 pointForMapPoint:{v58.x, v58.y}];
             v65 = v64;
             v67 = v66;
-            v68 = [v63 path];
+            path = [v63 path];
             v134.x = v65;
             v134.y = v67;
-            if (CGPathContainsPoint(v68, 0, v134, 1))
+            if (CGPathContainsPoint(path, 0, v134, 1))
             {
               break;
             }
 
             objc_autoreleasePoolPop(v60);
-            if ([v57 count] <= ++v59)
+            if ([polygons count] <= ++v59)
             {
               v69 = 0;
               goto LABEL_55;
             }
           }
 
-          v70 = v103->_log;
+          v70 = selfCopy->_log;
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v84;
-            v120 = a3;
+            latitudeCopy2 = latitude;
             v121 = 2049;
-            v122 = a4;
+            longitudeCopy2 = longitude;
             v123 = 2112;
             v124 = v109;
             v125 = 2112;

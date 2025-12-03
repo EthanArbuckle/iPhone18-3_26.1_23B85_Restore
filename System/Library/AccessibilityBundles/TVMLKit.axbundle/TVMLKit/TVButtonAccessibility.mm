@@ -15,35 +15,35 @@
 - (id)accessibilityLabel
 {
   v3 = [(TVButtonAccessibility *)self safeValueForKey:@"textContentView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(TVButtonAccessibility *)self safeValueForKey:@"imageView"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    if ([v6 length])
+    if ([accessibilityLabel2 length])
     {
-      [(TVButtonAccessibility *)self setAccessibilityHint:v6];
+      [(TVButtonAccessibility *)self setAccessibilityHint:accessibilityLabel2];
     }
   }
 
   else
   {
-    v7 = v6;
+    v7 = accessibilityLabel2;
 
-    v4 = v7;
+    accessibilityLabel = v7;
   }
 
-  if (![v4 length])
+  if (![accessibilityLabel length])
   {
     v8 = [(TVButtonAccessibility *)self safeValueForKey:@"accessoryView"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel3 = [v8 accessibilityLabel];
 
-    v4 = v9;
+    accessibilityLabel = accessibilityLabel3;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

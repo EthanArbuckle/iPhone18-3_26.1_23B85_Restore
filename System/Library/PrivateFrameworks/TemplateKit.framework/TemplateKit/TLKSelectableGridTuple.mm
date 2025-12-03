@@ -1,88 +1,88 @@
 @interface TLKSelectableGridTuple
-+ (id)tupleWithTitle:(id)a3 subtitle:(id)a4;
-+ (id)tuplesForTitles:(id)a3 subtitles:(id)a4;
++ (id)tupleWithTitle:(id)title subtitle:(id)subtitle;
++ (id)tuplesForTitles:(id)titles subtitles:(id)subtitles;
 - (id)description;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TLKSelectableGridTuple
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  if (self->_title != v10)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    objc_storeStrong(&self->_title, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_title, title);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v10 = a3;
-  if (self->_subtitle != v10)
+  subtitleCopy = subtitle;
+  if (self->_subtitle != subtitleCopy)
   {
-    objc_storeStrong(&self->_subtitle, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_subtitle, subtitle);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-+ (id)tupleWithTitle:(id)a3 subtitle:(id)a4
++ (id)tupleWithTitle:(id)title subtitle:(id)subtitle
 {
-  v5 = a4;
-  v6 = a3;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v7 = objc_alloc_init(TLKSelectableGridTuple);
-  [(TLKSelectableGridTuple *)v7 setTitle:v6];
+  [(TLKSelectableGridTuple *)v7 setTitle:titleCopy];
 
-  [(TLKSelectableGridTuple *)v7 setSubtitle:v5];
+  [(TLKSelectableGridTuple *)v7 setSubtitle:subtitleCopy];
 
   return v7;
 }
 
-+ (id)tuplesForTitles:(id)a3 subtitles:(id)a4
++ (id)tuplesForTitles:(id)titles subtitles:(id)subtitles
 {
-  v5 = a3;
-  v6 = a4;
+  titlesCopy = titles;
+  subtitlesCopy = subtitles;
   v7 = objc_opt_new();
-  if ([v5 count])
+  if ([titlesCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
-      v10 = [v6 objectAtIndexedSubscript:v8];
+      v9 = [titlesCopy objectAtIndexedSubscript:v8];
+      v10 = [subtitlesCopy objectAtIndexedSubscript:v8];
       v11 = [TLKSelectableGridTuple tupleWithTitle:v9 subtitle:v10];
       [v7 addObject:v11];
 
       ++v8;
     }
 
-    while (v8 < [v5 count]);
+    while (v8 < [titlesCopy count]);
   }
 
   v12 = [v7 copy];
@@ -98,9 +98,9 @@
   v4 = [(TLKSelectableGridTuple *)&v8 description];
   [v3 appendString:v4];
 
-  v5 = [(TLKSelectableGridTuple *)self title];
-  v6 = [(TLKSelectableGridTuple *)self subtitle];
-  [v3 appendFormat:@" (Title: '%@', Subtitle: '%@')", v5, v6];
+  title = [(TLKSelectableGridTuple *)self title];
+  subtitle = [(TLKSelectableGridTuple *)self subtitle];
+  [v3 appendFormat:@" (Title: '%@', Subtitle: '%@')", title, subtitle];
 
   return v3;
 }

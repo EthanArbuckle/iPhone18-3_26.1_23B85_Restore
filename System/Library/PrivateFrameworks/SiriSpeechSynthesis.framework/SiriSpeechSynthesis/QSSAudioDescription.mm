@@ -1,6 +1,6 @@
 @interface QSSAudioDescription
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3;
-- (QSSAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer;
+- (QSSAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify;
 - (double)sample_rate;
 - (id)flatbuffData;
 - (unsigned)bits_per_channel;
@@ -44,33 +44,33 @@ flatbuffers::DetachedBuffer *__35__QSSAudioDescription_flatbuffData__block_invok
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer
 {
   [(QSSAudioDescription *)self sample_rate];
   v6 = v5;
-  v7 = [(QSSAudioDescription *)self format_id];
-  v8 = [(QSSAudioDescription *)self format_flags];
-  v9 = [(QSSAudioDescription *)self bytes_per_packet];
-  v10 = [(QSSAudioDescription *)self frames_per_packet];
-  v11 = [(QSSAudioDescription *)self bytes_per_frame];
-  v12 = [(QSSAudioDescription *)self channels_per_frame];
-  v13 = [(QSSAudioDescription *)self bits_per_channel];
-  v17 = [(QSSAudioDescription *)self reserved];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<double>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v8);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v9);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v11);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 18, v13);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v17);
+  format_id = [(QSSAudioDescription *)self format_id];
+  format_flags = [(QSSAudioDescription *)self format_flags];
+  bytes_per_packet = [(QSSAudioDescription *)self bytes_per_packet];
+  frames_per_packet = [(QSSAudioDescription *)self frames_per_packet];
+  bytes_per_frame = [(QSSAudioDescription *)self bytes_per_frame];
+  channels_per_frame = [(QSSAudioDescription *)self channels_per_frame];
+  bits_per_channel = [(QSSAudioDescription *)self bits_per_channel];
+  reserved = [(QSSAudioDescription *)self reserved];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<double>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, format_id);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, format_flags);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, bytes_per_packet);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, frames_per_packet);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, bytes_per_frame);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, channels_per_frame);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 18, bits_per_channel);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, reserved);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (unsigned)reserved
@@ -210,42 +210,42 @@ flatbuffers::DetachedBuffer *__35__QSSAudioDescription_flatbuffData__block_invok
   return result;
 }
 
-- (QSSAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5
+- (QSSAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSAudioDescription;
   v10 = [(QSSAudioDescription *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -267,9 +267,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -12,39 +12,39 @@
   getMPModelLibraryPlaylistEditTransactionDetailsClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_transactionDetails_identifier
 {
-  v1 = [a1 _musicKit_self_transactionDetails];
-  v2 = [v1 identifier];
+  _musicKit_self_transactionDetails = [self _musicKit_self_transactionDetails];
+  identifier = [_musicKit_self_transactionDetails identifier];
 
-  return v2;
+  return identifier;
 }
 
 - (id)musicKit_transactionDetails_referenceIdentifier
 {
-  v1 = [a1 _musicKit_self_transactionDetails];
-  v2 = [v1 referenceIdentifier];
+  _musicKit_self_transactionDetails = [self _musicKit_self_transactionDetails];
+  referenceIdentifier = [_musicKit_self_transactionDetails referenceIdentifier];
 
-  return v2;
+  return referenceIdentifier;
 }
 
 - (id)musicKit_transactionDetails_changes
 {
-  v1 = [a1 _musicKit_self_transactionDetails];
-  v2 = [v1 changes];
+  _musicKit_self_transactionDetails = [self _musicKit_self_transactionDetails];
+  changes = [_musicKit_self_transactionDetails changes];
 
-  return v2;
+  return changes;
 }
 
 @end

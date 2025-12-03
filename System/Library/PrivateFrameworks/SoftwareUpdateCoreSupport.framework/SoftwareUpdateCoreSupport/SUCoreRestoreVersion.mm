@@ -1,17 +1,17 @@
 @interface SUCoreRestoreVersion
 + (BOOL)_enableVerboseLogging;
-+ (id)_stringForNSComparisonResult:(int64_t)a3;
-- (BOOL)_isStringOnlyNumbers:(id)a3;
-- (BOOL)isComparable:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SUCoreRestoreVersion)initWithCoder:(id)a3;
-- (SUCoreRestoreVersion)initWithRestoreVersion:(id)a3;
++ (id)_stringForNSComparisonResult:(int64_t)result;
+- (BOOL)_isStringOnlyNumbers:(id)numbers;
+- (BOOL)isComparable:(id)comparable;
+- (BOOL)isEqual:(id)equal;
+- (SUCoreRestoreVersion)initWithCoder:(id)coder;
+- (SUCoreRestoreVersion)initWithRestoreVersion:(id)version;
 - (id)description;
-- (id)getNextNearestRestoreVersionOf:(id)a3 and:(id)a4;
+- (id)getNextNearestRestoreVersionOf:(id)of and:(id)and;
 - (id)summary;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)_parseRestoreVersionString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreRestoreVersion
@@ -20,7 +20,7 @@
 {
   OUTLINED_FUNCTION_2();
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [v0 summary];
+  summary = [v0 summary];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_0(&dword_1E0F71000, v2, v3, "[RestoreVersion] (%{public}@) Parse: first order split result was not as expected (expected 2 values): %{public}@", v4, v5, v6, v7, v9);
 
@@ -37,17 +37,17 @@
   return _enableVerboseLogging___verboseLoggingEnabled;
 }
 
-- (SUCoreRestoreVersion)initWithRestoreVersion:(id)a3
+- (SUCoreRestoreVersion)initWithRestoreVersion:(id)version
 {
-  v5 = a3;
-  if (!v5)
+  versionCopy = version;
+  if (!versionCopy)
   {
     v14 = +[SUCoreLog sharedLogger];
-    v15 = [v14 oslog];
+    oslog = [v14 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreRestoreVersion initWithRestoreVersion:v15];
+      [SUCoreRestoreVersion initWithRestoreVersion:oslog];
     }
 
     goto LABEL_11;
@@ -59,7 +59,7 @@
   self = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_restoreVersionString, a3);
+    objc_storeStrong(&v6->_restoreVersionString, version);
     [(SUCoreRestoreVersion *)self _parseRestoreVersionString];
     parsedVersion = self->_parsedVersion;
     if (parsedVersion && [(NSArray *)parsedVersion count]== 5)
@@ -83,39 +83,39 @@
     }
 
     v16 = +[SUCoreLog sharedLogger];
-    v15 = [v16 oslog];
+    oslog = [v16 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreRestoreVersion initWithRestoreVersion:];
     }
 
 LABEL_11:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
 LABEL_6:
   self = self;
-  v13 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)getNextNearestRestoreVersionOf:(id)a3 and:(id)a4
+- (id)getNextNearestRestoreVersionOf:(id)of and:(id)and
 {
   v18 = *MEMORY[0x1E69E9840];
-  v15 = self;
-  v16 = a3;
-  v17 = a4;
+  selfCopy = self;
+  ofCopy = of;
+  andCopy = and;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v15 count:3];
+  andCopy2 = and;
+  ofCopy2 = of;
+  v9 = [v6 arrayWithObjects:&selfCopy count:3];
 
-  v10 = [v9 sortedArrayUsingComparator:{&__block_literal_global_3, v15, v16, v17, v18}];
+  v10 = [v9 sortedArrayUsingComparator:{&__block_literal_global_3, selfCopy, ofCopy, andCopy, v18}];
 
   v11 = [v10 indexOfObjectIdenticalTo:self];
   if (v11 >= [v10 count] - 1)
@@ -133,28 +133,28 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_isStringOnlyNumbers:(id)a3
+- (BOOL)_isStringOnlyNumbers:(id)numbers
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 decimalDigitCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  numbersCopy = numbers;
+  decimalDigitCharacterSet = [v3 decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v7 = [numbersCopy rangeOfCharacterFromSet:invertedSet];
 
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)isComparable:(id)a3
+- (BOOL)isComparable:(id)comparable
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (v5 = -[SUCoreRestoreVersion buildGroup](self, "buildGroup"), v5 == [v4 buildGroup]))
+  comparableCopy = comparable;
+  if (comparableCopy && (v5 = -[SUCoreRestoreVersion buildGroup](self, "buildGroup"), v5 == [comparableCopy buildGroup]))
   {
-    v6 = [(SUCoreRestoreVersion *)self parsedVersion];
-    if ([v6 count] == 5)
+    parsedVersion = [(SUCoreRestoreVersion *)self parsedVersion];
+    if ([parsedVersion count] == 5)
     {
-      v7 = [v4 parsedVersion];
-      v8 = [v7 count] == 5;
+      parsedVersion2 = [comparableCopy parsedVersion];
+      v8 = [parsedVersion2 count] == 5;
     }
 
     else
@@ -171,26 +171,26 @@ LABEL_12:
   if (+[SUCoreRestoreVersion _enableVerboseLogging])
   {
     v9 = +[SUCoreLog sharedLogger];
-    v10 = [v9 oslog];
+    oslog = [v9 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUCoreRestoreVersion *)self summary];
-      v12 = [v4 summary];
-      v13 = v12;
+      summary = [(SUCoreRestoreVersion *)self summary];
+      summary2 = [comparableCopy summary];
+      v13 = summary2;
       v14 = @"NO";
       v17 = 138543874;
-      v18 = v11;
+      v18 = summary;
       v19 = 2114;
       if (v8)
       {
         v14 = @"YES";
       }
 
-      v20 = v12;
+      v20 = summary2;
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_1E0F71000, v10, OS_LOG_TYPE_DEFAULT, "[RestoreVersion] Comparable: self=%{public}@ to=%{public}@ | valid=%{public}@", &v17, 0x20u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[RestoreVersion] Comparable: self=%{public}@ to=%{public}@ | valid=%{public}@", &v17, 0x20u);
     }
   }
 
@@ -198,19 +198,19 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(SUCoreRestoreVersion *)self isComparable:v4])
+  compareCopy = compare;
+  if ([(SUCoreRestoreVersion *)self isComparable:compareCopy])
   {
     v5 = 0;
     do
     {
-      v6 = [(SUCoreRestoreVersion *)self parsedVersion];
-      v7 = [v6 objectAtIndex:v5];
-      v8 = [v4 parsedVersion];
-      v9 = [v8 objectAtIndex:v5];
+      parsedVersion = [(SUCoreRestoreVersion *)self parsedVersion];
+      v7 = [parsedVersion objectAtIndex:v5];
+      parsedVersion2 = [compareCopy parsedVersion];
+      v9 = [parsedVersion2 objectAtIndex:v5];
       v10 = [v7 compare:v9];
 
       if (v10)
@@ -223,20 +223,20 @@ LABEL_12:
     if (+[SUCoreRestoreVersion _enableVerboseLogging])
     {
       v12 = +[SUCoreLog sharedLogger];
-      v13 = [v12 oslog];
+      oslog = [v12 oslog];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(SUCoreRestoreVersion *)self summary];
-        v15 = [v4 summary];
+        summary = [(SUCoreRestoreVersion *)self summary];
+        summary2 = [compareCopy summary];
         v16 = [SUCoreRestoreVersion _stringForNSComparisonResult:v10];
         v20 = 138543874;
-        v21 = v14;
+        v21 = summary;
         v22 = 2114;
-        v23 = v15;
+        v23 = summary2;
         v24 = 2114;
         v25 = v16;
-        _os_log_impl(&dword_1E0F71000, v13, OS_LOG_TYPE_DEFAULT, "[RestoreVersion] Compare: self=%{public}@ to=%{public}@ | result=%{public}@", &v20, 0x20u);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[RestoreVersion] Compare: self=%{public}@ to=%{public}@ | result=%{public}@", &v20, 0x20u);
       }
     }
   }
@@ -253,23 +253,23 @@ LABEL_12:
   return v10;
 }
 
-+ (id)_stringForNSComparisonResult:(int64_t)a3
++ (id)_stringForNSComparisonResult:(int64_t)result
 {
-  if ((a3 + 1) > 2)
+  if ((result + 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E86FC8E8[a3 + 1];
+    return off_1E86FC8E8[result + 1];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -279,11 +279,11 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCoreRestoreVersion *)self restoreVersionString];
-      v7 = [(SUCoreRestoreVersion *)v5 restoreVersionString];
+      v5 = equalCopy;
+      restoreVersionString = [(SUCoreRestoreVersion *)self restoreVersionString];
+      restoreVersionString2 = [(SUCoreRestoreVersion *)v5 restoreVersionString];
 
-      v8 = [SUCore stringIsEqual:v6 to:v7];
+      v8 = [SUCore stringIsEqual:restoreVersionString to:restoreVersionString2];
     }
 
     else
@@ -298,8 +298,8 @@ LABEL_12:
 - (id)summary
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SUCoreRestoreVersion *)self restoreVersionString];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  restoreVersionString = [(SUCoreRestoreVersion *)self restoreVersionString];
+  v4 = [v2 stringWithFormat:@"%@", restoreVersionString];
 
   return v4;
 }
@@ -307,28 +307,28 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SUCoreRestoreVersion *)self restoreVersionString];
-  v5 = [(SUCoreRestoreVersion *)self parsedVersion];
-  v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 stringWithFormat:@"SUCoreRestoreVersion(restoreVersionString:%@|parsedVersion:%@|buildGroup:%ld)", v4, v6, -[SUCoreRestoreVersion buildGroup](self, "buildGroup")];
+  restoreVersionString = [(SUCoreRestoreVersion *)self restoreVersionString];
+  parsedVersion = [(SUCoreRestoreVersion *)self parsedVersion];
+  v6 = [parsedVersion componentsJoinedByString:@"."];
+  v7 = [v3 stringWithFormat:@"SUCoreRestoreVersion(restoreVersionString:%@|parsedVersion:%@|buildGroup:%ld)", restoreVersionString, v6, -[SUCoreRestoreVersion buildGroup](self, "buildGroup")];
 
   return v7;
 }
 
-- (SUCoreRestoreVersion)initWithCoder:(id)a3
+- (SUCoreRestoreVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RestoreVersionString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RestoreVersionString"];
 
   v6 = [(SUCoreRestoreVersion *)self initWithRestoreVersion:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreRestoreVersion *)self restoreVersionString];
-  [v4 encodeObject:v5 forKey:@"RestoreVersionString"];
+  coderCopy = coder;
+  restoreVersionString = [(SUCoreRestoreVersion *)self restoreVersionString];
+  [coderCopy encodeObject:restoreVersionString forKey:@"RestoreVersionString"];
 }
 
 void __45__SUCoreRestoreVersion__enableVerboseLogging__block_invoke()

@@ -1,24 +1,24 @@
 @interface CRLWPSearch
-- (CRLWPSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 storage:(id)a6 range:(_NSRange)a7 searchCanvasDelegate:(id)a8;
+- (CRLWPSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block storage:(id)storage range:(_NSRange)range searchCanvasDelegate:(id)delegate;
 - (_NSRange)range;
 - (_TtC8Freeform12CRLWPStorage)storage;
-- (void)foundHitWithRange:(_NSRange)a3;
+- (void)foundHitWithRange:(_NSRange)range;
 @end
 
 @implementation CRLWPSearch
 
-- (CRLWPSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 storage:(id)a6 range:(_NSRange)a7 searchCanvasDelegate:(id)a8
+- (CRLWPSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block storage:(id)storage range:(_NSRange)range searchCanvasDelegate:(id)delegate
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = v17;
-  if (v14)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
+  storageCopy = storage;
+  delegateCopy = delegate;
+  v18 = delegateCopy;
+  if (stringCopy)
   {
-    if (v16)
+    if (storageCopy)
     {
       goto LABEL_22;
     }
@@ -27,7 +27,7 @@
   }
 
   v31 = location;
-  v33 = v17;
+  v33 = delegateCopy;
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   v19 = length;
   if (qword_101AD5A10 != -1)
@@ -58,7 +58,7 @@
   length = v19;
   location = v31;
   v18 = v33;
-  if (!v16)
+  if (!storageCopy)
   {
 LABEL_13:
     v32 = location;
@@ -94,33 +94,33 @@ LABEL_13:
 LABEL_22:
   v34.receiver = self;
   v34.super_class = CRLWPSearch;
-  v26 = [(CRLSearch *)&v34 initWithString:v14 options:a4 hitBlock:v15];
+  v26 = [(CRLSearch *)&v34 initWithString:stringCopy options:options hitBlock:blockCopy];
   v27 = v26;
   if (v26)
   {
     v26->_range.location = location;
     v26->_range.length = length;
-    objc_storeWeak(&v26->_storage, v16);
-    v27->_storageChangeCount = [v16 changeCount];
-    objc_storeStrong(&v27->_searchCanvasDelegate, a8);
-    v28 = [v16 string];
+    objc_storeWeak(&v26->_storage, storageCopy);
+    v27->_storageChangeCount = [storageCopy changeCount];
+    objc_storeStrong(&v27->_searchCanvasDelegate, delegate);
+    string = [storageCopy string];
     searchedString = v27->_searchedString;
-    v27->_searchedString = v28;
+    v27->_searchedString = string;
   }
 
   return v27;
 }
 
-- (void)foundHitWithRange:(_NSRange)a3
+- (void)foundHitWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CRLWPSearch *)self searchCanvasDelegate];
+  length = range.length;
+  location = range.location;
+  searchCanvasDelegate = [(CRLWPSearch *)self searchCanvasDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CRLWPSearch *)self searchCanvasDelegate];
-    v8 = [(CRLWPSearch *)self storage];
-    v9 = [v7 wpSelectionClassForStorage:v8];
+    searchCanvasDelegate2 = [(CRLWPSearch *)self searchCanvasDelegate];
+    storage = [(CRLWPSearch *)self storage];
+    v9 = [searchCanvasDelegate2 wpSelectionClassForStorage:storage];
   }
 
   else
@@ -128,12 +128,12 @@ LABEL_22:
     v9 = objc_opt_class();
   }
 
-  v14 = [(CRLSearch *)self hitBlock];
-  v10 = [(CRLWPSearch *)self storage];
+  hitBlock = [(CRLSearch *)self hitBlock];
+  storage2 = [(CRLWPSearch *)self storage];
   v11 = [v9 selectionWithRange:{location, length}];
-  v12 = [(CRLWPSearch *)self searchCanvasDelegate];
-  v13 = [CRLWPSearchReference searchReferenceWithStorage:v10 selection:v11 searchCanvasDelegate:v12];
-  v14[2](v14, v13);
+  searchCanvasDelegate3 = [(CRLWPSearch *)self searchCanvasDelegate];
+  v13 = [CRLWPSearchReference searchReferenceWithStorage:storage2 selection:v11 searchCanvasDelegate:searchCanvasDelegate3];
+  hitBlock[2](hitBlock, v13);
 }
 
 - (_NSRange)range

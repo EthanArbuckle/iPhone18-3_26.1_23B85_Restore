@@ -1,17 +1,17 @@
 @interface ChangeHistoryProcessor
 - (_TtC14CopresenceCore22ChangeHistoryProcessor)init;
-- (void)visitDeleteContactEvent:(id)a3;
+- (void)visitDeleteContactEvent:(id)event;
 @end
 
 @implementation ChangeHistoryProcessor
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC14CopresenceCore22ChangeHistoryProcessor_onContactDeleted);
   v4 = *&self->onContactDeleted[OBJC_IVAR____TtC14CopresenceCore22ChangeHistoryProcessor_onContactDeleted];
-  v11 = a3;
-  v6 = self;
-  v7 = [v11 contactIdentifier];
+  eventCopy = event;
+  selfCopy = self;
+  contactIdentifier = [eventCopy contactIdentifier];
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 

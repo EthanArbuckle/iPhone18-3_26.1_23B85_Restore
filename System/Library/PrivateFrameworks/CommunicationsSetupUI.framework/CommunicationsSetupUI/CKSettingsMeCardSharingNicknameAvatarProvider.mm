@@ -1,37 +1,37 @@
 @interface CKSettingsMeCardSharingNicknameAvatarProvider
-- (CKSettingsMeCardSharingNicknameAvatarProvider)initWithImageData:(id)a3;
-- (void)generateAvatarImageOfSize:(CGSize)a3 imageHandler:(id)a4;
+- (CKSettingsMeCardSharingNicknameAvatarProvider)initWithImageData:(id)data;
+- (void)generateAvatarImageOfSize:(CGSize)size imageHandler:(id)handler;
 @end
 
 @implementation CKSettingsMeCardSharingNicknameAvatarProvider
 
-- (CKSettingsMeCardSharingNicknameAvatarProvider)initWithImageData:(id)a3
+- (CKSettingsMeCardSharingNicknameAvatarProvider)initWithImageData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = CKSettingsMeCardSharingNicknameAvatarProvider;
   v6 = [(CKSettingsMeCardSharingNicknameAvatarProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageData, a3);
+    objc_storeStrong(&v6->_imageData, data);
   }
 
   return v7;
 }
 
-- (void)generateAvatarImageOfSize:(CGSize)a3 imageHandler:(id)a4
+- (void)generateAvatarImageOfSize:(CGSize)size imageHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v14 = a4;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   v10 = MEMORY[0x277D755B8];
-  v11 = [(CKSettingsMeCardSharingNicknameAvatarProvider *)self imageData];
-  v12 = [v10 imageWithData:v11 scale:v9];
+  imageData = [(CKSettingsMeCardSharingNicknameAvatarProvider *)self imageData];
+  v12 = [v10 imageWithData:imageData scale:v9];
 
   if (v12)
   {
@@ -54,7 +54,7 @@
     v13 = 0;
   }
 
-  v14[2](v14, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
 }
 
 @end

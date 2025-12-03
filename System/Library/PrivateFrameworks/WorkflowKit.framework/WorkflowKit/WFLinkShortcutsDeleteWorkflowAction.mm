@@ -1,6 +1,6 @@
 @interface WFLinkShortcutsDeleteWorkflowAction
 - (id)inputDictionary;
-- (id)localizedCategoryWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
 @end
 
 @implementation WFLinkShortcutsDeleteWorkflowAction
@@ -10,8 +10,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = WFLinkShortcutsDeleteWorkflowAction;
-  v3 = [(WFLinkAction *)&v15 inputDictionary];
-  v4 = [v3 mutableCopy];
+  inputDictionary = [(WFLinkAction *)&v15 inputDictionary];
+  v4 = [inputDictionary mutableCopy];
 
   v5 = [v4 objectForKey:@"Types"];
   if (v5)
@@ -43,7 +43,7 @@
       *buf = 136315394;
       v17 = "[WFLinkShortcutsDeleteWorkflowAction inputDictionary]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_FAULT, "%s Unable to construct input type for %@", buf, 0x16u);
     }
 
@@ -63,11 +63,11 @@
   return v4;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"ShortcutsSubcategoryShortcuts", @"Shortcuts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

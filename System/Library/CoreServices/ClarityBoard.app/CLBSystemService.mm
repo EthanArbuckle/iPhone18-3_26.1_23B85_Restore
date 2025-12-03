@@ -1,31 +1,31 @@
 @interface CLBSystemService
-- (BOOL)_openWebsiteInlineForRequest:(id)a3;
-- (CLBSystemService)initWithDelegate:(id)a3;
+- (BOOL)_openWebsiteInlineForRequest:(id)request;
+- (CLBSystemService)initWithDelegate:(id)delegate;
 - (CLBSystemServiceDelegate)delegate;
-- (void)_attemptToDismissLockScreenWithCompletion:(id)a3;
-- (void)_finishHandlingOpenApplicationRequest:(id)a3 verifierResult:(id)a4 completion:(id)a5;
-- (void)_handleUpdatedScreenSizeForApplication:(id)a3 completion:(id)a4;
-- (void)_performSceneUpdateForRequest:(id)a3;
-- (void)_reportInsecureProcessesForAction:(id)a3;
+- (void)_attemptToDismissLockScreenWithCompletion:(id)completion;
+- (void)_finishHandlingOpenApplicationRequest:(id)request verifierResult:(id)result completion:(id)completion;
+- (void)_handleUpdatedScreenSizeForApplication:(id)application completion:(id)completion;
+- (void)_performSceneUpdateForRequest:(id)request;
+- (void)_reportInsecureProcessesForAction:(id)action;
 - (void)dealloc;
-- (void)systemService:(id)a3 canActivateApplication:(id)a4 withResult:(id)a5;
-- (void)systemService:(id)a3 handleActions:(id)a4 origin:(id)a5 withResult:(id)a6;
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5;
-- (void)systemService:(id)a3 isPasscodeLockedOrBlockedWithResult:(id)a4;
+- (void)systemService:(id)service canActivateApplication:(id)application withResult:(id)result;
+- (void)systemService:(id)service handleActions:(id)actions origin:(id)origin withResult:(id)result;
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion;
+- (void)systemService:(id)service isPasscodeLockedOrBlockedWithResult:(id)result;
 @end
 
 @implementation CLBSystemService
 
-- (CLBSystemService)initWithDelegate:(id)a3
+- (CLBSystemService)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = CLBSystemService;
   v5 = [(CLBSystemService *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[FBSystemService sharedInstance];
     [v7 setDelegate:v6];
   }
@@ -35,13 +35,13 @@
 
 - (void)dealloc
 {
-  v3 = [(CLBSystemService *)self lockScreenDidCompleteToken];
+  lockScreenDidCompleteToken = [(CLBSystemService *)self lockScreenDidCompleteToken];
 
-  if (v3)
+  if (lockScreenDidCompleteToken)
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(CLBSystemService *)self lockScreenDidCompleteToken];
-    [v4 removeObserver:v5];
+    lockScreenDidCompleteToken2 = [(CLBSystemService *)self lockScreenDidCompleteToken];
+    [v4 removeObserver:lockScreenDidCompleteToken2];
   }
 
   v6.receiver = self;
@@ -49,31 +49,31 @@
   [(CLBSystemService *)&v6 dealloc];
 }
 
-- (void)systemService:(id)a3 canActivateApplication:(id)a4 withResult:(id)a5
+- (void)systemService:(id)service canActivateApplication:(id)application withResult:(id)result
 {
-  if (a5)
+  if (result)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(result + 2))(result, 0);
   }
 }
 
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   v9 = +[CLFLog commonLog];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 systemServiceDescription];
+    systemServiceDescription = [requestCopy systemServiceDescription];
     *buf = 138412290;
-    v21 = v10;
+    v21 = systemServiceDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Handle open application request (%@)", buf, 0xCu);
   }
 
-  v11 = [(CLBSystemService *)self lockScreenDidCompleteToken];
+  lockScreenDidCompleteToken = [(CLBSystemService *)self lockScreenDidCompleteToken];
 
-  if (v11)
+  if (lockScreenDidCompleteToken)
   {
     v12 = +[CLFLog commonLog];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -82,10 +82,10 @@
     }
 
     v13 = FBSOpenApplicationErrorCreate();
-    v8[2](v8, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  else if ([(CLBSystemService *)self _openWebsiteInlineForRequest:v7])
+  else if ([(CLBSystemService *)self _openWebsiteInlineForRequest:requestCopy])
   {
     v14 = +[CLFLog commonLog];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -94,7 +94,7 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Opened website URL within current app.", buf, 2u);
     }
 
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -104,18 +104,18 @@
     v16[1] = 3221225472;
     v16[2] = sub_100025D2C;
     v16[3] = &unk_1002FD048;
-    v17 = v7;
-    v18 = self;
-    v19 = v8;
+    v17 = requestCopy;
+    selfCopy = self;
+    v19 = completionCopy;
     [v15 verifyRequest:v17 completionHandler:v16];
   }
 }
 
-- (BOOL)_openWebsiteInlineForRequest:(id)a3
+- (BOOL)_openWebsiteInlineForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[CLBOpenApplicationVerifier sharedInstance];
-  v5 = [v4 shouldOpenWebsiteInlineForRequest:v3];
+  v5 = [v4 shouldOpenWebsiteInlineForRequest:requestCopy];
 
   if (!v5)
   {
@@ -125,8 +125,8 @@ LABEL_7:
   }
 
   v6 = qword_100336870;
-  v7 = [v3 options];
-  v8 = [v7 url];
+  options = [requestCopy options];
+  v8 = [options url];
   v9 = [CLBEvent eventWithType:5 context:v8];
   LOBYTE(v6) = [v6 handleEvent:v9];
 
@@ -147,9 +147,9 @@ LABEL_8:
   return v10;
 }
 
-- (void)_attemptToDismissLockScreenWithCompletion:(id)a3
+- (void)_attemptToDismissLockScreenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   v5 = +[CLFLog commonLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -170,7 +170,7 @@ LABEL_8:
   v16 = sub_10002625C;
   v17 = &unk_1002FD070;
   objc_copyWeak(&v19, buf);
-  v10 = v4;
+  v10 = completionCopy;
   v18 = v10;
   objc_copyWeak(&v20, &location);
   v11 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:&v14];
@@ -186,17 +186,17 @@ LABEL_8:
   objc_destroyWeak(buf);
 }
 
-- (void)_finishHandlingOpenApplicationRequest:(id)a3 verifierResult:(id)a4 completion:(id)a5
+- (void)_finishHandlingOpenApplicationRequest:(id)request verifierResult:(id)result completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = objc_retainBlock(a5);
-  v11 = [v9 error];
-  v12 = v11;
-  if (v11)
+  requestCopy = request;
+  resultCopy = result;
+  v10 = objc_retainBlock(completion);
+  error = [resultCopy error];
+  v12 = error;
+  if (error)
   {
-    [v11 code];
-    v20 = [v12 errorDescription];
+    [error code];
+    errorDescription = [v12 errorDescription];
     v13 = FBSOpenApplicationErrorCreate();
 
     v14 = +[CLFLog commonLog];
@@ -217,15 +217,15 @@ LABEL_5:
 
   else
   {
-    v15 = [v9 pptTestURL];
-    if (v15)
+    pptTestURL = [resultCopy pptTestURL];
+    if (pptTestURL)
     {
-      [UIApp handleTestURL:v15];
+      [UIApp handleTestURL:pptTestURL];
     }
 
     else
     {
-      v16 = [[CLBOpenApplicationRequest alloc] initWithRequest:v8 completion:v10];
+      v16 = [[CLBOpenApplicationRequest alloc] initWithRequest:requestCopy completion:v10];
       v17 = qword_100336870;
       v18 = [CLBEvent eventWithType:4 context:v16];
       LOBYTE(v17) = [v17 handleEvent:v18];
@@ -254,17 +254,17 @@ LABEL_5:
 LABEL_15:
 }
 
-- (void)_handleUpdatedScreenSizeForApplication:(id)a3 completion:(id)a4
+- (void)_handleUpdatedScreenSizeForApplication:(id)application completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v8 = [v6 bundleIdentifier];
-  v9 = [(CLBSystemService *)self delegate];
-  v10 = [v9 systemService:self displayStyleForBundleIdentifier:v8];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  delegate = [(CLBSystemService *)self delegate];
+  v10 = [delegate systemService:self displayStyleForBundleIdentifier:bundleIdentifier];
 
-  v11 = [(CLBSystemService *)self delegate];
-  v12 = [v11 systemService:self lastUsedDisplayStyleForBundleIdentifier:v8];
+  delegate2 = [(CLBSystemService *)self delegate];
+  v12 = [delegate2 systemService:self lastUsedDisplayStyleForBundleIdentifier:bundleIdentifier];
 
   if (!v12 || [v12 integerValue] == v10)
   {
@@ -277,7 +277,7 @@ LABEL_15:
     v14 = sub_10001FE74([v12 integerValue]);
     v15 = sub_10001FE74(v10);
     *buf = 138412802;
-    v25 = v8;
+    v25 = bundleIdentifier;
     v26 = 2112;
     v27 = v14;
     v28 = 2112;
@@ -286,26 +286,26 @@ LABEL_15:
   }
 
   v16 = +[FBProcessManager sharedInstance];
-  v17 = [v16 applicationProcessesForBundleIdentifier:v8];
+  v17 = [v16 applicationProcessesForBundleIdentifier:bundleIdentifier];
 
   if ([v17 count] >= 2)
   {
     v18 = +[CLFLog commonLog];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      sub_1002857D4(v8, v18);
+      sub_1002857D4(bundleIdentifier, v18);
     }
   }
 
-  v19 = [v17 firstObject];
+  firstObject = [v17 firstObject];
 
-  if (v19)
+  if (firstObject)
   {
     v20 = +[CLFLog commonLog];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v8;
+      v25 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Terminating to handle updated screen size: %@", buf, 0xCu);
     }
 
@@ -313,37 +313,37 @@ LABEL_15:
     v21[1] = 3221225472;
     v21[2] = sub_100026888;
     v21[3] = &unk_1002FD098;
-    v22 = v6;
-    v23 = v7;
-    [v19 killForReason:5 andReport:0 withDescription:@"scene frame changed" completion:v21];
+    v22 = applicationCopy;
+    v23 = completionCopy;
+    [firstObject killForReason:5 andReport:0 withDescription:@"scene frame changed" completion:v21];
   }
 
   else
   {
 LABEL_13:
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)_performSceneUpdateForRequest:(id)a3
+- (void)_performSceneUpdateForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 systemRequest];
-  v6 = [v5 bundleIdentifier];
+  requestCopy = request;
+  systemRequest = [requestCopy systemRequest];
+  bundleIdentifier = [systemRequest bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100026B7C;
     v16[3] = &unk_1002FD0C0;
-    v7 = v4;
+    v7 = requestCopy;
     v17 = v7;
-    v18 = self;
-    v8 = v6;
+    selfCopy = self;
+    v8 = bundleIdentifier;
     v19 = v8;
     v9 = objc_retainBlock(v16);
-    v10 = [v7 application];
+    application = [v7 application];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100026C10;
@@ -351,7 +351,7 @@ LABEL_13:
     v14 = v8;
     v15 = v9;
     v11 = v9;
-    [(CLBSystemService *)self _handleUpdatedScreenSizeForApplication:v10 completion:v13];
+    [(CLBSystemService *)self _handleUpdatedScreenSizeForApplication:application completion:v13];
 
     v12 = v17;
   }
@@ -366,23 +366,23 @@ LABEL_13:
   }
 }
 
-- (void)systemService:(id)a3 isPasscodeLockedOrBlockedWithResult:(id)a4
+- (void)systemService:(id)service isPasscodeLockedOrBlockedWithResult:(id)result
 {
-  if (a4)
+  if (result)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(result + 2))(result, 0);
   }
 }
 
-- (void)systemService:(id)a3 handleActions:(id)a4 origin:(id)a5 withResult:(id)a6
+- (void)systemService:(id)service handleActions:(id)actions origin:(id)origin withResult:(id)result
 {
-  v8 = a4;
-  v9 = a6;
+  actionsCopy = actions;
+  resultCopy = result;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [actionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -394,7 +394,7 @@ LABEL_13:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
@@ -410,11 +410,11 @@ LABEL_13:
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [actionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
-    if (v9)
+    if (resultCopy)
     {
       if (v13)
       {
@@ -430,27 +430,27 @@ LABEL_13:
     }
   }
 
-  else if (v9)
+  else if (resultCopy)
   {
     v16 = 0;
 LABEL_17:
-    v9[2](v9, v16);
+    resultCopy[2](resultCopy, v16);
   }
 }
 
-- (void)_reportInsecureProcessesForAction:(id)a3
+- (void)_reportInsecureProcessesForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 secureModeViolations];
+  actionCopy = action;
+  secureModeViolations = [actionCopy secureModeViolations];
   v5 = +[CLFLog commonLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v83 = v3;
+    v83 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received insecure drawing action %@", buf, 0xCu);
   }
 
-  v48 = v3;
+  v48 = actionCopy;
 
   v54 = getpid();
   v52 = objc_alloc_init(NSMutableSet);
@@ -459,7 +459,7 @@ LABEL_17:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v4;
+  obj = secureModeViolations;
   v55 = [obj countByEnumeratingWithState:&v74 objects:v81 count:16];
   if (v55)
   {
@@ -477,12 +477,12 @@ LABEL_17:
 
         v56 = v7;
         v8 = *(*(&v74 + 1) + 8 * v7);
-        v9 = [v8 layerNamesByContext];
-        v10 = [v9 count];
+        layerNamesByContext = [v8 layerNamesByContext];
+        v10 = [layerNamesByContext count];
 
         if (v10)
         {
-          v11 = [v8 layerNamesByContext];
+          layerNamesByContext2 = [v8 layerNamesByContext];
           v70[0] = _NSConcreteStackBlock;
           v70[1] = 3221225472;
           v70[2] = sub_1000274E0;
@@ -490,20 +490,20 @@ LABEL_17:
           v71 = v52;
           v72 = v6;
           v73 = v8;
-          [v11 enumerateKeysAndObjectsUsingBlock:v70];
+          [layerNamesByContext2 enumerateKeysAndObjectsUsingBlock:v70];
 
-          v12 = v71;
+          processId = v71;
         }
 
         else
         {
-          v12 = [v8 processId];
-          [v6 addObject:v12];
+          processId = [v8 processId];
+          [v6 addObject:processId];
         }
 
-        v13 = [v8 processId];
+        processId2 = [v8 processId];
         v14 = [NSNumber numberWithInt:v54];
-        v15 = [v13 isEqualToNumber:v14];
+        v15 = [processId2 isEqualToNumber:v14];
 
         if (v15)
         {
@@ -511,8 +511,8 @@ LABEL_17:
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v16 = [v8 contextIds];
-          v17 = [v16 countByEnumeratingWithState:&v66 objects:v80 count:16];
+          contextIds = [v8 contextIds];
+          v17 = [contextIds countByEnumeratingWithState:&v66 objects:v80 count:16];
           if (v17)
           {
             v18 = v17;
@@ -523,7 +523,7 @@ LABEL_17:
               {
                 if (*v67 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(contextIds);
                 }
 
                 v21 = *(*(&v66 + 1) + 8 * i);
@@ -537,7 +537,7 @@ LABEL_17:
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v66 objects:v80 count:16];
+              v18 = [contextIds countByEnumeratingWithState:&v66 objects:v80 count:16];
             }
 
             while (v18);
@@ -620,27 +620,27 @@ LABEL_17:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v58 + 1) + 8 * k) processId];
-        v40 = [v39 intValue];
+        processId3 = [*(*(&v58 + 1) + 8 * k) processId];
+        intValue = [processId3 intValue];
 
-        if (v40 >= 1)
+        if (intValue >= 1)
         {
-          v41 = [NSNumber numberWithInt:v40];
+          v41 = [NSNumber numberWithInt:intValue];
           v42 = [v33 containsObject:v41];
 
           if (v42)
           {
             v43 = v33;
-            v44 = [v57 processForPID:v40];
+            v44 = [v57 processForPID:intValue];
             v45 = v44;
             if (v44)
             {
-              v46 = [v44 bundleIdentifier];
+              bundleIdentifier = [v44 bundleIdentifier];
               v47 = +[CLFLog commonLog];
               if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v83 = v46;
+                v83 = bundleIdentifier;
                 _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "Process had insecure drawing: %@", buf, 0xCu);
               }
             }

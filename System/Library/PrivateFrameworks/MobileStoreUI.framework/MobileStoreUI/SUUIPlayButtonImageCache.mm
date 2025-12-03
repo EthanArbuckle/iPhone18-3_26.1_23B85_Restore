@@ -1,6 +1,6 @@
 @interface SUUIPlayButtonImageCache
-+ (id)imageCacheForStyle:(int64_t)a3;
-- (SUUIPlayButtonImageCache)initWithStyle:(int64_t)a3;
++ (id)imageCacheForStyle:(int64_t)style;
+- (SUUIPlayButtonImageCache)initWithStyle:(int64_t)style;
 - (UIImage)pauseImage;
 - (UIImage)playImage;
 - (UIImage)stopImage;
@@ -9,18 +9,18 @@
 
 @implementation SUUIPlayButtonImageCache
 
-+ (id)imageCacheForStyle:(int64_t)a3
++ (id)imageCacheForStyle:(int64_t)style
 {
   if (imageCacheForStyle__onceToken != -1)
   {
     +[SUUIPlayButtonImageCache imageCacheForStyle:];
   }
 
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v5 = [imageCacheForStyle__sharedCaches objectForKey:v4];
   if (!v5)
   {
-    v5 = [[SUUIPlayButtonImageCache alloc] initWithStyle:a3];
+    v5 = [[SUUIPlayButtonImageCache alloc] initWithStyle:style];
     [imageCacheForStyle__sharedCaches setObject:v5 forKey:v4];
   }
 
@@ -38,7 +38,7 @@ uint64_t __47__SUUIPlayButtonImageCache_imageCacheForStyle___block_invoke()
   return [v2 setName:@"com.apple.iTunesStoreUI.SUUIPlayButtonImageCache.imageCacheForStyle"];
 }
 
-- (SUUIPlayButtonImageCache)initWithStyle:(int64_t)a3
+- (SUUIPlayButtonImageCache)initWithStyle:(int64_t)style
 {
   v16.receiver = self;
   v16.super_class = SUUIPlayButtonImageCache;
@@ -51,10 +51,10 @@ uint64_t __47__SUUIPlayButtonImageCache_imageCacheForStyle___block_invoke()
     bundle = v5->_bundle;
     v5->_bundle = v6;
 
-    if (a3 <= 2)
+    if (style <= 2)
     {
-      v8 = off_2798FE070[a3];
-      v9 = off_2798FE088[a3];
+      v8 = off_2798FE070[style];
+      v9 = off_2798FE088[style];
       playImageName = v5->_playImageName;
       v5->_playImageName = &v8->isa;
 

@@ -7,7 +7,7 @@
 - (int64_t)pageAngle;
 - (unint64_t)i_flushableMemoryEstimate;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)i_commonInit;
 - (void)p_loadIfNecessary;
@@ -152,13 +152,13 @@
   return v3;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ((objc_msgSend_isValid(self, a2, a3) & 1) == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ((objc_msgSend_isValid(self, a2, context) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDPDFImageProvider drawImageInContext:rect:]");
@@ -175,7 +175,7 @@
     if (Page)
     {
       v21 = Page;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v31.origin.x = x;
       v31.origin.y = y;
       v31.size.width = width;
@@ -186,8 +186,8 @@
       v32.size.width = width;
       v32.size.height = height;
       MaxY = CGRectGetMaxY(v32);
-      CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a3, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       memset(&v30, 0, sizeof(v30));
       v28 = 0.0;
       v29 = 0.0;
@@ -202,12 +202,12 @@
         *&v24.a = v25;
         *&v24.c = v26;
         *&v24.tx = v27;
-        CGContextConcatCTM(a3, &v24);
+        CGContextConcatCTM(context, &v24);
         CGContextClipToRectSafe();
-        CGContextDrawPDFPage(a3, v21);
+        CGContextDrawPDFPage(context, v21);
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }

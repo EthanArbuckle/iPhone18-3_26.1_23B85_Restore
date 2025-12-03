@@ -1,26 +1,26 @@
 @interface MTLIOAccelCommandQueue
-- (BOOL)_setGPUPriority:(unint64_t)a3 backgroundPriority:(unint64_t)a4;
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3;
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3 offset:(unsigned __int16)a4;
-- (BOOL)setGPUPriority:(unint64_t)a3;
-- (MTLIOAccelCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
+- (BOOL)_setGPUPriority:(unint64_t)priority backgroundPriority:(unint64_t)backgroundPriority;
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority;
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority offset:(unsigned __int16)offset;
+- (BOOL)setGPUPriority:(unint64_t)priority;
+- (MTLIOAccelCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)setCompletionQueue:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)submitCommandBuffers:(const void *)a3 count:(unint64_t)a4;
+- (void)setCompletionQueue:(id)queue;
+- (void)setLabel:(id)label;
+- (void)submitCommandBuffers:(const void *)buffers count:(unint64_t)count;
 @end
 
 @implementation MTLIOAccelCommandQueue
 
-- (MTLIOAccelCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (MTLIOAccelCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLIOAccelCommandQueue;
-  v5 = [(_MTLCommandQueue *)&v11 initWithDevice:a3 descriptor:a4];
+  v5 = [(_MTLCommandQueue *)&v11 initWithDevice:device descriptor:descriptor];
   if (v5)
   {
-    v5->_device = a3;
-    [a3 sharedRef];
+    v5->_device = device;
+    [device sharedRef];
     qosLevel_low = LODWORD(v5->super._qosLevel);
     v7 = IOAccelCommandQueueCreateWithQoS();
     v5->_commandQueue = v7;
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v7.receiver = self;
   v7.super_class = MTLIOAccelCommandQueue;
@@ -54,7 +54,7 @@
     [(MTLDevice *)self->_device deviceRef];
     globalTraceObjectID = self->super._globalTraceObjectID;
     labelTraceID = self->super._labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->super._labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 }
@@ -69,7 +69,7 @@
   [(_MTLCommandQueue *)&v4 dealloc];
 }
 
-- (void)setCompletionQueue:(id)a3
+- (void)setCompletionQueue:(id)queue
 {
   completionQueueDispatch = self->super._completionQueueDispatch;
   if (completionQueueDispatch)
@@ -77,77 +77,77 @@
     dispatch_release(completionQueueDispatch);
   }
 
-  self->super._completionQueueDispatch = a3;
-  dispatch_retain(a3);
+  self->super._completionQueueDispatch = queue;
+  dispatch_retain(queue);
   commandQueue = self->_commandQueue;
   v7 = self->super._completionQueueDispatch;
 
   IOAccelCommandQueueSetDispatchQueue();
 }
 
-- (BOOL)_setGPUPriority:(unint64_t)a3 backgroundPriority:(unint64_t)a4
+- (BOOL)_setGPUPriority:(unint64_t)priority backgroundPriority:(unint64_t)backgroundPriority
 {
   commandQueue = self->_commandQueue;
   v8 = IOAccelCommandQueueSetPriorityAndBackground();
   if (!v8)
   {
-    self->_priority = a3;
-    self->_backgroundPriority = a4;
+    self->_priority = priority;
+    self->_backgroundPriority = backgroundPriority;
   }
 
   return v8 == 0;
 }
 
-- (BOOL)setGPUPriority:(unint64_t)a3
+- (BOOL)setGPUPriority:(unint64_t)priority
 {
-  validateGPUPriority(a3, 0, a3, v3, v4, v5, v6, v7);
+  validateGPUPriority(priority, 0, priority, v3, v4, v5, v6, v7);
   backgroundPriority = self->_backgroundPriority;
 
-  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:a3 backgroundPriority:backgroundPriority];
+  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:priority backgroundPriority:backgroundPriority];
 }
 
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority
 {
-  if (a3 >= 6)
+  if (priority >= 6)
   {
-    MTLReportFailure(0, "validateGPUPriority", 121, @"priority (%d) is not a valid MTLGPUPriority", v3, v4, v5, v6, a3);
+    MTLReportFailure(0, "validateGPUPriority", 121, @"priority (%d) is not a valid MTLGPUPriority", v3, v4, v5, v6, priority);
   }
 
   priority = self->_priority;
 
-  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:priority backgroundPriority:a3];
+  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:priority backgroundPriority:priority];
 }
 
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3 offset:(unsigned __int16)a4
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority offset:(unsigned __int16)offset
 {
-  if (a3 >= 6)
+  if (priority >= 6)
   {
-    MTLReportFailure(0, "validateGPUPriority", 121, @"priority (%d) is not a valid MTLGPUPriority", v4, v5, v6, v7, a3);
+    MTLReportFailure(0, "validateGPUPriority", 121, @"priority (%d) is not a valid MTLGPUPriority", v4, v5, v6, v7, priority);
   }
 
   priority = self->_priority;
 
-  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:priority backgroundPriority:a3];
+  return [(MTLIOAccelCommandQueue *)self _setGPUPriority:priority backgroundPriority:priority];
 }
 
-- (void)submitCommandBuffers:(const void *)a3 count:(unint64_t)a4
+- (void)submitCommandBuffers:(const void *)buffers count:(unint64_t)count
 {
   aBlock[5] = *MEMORY[0x1E69E9840];
   MEMORY[0x1EEE9AC00](self);
   v8 = (&v24 - ((v7 + 23) & 0xFFFFFFFFFFFFFFF0));
   bzero(v8, v7 + 8);
   v25 = v8;
-  v8[1] = a4;
-  if (a4)
+  v8[1] = count;
+  if (count)
   {
     v27 = MEMORY[0x1E69E9820];
     v26 = __53__MTLIOAccelCommandQueue_submitCommandBuffers_count___block_invoke;
     v9 = v25 + 3;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3;
-      v12 = *(*a3 + 77);
+      v11 = *buffers;
+      v12 = *(*buffers + 77);
       *(v9 - 1) = *(*(v12 + 32) + 48);
       *v9 = *(*(v12 + 64) + 48);
       aBlock[0] = v27;
@@ -182,11 +182,11 @@
       }
 
       v9 += 6;
-      ++a3;
-      --v10;
+      ++buffers;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
   commandQueue = self->_commandQueue;
@@ -213,7 +213,7 @@
       v18 = v17;
     }
 
-    if (a4)
+    if (count)
     {
       v19 = MEMORY[0x1E69E9820];
       v20 = (v25 + 4);
@@ -229,10 +229,10 @@
         v29 = v22;
         v30 = v18;
         dispatch_async(commandQueueDispatch, block);
-        --a4;
+        --count;
       }
 
-      while (a4);
+      while (count);
     }
   }
 

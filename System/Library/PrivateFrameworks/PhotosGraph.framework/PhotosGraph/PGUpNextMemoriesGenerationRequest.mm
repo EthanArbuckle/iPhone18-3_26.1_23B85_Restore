@@ -1,26 +1,26 @@
 @interface PGUpNextMemoriesGenerationRequest
-+ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)a3;
-+ (id)_memoryNodesWithSignificantOverlapWithMomentNodes:(id)a3;
-+ (id)_requestErrorWithCode:(int64_t)a3 description:(id)a4;
-+ (id)requestWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (PGUpNextMemoriesGenerationRequest)initWithRootMemoryLocalIdentifier:(id)a3 momentUUIDs:(id)a4 memoryLocalIdentifiersToAvoid:(id)a5 targetUpNextMemoryCount:(unint64_t)a6 customVectors:(id)a7 wantsVerboseDebugInfo:(BOOL)a8 sharingFilter:(unsigned __int16)a9;
-- (id)_fetchRootMemoryWithPhotoLibrary:(id)a3;
-- (id)_momentUUIDsForMemory:(id)a3;
-- (id)fetchMemoryLocalIdentifiersWithWorkingContext:(id)a3 musicCurationOptions:(id)a4 error:(id *)a5;
-- (id)localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:(id)a3;
-- (id)upNextMemoryLocalIdentifiersWithWorkingContext:(id)a3 rootMemory:(id)a4 localMemoriesByUniqueMemoryIdentifiers:(id)a5 uniqueMemoryIdentifiersOfMemoriesToAvoid:(id)a6 aggregator:(id)a7 debugInfo:(id *)a8 error:(id *)a9;
-- (void)_enumerateMemoriesToAvoidWithWorkingContext:(id)a3 usingBlock:(id)a4;
++ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)library;
++ (id)_memoryNodesWithSignificantOverlapWithMomentNodes:(id)nodes;
++ (id)_requestErrorWithCode:(int64_t)code description:(id)description;
++ (id)requestWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (PGUpNextMemoriesGenerationRequest)initWithRootMemoryLocalIdentifier:(id)identifier momentUUIDs:(id)ds memoryLocalIdentifiersToAvoid:(id)avoid targetUpNextMemoryCount:(unint64_t)count customVectors:(id)vectors wantsVerboseDebugInfo:(BOOL)info sharingFilter:(unsigned __int16)filter;
+- (id)_fetchRootMemoryWithPhotoLibrary:(id)library;
+- (id)_momentUUIDsForMemory:(id)memory;
+- (id)fetchMemoryLocalIdentifiersWithWorkingContext:(id)context musicCurationOptions:(id)options error:(id *)error;
+- (id)localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:(id)context;
+- (id)upNextMemoryLocalIdentifiersWithWorkingContext:(id)context rootMemory:(id)memory localMemoriesByUniqueMemoryIdentifiers:(id)identifiers uniqueMemoryIdentifiersOfMemoriesToAvoid:(id)avoid aggregator:(id)aggregator debugInfo:(id *)info error:(id *)error;
+- (void)_enumerateMemoriesToAvoidWithWorkingContext:(id)context usingBlock:(id)block;
 @end
 
 @implementation PGUpNextMemoriesGenerationRequest
 
-- (id)_momentUUIDsForMemory:(id)a3
+- (id)_momentUUIDsForMemory:(id)memory
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
+  memoryCopy = memory;
+  photoLibrary = [memoryCopy photoLibrary];
   v5 = MEMORY[0x277CD97B8];
-  v6 = [v4 librarySpecificFetchOptions];
-  v7 = [v5 fetchMomentsBackingMemory:v3 options:v6];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v7 = [v5 fetchMomentsBackingMemory:memoryCopy options:librarySpecificFetchOptions];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([v7 count])
@@ -29,8 +29,8 @@
     do
     {
       v10 = [v7 objectAtIndexedSubscript:v9];
-      v11 = [v10 uuid];
-      [v8 addObject:v11];
+      uuid = [v10 uuid];
+      [v8 addObject:uuid];
 
       ++v9;
     }
@@ -41,43 +41,43 @@
   return v8;
 }
 
-- (id)_fetchRootMemoryWithPhotoLibrary:(id)a3
+- (id)_fetchRootMemoryWithPhotoLibrary:(id)library
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() _baseMemoryFetchOptionsWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [objc_opt_class() _baseMemoryFetchOptionsWithPhotoLibrary:libraryCopy];
 
   v6 = MEMORY[0x277CD97B8];
   v12[0] = self->_rootMemoryLocalIdentifier;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v8 = [v6 fetchAssetCollectionsWithLocalIdentifiers:v7 options:v5];
 
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return firstObject;
 }
 
-- (void)_enumerateMemoriesToAvoidWithWorkingContext:(id)a3 usingBlock:(id)a4
+- (void)_enumerateMemoriesToAvoidWithWorkingContext:(id)context usingBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v8 = objc_opt_class();
-  v9 = [v6 photoLibrary];
-  v10 = [v8 _baseMemoryFetchOptionsWithPhotoLibrary:v9];
+  photoLibrary = [contextCopy photoLibrary];
+  v10 = [v8 _baseMemoryFetchOptionsWithPhotoLibrary:photoLibrary];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier IN %@", self->_memoryLocalIdentifiersToAvoid];
   [v10 setPredicate:v11];
 
   v12 = [MEMORY[0x277CD98D8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v10];
-  v13 = [v6 loggingConnection];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [contextCopy loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
     v18 = [v12 count];
-    _os_log_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_DEFAULT, "[UpNext] Found %lu memories to avoid", buf, 0xCu);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[UpNext] Found %lu memories to avoid", buf, 0xCu);
   }
 
   if ([v12 count])
@@ -86,7 +86,7 @@
     do
     {
       v15 = [v12 objectAtIndexedSubscript:v14];
-      v7[2](v7, v15);
+      blockCopy[2](blockCopy, v15);
 
       ++v14;
     }
@@ -97,14 +97,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:(id)a3
+- (id)localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
-  v30 = v4;
-  v6 = [v4 photoLibrary];
-  v7 = [v5 _baseMemoryFetchOptionsWithPhotoLibrary:v6];
+  v30 = contextCopy;
+  photoLibrary = [contextCopy photoLibrary];
+  v7 = [v5 _baseMemoryFetchOptionsWithPhotoLibrary:photoLibrary];
 
   [v7 setSharingFilter:{-[PGUpNextMemoriesGenerationRequest sharingFilter](self, "sharingFilter")}];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -143,13 +143,13 @@
   [v7 setPredicate:v15];
 
   v16 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v7];
-  v17 = [v30 loggingConnection];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [v30 loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v18 = [v16 count];
     *buf = 134217984;
     v41 = v18;
-    _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_DEFAULT, "[UpNext] Found %lu eligible local memories", buf, 0xCu);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[UpNext] Found %lu eligible local memories", buf, 0xCu);
   }
 
   v19 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v16, "count")}];
@@ -173,10 +173,10 @@
         }
 
         v25 = *(*(&v31 + 1) + 8 * j);
-        v26 = [v25 graphMemoryIdentifier];
-        if (v26)
+        graphMemoryIdentifier = [v25 graphMemoryIdentifier];
+        if (graphMemoryIdentifier)
         {
-          [v19 setObject:v25 forKeyedSubscript:v26];
+          [v19 setObject:v25 forKeyedSubscript:graphMemoryIdentifier];
         }
       }
 
@@ -191,69 +191,69 @@
   return v19;
 }
 
-- (id)upNextMemoryLocalIdentifiersWithWorkingContext:(id)a3 rootMemory:(id)a4 localMemoriesByUniqueMemoryIdentifiers:(id)a5 uniqueMemoryIdentifiersOfMemoriesToAvoid:(id)a6 aggregator:(id)a7 debugInfo:(id *)a8 error:(id *)a9
+- (id)upNextMemoryLocalIdentifiersWithWorkingContext:(id)context rootMemory:(id)memory localMemoriesByUniqueMemoryIdentifiers:(id)identifiers uniqueMemoryIdentifiersOfMemoriesToAvoid:(id)avoid aggregator:(id)aggregator debugInfo:(id *)info error:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v42 = a5;
-  v44 = a6;
-  v16 = a7;
-  v17 = v14;
-  v46 = v16;
-  v18 = [v14 photoLibrary];
-  oslog = [v14 loggingConnection];
-  v53 = [v15 title];
-  if (v15)
+  contextCopy = context;
+  memoryCopy = memory;
+  identifiersCopy = identifiers;
+  avoidCopy = avoid;
+  aggregatorCopy = aggregator;
+  v17 = contextCopy;
+  v46 = aggregatorCopy;
+  photoLibrary = [contextCopy photoLibrary];
+  oslog = [contextCopy loggingConnection];
+  title = [memoryCopy title];
+  if (memoryCopy)
   {
     v19 = MEMORY[0x277CD97A8];
-    v20 = [v18 librarySpecificFetchOptions];
-    v21 = [v19 fetchKeyCuratedAssetInAssetCollection:v15 referenceAsset:0 options:v20];
-    v22 = [v21 firstObject];
-    v52 = [v22 localIdentifier];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v21 = [v19 fetchKeyCuratedAssetInAssetCollection:memoryCopy referenceAsset:0 options:librarySpecificFetchOptions];
+    firstObject = [v21 firstObject];
+    localIdentifier = [firstObject localIdentifier];
   }
 
   else
   {
-    v52 = 0;
+    localIdentifier = 0;
   }
 
-  v54 = [v15 graphMemoryIdentifier];
+  graphMemoryIdentifier = [memoryCopy graphMemoryIdentifier];
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v54;
+    *(&buf + 4) = graphMemoryIdentifier;
     _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_DEFAULT, "[UpNext] Up Next RootMemory MemoryNodeUniqueIdentifier:(%@)", &buf, 0xCu);
   }
 
   v23 = self->_momentUUIDs;
   v24 = v23;
-  if (v15 && !v23)
+  if (memoryCopy && !v23)
   {
-    v24 = [(PGUpNextMemoriesGenerationRequest *)self _momentUUIDsForMemory:v15];
+    v24 = [(PGUpNextMemoriesGenerationRequest *)self _momentUUIDsForMemory:memoryCopy];
   }
 
-  if (a9 && !v24)
+  if (error && !v24)
   {
-    *a9 = [objc_opt_class() _requestErrorWithCode:0 description:@"[UpNext] Neither rootMemory nor starting moments were provided for UpNext generation"];
+    *error = [objc_opt_class() _requestErrorWithCode:0 description:@"[UpNext] Neither rootMemory nor starting moments were provided for UpNext generation"];
   }
 
-  v41 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:v18];
-  v25 = [(PGUpNextMemoriesGenerationRequest *)self customVectors];
+  v41 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:photoLibrary];
+  customVectors = [(PGUpNextMemoriesGenerationRequest *)self customVectors];
   v26 = objc_alloc_init(_TtC11PhotosGraph24PGUpNextDebugInfoBuilder);
   [(PGUpNextDebugInfoBuilder *)v26 setWantsVerboseDebugInfo:self->_wantsVerboseDebugInfo];
-  [(PGUpNextDebugInfoBuilder *)v26 setRootMemoryNodeUniqueIdentifier:v54];
+  [(PGUpNextDebugInfoBuilder *)v26 setRootMemoryNodeUniqueIdentifier:graphMemoryIdentifier];
   [(PGUpNextDebugInfoBuilder *)v26 setMomentUUIDs:v24];
-  [(PGUpNextDebugInfoBuilder *)v26 setFeatureWeightVectors:v25];
-  -[PGUpNextDebugInfoBuilder setRootMemoryIsAggregation:](v26, "setRootMemoryIsAggregation:", (PGMemorySourceTypeFromCategory([v15 category]) - 3) < 2);
-  v27 = [v15 uuid];
-  v51 = [v27 substringToIndex:8];
+  [(PGUpNextDebugInfoBuilder *)v26 setFeatureWeightVectors:customVectors];
+  -[PGUpNextDebugInfoBuilder setRootMemoryIsAggregation:](v26, "setRootMemoryIsAggregation:", (PGMemorySourceTypeFromCategory([memoryCopy category]) - 3) < 2);
+  uuid = [memoryCopy uuid];
+  v51 = [uuid substringToIndex:8];
 
-  v50 = [v53 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
-  v28 = [v15 subtitle];
-  v49 = [v28 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
+  v50 = [title stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
+  subtitle = [memoryCopy subtitle];
+  v49 = [subtitle stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
 
-  v48 = [v52 substringToIndex:8];
+  v48 = [localIdentifier substringToIndex:8];
   v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Root memory: %@\n\t%@ - %@\n\tkeyAsset: %@", v51, v50, v49, v48];
   [(PGUpNextDebugInfoBuilder *)v26 addSuggestionFilteringLog:v29];
 
@@ -275,22 +275,22 @@
   v58[3] = &unk_278884058;
   v40 = oslog;
   v59 = v40;
-  v43 = v42;
+  v43 = identifiersCopy;
   v60 = v43;
-  v45 = v44;
+  v45 = avoidCopy;
   v61 = v45;
-  osloga = v54;
+  osloga = graphMemoryIdentifier;
   v62 = osloga;
-  v39 = v15;
+  v39 = memoryCopy;
   v63 = v39;
   v30 = v24;
   v64 = v30;
   v31 = v26;
   v65 = v31;
-  v66 = self;
-  v32 = v25;
+  selfCopy = self;
+  v32 = customVectors;
   v67 = v32;
-  v55 = v18;
+  v55 = photoLibrary;
   v68 = v55;
   v33 = v41;
   v69 = v33;
@@ -299,15 +299,15 @@
   p_buf = &buf;
   v72 = &v73;
   [v17 performSynchronousConcurrentGraphReadUsingBlock:v58];
-  if (a8)
+  if (info)
   {
-    *a8 = [(PGUpNextDebugInfoBuilder *)v31 debugInfo];
+    *info = [(PGUpNextDebugInfoBuilder *)v31 debugInfo];
   }
 
   v35 = *(&buf + 1);
-  if (a9 && !*(*(&buf + 1) + 40))
+  if (error && !*(*(&buf + 1) + 40))
   {
-    *a9 = v74[5];
+    *error = v74[5];
     v35 = *(&buf + 1);
   }
 
@@ -647,29 +647,29 @@ uint64_t __202__PGUpNextMemoriesGenerationRequest_upNextMemoryLocalIdentifiersWi
   return v8;
 }
 
-- (id)fetchMemoryLocalIdentifiersWithWorkingContext:(id)a3 musicCurationOptions:(id)a4 error:(id *)a5
+- (id)fetchMemoryLocalIdentifiersWithWorkingContext:(id)context musicCurationOptions:(id)options error:(id *)error
 {
   v90 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v75 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v8 = self->_rootMemoryLocalIdentifier;
   v9 = self->_memoryLocalIdentifiersToAvoid;
-  v10 = [v7 loggingConnection];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [contextCopy loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v85 = [(PGUpNextMemoriesGenerationRequest *)self targetUpNextMemoryCount];
+    targetUpNextMemoryCount = [(PGUpNextMemoriesGenerationRequest *)self targetUpNextMemoryCount];
     v86 = 2112;
     v87 = *&v8;
     v88 = 2112;
     v89 = v9;
-    _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "[UpNext] Requesting %lu Up Next memories for memory:(%@), memories to avoid:%@", buf, 0x20u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[UpNext] Requesting %lu Up Next memories for memory:(%@), memories to avoid:%@", buf, 0x20u);
   }
 
   v71 = v9;
-  v11 = [v7 loggingConnection];
-  v12 = os_signpost_id_generate(v11);
-  v13 = v11;
+  loggingConnection2 = [contextCopy loggingConnection];
+  v12 = os_signpost_id_generate(loggingConnection2);
+  v13 = loggingConnection2;
   v14 = v13;
   v66 = v12 - 1;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
@@ -684,9 +684,9 @@ uint64_t __202__PGUpNextMemoriesGenerationRequest_upNextMemoryLocalIdentifiersWi
   info = 0;
   mach_timebase_info(&info);
   v65 = mach_absolute_time();
-  v15 = [v7 loggingConnection];
-  v16 = os_signpost_id_generate(v15);
-  v17 = v15;
+  loggingConnection3 = [contextCopy loggingConnection];
+  v16 = os_signpost_id_generate(loggingConnection3);
+  v17 = loggingConnection3;
   v18 = v17;
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
@@ -697,22 +697,22 @@ uint64_t __202__PGUpNextMemoriesGenerationRequest_upNextMemoryLocalIdentifiersWi
   v82 = 0;
   mach_timebase_info(&v82);
   v19 = mach_absolute_time();
-  v20 = [v7 photoLibrary];
+  photoLibrary = [contextCopy photoLibrary];
   if (!v8)
   {
     v70 = 0;
     goto LABEL_14;
   }
 
-  v70 = [(PGUpNextMemoriesGenerationRequest *)self _fetchRootMemoryWithPhotoLibrary:v20];
+  v70 = [(PGUpNextMemoriesGenerationRequest *)self _fetchRootMemoryWithPhotoLibrary:photoLibrary];
   if (v70)
   {
 LABEL_14:
-    v72 = [(PGUpNextMemoriesGenerationRequest *)self localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:v7];
+    v72 = [(PGUpNextMemoriesGenerationRequest *)self localMemoriesByUniqueMemoryIdentifiersWithWorkingContext:contextCopy];
     if ([v72 count])
     {
       v63 = v8;
-      v25 = v20;
+      v25 = photoLibrary;
       v26 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v78[0] = MEMORY[0x277D85DD0];
@@ -726,11 +726,11 @@ LABEL_14:
       v80 = v60;
       v28 = v27;
       v81 = v28;
-      [(PGUpNextMemoriesGenerationRequest *)self _enumerateMemoriesToAvoidWithWorkingContext:v7 usingBlock:v78];
+      [(PGUpNextMemoriesGenerationRequest *)self _enumerateMemoriesToAvoidWithWorkingContext:contextCopy usingBlock:v78];
       v29 = [PGUpNextMemoriesAggregator alloc];
       v30 = objc_alloc_init(MEMORY[0x277CBEB98]);
       v62 = v28;
-      v68 = [(PGUpNextMemoriesAggregator *)v29 initWithLowercaseTitles:v30 keyAssetLocalIdentifiers:v28 gateOnUserFeedback:1 loggingConnection:v10];
+      v68 = [(PGUpNextMemoriesAggregator *)v29 initWithLowercaseTitles:v30 keyAssetLocalIdentifiers:v28 gateOnUserFeedback:1 loggingConnection:loggingConnection];
 
       v31 = mach_absolute_time();
       numer = v82.numer;
@@ -747,7 +747,7 @@ LABEL_14:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
-        v85 = "PGUpNextMemoriesGenerationSetup";
+        targetUpNextMemoryCount = "PGUpNextMemoriesGenerationSetup";
         v86 = 2048;
         v87 = ((((v31 - v19) * numer) / denom) / 1000000.0);
         _os_log_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
@@ -755,19 +755,19 @@ LABEL_14:
 
       v77 = 0;
       v21 = v70;
-      v36 = [(PGUpNextMemoriesGenerationRequest *)self upNextMemoryLocalIdentifiersWithWorkingContext:v7 rootMemory:v70 localMemoriesByUniqueMemoryIdentifiers:v72 uniqueMemoryIdentifiersOfMemoriesToAvoid:v69 aggregator:v68 debugInfo:&v77 error:a5];
+      v36 = [(PGUpNextMemoriesGenerationRequest *)self upNextMemoryLocalIdentifiersWithWorkingContext:contextCopy rootMemory:v70 localMemoriesByUniqueMemoryIdentifiers:v72 uniqueMemoryIdentifiersOfMemoriesToAvoid:v69 aggregator:v68 debugInfo:&v77 error:error];
       v61 = v77;
       v8 = v63;
       if (v36)
       {
-        v20 = v67;
+        photoLibrary = v67;
         if ([v36 count])
         {
-          if ([v75 shouldCurateUpNextMemories])
+          if ([optionsCopy shouldCurateUpNextMemories])
           {
-            v37 = [v7 loggingConnection];
-            v38 = os_signpost_id_generate(v37);
-            v39 = v37;
+            loggingConnection4 = [contextCopy loggingConnection];
+            v38 = os_signpost_id_generate(loggingConnection4);
+            v39 = loggingConnection4;
             v40 = v39;
             if (v38 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
             {
@@ -778,12 +778,12 @@ LABEL_14:
             v76 = 0;
             mach_timebase_info(&v76);
             v59 = mach_absolute_time();
-            v41 = [[PGUpNextMusicCurator alloc] initWithLoggingConnection:v10];
-            if (![(PGUpNextMusicCurator *)v41 curateMusicForUpNextMemoriesWithLocalIdentifiers:v36 musicCurationOptions:v75 photoLibrary:v60 managerContext:v7 error:a5])
+            v41 = [[PGUpNextMusicCurator alloc] initWithLoggingConnection:loggingConnection];
+            if (![(PGUpNextMusicCurator *)v41 curateMusicForUpNextMemoriesWithLocalIdentifiers:v36 musicCurationOptions:optionsCopy photoLibrary:v60 managerContext:contextCopy error:error])
             {
-              if (a5)
+              if (error)
               {
-                v42 = [*a5 description];
+                v42 = [*error description];
               }
 
               else
@@ -791,13 +791,13 @@ LABEL_14:
                 v42 = @"no error";
               }
 
-              if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v85 = v42;
+                targetUpNextMemoryCount = v42;
                 v86 = 2112;
                 v87 = *&v36;
-                _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[UpNext] Music curation failed (%@) for Up Next memories: %@", buf, 0x16u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[UpNext] Music curation failed (%@) for Up Next memories: %@", buf, 0x16u);
               }
             }
 
@@ -816,7 +816,7 @@ LABEL_14:
             if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
             {
               *buf = 136315394;
-              v85 = "PGUpNextMemoriesGenerationMusicCuration";
+              targetUpNextMemoryCount = "PGUpNextMemoriesGenerationMusicCuration";
               v86 = 2048;
               v87 = ((((v47 - v59) * v49) / v48) / 1000000.0);
               _os_log_impl(&dword_22F0FC000, v51, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
@@ -839,37 +839,37 @@ LABEL_14:
           if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
           {
             *buf = 136315394;
-            v85 = "PGUpNextMemoriesGenerationRequest";
+            targetUpNextMemoryCount = "PGUpNextMemoriesGenerationRequest";
             v86 = 2048;
             v87 = ((((v52 - v65) * v54) / v53) / 1000000.0);
             _os_log_impl(&dword_22F0FC000, v56, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
           }
 
           v43 = v18;
-          if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v85 = v36;
-            _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "[UpNext] Result Up Next memories: %@", buf, 0xCu);
+            targetUpNextMemoryCount = v36;
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[UpNext] Result Up Next memories: %@", buf, 0xCu);
           }
 
-          v44 = v10;
+          v44 = loggingConnection;
           v45 = v61;
           v22 = [[PGUpNextMemoriesGenerationResult alloc] initWithMemoryLocalIdentifiers:v36 debugInfo:v61];
-          v20 = v67;
+          photoLibrary = v67;
         }
 
         else
         {
           v43 = v18;
-          v44 = v10;
-          if (a5)
+          v44 = loggingConnection;
+          if (error)
           {
             v45 = v61;
             v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"[UpNext] Could not find up next memories for memory with local identifier (%@), debug info (%@)", v63, v61];
-            *a5 = [objc_opt_class() _requestErrorWithCode:2 description:v46];
+            *error = [objc_opt_class() _requestErrorWithCode:2 description:v46];
 
-            v20 = v67;
+            photoLibrary = v67;
             v22 = 0;
           }
 
@@ -884,23 +884,23 @@ LABEL_14:
       else
       {
         v43 = v18;
-        v44 = v10;
+        v44 = loggingConnection;
         v22 = 0;
-        v20 = v67;
+        photoLibrary = v67;
         v45 = v61;
       }
 
       v23 = v71;
-      v10 = v44;
+      loggingConnection = v44;
       v18 = v43;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
         [objc_opt_class() _requestErrorWithCode:1 description:@"[UpNext] Could not find any local memories"];
-        *a5 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -916,7 +916,7 @@ LABEL_14:
     goto LABEL_58;
   }
 
-  if (!a5)
+  if (!error)
   {
     v22 = 0;
     v23 = v71;
@@ -926,7 +926,7 @@ LABEL_14:
 
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"[UpNext] Could not find root memory with local identifier (%@)", v8];
   [objc_opt_class() _requestErrorWithCode:1 description:v21];
-  *a5 = v22 = 0;
+  *error = v22 = 0;
   v23 = v71;
   v24 = v73;
 LABEL_58:
@@ -959,72 +959,72 @@ void __110__PGUpNextMemoriesGenerationRequest_fetchMemoryLocalIdentifiersWithWor
   }
 }
 
-- (PGUpNextMemoriesGenerationRequest)initWithRootMemoryLocalIdentifier:(id)a3 momentUUIDs:(id)a4 memoryLocalIdentifiersToAvoid:(id)a5 targetUpNextMemoryCount:(unint64_t)a6 customVectors:(id)a7 wantsVerboseDebugInfo:(BOOL)a8 sharingFilter:(unsigned __int16)a9
+- (PGUpNextMemoriesGenerationRequest)initWithRootMemoryLocalIdentifier:(id)identifier momentUUIDs:(id)ds memoryLocalIdentifiersToAvoid:(id)avoid targetUpNextMemoryCount:(unint64_t)count customVectors:(id)vectors wantsVerboseDebugInfo:(BOOL)info sharingFilter:(unsigned __int16)filter
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  avoidCopy = avoid;
+  vectorsCopy = vectors;
   v29.receiver = self;
   v29.super_class = PGUpNextMemoriesGenerationRequest;
   v19 = [(PGUpNextMemoriesGenerationRequest *)&v29 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [identifierCopy copy];
     rootMemoryLocalIdentifier = v19->_rootMemoryLocalIdentifier;
     v19->_rootMemoryLocalIdentifier = v20;
 
-    v22 = [v16 copy];
+    v22 = [dsCopy copy];
     momentUUIDs = v19->_momentUUIDs;
     v19->_momentUUIDs = v22;
 
-    v24 = [v17 copy];
+    v24 = [avoidCopy copy];
     memoryLocalIdentifiersToAvoid = v19->_memoryLocalIdentifiersToAvoid;
     v19->_memoryLocalIdentifiersToAvoid = v24;
 
-    v19->_targetUpNextMemoryCount = a6;
-    v26 = [v18 copy];
+    v19->_targetUpNextMemoryCount = count;
+    v26 = [vectorsCopy copy];
     customVectors = v19->_customVectors;
     v19->_customVectors = v26;
 
-    v19->_wantsVerboseDebugInfo = a8;
-    v19->_sharingFilter = a9;
+    v19->_wantsVerboseDebugInfo = info;
+    v19->_sharingFilter = filter;
   }
 
   return v19;
 }
 
-+ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)a3
++ (id)_baseMemoryFetchOptionsWithPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setWantsIncrementalChangeDetails:0];
-  [v3 setIncludeLocalMemories:1];
-  [v3 setIncludePendingMemories:1];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludeLocalMemories:1];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)_memoryNodesWithSignificantOverlapWithMomentNodes:(id)a3
++ (id)_memoryNodesWithSignificantOverlapWithMomentNodes:(id)nodes
 {
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = MEMORY[0x277D22BF8];
-  v5 = [v3 memoryNodes];
+  memoryNodes = [nodesCopy memoryNodes];
   v6 = +[PGGraphMemoryNode momentOfMemory];
-  v7 = [v4 adjacencyWithSources:v5 relation:v6 targetsClass:objc_opt_class()];
+  v7 = [v4 adjacencyWithSources:memoryNodes relation:v6 targetsClass:objc_opt_class()];
 
   v8 = objc_alloc_init(MEMORY[0x277D22BD0]);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __87__PGUpNextMemoriesGenerationRequest__memoryNodesWithSignificantOverlapWithMomentNodes___block_invoke;
   v18 = &unk_278884080;
-  v19 = v3;
+  v19 = nodesCopy;
   v20 = v8;
   v9 = v8;
-  v10 = v3;
+  v10 = nodesCopy;
   [v7 enumerateTargetsBySourceWithBlock:&v15];
   v11 = [PGGraphMemoryNodeCollection alloc];
-  v12 = [v10 graph];
-  v13 = [(MAElementCollection *)v11 initWithGraph:v12 elementIdentifiers:v9];
+  graph = [v10 graph];
+  v13 = [(MAElementCollection *)v11 initWithGraph:graph elementIdentifiers:v9];
 
   return v13;
 }
@@ -1055,58 +1055,58 @@ void __87__PGUpNextMemoriesGenerationRequest__memoryNodesWithSignificantOverlapW
   }
 }
 
-+ (id)_requestErrorWithCode:(int64_t)a3 description:(id)a4
++ (id)_requestErrorWithCode:(int64_t)code description:(id)description
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v12 = *MEMORY[0x277CCA450];
-  v13[0] = a4;
+  v13[0] = description;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  descriptionCopy = description;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"com.apple.PhotosGraph.PGUpNextErrorDomain" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"com.apple.PhotosGraph.PGUpNextErrorDomain" code:code userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (id)requestWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)requestWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  representationCopy = representation;
   v7 = *MEMORY[0x277D3B120];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277D3B120]];
+  v8 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277D3B120]];
   if (v8)
   {
     v9 = *MEMORY[0x277D3B110];
-    v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D3B110]];
+    v10 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277D3B110]];
     if (!v10)
     {
-      if (a4)
+      if (error)
       {
         v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is nil", v9];
-        *a4 = [objc_opt_class() _requestErrorWithCode:0 description:v25];
+        *error = [objc_opt_class() _requestErrorWithCode:0 description:v25];
       }
 
       v24 = 0;
       goto LABEL_38;
     }
 
-    v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277D3B128]];
+    v11 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277D3B128]];
     if (!v11)
     {
-      if (a4)
+      if (error)
       {
         v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"[UpNext] %@ is nil", v9];
-        *a4 = [objc_opt_class() _requestErrorWithCode:0 description:v26];
+        *error = [objc_opt_class() _requestErrorWithCode:0 description:v26];
       }
 
       v24 = 0;
       goto LABEL_37;
     }
 
-    v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277D3B108]];
+    v12 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277D3B108]];
     if (v12)
     {
       v39 = v8;
@@ -1114,10 +1114,10 @@ void __87__PGUpNextMemoriesGenerationRequest__memoryNodesWithSignificantOverlapW
       v14 = [v12 count];
       if (v14 != *MEMORY[0x277D3B100])
       {
-        if (a4)
+        if (error)
         {
           v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"[UpNext] Custom vector count mismatch. (Expecting:%lu Received:%lu)", *MEMORY[0x277D3B100], objc_msgSend(v12, "count")];
-          *a4 = [objc_opt_class() _requestErrorWithCode:3 description:v30];
+          *error = [objc_opt_class() _requestErrorWithCode:3 description:v30];
         }
 
         v24 = 0;
@@ -1155,10 +1155,10 @@ LABEL_38:
             v21 = *(*(&v43 + 1) + 8 * i);
             if ([v21 count] != v19)
             {
-              if (a4)
+              if (error)
               {
                 v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"[UpNext] Vector feature count mismatch. (Expecting:%lu Received:%lu)", v19, objc_msgSend(v21, "count")];
-                *a4 = [objc_opt_class() _requestErrorWithCode:3 description:v31];
+                *error = [objc_opt_class() _requestErrorWithCode:3 description:v31];
               }
 
               v24 = 0;
@@ -1193,14 +1193,14 @@ LABEL_38:
       v13 = 0;
     }
 
-    v40 = [v6 objectForKeyedSubscript:*MEMORY[0x277D3B130]];
+    v40 = [representationCopy objectForKeyedSubscript:*MEMORY[0x277D3B130]];
     v27 = *MEMORY[0x277D3B118];
-    v28 = [v6 objectForKey:*MEMORY[0x277D3B118]];
+    v28 = [representationCopy objectForKey:*MEMORY[0x277D3B118]];
 
     v42 = v12;
     if (v28)
     {
-      v29 = [v6 objectForKeyedSubscript:v27];
+      v29 = [representationCopy objectForKeyedSubscript:v27];
     }
 
     else
@@ -1208,11 +1208,11 @@ LABEL_38:
       v29 = &unk_284483D68;
     }
 
-    v38 = [v29 unsignedShortValue];
-    v32 = [a1 alloc];
+    unsignedShortValue = [v29 unsignedShortValue];
+    v32 = [self alloc];
     v33 = [MEMORY[0x277CBEB98] setWithArray:v10];
     v11 = v41;
-    LOWORD(v36) = v38;
+    LOWORD(v36) = unsignedShortValue;
     v24 = [v32 initWithRootMemoryLocalIdentifier:v8 momentUUIDs:0 memoryLocalIdentifiersToAvoid:v33 targetUpNextMemoryCount:objc_msgSend(v41 customVectors:"unsignedIntegerValue") wantsVerboseDebugInfo:v13 sharingFilter:{objc_msgSend(v40, "BOOLValue"), v36}];
 
 LABEL_35:
@@ -1220,10 +1220,10 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is nil", v7];
-    *a4 = [objc_opt_class() _requestErrorWithCode:0 description:v23];
+    *error = [objc_opt_class() _requestErrorWithCode:0 description:v23];
   }
 
   v24 = 0;

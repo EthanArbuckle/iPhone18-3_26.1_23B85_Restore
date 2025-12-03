@@ -1,85 +1,85 @@
 @interface IOSDoubleArray
-+ (IOSDoubleArray)arrayWithDoubles:(const double *)a3 count:(unint64_t)a4;
-+ (IOSDoubleArray)arrayWithLength:(unint64_t)a3;
++ (IOSDoubleArray)arrayWithDoubles:(const double *)doubles count:(unint64_t)count;
++ (IOSDoubleArray)arrayWithLength:(unint64_t)length;
 + (id)iosClass;
-+ (id)newArrayWithDoubles:(const double *)a3 count:(unint64_t)a4;
-- (double)doubleAtIndex:(unint64_t)a3;
-- (double)doubleRefAtIndex:(unint64_t)a3;
-- (double)replaceDoubleAtIndex:(unint64_t)a3 withDouble:(double)result;
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6;
-- (void)getDoubles:(double *)a3 length:(unint64_t)a4;
++ (id)newArrayWithDoubles:(const double *)doubles count:(unint64_t)count;
+- (double)doubleAtIndex:(unint64_t)index;
+- (double)doubleRefAtIndex:(unint64_t)index;
+- (double)replaceDoubleAtIndex:(unint64_t)index withDouble:(double)result;
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length;
+- (void)getDoubles:(double *)doubles length:(unint64_t)length;
 @end
 
 @implementation IOSDoubleArray
 
-+ (IOSDoubleArray)arrayWithLength:(unint64_t)a3
++ (IOSDoubleArray)arrayWithLength:(unint64_t)length
 {
-  v3 = sub_10023EA88(a3);
+  v3 = sub_10023EA88(length);
 
   return v3;
 }
 
-+ (id)newArrayWithDoubles:(const double *)a3 count:(unint64_t)a4
++ (id)newArrayWithDoubles:(const double *)doubles count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = sub_10023EA88(a4);
-  memcpy(v6 + 4, a3, 8 * v4);
+  countCopy = count;
+  v6 = sub_10023EA88(count);
+  memcpy(v6 + 4, doubles, 8 * countCopy);
   return v6;
 }
 
-+ (IOSDoubleArray)arrayWithDoubles:(const double *)a3 count:(unint64_t)a4
++ (IOSDoubleArray)arrayWithDoubles:(const double *)doubles count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = sub_10023EA88(a4);
-  memcpy(v6 + 4, a3, 8 * v4);
+  countCopy = count;
+  v6 = sub_10023EA88(count);
+  memcpy(v6 + 4, doubles, 8 * countCopy);
 
   return v6;
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  return self->buffer_[a3];
+  return self->buffer_[index];
 }
 
-- (double)doubleRefAtIndex:(unint64_t)a3
+- (double)doubleRefAtIndex:(unint64_t)index
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  return &self->buffer_[a3];
+  return &self->buffer_[index];
 }
 
-- (double)replaceDoubleAtIndex:(unint64_t)a3 withDouble:(double)result
+- (double)replaceDoubleAtIndex:(unint64_t)index withDouble:(double)result
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  self->buffer_[a3] = result;
+  self->buffer_[index] = result;
   return result;
 }
 
-- (void)getDoubles:(double *)a3 length:(unint64_t)a4
+- (void)getDoubles:(double *)doubles length:(unint64_t)length
 {
   size = self->super.size_;
-  v6 = (a4 - 1);
-  if (a4 - 1 < 0 || v6 >= size)
+  v6 = (length - 1);
+  if (length - 1 < 0 || v6 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v6);
   }
 
-  memcpy(a3, self->buffer_, 8 * a4);
+  memcpy(doubles, self->buffer_, 8 * length);
 }
 
 + (id)iosClass
@@ -89,19 +89,19 @@
   return IOSClass_arrayOf(v2);
 }
 
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length
 {
-  if ((a6 | a3) < 0 || a6 + a3 > self->super.size_)
+  if ((length | arraycopy) < 0 || length + arraycopy > self->super.size_)
   {
     IOSArray_throwOutOfBounds();
   }
 
-  if ((a6 | a5) < 0 || a6 + a5 > *(a4 + 2))
+  if ((length | offset) < 0 || length + offset > *(destination + 2))
   {
     IOSArray_throwOutOfBounds();
   }
 
-  memmove(a4 + 8 * a5 + 16, &self->buffer_[a3], 8 * a6);
+  memmove(destination + 8 * offset + 16, &self->buffer_[arraycopy], 8 * length);
 }
 
 @end

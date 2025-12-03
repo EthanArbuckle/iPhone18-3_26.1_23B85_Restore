@@ -1,57 +1,57 @@
 @interface UILongPressGestureRecognizer
-- (BOOL)_shouldReceivePress:(id)a3;
-- (BOOL)_touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:(id)a3;
+- (BOOL)_shouldReceivePress:(id)press;
+- (BOOL)_touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:(id)timer;
 - (BOOL)activeTouchesExceedAllowableSeparation;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
 - (CGPoint)_adjustSceneReferenceLocation:(CGPoint)result;
-- (CGPoint)_centroidInView:(id)a3;
+- (CGPoint)_centroidInView:(id)view;
 - (CGPoint)_centroidScreen;
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)_locationOfTouches:(id)a3;
-- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)a3;
-- (CGPoint)_startPointInView:(id)a3;
-- (CGPoint)_translationInView:(id)a3;
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)_locationOfTouches:(id)touches;
+- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)location;
+- (CGPoint)_startPointInView:(id)view;
+- (CGPoint)_translationInView:(id)view;
 - (CGPoint)centroid;
 - (CGPoint)lastSceneReferenceLocation;
 - (CGPoint)lastUnadjustedSceneReferenceLocation;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
 - (CGPoint)startPoint;
-- (CGPoint)velocityInView:(id)a3;
-- (UILongPressGestureRecognizer)initWithCoder:(id)a3;
-- (UILongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)a3 toSceneReferenceLocation:(CGPoint)a4;
+- (CGPoint)velocityInView:(id)view;
+- (UILongPressGestureRecognizer)initWithCoder:(id)coder;
+- (UILongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)location toSceneReferenceLocation:(CGPoint)referenceLocation;
 - (double)_touchSloppinessFactor;
 - (int64_t)_buttonType;
-- (void)_appendSubclassDescription:(id)a3;
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 physicalTouch:(id)a5;
-- (void)_changeTouchesListTo:(id)a3;
+- (void)_appendSubclassDescription:(id)description;
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time physicalTouch:(id)touch;
+- (void)_changeTouchesListTo:(id)to;
 - (void)_clearEnoughTimeElapsedTimer;
-- (void)_incorporateTouchForceMessageIntoImpulseQuietness:(id)a3;
-- (void)_interactionsEndedWithValidTouches:(BOOL)a3;
+- (void)_incorporateTouchForceMessageIntoImpulseQuietness:(id)quietness;
+- (void)_interactionsEndedWithValidTouches:(BOOL)touches;
 - (void)_resetGestureRecognizer;
 - (void)_resetImpulseQuietness;
 - (void)_resetVelocitySamples;
-- (void)_setAllowsDynamicTouchesList:(BOOL)a3;
-- (void)_setButtonType:(int64_t)a3;
-- (void)_setTranslation:(CGPoint)a3 inView:(id)a4;
+- (void)_setAllowsDynamicTouchesList:(BOOL)list;
+- (void)_setButtonType:(int64_t)type;
+- (void)_setTranslation:(CGPoint)translation inView:(id)view;
 - (void)_startEnoughTimeElapsedTimer;
 - (void)_startMultitouchTimer;
 - (void)_startTapFinishedTimer;
 - (void)clearAllTimers;
 - (void)clearAllTimersAndStartEnoughTimeElapsedTimer;
-- (void)encodeWithCoder:(id)a3;
-- (void)enoughTimeElapsed:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setButtonMaskRequired:(int64_t)a3;
-- (void)setCancelPastAllowableMovement:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)tapRecognizerRecognizedTap:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)enoughTimeElapsed:(id)elapsed;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setButtonMaskRequired:(int64_t)required;
+- (void)setCancelPastAllowableMovement:(BOOL)movement;
+- (void)setView:(id)view;
+- (void)tapRecognizerRecognizedTap:(id)tap;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UILongPressGestureRecognizer
@@ -125,19 +125,19 @@
 
 - (int64_t)_buttonType
 {
-  v2 = [(UIGestureRecognizer *)self allowedPressTypes];
-  if ([v2 count])
+  allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+  if ([allowedPressTypes count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 integerValue];
+    firstObject = [allowedPressTypes firstObject];
+    integerValue = [firstObject integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_startMultitouchTimer
@@ -156,8 +156,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(UILongPressGestureRecognizer *)self touches];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  touches = [(UILongPressGestureRecognizer *)self touches];
+  v4 = [touches countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -169,12 +169,12 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(touches);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * v7) window];
+        window = [*(*(&v14 + 1) + 8 * v7) window];
 
-        if (!v8)
+        if (!window)
         {
           x = self->_lastCentroidScreen.x;
           y = self->_lastCentroidScreen.y;
@@ -185,7 +185,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [touches countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -195,8 +195,8 @@
     }
   }
 
-  v3 = [(UILongPressGestureRecognizer *)self touches];
-  x = _CentroidOfTouches(v3, 0);
+  touches = [(UILongPressGestureRecognizer *)self touches];
+  x = _CentroidOfTouches(touches, 0);
   y = v10;
 LABEL_11:
 
@@ -234,13 +234,13 @@ LABEL_11:
   if ([(UIGestureRecognizer *)self _inForceCapableEnvironment])
   {
     objc_initWeak(&location, self);
-    v7 = [(UIGestureRecognizer *)self _touchForceObservable];
+    _touchForceObservable = [(UIGestureRecognizer *)self _touchForceObservable];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__UILongPressGestureRecognizer__startEnoughTimeElapsedTimer__block_invoke;
     v10[3] = &unk_1E710B6B0;
     objc_copyWeak(&v11, &location);
-    v8 = [v7 addObserverBlock:v10];
+    v8 = [_touchForceObservable addObserverBlock:v10];
     touchForceObservation = self->_touchForceObservation;
     self->_touchForceObservation = v8;
 
@@ -257,11 +257,11 @@ LABEL_11:
   self->_lastForceTimestamp = 0.0;
 }
 
-- (UILongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UILongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = UILongPressGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -282,7 +282,7 @@ LABEL_11:
   return v5;
 }
 
-- (UILongPressGestureRecognizer)initWithCoder:(id)a3
+- (UILongPressGestureRecognizer)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = UILongPressGestureRecognizer;
@@ -295,25 +295,25 @@ LABEL_11:
     v4->_allowableMovement = 10.0;
     *(v4 + 440) |= 4u;
     v4->_allowableElapsedTimeForAllRequiredTouches = 0.0;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UILongPressGestureRecognizer._imp"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UILongPressGestureRecognizer._imp"];
     imp = v5->_imp;
     v5->_imp = v6;
 
     [(UITapRecognizer *)v5->_imp setDelegate:v5];
-    if ([a3 containsValueForKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"])
+    if ([coder containsValueForKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"])
     {
-      v5->_numberOfTouchesRequired = [a3 decodeIntegerForKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"];
+      v5->_numberOfTouchesRequired = [coder decodeIntegerForKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"];
     }
 
-    if ([a3 containsValueForKey:@"UILongPressGestureRecognizer.minimumPressDuration"])
+    if ([coder containsValueForKey:@"UILongPressGestureRecognizer.minimumPressDuration"])
     {
-      [a3 decodeFloatForKey:@"UILongPressGestureRecognizer.minimumPressDuration"];
+      [coder decodeFloatForKey:@"UILongPressGestureRecognizer.minimumPressDuration"];
       v5->_minimumPressDuration = v8;
     }
 
-    if ([a3 containsValueForKey:@"UILongPressGestureRecognizer.allowableMovement"])
+    if ([coder containsValueForKey:@"UILongPressGestureRecognizer.allowableMovement"])
     {
-      [a3 decodeFloatForKey:@"UILongPressGestureRecognizer.allowableMovement"];
+      [coder decodeFloatForKey:@"UILongPressGestureRecognizer.allowableMovement"];
       v5->_allowableMovement = v9;
     }
 
@@ -323,49 +323,49 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UILongPressGestureRecognizer;
   [(UIGestureRecognizer *)&v8 encodeWithCoder:?];
-  [a3 encodeObject:self->_imp forKey:@"UILongPressGestureRecognizer._imp"];
+  [coder encodeObject:self->_imp forKey:@"UILongPressGestureRecognizer._imp"];
   numberOfTouchesRequired = self->_numberOfTouchesRequired;
   if (numberOfTouchesRequired != 1)
   {
-    [a3 encodeInteger:numberOfTouchesRequired forKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"];
+    [coder encodeInteger:numberOfTouchesRequired forKey:@"UILongPressGestureRecognizer.numberOfTouchesRequired"];
   }
 
   minimumPressDuration = self->_minimumPressDuration;
   if (minimumPressDuration != 0.5)
   {
     *&minimumPressDuration = minimumPressDuration;
-    [a3 encodeFloat:@"UILongPressGestureRecognizer.minimumPressDuration" forKey:minimumPressDuration];
+    [coder encodeFloat:@"UILongPressGestureRecognizer.minimumPressDuration" forKey:minimumPressDuration];
   }
 
   allowableMovement = self->_allowableMovement;
   if (allowableMovement != 10.0)
   {
     *&allowableMovement = allowableMovement;
-    [a3 encodeFloat:@"UILongPressGestureRecognizer.allowableMovement" forKey:allowableMovement];
+    [coder encodeFloat:@"UILongPressGestureRecognizer.allowableMovement" forKey:allowableMovement];
   }
 }
 
-- (void)setButtonMaskRequired:(int64_t)a3
+- (void)setButtonMaskRequired:(int64_t)required
 {
-  if (a3 <= 0)
+  if (required <= 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UILongPressGestureRecognizer.m" lineNumber:217 description:@"buttonMaskRequired must be greater than 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UILongPressGestureRecognizer.m" lineNumber:217 description:@"buttonMaskRequired must be greater than 0"];
   }
 
   imp = self->_imp;
 
-  [(UITapRecognizer *)imp setButtonMaskRequired:a3];
+  [(UITapRecognizer *)imp setButtonMaskRequired:required];
 }
 
-- (void)setCancelPastAllowableMovement:(BOOL)a3
+- (void)setCancelPastAllowableMovement:(BOOL)movement
 {
-  if (a3)
+  if (movement)
   {
     v3 = 8;
   }
@@ -378,9 +378,9 @@ LABEL_11:
   *(self + 440) = *(self + 440) & 0xF7 | v3;
 }
 
-- (void)_setAllowsDynamicTouchesList:(BOOL)a3
+- (void)_setAllowsDynamicTouchesList:(BOOL)list
 {
-  if (a3)
+  if (list)
   {
     v3 = 16;
   }
@@ -393,16 +393,16 @@ LABEL_11:
   *(self + 440) = *(self + 440) & 0xEF | v3;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     [(UILongPressGestureRecognizer *)self clearAllTimers];
   }
 
   v5.receiver = self;
   v5.super_class = UILongPressGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 setView:a3];
+  [(UIGestureRecognizer *)&v5 setView:view];
 }
 
 - (BOOL)activeTouchesExceedAllowableSeparation
@@ -416,7 +416,7 @@ LABEL_11:
   return v9 * v10 < sqrt(v5 * v5 + v7 * v7);
 }
 
-- (void)enoughTimeElapsed:(id)a3
+- (void)enoughTimeElapsed:(id)elapsed
 {
   if ((*(self + 440) & 1) == 0 && (*(self + 440) & 2) == 0 && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && ([(NSMutableSet *)self->_activeTouches count]== self->_numberOfTouchesRequired || [(UILongPressGestureRecognizer *)self _buttonType]!= -1))
   {
@@ -425,7 +425,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)_touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:(id)a3
+- (BOOL)_touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:(id)timer
 {
   v24 = *MEMORY[0x1E69E9840];
   if ([(UILongPressGestureRecognizer *)self _isGestureType:15]|| ([(UILongPressGestureRecognizer *)self minimumPressDuration], v5 < 0.15))
@@ -440,8 +440,8 @@ LABEL_11:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = a3;
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    timerCopy = timer;
+    v9 = [timerCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = *v20;
@@ -452,17 +452,17 @@ LABEL_11:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(timerCopy);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * v11) _gestureRecognizers];
-          [v7 addObjectsFromArray:v12];
+          _gestureRecognizers = [*(*(&v19 + 1) + 8 * v11) _gestureRecognizers];
+          [v7 addObjectsFromArray:_gestureRecognizers];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [timerCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -550,20 +550,20 @@ LABEL_10:
   self->_tooMuchTimeElapsed = v4;
 }
 
-- (void)_changeTouchesListTo:(id)a3
+- (void)_changeTouchesListTo:(id)to
 {
   [(UILongPressGestureRecognizer *)self _centroidScreen];
   v6 = v5;
   v8 = v7;
-  v9 = _CentroidOfTouches(a3, 1);
+  v9 = _CentroidOfTouches(to, 1);
   v11 = v10 - v8 + self->_startPointScreen.y;
   self->_startPointScreen.x = self->_startPointScreen.x + v9 - v6;
   self->_startPointScreen.y = v11;
 
-  [(UILongPressGestureRecognizer *)self setTouches:a3];
+  [(UILongPressGestureRecognizer *)self setTouches:to];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v33 = *MEMORY[0x1E69E9840];
   if ([(UILongPressGestureRecognizer *)self _buttonType]!= -1)
@@ -571,11 +571,11 @@ LABEL_10:
     goto LABEL_2;
   }
 
-  v8 = [(UILongPressGestureRecognizer *)self buttonMaskRequired];
-  v9 = a4;
-  if ([v9 _buttonMask])
+  buttonMaskRequired = [(UILongPressGestureRecognizer *)self buttonMaskRequired];
+  eventCopy = event;
+  if ([eventCopy _buttonMask])
   {
-    v10 = [v9 _buttonMask] & v8;
+    v10 = [eventCopy _buttonMask] & buttonMaskRequired;
 
     if (!v10)
     {
@@ -596,7 +596,7 @@ LABEL_3:
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp touchesBegan:a3 withEvent:v9];
+    [(UITapRecognizer *)imp touchesBegan:began withEvent:eventCopy];
     return;
   }
 
@@ -607,15 +607,15 @@ LABEL_3:
 
   if (![(NSMutableSet *)self->_activeTouches count])
   {
-    [(UILongPressGestureRecognizer *)self _locationOfTouches:a3];
+    [(UILongPressGestureRecognizer *)self _locationOfTouches:began];
     self->_lastSceneReferenceLocation.x = v12;
     self->_lastSceneReferenceLocation.y = v13;
     self->_lastUnadjustedSceneReferenceLocation = self->_lastSceneReferenceLocation;
-    [v9 timestamp];
+    [eventCopy timestamp];
     self->_lastTouchTime = v14;
   }
 
-  if ([a3 count])
+  if ([began count])
   {
     if (!self->_activeTouches)
     {
@@ -626,8 +626,8 @@ LABEL_3:
 
     if (([(UIGestureRecognizer *)self _state]- 1) <= 2 && [(UILongPressGestureRecognizer *)self _allowsDynamicTouchesList])
     {
-      [(NSMutableSet *)self->_activeTouches unionSet:a3];
-      v27 = [(NSMutableSet *)self->_activeTouches allObjects];
+      [(NSMutableSet *)self->_activeTouches unionSet:began];
+      allObjects = [(NSMutableSet *)self->_activeTouches allObjects];
       [(UILongPressGestureRecognizer *)self _changeTouchesListTo:?];
 LABEL_24:
 
@@ -636,7 +636,7 @@ LABEL_24:
 
     if (([(UIGestureRecognizer *)self _state]- 1) > 2)
     {
-      [(NSMutableSet *)self->_activeTouches unionSet:a3];
+      [(NSMutableSet *)self->_activeTouches unionSet:began];
       if (*(self + 440))
       {
         return;
@@ -667,7 +667,7 @@ LABEL_24:
           goto LABEL_3;
         }
 
-        v27 = [(NSMutableSet *)v24 allObjects];
+        allObjects = [(NSMutableSet *)v24 allObjects];
         [(UILongPressGestureRecognizer *)self setTouches:?];
         [(UILongPressGestureRecognizer *)self _centroidScreen];
         self->_startPointScreen.x = v25;
@@ -675,7 +675,7 @@ LABEL_24:
         [(UILongPressGestureRecognizer *)self clearAllTimersAndStartEnoughTimeElapsedTimer];
         if ([(UIGestureRecognizer *)self _inForceCapableEnvironment])
         {
-          self->_requiresQuietImpulseForCurrentTouchSequence = [(UILongPressGestureRecognizer *)self _touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:v27];
+          self->_requiresQuietImpulseForCurrentTouchSequence = [(UILongPressGestureRecognizer *)self _touchesMayBeRecognizedByForcePreviewingRevealGestureRecognizerWhichShouldDelayTimer:allObjects];
         }
 
         goto LABEL_24;
@@ -690,8 +690,8 @@ LABEL_24:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v17 = a3;
-      v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      beganCopy = began;
+      v18 = [beganCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v18)
       {
         v19 = v18;
@@ -702,13 +702,13 @@ LABEL_24:
           {
             if (*v29 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(beganCopy);
             }
 
-            [(UIGestureRecognizer *)self ignoreTouch:*(*(&v28 + 1) + 8 * i) forEvent:v9];
+            [(UIGestureRecognizer *)self ignoreTouch:*(*(&v28 + 1) + 8 * i) forEvent:eventCopy];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v19 = [beganCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v19);
@@ -717,21 +717,21 @@ LABEL_24:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if ([(UILongPressGestureRecognizer *)self _buttonType]== -1)
   {
     if ((*(self + 440) & 4) != 0)
     {
-      [(UILongPressGestureRecognizer *)self _locationOfTouches:a3];
+      [(UILongPressGestureRecognizer *)self _locationOfTouches:moved];
       v9 = v8;
       v11 = v10;
-      [a4 timestamp];
+      [event timestamp];
       v13 = v12;
-      v14 = [a3 anyObject];
-      [(UILongPressGestureRecognizer *)self _centroidMovedTo:v14 atTime:v9 physicalTouch:v11, v13];
+      anyObject = [moved anyObject];
+      [(UILongPressGestureRecognizer *)self _centroidMovedTo:anyObject atTime:v9 physicalTouch:v11, v13];
 
-      if (([(UIGestureRecognizer *)self _state]- 1) <= 2 && [(NSMutableSet *)self->_activeTouches intersectsSet:a3])
+      if (([(UIGestureRecognizer *)self _state]- 1) <= 2 && [(NSMutableSet *)self->_activeTouches intersectsSet:moved])
       {
         if ((*(self + 440) & 8) != 0)
         {
@@ -764,12 +764,12 @@ LABEL_24:
     {
       imp = self->_imp;
 
-      [(UITapRecognizer *)imp touchesMoved:a3 withEvent:a4];
+      [(UITapRecognizer *)imp touchesMoved:moved withEvent:event];
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([(UILongPressGestureRecognizer *)self _buttonType]== -1)
   {
@@ -778,26 +778,26 @@ LABEL_24:
       self->_requiresQuietImpulseForCurrentTouchSequence = 0;
     }
 
-    v7 = [(UILongPressGestureRecognizer *)self touches];
-    self->_lastCentroidScreen.x = _CentroidOfTouches(v7, 0);
+    touches = [(UILongPressGestureRecognizer *)self touches];
+    self->_lastCentroidScreen.x = _CentroidOfTouches(touches, 0);
     self->_lastCentroidScreen.y = v8;
 
     if ((*(self + 440) & 4) != 0)
     {
-      [(UILongPressGestureRecognizer *)self _locationOfTouches:a3];
+      [(UILongPressGestureRecognizer *)self _locationOfTouches:ended];
       v11 = v10;
       v13 = v12;
-      [a4 timestamp];
+      [event timestamp];
       v15 = v14;
-      v16 = [a3 anyObject];
-      [(UILongPressGestureRecognizer *)self _centroidMovedTo:v16 atTime:v11 physicalTouch:v13, v15];
+      anyObject = [ended anyObject];
+      [(UILongPressGestureRecognizer *)self _centroidMovedTo:anyObject atTime:v11 physicalTouch:v13, v15];
 
-      if (![a3 count])
+      if (![ended count])
       {
         return;
       }
 
-      [(NSMutableSet *)self->_activeTouches minusSet:a3];
+      [(NSMutableSet *)self->_activeTouches minusSet:ended];
       if ([(UILongPressGestureRecognizer *)self _allowsDynamicTouchesList]&& [(NSMutableSet *)self->_activeTouches count])
       {
         if (![(UILongPressGestureRecognizer *)self _allowsDynamicTouchesList])
@@ -805,16 +805,16 @@ LABEL_24:
           return;
         }
 
-        v19 = [(NSMutableSet *)self->_activeTouches allObjects];
-        [(UILongPressGestureRecognizer *)self _changeTouchesListTo:v19];
+        allObjects = [(NSMutableSet *)self->_activeTouches allObjects];
+        [(UILongPressGestureRecognizer *)self _changeTouchesListTo:allObjects];
       }
 
       else
       {
         v17 = MEMORY[0x1E695DFD8];
-        v19 = [(UILongPressGestureRecognizer *)self touches];
-        v18 = [v17 setWithArray:v19];
-        -[UILongPressGestureRecognizer _interactionsEndedWithValidTouches:](self, "_interactionsEndedWithValidTouches:", [v18 intersectsSet:a3]);
+        allObjects = [(UILongPressGestureRecognizer *)self touches];
+        v18 = [v17 setWithArray:allObjects];
+        -[UILongPressGestureRecognizer _interactionsEndedWithValidTouches:](self, "_interactionsEndedWithValidTouches:", [v18 intersectsSet:ended]);
       }
     }
 
@@ -822,14 +822,14 @@ LABEL_24:
     {
       imp = self->_imp;
 
-      [(UITapRecognizer *)imp touchesEnded:a3 withEvent:a4];
+      [(UITapRecognizer *)imp touchesEnded:ended withEvent:event];
     }
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(UILongPressGestureRecognizer *)self _buttonType:a3]== -1)
+  if ([(UILongPressGestureRecognizer *)self _buttonType:cancelled]== -1)
   {
     [(UIGestureRecognizer *)self _failWithReason:@"touchesCancelled"];
   }
@@ -840,7 +840,7 @@ LABEL_24:
   }
 }
 
-- (void)_incorporateTouchForceMessageIntoImpulseQuietness:(id)a3
+- (void)_incorporateTouchForceMessageIntoImpulseQuietness:(id)quietness
 {
   v3[4] = self;
   v4[0] = MEMORY[0x1E69E9820];
@@ -852,7 +852,7 @@ LABEL_24:
   v3[1] = 3221225472;
   v3[2] = __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImpulseQuietness___block_invoke_2;
   v3[3] = &unk_1E70F3590;
-  [a3 ifObservation:v4 ifReset:v3];
+  [quietness ifObservation:v4 ifReset:v3];
 }
 
 uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImpulseQuietness___block_invoke(uint64_t a1, void *a2)
@@ -872,12 +872,12 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (void)_interactionsEndedWithValidTouches:(BOOL)a3
+- (void)_interactionsEndedWithValidTouches:(BOOL)touches
 {
-  v3 = a3;
+  touchesCopy = touches;
   *(self + 440) |= 1u;
   [(UILongPressGestureRecognizer *)self clearAllTimers];
-  if (([(UIGestureRecognizer *)self _state]- 1) > 2 || !v3)
+  if (([(UIGestureRecognizer *)self _state]- 1) > 2 || !touchesCopy)
   {
 
     [(UIGestureRecognizer *)self _failWithReason:@"interactionEnded"];
@@ -890,42 +890,42 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   }
 }
 
-- (void)_appendSubclassDescription:(id)a3
+- (void)_appendSubclassDescription:(id)description
 {
   if ([(UITapRecognizer *)self->_imp numberOfTapsRequired]!= 1)
   {
-    [a3 appendFormat:@"; numberOfTapsRequired = %ld", -[UITapRecognizer numberOfTapsRequired](self->_imp, "numberOfTapsRequired")];
+    [description appendFormat:@"; numberOfTapsRequired = %ld", -[UITapRecognizer numberOfTapsRequired](self->_imp, "numberOfTapsRequired")];
   }
 
   if ([(UITapRecognizer *)self->_imp numberOfTouchesRequired]!= 1)
   {
-    [a3 appendFormat:@"; numberOfTouchesRequired = %ld", -[UITapRecognizer numberOfTouchesRequired](self->_imp, "numberOfTouchesRequired")];
+    [description appendFormat:@"; numberOfTouchesRequired = %ld", -[UITapRecognizer numberOfTouchesRequired](self->_imp, "numberOfTouchesRequired")];
   }
 
   [(UILongPressGestureRecognizer *)self minimumPressDuration];
   if (v5 > 0.0)
   {
     [(UILongPressGestureRecognizer *)self minimumPressDuration];
-    [a3 appendFormat:@"; minimumPressDuration = %2g", v6];
+    [description appendFormat:@"; minimumPressDuration = %2g", v6];
   }
 
   if ([(UITapRecognizer *)self->_imp buttonMaskRequired]!= 1)
   {
-    [a3 appendFormat:@"; buttonMaskRequired = %ld", -[UITapRecognizer buttonMaskRequired](self->_imp, "buttonMaskRequired")];
+    [description appendFormat:@"; buttonMaskRequired = %ld", -[UITapRecognizer buttonMaskRequired](self->_imp, "buttonMaskRequired")];
   }
 }
 
-- (CGPoint)_centroidInView:(id)a3
+- (CGPoint)_centroidInView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v5 = [a3 _window];
+    _window = [view _window];
     [(UILongPressGestureRecognizer *)self _centroidScreen];
-    [v5 _convertPointFromSceneReferenceSpace:?];
+    [_window _convertPointFromSceneReferenceSpace:?];
     v7 = v6;
     v9 = v8;
 
-    [a3 convertPoint:0 fromView:{v7, v9}];
+    [view convertPoint:0 fromView:{v7, v9}];
   }
 
   else
@@ -941,8 +941,8 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
 
 - (CGPoint)centroid
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UILongPressGestureRecognizer *)self _centroidInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(UILongPressGestureRecognizer *)self _centroidInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -953,14 +953,14 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)_startPointInView:(id)a3
+- (CGPoint)_startPointInView:(id)view
 {
-  v5 = [a3 window];
-  [v5 _convertPointFromSceneReferenceSpace:{self->_startPointScreen.x, self->_startPointScreen.y}];
+  window = [view window];
+  [window _convertPointFromSceneReferenceSpace:{self->_startPointScreen.x, self->_startPointScreen.y}];
   v7 = v6;
   v9 = v8;
 
-  [a3 convertPoint:0 fromView:{v7, v9}];
+  [view convertPoint:0 fromView:{v7, v9}];
   result.y = v11;
   result.x = v10;
   return result;
@@ -968,8 +968,8 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
 
 - (CGPoint)startPoint
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UILongPressGestureRecognizer *)self _startPointInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(UILongPressGestureRecognizer *)self _startPointInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -980,12 +980,12 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)_translationInView:(id)a3
+- (CGPoint)_translationInView:(id)view
 {
   [(UILongPressGestureRecognizer *)self _centroidInView:?];
   v6 = v5;
   v8 = v7;
-  [(UILongPressGestureRecognizer *)self _startPointInView:a3];
+  [(UILongPressGestureRecognizer *)self _startPointInView:view];
   v10 = v6 - v9;
   v12 = v8 - v11;
   result.y = v12;
@@ -993,20 +993,20 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (void)_setTranslation:(CGPoint)a3 inView:(id)a4
+- (void)_setTranslation:(CGPoint)translation inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   [(UILongPressGestureRecognizer *)self _centroidInView:?];
   v9 = x + v8;
   v11 = y + v10;
-  v12 = [a4 window];
-  [a4 convertPoint:v12 toView:{v9, v11}];
+  window = [view window];
+  [view convertPoint:window toView:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [a4 window];
-  [v17 _convertPointToSceneReferenceSpace:{v14, v16}];
+  window2 = [view window];
+  [window2 _convertPointToSceneReferenceSpace:{v14, v16}];
   v19 = v18;
   v21 = v20;
 
@@ -1014,27 +1014,27 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   self->_startPointScreen.y = v21;
 }
 
-- (void)_setButtonType:(int64_t)a3
+- (void)_setButtonType:(int64_t)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if ([(UILongPressGestureRecognizer *)self _buttonType]!= a3)
+  if ([(UILongPressGestureRecognizer *)self _buttonType]!= type)
   {
-    v6 = [(UIGestureRecognizer *)self view];
+    view = [(UIGestureRecognizer *)self view];
 
-    if (v6)
+    if (view)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UILongPressGestureRecognizer.m" lineNumber:758 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UILongPressGestureRecognizer.m" lineNumber:758 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(UIGestureRecognizer *)self setAllowedPressTypes:v8];
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   if ([UILongPressGestureRecognizer _shouldFailInResponseToPresses:"_shouldFailInResponseToPresses:withEvent:" withEvent:?])
   {
@@ -1060,24 +1060,24 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp pressesBegan:a3 withEvent:a4];
+    [(UITapRecognizer *)imp pressesBegan:began withEvent:event];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   if ((*(self + 440) & 4) != 0)
   {
-    [(UILongPressGestureRecognizer *)self _interactionsEndedWithValidTouches:1, a4];
+    [(UILongPressGestureRecognizer *)self _interactionsEndedWithValidTouches:1, event];
   }
 
   else
   {
-    [(UITapRecognizer *)self->_imp pressesEnded:a3 withEvent:a4];
+    [(UITapRecognizer *)self->_imp pressesEnded:ended withEvent:event];
   }
 }
 
-- (BOOL)_shouldReceivePress:(id)a3
+- (BOOL)_shouldReceivePress:(id)press
 {
   v10.receiver = self;
   v10.super_class = UILongPressGestureRecognizer;
@@ -1088,17 +1088,17 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
 
   else
   {
-    v6 = [(UILongPressGestureRecognizer *)self _buttonType];
-    v5 = v6 == [a3 type];
+    _buttonType = [(UILongPressGestureRecognizer *)self _buttonType];
+    v5 = _buttonType == [press type];
   }
 
-  v7 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v7 = [MEMORY[0x1E695DFD8] setWithObject:press];
   v8 = [(UILongPressGestureRecognizer *)self _shouldFailInResponseToPresses:v7 withEvent:0];
 
   return v5 || v8;
 }
 
-- (void)tapRecognizerRecognizedTap:(id)a3
+- (void)tapRecognizerRecognizedTap:(id)tap
 {
   *(self + 440) |= 4u;
   [(UILongPressGestureRecognizer *)self _startTapFinishedTimer];
@@ -1109,31 +1109,31 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
 
 - (double)_touchSloppinessFactor
 {
-  v2 = [(UIGestureRecognizer *)self view];
-  [v2 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   if ([(NSArray *)self->_touches count])
   {
 
-    [(UILongPressGestureRecognizer *)self _centroidInView:a3];
+    [(UILongPressGestureRecognizer *)self _centroidInView:view];
   }
 
   else
   {
-    [(UITapRecognizer *)self->_imp locationInViewNotTrackingTouches:a3];
+    [(UITapRecognizer *)self->_imp locationInViewNotTrackingTouches:view];
     v7 = v5;
     v8 = v6;
-    if (a3)
+    if (view)
     {
-      v9 = [a3 _window];
-      [v9 _convertPointFromSceneReferenceSpace:{v7, v8}];
-      [a3 convertPoint:0 fromView:?];
+      _window = [view _window];
+      [_window _convertPointFromSceneReferenceSpace:{v7, v8}];
+      [view convertPoint:0 fromView:?];
       v11 = v10;
       v13 = v12;
 
@@ -1147,9 +1147,9 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
-  if ([(NSArray *)self->_touches count]<= a3)
+  if ([(NSArray *)self->_touches count]<= touch)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
@@ -1157,15 +1157,15 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
     v16 = NSStringFromSelector(a2);
     v8 = [v13 stringWithFormat:@"-[%@ %@]", v15, v16];
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%ld) beyond bounds (%ld).", v8, a3, -[NSArray count](self->_touches, "count")}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%ld) beyond bounds (%ld).", v8, touch, -[NSArray count](self->_touches, "count")}];
     v10 = *MEMORY[0x1E695EFF8];
     v12 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
   else
   {
-    v8 = [(NSArray *)self->_touches objectAtIndex:a3];
-    [v8 locationInView:a4];
+    v8 = [(NSArray *)self->_touches objectAtIndex:touch];
+    [v8 locationInView:view];
     v10 = v9;
     v12 = v11;
   }
@@ -1177,15 +1177,15 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view
 {
-  if (a3 && *(a3 + 5) >= 0.001)
+  if (sample && *(sample + 5) >= 0.001)
   {
-    [(UIGestureRecognizer *)self _convertPoint:a4 fromSceneReferenceCoordinatesToView:*(a3 + 1), *(a3 + 2)];
+    [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:*(sample + 1), *(sample + 2)];
     v10 = v9;
     v12 = v11;
-    [(UIGestureRecognizer *)self _convertPoint:a4 fromSceneReferenceCoordinatesToView:*(a3 + 3), *(a3 + 4)];
-    v14 = *(a3 + 5);
+    [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:*(sample + 3), *(sample + 4)];
+    v14 = *(sample + 5);
     v5 = (v13 - v10) / v14;
     v6 = (v15 - v12) / v14;
   }
@@ -1201,9 +1201,9 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  [(UILongPressGestureRecognizer *)self _convertVelocitySample:self->_velocitySample fromSceneReferenceCoordinatesToView:a3];
+  [(UILongPressGestureRecognizer *)self _convertVelocitySample:self->_velocitySample fromSceneReferenceCoordinatesToView:view];
   v5 = v4;
   v7 = v6;
   previousVelocitySample = self->_previousVelocitySample;
@@ -1221,12 +1221,12 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)_locationOfTouches:(id)a3
+- (CGPoint)_locationOfTouches:(id)touches
 {
-  v3 = [a3 anyObject];
-  v4 = [v3 window];
-  [v3 locationInView:0];
-  [v4 _convertPointToSceneReferenceSpace:?];
+  anyObject = [touches anyObject];
+  window = [anyObject window];
+  [anyObject locationInView:0];
+  [window _convertPointToSceneReferenceSpace:?];
   v6 = v5;
   v8 = v7;
 
@@ -1237,19 +1237,19 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)a3 toSceneReferenceLocation:(CGPoint)a4
+- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)location toSceneReferenceLocation:(CGPoint)referenceLocation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v9 fromSceneReferenceCoordinatesToView:v7, v6];
+  y = referenceLocation.y;
+  x = referenceLocation.x;
+  v6 = location.y;
+  v7 = location.x;
+  view = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v7, v6];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v14 fromSceneReferenceCoordinatesToView:x, y];
+  view2 = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view2 fromSceneReferenceCoordinatesToView:x, y];
   v16 = v15;
   v18 = v17;
 
@@ -1260,18 +1260,18 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)a3
+- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)location
 {
-  [(UILongPressGestureRecognizer *)self _offsetInViewFromSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.x toSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.y, a3.x, a3.y];
+  [(UILongPressGestureRecognizer *)self _offsetInViewFromSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.x toSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.y, location.x, location.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v8 fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v13 toSceneReferenceCoordinatesFromView:v5 + v10, v7 + v12];
+  view2 = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view2 toSceneReferenceCoordinatesFromView:v5 + v10, v7 + v12];
   v15 = v14;
   v17 = v16;
 
@@ -1292,11 +1292,11 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   return result;
 }
 
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 physicalTouch:(id)a5
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time physicalTouch:(id)touch
 {
-  y = a3.y;
-  x = a3.x;
-  [(UILongPressGestureRecognizer *)self _adjustSceneReferenceLocation:a5];
+  y = to.y;
+  x = to.x;
+  [(UILongPressGestureRecognizer *)self _adjustSceneReferenceLocation:touch];
   v10 = v9;
   v12 = v11;
   lastTouchTime = self->_lastTouchTime;
@@ -1317,26 +1317,26 @@ uint64_t __82__UILongPressGestureRecognizer__incorporateTouchForceMessageIntoImp
   *(v16 + 8) = self->_lastSceneReferenceLocation;
   *(v16 + 3) = v10;
   *(v16 + 4) = v12;
-  *(v16 + 5) = a4 - lastTouchTime;
+  *(v16 + 5) = time - lastTouchTime;
 
   self->_lastUnadjustedSceneReferenceLocation.x = x;
   self->_lastUnadjustedSceneReferenceLocation.y = y;
   self->_lastSceneReferenceLocation.x = v10;
   self->_lastSceneReferenceLocation.y = v12;
-  self->_lastTouchTime = a4;
+  self->_lastTouchTime = time;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
   v5 = 1;
-  if ([a3 _isGestureType:1])
+  if ([recognizer _isGestureType:1])
   {
-    v6 = a3;
-    v7 = [v6 numberOfTouchesRequired];
-    if (v7 == -[UILongPressGestureRecognizer numberOfTouchesRequired](self, "numberOfTouchesRequired") && (v8 = [v6 buttonMaskRequired], v8 == -[UILongPressGestureRecognizer buttonMaskRequired](self, "buttonMaskRequired")))
+    recognizerCopy = recognizer;
+    numberOfTouchesRequired = [recognizerCopy numberOfTouchesRequired];
+    if (numberOfTouchesRequired == -[UILongPressGestureRecognizer numberOfTouchesRequired](self, "numberOfTouchesRequired") && (v8 = [recognizerCopy buttonMaskRequired], v8 == -[UILongPressGestureRecognizer buttonMaskRequired](self, "buttonMaskRequired")))
     {
-      v9 = [v6 numberOfTapsRequired];
-      v5 = v9 <= [(UILongPressGestureRecognizer *)self numberOfTapsRequired];
+      numberOfTapsRequired = [recognizerCopy numberOfTapsRequired];
+      v5 = numberOfTapsRequired <= [(UILongPressGestureRecognizer *)self numberOfTapsRequired];
     }
 
     else

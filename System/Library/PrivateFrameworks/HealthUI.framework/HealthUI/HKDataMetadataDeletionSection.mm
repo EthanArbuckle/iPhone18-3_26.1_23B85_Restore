@@ -1,10 +1,10 @@
 @interface HKDataMetadataDeletionSection
 - (HKDataMetadataDeletionSection)init;
-- (HKDataMetadataDeletionSection)initWithTitle:(id)a3;
+- (HKDataMetadataDeletionSection)initWithTitle:(id)title;
 - (HKDataMetadataDeletionSectionDelegate)delegate;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
 - (void)_updateCellForEnabledState;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKDataMetadataDeletionSection
@@ -18,16 +18,16 @@
   return v5;
 }
 
-- (HKDataMetadataDeletionSection)initWithTitle:(id)a3
+- (HKDataMetadataDeletionSection)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = HKDataMetadataDeletionSection;
   v6 = [(HKDataMetadataDeletionSection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
     v7->_enabled = 1;
   }
 
@@ -46,50 +46,50 @@
     [MEMORY[0x1E69DC888] hk_appInteractionDisabledColor];
   }
   v5 = ;
-  v3 = [(HKDataMetadataDeletionSection *)self cell];
-  v4 = [v3 textLabel];
-  [v4 setTextColor:v5];
+  cell = [(HKDataMetadataDeletionSection *)self cell];
+  textLabel = [cell textLabel];
+  [textLabel setTextColor:v5];
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithIdentifier:@"HKDataMetadataDeletionSectionCell"];
+  v5 = [view dequeueReusableCellWithIdentifier:@"HKDataMetadataDeletionSectionCell"];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"HKDataMetadataDeletionSectionCell"];
   }
 
-  v6 = [v5 textLabel];
-  [v6 setTextAlignment:1];
+  textLabel = [v5 textLabel];
+  [textLabel setTextAlignment:1];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v8 = [v5 textLabel];
-  [v8 setFont:v7];
+  textLabel2 = [v5 textLabel];
+  [textLabel2 setFont:v7];
 
-  v9 = [v5 textLabel];
-  [v9 setAdjustsFontForContentSizeCategory:1];
+  textLabel3 = [v5 textLabel];
+  [textLabel3 setAdjustsFontForContentSizeCategory:1];
 
-  v10 = [(HKDataMetadataDeletionSection *)self title];
-  v11 = [v5 textLabel];
-  [v11 setText:v10];
+  title = [(HKDataMetadataDeletionSection *)self title];
+  textLabel4 = [v5 textLabel];
+  [textLabel4 setText:title];
 
   [(HKDataMetadataDeletionSection *)self setCell:v5];
-  v12 = [(HKDataMetadataDeletionSection *)self delegate];
-  v13 = [v12 accessibilityIdentifier];
-  v14 = [(HKDataMetadataDeletionSection *)self cell];
-  [v14 setAccessibilityIdentifier:v13];
+  delegate = [(HKDataMetadataDeletionSection *)self delegate];
+  accessibilityIdentifier = [delegate accessibilityIdentifier];
+  cell = [(HKDataMetadataDeletionSection *)self cell];
+  [cell setAccessibilityIdentifier:accessibilityIdentifier];
 
   [(HKDataMetadataDeletionSection *)self _updateCellForEnabledState];
 
   return v5;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  if ([(HKDataMetadataDeletionSection *)self isEnabled:a3])
+  if ([(HKDataMetadataDeletionSection *)self isEnabled:index])
   {
-    v6 = [(HKDataMetadataDeletionSection *)self delegate];
-    [v6 deletionSectionDidSelectRow:self sourceItem:self->_cell];
+    delegate = [(HKDataMetadataDeletionSection *)self delegate];
+    [delegate deletionSectionDidSelectRow:self sourceItem:self->_cell];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface MPSImageConversion
-- (MPSImageConversion)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageConversion)initWithDevice:(id)a3;
-- (MPSImageConversion)initWithDevice:(id)a3 transform:(id)a4;
+- (MPSImageConversion)initWithCoder:(id)coder device:(id)device;
+- (MPSImageConversion)initWithDevice:(id)device;
 - (MPSImageConversion)initWithDevice:(id)device srcAlpha:(MPSAlphaType)srcAlpha destAlpha:(MPSAlphaType)destAlpha backgroundColor:(CGFloat *)backgroundColor conversionInfo:(CGColorConversionInfoRef)conversionInfo;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSImageConversion)initWithDevice:(id)device transform:(id)transform;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageConversion
@@ -207,7 +207,7 @@ LABEL_39:
   return v90;
 }
 
-- (MPSImageConversion)initWithDevice:(id)a3
+- (MPSImageConversion)initWithDevice:(id)device
 {
   v17.receiver = self;
   v17.super_class = MPSImageConversion;
@@ -228,13 +228,13 @@ LABEL_39:
     v4->super._encode = sub_23995A480;
     v4->super._encodeData = v4;
     sub_23995D1B4(v4, 0);
-    sub_23995D4C4(v5, a3, v15, v11, v12, v13, v14);
+    sub_23995D4C4(v5, device, v15, v11, v12, v13, v14);
   }
 
   return v5;
 }
 
-- (MPSImageConversion)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageConversion)initWithCoder:(id)coder device:(id)device
 {
   v139.receiver = self;
   v139.super_class = MPSImageConversion;
@@ -273,11 +273,11 @@ LABEL_39:
   v136 = MPSDevice;
   *(v6 + 22) = sub_23995A480;
   *(v6 + 24) = v6;
-  *(v6 + 60) = objc_msgSend_decodeInt64ForKey_(a3, v8, @"kMPSImageConversion.sourceAlpha", v9, v10, v11);
-  *(v6 + 61) = objc_msgSend_decodeInt64ForKey_(a3, v13, @"kMPSImageConversion.destinationAlpha", v14, v15, v16);
+  *(v6 + 60) = objc_msgSend_decodeInt64ForKey_(coder, v8, @"kMPSImageConversion.sourceAlpha", v9, v10, v11);
+  *(v6 + 61) = objc_msgSend_decodeInt64ForKey_(coder, v13, @"kMPSImageConversion.destinationAlpha", v14, v15, v16);
   v138 = 0;
   v137 = 0;
-  v19 = sub_23995E98C(a3, @"kMPSImageConversion.srcDecode", &v138, &v137, v17, v18);
+  v19 = sub_23995E98C(coder, @"kMPSImageConversion.srcDecode", &v138, &v137, v17, v18);
   v20 = v137;
   if (v137 != 1 || v138 < 8)
   {
@@ -317,7 +317,7 @@ LABEL_39:
   HIDWORD(v22) = v19[7];
   *(v6 + 15) = v22;
   free(v19);
-  v25 = sub_23995E98C(a3, @"kMPSImageConversion.destDecode", &v138, &v137, v23, v24);
+  v25 = sub_23995E98C(coder, @"kMPSImageConversion.destDecode", &v138, &v137, v23, v24);
   v26 = v137;
   if (v137 != 1 || v138 <= 7)
   {
@@ -349,7 +349,7 @@ LABEL_39:
   HIDWORD(v28) = v25[7];
   *(v6 + 17) = v28;
   free(v25);
-  v31 = sub_23995E98C(a3, @"kMPSImageConversion.info", &v138, &v137, v29, v30);
+  v31 = sub_23995E98C(coder, @"kMPSImageConversion.info", &v138, &v137, v29, v30);
   v32 = v137;
   if (v137 != 1 || v138 <= 0x11)
   {
@@ -376,7 +376,7 @@ LABEL_39:
   *(v6 + 376) = 0u;
   *(v6 + 392) = 0u;
   *(v6 + 51) = 0;
-  *(v6 + 46) = sub_23995E98C(a3, @"kMPSImageConversion.iData", &v138, &v137, v37, v38);
+  *(v6 + 46) = sub_23995E98C(coder, @"kMPSImageConversion.iData", &v138, &v137, v37, v38);
   if (!v137)
   {
 
@@ -399,7 +399,7 @@ LABEL_27:
     return 0;
   }
 
-  *(v6 + 47) = sub_23995E98C(a3, @"kMPSImageConversion.fData", &v138, &v137, v39, v40);
+  *(v6 + 47) = sub_23995E98C(coder, @"kMPSImageConversion.fData", &v138, &v137, v39, v40);
   if (!v137)
   {
 
@@ -416,7 +416,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  *(v6 + 51) = sub_23995EACC(a3, a4, @"kMPSImageConversion.devFloatData", &v138, &v137, v41);
+  *(v6 + 51) = sub_23995EACC(coder, device, @"kMPSImageConversion.devFloatData", &v138, &v137, v41);
   if ((v137 & 1) == 0)
   {
 
@@ -439,7 +439,7 @@ LABEL_27:
       v141 = 0;
       v45 = objc_alloc(MEMORY[0x277CCACA8]);
       v50 = objc_msgSend_initWithFormat_(v45, v46, @"%@.%d", v47, v48, v49, @"kMPSImageConversion.stages", v43);
-      v53 = sub_23995E98C(a3, v50, &v140, &v141, v51, v52);
+      v53 = sub_23995E98C(coder, v50, &v140, &v141, v51, v52);
       v54 = v141;
       if (v141 == 1 && v53 != 0)
       {
@@ -501,7 +501,7 @@ LABEL_44:
       {
         v62 = objc_alloc(MEMORY[0x277CCACA8]);
         v67 = objc_msgSend_initWithFormat_(v62, v63, @"%@%d", v64, v65, v66, @"kMPSImageConversion.texLuts", v61);
-        *(*(v6 + 48) + 8 * v61) = sub_23995EB78(a3, a4, v67, &v137);
+        *(*(v6 + 48) + 8 * v61) = sub_23995EB78(coder, device, v67, &v137);
 
         if ((v137 & 1) == 0)
         {
@@ -547,12 +547,12 @@ LABEL_52:
   v90 = (*(*v136 + 24))(v136);
   objc_msgSend_setStorageMode_(v69, v91, v90, v92, v93, v94);
   objc_msgSend_setTextureType_(v69, v95, 0, v96, v97, v98);
-  **(v6 + 50) = objc_msgSend_newTextureWithDescriptor_(a4, v99, v69, v100, v101, v102);
+  **(v6 + 50) = objc_msgSend_newTextureWithDescriptor_(device, v99, v69, v100, v101, v102);
   objc_msgSend_setTextureType_(v69, v103, 2, v104, v105, v106);
-  *(*(v6 + 50) + 8) = objc_msgSend_newTextureWithDescriptor_(a4, v107, v69, v108, v109, v110);
+  *(*(v6 + 50) + 8) = objc_msgSend_newTextureWithDescriptor_(device, v107, v69, v108, v109, v110);
   objc_msgSend_setTextureType_(v69, v111, 7, v112, v113, v114);
-  *(*(v6 + 50) + 16) = objc_msgSend_newTextureWithDescriptor_(a4, v115, v69, v116, v117, v118);
-  *(*(v6 + 50) + 24) = objc_msgSend_newTextureWithDescriptor_(a4, v119, v69, v120, v121, v122);
+  *(*(v6 + 50) + 16) = objc_msgSend_newTextureWithDescriptor_(device, v115, v69, v116, v117, v118);
+  *(*(v6 + 50) + 24) = objc_msgSend_newTextureWithDescriptor_(device, v119, v69, v120, v121, v122);
 
   v123 = *(v6 + 82);
   if (v123 >= 1)
@@ -578,7 +578,7 @@ LABEL_52:
         v126 = objc_alloc(MEMORY[0x277CCACA8]);
         v131 = objc_msgSend_initWithFormat_(v126, v127, @"%@%d", v128, v129, v130, @"kMPSImageConversion.trcLuts", v125);
         v140 = 0;
-        *(*(v6 + 49) + 8 * v125) = sub_23995EACC(a3, a4, v131, &v140, &v137, v132);
+        *(*(v6 + 49) + 8 * v125) = sub_23995EACC(coder, device, v131, &v140, &v137, v132);
 
         if ((v137 & 1) == 0)
         {
@@ -603,28 +603,28 @@ LABEL_52:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v242 = *MEMORY[0x277D85DE8];
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v238.receiver = self;
   v238.super_class = MPSImageConversion;
   [(MPSUnaryImageKernel *)&v238 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->sourceAlpha, @"kMPSImageConversion.sourceAlpha", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->destinationAlpha, @"kMPSImageConversion.destinationAlpha", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->sourceAlpha, @"kMPSImageConversion.sourceAlpha", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->destinationAlpha, @"kMPSImageConversion.destinationAlpha", v9, v10);
   v240 = *self->srcDecode;
   v241 = v240;
-  sub_23995F540(a3, &v240, @"kMPSImageConversion.srcDecode", 8, v11, v12);
+  sub_23995F540(coder, &v240, @"kMPSImageConversion.srcDecode", 8, v11, v12);
   v240 = *self->destDecode;
   v241 = v240;
-  sub_23995F540(a3, &v240, @"kMPSImageConversion.destDecode", 8, v13, v14);
+  sub_23995F540(coder, &v240, @"kMPSImageConversion.destDecode", 8, v13, v14);
   p_convertInfo = &self->convertInfo;
-  sub_23995F540(a3, &self->convertInfo, @"kMPSImageConversion.info", 18, v16, v17);
+  sub_23995F540(coder, &self->convertInfo, @"kMPSImageConversion.info", 18, v16, v17);
   p_convertInfoPtrs = &self->convertInfoPtrs;
-  sub_23995F540(a3, self->convertInfoPtrs.data, @"kMPSImageConversion.iData", self->convertInfo.nData, v19, v20);
+  sub_23995F540(coder, self->convertInfoPtrs.data, @"kMPSImageConversion.iData", self->convertInfo.nData, v19, v20);
   v21 = self->convertInfo.nFData + 8 * self->convertInfo.nStages;
-  v237 = a3;
-  sub_23995F540(a3, self->convertInfoPtrs.fData, @"kMPSImageConversion.fData", v21 + 8, v22, v23);
+  coderCopy = coder;
+  sub_23995F540(coder, self->convertInfoPtrs.fData, @"kMPSImageConversion.fData", v21 + 8, v22, v23);
   var2 = self->convertInfoPtrs.var2;
   if (var2)
   {
@@ -636,7 +636,7 @@ LABEL_52:
     v30 = 0;
   }
 
-  sub_23995F540(a3, v30, @"kMPSImageConversion.devFloatData", v21 + 8, v27, v28);
+  sub_23995F540(coder, v30, @"kMPSImageConversion.devFloatData", v21 + 8, v27, v28);
   if (self->convertInfo.nStages >= 1)
   {
     v31 = 0;
@@ -654,7 +654,7 @@ LABEL_52:
         *v35 = vmovl_u16(*v36);
         *(v35 + 4) = v36[1].i32[1];
         *(v35 + 5) = v36[1].i32[0];
-        sub_23995F540(v237, v35, v42, 6, v43, v44);
+        sub_23995F540(coderCopy, v35, v42, 6, v43, v44);
         free(v35);
       }
 
@@ -710,22 +710,22 @@ LABEL_52:
           v231 = objc_msgSend_initWithFormat_(v134, v135, @"%@%@", v136, v137, v138, v56, @".textureType");
           v139 = objc_alloc(MEMORY[0x277CCACA8]);
           v234 = objc_msgSend_initWithFormat_(v139, v140, @"%@%@", v141, v142, v143, v56, @".data");
-          objc_msgSend_encodeBool_forKey_(v237, v144, 1, v56, v145, v146);
+          objc_msgSend_encodeBool_forKey_(coderCopy, v144, 1, v56, v145, v146);
           v152 = objc_msgSend_width(v58, v147, v148, v149, v150, v151);
-          objc_msgSend_encodeInt64_forKey_(v237, v153, v152, v233, v154, v155);
+          objc_msgSend_encodeInt64_forKey_(coderCopy, v153, v152, v233, v154, v155);
           v161 = objc_msgSend_height(v58, v156, v157, v158, v159, v160);
-          objc_msgSend_encodeInt64_forKey_(v237, v162, v161, v232, v163, v164);
+          objc_msgSend_encodeInt64_forKey_(coderCopy, v162, v161, v232, v163, v164);
           v170 = objc_msgSend_depth(v58, v165, v166, v167, v168, v169);
-          objc_msgSend_encodeInt64_forKey_(v237, v171, v170, v126, v172, v173);
+          objc_msgSend_encodeInt64_forKey_(coderCopy, v171, v170, v126, v172, v173);
           v179 = objc_msgSend_pixelFormat(v58, v174, v175, v176, v177, v178);
-          objc_msgSend_encodeInt64_forKey_(v237, v180, v179, v133, v181, v182);
+          objc_msgSend_encodeInt64_forKey_(coderCopy, v180, v179, v133, v181, v182);
           v188 = objc_msgSend_textureType(v58, v183, v184, v185, v186, v187);
-          objc_msgSend_encodeInt64_forKey_(v237, v189, v188, v231, v190, v191);
+          objc_msgSend_encodeInt64_forKey_(coderCopy, v189, v188, v231, v190, v191);
           objc_msgSend_width(v58, v192, v193, v194, v195, v196);
           objc_msgSend_height(v58, v197, v198, v199, v200, v201);
           objc_msgSend_depth(v58, v202, v203, v204, v205, v206);
           MPSCopyToFromNetworkByteOrder32();
-          objc_msgSend_encodeBytes_length_forKey_(v237, v207, v132, v235, v234, v208);
+          objc_msgSend_encodeBytes_length_forKey_(coderCopy, v207, v132, v235, v234, v208);
           free(v132);
 
           p_convertInfo = v230;
@@ -734,7 +734,7 @@ LABEL_52:
 
       else
       {
-        objc_msgSend_encodeBool_forKey_(v237, v51, 0, v56, v54, v55);
+        objc_msgSend_encodeBool_forKey_(coderCopy, v51, 0, v56, v54, v55);
       }
 
       ++v45;
@@ -763,7 +763,7 @@ LABEL_52:
         v210 = 0;
       }
 
-      sub_23995F540(v237, v210, v218, (v228 >> 2), v211, v212);
+      sub_23995F540(coderCopy, v210, v218, (v228 >> 2), v211, v212);
 
       ++v209;
     }
@@ -774,7 +774,7 @@ LABEL_52:
   v229 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v92.receiver = self;
   v92.super_class = MPSImageConversion;
@@ -797,7 +797,7 @@ LABEL_52:
   transform = self->transform;
   if (transform)
   {
-    v13 = objc_msgSend_copyWithZone_device_(transform, v8, a3, a4, v9, v10);
+    v13 = objc_msgSend_copyWithZone_device_(transform, v8, zone, device, v9, v10);
     *(v11 + 26) = v13;
     if (!v13)
     {
@@ -1331,15 +1331,15 @@ LABEL_35:
   [(MPSKernel *)&v23 dealloc];
 }
 
-- (MPSImageConversion)initWithDevice:(id)a3 transform:(id)a4
+- (MPSImageConversion)initWithDevice:(id)device transform:(id)transform
 {
-  result = objc_msgSend_initWithDevice_(self, a2, a3, a4, v4, v5);
+  result = objc_msgSend_initWithDevice_(self, a2, device, transform, v4, v5);
   if (result)
   {
     v8 = result;
-    v9 = a4;
+    transformCopy = transform;
     result = v8;
-    v8->transform = a4;
+    v8->transform = transform;
   }
 
   return result;

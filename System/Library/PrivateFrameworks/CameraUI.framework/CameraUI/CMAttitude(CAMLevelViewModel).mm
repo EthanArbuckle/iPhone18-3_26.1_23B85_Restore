@@ -6,9 +6,9 @@
 
 - (uint64_t)cam_getDistanceFromFlat:()CAMLevelViewModel relativeRoll:
 {
-  [a1 pitch];
+  [self pitch];
   v8 = v7;
-  result = [a1 roll];
+  result = [self roll];
   v11 = v10;
   v12 = v11;
   if (v11 <= 1.57079633)

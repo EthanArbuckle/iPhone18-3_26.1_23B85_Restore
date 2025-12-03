@@ -1,24 +1,24 @@
 @interface _PXCuratedLibraryConcreteAnalysisStatus
 - (BOOL)isDeviceUnplugged;
-- (_PXCuratedLibraryConcreteAnalysisStatus)initWithDataSourceManager:(id)a3;
-- (float)_enrichmentProgressForDataSource:(id)a3;
-- (int64_t)_analyzingStateForDataSource:(id)a3;
+- (_PXCuratedLibraryConcreteAnalysisStatus)initWithDataSourceManager:(id)manager;
+- (float)_enrichmentProgressForDataSource:(id)source;
+- (int64_t)_analyzingStateForDataSource:(id)source;
 - (void)_configureBatteryMonitoring;
 - (void)_updateStatusProperties;
 - (void)dataSourceManagerDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation _PXCuratedLibraryConcreteAnalysisStatus
 
 - (void)dataSourceManagerDidChange
 {
-  v3 = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
+  dataSourceManager = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
 
-  if (v3)
+  if (dataSourceManager)
   {
-    v4 = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
-    [v4 registerChangeObserver:self context:CuratedLibraryAssetsDataSourceManagerObserverContext];
+    dataSourceManager2 = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
+    [dataSourceManager2 registerChangeObserver:self context:CuratedLibraryAssetsDataSourceManagerObserverContext];
 
     [(_PXCuratedLibraryConcreteAnalysisStatus *)self _configureBatteryMonitoring];
 
@@ -28,20 +28,20 @@
 
 - (void)_configureBatteryMonitoring
 {
-  v3 = [off_1E7721858 sharedScheduler];
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70___PXCuratedLibraryConcreteAnalysisStatus__configureBatteryMonitoring__block_invoke;
   v4[3] = &unk_1E774C648;
   v4[4] = self;
-  [v3 scheduleMainQueueTask:v4];
+  [sharedScheduler scheduleMainQueueTask:v4];
 }
 
 - (void)_updateStatusProperties
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
-  if (![v3 canLoadData])
+  dataSourceManager = [(PXCuratedLibraryAnalysisStatus *)self dataSourceManager];
+  if (![dataSourceManager canLoadData])
   {
     v7 = 0;
     LOBYTE(v8) = 1;
@@ -49,13 +49,13 @@
     goto LABEL_20;
   }
 
-  v4 = [v3 dataSourceManagerForZoomLevel:3];
-  v5 = [v4 dataSource];
+  v4 = [dataSourceManager dataSourceManagerForZoomLevel:3];
+  dataSource = [v4 dataSource];
 
-  if ([v3 enableDays])
+  if ([dataSourceManager enableDays])
   {
-    v6 = [v5 firstAssetCollection];
-    if (!v6)
+    firstAssetCollection = [dataSource firstAssetCollection];
+    if (!firstAssetCollection)
     {
       goto LABEL_8;
     }
@@ -63,20 +63,20 @@
 
   else
   {
-    v10 = [v3 dataSourceManagerForZoomLevel:2];
-    v11 = [v10 dataSource];
+    v10 = [dataSourceManager dataSourceManagerForZoomLevel:2];
+    dataSource2 = [v10 dataSource];
 
-    v6 = [v11 firstAssetCollection];
+    firstAssetCollection = [dataSource2 firstAssetCollection];
 
-    if (!v6)
+    if (!firstAssetCollection)
     {
       goto LABEL_8;
     }
   }
 
-  if (([v6 isRecent] & 1) == 0)
+  if (([firstAssetCollection isRecent] & 1) == 0)
   {
-    if ([v5 numberOfSections] < 1)
+    if ([dataSource numberOfSections] < 1)
     {
       v7 = 0;
       v9 = -1.0;
@@ -84,9 +84,9 @@
 
     else
     {
-      [(_PXCuratedLibraryConcreteAnalysisStatus *)self _enrichmentProgressForDataSource:v5];
+      [(_PXCuratedLibraryConcreteAnalysisStatus *)self _enrichmentProgressForDataSource:dataSource];
       v9 = v12;
-      v7 = [(_PXCuratedLibraryConcreteAnalysisStatus *)self _analyzingStateForDataSource:v5];
+      v7 = [(_PXCuratedLibraryConcreteAnalysisStatus *)self _analyzingStateForDataSource:dataSource];
     }
 
     v8 = 1;
@@ -109,7 +109,7 @@ LABEL_14:
       *buf = 138412546;
       v33 = v15;
       v34 = 2112;
-      v35 = v6;
+      v35 = firstAssetCollection;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "[CuratedLibraryAnalysisStatus] isDaysMonthsYearsStructureEnabled %@ with firstAssetCollection: %@", buf, 0x16u);
     }
 
@@ -128,10 +128,10 @@ LABEL_8:
 LABEL_19:
 
 LABEL_20:
-  v16 = [(_PXCuratedLibraryConcreteAnalysisStatus *)self isDeviceUnplugged];
-  v17 = [(_PXCuratedLibraryConcreteAnalysisStatus *)self hasBattery];
-  v18 = _CuratedLibraryAnalysisStatusLocalizedTitleForState(v7, v16, [(PXCuratedLibraryAnalysisStatus *)self alternateTitleIndex]);
-  v19 = _CuratedLibraryAnalysisStatusLocalizedDescriptionForState(v7, v16, v17);
+  isDeviceUnplugged = [(_PXCuratedLibraryConcreteAnalysisStatus *)self isDeviceUnplugged];
+  hasBattery = [(_PXCuratedLibraryConcreteAnalysisStatus *)self hasBattery];
+  v18 = _CuratedLibraryAnalysisStatusLocalizedTitleForState(v7, isDeviceUnplugged, [(PXCuratedLibraryAnalysisStatus *)self alternateTitleIndex]);
+  v19 = _CuratedLibraryAnalysisStatusLocalizedDescriptionForState(v7, isDeviceUnplugged, hasBattery);
   if (v7 == 2)
   {
     v20 = -1.0;
@@ -142,7 +142,7 @@ LABEL_20:
     v20 = v9;
   }
 
-  if (v7 == 2 && (v16 & 1) == 0)
+  if (v7 == 2 && (isDeviceUnplugged & 1) == 0)
   {
     v21 = v9;
     if (v9 < 0.1)
@@ -163,7 +163,7 @@ LABEL_20:
   v28 = v9;
   v29 = v20;
   v30 = v8;
-  v31 = v16;
+  v31 = isDeviceUnplugged;
   v22 = v19;
   v23 = v18;
   [(_PXCuratedLibraryConcreteAnalysisStatus *)self performChanges:v24];
@@ -171,41 +171,41 @@ LABEL_20:
 
 - (BOOL)isDeviceUnplugged
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 batteryState] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice batteryState] == 1;
 
   return v3;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CuratedLibraryAssetsDataSourceManagerObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CuratedLibraryAssetsDataSourceManagerObserverContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAnalysisStatus.m" lineNumber:478 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAnalysisStatus.m" lineNumber:478 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0xC) != 0)
+  if ((changeCopy & 0xC) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(_PXCuratedLibraryConcreteAnalysisStatus *)self _updateStatusProperties];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (int64_t)_analyzingStateForDataSource:(id)a3
+- (int64_t)_analyzingStateForDataSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = +[PXCuratedLibrarySettings sharedInstance];
-  v6 = [v5 firstTimeExperienceMaxNonProcessedHighlights];
+  firstTimeExperienceMaxNonProcessedHighlights = [v5 firstTimeExperienceMaxNonProcessedHighlights];
 
   v7 = +[PXCuratedLibrarySettings sharedInstance];
-  v8 = [v7 firstTimeExperienceMaxNonProcessedAssets];
+  firstTimeExperienceMaxNonProcessedAssets = [v7 firstTimeExperienceMaxNonProcessedAssets];
 
   v9 = 0;
   v10 = 0;
@@ -214,9 +214,9 @@ LABEL_20:
   while (1)
   {
     v13 = v11;
-    v9 += [v4 numberOfSectionsWithEnrichmentState:v11];
-    v10 += [v4 estimatedAssetsCountWithEnrichmentState:v11];
-    v14 = v9 <= v6 && v10 <= v8;
+    v9 += [sourceCopy numberOfSectionsWithEnrichmentState:v11];
+    v10 += [sourceCopy estimatedAssetsCountWithEnrichmentState:v11];
+    v14 = v9 <= firstTimeExperienceMaxNonProcessedHighlights && v10 <= firstTimeExperienceMaxNonProcessedAssets;
     v15 = v14;
     if (!v14)
     {
@@ -257,16 +257,16 @@ LABEL_11:
   return v12;
 }
 
-- (float)_enrichmentProgressForDataSource:(id)a3
+- (float)_enrichmentProgressForDataSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = 0;
   v6 = 3;
   do
   {
     v7 = v6;
-    v5 += [v4 estimatedAssetsCountWithEnrichmentState:v6++];
+    v5 += [sourceCopy estimatedAssetsCountWithEnrichmentState:v6++];
   }
 
   while (v7 < 4);
@@ -276,14 +276,14 @@ LABEL_11:
   do
   {
     v11 = v9;
-    v12 = [v4 estimatedAssetsCountWithEnrichmentState:v10];
+    v12 = [sourceCopy estimatedAssetsCountWithEnrichmentState:v10];
     v9 = 0;
     v8 += v12;
     v10 = 2;
   }
 
   while ((v11 & 1) != 0);
-  v13 = v8 + v5 + [v4 estimatedAssetsCountWithEnrichmentState:0];
+  v13 = v8 + v5 + [sourceCopy estimatedAssetsCountWithEnrichmentState:0];
   if (v13 < 1)
   {
     v14 = 1.0;
@@ -313,11 +313,11 @@ LABEL_11:
   return v14;
 }
 
-- (_PXCuratedLibraryConcreteAnalysisStatus)initWithDataSourceManager:(id)a3
+- (_PXCuratedLibraryConcreteAnalysisStatus)initWithDataSourceManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = _PXCuratedLibraryConcreteAnalysisStatus;
-  return [(PXCuratedLibraryAnalysisStatus *)&v4 _initWithDataSourceManager:a3];
+  return [(PXCuratedLibraryAnalysisStatus *)&v4 _initWithDataSourceManager:manager];
 }
 
 @end

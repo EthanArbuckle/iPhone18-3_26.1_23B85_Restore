@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v3 = [(GKSectionInfo *)self items];
-  v4 = [v3 count];
+  items = [(GKSectionInfo *)self items];
+  v4 = [items count];
 
   v22 = MEMORY[0x277CCACA8];
   v23.receiver = self;

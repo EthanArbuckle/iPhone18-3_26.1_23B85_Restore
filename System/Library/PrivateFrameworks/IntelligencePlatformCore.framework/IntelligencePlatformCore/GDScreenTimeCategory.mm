@@ -1,12 +1,12 @@
 @interface GDScreenTimeCategory
-+ (id)categoryForBundleId:(id)a3;
++ (id)categoryForBundleId:(id)id;
 @end
 
 @implementation GDScreenTimeCategory
 
-+ (id)categoryForBundleId:(id)a3
++ (id)categoryForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = dispatch_semaphore_create(0);
   v16 = 0;
   v17 = &v16;
@@ -22,7 +22,7 @@
   v15 = &v16;
   v9 = v4;
   v14 = v9;
-  objc_msgSend_categoryForBundleID_completionHandler_(v8, v10, v3, v13);
+  objc_msgSend_categoryForBundleID_completionHandler_(v8, v10, idCopy, v13);
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v11 = v17[5];

@@ -1,8 +1,8 @@
 @interface DisplayProfileConfigurator
 - (_TtC13ShellSceneKitP33_A1DCD04D86D5AECADE6EA65E0805B71C26DisplayProfileConfigurator)init;
-- (void)deriveWithIdentifier:(id)a3;
-- (void)setMainLike:(BOOL)a3;
-- (void)setPriorityLevel:(unint64_t)a3 sceneSpecification:(id)a4;
+- (void)deriveWithIdentifier:(id)identifier;
+- (void)setMainLike:(BOOL)like;
+- (void)setPriorityLevel:(unint64_t)level sceneSpecification:(id)specification;
 @end
 
 @implementation DisplayProfileConfigurator
@@ -22,14 +22,14 @@
   return [(DisplayProfileConfigurator *)&v7 init];
 }
 
-- (void)setPriorityLevel:(unint64_t)a3 sceneSpecification:(id)a4
+- (void)setPriorityLevel:(unint64_t)level sceneSpecification:(id)specification
 {
-  v6 = a4;
-  v7 = self;
-  sub_265FDA070(a3, v6);
+  specificationCopy = specification;
+  selfCopy = self;
+  sub_265FDA070(level, specificationCopy);
 }
 
-- (void)deriveWithIdentifier:(id)a3
+- (void)deriveWithIdentifier:(id)identifier
 {
   v4 = sub_265FEC0E0();
   v5 = self + OBJC_IVAR____TtC13ShellSceneKitP33_A1DCD04D86D5AECADE6EA65E0805B71C26DisplayProfileConfigurator_configuration;
@@ -40,10 +40,10 @@
   v5[32] = v7 & v6;
 }
 
-- (void)setMainLike:(BOOL)a3
+- (void)setMainLike:(BOOL)like
 {
-  v4 = self;
-  sub_265FDA36C(a3);
+  selfCopy = self;
+  sub_265FDA36C(like);
 }
 
 @end

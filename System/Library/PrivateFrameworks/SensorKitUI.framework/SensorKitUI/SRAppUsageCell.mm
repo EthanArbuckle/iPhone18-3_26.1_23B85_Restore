@@ -1,16 +1,16 @@
 @interface SRAppUsageCell
-- (SRAppUsageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SRAppUsageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation SRAppUsageCell
 
-- (SRAppUsageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SRAppUsageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = SRAppUsageCell;
-  v4 = [(SRAppUsageCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SRAppUsageCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

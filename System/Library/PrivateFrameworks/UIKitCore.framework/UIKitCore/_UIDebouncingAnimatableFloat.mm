@@ -1,8 +1,8 @@
 @interface _UIDebouncingAnimatableFloat
 - (_TtC5UIKit28_UIDebouncingAnimatableFloat)init;
-- (_TtC5UIKit28_UIDebouncingAnimatableFloat)initWithView:(id)a3;
+- (_TtC5UIKit28_UIDebouncingAnimatableFloat)initWithView:(id)view;
 - (double)value;
-- (void)setValue:(double)a3;
+- (void)setValue:(double)value;
 @end
 
 @implementation _UIDebouncingAnimatableFloat
@@ -15,23 +15,23 @@
   return result;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  v5 = self;
-  [(_UIDebouncingAnimatableFloat *)v5 value];
-  if (v4 == a3 && [objc_opt_self() areAnimationsEnabled])
+  selfCopy = self;
+  [(_UIDebouncingAnimatableFloat *)selfCopy value];
+  if (v4 == value && [objc_opt_self() areAnimationsEnabled])
   {
   }
 
   else
   {
-    v6.receiver = v5;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for _UIDebouncingAnimatableFloat();
-    [(UIViewFloatAnimatableProperty *)&v6 setValue:a3];
+    [(UIViewFloatAnimatableProperty *)&v6 setValue:value];
   }
 }
 
-- (_TtC5UIKit28_UIDebouncingAnimatableFloat)initWithView:(id)a3
+- (_TtC5UIKit28_UIDebouncingAnimatableFloat)initWithView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

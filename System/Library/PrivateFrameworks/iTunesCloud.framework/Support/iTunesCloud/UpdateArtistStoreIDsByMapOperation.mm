@@ -1,21 +1,21 @@
 @interface UpdateArtistStoreIDsByMapOperation
 - (id)_fetchAndCacheLatestAllArtistImagesMap;
 - (id)_latestAllArtistImagesMap;
-- (void)_updateAllArtistStoreIDsUsingAllArtistImagesMap:(id)a3;
-- (void)_updateSpecificArtistStoreIDsUsingAllArtistImagesMap:(id)a3;
+- (void)_updateAllArtistStoreIDsUsingAllArtistImagesMap:(id)map;
+- (void)_updateSpecificArtistStoreIDsUsingAllArtistImagesMap:(id)map;
 - (void)main;
 @end
 
 @implementation UpdateArtistStoreIDsByMapOperation
 
-- (void)_updateAllArtistStoreIDsUsingAllArtistImagesMap:(id)a3
+- (void)_updateAllArtistStoreIDsUsingAllArtistImagesMap:(id)map
 {
-  v4 = a3;
-  v5 = [(QueueAwareOperation *)self musicLibrary];
-  v6 = sub_1000755D8(v5);
+  mapCopy = map;
+  musicLibrary = [(QueueAwareOperation *)self musicLibrary];
+  v6 = sub_1000755D8(musicLibrary);
 
-  v7 = [(QueueAwareOperation *)self musicLibrary];
-  v8 = sub_1000756D0(v7);
+  musicLibrary2 = [(QueueAwareOperation *)self musicLibrary];
+  v8 = sub_1000756D0(musicLibrary2);
 
   v21 = ML3ArtistPropertyName;
   v9 = [NSArray arrayWithObjects:&v21 count:1];
@@ -23,9 +23,9 @@
   v17[1] = 3221225472;
   v17[2] = sub_100075AD8;
   v17[3] = &unk_1001DE538;
-  v10 = v4;
+  v10 = mapCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   [v6 enumeratePersistentIDsAndProperties:v9 usingBlock:v17];
 
   if ([(UpdateArtistStoreIDsByMapOperation *)self isCancelled])
@@ -47,23 +47,23 @@
     v13[2] = sub_100075BF0;
     v13[3] = &unk_1001DE538;
     v14 = v10;
-    v15 = self;
+    selfCopy2 = self;
     [v8 enumeratePersistentIDsAndProperties:v12 usingBlock:v13];
 
     v11 = v14;
   }
 }
 
-- (void)_updateSpecificArtistStoreIDsUsingAllArtistImagesMap:(id)a3
+- (void)_updateSpecificArtistStoreIDsUsingAllArtistImagesMap:(id)map
 {
-  v42 = a3;
-  v43 = self;
+  mapCopy = map;
+  selfCopy = self;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v4 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-  v5 = [v4 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  artistPersistentIDsToUpdate = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+  v5 = [artistPersistentIDsToUpdate countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v5)
   {
     v6 = v5;
@@ -78,28 +78,28 @@
       {
         if (*v49 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(artistPersistentIDsToUpdate);
         }
 
-        v10 = [*(*(&v48 + 1) + 8 * v9) longLongValue];
-        v11 = [(QueueAwareOperation *)v43 musicLibrary];
-        v12 = [ML3Artist newWithPersistentID:v10 inLibrary:v11];
+        longLongValue = [*(*(&v48 + 1) + 8 * v9) longLongValue];
+        musicLibrary = [(QueueAwareOperation *)selfCopy musicLibrary];
+        v12 = [ML3Artist newWithPersistentID:longLongValue inLibrary:musicLibrary];
 
         v13 = [v12 valueForProperty:v8];
-        v14 = [v13 longLongValue];
+        longLongValue2 = [v13 longLongValue];
 
-        if (!v14)
+        if (!longLongValue2)
         {
           v15 = [v12 valueForProperty:obj];
-          v16 = [v42 objectForKey:v15];
+          v16 = [mapCopy objectForKey:v15];
           if (v16)
           {
-            [(QueueAwareOperation *)v43 musicLibrary];
+            [(QueueAwareOperation *)selfCopy musicLibrary];
             v17 = v7;
-            v19 = v18 = v4;
-            sub_100075ED8(v19, v10, v15, [v16 longLongValue]);
+            v19 = v18 = artistPersistentIDsToUpdate;
+            sub_100075ED8(v19, longLongValue, v15, [v16 longLongValue]);
 
-            v4 = v18;
+            artistPersistentIDsToUpdate = v18;
             v7 = v17;
             v6 = v38;
           }
@@ -109,7 +109,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v6 = [artistPersistentIDsToUpdate countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v6);
@@ -119,7 +119,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obja = [(QueueAwareOperation *)v43 albumArtistPersistentIDsToUpdate];
+  obja = [(QueueAwareOperation *)selfCopy albumArtistPersistentIDsToUpdate];
   v20 = [obja countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v20)
   {
@@ -138,25 +138,25 @@
           objc_enumerationMutation(obja);
         }
 
-        v26 = [*(*(&v44 + 1) + 8 * v25) longLongValue];
+        longLongValue3 = [*(*(&v44 + 1) + 8 * v25) longLongValue];
         v27 = v24[264];
-        v28 = [(QueueAwareOperation *)v43 musicLibrary];
-        v29 = [v27 newWithPersistentID:v26 inLibrary:v28];
+        musicLibrary2 = [(QueueAwareOperation *)selfCopy musicLibrary];
+        v29 = [v27 newWithPersistentID:longLongValue3 inLibrary:musicLibrary2];
 
         v30 = [v29 valueForProperty:v23];
-        v31 = [v30 longLongValue];
+        longLongValue4 = [v30 longLongValue];
 
-        if (!v31)
+        if (!longLongValue4)
         {
           v32 = v23;
           v33 = v22;
           v34 = v24;
           v35 = [v29 valueForProperty:v39];
-          v36 = [v42 objectForKey:v35];
+          v36 = [mapCopy objectForKey:v35];
           if (v36)
           {
-            v37 = [(QueueAwareOperation *)v43 musicLibrary];
-            sub_100075D08(v37, v26, v35, [v36 longLongValue]);
+            musicLibrary3 = [(QueueAwareOperation *)selfCopy musicLibrary];
+            sub_100075D08(musicLibrary3, longLongValue3, v35, [v36 longLongValue]);
           }
 
           v24 = v34;
@@ -184,17 +184,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Attempting to fetch latest all-artist-images-map", &buf, 2u);
   }
 
-  v4 = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
+  allArtistImagesMapURL = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
 
   v5 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (allArtistImagesMapURL)
   {
     if (v6)
     {
-      v7 = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
+      allArtistImagesMapURL2 = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = allArtistImagesMapURL2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "all-artist-images-map-url: %{public}@", &buf, 0xCu);
     }
 
@@ -204,13 +204,13 @@
     v38 = sub_10006FB34;
     v39 = sub_10006FB44;
     v40 = 0;
-    v8 = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
-    v9 = [NSMutableURLRequest requestWithURL:v8];
+    allArtistImagesMapURL3 = [(UpdateArtistStoreIDsByMapOperation *)self allArtistImagesMapURL];
+    v9 = [NSMutableURLRequest requestWithURL:allArtistImagesMapURL3];
 
     [v9 setTimeoutInterval:180.0];
     v10 = [ICStoreRequestContext alloc];
-    v11 = [(QueueAwareOperation *)self userIdentity];
-    v12 = [v10 initWithIdentity:v11];
+    userIdentity = [(QueueAwareOperation *)self userIdentity];
+    v12 = [v10 initWithIdentity:userIdentity];
 
     v13 = [[ICStoreURLRequest alloc] initWithURLRequest:v9 requestContext:v12];
     v14 = dispatch_semaphore_create(0);
@@ -243,8 +243,8 @@
     {
       v32[0] = @"AllArtistImagesMapNextUpdateDateKey";
       v20 = +[NSDate date];
-      v21 = [(UpdateArtistStoreIDsByMapOperation *)self updateIntervalSeconds];
-      v22 = [v20 dateByAddingTimeInterval:{objc_msgSend(v21, "unsignedIntegerValue")}];
+      updateIntervalSeconds = [(UpdateArtistStoreIDsByMapOperation *)self updateIntervalSeconds];
+      v22 = [v20 dateByAddingTimeInterval:{objc_msgSend(updateIntervalSeconds, "unsignedIntegerValue")}];
       v32[1] = @"AllArtistImagesMapDataDictionaryKey";
       v33[0] = v22;
       v33[1] = *(*(&buf + 1) + 40);
@@ -322,11 +322,11 @@
   if (v10)
   {
 LABEL_11:
-    v14 = [(UpdateArtistStoreIDsByMapOperation *)self _fetchAndCacheLatestAllArtistImagesMap];
-    v15 = v14;
-    if (v14)
+    _fetchAndCacheLatestAllArtistImagesMap = [(UpdateArtistStoreIDsByMapOperation *)self _fetchAndCacheLatestAllArtistImagesMap];
+    v15 = _fetchAndCacheLatestAllArtistImagesMap;
+    if (_fetchAndCacheLatestAllArtistImagesMap)
     {
-      v16 = v14;
+      v16 = _fetchAndCacheLatestAllArtistImagesMap;
 
       v5 = v16;
     }
@@ -339,7 +339,7 @@ LABEL_11:
 
 - (void)main
 {
-  v3 = [(UpdateArtistStoreIDsByMapOperation *)self _latestAllArtistImagesMap];
+  _latestAllArtistImagesMap = [(UpdateArtistStoreIDsByMapOperation *)self _latestAllArtistImagesMap];
   if ([(UpdateArtistStoreIDsByMapOperation *)self isCancelled])
   {
     v4 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
@@ -356,23 +356,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v3)
+  if (!_latestAllArtistImagesMap)
   {
-    v7 = [(QueueAwareOperation *)self operationQueue];
-    if (v7)
+    operationQueue = [(QueueAwareOperation *)self operationQueue];
+    if (operationQueue)
     {
       v8 = [UpdateArtistStoreIDsByLibraryMatchLookupOperation alloc];
-      v9 = [(QueueAwareOperation *)self artworkImporter];
-      v10 = [(QueueAwareOperation *)self clientIdentity];
-      v11 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-      v12 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-      v13 = [(QueueAwareOperation *)v8 initWithArtworkImporter:v9 clientIdentity:v10 operationQueue:v7 artistPersistentIDsToUpdate:v11 albumArtistPersistentIDsToUpdate:v12];
+      artworkImporter = [(QueueAwareOperation *)self artworkImporter];
+      clientIdentity = [(QueueAwareOperation *)self clientIdentity];
+      artistPersistentIDsToUpdate = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+      albumArtistPersistentIDsToUpdate = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+      v13 = [(QueueAwareOperation *)v8 initWithArtworkImporter:artworkImporter clientIdentity:clientIdentity operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate];
 
-      v14 = [(UpdateArtistStoreIDsByMapOperation *)self artistNameLibraryMatchURL];
-      [(UpdateArtistStoreIDsByLibraryMatchLookupOperation *)v13 setArtistNameLibraryMatchURL:v14];
+      artistNameLibraryMatchURL = [(UpdateArtistStoreIDsByMapOperation *)self artistNameLibraryMatchURL];
+      [(UpdateArtistStoreIDsByLibraryMatchLookupOperation *)v13 setArtistNameLibraryMatchURL:artistNameLibraryMatchURL];
 
 LABEL_17:
-      [v7 addOperation:v13];
+      [operationQueue addOperation:v13];
     }
 
 LABEL_18:
@@ -382,25 +382,25 @@ LABEL_18:
 
   if ([(QueueAwareOperation *)self shouldProcessSpecificArtists])
   {
-    [(UpdateArtistStoreIDsByMapOperation *)self _updateSpecificArtistStoreIDsUsingAllArtistImagesMap:v3];
+    [(UpdateArtistStoreIDsByMapOperation *)self _updateSpecificArtistStoreIDsUsingAllArtistImagesMap:_latestAllArtistImagesMap];
   }
 
   else
   {
-    [(UpdateArtistStoreIDsByMapOperation *)self _updateAllArtistStoreIDsUsingAllArtistImagesMap:v3];
+    [(UpdateArtistStoreIDsByMapOperation *)self _updateAllArtistStoreIDsUsingAllArtistImagesMap:_latestAllArtistImagesMap];
   }
 
   if (![(UpdateArtistStoreIDsByMapOperation *)self isCancelled])
   {
-    v7 = [(QueueAwareOperation *)self operationQueue];
-    if (v7)
+    operationQueue = [(QueueAwareOperation *)self operationQueue];
+    if (operationQueue)
     {
       v15 = [UpdateArtistArtworkTokensOperation alloc];
-      v16 = [(QueueAwareOperation *)self artworkImporter];
-      v17 = [(QueueAwareOperation *)self clientIdentity];
-      v18 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-      v19 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-      v13 = [(QueueAwareOperation *)v15 initWithArtworkImporter:v16 clientIdentity:v17 operationQueue:v7 artistPersistentIDsToUpdate:v18 albumArtistPersistentIDsToUpdate:v19];
+      artworkImporter2 = [(QueueAwareOperation *)self artworkImporter];
+      clientIdentity2 = [(QueueAwareOperation *)self clientIdentity];
+      artistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+      albumArtistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+      v13 = [(QueueAwareOperation *)v15 initWithArtworkImporter:artworkImporter2 clientIdentity:clientIdentity2 operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate2 albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate2];
 
       goto LABEL_17;
     }

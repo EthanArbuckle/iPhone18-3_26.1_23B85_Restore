@@ -1,25 +1,25 @@
 @interface ACCCommunicationsServerRemote
-- (ACCCommunicationsServerRemote)initWithXPCConnection:(id)a3;
-- (void)callStateDidChange:(id)a3;
-- (void)commStatusDidChange:(id)a3;
-- (void)initConnection:(id)a3;
-- (void)listUpdate:(id)a3 forType:(int)a4 coalesced:(BOOL)a5;
+- (ACCCommunicationsServerRemote)initWithXPCConnection:(id)connection;
+- (void)callStateDidChange:(id)change;
+- (void)commStatusDidChange:(id)change;
+- (void)initConnection:(id)connection;
+- (void)listUpdate:(id)update forType:(int)type coalesced:(BOOL)coalesced;
 @end
 
 @implementation ACCCommunicationsServerRemote
 
-- (ACCCommunicationsServerRemote)initWithXPCConnection:(id)a3
+- (ACCCommunicationsServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ACCCommunicationsServerRemote;
   v6 = [(ACCCommunicationsServerRemote *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_XPCConnection, a3);
+      objc_storeStrong(&v6->_XPCConnection, connection);
     }
 
     else
@@ -32,14 +32,14 @@
   return v7;
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCCommunicationsServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCCommunicationsServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCCommunicationsServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -111,12 +111,12 @@
     [v14 refreshClientData];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)callStateDidChange:(id)a3
+- (void)callStateDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 5;
@@ -167,15 +167,15 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCCommunicationsServerRemote *)v3 callStateDidChange:v7, v9, v10, v11, v12, v13, v14];
+    [(ACCCommunicationsServerRemote *)changeCopy callStateDidChange:v7, v9, v10, v11, v12, v13, v14];
   }
 
-  platform_communications_callStateUpdate(v3);
+  platform_communications_callStateUpdate(changeCopy);
 }
 
-- (void)commStatusDidChange:(id)a3
+- (void)commStatusDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 5;
@@ -226,16 +226,16 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCCommunicationsServerRemote *)v3 commStatusDidChange:v7, v9, v10, v11, v12, v13, v14];
+    [(ACCCommunicationsServerRemote *)changeCopy commStatusDidChange:v7, v9, v10, v11, v12, v13, v14];
   }
 
-  platform_communications_communicationsUpdate(v3);
+  platform_communications_communicationsUpdate(changeCopy);
 }
 
-- (void)listUpdate:(id)a3 forType:(int)a4 coalesced:(BOOL)a5
+- (void)listUpdate:(id)update forType:(int)type coalesced:(BOOL)coalesced
 {
-  v5 = a5;
-  v7 = a3;
+  coalescedCopy = coalesced;
+  updateCopy = update;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -265,13 +265,13 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = "NO";
-    if (v5)
+    if (coalescedCopy)
     {
       v11 = "YES";
     }
 
     v20[0] = 67109378;
-    v20[1] = a4;
+    v20[1] = type;
     v21 = 2080;
     v22 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[#Communications] Received list update! (type: %{coreacc:ACCCommunications_ListUpdate_Type_t}d, coalesced: %s)", v20, 0x12u);
@@ -295,10 +295,10 @@
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCCommunicationsServerRemote *)v7 listUpdate:v12 forType:v14 coalesced:v15, v16, v17, v18, v19];
+    [(ACCCommunicationsServerRemote *)updateCopy listUpdate:v12 forType:v14 coalesced:v15, v16, v17, v18, v19];
   }
 
-  platform_communications_listUpdate(a4, v7, v5);
+  platform_communications_listUpdate(type, updateCopy, coalescedCopy);
 }
 
 @end

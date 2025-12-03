@@ -1,40 +1,40 @@
 @interface MTAWorldClockCollectionViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MTAWorldClockCollectionViewController)initWithCollectionViewLayout:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MTAWorldClockCollectionViewController)initWithCollectionViewLayout:(id)layout;
 - (MTAWorldClockCollectionViewDelegate)delegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)cellHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)deleteCell:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)deleteCell:(id)cell;
 - (void)handleContentSizeChange;
 - (void)handleScrollEnd;
-- (void)removeCityAtIndexPath:(id)a3;
+- (void)removeCityAtIndexPath:(id)path;
 - (void)saveLastIndexPath;
-- (void)scrollToPageContainingIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)setEditing:(BOOL)a3;
+- (void)scrollToPageContainingIndexPath:(id)path animated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)setEditing:(BOOL)editing;
 - (void)updateCollectionViewLayout;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation MTAWorldClockCollectionViewController
 
-- (MTAWorldClockCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (MTAWorldClockCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   v8.receiver = self;
   v8.super_class = MTAWorldClockCollectionViewController;
-  v3 = [(MTAWorldClockCollectionViewController *)&v8 initWithCollectionViewLayout:a3];
+  v3 = [(MTAWorldClockCollectionViewController *)&v8 initWithCollectionViewLayout:layout];
   v4 = v3;
   if (v3)
   {
     v3->_cellHeight = -1.0;
-    v5 = [(MTAWorldClockCollectionViewController *)v3 traitCollection];
+    traitCollection = [(MTAWorldClockCollectionViewController *)v3 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     v4->_cellPadding = v6;
   }
@@ -47,27 +47,27 @@
   v8.receiver = self;
   v8.super_class = MTAWorldClockCollectionViewController;
   [(MTAWorldClockCollectionViewController *)&v8 viewDidLoad];
-  v3 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v3 setPagingEnabled:0];
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView setPagingEnabled:0];
 
-  v4 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v4 setShowsVerticalScrollIndicator:0];
+  collectionView2 = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView2 setShowsVerticalScrollIndicator:0];
 
-  v5 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v5 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v6 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v6 setIndicatorStyle:2];
+  collectionView4 = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView4 setIndicatorStyle:2];
 
-  v7 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"WorldClockCollectionCellTileReuseIdentifier"];
+  collectionView5 = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"WorldClockCollectionCellTileReuseIdentifier"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTAWorldClockCollectionViewController;
-  [(MTAWorldClockCollectionViewController *)&v4 viewDidAppear:a3];
+  [(MTAWorldClockCollectionViewController *)&v4 viewDidAppear:appear];
   [(MTAWorldClockCollectionViewController *)self setInstallsStandardGestureForInteractiveMovement:1];
 }
 
@@ -75,8 +75,8 @@
 {
   self->_cellHeight = -1.0;
   [(MTAWorldClockCollectionViewController *)self updateCollectionViewLayout];
-  v3 = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionViewLayout = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)updateCollectionViewLayout
@@ -124,19 +124,19 @@
 
   else
   {
-    v13 = [(MTAWorldClockCollectionViewController *)self view];
-    [v13 bounds];
+    view = [(MTAWorldClockCollectionViewController *)self view];
+    [view bounds];
     v15 = v14 / v12;
     v16 = floorf(v15);
   }
 
-  v17 = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
-  [v17 setColumnsPerPage:v16];
+  collectionViewLayout = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout setColumnsPerPage:v16];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v15.receiver = self;
   v15.super_class = MTAWorldClockCollectionViewController;
   [(MTAWorldClockCollectionViewController *)&v15 setEditing:?];
@@ -144,10 +144,10 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -159,27 +159,27 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) setEditing:v3 animated:1];
+        [*(*(&v11 + 1) + 8 * v10) setEditing:editingCopy animated:1];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)scrollToPageContainingIndexPath:(id)a3 animated:(BOOL)a4
+- (void)scrollToPageContainingIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v7 scrollToItemAtIndexPath:v6 atScrollPosition:0 animated:v4];
+  animatedCopy = animated;
+  pathCopy = path;
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:0 animated:animatedCopy];
 }
 
 - (double)cellHeight
@@ -194,80 +194,80 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [WorldClockManager sharedManager:a3];
-  v5 = [v4 cities];
-  v6 = [v5 count];
+  v4 = [WorldClockManager sharedManager:view];
+  cities = [v4 cities];
+  v6 = [cities count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableCellWithReuseIdentifier:@"WorldClockCollectionCellTileReuseIdentifier" forIndexPath:v5];
+  pathCopy = path;
+  v6 = [view dequeueReusableCellWithReuseIdentifier:@"WorldClockCollectionCellTileReuseIdentifier" forIndexPath:pathCopy];
   v7 = +[WorldClockManager sharedManager];
-  v8 = [v7 cities];
-  v9 = [v5 row];
+  cities = [v7 cities];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [cities objectAtIndex:v9];
   [v6 setCity:v10];
 
-  v11 = [v6 city];
-  v12 = [v11 name];
-  [v6 setAccessibilityIdentifier:v12];
+  city = [v6 city];
+  name = [city name];
+  [v6 setAccessibilityIdentifier:name];
 
   [v6 start];
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = [a4 row];
-  v9 = [v7 row];
+  indexPathCopy = indexPath;
+  v8 = [path row];
+  v9 = [indexPathCopy row];
   v10 = +[WorldClockManager sharedManager];
   [v10 moveCityFromIndex:v8 toIndex:v9];
-  [(MTAWorldClockCollectionViewController *)self scrollToPageContainingIndexPath:v7 animated:1];
+  [(MTAWorldClockCollectionViewController *)self scrollToPageContainingIndexPath:indexPathCopy animated:1];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 start];
-  [v6 setDelegate:self];
-  [v6 setEditing:{-[MTAWorldClockCollectionViewController isEditing](self, "isEditing")}];
+  cellCopy = cell;
+  [cellCopy start];
+  [cellCopy setDelegate:self];
+  [cellCopy setEditing:{-[MTAWorldClockCollectionViewController isEditing](self, "isEditing")}];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 stop];
-  [v5 setDelegate:0];
+  cellCopy = cell;
+  [cellCopy stop];
+  [cellCopy setDelegate:0];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(MTAWorldClockCollectionViewController *)self view];
-  [v7 frame];
+  layoutCopy = layout;
+  view = [(MTAWorldClockCollectionViewController *)self view];
+  [view frame];
   v9 = v8;
   v11 = v10;
 
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   v14 = v9 == CGSizeZero.width && v11 == height;
-  if (v14 || ![v6 columnsPerPage])
+  if (v14 || ![layoutCopy columnsPerPage])
   {
     v22 = MTLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138543618;
-      v27 = self;
+      selfCopy = self;
       v28 = 2048;
-      v29 = [v6 columnsPerPage];
+      columnsPerPage = [layoutCopy columnsPerPage];
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Either collectionViewSize or columnsPerPage: %lu is 0", &v26, 0x16u);
     }
   }
@@ -276,22 +276,22 @@
   {
     [(MTAWorldClockCollectionViewController *)self cellPadding];
     v16 = v15;
-    v17 = ([v6 columnsPerPage] - 1);
+    v17 = ([layoutCopy columnsPerPage] - 1);
     [(MTAWorldClockCollectionViewController *)self cellPadding];
     v19 = v18 * v17 + v16 * 2.0;
-    if ([v6 scrollDirection] == 1)
+    if ([layoutCopy scrollDirection] == 1)
     {
-      [v6 columnsPerPage];
-      [v6 columnsPerPage];
+      [layoutCopy columnsPerPage];
+      [layoutCopy columnsPerPage];
       [(MTAWorldClockCollectionViewController *)self cellPadding];
-      v20 = [(MTAWorldClockCollectionViewController *)self collectionView];
+      collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
       UIFloorToViewScale();
       width = v21;
     }
 
     else
     {
-      width = (v9 - v19) / [v6 columnsPerPage];
+      width = (v9 - v19) / [layoutCopy columnsPerPage];
     }
 
     [(MTAWorldClockCollectionViewController *)self cellHeight];
@@ -305,9 +305,9 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [(MTAWorldClockCollectionViewController *)self cellPadding:a3];
+  [(MTAWorldClockCollectionViewController *)self cellPadding:view];
   v7 = v6;
   [(MTAWorldClockCollectionViewController *)self cellPadding];
   v9 = v8;
@@ -321,32 +321,32 @@
   return result;
 }
 
-- (void)deleteCell:(id)a3
+- (void)deleteCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
   [(MTAWorldClockCollectionViewController *)self removeCityAtIndexPath:v6];
 }
 
-- (void)removeCityAtIndexPath:(id)a3
+- (void)removeCityAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[WorldClockManager sharedManager];
-  v6 = [v5 cities];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  cities = [v5 cities];
+  v7 = [cities objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  [v5 removeCityAtIndex:{objc_msgSend(v4, "row")}];
+  [v5 removeCityAtIndex:{objc_msgSend(pathCopy, "row")}];
   [v5 saveCities];
-  v8 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  v12 = v4;
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  v12 = pathCopy;
   v9 = [NSArray arrayWithObjects:&v12 count:1];
-  [v8 deleteItemsAtIndexPaths:v9];
+  [collectionView deleteItemsAtIndexPaths:v9];
 
-  v10 = [(MTAWorldClockCollectionViewController *)self delegate];
-  v11 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  [v10 collectionView:v11 didRemoveCity:v7];
+  delegate = [(MTAWorldClockCollectionViewController *)self delegate];
+  collectionView2 = [(MTAWorldClockCollectionViewController *)self collectionView];
+  [delegate collectionView:collectionView2 didRemoveCity:v7];
 
   [MTAnalytics incrementEventCount:kMTCAWorldClockRemoves];
 }
@@ -354,60 +354,60 @@
 - (void)handleScrollEnd
 {
   [(MTAWorldClockCollectionViewController *)self saveLastIndexPath];
-  v3 = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
-  v4 = [v3 scrollDirection];
+  collectionViewLayout = [(MTAWorldClockCollectionViewController *)self collectionViewLayout];
+  scrollDirection = [collectionViewLayout scrollDirection];
 
-  if (v4)
+  if (scrollDirection)
   {
-    v9 = [(MTAWorldClockCollectionViewController *)self collectionView];
-    [v9 contentOffset];
-    [v9 frame];
-    v5 = [(MTAWorldClockCollectionViewController *)self view];
-    v6 = [v5 mtui_isRTL];
+    collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+    [collectionView contentOffset];
+    [collectionView frame];
+    view = [(MTAWorldClockCollectionViewController *)self view];
+    mtui_isRTL = [view mtui_isRTL];
 
-    if (v6)
+    if (mtui_isRTL)
     {
       v7 = +[WorldClockManager sharedManager];
-      v8 = [v7 cities];
-      [v8 count];
+      cities = [v7 cities];
+      [cities count];
     }
   }
 }
 
 - (void)saveLastIndexPath
 {
-  v3 = [(MTAWorldClockCollectionViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(MTAWorldClockCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002C7FC;
   v13[3] = &unk_1000AE260;
   v13[4] = self;
-  v5 = [v4 na_map:v13];
+  v5 = [visibleCells na_map:v13];
 
   v6 = [NSSortDescriptor sortDescriptorWithKey:@"row" ascending:1];
   v14 = v6;
   v7 = [NSArray arrayWithObjects:&v14 count:1];
   v8 = [v5 sortedArrayUsingDescriptors:v7];
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
 
   v10 = +[MTAStateStore shared];
-  v11 = [MTAStateStoreEvent eventWithType:4 indexPath:v9];
+  v11 = [MTAStateStoreEvent eventWithType:4 indexPath:lastObject];
   [v10 pushEvent:v11];
 
   v12 = +[MTAStateStore shared];
   [v12 synchronize];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(MTAWorldClockCollectionViewController *)self handleScrollEnd];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"DidPageWorldClock_PPT" object:0];

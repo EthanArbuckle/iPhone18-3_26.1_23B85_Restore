@@ -1,44 +1,44 @@
 @interface CNUIPRLikenessLookup
-+ (BOOL)useGivenAvatarForContact:(id)a3;
-+ (id)basicMonogramForContactFuture:(id)a3 monogramColor:(id)a4;
-+ (id)basicMonogramFromString:(id)a3 color:(id)a4;
-+ (id)basicMonogramObservableForContactFuture:(id)a3 monogramColor:(id)a4;
-+ (id)basicMonogramObservableFromString:(id)a3 color:(id)a4;
-+ (id)contactFuture:(id)a3 contactStore:(id)a4 personaId:(id)a5 scheduler:(id)a6 refetchContact:(BOOL)a7;
-+ (id)contactFuture:(id)a3 contactStore:(id)a4 refetchContact:(BOOL)a5;
++ (BOOL)useGivenAvatarForContact:(id)contact;
++ (id)basicMonogramForContactFuture:(id)future monogramColor:(id)color;
++ (id)basicMonogramFromString:(id)string color:(id)color;
++ (id)basicMonogramObservableForContactFuture:(id)future monogramColor:(id)color;
++ (id)basicMonogramObservableFromString:(id)string color:(id)color;
++ (id)contactFuture:(id)future contactStore:(id)store personaId:(id)id scheduler:(id)scheduler refetchContact:(BOOL)contact;
++ (id)contactFuture:(id)future contactStore:(id)store refetchContact:(BOOL)contact;
 + (id)descriptorForRequiredKeys;
-+ (id)observableFromLikenessProviderBlock:(id)a3 withScheduler:(id)a4;
-+ (id)photoObservableWithPhotoFuture:(id)a3 likenessFingerprint:(id)a4 scheduler:(id)a5;
-+ (id)photoWithPhotoFuture:(id)a3 likenessFingerprint:(id)a4;
-- (BOOL)isMeContact:(id)a3;
-- (BOOL)shouldFetchSharedPhotoForContact:(id)a3;
-- (CNUIPRLikenessLookup)initWithContactStore:(id)a3 scheduler:(id)a4 meMonitor:(id)a5;
-- (CNUIPRLikenessLookup)initWithContactStore:(id)a3 schedulerProvider:(id)a4 meMonitor:(id)a5 personaId:(id)a6;
++ (id)observableFromLikenessProviderBlock:(id)block withScheduler:(id)scheduler;
++ (id)photoObservableWithPhotoFuture:(id)future likenessFingerprint:(id)fingerprint scheduler:(id)scheduler;
++ (id)photoWithPhotoFuture:(id)future likenessFingerprint:(id)fingerprint;
+- (BOOL)isMeContact:(id)contact;
+- (BOOL)shouldFetchSharedPhotoForContact:(id)contact;
+- (CNUIPRLikenessLookup)initWithContactStore:(id)store scheduler:(id)scheduler meMonitor:(id)monitor;
+- (CNUIPRLikenessLookup)initWithContactStore:(id)store schedulerProvider:(id)provider meMonitor:(id)monitor personaId:(id)id;
 - (CNUIPRLikenessProvider)loadingPlaceholderLikeness;
-- (id)badgeObservableWithLikenessBadge:(id)a3 workScheduler:(id)a4;
-- (id)badgeWithLikenessBadge:(id)a3;
-- (id)basicMonogramFromString:(id)a3 color:(id)a4;
-- (id)basicMonogramObservableFromString:(id)a3 color:(id)a4;
-- (id)basicMonogramObservableWithContactFuture:(id)a3 monogramColor:(id)a4;
-- (id)basicMonogramWithContactFuture:(id)a3 monogramColor:(id)a4;
-- (id)blessedPhotoObservableWithFuture:(id)a3 contact:(id)a4 workScheduler:(id)a5;
-- (id)blessedPhotoWithFuture:(id)a3 contact:(id)a4;
-- (id)contentObservableForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5 workScheduler:(id)a6;
-- (id)futureResultForPhotoImageDataForContact:(id)a3 error:(id *)a4;
-- (id)futureResultForPhotoImageDataForMeContact:(id)a3 error:(id *)a4;
-- (id)likenessForContact:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)likenessForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5;
-- (id)likenessObservableForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5 workScheduler:(id)a6;
-- (id)likenessesForContact:(id)a3 options:(id)a4 workScheduler:(id)a5;
-- (id)likenessesForContacts:(id)a3 options:(id)a4 error:(id)a5;
-- (id)loadingPlaceholderObservableWithPlaceholderProviderFactory:(id)a3;
-- (id)photoFutureForContactFuture:(id)a3 scheduler:(id)a4;
-- (id)photoImageDataForContact:(id)a3 error:(id *)a4;
-- (id)remoteImageWithContactFuture:(id)a3;
-- (id)remoteImagesObservableWithContactFuture:(id)a3 workScheduler:(id)a4;
-- (id)resolveLikenessesForContacts:(id)a3 workScheduler:(id)a4 withContentHandler:(id)a5;
-- (id)silhouetteObservableWithPlaceholderProviderFactory:(id)a3 contact:(id)a4 workScheduler:(id)a5;
-- (id)silhouetteWithPlaceholderProviderFactory:(id)a3 contact:(id)a4;
+- (id)badgeObservableWithLikenessBadge:(id)badge workScheduler:(id)scheduler;
+- (id)badgeWithLikenessBadge:(id)badge;
+- (id)basicMonogramFromString:(id)string color:(id)color;
+- (id)basicMonogramObservableFromString:(id)string color:(id)color;
+- (id)basicMonogramObservableWithContactFuture:(id)future monogramColor:(id)color;
+- (id)basicMonogramWithContactFuture:(id)future monogramColor:(id)color;
+- (id)blessedPhotoObservableWithFuture:(id)future contact:(id)contact workScheduler:(id)scheduler;
+- (id)blessedPhotoWithFuture:(id)future contact:(id)contact;
+- (id)contentObservableForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options workScheduler:(id)scheduler;
+- (id)futureResultForPhotoImageDataForContact:(id)contact error:(id *)error;
+- (id)futureResultForPhotoImageDataForMeContact:(id)contact error:(id *)error;
+- (id)likenessForContact:(id)contact options:(id)options error:(id *)error;
+- (id)likenessForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options;
+- (id)likenessObservableForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options workScheduler:(id)scheduler;
+- (id)likenessesForContact:(id)contact options:(id)options workScheduler:(id)scheduler;
+- (id)likenessesForContacts:(id)contacts options:(id)options error:(id)error;
+- (id)loadingPlaceholderObservableWithPlaceholderProviderFactory:(id)factory;
+- (id)photoFutureForContactFuture:(id)future scheduler:(id)scheduler;
+- (id)photoImageDataForContact:(id)contact error:(id *)error;
+- (id)remoteImageWithContactFuture:(id)future;
+- (id)remoteImagesObservableWithContactFuture:(id)future workScheduler:(id)scheduler;
+- (id)resolveLikenessesForContacts:(id)contacts workScheduler:(id)scheduler withContentHandler:(id)handler;
+- (id)silhouetteObservableWithPlaceholderProviderFactory:(id)factory contact:(id)contact workScheduler:(id)scheduler;
+- (id)silhouetteWithPlaceholderProviderFactory:(id)factory contact:(id)contact;
 @end
 
 @implementation CNUIPRLikenessLookup
@@ -67,122 +67,122 @@
   return v10;
 }
 
-- (CNUIPRLikenessLookup)initWithContactStore:(id)a3 schedulerProvider:(id)a4 meMonitor:(id)a5 personaId:(id)a6
+- (CNUIPRLikenessLookup)initWithContactStore:(id)store schedulerProvider:(id)provider meMonitor:(id)monitor personaId:(id)id
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  providerCopy = provider;
+  monitorCopy = monitor;
+  idCopy = id;
   v21.receiver = self;
   v21.super_class = CNUIPRLikenessLookup;
   v15 = [(CNUIPRLikenessLookup *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contactStore, a3);
+    objc_storeStrong(&v15->_contactStore, store);
     v17 = objc_alloc_init(CNUIPlaceholderProviderFactory);
     placeholderProviderFactory = v16->_placeholderProviderFactory;
     v16->_placeholderProviderFactory = v17;
 
-    objc_storeStrong(&v16->_schedulerProvider, a4);
-    objc_storeStrong(&v16->_meMonitor, a5);
-    objc_storeStrong(&v16->_personaId, a6);
+    objc_storeStrong(&v16->_schedulerProvider, provider);
+    objc_storeStrong(&v16->_meMonitor, monitor);
+    objc_storeStrong(&v16->_personaId, id);
     v19 = v16;
   }
 
   return v16;
 }
 
-- (CNUIPRLikenessLookup)initWithContactStore:(id)a3 scheduler:(id)a4 meMonitor:(id)a5
+- (CNUIPRLikenessLookup)initWithContactStore:(id)store scheduler:(id)scheduler meMonitor:(id)monitor
 {
   v7 = MEMORY[0x1E6996820];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 defaultProvider];
+  monitorCopy = monitor;
+  schedulerCopy = scheduler;
+  storeCopy = store;
+  defaultProvider = [v7 defaultProvider];
   v12 = objc_alloc(MEMORY[0x1E6996820]);
-  v13 = [v11 mainThreadScheduler];
-  v14 = [v11 immediateScheduler];
-  v15 = [v11 valueForKey:@"serialSchedulerProvider"];
-  v16 = [v11 valueForKey:@"synchronousSerialSchedulerProvider"];
-  v17 = [v11 valueForKey:@"readerWriterSchedulerProvider"];
-  v18 = [v12 initWithBackgroundScheduler:v9 mainThreadScheduler:v13 immediateScheduler:v14 serialSchedulerProvider:v15 synchronousSerialSchedulerProvider:v16 readerWriterSchedulerProvider:v17];
+  mainThreadScheduler = [defaultProvider mainThreadScheduler];
+  immediateScheduler = [defaultProvider immediateScheduler];
+  v15 = [defaultProvider valueForKey:@"serialSchedulerProvider"];
+  v16 = [defaultProvider valueForKey:@"synchronousSerialSchedulerProvider"];
+  v17 = [defaultProvider valueForKey:@"readerWriterSchedulerProvider"];
+  v18 = [v12 initWithBackgroundScheduler:schedulerCopy mainThreadScheduler:mainThreadScheduler immediateScheduler:immediateScheduler serialSchedulerProvider:v15 synchronousSerialSchedulerProvider:v16 readerWriterSchedulerProvider:v17];
 
-  v19 = [(CNUIPRLikenessLookup *)self initWithContactStore:v10 schedulerProvider:v18 meMonitor:v8 personaId:&stru_1F162C170];
+  v19 = [(CNUIPRLikenessLookup *)self initWithContactStore:storeCopy schedulerProvider:v18 meMonitor:monitorCopy personaId:&stru_1F162C170];
   return v19;
 }
 
-- (id)likenessesForContacts:(id)a3 options:(id)a4 error:(id)a5
+- (id)likenessesForContacts:(id)contacts options:(id)options error:(id)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
-  v10 = [v8 _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
+  optionsCopy = options;
+  contactsCopy = contacts;
+  placeholderProviderFactory = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
+  v10 = [contactsCopy _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__CNUIPRLikenessLookup_likenessesForContacts_options_error___block_invoke;
   v15[3] = &unk_1E76E7BD8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v7;
-  v11 = v7;
-  v12 = v9;
+  v16 = placeholderProviderFactory;
+  v17 = optionsCopy;
+  v11 = optionsCopy;
+  v12 = placeholderProviderFactory;
   v13 = [v10 _cn_map:v15];
 
   return v13;
 }
 
-- (id)resolveLikenessesForContacts:(id)a3 workScheduler:(id)a4 withContentHandler:(id)a5
+- (id)resolveLikenessesForContacts:(id)contacts workScheduler:(id)scheduler withContentHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
+  schedulerCopy = scheduler;
+  handlerCopy = handler;
+  contactsCopy = contacts;
+  v11 = [contactsCopy _cn_take:{+[CNUIPRLikenessResolver maxContacts](CNUIPRLikenessResolver, "maxContacts")}];
 
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __86__CNUIPRLikenessLookup_resolveLikenessesForContacts_workScheduler_withContentHandler___block_invoke;
   v23 = &unk_1E76E89F8;
-  v24 = self;
-  v25 = v8;
-  v12 = v8;
+  selfCopy = self;
+  v25 = schedulerCopy;
+  v12 = schedulerCopy;
   v13 = [v11 _cn_map:&v20];
 
   v14 = MEMORY[0x1E6996798];
   v15 = [(CNUIPRLikenessLookup *)self schedulerProvider:v20];
   v16 = [v14 combineLatest:v13 resultScheduler:v12 schedulerProvider:v15];
-  v17 = [MEMORY[0x1E69967A0] observerWithResultBlock:v9];
+  v17 = [MEMORY[0x1E69967A0] observerWithResultBlock:handlerCopy];
 
   v18 = [v16 subscribe:v17];
 
   return v18;
 }
 
-- (id)likenessForContact:(id)a3 options:(id)a4 error:(id *)a5
+- (id)likenessForContact:(id)contact options:(id)options error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
-  v10 = [(CNUIPRLikenessLookup *)self likenessForContact:v8 placeholderProviderFactory:v9 options:v7];
+  optionsCopy = options;
+  contactCopy = contact;
+  placeholderProviderFactory = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
+  v10 = [(CNUIPRLikenessLookup *)self likenessForContact:contactCopy placeholderProviderFactory:placeholderProviderFactory options:optionsCopy];
 
   return v10;
 }
 
-- (id)likenessesForContact:(id)a3 options:(id)a4 workScheduler:(id)a5
+- (id)likenessesForContact:(id)contact options:(id)options workScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
-  v12 = [(CNUIPRLikenessLookup *)self likenessObservableForContact:v8 placeholderProviderFactory:v11 options:v10 workScheduler:v9];
+  contactCopy = contact;
+  schedulerCopy = scheduler;
+  optionsCopy = options;
+  placeholderProviderFactory = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
+  v12 = [(CNUIPRLikenessLookup *)self likenessObservableForContact:contactCopy placeholderProviderFactory:placeholderProviderFactory options:optionsCopy workScheduler:schedulerCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___block_invoke;
   v16[3] = &unk_1E76E9768;
-  v17 = v8;
-  v13 = v8;
+  v17 = contactCopy;
+  v13 = contactCopy;
   v14 = [v12 doOnNext:v16];
 
   return v14;
@@ -198,18 +198,18 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
   }
 }
 
-- (id)likenessForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5
+- (id)likenessForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  factoryCopy = factory;
+  optionsCopy = options;
   v11 = objc_opt_class();
-  v12 = [(CNUIPRLikenessLookup *)self contactStore];
-  v13 = [v11 contactFuture:v8 contactStore:v12 refetchContact:{-[CNUIPRLikenessLookup skipContactLookup](self, "skipContactLookup") ^ 1}];
+  contactStore = [(CNUIPRLikenessLookup *)self contactStore];
+  v13 = [v11 contactFuture:contactCopy contactStore:contactStore refetchContact:{-[CNUIPRLikenessLookup skipContactLookup](self, "skipContactLookup") ^ 1}];
 
-  v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v15 = [v14 featureFlags];
-  v16 = [v15 isFeatureEnabled:6];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v16 = [featureFlags isFeatureEnabled:6];
 
   if (v16)
   {
@@ -225,7 +225,7 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
         [CNUIPRLikenessLookup likenessForContact:placeholderProviderFactory:options:];
       }
 
-      v19 = v8;
+      v19 = contactCopy;
     }
 
     v21 = [[CNUIPRLikenessSwiftUIAvatarProvider alloc] initWithCNContact:v19];
@@ -233,11 +233,11 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
 
   else
   {
-    v22 = [MEMORY[0x1E6996818] immediateScheduler];
-    v18 = [(CNUIPRLikenessLookup *)self photoFutureForContactFuture:v13 scheduler:v22];
+    immediateScheduler = [MEMORY[0x1E6996818] immediateScheduler];
+    v18 = [(CNUIPRLikenessLookup *)self photoFutureForContactFuture:v13 scheduler:immediateScheduler];
 
     v17 = [(CNUIPRLikenessLookup *)self photoFutureForContactFuture:v13 photoFuture:v18 allowingFallbackForMeCard:0];
-    v23 = [(CNUIPRLikenessLookup *)self blessedPhotoWithFuture:v17 contact:v8];
+    v23 = [(CNUIPRLikenessLookup *)self blessedPhotoWithFuture:v17 contact:contactCopy];
     if (v23)
     {
       v24 = v23;
@@ -263,8 +263,8 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
 
       else
       {
-        v27 = [v10 monogramColor];
-        v24 = [(CNUIPRLikenessLookup *)self basicMonogramWithContactFuture:v13 monogramColor:v27];
+        monogramColor = [optionsCopy monogramColor];
+        v24 = [(CNUIPRLikenessLookup *)self basicMonogramWithContactFuture:v13 monogramColor:monogramColor];
 
         if (v24)
         {
@@ -277,7 +277,7 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
 
         else
         {
-          v24 = [(CNUIPRLikenessLookup *)self silhouetteWithPlaceholderProviderFactory:v9 contact:v8];
+          v24 = [(CNUIPRLikenessLookup *)self silhouetteWithPlaceholderProviderFactory:factoryCopy contact:contactCopy];
           v25 = +[CNUICoreLogProvider likenesses_os_log];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
@@ -293,85 +293,85 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
   return v21;
 }
 
-- (id)likenessObservableForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5 workScheduler:(id)a6
+- (id)likenessObservableForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options workScheduler:(id)scheduler
 {
-  v10 = a4;
+  factoryCopy = factory;
   v11 = MEMORY[0x1E695DF70];
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [v11 array];
-  v16 = [(CNUIPRLikenessLookup *)self contentObservableForContact:v14 placeholderProviderFactory:v10 options:v13 workScheduler:v12];
+  schedulerCopy = scheduler;
+  optionsCopy = options;
+  contactCopy = contact;
+  array = [v11 array];
+  v16 = [(CNUIPRLikenessLookup *)self contentObservableForContact:contactCopy placeholderProviderFactory:factoryCopy options:optionsCopy workScheduler:schedulerCopy];
 
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:8])
   {
-    v17 = [(CNUIPRLikenessLookup *)self loadingPlaceholderObservableWithPlaceholderProviderFactory:v10];
-    [v15 _cn_addNonNilObject:v17];
+    v17 = [(CNUIPRLikenessLookup *)self loadingPlaceholderObservableWithPlaceholderProviderFactory:factoryCopy];
+    [array _cn_addNonNilObject:v17];
 
-    v18 = [(CNUIPRLikenessLookup *)self schedulerProvider];
-    v19 = [v18 mainThreadScheduler];
-    v20 = [v16 observeOn:v19];
+    schedulerProvider = [(CNUIPRLikenessLookup *)self schedulerProvider];
+    mainThreadScheduler = [schedulerProvider mainThreadScheduler];
+    v20 = [v16 observeOn:mainThreadScheduler];
 
     v16 = v20;
   }
 
-  [v15 addObject:v16];
-  v21 = [MEMORY[0x1E6996798] concatenate:v15];
+  [array addObject:v16];
+  v21 = [MEMORY[0x1E6996798] concatenate:array];
 
   return v21;
 }
 
-- (id)contentObservableForContact:(id)a3 placeholderProviderFactory:(id)a4 options:(id)a5 workScheduler:(id)a6
+- (id)contentObservableForContact:(id)contact placeholderProviderFactory:(id)factory options:(id)options workScheduler:(id)scheduler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v15 = [v14 featureFlags];
-  v16 = [v15 isFeatureEnabled:6];
+  contactCopy = contact;
+  factoryCopy = factory;
+  optionsCopy = options;
+  schedulerCopy = scheduler;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v16 = [featureFlags isFeatureEnabled:6];
 
   if (v16)
   {
     v17 = MEMORY[0x1E6996798];
-    v18 = [[CNUIPRLikenessSwiftUIAvatarProvider alloc] initWithCNContact:v10];
-    v19 = [v17 observableWithResult:v18];
+    v18 = [[CNUIPRLikenessSwiftUIAvatarProvider alloc] initWithCNContact:contactCopy];
+    firstObject = [v17 observableWithResult:v18];
   }
 
   else
   {
     v20 = objc_opt_class();
-    v21 = [(CNUIPRLikenessLookup *)self contactStore];
-    v22 = [(CNUIPRLikenessLookup *)self personaId];
-    v23 = [v20 contactFuture:v10 contactStore:v21 personaId:v22 scheduler:v13 refetchContact:{-[CNUIPRLikenessLookup skipContactLookup](self, "skipContactLookup") ^ 1}];
+    contactStore = [(CNUIPRLikenessLookup *)self contactStore];
+    personaId = [(CNUIPRLikenessLookup *)self personaId];
+    v23 = [v20 contactFuture:contactCopy contactStore:contactStore personaId:personaId scheduler:schedulerCopy refetchContact:{-[CNUIPRLikenessLookup skipContactLookup](self, "skipContactLookup") ^ 1}];
 
-    v39 = [(CNUIPRLikenessLookup *)self photoFutureForContactFuture:v23 scheduler:v13];
+    v39 = [(CNUIPRLikenessLookup *)self photoFutureForContactFuture:v23 scheduler:schedulerCopy];
     v24 = [CNUIPRLikenessLookup photoFutureForContactFuture:"photoFutureForContactFuture:photoFuture:allowingFallbackForMeCard:" photoFuture:v23 allowingFallbackForMeCard:?];
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v38 = v24;
-    v26 = [(CNUIPRLikenessLookup *)self blessedPhotoObservableWithFuture:v24 contact:v10 workScheduler:v13];
-    [v25 _cn_addNonNilObject:v26];
+    v26 = [(CNUIPRLikenessLookup *)self blessedPhotoObservableWithFuture:v24 contact:contactCopy workScheduler:schedulerCopy];
+    [array _cn_addNonNilObject:v26];
 
-    v27 = [(CNUIPRLikenessLookup *)self remoteImagesObservableWithContactFuture:v23 workScheduler:v13];
-    [v25 _cn_addNonNilObject:v27];
+    v27 = [(CNUIPRLikenessLookup *)self remoteImagesObservableWithContactFuture:v23 workScheduler:schedulerCopy];
+    [array _cn_addNonNilObject:v27];
 
-    v40 = v12;
-    v28 = [v12 monogramColor];
-    v29 = [(CNUIPRLikenessLookup *)self basicMonogramObservableWithContactFuture:v23 monogramColor:v28];
-    [v25 _cn_addNonNilObject:v29];
+    v40 = optionsCopy;
+    monogramColor = [optionsCopy monogramColor];
+    v29 = [(CNUIPRLikenessLookup *)self basicMonogramObservableWithContactFuture:v23 monogramColor:monogramColor];
+    [array _cn_addNonNilObject:v29];
 
-    v41 = v11;
-    v30 = [(CNUIPRLikenessLookup *)self silhouetteObservableWithPlaceholderProviderFactory:v11 contact:v10 workScheduler:v13];
-    [v25 _cn_addNonNilObject:v30];
+    v41 = factoryCopy;
+    v30 = [(CNUIPRLikenessLookup *)self silhouetteObservableWithPlaceholderProviderFactory:factoryCopy contact:contactCopy workScheduler:schedulerCopy];
+    [array _cn_addNonNilObject:v30];
 
-    v19 = [v25 firstObject];
+    firstObject = [array firstObject];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v31 = [v25 _cn_tail];
-    v32 = [v31 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    _cn_tail = [array _cn_tail];
+    v32 = [_cn_tail countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v32)
     {
       v33 = v32;
@@ -379,67 +379,67 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
       do
       {
         v35 = 0;
-        v36 = v19;
+        v36 = firstObject;
         do
         {
           if (*v43 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(_cn_tail);
           }
 
-          v19 = [v36 onEmpty:*(*(&v42 + 1) + 8 * v35)];
+          firstObject = [v36 onEmpty:*(*(&v42 + 1) + 8 * v35)];
 
           ++v35;
-          v36 = v19;
+          v36 = firstObject;
         }
 
         while (v33 != v35);
-        v33 = [v31 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v33 = [_cn_tail countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v33);
     }
 
-    v12 = v40;
-    v11 = v41;
+    optionsCopy = v40;
+    factoryCopy = v41;
   }
 
-  return v19;
+  return firstObject;
 }
 
 - (CNUIPRLikenessProvider)loadingPlaceholderLikeness
 {
-  v3 = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
-  v4 = [(CNUIPRLikenessLookup *)self loadingPlaceholderWithPlaceholderProviderFactory:v3];
+  placeholderProviderFactory = [(CNUIPRLikenessLookup *)self placeholderProviderFactory];
+  v4 = [(CNUIPRLikenessLookup *)self loadingPlaceholderWithPlaceholderProviderFactory:placeholderProviderFactory];
 
   return v4;
 }
 
-- (id)loadingPlaceholderObservableWithPlaceholderProviderFactory:(id)a3
+- (id)loadingPlaceholderObservableWithPlaceholderProviderFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v5 = objc_opt_class();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__CNUIPRLikenessLookup_loadingPlaceholderObservableWithPlaceholderProviderFactory___block_invoke;
   v11[3] = &unk_1E76E9790;
-  v12 = v4;
-  v6 = v4;
-  v7 = [(CNUIPRLikenessLookup *)self schedulerProvider];
-  v8 = [v7 mainThreadScheduler];
-  v9 = [v5 observableFromLikenessProviderBlock:v11 withScheduler:v8];
+  v12 = factoryCopy;
+  v6 = factoryCopy;
+  schedulerProvider = [(CNUIPRLikenessLookup *)self schedulerProvider];
+  mainThreadScheduler = [schedulerProvider mainThreadScheduler];
+  v9 = [v5 observableFromLikenessProviderBlock:v11 withScheduler:mainThreadScheduler];
 
   return v9;
 }
 
-- (id)blessedPhotoWithFuture:(id)a3 contact:(id)a4
+- (id)blessedPhotoWithFuture:(id)future contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  contactCopy = contact;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:1])
   {
-    v8 = [CNUILikenessFingerprint fingerprintForContact:v7];
-    v9 = [objc_opt_class() photoWithPhotoFuture:v6 likenessFingerprint:v8];
+    v8 = [CNUILikenessFingerprint fingerprintForContact:contactCopy];
+    v9 = [objc_opt_class() photoWithPhotoFuture:futureCopy likenessFingerprint:v8];
     v10 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -455,20 +455,20 @@ void __67__CNUIPRLikenessLookup_likenessesForContact_options_workScheduler___blo
   return v9;
 }
 
-- (id)blessedPhotoObservableWithFuture:(id)a3 contact:(id)a4 workScheduler:(id)a5
+- (id)blessedPhotoObservableWithFuture:(id)future contact:(id)contact workScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  futureCopy = future;
+  contactCopy = contact;
+  schedulerCopy = scheduler;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:1])
   {
-    v11 = [CNUILikenessFingerprint fingerprintForContact:v9];
-    v12 = [objc_opt_class() photoObservableWithPhotoFuture:v8 likenessFingerprint:v11 scheduler:v10];
+    v11 = [CNUILikenessFingerprint fingerprintForContact:contactCopy];
+    v12 = [objc_opt_class() photoObservableWithPhotoFuture:futureCopy likenessFingerprint:v11 scheduler:schedulerCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __79__CNUIPRLikenessLookup_blessedPhotoObservableWithFuture_contact_workScheduler___block_invoke;
     v15[3] = &unk_1E76E9768;
-    v16 = v9;
+    v16 = contactCopy;
     v13 = [v12 doOnNext:v15];
   }
 
@@ -490,10 +490,10 @@ void __79__CNUIPRLikenessLookup_blessedPhotoObservableWithFuture_contact_workSch
   }
 }
 
-- (id)remoteImageWithContactFuture:(id)a3
+- (id)remoteImageWithContactFuture:(id)future
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  futureCopy = future;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:1])
   {
     v11 = 0;
@@ -507,12 +507,12 @@ void __79__CNUIPRLikenessLookup_blessedPhotoObservableWithFuture_contact_workSch
     v10[2] = __53__CNUIPRLikenessLookup_remoteImageWithContactFuture___block_invoke;
     v10[3] = &unk_1E76E97B8;
     v10[4] = &v11;
-    v5 = [v4 flatMap:v10];
+    v5 = [futureCopy flatMap:v10];
     v6 = [objc_opt_class() photoWithPhotoFuture:v5 likenessFingerprint:v12[5]];
     v7 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v4 result:0];
+      v8 = [futureCopy result:0];
       [(CNUIPRLikenessLookup *)v6 remoteImageWithContactFuture:v8, buf, v7];
     }
 
@@ -540,10 +540,10 @@ id __53__CNUIPRLikenessLookup_remoteImageWithContactFuture___block_invoke(uint64
   return v7;
 }
 
-- (id)remoteImagesObservableWithContactFuture:(id)a3 workScheduler:(id)a4
+- (id)remoteImagesObservableWithContactFuture:(id)future workScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  schedulerCopy = scheduler;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:1])
   {
     v15 = 0;
@@ -557,13 +557,13 @@ id __53__CNUIPRLikenessLookup_remoteImageWithContactFuture___block_invoke(uint64
     v14[2] = __78__CNUIPRLikenessLookup_remoteImagesObservableWithContactFuture_workScheduler___block_invoke;
     v14[3] = &unk_1E76E97B8;
     v14[4] = &v15;
-    v8 = [v6 flatMap:v14];
-    v9 = [objc_opt_class() photoObservableWithPhotoFuture:v8 likenessFingerprint:v16[5] scheduler:v7];
+    v8 = [futureCopy flatMap:v14];
+    v9 = [objc_opt_class() photoObservableWithPhotoFuture:v8 likenessFingerprint:v16[5] scheduler:schedulerCopy];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__CNUIPRLikenessLookup_remoteImagesObservableWithContactFuture_workScheduler___block_invoke_2;
     v12[3] = &unk_1E76E9768;
-    v13 = v6;
+    v13 = futureCopy;
     v10 = [v9 doOnNext:v12];
 
     _Block_object_dispose(&v15, 8);
@@ -600,13 +600,13 @@ void __78__CNUIPRLikenessLookup_remoteImagesObservableWithContactFuture_workSche
   }
 }
 
-- (id)basicMonogramWithContactFuture:(id)a3 monogramColor:(id)a4
+- (id)basicMonogramWithContactFuture:(id)future monogramColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  colorCopy = color;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:2])
   {
-    v8 = [objc_opt_class() basicMonogramForContactFuture:v6 monogramColor:v7];
+    v8 = [objc_opt_class() basicMonogramForContactFuture:futureCopy monogramColor:colorCopy];
     v9 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -622,18 +622,18 @@ void __78__CNUIPRLikenessLookup_remoteImagesObservableWithContactFuture_workSche
   return v8;
 }
 
-- (id)basicMonogramObservableWithContactFuture:(id)a3 monogramColor:(id)a4
+- (id)basicMonogramObservableWithContactFuture:(id)future monogramColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  colorCopy = color;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:2])
   {
-    v8 = [objc_opt_class() basicMonogramObservableForContactFuture:v6 monogramColor:v7];
+    v8 = [objc_opt_class() basicMonogramObservableForContactFuture:futureCopy monogramColor:colorCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__CNUIPRLikenessLookup_basicMonogramObservableWithContactFuture_monogramColor___block_invoke;
     v11[3] = &unk_1E76E9768;
-    v12 = v6;
+    v12 = futureCopy;
     v9 = [v8 doOnNext:v11];
   }
 
@@ -655,18 +655,18 @@ void __79__CNUIPRLikenessLookup_basicMonogramObservableWithContactFuture_monogra
   }
 }
 
-+ (id)basicMonogramForContactFuture:(id)a3 monogramColor:(id)a4
++ (id)basicMonogramForContactFuture:(id)future monogramColor:(id)color
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 result:0];
+  colorCopy = color;
+  v7 = [future result:0];
   if ([v7 isKeyAvailable:*MEMORY[0x1E695C410]] && !objc_msgSend(v7, "contactType") && (objc_msgSend(MEMORY[0x1E695CD80], "descriptorForRequiredKeysForStyle:", 0), v8 = objc_claimAutoreleasedReturnValue(), v15[0] = v8, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "areKeysAvailable:", v9), v9, v8, v10))
   {
     v11 = [MEMORY[0x1E695CD80] abbreviatedStringFromContact:v7 trimmingWhitespace:1];
     v12 = v11;
     if (v11 && [v11 length])
     {
-      v13 = [a1 basicMonogramFromString:v12 color:v6];
+      v13 = [self basicMonogramFromString:v12 color:colorCopy];
     }
 
     else
@@ -683,15 +683,15 @@ void __79__CNUIPRLikenessLookup_basicMonogramObservableWithContactFuture_monogra
   return v13;
 }
 
-+ (id)basicMonogramObservableForContactFuture:(id)a3 monogramColor:(id)a4
++ (id)basicMonogramObservableForContactFuture:(id)future monogramColor:(id)color
 {
   v6 = MEMORY[0x1E6996798];
-  v7 = a4;
-  v8 = [v6 observableWithFuture:a3];
+  colorCopy = color;
+  v8 = [v6 observableWithFuture:future];
   v9 = [v8 map:&__block_literal_global_53];
   v10 = [v9 filter:*MEMORY[0x1E6996550]];
 
-  v11 = [a1 basicMonogramObservableFromString:v10 color:v7];
+  v11 = [self basicMonogramObservableFromString:v10 color:colorCopy];
 
   return v11;
 }
@@ -723,67 +723,67 @@ id __78__CNUIPRLikenessLookup_basicMonogramObservableForContactFuture_monogramCo
   return v3;
 }
 
-+ (id)basicMonogramFromString:(id)a3 color:(id)a4
++ (id)basicMonogramFromString:(id)string color:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  stringCopy = string;
+  colorCopy = color;
+  if (stringCopy && [stringCopy length])
   {
-    v7 = [(objc_class *)getPRMonogramClass_0() monogram];
-    [v7 setText:v5];
-    v8 = [v7 text];
-    if (v8)
+    monogram = [(objc_class *)getPRMonogramClass_0() monogram];
+    [monogram setText:stringCopy];
+    text = [monogram text];
+    if (text)
     {
-      v9 = [v7 text];
-      v10 = [v9 length];
+      text2 = [monogram text];
+      v10 = [text2 length];
 
       if (v10)
       {
-        if (v6)
+        if (colorCopy)
         {
-          [v7 setMonogramColor:v6];
+          [monogram setMonogramColor:colorCopy];
         }
 
         v11 = MEMORY[0x1E69BDC38];
-        v12 = [v7 dataRepresentation];
-        v13 = [v11 monogramWithRecipe:v12 staticRepresentation:0];
+        dataRepresentation = [monogram dataRepresentation];
+        v13 = [v11 monogramWithRecipe:dataRepresentation staticRepresentation:0];
 
         if (v13)
         {
-          v8 = [[CNUIPRLikenessProvider alloc] initWithPRLikeness:v13];
+          text = [[CNUIPRLikenessProvider alloc] initWithPRLikeness:v13];
         }
 
         else
         {
-          v8 = 0;
+          text = 0;
         }
       }
 
       else
       {
-        v8 = 0;
+        text = 0;
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    text = 0;
   }
 
-  return v8;
+  return text;
 }
 
-+ (id)basicMonogramObservableFromString:(id)a3 color:(id)a4
++ (id)basicMonogramObservableFromString:(id)string color:(id)color
 {
-  v5 = a4;
+  colorCopy = color;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__CNUIPRLikenessLookup_basicMonogramObservableFromString_color___block_invoke;
   v10[3] = &unk_1E76E9800;
-  v11 = v5;
-  v6 = v5;
-  v7 = [a3 map:v10];
+  v11 = colorCopy;
+  v6 = colorCopy;
+  v7 = [string map:v10];
   v8 = [v7 filter:*MEMORY[0x1E6996550]];
 
   return v8;
@@ -838,31 +838,31 @@ id __64__CNUIPRLikenessLookup_basicMonogramObservableFromString_color___block_in
   return v5;
 }
 
-- (id)basicMonogramFromString:(id)a3 color:(id)a4
+- (id)basicMonogramFromString:(id)string color:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() basicMonogramFromString:v6 color:v5];
+  colorCopy = color;
+  stringCopy = string;
+  v7 = [objc_opt_class() basicMonogramFromString:stringCopy color:colorCopy];
 
   return v7;
 }
 
-- (id)basicMonogramObservableFromString:(id)a3 color:(id)a4
+- (id)basicMonogramObservableFromString:(id)string color:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() basicMonogramObservableFromString:v6 color:v5];
+  colorCopy = color;
+  stringCopy = string;
+  v7 = [objc_opt_class() basicMonogramObservableFromString:stringCopy color:colorCopy];
 
   return v7;
 }
 
-- (id)silhouetteWithPlaceholderProviderFactory:(id)a3 contact:(id)a4
+- (id)silhouetteWithPlaceholderProviderFactory:(id)factory contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  contactCopy = contact;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:4])
   {
-    v8 = [v6 placeholderProviderForContact:v7];
+    v8 = [factoryCopy placeholderProviderForContact:contactCopy];
     v9 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -878,11 +878,11 @@ id __64__CNUIPRLikenessLookup_basicMonogramObservableFromString_color___block_in
   return v8;
 }
 
-- (id)silhouetteObservableWithPlaceholderProviderFactory:(id)a3 contact:(id)a4 workScheduler:(id)a5
+- (id)silhouetteObservableWithPlaceholderProviderFactory:(id)factory contact:(id)contact workScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  factoryCopy = factory;
+  contactCopy = contact;
+  schedulerCopy = scheduler;
   if ([(CNUIPRLikenessLookup *)self mayIncludeSource:4])
   {
     v11 = objc_opt_class();
@@ -890,9 +890,9 @@ id __64__CNUIPRLikenessLookup_basicMonogramObservableFromString_color___block_in
     v16 = 3221225472;
     v17 = __97__CNUIPRLikenessLookup_silhouetteObservableWithPlaceholderProviderFactory_contact_workScheduler___block_invoke;
     v18 = &unk_1E76E9828;
-    v19 = v8;
-    v20 = v9;
-    v12 = [v11 observableFromLikenessProviderBlock:&v15 withScheduler:v10];
+    v19 = factoryCopy;
+    v20 = contactCopy;
+    v12 = [v11 observableFromLikenessProviderBlock:&v15 withScheduler:schedulerCopy];
     v13 = [v12 doOnNext:{&__block_literal_global_49_0, v15, v16, v17, v18}];
   }
 
@@ -913,26 +913,26 @@ void __97__CNUIPRLikenessLookup_silhouetteObservableWithPlaceholderProviderFacto
   }
 }
 
-- (id)badgeWithLikenessBadge:(id)a3
+- (id)badgeWithLikenessBadge:(id)badge
 {
-  v3 = a3;
-  v4 = [[CNUIPRLikenessBadgeImageProvider alloc] initWithBadge:v3];
+  badgeCopy = badge;
+  v4 = [[CNUIPRLikenessBadgeImageProvider alloc] initWithBadge:badgeCopy];
 
   return v4;
 }
 
-- (id)badgeObservableWithLikenessBadge:(id)a3 workScheduler:(id)a4
+- (id)badgeObservableWithLikenessBadge:(id)badge workScheduler:(id)scheduler
 {
-  v5 = a3;
-  v6 = a4;
+  badgeCopy = badge;
+  schedulerCopy = scheduler;
   v7 = objc_opt_class();
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__CNUIPRLikenessLookup_badgeObservableWithLikenessBadge_workScheduler___block_invoke;
   v12[3] = &unk_1E76E9790;
-  v13 = v5;
-  v8 = v5;
-  v9 = [v7 observableFromLikenessProviderBlock:v12 withScheduler:v6];
+  v13 = badgeCopy;
+  v8 = badgeCopy;
+  v9 = [v7 observableFromLikenessProviderBlock:v12 withScheduler:schedulerCopy];
 
   v10 = [v9 doOnNext:&__block_literal_global_52];
 
@@ -955,19 +955,19 @@ void __71__CNUIPRLikenessLookup_badgeObservableWithLikenessBadge_workScheduler__
   }
 }
 
-+ (id)observableFromLikenessProviderBlock:(id)a3 withScheduler:(id)a4
++ (id)observableFromLikenessProviderBlock:(id)block withScheduler:(id)scheduler
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v7 = MEMORY[0x1E6996798];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__CNUIPRLikenessLookup_observableFromLikenessProviderBlock_withScheduler___block_invoke;
   v12[3] = &unk_1E76E9898;
-  v13 = v6;
-  v14 = v5;
-  v8 = v5;
-  v9 = v6;
+  v13 = schedulerCopy;
+  v14 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   v10 = [v7 observableWithBlock:v12];
 
   return v10;
@@ -1014,15 +1014,15 @@ uint64_t __74__CNUIPRLikenessLookup_observableFromLikenessProviderBlock_withSche
   return [v2 observerDidComplete];
 }
 
-+ (id)photoWithPhotoFuture:(id)a3 likenessFingerprint:(id)a4
++ (id)photoWithPhotoFuture:(id)future likenessFingerprint:(id)fingerprint
 {
-  v5 = a4;
+  fingerprintCopy = fingerprint;
   v11 = 0;
-  v6 = [a3 result:&v11];
+  v6 = [future result:&v11];
   v7 = v11;
   if (v6)
   {
-    v8 = [[CNUIPRLikenessPhotoProvider alloc] initWithPhotoData:v6 fingerprint:v5];
+    v8 = [[CNUIPRLikenessPhotoProvider alloc] initWithPhotoData:v6 fingerprint:fingerprintCopy];
   }
 
   else
@@ -1039,23 +1039,23 @@ uint64_t __74__CNUIPRLikenessLookup_observableFromLikenessProviderBlock_withSche
   return v8;
 }
 
-+ (id)photoObservableWithPhotoFuture:(id)a3 likenessFingerprint:(id)a4 scheduler:(id)a5
++ (id)photoObservableWithPhotoFuture:(id)future likenessFingerprint:(id)fingerprint scheduler:(id)scheduler
 {
-  v7 = a4;
+  fingerprintCopy = fingerprint;
   v8 = MEMORY[0x1E6996798];
-  v9 = a5;
-  v10 = [v8 observableWithFuture:a3];
+  schedulerCopy = scheduler;
+  v10 = [v8 observableWithFuture:future];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __85__CNUIPRLikenessLookup_photoObservableWithPhotoFuture_likenessFingerprint_scheduler___block_invoke;
   v17[3] = &unk_1E76E98C0;
-  v18 = v7;
-  v11 = v7;
+  v18 = fingerprintCopy;
+  v11 = fingerprintCopy;
   v12 = [v10 map:v17];
-  v13 = [v12 subscribeOn:v9];
+  v13 = [v12 subscribeOn:schedulerCopy];
 
-  v14 = [MEMORY[0x1E6996798] emptyObservable];
-  v15 = [v13 onError:v14];
+  emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
+  v15 = [v13 onError:emptyObservable];
 
   return v15;
 }
@@ -1068,29 +1068,29 @@ CNUIPRLikenessPhotoProvider *__85__CNUIPRLikenessLookup_photoObservableWithPhoto
   return v4;
 }
 
-+ (BOOL)useGivenAvatarForContact:(id)a3
++ (BOOL)useGivenAvatarForContact:(id)contact
 {
-  v3 = a3;
-  if ([v3 hasBeenPersisted])
+  contactCopy = contact;
+  if ([contactCopy hasBeenPersisted])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 imageData];
-    v4 = v5 != 0;
+    imageData = [contactCopy imageData];
+    v4 = imageData != 0;
   }
 
   return v4;
 }
 
-+ (id)contactFuture:(id)a3 contactStore:(id)a4 refetchContact:(BOOL)a5
++ (id)contactFuture:(id)future contactStore:(id)store refetchContact:(BOOL)contact
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  futureCopy = future;
+  storeCopy = store;
+  if (!contact)
   {
     v10 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1101,7 +1101,7 @@ CNUIPRLikenessPhotoProvider *__85__CNUIPRLikenessLookup_photoObservableWithPhoto
     goto LABEL_7;
   }
 
-  if ([objc_opt_class() useGivenAvatarForContact:v8])
+  if ([objc_opt_class() useGivenAvatarForContact:futureCopy])
   {
     v10 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1111,11 +1111,11 @@ CNUIPRLikenessPhotoProvider *__85__CNUIPRLikenessLookup_photoObservableWithPhoto
 
 LABEL_7:
 
-    v11 = [MEMORY[0x1E6996720] futureWithResult:v8];
+    v11 = [MEMORY[0x1E6996720] futureWithResult:futureCopy];
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!storeCopy)
   {
     v10 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1137,11 +1137,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [a1 descriptorForRequiredKeys];
-  v26[0] = v13;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  v26[0] = descriptorForRequiredKeys;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v25 = 0;
-  v15 = [v9 contactsMatchingPropertiesOfContact:v8 unifyResults:1 keysToFetch:v14 error:&v25];
+  v15 = [storeCopy contactsMatchingPropertiesOfContact:futureCopy unifyResults:1 keysToFetch:v14 error:&v25];
   v16 = v25;
 
   if (v15)
@@ -1158,14 +1158,14 @@ LABEL_7:
         }
       }
 
-      v18 = [v15 firstObject];
+      firstObject = [v15 firstObject];
       v19 = +[CNUICoreLogProvider likenesses_os_log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         +[CNUIPRLikenessLookup contactFuture:contactStore:refetchContact:];
       }
 
-      v20 = [MEMORY[0x1E6996720] futureWithResult:v18];
+      v20 = [MEMORY[0x1E6996720] futureWithResult:firstObject];
     }
 
     else
@@ -1177,8 +1177,8 @@ LABEL_7:
       }
 
       v23 = MEMORY[0x1E6996720];
-      v18 = [CNContactsUIError errorWithCode:402];
-      v20 = [v23 futureWithError:v18];
+      firstObject = [CNContactsUIError errorWithCode:402];
+      v20 = [v23 futureWithError:firstObject];
     }
 
     v11 = v20;
@@ -1200,12 +1200,12 @@ LABEL_8:
   return v11;
 }
 
-+ (id)contactFuture:(id)a3 contactStore:(id)a4 personaId:(id)a5 scheduler:(id)a6 refetchContact:(BOOL)a7
++ (id)contactFuture:(id)future contactStore:(id)store personaId:(id)id scheduler:(id)scheduler refetchContact:(BOOL)contact
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!a7)
+  futureCopy = future;
+  storeCopy = store;
+  schedulerCopy = scheduler;
+  if (!contact)
   {
     v17 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1217,13 +1217,13 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v14 = [objc_opt_class() useGivenAvatarForContact:v11];
+  v14 = [objc_opt_class() useGivenAvatarForContact:futureCopy];
   v15 = MEMORY[0x1E6996720];
   if (v14)
   {
     v16 = MEMORY[0x1E6996720];
 LABEL_7:
-    v18 = [v16 futureWithResult:v11];
+    v18 = [v16 futureWithResult:futureCopy];
     goto LABEL_9;
   }
 
@@ -1231,11 +1231,11 @@ LABEL_7:
   v23[1] = 3221225472;
   v23[2] = __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_refetchContact___block_invoke;
   v23[3] = &unk_1E76E8730;
-  v19 = v11;
+  v19 = futureCopy;
   v24 = v19;
-  v26 = a1;
-  v25 = v12;
-  v18 = [v15 futureWithBlock:v23 scheduler:v13];
+  selfCopy = self;
+  v25 = storeCopy;
+  v18 = [v15 futureWithBlock:v23 scheduler:schedulerCopy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_refetchContact___block_invoke_62;
@@ -1290,35 +1290,35 @@ void __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_r
   }
 }
 
-- (BOOL)shouldFetchSharedPhotoForContact:(id)a3
+- (BOOL)shouldFetchSharedPhotoForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   if (([(CNUIPRLikenessLookup *)self lookupOptions]& 2) != 0)
   {
-    if ([(CNUIPRLikenessLookup *)self isMeContact:v4])
+    if ([(CNUIPRLikenessLookup *)self isMeContact:contactCopy])
     {
-      v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v7 = [v6 nicknameProvider];
-      v8 = [v7 isNicknameSharingEnabled];
+      currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+      nicknameProvider = [currentEnvironment nicknameProvider];
+      isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
     }
 
     else
     {
-      v8 = 0;
+      isNicknameSharingEnabled = 0;
     }
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v10 = [v4 thumbnailImageData];
-    if (v10)
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    if (thumbnailImageData)
     {
       v11 = 1;
     }
 
-    else if ([v4 isKeyAvailable:*MEMORY[0x1E695C278]])
+    else if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C278]])
     {
-      v12 = [v4 imageData];
-      v11 = v12 != 0;
+      imageData = [contactCopy imageData];
+      v11 = imageData != 0;
     }
 
     else
@@ -1326,7 +1326,7 @@ void __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_r
       v11 = 0;
     }
 
-    v5 = v8 & (isKindOfClass & v11 ^ 1);
+    v5 = isNicknameSharingEnabled & (isKindOfClass & v11 ^ 1);
   }
 
   else
@@ -1337,9 +1337,9 @@ void __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_r
   return v5;
 }
 
-- (BOOL)isMeContact:(id)a3
+- (BOOL)isMeContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   if ([(CNUIPRLikenessLookup *)self skipContactLookup])
   {
     v5 = 0;
@@ -1347,39 +1347,39 @@ void __86__CNUIPRLikenessLookup_contactFuture_contactStore_personaId_scheduler_r
 
   else
   {
-    v6 = [(CNUIPRLikenessLookup *)self meMonitor];
+    meMonitor = [(CNUIPRLikenessLookup *)self meMonitor];
 
-    if (v6)
+    if (meMonitor)
     {
-      v7 = [(CNUIPRLikenessLookup *)self meMonitor];
-      v5 = [v7 isMeContact:v4];
+      meMonitor2 = [(CNUIPRLikenessLookup *)self meMonitor];
+      v5 = [meMonitor2 isMeContact:contactCopy];
     }
 
     else
     {
-      v8 = [(CNUIPRLikenessLookup *)self contactStore];
-      v7 = [v8 _crossPlatformUnifiedMeContactWithKeysToFetch:MEMORY[0x1E695E0F0] error:0];
+      contactStore = [(CNUIPRLikenessLookup *)self contactStore];
+      meMonitor2 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:MEMORY[0x1E695E0F0] error:0];
 
-      v9 = [v4 identifier];
-      v10 = [v7 identifier];
-      v5 = [v9 isEqualToString:v10];
+      identifier = [contactCopy identifier];
+      identifier2 = [meMonitor2 identifier];
+      v5 = [identifier isEqualToString:identifier2];
     }
   }
 
   return v5;
 }
 
-- (id)photoFutureForContactFuture:(id)a3 scheduler:(id)a4
+- (id)photoFutureForContactFuture:(id)future scheduler:(id)scheduler
 {
-  v6 = a4;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__CNUIPRLikenessLookup_photoFutureForContactFuture_scheduler___block_invoke;
   v10[3] = &unk_1E76E9910;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 flatMap:v10];
+  v11 = schedulerCopy;
+  v7 = schedulerCopy;
+  v8 = [future flatMap:v10];
 
   return v8;
 }
@@ -1417,31 +1417,31 @@ id __62__CNUIPRLikenessLookup_photoFutureForContactFuture_scheduler___block_invo
   return v11;
 }
 
-- (id)futureResultForPhotoImageDataForMeContact:(id)a3 error:(id *)a4
+- (id)futureResultForPhotoImageDataForMeContact:(id)contact error:(id *)error
 {
-  v6 = a3;
+  contactCopy = contact;
   v7 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v8 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v9 = [v8 nicknameProvider];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__CNUIPRLikenessLookup_futureResultForPhotoImageDataForMeContact_error___block_invoke;
   v18[3] = &unk_1E76E9938;
-  v10 = v6;
+  v10 = contactCopy;
   v19 = v10;
-  v20 = self;
+  selfCopy = self;
   v11 = v7;
   v21 = v11;
-  [v9 fetchPersonalNicknameAsContactWithCompletion:v18];
+  [nicknameProvider fetchPersonalNicknameAsContactWithCompletion:v18];
 
   v12 = *MEMORY[0x1E6996590];
-  v13 = [v11 future];
-  v14 = [v13 resultWithTimeout:0 error:0.2];
+  future = [v11 future];
+  v14 = [future resultWithTimeout:0 error:0.2];
   v15 = (*(v12 + 16))(v12, v14);
 
   if ((*(*MEMORY[0x1E6996540] + 16))())
   {
-    v16 = [(CNUIPRLikenessLookup *)self futureResultForPhotoImageDataForContact:v10 error:a4];
+    v16 = [(CNUIPRLikenessLookup *)self futureResultForPhotoImageDataForContact:v10 error:error];
 
     v15 = v16;
   }
@@ -1475,9 +1475,9 @@ void __72__CNUIPRLikenessLookup_futureResultForPhotoImageDataForMeContact_error_
   }
 }
 
-- (id)futureResultForPhotoImageDataForContact:(id)a3 error:(id *)a4
+- (id)futureResultForPhotoImageDataForContact:(id)contact error:(id *)error
 {
-  v5 = [(CNUIPRLikenessLookup *)self photoImageDataForContact:a3 error:?];
+  v5 = [(CNUIPRLikenessLookup *)self photoImageDataForContact:contact error:?];
   if ([v5 length])
   {
     v6 = v5;
@@ -1486,10 +1486,10 @@ void __72__CNUIPRLikenessLookup_futureResultForPhotoImageDataForMeContact_error_
   else
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695C448] code:302 userInfo:0];
-    if (a4)
+    if (error)
     {
       v7 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     v6 = 0;
@@ -1498,22 +1498,22 @@ void __72__CNUIPRLikenessLookup_futureResultForPhotoImageDataForMeContact_error_
   return v6;
 }
 
-- (id)photoImageDataForContact:(id)a3 error:(id *)a4
+- (id)photoImageDataForContact:(id)contact error:(id *)error
 {
-  v4 = a3;
-  if ([v4 isKeyAvailable:*MEMORY[0x1E695C400]])
+  contactCopy = contact;
+  if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C400]])
   {
-    v5 = [v4 thumbnailImageData];
-    if (![v5 length] && objc_msgSend(v4, "isKeyAvailable:", *MEMORY[0x1E695C278]))
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    if (![thumbnailImageData length] && objc_msgSend(contactCopy, "isKeyAvailable:", *MEMORY[0x1E695C278]))
     {
-      v6 = [v4 imageData];
+      imageData = [contactCopy imageData];
 
-      if ([v4 isKeyAvailable:*MEMORY[0x1E695C1E8]])
+      if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C1E8]])
       {
-        [v4 cropRect];
+        [contactCopy cropRect];
       }
 
-      v5 = CNImageUtilsCroppedImageDataFromFullSizeImageData();
+      thumbnailImageData = CNImageUtilsCroppedImageDataFromFullSizeImageData();
     }
 
     v7 = +[CNUICoreLogProvider likenesses_os_log];
@@ -1525,10 +1525,10 @@ void __72__CNUIPRLikenessLookup_futureResultForPhotoImageDataForMeContact_error_
 
   else
   {
-    v5 = 0;
+    thumbnailImageData = 0;
   }
 
-  return v5;
+  return thumbnailImageData;
 }
 
 - (void)likenessForContact:placeholderProviderFactory:options:.cold.5()

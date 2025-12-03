@@ -1,34 +1,34 @@
 @interface SBTapAppLayoutSwitcherModifierEvent
-- (SBTapAppLayoutSwitcherModifierEvent)initWithAppLayout:(id)a3 layoutRole:(int64_t)a4 modifierFlags:(int64_t)a5 source:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBTapAppLayoutSwitcherModifierEvent)initWithAppLayout:(id)layout layoutRole:(int64_t)role modifierFlags:(int64_t)flags source:(int64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBTapAppLayoutSwitcherModifierEvent
 
-- (SBTapAppLayoutSwitcherModifierEvent)initWithAppLayout:(id)a3 layoutRole:(int64_t)a4 modifierFlags:(int64_t)a5 source:(int64_t)a6
+- (SBTapAppLayoutSwitcherModifierEvent)initWithAppLayout:(id)layout layoutRole:(int64_t)role modifierFlags:(int64_t)flags source:(int64_t)source
 {
-  v11 = a3;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBTapAppLayoutSwitcherModifierEvent;
   v12 = [(SBWindowingModifierActivity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appLayout, a3);
-    v13->_layoutRole = a4;
-    v13->_modifierFlags = a5;
-    v13->_source = a6;
+    objc_storeStrong(&v12->_appLayout, layout);
+    v13->_layoutRole = role;
+    v13->_modifierFlags = flags;
+    v13->_source = source;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SBTapAppLayoutSwitcherModifierEvent;
-  v4 = [(SBChainableModifierEvent *)&v8 copyWithZone:a3];
+  v4 = [(SBChainableModifierEvent *)&v8 copyWithZone:zone];
   v5 = [(SBAppLayout *)self->_appLayout copy];
   v6 = v4[4];
   v4[4] = v5;
@@ -39,13 +39,13 @@
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = SBTapAppLayoutSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v11 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBAppLayout *)self->_appLayout succinctDescription];
-  v6 = [v4 appendObject:v5 withName:@"appLayout"];
+  v4 = [(SBSwitcherModifierEvent *)&v11 descriptionBuilderWithMultilinePrefix:prefix];
+  succinctDescription = [(SBAppLayout *)self->_appLayout succinctDescription];
+  v6 = [v4 appendObject:succinctDescription withName:@"appLayout"];
 
   v7 = SBLayoutRoleDescription(self->_layoutRole);
   [v4 appendString:v7 withName:@"layoutRole"];

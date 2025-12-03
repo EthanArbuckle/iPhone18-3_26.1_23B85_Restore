@@ -2,12 +2,12 @@
 - (STSPickerView)init;
 - (UIEdgeInsets)_updateContentInset;
 - (void)layoutSubviews;
-- (void)scrollToTopWithAnimation:(BOOL)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setOverlayView:(id)a3;
-- (void)setShowActivityIndicator:(BOOL)a3;
-- (void)setTopInset:(double)a3;
-- (void)updateContentOffset:(double)a3;
+- (void)scrollToTopWithAnimation:(BOOL)animation;
+- (void)setHeaderView:(id)view;
+- (void)setOverlayView:(id)view;
+- (void)setShowActivityIndicator:(BOOL)indicator;
+- (void)setTopInset:(double)inset;
+- (void)updateContentOffset:(double)offset;
 - (void)updateHeaderPositionOnScroll;
 @end
 
@@ -35,16 +35,16 @@
 
     [(UICollectionView *)v3->_collectionView setAlwaysBounceVertical:1];
     v9 = v3->_collectionView;
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(UICollectionView *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UICollectionView *)v9 setBackgroundColor:clearColor];
 
     [(UICollectionView *)v3->_collectionView setPrefetchingEnabled:0];
     [(UICollectionView *)v3->_collectionView setAllowsMultipleSelection:0];
     [(UICollectionView *)v3->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(STSPickerView *)v3 addSubview:v3->_collectionView];
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     constraints = v3->_constraints;
-    v3->_constraints = v11;
+    v3->_constraints = array;
   }
 
   return v3;
@@ -53,7 +53,7 @@
 - (void)layoutSubviews
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v3 = [(STSPickerView *)self layoutMarginsGuide];
+  layoutMarginsGuide = [(STSPickerView *)self layoutMarginsGuide];
   [MEMORY[0x277CCAAD0] deactivateConstraints:self->_constraints];
   [(NSMutableArray *)self->_constraints removeAllObjects];
   overlayView = self->_overlayView;
@@ -61,7 +61,7 @@
   {
     headerView = self->_headerView;
     constraints = self->_constraints;
-    v7 = [(STSSearchNoticeView *)overlayView topAnchor];
+    topAnchor = [(STSSearchNoticeView *)overlayView topAnchor];
     if (headerView)
     {
       [(UIView *)self->_headerView bottomAnchor];
@@ -69,28 +69,28 @@
 
     else
     {
-      [v3 topAnchor];
+      [layoutMarginsGuide topAnchor];
     }
     v8 = ;
-    v9 = [v7 constraintEqualToAnchor:v8];
+    v9 = [topAnchor constraintEqualToAnchor:v8];
     [(NSMutableArray *)constraints addObject:v9];
 
     v10 = self->_constraints;
-    v11 = [(STSSearchNoticeView *)self->_overlayView leadingAnchor];
-    v12 = [(STSPickerView *)self leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    leadingAnchor = [(STSSearchNoticeView *)self->_overlayView leadingAnchor];
+    leadingAnchor2 = [(STSPickerView *)self leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(NSMutableArray *)v10 addObject:v13];
 
     v14 = self->_constraints;
-    v15 = [(STSSearchNoticeView *)self->_overlayView trailingAnchor];
-    v16 = [(STSPickerView *)self trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    trailingAnchor = [(STSSearchNoticeView *)self->_overlayView trailingAnchor];
+    trailingAnchor2 = [(STSPickerView *)self trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(NSMutableArray *)v14 addObject:v17];
 
     v18 = self->_constraints;
-    v19 = [(STSSearchNoticeView *)self->_overlayView bottomAnchor];
-    v20 = [v3 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [(STSSearchNoticeView *)self->_overlayView bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(NSMutableArray *)v18 addObject:v21];
 
     [MEMORY[0x277CCAAD0] activateConstraints:self->_constraints];
@@ -113,22 +113,22 @@
       v22 = self->_headerView;
     }
 
-    v26 = [(UIView *)v22 topAnchor];
-    v27 = [v3 topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor2 = [(UIView *)v22 topAnchor];
+    topAnchor3 = [layoutMarginsGuide topAnchor];
+    v28 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v29 = self->_headerTopConstraint;
     self->_headerTopConstraint = v28;
 
     v30 = self->_constraints;
-    v31 = [(UIView *)self->_headerView leadingAnchor];
-    v32 = [(STSPickerView *)self leadingAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    leadingAnchor3 = [(UIView *)self->_headerView leadingAnchor];
+    leadingAnchor4 = [(STSPickerView *)self leadingAnchor];
+    v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [(NSMutableArray *)v30 addObject:v33];
 
     v34 = self->_constraints;
-    v35 = [(UIView *)self->_headerView trailingAnchor];
-    v36 = [(STSPickerView *)self trailingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    trailingAnchor3 = [(UIView *)self->_headerView trailingAnchor];
+    trailingAnchor4 = [(STSPickerView *)self trailingAnchor];
+    v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [(NSMutableArray *)v34 addObject:v37];
 
     v38 = MEMORY[0x277CCAAD0];
@@ -142,7 +142,7 @@
   {
     v41 = self->_headerView;
     v42 = self->_constraints;
-    v43 = [(UICollectionView *)collectionView topAnchor];
+    topAnchor4 = [(UICollectionView *)collectionView topAnchor];
     if (v41)
     {
       [(UIView *)self->_headerView bottomAnchor];
@@ -150,39 +150,39 @@
 
     else
     {
-      [v3 topAnchor];
+      [layoutMarginsGuide topAnchor];
     }
     v44 = ;
-    v45 = [v43 constraintEqualToAnchor:v44];
+    v45 = [topAnchor4 constraintEqualToAnchor:v44];
     [(NSMutableArray *)v42 addObject:v45];
 
     v46 = self->_constraints;
-    v47 = [(UICollectionView *)self->_collectionView bottomAnchor];
-    v48 = [(STSPickerView *)self bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    bottomAnchor3 = [(UICollectionView *)self->_collectionView bottomAnchor];
+    bottomAnchor4 = [(STSPickerView *)self bottomAnchor];
+    v49 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [(NSMutableArray *)v46 addObject:v49];
 
     v50 = self->_constraints;
-    v51 = [(UICollectionView *)self->_collectionView leadingAnchor];
-    v52 = [(STSPickerView *)self leadingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    leadingAnchor5 = [(UICollectionView *)self->_collectionView leadingAnchor];
+    leadingAnchor6 = [(STSPickerView *)self leadingAnchor];
+    v53 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [(NSMutableArray *)v50 addObject:v53];
 
     v54 = self->_constraints;
-    v55 = [(UICollectionView *)self->_collectionView trailingAnchor];
-    v56 = [(STSPickerView *)self trailingAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    trailingAnchor5 = [(UICollectionView *)self->_collectionView trailingAnchor];
+    trailingAnchor6 = [(STSPickerView *)self trailingAnchor];
+    v57 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [(NSMutableArray *)v54 addObject:v57];
 
     [MEMORY[0x277CCAAD0] activateConstraints:self->_constraints];
   }
 }
 
-- (void)scrollToTopWithAnimation:(BOOL)a3
+- (void)scrollToTopWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(UICollectionView *)self->_collectionView contentInset];
-  [(UICollectionView *)self->_collectionView setContentOffset:v3 animated:-v5, -v6];
+  [(UICollectionView *)self->_collectionView setContentOffset:animationCopy animated:-v5, -v6];
 
   [(STSPickerView *)self updateHeaderPositionOnScroll];
 }
@@ -216,7 +216,7 @@
       [(UIView *)self->_headerView frame];
       [(UIView *)self->_headerView frame];
       v14 = v13 - v10;
-      v15 = [(STSPickerView *)self layoutMarginsGuide];
+      layoutMarginsGuide = [(STSPickerView *)self layoutMarginsGuide];
       v16 = fmin(v8 + v14, 0.0);
       [(UIView *)self->_headerView frame];
       v17 = -CGRectGetHeight(v24);
@@ -235,15 +235,15 @@
   }
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  if (overlayView != v5)
+  if (overlayView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(STSSearchNoticeView *)overlayView removeFromSuperview];
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     activityIndicator = self->_activityIndicator;
     if (!activityIndicator)
     {
@@ -252,34 +252,34 @@
 
     [(STSPickerView *)self insertSubview:self->_overlayView aboveSubview:activityIndicator];
     overlayView = [(STSPickerView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](overlayView, v5);
+  MEMORY[0x2821F96F8](overlayView, viewCopy);
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     [(STSPickerView *)self addSubview:self->_headerView];
     headerView = [(STSPickerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](headerView, v5);
+  MEMORY[0x2821F96F8](headerView, viewCopy);
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
   [(UIView *)self->_headerView frame];
   MinY = CGRectGetMinY(v8);
-  self->_topInset = a3;
+  self->_topInset = inset;
   [(UICollectionView *)self->_collectionView contentOffset];
   [(UICollectionView *)self->_collectionView contentInset];
   [(STSPickerView *)self _updateContentInset];
@@ -289,14 +289,14 @@
   [(UICollectionView *)collectionView setContentOffset:?];
 }
 
-- (void)setShowActivityIndicator:(BOOL)a3
+- (void)setShowActivityIndicator:(BOOL)indicator
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  if (self->_showActivityIndicator != a3)
+  if (self->_showActivityIndicator != indicator)
   {
-    self->_showActivityIndicator = a3;
+    self->_showActivityIndicator = indicator;
     activityIndicator = self->_activityIndicator;
-    if (a3)
+    if (indicator)
     {
       if (!activityIndicator)
       {
@@ -310,13 +310,13 @@
 
       [(STSPickerView *)self insertSubview:activityIndicator aboveSubview:self->_collectionView];
       v7 = MEMORY[0x277CCAAD0];
-      v8 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-      v9 = [(UICollectionView *)self->_collectionView centerXAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+      centerXAnchor2 = [(UICollectionView *)self->_collectionView centerXAnchor];
+      v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v16[0] = v10;
-      v11 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-      v12 = [(UICollectionView *)self->_collectionView centerYAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+      centerYAnchor2 = [(UICollectionView *)self->_collectionView centerYAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v16[1] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
       [v7 activateConstraints:v14];
@@ -335,12 +335,12 @@
   }
 }
 
-- (void)updateContentOffset:(double)a3
+- (void)updateContentOffset:(double)offset
 {
-  v7 = [(STSPickerView *)self collectionView];
-  v5 = [(STSPickerView *)self collectionView];
-  [v5 contentInset];
-  [v7 setContentOffset:{-v6, a3}];
+  collectionView = [(STSPickerView *)self collectionView];
+  collectionView2 = [(STSPickerView *)self collectionView];
+  [collectionView2 contentInset];
+  [collectionView setContentOffset:{-v6, offset}];
 }
 
 - (UIEdgeInsets)_updateContentInset

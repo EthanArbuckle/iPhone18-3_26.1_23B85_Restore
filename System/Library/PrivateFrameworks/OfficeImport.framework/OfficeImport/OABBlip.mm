@@ -1,28 +1,28 @@
 @interface OABBlip
-+ (EshBlip)writeBlip:(id)a3;
-+ (id)compressMetafileData:(id)a3 info:(void *)a4;
-+ (id)delayedSubBlipWithMetafileInfo:(const void *)a3;
-+ (id)dibFileContentsWithDibBlipData:(const OcBinaryData *)a3;
-+ (id)readBlipFromBse:(id)a3;
-+ (id)readBlipFromEshBlip:(EshBlip *)a3;
-+ (id)subBlipWithMetafileInfo:(const void *)a3;
-+ (int)blipTypeForBlipSignature:(int)a3;
-+ (void)setMetafileBoundsFromPictData:(id)a3 info:(void *)a4;
-+ (void)writeBlip:(id)a3 toBlipStoreEntry:(EshBSE *)a4;
-+ (void)writeEmptyBlipStoreEntry:(EshBSE *)a3;
++ (EshBlip)writeBlip:(id)blip;
++ (id)compressMetafileData:(id)data info:(void *)info;
++ (id)delayedSubBlipWithMetafileInfo:(const void *)info;
++ (id)dibFileContentsWithDibBlipData:(const OcBinaryData *)data;
++ (id)readBlipFromBse:(id)bse;
++ (id)readBlipFromEshBlip:(EshBlip *)blip;
++ (id)subBlipWithMetafileInfo:(const void *)info;
++ (int)blipTypeForBlipSignature:(int)signature;
++ (void)setMetafileBoundsFromPictData:(id)data info:(void *)info;
++ (void)writeBlip:(id)blip toBlipStoreEntry:(EshBSE *)entry;
++ (void)writeEmptyBlipStoreEntry:(EshBSE *)entry;
 @end
 
 @implementation OABBlip
 
-+ (id)readBlipFromBse:(id)a3
++ (id)readBlipFromBse:(id)bse
 {
-  v4 = a3;
-  v5 = [v4 eshObject];
+  bseCopy = bse;
+  eshObject = [bseCopy eshObject];
   {
     v7 = v6[13];
     if (v7 && *(v6 + 4))
     {
-      v8 = [a1 readBlipFromEshBlip:?];
+      v8 = [self readBlipFromEshBlip:?];
       *[(OADBlip *)v8 referenceCount]= v7;
     }
 
@@ -40,22 +40,22 @@
   return v8;
 }
 
-+ (id)readBlipFromEshBlip:(EshBlip *)a3
++ (id)readBlipFromEshBlip:(EshBlip *)blip
 {
-  if (!a3)
+  if (!blip)
   {
     v10 = 0;
     goto LABEL_20;
   }
 
-  RecordType = EshRecord::getRecordType(a3);
+  RecordType = EshRecord::getRecordType(blip);
   v6 = objc_alloc_init(OADBlip);
   if ((RecordType - 61466) >= 6 && (RecordType - 61481) > 1)
   {
     goto LABEL_18;
   }
 
-  if ((*(a3->var0 + 10))(a3))
+  if ((*(blip->var0 + 10))(blip))
   {
     v7 = 2;
     if (RecordType <= 61470)
@@ -78,7 +78,7 @@
         if (RecordType == 61471)
         {
           v8 = [[OADSubBlip alloc] initWithData:0 type:1];
-          v9 = [(ESDBlipContext *)[ESDDibFileBlipContext alloc] initWithOffset:*&a3[1].var3.var0[4] byteCount:*&a3[1].var3.var0[12] stream:*&a3[2].var2.var1 streamID:*&a3[1].var3.var0[8]];
+          v9 = [(ESDBlipContext *)[ESDDibFileBlipContext alloc] initWithOffset:*&blip[1].var3.var0[4] byteCount:*&blip[1].var3.var0[12] stream:*&blip[2].var2.var1 streamID:*&blip[1].var3.var0[8]];
           [(OCDDelayedNode *)v8 setDelayedContext:v9];
           [(OADBlip *)v6 setMainSubBlip:v8];
 LABEL_17:
@@ -89,9 +89,9 @@ LABEL_18:
         }
 
 LABEL_23:
-        v8 = [a1 delayedSubBlipWithMetafileInfo:&a3[1]];
+        v8 = [self delayedSubBlipWithMetafileInfo:&blip[1]];
         [(OADBlip *)v6 setMainSubBlip:v8];
-        v9 = [a1 delayedSubBlipWithMetafileInfo:&a3[3].var2.var4];
+        v9 = [self delayedSubBlipWithMetafileInfo:&blip[3].var2.var4];
         if (v9)
         {
           [(OADBlip *)v6 setAltSubBlip:v9];
@@ -104,7 +104,7 @@ LABEL_23:
     }
 
     v8 = [[OADSubBlip alloc] initWithData:0 type:v7];
-    v9 = [[ESDBlipContext alloc] initWithOffset:*&a3[1].var3.var0[4] byteCount:*&a3[1].var3.var0[12] stream:*&a3[2].var2.var1 streamID:*&a3[1].var3.var0[8]];
+    v9 = [[ESDBlipContext alloc] initWithOffset:*&blip[1].var3.var0[4] byteCount:*&blip[1].var3.var0[12] stream:*&blip[2].var2.var1 streamID:*&blip[1].var3.var0[8]];
     [(OCDDelayedNode *)v8 setDelayedContext:v9];
     [(OADBlip *)v6 setMainSubBlip:v8];
     goto LABEL_17;
@@ -119,29 +119,29 @@ LABEL_20:
   return v10;
 }
 
-+ (EshBlip)writeBlip:(id)a3
++ (EshBlip)writeBlip:(id)blip
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [a3 mainSubBlip];
-  v6 = [v5 type];
-  if (v6 <= 3)
+  mainSubBlip = [blip mainSubBlip];
+  type = [mainSubBlip type];
+  if (type <= 3)
   {
-    v8 = v6 == 2 || v6 == 3;
-    v9 = v6 == 2;
-    v10 = v6 != 2 && v6 == 3;
+    v8 = type == 2 || type == 3;
+    v9 = type == 2;
+    v10 = type != 2 && type == 3;
   }
 
   else
   {
-    v7 = v6 == 5 || v6 == 6;
-    v8 = v6 == 4 || v7;
+    v7 = type == 5 || type == 6;
+    v8 = type == 4 || v7;
     v9 = 0;
     v10 = 0;
   }
 
-  v11 = [v5 data];
-  v12 = v11;
-  if (v11)
+  data = [mainSubBlip data];
+  v12 = data;
+  if (data)
   {
     v13 = v8;
   }
@@ -151,7 +151,7 @@ LABEL_20:
     v13 = 0;
   }
 
-  if (v13 && [v11 length])
+  if (v13 && [data length])
   {
     v14 = CFUUIDCreate(0);
     CFUUIDGetUUIDBytes(v14);
@@ -167,17 +167,17 @@ LABEL_20:
   return 0;
 }
 
-+ (void)writeBlip:(id)a3 toBlipStoreEntry:(EshBSE *)a4
++ (void)writeBlip:(id)blip toBlipStoreEntry:(EshBSE *)entry
 {
-  v13 = a3;
-  if (*[v13 referenceCount])
+  blipCopy = blip;
+  if (*[blipCopy referenceCount])
   {
-    v6 = [v13 mainSubBlip];
-    v7 = [v6 sizeInBytes];
+    mainSubBlip = [blipCopy mainSubBlip];
+    sizeInBytes = [mainSubBlip sizeInBytes];
 
-    if (v7 >= 1)
+    if (sizeInBytes >= 1)
     {
-      v8 = [a1 writeBlip:v13];
+      v8 = [self writeBlip:blipCopy];
       v9 = v8;
       if (v8)
       {
@@ -203,14 +203,14 @@ LABEL_12:
           v12 = 4;
           v11 = BlipType;
 LABEL_15:
-          EshRecord::setInstance(a4, BlipType);
-          a4->var11 = v11;
-          a4->var12 = v12;
-          a4->var8 = 255;
-          a4->var9 = 0;
-          a4->var6 = *[v13 referenceCount];
-          a4->var15 = v9->var3;
-          a4->var3 = v9;
+          EshRecord::setInstance(entry, BlipType);
+          entry->var11 = v11;
+          entry->var12 = v12;
+          entry->var8 = 255;
+          entry->var9 = 0;
+          entry->var6 = *[blipCopy referenceCount];
+          entry->var15 = v9->var3;
+          entry->var3 = v9;
           goto LABEL_17;
         }
 
@@ -227,15 +227,15 @@ LABEL_15:
     }
   }
 
-  [a1 writeEmptyBlipStoreEntry:a4];
+  [self writeEmptyBlipStoreEntry:entry];
 LABEL_17:
 }
 
-+ (id)dibFileContentsWithDibBlipData:(const OcBinaryData *)a3
++ (id)dibFileContentsWithDibBlipData:(const OcBinaryData *)data
 {
   v4 = [MEMORY[0x277CBEB28] dataWithCapacity:0];
-  var5 = a3->var5;
-  var3 = a3->var3;
+  var5 = data->var5;
+  var3 = data->var3;
   v16 = var3 + 14;
   SInt32 = CsLeReadSInt32(var5);
   v8 = 14;
@@ -273,18 +273,18 @@ LABEL_17:
   return v4;
 }
 
-+ (id)subBlipWithMetafileInfo:(const void *)a3
++ (id)subBlipWithMetafileInfo:(const void *)info
 {
-  v3 = **a3 & 0xFFFE;
-  if ((**a3 & 0xFFFE) != 0)
+  v3 = **info & 0xFFFE;
+  if ((**info & 0xFFFE) != 0)
   {
-    v5 = [a1 blipTypeForBlipSignature:**a3 & 0xFFFE];
+    0xFFFE = [self blipTypeForBlipSignature:**info & 0xFFFE];
     v6 = v3 == 1346;
-    v7 = *(a3 + 25);
-    v8 = *(a3 + 18);
+    v7 = *(info + 25);
+    v8 = *(info + 18);
     v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(v8 + (v6 << 9))];
     destLen = v8;
-    if (uncompress(([v9 mutableBytes] + (v6 << 9)), &destLen, *(a3 + 6), v7))
+    if (uncompress(([v9 mutableBytes] + (v6 << 9)), &destLen, *(info + 6), v7))
     {
       v10 = 0;
     }
@@ -296,12 +296,12 @@ LABEL_17:
 
     if (v10)
     {
-      v11 = [[OADSubBlip alloc] initWithData:v9 type:v5];
-      v12 = *(a3 + 92);
+      v11 = [[OADSubBlip alloc] initWithData:v9 type:0xFFFE];
+      v12 = *(info + 92);
       v13.i64[0] = v12;
       v13.i64[1] = SHIDWORD(v12);
       [(OADSubBlip *)v11 setSizeInPoints:vdivq_f64(vcvtq_f64_s64(v13), vdupq_n_s64(0x40C8CE0000000000uLL))];
-      [(OADSubBlip *)v11 setFrame:*(a3 + 19), *(a3 + 20), (*(a3 + 21) - *(a3 + 19)), (*(a3 + 22) - *(a3 + 20))];
+      [(OADSubBlip *)v11 setFrame:*(info + 19), *(info + 20), (*(info + 21) - *(info + 19)), (*(info + 22) - *(info + 20))];
     }
 
     else
@@ -318,18 +318,18 @@ LABEL_17:
   return v11;
 }
 
-+ (id)delayedSubBlipWithMetafileInfo:(const void *)a3
++ (id)delayedSubBlipWithMetafileInfo:(const void *)info
 {
-  v4 = **a3 & 0xFFFE;
-  if (v4 && (v5 = v4 == 1346, v6 = [a1 blipTypeForBlipSignature:?], v6) && *(a3 + 10))
+  v4 = **info & 0xFFFE;
+  if (v4 && (v5 = v4 == 1346, v6 = [self blipTypeForBlipSignature:?], v6) && *(info + 10))
   {
     v7 = [[OADSubBlip alloc] initWithData:0 type:v6];
-    v8 = *(a3 + 92);
+    v8 = *(info + 92);
     v9.i64[0] = v8;
     v9.i64[1] = SHIDWORD(v8);
     [(OADSubBlip *)v7 setSizeInPoints:vdivq_f64(vcvtq_f64_s64(v9), vdupq_n_s64(0x40C8CE0000000000uLL))];
-    [(OADSubBlip *)v7 setFrame:*(a3 + 19), *(a3 + 20), (*(a3 + 21) - *(a3 + 19)), (*(a3 + 22) - *(a3 + 20))];
-    v10 = [[ESDMetafileBlipContext alloc] initWithOffset:*(a3 + 8) byteCount:*(a3 + 10) uncompressed:*(a3 + 18) stream:*(a3 + 8) streamID:*(a3 + 9)];
+    [(OADSubBlip *)v7 setFrame:*(info + 19), *(info + 20), (*(info + 21) - *(info + 19)), (*(info + 22) - *(info + 20))];
+    v10 = [[ESDMetafileBlipContext alloc] initWithOffset:*(info + 8) byteCount:*(info + 10) uncompressed:*(info + 18) stream:*(info + 8) streamID:*(info + 9)];
     [(ESDMetafileBlipContext *)v10 setDefaultHeaderSize:(v5 << 9)];
     [(OCDDelayedNode *)v7 setDelayedContext:v10];
   }
@@ -342,18 +342,18 @@ LABEL_17:
   return v7;
 }
 
-+ (int)blipTypeForBlipSignature:(int)a3
++ (int)blipTypeForBlipSignature:(int)signature
 {
-  if (a3 <= 1759)
+  if (signature <= 1759)
   {
-    if (a3 <= 1129)
+    if (signature <= 1129)
     {
-      if (a3 == 534)
+      if (signature == 534)
       {
         return 4;
       }
 
-      if (a3 == 980)
+      if (signature == 980)
       {
         return 5;
       }
@@ -361,9 +361,9 @@ LABEL_17:
       return 0;
     }
 
-    if (a3 != 1130)
+    if (signature != 1130)
     {
-      if (a3 == 1346)
+      if (signature == 1346)
       {
         return 6;
       }
@@ -374,14 +374,14 @@ LABEL_17:
     return 2;
   }
 
-  if (a3 <= 1763)
+  if (signature <= 1763)
   {
-    if (a3 == 1760)
+    if (signature == 1760)
     {
       return 3;
     }
 
-    if (a3 != 1762)
+    if (signature != 1762)
     {
       return 0;
     }
@@ -389,18 +389,18 @@ LABEL_17:
     return 2;
   }
 
-  if (a3 == 1764)
+  if (signature == 1764)
   {
     return 8;
   }
 
-  return a3 == 1960;
+  return signature == 1960;
 }
 
-+ (void)setMetafileBoundsFromPictData:(id)a3 info:(void *)a4
++ (void)setMetafileBoundsFromPictData:(id)data info:(void *)info
 {
-  v14 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v14];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
   v6 = v5;
   if (v5)
   {
@@ -415,44 +415,44 @@ LABEL_17:
 
   v9 = v7 * 12700.0;
   v10 = v8 * 12700.0;
-  *(a4 + 23) = llroundf(v9);
-  *(a4 + 24) = llroundf(v10);
+  *(info + 23) = llroundf(v9);
+  *(info + 24) = llroundf(v10);
   v11 = v7;
   v12 = llroundf(v11);
   v13 = v8;
-  *(a4 + 19) = 0;
-  *(a4 + 20) = 0;
-  *(a4 + 21) = v12;
-  *(a4 + 22) = llroundf(v13);
+  *(info + 19) = 0;
+  *(info + 20) = 0;
+  *(info + 21) = v12;
+  *(info + 22) = llroundf(v13);
 }
 
-+ (id)compressMetafileData:(id)a3 info:(void *)a4
++ (id)compressMetafileData:(id)data info:(void *)info
 {
-  v5 = a3;
-  v6 = [v5 length];
-  *(a4 + 18) = v6;
+  dataCopy = data;
+  v6 = [dataCopy length];
+  *(info + 18) = v6;
   v7 = vcvtps_s32_f32((v6 * 1.01) + 12.0);
   v8 = [MEMORY[0x277CBEB28] dataWithLength:v7];
   destLen = v7;
-  if (compress([v8 mutableBytes], &destLen, objc_msgSend(v5, "bytes"), v6))
+  if (compress([v8 mutableBytes], &destLen, objc_msgSend(dataCopy, "bytes"), v6))
   {
     [TCMessageException raise:TCUnknownProblemMessage];
   }
 
   [v8 setLength:destLen];
-  *(a4 + 25) = destLen;
-  *(a4 + 52) = -512;
+  *(info + 25) = destLen;
+  *(info + 52) = -512;
 
   return v8;
 }
 
-+ (void)writeEmptyBlipStoreEntry:(EshBSE *)a3
++ (void)writeEmptyBlipStoreEntry:(EshBSE *)entry
 {
-  EshRecord::setInstance(a3, 0);
-  *&a3->var11 = 0;
-  a3->var8 = 255;
-  a3->var9 = 0;
-  a3->var6 = 0;
+  EshRecord::setInstance(entry, 0);
+  *&entry->var11 = 0;
+  entry->var8 = 255;
+  entry->var9 = 0;
+  entry->var6 = 0;
 }
 
 @end

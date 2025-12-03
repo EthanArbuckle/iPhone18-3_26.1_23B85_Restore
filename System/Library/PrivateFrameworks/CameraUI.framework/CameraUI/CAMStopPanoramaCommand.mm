@@ -1,14 +1,14 @@
 @interface CAMStopPanoramaCommand
-- (CAMStopPanoramaCommand)initWithCoder:(id)a3;
-- (CAMStopPanoramaCommand)initWithInterrupted:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMStopPanoramaCommand)initWithCoder:(id)coder;
+- (CAMStopPanoramaCommand)initWithInterrupted:(BOOL)interrupted;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMStopPanoramaCommand
 
-- (CAMStopPanoramaCommand)initWithInterrupted:(BOOL)a3
+- (CAMStopPanoramaCommand)initWithInterrupted:(BOOL)interrupted
 {
   v8.receiver = self;
   v8.super_class = CAMStopPanoramaCommand;
@@ -16,47 +16,47 @@
   v5 = v4;
   if (v4)
   {
-    v4->__interrupted = a3;
+    v4->__interrupted = interrupted;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMStopPanoramaCommand)initWithCoder:(id)a3
+- (CAMStopPanoramaCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMStopPanoramaCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->__interrupted = [v4 decodeBoolForKey:@"CAMStopPanoramaCommandInterrupted"];
+    v5->__interrupted = [coderCopy decodeBoolForKey:@"CAMStopPanoramaCommandInterrupted"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CAMStopPanoramaCommand _interrupted](self forKey:{"_interrupted"), @"CAMStopPanoramaCommandInterrupted"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CAMStopPanoramaCommand _interrupted](self forKey:{"_interrupted"), @"CAMStopPanoramaCommandInterrupted"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMStopPanoramaCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMStopPanoramaCommand *)self _interrupted];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  [v4 stopPanoramaCaptureInterrupted:{-[CAMStopPanoramaCommand _interrupted](self, "_interrupted")}];
+  contextCopy = context;
+  [contextCopy stopPanoramaCaptureInterrupted:{-[CAMStopPanoramaCommand _interrupted](self, "_interrupted")}];
 }
 
 @end

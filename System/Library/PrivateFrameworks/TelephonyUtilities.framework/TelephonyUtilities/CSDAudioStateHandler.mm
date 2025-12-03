@@ -1,14 +1,14 @@
 @interface CSDAudioStateHandler
-- (CSDAudioStateHandler)initWith:(id)a3 delegate:(id)a4;
+- (CSDAudioStateHandler)initWith:(id)with delegate:(id)delegate;
 @end
 
 @implementation CSDAudioStateHandler
 
-- (CSDAudioStateHandler)initWith:(id)a3 delegate:(id)a4
+- (CSDAudioStateHandler)initWith:(id)with delegate:(id)delegate
 {
-  v5 = a3;
+  withCopy = with;
   swift_unknownObjectRetain();
-  return sub_1003C6274(v5, a4);
+  return sub_1003C6274(withCopy, delegate);
 }
 
 @end

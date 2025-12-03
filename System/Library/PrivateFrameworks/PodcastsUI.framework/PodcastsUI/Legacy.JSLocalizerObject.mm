@@ -1,9 +1,9 @@
 @interface Legacy.JSLocalizerObject
 - (NSString)identifier;
 - (_TtCO10PodcastsUI6Legacy17JSLocalizerObject)init;
-- (id)friendlyDate:(id)a3;
-- (id)timeRange:(id)a3 :(id)a4 :(id)a5;
-- (id)timeRangeWithFormat:(id)a3 :(id)a4 :(id)a5 :(id)a6;
+- (id)friendlyDate:(id)date;
+- (id)timeRange:(id)range :(id)a4 :(id)a5;
+- (id)timeRangeWithFormat:(id)format :(id)a4 :(id)a5 :(id)a6;
 @end
 
 @implementation Legacy.JSLocalizerObject
@@ -16,14 +16,14 @@
   return v2;
 }
 
-- (id)friendlyDate:(id)a3
+- (id)friendlyDate:(id)date
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD87538);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v15 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v7);
   v9 = &v15 - v8;
-  if (a3)
+  if (date)
   {
     sub_21B4C5838();
     v10 = sub_21B4C5858();
@@ -59,7 +59,7 @@
   return v12;
 }
 
-- (id)timeRange:(id)a3 :(id)a4 :(id)a5
+- (id)timeRange:(id)range :(id)a4 :(id)a5
 {
   v6 = sub_21B4C5858();
   v7 = *(v6 - 8);
@@ -71,7 +71,7 @@
   sub_21B4C5838();
   v13 = sub_21B4C9708();
   v15 = v14;
-  v16 = self;
+  selfCopy = self;
   v17 = sub_21B463844(v13, v15);
 
   v18 = sub_21B4C5818();
@@ -91,7 +91,7 @@
   return v20;
 }
 
-- (id)timeRangeWithFormat:(id)a3 :(id)a4 :(id)a5 :(id)a6
+- (id)timeRangeWithFormat:(id)format :(id)a4 :(id)a5 :(id)a6
 {
   v8 = sub_21B4C5858();
   v9 = *(v8 - 8);
@@ -114,7 +114,7 @@
     v18 = 0;
   }
 
-  v20 = self;
+  selfCopy = self;
   sub_21B463B98(v14, v11, v15, v17, v18, a6);
 
   v21 = *(v9 + 8);

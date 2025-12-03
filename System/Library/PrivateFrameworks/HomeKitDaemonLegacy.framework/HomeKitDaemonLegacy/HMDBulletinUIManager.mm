@@ -1,5 +1,5 @@
 @interface HMDBulletinUIManager
-+ (void)openHomeAppWithURL:(id)a3;
++ (void)openHomeAppWithURL:(id)l;
 @end
 
 @implementation HMDBulletinUIManager
@@ -22,16 +22,16 @@ void __77__HMDBulletinUIManager_presentExecutionErrorDialogForTrigger_partialSuc
   }
 }
 
-+ (void)openHomeAppWithURL:(id)a3
++ (void)openHomeAppWithURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  if (!v3)
+  absoluteString = [l absoluteString];
+  if (!absoluteString)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://", *MEMORY[0x277CCFE40]];
+    absoluteString = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://", *MEMORY[0x277CCFE40]];
   }
 
-  v4 = v3;
-  launchURL(v3);
+  v4 = absoluteString;
+  launchURL(absoluteString);
 }
 
 @end

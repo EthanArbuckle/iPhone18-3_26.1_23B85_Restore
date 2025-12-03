@@ -1,44 +1,44 @@
 @interface IMSPIRecentEvent
-- (IMSPIRecentEvent)initWithHandle:(id)a3 date:(id)a4;
-- (IMSPIRecentEvent)initWithLabelID:(id)a3 date:(id)a4;
+- (IMSPIRecentEvent)initWithHandle:(id)handle date:(id)date;
+- (IMSPIRecentEvent)initWithLabelID:(id)d date:(id)date;
 - (id)description;
 @end
 
 @implementation IMSPIRecentEvent
 
-- (IMSPIRecentEvent)initWithHandle:(id)a3 date:(id)a4
+- (IMSPIRecentEvent)initWithHandle:(id)handle date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = IMSPIRecentEvent;
   v10 = [(IMSPIRecentEvent *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(handleCopy, v8, v9);
     handle = v10->_handle;
     v10->_handle = v11;
 
-    objc_storeStrong(&v10->_date, a4);
+    objc_storeStrong(&v10->_date, date);
   }
 
   return v10;
 }
 
-- (IMSPIRecentEvent)initWithLabelID:(id)a3 date:(id)a4
+- (IMSPIRecentEvent)initWithLabelID:(id)d date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = IMSPIRecentEvent;
   v10 = [(IMSPIRecentEvent *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(dCopy, v8, v9);
     labelID = v10->_labelID;
     v10->_labelID = v11;
 
-    objc_storeStrong(&v10->_date, a4);
+    objc_storeStrong(&v10->_date, date);
   }
 
   return v10;

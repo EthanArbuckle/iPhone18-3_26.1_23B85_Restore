@@ -14,7 +14,7 @@
   v13 = v5;
   v14 = a3;
   v6 = v5;
-  [a1 enumerateObjectsUsingBlock:&v9];
+  [self enumerateObjectsUsingBlock:&v9];
   v7 = [MEMORY[0x1E695DFD8] setWithSet:{v6, v9, v10, v11, v12}];
 
   return v7;

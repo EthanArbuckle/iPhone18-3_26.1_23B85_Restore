@@ -1,14 +1,14 @@
 @interface ICSAlternateTimeProposalStatusParameter
-+ (id)statusParameterFromCode:(int)a3;
-+ (id)statusParameterFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)statusParameterFromCode:(int)code;
++ (id)statusParameterFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSAlternateTimeProposalStatusParameter
 
-+ (id)statusParameterFromICSString:(id)a3
++ (id)statusParameterFromICSString:(id)string
 {
-  v3 = [ICSAlternateTimeProposal statusFromICSString:a3];
+  v3 = [ICSAlternateTimeProposal statusFromICSString:string];
   if (v3)
   {
     v4 = [ICSAlternateTimeProposalStatusParameter statusParameterFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)statusParameterFromCode:(int)a3
++ (id)statusParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSAlternateTimeProposalStatusParameter alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSAlternateTimeProposalStatusParameter alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSAlternateTimeProposal ICSStringFromAlternateTimeProposalStatus:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

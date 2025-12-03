@@ -2,8 +2,8 @@
 - (id)generateData;
 - (id)generateLayouts;
 - (id)generateTestCases;
-- (id)init:(id)a3 inputMode:(id)a4 layouts:(id)a5;
-- (void)addLayouts:(id)a3;
+- (id)init:(id)init inputMode:(id)mode layouts:(id)layouts;
+- (void)addLayouts:(id)layouts;
 - (void)close;
 @end
 
@@ -27,9 +27,9 @@
 
   else
   {
-    v5 = [(TTKFileSink *)self generateData];
+    generateData = [(TTKFileSink *)self generateData];
     v6 = 0;
-    if (![MEMORY[0x277CCAAA0] writeJSONObject:v5 toStream:v4 options:1 error:&v6])
+    if (![MEMORY[0x277CCAAA0] writeJSONObject:generateData toStream:v4 options:1 error:&v6])
     {
       NSLog(&cfstr_ErrorWritingJs.isa);
     }
@@ -42,33 +42,33 @@
 
 - (id)generateData
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:2];
-  [v3 setObject:v4 forKeyedSubscript:@"major_version"];
+  [dictionary setObject:v4 forKeyedSubscript:@"major_version"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:0];
-  [v3 setObject:v5 forKeyedSubscript:@"minor_version"];
+  [dictionary setObject:v5 forKeyedSubscript:@"minor_version"];
 
-  [v3 setObject:self->_inputMode forKeyedSubscript:@"input_mode"];
+  [dictionary setObject:self->_inputMode forKeyedSubscript:@"input_mode"];
   if (self->_layouts)
   {
-    v6 = [(TTKFileSink *)self generateLayouts];
-    [v3 setObject:v6 forKeyedSubscript:@"layouts"];
+    generateLayouts = [(TTKFileSink *)self generateLayouts];
+    [dictionary setObject:generateLayouts forKeyedSubscript:@"layouts"];
   }
 
   if (self->_testCases)
   {
-    v7 = [(TTKFileSink *)self generateTestCases];
-    [v3 setObject:v7 forKeyedSubscript:@"test_cases"];
+    generateTestCases = [(TTKFileSink *)self generateTestCases];
+    [dictionary setObject:generateTestCases forKeyedSubscript:@"test_cases"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)generateTestCases
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -88,8 +88,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) toJsonDictionary];
-        [v3 addObject:v9];
+        toJsonDictionary = [*(*(&v11 + 1) + 8 * i) toJsonDictionary];
+        [array addObject:toJsonDictionary];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -98,13 +98,13 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)generateLayouts
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -125,8 +125,8 @@
         }
 
         v9 = [(NSDictionary *)self->_layouts objectForKey:*(*(&v12 + 1) + 8 * i), v12];
-        v10 = [v9 toJsonDictionary];
-        [v3 addObject:v10];
+        toJsonDictionary = [v9 toJsonDictionary];
+        [array addObject:toJsonDictionary];
       }
 
       v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -135,38 +135,38 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)addLayouts:(id)a3
+- (void)addLayouts:(id)layouts
 {
   v4 = MEMORY[0x277CBEB38];
   layouts = self->_layouts;
-  v6 = a3;
+  layoutsCopy = layouts;
   v7 = [v4 dictionaryWithDictionary:layouts];
-  [(NSDictionary *)v7 addEntriesFromDictionary:v6];
+  [(NSDictionary *)v7 addEntriesFromDictionary:layoutsCopy];
 
   v8 = self->_layouts;
   self->_layouts = v7;
 }
 
-- (id)init:(id)a3 inputMode:(id)a4 layouts:(id)a5
+- (id)init:(id)init inputMode:(id)mode layouts:(id)layouts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  initCopy = init;
+  modeCopy = mode;
+  layoutsCopy = layouts;
   v17.receiver = self;
   v17.super_class = TTKFileSink;
   v12 = [(TTKFileSink *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fileName, a3);
-    objc_storeStrong(&v13->_inputMode, a4);
-    objc_storeStrong(&v13->_layouts, a5);
-    v14 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v12->_fileName, init);
+    objc_storeStrong(&v13->_inputMode, mode);
+    objc_storeStrong(&v13->_layouts, layouts);
+    array = [MEMORY[0x277CBEB18] array];
     testCases = v13->_testCases;
-    v13->_testCases = v14;
+    v13->_testCases = array;
   }
 
   return v13;

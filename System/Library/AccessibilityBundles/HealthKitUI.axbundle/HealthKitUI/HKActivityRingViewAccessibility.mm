@@ -7,9 +7,9 @@
 - (id)accessibilityValue
 {
   v2 = [(HKActivityRingViewAccessibility *)self safeValueForKey:@"activitySummary"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

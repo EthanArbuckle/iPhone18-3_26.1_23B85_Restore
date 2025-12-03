@@ -1,16 +1,16 @@
 @interface PXStoryModel
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)thumbnailAutoplayTimeRange;
-- (BOOL)_isPlaceholderPresentInSegmentWithIdentifier:(int64_t)a3;
-- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)a3;
+- (BOOL)_isPlaceholderPresentInSegmentWithIdentifier:(int64_t)identifier;
+- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)reason;
 - (BOOL)currentChapterTitleIsVisible;
-- (BOOL)getMainVisibleClipIdentifier:(int64_t *)a3 assetReferece:(id *)a4;
+- (BOOL)getMainVisibleClipIdentifier:(int64_t *)identifier assetReferece:(id *)referece;
 - (BOOL)isFirstSegmentVisible;
 - (BOOL)isLastSegmentVisible;
 - (BOOL)rewindToBeginning;
 - (BOOL)rewindToBeginningOfCurrentSegment;
-- (BOOL)setCurrentSegmentIdentifier:(int64_t)a3 timeIntoSegment:(id *)a4 timeLeftInSegment:(id *)a5 changeSource:(unint64_t)a6;
-- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)a3;
-- (BOOL)skipToSegmentWithOffset:(int64_t)a3;
+- (BOOL)setCurrentSegmentIdentifier:(int64_t)identifier timeIntoSegment:(id *)segment timeLeftInSegment:(id *)inSegment changeSource:(unint64_t)source;
+- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)identifier;
+- (BOOL)skipToSegmentWithOffset:(int64_t)offset;
 - (CGPoint)currentGridScrollPosition;
 - (NSSet)changesOrigins;
 - (NSString)titleCategory;
@@ -21,13 +21,13 @@
 - (PXStoryChapter)currentChapter;
 - (PXStoryChapterCollectionManager)chapterCollectionManager;
 - (PXStoryModel)init;
-- (PXStoryModel)initWithConfiguration:(id)a3 extendedTraitCollection:(id)a4 loadingCoordinator:(id)a5 paperTrailOptions:(unint64_t)a6;
-- (PXStoryModel)initWithTimelineManager:(id)a3 layoutSpecManager:(id)a4 configuration:(id)a5;
+- (PXStoryModel)initWithConfiguration:(id)configuration extendedTraitCollection:(id)collection loadingCoordinator:(id)coordinator paperTrailOptions:(unint64_t)options;
+- (PXStoryModel)initWithTimelineManager:(id)manager layoutSpecManager:(id)specManager configuration:(id)configuration;
 - (PXStorySongResource)currentSongResource;
 - (id)_appleMusicCapabilitiesDebugInformation;
-- (id)_currentAssetCollectionDescriptionForHUDType:(int64_t)a3;
+- (id)_currentAssetCollectionDescriptionForHUDType:(int64_t)type;
 - (id)_musicCurationDebugInformation;
-- (id)assetReferenceForClipIdentifier:(int64_t)a3;
+- (id)assetReferenceForClipIdentifier:(int64_t)identifier;
 - (id)beginMusicDucking;
 - (id)currentGradeDescription;
 - (id)currentSongDescription;
@@ -36,16 +36,16 @@
 - (id)currentStyleDescription;
 - (id)currentTimeDescription;
 - (id)diagnosticDescriptionForAllHUDTypes;
-- (id)diagnosticHUDContentProviderForType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3;
+- (id)diagnosticHUDContentProviderForType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type;
 - (id)didStartPresentingAlert;
-- (id)photoKitAssetContainerWithAssetCollection:(id)a3;
+- (id)photoKitAssetContainerWithAssetCollection:(id)collection;
 - (id)requestImmediateNavigationPermission;
 - (void)_callCompletionHandlersPendingTimelineChange;
 - (void)_clearLastHitAssetClip;
-- (void)_completePersistenceRequestsWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_completePersistenceRequestsWithSuccess:(BOOL)success error:(id)error;
 - (void)_displayCollectionPersistenceConfirmationIfNeeded;
-- (void)_enumerateVisibleAssetVideoPresentationControllersUsingBlock:(id)a3;
+- (void)_enumerateVisibleAssetVideoPresentationControllersUsingBlock:(id)block;
 - (void)_invalidateCurrentAssetCollection;
 - (void)_invalidateCurrentStyleAndFocus;
 - (void)_invalidateLayoutSpec;
@@ -76,131 +76,131 @@
 - (void)_updateTimelineAttributes;
 - (void)_updateTimelineSpec;
 - (void)_updateWantsMusicDucked;
-- (void)addVideoPresentationController:(id)a3;
+- (void)addVideoPresentationController:(id)controller;
 - (void)beginEditing;
-- (void)changeOverallDuration:(int64_t)a3 completionHandler:(id)a4;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)changeOverallDuration:(int64_t)duration completionHandler:(id)handler;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)didEndChangeHandling;
-- (void)didEndPresentingAlertWithToken:(id)a3;
+- (void)didEndPresentingAlertWithToken:(id)token;
 - (void)didPerformChanges;
-- (void)endMusicDuckingWithToken:(id)a3;
-- (void)makeAssetKeyPhoto:(id)a3;
+- (void)endMusicDuckingWithToken:(id)token;
+- (void)makeAssetKeyPhoto:(id)photo;
 - (void)makeCurrentAssetKeyPhoto;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3 origin:(id)a4;
-- (void)performWithPrerequestedPersistencePermission:(id)a3 forUserActionKind:(int64_t)a4;
-- (void)performedUserActionKind:(int64_t)a3;
-- (void)prerequestPersistencePermission:(id)a3;
-- (void)reconfigureWithAssetCollection:(id)a3;
-- (void)removeAssetsFromCuration:(id)a3;
-- (void)removeVideoPresentationController:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes origin:(id)origin;
+- (void)performWithPrerequestedPersistencePermission:(id)permission forUserActionKind:(int64_t)kind;
+- (void)performedUserActionKind:(int64_t)kind;
+- (void)prerequestPersistencePermission:(id)permission;
+- (void)reconfigureWithAssetCollection:(id)collection;
+- (void)removeAssetsFromCuration:(id)curation;
+- (void)removeVideoPresentationController:(id)controller;
 - (void)reportNetworkRelatedPlaybackFailure;
-- (void)reportPersistenceFailureWithError:(id)a3;
-- (void)requestNavigationPermission:(id)a3;
-- (void)requestPersistencePermissionForUserActionKind:(int64_t)a3 withTimeout:(double)a4 completionHandler:(id)a5;
-- (void)scrollToPosition:(id *)a3;
-- (void)setActiveSongResource:(id)a3;
-- (void)setAllowsScrolling:(BOOL)a3;
-- (void)setChromeVisibilityFraction:(double)a3;
-- (void)setColorGradeKind:(int64_t)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setContentReadinessStatus:(int64_t)a3;
-- (void)setCurrentAssetCollection:(id)a3;
-- (void)setCurrentAssetCollectionIsFavorite:(BOOL)a3;
-- (void)setCurrentScrollPosition:(id *)a3;
-- (void)setCurrentStyle:(id)a3;
-- (void)setDesiredInfoPanelVisibilityFraction:(double)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setDetailsViewButtonDisplayStyle:(int64_t)a3;
-- (void)setDiagnosticHUDContentProvider:(id)a3 forType:(int64_t)a4;
-- (void)setDiagnosticHUDType:(int64_t)a3;
-- (void)setDidReachOutroOnce:(BOOL)a3;
-- (void)setEditorPreviewSong:(id)a3;
-- (void)setElapsedTime:(id *)a3;
-- (void)setInLiveResize:(BOOL)a3;
-- (void)setInfoPanelVisibilityFraction:(double)a3;
-- (void)setIsActuallyPlaying:(BOOL)a3;
-- (void)setIsAtPlaybackEnd:(BOOL)a3;
-- (void)setIsHUDVisible:(BOOL)a3;
-- (void)setIsHovering:(BOOL)a3;
-- (void)setIsPerformingViewControllerTransition:(BOOL)a3;
-- (void)setIsPresentingAnyAlert:(BOOL)a3;
-- (void)setIsPresentingAssetPicker:(BOOL)a3;
-- (void)setIsPresentingColorGradeEditor:(BOOL)a3;
-- (void)setIsPresentingMusicEditor:(BOOL)a3;
-- (void)setIsScrolling:(BOOL)a3;
-- (void)setIsTouching:(BOOL)a3;
-- (void)setLastHitAssetReference:(id)a3;
-- (void)setLastHitClipIdentifier:(int64_t)a3;
-- (void)setLastPlaybackTimeChangeSource:(unint64_t)a3;
-- (void)setLayoutSpec:(id)a3;
-- (void)setMusicReadinessStatus:(int64_t)a3;
-- (void)setNominalPlaybackTime:(id *)a3;
-- (void)setOutroDuration:(id *)a3;
-- (void)setOutroFractionCompleted:(double)a3;
-- (void)setPersistedAssetCollection:(id)a3;
-- (void)setPersistencePermission:(int64_t)a3;
-- (void)setPlaybackDuration:(id *)a3;
-- (void)setPlaybackFractionCompleted:(double)a3;
-- (void)setPlaybackMaxFractionCompleted:(double)a3;
-- (void)setPrefersExportLayoutMatchesPlayback:(BOOL)a3;
-- (void)setPresentedSubtitleFrame:(id)a3;
-- (void)setPresentedTitleFrame:(id)a3;
-- (void)setPressAnimationInfo:(id *)a3;
-- (void)setPreviousSegmentIdentifier:(int64_t)a3;
-- (void)setReadinessStatus:(int64_t)a3;
-- (void)setShouldAspectFitCurrentSegment:(BOOL)a3;
-- (void)setShouldAutoplayThumbnail:(BOOL)a3;
-- (void)setShouldPauseTransitions:(BOOL)a3;
-- (void)setStyleSwitcherVisibilityFraction:(double)a3;
-- (void)setThumbnailAutoplayTimeRange:(id *)a3;
-- (void)setThumbnailStyle:(int64_t)a3;
-- (void)setTimeline:(id)a3;
-- (void)setTimelineAttributes:(unint64_t)a3;
-- (void)setTimelineSpec:(id)a3;
-- (void)setTitleAlignment:(int64_t)a3;
-- (void)setTitleOpacity:(double)a3;
-- (void)setViewMode:(int64_t)a3;
-- (void)setViewModeTransition:(id)a3;
-- (void)setVisibleSegmentIdentifiers:(id)a3;
-- (void)setVolume:(double)a3;
-- (void)setVolumeDuringViewControllerTransition:(float)a3;
-- (void)setWantsMusicDucked:(BOOL)a3;
+- (void)reportPersistenceFailureWithError:(id)error;
+- (void)requestNavigationPermission:(id)permission;
+- (void)requestPersistencePermissionForUserActionKind:(int64_t)kind withTimeout:(double)timeout completionHandler:(id)handler;
+- (void)scrollToPosition:(id *)position;
+- (void)setActiveSongResource:(id)resource;
+- (void)setAllowsScrolling:(BOOL)scrolling;
+- (void)setChromeVisibilityFraction:(double)fraction;
+- (void)setColorGradeKind:(int64_t)kind;
+- (void)setConfiguration:(id)configuration;
+- (void)setContentReadinessStatus:(int64_t)status;
+- (void)setCurrentAssetCollection:(id)collection;
+- (void)setCurrentAssetCollectionIsFavorite:(BOOL)favorite;
+- (void)setCurrentScrollPosition:(id *)position;
+- (void)setCurrentStyle:(id)style;
+- (void)setDesiredInfoPanelVisibilityFraction:(double)fraction;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setDetailsViewButtonDisplayStyle:(int64_t)style;
+- (void)setDiagnosticHUDContentProvider:(id)provider forType:(int64_t)type;
+- (void)setDiagnosticHUDType:(int64_t)type;
+- (void)setDidReachOutroOnce:(BOOL)once;
+- (void)setEditorPreviewSong:(id)song;
+- (void)setElapsedTime:(id *)time;
+- (void)setInLiveResize:(BOOL)resize;
+- (void)setInfoPanelVisibilityFraction:(double)fraction;
+- (void)setIsActuallyPlaying:(BOOL)playing;
+- (void)setIsAtPlaybackEnd:(BOOL)end;
+- (void)setIsHUDVisible:(BOOL)visible;
+- (void)setIsHovering:(BOOL)hovering;
+- (void)setIsPerformingViewControllerTransition:(BOOL)transition;
+- (void)setIsPresentingAnyAlert:(BOOL)alert;
+- (void)setIsPresentingAssetPicker:(BOOL)picker;
+- (void)setIsPresentingColorGradeEditor:(BOOL)editor;
+- (void)setIsPresentingMusicEditor:(BOOL)editor;
+- (void)setIsScrolling:(BOOL)scrolling;
+- (void)setIsTouching:(BOOL)touching;
+- (void)setLastHitAssetReference:(id)reference;
+- (void)setLastHitClipIdentifier:(int64_t)identifier;
+- (void)setLastPlaybackTimeChangeSource:(unint64_t)source;
+- (void)setLayoutSpec:(id)spec;
+- (void)setMusicReadinessStatus:(int64_t)status;
+- (void)setNominalPlaybackTime:(id *)time;
+- (void)setOutroDuration:(id *)duration;
+- (void)setOutroFractionCompleted:(double)completed;
+- (void)setPersistedAssetCollection:(id)collection;
+- (void)setPersistencePermission:(int64_t)permission;
+- (void)setPlaybackDuration:(id *)duration;
+- (void)setPlaybackFractionCompleted:(double)completed;
+- (void)setPlaybackMaxFractionCompleted:(double)completed;
+- (void)setPrefersExportLayoutMatchesPlayback:(BOOL)playback;
+- (void)setPresentedSubtitleFrame:(id)frame;
+- (void)setPresentedTitleFrame:(id)frame;
+- (void)setPressAnimationInfo:(id *)info;
+- (void)setPreviousSegmentIdentifier:(int64_t)identifier;
+- (void)setReadinessStatus:(int64_t)status;
+- (void)setShouldAspectFitCurrentSegment:(BOOL)segment;
+- (void)setShouldAutoplayThumbnail:(BOOL)thumbnail;
+- (void)setShouldPauseTransitions:(BOOL)transitions;
+- (void)setStyleSwitcherVisibilityFraction:(double)fraction;
+- (void)setThumbnailAutoplayTimeRange:(id *)range;
+- (void)setThumbnailStyle:(int64_t)style;
+- (void)setTimeline:(id)timeline;
+- (void)setTimelineAttributes:(unint64_t)attributes;
+- (void)setTimelineSpec:(id)spec;
+- (void)setTitleAlignment:(int64_t)alignment;
+- (void)setTitleOpacity:(double)opacity;
+- (void)setViewMode:(int64_t)mode;
+- (void)setViewModeTransition:(id)transition;
+- (void)setVisibleSegmentIdentifiers:(id)identifiers;
+- (void)setVolume:(double)volume;
+- (void)setVolumeDuringViewControllerTransition:(float)transition;
+- (void)setWantsMusicDucked:(BOOL)ducked;
 @end
 
 @implementation PXStoryModel
 
 - (void)beginEditing
 {
-  v6 = self;
+  selfCopy = self;
   sub_1A524CC54();
   v4[2] = sub_1A4A19AA8;
   v4[3] = &v5;
-  v3 = self;
+  selfCopy2 = self;
   sub_1A3C67884(sub_1A4A19A78, v4);
 }
 
-- (void)setPersistedAssetCollection:(id)a3
+- (void)setPersistedAssetCollection:(id)collection
 {
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  collectionCopy = collection;
   sub_1A524CC54();
   v5[2] = sub_1A4A19AD8;
   v5[3] = &v6;
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy2 = self;
   sub_1A3C67884(sub_1A4A19A78, v5);
   swift_unknownObjectRelease();
 }
 
-- (void)performedUserActionKind:(int64_t)a3
+- (void)performedUserActionKind:(int64_t)kind
 {
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  kindCopy = kind;
   sub_1A524CC54();
   v5[2] = sub_1A4A19AC0;
   v5[3] = &v6;
-  v4 = self;
+  selfCopy2 = self;
   sub_1A3C67884(sub_1A4A19A78, v5);
 }
 
@@ -208,45 +208,45 @@
 {
   sub_1A524CC54();
   v6[2] = self;
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A4A188CC(sub_1A4A19A90, v6, "PhotosUICore/PXStoryModel.swift", 31);
 
   return v4;
 }
 
-- (void)requestNavigationPermission:(id)a3
+- (void)requestNavigationPermission:(id)permission
 {
   sub_1A3C565EC(0, &qword_1EB12B270, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v15 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(permission);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = sub_1A524CCB4();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   sub_1A524CC54();
-  v11 = self;
+  selfCopy = self;
 
   v12 = sub_1A524CC44();
   v13 = swift_allocObject();
   v14 = MEMORY[0x1E69E85E0];
   v13[2] = v12;
   v13[3] = v14;
-  v13[4] = v11;
+  v13[4] = selfCopy;
   v13[5] = sub_1A3E79128;
   v13[6] = v9;
   sub_1A3D4D930(0, 0, v7, &unk_1A537D828, v13);
 }
 
-- (id)photoKitAssetContainerWithAssetCollection:(id)a3
+- (id)photoKitAssetContainerWithAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXStoryModel *)self configuration];
-  v6 = [v5 originalContainer];
+  collectionCopy = collection;
+  configuration = [(PXStoryModel *)self configuration];
+  originalContainer = [configuration originalContainer];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = originalContainer;
   }
 
   else
@@ -254,21 +254,21 @@
     v7 = 0;
   }
 
-  v8 = [[PXStoryPhotoKitAssetContainer alloc] initWithAssetCollection:v4 originalContainer:v7];
+  v8 = [[PXStoryPhotoKitAssetContainer alloc] initWithAssetCollection:collectionCopy originalContainer:v7];
 
   return v8;
 }
 
-- (PXStoryModel)initWithConfiguration:(id)a3 extendedTraitCollection:(id)a4 loadingCoordinator:(id)a5 paperTrailOptions:(unint64_t)a6
+- (PXStoryModel)initWithConfiguration:(id)configuration extendedTraitCollection:(id)collection loadingCoordinator:(id)coordinator paperTrailOptions:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 timelineProducer];
-  v13 = v12;
-  if (v12)
+  configurationCopy = configuration;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  timelineProducer = [configurationCopy timelineProducer];
+  v13 = timelineProducer;
+  if (timelineProducer)
   {
-    v14 = v12;
+    v14 = timelineProducer;
   }
 
   else
@@ -278,27 +278,27 @@
 
   v15 = v14;
 
-  v16 = [[PXStoryRecipeManager alloc] initWithConfiguration:v9];
+  v16 = [[PXStoryRecipeManager alloc] initWithConfiguration:configurationCopy];
   v29 = [[PXStoryResourcesDataSourceManager alloc] initWithRecipeManager:v16];
   v17 = [PXStoryStyleManager alloc];
-  v18 = [v9 errorReporter];
-  v19 = [(PXStoryStyleManager *)v17 initWithRecipeManager:v16 errorReporter:v18];
+  errorReporter = [configurationCopy errorReporter];
+  v19 = [(PXStoryStyleManager *)v17 initWithRecipeManager:v16 errorReporter:errorReporter];
 
-  v20 = [[PXStoryTimelineSpecManager alloc] initWithExtendedTraitCollection:v10 configuration:v9];
-  v21 = [PXStoryTimelineManager timelineManagerWithTimelineProducer:v15 resourcesDataSourceManager:v29 styleManager:v19 specManager:v20 configuration:v9 loadingCoordinator:v11 paperTrailOptions:a6];
+  v20 = [[PXStoryTimelineSpecManager alloc] initWithExtendedTraitCollection:collectionCopy configuration:configurationCopy];
+  v21 = [PXStoryTimelineManager timelineManagerWithTimelineProducer:v15 resourcesDataSourceManager:v29 styleManager:v19 specManager:v20 configuration:configurationCopy loadingCoordinator:coordinatorCopy paperTrailOptions:options];
 
-  v22 = -[PXStoryLayoutSpecManager initWithExtendedTraitCollection:options:storyConfigurationOptions:]([PXStoryLayoutSpecManager alloc], "initWithExtendedTraitCollection:options:storyConfigurationOptions:", v10, 0, [v9 options]);
-  v23 = [(PXStoryModel *)self initWithTimelineManager:v21 layoutSpecManager:v22 configuration:v9];
+  v22 = -[PXStoryLayoutSpecManager initWithExtendedTraitCollection:options:storyConfigurationOptions:]([PXStoryLayoutSpecManager alloc], "initWithExtendedTraitCollection:options:storyConfigurationOptions:", collectionCopy, 0, [configurationCopy options]);
+  v23 = [(PXStoryModel *)self initWithTimelineManager:v21 layoutSpecManager:v22 configuration:configurationCopy];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitCollection_loadingCoordinator_paperTrailOptions___block_invoke;
   v31[3] = &unk_1E7732FE8;
   v32 = v16;
   v33 = v21;
-  v34 = v9;
-  v35 = v10;
-  v24 = v10;
-  v25 = v9;
+  v34 = configurationCopy;
+  v35 = collectionCopy;
+  v24 = collectionCopy;
+  v25 = configurationCopy;
   v26 = v21;
   v27 = v16;
   [(PXStoryModel *)v23 performChanges:v31];
@@ -342,12 +342,12 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
 - (id)currentSongPaceDescription
 {
-  v2 = [(PXStoryModel *)self currentSongResource];
-  v3 = [v2 px_storyResourceSongAsset];
+  currentSongResource = [(PXStoryModel *)self currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
 
-  if (v3)
+  if (px_storyResourceSongAsset)
   {
-    [v3 pace];
+    [px_storyResourceSongAsset pace];
     v4 = PFStoryRecipeSongPaceDescription();
   }
 
@@ -356,14 +356,14 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
     v4 = @"-";
   }
 
-  v5 = [v3 pace];
+  pace = [px_storyResourceSongAsset pace];
   v6 = v4;
   v7 = +[PXStorySettings sharedInstance];
-  v8 = [v7 autoEditSongPaceOverride];
+  autoEditSongPaceOverride = [v7 autoEditSongPaceOverride];
 
-  if (v8)
+  if (autoEditSongPaceOverride)
   {
-    v9 = v8 == v5;
+    v9 = autoEditSongPaceOverride == pace;
   }
 
   else
@@ -384,68 +384,68 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
 - (id)currentSongTagsDescription
 {
-  v2 = [(PXStoryModel *)self currentSongResource];
-  v3 = [v2 px_storyResourceSongAsset];
+  currentSongResource = [(PXStoryModel *)self currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
 
-  if (v3)
+  if (px_storyResourceSongAsset)
   {
-    v4 = [v3 assetTagsDescription];
+    assetTagsDescription = [px_storyResourceSongAsset assetTagsDescription];
   }
 
   else
   {
-    v4 = @"-";
+    assetTagsDescription = @"-";
   }
 
-  return v4;
+  return assetTagsDescription;
 }
 
 - (id)currentSongDescription
 {
-  v3 = [(PXStoryModel *)self currentSongResource];
-  v4 = [v3 px_storyResourceSongAsset];
+  currentSongResource = [(PXStoryModel *)self currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
 
-  if (v4)
+  if (px_storyResourceSongAsset)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [v4 title];
-    v7 = v6;
-    if (v6)
+    title = [px_storyResourceSongAsset title];
+    v7 = title;
+    if (title)
     {
       v8 = 0;
-      v9 = v6;
+      albumTitle = title;
     }
 
     else
     {
-      v11 = [v4 artistName];
-      v2 = v11;
-      if (v11)
+      artistName = [px_storyResourceSongAsset artistName];
+      v2 = artistName;
+      if (artistName)
       {
         v8 = 0;
-        v9 = v11;
+        albumTitle = artistName;
       }
 
       else
       {
-        v9 = [v4 albumTitle];
+        albumTitle = [px_storyResourceSongAsset albumTitle];
         v8 = 1;
       }
     }
 
-    v12 = [v4 catalog];
-    if (v12 > 4)
+    catalog = [px_storyResourceSongAsset catalog];
+    if (catalog > 4)
     {
       v13 = @"Mock";
     }
 
     else
     {
-      v13 = off_1E773ED58[v12];
+      v13 = off_1E773ED58[catalog];
     }
 
     v14 = v13;
-    v10 = [v5 initWithFormat:@"%@ (%@)", v9, v14];
+    v10 = [v5 initWithFormat:@"%@ (%@)", albumTitle, v14];
 
     if (v8)
     {
@@ -467,22 +467,22 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 - (id)currentGradeDescription
 {
   v3 = objc_opt_new();
-  v4 = [(PXStoryModel *)self currentStyle];
-  v5 = [v4 customColorGradeKind];
+  currentStyle = [(PXStoryModel *)self currentStyle];
+  customColorGradeKind = [currentStyle customColorGradeKind];
 
-  v6 = [(PXStoryModel *)self currentStyle];
-  v7 = [v6 originalColorGradeCategory];
+  currentStyle2 = [(PXStoryModel *)self currentStyle];
+  originalColorGradeCategory = [currentStyle2 originalColorGradeCategory];
 
-  v8 = [(PXStoryModel *)self currentAssetCollection];
+  currentAssetCollection = [(PXStoryModel *)self currentAssetCollection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(PXStoryModel *)self currentAssetCollection];
-    v11 = [v10 storyColorGradeKind];
+    currentAssetCollection2 = [(PXStoryModel *)self currentAssetCollection];
+    storyColorGradeKind = [currentAssetCollection2 storyColorGradeKind];
 
-    v12 = v11 == 0;
+    v12 = storyColorGradeKind == 0;
   }
 
   else
@@ -490,16 +490,16 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
     v12 = 1;
   }
 
-  v13 = [(PXStoryModel *)self colorGradingRepository];
-  v14 = [v13 colorGradeKindForColorGradeCategory:v7];
+  colorGradingRepository = [(PXStoryModel *)self colorGradingRepository];
+  v14 = [colorGradingRepository colorGradeKindForColorGradeCategory:originalColorGradeCategory];
   v15 = @"<curation> ";
   v16 = @"<custom> ";
-  if (v14 == v5)
+  if (v14 == customColorGradeKind)
   {
     v16 = @"<music> ";
   }
 
-  if (v5 == 1 && v12)
+  if (customColorGradeKind == 1 && v12)
   {
     v17 = @"<curation> ";
   }
@@ -509,17 +509,17 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
     v17 = v16;
   }
 
-  if (v5 == 1 && v12)
+  if (customColorGradeKind == 1 && v12)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = v5;
+    v18 = customColorGradeKind;
   }
 
-  if (v7)
+  if (originalColorGradeCategory)
   {
     v15 = v17;
     v19 = v18;
@@ -527,10 +527,10 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
   else
   {
-    v19 = v5;
+    v19 = customColorGradeKind;
   }
 
-  if (v5)
+  if (customColorGradeKind)
   {
     v20 = v15;
   }
@@ -540,7 +540,7 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
     v20 = @"<music> ";
   }
 
-  if (v5)
+  if (customColorGradeKind)
   {
     v21 = v19;
   }
@@ -551,7 +551,7 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
   }
 
   [v3 appendString:v20];
-  v22 = [v13 localizedTitleForColorGradeKind:v21];
+  v22 = [colorGradingRepository localizedTitleForColorGradeKind:v21];
   [v3 appendString:v22];
 
   return v3;
@@ -559,12 +559,12 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
 - (id)currentStyleDescription
 {
-  v2 = [(PXStoryModel *)self currentStyle];
-  v3 = [v2 originalColorGradeCategory];
-  v4 = v3;
-  if (v3)
+  currentStyle = [(PXStoryModel *)self currentStyle];
+  originalColorGradeCategory = [currentStyle originalColorGradeCategory];
+  v4 = originalColorGradeCategory;
+  if (originalColorGradeCategory)
   {
-    v5 = v3;
+    v5 = originalColorGradeCategory;
   }
 
   else
@@ -579,14 +579,14 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
 - (id)currentTimeDescription
 {
-  v3 = [(PXStoryModel *)self desiredPlayState];
+  desiredPlayState = [(PXStoryModel *)self desiredPlayState];
   v4 = @"▶︎";
-  if (v3 != 1)
+  if (desiredPlayState != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (desiredPlayState)
   {
     v5 = v4;
   }
@@ -605,17 +605,17 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
   return v9;
 }
 
-- (id)_currentAssetCollectionDescriptionForHUDType:(int64_t)a3
+- (id)_currentAssetCollectionDescriptionForHUDType:(int64_t)type
 {
-  v4 = [(PXStoryModel *)self currentAssetCollection];
-  if (v4)
+  currentAssetCollection = [(PXStoryModel *)self currentAssetCollection];
+  if (currentAssetCollection)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [v4 localizedTitle];
-    v7 = v6;
-    if (v6)
+    localizedTitle = [currentAssetCollection localizedTitle];
+    v7 = localizedTitle;
+    if (localizedTitle)
     {
-      v8 = v6;
+      v8 = localizedTitle;
     }
 
     else
@@ -623,11 +623,11 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
       v8 = &stru_1F1741150;
     }
 
-    v9 = [v4 localizedSubtitle];
-    v10 = v9;
-    if (v9)
+    localizedSubtitle = [currentAssetCollection localizedSubtitle];
+    v10 = localizedSubtitle;
+    if (localizedSubtitle)
     {
-      v11 = v9;
+      v11 = localizedSubtitle;
     }
 
     else
@@ -637,13 +637,13 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
     v12 = [v5 initWithFormat:@"%@ \n%@", v8, v11];
 
-    v13 = [off_1E77217B8 defaultHelper];
-    v14 = [v13 displayableTextForTitle:v12 intent:1];
+    defaultHelper = [off_1E77217B8 defaultHelper];
+    v14 = [defaultHelper displayableTextForTitle:v12 intent:1];
 
-    if (a3 == 14)
+    if (type == 14)
     {
-      v15 = [v4 uuid];
-      v16 = [(__CFString *)v14 stringByAppendingFormat:@"\n\tUUID: %@", v15];
+      uuid = [currentAssetCollection uuid];
+      v16 = [(__CFString *)v14 stringByAppendingFormat:@"\n\tUUID: %@", uuid];
 
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
@@ -652,9 +652,9 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v4;
-        v20 = [v19 photosGraphProperties];
-        v21 = [v20 objectForKeyedSubscript:@"info"];
+        v19 = currentAssetCollection;
+        photosGraphProperties = [v19 photosGraphProperties];
+        v21 = [photosGraphProperties objectForKeyedSubscript:@"info"];
         v22 = [v21 objectForKeyedSubscript:@"osInfo"];
 
         v23 = @"?";
@@ -689,8 +689,8 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
         v28 = [v26 stringByAppendingFormat:@"\n\tenriched: %@", v27];
 
-        v29 = [v19 storyTitleCategory];
-        v30 = [v28 stringByAppendingFormat:@"\n\tstoryTitleCategory: %@", v29];
+        storyTitleCategory = [v19 storyTitleCategory];
+        v30 = [v28 stringByAppendingFormat:@"\n\tstoryTitleCategory: %@", storyTitleCategory];
 
         [v19 storyColorGradeKind];
         v31 = PFStoryColorGradeKindToString();
@@ -707,85 +707,85 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
   return v14;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3
+- (id)diagnosticTextForHUDType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [(PXStoryModel *)self _currentAssetCollectionDescriptionForHUDType:a3];
+  v6 = [(PXStoryModel *)self _currentAssetCollectionDescriptionForHUDType:type];
   [v5 appendFormat:@" Asset Collection: %@\n", v6];
 
-  v7 = [(PXStoryModel *)self currentTimeDescription];
-  [v5 appendFormat:@"             Time: %@\n", v7];
+  currentTimeDescription = [(PXStoryModel *)self currentTimeDescription];
+  [v5 appendFormat:@"             Time: %@\n", currentTimeDescription];
 
-  v8 = [(PXStoryModel *)self currentStyleDescription];
-  [v5 appendFormat:@"            Style: %@\n", v8];
+  currentStyleDescription = [(PXStoryModel *)self currentStyleDescription];
+  [v5 appendFormat:@"            Style: %@\n", currentStyleDescription];
 
-  v9 = [(PXStoryModel *)self currentGradeDescription];
-  [v5 appendFormat:@"            Grade: %@\n", v9];
+  currentGradeDescription = [(PXStoryModel *)self currentGradeDescription];
+  [v5 appendFormat:@"            Grade: %@\n", currentGradeDescription];
 
-  v10 = [(PXStoryModel *)self currentSongDescription];
-  [v5 appendFormat:@"             Song: %@\n", v10];
+  currentSongDescription = [(PXStoryModel *)self currentSongDescription];
+  [v5 appendFormat:@"             Song: %@\n", currentSongDescription];
 
-  v11 = [(PXStoryModel *)self currentSongTagsDescription];
-  [v5 appendFormat:@"        Song Tags: %@\n", v11];
+  currentSongTagsDescription = [(PXStoryModel *)self currentSongTagsDescription];
+  [v5 appendFormat:@"        Song Tags: %@\n", currentSongTagsDescription];
 
-  v12 = [(PXStoryModel *)self currentSongPaceDescription];
-  [v5 appendFormat:@"        Song Pace: %@\n", v12];
+  currentSongPaceDescription = [(PXStoryModel *)self currentSongPaceDescription];
+  [v5 appendFormat:@"        Song Pace: %@\n", currentSongPaceDescription];
 
   [(PXStoryModel *)self outroDuration];
   time = v32;
   [v5 appendFormat:@"   Outro Duration: %.2fs\n", CMTimeGetSeconds(&time)];
-  if (a3 == 14)
+  if (type == 14)
   {
-    v13 = [(PXStoryModel *)self visibleSegmentIdentifiers];
-    v14 = [v13 px_shortDescription];
-    [v5 appendFormat:@" Visible Segments: %@\n", v14];
+    visibleSegmentIdentifiers = [(PXStoryModel *)self visibleSegmentIdentifiers];
+    px_shortDescription = [visibleSegmentIdentifiers px_shortDescription];
+    [v5 appendFormat:@" Visible Segments: %@\n", px_shortDescription];
 
-    v15 = [(PXStoryModel *)self allowsScrolling];
+    allowsScrolling = [(PXStoryModel *)self allowsScrolling];
     v16 = @"No";
-    if (v15)
+    if (allowsScrolling)
     {
       v16 = @"Yes";
     }
 
     [v5 appendFormat:@"Scrolling Allowed: %@\n", v16];
     [v5 appendString:@"\n"];
-    v17 = [(PXStoryModel *)self readinessStatus];
-    if (v17 > 3)
+    readinessStatus = [(PXStoryModel *)self readinessStatus];
+    if (readinessStatus > 3)
     {
       v18 = @"??";
     }
 
     else
     {
-      v18 = off_1E77402F0[v17];
+      v18 = off_1E77402F0[readinessStatus];
     }
 
     v19 = v18;
     [v5 appendFormat:@"   Overall Status: %@\n", v19];
 
-    v20 = [(PXStoryModel *)self musicReadinessStatus];
-    if (v20 > 3)
+    musicReadinessStatus = [(PXStoryModel *)self musicReadinessStatus];
+    if (musicReadinessStatus > 3)
     {
       v21 = @"??";
     }
 
     else
     {
-      v21 = off_1E77402F0[v20];
+      v21 = off_1E77402F0[musicReadinessStatus];
     }
 
     v22 = v21;
     [v5 appendFormat:@"     Music Status: %@\n", v22];
 
-    v23 = [(PXStoryModel *)self contentReadinessStatus];
-    if (v23 > 3)
+    contentReadinessStatus = [(PXStoryModel *)self contentReadinessStatus];
+    if (contentReadinessStatus > 3)
     {
       v24 = @"??";
     }
 
     else
     {
-      v24 = off_1E77402F0[v23];
+      v24 = off_1E77402F0[contentReadinessStatus];
     }
 
     v25 = v24;
@@ -795,8 +795,8 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
     v27 = v26;
     [(PXStoryModel *)self volumeDuringViewControllerTransition];
     [v5 appendFormat:@"          Volumes: %.2f %.2f\n", v27, v28];
-    v29 = [(PXStoryModel *)self timeline];
-    [v5 appendFormat:@"         Timeline: %@\n", v29];
+    timeline = [(PXStoryModel *)self timeline];
+    [v5 appendFormat:@"         Timeline: %@\n", timeline];
   }
 
   v30 = [v5 copy];
@@ -806,23 +806,23 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
 
 - (id)_musicCurationDebugInformation
 {
-  v3 = [(PXStoryModel *)self currentSongResource];
-  v4 = [v3 px_storyResourceSongAsset];
+  currentSongResource = [(PXStoryModel *)self currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
 
-  if (v4)
+  if (px_storyResourceSongAsset)
   {
-    v5 = [(PXStoryModel *)self currentAssetCollection];
+    currentAssetCollection = [(PXStoryModel *)self currentAssetCollection];
 
-    if (v5)
+    if (currentAssetCollection)
     {
-      v6 = [(PXStoryModel *)self currentAssetCollection];
+      currentAssetCollection2 = [(PXStoryModel *)self currentAssetCollection];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v8 = [(PXStoryModel *)self currentAssetCollection];
-        v9 = [(PXStoryModel *)self photoKitAssetContainerWithAssetCollection:v8];
+        currentAssetCollection3 = [(PXStoryModel *)self currentAssetCollection];
+        v9 = [(PXStoryModel *)self photoKitAssetContainerWithAssetCollection:currentAssetCollection3];
         v19 = 0;
         v20 = &v19;
         v21 = 0x3032000000;
@@ -838,7 +838,7 @@ void __114__PXStoryModel_Configuration__initWithConfiguration_extendedTraitColle
         v18 = &v19;
         v11 = v10;
         v17 = v11;
-        v12 = [PXMusicCurator requestDebugInformationForAudioAsset:v4 assetContainer:v9 resultHandler:v16];
+        v12 = [PXMusicCurator requestDebugInformationForAudioAsset:px_storyResourceSongAsset assetContainer:v9 resultHandler:v16];
         v13 = dispatch_time(0, 10000000000);
         if (dispatch_group_wait(v11, v13))
         {
@@ -900,11 +900,11 @@ void __46__PXStoryModel__musicCurationDebugInformation__block_invoke(uint64_t a1
 {
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(PXStoryModel *)self configuration];
-  v5 = [v4 appleMusicStatusProvider];
+  configuration = [(PXStoryModel *)self configuration];
+  appleMusicStatusProvider = [configuration appleMusicStatusProvider];
 
-  v6 = [v5 statusForCapability:1];
-  v7 = [v5 error];
+  v6 = [appleMusicStatusProvider statusForCapability:1];
+  error = [appleMusicStatusProvider error];
   if ((v6 - 1) > 2)
   {
     v8 = @"Unknown";
@@ -917,9 +917,9 @@ void __46__PXStoryModel__musicCurationDebugInformation__block_invoke(uint64_t a1
 
   v9 = v8;
   v10 = v9;
-  if (!v6 && v7)
+  if (!v6 && error)
   {
-    v11 = [(__CFString *)v9 stringByAppendingFormat:@" (Error: %@)", v7];
+    v11 = [(__CFString *)v9 stringByAppendingFormat:@" (Error: %@)", error];
 
     v10 = v11;
   }
@@ -927,38 +927,38 @@ void __46__PXStoryModel__musicCurationDebugInformation__block_invoke(uint64_t a1
   return v10;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v11 = [(PXStoryModel *)self timeline];
-  v5 = [v11 diagnosticDescription];
-  [v4 addAttachmentWithText:v5 name:@"Timeline"];
+  containerCopy = container;
+  timeline = [(PXStoryModel *)self timeline];
+  diagnosticDescription = [timeline diagnosticDescription];
+  [containerCopy addAttachmentWithText:diagnosticDescription name:@"Timeline"];
 
-  v6 = [v11 objectiveCCode];
-  [v4 addAttachmentWithObjectiveCCode:v6 name:@"Timeline"];
+  objectiveCCode = [timeline objectiveCCode];
+  [containerCopy addAttachmentWithObjectiveCCode:objectiveCCode name:@"Timeline"];
 
-  v7 = [(PXStoryModel *)self _appleMusicCapabilitiesDebugInformation];
-  [v4 addAttachmentWithText:v7 name:@"AppleMusicCapabilities"];
+  _appleMusicCapabilitiesDebugInformation = [(PXStoryModel *)self _appleMusicCapabilitiesDebugInformation];
+  [containerCopy addAttachmentWithText:_appleMusicCapabilitiesDebugInformation name:@"AppleMusicCapabilities"];
 
-  v8 = [(PXStoryModel *)self _musicCurationDebugInformation];
-  [v4 addAttachmentWithText:v8 name:@"MusicCurationDebugInformation"];
+  _musicCurationDebugInformation = [(PXStoryModel *)self _musicCurationDebugInformation];
+  [containerCopy addAttachmentWithText:_musicCurationDebugInformation name:@"MusicCurationDebugInformation"];
 
-  v9 = [(PXStoryModel *)self styleManager];
-  [v4 addSubprovider:v9];
+  styleManager = [(PXStoryModel *)self styleManager];
+  [containerCopy addSubprovider:styleManager];
 
-  v10 = [(PXStoryModel *)self timelineManager];
-  [v4 addSubprovider:v10];
+  timelineManager = [(PXStoryModel *)self timelineManager];
+  [containerCopy addSubprovider:timelineManager];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__PXStoryModel_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E773BD38;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryModel *)self performChanges:v5];
 }
@@ -1057,8 +1057,8 @@ LABEL_22:
 
 - (void)_updatePressAnimationInfo
 {
-  v14 = [(PXStoryModel *)self pressedFractionAnimator];
-  [v14 presentationValue];
+  pressedFractionAnimator = [(PXStoryModel *)self pressedFractionAnimator];
+  [pressedFractionAnimator presentationValue];
   v4 = v3;
   [(PXStoryModel *)self pressAnimationInfo];
   if (v4 == 0.0)
@@ -1073,21 +1073,21 @@ LABEL_22:
     v8 = v6;
     if (v5 == *MEMORY[0x1E695F060] && v6 == *(MEMORY[0x1E695F060] + 8))
     {
-      v10 = [(PXStoryModel *)self timeline];
-      [v10 size];
+      timeline = [(PXStoryModel *)self timeline];
+      [timeline size];
       v7 = v11;
       v8 = v12;
     }
   }
 
-  [v14 approximateVelocity];
+  [pressedFractionAnimator approximateVelocity];
   [(PXStoryModel *)self setPressAnimationInfo:v4, v13, v7, v8];
 }
 
 - (void)_invalidatePressAnimationInfo
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePressAnimationInfo];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePressAnimationInfo];
 }
 
 - (void)_updatePressedFractionAnimator
@@ -1095,8 +1095,8 @@ LABEL_22:
   v3 = 0.0;
   if ([(PXStoryModel *)self isTouching]&& [(PXStoryModel *)self viewMode]== 3)
   {
-    v4 = [(PXStoryModel *)self layoutSpec];
-    if ([v4 canScaleWhenPressed])
+    layoutSpec = [(PXStoryModel *)self layoutSpec];
+    if ([layoutSpec canScaleWhenPressed])
     {
       v3 = 1.0;
     }
@@ -1107,43 +1107,43 @@ LABEL_22:
     }
   }
 
-  v5 = [(PXStoryModel *)self pressedFractionAnimator];
-  [v5 value];
+  pressedFractionAnimator = [(PXStoryModel *)self pressedFractionAnimator];
+  [pressedFractionAnimator value];
   v7 = v6;
 
   if (v7 != v3)
   {
-    v8 = [(PXStoryModel *)self pressedFractionAnimator];
+    pressedFractionAnimator2 = [(PXStoryModel *)self pressedFractionAnimator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __46__PXStoryModel__updatePressedFractionAnimator__block_invoke;
     v9[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     *&v9[4] = v3;
-    [v8 performChangesUsingDefaultSpringAnimationWithInitialVelocity:v9 changes:0.0];
+    [pressedFractionAnimator2 performChangesUsingDefaultSpringAnimationWithInitialVelocity:v9 changes:0.0];
   }
 }
 
 - (void)_invalidatePressedFractionAnimator
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePressedFractionAnimator];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePressedFractionAnimator];
 }
 
 - (void)_updateOutroFractionCompleted
 {
-  v3 = [(PXStoryModel *)self viewMode];
+  viewMode = [(PXStoryModel *)self viewMode];
   v4 = 0.0;
-  if (v3 != 4)
+  if (viewMode != 4)
   {
     [(PXStoryModel *)self nominalPlaybackTime];
     memset(v13, 0, sizeof(v13));
     [(PXStoryModel *)self outroDuration];
     memset(&v12, 0, sizeof(v12));
-    v5 = [(PXStoryModel *)self timeline];
-    v6 = v5;
-    if (v5)
+    timeline = [(PXStoryModel *)self timeline];
+    v6 = timeline;
+    if (timeline)
     {
-      [v5 timeRange];
+      [timeline timeRange];
     }
 
     else
@@ -1181,19 +1181,19 @@ LABEL_22:
 
 - (void)_invalidateOutroFractionCompleted
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOutroFractionCompleted];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOutroFractionCompleted];
 }
 
 - (void)_updateOutroDuration
 {
   memset(&v11, 0, sizeof(v11));
-  v3 = [(PXStoryModel *)self styleManager];
-  v4 = [v3 currentStyle];
-  v5 = v4;
-  if (v4)
+  styleManager = [(PXStoryModel *)self styleManager];
+  currentStyle = [styleManager currentStyle];
+  v5 = currentStyle;
+  if (currentStyle)
   {
-    [v4 outroDuration];
+    [currentStyle outroDuration];
   }
 
   else
@@ -1206,13 +1206,13 @@ LABEL_22:
     PXAssertGetLog();
   }
 
-  v6 = [(PXStoryModel *)self timeline];
-  if ([v6 numberOfSegments] >= 1)
+  timeline = [(PXStoryModel *)self timeline];
+  if ([timeline numberOfSegments] >= 1)
   {
-    v7 = [v6 identifierForSegmentAtIndex:{objc_msgSend(v6, "numberOfSegments") - 1}];
-    if (v6)
+    v7 = [timeline identifierForSegmentAtIndex:{objc_msgSend(timeline, "numberOfSegments") - 1}];
+    if (timeline)
     {
-      [v6 timeRangeForSegmentWithIdentifier:v7];
+      [timeline timeRangeForSegmentWithIdentifier:v7];
     }
 
     else
@@ -1233,8 +1233,8 @@ LABEL_22:
 
 - (void)_invalidateOutroDuration
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOutroDuration];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOutroDuration];
 }
 
 - (void)_updateWantsMusicDucked
@@ -1246,14 +1246,14 @@ LABEL_22:
 
 - (void)_invalidateWantsMusicDucked
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsMusicDucked];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsMusicDucked];
 }
 
 - (void)_updatePersistencePermission
 {
-  v3 = [(PXStoryModel *)self configuration];
-  v4 = [PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:v3];
+  configuration = [(PXStoryModel *)self configuration];
+  v4 = [PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:configuration];
 
   if (v4)
   {
@@ -1264,13 +1264,13 @@ LABEL_22:
   else
   {
     v5 = [(NSMutableArray *)self->_persistenceRequests count];
-    v6 = [(PXStoryModel *)self persistencePermission];
-    if (v6 == 1)
+    persistencePermission = [(PXStoryModel *)self persistencePermission];
+    if (persistencePermission == 1)
     {
       PXAssertGetLog();
     }
 
-    if (v6)
+    if (persistencePermission)
     {
       v5 = 0;
     }
@@ -1287,8 +1287,8 @@ LABEL_22:
 
 - (void)_invalidatePersistencePermission
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistencePermission];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistencePermission];
 }
 
 - (void)_updateShouldAspectFitCurrentSegment
@@ -1302,58 +1302,58 @@ LABEL_22:
 
 - (void)_invalidateShouldAspectFitCurrentSegment
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldAspectFitCurrentSegment];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldAspectFitCurrentSegment];
 }
 
 - (void)_updateLayoutSpec
 {
-  v4 = [(PXStoryModel *)self layoutSpecManager];
-  v3 = [v4 layoutSpec];
-  [(PXStoryModel *)self setLayoutSpec:v3];
+  layoutSpecManager = [(PXStoryModel *)self layoutSpecManager];
+  layoutSpec = [layoutSpecManager layoutSpec];
+  [(PXStoryModel *)self setLayoutSpec:layoutSpec];
 }
 
 - (void)_invalidateLayoutSpec
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLayoutSpec];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLayoutSpec];
 }
 
 - (void)_updateCurrentStyle
 {
-  v4 = [(PXStoryModel *)self styleManager];
-  v3 = [v4 currentStyle];
-  [(PXStoryModel *)self setCurrentStyle:v3];
+  styleManager = [(PXStoryModel *)self styleManager];
+  currentStyle = [styleManager currentStyle];
+  [(PXStoryModel *)self setCurrentStyle:currentStyle];
 }
 
 - (void)_invalidateCurrentStyleAndFocus
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentStyle];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentStyle];
 }
 
 - (void)_updateCurrentAssetCollection
 {
-  v5 = [(PXStoryModel *)self resourcesDataSourceManager];
-  v3 = [v5 dataSource];
-  v4 = [v3 assetCollection];
-  [(PXStoryModel *)self setCurrentAssetCollection:v4];
+  resourcesDataSourceManager = [(PXStoryModel *)self resourcesDataSourceManager];
+  dataSource = [resourcesDataSourceManager dataSource];
+  assetCollection = [dataSource assetCollection];
+  [(PXStoryModel *)self setCurrentAssetCollection:assetCollection];
 }
 
 - (void)_invalidateCurrentAssetCollection
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentAssetCollection];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentAssetCollection];
 }
 
 - (void)_updatePlaybackFractionCompleted
 {
   memset(&v9, 0, sizeof(v9));
-  v3 = [(PXStoryModel *)self timeline];
-  v4 = v3;
-  if (v3)
+  timeline = [(PXStoryModel *)self timeline];
+  v4 = timeline;
+  if (timeline)
   {
-    [v3 timeRange];
+    [timeline timeRange];
   }
 
   else
@@ -1385,8 +1385,8 @@ LABEL_22:
 
 - (void)_invalidatePlaybackFractionCompleted
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlaybackFractionCompleted];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlaybackFractionCompleted];
 }
 
 - (void)_updateNominalPlaybackTime
@@ -1394,17 +1394,17 @@ LABEL_22:
   v17 = *MEMORY[0x1E69E9840];
   value = 0;
   timescale = 0;
-  v3 = [(PXStoryModel *)self currentSegmentIdentifier];
-  if (v3)
+  currentSegmentIdentifier = [(PXStoryModel *)self currentSegmentIdentifier];
+  if (currentSegmentIdentifier)
   {
-    v4 = v3;
+    v4 = currentSegmentIdentifier;
     memset(v12, 0, sizeof(v12));
     v11 = 0u;
-    v5 = [(PXStoryModel *)self timeline];
-    v6 = v5;
-    if (v5)
+    timeline = [(PXStoryModel *)self timeline];
+    v6 = timeline;
+    if (timeline)
     {
-      [v5 timeRangeForSegmentWithIdentifier:v4];
+      [timeline timeRangeForSegmentWithIdentifier:v4];
     }
 
     else
@@ -1458,50 +1458,50 @@ LABEL_22:
 
 - (void)_invalidateNominalPlaybackTime
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateNominalPlaybackTime];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateNominalPlaybackTime];
 }
 
 - (void)_updateTimelineSpec
 {
-  v5 = [(PXStoryModel *)self timelineManager];
-  v3 = [v5 specManager];
-  v4 = [v3 spec];
-  [(PXStoryModel *)self setTimelineSpec:v4];
+  timelineManager = [(PXStoryModel *)self timelineManager];
+  specManager = [timelineManager specManager];
+  spec = [specManager spec];
+  [(PXStoryModel *)self setTimelineSpec:spec];
 }
 
 - (void)_invalidateTimelineSpec
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimelineSpec];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimelineSpec];
 }
 
 - (void)_updateTimelineAttributes
 {
-  v3 = [(PXStoryModel *)self timelineManager];
-  -[PXStoryModel setTimelineAttributes:](self, "setTimelineAttributes:", [v3 timelineAttributes]);
+  timelineManager = [(PXStoryModel *)self timelineManager];
+  -[PXStoryModel setTimelineAttributes:](self, "setTimelineAttributes:", [timelineManager timelineAttributes]);
 }
 
 - (void)_invalidateTimelineAttributes
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimelineAttributes];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimelineAttributes];
 }
 
 - (void)_updateTimeline
 {
-  v4 = [(PXStoryModel *)self timelineManager];
-  v3 = [v4 timeline];
-  [(PXStoryModel *)self setTimeline:v3];
+  timelineManager = [(PXStoryModel *)self timelineManager];
+  timeline = [timelineManager timeline];
+  [(PXStoryModel *)self setTimeline:timeline];
 }
 
 - (void)_invalidateTimeline
 {
-  v2 = [(PXStoryModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimeline];
+  updater = [(PXStoryModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimeline];
 }
 
-- (void)setPressAnimationInfo:(id *)a3
+- (void)setPressAnimationInfo:(id *)info
 {
   v7 = v3 == self->_pressAnimationInfo.pressedFraction && v4 == self->_pressAnimationInfo.pressedFractionVelocity;
   if (!v7 || (v5 == self->_pressAnimationInfo.timelineSizeBeforePressing.width ? (v8 = v6 == self->_pressAnimationInfo.timelineSizeBeforePressing.height) : (v8 = 0), !v8))
@@ -1514,25 +1514,25 @@ LABEL_22:
   }
 }
 
-- (void)_enumerateVisibleAssetVideoPresentationControllersUsingBlock:(id)a3
+- (void)_enumerateVisibleAssetVideoPresentationControllersUsingBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryModel *)self visibleDisplayAssets];
+  blockCopy = block;
+  visibleDisplayAssets = [(PXStoryModel *)self visibleDisplayAssets];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ([v5 count] >= 1)
+  if ([visibleDisplayAssets count] >= 1)
   {
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:v7];
-      v9 = [v8 uuid];
-      [v6 addObject:v9];
+      v8 = [visibleDisplayAssets objectAtIndexedSubscript:v7];
+      uuid = [v8 uuid];
+      [v6 addObject:uuid];
 
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [visibleDisplayAssets count]);
   }
 
   v22 = 0u;
@@ -1555,14 +1555,14 @@ LABEL_6:
       }
 
       v14 = *(*(&v20 + 1) + 8 * v13);
-      v15 = [v14 displayAsset];
-      v16 = [v15 uuid];
-      v17 = [v6 containsObject:v16];
+      displayAsset = [v14 displayAsset];
+      uuid2 = [displayAsset uuid];
+      v17 = [v6 containsObject:uuid2];
 
       if (v17)
       {
         v19 = 0;
-        v4[2](v4, v14, &v19);
+        blockCopy[2](blockCopy, v14, &v19);
         if (v19)
         {
           break;
@@ -1583,26 +1583,26 @@ LABEL_6:
   }
 }
 
-- (void)removeVideoPresentationController:(id)a3
+- (void)removeVideoPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXStoryModel *)self videoPresentationControllers];
-  [v5 removeObject:v4];
+  controllerCopy = controller;
+  videoPresentationControllers = [(PXStoryModel *)self videoPresentationControllers];
+  [videoPresentationControllers removeObject:controllerCopy];
 }
 
-- (void)addVideoPresentationController:(id)a3
+- (void)addVideoPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXStoryModel *)self videoPresentationControllers];
-  [v5 addObject:v4];
+  controllerCopy = controller;
+  videoPresentationControllers = [(PXStoryModel *)self videoPresentationControllers];
+  [videoPresentationControllers addObject:controllerCopy];
 }
 
-- (void)setInfoPanelVisibilityFraction:(double)a3
+- (void)setInfoPanelVisibilityFraction:(double)fraction
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_infoPanelVisibilityFraction != a3)
+  if (self->_infoPanelVisibilityFraction != fraction)
   {
-    self->_infoPanelVisibilityFraction = a3;
+    self->_infoPanelVisibilityFraction = fraction;
     [(PXStoryModel *)self signalChange:0x800000000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -1612,7 +1612,7 @@ LABEL_6:
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedInfoPanelVisibilityFraction", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -1624,11 +1624,11 @@ LABEL_6:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 2048;
-        v19 = a3;
+        fractionCopy2 = fraction;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedInfoPanelVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %0.1f", &v16, 0x16u);
       }
     }
@@ -1640,62 +1640,62 @@ LABEL_6:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 2048;
-        v19 = a3;
+        fractionCopy2 = fraction;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedInfoPanelVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %0.1f", &v16, 0x16u);
       }
     }
   }
 }
 
-- (void)setDesiredInfoPanelVisibilityFraction:(double)a3
+- (void)setDesiredInfoPanelVisibilityFraction:(double)fraction
 {
-  if (self->_desiredInfoPanelVisibilityFraction != a3)
+  if (self->_desiredInfoPanelVisibilityFraction != fraction)
   {
-    self->_desiredInfoPanelVisibilityFraction = a3;
+    self->_desiredInfoPanelVisibilityFraction = fraction;
     [(PXStoryModel *)self signalChange:0x400000000000000];
   }
 }
 
-- (void)setVolumeDuringViewControllerTransition:(float)a3
+- (void)setVolumeDuringViewControllerTransition:(float)transition
 {
-  if (self->_volumeDuringViewControllerTransition != a3)
+  if (self->_volumeDuringViewControllerTransition != transition)
   {
-    self->_volumeDuringViewControllerTransition = a3;
+    self->_volumeDuringViewControllerTransition = transition;
     [(PXStoryModel *)self signalChange:0x200000000000000];
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     [(PXStoryModel *)self signalChange:0x200000000000000];
   }
 }
 
-- (void)setPreviousSegmentIdentifier:(int64_t)a3
+- (void)setPreviousSegmentIdentifier:(int64_t)identifier
 {
-  if (self->_previousSegmentIdentifier != a3)
+  if (self->_previousSegmentIdentifier != identifier)
   {
-    self->_previousSegmentIdentifier = a3;
+    self->_previousSegmentIdentifier = identifier;
     [(PXStoryModel *)self signalChange:0x100000000000000];
   }
 }
 
-- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)a3
+- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)reason
 {
   if ([(PXStoryModel *)self isPresentingAssetPicker])
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isPresentingAssetPicker";
 LABEL_13:
-      *a3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
+      *reason = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
       goto LABEL_14;
     }
 
@@ -1704,20 +1704,20 @@ LABEL_13:
 
   if ([(PXStoryModel *)self isPresentingMusicEditor])
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isPresentingMusicEditor";
       goto LABEL_13;
     }
 
 LABEL_14:
-    LOBYTE(v6) = 1;
-    return v6;
+    LOBYTE(isPresentingAnyAlert) = 1;
+    return isPresentingAnyAlert;
   }
 
   if ([(PXStoryModel *)self isPresentingColorGradeEditor])
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isPresentingColorGradeEditor";
       goto LABEL_13;
@@ -1726,10 +1726,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v6 = [(PXStoryModel *)self isPresentingAnyAlert];
-  if (v6)
+  isPresentingAnyAlert = [(PXStoryModel *)self isPresentingAnyAlert];
+  if (isPresentingAnyAlert)
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isPresentingAnyAlert";
       goto LABEL_13;
@@ -1738,18 +1738,18 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  return v6;
+  return isPresentingAnyAlert;
 }
 
-- (void)setOutroDuration:(id *)a3
+- (void)setOutroDuration:(id *)duration
 {
   p_outroDuration = &self->_outroDuration;
-  time1 = *a3;
+  time1 = *duration;
   outroDuration = self->_outroDuration;
   if (CMTimeCompare(&time1, &outroDuration))
   {
-    v6 = *&a3->var0;
-    p_outroDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_outroDuration->epoch = duration->var3;
     *&p_outroDuration->value = v6;
     [(PXStoryModel *)self _invalidateOutroFractionCompleted];
   }
@@ -1789,41 +1789,41 @@ LABEL_14:
   return v10;
 }
 
-- (void)endMusicDuckingWithToken:(id)a3
+- (void)endMusicDuckingWithToken:(id)token
 {
-  [(NSMutableSet *)self->_musicDuckingTokens removeObject:a3];
+  [(NSMutableSet *)self->_musicDuckingTokens removeObject:token];
 
   [(PXStoryModel *)self _invalidateWantsMusicDucked];
 }
 
 - (id)beginMusicDucking
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(NSMutableSet *)self->_musicDuckingTokens addObject:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(NSMutableSet *)self->_musicDuckingTokens addObject:uUID];
   [(PXStoryModel *)self _invalidateWantsMusicDucked];
 
-  return v3;
+  return uUID;
 }
 
-- (void)setWantsMusicDucked:(BOOL)a3
+- (void)setWantsMusicDucked:(BOOL)ducked
 {
-  if (self->_wantsMusicDucked != a3)
+  if (self->_wantsMusicDucked != ducked)
   {
-    self->_wantsMusicDucked = a3;
+    self->_wantsMusicDucked = ducked;
     [(PXStoryModel *)self signalChange:256];
   }
 }
 
-- (void)removeAssetsFromCuration:(id)a3
+- (void)removeAssetsFromCuration:(id)curation
 {
-  v4 = a3;
+  curationCopy = curation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__PXStoryModel_removeAssetsFromCuration___block_invoke;
   v6[3] = &unk_1E774B730;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = curationCopy;
+  v5 = curationCopy;
   [(PXStoryModel *)self requestPersistencePermissionForUserActionKind:2 completionHandler:v6];
 }
 
@@ -1850,16 +1850,16 @@ void __41__PXStoryModel_removeAssetsFromCuration___block_invoke(uint64_t a1, cha
   }
 }
 
-- (void)makeAssetKeyPhoto:(id)a3
+- (void)makeAssetKeyPhoto:(id)photo
 {
-  v4 = a3;
+  photoCopy = photo;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__PXStoryModel_makeAssetKeyPhoto___block_invoke;
   v6[3] = &unk_1E774B730;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = photoCopy;
+  v5 = photoCopy;
   [(PXStoryModel *)self requestPersistencePermissionForUserActionKind:2 completionHandler:v6];
 }
 
@@ -1889,11 +1889,11 @@ void __34__PXStoryModel_makeAssetKeyPhoto___block_invoke(uint64_t a1, char a2, v
 - (void)makeCurrentAssetKeyPhoto
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryModel *)self visibleDisplayAssets];
-  if ([v3 count] == 1)
+  visibleDisplayAssets = [(PXStoryModel *)self visibleDisplayAssets];
+  if ([visibleDisplayAssets count] == 1)
   {
-    v4 = [v3 firstObject];
-    [(PXStoryModel *)self makeAssetKeyPhoto:v4];
+    firstObject = [visibleDisplayAssets firstObject];
+    [(PXStoryModel *)self makeAssetKeyPhoto:firstObject];
   }
 
   else
@@ -1902,24 +1902,24 @@ void __34__PXStoryModel_makeAssetKeyPhoto___block_invoke(uint64_t a1, char a2, v
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 134217984;
-      v7 = [v3 count];
+      v7 = [visibleDisplayAssets count];
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Can't set key asset when visibleDisplayAssets count = %ld", &v6, 0xCu);
     }
   }
 }
 
-- (void)changeOverallDuration:(int64_t)a3 completionHandler:(id)a4
+- (void)changeOverallDuration:(int64_t)duration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
+  handlerCopy = handler;
+  overallDurationChangeCompletionHandler = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
 
-  if (v7)
+  if (overallDurationChangeCompletionHandler)
   {
-    v8 = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
-    v8[2](v8, 0);
+    overallDurationChangeCompletionHandler2 = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
+    overallDurationChangeCompletionHandler2[2](overallDurationChangeCompletionHandler2, 0);
   }
 
-  [(PXStoryModel *)self setOverallDurationChangeCompletionHandler:v6];
+  [(PXStoryModel *)self setOverallDurationChangeCompletionHandler:handlerCopy];
   v9 = *(MEMORY[0x1E69C0DB0] + 48);
   v14 = *(MEMORY[0x1E69C0DB0] + 32);
   v15 = v9;
@@ -1933,7 +1933,7 @@ void __34__PXStoryModel_makeAssetKeyPhoto___block_invoke(uint64_t a1, char a2, v
   v11[2] = __56__PXStoryModel_changeOverallDuration_completionHandler___block_invoke;
   v11[3] = &unk_1E773B210;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = duration;
   [(PXStoryModel *)self requestPersistencePermissionForUserActionKind:2 completionHandler:v11];
 }
 
@@ -1978,20 +1978,20 @@ uint64_t __56__PXStoryModel_changeOverallDuration_completionHandler___block_invo
   return [a2 applyTargetOverallDurationInfo:v5];
 }
 
-- (void)_completePersistenceRequestsWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_completePersistenceRequestsWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
     v7 = PLStoryGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v16 = v4;
+      v16 = successCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Error requesting persistence success:%d error:%@", buf, 0x12u);
     }
   }
@@ -2000,16 +2000,16 @@ uint64_t __56__PXStoryModel_changeOverallDuration_completionHandler___block_invo
   {
     v8 = [(NSMutableArray *)self->_persistenceRequests copy];
     [(NSMutableArray *)self->_persistenceRequests removeAllObjects];
-    v9 = [(PXStoryModel *)self storyQueue];
+    storyQueue = [(PXStoryModel *)self storyQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__PXStoryModel__completePersistenceRequestsWithSuccess_error___block_invoke;
     block[3] = &unk_1E774B368;
     v12 = v8;
-    v14 = v4;
-    v13 = v6;
+    v14 = successCopy;
+    v13 = errorCopy;
     v10 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(storyQueue, block);
   }
 }
 
@@ -2048,9 +2048,9 @@ void __62__PXStoryModel__completePersistenceRequestsWithSuccess_error___block_in
   }
 }
 
-- (void)performWithPrerequestedPersistencePermission:(id)a3 forUserActionKind:(int64_t)a4
+- (void)performWithPrerequestedPersistencePermission:(id)permission forUserActionKind:(int64_t)kind
 {
-  v6 = a3;
+  permissionCopy = permission;
   if (![(PXStoryModel *)self didPrerequestPersistencePermission])
   {
     PXAssertGetLog();
@@ -2061,9 +2061,9 @@ void __62__PXStoryModel__completePersistenceRequestsWithSuccess_error___block_in
   v7[1] = 3221225472;
   v7[2] = __79__PXStoryModel_performWithPrerequestedPersistencePermission_forUserActionKind___block_invoke;
   v7[3] = &unk_1E77472D0;
-  v8 = v6;
+  v8 = permissionCopy;
   objc_copyWeak(&v9, location);
-  [(PXStoryModel *)self requestPersistencePermissionForUserActionKind:a4 completionHandler:v7];
+  [(PXStoryModel *)self requestPersistencePermissionForUserActionKind:kind completionHandler:v7];
   objc_destroyWeak(&v9);
 
   objc_destroyWeak(location);
@@ -2095,36 +2095,36 @@ void __79__PXStoryModel_performWithPrerequestedPersistencePermission_forUserActi
   }
 }
 
-- (void)prerequestPersistencePermission:(id)a3
+- (void)prerequestPersistencePermission:(id)permission
 {
-  v4 = a3;
+  permissionCopy = permission;
   [(PXStoryModel *)self setDidPrerequestPersistencePermission:1];
-  v4[2](v4, 1, 0);
+  permissionCopy[2](permissionCopy, 1, 0);
 }
 
 - (void)reportNetworkRelatedPlaybackFailure
 {
   v3 = +[PXNetworkStatusMonitor sharedInstance];
-  v4 = [v3 bestAvailableNetworkType];
+  bestAvailableNetworkType = [v3 bestAvailableNetworkType];
 
-  if (v4 == 1)
+  if (bestAvailableNetworkType == 1)
   {
     v12 = PXStoryErrorCreateWithCodeUnderlyingErrorDebugFormat(19, 0, @"Network required for playback", v5, v6, v7, v8, v9, v11);
-    v10 = [(PXStoryModel *)self errorReporter];
-    [v10 setError:v12 forComponent:@"NetworkReachablity"];
+    errorReporter = [(PXStoryModel *)self errorReporter];
+    [errorReporter setError:v12 forComponent:@"NetworkReachablity"];
   }
 }
 
-- (void)reportPersistenceFailureWithError:(id)a3
+- (void)reportPersistenceFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PXStoryModel_reportPersistenceFailureWithError___block_invoke;
   v6[3] = &unk_1E773EC90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(PXStoryModel *)self performChanges:v6];
 }
 
@@ -2137,13 +2137,13 @@ uint64_t __50__PXStoryModel_reportPersistenceFailureWithError___block_invoke(uin
   return [v2 _invalidatePersistencePermission];
 }
 
-- (void)requestPersistencePermissionForUserActionKind:(int64_t)a3 withTimeout:(double)a4 completionHandler:(id)a5
+- (void)requestPersistencePermissionForUserActionKind:(int64_t)kind withTimeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
-  [(PXStoryModel *)self performedUserActionKind:a3];
+  handlerCopy = handler;
+  [(PXStoryModel *)self performedUserActionKind:kind];
   if ([(PXStoryModel *)self persistencePermission]== 1)
   {
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -2166,17 +2166,17 @@ uint64_t __50__PXStoryModel_reportPersistenceFailureWithError___block_invoke(uin
     aBlock[3] = &unk_1E773B1A0;
     v21 = buf;
     aBlock[4] = self;
-    v20 = v8;
+    v20 = handlerCopy;
     v10 = _Block_copy(aBlock);
-    v11 = dispatch_time(0, (a4 * 1000000000.0));
-    v12 = [(PXStoryModel *)self storyQueue];
+    v11 = dispatch_time(0, (timeout * 1000000000.0));
+    storyQueue = [(PXStoryModel *)self storyQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __92__PXStoryModel_requestPersistencePermissionForUserActionKind_withTimeout_completionHandler___block_invoke_2;
     block[3] = &unk_1E774C250;
     v13 = v10;
     v18 = v13;
-    dispatch_after(v11, v12, block);
+    dispatch_after(v11, storyQueue, block);
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -2269,41 +2269,41 @@ uint64_t __92__PXStoryModel_requestPersistencePermissionForUserActionKind_withTi
   return [v4 _invalidatePersistencePermission];
 }
 
-- (void)reconfigureWithAssetCollection:(id)a3
+- (void)reconfigureWithAssetCollection:(id)collection
 {
   configuration = self->_configuration;
-  v5 = a3;
-  v6 = [(PXStoryConfiguration *)configuration copyWithAssetCollection:v5];
+  collectionCopy = collection;
+  v6 = [(PXStoryConfiguration *)configuration copyWithAssetCollection:collectionCopy];
   [(PXStoryModel *)self setConfiguration:v6];
-  v7 = [(PXStoryModel *)self recipeManager];
+  recipeManager = [(PXStoryModel *)self recipeManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__PXStoryModel_reconfigureWithAssetCollection___block_invoke;
   v9[3] = &unk_1E773CCA8;
   v10 = v6;
   v8 = v6;
-  [v7 performChanges:v9];
+  [recipeManager performChanges:v9];
 
   [(PXStoryModel *)self _completePersistenceRequestsWithSuccess:1 error:0];
-  [(PXStoryModel *)self setPersistedAssetCollection:v5];
+  [(PXStoryModel *)self setPersistedAssetCollection:collectionCopy];
 }
 
 - (BOOL)isLastSegmentVisible
 {
-  v3 = [(PXStoryModel *)self visibleSegmentIdentifiers];
-  v4 = [(PXStoryModel *)self timeline];
-  v5 = [v3 containsIndex:{objc_msgSend(v4, "lastSegmentIdentifier")}];
+  visibleSegmentIdentifiers = [(PXStoryModel *)self visibleSegmentIdentifiers];
+  timeline = [(PXStoryModel *)self timeline];
+  v5 = [visibleSegmentIdentifiers containsIndex:{objc_msgSend(timeline, "lastSegmentIdentifier")}];
 
   return v5;
 }
 
 - (BOOL)isFirstSegmentVisible
 {
-  v3 = [(PXStoryModel *)self timeline];
-  v4 = [v3 firstSegmentIdentifier];
+  timeline = [(PXStoryModel *)self timeline];
+  firstSegmentIdentifier = [timeline firstSegmentIdentifier];
 
-  v5 = [(PXStoryModel *)self visibleSegmentIdentifiers];
-  v6 = [v5 containsIndex:v4];
+  visibleSegmentIdentifiers = [(PXStoryModel *)self visibleSegmentIdentifiers];
+  v6 = [visibleSegmentIdentifiers containsIndex:firstSegmentIdentifier];
 
   if (v6)
   {
@@ -2311,11 +2311,11 @@ uint64_t __92__PXStoryModel_requestPersistencePermissionForUserActionKind_withTi
   }
 
   [(PXStoryModel *)self elapsedTime];
-  v8 = [(PXStoryModel *)self timeline];
-  v9 = v8;
-  if (v8)
+  timeline2 = [(PXStoryModel *)self timeline];
+  v9 = timeline2;
+  if (timeline2)
   {
-    [v8 infoForSegmentWithIdentifier:v4];
+    [timeline2 infoForSegmentWithIdentifier:firstSegmentIdentifier];
   }
 
   else
@@ -2330,17 +2330,17 @@ uint64_t __92__PXStoryModel_requestPersistencePermissionForUserActionKind_withTi
   return v7;
 }
 
-- (BOOL)_isPlaceholderPresentInSegmentWithIdentifier:(int64_t)a3
+- (BOOL)_isPlaceholderPresentInSegmentWithIdentifier:(int64_t)identifier
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
   v8 = 0;
-  v4 = [(PXStoryModel *)self timeline];
-  v5 = v4;
-  if (v4)
+  timeline = [(PXStoryModel *)self timeline];
+  v5 = timeline;
+  if (timeline)
   {
-    [v4 timeRangeForSegmentWithIdentifier:a3];
+    [timeline timeRangeForSegmentWithIdentifier:identifier];
   }
 
   [v5 size];
@@ -2390,23 +2390,23 @@ void __61__PXStoryModel__isPlaceholderPresentInSegmentWithIdentifier___block_inv
   }
 }
 
-- (id)assetReferenceForClipIdentifier:(int64_t)a3
+- (id)assetReferenceForClipIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryModel *)self timeline];
-  v5 = [v4 clipWithIdentifier:a3];
+  timeline = [(PXStoryModel *)self timeline];
+  v5 = [timeline clipWithIdentifier:identifier];
 
-  v6 = [v5 resource];
-  v7 = [v6 px_storyResourceKind];
+  resource = [v5 resource];
+  px_storyResourceKind = [resource px_storyResourceKind];
 
-  if (v7 == 1)
+  if (px_storyResourceKind == 1)
   {
-    v8 = [v5 resource];
-    v9 = [v8 px_storyResourceDisplayAsset];
+    resource2 = [v5 resource];
+    px_storyResourceDisplayAsset = [resource2 px_storyResourceDisplayAsset];
     v10 = [off_1E7721490 alloc];
     v11 = *(off_1E7722228 + 1);
     v14[0] = *off_1E7722228;
     v14[1] = v11;
-    v12 = [v10 initWithSectionObject:0 itemObject:v9 subitemObject:0 indexPath:v14];
+    v12 = [v10 initWithSectionObject:0 itemObject:px_storyResourceDisplayAsset subitemObject:0 indexPath:v14];
   }
 
   else
@@ -2417,20 +2417,20 @@ void __61__PXStoryModel__isPlaceholderPresentInSegmentWithIdentifier___block_inv
   return v12;
 }
 
-- (BOOL)getMainVisibleClipIdentifier:(int64_t *)a3 assetReferece:(id *)a4
+- (BOOL)getMainVisibleClipIdentifier:(int64_t *)identifier assetReferece:(id *)referece
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PXStoryModel *)self timeline];
-  v9 = [(PXStoryModel *)self visibleSegmentIdentifiers];
+  timeline = [(PXStoryModel *)self timeline];
+  visibleSegmentIdentifiers = [(PXStoryModel *)self visibleSegmentIdentifiers];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __59__PXStoryModel_getMainVisibleClipIdentifier_assetReferece___block_invoke;
   v20 = &unk_1E774A7B8;
-  v21 = v8;
+  v21 = timeline;
   v10 = v7;
   v22 = v10;
-  v11 = v8;
-  [v9 enumerateIndexesUsingBlock:&v17];
+  v11 = timeline;
+  [visibleSegmentIdentifiers enumerateIndexesUsingBlock:&v17];
 
   v12 = [v10 count];
   v13 = v12;
@@ -2446,10 +2446,10 @@ void __61__PXStoryModel__isPlaceholderPresentInSegmentWithIdentifier___block_inv
       [v10 firstObject];
     }
     v15 = ;
-    v14 = [v15 integerValue];
+    integerValue = [v15 integerValue];
 
-    v12 = [(PXStoryModel *)self assetReferenceForClipIdentifier:v14];
-    if (!a3)
+    v12 = [(PXStoryModel *)self assetReferenceForClipIdentifier:integerValue];
+    if (!identifier)
     {
       goto LABEL_9;
     }
@@ -2457,18 +2457,18 @@ void __61__PXStoryModel__isPlaceholderPresentInSegmentWithIdentifier___block_inv
     goto LABEL_8;
   }
 
-  v14 = 0;
-  if (a3)
+  integerValue = 0;
+  if (identifier)
   {
 LABEL_8:
-    *a3 = v14;
+    *identifier = integerValue;
   }
 
 LABEL_9:
-  if (a4)
+  if (referece)
   {
     v12 = v12;
-    *a4 = v12;
+    *referece = v12;
   }
 
   return v13 != 0;
@@ -2577,40 +2577,40 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (void)setLastPlaybackTimeChangeSource:(unint64_t)a3
+- (void)setLastPlaybackTimeChangeSource:(unint64_t)source
 {
-  if (self->_lastPlaybackTimeChangeSource != a3)
+  if (self->_lastPlaybackTimeChangeSource != source)
   {
-    self->_lastPlaybackTimeChangeSource = a3;
+    self->_lastPlaybackTimeChangeSource = source;
     [(PXStoryModel *)self signalChange:0x10000000000000];
   }
 }
 
 - (PXDisplayAssetFetchResult)untruncatedCuratedAssets
 {
-  v2 = [(PXStoryModel *)self recipeManager];
-  v3 = [v2 recipe];
-  v4 = [v3 untruncatedCuratedAssets];
+  recipeManager = [(PXStoryModel *)self recipeManager];
+  recipe = [recipeManager recipe];
+  untruncatedCuratedAssets = [recipe untruncatedCuratedAssets];
 
-  return v4;
+  return untruncatedCuratedAssets;
 }
 
 - (PXDisplayAssetFetchResult)curatedAssets
 {
-  v2 = [(PXStoryModel *)self recipeManager];
-  v3 = [v2 recipe];
-  v4 = [v3 curatedAssets];
+  recipeManager = [(PXStoryModel *)self recipeManager];
+  recipe = [recipeManager recipe];
+  curatedAssets = [recipe curatedAssets];
 
-  return v4;
+  return curatedAssets;
 }
 
-- (void)setDidReachOutroOnce:(BOOL)a3
+- (void)setDidReachOutroOnce:(BOOL)once
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (self->_didReachOutroOnce != a3)
+  if (self->_didReachOutroOnce != once)
   {
-    self->_didReachOutroOnce = a3;
-    if (a3)
+    self->_didReachOutroOnce = once;
+    if (once)
     {
       v17 = *MEMORY[0x1E6991E20];
       v4 = objc_opt_class();
@@ -2630,13 +2630,13 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
       }
 
       [MEMORY[0x1E6991F28] sendEvent:v8 withPayload:v6];
-      v9 = [(PXStoryModel *)self untruncatedCuratedAssets];
-      v10 = v9;
-      if (v9)
+      untruncatedCuratedAssets = [(PXStoryModel *)self untruncatedCuratedAssets];
+      v10 = untruncatedCuratedAssets;
+      if (untruncatedCuratedAssets)
       {
-        v11 = [v9 count];
-        v12 = [(PXStoryModel *)self curatedAssets];
-        v13 = v11 - [v12 count];
+        v11 = [untruncatedCuratedAssets count];
+        curatedAssets = [(PXStoryModel *)self curatedAssets];
+        v13 = v11 - [curatedAssets count];
 
         if (v13 >= 1)
         {
@@ -2655,11 +2655,11 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (void)setOutroFractionCompleted:(double)a3
+- (void)setOutroFractionCompleted:(double)completed
 {
-  if (self->_outroFractionCompleted != a3)
+  if (self->_outroFractionCompleted != completed)
   {
-    self->_outroFractionCompleted = a3;
+    self->_outroFractionCompleted = completed;
     [(PXStoryModel *)self signalChange:0x400000000000];
     if (self->_outroFractionCompleted > 0.0)
     {
@@ -2669,54 +2669,54 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (void)setDiagnosticHUDType:(int64_t)a3
+- (void)setDiagnosticHUDType:(int64_t)type
 {
-  if (self->_diagnosticHUDType != a3)
+  if (self->_diagnosticHUDType != type)
   {
-    self->_diagnosticHUDType = a3;
+    self->_diagnosticHUDType = type;
     [(PXStoryModel *)self signalChange:0x1000000];
   }
 }
 
-- (void)setIsHUDVisible:(BOOL)a3
+- (void)setIsHUDVisible:(BOOL)visible
 {
-  if (self->_isHUDVisible != a3)
+  if (self->_isHUDVisible != visible)
   {
-    self->_isHUDVisible = a3;
+    self->_isHUDVisible = visible;
     [(PXStoryModel *)self signalChange:0x800000];
   }
 }
 
-- (void)setElapsedTime:(id *)a3
+- (void)setElapsedTime:(id *)time
 {
   p_elapsedTime = &self->_elapsedTime;
   time1 = self->_elapsedTime;
-  v7 = *a3;
+  v7 = *time;
   if (CMTimeCompare(&time1, &v7))
   {
-    v6 = *&a3->var0;
-    p_elapsedTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_elapsedTime->epoch = time->var3;
     *&p_elapsedTime->value = v6;
     [(PXStoryModel *)self signalChange:4096];
   }
 }
 
-- (void)scrollToPosition:(id *)a3
+- (void)scrollToPosition:(id *)position
 {
-  p_var2 = &a3->var2;
-  if (a3->var1 <= 0.5)
+  p_var2 = &position->var2;
+  if (position->var1 <= 0.5)
   {
-    p_var2 = a3;
+    p_var2 = position;
   }
 
   var0 = p_var2->var0;
   if (var0 != [(PXStoryModel *)self currentSegmentIdentifier])
   {
-    v7 = [(PXStoryModel *)self timeline];
-    v8 = v7;
-    if (v7)
+    timeline = [(PXStoryModel *)self timeline];
+    v8 = timeline;
+    if (timeline)
     {
-      [v7 timeRangeForSegmentWithIdentifier:var0];
+      [timeline timeRangeForSegmentWithIdentifier:var0];
     }
 
     else
@@ -2735,35 +2735,35 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
     [(PXStoryModel *)self setCurrentSegmentIdentifier:var0 timeIntoSegment:&v11 timeLeftInSegment:&v9 changeSource:2];
   }
 
-  v15 = *&a3->var0;
-  var2 = a3->var2;
+  v15 = *&position->var0;
+  var2 = position->var2;
   [(PXStoryModel *)self setCurrentScrollPosition:&v15];
 }
 
 - (BOOL)rewindToBeginningOfCurrentSegment
 {
   [(PXStoryModel *)self _enumerateVisibleAssetVideoPresentationControllersUsingBlock:&__block_literal_global_442];
-  v3 = [(PXStoryModel *)self currentSegmentIdentifier];
+  currentSegmentIdentifier = [(PXStoryModel *)self currentSegmentIdentifier];
 
-  return [(PXStoryModel *)self skipToBeginningOfSegmentWithIdentifier:v3];
+  return [(PXStoryModel *)self skipToBeginningOfSegmentWithIdentifier:currentSegmentIdentifier];
 }
 
 - (BOOL)rewindToBeginning
 {
-  v2 = self;
-  v3 = [(PXStoryModel *)self timeline];
-  LOBYTE(v2) = -[PXStoryModel skipToBeginningOfSegmentWithIdentifier:](v2, "skipToBeginningOfSegmentWithIdentifier:", [v3 firstSegmentIdentifier]);
+  selfCopy = self;
+  timeline = [(PXStoryModel *)self timeline];
+  LOBYTE(selfCopy) = -[PXStoryModel skipToBeginningOfSegmentWithIdentifier:](selfCopy, "skipToBeginningOfSegmentWithIdentifier:", [timeline firstSegmentIdentifier]);
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)a3
+- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)identifier
 {
-  v5 = [(PXStoryModel *)self timeline];
-  v6 = v5;
-  if (v5)
+  timeline = [(PXStoryModel *)self timeline];
+  v6 = timeline;
+  if (timeline)
   {
-    [v5 timeRangeForSegmentWithIdentifier:a3];
+    [timeline timeRangeForSegmentWithIdentifier:identifier];
   }
 
   else
@@ -2779,30 +2779,30 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
   v11 = 0;
   v8 = v14;
   v9 = v15;
-  return [(PXStoryModel *)self setCurrentSegmentIdentifier:a3 timeIntoSegment:&v10 timeLeftInSegment:&v8 changeSource:2];
+  return [(PXStoryModel *)self setCurrentSegmentIdentifier:identifier timeIntoSegment:&v10 timeLeftInSegment:&v8 changeSource:2];
 }
 
-- (BOOL)setCurrentSegmentIdentifier:(int64_t)a3 timeIntoSegment:(id *)a4 timeLeftInSegment:(id *)a5 changeSource:(unint64_t)a6
+- (BOOL)setCurrentSegmentIdentifier:(int64_t)identifier timeIntoSegment:(id *)segment timeLeftInSegment:(id *)inSegment changeSource:(unint64_t)source
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (self->_currentSegmentIdentifier != a3 || (v11 = &self->_timeIntoCurrentSegment, time1 = *a4, time2 = self->_timeIntoCurrentSegment, CMTimeCompare(&time1, &time2)) || (time1 = *a4, *&time2.value = *&v11->value, time2.epoch = self->_timeIntoCurrentSegment.epoch, CMTimeCompare(&time1, &time2)))
+  if (self->_currentSegmentIdentifier != identifier || (v11 = &self->_timeIntoCurrentSegment, time1 = *segment, time2 = self->_timeIntoCurrentSegment, CMTimeCompare(&time1, &time2)) || (time1 = *segment, *&time2.value = *&v11->value, time2.epoch = self->_timeIntoCurrentSegment.epoch, CMTimeCompare(&time1, &time2)))
   {
-    v12 = [(PXStoryModel *)self timeline];
-    v13 = [v12 containsSegmentWithIdentifier:a3];
+    timeline = [(PXStoryModel *)self timeline];
+    v13 = [timeline containsSegmentWithIdentifier:identifier];
     if (v13)
     {
       p_timeIntoCurrentSegment = &self->_timeIntoCurrentSegment;
-      time1 = *a4;
+      time1 = *segment;
       time2 = self->_timeIntoCurrentSegment;
       if (CMTimeCompare(&time1, &time2))
       {
         *&time2.value = *&p_timeIntoCurrentSegment->value;
         time2.epoch = self->_timeIntoCurrentSegment.epoch;
-        var3 = a4->var3;
-        *&p_timeIntoCurrentSegment->value = *&a4->var0;
+        var3 = segment->var3;
+        *&p_timeIntoCurrentSegment->value = *&segment->var0;
         self->_timeIntoCurrentSegment.epoch = var3;
         [(PXStoryModel *)self signalChange:0x800000000];
-        if (self->_currentSegmentIdentifier != a3)
+        if (self->_currentSegmentIdentifier != identifier)
         {
           v16 = [(PXStoryModel *)self log];
           v17 = os_signpost_id_make_with_pointer(v16, self);
@@ -2811,21 +2811,21 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
             v18 = v17;
             if (os_signpost_enabled(v16))
             {
-              v41 = [(PXStoryModel *)self logContext];
+              logContext = [(PXStoryModel *)self logContext];
               time1 = time2;
               v40 = PXStoryTimeDescription(&time1);
-              time1 = *a4;
+              time1 = *segment;
               v42 = PXStoryTimeDescription(&time1);
               LODWORD(time1.value) = 134219010;
-              *(&time1.value + 4) = v41;
+              *(&time1.value + 4) = logContext;
               LOWORD(time1.flags) = 2050;
-              *(&time1.flags + 2) = a3;
+              *(&time1.flags + 2) = identifier;
               HIWORD(time1.epoch) = 2114;
-              v46 = v40;
+              sourceCopy4 = v40;
               v47 = 2114;
               v48 = v42;
               v49 = 2050;
-              v50 = a6;
+              sourceCopy2 = source;
               _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_EVENT, v18, "PXStoryModelChangedTimeIntoCurrentSegment", "Context=%{signpost.telemetry:string2}lu segmentIdentifier=%{signpost.description:attribute, public}ld timeIntoSegment=%{signpost.description:attribute, public}@ → %{signpost.description:attribute, public}@ changeSource=%{signpost.description:attribute, public}ld", &time1, 0x34u);
             }
           }
@@ -2833,17 +2833,17 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
       }
 
       p_timeLeftInCurrentSegment = &self->_timeLeftInCurrentSegment;
-      time1 = *a5;
+      time1 = *inSegment;
       time2 = self->_timeLeftInCurrentSegment;
       if (CMTimeCompare(&time1, &time2))
       {
         *&time2.value = *&p_timeLeftInCurrentSegment->value;
         time2.epoch = self->_timeLeftInCurrentSegment.epoch;
-        v20 = a5->var3;
-        *&p_timeLeftInCurrentSegment->value = *&a5->var0;
+        v20 = inSegment->var3;
+        *&p_timeLeftInCurrentSegment->value = *&inSegment->var0;
         self->_timeLeftInCurrentSegment.epoch = v20;
         [(PXStoryModel *)self signalChange:0x40000000];
-        if (self->_currentSegmentIdentifier != a3)
+        if (self->_currentSegmentIdentifier != identifier)
         {
           v21 = [(PXStoryModel *)self log];
           v22 = os_signpost_id_make_with_pointer(v21, self);
@@ -2852,31 +2852,31 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
             v23 = v22;
             if (os_signpost_enabled(v21))
             {
-              v43 = [(PXStoryModel *)self logContext];
+              logContext2 = [(PXStoryModel *)self logContext];
               time1 = time2;
               v24 = PXStoryTimeDescription(&time1);
-              time1 = *a5;
+              time1 = *inSegment;
               v25 = PXStoryTimeDescription(&time1);
               LODWORD(time1.value) = 134219010;
-              *(&time1.value + 4) = v43;
+              *(&time1.value + 4) = logContext2;
               LOWORD(time1.flags) = 2050;
-              *(&time1.flags + 2) = a3;
+              *(&time1.flags + 2) = identifier;
               HIWORD(time1.epoch) = 2114;
-              v46 = v24;
+              sourceCopy4 = v24;
               v47 = 2114;
               v48 = v25;
               v49 = 2050;
-              v50 = a6;
+              sourceCopy2 = source;
               _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v21, OS_SIGNPOST_EVENT, v23, "PXStoryModelChangedTimeLeftInCurrentSegment", "Context=%{signpost.telemetry:string2}lu segmentIdentifier=%{signpost.description:attribute, public}ld timeLeftInSegment=%{signpost.description:attribute, public}@ → %{signpost.description:attribute, public}@ changeSource=%{signpost.description:attribute, public}ld", &time1, 0x34u);
             }
           }
         }
       }
 
-      if (self->_currentSegmentIdentifier != a3)
+      if (self->_currentSegmentIdentifier != identifier)
       {
         [(PXStoryModel *)self setPreviousSegmentIdentifier:?];
-        self->_currentSegmentIdentifier = a3;
+        self->_currentSegmentIdentifier = identifier;
         [(PXStoryModel *)self signalChange:32];
         v26 = [(PXStoryModel *)self log];
         v27 = os_signpost_id_make_with_pointer(v26, self);
@@ -2885,9 +2885,9 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
           v28 = v27;
           if (os_signpost_enabled(v26))
           {
-            v29 = [(PXStoryModel *)self logContext];
+            logContext3 = [(PXStoryModel *)self logContext];
             LODWORD(time1.value) = 134217984;
-            *(&time1.value + 4) = v29;
+            *(&time1.value + 4) = logContext3;
             _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v26, OS_SIGNPOST_INTERVAL_END, v28, "PXStoryModelChangedCurrentSegmentIdentifier", "Context=%{signpost.telemetry:string2}lu ", &time1, 0xCu);
           }
         }
@@ -2899,13 +2899,13 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
           v32 = v31;
           if (os_signpost_enabled(v30))
           {
-            v33 = [(PXStoryModel *)self logContext];
+            logContext4 = [(PXStoryModel *)self logContext];
             LODWORD(time1.value) = 134218496;
-            *(&time1.value + 4) = v33;
+            *(&time1.value + 4) = logContext4;
             LOWORD(time1.flags) = 2050;
-            *(&time1.flags + 2) = a3;
+            *(&time1.flags + 2) = identifier;
             HIWORD(time1.epoch) = 2050;
-            v46 = a6;
+            sourceCopy4 = source;
             _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v30, OS_SIGNPOST_EVENT, v32, "PXStoryModelChangedCurrentSegmentIdentifier", "Context=%{signpost.telemetry:string2}lu segmentIdentifier=%{signpost.description:attribute, public}ld changeSource=%{signpost.description:attribute, public}ld", &time1, 0x20u);
           }
         }
@@ -2917,28 +2917,28 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
           v36 = v35;
           if (os_signpost_enabled(v34))
           {
-            v37 = [(PXStoryModel *)self logContext];
+            logContext5 = [(PXStoryModel *)self logContext];
             LODWORD(time1.value) = 134218496;
-            *(&time1.value + 4) = v37;
+            *(&time1.value + 4) = logContext5;
             LOWORD(time1.flags) = 2050;
-            *(&time1.flags + 2) = a3;
+            *(&time1.flags + 2) = identifier;
             HIWORD(time1.epoch) = 2050;
-            v46 = a6;
+            sourceCopy4 = source;
             _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v34, OS_SIGNPOST_INTERVAL_BEGIN, v36, "PXStoryModelChangedCurrentSegmentIdentifier", "Context=%{signpost.telemetry:string2}lu segmentIdentifier=%{signpost.description:attribute, public}ld changeSource=%{signpost.description:attribute, public}ld", &time1, 0x20u);
           }
         }
 
-        if (a6 == 2)
+        if (source == 2)
         {
-          v38 = [(PXStoryModel *)self loadingStatusReporter];
-          [v38 notifyUserDidNavigate];
+          loadingStatusReporter = [(PXStoryModel *)self loadingStatusReporter];
+          [loadingStatusReporter notifyUserDidNavigate];
         }
       }
 
-      [(PXStoryModel *)self setLastPlaybackTimeChangeSource:a6];
+      [(PXStoryModel *)self setLastPlaybackTimeChangeSource:source];
       *&time1.timescale = 0;
       time1.epoch = 0;
-      time1.value = a3;
+      time1.value = identifier;
       [(PXStoryModel *)self setCurrentScrollPosition:&time1];
       [(PXStoryModel *)self _invalidateNominalPlaybackTime];
     }
@@ -2952,19 +2952,19 @@ void __36__PXStoryModel_visibleDisplayAssets__block_invoke_2(uint64_t a1, uint64
   return v13;
 }
 
-- (void)setIsPresentingAnyAlert:(BOOL)a3
+- (void)setIsPresentingAnyAlert:(BOOL)alert
 {
-  if (self->_isPresentingAnyAlert != a3)
+  if (self->_isPresentingAnyAlert != alert)
   {
-    self->_isPresentingAnyAlert = a3;
+    self->_isPresentingAnyAlert = alert;
     [(PXStoryModel *)self signalChange:0x80000000000];
   }
 }
 
-- (void)didEndPresentingAlertWithToken:(id)a3
+- (void)didEndPresentingAlertWithToken:(id)token
 {
   v4 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!token)
   {
     PXAssertGetLog();
   }
@@ -2993,9 +2993,9 @@ uint64_t __47__PXStoryModel_didEndPresentingAlertWithToken___block_invoke(uint64
   v4[3] = &unk_1E77485B0;
   v4[4] = self;
   [(PXStoryModel *)self performChanges:v4];
-  v2 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
 
-  return v2;
+  return uUID;
 }
 
 uint64_t __39__PXStoryModel_didStartPresentingAlert__block_invoke(uint64_t a1)
@@ -3006,21 +3006,21 @@ uint64_t __39__PXStoryModel_didStartPresentingAlert__block_invoke(uint64_t a1)
   return [v1 setNumberOfPresentedAlerts:v2];
 }
 
-- (BOOL)skipToSegmentWithOffset:(int64_t)a3
+- (BOOL)skipToSegmentWithOffset:(int64_t)offset
 {
   if ([(PXStoryModel *)self viewMode]!= 1)
   {
     return 0;
   }
 
-  v5 = [(PXStoryModel *)self viewModeTransition];
+  viewModeTransition = [(PXStoryModel *)self viewModeTransition];
 
-  if (v5)
+  if (viewModeTransition)
   {
     return 0;
   }
 
-  if (a3 == -1)
+  if (offset == -1)
   {
     *&v20[0] = 0;
     *(&v20[0] + 1) = v20;
@@ -3042,32 +3042,32 @@ uint64_t __39__PXStoryModel_didStartPresentingAlert__block_invoke(uint64_t a1)
     _Block_object_dispose(v20, 8);
   }
 
-  v8 = [(PXStoryModel *)self timeline];
-  v9 = [v8 indexOfSegmentWithIdentifier:{-[PXStoryModel currentSegmentIdentifier](self, "currentSegmentIdentifier")}];
+  timeline = [(PXStoryModel *)self timeline];
+  v9 = [timeline indexOfSegmentWithIdentifier:{-[PXStoryModel currentSegmentIdentifier](self, "currentSegmentIdentifier")}];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_16;
   }
 
-  v10 = v9 + a3;
-  if (v10 < 0 || v10 >= [v8 numberOfSegments])
+  v10 = v9 + offset;
+  if (v10 < 0 || v10 >= [timeline numberOfSegments])
   {
     goto LABEL_16;
   }
 
-  v11 = [v8 identifierForSegmentAtIndex:v10];
+  v11 = [timeline identifierForSegmentAtIndex:v10];
   memset(v20, 0, sizeof(v20));
-  if (v8)
+  if (timeline)
   {
-    [v8 timeRangeForSegmentWithIdentifier:v11];
+    [timeline timeRangeForSegmentWithIdentifier:v11];
   }
 
   v18 = *(&v20[1] + 8);
   v19 = *(&v20[2] + 1);
-  v12 = [(PXStoryModel *)self configuration];
-  v13 = [v12 allowSkipToSegmentWithPlaceholder];
+  configuration = [(PXStoryModel *)self configuration];
+  allowSkipToSegmentWithPlaceholder = [configuration allowSkipToSegmentWithPlaceholder];
 
-  if ((v13 & 1) == 0 && [(PXStoryModel *)self _isPlaceholderPresentInSegmentWithIdentifier:v11])
+  if ((allowSkipToSegmentWithPlaceholder & 1) == 0 && [(PXStoryModel *)self _isPlaceholderPresentInSegmentWithIdentifier:v11])
   {
 LABEL_16:
     v6 = 0;
@@ -3098,13 +3098,13 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setShouldPauseTransitions:(BOOL)a3
+- (void)setShouldPauseTransitions:(BOOL)transitions
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_shouldPauseTransitions != a3)
+  if (self->_shouldPauseTransitions != transitions)
   {
-    v3 = a3;
-    self->_shouldPauseTransitions = a3;
+    transitionsCopy = transitions;
+    self->_shouldPauseTransitions = transitions;
     [(PXStoryModel *)self signalChange:0x40000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3114,7 +3114,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedShouldPauseTransitions", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3126,11 +3126,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = transitionsCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedShouldPauseTransitions", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3142,24 +3142,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = transitionsCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedShouldPauseTransitions", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setInLiveResize:(BOOL)a3
+- (void)setInLiveResize:(BOOL)resize
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_inLiveResize != a3)
+  if (self->_inLiveResize != resize)
   {
-    v3 = a3;
-    self->_inLiveResize = a3;
+    resizeCopy = resize;
+    self->_inLiveResize = resize;
     [(PXStoryModel *)self signalChange:0x4000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3169,7 +3169,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedInLiveResize", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3181,11 +3181,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = resizeCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedInLiveResize", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3197,42 +3197,42 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = resizeCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedInLiveResize", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (id)diagnosticHUDContentProviderForType:(int64_t)a3
+- (id)diagnosticHUDContentProviderForType:(int64_t)type
 {
-  v4 = [(PXStoryModel *)self HUDContentProvidersByType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  hUDContentProvidersByType = [(PXStoryModel *)self HUDContentProvidersByType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [hUDContentProvidersByType objectForKey:v5];
 
   return v6;
 }
 
-- (void)setDiagnosticHUDContentProvider:(id)a3 forType:(int64_t)a4
+- (void)setDiagnosticHUDContentProvider:(id)provider forType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PXStoryModel *)self HUDContentProvidersByType];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKey:v8];
+  providerCopy = provider;
+  hUDContentProvidersByType = [(PXStoryModel *)self HUDContentProvidersByType];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [hUDContentProvidersByType setObject:providerCopy forKey:v8];
 
   [(PXStoryModel *)self signalChange:0x8000];
 }
 
-- (void)setLastHitAssetReference:(id)a3
+- (void)setLastHitAssetReference:(id)reference
 {
-  v8 = a3;
+  referenceCopy = reference;
   v5 = self->_lastHitAssetReference;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == referenceCopy)
   {
   }
 
@@ -3242,17 +3242,17 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_lastHitAssetReference, a3);
+      objc_storeStrong(&self->_lastHitAssetReference, reference);
       [(PXStoryModel *)self signalChange:0x2000000];
     }
   }
 }
 
-- (void)setLastHitClipIdentifier:(int64_t)a3
+- (void)setLastHitClipIdentifier:(int64_t)identifier
 {
-  if (self->_lastHitClipIdentifier != a3)
+  if (self->_lastHitClipIdentifier != identifier)
   {
-    self->_lastHitClipIdentifier = a3;
+    self->_lastHitClipIdentifier = identifier;
     [(PXStoryModel *)self signalChange:0x2000000];
   }
 }
@@ -3264,14 +3264,14 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   [(PXStoryModel *)self setLastHitClipIdentifier:0];
 }
 
-- (void)setVisibleSegmentIdentifiers:(id)a3
+- (void)setVisibleSegmentIdentifiers:(id)identifiers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_visibleSegmentIdentifiers != v5 && ([(NSIndexSet *)v5 isEqual:?]& 1) == 0)
+  identifiersCopy = identifiers;
+  v6 = identifiersCopy;
+  if (self->_visibleSegmentIdentifiers != identifiersCopy && ([(NSIndexSet *)identifiersCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_visibleSegmentIdentifiers, a3);
+    objc_storeStrong(&self->_visibleSegmentIdentifiers, identifiers);
     viewMode = self->_viewMode;
     [(PXStoryModel *)self signalChange:64];
     if (viewMode != 3)
@@ -3284,7 +3284,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
         if (os_signpost_enabled(v8))
         {
           *buf = 134217984;
-          v24 = [(PXStoryModel *)self logContext];
+          logContext = [(PXStoryModel *)self logContext];
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_END, v10, "PXStoryModelChangedVisibleSegmentIdentifiers", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
         }
       }
@@ -3296,12 +3296,12 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
         v13 = v12;
         if (os_signpost_enabled(v11))
         {
-          v14 = [(PXStoryModel *)self logContext];
-          v15 = [(NSIndexSet *)v6 px_shortDescription];
+          logContext2 = [(PXStoryModel *)self logContext];
+          px_shortDescription = [(NSIndexSet *)v6 px_shortDescription];
           *buf = 134218242;
-          v24 = v14;
+          logContext = logContext2;
           v25 = 2114;
-          v26 = v15;
+          v26 = px_shortDescription;
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_EVENT, v13, "PXStoryModelChangedVisibleSegmentIdentifiers", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
         }
       }
@@ -3313,39 +3313,39 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
         v18 = v17;
         if (os_signpost_enabled(v16))
         {
-          v19 = [(PXStoryModel *)self logContext];
-          v20 = [(NSIndexSet *)v6 px_shortDescription];
+          logContext3 = [(PXStoryModel *)self logContext];
+          px_shortDescription2 = [(NSIndexSet *)v6 px_shortDescription];
           *buf = 134218242;
-          v24 = v19;
+          logContext = logContext3;
           v25 = 2114;
-          v26 = v20;
+          v26 = px_shortDescription2;
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PXStoryModelChangedVisibleSegmentIdentifiers", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
         }
       }
     }
 
-    v21 = [(PXStoryModel *)self timelineManager];
+    timelineManager = [(PXStoryModel *)self timelineManager];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __45__PXStoryModel_setVisibleSegmentIdentifiers___block_invoke;
     v22[3] = &unk_1E773BEC0;
     v22[4] = self;
-    [v21 performChanges:v22];
+    [timelineManager performChanges:v22];
   }
 }
 
-- (void)setEditorPreviewSong:(id)a3
+- (void)setEditorPreviewSong:(id)song
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_editorPreviewSong != v5)
+  songCopy = song;
+  v6 = songCopy;
+  if (self->_editorPreviewSong != songCopy)
   {
-    v8 = v5;
-    v7 = [(PXStorySongResource *)v5 isEqual:?];
+    v8 = songCopy;
+    v7 = [(PXStorySongResource *)songCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_editorPreviewSong, a3);
+      objc_storeStrong(&self->_editorPreviewSong, song);
       [(PXStoryModel *)self signalChange:0x800000000000];
       v6 = v8;
     }
@@ -3354,30 +3354,30 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
 
 - (PXStorySongResource)currentSongResource
 {
-  v2 = [(PXStoryModel *)self currentStyle];
-  v3 = [v2 songResource];
+  currentStyle = [(PXStoryModel *)self currentStyle];
+  songResource = [currentStyle songResource];
 
-  return v3;
+  return songResource;
 }
 
-- (void)setActiveSongResource:(id)a3
+- (void)setActiveSongResource:(id)resource
 {
-  v5 = a3;
-  if (self->_activeSongResource != v5)
+  resourceCopy = resource;
+  if (self->_activeSongResource != resourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeSongResource, a3);
+    v6 = resourceCopy;
+    objc_storeStrong(&self->_activeSongResource, resource);
     [(PXStoryModel *)self signalChange:1024];
-    v5 = v6;
+    resourceCopy = v6;
   }
 }
 
-- (void)setColorGradeKind:(int64_t)a3
+- (void)setColorGradeKind:(int64_t)kind
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_colorGradeKind != a3)
+  if (self->_colorGradeKind != kind)
   {
-    self->_colorGradeKind = a3;
+    self->_colorGradeKind = kind;
     [(PXStoryModel *)self signalChange:0x100000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3387,7 +3387,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedColorGradeKind", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3399,11 +3399,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 2050;
-        v19 = a3;
+        kindCopy2 = kind;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedColorGradeKind", "Context=%{signpost.telemetry:string2}lu %{public}ld", &v16, 0x16u);
       }
     }
@@ -3415,23 +3415,23 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 2050;
-        v19 = a3;
+        kindCopy2 = kind;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedColorGradeKind", "Context=%{signpost.telemetry:string2}lu %{public}ld", &v16, 0x16u);
       }
     }
   }
 }
 
-- (void)setStyleSwitcherVisibilityFraction:(double)a3
+- (void)setStyleSwitcherVisibilityFraction:(double)fraction
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_styleSwitcherVisibilityFraction != a3)
+  if (self->_styleSwitcherVisibilityFraction != fraction)
   {
-    self->_styleSwitcherVisibilityFraction = a3;
+    self->_styleSwitcherVisibilityFraction = fraction;
     [(PXStoryModel *)self signalChange:0x2000000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3441,7 +3441,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedStyleSwitcherVisibilityFraction", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3453,11 +3453,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 2048;
-        v19 = a3;
+        fractionCopy2 = fraction;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedStyleSwitcherVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %0.1f", &v16, 0x16u);
       }
     }
@@ -3469,34 +3469,34 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 2048;
-        v19 = a3;
+        fractionCopy2 = fraction;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedStyleSwitcherVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %0.1f", &v16, 0x16u);
       }
     }
   }
 }
 
-- (void)setCurrentStyle:(id)a3
+- (void)setCurrentStyle:(id)style
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentStyle != v5 && ([(PXStoryStyle *)v5 isEqual:?]& 1) == 0)
+  styleCopy = style;
+  v6 = styleCopy;
+  if (self->_currentStyle != styleCopy && ([(PXStoryStyle *)styleCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_currentStyle, a3);
-    v7 = [(PXStoryStyle *)v6 customColorGradeKind];
-    if (!v7)
+    objc_storeStrong(&self->_currentStyle, style);
+    customColorGradeKind = [(PXStoryStyle *)v6 customColorGradeKind];
+    if (!customColorGradeKind)
     {
-      v8 = [(PXStoryStyle *)v6 originalColorGradeCategory];
-      v9 = [(PXStoryModel *)self colorGradingRepository];
-      v7 = [v9 colorGradeKindForColorGradeCategory:v8];
+      originalColorGradeCategory = [(PXStoryStyle *)v6 originalColorGradeCategory];
+      colorGradingRepository = [(PXStoryModel *)self colorGradingRepository];
+      customColorGradeKind = [colorGradingRepository colorGradeKindForColorGradeCategory:originalColorGradeCategory];
     }
 
-    [(PXStoryModel *)self setColorGradeKind:v7];
+    [(PXStoryModel *)self setColorGradeKind:customColorGradeKind];
     [(PXStoryModel *)self _invalidateOutroDuration];
     [(PXStoryModel *)self signalChange:512];
     v10 = [(PXStoryModel *)self log];
@@ -3507,7 +3507,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v10))
       {
         v21 = 134217984;
-        v22 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_END, v12, "PXStoryModelChangedCurrentStyle", "Context=%{signpost.telemetry:string2}lu ", &v21, 0xCu);
       }
     }
@@ -3519,9 +3519,9 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v21 = 134218242;
-        v22 = v16;
+        logContext = logContext2;
         v23 = 2114;
         v24 = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_EVENT, v15, "PXStoryModelChangedCurrentStyle", "Context=%{signpost.telemetry:string2}lu %{public}@", &v21, 0x16u);
@@ -3535,9 +3535,9 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v19 = v18;
       if (os_signpost_enabled(v17))
       {
-        v20 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v21 = 134218242;
-        v22 = v20;
+        logContext = logContext3;
         v23 = 2114;
         v24 = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v19, "PXStoryModelChangedCurrentStyle", "Context=%{signpost.telemetry:string2}lu %{public}@", &v21, 0x16u);
@@ -3546,12 +3546,12 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setPersistencePermission:(int64_t)a3
+- (void)setPersistencePermission:(int64_t)permission
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_persistencePermission != a3)
+  if (self->_persistencePermission != permission)
   {
-    self->_persistencePermission = a3;
+    self->_persistencePermission = permission;
     [(PXStoryModel *)self signalChange:0x4000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3561,7 +3561,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedPersistencePermission", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3573,11 +3573,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 2048;
-        v19 = a3;
+        permissionCopy2 = permission;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedPersistencePermission", "Context=%{signpost.telemetry:string2}lu %ld", &v16, 0x16u);
       }
     }
@@ -3589,22 +3589,22 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 2048;
-        v19 = a3;
+        permissionCopy2 = permission;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedPersistencePermission", "Context=%{signpost.telemetry:string2}lu %ld", &v16, 0x16u);
       }
     }
   }
 }
 
-- (void)setCurrentAssetCollectionIsFavorite:(BOOL)a3
+- (void)setCurrentAssetCollectionIsFavorite:(BOOL)favorite
 {
-  if (self->_currentAssetCollectionIsFavorite != a3)
+  if (self->_currentAssetCollectionIsFavorite != favorite)
   {
-    self->_currentAssetCollectionIsFavorite = a3;
+    self->_currentAssetCollectionIsFavorite = favorite;
     [(PXStoryModel *)self signalChange:0x200000000000];
   }
 }
@@ -3614,10 +3614,10 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   titleCategory = self->_titleCategory;
   if (titleCategory == @"<UninitializedMemoryTitleCategory>")
   {
-    v4 = [(PXStoryModel *)self currentAssetCollection];
-    v5 = [v4 storyTitleCategory];
+    currentAssetCollection = [(PXStoryModel *)self currentAssetCollection];
+    storyTitleCategory = [currentAssetCollection storyTitleCategory];
     v6 = self->_titleCategory;
-    self->_titleCategory = v5;
+    self->_titleCategory = storyTitleCategory;
 
     titleCategory = self->_titleCategory;
   }
@@ -3625,54 +3625,54 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   return titleCategory;
 }
 
-- (void)setCurrentAssetCollection:(id)a3
+- (void)setCurrentAssetCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_currentAssetCollection != v5)
+  collectionCopy = collection;
+  if (self->_currentAssetCollection != collectionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_currentAssetCollection, a3);
+    v9 = collectionCopy;
+    objc_storeStrong(&self->_currentAssetCollection, collection);
     [(PXStoryModel *)self signalChange:2048];
     v6 = *MEMORY[0x1E69C0E10];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PXDisplayAssetCollection *)self->_currentAssetCollection isFavorite];
+      isFavorite = [(PXDisplayAssetCollection *)self->_currentAssetCollection isFavorite];
 
       v6 = @"<UninitializedMemoryTitleCategory>";
     }
 
     else
     {
-      v7 = 0;
+      isFavorite = 0;
     }
 
-    [(PXStoryModel *)self setCurrentAssetCollectionIsFavorite:v7];
+    [(PXStoryModel *)self setCurrentAssetCollectionIsFavorite:isFavorite];
     titleCategory = self->_titleCategory;
     self->_titleCategory = &v6->isa;
 
-    v5 = v9;
+    collectionCopy = v9;
   }
 }
 
-- (void)setCurrentScrollPosition:(id *)a3
+- (void)setCurrentScrollPosition:(id *)position
 {
-  if (a3->var0 != self->_currentScrollPosition.firstSegmentIdentifier || (a3->var1 == self->_currentScrollPosition.secondSegmentMixFactor ? (v3 = a3->var2 == self->_currentScrollPosition.secondSegmentIdentifier) : (v3 = 0), !v3))
+  if (position->var0 != self->_currentScrollPosition.firstSegmentIdentifier || (position->var1 == self->_currentScrollPosition.secondSegmentMixFactor ? (v3 = position->var2 == self->_currentScrollPosition.secondSegmentIdentifier) : (v3 = 0), !v3))
   {
-    v4 = *&a3->var0;
-    self->_currentScrollPosition.secondSegmentIdentifier = a3->var2;
+    v4 = *&position->var0;
+    self->_currentScrollPosition.secondSegmentIdentifier = position->var2;
     *&self->_currentScrollPosition.firstSegmentIdentifier = v4;
     [(PXStoryModel *)self signalChange:4];
   }
 }
 
-- (void)setIsPerformingViewControllerTransition:(BOOL)a3
+- (void)setIsPerformingViewControllerTransition:(BOOL)transition
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isPerformingViewControllerTransition != a3)
+  if (self->_isPerformingViewControllerTransition != transition)
   {
-    v3 = a3;
-    self->_isPerformingViewControllerTransition = a3;
+    transitionCopy = transition;
+    self->_isPerformingViewControllerTransition = transition;
     [(PXStoryModel *)self signalChange:0x400000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3682,7 +3682,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsPerformingViewControllerTransition", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3694,11 +3694,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = transitionCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsPerformingViewControllerTransition", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3710,24 +3710,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = transitionCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsPerformingViewControllerTransition", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsPresentingColorGradeEditor:(BOOL)a3
+- (void)setIsPresentingColorGradeEditor:(BOOL)editor
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isPresentingColorGradeEditor != a3)
+  if (self->_isPresentingColorGradeEditor != editor)
   {
-    v3 = a3;
-    self->_isPresentingColorGradeEditor = a3;
+    editorCopy = editor;
+    self->_isPresentingColorGradeEditor = editor;
     [(PXStoryModel *)self signalChange:0x10000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3737,7 +3737,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsPresentingColorGradeEditor", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3749,11 +3749,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = editorCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsPresentingColorGradeEditor", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3765,24 +3765,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = editorCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsPresentingColorGradeEditor", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsPresentingMusicEditor:(BOOL)a3
+- (void)setIsPresentingMusicEditor:(BOOL)editor
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isPresentingMusicEditor != a3)
+  if (self->_isPresentingMusicEditor != editor)
   {
-    v3 = a3;
-    self->_isPresentingMusicEditor = a3;
+    editorCopy = editor;
+    self->_isPresentingMusicEditor = editor;
     [(PXStoryModel *)self signalChange:0x8000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3792,7 +3792,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsPresentingMusicEditor", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3804,11 +3804,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = editorCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsPresentingMusicEditor", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3820,24 +3820,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = editorCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsPresentingMusicEditor", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsPresentingAssetPicker:(BOOL)a3
+- (void)setIsPresentingAssetPicker:(BOOL)picker
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isPresentingAssetPicker != a3)
+  if (self->_isPresentingAssetPicker != picker)
   {
-    v3 = a3;
-    self->_isPresentingAssetPicker = a3;
+    pickerCopy = picker;
+    self->_isPresentingAssetPicker = picker;
     [(PXStoryModel *)self signalChange:0x200000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3847,7 +3847,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsPresentingAssetPicker", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3859,11 +3859,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = pickerCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsPresentingAssetPicker", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3875,24 +3875,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = pickerCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsPresentingAssetPicker", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsHovering:(BOOL)a3
+- (void)setIsHovering:(BOOL)hovering
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isHovering != a3)
+  if (self->_isHovering != hovering)
   {
-    v3 = a3;
-    self->_isHovering = a3;
+    hoveringCopy = hovering;
+    self->_isHovering = hovering;
     [(PXStoryModel *)self signalChange:0x4000000000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -3902,7 +3902,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsHovering", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3914,11 +3914,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = hoveringCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsHovering", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3930,24 +3930,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = hoveringCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsHovering", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsTouching:(BOOL)a3
+- (void)setIsTouching:(BOOL)touching
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isTouching != a3)
+  if (self->_isTouching != touching)
   {
-    v3 = a3;
-    self->_isTouching = a3;
+    touchingCopy = touching;
+    self->_isTouching = touching;
     [(PXStoryModel *)self _invalidatePressedFractionAnimator];
     [(PXStoryModel *)self signalChange:0x4000000];
     v5 = [(PXStoryModel *)self log];
@@ -3958,7 +3958,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsTouching", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -3970,11 +3970,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = touchingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsTouching", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -3986,24 +3986,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = touchingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsTouching", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setAllowsScrolling:(BOOL)a3
+- (void)setAllowsScrolling:(BOOL)scrolling
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_allowsScrolling != a3)
+  if (self->_allowsScrolling != scrolling)
   {
-    v3 = a3;
-    self->_allowsScrolling = a3;
+    scrollingCopy = scrolling;
+    self->_allowsScrolling = scrolling;
     [(PXStoryModel *)self signalChange:0x8000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4013,7 +4013,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedAllowsScrolling", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4025,11 +4025,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = scrollingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedAllowsScrolling", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4041,24 +4041,24 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = scrollingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedAllowsScrolling", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setIsScrolling:(BOOL)a3
+- (void)setIsScrolling:(BOOL)scrolling
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isScrolling != a3)
+  if (self->_isScrolling != scrolling)
   {
-    v3 = a3;
-    self->_isScrolling = a3;
+    scrollingCopy = scrolling;
+    self->_isScrolling = scrolling;
     [(PXStoryModel *)self signalChange:8];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4068,7 +4068,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsScrolling", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4080,11 +4080,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = scrollingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsScrolling", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4096,11 +4096,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = scrollingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsScrolling", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4109,13 +4109,13 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setIsActuallyPlaying:(BOOL)a3
+- (void)setIsActuallyPlaying:(BOOL)playing
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isActuallyPlaying != a3)
+  if (self->_isActuallyPlaying != playing)
   {
-    v3 = a3;
-    self->_isActuallyPlaying = a3;
+    playingCopy = playing;
+    self->_isActuallyPlaying = playing;
     [(PXStoryModel *)self signalChange:0x10000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4125,7 +4125,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedIsActuallyPlaying", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4137,11 +4137,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = playingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedIsActuallyPlaying", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4153,23 +4153,23 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = playingCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedIsActuallyPlaying", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_desiredPlayState != a3)
+  if (self->_desiredPlayState != state)
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     [(PXStoryModel *)self signalChange:2];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4179,7 +4179,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4191,11 +4191,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 2048;
-        v19 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v16, 0x16u);
       }
     }
@@ -4207,11 +4207,11 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 2048;
-        v19 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v16, 0x16u);
       }
     }
@@ -4220,15 +4220,15 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setNominalPlaybackTime:(id *)a3
+- (void)setNominalPlaybackTime:(id *)time
 {
   p_nominalPlaybackTime = &self->_nominalPlaybackTime;
-  time1 = *a3;
+  time1 = *time;
   nominalPlaybackTime = self->_nominalPlaybackTime;
   if (CMTimeCompare(&time1, &nominalPlaybackTime))
   {
-    v6 = *&a3->var0;
-    p_nominalPlaybackTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_nominalPlaybackTime->epoch = time->var3;
     *&p_nominalPlaybackTime->value = v6;
     [(PXStoryModel *)self _invalidatePlaybackFractionCompleted];
     [(PXStoryModel *)self _invalidateOutroFractionCompleted];
@@ -4236,56 +4236,56 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setIsAtPlaybackEnd:(BOOL)a3
+- (void)setIsAtPlaybackEnd:(BOOL)end
 {
-  if (self->_isAtPlaybackEnd != a3)
+  if (self->_isAtPlaybackEnd != end)
   {
-    self->_isAtPlaybackEnd = a3;
+    self->_isAtPlaybackEnd = end;
     [(PXStoryModel *)self signalChange:0x40000000000];
   }
 }
 
-- (void)setPlaybackMaxFractionCompleted:(double)a3
+- (void)setPlaybackMaxFractionCompleted:(double)completed
 {
-  if (self->_playbackMaxFractionCompleted != a3)
+  if (self->_playbackMaxFractionCompleted != completed)
   {
-    self->_playbackMaxFractionCompleted = a3;
+    self->_playbackMaxFractionCompleted = completed;
   }
 }
 
-- (void)setPlaybackDuration:(id *)a3
+- (void)setPlaybackDuration:(id *)duration
 {
   p_playbackDuration = &self->_playbackDuration;
-  time1 = *a3;
+  time1 = *duration;
   playbackDuration = self->_playbackDuration;
   if (CMTimeCompare(&time1, &playbackDuration))
   {
-    v6 = *&a3->var0;
-    p_playbackDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_playbackDuration->epoch = duration->var3;
     *&p_playbackDuration->value = v6;
     [(PXStoryModel *)self signalChange:0x20000];
   }
 }
 
-- (void)setPlaybackFractionCompleted:(double)a3
+- (void)setPlaybackFractionCompleted:(double)completed
 {
-  if (self->_playbackFractionCompleted != a3)
+  if (self->_playbackFractionCompleted != completed)
   {
     PXFloatEqualToFloatWithTolerance();
   }
 }
 
-- (void)setReadinessStatus:(int64_t)a3
+- (void)setReadinessStatus:(int64_t)status
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (self->_readinessStatus == a3)
+  if (self->_readinessStatus == status)
   {
     return;
   }
 
   if ([(PXStoryModel *)self desiredPlayState]== 1)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       [(PXStoryModel *)self setBufferingEvents:[(PXStoryModel *)self bufferingEvents]+ 1];
       v5 = [(PXStoryModel *)self log];
@@ -4296,7 +4296,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
         if (os_signpost_enabled(v5))
         {
           v28 = 134217984;
-          v29 = [(PXStoryModel *)self logContext];
+          logContext = [(PXStoryModel *)self logContext];
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PXStoryModel.Buffering", "Context=%{signpost.telemetry:string2}lu ", &v28, 0xCu);
         }
       }
@@ -4304,7 +4304,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
 
     else
     {
-      if (a3 != 3 || self->_readinessStatus != 1)
+      if (status != 3 || self->_readinessStatus != 1)
       {
         goto LABEL_13;
       }
@@ -4316,14 +4316,14 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
         v9 = v8;
         if (os_signpost_enabled(v5))
         {
-          v10 = [(PXStoryModel *)self logContext];
+          logContext2 = [(PXStoryModel *)self logContext];
           v11 = +[PXNetworkStatusMonitor sharedInstance];
           v28 = 134218496;
-          v29 = v10;
+          logContext = logContext2;
           v30 = 2050;
-          v31 = [v11 bestAvailableNetworkType];
+          statusCopy2 = [v11 bestAvailableNetworkType];
           v32 = 2050;
-          v33 = [(PXStoryModel *)self bufferingEvents];
+          bufferingEvents = [(PXStoryModel *)self bufferingEvents];
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v9, "PXStoryModel.Buffering", "Context=%{signpost.telemetry:string2}lu  enableTelemetry=YES networkType=%{signpost.telemetry:number1,public}lu bufferingEventCount=%{signpost.telemetry:number2,public}lu", &v28, 0x20u);
         }
       }
@@ -4331,7 +4331,7 @@ uint64_t __40__PXStoryModel_skipToSegmentWithOffset___block_invoke(uint64_t a1, 
   }
 
 LABEL_13:
-  self->_readinessStatus = a3;
+  self->_readinessStatus = status;
   [(PXStoryModel *)self signalChange:0x200000];
   v12 = [(PXStoryModel *)self log];
   v13 = os_signpost_id_make_with_pointer(v12, self);
@@ -4340,9 +4340,9 @@ LABEL_13:
     v14 = v13;
     if (os_signpost_enabled(v12))
     {
-      v15 = [(PXStoryModel *)self logContext];
+      logContext3 = [(PXStoryModel *)self logContext];
       v28 = 134217984;
-      v29 = v15;
+      logContext = logContext3;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_END, v14, "PXStoryModelChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu ", &v28, 0xCu);
     }
   }
@@ -4354,24 +4354,24 @@ LABEL_13:
     v18 = v17;
     if (os_signpost_enabled(v16))
     {
-      v19 = [(PXStoryModel *)self logContext];
-      if (a3 > 3)
+      logContext4 = [(PXStoryModel *)self logContext];
+      if (status > 3)
       {
         v20 = @"??";
       }
 
       else
       {
-        v20 = off_1E77402F0[a3];
+        v20 = off_1E77402F0[status];
       }
 
       v21 = v20;
       v28 = 134218498;
-      v29 = v19;
+      logContext = logContext4;
       v30 = 2048;
-      v31 = a3;
+      statusCopy2 = status;
       v32 = 2114;
-      v33 = v21;
+      bufferingEvents = v21;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_EVENT, v18, "PXStoryModelChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v28, 0x20u);
     }
   }
@@ -4383,35 +4383,35 @@ LABEL_13:
     v24 = v23;
     if (os_signpost_enabled(v22))
     {
-      v25 = [(PXStoryModel *)self logContext];
-      if (a3 > 3)
+      logContext5 = [(PXStoryModel *)self logContext];
+      if (status > 3)
       {
         v26 = @"??";
       }
 
       else
       {
-        v26 = off_1E77402F0[a3];
+        v26 = off_1E77402F0[status];
       }
 
       v27 = v26;
       v28 = 134218498;
-      v29 = v25;
+      logContext = logContext5;
       v30 = 2048;
-      v31 = a3;
+      statusCopy2 = status;
       v32 = 2114;
-      v33 = v27;
+      bufferingEvents = v27;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v24, "PXStoryModelChangedReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v28, 0x20u);
     }
   }
 }
 
-- (void)setMusicReadinessStatus:(int64_t)a3
+- (void)setMusicReadinessStatus:(int64_t)status
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (self->_musicReadinessStatus != a3)
+  if (self->_musicReadinessStatus != status)
   {
-    self->_musicReadinessStatus = a3;
+    self->_musicReadinessStatus = status;
     [(PXStoryModel *)self signalChange:0x100000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4421,7 +4421,7 @@ LABEL_13:
       if (os_signpost_enabled(v5))
       {
         v20 = 134217984;
-        v21 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedMusicReadinessStatus", "Context=%{signpost.telemetry:string2}lu ", &v20, 0xCu);
       }
     }
@@ -4433,22 +4433,22 @@ LABEL_13:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
-        if (a3 > 3)
+        logContext2 = [(PXStoryModel *)self logContext];
+        if (status > 3)
         {
           v12 = @"??";
         }
 
         else
         {
-          v12 = off_1E77402F0[a3];
+          v12 = off_1E77402F0[status];
         }
 
         v13 = v12;
         v20 = 134218498;
-        v21 = v11;
+        logContext = logContext2;
         v22 = 2048;
-        v23 = a3;
+        statusCopy2 = status;
         v24 = 2114;
         v25 = v13;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedMusicReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4462,22 +4462,22 @@ LABEL_13:
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v17 = [(PXStoryModel *)self logContext];
-        if (a3 > 3)
+        logContext3 = [(PXStoryModel *)self logContext];
+        if (status > 3)
         {
           v18 = @"??";
         }
 
         else
         {
-          v18 = off_1E77402F0[a3];
+          v18 = off_1E77402F0[status];
         }
 
         v19 = v18;
         v20 = 134218498;
-        v21 = v17;
+        logContext = logContext3;
         v22 = 2048;
-        v23 = a3;
+        statusCopy2 = status;
         v24 = 2114;
         v25 = v19;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PXStoryModelChangedMusicReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4486,12 +4486,12 @@ LABEL_13:
   }
 }
 
-- (void)setContentReadinessStatus:(int64_t)a3
+- (void)setContentReadinessStatus:(int64_t)status
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (self->_contentReadinessStatus != a3)
+  if (self->_contentReadinessStatus != status)
   {
-    self->_contentReadinessStatus = a3;
+    self->_contentReadinessStatus = status;
     [(PXStoryModel *)self signalChange:128];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4501,7 +4501,7 @@ LABEL_13:
       if (os_signpost_enabled(v5))
       {
         v20 = 134217984;
-        v21 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedContentReadinessStatus", "Context=%{signpost.telemetry:string2}lu ", &v20, 0xCu);
       }
     }
@@ -4513,22 +4513,22 @@ LABEL_13:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
-        if (a3 > 3)
+        logContext2 = [(PXStoryModel *)self logContext];
+        if (status > 3)
         {
           v12 = @"??";
         }
 
         else
         {
-          v12 = off_1E77402F0[a3];
+          v12 = off_1E77402F0[status];
         }
 
         v13 = v12;
         v20 = 134218498;
-        v21 = v11;
+        logContext = logContext2;
         v22 = 2048;
-        v23 = a3;
+        statusCopy2 = status;
         v24 = 2114;
         v25 = v13;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedContentReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4542,22 +4542,22 @@ LABEL_13:
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v17 = [(PXStoryModel *)self logContext];
-        if (a3 > 3)
+        logContext3 = [(PXStoryModel *)self logContext];
+        if (status > 3)
         {
           v18 = @"??";
         }
 
         else
         {
-          v18 = off_1E77402F0[a3];
+          v18 = off_1E77402F0[status];
         }
 
         v19 = v18;
         v20 = 134218498;
-        v21 = v17;
+        logContext = logContext3;
         v22 = 2048;
-        v23 = a3;
+        statusCopy2 = status;
         v24 = 2114;
         v25 = v19;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PXStoryModelChangedContentReadinessStatus", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4566,18 +4566,18 @@ LABEL_13:
   }
 }
 
-- (void)setLayoutSpec:(id)a3
+- (void)setLayoutSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_layoutSpec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_layoutSpec != specCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryLayoutSpec *)v5 isEqual:?];
+    v8 = specCopy;
+    v7 = [(PXStoryLayoutSpec *)specCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_layoutSpec, a3);
+      objc_storeStrong(&self->_layoutSpec, spec);
       [(PXStoryModel *)self _invalidatePressedFractionAnimator];
       [(PXStoryModel *)self signalChange:0x2000];
       v6 = v8;
@@ -4585,29 +4585,29 @@ LABEL_13:
   }
 }
 
-- (void)setTimelineSpec:(id)a3
+- (void)setTimelineSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_timelineSpec != v5)
+  specCopy = spec;
+  if (self->_timelineSpec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_timelineSpec, a3);
-    v5 = v6;
+    v6 = specCopy;
+    objc_storeStrong(&self->_timelineSpec, spec);
+    specCopy = v6;
   }
 }
 
-- (void)setTimelineAttributes:(unint64_t)a3
+- (void)setTimelineAttributes:(unint64_t)attributes
 {
   v26 = *MEMORY[0x1E69E9840];
   timelineAttributes = self->_timelineAttributes;
-  if (timelineAttributes == a3)
+  if (timelineAttributes == attributes)
   {
     return;
   }
 
-  if ((timelineAttributes & 2) == 0 || !(((self->_timelineAttributes & 1) == 0) | a3 & 1))
+  if ((timelineAttributes & 2) == 0 || !(((self->_timelineAttributes & 1) == 0) | attributes & 1))
   {
-    if ((((self->_timelineAttributes & 2) == 0) & (((self->_timelineAttributes & 1) == 0) | a3)) != 0)
+    if ((((self->_timelineAttributes & 2) == 0) & (((self->_timelineAttributes & 1) == 0) | attributes)) != 0)
     {
       goto LABEL_8;
     }
@@ -4616,13 +4616,13 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  if ((a3 & 2) == 0)
+  if ((attributes & 2) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  self->_timelineAttributes = a3;
+  self->_timelineAttributes = attributes;
   [(PXStoryModel *)self signalChange:0x20000000];
   v6 = [(PXStoryModel *)self log];
   v7 = os_signpost_id_make_with_pointer(v6, self);
@@ -4631,9 +4631,9 @@ LABEL_8:
     v8 = v7;
     if (os_signpost_enabled(v6))
     {
-      v9 = [(PXStoryModel *)self logContext];
+      logContext = [(PXStoryModel *)self logContext];
       v20 = 134217984;
-      v21 = v9;
+      v21 = logContext;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXStoryModelChangedTimelineAttributes", "Context=%{signpost.telemetry:string2}lu ", &v20, 0xCu);
     }
   }
@@ -4645,12 +4645,12 @@ LABEL_8:
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
-      v13 = [(PXStoryModel *)self logContext];
-      v14 = PXStoryComponentAttributesDescription(a3);
+      logContext2 = [(PXStoryModel *)self logContext];
+      v14 = PXStoryComponentAttributesDescription(attributes);
       v20 = 134218498;
-      v21 = v13;
+      v21 = logContext2;
       v22 = 2048;
-      v23 = a3;
+      attributesCopy2 = attributes;
       v24 = 2114;
       v25 = v14;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, v12, "PXStoryModelChangedTimelineAttributes", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4664,12 +4664,12 @@ LABEL_8:
     v17 = v16;
     if (os_signpost_enabled(v15))
     {
-      v18 = [(PXStoryModel *)self logContext];
-      v19 = PXStoryComponentAttributesDescription(a3);
+      logContext3 = [(PXStoryModel *)self logContext];
+      v19 = PXStoryComponentAttributesDescription(attributes);
       v20 = 134218498;
-      v21 = v18;
+      v21 = logContext3;
       v22 = 2048;
-      v23 = a3;
+      attributesCopy2 = attributes;
       v24 = 2114;
       v25 = v19;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PXStoryModelChangedTimelineAttributes", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v20, 0x20u);
@@ -4679,25 +4679,25 @@ LABEL_8:
 
 - (void)_callCompletionHandlersPendingTimelineChange
 {
-  v3 = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
-  if (v3)
+  overallDurationChangeCompletionHandler = [(PXStoryModel *)self overallDurationChangeCompletionHandler];
+  if (overallDurationChangeCompletionHandler)
   {
-    v4 = v3;
+    v4 = overallDurationChangeCompletionHandler;
     [(PXStoryModel *)self setOverallDurationChangeCompletionHandler:0];
     v4[2](v4, 1);
-    v3 = v4;
+    overallDurationChangeCompletionHandler = v4;
   }
 }
 
-- (void)setTimeline:(id)a3
+- (void)setTimeline:(id)timeline
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_timeline != v5 && ([(PXStoryTimeline *)v5 isEqual:?]& 1) == 0)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_timeline != timelineCopy && ([(PXStoryTimeline *)timelineCopy isEqual:?]& 1) == 0)
   {
     v7 = self->_timeline;
-    objc_storeStrong(&self->_timeline, a3);
+    objc_storeStrong(&self->_timeline, timeline);
     [(PXStoryModel *)self signalChange:16];
     v8 = [(PXStoryModel *)self log];
     v9 = os_signpost_id_make_with_pointer(v8, self);
@@ -4719,9 +4719,9 @@ LABEL_8:
       v13 = v12;
       if (os_signpost_enabled(v11))
       {
-        v14 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         LODWORD(buf.value) = 134218242;
-        *(&buf.value + 4) = v14;
+        *(&buf.value + 4) = logContext;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_EVENT, v13, "PXStoryModelChangedTimeline", "Context=%{signpost.telemetry:string2}lu %{public}@", &buf, 0x16u);
@@ -4735,25 +4735,25 @@ LABEL_8:
       v17 = v16;
       if (os_signpost_enabled(v15))
       {
-        v18 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         LODWORD(buf.value) = 134218242;
-        *(&buf.value + 4) = v18;
+        *(&buf.value + 4) = logContext2;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PXStoryModelChangedTimeline", "Context=%{signpost.telemetry:string2}lu %{public}@", &buf, 0x16u);
       }
     }
 
-    v19 = [(PXStoryModel *)self currentSegmentIdentifier];
-    v20 = [(PXStoryModel *)self desiredStartAsset];
-    if (v20)
+    currentSegmentIdentifier = [(PXStoryModel *)self currentSegmentIdentifier];
+    desiredStartAsset = [(PXStoryModel *)self desiredStartAsset];
+    if (desiredStartAsset)
     {
-      v21 = [(PXStoryTimeline *)v6 identifierOfFirstSegmentContainingAsset:v20];
+      v21 = [(PXStoryTimeline *)v6 identifierOfFirstSegmentContainingAsset:desiredStartAsset];
       if (v21)
       {
         v22 = v21;
         [(PXStoryModel *)self setDesiredStartAsset:0];
-        v19 = v22;
+        currentSegmentIdentifier = v22;
       }
     }
 
@@ -4761,18 +4761,18 @@ LABEL_8:
     *&v27.value = PXStoryTimeZero;
     *&v26.value = PXStoryTimeZero;
     v26.epoch = 0;
-    if ([(PXStoryTimeline *)v7 containsSegmentWithIdentifier:v19])
+    if ([(PXStoryTimeline *)v7 containsSegmentWithIdentifier:currentSegmentIdentifier])
     {
       [(PXStoryModel *)self timeIntoCurrentSegment];
       [(PXStoryModel *)self timeLeftInCurrentSegment];
     }
 
-    if (([(PXStoryTimeline *)v6 containsSegmentWithIdentifier:v19]& 1) == 0)
+    if (([(PXStoryTimeline *)v6 containsSegmentWithIdentifier:currentSegmentIdentifier]& 1) == 0)
     {
-      v19 = [(PXStoryTimeline *)v6 identifierOfSegmentClosestToSegmentWithIdentifier:v19 inTimeline:v7];
+      currentSegmentIdentifier = [(PXStoryTimeline *)v6 identifierOfSegmentClosestToSegmentWithIdentifier:currentSegmentIdentifier inTimeline:v7];
       if (v6)
       {
-        [(PXStoryTimeline *)v6 timeRangeForSegmentWithIdentifier:v19];
+        [(PXStoryTimeline *)v6 timeRangeForSegmentWithIdentifier:currentSegmentIdentifier];
       }
 
       else
@@ -4789,7 +4789,7 @@ LABEL_8:
 
     buf = v27;
     rhs = v26;
-    [(PXStoryModel *)self setCurrentSegmentIdentifier:v19 timeIntoSegment:&buf timeLeftInSegment:&rhs changeSource:1, v23, v24[0]];
+    [(PXStoryModel *)self setCurrentSegmentIdentifier:currentSegmentIdentifier timeIntoSegment:&buf timeLeftInSegment:&rhs changeSource:1, v23, v24[0]];
     [(PXStoryModel *)self _invalidateNominalPlaybackTime];
     [(PXStoryModel *)self _invalidateOutroDuration];
     [(PXStoryModel *)self _invalidatePlaybackFractionCompleted];
@@ -4797,14 +4797,14 @@ LABEL_8:
   }
 }
 
-- (void)setViewModeTransition:(id)a3
+- (void)setViewModeTransition:(id)transition
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewModeTransition != v5 && ([(PXStoryViewModeTransition *)v5 isEqual:?]& 1) == 0)
+  transitionCopy = transition;
+  v6 = transitionCopy;
+  if (self->_viewModeTransition != transitionCopy && ([(PXStoryViewModeTransition *)transitionCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModeTransition, a3);
+    objc_storeStrong(&self->_viewModeTransition, transition);
     [(PXStoryModel *)self signalChange:0x400000];
     v7 = [(PXStoryModel *)self log];
     v8 = os_signpost_id_make_with_pointer(v7, self);
@@ -4814,7 +4814,7 @@ LABEL_8:
       if (os_signpost_enabled(v7))
       {
         v18 = 134217984;
-        v19 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, v9, "PXStoryModelChangedViewModeTransition", "Context=%{signpost.telemetry:string2}lu ", &v18, 0xCu);
       }
     }
@@ -4826,9 +4826,9 @@ LABEL_8:
       v12 = v11;
       if (os_signpost_enabled(v10))
       {
-        v13 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v18 = 134218242;
-        v19 = v13;
+        logContext = logContext2;
         v20 = 2114;
         v21 = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, v12, "PXStoryModelChangedViewModeTransition", "Context=%{signpost.telemetry:string2}lu %{public}@", &v18, 0x16u);
@@ -4842,9 +4842,9 @@ LABEL_8:
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v17 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v18 = 134218242;
-        v19 = v17;
+        logContext = logContext3;
         v20 = 2114;
         v21 = v6;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PXStoryModelChangedViewModeTransition", "Context=%{signpost.telemetry:string2}lu %{public}@", &v18, 0x16u);
@@ -4853,13 +4853,13 @@ LABEL_8:
   }
 }
 
-- (void)setShouldAspectFitCurrentSegment:(BOOL)a3
+- (void)setShouldAspectFitCurrentSegment:(BOOL)segment
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_shouldAspectFitCurrentSegment != a3)
+  if (self->_shouldAspectFitCurrentSegment != segment)
   {
-    v3 = a3;
-    self->_shouldAspectFitCurrentSegment = a3;
+    segmentCopy = segment;
+    self->_shouldAspectFitCurrentSegment = segment;
     [(PXStoryModel *)self signalChange:0x1000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4869,7 +4869,7 @@ LABEL_8:
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedShouldAspectFitCurrentSegment", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4881,11 +4881,11 @@ LABEL_8:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = segmentCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedShouldAspectFitCurrentSegment", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4897,91 +4897,91 @@ LABEL_8:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = segmentCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedShouldAspectFitCurrentSegment", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setThumbnailAutoplayTimeRange:(id *)a3
+- (void)setThumbnailAutoplayTimeRange:(id *)range
 {
   p_thumbnailAutoplayTimeRange = &self->_thumbnailAutoplayTimeRange;
-  v6 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v6;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   v7 = *&self->_thumbnailAutoplayTimeRange.start.epoch;
   *&v10.start.value = *&self->_thumbnailAutoplayTimeRange.start.value;
   *&v10.start.epoch = v7;
   *&v10.duration.timescale = *&self->_thumbnailAutoplayTimeRange.duration.timescale;
   if (!CMTimeRangeEqual(&range1, &v10))
   {
-    v8 = *&a3->var0.var0;
-    v9 = *&a3->var1.var1;
-    *&p_thumbnailAutoplayTimeRange->start.epoch = *&a3->var0.var3;
+    v8 = *&range->var0.var0;
+    v9 = *&range->var1.var1;
+    *&p_thumbnailAutoplayTimeRange->start.epoch = *&range->var0.var3;
     *&p_thumbnailAutoplayTimeRange->duration.timescale = v9;
     *&p_thumbnailAutoplayTimeRange->start.value = v8;
     [(PXStoryModel *)self signalChange:0x4000000000000];
   }
 }
 
-- (void)setShouldAutoplayThumbnail:(BOOL)a3
+- (void)setShouldAutoplayThumbnail:(BOOL)thumbnail
 {
-  if (self->_shouldAutoplayThumbnail != a3)
+  if (self->_shouldAutoplayThumbnail != thumbnail)
   {
-    self->_shouldAutoplayThumbnail = a3;
+    self->_shouldAutoplayThumbnail = thumbnail;
     [(PXStoryModel *)self signalChange:0x80000000];
   }
 }
 
-- (void)setDetailsViewButtonDisplayStyle:(int64_t)a3
+- (void)setDetailsViewButtonDisplayStyle:(int64_t)style
 {
-  if (self->_detailsViewButtonDisplayStyle != a3)
+  if (self->_detailsViewButtonDisplayStyle != style)
   {
-    self->_detailsViewButtonDisplayStyle = a3;
+    self->_detailsViewButtonDisplayStyle = style;
   }
 }
 
-- (void)setTitleAlignment:(int64_t)a3
+- (void)setTitleAlignment:(int64_t)alignment
 {
-  if (self->_titleAlignment != a3)
+  if (self->_titleAlignment != alignment)
   {
-    self->_titleAlignment = a3;
+    self->_titleAlignment = alignment;
     [(PXStoryModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setPresentedSubtitleFrame:(id)a3
+- (void)setPresentedSubtitleFrame:(id)frame
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_presentedSubtitleFrame] & 1) == 0)
+  frameCopy = frame;
+  if (([frameCopy isEqual:self->_presentedSubtitleFrame] & 1) == 0)
   {
-    objc_storeStrong(&self->_presentedSubtitleFrame, a3);
+    objc_storeStrong(&self->_presentedSubtitleFrame, frame);
     [(PXStoryModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setPresentedTitleFrame:(id)a3
+- (void)setPresentedTitleFrame:(id)frame
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_presentedTitleFrame] & 1) == 0)
+  frameCopy = frame;
+  if (([frameCopy isEqual:self->_presentedTitleFrame] & 1) == 0)
   {
-    objc_storeStrong(&self->_presentedTitleFrame, a3);
+    objc_storeStrong(&self->_presentedTitleFrame, frame);
     [(PXStoryModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setTitleOpacity:(double)a3
+- (void)setTitleOpacity:(double)opacity
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_titleOpacity != a3)
+  if (self->_titleOpacity != opacity)
   {
-    self->_titleOpacity = a3;
+    self->_titleOpacity = opacity;
     [(PXStoryModel *)self signalChange:0x1000000000000];
     v4 = [(PXStoryModel *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
@@ -4991,7 +4991,7 @@ LABEL_8:
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXStoryModelChangedTitleOpacity", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -5003,10 +5003,10 @@ LABEL_8:
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         titleOpacity = self->_titleOpacity;
         v17 = 134218240;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2048;
         v20 = titleOpacity;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryModelChangedTitleOpacity", "Context=%{signpost.telemetry:string2}lu %.2f", &v17, 0x16u);
@@ -5020,10 +5020,10 @@ LABEL_8:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = self->_titleOpacity;
         v17 = 134218240;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2048;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedTitleOpacity", "Context=%{signpost.telemetry:string2}lu %.2f", &v17, 0x16u);
@@ -5032,12 +5032,12 @@ LABEL_8:
   }
 }
 
-- (void)setChromeVisibilityFraction:(double)a3
+- (void)setChromeVisibilityFraction:(double)fraction
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_chromeVisibilityFraction != a3)
+  if (self->_chromeVisibilityFraction != fraction)
   {
-    self->_chromeVisibilityFraction = a3;
+    self->_chromeVisibilityFraction = fraction;
     [(PXStoryModel *)self signalChange:0x1000000000000000];
     v4 = [(PXStoryModel *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
@@ -5047,7 +5047,7 @@ LABEL_8:
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXStoryModelChangedChromeVisibilityFraction", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -5059,10 +5059,10 @@ LABEL_8:
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         chromeVisibilityFraction = self->_chromeVisibilityFraction;
         v17 = 134218240;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2048;
         v20 = chromeVisibilityFraction;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryModelChangedChromeVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %.2f", &v17, 0x16u);
@@ -5076,10 +5076,10 @@ LABEL_8:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = self->_chromeVisibilityFraction;
         v17 = 134218240;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2048;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedChromeVisibilityFraction", "Context=%{signpost.telemetry:string2}lu %.2f", &v17, 0x16u);
@@ -5088,13 +5088,13 @@ LABEL_8:
   }
 }
 
-- (void)setPrefersExportLayoutMatchesPlayback:(BOOL)a3
+- (void)setPrefersExportLayoutMatchesPlayback:(BOOL)playback
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_prefersExportLayoutMatchesPlayback != a3)
+  if (self->_prefersExportLayoutMatchesPlayback != playback)
   {
-    v3 = a3;
-    self->_prefersExportLayoutMatchesPlayback = a3;
+    playbackCopy = playback;
+    self->_prefersExportLayoutMatchesPlayback = playback;
     [(PXStoryModel *)self signalChange:0x80000000000000];
     v5 = [(PXStoryModel *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -5104,7 +5104,7 @@ LABEL_8:
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedPrefersExportLayoutMatchesPlayback", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -5116,11 +5116,11 @@ LABEL_8:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
+        logContext2 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = playbackCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedPrefersExportLayoutMatchesPlayback", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -5132,32 +5132,32 @@ LABEL_8:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryModel *)self logContext];
+        logContext3 = [(PXStoryModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = playbackCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryModelChangedPrefersExportLayoutMatchesPlayback", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setThumbnailStyle:(int64_t)a3
+- (void)setThumbnailStyle:(int64_t)style
 {
-  if (self->_thumbnailStyle != a3)
+  if (self->_thumbnailStyle != style)
   {
-    self->_thumbnailStyle = a3;
+    self->_thumbnailStyle = style;
   }
 }
 
-- (void)setViewMode:(int64_t)a3
+- (void)setViewMode:(int64_t)mode
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (self->_viewMode != a3)
+  if (self->_viewMode != mode)
   {
-    self->_viewMode = a3;
-    if (a3 != 3)
+    self->_viewMode = mode;
+    if (mode != 3)
     {
       [(PXStoryModel *)self setThumbnailStyle:0];
     }
@@ -5173,7 +5173,7 @@ LABEL_8:
       if (os_signpost_enabled(v5))
       {
         v18 = 134217984;
-        v19 = [(PXStoryModel *)self logContext];
+        logContext = [(PXStoryModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryModelChangedViewMode", "Context=%{signpost.telemetry:string2}lu ", &v18, 0xCu);
       }
     }
@@ -5185,12 +5185,12 @@ LABEL_8:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryModel *)self logContext];
-        v12 = PXStoryViewModeDescription(a3);
+        logContext2 = [(PXStoryModel *)self logContext];
+        v12 = PXStoryViewModeDescription(mode);
         v18 = 134218498;
-        v19 = v11;
+        logContext = logContext2;
         v20 = 2048;
-        v21 = a3;
+        modeCopy2 = mode;
         v22 = 2114;
         v23 = v12;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryModelChangedViewMode", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v18, 0x20u);
@@ -5204,12 +5204,12 @@ LABEL_8:
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXStoryModel *)self logContext];
-        v17 = PXStoryViewModeDescription(a3);
+        logContext3 = [(PXStoryModel *)self logContext];
+        v17 = PXStoryViewModeDescription(mode);
         v18 = 134218498;
-        v19 = v16;
+        logContext = logContext3;
         v20 = 2048;
-        v21 = a3;
+        modeCopy2 = mode;
         v22 = 2114;
         v23 = v17;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PXStoryModelChangedViewMode", "Context=%{signpost.telemetry:string2}lu %ld %{public}@", &v18, 0x20u);
@@ -5218,12 +5218,12 @@ LABEL_8:
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   v5 = self->_configuration;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == configurationCopy)
   {
   }
 
@@ -5233,7 +5233,7 @@ LABEL_8:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_configuration, a3);
+      objc_storeStrong(&self->_configuration, configuration);
       [(PXStoryModel *)self signalChange:0x2000000000];
       [(PXStoryModel *)self _invalidatePersistencePermission];
     }
@@ -5242,19 +5242,19 @@ LABEL_8:
 
 - (void)_displayCollectionPersistenceConfirmationIfNeeded
 {
-  v3 = [(PXStoryModel *)self configuration];
-  v4 = [v3 collectionPersistenceConfirmationStyle];
+  configuration = [(PXStoryModel *)self configuration];
+  collectionPersistenceConfirmationStyle = [configuration collectionPersistenceConfirmationStyle];
 
-  if (v4 == 2)
+  if (collectionPersistenceConfirmationStyle == 2)
   {
 
     [(PXStoryModel *)self beginEditing];
   }
 
-  else if (v4 == 1)
+  else if (collectionPersistenceConfirmationStyle == 1)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    [(PXStoryModel *)self setPersistenceConfirmationPresentationDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PXStoryModel *)self setPersistenceConfirmationPresentationDate:date];
 
     v6 = PLStoryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -5279,19 +5279,19 @@ void __65__PXStoryModel__displayCollectionPersistenceConfirmationIfNeeded__block
 
 - (PXStoryChapterCollectionManager)chapterCollectionManager
 {
-  v2 = [(PXStoryModel *)self recipeManager];
-  v3 = [v2 chapterCollectionManager];
+  recipeManager = [(PXStoryModel *)self recipeManager];
+  chapterCollectionManager = [recipeManager chapterCollectionManager];
 
-  return v3;
+  return chapterCollectionManager;
 }
 
 - (BOOL)currentChapterTitleIsVisible
 {
-  v3 = [(PXStoryModel *)self chapterCollectionManager];
-  v4 = [v3 chapterCollection];
+  chapterCollectionManager = [(PXStoryModel *)self chapterCollectionManager];
+  chapterCollection = [chapterCollectionManager chapterCollection];
 
-  v5 = [(PXStoryModel *)self visibleDisplayAssets];
-  if ([v5 count] < 1)
+  visibleDisplayAssets = [(PXStoryModel *)self visibleDisplayAssets];
+  if ([visibleDisplayAssets count] < 1)
   {
 LABEL_5:
     v9 = 0;
@@ -5302,23 +5302,23 @@ LABEL_5:
     v6 = 0;
     while (1)
     {
-      v7 = [v5 objectAtIndexedSubscript:v6];
-      v8 = [v4 containsChapterBeginningWithAsset:v7];
+      v7 = [visibleDisplayAssets objectAtIndexedSubscript:v6];
+      v8 = [chapterCollection containsChapterBeginningWithAsset:v7];
 
       if (v8)
       {
         break;
       }
 
-      if (++v6 >= [v5 count])
+      if (++v6 >= [visibleDisplayAssets count])
       {
         goto LABEL_5;
       }
     }
 
-    v10 = [(PXStoryModel *)self timeline];
-    v11 = [(PXStoryModel *)self visibleSegmentIdentifiers];
-    v12 = [v10 indexOfSegmentWithIdentifier:{objc_msgSend(v11, "firstIndex")}];
+    timeline = [(PXStoryModel *)self timeline];
+    visibleSegmentIdentifiers = [(PXStoryModel *)self visibleSegmentIdentifiers];
+    v12 = [timeline indexOfSegmentWithIdentifier:{objc_msgSend(visibleSegmentIdentifiers, "firstIndex")}];
 
     v9 = v12 != 0;
   }
@@ -5328,11 +5328,11 @@ LABEL_5:
 
 - (PXStoryChapter)currentChapter
 {
-  v3 = [(PXStoryModel *)self chapterCollectionManager];
-  v4 = [v3 chapterCollection];
+  chapterCollectionManager = [(PXStoryModel *)self chapterCollectionManager];
+  chapterCollection = [chapterCollectionManager chapterCollection];
 
-  v5 = [(PXStoryModel *)self visibleDisplayAssets];
-  if ([v5 count] < 1)
+  visibleDisplayAssets = [(PXStoryModel *)self visibleDisplayAssets];
+  if ([visibleDisplayAssets count] < 1)
   {
 LABEL_5:
     v8 = 0;
@@ -5343,15 +5343,15 @@ LABEL_5:
     v6 = 0;
     while (1)
     {
-      v7 = [v5 objectAtIndexedSubscript:v6];
-      v8 = [v4 chapterContainingAsset:v7];
+      v7 = [visibleDisplayAssets objectAtIndexedSubscript:v6];
+      v8 = [chapterCollection chapterContainingAsset:v7];
 
       if (v8)
       {
         break;
       }
 
-      if (++v6 >= [v5 count])
+      if (++v6 >= [visibleDisplayAssets count])
       {
         goto LABEL_5;
       }
@@ -5363,10 +5363,10 @@ LABEL_5:
 
 - (PXExtendedTraitCollection)extendedTraitCollection
 {
-  v2 = [(PXStoryModel *)self layoutSpecManager];
-  v3 = [v2 extendedTraitCollection];
+  layoutSpecManager = [(PXStoryModel *)self layoutSpecManager];
+  extendedTraitCollection = [layoutSpecManager extendedTraitCollection];
 
-  return v3;
+  return extendedTraitCollection;
 }
 
 - (NSSet)changesOrigins
@@ -5386,9 +5386,9 @@ LABEL_5:
 
 - (void)didPerformChanges
 {
-  v3 = [(PXStoryModel *)self currentChanges];
-  v4 = [(PXStoryModel *)self currentChanges];
-  if ((v3 & 0x10000) != 0 && (v4 & 0x2000000) == 0)
+  currentChanges = [(PXStoryModel *)self currentChanges];
+  currentChanges2 = [(PXStoryModel *)self currentChanges];
+  if ((currentChanges & 0x10000) != 0 && (currentChanges2 & 0x2000000) == 0)
   {
     [(PXStoryModel *)self _clearLastHitAssetClip];
   }
@@ -5396,42 +5396,42 @@ LABEL_5:
   v6.receiver = self;
   v6.super_class = PXStoryModel;
   [(PXStoryModel *)&v6 didPerformChanges];
-  v5 = [(PXStoryModel *)self updater];
-  [v5 updateIfNeeded];
+  updater = [(PXStoryModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3 origin:(id)a4
+- (void)performChanges:(id)changes origin:(id)origin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXStoryModel *)self storyQueue];
-  dispatch_assert_queue_V2(v8);
+  changesCopy = changes;
+  originCopy = origin;
+  storyQueue = [(PXStoryModel *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
-  if (v7)
+  if (originCopy)
   {
-    [(NSMutableSet *)self->_changesOrigins addObject:v7];
+    [(NSMutableSet *)self->_changesOrigins addObject:originCopy];
   }
 
   v9.receiver = self;
   v9.super_class = PXStoryModel;
-  [(PXStoryModel *)&v9 performChanges:v6];
+  [(PXStoryModel *)&v9 performChanges:changesCopy];
 }
 
-- (PXStoryModel)initWithTimelineManager:(id)a3 layoutSpecManager:(id)a4 configuration:(id)a5
+- (PXStoryModel)initWithTimelineManager:(id)manager layoutSpecManager:(id)specManager configuration:(id)configuration
 {
   v81 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  specManagerCopy = specManager;
+  configurationCopy = configuration;
   v76.receiver = self;
   v76.super_class = PXStoryModel;
   v12 = [(PXStoryModel *)&v76 init];
   if (v12)
   {
-    v13 = [v11 log];
+    v13 = [configurationCopy log];
     [v12 setLog:v13];
 
-    [v12 setLogContext:{objc_msgSend(v11, "logContext")}];
+    [v12 setLogContext:{objc_msgSend(configurationCopy, "logContext")}];
     v14 = [v12 log];
     v15 = os_signpost_id_make_with_pointer(v14, v12);
     if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5439,18 +5439,18 @@ LABEL_5:
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v68 = [v12 logContext];
-        v70 = [v11 assetCollection];
+        logContext = [v12 logContext];
+        assetCollection = [configurationCopy assetCollection];
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v69 = [v11 assetCollection];
-        [v69 localizedTitle];
-        v19 = v72 = v9;
-        v20 = [v11 assetCollection];
-        [v20 uuid];
-        v21 = v71 = v10;
+        assetCollection2 = [configurationCopy assetCollection];
+        [assetCollection2 localizedTitle];
+        v19 = v72 = managerCopy;
+        assetCollection3 = [configurationCopy assetCollection];
+        [assetCollection3 uuid];
+        v21 = v71 = specManagerCopy;
         LODWORD(buf.value) = 134218754;
-        *(&buf.value + 4) = v68;
+        *(&buf.value + 4) = logContext;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v18;
         HIWORD(buf.epoch) = 2112;
@@ -5459,8 +5459,8 @@ LABEL_5:
         v80 = v21;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_EVENT, v16, "PXStoryModel.init", "Context=%{signpost.telemetry:string2}lu AssetCollection=%{signpost.description:attribute,public}@ Title=%{signpost.description:attribute}@ UUID=%{signpost.description:attribute,public}@ ", &buf, 0x2Au);
 
-        v10 = v71;
-        v9 = v72;
+        specManagerCopy = v71;
+        managerCopy = v72;
       }
     }
 
@@ -5468,26 +5468,26 @@ LABEL_5:
     v23 = *(v12 + 22);
     *(v12 + 22) = v22;
 
-    objc_storeStrong(v12 + 83, a3);
+    objc_storeStrong(v12 + 83, manager);
     [*(v12 + 83) registerChangeObserver:v12 context:TimelineManagerObservationContext];
-    v24 = [*(v12 + 83) specManager];
-    [v24 registerChangeObserver:v12 context:TimelineSpecManagerObservationContext];
+    specManager = [*(v12 + 83) specManager];
+    [specManager registerChangeObserver:v12 context:TimelineSpecManagerObservationContext];
 
-    v25 = [v9 resourcesDataSourceManager];
+    resourcesDataSourceManager = [managerCopy resourcesDataSourceManager];
     v26 = *(v12 + 56);
-    *(v12 + 56) = v25;
+    *(v12 + 56) = resourcesDataSourceManager;
 
     [*(v12 + 56) registerChangeObserver:v12 context:ResourcesDataSourceManagerObservationContext_124137];
-    v27 = [v9 styleManager];
+    styleManager = [managerCopy styleManager];
     v28 = *(v12 + 52);
-    *(v12 + 52) = v27;
+    *(v12 + 52) = styleManager;
 
     [*(v12 + 52) registerChangeObserver:v12 context:StyleManagerObservationContext_124138];
-    v29 = [*(v12 + 56) recipeManager];
+    recipeManager = [*(v12 + 56) recipeManager];
     v30 = *(v12 + 57);
-    *(v12 + 57) = v29;
+    *(v12 + 57) = recipeManager;
 
-    objc_storeStrong(v12 + 72, a4);
+    objc_storeStrong(v12 + 72, specManager);
     [*(v12 + 72) registerChangeObserver:v12 context:LayoutSpecManagerObservationContext];
     v31 = objc_alloc_init(PXStoryLoadingStatusReporter);
     v32 = *(v12 + 64);
@@ -5524,9 +5524,9 @@ LABEL_5:
     v39 = *(v12 + 13);
     *(v12 + 13) = v38;
 
-    v40 = [*(v12 + 52) colorGradingRepository];
+    colorGradingRepository = [*(v12 + 52) colorGradingRepository];
     v41 = *(v12 + 53);
-    *(v12 + 53) = v40;
+    *(v12 + 53) = colorGradingRepository;
 
     *(v12 + 26) = 0;
     CMTimeMakeWithSeconds(&buf, 0.0, 600);
@@ -5542,7 +5542,7 @@ LABEL_5:
     v44 = *&buf.value;
     *(v12 + 107) = buf.epoch;
     *(v12 + 840) = v44;
-    *(v12 + 27) = [v11 initialViewMode];
+    *(v12 + 27) = [configurationCopy initialViewMode];
     v12[127] = 1;
     *(v12 + 56) = 0u;
     *(v12 + 57) = 0u;
@@ -5550,27 +5550,27 @@ LABEL_5:
     *(v12 + 29) = 1;
     *(v12 + 34) = 0x3FF0000000000000;
     *(v12 + 69) = 0x3FF0000000000000;
-    v12[123] = [v11 allowInactiveAppearance];
-    v45 = [v9 storyQueue];
+    v12[123] = [configurationCopy allowInactiveAppearance];
+    storyQueue = [managerCopy storyQueue];
     v46 = *(v12 + 19);
-    *(v12 + 19) = v45;
+    *(v12 + 19) = storyQueue;
 
-    v12[136] = ([v11 options] & 0x2000) != 0 || *(v12 + 19) != MEMORY[0x1E69E96A0];
-    v12[137] = ([v11 options] & 0x8000) != 0;
-    v12[138] = ([v11 options] & 0x20000) != 0;
-    v47 = [v11 options];
-    *(v12 + 63) = [v9 options] & 1 | (2 * ((v47 >> 6) & 1));
-    v48 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    v12[136] = ([configurationCopy options] & 0x2000) != 0 || *(v12 + 19) != MEMORY[0x1E69E96A0];
+    v12[137] = ([configurationCopy options] & 0x8000) != 0;
+    v12[138] = ([configurationCopy options] & 0x20000) != 0;
+    options = [configurationCopy options];
+    *(v12 + 63) = [managerCopy options] & 1 | (2 * ((options >> 6) & 1));
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v49 = *(v12 + 74);
-    *(v12 + 74) = v48;
+    *(v12 + 74) = strongToWeakObjectsMapTable;
 
-    v50 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v51 = *(v12 + 75);
-    *(v12 + 75) = v50;
+    *(v12 + 75) = weakObjectsHashTable;
 
-    v52 = [v11 errorReporter];
+    errorReporter = [configurationCopy errorReporter];
     v53 = *(v12 + 65);
-    *(v12 + 65) = v52;
+    *(v12 + 65) = errorReporter;
 
     v54 = [[PXStoryAnimationController alloc] initWithModel:v12];
     v55 = *(v12 + 60);
@@ -5599,16 +5599,16 @@ LABEL_5:
     *(v12 + 79) = v63;
 
     [*(v12 + 79) registerChangeObserver:v12 context:PressedFractionAnimatorObservationContext];
-    v65 = [v11 desiredStartAsset];
+    desiredStartAsset = [configurationCopy desiredStartAsset];
     v66 = *(v12 + 80);
-    *(v12 + 80) = v65;
+    *(v12 + 80) = desiredStartAsset;
 
     v73[0] = MEMORY[0x1E69E9820];
     v73[1] = 3221225472;
     v73[2] = __72__PXStoryModel_initWithTimelineManager_layoutSpecManager_configuration___block_invoke;
     v73[3] = &unk_1E77498F8;
     v74 = v12;
-    v75 = v11;
+    v75 = configurationCopy;
     [v74 performChanges:v73];
   }
 
@@ -5633,8 +5633,8 @@ uint64_t __72__PXStoryModel_initWithTimelineManager_layoutSpecManager_configurat
 
 - (PXStoryModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryModel.m" lineNumber:114 description:{@"%s is not available as initializer", "-[PXStoryModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryModel.m" lineNumber:114 description:{@"%s is not available as initializer", "-[PXStoryModel init]"}];
 
   abort();
 }

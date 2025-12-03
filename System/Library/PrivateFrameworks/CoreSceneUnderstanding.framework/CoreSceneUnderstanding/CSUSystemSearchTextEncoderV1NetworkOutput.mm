@@ -1,24 +1,24 @@
 @interface CSUSystemSearchTextEncoderV1NetworkOutput
-- (CSUSystemSearchTextEncoderV1NetworkOutput)initWithTextEmbedding:(const void *)a3 tokenSegments:(id)a4;
+- (CSUSystemSearchTextEncoderV1NetworkOutput)initWithTextEmbedding:(const void *)embedding tokenSegments:(id)segments;
 @end
 
 @implementation CSUSystemSearchTextEncoderV1NetworkOutput
 
-- (CSUSystemSearchTextEncoderV1NetworkOutput)initWithTextEmbedding:(const void *)a3 tokenSegments:(id)a4
+- (CSUSystemSearchTextEncoderV1NetworkOutput)initWithTextEmbedding:(const void *)embedding tokenSegments:(id)segments
 {
-  v7 = a4;
+  segmentsCopy = segments;
   v33.receiver = self;
   v33.super_class = CSUSystemSearchTextEncoderV1NetworkOutput;
   v8 = [(CSUSystemSearchTextEncoderV1NetworkOutput *)&v33 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_tokenSegments, a4);
-    v13 = objc_msgSend_castToFP16WithDeepCopyFromTensor_(CSUMLMultiArrayUtilities, v10, a3, v11, v12);
+    objc_storeStrong(&v8->_tokenSegments, segments);
+    v13 = objc_msgSend_castToFP16WithDeepCopyFromTensor_(CSUMLMultiArrayUtilities, v10, embedding, v11, v12);
     systemSearchTextEmbeddingMLMultiArray = v9->_systemSearchTextEmbeddingMLMultiArray;
     v9->_systemSearchTextEmbeddingMLMultiArray = v13;
 
-    v15 = *(a3 + 5);
+    v15 = *(embedding + 5);
     v16 = *(v15 + 40);
     v17 = *(v15 + 24);
     v31[0] = *(v15 + 8);

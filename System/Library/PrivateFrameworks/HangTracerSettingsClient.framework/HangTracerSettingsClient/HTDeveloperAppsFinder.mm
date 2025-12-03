@@ -1,9 +1,9 @@
 @interface HTDeveloperAppsFinder
 - (HTDeveloperAppsFinder)init;
 - (HTDeveloperAppsFinderDelegate)delegate;
-- (void)checkProxiesForDeveloperAppAndNotifyDelegate:(id)a3;
+- (void)checkProxiesForDeveloperAppAndNotifyDelegate:(id)delegate;
 - (void)dealloc;
-- (void)findApps:(id)a3;
+- (void)findApps:(id)apps;
 @end
 
 @implementation HTDeveloperAppsFinder
@@ -15,8 +15,8 @@
   v2 = [(HTDeveloperAppsFinder *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v3 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
   }
 
   return v2;
@@ -24,17 +24,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HTDeveloperAppsFinder;
   [(HTDeveloperAppsFinder *)&v4 dealloc];
 }
 
-- (void)findApps:(id)a3
+- (void)findApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   NSLog(&cfstr_FindingApplica.isa);
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
@@ -42,8 +42,8 @@
   v7[2] = __34__HTDeveloperAppsFinder_findApps___block_invoke;
   v7[3] = &unk_2796A92F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = appsCopy;
+  v6 = appsCopy;
   dispatch_async(v5, v7);
 }
 
@@ -175,16 +175,16 @@ uint64_t __34__HTDeveloperAppsFinder_findApps___block_invoke_6(uint64_t a1, void
   return v7;
 }
 
-- (void)checkProxiesForDeveloperAppAndNotifyDelegate:(id)a3
+- (void)checkProxiesForDeveloperAppAndNotifyDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  v6 = v4;
+  delegateCopy = delegate;
+  v5 = [delegateCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = delegateCopy;
   if (v5)
   {
     v7 = v5;
@@ -195,26 +195,26 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(delegateCopy);
       }
 
-      v10 = [*(*(&v14 + 1) + 8 * v9) correspondingApplicationRecord];
-      v11 = [v10 isDeveloperApp];
+      correspondingApplicationRecord = [*(*(&v14 + 1) + 8 * v9) correspondingApplicationRecord];
+      isDeveloperApp = [correspondingApplicationRecord isDeveloperApp];
 
-      if (v11)
+      if (isDeveloperApp)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [delegateCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
         }
 
-        v6 = v4;
+        v6 = delegateCopy;
         goto LABEL_12;
       }
     }

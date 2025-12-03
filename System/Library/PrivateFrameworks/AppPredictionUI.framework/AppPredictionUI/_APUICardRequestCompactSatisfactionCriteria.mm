@@ -1,13 +1,13 @@
 @interface _APUICardRequestCompactSatisfactionCriteria
-- (unint64_t)servicePriorityForRequest:(id)a3;
+- (unint64_t)servicePriorityForRequest:(id)request;
 @end
 
 @implementation _APUICardRequestCompactSatisfactionCriteria
 
-- (unint64_t)servicePriorityForRequest:(id)a3
+- (unint64_t)servicePriorityForRequest:(id)request
 {
-  v4 = a3;
-  if ([(_APUICardRequestCompactSatisfactionCriteria *)self canSatisfyCardRequest:v4])
+  requestCopy = request;
+  if ([(_APUICardRequestCompactSatisfactionCriteria *)self canSatisfyCardRequest:requestCopy])
   {
     v5 = 2;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _APUICardRequestCompactSatisfactionCriteria;
-    v5 = [(APUICardRequestSatisfactionCriteria *)&v7 servicePriorityForRequest:v4];
+    v5 = [(APUICardRequestSatisfactionCriteria *)&v7 servicePriorityForRequest:requestCopy];
   }
 
   return v5;

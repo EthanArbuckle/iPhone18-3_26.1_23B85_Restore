@@ -1,36 +1,36 @@
 @interface MOPeopleDiscoveryManager
-- (MOPeopleDiscoveryManager)initWithUniverse:(id)a3;
-- (id)_createEventFromPeopleDensityEvent:(id)a3;
-- (id)_createEventFromProx:(id)a3;
-- (id)_createNewEventsWithStoredEvents:(id)a3 peopleDensityEvents:(id)a4;
-- (id)_createNewEventsWithStoredEvents:(id)a3 proxEvents:(id)a4;
-- (id)_rehydrateStoredEvents:(id)a3 fromPeopleDensityEvents:(id)a4;
-- (id)_rehydrateStoredEvents:(id)a3 fromProxEvents:(id)a4;
-- (id)_updateMOEventWithEndDate:(id)a3 endDate:(id)a4;
+- (MOPeopleDiscoveryManager)initWithUniverse:(id)universe;
+- (id)_createEventFromPeopleDensityEvent:(id)event;
+- (id)_createEventFromProx:(id)prox;
+- (id)_createNewEventsWithStoredEvents:(id)events peopleDensityEvents:(id)densityEvents;
+- (id)_createNewEventsWithStoredEvents:(id)events proxEvents:(id)proxEvents;
+- (id)_rehydrateStoredEvents:(id)events fromPeopleDensityEvents:(id)densityEvents;
+- (id)_rehydrateStoredEvents:(id)events fromProxEvents:(id)proxEvents;
+- (id)_updateMOEventWithEndDate:(id)date endDate:(id)endDate;
 - (id)routineManager;
-- (void)_fetchPeopleDensityBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)_fetchPeopleDensityEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchProxBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)_fetchProxEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_rehydratePeopleDensityEvents:(id)a3 handler:(id)a4;
-- (void)_rehydrateProx:(id)a3 handler:(id)a4;
-- (void)_saveEvents:(id)a3 handler:(id)a4;
-- (void)_savePeopleDensityEvents:(id)a3 handler:(id)a4;
-- (void)fetchAndSaveProxBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)fetchPeopleDensityEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)fetchProxEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydratePeopleDensityEvents:(id)a3 handler:(id)a4;
-- (void)rehydrateProx:(id)a3 handler:(id)a4;
+- (void)_fetchPeopleDensityBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)_fetchPeopleDensityEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchProxBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)_fetchProxEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_rehydratePeopleDensityEvents:(id)events handler:(id)handler;
+- (void)_rehydrateProx:(id)prox handler:(id)handler;
+- (void)_saveEvents:(id)events handler:(id)handler;
+- (void)_savePeopleDensityEvents:(id)events handler:(id)handler;
+- (void)fetchAndSaveProxBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)fetchPeopleDensityEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)fetchProxEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydratePeopleDensityEvents:(id)events handler:(id)handler;
+- (void)rehydrateProx:(id)prox handler:(id)handler;
 @end
 
 @implementation MOPeopleDiscoveryManager
 
-- (MOPeopleDiscoveryManager)initWithUniverse:(id)a3
+- (MOPeopleDiscoveryManager)initWithUniverse:(id)universe
 {
-  v6 = a3;
+  universeCopy = universe;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 getService:v8];
+  v9 = [universeCopy getService:v8];
 
   if (!v9)
   {
@@ -47,7 +47,7 @@
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v6 getService:v11];
+  v12 = [universeCopy getService:v11];
 
   if (!v12)
   {
@@ -61,7 +61,7 @@
     [v20 handleFailureInMethod:a2 object:self file:@"MOPeopleDiscoveryManager.m" lineNumber:63 description:@"Invalid parameter not satisfying: eventStore"];
 
 LABEL_12:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -77,14 +77,14 @@ LABEL_12:
 
     objc_storeStrong(&v13->_eventStore, v12);
     objc_storeStrong(&v13->_configurationManager, v9);
-    objc_storeStrong(&v13->_universe, a3);
+    objc_storeStrong(&v13->_universe, universe);
   }
 
   self = v13;
-  v17 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)routineManager
@@ -105,16 +105,16 @@ LABEL_13:
   return [(MORoutineServiceManager *)routineServiceManager routineManager];
 }
 
-- (void)fetchAndSaveProxBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)fetchAndSaveProxBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __77__MOPeopleDiscoveryManager_fetchAndSaveProxBetweenStartDate_EndDate_handler___block_invoke;
   v8[3] = &unk_100337850;
-  v9 = self;
-  v10 = a5;
-  v7 = v10;
-  [(MOPeopleDiscoveryManager *)v9 _fetchProxBetweenStartDate:a3 EndDate:a4 handler:v8];
+  selfCopy = self;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [(MOPeopleDiscoveryManager *)selfCopy _fetchProxBetweenStartDate:date EndDate:endDate handler:v8];
 }
 
 void __77__MOPeopleDiscoveryManager_fetchAndSaveProxBetweenStartDate_EndDate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -184,24 +184,24 @@ uint64_t __77__MOPeopleDiscoveryManager_fetchAndSaveProxBetweenStartDate_EndDate
   return result;
 }
 
-- (void)_fetchProxBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)_fetchProxBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOPeopleDiscoveryManager *)self routineManager];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __71__MOPeopleDiscoveryManager__fetchProxBetweenStartDate_EndDate_handler___block_invoke;
   v15[3] = &unk_100337878;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 fetchProximityHistoryFromStartDate:v14 endDate:v13 completionHandler:v15];
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  [routineManager fetchProximityHistoryFromStartDate:v14 endDate:v13 completionHandler:v15];
 }
 
 void __71__MOPeopleDiscoveryManager__fetchProxBetweenStartDate_EndDate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -309,24 +309,24 @@ LABEL_5:
 LABEL_21:
 }
 
-- (void)_fetchPeopleDensityBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)_fetchPeopleDensityBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOPeopleDiscoveryManager *)self routineManager];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __80__MOPeopleDiscoveryManager__fetchPeopleDensityBetweenStartDate_EndDate_handler___block_invoke;
   v15[3] = &unk_100337878;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 fetchPeopleDensityHistoryFromStartDate:v14 endDate:v13 completionHandler:v15];
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  [routineManager fetchPeopleDensityHistoryFromStartDate:v14 endDate:v13 completionHandler:v15];
 }
 
 void __80__MOPeopleDiscoveryManager__fetchPeopleDensityBetweenStartDate_EndDate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -434,16 +434,16 @@ LABEL_5:
 LABEL_21:
 }
 
-- (id)_createEventFromProx:(id)a3
+- (id)_createEventFromProx:(id)prox
 {
-  v4 = a3;
+  proxCopy = prox;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
-  if (v8)
+  startDate = [proxCopy startDate];
+  endDate = [proxCopy endDate];
+  if (endDate)
   {
-    [v4 endDate];
+    [proxCopy endDate];
   }
 
   else
@@ -452,12 +452,12 @@ LABEL_21:
   }
   v9 = ;
   v10 = +[NSDate now];
-  v11 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v9 creationDate:v10 provider:6 category:15];
+  v11 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:v9 creationDate:v10 provider:6 category:15];
 
-  v12 = [v4 endDate];
-  if (v12)
+  endDate2 = [proxCopy endDate];
+  if (endDate2)
   {
-    [v4 endDate];
+    [proxCopy endDate];
   }
 
   else
@@ -465,16 +465,16 @@ LABEL_21:
     +[NSDate now];
   }
   v13 = ;
-  v14 = [(MOPeopleDiscoveryManager *)self configurationManager];
+  configurationManager = [(MOPeopleDiscoveryManager *)self configurationManager];
   LODWORD(v15) = 1242802176;
-  [v14 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v15];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v15];
   v17 = [v13 dateByAddingTimeInterval:v16];
   [(MOEvent *)v11 setExpirationDate:v17];
 
-  v18 = [v4 endDate];
-  if (v18)
+  endDate3 = [proxCopy endDate];
+  if (endDate3)
   {
-    [(MOEvent *)v11 setSourceCreationDate:v18];
+    [(MOEvent *)v11 setSourceCreationDate:endDate3];
   }
 
   else
@@ -483,30 +483,30 @@ LABEL_21:
     [(MOEvent *)v11 setSourceCreationDate:v19];
   }
 
-  v20 = [v4 endDate];
+  endDate4 = [proxCopy endDate];
 
-  if (!v20)
+  if (!endDate4)
   {
     [(MOEvent *)v11 setIsGComplete:0];
   }
 
-  v21 = [v4 eventID];
-  v22 = [v21 UUIDString];
-  [(MOEvent *)v11 setIdentifierFromProvider:v22];
+  eventID = [proxCopy eventID];
+  uUIDString = [eventID UUIDString];
+  [(MOEvent *)v11 setIdentifierFromProvider:uUIDString];
 
   return v11;
 }
 
-- (id)_createEventFromPeopleDensityEvent:(id)a3
+- (id)_createEventFromPeopleDensityEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [MOEvent alloc];
   v5 = +[NSUUID UUID];
-  v6 = [v3 startDate];
-  v7 = [v3 endDate];
-  if (v7)
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  if (endDate)
   {
-    [v3 endDate];
+    [eventCopy endDate];
   }
 
   else
@@ -515,12 +515,12 @@ LABEL_21:
   }
   v8 = ;
   v9 = +[NSDate now];
-  v10 = [(MOEvent *)v4 initWithEventIdentifier:v5 startDate:v6 endDate:v8 creationDate:v9 provider:6 category:23];
+  v10 = [(MOEvent *)v4 initWithEventIdentifier:v5 startDate:startDate endDate:v8 creationDate:v9 provider:6 category:23];
 
-  v11 = [v3 endDate];
-  if (v11)
+  endDate2 = [eventCopy endDate];
+  if (endDate2)
   {
-    [v3 endDate];
+    [eventCopy endDate];
   }
 
   else
@@ -531,10 +531,10 @@ LABEL_21:
   v13 = [v12 dateByAddingTimeInterval:2419200.0];
   [(MOEvent *)v10 setExpirationDate:v13];
 
-  v14 = [v3 endDate];
-  if (v14)
+  endDate3 = [eventCopy endDate];
+  if (endDate3)
   {
-    [(MOEvent *)v10 setSourceCreationDate:v14];
+    [(MOEvent *)v10 setSourceCreationDate:endDate3];
   }
 
   else
@@ -543,13 +543,13 @@ LABEL_21:
     [(MOEvent *)v10 setSourceCreationDate:v15];
   }
 
-  v16 = [v3 uuid];
-  v17 = [v16 UUIDString];
-  [(MOEvent *)v10 setIdentifierFromProvider:v17];
+  uuid = [eventCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [(MOEvent *)v10 setIdentifierFromProvider:uUIDString];
 
-  v18 = [v3 endDate];
+  endDate4 = [eventCopy endDate];
 
-  if (!v18)
+  if (!endDate4)
   {
     [(MOEvent *)v10 setIsGComplete:0];
   }
@@ -557,34 +557,34 @@ LABEL_21:
   return v10;
 }
 
-- (id)_updateMOEventWithEndDate:(id)a3 endDate:(id)a4
+- (id)_updateMOEventWithEndDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = [MOEvent alloc];
-  v8 = [v6 eventIdentifier];
-  v9 = [v6 startDate];
-  v10 = [v6 creationDate];
-  v11 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v7, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v8, v9, v5, v10, [v6 provider], objc_msgSend(v6, "category"));
+  eventIdentifier = [dateCopy eventIdentifier];
+  startDate = [dateCopy startDate];
+  creationDate = [dateCopy creationDate];
+  v11 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v7, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", eventIdentifier, startDate, endDateCopy, creationDate, [dateCopy provider], objc_msgSend(dateCopy, "category"));
 
-  v12 = [v6 expirationDate];
-  [(MOEvent *)v11 setExpirationDate:v12];
+  expirationDate = [dateCopy expirationDate];
+  [(MOEvent *)v11 setExpirationDate:expirationDate];
 
-  v13 = [v6 sourceCreationDate];
-  [(MOEvent *)v11 setSourceCreationDate:v13];
+  sourceCreationDate = [dateCopy sourceCreationDate];
+  [(MOEvent *)v11 setSourceCreationDate:sourceCreationDate];
 
   [(MOEvent *)v11 setIsGComplete:1];
-  v14 = [v6 identifierFromProvider];
+  identifierFromProvider = [dateCopy identifierFromProvider];
 
-  [(MOEvent *)v11 setIdentifierFromProvider:v14];
+  [(MOEvent *)v11 setIdentifierFromProvider:identifierFromProvider];
 
   return v11;
 }
 
-- (void)_saveEvents:(id)a3 handler:(id)a4
+- (void)_saveEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v21 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -603,7 +603,7 @@ LABEL_21:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v37 count:16];
   if (v10)
   {
@@ -648,7 +648,7 @@ LABEL_21:
   v22[1] = 3221225472;
   v22[2] = __48__MOPeopleDiscoveryManager__saveEvents_handler___block_invoke_124;
   v22[3] = &unk_100336198;
-  v20 = v21;
+  v20 = handlerCopy;
   v23 = v20;
   [(MOEventStore *)v19 storeEvents:v8 CompletionHandler:v22];
 
@@ -675,10 +675,10 @@ void __48__MOPeopleDiscoveryManager__saveEvents_handler___block_invoke_124(uint6
   }
 }
 
-- (void)_savePeopleDensityEvents:(id)a3 handler:(id)a4
+- (void)_savePeopleDensityEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v21 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -697,7 +697,7 @@ void __48__MOPeopleDiscoveryManager__saveEvents_handler___block_invoke_124(uint6
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v37 count:16];
   if (v10)
   {
@@ -742,7 +742,7 @@ void __48__MOPeopleDiscoveryManager__saveEvents_handler___block_invoke_124(uint6
   v22[1] = 3221225472;
   v22[2] = __61__MOPeopleDiscoveryManager__savePeopleDensityEvents_handler___block_invoke_125;
   v22[3] = &unk_100336198;
-  v20 = v21;
+  v20 = handlerCopy;
   v23 = v20;
   [(MOEventStore *)v19 storeEvents:v8 CompletionHandler:v22];
 
@@ -769,43 +769,43 @@ void __61__MOPeopleDiscoveryManager__savePeopleDensityEvents_handler___block_inv
   }
 }
 
-- (void)rehydrateProx:(id)a3 handler:(id)a4
+- (void)rehydrateProx:(id)prox handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOPeopleDiscoveryManager *)self queue];
+  proxCopy = prox;
+  handlerCopy = handler;
+  queue = [(MOPeopleDiscoveryManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__MOPeopleDiscoveryManager_rehydrateProx_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = proxCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = proxCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateProx:(id)a3 handler:(id)a4
+- (void)_rehydrateProx:(id)prox handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
-  v9 = [(MOPeopleDiscoveryManager *)self routineManager];
-  v10 = [v8 startDate];
-  v11 = [v8 endDate];
+  proxCopy = prox;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [proxCopy getDurationOfMOEventArray];
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __51__MOPeopleDiscoveryManager__rehydrateProx_handler___block_invoke;
   v15[3] = &unk_100337878;
   v15[4] = self;
-  v16 = v8;
-  v17 = v6;
-  v18 = v7;
-  v12 = v6;
-  v13 = v7;
-  v14 = v8;
-  [v9 fetchProximityHistoryFromStartDate:v10 endDate:v11 completionHandler:v15];
+  v16 = getDurationOfMOEventArray;
+  v17 = proxCopy;
+  v18 = handlerCopy;
+  v12 = proxCopy;
+  v13 = handlerCopy;
+  v14 = getDurationOfMOEventArray;
+  [routineManager fetchProximityHistoryFromStartDate:startDate endDate:endDate completionHandler:v15];
 }
 
 void __51__MOPeopleDiscoveryManager__rehydrateProx_handler___block_invoke(id *a1, void *a2, void *a3)
@@ -867,11 +867,11 @@ void __51__MOPeopleDiscoveryManager__rehydrateProx_handler___block_invoke_2(uint
   }
 }
 
-- (id)_rehydrateStoredEvents:(id)a3 fromProxEvents:(id)a4
+- (id)_rehydrateStoredEvents:(id)events fromProxEvents:(id)proxEvents
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  eventsCopy = events;
+  proxEventsCopy = proxEvents;
+  if (![eventsCopy count])
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityPeopleDiscovery);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -883,7 +883,7 @@ void __51__MOPeopleDiscoveryManager__rehydrateProx_handler___block_invoke_2(uint
     goto LABEL_31;
   }
 
-  if (![v6 count])
+  if (![proxEventsCopy count])
   {
     v31 = _mo_log_facility_get_os_log(&MOLogFacilityPeopleDiscovery);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -893,10 +893,10 @@ void __51__MOPeopleDiscoveryManager__rehydrateProx_handler___block_invoke_2(uint
     }
 
     v32 = [MORehydrationMetrics alloc];
-    v33 = [v5 firstObject];
-    v34 = [v33 category];
-    v35 = [v5 firstObject];
-    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v34, [v35 provider], 1, 0, objc_msgSend(v5, "count"), 3, objc_msgSend(v5, "count"), 0.0);
+    firstObject = [eventsCopy firstObject];
+    category = [firstObject category];
+    firstObject2 = [eventsCopy firstObject];
+    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(eventsCopy, "count"), 3, objc_msgSend(eventsCopy, "count"), 0.0);
 
     v58 = 0;
     [v7 submitMetricsWithError:&v58];
@@ -910,8 +910,8 @@ LABEL_31:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v46 = v6;
-  v8 = v6;
+  v46 = proxEventsCopy;
+  v8 = proxEventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (v9)
   {
@@ -927,9 +927,9 @@ LABEL_31:
         }
 
         v13 = *(*(&v54 + 1) + 8 * i);
-        v14 = [v13 eventID];
-        v15 = [v14 UUIDString];
-        [v7 setValue:v13 forKey:v15];
+        eventID = [v13 eventID];
+        uUIDString = [eventID UUIDString];
+        [v7 setValue:v13 forKey:uUIDString];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v54 objects:v64 count:16];
@@ -943,8 +943,8 @@ LABEL_31:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v47 = v5;
-  v17 = v5;
+  v47 = eventsCopy;
+  v17 = eventsCopy;
   v18 = [v17 countByEnumeratingWithState:&v50 objects:v63 count:16];
   if (v18)
   {
@@ -961,8 +961,8 @@ LABEL_31:
         }
 
         v23 = *(*(&v50 + 1) + 8 * j);
-        v24 = [v23 identifierFromProvider];
-        v25 = [v7 objectForKey:v24];
+        identifierFromProvider = [v23 identifierFromProvider];
+        v25 = [v7 objectForKey:identifierFromProvider];
 
         if (v25)
         {
@@ -973,10 +973,10 @@ LABEL_31:
 
           else
           {
-            v27 = [v25 endDate];
-            v28 = [(MOPeopleDiscoveryManager *)self _updateMOEventWithEndDate:v23 endDate:v27];
+            endDate = [v25 endDate];
+            v28 = [(MOPeopleDiscoveryManager *)self _updateMOEventWithEndDate:v23 endDate:endDate];
 
-            v20 = v27;
+            v20 = endDate;
           }
 
           [v28 setGaPR:{objc_msgSend(v25, "relationship")}];
@@ -1021,59 +1021,59 @@ LABEL_31:
   }
 
   v40 = [MORehydrationMetrics alloc];
-  v41 = [v17 firstObject];
-  v42 = [v41 category];
-  v43 = [v17 firstObject];
-  v44 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v40, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v42, [v43 provider], 1, 0, objc_msgSend(v17, "count"), 3, (objc_msgSend(v17, "count") - objc_msgSend(v16, "count")), 0.0);
+  firstObject3 = [v17 firstObject];
+  category2 = [firstObject3 category];
+  firstObject4 = [v17 firstObject];
+  v44 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v40, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category2, [firstObject4 provider], 1, 0, objc_msgSend(v17, "count"), 3, (objc_msgSend(v17, "count") - objc_msgSend(v16, "count")), 0.0);
 
   v49 = 0;
   [(MORehydrationMetrics *)v44 submitMetricsWithError:&v49];
   v36 = v16;
 
-  v6 = v46;
-  v5 = v47;
+  proxEventsCopy = v46;
+  eventsCopy = v47;
 LABEL_36:
 
   return v36;
 }
 
-- (void)rehydratePeopleDensityEvents:(id)a3 handler:(id)a4
+- (void)rehydratePeopleDensityEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOPeopleDiscoveryManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOPeopleDiscoveryManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __65__MOPeopleDiscoveryManager_rehydratePeopleDensityEvents_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydratePeopleDensityEvents:(id)a3 handler:(id)a4
+- (void)_rehydratePeopleDensityEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
-  v9 = [(MOPeopleDiscoveryManager *)self routineManager];
-  v10 = [v8 startDate];
-  v11 = [v8 endDate];
+  eventsCopy = events;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __66__MOPeopleDiscoveryManager__rehydratePeopleDensityEvents_handler___block_invoke;
   v15[3] = &unk_1003378F0;
-  v16 = v8;
-  v17 = self;
-  v18 = v6;
-  v19 = v7;
-  v12 = v6;
-  v13 = v7;
-  v14 = v8;
-  [v9 fetchPeopleDensityHistoryFromStartDate:v10 endDate:v11 completionHandler:v15];
+  v16 = getDurationOfMOEventArray;
+  selfCopy = self;
+  v18 = eventsCopy;
+  v19 = handlerCopy;
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v14 = getDurationOfMOEventArray;
+  [routineManager fetchPeopleDensityHistoryFromStartDate:startDate endDate:endDate completionHandler:v15];
 }
 
 void __66__MOPeopleDiscoveryManager__rehydratePeopleDensityEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1136,11 +1136,11 @@ LABEL_5:
 LABEL_10:
 }
 
-- (id)_rehydrateStoredEvents:(id)a3 fromPeopleDensityEvents:(id)a4
+- (id)_rehydrateStoredEvents:(id)events fromPeopleDensityEvents:(id)densityEvents
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  eventsCopy = events;
+  densityEventsCopy = densityEvents;
+  if (![eventsCopy count])
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityPeopleDiscovery);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1152,7 +1152,7 @@ LABEL_10:
     goto LABEL_35;
   }
 
-  if (![v6 count])
+  if (![densityEventsCopy count])
   {
     v40 = _mo_log_facility_get_os_log(&MOLogFacilityPeopleDiscovery);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
@@ -1162,10 +1162,10 @@ LABEL_10:
     }
 
     v41 = [MORehydrationMetrics alloc];
-    v42 = [v5 firstObject];
-    v43 = [v42 category];
-    v44 = [v5 firstObject];
-    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v41, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v43, [v44 provider], 1, 0, objc_msgSend(v5, "count"), 3, objc_msgSend(v5, "count"), 0.0);
+    firstObject = [eventsCopy firstObject];
+    category = [firstObject category];
+    firstObject2 = [eventsCopy firstObject];
+    v7 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v41, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(eventsCopy, "count"), 3, objc_msgSend(eventsCopy, "count"), 0.0);
 
     v58 = 0;
     [v7 submitMetricsWithError:&v58];
@@ -1179,8 +1179,8 @@ LABEL_35:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v46 = v6;
-  v8 = v6;
+  v46 = densityEventsCopy;
+  v8 = densityEventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (v9)
   {
@@ -1196,13 +1196,13 @@ LABEL_35:
         }
 
         v13 = *(*(&v54 + 1) + 8 * i);
-        v14 = [v13 uuid];
+        uuid = [v13 uuid];
 
-        if (v14)
+        if (uuid)
         {
-          v15 = [v13 uuid];
-          v16 = [v15 UUIDString];
-          [v7 setValue:v13 forKey:v16];
+          uuid2 = [v13 uuid];
+          uUIDString = [uuid2 UUIDString];
+          [v7 setValue:v13 forKey:uUIDString];
         }
       }
 
@@ -1217,8 +1217,8 @@ LABEL_35:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v47 = v5;
-  v18 = v5;
+  v47 = eventsCopy;
+  v18 = eventsCopy;
   v19 = [v18 countByEnumeratingWithState:&v50 objects:v63 count:16];
   if (v19)
   {
@@ -1234,8 +1234,8 @@ LABEL_35:
         }
 
         v23 = *(*(&v50 + 1) + 8 * j);
-        v24 = [v23 identifierFromProvider];
-        v25 = [v7 objectForKey:v24];
+        identifierFromProvider = [v23 identifierFromProvider];
+        v25 = [v7 objectForKey:identifierFromProvider];
 
         if (v25)
         {
@@ -1246,8 +1246,8 @@ LABEL_35:
 
           else
           {
-            v27 = [v25 endDate];
-            v28 = [(MOPeopleDiscoveryManager *)self _updateMOEventWithEndDate:v23 endDate:v27];
+            endDate = [v25 endDate];
+            v28 = [(MOPeopleDiscoveryManager *)self _updateMOEventWithEndDate:v23 endDate:endDate];
           }
 
           [v25 densityScore];
@@ -1289,50 +1289,50 @@ LABEL_35:
   }
 
   v35 = [MORehydrationMetrics alloc];
-  v36 = [v18 firstObject];
-  v37 = [v36 category];
-  v38 = [v18 firstObject];
-  v39 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v35, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v37, [v38 provider], 1, 0, objc_msgSend(v18, "count"), 3, (objc_msgSend(v18, "count") - objc_msgSend(v17, "count")), 0.0);
+  firstObject3 = [v18 firstObject];
+  category2 = [firstObject3 category];
+  firstObject4 = [v18 firstObject];
+  v39 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v35, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category2, [firstObject4 provider], 1, 0, objc_msgSend(v18, "count"), 3, (objc_msgSend(v18, "count") - objc_msgSend(v17, "count")), 0.0);
 
   v49 = 0;
   [(MORehydrationMetrics *)v39 submitMetricsWithError:&v49];
 
-  v6 = v46;
-  v5 = v47;
+  densityEventsCopy = v46;
+  eventsCopy = v47;
 LABEL_36:
 
   return v17;
 }
 
-- (void)fetchProxEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchProxEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOPeopleDiscoveryManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOPeopleDiscoveryManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __93__MOPeopleDiscoveryManager_fetchProxEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchProxEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchProxEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 15];
   v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 6];
   v29[0] = v14;
@@ -1340,23 +1340,23 @@ LABEL_36:
   v16 = [NSArray arrayWithObjects:v29 count:2];
   v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-  v18 = [v13 filteredArrayUsingPredicate:v17];
+  v18 = [eventsCopy filteredArrayUsingPredicate:v17];
 
-  v19 = [(MOPeopleDiscoveryManager *)self routineManager];
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v24[3] = &unk_100337940;
   v24[4] = self;
-  v25 = v10;
+  v25 = dateCopy;
   v27 = v18;
-  v28 = v12;
-  v26 = v11;
+  v28 = handlerCopy;
+  v26 = endDateCopy;
   v20 = v18;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
-  [v19 fetchProximityHistoryFromStartDate:v23 endDate:v22 completionHandler:v24];
+  v21 = handlerCopy;
+  v22 = endDateCopy;
+  v23 = dateCopy;
+  [routineManager fetchProximityHistoryFromStartDate:v23 endDate:v22 completionHandler:v24];
 }
 
 void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke(id *a1, void *a2, void *a3)
@@ -1470,13 +1470,13 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
   }
 }
 
-- (id)_createNewEventsWithStoredEvents:(id)a3 proxEvents:(id)a4
+- (id)_createNewEventsWithStoredEvents:(id)events proxEvents:(id)proxEvents
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  eventsCopy = events;
+  proxEventsCopy = proxEvents;
+  if ([proxEventsCopy count])
   {
-    if ([v5 count])
+    if ([eventsCopy count])
     {
       v43 = objc_opt_new();
       v7 = objc_opt_new();
@@ -1484,7 +1484,7 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v8 = v5;
+      v8 = eventsCopy;
       v9 = [v8 countByEnumeratingWithState:&v49 objects:v62 count:16];
       if (v9)
       {
@@ -1500,12 +1500,12 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
             }
 
             v13 = *(*(&v49 + 1) + 8 * i);
-            v14 = [v13 identifierFromProvider];
+            identifierFromProvider = [v13 identifierFromProvider];
 
-            if (v14)
+            if (identifierFromProvider)
             {
-              v15 = [v13 identifierFromProvider];
-              [v7 setValue:v13 forKey:v15];
+              identifierFromProvider2 = [v13 identifierFromProvider];
+              [v7 setValue:v13 forKey:identifierFromProvider2];
             }
           }
 
@@ -1515,14 +1515,14 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
         while (v10);
       }
 
-      v42 = v5;
+      v42 = eventsCopy;
 
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v41 = v6;
-      v16 = v6;
+      v41 = proxEventsCopy;
+      v16 = proxEventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v45 objects:v61 count:16];
       if (v17)
       {
@@ -1538,15 +1538,15 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
             }
 
             v21 = *(*(&v45 + 1) + 8 * j);
-            v22 = [v21 eventID];
-            v23 = [v22 UUIDString];
-            v24 = [v7 objectForKey:v23];
+            eventID = [v21 eventID];
+            uUIDString = [eventID UUIDString];
+            v24 = [v7 objectForKey:uUIDString];
 
             if (!v24)
             {
-              v25 = [v21 endDate];
+              endDate = [v21 endDate];
 
-              if (v25)
+              if (endDate)
               {
                 v26 = [(MOPeopleDiscoveryManager *)self _createEventFromProx:v21];
                 [v26 setGaPR:{objc_msgSend(v21, "relationship")}];
@@ -1580,8 +1580,8 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "new prox events count, %lu, stored prox event count, %lu", buf, 0x16u);
       }
 
-      v6 = v41;
-      v5 = v42;
+      proxEventsCopy = v41;
+      eventsCopy = v42;
     }
 
     else
@@ -1598,7 +1598,7 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v7 = v6;
+      v7 = proxEventsCopy;
       v32 = [v7 countByEnumeratingWithState:&v53 objects:v63 count:16];
       if (v32)
       {
@@ -1614,9 +1614,9 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
             }
 
             v36 = *(*(&v53 + 1) + 8 * k);
-            v37 = [v36 endDate];
+            endDate2 = [v36 endDate];
 
-            if (v37)
+            if (endDate2)
             {
               v38 = [(MOPeopleDiscoveryManager *)self _createEventFromProx:v36];
               [v38 setGaPR:{objc_msgSend(v36, "relationship")}];
@@ -1654,35 +1654,35 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
   return v43;
 }
 
-- (void)fetchPeopleDensityEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchPeopleDensityEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOPeopleDiscoveryManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOPeopleDiscoveryManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __102__MOPeopleDiscoveryManager_fetchPeopleDensityEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchPeopleDensityEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchPeopleDensityEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 23];
   v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 6];
   v30[0] = v14;
@@ -1690,23 +1690,23 @@ void __94__MOPeopleDiscoveryManager__fetchProxEventsBetweenStartDate_endDate_wit
   v16 = [NSArray arrayWithObjects:v30 count:2];
   v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-  v18 = [v13 filteredArrayUsingPredicate:v17];
+  v18 = [eventsCopy filteredArrayUsingPredicate:v17];
 
-  v19 = [(MOPeopleDiscoveryManager *)self routineManager];
+  routineManager = [(MOPeopleDiscoveryManager *)self routineManager];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v24[3] = &unk_100337968;
-  v25 = v10;
-  v26 = v11;
-  v28 = self;
-  v29 = v12;
+  v25 = dateCopy;
+  v26 = endDateCopy;
+  selfCopy = self;
+  v29 = handlerCopy;
   v27 = v18;
   v20 = v18;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
-  [v19 fetchPeopleDensityHistoryFromStartDate:v23 endDate:v22 completionHandler:v24];
+  v21 = handlerCopy;
+  v22 = endDateCopy;
+  v23 = dateCopy;
+  [routineManager fetchPeopleDensityHistoryFromStartDate:v23 endDate:v22 completionHandler:v24];
 }
 
 void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1801,13 +1801,13 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
   }
 }
 
-- (id)_createNewEventsWithStoredEvents:(id)a3 peopleDensityEvents:(id)a4
+- (id)_createNewEventsWithStoredEvents:(id)events peopleDensityEvents:(id)densityEvents
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  eventsCopy = events;
+  densityEventsCopy = densityEvents;
+  if ([densityEventsCopy count])
   {
-    if ([v5 count])
+    if ([eventsCopy count])
     {
       v45 = objc_opt_new();
       v7 = objc_opt_new();
@@ -1815,7 +1815,7 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v8 = v5;
+      v8 = eventsCopy;
       v9 = [v8 countByEnumeratingWithState:&v51 objects:v64 count:16];
       if (v9)
       {
@@ -1831,8 +1831,8 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
             }
 
             v13 = *(*(&v51 + 1) + 8 * i);
-            v14 = [v13 identifierFromProvider];
-            [v7 setValue:v13 forKey:v14];
+            identifierFromProvider = [v13 identifierFromProvider];
+            [v7 setValue:v13 forKey:identifierFromProvider];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v51 objects:v64 count:16];
@@ -1841,15 +1841,15 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
         while (v10);
       }
 
-      v44 = v5;
+      v44 = eventsCopy;
       v42 = v8;
 
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v43 = v6;
-      v15 = v6;
+      v43 = densityEventsCopy;
+      v15 = densityEventsCopy;
       v16 = [v15 countByEnumeratingWithState:&v47 objects:v63 count:16];
       if (v16)
       {
@@ -1865,15 +1865,15 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
             }
 
             v20 = *(*(&v47 + 1) + 8 * j);
-            v21 = [v20 uuid];
-            v22 = [v21 UUIDString];
-            v23 = [v7 objectForKey:v22];
+            uuid = [v20 uuid];
+            uUIDString = [uuid UUIDString];
+            v23 = [v7 objectForKey:uUIDString];
 
             if (!v23)
             {
-              v24 = [v20 endDate];
+              endDate = [v20 endDate];
 
-              if (v24)
+              if (endDate)
               {
                 v25 = [(MOPeopleDiscoveryManager *)self _createEventFromPeopleDensityEvent:v20];
                 [v20 densityScore];
@@ -1910,8 +1910,8 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "new density events count, %lu, stored density event count, %lu", buf, 0x16u);
       }
 
-      v6 = v43;
-      v5 = v44;
+      densityEventsCopy = v43;
+      eventsCopy = v44;
     }
 
     else
@@ -1928,7 +1928,7 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v7 = v6;
+      v7 = densityEventsCopy;
       v32 = [v7 countByEnumeratingWithState:&v55 objects:v65 count:16];
       if (v32)
       {
@@ -1944,9 +1944,9 @@ void __103__MOPeopleDiscoveryManager__fetchPeopleDensityEventsBetweenStartDate_e
             }
 
             v36 = *(*(&v55 + 1) + 8 * k);
-            v37 = [v36 endDate];
+            endDate2 = [v36 endDate];
 
-            if (v37)
+            if (endDate2)
             {
               v38 = [(MOPeopleDiscoveryManager *)self _createEventFromPeopleDensityEvent:v36];
               [v36 densityScore];

@@ -1,51 +1,51 @@
 @interface ADRapportLinkDiscoveryOptions
-+ (id)newWithBuilder:(id)a3;
-- (ADRapportLinkDiscoveryOptions)initWithBuilder:(id)a3;
-- (ADRapportLinkDiscoveryOptions)initWithCoder:(id)a3;
-- (ADRapportLinkDiscoveryOptions)initWithIncludesFamily:(int64_t)a3 includesHome:(int64_t)a4 includesRemoraDevices:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADRapportLinkDiscoveryOptions)initWithBuilder:(id)builder;
+- (ADRapportLinkDiscoveryOptions)initWithCoder:(id)coder;
+- (ADRapportLinkDiscoveryOptions)initWithIncludesFamily:(int64_t)family includesHome:(int64_t)home includesRemoraDevices:(int64_t)devices;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADRapportLinkDiscoveryOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   includesFamily = self->_includesFamily;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [NSNumber numberWithInteger:includesFamily];
-  [v5 encodeObject:v6 forKey:@"ADRapportLinkDiscoveryOptions::includesFamily"];
+  [coderCopy encodeObject:v6 forKey:@"ADRapportLinkDiscoveryOptions::includesFamily"];
 
   v7 = [NSNumber numberWithInteger:self->_includesHome];
-  [v5 encodeObject:v7 forKey:@"ADRapportLinkDiscoveryOptions::includesHome"];
+  [coderCopy encodeObject:v7 forKey:@"ADRapportLinkDiscoveryOptions::includesHome"];
 
   v8 = [NSNumber numberWithInteger:self->_includesRemoraDevices];
-  [v5 encodeObject:v8 forKey:@"ADRapportLinkDiscoveryOptions::includesRemoraDevices"];
+  [coderCopy encodeObject:v8 forKey:@"ADRapportLinkDiscoveryOptions::includesRemoraDevices"];
 }
 
-- (ADRapportLinkDiscoveryOptions)initWithCoder:(id)a3
+- (ADRapportLinkDiscoveryOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesFamily"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesFamily"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesHome"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesHome"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesRemoraDevices"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkDiscoveryOptions::includesRemoraDevices"];
 
-  v10 = [v9 integerValue];
+  integerValue3 = [v9 integerValue];
 
-  return [(ADRapportLinkDiscoveryOptions *)self initWithIncludesFamily:v6 includesHome:v8 includesRemoraDevices:v10];
+  return [(ADRapportLinkDiscoveryOptions *)self initWithIncludesFamily:integerValue includesHome:integerValue2 includesRemoraDevices:integerValue3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       includesFamily = self->_includesFamily;
       if (includesFamily == [(ADRapportLinkDiscoveryOptions *)v5 includesFamily]&& (includesHome = self->_includesHome, includesHome == [(ADRapportLinkDiscoveryOptions *)v5 includesHome]))
       {
@@ -90,7 +90,7 @@
   return v6 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -101,29 +101,29 @@
   return v6;
 }
 
-- (ADRapportLinkDiscoveryOptions)initWithIncludesFamily:(int64_t)a3 includesHome:(int64_t)a4 includesRemoraDevices:(int64_t)a5
+- (ADRapportLinkDiscoveryOptions)initWithIncludesFamily:(int64_t)family includesHome:(int64_t)home includesRemoraDevices:(int64_t)devices
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100133F50;
   v6[3] = &unk_1005129A8;
-  v6[4] = a3;
-  v6[5] = a4;
-  v6[6] = a5;
+  v6[4] = family;
+  v6[5] = home;
+  v6[6] = devices;
   return [(ADRapportLinkDiscoveryOptions *)self initWithBuilder:v6];
 }
 
-- (ADRapportLinkDiscoveryOptions)initWithBuilder:(id)a3
+- (ADRapportLinkDiscoveryOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = ADRapportLinkDiscoveryOptions;
   v5 = [(ADRapportLinkDiscoveryOptions *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADRapportLinkDiscoveryOptionsMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADRapportLinkDiscoveryOptionsMutation *)v7 isDirty])
     {
       v6->_includesFamily = [(_ADRapportLinkDiscoveryOptionsMutation *)v7 getIncludesFamily];
@@ -135,21 +135,21 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADRapportLinkDiscoveryOptionsMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADRapportLinkDiscoveryOptionsMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADRapportLinkDiscoveryOptions);

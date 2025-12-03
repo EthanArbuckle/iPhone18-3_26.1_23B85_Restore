@@ -1,97 +1,97 @@
 @interface SKINotificationsInvocation
-+ (id)announceNotificationsRequestFromAnnounceDirectInvocationPayload:(id)a3;
-+ (id)announcePayloadFromUserData:(id)a3;
++ (id)announceNotificationsRequestFromAnnounceDirectInvocationPayload:(id)payload;
++ (id)announcePayloadFromUserData:(id)data;
 @end
 
 @implementation SKINotificationsInvocation
 
-+ (id)announceNotificationsRequestFromAnnounceDirectInvocationPayload:(id)a3
++ (id)announceNotificationsRequestFromAnnounceDirectInvocationPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v5 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.notifications.announceNotification"];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:10];
-  v7 = [v3 appBundleId];
-  v8 = [v7 length];
+  appBundleId = [payloadCopy appBundleId];
+  v8 = [appBundleId length];
 
   if (v8)
   {
-    v9 = [v3 appBundleId];
-    [v6 setValue:v9 forKey:@"appBundleId"];
+    appBundleId2 = [payloadCopy appBundleId];
+    [v6 setValue:appBundleId2 forKey:@"appBundleId"];
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "synchronousBurstIndex")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(payloadCopy, "synchronousBurstIndex")}];
   [v6 setValue:v10 forKey:@"synchronousBurstIndex"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isMediaPlaying")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(payloadCopy, "isMediaPlaying")}];
   [v6 setValue:v11 forKey:@"isMediaPlaying"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSameTypeAsLastAnnouncement")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(payloadCopy, "isSameTypeAsLastAnnouncement")}];
   [v6 setValue:v12 forKey:@"isSameTypeAsLastAnnouncement"];
 
-  v13 = [v3 notification];
-  v14 = [v13 request];
+  notification = [payloadCopy notification];
+  request = [notification request];
 
-  v15 = [v14 content];
-  v16 = [v14 identifier];
-  v17 = [v16 length];
+  content = [request content];
+  identifier = [request identifier];
+  v17 = [identifier length];
 
   if (v17)
   {
-    v18 = [v14 identifier];
-    [v6 setValue:v18 forKey:@"notificationId"];
+    identifier2 = [request identifier];
+    [v6 setValue:identifier2 forKey:@"notificationId"];
   }
 
-  v19 = [v3 notification];
-  v20 = [v19 date];
+  notification2 = [payloadCopy notification];
+  date = [notification2 date];
 
-  if (v20)
+  if (date)
   {
-    v21 = [v3 notification];
-    v22 = [v21 date];
-    [v6 setValue:v22 forKey:@"notificationDate"];
+    notification3 = [payloadCopy notification];
+    date2 = [notification3 date];
+    [v6 setValue:date2 forKey:@"notificationDate"];
   }
 
-  v23 = [v15 title];
+  title = [content title];
 
-  if (v23)
+  if (title)
   {
-    v24 = [v15 title];
-    [v6 setValue:v24 forKey:@"notificationTitle"];
+    title2 = [content title];
+    [v6 setValue:title2 forKey:@"notificationTitle"];
   }
 
-  v25 = [v15 subtitle];
+  subtitle = [content subtitle];
 
-  if (v25)
+  if (subtitle)
   {
-    v26 = [v15 subtitle];
-    [v6 setValue:v26 forKey:@"notificationSubtitle"];
+    subtitle2 = [content subtitle];
+    [v6 setValue:subtitle2 forKey:@"notificationSubtitle"];
   }
 
-  v27 = [v15 body];
+  body = [content body];
 
-  if (v27)
+  if (body)
   {
-    v28 = [v15 body];
-    [v6 setValue:v28 forKey:@"notificationBody"];
+    body2 = [content body];
+    [v6 setValue:body2 forKey:@"notificationBody"];
   }
 
-  v29 = [v15 threadIdentifier];
+  threadIdentifier = [content threadIdentifier];
 
-  if (v29)
+  if (threadIdentifier)
   {
-    v30 = [v15 threadIdentifier];
-    [v6 setValue:v30 forKey:@"notificationThreadId"];
+    threadIdentifier2 = [content threadIdentifier];
+    [v6 setValue:threadIdentifier2 forKey:@"notificationThreadId"];
   }
 
-  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "interruptionLevel")}];
+  v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(content, "interruptionLevel")}];
   [v6 setValue:v31 forKey:@"interruptionLevel"];
 
-  v32 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "announcementPlatform")}];
+  v32 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(payloadCopy, "announcementPlatform")}];
   [v6 setValue:v32 forKey:@"announcePlatform"];
 
   v39 = 0;
-  v33 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v39];
+  v33 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:payloadCopy requiringSecureCoding:1 error:&v39];
   v34 = v39;
   if (v33)
   {
@@ -114,9 +114,9 @@
   return v37;
 }
 
-+ (id)announcePayloadFromUserData:(id)a3
++ (id)announcePayloadFromUserData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:@"announcePayload"];
+  v3 = [data objectForKeyedSubscript:@"announcePayload"];
   v8 = 0;
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
   v5 = v8;

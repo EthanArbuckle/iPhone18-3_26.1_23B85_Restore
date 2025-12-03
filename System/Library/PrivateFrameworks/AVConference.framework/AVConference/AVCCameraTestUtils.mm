@@ -1,8 +1,8 @@
 @interface AVCCameraTestUtils
-+ (BOOL)expectedGFTResolutionForDevice:(id)a3 ratio:(CGSize *)a4;
-+ (BOOL)expectedPreviewResolutionForDevice:(id)a3 width:(int *)a4 height:(int *)a5;
-+ (BOOL)findExpectedFramerate:(float *)a3 forDevice:(id)a4;
-+ (BOOL)isCameraAvailable:(int64_t)a3;
++ (BOOL)expectedGFTResolutionForDevice:(id)device ratio:(CGSize *)ratio;
++ (BOOL)expectedPreviewResolutionForDevice:(id)device width:(int *)width height:(int *)height;
++ (BOOL)findExpectedFramerate:(float *)framerate forDevice:(id)device;
++ (BOOL)isCameraAvailable:(int64_t)available;
 + (BOOL)isCenterStageActive;
 + (BOOL)isCenterStageAvailable;
 + (BOOL)isReactionAvailable;
@@ -39,7 +39,7 @@
   return v2;
 }
 
-+ (BOOL)isCameraAvailable:(int64_t)a3
++ (BOOL)isCameraAvailable:(int64_t)available
 {
   v9[6] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E6986928];
@@ -52,7 +52,7 @@
   v9[4] = *MEMORY[0x1E6986908];
   v9[5] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:6];
-  return [objc_msgSend(objc_msgSend(MEMORY[0x1E69870A8] discoverySessionWithDeviceTypes:v7 mediaType:*MEMORY[0x1E6987608] position:{a3), "devices"), "count"}] != 0;
+  return [objc_msgSend(objc_msgSend(MEMORY[0x1E69870A8] discoverySessionWithDeviceTypes:v7 mediaType:*MEMORY[0x1E6987608] position:{available), "devices"), "count"}] != 0;
 }
 
 + (BOOL)isCenterStageActive
@@ -102,28 +102,28 @@
   return v5 & 1;
 }
 
-+ (BOOL)expectedPreviewResolutionForDevice:(id)a3 width:(int *)a4 height:(int *)a5
++ (BOOL)expectedPreviewResolutionForDevice:(id)device width:(int *)width height:(int *)height
 {
   if (expectedPreviewResolutionForDevice_width_height__onceToken != -1)
   {
     +[AVCCameraTestUtils expectedPreviewResolutionForDevice:width:height:];
   }
 
-  v8 = [expectedPreviewResolutionForDevice_width_height___resolutionForDeviceTypeDict objectForKeyedSubscript:a3];
+  v8 = [expectedPreviewResolutionForDevice_width_height___resolutionForDeviceTypeDict objectForKeyedSubscript:device];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 componentsSeparatedByString:@"x"];
-    *a4 = [objc_msgSend(v10 objectAtIndexedSubscript:{0), "integerValue"}];
-    *a5 = [objc_msgSend(v10 objectAtIndexedSubscript:{1), "integerValue"}];
+    *width = [objc_msgSend(v10 objectAtIndexedSubscript:{0), "integerValue"}];
+    *height = [objc_msgSend(v10 objectAtIndexedSubscript:{1), "integerValue"}];
   }
 
   return v9 != 0;
 }
 
-+ (BOOL)expectedGFTResolutionForDevice:(id)a3 ratio:(CGSize *)a4
++ (BOOL)expectedGFTResolutionForDevice:(id)device ratio:(CGSize *)ratio
 {
-  if (!a4)
+  if (!ratio)
   {
     return 0;
   }
@@ -133,25 +133,25 @@
     +[AVCCameraTestUtils expectedGFTResolutionForDevice:ratio:];
   }
 
-  v6 = [expectedGFTResolutionForDevice_ratio___gftResolutionForDeviceTypeDict objectForKeyedSubscript:a3];
+  v6 = [expectedGFTResolutionForDevice_ratio___gftResolutionForDeviceTypeDict objectForKeyedSubscript:device];
   if (!v6)
   {
     return 0;
   }
 
   v7 = [v6 componentsSeparatedByString:@"x"];
-  a4->width = [objc_msgSend(v7 objectAtIndexedSubscript:{0), "integerValue"}];
+  ratio->width = [objc_msgSend(v7 objectAtIndexedSubscript:{0), "integerValue"}];
   v8 = 1;
-  a4->height = [objc_msgSend(v7 objectAtIndexedSubscript:{1), "integerValue"}];
+  ratio->height = [objc_msgSend(v7 objectAtIndexedSubscript:{1), "integerValue"}];
   return v8;
 }
 
-+ (BOOL)findExpectedFramerate:(float *)a3 forDevice:(id)a4
++ (BOOL)findExpectedFramerate:(float *)framerate forDevice:(id)device
 {
   v37 = *MEMORY[0x1E69E9840];
   v26 = 0;
   v25 = 0.0;
-  v23 = [+[VCVideoRuleCollectionsCamera getBestFrameWidth:a3]frameRate:"getBestFrameWidth:frameHeight:frameRate:", &v26 + 4, &v26, &v25];
+  v23 = [+[VCVideoRuleCollectionsCamera getBestFrameWidth:framerate]frameRate:"getBestFrameWidth:frameHeight:frameRate:", &v26 + 4, &v26, &v25];
   v4 = [MEMORY[0x1E69870A0] defaultDeviceWithMediaType:*MEMORY[0x1E6987608]];
   v5 = 0.0;
   if (v4)
@@ -160,8 +160,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [v4 formats];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v32 count:16];
+    formats = [v4 formats];
+    v7 = [formats countByEnumeratingWithState:&v33 objects:v32 count:16];
     if (v7)
     {
       v8 = v7;
@@ -172,7 +172,7 @@
         {
           if (*v34 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(formats);
           }
 
           v11 = *(*(&v33 + 1) + 8 * i);
@@ -180,8 +180,8 @@
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v12 = [v11 videoSupportedFrameRateRanges];
-          v13 = [v12 countByEnumeratingWithState:&v28 objects:v27 count:16];
+          videoSupportedFrameRateRanges = [v11 videoSupportedFrameRateRanges];
+          v13 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v28 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -192,7 +192,7 @@
               {
                 if (*v29 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(videoSupportedFrameRateRanges);
                 }
 
                 v17 = *(*(&v28 + 1) + 8 * j);
@@ -204,14 +204,14 @@
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v28 objects:v27 count:16];
+              v14 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v28 objects:v27 count:16];
             }
 
             while (v14);
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v33 objects:v32 count:16];
+        v8 = [formats countByEnumeratingWithState:&v33 objects:v32 count:16];
       }
 
       while (v8);
@@ -234,7 +234,7 @@
     v20 = v21;
   }
 
-  *a3 = v20;
+  *framerate = v20;
   return v23;
 }
 

@@ -1,45 +1,45 @@
 @interface CaptureMTLLibrary
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4;
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureFunctions:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler;
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureDevice:(id)device captureFunctions:(id)functions;
 - (NSString)description;
-- (id)newExternFunctionWithName:(id)a3;
-- (id)newFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 error:(id *)a5;
-- (id)newFunctionWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newFunctionWithName:(id)a3;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 error:(id *)a6;
-- (id)newIntersectionFunctionWithDescriptor:(id)a3 error:(id *)a4;
+- (id)newExternFunctionWithName:(id)name;
+- (id)newFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive error:(id *)error;
+- (id)newFunctionWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newFunctionWithName:(id)name;
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error;
+- (id)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library error:(id *)error;
+- (id)newIntersectionFunctionWithDescriptor:(id)descriptor error:(id *)error;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)newFunctionWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 completionHandler:(id)a5;
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 completionHandler:(id)a6;
-- (void)newIntersectionFunctionWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)setLabel:(id)a3;
-- (void)setOverrideTriple:(id)a3;
+- (void)newFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newFunctionWithName:(id)name constantValues:(id)values completionHandler:(id)handler;
+- (void)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library completionHandler:(id)handler;
+- (void)newIntersectionFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)setLabel:(id)label;
+- (void)setOverrideTriple:(id)triple;
 - (void)touch;
 @end
 
 @implementation CaptureMTLLibrary
 
-- (id)newFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 error:(id *)a5
+- (id)newFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  archiveCopy = archive;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLLibrary_newFunctionWithDescriptor_destinationArchive_error", "Binary Linking", 0, 0);
   baseObject = self->_baseObject;
-  v11 = unwrapMTLFunctionDescriptor(v9);
+  v11 = unwrapMTLFunctionDescriptor(descriptorCopy);
 
-  v12 = [v8 baseObject];
+  baseObject = [archiveCopy baseObject];
 
-  v13 = [(MTLLibrarySPI *)baseObject newFunctionWithDescriptor:v11 destinationArchive:v12 error:a5];
+  v13 = [(MTLLibrarySPI *)baseObject newFunctionWithDescriptor:v11 destinationArchive:baseObject error:error];
   if (v13)
   {
     v14 = [CaptureMTLFunction alloc];
-    v15 = [(CaptureMTLLibrary *)self device];
-    v16 = [(CaptureMTLFunction *)v14 initWithBaseObject:v13 captureDevice:v15];
+    device = [(CaptureMTLLibrary *)self device];
+    v16 = [(CaptureMTLFunction *)v14 initWithBaseObject:v13 captureDevice:device];
   }
 
   else
@@ -50,15 +50,15 @@
   return v16;
 }
 
-- (void)setOverrideTriple:(id)a3
+- (void)setOverrideTriple:(id)triple
 {
-  v4 = a3;
+  tripleCopy = triple;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLLibrarySPI *)self->_baseObject setOverrideTriple:v4];
+  [(MTLLibrarySPI *)self->_baseObject setOverrideTriple:tripleCopy];
   v6 = v19;
   *(v19 + 8) = -16083;
   v7 = BYTE9(v20);
@@ -78,10 +78,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLLibrary *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -89,16 +89,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [tripleCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [tripleCopy UTF8String];
+    v15 = strlen([tripleCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -107,15 +107,15 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLLibrarySPI *)self->_baseObject setLabel:v4];
+  [(MTLLibrarySPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16292;
   v7 = BYTE9(v20);
@@ -135,10 +135,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLLibrary *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -146,16 +146,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -164,13 +164,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLLibrarySPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLLibrarySPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -225,21 +225,21 @@
   }
 }
 
-- (void)newIntersectionFunctionWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newIntersectionFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   baseObject = self->_baseObject;
-  v9 = unwrapMTLFunctionDescriptor(v6);
+  v9 = unwrapMTLFunctionDescriptor(descriptorCopy);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __77__CaptureMTLLibrary_newIntersectionFunctionWithDescriptor_completionHandler___block_invoke;
   v12[3] = &unk_2F1B98;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = descriptorCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = descriptorCopy;
   [(MTLLibrarySPI *)baseObject newIntersectionFunctionWithDescriptor:v9 completionHandler:v12];
 }
 
@@ -346,19 +346,19 @@ void __77__CaptureMTLLibrary_newIntersectionFunctionWithDescriptor_completionHan
   *v31 = v32;
 }
 
-- (id)newIntersectionFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIntersectionFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   baseObject = self->_baseObject;
-  v8 = unwrapMTLFunctionDescriptor(v6);
-  v9 = [(MTLLibrarySPI *)baseObject newIntersectionFunctionWithDescriptor:v8 error:a4];
+  v8 = unwrapMTLFunctionDescriptor(descriptorCopy);
+  v9 = [(MTLLibrarySPI *)baseObject newIntersectionFunctionWithDescriptor:v8 error:error];
 
   v36 = 0;
   if (v9 && [(CaptureMTLDevice *)self->_captureDevice newCaptureFunction:&v36 associatedWithBaseFunction:v9 captureLibrary:self])
   {
     v10 = self->_baseObject;
-    v11 = [v6 name];
-    v12 = [(MTLLibrarySPI *)v10 newFunctionWithName:v11];
+    name = [descriptorCopy name];
+    v12 = [(MTLLibrarySPI *)v10 newFunctionWithName:name];
 
     v34 = 0u;
     v35 = 0u;
@@ -397,10 +397,10 @@ void __77__CaptureMTLLibrary_newIntersectionFunctionWithDescriptor_completionHan
 
     *(v18 + 13) = v19;
     SaveMTLFunctionInfo(&v33, v9, v12, self->_baseObject);
-    v23 = [(CaptureMTLLibrary *)self traceStream];
-    if (v23)
+    traceStream = [(CaptureMTLLibrary *)self traceStream];
+    if (traceStream)
     {
-      var0 = v23->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -408,17 +408,17 @@ void __77__CaptureMTLLibrary_newIntersectionFunctionWithDescriptor_completionHan
       var0 = 0;
     }
 
-    v25 = [v36 traceStream];
-    if (v25)
+    traceStream2 = [v36 traceStream];
+    if (traceStream2)
     {
-      v26 = *v25;
-      if (a4)
+      v26 = *traceStream2;
+      if (error)
       {
 LABEL_11:
-        v27 = *a4;
+        v27 = *error;
 LABEL_14:
-        v28 = [v12 functionConstantsDictionary];
-        v29 = SaveMTLIntersectionFunctionDescriptor(&v33, v6, v28);
+        functionConstantsDictionary = [v12 functionConstantsDictionary];
+        v29 = SaveMTLIntersectionFunctionDescriptor(&v33, descriptorCopy, functionConstantsDictionary);
         *v20 = var0;
         *(v20 + 1) = v26;
         *(v20 + 2) = v27;
@@ -438,7 +438,7 @@ LABEL_14:
     else
     {
       v26 = 0;
-      if (a4)
+      if (error)
       {
         goto LABEL_11;
       }
@@ -454,24 +454,24 @@ LABEL_15:
   return v31;
 }
 
-- (void)newFunctionWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newFunctionWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  baseObject = v8->_baseObject;
-  v10 = unwrapMTLFunctionDescriptor(v6);
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  selfCopy = self;
+  baseObject = selfCopy->_baseObject;
+  v10 = unwrapMTLFunctionDescriptor(descriptorCopy);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __65__CaptureMTLLibrary_newFunctionWithDescriptor_completionHandler___block_invoke;
   v14[3] = &unk_2F1B70;
-  v14[4] = v8;
-  v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
+  v14[4] = selfCopy;
+  v15 = selfCopy;
+  v16 = descriptorCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = descriptorCopy;
+  v13 = selfCopy;
   [(MTLLibrarySPI *)baseObject newFunctionWithDescriptor:v10 completionHandler:v14];
 }
 
@@ -663,12 +663,12 @@ void __65__CaptureMTLLibrary_newFunctionWithDescriptor_completionHandler___block
   *v8 = v49;
 }
 
-- (id)newFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   baseObject = self->_baseObject;
-  v8 = unwrapMTLFunctionDescriptor(v6);
-  v9 = [(MTLLibrarySPI *)baseObject newFunctionWithDescriptor:v8 error:a4];
+  v8 = unwrapMTLFunctionDescriptor(descriptorCopy);
+  v9 = [(MTLLibrarySPI *)baseObject newFunctionWithDescriptor:v8 error:error];
 
   v53 = 0;
   if (v9)
@@ -713,14 +713,14 @@ void __65__CaptureMTLLibrary_newFunctionWithDescriptor_completionHandler___block
 
       *(v15 + 13) = v16;
       v25 = self->_baseObject;
-      v26 = [v6 name];
-      v27 = [(MTLLibrarySPI *)v25 newFunctionWithName:v26];
+      name = [descriptorCopy name];
+      v27 = [(MTLLibrarySPI *)v25 newFunctionWithName:name];
 
       SaveMTLFunctionInfo(&v50, v9, v27, self->_baseObject);
-      v28 = [(CaptureMTLLibrary *)self traceStream];
-      if (v28)
+      traceStream = [(CaptureMTLLibrary *)self traceStream];
+      if (traceStream)
       {
-        var0 = v28->var0;
+        var0 = traceStream->var0;
       }
 
       else
@@ -728,18 +728,18 @@ void __65__CaptureMTLLibrary_newFunctionWithDescriptor_completionHandler___block
         var0 = 0;
       }
 
-      v37 = [v53 traceStream];
-      if (v37)
+      traceStream2 = [v53 traceStream];
+      if (traceStream2)
       {
-        v38 = *v37;
-        if (!a4)
+        v38 = *traceStream2;
+        if (!error)
         {
 LABEL_17:
-          v39 = [v27 functionConstantsDictionary];
-          v40 = SaveMTLFunctionDescriptor(&v50, v6, v39);
+          functionConstantsDictionary = [v27 functionConstantsDictionary];
+          v40 = SaveMTLFunctionDescriptor(&v50, descriptorCopy, functionConstantsDictionary);
           *v17 = var0;
           *(v17 + 1) = v38;
-          *(v17 + 2) = a4;
+          *(v17 + 2) = error;
           v17[24] = v40;
           *(v17 + 25) = 0;
           *(v17 + 7) = 0;
@@ -756,13 +756,13 @@ LABEL_17:
       else
       {
         v38 = 0;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_17;
         }
       }
 
-      a4 = *a4;
+      error = *error;
       goto LABEL_17;
     }
 
@@ -801,13 +801,13 @@ LABEL_17:
 
     *(v20 + 13) = v21;
     v32 = self->_baseObject;
-    v33 = [v6 name];
-    v34 = [(MTLLibrarySPI *)v32 newFunctionWithName:v33];
+    name2 = [descriptorCopy name];
+    v34 = [(MTLLibrarySPI *)v32 newFunctionWithName:name2];
 
-    v35 = [v53 traceStream];
-    if (v35)
+    traceStream3 = [v53 traceStream];
+    if (traceStream3)
     {
-      v36 = *v35;
+      v36 = *traceStream3;
     }
 
     else
@@ -815,11 +815,11 @@ LABEL_17:
       v36 = 0;
     }
 
-    v42 = [v53 captureLibrary];
-    v43 = [v42 traceStream];
-    if (v43)
+    captureLibrary = [v53 captureLibrary];
+    traceStream4 = [captureLibrary traceStream];
+    if (traceStream4)
     {
-      v44 = *v43;
+      v44 = *traceStream4;
     }
 
     else
@@ -827,8 +827,8 @@ LABEL_17:
       v44 = 0;
     }
 
-    v45 = [v34 functionConstantsDictionary];
-    v46 = SaveMTLFunctionDescriptor(&v50, v6, v45);
+    functionConstantsDictionary2 = [v34 functionConstantsDictionary];
+    v46 = SaveMTLFunctionDescriptor(&v50, descriptorCopy, functionConstantsDictionary2);
     *v22 = v36;
     *(v22 + 1) = v44;
     v22[16] = v46;
@@ -847,33 +847,33 @@ LABEL_25:
   return v48;
 }
 
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 completionHandler:(id)a6
+- (void)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = [a3 copy];
-  v14 = [v12 copy];
+  libraryCopy = library;
+  handlerCopy = handler;
+  valuesCopy = values;
+  v13 = [name copy];
+  v14 = [valuesCopy copy];
 
-  v15 = self;
-  baseObject = v15->_baseObject;
-  v17 = [v10 baseObject];
+  selfCopy = self;
+  baseObject = selfCopy->_baseObject;
+  baseObject = [libraryCopy baseObject];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_completionHandler___block_invoke;
   v23[3] = &unk_2F1B48;
-  v23[4] = v15;
-  v24 = v15;
+  v23[4] = selfCopy;
+  v24 = selfCopy;
   v25 = v13;
   v26 = v14;
-  v27 = v10;
-  v28 = v11;
-  v18 = v11;
-  v19 = v10;
+  v27 = libraryCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = libraryCopy;
   v20 = v14;
   v21 = v13;
-  v22 = v15;
-  [(MTLLibrarySPI *)baseObject newFunctionWithName:v21 constantValues:v20 pipelineLibrary:v17 completionHandler:v23];
+  v22 = selfCopy;
+  [(MTLLibrarySPI *)baseObject newFunctionWithName:v21 constantValues:v20 pipelineLibrary:baseObject completionHandler:v23];
 }
 
 void __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -991,14 +991,14 @@ void __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_
   *v30 = v31;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 error:(id *)a6
+- (id)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  valuesCopy = values;
+  libraryCopy = library;
   baseObject = self->_baseObject;
-  v14 = [v12 baseObject];
-  v15 = [(MTLLibrarySPI *)baseObject newFunctionWithName:v10 constantValues:v11 pipelineLibrary:v14 error:a6];
+  baseObject = [libraryCopy baseObject];
+  v15 = [(MTLLibrarySPI *)baseObject newFunctionWithName:nameCopy constantValues:valuesCopy pipelineLibrary:baseObject error:error];
 
   v42 = 0;
   if (!v15 || ![(CaptureMTLDevice *)self->_captureDevice newCaptureFunction:&v42 associatedWithBaseFunction:v15 captureLibrary:self])
@@ -1006,7 +1006,7 @@ void __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_
     goto LABEL_21;
   }
 
-  v16 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:v10];
+  v16 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:nameCopy];
   v40 = 0u;
   v41 = 0u;
   v39 = 0u;
@@ -1033,10 +1033,10 @@ void __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_
 
   *(v18 + 13) = v19;
   SaveMTLFunctionInfo(&v39, v15, v16, self->_baseObject);
-  v23 = [(CaptureMTLLibrary *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1044,21 +1044,21 @@ void __90__CaptureMTLLibrary_newFunctionWithName_constantValues_pipelineLibrary_
     var0 = 0;
   }
 
-  v24 = [v42 traceStream];
-  if (v24)
+  traceStream2 = [v42 traceStream];
+  if (traceStream2)
   {
-    v25 = [v12 traceStream];
+    traceStream3 = [libraryCopy traceStream];
   }
 
   else
   {
-    v25 = [v12 traceStream];
+    traceStream3 = [libraryCopy traceStream];
   }
 
-  if (!v25)
+  if (!traceStream3)
   {
     v26 = 0;
-    if (a6)
+    if (error)
     {
       goto LABEL_14;
     }
@@ -1068,20 +1068,20 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v26 = *v25;
-  if (!a6)
+  v26 = *traceStream3;
+  if (!error)
   {
     goto LABEL_16;
   }
 
 LABEL_14:
-  v27 = *a6;
+  v27 = *error;
 LABEL_17:
-  if ([v10 UTF8String])
+  if ([nameCopy UTF8String])
   {
-    v28 = [v10 UTF8String];
-    v29 = strlen([v10 UTF8String]);
-    v30 = GTTraceEncoder_storeBytes(&v39, v28, v29 + 1);
+    uTF8String = [nameCopy UTF8String];
+    v29 = strlen([nameCopy UTF8String]);
+    v30 = GTTraceEncoder_storeBytes(&v39, uTF8String, v29 + 1);
   }
 
   else
@@ -1089,8 +1089,8 @@ LABEL_17:
     v30 = 0;
   }
 
-  v31 = [v16 functionConstantsDictionary];
-  v32 = SaveMTLFunctionConstantValues(&v39, v31, v11);
+  functionConstantsDictionary = [v16 functionConstantsDictionary];
+  v32 = SaveMTLFunctionConstantValues(&v39, functionConstantsDictionary, valuesCopy);
   *v20 = var0;
   *(v20 + 1) = v37;
   *(v20 + 2) = v26;
@@ -1111,18 +1111,18 @@ LABEL_21:
   return v35;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:v8 constantValues:v9 error:a5];
+  nameCopy = name;
+  valuesCopy = values;
+  v10 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:nameCopy constantValues:valuesCopy error:error];
   v35 = 0;
   if (!v10 || ![(CaptureMTLDevice *)self->_captureDevice newCaptureFunction:&v35 associatedWithBaseFunction:v10 captureLibrary:self])
   {
     goto LABEL_18;
   }
 
-  v11 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:v8];
+  v11 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:nameCopy];
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
@@ -1149,10 +1149,10 @@ LABEL_21:
 
   *(v13 + 13) = v14;
   SaveMTLFunctionInfo(&v32, v10, v11, self->_baseObject);
-  v18 = [(CaptureMTLLibrary *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1160,11 +1160,11 @@ LABEL_21:
     var0 = 0;
   }
 
-  v20 = [v35 traceStream];
-  if (!v20)
+  traceStream2 = [v35 traceStream];
+  if (!traceStream2)
   {
     v21 = 0;
-    if (a5)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -1174,20 +1174,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v21 = *v20;
-  if (!a5)
+  v21 = *traceStream2;
+  if (!error)
   {
     goto LABEL_13;
   }
 
 LABEL_11:
-  v22 = *a5;
+  v22 = *error;
 LABEL_14:
-  if ([v8 UTF8String])
+  if ([nameCopy UTF8String])
   {
-    v23 = [v8 UTF8String];
-    v24 = strlen([v8 UTF8String]);
-    v25 = GTTraceEncoder_storeBytes(&v32, v23, v24 + 1);
+    uTF8String = [nameCopy UTF8String];
+    v24 = strlen([nameCopy UTF8String]);
+    v25 = GTTraceEncoder_storeBytes(&v32, uTF8String, v24 + 1);
   }
 
   else
@@ -1195,8 +1195,8 @@ LABEL_14:
     v25 = 0;
   }
 
-  v26 = [v11 functionConstantsDictionary];
-  v27 = SaveMTLFunctionConstantValues(&v32, v26, v9);
+  functionConstantsDictionary = [v11 functionConstantsDictionary];
+  v27 = SaveMTLFunctionConstantValues(&v32, functionConstantsDictionary, valuesCopy);
   *v15 = var0;
   *(v15 + 1) = v21;
   *(v15 + 2) = v22;
@@ -1216,28 +1216,28 @@ LABEL_18:
   return v30;
 }
 
-- (void)newFunctionWithName:(id)a3 constantValues:(id)a4 completionHandler:(id)a5
+- (void)newFunctionWithName:(id)name constantValues:(id)values completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 copy];
-  v11 = [v9 copy];
+  handlerCopy = handler;
+  valuesCopy = values;
+  v10 = [name copy];
+  v11 = [valuesCopy copy];
 
-  v12 = self;
-  baseObject = v12->_baseObject;
+  selfCopy = self;
+  baseObject = selfCopy->_baseObject;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = __74__CaptureMTLLibrary_newFunctionWithName_constantValues_completionHandler___block_invoke;
   v18[3] = &unk_2F1B20;
-  v18[4] = v12;
-  v19 = v12;
+  v18[4] = selfCopy;
+  v19 = selfCopy;
   v20 = v10;
   v21 = v11;
-  v22 = v8;
-  v14 = v8;
+  v22 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v11;
   v16 = v10;
-  v17 = v12;
+  v17 = selfCopy;
   [(MTLLibrarySPI *)baseObject newFunctionWithName:v16 constantValues:v15 completionHandler:v18];
 }
 
@@ -1344,10 +1344,10 @@ void __74__CaptureMTLLibrary_newFunctionWithName_constantValues_completionHandle
   *v29 = v30;
 }
 
-- (id)newFunctionWithName:(id)a3
+- (id)newFunctionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:v4];
+  nameCopy = name;
+  v5 = [(MTLLibrarySPI *)self->_baseObject newFunctionWithName:nameCopy];
   v6 = v5;
   v27 = 0;
   if (v5)
@@ -1386,10 +1386,10 @@ void __74__CaptureMTLLibrary_newFunctionWithName_constantValues_completionHandle
 
   *(v8 + 13) = v9;
   SaveMTLFunctionInfo(&v24, v6, 0, self->_baseObject);
-  v13 = [(CaptureMTLLibrary *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1397,10 +1397,10 @@ void __74__CaptureMTLLibrary_newFunctionWithName_constantValues_completionHandle
     var0 = 0;
   }
 
-  v15 = [v27 traceStream];
-  if (v15)
+  traceStream2 = [v27 traceStream];
+  if (traceStream2)
   {
-    v16 = *v15;
+    v16 = *traceStream2;
   }
 
   else
@@ -1408,17 +1408,17 @@ void __74__CaptureMTLLibrary_newFunctionWithName_constantValues_completionHandle
     v16 = 0;
   }
 
-  v17 = [v4 UTF8String];
-  if (v17)
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String)
   {
-    v18 = [v4 UTF8String];
-    v19 = strlen([v4 UTF8String]);
-    LOBYTE(v17) = GTTraceEncoder_storeBytes(&v24, v18, v19 + 1);
+    uTF8String2 = [nameCopy UTF8String];
+    v19 = strlen([nameCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v24, uTF8String2, v19 + 1);
   }
 
   *v10 = var0;
   *(v10 + 1) = v16;
-  v10[16] = v17;
+  v10[16] = uTF8String;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
   s();
@@ -1431,10 +1431,10 @@ LABEL_16:
   return v22;
 }
 
-- (id)newExternFunctionWithName:(id)a3
+- (id)newExternFunctionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTLLibrarySPI *)self->_baseObject newExternFunctionWithName:v4];
+  nameCopy = name;
+  v5 = [(MTLLibrarySPI *)self->_baseObject newExternFunctionWithName:nameCopy];
   v6 = v5;
   v27 = 0;
   if (v5)
@@ -1473,10 +1473,10 @@ LABEL_16:
 
   *(v8 + 13) = v9;
   SaveMTLFunctionInfo(&v24, v6, 0, self->_baseObject);
-  v13 = [(CaptureMTLLibrary *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1484,10 +1484,10 @@ LABEL_16:
     var0 = 0;
   }
 
-  v15 = [v27 traceStream];
-  if (v15)
+  traceStream2 = [v27 traceStream];
+  if (traceStream2)
   {
-    v16 = *v15;
+    v16 = *traceStream2;
   }
 
   else
@@ -1495,17 +1495,17 @@ LABEL_16:
     v16 = 0;
   }
 
-  v17 = [v4 UTF8String];
-  if (v17)
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String)
   {
-    v18 = [v4 UTF8String];
-    v19 = strlen([v4 UTF8String]);
-    LOBYTE(v17) = GTTraceEncoder_storeBytes(&v24, v18, v19 + 1);
+    uTF8String2 = [nameCopy UTF8String];
+    v19 = strlen([nameCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v24, uTF8String2, v19 + 1);
   }
 
   *v10 = var0;
   *(v10 + 1) = v16;
-  v10[16] = v17;
+  v10[16] = uTF8String;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
   s();
@@ -1551,10 +1551,10 @@ LABEL_16:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLLibrary *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1573,26 +1573,26 @@ LABEL_16:
   [(CaptureMTLLibrary *)&v14 dealloc];
 }
 
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureCompiler:(id)a4
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureCompiler:(id)compiler
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  compilerCopy = compiler;
   v17.receiver = self;
   v17.super_class = CaptureMTLLibrary;
   v9 = [(CaptureMTLLibrary *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureCompiler, a4);
-    v11 = [v8 captureDevice];
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureCompiler, compiler);
+    captureDevice = [compilerCopy captureDevice];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = captureDevice;
 
-    v13 = [(CaptureMTLDevice *)v10->_captureDevice traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    traceContext = [(CaptureMTLDevice *)v10->_captureDevice traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
 
     captureFunctions = v10->_captureFunctions;
     v10->_captureFunctions = 0;
@@ -1601,25 +1601,25 @@ LABEL_16:
   return v10;
 }
 
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureFunctions:(id)a5
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureDevice:(id)device captureFunctions:(id)functions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  functionsCopy = functions;
   v19.receiver = self;
   v19.super_class = CaptureMTLLibrary;
   v12 = [(CaptureMTLLibrary *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
-    v14 = [v10 traceContext];
-    v13->_traceContext = v14;
-    v15 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v14, v15, v13);
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v15 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v15, v13);
 
-    v16 = [v11 copy];
+    v16 = [functionsCopy copy];
     captureFunctions = v13->_captureFunctions;
     v13->_captureFunctions = v16;
   }
@@ -1627,22 +1627,22 @@ LABEL_16:
   return v13;
 }
 
-- (CaptureMTLLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLLibrary)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = CaptureMTLLibrary;
   v9 = [(CaptureMTLLibrary *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
 
     captureFunctions = v10->_captureFunctions;
     v10->_captureFunctions = 0;

@@ -7,7 +7,7 @@
 
 - (unint64_t)upNextSection
 {
-  v1 = [a1 indexAtPosition:0];
+  v1 = [self indexAtPosition:0];
   if (v1 >= NTKUpNextSectionMax)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"The section %lu is not a valid Up Next Section", v1}];

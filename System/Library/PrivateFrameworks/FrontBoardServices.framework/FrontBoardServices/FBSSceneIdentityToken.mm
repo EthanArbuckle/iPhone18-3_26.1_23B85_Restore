@@ -1,17 +1,17 @@
 @interface FBSSceneIdentityToken
-+ (FBSSceneIdentityToken)tokenWithHostEndpoint:(id)a3 workspace:(id)a4 identifier:(id)a5;
-+ (FBSSceneIdentityToken)tokenWithHostPID:(int)a3 directEndpointTarget:(id)a4 workspace:(id)a5 identifier:(id)a6;
-+ (FBSSceneIdentityToken)tokenWithHostPID:(int)a3 viewServiceSessionIdentifier:(id)a4;
-+ (id)pseudoTokenWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (FBSSceneIdentityToken)tokenWithHostEndpoint:(id)endpoint workspace:(id)workspace identifier:(id)identifier;
++ (FBSSceneIdentityToken)tokenWithHostPID:(int)d directEndpointTarget:(id)target workspace:(id)workspace identifier:(id)identifier;
++ (FBSSceneIdentityToken)tokenWithHostPID:(int)d viewServiceSessionIdentifier:(id)identifier;
++ (id)pseudoTokenWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (FBSSceneIdentityToken)init;
-- (FBSSceneIdentityToken)initWithBSXPCCoder:(id)a3;
-- (FBSSceneIdentityToken)initWithCoder:(id)a3;
-- (FBSSceneIdentityToken)initWithXPCDictionary:(id)a3;
-- (id)_initWithHost:(void *)a3 endpoint:(void *)a4 target:(void *)a5 workspace:(void *)a6 identifier:;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (FBSSceneIdentityToken)initWithBSXPCCoder:(id)coder;
+- (FBSSceneIdentityToken)initWithCoder:(id)coder;
+- (FBSSceneIdentityToken)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithHost:(void *)host endpoint:(void *)endpoint target:(void *)target workspace:(void *)workspace identifier:;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSSceneIdentityToken
@@ -29,7 +29,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSSceneIdentityToken.m";
     v16 = 1024;
@@ -43,16 +43,16 @@
   _bs_set_crash_log_message();
 }
 
-+ (FBSSceneIdentityToken)tokenWithHostPID:(int)a3 viewServiceSessionIdentifier:(id)a4
++ (FBSSceneIdentityToken)tokenWithHostPID:(int)d viewServiceSessionIdentifier:(id)identifier
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&d;
+  identifierCopy = identifier;
   if (v4 <= 0)
   {
     [FBSSceneIdentityToken tokenWithHostPID:v4 viewServiceSessionIdentifier:a2];
   }
 
-  v7 = v6;
+  v7 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v7)
   {
@@ -69,12 +69,12 @@
   return v8;
 }
 
-+ (FBSSceneIdentityToken)tokenWithHostEndpoint:(id)a3 workspace:(id)a4 identifier:(id)a5
++ (FBSSceneIdentityToken)tokenWithHostEndpoint:(id)endpoint workspace:(id)workspace identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  endpointCopy = endpoint;
+  workspaceCopy = workspace;
+  identifierCopy = identifier;
+  v11 = endpointCopy;
   NSClassFromString(&cfstr_Bsserviceconne.isa);
   if (!v11)
   {
@@ -87,15 +87,15 @@
   }
 
   v12 = +[FBSWorkspaceServiceSpecification identifier];
-  v13 = [v11 service];
-  v14 = [v12 isEqualToString:v13];
+  service = [v11 service];
+  v14 = [v12 isEqualToString:service];
 
   if ((v14 & 1) == 0)
   {
     [FBSSceneIdentityToken tokenWithHostEndpoint:v11 workspace:a2 identifier:?];
   }
 
-  v15 = v9;
+  v15 = workspaceCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v15)
   {
@@ -107,7 +107,7 @@
     [FBSSceneIdentityToken tokenWithHostEndpoint:a2 workspace:? identifier:?];
   }
 
-  v16 = v10;
+  v16 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -123,19 +123,19 @@
   return v18;
 }
 
-+ (FBSSceneIdentityToken)tokenWithHostPID:(int)a3 directEndpointTarget:(id)a4 workspace:(id)a5 identifier:(id)a6
++ (FBSSceneIdentityToken)tokenWithHostPID:(int)d directEndpointTarget:(id)target workspace:(id)workspace identifier:(id)identifier
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&d;
+  targetCopy = target;
+  workspaceCopy = workspace;
+  identifierCopy = identifier;
   if (v8 <= 0)
   {
     [FBSSceneIdentityToken tokenWithHostPID:v8 directEndpointTarget:a2 workspace:? identifier:?];
   }
 
-  v13 = v12;
-  v14 = v10;
+  v13 = identifierCopy;
+  v14 = targetCopy;
   NSClassFromString(&cfstr_Rbsprocessiden.isa);
   if (!v14)
   {
@@ -147,7 +147,7 @@
     [FBSSceneIdentityToken tokenWithHostPID:a2 directEndpointTarget:? workspace:? identifier:?];
   }
 
-  v15 = v11;
+  v15 = workspaceCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v15)
   {
@@ -175,16 +175,16 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_9;
@@ -213,14 +213,14 @@ LABEL_9:
   return v7;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     if (self->_host >= 1)
     {
-      xpc_dictionary_set_int64(v4, [@"h" UTF8String], self->_host);
+      xpc_dictionary_set_int64(dictionaryCopy, [@"h" UTF8String], self->_host);
     }
 
     if (self->_endpoint)
@@ -249,95 +249,95 @@ LABEL_9:
   }
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v8 = v4;
+  coderCopy = coder;
+  v8 = coderCopy;
   if (self->_host >= 1)
   {
-    [v4 encodeInt64:? forKey:?];
-    v4 = v8;
+    [coderCopy encodeInt64:? forKey:?];
+    coderCopy = v8;
   }
 
   endpoint = self->_endpoint;
   if (endpoint)
   {
     [v8 encodeObject:endpoint forKey:@"e"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   target = self->_target;
   if (target)
   {
     [v8 encodeObject:target forKey:@"t"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   workspace = self->_workspace;
   if (workspace)
   {
     [v8 encodeObject:workspace forKey:@"w"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
-  [v4 encodeObject:self->_identifier forKey:@"i"];
+  [coderCopy encodeObject:self->_identifier forKey:@"i"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v8 = v4;
+  coderCopy = coder;
+  v8 = coderCopy;
   if (self->_host >= 1)
   {
-    [v4 encodeInt64:? forKey:?];
-    v4 = v8;
+    [coderCopy encodeInt64:? forKey:?];
+    coderCopy = v8;
   }
 
   endpoint = self->_endpoint;
   if (endpoint)
   {
     [v8 encodeObject:endpoint forKey:@"e"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   target = self->_target;
   if (target)
   {
     [v8 encodeObject:target forKey:@"t"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   workspace = self->_workspace;
   if (workspace)
   {
     [v8 encodeObject:workspace forKey:@"w"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
-  [v4 encodeObject:self->_identifier forKey:@"i"];
+  [coderCopy encodeObject:self->_identifier forKey:@"i"];
 }
 
-- (id)_initWithHost:(void *)a3 endpoint:(void *)a4 target:(void *)a5 workspace:(void *)a6 identifier:
+- (id)_initWithHost:(void *)host endpoint:(void *)endpoint target:(void *)target workspace:(void *)workspace identifier:
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!a1)
+  hostCopy = host;
+  endpointCopy = endpoint;
+  targetCopy = target;
+  workspaceCopy = workspace;
+  if (!self)
   {
     goto LABEL_43;
   }
 
   if (a2 < 1)
   {
-    v84 = a1;
+    selfCopy = self;
     if (a2)
     {
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_4_1();
       [v71 handleFailureInMethod:a2 object:? file:? lineNumber:? description:?];
 
-      if (v11)
+      if (hostCopy)
       {
 LABEL_18:
         objc_opt_class();
@@ -349,23 +349,23 @@ LABEL_18:
       }
     }
 
-    else if (v11)
+    else if (hostCopy)
     {
       goto LABEL_18;
     }
 
-    v72 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_4_1();
-    [v73 handleFailureInMethod:v11 object:? file:? lineNumber:? description:?];
+    [v73 handleFailureInMethod:hostCopy object:? file:? lineNumber:? description:?];
 
 LABEL_19:
     v28 = +[FBSWorkspaceServiceSpecification identifier];
-    v29 = [v11 service];
-    v30 = [v28 isEqualToString:v29];
+    service = [hostCopy service];
+    v30 = [v28 isEqualToString:service];
 
     if (v30)
     {
-      if (!v12)
+      if (!endpointCopy)
       {
         goto LABEL_21;
       }
@@ -373,42 +373,42 @@ LABEL_19:
 
     else
     {
-      v74 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_4_1();
-      [v75 handleFailureInMethod:v11 object:? file:? lineNumber:? description:?];
+      [v75 handleFailureInMethod:hostCopy object:? file:? lineNumber:? description:?];
 
-      if (!v12)
+      if (!endpointCopy)
       {
         goto LABEL_21;
       }
     }
 
-    v76 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_4_1();
-    [v77 handleFailureInMethod:v12 object:? file:? lineNumber:? description:?];
+    [v77 handleFailureInMethod:endpointCopy object:? file:? lineNumber:? description:?];
 
 LABEL_21:
-    if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!targetCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v62 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_4_1();
-      [v63 handleFailureInMethod:v13 object:? file:? lineNumber:? description:?];
+      [v63 handleFailureInMethod:targetCopy object:? file:? lineNumber:? description:?];
     }
 
     v86 = a2;
-    if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!workspaceCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v64 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_4_1();
-      [v65 handleFailureInMethod:v14 object:? file:? lineNumber:? description:?];
+      [v65 handleFailureInMethod:workspaceCopy object:? file:? lineNumber:? description:?];
     }
 
     v31 = MEMORY[0x1E696AEC0];
-    v21 = [v11 targetDescription];
+    targetDescription = [hostCopy targetDescription];
     v32 = MEMORY[0x1E696AB08];
-    v33 = v13;
-    v34 = [v32 URLHostAllowedCharacterSet];
-    v35 = [v33 stringByAddingPercentEncodingWithAllowedCharacters:v34];
+    v33 = targetCopy;
+    uRLHostAllowedCharacterSet = [v32 URLHostAllowedCharacterSet];
+    v35 = [v33 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
     if ([v35 isEqualToString:v33])
     {
@@ -423,9 +423,9 @@ LABEL_21:
     v37 = v36;
 
     v38 = MEMORY[0x1E696AB08];
-    v39 = v14;
-    v40 = [v38 URLHostAllowedCharacterSet];
-    a2 = [v39 stringByAddingPercentEncodingWithAllowedCharacters:v40];
+    v39 = workspaceCopy;
+    uRLHostAllowedCharacterSet2 = [v38 URLHostAllowedCharacterSet];
+    a2 = [v39 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet2];
 
     if ([a2 isEqualToString:v39])
     {
@@ -439,22 +439,22 @@ LABEL_21:
 
     v42 = v41;
 
-    v27 = [v31 stringWithFormat:@"%@/%@:%@", v21, v37, v42];
+    v27 = [v31 stringWithFormat:@"%@/%@:%@", targetDescription, v37, v42];
 
-    a1 = v84;
+    self = selfCopy;
     LODWORD(a2) = v86;
     goto LABEL_40;
   }
 
-  if (v12)
+  if (endpointCopy)
   {
-    if (v11)
+    if (hostCopy)
     {
-      v66 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_3_3();
-      [v67 handleFailureInMethod:v11 object:? file:? lineNumber:? description:?];
+      [v67 handleFailureInMethod:hostCopy object:? file:? lineNumber:? description:?];
 
-      if (v13)
+      if (targetCopy)
       {
 LABEL_6:
         objc_opt_class();
@@ -465,29 +465,29 @@ LABEL_6:
       }
     }
 
-    else if (v13)
+    else if (targetCopy)
     {
       goto LABEL_6;
     }
 
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_3_3();
-    [v69 handleFailureInMethod:v13 object:? file:? lineNumber:? description:?];
+    [v69 handleFailureInMethod:targetCopy object:? file:? lineNumber:? description:?];
 
 LABEL_7:
     v85 = a2;
-    if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (!workspaceCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v60 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_3_3();
-      [v61 handleFailureInMethod:v14 object:? file:? lineNumber:? description:?];
+      [v61 handleFailureInMethod:workspaceCopy object:? file:? lineNumber:? description:?];
     }
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = MEMORY[0x1E696AB08];
-    v17 = v13;
-    v18 = [v16 URLHostAllowedCharacterSet];
-    v19 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:v18];
+    v17 = targetCopy;
+    uRLHostAllowedCharacterSet3 = [v16 URLHostAllowedCharacterSet];
+    v19 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet3];
 
     if ([v19 isEqualToString:v17])
     {
@@ -499,12 +499,12 @@ LABEL_7:
       v20 = v19;
     }
 
-    v21 = v20;
+    targetDescription = v20;
 
     v22 = MEMORY[0x1E696AB08];
-    a2 = v14;
-    v23 = [v22 URLHostAllowedCharacterSet];
-    v24 = [a2 stringByAddingPercentEncodingWithAllowedCharacters:v23];
+    a2 = workspaceCopy;
+    uRLHostAllowedCharacterSet4 = [v22 URLHostAllowedCharacterSet];
+    v24 = [a2 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet4];
 
     if ([v24 isEqualToString:a2])
     {
@@ -519,24 +519,24 @@ LABEL_7:
     v26 = v25;
 
     LODWORD(a2) = v85;
-    v27 = [v15 stringWithFormat:@"%i->%@/%@:%@", v85, v12, v21, v26];
+    v27 = [v15 stringWithFormat:@"%i->%@/%@:%@", v85, endpointCopy, targetDescription, v26];
 
     goto LABEL_40;
   }
 
-  if (!v11)
+  if (!hostCopy)
   {
-    if (!v13)
+    if (!targetCopy)
     {
       goto LABEL_34;
     }
 
 LABEL_54:
-    v80 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_3_3();
-    [v81 handleFailureInMethod:v13 object:? file:? lineNumber:? description:?];
+    [v81 handleFailureInMethod:targetCopy object:? file:? lineNumber:? description:?];
 
-    if (!v14)
+    if (!workspaceCopy)
     {
       goto LABEL_55;
     }
@@ -544,22 +544,22 @@ LABEL_54:
     goto LABEL_35;
   }
 
-  v78 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_3_3();
-  [v79 handleFailureInMethod:v11 object:? file:? lineNumber:? description:?];
+  [v79 handleFailureInMethod:hostCopy object:? file:? lineNumber:? description:?];
 
-  if (v13)
+  if (targetCopy)
   {
     goto LABEL_54;
   }
 
 LABEL_34:
-  if (!v14)
+  if (!workspaceCopy)
   {
 LABEL_55:
-    v82 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_3_3();
-    [v83 handleFailureInMethod:v14 object:? file:? lineNumber:? description:?];
+    [v83 handleFailureInMethod:workspaceCopy object:? file:? lineNumber:? description:?];
 
     goto LABEL_36;
   }
@@ -574,9 +574,9 @@ LABEL_35:
 LABEL_36:
   v43 = MEMORY[0x1E696AEC0];
   v44 = MEMORY[0x1E696AB08];
-  v45 = v14;
-  v46 = [v44 URLHostAllowedCharacterSet];
-  v47 = [v45 stringByAddingPercentEncodingWithAllowedCharacters:v46];
+  v45 = workspaceCopy;
+  uRLHostAllowedCharacterSet5 = [v44 URLHostAllowedCharacterSet];
+  v47 = [v45 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet5];
 
   if ([v47 isEqualToString:v45])
   {
@@ -588,58 +588,58 @@ LABEL_36:
     v48 = v47;
   }
 
-  v21 = v48;
+  targetDescription = v48;
 
-  v27 = [v43 stringWithFormat:@"%i/view-service:%@", a2, v21];
+  v27 = [v43 stringWithFormat:@"%i/view-service:%@", a2, targetDescription];
 LABEL_40:
 
-  v87.receiver = a1;
+  v87.receiver = self;
   v87.super_class = FBSSceneIdentityToken;
   v49 = objc_msgSendSuper2(&v87, sel_init);
   v50 = v49;
   if (v49)
   {
     v49[12] = a2;
-    v51 = [v11 copy];
+    v51 = [hostCopy copy];
     v52 = *(v50 + 1);
     *(v50 + 1) = v51;
 
-    v53 = [v12 copy];
+    v53 = [endpointCopy copy];
     v54 = *(v50 + 2);
     *(v50 + 2) = v53;
 
-    v55 = [v13 copy];
+    v55 = [targetCopy copy];
     v56 = *(v50 + 3);
     *(v50 + 3) = v55;
 
-    v57 = [v14 copy];
+    v57 = [workspaceCopy copy];
     v58 = *(v50 + 4);
     *(v50 + 4) = v57;
 
     objc_storeStrong(v50 + 5, v27);
   }
 
-  a1 = v50;
+  self = v50;
 
 LABEL_43:
-  return a1;
+  return self;
 }
 
-+ (id)pseudoTokenWithIdentifier:(id)a3
++ (id)pseudoTokenWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [FBSSceneIdentityToken alloc];
   v5 = getpid();
-  v6 = [(FBSSceneIdentityToken *)v4 _initWithHost:v5 endpoint:0 target:0 workspace:0 identifier:v3];
+  v6 = [(FBSSceneIdentityToken *)v4 _initWithHost:v5 endpoint:0 target:0 workspace:0 identifier:identifierCopy];
   v7 = v6;
   if (v6)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = MEMORY[0x1E696AB08];
     v10 = *(v6 + 12);
-    v11 = v3;
-    v12 = [v9 URLHostAllowedCharacterSet];
-    v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+    v11 = identifierCopy;
+    uRLHostAllowedCharacterSet = [v9 URLHostAllowedCharacterSet];
+    v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
     if ([v13 isEqualToString:v11])
     {
@@ -662,35 +662,35 @@ LABEL_43:
   return v7;
 }
 
-- (FBSSceneIdentityToken)initWithXPCDictionary:(id)a3
+- (FBSSceneIdentityToken)initWithXPCDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   [@"t" UTF8String];
   OUTLINED_FUNCTION_5_3();
   BSDeserializeDataFromXPCDictionaryWithKey();
 }
 
-- (FBSSceneIdentityToken)initWithBSXPCCoder:(id)a3
+- (FBSSceneIdentityToken)initWithBSXPCCoder:(id)coder
 {
-  v3 = a3;
-  [v3 decodeInt64ForKey:@"h"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
-  v6 = [v3 decodeStringForKey:@"w"];
-  v7 = [v3 decodeStringForKey:@"i"];
+  coderCopy = coder;
+  [coderCopy decodeInt64ForKey:@"h"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+  v6 = [coderCopy decodeStringForKey:@"w"];
+  v7 = [coderCopy decodeStringForKey:@"i"];
 
   v8 = OUTLINED_FUNCTION_6_0();
   return v8;
 }
 
-- (FBSSceneIdentityToken)initWithCoder:(id)a3
+- (FBSSceneIdentityToken)initWithCoder:(id)coder
 {
-  v3 = a3;
-  [v3 decodeInt64ForKey:@"h"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"w"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+  coderCopy = coder;
+  [coderCopy decodeInt64ForKey:@"h"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"w"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
 
   v8 = OUTLINED_FUNCTION_6_0();
   return v8;

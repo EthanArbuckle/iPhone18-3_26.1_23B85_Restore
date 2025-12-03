@@ -1,21 +1,21 @@
 @interface _UIPointerAccessibilityEffect
-+ (id)_effectWithInputEffect:(id)a3;
++ (id)_effectWithInputEffect:(id)effect;
 - (BOOL)prefersScaledContent;
 - (BOOL)prefersShadow;
 @end
 
 @implementation _UIPointerAccessibilityEffect
 
-+ (id)_effectWithInputEffect:(id)a3
++ (id)_effectWithInputEffect:(id)effect
 {
-  v3 = a3;
-  v4 = [v3 preview];
-  v5 = [(UIPointerEffect *)_UIPointerAccessibilityEffect effectWithPreview:v4];
+  effectCopy = effect;
+  preview = [effectCopy preview];
+  v5 = [(UIPointerEffect *)_UIPointerAccessibilityEffect effectWithPreview:preview];
 
-  [v5 setPrefersScaledContent:{(objc_msgSend(v3, "options") >> 5) & 1}];
+  [v5 setPrefersScaledContent:{(objc_msgSend(effectCopy, "options") >> 5) & 1}];
   isKindOfClass = 1;
   [v5 set_tintViewTakesOnPointerShape:1];
-  if (([v3 options] & 8) == 0)
+  if (([effectCopy options] & 8) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

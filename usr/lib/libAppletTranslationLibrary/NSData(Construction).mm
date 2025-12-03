@@ -41,10 +41,10 @@
     if (a4)
     {
       v4 = [MEMORY[0x277CBEB28] dataWithLength:a4];
-      v7 = [v4 mutableBytes];
+      mutableBytes = [v4 mutableBytes];
       do
       {
-        *v7++ = *(a3 - 1 + v5--);
+        *mutableBytes++ = *(a3 - 1 + v5--);
       }
 
       while (v5);

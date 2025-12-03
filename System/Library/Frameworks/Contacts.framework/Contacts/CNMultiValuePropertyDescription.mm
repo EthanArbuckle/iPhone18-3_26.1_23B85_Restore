@@ -1,32 +1,32 @@
 @interface CNMultiValuePropertyDescription
-- (BOOL)applyABMultivalueValueBytes:(char *)a3 length:(unint64_t)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7 toCNMultivalueRepresentation:(id)a8;
-- (BOOL)applyCNValue:(id)a3 toArray:(id)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7;
-- (BOOL)applyDictionary:(id)a3 identifier:(id)a4 legacyIdentifier:(int)a5 label:(id)a6 toCNMultivalueRepresentation:(id)a7;
-- (BOOL)isEqualIgnoringIdentifiersForContact:(id)a3 other:(id)a4;
-- (BOOL)isValidMultiValueValue:(id)a3 error:(id *)a4;
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
+- (BOOL)applyABMultivalueValueBytes:(char *)bytes length:(unint64_t)length identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation;
+- (BOOL)applyCNValue:(id)value toArray:(id)array identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label;
+- (BOOL)applyDictionary:(id)dictionary identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation;
+- (BOOL)isEqualIgnoringIdentifiersForContact:(id)contact other:(id)other;
+- (BOOL)isValidMultiValueValue:(id)value error:(id *)error;
+- (BOOL)isValidValue:(id)value error:(id *)error;
 - (NSArray)standardLabels;
-- (__CFString)ABMultiValueLabelFromCNLabeledValueLabel:(id)a3;
-- (id)CNLabeledValueLabelFromABMultiValueLabel:(__CFString *)a3;
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3 destinationClass:(Class)a4 settersByABKeys:(id)a5;
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4;
-- (id)CNValueFromABValue:(void *)a3;
-- (id)standardLabelsWithOptions:(unint64_t)a3;
-- (id)stringForIndexingForContact:(id)a3;
-- (id)valueWithResetIdentifiers:(id)a3;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3 gettersByABKeys:(id)a4;
-- (void)ABMutableMultiValueForABPerson:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)assertValueType:(id)a3;
+- (__CFString)ABMultiValueLabelFromCNLabeledValueLabel:(id)label;
+- (id)CNLabeledValueLabelFromABMultiValueLabel:(__CFString *)label;
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value destinationClass:(Class)class settersByABKeys:(id)keys;
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length;
+- (id)CNValueFromABValue:(void *)value;
+- (id)standardLabelsWithOptions:(unint64_t)options;
+- (id)stringForIndexingForContact:(id)contact;
+- (id)valueWithResetIdentifiers:(id)identifiers;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value gettersByABKeys:(id)keys;
+- (void)ABMutableMultiValueForABPerson:(void *)person;
+- (void)ABValueFromCNValue:(id)value;
+- (void)assertValueType:(id)type;
 @end
 
 @implementation CNMultiValuePropertyDescription
 
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length
 {
-  if (a3)
+  if (bytes)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:length encoding:4];
   }
 
   else
@@ -37,62 +37,62 @@
   return v5;
 }
 
-- (BOOL)applyCNValue:(id)a3 toArray:(id)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7
+- (BOOL)applyCNValue:(id)value toArray:(id)array identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label
 {
-  v7 = *&a6;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[CNLabeledValue alloc] primitiveInitWithIdentifier:v12 label:v11 value:v14];
+  v7 = *&legacyIdentifier;
+  labelCopy = label;
+  identifierCopy = identifier;
+  arrayCopy = array;
+  valueCopy = value;
+  v15 = [[CNLabeledValue alloc] primitiveInitWithIdentifier:identifierCopy label:labelCopy value:valueCopy];
 
   [v15 setIOSLegacyIdentifier:v7];
-  [v13 addObject:v15];
+  [arrayCopy addObject:v15];
 
   return 1;
 }
 
-- (BOOL)applyABMultivalueValueBytes:(char *)a3 length:(unint64_t)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7 toCNMultivalueRepresentation:(id)a8
+- (BOOL)applyABMultivalueValueBytes:(char *)bytes length:(unint64_t)length identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation
 {
-  v9 = *&a6;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValueBytes:a3 length:a4];
-  [(CNMultiValuePropertyDescription *)self applyCNValue:v17 toArray:v14 identifier:v16 legacyIdentifier:v9 label:v15];
+  v9 = *&legacyIdentifier;
+  representationCopy = representation;
+  labelCopy = label;
+  identifierCopy = identifier;
+  v17 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValueBytes:bytes length:length];
+  [(CNMultiValuePropertyDescription *)self applyCNValue:v17 toArray:representationCopy identifier:identifierCopy legacyIdentifier:v9 label:labelCopy];
 
   return 1;
 }
 
-- (BOOL)applyDictionary:(id)a3 identifier:(id)a4 legacyIdentifier:(int)a5 label:(id)a6 toCNMultivalueRepresentation:(id)a7
+- (BOOL)applyDictionary:(id)dictionary identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation
 {
-  v9 = *&a5;
-  v12 = a3;
+  v9 = *&legacyIdentifier;
+  dictionaryCopy = dictionary;
   v13 = *MEMORY[0x1E698A328];
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = [v12 objectForKey:v13];
+  representationCopy = representation;
+  labelCopy = label;
+  identifierCopy = identifier;
+  v17 = [dictionaryCopy objectForKey:v13];
   v18 = v17;
   if (v17)
   {
     v19 = [v17 componentsSeparatedByString:{@", "}];
-    v20 = [v12 mutableCopy];
+    v20 = [dictionaryCopy mutableCopy];
     [v20 setObject:v19 forKey:v13];
 
-    v12 = v20;
+    dictionaryCopy = v20;
   }
 
-  v21 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:v12];
+  v21 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:dictionaryCopy];
 
-  v22 = [(CNMultiValuePropertyDescription *)self applyCNValue:v21 toArray:v14 identifier:v16 legacyIdentifier:v9 label:v15];
+  v22 = [(CNMultiValuePropertyDescription *)self applyCNValue:v21 toArray:representationCopy identifier:identifierCopy legacyIdentifier:v9 label:labelCopy];
   return v22;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   +[CNiOSABConstantsMapping CNToABLabelConstantsMapping];
   v22 = v21 = self;
   Mutable = ABMultiValueCreateMutable([(CNMultiValuePropertyDescription *)self abPropertyType]);
@@ -100,7 +100,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = valueCopy;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -119,12 +119,12 @@
         }
 
         v12 = *(*(&v23 + 1) + 8 * v10);
-        v13 = [v12 value];
-        [(CNMultiValuePropertyDescription *)v21 ABMultiValueValueFromCNLabeledValueValue:v13];
-        v14 = [v12 label];
-        v15 = [v22 mappedConstant:v14];
+        value = [v12 value];
+        [(CNMultiValuePropertyDescription *)v21 ABMultiValueValueFromCNLabeledValueValue:value];
+        label = [v12 label];
+        v15 = [v22 mappedConstant:label];
 
-        v16 = [v12 identifier];
+        identifier = [v12 identifier];
         v8 = v11 + 1;
         ABMultiValueInsertValueAndLabelAndUUIDAtIndex();
 
@@ -154,17 +154,17 @@
   return v18;
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  v16 = [MEMORY[0x1E695DF70] array];
-  Count = ABMultiValueGetCount(a3);
+  array = [MEMORY[0x1E695DF70] array];
+  Count = ABMultiValueGetCount(value);
   if (Count >= 1)
   {
     for (i = 0; i != Count; ++i)
     {
-      v6 = ABMultiValueCopyValueAtIndex(a3, i);
-      v7 = ABMultiValueCopyLabelAtIndex(a3, i);
-      IdentifierAtIndex = ABMultiValueGetIdentifierAtIndex(a3, i);
+      v6 = ABMultiValueCopyValueAtIndex(value, i);
+      v7 = ABMultiValueCopyLabelAtIndex(value, i);
+      IdentifierAtIndex = ABMultiValueGetIdentifierAtIndex(value, i);
       v9 = ABMultiValueCopyUUIDAtIndex();
       v10 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:v6];
       v11 = [(CNMultiValuePropertyDescription *)self CNLabeledValueLabelFromABMultiValueLabel:v7];
@@ -172,7 +172,7 @@
       {
         v12 = [[CNLabeledValue alloc] primitiveInitWithIdentifier:v9 label:v11 value:v10];
         [v12 setIOSLegacyIdentifier:IdentifierAtIndex];
-        [v16 addObject:v12];
+        [array addObject:v12];
       }
 
       if (v6)
@@ -192,41 +192,41 @@
     }
   }
 
-  v13 = v16;
-  v14 = [v16 copy];
+  v13 = array;
+  v14 = [array copy];
 
   return v14;
 }
 
-- (id)CNLabeledValueLabelFromABMultiValueLabel:(__CFString *)a3
+- (id)CNLabeledValueLabelFromABMultiValueLabel:(__CFString *)label
 {
   v4 = +[CNiOSABConstantsMapping ABToCNLabelConstantsMapping];
-  v5 = [v4 mappedConstant:a3];
+  v5 = [v4 mappedConstant:label];
 
   return v5;
 }
 
-- (__CFString)ABMultiValueLabelFromCNLabeledValueLabel:(id)a3
+- (__CFString)ABMultiValueLabelFromCNLabeledValueLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = +[CNiOSABConstantsMapping CNToABLabelConstantsMapping];
-  v5 = [v4 mappedConstant:v3];
+  v5 = [v4 mappedConstant:labelCopy];
 
   return v5;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3 destinationClass:(Class)a4 settersByABKeys:(id)a5
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value destinationClass:(Class)class settersByABKeys:(id)keys
 {
-  v7 = a5;
-  v8 = objc_alloc_init(a4);
+  keysCopy = keys;
+  v8 = objc_alloc_init(class);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __116__CNMultiValuePropertyDescription_iOSAB__CNLabeledValueValueFromABMultiValueValue_destinationClass_settersByABKeys___block_invoke;
   v11[3] = &unk_1E7415CF8;
-  v13 = a3;
+  valueCopy = value;
   v9 = v8;
   v12 = v9;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
+  [keysCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   return v9;
 }
@@ -241,20 +241,20 @@ void __116__CNMultiValuePropertyDescription_iOSAB__CNLabeledValueValueFromABMult
   }
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3 gettersByABKeys:(id)a4
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value gettersByABKeys:(id)keys
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = *MEMORY[0x1E695E480];
-  v7 = a4;
+  keysCopy = keys;
   Mutable = CFDictionaryCreateMutable(v6, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeledValueValue_gettersByABKeys___block_invoke;
   v11[3] = &unk_1E7415CF8;
-  v9 = v5;
+  v9 = valueCopy;
   v12 = v9;
   v13 = Mutable;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
+  [keysCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   if (Mutable)
   {
@@ -279,9 +279,9 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
   }
 }
 
-- (void)ABMutableMultiValueForABPerson:(void *)a3
+- (void)ABMutableMultiValueForABPerson:(void *)person
 {
-  v4 = [(CNPropertyDescription *)self ABValueForABPerson:a3];
+  v4 = [(CNPropertyDescription *)self ABValueForABPerson:person];
   if (v4)
   {
     result = ABMultiValueCreateMutableCopy(v4);
@@ -303,28 +303,28 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
   return CFAutorelease(result);
 }
 
-- (BOOL)isEqualIgnoringIdentifiersForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualIgnoringIdentifiersForContact:(id)contact other:(id)other
 {
-  v6 = a4;
-  v7 = [(CNPropertyDescription *)self CNValueForContact:a3];
-  v8 = [(CNPropertyDescription *)self CNValueForContact:v6];
+  otherCopy = other;
+  v7 = [(CNPropertyDescription *)self CNValueForContact:contact];
+  v8 = [(CNPropertyDescription *)self CNValueForContact:otherCopy];
 
-  LOBYTE(v6) = [CNLabeledValue isArrayOfEntries:v7 equalToArrayOfEntriesIgnoringIdentifiers:v8];
-  return v6;
+  LOBYTE(otherCopy) = [CNLabeledValue isArrayOfEntries:v7 equalToArrayOfEntriesIgnoringIdentifiers:v8];
+  return otherCopy;
 }
 
-- (void)assertValueType:(id)a3
+- (void)assertValueType:(id)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v24.receiver = self;
   v24.super_class = CNMultiValuePropertyDescription;
-  [(CNPropertyDescription *)&v24 assertValueType:v4];
+  [(CNPropertyDescription *)&v24 assertValueType:typeCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v4;
+  obj = typeCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
@@ -350,8 +350,8 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
           [v9 raise:v10 format:{@"Labeled value %@ has incorrect type %@ for key %@. It should be %@.", v8, v11, v12, objc_opt_class()}];
         }
 
-        v13 = [v8 label];
-        if (v13)
+        label = [v8 label];
+        if (label)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -359,15 +359,15 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
             v14 = MEMORY[0x1E695DF30];
             v15 = CNPropertyInvalidTypeExceptionName;
             v16 = objc_opt_class();
-            [v14 raise:v15 format:{@"Labeled value %@ label %@ has incorrect type %@. It should be %@.", v8, v13, v16, objc_opt_class()}];
+            [v14 raise:v15 format:{@"Labeled value %@ label %@ has incorrect type %@. It should be %@.", v8, label, v16, objc_opt_class()}];
           }
         }
 
-        v17 = [v8 value];
+        value = [v8 value];
         [(CNMultiValuePropertyDescription *)self labeledValueClass];
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [MEMORY[0x1E695DF30] raise:CNPropertyInvalidTypeExceptionName format:{@"Labeled value %@ value %@ has incorrect type %@. It should be %@.", v8, v17, objc_opt_class(), -[CNMultiValuePropertyDescription labeledValueClass](self, "labeledValueClass")}];
+          [MEMORY[0x1E695DF30] raise:CNPropertyInvalidTypeExceptionName format:{@"Labeled value %@ value %@ has incorrect type %@. It should be %@.", v8, value, objc_opt_class(), -[CNMultiValuePropertyDescription labeledValueClass](self, "labeledValueClass")}];
         }
       }
 
@@ -378,18 +378,18 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
   }
 }
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (valueCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v6;
+    v8 = valueCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v9)
     {
@@ -404,21 +404,21 @@ void __99__CNMultiValuePropertyDescription_iOSAB__ABMultiValueValueFromCNLabeled
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) value];
+          value = [*(*(&v23 + 1) + 8 * i) value];
           v22 = 0;
-          v14 = [(CNMultiValuePropertyDescription *)self isValidMultiValueValue:v13 error:&v22];
+          v14 = [(CNMultiValuePropertyDescription *)self isValidMultiValueValue:value error:&v22];
           v15 = v22;
           v16 = v15;
           if (!v14)
           {
-            if (a4)
+            if (error)
             {
               v18 = [(CNPropertyDescription *)self key];
               v27[0] = v18;
               v27[1] = @"value";
               v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
               v20 = [v19 componentsJoinedByString:@"."];
-              *a4 = [CNErrorFactory errorByPrependingKeyPath:v20 toKeyPathsInError:v16];
+              *error = [CNErrorFactory errorByPrependingKeyPath:v20 toKeyPathsInError:v16];
             }
 
             v17 = 0;
@@ -448,12 +448,12 @@ LABEL_14:
   return v17;
 }
 
-- (BOOL)isValidMultiValueValue:(id)a3 error:(id *)a4
+- (BOOL)isValidMultiValueValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&unk_1F0993B08])
+  valueCopy = value;
+  if ([valueCopy conformsToProtocol:&unk_1F0993B08])
   {
-    v6 = [v5 isValid:a4];
+    v6 = [valueCopy isValid:error];
   }
 
   else
@@ -464,16 +464,16 @@ LABEL_14:
   return v6;
 }
 
-- (id)stringForIndexingForContact:(id)a3
+- (id)stringForIndexingForContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   if ([(objc_class *)[(CNMultiValuePropertyDescription *)self labeledValueClass] isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(CNPropertyDescription *)self CNValueForContact:v4];
+    v5 = [(CNPropertyDescription *)self CNValueForContact:contactCopy];
     if ([v5 count])
     {
-      v6 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
@@ -493,10 +493,10 @@ LABEL_14:
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v14 + 1) + 8 * i) value];
-            [v6 appendString:v12];
+            value = [*(*(&v14 + 1) + 8 * i) value];
+            [string appendString:value];
 
-            [v6 appendString:@" "];
+            [string appendString:@" "];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -508,28 +508,28 @@ LABEL_14:
 
     else
     {
-      v6 = 0;
+      string = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    string = 0;
   }
 
-  return v6;
+  return string;
 }
 
-- (id)valueWithResetIdentifiers:(id)a3
+- (id)valueWithResetIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  identifiersCopy = identifiers;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -545,9 +545,9 @@ LABEL_14:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 label];
-        v12 = [v10 value];
-        v13 = [CNLabeledValue labeledValueWithLabel:v11 value:v12];
+        label = [v10 label];
+        value = [v10 value];
+        v13 = [CNLabeledValue labeledValueWithLabel:label value:value];
 
         [v4 addObject:v13];
       }
@@ -561,19 +561,19 @@ LABEL_14:
   return v4;
 }
 
-- (id)standardLabelsWithOptions:(unint64_t)a3
+- (id)standardLabelsWithOptions:(unint64_t)options
 {
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v4 = MEMORY[0x1E695E0F0];
+    standardLabels = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [(CNMultiValuePropertyDescription *)self standardLabels];
+    standardLabels = [(CNMultiValuePropertyDescription *)self standardLabels];
   }
 
-  return v4;
+  return standardLabels;
 }
 
 - (NSArray)standardLabels

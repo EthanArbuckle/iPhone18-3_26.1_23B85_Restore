@@ -1,13 +1,13 @@
 @interface SidecarTransferReceiver
-- (SidecarTransferReceiver)initWithSession:(id)a3 requestID:(int64_t)a4;
-- (void)handleMessage:(id)a3;
+- (SidecarTransferReceiver)initWithSession:(id)session requestID:(int64_t)d;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation SidecarTransferReceiver
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -20,7 +20,7 @@
   v6[3] = &unk_279BC30C0;
   v8 = &v9;
   v6[4] = self;
-  v5 = v4;
+  v5 = messageCopy;
   v7 = v5;
   SidecarTransferLocked(self, v6);
   (*(v10[5] + 16))();
@@ -38,11 +38,11 @@ uint64_t __41__SidecarTransferReceiver_handleMessage___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (SidecarTransferReceiver)initWithSession:(id)a3 requestID:(int64_t)a4
+- (SidecarTransferReceiver)initWithSession:(id)session requestID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = SidecarTransferReceiver;
-  return [(SidecarTransfer *)&v5 initWithSession:a3 requestID:a4 transferID:0];
+  return [(SidecarTransfer *)&v5 initWithSession:session requestID:d transferID:0];
 }
 
 @end

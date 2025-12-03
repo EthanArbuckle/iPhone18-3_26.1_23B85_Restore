@@ -1,24 +1,24 @@
 @interface _DKPredictor
-+ (id)defaultPeriodAtDate:(uint64_t)a1;
++ (id)defaultPeriodAtDate:(uint64_t)date;
 + (id)deviceActivityLikelihoodQueryPredicate;
 + (id)predictorLog;
-+ (id)predictorWithKnowledgeStore:(id)a3;
++ (id)predictorWithKnowledgeStore:(id)store;
 - (id)deviceActivityLikelihood;
 - (id)displayOnLikelihood;
 - (id)expectedInBedPeriod;
-- (id)initWithKnowledgeStore:(id *)a1;
-- (id)launchLikelihoodPredictionForApp:(id)a3;
+- (id)initWithKnowledgeStore:(id *)store;
+- (id)launchLikelihoodPredictionForApp:(id)app;
 - (id)localInBedPeriod;
 - (id)pluginLikelihood;
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5;
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5 asOfDate:(id)a6;
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5 withDataPartitionType:(unint64_t)a6 asOfDate:(id)a7;
-- (id)predictionForStreamsWithNames:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5;
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type;
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type asOfDate:(id)date;
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type withDataPartitionType:(unint64_t)partitionType asOfDate:(id)date;
+- (id)predictionForStreamsWithNames:(id)names withPredicate:(id)predicate withPredictionType:(unint64_t)type;
 - (void)deviceActivityLikelihood;
 - (void)displayOnLikelihood;
 - (void)pluginLikelihood;
-- (void)predictionForStreamsWithNames:(void *)a3 withPredicate:(uint64_t)a4 withPredictionType:(uint64_t)a5 withDataPartitionType:(void *)a6 asOfDate:;
-- (void)predictionForStreamsWithNames:(void *)a3 withPredicate:(uint64_t)a4 withPredictionType:(void *)a5 asOfDate:;
+- (void)predictionForStreamsWithNames:(void *)names withPredicate:(uint64_t)predicate withPredictionType:(uint64_t)type withDataPartitionType:(void *)partitionType asOfDate:;
+- (void)predictionForStreamsWithNames:(void *)names withPredicate:(uint64_t)predicate withPredictionType:(void *)type asOfDate:;
 @end
 
 @implementation _DKPredictor
@@ -36,19 +36,19 @@
   return v0;
 }
 
-- (id)launchLikelihoodPredictionForApp:(id)a3
+- (id)launchLikelihoodPredictionForApp:(id)app
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   v5 = _os_activity_create(&dword_191750000, "CoreDuet: launchLikelihoodPredictionForApp", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  if (v4)
+  if (appCopy)
   {
-    v6 = [_DKQuery predicateForEventsWithStringValue:v4];
+    v6 = [_DKQuery predicateForEventsWithStringValue:appCopy];
   }
 
   else
@@ -232,9 +232,9 @@
   os_activity_scope_enter(v3, &state);
   os_activity_scope_leave(&state);
 
-  v4 = [objc_opt_class() deviceActivityLikelihoodQueryPredicate];
+  deviceActivityLikelihoodQueryPredicate = [objc_opt_class() deviceActivityLikelihoodQueryPredicate];
   v5 = +[_DKSystemEventStreams deviceActivityLevelStream];
-  v6 = [_DKPredictionQuery predictionQueryForStream:v5 withPredicate:v4 withPredictionType:0];
+  v6 = [_DKPredictionQuery predictionQueryForStream:v5 withPredicate:deviceActivityLikelihoodQueryPredicate withPredictionType:0];
 
   [v6 setMinimumDaysOfHistory:3];
   [v6 setSlotDuration:900];
@@ -260,9 +260,9 @@
   {
     v12 = objc_alloc_init(_DKPredictionQueryFeedback);
     v13 = self->_knowledgeStore;
-    v14 = [v8 startHistogram];
-    v15 = [v8 endHistogram];
-    [(_DKPredictionQueryFeedback *)v12 logPredictionQueryFeedback:v14 endHistogram:v15 withStorage:v13];
+    startHistogram = [v8 startHistogram];
+    endHistogram = [v8 endHistogram];
+    [(_DKPredictionQueryFeedback *)v12 logPredictionQueryFeedback:startHistogram endHistogram:endHistogram withStorage:v13];
 
     [v8 setStartHistogram:0];
     [v8 setEndHistogram:0];
@@ -272,46 +272,46 @@
   return v11;
 }
 
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  nameCopy = name;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v16 count:1];
-  v12 = [MEMORY[0x1E695DF00] date];
+  predicateCopy = predicate;
+  nameCopy2 = name;
+  v11 = [v8 arrayWithObjects:&nameCopy count:1];
+  date = [MEMORY[0x1E695DF00] date];
 
-  v13 = [(_DKPredictor *)self predictionForStreamsWithNames:v11 withPredicate:v9 withPredictionType:a5 asOfDate:v12];
+  v13 = [(_DKPredictor *)self predictionForStreamsWithNames:v11 withPredicate:predicateCopy withPredictionType:type asOfDate:date];
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5 withDataPartitionType:(unint64_t)a6 asOfDate:(id)a7
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type withDataPartitionType:(unint64_t)partitionType asOfDate:(id)date
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v20[0] = a3;
+  v20[0] = name;
   v12 = MEMORY[0x1E695DEC8];
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
+  dateCopy = date;
+  predicateCopy = predicate;
+  nameCopy = name;
   v16 = [v12 arrayWithObjects:v20 count:1];
 
-  v17 = [(_DKPredictor *)self predictionForStreamsWithNames:v16 withPredicate:v14 withPredictionType:a5 withDataPartitionType:a6 asOfDate:v13];
+  v17 = [(_DKPredictor *)self predictionForStreamsWithNames:v16 withPredicate:predicateCopy withPredictionType:type withDataPartitionType:partitionType asOfDate:dateCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-+ (id)defaultPeriodAtDate:(uint64_t)a1
++ (id)defaultPeriodAtDate:(uint64_t)date
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [v3 components:32 fromDate:v2];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v4 = [currentCalendar components:32 fromDate:v2];
   if ([v4 hour] <= 6)
   {
     v5 = [v2 dateByAddingTimeInterval:-86400.0];
@@ -319,7 +319,7 @@
     v2 = v5;
   }
 
-  v6 = [v3 startOfDayForDate:v2];
+  v6 = [currentCalendar startOfDayForDate:v2];
   v7 = [v6 dateByAddingTimeInterval:72000.0];
 
   v8 = [v7 dateByAddingTimeInterval:39600.0];
@@ -336,16 +336,16 @@
   os_activity_scope_enter(v3, &v8);
   os_activity_scope_leave(&v8);
 
-  v4 = [(_DKPredictor *)self deviceActivityLikelihood];
-  if ([v4 isUnavailable])
+  deviceActivityLikelihood = [(_DKPredictor *)self deviceActivityLikelihood];
+  if ([deviceActivityLikelihood isUnavailable])
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [_DKPredictor defaultPeriodAtDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [_DKPredictor defaultPeriodAtDate:date];
   }
 
   else
   {
-    v6 = [v4 largestDateRangeWithValuesBetween:0.0 and:0.1 ofMinimumDuration:21600.0];
+    v6 = [deviceActivityLikelihood largestDateRangeWithValuesBetween:0.0 and:0.1 ofMinimumDuration:21600.0];
   }
 
   return v6;
@@ -359,83 +359,83 @@
   os_activity_scope_enter(v3, &v6);
   os_activity_scope_leave(&v6);
 
-  v4 = [(_DKPredictor *)self localInBedPeriod];
+  localInBedPeriod = [(_DKPredictor *)self localInBedPeriod];
 
-  return v4;
+  return localInBedPeriod;
 }
 
-- (id)initWithKnowledgeStore:(id *)a1
+- (id)initWithKnowledgeStore:(id *)store
 {
   v4 = a2;
-  if (a1)
+  if (store)
   {
-    v7.receiver = a1;
+    v7.receiver = store;
     v7.super_class = _DKPredictor;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    store = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return store;
 }
 
-+ (id)predictorWithKnowledgeStore:(id)a3
++ (id)predictorWithKnowledgeStore:(id)store
 {
-  v4 = a3;
-  v5 = [(_DKPredictor *)[a1 alloc] initWithKnowledgeStore:v4];
+  storeCopy = store;
+  v5 = [(_DKPredictor *)[self alloc] initWithKnowledgeStore:storeCopy];
 
   return v5;
 }
 
-- (void)predictionForStreamsWithNames:(void *)a3 withPredicate:(uint64_t)a4 withPredictionType:(void *)a5 asOfDate:
+- (void)predictionForStreamsWithNames:(void *)names withPredicate:(uint64_t)predicate withPredictionType:(void *)type asOfDate:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_DKPredictor *)a1 predictionForStreamsWithNames:a2 withPredicate:a3 withPredictionType:a4 withDataPartitionType:1 asOfDate:a5];
+    self = [(_DKPredictor *)self predictionForStreamsWithNames:a2 withPredicate:names withPredictionType:predicate withDataPartitionType:1 asOfDate:type];
     v5 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)predictionForStreamsWithNames:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5
+- (id)predictionForStreamsWithNames:(id)names withPredicate:(id)predicate withPredictionType:(unint64_t)type
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 date];
-  v12 = [(_DKPredictor *)self predictionForStreamsWithNames:v10 withPredicate:v9 withPredictionType:a5 asOfDate:v11];
+  predicateCopy = predicate;
+  namesCopy = names;
+  date = [v8 date];
+  v12 = [(_DKPredictor *)self predictionForStreamsWithNames:namesCopy withPredicate:predicateCopy withPredictionType:type asOfDate:date];
 
   return v12;
 }
 
-- (id)predictionForStreamWithName:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5 asOfDate:(id)a6
+- (id)predictionForStreamWithName:(id)name withPredicate:(id)predicate withPredictionType:(unint64_t)type asOfDate:(id)date
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v18[0] = a3;
+  v18[0] = name;
   v10 = MEMORY[0x1E695DEC8];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  dateCopy = date;
+  predicateCopy = predicate;
+  nameCopy = name;
   v14 = [v10 arrayWithObjects:v18 count:1];
 
-  v15 = [(_DKPredictor *)self predictionForStreamsWithNames:v14 withPredicate:v12 withPredictionType:a5 asOfDate:v11];
+  v15 = [(_DKPredictor *)self predictionForStreamsWithNames:v14 withPredicate:predicateCopy withPredictionType:type asOfDate:dateCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (void)predictionForStreamsWithNames:(void *)a3 withPredicate:(uint64_t)a4 withPredictionType:(uint64_t)a5 withDataPartitionType:(void *)a6 asOfDate:
+- (void)predictionForStreamsWithNames:(void *)names withPredicate:(uint64_t)predicate withPredictionType:(uint64_t)type withDataPartitionType:(void *)partitionType asOfDate:
 {
   v41 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a6;
-  if (a1)
+  namesCopy = names;
+  partitionTypeCopy = partitionType;
+  if (self)
   {
     v12 = _os_activity_create(&dword_191750000, "CoreDuet: predictionForStreamsWithNames", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     *state = 0;
@@ -444,7 +444,7 @@
     os_activity_scope_leave(state);
 
     context = objc_autoreleasePoolPush();
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -466,7 +466,7 @@
           }
 
           v19 = [_DKEventStream eventStreamWithName:*(*(&v35 + 1) + 8 * i)];
-          [v13 addObject:v19];
+          [array addObject:v19];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -475,13 +475,13 @@
       while (v16);
     }
 
-    v20 = [v13 copy];
-    v21 = v10;
-    v22 = [_DKPredictionQuery predictionQueryForStreams:v20 withPredicate:v10 withPredictionType:a4];
+    v20 = [array copy];
+    v21 = namesCopy;
+    v22 = [_DKPredictionQuery predictionQueryForStreams:v20 withPredicate:namesCopy withPredictionType:predicate];
 
-    [v22 setAsOfDate:v11];
-    [v22 setPartitionType:a5];
-    v23 = a1[1];
+    [v22 setAsOfDate:partitionTypeCopy];
+    [v22 setPartitionType:type];
+    v23 = self[1];
     v34 = 0;
     v24 = [v23 executeQuery:v22 error:&v34];
     v25 = v34;
@@ -506,7 +506,7 @@
       v27 = v24;
     }
 
-    a1 = v27;
+    self = v27;
     v9 = v31;
 
     objc_autoreleasePoolPop(context);
@@ -514,12 +514,12 @@
 
   else
   {
-    v21 = v10;
+    v21 = namesCopy;
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 - (void)launchLikelihoodPredictionForApp:.cold.1()

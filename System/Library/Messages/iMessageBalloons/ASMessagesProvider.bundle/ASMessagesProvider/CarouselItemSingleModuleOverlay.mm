@@ -1,7 +1,7 @@
 @interface CarouselItemSingleModuleOverlay
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleSelection:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleSelection:(id)selection;
 - (void)layoutSubviews;
 @end
 
@@ -16,17 +16,17 @@
   sub_2F53FC(v4);
   sub_B170(v4, v4[3]);
   sub_75D650();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_7673E0();
 
   sub_BEB8(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_28613C(width, height);
   sub_2F53FC(v12);
   v7 = sub_604168(v12, v6, height);
@@ -40,22 +40,22 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2F66C4(v7);
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_2F66C4(eventCopy);
 
   return v9;
 }
 
-- (void)handleSelection:(id)a3
+- (void)handleSelection:(id)selection
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider31CarouselItemSingleModuleOverlay_selectionHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_F714(v3);
     v3(v5);
 

@@ -1,42 +1,42 @@
 @interface SBPIPPegasusAdapter
 + (BOOL)_isAutoPictureInPictureSupported;
 + (BOOL)isSupported;
-- (BOOL)_layoutStateContainsSceneForSourceSceneSessionIdentifier:(id)a3 bundleIdentifier:(id)a4 windowScene:(id)a5;
-- (BOOL)_presentableIsDodgeableAndStatusBarSuppressing:(id)a3;
-- (BOOL)isPresentingPictureInPictureForPIPController:(id)a3 applicationBundleIdentifier:(id)a4;
-- (BOOL)isStoppingOrCancellingPictureForPIPController:(id)a3 applicationWithBundleIdentifier:(id)a4 scenePersistenceIdentifier:(id)a5;
-- (BOOL)pictureInPictureController:(id)a3 shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:(id)a4;
-- (BOOL)pictureInPictureControllerCanBackgroundStartForFaceTimeVideoCall:(id)a3;
-- (BOOL)pipController:(id)a3 willBeginPIPInterruptionForAssertion:(id)a4;
-- (BOOL)preventStashAssertionsForPIPController:(id)a3;
-- (BOOL)shouldStartPictureInPictureForPIPController:(id)a3 applicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5;
+- (BOOL)_layoutStateContainsSceneForSourceSceneSessionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier windowScene:(id)scene;
+- (BOOL)_presentableIsDodgeableAndStatusBarSuppressing:(id)suppressing;
+- (BOOL)isPresentingPictureInPictureForPIPController:(id)controller applicationBundleIdentifier:(id)identifier;
+- (BOOL)isStoppingOrCancellingPictureForPIPController:(id)controller applicationWithBundleIdentifier:(id)identifier scenePersistenceIdentifier:(id)persistenceIdentifier;
+- (BOOL)pictureInPictureController:(id)controller shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:(id)identifier;
+- (BOOL)pictureInPictureControllerCanBackgroundStartForFaceTimeVideoCall:(id)call;
+- (BOOL)pipController:(id)controller willBeginPIPInterruptionForAssertion:(id)assertion;
+- (BOOL)preventStashAssertionsForPIPController:(id)controller;
+- (BOOL)shouldStartPictureInPictureForPIPController:(id)controller applicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier;
 - (SBPIPPegasusAdapter)init;
-- (id)pictureInPictureController:(id)a3 displayConfigurationForApplication:(id)a4;
-- (id)pipController:(id)a3 morphAnimatorDataSourceForMorphAnimatorController:(id)a4;
-- (int64_t)_reasonForAssertion:(id)a3;
-- (void)_activateSceneWithPersistenceIdentifier:(id)a3 pictureInPictureViewController:(id)a4 completion:(id)a5;
-- (void)_actuallyUpdateBannerInsetsForExpanseBanner:(id)a3 isSizeChanging:(BOOL)a4 isFullScreen:(BOOL)a5;
-- (void)_bannerPresentableWillAnimateTransition:(id)a3 isPresentation:(BOOL)a4 isDismissal:(BOOL)a5 isFullScreen:(BOOL)a6 withTransitionCoordinator:(id)a7;
-- (void)_enumerateContainerViewControllersForApplication:(id)a3 scenePersistenceIdentifier:(id)a4 usingBlock:(id)a5;
-- (void)_postEnsuredInSwitcher_pictureInPictureController:(id)a3 didRequestStopForPictureInPictureViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6;
+- (id)pictureInPictureController:(id)controller displayConfigurationForApplication:(id)application;
+- (id)pipController:(id)controller morphAnimatorDataSourceForMorphAnimatorController:(id)animatorController;
+- (int64_t)_reasonForAssertion:(id)assertion;
+- (void)_activateSceneWithPersistenceIdentifier:(id)identifier pictureInPictureViewController:(id)controller completion:(id)completion;
+- (void)_actuallyUpdateBannerInsetsForExpanseBanner:(id)banner isSizeChanging:(BOOL)changing isFullScreen:(BOOL)screen;
+- (void)_bannerPresentableWillAnimateTransition:(id)transition isPresentation:(BOOL)presentation isDismissal:(BOOL)dismissal isFullScreen:(BOOL)screen withTransitionCoordinator:(id)coordinator;
+- (void)_enumerateContainerViewControllersForApplication:(id)application scenePersistenceIdentifier:(id)identifier usingBlock:(id)block;
+- (void)_postEnsuredInSwitcher_pictureInPictureController:(id)controller didRequestStopForPictureInPictureViewController:(id)viewController sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated;
 - (void)_updateAppStatusBarSettingsAssertion;
-- (void)_updateBannerInsetsForExpanseBanner:(id)a3 isSizeChanging:(BOOL)a4 isFullScreen:(BOOL)a5;
+- (void)_updateBannerInsetsForExpanseBanner:(id)banner isSizeChanging:(BOOL)changing isFullScreen:(BOOL)screen;
 - (void)_updateHasIdleTimerBehaviors;
 - (void)_updateHideFromClonedDisplaysAssertion;
-- (void)bannerManager:(id)a3 presentable:(id)a4 willTransitionToSize:(CGSize)a5 withTransitionCoordinator:(id)a6;
-- (void)containerViewControllerStartReducingResourcesUsage:(id)a3;
-- (void)containerViewControllerStopReducingResourcesUsage:(id)a3;
+- (void)bannerManager:(id)manager presentable:(id)presentable willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)containerViewControllerStartReducingResourcesUsage:(id)usage;
+- (void)containerViewControllerStopReducingResourcesUsage:(id)usage;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pictureInPictureController:(id)a3 didCreatePictureInPictureViewController:(id)a4;
-- (void)pictureInPictureController:(id)a3 didHidePictureInPictureViewController:(id)a4;
-- (void)pictureInPictureController:(id)a3 didRequestStopForPictureInPictureViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6;
-- (void)pictureInPictureController:(id)a3 willDestroyPictureInPictureViewController:(id)a4;
-- (void)pictureInPictureController:(id)a3 willHidePictureInPictureViewController:(id)a4;
-- (void)pipController:(id)a3 didCancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5;
-- (void)pipController:(id)a3 didStartPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7;
-- (void)pipController:(id)a3 willEndPIPInterruptionForAssertion:(id)a4;
-- (void)setPIPController:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pictureInPictureController:(id)controller didCreatePictureInPictureViewController:(id)viewController;
+- (void)pictureInPictureController:(id)controller didHidePictureInPictureViewController:(id)viewController;
+- (void)pictureInPictureController:(id)controller didRequestStopForPictureInPictureViewController:(id)viewController sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)pictureInPictureController:(id)controller willDestroyPictureInPictureViewController:(id)viewController;
+- (void)pictureInPictureController:(id)controller willHidePictureInPictureViewController:(id)viewController;
+- (void)pipController:(id)controller didCancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier;
+- (void)pipController:(id)controller didStartPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler;
+- (void)pipController:(id)controller willEndPIPInterruptionForAssertion:(id)assertion;
+- (void)setPIPController:(id)controller;
 @end
 
 @implementation SBPIPPegasusAdapter
@@ -44,10 +44,10 @@
 + (BOOL)_isAutoPictureInPictureSupported
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 pipDefaults];
-  v5 = [v4 allowAutoPIP];
+  pipDefaults = [v3 pipDefaults];
+  allowAutoPIP = [pipDefaults allowAutoPIP];
 
-  return [a1 isSupported] & v5;
+  return [self isSupported] & allowAutoPIP;
 }
 
 + (BOOL)isSupported
@@ -84,13 +84,13 @@ uint64_t __34__SBPIPPegasusAdapter_isSupported__block_invoke()
     v2->_analyticsHelper = v5;
 
     [(PGPictureInPictureController *)v2->_pegasusController setAnalyticsDelegate:v2->_analyticsHelper];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__updateHasIdleTimerBehaviors name:*MEMORY[0x277D38BF8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateHasIdleTimerBehaviors name:*MEMORY[0x277D38BF8] object:0];
 
     [(PGPictureInPictureController *)v2->_pegasusController addObserver:v2 forKeyPath:@"pictureInPictureActive" options:1 context:0];
     [(PGPictureInPictureController *)v2->_pegasusController activateBackgroundPIPAuthorizationService];
-    v8 = [SBApp bannerManager];
-    [v8 addTransitionObserver:v2];
+    bannerManager = [SBApp bannerManager];
+    [bannerManager addTransitionObserver:v2];
   }
 
   return v2;
@@ -99,14 +99,14 @@ uint64_t __34__SBPIPPegasusAdapter_isSupported__block_invoke()
 - (void)dealloc
 {
   [(BSAbsoluteMachTimer *)self->_pipDefaultContentSizeResetTimer invalidate];
-  v3 = [SBApp bannerManager];
-  [v3 removeTransitionObserver:self];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager removeTransitionObserver:self];
 
   if ([objc_opt_class() isSupported])
   {
     [(PGPictureInPictureController *)self->_pegasusController removeObserver:self forKeyPath:@"pictureInPictureActive"];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v5.receiver = self;
@@ -114,9 +114,9 @@ uint64_t __34__SBPIPPegasusAdapter_isSupported__block_invoke()
   [(SBPIPPegasusAdapter *)&v5 dealloc];
 }
 
-- (void)setPIPController:(id)a3
+- (void)setPIPController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
 
   v5 = obj;
@@ -127,46 +127,46 @@ uint64_t __34__SBPIPPegasusAdapter_isSupported__block_invoke()
   }
 }
 
-- (BOOL)isPresentingPictureInPictureForPIPController:(id)a3 applicationBundleIdentifier:(id)a4
+- (BOOL)isPresentingPictureInPictureForPIPController:(id)controller applicationBundleIdentifier:(id)identifier
 {
   pegasusController = self->_pegasusController;
-  v5 = a4;
-  v6 = [(PGPictureInPictureController *)pegasusController activePictureInPictureApplication];
-  v7 = [v6 bundleIdentifier];
+  identifierCopy = identifier;
+  activePictureInPictureApplication = [(PGPictureInPictureController *)pegasusController activePictureInPictureApplication];
+  bundleIdentifier = [activePictureInPictureApplication bundleIdentifier];
 
-  LOBYTE(v6) = [v7 isEqualToString:v5];
-  return v6;
+  LOBYTE(activePictureInPictureApplication) = [bundleIdentifier isEqualToString:identifierCopy];
+  return activePictureInPictureApplication;
 }
 
-- (BOOL)pipController:(id)a3 willBeginPIPInterruptionForAssertion:(id)a4
+- (BOOL)pipController:(id)controller willBeginPIPInterruptionForAssertion:(id)assertion
 {
   pegasusController = self->_pegasusController;
-  v6 = a4;
-  v7 = [(SBPIPPegasusAdapter *)self _reasonForAssertion:v6];
-  v8 = [v6 cameraSensorAttributionBundleIdentifier];
+  assertionCopy = assertion;
+  v7 = [(SBPIPPegasusAdapter *)self _reasonForAssertion:assertionCopy];
+  cameraSensorAttributionBundleIdentifier = [assertionCopy cameraSensorAttributionBundleIdentifier];
 
-  LOBYTE(v7) = [(PGPictureInPictureController *)pegasusController pictureInPictureInterruptionBeganWithReason:v7 attribution:v8];
+  LOBYTE(v7) = [(PGPictureInPictureController *)pegasusController pictureInPictureInterruptionBeganWithReason:v7 attribution:cameraSensorAttributionBundleIdentifier];
   return v7;
 }
 
-- (void)pipController:(id)a3 willEndPIPInterruptionForAssertion:(id)a4
+- (void)pipController:(id)controller willEndPIPInterruptionForAssertion:(id)assertion
 {
   pegasusController = self->_pegasusController;
-  v6 = a4;
-  v7 = [(SBPIPPegasusAdapter *)self _reasonForAssertion:v6];
-  v8 = [v6 cameraSensorAttributionBundleIdentifier];
+  assertionCopy = assertion;
+  v7 = [(SBPIPPegasusAdapter *)self _reasonForAssertion:assertionCopy];
+  cameraSensorAttributionBundleIdentifier = [assertionCopy cameraSensorAttributionBundleIdentifier];
 
-  [(PGPictureInPictureController *)pegasusController pictureInPictureInterruptionEndedWithReason:v7 attribution:v8];
+  [(PGPictureInPictureController *)pegasusController pictureInPictureInterruptionEndedWithReason:v7 attribution:cameraSensorAttributionBundleIdentifier];
 }
 
-- (BOOL)shouldStartPictureInPictureForPIPController:(id)a3 applicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5
+- (BOOL)shouldStartPictureInPictureForPIPController:(id)controller applicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier
 {
-  v7 = a5;
+  identifierCopy = identifier;
   if ([objc_opt_class() _isAutoPictureInPictureSupported])
   {
     pegasusController = self->_pegasusController;
-    v9 = SBPIPApplicationForProcessIdentifier(pegasusController, a4);
-    v10 = [(PGPictureInPictureController *)pegasusController shouldStartPictureInPictureForApplicationEnteringBackground:v9 sceneSessionPersistentIdentifier:v7];
+    v9 = SBPIPApplicationForProcessIdentifier(pegasusController, background);
+    v10 = [(PGPictureInPictureController *)pegasusController shouldStartPictureInPictureForApplicationEnteringBackground:v9 sceneSessionPersistentIdentifier:identifierCopy];
   }
 
   else
@@ -177,57 +177,57 @@ uint64_t __34__SBPIPPegasusAdapter_isSupported__block_invoke()
   return v10;
 }
 
-- (BOOL)isStoppingOrCancellingPictureForPIPController:(id)a3 applicationWithBundleIdentifier:(id)a4 scenePersistenceIdentifier:(id)a5
+- (BOOL)isStoppingOrCancellingPictureForPIPController:(id)controller applicationWithBundleIdentifier:(id)identifier scenePersistenceIdentifier:(id)persistenceIdentifier
 {
   pegasusController = self->_pegasusController;
-  v7 = a5;
-  v8 = [(PGPictureInPictureController *)pegasusController existingPictureInPictureApplicationForBundleIdentifier:a4];
-  LOBYTE(pegasusController) = [(PGPictureInPictureController *)pegasusController isStoppingOrCancellingPictureInPictureForApplication:v8 sceneSessionPersistentIdentifier:v7];
+  persistenceIdentifierCopy = persistenceIdentifier;
+  v8 = [(PGPictureInPictureController *)pegasusController existingPictureInPictureApplicationForBundleIdentifier:identifier];
+  LOBYTE(pegasusController) = [(PGPictureInPictureController *)pegasusController isStoppingOrCancellingPictureInPictureForApplication:v8 sceneSessionPersistentIdentifier:persistenceIdentifierCopy];
 
   return pegasusController;
 }
 
-- (void)pipController:(id)a3 didStartPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)pipController:(id)controller didStartPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a6;
+  animatedCopy = animated;
   pegasusController = self->_pegasusController;
-  v11 = a7;
-  v12 = a5;
-  v13 = SBPIPApplicationForProcessIdentifier(pegasusController, a4);
-  [(PGPictureInPictureController *)pegasusController startPictureInPictureForApplicationEnteringBackground:v13 sceneSessionPersistentIdentifier:v12 animated:v7 completionHandler:v11];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v13 = SBPIPApplicationForProcessIdentifier(pegasusController, background);
+  [(PGPictureInPictureController *)pegasusController startPictureInPictureForApplicationEnteringBackground:v13 sceneSessionPersistentIdentifier:identifierCopy animated:animatedCopy completionHandler:handlerCopy];
 }
 
-- (void)pipController:(id)a3 didCancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)a4 scenePersistenceIdentifier:(id)a5
+- (void)pipController:(id)controller didCancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:(int)background scenePersistenceIdentifier:(id)identifier
 {
   pegasusController = self->_pegasusController;
-  v7 = a5;
-  v8 = SBPIPApplicationForProcessIdentifier(pegasusController, a4);
-  [(PGPictureInPictureController *)pegasusController cancelPictureInPictureForApplication:v8 sceneSessionPersistentIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = SBPIPApplicationForProcessIdentifier(pegasusController, background);
+  [(PGPictureInPictureController *)pegasusController cancelPictureInPictureForApplication:v8 sceneSessionPersistentIdentifier:identifierCopy];
 }
 
-- (id)pipController:(id)a3 morphAnimatorDataSourceForMorphAnimatorController:(id)a4
+- (id)pipController:(id)controller morphAnimatorDataSourceForMorphAnimatorController:(id)animatorController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 scenePersistenceIdentifier];
-  v9 = SBPIPApplicationForProcessIdentifier(self->_pegasusController, [v6 targetProcessIdentifier]);
-  v10 = [(PGPictureInPictureController *)self->_pegasusController contentTypePictureInPictureApplication:v9 sceneSessionPersistentIdentifier:v8];
-  [(PGPictureInPictureController *)self->_pegasusController preferredContentSizeForInteractivelyEnteringBackgroundForApplication:v9 sceneSessionPersistentIdentifier:v8];
+  animatorControllerCopy = animatorController;
+  controllerCopy = controller;
+  scenePersistenceIdentifier = [animatorControllerCopy scenePersistenceIdentifier];
+  v9 = SBPIPApplicationForProcessIdentifier(self->_pegasusController, [animatorControllerCopy targetProcessIdentifier]);
+  v10 = [(PGPictureInPictureController *)self->_pegasusController contentTypePictureInPictureApplication:v9 sceneSessionPersistentIdentifier:scenePersistenceIdentifier];
+  [(PGPictureInPictureController *)self->_pegasusController preferredContentSizeForInteractivelyEnteringBackgroundForApplication:v9 sceneSessionPersistentIdentifier:scenePersistenceIdentifier];
   v12 = v11;
   v14 = v13;
   v15 = [SBPIPContentViewLayoutSettings alloc];
   v16 = [SBPIPContentViewLayoutMetrics pegasusMetricsForContentType:v10];
   v17 = [(SBPIPContentViewLayoutSettings *)v15 initWithPlatformMetrics:v16 contentSize:v12, v14];
 
-  v18 = [[SBPIPMorphAnimatorDataSource alloc] initWithMorphAnimatorController:v6 pipController:v7 pegasusController:self->_pegasusController contentViewLayoutSettings:v17];
+  v18 = [[SBPIPMorphAnimatorDataSource alloc] initWithMorphAnimatorController:animatorControllerCopy pipController:controllerCopy pegasusController:self->_pegasusController contentViewLayoutSettings:v17];
 
   return v18;
 }
 
-- (BOOL)preventStashAssertionsForPIPController:(id)a3
+- (BOOL)preventStashAssertionsForPIPController:(id)controller
 {
-  v5 = [(PGPictureInPictureController *)self->_pegasusController isStartingStoppingOrCancellingPictureInPicture];
-  if (v5)
+  isStartingStoppingOrCancellingPictureInPicture = [(PGPictureInPictureController *)self->_pegasusController isStartingStoppingOrCancellingPictureInPicture];
+  if (isStartingStoppingOrCancellingPictureInPicture)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pipController);
     if ([WeakRetained hasCameraInterruptionForBundleIdentifier:@"com.apple.avconferenced"])
@@ -239,10 +239,10 @@ LABEL_5:
     }
   }
 
-  v7 = [(PGPictureInPictureController *)self->_pegasusController activePictureInPictureApplications];
-  v6 = [v7 count] == 0;
+  activePictureInPictureApplications = [(PGPictureInPictureController *)self->_pegasusController activePictureInPictureApplications];
+  v6 = [activePictureInPictureApplications count] == 0;
 
-  if (v5)
+  if (isStartingStoppingOrCancellingPictureInPicture)
   {
     goto LABEL_5;
   }
@@ -250,20 +250,20 @@ LABEL_5:
   return v6;
 }
 
-- (void)_bannerPresentableWillAnimateTransition:(id)a3 isPresentation:(BOOL)a4 isDismissal:(BOOL)a5 isFullScreen:(BOOL)a6 withTransitionCoordinator:(id)a7
+- (void)_bannerPresentableWillAnimateTransition:(id)transition isPresentation:(BOOL)presentation isDismissal:(BOOL)dismissal isFullScreen:(BOOL)screen withTransitionCoordinator:(id)coordinator
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a7;
-  v14 = [(SBPIPPegasusAdapter *)self _presentableIsDodgeableAndStatusBarSuppressing:v12];
+  dismissalCopy = dismissal;
+  presentationCopy = presentation;
+  transitionCopy = transition;
+  coordinatorCopy = coordinator;
+  v14 = [(SBPIPPegasusAdapter *)self _presentableIsDodgeableAndStatusBarSuppressing:transitionCopy];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __129__SBPIPPegasusAdapter__bannerPresentableWillAnimateTransition_isPresentation_isDismissal_isFullScreen_withTransitionCoordinator___block_invoke;
   v35[3] = &unk_2783A92D8;
-  v15 = v12;
+  v15 = transitionCopy;
   v36 = v15;
-  v37 = self;
+  selfCopy = self;
   v16 = MEMORY[0x223D6F7F0](v35);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -271,14 +271,14 @@ LABEL_5:
   v32[3] = &unk_2783A92D8;
   v17 = v15;
   v33 = v17;
-  v34 = self;
+  selfCopy2 = self;
   v18 = MEMORY[0x223D6F7F0](v32);
   v19 = v18;
   if (v14)
   {
-    if (v10 || v9)
+    if (presentationCopy || dismissalCopy)
     {
-      if (v10)
+      if (presentationCopy)
       {
         v18 = v16;
       }
@@ -292,21 +292,21 @@ LABEL_5:
     v28[3] = &unk_2783B26B8;
     v28[4] = self;
     v29 = v17;
-    v30 = !v10 && !v9 && v14;
-    v31 = a6;
+    v30 = !presentationCopy && !dismissalCopy && v14;
+    screenCopy = screen;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __129__SBPIPPegasusAdapter__bannerPresentableWillAnimateTransition_isPresentation_isDismissal_isFullScreen_withTransitionCoordinator___block_invoke_4;
     v20[3] = &unk_2783B26E0;
-    v24 = v10;
+    v24 = presentationCopy;
     v22 = v19;
-    v25 = v9;
+    v25 = dismissalCopy;
     v23 = v16;
     v20[4] = self;
     v21 = v29;
     v26 = v30;
-    v27 = a6;
-    [v13 animateAlongsideTransition:v28 completion:v20];
+    screenCopy2 = screen;
+    [coordinatorCopy animateAlongsideTransition:v28 completion:v20];
   }
 }
 
@@ -411,15 +411,15 @@ LABEL_8:
   return [v5 _updateAppStatusBarSettingsAssertion];
 }
 
-- (void)bannerManager:(id)a3 presentable:(id)a4 willTransitionToSize:(CGSize)a5 withTransitionCoordinator:(id)a6
+- (void)bannerManager:(id)manager presentable:(id)presentable willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a5.height;
-  width = a5.width;
-  v18 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v12 windowSceneForPresentable:v18];
-  v14 = [v12 bannerWindowInWindowScene:v13];
+  height = size.height;
+  width = size.width;
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
+  v13 = [managerCopy windowSceneForPresentable:presentableCopy];
+  v14 = [managerCopy bannerWindowInWindowScene:v13];
 
   if (v14)
   {
@@ -432,35 +432,35 @@ LABEL_8:
     v17 = 0;
   }
 
-  [(SBPIPPegasusAdapter *)self _bannerPresentableWillAnimateTransition:v18 isPresentation:0 isDismissal:0 isFullScreen:v17 withTransitionCoordinator:v11];
+  [(SBPIPPegasusAdapter *)self _bannerPresentableWillAnimateTransition:presentableCopy isPresentation:0 isDismissal:0 isFullScreen:v17 withTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)_updateBannerInsetsForExpanseBanner:(id)a3 isSizeChanging:(BOOL)a4 isFullScreen:(BOOL)a5
+- (void)_updateBannerInsetsForExpanseBanner:(id)banner isSizeChanging:(BOOL)changing isFullScreen:(BOOL)screen
 {
-  v8 = a3;
+  bannerCopy = banner;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__SBPIPPegasusAdapter__updateBannerInsetsForExpanseBanner_isSizeChanging_isFullScreen___block_invoke;
   block[3] = &unk_2783B2708;
   block[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v13 = a5;
-  v9 = v8;
+  v11 = bannerCopy;
+  changingCopy = changing;
+  screenCopy = screen;
+  v9 = bannerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_actuallyUpdateBannerInsetsForExpanseBanner:(id)a3 isSizeChanging:(BOOL)a4 isFullScreen:(BOOL)a5
+- (void)_actuallyUpdateBannerInsetsForExpanseBanner:(id)banner isSizeChanging:(BOOL)changing isFullScreen:(BOOL)screen
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v9 = [(NSMutableSet *)self->_presentedExpanseBanners count];
     v10 = [(NSMutableSet *)self->_presentedExpanseBanners count];
-    v11 = !v9 || a5;
+    v11 = !v9 || screen;
     if (v10 <= 1)
     {
       v12 = 0.0;
@@ -509,16 +509,16 @@ LABEL_8:
           }
 
           v19 = *(*(&v67 + 1) + 8 * i);
-          v20 = [v19 viewController];
-          v21 = [v20 view];
+          viewController = [v19 viewController];
+          view = [viewController view];
 
-          [v21 bounds];
+          [view bounds];
           v23 = v22;
           v25 = v24;
           v27 = v26;
           v29 = v28;
-          v30 = [v19 viewController];
-          [v30 bannerContentOutsets];
+          viewController2 = [v19 viewController];
+          [viewController2 bannerContentOutsets];
           v32 = v31;
           v34 = v33;
           v36 = v35;
@@ -528,8 +528,8 @@ LABEL_8:
           v40 = v25 + v32;
           v41 = v27 - (v34 + v38);
           v42 = v29 - (v32 + v36);
-          v43 = [v21 window];
-          [v43 bounds];
+          window = [view window];
+          [window bounds];
           v45 = v44;
           v47 = v46;
           v49 = v48;
@@ -547,8 +547,8 @@ LABEL_8:
           }
 
           v66 = v53;
-          v54 = [v21 window];
-          [v54 convertRect:v21 fromView:{v39, v40, v41, v42}];
+          window2 = [view window];
+          [window2 convertRect:view fromView:{v39, v40, v41, v42}];
           v77.origin.x = v45;
           v77.origin.y = v47;
           v77.size.width = v49;
@@ -597,11 +597,11 @@ LABEL_8:
     {
 LABEL_30:
       WeakRetained = objc_loadWeakRetained(&self->_pipController);
-      v61 = [WeakRetained windowSceneManager];
-      v62 = [v61 activeDisplayWindowScene];
+      windowSceneManager = [WeakRetained windowSceneManager];
+      activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-      v63 = [v62 pictureInPictureManager];
-      [v63 applyPictureInPictureInsets:6 forSource:{v12, 0.0, 0.0, 0.0}];
+      pictureInPictureManager = [activeDisplayWindowScene pictureInPictureManager];
+      [pictureInPictureManager applyPictureInPictureInsets:6 forSource:{v12, 0.0, 0.0, 0.0}];
     }
   }
 }
@@ -618,8 +618,8 @@ LABEL_30:
   appStatusBarSettingsAssertion = self->_appStatusBarSettingsAssertion;
   if (!v4)
   {
-    v18 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)appStatusBarSettingsAssertion invalidateWithAnimationParameters:v18];
+    initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)appStatusBarSettingsAssertion invalidateWithAnimationParameters:initWithDefaultParameters];
 
     v7 = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = 0;
@@ -628,66 +628,66 @@ LABEL_30:
 
   if (!appStatusBarSettingsAssertion)
   {
-    v6 = [SBApp bannerManager];
-    v7 = [v6 windowSceneForPresentable:v4];
+    bannerManager = [SBApp bannerManager];
+    v7 = [bannerManager windowSceneForPresentable:v4];
 
-    v8 = [v7 statusBarManager];
-    v9 = [v8 assertionManager];
+    statusBarManager = [v7 statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
     v10 = objc_alloc_init(SBMutableStatusBarSettings);
     v11 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D6BC60], *MEMORY[0x277D6BC68], *MEMORY[0x277D6BCD8], *MEMORY[0x277D6BCE8], *MEMORY[0x277D6BBD8], *MEMORY[0x277D6BC58], *MEMORY[0x277D6BC08], *MEMORY[0x277D6BD00], *MEMORY[0x277D6BCE0], @"com.apple.systemstatus.background-activity.CallRecording", 0}];
     [(SBMutableStatusBarSettings *)v10 setBackgroundActivitiesToSuppress:v11];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v9 newSettingsAssertionWithSettings:v10 atLevel:8 reason:v13];
+    v14 = [assertionManager newSettingsAssertionWithSettings:v10 atLevel:8 reason:v13];
     v15 = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = v14;
 
     v16 = self->_appStatusBarSettingsAssertion;
-    v17 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v16 acquireWithAnimationParameters:v17];
+    initWithDefaultParameters2 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v16 acquireWithAnimationParameters:initWithDefaultParameters2];
 
 LABEL_5:
   }
 }
 
-- (BOOL)_presentableIsDodgeableAndStatusBarSuppressing:(id)a3
+- (BOOL)_presentableIsDodgeableAndStatusBarSuppressing:(id)suppressing
 {
-  v3 = a3;
-  v4 = [v3 requesterIdentifier];
-  v5 = [v3 requestIdentifier];
+  suppressingCopy = suppressing;
+  requesterIdentifier = [suppressingCopy requesterIdentifier];
+  requestIdentifier = [suppressingCopy requestIdentifier];
 
-  if ([v5 hasPrefix:@"com.apple.conversationController.HUD"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"com.apple.conversationController.Session"))
+  if ([requestIdentifier hasPrefix:@"com.apple.conversationController.HUD"] & 1) != 0 || (objc_msgSend(requestIdentifier, "hasPrefix:", @"com.apple.conversationController.Session"))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 isEqualToString:@"com.apple.CopresenceApp.DefaultRequester"];
+    v6 = [requesterIdentifier isEqualToString:@"com.apple.CopresenceApp.DefaultRequester"];
   }
 
   return v6;
 }
 
-- (void)containerViewControllerStartReducingResourcesUsage:(id)a3
+- (void)containerViewControllerStartReducingResourcesUsage:(id)usage
 {
   if (!self->_isReducingResourcesUsage)
   {
     self->_isReducingResourcesUsage = 1;
-    v6 = [a3 contentViewController];
-    v5 = [v6 application];
-    [(PGPictureInPictureController *)self->_pegasusController startPictureInPictureResourcesUsageReductionForApplication:v5 requestingViewController:v6];
+    contentViewController = [usage contentViewController];
+    application = [contentViewController application];
+    [(PGPictureInPictureController *)self->_pegasusController startPictureInPictureResourcesUsageReductionForApplication:application requestingViewController:contentViewController];
   }
 }
 
-- (void)containerViewControllerStopReducingResourcesUsage:(id)a3
+- (void)containerViewControllerStopReducingResourcesUsage:(id)usage
 {
   if (self->_isReducingResourcesUsage)
   {
     self->_isReducingResourcesUsage = 0;
-    v6 = [a3 contentViewController];
-    v5 = [v6 application];
-    [(PGPictureInPictureController *)self->_pegasusController stopPictureInPictureResourcesUsageReductionForApplication:v5 requestingViewController:v6];
+    contentViewController = [usage contentViewController];
+    application = [contentViewController application];
+    [(PGPictureInPictureController *)self->_pegasusController stopPictureInPictureResourcesUsageReductionForApplication:application requestingViewController:contentViewController];
   }
 }
 
@@ -706,9 +706,9 @@ LABEL_5:
     }
 
     v12 = +[SBWorkspace mainWorkspace];
-    v8 = [v12 inCallPresentationManager];
-    v9 = [v8 hideSharePlayContentFromSharedScreenController];
-    v10 = [v9 acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:@"FaceTime PIP"];
+    inCallPresentationManager = [v12 inCallPresentationManager];
+    hideSharePlayContentFromSharedScreenController = [inCallPresentationManager hideSharePlayContentFromSharedScreenController];
+    v10 = [hideSharePlayContentFromSharedScreenController acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:@"FaceTime PIP"];
     v11 = self->_hideFaceTimePIPFromSharePlayScreenSharingAssertion;
     self->_hideFaceTimePIPFromSharePlayScreenSharingAssertion = v10;
 
@@ -723,44 +723,44 @@ LABEL_5:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v47 = a4;
-  v10 = a5;
-  v46 = v9;
-  if ([v9 isEqualToString:@"pictureInPictureActive"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v46 = pathCopy;
+  if ([pathCopy isEqualToString:@"pictureInPictureActive"])
   {
-    v43 = v10;
-    v11 = [v10 objectForKey:*MEMORY[0x277CCA2F0]];
-    v44 = [v11 BOOLValue];
+    v43 = changeCopy;
+    v11 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v11 BOOLValue];
 
     v12 = +[SBApplicationTestingManager sharedInstance];
-    v45 = [v12 currentTestName];
+    currentTestName = [v12 currentTestName];
 
-    if (v45 && (([v45 containsString:@"PIP"] & 1) != 0 || objc_msgSend(v45, "containsString:", @"PiP")))
+    if (currentTestName && (([currentTestName containsString:@"PIP"] & 1) != 0 || objc_msgSend(currentTestName, "containsString:", @"PiP")))
     {
       v13 = SBApplicationTestingPIPIsActiveNotificationName;
-      if (!v44)
+      if (!bOOLValue)
       {
         v13 = SBApplicationTestingPIPIsNoLongerActiveNotificationName;
       }
 
       v14 = MEMORY[0x277CCAB98];
       v15 = *v13;
-      v16 = [v14 defaultCenter];
-      [v16 postNotificationName:v15 object:0];
+      defaultCenter = [v14 defaultCenter];
+      [defaultCenter postNotificationName:v15 object:0];
     }
 
-    if ((v44 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v50 = [(PGPictureInPictureController *)self->_pegasusController activeSceneSessionIdentifiersByApplication];
+      activeSceneSessionIdentifiersByApplication = [(PGPictureInPictureController *)self->_pegasusController activeSceneSessionIdentifiersByApplication];
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      obj = [v50 allKeys];
+      obj = [activeSceneSessionIdentifiersByApplication allKeys];
       v51 = [obj countByEnumeratingWithState:&v59 objects:v64 count:16];
       if (v51)
       {
@@ -775,7 +775,7 @@ LABEL_5:
             }
 
             v18 = *(*(&v59 + 1) + 8 * i);
-            v19 = [v50 objectForKey:v18];
+            v19 = [activeSceneSessionIdentifiersByApplication objectForKey:v18];
             v57 = 0u;
             v58 = 0u;
             v55 = 0u;
@@ -799,8 +799,8 @@ LABEL_5:
 
                   if (v25)
                   {
-                    v26 = [v25 viewMorphAnimator];
-                    v27 = [v26 direction] == 1;
+                    viewMorphAnimator = [v25 viewMorphAnimator];
+                    v27 = [viewMorphAnimator direction] == 1;
 
                     if (!v27)
                     {
@@ -825,7 +825,7 @@ LABEL_5:
 
     if (__sb__runningInSpringBoard())
     {
-      if ((SBFEffectiveDeviceClass() == 2) | v44 & 1)
+      if ((SBFEffectiveDeviceClass() == 2) | bOOLValue & 1)
       {
 LABEL_29:
         pipDefaultContentSizeResetTimer = self->_pipDefaultContentSizeResetTimer;
@@ -838,17 +838,17 @@ LABEL_29:
         [v31 setInitiallyUsesMinimumPreferredContentSize:0];
 
 LABEL_32:
-        v10 = v43;
+        changeCopy = v43;
         goto LABEL_33;
       }
     }
 
     else
     {
-      v32 = [MEMORY[0x277D75418] currentDevice];
-      v33 = [v32 userInterfaceIdiom] == 1;
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      v33 = [currentDevice userInterfaceIdiom] == 1;
 
-      if ((v33 | v44))
+      if ((v33 | bOOLValue))
       {
         goto LABEL_29;
       }
@@ -864,8 +864,8 @@ LABEL_32:
 
     objc_initWeak(&location, self);
     v37 = +[SBPIPSettingsDomain rootSettings];
-    v38 = [v37 interactionSettings];
-    [v38 defaultContentSizeResetTimeout];
+    interactionSettings = [v37 interactionSettings];
+    [interactionSettings defaultContentSizeResetTimeout];
     v40 = v39;
 
     v41 = self->_pipDefaultContentSizeResetTimer;
@@ -902,11 +902,11 @@ void __70__SBPIPPegasusAdapter_observeValueForKeyPath_ofObject_change_context___
   }
 }
 
-- (void)pictureInPictureController:(id)a3 didCreatePictureInPictureViewController:(id)a4
+- (void)pictureInPictureController:(id)controller didCreatePictureInPictureViewController:(id)viewController
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
+  viewControllerCopy = viewController;
   if (([v5 isMainThread] & 1) == 0)
   {
     v7 = SBLogCommon();
@@ -932,15 +932,15 @@ void __70__SBPIPPegasusAdapter_observeValueForKeyPath_ofObject_change_context___
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  v14 = [v6 contentType];
-  if (v14 == 4)
+  contentType = [viewControllerCopy contentType];
+  if (contentType == 4)
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = 2 * (v14 == 6);
+    v15 = 2 * (contentType == 6);
   }
 
   v25 = *MEMORY[0x277D67600];
@@ -948,14 +948,14 @@ void __70__SBPIPPegasusAdapter_observeValueForKeyPath_ofObject_change_context___
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v17 = MEMORY[0x277D65DD0];
   v18 = v16;
-  v19 = [v17 sharedInstance];
-  [v19 emitEvent:24 withPayload:v18];
+  sharedInstance = [v17 sharedInstance];
+  [sharedInstance emitEvent:24 withPayload:v18];
 
-  v20 = [[SBPIPPegasusContainerAdapter alloc] initWithPictureInPictureViewController:v6];
+  v20 = [[SBPIPPegasusContainerAdapter alloc] initWithPictureInPictureViewController:viewControllerCopy];
   v21 = [SBPIPContainerViewController alloc];
   v22 = +[SBPIPSettingsDomain rootSettings];
-  v23 = [v22 interactionSettings];
-  v24 = [(SBPIPContainerViewController *)v21 initWithPIPController:WeakRetained interactionSettings:v23 adapter:v20];
+  interactionSettings = [v22 interactionSettings];
+  v24 = [(SBPIPContainerViewController *)v21 initWithPIPController:WeakRetained interactionSettings:interactionSettings adapter:v20];
 
   [(SBPIPContainerViewController *)v24 setContentZOrderPriority:v15];
   [(SBPIPContainerViewController *)v24 addObserver:self];
@@ -963,35 +963,35 @@ void __70__SBPIPPegasusAdapter_observeValueForKeyPath_ofObject_change_context___
   [(SBPIPPegasusAdapter *)self _updateHideFromClonedDisplaysAssertion];
 }
 
-- (void)pictureInPictureController:(id)a3 didRequestStopForPictureInPictureViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6
+- (void)pictureInPictureController:(id)controller didRequestStopForPictureInPictureViewController:(id)viewController sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  v14 = [v13 application];
-  v15 = [v14 bundleIdentifier];
-  if ([v15 isEqualToString:@"com.apple.InCallService"])
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  identifierCopy = identifier;
+  v13 = viewControllerCopy;
+  application = [v13 application];
+  bundleIdentifier = [application bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.InCallService"])
   {
     v16 = +[SBWorkspace mainWorkspace];
-    v17 = [v16 inCallPresentationManager];
+    inCallPresentationManager = [v16 inCallPresentationManager];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __136__SBPIPPegasusAdapter_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke;
     v18[3] = &unk_2783B2778;
     v18[4] = self;
-    v19 = v10;
+    v19 = controllerCopy;
     v20 = v13;
-    v21 = v12;
-    v23 = v6;
-    v22 = v14;
-    [v17 ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:v21 completion:v18];
+    v21 = identifierCopy;
+    v23 = animatedCopy;
+    v22 = application;
+    [inCallPresentationManager ensureSwitcherInclusionForRestoringFromPIPForSceneWithPersistenceIdentifier:v21 completion:v18];
   }
 
   else
   {
-    [(SBPIPPegasusAdapter *)self _postEnsuredInSwitcher_pictureInPictureController:v10 didRequestStopForPictureInPictureViewController:v13 sourceSceneSessionIdentifier:v12 animated:v6];
+    [(SBPIPPegasusAdapter *)self _postEnsuredInSwitcher_pictureInPictureController:controllerCopy didRequestStopForPictureInPictureViewController:v13 sourceSceneSessionIdentifier:identifierCopy animated:animatedCopy];
   }
 }
 
@@ -1020,47 +1020,47 @@ uint64_t __136__SBPIPPegasusAdapter_pictureInPictureController_didRequestStopFor
   }
 }
 
-- (void)_postEnsuredInSwitcher_pictureInPictureController:(id)a3 didRequestStopForPictureInPictureViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6
+- (void)_postEnsuredInSwitcher_pictureInPictureController:(id)controller didRequestStopForPictureInPictureViewController:(id)viewController sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated
 {
   v144 = *MEMORY[0x277D85DE8];
-  v82 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  v12 = v9;
-  v81 = [v12 application];
-  v13 = [v81 bundleIdentifier];
+  v12 = viewControllerCopy;
+  application = [v12 application];
+  bundleIdentifier = [application bundleIdentifier];
   v87 = v12;
-  v14 = [v12 _sbWindowScene];
-  v77 = self;
-  v79 = [(SBPIPPegasusAdapter *)self _layoutStateContainsSceneForSourceSceneSessionIdentifier:v10 bundleIdentifier:v13 windowScene:v14];
-  v15 = [v14 switcherController];
-  v78 = [v15 isAnySwitcherVisible];
-  v76 = [v15 isInAnyPeekState];
-  v83 = v15;
-  v75 = [v15 unlockedEnvironmentMode];
-  v93 = v14;
-  v16 = [v14 switcherController];
-  v17 = [v16 windowManagementContext];
-  v91 = [v17 isChamoisOrFlexibleWindowing];
+  _sbWindowScene = [v12 _sbWindowScene];
+  selfCopy = self;
+  v79 = [(SBPIPPegasusAdapter *)self _layoutStateContainsSceneForSourceSceneSessionIdentifier:identifierCopy bundleIdentifier:bundleIdentifier windowScene:_sbWindowScene];
+  switcherController = [_sbWindowScene switcherController];
+  isAnySwitcherVisible = [switcherController isAnySwitcherVisible];
+  isInAnyPeekState = [switcherController isInAnyPeekState];
+  v83 = switcherController;
+  unlockedEnvironmentMode = [switcherController unlockedEnvironmentMode];
+  v93 = _sbWindowScene;
+  switcherController2 = [_sbWindowScene switcherController];
+  windowManagementContext = [switcherController2 windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   v18 = +[SBSceneManagerCoordinator sharedInstance];
-  v19 = [v18 sceneManagerForPersistenceIdentifier:v10];
+  v19 = [v18 sceneManagerForPersistenceIdentifier:identifierCopy];
 
   v84 = v19;
-  v97 = [v19 existingSceneHandleForPersistenceIdentifier:v10];
+  v97 = [v19 existingSceneHandleForPersistenceIdentifier:identifierCopy];
   v92 = 0;
   v20 = 1;
   v85 = WeakRetained;
-  v86 = v10;
-  v80 = v13;
-  if (v10 && v13)
+  v86 = identifierCopy;
+  v80 = bundleIdentifier;
+  if (identifierCopy && bundleIdentifier)
   {
     v21 = +[SBMainSwitcherControllerCoordinator sharedInstanceIfExists];
-    v22 = [v21 _recentAppLayoutsController];
-    v23 = [v22 recentsForBundleIdentifier:v13 includingHiddenAppLayouts:0];
+    _recentAppLayoutsController = [v21 _recentAppLayoutsController];
+    v23 = [_recentAppLayoutsController recentsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
 
-    v90 = [v83 displayItemLayoutAttributesProvider];
+    displayItemLayoutAttributesProvider = [v83 displayItemLayoutAttributesProvider];
     v138 = 0u;
     v139 = 0u;
     v140 = 0u;
@@ -1086,8 +1086,8 @@ uint64_t __136__SBPIPPegasusAdapter_pictureInPictureController_didRequestStopFor
           v135 = 0u;
           v136 = 0u;
           v137 = 0u;
-          v26 = [v25 allItems];
-          v27 = [v26 countByEnumeratingWithState:&v134 objects:v142 count:16];
+          allItems = [v25 allItems];
+          v27 = [allItems countByEnumeratingWithState:&v134 objects:v142 count:16];
           if (v27)
           {
             v28 = v27;
@@ -1098,32 +1098,32 @@ uint64_t __136__SBPIPPegasusAdapter_pictureInPictureController_didRequestStopFor
               {
                 if (*v135 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(allItems);
                 }
 
                 v31 = *(*(&v134 + 1) + 8 * j);
-                v32 = [v31 uniqueIdentifier];
-                v33 = [v97 sceneIdentifier];
-                v34 = [v32 isEqualToString:v33];
+                uniqueIdentifier = [v31 uniqueIdentifier];
+                sceneIdentifier = [v97 sceneIdentifier];
+                v34 = [uniqueIdentifier isEqualToString:sceneIdentifier];
 
                 if (v34)
                 {
                   v89 = [v25 environment] == 2;
-                  v35 = [v25 preferredDisplayOrdinal];
-                  v36 = [v93 interfaceOrientation];
-                  if ((v36 - 1) < 2)
+                  preferredDisplayOrdinal = [v25 preferredDisplayOrdinal];
+                  interfaceOrientation = [v93 interfaceOrientation];
+                  if ((interfaceOrientation - 1) < 2)
                   {
                     v37 = 1;
                   }
 
                   else
                   {
-                    v37 = 2 * ((v36 - 3) < 2);
+                    v37 = 2 * ((interfaceOrientation - 3) < 2);
                   }
 
-                  v38 = [v90 layoutAttributesForDisplayItem:v31 inAppLayout:v25 displayOrdinal:v35 orientation:v37];
+                  v38 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v31 inAppLayout:v25 displayOrdinal:preferredDisplayOrdinal orientation:v37];
                   v39 = v38;
-                  if (v91)
+                  if (isChamoisOrFlexibleWindowing)
                   {
                     v92 = [(SBCameraHardwareButton *)v38 foregroundCameraShutterButtonPIDs]!= 1;
                   }
@@ -1137,7 +1137,7 @@ uint64_t __136__SBPIPPegasusAdapter_pictureInPictureController_didRequestStopFor
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v134 objects:v142 count:16];
+              v28 = [allItems countByEnumeratingWithState:&v134 objects:v142 count:16];
               if (v28)
               {
                 continue;
@@ -1164,31 +1164,31 @@ LABEL_24:
   }
 
   v40 = +[SBMainWorkspace sharedInstance];
-  v41 = [v40 currentTransaction];
+  currentTransaction = [v40 currentTransaction];
 
   v42 = +[SBLockScreenManager sharedInstanceIfExists];
-  v43 = [v42 isUILocked];
+  isUILocked = [v42 isUILocked];
 
   v44 = 1;
   [v85 hideContainersExcludingContainerForContentViewControllerAndTetheredOnes:v87 animated:1];
-  v45 = [v97 application];
-  v46 = [v97 displayIdentity];
-  v47 = [SBDeviceApplicationSceneEntity entityWithApplication:v45 scenePersistenceIdentifier:v86 sceneHandleProvider:v84 displayIdentity:v46];
+  application2 = [v97 application];
+  displayIdentity = [v97 displayIdentity];
+  v47 = [SBDeviceApplicationSceneEntity entityWithApplication:application2 scenePersistenceIdentifier:v86 sceneHandleProvider:v84 displayIdentity:displayIdentity];
 
-  v96 = [v97 sceneIfExists];
-  v48 = [v96 settings];
-  LODWORD(v45) = [v48 isForeground];
+  sceneIfExists = [v97 sceneIfExists];
+  settings = [sceneIfExists settings];
+  LODWORD(application2) = [settings isForeground];
 
-  if (!v45)
+  if (!application2)
   {
     v52 = 0;
     goto LABEL_34;
   }
 
-  v49 = [SBApp windowSceneManager];
-  v50 = [v96 settings];
-  v51 = [v50 displayIdentity];
-  v52 = [v49 windowSceneForDisplayIdentity:v51];
+  windowSceneManager = [SBApp windowSceneManager];
+  settings2 = [sceneIfExists settings];
+  displayIdentity2 = [settings2 displayIdentity];
+  v52 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity2];
 
   v44 = v52 == 0;
   if (!v52)
@@ -1205,8 +1205,8 @@ LABEL_34:
   {
     v55 = v86;
     v56 = v80;
-    v57 = [(SBPIPPegasusAdapter *)v77 _layoutStateContainsSceneForSourceSceneSessionIdentifier:v86 bundleIdentifier:v80 windowScene:v52];
-    pegasusController = v77->_pegasusController;
+    v57 = [(SBPIPPegasusAdapter *)selfCopy _layoutStateContainsSceneForSourceSceneSessionIdentifier:v86 bundleIdentifier:v80 windowScene:v52];
+    pegasusController = selfCopy->_pegasusController;
     v131[0] = MEMORY[0x277D85DD0];
     v131[1] = 3221225472;
     v131[2] = __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke;
@@ -1215,46 +1215,46 @@ LABEL_34:
     v132 = v85;
     v133 = v93;
     v60 = pegasusController;
-    v61 = v81;
-    [(PGPictureInPictureController *)v60 stopPictureInPictureForApplication:v81 sceneSessionPersistentIdentifier:v86 animated:!v57 completionHandler:v131];
+    v61 = application;
+    [(PGPictureInPictureController *)v60 stopPictureInPictureForApplication:application sceneSessionPersistentIdentifier:v86 animated:!v57 completionHandler:v131];
 
     v62 = v132;
-    v63 = v82;
+    v63 = controllerCopy;
     goto LABEL_48;
   }
 
 LABEL_35:
   v64 = v20 | v54;
-  v63 = v82;
-  if ((v64 & 1) != 0 && (!v91 ? (v65 = v78) : (v65 = (v75 == 3) | v76 | v78), v54 || (v65 & 1) == 0))
+  v63 = controllerCopy;
+  if ((v64 & 1) != 0 && (!isChamoisOrFlexibleWindowing ? (v65 = isAnySwitcherVisible) : (v65 = (unlockedEnvironmentMode == 3) | isInAnyPeekState | isAnySwitcherVisible), v54 || (v65 & 1) == 0))
   {
-    if (!((v78 | v76 | v54 | v43) & 1 | (v41 != 0)))
+    if (!((isAnySwitcherVisible | isInAnyPeekState | v54 | isUILocked) & 1 | (currentTransaction != 0)))
     {
       v107[0] = MEMORY[0x277D85DD0];
       v107[1] = 3221225472;
       v107[2] = __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke_8;
       v107[3] = &unk_2783B2890;
-      v108 = v82;
-      v109 = v81;
+      v108 = controllerCopy;
+      v109 = application;
       v55 = v86;
       v110 = v86;
       v59 = v85;
       v111 = v85;
       v112 = v93;
-      v113 = v77;
+      v113 = selfCopy;
       v98[0] = MEMORY[0x277D85DD0];
       v98[1] = 3221225472;
       v98[2] = __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke_81;
       v98[3] = &unk_2783B2900;
-      v61 = v81;
+      v61 = application;
       v99 = v109;
       v100 = v110;
-      v101 = v77;
+      v101 = selfCopy;
       v56 = v80;
       v102 = v80;
-      v63 = v82;
+      v63 = controllerCopy;
       v103 = v112;
-      v106 = v91;
+      v106 = isChamoisOrFlexibleWindowing;
       v104 = v108;
       v53 = v93;
       v105 = v111;
@@ -1266,19 +1266,19 @@ LABEL_35:
 
     v59 = v85;
     v55 = v86;
-    v61 = v81;
+    v61 = application;
     if (v92)
     {
       v117[0] = MEMORY[0x277D85DD0];
       v117[1] = 3221225472;
       v117[2] = __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke_5;
       v117[3] = &unk_2783B27C8;
-      v118 = v82;
-      v119 = v81;
+      v118 = controllerCopy;
+      v119 = application;
       v120 = v86;
       v121 = v85;
       v122 = v53;
-      [(SBPIPPegasusAdapter *)v77 _activateSceneWithPersistenceIdentifier:v120 pictureInPictureViewController:v87 completion:v117];
+      [(SBPIPPegasusAdapter *)selfCopy _activateSceneWithPersistenceIdentifier:v120 pictureInPictureViewController:v87 completion:v117];
 
       v62 = v118;
     }
@@ -1291,7 +1291,7 @@ LABEL_35:
       v114[3] = &unk_2783B27A0;
       v115 = v85;
       v116 = v53;
-      [v82 stopPictureInPictureForApplication:v81 sceneSessionPersistentIdentifier:v86 animated:1 completionHandler:v114];
+      [controllerCopy stopPictureInPictureForApplication:application sceneSessionPersistentIdentifier:v86 animated:1 completionHandler:v114];
 
       v62 = v115;
     }
@@ -1317,11 +1317,11 @@ LABEL_35:
 
     v69 = v68;
     v70 = +[SBMainWorkspace sharedInstance];
-    v71 = [v69 _sbDisplayConfiguration];
-    v62 = [v70 createRequestWithOptions:0 displayConfiguration:v71];
+    _sbDisplayConfiguration = [v69 _sbDisplayConfiguration];
+    v62 = [v70 createRequestWithOptions:0 displayConfiguration:_sbDisplayConfiguration];
 
-    v72 = [MEMORY[0x277CF0CD0] processHandle];
-    [v62 setOriginatingProcess:v72];
+    processHandle = [MEMORY[0x277CF0CD0] processHandle];
+    [v62 setOriginatingProcess:processHandle];
 
     v129[0] = MEMORY[0x277D85DD0];
     v129[1] = 3221225472;
@@ -1333,8 +1333,8 @@ LABEL_35:
     v123[1] = 3221225472;
     v123[2] = __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureController_didRequestStopForPictureInPictureViewController_sourceSceneSessionIdentifier_animated___block_invoke_3;
     v123[3] = &unk_2783B27C8;
-    v124 = v82;
-    v125 = v81;
+    v124 = controllerCopy;
+    v125 = application;
     v55 = v86;
     v126 = v86;
     v127 = v85;
@@ -1343,7 +1343,7 @@ LABEL_35:
     v74 = +[SBMainWorkspace sharedInstance];
     [v74 executeTransitionRequest:v62];
 
-    v61 = v81;
+    v61 = application;
     v53 = v93;
   }
 
@@ -1634,15 +1634,15 @@ void __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureControlle
   [v2 setHidden:1];
 }
 
-- (void)_enumerateContainerViewControllersForApplication:(id)a3 scenePersistenceIdentifier:(id)a4 usingBlock:(id)a5
+- (void)_enumerateContainerViewControllersForApplication:(id)application scenePersistenceIdentifier:(id)identifier usingBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v24 = a5;
-  v10 = [SBApp windowSceneManager];
-  v25 = v9;
-  v11 = [v10 windowSceneForPersistentIdentifier:v9];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  blockCopy = block;
+  windowSceneManager = [SBApp windowSceneManager];
+  v25 = identifierCopy;
+  v11 = [windowSceneManager windowSceneForPersistentIdentifier:identifierCopy];
 
   if (v11)
   {
@@ -1669,16 +1669,16 @@ void __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureControlle
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 bundleIdentifier];
-          v20 = [v8 bundleIdentifier];
-          if ([v19 isEqualToString:v20])
+          bundleIdentifier = [v18 bundleIdentifier];
+          bundleIdentifier2 = [applicationCopy bundleIdentifier];
+          if ([bundleIdentifier isEqualToString:bundleIdentifier2])
           {
-            v21 = [v18 scenePersistenceIdentifier];
-            v22 = [v21 isEqualToString:v25];
+            scenePersistenceIdentifier = [v18 scenePersistenceIdentifier];
+            v22 = [scenePersistenceIdentifier isEqualToString:v25];
 
             if (v22)
             {
-              v24[2](v24, v18);
+              blockCopy[2](blockCopy, v18);
             }
           }
 
@@ -1697,31 +1697,31 @@ void __159__SBPIPPegasusAdapter__postEnsuredInSwitcher_pictureInPictureControlle
   }
 }
 
-- (BOOL)_layoutStateContainsSceneForSourceSceneSessionIdentifier:(id)a3 bundleIdentifier:(id)a4 windowScene:(id)a5
+- (BOOL)_layoutStateContainsSceneForSourceSceneSessionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier windowScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  sceneCopy = scene;
+  v10 = sceneCopy;
+  if (identifierCopy)
   {
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v11 = [v9 switcherController];
-    if (([v11 isAnySwitcherVisible] & 1) == 0)
+    switcherController = [sceneCopy switcherController];
+    if (([switcherController isAnySwitcherVisible] & 1) == 0)
     {
-      v12 = [v11 layoutState];
-      v13 = [v12 elements];
+      layoutState = [switcherController layoutState];
+      elements = [layoutState elements];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __109__SBPIPPegasusAdapter__layoutStateContainsSceneForSourceSceneSessionIdentifier_bundleIdentifier_windowScene___block_invoke;
       v16[3] = &unk_2783B2928;
-      v17 = v7;
+      v17 = identifierCopy;
       v19 = &v20;
-      v18 = v8;
-      [v13 enumerateObjectsUsingBlock:v16];
+      v18 = bundleIdentifierCopy;
+      [elements enumerateObjectsUsingBlock:v16];
     }
 
     v14 = *(v21 + 24);
@@ -1770,11 +1770,11 @@ void __109__SBPIPPegasusAdapter__layoutStateContainsSceneForSourceSceneSessionId
   *a3 = *(*(a1[6] + 8) + 24);
 }
 
-- (void)pictureInPictureController:(id)a3 willDestroyPictureInPictureViewController:(id)a4
+- (void)pictureInPictureController:(id)controller willDestroyPictureInPictureViewController:(id)viewController
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
+  viewControllerCopy = viewController;
   if (([v5 isMainThread] & 1) == 0)
   {
     v7 = SBLogCommon();
@@ -1792,47 +1792,47 @@ void __109__SBPIPPegasusAdapter__layoutStateContainsSceneForSourceSceneSessionId
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v11 = MEMORY[0x277D65DD0];
   v12 = v10;
-  v13 = [v11 sharedInstance];
-  [v13 emitEvent:24 withPayload:v12];
+  sharedInstance = [v11 sharedInstance];
+  [sharedInstance emitEvent:24 withPayload:v12];
 
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  v15 = [WeakRetained containerViewControllerForContentViewController:v6];
+  v15 = [WeakRetained containerViewControllerForContentViewController:viewControllerCopy];
 
   [WeakRetained removeContainerViewController:v15];
   [(SBPIPPegasusAdapter *)self _updateHideFromClonedDisplaysAssertion];
 }
 
-- (void)pictureInPictureController:(id)a3 willHidePictureInPictureViewController:(id)a4
+- (void)pictureInPictureController:(id)controller willHidePictureInPictureViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  [WeakRetained prepareContainerViewControllerForHidingContentViewController:v5];
+  [WeakRetained prepareContainerViewControllerForHidingContentViewController:viewControllerCopy];
 }
 
-- (void)pictureInPictureController:(id)a3 didHidePictureInPictureViewController:(id)a4
+- (void)pictureInPictureController:(id)controller didHidePictureInPictureViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
-  v6 = [v5 _sbWindowScene];
+  _sbWindowScene = [viewControllerCopy _sbWindowScene];
 
-  [WeakRetained updatePictureInPictureWindowLevelForWindowScene:v6];
+  [WeakRetained updatePictureInPictureWindowLevelForWindowScene:_sbWindowScene];
 }
 
-- (BOOL)pictureInPictureController:(id)a3 shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:(id)a4
+- (BOOL)pictureInPictureController:(id)controller shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:(id)identifier
 {
-  v4 = a4;
-  v5 = [objc_opt_class() isSupported];
+  identifierCopy = identifier;
+  isSupported = [objc_opt_class() isSupported];
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 pipDefaults];
-  v8 = [v7 allowAutoPIP];
+  pipDefaults = [v6 pipDefaults];
+  allowAutoPIP = [pipDefaults allowAutoPIP];
 
   v9 = +[SBLockScreenManager sharedInstance];
-  v10 = [v9 isUILocked];
+  isUILocked = [v9 isUILocked];
 
   v11 = 0;
-  if (v5 && v8 && (v10 & 1) == 0)
+  if (isSupported && allowAutoPIP && (isUILocked & 1) == 0)
   {
-    if ([v4 isEqualToString:@"com.apple.InCallService"])
+    if ([identifierCopy isEqualToString:@"com.apple.InCallService"])
     {
       v11 = 1;
     }
@@ -1840,18 +1840,18 @@ void __109__SBPIPPegasusAdapter__layoutStateContainsSceneForSourceSceneSessionId
     else
     {
       v12 = +[SBApplicationController sharedInstanceIfExists];
-      v13 = [v12 applicationWithBundleIdentifier:v4];
-      v14 = [v13 info];
-      if ([v14 supportsBackgroundMode:*MEMORY[0x277D76778]] && (objc_msgSend(v14, "isBlockedForScreenTimeExpiration") & 1) == 0)
+      v13 = [v12 applicationWithBundleIdentifier:identifierCopy];
+      info = [v13 info];
+      if ([info supportsBackgroundMode:*MEMORY[0x277D76778]] && (objc_msgSend(info, "isBlockedForScreenTimeExpiration") & 1) == 0)
       {
         v15 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-        v16 = [v15 externalForegroundApplicationSceneHandles];
+        externalForegroundApplicationSceneHandles = [v15 externalForegroundApplicationSceneHandles];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier___block_invoke;
         v19[3] = &unk_2783A9FA0;
         v20 = v13;
-        v17 = [v16 bs_containsObjectPassingTest:v19];
+        v17 = [externalForegroundApplicationSceneHandles bs_containsObjectPassingTest:v19];
 
         v11 = v17 ^ 1;
       }
@@ -1874,66 +1874,66 @@ uint64_t __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBa
   return v4;
 }
 
-- (BOOL)pictureInPictureControllerCanBackgroundStartForFaceTimeVideoCall:(id)a3
+- (BOOL)pictureInPictureControllerCanBackgroundStartForFaceTimeVideoCall:(id)call
 {
-  v3 = [objc_opt_class() isSupported];
+  isSupported = [objc_opt_class() isSupported];
   v4 = +[SBWorkspace mainWorkspace];
-  v5 = [v4 inCallPresentationManager];
-  v6 = [v5 hasFullscreenActiveCallInSwitcher];
+  inCallPresentationManager = [v4 inCallPresentationManager];
+  hasFullscreenActiveCallInSwitcher = [inCallPresentationManager hasFullscreenActiveCallInSwitcher];
 
   v7 = +[SBDefaults localDefaults];
-  v8 = [v7 pipDefaults];
-  v9 = [v8 allowAutoPIP];
+  pipDefaults = [v7 pipDefaults];
+  allowAutoPIP = [pipDefaults allowAutoPIP];
 
   v10 = +[SBLockScreenManager sharedInstance];
-  LOBYTE(v8) = [v10 isUILocked];
+  LOBYTE(pipDefaults) = [v10 isUILocked];
 
-  return v3 & v9 & ((v8 | v6) ^ 1);
+  return isSupported & allowAutoPIP & ((pipDefaults | hasFullscreenActiveCallInSwitcher) ^ 1);
 }
 
-- (id)pictureInPictureController:(id)a3 displayConfigurationForApplication:(id)a4
+- (id)pictureInPictureController:(id)controller displayConfigurationForApplication:(id)application
 {
-  v4 = a4;
+  applicationCopy = application;
   v5 = +[SBApplicationController sharedInstance];
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
 
-  v7 = [v5 applicationWithBundleIdentifier:v6];
+  v7 = [v5 applicationWithBundleIdentifier:bundleIdentifier];
 
   LODWORD(v5) = [v7 isClassic];
-  v8 = [MEMORY[0x277D0AA90] mainConfiguration];
+  mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
   if (v5)
   {
-    v9 = [v7 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v8];
+    v9 = [v7 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:mainConfiguration];
 
-    v8 = v9;
+    mainConfiguration = v9;
   }
 
-  return v8;
+  return mainConfiguration;
 }
 
-- (void)_activateSceneWithPersistenceIdentifier:(id)a3 pictureInPictureViewController:(id)a4 completion:(id)a5
+- (void)_activateSceneWithPersistenceIdentifier:(id)identifier pictureInPictureViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_pipController);
   v12 = +[SBSceneManagerCoordinator sharedInstance];
-  v13 = [v12 sceneManagerForPersistenceIdentifier:v8];
+  v13 = [v12 sceneManagerForPersistenceIdentifier:identifierCopy];
 
   v47 = v13;
-  v14 = [v13 existingSceneHandleForPersistenceIdentifier:v8];
-  v15 = [v10 _sbWindowScene];
+  v14 = [v13 existingSceneHandleForPersistenceIdentifier:identifierCopy];
+  _sbWindowScene = [controllerCopy _sbWindowScene];
 
-  v16 = [v15 _sbDisplayConfiguration];
+  _sbDisplayConfiguration = [_sbWindowScene _sbDisplayConfiguration];
 
-  v17 = [v14 sceneIfExists];
-  v18 = [v17 settings];
-  v19 = [v18 displayIdentity];
+  sceneIfExists = [v14 sceneIfExists];
+  settings = [sceneIfExists settings];
+  displayIdentity = [settings displayIdentity];
 
-  if (v19)
+  if (displayIdentity)
   {
-    v20 = [SBApp windowSceneManager];
-    v21 = [v20 windowSceneForDisplayIdentity:v19];
+    windowSceneManager = [SBApp windowSceneManager];
+    v21 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
   }
 
   else
@@ -1941,33 +1941,33 @@ uint64_t __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBa
     v21 = 0;
   }
 
-  v22 = [v14 scene];
-  v23 = [v22 settings];
+  scene = [v14 scene];
+  settings2 = [scene settings];
   v46 = v21;
-  if ([v23 isForeground] && v21)
+  if ([settings2 isForeground] && v21)
   {
     [v14 application];
     v45 = v14;
-    v24 = v19;
-    v26 = v25 = v16;
-    v27 = [v26 bundleIdentifier];
+    v24 = displayIdentity;
+    v26 = v25 = _sbDisplayConfiguration;
+    bundleIdentifier = [v26 bundleIdentifier];
     v28 = v21;
     v29 = WeakRetained;
-    v30 = v9;
-    v31 = v27;
-    v32 = [(SBPIPPegasusAdapter *)self _layoutStateContainsSceneForSourceSceneSessionIdentifier:v8 bundleIdentifier:v27 windowScene:v28];
+    v30 = completionCopy;
+    v31 = bundleIdentifier;
+    v32 = [(SBPIPPegasusAdapter *)self _layoutStateContainsSceneForSourceSceneSessionIdentifier:identifierCopy bundleIdentifier:bundleIdentifier windowScene:v28];
 
-    v9 = v30;
+    completionCopy = v30;
     WeakRetained = v29;
 
-    v16 = v25;
-    v19 = v24;
+    _sbDisplayConfiguration = v25;
+    displayIdentity = v24;
     v14 = v45;
 
     v33 = v47;
     if (v32)
     {
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
       goto LABEL_13;
     }
   }
@@ -1978,15 +1978,15 @@ uint64_t __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBa
     v33 = v47;
   }
 
-  if (v8 && v16)
+  if (identifierCopy && _sbDisplayConfiguration)
   {
-    v48 = v16;
-    v34 = [v14 application];
-    [v16 identity];
-    v36 = v35 = v9;
-    v37 = [SBDeviceApplicationSceneEntity entityWithApplication:v34 scenePersistenceIdentifier:v8 sceneHandleProvider:v33 displayIdentity:v36];
+    v48 = _sbDisplayConfiguration;
+    application = [v14 application];
+    [_sbDisplayConfiguration identity];
+    v36 = v35 = completionCopy;
+    v37 = [SBDeviceApplicationSceneEntity entityWithApplication:application scenePersistenceIdentifier:identifierCopy sceneHandleProvider:v33 displayIdentity:v36];
 
-    v9 = v35;
+    completionCopy = v35;
     [v37 setFlag:1 forActivationSetting:57];
     v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(WeakRetained, "contentType")}];
     [v37 setObject:v38 forActivationSetting:58];
@@ -1994,8 +1994,8 @@ uint64_t __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBa
     v39 = +[SBMainWorkspace sharedInstance];
     v40 = [v39 createRequestWithOptions:0 displayConfiguration:v48];
 
-    v41 = [MEMORY[0x277CF0CD0] processHandle];
-    [v40 setOriginatingProcess:v41];
+    processHandle = [MEMORY[0x277CF0CD0] processHandle];
+    [v40 setOriginatingProcess:processHandle];
 
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
@@ -2004,16 +2004,16 @@ uint64_t __105__SBPIPPegasusAdapter_pictureInPictureController_shouldAuthorizeBa
     v50 = v37;
     v42 = v37;
     [v40 modifyApplicationContext:v49];
-    v43 = [v40 addCompletionHandler:v9];
+    v43 = [v40 addCompletionHandler:completionCopy];
     v44 = +[SBMainWorkspace sharedInstance];
     [v44 executeTransitionRequest:v40];
 
-    v16 = v48;
+    _sbDisplayConfiguration = v48;
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_13:
@@ -2025,17 +2025,17 @@ LABEL_13:
   [WeakRetained invalidateIdleTimerBehaviors];
 }
 
-- (int64_t)_reasonForAssertion:(id)a3
+- (int64_t)_reasonForAssertion:(id)assertion
 {
-  v3 = [a3 behaviorOverrideReason];
-  if (v3 == 1)
+  behaviorOverrideReason = [assertion behaviorOverrideReason];
+  if (behaviorOverrideReason == 1)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 2;
+    return behaviorOverrideReason == 2;
   }
 }
 

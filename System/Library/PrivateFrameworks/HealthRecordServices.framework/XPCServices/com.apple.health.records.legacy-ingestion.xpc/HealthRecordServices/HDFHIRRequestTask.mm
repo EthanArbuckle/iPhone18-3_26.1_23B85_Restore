@@ -1,12 +1,12 @@
 @interface HDFHIRRequestTask
 - (HDFHIRRequestTask)init;
-- (HDFHIRRequestTask)initWithSession:(id)a3;
+- (HDFHIRRequestTask)initWithSession:(id)session;
 - (NSString)resourceType;
-- (id)errorForRequest:(id)a3 response:(id)a4 data:(id)a5;
+- (id)errorForRequest:(id)request response:(id)response data:(id)data;
 - (int64_t)interactionType;
-- (void)createURLRequestWithCompletion:(id)a3;
+- (void)createURLRequestWithCompletion:(id)completion;
 - (void)resume;
-- (void)startTaskWithRequest:(id)a3 completion:(id)a4;
+- (void)startTaskWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation HDFHIRRequestTask
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (HDFHIRRequestTask)initWithSession:(id)a3
+- (HDFHIRRequestTask)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = HDFHIRRequestTask;
   v6 = [(HDFHIRRequestTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = dispatch_group_create();
     group = v7->_group;
     v7->_group = v8;
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)startTaskWithRequest:(id)a3 completion:(id)a4
+- (void)startTaskWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!requestCopy)
   {
     sub_10000C2AC();
   }
@@ -72,25 +72,25 @@
   v9 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000C324(v9, self, v7);
+    sub_10000C324(v9, self, requestCopy);
   }
 
-  v10 = [(HDFHIRRequestTask *)self session];
+  session = [(HDFHIRRequestTask *)self session];
   +[NSDate timeIntervalSinceReferenceDate];
   v12 = v11;
-  v13 = [v10 URLSession];
+  uRLSession = [session URLSession];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100009B5C;
   v17[3] = &unk_100018788;
   v17[4] = self;
-  v18 = v7;
+  v18 = requestCopy;
   v21 = v12;
-  v19 = v8;
+  v19 = completionCopy;
   v20 = a2;
-  v14 = v8;
-  v15 = v7;
-  v16 = [v13 dataTaskWithRequest:v15 completionHandler:v17];
+  v14 = completionCopy;
+  v15 = requestCopy;
+  v16 = [uRLSession dataTaskWithRequest:v15 completionHandler:v17];
 
   [v16 resume];
 }
@@ -111,7 +111,7 @@
   return 0;
 }
 
-- (void)createURLRequestWithCompletion:(id)a3
+- (void)createURLRequestWithCompletion:(id)completion
 {
   sub_1000035AC();
   v4 = v3;
@@ -120,7 +120,7 @@
   (*(v4 + 2))(v4, 0, 0);
 }
 
-- (id)errorForRequest:(id)a3 response:(id)a4 data:(id)a5
+- (id)errorForRequest:(id)request response:(id)response data:(id)data
 {
   sub_1000035AC();
   objc_opt_class();

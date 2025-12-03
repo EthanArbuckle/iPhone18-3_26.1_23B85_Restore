@@ -1,6 +1,6 @@
 @interface ASShadowlessNavigationBar
 - (ASShadowlessNavigationBar)init;
-- (void)pushNavigationItem:(id)a3 animated:(BOOL)a4;
+- (void)pushNavigationItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation ASShadowlessNavigationBar
@@ -13,22 +13,22 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ASShadowlessNavigationBar *)v2 standardAppearance];
-    [v4 setShadowColor:0];
-    [(ASShadowlessNavigationBar *)v3 setStandardAppearance:v4];
+    standardAppearance = [(ASShadowlessNavigationBar *)v2 standardAppearance];
+    [standardAppearance setShadowColor:0];
+    [(ASShadowlessNavigationBar *)v3 setStandardAppearance:standardAppearance];
   }
 
   return v3;
 }
 
-- (void)pushNavigationItem:(id)a3 animated:(BOOL)a4
+- (void)pushNavigationItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   [(ASShadowlessNavigationBar *)self _setTitleOpacity:1.0];
   v7.receiver = self;
   v7.super_class = ASShadowlessNavigationBar;
-  [(ASShadowlessNavigationBar *)&v7 pushNavigationItem:v6 animated:v4];
+  [(ASShadowlessNavigationBar *)&v7 pushNavigationItem:itemCopy animated:animatedCopy];
 }
 
 @end

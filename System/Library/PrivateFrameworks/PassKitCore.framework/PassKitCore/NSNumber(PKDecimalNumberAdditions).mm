@@ -13,7 +13,7 @@
   v4[0] = 0;
   v4[1] = 0;
   v5 = 0;
-  [a1 decimalValue];
+  [self decimalValue];
   result = 0;
   if ((v4[0] & 0x1F00) != 0x1000)
   {
@@ -29,47 +29,47 @@
 
 - (BOOL)pk_isNegativeNumber
 {
-  if ([a1 pk_isNotANumber])
+  if ([self pk_isNotANumber])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E696AB90] zero];
-  v2 = [a1 compare:v3] == -1;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v2 = [self compare:zero] == -1;
 
   return v2;
 }
 
 - (BOOL)pk_isPositiveNumber
 {
-  if ([a1 pk_isNotANumber])
+  if ([self pk_isNotANumber])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E696AB90] zero];
-  v2 = [a1 compare:v3] == 1;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v2 = [self compare:zero] == 1;
 
   return v2;
 }
 
 - (BOOL)pk_isZeroNumber
 {
-  if ([a1 pk_isNotANumber])
+  if ([self pk_isNotANumber])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E696AB90] zero];
-  v2 = [a1 compare:v3] == 0;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v2 = [self compare:zero] == 0;
 
   return v2;
 }
 
 - (BOOL)pk_isNotANumber
 {
-  v2 = [MEMORY[0x1E696AB90] notANumber];
-  v3 = [a1 compare:v2] == 0;
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v3 = [self compare:notANumber] == 0;
 
   return v3;
 }

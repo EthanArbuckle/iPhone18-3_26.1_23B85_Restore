@@ -1,100 +1,100 @@
 @interface _MLCGPUConvolutionTransposePadding
-+ (id)convolutionTransposeZeroPaddingWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6 outputPaddingX:(unint64_t)a7 outputPaddingY:(unint64_t)a8;
-- (_MLCGPUConvolutionTransposePadding)initWithCoder:(id)a3;
-- (_MLCGPUConvolutionTransposePadding)initWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6 outputPaddingX:(unint64_t)a7 outputPaddingY:(unint64_t)a8;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 forKernel:(id)a5 suggestedDescriptor:(id)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)convolutionTransposeZeroPaddingWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount outputPaddingX:(unint64_t)x outputPaddingY:(unint64_t)y;
+- (_MLCGPUConvolutionTransposePadding)initWithCoder:(id)coder;
+- (_MLCGPUConvolutionTransposePadding)initWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount outputPaddingX:(unint64_t)x outputPaddingY:(unint64_t)y;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states forKernel:(id)kernel suggestedDescriptor:(id)descriptor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MLCGPUConvolutionTransposePadding
 
-+ (id)convolutionTransposeZeroPaddingWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6 outputPaddingX:(unint64_t)a7 outputPaddingY:(unint64_t)a8
++ (id)convolutionTransposeZeroPaddingWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount outputPaddingX:(unint64_t)x outputPaddingY:(unint64_t)y
 {
-  v8 = [[a1 alloc] initWithTopAmount:a3 bottomAmount:a4 leftAmount:a5 rightAmount:a6 outputPaddingX:a7 outputPaddingY:a8];
+  v8 = [[self alloc] initWithTopAmount:amount bottomAmount:bottomAmount leftAmount:leftAmount rightAmount:rightAmount outputPaddingX:x outputPaddingY:y];
 
   return v8;
 }
 
-- (_MLCGPUConvolutionTransposePadding)initWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6 outputPaddingX:(unint64_t)a7 outputPaddingY:(unint64_t)a8
+- (_MLCGPUConvolutionTransposePadding)initWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount outputPaddingX:(unint64_t)x outputPaddingY:(unint64_t)y
 {
   v15.receiver = self;
   v15.super_class = _MLCGPUConvolutionTransposePadding;
   result = [(_MLCGPUConvolutionTransposePadding *)&v15 init];
   if (result)
   {
-    result->_topAmount = a3;
-    result->_bottomAmount = a4;
-    result->_leftAmount = a5;
-    result->_rightAmount = a6;
-    result->_outputPaddingX = a7;
-    result->_outputPaddingY = a8;
+    result->_topAmount = amount;
+    result->_bottomAmount = bottomAmount;
+    result->_leftAmount = leftAmount;
+    result->_rightAmount = rightAmount;
+    result->_outputPaddingX = x;
+    result->_outputPaddingY = y;
   }
 
   return result;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 forKernel:(id)a5 suggestedDescriptor:(id)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states forKernel:(id)kernel suggestedDescriptor:(id)descriptor
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v9 kernelWidth];
-  v13 = [v9 kernelHeight];
-  v14 = [v9 dilationRateX] * (v12 - 1);
+  kernelCopy = kernel;
+  descriptorCopy = descriptor;
+  imagesCopy = images;
+  kernelWidth = [kernelCopy kernelWidth];
+  kernelHeight = [kernelCopy kernelHeight];
+  v14 = [kernelCopy dilationRateX] * (kernelWidth - 1);
   v15 = v14 + 1;
-  v16 = [v9 dilationRateY] * (v13 - 1);
+  v16 = [kernelCopy dilationRateY] * (kernelHeight - 1);
   v17 = v16 + 1;
   memset(v32, 0, sizeof(v32));
-  [v9 setOffset:v32];
+  [kernelCopy setOffset:v32];
   topAmount = self->_topAmount;
-  [v9 setKernelOffsetX:(v14 & 1) - (v14 + 1) / 2 + self->_leftAmount];
-  [v9 setKernelOffsetY:(v16 & 1) - (v16 + 1) / 2 + topAmount];
-  v19 = [v11 objectAtIndexedSubscript:0];
+  [kernelCopy setKernelOffsetX:(v14 & 1) - (v14 + 1) / 2 + self->_leftAmount];
+  [kernelCopy setKernelOffsetY:(v16 & 1) - (v16 + 1) / 2 + topAmount];
+  v19 = [imagesCopy objectAtIndexedSubscript:0];
   v20 = [v19 width] - 1;
-  v21 = [v9 strideInPixelsX];
+  strideInPixelsX = [kernelCopy strideInPixelsX];
   outputPaddingX = self->_outputPaddingX;
-  v23 = v15 + v20 * v21 - (self->_leftAmount + self->_rightAmount);
+  v23 = v15 + v20 * strideInPixelsX - (self->_leftAmount + self->_rightAmount);
 
-  v24 = [v11 objectAtIndexedSubscript:0];
+  v24 = [imagesCopy objectAtIndexedSubscript:0];
 
   v25 = [v24 height] - 1;
-  v26 = [v9 strideInPixelsY];
+  strideInPixelsY = [kernelCopy strideInPixelsY];
   v27 = self->_topAmount;
   bottomAmount = self->_bottomAmount;
   outputPaddingY = self->_outputPaddingY;
-  v30 = v17 + v25 * v26 - (v27 + bottomAmount);
+  v30 = v17 + v25 * strideInPixelsY - (v27 + bottomAmount);
 
-  [v10 setWidth:v23 + outputPaddingX];
-  [v10 setHeight:v30 + outputPaddingY];
+  [descriptorCopy setWidth:v23 + outputPaddingX];
+  [descriptorCopy setHeight:v30 + outputPaddingY];
 
-  return v10;
+  return descriptorCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding topAmount](self forKey:{"topAmount"), @"topAmount"}];
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding bottomAmount](self forKey:{"bottomAmount"), @"bottomAmount"}];
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding leftAmount](self forKey:{"leftAmount"), @"leftAmount"}];
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding rightAmount](self forKey:{"rightAmount"), @"rightAmount"}];
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding outputPaddingX](self forKey:{"outputPaddingX"), @"outputPaddingX"}];
-  [v4 encodeInteger:-[_MLCGPUConvolutionTransposePadding outputPaddingY](self forKey:{"outputPaddingY"), @"outputPaddingY"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding topAmount](self forKey:{"topAmount"), @"topAmount"}];
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding bottomAmount](self forKey:{"bottomAmount"), @"bottomAmount"}];
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding leftAmount](self forKey:{"leftAmount"), @"leftAmount"}];
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding rightAmount](self forKey:{"rightAmount"), @"rightAmount"}];
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding outputPaddingX](self forKey:{"outputPaddingX"), @"outputPaddingX"}];
+  [coderCopy encodeInteger:-[_MLCGPUConvolutionTransposePadding outputPaddingY](self forKey:{"outputPaddingY"), @"outputPaddingY"}];
 }
 
-- (_MLCGPUConvolutionTransposePadding)initWithCoder:(id)a3
+- (_MLCGPUConvolutionTransposePadding)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"topAmount"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"topAmount"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"bottomAmount"];
+  [coderCopy decodeFloatForKey:@"bottomAmount"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"leftAmount"];
+  [coderCopy decodeFloatForKey:@"leftAmount"];
   v10 = v9;
-  [v4 decodeFloatForKey:@"rightAmount"];
+  [coderCopy decodeFloatForKey:@"rightAmount"];
   v12 = v11;
-  [v4 decodeFloatForKey:@"outputPaddingX"];
+  [coderCopy decodeFloatForKey:@"outputPaddingX"];
   v14 = v13;
-  [v4 decodeFloatForKey:@"outputPaddingY"];
+  [coderCopy decodeFloatForKey:@"outputPaddingY"];
   v16 = v15;
 
   return [(_MLCGPUConvolutionTransposePadding *)self initWithTopAmount:v6 bottomAmount:v8 leftAmount:v10 rightAmount:v12 outputPaddingX:v14 outputPaddingY:v16];

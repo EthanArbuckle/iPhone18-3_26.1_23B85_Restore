@@ -3,9 +3,9 @@
 + (id)sharedInstance;
 - (FMDExtExtensionsDataSource)init;
 - (id)allExtensionIdentifiers;
-- (id)extensionWithIdentifier:(id)a3;
+- (id)extensionWithIdentifier:(id)identifier;
 - (void)endDiscoveringExtensions;
-- (void)startDiscoveringExtensionsWithCompletion:(id)a3;
+- (void)startDiscoveringExtensionsWithCompletion:(id)completion;
 @end
 
 @implementation FMDExtExtensionsDataSource
@@ -61,9 +61,9 @@
   return v3;
 }
 
-- (void)startDiscoveringExtensionsWithCompletion:(id)a3
+- (void)startDiscoveringExtensionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10000BE38();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,41 +80,41 @@
   v11 = 3221225472;
   v12 = sub_100137FFC;
   v13 = &unk_1002CD8D8;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v8 = completionCopy;
   v9 = [NSExtension beginMatchingExtensionsWithAttributes:v7 completion:&v10];
-  [(FMDExtExtensionsDataSource *)self setExtensionMatchToken:v9, v10, v11, v12, v13, v14];
+  [(FMDExtExtensionsDataSource *)self setExtensionMatchToken:v9, v10, v11, v12, v13, selfCopy];
 }
 
 - (void)endDiscoveringExtensions
 {
-  v3 = [(FMDExtExtensionsDataSource *)self extensionMatchToken];
+  extensionMatchToken = [(FMDExtExtensionsDataSource *)self extensionMatchToken];
 
-  if (v3)
+  if (extensionMatchToken)
   {
-    v4 = [(FMDExtExtensionsDataSource *)self extensionMatchToken];
-    [NSExtension endMatchingExtensions:v4];
+    extensionMatchToken2 = [(FMDExtExtensionsDataSource *)self extensionMatchToken];
+    [NSExtension endMatchingExtensions:extensionMatchToken2];
 
     [(FMDExtExtensionsDataSource *)self setExtensionMatchToken:0];
   }
 }
 
-- (id)extensionWithIdentifier:(id)a3
+- (id)extensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FMDExtExtensionsDataSource *)self extensions];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  extensions = [(FMDExtExtensionsDataSource *)self extensions];
+  v6 = [extensions objectForKey:identifierCopy];
 
   return v6;
 }
 
 - (id)allExtensionIdentifiers
 {
-  v2 = [(FMDExtExtensionsDataSource *)self extensions];
-  v3 = [v2 allKeys];
+  extensions = [(FMDExtExtensionsDataSource *)self extensions];
+  allKeys = [extensions allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 @end

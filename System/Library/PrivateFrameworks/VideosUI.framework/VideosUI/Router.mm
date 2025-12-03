@@ -1,58 +1,58 @@
 @interface Router
-- (BOOL)dismissViewControllerWithID:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)handleDocumentDataSource:(id)a3 targetResponder:(id)a4 appContext:(id)a5 documentOptions:(id)a6 completion:(id)a7;
+- (BOOL)dismissViewControllerWithID:(id)d animated:(BOOL)animated completion:(id)completion;
+- (BOOL)handleDocumentDataSource:(id)source targetResponder:(id)responder appContext:(id)context documentOptions:(id)options completion:(id)completion;
 - (BOOL)isPresentingAlert;
-- (void)accountPageViewControllerDidFinish:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5;
+- (void)accountPageViewControllerDidFinish:(id)finish;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view;
 - (void)handleNetworkChanges;
-- (void)invokeAction:(id)a3 targetResponder:(id)a4 completion:(id)a5;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 actions:(id)a5 animated:(BOOL)a6;
-- (void)presentRouterDataSource:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 modalPresentationStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)invokeAction:(id)action targetResponder:(id)responder completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message actions:(id)actions animated:(BOOL)animated;
+- (void)presentRouterDataSource:(id)source;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller modalPresentationStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation Router
 
-- (void)presentRouterDataSource:(id)a3
+- (void)presentRouterDataSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
+  sourceCopy = source;
+  selfCopy = self;
   sub_1E40CA4B0();
 }
 
-- (void)accountPageViewControllerDidFinish:(id)a3
+- (void)accountPageViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
+  finishCopy = finish;
+  selfCopy = self;
   sub_1E40CF63C();
 }
 
 - (void)handleNetworkChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E40D2FD4();
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 actions:(id)a5 animated:(BOOL)a6
+- (void)presentAlertWithTitle:(id)title message:(id)message actions:(id)actions animated:(BOOL)animated
 {
-  v7 = a4;
-  if (a3)
+  messageCopy = message;
+  if (title)
   {
     sub_1E4205F14();
-    if (v7)
+    if (messageCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a4)
+  else if (message)
   {
 LABEL_3:
     v9 = sub_1E4205F14();
-    v7 = v10;
-    if (!a5)
+    messageCopy = v10;
+    if (!actions)
     {
       goto LABEL_5;
     }
@@ -61,19 +61,19 @@ LABEL_3:
   }
 
   v9 = 0;
-  if (a5)
+  if (actions)
   {
 LABEL_4:
-    a5 = sub_1E42062B4();
+    actions = sub_1E42062B4();
   }
 
 LABEL_5:
-  v11 = self;
+  selfCopy = self;
   v12 = OUTLINED_FUNCTION_13_8();
-  sub_1E40D3274(v12, v13, v9, v7, a5);
+  sub_1E40D3274(v12, v13, v9, messageCopy, actions);
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   OUTLINED_FUNCTION_201_0();
   v6 = v5;
@@ -95,7 +95,7 @@ LABEL_5:
   OUTLINED_FUNCTION_200();
 }
 
-- (void)presentViewController:(id)a3 modalPresentationStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentViewController:(id)controller modalPresentationStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion
 {
   OUTLINED_FUNCTION_201_0();
   v7 = v6;
@@ -125,14 +125,14 @@ LABEL_5:
   OUTLINED_FUNCTION_200();
 }
 
-- (void)handleAccountSettingsEventWithUrl:(id)a3 amsBagKey:(id)a4 useAMSWebView:(BOOL)a5
+- (void)handleAccountSettingsEventWithUrl:(id)url amsBagKey:(id)key useAMSWebView:(BOOL)view
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v9);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v19 - v11;
-  if (a3)
+  if (url)
   {
     sub_1E41FE3C4();
     v13 = sub_1E41FE414();
@@ -146,29 +146,29 @@ LABEL_5:
   }
 
   __swift_storeEnumTagSinglePayload(v12, v14, 1, v13);
-  if (a4)
+  if (key)
   {
     sub_1E4205F14();
   }
 
-  v15 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_11_5();
   OUTLINED_FUNCTION_8_154();
-  sub_1E40D3B70(v16, v17, v18, a5);
+  sub_1E40D3B70(v16, v17, v18, view);
 
   sub_1E325F6F0(v12, &unk_1ECF363C0);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     OUTLINED_FUNCTION_4_0();
     *(swift_allocObject() + 16) = v5;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1E40D3E60();
   v6 = OUTLINED_FUNCTION_74();
   sub_1E34AF594(v6);
@@ -176,16 +176,16 @@ LABEL_5:
 
 - (BOOL)isPresentingAlert
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E40D3F5C();
 
   return v3 & 1;
 }
 
-- (BOOL)dismissViewControllerWithID:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)dismissViewControllerWithID:(id)d animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v7 = _Block_copy(a5);
+  animatedCopy = animated;
+  v7 = _Block_copy(completion);
   sub_1E4205F14();
   if (v7)
   {
@@ -194,16 +194,16 @@ LABEL_5:
     v7 = sub_1E37951AC;
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = OUTLINED_FUNCTION_11_6();
-  v11 = sub_1E40D404C(v9, v10, v5, v7);
+  v11 = sub_1E40D404C(v9, v10, animatedCopy, v7);
   v12 = OUTLINED_FUNCTION_124();
   sub_1E34AF594(v12);
 
   return v11 & 1;
 }
 
-- (void)invokeAction:(id)a3 targetResponder:(id)a4 completion:(id)a5
+- (void)invokeAction:(id)action targetResponder:(id)responder completion:(id)completion
 {
   OUTLINED_FUNCTION_201_0();
   v6 = v5;
@@ -227,10 +227,10 @@ LABEL_5:
   OUTLINED_FUNCTION_200();
 }
 
-- (BOOL)handleDocumentDataSource:(id)a3 targetResponder:(id)a4 appContext:(id)a5 documentOptions:(id)a6 completion:(id)a7
+- (BOOL)handleDocumentDataSource:(id)source targetResponder:(id)responder appContext:(id)context documentOptions:(id)options completion:(id)completion
 {
-  v12 = _Block_copy(a7);
-  if (a6)
+  v12 = _Block_copy(completion);
+  if (options)
   {
     sub_1E4205C64();
   }
@@ -242,10 +242,10 @@ LABEL_5:
     v12 = sub_1E3835F0C;
   }
 
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
+  sourceCopy = source;
+  responderCopy = responder;
+  contextCopy = context;
+  selfCopy = self;
   sub_1E40D483C();
   v18 = v17;
   sub_1E34AF594(v12);

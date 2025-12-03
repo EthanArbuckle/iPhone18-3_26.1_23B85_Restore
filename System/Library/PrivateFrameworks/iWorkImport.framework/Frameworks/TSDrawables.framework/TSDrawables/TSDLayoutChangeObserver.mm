@@ -1,53 +1,53 @@
 @interface TSDLayoutChangeObserver
-- (TSDLayoutChangeObserver)initWithDocumentRoot:(id)a3 layoutController:(id)a4;
-- (void)i_layoutRegistered:(id)a3;
-- (void)i_layoutUnregistered:(id)a3;
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4;
+- (TSDLayoutChangeObserver)initWithDocumentRoot:(id)root layoutController:(id)controller;
+- (void)i_layoutRegistered:(id)registered;
+- (void)i_layoutUnregistered:(id)unregistered;
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source;
 @end
 
 @implementation TSDLayoutChangeObserver
 
-- (TSDLayoutChangeObserver)initWithDocumentRoot:(id)a3 layoutController:(id)a4
+- (TSDLayoutChangeObserver)initWithDocumentRoot:(id)root layoutController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = TSDLayoutChangeObserver;
   v8 = [(TSDLayoutChangeObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_documentRoot, v6);
-    objc_storeWeak(&v9->_layoutController, v7);
+    objc_storeWeak(&v8->_documentRoot, rootCopy);
+    objc_storeWeak(&v9->_layoutController, controllerCopy);
   }
 
   return v9;
 }
 
-- (void)i_layoutRegistered:(id)a3
+- (void)i_layoutRegistered:(id)registered
 {
-  v4 = a3;
+  registeredCopy = registered;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v7 = objc_msgSend_changeNotifier(WeakRetained, v5, v6);
-  v10 = objc_msgSend_info(v4, v8, v9);
+  v10 = objc_msgSend_info(registeredCopy, v8, v9);
 
   objc_msgSend_addObserver_forChangeSource_(v7, v11, self, v10);
 }
 
-- (void)i_layoutUnregistered:(id)a3
+- (void)i_layoutUnregistered:(id)unregistered
 {
-  v4 = a3;
+  unregisteredCopy = unregistered;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v7 = objc_msgSend_changeNotifier(WeakRetained, v5, v6);
-  v10 = objc_msgSend_info(v4, v8, v9);
+  v10 = objc_msgSend_info(unregisteredCopy, v8, v9);
 
   objc_msgSend_removeObserver_forChangeSource_(v7, v11, self, v10);
 }
 
-- (void)preprocessChanges:(id)a3 forChangeSource:(id)a4
+- (void)preprocessChanges:(id)changes forChangeSource:(id)source
 {
-  v18 = a3;
-  v6 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v10 = objc_msgSend_accessController(WeakRetained, v8, v9);
   objc_msgSend_assertHasWrite(v10, v11, v12);
@@ -58,7 +58,7 @@
   {
     v14 = objc_loadWeakRetained(&self->_layoutController);
     v16 = objc_msgSend_layoutsForInfo_(v14, v15, v13, &unk_2885A16B8);
-    objc_msgSend_makeObjectsPerformSelector_withObject_(v16, v17, sel_processChanges_, v18);
+    objc_msgSend_makeObjectsPerformSelector_withObject_(v16, v17, sel_processChanges_, changesCopy);
   }
 }
 

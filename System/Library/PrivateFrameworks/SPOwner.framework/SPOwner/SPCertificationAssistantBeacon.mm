@@ -1,24 +1,24 @@
 @interface SPCertificationAssistantBeacon
-- (SPCertificationAssistantBeacon)initWithInternalSimpleBeacon:(id)a3;
+- (SPCertificationAssistantBeacon)initWithInternalSimpleBeacon:(id)beacon;
 @end
 
 @implementation SPCertificationAssistantBeacon
 
-- (SPCertificationAssistantBeacon)initWithInternalSimpleBeacon:(id)a3
+- (SPCertificationAssistantBeacon)initWithInternalSimpleBeacon:(id)beacon
 {
-  v4 = a3;
+  beaconCopy = beacon;
   v33.receiver = self;
   v33.super_class = SPCertificationAssistantBeacon;
   v5 = [(SPCertificationAssistantBeacon *)&v33 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 copy];
+    identifier = [beaconCopy identifier];
+    v7 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 name];
-    v10 = [v9 copy];
+    name = [beaconCopy name];
+    v10 = [name copy];
     v11 = v10;
     if (v10)
     {
@@ -32,8 +32,8 @@
 
     objc_storeStrong(&v5->_name, v12);
 
-    v13 = [v4 modelName];
-    v14 = [v13 copy];
+    modelName = [beaconCopy modelName];
+    v14 = [modelName copy];
     v15 = v14;
     if (v14)
     {
@@ -47,36 +47,36 @@
 
     objc_storeStrong(&v5->_model, v16);
 
-    v17 = [v4 accessoryProductInfo];
+    accessoryProductInfo = [beaconCopy accessoryProductInfo];
     accessoryProductInfo = v5->_accessoryProductInfo;
-    v5->_accessoryProductInfo = v17;
+    v5->_accessoryProductInfo = accessoryProductInfo;
 
-    v19 = [v4 systemVersion];
+    systemVersion = [beaconCopy systemVersion];
     systemVersion = v5->_systemVersion;
-    v5->_systemVersion = v19;
+    v5->_systemVersion = systemVersion;
 
-    v21 = [v4 role];
-    v22 = [v21 copy];
+    role = [beaconCopy role];
+    v22 = [role copy];
     role = v5->_role;
     v5->_role = v22;
 
-    v24 = [v4 type];
+    type = [beaconCopy type];
     type = v5->_type;
-    v5->_type = v24;
+    v5->_type = type;
 
-    v5->_vendorId = [v4 vendorId];
-    v5->_productId = [v4 productId];
-    v26 = [v4 taskInformation];
+    v5->_vendorId = [beaconCopy vendorId];
+    v5->_productId = [beaconCopy productId];
+    taskInformation = [beaconCopy taskInformation];
     taskInformation = v5->_taskInformation;
-    v5->_taskInformation = v26;
+    v5->_taskInformation = taskInformation;
 
-    v28 = [v4 accessoryProductInfo];
+    accessoryProductInfo2 = [beaconCopy accessoryProductInfo];
     v29 = v5->_accessoryProductInfo;
-    v5->_accessoryProductInfo = v28;
+    v5->_accessoryProductInfo = accessoryProductInfo2;
 
-    v30 = [v4 rawMetadata];
+    rawMetadata = [beaconCopy rawMetadata];
     rawMetadata = v5->_rawMetadata;
-    v5->_rawMetadata = v30;
+    v5->_rawMetadata = rawMetadata;
   }
 
   return v5;

@@ -1,19 +1,19 @@
 @interface TestFlightFeedbackDatabaseSession
-- (TestFlightFeedbackDatabaseSession)initWithConnection:(id)a3;
+- (TestFlightFeedbackDatabaseSession)initWithConnection:(id)connection;
 @end
 
 @implementation TestFlightFeedbackDatabaseSession
 
-- (TestFlightFeedbackDatabaseSession)initWithConnection:(id)a3
+- (TestFlightFeedbackDatabaseSession)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = TestFlightFeedbackDatabaseSession;
   v6 = [(TestFlightFeedbackDatabaseSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;

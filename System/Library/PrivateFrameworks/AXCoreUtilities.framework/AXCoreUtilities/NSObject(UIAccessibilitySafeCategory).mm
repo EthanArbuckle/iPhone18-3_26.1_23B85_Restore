@@ -31,7 +31,7 @@
   InstanceVariable = class_getInstanceVariable(v5, [v4 UTF8String]);
   if (InstanceVariable)
   {
-    v7 = ivar_getOffset(InstanceVariable) + a1;
+    v7 = ivar_getOffset(InstanceVariable) + self;
   }
 
   else
@@ -49,7 +49,7 @@
       v11 = AXLogValidations();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(NSObject(UIAccessibilitySafeCategory) *)v4 safeIvarForKey:a1, v11];
+        [(NSObject(UIAccessibilitySafeCategory) *)v4 safeIvarForKey:self, v11];
       }
     }
 
@@ -58,7 +58,7 @@
       v12 = AXLogValidations();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [(NSObject(UIAccessibilitySafeCategory) *)v4 safeIvarForKey:a1, v12];
+        [(NSObject(UIAccessibilitySafeCategory) *)v4 safeIvarForKey:self, v12];
       }
     }
 
@@ -71,52 +71,52 @@
 - (uint64_t)safeBoolForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "c", "B", "B", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "c", "B", "B", 0}];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)safeIntForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "I", "I", "q", "Q", "q", "Q", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "I", "I", "q", "Q", "q", "Q", 0}];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 - (uint64_t)safeUnsignedIntForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "I", "I", "q", "Q", "q", "Q", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"i", "I", "I", "q", "Q", "q", "Q", 0}];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 - (uint64_t)safeIntegerForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"q", "Q", "c", "s", "i", "q", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"q", "Q", "c", "s", "i", "q", 0}];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)safeUnsignedIntegerForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"Q", "q", "Q", "C", "S", "I", "Q", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"Q", "q", "Q", "C", "S", "I", "Q", 0}];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (float)safeFloatForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"f", "d", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"f", "d", 0}];
 
   [v5 floatValue];
   v7 = v6;
@@ -127,7 +127,7 @@
 - (double)safeDoubleForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"d", "f", 0}];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:{"d", "f", 0}];
 
   [v5 doubleValue];
   v7 = v6;
@@ -138,16 +138,16 @@
 - (uint64_t)safeRangeForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
 
-  v6 = [v5 rangeValue];
-  return v6;
+  rangeValue = [v5 rangeValue];
+  return rangeValue;
 }
 
 - (double)safeCGPointForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
 
   [v5 pointValue];
   v7 = v6;
@@ -158,7 +158,7 @@
 - (double)safeCGSizeForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
 
   [v5 sizeValue];
   v7 = v6;
@@ -169,7 +169,7 @@
 - (double)safeCGRectForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
 
   [v5 rectValue];
   v7 = v6;
@@ -180,7 +180,7 @@
 - (id)safeStringForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
 
   return v5;
 }
@@ -188,7 +188,7 @@
 - (id)safeArrayForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
 
   return v5;
 }
@@ -196,7 +196,7 @@
 - (id)safeSetForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
 
   return v5;
 }
@@ -204,7 +204,7 @@
 - (id)safeDictionaryForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:0];
 
   return v5;
 }
@@ -212,7 +212,7 @@
 - (id)safeUIViewForKey:()UIAccessibilitySafeCategory
 {
   v4 = a3;
-  v5 = [a1 _safeValidatedValueForKey:v4 expectedClass:NSClassFromString(&cfstr_Uiview.isa) expectedTypeEncoding:0];
+  v5 = [self _safeValidatedValueForKey:v4 expectedClass:NSClassFromString(&cfstr_Uiview.isa) expectedTypeEncoding:0];
 
   return v5;
 }
@@ -232,10 +232,10 @@
   v9[2] = __57__NSObject_UIAccessibilitySafeCategory__safeValueForKey___block_invoke;
   v9[3] = &unk_1E735B780;
   v11 = &v12;
-  v9[4] = a1;
+  v9[4] = self;
   v5 = v4;
   v10 = v5;
-  [a1 _accessibilityPerformSafeValueKeyBlock:v9 withKey:v5 onClass:objc_opt_class()];
+  [self _accessibilityPerformSafeValueKeyBlock:v9 withKey:v5 onClass:objc_opt_class()];
   v6 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -258,10 +258,10 @@
   v8[2] = __61__NSObject_UIAccessibilitySafeCategory__safeValueForKeyPath___block_invoke;
   v8[3] = &unk_1E735B780;
   v10 = &v11;
-  v8[4] = a1;
+  v8[4] = self;
   v5 = v4;
   v9 = v5;
-  [a1 _accessibilityPerformSafeValueKeyBlock:v8 withKey:v5 onClass:objc_opt_class()];
+  [self _accessibilityPerformSafeValueKeyBlock:v8 withKey:v5 onClass:objc_opt_class()];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -282,10 +282,10 @@
   v10[3] = &unk_1E735BD10;
   v14 = a4;
   v7 = v6;
-  v12 = a1;
+  selfCopy = self;
   v13 = &v15;
   v11 = v7;
-  [a1 _accessibilityPerformSafeValueKeyBlock:v10 withKey:v7 onClass:a4];
+  [self _accessibilityPerformSafeValueKeyBlock:v10 withKey:v7 onClass:a4];
   v8 = v16[3];
 
   _Block_object_dispose(&v15, 8);

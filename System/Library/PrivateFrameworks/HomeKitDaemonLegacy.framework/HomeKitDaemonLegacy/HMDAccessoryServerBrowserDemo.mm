@@ -1,16 +1,16 @@
 @interface HMDAccessoryServerBrowserDemo
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
 - (HAPAccessoryServerBrowserDelegate)delegate;
-- (id)_handleTestAccessorySetReachability:(id)a3;
-- (id)_handleTestAccessorySetValue:(id)a3 response:(id *)a4;
-- (id)_handleTestModeConfigRequest:(id)a3 response:(id *)a4;
-- (void)appendDemoData:(id)a3;
-- (void)discoverAccessoryServerWithIdentifier:(id)a3;
+- (id)_handleTestAccessorySetReachability:(id)reachability;
+- (id)_handleTestAccessorySetValue:(id)value response:(id *)response;
+- (id)_handleTestModeConfigRequest:(id)request response:(id *)response;
+- (void)appendDemoData:(id)data;
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier;
 - (void)discoverServer;
-- (void)loadDemoData:(id)a3 finalized:(BOOL)a4;
+- (void)loadDemoData:(id)data finalized:(BOOL)finalized;
 - (void)resetDemoAccessories;
-- (void)resetDemoAccessory:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)resetDemoAccessory:(id)accessory;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)startDiscoveringAccessoryServers;
 - (void)stopDiscoveringAccessoryServers;
 @end
@@ -24,18 +24,18 @@
   return WeakRetained;
 }
 
-- (id)_handleTestModeConfigRequest:(id)a3 response:(id *)a4
+- (id)_handleTestModeConfigRequest:(id)request response:(id *)response
 {
-  v6 = a3;
-  v7 = [v6 hmf_arrayForKey:@"kConfigTestingSetReturnValueKey"];
+  requestCopy = request;
+  v7 = [requestCopy hmf_arrayForKey:@"kConfigTestingSetReturnValueKey"];
   if (v7)
   {
-    v8 = [(HMDAccessoryServerBrowserDemo *)self _handleTestAccessorySetValue:v7 response:a4];
+    v8 = [(HMDAccessoryServerBrowserDemo *)self _handleTestAccessorySetValue:v7 response:response];
   }
 
   else
   {
-    v9 = [v6 hmf_arrayForKey:@"kConfigTestingSetReachabilityKey"];
+    v9 = [requestCopy hmf_arrayForKey:@"kConfigTestingSetReachabilityKey"];
     if (v9)
     {
       v8 = [(HMDAccessoryServerBrowserDemo *)self _handleTestAccessorySetReachability:v9];
@@ -43,7 +43,7 @@
 
     else
     {
-      v10 = [v6 hmf_arrayForKey:@"kConfigTestingGenerateNotificationKey"];
+      v10 = [requestCopy hmf_arrayForKey:@"kConfigTestingGenerateNotificationKey"];
       if (v10)
       {
         v8 = [(HMDAccessoryServerBrowserDemo *)self _handleTestAccessoryGenerateNotification:v10];
@@ -51,7 +51,7 @@
 
       else
       {
-        v11 = [v6 hmf_arrayForKey:@"kConfigTestingReadValueKey"];
+        v11 = [requestCopy hmf_arrayForKey:@"kConfigTestingReadValueKey"];
         if (v11)
         {
           v8 = [(HMDAccessoryServerBrowserDemo *)self _handleTestAccessoryReadValue:v11];
@@ -68,15 +68,15 @@
   return v8;
 }
 
-- (id)_handleTestAccessorySetReachability:(id)a3
+- (id)_handleTestAccessorySetReachability:(id)reachability
 {
   v78 = *MEMORY[0x277D85DE8];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v3 = a3;
-  v47 = [v3 countByEnumeratingWithState:&v63 objects:v77 count:16];
+  reachabilityCopy = reachability;
+  v47 = [reachabilityCopy countByEnumeratingWithState:&v63 objects:v77 count:16];
   if (v47)
   {
     v51 = 0;
@@ -84,14 +84,14 @@
     v49 = *v64;
     *&v4 = 138543874;
     v45 = v4;
-    v46 = v3;
+    v46 = reachabilityCopy;
     while (1)
     {
       v5 = 0;
 LABEL_4:
       if (*v64 != v49)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reachabilityCopy);
       }
 
       v6 = *(*(&v63 + 1) + 8 * v5);
@@ -124,8 +124,8 @@ LABEL_4:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v9 = [(HMDAccessoryServerBrowserDemo *)self servers];
-      v10 = [v9 countByEnumeratingWithState:&v58 objects:v76 count:16];
+      servers = [(HMDAccessoryServerBrowserDemo *)self servers];
+      v10 = [servers countByEnumeratingWithState:&v58 objects:v76 count:16];
       if (!v10)
       {
         break;
@@ -139,12 +139,12 @@ LABEL_9:
       {
         if (*v59 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(servers);
         }
 
         v14 = *(*(&v58 + 1) + 8 * v13);
-        v15 = [v14 identifier];
-        v16 = [v15 isEqual:v7];
+        identifier = [v14 identifier];
+        v16 = [identifier isEqual:v7];
 
         if (v16)
         {
@@ -153,7 +153,7 @@ LABEL_9:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v58 objects:v76 count:16];
+          v11 = [servers countByEnumeratingWithState:&v58 objects:v76 count:16];
           if (v11)
           {
             goto LABEL_9;
@@ -176,8 +176,8 @@ LABEL_9:
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v18 = [v17 accessories];
-        v19 = [v18 countByEnumeratingWithState:&v54 objects:v75 count:16];
+        accessories = [v17 accessories];
+        v19 = [accessories countByEnumeratingWithState:&v54 objects:v75 count:16];
         if (v19)
         {
           v20 = v19;
@@ -188,21 +188,21 @@ LABEL_9:
             {
               if (*v55 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(accessories);
               }
 
               v23 = *(*(&v54 + 1) + 8 * i);
-              v24 = [v23 instanceID];
-              v25 = [v8 isEqual:v24];
+              instanceID = [v23 instanceID];
+              v25 = [v8 isEqual:instanceID];
 
               if (v25)
               {
-                v26 = v23;
+                firstObject = v23;
                 goto LABEL_28;
               }
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v54 objects:v75 count:16];
+            v20 = [accessories countByEnumeratingWithState:&v54 objects:v75 count:16];
             if (v20)
             {
               continue;
@@ -211,27 +211,27 @@ LABEL_9:
             break;
           }
 
-          v26 = 0;
+          firstObject = 0;
 LABEL_28:
-          v3 = v46;
+          reachabilityCopy = v46;
         }
 
         else
         {
-          v26 = 0;
+          firstObject = 0;
         }
       }
 
       else
       {
-        v18 = [v17 accessories];
-        v26 = [v18 firstObject];
+        accessories = [v17 accessories];
+        firstObject = [accessories firstObject];
       }
 
       v27 = objc_autoreleasePoolPush();
       v28 = HMFGetOSLogHandle();
       v29 = os_log_type_enabled(v28, OS_LOG_TYPE_INFO);
-      if (v26)
+      if (firstObject)
       {
         if (v29)
         {
@@ -249,7 +249,7 @@ LABEL_28:
         }
 
         objc_autoreleasePoolPop(v27);
-        [v26 setReachable:v53];
+        [firstObject setReachable:v53];
       }
 
       else
@@ -272,7 +272,7 @@ LABEL_28:
         v51 = v33;
       }
 
-      if (v26)
+      if (firstObject)
       {
         v5 = v52 + 1;
         if (v52 + 1 != v47)
@@ -280,7 +280,7 @@ LABEL_28:
           goto LABEL_4;
         }
 
-        v47 = [v3 countByEnumeratingWithState:&v63 objects:v77 count:16];
+        v47 = [reachabilityCopy countByEnumeratingWithState:&v63 objects:v77 count:16];
         if (v47)
         {
           continue;
@@ -326,16 +326,16 @@ LABEL_51:
   return v51;
 }
 
-- (id)_handleTestAccessorySetValue:(id)a3 response:(id *)a4
+- (id)_handleTestAccessorySetValue:(id)value response:(id *)response
 {
   v160 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v95 = [MEMORY[0x277CBEB18] array];
+  valueCopy = value;
+  array = [MEMORY[0x277CBEB18] array];
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
-  obj = v4;
+  obj = valueCopy;
   v107 = [obj countByEnumeratingWithState:&v134 objects:v159 count:16];
   v5 = 0;
   if (v107)
@@ -369,8 +369,8 @@ LABEL_51:
         v131 = 0u;
         v132 = 0u;
         v133 = 0u;
-        v10 = [(HMDAccessoryServerBrowserDemo *)self servers];
-        v11 = [v10 countByEnumeratingWithState:&v130 objects:v158 count:16];
+        servers = [(HMDAccessoryServerBrowserDemo *)self servers];
+        v11 = [servers countByEnumeratingWithState:&v130 objects:v158 count:16];
         if (!v11)
         {
           goto LABEL_14;
@@ -384,12 +384,12 @@ LABEL_51:
           {
             if (*v131 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(servers);
             }
 
             v15 = *(*(&v130 + 1) + 8 * i);
-            v16 = [v15 identifier];
-            v17 = [v16 isEqual:v8];
+            identifier = [v15 identifier];
+            v17 = [identifier isEqual:v8];
 
             if (v17)
             {
@@ -407,8 +407,8 @@ LABEL_51:
                 v129 = 0u;
                 v126 = 0u;
                 v127 = 0u;
-                v19 = [v18 accessories];
-                v20 = [v19 countByEnumeratingWithState:&v126 objects:v157 count:16];
+                accessories = [v18 accessories];
+                v20 = [accessories countByEnumeratingWithState:&v126 objects:v157 count:16];
                 if (v20)
                 {
                   v21 = v20;
@@ -419,22 +419,22 @@ LABEL_51:
                     {
                       if (*v127 != v22)
                       {
-                        objc_enumerationMutation(v19);
+                        objc_enumerationMutation(accessories);
                       }
 
                       v24 = *(*(&v126 + 1) + 8 * j);
-                      v25 = [v24 instanceID];
-                      v26 = [v9 isEqual:v25];
+                      instanceID = [v24 instanceID];
+                      v26 = [v9 isEqual:instanceID];
 
                       if (v26)
                       {
-                        v34 = v24;
+                        firstObject = v24;
                         v18 = v100;
                         goto LABEL_31;
                       }
                     }
 
-                    v21 = [v19 countByEnumeratingWithState:&v126 objects:v157 count:16];
+                    v21 = [accessories countByEnumeratingWithState:&v126 objects:v157 count:16];
                     if (v21)
                     {
                       continue;
@@ -473,11 +473,11 @@ LABEL_57:
 
               else
               {
-                v19 = [v18 accessories];
-                v34 = [v19 firstObject];
+                accessories = [v18 accessories];
+                firstObject = [accessories firstObject];
 LABEL_31:
 
-                if (!v34)
+                if (!firstObject)
                 {
                   goto LABEL_41;
                 }
@@ -486,9 +486,9 @@ LABEL_31:
                 v125 = 0u;
                 v122 = 0u;
                 v123 = 0u;
-                v98 = v34;
-                v35 = [v34 services];
-                v36 = [v35 countByEnumeratingWithState:&v122 objects:v156 count:16];
+                v98 = firstObject;
+                services = [firstObject services];
+                v36 = [services countByEnumeratingWithState:&v122 objects:v156 count:16];
                 if (!v36)
                 {
 LABEL_40:
@@ -525,12 +525,12 @@ LABEL_34:
                 {
                   if (*v123 != v38)
                   {
-                    objc_enumerationMutation(v35);
+                    objc_enumerationMutation(services);
                   }
 
                   v40 = *(*(&v122 + 1) + 8 * v39);
-                  v41 = [v40 instanceID];
-                  v42 = [v117 isEqual:v41];
+                  instanceID2 = [v40 instanceID];
+                  v42 = [v117 isEqual:instanceID2];
 
                   if (v42)
                   {
@@ -539,7 +539,7 @@ LABEL_34:
 
                   if (v37 == ++v39)
                   {
-                    v37 = [v35 countByEnumeratingWithState:&v122 objects:v156 count:16];
+                    v37 = [services countByEnumeratingWithState:&v122 objects:v156 count:16];
                     if (v37)
                     {
                       goto LABEL_34;
@@ -561,8 +561,8 @@ LABEL_34:
                 v118 = 0u;
                 v119 = 0u;
                 v97 = v47;
-                v48 = [v47 characteristics];
-                v49 = [v48 countByEnumeratingWithState:&v118 objects:v155 count:16];
+                characteristics = [v47 characteristics];
+                v49 = [characteristics countByEnumeratingWithState:&v118 objects:v155 count:16];
                 if (v49)
                 {
                   v50 = v49;
@@ -573,12 +573,12 @@ LABEL_47:
                   {
                     if (*v119 != v51)
                     {
-                      objc_enumerationMutation(v48);
+                      objc_enumerationMutation(characteristics);
                     }
 
                     v53 = *(*(&v118 + 1) + 8 * v52);
-                    v54 = [v53 instanceID];
-                    v55 = [v116 isEqual:v54];
+                    instanceID3 = [v53 instanceID];
+                    v55 = [v116 isEqual:instanceID3];
 
                     if (v55)
                     {
@@ -587,7 +587,7 @@ LABEL_47:
 
                     if (v50 == ++v52)
                     {
-                      v50 = [v48 countByEnumeratingWithState:&v118 objects:v155 count:16];
+                      v50 = [characteristics countByEnumeratingWithState:&v118 objects:v155 count:16];
                       if (v50)
                       {
                         goto LABEL_47;
@@ -638,13 +638,13 @@ LABEL_47:
 
                   else
                   {
-                    v70 = [v60 responseDelay];
+                    responseDelay = [v60 responseDelay];
 
                     v32 = v110;
-                    if (v70)
+                    if (responseDelay)
                     {
-                      v71 = [v96 responseDelay];
-                      [v114 setObject:v71 forKey:@"kConfigTestingResponseDelayKey"];
+                      responseDelay2 = [v96 responseDelay];
+                      [v114 setObject:responseDelay2 forKey:@"kConfigTestingResponseDelayKey"];
 
                       v72 = objc_autoreleasePoolPush();
                       v73 = HMFGetOSLogHandle();
@@ -652,7 +652,7 @@ LABEL_47:
                       {
                         HMFGetLogIdentifier();
                         v74 = v93 = v72;
-                        v75 = [v96 responseDelay];
+                        responseDelay3 = [v96 responseDelay];
                         *buf = 138544642;
                         v142 = v74;
                         v143 = 2112;
@@ -664,7 +664,7 @@ LABEL_47:
                         v149 = 2112;
                         v150 = v116;
                         v151 = 2112;
-                        v152 = v75;
+                        v152 = responseDelay3;
                         _os_log_impl(&dword_2531F8000, v73, OS_LOG_TYPE_INFO, "%{public}@Getting the value for characteristic responseDelay (%@+%@/%@/%@): %@ ", buf, 0x3Eu);
 
                         v46 = v98;
@@ -684,7 +684,7 @@ LABEL_47:
                     {
                       HMFGetLogIdentifier();
                       v79 = v111 = v76;
-                      v80 = [v96 responseDelay];
+                      responseDelay4 = [v96 responseDelay];
                       *buf = 138544898;
                       v142 = v79;
                       v143 = 2112;
@@ -698,7 +698,7 @@ LABEL_47:
                       v151 = 2112;
                       v152 = v32;
                       v153 = 2112;
-                      v154 = v80;
+                      v154 = responseDelay4;
                       _os_log_impl(&dword_2531F8000, v77, OS_LOG_TYPE_INFO, "%{public}@Setting the value for characteristic (%@+%@/%@/%@) to %@ with responseDelay %@ milliseconds", buf, 0x48u);
 
                       v46 = v98;
@@ -733,16 +733,16 @@ LABEL_47:
                     }
 
                     objc_autoreleasePoolPop(v76);
-                    v82 = [v96 value];
-                    if (v82)
+                    value = [v96 value];
+                    if (value)
                     {
-                      [v114 setObject:v82 forKey:v106];
+                      [v114 setObject:value forKey:v106];
                     }
 
                     else
                     {
-                      v83 = [MEMORY[0x277CBEB68] null];
-                      [v114 setObject:v83 forKey:v106];
+                      null = [MEMORY[0x277CBEB68] null];
+                      [v114 setObject:null forKey:v106];
                     }
                   }
 
@@ -754,7 +754,7 @@ LABEL_47:
                     {
                       HMFGetLogIdentifier();
                       v86 = v113 = v84;
-                      v87 = [v96 responseDelay];
+                      responseDelay5 = [v96 responseDelay];
                       *buf = 138544898;
                       v142 = v86;
                       v143 = 2112;
@@ -768,7 +768,7 @@ LABEL_47:
                       v151 = 2112;
                       v152 = v32;
                       v153 = 2112;
-                      v154 = v87;
+                      v154 = responseDelay5;
                       _os_log_impl(&dword_2531F8000, v85, OS_LOG_TYPE_INFO, "%{public}@Triggering update notification for characteristic (%@+%@/%@/%@) with value %@, responseDelay %@ milliseconds", buf, 0x48u);
 
                       v46 = v98;
@@ -781,7 +781,7 @@ LABEL_47:
                     [v100 handleUpdatesForCharacteristics:v88 stateNumber:0];
                   }
 
-                  [v95 addObject:v114];
+                  [array addObject:v114];
                   v30 = 1;
                   v69 = v96;
                 }
@@ -830,7 +830,7 @@ LABEL_67:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v130 objects:v158 count:16];
+          v12 = [servers countByEnumeratingWithState:&v130 objects:v158 count:16];
           if (v12)
           {
             continue;
@@ -882,22 +882,22 @@ LABEL_59:
 LABEL_91:
 
   v138 = @"CharacteristicConfiguration";
-  v90 = [v95 copy];
+  v90 = [array copy];
   v139 = v90;
-  *a4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v139 forKeys:&v138 count:1];
+  *response = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v139 forKeys:&v138 count:1];
 
   v91 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v4 = [(HMDAccessoryServerBrowserDemo *)self delegate];
-  if (v4)
+  delegate = [(HMDAccessoryServerBrowserDemo *)self delegate];
+  if (delegate)
   {
-    v5 = [(HMDAccessoryServerBrowserDemo *)self delegateQueue];
-    if (v5)
+    delegateQueue = [(HMDAccessoryServerBrowserDemo *)self delegateQueue];
+    if (delegateQueue)
     {
       v6 = objc_opt_respondsToSelector();
     }
@@ -916,18 +916,18 @@ LABEL_91:
   return v6 & 1;
 }
 
-- (void)discoverAccessoryServerWithIdentifier:(id)a3
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HMDAccessoryServerBrowserDemo_discoverAccessoryServerWithIdentifier___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __71__HMDAccessoryServerBrowserDemo_discoverAccessoryServerWithIdentifier___block_invoke(uint64_t a1)
@@ -984,13 +984,13 @@ void __71__HMDAccessoryServerBrowserDemo_discoverAccessoryServerWithIdentifier__
 
 - (void)resetDemoAccessories
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__HMDAccessoryServerBrowserDemo_resetDemoAccessories__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __53__HMDAccessoryServerBrowserDemo_resetDemoAccessories__block_invoke(uint64_t a1)
@@ -1054,31 +1054,31 @@ void __53__HMDAccessoryServerBrowserDemo_resetDemoAccessories__block_invoke_2(ui
   [v2 accessoryServerBrowser:*(a1 + 32) didRemoveAccessoryServer:*(a1 + 40) error:0];
 }
 
-- (void)resetDemoAccessory:(id)a3
+- (void)resetDemoAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
     if ([(HMDAccessoryServerBrowserDemo *)self _delegateRespondsToSelector:sel_accessoryServerBrowser_didRemoveAccessoryServer_error_])
     {
-      v5 = [(HMDAccessoryServerBrowserDemo *)self delegateQueue];
+      delegateQueue = [(HMDAccessoryServerBrowserDemo *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __52__HMDAccessoryServerBrowserDemo_resetDemoAccessory___block_invoke;
       block[3] = &unk_2797359B0;
       block[4] = self;
-      v10 = v4;
-      dispatch_async(v5, block);
+      v10 = accessoryCopy;
+      dispatch_async(delegateQueue, block);
     }
 
-    v6 = [(HAPAccessoryServerBrowser *)self workQueue];
+    workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52__HMDAccessoryServerBrowserDemo_resetDemoAccessory___block_invoke_2;
     v7[3] = &unk_2797359B0;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = accessoryCopy;
+    dispatch_async(workQueue, v7);
   }
 }
 
@@ -1139,19 +1139,19 @@ void __52__HMDAccessoryServerBrowserDemo_resetDemoAccessory___block_invoke_27(ui
   [v2 accessoryServerBrowser:*(a1 + 32) didFindAccessoryServer:*(a1 + 40) stateChanged:0 stateNumber:0];
 }
 
-- (void)appendDemoData:(id)a3
+- (void)appendDemoData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDAccessoryServerBrowserDemo_appendDemoData___block_invoke;
   block[3] = &unk_279732E78;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1284,20 +1284,20 @@ uint64_t __48__HMDAccessoryServerBrowserDemo_appendDemoData___block_invoke_3(uin
   return v5;
 }
 
-- (void)loadDemoData:(id)a3 finalized:(BOOL)a4
+- (void)loadDemoData:(id)data finalized:(BOOL)finalized
 {
-  v6 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  v7 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HMDAccessoryServerBrowserDemo_loadDemoData_finalized___block_invoke;
   v9[3] = &unk_27972F5B0;
   objc_copyWeak(&v11, &location);
-  v10 = v6;
-  v12 = a4;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = dataCopy;
+  finalizedCopy = finalized;
+  v8 = dataCopy;
+  dispatch_async(workQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1313,13 +1313,13 @@ void __56__HMDAccessoryServerBrowserDemo_loadDemoData_finalized___block_invoke(u
 - (void)discoverServer
 {
   objc_initWeak(&location, self);
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__HMDAccessoryServerBrowserDemo_discoverServer__block_invoke;
   v4[3] = &unk_279732FD8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(workQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1480,13 +1480,13 @@ void __47__HMDAccessoryServerBrowserDemo_discoverServer__block_invoke_21(uint64_
 
 - (void)stopDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HMDAccessoryServerBrowserDemo_stopDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __64__HMDAccessoryServerBrowserDemo_stopDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -1509,13 +1509,13 @@ void __64__HMDAccessoryServerBrowserDemo_stopDiscoveringAccessoryServers__block_
 
 - (void)startDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDAccessoryServerBrowserDemo_startDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __65__HMDAccessoryServerBrowserDemo_startDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -1555,21 +1555,21 @@ void __65__HMDAccessoryServerBrowserDemo_startDiscoveringAccessoryServers__block
   [v2 accessoryServerBrowser:*(a1 + 32) didStartDiscoveringWithError:0];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HMDAccessoryServerBrowserDemo_setDelegate_queue___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __51__HMDAccessoryServerBrowserDemo_setDelegate_queue___block_invoke(uint64_t a1)

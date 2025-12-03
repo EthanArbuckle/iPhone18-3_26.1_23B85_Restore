@@ -1,15 +1,15 @@
 @interface IMDSpamCheckRequeryTracker
 + (id)sharedTracker;
 - (IMDSpamCheckRequeryTracker)init;
-- (IMDSpamCheckRequeryTracker)initWithInterval:(double)a3 timeout:(double)a4;
+- (IMDSpamCheckRequeryTracker)initWithInterval:(double)interval timeout:(double)timeout;
 - (void)_clearTimer;
 - (void)_startTimer;
-- (void)_updateRecord:(id)a3;
+- (void)_updateRecord:(id)record;
 - (void)_updateTracker;
 - (void)dealloc;
-- (void)startTrackingMessageGUID:(id)a3 chat:(id)a4;
-- (void)startTrackingRecord:(id)a3;
-- (void)stopTrackingRecord:(id)a3;
+- (void)startTrackingMessageGUID:(id)d chat:(id)chat;
+- (void)startTrackingRecord:(id)record;
+- (void)stopTrackingRecord:(id)record;
 @end
 
 @implementation IMDSpamCheckRequeryTracker
@@ -39,7 +39,7 @@
   return v2;
 }
 
-- (IMDSpamCheckRequeryTracker)initWithInterval:(double)a3 timeout:(double)a4
+- (IMDSpamCheckRequeryTracker)initWithInterval:(double)interval timeout:(double)timeout
 {
   v12.receiver = self;
   v12.super_class = IMDSpamCheckRequeryTracker;
@@ -60,26 +60,26 @@
     trackedRecords = v6->_trackedRecords;
     v6->_trackedRecords = v8;
 
-    v6->_updateTimeInterval = a3;
-    v6->_timerTimeout = a4;
+    v6->_updateTimeInterval = interval;
+    v6->_timerTimeout = timeout;
   }
 
   return v6;
 }
 
-- (void)startTrackingMessageGUID:(id)a3 chat:(id)a4
+- (void)startTrackingMessageGUID:(id)d chat:(id)chat
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDSpamCheckRequeryTracker *)self decisioningManager];
-  if ([v8 isJunkFilteringEnabled] && objc_msgSend(v7, "isFiltered"))
+  dCopy = d;
+  chatCopy = chat;
+  decisioningManager = [(IMDSpamCheckRequeryTracker *)self decisioningManager];
+  if ([decisioningManager isJunkFilteringEnabled] && objc_msgSend(chatCopy, "isFiltered"))
   {
-    v9 = [v7 isFiltered];
+    isFiltered = [chatCopy isFiltered];
 
-    if (v9 != 2)
+    if (isFiltered != 2)
     {
-      if (v6 && ([v7 guid], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+      if (dCopy && ([chatCopy guid], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
       {
         if (IMOSLoggingEnabled())
         {
@@ -87,14 +87,14 @@
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
             v17 = 138412290;
-            v18 = v6;
+            v18 = dCopy;
             _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "startTrackingMessageGUID %@", &v17, 0xCu);
           }
         }
 
         v12 = [IMDSpamCheckRequeryTrackerRecord alloc];
-        v13 = [v7 guid];
-        v14 = [(IMDSpamCheckRequeryTrackerRecord *)v12 initWithMessageGUID:v6 chatGUID:v13];
+        guid = [chatCopy guid];
+        v14 = [(IMDSpamCheckRequeryTrackerRecord *)v12 initWithMessageGUID:dCopy chatGUID:guid];
 
         [(IMDSpamCheckRequeryTracker *)self startTrackingRecord:v14];
       }
@@ -104,7 +104,7 @@
         v16 = IMLogHandleForCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          sub_22B7CF4C0(v7, v6, v16);
+          sub_22B7CF4C0(chatCopy, dCopy, v16);
         }
       }
     }
@@ -117,15 +117,15 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTrackingRecord:(id)a3
+- (void)startTrackingRecord:(id)record
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messageGUID];
-  if ([v5 length])
+  recordCopy = record;
+  messageGUID = [recordCopy messageGUID];
+  if ([messageGUID length])
   {
-    v6 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    trackedRecords = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+    v7 = [trackedRecords objectForKeyedSubscript:messageGUID];
 
     if (!v7)
     {
@@ -135,16 +135,16 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v12 = 138412290;
-          v13 = v5;
+          v13 = messageGUID;
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Tracking guid %@", &v12, 0xCu);
         }
       }
 
       v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:self->_timerTimeout];
-      [v4 setExpirationDate:v9];
+      [recordCopy setExpirationDate:v9];
 
-      v10 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-      [v10 setObject:v4 forKeyedSubscript:v5];
+      trackedRecords2 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+      [trackedRecords2 setObject:recordCopy forKeyedSubscript:messageGUID];
 
       [(IMDSpamCheckRequeryTracker *)self _startTimer];
     }
@@ -153,15 +153,15 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTrackingRecord:(id)a3
+- (void)stopTrackingRecord:(id)record
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messageGUID];
-  if ([v5 length])
+  recordCopy = record;
+  messageGUID = [recordCopy messageGUID];
+  if ([messageGUID length])
   {
-    v6 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    trackedRecords = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+    v7 = [trackedRecords objectForKeyedSubscript:messageGUID];
 
     if (v7)
     {
@@ -171,16 +171,16 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v13 = 138412290;
-          v14 = v5;
+          v14 = messageGUID;
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Stopping tracking of guid %@", &v13, 0xCu);
         }
       }
 
-      v9 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-      [v9 setObject:0 forKeyedSubscript:v5];
+      trackedRecords2 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+      [trackedRecords2 setObject:0 forKeyedSubscript:messageGUID];
 
-      v10 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-      v11 = [v10 count] == 0;
+      trackedRecords3 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+      v11 = [trackedRecords3 count] == 0;
 
       if (v11)
       {
@@ -194,9 +194,9 @@
 
 - (void)_startTimer
 {
-  v3 = [(IMDSpamCheckRequeryTracker *)self updateTimer];
+  updateTimer = [(IMDSpamCheckRequeryTracker *)self updateTimer];
 
-  if (v3)
+  if (updateTimer)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -249,9 +249,9 @@
 
 - (void)_clearTimer
 {
-  v3 = [(IMDSpamCheckRequeryTracker *)self updateTimer];
+  updateTimer = [(IMDSpamCheckRequeryTracker *)self updateTimer];
 
-  if (v3)
+  if (updateTimer)
   {
     if (IMOSLoggingEnabled())
     {
@@ -263,8 +263,8 @@
       }
     }
 
-    v5 = [(IMDSpamCheckRequeryTracker *)self updateTimer];
-    [v5 invalidate];
+    updateTimer2 = [(IMDSpamCheckRequeryTracker *)self updateTimer];
+    [updateTimer2 invalidate];
 
     [(IMDSpamCheckRequeryTracker *)self setUpdateTimer:0];
   }
@@ -272,8 +272,8 @@
 
 - (void)dealloc
 {
-  v3 = [(IMDSpamCheckRequeryTracker *)self updateTimer];
-  [v3 invalidate];
+  updateTimer = [(IMDSpamCheckRequeryTracker *)self updateTimer];
+  [updateTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = IMDSpamCheckRequeryTracker;
@@ -292,32 +292,32 @@
     }
   }
 
-  v4 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-  v5 = [v4 allValues];
+  trackedRecords = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+  allValues = [trackedRecords allValues];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22B4E80D4;
   v7[3] = &unk_2787029A0;
   v7[4] = self;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [allValues enumerateObjectsUsingBlock:v7];
 
-  v6 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
-  [v6 removeAllObjects];
+  trackedRecords2 = [(IMDSpamCheckRequeryTracker *)self trackedRecords];
+  [trackedRecords2 removeAllObjects];
 
   [(IMDSpamCheckRequeryTracker *)self _clearTimer];
 }
 
-- (void)_updateRecord:(id)a3
+- (void)_updateRecord:(id)record
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = +[IMDChatRegistry sharedInstance];
-  v6 = [v4 chatGUID];
-  v7 = [v5 existingChatWithGUID:v6];
+  chatGUID = [recordCopy chatGUID];
+  v7 = [v5 existingChatWithGUID:chatGUID];
 
   v8 = +[IMDMessageStore sharedInstance];
-  v9 = [v4 messageGUID];
-  v10 = [v8 messageWithGUID:v9];
+  messageGUID = [recordCopy messageGUID];
+  v10 = [v8 messageWithGUID:messageGUID];
 
   if (v10)
   {
@@ -326,8 +326,8 @@
       if (v7)
       {
         decisioningManager = self->_decisioningManager;
-        v12 = [v10 sender];
-        LOBYTE(decisioningManager) = [(IMDTrustKitDecisioningManager *)decisioningManager shouldSkipTrustKitDecisioningForChat:v7 sender:v12];
+        sender = [v10 sender];
+        LOBYTE(decisioningManager) = [(IMDTrustKitDecisioningManager *)decisioningManager shouldSkipTrustKitDecisioningForChat:v7 sender:sender];
 
         if ((decisioningManager & 1) == 0)
         {
@@ -336,28 +336,28 @@
             v13 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v14 = [v4 messageGUID];
+              messageGUID2 = [recordCopy messageGUID];
               *buf = 138412290;
-              v28 = v14;
+              v28 = messageGUID2;
               _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Processing update for %@", buf, 0xCu);
             }
           }
 
           v23 = self->_decisioningManager;
-          v15 = [v10 sender];
-          v16 = [v7 serviceName];
-          v17 = [v10 rcsAdvisedAction];
-          v18 = [v10 body];
-          v19 = [v10 countryCode];
-          v20 = [v10 messageContainsOneTimeCode];
+          sender2 = [v10 sender];
+          serviceName = [v7 serviceName];
+          rcsAdvisedAction = [v10 rcsAdvisedAction];
+          body = [v10 body];
+          countryCode = [v10 countryCode];
+          messageContainsOneTimeCode = [v10 messageContainsOneTimeCode];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = sub_22B4E83C0;
           v24[3] = &unk_2787029F0;
           v25 = v7;
           v26 = v10;
-          LOBYTE(v22) = v20;
-          [(IMDTrustKitDecisioningManager *)v23 requestDecisionForSender:v15 service:v16 trustIndicator:v17 messageBody:v18 countryCode:v19 requestReason:2 containsOneTimeCode:v22 completionHandler:v24];
+          LOBYTE(v22) = messageContainsOneTimeCode;
+          [(IMDTrustKitDecisioningManager *)v23 requestDecisionForSender:sender2 service:serviceName trustIndicator:rcsAdvisedAction messageBody:body countryCode:countryCode requestReason:2 containsOneTimeCode:v22 completionHandler:v24];
         }
       }
     }

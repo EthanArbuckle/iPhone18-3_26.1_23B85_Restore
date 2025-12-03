@@ -1,22 +1,22 @@
 @interface PUPosterLegibilityView
-- (PUPosterLegibilityView)initWithFrame:(CGRect)a3;
-- (void)_layoutLayersAnimated:(BOOL)a3;
+- (PUPosterLegibilityView)initWithFrame:(CGRect)frame;
+- (void)_layoutLayersAnimated:(BOOL)animated;
 - (void)_setupHighlightsDimmingLayer;
 - (void)_setupRadialVignetteLayer;
 - (void)didMoveToWindow;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)setIsHighKey:(BOOL)a3;
-- (void)setRadialVignetteLayerVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setIsHighKey:(BOOL)key;
+- (void)setRadialVignetteLayerVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation PUPosterLegibilityView
 
-- (void)_layoutLayersAnimated:(BOOL)a3
+- (void)_layoutLayersAnimated:(BOOL)animated
 {
-  v5 = [(PUPosterLegibilityView *)self window];
-  v6 = [v5 screen];
-  [v6 scale];
+  window = [(PUPosterLegibilityView *)self window];
+  screen = [window screen];
+  [screen scale];
   v8 = v7;
 
   if (v8 > 0.0)
@@ -31,13 +31,13 @@
     aBlock[5] = v10;
     aBlock[6] = v11;
     aBlock[7] = v12;
-    v17 = a3;
+    animatedCopy = animated;
     v13 = _Block_copy(aBlock);
-    v14 = [(PUPosterLegibilityView *)self radialVignetteLayer];
-    v13[2](v13, v14);
+    radialVignetteLayer = [(PUPosterLegibilityView *)self radialVignetteLayer];
+    v13[2](v13, radialVignetteLayer);
 
-    v15 = [(PUPosterLegibilityView *)self highlightsDimmingLayer];
-    v13[2](v13, v15);
+    highlightsDimmingLayer = [(PUPosterLegibilityView *)self highlightsDimmingLayer];
+    v13[2](v13, highlightsDimmingLayer);
   }
 }
 
@@ -79,12 +79,12 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
   [(PUPosterLegibilityView *)self _layoutLayersAnimated:0];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PUPosterLegibilityView *)self bounds];
   v8.receiver = self;
   v8.super_class = PUPosterLegibilityView;
@@ -95,20 +95,20 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
   }
 }
 
-- (void)setFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)setFrame:(CGRect)frame animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PUPosterLegibilityView *)self frame];
   v10.receiver = self;
   v10.super_class = PUPosterLegibilityView;
   [(PUPosterLegibilityView *)&v10 setFrame:x, y, width, height];
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
-    [(PUPosterLegibilityView *)self _layoutLayersAnimated:v4];
+    [(PUPosterLegibilityView *)self _layoutLayersAnimated:animatedCopy];
   }
 }
 
@@ -117,22 +117,22 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
   v17[3] = *MEMORY[0x1E69E9840];
   if (!self->_highlightsDimmingLayer)
   {
-    v3 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     highlightsDimmingLayer = self->_highlightsDimmingLayer;
-    self->_highlightsDimmingLayer = v3;
+    self->_highlightsDimmingLayer = layer;
 
     v5 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
     -[CALayer setBackgroundColor:](self->_highlightsDimmingLayer, "setBackgroundColor:", [v5 CGColor]);
 
     v16[0] = @"bounds";
-    v6 = [MEMORY[0x1E695DFB0] null];
-    v17[0] = v6;
+    null = [MEMORY[0x1E695DFB0] null];
+    v17[0] = null;
     v16[1] = @"position";
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v17[1] = v7;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v17[1] = null2;
     v16[2] = @"frame";
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v17[2] = v8;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v17[2] = null3;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
     [(CAGradientLayer *)self->_radialVignetteLayer setActions:v9];
 
@@ -150,21 +150,21 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     [(CALayer *)self->_highlightsDimmingLayer setFilters:v12];
 
-    v13 = [(PUPosterLegibilityView *)self layer];
-    [v13 addSublayer:self->_highlightsDimmingLayer];
+    layer2 = [(PUPosterLegibilityView *)self layer];
+    [layer2 addSublayer:self->_highlightsDimmingLayer];
   }
 }
 
-- (void)setRadialVignetteLayerVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setRadialVignetteLayerVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   if (!self->_radialVignetteLayer)
   {
     [(PUPosterLegibilityView *)self _setupRadialVignetteLayer];
   }
 
-  if (v5)
+  if (visibleCopy)
   {
     v7 = 1.0;
   }
@@ -174,9 +174,9 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
     v7 = 0.0;
   }
 
-  if (v4)
+  if (animatedCopy)
   {
-    if (v5)
+    if (visibleCopy)
     {
       v8 = 0.0;
     }
@@ -186,30 +186,30 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
       v8 = 1.0;
     }
 
-    v21 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
+    radialVignetteLayer2 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [MEMORY[0x1E69DD250] inheritedAnimationDuration];
-    [v21 setDuration:?];
-    v9 = [MEMORY[0x1E69DD250] _currentAnimationCurve];
-    v14 = _PUPosterGradientViewGetTimingFunction(v9, v10, v11, v12, v13);
-    [v21 setTimingFunction:v14];
+    [radialVignetteLayer2 setDuration:?];
+    _currentAnimationCurve = [MEMORY[0x1E69DD250] _currentAnimationCurve];
+    v14 = _PUPosterGradientViewGetTimingFunction(_currentAnimationCurve, v10, v11, v12, v13);
+    [radialVignetteLayer2 setTimingFunction:v14];
 
     *&v15 = v7;
     v16 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
-    [v21 setToValue:v16];
+    [radialVignetteLayer2 setToValue:v16];
 
     *&v17 = v8;
     v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-    [v21 setFromValue:v18];
+    [radialVignetteLayer2 setFromValue:v18];
 
-    v19 = [(PUPosterLegibilityView *)self radialVignetteLayer];
-    [v19 addAnimation:v21 forKey:@"opacityAnimation"];
+    radialVignetteLayer = [(PUPosterLegibilityView *)self radialVignetteLayer];
+    [radialVignetteLayer addAnimation:radialVignetteLayer2 forKey:@"opacityAnimation"];
   }
 
   else
   {
-    v21 = [(PUPosterLegibilityView *)self radialVignetteLayer];
+    radialVignetteLayer2 = [(PUPosterLegibilityView *)self radialVignetteLayer];
     *&v20 = v7;
-    [v21 setOpacity:v20];
+    [radialVignetteLayer2 setOpacity:v20];
   }
 }
 
@@ -218,9 +218,9 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
   v22[2] = *MEMORY[0x1E69E9840];
   if (!self->_radialVignetteLayer)
   {
-    v3 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     radialVignetteLayer = self->_radialVignetteLayer;
-    self->_radialVignetteLayer = v3;
+    self->_radialVignetteLayer = layer;
 
     [(CAGradientLayer *)self->_radialVignetteLayer setType:*MEMORY[0x1E6979DB0]];
     v5 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
@@ -233,14 +233,14 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
     [(CAGradientLayer *)self->_radialVignetteLayer setStartPoint:0.5, 0.5];
     [(CAGradientLayer *)self->_radialVignetteLayer setEndPoint:1.7, 1.04];
     v20[0] = @"bounds";
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v21[0] = v8;
+    null = [MEMORY[0x1E695DFB0] null];
+    v21[0] = null;
     v20[1] = @"position";
-    v9 = [MEMORY[0x1E695DFB0] null];
-    v21[1] = v9;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v21[1] = null2;
     v20[2] = @"frame";
-    v10 = [MEMORY[0x1E695DFB0] null];
-    v21[2] = v10;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v21[2] = null3;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
     [(CAGradientLayer *)self->_radialVignetteLayer setActions:v11];
 
@@ -253,17 +253,17 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     [(CAGradientLayer *)self->_radialVignetteLayer setInterpolations:v17];
 
-    v18 = [(PUPosterLegibilityView *)self layer];
-    [v18 addSublayer:self->_radialVignetteLayer];
+    layer2 = [(PUPosterLegibilityView *)self layer];
+    [layer2 addSublayer:self->_radialVignetteLayer];
   }
 }
 
-- (void)setIsHighKey:(BOOL)a3
+- (void)setIsHighKey:(BOOL)key
 {
-  if (self->_isHighKey != a3)
+  if (self->_isHighKey != key)
   {
-    self->_isHighKey = a3;
-    if (a3)
+    self->_isHighKey = key;
+    if (key)
     {
       [(CAGradientLayer *)self->_radialVignetteLayer removeFromSuperlayer];
       radialVignetteLayer = self->_radialVignetteLayer;
@@ -283,11 +283,11 @@ void __48__PUPosterLegibilityView__layoutLayersAnimated___block_invoke(uint64_t 
   }
 }
 
-- (PUPosterLegibilityView)initWithFrame:(CGRect)a3
+- (PUPosterLegibilityView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPosterLegibilityView;
-  v3 = [(PUPosterLegibilityView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPosterLegibilityView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

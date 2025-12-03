@@ -1,39 +1,39 @@
 @interface CRLMutableTransformGradientFill
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
-- (void)setGradientAngleInDegrees:(double)a3;
-- (void)setLastColor:(id)a3;
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
-- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
+- (void)setGradientAngleInDegrees:(double)degrees;
+- (void)setLastColor:(id)color;
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
+- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)size;
 @end
 
 @implementation CRLMutableTransformGradientFill
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
   v5 = [(NSArray *)[(CRLGradientFill *)self gradientStops] count]- 1;
 
-  [(CRLMutableTransformGradientFill *)self setColorOfStopAtIndex:v5 toColor:a3];
+  [(CRLMutableTransformGradientFill *)self setColorOfStopAtIndex:v5 toColor:color];
 }
 
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  [(CRLTransformGradientFill *)self p_scalePoint:a3.x fromShapeWithNaturalSize:a3.y, a4.width, a4.height];
+  [(CRLTransformGradientFill *)self p_scalePoint:point.x fromShapeWithNaturalSize:point.y, size.width, size.height];
 
   [(CRLTransformGradientFill *)self p_setStartPoint:?];
 }
 
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  [(CRLTransformGradientFill *)self p_scalePoint:a3.x fromShapeWithNaturalSize:a3.y, a4.width, a4.height];
+  [(CRLTransformGradientFill *)self p_scalePoint:point.x fromShapeWithNaturalSize:point.y, size.width, size.height];
 
   [(CRLTransformGradientFill *)self p_setEndPoint:?];
 }
 
-- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)a3
+- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_mTransformBeforeUpgrade = &self->super.mTransformBeforeUpgrade;
   v5 = *&self->super.mTransformBeforeUpgrade.c;
   *&v10.a = *&self->super.mTransformBeforeUpgrade.a;
@@ -51,7 +51,7 @@
   *&p_mTransformBeforeUpgrade->tx = *&CGAffineTransformIdentity.tx;
 }
 
-- (void)setGradientAngleInDegrees:(double)a3
+- (void)setGradientAngleInDegrees:(double)degrees
 {
   p_mStart = &self->super.mStart;
   p_mEnd = &self->super.mEnd;
@@ -62,7 +62,7 @@
   v11 = v10;
   v12 = sub_10011F31C(x, y, v8);
   v14 = sub_100120074(v12, v13);
-  v15 = sub_100120F98(a3 * 0.0174532925);
+  v15 = sub_100120F98(degrees * 0.0174532925);
   v17 = sub_10011F340(-v15, v16, v14 * 0.5);
   p_mStart->x = sub_10011F334(v9, v11, v17);
   p_mStart->y = v18;
@@ -70,13 +70,13 @@
   p_mEnd->y = v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLTransformGradientFill allocWithZone:a3];
-  v5 = [(CRLGradientFill *)self gradientStops];
-  v6 = [(CRLGradientFill *)self gradientType];
+  v4 = [CRLTransformGradientFill allocWithZone:zone];
+  gradientStops = [(CRLGradientFill *)self gradientStops];
+  gradientType = [(CRLGradientFill *)self gradientType];
   [(CRLGradientFill *)self opacity];
-  v7 = [(CRLGradientFill *)v4 initWithGradientStops:v5 type:v6 opacity:?];
+  v7 = [(CRLGradientFill *)v4 initWithGradientStops:gradientStops type:gradientType opacity:?];
   [(CRLGradientFill *)v7 i_setAdvancedGradientFlag:[(CRLGradientFill *)self i_advancedGradientFlag]];
   [(CRLTransformGradientFill *)self startPoint];
   [(CRLTransformGradientFill *)v7 p_setStartPoint:?];

@@ -2,16 +2,16 @@
 - (BOOL)containsValidData;
 - (id)allowedInfoKeys;
 - (id)sanitizedInfoDictionary;
-- (void)_mergeInfoDictionaryFromResult:(id)a3;
-- (void)addImageResult:(id)a3;
-- (void)addVideoResult:(id)a3;
+- (void)_mergeInfoDictionaryFromResult:(id)result;
+- (void)addImageResult:(id)result;
+- (void)addVideoResult:(id)result;
 @end
 
 @implementation PHLivePhotoResult
 
-- (void)addVideoResult:(id)a3
+- (void)addVideoResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   if (self->_videoResult)
   {
     v6 = PLImageManagerGetLog();
@@ -24,14 +24,14 @@
 
   else
   {
-    objc_storeStrong(&self->_videoResult, a3);
-    [(PHLivePhotoResult *)self _mergeInfoDictionaryFromResult:v5];
+    objc_storeStrong(&self->_videoResult, result);
+    [(PHLivePhotoResult *)self _mergeInfoDictionaryFromResult:resultCopy];
   }
 }
 
-- (void)addImageResult:(id)a3
+- (void)addImageResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   if (self->_imageResult)
   {
     v6 = PLImageManagerGetLog();
@@ -44,33 +44,33 @@
 
   else
   {
-    objc_storeStrong(&self->_imageResult, a3);
-    [(PHLivePhotoResult *)self _mergeInfoDictionaryFromResult:v5];
+    objc_storeStrong(&self->_imageResult, result);
+    [(PHLivePhotoResult *)self _mergeInfoDictionaryFromResult:resultCopy];
   }
 }
 
-- (void)_mergeInfoDictionaryFromResult:(id)a3
+- (void)_mergeInfoDictionaryFromResult:(id)result
 {
-  v8 = a3;
-  v4 = [v8 error];
-  if (v4)
+  resultCopy = result;
+  error = [resultCopy error];
+  if (error)
   {
-    v5 = v4;
-    v6 = [(PHCompositeMediaResult *)self error];
+    v5 = error;
+    error2 = [(PHCompositeMediaResult *)self error];
 
-    if (!v6)
+    if (!error2)
     {
-      v7 = [v8 error];
-      [(PHCompositeMediaResult *)self setError:v7];
+      error3 = [resultCopy error];
+      [(PHCompositeMediaResult *)self setError:error3];
     }
   }
 
-  if ([v8 isInCloud])
+  if ([resultCopy isInCloud])
   {
     [(PHCompositeMediaResult *)self setIsInCloud:1];
   }
 
-  if ([v8 isCancelled])
+  if ([resultCopy isCancelled])
   {
     [(PHCompositeMediaResult *)self setCancelled:1];
   }
@@ -80,11 +80,11 @@
 {
   v6.receiver = self;
   v6.super_class = PHLivePhotoResult;
-  v3 = [(PHCompositeMediaResult *)&v6 sanitizedInfoDictionary];
+  sanitizedInfoDictionary = [(PHCompositeMediaResult *)&v6 sanitizedInfoDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHLivePhotoResult isDegraded](self, "isDegraded")}];
-  [v3 setObject:v4 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
+  [sanitizedInfoDictionary setObject:v4 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
 
-  return v3;
+  return sanitizedInfoDictionary;
 }
 
 - (id)allowedInfoKeys

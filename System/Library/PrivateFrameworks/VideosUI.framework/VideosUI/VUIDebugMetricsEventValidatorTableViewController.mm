@@ -1,30 +1,30 @@
 @interface VUIDebugMetricsEventValidatorTableViewController
-- (VUIDebugMetricsEventValidatorTableViewController)initWithEvent:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_reloadResults:(id)a3;
+- (VUIDebugMetricsEventValidatorTableViewController)initWithEvent:(id)event;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_reloadResults:(id)results;
 @end
 
 @implementation VUIDebugMetricsEventValidatorTableViewController
 
-- (VUIDebugMetricsEventValidatorTableViewController)initWithEvent:(id)a3
+- (VUIDebugMetricsEventValidatorTableViewController)initWithEvent:(id)event
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = VUIDebugMetricsEventValidatorTableViewController;
   v6 = [(VUIDebugMetricsEventValidatorTableViewController *)&v14 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
     objc_initWeak(&location, v7);
-    v8 = [(VUIDebugMetricsEventValidatorTableViewController *)v7 tableView];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"validateCell"];
+    tableView = [(VUIDebugMetricsEventValidatorTableViewController *)v7 tableView];
+    [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"validateCell"];
 
-    v15[0] = v5;
+    v15[0] = eventCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -49,17 +49,17 @@ void __66__VUIDebugMetricsEventValidatorTableViewController_initWithEvent___bloc
   [WeakRetained _reloadResults:v4];
 }
 
-- (void)_reloadResults:(id)a3
+- (void)_reloadResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__VUIDebugMetricsEventValidatorTableViewController__reloadResults___block_invoke;
   block[3] = &unk_1E872F038;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = resultsCopy;
+  v5 = resultsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -213,20 +213,20 @@ void __67__VUIDebugMetricsEventValidatorTableViewController__reloadResults___blo
   [v31 reloadData];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-  v4 = [v3 count];
+  results = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+  v4 = [results count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   result = [(NSArray *)self->_results count];
   if (result)
   {
-    v7 = [(NSArray *)self->_results objectAtIndexedSubscript:a4];
+    v7 = [(NSArray *)self->_results objectAtIndexedSubscript:section];
     v8 = [v7 valueForKey:@"failedRules"];
     v9 = [v8 count];
 
@@ -236,30 +236,30 @@ void __67__VUIDebugMetricsEventValidatorTableViewController__reloadResults___blo
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"validateCell" forIndexPath:v6];
-  v8 = [v6 section];
-  v9 = [v6 row];
-  v10 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-  v11 = [v10 objectAtIndexedSubscript:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"validateCell" forIndexPath:pathCopy];
+  section = [pathCopy section];
+  v9 = [pathCopy row];
+  results = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+  v11 = [results objectAtIndexedSubscript:section];
   v12 = [v11 valueForKey:@"failedRules"];
   v13 = [v12 count];
 
   if (v9 == v13)
   {
-    v57 = v6;
-    v14 = [v7 textLabel];
-    [v14 setText:@"Passed Rules"];
+    v57 = pathCopy;
+    textLabel = [v7 textLabel];
+    [textLabel setText:@"Passed Rules"];
 
     v58 = v7;
-    v15 = [v7 detailTextLabel];
-    [v15 setNumberOfLines:0];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
 
-    v16 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-    v17 = [v16 objectAtIndexedSubscript:v8];
+    results2 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+    v17 = [results2 objectAtIndexedSubscript:section];
     v18 = [v17 valueForKey:@"passedRules"];
 
     v67 = 0u;
@@ -304,20 +304,20 @@ LABEL_19:
     v21 = &stru_1F5DB25C0;
 LABEL_20:
 
-    v6 = v57;
+    pathCopy = v57;
     v7 = v58;
     goto LABEL_25;
   }
 
   if (v9 == v13 + 1)
   {
-    v57 = v6;
+    v57 = pathCopy;
     v58 = v7;
-    v27 = [v7 textLabel];
-    [v27 setText:@"Filtered Rules"];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setText:@"Filtered Rules"];
 
-    v28 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-    v29 = [v28 objectAtIndexedSubscript:v8];
+    results3 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+    v29 = [results3 objectAtIndexedSubscript:section];
     v30 = [v29 valueForKey:@"filteredRules"];
 
     v63 = 0u;
@@ -361,14 +361,14 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v38 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-  v39 = [v38 objectAtIndexedSubscript:v8];
+  results4 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+  v39 = [results4 objectAtIndexedSubscript:section];
   v40 = [v39 valueForKey:@"failedRules"];
   v41 = [v40 objectAtIndexedSubscript:v9];
 
   v42 = [v41 valueForKey:@"ruleLabel"];
-  v43 = [v7 textLabel];
-  [v43 setText:v42];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setText:v42];
 
   v44 = [v41 valueForKey:@"onFailMapList"];
   if ([v44 count])
@@ -376,16 +376,16 @@ LABEL_20:
     v45 = [v41 valueForKey:@"onFailMapList"];
     v46 = [v45 objectAtIndexedSubscript:0];
     v47 = [v46 description];
-    v48 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    obja = [v47 componentsSeparatedByCharactersInSet:v48];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    obja = [v47 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v49 = [obja componentsJoinedByString:&stru_1F5DB25C0];
     v50 = [v41 valueForKey:@"ruleResult"];
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v50, v49];
-    v51 = [v7 detailTextLabel];
+    detailTextLabel2 = [v7 detailTextLabel];
     [MEMORY[0x1E69DC888] redColor];
     v53 = v52 = v42;
-    [v51 setTextColor:v53];
+    [detailTextLabel2 setTextColor:v53];
 
     v42 = v52;
   }
@@ -396,8 +396,8 @@ LABEL_20:
   }
 
 LABEL_25:
-  v54 = [v7 detailTextLabel];
-  [v54 setNumberOfLines:0];
+  detailTextLabel3 = [v7 detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
   if (![(__CFString *)v21 length])
   {
@@ -405,16 +405,16 @@ LABEL_25:
     v21 = @"none";
   }
 
-  v55 = [v7 detailTextLabel];
-  [v55 setText:v21];
+  detailTextLabel4 = [v7 detailTextLabel];
+  [detailTextLabel4 setText:v21];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  results = [(VUIDebugMetricsEventValidatorTableViewController *)self results];
+  v6 = [results objectAtIndexedSubscript:section];
   v7 = [v6 valueForKey:@"title"];
   v8 = [VUIDebugMetricsEventValidator removeGladiatorPrefix:v7];
 

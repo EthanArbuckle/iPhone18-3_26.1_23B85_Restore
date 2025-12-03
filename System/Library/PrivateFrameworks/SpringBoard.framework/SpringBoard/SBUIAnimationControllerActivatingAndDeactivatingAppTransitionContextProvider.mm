@@ -1,33 +1,33 @@
 @interface SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider
-+ (id)transitionContextProviderWithToApplicationSceneEntity:(id)a3 fromApplicationSceneEntity:(id)a4;
++ (id)transitionContextProviderWithToApplicationSceneEntity:(id)entity fromApplicationSceneEntity:(id)sceneEntity;
 - (NSSet)fromApplicationSceneEntities;
 - (NSSet)toApplicationSceneEntities;
-- (SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider)initWithToApplicationSceneEntity:(id)a3 fromApplicationSceneEntity:(id)a4;
+- (SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider)initWithToApplicationSceneEntity:(id)entity fromApplicationSceneEntity:(id)sceneEntity;
 @end
 
 @implementation SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider
 
-+ (id)transitionContextProviderWithToApplicationSceneEntity:(id)a3 fromApplicationSceneEntity:(id)a4
++ (id)transitionContextProviderWithToApplicationSceneEntity:(id)entity fromApplicationSceneEntity:(id)sceneEntity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider alloc] initWithToApplicationSceneEntity:v6 fromApplicationSceneEntity:v5];
+  sceneEntityCopy = sceneEntity;
+  entityCopy = entity;
+  v7 = [[SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider alloc] initWithToApplicationSceneEntity:entityCopy fromApplicationSceneEntity:sceneEntityCopy];
 
   return v7;
 }
 
-- (SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider)initWithToApplicationSceneEntity:(id)a3 fromApplicationSceneEntity:(id)a4
+- (SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider)initWithToApplicationSceneEntity:(id)entity fromApplicationSceneEntity:(id)sceneEntity
 {
-  v7 = a3;
-  v8 = a4;
+  entityCopy = entity;
+  sceneEntityCopy = sceneEntity;
   v12.receiver = self;
   v12.super_class = SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider;
   v9 = [(SBUIAnimationControllerActivatingAndDeactivatingAppTransitionContextProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_toAppSceneEntity, a3);
-    objc_storeStrong(&v10->_fromAppSceneEntity, a4);
+    objc_storeStrong(&v9->_toAppSceneEntity, entity);
+    objc_storeStrong(&v10->_fromAppSceneEntity, sceneEntity);
   }
 
   return v10;

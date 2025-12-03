@@ -1,34 +1,34 @@
 @interface _PSPETMessageBuilder
-+ (id)getPETMessageWithInteractionsStatistics:(id)a3 predictionContext:(id)a4 deviceIdentifier:(id)a5 trialIdentifier:(id)a6 peopleSuggesterDefaults:(id)a7;
-+ (int)contentTypeFromUTI:(id)a3;
++ (id)getPETMessageWithInteractionsStatistics:(id)statistics predictionContext:(id)context deviceIdentifier:(id)identifier trialIdentifier:(id)trialIdentifier peopleSuggesterDefaults:(id)defaults;
++ (int)contentTypeFromUTI:(id)i;
 @end
 
 @implementation _PSPETMessageBuilder
 
-+ (id)getPETMessageWithInteractionsStatistics:(id)a3 predictionContext:(id)a4 deviceIdentifier:(id)a5 trialIdentifier:(id)a6 peopleSuggesterDefaults:(id)a7
++ (id)getPETMessageWithInteractionsStatistics:(id)statistics predictionContext:(id)context deviceIdentifier:(id)identifier trialIdentifier:(id)trialIdentifier peopleSuggesterDefaults:(id)defaults
 {
   v94 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  statisticsCopy = statistics;
+  contextCopy = context;
+  identifierCopy = identifier;
+  trialIdentifierCopy = trialIdentifier;
+  defaultsCopy = defaults;
   v16 = objc_opt_new();
-  [v16 setDeviceIdentifier:v13];
-  v17 = [v12 sessionID];
-  [v16 setSessionId:v17];
+  [v16 setDeviceIdentifier:identifierCopy];
+  sessionID = [contextCopy sessionID];
+  [v16 setSessionId:sessionID];
 
-  [v16 setTrialIdentifier:v14];
+  [v16 setTrialIdentifier:trialIdentifierCopy];
   [v16 setVersion:6];
-  [v16 setIsFallbackFetch:{objc_msgSend(v12, "isFallbackFetch")}];
-  [v16 setIsSharePlayAvailable:{objc_msgSend(v12, "isSharePlayAvailable")}];
-  v18 = [v12 bundleID];
+  [v16 setIsFallbackFetch:{objc_msgSend(contextCopy, "isFallbackFetch")}];
+  [v16 setIsSharePlayAvailable:{objc_msgSend(contextCopy, "isSharePlayAvailable")}];
+  bundleID = [contextCopy bundleID];
   v19 = +[_PSConstants mobilePhotosBundleId];
-  LOBYTE(a4) = [v18 isEqualToString:v19];
+  LOBYTE(context) = [bundleID isEqualToString:v19];
 
-  v78 = v14;
-  v79 = v13;
-  if (a4)
+  v78 = trialIdentifierCopy;
+  v79 = identifierCopy;
+  if (context)
   {
     v20 = 1;
   }
@@ -36,7 +36,7 @@
   else
   {
     v21 = +[_PSConstants mobileScreenshotsBundleId];
-    v22 = [v18 isEqualToString:v21];
+    v22 = [bundleID isEqualToString:v21];
 
     if (v22)
     {
@@ -46,7 +46,7 @@
     else
     {
       v23 = +[_PSConstants mobileCameraBundleId];
-      v24 = [v18 isEqualToString:v23];
+      v24 = [bundleID isEqualToString:v23];
 
       if (v24)
       {
@@ -56,7 +56,7 @@
       else
       {
         v25 = +[_PSConstants mobileSafariBundleId];
-        v26 = [v18 isEqualToString:v25];
+        v26 = [bundleID isEqualToString:v25];
 
         if (v26)
         {
@@ -76,9 +76,9 @@
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v80 = v12;
-  v27 = [v12 attachments];
-  v28 = [v27 countByEnumeratingWithState:&v88 objects:v93 count:16];
+  v80 = contextCopy;
+  attachments = [contextCopy attachments];
+  v28 = [attachments countByEnumeratingWithState:&v88 objects:v93 count:16];
   if (v28)
   {
     v29 = v28;
@@ -89,14 +89,14 @@
       {
         if (*v89 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(attachments);
         }
 
         v32 = [*(*(&v88 + 1) + 8 * i) UTI];
         [v16 addTypeOfContent:{+[_PSPETMessageBuilder contentTypeFromUTI:](_PSPETMessageBuilder, "contentTypeFromUTI:", v32)}];
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v88 objects:v93 count:16];
+      v29 = [attachments countByEnumeratingWithState:&v88 objects:v93 count:16];
     }
 
     while (v29);
@@ -104,17 +104,17 @@
 
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
-    v33 = [v15 stringForKey:@"_PSPeopleSuggesterRewritePETMessageKey"];
+    v33 = [defaultsCopy stringForKey:@"_PSPeopleSuggesterRewritePETMessageKey"];
     [v16 setTestKey:v33];
   }
 
-  v77 = v15;
+  v77 = defaultsCopy;
   v34 = objc_opt_new();
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = [v11 conversationIds];
+  obj = [statisticsCopy conversationIds];
   v83 = [obj countByEnumeratingWithState:&v84 objects:v92 count:16];
   if (v83)
   {
@@ -130,10 +130,10 @@
 
         v36 = *(*(&v84 + 1) + 8 * j);
         v37 = objc_opt_new();
-        v38 = [v11 privatizedConversationId:v36];
+        v38 = [statisticsCopy privatizedConversationId:v36];
         [v37 setPrivatizedIdentifier:v38];
 
-        v39 = [v11 bundleIdForConversationId:v36];
+        v39 = [statisticsCopy bundleIdForConversationId:v36];
         v40 = [v34 objectForKeyedSubscript:v39];
         v41 = v40;
         if (v39)
@@ -152,99 +152,99 @@
           [v34 setObject:v41 forKeyedSubscript:v39];
         }
 
-        v43 = [v11 valueOrDefaultValueForFeature:@"feedback" forConversationId:v36];
-        v44 = [v43 integerValue];
+        v43 = [statisticsCopy valueOrDefaultValueForFeature:@"feedback" forConversationId:v36];
+        integerValue = [v43 integerValue];
 
-        if (v44)
+        if (integerValue)
         {
           v45 = objc_opt_new();
-          [v45 setFeedbackType:v44];
-          v46 = [v37 privatizedIdentifier];
-          [v45 setPrivatizedCandidateIdentifier:v46];
+          [v45 setFeedbackType:integerValue];
+          privatizedIdentifier = [v37 privatizedIdentifier];
+          [v45 setPrivatizedCandidateIdentifier:privatizedIdentifier];
 
           [v45 setPrivatizedTransportBundleId:v41];
           [v16 addFeedbackEvents:v45];
         }
 
-        v47 = [v11 privacyMitigatedFeatureValueFromName:@"timeSinceLastOutgoingInteraction" forConversationId:v36];
+        v47 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"timeSinceLastOutgoingInteraction" forConversationId:v36];
         [v37 setTimeSinceLastOutgoingInteraction:v47];
 
-        v48 = [v11 privacyMitigatedFeatureValueFromName:@"timeSinceLastIncomingInteraction" forConversationId:v36];
+        v48 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"timeSinceLastIncomingInteraction" forConversationId:v36];
         [v37 setTimeSinceLastIncomingInteraction:v48];
 
-        v49 = [v11 privacyMitigatedFeatureValueFromName:@"timeSinceLastPhoneCallWithConversation" forConversationId:v36];
+        v49 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"timeSinceLastPhoneCallWithConversation" forConversationId:v36];
         [v37 setTimeSinceLastPhoneCallWithConversation:v49];
 
-        v50 = [v11 privacyMitigatedFeatureValueFromName:@"timeSinceLastShareWithConversation" forConversationId:v36];
+        v50 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"timeSinceLastShareWithConversation" forConversationId:v36];
         [v37 setTimeSinceLastShareWithConversation:v50];
 
-        v51 = [v11 privacyMitigatedFeatureValueFromName:@"timeSinceLastPhotoShareWithConversation" forConversationId:v36];
+        v51 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"timeSinceLastPhotoShareWithConversation" forConversationId:v36];
         [v37 setTimeSinceLastPhotoShareWithConversation:v51];
 
-        v52 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesWithConversation" forConversationId:v36];
+        v52 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesWithConversation:v52];
 
-        v53 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesFromCurrentAppWithConversation" forConversationId:v36];
+        v53 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesFromCurrentAppWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesFromCurrentAppWithConversation:v53];
 
-        v54 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesOfTopDomainURLWithConversation" forConversationId:v36];
+        v54 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesOfTopDomainURLWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesOfTopDomainURLWithConversation:v54];
 
-        v55 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesOfDetectedPeopleWithConversation" forConversationId:v36];
+        v55 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesOfDetectedPeopleWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesOfDetectedPeopleWithConversation:v55];
 
-        v56 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesOfPeopleInPhotoWithConversation" forConversationId:v36];
+        v56 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesOfPeopleInPhotoWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesOfPeopleInPhotoWithConversation:v56];
 
-        v57 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesOfDetectedScenesInPhotoWithConversation" forConversationId:v36];
+        v57 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesOfDetectedScenesInPhotoWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesOfDetectedScenesInPhotoWithConversation:v57];
 
-        v58 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfSharesOfScenesInPhotoWithConversation" forConversationId:v36];
+        v58 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfSharesOfScenesInPhotoWithConversation" forConversationId:v36];
         [v37 setNumberOfSharesOfScenesInPhotoWithConversation:v58];
 
-        v59 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfOutgoingInteractionsWithConversation" forConversationId:v36];
+        v59 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfOutgoingInteractionsWithConversation" forConversationId:v36];
         [v37 setNumberOfOutgoingInteractionsWithConversation:v59];
 
-        v60 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfIncomingInteractionsWithConversation" forConversationId:v36];
+        v60 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfIncomingInteractionsWithConversation" forConversationId:v36];
         [v37 setNumberOfIncomingInteractionsWithConversation:v60];
 
-        v61 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfInteractionsDuringTimePeriodWithConversation" forConversationId:v36];
+        v61 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfInteractionsDuringTimePeriodWithConversation" forConversationId:v36];
         [v37 setNumberOfInteractionsDuringTimePeriodWithConversation:v61];
 
-        v62 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfAppsSharedFromWithConversation" forConversationId:v36];
+        v62 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfAppsSharedFromWithConversation" forConversationId:v36];
         [v37 setNumberOfAppsSharedFromWithConversation:v62];
 
-        v63 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfTotalSharesToTargetApp" forConversationId:v36];
+        v63 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfTotalSharesToTargetApp" forConversationId:v36];
         [v37 setNumberOfTotalSharesToTargetApp:v63];
 
-        v64 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsWithConversation" forConversationId:v36];
+        v64 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsWithConversation" forConversationId:v36];
         [v37 setNumberOfEngagedSuggestionsWithConversation:v64];
 
-        v65 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation" forConversationId:v36];
+        v65 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation" forConversationId:v36];
         [v37 setNumberOfEngagedSuggestionsFromCurrentAppWithConversation:v65];
 
-        v66 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation" forConversationId:v36];
+        v66 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation" forConversationId:v36];
         [v37 setNumberOfEngagedSuggestionsOfTopDomainURLWithConversation:v66];
 
-        v67 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation" forConversationId:v36];
+        v67 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation" forConversationId:v36];
         [v37 setNumberOfEngagedSuggestionsOfDetectedPeopleWithConversation:v67];
 
-        v68 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation" forConversationId:v36];
+        v68 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation" forConversationId:v36];
         [v37 setNumberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:v68];
 
-        v69 = [v11 privacyMitigatedFeatureValueFromName:@"hasEverSharePlayedWithConversation" forConversationId:v36];
+        v69 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"hasEverSharePlayedWithConversation" forConversationId:v36];
         [v37 setHasEverSharePlayedWithConversation:v69];
 
-        v70 = [v11 privacyMitigatedFeatureValueFromName:@"numberOfDifferentFacesSharedWithConversation" forConversationId:v36];
+        v70 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"numberOfDifferentFacesSharedWithConversation" forConversationId:v36];
         [v37 setNumberOfDifferentFacesSharedWithConversation:v70];
 
-        v71 = [v11 privacyMitigatedFeatureValueFromName:@"isFirstPartyApp" forConversationId:v36];
+        v71 = [statisticsCopy privacyMitigatedFeatureValueFromName:@"isFirstPartyApp" forConversationId:v36];
         [v37 setIsFirstPartyApp:v71 != 0];
 
-        v72 = [v11 valueForFeature:@"suggestedRank" forConversationId:v36];
+        v72 = [statisticsCopy valueForFeature:@"suggestedRank" forConversationId:v36];
         [v37 setSuggestedRank:{objc_msgSend(v72, "intValue")}];
 
-        v73 = [v11 valueForFeature:@"coreMLModelScore" forConversationId:v36];
+        v73 = [statisticsCopy valueForFeature:@"coreMLModelScore" forConversationId:v36];
         [v73 doubleValue];
         [v37 setCoreMLModelScore:?];
 
@@ -269,34 +269,34 @@
   return v16;
 }
 
-+ (int)contentTypeFromUTI:(id)a3
++ (int)contentTypeFromUTI:(id)i
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"public.url"])
+  iCopy = i;
+  if ([iCopy caseInsensitiveCompare:@"public.url"])
   {
-    if ([v3 caseInsensitiveCompare:@"public.image"])
+    if ([iCopy caseInsensitiveCompare:@"public.image"])
     {
-      if ([v3 caseInsensitiveCompare:@"public.jpeg"])
+      if ([iCopy caseInsensitiveCompare:@"public.jpeg"])
       {
-        if ([v3 caseInsensitiveCompare:@"public.heic"])
+        if ([iCopy caseInsensitiveCompare:@"public.heic"])
         {
-          if ([v3 caseInsensitiveCompare:@"com.apple.live-photo"])
+          if ([iCopy caseInsensitiveCompare:@"com.apple.live-photo"])
           {
-            if ([v3 caseInsensitiveCompare:@"public.movie"])
+            if ([iCopy caseInsensitiveCompare:@"public.movie"])
             {
-              if ([v3 caseInsensitiveCompare:@"com.apple.quicktime-movie"])
+              if ([iCopy caseInsensitiveCompare:@"com.apple.quicktime-movie"])
               {
-                if ([v3 caseInsensitiveCompare:@"public.plain-text"])
+                if ([iCopy caseInsensitiveCompare:@"public.plain-text"])
                 {
-                  if ([v3 caseInsensitiveCompare:@"public.file-url"])
+                  if ([iCopy caseInsensitiveCompare:@"public.file-url"])
                   {
-                    if ([v3 caseInsensitiveCompare:@"com.adobe.pdf"])
+                    if ([iCopy caseInsensitiveCompare:@"com.adobe.pdf"])
                     {
-                      if ([v3 caseInsensitiveCompare:@"public.png"])
+                      if ([iCopy caseInsensitiveCompare:@"public.png"])
                       {
-                        if ([v3 caseInsensitiveCompare:@"public.mpeg-4"])
+                        if ([iCopy caseInsensitiveCompare:@"public.mpeg-4"])
                         {
-                          if ([v3 caseInsensitiveCompare:@"public.vcard"])
+                          if ([iCopy caseInsensitiveCompare:@"public.vcard"])
                           {
                             v4 = 13;
                           }

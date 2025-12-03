@@ -1,6 +1,6 @@
 @interface MSDInstallableFileContext
 - (MSDInstallableFileContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)uniqueName;
 @end
 
@@ -28,9 +28,9 @@
     goto LABEL_2;
   }
 
-  v5 = [(MSDOperationContext *)self identifier];
+  identifier = [(MSDOperationContext *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     if (!self->_uniqueName)
     {
@@ -44,8 +44,8 @@
       {
         v6 = @"StandalonePackage.%@";
 LABEL_17:
-        v7 = [(MSDOperationContext *)self identifier];
-        v8 = [NSString stringWithFormat:v6, v7];
+        identifier2 = [(MSDOperationContext *)self identifier];
+        v8 = [NSString stringWithFormat:v6, identifier2];
         uniqueName = self->_uniqueName;
         self->_uniqueName = v8;
 
@@ -76,11 +76,11 @@ LABEL_3:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MSDInstallableFileContext;
-  v4 = [(MSDOperationContext *)&v6 copyWithZone:a3];
+  v4 = [(MSDOperationContext *)&v6 copyWithZone:zone];
   [v4 setFileType:self->_fileType];
   [v4 setFileHash:self->_fileHash];
   [v4 setOriginServer:self->_originServer];

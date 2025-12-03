@@ -1,10 +1,10 @@
 @interface SHSheetSceneClientSettings
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SHSheetSceneClientSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SHSheetMutableSceneClientSettings alloc];
 

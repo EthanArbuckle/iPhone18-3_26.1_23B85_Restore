@@ -1,15 +1,15 @@
 @interface UIKBDimmingView
-- (UIKBDimmingView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (UIKBDimmingView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation UIKBDimmingView
 
-- (UIKBDimmingView)initWithFrame:(CGRect)a3
+- (UIKBDimmingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIKBDimmingView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,12 +21,12 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {

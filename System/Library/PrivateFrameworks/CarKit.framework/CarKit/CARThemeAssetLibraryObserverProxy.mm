@@ -1,11 +1,11 @@
 @interface CARThemeAssetLibraryObserverProxy
 - (CARThemeAssetLibrary)assetLibrary;
 - (CARThemeAssetLibraryObserverProxy)init;
-- (void)service_attemptingDownloadForAssetVersion:(id)a3 reply:(id)a4;
-- (void)service_completedDownloadForAsset:(id)a3 reply:(id)a4;
-- (void)service_didUpdateFromAsset:(id)a3 toAsset:(id)a4 forVehicleIdentifier:(id)a5 reply:(id)a6;
-- (void)service_failedDownloadForAssetVersion:(id)a3 error:(id)a4 reply:(id)a5;
-- (void)service_foundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 reply:(id)a5;
+- (void)service_attemptingDownloadForAssetVersion:(id)version reply:(id)reply;
+- (void)service_completedDownloadForAsset:(id)asset reply:(id)reply;
+- (void)service_didUpdateFromAsset:(id)asset toAsset:(id)toAsset forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)service_failedDownloadForAssetVersion:(id)version error:(id)error reply:(id)reply;
+- (void)service_foundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version reply:(id)reply;
 @end
 
 @implementation CARThemeAssetLibraryObserverProxy
@@ -25,25 +25,25 @@
   return v2;
 }
 
-- (void)service_foundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 reply:(id)a5
+- (void)service_foundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
-  v12 = [v11 queue];
+  identifierCopy = identifier;
+  versionCopy = version;
+  replyCopy = reply;
+  assetLibrary = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
+  queue = [assetLibrary queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __125__CARThemeAssetLibraryObserverProxy_service_foundNoMatchingAssetForVehicleIdentifier_nextRequiredCompatibilityVersion_reply___block_invoke;
   v16[3] = &unk_1E82FC310;
-  v17 = v9;
-  v18 = v8;
-  v19 = self;
-  v20 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = versionCopy;
+  v18 = identifierCopy;
+  selfCopy = self;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = identifierCopy;
+  v15 = versionCopy;
+  dispatch_async(queue, v16);
 }
 
 uint64_t __125__CARThemeAssetLibraryObserverProxy_service_foundNoMatchingAssetForVehicleIdentifier_nextRequiredCompatibilityVersion_reply___block_invoke(uint64_t a1)
@@ -73,22 +73,22 @@ uint64_t __125__CARThemeAssetLibraryObserverProxy_service_foundNoMatchingAssetFo
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)service_attemptingDownloadForAssetVersion:(id)a3 reply:(id)a4
+- (void)service_attemptingDownloadForAssetVersion:(id)version reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
-  v9 = [v8 queue];
+  versionCopy = version;
+  replyCopy = reply;
+  assetLibrary = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
+  queue = [assetLibrary queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__CARThemeAssetLibraryObserverProxy_service_attemptingDownloadForAssetVersion_reply___block_invoke;
   block[3] = &unk_1E82FC2C0;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = versionCopy;
+  selfCopy = self;
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = versionCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __85__CARThemeAssetLibraryObserverProxy_service_attemptingDownloadForAssetVersion_reply___block_invoke(uint64_t a1)
@@ -126,25 +126,25 @@ uint64_t __85__CARThemeAssetLibraryObserverProxy_service_attemptingDownloadForAs
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)service_failedDownloadForAssetVersion:(id)a3 error:(id)a4 reply:(id)a5
+- (void)service_failedDownloadForAssetVersion:(id)version error:(id)error reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
-  v12 = [v11 queue];
+  versionCopy = version;
+  errorCopy = error;
+  replyCopy = reply;
+  assetLibrary = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
+  queue = [assetLibrary queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87__CARThemeAssetLibraryObserverProxy_service_failedDownloadForAssetVersion_error_reply___block_invoke;
   v16[3] = &unk_1E82FC310;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = versionCopy;
+  v18 = errorCopy;
+  selfCopy = self;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = errorCopy;
+  v15 = versionCopy;
+  dispatch_async(queue, v16);
 }
 
 uint64_t __87__CARThemeAssetLibraryObserverProxy_service_failedDownloadForAssetVersion_error_reply___block_invoke(uint64_t a1)
@@ -185,22 +185,22 @@ uint64_t __87__CARThemeAssetLibraryObserverProxy_service_failedDownloadForAssetV
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)service_completedDownloadForAsset:(id)a3 reply:(id)a4
+- (void)service_completedDownloadForAsset:(id)asset reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
-  v9 = [v8 queue];
+  assetCopy = asset;
+  replyCopy = reply;
+  assetLibrary = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
+  queue = [assetLibrary queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__CARThemeAssetLibraryObserverProxy_service_completedDownloadForAsset_reply___block_invoke;
   block[3] = &unk_1E82FC2C0;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = assetCopy;
+  selfCopy = self;
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = assetCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __77__CARThemeAssetLibraryObserverProxy_service_completedDownloadForAsset_reply___block_invoke(uint64_t a1)
@@ -230,28 +230,28 @@ uint64_t __77__CARThemeAssetLibraryObserverProxy_service_completedDownloadForAss
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)service_didUpdateFromAsset:(id)a3 toAsset:(id)a4 forVehicleIdentifier:(id)a5 reply:(id)a6
+- (void)service_didUpdateFromAsset:(id)asset toAsset:(id)toAsset forVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
-  v15 = [v14 queue];
+  assetCopy = asset;
+  toAssetCopy = toAsset;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  assetLibrary = [(CARThemeAssetLibraryObserverProxy *)self assetLibrary];
+  queue = [assetLibrary queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__CARThemeAssetLibraryObserverProxy_service_didUpdateFromAsset_toAsset_forVehicleIdentifier_reply___block_invoke;
   block[3] = &unk_1E82FC338;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = self;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  dispatch_async(v15, block);
+  v21 = assetCopy;
+  v22 = toAssetCopy;
+  v23 = identifierCopy;
+  selfCopy = self;
+  v25 = replyCopy;
+  v16 = replyCopy;
+  v17 = identifierCopy;
+  v18 = toAssetCopy;
+  v19 = assetCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __99__CARThemeAssetLibraryObserverProxy_service_didUpdateFromAsset_toAsset_forVehicleIdentifier_reply___block_invoke(uint64_t a1)

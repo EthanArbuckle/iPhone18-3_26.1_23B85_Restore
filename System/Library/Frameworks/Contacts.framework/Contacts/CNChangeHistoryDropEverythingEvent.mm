@@ -1,12 +1,12 @@
 @interface CNChangeHistoryDropEverythingEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)acceptEventVisitor:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
 @end
 
 @implementation CNChangeHistoryDropEverythingEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v3 = objc_opt_class();
   v4 = objc_opt_class();
@@ -17,15 +17,15 @@
 - (id)description
 {
   v2 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitDropEverythingEvent:self];
 }

@@ -1,29 +1,29 @@
 @interface StocksListTableViewCell
-+ (double)cellHeightForStackStatus:(BOOL)a3;
++ (double)cellHeightForStackStatus:(BOOL)status;
 - (CGRect)changeButtonRect;
-- (StocksListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)changeSignNegative:(BOOL)a3;
+- (StocksListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)changeSignNegative:(BOOL)negative;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBoxContentsAlpha:(double)a3 includeChangeSign:(BOOL)a4;
+- (void)setBoxContentsAlpha:(double)alpha includeChangeSign:(BOOL)sign;
 - (void)setBoxValueFromRowDataType;
-- (void)setRowDataType:(int64_t)a3;
-- (void)setShouldStackView:(BOOL)a3;
-- (void)setStock:(id)a3;
+- (void)setRowDataType:(int64_t)type;
+- (void)setShouldStackView:(BOOL)view;
+- (void)setStock:(id)stock;
 - (void)updateValues;
 @end
 
 @implementation StocksListTableViewCell
 
-+ (double)cellHeightForStackStatus:(BOOL)a3
++ (double)cellHeightForStackStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
   [v4 _scaledValueForValue:36.0];
   v6 = v5 + 0.0;
   [v4 _scaledValueForValue:20.0];
   v8 = v6 + v7;
-  if (v3)
+  if (statusCopy)
   {
     [v4 _scaledValueForValue:36.0];
     v10 = v9;
@@ -34,15 +34,15 @@
   return v8;
 }
 
-- (StocksListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (StocksListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v53.receiver = self;
   v53.super_class = StocksListTableViewCell;
-  v4 = [(StocksListTableViewCell *)&v53 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(StocksListTableViewCell *)&v53 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [(StocksListTableViewCell *)v4 setBackgroundColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(StocksListTableViewCell *)v4 setBackgroundColor:blackColor];
 
     v6 = objc_opt_new();
     symbolLabel = v4->_symbolLabel;
@@ -55,12 +55,12 @@
 
     [(UILabel *)v4->_symbolLabel setAdjustsFontForContentSizeCategory:1];
     v11 = v4->_symbolLabel;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     v13 = v4->_symbolLabel;
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v13 setTextColor:v14];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v13 setTextColor:whiteColor];
 
     [(UILabel *)v4->_symbolLabel setBaselineAdjustment:1];
     [(StocksListTableViewCell *)v4 addSubview:v4->_symbolLabel];
@@ -74,12 +74,12 @@
 
     [(UILabel *)v4->_priceLabel setAdjustsFontForContentSizeCategory:1];
     v19 = v4->_priceLabel;
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v19 setBackgroundColor:v20];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v19 setBackgroundColor:clearColor2];
 
     v21 = v4->_priceLabel;
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v21 setTextColor:v22];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v21 setTextColor:whiteColor2];
 
     [(UILabel *)v4->_priceLabel setBaselineAdjustment:1];
     [(UILabel *)v4->_priceLabel setTextAlignment:2];
@@ -87,8 +87,8 @@
     v23 = [StocksListBoxView alloc];
     v24 = MEMORY[0x277D755B8];
     v25 = [StocksBundles getBundle:1];
-    v26 = [(StocksListTableViewCell *)v4 traitCollection];
-    v27 = [v24 imageNamed:@"ButtonMask" inBundle:v25 compatibleWithTraitCollection:v26];
+    traitCollection = [(StocksListTableViewCell *)v4 traitCollection];
+    v27 = [v24 imageNamed:@"ButtonMask" inBundle:v25 compatibleWithTraitCollection:traitCollection];
     v28 = CeilToPixel(4.5);
     v29 = [v27 resizableImageWithCapInsets:1 resizingMode:{0.0, v28, 0.0, CeilToPixel(4.5)}];
     v30 = [(StocksListBoxView *)v23 initWithBackgroundMask:v29];
@@ -101,8 +101,8 @@
     v4->_boxLabel = v32;
 
     v34 = v4->_boxLabel;
-    v35 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v34 setBackgroundColor:v35];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v34 setBackgroundColor:clearColor3];
 
     v36 = v4->_boxLabel;
     v37 = [MEMORY[0x277D74300] preferredFontForTextStyle:v9];
@@ -110,8 +110,8 @@
 
     [(UILabel *)v4->_boxLabel setAdjustsFontForContentSizeCategory:1];
     v38 = v4->_boxLabel;
-    v39 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v38 setTextColor:v39];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v38 setTextColor:whiteColor3];
 
     [(UILabel *)v4->_boxLabel setBaselineAdjustment:1];
     [(UILabel *)v4->_boxLabel setAdjustsFontSizeToFitWidth:1];
@@ -119,15 +119,15 @@
     v40 = objc_alloc(MEMORY[0x277D755E8]);
     v41 = MEMORY[0x277D755B8];
     v42 = [StocksBundles getBundle:1];
-    v43 = [(StocksListTableViewCell *)v4 traitCollection];
-    v44 = [v41 imageNamed:@"PlusSign" inBundle:v42 compatibleWithTraitCollection:v43];
+    traitCollection2 = [(StocksListTableViewCell *)v4 traitCollection];
+    v44 = [v41 imageNamed:@"PlusSign" inBundle:v42 compatibleWithTraitCollection:traitCollection2];
     v45 = [v40 initWithImage:v44];
     changeSignView = v4->_changeSignView;
     v4->_changeSignView = v45;
 
     [(StocksListTableViewCell *)v4 addSubview:v4->_changeSignView];
-    v47 = [MEMORY[0x277D75348] blackColor];
-    [(StocksListTableViewCell *)v4 setBackgroundColor:v47];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(StocksListTableViewCell *)v4 setBackgroundColor:blackColor2];
 
     [(StocksListTableViewCell *)v4 setBoxValueFromRowDataType];
     v48 = objc_alloc(MEMORY[0x277D75D18]);
@@ -136,8 +136,8 @@
     [(StocksListTableViewCell *)v4 setSelectedBackgroundView:v49];
 
     v50 = [MEMORY[0x277D75348] colorWithWhite:0.22 alpha:1.0];
-    v51 = [(StocksListTableViewCell *)v4 selectedBackgroundView];
-    [v51 setBackgroundColor:v50];
+    selectedBackgroundView = [(StocksListTableViewCell *)v4 selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v50];
   }
 
   return v4;
@@ -151,38 +151,38 @@
   [(StocksListTableViewCell *)&v3 prepareForReuse];
 }
 
-- (void)setStock:(id)a3
+- (void)setStock:(id)stock
 {
-  v5 = a3;
-  if (self->_stock != v5)
+  stockCopy = stock;
+  if (self->_stock != stockCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stock, a3);
+    v6 = stockCopy;
+    objc_storeStrong(&self->_stock, stock);
     [(StocksListTableViewCell *)self updateValues];
-    v5 = v6;
+    stockCopy = v6;
   }
 }
 
-- (void)setBoxContentsAlpha:(double)a3 includeChangeSign:(BOOL)a4
+- (void)setBoxContentsAlpha:(double)alpha includeChangeSign:(BOOL)sign
 {
-  v4 = a4;
+  signCopy = sign;
   [(UILabel *)self->_boxLabel setAlpha:?];
-  if (v4)
+  if (signCopy)
   {
     changeSignView = self->_changeSignView;
 
-    [(UIImageView *)changeSignView setAlpha:a3];
+    [(UIImageView *)changeSignView setAlpha:alpha];
   }
 }
 
-- (void)setShouldStackView:(BOOL)a3
+- (void)setShouldStackView:(BOOL)view
 {
-  v3 = a3;
-  self->_shouldStackView = a3;
-  [(UILabel *)self->_symbolLabel setAdjustsFontSizeToFitWidth:!a3];
+  viewCopy = view;
+  self->_shouldStackView = view;
+  [(UILabel *)self->_symbolLabel setAdjustsFontSizeToFitWidth:!view];
   priceLabel = self->_priceLabel;
 
-  [(UILabel *)priceLabel setAdjustsFontSizeToFitWidth:!v3];
+  [(UILabel *)priceLabel setAdjustsFontSizeToFitWidth:!viewCopy];
 }
 
 - (void)updateValues
@@ -191,12 +191,12 @@
   if (stock)
   {
     symbolLabel = self->_symbolLabel;
-    v5 = [(Stock *)stock listName];
-    [(UILabel *)symbolLabel setText:v5];
+    listName = [(Stock *)stock listName];
+    [(UILabel *)symbolLabel setText:listName];
 
-    v6 = [(Stock *)self->_stock price];
+    price = [(Stock *)self->_stock price];
 
-    if (v6)
+    if (price)
     {
       v7 = [(Stock *)self->_stock formattedPriceDroppingFractionDigitsIfLengthExceeds:10];
     }
@@ -207,11 +207,11 @@
     }
 
     [(UILabel *)self->_priceLabel setText:v7];
-    v9 = [(Stock *)self->_stock changeIsNegative];
+    changeIsNegative = [(Stock *)self->_stock changeIsNegative];
     boxView = self->_boxView;
     v11 = +[StocksStyle sharedStyle];
     v12 = v11;
-    if (v9)
+    if (changeIsNegative)
     {
       [v11 lossColor];
     }
@@ -236,17 +236,17 @@
   [(UILabel *)self->_priceLabel setHidden:self->_stock == 0];
   [(UILabel *)self->_boxLabel setHidden:self->_stock == 0];
   v14 = self->_boxView;
-  v15 = [(Stock *)self->_stock change];
-  [(StocksListBoxView *)v14 setHidden:v15 == 0];
+  change = [(Stock *)self->_stock change];
+  [(StocksListBoxView *)v14 setHidden:change == 0];
 
   [(StocksListTableViewCell *)self setBoxValueFromRowDataType];
 }
 
-- (id)changeSignNegative:(BOOL)a3
+- (id)changeSignNegative:(BOOL)negative
 {
-  v3 = a3;
+  negativeCopy = negative;
   v5 = [StocksBundles getBundle:1];
-  if (!v3 || changeSignNegative__minusSign)
+  if (!negativeCopy || changeSignNegative__minusSign)
   {
     if (changeSignNegative__plusSign)
     {
@@ -264,13 +264,13 @@
   }
 
   v8 = MEMORY[0x277D755B8];
-  v9 = [(StocksListTableViewCell *)self traitCollection];
-  v10 = [v8 imageNamed:v6 inBundle:v5 compatibleWithTraitCollection:v9];
+  traitCollection = [(StocksListTableViewCell *)self traitCollection];
+  v10 = [v8 imageNamed:v6 inBundle:v5 compatibleWithTraitCollection:traitCollection];
   v11 = *v7;
   *v7 = v10;
 
 LABEL_7:
-  if (v3)
+  if (negativeCopy)
   {
     v12 = &changeSignNegative__minusSign;
   }
@@ -306,11 +306,11 @@ LABEL_7:
     if (self->_rowDataType == 2)
     {
       boxLabel = self->_boxLabel;
-      v7 = [(Stock *)stock change];
-      if (v7)
+      change = [(Stock *)stock change];
+      if (change)
       {
-        v8 = [(Stock *)self->_stock marketcap];
-        v9 = [Stock localizedMagnitudeAbbreviatedStringWithString:v8];
+        marketcap = [(Stock *)self->_stock marketcap];
+        v9 = [Stock localizedMagnitudeAbbreviatedStringWithString:marketcap];
         [(UILabel *)boxLabel setText:v9];
       }
 
@@ -322,9 +322,9 @@ LABEL_7:
 
     else
     {
-      v10 = [(Stock *)stock changeIsNegative];
-      v11 = [(Stock *)self->_stock change];
-      if (v11)
+      changeIsNegative = [(Stock *)stock changeIsNegative];
+      change2 = [(Stock *)self->_stock change];
+      if (change2)
       {
         v12 = [(Stock *)self->_stock formattedChangePercent:self->_rowDataType == 0];
       }
@@ -334,14 +334,14 @@ LABEL_7:
         v12 = &stru_287C73C90;
       }
 
-      v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v7 = [(__CFString *)v12 stringByTrimmingCharactersInSet:v13];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      change = [(__CFString *)v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-      [(UILabel *)self->_boxLabel setText:v7];
-      if ([v7 length] && (+[Stock BlankValueString](Stock, "BlankValueString"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v7, "isEqualToString:", v14), v14, !v15))
+      [(UILabel *)self->_boxLabel setText:change];
+      if ([change length] && (+[Stock BlankValueString](Stock, "BlankValueString"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(change, "isEqualToString:", v14), v14, !v15))
       {
         v16 = self->_changeSignView;
-        v17 = [(StocksListTableViewCell *)self changeSignNegative:v10];
+        v17 = [(StocksListTableViewCell *)self changeSignNegative:changeIsNegative];
         [(UIImageView *)v16 setImage:v17];
       }
 
@@ -352,10 +352,10 @@ LABEL_7:
     }
 
     v18 = +[StocksPreferences sharedPreferences];
-    v19 = [v18 textAttachmentDirectionIsRightToLeft];
+    textAttachmentDirectionIsRightToLeft = [v18 textAttachmentDirectionIsRightToLeft];
 
     v20 = 2;
-    if (v19)
+    if (textAttachmentDirectionIsRightToLeft)
     {
       v20 = 0;
     }
@@ -377,11 +377,11 @@ LABEL_7:
   }
 }
 
-- (void)setRowDataType:(int64_t)a3
+- (void)setRowDataType:(int64_t)type
 {
-  if (self->_rowDataType != a3)
+  if (self->_rowDataType != type)
   {
-    self->_rowDataType = a3;
+    self->_rowDataType = type;
     [(StocksListTableViewCell *)self setBoxValueFromRowDataType];
   }
 }
@@ -391,7 +391,7 @@ LABEL_7:
   v66.receiver = self;
   v66.super_class = StocksListTableViewCell;
   [(StocksListTableViewCell *)&v66 layoutSubviews];
-  v3 = [(StocksListTableViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(StocksListTableViewCell *)self _shouldReverseLayoutDirection];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
   v54 = RoundToPixel(0.5);
   [v4 _scaledValueForValue:36.0];
@@ -410,7 +410,7 @@ LABEL_7:
   v18 = v8;
   v19 = v11 + -16.0 - v8;
   v62 = 16.0;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v20 = 16.0;
   }
@@ -440,7 +440,7 @@ LABEL_7:
   {
     v30 = v25;
     v31 = 16.0;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       v67.origin.x = v13;
       v67.origin.y = v50;
@@ -468,7 +468,7 @@ LABEL_7:
   else
   {
     v52 = (v16 - v10) * 0.5;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       v70.origin.x = 16.0;
       v70.size.width = v18;
@@ -510,11 +510,11 @@ LABEL_7:
   [(UIImageView *)self->_changeSignView frame];
   v43 = v42;
   v44 = +[StocksPreferences sharedPreferences];
-  v45 = [v44 textAttachmentDirectionIsRightToLeft];
+  textAttachmentDirectionIsRightToLeft = [v44 textAttachmentDirectionIsRightToLeft];
 
   v46 = v59;
   v47 = v59 + 8.0;
-  if (v45)
+  if (textAttachmentDirectionIsRightToLeft)
   {
     v72.origin.x = v59;
     v72.origin.y = v52;
@@ -530,7 +530,7 @@ LABEL_7:
   }
 
   v49 = 16.0;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v49 = v55;
   }

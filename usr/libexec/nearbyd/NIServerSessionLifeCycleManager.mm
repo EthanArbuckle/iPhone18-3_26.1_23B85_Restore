@@ -4,32 +4,32 @@
 - (BOOL)isPositioningSensorActive;
 - (BOOL)isSessionInvalidated;
 - (BOOL)isTracking;
-- (BOOL)isTrackingPeer:(id)a3;
-- (NIServerSessionLifeCycleManager)initWithSessionIdentifier:(id)a3 cycleRate:(duration<long)long updatesQueue:()std:(1000>>)a4 :(id)a5 ratio<1 analyticsManager:(id)a6;
+- (BOOL)isTrackingPeer:(id)peer;
+- (NIServerSessionLifeCycleManager)initWithSessionIdentifier:(id)identifier cycleRate:(duration<long)long updatesQueue:()std:(1000>>)std :(id)a5 ratio<1 analyticsManager:(id)manager;
 - (NIServerSessionLifeCycleObserver)observer;
 - (NSArray)peers;
 - (id).cxx_construct;
 - (void)_printStats;
 - (void)_removeAllPeers;
-- (void)_removePeer:(id)a3;
-- (void)_startMonitoringPeersActivity:(id)a3;
+- (void)_removePeer:(id)peer;
+- (void)_startMonitoringPeersActivity:(id)activity;
 - (void)_watchdogLoop;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)failedToAddPeer;
 - (void)failedToRemovePeer;
 - (void)invalidateCalled;
-- (void)measurementReceivedForToken:(id)a3 contTimestamp:(double)a4;
+- (void)measurementReceivedForToken:(id)token contTimestamp:(double)timestamp;
 - (void)pauseCalled;
-- (void)peerHangupReceived:(id)a3;
-- (void)peerLostCallbackReceived:(id)a3;
+- (void)peerHangupReceived:(id)received;
+- (void)peerLostCallbackReceived:(id)received;
 - (void)positioningSensorSessionStarted;
 - (void)positioningSensorSessionStopped;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)runWithConfigurationCalled;
-- (void)startedDiscoveringPeersWithTokens:(id)a3;
+- (void)startedDiscoveringPeersWithTokens:(id)tokens;
 - (void)stoppedDiscoveringAllPeers;
-- (void)stoppedDiscoveringPeersWithTokens:(id)a3;
+- (void)stoppedDiscoveringPeersWithTokens:(id)tokens;
 @end
 
 @implementation NIServerSessionLifeCycleManager
@@ -329,12 +329,12 @@ LABEL_52:
   dispatch_sync(watchdogQueue, block);
 }
 
-- (NIServerSessionLifeCycleManager)initWithSessionIdentifier:(id)a3 cycleRate:(duration<long)long updatesQueue:()std:(1000>>)a4 :(id)a5 ratio<1 analyticsManager:(id)a6
+- (NIServerSessionLifeCycleManager)initWithSessionIdentifier:(id)identifier cycleRate:(duration<long)long updatesQueue:()std:(1000>>)std :(id)a5 ratio<1 analyticsManager:(id)manager
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v13 = a5;
-  v14 = a6;
-  if (v12)
+  managerCopy = manager;
+  if (identifierCopy)
   {
     if (v13)
     {
@@ -345,7 +345,7 @@ LABEL_16:
     v31 = +[NSAssertionHandler currentHandler];
     [v31 handleFailureInMethod:a2 object:self file:@"NIServerSessionLifeCycleManager.mm" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"updatesQueue"}];
 
-    if (v14)
+    if (managerCopy)
     {
       goto LABEL_4;
     }
@@ -362,7 +362,7 @@ LABEL_16:
   }
 
 LABEL_3:
-  if (v14)
+  if (managerCopy)
   {
     goto LABEL_4;
   }
@@ -381,8 +381,8 @@ LABEL_4:
     observers = v15->_observers;
     v15->_observers = v16;
 
-    objc_storeStrong(&v15->_sessionIdentifier, a3);
-    v15->_cycleRate = a4;
+    objc_storeStrong(&v15->_sessionIdentifier, identifier);
+    v15->_cycleRate = std;
     objc_storeStrong(&v15->_updatesQueue, a5);
     v18 = dispatch_queue_create("com.apple.nearbyd.sessionLifeCycleWatchdog", 0);
     watchdogQueue = v15->_watchdogQueue;
@@ -392,7 +392,7 @@ LABEL_4:
     nearbyObjectsCache = v15->_nearbyObjectsCache;
     v15->_nearbyObjectsCache = v20;
 
-    objc_storeWeak(&v15->_analyticsManager, v14);
+    objc_storeWeak(&v15->_analyticsManager, managerCopy);
     [(NIServerSessionLifeCycleManager *)v15 setTimeoutOnPeerInactivity:1];
     [(NIServerSessionLifeCycleManager *)v15 setMaxInactivityAfterTrackingBeganSeconds:60.0];
     [(NIServerSessionLifeCycleManager *)v15 setMaxInactivityBeforeTrackingBeganSeconds:120.0];
@@ -439,9 +439,9 @@ LABEL_4:
   [(NIServerSessionLifeCycleManager *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   sub_100004A08(__p, "addObserver");
   v8 = __p;
   v5 = sub_100014680(&self->_callCounter.__table_.__bucket_list_.__ptr_, __p);
@@ -451,12 +451,12 @@ LABEL_4:
     operator delete(__p[0]);
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   sub_100004A08(__p, "removeObserver");
   v8 = __p;
   v5 = sub_100014680(&self->_callCounter.__table_.__bucket_list_.__ptr_, __p);
@@ -466,7 +466,7 @@ LABEL_4:
     operator delete(__p[0]);
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 - (NSArray)peers
@@ -542,31 +542,31 @@ LABEL_4:
   dispatch_sync(watchdogQueue, block);
 }
 
-- (void)startedDiscoveringPeersWithTokens:(id)a3
+- (void)startedDiscoveringPeersWithTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   watchdogQueue = self->_watchdogQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100270BE0;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokensCopy;
+  v6 = tokensCopy;
   dispatch_sync(watchdogQueue, v7);
 }
 
-- (void)stoppedDiscoveringPeersWithTokens:(id)a3
+- (void)stoppedDiscoveringPeersWithTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   watchdogQueue = self->_watchdogQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100270DCC;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokensCopy;
+  v6 = tokensCopy;
   dispatch_sync(watchdogQueue, v7);
 }
 
@@ -581,17 +581,17 @@ LABEL_4:
   dispatch_sync(watchdogQueue, block);
 }
 
-- (void)peerLostCallbackReceived:(id)a3
+- (void)peerLostCallbackReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   watchdogQueue = self->_watchdogQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002711FC;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receivedCopy;
+  v6 = receivedCopy;
   dispatch_sync(watchdogQueue, v7);
 }
 
@@ -617,38 +617,38 @@ LABEL_4:
   dispatch_sync(watchdogQueue, block);
 }
 
-- (void)measurementReceivedForToken:(id)a3 contTimestamp:(double)a4
+- (void)measurementReceivedForToken:(id)token contTimestamp:(double)timestamp
 {
-  v6 = a3;
+  tokenCopy = token;
   watchdogQueue = self->_watchdogQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002717A4;
   block[3] = &unk_1009A1358;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = tokenCopy;
+  timestampCopy = timestamp;
+  v8 = tokenCopy;
   dispatch_sync(watchdogQueue, block);
 }
 
-- (void)peerHangupReceived:(id)a3
+- (void)peerHangupReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   watchdogQueue = self->_watchdogQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100271920;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receivedCopy;
+  v6 = receivedCopy;
   dispatch_sync(watchdogQueue, v7);
 }
 
-- (BOOL)isTrackingPeer:(id)a3
+- (BOOL)isTrackingPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -658,10 +658,10 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = sub_100271A98;
   block[3] = &unk_1009A1380;
-  v9 = v4;
+  v9 = peerCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = peerCopy;
   dispatch_sync(watchdogQueue, block);
   LOBYTE(watchdogQueue) = *(v12 + 24);
 
@@ -669,16 +669,16 @@ LABEL_4:
   return watchdogQueue;
 }
 
-- (void)_startMonitoringPeersActivity:(id)a3
+- (void)_startMonitoringPeersActivity:(id)activity
 {
-  v11 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(self->_watchdogQueue);
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  obj = v11;
+  obj = activityCopy;
   v5 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -694,10 +694,10 @@ LABEL_4:
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [PRPeerActivityEntry entryWithActivityType:0, v11];
+        activityCopy = [PRPeerActivityEntry entryWithActivityType:0, activityCopy];
         v10 = [[NINearbyObject alloc] initWithToken:v8];
         [v4 addObject:v10];
-        [(NSMutableDictionary *)self->_nearbyObjectsCache setObject:v9 forKey:v8];
+        [(NSMutableDictionary *)self->_nearbyObjectsCache setObject:activityCopy forKey:v8];
 
         v7 = v7 + 1;
       }
@@ -710,11 +710,11 @@ LABEL_4:
   }
 }
 
-- (void)_removePeer:(id)a3
+- (void)_removePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_watchdogQueue);
-  [(NSMutableDictionary *)self->_nearbyObjectsCache removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_nearbyObjectsCache removeObjectForKey:peerCopy];
 }
 
 - (void)_removeAllPeers

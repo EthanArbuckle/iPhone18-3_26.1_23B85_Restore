@@ -1,8 +1,8 @@
 @interface PGSearchMetadataComputer
-- (PGSearchMetadataComputer)initWithGraph:(id)a3;
+- (PGSearchMetadataComputer)initWithGraph:(id)graph;
 - (id)_mePersonUUID;
 - (id)_suggestableLocalizedSceneNames;
-- (id)searchMetadataWithOptions:(id)a3;
+- (id)searchMetadataWithOptions:(id)options;
 @end
 
 @implementation PGSearchMetadataComputer
@@ -101,11 +101,11 @@ void __53__PGSearchMetadataComputer__blockedMeaningsByMeaning__block_invoke_2(ui
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = +[PGGraphSceneNode suggestableSceneNames];
   v4 = [PGGraphSceneNodeCollection sceneNodesForSceneNames:v3 inGraph:self->_graph];
-  v5 = [v4 localizedSceneNames];
+  localizedSceneNames = [v4 localizedSceneNames];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
   v11[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [localizedSceneNames sortedArrayUsingDescriptors:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -114,10 +114,10 @@ void __53__PGSearchMetadataComputer__blockedMeaningsByMeaning__block_invoke_2(ui
 
 - (id)_mePersonUUID
 {
-  v2 = [(PGGraph *)self->_graph meNode];
+  meNode = [(PGGraph *)self->_graph meNode];
   v3 = MEMORY[0x277CD9938];
-  v4 = [v2 localIdentifier];
-  v5 = [v3 uuidFromLocalIdentifier:v4];
+  localIdentifier = [meNode localIdentifier];
+  v5 = [v3 uuidFromLocalIdentifier:localIdentifier];
 
   if ([v5 length])
   {
@@ -134,31 +134,31 @@ void __53__PGSearchMetadataComputer__blockedMeaningsByMeaning__block_invoke_2(ui
   return v6;
 }
 
-- (id)searchMetadataWithOptions:(id)a3
+- (id)searchMetadataWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(PGSearchMetadataComputer *)self _mePersonUUID];
-  [v4 setObject:v5 forKeyedSubscript:@"MePersonUUID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _mePersonUUID = [(PGSearchMetadataComputer *)self _mePersonUUID];
+  [dictionary setObject:_mePersonUUID forKeyedSubscript:@"MePersonUUID"];
 
-  v6 = [(PGSearchMetadataComputer *)self _suggestableLocalizedSceneNames];
-  [v4 setObject:v6 forKeyedSubscript:@"SceneWhitelist"];
+  _suggestableLocalizedSceneNames = [(PGSearchMetadataComputer *)self _suggestableLocalizedSceneNames];
+  [dictionary setObject:_suggestableLocalizedSceneNames forKeyedSubscript:@"SceneWhitelist"];
 
-  v7 = [(PGSearchMetadataComputer *)self _blockedMeaningsByMeaning];
-  [v4 setObject:v7 forKeyedSubscript:@"BlacklistedMeaningsByMeaning"];
+  _blockedMeaningsByMeaning = [(PGSearchMetadataComputer *)self _blockedMeaningsByMeaning];
+  [dictionary setObject:_blockedMeaningsByMeaning forKeyedSubscript:@"BlacklistedMeaningsByMeaning"];
 
-  return v4;
+  return dictionary;
 }
 
-- (PGSearchMetadataComputer)initWithGraph:(id)a3
+- (PGSearchMetadataComputer)initWithGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = PGSearchMetadataComputer;
   v6 = [(PGSearchMetadataComputer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graph, a3);
+    objc_storeStrong(&v6->_graph, graph);
   }
 
   return v7;

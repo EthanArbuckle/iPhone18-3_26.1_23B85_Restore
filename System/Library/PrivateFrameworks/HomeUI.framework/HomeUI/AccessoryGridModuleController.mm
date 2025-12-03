@@ -1,16 +1,16 @@
 @interface AccessoryGridModuleController
-- (BOOL)shouldShowHeaderForSection:(id)a3;
-- (Class)collectionCellClassForItem:(id)a3;
-- (_TtC6HomeUI29AccessoryGridModuleController)initWithModule:(id)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
-- (id)transform:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (BOOL)shouldShowHeaderForSection:(id)section;
+- (Class)collectionCellClassForItem:(id)item;
+- (_TtC6HomeUI29AccessoryGridModuleController)initWithModule:(id)module;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (id)displayedItemsInSection:(id)section;
+- (id)transform:(id)transform;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation AccessoryGridModuleController
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
   v7 = &unk_28251AC90;
   if (swift_dynamicCastObjCProtocolConditional())
@@ -22,21 +22,21 @@
   {
     v6.receiver = self;
     v6.super_class = type metadata accessor for AccessoryGridModuleController();
-    [(HUItemModuleController *)&v6 collectionCellClassForItem:a3];
+    [(HUItemModuleController *)&v6 collectionCellClassForItem:item];
     swift_getObjCClassMetadata();
   }
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v6 = sub_20D567838();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_20D117DD0();
-  v11 = v9 + OBJC_IVAR____TtC6HomeUI29AccessoryGridModuleController_layoutStyle;
+  v11 = selfCopy + OBJC_IVAR____TtC6HomeUI29AccessoryGridModuleController_layoutStyle;
   swift_beginAccess();
   v12 = *(v11 + 1);
   v13 = v11[16];
@@ -44,7 +44,7 @@
   v18 = v12;
   v19 = v13;
   sub_20CF008FC(v17, v12, v13);
-  sub_20CEFA3C8(v6, v8, &v17, a4);
+  sub_20CEFA3C8(v6, v8, &v17, environment);
   v15 = v14;
 
   swift_unknownObjectRelease();
@@ -54,25 +54,25 @@
   return v15;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20D118008(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D118008(cellCopy, itemCopy);
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
   sub_20D567838();
-  v4 = self;
-  v5 = [(HUItemModuleController *)v4 module];
-  v6 = [(HFItemModule *)v5 itemUpdater];
+  selfCopy = self;
+  module = [(HUItemModuleController *)selfCopy module];
+  itemUpdater = [(HFItemModule *)module itemUpdater];
 
-  if (v6)
+  if (itemUpdater)
   {
     v7 = sub_20D5677F8();
-    v8 = [(HFItemUpdating *)v6 displayedItemsInSectionWithIdentifier:v7];
+    v8 = [(HFItemUpdating *)itemUpdater displayedItemsInSectionWithIdentifier:v7];
 
     swift_unknownObjectRelease();
     sub_20CECF940(0, &qword_281120AC0);
@@ -89,29 +89,29 @@
   return v9;
 }
 
-- (BOOL)shouldShowHeaderForSection:(id)a3
+- (BOOL)shouldShowHeaderForSection:(id)section
 {
-  v3 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   v4 = OBJC_IVAR____TtC6HomeUI19AccessoryItemModule_sectionGroupingType;
   swift_beginAccess();
-  v5 = *(&v3->super.isa + v4);
+  v5 = *(&module->super.isa + v4);
 
   return v5 != 0;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v3 = a3;
-  [v3 setSectionLeadingMargin_];
-  [v3 setSectionTrailingMargin_];
+  transformCopy = transform;
+  [transformCopy setSectionLeadingMargin_];
+  [transformCopy setSectionTrailingMargin_];
 
-  return v3;
+  return transformCopy;
 }
 
-- (_TtC6HomeUI29AccessoryGridModuleController)initWithModule:(id)a3
+- (_TtC6HomeUI29AccessoryGridModuleController)initWithModule:(id)module
 {
-  v3 = a3;
-  v4 = sub_20D118E4C(v3);
+  moduleCopy = module;
+  v4 = sub_20D118E4C(moduleCopy);
 
   return v4;
 }

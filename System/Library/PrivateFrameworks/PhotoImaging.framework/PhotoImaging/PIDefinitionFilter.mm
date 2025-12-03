@@ -29,20 +29,20 @@ uint64_t __38__PIDefinitionFilter_definitionKernel__block_invoke()
 - (id)outputImage
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CIImage *)self->_inputImage imageByUnpremultiplyingAlpha];
-  v4 = [(CIImage *)self->_inputBlurImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->_inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha2 = [(CIImage *)self->_inputBlurImage imageByUnpremultiplyingAlpha];
   inputIntensity = self->_inputIntensity;
-  v11[1] = v4;
+  v11[1] = imageByUnpremultiplyingAlpha2;
   v11[2] = inputIntensity;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
 
-  v7 = [objc_opt_class() definitionKernel];
+  definitionKernel = [objc_opt_class() definitionKernel];
   [(CIImage *)self->_inputImage extent];
-  v8 = [v7 applyWithExtent:v6 arguments:?];
+  v8 = [definitionKernel applyWithExtent:v6 arguments:?];
 
-  v9 = [v8 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [v8 imageByPremultiplyingAlpha];
 
-  return v9;
+  return imageByPremultiplyingAlpha;
 }
 
 @end

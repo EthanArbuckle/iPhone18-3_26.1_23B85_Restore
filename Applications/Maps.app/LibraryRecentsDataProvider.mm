@@ -1,7 +1,7 @@
 @interface LibraryRecentsDataProvider
 - (NSArray)storeSubscriptionTypes;
-- (void)setStoreSubscriptionTypes:(id)a3;
-- (void)storeDidChange:(id)a3;
+- (void)setStoreSubscriptionTypes:(id)types;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation LibraryRecentsDataProvider
@@ -21,7 +21,7 @@
   return v2.super.isa;
 }
 
-- (void)setStoreSubscriptionTypes:(id)a3
+- (void)setStoreSubscriptionTypes:(id)types
 {
   sub_1000CE6B8(&qword_1019083F0);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -31,7 +31,7 @@
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v4 = *self->_TtCs12_SwiftObject_opaque;
   v5 = sub_1000CE6B8(&unk_10190BA50);

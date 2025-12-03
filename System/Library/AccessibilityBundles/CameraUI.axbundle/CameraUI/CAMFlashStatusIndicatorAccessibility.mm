@@ -1,16 +1,16 @@
 @interface CAMFlashStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CAMFlashStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFlashStatusIndicator" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMFlashStatusIndicator" hasInstanceMethod:@"isFlashUnavailable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFlashStatusIndicator" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMFlashStatusIndicator" hasInstanceMethod:@"isFlashUnavailable" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue
@@ -23,15 +23,15 @@
   else
   {
     v4 = [(CAMFlashStatusIndicatorAccessibility *)self safeValueForKey:@"flashMode"];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
 
     v6 = @"FLASH_MODE_BUTTON_VALUE_AUTO";
-    if (v5 == 1)
+    if (integerValue == 1)
     {
       v6 = @"FLASH_MODE_BUTTON_VALUE_ON";
     }
 
-    if (v5)
+    if (integerValue)
     {
       v3 = v6;
     }

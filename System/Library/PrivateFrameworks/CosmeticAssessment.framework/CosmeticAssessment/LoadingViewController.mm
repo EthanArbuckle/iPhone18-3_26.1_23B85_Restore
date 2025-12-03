@@ -1,12 +1,12 @@
 @interface LoadingViewController
-- (_TtC18CosmeticAssessment21LoadingViewController)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment21LoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18CosmeticAssessment21LoadingViewController)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment21LoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation LoadingViewController
 
-- (_TtC18CosmeticAssessment21LoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18CosmeticAssessment21LoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
@@ -19,7 +19,7 @@
 
   v7 = OBJC_IVAR____TtC18CosmeticAssessment21LoadingViewController_activityIndicator;
   v8 = objc_allocWithZone(MEMORY[0x277D750E8]);
-  v9 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.isa + v7) = [v8 initWithActivityIndicatorStyle_];
   v12.receiver = self;
   v12.super_class = ObjectType;
@@ -28,7 +28,7 @@
   return v10;
 }
 
-- (_TtC18CosmeticAssessment21LoadingViewController)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment21LoadingViewController)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -55,7 +55,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_247CC55D8();
 }
 

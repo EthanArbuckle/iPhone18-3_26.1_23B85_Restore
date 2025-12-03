@@ -1,6 +1,6 @@
 @interface UIWeakCoreKeyboardTracking
 - (UICoreKeyboardTrackingElement)base;
-- (UIWeakCoreKeyboardTracking)initWithBase:(id)a3;
+- (UIWeakCoreKeyboardTracking)initWithBase:(id)base;
 @end
 
 @implementation UIWeakCoreKeyboardTracking
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (UIWeakCoreKeyboardTracking)initWithBase:(id)a3
+- (UIWeakCoreKeyboardTracking)initWithBase:(id)base
 {
-  v4 = a3;
+  baseCopy = base;
   v8.receiver = self;
   v8.super_class = UIWeakCoreKeyboardTracking;
   v5 = [(UIWeakCoreKeyboardTracking *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_base, v4);
+    objc_storeWeak(&v5->_base, baseCopy);
   }
 
   return v6;

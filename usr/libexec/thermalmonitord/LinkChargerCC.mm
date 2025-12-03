@@ -1,14 +1,14 @@
 @interface LinkChargerCC
 - (BOOL)canSystemSleep;
-- (BOOL)updateCloakingState:(BOOL)a3;
-- (LinkChargerCC)initWithParams:(__CFDictionary *)a3;
+- (BOOL)updateCloakingState:(BOOL)state;
+- (LinkChargerCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)defaultAction;
 @end
 
 @implementation LinkChargerCC
 
-- (LinkChargerCC)initWithParams:(__CFDictionary *)a3
+- (LinkChargerCC)initWithParams:(__CFDictionary *)params
 {
   v11.receiver = self;
   v11.super_class = LinkChargerCC;
@@ -30,13 +30,13 @@
     }
 
     HIDWORD(v5->_remainingInitialNoCloakTime) = 100;
-    if (a3)
+    if (params)
     {
-      sub_100002A20(a3, @"cloakingInterval", kCFNumberDoubleType, &v5->_targetTimeCharging + 4);
-      sub_100002A20(a3, @"chargingInterval", kCFNumberDoubleType, &v5->_defaultTargetTimeCloaking + 4);
-      sub_100002A20(a3, @"wirelessCloakingInterval", kCFNumberDoubleType, &v5->_defaultTargetTimeCharging + 4);
-      sub_100002A20(a3, @"wirelessChargingInterval", kCFNumberDoubleType, &v5->_targetTimeWirelessMatCloaking + 4);
-      sub_100002A20(a3, @"skipFirstChargeThreshold", kCFNumberIntType, &v5->_remainingInitialNoCloakTime + 4);
+      sub_100002A20(params, @"cloakingInterval", kCFNumberDoubleType, &v5->_targetTimeCharging + 4);
+      sub_100002A20(params, @"chargingInterval", kCFNumberDoubleType, &v5->_defaultTargetTimeCloaking + 4);
+      sub_100002A20(params, @"wirelessCloakingInterval", kCFNumberDoubleType, &v5->_defaultTargetTimeCharging + 4);
+      sub_100002A20(params, @"wirelessChargingInterval", kCFNumberDoubleType, &v5->_targetTimeWirelessMatCloaking + 4);
+      sub_100002A20(params, @"skipFirstChargeThreshold", kCFNumberIntType, &v5->_remainingInitialNoCloakTime + 4);
     }
 
     v8 = *(&v5->_targetTimeCharging + 4);
@@ -269,12 +269,12 @@ LABEL_35:
   }
 }
 
-- (BOOL)updateCloakingState:(BOOL)a3
+- (BOOL)updateCloakingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   keys = @"EngageCloak";
   v5 = &kCFBooleanTrue;
-  if (!a3)
+  if (!state)
   {
     v5 = &kCFBooleanFalse;
   }
@@ -312,7 +312,7 @@ LABEL_7:
       *buf = 136315650;
       v14 = "[LinkChargerCC updateCloakingState:]";
       v15 = 1024;
-      v16 = v3;
+      v16 = stateCopy;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "<Notice> %s: state %d, err 0x%08x", buf, 0x18u);

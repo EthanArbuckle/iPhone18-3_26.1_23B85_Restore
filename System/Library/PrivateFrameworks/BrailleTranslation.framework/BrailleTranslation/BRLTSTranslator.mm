@@ -1,23 +1,23 @@
 @interface BRLTSTranslator
-- (BRLTSTranslator)initWithBundle:(id)a3;
+- (BRLTSTranslator)initWithBundle:(id)bundle;
 - (BRLTTranslatorProtocol)translator;
-- (id)brailleForText:(id)a3 parameters:(id)a4 locations:(id *)a5;
-- (id)textForBraille:(id)a3 parameters:(id)a4 locations:(id *)a5;
+- (id)brailleForText:(id)text parameters:(id)parameters locations:(id *)locations;
+- (id)textForBraille:(id)braille parameters:(id)parameters locations:(id *)locations;
 - (void)translator;
 @end
 
 @implementation BRLTSTranslator
 
-- (BRLTSTranslator)initWithBundle:(id)a3
+- (BRLTSTranslator)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v10.receiver = self;
   v10.super_class = BRLTSTranslator;
   v6 = [(BRLTSTranslator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
     translator = v7->_translator;
     v7->_translator = 0;
   }
@@ -35,27 +35,27 @@ LABEL_2:
     goto LABEL_19;
   }
 
-  v5 = [(BRLTSTranslator *)self bundle];
-  v6 = [v5 principalClass];
+  bundle = [(BRLTSTranslator *)self bundle];
+  principalClass = [bundle principalClass];
 
-  if (v6)
+  if (principalClass)
   {
-    if ((BRLTTranslatorClassIsValid(v6) & 1) == 0)
+    if ((BRLTTranslatorClassIsValid(principalClass) & 1) == 0)
     {
       v12 = BRLTLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(BRLTSTranslator *)v6 translator];
+        [(BRLTSTranslator *)principalClass translator];
       }
 
       goto LABEL_18;
     }
 
-    v7 = objc_alloc_init(v6);
-    v8 = [v7 interfaceVersion];
+    v7 = objc_alloc_init(principalClass);
+    interfaceVersion = [v7 interfaceVersion];
     v9 = BRLTLog();
     v10 = v9;
-    if (v8 == 7)
+    if (interfaceVersion == 7)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -91,23 +91,23 @@ LABEL_19:
   return v3;
 }
 
-- (id)brailleForText:(id)a3 parameters:(id)a4 locations:(id *)a5
+- (id)brailleForText:(id)text parameters:(id)parameters locations:(id *)locations
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRLTSTranslator *)self translator];
-  v11 = [v9 language];
-  [v10 setActiveTable:v11];
+  textCopy = text;
+  parametersCopy = parameters;
+  translator = [(BRLTSTranslator *)self translator];
+  language = [parametersCopy language];
+  [translator setActiveTable:language];
 
-  if (v8)
+  if (textCopy)
   {
-    v12 = [(BRLTSTranslator *)self translator];
-    v13 = [v9 mode];
-    v14 = [v9 textPositionsRange];
+    translator2 = [(BRLTSTranslator *)self translator];
+    mode = [parametersCopy mode];
+    textPositionsRange = [parametersCopy textPositionsRange];
     v16 = v15;
-    v17 = [v9 textFormattingRanges];
-    v18 = [v12 printBrailleForText:v8 mode:v13 locations:a5 textPositionsRange:v14 textFormattingRanges:{v16, v17}];
+    textFormattingRanges = [parametersCopy textFormattingRanges];
+    v18 = [translator2 printBrailleForText:textCopy mode:mode locations:locations textPositionsRange:textPositionsRange textFormattingRanges:{v16, textFormattingRanges}];
   }
 
   else
@@ -118,11 +118,11 @@ LABEL_19:
   v19 = BRLTLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v9 language];
-    v23 = v22;
-    if (a5)
+    language2 = [parametersCopy language];
+    v23 = language2;
+    if (locations)
     {
-      v24 = *a5;
+      v24 = *locations;
     }
 
     else
@@ -131,11 +131,11 @@ LABEL_19:
     }
 
     v25 = 138413058;
-    v26 = v8;
+    v26 = textCopy;
     v27 = 2112;
     v28 = v18;
     v29 = 2112;
-    v30 = v22;
+    v30 = language2;
     v31 = 2112;
     v32 = v24;
     _os_log_debug_impl(&dword_241DFD000, v19, OS_LOG_TYPE_DEBUG, "Translated text:'%@' -> '%@' lang:%@ positions:%@", &v25, 0x2Au);
@@ -146,19 +146,19 @@ LABEL_19:
   return v18;
 }
 
-- (id)textForBraille:(id)a3 parameters:(id)a4 locations:(id *)a5
+- (id)textForBraille:(id)braille parameters:(id)parameters locations:(id *)locations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRLTSTranslator *)self translator];
-  v11 = [v9 language];
-  [v10 setActiveTable:v11];
+  brailleCopy = braille;
+  parametersCopy = parameters;
+  translator = [(BRLTSTranslator *)self translator];
+  language = [parametersCopy language];
+  [translator setActiveTable:language];
 
-  if (v8)
+  if (brailleCopy)
   {
-    v12 = [(BRLTSTranslator *)self translator];
-    v13 = [v12 textForPrintBraille:v8 mode:objc_msgSend(v9 locations:{"mode"), a5}];
+    translator2 = [(BRLTSTranslator *)self translator];
+    v13 = [translator2 textForPrintBraille:brailleCopy mode:objc_msgSend(parametersCopy locations:{"mode"), locations}];
   }
 
   else
@@ -169,11 +169,11 @@ LABEL_19:
   v14 = BRLTLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v9 language];
-    v18 = v17;
-    if (a5)
+    language2 = [parametersCopy language];
+    v18 = language2;
+    if (locations)
     {
-      v19 = *a5;
+      v19 = *locations;
     }
 
     else
@@ -182,11 +182,11 @@ LABEL_19:
     }
 
     v20 = 138413058;
-    v21 = v8;
+    v21 = brailleCopy;
     v22 = 2112;
     v23 = v13;
     v24 = 2112;
-    v25 = v17;
+    v25 = language2;
     v26 = 2112;
     v27 = v19;
     _os_log_debug_impl(&dword_241DFD000, v14, OS_LOG_TYPE_DEBUG, "Translated braille: '%@' -> '%@' lang:%@ positions:%@", &v20, 0x2Au);
@@ -200,10 +200,10 @@ LABEL_19:
 - (void)translator
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a1 bundle];
-  v4 = [v3 bundleIdentifier];
+  bundle = [self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
   v6 = 138412290;
-  v7 = v4;
+  v7 = bundleIdentifier;
   _os_log_error_impl(&dword_241DFD000, a2, OS_LOG_TYPE_ERROR, "Couldn't load braille bundle for identifier: %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];

@@ -1,8 +1,8 @@
 @interface VUWTag
 - (NSUUID)uuid;
 - (VUWTag)init;
-- (VUWTag)initWithType:(int64_t)a3 uuid:(id)a4;
-- (void)setUuid:(id)a3;
+- (VUWTag)initWithType:(int64_t)type uuid:(id)uuid;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation VUWTag
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
   v4 = sub_1D225055C();
   v5 = *(v4 - 8);
@@ -46,12 +46,12 @@
   (*(v5 + 32))(boxed_opaque_existential_1, v7, v4);
   v9 = OBJC_IVAR___VUWTag__UUID;
   swift_beginAccess();
-  v10 = self;
+  selfCopy = self;
   sub_1D21C7088(v12, self + v9);
   swift_endAccess();
 }
 
-- (VUWTag)initWithType:(int64_t)a3 uuid:(id)a4
+- (VUWTag)initWithType:(int64_t)type uuid:(id)uuid
 {
   v6 = sub_1D225055C();
   v7 = *(v6 - 8);
@@ -61,7 +61,7 @@
   v10 = (self + OBJC_IVAR___VUWTag__UUID);
   *v10 = 0u;
   v10[1] = 0u;
-  *(&self->super.isa + OBJC_IVAR___VUWTag_tagType) = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWTag_tagType) = type;
   v16[3] = v6;
   boxed_opaque_existential_1 = __swift_allocate_boxed_opaque_existential_1(v16);
   (*(v7 + 16))(boxed_opaque_existential_1, v9, v6);

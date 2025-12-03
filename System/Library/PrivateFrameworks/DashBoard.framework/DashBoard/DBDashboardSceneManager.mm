@@ -1,29 +1,29 @@
 @interface DBDashboardSceneManager
 - (DBFocusMovementActionHandling)focusMovementActionHandler;
 - (_TtC9DashBoard23DBDashboardSceneManager)init;
-- (_TtC9DashBoard23DBDashboardSceneManager)initWithEnvironment:(id)a3 iconProvider:(id)a4 sceneWorkspaceIdentifier:(id)a5;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (id)sceneForApplicationEntity:(id)a3;
+- (_TtC9DashBoard23DBDashboardSceneManager)initWithEnvironment:(id)environment iconProvider:(id)provider sceneWorkspaceIdentifier:(id)identifier;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (id)sceneForApplicationEntity:(id)entity;
 - (void)_updateWallpaper;
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6;
-- (void)environmentConfiguration:(id)a3 appearanceStyleDidChange:(int64_t)a4;
-- (void)environmentConfiguration:(id)a3 mapsAppearanceStyleDidChange:(int64_t)a4;
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications;
+- (void)environmentConfiguration:(id)configuration appearanceStyleDidChange:(int64_t)change;
+- (void)environmentConfiguration:(id)configuration mapsAppearanceStyleDidChange:(int64_t)change;
 - (void)invalidate;
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4;
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier;
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
 - (void)startObservingNavigationApplicationProcesses;
-- (void)thermalMonitorLevelDidChange:(id)a3;
+- (void)thermalMonitorLevelDidChange:(id)change;
 - (void)updateApplicationSceneFrames;
 @end
 
 @implementation DBDashboardSceneManager
 
-- (id)sceneForApplicationEntity:(id)a3
+- (id)sceneForApplicationEntity:(id)entity
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DBDashboardSceneManager.sceneForApplicationEntity(_:)(v4);
+  entityCopy = entity;
+  selfCopy = self;
+  v6 = DBDashboardSceneManager.sceneForApplicationEntity(_:)(entityCopy);
 
   return v6;
 }
@@ -36,22 +36,22 @@
   return Strong;
 }
 
-- (_TtC9DashBoard23DBDashboardSceneManager)initWithEnvironment:(id)a3 iconProvider:(id)a4 sceneWorkspaceIdentifier:(id)a5
+- (_TtC9DashBoard23DBDashboardSceneManager)initWithEnvironment:(id)environment iconProvider:(id)provider sceneWorkspaceIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return DBDashboardSceneManager.init(environment:iconProvider:sceneWorkspaceIdentifier:)(a3, a4, a5);
+  return DBDashboardSceneManager.init(environment:iconProvider:sceneWorkspaceIdentifier:)(environment, provider, identifier);
 }
 
 - (void)updateApplicationSceneFrames
 {
-  v2 = self;
+  selfCopy = self;
   DBDashboardSceneManager.updateApplicationSceneFrames()();
 }
 
 - (void)startObservingNavigationApplicationProcesses
 {
-  v2 = self;
+  selfCopy = self;
   DBDashboardSceneManager.startObservingNavigationApplicationProcesses()();
 }
 
@@ -64,20 +64,20 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   DBDashboardSceneManager.invalidate()();
 }
 
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications
 {
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   _s9DashBoard23DBDashboardSceneManagerC21applicationController_17addedApplications07updatedI007removedI0ySo013DBApplicationG0C_ShySo0L0CGA2LtF_0();
 }
 
-- (void)environmentConfiguration:(id)a3 appearanceStyleDidChange:(int64_t)a4
+- (void)environmentConfiguration:(id)configuration appearanceStyleDidChange:(int64_t)change
 {
-  v5 = self;
+  selfCopy = self;
   sub_248383DC0();
   v4 = *sub_24827BD58();
   sub_248382A40();
@@ -85,46 +85,46 @@
   sub_2482B56AC();
 }
 
-- (void)environmentConfiguration:(id)a3 mapsAppearanceStyleDidChange:(int64_t)a4
+- (void)environmentConfiguration:(id)configuration mapsAppearanceStyleDidChange:(int64_t)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_2482B91E8(a4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_2482B91E8(change);
 }
 
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash
 {
   v7 = sub_248383960();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
+  monitorCopy = monitor;
+  selfCopy = self;
   sub_2482B9D34(v7, v9);
 }
 
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier
 {
   v6 = sub_248383960();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  monitorCopy = monitor;
+  selfCopy = self;
   sub_2482BA7B8(v6, v8);
 }
 
-- (void)thermalMonitorLevelDidChange:(id)a3
+- (void)thermalMonitorLevelDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DBDashboardSceneManager.thermalMonitorLevelDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DBDashboardSceneManager.thermalMonitorLevelDidChange(_:)(changeCopy);
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   sub_24814FB28(0, &unk_27EE91610);
   sub_248151298(&qword_27EE90E30, &unk_27EE91610);
   v6 = sub_248383C80();
-  v7 = a3;
-  v8 = self;
-  DBDashboardSceneManager.scene(_:handle:)(v7, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  DBDashboardSceneManager.scene(_:handle:)(sceneCopy, v6);
   v10 = v9;
 
   if (v10)
@@ -140,17 +140,17 @@
   return v11;
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  invalidateCopy = invalidate;
+  contextCopy = context;
+  selfCopy = self;
   _s9DashBoard23DBDashboardSceneManagerC18sceneDidInvalidate_7contextySo7FBSceneC_So25FBSSceneTransitionContextCSgtF_0();
 }
 
 - (void)_updateWallpaper
 {
-  v3 = self;
+  selfCopy = self;
   sub_248383DC0();
   v2 = *sub_24827BD58();
   sub_248382A40();

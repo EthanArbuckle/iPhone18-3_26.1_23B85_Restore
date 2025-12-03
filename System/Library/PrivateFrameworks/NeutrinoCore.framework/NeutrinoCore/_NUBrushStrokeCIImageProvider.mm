@@ -1,16 +1,16 @@
 @interface _NUBrushStrokeCIImageProvider
-- (_NUBrushStrokeCIImageProvider)initWithStroke:(id)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5 filled:(BOOL)a6;
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9;
+- (_NUBrushStrokeCIImageProvider)initWithStroke:(id)stroke closed:(BOOL)closed pressureMode:(int64_t)mode filled:(BOOL)filled;
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info;
 @end
 
 @implementation _NUBrushStrokeCIImageProvider
 
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info
 {
-  bzero(a3, a8 * a4);
+  bzero(data, a8 * row);
   if ([(NUBrushStroke *)self->_stroke pointCount])
   {
-    v16 = self->_extent.origin.x + a5;
+    v16 = self->_extent.origin.x + origin;
     v17 = self->_extent.size.height + self->_extent.origin.y - (a8 + a6);
     v18 = self->_stroke;
     v31 = v18;
@@ -31,12 +31,12 @@
 
     v21 = [NUMutableBufferAdapter alloc];
     v22 = +[NUPixelFormat R8];
-    v23 = [(NUMutableBufferAdapter *)v21 initWithSize:a7 format:a8 rowBytes:v22 mutableBytes:a4, a3];
+    data = [(NUMutableBufferAdapter *)v21 initWithSize:size format:a8 rowBytes:v22 mutableBytes:row, data];
 
-    [NUBrushRasterizer rasterizeBrushStroke:v31 atPoint:v16 toBuffer:v17 close:v23 startIndex:closed, -1];
+    [NUBrushRasterizer rasterizeBrushStroke:v31 atPoint:v16 toBuffer:v17 close:data startIndex:closed, -1];
     if (self->_filled)
     {
-      v24 = CGBitmapContextCreate(a3, a7, a8, 8uLL, a4, 0, 7u);
+      v24 = CGBitmapContextCreate(data, size, a8, 8uLL, row, 0, 7u);
       Mutable = CGPathCreateMutable();
       [(NUBrushStroke *)self->_stroke pointAtIndex:0];
       CGPathMoveToPoint(Mutable, 0, v26, v27);
@@ -63,18 +63,18 @@
   }
 }
 
-- (_NUBrushStrokeCIImageProvider)initWithStroke:(id)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5 filled:(BOOL)a6
+- (_NUBrushStrokeCIImageProvider)initWithStroke:(id)stroke closed:(BOOL)closed pressureMode:(int64_t)mode filled:(BOOL)filled
 {
-  v11 = a3;
+  strokeCopy = stroke;
   v18.receiver = self;
   v18.super_class = _NUBrushStrokeCIImageProvider;
   v12 = [(_NUBrushStrokeCIImageProvider *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_stroke, a3);
-    v13->_closed = a4;
-    v13->_pressureMode = a5;
+    objc_storeStrong(&v12->_stroke, stroke);
+    v13->_closed = closed;
+    v13->_pressureMode = mode;
     stroke = v13->_stroke;
     if (stroke)
     {
@@ -89,7 +89,7 @@
 
     v13->_extent.origin = v16;
     v13->_extent.size = v17;
-    v13->_filled = a6;
+    v13->_filled = filled;
   }
 
   return v13;

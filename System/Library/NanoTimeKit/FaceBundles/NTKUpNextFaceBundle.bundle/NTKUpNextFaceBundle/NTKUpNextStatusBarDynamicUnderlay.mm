@@ -1,5 +1,5 @@
 @interface NTKUpNextStatusBarDynamicUnderlay
-- (NTKUpNextStatusBarDynamicUnderlay)initWithFrame:(CGRect)a3;
+- (NTKUpNextStatusBarDynamicUnderlay)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)updateBackgroundColor;
@@ -7,11 +7,11 @@
 
 @implementation NTKUpNextStatusBarDynamicUnderlay
 
-- (NTKUpNextStatusBarDynamicUnderlay)initWithFrame:(CGRect)a3
+- (NTKUpNextStatusBarDynamicUnderlay)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NTKUpNextStatusBarDynamicUnderlay;
-  v3 = [(NTKUpNextStatusBarDynamicUnderlay *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextStatusBarDynamicUnderlay *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -70,9 +70,9 @@
   v10.super_class = NTKUpNextStatusBarDynamicUnderlay;
   [(NTKUpNextStatusBarDynamicUnderlay *)&v10 layoutSubviews];
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
-  sub_B3F4(v4, v8);
+  sub_B3F4(device, v8);
   v5 = v9;
   v6 = -v9;
   [(NTKUpNextStatusBarDynamicUnderlay *)self bounds];

@@ -1,37 +1,37 @@
 @interface HKDatabaseControl
 + (id)taskIdentifier;
-- (HKDatabaseControl)initWithHealthStore:(id)a3;
-- (id)healthDatabaseIdentifierWithError:(id *)a3;
-- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)a3 anchor:(int64_t)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(int64_t)a6 completion:(id)a7;
-- (void)deletedSampleDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 sampleUUID:(id)a5 completion:(id)a6;
-- (void)deletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 anchor:(int64_t)a6 limit:(int64_t)a7 completion:(id)a8;
-- (void)deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 createdOnOrAfter:(id)a6 createdBefore:(id)a7 limit:(int64_t)a8 completion:(id)a9;
-- (void)getHealthDirectorySizeInBytesWithCompletion:(id)a3;
-- (void)hkqa_generateDemoDataWithDurationInDays:(int64_t)a3 completion:(id)a4;
-- (void)hkqa_statisticsWithCompletion:(id)a3;
-- (void)obliterateHealthDataWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)performMigrationWithCompletion:(id)a3;
-- (void)pruneSamplesWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)showAndDeletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)showWithReferenceDate:(id)a3 deletedSamplesOnly:(BOOL)a4 completion:(id)a5;
+- (HKDatabaseControl)initWithHealthStore:(id)store;
+- (id)healthDatabaseIdentifierWithError:(id *)error;
+- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)date anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion;
+- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)date createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion;
+- (void)deletedSampleDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only sampleUUID:(id)d completion:(id)completion;
+- (void)deletedSampleInfoWithReferenceDate:(id)date completion:(id)completion;
+- (void)deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion;
+- (void)deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion;
+- (void)getHealthDirectorySizeInBytesWithCompletion:(id)completion;
+- (void)hkqa_generateDemoDataWithDurationInDays:(int64_t)days completion:(id)completion;
+- (void)hkqa_statisticsWithCompletion:(id)completion;
+- (void)obliterateHealthDataWithOptions:(unint64_t)options completion:(id)completion;
+- (void)performMigrationWithCompletion:(id)completion;
+- (void)pruneSamplesWithReferenceDate:(id)date completion:(id)completion;
+- (void)showAndDeletedSampleInfoWithReferenceDate:(id)date completion:(id)completion;
+- (void)showWithReferenceDate:(id)date deletedSamplesOnly:(BOOL)only completion:(id)completion;
 @end
 
 @implementation HKDatabaseControl
 
-- (HKDatabaseControl)initWithHealthStore:(id)a3
+- (HKDatabaseControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKDatabaseControl;
   v5 = [(HKDatabaseControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -48,7 +48,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)healthDatabaseIdentifierWithError:(id *)a3
+- (id)healthDatabaseIdentifierWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -79,10 +79,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -123,9 +123,9 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   *(v9 + 40) = v6;
 }
 
-- (void)getHealthDirectorySizeInBytesWithCompletion:(id)a3
+- (void)getHealthDirectorySizeInBytesWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -141,15 +141,15 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)obliterateHealthDataWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)obliterateHealthDataWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__HKDatabaseControl_obliterateHealthDataWithOptions_completion___block_invoke;
   v11[3] = &unk_1E737D938;
-  v13 = a3;
+  optionsCopy = options;
   v12 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -160,9 +160,9 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 
-- (void)performMigrationWithCompletion:(id)a3
+- (void)performMigrationWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -178,15 +178,15 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)hkqa_generateDemoDataWithDurationInDays:(int64_t)a3 completion:(id)a4
+- (void)hkqa_generateDemoDataWithDurationInDays:(int64_t)days completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__HKDatabaseControl_hkqa_generateDemoDataWithDurationInDays_completion___block_invoke;
   v11[3] = &unk_1E737D938;
-  v13 = a3;
+  daysCopy = days;
   v12 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -197,9 +197,9 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 
-- (void)hkqa_statisticsWithCompletion:(id)a3
+- (void)hkqa_statisticsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -215,17 +215,17 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)showWithReferenceDate:(id)a3 deletedSamplesOnly:(BOOL)a4 completion:(id)a5
+- (void)showWithReferenceDate:(id)date deletedSamplesOnly:(BOOL)only completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  dateCopy = date;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__HKDatabaseControl_showWithReferenceDate_deletedSamplesOnly_completion___block_invoke;
   v15[3] = &unk_1E737D960;
-  v16 = v8;
-  v18 = a4;
+  v16 = dateCopy;
+  onlyCopy = only;
   v17 = v9;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -233,20 +233,20 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v13[3] = &unk_1E7376960;
   v14 = v17;
   v11 = v17;
-  v12 = v8;
+  v12 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
-- (void)showAndDeletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4
+- (void)showAndDeletedSampleInfoWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dateCopy = date;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__HKDatabaseControl_showAndDeletedSampleInfoWithReferenceDate_completion___block_invoke;
   v13[3] = &unk_1E737D988;
-  v14 = v6;
+  v14 = dateCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -254,20 +254,20 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)deletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4
+- (void)deletedSampleInfoWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dateCopy = date;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__HKDatabaseControl_deletedSampleInfoWithReferenceDate_completion___block_invoke;
   v13[3] = &unk_1E737D988;
-  v14 = v6;
+  v14 = dateCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -275,22 +275,22 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)a3 anchor:(int64_t)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)date anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion
 {
-  v10 = a3;
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a6];
+  dateCopy = date;
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__HKDatabaseControl_classifiedDeletedSampleInfoWithReferenceDate_anchor_limit_completion___block_invoke;
   v17[3] = &unk_1E737D9B0;
-  v18 = v10;
-  v20 = a4;
-  v21 = a5;
+  v18 = dateCopy;
+  anchorCopy = anchor;
+  limitCopy = limit;
   v19 = v11;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -298,25 +298,25 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v15[3] = &unk_1E7376960;
   v16 = v19;
   v13 = v19;
-  v14 = v10;
+  v14 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(int64_t)a6 completion:(id)a7
+- (void)classifiedDeletedSampleInfoWithReferenceDate:(id)date createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a7];
+  dateCopy = date;
+  afterCopy = after;
+  beforeCopy = before;
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __114__HKDatabaseControl_classifiedDeletedSampleInfoWithReferenceDate_createdOnOrAfter_createdBefore_limit_completion___block_invoke;
   v23[3] = &unk_1E737D9D8;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v28 = a6;
+  v24 = dateCopy;
+  v25 = afterCopy;
+  v26 = beforeCopy;
+  limitCopy = limit;
   v27 = v15;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -324,25 +324,25 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v21[3] = &unk_1E7376960;
   v22 = v27;
   v17 = v27;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = beforeCopy;
+  v19 = afterCopy;
+  v20 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 
-- (void)deletedSampleDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 sampleUUID:(id)a5 completion:(id)a6
+- (void)deletedSampleDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only sampleUUID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a6];
+  dateCopy = date;
+  dCopy = d;
+  v12 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __103__HKDatabaseControl_deletedSampleDetailWithReferenceDate_matchingPredicatesOnly_sampleUUID_completion___block_invoke;
   v19[3] = &unk_1E737DA00;
-  v23 = a4;
-  v20 = v10;
-  v21 = v11;
+  onlyCopy = only;
+  v20 = dateCopy;
+  v21 = dCopy;
   v22 = v12;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -350,25 +350,25 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v17[3] = &unk_1E7376960;
   v18 = v22;
   v14 = v22;
-  v15 = v11;
-  v16 = v10;
+  v15 = dCopy;
+  v16 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v17];
 }
 
-- (void)deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 anchor:(int64_t)a6 limit:(int64_t)a7 completion:(id)a8
+- (void)deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion
 {
-  v14 = a3;
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a8];
+  dateCopy = date;
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __146__HKDatabaseControl_deletedSamplesDetailWithReferenceDate_matchingPredicatesOnly_samplesWithDifferentPruningOutcomesOnly_anchor_limit_completion___block_invoke;
   v21[3] = &unk_1E737DA28;
-  v26 = a4;
-  v27 = a5;
-  v22 = v14;
-  v24 = a6;
-  v25 = a7;
+  onlyCopy = only;
+  outcomesOnlyCopy = outcomesOnly;
+  v22 = dateCopy;
+  anchorCopy = anchor;
+  limitCopy = limit;
   v23 = v15;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -376,27 +376,27 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v19[3] = &unk_1E7376960;
   v20 = v23;
   v17 = v23;
-  v18 = v14;
+  v18 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v21 errorHandler:v19];
 }
 
-- (void)deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 createdOnOrAfter:(id)a6 createdBefore:(id)a7 limit:(int64_t)a8 completion:(id)a9
+- (void)deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a9];
+  dateCopy = date;
+  afterCopy = after;
+  beforeCopy = before;
+  v18 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __170__HKDatabaseControl_deletedSamplesDetailWithReferenceDate_matchingPredicatesOnly_samplesWithDifferentPruningOutcomesOnly_createdOnOrAfter_createdBefore_limit_completion___block_invoke;
   v26[3] = &unk_1E737DA50;
-  v32 = a4;
-  v33 = a5;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v31 = a8;
+  onlyCopy = only;
+  outcomesOnlyCopy = outcomesOnly;
+  v27 = dateCopy;
+  v28 = afterCopy;
+  v29 = beforeCopy;
+  limitCopy = limit;
   v30 = v18;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -404,22 +404,22 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v24[3] = &unk_1E7376960;
   v25 = v30;
   v20 = v30;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
+  v21 = beforeCopy;
+  v22 = afterCopy;
+  v23 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v26 errorHandler:v24];
 }
 
-- (void)pruneSamplesWithReferenceDate:(id)a3 completion:(id)a4
+- (void)pruneSamplesWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dateCopy = date;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__HKDatabaseControl_pruneSamplesWithReferenceDate_completion___block_invoke;
   v13[3] = &unk_1E737D988;
-  v14 = v6;
+  v14 = dateCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -427,7 +427,7 @@ void __55__HKDatabaseControl_healthDatabaseIdentifierWithError___block_invoke_2(
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 

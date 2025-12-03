@@ -1,27 +1,27 @@
 @interface NCNotificationRequestInlineActionsProvider
-- (NCNotificationRequestInlineActionsProvider)initWithNotificationRequest:(id)a3 delegate:(id)a4;
+- (NCNotificationRequestInlineActionsProvider)initWithNotificationRequest:(id)request delegate:(id)delegate;
 - (NCNotificationRequestInlineActionsProviderDelegate)delegate;
 - (NSArray)auxiliaryOptionActions;
 - (id)_primaryAction;
 - (id)_secondaryAction;
-- (void)handlePrimaryAction:(id)a3;
-- (void)handleSecondaryAction:(id)a3;
+- (void)handlePrimaryAction:(id)action;
+- (void)handleSecondaryAction:(id)action;
 @end
 
 @implementation NCNotificationRequestInlineActionsProvider
 
-- (NCNotificationRequestInlineActionsProvider)initWithNotificationRequest:(id)a3 delegate:(id)a4
+- (NCNotificationRequestInlineActionsProvider)initWithNotificationRequest:(id)request delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = NCNotificationRequestInlineActionsProvider;
   v9 = [(NCNotificationRequestInlineActionsProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_notificationRequest, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_notificationRequest, request);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -31,46 +31,46 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_initWeak(&location, self);
-  v4 = [(NCNotificationRequestInlineActionsProvider *)self _primaryAction];
-  v5 = v4;
-  if (v4)
+  _primaryAction = [(NCNotificationRequestInlineActionsProvider *)self _primaryAction];
+  v5 = _primaryAction;
+  if (_primaryAction)
   {
-    v6 = [v4 title];
-    v7 = [v6 length];
+    title = [_primaryAction title];
+    v7 = [title length];
 
     if (v7)
     {
       v8 = MEMORY[0x277D750C8];
-      v9 = [v5 title];
+      title2 = [v5 title];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __68__NCNotificationRequestInlineActionsProvider_auxiliaryOptionActions__block_invoke;
       v21[3] = &unk_27836F428;
       objc_copyWeak(&v22, &location);
-      v10 = [v8 actionWithTitle:v9 image:0 identifier:@"notification-request-inline-action-provider-primary-action" handler:v21];
+      v10 = [v8 actionWithTitle:title2 image:0 identifier:@"notification-request-inline-action-provider-primary-action" handler:v21];
 
       [v3 addObject:v10];
       objc_destroyWeak(&v22);
     }
   }
 
-  v11 = [(NCNotificationRequestInlineActionsProvider *)self _secondaryAction];
-  v12 = v11;
-  if (v11)
+  _secondaryAction = [(NCNotificationRequestInlineActionsProvider *)self _secondaryAction];
+  v12 = _secondaryAction;
+  if (_secondaryAction)
   {
-    v13 = [v11 title];
-    v14 = [v13 length];
+    title3 = [_secondaryAction title];
+    v14 = [title3 length];
 
     if (v14)
     {
       v15 = MEMORY[0x277D750C8];
-      v16 = [v12 title];
+      title4 = [v12 title];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __68__NCNotificationRequestInlineActionsProvider_auxiliaryOptionActions__block_invoke_2;
       v19[3] = &unk_27836F428;
       objc_copyWeak(&v20, &location);
-      v17 = [v15 actionWithTitle:v16 image:0 identifier:@"notification-request-inline-action-provider-secondary-action" handler:v19];
+      v17 = [v15 actionWithTitle:title4 image:0 identifier:@"notification-request-inline-action-provider-secondary-action" handler:v19];
 
       [v3 addObject:v17];
       objc_destroyWeak(&v20);
@@ -102,15 +102,15 @@ void __68__NCNotificationRequestInlineActionsProvider_auxiliaryOptionActions__bl
 
 - (id)_primaryAction
 {
-  v3 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
-  v4 = [v3 defaultEnvironmentActions];
-  v5 = [v4 count];
+  notificationRequest = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
+  defaultEnvironmentActions = [notificationRequest defaultEnvironmentActions];
+  v5 = [defaultEnvironmentActions count];
 
   if (v5)
   {
-    v6 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
-    v7 = [v6 defaultEnvironmentActions];
-    v8 = [v7 objectAtIndex:0];
+    notificationRequest2 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
+    defaultEnvironmentActions2 = [notificationRequest2 defaultEnvironmentActions];
+    v8 = [defaultEnvironmentActions2 objectAtIndex:0];
   }
 
   else
@@ -123,9 +123,9 @@ void __68__NCNotificationRequestInlineActionsProvider_auxiliaryOptionActions__bl
 
 - (id)_secondaryAction
 {
-  v3 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
-  v4 = [v3 defaultEnvironmentActions];
-  v5 = [v4 count];
+  notificationRequest = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
+  defaultEnvironmentActions = [notificationRequest defaultEnvironmentActions];
+  v5 = [defaultEnvironmentActions count];
 
   if (v5 < 2)
   {
@@ -134,26 +134,26 @@ void __68__NCNotificationRequestInlineActionsProvider_auxiliaryOptionActions__bl
 
   else
   {
-    v6 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
-    v7 = [v6 defaultEnvironmentActions];
-    v8 = [v7 objectAtIndex:1];
+    notificationRequest2 = [(NCNotificationRequestInlineActionsProvider *)self notificationRequest];
+    defaultEnvironmentActions2 = [notificationRequest2 defaultEnvironmentActions];
+    v8 = [defaultEnvironmentActions2 objectAtIndex:1];
   }
 
   return v8;
 }
 
-- (void)handlePrimaryAction:(id)a3
+- (void)handlePrimaryAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(NCNotificationRequestInlineActionsProvider *)self _primaryAction];
-  [WeakRetained contentProvider:self performAction:v4 animated:1];
+  _primaryAction = [(NCNotificationRequestInlineActionsProvider *)self _primaryAction];
+  [WeakRetained contentProvider:self performAction:_primaryAction animated:1];
 }
 
-- (void)handleSecondaryAction:(id)a3
+- (void)handleSecondaryAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(NCNotificationRequestInlineActionsProvider *)self _secondaryAction];
-  [WeakRetained contentProvider:self performAction:v4 animated:1];
+  _secondaryAction = [(NCNotificationRequestInlineActionsProvider *)self _secondaryAction];
+  [WeakRetained contentProvider:self performAction:_secondaryAction animated:1];
 }
 
 - (NCNotificationRequestInlineActionsProviderDelegate)delegate

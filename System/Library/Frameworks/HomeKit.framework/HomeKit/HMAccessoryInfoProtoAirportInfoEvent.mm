@@ -1,39 +1,39 @@
 @interface HMAccessoryInfoProtoAirportInfoEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoAirportInfoEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(HMAccessoryInfoProtoAirportInfoEvent *)self setSsid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(HMAccessoryInfoProtoAirportInfoEvent *)self setBssid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ssid = self->_ssid, !(ssid | v4[2])) || -[NSData isEqual:](ssid, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ssid = self->_ssid, !(ssid | equalCopy[2])) || -[NSData isEqual:](ssid, "isEqual:")))
   {
     bssid = self->_bssid;
-    if (bssid | v4[1])
+    if (bssid | equalCopy[1])
     {
       v7 = [(NSData *)bssid isEqual:?];
     }
@@ -52,62 +52,62 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ssid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ssid copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_bssid copyWithZone:a3];
+  v8 = [(NSData *)self->_bssid copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ssid)
   {
-    [v4 setSsid:?];
-    v4 = v5;
+    [toCopy setSsid:?];
+    toCopy = v5;
   }
 
   if (self->_bssid)
   {
     [v5 setBssid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ssid)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bssid)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   ssid = self->_ssid;
   if (ssid)
   {
-    [v3 setObject:ssid forKey:@"ssid"];
+    [dictionary setObject:ssid forKey:@"ssid"];
   }
 
   bssid = self->_bssid;
@@ -125,8 +125,8 @@
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoAirportInfoEvent;
   v4 = [(HMAccessoryInfoProtoAirportInfoEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoAirportInfoEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoAirportInfoEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

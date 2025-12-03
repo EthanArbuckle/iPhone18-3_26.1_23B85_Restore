@@ -1,21 +1,21 @@
 @interface UPParserModel
-+ (UPParserModel)modelWithLoadedModelConfiguration:(id)a3 error:(id *)a4;
-- (UPInferenceResult)forwardWithSpanLabels:(SEL)a3 embeddings:(UPGenericTensor *)a4 utterance:(UPGenericTensor *)a5;
-- (UPParserModel)initWithLoadedModelConfiguration:(id)a3;
-- (id)_candidateForBeamSequence:(const void *)a3 utterance:(const void *)a4 outputTokens:(const void *)a5 resolver:(void *)a6 sharedEntityResolution:(id)a7;
-- (id)_candidateForUtterance:(const void *)a3 probability:(float)a4 labelledSpans:(const void *)a5 intent:(id)a6 sharedEntityResolution:(id)a7;
-- (id)_resultFromInferenceResult:(const void *)a3 query:(id)a4 outputTokens:(const void *)a5 resolver:(void *)a6 sharedEntityResolution:(id)a7;
-- (id)predictionFromQuery:(id)a3 error:(id *)a4;
-- (id)predictionFromQuery:(id)a3 preprocessorOutput:(id)a4 error:(id *)a5;
++ (UPParserModel)modelWithLoadedModelConfiguration:(id)configuration error:(id *)error;
+- (UPInferenceResult)forwardWithSpanLabels:(SEL)labels embeddings:(UPGenericTensor *)embeddings utterance:(UPGenericTensor *)utterance;
+- (UPParserModel)initWithLoadedModelConfiguration:(id)configuration;
+- (id)_candidateForBeamSequence:(const void *)sequence utterance:(const void *)utterance outputTokens:(const void *)tokens resolver:(void *)resolver sharedEntityResolution:(id)resolution;
+- (id)_candidateForUtterance:(const void *)utterance probability:(float)probability labelledSpans:(const void *)spans intent:(id)intent sharedEntityResolution:(id)resolution;
+- (id)_resultFromInferenceResult:(const void *)result query:(id)query outputTokens:(const void *)tokens resolver:(void *)resolver sharedEntityResolution:(id)resolution;
+- (id)predictionFromQuery:(id)query error:(id *)error;
+- (id)predictionFromQuery:(id)query preprocessorOutput:(id)output error:(id *)error;
 @end
 
 @implementation UPParserModel
 
-- (id)predictionFromQuery:(id)a3 preprocessorOutput:(id)a4 error:(id *)a5
+- (id)predictionFromQuery:(id)query preprocessorOutput:(id)output error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  outputCopy = output;
   v9 = SNLPOSLoggerForCategory(7);
   v10 = os_signpost_id_generate(v9);
 
@@ -35,29 +35,29 @@
   }
 
   v14 = [UPSharedEntityResolution alloc];
-  v15 = [v7 spans];
-  v16 = [(UPSharedEntityResolution *)v14 initWithMatchingSpans:v15];
+  spans = [queryCopy spans];
+  v16 = [(UPSharedEntityResolution *)v14 initWithMatchingSpans:spans];
 
-  v17 = [v8 spanLabelsTensor];
+  spanLabelsTensor = [outputCopy spanLabelsTensor];
   v32 = 0;
   v33 = 0;
   v34 = 0;
-  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v32, *v17, v17[1], (v17[1] - *v17) >> 3);
+  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v32, *spanLabelsTensor, spanLabelsTensor[1], (spanLabelsTensor[1] - *spanLabelsTensor) >> 3);
   v35 = 0;
   v36 = 0;
   v37 = 0;
-  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v35, v17[3], v17[4], (v17[4] - v17[3]) >> 2);
-  v18 = [v8 embeddingsTensor];
+  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v35, spanLabelsTensor[3], spanLabelsTensor[4], (spanLabelsTensor[4] - spanLabelsTensor[3]) >> 2);
+  embeddingsTensor = [outputCopy embeddingsTensor];
   v26 = 0;
   v27 = 0;
   v28 = 0;
-  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v26, *v18, v18[1], (v18[1] - *v18) >> 3);
+  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v26, *embeddingsTensor, embeddingsTensor[1], (embeddingsTensor[1] - *embeddingsTensor) >> 3);
   __p = 0;
   v30 = 0;
   v31 = 0;
-  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v18[3], v18[4], (v18[4] - v18[3]) >> 2);
-  v19 = [v7 utterance];
-  [(UPParserModel *)self forwardWithSpanLabels:&v32 embeddings:&v26 utterance:v19];
+  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, embeddingsTensor[3], embeddingsTensor[4], (embeddingsTensor[4] - embeddingsTensor[3]) >> 2);
+  utterance = [queryCopy utterance];
+  [(UPParserModel *)self forwardWithSpanLabels:&v32 embeddings:&v26 utterance:utterance];
 
   if (__p)
   {
@@ -83,7 +83,7 @@
     operator delete(v32);
   }
 
-  v20 = -[UPParserModel _resultFromInferenceResult:query:outputTokens:resolver:sharedEntityResolution:](self, "_resultFromInferenceResult:query:outputTokens:resolver:sharedEntityResolution:", buf, v7, [v8 outputTokens], -[UPLoadedModelConfiguration resolver](self->__loadedModelConfiguration, "resolver"), v16);
+  v20 = -[UPParserModel _resultFromInferenceResult:query:outputTokens:resolver:sharedEntityResolution:](self, "_resultFromInferenceResult:query:outputTokens:resolver:sharedEntityResolution:", buf, queryCopy, [outputCopy outputTokens], -[UPLoadedModelConfiguration resolver](self->__loadedModelConfiguration, "resolver"), v16);
   if (v48)
   {
     v49 = v48;
@@ -140,27 +140,27 @@
   return v20;
 }
 
-- (id)_candidateForBeamSequence:(const void *)a3 utterance:(const void *)a4 outputTokens:(const void *)a5 resolver:(void *)a6 sharedEntityResolution:(id)a7
+- (id)_candidateForBeamSequence:(const void *)sequence utterance:(const void *)utterance outputTokens:(const void *)tokens resolver:(void *)resolver sharedEntityResolution:(id)resolution
 {
   v69 = *MEMORY[0x277D85DE8];
-  v40 = a7;
-  v12 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration intentVocabPath];
-  std::string::basic_string[abi:ne200100]<0>(v57, [v12 UTF8String]);
-  v13 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration bioLabelsVocabPath];
-  v14 = v13;
-  std::string::basic_string[abi:ne200100]<0>(&v59, [v13 UTF8String]);
+  resolutionCopy = resolution;
+  intentVocabPath = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration intentVocabPath];
+  std::string::basic_string[abi:ne200100]<0>(v57, [intentVocabPath UTF8String]);
+  bioLabelsVocabPath = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration bioLabelsVocabPath];
+  v14 = bioLabelsVocabPath;
+  std::string::basic_string[abi:ne200100]<0>(&v59, [bioLabelsVocabPath UTF8String]);
   memset(v61, 0, sizeof(v61));
-  std::vector<nl_featurization::Token>::__init_with_size[abi:ne200100]<nl_featurization::Token*,nl_featurization::Token*>(v61, *a5, *(a5 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 4));
+  std::vector<nl_featurization::Token>::__init_with_size[abi:ne200100]<nl_featurization::Token*,nl_featurization::Token*>(v61, *tokens, *(tokens + 1), 0xAAAAAAAAAAAAAAABLL * ((*(tokens + 1) - *tokens) >> 4));
 
-  v50 = *(a3 + 2);
+  v50 = *(sequence + 2);
   v51 = 0;
   v52 = 0;
   v53 = 0;
-  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v51, *(a3 + 7), *(a3 + 8), (*(a3 + 8) - *(a3 + 7)) >> 3);
+  std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v51, *(sequence + 7), *(sequence + 8), (*(sequence + 8) - *(sequence + 7)) >> 3);
   v54 = 0;
   v55 = 0;
   v56 = 0;
-  std::vector<std::optional<unsigned long>>::__init_with_size[abi:ne200100]<std::optional<unsigned long>*,std::optional<unsigned long>*>(&v54, *(a3 + 13), *(a3 + 14), (*(a3 + 14) - *(a3 + 13)) >> 4);
+  std::vector<std::optional<unsigned long>>::__init_with_size[abi:ne200100]<std::optional<unsigned long>*,std::optional<unsigned long>*>(&v54, *(sequence + 13), *(sequence + 14), (*(sequence + 14) - *(sequence + 13)) >> 4);
   nl_featurization::postprocessing::base::postProcessBaseModel(v57, &v50, &v47);
   v15 = SNLPOSLoggerForCategory(3);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -170,15 +170,15 @@
     _os_log_impl(&dword_22284A000, v15, OS_LOG_TYPE_DEBUG, "%ld", buf, 0xCu);
   }
 
-  v39 = a3;
+  sequenceCopy = sequence;
   v45 = 0;
   v46 = 0uLL;
   v16 = v48;
   v17 = v49;
   while (v16 != v17)
   {
-    u16Substring(a4, *(v16 + 16), *(v16 + 24), &v44);
-    uaap_orchestration::resolution::Resolver::lookupSemanticValueForLabel(a6, (v16 + 32), &v44, &__p);
+    u16Substring(utterance, *(v16 + 16), *(v16 + 24), &v44);
+    uaap_orchestration::resolution::Resolver::lookupSemanticValueForLabel(resolver, (v16 + 32), &v44, &__p);
     if (v43 == 1)
     {
       v18 = *(v16 + 16);
@@ -317,10 +317,10 @@ LABEL_33:
     v16 += 104;
   }
 
-  v32 = *v39;
+  v32 = *sequenceCopy;
   v33 = [UPUtilities stdU16ToNSString:&v47, v61];
   *&v34 = v32;
-  v35 = [(UPParserModel *)self _candidateForUtterance:a4 probability:&v45 labelledSpans:v33 intent:v40 sharedEntityResolution:v34];
+  v35 = [(UPParserModel *)self _candidateForUtterance:utterance probability:&v45 labelledSpans:v33 intent:resolutionCopy sharedEntityResolution:v34];
 
   *buf = &v45;
   std::vector<nl_featurization::postprocessing::LabelledSpan>::__destroy_vector::operator()[abi:ne200100](buf);
@@ -360,11 +360,11 @@ LABEL_33:
   return v35;
 }
 
-- (id)_resultFromInferenceResult:(const void *)a3 query:(id)a4 outputTokens:(const void *)a5 resolver:(void *)a6 sharedEntityResolution:(id)a7
+- (id)_resultFromInferenceResult:(const void *)result query:(id)query outputTokens:(const void *)tokens resolver:(void *)resolver sharedEntityResolution:(id)resolution
 {
   v64 = *MEMORY[0x277D85DE8];
-  v42 = a4;
-  v46 = a7;
+  queryCopy = query;
+  resolutionCopy = resolution;
   v9 = SNLPOSLoggerForCategory(7);
   v10 = os_signpost_id_generate(v9);
 
@@ -385,17 +385,17 @@ LABEL_33:
     _os_log_impl(&dword_22284A000, v13, OS_LOG_TYPE_DEFAULT, "BEGIN UaaP Post-Processing", buf, 2u);
   }
 
-  v14 = [v42 utterance];
-  [UPUtilities nSStringToU16String:v14];
+  utterance = [queryCopy utterance];
+  [UPUtilities nSStringToU16String:utterance];
 
-  v15 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
-  v16 = 0xAAAAAAAAAAAAAAABLL * ((v15[1] - *v15) >> 3);
+  beamMaskInput = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
+  v16 = 0xAAAAAAAAAAAAAAABLL * ((beamMaskInput[1] - *beamMaskInput) >> 3);
   v51 = 0;
   v52 = 0;
   v53 = 0;
   std::vector<double>::reserve(&v51, v16);
-  v17 = *(a3 + 3);
-  v18 = *(a3 + 4);
+  v17 = *(result + 3);
+  v18 = *(result + 4);
   while (v17 != v18)
   {
     *buf = *v17;
@@ -403,11 +403,11 @@ LABEL_33:
     ++v17;
   }
 
-  v20 = *a5;
-  v19 = *(a5 + 1);
-  v21 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
-  v45 = v21[4];
-  v44 = v21[3];
+  v20 = *tokens;
+  v19 = *(tokens + 1);
+  beamMaskInput2 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
+  v45 = beamMaskInput2[4];
+  v44 = beamMaskInput2[3];
   v41 = 0xAAAAAAAAAAAAAAABLL * ((v19 - v20) >> 4);
   memset(v50, 0, sizeof(v50));
   if (v19 != v20)
@@ -425,8 +425,8 @@ LABEL_33:
   v57 = 0;
   v58 = 0;
   std::vector<double>::reserve(buf, v41);
-  v22 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
-  nl_featurization::beam_search::beamSearch(&v51, v50, buf, v22, v22 + 3, v22 + 6, (v22 + 9), (v22 + 14), __p, 5uLL);
+  beamMaskInput3 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration beamMaskInput];
+  nl_featurization::beam_search::beamSearch(&v51, v50, buf, beamMaskInput3, beamMaskInput3 + 3, beamMaskInput3 + 6, (beamMaskInput3 + 9), (beamMaskInput3 + 14), __p, 5uLL);
   v23 = SNLPOSLoggerForCategory(3);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
@@ -452,13 +452,13 @@ LABEL_33:
       }
     }
 
-    v28 = [(UPParserModel *)self _candidateForBeamSequence:i utterance:&v54 outputTokens:a5 resolver:a6 sharedEntityResolution:v46];
+    v28 = [(UPParserModel *)self _candidateForBeamSequence:i utterance:&v54 outputTokens:tokens resolver:resolver sharedEntityResolution:resolutionCopy];
     v29 = SNLPOSLoggerForCategory(3);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v30 = [v28 annotatedString];
+      annotatedString = [v28 annotatedString];
       *v60 = 138412290;
-      *&v60[4] = v30;
+      *&v60[4] = annotatedString;
       _os_log_impl(&dword_22284A000, v29, OS_LOG_TYPE_DEBUG, "Produced candidate: %@", v60, 0xCu);
     }
 
@@ -481,8 +481,8 @@ LABEL_33:
   }
 
   v34 = [UPResult alloc];
-  v35 = [v42 uuid];
-  v36 = [(UPResult *)v34 initWithCandidates:v24 queryUUID:v35];
+  uuid = [queryCopy uuid];
+  v36 = [(UPResult *)v34 initWithCandidates:v24 queryUUID:uuid];
 
   *v60 = __p;
   std::vector<nl_featurization::beam_search::BeamSequence>::__destroy_vector::operator()[abi:ne200100](v60);
@@ -510,7 +510,7 @@ LABEL_33:
   return v36;
 }
 
-- (UPInferenceResult)forwardWithSpanLabels:(SEL)a3 embeddings:(UPGenericTensor *)a4 utterance:(UPGenericTensor *)a5
+- (UPInferenceResult)forwardWithSpanLabels:(SEL)labels embeddings:(UPGenericTensor *)embeddings utterance:(UPGenericTensor *)utterance
 {
   v10 = SNLPOSLoggerForCategory(7);
   v11 = os_signpost_id_generate(v10);
@@ -530,12 +530,12 @@ LABEL_33:
     _os_log_impl(&dword_22284A000, v14, OS_LOG_TYPE_DEFAULT, "BEGIN UaaP EspressoInference", buf, 2u);
   }
 
-  v15 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration parserEspressoModule];
-  uaap::EspressoModule::reshape(v15, a5, a4);
-  uaap::EspressoModule::buildPlan(v15);
+  parserEspressoModule = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration parserEspressoModule];
+  uaap::EspressoModule::reshape(parserEspressoModule, utterance, embeddings);
+  uaap::EspressoModule::buildPlan(parserEspressoModule);
   buf[23] = 12;
   strcpy(buf, "span_indices");
-  uaap::EspressoModule::setInput(v15, buf, &a4->data, a4);
+  uaap::EspressoModule::setInput(parserEspressoModule, buf, &embeddings->data, embeddings);
   if (buf[23] < 0)
   {
     operator delete(*buf);
@@ -543,19 +543,19 @@ LABEL_33:
 
   buf[23] = 16;
   strcpy(buf, "token_embeddings");
-  uaap::EspressoModule::setInput(v15, buf, &a5->data, a5);
+  uaap::EspressoModule::setInput(parserEspressoModule, buf, &utterance->data, utterance);
   if (buf[23] < 0)
   {
     operator delete(*buf);
   }
 
-  uaap::EspressoModule::executePlan(v15);
+  uaap::EspressoModule::executePlan(parserEspressoModule);
   std::string::basic_string[abi:ne200100]<0>(v42, "intent_softmax");
   std::string::basic_string[abi:ne200100]<0>(v40, "bio_labels_softmax");
   std::string::basic_string[abi:ne200100]<0>(v38, "group_labels_softmax");
-  uaap::EspressoModule::getOutput(v15, v42, buf);
-  uaap::EspressoModule::getOutput(v15, v40, v31);
-  uaap::EspressoModule::getOutput(v15, v38, v27);
+  uaap::EspressoModule::getOutput(parserEspressoModule, v42, buf);
+  uaap::EspressoModule::getOutput(parserEspressoModule, v40, v31);
+  uaap::EspressoModule::getOutput(parserEspressoModule, v38, v27);
   *&retstr->var0.shape.__begin_ = *buf;
   retstr->var0.shape.__cap_ = *&buf[16];
   v16 = *v36;
@@ -590,7 +590,7 @@ LABEL_33:
   __p[0] = 0;
   __p[1] = 0;
   v30 = 0;
-  uaap::EspressoModule::cleanPlan(v15);
+  uaap::EspressoModule::cleanPlan(parserEspressoModule);
   v22 = SNLPOSLoggerForCategory(7);
   v23 = v22;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
@@ -661,31 +661,31 @@ LABEL_33:
   return result;
 }
 
-- (id)_candidateForUtterance:(const void *)a3 probability:(float)a4 labelledSpans:(const void *)a5 intent:(id)a6 sharedEntityResolution:(id)a7
+- (id)_candidateForUtterance:(const void *)utterance probability:(float)probability labelledSpans:(const void *)spans intent:(id)intent sharedEntityResolution:(id)resolution
 {
-  v45 = a6;
-  v49 = a7;
-  v48 = [MEMORY[0x277CBEB18] array];
-  if (*(a3 + 23) >= 0)
+  intentCopy = intent;
+  resolutionCopy = resolution;
+  array = [MEMORY[0x277CBEB18] array];
+  if (*(utterance + 23) >= 0)
   {
-    v11 = *(a3 + 23);
+    v11 = *(utterance + 23);
   }
 
   else
   {
-    v11 = *(a3 + 1);
+    v11 = *(utterance + 1);
   }
 
   if (v11)
   {
     v12 = 0;
     v46 = v11;
-    v47 = a5;
+    spansCopy = spans;
     do
     {
-      v13 = *a5;
-      v14 = *(a5 + 1);
-      if (*a5 != v14)
+      v13 = *spans;
+      v14 = *(spans + 1);
+      if (*spans != v14)
       {
         v15 = 0;
         do
@@ -701,7 +701,7 @@ LABEL_33:
         while (v13 != v14);
         if (v15)
         {
-          u16Substring(a3, *(v15 + 16), *(v15 + 24), &__p);
+          u16Substring(utterance, *(v15 + 16), *(v15 + 24), &__p);
           v50 = [UPUtilities stdU16ToNSString:&__p];
           if (*(v15 + 80) == 1)
           {
@@ -797,11 +797,11 @@ LABEL_33:
             operator delete(__dst.__r_.__value_.__l.__data_);
           }
 
-          v29 = a3;
-          v30 = [v49 resolveSharedEntityForTokenRange:v23 valueType:{v25, v28}];
+          utteranceCopy = utterance;
+          v30 = [resolutionCopy resolveSharedEntityForTokenRange:v23 valueType:{v25, v28}];
           v31 = [UPUtilities rangeFromStart:*(v15 + 16) end:*(v15 + 24)];
           v33 = [[UPResultCandidateEntity alloc] initWithRange:v31 label:v32 text:v21 groupId:v50 semanticValue:v22 sharedEntityGraph:v19, v30];
-          [v48 addObject:v33];
+          [array addObject:v33];
           v36 = v15 + 16;
           v35 = *(v15 + 16);
           v34 = *(v36 + 8);
@@ -812,9 +812,9 @@ LABEL_33:
           }
 
           v12 += v34 + ~v35;
-          a3 = v29;
+          utterance = utteranceCopy;
           v11 = v46;
-          a5 = v47;
+          spans = spansCopy;
         }
       }
 
@@ -824,35 +824,35 @@ LABEL_33:
     while (v12 < v11);
   }
 
-  v37 = [UPUtilities stdU16ToNSString:a3];
+  v37 = [UPUtilities stdU16ToNSString:utterance];
   usoSerializer = self->__usoSerializer;
-  v39 = [(UPModelIdentifier *)self->_identifier appBundleId];
-  v40 = [(UPUsoSerializer *)usoSerializer serializeFromIntent:v45 andEntities:v48 forBundleId:v39];
+  appBundleId = [(UPModelIdentifier *)self->_identifier appBundleId];
+  v40 = [(UPUsoSerializer *)usoSerializer serializeFromIntent:intentCopy andEntities:array forBundleId:appBundleId];
 
   v41 = [objc_alloc(MEMORY[0x277D5F5E0]) initWithTask:v40];
-  v42 = [[UPResultCandidate alloc] initWithUncalibratedProbability:0 calibratedProbability:v37 utterance:v45 intent:v48 entities:self->_identifier modelIdentifier:v41 task:a4];
+  v42 = [[UPResultCandidate alloc] initWithUncalibratedProbability:0 calibratedProbability:v37 utterance:intentCopy intent:array entities:self->_identifier modelIdentifier:v41 task:probability];
 
   return v42;
 }
 
-- (id)predictionFromQuery:(id)a3 error:(id *)a4
+- (id)predictionFromQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration preprocessor];
+  queryCopy = query;
+  preprocessor = [(UPLoadedModelConfiguration *)self->__loadedModelConfiguration preprocessor];
   v13 = 0;
-  v8 = [v7 preprocess:v6 error:&v13];
+  v8 = [preprocessor preprocess:queryCopy error:&v13];
   v9 = v13;
 
   if (v8)
   {
-    v10 = [(UPParserModel *)self predictionFromQuery:v6 preprocessorOutput:v8 error:a4];
+    v10 = [(UPParserModel *)self predictionFromQuery:queryCopy preprocessorOutput:v8 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -863,9 +863,9 @@ LABEL_33:
   return v10;
 }
 
-- (UPParserModel)initWithLoadedModelConfiguration:(id)a3
+- (UPParserModel)initWithLoadedModelConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = SNLPOSLoggerForCategory(7);
   v7 = os_signpost_id_generate(v6);
 
@@ -890,10 +890,10 @@ LABEL_33:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->__loadedModelConfiguration, a3);
+    objc_storeStrong(&v11->__loadedModelConfiguration, configuration);
     v13 = [UPModelIdentifier alloc];
-    v14 = [(UPLoadedModelConfiguration *)v12->__loadedModelConfiguration bundleId];
-    v15 = [(UPModelIdentifier *)v13 initWithAppBundleId:v14];
+    bundleId = [(UPLoadedModelConfiguration *)v12->__loadedModelConfiguration bundleId];
+    v15 = [(UPModelIdentifier *)v13 initWithAppBundleId:bundleId];
     identifier = v12->_identifier;
     v12->_identifier = v15;
 
@@ -920,14 +920,14 @@ LABEL_33:
   return v12;
 }
 
-+ (UPParserModel)modelWithLoadedModelConfiguration:(id)a3 error:(id *)a4
++ (UPParserModel)modelWithLoadedModelConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
-  v6 = [[UPParserModel alloc] initWithLoadedModelConfiguration:v5];
+  configurationCopy = configuration;
+  v6 = [[UPParserModel alloc] initWithLoadedModelConfiguration:configurationCopy];
   v7 = v6;
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:0 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:0 userInfo:0];
   }
 
   return v7;

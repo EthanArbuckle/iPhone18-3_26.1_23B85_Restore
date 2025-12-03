@@ -1,63 +1,63 @@
 @interface MPCMediaRemoteController
 + (OS_dispatch_queue)mediaRemoteReplyQueue;
-+ (id)controllerForPlayerPath:(id)a3;
-+ (void)_sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 toPlayerPath:(id)a6 completion:(id)a7;
-+ (void)_sendCommand:(unsigned int)a3 playbackIntent:(id)a4 options:(id)a5 toPlayerPath:(id)a6 completion:(id)a7;
-+ (void)sendCommand:(unsigned int)a3 options:(id)a4 toPlayerPath:(id)a5 completion:(id)a6;
-- (CGSize)overlayScaledFittingSizeForCatalog:(id)a3 scaledFittingSize:(CGSize)result;
++ (id)controllerForPlayerPath:(id)path;
++ (void)_sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions toPlayerPath:(id)path completion:(id)completion;
++ (void)_sendCommand:(unsigned int)command playbackIntent:(id)intent options:(id)options toPlayerPath:(id)path completion:(id)completion;
++ (void)sendCommand:(unsigned int)command options:(id)options toPlayerPath:(id)path completion:(id)completion;
+- (CGSize)overlayScaledFittingSizeForCatalog:(id)catalog scaledFittingSize:(CGSize)result;
 - (MPCFuture)playbackQueueParticipants;
 - (MPCFuture)playbackState;
 - (MPCFuture)supportedCommands;
-- (id)_animatedArtworkKeyForSize:(CGSize)a3 artworkFormat:(id)a4;
-- (id)_artworkCatalogBlockForContentItem:(id)a3;
-- (id)_createExportableArtworkPropertiesForContentItem:(id)a3;
-- (id)_initWithResolvedPlayerPath:(id)a3;
+- (id)_animatedArtworkKeyForSize:(CGSize)size artworkFormat:(id)format;
+- (id)_artworkCatalogBlockForContentItem:(id)item;
+- (id)_createExportableArtworkPropertiesForContentItem:(id)item;
+- (id)_initWithResolvedPlayerPath:(id)path;
 - (id)_legacyCommands;
-- (id)_onQueue_identifiersForRange:(_MSVSignedRange)a3;
-- (id)_onQueue_playbackQueueForRange:(_MSVSignedRange)a3;
-- (id)_onQueue_setOptimisticElapsedTimeForContentItem:(id)a3 elapsedTime:(double)a4 rate:(float)a5;
-- (id)_onQueue_setOptimisticPlaybackState:(unsigned int)a3 withOptions:(id)a4;
+- (id)_onQueue_identifiersForRange:(_MSVSignedRange)range;
+- (id)_onQueue_playbackQueueForRange:(_MSVSignedRange)range;
+- (id)_onQueue_setOptimisticElapsedTimeForContentItem:(id)item elapsedTime:(double)time rate:(float)rate;
+- (id)_onQueue_setOptimisticPlaybackState:(unsigned int)state withOptions:(id)options;
 - (id)_onQueue_stateDictionary;
-- (id)_onQueue_updateOptimisticStateForCommand:(unsigned int)a3 options:(id)a4;
-- (id)artworkCatalogBlockForContentItem:(id)a3;
-- (id)contentItemAnimatedArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6;
-- (id)contentItemAnimatedArtworkPreviewFrameForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6;
-- (id)contentItemArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5;
-- (id)contentItemForIdentifier:(id)a3;
-- (id)contentItemRemoteArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6;
-- (id)formattedAnimatedArtworkCatalogBlockForContentItem:(id)a3;
+- (id)_onQueue_updateOptimisticStateForCommand:(unsigned int)command options:(id)options;
+- (id)artworkCatalogBlockForContentItem:(id)item;
+- (id)contentItemAnimatedArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format;
+- (id)contentItemAnimatedArtworkPreviewFrameForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format;
+- (id)contentItemArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size;
+- (id)contentItemForIdentifier:(id)identifier;
+- (id)contentItemRemoteArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format;
+- (id)formattedAnimatedArtworkCatalogBlockForContentItem:(id)item;
 - (id)mediaRemoteAnimatedArtworkDataSource;
 - (id)mediaRemoteArtworkDataSource;
-- (id)playbackQueueForRequest:(id)a3;
+- (id)playbackQueueForRequest:(id)request;
 - (id)remoteArtworkDataSource;
-- (int64_t)contentItemAnimatedArtworkCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4 artworkFormat:(id)a5;
-- (int64_t)contentItemAnimatedArtworkPreviewFrameCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4 artworkFormat:(id)a5;
-- (int64_t)contentItemArtworkCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4;
-- (int64_t)contentItemCacheStateForIdentifier:(id)a3;
+- (int64_t)contentItemAnimatedArtworkCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size artworkFormat:(id)format;
+- (int64_t)contentItemAnimatedArtworkPreviewFrameCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size artworkFormat:(id)format;
+- (int64_t)contentItemArtworkCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size;
+- (int64_t)contentItemCacheStateForIdentifier:(id)identifier;
 - (int64_t)playbackQueueParticipantsCacheState;
 - (int64_t)playbackStateCacheState;
 - (int64_t)supportedCommandsCacheState;
-- (void)_contentItemArtworkChangedNotification:(id)a3;
-- (void)_onQueue_invalidateAnimatedArtworkFuturesForContentItemID:(id)a3;
-- (void)_onQueue_invalidateArtworkFuturesForContentItemID:(id)a3;
-- (void)_onQueue_mergeContentItems:(id)a3;
-- (void)_onQueue_mergeContentItems:(id)a3 queueRange:(_MSVSignedRange)a4 requestRange:(_MSVSignedRange)a5 requestProperties:(id)a6;
-- (void)_onQueue_purgeArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4;
-- (void)_onQueue_purgeContentItemIdentifierForProperties:(id)a3;
-- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)a3 afterContentItemIdentifier:(id)a4;
-- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)a3 beforeContentItemIdentifier:(id)a4;
-- (void)_playbackQueueChangedNotification:(id)a3;
-- (void)_playbackQueueContentItemsChangedNotification:(id)a3;
-- (void)_playbackQueueParticipantsDidChangeNotification:(id)a3;
-- (void)_playbackStateDidChangeNotification:(id)a3;
-- (void)_supportedCommandsDidChangeNotification:(id)a3;
-- (void)artworkCatalog:(id)a3 didClearFromView:(id)a4;
-- (void)artworkCatalog:(id)a3 didConfigureView:(id)a4 withRepresentation:(id)a5;
-- (void)artworkCatalog:(id)a3 willConfigureView:(id)a4;
+- (void)_contentItemArtworkChangedNotification:(id)notification;
+- (void)_onQueue_invalidateAnimatedArtworkFuturesForContentItemID:(id)d;
+- (void)_onQueue_invalidateArtworkFuturesForContentItemID:(id)d;
+- (void)_onQueue_mergeContentItems:(id)items;
+- (void)_onQueue_mergeContentItems:(id)items queueRange:(_MSVSignedRange)range requestRange:(_MSVSignedRange)requestRange requestProperties:(id)properties;
+- (void)_onQueue_purgeArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier;
+- (void)_onQueue_purgeContentItemIdentifierForProperties:(id)properties;
+- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)identifier afterContentItemIdentifier:(id)itemIdentifier;
+- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)identifier beforeContentItemIdentifier:(id)itemIdentifier;
+- (void)_playbackQueueChangedNotification:(id)notification;
+- (void)_playbackQueueContentItemsChangedNotification:(id)notification;
+- (void)_playbackQueueParticipantsDidChangeNotification:(id)notification;
+- (void)_playbackStateDidChangeNotification:(id)notification;
+- (void)_supportedCommandsDidChangeNotification:(id)notification;
+- (void)artworkCatalog:(id)catalog didClearFromView:(id)view;
+- (void)artworkCatalog:(id)catalog didConfigureView:(id)view withRepresentation:(id)representation;
+- (void)artworkCatalog:(id)catalog willConfigureView:(id)view;
 - (void)dealloc;
-- (void)dictionary:(id)a3 willRemoveObject:(id)a4 forKey:(id)a5;
+- (void)dictionary:(id)dictionary willRemoveObject:(id)object forKey:(id)key;
 - (void)invalidateAllTokens;
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 completion:(id)a5;
+- (void)sendCommand:(unsigned int)command options:(id)options completion:(id)completion;
 @end
 
 @implementation MPCMediaRemoteController
@@ -410,14 +410,14 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
   return v3;
 }
 
-- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)a3 beforeContentItemIdentifier:(id)a4
+- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)identifier beforeContentItemIdentifier:(id)itemIdentifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:v6];
-  v9 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:v7];
+  v8 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:identifierCopy];
+  v9 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:itemIdentifierCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL && v9 != 0x7FFFFFFFFFFFFFFFLL && v8 != v9)
   {
     v12 = v9;
@@ -446,7 +446,7 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
         v16 = v13;
       }
 
-      [(NSMutableArray *)self->_contentItemIDs insertObject:v6 atIndex:v16];
+      [(NSMutableArray *)self->_contentItemIDs insertObject:identifierCopy atIndex:v16];
       if (v15 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v17 = [(NSMutableArray *)self->_contentItemIDs objectAtIndex:v15];
@@ -492,14 +492,14 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
   }
 }
 
-- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)a3 afterContentItemIdentifier:(id)a4
+- (void)_onQueue_setOptimisticReorderedPlaybackQueueWithMovingContentItemIdentifier:(id)identifier afterContentItemIdentifier:(id)itemIdentifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:v6];
-  v9 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:v7];
+  v8 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:identifierCopy];
+  v9 = [(NSMutableArray *)self->_contentItemIDs indexOfObject:itemIdentifierCopy];
   v11 = v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0x7FFFFFFFFFFFFFFFLL || v8 == v9;
   v12 = v9 + 1;
   if (!v11 && v8 != v12)
@@ -527,7 +527,7 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
       v17 = v12;
     }
 
-    [(NSMutableArray *)self->_contentItemIDs insertObject:v6 atIndex:v17];
+    [(NSMutableArray *)self->_contentItemIDs insertObject:identifierCopy atIndex:v17];
     if (v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v18 = [(NSMutableArray *)self->_contentItemIDs objectAtIndex:v16];
@@ -572,10 +572,10 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
   }
 }
 
-- (id)_onQueue_setOptimisticPlaybackState:(unsigned int)a3 withOptions:(id)a4
+- (id)_onQueue_setOptimisticPlaybackState:(unsigned int)state withOptions:(id)options
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = [(MPCFuture *)self->_playbackStateFuture result];
+  result = [(MPCFuture *)self->_playbackStateFuture result];
   [(MPCFuture *)self->_playbackStateFuture invalidate];
   [(MPCFuture *)self->_playbackStateFuture disconnect];
   v7 = [[MPCFuture alloc] initWithQueue:self->_calloutQueue];
@@ -596,7 +596,7 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
     aBlock[1] = 3221225472;
     aBlock[2] = __76__MPCMediaRemoteController__onQueue_setOptimisticPlaybackState_withOptions___block_invoke;
     aBlock[3] = &__block_descriptor_36_e5_I8__0l;
-    v18 = a3;
+    stateCopy = state;
     v11 = _Block_copy(aBlock);
     [(MPCFuture *)v9 finishWithValue:v11];
 
@@ -608,8 +608,8 @@ void __41__MPCMediaRemoteController_playbackState__block_invoke_2(uint64_t a1, i
   v15[2] = __76__MPCMediaRemoteController__onQueue_setOptimisticPlaybackState_withOptions___block_invoke_2;
   v15[3] = &unk_1E8239170;
   v15[4] = self;
-  v16 = v6;
-  v12 = v6;
+  v16 = result;
+  v12 = result;
   v13 = _Block_copy(v15);
 
   return v13;
@@ -641,15 +641,15 @@ void __76__MPCMediaRemoteController__onQueue_setOptimisticPlaybackState_withOpti
   }
 }
 
-- (id)_onQueue_setOptimisticElapsedTimeForContentItem:(id)a3 elapsedTime:(double)a4 rate:(float)a5
+- (id)_onQueue_setOptimisticElapsedTimeForContentItem:(id)item elapsedTime:(double)time rate:(float)rate
 {
-  v7 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (v7)
+  if (itemCopy)
   {
     v8 = objc_alloc(MEMORY[0x1E6970830]);
-    v9 = [v7 identifier];
-    v10 = [v8 initWithIdentifier:v9];
+    identifier = [itemCopy identifier];
+    v10 = [v8 initWithIdentifier:identifier];
 
     v11 = MEMORY[0x1E69704F0];
     v27[0] = MEMORY[0x1E69E9820];
@@ -657,33 +657,33 @@ void __76__MPCMediaRemoteController__onQueue_setOptimisticPlaybackState_withOpti
     v27[2] = __93__MPCMediaRemoteController__onQueue_setOptimisticElapsedTimeForContentItem_elapsedTime_rate___block_invoke;
     v27[3] = &unk_1E8239338;
     v28 = v10;
-    v29 = a4;
+    timeCopy = time;
     v12 = v10;
     [v11 performSuppressingChangeNotifications:v27];
     optimisticStateContentItems = self->_optimisticStateContentItems;
-    v14 = [v7 identifier];
-    [(NSMutableDictionary *)optimisticStateContentItems setObject:v12 forKeyedSubscript:v14];
+    identifier2 = [itemCopy identifier];
+    [(NSMutableDictionary *)optimisticStateContentItems setObject:v12 forKeyedSubscript:identifier2];
 
     contentItemFutures = self->_contentItemFutures;
-    v16 = [v7 identifier];
-    v17 = [(NSMapTable *)contentItemFutures objectForKey:v16];
+    identifier3 = [itemCopy identifier];
+    v17 = [(NSMapTable *)contentItemFutures objectForKey:identifier3];
     [v17 invalidate];
 
     v18 = self->_contentItemFutures;
-    v19 = [v7 identifier];
-    v20 = [(NSMapTable *)v18 objectForKey:v19];
+    identifier4 = [itemCopy identifier];
+    v20 = [(NSMapTable *)v18 objectForKey:identifier4];
     [v20 disconnect];
 
     v21 = self->_contentItemFutures;
-    v22 = [v7 identifier];
-    [(NSMapTable *)v21 removeObjectForKey:v22];
+    identifier5 = [itemCopy identifier];
+    [(NSMapTable *)v21 removeObjectForKey:identifier5];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __93__MPCMediaRemoteController__onQueue_setOptimisticElapsedTimeForContentItem_elapsedTime_rate___block_invoke_2;
     v25[3] = &unk_1E82392C0;
     v25[4] = self;
-    v26 = v7;
+    v26 = itemCopy;
     v23 = _Block_copy(v25);
   }
 
@@ -725,56 +725,56 @@ void __93__MPCMediaRemoteController__onQueue_setOptimisticElapsedTimeForContentI
   }
 }
 
-- (id)_onQueue_updateOptimisticStateForCommand:(unsigned int)a3 options:(id)a4
+- (id)_onQueue_updateOptimisticStateForCommand:(unsigned int)command options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (a3 == 2)
+  if (command == 2)
   {
-    v7 = [(MPCFuture *)self->_playbackStateFuture result];
-    if (!v7)
+    result = [(MPCFuture *)self->_playbackStateFuture result];
+    if (!result)
     {
       goto LABEL_32;
     }
 
-    v8 = v7;
-    v9 = [(MPCFuture *)self->_playbackStateFuture isInvalid];
+    v8 = result;
+    isInvalid = [(MPCFuture *)self->_playbackStateFuture isInvalid];
 
-    if (v9)
+    if (isInvalid)
     {
       goto LABEL_32;
     }
 
-    v10 = [(MPCFuture *)self->_playbackStateFuture result];
-    a3 = v10[2]() == 1;
+    result2 = [(MPCFuture *)self->_playbackStateFuture result];
+    command = result2[2]() == 1;
   }
 
   v11 = 0;
-  if (a3 <= 2)
+  if (command <= 2)
   {
-    if (!a3)
+    if (!command)
     {
-      v11 = [(MPCMediaRemoteController *)self _onQueue_setOptimisticPlaybackState:1 withOptions:v6];
+      v11 = [(MPCMediaRemoteController *)self _onQueue_setOptimisticPlaybackState:1 withOptions:optionsCopy];
       goto LABEL_33;
     }
 
-    if (a3 != 1)
+    if (command != 1)
     {
       goto LABEL_33;
     }
   }
 
-  else if (a3 != 3)
+  else if (command != 3)
   {
-    if (a3 != 24)
+    if (command != 24)
     {
-      if (a3 != 130)
+      if (command != 130)
       {
         goto LABEL_33;
       }
 
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B10C8]];
-      v13 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B1138]];
+      v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10C8]];
+      v13 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1138]];
       v14 = v13;
       if (v12)
       {
@@ -788,7 +788,7 @@ void __93__MPCMediaRemoteController__onQueue_setOptimisticElapsedTimeForContentI
 
       if (v15)
       {
-        v16 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
+        v16 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
         v17 = v16;
         if (v12 && v16)
         {
@@ -807,7 +807,7 @@ void __93__MPCMediaRemoteController__onQueue_setOptimisticElapsedTimeForContentI
     if (self->_playingItemIdentifier)
     {
       v31 = [(MSVLRUDictionary *)self->_contentItems objectForKeyedSubscript:?];
-      v32 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B1168]];
+      v32 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1168]];
       [v32 doubleValue];
       v34 = v33;
 
@@ -827,7 +827,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v18 = [(MPCMediaRemoteController *)self _onQueue_setOptimisticPlaybackState:2 withOptions:v6];
+  v18 = [(MPCMediaRemoteController *)self _onQueue_setOptimisticPlaybackState:2 withOptions:optionsCopy];
   v19 = self->_playingItemIdentifier;
   if (v19)
   {
@@ -950,17 +950,17 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
 {
   v30[11] = *MEMORY[0x1E69E9840];
   v3 = self->_playbackStateFuture;
-  v4 = [(MPCFuture *)v3 result];
+  result = [(MPCFuture *)v3 result];
 
   v28 = v3;
-  if (v4)
+  if (result)
   {
-    v5 = [(MPCFuture *)v3 result];
-    v5[2]();
+    result2 = [(MPCFuture *)v3 result];
+    result2[2]();
   }
 
-  v6 = [(NSMutableDictionary *)self->_contentItemChanges allKeys];
-  v7 = [(MPCFuture *)self->_supportedCommandsFuture result];
+  allKeys = [(NSMutableDictionary *)self->_contentItemChanges allKeys];
+  result3 = [(MPCFuture *)self->_supportedCommandsFuture result];
   v8 = MEMORY[0x1E695DF90];
   v29[0] = @"_obj";
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), self];
@@ -978,9 +978,9 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
   v30[2] = contentItemIDs;
   v29[3] = @"contentItemChanges:keys";
   optimisticStateContentItems = @"<EMPTY>";
-  if ([(__CFString *)v6 count])
+  if ([(__CFString *)allKeys count])
   {
-    v13 = v6;
+    v13 = allKeys;
   }
 
   else
@@ -1018,11 +1018,11 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
 
   v30[6] = optimisticStateContentItems;
   v29[7] = @"supportedCommands";
-  v17 = [v7 allCommandInfos];
-  v18 = v17;
-  if (v17)
+  allCommandInfos = [result3 allCommandInfos];
+  v18 = allCommandInfos;
+  if (allCommandInfos)
   {
-    v19 = v17;
+    v19 = allCommandInfos;
   }
 
   else
@@ -1054,14 +1054,14 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
   return v24;
 }
 
-- (void)_onQueue_invalidateAnimatedArtworkFuturesForContentItemID:(id)a3
+- (void)_onQueue_invalidateAnimatedArtworkFuturesForContentItemID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     dispatch_assert_queue_V2(self->_accessQueue);
-    v5 = [(NSMutableDictionary *)self->_contentItemAnimatedArtworkPreviewFrameFutures objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_contentItemAnimatedArtworkPreviewFrameFutures objectForKeyedSubscript:dCopy];
     v6 = v5;
     if (v5)
     {
@@ -1098,7 +1098,7 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
       [(NSMapTable *)v6 removeAllObjects];
     }
 
-    v13 = [(NSMutableDictionary *)self->_contentItemAnimatedArtworkFutures objectForKeyedSubscript:v4];
+    v13 = [(NSMutableDictionary *)self->_contentItemAnimatedArtworkFutures objectForKeyedSubscript:dCopy];
     v14 = v13;
     if (v13)
     {
@@ -1137,12 +1137,12 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
   }
 }
 
-- (void)_onQueue_invalidateArtworkFuturesForContentItemID:(id)a3
+- (void)_onQueue_invalidateArtworkFuturesForContentItemID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v5 = [(NSMutableDictionary *)self->_contentItemArtworkFutures objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_contentItemArtworkFutures objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -1180,26 +1180,26 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
   }
 }
 
-- (void)_onQueue_purgeArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4
+- (void)_onQueue_purgeArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (![v6 length])
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  v7 = artworkIdentifierCopy;
+  if (![artworkIdentifierCopy length])
   {
-    v8 = [(MSVLRUDictionary *)self->_contentItems objectForKeyedSubscript:v12];
-    v9 = [v8 artworkIdentifier];
-    if ([v9 length])
+    v8 = [(MSVLRUDictionary *)self->_contentItems objectForKeyedSubscript:identifierCopy];
+    artworkIdentifier = [v8 artworkIdentifier];
+    if ([artworkIdentifier length])
     {
-      v10 = [v8 artworkIdentifier];
+      artworkIdentifier2 = [v8 artworkIdentifier];
     }
 
     else
     {
-      v10 = v12;
+      artworkIdentifier2 = identifierCopy;
     }
 
-    v7 = v10;
+    v7 = artworkIdentifier2;
   }
 
   if ([v7 length])
@@ -1207,7 +1207,7 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
     v11 = [(NSMutableDictionary *)self->_contentItemArtworkIdentifiers objectForKeyedSubscript:v7];
     if ([v11 count])
     {
-      [v11 removeObject:v12];
+      [v11 removeObject:identifierCopy];
     }
 
     if (![v11 count])
@@ -1221,20 +1221,20 @@ uint64_t __77__MPCMediaRemoteController__onQueue_updateOptimisticStateForCommand
   }
 }
 
-- (void)_onQueue_purgeContentItemIdentifierForProperties:(id)a3
+- (void)_onQueue_purgeContentItemIdentifierForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   contentItemIDsForProperties = self->_contentItemIDsForProperties;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __77__MPCMediaRemoteController__onQueue_purgeContentItemIdentifierForProperties___block_invoke;
   v12 = &unk_1E8238410;
-  v13 = v4;
-  v14 = v5;
-  v7 = v5;
-  v8 = v4;
+  v13 = propertiesCopy;
+  v14 = array;
+  v7 = array;
+  v8 = propertiesCopy;
   [(NSMutableDictionary *)contentItemIDsForProperties enumerateKeysAndObjectsUsingBlock:&v9];
   [(NSMutableDictionary *)self->_contentItemIDsForProperties removeObjectsForKeys:v7, v9, v10, v11, v12];
 }
@@ -1253,18 +1253,18 @@ void __77__MPCMediaRemoteController__onQueue_purgeContentItemIdentifierForProper
   }
 }
 
-- (void)_onQueue_mergeContentItems:(id)a3
+- (void)_onQueue_mergeContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(self->_accessQueue);
   contentItems = self->_contentItems;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__MPCMediaRemoteController__onQueue_mergeContentItems___block_invoke;
   v7[3] = &unk_1E82392C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   [(MSVLRUDictionary *)contentItems performTransaction:v7];
 }
 
@@ -1330,19 +1330,19 @@ void __55__MPCMediaRemoteController__onQueue_mergeContentItems___block_invoke(ui
   }
 }
 
-- (void)_onQueue_mergeContentItems:(id)a3 queueRange:(_MSVSignedRange)a4 requestRange:(_MSVSignedRange)a5 requestProperties:(id)a6
+- (void)_onQueue_mergeContentItems:(id)items queueRange:(_MSVSignedRange)range requestRange:(_MSVSignedRange)requestRange requestProperties:(id)properties
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  itemsCopy = items;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(self->_accessQueue);
   if (location <= 0 && length > -location)
   {
-    if ([v10 count])
+    if ([itemsCopy count])
     {
-      [v10 objectAtIndexedSubscript:-location];
+      [itemsCopy objectAtIndexedSubscript:-location];
     }
 
     v12 = MRContentItemGetIdentifier();
@@ -1390,7 +1390,7 @@ void __55__MPCMediaRemoteController__onQueue_mergeContentItems___block_invoke(ui
     [(MSVLRUDictionary *)self->_contentItemAnimatedArtworkPreviewFrames setMaximumCapacity:v22];
   }
 
-  v23 = [(NSMutableDictionary *)self->_contentItemIDsForProperties objectForKeyedSubscript:v11];
+  v23 = [(NSMutableDictionary *)self->_contentItemIDsForProperties objectForKeyedSubscript:propertiesCopy];
   v24 = v23;
   if (v23)
   {
@@ -1410,9 +1410,9 @@ void __55__MPCMediaRemoteController__onQueue_mergeContentItems___block_invoke(ui
   v36[3] = &unk_1E82383E8;
   v27 = v26;
   v37 = v27;
-  v28 = [v10 msv_map:v36];
-  [(NSMutableDictionary *)self->_contentItemIDsForProperties setObject:v27 forKeyedSubscript:v11];
-  [(MPCMediaRemoteController *)self _onQueue_mergeContentItems:v10];
+  v28 = [itemsCopy msv_map:v36];
+  [(NSMutableDictionary *)self->_contentItemIDsForProperties setObject:v27 forKeyedSubscript:propertiesCopy];
+  [(MPCMediaRemoteController *)self _onQueue_mergeContentItems:itemsCopy];
   contentItemIDs = self->_contentItemIDs;
   v30 = MSVReplacementRangeForRanges();
   [(NSMutableArray *)contentItemIDs replaceObjectsInRange:v30 withObjectsFromArray:v31, v28];
@@ -1423,9 +1423,9 @@ void __55__MPCMediaRemoteController__onQueue_mergeContentItems___block_invoke(ui
   if (self->_playingItemIdentifier)
   {
     v33 = [(MSVLRUDictionary *)self->_contentItems objectForKeyedSubscript:?];
-    v34 = [v33 _mediaRemoteContentItem];
+    _mediaRemoteContentItem = [v33 _mediaRemoteContentItem];
 
-    if (v34)
+    if (_mediaRemoteContentItem)
     {
       v35 = MRContentItemGetArtworkIdentifier();
     }
@@ -1452,10 +1452,10 @@ id __97__MPCMediaRemoteController__onQueue_mergeContentItems_queueRange_requestR
   return v2;
 }
 
-- (id)_onQueue_playbackQueueForRange:(_MSVSignedRange)a3
+- (id)_onQueue_playbackQueueForRange:(_MSVSignedRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   dispatch_assert_queue_V2(self->_accessQueue);
   v6 = self->_loadedContentItemsRange.location;
   if (location <= v6)
@@ -1491,10 +1491,10 @@ id __97__MPCMediaRemoteController__onQueue_mergeContentItems_queueRange_requestR
   return v12;
 }
 
-- (id)_onQueue_identifiersForRange:(_MSVSignedRange)a3
+- (id)_onQueue_identifiersForRange:(_MSVSignedRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   dispatch_assert_queue_V2(self->_accessQueue);
   v6 = self->_loadedContentItemsRange.location;
   if (location <= v6)
@@ -1568,29 +1568,29 @@ id __97__MPCMediaRemoteController__onQueue_mergeContentItems_queueRange_requestR
   return v2;
 }
 
-- (id)_createExportableArtworkPropertiesForContentItem:(id)a3
+- (id)_createExportableArtworkPropertiesForContentItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 artworkURLTemplates];
-  v5 = [v3 artworkURL];
+  itemCopy = item;
+  artworkURLTemplates = [itemCopy artworkURLTemplates];
+  artworkURL = [itemCopy artworkURL];
   v6 = objc_alloc_init(MEMORY[0x1E6970528]);
-  [v6 setArtworkTemplateItems:v4];
-  [v6 setResolvedURLString:v5];
-  v7 = [v3 mediaType];
+  [v6 setArtworkTemplateItems:artworkURLTemplates];
+  [v6 setResolvedURLString:artworkURL];
+  mediaType = [itemCopy mediaType];
 
-  [v6 setMediaType:v7];
+  [v6 setMediaType:mediaType];
   [v6 setMediaLibraryArtworkType:1];
 
   return v6;
 }
 
-- (id)_artworkCatalogBlockForContentItem:(id)a3
+- (id)_artworkCatalogBlockForContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(MPCPlayerPath *)self->_resolvedPlayerPath isInProcess])
   {
-    v5 = [(MPCPlayerPath *)self->_resolvedPlayerPath playerID];
-    v6 = [MEMORY[0x1E6970850] infoCenterForPlayerID:v5];
+    playerID = [(MPCPlayerPath *)self->_resolvedPlayerPath playerID];
+    v6 = [MEMORY[0x1E6970850] infoCenterForPlayerID:playerID];
     if ([v6 supportsArtworkCatalogLoading])
     {
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -1598,8 +1598,8 @@ id __97__MPCMediaRemoteController__onQueue_mergeContentItems_queueRange_requestR
       aBlock[2] = __63__MPCMediaRemoteController__artworkCatalogBlockForContentItem___block_invoke;
       aBlock[3] = &unk_1E8238398;
       v17 = v6;
-      v18 = v4;
-      v7 = v4;
+      v18 = itemCopy;
+      v7 = itemCopy;
       v8 = v6;
       v9 = _Block_copy(aBlock);
       v10 = _Block_copy(v9);
@@ -1612,9 +1612,9 @@ id __97__MPCMediaRemoteController__onQueue_mergeContentItems_queueRange_requestR
   v13[1] = 3221225472;
   v13[2] = __63__MPCMediaRemoteController__artworkCatalogBlockForContentItem___block_invoke_2;
   v13[3] = &unk_1E8238398;
-  v14 = v4;
-  v15 = self;
-  v5 = v4;
+  v14 = itemCopy;
+  selfCopy = self;
+  playerID = itemCopy;
   v11 = _Block_copy(v13);
   v10 = _Block_copy(v11);
 
@@ -1779,38 +1779,38 @@ uint64_t __63__MPCMediaRemoteController__artworkCatalogBlockForContentItem___blo
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_animatedArtworkKeyForSize:(CGSize)a3 artworkFormat:(id)a4
+- (id)_animatedArtworkKeyForSize:(CGSize)size artworkFormat:(id)format
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
   v11.width = width;
   v11.height = height;
   v7 = NSStringFromCGSize(v11);
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@--%@", v7, v6];
+  formatCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@--%@", v7, formatCopy];
 
-  return v8;
+  return formatCopy;
 }
 
-- (void)artworkCatalog:(id)a3 didClearFromView:(id)a4
+- (void)artworkCatalog:(id)catalog didClearFromView:(id)view
 {
-  v6 = [a3 overlayStorage];
-  v4 = [v6 viewController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  overlayStorage = [catalog overlayStorage];
+  viewController = [overlayStorage viewController];
+  view = [viewController view];
+  [view removeFromSuperview];
 }
 
-- (void)artworkCatalog:(id)a3 didConfigureView:(id)a4 withRepresentation:(id)a5
+- (void)artworkCatalog:(id)catalog didConfigureView:(id)view withRepresentation:(id)representation
 {
-  v6 = a5;
-  v9 = [a3 overlayStorage];
-  v7 = [v6 imageRepresentation];
+  representationCopy = representation;
+  overlayStorage = [catalog overlayStorage];
+  imageRepresentation = [representationCopy imageRepresentation];
 
-  v8 = [v7 image];
-  [v9 setImage:v8];
+  image = [imageRepresentation image];
+  [overlayStorage setImage:image];
 }
 
-- (CGSize)overlayScaledFittingSizeForCatalog:(id)a3 scaledFittingSize:(CGSize)result
+- (CGSize)overlayScaledFittingSizeForCatalog:(id)catalog scaledFittingSize:(CGSize)result
 {
   if (result.width < 600.0)
   {
@@ -1821,28 +1821,28 @@ uint64_t __63__MPCMediaRemoteController__artworkCatalogBlockForContentItem___blo
   return result;
 }
 
-- (void)artworkCatalog:(id)a3 willConfigureView:(id)a4
+- (void)artworkCatalog:(id)catalog willConfigureView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  catalogCopy = catalog;
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 != 3)
+  if (userInterfaceIdiom != 3)
   {
-    v10 = [v7 artworkCatalog];
-    if (v10)
+    artworkCatalog = [viewCopy artworkCatalog];
+    if (artworkCatalog)
     {
-      v11 = v10;
+      _lastArtworkCatalog = artworkCatalog;
     }
 
     else
     {
-      v11 = [v7 _lastArtworkCatalog];
-      if (!v11)
+      _lastArtworkCatalog = [viewCopy _lastArtworkCatalog];
+      if (!_lastArtworkCatalog)
       {
 LABEL_6:
-        v13 = [v7 viewWithTag:11259375];
+        v13 = [viewCopy viewWithTag:11259375];
         v14 = v13;
         if (v13)
         {
@@ -1873,49 +1873,49 @@ LABEL_6:
           goto LABEL_15;
         }
 
-        v12 = v17;
-        v18 = [v17 viewController];
-        v19 = [v18 view];
+        overlayStorage = v17;
+        viewController = [v17 viewController];
+        view = [viewController view];
 
-        [v19 setTag:11259375];
-        [v7 addSubview:v19];
-        [v7 bounds];
+        [view setTag:11259375];
+        [viewCopy addSubview:view];
+        [viewCopy bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        v28 = [v12 viewController];
-        v29 = [v28 view];
-        [v29 setFrame:{v21, v23, v25, v27}];
+        viewController2 = [overlayStorage viewController];
+        view2 = [viewController2 view];
+        [view2 setFrame:{v21, v23, v25, v27}];
 
-        v30 = v7;
+        v30 = viewCopy;
         do
         {
           [v30 setUserInteractionEnabled:1];
-          v31 = [v30 superview];
+          superview = [v30 superview];
 
-          v30 = v31;
+          v30 = superview;
         }
 
-        while (v31);
-        [v6 setOverlayStorage:v12];
+        while (superview);
+        [catalogCopy setOverlayStorage:overlayStorage];
 
 LABEL_14:
-        [v12 setPlayerPath:{-[MPCPlayerPath mediaRemotePlayerPath](self->_resolvedPlayerPath, "mediaRemotePlayerPath")}];
-        v32 = [v6 overlayToken];
-        [v12 setContentItemID:v32];
+        [overlayStorage setPlayerPath:{-[MPCPlayerPath mediaRemotePlayerPath](self->_resolvedPlayerPath, "mediaRemotePlayerPath")}];
+        overlayToken = [catalogCopy overlayToken];
+        [overlayStorage setContentItemID:overlayToken];
 
-        v14 = v12;
+        v14 = overlayStorage;
 LABEL_15:
 
         goto LABEL_16;
       }
     }
 
-    v12 = [v11 overlayStorage];
-    [v11 setOverlayStorage:0];
-    [v6 setOverlayStorage:v12];
-    if (v12)
+    overlayStorage = [_lastArtworkCatalog overlayStorage];
+    [_lastArtworkCatalog setOverlayStorage:0];
+    [catalogCopy setOverlayStorage:overlayStorage];
+    if (overlayStorage)
     {
       goto LABEL_14;
     }
@@ -1926,16 +1926,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)formattedAnimatedArtworkCatalogBlockForContentItem:(id)a3
+- (id)formattedAnimatedArtworkCatalogBlockForContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__MPCMediaRemoteController_formattedAnimatedArtworkCatalogBlockForContentItem___block_invoke;
   v8[3] = &unk_1E82383C0;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = itemCopy;
+  selfCopy = self;
+  v5 = itemCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -1989,16 +1989,16 @@ id __79__MPCMediaRemoteController_formattedAnimatedArtworkCatalogBlockForContent
   return v10;
 }
 
-- (id)artworkCatalogBlockForContentItem:(id)a3
+- (id)artworkCatalogBlockForContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__MPCMediaRemoteController_artworkCatalogBlockForContentItem___block_invoke;
   v8[3] = &unk_1E8238398;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = itemCopy;
+  v5 = itemCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -2334,24 +2334,24 @@ void __47__MPCMediaRemoteController_invalidateAllTokens__block_invoke(uint64_t a
   [*(*(v52 + 32) + 168) removeAllObjects];
 }
 
-- (void)dictionary:(id)a3 willRemoveObject:(id)a4 forKey:(id)a5
+- (void)dictionary:(id)dictionary willRemoveObject:(id)object forKey:(id)key
 {
-  v7 = a4;
-  v8 = v7;
-  if (self->_contentItems == a3)
+  objectCopy = object;
+  v8 = objectCopy;
+  if (self->_contentItems == dictionary)
   {
-    v9 = [v7 identifier];
-    v10 = [v8 artworkIdentifier];
+    identifier = [objectCopy identifier];
+    artworkIdentifier = [v8 artworkIdentifier];
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__MPCMediaRemoteController_dictionary_willRemoveObject_forKey___block_invoke;
     block[3] = &unk_1E82391C0;
     block[4] = self;
-    v15 = v9;
-    v16 = v10;
-    v12 = v10;
-    v13 = v9;
+    v15 = identifier;
+    v16 = artworkIdentifier;
+    v12 = artworkIdentifier;
+    v13 = identifier;
     dispatch_async(accessQueue, block);
   }
 }
@@ -2365,13 +2365,13 @@ void __63__MPCMediaRemoteController_dictionary_willRemoveObject_forKey___block_i
   [v2 invalidate];
 }
 
-- (void)_playbackQueueParticipantsDidChangeNotification:(id)a3
+- (void)_playbackQueueParticipantsDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [v4 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  userInfo = [notification userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v5 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v5 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v6 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v6)
@@ -2397,20 +2397,20 @@ void __76__MPCMediaRemoteController__playbackQueueParticipantsDidChangeNotificat
   *(*(a1 + 32) + 72) = 0;
 }
 
-- (void)_contentItemArtworkChangedNotification:(id)a3
+- (void)_contentItemArtworkChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  [v5 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v6 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v6 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v7 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v7)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B1300]];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B1300]];
 
     accessQueue = self->_accessQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -2418,7 +2418,7 @@ void __76__MPCMediaRemoteController__playbackQueueParticipantsDidChangeNotificat
     v12[2] = __67__MPCMediaRemoteController__contentItemArtworkChangedNotification___block_invoke;
     v12[3] = &unk_1E82392C0;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v11 = v9;
     dispatch_async(accessQueue, v12);
   }
@@ -2470,13 +2470,13 @@ void __67__MPCMediaRemoteController__contentItemArtworkChangedNotification___blo
   }
 }
 
-- (void)_supportedCommandsDidChangeNotification:(id)a3
+- (void)_supportedCommandsDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [v4 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  userInfo = [notification userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v5 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v5 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v6 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v6)
@@ -2502,20 +2502,20 @@ void __68__MPCMediaRemoteController__supportedCommandsDidChangeNotification___bl
   *(*(a1 + 32) + 56) = 0;
 }
 
-- (void)_playbackStateDidChangeNotification:(id)a3
+- (void)_playbackStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  [v5 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v6 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v6 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v7 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v7)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B12B8]];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B12B8]];
 
     accessQueue = self->_accessQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -2523,7 +2523,7 @@ void __68__MPCMediaRemoteController__supportedCommandsDidChangeNotification___bl
     v12[2] = __64__MPCMediaRemoteController__playbackStateDidChangeNotification___block_invoke;
     v12[3] = &unk_1E82392C0;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v11 = v9;
     dispatch_async(accessQueue, v12);
   }
@@ -2576,20 +2576,20 @@ void __64__MPCMediaRemoteController__playbackStateDidChangeNotification___block_
   }
 }
 
-- (void)_playbackQueueContentItemsChangedNotification:(id)a3
+- (void)_playbackQueueContentItemsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  [v5 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v6 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v6 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v7 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v7)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B1300]];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69B1300]];
 
     accessQueue = self->_accessQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -2597,7 +2597,7 @@ void __64__MPCMediaRemoteController__playbackStateDidChangeNotification___block_
     v12[2] = __74__MPCMediaRemoteController__playbackQueueContentItemsChangedNotification___block_invoke;
     v12[3] = &unk_1E82392C0;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v11 = v9;
     dispatch_async(accessQueue, v12);
   }
@@ -2679,13 +2679,13 @@ void __74__MPCMediaRemoteController__playbackQueueContentItemsChangedNotificatio
   }
 }
 
-- (void)_playbackQueueChangedNotification:(id)a3
+- (void)_playbackQueueChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [v4 objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
+  userInfo = [notification userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B1310]];
 
-  v5 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
-  [v5 mediaRemotePlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  [resolvedPlayerPath mediaRemotePlayerPath];
   v6 = MRNowPlayingPlayerPathEqualToPlayerPath();
 
   if (v6)
@@ -2754,13 +2754,13 @@ void __62__MPCMediaRemoteController__playbackQueueChangedNotification___block_in
   [*(*(a1 + 32) + 224) removeAllObjects];
 }
 
-- (id)contentItemAnimatedArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6
+- (id)contentItemAnimatedArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  formatCopy = format;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2775,13 +2775,13 @@ void __62__MPCMediaRemoteController__playbackQueueChangedNotification___block_in
   v25 = width;
   v26 = height;
   block[4] = self;
-  v21 = v13;
-  v23 = v11;
+  v21 = formatCopy;
+  v23 = identifierCopy;
   v24 = &v27;
-  v22 = v12;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
+  v22 = artworkIdentifierCopy;
+  v15 = identifierCopy;
+  v16 = artworkIdentifierCopy;
+  v17 = formatCopy;
   dispatch_sync(accessQueue, block);
   v18 = v28[5];
 
@@ -3024,13 +3024,13 @@ void __116__MPCMediaRemoteController_contentItemAnimatedArtworkForContentItemIde
   [*(*(a1 + 48) + 160) insertAsset:0 forArtworkID:*(a1 + 56) artworkKey:*(a1 + 40)];
 }
 
-- (id)contentItemAnimatedArtworkPreviewFrameForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6
+- (id)contentItemAnimatedArtworkPreviewFrameForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  formatCopy = format;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -3045,13 +3045,13 @@ void __116__MPCMediaRemoteController_contentItemAnimatedArtworkForContentItemIde
   v25 = width;
   v26 = height;
   block[4] = self;
-  v21 = v13;
-  v23 = v11;
+  v21 = formatCopy;
+  v23 = identifierCopy;
   v24 = &v27;
-  v22 = v12;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
+  v22 = artworkIdentifierCopy;
+  v15 = identifierCopy;
+  v16 = artworkIdentifierCopy;
+  v17 = formatCopy;
   dispatch_sync(accessQueue, block);
   v18 = v28[5];
 
@@ -3324,11 +3324,11 @@ void __128__MPCMediaRemoteController_contentItemAnimatedArtworkPreviewFrameForCo
   [v2 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (id)contentItemRemoteArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5 artworkFormat:(id)a6
+- (id)contentItemRemoteArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size artworkFormat:(id)format
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
+  formatCopy = format;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3340,14 +3340,14 @@ void __128__MPCMediaRemoteController_contentItemAnimatedArtworkPreviewFrameForCo
   block[1] = 3221225472;
   block[2] = __114__MPCMediaRemoteController_contentItemRemoteArtworkForContentItemIdentifier_artworkIdentifier_size_artworkFormat___block_invoke;
   block[3] = &unk_1E8238510;
-  v21 = v11;
+  v21 = formatCopy;
   v22 = &v23;
   block[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v19 = artworkIdentifierCopy;
+  v20 = identifierCopy;
+  v13 = formatCopy;
+  v14 = identifierCopy;
+  v15 = artworkIdentifierCopy;
   dispatch_sync(accessQueue, block);
   v16 = v24[5];
 
@@ -3488,12 +3488,12 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)contentItemArtworkForContentItemIdentifier:(id)a3 artworkIdentifier:(id)a4 size:(CGSize)a5
+- (id)contentItemArtworkForContentItemIdentifier:(id)identifier artworkIdentifier:(id)artworkIdentifier size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  artworkIdentifierCopy = artworkIdentifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -3508,11 +3508,11 @@ LABEL_13:
   v20 = width;
   v21 = height;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
+  v17 = artworkIdentifierCopy;
+  v18 = identifierCopy;
   v19 = &v22;
-  v12 = v9;
-  v13 = v10;
+  v12 = identifierCopy;
+  v13 = artworkIdentifierCopy;
   dispatch_sync(accessQueue, v16);
   v14 = v23[5];
 
@@ -3807,12 +3807,12 @@ id __94__MPCMediaRemoteController_contentItemArtworkForContentItemIdentifier_art
   return v0;
 }
 
-- (int64_t)contentItemAnimatedArtworkCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4 artworkFormat:(id)a5
+- (int64_t)contentItemAnimatedArtworkCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size artworkFormat:(id)format
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  formatCopy = format;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3825,11 +3825,11 @@ id __94__MPCMediaRemoteController_contentItemArtworkForContentItemIdentifier_art
   v20 = width;
   v21 = height;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
+  v17 = formatCopy;
+  v18 = identifierCopy;
   v19 = &v22;
-  v12 = v9;
-  v13 = v10;
+  v12 = identifierCopy;
+  v13 = formatCopy;
   dispatch_sync(accessQueue, v16);
   v14 = v23[3];
 
@@ -3847,12 +3847,12 @@ void __104__MPCMediaRemoteController_contentItemAnimatedArtworkCacheStateForArtw
   }
 }
 
-- (int64_t)contentItemAnimatedArtworkPreviewFrameCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4 artworkFormat:(id)a5
+- (int64_t)contentItemAnimatedArtworkPreviewFrameCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size artworkFormat:(id)format
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  formatCopy = format;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3865,11 +3865,11 @@ void __104__MPCMediaRemoteController_contentItemAnimatedArtworkCacheStateForArtw
   v20 = width;
   v21 = height;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
+  v17 = formatCopy;
+  v18 = identifierCopy;
   v19 = &v22;
-  v12 = v9;
-  v13 = v10;
+  v12 = identifierCopy;
+  v13 = formatCopy;
   dispatch_sync(accessQueue, v16);
   v14 = v23[3];
 
@@ -3889,11 +3889,11 @@ void __116__MPCMediaRemoteController_contentItemAnimatedArtworkPreviewFrameCache
   }
 }
 
-- (int64_t)contentItemArtworkCacheStateForArtworkIdentifier:(id)a3 size:(CGSize)a4
+- (int64_t)contentItemArtworkCacheStateForArtworkIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -3906,9 +3906,9 @@ void __116__MPCMediaRemoteController_contentItemAnimatedArtworkPreviewFrameCache
   v15 = width;
   v16 = height;
   block[4] = self;
-  v13 = v7;
+  v13 = identifierCopy;
   v14 = &v17;
-  v9 = v7;
+  v9 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v10 = v18[3];
 
@@ -3928,9 +3928,9 @@ void __82__MPCMediaRemoteController_contentItemArtworkCacheStateForArtworkIdenti
   }
 }
 
-- (id)contentItemForIdentifier:(id)a3
+- (id)contentItemForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3942,10 +3942,10 @@ void __82__MPCMediaRemoteController_contentItemArtworkCacheStateForArtworkIdenti
   block[1] = 3221225472;
   block[2] = __53__MPCMediaRemoteController_contentItemForIdentifier___block_invoke;
   block[3] = &unk_1E8238A50;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -4101,9 +4101,9 @@ void __53__MPCMediaRemoteController_contentItemForIdentifier___block_invoke_4(ui
   [*(*(*(a1 + 56) + 8) + 40) finishWithValue:v2];
 }
 
-- (int64_t)contentItemCacheStateForIdentifier:(id)a3
+- (int64_t)contentItemCacheStateForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -4114,9 +4114,9 @@ void __53__MPCMediaRemoteController_contentItemForIdentifier___block_invoke_4(ui
   block[2] = __63__MPCMediaRemoteController_contentItemCacheStateForIdentifier___block_invoke;
   block[3] = &unk_1E8238A50;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[3];
 
@@ -4144,15 +4144,15 @@ void __63__MPCMediaRemoteController_contentItemCacheStateForIdentifier___block_i
   }
 }
 
-- (id)playbackQueueForRequest:(id)a3
+- (id)playbackQueueForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 label];
-  v7 = [v5 stringWithFormat:@"<MPCMediaRemoteController: %p> %@", self, v6];
-  [v4 setLabel:v7];
+  label = [requestCopy label];
+  v7 = [v5 stringWithFormat:@"<MPCMediaRemoteController: %p> %@", self, label];
+  [requestCopy setLabel:v7];
 
-  v8 = [(MPCMediaRemoteController *)self _requestPropertiesDescriptionForRequest:v4];
+  v8 = [(MPCMediaRemoteController *)self _requestPropertiesDescriptionForRequest:requestCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -4164,11 +4164,11 @@ void __63__MPCMediaRemoteController_contentItemCacheStateForIdentifier___block_i
   block[1] = 3221225472;
   block[2] = __52__MPCMediaRemoteController_playbackQueueForRequest___block_invoke;
   block[3] = &unk_1E8238210;
-  v14 = v4;
-  v15 = self;
+  v14 = requestCopy;
+  selfCopy = self;
   v16 = v8;
   v17 = &v18;
-  v10 = v4;
+  v10 = requestCopy;
   dispatch_sync(accessQueue, block);
   v11 = v19[5];
 
@@ -4329,11 +4329,11 @@ LABEL_16:
   return [*(*(a1 + 32) + 120) endTransaction];
 }
 
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 completion:(id)a5
+- (void)sendCommand:(unsigned int)command options:(id)options completion:(id)completion
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&command;
+  optionsCopy = options;
+  completionCopy = completion;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x3032000000;
@@ -4348,7 +4348,7 @@ LABEL_16:
   v33 = v35;
   block[4] = self;
   v34 = v6;
-  v11 = v8;
+  v11 = optionsCopy;
   v32 = v11;
   dispatch_sync(accessQueue, block);
   v12 = objc_alloc_init(MEMORY[0x1E69B13F0]);
@@ -4361,11 +4361,11 @@ LABEL_16:
   v29 = v35;
   v15 = v12;
   v27 = v15;
-  v28 = self;
+  selfCopy = self;
   v30 = v6;
   dispatch_after(v13, v14, v26);
   v16 = objc_opt_class();
-  v17 = [(MPCMediaRemoteController *)self resolvedPlayerPath];
+  resolvedPlayerPath = [(MPCMediaRemoteController *)self resolvedPlayerPath];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__MPCMediaRemoteController_sendCommand_options_completion___block_invoke_149;
@@ -4373,11 +4373,11 @@ LABEL_16:
   v18 = v15;
   v24 = v35;
   v21 = v18;
-  v22 = self;
+  selfCopy2 = self;
   v25 = v6;
-  v19 = v9;
+  v19 = completionCopy;
   v23 = v19;
-  [v16 sendCommand:v6 options:v11 toPlayerPath:v17 completion:v20];
+  [v16 sendCommand:v6 options:v11 toPlayerPath:resolvedPlayerPath completion:v20];
 
   _Block_object_dispose(v35, 8);
 }
@@ -4581,17 +4581,17 @@ void __51__MPCMediaRemoteController_remoteArtworkDataSource__block_invoke(uint64
 - (void)dealloc
 {
   MEMORY[0x1C6955540](self->_stateHandle, a2);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MPCMediaRemoteController;
   [(MPCMediaRemoteController *)&v4 dealloc];
 }
 
-- (id)_initWithResolvedPlayerPath:(id)a3
+- (id)_initWithResolvedPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v51.receiver = self;
   v51.super_class = MPCMediaRemoteController;
   v5 = [(MPCMediaRemoteController *)&v51 init];
@@ -4607,57 +4607,57 @@ void __51__MPCMediaRemoteController_remoteArtworkDataSource__block_invoke(uint64
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [pathCopy copy];
     resolvedPlayerPath = v5->_resolvedPlayerPath;
     v5->_resolvedPlayerPath = v12;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     contentItemIDs = v5->_contentItemIDs;
-    v5->_contentItemIDs = v14;
+    v5->_contentItemIDs = array;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     optimisticStateContentItems = v5->_optimisticStateContentItems;
-    v5->_optimisticStateContentItems = v16;
+    v5->_optimisticStateContentItems = dictionary;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     contentItemChanges = v5->_contentItemChanges;
-    v5->_contentItemChanges = v18;
+    v5->_contentItemChanges = dictionary2;
 
-    v20 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     playbackQueueFutures = v5->_playbackQueueFutures;
-    v5->_playbackQueueFutures = v20;
+    v5->_playbackQueueFutures = strongToWeakObjectsMapTable;
 
-    v22 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     contentItemFutures = v5->_contentItemFutures;
-    v5->_contentItemFutures = v22;
+    v5->_contentItemFutures = strongToWeakObjectsMapTable2;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     contentItemArtworkFutures = v5->_contentItemArtworkFutures;
-    v5->_contentItemArtworkFutures = v24;
+    v5->_contentItemArtworkFutures = dictionary3;
 
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     contentItemRemoteArtworkFutures = v5->_contentItemRemoteArtworkFutures;
-    v5->_contentItemRemoteArtworkFutures = v26;
+    v5->_contentItemRemoteArtworkFutures = dictionary4;
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     contentItemAnimatedArtworkPreviewFrameFutures = v5->_contentItemAnimatedArtworkPreviewFrameFutures;
-    v5->_contentItemAnimatedArtworkPreviewFrameFutures = v28;
+    v5->_contentItemAnimatedArtworkPreviewFrameFutures = dictionary5;
 
-    v30 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     contentItemAnimatedArtworkFutures = v5->_contentItemAnimatedArtworkFutures;
-    v5->_contentItemAnimatedArtworkFutures = v30;
+    v5->_contentItemAnimatedArtworkFutures = dictionary6;
 
-    v32 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
     contentItemArtworkIdentifiers = v5->_contentItemArtworkIdentifiers;
-    v5->_contentItemArtworkIdentifiers = v32;
+    v5->_contentItemArtworkIdentifiers = dictionary7;
 
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary8 = [MEMORY[0x1E695DF90] dictionary];
     requestedRangeForProperties = v5->_requestedRangeForProperties;
-    v5->_requestedRangeForProperties = v34;
+    v5->_requestedRangeForProperties = dictionary8;
 
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary9 = [MEMORY[0x1E695DF90] dictionary];
     contentItemIDsForProperties = v5->_contentItemIDsForProperties;
-    v5->_contentItemIDsForProperties = v36;
+    v5->_contentItemIDsForProperties = dictionary9;
 
     v38 = [objc_alloc(MEMORY[0x1E69B1430]) initWithMaximumCapacity:1];
     contentItems = v5->_contentItems;
@@ -4678,13 +4678,13 @@ void __51__MPCMediaRemoteController_remoteArtworkDataSource__block_invoke(uint64
 
     if ([objc_opt_class() _shouldRegisterForNotifications])
     {
-      v46 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v46 addObserver:v5 selector:sel__playbackStateDidChangeNotification_ name:*MEMORY[0x1E69B12C8] object:0];
-      [v46 addObserver:v5 selector:sel__supportedCommandsDidChangeNotification_ name:*MEMORY[0x1E69B12D0] object:0];
-      [v46 addObserver:v5 selector:sel__playbackQueueChangedNotification_ name:*MEMORY[0x1E69B1318] object:0];
-      [v46 addObserver:v5 selector:sel__playbackQueueContentItemsChangedNotification_ name:*MEMORY[0x1E69B1328] object:0];
-      [v46 addObserver:v5 selector:sel__contentItemArtworkChangedNotification_ name:*MEMORY[0x1E69B1320] object:0];
-      [v46 addObserver:v5 selector:sel__playbackQueueParticipantsDidChangeNotification_ name:*MEMORY[0x1E69B0960] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel__playbackStateDidChangeNotification_ name:*MEMORY[0x1E69B12C8] object:0];
+      [defaultCenter addObserver:v5 selector:sel__supportedCommandsDidChangeNotification_ name:*MEMORY[0x1E69B12D0] object:0];
+      [defaultCenter addObserver:v5 selector:sel__playbackQueueChangedNotification_ name:*MEMORY[0x1E69B1318] object:0];
+      [defaultCenter addObserver:v5 selector:sel__playbackQueueContentItemsChangedNotification_ name:*MEMORY[0x1E69B1328] object:0];
+      [defaultCenter addObserver:v5 selector:sel__contentItemArtworkChangedNotification_ name:*MEMORY[0x1E69B1320] object:0];
+      [defaultCenter addObserver:v5 selector:sel__playbackQueueParticipantsDidChangeNotification_ name:*MEMORY[0x1E69B0960] object:0];
     }
 
     v47 = dispatch_get_global_queue(21, 0);
@@ -4739,32 +4739,32 @@ uint64_t __56__MPCMediaRemoteController__initWithResolvedPlayerPath___block_invo
   return v9;
 }
 
-+ (void)_sendCommand:(unsigned int)a3 playbackIntent:(id)a4 options:(id)a5 toPlayerPath:(id)a6 completion:(id)a7
++ (void)_sendCommand:(unsigned int)command playbackIntent:(id)intent options:(id)options toPlayerPath:(id)path completion:(id)completion
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  intentCopy = intent;
+  optionsCopy = options;
+  pathCopy = path;
+  completionCopy = completion;
+  if (!intentCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"MPCMediaRemoteController.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"playbackIntent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCMediaRemoteController.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"playbackIntent"}];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __88__MPCMediaRemoteController__sendCommand_playbackIntent_options_toPlayerPath_completion___block_invoke;
   v22[3] = &unk_1E82380D8;
-  v23 = v13;
-  v24 = v14;
-  v26 = v16;
-  v27 = a1;
-  v28 = a3;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v16;
-  v20 = v13;
+  v23 = intentCopy;
+  v24 = optionsCopy;
+  v26 = completionCopy;
+  selfCopy = self;
+  commandCopy = command;
+  v25 = pathCopy;
+  v17 = pathCopy;
+  v18 = optionsCopy;
+  v19 = completionCopy;
+  v20 = intentCopy;
   [v17 getPlaybackIntentDestinationWithCompletion:v22];
 }
 
@@ -4878,26 +4878,26 @@ void __88__MPCMediaRemoteController__sendCommand_playbackIntent_options_toPlayer
   }
 }
 
-+ (void)_sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 toPlayerPath:(id)a6 completion:(id)a7
++ (void)_sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions toPlayerPath:(id)path completion:(id)completion
 {
-  v11 = a4;
-  v12 = a7;
+  optionsCopy = options;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__MPCMediaRemoteController__sendCommand_options_appOptions_toPlayerPath_completion___block_invoke;
   aBlock[3] = &unk_1E8238038;
-  v13 = v12;
+  v13 = completionCopy;
   v33 = v13;
-  v34 = a3;
-  v14 = a6;
+  commandCopy = command;
+  pathCopy = path;
   v15 = _Block_copy(aBlock);
   v16 = os_log_create("com.apple.amp.mediaplaybackcore", "MediaRemote");
   v17 = os_signpost_id_generate(v16);
 
-  v18 = [v11 objectForKeyedSubscript:@"MPCPlayerCommandRequestMediaRemoteOptionDevices"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"MPCPlayerCommandRequestMediaRemoteOptionDevices"];
   if (v18)
   {
-    v25 = [v11 mutableCopy];
+    v25 = [optionsCopy mutableCopy];
     [v25 removeObjectForKey:@"MPCPlayerCommandRequestMediaRemoteOptionDevices"];
     v24 = v25;
 
@@ -4909,8 +4909,8 @@ void __88__MPCMediaRemoteController__sendCommand_playbackIntent_options_toPlayer
       _os_signpost_emit_with_name_impl(&dword_1C5C61000, v27, OS_SIGNPOST_INTERVAL_BEGIN, v17, "SendCommand:groupDevicesAndSendCommand", "", buf, 2u);
     }
 
-    [v14 mediaRemotePlayerPath];
-    v21 = [a1 mediaRemoteReplyQueue];
+    [pathCopy mediaRemotePlayerPath];
+    mediaRemoteReplyQueue = [self mediaRemoteReplyQueue];
     v29[2] = MEMORY[0x1E69E9820];
     v29[3] = 3221225472;
     v29[4] = __84__MPCMediaRemoteController__sendCommand_options_appOptions_toPlayerPath_completion___block_invoke_66;
@@ -4932,14 +4932,14 @@ void __88__MPCMediaRemoteController__sendCommand_playbackIntent_options_toPlayer
       _os_signpost_emit_with_name_impl(&dword_1C5C61000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v17, "SendCommand:sendCommandToPlayer", "", buf, 2u);
     }
 
-    [v14 mediaRemotePlayerPath];
-    v21 = [a1 mediaRemoteReplyQueue];
+    [pathCopy mediaRemotePlayerPath];
+    mediaRemoteReplyQueue = [self mediaRemoteReplyQueue];
     v22 = v29;
     v29[0] = v15;
     v29[1] = v17;
     v23 = v15;
     MRMediaRemoteSendCommandToPlayerWithResult();
-    v24 = v11;
+    v24 = optionsCopy;
   }
 }
 
@@ -5038,28 +5038,28 @@ void __84__MPCMediaRemoteController__sendCommand_options_appOptions_toPlayerPath
   (*(v10 + 16))(v10, v7, v11, v13);
 }
 
-+ (void)sendCommand:(unsigned int)a3 options:(id)a4 toPlayerPath:(id)a5 completion:(id)a6
++ (void)sendCommand:(unsigned int)command options:(id)options toPlayerPath:(id)path completion:(id)completion
 {
-  v8 = *&a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v12 objectForKeyedSubscript:@"MPCPlayerCommandRequestMediaRemoteOptionPlaybackIntent"];
+  v8 = *&command;
+  completionCopy = completion;
+  pathCopy = path;
+  optionsCopy = options;
+  v13 = [optionsCopy objectForKeyedSubscript:@"MPCPlayerCommandRequestMediaRemoteOptionPlaybackIntent"];
   v14 = v13;
   if (v13)
   {
-    [a1 _sendCommand:v8 playbackIntent:v13 options:v12 toPlayerPath:v11 completion:v10];
+    [self _sendCommand:v8 playbackIntent:v13 options:optionsCopy toPlayerPath:pathCopy completion:completionCopy];
   }
 
   else
   {
-    [a1 _sendCommand:v8 options:v12 appOptions:v8 == 132 toPlayerPath:v11 completion:v10];
+    [self _sendCommand:v8 options:optionsCopy appOptions:v8 == 132 toPlayerPath:pathCopy completion:completionCopy];
   }
 }
 
-+ (id)controllerForPlayerPath:(id)a3
++ (id)controllerForPlayerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (controllerForPlayerPath__onceToken != -1)
   {
     dispatch_once(&controllerForPlayerPath__onceToken, &__block_literal_global_44);
@@ -5076,9 +5076,9 @@ void __84__MPCMediaRemoteController__sendCommand_options_appOptions_toPlayerPath
   v8[1] = 3221225472;
   v8[2] = __52__MPCMediaRemoteController_controllerForPlayerPath___block_invoke_47;
   v8[3] = &unk_1E82394D8;
-  v9 = v3;
+  v9 = pathCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = pathCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 

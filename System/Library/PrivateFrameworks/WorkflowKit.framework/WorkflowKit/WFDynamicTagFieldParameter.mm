@@ -14,8 +14,8 @@
 
 - (id)suggestedTags
 {
-  v3 = [(WFDynamicTagFieldParameter *)self dataSource];
-  v4 = [v3 suggestedTagsForTagField:self];
+  dataSource = [(WFDynamicTagFieldParameter *)self dataSource];
+  v4 = [dataSource suggestedTagsForTagField:self];
 
   return v4;
 }

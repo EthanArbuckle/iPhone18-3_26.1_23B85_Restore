@@ -1,153 +1,153 @@
 @interface NTKFaceSnapshotResult
-- (NTKFaceSnapshotResult)initWithCachedFile:(id)a3 snapshotKey:(id)a4 rawSnapshotKey:(id)a5 context:(id)a6 blankComplications:(BOOL)a7 snapshot:(id)a8;
-- (NTKFaceSnapshotResult)initWithCoder:(id)a3;
-- (id)_snapshotResultForGalleryLiteStoredWithin:(id)a3 withError:(id *)a4;
-- (id)snapshotResultForGalleryLiteUsingDevice:(id)a3 withError:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (NTKFaceSnapshotResult)initWithCachedFile:(id)file snapshotKey:(id)key rawSnapshotKey:(id)snapshotKey context:(id)context blankComplications:(BOOL)complications snapshot:(id)snapshot;
+- (NTKFaceSnapshotResult)initWithCoder:(id)coder;
+- (id)_snapshotResultForGalleryLiteStoredWithin:(id)within withError:(id *)error;
+- (id)snapshotResultForGalleryLiteUsingDevice:(id)device withError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKFaceSnapshotResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   snapshot = self->_snapshot;
-  v5 = a3;
-  [v5 encodeObject:snapshot forKey:@"snapshot"];
-  [v5 encodeObject:self->_snapshotContext forKey:@"context"];
-  [v5 encodeObject:self->_cachedFile forKey:@"cachedFile"];
-  [v5 encodeObject:self->_snapshotKey forKey:@"snapshotKey"];
-  [v5 encodeObject:self->_rawSnapshotKey forKey:@"rawSnapshotKey"];
-  [v5 encodeBool:self->_blankComplications forKey:@"blankComplications"];
+  coderCopy = coder;
+  [coderCopy encodeObject:snapshot forKey:@"snapshot"];
+  [coderCopy encodeObject:self->_snapshotContext forKey:@"context"];
+  [coderCopy encodeObject:self->_cachedFile forKey:@"cachedFile"];
+  [coderCopy encodeObject:self->_snapshotKey forKey:@"snapshotKey"];
+  [coderCopy encodeObject:self->_rawSnapshotKey forKey:@"rawSnapshotKey"];
+  [coderCopy encodeBool:self->_blankComplications forKey:@"blankComplications"];
 }
 
-- (NTKFaceSnapshotResult)initWithCoder:(id)a3
+- (NTKFaceSnapshotResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snapshot"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snapshot"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snapshotKey"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snapshotKey"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawSnapshotKey"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawSnapshotKey"];
         if (v8)
         {
-          v9 = [v4 decodeBoolForKey:@"blankComplications"];
-          v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cachedFile"];
+          v9 = [coderCopy decodeBoolForKey:@"blankComplications"];
+          v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cachedFile"];
           self = [(NTKFaceSnapshotResult *)self initWithCachedFile:v10 snapshotKey:v7 rawSnapshotKey:v8 context:v6 blankComplications:v9 snapshot:v5];
 
-          v11 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v11 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (NTKFaceSnapshotResult)initWithCachedFile:(id)a3 snapshotKey:(id)a4 rawSnapshotKey:(id)a5 context:(id)a6 blankComplications:(BOOL)a7 snapshot:(id)a8
+- (NTKFaceSnapshotResult)initWithCachedFile:(id)file snapshotKey:(id)key rawSnapshotKey:(id)snapshotKey context:(id)context blankComplications:(BOOL)complications snapshot:(id)snapshot
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  fileCopy = file;
+  keyCopy = key;
+  snapshotKeyCopy = snapshotKey;
+  contextCopy = context;
+  snapshotCopy = snapshot;
   v27.receiver = self;
   v27.super_class = NTKFaceSnapshotResult;
   v20 = [(NTKFaceSnapshotResult *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_cachedFile, a3);
-    objc_storeStrong(&v21->_snapshotContext, a6);
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_cachedFile, file);
+    objc_storeStrong(&v21->_snapshotContext, context);
+    v22 = [keyCopy copy];
     snapshotKey = v21->_snapshotKey;
     v21->_snapshotKey = v22;
 
-    v24 = [v17 copy];
+    v24 = [snapshotKeyCopy copy];
     rawSnapshotKey = v21->_rawSnapshotKey;
     v21->_rawSnapshotKey = v24;
 
-    v21->_blankComplications = a7;
-    objc_storeStrong(&v21->_snapshot, a8);
+    v21->_blankComplications = complications;
+    objc_storeStrong(&v21->_snapshot, snapshot);
   }
 
   return v21;
 }
 
-- (id)snapshotResultForGalleryLiteUsingDevice:(id)a3 withError:(id *)a4
+- (id)snapshotResultForGalleryLiteUsingDevice:(id)device withError:(id *)error
 {
-  v6 = [MEMORY[0x277CBEBC0] galleryLiteSupportDirectoryForDevice:a3];
-  v7 = [(NTKFaceSnapshotResult *)self _snapshotResultForGalleryLiteStoredWithin:v6 withError:a4];
+  v6 = [MEMORY[0x277CBEBC0] galleryLiteSupportDirectoryForDevice:device];
+  v7 = [(NTKFaceSnapshotResult *)self _snapshotResultForGalleryLiteStoredWithin:v6 withError:error];
 
   return v7;
 }
 
-- (id)_snapshotResultForGalleryLiteStoredWithin:(id)a3 withError:(id *)a4
+- (id)_snapshotResultForGalleryLiteStoredWithin:(id)within withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(NTKFaceSnapshotResult *)self cachedFile];
-  v8 = v7;
-  if (v7)
+  withinCopy = within;
+  cachedFile = [(NTKFaceSnapshotResult *)self cachedFile];
+  v8 = cachedFile;
+  if (cachedFile)
   {
-    v9 = [v7 _cachedFileForGalleryLiteStoredWithin:v6 withError:a4];
+    v9 = [cachedFile _cachedFileForGalleryLiteStoredWithin:withinCopy withError:error];
     if (v9)
     {
       v10 = v9;
-      v27 = v6;
+      v27 = withinCopy;
       v11 = 0;
 LABEL_13:
       v20 = [NTKFaceSnapshotResult alloc];
-      v21 = [(NTKFaceSnapshotResult *)self snapshotKey];
-      v22 = [(NTKFaceSnapshotResult *)self rawSnapshotKey];
-      v23 = [(NTKFaceSnapshotResult *)self snapshotContext];
-      v24 = [(NTKFaceSnapshotResult *)self hasBlankComplications];
-      v25 = [(NTKFaceSnapshotResult *)self snapshot];
-      v18 = [(NTKFaceSnapshotResult *)v20 initWithCachedFile:v10 snapshotKey:v21 rawSnapshotKey:v22 context:v23 blankComplications:v24 snapshot:v25];
+      snapshotKey = [(NTKFaceSnapshotResult *)self snapshotKey];
+      rawSnapshotKey = [(NTKFaceSnapshotResult *)self rawSnapshotKey];
+      snapshotContext = [(NTKFaceSnapshotResult *)self snapshotContext];
+      hasBlankComplications = [(NTKFaceSnapshotResult *)self hasBlankComplications];
+      snapshot = [(NTKFaceSnapshotResult *)self snapshot];
+      v18 = [(NTKFaceSnapshotResult *)v20 initWithCachedFile:v10 snapshotKey:snapshotKey rawSnapshotKey:rawSnapshotKey context:snapshotContext blankComplications:hasBlankComplications snapshot:snapshot];
 
-      v6 = v27;
+      withinCopy = v27;
       goto LABEL_15;
     }
 
     v10 = 0;
     v11 = 0;
-    if (a4)
+    if (error)
     {
       v18 = 0;
-      *a4 = 0;
+      *error = 0;
       goto LABEL_15;
     }
   }
 
   else
   {
-    v28 = [(NTKFaceSnapshotResult *)self snapshot];
-    v12 = [[NTKEncodedSnapshot alloc] initWithImage:v28];
-    v13 = [(NTKFaceSnapshotResult *)self snapshotKey];
-    v14 = [v6 URLByAppendingPathComponent:v13];
+    snapshot2 = [(NTKFaceSnapshotResult *)self snapshot];
+    v12 = [[NTKEncodedSnapshot alloc] initWithImage:snapshot2];
+    snapshotKey2 = [(NTKFaceSnapshotResult *)self snapshotKey];
+    v14 = [withinCopy URLByAppendingPathComponent:snapshotKey2];
     v15 = [v14 URLByAppendingPathExtension:@"cpbitmap"];
 
     v29 = 0;
@@ -159,11 +159,11 @@ LABEL_13:
       v10 = [[NTKFaceSnapshotResultCachedFile alloc] initWithFileURL:v15 format:2];
     }
 
-    else if (a4)
+    else if (error)
     {
       v19 = v17;
       v10 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -173,7 +173,7 @@ LABEL_13:
 
     if (v16)
     {
-      v27 = v6;
+      v27 = withinCopy;
       goto LABEL_13;
     }
   }

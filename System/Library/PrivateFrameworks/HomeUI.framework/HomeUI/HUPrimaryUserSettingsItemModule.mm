@@ -1,22 +1,22 @@
 @interface HUPrimaryUserSettingsItemModule
-- (HUPrimaryUserSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 mediaProfileContainer:(id)a5;
-- (id)_updatePrimaryUserSelectionType:(unint64_t)a3 user:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUPrimaryUserSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home mediaProfileContainer:(id)container;
+- (id)_updatePrimaryUserSelectionType:(unint64_t)type user:(id)user;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (void)_buildItemProviders;
 @end
 
 @implementation HUPrimaryUserSettingsItemModule
 
-- (HUPrimaryUserSettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 mediaProfileContainer:(id)a5
+- (HUPrimaryUserSettingsItemModule)initWithItemUpdater:(id)updater home:(id)home mediaProfileContainer:(id)container
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  updaterCopy = updater;
+  homeCopy = home;
+  containerCopy = container;
+  v12 = containerCopy;
+  if (homeCopy)
   {
-    if (v11)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
@@ -24,8 +24,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserSettingsItemModule.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPrimaryUserSettingsItemModule.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
 
     if (v12)
     {
@@ -33,18 +33,18 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserSettingsItemModule.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUPrimaryUserSettingsItemModule.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = HUPrimaryUserSettingsItemModule;
-  v13 = [(HFItemModule *)&v18 initWithItemUpdater:v9];
+  v13 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_home, a4);
-    objc_storeStrong(&v14->_mediaProfileContainer, a5);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v14->_mediaProfileContainer, container);
     [(HUPrimaryUserSettingsItemModule *)v14 _buildItemProviders];
   }
 
@@ -54,23 +54,23 @@ LABEL_3:
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUPrimaryUserSettingsItemModule *)self primaryUserItemProvider];
-  v5 = [(HUPrimaryUserSettingsItemModule *)self staticItemProvider];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  primaryUserItemProvider = [(HUPrimaryUserSettingsItemModule *)self primaryUserItemProvider];
+  staticItemProvider = [(HUPrimaryUserSettingsItemModule *)self staticItemProvider];
+  v6 = [v3 setWithObjects:{primaryUserItemProvider, staticItemProvider, 0}];
 
   return v6;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
-  v7 = [v6 hf_backingAccessory];
-  v22 = [v7 hf_isSiriEndpoint];
+  mediaProfileContainer = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
+  hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+  hf_isSiriEndpoint = [hf_backingAccessory hf_isSiriEndpoint];
 
   v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUPrimaryUserSettingsHeaderSectionIdentifier"];
-  if (v22)
+  if (hf_isSiriEndpoint)
   {
     v9 = @"HUPrimaryUserSettingsHeaderSection_SiriEndpoint_Footer";
   }
@@ -88,24 +88,24 @@ LABEL_3:
   [v5 addObject:v8];
   v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUPrimaryUserSettingsUserSectionIdentifier"];
   v12 = objc_opt_new();
-  v13 = [(HUPrimaryUserSettingsItemModule *)self primaryUserItemProvider];
-  v14 = [v13 items];
-  v15 = [v14 allObjects];
-  v16 = [objc_opt_class() _userItemComparator];
-  v17 = [v15 sortedArrayUsingComparator:v16];
+  primaryUserItemProvider = [(HUPrimaryUserSettingsItemModule *)self primaryUserItemProvider];
+  items = [primaryUserItemProvider items];
+  allObjects = [items allObjects];
+  _userItemComparator = [objc_opt_class() _userItemComparator];
+  v17 = [allObjects sortedArrayUsingComparator:_userItemComparator];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __67__HUPrimaryUserSettingsItemModule_buildSectionsWithDisplayedItems___block_invoke;
   v25[3] = &unk_277DB85D8;
-  v26 = v4;
-  v18 = v4;
+  v26 = itemsCopy;
+  v18 = itemsCopy;
   v19 = [v17 na_filter:v25];
   [v12 na_safeAddObjectsFromArray:v19];
 
-  if ((v22 & 1) == 0)
+  if ((hf_isSiriEndpoint & 1) == 0)
   {
-    v20 = [(HUPrimaryUserSettingsItemModule *)self homePodAccountSelectionItem];
-    [v12 na_safeAddObject:v20];
+    homePodAccountSelectionItem = [(HUPrimaryUserSettingsItemModule *)self homePodAccountSelectionItem];
+    [v12 na_safeAddObject:homePodAccountSelectionItem];
   }
 
   [v11 setItems:v12];
@@ -151,21 +151,21 @@ uint64_t __54__HUPrimaryUserSettingsItemModule__userItemComparator__block_invoke
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v3 = [HUPrimaryUserItemProvider alloc];
-  v4 = [(HUPrimaryUserSettingsItemModule *)self home];
-  v5 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
-  v6 = [(HUPrimaryUserItemProvider *)v3 initWithHome:v4 mediaProfileContainer:v5];
+  home = [(HUPrimaryUserSettingsItemModule *)self home];
+  mediaProfileContainer = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
+  v6 = [(HUPrimaryUserItemProvider *)v3 initWithHome:home mediaProfileContainer:mediaProfileContainer];
   [(HUPrimaryUserSettingsItemModule *)self setPrimaryUserItemProvider:v6];
 
   v7 = [HUPrimaryUserHomePodAccountItem alloc];
-  v8 = [(HUPrimaryUserSettingsItemModule *)self home];
-  v9 = [v8 hf_characteristicValueManager];
-  v10 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
-  v11 = [(HUPrimaryUserHomePodAccountItem *)v7 initWithValueSource:v9 mediaProfileContainer:v10];
+  home2 = [(HUPrimaryUserSettingsItemModule *)self home];
+  hf_characteristicValueManager = [home2 hf_characteristicValueManager];
+  mediaProfileContainer2 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
+  v11 = [(HUPrimaryUserHomePodAccountItem *)v7 initWithValueSource:hf_characteristicValueManager mediaProfileContainer:mediaProfileContainer2];
   [(HUPrimaryUserSettingsItemModule *)self setHomePodAccountSelectionItem:v11];
 
   v12 = objc_alloc(MEMORY[0x277CBEB58]);
-  v13 = [(HUPrimaryUserSettingsItemModule *)self homePodAccountSelectionItem];
-  v17[0] = v13;
+  homePodAccountSelectionItem = [(HUPrimaryUserSettingsItemModule *)self homePodAccountSelectionItem];
+  v17[0] = homePodAccountSelectionItem;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v15 = [v12 initWithArray:v14];
 
@@ -173,21 +173,21 @@ uint64_t __54__HUPrimaryUserSettingsItemModule__userItemComparator__block_invoke
   [(HUPrimaryUserSettingsItemModule *)self setStaticItemProvider:v16];
 }
 
-- (id)_updatePrimaryUserSelectionType:(unint64_t)a3 user:(id)a4
+- (id)_updatePrimaryUserSelectionType:(unint64_t)type user:(id)user
 {
   v34 = *MEMORY[0x277D85DE8];
-  v24 = a4;
+  userCopy = user;
   v6 = objc_opt_new();
   v7 = MEMORY[0x277CBEB58];
-  v8 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
-  v9 = [v8 accessories];
-  v10 = [v7 setWithSet:v9];
+  mediaProfileContainer = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
+  v10 = [v7 setWithSet:accessories];
 
   if (!v10)
   {
-    v11 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
-    v12 = [v11 hf_backingAccessory];
-    [0 na_safeAddObject:v12];
+    mediaProfileContainer2 = [(HUPrimaryUserSettingsItemModule *)self mediaProfileContainer];
+    hf_backingAccessory = [mediaProfileContainer2 hf_backingAccessory];
+    [0 na_safeAddObject:hf_backingAccessory];
   }
 
   v31 = 0u;
@@ -220,8 +220,8 @@ uint64_t __54__HUPrimaryUserSettingsItemModule__userItemComparator__block_invoke
           v25[4] = self;
           v25[5] = v18;
           v27 = a2;
-          v28 = a3;
-          v26 = v24;
+          typeCopy = type;
+          v26 = userCopy;
           v20 = [v19 futureWithBlock:v25];
           [v6 addObject:v20];
         }

@@ -1,7 +1,7 @@
 @interface VSSubscription
 + (id)keyPathsForValuesAffectingSubscriptionInfo;
 + (id)keyPathsForValuesAffectingVersionHash;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tierIdentifiers;
 - (NSData)versionHash;
 - (NSDate)expirationDate;
@@ -11,16 +11,16 @@
 - (NSString)subscriberIdentifierHash;
 - (NSString)subscriptionInfo;
 - (VSSubscription)init;
-- (VSSubscription)initWithCoder:(id)a3;
+- (VSSubscription)initWithCoder:(id)coder;
 - (VSSubscriptionSource)source;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_updateHash:(id)a3 withValueForProperty:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setModificationDate:(id)a3;
-- (void)setNilValueForKey:(id)a3;
+- (void)_updateHash:(id)hash withValueForProperty:(id)property;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCreationDate:(id)date;
+- (void)setModificationDate:(id)date;
+- (void)setNilValueForKey:(id)key;
 @end
 
 @implementation VSSubscription
@@ -39,32 +39,32 @@
   return v2;
 }
 
-- (VSSubscription)initWithCoder:(id)a3
+- (VSSubscription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSSubscription;
   v5 = [(VSSubscription *)&v8 init];
   if (v5)
   {
     v6 = VSSubscriptionValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSSubscriptionValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSSubscriptionValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -77,11 +77,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSSubscriptionValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }
@@ -94,53 +94,53 @@
   return v4;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v4 = [MEMORY[0x277CBEAA8] vs_currentDate];
+    dateCopy = [MEMORY[0x277CBEAA8] vs_currentDate];
   }
 
-  v7 = v4;
-  v5 = [v4 copy];
+  v7 = dateCopy;
+  v5 = [dateCopy copy];
   creationDate = self->_creationDate;
   self->_creationDate = v5;
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v4 = [MEMORY[0x277CBEAA8] vs_currentDate];
+    dateCopy = [MEMORY[0x277CBEAA8] vs_currentDate];
   }
 
-  v7 = v4;
-  v5 = [v4 copy];
+  v7 = dateCopy;
+  v5 = [dateCopy copy];
   modificationDate = self->_modificationDate;
   self->_modificationDate = v5;
 }
 
 - (NSDate)expirationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_expirationDate;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  distantFuture = selfCopy->_expirationDate;
+  if (!distantFuture)
   {
-    v3 = [MEMORY[0x277CBEAA8] distantFuture];
-    objc_storeStrong(&v2->_expirationDate, v3);
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    objc_storeStrong(&selfCopy->_expirationDate, distantFuture);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!distantFuture)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The __orNil parameter must not be nil."];
   }
 
-  return v3;
+  return distantFuture;
 }
 
 + (id)keyPathsForValuesAffectingSubscriptionInfo
@@ -174,63 +174,63 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
 
 - (NSString)subscriptionInfo
 {
-  v3 = [(VSSubscription *)self providedSubscriptionInfo];
-  if (![v3 length])
+  providedSubscriptionInfo = [(VSSubscription *)self providedSubscriptionInfo];
+  if (![providedSubscriptionInfo length])
   {
-    v4 = [(VSSubscription *)self derivedSubscriptionInfo];
+    derivedSubscriptionInfo = [(VSSubscription *)self derivedSubscriptionInfo];
 
-    v3 = v4;
+    providedSubscriptionInfo = derivedSubscriptionInfo;
   }
 
-  return v3;
+  return providedSubscriptionInfo;
 }
 
 - (NSString)providedSubscriptionInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_providedSubscriptionInfo;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_providedSubscriptionInfo;
   if (!v3)
   {
-    providedSubscriptionInfo = v2->_providedSubscriptionInfo;
+    providedSubscriptionInfo = selfCopy->_providedSubscriptionInfo;
     v3 = &stru_284DD5B48;
-    v2->_providedSubscriptionInfo = &stru_284DD5B48;
+    selfCopy->_providedSubscriptionInfo = &stru_284DD5B48;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)derivedSubscriptionInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_derivedSubscriptionInfo;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_derivedSubscriptionInfo;
   if (!v3)
   {
-    derivedSubscriptionInfo = v2->_derivedSubscriptionInfo;
+    derivedSubscriptionInfo = selfCopy->_derivedSubscriptionInfo;
     v3 = &stru_284DD5B48;
-    v2->_derivedSubscriptionInfo = &stru_284DD5B48;
+    selfCopy->_derivedSubscriptionInfo = &stru_284DD5B48;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (VSSubscriptionSource)source
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_source;
   if (!v3)
   {
     v3 = +[VSSubscriptionSource currentSource];
-    objc_storeStrong(&v2->_source, v3);
+    objc_storeStrong(&selfCopy->_source, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -242,87 +242,87 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
 
 - (NSString)billingIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_billingIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_billingIdentifier;
   if (!v3)
   {
-    billingIdentifier = v2->_billingIdentifier;
+    billingIdentifier = selfCopy->_billingIdentifier;
     v3 = &stru_284DD5B48;
-    v2->_billingIdentifier = &stru_284DD5B48;
+    selfCopy->_billingIdentifier = &stru_284DD5B48;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)tierIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_tierIdentifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_tierIdentifiers;
   if (!v3)
   {
-    tierIdentifiers = v2->_tierIdentifiers;
+    tierIdentifiers = selfCopy->_tierIdentifiers;
     v3 = MEMORY[0x277CBEBF8];
-    v2->_tierIdentifiers = MEMORY[0x277CBEBF8];
+    selfCopy->_tierIdentifiers = MEMORY[0x277CBEBF8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)subscriberIdentifierHash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_subscriberIdentifierHash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_subscriberIdentifierHash;
   if (!v3)
   {
-    subscriberIdentifierHash = v2->_subscriberIdentifierHash;
+    subscriberIdentifierHash = selfCopy->_subscriberIdentifierHash;
     v3 = &stru_284DD5B48;
-    v2->_subscriberIdentifierHash = &stru_284DD5B48;
+    selfCopy->_subscriberIdentifierHash = &stru_284DD5B48;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:@"accessLevel"])
+  keyCopy = key;
+  if ([keyCopy isEqual:@"accessLevel"])
   {
-    [(VSSubscription *)self setValue:&unk_284DF32F8 forKey:v4];
+    [(VSSubscription *)self setValue:&unk_284DF32F8 forKey:keyCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = VSSubscription;
-    [(VSSubscription *)&v5 setNilValueForKey:v4];
+    [(VSSubscription *)&v5 setNilValueForKey:keyCopy];
   }
 }
 
-- (void)_updateHash:(id)a3 withValueForProperty:(id)a4
+- (void)_updateHash:(id)hash withValueForProperty:(id)property
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 name];
-  v9 = [(VSSubscription *)self valueForKey:v8];
+  hashCopy = hash;
+  propertyCopy = property;
+  name = [propertyCopy name];
+  v9 = [(VSSubscription *)self valueForKey:name];
 
-  v10 = [v7 kind];
-  switch(v10)
+  kind = [propertyCopy kind];
+  switch(kind)
   {
     case 2:
-      v11 = [v7 allowedClasses];
-      if ([v11 count] != 1)
+      allowedClasses = [propertyCopy allowedClasses];
+      if ([allowedClasses count] != 1)
       {
-        if ([v11 count] == 2 && objc_msgSend(v11, "containsObject:", objc_opt_class()) && objc_msgSend(v11, "containsObject:", objc_opt_class()))
+        if ([allowedClasses count] == 2 && objc_msgSend(allowedClasses, "containsObject:", objc_opt_class()) && objc_msgSend(allowedClasses, "containsObject:", objc_opt_class()))
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -332,7 +332,7 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
               [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The valueOrNil parameter must not be nil."];
             }
 
-            v50 = v11;
+            v50 = allowedClasses;
             v51 = v9;
             v18 = v9;
             objc_opt_class();
@@ -372,19 +372,19 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      v30 = v6;
+                      v30 = hashCopy;
                       v31 = MEMORY[0x277CBEAD8];
                       v32 = objc_opt_class();
                       v33 = NSStringFromClass(v32);
                       v34 = v31;
-                      v6 = v30;
+                      hashCopy = v30;
                       [v34 raise:v27 format:{@"Unexpectedly, containedObject was %@, instead of NSString.", v33}];
                     }
 
                     v35 = v29;
                     if ([v35 length])
                     {
-                      [v6 updateWithString:v35];
+                      [hashCopy updateWithString:v35];
                     }
 
                     else
@@ -406,7 +406,7 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
             }
 
             v9 = v51;
-            v11 = v50;
+            allowedClasses = v50;
           }
 
           else
@@ -423,8 +423,8 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
         goto LABEL_55;
       }
 
-      v12 = [v11 anyObject];
-      if ([v12 isEqual:objc_opt_class()] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      anyObject = [allowedClasses anyObject];
+      if ([anyObject isEqual:objc_opt_class()] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         if (!v9)
         {
@@ -442,10 +442,10 @@ id __60__VSSubscription_keyPathsForValuesAffectingSubscriptionInfo__block_invoke
           [v14 raise:v15 format:{@"Unexpectedly, value was %@, instead of NSString.", v17}];
         }
 
-        [v6 updateWithString:v13];
+        [hashCopy updateWithString:v13];
       }
 
-      else if ([v12 isEqual:objc_opt_class()] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      else if ([anyObject isEqual:objc_opt_class()] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         if (!v9)
         {
@@ -465,17 +465,17 @@ LABEL_55:
           [v36 raise:v37 format:{@"Unexpectedly, value was %@, instead of NSDate.", v39}];
         }
 
-        [v6 updateWithDate:v13];
+        [hashCopy updateWithDate:v13];
       }
 
       else
       {
-        if (![v12 isEqual:objc_opt_class()] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+        if (![anyObject isEqual:objc_opt_class()] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           v46 = MEMORY[0x277CBEAD8];
           v47 = *MEMORY[0x277CBE660];
-          v48 = [v7 name];
-          [v46 raise:v47 format:{@"Unexpected value (%@) for property %@ of class: %@", v9, v48, v12}];
+          name2 = [propertyCopy name];
+          [v46 raise:v47 format:{@"Unexpected value (%@) for property %@ of class: %@", v9, name2, anyObject}];
 
           goto LABEL_55;
         }
@@ -497,15 +497,15 @@ LABEL_55:
         }
 
         v13 = v40;
-        [v6 updateWithInteger:{objc_msgSend(v13, "kind")}];
-        v45 = [v13 identifier];
+        [hashCopy updateWithInteger:{objc_msgSend(v13, "kind")}];
+        identifier = [v13 identifier];
 
-        [v6 updateWithString:v45];
+        [hashCopy updateWithString:identifier];
       }
 
       goto LABEL_55;
     case 1:
-      [v6 updateWithInteger:{objc_msgSend(v9, "integerValue")}];
+      [hashCopy updateWithInteger:{objc_msgSend(v9, "integerValue")}];
       break;
     case 0:
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Unexpected Boolean property kind."];
@@ -581,9 +581,9 @@ id __55__VSSubscription_keyPathsForValuesAffectingVersionHash__block_invoke_2()
   v14 = 0u;
   v15 = 0u;
   v4 = VSSubscriptionValueType();
-  v5 = [v4 properties];
+  properties = [v4 properties];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -594,21 +594,21 @@ id __55__VSSubscription_keyPathsForValuesAffectingVersionHash__block_invoke_2()
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(properties);
         }
 
         [(VSSubscription *)self _updateHash:v3 withValueForProperty:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(VSHash *)v3 finalData];
+  finalData = [(VSHash *)v3 finalData];
 
-  return v10;
+  return finalData;
 }
 
 @end

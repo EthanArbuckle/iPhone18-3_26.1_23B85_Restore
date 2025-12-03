@@ -2,34 +2,34 @@
 - (UIEdgeInsets)padding;
 - (UIEdgeInsets)presentedPadding;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_performUpdateSublayoutGeometries;
-- (void)_replaceSublayout:(id)a3 withSublayout:(id)a4 atIndex:(int64_t)a5;
+- (void)_replaceSublayout:(id)sublayout withSublayout:(id)withSublayout atIndex:(int64_t)index;
 - (void)_updateSublayoutGeometries;
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)didChangeSublayoutOrigins;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)a3;
+- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)block;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)removeSublayoutsInRange:(_NSRange)a3;
+- (void)removeSublayoutsInRange:(_NSRange)range;
 - (void)safeAreaInsetsDidChange;
 - (void)scrollSpeedRegimeDidChange;
-- (void)setAdjustSublayoutZPositions:(BOOL)a3;
-- (void)setFirstSublayout:(id)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setSecondSublayout:(id)a3;
-- (void)setShouldExcludeTopAndBottomPaddingFromReferenceSize:(BOOL)a3;
-- (void)sublayoutDidChangeContentSize:(id)a3;
-- (void)sublayoutDidChangeLastBaseline:(id)a3;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)setAdjustSublayoutZPositions:(BOOL)positions;
+- (void)setFirstSublayout:(id)sublayout;
+- (void)setMode:(int64_t)mode;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setSecondSublayout:(id)sublayout;
+- (void)setShouldExcludeTopAndBottomPaddingFromReferenceSize:(BOOL)size;
+- (void)sublayoutDidChangeContentSize:(id)size;
+- (void)sublayoutDidChangeLastBaseline:(id)baseline;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
 - (void)viewEnvironmentDidChange;
 - (void)visibleRectDidChange;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -56,9 +56,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout displayScaleDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:499 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:499 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -101,9 +101,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout viewEnvironmentDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:464 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:464 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -127,40 +127,40 @@ LABEL_6:
 
 - (int64_t)scrollableAxis
 {
-  v3 = [(PXGSplitLayout *)self mode];
-  if (v3 > 7)
+  mode = [(PXGSplitLayout *)self mode];
+  if (mode > 7)
   {
     goto LABEL_6;
   }
 
-  if (((1 << v3) & 0xDE) != 0)
+  if (((1 << mode) & 0xDE) != 0)
   {
-    v4 = [(PXGSplitLayout *)self secondSublayout];
+    secondSublayout = [(PXGSplitLayout *)self secondSublayout];
     goto LABEL_4;
   }
 
-  if (v3)
+  if (mode)
   {
-    v4 = [(PXGSplitLayout *)self firstSublayout];
+    secondSublayout = [(PXGSplitLayout *)self firstSublayout];
     goto LABEL_4;
   }
 
-  v4 = [(PXGSplitLayout *)self firstSublayout];
-  if (v4)
+  secondSublayout = [(PXGSplitLayout *)self firstSublayout];
+  if (secondSublayout)
   {
 LABEL_4:
-    v5 = v4;
-    v6 = [v4 scrollableAxis];
+    v5 = secondSublayout;
+    scrollableAxis = [secondSublayout scrollableAxis];
     goto LABEL_5;
   }
 
-  v8 = [(PXGSplitLayout *)self secondSublayout];
-  v6 = [v8 scrollableAxis];
+  secondSublayout2 = [(PXGSplitLayout *)self secondSublayout];
+  scrollableAxis = [secondSublayout2 scrollableAxis];
 
   v5 = 0;
 LABEL_5:
 
-  if (!v6)
+  if (!scrollableAxis)
   {
 LABEL_6:
     v9.receiver = self;
@@ -168,7 +168,7 @@ LABEL_6:
     return [(PXGLayout *)&v9 scrollableAxis];
   }
 
-  return v6;
+  return scrollableAxis;
 }
 
 - (void)visibleRectDidChange
@@ -192,9 +192,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout visibleRectDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:485 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:485 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -237,9 +237,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout safeAreaInsetsDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:492 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:492 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -282,9 +282,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout referenceSizeDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:471 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:471 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -314,18 +314,18 @@ LABEL_6:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGSplitLayout.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGSplitLayout.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
 - (void)update
 {
-  v3 = [(PXGLayout *)self numberOfDescendantAnchors];
+  numberOfDescendantAnchors = [(PXGLayout *)self numberOfDescendantAnchors];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
-  if (v3 >= 1)
+  if (numberOfDescendantAnchors >= 1)
   {
     if (!self->_updateFlags.isPerformingUpdate)
     {
@@ -338,9 +338,9 @@ LABEL_6:
 
     if (self->_updateFlags.updated)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXGSplitLayout.m" lineNumber:190 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v18 file:@"PXGSplitLayout.m" lineNumber:190 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -361,9 +361,9 @@ LABEL_6:
   if (self->_updateFlags.isPerformingUpdate)
   {
 LABEL_5:
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout update]"];
-    [v7 handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
     needsUpdate = p_updateFlags->needsUpdate;
   }
@@ -382,9 +382,9 @@ LABEL_10:
     {
       if (self->_additionalUpdateFlags.isPerformingUpdate)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout update]"];
-        [v13 handleFailureInFunction:v14 file:@"PXGSplitLayout.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"!_additionalUpdateFlags.isPerformingUpdate"}];
+        [currentHandler3 handleFailureInFunction:v14 file:@"PXGSplitLayout.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"!_additionalUpdateFlags.isPerformingUpdate"}];
 
         v10 = p_additionalUpdateFlags->needsUpdate;
       }
@@ -403,9 +403,9 @@ LABEL_10:
       self->_additionalUpdateFlags.isPerformingUpdate = 0;
       if (v10)
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout update]"];
-        [v15 handleFailureInFunction:v16 file:@"PXGSplitLayout.m" lineNumber:203 description:{@"still needing to update %lu after update pass", p_additionalUpdateFlags->needsUpdate}];
+        [currentHandler4 handleFailureInFunction:v16 file:@"PXGSplitLayout.m" lineNumber:203 description:{@"still needing to update %lu after update pass", p_additionalUpdateFlags->needsUpdate}];
       }
     }
 
@@ -415,9 +415,9 @@ LABEL_10:
   *p_isPerformingUpdate = 0;
   if (needsUpdate)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout update]"];
-    [v11 handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:205 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler5 handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:205 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_21:
@@ -445,7 +445,7 @@ LABEL_21:
 
 - (void)_performUpdateSublayoutGeometries
 {
-  v3 = [(PXGSplitLayout *)self mode];
+  mode = [(PXGSplitLayout *)self mode];
   [(PXGSplitLayout *)self padding];
   v5 = v4;
   v92 = v6;
@@ -456,17 +456,17 @@ LABEL_21:
   v13 = v12;
   [(PXGLayout *)self referenceDepth];
   v80 = v14;
-  v15 = [(PXGSplitLayout *)self shouldExcludeTopAndBottomPaddingFromReferenceSize];
+  shouldExcludeTopAndBottomPaddingFromReferenceSize = [(PXGSplitLayout *)self shouldExcludeTopAndBottomPaddingFromReferenceSize];
   v16 = v13 - (v5 + v8);
-  if (v15)
+  if (shouldExcludeTopAndBottomPaddingFromReferenceSize)
   {
     v16 = v13;
   }
 
   v81 = v8;
   v82 = v16;
-  v85 = [(PXGLayout *)self referenceOptions];
-  v79 = [(PXGLayout *)self viewEnvironment];
+  referenceOptions = [(PXGLayout *)self referenceOptions];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
   [(PXGLayout *)self safeAreaInsets];
   v83 = v18;
   v84 = v17;
@@ -482,16 +482,16 @@ LABEL_21:
   [(PXGLayout *)self lastScrollDirection];
   v30 = v29;
   v32 = v31;
-  v33 = [(PXGLayout *)self scrollSpeedRegime];
-  v34 = [(PXGLayout *)self userInterfaceDirection];
-  if (v3 > 7)
+  scrollSpeedRegime = [(PXGLayout *)self scrollSpeedRegime];
+  userInterfaceDirection = [(PXGLayout *)self userInterfaceDirection];
+  if (mode > 7)
   {
     v38 = 0;
     v35 = 0;
     goto LABEL_8;
   }
 
-  if (((1 << v3) & 0xDE) != 0)
+  if (((1 << mode) & 0xDE) != 0)
   {
     v35 = self->_secondSublayout;
     v36 = 904;
@@ -499,7 +499,7 @@ LABEL_21:
 
   else
   {
-    if (!v3)
+    if (!mode)
     {
       if ([(PXGLayout *)self numberOfSublayouts]== 1)
       {
@@ -546,43 +546,43 @@ LABEL_8:
   v40 = *(MEMORY[0x277CBF3A0] + 16);
   v128 = *MEMORY[0x277CBF3A0];
   v129 = v40;
-  v41 = [(PXGLayout *)self sublayoutDataStore];
-  v42 = [v41 count];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v42 = [sublayoutDataStore count];
 
-  v43 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore2 = [(PXGLayout *)self sublayoutDataStore];
   v101[0] = MEMORY[0x277D85DD0];
   v101[1] = 3221225472;
   v101[2] = __51__PXGSplitLayout__performUpdateSublayoutGeometries__block_invoke;
   v101[3] = &unk_2782A7A18;
   v108 = v11 - (v92 + v87);
   v109 = v82;
-  v126 = v85;
+  v126 = referenceOptions;
   v110 = v80;
   v111 = v24;
   v112 = v30;
   v113 = v32;
-  v114 = v33;
+  v114 = scrollSpeedRegime;
   v115 = v84;
   v116 = v83;
   v117 = v20;
   v118 = v22;
-  v119 = v34;
+  v119 = userInterfaceDirection;
   v120 = x;
   v121 = y;
   v122 = width;
   v123 = height;
-  v77 = v79;
+  v77 = viewEnvironment;
   v102 = v77;
   v106 = v130;
   v44 = v35;
   v103 = v44;
   v107 = v127;
-  v124 = v3;
+  v124 = mode;
   v125 = v42;
   v86 = v38;
   v104 = v86;
-  v105 = self;
-  [v43 enumerateSublayoutsUsingBlock:v101];
+  selfCopy = self;
+  [sublayoutDataStore2 enumerateSublayoutsUsingBlock:v101];
 
   if (v44)
   {
@@ -599,7 +599,7 @@ LABEL_8:
     y = v135.origin.y;
     width = v135.size.width;
     height = v135.size.height;
-    v49 = [(PXGSplitLayout *)self mode];
+    mode2 = [(PXGSplitLayout *)self mode];
     v50 = v48 == *(MEMORY[0x277CBF348] + 8) && v46 == *MEMORY[0x277CBF348];
     if (!v50 && v86)
     {
@@ -607,15 +607,15 @@ LABEL_8:
       v52 = y;
       v53 = width;
       v54 = height;
-      if (v49 != 2)
+      if (mode2 != 2)
       {
         v51 = x;
         v52 = y;
         v53 = width;
         v54 = height;
-        if (v49 != 5)
+        if (mode2 != 5)
         {
-          if (v49 != 6)
+          if (mode2 != 6)
           {
 LABEL_19:
             [(PXGLayout *)v86 updateIfNeeded];
@@ -658,14 +658,14 @@ LABEL_20:
   [(PXGSplitLayout *)self floatingModesRespectSafeArea];
   PXSizeValueForAxis();
   v57 = 0.0;
-  if (v3 > 7)
+  if (mode > 7)
   {
     goto LABEL_46;
   }
 
-  if (((1 << v3) & 0x4E) == 0)
+  if (((1 << mode) & 0x4E) == 0)
   {
-    if (((1 << v3) & 0x30) != 0)
+    if (((1 << mode) & 0x30) != 0)
     {
       v61 = 0;
       *&v133 = v92;
@@ -673,7 +673,7 @@ LABEL_20:
       *&v132 = v92;
       *(&v132 + 1) = v5;
       v62 = 0.0;
-      if (v3 == 4)
+      if (mode == 4)
       {
         v66 = 0.0;
       }
@@ -683,7 +683,7 @@ LABEL_20:
         v66 = v80 * 0.5;
       }
 
-      if (v3 == 4)
+      if (mode == 4)
       {
         v57 = v80 * 0.5;
       }
@@ -696,7 +696,7 @@ LABEL_20:
       goto LABEL_55;
     }
 
-    if (v3 == 7)
+    if (mode == 7)
     {
       v61 = 0;
       *&v133 = v92;
@@ -710,7 +710,7 @@ LABEL_54:
     }
 
 LABEL_46:
-    if (v3)
+    if (mode)
     {
       v61 = 0;
       v66 = 0.0;
@@ -759,7 +759,7 @@ LABEL_46:
 
   *&v132 = v92;
   *(&v132 + 1) = v5;
-  if (v3 == 1)
+  if (mode == 1)
   {
     PXPointValueForAxis();
     PXPointSetValueForAxis();
@@ -768,11 +768,11 @@ LABEL_46:
   v57 = v80 * 0.5;
   v66 = 0.0;
 LABEL_55:
-  v68 = [(PXGSplitLayout *)self adjustSublayoutZPositions];
-  v69 = [(PXGLayout *)self sublayoutDataStore];
-  v70 = v69;
+  adjustSublayoutZPositions = [(PXGSplitLayout *)self adjustSublayoutZPositions];
+  sublayoutDataStore3 = [(PXGLayout *)self sublayoutDataStore];
+  v70 = sublayoutDataStore3;
   v94[0] = MEMORY[0x277D85DD0];
-  if (v68)
+  if (adjustSublayoutZPositions)
   {
     v71 = v66;
   }
@@ -782,7 +782,7 @@ LABEL_55:
     v71 = 0.0;
   }
 
-  if (v68)
+  if (adjustSublayoutZPositions)
   {
     v72 = v57;
   }
@@ -802,7 +802,7 @@ LABEL_55:
   v97 = v62;
   v98 = v132;
   v99 = v72;
-  [v69 enumerateSublayoutGeometriesUsingBlock:v94];
+  [sublayoutDataStore3 enumerateSublayoutGeometriesUsingBlock:v94];
 
   v93 = *MEMORY[0x277CBF3A8];
   PXSizeSetValueForAxis();
@@ -950,9 +950,9 @@ void __51__PXGSplitLayout__performUpdateSublayoutGeometries__block_invoke_2(uint
   [(PXGLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGSplitLayout.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGSplitLayout.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -969,34 +969,34 @@ void __51__PXGSplitLayout__performUpdateSublayoutGeometries__block_invoke_2(uint
   return result;
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v5.receiver = self;
   v5.super_class = PXGSplitLayout;
-  [(PXGLayout *)&v5 willRemoveSublayout:a3 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v5 willRemoveSublayout:sublayout atIndex:index flags:flags];
 }
 
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v5.receiver = self;
   v5.super_class = PXGSplitLayout;
-  [(PXGLayout *)&v5 didAddSublayout:a3 atIndex:a4 flags:a5];
+  [(PXGLayout *)&v5 didAddSublayout:sublayout atIndex:index flags:flags];
 }
 
-- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)a3
+- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = 0;
-  v5 = [(PXGSplitLayout *)self secondSublayout];
-  if (v5)
+  secondSublayout = [(PXGSplitLayout *)self secondSublayout];
+  if (secondSublayout)
   {
-    v4[2](v4, v5, &v7);
+    blockCopy[2](blockCopy, secondSublayout, &v7);
   }
 
-  v6 = [(PXGSplitLayout *)self firstSublayout];
-  if (v6 && (v7 & 1) == 0)
+  firstSublayout = [(PXGSplitLayout *)self firstSublayout];
+  if (firstSublayout && (v7 & 1) == 0)
   {
-    v4[2](v4, v6, &v7);
+    blockCopy[2](blockCopy, firstSublayout, &v7);
   }
 }
 
@@ -1021,9 +1021,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout didChangeSublayoutOrigins]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:543 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:543 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1045,12 +1045,12 @@ LABEL_6:
   }
 }
 
-- (void)sublayoutDidChangeLastBaseline:(id)a3
+- (void)sublayoutDidChangeLastBaseline:(id)baseline
 {
-  v4 = a3;
+  baselineCopy = baseline;
   v10.receiver = self;
   v10.super_class = PXGSplitLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:baselineCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -1067,9 +1067,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout sublayoutDidChangeLastBaseline:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:536 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:536 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1093,12 +1093,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutDidChangeContentSize:(id)a3
+- (void)sublayoutDidChangeContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v10.receiver = self;
   v10.super_class = PXGSplitLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:sizeCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -1115,9 +1115,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout sublayoutDidChangeContentSize:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:529 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:529 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1141,15 +1141,15 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v10.receiver = self;
   v10.super_class = PXGSplitLayout;
-  [(PXGLayout *)&v10 sublayoutNeedsUpdate:v4];
+  [(PXGLayout *)&v10 sublayoutNeedsUpdate:updateCopy];
   if (self->_isUpdatingSublayouts)
   {
-    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:v4];
+    [(PXGLayout *)self assumeWillUpdateSublayoutInUpdatePass:updateCopy];
     goto LABEL_9;
   }
 
@@ -1167,9 +1167,9 @@ LABEL_8:
 LABEL_7:
     if (self->_updateFlags.updated)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout sublayoutNeedsUpdate:]"];
-      [v8 handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:520 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXGSplitLayout.m" lineNumber:520 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1213,9 +1213,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout userInterfaceDirectionDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:513 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:513 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1258,9 +1258,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout scrollSpeedRegimeDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:506 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:506 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1303,9 +1303,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout referenceDepthDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:478 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGSplitLayout.m" lineNumber:478 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1327,19 +1327,19 @@ LABEL_6:
   }
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v9 = a3;
-  v10 = [(PXGSplitLayout *)self objectReferenceLookup];
-  switch(v10)
+  referenceCopy = reference;
+  objectReferenceLookup = [(PXGSplitLayout *)self objectReferenceLookup];
+  switch(objectReferenceLookup)
   {
     case 2:
-      v14 = v9;
-      *a5 = v9;
-      v12 = [(PXGSplitLayout *)self secondSublayout];
-      if (v12)
+      v14 = referenceCopy;
+      *objectReference = referenceCopy;
+      secondSublayout = [(PXGSplitLayout *)self secondSublayout];
+      if (secondSublayout)
       {
-        v13 = [(PXGSplitLayout *)self secondSublayout];
+        secondSublayout2 = [(PXGSplitLayout *)self secondSublayout];
         goto LABEL_9;
       }
 
@@ -1347,15 +1347,15 @@ LABEL_10:
       v5 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_11;
     case 1:
-      v11 = v9;
-      *a5 = v9;
-      v12 = [(PXGSplitLayout *)self firstSublayout];
-      if (v12)
+      v11 = referenceCopy;
+      *objectReference = referenceCopy;
+      secondSublayout = [(PXGSplitLayout *)self firstSublayout];
+      if (secondSublayout)
       {
-        v13 = [(PXGSplitLayout *)self firstSublayout];
+        secondSublayout2 = [(PXGSplitLayout *)self firstSublayout];
 LABEL_9:
-        v15 = v13;
-        v5 = [(PXGLayout *)self indexOfSublayout:v13];
+        v15 = secondSublayout2;
+        v5 = [(PXGLayout *)self indexOfSublayout:secondSublayout2];
 
 LABEL_11:
         break;
@@ -1365,18 +1365,18 @@ LABEL_11:
     case 0:
       v17.receiver = self;
       v17.super_class = PXGSplitLayout;
-      v5 = [(PXGLayout *)&v17 sublayoutIndexForObjectReference:v9 options:a4 updatedObjectReference:a5];
+      v5 = [(PXGLayout *)&v17 sublayoutIndexForObjectReference:referenceCopy options:options updatedObjectReference:objectReference];
       break;
   }
 
   return v5;
 }
 
-- (void)setAdjustSublayoutZPositions:(BOOL)a3
+- (void)setAdjustSublayoutZPositions:(BOOL)positions
 {
-  if (self->_adjustSublayoutZPositions != a3)
+  if (self->_adjustSublayoutZPositions != positions)
   {
-    self->_adjustSublayoutZPositions = a3;
+    self->_adjustSublayoutZPositions = positions;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -1391,9 +1391,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout setAdjustSublayoutZPositions:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:138 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:138 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1416,11 +1416,11 @@ LABEL_6:
   }
 }
 
-- (void)setShouldExcludeTopAndBottomPaddingFromReferenceSize:(BOOL)a3
+- (void)setShouldExcludeTopAndBottomPaddingFromReferenceSize:(BOOL)size
 {
-  if (self->_shouldExcludeTopAndBottomPaddingFromReferenceSize != a3)
+  if (self->_shouldExcludeTopAndBottomPaddingFromReferenceSize != size)
   {
-    self->_shouldExcludeTopAndBottomPaddingFromReferenceSize = a3;
+    self->_shouldExcludeTopAndBottomPaddingFromReferenceSize = size;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -1435,9 +1435,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout setShouldExcludeTopAndBottomPaddingFromReferenceSize:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:130 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:130 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1460,12 +1460,12 @@ LABEL_6:
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsApproximatelyEqualToEdgeInsets() & 1) == 0)
   {
@@ -1484,9 +1484,9 @@ LABEL_6:
       needsUpdate = self->_additionalUpdateFlags.needsUpdate;
       if (self->_additionalUpdateFlags.isPerformingUpdate && (self->_additionalUpdateFlags.updated & 1) != 0)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout setPadding:]"];
-        [v11 handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:119 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:119 description:{@"invalidating %lu after it already has been updated", 1}];
         goto LABEL_19;
       }
 
@@ -1507,9 +1507,9 @@ LABEL_12:
 LABEL_11:
       if (self->_updateFlags.updated)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout setPadding:]"];
-        [v11 handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:117 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v12 file:@"PXGSplitLayout.m" lineNumber:117 description:{@"invalidating %lu after it already has been updated", 1}];
 LABEL_19:
 
         abort();
@@ -1533,14 +1533,14 @@ LABEL_19:
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode == a3)
+  if (self->_mode == mode)
   {
     return;
   }
 
-  self->_mode = a3;
+  self->_mode = mode;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (!needsUpdate)
@@ -1565,9 +1565,9 @@ LABEL_19:
 LABEL_6:
     if (self->_updateFlags.updated)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout setMode:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:106 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGSplitLayout.m" lineNumber:106 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1579,24 +1579,24 @@ LABEL_8:
   [(PXGLayout *)self setNeedsUpdateOfScrollableAxis];
 }
 
-- (void)removeSublayoutsInRange:(_NSRange)a3
+- (void)removeSublayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (self->_firstSublayout)
   {
-    a3.length = (self->_secondSublayout != 0) + 1;
+    range.length = (self->_secondSublayout != 0) + 1;
   }
 
   else
   {
-    a3.length = self->_secondSublayout != 0;
+    range.length = self->_secondSublayout != 0;
   }
 
-  v17.location = a3.location;
+  v17.location = range.location;
   v17.length = length;
-  a3.location = 0;
-  v6 = NSIntersectionRange(v17, a3);
+  range.location = 0;
+  v6 = NSIntersectionRange(v17, range);
   if (v6.length)
   {
     v7 = location == v6.location;
@@ -1617,8 +1617,8 @@ LABEL_8:
 
   if (self->_firstSublayout)
   {
-    v9 = [(PXGSplitLayout *)self firstSublayoutIndex];
-    v11 = v9 >= location && v9 - location < v6.length;
+    firstSublayoutIndex = [(PXGSplitLayout *)self firstSublayoutIndex];
+    v11 = firstSublayoutIndex >= location && firstSublayoutIndex - location < v6.length;
   }
 
   else
@@ -1628,8 +1628,8 @@ LABEL_8:
 
   if (self->_secondSublayout)
   {
-    v12 = [(PXGSplitLayout *)self secondSublayoutIndex];
-    v14 = v12 >= location && v12 - location < v6.length;
+    secondSublayoutIndex = [(PXGSplitLayout *)self secondSublayoutIndex];
+    v14 = secondSublayoutIndex >= location && secondSublayoutIndex - location < v6.length;
     if (v11)
     {
       goto LABEL_29;
@@ -1653,22 +1653,22 @@ LABEL_29:
   }
 }
 
-- (void)_replaceSublayout:(id)a3 withSublayout:(id)a4 atIndex:(int64_t)a5
+- (void)_replaceSublayout:(id)sublayout withSublayout:(id)withSublayout atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  sublayoutCopy = sublayout;
+  withSublayoutCopy = withSublayout;
   self->_settingSublayouts = 1;
-  [v9 setNeedsUpdate];
-  if (v8)
+  [withSublayoutCopy setNeedsUpdate];
+  if (sublayoutCopy)
   {
     v15.receiver = self;
     v15.super_class = PXGSplitLayout;
-    [(PXGLayout *)&v15 removeSublayoutsInRange:a5, 1];
+    [(PXGLayout *)&v15 removeSublayoutsInRange:index, 1];
   }
 
-  if (v9)
+  if (withSublayoutCopy)
   {
-    [(PXGLayout *)self insertSublayout:v9 atIndex:a5];
+    [(PXGLayout *)self insertSublayout:withSublayoutCopy atIndex:index];
   }
 
   self->_settingSublayouts = 0;
@@ -1686,9 +1686,9 @@ LABEL_10:
 LABEL_9:
     if (self->_updateFlags.updated)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSplitLayout _replaceSublayout:withSublayout:atIndex:]"];
-      [v13 handleFailureInFunction:v14 file:@"PXGSplitLayout.m" lineNumber:67 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v14 file:@"PXGSplitLayout.m" lineNumber:67 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1712,38 +1712,38 @@ LABEL_11:
   [(PXGLayout *)self setNeedsUpdateOfScrollableAxis];
 }
 
-- (void)setSecondSublayout:(id)a3
+- (void)setSecondSublayout:(id)sublayout
 {
-  v4 = a3;
-  if (self->_secondSublayout != v4)
+  sublayoutCopy = sublayout;
+  if (self->_secondSublayout != sublayoutCopy)
   {
-    v10 = v4;
-    v5 = [(PXGSplitLayout *)self secondSublayoutIndex];
+    v10 = sublayoutCopy;
+    secondSublayoutIndex = [(PXGSplitLayout *)self secondSublayoutIndex];
     secondSublayout = self->_secondSublayout;
     v7 = v10;
     v8 = self->_secondSublayout;
     self->_secondSublayout = v7;
     v9 = secondSublayout;
 
-    [(PXGSplitLayout *)self _replaceSublayout:v9 withSublayout:v7 atIndex:v5];
-    v4 = v10;
+    [(PXGSplitLayout *)self _replaceSublayout:v9 withSublayout:v7 atIndex:secondSublayoutIndex];
+    sublayoutCopy = v10;
   }
 }
 
-- (void)setFirstSublayout:(id)a3
+- (void)setFirstSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   firstSublayout = self->_firstSublayout;
-  if (firstSublayout != v4)
+  if (firstSublayout != sublayoutCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = sublayoutCopy;
+    v6 = sublayoutCopy;
     v7 = self->_firstSublayout;
     self->_firstSublayout = v6;
     v8 = firstSublayout;
 
     [(PXGSplitLayout *)self _replaceSublayout:v8 withSublayout:v6 atIndex:[(PXGSplitLayout *)self firstSublayoutIndex]];
-    v4 = v9;
+    sublayoutCopy = v9;
   }
 }
 

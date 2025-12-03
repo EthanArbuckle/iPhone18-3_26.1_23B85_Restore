@@ -1,11 +1,11 @@
 @interface FunCamMessagesViewController
 - (AVTAvatarPicker)forwardingPicker;
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3;
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context;
 - (id)landscapeOverlayMessage;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)requestExpandedPresentation;
-- (void)setAvatarPickerDelegate:(id)a3;
+- (void)setAvatarPickerDelegate:(id)delegate;
 @end
 
 @implementation FunCamMessagesViewController
@@ -39,38 +39,38 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   v4.receiver = self;
   v4.super_class = FunCamMessagesViewController;
-  [(BaseMessagesViewController *)&v4 didTransitionToPresentationStyle:a3];
+  [(BaseMessagesViewController *)&v4 didTransitionToPresentationStyle:style];
   [(FunCamMessagesViewController *)self setWaitingOnPresentationStyleChange:0];
 }
 
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context
 {
   v4 = objc_alloc_init(MessagesViewController);
   [(FunCamMessagesViewController *)self setForwardingPicker:v4];
-  v5 = [(FunCamMessagesViewController *)self avatarPickerDelegate];
-  [(MessagesViewController *)v4 setAvatarPickerDelegate:v5];
+  avatarPickerDelegate = [(FunCamMessagesViewController *)self avatarPickerDelegate];
+  [(MessagesViewController *)v4 setAvatarPickerDelegate:avatarPickerDelegate];
 
   return v4;
 }
 
-- (void)setAvatarPickerDelegate:(id)a3
+- (void)setAvatarPickerDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_avatarPickerDelegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_avatarPickerDelegate, obj);
-    v5 = [(FunCamMessagesViewController *)self forwardingPicker];
+    forwardingPicker = [(FunCamMessagesViewController *)self forwardingPicker];
 
-    if (v5)
+    if (forwardingPicker)
     {
-      v6 = [(FunCamMessagesViewController *)self forwardingPicker];
-      [v6 setAvatarPickerDelegate:obj];
+      forwardingPicker2 = [(FunCamMessagesViewController *)self forwardingPicker];
+      [forwardingPicker2 setAvatarPickerDelegate:obj];
     }
   }
 }

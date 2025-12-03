@@ -2,9 +2,9 @@
 - (PHPTPAnalyticsData)init;
 - (id)cplStateString;
 - (id)description;
-- (void)incrementConversionCountForAssetType:(signed __int16)a3;
+- (void)incrementConversionCountForAssetType:(signed __int16)type;
 - (void)report;
-- (void)updateWithPlatformInformation:(id)a3;
+- (void)updateWithPlatformInformation:(id)information;
 @end
 
 @implementation PHPTPAnalyticsData
@@ -15,8 +15,8 @@
   v9 = *&self->_vendor;
   platformVersion = self->_platformVersion;
   transport = self->_transport;
-  v6 = [(PHPTPAnalyticsData *)self cplStateString];
-  v7 = [v3 stringWithFormat:@"make: %@, os: %@, os_version: %@, transport: %@, clp_state: %@, library_asset_count: %lu, deferred_renders: %lu, videos_trancoded: %lu, images_transcoded: %lu, downloaded: %lu, duration: %g", v9, platformVersion, transport, v6, self->_libraryAssetCount, self->_deferredRenderCount, self->_videoTranscodedCount, self->_imageTranscodedCount, self->_downloadedCount, (self->_timeDisconnected - self->_timeConnected) / 1000000000.0];
+  cplStateString = [(PHPTPAnalyticsData *)self cplStateString];
+  v7 = [v3 stringWithFormat:@"make: %@, os: %@, os_version: %@, transport: %@, clp_state: %@, library_asset_count: %lu, deferred_renders: %lu, videos_trancoded: %lu, images_transcoded: %lu, downloaded: %lu, duration: %g", v9, platformVersion, transport, cplStateString, self->_libraryAssetCount, self->_deferredRenderCount, self->_videoTranscodedCount, self->_imageTranscodedCount, self->_downloadedCount, (self->_timeDisconnected - self->_timeConnected) / 1000000000.0];
 
   return v7;
 }
@@ -28,7 +28,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412290;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "PTP Analytics:\n%@", &v13, 0xCu);
   }
 
@@ -39,8 +39,8 @@
   [v4 setPayloadValue:self->_platform forKey:*MEMORY[0x1E69BFB28] onEventWithName:v5];
   [v4 setPayloadValue:self->_platformVersion forKey:*MEMORY[0x1E69BFB30] onEventWithName:v5];
   [v4 setPayloadValue:self->_transport forKey:*MEMORY[0x1E69BFB38] onEventWithName:v5];
-  v6 = [(PHPTPAnalyticsData *)self cplStateString];
-  [v4 setPayloadValue:v6 forKey:*MEMORY[0x1E69BFAE8] onEventWithName:v5];
+  cplStateString = [(PHPTPAnalyticsData *)self cplStateString];
+  [v4 setPayloadValue:cplStateString forKey:*MEMORY[0x1E69BFAE8] onEventWithName:v5];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_libraryAssetCount];
   [v4 setPayloadValue:v7 forKey:*MEMORY[0x1E69BFB18] onEventWithName:v5];
@@ -77,39 +77,39 @@
   }
 }
 
-- (void)incrementConversionCountForAssetType:(signed __int16)a3
+- (void)incrementConversionCountForAssetType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v6 = *MEMORY[0x1E69E9840];
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     v4 = PLPTPGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = typeCopy;
       _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_ERROR, "Unexpected asset type for transcode: %d", v5, 8u);
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     ++self->_videoTranscodedCount;
   }
 
-  else if (!a3)
+  else if (!type)
   {
     ++self->_imageTranscodedCount;
   }
 }
 
-- (void)updateWithPlatformInformation:(id)a3
+- (void)updateWithPlatformInformation:(id)information
 {
-  v4 = a3;
-  if (v4)
+  informationCopy = information;
+  if (informationCopy)
   {
-    v29 = v4;
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C09E0]];
+    v29 = informationCopy;
+    v5 = [informationCopy objectForKeyedSubscript:*MEMORY[0x1E69C09E0]];
     v6 = v29;
     if (!v5 || (v7 = self->_vendor, v5, v6 = v29, !v7))
     {
@@ -198,10 +198,10 @@ LABEL_18:
   v2 = [(PHPTPAnalyticsData *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v2->_uuid;
-    v2->_uuid = v4;
+    v2->_uuid = uUIDString;
   }
 
   return v2;

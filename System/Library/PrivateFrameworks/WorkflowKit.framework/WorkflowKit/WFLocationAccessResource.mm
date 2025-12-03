@@ -1,10 +1,10 @@
 @interface WFLocationAccessResource
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (id)workflow;
 - (unint64_t)status;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
-- (void)setWorkflow:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
+- (void)setWorkflow:(id)workflow;
 @end
 
 @implementation WFLocationAccessResource
@@ -16,9 +16,9 @@
   return WeakRetained;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  -[WFLocationAccessResource setAuthorizationStatus:](self, "setAuthorizationStatus:", [a3 authorizationStatus]);
+  -[WFLocationAccessResource setAuthorizationStatus:](self, "setAuthorizationStatus:", [authorization authorizationStatus]);
   if ([(WFLocationAccessResource *)self authorizationStatus])
   {
     v4 = [(WFLocationAccessResource *)self authorizationStatus]== 3 || [(WFLocationAccessResource *)self authorizationStatus]== 4;
@@ -27,19 +27,19 @@
   }
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WFLocationAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
   block[3] = &unk_1E837ECE0;
-  v11 = v6;
-  v12 = v7;
+  v11 = interfaceCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = interfaceCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -95,40 +95,40 @@ void __77__WFLocationAccessResource_makeAvailableWithUserInterface_completionHan
   [v5 finishMakingAvailableWithSuccess:v6 error:v7];
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeWeak(&self->_workflow, a3);
-  v6 = [(WFLocationAccessResource *)self workflow];
-  v4 = [v6 environment];
-  v5 = WFCLLocationManagerWithOptions(v4, self, MEMORY[0x1E69E96A0]);
+  objc_storeWeak(&self->_workflow, workflow);
+  workflow = [(WFLocationAccessResource *)self workflow];
+  environment = [workflow environment];
+  v5 = WFCLLocationManagerWithOptions(environment, self, MEMORY[0x1E69E96A0]);
   [(WFLocationAccessResource *)self setLocationManager:v5];
 }
 
 - (unint64_t)status
 {
-  v3 = [(WFLocationAccessResource *)self authorizationStatus];
-  if (!v3)
+  authorizationStatus = [(WFLocationAccessResource *)self authorizationStatus];
+  if (!authorizationStatus)
   {
-    v4 = [(WFLocationAccessResource *)self workflow];
-    v3 = WFCLLocationManagerAuthorizationStatusForWorkflowEnvironment([v4 environment]);
+    workflow = [(WFLocationAccessResource *)self workflow];
+    authorizationStatus = WFCLLocationManagerAuthorizationStatusForWorkflowEnvironment([workflow environment]);
   }
 
-  if ((v3 - 1) > 3)
+  if ((authorizationStatus - 1) > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_1CA992318[v3 - 1];
+    return qword_1CA992318[authorizationStatus - 1];
   }
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"your location", @"your location");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

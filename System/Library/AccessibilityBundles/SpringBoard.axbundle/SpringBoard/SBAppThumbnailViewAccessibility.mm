@@ -2,7 +2,7 @@
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
-- (void)_showQuitButton:(BOOL)a3;
+- (void)_showQuitButton:(BOOL)button;
 @end
 
 @implementation SBAppThumbnailViewAccessibility
@@ -10,17 +10,17 @@
 - (id)accessibilityLabel
 {
   v2 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"_label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   v2 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"isShowingQuitButton"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     v4 = @"phone.favorite.icon.quit.hint";
   }
@@ -38,9 +38,9 @@
 - (CGPoint)accessibilityActivationPoint
 {
   v3 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"isShowingQuitButton"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"_quitButton"];
     [v5 accessibilityActivationPoint];
@@ -63,24 +63,24 @@
   return result;
 }
 
-- (void)_showQuitButton:(BOOL)a3
+- (void)_showQuitButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"isShowingQuitButton"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v12.receiver = self;
   v12.super_class = SBAppThumbnailViewAccessibility;
-  [(SBAppThumbnailViewAccessibility *)&v12 _showQuitButton:v3];
-  if (v3 && (v6 & 1) == 0)
+  [(SBAppThumbnailViewAccessibility *)&v12 _showQuitButton:buttonCopy];
+  if (buttonCopy && (bOOLValue & 1) == 0)
   {
     v7 = [(SBAppThumbnailViewAccessibility *)self safeValueForKey:@"_quitButton"];
     [v7 setIsAccessibilityElement:0];
 
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"started.quit.app.mode");
-    v10 = [(SBAppThumbnailViewAccessibility *)self accessibilityLabel];
-    v11 = [v8 stringWithFormat:v9, v10];
+    accessibilityLabel = [(SBAppThumbnailViewAccessibility *)self accessibilityLabel];
+    v11 = [v8 stringWithFormat:v9, accessibilityLabel];
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v11);
   }

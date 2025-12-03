@@ -1,6 +1,6 @@
 @interface BKSegmentedControl
 - ($F0C0194F19B8DA0DC4F6EEC222945A9A)_appearanceStruct;
-- (BKSegmentedControl)initWithItems:(id)a3;
+- (BKSegmentedControl)initWithItems:(id)items;
 - (CGPoint)frameOffset;
 - (CGSize)textShadowOffset;
 - (void)updateAppearance;
@@ -8,11 +8,11 @@
 
 @implementation BKSegmentedControl
 
-- (BKSegmentedControl)initWithItems:(id)a3
+- (BKSegmentedControl)initWithItems:(id)items
 {
   v6.receiver = self;
   v6.super_class = BKSegmentedControl;
-  v3 = [(BKSegmentedControl *)&v6 initWithItems:a3];
+  v3 = [(BKSegmentedControl *)&v6 initWithItems:items];
   v4 = v3;
   if (v3)
   {
@@ -25,9 +25,9 @@
 
 - (void)updateAppearance
 {
-  v3 = [(BKSegmentedControl *)self background];
+  background = [(BKSegmentedControl *)self background];
 
-  if (v3)
+  if (background)
   {
     [(BKSegmentedControl *)self _appearanceStruct:0];
     [(BKSegmentedControl *)self _setSegmentedControlAppearance:&v4];
@@ -51,8 +51,8 @@
   *&retstr->var3.var4 = 0u;
   *&retstr->var3.var2 = 0u;
   *&retstr->var3.var0 = 0u;
-  v5 = [(BKSegmentedControl *)self font];
-  if (v5)
+  font = [(BKSegmentedControl *)self font];
+  if (font)
   {
     [(BKSegmentedControl *)self font];
   }
@@ -67,9 +67,9 @@
   retstr->var1 = 0.0;
   retstr->var2 = 0.0;
   retstr->var7 = 1;
-  v20 = [(BKSegmentedControl *)self textColor];
-  v7 = [(BKSegmentedControl *)self controlSize];
-  if (v7 == 1)
+  textColor = [(BKSegmentedControl *)self textColor];
+  controlSize = [(BKSegmentedControl *)self controlSize];
+  if (controlSize == 1)
   {
     [(BKSegmentedControl *)self dividerMini];
   }
@@ -79,70 +79,70 @@
     [(BKSegmentedControl *)self divider];
   }
   v8 = ;
-  v9 = [(BKSegmentedControl *)self dividerLeftPressed];
-  if (v9)
+  dividerLeftPressed = [(BKSegmentedControl *)self dividerLeftPressed];
+  if (dividerLeftPressed)
   {
-    v10 = [(BKSegmentedControl *)self dividerLeftPressed];
+    dividerLeftPressed2 = [(BKSegmentedControl *)self dividerLeftPressed];
   }
 
   else
   {
-    v10 = v8;
+    dividerLeftPressed2 = v8;
   }
 
-  v11 = v10;
+  v11 = dividerLeftPressed2;
 
-  v12 = [(BKSegmentedControl *)self dividerRightPressed];
-  if (v12)
+  dividerRightPressed = [(BKSegmentedControl *)self dividerRightPressed];
+  if (dividerRightPressed)
   {
-    v13 = [(BKSegmentedControl *)self dividerRightPressed];
+    dividerRightPressed2 = [(BKSegmentedControl *)self dividerRightPressed];
   }
 
   else
   {
-    v13 = v8;
+    dividerRightPressed2 = v8;
   }
 
-  v14 = v13;
+  v14 = dividerRightPressed2;
 
-  if (v7 == 1)
+  if (controlSize == 1)
   {
-    v15 = [(BKSegmentedControl *)self backgroundMini];
+    backgroundMini = [(BKSegmentedControl *)self backgroundMini];
     [(BKSegmentedControl *)self backgroundSelectedMini];
   }
 
   else
   {
-    v15 = [(BKSegmentedControl *)self background];
+    backgroundMini = [(BKSegmentedControl *)self background];
     [(BKSegmentedControl *)self backgroundSelected];
   }
   v16 = ;
   [(BKSegmentedControl *)self textShadowOffset];
-  retstr->var3.var0 = v15;
+  retstr->var3.var0 = backgroundMini;
   retstr->var3.var1 = v8;
   retstr->var3.var2 = v8;
-  retstr->var3.var3 = v20;
+  retstr->var3.var3 = textColor;
   retstr->var3.var4 = 0;
   retstr->var3.var5.width = v17;
   retstr->var3.var5.height = v18;
   retstr->var4.var0 = v16;
   retstr->var4.var1 = v11;
   retstr->var4.var2 = v14;
-  retstr->var4.var3 = v20;
+  retstr->var4.var3 = textColor;
   retstr->var4.var4 = 0;
   retstr->var4.var5.width = v17;
   retstr->var4.var5.height = v18;
-  retstr->var5.var0 = v15;
+  retstr->var5.var0 = backgroundMini;
   retstr->var5.var1 = v8;
   retstr->var5.var2 = v8;
-  retstr->var5.var3 = v20;
+  retstr->var5.var3 = textColor;
   retstr->var5.var4 = 0;
   retstr->var5.var5.width = v17;
   retstr->var5.var5.height = v18;
-  retstr->var6.var0 = v15;
+  retstr->var6.var0 = backgroundMini;
   retstr->var6.var1 = v8;
   retstr->var6.var2 = v8;
-  retstr->var6.var3 = v20;
+  retstr->var6.var3 = textColor;
   retstr->var6.var4 = 0;
   retstr->var6.var5.width = v17;
   retstr->var6.var5.height = v18;

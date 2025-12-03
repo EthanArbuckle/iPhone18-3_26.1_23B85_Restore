@@ -1,8 +1,8 @@
 @interface PBFDataStoreArchiver
-+ (BOOL)archiveDataStoreAtURL:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6;
++ (BOOL)archiveDataStoreAtURL:(id)l toURL:(id)rL options:(id)options error:(id *)error;
 + (id)fileManager;
-- (BOOL)archiveToFileAtURL:(id)a3 error:(id *)a4;
-- (PBFDataStoreArchiver)initWithDataStoreAtURL:(id)a3;
+- (BOOL)archiveToFileAtURL:(id)l error:(id *)error;
+- (PBFDataStoreArchiver)initWithDataStoreAtURL:(id)l;
 @end
 
 @implementation PBFDataStoreArchiver
@@ -26,13 +26,13 @@ void __35__PBFDataStoreArchiver_fileManager__block_invoke()
   fileManager_fileManager = v0;
 }
 
-+ (BOOL)archiveDataStoreAtURL:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6
++ (BOOL)archiveDataStoreAtURL:(id)l toURL:(id)rL options:(id)options error:(id *)error
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v11;
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  v14 = lCopy;
   NSClassFromString(&cfstr_Nsurl.isa);
   if (!v14)
   {
@@ -44,7 +44,7 @@ void __35__PBFDataStoreArchiver_fileManager__block_invoke()
     [PBFDataStoreArchiver archiveDataStoreAtURL:a2 toURL:? options:? error:?];
   }
 
-  v15 = v12;
+  v15 = rLCopy;
   NSClassFromString(&cfstr_Nsurl.isa);
   if (!v15)
   {
@@ -56,10 +56,10 @@ void __35__PBFDataStoreArchiver_fileManager__block_invoke()
     [PBFDataStoreArchiver archiveDataStoreAtURL:a2 toURL:? options:? error:?];
   }
 
-  if ([v14 checkResourceIsReachableAndReturnError:a6])
+  if ([v14 checkResourceIsReachableAndReturnError:error])
   {
     v48 = 0;
-    v16 = [v14 getResourceValue:&v48 forKey:*MEMORY[0x277CBE868] error:a6];
+    v16 = [v14 getResourceValue:&v48 forKey:*MEMORY[0x277CBE868] error:error];
     v17 = v48;
     v18 = v17;
     if (v16 && ([v17 BOOLValue] & 1) == 0)
@@ -72,7 +72,7 @@ void __35__PBFDataStoreArchiver_fileManager__block_invoke()
       v56[1] = v14;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
       [v32 pbf_generalErrorWithCode:1 userInfo:v19];
-      *a6 = v29 = 0;
+      *error = v29 = 0;
 LABEL_25:
 
       goto LABEL_26;
@@ -82,11 +82,11 @@ LABEL_25:
     v20 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
     [v19 setLocale:v20];
 
-    v21 = [v14 lastPathComponent];
-    v22 = [v19 numberFromString:v21];
-    v23 = [v22 unsignedIntegerValue];
+    lastPathComponent = [v14 lastPathComponent];
+    v22 = [v19 numberFromString:lastPathComponent];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-    if (v23 <= 0x3A)
+    if (unsignedIntegerValue <= 0x3A)
     {
       v24 = MEMORY[0x277CCA9B8];
       v25 = *MEMORY[0x277CCA748];
@@ -98,9 +98,9 @@ LABEL_25:
       v27 = v54;
       v28 = v53;
 LABEL_13:
-      v31 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:2];
-      [v24 pbf_generalErrorWithCode:1 userInfo:v31];
-      *a6 = v29 = 0;
+      fileManager = [v26 dictionaryWithObjects:v27 forKeys:v28 count:2];
+      [v24 pbf_generalErrorWithCode:1 userInfo:fileManager];
+      *error = v29 = 0;
 LABEL_24:
 
       goto LABEL_25;
@@ -120,24 +120,24 @@ LABEL_24:
       goto LABEL_13;
     }
 
-    v45 = v13;
+    v45 = optionsCopy;
     v47 = v18;
-    v31 = [a1 fileManager];
-    v34 = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
-    v35 = [MEMORY[0x277CCAD78] UUID];
-    v36 = [v35 UUIDString];
-    v37 = [v34 URLByAppendingPathComponent:v36];
+    fileManager = [self fileManager];
+    pf_temporaryDirectoryURL = [MEMORY[0x277CBEBC0] pf_temporaryDirectoryURL];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v37 = [pf_temporaryDirectoryURL URLByAppendingPathComponent:uUIDString];
 
     v46 = v37;
-    v38 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v37 version:v23];
-    v39 = [v38 URLByDeletingLastPathComponent];
-    LODWORD(v35) = [v31 createDirectoryAtURL:v39 withIntermediateDirectories:1 attributes:0 error:a6];
+    v38 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v37 version:unsignedIntegerValue];
+    uRLByDeletingLastPathComponent = [v38 URLByDeletingLastPathComponent];
+    LODWORD(uUID) = [fileManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
-    if (v35)
+    if (uUID)
     {
       v18 = v47;
-      v13 = v45;
-      if ([v31 copyItemAtURL:v14 toURL:v38 error:a6] && +[PBFDataStoreArchivalUtilities transformDataStoreAtURL:options:error:](PBFDataStoreArchivalUtilities, "transformDataStoreAtURL:options:error:", v38, v45, a6))
+      optionsCopy = v45;
+      if ([fileManager copyItemAtURL:v14 toURL:v38 error:error] && +[PBFDataStoreArchivalUtilities transformDataStoreAtURL:options:error:](PBFDataStoreArchivalUtilities, "transformDataStoreAtURL:options:error:", v38, v45, error))
       {
         if (PBFAppleArchiveCompressDirectory(v38, v15))
         {
@@ -156,7 +156,7 @@ LABEL_23:
         v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
         v43 = v40;
         v18 = v47;
-        *a6 = [v43 pbf_generalErrorWithCode:1 userInfo:v42];
+        *error = [v43 pbf_generalErrorWithCode:1 userInfo:v42];
       }
 
       v29 = 0;
@@ -165,7 +165,7 @@ LABEL_23:
 
     v29 = 0;
     v18 = v47;
-    v13 = v45;
+    optionsCopy = v45;
     goto LABEL_23;
   }
 
@@ -175,10 +175,10 @@ LABEL_26:
   return v29;
 }
 
-- (PBFDataStoreArchiver)initWithDataStoreAtURL:(id)a3
+- (PBFDataStoreArchiver)initWithDataStoreAtURL:(id)l
 {
-  v5 = a3;
-  if (([v5 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  lCopy = l;
+  if (([lCopy checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
     [PBFDataStoreArchiver initWithDataStoreAtURL:a2];
   }
@@ -188,7 +188,7 @@ LABEL_26:
   v6 = [(PBFDataStoreArchiver *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [lCopy copy];
     dataStoreURL = v6->_dataStoreURL;
     v6->_dataStoreURL = v7;
 
@@ -200,15 +200,15 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)archiveToFileAtURL:(id)a3 error:(id *)a4
+- (BOOL)archiveToFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = objc_opt_class();
   dataStoreURL = self->_dataStoreURL;
-  v9 = [(PBFDataStoreArchiver *)self options];
-  LOBYTE(a4) = [v7 archiveDataStoreAtURL:dataStoreURL toURL:v6 options:v9 error:a4];
+  options = [(PBFDataStoreArchiver *)self options];
+  LOBYTE(error) = [v7 archiveDataStoreAtURL:dataStoreURL toURL:lCopy options:options error:error];
 
-  return a4;
+  return error;
 }
 
 + (void)archiveDataStoreAtURL:(char *)a1 toURL:options:error:.cold.1(char *a1)

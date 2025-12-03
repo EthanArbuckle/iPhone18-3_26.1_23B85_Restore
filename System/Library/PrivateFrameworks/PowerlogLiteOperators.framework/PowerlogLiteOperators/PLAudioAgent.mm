@@ -18,44 +18,44 @@
 + (void)load;
 - (BOOL)headphonesConnected;
 - (BOOL)headsetHasInput;
-- (BOOL)initDefaultAudioDevice:(BOOL)a3;
+- (BOOL)initDefaultAudioDevice:(BOOL)device;
 - (BOOL)shouldModelAudioPowerSpeakerTemp;
 - (PLAudioAgent)init;
-- (double)audioPowerForRoute:(id)a3 forVolume:(double)a4;
-- (double)convertSpeakerProtectionModeledPowerToTotalSpeakerPower:(double)a3;
-- (double)modelAudioPowerWithVolume:(double)a3;
+- (double)audioPowerForRoute:(id)route forVolume:(double)volume;
+- (double)convertSpeakerProtectionModeledPowerToTotalSpeakerPower:(double)power;
+- (double)modelAudioPowerWithVolume:(double)volume;
 - (id)BTEndpointType;
 - (id)activeRoute;
-- (id)buildCallBack:(id)a3 withGroup:(BOOL)a4 withHandler:(id)a5;
-- (id)nowPlayingAppBundleID:(id)a3;
-- (id)returnVolumeOrOutPutCategory:(int)a3;
+- (id)buildCallBack:(id)back withGroup:(BOOL)group withHandler:(id)handler;
+- (id)nowPlayingAppBundleID:(id)d;
+- (id)returnVolumeOrOutPutCategory:(int)category;
 - (void)closeAudioAccountingEvents;
-- (void)createAirPlayAccountingEvents:(id)a3;
-- (void)createAudioAccountingEvents:(id)a3;
-- (void)createBluetoothAccountingEvents:(id)a3;
-- (void)createCarPlayAccountingEvents:(id)a3;
-- (void)handleLightningStatusCallback:(id)a3;
-- (void)handleNowPlayingApplicationIsPlayingDidChange:(id)a3;
+- (void)createAirPlayAccountingEvents:(id)events;
+- (void)createAudioAccountingEvents:(id)events;
+- (void)createBluetoothAccountingEvents:(id)events;
+- (void)createCarPlayAccountingEvents:(id)events;
+- (void)handleLightningStatusCallback:(id)callback;
+- (void)handleNowPlayingApplicationIsPlayingDidChange:(id)change;
 - (void)initOperatorDependancies;
 - (void)log;
-- (void)logEventForwardAudioDevice:(id)a3;
-- (void)logEventForwardHapticsPrewarmCount:(id)a3;
-- (void)logEventForwardHapticsRunningCount:(id)a3;
-- (void)logEventForwardMutedTalkerDetection:(id)a3;
+- (void)logEventForwardAudioDevice:(id)device;
+- (void)logEventForwardHapticsPrewarmCount:(id)count;
+- (void)logEventForwardHapticsRunningCount:(id)count;
+- (void)logEventForwardMutedTalkerDetection:(id)detection;
 - (void)logEventForwardOutput;
 - (void)logEventForwardRouting;
-- (void)logEventForwardSing:(id)a3;
-- (void)logEventForwardSongTransitions:(id)a3;
-- (void)logEventIntervalCoreAudioVAD:(id)a3;
-- (void)logEventIntervalRMSLogging:(id)a3;
-- (void)logEventIntervalShazamRecording:(id)a3;
-- (void)logEventPointAudioApp:(id)a3;
-- (void)logEventPointHaptics:(id)a3;
-- (void)logEventPointHapticsAssertion:(id)a3;
-- (void)logEventPointSpeakerAmp:(id)a3;
+- (void)logEventForwardSing:(id)sing;
+- (void)logEventForwardSongTransitions:(id)transitions;
+- (void)logEventIntervalCoreAudioVAD:(id)d;
+- (void)logEventIntervalRMSLogging:(id)logging;
+- (void)logEventIntervalShazamRecording:(id)recording;
+- (void)logEventPointAudioApp:(id)app;
+- (void)logEventPointHaptics:(id)haptics;
+- (void)logEventPointHapticsAssertion:(id)assertion;
+- (void)logEventPointSpeakerAmp:(id)amp;
 - (void)modelAudioPower;
-- (void)modelAudioPowerCodec:(id)a3;
-- (void)modelAudioPowerSpeaker:(id)a3;
+- (void)modelAudioPowerCodec:(id)codec;
+- (void)modelAudioPowerSpeaker:(id)speaker;
 - (void)setupAVSystemController;
 @end
 
@@ -84,8 +84,8 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke(uint64_t a1, void 
 {
   v5 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Output"];
   v3 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  v4 = [(PLAudioAgent *)self volume];
-  [v3 setObject:v4 forKeyedSubscript:@"Volume"];
+  volume = [(PLAudioAgent *)self volume];
+  [v3 setObject:volume forKeyedSubscript:@"Volume"];
 
   [(PLOperator *)self logEntry:v3];
   [(PLAudioAgent *)self modelAudioPower];
@@ -101,24 +101,24 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke(uint64_t a1, void 
   v3 = *MEMORY[0x277D3F5D0];
   v46 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Output"];
   v4 = [(PLOperator *)PLAudioAgent entryKeyForType:v3 andName:@"Routing"];
-  v5 = [(PLOperator *)self storage];
-  v6 = [v5 lastEntryForKey:v46];
+  storage = [(PLOperator *)self storage];
+  v6 = [storage lastEntryForKey:v46];
 
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 lastEntryForKey:v4];
+  storage2 = [(PLOperator *)self storage];
+  v8 = [storage2 lastEntryForKey:v4];
 
-  v9 = [(PLAudioAgent *)self speakerIsPlayingAudio];
-  v10 = [(PLAudioAgent *)self headsetIsPlayingAudio];
+  speakerIsPlayingAudio = [(PLAudioAgent *)self speakerIsPlayingAudio];
+  headsetIsPlayingAudio = [(PLAudioAgent *)self headsetIsPlayingAudio];
   if (v6 | v8)
   {
-    v11 = v10;
+    v11 = headsetIsPlayingAudio;
     if (v6)
     {
       if (v8)
       {
-        v12 = [v8 entryDate];
-        v13 = [v6 entryDate];
-        v14 = [v12 laterDate:v13];
+        entryDate = [v8 entryDate];
+        entryDate2 = [v6 entryDate];
+        entryDate3 = [entryDate laterDate:entryDate2];
 
         goto LABEL_10;
       }
@@ -131,7 +131,7 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke(uint64_t a1, void 
       v15 = v8;
     }
 
-    v14 = [v15 entryDate];
+    entryDate3 = [v15 entryDate];
 LABEL_10:
     v16 = [v8 objectForKeyedSubscript:@"Active"];
     if ([v16 BOOLValue])
@@ -164,7 +164,7 @@ LABEL_10:
     {
     }
 
-    v22 = ([(PLAudioAgent *)self speakerIsPlayingAudio]^ 1) & v9;
+    v22 = ([(PLAudioAgent *)self speakerIsPlayingAudio]^ 1) & speakerIsPlayingAudio;
     v23 = ([(PLAudioAgent *)self headsetIsPlayingAudio]^ 1) & v11;
 LABEL_18:
     v24 = [v6 objectForKeyedSubscript:@"Volume"];
@@ -184,14 +184,14 @@ LABEL_18:
         [(PLAudioAgent *)self audioPowerForRoute:v35 forVolume:?];
         v38 = v37;
 
-        v39 = [MEMORY[0x277D3F0C0] sharedInstance];
-        [v39 createPowerEventForwardWithRootNodeID:15 withPower:v14 withStartDate:v38];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:15 withPower:entryDate3 withStartDate:v38];
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_lastAudioStateChangeDate, v14);
+      objc_storeStrong(&self->_lastAudioStateChangeDate, entryDate3);
       [(PLAudioAgent *)self setSpeakerIsPlayingAudio:v22];
       if ([(PLAudioAgent *)self speakerIsPlayingAudio])
       {
@@ -204,8 +204,8 @@ LABEL_18:
           [(PLAudioAgent *)self audioPowerForRoute:v28 forVolume:?];
           v31 = v30;
 
-          v32 = [MEMORY[0x277D3F0C0] sharedInstance];
-          [v32 createPowerEventForwardWithRootNodeID:15 withPower:v14 withStartDate:v31];
+          mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+          [mEMORY[0x277D3F0C0]2 createPowerEventForwardWithRootNodeID:15 withPower:entryDate3 withStartDate:v31];
         }
       }
 
@@ -214,12 +214,12 @@ LABEL_18:
         [(PLAudioAgent *)self modelAudioPowerSpeaker:0];
       }
 
-      [(PLAudioAgent *)self modelAudioPowerCodec:v14];
+      [(PLAudioAgent *)self modelAudioPowerCodec:entryDate3];
     }
 
     if (v23 != [(PLAudioAgent *)self headsetIsPlayingAudio])
     {
-      objc_storeStrong(&self->_lastAudioStateChangeDate, v14);
+      objc_storeStrong(&self->_lastAudioStateChangeDate, entryDate3);
       [(PLAudioAgent *)self setHeadsetIsPlayingAudio:v23];
       v40 = 0.0;
       if (v23)
@@ -232,14 +232,14 @@ LABEL_18:
         v40 = v44;
       }
 
-      v45 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v45 createPowerEventForwardWithRootNodeID:14 withPower:v14 withStartDate:v40];
+      mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]3 createPowerEventForwardWithRootNodeID:14 withPower:entryDate3 withStartDate:v40];
     }
 
     goto LABEL_32;
   }
 
-  v14 = 0;
+  entryDate3 = 0;
 LABEL_32:
 }
 
@@ -318,11 +318,11 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_220(uint64_t a1, v
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLAudioAgent audioIsActive](self, "audioIsActive")}];
   [v3 setObject:v4 forKeyedSubscript:@"Active"];
 
-  v5 = [(PLAudioAgent *)self activeRoute];
-  [v3 setObject:v5 forKeyedSubscript:@"ActiveRoute"];
+  activeRoute = [(PLAudioAgent *)self activeRoute];
+  [v3 setObject:activeRoute forKeyedSubscript:@"ActiveRoute"];
 
-  v6 = [(PLAudioAgent *)self outputCategory];
-  [v3 setObject:v6 forKeyedSubscript:@"OutputCategory"];
+  outputCategory = [(PLAudioAgent *)self outputCategory];
+  [v3 setObject:outputCategory forKeyedSubscript:@"OutputCategory"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLAudioAgent headphonesConnected](self, "headphonesConnected")}];
   [v3 setObject:v7 forKeyedSubscript:@"HeadphonesConnected"];
@@ -330,11 +330,11 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_220(uint64_t a1, v
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLAudioAgent headsetHasInput](self, "headsetHasInput")}];
   [v3 setObject:v8 forKeyedSubscript:@"HeadsetHasInput"];
 
-  v9 = [(PLAudioAgent *)self BTEndpointType];
-  [v3 setObject:v9 forKeyedSubscript:@"BTEndpointType"];
+  bTEndpointType = [(PLAudioAgent *)self BTEndpointType];
+  [v3 setObject:bTEndpointType forKeyedSubscript:@"BTEndpointType"];
 
-  v10 = [(PLAudioAgent *)self entryRoutingOld];
-  v11 = [v3 compare:v10];
+  entryRoutingOld = [(PLAudioAgent *)self entryRoutingOld];
+  v11 = [v3 compare:entryRoutingOld];
 
   if (v11)
   {
@@ -347,18 +347,18 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_220(uint64_t a1, v
 
 - (BOOL)headphonesConnected
 {
-  v2 = [MEMORY[0x277D26E58] sharedInstance];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26C08]];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C08]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)BTEndpointType
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D26E58] sharedInstance];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26C70]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C70]];
 
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D26CB0]];
   v5 = PLLogAudio();
@@ -386,11 +386,11 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_220(uint64_t a1, v
 
 - (BOOL)headsetHasInput
 {
-  v2 = [MEMORY[0x277D26E58] sharedInstance];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26BF8]];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26BF8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)activeRoute
@@ -399,8 +399,8 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_220(uint64_t a1, v
   v3 = MEMORY[0x277D26AF8];
   do
   {
-    v4 = [MEMORY[0x277D26E58] sharedInstance];
-    v5 = [v4 attributeForKey:*v3];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+    v5 = [mEMORY[0x277D26E58] attributeForKey:*v3];
 
     if (v2 > 4)
     {
@@ -458,7 +458,7 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAudioAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -467,17 +467,17 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"AudioApp";
-  v3 = [a1 entryEventPointDefinitionAudioApp];
-  v11[0] = v3;
+  entryEventPointDefinitionAudioApp = [self entryEventPointDefinitionAudioApp];
+  v11[0] = entryEventPointDefinitionAudioApp;
   v10[1] = @"SpeakerAmp";
-  v4 = [a1 entryEventPointDefinitionSpeakerAmp];
-  v11[1] = v4;
+  entryEventPointDefinitionSpeakerAmp = [self entryEventPointDefinitionSpeakerAmp];
+  v11[1] = entryEventPointDefinitionSpeakerAmp;
   v10[2] = @"Haptics";
-  v5 = [a1 entryEventPointDefinitionHaptics];
-  v11[2] = v5;
+  entryEventPointDefinitionHaptics = [self entryEventPointDefinitionHaptics];
+  v11[2] = entryEventPointDefinitionHaptics;
   v10[3] = @"HapticsAssertion";
-  v6 = [a1 entryEventPointDefinitionHapticsAssertion];
-  v11[3] = v6;
+  entryEventPointDefinitionHapticsAssertion = [self entryEventPointDefinitionHapticsAssertion];
+  v11[3] = entryEventPointDefinitionHapticsAssertion;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -503,33 +503,33 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"ApplicationName";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat_withAppName];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withAppName = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withAppName];
+  v24[0] = commonTypeDict_StringFormat_withAppName;
   v23[1] = @"AssertionID";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v24[1] = commonTypeDict_IntegerFormat;
   v23[2] = @"AssertionName";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v24[2] = commonTypeDict_StringFormat;
   v23[3] = @"AudioRoute";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v24[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v24[3] = commonTypeDict_StringFormat2;
   v23[4] = @"Operation";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v24[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v24[4] = commonTypeDict_StringFormat3;
   v23[5] = @"PID";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v24[5] = commonTypeDict_IntegerFormat2;
   v23[6] = @"MirroringState";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_BoolFormat];
-  v24[6] = v11;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+  v24[6] = commonTypeDict_BoolFormat;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
   v28[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -552,9 +552,9 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Avg Watts Modelled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v11 = commonTypeDict_RealFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -581,17 +581,17 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
   v21[0] = v4;
   v20[1] = *MEMORY[0x277D3F540];
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat_withBundleID];
-  v16[0] = v6;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v16[0] = commonTypeDict_StringFormat_withBundleID;
   v15[1] = @"EngineOnDuration";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v16[1] = v8;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v16[1] = commonTypeDict_RealFormat;
   v15[2] = @"TimestampEnd";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_DateFormat];
-  v16[2] = v10;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v16[2] = commonTypeDict_DateFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -611,13 +611,13 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"active_time";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"active_clients";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v12[1] = commonTypeDict_StringFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -705,33 +705,33 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"Active";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_BoolFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v23[0] = commonTypeDict_BoolFormat;
   v22[1] = @"OutputCategory";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_StringFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v23[1] = commonTypeDict_StringFormat;
   v22[2] = @"ActiveRoute";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_StringFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v23[2] = commonTypeDict_StringFormat2;
   v22[3] = @"HeadphonesConnected";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v23[3] = commonTypeDict_BoolFormat2;
   v22[4] = @"HeadsetHasInput";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v23[4] = commonTypeDict_BoolFormat3;
   v22[5] = @"AudioSessionID";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat;
   v22[6] = @"BTEndpointType";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v23[6] = commonTypeDict_StringFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -754,13 +754,13 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"BundleID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat_withBundleID];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
   v12[1] = @"State";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_StringFormat_withBundleID;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -780,9 +780,9 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"Muted";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -802,17 +802,17 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"RunningCount";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"pid";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v13[2] = @"subsystem";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -835,21 +835,21 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v21[0] = v15;
   v20[1] = *MEMORY[0x277D3F540];
   v16[0] = @"PrewarmCount";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v17[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v17[0] = commonTypeDict_IntegerFormat;
   v16[1] = @"pid";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v17[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v17[1] = commonTypeDict_IntegerFormat2;
   v16[2] = @"subsystem";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v17[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v17[2] = commonTypeDict_IntegerFormat3;
   v16[3] = @"process";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat_withProcessName];
-  v17[3] = v10;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat_withProcessName];
+  v17[3] = commonTypeDict_StringFormat_withProcessName;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -866,11 +866,11 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v3 = +[PLAudioAgent entryEventIntervalDefinitionShazamRecording];
   v10[0] = v3;
   v9[1] = @"RMSLogging";
-  v4 = [a1 entryEventIntervalDefinitionRMSLogging];
-  v10[1] = v4;
+  entryEventIntervalDefinitionRMSLogging = [self entryEventIntervalDefinitionRMSLogging];
+  v10[1] = entryEventIntervalDefinitionRMSLogging;
   v9[2] = @"CoreAudioVAD";
-  v5 = [a1 entryEventIntervalDefinitionCoreAudioVAD];
-  v10[2] = v5;
+  entryEventIntervalDefinitionCoreAudioVAD = [self entryEventIntervalDefinitionCoreAudioVAD];
+  v10[2] = entryEventIntervalDefinitionCoreAudioVAD;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -893,13 +893,13 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"timestampEnd";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
   v12[1] = @"BundleID";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_DateFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v13[1] = commonTypeDict_StringFormat_withBundleID;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -922,45 +922,45 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v33[0] = v27;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"timestampEnd";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_DateFormat];
-  v29[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v29[0] = commonTypeDict_DateFormat;
   v28[1] = @"ApplicationName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat_withBundleID];
-  v29[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v29[1] = commonTypeDict_StringFormat_withBundleID;
   v28[2] = @"maxRms";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_RealFormat];
-  v29[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v29[2] = commonTypeDict_RealFormat;
   v28[3] = @"minRms";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_RealFormat];
-  v29[3] = v19;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v29[3] = commonTypeDict_RealFormat2;
   v28[4] = @"silence_duration";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[4] = v17;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v29[4] = commonTypeDict_IntegerFormat;
   v28[5] = @"quiet_duration";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v29[5] = v15;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v29[5] = commonTypeDict_IntegerFormat2;
   v28[6] = @"audible_duration";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v29[6] = v4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v29[6] = commonTypeDict_IntegerFormat3;
   v28[7] = @"node";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v29[7] = v6;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v29[7] = commonTypeDict_StringFormat;
   v28[8] = @"pid";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v29[8] = v8;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v29[8] = commonTypeDict_IntegerFormat4;
   v28[9] = @"reporterID";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v29[9] = v10;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v29[9] = commonTypeDict_IntegerFormat5;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   v33[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -980,37 +980,37 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"Client";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v24[0] = commonTypeDict_StringFormat;
   v23[1] = @"ClientID";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v24[1] = commonTypeDict_StringFormat2;
   v23[2] = @"StartTime";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v24[2] = commonTypeDict_DateFormat;
   v23[3] = @"EndTime";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_DateFormat];
-  v24[3] = v14;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_DateFormat];
+  v24[3] = commonTypeDict_DateFormat2;
   v23[4] = @"State";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v24[4] = v3;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v24[4] = commonTypeDict_IntegerFormat;
   v23[5] = @"Device";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v24[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v24[5] = commonTypeDict_StringFormat3;
   v23[6] = @"SID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v24[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v24[6] = commonTypeDict_StringFormat4;
   v23[7] = @"LifespanInSeconds";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v24[7] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:8];
   v28[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -1035,28 +1035,28 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   return result;
 }
 
-- (id)nowPlayingAppBundleID:(id)a3
+- (id)nowPlayingAppBundleID:(id)d
 {
-  v3 = [MEMORY[0x277D26E58] sharedInstance];
-  v4 = [v3 attributeForKey:*MEMORY[0x277D26C28]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  v4 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C28]];
 
   return v4;
 }
 
-- (void)handleNowPlayingApplicationIsPlayingDidChange:(id)a3
+- (void)handleNowPlayingApplicationIsPlayingDidChange:(id)change
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  changeCopy = change;
   v18 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"NowPlaying"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v18];
-  v7 = [(PLAudioAgent *)self nowPlayingAppBundleID:v5];
+  v7 = [(PLAudioAgent *)self nowPlayingAppBundleID:changeCopy];
 
   [v6 setObject:v7 forKeyedSubscript:@"BundleID"];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLAudioAgent audioIsActive](self, "audioIsActive")}];
   [v6 setObject:v8 forKeyedSubscript:@"State"];
 
-  v9 = [(PLOperator *)self storage];
-  v10 = [v9 lastEntryForKey:v18];
+  storage = [(PLOperator *)self storage];
+  v10 = [storage lastEntryForKey:v18];
 
   if (!v10)
   {
@@ -1064,9 +1064,9 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_284(uint64_t a1, 
   }
 
   v11 = [v10 objectForKeyedSubscript:@"State"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
   v13 = [v6 objectForKeyedSubscript:@"State"];
-  if (v12 != [v13 integerValue])
+  if (integerValue != [v13 integerValue])
   {
     goto LABEL_7;
   }
@@ -1095,11 +1095,11 @@ LABEL_8:
 {
   v80[4] = *MEMORY[0x277D85DE8];
   v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D26D40] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26D40] object:0];
 
-  v4 = [MEMORY[0x277D26E58] sharedInstance];
-  v5 = [v4 attributeForKey:*MEMORY[0x277D26C80]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  v5 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C80]];
 
   self->_audioIsActive = [v5 count] != 0;
   v6 = objc_opt_new();
@@ -1153,7 +1153,7 @@ LABEL_8:
         }
 
         v23 = *(*(&v69 + 1) + 8 * i);
-        v24 = [(PLAudioAgent *)self nsOutputNotifications];
+        nsOutputNotifications = [(PLAudioAgent *)self nsOutputNotifications];
         v25 = objc_alloc(MEMORY[0x277D3F1F0]);
         v68[0] = MEMORY[0x277D85DD0];
         v68[1] = 3221225472;
@@ -1161,7 +1161,7 @@ LABEL_8:
         v68[3] = &unk_2782597E8;
         v68[4] = self;
         v26 = [v25 initWithOperator:self forNotification:v23 withBlock:v68];
-        [v24 addObject:v26];
+        [nsOutputNotifications addObject:v26];
       }
 
       v20 = [obj countByEnumeratingWithState:&v69 objects:v77 count:16];
@@ -1190,7 +1190,7 @@ LABEL_8:
         }
 
         v31 = *(*(&v64 + 1) + 8 * j);
-        v32 = [(PLAudioAgent *)self nsOutputNotifications];
+        nsOutputNotifications2 = [(PLAudioAgent *)self nsOutputNotifications];
         v33 = objc_alloc(MEMORY[0x277D3F1F0]);
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
@@ -1198,7 +1198,7 @@ LABEL_8:
         v63[3] = &unk_2782597E8;
         v63[4] = self;
         v34 = [v33 initWithOperator:self forNotification:v31 withBlock:v63];
-        [v32 addObject:v34];
+        [nsOutputNotifications2 addObject:v34];
       }
 
       v28 = [v55 countByEnumeratingWithState:&v64 objects:v76 count:16];
@@ -1227,7 +1227,7 @@ LABEL_8:
         }
 
         v39 = *(*(&v59 + 1) + 8 * k);
-        v40 = [(PLAudioAgent *)self nsOutputNotifications];
+        nsOutputNotifications3 = [(PLAudioAgent *)self nsOutputNotifications];
         v41 = objc_alloc(MEMORY[0x277D3F1F0]);
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
@@ -1235,7 +1235,7 @@ LABEL_8:
         v58[3] = &unk_2782597E8;
         v58[4] = self;
         v42 = [v41 initWithOperator:self forNotification:v39 withBlock:v58];
-        [v40 addObject:v42];
+        [nsOutputNotifications3 addObject:v42];
       }
 
       v36 = [v53 countByEnumeratingWithState:&v59 objects:v75 count:16];
@@ -1247,10 +1247,10 @@ LABEL_8:
   [v51 addObjectsFromArray:obj];
   [v51 addObjectsFromArray:v55];
   [v51 addObjectsFromArray:v53];
-  v43 = [MEMORY[0x277D26E58] sharedInstance];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedInstance];
   v44 = *MEMORY[0x277D26DD0];
   v57 = 0;
-  [v43 setAttribute:v51 forKey:v44 error:&v57];
+  [mEMORY[0x277D26E58]2 setAttribute:v51 forKey:v44 error:&v57];
   v45 = v57;
 
   if (v45)
@@ -1264,12 +1264,12 @@ LABEL_8:
     }
   }
 
-  v47 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v47 addObserver:self selector:sel_setupAVSystemController name:*MEMORY[0x277D26D40] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_setupAVSystemController name:*MEMORY[0x277D26D40] object:0];
 
-  v48 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   lastAudioStateChangeDate = self->_lastAudioStateChangeDate;
-  self->_lastAudioStateChangeDate = v48;
+  self->_lastAudioStateChangeDate = monotonicDate;
 
   v50 = *MEMORY[0x277D85DE8];
 }
@@ -1293,7 +1293,7 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_224(uint64_t a1, v
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)returnVolumeOrOutPutCategory:(int)a3
+- (id)returnVolumeOrOutPutCategory:(int)category
 {
   v4 = 0;
   v5 = 0;
@@ -1301,20 +1301,20 @@ void __39__PLAudioAgent_setupAVSystemController__block_invoke_224(uint64_t a1, v
   do
   {
     v6 = v4;
-    v7 = [MEMORY[0x277D26E58] sharedInstance];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
     v13 = v4;
-    v8 = [v7 getActiveCategoryVolume:&v14 andName:&v13];
+    v8 = [mEMORY[0x277D26E58] getActiveCategoryVolume:&v14 andName:&v13];
     v4 = v13;
 
     if (v8)
     {
-      if (!a3)
+      if (!category)
       {
         v9 = [MEMORY[0x277CCABB0] numberWithDouble:v14 * 100.0];
         goto LABEL_8;
       }
 
-      if (a3 == 1)
+      if (category == 1)
       {
         v9 = v4;
 LABEL_8:
@@ -1339,7 +1339,7 @@ LABEL_9:
     v11 = v10;
   }
 
-  else if (a3)
+  else if (category)
   {
     v11 = @"INVALID";
   }
@@ -1369,8 +1369,8 @@ LABEL_9:
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
     v5 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"audio"];
-    v6 = [(PLAudioAgent *)self audioHardware];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    audioHardware = [(PLAudioAgent *)self audioHardware];
+    v7 = [v5 objectForKeyedSubscript:audioHardware];
     v8 = [v7 objectForKeyedSubscript:@"Speaker"];
     audioPowerModel = self->_audioPowerModel;
     self->_audioPowerModel = v8;
@@ -1484,9 +1484,9 @@ LABEL_9:
   [(PLAudioAgent *)self setSongTransitionXPCListener:v31];
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v32 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v33 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v32 createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18800 withStartDate:v33];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18800 withStartDate:monotonicDate];
 
     if (![(PLAudioAgent *)self audioIsActive])
     {
@@ -1658,29 +1658,29 @@ void __40__PLAudioAgent_initOperatorDependancies__block_invoke_362(uint64_t a1, 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildCallBack:(id)a3 withGroup:(BOOL)a4 withHandler:(id)a5
+- (id)buildCallBack:(id)back withGroup:(BOOL)group withHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  groupCopy = group;
+  backCopy = back;
+  handlerCopy = handler;
+  if (groupCopy)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"GroupID_%@", v8];
+    backCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"GroupID_%@", backCopy];
   }
 
   else
   {
-    v10 = v8;
+    backCopy = backCopy;
   }
 
-  v11 = v10;
+  v11 = backCopy;
   v12 = objc_alloc(MEMORY[0x277D3F1A8]);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__PLAudioAgent_buildCallBack_withGroup_withHandler___block_invoke;
   v16[3] = &unk_27825A338;
-  v17 = v9;
-  v13 = v9;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [v12 initWithOperator:self forEntryKey:v11 withBlock:v16];
 
   return v14;
@@ -1696,18 +1696,18 @@ uint64_t __52__PLAudioAgent_buildCallBack_withGroup_withHandler___block_invoke(u
   return result;
 }
 
-- (void)handleLightningStatusCallback:(id)a3
+- (void)handleLightningStatusCallback:(id)callback
 {
-  v5 = [a3 objectForKey:@"entry"];
+  v5 = [callback objectForKey:@"entry"];
   v4 = [v5 objectForKey:@"IOAccessoryPowerMode"];
   -[PLAudioAgent setAccessoryPowerState:](self, "setAccessoryPowerState:", [v4 intValue]);
 }
 
-- (BOOL)initDefaultAudioDevice:(BOOL)a3
+- (BOOL)initDefaultAudioDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v5 = [AudioDevice alloc];
-  if (!v3)
+  if (!deviceCopy)
   {
     v6 = [(AudioDevice *)v5 initOutputDeviceWithCtx:self];
     if ([v6 updateDefaultAudioDeviceInfo])
@@ -1744,12 +1744,12 @@ LABEL_8:
   [(PLAudioAgent *)self logEventForwardRouting];
 }
 
-- (void)logEventPointAudioApp:(id)a3
+- (void)logEventPointAudioApp:(id)app
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  appCopy = app;
   v19 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"AudioApp"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v19 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v19 withRawData:appCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"PlaybackStartTime"];
 
@@ -1760,8 +1760,8 @@ LABEL_8:
     v10 = v9;
 
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
-    v12 = [v11 convertFromSystemToMonotonic];
-    [v6 setEntryDate:v12];
+    convertFromSystemToMonotonic = [v11 convertFromSystemToMonotonic];
+    [v6 setEntryDate:convertFromSystemToMonotonic];
   }
 
   v13 = [v6 objectForKeyedSubscript:@"PlaybackStopTime"];
@@ -1773,8 +1773,8 @@ LABEL_8:
     v16 = v15;
 
     v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v16];
-    v18 = [v17 convertFromSystemToMonotonic];
-    [v6 setEntryDate:v18];
+    convertFromSystemToMonotonic2 = [v17 convertFromSystemToMonotonic];
+    [v6 setEntryDate:convertFromSystemToMonotonic2];
   }
 
   [(PLOperator *)self logEntry:v6];
@@ -1784,70 +1784,70 @@ LABEL_8:
   [(PLAudioAgent *)self createBluetoothAccountingEvents:v6];
 }
 
-- (void)logEventPointSpeakerAmp:(id)a3
+- (void)logEventPointSpeakerAmp:(id)amp
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  ampCopy = amp;
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"SpeakerAmp"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:ampCopy];
 
   [(PLAudioAgent *)self modelAudioPowerSpeaker:v6];
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointHaptics:(id)a3
+- (void)logEventPointHaptics:(id)haptics
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  hapticsCopy = haptics;
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"Haptics"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:hapticsCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointHapticsAssertion:(id)a3
+- (void)logEventPointHapticsAssertion:(id)assertion
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  assertionCopy = assertion;
   v9 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"HapticsAssertion"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9];
-  v7 = [v5 objectForKeyedSubscript:@"Haptic_Active_Hardware_Time_Seconds"];
+  v7 = [assertionCopy objectForKeyedSubscript:@"Haptic_Active_Hardware_Time_Seconds"];
   [v6 setObject:v7 forKeyedSubscript:@"active_time"];
 
-  v8 = [v5 objectForKeyedSubscript:@"Active_Clients"];
+  v8 = [assertionCopy objectForKeyedSubscript:@"Active_Clients"];
 
   [v6 setObject:v8 forKeyedSubscript:@"active_clients"];
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardAudioDevice:(id)a3
+- (void)logEventForwardAudioDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"AudioDevice"];
   v6 = objc_alloc(MEMORY[0x277D3F190]);
-  v7 = [v4 lastUpdateTime];
-  v8 = [v6 initWithEntryKey:v5 withDate:v7];
+  lastUpdateTime = [deviceCopy lastUpdateTime];
+  v8 = [v6 initWithEntryKey:v5 withDate:lastUpdateTime];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "deviceID")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(deviceCopy, "deviceID")}];
     [v8 setObject:v9 forKeyedSubscript:@"DeviceID"];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "sourceID")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(deviceCopy, "sourceID")}];
     [v8 setObject:v10 forKeyedSubscript:@"SourceID"];
 
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "transType")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(deviceCopy, "transType")}];
     [v8 setObject:v11 forKeyedSubscript:@"TransType"];
 
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isInput")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(deviceCopy, "isInput")}];
     [v8 setObject:v12 forKeyedSubscript:@"IsInput"];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isRunning")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(deviceCopy, "isRunning")}];
     [v8 setObject:v13 forKeyedSubscript:@"IsRunning"];
 
     v14 = MEMORY[0x277CCABB0];
-    [v4 volume];
+    [deviceCopy volume];
     v15 = [v14 numberWithFloat:?];
     [v8 setObject:v15 forKeyedSubscript:@"Volume"];
 
@@ -1855,9 +1855,9 @@ LABEL_8:
     v16 = PLLogAudio();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v4 lastUpdateTime];
+      lastUpdateTime2 = [deviceCopy lastUpdateTime];
       v19 = 138412546;
-      v20 = v18;
+      v20 = lastUpdateTime2;
       v21 = 2112;
       v22 = v8;
       _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "AudioDevice changed: %@, %@", &v19, 0x16u);
@@ -1867,63 +1867,63 @@ LABEL_8:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardHapticsRunningCount:(id)a3
+- (void)logEventForwardHapticsRunningCount:(id)count
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  countCopy = count;
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"HapticsRunningCount"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:countCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardHapticsPrewarmCount:(id)a3
+- (void)logEventForwardHapticsPrewarmCount:(id)count
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  countCopy = count;
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"HapticsPrewarmCount"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:countCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardMutedTalkerDetection:(id)a3
+- (void)logEventForwardMutedTalkerDetection:(id)detection
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  detectionCopy = detection;
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"MutedTalkerDetection"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:detectionCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardSing:(id)a3
+- (void)logEventForwardSing:(id)sing
 {
-  v4 = a3;
-  v9 = [v4 mutableCopy];
+  singCopy = sing;
+  v9 = [singCopy mutableCopy];
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v4 objectForKeyedSubscript:@"TimestampSent"];
+  v6 = [singCopy objectForKeyedSubscript:@"TimestampSent"];
 
   [v6 doubleValue];
   v7 = [v5 dateWithTimeIntervalSince1970:?];
 
-  v8 = [v7 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v7 convertFromSystemToMonotonic];
 
   [v9 removeObjectForKey:@"TimestampSent"];
-  [(PLOperator *)self logForSubsystem:@"Audio" category:@"Sing" data:v9 date:v8];
+  [(PLOperator *)self logForSubsystem:@"Audio" category:@"Sing" data:v9 date:convertFromSystemToMonotonic];
 }
 
-- (void)logEventForwardSongTransitions:(id)a3
+- (void)logEventForwardSongTransitions:(id)transitions
 {
-  v4 = a3;
-  v14 = [v4 mutableCopy];
+  transitionsCopy = transitions;
+  v14 = [transitionsCopy mutableCopy];
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v4 objectForKeyedSubscript:@"TimestampSent"];
+  v6 = [transitionsCopy objectForKeyedSubscript:@"TimestampSent"];
 
   [v6 doubleValue];
   v7 = [v5 dateWithTimeIntervalSince1970:?];
 
-  v8 = [v7 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v7 convertFromSystemToMonotonic];
 
   [v14 removeObjectForKey:@"TimestampSent"];
   v9 = [v14 objectForKeyedSubscript:@"TransitionDuration"];
@@ -1939,100 +1939,100 @@ LABEL_8:
     [v14 setObject:v13 forKeyedSubscript:@"TransitionDuration"];
   }
 
-  [(PLOperator *)self logForSubsystem:@"Audio" category:@"SongTransitions" data:v14 date:v8];
+  [(PLOperator *)self logForSubsystem:@"Audio" category:@"SongTransitions" data:v14 date:convertFromSystemToMonotonic];
 }
 
-- (void)logEventIntervalRMSLogging:(id)a3
+- (void)logEventIntervalRMSLogging:(id)logging
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  loggingCopy = logging;
   v21 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"RMSLogging"];
   v6 = MEMORY[0x277CBEAA8];
-  v7 = [v5 objectForKeyedSubscript:@"StartTime"];
+  v7 = [loggingCopy objectForKeyedSubscript:@"StartTime"];
   [v7 doubleValue];
   v8 = [v6 dateWithTimeIntervalSince1970:?];
 
-  v9 = [v8 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v8 convertFromSystemToMonotonic];
 
-  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v21 withDate:v9];
-  v11 = [v5 objectForKeyedSubscript:@"ApplicationName"];
+  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v21 withDate:convertFromSystemToMonotonic];
+  v11 = [loggingCopy objectForKeyedSubscript:@"ApplicationName"];
   [v10 setObject:v11 forKeyedSubscript:@"ApplicationName"];
 
-  v12 = [v5 objectForKeyedSubscript:@"maxRms"];
+  v12 = [loggingCopy objectForKeyedSubscript:@"maxRms"];
   [v10 setObject:v12 forKeyedSubscript:@"maxRms"];
 
-  v13 = [v5 objectForKeyedSubscript:@"minRms"];
+  v13 = [loggingCopy objectForKeyedSubscript:@"minRms"];
   [v10 setObject:v13 forKeyedSubscript:@"minRms"];
 
-  v14 = [v5 objectForKeyedSubscript:@"silence"];
+  v14 = [loggingCopy objectForKeyedSubscript:@"silence"];
   [v10 setObject:v14 forKeyedSubscript:@"silence_duration"];
 
-  v15 = [v5 objectForKeyedSubscript:@"quiet"];
+  v15 = [loggingCopy objectForKeyedSubscript:@"quiet"];
   [v10 setObject:v15 forKeyedSubscript:@"quiet_duration"];
 
-  v16 = [v5 objectForKeyedSubscript:@"audible"];
+  v16 = [loggingCopy objectForKeyedSubscript:@"audible"];
   [v10 setObject:v16 forKeyedSubscript:@"audible_duration"];
 
-  v17 = [v5 objectForKeyedSubscript:@"node"];
+  v17 = [loggingCopy objectForKeyedSubscript:@"node"];
   [v10 setObject:v17 forKeyedSubscript:@"node"];
 
-  v18 = [v5 objectForKeyedSubscript:@"pid"];
+  v18 = [loggingCopy objectForKeyedSubscript:@"pid"];
   [v10 setObject:v18 forKeyedSubscript:@"pid"];
 
-  v19 = [v5 objectForKeyedSubscript:@"reporterID"];
+  v19 = [loggingCopy objectForKeyedSubscript:@"reporterID"];
 
   [v10 setObject:v19 forKeyedSubscript:@"reporterID"];
-  v20 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v10 setObject:v20 forKeyedSubscript:@"timestampEnd"];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [v10 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
   [(PLOperator *)self logEntry:v10];
 }
 
-- (void)logEventIntervalShazamRecording:(id)a3
+- (void)logEventIntervalShazamRecording:(id)recording
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  recordingCopy = recording;
   v13 = [(PLOperator *)PLAudioAgent entryKeyForType:v4 andName:@"ShazamRecording"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"timestamp"];
-  v8 = [v7 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v8];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:recordingCopy];
+  v7 = [recordingCopy objectForKeyedSubscript:@"timestamp"];
+  convertFromSystemToMonotonic = [v7 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v9 = [v5 objectForKeyedSubscript:@"timestampEnd"];
+  v9 = [recordingCopy objectForKeyedSubscript:@"timestampEnd"];
 
-  v10 = [v9 convertFromSystemToMonotonic];
-  [v6 setObject:v10 forKeyedSubscript:@"timestampEnd"];
+  convertFromSystemToMonotonic2 = [v9 convertFromSystemToMonotonic];
+  [v6 setObject:convertFromSystemToMonotonic2 forKeyedSubscript:@"timestampEnd"];
 
   v11 = [v6 objectForKeyedSubscript:@"timestampEnd"];
 
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v6 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [v6 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
   }
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventIntervalCoreAudioVAD:(id)a3
+- (void)logEventIntervalCoreAudioVAD:(id)d
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"State"];
-  v6 = [v5 intValue];
+  dCopy = d;
+  v5 = [dCopy objectForKeyedSubscript:@"State"];
+  intValue = [v5 intValue];
 
   v7 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"CoreAudioVAD"];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v4 objectForKeyedSubscript:@"ClientID"];
-  v10 = [v4 objectForKeyedSubscript:@"Client"];
+  v9 = [dCopy objectForKeyedSubscript:@"ClientID"];
+  v10 = [dCopy objectForKeyedSubscript:@"Client"];
   v11 = [v8 stringWithFormat:@"EndTime IS NULL AND ClientID = '%@' AND Client = '%@'", v9, v10];
   v72[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:1];
 
-  v13 = [(PLOperator *)self storage];
-  v14 = [v13 lastEntryForKey:v7 withFilters:v12];
+  storage = [(PLOperator *)self storage];
+  v14 = [storage lastEntryForKey:v7 withFilters:v12];
 
-  if (v6 == 1)
+  if (intValue == 1)
   {
     if (v14)
     {
@@ -2051,7 +2051,7 @@ LABEL_8:
       v67[2] = __45__PLAudioAgent_logEventIntervalCoreAudioVAD___block_invoke;
       v67[3] = &unk_278259658;
       v68 = v14;
-      v69 = v4;
+      v69 = dCopy;
       [(PLOperator *)self updateEntry:v68 withBlock:v67];
 
       v16 = v68;
@@ -2059,29 +2059,29 @@ LABEL_8:
 
     else
     {
-      v62 = self;
-      v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v4];
+      selfCopy = self;
+      v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:dCopy];
       v19 = MEMORY[0x277CBEAA8];
-      v20 = [v4 objectForKeyedSubscript:@"StartTime"];
+      v20 = [dCopy objectForKeyedSubscript:@"StartTime"];
       [v20 doubleValue];
       v21 = [v19 dateWithTimeIntervalSince1970:?];
 
-      v22 = [v21 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic = [v21 convertFromSystemToMonotonic];
 
       v23 = MEMORY[0x277CBEAA8];
-      v24 = v22;
-      [v22 timeIntervalSince1970];
+      v24 = convertFromSystemToMonotonic;
+      [convertFromSystemToMonotonic timeIntervalSince1970];
       v26 = [v23 dateWithTimeIntervalSince1970:round(v25 / 60.0) * 60.0];
       [v16 setObject:v26 forKeyedSubscript:@"StartTime"];
 
       v27 = MEMORY[0x277CCABB0];
-      v28 = [v4 objectForKeyedSubscript:@"LifespanInSeconds"];
+      v28 = [dCopy objectForKeyedSubscript:@"LifespanInSeconds"];
       v29 = [v27 numberWithDouble:{round(objc_msgSend(v28, "intValue") / 60.0) * 60.0}];
       [v16 setObject:v29 forKeyedSubscript:@"LifespanInSeconds"];
 
       v30 = MEMORY[0x277D3F258];
       v31 = MEMORY[0x277CCACA8];
-      v32 = [v4 objectForKeyedSubscript:@"SID"];
+      v32 = [dCopy objectForKeyedSubscript:@"SID"];
       v33 = [v31 stringWithFormat:@"%@", v32];
       v34 = [v30 hashString:v33];
       [v16 setObject:v34 forKeyedSubscript:@"SID"];
@@ -2096,7 +2096,7 @@ LABEL_8:
         _os_log_debug_impl(&dword_21A4C6000, v35, OS_LOG_TYPE_DEBUG, "CoreAudioVad Active Session state = %d, creating new table entry =  %@", buf, 0x12u);
       }
 
-      [(PLOperator *)v62 logEntry:v16];
+      [(PLOperator *)selfCopy logEntry:v16];
     }
   }
 
@@ -2109,7 +2109,7 @@ LABEL_8:
       if (v18)
       {
         *buf = 67109378;
-        LODWORD(v71[0]) = v6;
+        LODWORD(v71[0]) = intValue;
         WORD2(v71[0]) = 2112;
         *(v71 + 6) = v14;
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "CoreAudioVad state = %d Found OpenEntry openEntry = %@", buf, 0x12u);
@@ -2119,7 +2119,7 @@ LABEL_8:
       v64[1] = 3221225472;
       v64[2] = __45__PLAudioAgent_logEventIntervalCoreAudioVAD___block_invoke_430;
       v64[3] = &unk_278259658;
-      v65 = v4;
+      v65 = dCopy;
       v66 = v14;
       [(PLOperator *)self updateEntry:v66 withBlock:v64];
 
@@ -2128,49 +2128,49 @@ LABEL_8:
 
     else
     {
-      v63 = self;
+      selfCopy2 = self;
       if (v18)
       {
         *buf = 138412290;
-        v71[0] = v4;
+        v71[0] = dCopy;
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "CoreAudioVad Didn't find OpenEntry, payload = %@", buf, 0xCu);
       }
 
-      v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v4];
+      v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:dCopy];
       v36 = MEMORY[0x277CBEAA8];
-      v37 = [v4 objectForKeyedSubscript:@"StartTime"];
+      v37 = [dCopy objectForKeyedSubscript:@"StartTime"];
       [v37 doubleValue];
       v38 = [v36 dateWithTimeIntervalSince1970:?];
 
-      v39 = [v38 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic2 = [v38 convertFromSystemToMonotonic];
 
       v40 = MEMORY[0x277CBEAA8];
-      v61 = v39;
-      [v39 timeIntervalSince1970];
+      v61 = convertFromSystemToMonotonic2;
+      [convertFromSystemToMonotonic2 timeIntervalSince1970];
       v42 = [v40 dateWithTimeIntervalSince1970:round(v41 / 60.0) * 60.0];
       [v16 setObject:v42 forKeyedSubscript:@"StartTime"];
 
       v43 = MEMORY[0x277CBEAA8];
-      v44 = [v4 objectForKeyedSubscript:@"EndTime"];
+      v44 = [dCopy objectForKeyedSubscript:@"EndTime"];
       [v44 doubleValue];
       v45 = [v43 dateWithTimeIntervalSince1970:?];
 
-      v46 = [v45 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic3 = [v45 convertFromSystemToMonotonic];
 
       v47 = MEMORY[0x277CBEAA8];
-      v48 = v46;
-      [v46 timeIntervalSince1970];
+      v48 = convertFromSystemToMonotonic3;
+      [convertFromSystemToMonotonic3 timeIntervalSince1970];
       v50 = [v47 dateWithTimeIntervalSince1970:round(v49 / 60.0) * 60.0];
       [v16 setObject:v50 forKeyedSubscript:@"EndTime"];
 
       v51 = MEMORY[0x277CCABB0];
-      v52 = [v4 objectForKeyedSubscript:@"LifespanInSeconds"];
+      v52 = [dCopy objectForKeyedSubscript:@"LifespanInSeconds"];
       v53 = [v51 numberWithDouble:{round(objc_msgSend(v52, "intValue") / 60.0) * 60.0}];
       [v16 setObject:v53 forKeyedSubscript:@"LifespanInSeconds"];
 
       v54 = MEMORY[0x277D3F258];
       v55 = MEMORY[0x277CCACA8];
-      v56 = [v4 objectForKeyedSubscript:@"SID"];
+      v56 = [dCopy objectForKeyedSubscript:@"SID"];
       v57 = [v55 stringWithFormat:@"%@", v56];
       v58 = [v54 hashString:v57];
       [v16 setObject:v58 forKeyedSubscript:@"SID"];
@@ -2183,7 +2183,7 @@ LABEL_8:
         _os_log_debug_impl(&dword_21A4C6000, v59, OS_LOG_TYPE_DEBUG, "CoreAudioVad Didn't find OpenEntry calling logEntry entry = %@", buf, 0xCu);
       }
 
-      [(PLOperator *)v63 logEntry:v16];
+      [(PLOperator *)selfCopy2 logEntry:v16];
     }
   }
 
@@ -2275,7 +2275,7 @@ uint64_t __48__PLAudioAgent_shouldModelAudioPowerSpeakerTemp__block_invoke()
   return result;
 }
 
-- (double)modelAudioPowerWithVolume:(double)a3
+- (double)modelAudioPowerWithVolume:(double)volume
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
@@ -2283,16 +2283,16 @@ uint64_t __48__PLAudioAgent_shouldModelAudioPowerSpeakerTemp__block_invoke()
   }
 
   v6 = MEMORY[0x277D3F258];
-  v7 = [(PLAudioAgent *)self audioPowerModel];
-  [v6 scaledPowerBasedOnPoint:v7 withPowerModel:a3];
+  audioPowerModel = [(PLAudioAgent *)self audioPowerModel];
+  [v6 scaledPowerBasedOnPoint:audioPowerModel withPowerModel:volume];
   v9 = v8;
 
   return v9;
 }
 
-- (void)modelAudioPowerCodec:(id)a3
+- (void)modelAudioPowerCodec:(id)codec
 {
-  v7 = a3;
+  codecCopy = codec;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
     v4 = 0.0;
@@ -2310,65 +2310,65 @@ uint64_t __48__PLAudioAgent_shouldModelAudioPowerSpeakerTemp__block_invoke()
       }
     }
 
-    v6 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v6 createPowerEventForwardWithRootNodeID:55 withPower:v7 withStartDate:v4];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:55 withPower:codecCopy withStartDate:v4];
   }
 }
 
-- (void)modelAudioPowerSpeaker:(id)a3
+- (void)modelAudioPowerSpeaker:(id)speaker
 {
-  v23 = a3;
+  speakerCopy = speaker;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    if (!v23)
+    if (!speakerCopy)
     {
       goto LABEL_10;
     }
 
-    v4 = [v23 entryDate];
+    entryDate = [speakerCopy entryDate];
 
-    if (!v4)
+    if (!entryDate)
     {
       goto LABEL_10;
     }
 
     if ([(PLAudioAgent *)self speakerIsPlayingAudio])
     {
-      v5 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"SpeakerAmp"];
-      v6 = [(PLOperator *)self storage];
-      v7 = [v6 lastEntryForKey:v5];
+      lastAudioStateChangeDate = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"SpeakerAmp"];
+      storage = [(PLOperator *)self storage];
+      v7 = [storage lastEntryForKey:lastAudioStateChangeDate];
 
-      v8 = [v23 entryDate];
-      v9 = [v8 dateByAddingTimeInterval:-60.0];
+      entryDate2 = [speakerCopy entryDate];
+      v9 = [entryDate2 dateByAddingTimeInterval:-60.0];
 
-      v10 = [v9 laterDate:self->_lastAudioStateChangeDate];
+      mEMORY[0x277D3F0C0]2 = [v9 laterDate:self->_lastAudioStateChangeDate];
 
       if (v7)
       {
-        v11 = [v7 entryDate];
-        v12 = [v10 laterDate:v11];
+        entryDate3 = [v7 entryDate];
+        v12 = [mEMORY[0x277D3F0C0]2 laterDate:entryDate3];
 
-        v10 = v12;
+        mEMORY[0x277D3F0C0]2 = v12;
       }
 
-      v13 = [v23 objectForKeyedSubscript:@"Avg Watts Modelled"];
+      v13 = [speakerCopy objectForKeyedSubscript:@"Avg Watts Modelled"];
       [v13 doubleValue];
       [(PLAudioAgent *)self convertSpeakerProtectionModeledPowerToTotalSpeakerPower:v14 * 1000.0];
       v16 = v15;
 
-      v17 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v17 createPowerEventForwardWithRootNodeID:15 withPower:v10 withStartDate:v16];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:15 withPower:mEMORY[0x277D3F0C0]2 withStartDate:v16];
 
       goto LABEL_11;
     }
 
-    v18 = [v23 objectForKeyedSubscript:@"Avg Watts Modelled"];
-    if (!v18 || (v19 = v18, [v23 objectForKeyedSubscript:@"Avg Watts Modelled"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "doubleValue"), v22 = v21, v20, v19, v22 <= 0.0))
+    v18 = [speakerCopy objectForKeyedSubscript:@"Avg Watts Modelled"];
+    if (!v18 || (v19 = v18, [speakerCopy objectForKeyedSubscript:@"Avg Watts Modelled"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "doubleValue"), v22 = v21, v20, v19, v22 <= 0.0))
     {
 LABEL_10:
-      v10 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v5 = [(PLAudioAgent *)self lastAudioStateChangeDate];
-      [v10 createPowerEventForwardWithRootNodeID:15 withPower:v5 withStartDate:0.0];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      lastAudioStateChangeDate = [(PLAudioAgent *)self lastAudioStateChangeDate];
+      [mEMORY[0x277D3F0C0]2 createPowerEventForwardWithRootNodeID:15 withPower:lastAudioStateChangeDate withStartDate:0.0];
 LABEL_11:
     }
   }
@@ -2376,108 +2376,108 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (double)convertSpeakerProtectionModeledPowerToTotalSpeakerPower:(double)a3
+- (double)convertSpeakerProtectionModeledPowerToTotalSpeakerPower:(double)power
 {
   result = 0.0;
-  if (a3 > 0.0)
+  if (power > 0.0)
   {
     if ([MEMORY[0x277D3F208] isHomePod])
     {
 LABEL_3:
-      result = a3;
+      result = power;
     }
 
     else
     {
       v5 = [MEMORY[0x277D3F208] kPLAudioClassOfDevice] - 1005001;
-      result = a3;
+      result = power;
       switch(v5)
       {
         case 0:
-          v21 = log(a3 + 0.1);
+          v21 = log(power + 0.1);
           v22 = 1.5;
           goto LABEL_55;
         case 1:
-          v15 = a3 * -0.0014;
+          v15 = power * -0.0014;
           v16 = 3.03;
           goto LABEL_47;
         case 2:
-          v11 = log(a3 * 0.005 + 1.0);
+          v11 = log(power * 0.005 + 1.0);
           v12 = 810.0;
           goto LABEL_70;
         case 3:
-          v8 = log(a3 * 0.002 + 1.0);
-          v9 = a3 * 0.4;
+          v8 = log(power * 0.002 + 1.0);
+          v9 = power * 0.4;
           v10 = 110.0;
           goto LABEL_72;
         case 4:
-          v21 = log(a3 * 0.05 + 1.0);
+          v21 = log(power * 0.05 + 1.0);
           v22 = 10.0;
 LABEL_55:
-          result = a3 + v21 * v22;
+          result = power + v21 * v22;
           break;
         case 5:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.51 + a3 * -0.0003 * a3;
+          v6 = power * 1.51 + power * -0.0003 * power;
           v17 = 0x4048000000000000;
           goto LABEL_68;
         case 6:
         case 7:
           result = 0.0;
-          if (a3 < 0.001)
+          if (power < 0.001)
           {
             break;
           }
 
-          v6 = a3 * 0.96 + a3 * -0.00009 * a3;
+          v6 = power * 0.96 + power * -0.00009 * power;
           v7 = 97.0;
           goto LABEL_75;
         case 8:
-          v8 = log(a3 + 1.0);
-          v9 = a3 * 0.5;
+          v8 = log(power + 1.0);
+          v9 = power * 0.5;
           v10 = 6.0;
           goto LABEL_72;
         case 9:
-          v15 = a3 * -0.0013;
+          v15 = power * -0.0013;
           v16 = 1.75;
 LABEL_47:
-          result = a3 * v16 + v15 * a3;
+          result = power * v16 + v15 * power;
           break;
         case 10:
-          v8 = log(a3 + 1.0);
-          v9 = a3 * 0.725;
+          v8 = log(power + 1.0);
+          v9 = power * 0.725;
           v10 = 9.0;
           goto LABEL_72;
         case 11:
-          v8 = log(a3 + 1.0);
-          v9 = a3 * 1.2;
+          v8 = log(power + 1.0);
+          v9 = power * 1.2;
           v10 = 10.0;
           goto LABEL_72;
         case 12:
         case 13:
-          v11 = log(a3 * 0.006 + 1.0);
+          v11 = log(power * 0.006 + 1.0);
           v12 = 410.0;
           goto LABEL_70;
         case 14:
-          v11 = log(a3 * 0.007 + 1.0);
+          v11 = log(power * 0.007 + 1.0);
           v12 = 450.0;
 LABEL_70:
           result = v11 * v12;
           break;
         case 15:
-          v8 = log(a3 * 0.9 + 1.0);
-          v9 = a3 * 1.35;
+          v8 = log(power * 0.9 + 1.0);
+          v9 = power * 1.35;
           v10 = 13.0;
           goto LABEL_72;
         case 16:
         case 17:
-          v8 = log(a3 * 8.0 + 1.0);
-          v9 = a3 * 1.07;
+          v8 = log(power * 8.0 + 1.0);
+          v9 = power * 1.07;
           v10 = 3.5;
           goto LABEL_72;
         case 18:
@@ -2491,19 +2491,19 @@ LABEL_70:
         case 46:
           break;
         case 20:
-          v18 = log(a3 + 1.0);
-          v19 = a3 * 1.075;
+          v18 = log(power + 1.0);
+          v19 = power * 1.075;
           v20 = 7.0;
           goto LABEL_61;
         case 21:
-          v18 = log(a3 + 1.0);
-          v19 = a3 * 0.97;
+          v18 = log(power + 1.0);
+          v19 = power * 0.97;
           v20 = 5.0;
 LABEL_61:
           result = v19 + v18 * v20;
           goto LABEL_62;
         case 22:
-          result = a3 + log(a3 * 5.0 + 1.0) * 10.0;
+          result = power + log(power * 5.0 + 1.0) * 10.0;
 LABEL_62:
           if (result < 0.0)
           {
@@ -2512,102 +2512,102 @@ LABEL_62:
 
           break;
         case 24:
-          v8 = log(a3 + 1.0);
-          v9 = a3 * 1.5;
+          v8 = log(power + 1.0);
+          v9 = power * 1.5;
           v10 = 11.0;
           goto LABEL_72;
         case 25:
-          v8 = log(a3 + 1.0);
-          v9 = a3 * 1.38;
+          v8 = log(power + 1.0);
+          v9 = power * 1.38;
           v10 = 7.0;
 LABEL_72:
           result = v9 + v8 * v10;
           break;
         case 27:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.87 + a3 * -0.0002 * a3;
+          v6 = power * 1.87 + power * -0.0002 * power;
           v7 = 95.26;
           goto LABEL_75;
         case 28:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.89 + a3 * -0.0001 * a3;
+          v6 = power * 1.89 + power * -0.0001 * power;
           v7 = -17.5;
           goto LABEL_75;
         case 29:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.44 + a3 * -0.000167 * a3;
+          v6 = power * 1.44 + power * -0.000167 * power;
           v7 = 15.0;
           goto LABEL_75;
         case 31:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.81 + a3 * -0.0000852 * a3;
+          v6 = power * 1.81 + power * -0.0000852 * power;
           v7 = 123.12;
           goto LABEL_75;
         case 32:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.85 + a3 * -0.00018 * a3;
+          v6 = power * 1.85 + power * -0.00018 * power;
           v7 = 22.35;
           goto LABEL_75;
         case 33:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.16 + a3 * 0.0000309 * a3;
+          v6 = power * 1.16 + power * 0.0000309 * power;
           v7 = -46.18;
           goto LABEL_75;
         case 34:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.015 + a3 * 0.0000866 * a3;
+          v6 = power * 1.015 + power * 0.0000866 * power;
           v7 = -23.0;
           goto LABEL_75;
         case 35:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.19 + a3 * -0.0000202 * a3;
+          v6 = power * 1.19 + power * -0.0000202 * power;
           v17 = 0xC049000000000000;
 LABEL_68:
           v7 = *&v17;
           goto LABEL_75;
         case 36:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
@@ -2617,57 +2617,57 @@ LABEL_68:
           goto LABEL_59;
         case 37:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 0.9261 + a3 * 0.00007412 * a3;
+          v6 = power * 0.9261 + power * 0.00007412 * power;
           v7 = 38.265;
           goto LABEL_75;
         case 41:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.0808 + a3 * -0.0003205 * a3;
+          v6 = power * 1.0808 + power * -0.0003205 * power;
           v7 = 14.1368;
           goto LABEL_75;
         case 42:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.1128 + a3 * -0.0002358 * a3;
+          v6 = power * 1.1128 + power * -0.0002358 * power;
           v7 = 13.3804;
           goto LABEL_75;
         case 43:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.6664 + a3 * -0.0003566 * a3;
+          v6 = power * 1.6664 + power * -0.0003566 * power;
           v7 = -268.816;
           goto LABEL_75;
         case 44:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 1.6392 + a3 * -0.0001588 * a3;
+          v6 = power * 1.6392 + power * -0.0001588 * power;
           v7 = 6.333;
           goto LABEL_75;
         case 45:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
@@ -2677,7 +2677,7 @@ LABEL_68:
           goto LABEL_59;
         case 47:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
@@ -2685,16 +2685,16 @@ LABEL_68:
           v13 = 17.34;
           v14 = 0.9685;
 LABEL_59:
-          result = v13 + a3 * v14;
+          result = v13 + power * v14;
           break;
         case 48:
           result = 0.0;
-          if (a3 < 0.1)
+          if (power < 0.1)
           {
             break;
           }
 
-          v6 = a3 * 0.9261 + a3 * 0.00007412 * a3;
+          v6 = power * 0.9261 + power * 0.00007412 * power;
           v7 = 18.265;
 LABEL_75:
           result = v6 + v7;
@@ -2718,41 +2718,41 @@ LABEL_75:
   return result;
 }
 
-- (double)audioPowerForRoute:(id)a3 forVolume:(double)a4
+- (double)audioPowerForRoute:(id)route forVolume:(double)volume
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D3F208] isHomePod];
+  routeCopy = route;
+  isHomePod = [MEMORY[0x277D3F208] isHomePod];
   v8 = 0.0;
-  if (v6 && (v7 & 1) == 0)
+  if (routeCopy && (isHomePod & 1) == 0)
   {
     v9 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"audio"];
     v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277D3F208], "kPLAudioClassOfDevice")}];
-    v11 = [v10 stringValue];
+    stringValue = [v10 stringValue];
 
-    v12 = [v9 allKeys];
-    v13 = [v12 containsString:v11];
+    allKeys = [v9 allKeys];
+    v13 = [allKeys containsString:stringValue];
 
     if (v13)
     {
-      if ([(PLAudioAgent *)self accessoryPowerState]== 4 && (([(__CFString *)v6 isEqual:@"Headphone"]& 1) != 0 || [(__CFString *)v6 isEqual:@"Headset"]))
+      if ([(PLAudioAgent *)self accessoryPowerState]== 4 && (([(__CFString *)routeCopy isEqual:@"Headphone"]& 1) != 0 || [(__CFString *)routeCopy isEqual:@"Headset"]))
       {
-        v14 = [v9 objectForKeyedSubscript:v11];
+        v14 = [v9 objectForKeyedSubscript:stringValue];
         v15 = v14;
         v16 = @"Lightning";
       }
 
-      else if ([(PLAudioAgent *)self accessoryPowerState]== 6 && (([(__CFString *)v6 isEqual:@"Headphone"]& 1) != 0 || [(__CFString *)v6 isEqual:@"Headset"]))
+      else if ([(PLAudioAgent *)self accessoryPowerState]== 6 && (([(__CFString *)routeCopy isEqual:@"Headphone"]& 1) != 0 || [(__CFString *)routeCopy isEqual:@"Headset"]))
       {
-        v14 = [v9 objectForKeyedSubscript:v11];
+        v14 = [v9 objectForKeyedSubscript:stringValue];
         v15 = v14;
         v16 = @"Lightning_VoltageMonitor";
       }
 
       else
       {
-        v24 = [(__CFString *)v6 isEqual:@"Speaker"];
-        v14 = [v9 objectForKeyedSubscript:v11];
+        v24 = [(__CFString *)routeCopy isEqual:@"Speaker"];
+        v14 = [v9 objectForKeyedSubscript:stringValue];
         v15 = v14;
         if (v24)
         {
@@ -2761,7 +2761,7 @@ LABEL_75:
 
         else
         {
-          v16 = v6;
+          v16 = routeCopy;
         }
       }
 
@@ -2769,15 +2769,15 @@ LABEL_75:
 
       if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v25 = [v18 allKeys];
-        v26 = [v25 sortedArrayUsingSelector:sel_compareFloat_];
+        allKeys2 = [v18 allKeys];
+        v26 = [allKeys2 sortedArrayUsingSelector:sel_compareFloat_];
 
         v57 = 0u;
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v23 = v26;
-        v27 = [v23 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        routeCopy = v26;
+        v27 = [routeCopy countByEnumeratingWithState:&v55 objects:v61 count:16];
         if (v27)
         {
           v28 = v27;
@@ -2790,14 +2790,14 @@ LABEL_25:
           {
             if (*v56 != v30)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(routeCopy);
             }
 
             v33 = *(*(&v55 + 1) + 8 * v31);
             [v33 doubleValue];
             v35 = v34;
             v29 = v33;
-            if (v35 > a4)
+            if (v35 > volume)
             {
               break;
             }
@@ -2806,7 +2806,7 @@ LABEL_25:
             v32 = v29;
             if (v28 == v31)
             {
-              v28 = [v23 countByEnumeratingWithState:&v55 objects:v61 count:16];
+              v28 = [routeCopy countByEnumeratingWithState:&v55 objects:v61 count:16];
               if (v28)
               {
                 goto LABEL_25;
@@ -2830,7 +2830,7 @@ LABEL_25:
           v46 = v45;
 
           [v32 doubleValue];
-          v48 = a4 - v47;
+          v48 = volume - v47;
           [v29 doubleValue];
           v50 = v49;
           [v32 doubleValue];
@@ -2873,18 +2873,18 @@ LABEL_42:
           goto LABEL_46;
         }
 
-        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"No audio power model exists for audio class: %@ and route: %@", v11, v6];
+        routeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No audio power model exists for audio class: %@ and route: %@", stringValue, routeCopy];
         v37 = MEMORY[0x277D3F178];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLAudioAgent.m"];
-        v39 = [v38 lastPathComponent];
+        lastPathComponent = [v38 lastPathComponent];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAudioAgent audioPowerForRoute:forVolume:]"];
-        [v37 logMessage:v23 fromFile:v39 fromFunction:v40 fromLineNumber:1868];
+        [v37 logMessage:routeCopy fromFile:lastPathComponent fromFunction:v40 fromLineNumber:1868];
 
         v32 = PLLogCommon();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v63 = v23;
+          v63 = routeCopy;
           _os_log_debug_impl(&dword_21A4C6000, v32, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
       }
@@ -2913,19 +2913,19 @@ LABEL_42:
         goto LABEL_47;
       }
 
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"No audio power model exists for audio class: %@", v11];
+      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"No audio power model exists for audio class: %@", stringValue];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLAudioAgent.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAudioAgent audioPowerForRoute:forVolume:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:1849];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:1849];
 
-      v23 = PLLogCommon();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+      routeCopy = PLLogCommon();
+      if (os_log_type_enabled(routeCopy, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
         v63 = v18;
-        _os_log_debug_impl(&dword_21A4C6000, v23, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+        _os_log_debug_impl(&dword_21A4C6000, routeCopy, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
@@ -2955,44 +2955,44 @@ uint64_t __45__PLAudioAgent_audioPowerForRoute_forVolume___block_invoke_456(uint
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
     v3 = MEMORY[0x277CBEC10];
-    [v2 createDistributionEventForwardWithDistributionID:7 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v5];
+    [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:7 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:monotonicDate];
 
-    v4 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v4 createDistributionEventForwardWithDistributionID:26 withChildNodeNameToWeight:v3 withStartDate:v5];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:26 withChildNodeNameToWeight:v3 withStartDate:monotonicDate];
   }
 }
 
-- (void)createAudioAccountingEvents:(id)a3
+- (void)createAudioAccountingEvents:(id)events
 {
-  v14 = a3;
+  eventsCopy = events;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v3 = [v14 objectForKeyedSubscript:@"ApplicationName"];
+    v3 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
     if (!v3)
     {
       goto LABEL_5;
     }
 
     v4 = v3;
-    v5 = [v14 objectForKeyedSubscript:@"Operation"];
+    v5 = [eventsCopy objectForKeyedSubscript:@"Operation"];
     v6 = [v5 description];
     v7 = [v6 isEqualToString:@"AudioPlayback_Start"];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v9 = [v14 objectForKeyedSubscript:@"ApplicationName"];
-      v10 = [v14 entryDate];
-      [v8 createDistributionEventForwardWithDistributionID:7 withAddingChildNodeName:v9 withStartDate:v10];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      v9 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
+      entryDate = [eventsCopy entryDate];
+      [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:7 withAddingChildNodeName:v9 withStartDate:entryDate];
     }
 
     else
     {
 LABEL_5:
-      v11 = [v14 objectForKeyedSubscript:@"Operation"];
+      v11 = [eventsCopy objectForKeyedSubscript:@"Operation"];
       v12 = [v11 description];
       v13 = [v12 isEqualToString:@"AudioPlayback_Stop"];
 
@@ -3001,80 +3001,80 @@ LABEL_5:
         goto LABEL_8;
       }
 
-      v8 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v9 = [v14 objectForKeyedSubscript:@"ApplicationName"];
-      v10 = [v14 entryDate];
-      [v8 createDistributionEventForwardWithDistributionID:7 withRemovingChildNodeName:v9 withStartDate:v10];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      v9 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
+      entryDate = [eventsCopy entryDate];
+      [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:7 withRemovingChildNodeName:v9 withStartDate:entryDate];
     }
   }
 
 LABEL_8:
 }
 
-- (void)createAirPlayAccountingEvents:(id)a3
+- (void)createAirPlayAccountingEvents:(id)events
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   if ([MEMORY[0x277D3F208] isHomePod])
   {
     goto LABEL_15;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v4 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
   v5 = [v4 description];
   if ([v5 isEqualToString:@"AirPlay"])
   {
     goto LABEL_5;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v6 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
   v7 = [v6 description];
   if ([v7 isEqualToString:@"Airtunes"])
   {
 
 LABEL_5:
 LABEL_6:
-    v8 = [v3 objectForKeyedSubscript:@"ApplicationName"];
+    v8 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
     if (v8)
     {
       v9 = v8;
-      v10 = [v3 objectForKeyedSubscript:@"Operation"];
+      v10 = [eventsCopy objectForKeyedSubscript:@"Operation"];
 
       if (v10)
       {
-        v11 = [v3 objectForKeyedSubscript:@"Operation"];
+        v11 = [eventsCopy objectForKeyedSubscript:@"Operation"];
         v12 = [v11 description];
         v13 = [v12 isEqualToString:@"AudioPlayback_Stop"];
 
-        v14 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v15 = [v3 entryDate];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        entryDate = [eventsCopy entryDate];
         if (!v13)
         {
-          [v14 createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18850 withStartDate:v15];
+          [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18850 withStartDate:entryDate];
 
-          v29 = [MEMORY[0x277D3F0C0] sharedInstance];
-          v30 = [v3 objectForKeyedSubscript:@"ApplicationName"];
+          mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+          v30 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
           v39 = v30;
           v40[0] = &unk_282C1C548;
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-          v32 = [v3 entryDate];
-          [v29 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:v31 withStartDate:v32];
+          entryDate2 = [eventsCopy entryDate];
+          [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:v31 withStartDate:entryDate2];
 
-          v33 = [MEMORY[0x277D3F0C0] sharedInstance];
-          v34 = [v3 objectForKeyedSubscript:@"ApplicationName"];
+          mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+          v34 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
           v38 = v34;
           v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-          v36 = [v3 entryDate];
-          [v33 createQualificationEventForwardWithQualificationID:3 withChildNodeNames:v35 withStartDate:v36];
+          entryDate3 = [eventsCopy entryDate];
+          [mEMORY[0x277D3F0C0]3 createQualificationEventForwardWithQualificationID:3 withChildNodeNames:v35 withStartDate:entryDate3];
 
           goto LABEL_15;
         }
 
-        [v14 createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18828 withStartDate:v15];
+        [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18828 withStartDate:entryDate];
 
-        v16 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v17 = [v3 entryDate];
-        [v16 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v17];
+        mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
+        entryDate4 = [eventsCopy entryDate];
+        [mEMORY[0x277D3F0C0]4 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:entryDate4];
 
         v18 = MEMORY[0x277D3F0C0];
         goto LABEL_13;
@@ -3084,7 +3084,7 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v19 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v19 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
   v20 = [v19 description];
   v21 = [v20 isEqualToString:@"AirTunes"];
 
@@ -3093,23 +3093,23 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v22 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
 
   if (v22)
   {
-    v23 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v24 = [v3 entryDate];
-    [v23 createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18878 withStartDate:v24];
+    mEMORY[0x277D3F0C0]5 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate5 = [eventsCopy entryDate];
+    [mEMORY[0x277D3F0C0]5 createDistributionEventForwardWithDistributionID:3 withChildNodeNameToWeight:&unk_282C18878 withStartDate:entryDate5];
 
-    v25 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v26 = [v3 entryDate];
-    [v25 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v26];
+    mEMORY[0x277D3F0C0]6 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate6 = [eventsCopy entryDate];
+    [mEMORY[0x277D3F0C0]6 createDistributionEventForwardWithDistributionID:36 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:entryDate6];
 
     v18 = MEMORY[0x277D3F0C0];
 LABEL_13:
-    v27 = [v18 sharedInstance];
-    v28 = [v3 entryDate];
-    [v27 createQualificationEventForwardWithQualificationID:3 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:v28];
+    sharedInstance = [v18 sharedInstance];
+    entryDate7 = [eventsCopy entryDate];
+    [sharedInstance createQualificationEventForwardWithQualificationID:3 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:entryDate7];
   }
 
 LABEL_15:
@@ -3117,46 +3117,46 @@ LABEL_15:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCarPlayAccountingEvents:(id)a3
+- (void)createCarPlayAccountingEvents:(id)events
 {
-  v15 = a3;
+  eventsCopy = events;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v3 = [v15 objectForKeyedSubscript:@"AudioRoute"];
+    v3 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
     v4 = [v3 description];
     v5 = [v4 isEqualToString:@"CarAudioOutput"];
 
     if (!v5)
     {
-      v12 = [v15 objectForKeyedSubscript:@"AudioRoute"];
+      mEMORY[0x277D3F0C0] = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v6 = [v15 objectForKeyedSubscript:@"ApplicationName"];
+    v6 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
     if (v6)
     {
       v7 = v6;
-      v8 = [v15 objectForKeyedSubscript:@"Operation"];
+      v8 = [eventsCopy objectForKeyedSubscript:@"Operation"];
 
       if (v8)
       {
-        v9 = [v15 objectForKeyedSubscript:@"Operation"];
+        v9 = [eventsCopy objectForKeyedSubscript:@"Operation"];
         v10 = [v9 description];
         v11 = [v10 isEqualToString:@"AudioPlayback_Stop"];
 
-        v12 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v13 = [v15 objectForKeyedSubscript:@"ApplicationName"];
-        v14 = [v15 entryDate];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        v13 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
+        entryDate = [eventsCopy entryDate];
         if (v11)
         {
-          [v12 createDistributionEventForwardWithDistributionID:26 withRemovingChildNodeName:v13 withStartDate:v14];
+          [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:26 withRemovingChildNodeName:v13 withStartDate:entryDate];
         }
 
         else
         {
-          [v12 createDistributionEventForwardWithDistributionID:26 withAddingChildNodeName:v13 withStartDate:v14];
+          [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:26 withAddingChildNodeName:v13 withStartDate:entryDate];
         }
 
         goto LABEL_10;
@@ -3167,45 +3167,45 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)createBluetoothAccountingEvents:(id)a3
+- (void)createBluetoothAccountingEvents:(id)events
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   if ([MEMORY[0x277D3F208] isHomePod])
   {
     goto LABEL_24;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v4 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
   v5 = [v4 description];
   if ([v5 isEqualToString:@"HeadsetBT"])
   {
 
 LABEL_5:
-    v9 = [v3 objectForKeyedSubscript:@"ApplicationName"];
+    v9 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
     if (v9)
     {
       v10 = v9;
-      v11 = [v3 objectForKeyedSubscript:@"Operation"];
+      v11 = [eventsCopy objectForKeyedSubscript:@"Operation"];
 
       if (v11)
       {
-        v12 = [v3 objectForKeyedSubscript:@"Operation"];
+        v12 = [eventsCopy objectForKeyedSubscript:@"Operation"];
         v13 = [v12 description];
         v14 = [v13 isEqualToString:@"AudioPlayback_Stop"];
 
-        v15 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v16 = v15;
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        mEMORY[0x277D3F0C0]4 = mEMORY[0x277D3F0C0];
         if (!v14)
         {
-          v17 = [v15 currentDistributionEventForwardWithDistributionID:8];
+          v17 = [mEMORY[0x277D3F0C0] currentDistributionEventForwardWithDistributionID:8];
 
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v16 = v17;
-          v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          mEMORY[0x277D3F0C0]4 = v17;
+          v18 = [mEMORY[0x277D3F0C0]4 countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (v18)
           {
             v19 = v18;
@@ -3216,36 +3216,36 @@ LABEL_5:
               {
                 if (*v32 != v20)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(mEMORY[0x277D3F0C0]4);
                 }
 
                 v22 = *(*(&v31 + 1) + 8 * i);
                 if (([v22 isEqualToString:{@"Hotspot", v31}] & 1) == 0 && (objc_msgSend(v22, "isEqualToString:", @"IDSWatchBT") & 1) == 0)
                 {
-                  v23 = [MEMORY[0x277D3F0C0] sharedInstance];
-                  v24 = [v3 entryDate];
-                  [v23 createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:v22 withStartDate:v24];
+                  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+                  entryDate = [eventsCopy entryDate];
+                  [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:v22 withStartDate:entryDate];
                 }
               }
 
-              v19 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+              v19 = [mEMORY[0x277D3F0C0]4 countByEnumeratingWithState:&v31 objects:v35 count:16];
             }
 
             while (v19);
           }
 
-          v25 = [MEMORY[0x277D3F0C0] sharedInstance];
-          v26 = [v3 objectForKeyedSubscript:@"ApplicationName"];
-          v27 = [v3 entryDate];
-          [v25 createDistributionEventForwardWithDistributionID:8 withAddingChildNodeName:v26 withStartDate:v27];
+          mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+          entryDate3 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
+          entryDate2 = [eventsCopy entryDate];
+          [mEMORY[0x277D3F0C0]3 createDistributionEventForwardWithDistributionID:8 withAddingChildNodeName:entryDate3 withStartDate:entryDate2];
 
           goto LABEL_23;
         }
 
 LABEL_22:
-        v25 = [v3 objectForKeyedSubscript:@"ApplicationName"];
-        v26 = [v3 entryDate];
-        [v16 createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:v25 withStartDate:v26];
+        mEMORY[0x277D3F0C0]3 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
+        entryDate3 = [eventsCopy entryDate];
+        [mEMORY[0x277D3F0C0]4 createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:mEMORY[0x277D3F0C0]3 withStartDate:entryDate3];
 LABEL_23:
 
         goto LABEL_24;
@@ -3255,7 +3255,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v6 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
   v7 = [v6 description];
   v8 = [v7 isEqualToString:@"HeadphonesBT"];
 
@@ -3264,15 +3264,15 @@ LABEL_23:
     goto LABEL_5;
   }
 
-  v28 = [v3 objectForKeyedSubscript:@"AudioRoute"];
+  v28 = [eventsCopy objectForKeyedSubscript:@"AudioRoute"];
 
   if (v28)
   {
-    v29 = [v3 objectForKeyedSubscript:@"ApplicationName"];
+    v29 = [eventsCopy objectForKeyedSubscript:@"ApplicationName"];
 
     if (v29)
     {
-      v16 = [MEMORY[0x277D3F0C0] sharedInstance];
+      mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
       goto LABEL_22;
     }
   }

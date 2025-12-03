@@ -1,14 +1,14 @@
 @interface CDContinueOnGetAuthInfoResponse
-- (CDContinueOnGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDContinueOnGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDContinueOnGetAuthInfoResponse
 
-- (CDContinueOnGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDContinueOnGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = CDContinueOnGetAuthInfoResponse;
   v5 = [(CDContinueOnGetAuthInfoResponse *)&v19 init];
@@ -73,9 +73,9 @@
   v4 = [(NSData *)self->_requestTypeData description];
   [v3 appendString:v4 withName:@"requestTypeData" skipIfEmpty:1];
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

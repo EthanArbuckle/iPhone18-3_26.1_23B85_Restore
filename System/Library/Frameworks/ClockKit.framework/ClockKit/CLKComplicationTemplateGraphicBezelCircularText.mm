@@ -3,8 +3,8 @@
 + (CLKComplicationTemplateGraphicBezelCircularText)templateWithCircularTemplate:(CLKComplicationTemplateGraphicCircular *)circularTemplate textProvider:(CLKTextProvider *)textProvider;
 - (BOOL)needsSerializableCopy;
 - (CLKComplicationTemplateGraphicBezelCircularText)initWithCircularTemplate:(CLKComplicationTemplateGraphicCircular *)circularTemplate textProvider:(CLKTextProvider *)textProvider;
-- (id)_validEmbeddedTemplateClassNamesForKey:(id)a3;
-- (id)serializableCopyWithImageProviders:(id)a3;
+- (id)_validEmbeddedTemplateClassNamesForKey:(id)key;
+- (id)serializableCopyWithImageProviders:(id)providers;
 @end
 
 @implementation CLKComplicationTemplateGraphicBezelCircularText
@@ -15,11 +15,11 @@
   v7 = textProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateGraphicBezelCircularText;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicBezelCircularText *)v8 setCircularTemplate:v6];
+    [(CLKComplicationTemplateGraphicBezelCircularText *)initPrivate setCircularTemplate:v6];
     [(CLKComplicationTemplateGraphicBezelCircularText *)v9 setTextProvider:v7];
   }
 
@@ -29,7 +29,7 @@
 + (CLKComplicationTemplateGraphicBezelCircularText)templateWithCircularTemplate:(CLKComplicationTemplateGraphicCircular *)circularTemplate
 {
   v4 = circularTemplate;
-  v5 = [[a1 alloc] initWithCircularTemplate:v4];
+  v5 = [[self alloc] initWithCircularTemplate:v4];
 
   return v5;
 }
@@ -38,12 +38,12 @@
 {
   v6 = textProvider;
   v7 = circularTemplate;
-  v8 = [[a1 alloc] initWithCircularTemplate:v7 textProvider:v6];
+  v8 = [[self alloc] initWithCircularTemplate:v7 textProvider:v6];
 
   return v8;
 }
 
-- (id)_validEmbeddedTemplateClassNamesForKey:(id)a3
+- (id)_validEmbeddedTemplateClassNamesForKey:(id)key
 {
   if (_validEmbeddedTemplateClassNamesForKey__onceToken != -1)
   {
@@ -115,15 +115,15 @@ void __90__CLKComplicationTemplateGraphicBezelCircularText__validEmbeddedTemplat
 
 - (BOOL)needsSerializableCopy
 {
-  v2 = [(CLKComplicationTemplateGraphicBezelCircularText *)self circularTemplate];
-  v3 = [v2 needsSerializableCopy];
+  circularTemplate = [(CLKComplicationTemplateGraphicBezelCircularText *)self circularTemplate];
+  needsSerializableCopy = [circularTemplate needsSerializableCopy];
 
-  return v3;
+  return needsSerializableCopy;
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -135,13 +135,13 @@ void __90__CLKComplicationTemplateGraphicBezelCircularText__validEmbeddedTemplat
   v11[2] = __86__CLKComplicationTemplateGraphicBezelCircularText_serializableCopyWithImageProviders___block_invoke;
   v11[3] = &unk_278A1EF38;
   v11[4] = &v12;
-  [v4 enumerateKeysAndObjectsUsingBlock:v11];
-  v5 = [(CLKComplicationTemplateGraphicBezelCircularText *)self circularTemplate];
-  v6 = [v5 serializableCopyWithImageProviders:v13[5]];
+  [providersCopy enumerateKeysAndObjectsUsingBlock:v11];
+  circularTemplate = [(CLKComplicationTemplateGraphicBezelCircularText *)self circularTemplate];
+  v6 = [circularTemplate serializableCopyWithImageProviders:v13[5]];
 
   v7 = [CLKComplicationTemplateGraphicBezelCircularText alloc];
-  v8 = [(CLKComplicationTemplateGraphicBezelCircularText *)self textProvider];
-  v9 = [(CLKComplicationTemplateGraphicBezelCircularText *)v7 initWithCircularTemplate:v6 textProvider:v8];
+  textProvider = [(CLKComplicationTemplateGraphicBezelCircularText *)self textProvider];
+  v9 = [(CLKComplicationTemplateGraphicBezelCircularText *)v7 initWithCircularTemplate:v6 textProvider:textProvider];
 
   [(CLKComplicationTemplate *)v9 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
   _Block_object_dispose(&v12, 8);

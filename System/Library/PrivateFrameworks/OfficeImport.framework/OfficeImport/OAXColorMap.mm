@@ -1,25 +1,25 @@
 @interface OAXColorMap
 + (id)mapColorEnumMap;
 + (void)mapColorEnumMap;
-+ (void)readFromXmlNode:(_xmlNode *)a3 toColorMap:(id)a4;
-+ (void)writeColorMap:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6;
++ (void)readFromXmlNode:(_xmlNode *)node toColorMap:(id)map;
++ (void)writeColorMap:(id)map elementName:(id)name to:(id)to state:(id)state;
 @end
 
 @implementation OAXColorMap
 
-+ (void)readFromXmlNode:(_xmlNode *)a3 toColorMap:(id)a4
++ (void)readFromXmlNode:(_xmlNode *)node toColorMap:(id)map
 {
-  v6 = a4;
-  [v6 addDefaultMappings:1];
-  v7 = [a1 mapColorEnumMap];
+  mapCopy = map;
+  [mapCopy addDefaultMappings:1];
+  mapColorEnumMap = [self mapColorEnumMap];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__OAXColorMap_readFromXmlNode_toColorMap___block_invoke;
   v9[3] = &unk_2799C7A38;
-  v11 = a3;
-  v8 = v6;
+  nodeCopy = node;
+  v8 = mapCopy;
   v10 = v8;
-  [v7 enumerateValuesAndStringsUsingBlock:v9];
+  [mapColorEnumMap enumerateValuesAndStringsUsingBlock:v9];
 }
 
 void __42__OAXColorMap_readFromXmlNode_toColorMap___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -36,28 +36,28 @@ void __42__OAXColorMap_readFromXmlNode_toColorMap___block_invoke(uint64_t a1, ui
   }
 }
 
-+ (void)writeColorMap:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6
++ (void)writeColorMap:(id)map elementName:(id)name to:(id)to state:(id)state
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 startElement:v9];
+  mapCopy = map;
+  nameCopy = name;
+  toCopy = to;
+  [toCopy startElement:nameCopy];
   v11 = 0;
   do
   {
-    v12 = [v17 mappingForIndex:v11];
-    v13 = [a1 mapColorEnumMap];
-    v14 = [v13 stringForValue:v11];
+    v12 = [mapCopy mappingForIndex:v11];
+    mapColorEnumMap = [self mapColorEnumMap];
+    v14 = [mapColorEnumMap stringForValue:v11];
 
     v15 = +[OAXColorScheme schemeColorEnumMap];
     v16 = [v15 stringForValue:v12];
 
-    [v10 writeAttribute:v14 content:v16];
+    [toCopy writeAttribute:v14 content:v16];
     v11 = (v11 + 1);
   }
 
   while (v11 != 12);
-  [v10 endElement];
+  [toCopy endElement];
 }
 
 + (id)mapColorEnumMap

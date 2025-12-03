@@ -1,12 +1,12 @@
 @interface CNVCardXABPHOTOParser
-+ (id)valueWithName:(id)a3;
++ (id)valueWithName:(id)name;
 @end
 
 @implementation CNVCardXABPHOTOParser
 
-+ (id)valueWithName:(id)a3
++ (id)valueWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
     v5 = 0;
@@ -14,8 +14,8 @@
 
   else
   {
-    v6 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-    v7 = [v6 URLForResource:v4 withExtension:@"png"];
+    v6 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+    v7 = [v6 URLForResource:nameCopy withExtension:@"png"];
     v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7];
   }
 

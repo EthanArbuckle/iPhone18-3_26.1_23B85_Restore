@@ -1,12 +1,12 @@
 @interface SetPlaybackSpeedIntentResponse
-- (SetPlaybackSpeedIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetPlaybackSpeedIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetPlaybackSpeedIntentResponse
 
-- (SetPlaybackSpeedIntentResponse)initWithPropertiesByName:(id)a3
+- (SetPlaybackSpeedIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

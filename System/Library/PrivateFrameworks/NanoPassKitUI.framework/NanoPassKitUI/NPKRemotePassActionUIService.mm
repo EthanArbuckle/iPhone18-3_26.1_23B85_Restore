@@ -1,12 +1,12 @@
 @interface NPKRemotePassActionUIService
 - (NPKCompanionViewServiceConnection)connection;
 - (NPKRemotePassActionUIServiceDelegate)delegate;
-- (void)companionViewServiceConnection:(id)a3 handleCompanionItemSelectionDidCancelForRequestIdentifier:(id)a4;
-- (void)companionViewServiceConnection:(id)a3 handleCompanionItemSelectionDidFinishWithRenewalAmount:(id)a4 serviceProviderData:(id)a5 forRequestWithIdentifier:(id)a6;
-- (void)companionViewServiceConnection:(id)a3 handleCompanionValueEntryDidCancelForRequestIdentifier:(id)a4;
-- (void)companionViewServiceConnection:(id)a3 handleCompanionValueEntryDidFinishWithCurrencyAmount:(id)a4 forRequestWithIdentifier:(id)a5;
-- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5;
-- (void)presentRemotePassValueEntryViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5;
+- (void)companionViewServiceConnection:(id)connection handleCompanionItemSelectionDidCancelForRequestIdentifier:(id)identifier;
+- (void)companionViewServiceConnection:(id)connection handleCompanionItemSelectionDidFinishWithRenewalAmount:(id)amount serviceProviderData:(id)data forRequestWithIdentifier:(id)identifier;
+- (void)companionViewServiceConnection:(id)connection handleCompanionValueEntryDidCancelForRequestIdentifier:(id)identifier;
+- (void)companionViewServiceConnection:(id)connection handleCompanionValueEntryDidFinishWithCurrencyAmount:(id)amount forRequestWithIdentifier:(id)identifier;
+- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
+- (void)presentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
 @end
 
 @implementation NPKRemotePassActionUIService
@@ -27,12 +27,12 @@
   return connection;
 }
 
-- (void)presentRemotePassValueEntryViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5
+- (void)presentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  completionCopy = completion;
   v11 = pk_RemotePassAction_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -41,29 +41,29 @@
     v13 = pk_RemotePassAction_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = MEMORY[0x25F868160](v10);
+      v14 = MEMORY[0x25F868160](completionCopy);
       v17 = 138412802;
-      v18 = v8;
+      v18 = requestCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = contactCopy;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_25B64D000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKRemotePassActionUIService: Present remote pass value entry view controller for request: %@ contact: %@ completion: %@", &v17, 0x20u);
     }
   }
 
-  v15 = [(NPKRemotePassActionUIService *)self connection];
-  [v15 presentRemotePassValueEntryViewControllerForRequest:v8 contact:v9 completion:v10];
+  connection = [(NPKRemotePassActionUIService *)self connection];
+  [connection presentRemotePassValueEntryViewControllerForRequest:requestCopy contact:contactCopy completion:completionCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5
+- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  completionCopy = completion;
   v11 = pk_RemotePassAction_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -72,52 +72,52 @@
     v13 = pk_RemotePassAction_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = MEMORY[0x25F868160](v10);
+      v14 = MEMORY[0x25F868160](completionCopy);
       v17 = 138412802;
-      v18 = v8;
+      v18 = requestCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = contactCopy;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_25B64D000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKRemotePassActionUIService: Present remote pass value select item controller for request: %@ contact: %@ completion: %@", &v17, 0x20u);
     }
   }
 
-  v15 = [(NPKRemotePassActionUIService *)self connection];
-  [v15 presentRemotePassItemSelectionViewControllerForRequest:v8 contact:v9 completion:v10];
+  connection = [(NPKRemotePassActionUIService *)self connection];
+  [connection presentRemotePassItemSelectionViewControllerForRequest:requestCopy contact:contactCopy completion:completionCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)companionViewServiceConnection:(id)a3 handleCompanionValueEntryDidFinishWithCurrencyAmount:(id)a4 forRequestWithIdentifier:(id)a5
+- (void)companionViewServiceConnection:(id)connection handleCompanionValueEntryDidFinishWithCurrencyAmount:(id)amount forRequestWithIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NPKRemotePassActionUIService *)self delegate];
-  [v9 remotePassActionUIService:self didSelectEnteredValueAmount:v8 forRequestIdentifier:v7];
+  identifierCopy = identifier;
+  amountCopy = amount;
+  delegate = [(NPKRemotePassActionUIService *)self delegate];
+  [delegate remotePassActionUIService:self didSelectEnteredValueAmount:amountCopy forRequestIdentifier:identifierCopy];
 }
 
-- (void)companionViewServiceConnection:(id)a3 handleCompanionValueEntryDidCancelForRequestIdentifier:(id)a4
+- (void)companionViewServiceConnection:(id)connection handleCompanionValueEntryDidCancelForRequestIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NPKRemotePassActionUIService *)self delegate];
-  [v6 remotePassActionUIService:self didCancelForRequestIdentifier:v5];
+  identifierCopy = identifier;
+  delegate = [(NPKRemotePassActionUIService *)self delegate];
+  [delegate remotePassActionUIService:self didCancelForRequestIdentifier:identifierCopy];
 }
 
-- (void)companionViewServiceConnection:(id)a3 handleCompanionItemSelectionDidFinishWithRenewalAmount:(id)a4 serviceProviderData:(id)a5 forRequestWithIdentifier:(id)a6
+- (void)companionViewServiceConnection:(id)connection handleCompanionItemSelectionDidFinishWithRenewalAmount:(id)amount serviceProviderData:(id)data forRequestWithIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(NPKRemotePassActionUIService *)self delegate];
-  [v12 remotePassActionUIService:self didSelectItemForRenewalAmount:v11 serviceProviderData:v10 forRequestIdentifier:v9];
+  identifierCopy = identifier;
+  dataCopy = data;
+  amountCopy = amount;
+  delegate = [(NPKRemotePassActionUIService *)self delegate];
+  [delegate remotePassActionUIService:self didSelectItemForRenewalAmount:amountCopy serviceProviderData:dataCopy forRequestIdentifier:identifierCopy];
 }
 
-- (void)companionViewServiceConnection:(id)a3 handleCompanionItemSelectionDidCancelForRequestIdentifier:(id)a4
+- (void)companionViewServiceConnection:(id)connection handleCompanionItemSelectionDidCancelForRequestIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NPKRemotePassActionUIService *)self delegate];
-  [v6 remotePassActionUIService:self didCancelForRequestIdentifier:v5];
+  identifierCopy = identifier;
+  delegate = [(NPKRemotePassActionUIService *)self delegate];
+  [delegate remotePassActionUIService:self didCancelForRequestIdentifier:identifierCopy];
 }
 
 - (NPKRemotePassActionUIServiceDelegate)delegate

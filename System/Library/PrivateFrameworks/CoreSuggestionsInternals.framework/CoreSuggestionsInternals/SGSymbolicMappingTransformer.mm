@@ -1,11 +1,11 @@
 @interface SGSymbolicMappingTransformer
-+ (id)withNumericMapping:(id)a3 andSymbolicMapping:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSymbolicMappingTransformer:(id)a3;
-- (SGSymbolicMappingTransformer)initWithNumericMapping:(id)a3 andSymbolicMapping:(id)a4;
-- (SGSymbolicMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
++ (id)withNumericMapping:(id)mapping andSymbolicMapping:(id)symbolicMapping;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSymbolicMappingTransformer:(id)transformer;
+- (SGSymbolicMappingTransformer)initWithNumericMapping:(id)mapping andSymbolicMapping:(id)symbolicMapping;
+- (SGSymbolicMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 - (unint64_t)hash;
 @end
 
@@ -13,45 +13,45 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SGSymbolicMappingTransformer *)self numericMapping];
-  v4 = [v3 hash];
+  numericMapping = [(SGSymbolicMappingTransformer *)self numericMapping];
+  v4 = [numericMapping hash];
 
-  v5 = [(SGSymbolicMappingTransformer *)self characterMapping];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  characterMapping = [(SGSymbolicMappingTransformer *)self characterMapping];
+  v6 = [characterMapping hash] - v4 + 32 * v4;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSymbolicMappingTransformer *)self isEqualToSymbolicMappingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGSymbolicMappingTransformer *)self isEqualToSymbolicMappingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSymbolicMappingTransformer:(id)a3
+- (BOOL)isEqualToSymbolicMappingTransformer:(id)transformer
 {
-  v6 = a3;
-  if (v6)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
-    v7 = [(SGSymbolicMappingTransformer *)self numericMapping];
-    v8 = [v6 numericMapping];
-    if (v7 == v8 || (-[SGSymbolicMappingTransformer numericMapping](self, "numericMapping"), v3 = objc_claimAutoreleasedReturnValue(), [v6 numericMapping], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    numericMapping = [(SGSymbolicMappingTransformer *)self numericMapping];
+    numericMapping2 = [transformerCopy numericMapping];
+    if (numericMapping == numericMapping2 || (-[SGSymbolicMappingTransformer numericMapping](self, "numericMapping"), v3 = objc_claimAutoreleasedReturnValue(), [transformerCopy numericMapping], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v10 = [(SGSymbolicMappingTransformer *)self characterMapping];
-      v11 = [v6 characterMapping];
-      v12 = v11;
-      if (v10 == v11)
+      characterMapping = [(SGSymbolicMappingTransformer *)self characterMapping];
+      characterMapping2 = [transformerCopy characterMapping];
+      v12 = characterMapping2;
+      if (characterMapping == characterMapping2)
       {
 
         v9 = 1;
@@ -59,12 +59,12 @@
 
       else
       {
-        v13 = [(SGSymbolicMappingTransformer *)self characterMapping];
-        v14 = [v6 characterMapping];
-        v9 = [v13 isEqual:v14];
+        characterMapping3 = [(SGSymbolicMappingTransformer *)self characterMapping];
+        characterMapping4 = [transformerCopy characterMapping];
+        v9 = [characterMapping3 isEqual:characterMapping4];
       }
 
-      if (v7 == v8)
+      if (numericMapping == numericMapping2)
       {
         goto LABEL_11;
       }
@@ -85,25 +85,25 @@ LABEL_12:
   return v9;
 }
 
-- (SGSymbolicMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGSymbolicMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"NUMERIC_MAPPING"];
-  v8 = [v6 objectForKeyedSubscript:@"CHARACTER_MAPPING"];
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"NUMERIC_MAPPING"];
+  v8 = [plistCopy objectForKeyedSubscript:@"CHARACTER_MAPPING"];
 
   v9 = [(SGSymbolicMappingTransformer *)self initWithNumericMapping:v7 andSymbolicMapping:v8];
   return v9;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"NUMERIC_MAPPING";
-  v4 = [(SGSymbolicMappingTransformer *)self numericMapping];
+  numericMapping = [(SGSymbolicMappingTransformer *)self numericMapping];
   v9[1] = @"CHARACTER_MAPPING";
-  v10[0] = v4;
-  v5 = [(SGSymbolicMappingTransformer *)self characterMapping];
-  v10[1] = v5;
+  v10[0] = numericMapping;
+  characterMapping = [(SGSymbolicMappingTransformer *)self characterMapping];
+  v10[1] = characterMapping;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -111,9 +111,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -127,8 +127,8 @@ LABEL_12:
   v9[3] = &unk_27894F210;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v4 enumerateObjectsUsingBlock:v9];
+  selfCopy = self;
+  [transformCopy enumerateObjectsUsingBlock:v9];
   v7 = v6;
 
   return v6;
@@ -170,31 +170,31 @@ LABEL_3:
 LABEL_8:
 }
 
-- (SGSymbolicMappingTransformer)initWithNumericMapping:(id)a3 andSymbolicMapping:(id)a4
+- (SGSymbolicMappingTransformer)initWithNumericMapping:(id)mapping andSymbolicMapping:(id)symbolicMapping
 {
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  symbolicMappingCopy = symbolicMapping;
   v13.receiver = self;
   v13.super_class = SGSymbolicMappingTransformer;
   v8 = [(SGSymbolicMappingTransformer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(SGSymbolicMappingTransformer *)v8 setNumericMapping:v6];
-    [(SGSymbolicMappingTransformer *)v9 setCharacterMapping:v7];
-    v10 = [MEMORY[0x277CCA900] letterCharacterSet];
-    v11 = [v10 invertedSet];
-    [(SGSymbolicMappingTransformer *)v9 setCharacterSet:v11];
+    [(SGSymbolicMappingTransformer *)v8 setNumericMapping:mappingCopy];
+    [(SGSymbolicMappingTransformer *)v9 setCharacterMapping:symbolicMappingCopy];
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+    invertedSet = [letterCharacterSet invertedSet];
+    [(SGSymbolicMappingTransformer *)v9 setCharacterSet:invertedSet];
   }
 
   return v9;
 }
 
-+ (id)withNumericMapping:(id)a3 andSymbolicMapping:(id)a4
++ (id)withNumericMapping:(id)mapping andSymbolicMapping:(id)symbolicMapping
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SGSymbolicMappingTransformer alloc] initWithNumericMapping:v6 andSymbolicMapping:v5];
+  symbolicMappingCopy = symbolicMapping;
+  mappingCopy = mapping;
+  v7 = [[SGSymbolicMappingTransformer alloc] initWithNumericMapping:mappingCopy andSymbolicMapping:symbolicMappingCopy];
 
   return v7;
 }

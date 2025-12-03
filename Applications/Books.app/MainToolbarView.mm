@@ -1,22 +1,22 @@
 @interface MainToolbarView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSString)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)didPressBackButtonItem;
 - (void)layoutSubviews;
 @end
 
 @implementation MainToolbarView
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
-  sub_1005579EC(a4);
+  sub_1005579EC(collection);
 
   sub_1000074E0(&v8);
 }
@@ -27,33 +27,33 @@
   v10.super_class = type metadata accessor for MainToolbarView();
   v2 = v10.receiver;
   [(MainToolbarView *)&v10 layoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC5Books15MainToolbarView_backgroundView] layer];
+  layer = [*&v2[OBJC_IVAR____TtC5Books15MainToolbarView_backgroundView] layer];
   [v2 bounds];
   v8 = [objc_opt_self() bezierPathWithRect:{v4, v5, v6, v7}];
-  v9 = [v8 CGPath];
+  cGPath = [v8 CGPath];
 
-  [v3 setShadowPath:v9];
+  [layer setShadowPath:cGPath];
 }
 
 - (void)didPressBackButtonItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_100557C3C();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books15MainToolbarView_backgroundView);
-  v8 = a4;
-  v9 = self;
+  eventCopy = event;
+  selfCopy = self;
   if (![v7 isHidden])
   {
     goto LABEL_4;
   }
 
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC5Books15MainToolbarView_itemViews);
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Books15MainToolbarView_itemViews);
   if (v10 >> 62)
   {
     if (sub_1007A38D4())
@@ -72,9 +72,9 @@ LABEL_7:
   }
 
 LABEL_4:
-  v13.receiver = v9;
+  v13.receiver = selfCopy;
   v13.super_class = type metadata accessor for MainToolbarView();
-  v11 = [(MainToolbarView *)&v13 pointInside:v8 withEvent:x, y];
+  v11 = [(MainToolbarView *)&v13 pointInside:eventCopy withEvent:x, y];
 
   return v11;
 }
@@ -84,10 +84,10 @@ LABEL_4:
   v7.receiver = self;
   v7.super_class = type metadata accessor for MainToolbarView();
   v2 = v7.receiver;
-  v3 = [(MainToolbarView *)&v7 accessibilityTraits];
+  accessibilityTraits = [(MainToolbarView *)&v7 accessibilityTraits];
   v4 = UIAccessibilityTraitHeader;
 
-  if ((v4 & ~v3) != 0)
+  if ((v4 & ~accessibilityTraits) != 0)
   {
     v5 = v4;
   }
@@ -97,12 +97,12 @@ LABEL_4:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100557FF0();
   v4 = v3;
 

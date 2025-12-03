@@ -1,29 +1,29 @@
 @interface REElementComplicationAction
-- (BOOL)isEqual:(id)a3;
-- (REElementComplicationAction)initWithSlotIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REElementComplicationAction)initWithSlotIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_performWithContext:(id)a3;
+- (void)_performWithContext:(id)context;
 @end
 
 @implementation REElementComplicationAction
 
-- (REElementComplicationAction)initWithSlotIdentifier:(id)a3
+- (REElementComplicationAction)initWithSlotIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REElementComplicationAction;
   v6 = [(REElementComplicationAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_slotIdentifier, a3);
+    objc_storeStrong(&v6->_slotIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REElementComplicationAction;
@@ -42,25 +42,25 @@
   return v4;
 }
 
-- (void)_performWithContext:(id)a3
+- (void)_performWithContext:(id)context
 {
-  v4 = [(REElementAction *)self delegate];
+  delegate = [(REElementAction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(REElementAction *)self delegate];
-    [v6 elementAction:self wantsToPerformTapActionForComplicationSlot:self->_slotIdentifier];
+    delegate2 = [(REElementAction *)self delegate];
+    [delegate2 elementAction:self wantsToPerformTapActionForComplicationSlot:self->_slotIdentifier];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_slotIdentifier isEqual:v4[3]];
+    v5 = [(NSString *)self->_slotIdentifier isEqual:equalCopy[3]];
   }
 
   else

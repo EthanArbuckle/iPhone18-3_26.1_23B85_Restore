@@ -1,11 +1,11 @@
 @interface PKPaymentSetupLabelFieldCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPaymentSetupLabelFieldCell)init;
 - (void)_buttonTapped;
-- (void)_updateDisplay:(BOOL)a3;
-- (void)_updateDisplayForFieldTypeLabel:(id)a3;
+- (void)_updateDisplay:(BOOL)display;
+- (void)_updateDisplayForFieldTypeLabel:(id)label;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
 @end
 
 @implementation PKPaymentSetupLabelFieldCell
@@ -17,41 +17,41 @@
   return [(PKPaymentSetupFieldCell *)&v3 init];
 }
 
-- (void)_updateDisplay:(BOOL)a3
+- (void)_updateDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     [(PKPaymentSetupFieldCell *)self _applyDefaultValues];
   }
 
-  v5 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v4 = [v5 labelFieldObject];
-  [(PKPaymentSetupLabelFieldCell *)self _updateDisplayForFieldTypeLabel:v4];
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  labelFieldObject = [paymentSetupField labelFieldObject];
+  [(PKPaymentSetupLabelFieldCell *)self _updateDisplayForFieldTypeLabel:labelFieldObject];
 }
 
-- (void)_updateDisplayForFieldTypeLabel:(id)a3
+- (void)_updateDisplayForFieldTypeLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupLabelFieldCell *)self textLabel];
-  v6 = [v4 title];
-  [v5 setText:v6];
+  labelCopy = label;
+  textLabel = [(PKPaymentSetupLabelFieldCell *)self textLabel];
+  title = [labelCopy title];
+  [textLabel setText:title];
 
   v7 = PKOBKListTextFieldCellLabelFont();
-  [v5 setFont:v7];
+  [textLabel setFont:v7];
 
-  v8 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [v5 setTextColor:v8];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [textLabel setTextColor:systemGrayColor];
 
-  [v5 setNumberOfLines:0];
-  v9 = [v4 alingment];
-  if (v9 == 1)
+  [textLabel setNumberOfLines:0];
+  alingment = [labelCopy alingment];
+  if (alingment == 1)
   {
     v10 = 0;
   }
 
   else
   {
-    if (v9 != 2)
+    if (alingment != 2)
     {
       goto LABEL_6;
     }
@@ -59,10 +59,10 @@
     v10 = 1;
   }
 
-  [v5 setTextAlignment:v10];
+  [textLabel setTextAlignment:v10];
 LABEL_6:
-  v11 = [v4 buttonTitle];
-  v12 = [v11 length];
+  buttonTitle = [labelCopy buttonTitle];
+  v12 = [buttonTitle length];
   button = self->_button;
   if (v12)
   {
@@ -70,7 +70,7 @@ LABEL_6:
     {
       v14 = MEMORY[0x1E69DC740];
       v15 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
-      v16 = [v14 pkui_plainConfigurationWithTitle:v11 font:v15];
+      v16 = [v14 pkui_plainConfigurationWithTitle:buttonTitle font:v15];
 
       objc_initWeak(&location, self);
       v17 = MEMORY[0x1E69DC628];
@@ -85,8 +85,8 @@ LABEL_6:
       self->_button = v19;
 
       [(UIButton *)self->_button setConfigurationUpdateHandler:&__block_literal_global_137];
-      v21 = [(PKPaymentSetupLabelFieldCell *)self contentView];
-      [v21 addSubview:self->_button];
+      contentView = [(PKPaymentSetupLabelFieldCell *)self contentView];
+      [contentView addSubview:self->_button];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&location);
@@ -116,11 +116,11 @@ void __64__PKPaymentSetupLabelFieldCell__updateDisplayForFieldTypeLabel___block_
   [v3 setTextAlignment:1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  PKFloatCeilToPixel(a3, *&a3.height);
+  height = fits.height;
+  width = fits.width;
+  PKFloatCeilToPixel(fits, *&fits.height);
   v7 = v6;
   v8 = width + PKTableViewCellTextInset() * -2.0;
   [(PKPaymentSetupLabelFieldCell *)self layoutMargins];
@@ -129,8 +129,8 @@ void __64__PKPaymentSetupLabelFieldCell__updateDisplayForFieldTypeLabel___block_
   v10 = v9;
   [(PKPaymentSetupLabelFieldCell *)self layoutMargins];
   v12 = height - (v10 + v11);
-  v13 = [(PKPaymentSetupLabelFieldCell *)self textLabel];
-  [v13 pkui_sizeThatFits:1 forceWordWrap:{v8, v12}];
+  textLabel = [(PKPaymentSetupLabelFieldCell *)self textLabel];
+  [textLabel pkui_sizeThatFits:1 forceWordWrap:{v8, v12}];
   v15 = v14;
 
   v16.n128_u64[0] = v15;
@@ -164,19 +164,19 @@ void __64__PKPaymentSetupLabelFieldCell__updateDisplayForFieldTypeLabel___block_
   v18.receiver = self;
   v18.super_class = PKPaymentSetupLabelFieldCell;
   [(PKPaymentSetupFieldCell *)&v18 layoutSubviews];
-  v3 = [(PKPaymentSetupLabelFieldCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentSetupLabelFieldCell *)self contentView];
+  [contentView bounds];
   v5 = v4 + PKTableViewCellTextInset() * -2.0;
 
-  v6 = [(PKPaymentSetupLabelFieldCell *)self textLabel];
-  [v6 frame];
+  textLabel = [(PKPaymentSetupLabelFieldCell *)self textLabel];
+  [textLabel frame];
   v7 = PKTableViewCellTextInset();
   [(PKPaymentSetupLabelFieldCell *)self bounds];
-  [v6 pkui_sizeThatFits:1 forceWordWrap:{v5, CGRectGetHeight(v19) + -10.0 + -25.0}];
+  [textLabel pkui_sizeThatFits:1 forceWordWrap:{v5, CGRectGetHeight(v19) + -10.0 + -25.0}];
   v9.n128_u64[0] = v8.n128_u64[0];
   PKFloatCeilToPixel(v9, v8);
   v11 = v10;
-  [v6 setFrame:{v7, 10.0, v5, v10}];
+  [textLabel setFrame:{v7, 10.0, v5, v10}];
   button = self->_button;
   if (button)
   {
@@ -196,22 +196,22 @@ void __64__PKPaymentSetupLabelFieldCell__updateDisplayForFieldTypeLabel___block_
 
 - (void)_buttonTapped
 {
-  v3 = [(PKPaymentSetupFieldCell *)self delegate];
+  delegate = [(PKPaymentSetupFieldCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 fieldCellDidTapButton:self];
+    [delegate fieldCellDidTapButton:self];
   }
 }
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupLabelFieldCell;
-  v4 = a3;
-  [(PKPaymentSetupFieldCell *)&v6 pk_applyAppearance:v4];
-  v5 = [v4 backgroundColor];
+  appearanceCopy = appearance;
+  [(PKPaymentSetupFieldCell *)&v6 pk_applyAppearance:appearanceCopy];
+  backgroundColor = [appearanceCopy backgroundColor];
 
-  [(PKPaymentSetupLabelFieldCell *)self setBackgroundColor:v5];
+  [(PKPaymentSetupLabelFieldCell *)self setBackgroundColor:backgroundColor];
 }
 
 @end

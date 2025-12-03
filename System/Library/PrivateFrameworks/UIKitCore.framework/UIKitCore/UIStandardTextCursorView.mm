@@ -3,8 +3,8 @@
 - ($2BD9DB369DDD0E9E489A8699A184AD3B)originShadow;
 - ($59ECE587B56CBF78EA342F243490147C)originShape;
 - (BOOL)_trackingFloatingCursorView;
-- (CGRect)_cursorShapeRectForBounds:(CGRect)a3;
-- (UIStandardTextCursorView)initWithFrame:(CGRect)a3;
+- (CGRect)_cursorShapeRectForBounds:(CGRect)bounds;
+- (UIStandardTextCursorView)initWithFrame:(CGRect)frame;
 - (UIView)originView;
 - (_UIStandardTextCursorViewAudioLevelProvider)audioLevelProvider;
 - (id)_createFloatingCursorView;
@@ -13,13 +13,13 @@
 - (void)_performBulgeAnimation;
 - (void)_setNeedsInitialDictationAnimation;
 - (void)_updateShadow;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
 - (void)layoutSubviews;
-- (void)setAudioLevelProvider:(id)a3;
-- (void)setBlinking:(BOOL)a3;
-- (void)setFloatingEffectEnabled:(BOOL)a3;
-- (void)setGlowEffectEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAudioLevelProvider:(id)provider;
+- (void)setBlinking:(BOOL)blinking;
+- (void)setFloatingEffectEnabled:(BOOL)enabled;
+- (void)setGlowEffectEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
 - (void)tintColorDidChange;
 @end
 
@@ -55,15 +55,15 @@
   v19 = v18;
   [(UIView *)self->_cursorShapeView setBounds:0.0, 0.0, v8, v10];
   [(UIView *)self->_cursorShapeView setCenter:v4 + v17 * 0.5, v6 + v19 * 0.5];
-  v20 = [(UIStandardTextCursorView *)self _fillColorForEffects];
-  [(UIView *)self->_cursorShapeView setBackgroundColor:v20];
+  _fillColorForEffects = [(UIStandardTextCursorView *)self _fillColorForEffects];
+  [(UIView *)self->_cursorShapeView setBackgroundColor:_fillColorForEffects];
 
   v26.origin.x = v4;
   v26.origin.y = v6;
   v26.size.width = v8;
   v26.size.height = v10;
   v21 = CGRectGetWidth(v26) * 0.5;
-  v22 = [(UIView *)self->_cursorShapeView layer];
+  layer = [(UIView *)self->_cursorShapeView layer];
   *v23 = v21;
   *&v23[1] = v21;
   *&v23[2] = v21;
@@ -72,7 +72,7 @@
   *&v23[5] = v21;
   *&v23[6] = v21;
   *&v23[7] = v21;
-  [v22 setCornerRadii:v23];
+  [layer setCornerRadii:v23];
 
   [(NSMutableSet *)self->_cursorAnimations makeObjectsPerformSelector:sel_cursorShapeDidChange];
 }
@@ -98,15 +98,15 @@
   v4.receiver = self;
   v4.super_class = UIStandardTextCursorView;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UIView *)self tintColor];
-  [(_UITextCursorDictationAnimation *)self->_dictationAnimation setTintColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextCursorDictationAnimation *)self->_dictationAnimation setTintColor:tintColor];
 }
 
-- (UIStandardTextCursorView)initWithFrame:(CGRect)a3
+- (UIStandardTextCursorView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = UIStandardTextCursorView;
-  v3 = [(UIView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor insertionPointColor];
@@ -131,11 +131,11 @@
   return v3;
 }
 
-- (void)setBlinking:(BOOL)a3
+- (void)setBlinking:(BOOL)blinking
 {
-  v3 = a3;
-  self->_blinking = a3;
-  if (a3 && !self->_blinkAnimation)
+  blinkingCopy = blinking;
+  self->_blinking = blinking;
+  if (blinking && !self->_blinkAnimation)
   {
     v5 = [[_UITextCursorBlinkAnimation alloc] initWithCursorShapeView:self->_cursorShapeView];
     blinkAnimation = self->_blinkAnimation;
@@ -146,14 +146,14 @@
 
   v7 = self->_blinkAnimation;
 
-  [(_UITextCursorBlinkAnimation *)v7 setEnabled:v3];
+  [(_UITextCursorBlinkAnimation *)v7 setEnabled:blinkingCopy];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v3.receiver = self;
   v3.super_class = UIStandardTextCursorView;
-  [(UIView *)&v3 setHidden:a3];
+  [(UIView *)&v3 setHidden:hidden];
 }
 
 id __48__UIStandardTextCursorView__fillColorForEffects__block_invoke(uint64_t a1, void *a2)
@@ -170,15 +170,15 @@ id __48__UIStandardTextCursorView__fillColorForEffects__block_invoke(uint64_t a1
   return v4;
 }
 
-- (CGRect)_cursorShapeRectForBounds:(CGRect)a3
+- (CGRect)_cursorShapeRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = *(MEMORY[0x1E695EFF8] + 8);
   v19 = *MEMORY[0x1E695EFF8];
-  v9 = CGRectGetWidth(a3);
+  v9 = CGRectGetWidth(bounds);
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -257,24 +257,24 @@ id __48__UIStandardTextCursorView__fillColorForEffects__block_invoke(uint64_t a1
 - (void)_updateShadow
 {
   [(UIStandardTextCursorView *)self _shadowSpecForEffects];
-  v3 = [0 CGColor];
-  v4 = [(UIView *)self->_cursorShapeView layer];
-  [v4 setShadowColor:v3];
+  cGColor = [0 CGColor];
+  layer = [(UIView *)self->_cursorShapeView layer];
+  [layer setShadowColor:cGColor];
 
-  v5 = [(UIView *)self->_cursorShapeView layer];
-  [v5 setShadowOffset:{0.0, 0.0}];
+  layer2 = [(UIView *)self->_cursorShapeView layer];
+  [layer2 setShadowOffset:{0.0, 0.0}];
 
-  v6 = [(UIView *)self->_cursorShapeView layer];
-  [v6 setShadowRadius:0.0];
+  layer3 = [(UIView *)self->_cursorShapeView layer];
+  [layer3 setShadowRadius:0.0];
 
-  v7 = [(UIView *)self->_cursorShapeView layer];
+  layer4 = [(UIView *)self->_cursorShapeView layer];
   *&v8 = 0.0;
-  [v7 setShadowOpacity:v8];
+  [layer4 setShadowOpacity:v8];
 }
 
-- (void)setFloatingEffectEnabled:(BOOL)a3
+- (void)setFloatingEffectEnabled:(BOOL)enabled
 {
-  self->_floatingEffectEnabled = a3;
+  self->_floatingEffectEnabled = enabled;
   [(UIStandardTextCursorView *)self _updateShadow];
 
   [(UIView *)self setNeedsLayout];
@@ -288,8 +288,8 @@ id __48__UIStandardTextCursorView__fillColorForEffects__block_invoke(uint64_t a1
   [v4 setFloatingEffectEnabled:1];
   [(UIStandardTextCursorView *)self _shapeScale];
   [v4 _setShapeScale:?];
-  v5 = [(UIView *)self tintColor];
-  [v4 setTintColor:v5];
+  tintColor = [(UIView *)self tintColor];
+  [v4 setTintColor:tintColor];
 
   objc_storeWeak(&self->_trackedFloatingCursorView, v4);
 
@@ -363,14 +363,14 @@ uint64_t __50__UIStandardTextCursorView__performBulgeAnimation__block_invoke_2(u
   return dictationAnimation;
 }
 
-- (void)setGlowEffectEnabled:(BOOL)a3
+- (void)setGlowEffectEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_glowEffectEnabled = a3;
-  v5 = [(UIStandardTextCursorView *)self _dictationAnimation];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_glowEffectEnabled = enabled;
+  _dictationAnimation = [(UIStandardTextCursorView *)self _dictationAnimation];
+  [_dictationAnimation setEnabled:enabledCopy];
 
-  if (!v3 && self->_dictationAnimation)
+  if (!enabledCopy && self->_dictationAnimation)
   {
     [(NSMutableSet *)self->_cursorAnimations removeObject:?];
     dictationAnimation = self->_dictationAnimation;
@@ -380,23 +380,23 @@ uint64_t __50__UIStandardTextCursorView__performBulgeAnimation__block_invoke_2(u
 
 - (void)_setNeedsInitialDictationAnimation
 {
-  v2 = [(UIStandardTextCursorView *)self _dictationAnimation];
-  [v2 setNeedsInitialDictationAnimation];
+  _dictationAnimation = [(UIStandardTextCursorView *)self _dictationAnimation];
+  [_dictationAnimation setNeedsInitialDictationAnimation];
 }
 
-- (void)setAudioLevelProvider:(id)a3
+- (void)setAudioLevelProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_audioLevelProvider, v4);
-  v5 = [(UIStandardTextCursorView *)self _dictationAnimation];
-  [v5 setAudioLevelProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_audioLevelProvider, providerCopy);
+  _dictationAnimation = [(UIStandardTextCursorView *)self _dictationAnimation];
+  [_dictationAnimation setAudioLevelProvider:providerCopy];
 }
 
 - (BOOL)_trackingFloatingCursorView
 {
   WeakRetained = objc_loadWeakRetained(&self->_trackedFloatingCursorView);
-  v3 = [WeakRetained window];
-  v4 = v3 != 0;
+  window = [WeakRetained window];
+  v4 = window != 0;
 
   return v4;
 }
@@ -442,11 +442,11 @@ uint64_t __50__UIStandardTextCursorView__performBulgeAnimation__block_invoke_2(u
   return self;
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
-  if (a4 == 231)
+  if (type == 231)
   {
-    [(UIStandardTextCursorView *)self setBlinking:a3];
+    [(UIStandardTextCursorView *)self setBlinking:state];
   }
 }
 

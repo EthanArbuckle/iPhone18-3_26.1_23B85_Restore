@@ -1,38 +1,38 @@
 @interface _HDAggregationStateKey
-+ (void)keyForCollector:(void *)a3 device:(void *)a4 aggregator:;
-- (BOOL)isEqual:(id)a3;
++ (void)keyForCollector:(void *)collector device:(void *)device aggregator:;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _HDAggregationStateKey
 
-+ (void)keyForCollector:(void *)a3 device:(void *)a4 aggregator:
++ (void)keyForCollector:(void *)collector device:(void *)device aggregator:
 {
-  v6 = a4;
-  v7 = a3;
+  deviceCopy = device;
+  collectorCopy = collector;
   v8 = a2;
   v9 = objc_alloc_init(objc_opt_self());
-  v10 = [v8 identifierForDataAggregator:v6];
+  v10 = [v8 identifierForDataAggregator:deviceCopy];
 
   v11 = [v10 copy];
   v12 = v9[1];
   v9[1] = v11;
 
-  v13 = [v7 copy];
+  v13 = [collectorCopy copy];
   v14 = v9[2];
   v9[2] = v13;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_collectorIdentifier isEqualToString:v4[1]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_collectorIdentifier isEqualToString:equalCopy[1]])
   {
     device = self->_device;
-    if (device == v4[2])
+    if (device == equalCopy[2])
     {
       v6 = 1;
     }

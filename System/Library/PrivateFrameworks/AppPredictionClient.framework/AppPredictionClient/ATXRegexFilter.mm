@@ -1,46 +1,46 @@
 @interface ATXRegexFilter
-+ (id)_compilePatterns:(id)a3 assetName:(id)a4 ruleName:(id)a5;
-- (ATXRegexFilter)initWithAssetName:(id)a3;
-- (BOOL)_checkString:(id)a3 againstRegexesArray:(id)a4;
-- (BOOL)_checkString:(id)a3 againstRegexesArrayDictionary:(id)a4;
-- (BOOL)shouldFilterOutAction:(id)a3;
-- (BOOL)shouldFilterOutBundleId:(id)a3 andAttribute:(id)a4;
-- (id)_initWithAssetName:(id)a3 asset:(id)a4;
++ (id)_compilePatterns:(id)patterns assetName:(id)name ruleName:(id)ruleName;
+- (ATXRegexFilter)initWithAssetName:(id)name;
+- (BOOL)_checkString:(id)string againstRegexesArray:(id)array;
+- (BOOL)_checkString:(id)string againstRegexesArrayDictionary:(id)dictionary;
+- (BOOL)shouldFilterOutAction:(id)action;
+- (BOOL)shouldFilterOutBundleId:(id)id andAttribute:(id)attribute;
+- (id)_initWithAssetName:(id)name asset:(id)asset;
 - (id)description;
 @end
 
 @implementation ATXRegexFilter
 
-- (ATXRegexFilter)initWithAssetName:(id)a3
+- (ATXRegexFilter)initWithAssetName:(id)name
 {
-  v4 = a3;
-  v5 = [ATXAssets2 dictionaryForClassName:v4];
-  v6 = [(ATXRegexFilter *)self _initWithAssetName:v4 asset:v5];
+  nameCopy = name;
+  v5 = [ATXAssets2 dictionaryForClassName:nameCopy];
+  v6 = [(ATXRegexFilter *)self _initWithAssetName:nameCopy asset:v5];
 
   return v6;
 }
 
-- (id)_initWithAssetName:(id)a3 asset:(id)a4
+- (id)_initWithAssetName:(id)name asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_assetName, a3);
+  nameCopy = name;
+  assetCopy = asset;
+  objc_storeStrong(&self->_assetName, name);
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = v11;
-  if (v8)
+  if (assetCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __43__ATXRegexFilter__initWithAssetName_asset___block_invoke;
     v20[3] = &unk_1E80C1750;
     v21 = v11;
-    v22 = v7;
+    v22 = nameCopy;
     v23 = v10;
     v24 = v9;
-    v25 = self;
-    [v8 enumerateKeysAndObjectsUsingBlock:v20];
+    selfCopy = self;
+    [assetCopy enumerateKeysAndObjectsUsingBlock:v20];
 
     v13 = v21;
   }
@@ -111,11 +111,11 @@ LABEL_5:
 LABEL_12:
 }
 
-- (BOOL)shouldFilterOutBundleId:(id)a3 andAttribute:(id)a4
+- (BOOL)shouldFilterOutBundleId:(id)id andAttribute:(id)attribute
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnBundleId:v6]|| [(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnAttribute:v7])
+  idCopy = id;
+  attributeCopy = attribute;
+  if ([(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnBundleId:idCopy]|| [(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnAttribute:attributeCopy])
   {
     v8 = 1;
   }
@@ -132,8 +132,8 @@ LABEL_12:
     v11[2] = __55__ATXRegexFilter_shouldFilterOutBundleId_andAttribute___block_invoke;
     v11[3] = &unk_1E80C1778;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = idCopy;
+    v13 = attributeCopy;
     v14 = &v15;
     [(NSDictionary *)combinedFilters enumerateKeysAndObjectsUsingBlock:v11];
     v8 = *(v16 + 24);
@@ -168,7 +168,7 @@ void __55__ATXRegexFilter_shouldFilterOutBundleId_andAttribute___block_invoke(vo
   }
 }
 
-- (BOOL)shouldFilterOutAction:(id)a3
+- (BOOL)shouldFilterOutAction:(id)action
 {
   v3 = __atxlog_handle_default();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -182,27 +182,27 @@ void __55__ATXRegexFilter_shouldFilterOutBundleId_andAttribute___block_invoke(vo
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NSDictionary *)self->_combinedFilters allKeys];
-  v5 = [(NSDictionary *)self->_bundleIdsFilters allKeys];
-  v6 = [(NSDictionary *)self->_attributesFilters allKeys];
-  v7 = [v3 initWithFormat:@"<ATXRegexFilter: %@ %@ %@>", v4, v5, v6];
+  allKeys = [(NSDictionary *)self->_combinedFilters allKeys];
+  allKeys2 = [(NSDictionary *)self->_bundleIdsFilters allKeys];
+  allKeys3 = [(NSDictionary *)self->_attributesFilters allKeys];
+  v7 = [v3 initWithFormat:@"<ATXRegexFilter: %@ %@ %@>", allKeys, allKeys2, allKeys3];
 
   return v7;
 }
 
-- (BOOL)_checkString:(id)a3 againstRegexesArray:(id)a4
+- (BOOL)_checkString:(id)string againstRegexesArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  stringCopy = string;
+  arrayCopy = array;
+  v7 = arrayCopy;
+  if (stringCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v6;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -216,7 +216,7 @@ void __55__ATXRegexFilter_shouldFilterOutBundleId_andAttribute___block_invoke(vo
             objc_enumerationMutation(v8);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) rangeOfFirstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length", v13)}] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([*(*(&v13 + 1) + 8 * i) rangeOfFirstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length", v13)}] != 0x7FFFFFFFFFFFFFFFLL)
           {
             LOBYTE(v9) = 1;
             goto LABEL_15;
@@ -250,11 +250,11 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_checkString:(id)a3 againstRegexesArrayDictionary:(id)a4
+- (BOOL)_checkString:(id)string againstRegexesArrayDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stringCopy = string;
+  dictionaryCopy = dictionary;
+  if (stringCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -265,9 +265,9 @@ LABEL_15:
     v11[2] = __61__ATXRegexFilter__checkString_againstRegexesArrayDictionary___block_invoke;
     v11[3] = &unk_1E80C17A0;
     v11[4] = self;
-    v12 = v6;
+    v12 = stringCopy;
     v13 = &v14;
-    [v7 enumerateKeysAndObjectsUsingBlock:v11];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v11];
     v8 = *(v15 + 24);
 
     _Block_object_dispose(&v14, 8);
@@ -299,19 +299,19 @@ uint64_t __61__ATXRegexFilter__checkString_againstRegexesArrayDictionary___block
   return result;
 }
 
-+ (id)_compilePatterns:(id)a3 assetName:(id)a4 ruleName:(id)a5
++ (id)_compilePatterns:(id)patterns assetName:(id)name ruleName:(id)ruleName
 {
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  ruleNameCopy = ruleName;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__ATXRegexFilter__compilePatterns_assetName_ruleName___block_invoke;
   v13[3] = &unk_1E80C17C8;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = [a3 _pas_mappedArrayWithTransform:v13];
+  v14 = nameCopy;
+  v15 = ruleNameCopy;
+  v9 = ruleNameCopy;
+  v10 = nameCopy;
+  v11 = [patterns _pas_mappedArrayWithTransform:v13];
 
   return v11;
 }

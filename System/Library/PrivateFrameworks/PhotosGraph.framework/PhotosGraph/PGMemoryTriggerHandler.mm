@@ -1,35 +1,35 @@
 @interface PGMemoryTriggerHandler
-+ (double)scoreForTriggerType:(unint64_t)a3;
-+ (double)triggerScoreForTriggeredMemory:(id)a3;
-+ (id)creationDateWithContext:(id)a3;
-+ (id)fallbackTriggeredMemoriesWithContext:(id)a3 excludingTriggeredMemories:(id)a4 inGraph:(id)a5 holidayService:(id)a6;
-+ (id)memoryNodesAllowedToBeFallbackFromMemoryNodes:(id)a3 withContext:(id)a4 inGraph:(id)a5 holidayService:(id)a6;
-+ (id)personMemoryNodesFeaturingMeNodeInGraph:(id)a3;
-+ (unint64_t)maximumValidityPeriodForValidityIntervalByTriggerType:(id)a3 context:(id)a4;
-- (PGMemoryTriggerHandler)initWithWorkingContext:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4;
-- (id)allTriggeredMemoriesWithContext:(id)a3 forTriggerType:(unint64_t)a4 inGraph:(id)a5 progressReporter:(id)a6;
-- (id)futureMemoriesForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5;
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3 forTriggerType:(unint64_t)a4;
++ (double)scoreForTriggerType:(unint64_t)type;
++ (double)triggerScoreForTriggeredMemory:(id)memory;
++ (id)creationDateWithContext:(id)context;
++ (id)fallbackTriggeredMemoriesWithContext:(id)context excludingTriggeredMemories:(id)memories inGraph:(id)graph holidayService:(id)service;
++ (id)memoryNodesAllowedToBeFallbackFromMemoryNodes:(id)nodes withContext:(id)context inGraph:(id)graph holidayService:(id)service;
++ (id)personMemoryNodesFeaturingMeNodeInGraph:(id)graph;
++ (unint64_t)maximumValidityPeriodForValidityIntervalByTriggerType:(id)type context:(id)context;
+- (PGMemoryTriggerHandler)initWithWorkingContext:(id)context momentNodesWithBlockedFeatureCache:(id)cache;
+- (id)allTriggeredMemoriesWithContext:(id)context forTriggerType:(unint64_t)type inGraph:(id)graph progressReporter:(id)reporter;
+- (id)futureMemoriesForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes forTriggerType:(unint64_t)type;
 @end
 
 @implementation PGMemoryTriggerHandler
 
-- (id)futureMemoriesForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5
+- (id)futureMemoriesForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v42 = a4;
-  v38 = v7;
-  v39 = a5;
-  v40 = [v7 futureMemoryCollisionUniversalDateInterval];
-  v43 = [v40 startDate];
-  v50 = [v40 endDate];
-  v8 = v50;
-  [v50 timeIntervalSinceDate:v43];
+  configurationCopy = configuration;
+  graphCopy = graph;
+  v38 = configurationCopy;
+  reporterCopy = reporter;
+  futureMemoryCollisionUniversalDateInterval = [configurationCopy futureMemoryCollisionUniversalDateInterval];
+  startDate = [futureMemoryCollisionUniversalDateInterval startDate];
+  endDate = [futureMemoryCollisionUniversalDateInterval endDate];
+  v8 = endDate;
+  [endDate timeIntervalSinceDate:startDate];
   v10 = (v9 / 86400.0);
   if (v10 < 1)
   {
-    v51 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
@@ -51,13 +51,13 @@
     info = 0;
     mach_timebase_info(&info);
     v35 = mach_absolute_time();
-    v41 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v39];
-    v45 = [v38 timeZone];
-    v51 = [MEMORY[0x277CBEB18] array];
+    v41 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
+    timeZone = [v38 timeZone];
+    array = [MEMORY[0x277CBEB18] array];
     v52 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if ([v50 compare:v43] == -1)
+    if ([endDate compare:startDate] == -1)
     {
-      v8 = v50;
+      v8 = endDate;
     }
 
     else
@@ -67,10 +67,10 @@
       do
       {
         context = objc_autoreleasePoolPush();
-        v49 = [MEMORY[0x277D27690] localDateFromUniversalDate:v50 inTimeZone:{v45, spid}];
-        v48 = [[PGMemoryContext alloc] initWithFutureLocalDate:v49 timeZone:v45 photoLibrary:self->_photoLibrary];
+        v49 = [MEMORY[0x277D27690] localDateFromUniversalDate:endDate inTimeZone:{timeZone, spid}];
+        v48 = [[PGMemoryContext alloc] initWithFutureLocalDate:v49 timeZone:timeZone photoLibrary:self->_photoLibrary];
         v47 = [v41 childProgressReporterToCheckpoint:v16];
-        v17 = [(PGMemoryTriggerHandler *)self allTriggeredMemoriesWithContext:v48 inGraph:v42 progressReporter:v47];
+        v17 = [(PGMemoryTriggerHandler *)self allTriggeredMemoriesWithContext:v48 inGraph:graphCopy progressReporter:v47];
         v59 = 0u;
         v60 = 0u;
         v57 = 0u;
@@ -91,25 +91,25 @@
 
               v22 = *(*(&v57 + 1) + 8 * i);
               v23 = objc_autoreleasePoolPush();
-              v24 = [v22 uniqueMemoryIdentifier];
+              uniqueMemoryIdentifier = [v22 uniqueMemoryIdentifier];
               *buf = 0;
               *&buf[8] = buf;
               *&buf[16] = 0x2020000000;
               v63 = 1;
-              v25 = [v22 triggerTypes];
+              triggerTypes = [v22 triggerTypes];
               v53[0] = MEMORY[0x277D85DD0];
               v53[1] = 3221225472;
               v53[2] = __84__PGMemoryTriggerHandler_futureMemoriesForConfiguration_withGraph_progressReporter___block_invoke;
               v53[3] = &unk_278883710;
               v54 = v52;
-              v26 = v24;
+              v26 = uniqueMemoryIdentifier;
               v55 = v26;
               v56 = buf;
-              [v25 enumerateIndexesUsingBlock:v53];
+              [triggerTypes enumerateIndexesUsingBlock:v53];
 
               if (*(*&buf[8] + 24) == 1)
               {
-                [v51 addObject:v22];
+                [array addObject:v22];
               }
 
               _Block_object_dispose(buf, 8);
@@ -122,14 +122,14 @@
           while (v19);
         }
 
-        v8 = [MEMORY[0x277D27690] dateByAddingDays:-1 toDate:v50];
+        v8 = [MEMORY[0x277D27690] dateByAddingDays:-1 toDate:endDate];
 
         objc_autoreleasePoolPop(context);
         v16 = v15 + v16;
-        v50 = v8;
+        endDate = v8;
       }
 
-      while ([v8 compare:v43] != -1);
+      while ([v8 compare:startDate] != -1);
     }
 
     v27 = mach_absolute_time();
@@ -155,7 +155,7 @@
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v51;
+  return array;
 }
 
 void __84__PGMemoryTriggerHandler_futureMemoriesForConfiguration_withGraph_progressReporter___block_invoke(void *a1, uint64_t a2)
@@ -186,13 +186,13 @@ void __84__PGMemoryTriggerHandler_futureMemoriesForConfiguration_withGraph_progr
   }
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3 forTriggerType:(unint64_t)a4
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes forTriggerType:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nodesCopy = nodes;
   v7 = [PGGraphFeatureNodeCollection alloc];
-  v8 = [v6 graph];
-  v9 = [(MAElementCollection *)v7 initWithGraph:v8];
+  graph = [nodesCopy graph];
+  v9 = [(MAElementCollection *)v7 initWithGraph:graph];
 
   v21 = 0u;
   v22 = 0u;
@@ -214,9 +214,9 @@ void __84__PGMemoryTriggerHandler_futureMemoriesForConfiguration_withGraph_progr
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        if ([v15 triggerType] == a4)
+        if ([v15 triggerType] == type)
         {
-          v16 = [v15 relevantFeatureNodesInFeatureNodes:v6];
+          v16 = [v15 relevantFeatureNodesInFeatureNodes:nodesCopy];
 
           v9 = v16;
           goto LABEL_11;
@@ -240,14 +240,14 @@ LABEL_11:
   return v9;
 }
 
-- (id)allTriggeredMemoriesWithContext:(id)a3 forTriggerType:(unint64_t)a4 inGraph:(id)a5 progressReporter:(id)a6
+- (id)allTriggeredMemoriesWithContext:(id)context forTriggerType:(unint64_t)type inGraph:(id)graph progressReporter:(id)reporter
 {
   v114 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v82 = a5;
-  v83 = a6;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v11 = [(NSArray *)self->_allMemoryTriggers count];
-  v81 = self;
+  selfCopy = self;
   loggingConnection = self->_loggingConnection;
   if (v11)
   {
@@ -270,13 +270,13 @@ LABEL_11:
     v74 = mach_absolute_time();
     v91 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v89 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [(NSArray *)v81->_allMemoryTriggers count];
-    v18 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v83];
+    v17 = [(NSArray *)selfCopy->_allMemoryTriggers count];
+    v18 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = v81->_allMemoryTriggers;
+    obj = selfCopy->_allMemoryTriggers;
     v19 = [(NSArray *)obj countByEnumeratingWithState:&v101 objects:v113 count:16];
     v79 = v18;
     if (v19)
@@ -286,7 +286,7 @@ LABEL_11:
       v22 = *v102;
       v23 = 0.0;
       v77 = *v102;
-      v78 = a4;
+      typeCopy = type;
       while (2)
       {
         v24 = 0;
@@ -299,16 +299,16 @@ LABEL_11:
           }
 
           v25 = *(*(&v101 + 1) + 8 * v24);
-          v26 = objc_autoreleasePoolPush();
+          contextCopy2 = objc_autoreleasePoolPush();
           v23 = fmin(v21 + v23, 1.0);
           v27 = [v18 childProgressReporterToCheckpoint:v23];
-          v90 = [v25 triggerType];
-          if ((!a4 || v90 == a4) && (![v10 futureLookup] || objc_msgSend(v25, "supportsFutureLookup")))
+          triggerType = [v25 triggerType];
+          if ((!type || triggerType == type) && (![contextCopy futureLookup] || objc_msgSend(v25, "supportsFutureLookup")))
           {
-            context = v26;
+            context = contextCopy2;
             v88 = v27;
             v86 = v24;
-            v28 = v81->_loggingConnection;
+            v28 = selfCopy->_loggingConnection;
             v29 = os_signpost_id_generate(v28);
             v30 = v28;
             v31 = v30;
@@ -321,8 +321,8 @@ LABEL_11:
             v100 = 0;
             mach_timebase_info(&v100);
             v32 = mach_absolute_time();
-            v33 = [v25 resultsTriggeredWithContext:v10 inGraph:v82 progressReporter:v27];
-            if ([v83 isCancelled])
+            v33 = [v25 resultsTriggeredWithContext:contextCopy inGraph:graphCopy progressReporter:v27];
+            if ([reporterCopy isCancelled])
             {
 
               objc_autoreleasePoolPop(context);
@@ -384,27 +384,27 @@ LABEL_11:
                   }
 
                   v51 = *(*(&v96 + 1) + 8 * i);
-                  v52 = [v51 memoryNode];
-                  v53 = [v10 categoriesDeniedForContextual];
-                  v54 = [v53 containsIndex:{objc_msgSend(v52, "memoryCategory")}];
+                  memoryNode = [v51 memoryNode];
+                  categoriesDeniedForContextual = [contextCopy categoriesDeniedForContextual];
+                  v54 = [categoriesDeniedForContextual containsIndex:{objc_msgSend(memoryNode, "memoryCategory")}];
 
                   if ((v54 & 1) == 0)
                   {
-                    v55 = v10;
-                    v56 = [v52 uniqueMemoryIdentifier];
-                    v57 = [v91 objectForKeyedSubscript:v56];
+                    v55 = contextCopy;
+                    uniqueMemoryIdentifier = [memoryNode uniqueMemoryIdentifier];
+                    v57 = [v91 objectForKeyedSubscript:uniqueMemoryIdentifier];
                     if (!v57)
                     {
                       v57 = objc_alloc_init(MEMORY[0x277CBEB38]);
-                      [v91 setObject:v57 forKeyedSubscript:v56];
+                      [v91 setObject:v57 forKeyedSubscript:uniqueMemoryIdentifier];
                     }
 
-                    v58 = [v51 validityInterval];
-                    v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v90];
-                    [v57 setObject:v58 forKeyedSubscript:v59];
+                    validityInterval = [v51 validityInterval];
+                    v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:triggerType];
+                    [v57 setObject:validityInterval forKeyedSubscript:v59];
 
-                    [v89 setObject:v52 forKeyedSubscript:v56];
-                    v10 = v55;
+                    [v89 setObject:memoryNode forKeyedSubscript:uniqueMemoryIdentifier];
+                    contextCopy = v55;
                   }
                 }
 
@@ -414,16 +414,16 @@ LABEL_11:
               while (v48);
             }
 
-            a4 = v78;
+            type = typeCopy;
             v18 = v79;
             v20 = v80;
             v22 = v77;
             v24 = v86;
-            v26 = context;
+            contextCopy2 = context;
             v27 = v88;
           }
 
-          objc_autoreleasePoolPop(v26);
+          objc_autoreleasePoolPop(contextCopy2);
           ++v24;
         }
 
@@ -438,7 +438,7 @@ LABEL_11:
       }
     }
 
-    v60 = [objc_opt_class() creationDateWithContext:v10];
+    v60 = [objc_opt_class() creationDateWithContext:contextCopy];
     v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v92[0] = MEMORY[0x277D85DD0];
     v92[1] = 3221225472;
@@ -504,11 +504,11 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
   [*(a1 + 48) addObject:v7];
 }
 
-- (PGMemoryTriggerHandler)initWithWorkingContext:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4
+- (PGMemoryTriggerHandler)initWithWorkingContext:(id)context momentNodesWithBlockedFeatureCache:(id)cache
 {
   v52[26] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  cacheCopy = cache;
   v51.receiver = self;
   v51.super_class = PGMemoryTriggerHandler;
   v8 = [(PGMemoryTriggerHandler *)&v51 init];
@@ -518,13 +518,13 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
     loggingConnection = v8->_loggingConnection;
     v8->_loggingConnection = v9;
 
-    v11 = [v6 photoLibrary];
+    photoLibrary = [contextCopy photoLibrary];
     photoLibrary = v8->_photoLibrary;
-    v8->_photoLibrary = v11;
+    v8->_photoLibrary = photoLibrary;
 
     v13 = objc_alloc(MEMORY[0x277D276D8]);
-    v14 = [MEMORY[0x277CBEAF8] currentLocale];
-    v15 = [v13 initWithLocale:v14];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v15 = [v13 initWithLocale:currentLocale];
     holidayService = v8->_holidayService;
     v8->_holidayService = v15;
 
@@ -538,7 +538,7 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
     v52[3] = v46;
     v45 = [[PGMemoryTriggerEndOfYear alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[4] = v45;
-    v44 = [[PGMemoryTriggerBeginningOfMonth alloc] initWithLoggingConnection:v8->_loggingConnection momentNodesWithBlockedFeatureCache:v7];
+    v44 = [[PGMemoryTriggerBeginningOfMonth alloc] initWithLoggingConnection:v8->_loggingConnection momentNodesWithBlockedFeatureCache:cacheCopy];
     v52[5] = v44;
     v43 = [[PGMemoryTriggerBeginningOfSeason alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[6] = v43;
@@ -556,24 +556,24 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
     v52[12] = v37;
     v36 = [[PGMemoryTriggerPersonAnniversary alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[13] = v36;
-    v35 = [[PGMemoryTriggerRecentHighlights alloc] initWithLoggingConnection:v8->_loggingConnection momentNodesWithBlockedFeatureCache:v7];
+    v35 = [[PGMemoryTriggerRecentHighlights alloc] initWithLoggingConnection:v8->_loggingConnection momentNodesWithBlockedFeatureCache:cacheCopy];
     v52[14] = v35;
     v34 = [[PGMemoryTriggerUpcomingHoliday alloc] initWithLoggingConnection:v8->_loggingConnection holidayService:v8->_holidayService];
     v52[15] = v34;
-    v33 = [[PGMemoryTriggerRecentSyndicatedAssets alloc] initWithLoggingConnection:v8->_loggingConnection photoLibrary:v8->_photoLibrary momentNodesWithBlockedFeatureCache:v7];
+    v33 = [[PGMemoryTriggerRecentSyndicatedAssets alloc] initWithLoggingConnection:v8->_loggingConnection photoLibrary:v8->_photoLibrary momentNodesWithBlockedFeatureCache:cacheCopy];
     v52[16] = v33;
     v32 = [[PGMemoryTriggerRecentMeaningfulEvent alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[17] = v32;
     v17 = [PGMemoryTriggerUpcomingCalendarEvent alloc];
-    v31 = [v6 serviceManager];
-    v30 = [v6 locationCache];
-    v18 = [(PGMemoryTriggerUpcomingCalendarEvent *)v17 initWithServiceManager:v31 locationCache:v30 loggingConnection:v8->_loggingConnection];
+    serviceManager = [contextCopy serviceManager];
+    locationCache = [contextCopy locationCache];
+    v18 = [(PGMemoryTriggerUpcomingCalendarEvent *)v17 initWithServiceManager:serviceManager locationCache:locationCache loggingConnection:v8->_loggingConnection];
     v52[18] = v18;
     v19 = [[PGMemoryTriggerLastWeekend alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[19] = v19;
     v20 = [[PGMemoryTriggerLastWeek alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[20] = v20;
-    v50 = v6;
+    v50 = contextCopy;
     v21 = [[PGMemoryTriggerRecentBreakoutOfRoutine alloc] initWithLoggingConnection:v8->_loggingConnection];
     v52[21] = v21;
     v22 = [(PGHolidayMemoryTrigger *)[PGMemoryTriggerUpcomingPersonCentricHoliday alloc] initWithLoggingConnection:v8->_loggingConnection holidayService:v8->_holidayService];
@@ -588,23 +588,23 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
     allMemoryTriggers = v8->_allMemoryTriggers;
     v8->_allMemoryTriggers = v26;
 
-    v6 = v50;
+    contextCopy = v50;
   }
 
   v28 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-+ (unint64_t)maximumValidityPeriodForValidityIntervalByTriggerType:(id)a3 context:(id)a4
++ (unint64_t)maximumValidityPeriodForValidityIntervalByTriggerType:(id)type context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 localDate];
+  typeCopy = type;
+  localDate = [context localDate];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = typeCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -621,8 +621,8 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
         }
 
         v13 = [v7 objectForKeyedSubscript:{*(*(&v19 + 1) + 8 * i), v19}];
-        v14 = [v13 endDate];
-        [v14 timeIntervalSinceDate:v6];
+        endDate = [v13 endDate];
+        [endDate timeIntervalSinceDate:localDate];
         v16 = v15;
 
         if (v10 <= ((v16 / 86400.0) & ~((v16 / 86400.0) >> 63)))
@@ -646,32 +646,32 @@ void __98__PGMemoryTriggerHandler_allTriggeredMemoriesWithContext_forTriggerType
   return v10;
 }
 
-+ (double)scoreForTriggerType:(unint64_t)a3
++ (double)scoreForTriggerType:(unint64_t)type
 {
   result = 0.0;
-  if (a3 - 1 <= 0x1A)
+  if (type - 1 <= 0x1A)
   {
-    return dbl_22F78C4D8[a3 - 1];
+    return dbl_22F78C4D8[type - 1];
   }
 
   return result;
 }
 
-+ (double)triggerScoreForTriggeredMemory:(id)a3
++ (double)triggerScoreForTriggeredMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [v4 triggerTypes];
+  triggerTypes = [memoryCopy triggerTypes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__PGMemoryTriggerHandler_triggerScoreForTriggeredMemory___block_invoke;
   v8[3] = &unk_278883738;
   v8[4] = &v9;
-  v8[5] = a1;
-  [v5 enumerateIndexesUsingBlock:v8];
+  v8[5] = self;
+  [triggerTypes enumerateIndexesUsingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -688,85 +688,85 @@ double __57__PGMemoryTriggerHandler_triggerScoreForTriggeredMemory___block_invok
   return result;
 }
 
-+ (id)creationDateWithContext:(id)a3
++ (id)creationDateWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [PGMemoryDate alloc];
-  v5 = [v3 localDate];
-  v6 = [(PGMemoryDate *)v4 initWithLocalDate:v5];
+  localDate = [contextCopy localDate];
+  v6 = [(PGMemoryDate *)v4 initWithLocalDate:localDate];
 
-  v7 = [v3 timeZone];
+  timeZone = [contextCopy timeZone];
 
-  v8 = [(PGMemoryDate *)v6 universalDateInTimeZone:v7];
-
-  return v8;
-}
-
-+ (id)personMemoryNodesFeaturingMeNodeInGraph:(id)a3
-{
-  v3 = a3;
-  v4 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v3];
-  v5 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:3 inGraph:v3];
-
-  v6 = [v4 featureNodeCollection];
-  v7 = [v6 memoryNodes];
-
-  v8 = [v5 collectionByIntersecting:v7];
+  v8 = [(PGMemoryDate *)v6 universalDateInTimeZone:timeZone];
 
   return v8;
 }
 
-+ (id)memoryNodesAllowedToBeFallbackFromMemoryNodes:(id)a3 withContext:(id)a4 inGraph:(id)a5 holidayService:(id)a6
++ (id)personMemoryNodesFeaturingMeNodeInGraph:(id)graph
 {
-  v10 = a4;
-  v11 = a5;
-  v66 = a6;
-  v12 = a3;
-  v13 = [v10 categoriesDeniedForFallback];
-  v14 = [PGGraphMemoryNodeCollection memoryNodesOfCategories:v13 inGraph:v11];
+  graphCopy = graph;
+  v4 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
+  v5 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:3 inGraph:graphCopy];
+
+  featureNodeCollection = [v4 featureNodeCollection];
+  memoryNodes = [featureNodeCollection memoryNodes];
+
+  v8 = [v5 collectionByIntersecting:memoryNodes];
+
+  return v8;
+}
+
++ (id)memoryNodesAllowedToBeFallbackFromMemoryNodes:(id)nodes withContext:(id)context inGraph:(id)graph holidayService:(id)service
+{
+  contextCopy = context;
+  graphCopy = graph;
+  serviceCopy = service;
+  nodesCopy = nodes;
+  categoriesDeniedForFallback = [contextCopy categoriesDeniedForFallback];
+  v14 = [PGGraphMemoryNodeCollection memoryNodesOfCategories:categoriesDeniedForFallback inGraph:graphCopy];
 
   v70 = v14;
-  v15 = [v12 collectionBySubtracting:v14];
+  v15 = [nodesCopy collectionBySubtracting:v14];
 
   v16 = MEMORY[0x277D27690];
-  v17 = [v10 localDate];
-  v18 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v16 yearFromDate:v17], v11);
+  localDate = [contextCopy localDate];
+  v18 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v16 yearFromDate:localDate], graphCopy);
 
   v69 = v18;
-  v19 = [v18 featureNodeCollection];
-  v20 = [v19 memoryNodes];
+  featureNodeCollection = [v18 featureNodeCollection];
+  memoryNodes = [featureNodeCollection memoryNodes];
 
-  v68 = v20;
-  v21 = [v15 collectionBySubtracting:v20];
+  v68 = memoryNodes;
+  v21 = [v15 collectionBySubtracting:memoryNodes];
 
   v22 = MEMORY[0x277D27690];
-  v23 = [v10 localDate];
-  v24 = [v22 seasonNameForLocalDate:v23 locale:0];
+  localDate2 = [contextCopy localDate];
+  v24 = [v22 seasonNameForLocalDate:localDate2 locale:0];
 
-  v25 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection nodesInGraph:v11];
+  v25 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection nodesInGraph:graphCopy];
   v65 = v24;
   if (v24)
   {
-    v26 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:v24 inGraph:v11];
+    v26 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:v24 inGraph:graphCopy];
     v27 = [v25 collectionBySubtracting:v26];
 
     v25 = v27;
   }
 
   v59 = v25;
-  v28 = [v25 featureNodeCollection];
-  v64 = [v28 memoryNodes];
+  featureNodeCollection2 = [v25 featureNodeCollection];
+  memoryNodes2 = [featureNodeCollection2 memoryNodes];
 
-  v29 = [v21 collectionBySubtracting:v64];
+  v29 = [v21 collectionBySubtracting:memoryNodes2];
 
-  v63 = [a1 personMemoryNodesFeaturingMeNodeInGraph:v11];
+  v63 = [self personMemoryNodesFeaturingMeNodeInGraph:graphCopy];
   v30 = [v29 collectionBySubtracting:v63];
 
-  v62 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:17 inGraph:v11];
-  v60 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection nodesInGraph:v11];
-  v31 = [v60 featureNodeCollection];
-  v32 = [v31 memoryNodes];
-  v61 = [v32 collectionByIntersecting:v62];
+  v62 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:17 inGraph:graphCopy];
+  v60 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection nodesInGraph:graphCopy];
+  featureNodeCollection3 = [v60 featureNodeCollection];
+  memoryNodes3 = [featureNodeCollection3 memoryNodes];
+  v61 = [memoryNodes3 collectionByIntersecting:v62];
 
   v58 = [v30 collectionBySubtracting:v61];
 
@@ -774,23 +774,23 @@ double __57__PGMemoryTriggerHandler_triggerScoreForTriggeredMemory___block_invok
   v34 = +[PGGraphFeatureNodeCollection memoryOfFeature];
   v35 = [v33 adjacencyWithSources:v60 relation:v34 targetsClass:objc_opt_class()];
 
-  v36 = [v35 sources];
-  v55 = [v36 holidayNames];
+  sources = [v35 sources];
+  holidayNames = [sources holidayNames];
 
   v37 = MEMORY[0x277D27690];
-  v38 = [v10 localDate];
-  v39 = [v10 timeZone];
-  v40 = [v37 universalDateFromLocalDate:v38 inTimeZone:v39];
+  localDate3 = [contextCopy localDate];
+  timeZone = [contextCopy timeZone];
+  v40 = [v37 universalDateFromLocalDate:localDate3 inTimeZone:timeZone];
 
   v56 = [v40 dateByAddingTimeInterval:-5259600.0];
   v54 = [v40 dateByAddingTimeInterval:5259600.0];
   v41 = MEMORY[0x277D27690];
-  v42 = [v10 timeZone];
-  v43 = [v41 localDateFromUniversalDate:v56 inTimeZone:v42];
+  timeZone2 = [contextCopy timeZone];
+  v43 = [v41 localDateFromUniversalDate:v56 inTimeZone:timeZone2];
 
   v44 = MEMORY[0x277D27690];
-  v45 = [v10 timeZone];
-  v46 = [v44 localDateFromUniversalDate:v54 inTimeZone:v45];
+  timeZone3 = [contextCopy timeZone];
+  v46 = [v44 localDateFromUniversalDate:v54 inTimeZone:timeZone3];
 
   v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v71[0] = MEMORY[0x277D85DD0];
@@ -798,16 +798,16 @@ double __57__PGMemoryTriggerHandler_triggerScoreForTriggeredMemory___block_invok
   v71[2] = __107__PGMemoryTriggerHandler_memoryNodesAllowedToBeFallbackFromMemoryNodes_withContext_inGraph_holidayService___block_invoke;
   v71[3] = &unk_2788836E8;
   v72 = v47;
-  v57 = v10;
+  v57 = contextCopy;
   v48 = v47;
-  [v66 enumerateEventRulesForAllCountriesWithNames:v55 betweenLocalDate:v43 andLocalDate:v46 usingBlock:v71];
+  [serviceCopy enumerateEventRulesForAllCountriesWithNames:holidayNames betweenLocalDate:v43 andLocalDate:v46 usingBlock:v71];
 
-  v49 = [PGGraphHolidayNodeCollection holidayNodesWithNames:v48 inGraph:v11];
+  v49 = [PGGraphHolidayNodeCollection holidayNodesWithNames:v48 inGraph:graphCopy];
   v50 = v35;
   v51 = [v35 subtractingSourcesWith:v49];
-  v52 = [v51 targets];
+  targets = [v51 targets];
 
-  v67 = [v58 collectionBySubtracting:v52];
+  v67 = [v58 collectionBySubtracting:targets];
 
   return v67;
 }
@@ -819,20 +819,20 @@ void __107__PGMemoryTriggerHandler_memoryNodesAllowedToBeFallbackFromMemoryNodes
   [v2 addObject:v3];
 }
 
-+ (id)fallbackTriggeredMemoriesWithContext:(id)a3 excludingTriggeredMemories:(id)a4 inGraph:(id)a5 holidayService:(id)a6
++ (id)fallbackTriggeredMemoriesWithContext:(id)context excludingTriggeredMemories:(id)memories inGraph:(id)graph holidayService:(id)service
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v32 = a6;
-  v13 = [(PGGraphNodeCollection *)PGGraphMemoryNodeCollection nodesInGraph:v12];
+  contextCopy = context;
+  memoriesCopy = memories;
+  graphCopy = graph;
+  serviceCopy = service;
+  v13 = [(PGGraphNodeCollection *)PGGraphMemoryNodeCollection nodesInGraph:graphCopy];
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v15 = v11;
+  v15 = memoriesCopy;
   v16 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v16)
   {
@@ -848,8 +848,8 @@ void __107__PGMemoryTriggerHandler_memoryNodesAllowedToBeFallbackFromMemoryNodes
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v36 + 1) + 8 * v19) uniqueMemoryIdentifier];
-        [v14 addObject:v20];
+        uniqueMemoryIdentifier = [*(*(&v36 + 1) + 8 * v19) uniqueMemoryIdentifier];
+        [v14 addObject:uniqueMemoryIdentifier];
 
         ++v19;
       }
@@ -861,12 +861,12 @@ void __107__PGMemoryTriggerHandler_memoryNodesAllowedToBeFallbackFromMemoryNodes
     while (v17);
   }
 
-  v21 = [PGGraphMemoryNodeCollection memoryNodesWithUniqueIdentifiers:v14 inGraph:v12];
+  v21 = [PGGraphMemoryNodeCollection memoryNodesWithUniqueIdentifiers:v14 inGraph:graphCopy];
   v22 = [v13 collectionBySubtracting:v21];
 
-  v23 = [a1 memoryNodesAllowedToBeFallbackFromMemoryNodes:v22 withContext:v10 inGraph:v12 holidayService:v32];
+  v23 = [self memoryNodesAllowedToBeFallbackFromMemoryNodes:v22 withContext:contextCopy inGraph:graphCopy holidayService:serviceCopy];
 
-  v24 = [a1 creationDateWithContext:v10];
+  v24 = [self creationDateWithContext:contextCopy];
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;

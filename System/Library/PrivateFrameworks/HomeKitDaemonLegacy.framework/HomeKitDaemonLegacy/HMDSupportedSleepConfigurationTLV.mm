@@ -1,12 +1,12 @@
 @interface HMDSupportedSleepConfigurationTLV
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDSupportedSleepConfigurationTLV)init;
-- (HMDSupportedSleepConfigurationTLV)initWithVersion:(id)a3 supportedWoLPacketConfigurations:(id)a4;
+- (HMDSupportedSleepConfigurationTLV)initWithVersion:(id)version supportedWoLPacketConfigurations:(id)configurations;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDSupportedSleepConfigurationTLV
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDSupportedSleepConfigurationTLV *)self version];
-  v5 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
-  v6 = [v3 stringWithFormat:@"<HMDSupportedSleepConfigurationTLV version=%@, supportedWoLPacketConfigurations=%@>", v4, v5];
+  version = [(HMDSupportedSleepConfigurationTLV *)self version];
+  supportedWoLPacketConfigurations = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
+  v6 = [v3 stringWithFormat:@"<HMDSupportedSleepConfigurationTLV version=%@, supportedWoLPacketConfigurations=%@>", version, supportedWoLPacketConfigurations];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDSupportedSleepConfigurationTLV *)self version];
-      v8 = [(HMDSupportedSleepConfigurationTLV *)v6 version];
-      if (v7 != v8)
+      v6 = equalCopy;
+      version = [(HMDSupportedSleepConfigurationTLV *)self version];
+      version2 = [(HMDSupportedSleepConfigurationTLV *)v6 version];
+      if (version != version2)
       {
-        v9 = [(HMDSupportedSleepConfigurationTLV *)self version];
-        v3 = [(HMDSupportedSleepConfigurationTLV *)v6 version];
-        if (![v9 isEqual:v3])
+        version3 = [(HMDSupportedSleepConfigurationTLV *)self version];
+        version4 = [(HMDSupportedSleepConfigurationTLV *)v6 version];
+        if (![version3 isEqual:version4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = version3;
       }
 
-      v11 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
-      v12 = [(HMDSupportedSleepConfigurationTLV *)v6 supportedWoLPacketConfigurations];
-      if (v11 == v12)
+      supportedWoLPacketConfigurations = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
+      supportedWoLPacketConfigurations2 = [(HMDSupportedSleepConfigurationTLV *)v6 supportedWoLPacketConfigurations];
+      if (supportedWoLPacketConfigurations == supportedWoLPacketConfigurations2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
-        v14 = [(HMDSupportedSleepConfigurationTLV *)v6 supportedWoLPacketConfigurations];
-        v10 = [v13 isEqual:v14];
+        supportedWoLPacketConfigurations3 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
+        supportedWoLPacketConfigurations4 = [(HMDSupportedSleepConfigurationTLV *)v6 supportedWoLPacketConfigurations];
+        v10 = [supportedWoLPacketConfigurations3 isEqual:supportedWoLPacketConfigurations4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      version3 = v16;
+      if (version == version2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDSupportedSleepConfigurationTLV allocWithZone:a3];
-  v5 = [(HMDSupportedSleepConfigurationTLV *)self version];
-  v6 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
-  v7 = [(HMDSupportedSleepConfigurationTLV *)v4 initWithVersion:v5 supportedWoLPacketConfigurations:v6];
+  v4 = [HMDSupportedSleepConfigurationTLV allocWithZone:zone];
+  version = [(HMDSupportedSleepConfigurationTLV *)self version];
+  supportedWoLPacketConfigurations = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
+  v7 = [(HMDSupportedSleepConfigurationTLV *)v4 initWithVersion:version supportedWoLPacketConfigurations:supportedWoLPacketConfigurations];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   v52 = 0u;
@@ -119,35 +119,35 @@ LABEL_15:
   v35 = 0u;
   v33 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDSupportedSleepConfigurationTLV *)self version];
+  version = [(HMDSupportedSleepConfigurationTLV *)self version];
 
-  if (!v5)
+  if (!version)
   {
     goto LABEL_7;
   }
 
-  v6 = [(HMDSupportedSleepConfigurationTLV *)self version];
+  version2 = [(HMDSupportedSleepConfigurationTLV *)self version];
   v31 = 0;
-  v7 = [v6 serializeWithError:&v31];
+  supportedWoLPacketConfigurations = [version2 serializeWithError:&v31];
   v8 = v31;
 
   if (v8)
   {
 LABEL_3:
 
-    if (a3)
+    if (error)
     {
       v9 = v8;
       v10 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_30;
     }
 
     goto LABEL_29;
   }
 
-  [v7 bytes];
-  [v7 length];
+  [supportedWoLPacketConfigurations bytes];
+  [supportedWoLPacketConfigurations length];
   if (!TLV8BufferAppend())
   {
 
@@ -156,8 +156,8 @@ LABEL_7:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
-    v11 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    supportedWoLPacketConfigurations = [(HMDSupportedSleepConfigurationTLV *)self supportedWoLPacketConfigurations];
+    v11 = [supportedWoLPacketConfigurations countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (!v11)
     {
 LABEL_23:
@@ -170,26 +170,26 @@ LABEL_23:
     v12 = v11;
     v13 = *v28;
     v14 = 1;
-    v25 = a3;
+    errorCopy = error;
     while (1)
     {
       v15 = 0;
 LABEL_10:
       if (*v28 != v13)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(supportedWoLPacketConfigurations);
       }
 
       v16 = *(*(&v27 + 1) + 8 * v15);
       if ((v14 & 1) == 0 && TLV8BufferAppend())
       {
 LABEL_25:
-        a3 = v25;
+        error = errorCopy;
         goto LABEL_26;
       }
 
       v26 = 0;
-      v17 = [v16 serializeWithError:{&v26, v25}];
+      v17 = [v16 serializeWithError:{&v26, errorCopy}];
       v18 = v26;
       if (v18)
       {
@@ -197,18 +197,18 @@ LABEL_25:
       }
 
       v19 = v13;
-      v20 = [v17 bytes];
-      v21 = v20 + [v17 length];
+      bytes = [v17 bytes];
+      v21 = bytes + [v17 length];
       do
       {
-        if ((v21 - v20) >= 255)
+        if ((v21 - bytes) >= 255)
         {
           v22 = 255;
         }
 
         else
         {
-          v22 = v21 - v20;
+          v22 = v21 - bytes;
         }
 
         if (TLV8BufferAppend())
@@ -217,10 +217,10 @@ LABEL_25:
           goto LABEL_25;
         }
 
-        v20 += v22;
+        bytes += v22;
       }
 
-      while (v20 < v21);
+      while (bytes < v21);
 
       v14 = 0;
       ++v15;
@@ -230,7 +230,7 @@ LABEL_25:
         goto LABEL_10;
       }
 
-      v12 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v12 = [supportedWoLPacketConfigurations countByEnumeratingWithState:&v27 objects:v32 count:16];
       v14 = 0;
       if (!v12)
       {
@@ -240,17 +240,17 @@ LABEL_25:
 
     v8 = v18;
 
-    a3 = v25;
+    error = errorCopy;
     goto LABEL_3;
   }
 
 LABEL_26:
 
-  if (a3)
+  if (error)
   {
     HMErrorFromOSStatus();
     v8 = 0;
-    *a3 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_30;
   }
 
@@ -265,27 +265,27 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
-  v9 = [MEMORY[0x277CBEB18] array];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
+  array = [MEMORY[0x277CBEB18] array];
   if (v8 < 1)
   {
     v11 = 0;
 LABEL_22:
-    [(HMDSupportedSleepConfigurationTLV *)self setVersion:v11, v21];
-    [(HMDSupportedSleepConfigurationTLV *)self setSupportedWoLPacketConfigurations:v9];
+    [(HMDSupportedSleepConfigurationTLV *)self setVersion:v11, errorCopy];
+    [(HMDSupportedSleepConfigurationTLV *)self setSupportedWoLPacketConfigurations:array];
     v10 = 0;
     v17 = 1;
     goto LABEL_24;
   }
 
-  v21 = a4;
+  errorCopy = error;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -294,10 +294,10 @@ LABEL_22:
     v25 = 0;
     if (TLV8GetNext())
     {
-      if (v21)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v21 = v17 = 0;
+        *errorCopy = v17 = 0;
         goto LABEL_24;
       }
 
@@ -322,7 +322,7 @@ LABEL_22:
         v15 = v22;
         if (!v15)
         {
-          [v9 addObject:v16];
+          [array addObject:v16];
         }
 
 LABEL_8:
@@ -360,11 +360,11 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (v21)
+  if (errorCopy)
   {
     v19 = v10;
     v17 = 0;
-    *v21 = v10;
+    *errorCopy = v10;
     goto LABEL_24;
   }
 
@@ -375,18 +375,18 @@ LABEL_24:
   return v17;
 }
 
-- (HMDSupportedSleepConfigurationTLV)initWithVersion:(id)a3 supportedWoLPacketConfigurations:(id)a4
+- (HMDSupportedSleepConfigurationTLV)initWithVersion:(id)version supportedWoLPacketConfigurations:(id)configurations
 {
-  v7 = a3;
-  v8 = a4;
+  versionCopy = version;
+  configurationsCopy = configurations;
   v14.receiver = self;
   v14.super_class = HMDSupportedSleepConfigurationTLV;
   v9 = [(HMDSupportedSleepConfigurationTLV *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_version, a3);
-    v11 = [v8 mutableCopy];
+    objc_storeStrong(&v9->_version, version);
+    v11 = [configurationsCopy mutableCopy];
     supportedWoLPacketConfigurations = v10->_supportedWoLPacketConfigurations;
     v10->_supportedWoLPacketConfigurations = v11;
   }
@@ -401,24 +401,24 @@ LABEL_24:
   return [(HMDSupportedSleepConfigurationTLV *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDSupportedSleepConfigurationTLV);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDSupportedSleepConfigurationTLV *)v6 parseFromData:v5 error:&v11];
+    [(HMDSupportedSleepConfigurationTLV *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

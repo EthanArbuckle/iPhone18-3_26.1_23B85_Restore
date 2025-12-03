@@ -1,42 +1,42 @@
 @interface YelpAccessPlugin
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8;
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion;
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
 @end
 
 @implementation YelpAccessPlugin
 
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion
 {
-  v13 = a4;
-  v9 = a8;
-  if (objc_msgSend_hasEntitlement_(v13, v10, *MEMORY[0x29EDB8400]))
+  clientCopy = client;
+  completionCopy = completion;
+  if (objc_msgSend_hasEntitlement_(clientCopy, v10, *MEMORY[0x29EDB8400]))
   {
     hasEntitlement = 1;
   }
 
   else
   {
-    hasEntitlement = objc_msgSend_hasEntitlement_(v13, v11, *MEMORY[0x29EDB83E0]);
+    hasEntitlement = objc_msgSend_hasEntitlement_(clientCopy, v11, *MEMORY[0x29EDB83E0]);
   }
 
-  v9[2](v9, hasEntitlement, 0);
+  completionCopy[2](completionCopy, hasEntitlement, 0);
 }
 
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
   v7 = *MEMORY[0x29EDB8400];
-  v10 = a6;
-  hasEntitlement = objc_msgSend_hasEntitlement_(a4, v8, v7);
-  v10[2](v10, hasEntitlement, 0);
+  completionCopy = completion;
+  hasEntitlement = objc_msgSend_hasEntitlement_(client, v8, v7);
+  completionCopy[2](completionCopy, hasEntitlement, 0);
 }
 
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
   v7 = *MEMORY[0x29EDB8400];
-  v10 = a6;
-  hasEntitlement = objc_msgSend_hasEntitlement_(a4, v8, v7);
-  v10[2](v10, hasEntitlement, 0);
+  completionCopy = completion;
+  hasEntitlement = objc_msgSend_hasEntitlement_(client, v8, v7);
+  completionCopy[2](completionCopy, hasEntitlement, 0);
 }
 
 @end

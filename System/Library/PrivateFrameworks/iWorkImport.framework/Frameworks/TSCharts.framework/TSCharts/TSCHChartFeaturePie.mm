@@ -9,9 +9,9 @@
 {
   v4.receiver = self;
   v4.super_class = TSCHChartFeaturePie;
-  v2 = [(TSCHChartFeaturePieFamily *)&v4 genericToSpecificPropertyMap];
+  genericToSpecificPropertyMap = [(TSCHChartFeaturePieFamily *)&v4 genericToSpecificPropertyMap];
 
-  return v2;
+  return genericToSpecificPropertyMap;
 }
 
 - (id)userInterfaceName

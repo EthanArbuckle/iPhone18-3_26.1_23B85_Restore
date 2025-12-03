@@ -1,48 +1,48 @@
 @interface _ICNamedEntityStore
-+ (id)tokenize:(id)a3;
-- (BOOL)areStringCharactersWhitelisted:(id)a3;
-- (BOOL)isCloserToTitleCase:(id)a3 than:(id)a4;
-- (BOOL)isValidNamedEntity:(id)a3 explanation:(id *)a4;
-- (USet)_exemplarSetForCustomLocales:(id)a3;
++ (id)tokenize:(id)tokenize;
+- (BOOL)areStringCharactersWhitelisted:(id)whitelisted;
+- (BOOL)isCloserToTitleCase:(id)case than:(id)than;
+- (BOOL)isValidNamedEntity:(id)entity explanation:(id *)explanation;
+- (USet)_exemplarSetForCustomLocales:(id)locales;
 - (USet)exemplarSetForSupportedLocales;
 - (_ICLexiconView)phraseLexicon;
 - (_ICLexiconView)wordLexicon;
-- (_ICNamedEntityStore)initWithName:(id)a3 maximumRecentlyAddedEntities:(unint64_t)a4;
-- (id)_adjustWordsForHyphenationIfNeeded:(id)a3 didAdjust:(BOOL *)a4;
-- (void)_addEntity:(void *)a3 asAliasOfEntity:(int)a4 isPhrase:;
-- (void)_addEntity:(void *)a3 tokens:;
-- (void)addEntity:(id)a3 isDurable:(BOOL)a4;
+- (_ICNamedEntityStore)initWithName:(id)name maximumRecentlyAddedEntities:(unint64_t)entities;
+- (id)_adjustWordsForHyphenationIfNeeded:(id)needed didAdjust:(BOOL *)adjust;
+- (void)_addEntity:(void *)entity asAliasOfEntity:(int)ofEntity isPhrase:;
+- (void)_addEntity:(void *)entity tokens:;
+- (void)addEntity:(id)entity isDurable:(BOOL)durable;
 - (void)reloadRecents;
 - (void)removeAllEntities;
 @end
 
 @implementation _ICNamedEntityStore
 
-- (_ICNamedEntityStore)initWithName:(id)a3 maximumRecentlyAddedEntities:(unint64_t)a4
+- (_ICNamedEntityStore)initWithName:(id)name maximumRecentlyAddedEntities:(unint64_t)entities
 {
-  v6 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = _ICNamedEntityStore;
   v7 = [(_ICNamedEntityStore *)&v22 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_maximumRecentlyAddedEntities = a4;
-    v10 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:a4];
+    v7->_maximumRecentlyAddedEntities = entities;
+    v10 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:entities];
     leastRecentlyAddedEntities = v7->_leastRecentlyAddedEntities;
     v7->_leastRecentlyAddedEntities = v10;
 
     v12 = [_ICTransientLexicon alloc];
-    v13 = [v6 stringByAppendingString:@"Words"];
+    v13 = [nameCopy stringByAppendingString:@"Words"];
     v14 = [(_ICTransientLexicon *)v12 initWithName:v13 typeFlags:1];
     wordLexiconImpl = v7->_wordLexiconImpl;
     v7->_wordLexiconImpl = v14;
 
     v16 = [_ICTransientLexicon alloc];
-    v17 = [v6 stringByAppendingString:@"Phrases"];
+    v17 = [nameCopy stringByAppendingString:@"Phrases"];
     v18 = [(_ICTransientLexicon *)v16 initWithName:v17 typeFlags:5];
     phraseLexiconImpl = v7->_phraseLexiconImpl;
     v7->_phraseLexiconImpl = v18;
@@ -93,38 +93,38 @@
   return v8;
 }
 
-- (BOOL)isCloserToTitleCase:(id)a3 than:(id)a4
+- (BOOL)isCloserToTitleCase:(id)case than:(id)than
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:v5])
+  caseCopy = case;
+  thanCopy = than;
+  if ([thanCopy isEqualToString:caseCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 capitalizedString];
-    if ([v5 isEqualToString:v8] && !objc_msgSend(v6, "isEqualToString:", v8))
+    capitalizedString = [caseCopy capitalizedString];
+    if ([caseCopy isEqualToString:capitalizedString] && !objc_msgSend(thanCopy, "isEqualToString:", capitalizedString))
     {
       v7 = 1;
     }
 
-    else if ([v6 isEqualToString:v8])
+    else if ([thanCopy isEqualToString:capitalizedString])
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [v5 length];
-      v10 = [v6 length];
+      v9 = [caseCopy length];
+      v10 = [thanCopy length];
       if (v9 >= v10)
       {
         v9 = v10;
       }
 
-      v11 = [v8 length];
+      v11 = [capitalizedString length];
       if (v9 >= v11)
       {
         v12 = v11;
@@ -142,14 +142,14 @@
         v15 = 0;
         do
         {
-          v16 = [v5 characterAtIndex:v13];
-          if (v16 == [v8 characterAtIndex:v13])
+          v16 = [caseCopy characterAtIndex:v13];
+          if (v16 == [capitalizedString characterAtIndex:v13])
           {
             ++v14;
           }
 
-          v17 = [v6 characterAtIndex:v13];
-          if (v17 == [v8 characterAtIndex:v13])
+          v17 = [thanCopy characterAtIndex:v13];
+          if (v17 == [capitalizedString characterAtIndex:v13])
           {
             ++v15;
           }
@@ -173,32 +173,32 @@
   return v7;
 }
 
-- (USet)_exemplarSetForCustomLocales:(id)a3
+- (USet)_exemplarSetForCustomLocales:(id)locales
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  localesCopy = locales;
   if (!_exemplarSetForCustomLocales__cachedExemplarSets)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = _exemplarSetForCustomLocales__cachedExemplarSets;
-    _exemplarSetForCustomLocales__cachedExemplarSets = v4;
+    _exemplarSetForCustomLocales__cachedExemplarSets = dictionary;
   }
 
-  v6 = [MEMORY[0x277CBEB58] setWithArray:v3];
+  v6 = [MEMORY[0x277CBEB58] setWithArray:localesCopy];
   v7 = [_exemplarSetForCustomLocales__cachedExemplarSets objectForKeyedSubscript:v6];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 pointerValue];
+    pointerValue = [v7 pointerValue];
   }
 
   else
   {
     v13 = 0;
-    v9 = _createExemplarSetForLocales(v3, &v13);
-    if (v9)
+    pointerValue = _createExemplarSetForLocales(localesCopy, &v13);
+    if (pointerValue)
     {
-      v10 = [MEMORY[0x277CCAE60] valueWithPointer:v9];
+      v10 = [MEMORY[0x277CCAE60] valueWithPointer:pointerValue];
       [_exemplarSetForCustomLocales__cachedExemplarSets setObject:v10 forKeyedSubscript:v6];
     }
 
@@ -215,7 +215,7 @@
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return pointerValue;
 }
 
 - (USet)exemplarSetForSupportedLocales
@@ -228,18 +228,18 @@
   return exemplarSetForSupportedLocales_exemplarSet;
 }
 
-- (BOOL)areStringCharactersWhitelisted:(id)a3
+- (BOOL)areStringCharactersWhitelisted:(id)whitelisted
 {
-  v4 = a3;
-  v5 = [(_ICNamedEntityStore *)self acceptedLanguages];
+  whitelistedCopy = whitelisted;
+  acceptedLanguages = [(_ICNamedEntityStore *)self acceptedLanguages];
 
-  if (v5)
+  if (acceptedLanguages)
   {
-    v6 = [(_ICNamedEntityStore *)self acceptedLanguages];
-    v7 = [v6 allObjects];
-    v8 = [(_ICNamedEntityStore *)self _exemplarSetForCustomLocales:v7];
+    acceptedLanguages2 = [(_ICNamedEntityStore *)self acceptedLanguages];
+    allObjects = [acceptedLanguages2 allObjects];
+    exemplarSetForSupportedLocales = [(_ICNamedEntityStore *)self _exemplarSetForCustomLocales:allObjects];
 
-    if (!v8)
+    if (!exemplarSetForSupportedLocales)
     {
       goto LABEL_9;
     }
@@ -247,8 +247,8 @@
 
   else
   {
-    v8 = [(_ICNamedEntityStore *)self exemplarSetForSupportedLocales];
-    if (!v8)
+    exemplarSetForSupportedLocales = [(_ICNamedEntityStore *)self exemplarSetForSupportedLocales];
+    if (!exemplarSetForSupportedLocales)
     {
       goto LABEL_9;
     }
@@ -258,50 +258,50 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v9 = [v4 precomposedStringWithCanonicalMapping];
-  v10 = [v9 length];
+  precomposedStringWithCanonicalMapping = [whitelistedCopy precomposedStringWithCanonicalMapping];
+  v10 = [precomposedStringWithCanonicalMapping length];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54___ICNamedEntityStore_areStringCharactersWhitelisted___block_invoke;
   v12[3] = &unk_2797ADE90;
   v12[4] = &v13;
-  v12[5] = v8;
-  if ([v9 _ICEnumerateLongCharactersInRange:0 usingBlock:{v10, v12}])
+  v12[5] = exemplarSetForSupportedLocales;
+  if ([precomposedStringWithCanonicalMapping _ICEnumerateLongCharactersInRange:0 usingBlock:{v10, v12}])
   {
-    LOBYTE(v8) = *(v14 + 24);
+    LOBYTE(exemplarSetForSupportedLocales) = *(v14 + 24);
   }
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(exemplarSetForSupportedLocales) = 0;
   }
 
   _Block_object_dispose(&v13, 8);
 LABEL_9:
 
-  return v8 & 1;
+  return exemplarSetForSupportedLocales & 1;
 }
 
-- (BOOL)isValidNamedEntity:(id)a3 explanation:(id *)a4
+- (BOOL)isValidNamedEntity:(id)entity explanation:(id *)explanation
 {
-  v6 = a3;
-  if ([v6 length] >= 0x81)
+  entityCopy = entity;
+  if ([entityCopy length] >= 0x81)
   {
-    if (a4)
+    if (explanation)
     {
       v7 = @"too long";
 LABEL_8:
       v8 = 0;
-      *a4 = v7;
+      *explanation = v7;
       goto LABEL_10;
     }
 
     goto LABEL_9;
   }
 
-  if (![(_ICNamedEntityStore *)self areStringCharactersWhitelisted:v6])
+  if (![(_ICNamedEntityStore *)self areStringCharactersWhitelisted:entityCopy])
   {
-    if (a4)
+    if (explanation)
     {
       v7 = @"characters are not whitelisted";
       goto LABEL_8;
@@ -318,15 +318,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)_adjustWordsForHyphenationIfNeeded:(id)a3 didAdjust:(BOOL *)a4
+- (id)_adjustWordsForHyphenationIfNeeded:(id)needed didAdjust:(BOOL *)adjust
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_treatHyphenatedWordAsPhrase && [v6 count] == 1 && (objc_msgSend(v7, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsString:", @"-"), v8, (v9 & 1) != 0))
+  neededCopy = needed;
+  v7 = neededCopy;
+  if (self->_treatHyphenatedWordAsPhrase && [neededCopy count] == 1 && (objc_msgSend(v7, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsString:", @"-"), v8, (v9 & 1) != 0))
   {
-    if (a4)
+    if (adjust)
     {
-      *a4 = 1;
+      *adjust = 1;
     }
 
     v10 = [v7 objectAtIndexedSubscript:0];
@@ -335,9 +335,9 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (adjust)
     {
-      *a4 = 0;
+      *adjust = 0;
     }
 
     v11 = v7;
@@ -346,23 +346,23 @@ LABEL_10:
   return v11;
 }
 
-- (void)addEntity:(id)a3 isDurable:(BOOL)a4
+- (void)addEntity:(id)entity isDurable:(BOOL)durable
 {
-  v4 = a4;
-  v6 = a3;
-  if (isTransientLexiconIngestionV2Enabled() && ([v6 passesFilters] & 1) == 0)
+  durableCopy = durable;
+  entityCopy = entity;
+  if (isTransientLexiconIngestionV2Enabled() && ([entityCopy passesFilters] & 1) == 0)
   {
     v8 = _ICPersNamedEntityOSLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [_ICNamedEntityStore addEntity:v6 isDurable:v8];
+      [_ICNamedEntityStore addEntity:entityCopy isDurable:v8];
     }
   }
 
   else
   {
     v7 = 64;
-    if (v4)
+    if (durableCopy)
     {
       v7 = 56;
     }
@@ -374,16 +374,16 @@ LABEL_10:
     v32[3] = &unk_2797ADEB8;
     v32[4] = self;
     v8 = MEMORY[0x259C27030](v32);
-    v9 = [v6 name];
+    name = [entityCopy name];
     v31 = 0;
-    v10 = [(_ICNamedEntityStore *)self isValidNamedEntity:v9 explanation:&v31];
+    v10 = [(_ICNamedEntityStore *)self isValidNamedEntity:name explanation:&v31];
     v11 = v31;
 
     if (v10)
     {
       v12 = objc_opt_class();
-      v13 = [v6 name];
-      v14 = [v12 tokenize:v13];
+      name2 = [entityCopy name];
+      v14 = [v12 tokenize:name2];
 
       v30 = 0;
       v15 = [(_ICNamedEntityStore *)self _adjustWordsForHyphenationIfNeeded:v14 didAdjust:&v30];
@@ -397,26 +397,26 @@ LABEL_10:
           v17 = 96;
         }
 
-        v16 = [*(&self->super.isa + v17) sortKeyEquivalents:v6];
-        v18 = [v6 name];
-        v19 = __43___ICNamedEntityStore_addEntity_isDurable___block_invoke_2(v18, v16, v18);
+        v16 = [*(&self->super.isa + v17) sortKeyEquivalents:entityCopy];
+        name3 = [entityCopy name];
+        v19 = __43___ICNamedEntityStore_addEntity_isDurable___block_invoke_2(name3, v16, name3);
 
         if (!v19)
         {
           goto LABEL_20;
         }
 
-        v20 = [v6 name];
+        name4 = [entityCopy name];
         [v19 name];
         v21 = v29 = v19;
-        v22 = [v20 isEqualToString:v21];
+        v22 = [name4 isEqualToString:v21];
 
         v19 = v29;
         if (!v22)
         {
-          v23 = [v6 name];
-          v24 = [v29 name];
-          v27 = [(_ICNamedEntityStore *)self isCloserToTitleCase:v23 than:v24];
+          name5 = [entityCopy name];
+          name6 = [v29 name];
+          v27 = [(_ICNamedEntityStore *)self isCloserToTitleCase:name5 than:name6];
 
           v25 = _ICPersNamedEntityOSLogFacility();
           v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG);
@@ -425,17 +425,17 @@ LABEL_10:
             v19 = v29;
             if (v26)
             {
-              [_ICNamedEntityStore addEntity:v29 isDurable:v6];
+              [_ICNamedEntityStore addEntity:v29 isDurable:entityCopy];
             }
 
             [(_ICTransientLexicon *)self->_phraseLexiconImpl removeEntity:v29];
             [(_ICTransientLexicon *)self->_wordLexiconImpl removeEntity:v29];
-            [(_ICNamedEntityStore *)self _addEntity:v6 tokens:v15];
-            [(_ICNamedEntityStore *)self _addEntity:v29 asAliasOfEntity:v6 isPhrase:v28 > 1];
-            if (!v4)
+            [(_ICNamedEntityStore *)self _addEntity:entityCopy tokens:v15];
+            [(_ICNamedEntityStore *)self _addEntity:v29 asAliasOfEntity:entityCopy isPhrase:v28 > 1];
+            if (!durableCopy)
             {
               [(NSMutableOrderedSet *)self->_leastRecentlyAddedEntities removeObject:v29];
-              (*(v8 + 16))(v8, v6);
+              (*(v8 + 16))(v8, entityCopy);
             }
           }
 
@@ -444,11 +444,11 @@ LABEL_10:
             v19 = v29;
             if (v26)
             {
-              [_ICNamedEntityStore addEntity:v6 isDurable:v29];
+              [_ICNamedEntityStore addEntity:entityCopy isDurable:v29];
             }
 
-            [(_ICNamedEntityStore *)self _addEntity:v6 asAliasOfEntity:v29 isPhrase:v28 > 1];
-            if (!v4)
+            [(_ICNamedEntityStore *)self _addEntity:entityCopy asAliasOfEntity:v29 isPhrase:v28 > 1];
+            if (!durableCopy)
             {
               (*(v8 + 16))(v8, v29);
             }
@@ -456,22 +456,22 @@ LABEL_10:
 
           if (v30 == 1)
           {
-            [(_ICTransientLexicon *)self->_wordLexiconImpl setIsHyphenatedWord:1 forEntity:v6];
+            [(_ICTransientLexicon *)self->_wordLexiconImpl setIsHyphenatedWord:1 forEntity:entityCopy];
           }
         }
 
         else
         {
 LABEL_20:
-          [(_ICNamedEntityStore *)self _addEntity:v6 tokens:v15];
+          [(_ICNamedEntityStore *)self _addEntity:entityCopy tokens:v15];
           if (v30 == 1)
           {
-            [(_ICTransientLexicon *)self->_wordLexiconImpl setIsHyphenatedWord:1 forEntity:v6];
+            [(_ICTransientLexicon *)self->_wordLexiconImpl setIsHyphenatedWord:1 forEntity:entityCopy];
           }
 
-          if (!v4)
+          if (!durableCopy)
           {
-            (*(v8 + 16))(v8, v6);
+            (*(v8 + 16))(v8, entityCopy);
           }
         }
       }
@@ -481,7 +481,7 @@ LABEL_20:
         v16 = _ICPersNamedEntityOSLogFacility();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          [_ICNamedEntityStore addEntity:v6 isDurable:?];
+          [_ICNamedEntityStore addEntity:entityCopy isDurable:?];
         }
       }
     }
@@ -491,7 +491,7 @@ LABEL_20:
       v15 = _ICPersNamedEntityOSLogFacility();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        [_ICNamedEntityStore addEntity:v6 isDurable:?];
+        [_ICNamedEntityStore addEntity:entityCopy isDurable:?];
       }
     }
   }
@@ -521,8 +521,8 @@ LABEL_20:
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = objc_opt_class();
-        v10 = [v8 name];
-        v11 = [v9 tokenize:v10];
+        name = [v8 name];
+        v11 = [v9 tokenize:name];
 
         v14 = 0;
         v12 = [(_ICNamedEntityStore *)self _adjustWordsForHyphenationIfNeeded:v11 didAdjust:&v14];
@@ -551,12 +551,12 @@ LABEL_20:
   self->_recentEntitiesAdded = 0;
 }
 
-+ (id)tokenize:(id)a3
++ (id)tokenize:(id)tokenize
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [v4 stringByAppendingString:@" "];
+  tokenizeCopy = tokenize;
+  array = [v3 array];
+  v6 = [tokenizeCopy stringByAppendingString:@" "];
 
   v7 = 4 * [v6 length];
   v8 = [v6 length];
@@ -565,7 +565,7 @@ LABEL_20:
   [v6 getBytes:v9 maxLength:v7 usedLength:&v13 encoding:4 options:0 range:0 remainingRange:{v8, 0}];
   v10 = CFLocaleCreate(0, @"en_US");
   LMStreamTokenizerCreate();
-  v12 = v5;
+  v12 = array;
   LMStreamTokenizerPushBytes();
   LMStreamTokenizerRelease();
   CFRelease(v10);
@@ -574,37 +574,37 @@ LABEL_20:
   return v12;
 }
 
-- (void)_addEntity:(void *)a3 asAliasOfEntity:(int)a4 isPhrase:
+- (void)_addEntity:(void *)entity asAliasOfEntity:(int)ofEntity isPhrase:
 {
   v8 = a2;
-  v7 = a3;
-  if (a1)
+  entityCopy = entity;
+  if (self)
   {
-    if (a4)
+    if (ofEntity)
     {
-      [*(a1 + 96) addEntity:v8 asAliasOfEntity:v7];
+      [*(self + 96) addEntity:v8 asAliasOfEntity:entityCopy];
     }
 
-    if ([*(a1 + 88) containsEntity:v7])
+    if ([*(self + 88) containsEntity:entityCopy])
     {
-      [*(a1 + 88) addEntity:v8 asAliasOfEntity:v7];
+      [*(self + 88) addEntity:v8 asAliasOfEntity:entityCopy];
     }
   }
 }
 
-- (void)_addEntity:(void *)a3 tokens:
+- (void)_addEntity:(void *)entity tokens:
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  entityCopy = entity;
+  v7 = entityCopy;
+  if (self)
   {
-    if ([v6 count] >= 2)
+    if ([entityCopy count] >= 2)
     {
-      v8 = *(a1 + 96);
-      v9 = [v5 name];
-      [v8 addEntity:v5 forEntry:v9];
+      v8 = *(self + 96);
+      name = [v5 name];
+      [v8 addEntity:v5 forEntry:name];
     }
 
     v19 = 0u;
@@ -627,9 +627,9 @@ LABEL_20:
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
-          if ([v15 length] >= *(a1 + 72))
+          if ([v15 length] >= *(self + 72))
           {
-            [*(a1 + 88) addEntity:v5 forEntry:v15];
+            [*(self + 88) addEntity:v5 forEntry:v15];
           }
         }
 

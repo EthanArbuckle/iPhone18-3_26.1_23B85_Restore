@@ -1,35 +1,35 @@
 @interface ICQManageStoragePageInfo
-- (ICQManageStoragePageInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQManageStoragePageInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQManageStoragePageInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ICQManageStoragePageInfo;
   v5 = [(ICQManageStoragePageInfo *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"storageGraphFooterText"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"storageGraphFooterText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_storageGraphFooterText, v6);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"title"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_title, v7);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"specifiers"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"specifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(ICQManageStoragePageInfo *)v5 setSpecifiers:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"tips"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"tips"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@ void __47__ICQManageStoragePageInfo_initFromDictionary___block_invoke_2(uint64_t
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQManageStoragePageInfo);
   [(ICQManageStoragePageInfo *)v4 setStorageGraphFooterText:self->_storageGraphFooterText];
@@ -97,30 +97,30 @@ void __47__ICQManageStoragePageInfo_initFromDictionary___block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   storageGraphFooterText = self->_storageGraphFooterText;
-  v5 = a3;
-  [v5 encodeObject:storageGraphFooterText forKey:@"thermometerFooterText"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_specifiers forKey:@"specifiers"];
-  [v5 encodeObject:self->_tips forKey:@"tips"];
+  coderCopy = coder;
+  [coderCopy encodeObject:storageGraphFooterText forKey:@"thermometerFooterText"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_specifiers forKey:@"specifiers"];
+  [coderCopy encodeObject:self->_tips forKey:@"tips"];
 }
 
-- (ICQManageStoragePageInfo)initWithCoder:(id)a3
+- (ICQManageStoragePageInfo)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = ICQManageStoragePageInfo;
   v5 = [(ICQManageStoragePageInfo *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thermometerFooterText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thermometerFooterText"];
     storageGraphFooterText = v5->_storageGraphFooterText;
     v5->_storageGraphFooterText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
@@ -130,7 +130,7 @@ void __47__ICQManageStoragePageInfo_initFromDictionary___block_invoke_2(uint64_t
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"specifiers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"specifiers"];
     specifiers = v5->_specifiers;
     v5->_specifiers = v13;
 
@@ -140,7 +140,7 @@ void __47__ICQManageStoragePageInfo_initFromDictionary___block_invoke_2(uint64_t
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"tips"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"tips"];
     tips = v5->_tips;
     v5->_tips = v18;
   }

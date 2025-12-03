@@ -1,29 +1,29 @@
 @interface TPSGradient
-- (BOOL)isEqual:(id)a3;
-- (TPSGradient)initWithCoder:(id)a3;
-- (TPSGradient)initWithColorStrings:(id)a3;
-- (TPSGradient)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSGradient)initWithCoder:(id)coder;
+- (TPSGradient)initWithColorStrings:(id)strings;
+- (TPSGradient)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSGradient
 
-- (TPSGradient)initWithDictionary:(id)a3
+- (TPSGradient)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = TPSGradient;
-  v5 = [(TPSSerializableObject *)&v30 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v30 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_15;
   }
 
-  v6 = [v4 TPSSafeDictionaryForKey:@"attrs"];
+  v6 = [dictionaryCopy TPSSafeDictionaryForKey:@"attrs"];
   v7 = v6;
   if (v6)
   {
@@ -32,7 +32,7 @@
 
   else
   {
-    v8 = v4;
+    v8 = dictionaryCopy;
   }
 
   v9 = v8;
@@ -96,10 +96,10 @@ LABEL_15:
   return v22;
 }
 
-- (TPSGradient)initWithColorStrings:(id)a3
+- (TPSGradient)initWithColorStrings:(id)strings
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   v25.receiver = self;
   v25.super_class = TPSGradient;
   v5 = [(TPSGradient *)&v25 init];
@@ -108,7 +108,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v6 = [v4 count];
+  v6 = [stringsCopy count];
   if (v6 > 0)
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
@@ -116,7 +116,7 @@ LABEL_15:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v4;
+    v8 = stringsCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v9)
     {
@@ -167,29 +167,29 @@ LABEL_12:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TPSGradient;
-  v4 = [(TPSSerializableObject *)&v7 copyWithZone:a3];
-  v5 = [(TPSGradient *)self stops];
-  [v4 setStops:v5];
+  v4 = [(TPSSerializableObject *)&v7 copyWithZone:zone];
+  stops = [(TPSGradient *)self stops];
+  [v4 setStops:stops];
 
   return v4;
 }
 
-- (TPSGradient)initWithCoder:(id)a3
+- (TPSGradient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TPSGradient;
-  v5 = [(TPSSerializableObject *)&v12 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"stops"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"stops"];
     stops = v5->_stops;
     v5->_stops = v9;
   }
@@ -197,14 +197,14 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSGradient;
-  v4 = a3;
-  [(TPSSerializableObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(TPSGradient *)self stops:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"stops"];
+  [coderCopy encodeObject:v5 forKey:@"stops"];
 }
 
 - (id)debugDescription
@@ -215,8 +215,8 @@ LABEL_12:
   v4 = [(TPSSerializableObject *)&v9 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSGradient *)self stops];
-  v7 = [v6 debugDescription];
+  stops = [(TPSGradient *)self stops];
+  v7 = [stops debugDescription];
   [v5 appendFormat:@"\n  %@ = %@", @"stops", v7];
 
   return v5;
@@ -252,19 +252,19 @@ id __26__TPSGradient_na_identity__block_invoke_3()
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

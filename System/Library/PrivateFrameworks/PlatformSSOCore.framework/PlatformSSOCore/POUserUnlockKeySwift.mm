@@ -1,12 +1,12 @@
 @interface POUserUnlockKeySwift
 + (NSNumber)prebootEncryptionAlgorithm;
-+ (id)createUnlockKeyWithPublicKey:(__SecKey *)a3 error:(id *)a4;
-+ (id)unlockKeyWithEncryptedKey:(id)a3 privateKey:(__SecKey *)a4 error:(id *)a5;
++ (id)createUnlockKeyWithPublicKey:(__SecKey *)key error:(id *)error;
++ (id)unlockKeyWithEncryptedKey:(id)key privateKey:(__SecKey *)privateKey error:(id *)error;
 - (NSData)keyData;
 - (NSString)encryptedKeyData;
 - (_TtC15PlatformSSOCore20POUserUnlockKeySwift)init;
-- (void)setEncryptedKeyData:(id)a3;
-- (void)setKeyData:(id)a3;
+- (void)setEncryptedKeyData:(id)data;
+- (void)setKeyData:(id)data;
 @end
 
 @implementation POUserUnlockKeySwift
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setEncryptedKeyData:(id)a3
+- (void)setEncryptedKeyData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_25E941848();
     v6 = v5;
@@ -81,20 +81,20 @@
   return v3;
 }
 
-- (void)setKeyData:(id)a3
+- (void)setKeyData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_25E941478();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_25E941478();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -102,7 +102,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_25E8B2B18(v11, v12);
 }
@@ -118,12 +118,12 @@
   return [(POUserUnlockKeySwift *)&v4 init];
 }
 
-+ (id)unlockKeyWithEncryptedKey:(id)a3 privateKey:(__SecKey *)a4 error:(id *)a5
++ (id)unlockKeyWithEncryptedKey:(id)key privateKey:(__SecKey *)privateKey error:(id *)error
 {
   v6 = sub_25E941848();
   v8 = v7;
-  v9 = a4;
-  v10 = sub_25E91E188(v6, v8, v9);
+  privateKeyCopy = privateKey;
+  v10 = sub_25E91E188(v6, v8, privateKeyCopy);
   v12 = v11;
 
   v13 = sub_25E941458();
@@ -132,10 +132,10 @@
   return v13;
 }
 
-+ (id)createUnlockKeyWithPublicKey:(__SecKey *)a3 error:(id *)a4
++ (id)createUnlockKeyWithPublicKey:(__SecKey *)key error:(id *)error
 {
-  v4 = a3;
-  v5 = sub_25E91E7B0(v4);
+  keyCopy = key;
+  v5 = sub_25E91E7B0(keyCopy);
 
   return v5;
 }

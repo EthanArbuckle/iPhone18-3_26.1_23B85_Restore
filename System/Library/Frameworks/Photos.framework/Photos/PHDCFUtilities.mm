@@ -1,35 +1,35 @@
 @interface PHDCFUtilities
-+ (BOOL)fileName:(id)a3 matchesRegex:(id)a4;
-+ (BOOL)isRenderFileName:(id)a3;
-+ (BOOL)isValidDCFFileName:(id)a3;
-+ (id)convertHash:(unsigned int)a3 usingPlaceValues:(id)a4;
-+ (id)dcfCompliantFileNameForFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5 filenameMarker:(id)a6;
-+ (id)dcfCompliantFileNameFromFileNameHash:(unsigned int)a3;
++ (BOOL)fileName:(id)name matchesRegex:(id)regex;
++ (BOOL)isRenderFileName:(id)name;
++ (BOOL)isValidDCFFileName:(id)name;
++ (id)convertHash:(unsigned int)hash usingPlaceValues:(id)values;
++ (id)dcfCompliantFileNameForFileName:(id)name createDate:(id)date fileSize:(unint64_t)size filenameMarker:(id)marker;
++ (id)dcfCompliantFileNameFromFileNameHash:(unsigned int)hash;
 + (id)dcfRegex;
-+ (id)dcfRegexForAuxiliaryResourceFilenameMarker:(id)a3;
-+ (id)fileNameByInsertingAuxiliaryResourceTypeMarker:(id)a3 intoFileName:(id)a4;
-+ (id)fileNameByRemovingRenderMarkerInFileName:(id)a3;
-+ (id)makeDCFFileNameByHashingFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5;
-+ (id)makeDCFFileNameFromFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5;
-+ (id)placeValuesFromBases:(id)a3;
-+ (unsigned)hashForFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5;
-+ (void)computeSHA256OfString:(id)a3 intoBuffer:(char *)a4;
++ (id)dcfRegexForAuxiliaryResourceFilenameMarker:(id)marker;
++ (id)fileNameByInsertingAuxiliaryResourceTypeMarker:(id)marker intoFileName:(id)name;
++ (id)fileNameByRemovingRenderMarkerInFileName:(id)name;
++ (id)makeDCFFileNameByHashingFileName:(id)name createDate:(id)date fileSize:(unint64_t)size;
++ (id)makeDCFFileNameFromFileName:(id)name createDate:(id)date fileSize:(unint64_t)size;
++ (id)placeValuesFromBases:(id)bases;
++ (unsigned)hashForFileName:(id)name createDate:(id)date fileSize:(unint64_t)size;
++ (void)computeSHA256OfString:(id)string intoBuffer:(char *)buffer;
 @end
 
 @implementation PHDCFUtilities
 
-+ (id)placeValuesFromBases:(id)a3
++ (id)placeValuesFromBases:(id)bases
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [v3 count];
+  basesCopy = bases;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(basesCopy, "count")}];
+  v5 = [basesCopy count];
   if (v5 >= 1)
   {
     v6 = (v5 & 0x7FFFFFFF) + 1;
     v7 = 1;
     do
     {
-      v8 = [v3 objectAtIndexedSubscript:v6 - 2];
+      v8 = [basesCopy objectAtIndexedSubscript:v6 - 2];
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
       [v4 addObject:v9];
 
@@ -43,22 +43,22 @@
   return v4;
 }
 
-+ (id)convertHash:(unsigned int)a3 usingPlaceValues:(id)a4
++ (id)convertHash:(unsigned int)hash usingPlaceValues:(id)values
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [v5 count];
+  valuesCopy = values;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
+  v7 = [valuesCopy count];
   if (v7 >= 1)
   {
     v8 = (v7 & 0x7FFFFFFF) + 1;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v8 - 2];
+      v9 = [valuesCopy objectAtIndexedSubscript:v8 - 2];
       [v9 doubleValue];
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:vcvtmd_u64_f64(a3 / v10)];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:vcvtmd_u64_f64(hash / v10)];
       [v6 addObject:v11];
 
-      a3 %= [v9 unsignedIntegerValue];
+      hash %= [v9 unsignedIntegerValue];
       --v8;
     }
 
@@ -68,11 +68,11 @@
   return v6;
 }
 
-+ (id)dcfCompliantFileNameFromFileNameHash:(unsigned int)a3
++ (id)dcfCompliantFileNameFromFileNameHash:(unsigned int)hash
 {
-  v3 = *&a3;
+  v3 = *&hash;
   pl_dispatch_once();
-  v5 = [a1 convertHash:v3 usingPlaceValues:dcfCompliantFileNameFromFileNameHash__pl_once_object_17];
+  v5 = [self convertHash:v3 usingPlaceValues:dcfCompliantFileNameFromFileNameHash__pl_once_object_17];
   v21 = MEMORY[0x1E696AEC0];
   v23 = [v5 objectAtIndexedSubscript:0];
   v19 = [v23 unsignedIntValue] + 65;
@@ -102,50 +102,50 @@ void __55__PHDCFUtilities_dcfCompliantFileNameFromFileNameHash___block_invoke(ui
   dcfCompliantFileNameFromFileNameHash__pl_once_object_17 = v1;
 }
 
-+ (void)computeSHA256OfString:(id)a3 intoBuffer:(char *)a4
++ (void)computeSHA256OfString:(id)string intoBuffer:(char *)buffer
 {
-  v5 = [a3 UTF8String];
+  uTF8String = [string UTF8String];
   memset(&v7, 0, sizeof(v7));
   CC_SHA256_Init(&v7);
-  v6 = strlen(v5);
-  CC_SHA256_Update(&v7, v5, v6);
-  CC_SHA256_Final(a4, &v7);
+  v6 = strlen(uTF8String);
+  CC_SHA256_Update(&v7, uTF8String, v6);
+  CC_SHA256_Final(buffer, &v7);
 }
 
-+ (unsigned)hashForFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5
++ (unsigned)hashForFileName:(id)name createDate:(id)date fileSize:(unint64_t)size
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%llu", a3, a4, a5];
-  [a1 computeSHA256OfString:v6 intoBuffer:buf];
-  LODWORD(a1) = crc32(0, buf, 0x20u);
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%llu", name, date, size];
+  [self computeSHA256OfString:v6 intoBuffer:buf];
+  LODWORD(self) = crc32(0, buf, 0x20u);
 
-  return a1;
+  return self;
 }
 
-+ (id)fileNameByInsertingAuxiliaryResourceTypeMarker:(id)a3 intoFileName:(id)a4
++ (id)fileNameByInsertingAuxiliaryResourceTypeMarker:(id)marker intoFileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 substringToIndex:4];
-  v8 = [v5 substringFromIndex:4];
+  nameCopy = name;
+  markerCopy = marker;
+  v7 = [nameCopy substringToIndex:4];
+  v8 = [nameCopy substringFromIndex:4];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v7, v6, v8];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v7, markerCopy, v8];
 
   return v9;
 }
 
-+ (id)makeDCFFileNameByHashingFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5
++ (id)makeDCFFileNameByHashingFileName:(id)name createDate:(id)date fileSize:(unint64_t)size
 {
-  v8 = a3;
-  v9 = [a1 dcfCompliantFileNameFromFileNameHash:{objc_msgSend(a1, "hashForFileName:createDate:fileSize:", v8, a4, a5)}];
-  v10 = [v8 pathExtension];
+  nameCopy = name;
+  v9 = [self dcfCompliantFileNameFromFileNameHash:{objc_msgSend(self, "hashForFileName:createDate:fileSize:", nameCopy, date, size)}];
+  pathExtension = [nameCopy pathExtension];
 
-  v11 = [v10 uppercaseString];
-  v12 = v11;
+  uppercaseString = [pathExtension uppercaseString];
+  v12 = uppercaseString;
   v13 = &stru_1F0FC60C8;
-  if (v11)
+  if (uppercaseString)
   {
-    v13 = v11;
+    v13 = uppercaseString;
   }
 
   v14 = v13;
@@ -155,81 +155,81 @@ void __55__PHDCFUtilities_dcfCompliantFileNameFromFileNameHash___block_invoke(ui
   return v15;
 }
 
-+ (id)makeDCFFileNameFromFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5
++ (id)makeDCFFileNameFromFileName:(id)name createDate:(id)date fileSize:(unint64_t)size
 {
-  v8 = a4;
-  v9 = a3;
-  if ([a1 isValidDCFFileName:v9])
+  dateCopy = date;
+  nameCopy = name;
+  if ([self isValidDCFFileName:nameCopy])
   {
-    [v9 uppercaseString];
+    [nameCopy uppercaseString];
   }
 
   else
   {
-    [a1 makeDCFFileNameByHashingFileName:v9 createDate:v8 fileSize:a5];
+    [self makeDCFFileNameByHashingFileName:nameCopy createDate:dateCopy fileSize:size];
   }
   v10 = ;
 
   return v10;
 }
 
-+ (BOOL)fileName:(id)a3 matchesRegex:(id)a4
++ (BOOL)fileName:(id)name matchesRegex:(id)regex
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 numberOfMatchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  regexCopy = regex;
+  nameCopy = name;
+  v7 = [regexCopy numberOfMatchesInString:nameCopy options:0 range:{0, objc_msgSend(nameCopy, "length")}];
 
   return v7 == 1;
 }
 
-+ (id)fileNameByRemovingRenderMarkerInFileName:(id)a3
++ (id)fileNameByRemovingRenderMarkerInFileName:(id)name
 {
-  v4 = a3;
-  if ([a1 isRenderFileName:v4])
+  nameCopy = name;
+  if ([self isRenderFileName:nameCopy])
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v4 substringToIndex:4];
-    v7 = [v4 substringFromIndex:5];
+    v6 = [nameCopy substringToIndex:4];
+    v7 = [nameCopy substringFromIndex:5];
     v8 = [v5 stringWithFormat:@"%@%@", v6, v7];
   }
 
   else
   {
-    v8 = v4;
+    v8 = nameCopy;
   }
 
   return v8;
 }
 
-+ (BOOL)isRenderFileName:(id)a3
++ (BOOL)isRenderFileName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 renderDCFRegex];
-  LOBYTE(a1) = [a1 fileName:v4 matchesRegex:v5];
+  nameCopy = name;
+  renderDCFRegex = [self renderDCFRegex];
+  LOBYTE(self) = [self fileName:nameCopy matchesRegex:renderDCFRegex];
 
-  return a1;
+  return self;
 }
 
-+ (id)dcfRegexForAuxiliaryResourceFilenameMarker:(id)a3
++ (id)dcfRegexForAuxiliaryResourceFilenameMarker:(id)marker
 {
-  v5 = a3;
-  if (!v5)
+  markerCopy = marker;
+  if (!markerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PHDCFUtilities.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"marker"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHDCFUtilities.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"marker"}];
   }
 
   pl_dispatch_once();
-  v6 = [dcfRegexForAuxiliaryResourceFilenameMarker__markerToRegexMap objectForKeyedSubscript:v5];
+  v6 = [dcfRegexForAuxiliaryResourceFilenameMarker__markerToRegexMap objectForKeyedSubscript:markerCopy];
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHDCFUtilities.m" lineNumber:91 description:{@"Unknown auxiliary resource type marker: %@", v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHDCFUtilities.m" lineNumber:91 description:{@"Unknown auxiliary resource type marker: %@", markerCopy}];
   }
 
   return v6;
@@ -277,13 +277,13 @@ void __61__PHDCFUtilities_dcfRegexForAuxiliaryResourceFilenameMarker___block_inv
   }
 }
 
-+ (id)dcfCompliantFileNameForFileName:(id)a3 createDate:(id)a4 fileSize:(unint64_t)a5 filenameMarker:(id)a6
++ (id)dcfCompliantFileNameForFileName:(id)name createDate:(id)date fileSize:(unint64_t)size filenameMarker:(id)marker
 {
-  v10 = a6;
-  v11 = [a1 makeDCFFileNameFromFileName:a3 createDate:a4 fileSize:a5];
-  if (v10)
+  markerCopy = marker;
+  v11 = [self makeDCFFileNameFromFileName:name createDate:date fileSize:size];
+  if (markerCopy)
   {
-    v12 = [a1 fileNameByInsertingAuxiliaryResourceTypeMarker:v10 intoFileName:v11];
+    v12 = [self fileNameByInsertingAuxiliaryResourceTypeMarker:markerCopy intoFileName:v11];
 
     v11 = v12;
   }
@@ -291,13 +291,13 @@ void __61__PHDCFUtilities_dcfRegexForAuxiliaryResourceFilenameMarker___block_inv
   return v11;
 }
 
-+ (BOOL)isValidDCFFileName:(id)a3
++ (BOOL)isValidDCFFileName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 dcfRegex];
-  LOBYTE(a1) = [a1 fileName:v4 matchesRegex:v5];
+  nameCopy = name;
+  dcfRegex = [self dcfRegex];
+  LOBYTE(self) = [self fileName:nameCopy matchesRegex:dcfRegex];
 
-  return a1;
+  return self;
 }
 
 + (id)dcfRegex

@@ -1,12 +1,12 @@
 @interface VUIJSBlob
-- (VUIJSBlob)initWithData:(id)a3;
+- (VUIJSBlob)initWithData:(id)data;
 @end
 
 @implementation VUIJSBlob
 
-- (VUIJSBlob)initWithData:(id)a3
+- (VUIJSBlob)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = +[VUIAppContext currentAppContext];
   v9.receiver = self;
   v9.super_class = VUIJSBlob;
@@ -14,7 +14,7 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_data, a3);
+    objc_storeStrong(&v7->_data, data);
   }
 
   return v7;

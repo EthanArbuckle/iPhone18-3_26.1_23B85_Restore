@@ -17,27 +17,27 @@
 - (int64_t)type
 {
   v2 = +[LAPasscodeHelper sharedInstance];
-  v3 = [v2 passcodeType];
+  passcodeType = [v2 passcodeType];
 
-  if ((v3 - 1) >= 4)
+  if ((passcodeType - 1) >= 4)
   {
     v4 = LALogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_10006AC1C(v3, v4);
+      sub_10006AC1C(passcodeType, v4);
     }
 
     return 4;
   }
 
-  return v3;
+  return passcodeType;
 }
 
 - (int64_t)length
 {
-  v2 = [(Passcode *)self type];
+  type = [(Passcode *)self type];
 
-  return _LACPasscodeTypeLength(v2);
+  return _LACPasscodeTypeLength(type);
 }
 
 + (id)currentPasscode

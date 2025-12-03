@@ -1,31 +1,31 @@
 @interface STWebFilterDetailController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (STContentPrivacyMediaRestrictionsDetailController)parentMediaRestrictionsController;
 - (STWebFilterDetailController)init;
-- (id)_addButtonSpecifierWithGroup:(id)a3 action:(SEL)a4;
-- (id)_listItemSpecifiersForNamedSitesGroup:(id)a3;
-- (id)_listItemSpecifiersForSitesGroup:(id)a3;
-- (id)getItemSpecifierValue:(id)a3;
-- (id)groupSpecifierWithConfiguration:(id)a3 key:(id)a4 footerText:(id)a5 radio:(BOOL)a6;
-- (id)listItemSpecifierWithGroup:(id)a3 name:(id)a4 value:(id)a5;
+- (id)_addButtonSpecifierWithGroup:(id)group action:(SEL)action;
+- (id)_listItemSpecifiersForNamedSitesGroup:(id)group;
+- (id)_listItemSpecifiersForSitesGroup:(id)group;
+- (id)getItemSpecifierValue:(id)value;
+- (id)groupSpecifierWithConfiguration:(id)configuration key:(id)key footerText:(id)text radio:(BOOL)radio;
+- (id)listItemSpecifierWithGroup:(id)group name:(id)name value:(id)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)addNamedSite:(id)a3;
-- (void)addSite:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)addNamedSite:(id)site;
+- (void)addSite:(id)site;
 - (void)dealloc;
 - (void)didCancelEnteringPIN;
-- (void)gatedAddNamedSite:(id)a3;
-- (void)gatedAddSite:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)saveItemValue:(id)a3 specifier:(id)a4;
-- (void)saveRemovingItem:(id)a3 value:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)gatedAddNamedSite:(id)site;
+- (void)gatedAddSite:(id)site;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)saveItemValue:(id)value specifier:(id)specifier;
+- (void)saveRemovingItem:(id)item value:(id)value;
+- (void)setCoordinator:(id)coordinator;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateParent;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -50,17 +50,17 @@
 - (id)specifiers
 {
   v37[4] = *MEMORY[0x277D85DE8];
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  v5 = [v4 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
 
-  if (![v5 isLoaded])
+  if (![viewModel isLoaded])
   {
     v23 = MEMORY[0x277CBEBF8];
     goto LABEL_9;
   }
 
-  v33 = v5;
+  v33 = viewModel;
   v6 = objc_opt_new();
   v7 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v8 = +[STScreenTimeSettingsUIBundle bundle];
@@ -82,9 +82,9 @@
   [v6 addObjectsFromArray:v16];
 
   v17 = [(STWebFilterDetailController *)self getItemSpecifierValue:v12];
-  v18 = [v17 unsignedIntegerValue];
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-  if (v18 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v24 = [v8 localizedStringForKey:@"WebContentAutoFilterFooterText" value:&stru_28766E5A8 table:v7];
     [v12 setObject:v24 forKeyedSubscript:*MEMORY[0x277D3FF88]];
@@ -103,12 +103,12 @@
     [v6 addObjectsFromArray:v28];
 
     v22 = [(STWebFilterDetailController *)self _addButtonSpecifierWithGroup:v20 action:sel_gatedAddSite_];
-    v5 = v33;
+    viewModel = v33;
     goto LABEL_7;
   }
 
-  v5 = v33;
-  if (v18 == 2)
+  viewModel = v33;
+  if (unsignedIntegerValue == 2)
   {
     v19 = [v8 localizedStringForKey:@"WebContentCustomFilterFooterText" value:&stru_28766E5A8 table:v7];
     [v12 setObject:v19 forKeyedSubscript:*MEMORY[0x277D3FF88]];
@@ -134,11 +134,11 @@ LABEL_9:
   return v23;
 }
 
-- (id)_listItemSpecifiersForNamedSitesGroup:(id)a3
+- (id)_listItemSpecifiersForNamedSitesGroup:(id)group
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STWebFilterDetailController *)self getItemSpecifierValue:v4];
+  groupCopy = group;
+  v5 = [(STWebFilterDetailController *)self getItemSpecifierValue:groupCopy];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"payloadPageTitle" ascending:1 selector:sel_localizedCaseInsensitiveCompare_];
   v24[0] = v7;
@@ -165,8 +165,8 @@ LABEL_9:
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 payloadPageTitle];
-        v17 = [(STWebFilterDetailController *)self listItemSpecifierWithGroup:v4 name:v16 value:v15];
+        payloadPageTitle = [v15 payloadPageTitle];
+        v17 = [(STWebFilterDetailController *)self listItemSpecifierWithGroup:groupCopy name:payloadPageTitle value:v15];
         [v6 addObject:v17];
       }
 
@@ -179,11 +179,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)_listItemSpecifiersForSitesGroup:(id)a3
+- (id)_listItemSpecifiersForSitesGroup:(id)group
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STWebFilterDetailController *)self getItemSpecifierValue:v4];
+  groupCopy = group;
+  v5 = [(STWebFilterDetailController *)self getItemSpecifierValue:groupCopy];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
   v7 = [v5 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
@@ -206,7 +206,7 @@ LABEL_9:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(STWebFilterDetailController *)self listItemSpecifierWithGroup:v4 name:*(*(&v15 + 1) + 8 * i) value:*(*(&v15 + 1) + 8 * i), v15];
+        v13 = [(STWebFilterDetailController *)self listItemSpecifierWithGroup:groupCopy name:*(*(&v15 + 1) + 8 * i) value:*(*(&v15 + 1) + 8 * i), v15];
         [v6 addObject:v13];
       }
 
@@ -221,45 +221,45 @@ LABEL_9:
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  [v4 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"WebFilterViewModelLoadedContext"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"WebFilterViewModelLoadedContext"];
 
   v5.receiver = self;
   v5.super_class = STWebFilterDetailController;
   [(STListViewController *)&v5 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
 
-  if (v5 != v4)
+  if (coordinator != coordinatorCopy)
   {
-    v6 = [(STPINListViewController *)self coordinator];
-    v7 = [v6 contentPrivacyCoordinator];
-    [v7 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"WebFilterViewModelLoadedContext"];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"WebFilterViewModelLoadedContext"];
 
     v10.receiver = self;
     v10.super_class = STWebFilterDetailController;
-    [(STPINListViewController *)&v10 setCoordinator:v4];
-    v8 = [(STPINListViewController *)self coordinator];
-    v9 = [v8 contentPrivacyCoordinator];
-    [v9 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"WebFilterViewModelLoadedContext"];
+    [(STPINListViewController *)&v10 setCoordinator:coordinatorCopy];
+    coordinator3 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator2 = [coordinator3 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator2 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"WebFilterViewModelLoadedContext"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"WebFilterViewModelLoadedContext")
+  if (context == @"WebFilterViewModelLoadedContext")
   {
-    v7 = [(STPINListViewController *)self coordinator:a3];
-    v8 = [v7 contentPrivacyCoordinator];
-    v9 = [v8 viewModel];
-    v10 = [v9 isLoaded];
+    v7 = [(STPINListViewController *)self coordinator:path];
+    contentPrivacyCoordinator = [v7 contentPrivacyCoordinator];
+    viewModel = [contentPrivacyCoordinator viewModel];
+    isLoaded = [viewModel isLoaded];
 
-    if (v10)
+    if (isLoaded)
     {
 
       [(STWebFilterDetailController *)self reloadSpecifiers];
@@ -270,13 +270,13 @@ LABEL_9:
   {
     v11.receiver = self;
     v11.super_class = STWebFilterDetailController;
-    [(STListViewController *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STListViewController *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)gatedAddNamedSite:(id)a3
+- (void)gatedAddNamedSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   if ([(PSListController *)self st_shouldShowPINSheetForPINSpecifier])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -284,13 +284,13 @@ LABEL_9:
     v5[2] = __49__STWebFilterDetailController_gatedAddNamedSite___block_invoke;
     v5[3] = &unk_279B7CA40;
     v5[4] = self;
-    v6 = v4;
+    v6 = siteCopy;
     [(PSListController *)self st_showPINSheetWithCompletion:v5];
   }
 
   else
   {
-    [(STWebFilterDetailController *)self addNamedSite:v4];
+    [(STWebFilterDetailController *)self addNamedSite:siteCopy];
   }
 }
 
@@ -304,9 +304,9 @@ uint64_t __49__STWebFilterDetailController_gatedAddNamedSite___block_invoke(uint
   return result;
 }
 
-- (void)gatedAddSite:(id)a3
+- (void)gatedAddSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   if ([(PSListController *)self st_shouldShowPINSheetForPINSpecifier])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -314,13 +314,13 @@ uint64_t __49__STWebFilterDetailController_gatedAddNamedSite___block_invoke(uint
     v5[2] = __44__STWebFilterDetailController_gatedAddSite___block_invoke;
     v5[3] = &unk_279B7CA40;
     v5[4] = self;
-    v6 = v4;
+    v6 = siteCopy;
     [(PSListController *)self st_showPINSheetWithCompletion:v5];
   }
 
   else
   {
-    [(STWebFilterDetailController *)self addSite:v4];
+    [(STWebFilterDetailController *)self addSite:siteCopy];
   }
 }
 
@@ -334,46 +334,46 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
   return result;
 }
 
-- (void)addNamedSite:(id)a3
+- (void)addNamedSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   v8 = objc_opt_new();
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 contentPrivacyCoordinator];
-  [v8 setCoordinator:v6];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [v8 setCoordinator:contentPrivacyCoordinator];
 
   [v8 setParentController:self];
-  v7 = [v4 objectForKeyedSubscript:0x287672648];
+  v7 = [siteCopy objectForKeyedSubscript:0x287672648];
 
   [v8 setRestriction:v7];
   [v8 setIsNamedSite:1];
   [(STWebFilterDetailController *)self showController:v8 animate:1];
 }
 
-- (void)addSite:(id)a3
+- (void)addSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   v8 = objc_opt_new();
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 contentPrivacyCoordinator];
-  [v8 setCoordinator:v6];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [v8 setCoordinator:contentPrivacyCoordinator];
 
   [v8 setParentController:self];
-  v7 = [v4 objectForKeyedSubscript:0x287672648];
+  v7 = [siteCopy objectForKeyedSubscript:0x287672648];
 
   [v8 setRestriction:v7];
   [(STWebFilterDetailController *)self showController:v8 animate:1];
 }
 
-- (id)getItemSpecifierValue:(id)a3
+- (id)getItemSpecifierValue:(id)value
 {
-  v4 = [a3 objectForKeyedSubscript:0x287672648];
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 contentPrivacyCoordinator];
-  v7 = [v6 viewModel];
+  v4 = [value objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
 
-  v8 = [v7 valuesByRestriction];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  valuesByRestriction = [viewModel valuesByRestriction];
+  v9 = [valuesByRestriction objectForKeyedSubscript:v4];
   v10 = v9;
   if (v9)
   {
@@ -382,7 +382,7 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
 
   else
   {
-    v11 = [v7 defaultValueForRestriction:v4];
+    v11 = [viewModel defaultValueForRestriction:v4];
   }
 
   v12 = v11;
@@ -390,16 +390,16 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
   return v12;
 }
 
-- (void)saveRemovingItem:(id)a3 value:(id)a4
+- (void)saveRemovingItem:(id)item value:(id)value
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [(STPINListViewController *)self coordinator];
-  v8 = [v7 contentPrivacyCoordinator];
-  v9 = [v8 viewModel];
+  itemCopy = item;
+  valueCopy = value;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
 
-  v10 = [v9 valuesByRestriction];
-  v11 = [v10 objectForKeyedSubscript:v24];
+  valuesByRestriction = [viewModel valuesByRestriction];
+  v11 = [valuesByRestriction objectForKeyedSubscript:itemCopy];
   v12 = v11;
   if (v11)
   {
@@ -408,59 +408,59 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
 
   else
   {
-    v13 = [v9 defaultValueForRestriction:v24];
+    v13 = [viewModel defaultValueForRestriction:itemCopy];
   }
 
   v14 = v13;
 
-  v15 = [v24 payloadKey];
-  v16 = [v15 isEqualToString:@"siteWhiteList"];
+  payloadKey = [itemCopy payloadKey];
+  v16 = [payloadKey isEqualToString:@"siteWhiteList"];
 
   v17 = MEMORY[0x277CCAC30];
   if (v16)
   {
-    v18 = [v6 payloadAddress];
-    v19 = [v17 predicateWithFormat:@"%K != %@", @"payloadAddress", v18];
+    payloadAddress = [valueCopy payloadAddress];
+    v19 = [v17 predicateWithFormat:@"%K != %@", @"payloadAddress", payloadAddress];
     v20 = [v14 filteredArrayUsingPredicate:v19];
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self != %@", v6];
-    v20 = [v14 filteredArrayUsingPredicate:v18];
+    payloadAddress = [MEMORY[0x277CCAC30] predicateWithFormat:@"self != %@", valueCopy];
+    v20 = [v14 filteredArrayUsingPredicate:payloadAddress];
   }
 
-  v21 = [(STPINListViewController *)self coordinator];
-  v22 = [v21 contentPrivacyCoordinator];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator2 = [coordinator2 contentPrivacyCoordinator];
   v23 = [v20 copy];
-  [v22 saveRestrictionValue:v23 forItem:v24 completionHandler:&__block_literal_global_27];
+  [contentPrivacyCoordinator2 saveRestrictionValue:v23 forItem:itemCopy completionHandler:&__block_literal_global_27];
 }
 
-- (void)saveItemValue:(id)a3 specifier:(id)a4
+- (void)saveItemValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:0x287672648];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 contentPrivacyCoordinator];
+  valueCopy = value;
+  v7 = [specifier objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__STWebFilterDetailController_saveItemValue_specifier___block_invoke;
   v10[3] = &unk_279B7CC18;
   v10[4] = self;
-  [v9 saveRestrictionValue:v6 forItem:v7 completionHandler:v10];
+  [contentPrivacyCoordinator saveRestrictionValue:valueCopy forItem:v7 completionHandler:v10];
 }
 
 - (void)updateParent
 {
-  v2 = [(STWebFilterDetailController *)self parentMediaRestrictionsController];
-  [v2 performSelectorOnMainThread:sel_reloadSpecifiers withObject:0 waitUntilDone:0];
+  parentMediaRestrictionsController = [(STWebFilterDetailController *)self parentMediaRestrictionsController];
+  [parentMediaRestrictionsController performSelectorOnMainThread:sel_reloadSpecifiers withObject:0 waitUntilDone:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = STWebFilterDetailController;
-  [(STPINListViewController *)&v6 viewDidAppear:a3];
+  [(STPINListViewController *)&v6 viewDidAppear:appear];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
   [(STWebFilterDetailController *)self setParentMediaRestrictionsController:WeakRetained];
 
@@ -479,11 +479,11 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
   [(STWebFilterDetailController *)self updateParent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = STWebFilterDetailController;
-  [(STWebFilterDetailController *)&v5 viewWillDisappear:a3];
+  [(STWebFilterDetailController *)&v5 viewWillDisappear:disappear];
   [(STWebFilterDetailController *)self updateParent];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -492,18 +492,18 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(STWebFilterDetailController *)self specifierAtIndexPath:a4];
+  v4 = [(STWebFilterDetailController *)self specifierAtIndexPath:path];
   v5 = [v4 objectForKeyedSubscript:0x287672648];
   v6 = [v5 restrictionType] == 2 && objc_msgSend(v4, "cellType") != 13;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(STWebFilterDetailController *)self specifierAtIndexPath:a5, a4];
+  style = [(STWebFilterDetailController *)self specifierAtIndexPath:path, style];
   if ([(PSListController *)self st_shouldShowPINSheetForPINSpecifier])
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -511,15 +511,15 @@ uint64_t __44__STWebFilterDetailController_gatedAddSite___block_invoke(uint64_t 
     v9[2] = __78__STWebFilterDetailController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
     v9[3] = &unk_279B7CA40;
     v9[4] = self;
-    v10 = v6;
+    v10 = style;
     [(PSListController *)self st_showPINSheetWithCompletion:v9];
   }
 
   else
   {
-    [(STWebFilterDetailController *)self removeSpecifier:v6 animated:1];
-    v7 = [v6 objectForKeyedSubscript:0x287672648];
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277D401A8]];
+    [(STWebFilterDetailController *)self removeSpecifier:style animated:1];
+    v7 = [style objectForKeyedSubscript:0x287672648];
+    v8 = [style objectForKeyedSubscript:*MEMORY[0x277D401A8]];
     [(STWebFilterDetailController *)self saveRemovingItem:v7 value:v8];
   }
 }
@@ -536,10 +536,10 @@ void __78__STWebFilterDetailController_tableView_commitEditingStyle_forRowAtInde
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STWebFilterDetailController *)self specifierAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(STWebFilterDetailController *)self specifierAtIndexPath:pathCopy];
   v7 = [(STWebFilterDetailController *)self getGroupSpecifierForSpecifier:v6];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3FFE8]];
   if ([v8 BOOLValue])
@@ -548,31 +548,31 @@ void __78__STWebFilterDetailController_tableView_commitEditingStyle_forRowAtInde
 
   else
   {
-    v9 = [v6 cellType];
+    cellType = [v6 cellType];
 
-    if (v9 == 3)
+    if (cellType == 3)
     {
       v10 = 0;
       goto LABEL_6;
     }
   }
 
-  v10 = v5;
+  v10 = pathCopy;
 LABEL_6:
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STWebFilterDetailController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(STWebFilterDetailController *)self specifierAtIndexPath:pathCopy];
   v9 = [(STWebFilterDetailController *)self getGroupSpecifierForSpecifier:v8];
   v10 = [v9 propertyForKey:*MEMORY[0x277D40090]];
   v14.receiver = self;
   v14.super_class = STWebFilterDetailController;
-  v11 = [(STListViewController *)&v14 tableView:v7 cellForRowAtIndexPath:v6];
+  v11 = [(STListViewController *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -584,17 +584,17 @@ LABEL_6:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STWebFilterDetailController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STWebFilterDetailController *)self specifierAtIndexPath:pathCopy];
   v9 = [(STWebFilterDetailController *)self getGroupSpecifierForSpecifier:v8];
   v10 = [v8 objectForKeyedSubscript:0x287672648];
   v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277D3FFE8]];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = v10 == 0;
   }
@@ -626,7 +626,7 @@ LABEL_6:
 
   v15.receiver = self;
   v15.super_class = STWebFilterDetailController;
-  [(STPINListViewController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STPINListViewController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 void __65__STWebFilterDetailController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, int a2)
@@ -639,79 +639,79 @@ void __65__STWebFilterDetailController_tableView_didSelectRowAtIndexPath___block
   }
 }
 
-- (id)groupSpecifierWithConfiguration:(id)a3 key:(id)a4 footerText:(id)a5 radio:(BOOL)a6
+- (id)groupSpecifierWithConfiguration:(id)configuration key:(id)key footerText:(id)text radio:(BOOL)radio
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  radioCopy = radio;
+  textCopy = text;
+  keyCopy = key;
+  configurationCopy = configuration;
   v13 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v14 = +[STScreenTimeSettingsUIBundle bundle];
-  v15 = [(STPINListViewController *)self coordinator];
-  v16 = [v15 contentPrivacyCoordinator];
-  v17 = [v16 viewModel];
-  v18 = [v17 visibleRestrictionWithConfiguration:v12 key:v11];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v18 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
   v19 = MEMORY[0x277D3FAD8];
-  v20 = [v18 uiLabel];
-  v21 = [v14 localizedStringForKey:v20 value:&stru_28766E5A8 table:v13];
+  uiLabel = [v18 uiLabel];
+  v21 = [v14 localizedStringForKey:uiLabel value:&stru_28766E5A8 table:v13];
   v22 = [v19 groupSpecifierWithName:v21];
 
   [v22 setObject:v18 forKeyedSubscript:0x287672648];
-  v23 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:radioCopy];
   [v22 setObject:v23 forKeyedSubscript:*MEMORY[0x277D3FFE8]];
 
-  if (v10)
+  if (textCopy)
   {
-    [v22 setObject:v10 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [v22 setObject:textCopy forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
   return v22;
 }
 
-- (id)listItemSpecifierWithGroup:(id)a3 name:(id)a4 value:(id)a5
+- (id)listItemSpecifierWithGroup:(id)group name:(id)name value:(id)value
 {
-  v8 = a3;
+  groupCopy = group;
   v9 = MEMORY[0x277D3FAD8];
-  v10 = a5;
-  v11 = [v9 preferenceSpecifierNamed:a4 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  v12 = [v8 objectForKeyedSubscript:0x287672648];
+  valueCopy = value;
+  v11 = [v9 preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:3 edit:0];
+  v12 = [groupCopy objectForKeyedSubscript:0x287672648];
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(STPINListViewController *)self coordinator];
-  v15 = [v14 contentPrivacyCoordinator];
-  v16 = [v15 viewModel];
-  v17 = [v13 numberWithBool:{objc_msgSend(v16, "restrictionsEnabled")}];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v17 = [v13 numberWithBool:{objc_msgSend(viewModel, "restrictionsEnabled")}];
   [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v11 setObject:v12 forKeyedSubscript:0x287672648];
-  [v11 setObject:v10 forKeyedSubscript:*MEMORY[0x277D401A8]];
+  [v11 setObject:valueCopy forKeyedSubscript:*MEMORY[0x277D401A8]];
   v18 = [(STWebFilterDetailController *)self getItemSpecifierValue:v11];
-  LODWORD(v9) = [v10 isEqual:v18];
+  LODWORD(v9) = [valueCopy isEqual:v18];
 
   if (v9)
   {
-    [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277D40090]];
+    [groupCopy setObject:v11 forKeyedSubscript:*MEMORY[0x277D40090]];
   }
 
   return v11;
 }
 
-- (id)_addButtonSpecifierWithGroup:(id)a3 action:(SEL)a4
+- (id)_addButtonSpecifierWithGroup:(id)group action:(SEL)action
 {
-  v5 = [a3 objectForKeyedSubscript:0x287672648];
+  v5 = [group objectForKeyedSubscript:0x287672648];
   v6 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v8 = [v7 localizedStringForKey:@"AddWebsiteButton" value:&stru_28766E5A8 table:v6];
   v9 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:13 edit:0];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(STPINListViewController *)self coordinator];
-  v12 = [v11 contentPrivacyCoordinator];
-  v13 = [v12 viewModel];
-  v14 = [v10 numberWithBool:{objc_msgSend(v13, "restrictionsEnabled")}];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v14 = [v10 numberWithBool:{objc_msgSend(viewModel, "restrictionsEnabled")}];
   [v9 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v9 setObject:v5 forKeyedSubscript:0x287672648];
-  [v9 setButtonAction:a4];
+  [v9 setButtonAction:action];
 
   return v9;
 }

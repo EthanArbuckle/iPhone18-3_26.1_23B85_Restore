@@ -1,26 +1,26 @@
 @interface DriverManager
 + (id)sharedManager;
-- (DriverManager)initWithSwiftManager:(id)a3;
-- (id)driverApprovalStatesForThirdPartyApp:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (DriverManager)initWithSwiftManager:(id)manager;
+- (id)driverApprovalStatesForThirdPartyApp:(id)app;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DriverManager
 
-- (DriverManager)initWithSwiftManager:(id)a3
+- (DriverManager)initWithSwiftManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = DriverManager;
   v6 = [(DriverManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_swiftManager, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_swiftManager, manager);
+    array = [MEMORY[0x277CBEB18] array];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = array;
   }
 
   return v7;
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[ProxyDriverManagerObserver alloc] initWithObserver:v4];
+  observerCopy = observer;
+  v5 = [[ProxyDriverManagerObserver alloc] initWithObserver:observerCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v6);
         }
 
-        if (*(*(*(&v12 + 1) + 8 * v10) + 8) == v4)
+        if (*(*(*(&v12 + 1) + 8 * v10) + 8) == observerCopy)
         {
 
           goto LABEL_11;
@@ -87,16 +87,16 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if ([(NSMutableArray *)self->_observers count])
   {
     v4 = 0;
     while (1)
     {
       v5 = [(NSMutableArray *)self->_observers objectAtIndex:v4];
-      if (v5[1] == v6)
+      if (v5[1] == observerCopy)
       {
         break;
       }
@@ -114,10 +114,10 @@ LABEL_11:
 LABEL_7:
 }
 
-- (id)driverApprovalStatesForThirdPartyApp:(id)a3
+- (id)driverApprovalStatesForThirdPartyApp:(id)app
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(_SwiftDriverManager *)self->_swiftManager driverApprovalStatesForThirdPartyApp:a3];
+  v3 = [(_SwiftDriverManager *)self->_swiftManager driverApprovalStatesForThirdPartyApp:app];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v15 = 0u;
   v16 = 0u;

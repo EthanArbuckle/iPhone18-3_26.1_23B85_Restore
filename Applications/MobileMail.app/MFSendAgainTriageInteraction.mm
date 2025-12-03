@@ -24,18 +24,18 @@
 - (void)_performInteraction_Internal
 {
   v3 = [_MFMailCompositionContext alloc];
-  v4 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
-  v5 = [(MFMessageCompositionTriageInteraction *)self message];
-  v6 = [v3 initSendAgainDraftOfMessage:v4 legacyMessage:v5];
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  message = [(MFMessageCompositionTriageInteraction *)self message];
+  v6 = [v3 initSendAgainDraftOfMessage:emailMessage legacyMessage:message];
 
   [(MFMessageCompositionTriageInteraction *)self presentComposeWithContext:v6];
 }
 
 - (BOOL)isPermitted
 {
-  v2 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
-  v3 = [v2 mailboxes];
-  v4 = [v3 ef_any:&stru_100655A30];
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  mailboxes = [emailMessage mailboxes];
+  v4 = [mailboxes ef_any:&stru_100655A30];
 
   return v4;
 }

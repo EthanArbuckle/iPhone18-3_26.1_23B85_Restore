@@ -1,21 +1,21 @@
 @interface AVChromedLabel
-- (AVChromedLabel)initWithFrame:(CGRect)a3;
+- (AVChromedLabel)initWithFrame:(CGRect)frame;
 - (BOOL)isCollapsedOrExcluded;
 - (CGSize)extrinsicContentSize;
 - (UILabel)label;
 - (void)_updateLayoutItem;
 - (void)didMoveToSuperview;
 - (void)layoutAttributesDidChange;
-- (void)setAttributedText:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setFont:(id)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setLoadingIndicatorAlignment:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setShowsLoadingIndicator:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setFont:(id)font;
+- (void)setIncluded:(BOOL)included;
+- (void)setLoadingIndicatorAlignment:(int64_t)alignment;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setRemoved:(BOOL)removed;
+- (void)setShowsLoadingIndicator:(BOOL)indicator;
+- (void)setText:(id)text;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 @end
@@ -31,33 +31,33 @@
   return result;
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVChromedLabel *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(AVChromedLabel *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVChromedLabel *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
@@ -76,58 +76,58 @@
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVChromedLabel *)self layoutAttributes];
-  -[AVChromedLabel setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVChromedLabel *)self layoutAttributes];
+  -[AVChromedLabel setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  if (self->_numberOfLines != a3)
+  if (self->_numberOfLines != lines)
   {
-    self->_numberOfLines = a3;
-    v5 = [(AVChromedLabel *)self labelIfLoaded];
-    [v5 setNumberOfLines:a3];
+    self->_numberOfLines = lines;
+    labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+    [labelIfLoaded setNumberOfLines:lines];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(AVChromedLabel *)self label];
-  v4 = [v3 translatesAutoresizingMaskIntoConstraints];
+  label = [(AVChromedLabel *)self label];
+  translatesAutoresizingMaskIntoConstraints = [label translatesAutoresizingMaskIntoConstraints];
 
-  if (v4)
+  if (translatesAutoresizingMaskIntoConstraints)
   {
-    v5 = [(AVChromedLabel *)self label];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label2 = [(AVChromedLabel *)self label];
+    [label2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(AVChromedLabel *)self label];
-    v8 = [v7 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:self];
+    label3 = [(AVChromedLabel *)self label];
+    v8 = [label3 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:self];
     [v6 activateConstraints:v8];
   }
 
   if ([(AVChromedLabel *)self showsLoadingIndicator])
   {
-    v9 = [(AVChromedLabel *)self loadingIndicator];
-    v10 = [v9 translatesAutoresizingMaskIntoConstraints];
+    loadingIndicator = [(AVChromedLabel *)self loadingIndicator];
+    translatesAutoresizingMaskIntoConstraints2 = [loadingIndicator translatesAutoresizingMaskIntoConstraints];
 
-    if (v10)
+    if (translatesAutoresizingMaskIntoConstraints2)
     {
-      v11 = [(AVChromedLabel *)self loadingIndicator];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      loadingIndicator2 = [(AVChromedLabel *)self loadingIndicator];
+      [loadingIndicator2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v12 = [(AVChromedLabel *)self loadingIndicator];
-      v13 = [v12 centerYAnchor];
-      v14 = [(AVChromedLabel *)self centerYAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      loadingIndicator3 = [(AVChromedLabel *)self loadingIndicator];
+      centerYAnchor = [loadingIndicator3 centerYAnchor];
+      centerYAnchor2 = [(AVChromedLabel *)self centerYAnchor];
+      v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v15 setActive:1];
     }
 
-    v16 = [(AVChromedLabel *)self loadingIndicatorLeftAlignmentConstraint];
-    [v16 setActive:{-[AVChromedLabel loadingIndicatorAlignment](self, "loadingIndicatorAlignment") == 0}];
+    loadingIndicatorLeftAlignmentConstraint = [(AVChromedLabel *)self loadingIndicatorLeftAlignmentConstraint];
+    [loadingIndicatorLeftAlignmentConstraint setActive:{-[AVChromedLabel loadingIndicatorAlignment](self, "loadingIndicatorAlignment") == 0}];
 
-    v17 = [(AVChromedLabel *)self loadingIndicatorRightAlignmentConstraint];
-    [v17 setActive:{-[AVChromedLabel loadingIndicatorAlignment](self, "loadingIndicatorAlignment") == 1}];
+    loadingIndicatorRightAlignmentConstraint = [(AVChromedLabel *)self loadingIndicatorRightAlignmentConstraint];
+    [loadingIndicatorRightAlignmentConstraint setActive:{-[AVChromedLabel loadingIndicatorAlignment](self, "loadingIndicatorAlignment") == 1}];
   }
 
   v18.receiver = self;
@@ -140,12 +140,12 @@
   v6.receiver = self;
   v6.super_class = AVChromedLabel;
   [(AVChromedLabel *)&v6 tintColorDidChange];
-  v3 = [(AVChromedLabel *)self labelIfLoaded];
-  v4 = [(AVChromedLabel *)self tintColor];
-  [v3 setTextColor:v4];
+  labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+  tintColor = [(AVChromedLabel *)self tintColor];
+  [labelIfLoaded setTextColor:tintColor];
 
-  v5 = [(AVChromedLabel *)self labelIfLoaded];
-  [v5 setPreferredVibrancy:1];
+  labelIfLoaded2 = [(AVChromedLabel *)self labelIfLoaded];
+  [labelIfLoaded2 setPreferredVibrancy:1];
 }
 
 - (void)didMoveToSuperview
@@ -158,11 +158,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVChromedLabel *)self layoutAttributes];
+  layoutAttributes = [(AVChromedLabel *)self layoutAttributes];
   [(AVChromedLabel *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVChromedLabel *)self layoutAttributes];
+  layoutAttributes2 = [(AVChromedLabel *)self layoutAttributes];
   if ([(AVChromedLabel *)self isIncluded])
   {
     v5 = [(AVChromedLabel *)self isRemoved]^ 1;
@@ -173,40 +173,40 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVChromedLabel *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVChromedLabel isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVChromedLabel *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVChromedLabel isCollapsed](self, "isCollapsed")}];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVChromedLabel *)self invalidateIntrinsicContentSize];
 
     [(AVChromedLabel *)self _updateLayoutItem];
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (![(NSAttributedString *)self->_attributedText isEqualToAttributedString:?])
   {
     v4 = [(NSAttributedString *)self->_attributedText length];
-    v5 = [v9 copy];
+    v5 = [textCopy copy];
     attributedText = self->_attributedText;
     self->_attributedText = v5;
 
-    v7 = [(AVChromedLabel *)self label];
-    [v7 setAttributedText:v9];
+    label = [(AVChromedLabel *)self label];
+    [label setAttributedText:textCopy];
 
     if (v4 != [(NSAttributedString *)self->_attributedText length])
     {
-      v8 = [(AVChromedLabel *)self labelIfLoaded];
-      [v8 intrinsicContentSize];
+      labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+      [labelIfLoaded intrinsicContentSize];
       [(AVChromedLabel *)self setExtrinsicContentSize:?];
     }
 
@@ -214,23 +214,23 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
     v4 = [(NSString *)self->_text length];
-    v5 = [v9 copy];
+    v5 = [textCopy copy];
     text = self->_text;
     self->_text = v5;
 
-    v7 = [(AVChromedLabel *)self label];
-    [v7 setText:v9];
+    label = [(AVChromedLabel *)self label];
+    [label setText:textCopy];
 
     if (v4 != [(NSString *)self->_text length])
     {
-      v8 = [(AVChromedLabel *)self labelIfLoaded];
-      [v8 intrinsicContentSize];
+      labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+      [labelIfLoaded intrinsicContentSize];
       [(AVChromedLabel *)self setExtrinsicContentSize:?];
 
       [(AVChromedLabel *)self _updateLayoutItem];
@@ -238,33 +238,33 @@
   }
 }
 
-- (void)setShowsLoadingIndicator:(BOOL)a3
+- (void)setShowsLoadingIndicator:(BOOL)indicator
 {
-  if (self->_showsLoadingIndicator != a3)
+  if (self->_showsLoadingIndicator != indicator)
   {
-    v3 = a3;
-    self->_showsLoadingIndicator = a3;
-    v5 = [(AVChromedLabel *)self label];
-    v6 = [v5 text];
+    indicatorCopy = indicator;
+    self->_showsLoadingIndicator = indicator;
+    label = [(AVChromedLabel *)self label];
+    text = [label text];
 
-    if (!v6 && v3)
+    if (!text && indicatorCopy)
     {
-      v7 = [(AVChromedLabel *)self label];
-      [v7 setText:@" "];
+      label2 = [(AVChromedLabel *)self label];
+      [label2 setText:@" "];
     }
 
-    v8 = [(AVChromedLabel *)self label];
-    v9 = v8;
+    label3 = [(AVChromedLabel *)self label];
+    v9 = label3;
     v10 = 1.0;
-    if (v3)
+    if (indicatorCopy)
     {
       v10 = 0.0;
     }
 
-    [v8 setAlpha:v10];
+    [label3 setAlpha:v10];
 
     loadingIndicator = self->_loadingIndicator;
-    if (v3)
+    if (indicatorCopy)
     {
       if (!loadingIndicator)
       {
@@ -272,15 +272,15 @@
         v16 = self->_loadingIndicator;
         self->_loadingIndicator = v15;
 
-        v17 = [(UIActivityIndicatorView *)self->_loadingIndicator leftAnchor];
-        v18 = [(AVChromedLabel *)self leftAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        leftAnchor = [(UIActivityIndicatorView *)self->_loadingIndicator leftAnchor];
+        leftAnchor2 = [(AVChromedLabel *)self leftAnchor];
+        v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         loadingIndicatorLeftAlignmentConstraint = self->_loadingIndicatorLeftAlignmentConstraint;
         self->_loadingIndicatorLeftAlignmentConstraint = v19;
 
-        v21 = [(UIActivityIndicatorView *)self->_loadingIndicator rightAnchor];
-        v22 = [(AVChromedLabel *)self rightAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22];
+        rightAnchor = [(UIActivityIndicatorView *)self->_loadingIndicator rightAnchor];
+        rightAnchor2 = [(AVChromedLabel *)self rightAnchor];
+        v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         loadingIndicatorRightAlignmentConstraint = self->_loadingIndicatorRightAlignmentConstraint;
         self->_loadingIndicatorRightAlignmentConstraint = v23;
 
@@ -306,14 +306,14 @@
   }
 }
 
-- (void)setLoadingIndicatorAlignment:(int64_t)a3
+- (void)setLoadingIndicatorAlignment:(int64_t)alignment
 {
-  if (self->_loadingIndicatorAlignment != a3)
+  if (self->_loadingIndicatorAlignment != alignment)
   {
-    self->_loadingIndicatorAlignment = a3;
-    v4 = a3 == 2;
-    v5 = [(AVChromedLabel *)self labelIfLoaded];
-    [v5 setTextAlignment:v4];
+    self->_loadingIndicatorAlignment = alignment;
+    v4 = alignment == 2;
+    labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+    [labelIfLoaded setTextAlignment:v4];
 
     if ([(AVChromedLabel *)self showsLoadingIndicator])
     {
@@ -323,21 +323,21 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_font, a3);
-    v6 = [(AVChromedLabel *)self labelIfLoaded];
-    [v6 setFont:v8];
+    v8 = fontCopy;
+    objc_storeStrong(&self->_font, font);
+    labelIfLoaded = [(AVChromedLabel *)self labelIfLoaded];
+    [labelIfLoaded setFont:v8];
 
-    v7 = [(AVChromedLabel *)self labelIfLoaded];
-    [v7 intrinsicContentSize];
+    labelIfLoaded2 = [(AVChromedLabel *)self labelIfLoaded];
+    [labelIfLoaded2 intrinsicContentSize];
     [(AVChromedLabel *)self setExtrinsicContentSize:?];
 
-    v5 = v8;
+    fontCopy = v8;
   }
 }
 
@@ -353,22 +353,22 @@
     self->_label = v5;
 
     v7 = self->_label;
-    v8 = [(AVChromedLabel *)self tintColor];
-    [(UILabel *)v7 setTextColor:v8];
+    tintColor = [(AVChromedLabel *)self tintColor];
+    [(UILabel *)v7 setTextColor:tintColor];
 
     v9 = self->_label;
-    v10 = [(AVChromedLabel *)self text];
-    [(UILabel *)v9 setText:v10];
+    text = [(AVChromedLabel *)self text];
+    [(UILabel *)v9 setText:text];
 
     v11 = self->_label;
-    v12 = [(AVChromedLabel *)self font];
-    [(UILabel *)v11 setFont:v12];
+    font = [(AVChromedLabel *)self font];
+    [(UILabel *)v11 setFont:font];
 
     [(UILabel *)self->_label setPreferredVibrancy:1];
-    v13 = [(AVChromedLabel *)self loadingIndicatorAlignment];
-    if (v13 <= 2)
+    loadingIndicatorAlignment = [(AVChromedLabel *)self loadingIndicatorAlignment];
+    if (loadingIndicatorAlignment <= 2)
     {
-      [(UILabel *)self->_label setTextAlignment:qword_18B6EC650[v13]];
+      [(UILabel *)self->_label setTextAlignment:qword_18B6EC650[loadingIndicatorAlignment]];
     }
 
     [(UILabel *)self->_label setNumberOfLines:[(AVChromedLabel *)self numberOfLines]];
@@ -381,11 +381,11 @@
   return label;
 }
 
-- (AVChromedLabel)initWithFrame:(CGRect)a3
+- (AVChromedLabel)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = AVChromedLabel;
-  v3 = [(AVChromedLabel *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVChromedLabel *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -402,8 +402,8 @@
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setIncluded:[(AVChromedLabel *)v4 isIncluded]];
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setHasFlexibleContentSize:0];
     v8 = v4->_layoutAttributes;
-    v9 = [(AVChromedLabel *)v4 accessibilityIdentifier];
-    [(AVLayoutItemAttributes *)v8 setAccessibilityIdentifier:v9];
+    accessibilityIdentifier = [(AVChromedLabel *)v4 accessibilityIdentifier];
+    [(AVLayoutItemAttributes *)v8 setAccessibilityIdentifier:accessibilityIdentifier];
   }
 
   return v4;

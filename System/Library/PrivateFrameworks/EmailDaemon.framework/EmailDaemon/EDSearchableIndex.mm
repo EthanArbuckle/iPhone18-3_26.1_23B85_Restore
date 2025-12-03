@@ -4,29 +4,29 @@
 + (OS_os_log)signpostLog;
 + (id)_localClientState;
 + (id)_localClientStateURL;
-+ (id)_reindexReasonString:(int64_t)a3;
-+ (void)_saveLocalClientState:(id)a3;
-- (BOOL)_processIndexingBatch:(id)a3 clientState:(id)a4 itemsNotIndexed:(id)a5;
++ (id)_reindexReasonString:(int64_t)string;
++ (void)_saveLocalClientState:(id)state;
+- (BOOL)_processIndexingBatch:(id)batch clientState:(id)state itemsNotIndexed:(id)indexed;
 - (BOOL)clientStateFetched;
 - (BOOL)isActive;
 - (BOOL)isIndexingDisabledForPPT;
 - (BOOL)isPersistenceAvailable;
 - (CSSearchableIndex)searchIndex;
-- (EDSearchableIndex)initWithName:(id)a3 dataSource:(id)a4;
+- (EDSearchableIndex)initWithName:(id)name dataSource:(id)source;
 - (EDSearchableIndexDataSource)dataSource;
 - (EDSearchableIndexSchedulableDelegate)schedulableDelegate;
 - (NSString)copyDiagnosticInformation;
-- (double)_throttleRequestedSize:(unint64_t *)a3 targetTime:(double)a4 action:(id)a5;
-- (id)_consumeBatchOfSize:(unint64_t)a3;
-- (id)_eventDataForTransitionState:(id)a3;
-- (id)_identifiersForItems:(id)a3;
-- (id)_identifiersStringForItems:(id)a3 maxLength:(unint64_t)a4;
-- (id)_missingIdentifiersForIdentifiersNeedingReindex:(id)a3;
-- (id)_processDomainRemovals:(id)a3;
+- (double)_throttleRequestedSize:(unint64_t *)size targetTime:(double)time action:(id)action;
+- (id)_consumeBatchOfSize:(unint64_t)size;
+- (id)_eventDataForTransitionState:(id)state;
+- (id)_identifiersForItems:(id)items;
+- (id)_identifiersStringForItems:(id)items maxLength:(unint64_t)length;
+- (id)_missingIdentifiersForIdentifiersNeedingReindex:(id)reindex;
+- (id)_processDomainRemovals:(id)removals;
 - (id)_suggestionsService;
-- (id)bundleIDForSearchableIndexVerifier:(id)a3;
-- (id)dataSamplesForSearchableIndexVerifier:(id)a3 searchableIndex:(id)a4 count:(unint64_t)a5 lastVerifiedMessageID:(int64_t)a6;
-- (id)knownTransactionIDsForSearchableIndexVerifier:(id)a3;
+- (id)bundleIDForSearchableIndexVerifier:(id)verifier;
+- (id)dataSamplesForSearchableIndexVerifier:(id)verifier searchableIndex:(id)index count:(unint64_t)count lastVerifiedMessageID:(int64_t)d;
+- (id)knownTransactionIDsForSearchableIndexVerifier:(id)verifier;
 - (int64_t)_nextTransaction;
 - (int64_t)_transaction;
 - (int64_t)resumeCount;
@@ -34,77 +34,77 @@
 - (unint64_t)signpostID;
 - (void)_clearOrphanedSearchableMessagesFromDatabase;
 - (void)_coalescingTimerFired;
-- (void)_collectAnalyticsForReindexReason:(int64_t)a3 withInfo:(id)a4;
-- (void)_dataSourceAssignTransaction:(int64_t)a3 forIdentifiers:(id)a4 completion:(id)a5;
-- (void)_dataSourceAssignTransaction:(int64_t)a3 updates:(id)a4 completion:(id)a5;
-- (void)_dataSourceInvalidateItemsGreaterThanTransaction:(int64_t)a3 completion:(id)a4;
-- (void)_dataSourcePrepareToIndexItems:(id)a3 fromRefresh:(BOOL)a4 withCompletion:(id)a5;
-- (void)_dataSourceRequestNeededUpdatesExcludingIdentifiers:(id)a3 completion:(id)a4;
-- (void)_dataSourceScheduleWork:(id)a3;
-- (void)_dataSourceVerifyRepresentativeSampleWithCompletion:(id)a3;
-- (void)_doIndexItems:(id)a3 fromRefresh:(BOOL)a4 immediately:(BOOL)a5;
+- (void)_collectAnalyticsForReindexReason:(int64_t)reason withInfo:(id)info;
+- (void)_dataSourceAssignTransaction:(int64_t)transaction forIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_dataSourceAssignTransaction:(int64_t)transaction updates:(id)updates completion:(id)completion;
+- (void)_dataSourceInvalidateItemsGreaterThanTransaction:(int64_t)transaction completion:(id)completion;
+- (void)_dataSourcePrepareToIndexItems:(id)items fromRefresh:(BOOL)refresh withCompletion:(id)completion;
+- (void)_dataSourceRequestNeededUpdatesExcludingIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_dataSourceScheduleWork:(id)work;
+- (void)_dataSourceVerifyRepresentativeSampleWithCompletion:(id)completion;
+- (void)_doIndexItems:(id)items fromRefresh:(BOOL)refresh immediately:(BOOL)immediately;
 - (void)_fetchLastClientState;
-- (void)_getDomainRemovals:(id *)a3 identifierRemovals:(id *)a4;
-- (void)_handleFailingTransactionIDs:(id)a3;
-- (void)_invalidateItemsInTransactions:(id)a3;
-- (void)_logSignpostForIndexingBatchAssignedDomainRemovalCount:(unint64_t)a3;
-- (void)_logSignpostForIndexingBatchAssignedUpdatesWithItemsIndexedCount:(unint64_t)a3;
-- (void)_logSignpostForIndexingBatchCompletedWithItemsIndexedCount:(id)a3;
-- (void)_logSignpostForIndexingBatchStartWithPendingItemsCount:(id)a3;
+- (void)_getDomainRemovals:(id *)removals identifierRemovals:(id *)identifierRemovals;
+- (void)_handleFailingTransactionIDs:(id)ds;
+- (void)_invalidateItemsInTransactions:(id)transactions;
+- (void)_logSignpostForIndexingBatchAssignedDomainRemovalCount:(unint64_t)count;
+- (void)_logSignpostForIndexingBatchAssignedUpdatesWithItemsIndexedCount:(unint64_t)count;
+- (void)_logSignpostForIndexingBatchCompletedWithItemsIndexedCount:(id)count;
+- (void)_logSignpostForIndexingBatchStartWithPendingItemsCount:(id)count;
 - (void)_noteNeedsLastClientStateFetch;
 - (void)_powerStateChanged;
-- (void)_processAttachmentItemsForSuggestionsService:(id)a3;
-- (void)_processIdentifierRemovals:(id)a3;
-- (void)_processRefreshRequestWithCompletion:(id)a3;
-- (void)_processSpotlightVerificationWithCompletion:(id)a3;
-- (void)_queueConsumeBudgetElapsedPeriod:(double)a3;
-- (void)_queueConsumeBudgetItemCount:(unint64_t)a3 lastItemDateReceived:(id)a4;
+- (void)_processAttachmentItemsForSuggestionsService:(id)service;
+- (void)_processIdentifierRemovals:(id)removals;
+- (void)_processRefreshRequestWithCompletion:(id)completion;
+- (void)_processSpotlightVerificationWithCompletion:(id)completion;
+- (void)_queueConsumeBudgetElapsedPeriod:(double)period;
+- (void)_queueConsumeBudgetItemCount:(unint64_t)count lastItemDateReceived:(id)received;
 - (void)_queueRefresh;
 - (void)_registerDistantFutureSpotlightVerification;
 - (void)_registerStateCaptureHandler;
 - (void)_resume;
 - (void)_resumeIndexingScheduler;
 - (void)_scheduleDataSourceRefresh;
-- (void)_scheduleProcessPendingItemsFromRefresh:(BOOL)a3;
+- (void)_scheduleProcessPendingItemsFromRefresh:(BOOL)refresh;
 - (void)_scheduleSpotlightVerification;
-- (void)_scheduleSpotlightVerificationOnIndexingQueueWithCompletion:(id)a3;
-- (void)_sendAnalyticsForRedonatingItems:(unint64_t)a3;
-- (void)_sendAnalyticsForReindexReason:(int64_t)a3;
+- (void)_scheduleSpotlightVerificationOnIndexingQueueWithCompletion:(id)completion;
+- (void)_sendAnalyticsForRedonatingItems:(unint64_t)items;
+- (void)_sendAnalyticsForReindexReason:(int64_t)reason;
 - (void)_startCoalescingTimer;
 - (void)_stopCoalescingTimer;
-- (void)_storeLastKnownReindexReason:(int64_t)a3 withInfo:(id)a4;
+- (void)_storeLastKnownReindexReason:(int64_t)reason withInfo:(id)info;
 - (void)_suspend;
 - (void)_suspendIndexingScheduler;
-- (void)_transitionWithBudgetTimeUsed:(double)a3;
+- (void)_transitionWithBudgetTimeUsed:(double)used;
 - (void)_verifySpotlightIndex;
-- (void)attachmentBecameAvailable:(id)a3;
+- (void)attachmentBecameAvailable:(id)available;
 - (void)dealloc;
-- (void)generatedSummariesDidUpdate:(id)a3;
-- (void)indexItems:(id)a3 fromRefresh:(BOOL)a4 immediately:(BOOL)a5;
-- (void)indexMessages:(id)a3 includeBody:(BOOL)a4 indexingType:(int64_t)a5;
-- (void)markMessagesAsPrinted:(id)a3;
+- (void)generatedSummariesDidUpdate:(id)update;
+- (void)indexItems:(id)items fromRefresh:(BOOL)refresh immediately:(BOOL)immediately;
+- (void)indexMessages:(id)messages includeBody:(BOOL)body indexingType:(int64_t)type;
+- (void)markMessagesAsPrinted:(id)printed;
 - (void)performMaintenancePreWork;
-- (void)recordDataNeedsToBeDonatedForMessages:(id)a3;
-- (void)recordMessagesNeedToBeDonated:(id)a3 indexingType:(int64_t)a4;
-- (void)redonateAllItemsWithAcknowledgementHandler:(id)a3;
+- (void)recordDataNeedsToBeDonatedForMessages:(id)messages;
+- (void)recordMessagesNeedToBeDonated:(id)donated indexingType:(int64_t)type;
+- (void)redonateAllItemsWithAcknowledgementHandler:(id)handler;
 - (void)refresh;
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4;
-- (void)removeItemsForDomainIdentifier:(id)a3;
-- (void)removeItemsWithIdentifiers:(id)a3;
-- (void)removeItemsWithIdentifiers:(id)a3 reasons:(id)a4 fromRefresh:(BOOL)a5;
-- (void)removeMessages:(id)a3;
-- (void)resetIndexForNewLibraryWithCompletionHandler:(id)a3;
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)removeItemsForDomainIdentifier:(id)identifier;
+- (void)removeItemsWithIdentifiers:(id)identifiers;
+- (void)removeItemsWithIdentifiers:(id)identifiers reasons:(id)reasons fromRefresh:(BOOL)refresh;
+- (void)removeMessages:(id)messages;
+- (void)resetIndexForNewLibraryWithCompletionHandler:(id)handler;
 - (void)resume;
-- (void)richLinkBecameAvailable:(id)a3;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
-- (void)searchableItemsDidUpdate:(id)a3 mask:(int64_t)a4;
-- (void)setClientStateFetched:(BOOL)a3;
-- (void)setDataSourceIndexingPermitted:(BOOL)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setIndexingDisabledForPPT:(BOOL)a3;
-- (void)setPersistenceAvailable:(BOOL)a3;
+- (void)richLinkBecameAvailable:(id)available;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)searchableItemsDidUpdate:(id)update mask:(int64_t)mask;
+- (void)setClientStateFetched:(BOOL)fetched;
+- (void)setDataSourceIndexingPermitted:(BOOL)permitted;
+- (void)setForeground:(BOOL)foreground;
+- (void)setIndexingDisabledForPPT:(BOOL)t;
+- (void)setPersistenceAvailable:(BOOL)available;
 - (void)suspend;
 - (void)test_resetSpotlightIndex;
 - (void)test_tearDown;
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = __24__EDSearchableIndex_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_84 != -1)
   {
     dispatch_once(&log_onceToken_84, block);
@@ -143,7 +143,7 @@ void __24__EDSearchableIndex_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__EDSearchableIndex_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_8 != -1)
   {
     dispatch_once(&signpostLog_onceToken_8, block);
@@ -164,8 +164,8 @@ void __32__EDSearchableIndex_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -197,17 +197,17 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
   indexWhileLockedLog_log = v0;
 }
 
-- (EDSearchableIndex)initWithName:(id)a3 dataSource:(id)a4
+- (EDSearchableIndex)initWithName:(id)name dataSource:(id)source
 {
   location[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  sourceCopy = source;
   v77.receiver = self;
   v77.super_class = EDSearchableIndex;
   v8 = [(EDSearchableIndex *)&v77 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
@@ -215,12 +215,12 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
     aBlock[1] = 3221225472;
     aBlock[2] = __45__EDSearchableIndex_initWithName_dataSource___block_invoke;
     aBlock[3] = &unk_1E8255B10;
-    v76 = v6;
+    v76 = nameCopy;
     v11 = _Block_copy(aBlock);
     v12 = [_EDSearchableIndexPendingRemovals alloc];
-    v13 = [v8 purgeReasons];
-    v14 = [v8 exclusionReasons];
-    v72 = [(_EDSearchableIndexPendingRemovals *)v12 initWithPurgeReasons:v13 exclusionReasons:v14];
+    purgeReasons = [v8 purgeReasons];
+    exclusionReasons = [v8 exclusionReasons];
+    v72 = [(_EDSearchableIndexPendingRemovals *)v12 initWithPurgeReasons:purgeReasons exclusionReasons:exclusionReasons];
 
     v15 = [[EDSearchableIndexState alloc] initWithPendingIdentifierRemovals:v72];
     v16 = *(v8 + 24);
@@ -234,7 +234,7 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
     v22 = *(v8 + 4);
     *(v8 + 4) = v21;
 
-    objc_storeWeak(v8 + 21, v7);
+    objc_storeWeak(v8 + 21, sourceCopy);
     v23 = objc_alloc_init(MEMORY[0x1E699AC70]);
     v24 = *(v8 + 20);
     *(v8 + 20) = v23;
@@ -266,11 +266,11 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
     *(v8 + 28) = 0;
     *(v8 + 36) = 0;
     atomic_store(0, v8 + 37);
-    v43 = [MEMORY[0x1E696AE30] processInfo];
-    v44 = [v43 activeProcessorCount];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    activeProcessorCount = [processInfo activeProcessorCount];
 
     v45 = objc_alloc(MEMORY[0x1E699B988]);
-    v46 = [MEMORY[0x1E699B978] operationQueueSchedulerWithMaxConcurrentOperationCount:{vcvtd_n_f64_u64(v44, 1uLL) + 1}];
+    v46 = [MEMORY[0x1E699B978] operationQueueSchedulerWithMaxConcurrentOperationCount:{vcvtd_n_f64_u64(activeProcessorCount, 1uLL) + 1}];
     v47 = [v45 initWithScheduler:v46];
     v48 = *(v8 + 13);
     *(v8 + 13) = v47;
@@ -297,11 +297,11 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
 
     v8[154] = 0;
     atomic_store(0, v8 + 16);
-    v57 = [MEMORY[0x1E695E000] em_userDefaults];
-    v8[155] = [v57 BOOLForKey:@"DisableSpotlightVerification"] ^ 1;
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v8[155] = [em_userDefaults BOOLForKey:@"DisableSpotlightVerification"] ^ 1;
 
-    v58 = [v8 powerObservable];
-    if (v58)
+    powerObservable = [v8 powerObservable];
+    if (powerObservable)
     {
       v59 = objc_alloc_init(MEMORY[0x1E699B7F8]);
       v60 = *(v8 + 2);
@@ -316,7 +316,7 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
       v73[3] = &unk_1E82567B0;
       objc_copyWeak(&v74, location);
       v63 = [v62 observerWithResultBlock:v73];
-      v64 = [v58 subscribe:v63];
+      v64 = [powerObservable subscribe:v63];
       [v61 addCancelable:v64];
 
       objc_destroyWeak(&v74);
@@ -324,20 +324,20 @@ void __40__EDSearchableIndex_indexWhileLockedLog__block_invoke()
     }
 
     [v8 _registerStateCaptureHandler];
-    v65 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v65 addObserver:v8 selector:sel_richLinkBecameAvailable_ name:@"LibraryMessageRichLinkDataBecameAvailableNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_richLinkBecameAvailable_ name:@"LibraryMessageRichLinkDataBecameAvailableNotification" object:0];
 
     if (_os_feature_enabled_impl())
     {
-      v66 = [objc_opt_class() indexWhileLockedLog];
-      if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
+      indexWhileLockedLog = [objc_opt_class() indexWhileLockedLog];
+      if (os_log_type_enabled(indexWhileLockedLog, OS_LOG_TYPE_DEFAULT))
       {
         v67 = MEMORY[0x1E696AD98];
-        v68 = [MEMORY[0x1E696AE30] processInfo];
-        v69 = [v67 numberWithInt:{objc_msgSend(v68, "processIdentifier")}];
+        processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+        v69 = [v67 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
         LODWORD(location[0]) = 138412290;
         *(location + 4) = v69;
-        _os_log_impl(&dword_1C61EF000, v66, OS_LOG_TYPE_DEFAULT, "maild started with pid %@", location, 0xCu);
+        _os_log_impl(&dword_1C61EF000, indexWhileLockedLog, OS_LOG_TYPE_DEFAULT, "maild started with pid %@", location, 0xCu);
       }
     }
   }
@@ -384,47 +384,47 @@ void __45__EDSearchableIndex_initWithName_dataSource___block_invoke_2(uint64_t a
 
 - (CSSearchableIndex)searchIndex
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  searchIndex = v2->_searchIndex;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  searchIndex = selfCopy->_searchIndex;
   if (!searchIndex)
   {
-    v4 = [(EDSearchableIndex *)v2 searchableIndexBundleID];
+    searchableIndexBundleID = [(EDSearchableIndex *)selfCopy searchableIndexBundleID];
 
-    if (v4)
+    if (searchableIndexBundleID)
     {
       v5 = objc_alloc(MEMORY[0x1E6964E78]);
-      indexName = v2->_indexName;
-      v7 = [MEMORY[0x1E699AE70] protectionClass];
-      v8 = [(EDSearchableIndex *)v2 searchableIndexBundleID];
-      v9 = [v5 initWithName:indexName protectionClass:v7 bundleIdentifier:v8];
-      v10 = v2->_searchIndex;
-      v2->_searchIndex = v9;
+      indexName = selfCopy->_indexName;
+      protectionClass = [MEMORY[0x1E699AE70] protectionClass];
+      searchableIndexBundleID2 = [(EDSearchableIndex *)selfCopy searchableIndexBundleID];
+      v9 = [v5 initWithName:indexName protectionClass:protectionClass bundleIdentifier:searchableIndexBundleID2];
+      v10 = selfCopy->_searchIndex;
+      selfCopy->_searchIndex = v9;
     }
 
     else
     {
       v11 = objc_alloc(MEMORY[0x1E6964E78]);
-      v12 = v2->_indexName;
-      v7 = [MEMORY[0x1E699AE70] protectionClass];
-      v13 = [v11 initWithName:v12 protectionClass:v7];
-      v8 = v2->_searchIndex;
-      v2->_searchIndex = v13;
+      v12 = selfCopy->_indexName;
+      protectionClass = [MEMORY[0x1E699AE70] protectionClass];
+      v13 = [v11 initWithName:v12 protectionClass:protectionClass];
+      searchableIndexBundleID2 = selfCopy->_searchIndex;
+      selfCopy->_searchIndex = v13;
     }
 
-    v14 = [(EDSearchableIndex *)v2 state];
-    v15 = [v14 persistenceAvailable];
+    state = [(EDSearchableIndex *)selfCopy state];
+    persistenceAvailable = [state persistenceAvailable];
 
-    searchIndex = v2->_searchIndex;
-    if (v15)
+    searchIndex = selfCopy->_searchIndex;
+    if (persistenceAvailable)
     {
-      [(CSSearchableIndex *)searchIndex setIndexDelegate:v2];
-      searchIndex = v2->_searchIndex;
+      [(CSSearchableIndex *)searchIndex setIndexDelegate:selfCopy];
+      searchIndex = selfCopy->_searchIndex;
     }
   }
 
   v16 = searchIndex;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
@@ -552,7 +552,7 @@ void __45__EDSearchableIndex_initWithName_dataSource___block_invoke_2(uint64_t a
   v34[4] = self;
   v34[5] = &v35;
   [(EFStoppableScheduler *)dataSourceScheduler performSyncBlock:v34];
-  v6 = [(EDSearchableIndex *)self currentMaximumBatchSize];
+  currentMaximumBatchSize = [(EDSearchableIndex *)self currentMaximumBatchSize];
   [v3 appendString:@"==== Searchable Index State ====\n"];
   [v3 appendFormat:@"  transaction:                    %lld\n", v73[3]];
   v7 = *(v101 + 24);
@@ -593,13 +593,13 @@ void __45__EDSearchableIndex_initWithName_dataSource___block_invoke_2(uint64_t a
 
   [v3 appendFormat:@"  indexing batch size:            %lu\n", v41[3]];
   [v3 appendFormat:@"  data source batch size:         %lu\n", v36[3]];
-  [v3 appendFormat:@"  maximum batch size:             %lu\n", v6];
-  v25 = [(EDSearchableIndex *)self schedulableDelegate];
+  [v3 appendFormat:@"  maximum batch size:             %lu\n", currentMaximumBatchSize];
+  schedulableDelegate = [(EDSearchableIndex *)self schedulableDelegate];
   v26 = *(v77 + 24);
   v27 = NSStringFromBOOL();
   [v3 appendFormat:@"  data source indexing permitted: %@\n", v27];
 
-  [v25 hasAvailableIndexingBudgetForSearchableIndexSchedulable:self];
+  [schedulableDelegate hasAvailableIndexingBudgetForSearchableIndexSchedulable:self];
   v28 = NSStringFromBOOL();
   [v3 appendFormat:@"  has available indexing budget:  %@\n", v28];
 
@@ -711,45 +711,45 @@ void __46__EDSearchableIndex_copyDiagnosticInformation__block_invoke(uint64_t a1
   }
 }
 
-+ (id)_reindexReasonString:(int64_t)a3
++ (id)_reindexReasonString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Batch Transaction Failed";
   }
 
   else
   {
-    return off_1E8256E10[a3 - 1];
+    return off_1E8256E10[string - 1];
   }
 }
 
-- (void)_sendAnalyticsForReindexReason:(int64_t)a3
+- (void)_sendAnalyticsForReindexReason:(int64_t)reason
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"reason";
-  v4 = [objc_opt_class() _reindexReasonString:a3];
+  v4 = [objc_opt_class() _reindexReasonString:reason];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v6 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:@"com.apple.mail.searchableIndex.reindexAnalytics" collectionData:v5];
-  v7 = [(EDSearchableIndex *)self analyticsCollector];
-  [v7 logOneTimeEvent:v6];
+  analyticsCollector = [(EDSearchableIndex *)self analyticsCollector];
+  [analyticsCollector logOneTimeEvent:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_storeLastKnownReindexReason:(int64_t)a3 withInfo:(id)a4
+- (void)_storeLastKnownReindexReason:(int64_t)reason withInfo:(id)info
 {
-  v15 = a4;
+  infoCopy = info;
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [objc_opt_class() _reindexReasonString:a3];
-  v8 = [v5 initWithFormat:@"%@: %@ %@", v6, v7, v15];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [objc_opt_class() _reindexReasonString:reason];
+  infoCopy = [v5 initWithFormat:@"%@: %@ %@", date, v7, infoCopy];
 
   v9 = objc_alloc(MEMORY[0x1E695DF70]);
-  v10 = [MEMORY[0x1E695E000] em_userDefaults];
-  v11 = [v10 objectForKey:@"LastKnownReindexReasons"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v11 = [em_userDefaults objectForKey:@"LastKnownReindexReasons"];
   v12 = [v9 initWithArray:v11];
 
   if ([v12 count] >= 0x32)
@@ -757,10 +757,10 @@ void __46__EDSearchableIndex_copyDiagnosticInformation__block_invoke(uint64_t a1
     [v12 removeObjectAtIndex:0];
   }
 
-  [v12 addObject:v8];
-  v13 = [MEMORY[0x1E695E000] em_userDefaults];
+  [v12 addObject:infoCopy];
+  em_userDefaults2 = [MEMORY[0x1E695E000] em_userDefaults];
   v14 = [v12 copy];
-  [v13 setObject:v14 forKey:@"LastKnownReindexReasons"];
+  [em_userDefaults2 setObject:v14 forKey:@"LastKnownReindexReasons"];
 }
 
 - (void)_registerStateCaptureHandler
@@ -785,30 +785,30 @@ id __49__EDSearchableIndex__registerStateCaptureHandler__block_invoke()
   return v3;
 }
 
-- (void)_collectAnalyticsForReindexReason:(int64_t)a3 withInfo:(id)a4
+- (void)_collectAnalyticsForReindexReason:(int64_t)reason withInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  infoCopy = info;
   v7 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() _reindexReasonString:a3];
+    v8 = [objc_opt_class() _reindexReasonString:reason];
     v10 = 138412546;
     v11 = v8;
     v12 = 2112;
-    v13 = v6;
+    v13 = infoCopy;
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Collecting reindexing analytics for reason: %@, info: %@", &v10, 0x16u);
   }
 
-  [(EDSearchableIndex *)self _sendAnalyticsForReindexReason:a3];
-  [(EDSearchableIndex *)self _storeLastKnownReindexReason:a3 withInfo:v6];
+  [(EDSearchableIndex *)self _sendAnalyticsForReindexReason:reason];
+  [(EDSearchableIndex *)self _storeLastKnownReindexReason:reason withInfo:infoCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendAnalyticsForRedonatingItems:(unint64_t)a3
+- (void)_sendAnalyticsForRedonatingItems:(unint64_t)items
 {
-  if (!atomic_fetch_add(&self->_redonatedItems, a3))
+  if (!atomic_fetch_add(&self->_redonatedItems, items))
   {
     block[7] = v3;
     block[8] = v4;
@@ -841,7 +841,7 @@ void __54__EDSearchableIndex__sendAnalyticsForRedonatingItems___block_invoke(uin
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDataSourceIndexingPermitted:(BOOL)a3
+- (void)setDataSourceIndexingPermitted:(BOOL)permitted
 {
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v4[0] = MEMORY[0x1E69E9820];
@@ -849,7 +849,7 @@ void __54__EDSearchableIndex__sendAnalyticsForRedonatingItems___block_invoke(uin
   v4[2] = __52__EDSearchableIndex_setDataSourceIndexingPermitted___block_invoke;
   v4[3] = &unk_1E8256800;
   v4[4] = self;
-  v5 = a3;
+  permittedCopy = permitted;
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v4];
 }
 
@@ -932,13 +932,13 @@ void __46__EDSearchableIndex_performMaintenancePreWork__block_invoke(uint64_t a1
 - (void)_scheduleSpotlightVerification
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v3 = [(EDSearchableIndex *)self state];
-  v4 = [v3 scheduledVerification];
+  state = [(EDSearchableIndex *)self state];
+  scheduledVerification = [state scheduledVerification];
 
-  if ((v4 & 1) == 0)
+  if ((scheduledVerification & 1) == 0)
   {
-    v5 = [(EDSearchableIndex *)self state];
-    [v5 setScheduledVerification:1];
+    state2 = [(EDSearchableIndex *)self state];
+    [state2 setScheduledVerification:1];
 
     indexingScheduler = self->_indexingScheduler;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1085,9 +1085,9 @@ void __65__EDSearchableIndex__clearOrphanedSearchableMessagesFromDatabase__block
   [v3 clearOrphanedSearchableMessagesFromDatabase];
 }
 
-- (void)_scheduleSpotlightVerificationOnIndexingQueueWithCompletion:(id)a3
+- (void)_scheduleSpotlightVerificationOnIndexingQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
   v5 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
   v6 = +[EDSearchableIndex log];
@@ -1102,7 +1102,7 @@ void __65__EDSearchableIndex__clearOrphanedSearchableMessagesFromDatabase__block
   v9[2] = __81__EDSearchableIndex__scheduleSpotlightVerificationOnIndexingQueueWithCompletion___block_invoke;
   v9[3] = &unk_1E82568C0;
   v9[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v11 = v7;
   v8 = v5;
   v10 = v8;
@@ -1265,38 +1265,38 @@ uint64_t __42__EDSearchableIndex__verifySpotlightIndex__block_invoke(uint64_t a1
   return [v3 _queueTransitionFromRefresh:0];
 }
 
-- (void)_handleFailingTransactionIDs:(id)a3
+- (void)_handleFailingTransactionIDs:(id)ds
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    -[EDSearchableIndex _handleFailingTransactionIDs:].cold.1(v4, v8, [v4 count], v5);
+    -[EDSearchableIndex _handleFailingTransactionIDs:].cold.1(dsCopy, v8, [dsCopy count], v5);
   }
 
-  v6 = [v4 allObjects];
-  [(EDSearchableIndex *)self _invalidateItemsInTransactions:v6];
+  allObjects = [dsCopy allObjects];
+  [(EDSearchableIndex *)self _invalidateItemsInTransactions:allObjects];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (double)_throttleRequestedSize:(unint64_t *)a3 targetTime:(double)a4 action:(id)a5
+- (double)_throttleRequestedSize:(unint64_t *)size targetTime:(double)time action:(id)action
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 thermalState];
+  actionCopy = action;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
-  if ((v10 - 1) >= 3)
+  if ((thermalState - 1) >= 3)
   {
-    if (v10)
+    if (thermalState)
     {
       v17 = 0xAAAAAAAAAAAAAAAALL;
     }
 
     else
     {
-      v17 = *a3;
+      v17 = *size;
     }
   }
 
@@ -1328,7 +1328,7 @@ uint64_t __42__EDSearchableIndex__verifySpotlightIndex__block_invoke(uint64_t a1
   v29 = __62__EDSearchableIndex__throttleRequestedSize_targetTime_action___block_invoke;
   v30 = &unk_1E8256910;
   v32 = buf;
-  v18 = v8;
+  v18 = actionCopy;
   v31 = v18;
   v33 = v17;
   v19 = v28;
@@ -1343,12 +1343,12 @@ uint64_t __42__EDSearchableIndex__verifySpotlightIndex__block_invoke(uint64_t a1
   v23 = EFGetElapsedTimeSinceAbsoluteTime_sTimebaseInfo_1;
   v22 = *algn_1EDC94D14;
 
-  v24 = [(EDSearchableIndex *)self currentMaximumBatchSize];
-  v25 = *a3;
+  currentMaximumBatchSize = [(EDSearchableIndex *)self currentMaximumBatchSize];
+  v25 = *size;
   v26 = *(v35 + 3);
   if (v26)
   {
-    v25 = vcvtad_u64_f64(a4 / (((v21 - v20) * v23 / v22) / 1000000000.0 / v26) * 0.7 + v25 * 0.3);
+    v25 = vcvtad_u64_f64(time / (((v21 - v20) * v23 / v22) / 1000000000.0 / v26) * 0.7 + v25 * 0.3);
   }
 
   if (v25 <= 4)
@@ -1356,12 +1356,12 @@ uint64_t __42__EDSearchableIndex__verifySpotlightIndex__block_invoke(uint64_t a1
     v25 = 4;
   }
 
-  if (v25 >= v24)
+  if (v25 >= currentMaximumBatchSize)
   {
-    v25 = v24;
+    v25 = currentMaximumBatchSize;
   }
 
-  *a3 = v25;
+  *size = v25;
 
   _Block_object_dispose(buf, 8);
   return ((v21 - v20) * v23 / v22) / 1000000000.0;
@@ -1376,9 +1376,9 @@ void __62__EDSearchableIndex__throttleRequestedSize_targetTime_action___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v4 = 512;
   }
@@ -1422,15 +1422,15 @@ void __41__EDSearchableIndex__localClientStateURL__block_invoke()
 
 + (id)_localClientState
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
-    v5 = [a1 _localClientStateURL];
-    if (v5)
+    _localClientStateURL = [self _localClientStateURL];
+    if (_localClientStateURL)
     {
-      v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:1 error:0];
+      v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:_localClientStateURL options:1 error:0];
       v7 = [EDSearchableIndexClientState clientStateFromData:v6];
     }
 
@@ -1448,25 +1448,25 @@ void __41__EDSearchableIndex__localClientStateURL__block_invoke()
   return v7;
 }
 
-+ (void)_saveLocalClientState:(id)a3
++ (void)_saveLocalClientState:(id)state
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B7B0] currentDevice];
-  v6 = [v5 isInternal];
+  stateCopy = state;
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v6)
+  if (isInternal)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__EDSearchableIndex__saveLocalClientState___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_saveLocalClientState__onceToken != -1)
     {
       dispatch_once(&_saveLocalClientState__onceToken, block);
     }
 
-    [_saveLocalClientState__coalescer coalesceValue:v4];
+    [_saveLocalClientState__coalescer coalesceValue:stateCopy];
   }
 }
 
@@ -1519,7 +1519,7 @@ void __43__EDSearchableIndex__saveLocalClientState___block_invoke_2(uint64_t a1,
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
-  v6 = [(EDSearchableIndex *)self searchIndex];
+  searchIndex = [(EDSearchableIndex *)self searchIndex];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__EDSearchableIndex__fetchLastClientState__block_invoke_2_217;
@@ -1528,7 +1528,7 @@ void __43__EDSearchableIndex__saveLocalClientState___block_invoke_2(uint64_t a1,
   v14 = v7;
   v8 = v4;
   v15 = v8;
-  [v6 fetchLastClientStateWithCompletionHandler:v13];
+  [searchIndex fetchLastClientStateWithCompletionHandler:v13];
 
   v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:2.0];
   v10 = [v7 lockWhenCondition:1 beforeDate:v9];
@@ -1789,33 +1789,33 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2;
 }
 
-- (id)_eventDataForTransitionState:(id)a3
+- (id)_eventDataForTransitionState:(id)state
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  stateCopy = state;
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v22[0] = v20;
+  v22[0] = stateCopy;
   v21[0] = @"state";
   v21[1] = @"resumeCount";
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(EDSearchableIndex *)self state];
-  v6 = [v4 numberWithLongLong:{objc_msgSend(v5, "resumeCount")}];
+  state = [(EDSearchableIndex *)self state];
+  v6 = [v4 numberWithLongLong:{objc_msgSend(state, "resumeCount")}];
   v22[1] = v6;
   v21[2] = @"pending";
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(EDSearchableIndex *)self state];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "countOfItemsInPendingQueues")}];
+  state2 = [(EDSearchableIndex *)self state];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(state2, "countOfItemsInPendingQueues")}];
   v22[2] = v9;
   v21[3] = @"preprocessingItemCount";
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(EDSearchableIndex *)self state];
-  v12 = [v11 preprocessingItems];
-  v13 = [v10 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+  state3 = [(EDSearchableIndex *)self state];
+  preprocessingItems = [state3 preprocessingItems];
+  v13 = [v10 numberWithUnsignedInteger:{objc_msgSend(preprocessingItems, "count")}];
   v22[3] = v13;
   v21[4] = @"persistenceAvailable";
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(EDSearchableIndex *)self state];
-  v16 = [v14 numberWithBool:{objc_msgSend(v15, "persistenceAvailable")}];
+  state4 = [(EDSearchableIndex *)self state];
+  v16 = [v14 numberWithBool:{objc_msgSend(state4, "persistenceAvailable")}];
   v22[4] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:5];
 
@@ -1827,30 +1827,30 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
 - (void)_suspend
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v8 = [(EDSearchableIndex *)self state];
-  v3 = [v8 suspend];
+  state = [(EDSearchableIndex *)self state];
+  suspend = [state suspend];
 
   v4 = @"still resumed";
-  if (v3 < 0)
+  if (suspend < 0)
   {
     v4 = @"already suspended";
   }
 
-  if (!v3)
+  if (!suspend)
   {
     v4 = @"suspending";
   }
 
   v9 = v4;
-  v5 = [(EDSearchableIndex *)self schedulableDelegate];
+  schedulableDelegate = [(EDSearchableIndex *)self schedulableDelegate];
   v6 = [(EDSearchableIndex *)self _eventDataForTransitionState:v9];
-  [v5 searchableIndexSchedulable:self didGenerateImportantPowerEventWithIdentifier:@"suspend" eventData:v6];
+  [schedulableDelegate searchableIndexSchedulable:self didGenerateImportantPowerEventWithIdentifier:@"suspend" eventData:v6];
 
-  if (!v3)
+  if (!suspend)
   {
-    [v5 indexingDidSuspendForSearchableIndexSchedulable:self];
-    v7 = [(EDSearchableIndex *)self state];
-    [v7 setIsActive:0];
+    [schedulableDelegate indexingDidSuspendForSearchableIndexSchedulable:self];
+    state2 = [(EDSearchableIndex *)self state];
+    [state2 setIsActive:0];
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
@@ -1876,16 +1876,16 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
 {
   v17 = *MEMORY[0x1E69E9840];
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v3 = [(EDSearchableIndex *)self state];
-  v4 = [v3 resume];
+  state = [(EDSearchableIndex *)self state];
+  resume = [state resume];
 
   v5 = @"still suspended";
-  if (v4 > 1)
+  if (resume > 1)
   {
     v5 = @"already resumed";
   }
 
-  if (v4 == 1)
+  if (resume == 1)
   {
     v5 = @"resuming";
   }
@@ -1894,23 +1894,23 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
   v7 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(EDSearchableIndex *)self state];
+    state2 = [(EDSearchableIndex *)self state];
     v13 = 138412546;
     v14 = v6;
     v15 = 2048;
-    v16 = [v12 resumeCount];
+    resumeCount = [state2 resumeCount];
     _os_log_debug_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEBUG, "[EDSearchableIndex resume]: %@ (%lld)", &v13, 0x16u);
   }
 
-  v8 = [(EDSearchableIndex *)self schedulableDelegate];
+  schedulableDelegate = [(EDSearchableIndex *)self schedulableDelegate];
   v9 = [(EDSearchableIndex *)self _eventDataForTransitionState:v6];
-  [v8 searchableIndexSchedulable:self didGenerateImportantPowerEventWithIdentifier:@"resume" eventData:v9];
+  [schedulableDelegate searchableIndexSchedulable:self didGenerateImportantPowerEventWithIdentifier:@"resume" eventData:v9];
 
-  if (v4 == 1)
+  if (resume == 1)
   {
-    [v8 indexingDidResumeForSearchableIndexSchedulable:self];
-    v10 = [(EDSearchableIndex *)self state];
-    [v10 setIsActive:1];
+    [schedulableDelegate indexingDidResumeForSearchableIndexSchedulable:self];
+    state3 = [(EDSearchableIndex *)self state];
+    [state3 setIsActive:1];
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
@@ -1945,7 +1945,7 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v3];
 }
 
-- (void)setPersistenceAvailable:(BOOL)a3
+- (void)setPersistenceAvailable:(BOOL)available
 {
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1953,7 +1953,7 @@ void __37__EDSearchableIndex__nextTransaction__block_invoke(uint64_t a1)
   v4[2] = __45__EDSearchableIndex_setPersistenceAvailable___block_invoke;
   v4[3] = &unk_1E8256800;
   v4[4] = self;
-  v5 = a3;
+  availableCopy = available;
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v4];
 }
 
@@ -2073,10 +2073,10 @@ void __32__EDSearchableIndex_resumeCount__block_invoke(uint64_t a1)
   return indexingDisabledForPPT;
 }
 
-- (void)setIndexingDisabledForPPT:(BOOL)a3
+- (void)setIndexingDisabledForPPT:(BOOL)t
 {
   os_unfair_lock_lock(&self->_indexingDisabledForPPTLock);
-  self->_indexingDisabledForPPT = a3;
+  self->_indexingDisabledForPPT = t;
 
   os_unfair_lock_unlock(&self->_indexingDisabledForPPTLock);
 }
@@ -2106,7 +2106,7 @@ void __39__EDSearchableIndex_clientStateFetched__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 clientStateFetched];
 }
 
-- (void)setClientStateFetched:(BOOL)a3
+- (void)setClientStateFetched:(BOOL)fetched
 {
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2114,7 +2114,7 @@ void __39__EDSearchableIndex_clientStateFetched__block_invoke(uint64_t a1)
   v4[2] = __43__EDSearchableIndex_setClientStateFetched___block_invoke;
   v4[3] = &unk_1E8256800;
   v4[4] = self;
-  v5 = a3;
+  fetchedCopy = fetched;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v4];
 }
 
@@ -2125,15 +2125,15 @@ void __43__EDSearchableIndex_setClientStateFetched___block_invoke(uint64_t a1)
   [v2 setClientStateFetched:v1];
 }
 
-- (void)_dataSourceScheduleWork:(id)a3
+- (void)_dataSourceScheduleWork:(id)work
 {
-  v4 = a3;
+  workCopy = work;
   v5 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.email.searchableIndex.dataSourceWorkBlock"];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __45__EDSearchableIndex__dataSourceScheduleWork___block_invoke;
   v12 = &unk_1E82518B0;
-  v6 = v4;
+  v6 = workCopy;
   v14 = v6;
   v7 = v5;
   v13 = v7;
@@ -2149,20 +2149,20 @@ uint64_t __45__EDSearchableIndex__dataSourceScheduleWork___block_invoke(uint64_t
   return [v2 invalidate];
 }
 
-- (void)_dataSourceAssignTransaction:(int64_t)a3 updates:(id)a4 completion:(id)a5
+- (void)_dataSourceAssignTransaction:(int64_t)transaction updates:(id)updates completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  updatesCopy = updates;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__EDSearchableIndex__dataSourceAssignTransaction_updates_completion___block_invoke;
   v12[3] = &unk_1E8252E78;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = updatesCopy;
+  v14 = completionCopy;
+  transactionCopy = transaction;
+  v10 = completionCopy;
+  v11 = updatesCopy;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v12];
 }
 
@@ -2190,25 +2190,25 @@ void __69__EDSearchableIndex__dataSourceAssignTransaction_updates_completion___b
   }
 }
 
-- (void)_dataSourceAssignTransaction:(int64_t)a3 forIdentifiers:(id)a4 completion:(id)a5
+- (void)_dataSourceAssignTransaction:(int64_t)transaction forIdentifiers:(id)identifiers completion:(id)completion
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [[EDSearchableIndexUpdates alloc] initWithIdentifiers:v10];
-  [(EDSearchableIndex *)self _dataSourceAssignTransaction:a3 updates:v9 completion:v8];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v9 = [[EDSearchableIndexUpdates alloc] initWithIdentifiers:identifiersCopy];
+  [(EDSearchableIndex *)self _dataSourceAssignTransaction:transaction updates:v9 completion:completionCopy];
 }
 
-- (void)_dataSourceInvalidateItemsGreaterThanTransaction:(int64_t)a3 completion:(id)a4
+- (void)_dataSourceInvalidateItemsGreaterThanTransaction:(int64_t)transaction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__EDSearchableIndex__dataSourceInvalidateItemsGreaterThanTransaction_completion___block_invoke;
   v8[3] = &unk_1E8255CF8;
-  v9 = v6;
-  v10 = a3;
+  v9 = completionCopy;
+  transactionCopy = transaction;
   v8[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v8];
 }
 
@@ -2228,14 +2228,14 @@ uint64_t __81__EDSearchableIndex__dataSourceInvalidateItemsGreaterThanTransactio
   return result;
 }
 
-- (void)_dataSourceRequestNeededUpdatesExcludingIdentifiers:(id)a3 completion:(id)a4
+- (void)_dataSourceRequestNeededUpdatesExcludingIdentifiers:(id)identifiers completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:1229 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:1229 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -2243,9 +2243,9 @@ uint64_t __81__EDSearchableIndex__dataSourceInvalidateItemsGreaterThanTransactio
   v12[2] = __84__EDSearchableIndex__dataSourceRequestNeededUpdatesExcludingIdentifiers_completion___block_invoke;
   v12[3] = &unk_1E82534D8;
   v12[4] = self;
-  v9 = v7;
+  v9 = identifiersCopy;
   v13 = v9;
-  v10 = v8;
+  v10 = completionCopy;
   v14 = v10;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v12];
 }
@@ -2494,18 +2494,18 @@ uint64_t __84__EDSearchableIndex__dataSourceRequestNeededUpdatesExcludingIdentif
   return v2();
 }
 
-- (void)_dataSourceVerifyRepresentativeSampleWithCompletion:(id)a3
+- (void)_dataSourceVerifyRepresentativeSampleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73__EDSearchableIndex__dataSourceVerifyRepresentativeSampleWithCompletion___block_invoke;
     v6[3] = &unk_1E8250C30;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(EDSearchableIndex *)self _dataSourceScheduleWork:v6];
   }
 }
@@ -2516,25 +2516,25 @@ void __73__EDSearchableIndex__dataSourceVerifyRepresentativeSampleWithCompletion
   [(EDSearchableIndexVerifier *)v2 verifyDataSamplesWithCompletionHandler:*(a1 + 40) scheduler:*(*(a1 + 32) + 32)];
 }
 
-- (void)_dataSourcePrepareToIndexItems:(id)a3 fromRefresh:(BOOL)a4 withCompletion:(id)a5
+- (void)_dataSourcePrepareToIndexItems:(id)items fromRefresh:(BOOL)refresh withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  refreshCopy = refresh;
+  itemsCopy = items;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__EDSearchableIndex__dataSourcePrepareToIndexItems_fromRefresh_withCompletion___block_invoke;
   v14[3] = &unk_1E8256A28;
   v14[4] = self;
-  v10 = v8;
+  v10 = itemsCopy;
   v15 = v10;
-  v16 = v6;
+  v16 = refreshCopy;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v14];
-  if (v6)
+  if (refreshCopy)
   {
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -2546,7 +2546,7 @@ void __73__EDSearchableIndex__dataSourceVerifyRepresentativeSampleWithCompletion
     v11[3] = &unk_1E82534D8;
     v11[4] = self;
     v12 = v10;
-    v13 = v9;
+    v13 = completionCopy;
     [(EDSearchableIndex *)self _dataSourceScheduleWork:v11];
   }
 }
@@ -2783,26 +2783,26 @@ void __79__EDSearchableIndex__dataSourcePrepareToIndexItems_fromRefresh_withComp
   *(v3 + 40) = v2;
 }
 
-- (id)bundleIDForSearchableIndexVerifier:(id)a3
+- (id)bundleIDForSearchableIndexVerifier:(id)verifier
 {
-  v3 = [(EDSearchableIndex *)self searchableIndexBundleID];
+  searchableIndexBundleID = [(EDSearchableIndex *)self searchableIndexBundleID];
 
-  return v3;
+  return searchableIndexBundleID;
 }
 
-- (id)dataSamplesForSearchableIndexVerifier:(id)a3 searchableIndex:(id)a4 count:(unint64_t)a5 lastVerifiedMessageID:(int64_t)a6
+- (id)dataSamplesForSearchableIndexVerifier:(id)verifier searchableIndex:(id)index count:(unint64_t)count lastVerifiedMessageID:(int64_t)d
 {
-  v9 = a4;
-  v10 = [(EDSearchableIndex *)self dataSource];
-  v11 = [v10 verificationDataSamplesForSearchableIndex:v9 count:a5 lastVerifiedMessageID:a6];
+  indexCopy = index;
+  dataSource = [(EDSearchableIndex *)self dataSource];
+  v11 = [dataSource verificationDataSamplesForSearchableIndex:indexCopy count:count lastVerifiedMessageID:d];
 
   return v11;
 }
 
-- (id)knownTransactionIDsForSearchableIndexVerifier:(id)a3
+- (id)knownTransactionIDsForSearchableIndexVerifier:(id)verifier
 {
-  v4 = [(EDSearchableIndex *)self dataSource];
-  v5 = [v4 distinctTransactionIDsForSearchableIndex:self];
+  dataSource = [(EDSearchableIndex *)self dataSource];
+  v5 = [dataSource distinctTransactionIDsForSearchableIndex:self];
 
   return v5;
 }
@@ -2875,8 +2875,8 @@ void __42__EDSearchableIndex__startCoalescingTimer__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1C61EF000, v3, OS_LOG_TYPE_DEFAULT, "coalescing timer fired", v6, 2u);
   }
 
-  v4 = [(EDSearchableIndex *)self state];
-  [v4 setCoalesceTimerFired:1];
+  state = [(EDSearchableIndex *)self state];
+  [state setCoalesceTimerFired:1];
 
   coalescingTimer = self->_coalescingTimer;
   self->_coalescingTimer = 0;
@@ -2884,7 +2884,7 @@ void __42__EDSearchableIndex__startCoalescingTimer__block_invoke(uint64_t a1)
   [(EDSearchableIndex *)self _queueTransitionFromRefresh:0];
 }
 
-- (void)_transitionWithBudgetTimeUsed:(double)a3
+- (void)_transitionWithBudgetTimeUsed:(double)used
 {
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2892,7 +2892,7 @@ void __42__EDSearchableIndex__startCoalescingTimer__block_invoke(uint64_t a1)
   v4[2] = __51__EDSearchableIndex__transitionWithBudgetTimeUsed___block_invoke;
   v4[3] = &unk_1E8250A90;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = used;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v4];
 }
 
@@ -2904,26 +2904,26 @@ uint64_t __51__EDSearchableIndex__transitionWithBudgetTimeUsed___block_invoke(ui
   return [v2 _queueTransitionFromRefresh:0];
 }
 
-- (void)_queueConsumeBudgetElapsedPeriod:(double)a3
+- (void)_queueConsumeBudgetElapsedPeriod:(double)period
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v5 = [(EDSearchableIndex *)self schedulableDelegate];
-  [v5 searchableIndexSchedulable:self didIndexForTime:a3];
+  schedulableDelegate = [(EDSearchableIndex *)self schedulableDelegate];
+  [schedulableDelegate searchableIndexSchedulable:self didIndexForTime:period];
 }
 
-- (void)_queueConsumeBudgetItemCount:(unint64_t)a3 lastItemDateReceived:(id)a4
+- (void)_queueConsumeBudgetItemCount:(unint64_t)count lastItemDateReceived:(id)received
 {
-  v7 = a4;
+  receivedCopy = received;
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v6 = [(EDSearchableIndex *)self schedulableDelegate];
-  [v6 searchableIndexSchedulable:self didIndexItemCount:a3 lastItemDateReceived:v7];
+  schedulableDelegate = [(EDSearchableIndex *)self schedulableDelegate];
+  [schedulableDelegate searchableIndexSchedulable:self didIndexItemCount:count lastItemDateReceived:receivedCopy];
 }
 
 - (void)_queueRefresh
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v3 = [(EDSearchableIndex *)self state];
-  [v3 setNeedsRefresh:1];
+  state = [(EDSearchableIndex *)self state];
+  [state setNeedsRefresh:1];
 
   [(EDSearchableIndex *)self _queueTransitionFromRefresh:1];
 }
@@ -2950,75 +2950,75 @@ uint64_t __51__EDSearchableIndex__transitionWithBudgetTimeUsed___block_invoke(ui
   [(EFSuspendableScheduler *)self->_indexingScheduler resume];
 }
 
-- (void)_logSignpostForIndexingBatchStartWithPendingItemsCount:(id)a3
+- (void)_logSignpostForIndexingBatchStartWithPendingItemsCount:(id)count
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  countCopy = count;
   v5 = +[EDSearchableIndex signpostLog];
-  v6 = [(EDSearchableIndex *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  signpostID = [(EDSearchableIndex *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     v8 = 138543362;
-    v9 = v4;
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v6, "EDSearchableIndexBatchProcessing", "BatchStartedWithPendingItemCount=%{signpost.description:attribute,public}@", &v8, 0xCu);
+    v9 = countCopy;
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "EDSearchableIndexBatchProcessing", "BatchStartedWithPendingItemCount=%{signpost.description:attribute,public}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logSignpostForIndexingBatchAssignedDomainRemovalCount:(unint64_t)a3
+- (void)_logSignpostForIndexingBatchAssignedDomainRemovalCount:(unint64_t)count
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = +[EDSearchableIndex signpostLog];
-  v6 = [(EDSearchableIndex *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  signpostID = [(EDSearchableIndex *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     v8 = 134349056;
-    v9 = a3;
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_EVENT, v6, "EDSearchableIndexBatchProcessing", "BatchAssignedDomnainRemovalCount=%{signpost.description:attribute,public}llu", &v8, 0xCu);
+    countCopy = count;
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_EVENT, signpostID, "EDSearchableIndexBatchProcessing", "BatchAssignedDomnainRemovalCount=%{signpost.description:attribute,public}llu", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logSignpostForIndexingBatchAssignedUpdatesWithItemsIndexedCount:(unint64_t)a3
+- (void)_logSignpostForIndexingBatchAssignedUpdatesWithItemsIndexedCount:(unint64_t)count
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = +[EDSearchableIndex signpostLog];
-  v6 = [(EDSearchableIndex *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  signpostID = [(EDSearchableIndex *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     v8 = 134349056;
-    v9 = a3;
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_EVENT, v6, "EDSearchableIndexBatchProcessing", "BatchAssignedDomnainRemovalCount=%{signpost.description:attribute,public}llu", &v8, 0xCu);
+    countCopy = count;
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_EVENT, signpostID, "EDSearchableIndexBatchProcessing", "BatchAssignedDomnainRemovalCount=%{signpost.description:attribute,public}llu", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logSignpostForIndexingBatchCompletedWithItemsIndexedCount:(id)a3
+- (void)_logSignpostForIndexingBatchCompletedWithItemsIndexedCount:(id)count
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  countCopy = count;
   v5 = +[EDSearchableIndex signpostLog];
-  v6 = [(EDSearchableIndex *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  signpostID = [(EDSearchableIndex *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     v8 = 138543362;
-    v9 = v4;
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_INTERVAL_END, v6, "EDSearchableIndexBatchProcessing", "BatchFinishedWithItemIndexedCount=%{signpost.description:attribute,public}@", &v8, 0xCu);
+    v9 = countCopy;
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v5, OS_SIGNPOST_INTERVAL_END, signpostID, "EDSearchableIndexBatchProcessing", "BatchFinishedWithItemIndexedCount=%{signpost.description:attribute,public}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleProcessPendingItemsFromRefresh:(BOOL)a3
+- (void)_scheduleProcessPendingItemsFromRefresh:(BOOL)refresh
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v5 = [(EDSearchableIndex *)self state];
-  v6 = [v5 scheduledProcessing];
+  state = [(EDSearchableIndex *)self state];
+  scheduledProcessing = [state scheduledProcessing];
 
-  if ((v6 & 1) == 0)
+  if ((scheduledProcessing & 1) == 0)
   {
     v7 = +[EDSearchableIndex log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -3026,8 +3026,8 @@ uint64_t __51__EDSearchableIndex__transitionWithBudgetTimeUsed___block_invoke(ui
       [EDSearchableIndex _scheduleProcessPendingItemsFromRefresh:];
     }
 
-    v8 = [(EDSearchableIndex *)self state];
-    [v8 setScheduledProcessing:1];
+    state2 = [(EDSearchableIndex *)self state];
+    [state2 setScheduledProcessing:1];
 
     v9 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.email.searchableIndex.indexingBatch"];
     indexingScheduler = self->_indexingScheduler;
@@ -3035,7 +3035,7 @@ uint64_t __51__EDSearchableIndex__transitionWithBudgetTimeUsed___block_invoke(ui
     v12[1] = 3221225472;
     v12[2] = __61__EDSearchableIndex__scheduleProcessPendingItemsFromRefresh___block_invoke;
     v12[3] = &unk_1E8256A28;
-    v14 = a3;
+    refreshCopy = refresh;
     v12[4] = self;
     v13 = v9;
     v11 = v9;
@@ -3600,13 +3600,13 @@ void __61__EDSearchableIndex__scheduleProcessPendingItemsFromRefresh___block_inv
 - (void)_scheduleDataSourceRefresh
 {
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v3 = [(EDSearchableIndex *)self state];
-  v4 = [v3 scheduledRefresh];
+  state = [(EDSearchableIndex *)self state];
+  scheduledRefresh = [state scheduledRefresh];
 
-  if ((v4 & 1) == 0)
+  if ((scheduledRefresh & 1) == 0)
   {
-    v5 = [(EDSearchableIndex *)self state];
-    [v5 setScheduledRefresh:1];
+    state2 = [(EDSearchableIndex *)self state];
+    [state2 setScheduledRefresh:1];
 
     indexingScheduler = self->_indexingScheduler;
     v7[0] = MEMORY[0x1E69E9820];
@@ -3637,7 +3637,7 @@ void __47__EDSearchableIndex__scheduleDataSourceRefresh__block_invoke_2(uint64_t
   [v2 setScheduledRefresh:0];
 }
 
-- (id)_consumeBatchOfSize:(unint64_t)a3
+- (id)_consumeBatchOfSize:(unint64_t)size
 {
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
   v9 = 0;
@@ -3653,7 +3653,7 @@ void __47__EDSearchableIndex__scheduleDataSourceRefresh__block_invoke_2(uint64_t
   v8[3] = &unk_1E8256B90;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = size;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -3711,9 +3711,9 @@ void __41__EDSearchableIndex__consumeBatchOfSize___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_identifiersForItems:(id)a3
+- (id)_identifiersForItems:(id)items
 {
-  v3 = [a3 ef_map:&__block_literal_global_320];
+  v3 = [items ef_map:&__block_literal_global_320];
 
   return v3;
 }
@@ -3725,30 +3725,30 @@ id __42__EDSearchableIndex__identifiersForItems___block_invoke(uint64_t a1, void
   return v2;
 }
 
-- (id)_identifiersStringForItems:(id)a3 maxLength:(unint64_t)a4
+- (id)_identifiersStringForItems:(id)items maxLength:(unint64_t)length
 {
-  v5 = [(EDSearchableIndex *)self _identifiersForItems:a3];
+  v5 = [(EDSearchableIndex *)self _identifiersForItems:items];
   v6 = MEMORY[0x1E696AEC0];
   v7 = [v5 componentsJoinedByString:{@", "}];
   v8 = [v6 stringWithFormat:@"[%@]", v7];
 
   v9 = [v8 length];
-  if (v9 >= a4)
+  if (v9 >= length)
   {
-    v10 = a4;
+    lengthCopy = length;
   }
 
   else
   {
-    v10 = v9;
+    lengthCopy = v9;
   }
 
-  v11 = [v8 substringToIndex:v10];
+  v11 = [v8 substringToIndex:lengthCopy];
 
   return v11;
 }
 
-- (void)_getDomainRemovals:(id *)a3 identifierRemovals:(id *)a4
+- (void)_getDomainRemovals:(id *)removals identifierRemovals:(id *)identifierRemovals
 {
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
   v19 = 0;
@@ -3770,19 +3770,19 @@ id __42__EDSearchableIndex__identifiersForItems___block_invoke(uint64_t a1, void
   v8[2] = __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invoke;
   v8[3] = &unk_1E8256BD8;
   objc_copyWeak(&v9, &location);
-  v10 = a3 != 0;
-  v11 = a4 != 0;
+  v10 = removals != 0;
+  v11 = identifierRemovals != 0;
   v8[4] = &v13;
   v8[5] = &v19;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v8];
-  if (a3)
+  if (removals)
   {
-    *a3 = v14[5];
+    *removals = v14[5];
   }
 
-  if (a4)
+  if (identifierRemovals)
   {
-    *a4 = v20[5];
+    *identifierRemovals = v20[5];
   }
 
   objc_destroyWeak(&v9);
@@ -3821,21 +3821,21 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
   }
 }
 
-- (BOOL)_processIndexingBatch:(id)a3 clientState:(id)a4 itemsNotIndexed:(id)a5
+- (BOOL)_processIndexingBatch:(id)batch clientState:(id)state itemsNotIndexed:(id)indexed
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v38 = a4;
-  v9 = a5;
-  v10 = [v8 count];
+  batchCopy = batch;
+  stateCopy = state;
+  indexedCopy = indexed;
+  v10 = [batchCopy count];
   if (v10)
   {
     v11 = +[EDSearchableIndex signpostLog];
-    v12 = [(EDSearchableIndex *)self signpostID];
-    if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+    signpostID = [(EDSearchableIndex *)self signpostID];
+    if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C61EF000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v12, "EDSearchableIndexCreateSearchableItems", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C61EF000, v11, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "EDSearchableIndexCreateSearchableItems", "", buf, 2u);
     }
 
     v47[0] = MEMORY[0x1E69E9820];
@@ -3843,9 +3843,9 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
     v47[2] = __71__EDSearchableIndex__processIndexingBatch_clientState_itemsNotIndexed___block_invoke;
     v47[3] = &unk_1E8256C28;
     v47[4] = self;
-    v48 = v38;
-    v49 = v9;
-    v13 = [v8 ef_map:v47];
+    v48 = stateCopy;
+    v49 = indexedCopy;
+    v13 = [batchCopy ef_map:v47];
     v14 = [MEMORY[0x1E699B7C8] join:v13];
     v46 = 0;
     v15 = [v14 result:&v46];
@@ -3853,11 +3853,11 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
     v16 = [v15 ef_filter:*MEMORY[0x1E699B748]];
 
     v17 = +[EDSearchableIndex signpostLog];
-    v18 = [(EDSearchableIndex *)self signpostID];
-    if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
+    signpostID2 = [(EDSearchableIndex *)self signpostID];
+    if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C61EF000, v17, OS_SIGNPOST_INTERVAL_END, v18, "EDSearchableIndexCreateSearchableItems", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C61EF000, v17, OS_SIGNPOST_INTERVAL_END, signpostID2, "EDSearchableIndexCreateSearchableItems", "", buf, 2u);
     }
 
     if (!v16)
@@ -3885,10 +3885,10 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
       _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "indexing %lu / %lu items, throttled batch size %lu", buf, 0x20u);
     }
 
-    v23 = [objc_opt_class() indexWhileLockedLog];
-    if (v23 && (EFProtectedDataAvailable() & 1) == 0)
+    indexWhileLockedLog = [objc_opt_class() indexWhileLockedLog];
+    if (indexWhileLockedLog && (EFProtectedDataAvailable() & 1) == 0)
     {
-      v24 = v23;
+      v24 = indexWhileLockedLog;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = [v16 count];
@@ -3905,15 +3905,15 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
 
     if ([v16 count])
     {
-      v27 = [(EDSearchableIndex *)self searchIndex];
+      searchIndex = [(EDSearchableIndex *)self searchIndex];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __71__EDSearchableIndex__processIndexingBatch_clientState_itemsNotIndexed___block_invoke_329;
       v43[3] = &unk_1E8256C50;
       v28 = v16;
       v44 = v28;
-      v45 = self;
-      [v27 indexSearchableItems:v28 completionHandler:v43];
+      selfCopy = self;
+      [searchIndex indexSearchableItems:v28 completionHandler:v43];
 
       if ([(EDSearchableIndex *)self canIndexAttachments])
       {
@@ -3935,11 +3935,11 @@ void __59__EDSearchableIndex__getDomainRemovals_identifierRemovals___block_invok
                 objc_enumerationMutation(v29);
               }
 
-              v33 = [*(*(&v39 + 1) + 8 * i) attributeSet];
-              v34 = [v33 attachmentPaths];
+              attributeSet = [*(*(&v39 + 1) + 8 * i) attributeSet];
+              attachmentPaths = [attributeSet attachmentPaths];
 
-              LOBYTE(v33) = [v34 count] == 0;
-              if ((v33 & 1) == 0)
+              LOBYTE(attributeSet) = [attachmentPaths count] == 0;
+              if ((attributeSet & 1) == 0)
               {
                 LOBYTE(v30) = 1;
                 goto LABEL_34;
@@ -4100,73 +4100,73 @@ void __71__EDSearchableIndex__processIndexingBatch_clientState_itemsNotIndexed__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_processDomainRemovals:(id)a3
+- (id)_processDomainRemovals:(id)removals
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removalsCopy = removals;
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
-  v5 = [MEMORY[0x1E699B868] promise];
-  if ([v4 count])
+  promise = [MEMORY[0x1E699B868] promise];
+  if ([removalsCopy count])
   {
     v6 = +[EDSearchableIndex log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 allObjects];
-      v8 = [v7 componentsJoinedByString:{@", "}];
+      allObjects = [removalsCopy allObjects];
+      v8 = [allObjects componentsJoinedByString:{@", "}];
       v16 = 138412290;
       v17 = v8;
       _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "removing indexed items for domains {%@}", &v16, 0xCu);
     }
 
-    v9 = [(EDSearchableIndex *)self searchIndex];
-    v10 = [v4 allObjects];
-    v11 = [v5 errorOnlyCompletionHandlerAdapter];
-    [v9 deleteSearchableItemsWithDomainIdentifiers:v10 completionHandler:v11];
+    searchIndex = [(EDSearchableIndex *)self searchIndex];
+    allObjects2 = [removalsCopy allObjects];
+    errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+    [searchIndex deleteSearchableItemsWithDomainIdentifiers:allObjects2 completionHandler:errorOnlyCompletionHandlerAdapter];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
-    [v5 finishWithResult:v12];
+    null = [MEMORY[0x1E695DFB0] null];
+    [promise finishWithResult:null];
   }
 
-  v13 = [v5 future];
+  future = [promise future];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return future;
 }
 
-- (void)_processIdentifierRemovals:(id)a3
+- (void)_processIdentifierRemovals:(id)removals
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  removalsCopy = removals;
+  if ([removalsCopy count])
   {
     v5 = +[EDSearchableIndex log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 identifiers];
-      v7 = [v6 componentsJoinedByString:{@", "}];
+      identifiers = [removalsCopy identifiers];
+      v7 = [identifiers componentsJoinedByString:{@", "}];
       v12 = 138412290;
       v13 = v7;
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_INFO, "removing indexed items with identifiers {%@}", &v12, 0xCu);
     }
 
-    v8 = [(EDSearchableIndex *)self searchIndex];
-    v9 = [v4 identifiers];
-    [v8 deleteSearchableItemsWithIdentifiers:v9 completionHandler:0];
+    searchIndex = [(EDSearchableIndex *)self searchIndex];
+    identifiers2 = [removalsCopy identifiers];
+    [searchIndex deleteSearchableItemsWithIdentifiers:identifiers2 completionHandler:0];
 
-    v10 = [v4 purgedIdentifiers];
-    [v8 changeStateOfSearchableItemsWithUIDs:v10 toState:1];
+    purgedIdentifiers = [removalsCopy purgedIdentifiers];
+    [searchIndex changeStateOfSearchableItemsWithUIDs:purgedIdentifiers toState:1];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processRefreshRequestWithCompletion:(id)a3
+- (void)_processRefreshRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v7[0] = MEMORY[0x1E69E9820];
@@ -4174,7 +4174,7 @@ void __71__EDSearchableIndex__processIndexingBatch_clientState_itemsNotIndexed__
   v7[2] = __58__EDSearchableIndex__processRefreshRequestWithCompletion___block_invoke;
   v7[3] = &unk_1E8250C30;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v7];
 }
@@ -4228,9 +4228,9 @@ void __58__EDSearchableIndex__processRefreshRequestWithCompletion___block_invoke
   [v2 setNeedsRefresh:0];
 }
 
-- (void)_processSpotlightVerificationWithCompletion:(id)a3
+- (void)_processSpotlightVerificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(EFSuspendableScheduler *)self->_indexingScheduler assertIsExecuting:1];
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v7[0] = MEMORY[0x1E69E9820];
@@ -4238,7 +4238,7 @@ void __58__EDSearchableIndex__processRefreshRequestWithCompletion___block_invoke
   v7[2] = __65__EDSearchableIndex__processSpotlightVerificationWithCompletion___block_invoke;
   v7[3] = &unk_1E8250C30;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(EFAssertableScheduler *)stateTransitionScheduler performSyncBlock:v7];
 }
@@ -4273,30 +4273,30 @@ uint64_t __65__EDSearchableIndex__processSpotlightVerificationWithCompletion___b
   return result;
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v11 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v9;
+    v27 = identifiersCopy;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Spotlight requests to reindex items with identifiers %@", buf, 0xCu);
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
-  v13 = [v12 stringValue];
-  [(EDSearchableIndex *)self _collectAnalyticsForReindexReason:2 withInfo:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(identifiersCopy, "count")}];
+  stringValue = [v12 stringValue];
+  [(EDSearchableIndex *)self _collectAnalyticsForReindexReason:2 withInfo:stringValue];
 
-  -[EDSearchableIndex _sendAnalyticsForRedonatingItems:](self, "_sendAnalyticsForRedonatingItems:", [v9 count]);
+  -[EDSearchableIndex _sendAnalyticsForRedonatingItems:](self, "_sendAnalyticsForRedonatingItems:", [identifiersCopy count]);
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __98__EDSearchableIndex_searchableIndex_reindexSearchableItemsWithIdentifiers_acknowledgementHandler___block_invoke;
   v24[3] = &unk_1E8256898;
-  v14 = v9;
+  v14 = identifiersCopy;
   v25 = v14;
   [(EDSearchableIndex *)self _promptToFileRadarAboutReindexing:v24];
   stateTransitionScheduler = self->_stateTransitionScheduler;
@@ -4307,9 +4307,9 @@ uint64_t __65__EDSearchableIndex__processSpotlightVerificationWithCompletion___b
   v20[4] = self;
   v16 = v14;
   v21 = v16;
-  v17 = v10;
+  v17 = handlerCopy;
   v23 = v17;
-  v18 = v8;
+  v18 = indexCopy;
   v22 = v18;
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v20];
 
@@ -4380,9 +4380,9 @@ uint64_t __98__EDSearchableIndex_searchableIndex_reindexSearchableItemsWithIdent
   return [*(a1 + 32) refresh];
 }
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -4397,7 +4397,7 @@ uint64_t __98__EDSearchableIndex_searchableIndex_reindexSearchableItemsWithIdent
   v7[3] = &unk_1E8250260;
   v7[4] = self;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v7];
-  [(EDSearchableIndex *)self redonateAllItemsWithAcknowledgementHandler:v5];
+  [(EDSearchableIndex *)self redonateAllItemsWithAcknowledgementHandler:handlerCopy];
 }
 
 void __89__EDSearchableIndex_searchableIndex_reindexAllSearchableItemsWithAcknowledgementHandler___block_invoke_2(uint64_t a1)
@@ -4406,53 +4406,53 @@ void __89__EDSearchableIndex_searchableIndex_reindexAllSearchableItemsWithAcknow
   [v1 didDropIndex];
 }
 
-- (void)searchableItemsDidUpdate:(id)a3 mask:(int64_t)a4
+- (void)searchableItemsDidUpdate:(id)update mask:(int64_t)mask
 {
-  v4 = a4;
+  maskCopy = mask;
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  updateCopy = update;
+  if (maskCopy)
   {
     v7 = +[EDSearchableIndex log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = updateCopy;
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "spotlight updated items with summaries: %{public}@", &v9, 0xCu);
     }
 
-    [(EDSearchableIndex *)self generatedSummariesDidUpdate:v6];
+    [(EDSearchableIndex *)self generatedSummariesDidUpdate:updateCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_missingIdentifiersForIdentifiersNeedingReindex:(id)a3
+- (id)_missingIdentifiersForIdentifiersNeedingReindex:(id)reindex
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B868] promise];
+  reindexCopy = reindex;
+  promise = [MEMORY[0x1E699B868] promise];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__EDSearchableIndex__missingIdentifiersForIdentifiersNeedingReindex___block_invoke;
   v9[3] = &unk_1E8253760;
-  v6 = v5;
+  v6 = promise;
   v10 = v6;
-  [(EDSearchableIndex *)self _dataSourceAssignTransaction:0 forIdentifiers:v4 completion:v9];
-  v7 = [v6 future];
+  [(EDSearchableIndex *)self _dataSourceAssignTransaction:0 forIdentifiers:reindexCopy completion:v9];
+  future = [v6 future];
 
-  return v7;
+  return future;
 }
 
-- (void)_invalidateItemsInTransactions:(id)a3
+- (void)_invalidateItemsInTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__EDSearchableIndex__invalidateItemsInTransactions___block_invoke;
   v6[3] = &unk_1E8250128;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionsCopy;
+  v5 = transactionsCopy;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v6];
 }
 
@@ -4484,39 +4484,39 @@ void __52__EDSearchableIndex__invalidateItemsInTransactions___block_invoke(uint6
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(EDSearchableIndex *)self searchIndex];
-  [(EDSearchableIndex *)self searchableIndex:v7 reindexSearchableItemsWithIdentifiers:v8 acknowledgementHandler:v6];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  searchIndex = [(EDSearchableIndex *)self searchIndex];
+  [(EDSearchableIndex *)self searchableIndex:searchIndex reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:handlerCopy];
 }
 
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndex *)self searchIndex];
-  [(EDSearchableIndex *)self searchableIndex:v4 reindexAllSearchableItemsWithAcknowledgementHandler:v5];
+  handlerCopy = handler;
+  searchIndex = [(EDSearchableIndex *)self searchIndex];
+  [(EDSearchableIndex *)self searchableIndex:searchIndex reindexAllSearchableItemsWithAcknowledgementHandler:handlerCopy];
 }
 
-- (void)generatedSummariesDidUpdate:(id)a3
+- (void)generatedSummariesDidUpdate:(id)update
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndex *)self dataSource];
-  [v4 searchableIndex:self indexGeneratedSummaries:v5];
+  updateCopy = update;
+  dataSource = [(EDSearchableIndex *)self dataSource];
+  [dataSource searchableIndex:self indexGeneratedSummaries:updateCopy];
 }
 
-- (void)redonateAllItemsWithAcknowledgementHandler:(id)a3
+- (void)redonateAllItemsWithAcknowledgementHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__EDSearchableIndex_redonateAllItemsWithAcknowledgementHandler___block_invoke;
   v7[3] = &unk_1E8250C30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v7];
 }
 
@@ -4570,17 +4570,17 @@ uint64_t __64__EDSearchableIndex_redonateAllItemsWithAcknowledgementHandler___bl
   return [*(a1 + 32) refresh];
 }
 
-- (void)resetIndexForNewLibraryWithCompletionHandler:(id)a3
+- (void)resetIndexForNewLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   stateTransitionScheduler = self->_stateTransitionScheduler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__EDSearchableIndex_resetIndexForNewLibraryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8250C30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v7];
 }
 
@@ -4641,9 +4641,9 @@ void __66__EDSearchableIndex_resetIndexForNewLibraryWithCompletionHandler___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)indexItems:(id)a3 fromRefresh:(BOOL)a4 immediately:(BOOL)a5
+- (void)indexItems:(id)items fromRefresh:(BOOL)refresh immediately:(BOOL)immediately
 {
-  v8 = a3;
+  itemsCopy = items;
   if ([(EDSearchableIndex *)self isIndexingDisabledForPPT])
   {
     v9 = +[EDSearchableIndex log];
@@ -4653,7 +4653,7 @@ void __66__EDSearchableIndex_resetIndexForNewLibraryWithCompletionHandler___bloc
     }
   }
 
-  else if ([v8 count])
+  else if ([itemsCopy count])
   {
     addIndexItemsScheduler = self->_addIndexItemsScheduler;
     v11[0] = MEMORY[0x1E69E9820];
@@ -4661,9 +4661,9 @@ void __66__EDSearchableIndex_resetIndexForNewLibraryWithCompletionHandler___bloc
     v11[2] = __56__EDSearchableIndex_indexItems_fromRefresh_immediately___block_invoke;
     v11[3] = &unk_1E8256CE8;
     v11[4] = self;
-    v12 = v8;
-    v13 = a4;
-    v14 = a5;
+    v12 = itemsCopy;
+    refreshCopy = refresh;
+    immediatelyCopy = immediately;
     [(EFStoppableScheduler *)addIndexItemsScheduler performBlock:v11];
   }
 }
@@ -4758,15 +4758,15 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
   return v7;
 }
 
-- (void)_doIndexItems:(id)a3 fromRefresh:(BOOL)a4 immediately:(BOOL)a5
+- (void)_doIndexItems:(id)items fromRefresh:(BOOL)refresh immediately:(BOOL)immediately
 {
-  v5 = a5;
-  v61 = a4;
+  immediatelyCopy = immediately;
+  refreshCopy = refresh;
   v94 = *MEMORY[0x1E69E9840];
-  v59 = a3;
+  itemsCopy = items;
   [(EFAssertableScheduler *)self->_stateTransitionScheduler assertIsExecuting:1];
-  v7 = [(EDSearchableIndex *)self state];
-  if ([v7 isActive])
+  state = [(EDSearchableIndex *)self state];
+  if ([state isActive])
   {
   }
 
@@ -4780,7 +4780,7 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v76 = [v59 count];
+        v76 = [itemsCopy count];
         _os_log_impl(&dword_1C61EF000, v54, OS_LOG_TYPE_INFO, "Requested %lu items to be indexed while inactive", buf, 0xCu);
       }
 
@@ -4789,15 +4789,15 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
     }
   }
 
-  if (v5)
+  if (immediatelyCopy)
   {
-    v9 = [(EDSearchableIndex *)self state];
-    [v9 setIndexImmediately:1];
+    state2 = [(EDSearchableIndex *)self state];
+    [state2 setIndexImmediately:1];
   }
 
-  v10 = [(EDSearchableIndex *)self state];
-  v11 = [v10 pendingItems];
-  v12 = [v11 count];
+  state3 = [(EDSearchableIndex *)self state];
+  pendingItems = [state3 pendingItems];
+  v12 = [pendingItems count];
 
   v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v60 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -4807,7 +4807,7 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v59;
+  obj = itemsCopy;
   v13 = [obj countByEnumeratingWithState:&v71 objects:v93 count:16];
   if (v13)
   {
@@ -4822,47 +4822,47 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
         }
 
         v16 = *(*(&v71 + 1) + 8 * i);
-        v17 = [v16 identifier];
-        v18 = [(EDSearchableIndex *)self state];
-        v19 = [v18 pendingIdentifierRemovals];
-        v20 = [v19 identifiers];
-        v21 = [v20 containsObject:v17];
+        identifier = [v16 identifier];
+        state4 = [(EDSearchableIndex *)self state];
+        pendingIdentifierRemovals = [state4 pendingIdentifierRemovals];
+        identifiers = [pendingIdentifierRemovals identifiers];
+        v21 = [identifiers containsObject:identifier];
 
         if (!v21)
         {
-          v23 = [(EDSearchableIndex *)self state];
-          v24 = [v23 pendingItems];
-          v25 = [v24 count];
+          state5 = [(EDSearchableIndex *)self state];
+          pendingItems2 = [state5 pendingItems];
+          v25 = [pendingItems2 count];
 
-          v26 = [(EDSearchableIndex *)self state];
-          v27 = [v26 pendingItems];
-          v22 = [v27 lastObject];
+          state6 = [(EDSearchableIndex *)self state];
+          pendingItems3 = [state6 pendingItems];
+          lastObject = [pendingItems3 lastObject];
 
-          v28 = [(EDSearchableIndex *)self state];
-          v29 = [v28 indexItem:v16];
+          state7 = [(EDSearchableIndex *)self state];
+          v29 = [state7 indexItem:v16];
 
           if (v29 <= 1)
           {
             if (!v29)
             {
-              v36 = [v16 items];
-              v37 = [v36 copy];
+              items = [v16 items];
+              v37 = [items copy];
 
               preprocessingScheduler = self->_preprocessingScheduler;
               v66[0] = MEMORY[0x1E69E9820];
               v66[1] = 3221225472;
               v66[2] = __59__EDSearchableIndex__doIndexItems_fromRefresh_immediately___block_invoke;
               v66[3] = &unk_1E8255940;
-              v30 = v37;
-              v67 = v30;
-              v68 = self;
+              referenceItem2 = v37;
+              v67 = referenceItem2;
+              selfCopy = self;
               v69 = v16;
-              v70 = v61;
+              v70 = refreshCopy;
               [(EFStoppableScheduler *)preprocessingScheduler performBlock:v66];
-              v39 = [v16 referenceItem];
-              [v63 addObject:v39];
+              referenceItem = [v16 referenceItem];
+              [v63 addObject:referenceItem];
 
-              v31 = v67;
+              items2 = v67;
               goto LABEL_26;
             }
 
@@ -4871,35 +4871,35 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
               goto LABEL_28;
             }
 
-            v30 = [v16 referenceItem];
-            [v63 addObject:v30];
+            referenceItem2 = [v16 referenceItem];
+            [v63 addObject:referenceItem2];
           }
 
           else if (v29 == 2)
           {
-            v30 = [v16 referenceItem];
-            [v60 addObject:v30];
+            referenceItem2 = [v16 referenceItem];
+            [v60 addObject:referenceItem2];
           }
 
           else
           {
             if (v29 == 3)
             {
-              v32 = [v16 referenceItem];
-              [v62 addObject:v32];
+              referenceItem3 = [v16 referenceItem];
+              [v62 addObject:referenceItem3];
 
-              v33 = [(EDSearchableIndex *)self state];
-              v34 = [v33 pendingItems];
-              v35 = v25 == [v34 count];
+              state8 = [(EDSearchableIndex *)self state];
+              pendingItems4 = [state8 pendingItems];
+              v35 = v25 == [pendingItems4 count];
 
               if (!v35)
               {
                 goto LABEL_28;
               }
 
-              v30 = [(EDSearchableIndex *)self analytics];
-              v31 = [v22 items];
-              [v30 didEvictItems:v31];
+              referenceItem2 = [(EDSearchableIndex *)self analytics];
+              items2 = [lastObject items];
+              [referenceItem2 didEvictItems:items2];
             }
 
             else
@@ -4909,9 +4909,9 @@ EDSearchableIndexPendingItem *__57__EDSearchableIndex__indexItems_fromRefresh_im
                 goto LABEL_28;
               }
 
-              v30 = [(EDSearchableIndex *)self analytics];
-              v31 = [v16 items];
-              [v30 didEvictItems:v31];
+              referenceItem2 = [(EDSearchableIndex *)self analytics];
+              items2 = [v16 items];
+              [referenceItem2 didEvictItems:items2];
             }
 
 LABEL_26:
@@ -4920,12 +4920,12 @@ LABEL_26:
           goto LABEL_28;
         }
 
-        v22 = +[EDSearchableIndex log];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+        lastObject = +[EDSearchableIndex log];
+        if (os_log_type_enabled(lastObject, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v76 = v17;
-          _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "Skipping index of %{public}@ identifier because it is present in self.state.pendingIdentifierRemovals", buf, 0xCu);
+          v76 = identifier;
+          _os_log_impl(&dword_1C61EF000, lastObject, OS_LOG_TYPE_DEFAULT, "Skipping index of %{public}@ identifier because it is present in self.state.pendingIdentifierRemovals", buf, 0xCu);
         }
 
 LABEL_28:
@@ -4938,9 +4938,9 @@ LABEL_28:
   }
 
   v40 = [v62 count];
-  v41 = [(EDSearchableIndex *)self state];
-  v42 = [v41 pendingItems];
-  v43 = [v42 count];
+  state9 = [(EDSearchableIndex *)self state];
+  pendingItems5 = [state9 pendingItems];
+  v43 = [pendingItems5 count];
 
   v44 = [v63 count];
   v57 = [(EDSearchableIndex *)self _identifiersStringForItems:v62 maxLength:150];
@@ -4953,9 +4953,9 @@ LABEL_28:
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
     v48 = [obj count];
-    v49 = [(EDSearchableIndex *)self state];
-    v50 = [v49 pendingItems];
-    v51 = [v50 count];
+    state10 = [(EDSearchableIndex *)self state];
+    pendingItems6 = [state10 pendingItems];
+    v51 = [pendingItems6 count];
     *buf = 134220034;
     v76 = v48;
     v77 = 2048;
@@ -4973,20 +4973,20 @@ LABEL_28:
     v89 = 2048;
     v90 = v51;
     v91 = 1024;
-    v92 = v61;
+    v92 = refreshCopy;
     _os_log_impl(&dword_1C61EF000, v47, OS_LOG_TYPE_DEFAULT, "Requested %lu items to be indexed (new: %lu %{public}@ existing: %{public}@ deferred: %lu preprocess: %lu %{public}@ pending: %lu) fromRefresh: %{BOOL}d", buf, 0x58u);
   }
 
   if (v40)
   {
-    if (v61)
+    if (refreshCopy)
     {
-      v52 = [v62 lastObject];
-      v53 = [v52 dateReceived];
-      [(EDSearchableIndex *)self _queueConsumeBudgetItemCount:v40 lastItemDateReceived:v53];
+      lastObject2 = [v62 lastObject];
+      dateReceived = [lastObject2 dateReceived];
+      [(EDSearchableIndex *)self _queueConsumeBudgetItemCount:v40 lastItemDateReceived:dateReceived];
     }
 
-    [(EDSearchableIndex *)self _queueTransitionFromRefresh:v61, v56];
+    [(EDSearchableIndex *)self _queueTransitionFromRefresh:refreshCopy, v56];
   }
 
 LABEL_40:
@@ -5136,26 +5136,26 @@ id __59__EDSearchableIndex__doIndexItems_fromRefresh_immediately___block_invoke_
   return v2;
 }
 
-- (void)removeItemsWithIdentifiers:(id)a3
+- (void)removeItemsWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndex *)self currentReasons];
-  [(EDSearchableIndex *)self removeItemsWithIdentifiers:v5 reasons:v4 fromRefresh:0];
+  identifiersCopy = identifiers;
+  currentReasons = [(EDSearchableIndex *)self currentReasons];
+  [(EDSearchableIndex *)self removeItemsWithIdentifiers:identifiersCopy reasons:currentReasons fromRefresh:0];
 }
 
-- (void)removeItemsWithIdentifiers:(id)a3 reasons:(id)a4 fromRefresh:(BOOL)a5
+- (void)removeItemsWithIdentifiers:(id)identifiers reasons:(id)reasons fromRefresh:(BOOL)refresh
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  reasonsCopy = reasons;
+  if ([identifiersCopy count])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__EDSearchableIndex_removeItemsWithIdentifiers_reasons_fromRefresh___block_invoke;
     aBlock[3] = &unk_1E8256D80;
     aBlock[4] = self;
-    v20 = a5;
-    v19 = v9;
+    refreshCopy = refresh;
+    v19 = reasonsCopy;
     v10 = _Block_copy(aBlock);
     stateTransitionScheduler = self->_stateTransitionScheduler;
     v13[0] = MEMORY[0x1E69E9820];
@@ -5163,9 +5163,9 @@ id __59__EDSearchableIndex__doIndexItems_fromRefresh_immediately___block_invoke_
     v13[2] = __68__EDSearchableIndex_removeItemsWithIdentifiers_reasons_fromRefresh___block_invoke_352;
     v13[3] = &unk_1E8256DA8;
     v16 = v10;
-    v14 = v8;
-    v15 = self;
-    v17 = a5;
+    v14 = identifiersCopy;
+    selfCopy = self;
+    refreshCopy2 = refresh;
     v12 = v10;
     [(EFAssertableScheduler *)stateTransitionScheduler performBlock:v13];
   }
@@ -5272,16 +5272,16 @@ uint64_t __68__EDSearchableIndex_removeItemsWithIdentifiers_reasons_fromRefresh_
   return [v5 _queueTransitionFromRefresh:v3 & 1];
 }
 
-- (void)removeItemsForDomainIdentifier:(id)a3
+- (void)removeItemsForDomainIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke;
   v6[3] = &unk_1E8250128;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(EDSearchableIndex *)self _dataSourceScheduleWork:v6];
 }
 
@@ -5333,8 +5333,8 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:2399 description:{@"%s can only be called from unit tests", "-[EDSearchableIndex test_resetSpotlightIndex]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:2399 description:{@"%s can only be called from unit tests", "-[EDSearchableIndex test_resetSpotlightIndex]"}];
   }
 
   v4 = dispatch_semaphore_create(0);
@@ -5347,27 +5347,27 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
   [(EDSearchableIndex *)self resetIndexForNewLibraryWithCompletionHandler:v9];
   while (dispatch_semaphore_wait(v5, 0x64uLL))
   {
-    v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
     v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.01];
-    [v6 runUntilDate:v7];
+    [currentRunLoop runUntilDate:v7];
   }
 }
 
-- (void)removeMessages:(id)a3
+- (void)removeMessages:(id)messages
 {
-  v4 = [a3 ef_mapSelector:sel_persistentID];
+  v4 = [messages ef_mapSelector:sel_persistentID];
   [(EDSearchableIndex *)self removeItemsWithIdentifiers:?];
 }
 
-- (void)_processAttachmentItemsForSuggestionsService:(id)a3
+- (void)_processAttachmentItemsForSuggestionsService:(id)service
 {
   v36 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v26 = [(EDSearchableIndex *)self _suggestionsService];
-  if (v26)
+  serviceCopy = service;
+  _suggestionsService = [(EDSearchableIndex *)self _suggestionsService];
+  if (_suggestionsService)
   {
-    v25 = [v27 firstObject];
-    if (v25)
+    firstObject = [serviceCopy firstObject];
+    if (firstObject)
     {
       v4 = objc_opt_new();
       v5 = objc_opt_new();
@@ -5376,7 +5376,7 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      obj = v27;
+      obj = serviceCopy;
       v7 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v7)
       {
@@ -5390,12 +5390,12 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
               objc_enumerationMutation(obj);
             }
 
-            v10 = [*(*(&v29 + 1) + 8 * i) attributeSet];
-            v11 = [v10 contentType];
-            v12 = v11;
-            if (v11)
+            attributeSet = [*(*(&v29 + 1) + 8 * i) attributeSet];
+            contentType = [attributeSet contentType];
+            v12 = contentType;
+            if (contentType)
             {
-              v13 = v11;
+              v13 = contentType;
             }
 
             else
@@ -5405,11 +5405,11 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
 
             [v4 addObject:v13];
 
-            v14 = [v10 displayName];
-            v15 = v14;
-            if (v14)
+            displayName = [attributeSet displayName];
+            v15 = displayName;
+            if (displayName)
             {
-              v16 = v14;
+              v16 = displayName;
             }
 
             else
@@ -5419,12 +5419,12 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
 
             [v5 addObject:v16];
 
-            v17 = [v10 contentURL];
-            v18 = [v17 path];
-            v19 = v18;
-            if (v18)
+            contentURL = [attributeSet contentURL];
+            path = [contentURL path];
+            v19 = path;
+            if (path)
             {
-              v20 = v18;
+              v20 = path;
             }
 
             else
@@ -5441,10 +5441,10 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
         while (v7);
       }
 
-      v21 = [v25 attributeSet];
-      [v21 setAttachmentTypes:v4];
-      [v21 setAttachmentNames:v5];
-      [v21 setAttachmentPaths:v6];
+      attributeSet2 = [firstObject attributeSet];
+      [attributeSet2 setAttachmentTypes:v4];
+      [attributeSet2 setAttachmentNames:v5];
+      [attributeSet2 setAttachmentPaths:v6];
       v22 = +[EDSearchableIndex log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -5453,7 +5453,7 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
         _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "Processing attachment items %@ with suggestions service", buf, 0xCu);
       }
 
-      [v26 dissectAttachmentsFromSearchableItem:v25 options:3 withCompletion:&__block_literal_global_361];
+      [_suggestionsService dissectAttachmentsFromSearchableItem:firstObject options:3 withCompletion:&__block_literal_global_361];
     }
 
     else
@@ -5465,7 +5465,7 @@ uint64_t __52__EDSearchableIndex_removeItemsForDomainIdentifier___block_invoke_2
       }
     }
 
-    v23 = v25;
+    v23 = firstObject;
   }
 
   else
@@ -5521,46 +5521,46 @@ uint64_t __40__EDSearchableIndex__suggestionsService__block_invoke()
   return [v2 setSyncTimeout:1.0];
 }
 
-- (void)recordDataNeedsToBeDonatedForMessages:(id)a3
+- (void)recordDataNeedsToBeDonatedForMessages:(id)messages
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndex *)self dataSource];
-  [v4 searchableIndex:self dataNeedsToBeDonatedForMessages:v5];
+  messagesCopy = messages;
+  dataSource = [(EDSearchableIndex *)self dataSource];
+  [dataSource searchableIndex:self dataNeedsToBeDonatedForMessages:messagesCopy];
 }
 
-- (void)recordMessagesNeedToBeDonated:(id)a3 indexingType:(int64_t)a4
+- (void)recordMessagesNeedToBeDonated:(id)donated indexingType:(int64_t)type
 {
-  v7 = a3;
-  v6 = [(EDSearchableIndex *)self dataSource];
-  [v6 searchableIndex:self messagesNeedToBeDonated:v7 indexingType:a4];
+  donatedCopy = donated;
+  dataSource = [(EDSearchableIndex *)self dataSource];
+  [dataSource searchableIndex:self messagesNeedToBeDonated:donatedCopy indexingType:type];
 }
 
-- (void)indexMessages:(id)a3 includeBody:(BOOL)a4 indexingType:(int64_t)a5
+- (void)indexMessages:(id)messages includeBody:(BOOL)body indexingType:(int64_t)type
 {
-  v7 = a3;
+  messagesCopy = messages;
   [(EDSearchableIndex *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDSearchableIndex indexMessages:includeBody:indexingType:]", "EDSearchableIndex.m", 2491, "0");
 }
 
-- (void)markMessagesAsPrinted:(id)a3
+- (void)markMessagesAsPrinted:(id)printed
 {
-  v5 = a3;
+  printedCopy = printed;
   [(EDSearchableIndex *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDSearchableIndex markMessagesAsPrinted:]", "EDSearchableIndex.m", 2495, "0");
 }
 
-- (void)attachmentBecameAvailable:(id)a3
+- (void)attachmentBecameAvailable:(id)available
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [available object];
+  if (object)
   {
-    v6 = v4;
+    v6 = object;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 persistentID];
-      if (v5)
+      persistentID = [v6 persistentID];
+      if (persistentID)
       {
-        [(EDSearchableIndex *)self indexAttachmentsForMessageWithIdentifier:v5 immediately:1];
+        [(EDSearchableIndex *)self indexAttachmentsForMessageWithIdentifier:persistentID immediately:1];
       }
     }
   }
@@ -5568,7 +5568,7 @@ uint64_t __40__EDSearchableIndex__suggestionsService__block_invoke()
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)richLinkBecameAvailable:(id)a3
+- (void)richLinkBecameAvailable:(id)available
 {
   v4 = +[EDSearchableIndex log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -5584,8 +5584,8 @@ uint64_t __40__EDSearchableIndex__suggestionsService__block_invoke()
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:2569 description:{@"%s can only be called from unit tests", "-[EDSearchableIndex test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndex.m" lineNumber:2569 description:{@"%s can only be called from unit tests", "-[EDSearchableIndex test_tearDown]"}];
   }
 
   [(EFStoppableScheduler *)self->_dataSourceScheduler stopAndWait];

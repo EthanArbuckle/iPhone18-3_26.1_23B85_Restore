@@ -1,28 +1,28 @@
 @interface NSString
-+ (NSString)stringWithFourCC:(unsigned int)a3;
-+ (id)sanitizedHexString:(id)a3;
++ (NSString)stringWithFourCC:(unsigned int)c;
++ (id)sanitizedHexString:(id)string;
 @end
 
 @implementation NSString
 
-+ (NSString)stringWithFourCC:(unsigned int)a3
++ (NSString)stringWithFourCC:(unsigned int)c
 {
-  v6 = bswap32(a3) >> 16;
-  v5[1] = BYTE2(a3);
-  v5[0] = HIBYTE(a3);
+  v6 = bswap32(c) >> 16;
+  v5[1] = BYTE2(c);
+  v5[0] = HIBYTE(c);
   v7 = 0;
   v3 = [NSString stringWithCString:v5 encoding:4];
 
   return v3;
 }
 
-+ (id)sanitizedHexString:(id)a3
++ (id)sanitizedHexString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSCharacterSet characterSetWithCharactersInString:@"01234567890ABCDEFabcdef"];
-  v5 = [v4 invertedSet];
+  invertedSet = [v4 invertedSet];
 
-  v6 = [v3 componentsSeparatedByCharactersInSet:v5];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v7 = [v6 componentsJoinedByString:&stru_100025B80];
 

@@ -1,11 +1,11 @@
 @interface HKSleepHealthStore
-+ (BOOL)_areAllSamplesSleepTrackingSamples:(id)a3;
++ (BOOL)_areAllSamplesSleepTrackingSamples:(id)samples;
 + (NSString)taskIdentifier;
-- (HKSleepHealthStore)initWithHealthStore:(id)a3;
-- (void)saveSleepTrackingSamples:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5;
+- (HKSleepHealthStore)initWithHealthStore:(id)store;
+- (void)saveSleepTrackingSamples:(id)samples replacingSamplesInDateInterval:(id)interval completion:(id)completion;
 - (void)startSleepTrackingSession;
 - (void)stopSleepTrackingSession;
-- (void)updateCurrentSleepSchedules:(id)a3 sleepDurationGoal:(id)a4 completion:(id)a5;
+- (void)updateCurrentSleepSchedules:(id)schedules sleepDurationGoal:(id)goal completion:(id)completion;
 @end
 
 @implementation HKSleepHealthStore
@@ -17,9 +17,9 @@
   return NSStringFromClass(v2);
 }
 
-- (HKSleepHealthStore)initWithHealthStore:(id)a3
+- (HKSleepHealthStore)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = HKSleepHealthStore;
   v6 = [(HKSleepHealthStore *)&v15 init];
@@ -29,11 +29,11 @@
     scheduler = v6->_scheduler;
     v6->_scheduler = v7;
 
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v9 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v10 = [objc_opt_class() taskIdentifier];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v9 initWithHealthStore:v5 taskIdentifier:v10 exportedObject:v6 taskUUID:v11];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v12 = [v9 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v6 taskUUID:uUID];
     proxyProvider = v6->_proxyProvider;
     v6->_proxyProvider = v12;
   }
@@ -41,12 +41,12 @@
   return v6;
 }
 
-- (void)updateCurrentSleepSchedules:(id)a3 sleepDurationGoal:(id)a4 completion:(id)a5
+- (void)updateCurrentSleepSchedules:(id)schedules sleepDurationGoal:(id)goal completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schedulesCopy = schedules;
+  goalCopy = goal;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
@@ -55,20 +55,20 @@
     *buf = 138543618;
     v27 = objc_opt_class();
     v28 = 2112;
-    v29 = v8;
+    v29 = schedulesCopy;
     v13 = v27;
     _os_log_impl(&dword_269BCF000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating current sleep schedules: %@", buf, 0x16u);
   }
 
-  v14 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v14 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __79__HKSleepHealthStore_updateCurrentSleepSchedules_sleepDurationGoal_completion___block_invoke;
   v22[3] = &unk_279C82580;
-  v23 = v8;
-  v24 = v9;
+  v23 = schedulesCopy;
+  v24 = goalCopy;
   v25 = v14;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -76,8 +76,8 @@
   v20[3] = &unk_279C825A8;
   v21 = v25;
   v16 = v25;
-  v17 = v9;
-  v18 = v8;
+  v17 = goalCopy;
+  v18 = schedulesCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v22 errorHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -173,11 +173,11 @@ void __46__HKSleepHealthStore_stopSleepTrackingSession__block_invoke_2(uint64_t 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_areAllSamplesSleepTrackingSamples:(id)a3
++ (BOOL)_areAllSamplesSleepTrackingSamples:(id)samples
 {
   v3 = MEMORY[0x277CCD0C0];
   v4 = *MEMORY[0x277CCBAB8];
-  v5 = a3;
+  samplesCopy = samples;
   v6 = [v3 categoryTypeForIdentifier:v4];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -185,7 +185,7 @@ void __46__HKSleepHealthStore_stopSleepTrackingSession__block_invoke_2(uint64_t 
   v9[3] = &unk_279C82618;
   v10 = v6;
   v7 = v6;
-  LOBYTE(v4) = [v5 hk_allObjectsPassTest:v9];
+  LOBYTE(v4) = [samplesCopy hk_allObjectsPassTest:v9];
 
   return v4;
 }
@@ -198,17 +198,17 @@ uint64_t __57__HKSleepHealthStore__areAllSamplesSleepTrackingSamples___block_inv
   return v4;
 }
 
-- (void)saveSleepTrackingSamples:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5
+- (void)saveSleepTrackingSamples:(id)samples replacingSamplesInDateInterval:(id)interval completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  samplesCopy = samples;
+  intervalCopy = interval;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = MEMORY[0x277CCC320];
   v12 = *MEMORY[0x277CCC320];
   v13 = os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (intervalCopy)
   {
     if (!v13)
     {
@@ -219,9 +219,9 @@ uint64_t __57__HKSleepHealthStore__areAllSamplesSleepTrackingSamples___block_inv
     *buf = 138543874;
     v34 = objc_opt_class();
     v35 = 2112;
-    v36 = v9;
+    v36 = intervalCopy;
     v37 = 2112;
-    v38 = v8;
+    v38 = samplesCopy;
     v15 = v34;
     v16 = "[%{public}@] replacing sleep samples in %@ with sleep tracking samples: %@";
     v17 = v14;
@@ -239,7 +239,7 @@ uint64_t __57__HKSleepHealthStore__areAllSamplesSleepTrackingSamples___block_inv
     *buf = 138543618;
     v34 = objc_opt_class();
     v35 = 2112;
-    v36 = v8;
+    v36 = samplesCopy;
     v15 = v34;
     v16 = "[%{public}@] saving sleep tracking samples: %@";
     v17 = v14;
@@ -249,24 +249,24 @@ uint64_t __57__HKSleepHealthStore__areAllSamplesSleepTrackingSamples___block_inv
   _os_log_impl(&dword_269BCF000, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
 
 LABEL_7:
-  if ([objc_opt_class() _areAllSamplesSleepTrackingSamples:v8])
+  if ([objc_opt_class() _areAllSamplesSleepTrackingSamples:samplesCopy])
   {
-    v19 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+    v19 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
     proxyProvider = self->_proxyProvider;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __89__HKSleepHealthStore_saveSleepTrackingSamples_replacingSamplesInDateInterval_completion___block_invoke;
     v29[3] = &unk_279C82580;
-    v30 = v8;
-    v31 = v9;
+    v30 = samplesCopy;
+    v31 = intervalCopy;
     v32 = v19;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __89__HKSleepHealthStore_saveSleepTrackingSamples_replacingSamplesInDateInterval_completion___block_invoke_2;
     v27[3] = &unk_279C825A8;
-    v10 = v32;
-    v28 = v10;
+    completionCopy = v32;
+    v28 = completionCopy;
     [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v29 errorHandler:v27];
 
     v21 = v30;
@@ -287,7 +287,7 @@ LABEL_7:
     }
 
     v21 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"attempted to save non-sleep samples"];
-    (*(v10 + 2))(v10, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
   }
 
   v23 = *MEMORY[0x277D85DE8];

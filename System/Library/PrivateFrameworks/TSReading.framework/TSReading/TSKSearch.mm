@@ -1,11 +1,11 @@
 @interface TSKSearch
-- (TSKSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5;
+- (TSKSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation TSKSearch
 
-- (TSKSearch)initWithString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5
+- (TSKSearch)initWithString:(id)string options:(unint64_t)options hitBlock:(id)block
 {
   v11.receiver = self;
   v11.super_class = TSKSearch;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    [(TSKSearch *)v8 setString:a3];
-    [(TSKSearch *)v9 setOptions:a4];
-    [(TSKSearch *)v9 setHitBlock:a5];
+    [(TSKSearch *)v8 setString:string];
+    [(TSKSearch *)v9 setOptions:options];
+    [(TSKSearch *)v9 setHitBlock:block];
     [(TSKSearch *)v9 setIsComplete:0];
   }
 

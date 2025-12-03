@@ -1,27 +1,27 @@
 @interface ICEncryptionObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)validate;
-- (ICEncryptionObject)initWithCoder:(id)a3;
-- (ICEncryptionObject)initWithMetadata:(id)a3 wrappedEncryptionKey:(id)a4 encryptedData:(id)a5;
-- (ICEncryptionObject)initWithSerializedData:(id)a3;
+- (ICEncryptionObject)initWithCoder:(id)coder;
+- (ICEncryptionObject)initWithMetadata:(id)metadata wrappedEncryptionKey:(id)key encryptedData:(id)data;
+- (ICEncryptionObject)initWithSerializedData:(id)data;
 - (id)description;
 - (id)serialized;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICEncryptionObject
 
-- (ICEncryptionObject)initWithMetadata:(id)a3 wrappedEncryptionKey:(id)a4 encryptedData:(id)a5
+- (ICEncryptionObject)initWithMetadata:(id)metadata wrappedEncryptionKey:(id)key encryptedData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  keyCopy = key;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = ICEncryptionObject;
   v12 = [(ICEncryptionObject *)&v20 init];
   v13 = v12;
-  if (v12 && (objc_storeStrong(&v12->_metadata, a3), v14 = [v10 copy], wrappedEncryptionKey = v13->_wrappedEncryptionKey, v13->_wrappedEncryptionKey = v14, wrappedEncryptionKey, v16 = objc_msgSend(v11, "copy"), encryptedData = v13->_encryptedData, v13->_encryptedData = v16, encryptedData, !-[ICEncryptionObject validate](v13, "validate")))
+  if (v12 && (objc_storeStrong(&v12->_metadata, metadata), v14 = [keyCopy copy], wrappedEncryptionKey = v13->_wrappedEncryptionKey, v13->_wrappedEncryptionKey = v14, wrappedEncryptionKey, v16 = objc_msgSend(dataCopy, "copy"), encryptedData = v13->_encryptedData, v13->_encryptedData = v16, encryptedData, !-[ICEncryptionObject validate](v13, "validate")))
   {
     v18 = 0;
   }
@@ -39,38 +39,38 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICEncryptionObject *)self metadata];
-  v7 = [(ICEncryptionObject *)self wrappedEncryptionKey];
-  v8 = [v7 ic_sha256];
-  v9 = [(ICEncryptionObject *)self encryptedData];
-  v10 = [v9 ic_sha256];
-  v11 = [v3 stringWithFormat:@"<%@: %p, metadata: %@, wrappedEncryptionKey.sha256: %@, encryptedData.sha256: %@>", v5, self, v6, v8, v10];
+  metadata = [(ICEncryptionObject *)self metadata];
+  wrappedEncryptionKey = [(ICEncryptionObject *)self wrappedEncryptionKey];
+  ic_sha256 = [wrappedEncryptionKey ic_sha256];
+  encryptedData = [(ICEncryptionObject *)self encryptedData];
+  ic_sha2562 = [encryptedData ic_sha256];
+  v11 = [v3 stringWithFormat:@"<%@: %p, metadata: %@, wrappedEncryptionKey.sha256: %@, encryptedData.sha256: %@>", v5, self, metadata, ic_sha256, ic_sha2562];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [v5 metadata];
-  v7 = [(ICEncryptionObject *)self metadata];
-  if ([v6 isEqual:v7])
+  metadata = [v5 metadata];
+  metadata2 = [(ICEncryptionObject *)self metadata];
+  if ([metadata isEqual:metadata2])
   {
-    v8 = [v5 wrappedEncryptionKey];
-    v9 = [(ICEncryptionObject *)self wrappedEncryptionKey];
-    if ([v8 isEqual:v9])
+    wrappedEncryptionKey = [v5 wrappedEncryptionKey];
+    wrappedEncryptionKey2 = [(ICEncryptionObject *)self wrappedEncryptionKey];
+    if ([wrappedEncryptionKey isEqual:wrappedEncryptionKey2])
     {
-      v10 = [v5 encryptedData];
-      v11 = [(ICEncryptionObject *)self encryptedData];
-      v12 = [v10 isEqual:v11];
+      encryptedData = [v5 encryptedData];
+      encryptedData2 = [(ICEncryptionObject *)self encryptedData];
+      v12 = [encryptedData isEqual:encryptedData2];
     }
 
     else
@@ -92,12 +92,12 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICEncryptionObject *)self metadata];
-    v5 = [v4 hash];
-    v6 = [(ICEncryptionObject *)self wrappedEncryptionKey];
-    v7 = [v6 hash];
-    v8 = [(ICEncryptionObject *)self encryptedData];
-    [v8 hash];
+    metadata = [(ICEncryptionObject *)self metadata];
+    v5 = [metadata hash];
+    wrappedEncryptionKey = [(ICEncryptionObject *)self wrappedEncryptionKey];
+    v7 = [wrappedEncryptionKey hash];
+    encryptedData = [(ICEncryptionObject *)self encryptedData];
+    [encryptedData hash];
     self->_hash = ICHashWithHashKeys(v5, v9, v10, v11, v12, v13, v14, v15, v7);
 
     return self->_hash;
@@ -106,31 +106,31 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICEncryptionObject *)self metadata];
-  v6 = [v5 serializedData];
-  [v4 encodeObject:v6 forKey:@"unauthenticatedMetadata"];
+  coderCopy = coder;
+  metadata = [(ICEncryptionObject *)self metadata];
+  serializedData = [metadata serializedData];
+  [coderCopy encodeObject:serializedData forKey:@"unauthenticatedMetadata"];
 
-  v7 = [(ICEncryptionObject *)self metadata];
-  v8 = [v7 authenticatedData];
-  [v4 encodeObject:v8 forKey:@"metadata"];
+  metadata2 = [(ICEncryptionObject *)self metadata];
+  authenticatedData = [metadata2 authenticatedData];
+  [coderCopy encodeObject:authenticatedData forKey:@"metadata"];
 
-  v9 = [(ICEncryptionObject *)self wrappedEncryptionKey];
-  [v4 encodeObject:v9 forKey:@"wrappedEncryptionKey"];
+  wrappedEncryptionKey = [(ICEncryptionObject *)self wrappedEncryptionKey];
+  [coderCopy encodeObject:wrappedEncryptionKey forKey:@"wrappedEncryptionKey"];
 
-  v10 = [(ICEncryptionObject *)self encryptedData];
-  [v4 encodeObject:v10 forKey:@"encryptedData"];
+  encryptedData = [(ICEncryptionObject *)self encryptedData];
+  [coderCopy encodeObject:encryptedData forKey:@"encryptedData"];
 }
 
-- (ICEncryptionObject)initWithCoder:(id)a3
+- (ICEncryptionObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unauthenticatedMetadata"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappedEncryptionKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unauthenticatedMetadata"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappedEncryptionKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
 
   if (v6)
   {
@@ -164,7 +164,7 @@
     }
 
 LABEL_18:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
@@ -180,28 +180,28 @@ LABEL_18:
   }
 
   self = p_isa;
-  v15 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v15;
+  return selfCopy;
 }
 
-- (ICEncryptionObject)initWithSerializedData:(id)a3
+- (ICEncryptionObject)initWithSerializedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ICEncryptionObject_initWithSerializedData___block_invoke;
   block[3] = &unk_278194B00;
-  v5 = self;
-  v13 = v5;
+  selfCopy = self;
+  v13 = selfCopy;
   if (initWithSerializedData__onceToken != -1)
   {
     dispatch_once(&initWithSerializedData__onceToken, block);
   }
 
   v11 = 0;
-  v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v11];
+  v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v11];
   v7 = v11;
   if (v7 || ([v6 validate] & 1) == 0)
   {
@@ -277,15 +277,15 @@ uint64_t __32__ICEncryptionObject_serialized__block_invoke()
 
 - (BOOL)validate
 {
-  v3 = [(ICEncryptionObject *)self metadata];
-  if (v3)
+  metadata = [(ICEncryptionObject *)self metadata];
+  if (metadata)
   {
-    v4 = v3;
-    v5 = [(ICEncryptionObject *)self wrappedEncryptionKey];
-    if ([v5 length])
+    v4 = metadata;
+    wrappedEncryptionKey = [(ICEncryptionObject *)self wrappedEncryptionKey];
+    if ([wrappedEncryptionKey length])
     {
-      v6 = [(ICEncryptionObject *)self encryptedData];
-      v7 = [v6 length];
+      encryptedData = [(ICEncryptionObject *)self encryptedData];
+      v7 = [encryptedData length];
 
       if (v7)
       {

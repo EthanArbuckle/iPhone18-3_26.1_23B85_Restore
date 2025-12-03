@@ -1,16 +1,16 @@
 @interface MUBrowseCategoryViewController
 - (CGSize)preferredCellSize;
-- (MUBrowseCategoryViewController)initWithMapItem:(id)a3;
+- (MUBrowseCategoryViewController)initWithMapItem:(id)item;
 - (MUBrowseCategoryViewControllerDelegate)delegate;
 - (NSArray)buttons;
 - (double)collectionViewBottomPadding;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int)placeCardTypeForAnalytics;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_ppt_postNotificationName:(id)a3 object:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)setPreferredCellSize:(CGSize)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_ppt_postNotificationName:(id)name object:(id)object;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)setPreferredCellSize:(CGSize)size;
 - (void)setupCollectionView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -35,61 +35,61 @@
   return WeakRetained;
 }
 
-- (void)_ppt_postNotificationName:(id)a3 object:(id)a4
+- (void)_ppt_postNotificationName:(id)name object:(id)object
 {
   v5 = MEMORY[0x1E696AD88];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultCenter];
-  [v8 postNotificationName:v7 object:v6];
+  objectCopy = object;
+  nameCopy = name;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:objectCopy];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[MUBrowseCategoryCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [(MUBrowseCategoryViewController *)self preferredCellSize];
   [v9 setPreferredSize:?];
-  v10 = [(MUBrowseCategoryViewController *)self preferredCellTitleLabelFont];
-  [v9 setPreferredTitleLabelFont:v10];
+  preferredCellTitleLabelFont = [(MUBrowseCategoryViewController *)self preferredCellTitleLabelFont];
+  [v9 setPreferredTitleLabelFont:preferredCellTitleLabelFont];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [v9 setTitleLabelTextColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v9 setTitleLabelTextColor:labelColor];
 
-  v12 = [(MUBrowseCategoryViewController *)self browseItems];
-  v13 = [v6 row];
+  browseItems = [(MUBrowseCategoryViewController *)self browseItems];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndex:v13];
+  v14 = [browseItems objectAtIndex:v13];
   [v9 setBrowseItem:v14];
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(MUBrowseCategoryViewController *)self browseItems:a3];
+  v4 = [(MUBrowseCategoryViewController *)self browseItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MUBrowseCategoryViewController *)self browseItems];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  browseItems = [(MUBrowseCategoryViewController *)self browseItems];
+  v7 = [browseItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [(MUBrowseCategoryViewController *)self browseItems];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  browseItems2 = [(MUBrowseCategoryViewController *)self browseItems];
+  v10 = [browseItems2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -101,43 +101,43 @@
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(browseItems2);
         }
 
-        v14 = [*(*(&v28 + 1) + 8 * v13) searchCategory];
-        [v8 addObject:v14];
+        searchCategory = [*(*(&v28 + 1) + 8 * v13) searchCategory];
+        [v8 addObject:searchCategory];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v11 = [browseItems2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [MEMORY[0x1E696F298] sharedService];
-  v16 = [v7 title];
-  v17 = [(MUBrowseCategoryViewController *)self mapItem];
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+  title = [v7 title];
+  mapItem = [(MUBrowseCategoryViewController *)self mapItem];
   Current = CFAbsoluteTimeGetCurrent();
-  v19 = [(MUBrowseCategoryViewController *)self placeCardTypeForAnalytics];
+  placeCardTypeForAnalytics = [(MUBrowseCategoryViewController *)self placeCardTypeForAnalytics];
   v20 = [v8 copy];
-  v21 = [v7 searchCategory];
-  [v15 capturePlaceCardUserAction:2004 onTarget:201 eventValue:v16 mapItem:v17 timestamp:v19 placeCardType:v20 categoriesDisplayed:Current categorySelected:v21];
+  searchCategory2 = [v7 searchCategory];
+  [mEMORY[0x1E696F298] capturePlaceCardUserAction:2004 onTarget:201 eventValue:title mapItem:mapItem timestamp:placeCardTypeForAnalytics placeCardType:v20 categoriesDisplayed:Current categorySelected:searchCategory2];
 
-  v22 = [v7 searchCategory];
+  searchCategory3 = [v7 searchCategory];
 
-  if (v22)
+  if (searchCategory3)
   {
-    v23 = [(MUBrowseCategoryViewController *)self delegate];
+    delegate = [(MUBrowseCategoryViewController *)self delegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(MUBrowseCategoryViewController *)self delegate];
-      v26 = [v7 searchCategory];
-      [v25 categoryBrowseViewController:self didTapOnSearchCategory:v26];
+      delegate2 = [(MUBrowseCategoryViewController *)self delegate];
+      searchCategory4 = [v7 searchCategory];
+      [delegate2 categoryBrowseViewController:self didTapOnSearchCategory:searchCategory4];
     }
   }
 
@@ -146,8 +146,8 @@
 
 - (NSArray)buttons
 {
-  v3 = [(MUBrowseCategoryViewController *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(MUBrowseCategoryViewController *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   if (v4 < 1)
   {
@@ -156,15 +156,15 @@
 
   else
   {
-    v5 = [(MUBrowseCategoryViewController *)self collectionView];
-    [v5 layoutIfNeeded];
+    collectionView2 = [(MUBrowseCategoryViewController *)self collectionView];
+    [collectionView2 layoutIfNeeded];
 
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
     for (i = 0; i != v4; ++i)
     {
       v8 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:0];
-      v9 = [(MUBrowseCategoryViewController *)self collectionView];
-      v10 = [v9 cellForItemAtIndexPath:v8];
+      collectionView3 = [(MUBrowseCategoryViewController *)self collectionView];
+      v10 = [collectionView3 cellForItemAtIndexPath:v8];
 
       if (v10)
       {
@@ -180,34 +180,34 @@
 
 - (int)placeCardTypeForAnalytics
 {
-  v2 = [(MUBrowseCategoryViewController *)self mapItem];
-  v3 = [v2 _browseCategory_placeCardType];
+  mapItem = [(MUBrowseCategoryViewController *)self mapItem];
+  _browseCategory_placeCardType = [mapItem _browseCategory_placeCardType];
 
-  return v3;
+  return _browseCategory_placeCardType;
 }
 
-- (void)setPreferredCellSize:(CGSize)a3
+- (void)setPreferredCellSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != self->_preferredCellSize.width || a3.height != self->_preferredCellSize.height)
+  height = size.height;
+  width = size.width;
+  if (size.width != self->_preferredCellSize.width || size.height != self->_preferredCellSize.height)
   {
-    self->_preferredCellSize = a3;
-    v6 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
-    [v6 setEstimatedItemSize:{width, height}];
+    self->_preferredCellSize = size;
+    collectionViewFlowLayout = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
+    [collectionViewFlowLayout setEstimatedItemSize:{width, height}];
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(MUBrowseCategoryViewController *)self collectionViewBottomPadding];
   v5 = -v4;
-  v6 = [(MUBrowseCategoryViewController *)self collectionViewBottomConstraint];
-  [v6 setConstant:v5];
+  collectionViewBottomConstraint = [(MUBrowseCategoryViewController *)self collectionViewBottomConstraint];
+  [collectionViewBottomConstraint setConstant:v5];
 
-  v8 = [(MUBrowseCategoryViewController *)self collectionView];
-  v7 = [v8 collectionViewLayout];
-  [v7 invalidateLayout];
+  collectionView = [(MUBrowseCategoryViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -216,21 +216,21 @@
   v25.receiver = self;
   v25.super_class = MUBrowseCategoryViewController;
   [(MUBrowseCategoryViewController *)&v25 viewDidLayoutSubviews];
-  v3 = [(MUBrowseCategoryViewController *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(MUBrowseCategoryViewController *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   if (v4 >= 1)
   {
-    v5 = [(MUBrowseCategoryViewController *)self browseItems];
-    v6 = [v5 firstObject];
-    v7 = [v6 searchCategory];
+    browseItems = [(MUBrowseCategoryViewController *)self browseItems];
+    firstObject = [browseItems firstObject];
+    searchCategory = [firstObject searchCategory];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [(MUBrowseCategoryViewController *)self browseItems];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    browseItems2 = [(MUBrowseCategoryViewController *)self browseItems];
+    v9 = [browseItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v9)
     {
       v10 = v9;
@@ -242,12 +242,12 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(browseItems2);
           }
 
-          v13 = [*(*(&v21 + 1) + 8 * v12) searchCategory];
-          v14 = [v13 subcategories];
-          v15 = [v14 count];
+          searchCategory2 = [*(*(&v21 + 1) + 8 * v12) searchCategory];
+          subcategories = [searchCategory2 subcategories];
+          v15 = [subcategories count];
 
           if (v15)
           {
@@ -259,7 +259,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v10 = [browseItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v10)
         {
           continue;
@@ -269,19 +269,19 @@
       }
     }
 
-    v13 = v7;
+    searchCategory2 = searchCategory;
 LABEL_12:
 
-    v16 = [(MUBrowseCategoryViewController *)self didDisplayCategoriesNotificationName];
-    [(MUBrowseCategoryViewController *)self _ppt_postNotificationName:v16 object:v13];
+    didDisplayCategoriesNotificationName = [(MUBrowseCategoryViewController *)self didDisplayCategoriesNotificationName];
+    [(MUBrowseCategoryViewController *)self _ppt_postNotificationName:didDisplayCategoriesNotificationName object:searchCategory2];
 
-    v17 = [(MUBrowseCategoryViewController *)self delegate];
+    delegate = [(MUBrowseCategoryViewController *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(MUBrowseCategoryViewController *)self delegate];
-      [v19 categoryBrowseViewControllerDidDisplayBrowseCategories:self];
+      delegate2 = [(MUBrowseCategoryViewController *)self delegate];
+      [delegate2 categoryBrowseViewControllerDidDisplayBrowseCategories:self];
     }
   }
 
@@ -299,8 +299,8 @@ LABEL_12:
   }
 
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  v4 = [(MUBrowseCategoryViewController *)self view];
-  [v4 frame];
+  view = [(MUBrowseCategoryViewController *)self view];
+  [view frame];
   v6 = v5;
 
   if (v6 <= 320.0)
@@ -310,24 +310,24 @@ LABEL_12:
     v3 = v7;
   }
 
-  v8 = [(MUBrowseCategoryViewController *)self view];
-  [v8 layoutMargins];
+  view2 = [(MUBrowseCategoryViewController *)self view];
+  [view2 layoutMargins];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(MUBrowseCategoryViewController *)self view];
-  [v13 frame];
+  view3 = [(MUBrowseCategoryViewController *)self view];
+  [view3 frame];
   Width = CGRectGetWidth(v27);
 
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if ([v16 isEqualToString:*MEMORY[0x1E69DDC50]])
+  if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC50]])
   {
     v17 = 85.0;
   }
 
-  else if ([viewWillLayoutSubviews_accessibilitySizeCategories containsObject:v16])
+  else if ([viewWillLayoutSubviews_accessibilitySizeCategories containsObject:preferredContentSizeCategory])
   {
     [v3 pointSize];
     v17 = 110.0;
@@ -344,15 +344,15 @@ LABEL_12:
     v17 = (Width - (v12 + v10)) * 0.25 + -0.75;
   }
 
-  v20 = [(MUBrowseCategoryViewController *)self preferredCellTitleLabelFont];
-  if (![v20 isEqual:v3])
+  preferredCellTitleLabelFont = [(MUBrowseCategoryViewController *)self preferredCellTitleLabelFont];
+  if (![preferredCellTitleLabelFont isEqual:v3])
   {
 
     [(MUBrowseCategoryViewController *)self setPreferredCellSize:v17, 56.0];
     [(MUBrowseCategoryViewController *)self setPreferredCellTitleLabelFont:v3];
 LABEL_16:
-    v25 = [(MUBrowseCategoryViewController *)self collectionView];
-    [v25 reloadData];
+    collectionView = [(MUBrowseCategoryViewController *)self collectionView];
+    [collectionView reloadData];
 
     goto LABEL_17;
   }
@@ -390,9 +390,9 @@ void __56__MUBrowseCategoryViewController_viewWillLayoutSubviews__block_invoke()
 
 - (double)collectionViewBottomPadding
 {
-  v2 = [(MUBrowseCategoryViewController *)self disableBottomPadding];
+  disableBottomPadding = [(MUBrowseCategoryViewController *)self disableBottomPadding];
   result = 0.0;
-  if (!v2)
+  if (!disableBottomPadding)
   {
     if (collectionViewBottomPadding_onceToken != -1)
     {
@@ -400,9 +400,9 @@ void __56__MUBrowseCategoryViewController_viewWillLayoutSubviews__block_invoke()
     }
 
     v4 = collectionViewBottomPadding_sizeCategoriesForDefaultPadding;
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v6 = [v5 preferredContentSizeCategory];
-    LODWORD(v4) = [v4 containsObject:v6];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+    LODWORD(v4) = [v4 containsObject:preferredContentSizeCategory];
 
     result = 15.0;
     if (v4)
@@ -440,83 +440,83 @@ void __61__MUBrowseCategoryViewController_collectionViewBottomPadding__block_inv
   v3 = objc_alloc_init(MUFixedToTopCollectionViewFlowLayout);
   [(MUBrowseCategoryViewController *)self setCollectionViewFlowLayout:v3];
 
-  v4 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
-  [v4 setScrollDirection:0];
+  collectionViewFlowLayout = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
+  [collectionViewFlowLayout setScrollDirection:0];
 
-  v5 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
-  [v5 setMinimumLineSpacing:15.0];
+  collectionViewFlowLayout2 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
+  [collectionViewFlowLayout2 setMinimumLineSpacing:15.0];
 
-  v6 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
-  [v6 setMinimumInteritemSpacing:0.0];
+  collectionViewFlowLayout3 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
+  [collectionViewFlowLayout3 setMinimumInteritemSpacing:0.0];
 
   v7 = [MUBrowseCategoryCollectionView alloc];
-  v8 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
-  v9 = [(MUBrowseCategoryCollectionView *)v7 initWithFrame:v8 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  collectionViewFlowLayout4 = [(MUBrowseCategoryViewController *)self collectionViewFlowLayout];
+  v9 = [(MUBrowseCategoryCollectionView *)v7 initWithFrame:collectionViewFlowLayout4 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(MUBrowseCategoryViewController *)self setCollectionView:v9];
 
-  v10 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v11 setAccessibilityIdentifier:@"VenuesBrowseCategoryView"];
+  collectionView2 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView2 setAccessibilityIdentifier:@"VenuesBrowseCategoryView"];
 
-  v12 = [(MUBrowseCategoryViewController *)self view];
-  v13 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v12 addSubview:v13];
+  view = [(MUBrowseCategoryViewController *)self view];
+  collectionView3 = [(MUBrowseCategoryViewController *)self collectionView];
+  [view addSubview:collectionView3];
 
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  v15 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v15 setBackgroundColor:v14];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  collectionView4 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView4 setBackgroundColor:clearColor];
 
-  v16 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v16 setDelegate:self];
+  collectionView5 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView5 setDelegate:self];
 
-  v17 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v17 setDataSource:self];
+  collectionView6 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView6 setDataSource:self];
 
-  v18 = [(MUBrowseCategoryViewController *)self collectionView];
+  collectionView7 = [(MUBrowseCategoryViewController *)self collectionView];
   v19 = objc_opt_class();
   v20 = +[MUBrowseCategoryCollectionViewCell reuseIdentifier];
-  [v18 registerClass:v19 forCellWithReuseIdentifier:v20];
+  [collectionView7 registerClass:v19 forCellWithReuseIdentifier:v20];
 
-  v21 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v21 setScrollEnabled:0];
+  collectionView8 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView8 setScrollEnabled:0];
 
-  v22 = [(MUBrowseCategoryViewController *)self collectionView];
-  [v22 setClipsToBounds:0];
+  collectionView9 = [(MUBrowseCategoryViewController *)self collectionView];
+  [collectionView9 setClipsToBounds:0];
 
-  v23 = [(MUBrowseCategoryViewController *)self collectionView];
-  v24 = [v23 bottomAnchor];
-  v25 = [(MUBrowseCategoryViewController *)self view];
-  v26 = [v25 layoutMarginsGuide];
-  v27 = [v26 bottomAnchor];
+  collectionView10 = [(MUBrowseCategoryViewController *)self collectionView];
+  bottomAnchor = [collectionView10 bottomAnchor];
+  view2 = [(MUBrowseCategoryViewController *)self view];
+  layoutMarginsGuide = [view2 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
   [(MUBrowseCategoryViewController *)self collectionViewBottomPadding];
-  v29 = [v24 constraintEqualToAnchor:v27 constant:-v28];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v28];
   [(MUBrowseCategoryViewController *)self setCollectionViewBottomConstraint:v29];
 
   v43 = MEMORY[0x1E696ACD8];
-  v50 = [(MUBrowseCategoryViewController *)self collectionView];
-  v48 = [v50 leadingAnchor];
-  v49 = [(MUBrowseCategoryViewController *)self view];
-  v47 = [v49 layoutMarginsGuide];
-  v46 = [v47 leadingAnchor];
-  v45 = [v48 constraintEqualToAnchor:v46];
+  collectionView11 = [(MUBrowseCategoryViewController *)self collectionView];
+  leadingAnchor = [collectionView11 leadingAnchor];
+  view3 = [(MUBrowseCategoryViewController *)self view];
+  layoutMarginsGuide2 = [view3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v51[0] = v45;
-  v44 = [(MUBrowseCategoryViewController *)self collectionView];
-  v41 = [v44 trailingAnchor];
-  v42 = [(MUBrowseCategoryViewController *)self view];
-  v30 = [v42 layoutMarginsGuide];
-  v31 = [v30 trailingAnchor];
-  v32 = [v41 constraintEqualToAnchor:v31];
+  collectionView12 = [(MUBrowseCategoryViewController *)self collectionView];
+  trailingAnchor = [collectionView12 trailingAnchor];
+  view4 = [(MUBrowseCategoryViewController *)self view];
+  layoutMarginsGuide3 = [view4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v51[1] = v32;
-  v33 = [(MUBrowseCategoryViewController *)self collectionView];
-  v34 = [v33 topAnchor];
-  v35 = [(MUBrowseCategoryViewController *)self view];
-  v36 = [v35 topAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  collectionView13 = [(MUBrowseCategoryViewController *)self collectionView];
+  topAnchor = [collectionView13 topAnchor];
+  view5 = [(MUBrowseCategoryViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[2] = v37;
-  v38 = [(MUBrowseCategoryViewController *)self collectionViewBottomConstraint];
-  v51[3] = v38;
+  collectionViewBottomConstraint = [(MUBrowseCategoryViewController *)self collectionViewBottomConstraint];
+  v51[3] = collectionViewBottomConstraint;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
   [v43 activateConstraints:v39];
 
@@ -529,25 +529,25 @@ void __61__MUBrowseCategoryViewController_collectionViewBottomPadding__block_inv
   v25.receiver = self;
   v25.super_class = MUBrowseCategoryViewController;
   [(MUBrowseCategoryViewController *)&v25 viewDidLoad];
-  v3 = [(MUBrowseCategoryViewController *)self view];
-  [v3 setPreservesSuperviewLayoutMargins:1];
+  view = [(MUBrowseCategoryViewController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
 
-  v4 = [(MUBrowseCategoryViewController *)self willStartDisplayCategoriesNotificationName];
-  [(MUBrowseCategoryViewController *)self _ppt_postNotificationName:v4 object:0];
+  willStartDisplayCategoriesNotificationName = [(MUBrowseCategoryViewController *)self willStartDisplayCategoriesNotificationName];
+  [(MUBrowseCategoryViewController *)self _ppt_postNotificationName:willStartDisplayCategoriesNotificationName object:0];
 
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(MUBrowseCategoryViewController *)self mapItem];
-  v7 = [v6 _browseCategories];
-  v8 = [v5 initWithCapacity:{objc_msgSend(v7, "count")}];
+  mapItem = [(MUBrowseCategoryViewController *)self mapItem];
+  _browseCategories = [mapItem _browseCategories];
+  v8 = [v5 initWithCapacity:{objc_msgSend(_browseCategories, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(MUBrowseCategoryViewController *)self mapItem];
-  v10 = [v9 _browseCategories];
+  mapItem2 = [(MUBrowseCategoryViewController *)self mapItem];
+  _browseCategories2 = [mapItem2 _browseCategories];
 
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v11 = [_browseCategories2 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -559,20 +559,20 @@ void __61__MUBrowseCategoryViewController_collectionViewBottomPadding__block_inv
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_browseCategories2);
         }
 
         v15 = *(*(&v21 + 1) + 8 * v14);
         v16 = [MUBrowseCategoryItem alloc];
-        v17 = [(MUBrowseCategoryViewController *)self traitCollection];
-        v18 = -[MUBrowseCategoryItem initWithCategory:nightMode:](v16, "initWithCategory:nightMode:", v15, [v17 userInterfaceStyle] == 2);
+        traitCollection = [(MUBrowseCategoryViewController *)self traitCollection];
+        v18 = -[MUBrowseCategoryItem initWithCategory:nightMode:](v16, "initWithCategory:nightMode:", v15, [traitCollection userInterfaceStyle] == 2);
         [v8 addObject:v18];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v12 = [_browseCategories2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v12);
@@ -585,18 +585,18 @@ void __61__MUBrowseCategoryViewController_collectionViewBottomPadding__block_inv
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (MUBrowseCategoryViewController)initWithMapItem:(id)a3
+- (MUBrowseCategoryViewController)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = MUBrowseCategoryViewController;
   v6 = [(MUBrowseCategoryViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    objc_storeStrong(&v6->_mapItem, item);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v7;

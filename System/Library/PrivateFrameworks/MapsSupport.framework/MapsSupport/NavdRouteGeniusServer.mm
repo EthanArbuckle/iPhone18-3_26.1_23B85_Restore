@@ -1,10 +1,10 @@
 @interface NavdRouteGeniusServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NavdRouteGeniusServer)init;
 - (id)uniqueName;
 - (void)_q_start;
 - (void)_q_stop;
-- (void)didUpdateRouteGenius:(id)a3;
+- (void)didUpdateRouteGenius:(id)genius;
 @end
 
 @implementation NavdRouteGeniusServer
@@ -58,24 +58,24 @@
   return [v2 description];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = GEOFindOrCreateLog();
   v9 = v8;
-  if (v7)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v31 = v7;
+      v31 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
     v10 = [NavdRouteGeniusXPCPeer alloc];
-    v11 = [(NavdRouteGeniusServer *)self activatable];
-    v12 = [(NavdRouteGeniusXPCPeer *)v10 initWithXPCConnection:v7 delegate:v11];
+    activatable = [(NavdRouteGeniusServer *)self activatable];
+    v12 = [(NavdRouteGeniusXPCPeer *)v10 initWithXPCConnection:connectionCopy delegate:activatable];
 
     objc_initWeak(buf, self);
     v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MNRouteGeniusDelegateProxy];
@@ -83,11 +83,11 @@
     v15 = [NSSet setWithObjects:v14, objc_opt_class(), 0];
     [v13 setClasses:v15 forSelector:"didUpdateRouteGenius:" argumentIndex:0 ofReply:0];
 
-    [v7 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
     v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MNRouteGeniusProxy];
-    [v7 setExportedInterface:v16];
+    [connectionCopy setExportedInterface:v16];
 
-    [v7 setExportedObject:v12];
+    [connectionCopy setExportedObject:v12];
     objc_initWeak(&location, v12);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -95,7 +95,7 @@
     v25[3] = &unk_100065110;
     objc_copyWeak(&v27, buf);
     objc_copyWeak(&v28, &location);
-    v17 = v7;
+    v17 = connectionCopy;
     v26 = v17;
     [v17 setInvalidationHandler:v25];
     queue = self->_queue;
@@ -137,12 +137,12 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a newConnection", buf, 0x26u);
   }
 
-  return v7 != 0;
+  return connectionCopy != 0;
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
+  geniusCopy = genius;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -150,8 +150,8 @@
   block[2] = sub_10002CDB8;
   block[3] = &unk_100064F58;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = geniusCopy;
+  v6 = geniusCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -176,8 +176,8 @@ LABEL_6:
   else
   {
     self->_isActive = 1;
-    v5 = [(NavdRouteGeniusServer *)self activatable];
-    [v5 start];
+    activatable = [(NavdRouteGeniusServer *)self activatable];
+    [activatable start];
 
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -195,8 +195,8 @@ LABEL_6:
   if (self->_isActive)
   {
     self->_isActive = 0;
-    v2 = [(NavdRouteGeniusServer *)self activatable];
-    [v2 stop];
+    activatable = [(NavdRouteGeniusServer *)self activatable];
+    [activatable stop];
 
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))

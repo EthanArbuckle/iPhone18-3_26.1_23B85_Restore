@@ -1,44 +1,44 @@
 @interface IDSGroupGetMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSGroupGetMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = IDSGroupGetMessage;
-  v4 = [(IDSGroupGetMessage *)&v15 copyWithZone:a3];
-  v5 = [(IDSGroupGetMessage *)self hardwareVersion];
-  [v4 setHardwareVersion:v5];
+  v4 = [(IDSGroupGetMessage *)&v15 copyWithZone:zone];
+  hardwareVersion = [(IDSGroupGetMessage *)self hardwareVersion];
+  [v4 setHardwareVersion:hardwareVersion];
 
-  v6 = [(IDSGroupGetMessage *)self osVersion];
-  [v4 setOsVersion:v6];
+  osVersion = [(IDSGroupGetMessage *)self osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v7 = [(IDSGroupGetMessage *)self softwareVersion];
-  [v4 setSoftwareVersion:v7];
+  softwareVersion = [(IDSGroupGetMessage *)self softwareVersion];
+  [v4 setSoftwareVersion:softwareVersion];
 
-  v8 = [(IDSGroupGetMessage *)self deviceName];
-  [v4 setDeviceName:v8];
+  deviceName = [(IDSGroupGetMessage *)self deviceName];
+  [v4 setDeviceName:deviceName];
 
-  v9 = [(IDSGroupGetMessage *)self engramID];
-  [v4 setEngramID:v9];
+  engramID = [(IDSGroupGetMessage *)self engramID];
+  [v4 setEngramID:engramID];
 
-  v10 = [(IDSGroupGetMessage *)self version];
-  [v4 setVersion:v10];
+  version = [(IDSGroupGetMessage *)self version];
+  [v4 setVersion:version];
 
-  v11 = [(IDSGroupGetMessage *)self responseEntries];
-  [v4 setResponseEntries:v11];
+  responseEntries = [(IDSGroupGetMessage *)self responseEntries];
+  [v4 setResponseEntries:responseEntries];
 
-  v12 = [(IDSGroupGetMessage *)self responseStatus];
-  [v4 setResponseStatus:v12];
+  responseStatus = [(IDSGroupGetMessage *)self responseStatus];
+  [v4 setResponseStatus:responseStatus];
 
-  v13 = [(IDSGroupGetMessage *)self responseMessage];
-  [v4 setResponseMessage:v13];
+  responseMessage = [(IDSGroupGetMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -47,29 +47,29 @@
 {
   v12.receiver = self;
   v12.super_class = IDSGroupGetMessage;
-  v3 = [(IDSGroupGetMessage *)&v12 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSGroupGetMessage *)&v12 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSGroupGetMessage *)self engramID];
+  engramID = [(IDSGroupGetMessage *)self engramID];
 
-  if (v5)
+  if (engramID)
   {
-    v6 = [(IDSGroupGetMessage *)self engramID];
-    v7 = [v6 __imHexString];
-    v5 = [NSString stringWithFormat:@"HASH:%@", v7];
+    engramID2 = [(IDSGroupGetMessage *)self engramID];
+    __imHexString = [engramID2 __imHexString];
+    engramID = [NSString stringWithFormat:@"HASH:%@", __imHexString];
   }
 
-  v8 = [(IDSGroupGetMessage *)self pushCertificate];
-  v9 = [v8 _FTStringFromBaseData];
+  pushCertificate = [(IDSGroupGetMessage *)self pushCertificate];
+  _FTStringFromBaseData = [pushCertificate _FTStringFromBaseData];
 
-  if (v9)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-cert", v9);
+    CFDictionarySetValue(Mutable, @"x-push-cert", _FTStringFromBaseData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@
     sub_1009150CC();
   }
 
-  v10 = v5;
+  v10 = engramID;
   if (v10)
   {
     CFDictionarySetValue(Mutable, @"route", v10);
@@ -95,18 +95,18 @@
 {
   v12.receiver = self;
   v12.super_class = IDSGroupGetMessage;
-  v3 = [(IDSGroupGetMessage *)&v12 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSGroupGetMessage *)&v12 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSGroupGetMessage *)self hardwareVersion];
-  if (v5)
+  hardwareVersion = [(IDSGroupGetMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"hardware-version", v5);
+    CFDictionarySetValue(Mutable, @"hardware-version", hardwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -114,10 +114,10 @@
     sub_1009151DC();
   }
 
-  v6 = [(IDSGroupGetMessage *)self osVersion];
-  if (v6)
+  osVersion = [(IDSGroupGetMessage *)self osVersion];
+  if (osVersion)
   {
-    CFDictionarySetValue(Mutable, @"os-version", v6);
+    CFDictionarySetValue(Mutable, @"os-version", osVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -125,10 +125,10 @@
     sub_100915264();
   }
 
-  v7 = [(IDSGroupGetMessage *)self softwareVersion];
-  if (v7)
+  softwareVersion = [(IDSGroupGetMessage *)self softwareVersion];
+  if (softwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"software-version", v7);
+    CFDictionarySetValue(Mutable, @"software-version", softwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -136,10 +136,10 @@
     sub_100920E24();
   }
 
-  v8 = [(IDSGroupGetMessage *)self deviceName];
-  if (v8)
+  deviceName = [(IDSGroupGetMessage *)self deviceName];
+  if (deviceName)
   {
-    CFDictionarySetValue(Mutable, @"device-name", v8);
+    CFDictionarySetValue(Mutable, @"device-name", deviceName);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -147,10 +147,10 @@
     sub_1009318E8();
   }
 
-  v9 = [(IDSGroupGetMessage *)self engramID];
-  if (v9)
+  engramID = [(IDSGroupGetMessage *)self engramID];
+  if (engramID)
   {
-    CFDictionarySetValue(Mutable, @"engram-id", v9);
+    CFDictionarySetValue(Mutable, @"engram-id", engramID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -158,10 +158,10 @@
     sub_100931970();
   }
 
-  v10 = [(IDSGroupGetMessage *)self version];
-  if (v10)
+  version = [(IDSGroupGetMessage *)self version];
+  if (version)
   {
-    CFDictionarySetValue(Mutable, @"version", v10);
+    CFDictionarySetValue(Mutable, @"version", version);
   }
 
   return Mutable;
@@ -174,16 +174,16 @@
   return v2;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 _arrayForKey:@"entries"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy _arrayForKey:@"entries"];
   [(IDSGroupGetMessage *)self setResponseEntries:v5];
 
-  v6 = [v4 _numberForKey:@"status"];
+  v6 = [dictionaryCopy _numberForKey:@"status"];
   [(IDSGroupGetMessage *)self setResponseStatus:v6];
 
-  v7 = [v4 _stringForKey:@"message"];
+  v7 = [dictionaryCopy _stringForKey:@"message"];
 
   [(IDSGroupGetMessage *)self setResponseMessage:v7];
 }

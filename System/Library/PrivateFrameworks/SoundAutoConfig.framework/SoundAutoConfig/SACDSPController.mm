@@ -1,8 +1,8 @@
 @interface SACDSPController
 - (SACDSPController)init;
-- (void)getDSPInfoByKey:(id)a3 withReply:(id)a4;
+- (void)getDSPInfoByKey:(id)key withReply:(id)reply;
 - (void)handleServiceCrash;
-- (void)setDSPConfig:(id)a3;
+- (void)setDSPConfig:(id)config;
 - (void)startServiceConnection;
 @end
 
@@ -72,10 +72,10 @@
 
   [(NSXPCConnection *)self->mServiceConnection setExportedObject:self];
   [(NSXPCConnection *)self->mServiceConnection resume];
-  v9 = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
   mProxyInterface = self->mProxyInterface;
   p_mProxyInterface = &self->mProxyInterface;
-  *p_mProxyInterface = v9;
+  *p_mProxyInterface = remoteObjectProxy;
 
   [*p_mProxyInterface registerAsClientWithConnectionType:0];
   _Block_object_dispose(buf, 8);
@@ -111,31 +111,31 @@
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
-- (void)setDSPConfig:(id)a3
+- (void)setDSPConfig:(id)config
 {
-  v7 = a3;
-  v4 = [(SACDSPController *)self delegate];
+  configCopy = config;
+  delegate = [(SACDSPController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SACDSPController *)self delegate];
-    [v6 setDSPConfig:v7];
+    delegate2 = [(SACDSPController *)self delegate];
+    [delegate2 setDSPConfig:configCopy];
   }
 }
 
-- (void)getDSPInfoByKey:(id)a3 withReply:(id)a4
+- (void)getDSPInfoByKey:(id)key withReply:(id)reply
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SACDSPController *)self delegate];
+  keyCopy = key;
+  replyCopy = reply;
+  delegate = [(SACDSPController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SACDSPController *)self delegate];
-    v10 = [v9 getDSPInfoByKey:v11];
-    v6[2](v6, v10);
+    delegate2 = [(SACDSPController *)self delegate];
+    v10 = [delegate2 getDSPInfoByKey:keyCopy];
+    replyCopy[2](replyCopy, v10);
   }
 }
 

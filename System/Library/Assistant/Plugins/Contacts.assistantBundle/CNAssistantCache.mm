@@ -1,18 +1,18 @@
 @interface CNAssistantCache
-+ (BOOL)addUpdate:(id)a3 forAssistantUrl:(id)a4;
++ (BOOL)addUpdate:(id)update forAssistantUrl:(id)url;
 + (BOOL)removeAllUpdates;
-+ (BOOL)removeUpdatesForAssistantUrl:(id)a3;
-+ (BOOL)saveCache:(id)a3;
++ (BOOL)removeUpdatesForAssistantUrl:(id)url;
++ (BOOL)saveCache:(id)cache;
 + (id)cacheDictionary;
 + (id)cachePath;
-+ (id)updatesForAssistantUrl:(id)a3;
++ (id)updatesForAssistantUrl:(id)url;
 @end
 
 @implementation CNAssistantCache
 
 + (BOOL)removeAllUpdates
 {
-  v3 = objc_msgSend_cachePath(a1, a2, v2);
+  v3 = objc_msgSend_cachePath(self, a2, v2);
   v6 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5);
   v8 = v6;
   if (v3 && objc_msgSend_fileExistsAtPath_(v6, v7, v3))
@@ -45,7 +45,7 @@
 
 + (id)cacheDictionary
 {
-  v3 = objc_msgSend_cachePath(a1, a2, v2);
+  v3 = objc_msgSend_cachePath(self, a2, v2);
   v6 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5);
   if ((objc_msgSend_fileExistsAtPath_(v6, v7, v3) & 1) == 0)
   {
@@ -74,10 +74,10 @@ LABEL_7:
   return v15;
 }
 
-+ (BOOL)saveCache:(id)a3
++ (BOOL)saveCache:(id)cache
 {
-  v4 = a3;
-  v7 = objc_msgSend_cachePath(a1, v5, v6);
+  cacheCopy = cache;
+  v7 = objc_msgSend_cachePath(self, v5, v6);
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v8, v9);
   if ((objc_msgSend_fileExistsAtPath_(v10, v11, v7) & 1) == 0)
   {
@@ -91,7 +91,7 @@ LABEL_7:
   if (isWritableFileAtPath)
   {
 LABEL_5:
-    v18 = objc_msgSend_writeToFile_atomically_(v4, v17, v7, 1);
+    v18 = objc_msgSend_writeToFile_atomically_(cacheCopy, v17, v7, 1);
     goto LABEL_6;
   }
 
@@ -101,12 +101,12 @@ LABEL_6:
   return v18;
 }
 
-+ (BOOL)addUpdate:(id)a3 forAssistantUrl:(id)a4
++ (BOOL)addUpdate:(id)update forAssistantUrl:(id)url
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_cacheDictionary(a1, v8, v9);
-  v13 = objc_msgSend_absoluteString(v7, v11, v12);
+  updateCopy = update;
+  urlCopy = url;
+  v10 = objc_msgSend_cacheDictionary(self, v8, v9);
+  v13 = objc_msgSend_absoluteString(urlCopy, v11, v12);
   v15 = v13;
   v16 = 0;
   if (v10 && v13)
@@ -120,37 +120,37 @@ LABEL_6:
       v20 = objc_msgSend_initWithCapacity_(v22, v23, 1);
     }
 
-    objc_msgSend_addObject_(v20, v21, v6);
-    v26 = objc_msgSend_absoluteString(v7, v24, v25);
+    objc_msgSend_addObject_(v20, v21, updateCopy);
+    v26 = objc_msgSend_absoluteString(urlCopy, v24, v25);
     objc_msgSend_setObject_forKeyedSubscript_(v10, v27, v20, v26);
 
-    v16 = objc_msgSend_saveCache_(a1, v28, v10);
+    v16 = objc_msgSend_saveCache_(self, v28, v10);
   }
 
   return v16;
 }
 
-+ (BOOL)removeUpdatesForAssistantUrl:(id)a3
++ (BOOL)removeUpdatesForAssistantUrl:(id)url
 {
-  v4 = a3;
-  v7 = objc_msgSend_cacheDictionary(a1, v5, v6);
-  v10 = objc_msgSend_absoluteString(v4, v8, v9);
+  urlCopy = url;
+  v7 = objc_msgSend_cacheDictionary(self, v5, v6);
+  v10 = objc_msgSend_absoluteString(urlCopy, v8, v9);
 
   v12 = 0;
   if (v7 && v10)
   {
     objc_msgSend_removeObjectForKey_(v7, v11, v10);
-    v12 = objc_msgSend_saveCache_(a1, v13, v7);
+    v12 = objc_msgSend_saveCache_(self, v13, v7);
   }
 
   return v12;
 }
 
-+ (id)updatesForAssistantUrl:(id)a3
++ (id)updatesForAssistantUrl:(id)url
 {
-  v4 = a3;
-  v7 = objc_msgSend_cacheDictionary(a1, v5, v6);
-  v10 = objc_msgSend_absoluteString(v4, v8, v9);
+  urlCopy = url;
+  v7 = objc_msgSend_cacheDictionary(self, v5, v6);
+  v10 = objc_msgSend_absoluteString(urlCopy, v8, v9);
 
   v12 = 0;
   if (v7 && v10)

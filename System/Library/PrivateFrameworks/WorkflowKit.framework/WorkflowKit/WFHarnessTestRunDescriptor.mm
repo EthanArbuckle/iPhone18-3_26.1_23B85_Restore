@@ -1,13 +1,13 @@
 @interface WFHarnessTestRunDescriptor
 - (BOOL)shouldDisablePrivacyPrompts;
-- (WFHarnessTestRunDescriptor)initWithCoder:(id)a3;
-- (WFHarnessTestRunDescriptor)initWithTestBundleURL:(id)a3 xcTestClass:(id)a4 xcTestMethodName:(id)a5 testIdentifier:(id)a6;
+- (WFHarnessTestRunDescriptor)initWithCoder:(id)coder;
+- (WFHarnessTestRunDescriptor)initWithTestBundleURL:(id)l xcTestClass:(id)class xcTestMethodName:(id)name testIdentifier:(id)identifier;
 - (id)description;
-- (id)loadTestCaseWithError:(id *)a3;
-- (id)testMethodNamebyRemovingSuffixes:(id)a3;
-- (void)createWorkflowWithEnvironment:(int64_t)a3 database:(id)a4 completionHandler:(id)a5;
+- (id)loadTestCaseWithError:(id *)error;
+- (id)testMethodNamebyRemovingSuffixes:(id)suffixes;
+- (void)createWorkflowWithEnvironment:(int64_t)environment database:(id)database completionHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFHarnessTestRunDescriptor
@@ -24,81 +24,81 @@
 
 - (BOOL)shouldDisablePrivacyPrompts
 {
-  v3 = [(WFHarnessTestRunDescriptor *)self testCase];
+  testCase = [(WFHarnessTestRunDescriptor *)self testCase];
 
-  if (!v3)
+  if (!testCase)
   {
     return 1;
   }
 
-  v4 = [(WFHarnessTestRunDescriptor *)self testCase];
-  v5 = [v4 interactions];
-  v6 = [v5 bs_containsObjectPassingTest:&__block_literal_global_20740];
+  testCase2 = [(WFHarnessTestRunDescriptor *)self testCase];
+  interactions = [testCase2 interactions];
+  v6 = [interactions bs_containsObjectPassingTest:&__block_literal_global_20740];
 
   return v6 ^ 1;
 }
 
-- (id)loadTestCaseWithError:(id *)a3
+- (id)loadTestCaseWithError:(id *)error
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = [(WFHarnessTestRunDescriptor *)self testCase];
+  testCase = [(WFHarnessTestRunDescriptor *)self testCase];
 
-  if (v5)
+  if (testCase)
   {
-    v6 = [(WFHarnessTestRunDescriptor *)self testCase];
+    testCase2 = [(WFHarnessTestRunDescriptor *)self testCase];
     goto LABEL_52;
   }
 
   v7 = MEMORY[0x1E696AAE8];
-  v8 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
-  v9 = [v7 bundleWithURL:v8];
+  testBundleURL = [(WFHarnessTestRunDescriptor *)self testBundleURL];
+  v9 = [v7 bundleWithURL:testBundleURL];
 
   if (!v9)
   {
     v33 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
     {
-      v34 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
+      testBundleURL2 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
       *buf = 136315394;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v34;
+      selfCopy9 = testBundleURL2;
       _os_log_impl(&dword_1CA256000, v33, OS_LOG_TYPE_FAULT, "%s Could not load test bundle at URL %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:0];
-      *a3 = v6 = 0;
+      *error = testCase2 = 0;
     }
 
     else
     {
-      v6 = 0;
+      testCase2 = 0;
     }
 
     goto LABEL_51;
   }
 
-  v10 = [v9 sharedSupportURL];
-  v11 = [v10 URLByAppendingPathComponent:@"libActionHarnessTests.dylib"];
+  sharedSupportURL = [v9 sharedSupportURL];
+  v11 = [sharedSupportURL URLByAppendingPathComponent:@"libActionHarnessTests.dylib"];
 
-  v12 = [(WFHarnessTestRunDescriptor *)v11 wf_fileExists];
+  wf_fileExists = [(WFHarnessTestRunDescriptor *)v11 wf_fileExists];
   v13 = getWFTestHarnessLogObject();
   v14 = v13;
-  if ((v12 & 1) == 0)
+  if ((wf_fileExists & 1) == 0)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      v35 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
+      testBundleURL3 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
       *buf = 136315394;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v35;
+      selfCopy9 = testBundleURL3;
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_FAULT, "%s Could not find action harness test dylib in bundle %@", buf, 0x16u);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_49;
     }
@@ -111,7 +111,7 @@
     *buf = 136315394;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = v11;
+    selfCopy9 = v11;
     _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_DEFAULT, "%s Loading test dylib at path %@", buf, 0x16u);
   }
 
@@ -124,11 +124,11 @@
       *buf = 136315394;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v11;
+      selfCopy9 = v11;
       _os_log_impl(&dword_1CA256000, v36, OS_LOG_TYPE_FAULT, "%s Could not dlopen test dylib at path %@", buf, 0x16u);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_49;
     }
@@ -136,25 +136,25 @@
     goto LABEL_47;
   }
 
-  v16 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
-  cls = NSClassFromString(v16);
+  xcTestClass = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+  cls = NSClassFromString(xcTestClass);
 
   if (!cls)
   {
     v40 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
     {
-      v41 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestClass2 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
       *buf = 136315650;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v41;
+      selfCopy9 = xcTestClass2;
       v95 = 2112;
       v96 = v11;
       _os_log_impl(&dword_1CA256000, v40, OS_LOG_TYPE_FAULT, "%s Could not find test class %@ inside dylib at path %@", buf, 0x20u);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_49;
     }
@@ -173,25 +173,25 @@ LABEL_47:
     v37 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
     {
-      v38 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestClass3 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
       *buf = 136315394;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v38;
+      selfCopy9 = xcTestClass3;
       _os_log_impl(&dword_1CA256000, v37, OS_LOG_TYPE_FAULT, "%s Test class %@ does not conform to WFHarnessTestCaseVendor", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       v39 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
 LABEL_48:
-      v6 = 0;
-      *a3 = v39;
+      testCase2 = 0;
+      *error = v39;
       goto LABEL_50;
     }
 
 LABEL_49:
-    v6 = 0;
+    testCase2 = 0;
     goto LABEL_50;
   }
 
@@ -204,23 +204,23 @@ LABEL_49:
     v47 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
     {
-      v48 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestClass4 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
       *buf = 136315394;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v48;
+      selfCopy9 = xcTestClass4;
       _os_log_impl(&dword_1CA256000, v47, OS_LOG_TYPE_FAULT, "%s Unable to get method list from test class: %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-      *a3 = v6 = 0;
+      *error = testCase2 = 0;
     }
 
     else
     {
-      v6 = 0;
+      testCase2 = 0;
     }
 
     goto LABEL_66;
@@ -235,21 +235,21 @@ LABEL_49:
   v22 = getWFTestHarnessLogObject();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
-    v24 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
+    xcTestClass5 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+    xcTestMethodName = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
     *buf = 136315906;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = self;
+    selfCopy9 = self;
     v95 = 2112;
-    v96 = v23;
+    v96 = xcTestClass5;
     v97 = 2112;
-    *v98 = v24;
+    *v98 = xcTestMethodName;
     _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_DEFAULT, "%s %@: Looking for test method %@ %@", buf, 0x2Au);
   }
 
-  v25 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
-  v73 = [(WFHarnessTestRunDescriptor *)self testMethodNamebyRemovingSuffixes:v25];
+  xcTestMethodName2 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
+  v73 = [(WFHarnessTestRunDescriptor *)self testMethodNamebyRemovingSuffixes:xcTestMethodName2];
 
   if (!outCount)
   {
@@ -257,14 +257,14 @@ LABEL_57:
     v29 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
     {
-      v45 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
-      v46 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
+      xcTestClass6 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestMethodName3 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
       *buf = 136315650;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = v45;
+      selfCopy9 = xcTestClass6;
       v95 = 2112;
-      v96 = v46;
+      v96 = xcTestMethodName3;
       _os_log_impl(&dword_1CA256000, v29, OS_LOG_TYPE_FAULT, "%s Failed to find a test method name matching %@ %@ - check if XCTest calling convention has changed", buf, 0x20u);
     }
 
@@ -317,13 +317,13 @@ LABEL_19:
     v31 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestClass7 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
       *buf = 136315906;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = self;
+      selfCopy9 = self;
       v95 = 2112;
-      v96 = v32;
+      v96 = xcTestClass7;
       v97 = 2112;
       *v98 = v29;
       _os_log_impl(&dword_1CA256000, v31, OS_LOG_TYPE_DEFAULT, "%s %@: Skipping considering %@ %@ - method has empty type encoding", buf, 0x2Au);
@@ -343,23 +343,23 @@ LABEL_19:
     *buf = 136315650;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = self;
+    selfCopy9 = self;
     v95 = 2112;
     v96 = v71;
     _os_log_impl(&dword_1CA256000, v49, OS_LOG_TYPE_DEFAULT, "%s %@: types=%@", buf, 0x20u);
   }
 
   clsa = [(objc_class *)cls instanceMethodSignatureForSelector:Name];
-  v50 = [(objc_class *)clsa numberOfArguments];
+  numberOfArguments = [(objc_class *)clsa numberOfArguments];
   v51 = getWFTestHarnessLogObject();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = self;
+    selfCopy9 = self;
     v95 = 2048;
-    v96 = v50;
+    v96 = numberOfArguments;
     _os_log_impl(&dword_1CA256000, v51, OS_LOG_TYPE_DEFAULT, "%s %@: methodSignature.numberOfArguments=%lu", buf, 0x20u);
   }
 
@@ -370,7 +370,7 @@ LABEL_19:
   v53 = [v29 containsString:@"WithCompletionHandler:"];
   if (v53)
   {
-    if (v50 == 3)
+    if (numberOfArguments == 3)
     {
       v54 = [(WFHarnessTestRunDescriptor *)v71 containsString:@"NSError"];
       goto LABEL_82;
@@ -382,7 +382,7 @@ LABEL_77:
 
   else
   {
-    if (v50 != 3)
+    if (numberOfArguments != 3)
     {
       goto LABEL_77;
     }
@@ -397,7 +397,7 @@ LABEL_77:
       *buf = 136316418;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = self;
+      selfCopy9 = self;
       v95 = 2112;
       v96 = v29;
       v97 = 1024;
@@ -414,13 +414,13 @@ LABEL_82:
   v59 = getWFTestHarnessLogObject();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
   {
-    v60 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+    xcTestClass8 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
     *buf = 136316418;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = self;
+    selfCopy9 = self;
     v95 = 2112;
-    v96 = v60;
+    v96 = xcTestClass8;
     v97 = 2112;
     *v98 = v29;
     *&v98[8] = 1024;
@@ -437,9 +437,9 @@ LABEL_82:
     {
       v84 = 0;
       [v69 getArgument:&v84 atIndex:2];
-      if (a3)
+      if (error)
       {
-        *a3 = v84;
+        *error = v84;
       }
 
       if (v84)
@@ -447,13 +447,13 @@ LABEL_82:
         v62 = getWFTestHarnessLogObject();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
-          v63 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+          xcTestClass9 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
           *buf = 136316162;
           *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
           v93 = 2112;
-          v94 = self;
+          selfCopy9 = self;
           v95 = 2112;
-          v96 = v63;
+          v96 = xcTestClass9;
           v97 = 2112;
           *v98 = v29;
           *&v98[8] = 2112;
@@ -510,13 +510,13 @@ LABEL_82:
     v65 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+      xcTestClass10 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
       *buf = 136315906;
       *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
       v93 = 2112;
-      v94 = self;
+      selfCopy9 = self;
       v95 = 2112;
-      v96 = v66;
+      v96 = xcTestClass10;
       v97 = 2112;
       *v98 = v29;
       _os_log_impl(&dword_1CA256000, v65, OS_LOG_TYPE_DEFAULT, "%s %@: Timeout - giving up waiting on async test method %@ %@", buf, 0x2Au);
@@ -525,9 +525,9 @@ LABEL_82:
     goto LABEL_103;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v85[5];
+    *error = v85[5];
   }
 
   if (!v85[5])
@@ -537,24 +537,24 @@ LABEL_82:
 LABEL_106:
 
 LABEL_56:
-    v44 = [(WFHarnessTestRunDescriptor *)self testIdentifier];
-    v6 = [v74 testCaseWithIdentifier:v44];
+    testIdentifier = [(WFHarnessTestRunDescriptor *)self testIdentifier];
+    testCase2 = [v74 testCaseWithIdentifier:testIdentifier];
 
-    [(WFHarnessTestRunDescriptor *)self setTestCase:v6];
+    [(WFHarnessTestRunDescriptor *)self setTestCase:testCase2];
     goto LABEL_60;
   }
 
   v65 = getWFTestHarnessLogObject();
   if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
   {
-    v67 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+    xcTestClass11 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
     v68 = v85[5];
     *buf = 136316162;
     *&buf[4] = "[WFHarnessTestRunDescriptor loadTestCaseWithError:]";
     v93 = 2112;
-    v94 = self;
+    selfCopy9 = self;
     v95 = 2112;
-    v96 = v67;
+    v96 = xcTestClass11;
     v97 = 2112;
     *v98 = v29;
     *&v98[8] = 2112;
@@ -568,7 +568,7 @@ LABEL_103:
 LABEL_104:
 
 LABEL_59:
-  v6 = 0;
+  testCase2 = 0;
 LABEL_60:
 
   v72[2]();
@@ -580,7 +580,7 @@ LABEL_51:
 LABEL_52:
   v42 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return testCase2;
 }
 
 void __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_224(uint64_t a1, void *a2)
@@ -641,40 +641,40 @@ intptr_t __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_2
   return result;
 }
 
-- (id)testMethodNamebyRemovingSuffixes:(id)a3
+- (id)testMethodNamebyRemovingSuffixes:(id)suffixes
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@"AndReturnError:"])
+  suffixesCopy = suffixes;
+  if ([suffixesCopy hasSuffix:@"AndReturnError:"])
   {
-    v4 = [v3 substringToIndex:{objc_msgSend(v3, "length") - objc_msgSend(@"AndReturnError:", "length")}];
+    v4 = [suffixesCopy substringToIndex:{objc_msgSend(suffixesCopy, "length") - objc_msgSend(@"AndReturnError:", "length")}];
 
-    v3 = v4;
+    suffixesCopy = v4;
   }
 
-  if ([v3 hasSuffix:@"WithCompletionHandler:"])
+  if ([suffixesCopy hasSuffix:@"WithCompletionHandler:"])
   {
-    v5 = [v3 substringToIndex:{objc_msgSend(v3, "length") - objc_msgSend(@"WithCompletionHandler:", "length")}];
+    v5 = [suffixesCopy substringToIndex:{objc_msgSend(suffixesCopy, "length") - objc_msgSend(@"WithCompletionHandler:", "length")}];
 
-    v3 = v5;
+    suffixesCopy = v5;
   }
 
-  if ([v3 hasSuffix:@"()"])
+  if ([suffixesCopy hasSuffix:@"()"])
   {
-    v6 = [v3 substringToIndex:{objc_msgSend(v3, "length") - objc_msgSend(@"()", "length")}];
+    v6 = [suffixesCopy substringToIndex:{objc_msgSend(suffixesCopy, "length") - objc_msgSend(@"()", "length")}];
 
-    v3 = v6;
+    suffixesCopy = v6;
   }
 
-  return v3;
+  return suffixesCopy;
 }
 
-- (WFHarnessTestRunDescriptor)initWithCoder:(id)a3
+- (WFHarnessTestRunDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testBundleURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xcTestClass"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xcTestMethodName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testBundleURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xcTestClass"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xcTestMethodName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testIdentifier"];
 
   if (v5)
   {
@@ -688,7 +688,7 @@ intptr_t __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_2
 
   if (v9 || v7 == 0 || v8 == 0)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -696,37 +696,37 @@ intptr_t __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_2
     v12 = [v5 url];
     self = [(WFHarnessTestRunDescriptor *)self initWithTestBundleURL:v12 xcTestClass:v6 xcTestMethodName:v7 testIdentifier:v8];
 
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AE98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
-  v7 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
-  v11 = [v6 initWithURL:v7];
+  testBundleURL = [(WFHarnessTestRunDescriptor *)self testBundleURL];
+  v11 = [v6 initWithURL:testBundleURL];
 
-  [v5 encodeObject:v11 forKey:@"testBundleURL"];
-  v8 = [(WFHarnessTestRunDescriptor *)self xcTestClass];
-  [v5 encodeObject:v8 forKey:@"xcTestClass"];
+  [coderCopy encodeObject:v11 forKey:@"testBundleURL"];
+  xcTestClass = [(WFHarnessTestRunDescriptor *)self xcTestClass];
+  [coderCopy encodeObject:xcTestClass forKey:@"xcTestClass"];
 
-  v9 = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
-  [v5 encodeObject:v9 forKey:@"xcTestMethodName"];
+  xcTestMethodName = [(WFHarnessTestRunDescriptor *)self xcTestMethodName];
+  [coderCopy encodeObject:xcTestMethodName forKey:@"xcTestMethodName"];
 
-  v10 = [(WFHarnessTestRunDescriptor *)self testIdentifier];
-  [v5 encodeObject:v10 forKey:@"testIdentifier"];
+  testIdentifier = [(WFHarnessTestRunDescriptor *)self testIdentifier];
+  [coderCopy encodeObject:testIdentifier forKey:@"testIdentifier"];
 }
 
 - (void)dealloc
 {
   if ([(WFHarnessTestRunDescriptor *)self holdingSecurityScopedAccess])
   {
-    v3 = [(WFHarnessTestRunDescriptor *)self testBundleURL];
-    [v3 stopAccessingSecurityScopedResource];
+    testBundleURL = [(WFHarnessTestRunDescriptor *)self testBundleURL];
+    [testBundleURL stopAccessingSecurityScopedResource];
   }
 
   v4.receiver = self;
@@ -734,16 +734,16 @@ intptr_t __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_2
   [(WFHarnessTestRunDescriptor *)&v4 dealloc];
 }
 
-- (WFHarnessTestRunDescriptor)initWithTestBundleURL:(id)a3 xcTestClass:(id)a4 xcTestMethodName:(id)a5 testIdentifier:(id)a6
+- (WFHarnessTestRunDescriptor)initWithTestBundleURL:(id)l xcTestClass:(id)class xcTestMethodName:(id)name testIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  lCopy = l;
+  classCopy = class;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (lCopy)
   {
-    if (v13)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -751,22 +751,22 @@ intptr_t __52__WFHarnessTestRunDescriptor_loadTestCaseWithError___block_invoke_2
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"testBundleURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"testBundleURL"}];
 
-    if (v13)
+    if (classCopy)
     {
 LABEL_3:
-      if (v14)
+      if (nameCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_14:
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"xcTestMethodName"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"xcTestMethodName"}];
 
-      if (v15)
+      if (identifierCopy)
       {
         goto LABEL_5;
       }
@@ -775,23 +775,23 @@ LABEL_14:
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"xcTestClass"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"xcTestClass"}];
 
-  if (!v14)
+  if (!nameCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
-  if (v15)
+  if (identifierCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_15:
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"testIdentifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunDescriptor.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"testIdentifier"}];
 
 LABEL_5:
   v33.receiver = self;
@@ -800,22 +800,22 @@ LABEL_5:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_testBundleURL, a3);
-    v18 = [v13 copy];
+    objc_storeStrong(&v16->_testBundleURL, l);
+    v18 = [classCopy copy];
     xcTestClass = v17->_xcTestClass;
     v17->_xcTestClass = v18;
 
-    v20 = [v14 copy];
+    v20 = [nameCopy copy];
     xcTestMethodName = v17->_xcTestMethodName;
     v17->_xcTestMethodName = v20;
 
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     testIdentifier = v17->_testIdentifier;
     v17->_testIdentifier = v22;
 
-    v24 = [v12 startAccessingSecurityScopedResource];
-    v17->_holdingSecurityScopedAccess = v24;
-    if (v24)
+    startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+    v17->_holdingSecurityScopedAccess = startAccessingSecurityScopedResource;
+    if (startAccessingSecurityScopedResource)
     {
       v25 = getWFTestHarnessLogObject();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -823,7 +823,7 @@ LABEL_5:
         *buf = 136315394;
         v35 = "[WFHarnessTestRunDescriptor initWithTestBundleURL:xcTestClass:xcTestMethodName:testIdentifier:]";
         v36 = 2112;
-        v37 = v12;
+        v37 = lCopy;
         _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_DEFAULT, "%s Taken sandbox extension to %@", buf, 0x16u);
       }
     }
@@ -835,18 +835,18 @@ LABEL_5:
   return v17;
 }
 
-- (void)createWorkflowWithEnvironment:(int64_t)a3 database:(id)a4 completionHandler:(id)a5
+- (void)createWorkflowWithEnvironment:(int64_t)environment database:(id)database completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  databaseCopy = database;
+  handlerCopy = handler;
   v10 = getWFTestHarnessLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[WFHarnessTestRunDescriptor(Conversion) createWorkflowWithEnvironment:database:completionHandler:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_DEFAULT, "%s %@ - Loading testCase", buf, 0x16u);
   }
 
@@ -855,19 +855,19 @@ LABEL_5:
   v12 = v20;
   if (v11)
   {
-    v13 = [v11 runDescriptor];
+    runDescriptor = [v11 runDescriptor];
     v14 = getWFTestHarnessLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v11 name];
+      name = [v11 name];
       *buf = 136315906;
       v22 = "[WFHarnessTestRunDescriptor(Conversion) createWorkflowWithEnvironment:database:completionHandler:]";
       v23 = 2112;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v13;
+      v26 = runDescriptor;
       v27 = 2112;
-      v28 = v15;
+      v28 = name;
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_DEFAULT, "%s %@ - Running workflow %@ %@", buf, 0x2Au);
     }
 
@@ -876,13 +876,13 @@ LABEL_5:
     v17[2] = __99__WFHarnessTestRunDescriptor_Conversion__createWorkflowWithEnvironment_database_completionHandler___block_invoke;
     v17[3] = &unk_1E8376698;
     v18 = v11;
-    v19 = v9;
-    [v13 createWorkflowWithEnvironment:a3 database:v8 completionHandler:v17];
+    v19 = handlerCopy;
+    [runDescriptor createWorkflowWithEnvironment:environment database:databaseCopy completionHandler:v17];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   v16 = *MEMORY[0x1E69E9840];

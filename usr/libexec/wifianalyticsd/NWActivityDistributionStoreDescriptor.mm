@@ -1,15 +1,15 @@
 @interface NWActivityDistributionStoreDescriptor
-+ (id)withGroupAndOptions:(int64_t)a3 groupTarget:(id)a4;
++ (id)withGroupAndOptions:(int64_t)options groupTarget:(id)target;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
-- (id)_initWithGroupAndOptions:(int64_t)a3 groupTarget:(id)a4;
-- (void)findInterpolatedPercentileFromWiFiStats:(id)a3 andReply:(id)a4;
+- (id)_initWithGroupAndOptions:(int64_t)options groupTarget:(id)target;
+- (void)findInterpolatedPercentileFromWiFiStats:(id)stats andReply:(id)reply;
 @end
 
 @implementation NWActivityDistributionStoreDescriptor
 
-+ (id)withGroupAndOptions:(int64_t)a3 groupTarget:(id)a4
++ (id)withGroupAndOptions:(int64_t)options groupTarget:(id)target
 {
-  v5 = a4;
+  targetCopy = target;
   v6 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -18,20 +18,20 @@
     v11 = 1024;
     v12 = 58;
     v13 = 2048;
-    v14 = a3;
+    optionsCopy = options;
     v15 = 2112;
-    v16 = v5;
+    v16 = targetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Initiating store descriptor for %ld and options %@", &v9, 0x26u);
   }
 
-  v7 = [[NWActivityDistributionStoreDescriptor alloc] _initWithGroupAndOptions:a3 groupTarget:v5];
+  v7 = [[NWActivityDistributionStoreDescriptor alloc] _initWithGroupAndOptions:options groupTarget:targetCopy];
 
   return v7;
 }
 
-- (id)_initWithGroupAndOptions:(int64_t)a3 groupTarget:(id)a4
+- (id)_initWithGroupAndOptions:(int64_t)options groupTarget:(id)target
 {
-  v5 = a4;
+  targetCopy = target;
   v42.receiver = self;
   v42.super_class = NWActivityDistributionStoreDescriptor;
   v6 = [(NWActivityDistributionStoreDescriptor *)&v42 init];
@@ -52,7 +52,7 @@
     v46 = 1024;
     v47 = 29;
     v48 = 2112;
-    v49 = @"LEGACY";
+    optionsCopy = @"LEGACY";
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:NWActivityDistributionStoreDescriptor is running in %@ MODE", buf, 0x1Cu);
   }
 
@@ -68,7 +68,7 @@
       v46 = 1024;
       v47 = 79;
       v48 = 2112;
-      v49 = 0;
+      optionsCopy = 0;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to access bundle path %@", buf, 0x1Cu);
     }
 
@@ -88,7 +88,7 @@
       v46 = 1024;
       v47 = 83;
       v48 = 2112;
-      v49 = v8;
+      optionsCopy = v8;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%{public}s::%d:Found no files in %@", buf, 0x1Cu);
     }
 
@@ -123,11 +123,11 @@ LABEL_39:
 
         v19 = *(*(&v38 + 1) + 8 * i);
         v20 = [v19 componentsSeparatedByString:{@".", v32, v33, v34, v35}];
-        v21 = [v20 firstObject];
+        firstObject = [v20 firstObject];
 
-        if ([v19 hasSuffix:@"sqlite"] && -[__CFString hasPrefix:](v21, "hasPrefix:", @"NWActivity_"))
+        if ([v19 hasSuffix:@"sqlite"] && -[__CFString hasPrefix:](firstObject, "hasPrefix:", @"NWActivity_"))
         {
-          if (a3)
+          if (options)
           {
             v22 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -137,12 +137,12 @@ LABEL_39:
               v46 = 1024;
               v47 = 106;
               v48 = 2048;
-              v49 = a3;
+              optionsCopy = options;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}s::%d:Unsupported Group %ld", buf, 0x1Cu);
             }
           }
 
-          else if ([(__CFString *)v21 hasSuffix:@"cdf_allActivities"])
+          else if ([(__CFString *)firstObject hasSuffix:@"cdf_allActivities"])
           {
             v16 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -152,7 +152,7 @@ LABEL_39:
               v46 = 1024;
               v47 = 99;
               v48 = 2112;
-              v49 = v21;
+              optionsCopy = firstObject;
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found file %@", buf, 0x1Cu);
             }
 
@@ -161,7 +161,7 @@ LABEL_39:
             backingStore = v36->backingStore;
             v36->backingStore = v23;
 
-            v25 = [NSString stringWithString:v21];
+            v25 = [NSString stringWithString:firstObject];
             sqlTable = v36->sqlTable;
             v36->sqlTable = v25;
 
@@ -247,10 +247,10 @@ LABEL_33:
   return 0;
 }
 
-- (void)findInterpolatedPercentileFromWiFiStats:(id)a3 andReply:(id)a4
+- (void)findInterpolatedPercentileFromWiFiStats:(id)stats andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  statsCopy = stats;
+  replyCopy = reply;
   ppDb = 0;
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = &WAXPCRequestDelegateInterface_ptr;
@@ -262,7 +262,7 @@ LABEL_33:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = sqlite3_errmsg(ppDb);
-      v13 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       *buf = 136446978;
       v62 = "[NWActivityDistributionStoreDescriptor findInterpolatedPercentileFromWiFiStats:andReply:]";
       v63 = 1024;
@@ -270,7 +270,7 @@ LABEL_33:
       v65 = 2080;
       v66 = v12;
       v67 = 2080;
-      v68 = v13;
+      v68 = uTF8String;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to open database with message '%s' for file %s", buf, 0x26u);
     }
 
@@ -279,13 +279,13 @@ LABEL_33:
     v14 = [NSDictionary dictionaryWithObjects:&v71 forKeys:&v70 count:1];
     v15 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9020 userInfo:v14];
 
-    v7[2](v7, 0, v15);
+    replyCopy[2](replyCopy, 0, v15);
   }
 
   else
   {
     v37 = v10;
-    v38 = v7;
+    v38 = replyCopy;
     v40 = v8;
     ppStmt = 0;
     context = objc_autoreleasePoolPush();
@@ -294,8 +294,8 @@ LABEL_33:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v39 = v6;
-    v16 = v6;
+    v39 = statsCopy;
+    v16 = statsCopy;
     v17 = [v16 countByEnumeratingWithState:&v42 objects:v60 count:16];
     if (v17)
     {
@@ -383,10 +383,10 @@ LABEL_33:
     }
 
     objc_autoreleasePoolPop(context);
-    v7 = v38;
+    replyCopy = v38;
     v8 = v40;
     (v38)[2](v38, v40, 0);
-    v6 = v39;
+    statsCopy = v39;
     v10 = v37;
   }
 }

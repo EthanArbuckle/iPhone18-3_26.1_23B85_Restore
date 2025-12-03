@@ -1,26 +1,26 @@
 @interface CARSetupPrompts
-+ (id)allowWhileLockedPromptForVehicleName:(id)a3 responseHandler:(id)a4;
-+ (id)assetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5;
-+ (id)assetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5;
-+ (id)bluetoothConfirmationPromptForVehicleName:(id)a3 numericCode:(id)a4 responseHandler:(id)a5;
-+ (id)bluetoothContactsSyncPromptWithResponseHandler:(id)a3;
-+ (id)bluetoothFailedPromptForVehicleName:(id)a3 isTimeout:(BOOL)a4 responseHandler:(id)a5;
-+ (id)connectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5;
-+ (id)enhancedIntegrationPromptForVehicleName:(id)a3 responseHandler:(id)a4;
-+ (id)useWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5;
++ (id)allowWhileLockedPromptForVehicleName:(id)name responseHandler:(id)handler;
++ (id)assetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler;
++ (id)assetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler;
++ (id)bluetoothConfirmationPromptForVehicleName:(id)name numericCode:(id)code responseHandler:(id)handler;
++ (id)bluetoothContactsSyncPromptWithResponseHandler:(id)handler;
++ (id)bluetoothFailedPromptForVehicleName:(id)name isTimeout:(BOOL)timeout responseHandler:(id)handler;
++ (id)connectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler;
++ (id)enhancedIntegrationPromptForVehicleName:(id)name responseHandler:(id)handler;
++ (id)useWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler;
 + (id)waitingOnMessagingPrompt;
 + (id)waitingOnStartSessionPrompt;
 @end
 
 @implementation CARSetupPrompts
 
-+ (id)bluetoothConfirmationPromptForVehicleName:(id)a3 numericCode:(id)a4 responseHandler:(id)a5
++ (id)bluetoothConfirmationPromptForVehicleName:(id)name numericCode:(id)code responseHandler:(id)handler
 {
   v61[4] = *MEMORY[0x277D85DE8];
-  v55 = a5;
+  handlerCopy = handler;
   v7 = MEMORY[0x277D43330];
-  v8 = a4;
-  v9 = a3;
+  codeCopy = code;
+  nameCopy = name;
   v10 = objc_alloc_init(v7);
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"BLUETOOTH_PAIRING_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable"];
@@ -30,11 +30,11 @@
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"BLUETOOTH_PAIRING_CARD_MESSAGE_IPHONE_%@" value:&stru_2855A1F50 table:@"Localizable"];
 
-  v56 = [v13 stringWithFormat:v15, v9];
+  nameCopy = [v13 stringWithFormat:v15, nameCopy];
 
-  [v10 setSubtitle:v56];
+  [v10 setSubtitle:nameCopy];
   [v10 setDismissalType:2];
-  v16 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8];
+  v16 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:codeCopy];
 
   v17 = [v16 length];
   v54 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:36.0 weight:*MEMORY[0x277D74418]];
@@ -48,29 +48,29 @@
   [v18 setAttributedText:v16];
   [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   v50 = v10;
-  v19 = [v10 contentView];
-  [v19 addSubview:v18];
+  contentView = [v10 contentView];
+  [contentView addSubview:v18];
 
-  v20 = [v10 contentView];
-  v21 = [v20 mainContentGuide];
+  contentView2 = [v10 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
   v45 = MEMORY[0x277CCAAD0];
-  v49 = [v18 topAnchor];
-  v48 = [v21 topAnchor];
-  v47 = [v49 constraintEqualToSystemSpacingBelowAnchor:v48 multiplier:1.0];
+  topAnchor = [v18 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v47 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v61[0] = v47;
-  v46 = [v21 bottomAnchor];
-  v22 = [v18 bottomAnchor];
-  v23 = [v46 constraintEqualToSystemSpacingBelowAnchor:v22 multiplier:1.0];
+  bottomAnchor = [mainContentGuide bottomAnchor];
+  bottomAnchor2 = [v18 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v61[1] = v23;
-  v24 = [v18 centerXAnchor];
-  v51 = v21;
-  v25 = [v21 centerXAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerXAnchor = [v18 centerXAnchor];
+  v51 = mainContentGuide;
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[2] = v26;
-  v27 = [v18 widthAnchor];
-  v28 = [v21 widthAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  widthAnchor = [v18 widthAnchor];
+  widthAnchor2 = [mainContentGuide widthAnchor];
+  v29 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v61[3] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:4];
   [v45 activateConstraints:v30];
@@ -83,7 +83,7 @@
   v59[1] = 3221225472;
   v59[2] = __89__CARSetupPrompts_bluetoothConfirmationPromptForVehicleName_numericCode_responseHandler___block_invoke;
   v59[3] = &unk_278D8F580;
-  v34 = v55;
+  v34 = handlerCopy;
   v60 = v34;
   v35 = [v31 actionWithTitle:v33 style:0 handler:v59];
   v36 = [v50 addAction:v35];
@@ -128,9 +128,9 @@ uint64_t __89__CARSetupPrompts_bluetoothConfirmationPromptForVehicleName_numeric
   return result;
 }
 
-+ (id)bluetoothContactsSyncPromptWithResponseHandler:(id)a3
++ (id)bluetoothContactsSyncPromptWithResponseHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(MEMORY[0x277D43330]);
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BLUETOOTH_CONTACTS_SYNC_TITLE" value:&stru_2855A1F50 table:@"Localizable"];
@@ -152,7 +152,7 @@ uint64_t __89__CARSetupPrompts_bluetoothConfirmationPromptForVehicleName_numeric
   v29[1] = 3221225472;
   v29[2] = __66__CARSetupPrompts_bluetoothContactsSyncPromptWithResponseHandler___block_invoke;
   v29[3] = &unk_278D8F580;
-  v14 = v3;
+  v14 = handlerCopy;
   v30 = v14;
   v15 = [v11 actionWithTitle:v13 style:0 handler:v29];
   v16 = [v4 addAction:v15];
@@ -195,17 +195,17 @@ uint64_t __66__CARSetupPrompts_bluetoothContactsSyncPromptWithResponseHandler___
   return result;
 }
 
-+ (id)bluetoothFailedPromptForVehicleName:(id)a3 isTimeout:(BOOL)a4 responseHandler:(id)a5
++ (id)bluetoothFailedPromptForVehicleName:(id)name isTimeout:(BOOL)timeout responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  timeoutCopy = timeout;
+  nameCopy = name;
+  handlerCopy = handler;
   v9 = objc_alloc_init(MEMORY[0x277D43330]);
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"BLUETOOTH_FAILED_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable"];
 
   [v9 setTitle:v11];
-  if (v6)
+  if (timeoutCopy)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -218,11 +218,11 @@ uint64_t __66__CARSetupPrompts_bluetoothContactsSyncPromptWithResponseHandler___
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = v13;
-    if (v7)
+    if (nameCopy)
     {
       v16 = [v13 localizedStringForKey:@"BLUETOOTH_FAILED_MESSAGE_GENERIC_%@" value:&stru_2855A1F50 table:@"Localizable"];
 
-      [v12 stringWithFormat:v16, v7];
+      [v12 stringWithFormat:v16, nameCopy];
       goto LABEL_7;
     }
 
@@ -250,8 +250,8 @@ uint64_t __66__CARSetupPrompts_bluetoothContactsSyncPromptWithResponseHandler___
   v30[1] = 3221225472;
   v30[2] = __81__CARSetupPrompts_bluetoothFailedPromptForVehicleName_isTimeout_responseHandler___block_invoke;
   v30[3] = &unk_278D8F580;
-  v31 = v8;
-  v25 = v8;
+  v31 = handlerCopy;
+  v25 = handlerCopy;
   v26 = [v22 actionWithTitle:v24 style:0 handler:v30];
   v27 = [v9 addAction:v26];
 
@@ -280,25 +280,25 @@ uint64_t __81__CARSetupPrompts_bluetoothFailedPromptForVehicleName_isTimeout_res
   [v2 setDismissalType:2];
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v2 contentView];
-  [v6 addSubview:v5];
+  contentView = [v2 contentView];
+  [contentView addSubview:v5];
 
   v19 = v2;
-  v7 = [v2 contentView];
-  v8 = [v7 mainContentGuide];
+  contentView2 = [v2 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
   v20 = MEMORY[0x277CCAAD0];
-  v22 = [v5 topAnchor];
-  v21 = [v8 topAnchor];
-  v9 = [v22 constraintEqualToSystemSpacingBelowAnchor:v21 multiplier:1.0];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v9 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v23[0] = v9;
-  v10 = [v8 bottomAnchor];
-  v11 = [v5 bottomAnchor];
-  v12 = [v10 constraintEqualToSystemSpacingBelowAnchor:v11 multiplier:1.0];
+  bottomAnchor = [mainContentGuide bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v23[1] = v12;
-  v13 = [v5 centerXAnchor];
-  v14 = [v8 centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v23[2] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
   [v20 activateConstraints:v16];
@@ -309,18 +309,18 @@ uint64_t __81__CARSetupPrompts_bluetoothFailedPromptForVehicleName_isTimeout_res
   return v19;
 }
 
-+ (id)allowWhileLockedPromptForVehicleName:(id)a3 responseHandler:(id)a4
++ (id)allowWhileLockedPromptForVehicleName:(id)name responseHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x277D43330]);
-  if (v5)
+  if (nameCopy)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"ALLOW_WHILE_LOCKED_CARD_TITLE_%@" value:&stru_2855A1F50 table:@"Localizable"];
 
-    [v8 stringWithFormat:v10, v5];
+    [v8 stringWithFormat:v10, nameCopy];
   }
 
   else
@@ -345,7 +345,7 @@ uint64_t __81__CARSetupPrompts_bluetoothFailedPromptForVehicleName_isTimeout_res
   v34[1] = 3221225472;
   v34[2] = __72__CARSetupPrompts_allowWhileLockedPromptForVehicleName_responseHandler___block_invoke;
   v34[3] = &unk_278D8F580;
-  v16 = v6;
+  v16 = handlerCopy;
   v35 = v16;
   v17 = [v13 actionWithTitle:v15 style:0 handler:v34];
   v18 = [v7 addAction:v17];
@@ -409,11 +409,11 @@ uint64_t __72__CARSetupPrompts_allowWhileLockedPromptForVehicleName_responseHand
   return result;
 }
 
-+ (id)connectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5
++ (id)connectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = a5;
+  enablementCopy = enablement;
+  optionCopy = option;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277D43330]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CONNECT_TO_CARPLAY_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable"];
@@ -425,7 +425,7 @@ uint64_t __72__CARSetupPrompts_allowWhileLockedPromptForVehicleName_responseHand
   [v8 setSubtitle:v12];
   [v8 setDismissalType:3];
   [v8 carSetup_addCarPlayIconCenteredInMainContent];
-  if ((v5 & 2) != 0)
+  if ((enablementCopy & 2) != 0)
   {
     v13 = CRLocalizedWiFiVariantKeyForKey();
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -443,12 +443,12 @@ uint64_t __72__CARSetupPrompts_allowWhileLockedPromptForVehicleName_responseHand
   v33[1] = 3221225472;
   v33[2] = __91__CARSetupPrompts_connectPromptWithBluetoothOnlyOption_wirelessEnablement_responseHandler___block_invoke;
   v33[3] = &unk_278D8F580;
-  v17 = v7;
+  v17 = handlerCopy;
   v34 = v17;
   v18 = [v16 actionWithTitle:v14 style:0 handler:v33];
   v19 = [v8 addAction:v18];
 
-  if (v6)
+  if (optionCopy)
   {
     v20 = MEMORY[0x277D432F0];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -530,20 +530,20 @@ uint64_t __91__CARSetupPrompts_connectPromptWithBluetoothOnlyOption_wirelessEnab
   return result;
 }
 
-+ (id)useWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5
++ (id)useWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277D43330]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"USE_WIRELESS_CARPLAY_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable"];
 
   [v8 setTitle:v10];
   v11 = 0;
-  if (a3 <= 1)
+  if (enablement <= 1)
   {
-    if (a3)
+    if (enablement)
     {
-      if (a3 != 1)
+      if (enablement != 1)
       {
         goto LABEL_12;
       }
@@ -564,7 +564,7 @@ uint64_t __91__CARSetupPrompts_connectPromptWithBluetoothOnlyOption_wirelessEnab
     goto LABEL_11;
   }
 
-  if (a3 == 2 || a3 == 3)
+  if (enablement == 2 || enablement == 3)
   {
     v13 = CRLocalizedWiFiVariantKeyForKey();
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -578,8 +578,8 @@ LABEL_12:
   [v8 setDismissalType:0];
   v16 = [MEMORY[0x277D755D0] configurationWithPointSize:78.0];
   v17 = MEMORY[0x277D755D0];
-  v18 = [MEMORY[0x277D75348] systemBlueColor];
-  v19 = [v17 configurationWithHierarchicalColor:v18];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v19 = [v17 configurationWithHierarchicalColor:systemBlueColor];
   v20 = [v16 configurationByApplyingConfiguration:v19];
 
   v21 = [MEMORY[0x277D755B8] _systemImageNamed:@"carplay.radiowaves.left.and.right" withConfiguration:v20];
@@ -593,15 +593,15 @@ LABEL_12:
   v39[1] = 3221225472;
   v39[2] = __90__CARSetupPrompts_useWirelessPromptWithWirelessEnablement_declineVariant_responseHandler___block_invoke;
   v39[3] = &unk_278D8F580;
-  v26 = v7;
+  v26 = handlerCopy;
   v40 = v26;
   v27 = [v23 actionWithTitle:v25 style:0 handler:v39];
   v28 = [v8 addAction:v27];
 
   v29 = 0;
-  if (a4 <= 2)
+  if (variant <= 2)
   {
-    v30 = off_278D8F5C0[a4];
+    v30 = off_278D8F5C0[variant];
     v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v29 = [v31 localizedStringForKey:v30 value:&stru_2855A1F50 table:@"Localizable"];
   }
@@ -677,19 +677,19 @@ void __46__CARSetupPrompts_waitingOnStartSessionPrompt__block_invoke()
   }
 }
 
-+ (id)enhancedIntegrationPromptForVehicleName:(id)a3 responseHandler:(id)a4
++ (id)enhancedIntegrationPromptForVehicleName:(id)name responseHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x277D43330];
-  v7 = a3;
+  nameCopy = name;
   v8 = objc_alloc_init(v6);
   v9 = MEMORY[0x277CCACA8];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"ENHANCED_INTEGRATION_CARD_TITLE_%@" value:&stru_2855A1F50 table:@"Localizable"];
 
-  v27 = [v9 stringWithFormat:v11, v7];
+  nameCopy = [v9 stringWithFormat:v11, nameCopy];
 
-  [v8 setTitle:v27];
+  [v8 setTitle:nameCopy];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"ENHANCED_INTEGRATION_CARD_MESSAGE" value:&stru_2855A1F50 table:@"Localizable"];
 
@@ -703,7 +703,7 @@ void __46__CARSetupPrompts_waitingOnStartSessionPrompt__block_invoke()
   v30[1] = 3221225472;
   v30[2] = __75__CARSetupPrompts_enhancedIntegrationPromptForVehicleName_responseHandler___block_invoke;
   v30[3] = &unk_278D8F580;
-  v17 = v5;
+  v17 = handlerCopy;
   v31 = v17;
   v18 = [v14 actionWithTitle:v16 style:0 handler:v30];
   v19 = [v8 addAction:v18];
@@ -746,11 +746,11 @@ uint64_t __75__CARSetupPrompts_enhancedIntegrationPromptForVehicleName_responseH
   return result;
 }
 
-+ (id)assetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5
++ (id)assetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = a5;
+  enablementCopy = enablement;
+  optionCopy = option;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277D43330]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CONNECT_TO_CARPLAY_ULTRA_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable-Themed"];
@@ -762,7 +762,7 @@ uint64_t __75__CARSetupPrompts_enhancedIntegrationPromptForVehicleName_responseH
   [v8 setSubtitle:v12];
   [v8 setDismissalType:3];
   [v8 carSetup_addCarPlayIconCenteredInMainContent];
-  if ((v5 & 2) != 0)
+  if ((enablementCopy & 2) != 0)
   {
     v13 = CRLocalizedWiFiVariantKeyForKey();
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -780,12 +780,12 @@ uint64_t __75__CARSetupPrompts_enhancedIntegrationPromptForVehicleName_responseH
   v33[1] = 3221225472;
   v33[2] = __106__CARSetupPrompts_assetSupportingConnectPromptWithBluetoothOnlyOption_wirelessEnablement_responseHandler___block_invoke;
   v33[3] = &unk_278D8F580;
-  v17 = v7;
+  v17 = handlerCopy;
   v34 = v17;
   v18 = [v16 actionWithTitle:v14 style:0 handler:v33];
   v19 = [v8 addAction:v18];
 
-  if (v6)
+  if (optionCopy)
   {
     v20 = MEMORY[0x277D432F0];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -867,20 +867,20 @@ uint64_t __106__CARSetupPrompts_assetSupportingConnectPromptWithBluetoothOnlyOpt
   return result;
 }
 
-+ (id)assetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5
++ (id)assetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277D43330]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CONNECT_TO_CARPLAY_ULTRA_CARD_TITLE" value:&stru_2855A1F50 table:@"Localizable-Themed"];
 
   [v8 setTitle:v10];
   v11 = 0;
-  if (a3 <= 1)
+  if (enablement <= 1)
   {
-    if (a3)
+    if (enablement)
     {
-      if (a3 != 1)
+      if (enablement != 1)
       {
         goto LABEL_12;
       }
@@ -901,7 +901,7 @@ uint64_t __106__CARSetupPrompts_assetSupportingConnectPromptWithBluetoothOnlyOpt
     goto LABEL_11;
   }
 
-  if (a3 == 2 || a3 == 3)
+  if (enablement == 2 || enablement == 3)
   {
     v13 = CRLocalizedWiFiVariantKeyForKey();
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -922,15 +922,15 @@ LABEL_12:
   v35[1] = 3221225472;
   v35[2] = __105__CARSetupPrompts_assetSupportingUseWirelessPromptWithWirelessEnablement_declineVariant_responseHandler___block_invoke;
   v35[3] = &unk_278D8F580;
-  v19 = v7;
+  v19 = handlerCopy;
   v36 = v19;
   v20 = [v16 actionWithTitle:v18 style:0 handler:v35];
   v21 = [v8 addAction:v20];
 
   v22 = 0;
-  if (a4 <= 2)
+  if (variant <= 2)
   {
-    v23 = off_278D8F5D8[a4];
+    v23 = off_278D8F5D8[variant];
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v24 localizedStringForKey:v23 value:&stru_2855A1F50 table:@"Localizable-Themed"];
   }

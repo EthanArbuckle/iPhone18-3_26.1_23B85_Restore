@@ -3,8 +3,8 @@
 - (SMUSystemDisplayIdentity)mainIdentity;
 - (SMUSystemDisplayMonitor)init;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 @end
 
 @implementation SMUSystemDisplayMonitor
@@ -28,10 +28,10 @@
 
 - (NSSet)connectedIdentities
 {
-  v2 = [(SMUSystemDisplayMonitor *)self displayMonitor];
-  v3 = [v2 connectedIdentities];
+  displayMonitor = [(SMUSystemDisplayMonitor *)self displayMonitor];
+  connectedIdentities = [displayMonitor connectedIdentities];
 
-  return v3;
+  return connectedIdentities;
 }
 
 - (void)dealloc
@@ -44,24 +44,24 @@
 
 - (SMUSystemDisplayIdentity)mainIdentity
 {
-  v2 = [(SMUSystemDisplayMonitor *)self displayMonitor];
-  v3 = [v2 mainIdentity];
+  displayMonitor = [(SMUSystemDisplayMonitor *)self displayMonitor];
+  mainIdentity = [displayMonitor mainIdentity];
 
-  return v3;
+  return mainIdentity;
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(SMUSystemDisplayMonitor *)self onDisplayConnected];
-  v7[2](v7, v6);
+  identityCopy = identity;
+  onDisplayConnected = [(SMUSystemDisplayMonitor *)self onDisplayConnected];
+  onDisplayConnected[2](onDisplayConnected, identityCopy);
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = [(SMUSystemDisplayMonitor *)self onDisplayDisconnected];
-  v6[2](v6, v5);
+  identityCopy = identity;
+  onDisplayDisconnected = [(SMUSystemDisplayMonitor *)self onDisplayDisconnected];
+  onDisplayDisconnected[2](onDisplayDisconnected, identityCopy);
 }
 
 @end

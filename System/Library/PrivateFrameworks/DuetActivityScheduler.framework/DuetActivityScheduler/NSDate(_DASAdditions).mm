@@ -8,16 +8,16 @@
 
 - (BOOL)isBefore:()_DASAdditions
 {
-  v2 = [a1 earlierDate:?];
-  v3 = v2 == a1;
+  v2 = [self earlierDate:?];
+  v3 = v2 == self;
 
   return v3;
 }
 
 - (BOOL)isAfter:()_DASAdditions
 {
-  v2 = [a1 laterDate:?];
-  v3 = v2 == a1;
+  v2 = [self laterDate:?];
+  v3 = v2 == self;
 
   return v3;
 }
@@ -26,11 +26,11 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v6 components:512 fromDate:a1];
+  v8 = [v6 components:512 fromDate:self];
   v9 = [v6 components:512 fromDate:v7];
 
-  v10 = [v8 weekday];
-  v11 = v10 == [v9 weekday];
+  weekday = [v8 weekday];
+  v11 = weekday == [v9 weekday];
 
   return v11;
 }

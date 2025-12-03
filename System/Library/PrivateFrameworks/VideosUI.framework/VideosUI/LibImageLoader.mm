@@ -1,13 +1,13 @@
 @interface LibImageLoader
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation LibImageLoader
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v5);
@@ -15,7 +15,7 @@
   MEMORY[0x1EEE9AC00](v6);
   OUTLINED_FUNCTION_42_1();
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_1E4207264();
   swift_unknownObjectRelease();
   sub_1E39FAFF4();
@@ -33,10 +33,10 @@
   return v9;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1E4207264();
   swift_unknownObjectRelease();
   sub_1E39FB154(v9);
@@ -57,10 +57,10 @@
   return v7;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1E4207264();
   swift_unknownObjectRelease();
   sub_1E39FB554();
@@ -68,7 +68,7 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
   OUTLINED_FUNCTION_5_16();
   v8 = v7;

@@ -2,8 +2,8 @@
 + (id)_sharedPowerSourceController;
 - (BCBatteryDeviceController)init;
 - (NSArray)connectedDevices;
-- (void)addBatteryDeviceObserver:(id)a3 queue:(id)a4;
-- (void)removeBatteryDeviceObserver:(id)a3;
+- (void)addBatteryDeviceObserver:(id)observer queue:(id)queue;
+- (void)removeBatteryDeviceObserver:(id)observer;
 @end
 
 @implementation BCBatteryDeviceController
@@ -42,25 +42,25 @@ uint64_t __57__BCBatteryDeviceController__sharedPowerSourceController__block_inv
 
 - (NSArray)connectedDevices
 {
-  v2 = [objc_opt_class() _sharedPowerSourceController];
-  v3 = [v2 connectedDevices];
+  _sharedPowerSourceController = [objc_opt_class() _sharedPowerSourceController];
+  connectedDevices = [_sharedPowerSourceController connectedDevices];
 
-  return v3;
+  return connectedDevices;
 }
 
-- (void)addBatteryDeviceObserver:(id)a3 queue:(id)a4
+- (void)addBatteryDeviceObserver:(id)observer queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _sharedPowerSourceController];
-  [v7 addBatteryDeviceObserver:v6 queue:v5];
+  queueCopy = queue;
+  observerCopy = observer;
+  _sharedPowerSourceController = [objc_opt_class() _sharedPowerSourceController];
+  [_sharedPowerSourceController addBatteryDeviceObserver:observerCopy queue:queueCopy];
 }
 
-- (void)removeBatteryDeviceObserver:(id)a3
+- (void)removeBatteryDeviceObserver:(id)observer
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _sharedPowerSourceController];
-  [v4 removeBatteryDeviceObserver:v3];
+  observerCopy = observer;
+  _sharedPowerSourceController = [objc_opt_class() _sharedPowerSourceController];
+  [_sharedPowerSourceController removeBatteryDeviceObserver:observerCopy];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface _UISearchTokenLayoutView
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position;
 - (CGRect)selectionBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)atomInsets;
 - (_UISearchTokenLayoutView)init;
-- (_UISearchTokenLayoutView)initWithCoder:(id)a3;
-- (_UISearchTokenLayoutView)initWithDelegateView:(id)a3;
-- (_UISearchTokenLayoutView)initWithFrame:(CGRect)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)targetedDragPreviewInContainerView:(id)a3;
+- (_UISearchTokenLayoutView)initWithCoder:(id)coder;
+- (_UISearchTokenLayoutView)initWithDelegateView:(id)view;
+- (_UISearchTokenLayoutView)initWithFrame:(CGRect)frame;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)targetedDragPreviewInContainerView:(id)view;
 - (void)layoutSubviews;
-- (void)updateMaskLayerForAttachmentRect:(CGRect)a3 lineFragment:(CGRect)a4;
-- (void)updateMaskLayerForVisibleRect:(CGRect)a3;
+- (void)updateMaskLayerForAttachmentRect:(CGRect)rect lineFragment:(CGRect)fragment;
+- (void)updateMaskLayerForVisibleRect:(CGRect)rect;
 @end
 
 @implementation _UISearchTokenLayoutView
 
-- (_UISearchTokenLayoutView)initWithDelegateView:(id)a3
+- (_UISearchTokenLayoutView)initWithDelegateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UISearchTokenLayoutView;
   v6 = [(UIView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegateView, a3);
+    objc_storeStrong(&v6->_delegateView, view);
     [(_UIAtomTextViewAtomLayout *)v7->_delegateView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v7 setAutoresizesSubviews:0];
     [(UIView *)v7 addSubview:v7->_delegateView];
@@ -42,20 +42,20 @@
   objc_exception_throw(v2);
 }
 
-- (_UISearchTokenLayoutView)initWithFrame:(CGRect)a3
+- (_UISearchTokenLayoutView)initWithFrame:(CGRect)frame
 {
-  v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Unimplemented" userInfo:{0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Unimplemented" userInfo:{0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   objc_exception_throw(v3);
 }
 
-- (_UISearchTokenLayoutView)initWithCoder:(id)a3
+- (_UISearchTokenLayoutView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Unimplemented" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = _UISearchTokenLayoutView;
@@ -72,14 +72,14 @@
   return v3 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = _UISearchTokenLayoutView;
   v5 = [(_UISearchTokenLayoutView *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(_UIAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:a3];
+    v5 = [(_UIAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:selector];
   }
 
   return v5;
@@ -117,9 +117,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UIAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(_UIAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(_UISearchTokenLayoutView *)self atomInsets];
@@ -161,20 +161,20 @@
   return result;
 }
 
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position
 {
-  [(UIView *)self layoutIfNeeded:a3];
+  [(UIView *)self layoutIfNeeded:container];
   v6 = *MEMORY[0x1E695F058];
   [(_UISearchTokenLayoutView *)self sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v8 = v7;
-  v9 = [(_UISearchTokenLayoutView *)self viewForLastBaselineLayout];
-  [v9 _baselineOffsetFromBottom];
+  viewForLastBaselineLayout = [(_UISearchTokenLayoutView *)self viewForLastBaselineLayout];
+  [viewForLastBaselineLayout _baselineOffsetFromBottom];
   v11 = -v10;
-  [v9 bounds];
+  [viewForLastBaselineLayout bounds];
   Height = CGRectGetHeight(v18);
   delegateView = self->_delegateView;
-  [v9 bounds];
-  [(_UIAtomTextViewAtomLayout *)delegateView convertRect:v9 fromView:?];
+  [viewForLastBaselineLayout bounds];
+  [(_UIAtomTextViewAtomLayout *)delegateView convertRect:viewForLastBaselineLayout fromView:?];
   self->_verticalDelegateViewOrigin = CGRectGetMinY(v19);
 
   v14 = v6;
@@ -188,18 +188,18 @@
   return result;
 }
 
-- (void)updateMaskLayerForAttachmentRect:(CGRect)a3 lineFragment:(CGRect)a4
+- (void)updateMaskLayerForAttachmentRect:(CGRect)rect lineFragment:(CGRect)fragment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  y = fragment.origin.y;
+  x = fragment.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v53[4] = *MEMORY[0x1E69E9840];
-  v13 = CGRectIntersectsRect(a3, a4);
+  v13 = CGRectIntersectsRect(rect, fragment);
   v45 = v9;
   v46 = v11;
   if (v13)
@@ -350,33 +350,33 @@ LABEL_9:
     verticalDelegateViewOrigin = self->_verticalDelegateViewOrigin;
     v40 = v24 + verticalDelegateViewOrigin + verticalDelegateViewOrigin;
     v41 = -verticalDelegateViewOrigin;
-    v42 = [MEMORY[0x1E6979380] layer];
-    [v42 setColors:v30];
-    [v42 setLocations:v35];
-    [v42 setStartPoint:{0.0, 0.5}];
-    [v42 setEndPoint:{1.0, 0.5}];
-    [v42 setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    [v42 setBounds:{v36, v37, v38, v40}];
-    [v42 setPosition:{0.0, v41}];
-    v43 = [(UIView *)self layer];
-    [v43 setMask:v42];
+    layer = [MEMORY[0x1E6979380] layer];
+    [layer setColors:v30];
+    [layer setLocations:v35];
+    [layer setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
+    [layer setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [layer setBounds:{v36, v37, v38, v40}];
+    [layer setPosition:{0.0, v41}];
+    layer2 = [(UIView *)self layer];
+    [layer2 setMask:layer];
 
     [(UIView *)self setHidden:0];
     return;
   }
 
-  v18 = [(UIView *)self layer];
-  [v18 setMask:0];
+  layer3 = [(UIView *)self layer];
+  [layer3 setMask:0];
 
   [(UIView *)self setHidden:!v13];
 }
 
-- (void)updateMaskLayerForVisibleRect:(CGRect)a3
+- (void)updateMaskLayerForVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v58[6] = *MEMORY[0x1E69E9840];
   [(UIView *)self bounds];
   v9 = v8;
@@ -393,14 +393,14 @@ LABEL_9:
   v72.size.height = v15;
   if (CGRectContainsRect(v60, v72))
   {
-    v16 = [(UIView *)self layer];
-    [v16 setMask:0];
+    layer = [(UIView *)self layer];
+    [layer setMask:0];
 
-    v17 = self;
+    selfCopy2 = self;
     v18 = 0;
 LABEL_10:
 
-    [(UIView *)v17 setHidden:v18];
+    [(UIView *)selfCopy2 setHidden:v18];
     return;
   }
 
@@ -414,10 +414,10 @@ LABEL_10:
   v73.size.height = height;
   if (!CGRectIntersectsRect(v61, v73))
   {
-    v52 = [(UIView *)self layer];
-    [v52 setMask:0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setMask:0];
 
-    v17 = self;
+    selfCopy2 = self;
     v18 = 1;
     goto LABEL_10;
   }
@@ -447,17 +447,17 @@ LABEL_10:
   v65.size.height = height;
   v23 = MaxX - CGRectGetMaxX(v65);
   v24 = +[UIColor clearColor];
-  v25 = [v24 CGColor];
+  cGColor = [v24 CGColor];
 
   v26 = +[UIColor whiteColor];
-  v27 = [v26 CGColor];
+  cGColor2 = [v26 CGColor];
 
-  v58[0] = v25;
-  v58[1] = v25;
-  v58[2] = v27;
-  v58[3] = v27;
-  v58[4] = v25;
-  v58[5] = v25;
+  v58[0] = cGColor;
+  v58[1] = cGColor;
+  v58[2] = cGColor2;
+  v58[3] = cGColor2;
+  v58[4] = cGColor;
+  v58[5] = cGColor;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:6];
   v29 = 0.0;
   v30 = 0.0;
@@ -526,24 +526,24 @@ LABEL_10:
   v71.size.height = v19;
   MidY = CGRectGetMidY(v71);
   v49 = v19 + self->_verticalDelegateViewOrigin + self->_verticalDelegateViewOrigin;
-  v50 = [MEMORY[0x1E6979380] layer];
-  [v50 setColors:v28];
-  [v50 setLocations:v44];
-  [v50 setStartPoint:{0.0, 0.5}];
-  [v50 setEndPoint:{1.0, 0.5}];
-  [v50 setBounds:{v45, v46, v55, v49}];
-  [v50 setPosition:{MidX, MidY}];
-  v51 = [(UIView *)self layer];
-  [v51 setMask:v50];
+  layer3 = [MEMORY[0x1E6979380] layer];
+  [layer3 setColors:v28];
+  [layer3 setLocations:v44];
+  [layer3 setStartPoint:{0.0, 0.5}];
+  [layer3 setEndPoint:{1.0, 0.5}];
+  [layer3 setBounds:{v45, v46, v55, v49}];
+  [layer3 setPosition:{MidX, MidY}];
+  layer4 = [(UIView *)self layer];
+  [layer4 setMask:layer3];
 
   [(UIView *)self setHidden:0];
 }
 
-- (id)targetedDragPreviewInContainerView:(id)a3
+- (id)targetedDragPreviewInContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_UISearchTokenLayoutView *)self selectionBounds];
-  [v4 convertRect:self fromView:?];
+  [viewCopy convertRect:self fromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -553,7 +553,7 @@ LABEL_10:
   v15 = +[UIColor clearColor];
   [v14 setBackgroundColor:v15];
 
-  v16 = [(UIPreviewTarget *)[UIDragPreviewTarget alloc] initWithContainer:v4 center:v6 + v10 * 0.5, v8 + v12 * 0.5];
+  v16 = [(UIPreviewTarget *)[UIDragPreviewTarget alloc] initWithContainer:viewCopy center:v6 + v10 * 0.5, v8 + v12 * 0.5];
   v17 = [[UITargetedDragPreview alloc] initWithView:v13 parameters:v14 target:v16];
 
   return v17;

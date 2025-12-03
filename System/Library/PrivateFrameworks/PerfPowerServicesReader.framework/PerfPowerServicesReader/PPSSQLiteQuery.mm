@@ -1,27 +1,27 @@
 @interface PPSSQLiteQuery
-+ (id)queryWithDatabase:(id)a3 entity:(id)a4 predicate:(id)a5;
-+ (id)queryWithDatabase:(id)a3 entity:(id)a4 predicate:(id)a5 groupByProperties:(id)a6 orderByProperties:(id)a7 orderByDirections:(id)a8 limitCount:(unint64_t)a9 offsetCount:(unint64_t)a10;
-- (BOOL)enumerateProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-- (PPSSQLiteQuery)initWithDatabase:(id)a3 descriptor:(id)a4;
-- (id)columnNamesForProperties:(id)a3;
-- (id)selectSQLWithProperties:(id)a3;
-- (void)bindToSelectStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
++ (id)queryWithDatabase:(id)database entity:(id)entity predicate:(id)predicate;
++ (id)queryWithDatabase:(id)database entity:(id)entity predicate:(id)predicate groupByProperties:(id)properties orderByProperties:(id)byProperties orderByDirections:(id)directions limitCount:(unint64_t)count offsetCount:(unint64_t)self0;
+- (BOOL)enumerateProperties:(id)properties error:(id *)error enumerationHandler:(id)handler;
+- (PPSSQLiteQuery)initWithDatabase:(id)database descriptor:(id)descriptor;
+- (id)columnNamesForProperties:(id)properties;
+- (id)selectSQLWithProperties:(id)properties;
+- (void)bindToSelectStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 @end
 
 @implementation PPSSQLiteQuery
 
-- (PPSSQLiteQuery)initWithDatabase:(id)a3 descriptor:(id)a4
+- (PPSSQLiteQuery)initWithDatabase:(id)database descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = PPSSQLiteQuery;
   v9 = [(PPSSQLiteQuery *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_database, database);
+    v11 = [descriptorCopy copy];
     descriptor = v10->_descriptor;
     v10->_descriptor = v11;
   }
@@ -29,54 +29,54 @@
   return v10;
 }
 
-- (void)bindToSelectStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToSelectStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
-  v7 = [(PPSSQLiteQuery *)self descriptor];
-  v8 = [v7 predicate];
-  [v8 bindToStatement:a3 bindingIndex:a4];
+  descriptor = [(PPSSQLiteQuery *)self descriptor];
+  predicate = [descriptor predicate];
+  [predicate bindToStatement:statement bindingIndex:index];
 
-  v9 = [(PPSSQLiteQuery *)self descriptor];
-  v10 = [v9 limitCount];
+  descriptor2 = [(PPSSQLiteQuery *)self descriptor];
+  limitCount = [descriptor2 limitCount];
 
-  if (v10 >> 31)
+  if (limitCount >> 31)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"bindToSelectStatement called with limit count %ld, greater than maximum allowed limit count (%d)", v10, 0x7FFFFFFFLL}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"bindToSelectStatement called with limit count %ld, greater than maximum allowed limit count (%d)", limitCount, 0x7FFFFFFFLL}];
   }
 
-  v11 = [(PPSSQLiteQuery *)self descriptor];
-  v12 = [v11 offsetCount];
+  descriptor3 = [(PPSSQLiteQuery *)self descriptor];
+  offsetCount = [descriptor3 offsetCount];
 
-  if (v12 >> 31)
+  if (offsetCount >> 31)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"bindToSelectStatement called with offset count %ld, greater than maximum allowed offset count (%d)", v12, 0x7FFFFFFFLL}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"bindToSelectStatement called with offset count %ld, greater than maximum allowed offset count (%d)", offsetCount, 0x7FFFFFFFLL}];
   }
 
-  if (v10)
+  if (limitCount)
   {
-    sqlite3_bind_int(a3, *a4, v10);
-    ++*a4;
+    sqlite3_bind_int(statement, *index, limitCount);
+    ++*index;
   }
 
-  if (v12)
+  if (offsetCount)
   {
-    sqlite3_bind_int(a3, *a4, v12);
-    ++*a4;
+    sqlite3_bind_int(statement, *index, offsetCount);
+    ++*index;
   }
 }
 
-- (id)columnNamesForProperties:(id)a3
+- (id)columnNamesForProperties:(id)properties
 {
   v23 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
-  v5 = [(PPSSQLiteQuery *)self descriptor];
-  v6 = [v5 entity];
+  propertiesCopy = properties;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
+  descriptor = [(PPSSQLiteQuery *)self descriptor];
+  entity = [descriptor entity];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v17;
+  v7 = propertiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -94,14 +94,14 @@
         v12 = [v11 rangeOfString:@"."];
         if (v12 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = [v6 disambiguatedSQLForProperty:v11 shouldEscape:0];
+          v13 = [entity disambiguatedSQLForProperty:v11 shouldEscape:0];
           [v4 addObject:v13];
         }
 
         else
         {
           v13 = [v11 substringFromIndex:v12 + 1];
-          v14 = [v6 disambiguatedSQLForProperty:v13 shouldEscape:0];
+          v14 = [entity disambiguatedSQLForProperty:v13 shouldEscape:0];
           [v4 addObject:v14];
         }
       }
@@ -117,28 +117,28 @@
   return v4;
 }
 
-- (id)selectSQLWithProperties:(id)a3
+- (id)selectSQLWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(PPSSQLiteQuery *)self descriptor];
-  v6 = [v5 _sqlForSelectWithProperties:v4];
+  propertiesCopy = properties;
+  descriptor = [(PPSSQLiteQuery *)self descriptor];
+  v6 = [descriptor _sqlForSelectWithProperties:propertiesCopy];
 
   return v6;
 }
 
-- (BOOL)enumerateProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
+- (BOOL)enumerateProperties:(id)properties error:(id *)error enumerationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count] >= 0x80000000)
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  if ([propertiesCopy count] >= 0x80000000)
   {
     v10 = MEMORY[0x277CBEAD8];
-    v11 = [v8 count];
+    v11 = [propertiesCopy count];
     [v10 raise:*MEMORY[0x277CBE660] format:{@"Insane number of properties for enumeration (%lu)", v11}];
   }
 
-  v12 = [(PPSSQLiteQuery *)self descriptor];
-  v13 = [v12 _sqlForSelectWithProperties:v8];
+  descriptor = [(PPSSQLiteQuery *)self descriptor];
+  v13 = [descriptor _sqlForSelectWithProperties:propertiesCopy];
 
   v24[0] = 0;
   v24[1] = v24;
@@ -155,11 +155,11 @@
   v19[2] = __63__PPSSQLiteQuery_enumerateProperties_error_enumerationHandler___block_invoke_2;
   v19[3] = &unk_279A11820;
   v22 = v24;
-  v15 = v8;
+  v15 = propertiesCopy;
   v20 = v15;
-  v16 = v9;
+  v16 = handlerCopy;
   v21 = v16;
-  v17 = [(PPSSQLiteDatabase *)database executeSQL:v13 shouldCache:1 error:a4 bindingHandler:v23 enumerationHandler:v19];
+  v17 = [(PPSSQLiteDatabase *)database executeSQL:v13 shouldCache:1 error:error bindingHandler:v23 enumerationHandler:v19];
 
   _Block_object_dispose(v24, 8);
   return v17;
@@ -179,28 +179,28 @@ uint64_t __63__PPSSQLiteQuery_enumerateProperties_error_enumerationHandler___blo
   return v4();
 }
 
-+ (id)queryWithDatabase:(id)a3 entity:(id)a4 predicate:(id)a5
++ (id)queryWithDatabase:(id)database entity:(id)entity predicate:(id)predicate
 {
-  v5 = [PPSSQLiteQuery queryWithDatabase:a3 entity:a4 predicate:a5 groupByProperties:0 orderByProperties:0 orderByDirections:0 limitCount:0 offsetCount:0];
+  v5 = [PPSSQLiteQuery queryWithDatabase:database entity:entity predicate:predicate groupByProperties:0 orderByProperties:0 orderByDirections:0 limitCount:0 offsetCount:0];
 
   return v5;
 }
 
-+ (id)queryWithDatabase:(id)a3 entity:(id)a4 predicate:(id)a5 groupByProperties:(id)a6 orderByProperties:(id)a7 orderByDirections:(id)a8 limitCount:(unint64_t)a9 offsetCount:(unint64_t)a10
++ (id)queryWithDatabase:(id)database entity:(id)entity predicate:(id)predicate groupByProperties:(id)properties orderByProperties:(id)byProperties orderByDirections:(id)directions limitCount:(unint64_t)count offsetCount:(unint64_t)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [[PPSSQLiteQueryDescriptor alloc] initWithEntity:v16 predicate:v17];
-  [(PPSSQLiteQueryDescriptor *)v21 setOrderByDirections:v20];
-  [(PPSSQLiteQueryDescriptor *)v21 setOrderByProperties:v19];
-  [(PPSSQLiteQueryDescriptor *)v21 setGroupByProperties:v18];
-  [(PPSSQLiteQueryDescriptor *)v21 setLimitCount:a9];
-  [(PPSSQLiteQueryDescriptor *)v21 setOffsetCount:a10];
-  v22 = [[PPSSQLiteQuery alloc] initWithDatabase:v15 descriptor:v21];
+  databaseCopy = database;
+  entityCopy = entity;
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  byPropertiesCopy = byProperties;
+  directionsCopy = directions;
+  v21 = [[PPSSQLiteQueryDescriptor alloc] initWithEntity:entityCopy predicate:predicateCopy];
+  [(PPSSQLiteQueryDescriptor *)v21 setOrderByDirections:directionsCopy];
+  [(PPSSQLiteQueryDescriptor *)v21 setOrderByProperties:byPropertiesCopy];
+  [(PPSSQLiteQueryDescriptor *)v21 setGroupByProperties:propertiesCopy];
+  [(PPSSQLiteQueryDescriptor *)v21 setLimitCount:count];
+  [(PPSSQLiteQueryDescriptor *)v21 setOffsetCount:offsetCount];
+  v22 = [[PPSSQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v21];
 
   return v22;
 }

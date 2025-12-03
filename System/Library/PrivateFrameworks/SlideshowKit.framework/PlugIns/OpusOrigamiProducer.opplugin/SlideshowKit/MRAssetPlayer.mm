@@ -1,5 +1,5 @@
 @interface MRAssetPlayer
-- (MRAssetPlayer)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6;
+- (MRAssetPlayer)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options;
 - (id)retainedByUserCurrentImage;
 - (void)dealloc;
 - (void)releaseByUser;
@@ -7,10 +7,10 @@
 
 @implementation MRAssetPlayer
 
-- (MRAssetPlayer)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6
+- (MRAssetPlayer)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = MRAssetPlayer;
   v10 = [(MRAssetPlayer *)&v15 init];
@@ -19,21 +19,21 @@
   {
     v10->_size.width = width;
     v10->_size.height = height;
-    v10->_master = a5;
-    v11->_isMonochromatic = [a6 wantsMonochromatic];
-    v11->_generatesMipmap = [a6 wantsMipmap];
-    v11->_usesPowerOfTwo = [a6 wantsPowerOfTwo];
-    v11->_thumbnailIsOK = [a6 thumbnailIsOK];
-    v12 = [a6 isStill];
-    v11->_isStill = v12;
+    v10->_master = master;
+    v11->_isMonochromatic = [options wantsMonochromatic];
+    v11->_generatesMipmap = [options wantsMipmap];
+    v11->_usesPowerOfTwo = [options wantsPowerOfTwo];
+    v11->_thumbnailIsOK = [options thumbnailIsOK];
+    isStill = [options isStill];
+    v11->_isStill = isStill;
     v13 = -1.0;
-    if (v12)
+    if (isStill)
     {
-      [a6 stillTime];
+      [options stillTime];
     }
 
     v11->_time = v13;
-    v11->_image = [objc_msgSend(a6 "initialImage")];
+    v11->_image = [objc_msgSend(options "initialImage")];
   }
 
   return v11;
@@ -52,23 +52,23 @@
 
 - (void)releaseByUser
 {
-  v3 = self;
+  selfCopy = self;
   if (atomic_fetch_add(&self->_retainByUserCount, 0xFFFFFFFF) == 1)
   {
-    v4 = self;
+    selfCopy2 = self;
     self = [(MRAssetMaster *)self->_master relinquishPlayer:self];
-    v3 = v4;
+    selfCopy = selfCopy2;
   }
 
-  _objc_release_x1(self, v3);
+  _objc_release_x1(self, selfCopy);
 }
 
 - (id)retainedByUserCurrentImage
 {
   objc_sync_enter(self);
-  v3 = [(MRImage *)self->_image retainByUser];
+  retainByUser = [(MRImage *)self->_image retainByUser];
   objc_sync_exit(self);
-  return v3;
+  return retainByUser;
 }
 
 @end

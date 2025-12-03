@@ -1,45 +1,45 @@
 @interface VCRateControlOWRDEstimator
-- (BOOL)detectAbnormalOWRDWithRoundTripTime:(double)a3;
-- (BOOL)detectOutOfOrderAndSpikeWithReceiveTimestamp:(unsigned int)a3;
-- (BOOL)detectOutOfOrderAndSpikeWithSendTimestamp:(unsigned int)a3;
-- (BOOL)shouldResumeOWRDEstimationWhenOutOfOrderWithTimestamp:(unsigned int)a3 isSend:(BOOL)a4;
+- (BOOL)detectAbnormalOWRDWithRoundTripTime:(double)time;
+- (BOOL)detectOutOfOrderAndSpikeWithReceiveTimestamp:(unsigned int)timestamp;
+- (BOOL)detectOutOfOrderAndSpikeWithSendTimestamp:(unsigned int)timestamp;
+- (BOOL)shouldResumeOWRDEstimationWhenOutOfOrderWithTimestamp:(unsigned int)timestamp isSend:(BOOL)send;
 - (BOOL)shouldResumeOWRDEstimationWhenSpuriousLagDetected;
-- (double)relativeReceiveTimeWithTimestamp:(unsigned int)a3 timestampRate:(unsigned int)a4;
-- (double)relativeSendTimeWithTimestamp:(unsigned int)a3 timestampRate:(unsigned int)a4;
-- (void)calculateOWRDWithSendTime:(double)a3 receiveTime:(double)a4 roundTripTime:(double)a5;
+- (double)relativeReceiveTimeWithTimestamp:(unsigned int)timestamp timestampRate:(unsigned int)rate;
+- (double)relativeSendTimeWithTimestamp:(unsigned int)timestamp timestampRate:(unsigned int)rate;
+- (void)calculateOWRDWithSendTime:(double)time receiveTime:(double)receiveTime roundTripTime:(double)tripTime;
 - (void)resetOWRDEstimation;
-- (void)setMode:(unsigned int)a3;
+- (void)setMode:(unsigned int)mode;
 @end
 
 @implementation VCRateControlOWRDEstimator
 
-- (void)setMode:(unsigned int)a3
+- (void)setMode:(unsigned int)mode
 {
-  self->_mode = a3;
-  if (a3 - 8 >= 5)
+  self->_mode = mode;
+  if (mode - 8 >= 5)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = 0x1000000uLL >> (8 * (a3 - 8));
+    v3 = 0x1000000uLL >> (8 * (mode - 8));
   }
 
   self->_useUINT16 = v3;
 }
 
-- (double)relativeSendTimeWithTimestamp:(unsigned int)a3 timestampRate:(unsigned int)a4
+- (double)relativeSendTimeWithTimestamp:(unsigned int)timestamp timestampRate:(unsigned int)rate
 {
   v25 = *MEMORY[0x1E69E9840];
   firstSendTimestamp = self->_firstSendTimestamp;
   if (!firstSendTimestamp)
   {
-    self->_firstSendTimestamp = a3;
-    firstSendTimestamp = a3;
+    self->_firstSendTimestamp = timestamp;
+    firstSendTimestamp = timestamp;
   }
 
-  v7 = a3 - firstSendTimestamp;
+  v7 = timestamp - firstSendTimestamp;
   previousSendTimestampDiff = self->_previousSendTimestampDiff;
   if (self->_useUINT16)
   {
@@ -153,7 +153,7 @@ LABEL_31:
 LABEL_32:
     self->_previousSendTimestampDiff = v7;
 LABEL_33:
-    result = (self->_sendTimestampWrappedAround * v18 + v7) / a4;
+    result = (self->_sendTimestampWrappedAround * v18 + v7) / rate;
     if (self->_firstSendTime == 0.0)
     {
       self->_firstSendTime = result;
@@ -163,17 +163,17 @@ LABEL_33:
   return result;
 }
 
-- (double)relativeReceiveTimeWithTimestamp:(unsigned int)a3 timestampRate:(unsigned int)a4
+- (double)relativeReceiveTimeWithTimestamp:(unsigned int)timestamp timestampRate:(unsigned int)rate
 {
   v25 = *MEMORY[0x1E69E9840];
   firstReceiveTimestamp = self->_firstReceiveTimestamp;
   if (!firstReceiveTimestamp)
   {
-    self->_firstReceiveTimestamp = a3;
-    firstReceiveTimestamp = a3;
+    self->_firstReceiveTimestamp = timestamp;
+    firstReceiveTimestamp = timestamp;
   }
 
-  v7 = a3 - firstReceiveTimestamp;
+  v7 = timestamp - firstReceiveTimestamp;
   previousReceiveTimestampDiff = self->_previousReceiveTimestampDiff;
   if (self->_useUINT16)
   {
@@ -287,7 +287,7 @@ LABEL_31:
 LABEL_32:
     self->_previousReceiveTimestampDiff = v7;
 LABEL_33:
-    result = (self->_receiveTimestampWrappedAround * v18 + v7) / a4;
+    result = (self->_receiveTimestampWrappedAround * v18 + v7) / rate;
     if (self->_firstReceiveTime == 0.0)
     {
       self->_firstReceiveTime = result;
@@ -365,10 +365,10 @@ LABEL_9:
   return self->_spuriousLagWithoutSpikeCount > 0x1E;
 }
 
-- (void)calculateOWRDWithSendTime:(double)a3 receiveTime:(double)a4 roundTripTime:(double)a5
+- (void)calculateOWRDWithSendTime:(double)time receiveTime:(double)receiveTime roundTripTime:(double)tripTime
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 || a4 < 0.0)
+  if (time < 0.0 || receiveTime < 0.0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -383,9 +383,9 @@ LABEL_9:
         v33 = 1024;
         v34 = 188;
         v35 = 2048;
-        v36 = a3;
+        timeCopy = time;
         v37 = 2048;
-        v38 = a4;
+        tripTimeCopy = receiveTime;
         _os_log_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_DEFAULT, "VCRC [%s] %s:%d Repeated or out of order timestamp detected when calculating OWRD, sendTime=%f, receiveTime=%f", &v29, 0x30u);
       }
     }
@@ -396,20 +396,20 @@ LABEL_9:
     firstSendTime = self->_firstSendTime;
     if (firstSendTime == 0.0)
     {
-      self->_firstSendTime = a3;
-      firstSendTime = a3;
+      self->_firstSendTime = time;
+      firstSendTime = time;
     }
 
     firstReceiveTime = self->_firstReceiveTime;
     if (firstReceiveTime == 0.0)
     {
-      self->_firstReceiveTime = a4;
-      firstReceiveTime = a4;
+      self->_firstReceiveTime = receiveTime;
+      firstReceiveTime = receiveTime;
     }
 
-    v11 = a4 - firstReceiveTime;
-    v12 = a3 - firstSendTime;
-    v13 = a4 - firstReceiveTime - v12;
+    v11 = receiveTime - firstReceiveTime;
+    v12 = time - firstSendTime;
+    v13 = receiveTime - firstReceiveTime - v12;
     shortAverageLag = self->_shortAverageLag;
     if (shortAverageLag == 0.0 || (longAverageLag = self->_longAverageLag, longAverageLag == 0.0))
     {
@@ -434,7 +434,7 @@ LABEL_9:
         self->_owrd = 0.0;
       }
 
-      if ([(VCRateControlOWRDEstimator *)self detectAbnormalOWRDWithRoundTripTime:a5])
+      if ([(VCRateControlOWRDEstimator *)self detectAbnormalOWRDWithRoundTripTime:tripTime])
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -450,9 +450,9 @@ LABEL_9:
             v33 = 1024;
             v34 = 227;
             v35 = 2048;
-            v36 = owrd;
+            timeCopy = owrd;
             v37 = 2048;
-            v38 = a5;
+            tripTimeCopy = tripTime;
             _os_log_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEFAULT, "VCRC [%s] %s:%d Abnormal OWRD %f detected while RTT stays low at %f for too long. Reference could be bad. Reset OWRD", &v29, 0x30u);
           }
         }
@@ -478,9 +478,9 @@ LABEL_9:
           v33 = 1024;
           v34 = 210;
           v35 = 2048;
-          v36 = v13;
+          timeCopy = v13;
           v37 = 2048;
-          v38 = v11;
+          tripTimeCopy = v11;
           v39 = 2048;
           v40 = v12;
           v41 = 2048;
@@ -502,10 +502,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)detectAbnormalOWRDWithRoundTripTime:(double)a3
+- (BOOL)detectAbnormalOWRDWithRoundTripTime:(double)time
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0 || ((v5 = self->_owrd, v5 > 2.0) ? (v6 = v5 <= a3 * 5.0) : (v6 = 1), v6))
+  if (time <= 0.0 || ((v5 = self->_owrd, v5 > 2.0) ? (v6 = v5 <= time * 5.0) : (v6 = 1), v6))
   {
     self->_abnormalOWRDSampleCount = 0;
   }
@@ -531,7 +531,7 @@ LABEL_18:
         v19 = 2048;
         v20 = owrd;
         v21 = 2048;
-        v22 = a3;
+        timeCopy = time;
         v23 = 1024;
         v24 = abnormalOWRDSampleCount;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCRC [%s] %s:%d Abnormal OWRD %f detected while RTT stays low at %f. abnormalOWRDSampleCount:%u", &v13, 0x36u);
@@ -542,19 +542,19 @@ LABEL_18:
   return self->_abnormalOWRDSampleCount > 0x1E;
 }
 
-- (BOOL)detectOutOfOrderAndSpikeWithSendTimestamp:(unsigned int)a3
+- (BOOL)detectOutOfOrderAndSpikeWithSendTimestamp:(unsigned int)timestamp
 {
-  v3 = *&a3;
+  v3 = *&timestamp;
   v48 = *MEMORY[0x1E69E9840];
   previousSendTimestamp = self->_previousSendTimestamp;
   if (!previousSendTimestamp)
   {
     v10 = 0;
-    self->_previousSendTimestamp = a3;
+    self->_previousSendTimestamp = timestamp;
     return v10;
   }
 
-  v6 = a3 - previousSendTimestamp;
+  v6 = timestamp - previousSendTimestamp;
   averageSendInterval = self->_averageSendInterval;
   if (averageSendInterval <= 0.0)
   {
@@ -625,7 +625,7 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v9 = (a3 - previousSendTimestamp);
+  v9 = (timestamp - previousSendTimestamp);
   if (v9 > 0x7FFE)
   {
     goto LABEL_11;
@@ -757,11 +757,11 @@ LABEL_27:
   return v10;
 }
 
-- (BOOL)shouldResumeOWRDEstimationWhenOutOfOrderWithTimestamp:(unsigned int)a3 isSend:(BOOL)a4
+- (BOOL)shouldResumeOWRDEstimationWhenOutOfOrderWithTimestamp:(unsigned int)timestamp isSend:(BOOL)send
 {
-  v4 = a4;
+  sendCopy = send;
   v37 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (send)
   {
     v7 = 108;
   }
@@ -772,16 +772,16 @@ LABEL_27:
   }
 
   v8 = 56;
-  if (a4)
+  if (send)
   {
     v8 = 24;
   }
 
   v9 = *(&self->super.isa + v8);
-  *(&self->super.isa + v8) = a3;
+  *(&self->super.isa + v8) = timestamp;
   if (self->_useUINT16)
   {
-    if ((a3 - v9) <= 0x7FFEu)
+    if ((timestamp - v9) <= 0x7FFEu)
     {
 LABEL_8:
       ++*(&self->super.isa + v7);
@@ -795,7 +795,7 @@ LABEL_8:
           v13 = "receive";
           v21 = 136316930;
           v22 = v10;
-          if (v4)
+          if (sendCopy)
           {
             v13 = "send";
           }
@@ -807,7 +807,7 @@ LABEL_8:
           v27 = 2080;
           v28 = v13;
           v29 = 1024;
-          v30 = a3;
+          timestampCopy2 = timestamp;
           v31 = 2080;
           v32 = v13;
           v33 = 1024;
@@ -827,7 +827,7 @@ LABEL_19:
     }
   }
 
-  else if (a3 - v9 <= 0x7FFFFFFE)
+  else if (timestamp - v9 <= 0x7FFFFFFE)
   {
     goto LABEL_8;
   }
@@ -844,7 +844,7 @@ LABEL_19:
       v22 = v17;
       v23 = 2080;
       v24 = "[VCRateControlOWRDEstimator shouldResumeOWRDEstimationWhenOutOfOrderWithTimestamp:isSend:]";
-      if (v4)
+      if (sendCopy)
       {
         v19 = "send";
       }
@@ -854,7 +854,7 @@ LABEL_19:
       v27 = 2080;
       v28 = v19;
       v29 = 1024;
-      v30 = a3;
+      timestampCopy2 = timestamp;
       v31 = 2080;
       v32 = v19;
       v33 = 1024;
@@ -869,19 +869,19 @@ LABEL_19:
   return *(&self->super.isa + v7) > 0x1Eu;
 }
 
-- (BOOL)detectOutOfOrderAndSpikeWithReceiveTimestamp:(unsigned int)a3
+- (BOOL)detectOutOfOrderAndSpikeWithReceiveTimestamp:(unsigned int)timestamp
 {
-  v3 = *&a3;
+  v3 = *&timestamp;
   v48 = *MEMORY[0x1E69E9840];
   previousReceiveTimestamp = self->_previousReceiveTimestamp;
   if (!previousReceiveTimestamp)
   {
     LOBYTE(v10) = 0;
-    self->_previousReceiveTimestamp = a3;
+    self->_previousReceiveTimestamp = timestamp;
     return v10;
   }
 
-  v6 = a3 - previousReceiveTimestamp;
+  v6 = timestamp - previousReceiveTimestamp;
   averageReceiveInterval = self->_averageReceiveInterval;
   if (averageReceiveInterval <= 0.0)
   {
@@ -891,7 +891,7 @@ LABEL_19:
   v8 = (averageReceiveInterval * 10.0);
   if (self->_useUINT16)
   {
-    v9 = (a3 - previousReceiveTimestamp);
+    v9 = (timestamp - previousReceiveTimestamp);
     if (v9 <= 0x7FFE)
     {
       if (v9 <= v8)

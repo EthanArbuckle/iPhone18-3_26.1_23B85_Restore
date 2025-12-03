@@ -1,7 +1,7 @@
 @interface SSPaymentSheet
-+ (id)_attributedStringWithString:(id)a3 styles:(id)a4;
-+ (id)_styleDictionaryWithName:(id)a3 styles:(id)a4;
-+ (id)stringWithFormattedUsernameForString:(id)a3 username:(id)a4;
++ (id)_attributedStringWithString:(id)string styles:(id)styles;
++ (id)_styleDictionaryWithName:(id)name styles:(id)styles;
++ (id)stringWithFormattedUsernameForString:(id)string username:(id)username;
 - (NSArray)salableInfo;
 - (NSAttributedString)displayPriceLabel;
 - (NSAttributedString)salableInfoLabel;
@@ -17,42 +17,42 @@
 - (NSString)storeName;
 - (NSURL)salableIconURL;
 - (SSPaymentSheet)init;
-- (SSPaymentSheet)initWithServerResponse:(id)a3;
-- (SSPaymentSheet)initWithServerResponse:(id)a3 buyParams:(id)a4;
-- (SSPaymentSheet)initWithXPCEncoding:(id)a3;
-- (id)_attributedListForFlexList:(id)a3;
-- (id)_attributedStringForAttributedArray:(id)a3;
-- (id)_attributedStringForAttributedDictionary:(id)a3;
-- (id)_attributedStringForSalableInfoStringArray:(id)a3;
-- (id)_attributedStringForString:(id)a3;
-- (id)_attributedStringForStringArray:(id)a3 useGrey:(BOOL)a4;
-- (id)_displayPriceLabelForDisplayPrice:(id)a3;
-- (id)_greyAttributedStringForAttributedString:(id)a3 range:(_NSRange)a4;
-- (id)_replaceBreakingSpaceMarkupForMutableAttributedString:(id)a3;
-- (id)_replaceMarkupForMutableAttributedString:(id)a3 markupType:(int64_t)a4;
-- (id)authKitAuthenticationContextForAccount:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSPaymentSheet)initWithServerResponse:(id)response;
+- (SSPaymentSheet)initWithServerResponse:(id)response buyParams:(id)params;
+- (SSPaymentSheet)initWithXPCEncoding:(id)encoding;
+- (id)_attributedListForFlexList:(id)list;
+- (id)_attributedStringForAttributedArray:(id)array;
+- (id)_attributedStringForAttributedDictionary:(id)dictionary;
+- (id)_attributedStringForSalableInfoStringArray:(id)array;
+- (id)_attributedStringForString:(id)string;
+- (id)_attributedStringForStringArray:(id)array useGrey:(BOOL)grey;
+- (id)_displayPriceLabelForDisplayPrice:(id)price;
+- (id)_greyAttributedStringForAttributedString:(id)string range:(_NSRange)range;
+- (id)_replaceBreakingSpaceMarkupForMutableAttributedString:(id)string;
+- (id)_replaceMarkupForMutableAttributedString:(id)string markupType:(int64_t)type;
+- (id)authKitAuthenticationContextForAccount:(id)account;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)defaultAuthKitAuthenticationContext;
-- (int64_t)_confirmationTitleTypeForStringValue:(id)a3;
-- (int64_t)_inferSalableIconTypeWithBuyParams:(id)a3;
-- (int64_t)_payeeTypeForRequestorValue:(id)a3;
+- (int64_t)_confirmationTitleTypeForStringValue:(id)value;
+- (int64_t)_inferSalableIconTypeWithBuyParams:(id)params;
+- (int64_t)_payeeTypeForRequestorValue:(id)value;
 - (int64_t)_payeeTypeInferredFromEnumeratedTitle;
-- (int64_t)_salableIconTypeForString:(id)a3;
+- (int64_t)_salableIconTypeForString:(id)string;
 - (void)_init;
-- (void)_parseResponse:(id)a3;
+- (void)_parseResponse:(id)response;
 - (void)_salableInfoItemsToUppercase;
 - (void)_stringValuesToUppercase;
-- (void)setAccountHeader:(id)a3;
-- (void)setDisplayPrice:(id)a3;
-- (void)setExplanation:(id)a3;
-- (void)setPaymentSummary:(id)a3;
-- (void)setPresentingSceneIdentifier:(id)a3;
-- (void)setRatingHeader:(id)a3;
-- (void)setRatingValue:(id)a3;
-- (void)setSalableIconURLString:(id)a3;
-- (void)setSalableInfo:(id)a3;
-- (void)setStoreName:(id)a3;
+- (void)setAccountHeader:(id)header;
+- (void)setDisplayPrice:(id)price;
+- (void)setExplanation:(id)explanation;
+- (void)setPaymentSummary:(id)summary;
+- (void)setPresentingSceneIdentifier:(id)identifier;
+- (void)setRatingHeader:(id)header;
+- (void)setRatingValue:(id)value;
+- (void)setSalableIconURLString:(id)string;
+- (void)setSalableInfo:(id)info;
+- (void)setStoreName:(id)name;
 @end
 
 @implementation SSPaymentSheet
@@ -60,18 +60,18 @@
 - (id)defaultAuthKitAuthenticationContext
 {
   v3 = +[SSAccountStore defaultStore];
-  v4 = [v3 activeAccount];
-  v5 = [(SSPaymentSheet *)self authKitAuthenticationContextForAccount:v4];
+  activeAccount = [v3 activeAccount];
+  v5 = [(SSPaymentSheet *)self authKitAuthenticationContextForAccount:activeAccount];
 
   return v5;
 }
 
-- (id)authKitAuthenticationContextForAccount:(id)a3
+- (id)authKitAuthenticationContextForAccount:(id)account
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 accountName];
-  if (!v5)
+  accountCopy = account;
+  accountName = [accountCopy accountName];
+  if (!accountName)
   {
     v6 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v6)
@@ -79,19 +79,19 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 &= 2u;
     }
@@ -112,9 +112,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v40, v39, v40}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v40, v39, v40}];
       free(v11);
-      SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, v9);
+      SSFileLog(v6, @"%@", v12, v13, v14, v15, v16, v17, oSLogObject);
     }
 
     goto LABEL_13;
@@ -122,25 +122,25 @@ LABEL_13:
 
 LABEL_14:
   v18 = objc_alloc_init(MEMORY[0x1E698DCB8]);
-  v19 = [v4 altDSID];
-  [v18 setAltDSID:v19];
+  altDSID = [accountCopy altDSID];
+  [v18 setAltDSID:altDSID];
 
-  v20 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [accountCopy uniqueIdentifier];
 
-  v21 = [v20 stringValue];
-  [v18 setDSID:v21];
+  stringValue = [uniqueIdentifier stringValue];
+  [v18 setDSID:stringValue];
 
-  [v18 setIsUsernameEditable:v5 == 0];
-  v22 = [(SSPaymentSheet *)self message];
-  [v18 set_passwordPromptTitle:v22];
+  [v18 setIsUsernameEditable:accountName == 0];
+  message = [(SSPaymentSheet *)self message];
+  [v18 set_passwordPromptTitle:message];
 
-  v23 = [(SSPaymentSheet *)self explanation];
-  [v18 setReason:v23];
+  explanation = [(SSPaymentSheet *)self explanation];
+  [v18 setReason:explanation];
 
   [v18 setShouldAllowAppleIDCreation:0];
   [v18 setAuthenticationType:2];
   [v18 setShouldUpdatePersistentServiceTokens:1];
-  [v18 setUsername:v5];
+  [v18 setUsername:accountName];
   if (v18)
   {
     goto LABEL_27;
@@ -152,19 +152,19 @@ LABEL_14:
     v24 = +[SSLogConfig sharedConfig];
   }
 
-  v25 = [v24 shouldLog];
+  shouldLog2 = [v24 shouldLog];
   if ([v24 shouldLogToDisk])
   {
-    v26 = v25 | 2;
+    v26 = shouldLog2 | 2;
   }
 
   else
   {
-    v26 = v25;
+    v26 = shouldLog2;
   }
 
-  v27 = [v24 OSLogObject];
-  if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v24 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v26 &= 2u;
   }
@@ -183,9 +183,9 @@ LABEL_14:
 
   if (v30)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v40, v39}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v40, v39}];
     free(v30);
-    SSFileLog(v24, @"%@", v31, v32, v33, v34, v35, v36, v27);
+    SSFileLog(v24, @"%@", v31, v32, v33, v34, v35, v36, oSLogObject2);
 LABEL_25:
   }
 
@@ -208,9 +208,9 @@ LABEL_27:
   return v3;
 }
 
-- (SSPaymentSheet)initWithServerResponse:(id)a3
+- (SSPaymentSheet)initWithServerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v8.receiver = self;
   v8.super_class = SSPaymentSheet;
   v5 = [(SSPaymentSheet *)&v8 init];
@@ -218,16 +218,16 @@ LABEL_27:
   if (v5)
   {
     [(SSPaymentSheet *)v5 _init];
-    [(SSPaymentSheet *)v6 _parseResponse:v4];
+    [(SSPaymentSheet *)v6 _parseResponse:responseCopy];
   }
 
   return v6;
 }
 
-- (SSPaymentSheet)initWithServerResponse:(id)a3 buyParams:(id)a4
+- (SSPaymentSheet)initWithServerResponse:(id)response buyParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  paramsCopy = params;
   v14.receiver = self;
   v14.super_class = SSPaymentSheet;
   v8 = [(SSPaymentSheet *)&v14 init];
@@ -235,12 +235,12 @@ LABEL_27:
   if (v8)
   {
     [(SSPaymentSheet *)v8 _init];
-    [(SSPaymentSheet *)v9 _parseResponse:v6];
-    v10 = [v7 copy];
+    [(SSPaymentSheet *)v9 _parseResponse:responseCopy];
+    v10 = [paramsCopy copy];
     buyParams = v9->_buyParams;
     v9->_buyParams = v10;
 
-    v12 = [(SSPaymentSheet *)v9 _inferSalableIconTypeWithBuyParams:v7];
+    v12 = [(SSPaymentSheet *)v9 _inferSalableIconTypeWithBuyParams:paramsCopy];
     if (v12)
     {
       [(SSPaymentSheet *)v9 setSalableIconType:v12];
@@ -267,12 +267,12 @@ LABEL_27:
   self->_shouldUppercaseText = 1;
 }
 
-+ (id)stringWithFormattedUsernameForString:(id)a3 username:(id)a4
++ (id)stringWithFormattedUsernameForString:(id)string username:(id)username
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  stringCopy = string;
+  usernameCopy = username;
+  v7 = stringCopy;
   if ([v7 containsString:@"%%appleId%%"])
   {
     v8 = 1;
@@ -280,8 +280,8 @@ LABEL_27:
 
   else
   {
-    v9 = [@"%%appleId%%" localizedUppercaseString];
-    v8 = [v7 containsString:v9];
+    localizedUppercaseString = [@"%%appleId%%" localizedUppercaseString];
+    v8 = [v7 containsString:localizedUppercaseString];
   }
 
   if ([v7 containsString:@"%%APPLE_ID%%"])
@@ -291,8 +291,8 @@ LABEL_27:
 
   else
   {
-    v11 = [@"%%APPLE_ID%%" localizedUppercaseString];
-    v10 = [v7 containsString:v11];
+    localizedUppercaseString2 = [@"%%APPLE_ID%%" localizedUppercaseString];
+    v10 = [v7 containsString:localizedUppercaseString2];
 
     v12 = v7;
     if (((v8 | v10) & 1) == 0)
@@ -301,9 +301,9 @@ LABEL_27:
     }
   }
 
-  if (v6)
+  if (usernameCopy)
   {
-    v13 = [MEMORY[0x1E698DE10] formattedUsernameFromUsername:v6];
+    v13 = [MEMORY[0x1E698DE10] formattedUsernameFromUsername:usernameCopy];
     v14 = v13;
     if (v13)
     {
@@ -312,7 +312,7 @@ LABEL_27:
 
     else
     {
-      v15 = v6;
+      v15 = usernameCopy;
     }
 
     v16 = v15;
@@ -325,19 +325,19 @@ LABEL_27:
     v17 = +[SSLogConfig sharedConfig];
   }
 
-  v18 = [v17 shouldLog];
+  shouldLog = [v17 shouldLog];
   if ([v17 shouldLogToDisk])
   {
-    v19 = v18 | 2;
+    v19 = shouldLog | 2;
   }
 
   else
   {
-    v19 = v18;
+    v19 = shouldLog;
   }
 
-  v20 = [v17 OSLogObject];
-  if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v17 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v19 &= 2u;
   }
@@ -355,9 +355,9 @@ LABEL_27:
 
   if (v22)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v36, v35, v36}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v36, v35, v36}];
     free(v22);
-    SSFileLog(v17, @"%@", v23, v24, v25, v26, v27, v28, v20);
+    SSFileLog(v17, @"%@", v23, v24, v25, v26, v27, v28, oSLogObject);
 LABEL_22:
   }
 
@@ -369,17 +369,17 @@ LABEL_24:
   {
     v29 = [v7 stringByReplacingOccurrencesOfString:@"%%appleId%%" withString:v16];
 
-    v30 = [@"%%appleId%%" localizedUppercaseString];
-    v12 = [v29 stringByReplacingOccurrencesOfString:v30 withString:v16];
+    localizedUppercaseString3 = [@"%%appleId%%" localizedUppercaseString];
+    v12 = [v29 stringByReplacingOccurrencesOfString:localizedUppercaseString3 withString:v16];
   }
 
   if (v10)
   {
-    v31 = [(__CFString *)v16 localizedUppercaseString];
-    v32 = [v12 stringByReplacingOccurrencesOfString:@"%%APPLE_ID%%" withString:v31];
+    localizedUppercaseString4 = [(__CFString *)v16 localizedUppercaseString];
+    v32 = [v12 stringByReplacingOccurrencesOfString:@"%%APPLE_ID%%" withString:localizedUppercaseString4];
 
-    v33 = [@"%%APPLE_ID%%" localizedUppercaseString];
-    v12 = [v32 stringByReplacingOccurrencesOfString:v33 withString:v31];
+    localizedUppercaseString5 = [@"%%APPLE_ID%%" localizedUppercaseString];
+    v12 = [v32 stringByReplacingOccurrencesOfString:localizedUppercaseString5 withString:localizedUppercaseString4];
   }
 
 LABEL_29:
@@ -542,42 +542,42 @@ LABEL_29:
   return v6;
 }
 
-- (void)setAccountHeader:(id)a3
+- (void)setAccountHeader:(id)header
 {
-  v8 = a3;
+  headerCopy = header;
   [(SSPaymentSheet *)self _lock];
-  if (self->_accountHeader != v8)
+  if (self->_accountHeader != headerCopy)
   {
-    v4 = [(NSString *)v8 copy];
+    v4 = [(NSString *)headerCopy copy];
     accountHeader = self->_accountHeader;
     self->_accountHeader = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_accountHeader localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_accountHeader localizedUppercaseString];
       v7 = self->_accountHeader;
-      self->_accountHeader = v6;
+      self->_accountHeader = localizedUppercaseString;
     }
   }
 
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setDisplayPrice:(id)a3
+- (void)setDisplayPrice:(id)price
 {
-  v9 = a3;
+  priceCopy = price;
   [(SSPaymentSheet *)self _lock];
-  if (self->_displayPrice != v9)
+  if (self->_displayPrice != priceCopy)
   {
-    v4 = [(NSString *)v9 copy];
+    v4 = [(NSString *)priceCopy copy];
     displayPrice = self->_displayPrice;
     self->_displayPrice = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_displayPrice localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_displayPrice localizedUppercaseString];
       v7 = self->_displayPrice;
-      self->_displayPrice = v6;
+      self->_displayPrice = localizedUppercaseString;
     }
 
     displayPriceLabel = self->_displayPriceLabel;
@@ -587,22 +587,22 @@ LABEL_29:
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setExplanation:(id)a3
+- (void)setExplanation:(id)explanation
 {
-  v10 = a3;
+  explanationCopy = explanation;
   [(SSPaymentSheet *)self _lock];
-  if (self->_explanation != v10)
+  if (self->_explanation != explanationCopy)
   {
-    v4 = [(NSString *)v10 copy];
-    v5 = [(SSPaymentSheet *)self accountName];
-    if (!v5)
+    v4 = [(NSString *)explanationCopy copy];
+    accountName = [(SSPaymentSheet *)self accountName];
+    if (!accountName)
     {
       v6 = +[SSAccountStore defaultStore];
-      v7 = [v6 activeAccount];
-      v5 = [v7 accountName];
+      activeAccount = [v6 activeAccount];
+      accountName = [activeAccount accountName];
     }
 
-    v8 = [objc_opt_class() stringWithFormattedUsernameForString:v4 username:v5];
+    v8 = [objc_opt_class() stringWithFormattedUsernameForString:v4 username:accountName];
     explanation = self->_explanation;
     self->_explanation = v8;
   }
@@ -610,34 +610,34 @@ LABEL_29:
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setPaymentSummary:(id)a3
+- (void)setPaymentSummary:(id)summary
 {
-  v8 = a3;
+  summaryCopy = summary;
   [(SSPaymentSheet *)self _lock];
-  if (self->_paymentSummary != v8)
+  if (self->_paymentSummary != summaryCopy)
   {
-    v4 = [(NSString *)v8 copy];
+    v4 = [(NSString *)summaryCopy copy];
     paymentSummary = self->_paymentSummary;
     self->_paymentSummary = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_paymentSummary localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_paymentSummary localizedUppercaseString];
       v7 = self->_paymentSummary;
-      self->_paymentSummary = v6;
+      self->_paymentSummary = localizedUppercaseString;
     }
   }
 
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setPresentingSceneIdentifier:(id)a3
+- (void)setPresentingSceneIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(SSPaymentSheet *)self _lock];
-  if (self->_presentingSceneIdentifier != v6)
+  if (self->_presentingSceneIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     presentingSceneIdentifier = self->_presentingSceneIdentifier;
     self->_presentingSceneIdentifier = v4;
   }
@@ -645,55 +645,55 @@ LABEL_29:
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setRatingHeader:(id)a3
+- (void)setRatingHeader:(id)header
 {
-  v8 = a3;
+  headerCopy = header;
   [(SSPaymentSheet *)self _lock];
-  if (self->_ratingHeader != v8)
+  if (self->_ratingHeader != headerCopy)
   {
-    v4 = [(NSString *)v8 copy];
+    v4 = [(NSString *)headerCopy copy];
     ratingHeader = self->_ratingHeader;
     self->_ratingHeader = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_ratingHeader localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_ratingHeader localizedUppercaseString];
       v7 = self->_ratingHeader;
-      self->_ratingHeader = v6;
+      self->_ratingHeader = localizedUppercaseString;
     }
   }
 
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setRatingValue:(id)a3
+- (void)setRatingValue:(id)value
 {
-  v8 = a3;
+  valueCopy = value;
   [(SSPaymentSheet *)self _lock];
-  if (self->_ratingValue != v8)
+  if (self->_ratingValue != valueCopy)
   {
-    v4 = [(NSString *)v8 copy];
+    v4 = [(NSString *)valueCopy copy];
     ratingValue = self->_ratingValue;
     self->_ratingValue = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_ratingValue localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_ratingValue localizedUppercaseString];
       v7 = self->_ratingValue;
-      self->_ratingValue = v6;
+      self->_ratingValue = localizedUppercaseString;
     }
   }
 
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setSalableIconURLString:(id)a3
+- (void)setSalableIconURLString:(id)string
 {
-  v7 = a3;
+  stringCopy = string;
   [(SSPaymentSheet *)self _lock];
-  if (self->_salableIconURLString != v7)
+  if (self->_salableIconURLString != stringCopy)
   {
-    v4 = [(NSString *)v7 copy];
+    v4 = [(NSString *)stringCopy copy];
     salableIconURLString = self->_salableIconURLString;
     self->_salableIconURLString = v4;
 
@@ -704,13 +704,13 @@ LABEL_29:
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setSalableInfo:(id)a3
+- (void)setSalableInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   [(SSPaymentSheet *)self _lock];
-  if (self->_salableInfo != v7)
+  if (self->_salableInfo != infoCopy)
   {
-    v4 = [(NSArray *)v7 copy];
+    v4 = [(NSArray *)infoCopy copy];
     salableInfo = self->_salableInfo;
     self->_salableInfo = v4;
 
@@ -726,21 +726,21 @@ LABEL_29:
   [(SSPaymentSheet *)self _unlock];
 }
 
-- (void)setStoreName:(id)a3
+- (void)setStoreName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   [(SSPaymentSheet *)self _lock];
-  if (self->_storeName != v8)
+  if (self->_storeName != nameCopy)
   {
-    v4 = [(NSString *)v8 copy];
+    v4 = [(NSString *)nameCopy copy];
     storeName = self->_storeName;
     self->_storeName = v4;
 
     if (self->_shouldUppercaseText)
     {
-      v6 = [(NSString *)self->_storeName localizedUppercaseString];
+      localizedUppercaseString = [(NSString *)self->_storeName localizedUppercaseString];
       v7 = self->_storeName;
-      self->_storeName = v6;
+      self->_storeName = localizedUppercaseString;
     }
   }
 
@@ -756,101 +756,101 @@ LABEL_29:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSString *)self->_accountHeader copyWithZone:a3];
+  v6 = [(NSString *)self->_accountHeader copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSArray *)self->_attributedList copyWithZone:a3];
+  v8 = [(NSArray *)self->_attributedList copyWithZone:zone];
   v9 = v5[19];
   v5[19] = v8;
 
   v5[20] = self->_confirmationTitleType;
-  v10 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v10 = [(NSString *)self->_countryCode copyWithZone:zone];
   v11 = v5[21];
   v5[21] = v10;
 
-  v12 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v12 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v13 = v5[22];
   v5[22] = v12;
 
-  v14 = [(NSNumber *)self->_designVersion copyWithZone:a3];
+  v14 = [(NSNumber *)self->_designVersion copyWithZone:zone];
   v15 = v5[23];
   v5[23] = v14;
 
-  v16 = [(NSString *)self->_dialogId copyWithZone:a3];
+  v16 = [(NSString *)self->_dialogId copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
-  v18 = [(NSString *)self->_displayPrice copyWithZone:a3];
+  v18 = [(NSString *)self->_displayPrice copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
-  v20 = [(NSString *)self->_explanation copyWithZone:a3];
+  v20 = [(NSString *)self->_explanation copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
-  v22 = [(NSArray *)self->_flexList copyWithZone:a3];
+  v22 = [(NSArray *)self->_flexList copyWithZone:zone];
   v23 = v5[24];
   v5[24] = v22;
 
-  v24 = [(NSArray *)self->_inlineImages copyWithZone:a3];
+  v24 = [(NSArray *)self->_inlineImages copyWithZone:zone];
   v25 = v5[25];
   v5[25] = v24;
 
   *(v5 + 16) = self->_applePayClassic;
-  v26 = [(NSDictionary *)self->_merchantSession copyWithZone:a3];
+  v26 = [(NSDictionary *)self->_merchantSession copyWithZone:zone];
   v27 = v5[26];
   v5[26] = v26;
 
-  v28 = [(NSString *)self->_message copyWithZone:a3];
+  v28 = [(NSString *)self->_message copyWithZone:zone];
   v29 = v5[27];
   v5[27] = v28;
 
   v5[28] = self->_payeeType;
-  v30 = [(NSString *)self->_paymentSummary copyWithZone:a3];
+  v30 = [(NSString *)self->_paymentSummary copyWithZone:zone];
   v31 = v5[9];
   v5[9] = v30;
 
-  v32 = [(NSString *)self->_presentingSceneIdentifier copyWithZone:a3];
+  v32 = [(NSString *)self->_presentingSceneIdentifier copyWithZone:zone];
   v33 = v5[10];
   v5[10] = v32;
 
-  v34 = [(NSNumber *)self->_price copyWithZone:a3];
+  v34 = [(NSNumber *)self->_price copyWithZone:zone];
   v35 = v5[29];
   v5[29] = v34;
 
-  v36 = [(NSArray *)self->_priceSectionItems copyWithZone:a3];
+  v36 = [(NSArray *)self->_priceSectionItems copyWithZone:zone];
   v37 = v5[30];
   v5[30] = v36;
 
-  v38 = [(NSString *)self->_ratingHeader copyWithZone:a3];
+  v38 = [(NSString *)self->_ratingHeader copyWithZone:zone];
   v39 = v5[11];
   v5[11] = v38;
 
-  v40 = [(NSString *)self->_ratingValue copyWithZone:a3];
+  v40 = [(NSString *)self->_ratingValue copyWithZone:zone];
   v41 = v5[12];
   v5[12] = v40;
 
   v5[31] = self->_salableIconType;
-  v42 = [(NSString *)self->_salableIconURLString copyWithZone:a3];
+  v42 = [(NSString *)self->_salableIconURLString copyWithZone:zone];
   v43 = v5[14];
   v5[14] = v42;
 
-  v44 = [(NSArray *)self->_salableInfo copyWithZone:a3];
+  v44 = [(NSArray *)self->_salableInfo copyWithZone:zone];
   v45 = v5[15];
   v5[15] = v44;
 
   *(v5 + 17) = self->_shouldShowCardPicker;
   *(v5 + 18) = self->_shouldSuppressPrice;
   *(v5 + 19) = self->_shouldUppercaseText;
-  v46 = [(NSString *)self->_storeName copyWithZone:a3];
+  v46 = [(NSString *)self->_storeName copyWithZone:zone];
   v47 = v5[17];
   v5[17] = v46;
 
-  v48 = [(NSString *)self->_title copyWithZone:a3];
+  v48 = [(NSString *)self->_title copyWithZone:zone];
   v49 = v5[33];
   v5[33] = v48;
 
@@ -895,11 +895,11 @@ LABEL_29:
   return v3;
 }
 
-- (SSPaymentSheet)initWithXPCEncoding:(id)a3
+- (SSPaymentSheet)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v77.receiver = self;
     v77.super_class = SSPaymentSheet;
@@ -1041,25 +1041,25 @@ LABEL_29:
   return v6;
 }
 
-- (id)_attributedStringForAttributedArray:(id)a3
+- (id)_attributedStringForAttributedArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __54__SSPaymentSheet__attributedStringForAttributedArray___block_invoke;
   v16 = &unk_1E84B15C8;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
+  v19 = arrayCopy;
   v20 = v6;
   v7 = v6;
-  v8 = v4;
+  v8 = arrayCopy;
   v9 = v5;
   [v8 enumerateObjectsUsingBlock:&v13];
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v11 = [v10 initWithAttributedString:{v9, v13, v14, v15, v16, v17}];
+  v11 = [v10 initWithAttributedString:{v9, v13, v14, v15, v16, selfCopy}];
 
   return v11;
 }
@@ -1094,10 +1094,10 @@ LABEL_6:
   }
 }
 
-- (id)_attributedStringForAttributedDictionary:(id)a3
+- (id)_attributedStringForAttributedDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"value"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1105,7 +1105,7 @@ LABEL_6:
     v7 = [(SSPaymentSheet *)self _attributedStringForString:v5];
     v8 = [v6 initWithAttributedString:v7];
 
-    v9 = [v4 objectForKeyedSubscript:@"size"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"size"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 isEqualToString:@"large"])
     {
@@ -1124,25 +1124,25 @@ LABEL_6:
   return v11;
 }
 
-- (id)_attributedStringForSalableInfoStringArray:(id)a3
+- (id)_attributedStringForSalableInfoStringArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __61__SSPaymentSheet__attributedStringForSalableInfoStringArray___block_invoke;
   v16 = &unk_1E84B15F0;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  v19 = v4;
+  v19 = arrayCopy;
   v20 = v6;
   v7 = v6;
-  v8 = v4;
+  v8 = arrayCopy;
   v9 = v5;
   [v8 enumerateObjectsUsingBlock:&v13];
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v11 = [v10 initWithAttributedString:{v9, v13, v14, v15, v16, v17}];
+  v11 = [v10 initWithAttributedString:{v9, v13, v14, v15, v16, selfCopy}];
 
   return v11;
 }
@@ -1167,24 +1167,24 @@ void __61__SSPaymentSheet__attributedStringForSalableInfoStringArray___block_inv
   }
 }
 
-- (id)_attributedStringForString:(id)a3
+- (id)_attributedStringForString:(id)string
 {
-  v4 = a3;
-  v5 = [(SSPaymentSheet *)self accountName];
-  if (!v5)
+  stringCopy = string;
+  accountName = [(SSPaymentSheet *)self accountName];
+  if (!accountName)
   {
     v6 = +[SSAccountStore defaultStore];
-    v7 = [v6 activeAccount];
-    v5 = [v7 accountName];
+    activeAccount = [v6 activeAccount];
+    accountName = [activeAccount accountName];
   }
 
-  v8 = [objc_opt_class() stringWithFormattedUsernameForString:v4 username:v5];
+  v8 = [objc_opt_class() stringWithFormattedUsernameForString:stringCopy username:accountName];
 
   if (self->_shouldUppercaseText)
   {
-    v9 = [v8 localizedUppercaseString];
+    localizedUppercaseString = [v8 localizedUppercaseString];
 
-    v8 = v9;
+    v8 = localizedUppercaseString;
   }
 
   v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
@@ -1199,22 +1199,22 @@ void __61__SSPaymentSheet__attributedStringForSalableInfoStringArray___block_inv
   return v14;
 }
 
-- (id)_attributedStringForStringArray:(id)a3 useGrey:(BOOL)a4
+- (id)_attributedStringForStringArray:(id)array useGrey:(BOOL)grey
 {
-  v6 = a3;
+  arrayCopy = array;
   v7 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke;
   v14[3] = &unk_1E84B1618;
-  v18 = a4;
+  greyCopy = grey;
   v14[4] = self;
   v15 = v7;
-  v16 = v6;
+  v16 = arrayCopy;
   v17 = v8;
   v9 = v8;
-  v10 = v6;
+  v10 = arrayCopy;
   v11 = v7;
   [v10 enumerateObjectsUsingBlock:v14];
   v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v11];
@@ -1242,35 +1242,35 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
   }
 }
 
-- (int64_t)_confirmationTitleTypeForStringValue:(id)a3
+- (int64_t)_confirmationTitleTypeForStringValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"pay"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"pay"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"confirm"])
+  else if ([valueCopy isEqualToString:@"confirm"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"get"])
+  else if ([valueCopy isEqualToString:@"get"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"install"])
+  else if ([valueCopy isEqualToString:@"install"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"rent"])
+  else if ([valueCopy isEqualToString:@"rent"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"redeem"])
+  else if ([valueCopy isEqualToString:@"redeem"])
   {
     v4 = 5;
   }
@@ -1283,19 +1283,19 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
   return v4;
 }
 
-- (id)_displayPriceLabelForDisplayPrice:(id)a3
+- (id)_displayPriceLabelForDisplayPrice:(id)price
 {
   v3 = MEMORY[0x1E696AAB0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  priceCopy = price;
+  v5 = [[v3 alloc] initWithString:priceCopy];
 
   return v5;
 }
 
-- (id)_greyAttributedStringForAttributedString:(id)a3 range:(_NSRange)a4
+- (id)_greyAttributedStringForAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  v5 = a3;
+  length = range.length;
+  stringCopy = string;
   if (!_greyAttributedStringForAttributedString_range__kPKPaymentContentItemLightColorAttribute)
   {
     v6 = SSVPassKitFramework();
@@ -1304,7 +1304,7 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
     _greyAttributedStringForAttributedString_range__kPKPaymentContentItemLightColorAttribute = v7;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v5];
+  v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:stringCopy];
   v10 = v9;
   if (_greyAttributedStringForAttributedString_range__kPKPaymentContentItemLightColorAttribute)
   {
@@ -1326,13 +1326,13 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
   return v12;
 }
 
-- (int64_t)_inferSalableIconTypeWithBuyParams:(id)a3
+- (int64_t)_inferSalableIconTypeWithBuyParams:(id)params
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  paramsCopy = params;
+  v4 = paramsCopy;
+  if (paramsCopy)
   {
-    if ([v3 rangeOfString:@"mtApp=com.apple.MobileSMS"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([paramsCopy rangeOfString:@"mtApp=com.apple.MobileSMS"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       if ([v4 rangeOfString:@"mtApp=com.apple.AppStore.BridgeStoreExtension"] == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1359,22 +1359,22 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
   return v5;
 }
 
-- (void)_parseResponse:(id)a3
+- (void)_parseResponse:(id)response
 {
   v135 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"caseControl"];
+  responseCopy = response;
+  v5 = [responseCopy objectForKey:@"caseControl"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 lowercaseString];
-    if ([v6 isEqualToString:@"true"])
+    lowercaseString = [v5 lowercaseString];
+    if ([lowercaseString isEqualToString:@"true"])
     {
       self->_shouldUppercaseText = 0;
     }
   }
 
-  v7 = [v4 objectForKey:@"title"];
+  v7 = [responseCopy objectForKey:@"title"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1453,19 +1453,19 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
     v19 = +[SSLogConfig sharedConfig];
   }
 
-  v20 = [v19 shouldLog];
+  shouldLog = [v19 shouldLog];
   if ([v19 shouldLogToDisk])
   {
-    v21 = v20 | 2;
+    v21 = shouldLog | 2;
   }
 
   else
   {
-    v21 = v20;
+    v21 = shouldLog;
   }
 
-  v22 = [v19 OSLogObject];
-  if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v19 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v21 &= 2u;
   }
@@ -1490,13 +1490,13 @@ void __58__SSPaymentSheet__attributedStringForStringArray_useGrey___block_invoke
       goto LABEL_33;
     }
 
-    v22 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v129, v118}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v129, v118}];
     free(v26);
-    SSFileLog(v19, @"%@", v27, v28, v29, v30, v31, v32, v22);
+    SSFileLog(v19, @"%@", v27, v28, v29, v30, v31, v32, oSLogObject);
   }
 
 LABEL_33:
-  v33 = [v4 valueForKey:@"accountHeader"];
+  v33 = [responseCopy valueForKey:@"accountHeader"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1506,7 +1506,7 @@ LABEL_33:
     self->_accountHeader = v34;
   }
 
-  v36 = [v4 valueForKey:{@"countryCode", v117}];
+  v36 = [responseCopy valueForKey:{@"countryCode", v117}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1516,7 +1516,7 @@ LABEL_33:
     self->_countryCode = v37;
   }
 
-  v39 = [v4 valueForKey:@"currency"];
+  v39 = [responseCopy valueForKey:@"currency"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1526,7 +1526,7 @@ LABEL_33:
     self->_currencyCode = v40;
   }
 
-  v42 = [v4 valueForKey:@"designVersion"];
+  v42 = [responseCopy valueForKey:@"designVersion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1536,7 +1536,7 @@ LABEL_33:
     self->_designVersion = v43;
   }
 
-  v45 = [v4 valueForKey:@"price"];
+  v45 = [responseCopy valueForKey:@"price"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1546,7 +1546,7 @@ LABEL_33:
     self->_price = v46;
   }
 
-  v48 = [v4 valueForKey:@"displayPrice"];
+  v48 = [responseCopy valueForKey:@"displayPrice"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1559,13 +1559,13 @@ LABEL_33:
     self->_displayPriceLabel = 0;
   }
 
-  v52 = [v4 valueForKey:@"suppressPrice"];
+  v52 = [responseCopy valueForKey:@"suppressPrice"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v53 = [v52 lowercaseString];
-    v54 = [v53 isEqualToString:@"true"];
+    lowercaseString2 = [v52 lowercaseString];
+    v54 = [lowercaseString2 isEqualToString:@"true"];
 
     if (v54)
     {
@@ -1582,11 +1582,11 @@ LABEL_33:
     }
   }
 
-  v55 = [v4 valueForKey:@"priceSection"];
+  v55 = [responseCopy valueForKey:@"priceSection"];
 
   if (!v55)
   {
-    v55 = [v4 valueForKey:@"pricingSection"];
+    v55 = [responseCopy valueForKey:@"pricingSection"];
   }
 
   objc_opt_class();
@@ -1607,21 +1607,21 @@ LABEL_33:
     self->_priceSectionItems = v59;
   }
 
-  v61 = [v4 valueForKey:@"requestor"];
+  v61 = [responseCopy valueForKey:@"requestor"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v62 = [(SSPaymentSheet *)self _payeeTypeForRequestorValue:v61];
+    _payeeTypeInferredFromEnumeratedTitle = [(SSPaymentSheet *)self _payeeTypeForRequestorValue:v61];
   }
 
   else
   {
-    v62 = [(SSPaymentSheet *)self _payeeTypeInferredFromEnumeratedTitle];
+    _payeeTypeInferredFromEnumeratedTitle = [(SSPaymentSheet *)self _payeeTypeInferredFromEnumeratedTitle];
   }
 
-  self->_payeeType = v62;
-  v63 = [v4 valueForKey:@"salableIcon"];
+  self->_payeeType = _payeeTypeInferredFromEnumeratedTitle;
+  v63 = [responseCopy valueForKey:@"salableIcon"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1634,16 +1634,16 @@ LABEL_33:
     self->_salableIconURL = 0;
   }
 
-  v67 = [v4 valueForKey:@"salableIconType"];
+  v67 = [responseCopy valueForKey:@"salableIconType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v68 = [v67 lowercaseString];
-    self->_salableIconType = [(SSPaymentSheet *)self _salableIconTypeForString:v68];
+    lowercaseString3 = [v67 lowercaseString];
+    self->_salableIconType = [(SSPaymentSheet *)self _salableIconTypeForString:lowercaseString3];
   }
 
-  v69 = [v4 valueForKey:@"storeName"];
+  v69 = [responseCopy valueForKey:@"storeName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1653,7 +1653,7 @@ LABEL_33:
     self->_storeName = v70;
   }
 
-  v72 = [v4 valueForKey:@"rating"];
+  v72 = [responseCopy valueForKey:@"rating"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1679,16 +1679,16 @@ LABEL_33:
     }
   }
 
-  v80 = [v4 valueForKey:@"confirmationTitle"];
+  v80 = [responseCopy valueForKey:@"confirmationTitle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v81 = [v80 lowercaseString];
-    self->_confirmationTitleType = [(SSPaymentSheet *)self _confirmationTitleTypeForStringValue:v81];
+    lowercaseString4 = [v80 lowercaseString];
+    self->_confirmationTitleType = [(SSPaymentSheet *)self _confirmationTitleTypeForStringValue:lowercaseString4];
   }
 
-  v82 = [v4 valueForKey:@"paymentSummary"];
+  v82 = [responseCopy valueForKey:@"paymentSummary"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1698,7 +1698,7 @@ LABEL_33:
     self->_paymentSummary = v83;
   }
 
-  v85 = [v4 objectForKey:@"salableInfo"];
+  v85 = [responseCopy objectForKey:@"salableInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1725,7 +1725,7 @@ LABEL_33:
   self->_salableInfoLabel = 0;
 
 LABEL_78:
-  v89 = [v4 objectForKey:@"images"];
+  v89 = [responseCopy objectForKey:@"images"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1806,7 +1806,7 @@ LABEL_104:
   }
 
 LABEL_84:
-  v96 = [v4 objectForKey:@"styles"];
+  v96 = [responseCopy objectForKey:@"styles"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1825,7 +1825,7 @@ LABEL_84:
     [(SSPaymentSheet *)self setStyles:v98];
   }
 
-  v99 = [v4 objectForKey:@"flexList"];
+  v99 = [responseCopy objectForKey:@"flexList"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1851,13 +1851,13 @@ LABEL_84:
     self->_attributedList = v106;
   }
 
-  v108 = [v4 objectForKey:@"isApplePay"];
+  v108 = [responseCopy objectForKey:@"isApplePay"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v109 = [v108 lowercaseString];
-    v110 = [v109 isEqualToString:@"true"];
+    lowercaseString5 = [v108 lowercaseString];
+    v110 = [lowercaseString5 isEqualToString:@"true"];
 
     if (v110)
     {
@@ -2230,10 +2230,10 @@ void __33__SSPaymentSheet__parseResponse___block_invoke_6(id *a1, void *a2, unin
   }
 }
 
-- (id)_attributedListForFlexList:(id)a3
+- (id)_attributedListForFlexList:(id)list
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  listCopy = list;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14[0] = MEMORY[0x1E69E9820];
@@ -2242,7 +2242,7 @@ void __33__SSPaymentSheet__parseResponse___block_invoke_6(id *a1, void *a2, unin
   v14[3] = &unk_1E84B1668;
   v8 = v7;
   v15 = v8;
-  [v5 enumerateObjectsUsingBlock:v14];
+  [listCopy enumerateObjectsUsingBlock:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2393,30 +2393,30 @@ LABEL_12:
   }
 }
 
-- (int64_t)_payeeTypeForRequestorValue:(id)a3
+- (int64_t)_payeeTypeForRequestorValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AppStore"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"AppStore"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"iTunes"])
+  else if ([valueCopy isEqualToString:@"iTunes"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AppleMusic"])
+  else if ([valueCopy isEqualToString:@"AppleMusic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"iBooks"])
+  else if ([valueCopy isEqualToString:@"iBooks"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AppleNews"])
+  else if ([valueCopy isEqualToString:@"AppleNews"])
   {
     v4 = 2;
   }
@@ -2438,19 +2438,19 @@ LABEL_12:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -2469,9 +2469,9 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v35, v34, *v35}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, v35, v34, *v35}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
   }
 
 LABEL_12:
@@ -2483,19 +2483,19 @@ LABEL_12:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog2 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog2 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog2;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v18 &= 2u;
     }
@@ -2541,19 +2541,19 @@ LABEL_12:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v16 shouldLog];
+    shouldLog3 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v30 = v29 | 2;
+      v30 = shouldLog3 | 2;
     }
 
     else
     {
-      v30 = v29;
+      v30 = shouldLog3;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v30 &= 2u;
     }
@@ -2581,9 +2581,9 @@ LABEL_27:
       return 0;
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, v35, v34}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, v35, v34}];
     free(v22);
-    SSFileLog(v16, @"%@", v23, v24, v25, v26, v27, v28, v19);
+    SSFileLog(v16, @"%@", v23, v24, v25, v26, v27, v28, oSLogObject2);
 LABEL_26:
 
     goto LABEL_27;
@@ -2592,25 +2592,25 @@ LABEL_26:
   return 2;
 }
 
-- (id)_replaceBreakingSpaceMarkupForMutableAttributedString:(id)a3
+- (id)_replaceBreakingSpaceMarkupForMutableAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 string];
-  v5 = [v4 lowercaseString];
+  stringCopy = string;
+  string = [stringCopy string];
+  lowercaseString = [string lowercaseString];
 
-  v6 = [v5 rangeOfString:@"[br/]"];
+  v6 = [lowercaseString rangeOfString:@"[br/]"];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v6;
     v9 = 0;
     do
     {
-      v10 = v5;
-      [v3 replaceCharactersInRange:v8 withString:{v7, @"\n"}];
-      v11 = [v3 string];
-      v5 = [v11 lowercaseString];
+      v10 = lowercaseString;
+      [stringCopy replaceCharactersInRange:v8 withString:{v7, @"\n"}];
+      string2 = [stringCopy string];
+      lowercaseString = [string2 lowercaseString];
 
-      v12 = [v5 rangeOfString:@"[br/]"];
+      v12 = [lowercaseString rangeOfString:@"[br/]"];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -2622,29 +2622,29 @@ LABEL_26:
     while (v9++ < 9);
   }
 
-  return v3;
+  return stringCopy;
 }
 
-- (id)_replaceMarkupForMutableAttributedString:(id)a3 markupType:(int64_t)a4
+- (id)_replaceMarkupForMutableAttributedString:(id)string markupType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
+  stringCopy = string;
+  v6 = stringCopy;
   v7 = @"[/i]";
   v8 = @"[b]";
   v9 = @"[/b]";
-  if (a4)
+  if (type)
   {
     v9 = 0;
     v8 = 0;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     v7 = v9;
   }
 
   v31 = v7;
-  if (a4 == 1)
+  if (type == 1)
   {
     v10 = @"[i]";
   }
@@ -2654,16 +2654,16 @@ LABEL_26:
     v10 = v8;
   }
 
-  v11 = [v5 string];
-  v12 = [v11 lowercaseString];
+  string = [stringCopy string];
+  lowercaseString = [string lowercaseString];
 
-  if ([v12 rangeOfString:v10] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([lowercaseString rangeOfString:v10] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = SSVCoreText();
     v14 = SSVWeakLinkedSymbolForString("CTFontCreateWithName", v13);
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_22;
       }
@@ -2680,9 +2680,9 @@ LABEL_26:
     if (v16)
     {
       v17 = v16;
-      v18 = [v12 rangeOfString:v10];
+      v18 = [lowercaseString rangeOfString:v10];
       v20 = v19;
-      v21 = [v12 rangeOfString:v31];
+      v21 = [lowercaseString rangeOfString:v31];
       if (v18 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v23 = v21;
@@ -2691,15 +2691,15 @@ LABEL_26:
           v24 = 0;
           do
           {
-            v25 = v12;
+            v25 = lowercaseString;
             [v6 replaceCharactersInRange:v23 withString:{v22, &stru_1F503F418}];
             [v6 replaceCharactersInRange:v18 withString:{v20, &stru_1F503F418}];
-            v26 = [v6 string];
-            v12 = [v26 lowercaseString];
+            string2 = [v6 string];
+            lowercaseString = [string2 lowercaseString];
 
-            v18 = [v12 rangeOfString:v10];
+            v18 = [lowercaseString rangeOfString:v10];
             v20 = v27;
-            v28 = [v12 rangeOfString:v31];
+            v28 = [lowercaseString rangeOfString:v31];
             if (v18 == 0x7FFFFFFFFFFFFFFFLL)
             {
               break;
@@ -2725,25 +2725,25 @@ LABEL_22:
   return v6;
 }
 
-- (int64_t)_salableIconTypeForString:(id)a3
+- (int64_t)_salableIconTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"app"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"app"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"merchant"])
+  else if ([stringCopy isEqualToString:@"merchant"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"messages"])
+  else if ([stringCopy isEqualToString:@"messages"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"watch"])
+  else if ([stringCopy isEqualToString:@"watch"])
   {
     v4 = 3;
   }
@@ -2781,35 +2781,35 @@ void __46__SSPaymentSheet__salableInfoItemsToUppercase__block_invoke(uint64_t a1
 
 - (void)_stringValuesToUppercase
 {
-  v3 = [(NSString *)self->_accountHeader localizedUppercaseString];
+  localizedUppercaseString = [(NSString *)self->_accountHeader localizedUppercaseString];
   accountHeader = self->_accountHeader;
-  self->_accountHeader = v3;
+  self->_accountHeader = localizedUppercaseString;
 
-  v5 = [(NSString *)self->_displayPrice localizedUppercaseString];
+  localizedUppercaseString2 = [(NSString *)self->_displayPrice localizedUppercaseString];
   displayPrice = self->_displayPrice;
-  self->_displayPrice = v5;
+  self->_displayPrice = localizedUppercaseString2;
 
-  v7 = [(NSString *)self->_paymentSummary localizedUppercaseString];
+  localizedUppercaseString3 = [(NSString *)self->_paymentSummary localizedUppercaseString];
   paymentSummary = self->_paymentSummary;
-  self->_paymentSummary = v7;
+  self->_paymentSummary = localizedUppercaseString3;
 
-  v9 = [(NSString *)self->_ratingHeader localizedUppercaseString];
+  localizedUppercaseString4 = [(NSString *)self->_ratingHeader localizedUppercaseString];
   ratingHeader = self->_ratingHeader;
-  self->_ratingHeader = v9;
+  self->_ratingHeader = localizedUppercaseString4;
 
-  v11 = [(NSString *)self->_ratingValue localizedUppercaseString];
+  localizedUppercaseString5 = [(NSString *)self->_ratingValue localizedUppercaseString];
   ratingValue = self->_ratingValue;
-  self->_ratingValue = v11;
+  self->_ratingValue = localizedUppercaseString5;
 
-  v13 = [(NSString *)self->_storeName localizedUppercaseString];
+  localizedUppercaseString6 = [(NSString *)self->_storeName localizedUppercaseString];
   storeName = self->_storeName;
-  self->_storeName = v13;
+  self->_storeName = localizedUppercaseString6;
 }
 
-+ (id)_attributedStringWithString:(id)a3 styles:(id)a4
++ (id)_attributedStringWithString:(id)string styles:(id)styles
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  stylesCopy = styles;
   if (!_attributedStringWithString_styles__kPKPaymentContentItemLightColorAttribute)
   {
     v7 = SSVPassKitFramework();
@@ -2818,15 +2818,15 @@ void __46__SSPaymentSheet__salableInfoItemsToUppercase__block_invoke(uint64_t a1
     _attributedStringWithString_styles__kPKPaymentContentItemLightColorAttribute = v8;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5];
-  v11 = [v6 objectForKeyedSubscript:@"color"];
+  v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy];
+  v11 = [stylesCopy objectForKeyedSubscript:@"color"];
   if ([v11 isEqualToString:@"gray"])
   {
   }
 
   else
   {
-    v12 = [v6 objectForKeyedSubscript:@"color"];
+    v12 = [stylesCopy objectForKeyedSubscript:@"color"];
     v13 = [v12 isEqualToString:@"grey"];
 
     if (!v13)
@@ -2836,7 +2836,7 @@ void __46__SSPaymentSheet__salableInfoItemsToUppercase__block_invoke(uint64_t a1
   }
 
   v14 = _attributedStringWithString_styles__kPKPaymentContentItemLightColorAttribute;
-  v15 = [v5 length];
+  v15 = [stringCopy length];
   [v10 addAttribute:v14 value:MEMORY[0x1E695E118] range:{0, v15}];
 LABEL_7:
   if (!_attributedStringWithString_styles__kPKPaymentContentItemBoldAttribute)
@@ -2847,23 +2847,23 @@ LABEL_7:
     _attributedStringWithString_styles__kPKPaymentContentItemBoldAttribute = v17;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"bold"];
+  v19 = [stylesCopy objectForKeyedSubscript:@"bold"];
   if (([v19 isEqualToString:@"true"] & 1) != 0 || objc_msgSend(v19, "BOOLValue"))
   {
     v20 = _attributedStringWithString_styles__kPKPaymentContentItemBoldAttribute;
-    v21 = [v5 length];
+    v21 = [stringCopy length];
     [v10 addAttribute:v20 value:MEMORY[0x1E695E118] range:{0, v21}];
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"size"];
+  v22 = [stylesCopy objectForKeyedSubscript:@"size"];
   v23 = [v22 isEqualToString:@"large"];
 
   if (v23)
   {
-    [v10 addAttribute:*MEMORY[0x1E698C728] value:@"large" range:{0, objc_msgSend(v5, "length")}];
+    [v10 addAttribute:*MEMORY[0x1E698C728] value:@"large" range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"spacingAfter"];
+  v24 = [stylesCopy objectForKeyedSubscript:@"spacingAfter"];
   v25 = v24;
   if (v24)
   {
@@ -2887,11 +2887,11 @@ LABEL_7:
       v26 = MEMORY[0x1E698C740];
     }
 
-    [v10 addAttribute:*MEMORY[0x1E698C730] value:*v26 range:{0, objc_msgSend(v5, "length")}];
+    [v10 addAttribute:*MEMORY[0x1E698C730] value:*v26 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
 LABEL_22:
-  v27 = [v6 objectForKeyedSubscript:@"spacingBefore"];
+  v27 = [stylesCopy objectForKeyedSubscript:@"spacingBefore"];
   v28 = v27;
   if (!v27)
   {
@@ -2918,26 +2918,26 @@ LABEL_22:
     v29 = MEMORY[0x1E698C740];
   }
 
-  [v10 addAttribute:*MEMORY[0x1E698C750] value:*v29 range:{0, objc_msgSend(v5, "length")}];
+  [v10 addAttribute:*MEMORY[0x1E698C750] value:*v29 range:{0, objc_msgSend(stringCopy, "length")}];
 LABEL_30:
   v30 = [v10 copy];
 
   return v30;
 }
 
-+ (id)_styleDictionaryWithName:(id)a3 styles:(id)a4
++ (id)_styleDictionaryWithName:(id)name styles:(id)styles
 {
-  v5 = a3;
+  nameCopy = name;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__SSPaymentSheet__styleDictionaryWithName_styles___block_invoke;
   v10[3] = &unk_1E84B1730;
-  v11 = v5;
-  v6 = v5;
-  v7 = [a4 ams_mapWithTransformIgnoresNil:v10];
-  v8 = [v7 firstObject];
+  v11 = nameCopy;
+  v6 = nameCopy;
+  v7 = [styles ams_mapWithTransformIgnoresNil:v10];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 void *__50__SSPaymentSheet__styleDictionaryWithName_styles___block_invoke(uint64_t a1, void *a2)

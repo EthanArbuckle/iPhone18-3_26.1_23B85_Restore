@@ -1,37 +1,37 @@
 @interface CCFetchMergeableDeltasResponse
-+ (id)fetchMergeableDeltasResponseFromPeerToPeerMessage:(id)a3 peerPublicKey:(id)a4;
++ (id)fetchMergeableDeltasResponseFromPeerToPeerMessage:(id)message peerPublicKey:(id)key;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCFetchMergeableDeltasResponse
 
-+ (id)fetchMergeableDeltasResponseFromPeerToPeerMessage:(id)a3 peerPublicKey:(id)a4
++ (id)fetchMergeableDeltasResponseFromPeerToPeerMessage:(id)message peerPublicKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  messageCopy = message;
   v7 = [CCFetchMergeableDeltasResponse alloc];
-  v8 = [v6 syncReason];
-  v9 = [v6 senderDeviceUUID];
-  v10 = [v6 protocolVersion];
-  [v6 walltime];
+  syncReason = [messageCopy syncReason];
+  senderDeviceUUID = [messageCopy senderDeviceUUID];
+  protocolVersion = [messageCopy protocolVersion];
+  [messageCopy walltime];
   v12 = v11;
 
-  v13 = [(CCPeerToPeerMessage *)v7 initWithSyncReason:v8 senderDeviceUUID:v9 protocolVersion:v10 wallTime:v12];
-  [(CCFetchMergeableDeltasResponse *)v13 setPeerPublicKey:v5];
+  v13 = [(CCPeerToPeerMessage *)v7 initWithSyncReason:syncReason senderDeviceUUID:senderDeviceUUID protocolVersion:protocolVersion wallTime:v12];
+  [(CCFetchMergeableDeltasResponse *)v13 setPeerPublicKey:keyCopy];
 
   return v13;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = CCFetchMergeableDeltasResponse;
-  v5 = [(CCPeerToPeerMessage *)&v9 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v9 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"peerPublicKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"peerPublicKey"];
     v7 = v5[5];
     v5[5] = v6;
   }
@@ -44,13 +44,13 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = @"peerPublicKey";
   peerPublicKey = self->_peerPublicKey;
-  v4 = peerPublicKey;
+  data = peerPublicKey;
   if (!peerPublicKey)
   {
-    v4 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v12[0] = v4;
+  v12[0] = data;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v6 = [v5 mutableCopy];
 
@@ -60,8 +60,8 @@
 
   v10.receiver = self;
   v10.super_class = CCFetchMergeableDeltasResponse;
-  v7 = [(CCPeerToPeerMessage *)&v10 dictionaryRepresentation];
-  [v6 addEntriesFromDictionary:v7];
+  dictionaryRepresentation = [(CCPeerToPeerMessage *)&v10 dictionaryRepresentation];
+  [v6 addEntriesFromDictionary:dictionaryRepresentation];
 
   v8 = *MEMORY[0x1E69E9840];
 

@@ -1,48 +1,48 @@
 @interface VUIBaseCollectionViewCell
-- (BOOL)vui_addSubview:(id)a3 oldView:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
-- (VUIBaseCollectionViewCell)initWithFrame:(CGRect)a3;
+- (BOOL)vui_addSubview:(id)subview oldView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
+- (VUIBaseCollectionViewCell)initWithFrame:(CGRect)frame;
 - (VUICollectionViewCellInteractor)vuiCollectionViewCellInteractor;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didEndDisplaying;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShouldAppearSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShouldAppearSelected:(BOOL)selected;
 - (void)setupPreview;
 - (void)vui_prepareForReuse;
-- (void)vui_setHighlighted:(BOOL)a3;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)vui_setHighlighted:(BOOL)highlighted;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 - (void)willBeDisplayed;
 @end
 
 @implementation VUIBaseCollectionViewCell
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
     if (_os_feature_enabled_impl())
     {
-      v6 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-      [v6 setBackgroundColor:v7];
+      vuiContentView = [(VUIBaseCollectionViewCell *)self vuiContentView];
+      [vuiContentView setBackgroundColor:v7];
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (VUIBaseCollectionViewCell)initWithFrame:(CGRect)a3
+- (VUIBaseCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUIBaseCollectionViewCell;
-  v3 = [(VUIBaseCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIBaseCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,9 +52,9 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIBaseCollectionViewCell *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIBaseCollectionViewCell *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -67,18 +67,18 @@
   [(VUIBaseCollectionViewCell *)&v6 layoutSubviews];
   [(VUIBaseCollectionViewCell *)self bounds];
   [(VUIBaseCollectionViewCell *)self vui_layoutSubviews:0 computationOnly:v3, v4];
-  v5 = [(VUIBaseCollectionViewCell *)self preview];
+  preview = [(VUIBaseCollectionViewCell *)self preview];
   [(VUIBaseCollectionViewCell *)self bounds];
-  [v5 setFrame:?];
+  [preview setFrame:?];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = VUIBaseCollectionViewCell;
   [(VUIBaseCollectionViewCell *)&v5 setHighlighted:?];
-  [(VUIBaseCollectionViewCell *)self vui_setHighlighted:v3];
+  [(VUIBaseCollectionViewCell *)self vui_setHighlighted:highlightedCopy];
 }
 
 - (void)prepareForReuse
@@ -89,29 +89,29 @@
   [(VUIBaseCollectionViewCell *)self vui_prepareForReuse];
 }
 
-- (void)setShouldAppearSelected:(BOOL)a3
+- (void)setShouldAppearSelected:(BOOL)selected
 {
-  if (self->_shouldAppearSelected != a3)
+  if (self->_shouldAppearSelected != selected)
   {
-    self->_shouldAppearSelected = a3;
+    self->_shouldAppearSelected = selected;
     [(VUIBaseCollectionViewCell *)self vui_setSelected:?];
   }
 }
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  [(VUIBaseCollectionViewCell *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIBaseCollectionViewCell *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (BOOL)vui_addSubview:(id)a3 oldView:(id)a4
+- (BOOL)vui_addSubview:(id)subview oldView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-  v9 = [v8 vui_addSubview:v7 oldView:v6];
+  viewCopy = view;
+  subviewCopy = subview;
+  vuiContentView = [(VUIBaseCollectionViewCell *)self vuiContentView];
+  v9 = [vuiContentView vui_addSubview:subviewCopy oldView:viewCopy];
 
   return v9;
 }
@@ -123,26 +123,26 @@
   self->_preview = v3;
 
   [(UIView *)self->_preview setAlpha:0.0];
-  v5 = [(VUIBaseCollectionViewCell *)self preview];
-  [(VUIBaseCollectionViewCell *)self addSubview:v5];
+  preview = [(VUIBaseCollectionViewCell *)self preview];
+  [(VUIBaseCollectionViewCell *)self addSubview:preview];
 }
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
-  if (v9)
+  coordinatorCopy = coordinator;
+  highlightedBackgroundColor = [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
+  if (highlightedBackgroundColor)
   {
-    v10 = v9;
-    v11 = [(VUIBaseCollectionViewCell *)self backgroundColor];
+    v10 = highlightedBackgroundColor;
+    backgroundColor = [(VUIBaseCollectionViewCell *)self backgroundColor];
 
-    if (v11)
+    if (backgroundColor)
     {
-      v12 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-      if (v6)
+      vuiContentView = [(VUIBaseCollectionViewCell *)self vuiContentView];
+      if (selectedCopy)
       {
         [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
       }
@@ -152,7 +152,7 @@
         [(VUIBaseCollectionViewCell *)self backgroundColor];
       }
       v13 = ;
-      [v12 setVuiBackgroundColor:v13];
+      [vuiContentView setVuiBackgroundColor:v13];
     }
   }
 
@@ -160,10 +160,10 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-  v15 = [v14 subviews];
+  vuiContentView2 = [(VUIBaseCollectionViewCell *)self vuiContentView];
+  subviews = [vuiContentView2 subviews];
 
-  v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v16 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v16)
   {
     v17 = v16;
@@ -174,38 +174,38 @@
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v20 + 1) + 8 * i) vui_setSelected:v6 animated:v5 withAnimationCoordinator:v8];
+        [*(*(&v20 + 1) + 8 * i) vui_setSelected:selectedCopy animated:animatedCopy withAnimationCoordinator:coordinatorCopy];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v17 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v22 = *MEMORY[0x1E69E9840];
   if ([(VUIBaseCollectionViewCell *)self shouldAppearSelected])
   {
-    v3 = [(VUIBaseCollectionViewCell *)self shouldAppearSelected];
+    highlightedCopy = [(VUIBaseCollectionViewCell *)self shouldAppearSelected];
   }
 
-  v5 = [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
-  if (v5)
+  highlightedBackgroundColor = [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
+  if (highlightedBackgroundColor)
   {
-    v6 = v5;
-    v7 = [(VUIBaseCollectionViewCell *)self backgroundColor];
+    v6 = highlightedBackgroundColor;
+    backgroundColor = [(VUIBaseCollectionViewCell *)self backgroundColor];
 
-    if (v7)
+    if (backgroundColor)
     {
-      v8 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-      if ([(VUIBaseCollectionViewCell *)self isSelected]| v3)
+      vuiContentView = [(VUIBaseCollectionViewCell *)self vuiContentView];
+      if ([(VUIBaseCollectionViewCell *)self isSelected]| highlightedCopy)
       {
         [(VUIBaseCollectionViewCell *)self highlightedBackgroundColor];
       }
@@ -215,7 +215,7 @@
         [(VUIBaseCollectionViewCell *)self backgroundColor];
       }
       v9 = ;
-      [v8 setVuiBackgroundColor:v9];
+      [vuiContentView setVuiBackgroundColor:v9];
     }
   }
 
@@ -223,10 +223,10 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(VUIBaseCollectionViewCell *)self vuiContentView];
-  v11 = [v10 subviews];
+  vuiContentView2 = [(VUIBaseCollectionViewCell *)self vuiContentView];
+  subviews = [vuiContentView2 subviews];
 
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v12 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -238,27 +238,27 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 vui_setHighlighted:v3];
+          [v16 vui_setHighlighted:highlightedCopy];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
@@ -297,19 +297,19 @@
   [(VUIBaseCollectionViewCell *)self vui_cellDidEndDisplaying];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 forcedSize])
+  attributesCopy = attributes;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [attributesCopy forcedSize])
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VUIBaseCollectionViewCell;
-    v5 = [(VUIBaseCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+    v5 = [(VUIBaseCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   }
 
   v6 = v5;

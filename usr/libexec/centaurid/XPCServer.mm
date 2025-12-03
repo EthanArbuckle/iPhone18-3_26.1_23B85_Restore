@@ -1,21 +1,21 @@
 @interface XPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (XPCServer)initWithChipManager:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (XPCServer)initWithChipManager:(id)manager;
 - (void)activate;
-- (void)checkForNewPowerTables:(id)a3;
-- (void)getPMUFaultInfo:(id)a3;
-- (void)getSiKPublicKey:(id)a3;
-- (void)helloCommand:(id)a3;
+- (void)checkForNewPowerTables:(id)tables;
+- (void)getPMUFaultInfo:(id)info;
+- (void)getSiKPublicKey:(id)key;
+- (void)helloCommand:(id)command;
 - (void)invalidate;
-- (void)preflightQuery:(id)a3;
-- (void)shellCommand:(id)a3 reply:(id)a4;
+- (void)preflightQuery:(id)query;
+- (void)shellCommand:(id)command reply:(id)reply;
 @end
 
 @implementation XPCServer
 
-- (XPCServer)initWithChipManager:(id)a3
+- (XPCServer)initWithChipManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = XPCServer;
   v6 = [(XPCServer *)&v10 init];
@@ -26,7 +26,7 @@
     v6->_listener = v7;
 
     [(NSXPCListener *)v6->_listener setDelegate:v6];
-    objc_storeStrong(&v6->_chipManager, a3);
+    objc_storeStrong(&v6->_chipManager, manager);
   }
 
   return v6;
@@ -66,12 +66,12 @@
   [(NSXPCListener *)self->_listener invalidate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [v6 processIdentifier];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   bzero(buffer, 0x400uLL);
-  if (!proc_name(v7, buffer, 0x400u))
+  if (!proc_name(processIdentifier, buffer, 0x400u))
   {
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@
     v29 = 2082;
     v30 = buffer;
     v31 = 2114;
-    v32 = v6;
+    v32 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: connection from %{public}s: %{public}@", buf, 0x2Au);
   }
 
@@ -102,18 +102,18 @@
   v23[3] = &unk_10005CDD8;
   v23[4] = self;
   v23[5] = a2;
-  v24 = v7;
-  [v6 setInterruptionHandler:v23];
+  v24 = processIdentifier;
+  [connectionCopy setInterruptionHandler:v23];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100027954;
   v21[3] = &unk_10005CDD8;
   v21[4] = self;
   v21[5] = a2;
-  v22 = v7;
-  [v6 setInvalidationHandler:v21];
-  v12 = [v6 serviceName];
-  v13 = [v12 isEqualToString:@"com.apple.centaurid.xpc"];
+  v22 = processIdentifier;
+  [connectionCopy setInvalidationHandler:v21];
+  serviceName = [connectionCopy serviceName];
+  v13 = [serviceName isEqualToString:@"com.apple.centaurid.xpc"];
 
   if ((v13 & 1) == 0)
   {
@@ -122,20 +122,20 @@
     {
       v18 = [objc_opt_class() description];
       v19 = NSStringFromSelector(a2);
-      v20 = [v6 serviceName];
+      serviceName2 = [connectionCopy serviceName];
       *buf = 138543874;
       v26 = v18;
       v27 = 2114;
       v28 = v19;
       v29 = 2114;
-      v30 = v20;
+      v30 = serviceName2;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: unknown service %{public}@", buf, 0x20u);
     }
 
     goto LABEL_16;
   }
 
-  v14 = [v6 valueForEntitlement:@"com.apple.centaurid.xpc"];
+  v14 = [connectionCopy valueForEntitlement:@"com.apple.centaurid.xpc"];
   if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v14 BOOLValue]& 1) == 0)
   {
     sub_100031818(self, a2);
@@ -145,19 +145,19 @@ LABEL_16:
   }
 
   v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CENXPCServerProtocol];
-  [v6 setExportedInterface:v15];
+  [connectionCopy setExportedInterface:v15];
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
   v16 = 1;
 LABEL_12:
 
   return v16;
 }
 
-- (void)helloCommand:(id)a3
+- (void)helloCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,13 +170,13 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v9, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager helloCommand:v5];
+  [(ChipManager *)self->_chipManager helloCommand:commandCopy];
 }
 
-- (void)shellCommand:(id)a3 reply:(id)a4
+- (void)shellCommand:(id)command reply:(id)reply
 {
-  v7 = a4;
-  v8 = a3;
+  replyCopy = reply;
+  commandCopy = command;
   v9 = sub_100025204();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -189,12 +189,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v12, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager shellCommand:v8 completion:v7];
+  [(ChipManager *)self->_chipManager shellCommand:commandCopy completion:replyCopy];
 }
 
-- (void)getPMUFaultInfo:(id)a3
+- (void)getPMUFaultInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,12 +207,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v9, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager getPMUFaultInfo:v5];
+  [(ChipManager *)self->_chipManager getPMUFaultInfo:infoCopy];
 }
 
-- (void)preflightQuery:(id)a3
+- (void)preflightQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -225,12 +225,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v9, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager preflightQuery:v5];
+  [(ChipManager *)self->_chipManager preflightQuery:queryCopy];
 }
 
-- (void)getSiKPublicKey:(id)a3
+- (void)getSiKPublicKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -243,12 +243,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v9, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager getSiKPublicKey:v5];
+  [(ChipManager *)self->_chipManager getSiKPublicKey:keyCopy];
 }
 
-- (void)checkForNewPowerTables:(id)a3
+- (void)checkForNewPowerTables:(id)tables
 {
-  v5 = a3;
+  tablesCopy = tables;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -261,7 +261,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: ", &v9, 0x16u);
   }
 
-  [(ChipManager *)self->_chipManager checkForNewPowerTables:v5];
+  [(ChipManager *)self->_chipManager checkForNewPowerTables:tablesCopy];
 }
 
 @end

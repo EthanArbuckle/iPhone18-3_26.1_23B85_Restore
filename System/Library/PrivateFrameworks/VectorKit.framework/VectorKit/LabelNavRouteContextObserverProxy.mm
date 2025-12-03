@@ -1,10 +1,10 @@
 @interface LabelNavRouteContextObserverProxy
-- (LabelNavRouteContextObserverProxy)initWithRouteContextChangeObserver:(RouteContextChangeObserver *)a3;
+- (LabelNavRouteContextObserverProxy)initWithRouteContextChangeObserver:(RouteContextChangeObserver *)observer;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)routeContextStateDidChange:(id)a3;
-- (void)startObserving:(id)a3;
-- (void)stopObserving:(id)a3;
+- (void)routeContextStateDidChange:(id)change;
+- (void)startObserving:(id)observing;
+- (void)stopObserving:(id)observing;
 @end
 
 @implementation LabelNavRouteContextObserverProxy
@@ -34,26 +34,26 @@
   [(LabelNavRouteContextObserverProxy *)&v6 dealloc];
 }
 
-- (void)routeContextStateDidChange:(id)a3
+- (void)routeContextStateDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   observer = self->_observer;
   if (observer)
   {
-    (*observer->var0)(observer, v5);
+    (*observer->var0)(observer, changeCopy);
   }
 }
 
-- (void)stopObserving:(id)a3
+- (void)stopObserving:(id)observing
 {
-  v4 = a3;
-  if (v4)
+  observingCopy = observing;
+  if (observingCopy)
   {
     begin = self->_observedContexts.__begin_;
     end = self->_observedContexts.__end_;
     if (begin != end)
     {
-      while (begin[1] != v4)
+      while (begin[1] != observingCopy)
       {
         begin += 3;
         if (begin == end)
@@ -65,8 +65,8 @@
 
     if (begin != end)
     {
-      v14 = v4;
-      [v4 removeObserver:self withType:2];
+      v14 = observingCopy;
+      [observingCopy removeObserver:self withType:2];
       v7 = self->_observedContexts.__end_;
       if (begin + 3 != v7)
       {
@@ -99,23 +99,23 @@
       }
 
       self->_observedContexts.__end_ = begin;
-      v4 = v14;
+      observingCopy = v14;
     }
   }
 
 LABEL_15:
 }
 
-- (void)startObserving:(id)a3
+- (void)startObserving:(id)observing
 {
-  v4 = a3;
-  if (v4)
+  observingCopy = observing;
+  if (observingCopy)
   {
     begin = self->_observedContexts.__begin_;
     end = self->_observedContexts.__end_;
     if (begin != end)
     {
-      while (begin[1] != v4)
+      while (begin[1] != observingCopy)
       {
         begin += 3;
         if (begin == end)
@@ -128,8 +128,8 @@ LABEL_15:
     if (begin == end)
     {
 LABEL_7:
-      v36 = v4;
-      [v4 addObserver:self withType:2];
+      v36 = observingCopy;
+      [observingCopy addObserver:self withType:2];
       v7 = self->_observedContexts.__end_;
       cap = self->_observedContexts.__cap_;
       if (v7 >= cap)
@@ -230,13 +230,13 @@ LABEL_7:
           geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::deallocate<geo::_retain_ptr<VKRouteContext * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>>(v34, v33);
         }
 
-        v4 = v36;
+        observingCopy = v36;
       }
 
       else
       {
         v9 = geo::_retain_ptr<VKRouteContext * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr(v7, v36) + 3;
-        v4 = v36;
+        observingCopy = v36;
         self->_observedContexts.__end_ = v9;
       }
 
@@ -245,14 +245,14 @@ LABEL_7:
   }
 }
 
-- (LabelNavRouteContextObserverProxy)initWithRouteContextChangeObserver:(RouteContextChangeObserver *)a3
+- (LabelNavRouteContextObserverProxy)initWithRouteContextChangeObserver:(RouteContextChangeObserver *)observer
 {
   v5.receiver = self;
   v5.super_class = LabelNavRouteContextObserverProxy;
   result = [(LabelNavRouteContextObserverProxy *)&v5 init];
   if (result)
   {
-    result->_observer = a3;
+    result->_observer = observer;
   }
 
   return result;

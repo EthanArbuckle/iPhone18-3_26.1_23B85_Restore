@@ -1,20 +1,20 @@
 @interface _SASPreheatRequestMutation
-- (_SASPreheatRequestMutation)initWithBaseModel:(id)a3;
+- (_SASPreheatRequestMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
 @implementation _SASPreheatRequestMutation
 
-- (_SASPreheatRequestMutation)initWithBaseModel:(id)a3
+- (_SASPreheatRequestMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASPreheatRequestMutation;
   v6 = [(_SASPreheatRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;
@@ -63,7 +63,7 @@ LABEL_14:
 
   if ((*&self->_mutationFlags & 2) == 0)
   {
-    v9 = [(SASPreheatRequest *)baseModel requestSource];
+    requestSource = [(SASPreheatRequest *)baseModel requestSource];
     mutationFlags = self->_mutationFlags;
     if ((mutationFlags & 4) != 0)
     {
@@ -71,35 +71,35 @@ LABEL_14:
     }
 
 LABEL_16:
-    v10 = [(SASPreheatRequest *)self->_baseModel configuration];
+    configuration = [(SASPreheatRequest *)self->_baseModel configuration];
     if ((*&self->_mutationFlags & 8) != 0)
     {
       goto LABEL_10;
     }
 
 LABEL_17:
-    v11 = [(SASPreheatRequest *)self->_baseModel activationReferenceIdentifier];
+    activationReferenceIdentifier = [(SASPreheatRequest *)self->_baseModel activationReferenceIdentifier];
     goto LABEL_18;
   }
 
-  v9 = self->_requestSource;
+  requestSource = self->_requestSource;
   if ((*&self->_mutationFlags & 4) == 0)
   {
     goto LABEL_16;
   }
 
 LABEL_9:
-  v10 = self->_configuration;
+  configuration = self->_configuration;
   if ((mutationFlags & 8) == 0)
   {
     goto LABEL_17;
   }
 
 LABEL_10:
-  v11 = self->_activationReferenceIdentifier;
+  activationReferenceIdentifier = self->_activationReferenceIdentifier;
 LABEL_18:
-  v13 = v11;
-  v12 = [[SASPreheatRequest alloc] initWithRequestSource:v9 configuration:v10 activationReferenceIdentifier:v11];
+  v13 = activationReferenceIdentifier;
+  v12 = [[SASPreheatRequest alloc] initWithRequestSource:requestSource configuration:configuration activationReferenceIdentifier:activationReferenceIdentifier];
 
 LABEL_19:
 

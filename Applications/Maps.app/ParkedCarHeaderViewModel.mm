@@ -1,5 +1,5 @@
 @interface ParkedCarHeaderViewModel
-- (ParkedCarHeaderViewModel)initWithParkedCar:(id)a3 subtitleText:(id)a4;
+- (ParkedCarHeaderViewModel)initWithParkedCar:(id)car subtitleText:(id)text;
 - (id)placeSecondaryName;
 @end
 
@@ -18,19 +18,19 @@
   }
 }
 
-- (ParkedCarHeaderViewModel)initWithParkedCar:(id)a3 subtitleText:(id)a4
+- (ParkedCarHeaderViewModel)initWithParkedCar:(id)car subtitleText:(id)text
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mapItem];
+  carCopy = car;
+  textCopy = text;
+  mapItem = [carCopy mapItem];
   v14.receiver = self;
   v14.super_class = ParkedCarHeaderViewModel;
-  v10 = [(ParkedCarHeaderViewModel *)&v14 initWithMapItem:v9];
+  v10 = [(ParkedCarHeaderViewModel *)&v14 initWithMapItem:mapItem];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_parkedCar, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v10->_parkedCar, car);
+    v11 = [textCopy copy];
     subtitleText = v10->_subtitleText;
     v10->_subtitleText = v11;
   }

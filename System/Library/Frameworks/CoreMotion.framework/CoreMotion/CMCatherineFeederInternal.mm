@@ -1,6 +1,6 @@
 @interface CMCatherineFeederInternal
 - (CMCatherineFeederInternal)init;
-- (void)_feedCatherine:(double)a3 confidence:(double)a4 timestamp:(double)a5;
+- (void)_feedCatherine:(double)catherine confidence:(double)confidence timestamp:(double)timestamp;
 - (void)_startDaemonConnection;
 - (void)_teardown;
 - (void)dealloc;
@@ -50,11 +50,11 @@
   CLConnectionClient::start(v4);
 }
 
-- (void)_feedCatherine:(double)a3 confidence:(double)a4 timestamp:(double)a5
+- (void)_feedCatherine:(double)catherine confidence:(double)confidence timestamp:(double)timestamp
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v8 = [CMCatherineData alloc];
-  v11 = objc_msgSend_initWithCatherine_confidence_timestamp_(v8, v9, v10, a3, a4, a5);
+  v11 = objc_msgSend_initWithCatherine_confidence_timestamp_(v8, v9, v10, catherine, confidence, timestamp);
   v13 = @"kCLConnectionMessageCatherineDataKey";
   v14[0] = v11;
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v14, &v13, 1);

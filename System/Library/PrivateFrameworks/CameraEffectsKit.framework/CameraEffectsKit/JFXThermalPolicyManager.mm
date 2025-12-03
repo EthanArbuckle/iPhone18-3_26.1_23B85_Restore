@@ -1,23 +1,23 @@
 @interface JFXThermalPolicyManager
 - (JFXThermalPolicy)highestPriorityPolicy;
-- (JFXThermalPolicyManager)initWithDefaultPolicy:(id)a3;
+- (JFXThermalPolicyManager)initWithDefaultPolicy:(id)policy;
 - (id)description;
-- (void)setPolicyType:(Class)a3 active:(BOOL)a4;
+- (void)setPolicyType:(Class)type active:(BOOL)active;
 @end
 
 @implementation JFXThermalPolicyManager
 
-- (JFXThermalPolicyManager)initWithDefaultPolicy:(id)a3
+- (JFXThermalPolicyManager)initWithDefaultPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = JFXThermalPolicyManager;
-  v3 = a3;
+  policyCopy = policy;
   v4 = [(JFXThermalPolicyManager *)&v8 init];
   v5 = objc_alloc_init(JFXThreadSafeArray);
   activePolicies = v4->_activePolicies;
   v4->_activePolicies = v5;
 
-  [(JFXThreadSafeArray *)v4->_activePolicies addObject:v3, v8.receiver, v8.super_class];
+  [(JFXThreadSafeArray *)v4->_activePolicies addObject:policyCopy, v8.receiver, v8.super_class];
   return v4;
 }
 
@@ -29,13 +29,13 @@
   v9 = __Block_byref_object_copy__22;
   v10 = __Block_byref_object_dispose__22;
   v11 = 0;
-  v2 = [(JFXThermalPolicyManager *)self activePolicies];
+  activePolicies = [(JFXThermalPolicyManager *)self activePolicies];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__JFXThermalPolicyManager_highestPriorityPolicy__block_invoke;
   v5[3] = &unk_278D7C5F8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [activePolicies enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -63,13 +63,13 @@ void __48__JFXThermalPolicyManager_highestPriorityPolicy__block_invoke(uint64_t 
 LABEL_5:
 }
 
-- (void)setPolicyType:(Class)a3 active:(BOOL)a4
+- (void)setPolicyType:(Class)type active:(BOOL)active
 {
-  if (a4)
+  if (active)
   {
-    v9 = objc_alloc_init(a3);
-    v6 = [(JFXThermalPolicyManager *)self activePolicies];
-    [v6 addObject:v9];
+    v9 = objc_alloc_init(type);
+    activePolicies = [(JFXThermalPolicyManager *)self activePolicies];
+    [activePolicies addObject:v9];
   }
 
   else
@@ -80,19 +80,19 @@ LABEL_5:
     v14 = __Block_byref_object_copy__22;
     v15 = __Block_byref_object_dispose__22;
     v16 = 0;
-    v7 = [(JFXThermalPolicyManager *)self activePolicies];
+    activePolicies2 = [(JFXThermalPolicyManager *)self activePolicies];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __48__JFXThermalPolicyManager_setPolicyType_active___block_invoke;
     v10[3] = &unk_278D7C620;
     v10[4] = &v11;
-    v10[5] = a3;
-    [v7 enumerateObjectsUsingBlock:v10];
+    v10[5] = type;
+    [activePolicies2 enumerateObjectsUsingBlock:v10];
 
     if (v12[5])
     {
-      v8 = [(JFXThermalPolicyManager *)self activePolicies];
-      [v8 removeObject:v12[5]];
+      activePolicies3 = [(JFXThermalPolicyManager *)self activePolicies];
+      [activePolicies3 removeObject:v12[5]];
     }
 
     _Block_object_dispose(&v11, 8);
@@ -112,9 +112,9 @@ void __48__JFXThermalPolicyManager_setPolicyType_active___block_invoke(uint64_t 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(JFXThermalPolicyManager *)self highestPriorityPolicy];
-  v5 = [(JFXThermalPolicyManager *)self activePolicies];
-  v6 = [v3 stringWithFormat:@"Highest Priority: %@\n\nActive Policy List:\n%@\n", v4, v5];
+  highestPriorityPolicy = [(JFXThermalPolicyManager *)self highestPriorityPolicy];
+  activePolicies = [(JFXThermalPolicyManager *)self activePolicies];
+  v6 = [v3 stringWithFormat:@"Highest Priority: %@\n\nActive Policy List:\n%@\n", highestPriorityPolicy, activePolicies];
 
   return v6;
 }

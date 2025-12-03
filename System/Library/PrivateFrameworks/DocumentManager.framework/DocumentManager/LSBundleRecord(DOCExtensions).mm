@@ -7,15 +7,15 @@
 
 - (id)containingApplicationRecord
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 containingBundleRecord];
+    containingBundleRecord = [selfCopy containingBundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = containingBundleRecord;
     }
 
     else

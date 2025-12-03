@@ -1,17 +1,17 @@
 @interface RadioAddStationRequest
 - (RadioAddStationRequest)init;
-- (RadioAddStationRequest)initWithQueryTerm:(id)a3 queryID:(int64_t)a4;
-- (RadioAddStationRequest)initWithStation:(id)a3;
-- (RadioAddStationRequest)initWithStationDictionary:(id)a3;
+- (RadioAddStationRequest)initWithQueryTerm:(id)term queryID:(int64_t)d;
+- (RadioAddStationRequest)initWithStation:(id)station;
+- (RadioAddStationRequest)initWithStationDictionary:(id)dictionary;
 - (id)changeList;
-- (void)startWithAddStationCompletionHandler:(id)a3;
+- (void)startWithAddStationCompletionHandler:(id)handler;
 @end
 
 @implementation RadioAddStationRequest
 
-- (void)startWithAddStationCompletionHandler:(id)a3
+- (void)startWithAddStationCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RadioModel sharedModel];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -26,10 +26,10 @@
   v10[3] = &unk_279AEAA48;
   v10[4] = self;
   v11 = v6;
-  v12 = v4;
+  v12 = handlerCopy;
   v9.receiver = self;
   v9.super_class = RadioAddStationRequest;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = v6;
   [(RadioSyncRequest *)&v9 startWithCompletionHandler:v10];
 }
@@ -180,14 +180,14 @@ uint64_t __63__RadioAddStationRequest_startWithAddStationCompletionHandler___blo
   return v2;
 }
 
-- (RadioAddStationRequest)initWithQueryTerm:(id)a3 queryID:(int64_t)a4
+- (RadioAddStationRequest)initWithQueryTerm:(id)term queryID:(int64_t)d
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  termCopy = term;
+  if (!termCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"RadioAddStationRequest.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"queryTerm"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RadioAddStationRequest.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"queryTerm"}];
   }
 
   v16.receiver = self;
@@ -197,15 +197,15 @@ uint64_t __63__RadioAddStationRequest_startWithAddStationCompletionHandler___blo
   {
     v8->_persistentID = arc4random();
     v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-    if (a4)
+    if (d)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
       [v9 setObject:v10 forKey:@"id"];
     }
 
-    if (v7)
+    if (termCopy)
     {
-      [v9 setObject:v7 forKey:@"term"];
+      [v9 setObject:termCopy forKey:@"term"];
     }
 
     v17 = @"query";
@@ -219,10 +219,10 @@ uint64_t __63__RadioAddStationRequest_startWithAddStationCompletionHandler___blo
   return v8;
 }
 
-- (RadioAddStationRequest)initWithStationDictionary:(id)a3
+- (RadioAddStationRequest)initWithStationDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v12.receiver = self;
     v12.super_class = RadioAddStationRequest;
@@ -230,7 +230,7 @@ uint64_t __63__RadioAddStationRequest_startWithAddStationCompletionHandler___blo
     if (v5)
     {
       v5->_persistentID = arc4random();
-      v6 = [v4 mutableCopy];
+      v6 = [dictionaryCopy mutableCopy];
       stationDictionary = v5->_stationDictionary;
       v5->_stationDictionary = v6;
 
@@ -240,36 +240,36 @@ uint64_t __63__RadioAddStationRequest_startWithAddStationCompletionHandler___blo
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"stationDictionary must be non-nil"];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (RadioAddStationRequest)initWithStation:(id)a3
+- (RadioAddStationRequest)initWithStation:(id)station
 {
-  v4 = a3;
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [(RadioAddStationRequest *)self initWithStationDictionary:v5];
+  stationCopy = station;
+  dictionaryRepresentation = [stationCopy dictionaryRepresentation];
+  v6 = [(RadioAddStationRequest *)self initWithStationDictionary:dictionaryRepresentation];
 
   if (v6)
   {
-    v7 = [v4 stationHash];
+    stationHash = [stationCopy stationHash];
     stationHashForSkipHistoryCopying = v6->_stationHashForSkipHistoryCopying;
-    v6->_stationHashForSkipHistoryCopying = v7;
+    v6->_stationHashForSkipHistoryCopying = stationHash;
 
     v9 = +[RadioModel sharedModel];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__RadioAddStationRequest_initWithStation___block_invoke;
     v11[3] = &unk_279AEACA0;
-    v12 = v4;
+    v12 = stationCopy;
     v13 = v6;
     [v9 performWriteTransactionWithBlock:v11];
   }

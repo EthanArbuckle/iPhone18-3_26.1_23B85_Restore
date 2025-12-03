@@ -11,13 +11,13 @@
     v3 = MEMORY[0x277D0FCE0];
     v4 = a3;
     v5 = [v3 alloc];
-    v6 = [v4 quantity];
-    v7 = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
-    [v6 doubleValueForUnit:v7];
+    quantity = [v4 quantity];
+    degreeCelsiusUnit = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
+    [quantity doubleValueForUnit:degreeCelsiusUnit];
     v9 = v8;
-    v10 = [v4 watchBundleIdentifier];
+    watchBundleIdentifier = [v4 watchBundleIdentifier];
 
-    v11 = [v5 initWithTemperature:v10 forWatchIdentifier:v9];
+    v11 = [v5 initWithTemperature:watchBundleIdentifier forWatchIdentifier:v9];
   }
 
   else

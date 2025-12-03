@@ -1,40 +1,40 @@
 @interface SFBrowserRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 + (id)serviceViewControllerInterface;
 - (BOOL)isOnScreenForVolumeDisplay;
-- (SFBrowserRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SFBrowserRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SFBrowserRemoteViewControllerDelegate)delegate;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (void)_determineVisibilityIfNeeded;
-- (void)_sf_sceneDidEnterBackground:(id)a3;
-- (void)_sf_sceneWillEnterForeground:(id)a3;
+- (void)_sf_sceneDidEnterBackground:(id)background;
+- (void)_sf_sceneWillEnterForeground:(id)foreground;
 - (void)destroyScene;
-- (void)didChangeFullScreen:(BOOL)a3;
-- (void)didDecideCookieSharingForURL:(id)a3 shouldCancel:(BOOL)a4 withError:(id)a5;
-- (void)didDecideShouldShowLinkPreviews:(BOOL)a3;
-- (void)didFinishInitialLoad:(BOOL)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didResolveRedirectionWithURL:(id)a3 appLink:(id)a4;
-- (void)executeCustomActivityProxyID:(id)a3;
-- (void)fetchActivityViewControllerInfoForURL:(id)a3 title:(id)a4;
-- (void)initialLoadDidRedirectToURL:(id)a3;
-- (void)setRemoteSwipeGestureEnabled:(BOOL)a3;
+- (void)didChangeFullScreen:(BOOL)screen;
+- (void)didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error;
+- (void)didDecideShouldShowLinkPreviews:(BOOL)previews;
+- (void)didFinishInitialLoad:(BOOL)load;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didResolveRedirectionWithURL:(id)l appLink:(id)link;
+- (void)executeCustomActivityProxyID:(id)d;
+- (void)fetchActivityViewControllerInfoForURL:(id)l title:(id)title;
+- (void)initialLoadDidRedirectToURL:(id)l;
+- (void)setRemoteSwipeGestureEnabled:(BOOL)enabled;
 - (void)suspendApplication;
 - (void)viewDidLayoutSubviews;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willDismissServiceViewController;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 - (void)willOpenCurrentPageInBrowser;
-- (void)willOpenURLInHostApplication:(id)a3;
+- (void)willOpenURLInHostApplication:(id)application;
 @end
 
 @implementation SFBrowserRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"SFBrowserServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"SFBrowserServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:handlerCopy];
 
   return v4;
 }
@@ -50,11 +50,11 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SFBrowserRemoteViewController;
-  [(_UIRemoteViewController *)&v4 viewWillAppear:a3];
+  [(_UIRemoteViewController *)&v4 viewWillAppear:appear];
   self->_shouldDetermineVisibilityOnNextLayout = !self->_hasBeenDisplayedAtLeastOnce;
   self->_hasBeenDisplayedAtLeastOnce = 1;
 }
@@ -70,30 +70,30 @@
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = SFBrowserRemoteViewController;
   [(SFBrowserRemoteViewController *)&v6 willMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [MEMORY[0x1E6970A38] sharedInstance];
-    [v5 addVolumeDisplay:self];
+    mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+    [mEMORY[0x1E6970A38] addVolumeDisplay:self];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v5 = [MEMORY[0x1E6970A38] sharedInstance];
-    [v5 removeVolumeDisplay:self];
+    mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+    [mEMORY[0x1E6970A38] removeVolumeDisplay:self];
   }
 
   v6.receiver = self;
   v6.super_class = SFBrowserRemoteViewController;
-  [(_UIRemoteViewController *)&v6 didMoveToParentViewController:v4];
+  [(_UIRemoteViewController *)&v6 didMoveToParentViewController:controllerCopy];
 }
 
 - (void)_determineVisibilityIfNeeded
@@ -116,14 +116,14 @@
           return;
         }
 
-        v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-        [v6 didDetectUserInteractionFromHostApp];
+        serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+        [serviceViewControllerProxy didDetectUserInteractionFromHostApp];
       }
 
       else
       {
-        v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-        [v6 didDetectRemoteViewControllerViewIsHidden];
+        serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+        [serviceViewControllerProxy didDetectRemoteViewControllerViewIsHidden];
       }
     }
   }
@@ -155,93 +155,93 @@
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self viewServiceDidTerminateWithError:v4];
+  [WeakRetained remoteViewController:self viewServiceDidTerminateWithError:errorCopy];
 }
 
-- (void)setRemoteSwipeGestureEnabled:(BOOL)a3
+- (void)setRemoteSwipeGestureEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self setSwipeGestureEnabled:v3];
+  [WeakRetained remoteViewController:self setSwipeGestureEnabled:enabledCopy];
 }
 
-- (void)didFinishInitialLoad:(BOOL)a3
+- (void)didFinishInitialLoad:(BOOL)load
 {
-  v3 = a3;
+  loadCopy = load;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self didFinishInitialLoad:v3];
+  [WeakRetained remoteViewController:self didFinishInitialLoad:loadCopy];
 }
 
-- (void)fetchActivityViewControllerInfoForURL:(id)a3 title:(id)a4
+- (void)fetchActivityViewControllerInfoForURL:(id)l title:(id)title
 {
-  v6 = a4;
-  v7 = a3;
+  titleCopy = title;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self fetchActivityViewControllerInfoForURL:v7 title:v6];
+  [WeakRetained remoteViewController:self fetchActivityViewControllerInfoForURL:lCopy title:titleCopy];
 }
 
-- (void)executeCustomActivityProxyID:(id)a3
+- (void)executeCustomActivityProxyID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self executeCustomActivityProxyID:v4];
+  [WeakRetained remoteViewController:self executeCustomActivityProxyID:dCopy];
 }
 
-- (void)willOpenURLInHostApplication:(id)a3
+- (void)willOpenURLInHostApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self hostApplicationOpenURL:v4];
+  [WeakRetained remoteViewController:self hostApplicationOpenURL:applicationCopy];
 }
 
-- (void)didDecideCookieSharingForURL:(id)a3 shouldCancel:(BOOL)a4 withError:(id)a5
+- (void)didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error
 {
-  v6 = a4;
-  v10 = a3;
-  v8 = a5;
+  cancelCopy = cancel;
+  lCopy = l;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteViewController:self didDecideCookieSharingForURL:v10 shouldCancel:v6 withError:v8];
+    [WeakRetained remoteViewController:self didDecideCookieSharingForURL:lCopy shouldCancel:cancelCopy withError:errorCopy];
   }
 }
 
-- (void)initialLoadDidRedirectToURL:(id)a3
+- (void)initialLoadDidRedirectToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self initialLoadDidRedirectToURL:v4];
+  [WeakRetained remoteViewController:self initialLoadDidRedirectToURL:lCopy];
 }
 
-- (void)didChangeFullScreen:(BOOL)a3
+- (void)didChangeFullScreen:(BOOL)screen
 {
-  self->_isInFullScreen = a3;
-  v3 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v3 setNeedsUpdate];
+  self->_isInFullScreen = screen;
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] setNeedsUpdate];
 }
 
-- (void)didResolveRedirectionWithURL:(id)a3 appLink:(id)a4
+- (void)didResolveRedirectionWithURL:(id)l appLink:(id)link
 {
-  v8 = a3;
-  v6 = a4;
+  lCopy = l;
+  linkCopy = link;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteViewController:self didResolveRedirectionWithURL:v8 appLink:v6];
+    [WeakRetained remoteViewController:self didResolveRedirectionWithURL:lCopy appLink:linkCopy];
   }
 }
 
-- (void)didDecideShouldShowLinkPreviews:(BOOL)a3
+- (void)didDecideShouldShowLinkPreviews:(BOOL)previews
 {
-  v3 = a3;
+  previewsCopy = previews;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteViewController:self didDecideShouldShowLinkPreviews:v3];
+    [WeakRetained remoteViewController:self didDecideShouldShowLinkPreviews:previewsCopy];
   }
 }
 
@@ -254,53 +254,53 @@
   }
 }
 
-- (void)_sf_sceneWillEnterForeground:(id)a3
+- (void)_sf_sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v4 object];
+  foregroundCopy = foreground;
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  object = [foregroundCopy object];
 
-  if (v7 == v8)
+  if (windowScene == object)
   {
-    v9 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v9 beginDigitalHealthTracking];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy beginDigitalHealthTracking];
   }
 }
 
-- (void)_sf_sceneDidEnterBackground:(id)a3
+- (void)_sf_sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v4 object];
+  backgroundCopy = background;
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  object = [backgroundCopy object];
 
-  if (v7 == v8)
+  if (windowScene == object)
   {
-    v9 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v9 stopDigitalHealthTrackingWithCompletionHandler:&__block_literal_global_37];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy stopDigitalHealthTrackingWithCompletionHandler:&__block_literal_global_37];
   }
 }
 
 - (void)suspendApplication
 {
   v8 = [objc_alloc(MEMORY[0x1E69DC958]) initWithInfo:0 responder:0];
-  v3 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _FBSScene];
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  _FBSScene = [windowScene _FBSScene];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-  [v6 sendActions:v7];
+  [_FBSScene sendActions:v7];
 }
 
 - (void)destroyScene
 {
-  v4 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v2 = [v4 window];
-  v3 = [v2 windowScene];
-  [v3 _sf_destroyScene];
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  [windowScene _sf_destroyScene];
 }
 
 - (BOOL)isOnScreenForVolumeDisplay
@@ -310,32 +310,32 @@
     return 0;
   }
 
-  v2 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  v4 = window != 0;
 
   return v4;
 }
 
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
-  v2 = [(SFBrowserRemoteViewController *)self viewIfLoaded];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  viewIfLoaded = [(SFBrowserRemoteViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  return v4;
+  return windowScene;
 }
 
-- (SFBrowserRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SFBrowserRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SFBrowserRemoteViewController;
-  v4 = [(SFBrowserRemoteViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SFBrowserRemoteViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__sf_sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
-    [v5 addObserver:v4 selector:sel__sf_sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__sf_sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
+    [defaultCenter addObserver:v4 selector:sel__sf_sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
     v6 = v4;
   }
 

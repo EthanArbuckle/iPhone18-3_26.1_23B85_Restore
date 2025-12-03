@@ -1,21 +1,21 @@
 @interface _TUIHostingAnchorRenderModel
-- (_TUIHostingAnchorRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 hostingIdentifier:(id)a5 hostingProperties:(id)a6;
+- (_TUIHostingAnchorRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties;
 @end
 
 @implementation _TUIHostingAnchorRenderModel
 
-- (_TUIHostingAnchorRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 hostingIdentifier:(id)a5 hostingProperties:(id)a6
+- (_TUIHostingAnchorRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties
 {
-  v11 = a5;
-  v12 = a6;
+  hostingIdentifierCopy = hostingIdentifier;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = _TUIHostingAnchorRenderModel;
-  v13 = [(TUIRenderModelView *)&v16 initWithReuseIdentifier:@"TUIReuseIdentifierHostingAnchorView" identifier:a3 submodel:a4];
+  v13 = [(TUIRenderModelView *)&v16 initWithReuseIdentifier:@"TUIReuseIdentifierHostingAnchorView" identifier:identifier submodel:submodel];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_hostingIdentifier, a5);
-    objc_storeStrong(&v14->_hostingProperties, a6);
+    objc_storeStrong(&v13->_hostingIdentifier, hostingIdentifier);
+    objc_storeStrong(&v14->_hostingProperties, properties);
   }
 
   return v14;

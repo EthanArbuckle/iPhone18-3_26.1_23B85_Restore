@@ -1,48 +1,48 @@
 @interface MIStagingLocation
 + (id)_stagingRootClassCluster;
-- (BOOL)isEqual:(id)a3;
-- (MIStagingLocation)initWithCoder:(id)a3;
-- (MIStagingLocation)initWithStagingRoot:(id)a3 relativeStagingBaseDirectory:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MIStagingLocation)initWithCoder:(id)coder;
+- (MIStagingLocation)initWithStagingRoot:(id)root relativeStagingBaseDirectory:(id)directory;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolveWithError:(id *)a3;
+- (id)resolveWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIStagingLocation
 
-- (MIStagingLocation)initWithStagingRoot:(id)a3 relativeStagingBaseDirectory:(id)a4
+- (MIStagingLocation)initWithStagingRoot:(id)root relativeStagingBaseDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
+  rootCopy = root;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = MIStagingLocation;
   v9 = [(MIStagingLocation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stagingRoot, a3);
-    objc_storeStrong(&v10->_relativeStagingBaseDirectory, a4);
+    objc_storeStrong(&v9->_stagingRoot, root);
+    objc_storeStrong(&v10->_relativeStagingBaseDirectory, directory);
   }
 
   return v10;
 }
 
-- (MIStagingLocation)initWithCoder:(id)a3
+- (MIStagingLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MIStagingLocation;
   v5 = [(MIStagingLocation *)&v12 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _stagingRootClassCluster];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"stagingRoot"];
+    _stagingRootClassCluster = [objc_opt_class() _stagingRootClassCluster];
+    v7 = [coderCopy decodeObjectOfClasses:_stagingRootClassCluster forKey:@"stagingRoot"];
     stagingRoot = v5->_stagingRoot;
     v5->_stagingRoot = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relativeStagingBaseDirectory"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relativeStagingBaseDirectory"];
     relativeStagingBaseDirectory = v5->_relativeStagingBaseDirectory;
     v5->_relativeStagingBaseDirectory = v9;
   }
@@ -62,17 +62,17 @@
   return v4;
 }
 
-- (id)resolveWithError:(id *)a3
+- (id)resolveWithError:(id *)error
 {
-  v5 = [(MIStagingLocation *)self stagingRoot];
-  v6 = [v5 resolveRootWithError:a3];
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  v6 = [stagingRoot resolveRootWithError:error];
 
   if (v6)
   {
-    v7 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-    if (v7)
+    relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+    if (relativeStagingBaseDirectory)
     {
-      v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+      v8 = [v6 URLByAppendingPathComponent:relativeStagingBaseDirectory isDirectory:1];
     }
 
     else
@@ -91,10 +91,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -104,24 +104,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIStagingLocation *)v5 stagingRoot];
-      v7 = [(MIStagingLocation *)self stagingRoot];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      stagingRoot = [(MIStagingLocation *)v5 stagingRoot];
+      stagingRoot2 = [(MIStagingLocation *)self stagingRoot];
+      v8 = [stagingRoot isEqual:stagingRoot2];
 
       if (v8)
       {
-        v9 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-        v10 = [(MIStagingLocation *)v5 relativeStagingBaseDirectory];
-        v11 = v10;
-        if (v9)
+        relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+        relativeStagingBaseDirectory2 = [(MIStagingLocation *)v5 relativeStagingBaseDirectory];
+        v11 = relativeStagingBaseDirectory2;
+        if (relativeStagingBaseDirectory)
         {
-          v12 = [v9 isEqual:v10];
+          v12 = [relativeStagingBaseDirectory isEqual:relativeStagingBaseDirectory2];
         }
 
         else
         {
-          v12 = v10 == 0;
+          v12 = relativeStagingBaseDirectory2 == 0;
         }
       }
 
@@ -143,41 +143,41 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIStagingLocation *)self stagingRoot];
-  v5 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-  v6 = [v3 stringWithFormat:@"[%@/%@]", v4, v5];
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+  v6 = [v3 stringWithFormat:@"[%@/%@]", stagingRoot, relativeStagingBaseDirectory];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MIStagingLocation *)self stagingRoot];
-  v6 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-  v7 = [v4 initWithStagingRoot:v5 relativeStagingBaseDirectory:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+  v7 = [v4 initWithStagingRoot:stagingRoot relativeStagingBaseDirectory:relativeStagingBaseDirectory];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIStagingLocation *)self stagingRoot];
-  [v4 encodeObject:v5 forKey:@"stagingRoot"];
+  coderCopy = coder;
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  [coderCopy encodeObject:stagingRoot forKey:@"stagingRoot"];
 
-  v6 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-  [v4 encodeObject:v6 forKey:@"relativeStagingBaseDirectory"];
+  relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+  [coderCopy encodeObject:relativeStagingBaseDirectory forKey:@"relativeStagingBaseDirectory"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-  v4 = [(MIStagingLocation *)self stagingRoot];
-  v5 = [v4 hash];
-  if (v3)
+  relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  v5 = [stagingRoot hash];
+  if (relativeStagingBaseDirectory)
   {
-    v5 ^= [v3 hash];
+    v5 ^= [relativeStagingBaseDirectory hash];
   }
 
   return v5;

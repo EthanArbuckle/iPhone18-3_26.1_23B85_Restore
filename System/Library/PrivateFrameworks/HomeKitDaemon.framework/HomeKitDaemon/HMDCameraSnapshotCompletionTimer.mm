@@ -1,5 +1,5 @@
 @interface HMDCameraSnapshotCompletionTimer
-- (HMDCameraSnapshotCompletionTimer)initWithSnapshotSession:(id)a3 timeInterval:(double)a4;
+- (HMDCameraSnapshotCompletionTimer)initWithSnapshotSession:(id)session timeInterval:(double)interval;
 - (HMDCameraSnapshotSession)snapshotSession;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (HMDCameraSnapshotCompletionTimer)initWithSnapshotSession:(id)a3 timeInterval:(double)a4
+- (HMDCameraSnapshotCompletionTimer)initWithSnapshotSession:(id)session timeInterval:(double)interval
 {
-  v6 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = HMDCameraSnapshotCompletionTimer;
-  v7 = [(HMFTimer *)&v10 initWithTimeInterval:0 options:a4];
+  v7 = [(HMFTimer *)&v10 initWithTimeInterval:0 options:interval];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_snapshotSession, v6);
+    objc_storeWeak(&v7->_snapshotSession, sessionCopy);
   }
 
   return v8;

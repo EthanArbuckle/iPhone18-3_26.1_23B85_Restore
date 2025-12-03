@@ -22,35 +22,35 @@
 
 - (uint64_t)sk_appName
 {
-  v2 = [a1 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+  v2 = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
   if (isValidString(v2))
   {
     return v2;
   }
 
-  v2 = [a1 objectForInfoDictionaryKey:@"CFBundleName"];
+  v2 = [self objectForInfoDictionaryKey:@"CFBundleName"];
   if (isValidString(v2))
   {
     return v2;
   }
 
-  return [a1 bundleIdentifier];
+  return [self bundleIdentifier];
 }
 
 - (uint64_t)sk_studyName
 {
-  v2 = [a1 objectForInfoDictionaryKey:@"NSSensorKitStudyName"];
+  v2 = [self objectForInfoDictionaryKey:@"NSSensorKitStudyName"];
   if (isValidString(v2))
   {
     return v2;
   }
 
-  return [a1 sk_appName];
+  return [self sk_appName];
 }
 
 - (void)sk_privacyURL
 {
-  v1 = [a1 objectForInfoDictionaryKey:@"NSSensorKitPrivacyPolicyURL"];
+  v1 = [self objectForInfoDictionaryKey:@"NSSensorKitPrivacyPolicyURL"];
   if (v1)
   {
     objc_opt_class();
@@ -74,7 +74,7 @@
 
 - (void)sk_usageDescription
 {
-  v1 = [a1 objectForInfoDictionaryKey:@"NSSensorKitUsageDescription"];
+  v1 = [self objectForInfoDictionaryKey:@"NSSensorKitUsageDescription"];
   if (isValidString(v1))
   {
     return v1;
@@ -89,7 +89,7 @@
 - (uint64_t)sk_requiredCategories
 {
   v2 = [MEMORY[0x1E695DFA8] set];
-  v3 = [a1 objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"];
+  v3 = [self objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -112,8 +112,8 @@
 
 - (uint64_t)sk_perCategoryDetailDescription
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [a1 objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v3 = [self objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -121,18 +121,18 @@
     v5[1] = 3221225472;
     v5[2] = __61__NSBundle_SensorKitPrivate__sk_perCategoryDetailDescription__block_invoke;
     v5[3] = &unk_1E8330A38;
-    v5[4] = a1;
-    v5[5] = v2;
+    v5[4] = self;
+    v5[5] = dictionary;
     [v3 enumerateKeysAndObjectsUsingBlock:v5];
   }
 
-  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:v2];
+  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 }
 
 - (uint64_t)sr_bundleType
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = -[NSBundle sr_bundleTypeWithPartnerAppDirectoryURL:](a1, [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/Research/Studies/" isDirectory:1 relativeToURL:0]);
+  v3 = -[NSBundle sr_bundleTypeWithPartnerAppDirectoryURL:](self, [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/Research/Studies/" isDirectory:1 relativeToURL:0]);
   objc_autoreleasePoolPop(v2);
   return v3;
 }
@@ -141,21 +141,21 @@
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/Research/Studies/" isDirectory:1 relativeToURL:0];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_7;
   }
 
-  v3 = [(NSBundle *)a1 sr_bundleTypeWithPartnerAppDirectoryURL:v2];
+  v3 = [(NSBundle *)self sr_bundleTypeWithPartnerAppDirectoryURL:v2];
   if (v3 == 1)
   {
     v6 = @"com.apple.Research";
-    if (([objc_msgSend(a1 "bundleIdentifier")] & 1) == 0)
+    if (([objc_msgSend(self "bundleIdentifier")] & 1) == 0)
     {
       v6 = @"com.appleinternal.health.Lime";
-      if (([objc_msgSend(a1 "bundleIdentifier")] & 1) == 0)
+      if (([objc_msgSend(self "bundleIdentifier")] & 1) == 0)
       {
-        v6 = [a1 objectForInfoDictionaryKey:@"SRStudyApplicationGroupIdentifier"];
+        v6 = [self objectForInfoDictionaryKey:@"SRStudyApplicationGroupIdentifier"];
       }
     }
 
@@ -170,7 +170,7 @@
       v9 = 138543618;
       v10 = v6;
       v11 = 2114;
-      v12 = [a1 bundleIdentifier];
+      bundleIdentifier = [self bundleIdentifier];
       _os_log_impl(&dword_1C914D000, v7, OS_LOG_TYPE_INFO, "Found parent app %{public}@ for study %{public}@", &v9, 0x16u);
     }
 
@@ -188,7 +188,7 @@ LABEL_15:
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return [a1 bundleIdentifier];
+  return [self bundleIdentifier];
 }
 
 @end

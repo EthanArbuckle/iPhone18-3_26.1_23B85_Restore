@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationAcceptCandidate
-- (TIWordSearchOperationAcceptCandidate)initWithWordSearch:(id)a3 mecabraCandidate:(void *)a4 isPartial:(BOOL)a5;
+- (TIWordSearchOperationAcceptCandidate)initWithWordSearch:(id)search mecabraCandidate:(void *)candidate isPartial:(BOOL)partial;
 - (void)dealloc;
 - (void)perform;
 @end
@@ -8,27 +8,27 @@
 
 - (void)perform
 {
-  v3 = [(TIWordSearchOperationAcceptCandidate *)self mecabraWrapper];
-  v4 = [v3 mecabraRef];
+  mecabraWrapper = [(TIWordSearchOperationAcceptCandidate *)self mecabraWrapper];
+  mecabraRef = [mecabraWrapper mecabraRef];
 
-  if (v4)
+  if (mecabraRef)
   {
     mecabraCandidate = self->_mecabraCandidate;
     if (mecabraCandidate)
     {
-      v6 = [(TIWordSearchOperationAcceptCandidate *)self isPartialCandidate];
-      v7 = v4;
+      isPartialCandidate = [(TIWordSearchOperationAcceptCandidate *)self isPartialCandidate];
+      v7 = mecabraRef;
       v8 = mecabraCandidate;
     }
 
     else
     {
-      v7 = v4;
+      v7 = mecabraRef;
       v8 = 0;
-      v6 = 0;
+      isPartialCandidate = 0;
     }
 
-    MEMORY[0x2821F8CA0](v7, v8, v6);
+    MEMORY[0x2821F8CA0](v7, v8, isPartialCandidate);
   }
 }
 
@@ -44,30 +44,30 @@
   [(TIWordSearchOperationAcceptCandidate *)&v4 dealloc];
 }
 
-- (TIWordSearchOperationAcceptCandidate)initWithWordSearch:(id)a3 mecabraCandidate:(void *)a4 isPartial:(BOOL)a5
+- (TIWordSearchOperationAcceptCandidate)initWithWordSearch:(id)search mecabraCandidate:(void *)candidate isPartial:(BOOL)partial
 {
-  v8 = a3;
+  searchCopy = search;
   v14.receiver = self;
   v14.super_class = TIWordSearchOperationAcceptCandidate;
   v9 = [(TIWordSearchOperationAcceptCandidate *)&v14 init];
   if (v9)
   {
-    v10 = [v8 mecabraWrapper];
+    mecabraWrapper = [searchCopy mecabraWrapper];
     mecabraWrapper = v9->_mecabraWrapper;
-    v9->_mecabraWrapper = v10;
+    v9->_mecabraWrapper = mecabraWrapper;
 
-    if (a4)
+    if (candidate)
     {
-      v12 = a4;
+      candidateCopy = candidate;
     }
 
     else
     {
-      v12 = 0;
+      candidateCopy = 0;
     }
 
-    v9->_mecabraCandidate = v12;
-    v9->_partialCandidate = a5;
+    v9->_mecabraCandidate = candidateCopy;
+    v9->_partialCandidate = partial;
   }
 
   return v9;

@@ -1,25 +1,25 @@
 @interface MSDKPeerDemoDevice
-- (id)initWithMSDRapportDevice:(id)a3;
+- (id)initWithMSDRapportDevice:(id)device;
 @end
 
 @implementation MSDKPeerDemoDevice
 
-- (id)initWithMSDRapportDevice:(id)a3
+- (id)initWithMSDRapportDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableDictionary dictionary];
-  [v5 setObject:v4 forKeyedSubscript:kMSDKPeerDemoDevicePropertyDevice];
-  v6 = [v4 identifier];
-  [v5 setObject:v6 forKeyedSubscript:kMSDKPeerDemoDevicePropertyIdentifier];
+  [v5 setObject:deviceCopy forKeyedSubscript:kMSDKPeerDemoDevicePropertyDevice];
+  identifier = [deviceCopy identifier];
+  [v5 setObject:identifier forKeyedSubscript:kMSDKPeerDemoDevicePropertyIdentifier];
 
-  v7 = [v4 deviceName];
-  [v5 setObject:v7 forKeyedSubscript:kMSDKPeerDemoDevicePropertyDeviceName];
+  deviceName = [deviceCopy deviceName];
+  [v5 setObject:deviceName forKeyedSubscript:kMSDKPeerDemoDevicePropertyDeviceName];
 
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 pairingMode]);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deviceCopy pairingMode]);
   [v5 setObject:v8 forKeyedSubscript:kMSDKPeerDemoDevicePropertyPairingMode];
 
-  v9 = [v4 authenticated];
-  v10 = [NSNumber numberWithBool:v9];
+  authenticated = [deviceCopy authenticated];
+  v10 = [NSNumber numberWithBool:authenticated];
   [v5 setObject:v10 forKeyedSubscript:kMSDKPeerDemoDevicePropertyAuthenticated];
 
   v11 = [(MSDKPeerDemoDevice *)self initWithDeviceProperties:v5];

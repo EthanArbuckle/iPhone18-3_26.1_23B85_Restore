@@ -1,6 +1,6 @@
 @interface MPMediaItem
-+ (BOOL)bk_isItemAudibleAudiobook:(id)a3;
-+ (int)bk_audibleDRMGroupIDForItem:(id)a3;
++ (BOOL)bk_isItemAudibleAudiobook:(id)audiobook;
++ (int)bk_audibleDRMGroupIDForItem:(id)item;
 - (BOOL)bk_isJaliscoAsset;
 - (id)bk_assetID;
 - (id)bk_assetURL;
@@ -12,7 +12,7 @@
 - (id)bk_storePlaylistID;
 - (id)bk_storeRedownloadParameters;
 - (unint64_t)bk_albumTrackIndex;
-- (void)bk_artworkImageWithCompletion:(id)a3;
+- (void)bk_artworkImageWithCompletion:(id)completion;
 @end
 
 @implementation MPMediaItem
@@ -25,9 +25,9 @@
     v4 = BKAudiobooksLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(MPMediaItem *)self bk_effectiveTitle];
+      bk_effectiveTitle = [(MPMediaItem *)self bk_effectiveTitle];
       *buf = 138412290;
-      v22 = v5;
+      v22 = bk_effectiveTitle;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Using file path for %@.", buf, 0xCu);
     }
 
@@ -46,8 +46,8 @@
   }
 
   v9 = v8;
-  v10 = [v8 stringValue];
-  v11 = [NSString stringWithFormat:@"NBAssetOverride-%@", v10];
+  stringValue = [v8 stringValue];
+  v11 = [NSString stringWithFormat:@"NBAssetOverride-%@", stringValue];
 
   v12 = +[NSUserDefaults standardUserDefaults];
   v13 = [v12 stringForKey:v11];
@@ -84,9 +84,9 @@ LABEL_19:
       v18 = BKAudiobooksLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(MPMediaItem *)self bk_effectiveTitle];
+        bk_effectiveTitle2 = [(MPMediaItem *)self bk_effectiveTitle];
         *buf = 138412290;
-        v22 = v19;
+        v22 = bk_effectiveTitle2;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "No path available for streaming or local playback. Using the assetURL for %@.", buf, 0xCu);
       }
 
@@ -96,9 +96,9 @@ LABEL_19:
     v16 = BKAudiobooksLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(MPMediaItem *)self bk_effectiveTitle];
+      bk_effectiveTitle3 = [(MPMediaItem *)self bk_effectiveTitle];
       *buf = 138412290;
-      v22 = v17;
+      v22 = bk_effectiveTitle3;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "Using HLS playlist for %@.", buf, 0xCu);
     }
 
@@ -117,18 +117,18 @@ LABEL_22:
 
 - (id)bk_storeDemoAssetURL
 {
-  v3 = [(MPMediaItem *)self bk_storeID];
-  if (!v3)
+  bk_storeID = [(MPMediaItem *)self bk_storeID];
+  if (!bk_storeID)
   {
     goto LABEL_10;
   }
 
-  v4 = [NSString stringWithFormat:@"/var/mobile/Media/Books/%@.m4b", v3];
-  v5 = [NSURL fileURLWithPath:v4];
+  v4 = [NSString stringWithFormat:@"/var/mobile/Media/Books/%@.m4b", bk_storeID];
+  bk_assetURL = [NSURL fileURLWithPath:v4];
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [bk_assetURL path];
+  v8 = [v6 fileExistsAtPath:path];
 
   v9 = BKAudiobooksLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -136,11 +136,11 @@ LABEL_22:
   {
     if (v10)
     {
-      v12 = [v5 path];
+      path2 = [bk_assetURL path];
       *buf = 138412546;
-      v15 = v3;
+      v15 = bk_storeID;
       v16 = 2112;
-      v17 = v12;
+      v17 = path2;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Failed to override the asset path for %@ to be %@. File does not exist.", buf, 0x16u);
     }
 
@@ -149,21 +149,21 @@ LABEL_22:
 
   if (v10)
   {
-    v11 = [v5 path];
+    path3 = [bk_assetURL path];
     *buf = 138412546;
-    v15 = v3;
+    v15 = bk_storeID;
     v16 = 2112;
-    v17 = v11;
+    v17 = path3;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Overriding the asset path for %@ to be %@.", buf, 0x16u);
   }
 
-  if (!v5)
+  if (!bk_assetURL)
   {
 LABEL_10:
-    v5 = [(MPMediaItem *)self bk_assetURL];
+    bk_assetURL = [(MPMediaItem *)self bk_assetURL];
   }
 
-  return v5;
+  return bk_assetURL;
 }
 
 - (id)bk_storeRedownloadParameters
@@ -185,10 +185,10 @@ LABEL_10:
 
 - (id)bk_storeID
 {
-  v3 = [(MPMediaItem *)self bk_isJaliscoAsset];
+  bk_isJaliscoAsset = [(MPMediaItem *)self bk_isJaliscoAsset];
   objc_opt_class();
   v4 = &MPMediaItemPropertyStoreID;
-  if (!v3)
+  if (!bk_isJaliscoAsset)
   {
     v4 = &MPMediaItemPropertyStorePlaylistID;
   }
@@ -234,25 +234,25 @@ LABEL_10:
 
 - (id)bk_assetID
 {
-  v3 = [(MPMediaItem *)self bk_storeID];
+  bk_storeID = [(MPMediaItem *)self bk_storeID];
   if (BUStoreIdFromObject())
   {
-    v4 = [v3 stringValue];
+    stringValue = [bk_storeID stringValue];
     goto LABEL_9;
   }
 
-  v5 = [(MPMediaItem *)self albumTitle];
-  if ([v5 length])
+  albumTitle = [(MPMediaItem *)self albumTitle];
+  if ([albumTitle length])
   {
-    v6 = [v5 dataUsingEncoding:4];
-    v7 = [v6 bu_sha1];
-    v4 = [NSString stringWithFormat:@"sha1-%@", v7];
+    v6 = [albumTitle dataUsingEncoding:4];
+    bu_sha1 = [v6 bu_sha1];
+    stringValue = [NSString stringWithFormat:@"sha1-%@", bu_sha1];
   }
 
   else
   {
-    v8 = [(MPMediaItem *)self persistentID];
-    if (!v8)
+    persistentID = [(MPMediaItem *)self persistentID];
+    if (!persistentID)
     {
       v10 = BKAudiobooksLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -260,61 +260,61 @@ LABEL_10:
         sub_22864(self, v10);
       }
 
-      v4 = 0;
+      stringValue = 0;
       goto LABEL_8;
     }
 
-    v6 = [NSNumber numberWithUnsignedLongLong:v8];
-    v4 = [NSString stringWithFormat:@"pid-%@", v6];
+    v6 = [NSNumber numberWithUnsignedLongLong:persistentID];
+    stringValue = [NSString stringWithFormat:@"pid-%@", v6];
   }
 
 LABEL_8:
 LABEL_9:
 
-  return v4;
+  return stringValue;
 }
 
 - (id)bk_effectiveTitle
 {
-  v3 = [(MPMediaItem *)self albumTitle];
-  if ([v3 length])
+  albumTitle = [(MPMediaItem *)self albumTitle];
+  if ([albumTitle length])
   {
-    v4 = v3;
+    title = albumTitle;
   }
 
   else
   {
-    v4 = [(MPMediaItem *)self title];
+    title = [(MPMediaItem *)self title];
   }
 
-  v5 = v4;
+  v5 = title;
 
   return v5;
 }
 
 - (id)bk_effectiveAuthor
 {
-  v3 = [(MPMediaItem *)self albumArtist];
-  if ([v3 length])
+  albumArtist = [(MPMediaItem *)self albumArtist];
+  if ([albumArtist length])
   {
-    v4 = v3;
+    artist = albumArtist;
   }
 
   else
   {
-    v4 = [(MPMediaItem *)self artist];
+    artist = [(MPMediaItem *)self artist];
   }
 
-  v5 = v4;
+  v5 = artist;
 
   return v5;
 }
 
-- (void)bk_artworkImageWithCompletion:(id)a3
+- (void)bk_artworkImageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPMediaItem *)self artworkCatalog];
-  if (v5)
+  completionCopy = completion;
+  artworkCatalog = [(MPMediaItem *)self artworkCatalog];
+  if (artworkCatalog)
   {
     v6 = +[UIScreen mainScreen];
     [v6 bounds];
@@ -327,9 +327,9 @@ LABEL_9:
     }
 
     [v6 scale];
-    [v5 setDestinationScale:?];
-    [v5 setFittingSize:{Width, Width}];
-    [v5 requestImageWithCompletionHandler:v4];
+    [artworkCatalog setDestinationScale:?];
+    [artworkCatalog setFittingSize:{Width, Width}];
+    [artworkCatalog requestImageWithCompletionHandler:completionCopy];
   }
 
   else
@@ -340,8 +340,8 @@ LABEL_9:
       sub_228DC(v9);
     }
 
-    v10 = [(MPMediaItem *)self representativeItem];
-    v6 = [v10 valueForProperty:MPMediaItemPropertyArtwork];
+    representativeItem = [(MPMediaItem *)self representativeItem];
+    v6 = [representativeItem valueForProperty:MPMediaItemPropertyArtwork];
 
     if (v6)
     {
@@ -360,7 +360,7 @@ LABEL_9:
       v13 = 0;
     }
 
-    v15 = objc_retainBlock(v4);
+    v15 = objc_retainBlock(completionCopy);
 
     if (v15)
     {
@@ -371,22 +371,22 @@ LABEL_9:
 
 - (unint64_t)bk_albumTrackIndex
 {
-  v3 = [(MPMediaItem *)self bk_assetID];
-  v4 = [(MPMediaItem *)self albumTitle];
-  v5 = [MPMediaQuery bk_queryWithStoreID:v3 albumTitle:v4 isCloudItem:[(MPMediaItem *)self isCloudItem]];
+  bk_assetID = [(MPMediaItem *)self bk_assetID];
+  albumTitle = [(MPMediaItem *)self albumTitle];
+  v5 = [MPMediaQuery bk_queryWithStoreID:bk_assetID albumTitle:albumTitle isCloudItem:[(MPMediaItem *)self isCloudItem]];
 
   if (v5)
   {
-    v6 = [v5 collections];
-    v7 = [v6 firstObject];
-    v8 = [v7 items];
+    collections = [v5 collections];
+    firstObject = [collections firstObject];
+    items = [firstObject items];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_2016C;
     v11[3] = &unk_3D2A8;
     v11[4] = self;
-    v9 = [v8 indexOfObjectPassingTest:v11];
+    v9 = [items indexOfObjectPassingTest:v11];
   }
 
   else
@@ -403,7 +403,7 @@ LABEL_9:
   v4 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyPurchaseHistoryID];
   if ([v4 longLongValue])
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
   else
@@ -421,65 +421,65 @@ LABEL_9:
         [v8 setGroupingType:1];
         v10 = [MPMediaPropertyPredicate predicateWithValue:v7 forProperty:v6];
         [v8 addFilterPredicate:v10];
-        v11 = [v8 collections];
-        v5 = [v11 firstObject];
+        collections = [v8 collections];
+        firstObject = [collections firstObject];
       }
 
       else
       {
-        v5 = 0;
+        firstObject = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      firstObject = 0;
     }
   }
 
-  return v5;
+  return firstObject;
 }
 
-+ (BOOL)bk_isItemAudibleAudiobook:(id)a3
++ (BOOL)bk_isItemAudibleAudiobook:(id)audiobook
 {
-  v3 = a3;
+  audiobookCopy = audiobook;
   objc_opt_class();
-  v4 = [v3 valueForProperty:MPMediaItemPropertyFilePath];
+  v4 = [audiobookCopy valueForProperty:MPMediaItemPropertyFilePath];
 
   v5 = BUDynamicCast();
-  v6 = [v5 pathExtension];
-  v7 = [v6 lowercaseString];
+  pathExtension = [v5 pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  if ([v7 isEqualToString:@"aa"])
+  if ([lowercaseString isEqualToString:@"aa"])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v7 isEqualToString:@"aax"];
+    v8 = [lowercaseString isEqualToString:@"aax"];
   }
 
   return v8;
 }
 
-+ (int)bk_audibleDRMGroupIDForItem:(id)a3
++ (int)bk_audibleDRMGroupIDForItem:(id)item
 {
-  v4 = a3;
-  if (v4 && [a1 bk_isItemAudibleAudiobook:v4])
+  itemCopy = item;
+  if (itemCopy && [self bk_isItemAudibleAudiobook:itemCopy])
   {
     objc_opt_class();
-    v5 = [v4 valueForProperty:MPMediaItemPropertyStoreAccountID];
+    v5 = [itemCopy valueForProperty:MPMediaItemPropertyStoreAccountID];
     v6 = BUDynamicCast();
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v7 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 @end

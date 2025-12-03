@@ -1,27 +1,27 @@
 @interface FBMutableWorkspaceConnectionsState
-- (BOOL)addProcessIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)addProcessIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FBMutableWorkspaceConnectionsState
 
-- (BOOL)addProcessIdentifier:(id)a3
+- (BOOL)addProcessIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(FBMutableWorkspaceConnectionsState *)a2 addProcessIdentifier:?];
   }
 
-  v6 = v5;
-  v7 = [v5 rbs_pid];
-  if (v7 <= 0)
+  v6 = identifierCopy;
+  rbs_pid = [identifierCopy rbs_pid];
+  if (rbs_pid <= 0)
   {
     [(FBMutableWorkspaceConnectionsState *)a2 addProcessIdentifier:?];
   }
 
-  v8 = v7;
-  v9 = [(NSMutableIndexSet *)self->super._pidSet containsIndex:v7];
+  v8 = rbs_pid;
+  v9 = [(NSMutableIndexSet *)self->super._pidSet containsIndex:rbs_pid];
   if ((v9 & 1) == 0)
   {
     [(NSMutableIndexSet *)self->super._pidSet addIndex:v8];
@@ -30,7 +30,7 @@
   return v9 ^ 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FBWorkspaceConnectionsState alloc];
   pidSet = self->super._pidSet;

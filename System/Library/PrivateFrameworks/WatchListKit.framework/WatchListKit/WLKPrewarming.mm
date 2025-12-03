@@ -5,12 +5,12 @@
 - (id)_init;
 - (void)_onQueue_prewarmDevice;
 - (void)_prefetchAppLibrary;
-- (void)_prefetchIfNeeded:(id)a3 alwaysPrefetchConfig:(BOOL)a4;
-- (void)_prewarmConfigurationWithConfigCachePolicy:(unint64_t)a3;
+- (void)_prefetchIfNeeded:(id)needed alwaysPrefetchConfig:(BOOL)config;
+- (void)_prewarmConfigurationWithConfigCachePolicy:(unint64_t)policy;
 - (void)prewarmDevice;
 - (void)prewarmDeviceAndNetwork;
 - (void)prewarmSubscriptionData;
-- (void)prewarmWithConfigCachePolicy:(unint64_t)a3;
+- (void)prewarmWithConfigCachePolicy:(unint64_t)policy;
 @end
 
 @implementation WLKPrewarming
@@ -143,14 +143,14 @@ void __36__WLKPrewarming__prefetchAppLibrary__block_invoke()
   return 0;
 }
 
-- (void)prewarmWithConfigCachePolicy:(unint64_t)a3
+- (void)prewarmWithConfigCachePolicy:(unint64_t)policy
 {
-  [(WLKPrewarming *)self _prewarmConfigurationWithConfigCachePolicy:a3];
+  [(WLKPrewarming *)self _prewarmConfigurationWithConfigCachePolicy:policy];
 
   [(WLKPrewarming *)self _prefetchAppLibrary];
 }
 
-- (void)_prewarmConfigurationWithConfigCachePolicy:(unint64_t)a3
+- (void)_prewarmConfigurationWithConfigCachePolicy:(unint64_t)policy
 {
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
@@ -158,7 +158,7 @@ void __36__WLKPrewarming__prefetchAppLibrary__block_invoke()
   v6[1] = 3221225472;
   v6[2] = __60__WLKPrewarming__prewarmConfigurationWithConfigCachePolicy___block_invoke;
   v6[3] = &unk_279E60CC0;
-  v7[1] = a3;
+  v7[1] = policy;
   objc_copyWeak(v7, &location);
   v6[4] = self;
   dispatch_async(workQueue, v6);
@@ -314,17 +314,17 @@ void __60__WLKPrewarming__prewarmConfigurationWithConfigCachePolicy___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prefetchIfNeeded:(id)a3 alwaysPrefetchConfig:(BOOL)a4
+- (void)_prefetchIfNeeded:(id)needed alwaysPrefetchConfig:(BOOL)config
 {
-  v6 = a3;
+  neededCopy = needed;
   prefetchQueue = self->_prefetchQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__WLKPrewarming__prefetchIfNeeded_alwaysPrefetchConfig___block_invoke;
   v9[3] = &unk_279E602F0;
-  v11 = a4;
-  v10 = v6;
-  v8 = v6;
+  configCopy = config;
+  v10 = neededCopy;
+  v8 = neededCopy;
   dispatch_async(prefetchQueue, v9);
 }
 

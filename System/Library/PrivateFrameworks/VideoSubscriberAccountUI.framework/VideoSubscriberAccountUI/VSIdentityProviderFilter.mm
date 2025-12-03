@@ -2,10 +2,10 @@
 + (id)keyPathsForValuesAffectingFilteredIdentityProviders;
 - (NSArray)filteredIdentityProviders;
 - (VSIdentityProviderFilter)init;
-- (id)_camelAndWordBasedPrefixesForProvider:(id)a3;
+- (id)_camelAndWordBasedPrefixesForProvider:(id)provider;
 - (void)_refreshProviderList;
-- (void)setAllIdentityProviders:(id)a3;
-- (void)setSupportedAccountProviderIDs:(id)a3;
+- (void)setAllIdentityProviders:(id)providers;
+- (void)setSupportedAccountProviderIDs:(id)ds;
 @end
 
 @implementation VSIdentityProviderFilter
@@ -39,24 +39,24 @@
   return v3;
 }
 
-- (id)_camelAndWordBasedPrefixesForProvider:(id)a3
+- (id)_camelAndWordBasedPrefixesForProvider:(id)provider
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v31 = v3;
-  v5 = [v3 displayName];
-  v6 = [v5 forceUnwrapObject];
+  v31 = providerCopy;
+  displayName = [providerCopy displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [v6 length];
+  v8 = [forceUnwrapObject length];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __66__VSIdentityProviderFilter__camelAndWordBasedPrefixesForProvider___block_invoke;
   v36[3] = &unk_279E19570;
   v9 = v7;
   v37 = v9;
-  [v6 enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v36}];
+  [forceUnwrapObject enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v36}];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
   [v10 addObject:v11];
@@ -79,7 +79,7 @@
         v18 = [v9 objectAtIndex:v13 - 2];
       }
 
-      v19 = [v16 vs_composedCharacterIsWhitespace];
+      vs_composedCharacterIsWhitespace = [v16 vs_composedCharacterIsWhitespace];
       if ([v17 vs_composedCharacterIsLowercase])
       {
         v14 = [v16 vs_composedCharacterIsUppercase] ^ 1;
@@ -87,7 +87,7 @@
         {
 LABEL_4:
           v15 = v13;
-          if (!v19)
+          if (!vs_composedCharacterIsWhitespace)
           {
             goto LABEL_16;
           }
@@ -105,8 +105,8 @@ LABEL_4:
         }
       }
 
-      v20 = [v18 vs_composedCharacterIsWhitespace];
-      if ((v14 | v20))
+      vs_composedCharacterIsWhitespace2 = [v18 vs_composedCharacterIsWhitespace];
+      if ((v14 | vs_composedCharacterIsWhitespace2))
       {
         v15 = v13;
       }
@@ -116,7 +116,7 @@ LABEL_4:
         v15 = v13 - 1;
       }
 
-      if (!(v19 & 1 | (((v14 | v20) & 1) == 0)))
+      if (!(vs_composedCharacterIsWhitespace & 1 | (((v14 | vs_composedCharacterIsWhitespace2) & 1) == 0)))
       {
         goto LABEL_16;
       }
@@ -151,8 +151,8 @@ LABEL_16:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v32 + 1) + 8 * i) unsignedIntegerValue];
-        v28 = [v6 substringWithRange:{v27, objc_msgSend(v6, "length") - v27}];
+        unsignedIntegerValue = [*(*(&v32 + 1) + 8 * i) unsignedIntegerValue];
+        v28 = [forceUnwrapObject substringWithRange:{unsignedIntegerValue, objc_msgSend(forceUnwrapObject, "length") - unsignedIntegerValue}];
         [v4 addObject:v28];
       }
 
@@ -183,22 +183,22 @@ void __66__VSIdentityProviderFilter__camelAndWordBasedPrefixesForProvider___bloc
 
 - (void)_refreshProviderList
 {
-  v2 = self;
+  selfCopy = self;
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(VSIdentityProviderFilter *)self allIdentityProviders];
-  v4 = [(VSIdentityProviderFilter *)v2 supportedAccountProviderIDs];
+  allIdentityProviders = [(VSIdentityProviderFilter *)self allIdentityProviders];
+  supportedAccountProviderIDs = [(VSIdentityProviderFilter *)selfCopy supportedAccountProviderIDs];
   v5 = &off_270E38000;
-  if ([v4 count])
+  if ([supportedAccountProviderIDs count])
   {
-    v27 = v2;
-    v28 = v4;
-    v26 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:v4];
+    v27 = selfCopy;
+    v28 = supportedAccountProviderIDs;
+    v26 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:supportedAccountProviderIDs];
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = v3;
+    v7 = allIdentityProviders;
     v8 = [(NSArray *)v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v8)
     {
@@ -214,14 +214,14 @@ void __66__VSIdentityProviderFilter__camelAndWordBasedPrefixesForProvider___bloc
           }
 
           v12 = *(*(&v38 + 1) + 8 * i);
-          v13 = [v12 providerID];
+          providerID = [v12 providerID];
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
           v35[2] = __48__VSIdentityProviderFilter__refreshProviderList__block_invoke;
           v35[3] = &unk_279E19598;
           v36 = v6;
           v37 = v12;
-          [v13 conditionallyUnwrapObject:v35];
+          [providerID conditionallyUnwrapObject:v35];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -263,9 +263,9 @@ void __66__VSIdentityProviderFilter__camelAndWordBasedPrefixesForProvider___bloc
       while (v17);
     }
 
-    v3 = [v14 copy];
-    v2 = v27;
-    v4 = v28;
+    allIdentityProviders = [v14 copy];
+    selfCopy = v27;
+    supportedAccountProviderIDs = v28;
     v5 = &off_270E38000;
   }
 
@@ -274,14 +274,14 @@ void __66__VSIdentityProviderFilter__camelAndWordBasedPrefixesForProvider___bloc
   v29[1] = *(v5 + 337);
   v29[2] = __48__VSIdentityProviderFilter__refreshProviderList__block_invoke_2;
   v29[3] = &unk_279E195C0;
-  v29[4] = v2;
+  v29[4] = selfCopy;
   v30 = v21;
   v22 = v21;
-  [(NSArray *)v3 enumerateObjectsUsingBlock:v29];
-  [(VSIdentityProviderFilter *)v2 setSearchTree:v22];
-  supportedIdentityProviders = v2->_supportedIdentityProviders;
-  v2->_supportedIdentityProviders = v3;
-  v24 = v3;
+  [(NSArray *)allIdentityProviders enumerateObjectsUsingBlock:v29];
+  [(VSIdentityProviderFilter *)selfCopy setSearchTree:v22];
+  supportedIdentityProviders = selfCopy->_supportedIdentityProviders;
+  selfCopy->_supportedIdentityProviders = allIdentityProviders;
+  v24 = allIdentityProviders;
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -327,16 +327,16 @@ void __48__VSIdentityProviderFilter__refreshProviderList__block_invoke_2(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAllIdentityProviders:(id)a3
+- (void)setAllIdentityProviders:(id)providers
 {
-  objc_storeStrong(&self->_allIdentityProviders, a3);
+  objc_storeStrong(&self->_allIdentityProviders, providers);
 
   [(VSIdentityProviderFilter *)self _refreshProviderList];
 }
 
-- (void)setSupportedAccountProviderIDs:(id)a3
+- (void)setSupportedAccountProviderIDs:(id)ds
 {
-  objc_storeStrong(&self->_supportedAccountProviderIDs, a3);
+  objc_storeStrong(&self->_supportedAccountProviderIDs, ds);
 
   [(VSIdentityProviderFilter *)self _refreshProviderList];
 }
@@ -373,22 +373,22 @@ id __79__VSIdentityProviderFilter_keyPathsForValuesAffectingFilteredIdentityProv
 
 - (NSArray)filteredIdentityProviders
 {
-  v3 = [(VSIdentityProviderFilter *)self supportedIdentityProviders];
-  v4 = [(VSIdentityProviderFilter *)self searchQuery];
-  v5 = [v4 lowercaseString];
+  supportedIdentityProviders = [(VSIdentityProviderFilter *)self supportedIdentityProviders];
+  searchQuery = [(VSIdentityProviderFilter *)self searchQuery];
+  lowercaseString = [searchQuery lowercaseString];
 
-  if ([v5 length])
+  if ([lowercaseString length])
   {
-    v6 = [(VSIdentityProviderFilter *)self searchTree];
-    v7 = [v6 objectsMatchingPrefix:v5];
+    searchTree = [(VSIdentityProviderFilter *)self searchTree];
+    v7 = [searchTree objectsMatchingPrefix:lowercaseString];
 
     v8 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:v7];
-    v9 = [v8 array];
+    array = [v8 array];
 
-    v3 = v9;
+    supportedIdentityProviders = array;
   }
 
-  return v3;
+  return supportedIdentityProviders;
 }
 
 @end

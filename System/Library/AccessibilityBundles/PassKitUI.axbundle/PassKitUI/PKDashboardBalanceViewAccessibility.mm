@@ -1,34 +1,34 @@
 @interface PKDashboardBalanceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_buttonPressed:(id)a3;
+- (void)_buttonPressed:(id)pressed;
 - (void)createSubviews;
 - (void)didMoveToWindow;
 @end
 
 @implementation PKDashboardBalanceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceMethod:@"_buttonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_actionButton" withType:"PKContinuousButton"];
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_detailLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_availableCreditLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceMethod:@"_buttonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_actionButton" withType:"PKContinuousButton"];
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_detailLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKDashboardBalanceView" hasInstanceVariable:@"_availableCreditLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(PKDashboardBalanceViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(PKDashboardBalanceViewAccessibility *)self safeUIViewForKey:@"_detailLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v7 = [(PKDashboardBalanceViewAccessibility *)self safeUIViewForKey:@"_availableCreditLabel"];
-  v10 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;
@@ -75,20 +75,20 @@ uint64_t __81__PKDashboardBalanceViewAccessibility__accessibilityLoadAccessibili
   return v2;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v3.receiver = self;
   v3.super_class = PKDashboardBalanceViewAccessibility;
-  [(PKDashboardBalanceViewAccessibility *)&v3 _buttonPressed:a3];
+  [(PKDashboardBalanceViewAccessibility *)&v3 _buttonPressed:pressed];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   v3 = [(PKDashboardBalanceViewAccessibility *)self safeUIViewForKey:@"_actionButton"];
-  v4 = [v3 isAccessibilityElement];
+  isAccessibilityElement = [v3 isAccessibilityElement];
 
-  if (v4)
+  if (isAccessibilityElement)
   {
     v5 = MEMORY[0x29EDB8D80];
     v6 = [(PKDashboardBalanceViewAccessibility *)self safeValueForKey:@"_actionButton"];

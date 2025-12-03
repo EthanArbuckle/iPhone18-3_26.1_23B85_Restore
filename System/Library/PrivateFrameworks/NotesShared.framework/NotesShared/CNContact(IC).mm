@@ -9,26 +9,26 @@
   v39[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277CBDB38]);
-  v5 = [v3 userIdentity];
-  v6 = [v5 lookupInfo];
-  v7 = [v6 emailAddress];
+  userIdentity = [v3 userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
+  emailAddress = [lookupInfo emailAddress];
 
-  if ([v7 length])
+  if ([emailAddress length])
   {
     v8 = objc_alloc(MEMORY[0x277CBDB20]);
-    v9 = [v8 initWithLabel:*MEMORY[0x277CBCFC0] value:v7];
+    v9 = [v8 initWithLabel:*MEMORY[0x277CBCFC0] value:emailAddress];
     v39[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
     [v4 setEmailAddresses:v10];
   }
 
-  v11 = [v3 userIdentity];
-  v12 = [v11 lookupInfo];
-  v13 = [v12 phoneNumber];
+  userIdentity2 = [v3 userIdentity];
+  lookupInfo2 = [userIdentity2 lookupInfo];
+  phoneNumber = [lookupInfo2 phoneNumber];
 
-  if ([v13 length])
+  if ([phoneNumber length])
   {
-    v14 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v13];
+    v14 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:phoneNumber];
     v15 = objc_alloc(MEMORY[0x277CBDB20]);
     v16 = [v15 initWithLabel:*MEMORY[0x277CBD098] value:v14];
     v38 = v16;
@@ -36,35 +36,35 @@
     [v4 setPhoneNumbers:v17];
   }
 
-  v18 = [v3 userIdentity];
-  v19 = [v18 nameComponents];
-  v20 = [v19 namePrefix];
-  [v4 setNamePrefix:v20];
+  userIdentity3 = [v3 userIdentity];
+  nameComponents = [userIdentity3 nameComponents];
+  namePrefix = [nameComponents namePrefix];
+  [v4 setNamePrefix:namePrefix];
 
-  v21 = [v3 userIdentity];
-  v22 = [v21 nameComponents];
-  v23 = [v22 givenName];
-  [v4 setGivenName:v23];
+  userIdentity4 = [v3 userIdentity];
+  nameComponents2 = [userIdentity4 nameComponents];
+  givenName = [nameComponents2 givenName];
+  [v4 setGivenName:givenName];
 
-  v24 = [v3 userIdentity];
-  v25 = [v24 nameComponents];
-  v26 = [v25 middleName];
-  [v4 setMiddleName:v26];
+  userIdentity5 = [v3 userIdentity];
+  nameComponents3 = [userIdentity5 nameComponents];
+  middleName = [nameComponents3 middleName];
+  [v4 setMiddleName:middleName];
 
-  v27 = [v3 userIdentity];
-  v28 = [v27 nameComponents];
-  v29 = [v28 familyName];
-  [v4 setFamilyName:v29];
+  userIdentity6 = [v3 userIdentity];
+  nameComponents4 = [userIdentity6 nameComponents];
+  familyName = [nameComponents4 familyName];
+  [v4 setFamilyName:familyName];
 
-  v30 = [v3 userIdentity];
-  v31 = [v30 nameComponents];
-  v32 = [v31 nameSuffix];
-  [v4 setNameSuffix:v32];
+  userIdentity7 = [v3 userIdentity];
+  nameComponents5 = [userIdentity7 nameComponents];
+  nameSuffix = [nameComponents5 nameSuffix];
+  [v4 setNameSuffix:nameSuffix];
 
-  v33 = [v3 userIdentity];
-  v34 = [v33 nameComponents];
-  v35 = [v34 nickname];
-  [v4 setNickname:v35];
+  userIdentity8 = [v3 userIdentity];
+  nameComponents6 = [userIdentity8 nameComponents];
+  nickname = [nameComponents6 nickname];
+  [v4 setNickname:nickname];
 
   v36 = [v4 copy];
 

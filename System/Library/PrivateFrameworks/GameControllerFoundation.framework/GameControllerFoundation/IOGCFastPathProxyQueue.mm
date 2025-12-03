@@ -1,25 +1,25 @@
 @interface IOGCFastPathProxyQueue
-- (id)_initWithConnection:(id)a3 queue:(unint64_t)a4;
-- (int)getProperties:(id)a3 dictionary:(id *)a4;
-- (int)mapMemoryAt:(unint64_t *)a3 ofSize:(unint64_t *)a4 options:(unsigned int)a5;
+- (id)_initWithConnection:(id)connection queue:(unint64_t)queue;
+- (int)getProperties:(id)properties dictionary:(id *)dictionary;
+- (int)mapMemoryAt:(unint64_t *)at ofSize:(unint64_t *)size options:(unsigned int)options;
 @end
 
 @implementation IOGCFastPathProxyQueue
 
-- (id)_initWithConnection:(id)a3 queue:(unint64_t)a4
+- (id)_initWithConnection:(id)connection queue:(unint64_t)queue
 {
-  v6 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = IOGCFastPathProxyQueue;
   v7 = [(IOGCFastPathProxyQueue *)&v10 init];
   parent = v7->_parent;
-  v7->_parent = v6;
+  v7->_parent = connectionCopy;
 
-  v7->_queue = a4;
+  v7->_queue = queue;
   return v7;
 }
 
-- (int)mapMemoryAt:(unint64_t *)a3 ofSize:(unint64_t *)a4 options:(unsigned int)a5
+- (int)mapMemoryAt:(unint64_t *)at ofSize:(unint64_t *)size options:(unsigned int)options
 {
   v33 = *MEMORY[0x1E69E9840];
   v8 = _gc_log_iokit();
@@ -58,19 +58,19 @@
         uint64 = xpc_dictionary_get_uint64(v11, "memory_size");
         if (uint64)
         {
-          value = mach_vm_map(*MEMORY[0x1E69E9A60], a3, uint64, 0, 1, v23, 0, 0, 1, 1, 2u);
+          value = mach_vm_map(*MEMORY[0x1E69E9A60], at, uint64, 0, 1, v23, 0, 0, 1, 1, 2u);
           if (value)
           {
             v25 = _gc_log_iokit();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              LODWORD(v28) = value;
+              LODWORD(selfCopy4) = value;
               _os_log_impl(&dword_1D2C3B000, v25, OS_LOG_TYPE_DEFAULT, "vm_map returns %{mach.errno}d", buf, 8u);
             }
           }
 
-          *a4 = uint64;
+          *size = uint64;
           goto LABEL_19;
         }
 
@@ -78,7 +78,7 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1D2C3B000, v26, OS_LOG_TYPE_DEFAULT, "mapMemory reply for %@ missing 'memory_size' argument", buf, 0xCu);
         }
       }
@@ -89,7 +89,7 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1D2C3B000, v26, OS_LOG_TYPE_DEFAULT, "mapMemory reply for %@ missing 'memory' argument", buf, 0xCu);
         }
       }
@@ -121,7 +121,7 @@ LABEL_19:
     if (v16)
     {
       *buf = 138412546;
-      v28 = self;
+      selfCopy4 = self;
       v29 = 2112;
       v30 = v11;
       _os_log_impl(&dword_1D2C3B000, v14, OS_LOG_TYPE_DEFAULT, "mapMemory for %@ failed: %@", buf, 0x16u);
@@ -131,7 +131,7 @@ LABEL_19:
   else if (v16)
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy4 = self;
     v29 = 2112;
     v30 = v11;
     _os_log_impl(&dword_1D2C3B000, v14, OS_LOG_TYPE_DEFAULT, "mapMemory for %@ unknown response: %@", buf, 0x16u);
@@ -148,10 +148,10 @@ LABEL_20:
   return value;
 }
 
-- (int)getProperties:(id)a3 dictionary:(id *)a4
+- (int)getProperties:(id)properties dictionary:(id *)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertiesCopy = properties;
   v7 = _gc_log_iokit();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -163,7 +163,7 @@ LABEL_20:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v6;
+  v9 = propertiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v47 count:16];
   if (v10)
   {
@@ -226,8 +226,8 @@ LABEL_20:
         v29 = v28;
         v35 = v29;
         xpc_dictionary_apply(v25, applier);
-        v30 = *a4;
-        *a4 = v29;
+        v30 = *dictionary;
+        *dictionary = v29;
         v27 = v29;
 
         value = 0;
@@ -267,7 +267,7 @@ LABEL_30:
     if (v23)
     {
       *buf = 138412546;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
       v43 = v17;
       _os_log_impl(&dword_1D2C3B000, v21, OS_LOG_TYPE_DEFAULT, "getProperties for %@ failed: %@", buf, 0x16u);
@@ -277,7 +277,7 @@ LABEL_30:
   else if (v23)
   {
     *buf = 138412546;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 2112;
     v43 = v17;
     _os_log_impl(&dword_1D2C3B000, v21, OS_LOG_TYPE_DEFAULT, "getProperties for %@ unknown response: %@", buf, 0x16u);

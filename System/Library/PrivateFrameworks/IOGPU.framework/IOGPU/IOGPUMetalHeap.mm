@@ -1,19 +1,19 @@
 @interface IOGPUMetalHeap
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newSubResourceAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 alignment:(unint64_t)a5 options:(unint64_t)a6;
-- (id)newSubResourceWithLength:(unint64_t)a3 alignment:(unint64_t)a4 options:(unint64_t)a5 offset:(unint64_t *)a6;
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newSubResourceAtOffset:(unint64_t)offset withLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options;
+- (id)newSubResourceWithLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options offset:(unint64_t *)offset;
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)usedSize;
 - (void)dealloc;
 - (void)deallocHeapSubResource;
-- (void)setLabel:(id)a3;
-- (void)unpinMemoryAtOffset:(unint64_t)a3 withLength:(unint64_t)a4;
+- (void)setLabel:(id)label;
+- (void)unpinMemoryAtOffset:(unint64_t)offset withLength:(unint64_t)length;
 @end
 
 @implementation IOGPUMetalHeap
@@ -52,9 +52,9 @@
   return v3;
 }
 
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment
 {
-  if ((a3 & (a3 - 1)) != 0)
+  if ((alignment & (alignment - 1)) != 0)
   {
     [IOGPUMetalHeap maxAvailableSizeWithAlignment:];
   }
@@ -70,31 +70,31 @@
   return MaxFreeSize;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v5 = objc_autoreleasePoolPush();
-  -[IOGPUMetalResource setLabel:](self->_resource, "setLabel:", [@"IOGPUMetalHeap" stringByAppendingFormat:@", %@", a3]);
+  -[IOGPUMetalResource setLabel:](self->_resource, "setLabel:", [@"IOGPUMetalHeap" stringByAppendingFormat:@", %@", label]);
   objc_autoreleasePoolPop(v5);
   v6.receiver = self;
   v6.super_class = IOGPUMetalHeap;
-  [(_MTLObjectWithLabel *)&v6 setLabel:a3];
+  [(_MTLObjectWithLabel *)&v6 setLabel:label];
 }
 
-- (id)newSubResourceWithLength:(unint64_t)a3 alignment:(unint64_t)a4 options:(unint64_t)a5 offset:(unint64_t *)a6
+- (id)newSubResourceWithLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options offset:(unint64_t *)offset
 {
-  v6 = a5;
+  optionsCopy = options;
   if ([(_MTLHeap *)self type])
   {
     [IOGPUMetalHeap newSubResourceWithLength:alignment:options:offset:];
   }
 
-  if (self->_size < a3)
+  if (self->_size < length)
   {
     return 0;
   }
 
   v10 = *&self->_resource->_anon_50[88];
-  if ((v6 & 0xF) != (v10 & 0xF))
+  if ((optionsCopy & 0xF) != (v10 & 0xF))
   {
     MTLCPUCacheModeString();
     MTLCPUCacheModeString();
@@ -102,7 +102,7 @@
     v10 = *&self->_resource->_anon_50[88];
   }
 
-  v11 = v6 >> 4;
+  v11 = optionsCopy >> 4;
   if (v11 != 3 && v11 != v10 >> 4)
   {
     [IOGPUMetalHeap newSubResourceWithLength:alignment:options:offset:];
@@ -123,7 +123,7 @@
   return v9;
 }
 
-- (void)unpinMemoryAtOffset:(unint64_t)a3 withLength:(unint64_t)a4
+- (void)unpinMemoryAtOffset:(unint64_t)offset withLength:(unint64_t)length
 {
   if ([(_MTLHeap *)self type])
   {
@@ -136,24 +136,24 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   pthread_mutex_lock(&self->_mutex);
-  v5 = [(IOGPUMetalResource *)self->_resource setPurgeableState:a3];
+  v5 = [(IOGPUMetalResource *)self->_resource setPurgeableState:state];
   pthread_mutex_unlock(&self->_mutex);
   return v5;
 }
 
-- (id)newSubResourceAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 alignment:(unint64_t)a5 options:(unint64_t)a6
+- (id)newSubResourceAtOffset:(unint64_t)offset withLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   if ([(_MTLHeap *)self type]!= 1)
   {
     [IOGPUMetalHeap newSubResourceAtOffset:withLength:alignment:options:];
   }
 
   v11 = *&self->_resource->_anon_50[88];
-  if ((v6 & 0xF) != (v11 & 0xF))
+  if ((optionsCopy & 0xF) != (v11 & 0xF))
   {
     MTLCPUCacheModeString();
     MTLCPUCacheModeString();
@@ -161,12 +161,12 @@
     v11 = *&self->_resource->_anon_50[88];
   }
 
-  if (v6 >> 4 != (v11 >> 4))
+  if (optionsCopy >> 4 != (v11 >> 4))
   {
     [IOGPUMetalHeap newSubResourceAtOffset:withLength:alignment:options:];
   }
 
-  if (__CFADD__(a3, a4) || a3 + a4 > self->_size || ((a5 | a3) & (a5 - 1)) != 0)
+  if (__CFADD__(offset, length) || offset + length > self->_size || ((alignment | offset) & (alignment - 1)) != 0)
   {
     return 0;
   }
@@ -176,7 +176,7 @@
   return resource;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -185,7 +185,7 @@
       [IOGPUMetalHeap newAccelerationStructureWithSize:];
     }
 
-    v6 = [(IOGPUMetalHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions]];
+    v6 = [(IOGPUMetalHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions]];
     if (v6)
     {
       v7 = v6;
@@ -203,7 +203,7 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -212,7 +212,7 @@
       [IOGPUMetalHeap newAccelerationStructureWithDescriptor:];
     }
 
-    v6 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:a3];
+    v6 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:descriptor];
 
     return [(IOGPUMetalHeap *)self newAccelerationStructureWithSize:v6];
   }
@@ -224,7 +224,7 @@
   }
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -233,7 +233,7 @@
       [IOGPUMetalHeap newAccelerationStructureWithSize:offset:];
     }
 
-    v8 = [(_MTLHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions] offset:a4];
+    v8 = [(_MTLHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions] offset:offset];
     if (v8)
     {
       v9 = v8;
@@ -251,7 +251,7 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -260,9 +260,9 @@
       [IOGPUMetalHeap newAccelerationStructureWithDescriptor:offset:];
     }
 
-    v8 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:a3];
+    v8 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:descriptor];
 
-    return [(IOGPUMetalHeap *)self newAccelerationStructureWithSize:v8 offset:a4];
+    return [(IOGPUMetalHeap *)self newAccelerationStructureWithSize:v8 offset:offset];
   }
 
   else
@@ -272,7 +272,7 @@
   }
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -281,11 +281,11 @@
       [IOGPUMetalHeap newAccelerationStructureWithSize:resourceIndex:];
     }
 
-    v8 = [(IOGPUMetalHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions]];
+    v8 = [(IOGPUMetalHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions]];
     if (v8)
     {
       v9 = v8;
-      v10 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v8 offset:0 resourceIndex:a4];
+      v10 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v8 offset:0 resourceIndex:index];
 
       return v10;
     }
@@ -299,7 +299,7 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
@@ -308,11 +308,11 @@
       [IOGPUMetalHeap newAccelerationStructureWithSize:offset:resourceIndex:];
     }
 
-    v10 = [(_MTLHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions] offset:a4];
+    v10 = [(_MTLHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions] offset:offset];
     if (v10)
     {
       v11 = v10;
-      v12 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v10 offset:0 resourceIndex:a5];
+      v12 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v10 offset:0 resourceIndex:index];
 
       return v12;
     }

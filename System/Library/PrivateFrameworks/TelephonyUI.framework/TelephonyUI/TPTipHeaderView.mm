@@ -1,11 +1,11 @@
 @interface TPTipHeaderView
-- (_TtC11TelephonyUI15TPTipHeaderView)initWithCoder:(id)a3;
-- (_TtC11TelephonyUI15TPTipHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC11TelephonyUI15TPTipHeaderView)initWithCoder:(id)coder;
+- (_TtC11TelephonyUI15TPTipHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TPTipHeaderView
 
-- (_TtC11TelephonyUI15TPTipHeaderView)initWithCoder:(id)a3
+- (_TtC11TelephonyUI15TPTipHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC11TelephonyUI15TPTipHeaderView_separatorEdgeInset);
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC11TelephonyUI15TPTipHeaderView)initWithFrame:(CGRect)a3
+- (_TtC11TelephonyUI15TPTipHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

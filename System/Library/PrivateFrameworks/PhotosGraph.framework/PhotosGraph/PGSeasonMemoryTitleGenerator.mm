@@ -1,14 +1,14 @@
 @interface PGSeasonMemoryTitleGenerator
-+ (id)seasonSubtitleWithMomentNodes:(id)a3 seasonName:(id)a4;
-- (PGSeasonMemoryTitleGenerator)initWithMomentNodes:(id)a3 seasonName:(id)a4 titleGenerationContext:(id)a5;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
++ (id)seasonSubtitleWithMomentNodes:(id)nodes seasonName:(id)name;
+- (PGSeasonMemoryTitleGenerator)initWithMomentNodes:(id)nodes seasonName:(id)name titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGSeasonMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v12 = a3;
+  resultCopy = result;
   v4 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"PGSeasonMemoryTitleFormat%@", self->_season];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:v4 value:v4 table:@"Localizable"];
@@ -26,34 +26,34 @@
   }
 
   v9 = objc_opt_class();
-  v10 = [(PGTitleGenerator *)self momentNodes];
-  v11 = [v9 seasonSubtitleWithMomentNodes:v10 seasonName:0];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  v11 = [v9 seasonSubtitleWithMomentNodes:momentNodes seasonName:0];
 
-  if (v12)
+  if (resultCopy)
   {
-    v12[2](v12, v8, v11);
+    resultCopy[2](resultCopy, v8, v11);
   }
 }
 
-- (PGSeasonMemoryTitleGenerator)initWithMomentNodes:(id)a3 seasonName:(id)a4 titleGenerationContext:(id)a5
+- (PGSeasonMemoryTitleGenerator)initWithMomentNodes:(id)nodes seasonName:(id)name titleGenerationContext:(id)context
 {
-  v9 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = PGSeasonMemoryTitleGenerator;
-  v10 = [(PGTitleGenerator *)&v13 initWithMomentNodes:a3 type:0 titleGenerationContext:a5];
+  v10 = [(PGTitleGenerator *)&v13 initWithMomentNodes:nodes type:0 titleGenerationContext:context];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_season, a4);
+    objc_storeStrong(&v10->_season, name);
   }
 
   return v11;
 }
 
-+ (id)seasonSubtitleWithMomentNodes:(id)a3 seasonName:(id)a4
++ (id)seasonSubtitleWithMomentNodes:(id)nodes seasonName:(id)name
 {
-  v5 = a4;
-  v6 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:a3];
+  nameCopy = name;
+  v6 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:nodes];
   v7 = objc_opt_new();
   v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
   [v7 setMomentNodes:v8];
@@ -67,11 +67,11 @@
     goto LABEL_4;
   }
 
-  if (v5)
+  if (nameCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"PGSeasonMemoryTitleFormat%@Year", v5];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PGSeasonMemoryTitleFormat%@Year", nameCopy];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v13 = [v12 localizedStringForKey:v11 value:v11 table:@"Localizable"];
+    v13 = [v12 localizedStringForKey:nameCopy value:nameCopy table:@"Localizable"];
     v17 = v10;
     v14 = PFStringWithValidatedFormat();
 

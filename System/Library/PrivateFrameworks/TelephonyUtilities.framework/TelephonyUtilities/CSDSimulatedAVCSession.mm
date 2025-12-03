@@ -1,22 +1,22 @@
 @interface CSDSimulatedAVCSession
 - (CGRect)presentationRect;
-- (CSDSimulatedAVCSession)initWithDelegate:(id)a3 queue:(id)a4 videoEnabled:(BOOL)a5 oneToOneModeEnabled:(BOOL)a6;
+- (CSDSimulatedAVCSession)initWithDelegate:(id)delegate queue:(id)queue videoEnabled:(BOOL)enabled oneToOneModeEnabled:(BOOL)modeEnabled;
 - (NSData)localParticipantData;
 - (NSString)sessionIdentifier;
-- (id)localParticipantDataWithVersion:(unint64_t)a3;
-- (void)addParticipant:(id)a3 withVideoEnabled:(BOOL)a4 audioPaused:(BOOL)a5 screenEnabled:(BOOL)a6;
-- (void)removeParticipant:(id)a3;
+- (id)localParticipantDataWithVersion:(unint64_t)version;
+- (void)addParticipant:(id)participant withVideoEnabled:(BOOL)enabled audioPaused:(BOOL)paused screenEnabled:(BOOL)screenEnabled;
+- (void)removeParticipant:(id)participant;
 - (void)start;
 - (void)stop;
-- (void)stopWithError:(id)a3;
+- (void)stopWithError:(id)error;
 @end
 
 @implementation CSDSimulatedAVCSession
 
-- (CSDSimulatedAVCSession)initWithDelegate:(id)a3 queue:(id)a4 videoEnabled:(BOOL)a5 oneToOneModeEnabled:(BOOL)a6
+- (CSDSimulatedAVCSession)initWithDelegate:(id)delegate queue:(id)queue videoEnabled:(BOOL)enabled oneToOneModeEnabled:(BOOL)modeEnabled
 {
   swift_unknownObjectRetain();
-  v7 = a4;
+  queueCopy = queue;
   sub_1002EB010();
   return result;
 }
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (id)localParticipantDataWithVersion:(unint64_t)a3
+- (id)localParticipantDataWithVersion:(unint64_t)version
 {
   v3.super.isa = Data._bridgeToObjectiveC()().super.isa;
   sub_100049B14(0, 0xC000000000000000);
@@ -63,36 +63,36 @@
   return v3.super.isa;
 }
 
-- (void)addParticipant:(id)a3 withVideoEnabled:(BOOL)a4 audioPaused:(BOOL)a5 screenEnabled:(BOOL)a6
+- (void)addParticipant:(id)participant withVideoEnabled:(BOOL)enabled audioPaused:(BOOL)paused screenEnabled:(BOOL)screenEnabled
 {
-  v7 = a3;
-  v8 = self;
+  participantCopy = participant;
+  selfCopy = self;
   sub_1002EB958();
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = self;
+  participantCopy = participant;
+  selfCopy = self;
   sub_1002EBE00();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002EC258();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002EC548();
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  errorCopy = error;
   sub_1002EC598();
 }
 

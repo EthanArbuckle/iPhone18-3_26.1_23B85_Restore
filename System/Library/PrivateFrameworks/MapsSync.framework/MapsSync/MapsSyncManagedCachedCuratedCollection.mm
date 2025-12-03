@@ -1,14 +1,14 @@
 @interface MapsSyncManagedCachedCuratedCollection
-- (MapsSyncManagedCachedCuratedCollection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MapsSyncManagedCachedCuratedCollection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MapsSyncManagedCachedCuratedCollection
 
-- (MapsSyncManagedCachedCuratedCollection)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MapsSyncManagedCachedCuratedCollection)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MapsSyncManagedCachedCuratedCollection();
-  return [(MapsSyncManagedCachedCuratedCollection *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MapsSyncManagedCachedCuratedCollection *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

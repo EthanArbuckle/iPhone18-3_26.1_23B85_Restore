@@ -1,25 +1,25 @@
 @interface MHSchemaFirstPassChannelSelectionScore
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaFirstPassChannelSelectionScore)initWithDictionary:(id)a3;
-- (MHSchemaFirstPassChannelSelectionScore)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaFirstPassChannelSelectionScore)initWithDictionary:(id)dictionary;
+- (MHSchemaFirstPassChannelSelectionScore)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaFirstPassChannelSelectionScore
 
-- (MHSchemaFirstPassChannelSelectionScore)initWithDictionary:(id)a3
+- (MHSchemaFirstPassChannelSelectionScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MHSchemaFirstPassChannelSelectionScore;
   v5 = [(MHSchemaFirstPassChannelSelectionScore *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"channelString"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"channelString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(MHSchemaFirstPassChannelSelectionScore *)v5 setChannelString:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"firstPassScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstPassScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (MHSchemaFirstPassChannelSelectionScore)initWithJSON:(id)a3
+- (MHSchemaFirstPassChannelSelectionScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaFirstPassChannelSelectionScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaFirstPassChannelSelectionScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaFirstPassChannelSelectionScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,12 +77,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_channelString)
   {
-    v4 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"channelString"];
+    channelString = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
+    v5 = [channelString copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"channelString"];
   }
 
   if (*&self->_has)
@@ -90,12 +90,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(MHSchemaFirstPassChannelSelectionScore *)self firstPassScore];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"firstPassScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"firstPassScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -142,26 +142,26 @@
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
-  v6 = [v4 channelString];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  channelString = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
+  channelString2 = [equalCopy channelString];
+  v7 = channelString2;
+  if ((channelString != 0) != (channelString2 == 0))
   {
-    v8 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
-    if (v8)
+    channelString3 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
+    if (channelString3)
     {
-      v9 = v8;
-      v10 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
-      v11 = [v4 channelString];
-      v12 = [v10 isEqual:v11];
+      v9 = channelString3;
+      channelString4 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
+      channelString5 = [equalCopy channelString];
+      v12 = [channelString4 isEqual:channelString5];
 
       if (!v12)
       {
@@ -173,9 +173,9 @@
     {
     }
 
-    if ((*&self->_has & 1) == (v4[20] & 1))
+    if ((*&self->_has & 1) == (equalCopy[20] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (firstPassScore = self->_firstPassScore, [v4 firstPassScore], firstPassScore == v14))
+      if ((*&self->_has & 1) == 0 || (firstPassScore = self->_firstPassScore, [equalCopy firstPassScore], firstPassScore == v14))
       {
         v15 = 1;
         goto LABEL_12;
@@ -194,12 +194,12 @@ LABEL_12:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
+  toCopy = to;
+  channelString = [(MHSchemaFirstPassChannelSelectionScore *)self channelString];
 
-  if (v4)
+  if (channelString)
   {
     PBDataWriterWriteStringField();
   }

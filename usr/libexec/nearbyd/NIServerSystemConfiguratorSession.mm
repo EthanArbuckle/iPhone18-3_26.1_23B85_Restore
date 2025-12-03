@@ -1,22 +1,22 @@
 @interface NIServerSystemConfiguratorSession
-- (BOOL)updateConfiguration:(id)a3;
-- (NIServerSystemConfiguratorSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (id)_processSystemEvent:(id)a3;
+- (BOOL)updateConfiguration:(id)configuration;
+- (NIServerSystemConfiguratorSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
+- (id)_processSystemEvent:(id)event;
 - (id)configure;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)pauseWithSource:(int64_t)source;
 - (id)run;
 - (void)dealloc;
-- (void)didUpdateResourceUsageLimitExceeded:(BOOL)a3 forSessionConfigurationType:(Class)a4;
-- (void)didUpdateSystemState:(id)a3;
+- (void)didUpdateResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationType:(Class)type;
+- (void)didUpdateSystemState:(id)state;
 - (void)invalidate;
 @end
 
 @implementation NIServerSystemConfiguratorSession
 
-- (NIServerSystemConfiguratorSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerSystemConfiguratorSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -24,9 +24,9 @@
     [v23 handleFailureInMethod:a2 object:self file:@"NIServerSystemConfiguratorSession.mm" lineNumber:33 description:@"Invalid configuration type."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v24 = +[NSAssertionHandler currentHandler];
     [v24 handleFailureInMethod:a2 object:self file:@"NIServerSystemConfiguratorSession.mm" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -34,20 +34,20 @@
 
   v25.receiver = self;
   v25.super_class = NIServerSystemConfiguratorSession;
-  v13 = [(NIServerBaseSession *)&v25 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v13 = [(NIServerBaseSession *)&v25 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v13)
   {
-    v14 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     clientQueue = v13->_clientQueue;
-    v13->_clientQueue = v14;
+    v13->_clientQueue = clientConnectionQueue;
 
-    v16 = [v10 copy];
+    v16 = [configurationCopy copy];
     configuration = v13->_configuration;
     v13->_configuration = v16;
 
     v18 = +[NSUUID UUID];
-    v19 = [v18 UUIDString];
-    v20 = [NSString stringWithFormat:@"ses-system-%@", v19];
+    uUIDString = [v18 UUIDString];
+    v20 = [NSString stringWithFormat:@"ses-system-%@", uUIDString];
     configuratorClientIdentifier = v13->_configuratorClientIdentifier;
     v13->_configuratorClientIdentifier = v20;
   }
@@ -59,8 +59,8 @@
 {
   v7.receiver = self;
   v7.super_class = NIServerSystemConfiguratorSession;
-  v2 = [(NIServerBaseSession *)&v7 resourcesManager];
-  if ([v2 entitlementGranted:0])
+  resourcesManager = [(NIServerBaseSession *)&v7 resourcesManager];
+  if ([resourcesManager entitlementGranted:0])
   {
     v3 = 0;
   }
@@ -96,9 +96,9 @@
 
   v10.receiver = self;
   v10.super_class = NIServerSystemConfiguratorSession;
-  v5 = [(NIServerBaseSession *)&v10 resourcesManager];
-  v6 = [v5 lifecycleSupervisor];
-  [v6 setTimeoutOnPeerInactivity:0];
+  resourcesManager = [(NIServerBaseSession *)&v10 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor setTimeoutOnPeerInactivity:0];
 
   v7 = +[NIServerSystemConfigurator sharedInstance];
   [v7 addClient:self identifier:self->_configuratorClientIdentifier];
@@ -109,7 +109,7 @@
   return 0;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   v3 = qword_1009F9820;
@@ -122,33 +122,33 @@
   return 0;
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_clientQueue);
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     configuration = self->_configuration;
     v10 = 138412546;
-    v11 = v4;
+    v11 = configurationCopy;
     v12 = 2112;
-    v13 = configuration;
+    configurationCopy2 = configuration;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-system,Update to configuration: %@. Previous: %@", &v10, 0x16u);
   }
 
-  v7 = [v4 copy];
+  v7 = [configurationCopy copy];
   v8 = self->_configuration;
   self->_configuration = v7;
 
   return 1;
 }
 
-- (id)_processSystemEvent:(id)a3
+- (id)_processSystemEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (!v4)
+  if (!eventCopy)
   {
     __assert_rtn("[NIServerSystemConfiguratorSession _processSystemEvent:]", "NIServerSystemConfiguratorSession.mm", 91, "event");
   }
@@ -157,16 +157,16 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-system,Process system event: %@", &v16, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SystemEventDictKey_EventType"];
-  v7 = [v6 integerValue];
+  v6 = [eventCopy objectForKeyedSubscript:@"SystemEventDictKey_EventType"];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
-    v10 = [v4 objectForKeyedSubscript:@"SystemEventDictKey_PassiveAccessIntentOptions"];
+    v10 = [eventCopy objectForKeyedSubscript:@"SystemEventDictKey_PassiveAccessIntentOptions"];
     if (v10)
     {
       objc_opt_class();
@@ -178,24 +178,24 @@
       isKindOfClass = 0;
     }
 
-    v13 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v14 = v13;
+    v14 = unsignedIntegerValue;
     v11 = +[NIServerSystemConfigurator sharedInstance];
     [v11 clientWithIdentifier:self->_configuratorClientIdentifier notifiedPassiveAccessIntent:v14];
     goto LABEL_14;
   }
 
-  if (v7 == 2)
+  if (integerValue == 2)
   {
-    v8 = [v4 objectForKeyedSubscript:@"SystemEventDictKey_ConfigurationType"];
+    v8 = [eventCopy objectForKeyedSubscript:@"SystemEventDictKey_ConfigurationType"];
     v9 = NSClassFromString(v8);
 
-    v10 = [v4 objectForKeyedSubscript:@"SystemEventDictKey_ResourceUsageLimitExceededValue"];
+    v10 = [eventCopy objectForKeyedSubscript:@"SystemEventDictKey_ResourceUsageLimitExceededValue"];
     if (!v10)
     {
       goto LABEL_15;
@@ -252,30 +252,30 @@ LABEL_15:
   [(NIServerSystemConfiguratorSession *)&v5 dealloc];
 }
 
-- (void)didUpdateSystemState:(id)a3
+- (void)didUpdateSystemState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   clientQueue = self->_clientQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100207C38;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(clientQueue, v7);
 }
 
-- (void)didUpdateResourceUsageLimitExceeded:(BOOL)a3 forSessionConfigurationType:(Class)a4
+- (void)didUpdateResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationType:(Class)type
 {
   clientQueue = self->_clientQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100207D48;
   block[3] = &unk_10099E558;
-  v6 = a3;
+  exceededCopy = exceeded;
   block[4] = self;
-  block[5] = a4;
+  block[5] = type;
   dispatch_async(clientQueue, block);
 }
 

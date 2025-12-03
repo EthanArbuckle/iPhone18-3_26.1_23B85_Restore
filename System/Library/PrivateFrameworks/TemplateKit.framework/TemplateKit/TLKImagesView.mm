@@ -1,14 +1,14 @@
 @interface TLKImagesView
 - (TLKImagesViewDelegate)delegate;
-- (id)imageViewAtLocation:(CGPoint)a3;
+- (id)imageViewAtLocation:(CGPoint)location;
 - (id)setupContentView;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_updateImages;
 - (void)_updateSpacing;
 - (void)observedPropertiesChanged;
-- (void)setImages:(id)a3;
-- (void)setPaddingDisabled:(BOOL)a3;
-- (void)setSelectionEnabled:(BOOL)a3;
+- (void)setImages:(id)images;
+- (void)setPaddingDisabled:(BOOL)disabled;
+- (void)setSelectionEnabled:(BOOL)enabled;
 @end
 
 @implementation TLKImagesView
@@ -30,65 +30,65 @@
   return v5;
 }
 
-- (void)setImages:(id)a3
+- (void)setImages:(id)images
 {
-  v10 = a3;
-  if (self->_images != v10)
+  imagesCopy = images;
+  if (self->_images != imagesCopy)
   {
-    objc_storeStrong(&self->_images, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_images, images);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setPaddingDisabled:(BOOL)a3
+- (void)setPaddingDisabled:(BOOL)disabled
 {
-  if (self->_paddingDisabled != a3)
+  if (self->_paddingDisabled != disabled)
   {
-    self->_paddingDisabled = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_paddingDisabled = disabled;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSelectionEnabled:(BOOL)a3
+- (void)setSelectionEnabled:(BOOL)enabled
 {
-  if (self->_selectionEnabled != a3)
+  if (self->_selectionEnabled != enabled)
   {
-    self->_selectionEnabled = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_selectionEnabled = enabled;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -98,11 +98,11 @@
 {
   [(TLKImagesView *)self _updateImages];
   [(TLKImagesView *)self _updateSpacing];
-  v6 = [(TLKImagesView *)self images];
-  v3 = [v6 count] == 1 && -[TLKImagesView isPaddingDisabled](self, "isPaddingDisabled");
-  v4 = [(TLKImagesView *)self imageButtons];
-  v5 = [v4 firstObject];
-  [v5 setAlwaysShowPlaceholderView:v3];
+  images = [(TLKImagesView *)self images];
+  v3 = [images count] == 1 && -[TLKImagesView isPaddingDisabled](self, "isPaddingDisabled");
+  imageButtons = [(TLKImagesView *)self imageButtons];
+  firstObject = [imageButtons firstObject];
+  [firstObject setAlwaysShowPlaceholderView:v3];
 }
 
 - (void)_updateSpacing
@@ -117,8 +117,8 @@
     v3 = 6.0;
   }
 
-  v4 = [(TLKView *)self contentView];
-  [v4 setItemSpacing:v3];
+  contentView = [(TLKView *)self contentView];
+  [contentView setItemSpacing:v3];
 
   if ([(TLKImagesView *)self isPaddingDisabled])
   {
@@ -130,8 +130,8 @@
     v5 = 6.0;
   }
 
-  v6 = [(TLKView *)self contentView];
-  [v6 setRowSpacing:v5];
+  contentView2 = [(TLKView *)self contentView];
+  [contentView2 setRowSpacing:v5];
 
   if ([(TLKImagesView *)self isPaddingDisabled])
   {
@@ -153,8 +153,8 @@
     v10 = v14;
   }
 
-  v15 = [(TLKView *)self contentView];
-  [v15 setLayoutMargins:{v7, v8, v9, v10}];
+  contentView3 = [(TLKView *)self contentView];
+  [contentView3 setLayoutMargins:{v7, v8, v9, v10}];
 }
 
 - (void)_updateImages
@@ -166,8 +166,8 @@
 
   else
   {
-    v4 = [(TLKImagesView *)self images];
-    v5 = [v4 count];
+    images = [(TLKImagesView *)self images];
+    v5 = [images count];
 
     if (v5 >= 4)
     {
@@ -180,14 +180,14 @@
     }
   }
 
-  v6 = [(TLKView *)self contentView];
-  [v6 setNumberOfColumns:v3];
+  contentView = [(TLKView *)self contentView];
+  [contentView setNumberOfColumns:v3];
 
-  v7 = [(TLKImagesView *)self imageButtons];
-  v8 = [v7 count];
+  imageButtons = [(TLKImagesView *)self imageButtons];
+  v8 = [imageButtons count];
 
-  v9 = [(TLKImagesView *)self images];
-  v10 = [v9 count];
+  images2 = [(TLKImagesView *)self images];
+  v10 = [images2 count];
 
   if (v8 < v10)
   {
@@ -196,89 +196,89 @@
       v11 = objc_opt_new();
       [v11 setMatchesHeightForAlignmentRectWithIntrinsicContentSize:0];
       [v11 addTarget:self action:sel__handleTap_];
-      v12 = [(TLKImagesView *)self imageButtons];
-      [v12 addObject:v11];
+      imageButtons2 = [(TLKImagesView *)self imageButtons];
+      [imageButtons2 addObject:v11];
 
       ++v8;
-      v13 = [(TLKImagesView *)self images];
-      v14 = [v13 count];
+      images3 = [(TLKImagesView *)self images];
+      v14 = [images3 count];
     }
 
     while (v8 < v14);
   }
 
-  v15 = [(TLKImagesView *)self imageButtons];
-  v16 = [(TLKImagesView *)self images];
-  v17 = [v15 subarrayWithRange:{0, objc_msgSend(v16, "count")}];
-  v18 = [(TLKView *)self contentView];
-  [v18 setArrangedSubviews:v17];
+  imageButtons3 = [(TLKImagesView *)self imageButtons];
+  images4 = [(TLKImagesView *)self images];
+  v17 = [imageButtons3 subarrayWithRange:{0, objc_msgSend(images4, "count")}];
+  contentView2 = [(TLKView *)self contentView];
+  [contentView2 setArrangedSubviews:v17];
 
-  v19 = [(TLKImagesView *)self images];
-  v20 = [v19 count];
+  images5 = [(TLKImagesView *)self images];
+  v20 = [images5 count];
 
   if (v20)
   {
     v21 = 0;
     do
     {
-      v22 = [(TLKImagesView *)self imageButtons];
-      v23 = [v22 objectAtIndexedSubscript:v21];
+      imageButtons4 = [(TLKImagesView *)self imageButtons];
+      v23 = [imageButtons4 objectAtIndexedSubscript:v21];
 
-      v24 = [(TLKImagesView *)self images];
-      v25 = [v24 objectAtIndexedSubscript:v21];
+      images6 = [(TLKImagesView *)self images];
+      v25 = [images6 objectAtIndexedSubscript:v21];
       [v23 setTlkImage:v25];
 
       [v23 setEnabled:{-[TLKImagesView isSelectionEnabled](self, "isSelectionEnabled")}];
       ++v21;
-      v26 = [(TLKImagesView *)self images];
-      v27 = [v26 count];
+      images7 = [(TLKImagesView *)self images];
+      v27 = [images7 count];
     }
 
     while (v21 < v27);
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 tlkImage];
+  tlkImage = [tapCopy tlkImage];
 
-  [WeakRetained imagesView:self didSelectImage:v5];
+  [WeakRetained imagesView:self didSelectImage:tlkImage];
 }
 
-- (id)imageViewAtLocation:(CGPoint)a3
+- (id)imageViewAtLocation:(CGPoint)location
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(TLKImagesView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v4 = [(TLKImagesView *)self hitTest:0 withEvent:location.x, location.y];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(TLKImagesView *)self imageButtons];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v6)
+  imageButtons = [(TLKImagesView *)self imageButtons];
+  tlkImageView = [imageButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (tlkImageView)
   {
     v7 = *v12;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != tlkImageView; i = i + 1)
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(imageButtons);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if (v4 == v9)
         {
-          v6 = [v9 tlkImageView];
+          tlkImageView = [v9 tlkImageView];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v6)
+      tlkImageView = [imageButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (tlkImageView)
       {
         continue;
       }
@@ -289,7 +289,7 @@
 
 LABEL_11:
 
-  return v6;
+  return tlkImageView;
 }
 
 - (TLKImagesViewDelegate)delegate

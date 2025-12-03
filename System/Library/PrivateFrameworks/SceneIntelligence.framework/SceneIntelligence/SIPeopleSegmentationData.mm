@@ -1,22 +1,22 @@
 @interface SIPeopleSegmentationData
-- (CGSize)_resolutionByConfig:(id)a3;
-- (SIPeopleSegmentationData)initWithConfig:(id)a3;
-- (SIPeopleSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)a3;
+- (CGSize)_resolutionByConfig:(id)config;
+- (SIPeopleSegmentationData)initWithConfig:(id)config;
+- (SIPeopleSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation SIPeopleSegmentationData
 
-- (SIPeopleSegmentationData)initWithConfig:(id)a3
+- (SIPeopleSegmentationData)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = SIPeopleSegmentationData;
   v5 = [(SIPeopleSegmentationData *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(SIPeopleSegmentationData *)v5 _resolutionByConfig:v4];
+    [(SIPeopleSegmentationData *)v5 _resolutionByConfig:configCopy];
     v6->_segmentation = SICreateCVPixelBuffer(v7, v8, 0x4C303038u, 1);
     v9 = v6;
   }
@@ -24,25 +24,25 @@
   return v6;
 }
 
-- (SIPeopleSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)a3
+- (SIPeopleSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)buffer
 {
   v7.receiver = self;
   v7.super_class = SIPeopleSegmentationData;
   v4 = [(SIPeopleSegmentationData *)&v7 init];
   if (v4)
   {
-    v4->_segmentation = CVPixelBufferRetain(a3);
+    v4->_segmentation = CVPixelBufferRetain(buffer);
     v5 = v4;
   }
 
   return v4;
 }
 
-- (CGSize)_resolutionByConfig:(id)a3
+- (CGSize)_resolutionByConfig:(id)config
 {
-  v3 = [a3 networkModeEnum];
+  networkModeEnum = [config networkModeEnum];
   v4 = 256.0;
-  if (v3 == 1)
+  if (networkModeEnum == 1)
   {
     v5 = 192.0;
   }
@@ -52,7 +52,7 @@
     v5 = 256.0;
   }
 
-  if (v3 != 1)
+  if (networkModeEnum != 1)
   {
     v4 = 192.0;
   }

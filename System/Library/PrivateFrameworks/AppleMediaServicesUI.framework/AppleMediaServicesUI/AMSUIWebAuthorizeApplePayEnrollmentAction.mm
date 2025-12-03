@@ -1,19 +1,19 @@
 @interface AMSUIWebAuthorizeApplePayEnrollmentAction
-- (AMSUIWebAuthorizeApplePayEnrollmentAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebAuthorizeApplePayEnrollmentAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebAuthorizeApplePayEnrollmentAction
 
-- (AMSUIWebAuthorizeApplePayEnrollmentAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebAuthorizeApplePayEnrollmentAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = AMSUIWebAuthorizeApplePayEnrollmentAction;
-  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"confirmationStyle"];
+    v8 = [objectCopy objectForKeyedSubscript:@"confirmationStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
     confirmationStyle = v7->_confirmationStyle;
     v7->_confirmationStyle = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"passSerialNumber"];
+    v11 = [objectCopy objectForKeyedSubscript:@"passSerialNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
     passSerialNumber = v7->_passSerialNumber;
     v7->_passSerialNumber = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"passTypeIdentifier"];
+    v14 = [objectCopy objectForKeyedSubscript:@"passTypeIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
     passTypeIdentifier = v7->_passTypeIdentifier;
     v7->_passTypeIdentifier = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"paymentSession"];
+    v17 = [objectCopy objectForKeyedSubscript:@"paymentSession"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,38 +82,38 @@
   v31 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = AMSUIWebAuthorizeApplePayEnrollmentAction;
-  v3 = [(AMSUIWebAction *)&v26 runAction];
-  v4 = [(AMSUIWebAction *)self context];
-  v5 = [v4 bag];
+  runAction = [(AMSUIWebAction *)&v26 runAction];
+  context = [(AMSUIWebAction *)self context];
+  v5 = [context bag];
 
   if ([MEMORY[0x1E698C830] shouldUseExtendedEnrollmentWithBag:v5])
   {
-    v6 = [(AMSUIWebAuthorizeApplePayEnrollmentAction *)self paymentSession];
-    if (v6)
+    paymentSession = [(AMSUIWebAuthorizeApplePayEnrollmentAction *)self paymentSession];
+    if (paymentSession)
     {
       v7 = [v5 stringForKey:@"currentStorefrontCountryCodeISO2A"];
-      v8 = [v7 valuePromise];
+      valuePromise = [v7 valuePromise];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __54__AMSUIWebAuthorizeApplePayEnrollmentAction_runAction__block_invoke;
       v22[3] = &unk_1E7F25B78;
       v23 = v5;
-      v24 = self;
-      v25 = v6;
-      v9 = [v8 thenWithBlock:v22];
+      selfCopy = self;
+      v25 = paymentSession;
+      v9 = [valuePromise thenWithBlock:v22];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v15)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v15 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v17 = objc_opt_class();
         v18 = AMSLogKey();
@@ -121,25 +121,25 @@
         v28 = v17;
         v29 = 2114;
         v30 = v18;
-        _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for bad arguments.", buf, 0x16u);
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for bad arguments.", buf, 0x16u);
       }
 
       v19 = MEMORY[0x1E698CAD0];
-      v8 = AMSError();
-      v9 = [v19 promiseWithError:v8];
+      valuePromise = AMSError();
+      v9 = [v19 promiseWithError:valuePromise];
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -147,12 +147,12 @@
       v28 = v12;
       v29 = 2114;
       v30 = v13;
-      _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for feature not enabled.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for feature not enabled.", buf, 0x16u);
     }
 
     v14 = MEMORY[0x1E698CAD0];
-    v6 = AMSError();
-    v9 = [v14 promiseWithError:v6];
+    paymentSession = AMSError();
+    v9 = [v14 promiseWithError:paymentSession];
   }
 
   v20 = *MEMORY[0x1E69E9840];

@@ -1,9 +1,9 @@
 @interface NSTextAttachmentViewProvider
-+ (BOOL)acceptsViewProviderForContext:(CGContext *)a3;
++ (BOOL)acceptsViewProviderForContext:(CGContext *)context;
 - (CGRect)attachmentBoundsForAttributes:(NSDictionary *)attributes location:(id)location textContainer:(NSTextContainer *)textContainer proposedLineFragment:(CGRect)proposedLineFragment position:(CGPoint)position;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (NSTextAttachmentViewProvider)initWithTextAttachment:(NSTextAttachment *)textAttachment parentView:(UIView *)parentView textLayoutManager:(NSTextLayoutManager *)textLayoutManager location:(id)location;
-- (NSTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 characterIndex:(unint64_t)a5 layoutManager:(id)a6;
+- (NSTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
 - (UIView)view;
 - (void)dealloc;
 - (void)removeView;
@@ -56,14 +56,14 @@
 
 - (void)removeView
 {
-  v3 = [(NSTextAttachmentViewProvider *)self view];
-  if (v3)
+  view = [(NSTextAttachmentViewProvider *)self view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [(NSTextAttachmentViewProvider *)self textAttachment];
-    v6 = [(UIView *)v4 superview];
+    v4 = view;
+    textAttachment = [(NSTextAttachmentViewProvider *)self textAttachment];
+    superview = [(UIView *)v4 superview];
 
-    [(NSTextAttachment *)v5 detachView:v4 fromParentView:v6];
+    [(NSTextAttachment *)textAttachment detachView:v4 fromParentView:superview];
   }
 }
 
@@ -117,26 +117,26 @@
   return result;
 }
 
-- (NSTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 characterIndex:(unint64_t)a5 layoutManager:(id)a6
+- (NSTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  v11 = [[NSCountableTextLocation alloc] initWithIndex:a5];
-  v12 = [(NSTextAttachmentViewProvider *)self initWithTextAttachment:a3 parentView:a4 textLayoutManager:0 location:v11];
+  v11 = [[NSCountableTextLocation alloc] initWithIndex:index];
+  v12 = [(NSTextAttachmentViewProvider *)self initWithTextAttachment:attachment parentView:view textLayoutManager:0 location:v11];
   v13 = v12;
   if (v12)
   {
-    [(NSTextAttachmentViewProvider *)v12 setLayoutManager:a6];
-    v13->_characterIndex = a5;
+    [(NSTextAttachmentViewProvider *)v12 setLayoutManager:manager];
+    v13->_characterIndex = index;
   }
 
   return v13;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   v6 = MEMORY[0x1E696AA80];
   v7 = *MEMORY[0x1E696AA80];
   v8 = *(MEMORY[0x1E696AA80] + 8);
-  v9 = [(NSTextAttachmentViewProvider *)self view:a3];
+  v9 = [(NSTextAttachmentViewProvider *)self view:container];
   if (v9)
   {
     [(UIView *)v9 intrinsicContentSize];
@@ -159,9 +159,9 @@
   return result;
 }
 
-+ (BOOL)acceptsViewProviderForContext:(CGContext *)a3
++ (BOOL)acceptsViewProviderForContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
     Type = CGContextGetType();
     if (Type <= 9)

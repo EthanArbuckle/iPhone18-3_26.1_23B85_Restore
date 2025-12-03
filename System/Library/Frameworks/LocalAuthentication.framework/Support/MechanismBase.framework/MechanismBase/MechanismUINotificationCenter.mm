@@ -1,17 +1,17 @@
 @interface MechanismUINotificationCenter
-- (BOOL)_checkIsRedundantNotification:(int64_t)a3;
-- (BOOL)postNotification:(int64_t)a3;
-- (id)_identifierForNotification:(int64_t)a3;
-- (void)_postDarwinNotificationWithIdentifier:(id)a3;
+- (BOOL)_checkIsRedundantNotification:(int64_t)notification;
+- (BOOL)postNotification:(int64_t)notification;
+- (id)_identifierForNotification:(int64_t)notification;
+- (void)_postDarwinNotificationWithIdentifier:(id)identifier;
 @end
 
 @implementation MechanismUINotificationCenter
 
-- (BOOL)postNotification:(int64_t)a3
+- (BOOL)postNotification:(int64_t)notification
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = [(MechanismUINotificationCenter *)self _identifierForNotification:?];
-  v6 = [(MechanismUINotificationCenter *)self _checkIsRedundantNotification:a3];
+  v6 = [(MechanismUINotificationCenter *)self _checkIsRedundantNotification:notification];
   if (v6)
   {
     v7 = LA_LOG_MechanismUINotificationCenter();
@@ -27,7 +27,7 @@ LABEL_6:
 
   else
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:notification];
     [(MechanismUINotificationCenter *)self setLastNotification:v9];
 
     [(MechanismUINotificationCenter *)self _postDarwinNotificationWithIdentifier:v5];
@@ -45,15 +45,15 @@ LABEL_6:
   return !v6;
 }
 
-- (BOOL)_checkIsRedundantNotification:(int64_t)a3
+- (BOOL)_checkIsRedundantNotification:(int64_t)notification
 {
-  if (a3 == 1)
+  if (notification == 1)
   {
-    v5 = [(MechanismUINotificationCenter *)self lastNotification];
-    if (v5)
+    lastNotification = [(MechanismUINotificationCenter *)self lastNotification];
+    if (lastNotification)
     {
-      v6 = [(MechanismUINotificationCenter *)self lastNotification];
-      v3 = [v6 isEqual:&unk_284B788D0] ^ 1;
+      lastNotification2 = [(MechanismUINotificationCenter *)self lastNotification];
+      v3 = [lastNotification2 isEqual:&unk_284B788D0] ^ 1;
     }
 
     else
@@ -64,19 +64,19 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!notification)
   {
-    v5 = [(MechanismUINotificationCenter *)self lastNotification];
-    v3 = [v5 isEqual:&unk_284B788D0];
+    lastNotification = [(MechanismUINotificationCenter *)self lastNotification];
+    v3 = [lastNotification isEqual:&unk_284B788D0];
 LABEL_7:
   }
 
   return v3 & 1;
 }
 
-- (id)_identifierForNotification:(int64_t)a3
+- (id)_identifierForNotification:(int64_t)notification
 {
-  if (a3)
+  if (notification)
   {
     return @"com.apple.LocalAuthentication.ui.dismissed";
   }
@@ -87,9 +87,9 @@ LABEL_7:
   }
 }
 
-- (void)_postDarwinNotificationWithIdentifier:(id)a3
+- (void)_postDarwinNotificationWithIdentifier:(id)identifier
 {
-  name = a3;
+  name = identifier;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }

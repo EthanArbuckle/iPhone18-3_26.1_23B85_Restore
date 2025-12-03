@@ -1,29 +1,29 @@
 @interface OrgApacheLuceneUtilFstFST
-+ (BOOL)targetHasArcsWithOrgApacheLuceneUtilFstFST_Arc:(id)a3;
++ (BOOL)targetHasArcsWithOrgApacheLuceneUtilFstFST_Arc:(id)arc;
 + (void)initialize;
-- (BOOL)isExpandedTargetWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4;
-- (BOOL)shouldExpandWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4;
+- (BOOL)isExpandedTargetWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (BOOL)shouldExpandWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node;
 - (NSString)description;
 - (id)getBytesReader;
 - (id)getChildResources;
-- (id)getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3;
-- (id)readFirstRealTargetArcWithLong:(int64_t)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5;
-- (id)readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5;
-- (id)readLastTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5;
-- (id)readNextArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4;
-- (id)readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4;
-- (int)readLabelWithOrgApacheLuceneStoreDataInput:(id)a3;
-- (int)readNextArcLabelWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4;
-- (int64_t)addNodeWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4;
-- (int64_t)getNodeAddressWithLong:(int64_t)a3;
+- (id)getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc;
+- (id)readFirstRealTargetArcWithLong:(int64_t)long withOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (id)readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_Arc:(id)t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (id)readLastTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_Arc:(id)t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (id)readNextArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (id)readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (int)readLabelWithOrgApacheLuceneStoreDataInput:(id)input;
+- (int)readNextArcLabelWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
+- (int64_t)addNodeWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node;
+- (int64_t)getNodeAddressWithLong:(int64_t)long;
 - (int64_t)ramBytesUsed;
-- (int64_t)readUnpackedNodeTargetWithOrgApacheLuceneUtilFstFST_BytesReader:(id)a3;
+- (int64_t)readUnpackedNodeTargetWithOrgApacheLuceneUtilFstFST_BytesReader:(id)reader;
 - (uint64_t)cacheRootArcs;
 - (void)dealloc;
-- (void)finishWithLong:(int64_t)a3;
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3;
-- (void)saveWithOrgLukhnosPortmobileFilePath:(id)a3;
-- (void)setEmptyOutputWithId:(id)a3;
+- (void)finishWithLong:(int64_t)long;
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output;
+- (void)saveWithOrgLukhnosPortmobileFilePath:(id)path;
+- (void)setEmptyOutputWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneUtilFstFST
@@ -57,11 +57,11 @@
       return &v7[self->cachedArcsBytesUsed_];
     }
 
-    v10 = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress ramBytesUsed];
+    ramBytesUsed = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress ramBytesUsed];
     inCounts = self->inCounts_;
     if (inCounts)
     {
-      v7 = &v7[v10 + [(OrgApacheLuceneUtilPackedGrowableWriter *)inCounts ramBytesUsed]];
+      v7 = &v7[ramBytesUsed + [(OrgApacheLuceneUtilPackedGrowableWriter *)inCounts ramBytesUsed]];
       return &v7[self->cachedArcsBytesUsed_];
     }
 
@@ -112,7 +112,7 @@ LABEL_5:
   return JreStrcat("$$@$@$Z", v4, v5, v6, v7, v8, v9, v10, v3);
 }
 
-- (void)finishWithLong:(int64_t)a3
+- (void)finishWithLong:(int64_t)long
 {
   if (self->startNode_ != -1)
   {
@@ -120,20 +120,20 @@ LABEL_5:
     objc_exception_throw(v4);
   }
 
-  if (a3 == -1)
+  if (long == -1)
   {
     if (self->emptyOutput_)
     {
-      a3 = 0;
+      long = 0;
     }
 
     else
     {
-      a3 = -1;
+      long = -1;
     }
   }
 
-  self->startNode_ = a3;
+  self->startNode_ = long;
   [(OrgApacheLuceneUtilFstBytesStore *)self->bytes_ finish];
 
   [OrgApacheLuceneUtilFstFST cacheRootArcs]_0(self);
@@ -142,7 +142,7 @@ LABEL_5:
 - (uint64_t)cacheRootArcs
 {
   v2 = [OrgApacheLuceneUtilFstFST_Arc alloc];
-  result = [a1 getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:v2];
+  result = [self getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:v2];
   if (atomic_load_explicit(OrgApacheLuceneUtilFstFST__initialized, memory_order_acquire))
   {
     if (v2)
@@ -163,7 +163,7 @@ LABEL_20:
 LABEL_3:
   if (v2->target_ >= 1)
   {
-    v4 = [a1 getBytesReader];
+    getBytesReader = [self getBytesReader];
     if (qword_100554788 != -1)
     {
       sub_100122544();
@@ -176,12 +176,12 @@ LABEL_3:
       JreThrowClassCastException();
     }
 
-    [a1 readFirstRealTargetArcWithLong:v2->target_ withOrgApacheLuceneUtilFstFST_Arc:v2 withOrgApacheLuceneUtilFstFST_BytesReader:v4];
+    [self readFirstRealTargetArcWithLong:v2->target_ withOrgApacheLuceneUtilFstFST_Arc:v2 withOrgApacheLuceneUtilFstFST_BytesReader:getBytesReader];
     label = v2->label_;
     if (label >= v5->super.size_)
     {
 
-      return sub_10011EC60(a1, v5);
+      return sub_10011EC60(self, v5);
     }
 
     else
@@ -195,21 +195,21 @@ LABEL_3:
           break;
         }
 
-        [a1 readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:v2 withOrgApacheLuceneUtilFstFST_BytesReader:v4];
+        [self readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:v2 withOrgApacheLuceneUtilFstFST_BytesReader:getBytesReader];
         ++v7;
         label = v2->label_;
       }
 
       while (label < v5->super.size_);
-      result = sub_10011EC60(a1, v5);
+      result = sub_10011EC60(self, v5);
       if (v7 >= 5)
       {
         v8 = result;
-        result = [a1 ramBytesUsed];
+        result = [self ramBytesUsed];
         if (result / 5 > v8)
         {
-          result = JreStrongAssign((a1 + 72), v5);
-          *(a1 + 100) = v8;
+          result = JreStrongAssign((self + 72), v5);
+          *(self + 100) = v8;
         }
       }
     }
@@ -218,21 +218,21 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)getNodeAddressWithLong:(int64_t)a3
+- (int64_t)getNodeAddressWithLong:(int64_t)long
 {
   nodeAddress = self->nodeAddress_;
   if (nodeAddress)
   {
-    return [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:a3];
+    return [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:long];
   }
 
   else
   {
-    return a3;
+    return long;
   }
 }
 
-- (void)setEmptyOutputWithId:(id)a3
+- (void)setEmptyOutputWithId:(id)id
 {
   p_emptyOutput = &self->emptyOutput_;
   if (self->emptyOutput_)
@@ -243,13 +243,13 @@ LABEL_3:
       JreThrowNullPointerException();
     }
 
-    a3 = [OrgApacheLuceneUtilFstOutputs mergeWithId:"mergeWithId:withId:" withId:?];
+    id = [OrgApacheLuceneUtilFstOutputs mergeWithId:"mergeWithId:withId:" withId:?];
   }
 
-  JreStrongAssign(p_emptyOutput, a3);
+  JreStrongAssign(p_emptyOutput, id);
 }
 
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output
 {
   if (self->startNode_ == -1)
   {
@@ -276,10 +276,10 @@ LABEL_55:
     }
   }
 
-  OrgApacheLuceneCodecsCodecUtil_writeHeaderWithOrgApacheLuceneStoreDataOutput_withNSString_withInt_(a3, @"FST", 5);
+  OrgApacheLuceneCodecsCodecUtil_writeHeaderWithOrgApacheLuceneStoreDataOutput_withNSString_withInt_(output, @"FST", 5);
   if (self->packed_)
   {
-    if (!a3)
+    if (!output)
     {
       goto LABEL_50;
     }
@@ -289,7 +289,7 @@ LABEL_55:
 
   else
   {
-    if (!a3)
+    if (!output)
     {
       goto LABEL_50;
     }
@@ -297,10 +297,10 @@ LABEL_55:
     v6 = 0;
   }
 
-  [a3 writeByteWithByte:v6];
+  [output writeByteWithByte:v6];
   if (self->emptyOutput_)
   {
-    [a3 writeByteWithByte:1];
+    [output writeByteWithByte:1];
     v7 = new_OrgApacheLuceneStoreRAMOutputStream_init();
     outputs = self->outputs_;
     if (!outputs)
@@ -356,13 +356,13 @@ LABEL_55:
       }
     }
 
-    [a3 writeVIntWithInt:v9->super.size_];
-    [a3 writeBytesWithByteArray:v9 withInt:0 withInt:v9->super.size_];
+    [output writeVIntWithInt:v9->super.size_];
+    [output writeBytesWithByteArray:v9 withInt:0 withInt:v9->super.size_];
   }
 
   else
   {
-    [a3 writeByteWithByte:0];
+    [output writeByteWithByte:0];
   }
 
   inputType = self->inputType_;
@@ -395,7 +395,7 @@ LABEL_55:
     }
   }
 
-  [a3 writeByteWithByte:v21];
+  [output writeByteWithByte:v21];
   if (self->packed_)
   {
     v22 = self->nodeRefToAddress_;
@@ -410,17 +410,17 @@ LABEL_55:
       JreThrowClassCastException();
     }
 
-    [(OrgApacheLuceneUtilPackedPackedInts_Reader *)v22 saveWithOrgApacheLuceneStoreDataOutput:a3];
+    [(OrgApacheLuceneUtilPackedPackedInts_Reader *)v22 saveWithOrgApacheLuceneStoreDataOutput:output];
   }
 
-  [a3 writeVLongWithLong:self->startNode_];
+  [output writeVLongWithLong:self->startNode_];
   bytes = self->bytes_;
   if (bytes)
   {
-    [a3 writeVLongWithLong:{-[OrgApacheLuceneUtilFstBytesStore getPosition](bytes, "getPosition")}];
+    [output writeVLongWithLong:{-[OrgApacheLuceneUtilFstBytesStore getPosition](bytes, "getPosition")}];
     v24 = self->bytes_;
 
-    [(OrgApacheLuceneUtilFstBytesStore *)v24 writeToWithOrgApacheLuceneStoreDataOutput:a3];
+    [(OrgApacheLuceneUtilFstBytesStore *)v24 writeToWithOrgApacheLuceneStoreDataOutput:output];
     return;
   }
 
@@ -431,15 +431,15 @@ LABEL_50:
     JreThrowNullPointerException();
   }
 
-  [a3 writeVLongWithLong:bytesArray->super.size_];
+  [output writeVLongWithLong:bytesArray->super.size_];
   v26 = self->bytesArray_->super.size_;
 
-  [a3 writeBytesWithByteArray:? withInt:? withInt:?];
+  [output writeBytesWithByteArray:? withInt:? withInt:?];
 }
 
-- (void)saveWithOrgLukhnosPortmobileFilePath:(id)a3
+- (void)saveWithOrgLukhnosPortmobileFilePath:(id)path
 {
-  v4 = OrgLukhnosPortmobileFileFiles_newOutputStreamWithOrgLukhnosPortmobileFilePath_(a3);
+  v4 = OrgLukhnosPortmobileFileFiles_newOutputStreamWithOrgLukhnosPortmobileFilePath_(path);
   v5 = new_JavaIoBufferedOutputStream_initWithJavaIoOutputStream_(v4);
   [(OrgApacheLuceneUtilFstFST *)self saveWithOrgApacheLuceneStoreDataOutput:new_OrgApacheLuceneStoreOutputStreamDataOutput_initWithJavaIoOutputStream_(v5)];
   if (v5)
@@ -448,7 +448,7 @@ LABEL_50:
   }
 }
 
-- (int)readLabelWithOrgApacheLuceneStoreDataInput:(id)a3
+- (int)readLabelWithOrgApacheLuceneStoreDataInput:(id)input
 {
   inputType = self->inputType_;
   if ((atomic_load_explicit(OrgApacheLuceneUtilFstFST_INPUT_TYPEEnum__initialized, memory_order_acquire) & 1) == 0)
@@ -458,9 +458,9 @@ LABEL_50:
 
   if (inputType == OrgApacheLuceneUtilFstFST_INPUT_TYPEEnum_values_)
   {
-    if (a3)
+    if (input)
     {
-      return [a3 readByte];
+      return [input readByte];
     }
 
     goto LABEL_15;
@@ -474,85 +474,85 @@ LABEL_50:
 
   if (v6 == qword_100557B78)
   {
-    if (a3)
+    if (input)
     {
-      return [a3 readShort];
+      return [input readShort];
     }
 
 LABEL_15:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!input)
   {
     goto LABEL_15;
   }
 
-  return [a3 readVInt];
+  return [input readVInt];
 }
 
-+ (BOOL)targetHasArcsWithOrgApacheLuceneUtilFstFST_Arc:(id)a3
++ (BOOL)targetHasArcsWithOrgApacheLuceneUtilFstFST_Arc:(id)arc
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilFstFST__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100122538();
-    if (a3)
+    if (arc)
     {
-      return *(a3 + 4) > 0;
+      return *(arc + 4) > 0;
     }
 
 LABEL_5:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!arc)
   {
     goto LABEL_5;
   }
 
-  return *(a3 + 4) > 0;
+  return *(arc + 4) > 0;
 }
 
-- (int64_t)addNodeWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4
+- (int64_t)addNodeWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node
 {
-  v4 = self;
+  selfCopy = self;
   outputs = self->outputs_;
   if (!outputs)
   {
     goto LABEL_86;
   }
 
-  v90 = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
-  if (!a4)
+  getNoOutput = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
+  if (!node)
   {
     goto LABEL_86;
   }
 
-  if (!*(a4 + 4))
+  if (!*(node + 4))
   {
-    return -*(a4 + 40);
+    return -*(node + 40);
   }
 
-  if (!a3)
+  if (!builder)
   {
     goto LABEL_86;
   }
 
-  v8 = *(a3 + 7);
+  v8 = *(builder + 7);
   if (!v8)
   {
     goto LABEL_86;
   }
 
-  v81 = [v8 getPosition];
-  v82 = v4;
-  if (*(a3 + 48) != 1)
+  getPosition = [v8 getPosition];
+  v82 = selfCopy;
+  if (*(builder + 48) != 1)
   {
     goto LABEL_9;
   }
 
-  v15 = *(a4 + 4);
-  if (*(a4 + 14) > 3)
+  v15 = *(node + 4);
+  if (*(node + 14) > 3)
   {
     if (v15 < 10)
     {
@@ -560,7 +560,7 @@ LABEL_5:
     }
 
 LABEL_82:
-    v78 = *(a3 + 3);
+    v78 = *(builder + 3);
     if (!v78)
     {
       goto LABEL_86;
@@ -570,7 +570,7 @@ LABEL_82:
     if (*(v78 + 8) < v15)
     {
       v79 = [IOSIntArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v15, 1, v9, v10, v11, v12, v13, v14)];
-      JreStrongAssignAndConsume(a3 + 3, v79);
+      JreStrongAssignAndConsume(builder + 3, v79);
     }
 
     goto LABEL_10;
@@ -584,20 +584,20 @@ LABEL_82:
 LABEL_9:
   v88 = 0;
 LABEL_10:
-  *(a3 + 4) += *(a4 + 4);
-  v16 = *(a4 + 4);
-  v17 = [*(a3 + 7) getPosition];
-  if (*(a4 + 4) >= 1)
+  *(builder + 4) += *(node + 4);
+  v16 = *(node + 4);
+  getPosition2 = [*(builder + 7) getPosition];
+  if (*(node + 4) >= 1)
   {
-    v83 = v17;
+    getPosition4 = getPosition2;
     v18 = 0;
     v87 = 0;
     v84 = v16 - 1;
-    v85 = a3;
-    v86 = a4;
+    builderCopy = builder;
+    nodeCopy = node;
     while (1)
     {
-      v19 = *(a4 + 3);
+      v19 = *(node + 3);
       if (!v19)
       {
         goto LABEL_86;
@@ -638,7 +638,7 @@ LABEL_10:
         v24 = (2 * (v84 == v18)) | 4;
       }
 
-      if (*(a3 + 2) == v23)
+      if (*(builder + 2) == v23)
       {
         v25 = v24;
       }
@@ -650,7 +650,7 @@ LABEL_10:
 
       if (*(v21 + 24) == 1)
       {
-        if (*(v21 + 40) == v90)
+        if (*(v21 + 40) == getNoOutput)
         {
           v26 = 1;
         }
@@ -666,12 +666,12 @@ LABEL_10:
       if (v23 <= 0)
       {
         v25 += 8;
-        v28 = v4;
+        v28 = selfCopy;
       }
 
       else
       {
-        inCounts = v4->inCounts_;
+        inCounts = selfCopy->inCounts_;
         if (inCounts)
         {
           [(OrgApacheLuceneUtilPackedGrowableWriter *)inCounts setWithInt:v23 withLong:[(OrgApacheLuceneUtilPackedGrowableWriter *)inCounts getWithInt:Weak[1]]+ 1];
@@ -680,53 +680,53 @@ LABEL_10:
         v28 = v82;
       }
 
-      if (*(v21 + 32) != v90)
+      if (*(v21 + 32) != getNoOutput)
       {
         v25 += 16;
       }
 
-      a3 = v85;
-      [v85[7] writeByteWithByte:v25];
-      sub_10011F82C(v28, v85[7], *(v21 + 8));
-      v4 = v28;
-      if (*(v21 + 32) != v90)
+      builder = builderCopy;
+      [builderCopy[7] writeByteWithByte:v25];
+      sub_10011F82C(v28, builderCopy[7], *(v21 + 8));
+      selfCopy = v28;
+      if (*(v21 + 32) != getNoOutput)
       {
-        v29 = v85[7];
+        v29 = builderCopy[7];
         [*(v28 + 40) writeWithId:? withOrgApacheLuceneStoreDataOutput:?];
       }
 
       v30 = *(v21 + 40);
-      if (v30 != v90)
+      if (v30 != getNoOutput)
       {
-        [*(v28 + 40) writeFinalOutputWithId:v30 withOrgApacheLuceneStoreDataOutput:v85[7]];
+        [*(v28 + 40) writeFinalOutputWithId:v30 withOrgApacheLuceneStoreDataOutput:builderCopy[7]];
       }
 
       v31 = v23 >= 1 && (v25 & 4) == 0;
-      a4 = v86;
+      node = nodeCopy;
       if (v31)
       {
-        [v85[7] writeVLongWithLong:Weak[1]];
+        [builderCopy[7] writeVLongWithLong:Weak[1]];
       }
 
       if (v88)
       {
-        v32 = [v85[7] getPosition];
-        v33 = v85[3];
+        getPosition3 = [builderCopy[7] getPosition];
+        v33 = builderCopy[3];
         if (!v33)
         {
           goto LABEL_86;
         }
 
-        v34 = v32;
+        v34 = getPosition3;
         v35 = v33[2];
         if (v18 >= v35)
         {
           IOSArray_throwOutOfBoundsWithMsg(v35, v18);
         }
 
-        v33[v18 + 3] = v34 - v83;
-        v83 = [v85[7] getPosition];
-        v36 = v85[3];
+        v33[v18 + 3] = v34 - getPosition4;
+        getPosition4 = [builderCopy[7] getPosition];
+        v36 = builderCopy[3];
         v37 = v36[2];
         if (v18 >= v37)
         {
@@ -736,7 +736,7 @@ LABEL_10:
         v87 = JavaLangMath_maxWithInt_withInt_(v87, v36[v18 + 3]);
       }
 
-      if (++v18 >= v86[4])
+      if (++v18 >= nodeCopy[4])
       {
         goto LABEL_57;
       }
@@ -750,24 +750,24 @@ LABEL_57:
     v89 = [IOSByteArray arrayWithLength:11];
     v39 = new_OrgApacheLuceneStoreByteArrayDataOutput_initWithByteArray_(v89);
     [(OrgApacheLuceneStoreByteArrayDataOutput *)v39 writeByteWithByte:32];
-    [(OrgApacheLuceneStoreDataOutput *)v39 writeVIntWithInt:*(a4 + 4)];
+    [(OrgApacheLuceneStoreDataOutput *)v39 writeVIntWithInt:*(node + 4)];
     [(OrgApacheLuceneStoreDataOutput *)v39 writeVIntWithInt:v87];
-    v91 = [(OrgApacheLuceneStoreByteArrayDataOutput *)v39 getPosition];
-    v40 = [*(a3 + 7) getPosition];
-    v41 = *(a4 + 4) * v87;
-    v42 = &v81[v91 + v41];
-    if (v42 > v40)
+    getPosition5 = [(OrgApacheLuceneStoreByteArrayDataOutput *)v39 getPosition];
+    getPosition6 = [*(builder + 7) getPosition];
+    v41 = *(node + 4) * v87;
+    v42 = &getPosition[getPosition5 + v41];
+    if (v42 > getPosition6)
     {
-      v43 = v40;
-      [*(a3 + 7) skipBytesWithInt:(v42 - v40)];
-      v44 = *(a4 + 4);
+      v43 = getPosition6;
+      [*(builder + 7) skipBytesWithInt:(v42 - getPosition6)];
+      v44 = *(node + 4);
       v45 = (v44 - 1);
       if (v44 - 1 >= 0)
       {
-        v46 = &v81[v91 + v41 - v87];
+        v46 = &getPosition[getPosition5 + v41 - v87];
         do
         {
-          v47 = *(a3 + 3);
+          v47 = *(builder + 3);
           if (!v47)
           {
             goto LABEL_86;
@@ -782,14 +782,14 @@ LABEL_57:
           v43 -= *(v47 + 12 + 4 * v45);
           if (v46 != v43)
           {
-            v49 = *(a3 + 3);
+            v49 = *(builder + 3);
             v50 = *(v49 + 8);
             if (v45 >= v50)
             {
               IOSArray_throwOutOfBoundsWithMsg(v50, v45);
             }
 
-            [*(a3 + 7) copyBytesWithLong:v43 withLong:v46 withInt:*(v49 + 12 + 4 * v45)];
+            [*(builder + 7) copyBytesWithLong:v43 withLong:v46 withInt:*(v49 + 12 + 4 * v45)];
           }
 
           v46 -= v87;
@@ -799,31 +799,31 @@ LABEL_57:
       }
     }
 
-    [*(a3 + 7) writeBytesWithLong:v81 withByteArray:v89 withInt:0 withInt:v91];
-    v4 = v82;
+    [*(builder + 7) writeBytesWithLong:getPosition withByteArray:v89 withInt:0 withInt:getPosition5];
+    selfCopy = v82;
   }
 
-  v38 = [*(a3 + 7) getPosition] - 1;
-  [*(a3 + 7) reverseWithLong:v81 withLong:v38];
-  nodeAddress = v4->nodeAddress_;
-  p_nodeAddress = &v4->nodeAddress_;
-  v54 = *(a3 + 5);
+  v38 = [*(builder + 7) getPosition] - 1;
+  [*(builder + 7) reverseWithLong:getPosition withLong:v38];
+  nodeAddress = selfCopy->nodeAddress_;
+  p_nodeAddress = &selfCopy->nodeAddress_;
+  v54 = *(builder + 5);
   if (nodeAddress && v54 == 0x7FFFFFFF)
   {
     v80 = new_JavaLangIllegalStateException_initWithNSString_(@"cannot create a packed FST with more than 2.1 billion nodes");
     objc_exception_throw(v80);
   }
 
-  *(a3 + 5) = v54 + 1;
+  *(builder + 5) = v54 + 1;
   if (*p_nodeAddress)
   {
-    v55 = *(a3 + 10);
+    v55 = *(builder + 10);
     if ([*p_nodeAddress size] == v55)
     {
       v56 = v82->nodeAddress_;
       v57 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v56 size];
-      v58 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v82->nodeAddress_ getBitsPerValue];
-      v65 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v56 resizeWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v57 + 1, v58, v59, v60, v61, v62, v63, v64)];
+      getBitsPerValue = [(OrgApacheLuceneUtilPackedGrowableWriter *)v82->nodeAddress_ getBitsPerValue];
+      v65 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v56 resizeWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v57 + 1, getBitsPerValue, v59, v60, v61, v62, v63, v64)];
       JreStrongAssign(p_nodeAddress, v65);
       p_inCounts = &v82->inCounts_;
       v67 = v82->inCounts_;
@@ -833,8 +833,8 @@ LABEL_57:
       }
 
       v68 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v67 size];
-      v69 = [*p_inCounts getBitsPerValue];
-      v76 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v67 resizeWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v68 + 1, v69, v70, v71, v72, v73, v74, v75)];
+      getBitsPerValue2 = [*p_inCounts getBitsPerValue];
+      v76 = [(OrgApacheLuceneUtilPackedGrowableWriter *)v67 resizeWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v68 + 1, getBitsPerValue2, v70, v71, v72, v73, v74, v75)];
       JreStrongAssign(p_inCounts, v76);
     }
 
@@ -844,14 +844,14 @@ LABEL_86:
       JreThrowNullPointerException();
     }
 
-    [*p_nodeAddress setWithInt:*(a3 + 10) withLong:v38];
-    return *(a3 + 5);
+    [*p_nodeAddress setWithInt:*(builder + 10) withLong:v38];
+    return *(builder + 5);
   }
 
   return v38;
 }
 
-- (id)getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3
+- (id)getFirstArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc
 {
   outputs = self->outputs_;
   if (!outputs)
@@ -859,13 +859,13 @@ LABEL_86:
     goto LABEL_9;
   }
 
-  v6 = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
+  getNoOutput = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
   if (!self->emptyOutput_)
   {
-    if (a3)
+    if (arc)
     {
-      *(a3 + 40) = 2;
-      JreStrongAssign(a3 + 6, v6);
+      *(arc + 40) = 2;
+      JreStrongAssign(arc + 6, getNoOutput);
       goto LABEL_8;
     }
 
@@ -873,29 +873,29 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!arc)
   {
     goto LABEL_9;
   }
 
-  *(a3 + 40) = 3;
-  JreStrongAssign(a3 + 6, self->emptyOutput_);
-  if (self->emptyOutput_ != v6)
+  *(arc + 40) = 3;
+  JreStrongAssign(arc + 6, self->emptyOutput_);
+  if (self->emptyOutput_ != getNoOutput)
   {
-    *(a3 + 40) |= 0x20u;
+    *(arc + 40) |= 0x20u;
   }
 
 LABEL_8:
-  JreStrongAssign(a3 + 2, v6);
-  *(a3 + 4) = self->startNode_;
-  return a3;
+  JreStrongAssign(arc + 2, getNoOutput);
+  *(arc + 4) = self->startNode_;
+  return arc;
 }
 
-- (id)readLastTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5
+- (id)readLastTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_Arc:(id)t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
   if (atomic_load_explicit(OrgApacheLuceneUtilFstFST__initialized, memory_order_acquire))
   {
-    if (!a3)
+    if (!arc)
     {
       goto LABEL_34;
     }
@@ -904,29 +904,29 @@ LABEL_8:
   else
   {
     sub_100122538();
-    if (!a3)
+    if (!arc)
     {
       goto LABEL_34;
     }
   }
 
-  v9 = *(a3 + 4);
+  v9 = *(arc + 4);
   if (v9 <= 0)
   {
-    if (a4)
+    if (t_Arc)
     {
-      *(a4 + 2) = -1;
-      *(a4 + 4) = -1;
-      JreStrongAssign(a4 + 2, *(a3 + 6));
-      *(a4 + 40) = 2;
-      return a4;
+      *(t_Arc + 2) = -1;
+      *(t_Arc + 4) = -1;
+      JreStrongAssign(t_Arc + 2, *(arc + 6));
+      *(t_Arc + 40) = 2;
+      return t_Arc;
     }
 
 LABEL_34:
     JreThrowNullPointerException();
   }
 
-  if (!a5)
+  if (!reader)
   {
     goto LABEL_34;
   }
@@ -937,42 +937,42 @@ LABEL_34:
     v9 = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:?];
   }
 
-  [a5 setPositionWithLong:v9];
-  if (!a4)
+  [reader setPositionWithLong:v9];
+  if (!t_Arc)
   {
     goto LABEL_34;
   }
 
-  *(a4 + 3) = *(a3 + 4);
-  v11 = [a5 readByte];
-  if (v11 == 32)
+  *(t_Arc + 3) = *(arc + 4);
+  readByte = [reader readByte];
+  if (readByte == 32)
   {
-    *(a4 + 20) = [a5 readVInt];
+    *(t_Arc + 20) = [reader readVInt];
     if (self->packed_ || self->version__ >= 4)
     {
-      v12 = [a5 readVInt];
+      readVInt = [reader readVInt];
     }
 
     else
     {
-      v12 = [a5 readInt];
+      readVInt = [reader readInt];
     }
 
-    *(a4 + 18) = v12;
-    *(a4 + 8) = [a5 getPosition];
-    *(a4 + 19) = *(a4 + 20) - 2;
+    *(t_Arc + 18) = readVInt;
+    *(t_Arc + 8) = [reader getPosition];
+    *(t_Arc + 19) = *(t_Arc + 20) - 2;
   }
 
   else
   {
-    *(a4 + 40) = v11;
-    *(a4 + 18) = 0;
-    if (([a4 isLast] & 1) == 0)
+    *(t_Arc + 40) = readByte;
+    *(t_Arc + 18) = 0;
+    if (([t_Arc isLast] & 1) == 0)
     {
       do
       {
-        [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:a5];
-        if ([a4 flagWithInt:16])
+        [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:reader];
+        if ([t_Arc flagWithInt:16])
         {
           outputs = self->outputs_;
           if (!outputs)
@@ -980,10 +980,10 @@ LABEL_34:
             goto LABEL_34;
           }
 
-          [(OrgApacheLuceneUtilFstOutputs *)outputs skipOutputWithOrgApacheLuceneStoreDataInput:a5];
+          [(OrgApacheLuceneUtilFstOutputs *)outputs skipOutputWithOrgApacheLuceneStoreDataInput:reader];
         }
 
-        if ([a4 flagWithInt:32])
+        if ([t_Arc flagWithInt:32])
         {
           v14 = self->outputs_;
           if (!v14)
@@ -991,145 +991,145 @@ LABEL_34:
             goto LABEL_34;
           }
 
-          [(OrgApacheLuceneUtilFstOutputs *)v14 skipFinalOutputWithOrgApacheLuceneStoreDataInput:a5];
+          [(OrgApacheLuceneUtilFstOutputs *)v14 skipFinalOutputWithOrgApacheLuceneStoreDataInput:reader];
         }
 
-        if (([a4 flagWithInt:8] & 1) == 0 && (objc_msgSend(a4, "flagWithInt:", 4) & 1) == 0)
+        if (([t_Arc flagWithInt:8] & 1) == 0 && (objc_msgSend(t_Arc, "flagWithInt:", 4) & 1) == 0)
         {
           if (self->packed_ || self->version__ > 3)
           {
-            [a5 readVLong];
+            [reader readVLong];
           }
 
           else
           {
-            [a5 readInt];
+            [reader readInt];
           }
         }
 
-        *(a4 + 40) = [a5 readByte];
+        *(t_Arc + 40) = [reader readByte];
       }
 
-      while (![a4 isLast]);
+      while (![t_Arc isLast]);
     }
 
-    [a5 skipBytesWithLong:-1];
-    *(a4 + 7) = [a5 getPosition];
+    [reader skipBytesWithLong:-1];
+    *(t_Arc + 7) = [reader getPosition];
   }
 
-  [(OrgApacheLuceneUtilFstFST *)self readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:a4 withOrgApacheLuceneUtilFstFST_BytesReader:a5];
-  return a4;
+  [(OrgApacheLuceneUtilFstFST *)self readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:reader];
+  return t_Arc;
 }
 
-- (int64_t)readUnpackedNodeTargetWithOrgApacheLuceneUtilFstFST_BytesReader:(id)a3
+- (int64_t)readUnpackedNodeTargetWithOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
   if (self->version__ <= 3)
   {
-    if (a3)
+    if (reader)
     {
-      return [a3 readInt];
+      return [reader readInt];
     }
 
 LABEL_8:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!reader)
   {
     goto LABEL_8;
   }
 
-  return [a3 readVLong];
+  return [reader readVLong];
 }
 
-- (id)readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5
+- (id)readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_Arc:(id)t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
-  if (!a3)
+  if (!arc)
   {
     goto LABEL_11;
   }
 
-  if ([a3 isFinal])
+  if ([arc isFinal])
   {
-    if (a4)
+    if (t_Arc)
     {
-      *(a4 + 2) = -1;
-      JreStrongAssign(a4 + 2, *(a3 + 6));
-      *(a4 + 40) = 1;
-      v9 = *(a3 + 4);
+      *(t_Arc + 2) = -1;
+      JreStrongAssign(t_Arc + 2, *(arc + 6));
+      *(t_Arc + 40) = 1;
+      v9 = *(arc + 4);
       if (v9 <= 0)
       {
-        *(a4 + 40) = 3;
+        *(t_Arc + 40) = 3;
       }
 
       else
       {
-        *(a4 + 3) = v9;
-        *(a4 + 7) = *(a3 + 4);
+        *(t_Arc + 3) = v9;
+        *(t_Arc + 7) = *(arc + 4);
       }
 
-      *(a4 + 4) = -1;
-      return a4;
+      *(t_Arc + 4) = -1;
+      return t_Arc;
     }
 
 LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v10 = *(a3 + 4);
+  v10 = *(arc + 4);
 
-  return [(OrgApacheLuceneUtilFstFST *)self readFirstRealTargetArcWithLong:v10 withOrgApacheLuceneUtilFstFST_Arc:a4 withOrgApacheLuceneUtilFstFST_BytesReader:a5];
+  return [(OrgApacheLuceneUtilFstFST *)self readFirstRealTargetArcWithLong:v10 withOrgApacheLuceneUtilFstFST_Arc:t_Arc withOrgApacheLuceneUtilFstFST_BytesReader:reader];
 }
 
-- (id)readFirstRealTargetArcWithLong:(int64_t)a3 withOrgApacheLuceneUtilFstFST_Arc:(id)a4 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a5
+- (id)readFirstRealTargetArcWithLong:(int64_t)long withOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
   nodeAddress = self->nodeAddress_;
-  v10 = a3;
+  longCopy = long;
   if (nodeAddress)
   {
-    v10 = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:a3];
+    longCopy = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:long];
   }
 
-  if (!a5 || ([a5 setPositionWithLong:v10], !a4))
+  if (!reader || ([reader setPositionWithLong:longCopy], !arc))
   {
     JreThrowNullPointerException();
   }
 
-  *(a4 + 3) = a3;
-  if ([a5 readByte] == 32)
+  *(arc + 3) = long;
+  if ([reader readByte] == 32)
   {
-    *(a4 + 20) = [a5 readVInt];
+    *(arc + 20) = [reader readVInt];
     if (self->packed_ || self->version__ >= 4)
     {
-      v11 = [a5 readVInt];
+      readVInt = [reader readVInt];
     }
 
     else
     {
-      v11 = [a5 readInt];
+      readVInt = [reader readInt];
     }
 
-    *(a4 + 18) = v11;
-    *(a4 + 19) = -1;
-    v12 = [a5 getPosition];
-    *(a4 + 7) = v12;
-    *(a4 + 8) = v12;
+    *(arc + 18) = readVInt;
+    *(arc + 19) = -1;
+    getPosition = [reader getPosition];
+    *(arc + 7) = getPosition;
+    *(arc + 8) = getPosition;
   }
 
   else
   {
-    *(a4 + 7) = v10;
-    *(a4 + 18) = 0;
+    *(arc + 7) = longCopy;
+    *(arc + 18) = 0;
   }
 
-  return [(OrgApacheLuceneUtilFstFST *)self readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:a4 withOrgApacheLuceneUtilFstFST_BytesReader:a5];
+  return [(OrgApacheLuceneUtilFstFST *)self readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:arc withOrgApacheLuceneUtilFstFST_BytesReader:reader];
 }
 
-- (BOOL)isExpandedTargetWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4
+- (BOOL)isExpandedTargetWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
   if (atomic_load_explicit(OrgApacheLuceneUtilFstFST__initialized, memory_order_acquire))
   {
-    if (!a3)
+    if (!arc)
     {
       goto LABEL_10;
     }
@@ -1138,19 +1138,19 @@ LABEL_11:
   else
   {
     sub_100122538();
-    if (!a3)
+    if (!arc)
     {
       goto LABEL_10;
     }
   }
 
-  v7 = *(a3 + 4);
+  v7 = *(arc + 4);
   if (v7 < 1)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!reader)
   {
 LABEL_10:
     JreThrowNullPointerException();
@@ -1162,20 +1162,20 @@ LABEL_10:
     v7 = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:?];
   }
 
-  [a4 setPositionWithLong:v7];
-  return [a4 readByte] == 32;
+  [reader setPositionWithLong:v7];
+  return [reader readByte] == 32;
 }
 
-- (id)readNextArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4
+- (id)readNextArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
-  if (!a3)
+  if (!arc)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) == -1)
+  if (*(arc + 2) == -1)
   {
-    if (*(a3 + 7) <= 0)
+    if (*(arc + 7) <= 0)
     {
       v5 = new_JavaLangIllegalArgumentException_initWithNSString_(@"cannot readNextArc when arc.isLast()=true");
       objc_exception_throw(v5);
@@ -1191,51 +1191,51 @@ LABEL_10:
   }
 }
 
-- (int)readNextArcLabelWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4
+- (int)readNextArcLabelWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
-  if (*(a3 + 2) == -1)
+  if (*(arc + 2) == -1)
   {
-    v7 = *(a3 + 7);
+    v7 = *(arc + 7);
     nodeAddress = self->nodeAddress_;
     if (nodeAddress)
     {
       v7 = [(OrgApacheLuceneUtilPackedGrowableWriter *)nodeAddress getWithInt:v7];
     }
 
-    if (!a4)
+    if (!reader)
     {
       goto LABEL_20;
     }
 
-    [a4 setPositionWithLong:v7];
-    if ([a4 readByte] == 32)
+    [reader setPositionWithLong:v7];
+    if ([reader readByte] == 32)
     {
-      [a4 readVInt];
+      [reader readVInt];
       if (self->packed_ || self->version__ >= 4)
       {
-        [a4 readVInt];
+        [reader readVInt];
       }
 
       else
       {
-        [a4 readInt];
+        [reader readInt];
       }
 
       goto LABEL_16;
     }
 
-    v10 = a4;
+    readerCopy2 = reader;
     v9 = v7;
   }
 
   else
   {
-    if (*(a3 + 18))
+    if (*(arc + 18))
     {
-      if (a4)
+      if (reader)
       {
-        [a4 setPositionWithLong:*(a3 + 8)];
-        [a4 skipBytesWithLong:*(a3 + 18) + *(a3 + 18) * *(a3 + 19)];
+        [reader setPositionWithLong:*(arc + 8)];
+        [reader skipBytesWithLong:*(arc + 18) + *(arc + 18) * *(arc + 19)];
         goto LABEL_16;
       }
 
@@ -1243,54 +1243,54 @@ LABEL_20:
       JreThrowNullPointerException();
     }
 
-    if (!a4)
+    if (!reader)
     {
       goto LABEL_20;
     }
 
-    v9 = *(a3 + 7);
-    v10 = a4;
+    v9 = *(arc + 7);
+    readerCopy2 = reader;
   }
 
-  [v10 setPositionWithLong:v9];
+  [readerCopy2 setPositionWithLong:v9];
 LABEL_16:
-  [a4 readByte];
+  [reader readByte];
 
-  return [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:a4];
+  return [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:reader];
 }
 
-- (id)readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withOrgApacheLuceneUtilFstFST_BytesReader:(id)a4
+- (id)readNextRealArcWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withOrgApacheLuceneUtilFstFST_BytesReader:(id)reader
 {
-  if (!a3)
+  if (!arc)
   {
     goto LABEL_41;
   }
 
-  if (*(a3 + 18))
+  if (*(arc + 18))
   {
-    ++*(a3 + 19);
-    if (!a4)
+    ++*(arc + 19);
+    if (!reader)
     {
       goto LABEL_41;
     }
 
-    [a4 setPositionWithLong:*(a3 + 8)];
-    [a4 skipBytesWithLong:*(a3 + 18) * *(a3 + 19)];
+    [reader setPositionWithLong:*(arc + 8)];
+    [reader skipBytesWithLong:*(arc + 18) * *(arc + 19)];
   }
 
   else
   {
-    if (!a4)
+    if (!reader)
     {
       goto LABEL_41;
     }
 
-    [a4 setPositionWithLong:*(a3 + 7)];
+    [reader setPositionWithLong:*(arc + 7)];
   }
 
-  *(a3 + 40) = [a4 readByte];
-  *(a3 + 2) = [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:a4];
-  v7 = [a3 flagWithInt:16];
+  *(arc + 40) = [reader readByte];
+  *(arc + 2) = [(OrgApacheLuceneUtilFstFST *)self readLabelWithOrgApacheLuceneStoreDataInput:reader];
+  v7 = [arc flagWithInt:16];
   outputs = self->outputs_;
   if (v7)
   {
@@ -1299,7 +1299,7 @@ LABEL_16:
       goto LABEL_41;
     }
 
-    v9 = [(OrgApacheLuceneUtilFstOutputs *)outputs readWithOrgApacheLuceneStoreDataInput:a4];
+    getNoOutput = [(OrgApacheLuceneUtilFstOutputs *)outputs readWithOrgApacheLuceneStoreDataInput:reader];
   }
 
   else
@@ -1309,11 +1309,11 @@ LABEL_16:
       goto LABEL_41;
     }
 
-    v9 = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
+    getNoOutput = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
   }
 
-  JreStrongAssign(a3 + 2, v9);
-  v10 = [a3 flagWithInt:32];
+  JreStrongAssign(arc + 2, getNoOutput);
+  v10 = [arc flagWithInt:32];
   v11 = self->outputs_;
   if (v10)
   {
@@ -1322,7 +1322,7 @@ LABEL_16:
       goto LABEL_41;
     }
 
-    v12 = [(OrgApacheLuceneUtilFstOutputs *)v11 readFinalOutputWithOrgApacheLuceneStoreDataInput:a4];
+    getNoOutput2 = [(OrgApacheLuceneUtilFstOutputs *)v11 readFinalOutputWithOrgApacheLuceneStoreDataInput:reader];
   }
 
   else
@@ -1332,54 +1332,54 @@ LABEL_16:
       goto LABEL_41;
     }
 
-    v12 = [(OrgApacheLuceneUtilFstOutputs *)v11 getNoOutput];
+    getNoOutput2 = [(OrgApacheLuceneUtilFstOutputs *)v11 getNoOutput];
   }
 
-  JreStrongAssign(a3 + 6, v12);
-  if ([a3 flagWithInt:8])
+  JreStrongAssign(arc + 6, getNoOutput2);
+  if ([arc flagWithInt:8])
   {
-    *(a3 + 4) = ([a3 flagWithInt:1] << 63) >> 63;
+    *(arc + 4) = ([arc flagWithInt:1] << 63) >> 63;
 LABEL_36:
-    v13 = [a4 getPosition];
+    getPosition = [reader getPosition];
     v18 = 56;
     goto LABEL_40;
   }
 
-  if (![a3 flagWithInt:4])
+  if (![arc flagWithInt:4])
   {
     if (!self->packed_)
     {
       if (self->version__ <= 3)
       {
-        v15 = [a4 readInt];
+        readInt = [reader readInt];
         goto LABEL_35;
       }
 
-      v17 = [a4 readVLong];
+      readVLong = [reader readVLong];
 LABEL_34:
-      v15 = v17;
+      readInt = readVLong;
       goto LABEL_35;
     }
 
-    v14 = [a4 getPosition];
-    v15 = [a4 readVLong];
-    if ([a3 flagWithInt:64])
+    getPosition2 = [reader getPosition];
+    readInt = [reader readVLong];
+    if ([arc flagWithInt:64])
     {
-      v15 += v14;
+      readInt += getPosition2;
 LABEL_35:
-      *(a3 + 4) = v15;
+      *(arc + 4) = readInt;
       goto LABEL_36;
     }
 
     nodeRefToAddress = self->nodeRefToAddress_;
     if (nodeRefToAddress)
     {
-      if (v15 >= [(OrgApacheLuceneUtilPackedPackedInts_Reader *)nodeRefToAddress size])
+      if (readInt >= [(OrgApacheLuceneUtilPackedPackedInts_Reader *)nodeRefToAddress size])
       {
         goto LABEL_35;
       }
 
-      v17 = [(OrgApacheLuceneUtilPackedPackedInts_Reader *)self->nodeRefToAddress_ getWithInt:v15];
+      readVLong = [(OrgApacheLuceneUtilPackedPackedInts_Reader *)self->nodeRefToAddress_ getWithInt:readInt];
       goto LABEL_34;
     }
 
@@ -1387,57 +1387,57 @@ LABEL_41:
     JreThrowNullPointerException();
   }
 
-  *(a3 + 7) = [a4 getPosition];
+  *(arc + 7) = [reader getPosition];
   if (self->nodeAddress_)
   {
-    v13 = (*(a3 + 3) - 1);
+    getPosition = (*(arc + 3) - 1);
   }
 
   else
   {
-    if (([a3 flagWithInt:2] & 1) == 0)
+    if (([arc flagWithInt:2] & 1) == 0)
     {
-      if (*(a3 + 18))
+      if (*(arc + 18))
       {
-        [a4 setPositionWithLong:*(a3 + 8)];
-        [a4 skipBytesWithLong:*(a3 + 20) * *(a3 + 18)];
+        [reader setPositionWithLong:*(arc + 8)];
+        [reader skipBytesWithLong:*(arc + 20) * *(arc + 18)];
       }
 
       else
       {
-        sub_100120BBC(self, a4);
+        sub_100120BBC(self, reader);
       }
     }
 
-    v13 = [a4 getPosition];
+    getPosition = [reader getPosition];
   }
 
   v18 = 32;
 LABEL_40:
-  *(a3 + v18) = v13;
-  return a3;
+  *(arc + v18) = getPosition;
+  return arc;
 }
 
-- (BOOL)shouldExpandWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4
+- (BOOL)shouldExpandWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node
 {
-  if (!a3)
+  if (!builder)
   {
     goto LABEL_10;
   }
 
-  if (*(a3 + 48) != 1)
+  if (*(builder + 48) != 1)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!node)
   {
 LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v4 = *(a4 + 4);
-  if (*(a4 + 14) < 4)
+  v4 = *(node + 4);
+  if (*(node + 14) < 4)
   {
     return v4 > 4;
   }
@@ -1493,7 +1493,7 @@ LABEL_17:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilFstFST_class_();
     qword_100554750 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

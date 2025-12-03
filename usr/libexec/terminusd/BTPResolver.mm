@@ -1,19 +1,19 @@
 @interface BTPResolver
 - (BOOL)start;
-- (BTPResolver)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 name:(id)a5 type:(id)a6 domain:(id)a7;
+- (BTPResolver)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex name:(id)name type:(id)type domain:(id)domain;
 - (void)dealloc;
-- (void)handleReplyFullName:(id)a3 hostTarget:(id)a4 port:(unsigned __int16)a5 txtRecord:(id)a6 ifIndex:(unsigned int)a7;
+- (void)handleReplyFullName:(id)name hostTarget:(id)target port:(unsigned __int16)port txtRecord:(id)record ifIndex:(unsigned int)index;
 - (void)stop;
 @end
 
 @implementation BTPResolver
 
-- (void)handleReplyFullName:(id)a3 hostTarget:(id)a4 port:(unsigned __int16)a5 txtRecord:(id)a6 ifIndex:(unsigned int)a7
+- (void)handleReplyFullName:(id)name hostTarget:(id)target port:(unsigned __int16)port txtRecord:(id)record ifIndex:(unsigned int)index
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (self->_srcIfIndex == a7)
+  nameCopy = name;
+  targetCopy = target;
+  recordCopy = record;
+  if (self->_srcIfIndex == index)
   {
     if (qword_100228F30 != -1)
     {
@@ -33,8 +33,8 @@
       _NRLogWithArgs();
     }
 
-    LOWORD(v16) = a5;
-    v14 = [[BTPAdvertiser alloc] initWithSrcIfIndex:self->_srcIfIndex dstIfIndex:self->_dstIfIndex name:self->_bonjourName type:self->_bonjourType domain:self->_bonjourDomain hostTarget:v12 port:v16 txtRecord:v13];
+    LOWORD(v16) = port;
+    v14 = [[BTPAdvertiser alloc] initWithSrcIfIndex:self->_srcIfIndex dstIfIndex:self->_dstIfIndex name:self->_bonjourName type:self->_bonjourType domain:self->_bonjourDomain hostTarget:targetCopy port:v16 txtRecord:recordCopy];
     v15 = v14;
     if (v14)
     {
@@ -227,11 +227,11 @@
   return result;
 }
 
-- (BTPResolver)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 name:(id)a5 type:(id)a6 domain:(id)a7
+- (BTPResolver)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex name:(id)name type:(id)type domain:(id)domain
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
   v22.receiver = self;
   v22.super_class = BTPResolver;
   v16 = [(BTPResolver *)&v22 init];
@@ -239,11 +239,11 @@
   if (v16)
   {
     v16->_sdRefResolve = 0;
-    v16->_srcIfIndex = a3;
-    v16->_dstIfIndex = a4;
-    objc_storeStrong(&v16->_bonjourName, a5);
-    objc_storeStrong(&v17->_bonjourType, a6);
-    objc_storeStrong(&v17->_bonjourDomain, a7);
+    v16->_srcIfIndex = index;
+    v16->_dstIfIndex = ifIndex;
+    objc_storeStrong(&v16->_bonjourName, name);
+    objc_storeStrong(&v17->_bonjourType, type);
+    objc_storeStrong(&v17->_bonjourDomain, domain);
     v18 = +[NSMutableArray array];
     advertisers = v17->_advertisers;
     v17->_advertisers = v18;

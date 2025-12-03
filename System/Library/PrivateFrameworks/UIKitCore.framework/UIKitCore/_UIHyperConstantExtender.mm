@@ -1,75 +1,75 @@
 @interface _UIHyperConstantExtender
-- (BOOL)isEqual:(id)a3;
-- (_UIHyperConstantExtender)initWithCoder:(id)a3;
-- (_UIHyperConstantExtender)initWithDimensions:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_getExtentVector:(double *)a3 forUnconstrainedPoint:(const double *)a4 closestPoint:(const double *)a5;
-- (void)_setMaximumDistance:(double)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIHyperConstantExtender)initWithCoder:(id)coder;
+- (_UIHyperConstantExtender)initWithDimensions:(unint64_t)dimensions;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_getExtentVector:(double *)vector forUnconstrainedPoint:(const double *)point closestPoint:(const double *)closestPoint;
+- (void)_setMaximumDistance:(double)distance;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIHyperConstantExtender
 
-- (_UIHyperConstantExtender)initWithDimensions:(unint64_t)a3
+- (_UIHyperConstantExtender)initWithDimensions:(unint64_t)dimensions
 {
   v5.receiver = self;
   v5.super_class = _UIHyperConstantExtender;
   result = [(_UIHyperConstantExtender *)&v5 init];
   if (result)
   {
-    result->__dimensions = a3;
+    result->__dimensions = dimensions;
     result->__maximumDistance = 50.0;
   }
 
   return result;
 }
 
-- (void)_setMaximumDistance:(double)a3
+- (void)_setMaximumDistance:(double)distance
 {
-  if (self->__maximumDistance != a3)
+  if (self->__maximumDistance != distance)
   {
     [(_UIHyperConstantExtender *)self willChangeValueForKey:@"_maximumDistance"];
-    self->__maximumDistance = a3;
-    if (a3 < 0.0)
+    self->__maximumDistance = distance;
+    if (distance < 0.0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"_UIHyperExtender.m" lineNumber:39 description:@"_maximumDistance must be greater than or equal to 0.0"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperExtender.m" lineNumber:39 description:@"_maximumDistance must be greater than or equal to 0.0"];
     }
 
     [(_UIHyperConstantExtender *)self didChangeValueForKey:@"_maximumDistance"];
   }
 }
 
-- (void)_getExtentVector:(double *)a3 forUnconstrainedPoint:(const double *)a4 closestPoint:(const double *)a5
+- (void)_getExtentVector:(double *)vector forUnconstrainedPoint:(const double *)point closestPoint:(const double *)closestPoint
 {
-  vDSP_vsubD(a5, 1, a4, 1, a3, 1, self->__dimensions);
+  vDSP_vsubD(closestPoint, 1, point, 1, vector, 1, self->__dimensions);
   maximumDistance = self->__maximumDistance;
   cblas_dnrm2_NEWLAPACK();
   dimensions = self->__dimensions;
   __B = maximumDistance / v9;
-  vDSP_vsmulD(a3, 1, &__B, a3, 1, dimensions);
+  vDSP_vsmulD(vector, 1, &__B, vector, 1, dimensions);
 }
 
-- (_UIHyperConstantExtender)initWithCoder:(id)a3
+- (_UIHyperConstantExtender)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[_UIHyperConstantExtender initWithDimensions:](self, "initWithDimensions:", [v4 decodeIntegerForKey:@"_dimensions"]);
-  [v4 decodeDoubleForKey:@"_maximumDistance"];
+  coderCopy = coder;
+  v5 = -[_UIHyperConstantExtender initWithDimensions:](self, "initWithDimensions:", [coderCopy decodeIntegerForKey:@"_dimensions"]);
+  [coderCopy decodeDoubleForKey:@"_maximumDistance"];
   v7 = v6;
 
   [(_UIHyperConstantExtender *)v5 _setMaximumDistance:v7];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dimensions = self->__dimensions;
-  v5 = a3;
-  [v5 encodeInteger:dimensions forKey:@"_dimensions"];
-  [v5 encodeDouble:@"_maximumDistance" forKey:self->__maximumDistance];
+  coderCopy = coder;
+  [coderCopy encodeInteger:dimensions forKey:@"_dimensions"];
+  [coderCopy encodeDouble:@"_maximumDistance" forKey:self->__maximumDistance];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIHyperConstantExtender alloc] initWithDimensions:[(_UIHyperConstantExtender *)self _dimensions]];
   [(_UIHyperConstantExtender *)self _maximumDistance];
@@ -77,15 +77,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIHyperConstantExtender *)self _dimensions];
-    if (v6 == [v5 _dimensions])
+    v5 = equalCopy;
+    _dimensions = [(_UIHyperConstantExtender *)self _dimensions];
+    if (_dimensions == [v5 _dimensions])
     {
       [(_UIHyperConstantExtender *)self _maximumDistance];
       v8 = v7;

@@ -5,20 +5,20 @@
 - (id)createAssetsDataSourceManager;
 - (id)createInitialDataSource;
 - (id)imageProvider;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (id)socialLayerHighlightProvider;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 @end
 
 @implementation PXContentSyndicationMockSingleAssetsDataSourceManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PXSectionedDataSourceManager *)self dataSource];
-  if (v9)
+  queueCopy = queue;
+  infoCopy = info;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -26,64 +26,64 @@
       goto LABEL_3;
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v26 = NSStringFromClass(v27);
-    v28 = [v9 px_descriptionForAssertionMessage];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationMockSingleAssetsDataSource.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v26, v28}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationMockSingleAssetsDataSource.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v26, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    [v24 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationMockSingleAssetsDataSource.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationMockSingleAssetsDataSource.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v26}];
   }
 
 LABEL_3:
-  v10 = [v8 objectForKeyedSubscript:@"currentDataSource"];
+  v10 = [infoCopy objectForKeyedSubscript:@"currentDataSource"];
 
-  if (v10 == v9)
+  if (v10 == dataSource)
   {
-    v11 = [v8 objectForKeyedSubscript:@"preparedDataSource"];
-    v12 = [v8 objectForKeyedSubscript:@"preparedChangeDetails"];
+    v11 = [infoCopy objectForKeyedSubscript:@"preparedDataSource"];
+    v12 = [infoCopy objectForKeyedSubscript:@"preparedChangeDetails"];
   }
 
   else
   {
     v30 = 0;
-    v11 = [v9 dataSourceUpdatedWithChange:v7 changeDetails:&v30];
+    v11 = [dataSource dataSourceUpdatedWithChange:queueCopy changeDetails:&v30];
     v12 = v30;
   }
 
   v13 = v12;
-  if (v11 != v9)
+  if (v11 != dataSource)
   {
     v14 = [off_1E77218B0 alloc];
-    v15 = [v9 identifier];
-    v29 = v8;
-    v16 = self;
-    v17 = v7;
-    v18 = [v11 identifier];
-    v19 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    v29 = infoCopy;
+    selfCopy = self;
+    v17 = queueCopy;
+    identifier2 = [v11 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v31 = &unk_1F1909940;
     v32[0] = v13;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v21 = v18;
-    v7 = v17;
-    v22 = [v14 initWithFromDataSourceIdentifier:v15 toDataSourceIdentifier:v21 sectionChanges:v19 itemChangeDetailsBySection:v20 subitemChangeDetailsByItemBySection:0];
+    v21 = identifier2;
+    queueCopy = v17;
+    v22 = [v14 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:v21 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v20 subitemChangeDetailsByItemBySection:0];
 
-    v23 = v16;
-    v8 = v29;
+    v23 = selfCopy;
+    infoCopy = v29;
     [(PXSectionedDataSourceManager *)v23 setDataSource:v11 changeDetails:v22];
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -100,7 +100,7 @@ LABEL_3:
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v6 = v15[5];
   v12 = 0;
-  v7 = [v6 dataSourceUpdatedWithChange:v5 changeDetails:&v12];
+  v7 = [v6 dataSourceUpdatedWithChange:changeCopy changeDetails:&v12];
   v8 = v12;
   v9 = v15[5];
   v20[0] = @"currentDataSource";
@@ -155,11 +155,11 @@ LABEL_3:
 - (id)createAssetsDataSourceManager
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXSectionedDataSourceManager *)self dataSource];
-  v5 = v4;
-  if (v4)
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  v5 = dataSource;
+  if (dataSource)
   {
-    [v4 firstItemIndexPath];
+    [dataSource firstItemIndexPath];
   }
 
   else
@@ -240,8 +240,8 @@ void __86__PXContentSyndicationMockSingleAssetsDataSourceManager_createAssetsDat
 
 - (id)createInitialDataSource
 {
-  v3 = [(PHFetchResult *)self->_allPhotosFetchResult photoLibrary];
-  [v3 px_registerChangeObserver:self];
+  photoLibrary = [(PHFetchResult *)self->_allPhotosFetchResult photoLibrary];
+  [photoLibrary px_registerChangeObserver:self];
   v4 = [[PXContentSyndicationMockSingleAssetsDataSource alloc] initWithFetchResult:self->_allPhotosFetchResult];
 
   return v4;
@@ -261,19 +261,19 @@ void __86__PXContentSyndicationMockSingleAssetsDataSourceManager_createAssetsDat
   v3 = +[PXContentSyndicationSettings sharedInstance];
   if ([v3 useUserLibraryForSyndicatedAssets])
   {
-    v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v5 = 0;
-    if (v4)
+    if (px_deprecated_appPhotoLibrary)
     {
 LABEL_4:
       photoLibrary = v2->_photoLibrary;
-      v2->_photoLibrary = v4;
-      v7 = v4;
+      v2->_photoLibrary = px_deprecated_appPhotoLibrary;
+      v7 = px_deprecated_appPhotoLibrary;
 
       v8 = +[PXContentSyndicationSettings sharedInstance];
-      v9 = [v8 maxNumberOfBatches];
+      maxNumberOfBatches = [v8 maxNumberOfBatches];
 
-      v10 = PXContentSyndicationMockSingleAssetsFetchResult(v2->_photoLibrary, 0, v9);
+      v10 = PXContentSyndicationMockSingleAssetsFetchResult(v2->_photoLibrary, 0, maxNumberOfBatches);
       allPhotosFetchResult = v2->_allPhotosFetchResult;
       v2->_allPhotosFetchResult = v10;
 
@@ -286,9 +286,9 @@ LABEL_5:
   else
   {
     v15 = 0;
-    v4 = [MEMORY[0x1E69789A8] openPhotoLibraryWithWellKnownIdentifier:3 error:&v15];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] openPhotoLibraryWithWellKnownIdentifier:3 error:&v15];
     v5 = v15;
-    if (v4)
+    if (px_deprecated_appPhotoLibrary)
     {
       goto LABEL_4;
     }

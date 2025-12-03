@@ -1,16 +1,16 @@
 @interface HACCBatteryView
-- (HACCBatteryView)initWithFrame:(CGRect)a3;
-- (void)setValue:(double)a3 forEar:(int)a4;
+- (HACCBatteryView)initWithFrame:(CGRect)frame;
+- (void)setValue:(double)value forEar:(int)ear;
 @end
 
 @implementation HACCBatteryView
 
-- (HACCBatteryView)initWithFrame:(CGRect)a3
+- (HACCBatteryView)initWithFrame:(CGRect)frame
 {
   v48[1] = *MEMORY[0x277D85DE8];
   v46.receiver = self;
   v46.super_class = HACCBatteryView;
-  v3 = [(HACCBatteryView *)&v46 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HACCBatteryView *)&v46 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -31,8 +31,8 @@
     [(UILabel *)v10 setFont:v12];
 
     v13 = v3->_sideLabel;
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v13 setTextColor:v14];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v13 setTextColor:whiteColor];
 
     [(UILabel *)v3->_sideLabel setTextAlignment:2];
     [(UILabel *)v3->_sideLabel setClipsToBounds:0];
@@ -54,8 +54,8 @@
     [(UILabel *)v20 setFont:v22];
 
     v23 = v3->_valueLabel;
-    v24 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v23 setTextColor:v24];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v23 setTextColor:whiteColor2];
 
     [(UILabel *)v3->_valueLabel setTextAlignment:0];
     [(UILabel *)v3->_valueLabel setClipsToBounds:0];
@@ -71,16 +71,16 @@
     v3->_batteryView = v28;
 
     v30 = v3->_batteryView;
-    v31 = [MEMORY[0x277D75348] whiteColor];
-    [(_UIBatteryView *)v30 setFillColor:v31];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(_UIBatteryView *)v30 setFillColor:whiteColor3];
 
     v32 = v3->_batteryView;
-    v33 = [MEMORY[0x277D75348] whiteColor];
-    [(_UIBatteryView *)v32 setBodyColor:v33];
+    whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+    [(_UIBatteryView *)v32 setBodyColor:whiteColor4];
 
     v34 = v3->_batteryView;
-    v35 = [MEMORY[0x277D75348] whiteColor];
-    [(_UIBatteryView *)v34 setPinColor:v35];
+    whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+    [(_UIBatteryView *)v34 setPinColor:whiteColor5];
 
     [(_UIBatteryView *)v3->_batteryView setChargePercent:1.0];
     [(HACCBatteryView *)v3 addSubview:v3->_batteryView];
@@ -108,13 +108,13 @@
   return v3;
 }
 
-- (void)setValue:(double)a3 forEar:(int)a4
+- (void)setValue:(double)value forEar:(int)ear
 {
-  if (a4 <= 3)
+  if (ear <= 3)
   {
-    if (a4)
+    if (ear)
     {
-      if (a4 != 2)
+      if (ear != 2)
       {
         goto LABEL_10;
       }
@@ -128,9 +128,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a4 != 4)
+  if (ear != 4)
   {
-    if (a4 != 6)
+    if (ear != 6)
     {
       goto LABEL_10;
     }
@@ -146,13 +146,13 @@ LABEL_9:
 LABEL_10:
   valueLabel = self->_valueLabel;
   numberFormatter = self->_numberFormatter;
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   v11 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v10];
   [(UILabel *)valueLabel setText:v11];
 
   batteryView = self->_batteryView;
 
-  [(_UIBatteryView *)batteryView setChargePercent:a3];
+  [(_UIBatteryView *)batteryView setChargePercent:value];
 }
 
 @end

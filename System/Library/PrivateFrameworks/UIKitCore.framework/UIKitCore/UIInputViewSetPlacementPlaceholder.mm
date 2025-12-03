@@ -1,28 +1,28 @@
 @interface UIInputViewSetPlacementPlaceholder
-+ (id)placementWithHeight:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4;
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
++ (id)placementWithHeight:(double)height;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementPlaceholder
 
-+ (id)placementWithHeight:(double)a3
++ (id)placementWithHeight:(double)height
 {
   v4 = objc_alloc_init(UIInputViewSetPlacementPlaceholder);
   if (v4)
   {
-    v4->_height = a3;
+    v4->_height = height;
   }
 
   return v4;
 }
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [MEMORY[0x1E69977A0] constraintWithItem:a4 attribute:3 relatedBy:0 toItem:a5 attribute:4 multiplier:1.0 constant:-self->_height];
+    v6 = [MEMORY[0x1E69977A0] constraintWithItem:view attribute:3 relatedBy:0 toItem:containerView attribute:4 multiplier:1.0 constant:-self->_height];
   }
 
   else
@@ -33,11 +33,11 @@
   return v6;
 }
 
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v
 {
   v9.receiver = self;
   v9.super_class = UIInputViewSetPlacementPlaceholder;
-  [(UIInputViewSetPlacement *)&v9 remoteIntrinsicContentSizeForInputViewInSet:a3 includingIAV:a4];
+  [(UIInputViewSetPlacement *)&v9 remoteIntrinsicContentSizeForInputViewInSet:set includingIAV:v];
   height = self->_height;
   result.size.height = height;
   result.size.width = v7;
@@ -46,14 +46,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = UIInputViewSetPlacementPlaceholder;
-  if ([(UIInputViewSetPlacement *)&v7 isEqual:v4])
+  if ([(UIInputViewSetPlacement *)&v7 isEqual:equalCopy])
   {
-    v5 = v4[5] == self->_height;
+    v5 = equalCopy[5] == self->_height;
   }
 
   else

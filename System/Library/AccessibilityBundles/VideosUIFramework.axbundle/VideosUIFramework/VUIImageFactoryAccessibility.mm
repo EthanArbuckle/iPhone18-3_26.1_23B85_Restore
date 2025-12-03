@@ -1,27 +1,27 @@
 @interface VUIImageFactoryAccessibility
-+ (id)makeImageViewWithResourceDescriptor:(id)a3 existingView:(id)a4;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (id)makeImageViewWithResourceDescriptor:(id)descriptor existingView:(id)view;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation VUIImageFactoryAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIResourceImageDescriptor" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIImageFactory" hasClassMethod:@"makeImageViewWithResourceDescriptor:existingView:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIResourceImageDescriptor" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIImageFactory" hasClassMethod:@"makeImageViewWithResourceDescriptor:existingView:" withFullSignature:{"@", "@", "@", 0}];
 }
 
-+ (id)makeImageViewWithResourceDescriptor:(id)a3 existingView:(id)a4
++ (id)makeImageViewWithResourceDescriptor:(id)descriptor existingView:(id)view
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VUIImageFactoryAccessibility;
-  v5 = a3;
-  v6 = objc_msgSendSuper2(&v10, sel_makeImageViewWithResourceDescriptor_existingView_, v5, a4);
-  v7 = [v5 safeStringForKey:{@"name", v10.receiver, v10.super_class}];
+  descriptorCopy = descriptor;
+  v6 = objc_msgSendSuper2(&v10, sel_makeImageViewWithResourceDescriptor_existingView_, descriptorCopy, view);
+  v7 = [descriptorCopy safeStringForKey:{@"name", v10.receiver, v10.super_class}];
 
-  LODWORD(v5) = [v7 isEqualToString:@"AppleTV-Channels"];
-  if (v5)
+  LODWORD(descriptorCopy) = [v7 isEqualToString:@"AppleTV-Channels"];
+  if (descriptorCopy)
   {
     [v6 setIsAccessibilityElement:1];
     v8 = accessibilityLocalizedString(@"channels.AppleTV");

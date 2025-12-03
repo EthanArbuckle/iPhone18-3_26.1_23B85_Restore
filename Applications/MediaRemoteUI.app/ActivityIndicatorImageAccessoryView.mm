@@ -1,14 +1,14 @@
 @interface ActivityIndicatorImageAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithCoder:(id)a3;
-- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithCoder:(id)coder;
+- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ActivityIndicatorImageAccessoryView
 
-- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithCoder:(id)a3
+- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView_isActivityRunning) = 0;
   v3 = OBJC_IVAR____TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView_activityIndicatorView;
@@ -32,23 +32,23 @@
   [v4 setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView_imageView) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView_imageView) sizeThatFits:{fits.width, fits.height}];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  [(ActivityIndicatorImageAccessoryView *)self sizeThatFits:a4, a3.width, a3.height];
+  [(ActivityIndicatorImageAccessoryView *)self sizeThatFits:mode, fits.width, fits.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC13MediaRemoteUI35ActivityIndicatorImageAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

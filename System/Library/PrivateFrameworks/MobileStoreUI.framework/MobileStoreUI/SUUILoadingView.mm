@@ -1,21 +1,21 @@
 @interface SUUILoadingView
-+ (id)defaultLoadingTextWithClientContext:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUILoadingView)initWithFrame:(CGRect)a3;
++ (id)defaultLoadingTextWithClientContext:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUILoadingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setLoadingText:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setLoadingText:(id)text;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SUUILoadingView
 
-- (SUUILoadingView)initWithFrame:(CGRect)a3
+- (SUUILoadingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUILoadingView;
-  v3 = [(SUUILoadingView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUILoadingView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -29,11 +29,11 @@
   return v3;
 }
 
-+ (id)defaultLoadingTextWithClientContext:(id)a3
++ (id)defaultLoadingTextWithClientContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    [a3 localizedStringForKey:@"DEFAULT_LOADING_TEXT"];
+    [context localizedStringForKey:@"DEFAULT_LOADING_TEXT"];
   }
 
   else
@@ -45,32 +45,32 @@
   return v3;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  if (self->_colorScheme != a3)
+  if (self->_colorScheme != scheme)
   {
-    v4 = [a3 copy];
+    v4 = [scheme copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v4;
 
-    v6 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (!v6)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (!primaryTextColor)
     {
-      v6 = [MEMORY[0x277D75348] labelColor];
+      primaryTextColor = [MEMORY[0x277D75348] labelColor];
     }
 
-    v7 = v6;
-    [(UIActivityIndicatorView *)self->_spinner setColor:v6];
+    v7 = primaryTextColor;
+    [(UIActivityIndicatorView *)self->_spinner setColor:primaryTextColor];
     [(UILabel *)self->_label setTextColor:v7];
   }
 }
 
-- (void)setLoadingText:(id)a3
+- (void)setLoadingText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   label = self->_label;
-  v16 = v4;
-  if (v4)
+  v16 = textCopy;
+  if (textCopy)
   {
     if (!label)
     {
@@ -79,33 +79,33 @@
       self->_label = v6;
 
       v8 = self->_label;
-      v9 = [(SUUILoadingView *)self backgroundColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SUUILoadingView *)self backgroundColor];
+      [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
       v10 = self->_label;
       v11 = [MEMORY[0x277D74300] systemFontOfSize:11.0];
       [(UILabel *)v10 setFont:v11];
 
-      v12 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+      primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
       v13 = self->_label;
-      if (v12)
+      if (primaryTextColor)
       {
-        [(UILabel *)self->_label setTextColor:v12];
+        [(UILabel *)self->_label setTextColor:primaryTextColor];
       }
 
       else
       {
-        v15 = [MEMORY[0x277D75348] labelColor];
-        [(UILabel *)v13 setTextColor:v15];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UILabel *)v13 setTextColor:labelColor];
       }
 
       [(SUUILoadingView *)self addSubview:self->_label];
 
       label = self->_label;
-      v4 = v16;
+      textCopy = v16;
     }
 
-    [(UILabel *)label setText:v4];
+    [(UILabel *)label setText:textCopy];
     [(UILabel *)self->_label sizeToFit];
     [(SUUILoadingView *)self setNeedsLayout];
   }
@@ -143,23 +143,23 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setBackgroundColor:v5];
-  [(UIActivityIndicatorView *)self->_spinner setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)label setBackgroundColor:colorCopy];
+  [(UIActivityIndicatorView *)self->_spinner setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUILoadingView;
-  [(SUUILoadingView *)&v6 setBackgroundColor:v5];
+  [(SUUILoadingView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   spinner = self->_spinner;
   if (spinner)
   {
-    [(UIActivityIndicatorView *)spinner frame:a3.width];
+    [(UIActivityIndicatorView *)spinner frame:fits.width];
     width = v5;
     [(UIActivityIndicatorView *)self->_spinner frame];
     v8 = v7 + 0.0;
@@ -167,7 +167,7 @@
 
   else
   {
-    width = a3.width;
+    width = fits.width;
     v8 = 0.0;
   }
 
@@ -190,26 +190,26 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
-  v5 = [(UIActivityIndicatorView *)self->_spinner isAnimating];
-  if (v4)
+  superviewCopy = superview;
+  isAnimating = [(UIActivityIndicatorView *)self->_spinner isAnimating];
+  if (superviewCopy)
   {
-    if (!v5)
+    if (!isAnimating)
     {
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
     }
   }
 
-  else if (v5)
+  else if (isAnimating)
   {
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   }
 
   v6.receiver = self;
   v6.super_class = SUUILoadingView;
-  [(SUUILoadingView *)&v6 willMoveToSuperview:v4];
+  [(SUUILoadingView *)&v6 willMoveToSuperview:superviewCopy];
 }
 
 @end

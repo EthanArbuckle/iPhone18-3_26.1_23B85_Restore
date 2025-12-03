@@ -5,9 +5,9 @@
 - (_SFAppInfoOverlayPreferenceManager)appInfoOverlayPreferenceManager;
 - (_SFContentBlockersPreferenceManager)contentBlockersPreferenceManager;
 - (_SFPageZoomPreferenceManager)pageZoomPreferenceManager;
-- (_SFPerSitePreferencesVendor)initWithExtensionsController:(id)a3 profileProvider:(id)a4;
+- (_SFPerSitePreferencesVendor)initWithExtensionsController:(id)controller profileProvider:(id)provider;
 - (_SFRequestDesktopSitePreferenceManager)requestDesktopSitePreferenceManager;
-- (id)managerForPreference:(id)a3;
+- (id)managerForPreference:(id)preference;
 @end
 
 @implementation _SFPerSitePreferencesVendor
@@ -18,9 +18,9 @@
   if (!requestDesktopSitePreferenceManager)
   {
     v4 = [_SFRequestDesktopSitePreferenceManager alloc];
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
     v6 = +[_SFRequestDesktopSiteQuirksManager sharedManager];
-    v7 = [(_SFRequestDesktopSitePreferenceManager *)v4 initWithPerSitePreferencesStore:v5 quirksManager:v6];
+    v7 = [(_SFRequestDesktopSitePreferenceManager *)v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8] quirksManager:v6];
     v8 = self->_requestDesktopSitePreferenceManager;
     self->_requestDesktopSitePreferenceManager = v7;
 
@@ -30,18 +30,18 @@
   return requestDesktopSitePreferenceManager;
 }
 
-- (_SFPerSitePreferencesVendor)initWithExtensionsController:(id)a3 profileProvider:(id)a4
+- (_SFPerSitePreferencesVendor)initWithExtensionsController:(id)controller profileProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = _SFPerSitePreferencesVendor;
   v9 = [(_SFPerSitePreferencesVendor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extensionsController, a3);
-    objc_storeStrong(&v10->_profileProvider, a4);
+    objc_storeStrong(&v9->_extensionsController, controller);
+    objc_storeStrong(&v10->_profileProvider, provider);
     v11 = v10;
   }
 
@@ -54,8 +54,8 @@
   if (!automaticReaderPreferenceManager)
   {
     v4 = objc_alloc(MEMORY[0x1E69C8EA8]);
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v6 = [v4 initWithPerSitePreferencesStore:v5];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v6 = [v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8]];
     v7 = self->_automaticReaderPreferenceManager;
     self->_automaticReaderPreferenceManager = v6;
 
@@ -71,8 +71,8 @@
   if (!contentBlockersPreferenceManager)
   {
     v4 = [_SFContentBlockersPreferenceManager alloc];
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v6 = [(_SFContentBlockersPreferenceManager *)v4 initWithPerSitePreferencesStore:v5 extensionsController:self->_extensionsController];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v6 = [(_SFContentBlockersPreferenceManager *)v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8] extensionsController:self->_extensionsController];
     v7 = self->_contentBlockersPreferenceManager;
     self->_contentBlockersPreferenceManager = v6;
 
@@ -88,8 +88,8 @@
   if (!lockdownModePreferenceManager)
   {
     v4 = objc_alloc(MEMORY[0x1E69C8F70]);
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v6 = [v4 initWithPerSitePreferenceStore:v5];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v6 = [v4 initWithPerSitePreferenceStore:mEMORY[0x1E69C8FC8]];
     v7 = self->_lockdownModePreferenceManager;
     self->_lockdownModePreferenceManager = v6;
 
@@ -120,8 +120,8 @@
   if (!appInfoOverlayPreferenceManager)
   {
     v4 = [_SFAppInfoOverlayPreferenceManager alloc];
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v6 = [(_SFAppInfoOverlayPreferenceManager *)v4 initWithPerSitePreferencesStore:v5];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v6 = [(_SFAppInfoOverlayPreferenceManager *)v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8]];
     v7 = self->_appInfoOverlayPreferenceManager;
     self->_appInfoOverlayPreferenceManager = v6;
 
@@ -137,8 +137,8 @@
   if (!profilePreferenceManager)
   {
     v4 = objc_alloc(MEMORY[0x1E69C8FE8]);
-    v5 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v6 = [v4 initWithPerSitePreferencesStore:v5 profileProvider:self->_profileProvider];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v6 = [v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8] profileProvider:self->_profileProvider];
     v7 = self->_profilePreferenceManager;
     self->_profilePreferenceManager = v6;
 
@@ -148,69 +148,69 @@
   return profilePreferenceManager;
 }
 
-- (id)managerForPreference:(id)a3
+- (id)managerForPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   preferenceToManager = self->_preferenceToManager;
   if (!preferenceToManager)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_preferenceToManager;
-    self->_preferenceToManager = v6;
+    self->_preferenceToManager = dictionary;
 
-    v38 = [(_SFPerSitePreferencesVendor *)self automaticReaderActivationManager];
+    automaticReaderActivationManager = [(_SFPerSitePreferencesVendor *)self automaticReaderActivationManager];
     v8 = self->_preferenceToManager;
-    v9 = [v38 readerPreference];
-    [(NSMutableDictionary *)v8 setObject:v38 forKeyedSubscript:v9];
+    readerPreference = [automaticReaderActivationManager readerPreference];
+    [(NSMutableDictionary *)v8 setObject:automaticReaderActivationManager forKeyedSubscript:readerPreference];
 
-    v37 = [(_SFPerSitePreferencesVendor *)self contentBlockersPreferenceManager];
+    contentBlockersPreferenceManager = [(_SFPerSitePreferencesVendor *)self contentBlockersPreferenceManager];
     v10 = self->_preferenceToManager;
-    v11 = [v37 contentBlockersPreference];
-    [(NSMutableDictionary *)v10 setObject:v37 forKeyedSubscript:v11];
+    contentBlockersPreference = [contentBlockersPreferenceManager contentBlockersPreference];
+    [(NSMutableDictionary *)v10 setObject:contentBlockersPreferenceManager forKeyedSubscript:contentBlockersPreference];
 
-    v12 = [(_SFPerSitePreferencesVendor *)self sharedUserMediaPermissionController];
+    sharedUserMediaPermissionController = [(_SFPerSitePreferencesVendor *)self sharedUserMediaPermissionController];
     v13 = self->_preferenceToManager;
-    v14 = [v12 cameraMediaCapturePreference];
-    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+    cameraMediaCapturePreference = [sharedUserMediaPermissionController cameraMediaCapturePreference];
+    [(NSMutableDictionary *)v13 setObject:sharedUserMediaPermissionController forKeyedSubscript:cameraMediaCapturePreference];
 
     v15 = self->_preferenceToManager;
-    v16 = [v12 microphoneMediaCapturePreference];
-    [(NSMutableDictionary *)v15 setObject:v12 forKeyedSubscript:v16];
+    microphoneMediaCapturePreference = [sharedUserMediaPermissionController microphoneMediaCapturePreference];
+    [(NSMutableDictionary *)v15 setObject:sharedUserMediaPermissionController forKeyedSubscript:microphoneMediaCapturePreference];
 
-    v36 = [(_SFPerSitePreferencesVendor *)self sharedGeolocationPermissionManager];
+    sharedGeolocationPermissionManager = [(_SFPerSitePreferencesVendor *)self sharedGeolocationPermissionManager];
     v17 = self->_preferenceToManager;
-    v18 = [v36 geolocationPreference];
-    [(NSMutableDictionary *)v17 setObject:v36 forKeyedSubscript:v18];
+    geolocationPreference = [sharedGeolocationPermissionManager geolocationPreference];
+    [(NSMutableDictionary *)v17 setObject:sharedGeolocationPermissionManager forKeyedSubscript:geolocationPreference];
 
-    v19 = [(_SFPerSitePreferencesVendor *)self requestDesktopSitePreferenceManager];
+    requestDesktopSitePreferenceManager = [(_SFPerSitePreferencesVendor *)self requestDesktopSitePreferenceManager];
     v20 = self->_preferenceToManager;
-    v21 = [v19 requestDesktopSitePreference];
-    [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:v21];
+    requestDesktopSitePreference = [requestDesktopSitePreferenceManager requestDesktopSitePreference];
+    [(NSMutableDictionary *)v20 setObject:requestDesktopSitePreferenceManager forKeyedSubscript:requestDesktopSitePreference];
 
-    v22 = [(_SFPerSitePreferencesVendor *)self pageZoomPreferenceManager];
+    pageZoomPreferenceManager = [(_SFPerSitePreferencesVendor *)self pageZoomPreferenceManager];
     v23 = self->_preferenceToManager;
-    v24 = [v22 pageZoomPreference];
-    [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
+    pageZoomPreference = [pageZoomPreferenceManager pageZoomPreference];
+    [(NSMutableDictionary *)v23 setObject:pageZoomPreferenceManager forKeyedSubscript:pageZoomPreference];
 
-    v25 = [(_SFPerSitePreferencesVendor *)self appInfoOverlayPreferenceManager];
+    appInfoOverlayPreferenceManager = [(_SFPerSitePreferencesVendor *)self appInfoOverlayPreferenceManager];
     v26 = self->_preferenceToManager;
-    v27 = [v25 appInfoOverlayPreference];
-    [(NSMutableDictionary *)v26 setObject:v25 forKeyedSubscript:v27];
+    appInfoOverlayPreference = [appInfoOverlayPreferenceManager appInfoOverlayPreference];
+    [(NSMutableDictionary *)v26 setObject:appInfoOverlayPreferenceManager forKeyedSubscript:appInfoOverlayPreference];
 
-    v28 = [(_SFPerSitePreferencesVendor *)self lockdownModePreferenceManager];
+    lockdownModePreferenceManager = [(_SFPerSitePreferencesVendor *)self lockdownModePreferenceManager];
     v29 = self->_preferenceToManager;
-    v30 = [v28 lockdownPreference];
-    [(NSMutableDictionary *)v29 setObject:v28 forKeyedSubscript:v30];
+    lockdownPreference = [lockdownModePreferenceManager lockdownPreference];
+    [(NSMutableDictionary *)v29 setObject:lockdownModePreferenceManager forKeyedSubscript:lockdownPreference];
 
-    v31 = [(_SFPerSitePreferencesVendor *)self profilePreferenceManager];
+    profilePreferenceManager = [(_SFPerSitePreferencesVendor *)self profilePreferenceManager];
     v32 = self->_preferenceToManager;
-    v33 = [v31 profilePreference];
-    [(NSMutableDictionary *)v32 setObject:v31 forKeyedSubscript:v33];
+    profilePreference = [profilePreferenceManager profilePreference];
+    [(NSMutableDictionary *)v32 setObject:profilePreferenceManager forKeyedSubscript:profilePreference];
 
     preferenceToManager = self->_preferenceToManager;
   }
 
-  v34 = [(NSMutableDictionary *)preferenceToManager objectForKeyedSubscript:v4];
+  v34 = [(NSMutableDictionary *)preferenceToManager objectForKeyedSubscript:preferenceCopy];
 
   return v34;
 }

@@ -1,49 +1,49 @@
 @interface SBHLibraryPodFolderView
 - (BSUIScrollViewDelegate)librarySearchControllerScrollViewDelegate;
-- (CGPoint)_restingContentOffsetForScrollOffset:(CGPoint)a3 withVelocity:(CGPoint)a4;
+- (CGPoint)_restingContentOffsetForScrollOffset:(CGPoint)offset withVelocity:(CGPoint)velocity;
 - (CGPoint)scrollingStartOffset;
-- (CGRect)_frameForIconListAtIndex:(unint64_t)a3;
-- (CGRect)_iconListFrameForPageRect:(CGRect)a3 atIndex:(unint64_t)a4;
+- (CGRect)_frameForIconListAtIndex:(unint64_t)index;
+- (CGRect)_iconListFrameForPageRect:(CGRect)rect atIndex:(unint64_t)index;
 - (CGSize)_iconListViewSize;
 - (CGSize)_iconSpacingForIconListView;
-- (NSDirectionalEdgeInsets)_layoutMarginsforNavigationBar:(id)a3;
-- (SBHLibraryPodFolderView)initWithConfiguration:(id)a3;
+- (NSDirectionalEdgeInsets)_layoutMarginsforNavigationBar:(id)bar;
+- (SBHLibraryPodFolderView)initWithConfiguration:(id)configuration;
 - (UIEdgeInsets)_scrollingInteractionVisibleInsets;
 - (UINavigationBar)navigationBar;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (double)_pageWidth;
-- (void)_configureIconListView:(id)a3;
-- (void)_configureScrollingInteraction:(id)a3;
-- (void)_enumerateScrollableIconViewsUsingBlock:(id)a3;
+- (void)_configureIconListView:(id)view;
+- (void)_configureScrollingInteraction:(id)interaction;
+- (void)_enumerateScrollableIconViewsUsingBlock:(id)block;
 - (void)_layoutNavBarAndContentInsets;
 - (void)_layoutSubviews;
-- (void)_orientationDidChange:(int64_t)a3;
+- (void)_orientationDidChange:(int64_t)change;
 - (void)_positionNavBarAbuttingListView;
-- (void)_updateCycleIdleUntil:(unint64_t)a3;
-- (void)_updateIconListContainment:(id)a3 atIndex:(unint64_t)a4;
+- (void)_updateCycleIdleUntil:(unint64_t)until;
+- (void)_updateIconListContainment:(id)containment atIndex:(unint64_t)index;
 - (void)_updateScrollViewContentSize;
 - (void)_updateVisibleRowRange;
 - (void)_zeroFirstListViewOriginIfNeeded;
 - (void)didMoveToWindow;
-- (void)iconListView:(id)a3 didAddIconView:(id)a4;
-- (void)scrollViewDidEndScrolling:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginScrolling:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCentersContentIfPossible:(BOOL)a3;
-- (void)setFolder:(id)a3;
-- (void)setHidesFeatherBlur:(BOOL)a3;
+- (void)iconListView:(id)view didAddIconView:(id)iconView;
+- (void)scrollViewDidEndScrolling:(id)scrolling;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginScrolling:(id)scrolling;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCentersContentIfPossible:(BOOL)possible;
+- (void)setFolder:(id)folder;
+- (void)setHidesFeatherBlur:(BOOL)blur;
 - (void)setNeedsLayout;
 @end
 
 @implementation SBHLibraryPodFolderView
 
-- (SBHLibraryPodFolderView)initWithConfiguration:(id)a3
+- (SBHLibraryPodFolderView)initWithConfiguration:(id)configuration
 {
   v12.receiver = self;
   v12.super_class = SBHLibraryPodFolderView;
-  v3 = [(SBFolderView *)&v12 initWithConfiguration:a3];
+  v3 = [(SBFolderView *)&v12 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -59,12 +59,12 @@
     [(BSUIScrollView *)v4->_podScrollView setClipsToBounds:0];
     [(BSUIScrollView *)v4->_podScrollView setDelegate:v4];
     [(BSUIScrollView *)v4->_podScrollView setDelaysContentTouches:0];
-    v8 = [(SBFolderView *)v4 scalingView];
-    [v8 addSubview:v4->_podScrollView];
+    scalingView = [(SBFolderView *)v4 scalingView];
+    [scalingView addSubview:v4->_podScrollView];
 
-    v9 = [(SBFolderView *)v4 folder];
-    v10 = [v9 firstList];
-    [v10 addListObserver:v4];
+    folder = [(SBFolderView *)v4 folder];
+    firstList = [folder firstList];
+    [firstList addListObserver:v4];
 
     [(SBHLibraryPodFolderView *)v4 setAccessibilityIdentifier:@"dewey-pod-expanded"];
   }
@@ -72,26 +72,26 @@
   return v4;
 }
 
-- (void)_configureScrollingInteraction:(id)a3
+- (void)_configureScrollingInteraction:(id)interaction
 {
-  v4 = a3;
-  [v4 setConsidersFolderIconTargets:{-[SBHLibraryPodFolderView isLibraryPodCategoryFolderView](self, "isLibraryPodCategoryFolderView") ^ 1}];
+  interactionCopy = interaction;
+  [interactionCopy setConsidersFolderIconTargets:{-[SBHLibraryPodFolderView isLibraryPodCategoryFolderView](self, "isLibraryPodCategoryFolderView") ^ 1}];
 }
 
-- (void)setFolder:(id)a3
+- (void)setFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(SBFolderView *)self folder];
-  v6 = [v5 firstList];
-  [v6 removeListObserver:self];
+  folderCopy = folder;
+  folder = [(SBFolderView *)self folder];
+  firstList = [folder firstList];
+  [firstList removeListObserver:self];
 
   v9.receiver = self;
   v9.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v9 setFolder:v4];
+  [(SBFolderView *)&v9 setFolder:folderCopy];
 
-  v7 = [(SBFolderView *)self folder];
-  v8 = [v7 firstList];
-  [v8 addListObserver:self];
+  folder2 = [(SBFolderView *)self folder];
+  firstList2 = [folder2 firstList];
+  [firstList2 addListObserver:self];
 }
 
 - (UINavigationBar)navigationBar
@@ -109,8 +109,8 @@
     v7 = self->_navBar;
     [(SBHLibraryPodFolderView *)self _layoutMarginsforNavigationBar:v7];
     [(SBHFeatherBlurNavigationBar *)v7 setDirectionalLayoutMargins:?];
-    v8 = [(SBFolderView *)self scalingView];
-    [v8 addSubview:self->_navBar];
+    scalingView = [(SBFolderView *)self scalingView];
+    [scalingView addSubview:self->_navBar];
 
     navBar = self->_navBar;
   }
@@ -118,20 +118,20 @@
   return navBar;
 }
 
-- (void)setCentersContentIfPossible:(BOOL)a3
+- (void)setCentersContentIfPossible:(BOOL)possible
 {
-  if (self->_centersContentIfPossible != a3)
+  if (self->_centersContentIfPossible != possible)
   {
-    self->_centersContentIfPossible = a3;
+    self->_centersContentIfPossible = possible;
     [(SBHLibraryPodFolderView *)self setNeedsLayout];
   }
 }
 
-- (void)setHidesFeatherBlur:(BOOL)a3
+- (void)setHidesFeatherBlur:(BOOL)blur
 {
-  if (self->_hidesFeatherBlur != a3)
+  if (self->_hidesFeatherBlur != blur)
   {
-    self->_hidesFeatherBlur = a3;
+    self->_hidesFeatherBlur = blur;
     [(SBHFeatherBlurNavigationBar *)self->_navBar setHidesFeatherBlur:?];
   }
 }
@@ -176,8 +176,8 @@
   self->_minimumNavBarHeight = v4;
   [(SBHFeatherBlurNavigationBar *)self->_navBar sb_maximumNavbarHeight];
   self->_maximumNavBarHeight = v5;
-  v6 = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide];
-  [v6 layoutFrame];
+  safeAreaLayoutGuide = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -252,8 +252,8 @@ LABEL_6:
     [(BSUIScrollView *)podScrollView setContentOffset:0.0, -v34];
   }
 
-  v35 = [(SBHLibraryPodFolderView *)self superview];
-  if (v35)
+  superview = [(SBHLibraryPodFolderView *)self superview];
+  if (superview)
   {
     podScrollViewGradientMaskLayers = self->_podScrollViewGradientMaskLayers;
 
@@ -276,7 +276,7 @@ LABEL_6:
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    v53 = [(SBHLibraryPodFolderView *)self window];
+    window = [(SBHLibraryPodFolderView *)self window];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
@@ -301,7 +301,7 @@ LABEL_6:
 
           v62 = *(*(&v68 + 1) + 8 * i);
           [v62 setFrame:{v59, 0.0, v58, v57}];
-          v63 = [MEMORY[0x1E69D3FC0] matchMoveAnimationForFrame:v53 relativeToView:{v59, 0.0, v58, v57}];
+          v63 = [MEMORY[0x1E69D3FC0] matchMoveAnimationForFrame:window relativeToView:{v59, 0.0, v58, v57}];
           [v62 addAnimation:v63 forKey:@"SBLibraryPodFolderViewMatchMoveAnimation"];
         }
 
@@ -329,8 +329,8 @@ LABEL_6:
   v29.size.height = v10;
   MinY = CGRectGetMinY(v29);
   minimumNavBarHeight = self->_minimumNavBarHeight;
-  v15 = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide];
-  [v15 layoutFrame];
+  safeAreaLayoutGuide = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v17 = minimumNavBarHeight + v16;
 
   v18 = v12 - MinY;
@@ -366,14 +366,14 @@ LABEL_6:
   [(SBHFeatherBlurNavigationBar *)navBar sbf_setBoundsAndPositionFromFrame:v20, MinY, v22, v26];
 }
 
-- (CGPoint)_restingContentOffsetForScrollOffset:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (CGPoint)_restingContentOffsetForScrollOffset:(CGPoint)offset withVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v34 = *MEMORY[0x1E69E9840];
   if (self->_usingCenteredLayout)
   {
-    v7 = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide:a3.x];
+    v7 = [(SBHLibraryPodFolderView *)self safeAreaLayoutGuide:offset.x];
     [v7 layoutFrame];
     v9 = v8;
     v11 = v10;
@@ -392,8 +392,8 @@ LABEL_6:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v18 = [(SBHFeatherBlurNavigationBar *)self->_navBar _restingHeights];
-      v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      _restingHeights = [(SBHFeatherBlurNavigationBar *)self->_navBar _restingHeights];
+      v19 = [_restingHeights countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v19)
       {
         v20 = v19;
@@ -406,7 +406,7 @@ LABEL_6:
           {
             if (*v30 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(_restingHeights);
             }
 
             [*(*(&v29 + 1) + 8 * i) doubleValue];
@@ -418,7 +418,7 @@ LABEL_6:
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v20 = [_restingHeights countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v20);
@@ -444,9 +444,9 @@ LABEL_6:
 {
   if ([(SBFolderView *)self iconListViewCount])
   {
-    v3 = [(SBFolderView *)self firstIconListView];
-    [v3 frame];
-    [v3 setFrame:?];
+    firstIconListView = [(SBFolderView *)self firstIconListView];
+    [firstIconListView frame];
+    [firstIconListView setFrame:?];
   }
 
   [(SBHLibraryPodFolderView *)self _updateVisibleRowRange];
@@ -467,23 +467,23 @@ LABEL_6:
   return CGRectGetWidth(*&v2);
 }
 
-- (void)_updateIconListContainment:(id)a3 atIndex:(unint64_t)a4
+- (void)_updateIconListContainment:(id)containment atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v5 = [v7 superview];
+  containmentCopy = containment;
+  superview = [containmentCopy superview];
   podScrollView = self->_podScrollView;
 
-  if (v5 != podScrollView)
+  if (superview != podScrollView)
   {
-    [(BSUIScrollView *)self->_podScrollView addSubview:v7];
+    [(BSUIScrollView *)self->_podScrollView addSubview:containmentCopy];
   }
 }
 
-- (CGRect)_iconListFrameForPageRect:(CGRect)a3 atIndex:(unint64_t)a4
+- (CGRect)_iconListFrameForPageRect:(CGRect)rect atIndex:(unint64_t)index
 {
   v15.receiver = self;
   v15.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v15 _iconListFrameForPageRect:a4 atIndex:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBFolderView *)&v15 _iconListFrameForPageRect:index atIndex:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -500,32 +500,32 @@ LABEL_6:
   return result;
 }
 
-- (void)_configureIconListView:(id)a3
+- (void)_configureIconListView:(id)view
 {
   v5.receiver = self;
   v5.super_class = SBHLibraryPodFolderView;
-  v4 = a3;
-  [(SBFolderView *)&v5 _configureIconListView:v4];
-  [v4 setBoundsSizeTracksContentSize:{1, v5.receiver, v5.super_class}];
-  [v4 addLayoutObserver:self];
+  viewCopy = view;
+  [(SBFolderView *)&v5 _configureIconListView:viewCopy];
+  [viewCopy setBoundsSizeTracksContentSize:{1, v5.receiver, v5.super_class}];
+  [viewCopy addLayoutObserver:self];
   [(SBHLibraryPodFolderView *)self _iconSpacingForIconListView];
-  [v4 setIconSpacing:?];
+  [viewCopy setIconSpacing:?];
 }
 
 - (CGSize)_iconSpacingForIconListView
 {
-  v3 = [(SBFolderView *)self listLayoutProvider];
-  v4 = [v3 layoutForIconLocation:@"SBIconLocationAppLibrary"];
+  listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+  v4 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationAppLibrary"];
 
-  v5 = [v4 appLibraryVisualConfiguration];
+  appLibraryVisualConfiguration = [v4 appLibraryVisualConfiguration];
   if (([(SBFolderView *)self orientation]- 3) > 1)
   {
-    [v5 portraitCategoryPodIconSpacing];
+    [appLibraryVisualConfiguration portraitCategoryPodIconSpacing];
   }
 
   else
   {
-    [v5 landscapeCategoryPodIconSpacing];
+    [appLibraryVisualConfiguration landscapeCategoryPodIconSpacing];
   }
 
   v8 = v6;
@@ -538,11 +538,11 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_frameForIconListAtIndex:(unint64_t)a3
+- (CGRect)_frameForIconListAtIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v7 _frameForIconListAtIndex:a3];
+  [(SBFolderView *)&v7 _frameForIconListAtIndex:index];
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
   result.size.height = v4;
@@ -556,8 +556,8 @@ LABEL_6:
 {
   if ([(SBFolderView *)self iconListViewCount])
   {
-    v3 = [(SBFolderView *)self firstIconListView];
-    [v3 bounds];
+    firstIconListView = [(SBFolderView *)self firstIconListView];
+    [firstIconListView bounds];
     v5 = v4;
     v7 = v6;
   }
@@ -575,7 +575,7 @@ LABEL_6:
   return result;
 }
 
-- (void)_orientationDidChange:(int64_t)a3
+- (void)_orientationDidChange:(int64_t)change
 {
   [(SBHLibraryPodFolderView *)self _iconSpacingForIconListView];
   v8[0] = MEMORY[0x1E69E9820];
@@ -587,7 +587,7 @@ LABEL_6:
   [(SBFolderView *)self enumerateIconListViewsUsingBlock:v8];
   v7.receiver = self;
   v7.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v7 _orientationDidChange:a3];
+  [(SBFolderView *)&v7 _orientationDidChange:change];
 }
 
 - (UIEdgeInsets)_scrollingInteractionVisibleInsets
@@ -600,12 +600,12 @@ LABEL_6:
   return result;
 }
 
-- (void)_enumerateScrollableIconViewsUsingBlock:(id)a3
+- (void)_enumerateScrollableIconViewsUsingBlock:(id)block
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBFolderView *)self currentIconListView];
-  [v5 icons];
+  blockCopy = block;
+  currentIconListView = [(SBFolderView *)self currentIconListView];
+  [currentIconListView icons];
   v40 = 0;
   v36 = 0u;
   v37 = 0u;
@@ -617,7 +617,7 @@ LABEL_6:
     v8 = v7;
     v9 = *v37;
     v28 = v6;
-    v29 = v5;
+    v29 = currentIconListView;
     v26 = *v37;
     while (2)
     {
@@ -631,24 +631,24 @@ LABEL_6:
         }
 
         v11 = *(*(&v36 + 1) + 8 * v10);
-        v12 = [v5 displayedIconViewForIcon:{v11, v26}];
+        v12 = [currentIconListView displayedIconViewForIcon:{v11, v26}];
         if (v12)
         {
           v13 = v12;
-          v14 = [v12 customIconImageViewController];
+          customIconImageViewController = [v12 customIconImageViewController];
           v15 = v11;
-          v16 = v14;
+          v16 = customIconImageViewController;
           if (([v15 isCategoryIcon] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v17 = v16) != 0)
           {
             v30 = v17;
             v31 = v16;
-            v18 = [v17 iconListView];
-            v19 = [v18 icons];
+            iconListView = [v17 iconListView];
+            icons = [iconListView icons];
             v32 = 0u;
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v20 = v19;
+            v20 = icons;
             v21 = [v20 countByEnumeratingWithState:&v32 objects:v41 count:16];
             if (v21)
             {
@@ -663,15 +663,15 @@ LABEL_6:
                     objc_enumerationMutation(v20);
                   }
 
-                  v25 = [v18 displayedIconViewForIcon:*(*(&v32 + 1) + 8 * i)];
+                  v25 = [iconListView displayedIconViewForIcon:*(*(&v32 + 1) + 8 * i)];
                   if (v25)
                   {
-                    v4[2](v4, v25, &v40);
+                    blockCopy[2](blockCopy, v25, &v40);
                     if (v40 == 1)
                     {
 
                       v6 = v28;
-                      v5 = v29;
+                      currentIconListView = v29;
                       v16 = v31;
                       goto LABEL_26;
                     }
@@ -689,7 +689,7 @@ LABEL_6:
             }
 
             v6 = v28;
-            v5 = v29;
+            currentIconListView = v29;
             v9 = v26;
             v8 = v27;
             v16 = v31;
@@ -697,7 +697,7 @@ LABEL_6:
 
           else
           {
-            v4[2](v4, v13, &v40);
+            blockCopy[2](blockCopy, v13, &v40);
             if (v40 == 1)
             {
 LABEL_26:
@@ -724,82 +724,82 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  if (self->_podScrollView == a3)
+  if (self->_podScrollView == scroll)
   {
-    v5 = a3;
+    scrollCopy = scroll;
     [(SBHLibraryPodFolderView *)self _updateVisibleRowRange];
     if (self->_navBar)
     {
       [(SBHLibraryPodFolderView *)self _positionNavBarAbuttingListView];
     }
 
-    [(SBFolderView *)self _scrollingInteractionScrollViewDidScroll:v5];
+    [(SBFolderView *)self _scrollingInteractionScrollViewDidScroll:scrollCopy];
     WeakRetained = objc_loadWeakRetained(&self->_librarySearchControllerScrollViewDelegate);
-    [WeakRetained scrollViewDidScroll:v5];
+    [WeakRetained scrollViewDidScroll:scrollCopy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBHLibraryPodFolderView;
-    v4 = a3;
-    [(SBFolderView *)&v7 scrollViewDidScroll:v4];
+    scrollCopy2 = scroll;
+    [(SBFolderView *)&v7 scrollViewDidScroll:scrollCopy2];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  if (self->_podScrollView == v9)
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  if (self->_podScrollView == draggingCopy)
   {
     if (self->_navBar)
     {
-      [(SBHLibraryPodFolderView *)self _restingContentOffsetForScrollOffset:a5->x withVelocity:a5->y, x, y];
-      a5->x = v10;
-      a5->y = v11;
+      [(SBHLibraryPodFolderView *)self _restingContentOffsetForScrollOffset:offset->x withVelocity:offset->y, x, y];
+      offset->x = v10;
+      offset->y = v11;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_librarySearchControllerScrollViewDelegate);
-    [WeakRetained scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:{x, y}];
+    [WeakRetained scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SBHLibraryPodFolderView;
-    [(SBFolderView *)&v13 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
+    [(SBFolderView *)&v13 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  if (self->_podScrollView == v4)
+  draggingCopy = dragging;
+  if (self->_podScrollView == draggingCopy)
   {
     [(SBFolderView *)self _updateScrollingInteractionIsScrolling:1];
     WeakRetained = objc_loadWeakRetained(&self->_librarySearchControllerScrollViewDelegate);
-    [WeakRetained scrollViewWillBeginDragging:v4];
+    [WeakRetained scrollViewWillBeginDragging:draggingCopy];
   }
 
   [(SBHFeatherBlurNavigationBar *)self->_navBar setAllowsAnimatedUpdating:1];
   v6.receiver = self;
   v6.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v6 scrollViewWillBeginDragging:v4];
+  [(SBFolderView *)&v6 scrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)scrollViewWillBeginScrolling:(id)a3
+- (void)scrollViewWillBeginScrolling:(id)scrolling
 {
-  if (self->_podScrollView == a3)
+  if (self->_podScrollView == scrolling)
   {
-    v5 = a3;
+    scrollingCopy = scrolling;
     WeakRetained = objc_loadWeakRetained(&self->_librarySearchControllerScrollViewDelegate);
-    [WeakRetained scrollViewWillBeginScrolling:v5];
+    [WeakRetained scrollViewWillBeginScrolling:scrollingCopy];
 
-    [v5 contentOffset];
+    [scrollingCopy contentOffset];
     v8 = v7;
     v10 = v9;
 
@@ -809,17 +809,17 @@ LABEL_27:
   }
 }
 
-- (void)scrollViewDidEndScrolling:(id)a3
+- (void)scrollViewDidEndScrolling:(id)scrolling
 {
-  v4 = a3;
+  scrollingCopy = scrolling;
   v6.receiver = self;
   v6.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v6 scrollViewDidEndScrolling:v4];
-  if (self->_podScrollView == v4)
+  [(SBFolderView *)&v6 scrollViewDidEndScrolling:scrollingCopy];
+  if (self->_podScrollView == scrollingCopy)
   {
     [(SBFolderView *)self _updateScrollingInteractionIsScrolling:0];
     WeakRetained = objc_loadWeakRetained(&self->_librarySearchControllerScrollViewDelegate);
-    [WeakRetained scrollViewDidEndScrolling:v4];
+    [WeakRetained scrollViewDidEndScrolling:scrollingCopy];
 
     [(SBHLibraryPodFolderView *)self setExtraIdleScrollVisibleRows:0];
   }
@@ -838,7 +838,7 @@ LABEL_27:
 
 - (void)_updateVisibleRowRange
 {
-  v17 = [(SBFolderView *)self firstIconListView];
+  firstIconListView = [(SBFolderView *)self firstIconListView];
   [(BSUIScrollView *)self->_podScrollView contentOffset];
   v4 = v3;
   [(BSUIScrollView *)self->_podScrollView bounds];
@@ -846,12 +846,12 @@ LABEL_27:
   v6 = nexttoward(v4 + Height, v4);
   [(SBHLibraryPodFolderView *)self scrollingStartOffset];
   v8 = v7;
-  v9 = [v17 rowAtPoint:{0.0, v4}];
-  v10 = [v17 rowAtPoint:{0.0, v6}];
-  v11 = [(SBHLibraryPodFolderView *)self extraIdleScrollVisibleRows];
-  v12 = v10 - v9 + v11;
-  v13 = v9 - v11;
-  if (v9 < v11)
+  v9 = [firstIconListView rowAtPoint:{0.0, v4}];
+  v10 = [firstIconListView rowAtPoint:{0.0, v6}];
+  extraIdleScrollVisibleRows = [(SBHLibraryPodFolderView *)self extraIdleScrollVisibleRows];
+  v12 = v10 - v9 + extraIdleScrollVisibleRows;
+  v13 = v9 - extraIdleScrollVisibleRows;
+  if (v9 < extraIdleScrollVisibleRows)
   {
     v13 = 0;
   }
@@ -866,41 +866,41 @@ LABEL_27:
     v14 = v13;
   }
 
-  v15 = [v17 iconRowsForCurrentOrientation];
-  if (v14 + v12 + 1 < v15)
+  iconRowsForCurrentOrientation = [firstIconListView iconRowsForCurrentOrientation];
+  if (v14 + v12 + 1 < iconRowsForCurrentOrientation)
   {
     v16 = v12 + 1;
   }
 
   else
   {
-    v16 = v15 - v14;
+    v16 = iconRowsForCurrentOrientation - v14;
   }
 
-  [v17 setVisibleRowRange:{v14, v16}];
-  [v17 layoutIconsIfNeeded];
+  [firstIconListView setVisibleRowRange:{v14, v16}];
+  [firstIconListView layoutIconsIfNeeded];
 }
 
-- (void)iconListView:(id)a3 didAddIconView:(id)a4
+- (void)iconListView:(id)view didAddIconView:(id)iconView
 {
-  v6 = a4;
-  v4 = [v6 icon];
-  v5 = [v4 isCategoryIcon];
+  iconViewCopy = iconView;
+  icon = [iconViewCopy icon];
+  isCategoryIcon = [icon isCategoryIcon];
 
-  if (v5)
+  if (isCategoryIcon)
   {
-    [v6 setAllowsEditingAnimation:0];
+    [iconViewCopy setAllowsEditingAnimation:0];
   }
 }
 
-- (NSDirectionalEdgeInsets)_layoutMarginsforNavigationBar:(id)a3
+- (NSDirectionalEdgeInsets)_layoutMarginsforNavigationBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v5 = SBHScreenTypeForCurrentDevice();
   if (SBHScreenTypeIsPhone(v5) || ![(SBHLibraryPodFolderView *)self isLibraryPodCategoryFolderView])
   {
-    v11 = [(SBFolderView *)self listLayoutProvider];
-    v8 = [v11 layoutForIconLocation:@"SBIconLocationRoot"];
+    listLayoutProvider = [(SBFolderView *)self listLayoutProvider];
+    v8 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
     SBHIconListLayoutNonDefaultIconGridSizeClassLayoutInsets(v8, 1);
     v10 = v12 + 4.0;
@@ -908,19 +908,19 @@ LABEL_27:
 
   else
   {
-    v6 = [(SBFolderView *)self listLayoutProvider];
-    v7 = [(SBFolderView *)self iconLocation];
-    v8 = [v6 layoutForIconLocation:v7];
+    listLayoutProvider2 = [(SBFolderView *)self listLayoutProvider];
+    iconLocation = [(SBFolderView *)self iconLocation];
+    v8 = [listLayoutProvider2 layoutForIconLocation:iconLocation];
 
     [v8 layoutInsetsForOrientation:{-[SBFolderView orientation](self, "orientation")}];
     v10 = v9;
   }
 
-  if ([v4 insetsLayoutMarginsFromSafeArea])
+  if ([barCopy insetsLayoutMarginsFromSafeArea])
   {
-    v13 = [v4 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [barCopy effectiveUserInterfaceLayoutDirection];
     [(SBHLibraryPodFolderView *)self safeAreaInsets];
-    if (v13 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = v14;
     }
@@ -930,7 +930,7 @@ LABEL_27:
       v16 = v15;
     }
 
-    if (v13 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v14 = v15;
     }
@@ -955,17 +955,17 @@ LABEL_27:
   return result;
 }
 
-- (void)_updateCycleIdleUntil:(unint64_t)a3
+- (void)_updateCycleIdleUntil:(unint64_t)until
 {
   v5.receiver = self;
   v5.super_class = SBHLibraryPodFolderView;
-  [(SBFolderView *)&v5 _updateCycleIdleUntil:a3];
+  [(SBFolderView *)&v5 _updateCycleIdleUntil:until];
   if ([(SBFolderView *)self contentVisibility]!= 2)
   {
-    v4 = [(SBHLibraryPodFolderView *)self extraIdleScrollVisibleRows];
-    if (v4 <= 9)
+    extraIdleScrollVisibleRows = [(SBHLibraryPodFolderView *)self extraIdleScrollVisibleRows];
+    if (extraIdleScrollVisibleRows <= 9)
     {
-      [(SBHLibraryPodFolderView *)self setExtraIdleScrollVisibleRows:v4 + 1];
+      [(SBHLibraryPodFolderView *)self setExtraIdleScrollVisibleRows:extraIdleScrollVisibleRows + 1];
       [(SBHLibraryPodFolderView *)self _updateVisibleRowRange];
     }
   }

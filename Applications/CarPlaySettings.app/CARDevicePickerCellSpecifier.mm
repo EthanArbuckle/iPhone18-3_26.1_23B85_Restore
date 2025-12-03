@@ -1,22 +1,22 @@
 @interface CARDevicePickerCellSpecifier
 - (BOOL)_isDevicePickerLimitedUIOn;
-- (CARDevicePickerCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5 accessoryType:(int64_t)a6 carSession:(id)a7 actionBlock:(id)a8;
+- (CARDevicePickerCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon accessoryType:(int64_t)type carSession:(id)session actionBlock:(id)block;
 - (id)_limitedUIAttributedString;
 - (void)refreshSpecifierIfNeeded;
 @end
 
 @implementation CARDevicePickerCellSpecifier
 
-- (CARDevicePickerCellSpecifier)initWithTitle:(id)a3 image:(id)a4 icon:(id)a5 accessoryType:(int64_t)a6 carSession:(id)a7 actionBlock:(id)a8
+- (CARDevicePickerCellSpecifier)initWithTitle:(id)title image:(id)image icon:(id)icon accessoryType:(int64_t)type carSession:(id)session actionBlock:(id)block
 {
-  v15 = a7;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = CARDevicePickerCellSpecifier;
-  v16 = [(CARSettingsCellSpecifier *)&v19 initWithTitle:a3 image:a4 icon:a5 accessoryType:a6 actionBlock:a8];
+  v16 = [(CARSettingsCellSpecifier *)&v19 initWithTitle:title image:image icon:icon accessoryType:type actionBlock:block];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_carSession, a7);
+    objc_storeStrong(&v16->_carSession, session);
   }
 
   return v17;
@@ -34,17 +34,17 @@
 
 - (BOOL)_isDevicePickerLimitedUIOn
 {
-  v3 = [(CARDevicePickerCellSpecifier *)self carSession];
-  v4 = [v3 limitUserInterfaces];
-  v5 = [v4 BOOLValue];
+  carSession = [(CARDevicePickerCellSpecifier *)self carSession];
+  limitUserInterfaces = [carSession limitUserInterfaces];
+  bOOLValue = [limitUserInterfaces BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(CARDevicePickerCellSpecifier *)self carSession];
-    v7 = [v6 configuration];
-    v8 = [v7 limitableUserInterfaces];
+    carSession2 = [(CARDevicePickerCellSpecifier *)self carSession];
+    configuration = [carSession2 configuration];
+    limitableUserInterfaces = [configuration limitableUserInterfaces];
 
-    return (v8 >> 6) & 1;
+    return (limitableUserInterfaces >> 6) & 1;
   }
 
   else

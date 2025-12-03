@@ -1,13 +1,13 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.speech-model-training"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.speech-model-training"];
 
   if (v5)
   {
@@ -30,15 +30,15 @@
     [v6 setClasses:v8 forSelector:"trainAllAppLMWithLanguage:completion:" argumentIndex:0 ofReply:1];
     [v6 setClasses:v8 forSelector:"buildPhoneticMatchWithLanguage:saveIntermediateFsts:completion:" argumentIndex:0 ofReply:1];
 
-    [v4 setExportedInterface:v6];
-    v11 = [[SpeechModelTrainingConnection alloc] initWithXPCConnection:v4];
-    [v4 setExportedObject:v11];
-    [v4 resume];
+    [connectionCopy setExportedInterface:v6];
+    v11 = [[SpeechModelTrainingConnection alloc] initWithXPCConnection:connectionCopy];
+    [connectionCopy setExportedObject:v11];
+    [connectionCopy resume];
   }
 
   else
   {
-    [v4 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v5 != 0;

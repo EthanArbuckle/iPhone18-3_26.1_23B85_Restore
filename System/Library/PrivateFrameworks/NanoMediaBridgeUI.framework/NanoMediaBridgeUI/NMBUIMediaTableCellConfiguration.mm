@@ -40,19 +40,19 @@
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      v25 = [(NMBUIMediaTableCellConfiguration *)self placeholderIconColor];
-      v26 = v25;
-      if (v25)
+      placeholderIconColor = [(NMBUIMediaTableCellConfiguration *)self placeholderIconColor];
+      v26 = placeholderIconColor;
+      if (placeholderIconColor)
       {
-        v27 = v25;
+        systemGrayColor = placeholderIconColor;
       }
 
       else
       {
-        v27 = [MEMORY[0x277D75348] systemGrayColor];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
       }
 
-      v28 = v27;
+      v28 = systemGrayColor;
 
       [v28 set];
       [v7 drawInRect:{v18, v20, v22, v24}];

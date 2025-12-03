@@ -1,8 +1,8 @@
 @interface GridIDDictionaryTransformer
 + (BOOL)allowsReverseTransformation;
 + (Class)transformedValueClass;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation GridIDDictionaryTransformer
@@ -23,17 +23,17 @@
   return sub_1D208C18C() & 1;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v24 = a3;
-  v23 = self;
-  v22 = a3;
+  valueCopy = value;
+  selfCopy = self;
+  valueCopy2 = value;
   swift_unknownObjectRetain();
-  v3 = v23;
-  if (v24)
+  v3 = selfCopy;
+  if (valueCopy)
   {
-    v21 = v22;
-    v20 = v22;
+    v21 = valueCopy2;
+    v20 = valueCopy2;
     v19 = v25;
     sub_1D208C94C();
     sub_1D20553D8(v25, v26);
@@ -77,17 +77,17 @@
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v24 = a3;
-  v23 = self;
-  v22 = a3;
+  valueCopy = value;
+  selfCopy = self;
+  valueCopy2 = value;
   swift_unknownObjectRetain();
-  v3 = v23;
-  if (v24)
+  v3 = selfCopy;
+  if (valueCopy)
   {
-    v21 = v22;
-    v20 = v22;
+    v21 = valueCopy2;
+    v20 = valueCopy2;
     v19 = v25;
     sub_1D208C94C();
     sub_1D20553D8(v25, v26);

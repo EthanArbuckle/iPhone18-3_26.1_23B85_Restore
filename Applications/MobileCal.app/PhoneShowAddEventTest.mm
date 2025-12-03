@@ -1,5 +1,5 @@
 @interface PhoneShowAddEventTest
-- (void)_viewControllerAppeared:(id)a3;
+- (void)_viewControllerAppeared:(id)appeared;
 - (void)runTest;
 @end
 
@@ -7,12 +7,12 @@
 
 - (void)runTest
 {
-  v3 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _delaySubTestName];
-  v5 = [objc_opt_class() _animationSubTestName];
-  v6 = [(ApplicationTest *)self application];
-  v7 = [v6 rootNavigationController];
-  v8 = [v7 resetToDayView];
+  testName = [objc_opt_class() testName];
+  _delaySubTestName = [objc_opt_class() _delaySubTestName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToDayView = [rootNavigationController resetToDayView];
 
   v9 = dispatch_time(0, 1000000000);
   v13[0] = _NSConcreteStackBlock;
@@ -20,28 +20,28 @@
   v13[2] = sub_100091470;
   v13[3] = &unk_10020F290;
   v13[4] = self;
-  v14 = v3;
-  v15 = v4;
-  v16 = v5;
-  v10 = v5;
-  v11 = v4;
-  v12 = v3;
+  v14 = testName;
+  v15 = _delaySubTestName;
+  v16 = _animationSubTestName;
+  v10 = _animationSubTestName;
+  v11 = _delaySubTestName;
+  v12 = testName;
   dispatch_after(v9, &_dispatch_main_q, v13);
 }
 
-- (void)_viewControllerAppeared:(id)a3
+- (void)_viewControllerAppeared:(id)appeared
 {
-  v11 = [objc_opt_class() testName];
-  v4 = [objc_opt_class() _animationSubTestName];
-  v5 = [(ApplicationTest *)self application];
-  [v5 finishedSubTest:v4 forTest:v11];
+  testName = [objc_opt_class() testName];
+  _animationSubTestName = [objc_opt_class() _animationSubTestName];
+  application = [(ApplicationTest *)self application];
+  [application finishedSubTest:_animationSubTestName forTest:testName];
 
-  v6 = [(ApplicationTest *)self application];
-  [v6 finishedTest:v11 extraResults:0];
+  application2 = [(ApplicationTest *)self application];
+  [application2 finishedTest:testName extraResults:0];
 
-  v7 = [(ApplicationTest *)self application];
-  v8 = [v7 rootNavigationController];
-  v9 = [v8 popToRootViewControllerAnimated:0];
+  application3 = [(ApplicationTest *)self application];
+  rootNavigationController = [application3 rootNavigationController];
+  v9 = [rootNavigationController popToRootViewControllerAnimated:0];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 removeObserver:self name:EKEventViewControllerDidAppearNotification object:0];

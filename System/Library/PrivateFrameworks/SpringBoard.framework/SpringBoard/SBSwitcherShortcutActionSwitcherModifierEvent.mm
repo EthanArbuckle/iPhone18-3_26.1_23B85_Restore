@@ -1,22 +1,22 @@
 @interface SBSwitcherShortcutActionSwitcherModifierEvent
-- (SBSwitcherShortcutActionSwitcherModifierEvent)initWithShortcutActionType:(int64_t)a3 displayItem:(id)a4 displayItemEnvironment:(int64_t)a5 shortcutSource:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBSwitcherShortcutActionSwitcherModifierEvent)initWithShortcutActionType:(int64_t)type displayItem:(id)item displayItemEnvironment:(int64_t)environment shortcutSource:(int64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSwitcherShortcutActionSwitcherModifierEvent
 
-- (SBSwitcherShortcutActionSwitcherModifierEvent)initWithShortcutActionType:(int64_t)a3 displayItem:(id)a4 displayItemEnvironment:(int64_t)a5 shortcutSource:(int64_t)a6
+- (SBSwitcherShortcutActionSwitcherModifierEvent)initWithShortcutActionType:(int64_t)type displayItem:(id)item displayItemEnvironment:(int64_t)environment shortcutSource:(int64_t)source
 {
-  v11 = a4;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = SBSwitcherShortcutActionSwitcherModifierEvent;
   v12 = [(SBWindowingModifierActivity *)&v14 init];
   if (v12)
   {
-    if (a3)
+    if (type)
     {
-      if (v11)
+      if (itemCopy)
       {
         goto LABEL_4;
       }
@@ -25,10 +25,10 @@
     else
     {
       [SBSwitcherShortcutActionSwitcherModifierEvent initWithShortcutActionType:displayItem:displayItemEnvironment:shortcutSource:];
-      if (v11)
+      if (itemCopy)
       {
 LABEL_4:
-        if (a5)
+        if (environment)
         {
           goto LABEL_5;
         }
@@ -38,16 +38,16 @@ LABEL_4:
     }
 
     [SBSwitcherShortcutActionSwitcherModifierEvent initWithShortcutActionType:displayItem:displayItemEnvironment:shortcutSource:];
-    if (a5)
+    if (environment)
     {
 LABEL_5:
-      if (a6)
+      if (source)
       {
 LABEL_6:
-        v12->_shortcutActionType = a3;
-        objc_storeStrong(&v12->_displayItem, a4);
-        v12->_displayItemEnvironment = a5;
-        v12->_shortcutSource = a6;
+        v12->_shortcutActionType = type;
+        objc_storeStrong(&v12->_displayItem, item);
+        v12->_displayItemEnvironment = environment;
+        v12->_shortcutSource = source;
         goto LABEL_7;
       }
 
@@ -58,7 +58,7 @@ LABEL_11:
 
 LABEL_10:
     [SBSwitcherShortcutActionSwitcherModifierEvent initWithShortcutActionType:displayItem:displayItemEnvironment:shortcutSource:];
-    if (a6)
+    if (source)
     {
       goto LABEL_6;
     }
@@ -71,7 +71,7 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBSwitcherShortcutActionSwitcherModifierEvent alloc];
   shortcutActionType = self->_shortcutActionType;
@@ -82,16 +82,16 @@ LABEL_7:
   return [(SBSwitcherShortcutActionSwitcherModifierEvent *)v4 initWithShortcutActionType:shortcutActionType displayItem:displayItem displayItemEnvironment:displayItemEnvironment shortcutSource:shortcutSource];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v14.receiver = self;
   v14.super_class = SBSwitcherShortcutActionSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v14 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSwitcherModifierEvent *)&v14 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_shortcutActionType];
   v6 = [v4 appendObject:v5 withName:@"shortcutActionType"];
 
-  v7 = [(SBDisplayItem *)self->_displayItem succinctDescription];
-  v8 = [v4 appendObject:v7 withName:@"displayItem"];
+  succinctDescription = [(SBDisplayItem *)self->_displayItem succinctDescription];
+  v8 = [v4 appendObject:succinctDescription withName:@"displayItem"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_displayItemEnvironment];
   v10 = [v4 appendObject:v9 withName:@"displayItemEnvironment"];

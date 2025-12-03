@@ -1,23 +1,23 @@
 @interface CAMPhotoFormatStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsCurrentFormatEssential;
 - (BOOL)accessibilityActivate;
 - (id)_axCurrentFormatValue;
-- (id)_axEncodingName:(id)a3;
-- (id)_axLocalizedStringForPhotoFormat:(id)a3;
+- (id)_axEncodingName:(id)name;
+- (id)_axLocalizedStringForPhotoFormat:(id)format;
 - (id)accessibilityValue;
 @end
 
 @implementation CAMPhotoFormatStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMPhotoFormatStatusIndicator" isKindOfClass:@"CAMExpandingControl"];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"selectedState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"allowedFormats" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"_essentialFormatIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"_advancedFormatIndex" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMPhotoFormatStatusIndicator" isKindOfClass:@"CAMExpandingControl"];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"selectedState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"allowedFormats" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"_essentialFormatIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMPhotoFormatStatusIndicator" hasInstanceMethod:@"_advancedFormatIndex" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityValue
@@ -30,8 +30,8 @@
   v5 = v13;
   if ([(CAMPhotoFormatStatusIndicatorAccessibility *)self _axIsCurrentFormatEssential])
   {
-    v6 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axAllowedFormats];
-    v7 = [v6 objectAtIndexedSubscript:{-[CAMPhotoFormatStatusIndicatorAccessibility _axAdvancedFormatIndex](self, "_axAdvancedFormatIndex")}];
+    _axAllowedFormats = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axAllowedFormats];
+    v7 = [_axAllowedFormats objectAtIndexedSubscript:{-[CAMPhotoFormatStatusIndicatorAccessibility _axAdvancedFormatIndex](self, "_axAdvancedFormatIndex")}];
     v12 = 0;
     v13 = 0;
     [v7 getValue:&v12 size:16];
@@ -40,7 +40,7 @@
   }
 
   v8 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axLocalizedStringForPhotoFormat:v4, v5];
-  v11 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axCurrentFormatValue];
+  _axCurrentFormatValue = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axCurrentFormatValue];
   v9 = __UIAXStringForVariables();
 
   return v9;
@@ -50,16 +50,16 @@
 {
   v8.receiver = self;
   v8.super_class = CAMPhotoFormatStatusIndicatorAccessibility;
-  v3 = [(CAMPhotoFormatStatusIndicatorAccessibility *)&v8 accessibilityActivate];
-  v4 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axCurrentFormatValue];
-  v5 = v4;
-  if (v4)
+  accessibilityActivate = [(CAMPhotoFormatStatusIndicatorAccessibility *)&v8 accessibilityActivate];
+  _axCurrentFormatValue = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axCurrentFormatValue];
+  v5 = _axCurrentFormatValue;
+  if (_axCurrentFormatValue)
   {
-    v7 = v4;
+    v7 = _axCurrentFormatValue;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (id)_axCurrentFormatValue
@@ -79,25 +79,25 @@
   return v3;
 }
 
-- (id)_axEncodingName:(id)a3
+- (id)_axEncodingName:(id)name
 {
-  if (a3.var0 > 2uLL)
+  if (name.var0 > 2uLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2ACD08[a3.var0]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2ACD08[name.var0]);
   }
 
   return v4;
 }
 
-- (id)_axLocalizedStringForPhotoFormat:(id)a3
+- (id)_axLocalizedStringForPhotoFormat:(id)format
 {
-  var1 = a3.var1;
-  v4 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axEncodingName:a3.var0];
+  var1 = format.var1;
+  v4 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axEncodingName:format.var0];
   v5 = 24;
   v6 = 12;
   if (var1 != 1)
@@ -140,11 +140,11 @@
 - (BOOL)_axIsCurrentFormatEssential
 {
   v3 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self safeValueForKey:@"selectedState"];
-  v4 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axAllowedFormats];
-  v5 = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axEssentialFormatIndex];
-  LOBYTE(v5) = [v4 indexOfObject:v3] == v5;
+  _axAllowedFormats = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axAllowedFormats];
+  _axEssentialFormatIndex = [(CAMPhotoFormatStatusIndicatorAccessibility *)self _axEssentialFormatIndex];
+  LOBYTE(_axEssentialFormatIndex) = [_axAllowedFormats indexOfObject:v3] == _axEssentialFormatIndex;
 
-  return v5;
+  return _axEssentialFormatIndex;
 }
 
 @end

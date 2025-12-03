@@ -1,17 +1,17 @@
 @interface CertUIKeyValueView
 + (double)defaultPreferredValueLabelOriginX;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CertUIKeyValueView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CertUIKeyValueView)initWithFrame:(CGRect)frame;
 - (id)detailFont;
 - (id)titleFont;
 - (id)verifiedFont;
 - (void)_createVerifiedComponentsIfNeeded;
 - (void)layoutSubviews;
-- (void)setCheckmarkLabelText:(id)a3 checkmarkLabelColor:(id)a4 showCheckmark:(BOOL)a5;
-- (void)setHighlightTextColor:(id)a3;
-- (void)setItemDetail:(id)a3;
-- (void)setKey:(id)a3 value:(id)a4;
-- (void)setPreferredValueLabelOriginX:(double)a3;
+- (void)setCheckmarkLabelText:(id)text checkmarkLabelColor:(id)color showCheckmark:(BOOL)checkmark;
+- (void)setHighlightTextColor:(id)color;
+- (void)setItemDetail:(id)detail;
+- (void)setKey:(id)key value:(id)value;
+- (void)setPreferredValueLabelOriginX:(double)x;
 @end
 
 @implementation CertUIKeyValueView
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (CertUIKeyValueView)initWithFrame:(CGRect)a3
+- (CertUIKeyValueView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = CertUIKeyValueView;
-  v3 = [(CertUIKeyValueView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CertUIKeyValueView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -55,12 +55,12 @@
     v3->_keyLabel = v9;
 
     [(UILabel *)v3->_keyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v3->_keyLabel setTextColor:v11];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v3->_keyLabel setTextColor:systemGrayColor];
 
     [(UILabel *)v3->_keyLabel setTextAlignment:2];
-    v12 = [(CertUIKeyValueView *)v3 titleFont];
-    [(UILabel *)v3->_keyLabel setFont:v12];
+    titleFont = [(CertUIKeyValueView *)v3 titleFont];
+    [(UILabel *)v3->_keyLabel setFont:titleFont];
 
     [(UILabel *)v3->_keyLabel setNumberOfLines:0];
     [(CertUIKeyValueView *)v3 addSubview:v3->_keyLabel];
@@ -69,8 +69,8 @@
     v3->_valueLabel = v13;
 
     [(UILabel *)v3->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(CertUIKeyValueView *)v3 detailFont];
-    [(UILabel *)v3->_valueLabel setFont:v15];
+    detailFont = [(CertUIKeyValueView *)v3 detailFont];
+    [(UILabel *)v3->_valueLabel setFont:detailFont];
 
     [(UILabel *)v3->_valueLabel setNumberOfLines:0];
     [(CertUIKeyValueView *)v3 addSubview:v3->_valueLabel];
@@ -92,8 +92,8 @@
   v6 = v4 - v5;
   [(CertUIKeyValueView *)self frame];
   v8 = v7 - v6 + -10.0;
-  v9 = [(CertUIKeyValueView *)self keyLabel];
-  [v9 sizeThatFits:{v8, 3.40282347e38}];
+  keyLabel = [(CertUIKeyValueView *)self keyLabel];
+  [keyLabel sizeThatFits:{v8, 3.40282347e38}];
   v11 = v10;
   v13 = v12;
 
@@ -106,12 +106,12 @@
   y = v92.origin.y;
   width = v92.size.width;
   height = v92.size.height;
-  v18 = [(CertUIKeyValueView *)self keyLabel];
-  [v18 setFrame:{x, y, width, height}];
+  keyLabel2 = [(CertUIKeyValueView *)self keyLabel];
+  [keyLabel2 setFrame:{x, y, width, height}];
 
-  v19 = [(CertUIKeyValueView *)self valueLabel];
+  valueLabel = [(CertUIKeyValueView *)self valueLabel];
   v89 = v6;
-  [v19 sizeThatFits:{v6, 3.40282347e38}];
+  [valueLabel sizeThatFits:{v6, 3.40282347e38}];
   v21 = v20;
   v23 = v22;
 
@@ -125,14 +125,14 @@
   v26 = v94.origin.y;
   v27 = v94.size.width;
   v28 = v94.size.height;
-  v29 = [(CertUIKeyValueView *)self valueLabel];
-  [v29 setFrame:{v25, v26, v27, v28}];
+  valueLabel2 = [(CertUIKeyValueView *)self valueLabel];
+  [valueLabel2 setFrame:{v25, v26, v27, v28}];
 
-  v30 = [(CertUIKeyValueView *)self keyLabel];
-  [v30 _firstLineBaselineFrameOriginY];
+  keyLabel3 = [(CertUIKeyValueView *)self keyLabel];
+  [keyLabel3 _firstLineBaselineFrameOriginY];
   v32 = v31;
-  v33 = [(CertUIKeyValueView *)self valueLabel];
-  [v33 _firstLineBaselineOffsetFromBoundsTop];
+  valueLabel3 = [(CertUIKeyValueView *)self valueLabel];
+  [valueLabel3 _firstLineBaselineOffsetFromBoundsTop];
   v35 = v32 - v34;
 
   v95.origin.x = v24;
@@ -144,29 +144,29 @@
   v37 = v96.origin.y;
   v38 = v96.size.width;
   v39 = v96.size.height;
-  v40 = [(CertUIKeyValueView *)self valueLabel];
-  [v40 setFrame:{v36, v37, v38, v39}];
+  valueLabel4 = [(CertUIKeyValueView *)self valueLabel];
+  [valueLabel4 setFrame:{v36, v37, v38, v39}];
 
-  v41 = [(CertUIKeyValueView *)self keyLabel];
-  v42 = [v41 text];
-  v43 = [v42 length];
+  keyLabel4 = [(CertUIKeyValueView *)self keyLabel];
+  text = [keyLabel4 text];
+  v43 = [text length];
 
-  v44 = [(CertUIKeyValueView *)self valueLabel];
-  v45 = [v44 text];
-  v46 = [v45 length];
+  valueLabel5 = [(CertUIKeyValueView *)self valueLabel];
+  text2 = [valueLabel5 text];
+  v46 = [text2 length];
 
   v97.origin.x = v24;
   v97.origin.y = v35;
   v97.size.width = v21;
   v97.size.height = v23;
   MaxY = CGRectGetMaxY(v97);
-  v48 = [(CertUIKeyValueView *)self verifiedLabel];
+  verifiedLabel = [(CertUIKeyValueView *)self verifiedLabel];
 
-  if (v48)
+  if (verifiedLabel)
   {
     v49 = v46 ? MaxY + 5.0 : MaxY;
-    v50 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v50 sizeThatFits:{v89, 3.40282347e38}];
+    verifiedLabel2 = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel2 sizeThatFits:{v89, 3.40282347e38}];
     v52 = v51;
     v54 = v53;
 
@@ -180,18 +180,18 @@
     v57 = v99.origin.y;
     v58 = v99.size.width;
     v59 = v99.size.height;
-    v60 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v60 setFrame:{v56, v57, v58, v59}];
+    verifiedLabel3 = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel3 setFrame:{v56, v57, v58, v59}];
 
     if (!v46)
     {
       if (v43)
       {
-        v61 = [(CertUIKeyValueView *)self keyLabel];
-        [v61 _firstLineBaselineFrameOriginY];
+        keyLabel5 = [(CertUIKeyValueView *)self keyLabel];
+        [keyLabel5 _firstLineBaselineFrameOriginY];
         v63 = v62;
-        v64 = [(CertUIKeyValueView *)self verifiedLabel];
-        [v64 _firstLineBaselineOffsetFromBoundsTop];
+        verifiedLabel4 = [(CertUIKeyValueView *)self verifiedLabel];
+        [verifiedLabel4 _firstLineBaselineOffsetFromBoundsTop];
         v66 = v63 - v65;
 
         v100.origin.x = v55;
@@ -203,28 +203,28 @@
         v68 = v101.origin.y;
         v69 = v101.size.width;
         v70 = v101.size.height;
-        v71 = [(CertUIKeyValueView *)self verifiedLabel];
-        [v71 setFrame:{v67, v68, v69, v70}];
+        verifiedLabel5 = [(CertUIKeyValueView *)self verifiedLabel];
+        [verifiedLabel5 setFrame:{v67, v68, v69, v70}];
       }
     }
   }
 
-  v72 = [(CertUIKeyValueView *)self verifiedImageView];
+  verifiedImageView = [(CertUIKeyValueView *)self verifiedImageView];
 
-  if (v72)
+  if (verifiedImageView)
   {
-    v73 = [(CertUIKeyValueView *)self verifiedImageView];
-    v74 = [v73 image];
-    [v74 size];
+    verifiedImageView2 = [(CertUIKeyValueView *)self verifiedImageView];
+    image = [verifiedImageView2 image];
+    [image size];
     v76 = v75;
     v78 = v77;
 
-    v79 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v79 frame];
+    verifiedLabel6 = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel6 frame];
     v80 = CGRectGetMaxX(v102) + 8.0;
 
-    v81 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v81 _firstLineBaselineFrameOriginY];
+    verifiedLabel7 = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel7 _firstLineBaselineFrameOriginY];
     v83 = v82 - v78;
 
     v103.origin.x = v80;
@@ -236,31 +236,31 @@
     v85 = v104.origin.y;
     v86 = v104.size.width;
     v87 = v104.size.height;
-    v88 = [(CertUIKeyValueView *)self verifiedImageView];
-    [v88 setFrame:{v84, v85, v86, v87}];
+    verifiedImageView3 = [(CertUIKeyValueView *)self verifiedImageView];
+    [verifiedImageView3 setFrame:{v84, v85, v86, v87}];
   }
 }
 
 - (void)_createVerifiedComponentsIfNeeded
 {
-  v3 = [(CertUIKeyValueView *)self verifiedImageView];
+  verifiedImageView = [(CertUIKeyValueView *)self verifiedImageView];
 
-  if (!v3)
+  if (!verifiedImageView)
   {
     v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
     verifiedImageView = self->_verifiedImageView;
     self->_verifiedImageView = v4;
 
     [(UIImageView *)self->_verifiedImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(CertUIKeyValueView *)self verifiedColor];
-    [(UIImageView *)self->_verifiedImageView setTintColor:v6];
+    verifiedColor = [(CertUIKeyValueView *)self verifiedColor];
+    [(UIImageView *)self->_verifiedImageView setTintColor:verifiedColor];
 
     [(CertUIKeyValueView *)self addSubview:self->_verifiedImageView];
   }
 
-  v7 = [(CertUIKeyValueView *)self verifiedLabel];
+  verifiedLabel = [(CertUIKeyValueView *)self verifiedLabel];
 
-  if (!v7)
+  if (!verifiedLabel)
   {
     v8 = objc_alloc(MEMORY[0x277D756B8]);
     v9 = [v8 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -268,11 +268,11 @@
     self->_verifiedLabel = v9;
 
     [(UILabel *)self->_verifiedLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [MEMORY[0x277D75348] systemRedColor];
-    [(UILabel *)self->_verifiedLabel setTextColor:v11];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(UILabel *)self->_verifiedLabel setTextColor:systemRedColor];
 
-    v12 = [(CertUIKeyValueView *)self verifiedFont];
-    [(UILabel *)self->_verifiedLabel setFont:v12];
+    verifiedFont = [(CertUIKeyValueView *)self verifiedFont];
+    [(UILabel *)self->_verifiedLabel setFont:verifiedFont];
 
     v13 = self->_verifiedLabel;
 
@@ -280,14 +280,14 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(CertUIKeyValueView *)self preferredValueLabelOriginX:a3.width];
+  width = fits.width;
+  [(CertUIKeyValueView *)self preferredValueLabelOriginX:fits.width];
   v6 = width - v5;
   v7 = width - (width - v5) + -10.0;
-  v8 = [(CertUIKeyValueView *)self keyLabel];
-  [v8 sizeThatFits:{v7, 3.40282347e38}];
+  keyLabel = [(CertUIKeyValueView *)self keyLabel];
+  [keyLabel sizeThatFits:{v7, 3.40282347e38}];
   v10 = v9;
   v12 = v11;
 
@@ -310,8 +310,8 @@
     MaxY = CGRectGetMaxY(v46);
   }
 
-  v18 = [(CertUIKeyValueView *)self valueLabel];
-  [v18 sizeThatFits:{v6, 3.40282347e38}];
+  valueLabel = [(CertUIKeyValueView *)self valueLabel];
+  [valueLabel sizeThatFits:{v6, 3.40282347e38}];
   v20 = v19;
   v22 = v21;
 
@@ -338,21 +338,21 @@
   v50.size.width = v25;
   v50.size.height = v26;
   v27 = CGRectGetMaxY(v50);
-  v28 = [(CertUIKeyValueView *)self valueLabel];
-  v29 = [v28 text];
-  v30 = [v29 length];
+  valueLabel2 = [(CertUIKeyValueView *)self valueLabel];
+  text = [valueLabel2 text];
+  v30 = [text length];
 
-  v31 = [(CertUIKeyValueView *)self verifiedLabel];
+  verifiedLabel = [(CertUIKeyValueView *)self verifiedLabel];
 
-  if (v31)
+  if (verifiedLabel)
   {
     if (v30)
     {
       v27 = v27 + 5.0;
     }
 
-    v32 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v32 sizeThatFits:{v6, 3.40282347e38}];
+    verifiedLabel2 = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel2 sizeThatFits:{v6, 3.40282347e38}];
     v34 = v33;
     v36 = v35;
 
@@ -382,68 +382,68 @@
   return result;
 }
 
-- (void)setItemDetail:(id)a3
+- (void)setItemDetail:(id)detail
 {
-  v10 = a3;
-  v4 = [v10 detailTitle];
-  v5 = [v10 detail];
-  [(CertUIKeyValueView *)self setKey:v4 value:v5];
+  detailCopy = detail;
+  detailTitle = [detailCopy detailTitle];
+  detail = [detailCopy detail];
+  [(CertUIKeyValueView *)self setKey:detailTitle value:detail];
 
-  v6 = [v10 detailHighlightColor];
-  [(CertUIKeyValueView *)self setHighlightTextColor:v6];
+  detailHighlightColor = [detailCopy detailHighlightColor];
+  [(CertUIKeyValueView *)self setHighlightTextColor:detailHighlightColor];
 
-  if ([v10 showCheckmarkView])
+  if ([detailCopy showCheckmarkView])
   {
-    v7 = [v10 checkmarkText];
-    v8 = [v10 checkmarkHighlightColor];
-    -[CertUIKeyValueView setCheckmarkLabelText:checkmarkLabelColor:showCheckmark:](self, "setCheckmarkLabelText:checkmarkLabelColor:showCheckmark:", v7, v8, [v10 showCheckmark]);
+    checkmarkText = [detailCopy checkmarkText];
+    checkmarkHighlightColor = [detailCopy checkmarkHighlightColor];
+    -[CertUIKeyValueView setCheckmarkLabelText:checkmarkLabelColor:showCheckmark:](self, "setCheckmarkLabelText:checkmarkLabelColor:showCheckmark:", checkmarkText, checkmarkHighlightColor, [detailCopy showCheckmark]);
   }
 
   else
   {
-    v9 = [(CertUIKeyValueView *)self verifiedLabel];
-    [v9 setText:0];
+    verifiedLabel = [(CertUIKeyValueView *)self verifiedLabel];
+    [verifiedLabel setText:0];
 
-    v7 = [(CertUIKeyValueView *)self verifiedImageView];
-    [v7 setImage:0];
+    checkmarkText = [(CertUIKeyValueView *)self verifiedImageView];
+    [checkmarkText setImage:0];
   }
 
   [(CertUIKeyValueView *)self setNeedsLayout];
 }
 
-- (void)setKey:(id)a3 value:(id)a4
+- (void)setKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CertUIKeyValueView *)self keyLabel];
-  [v8 setText:v7];
+  valueCopy = value;
+  keyCopy = key;
+  keyLabel = [(CertUIKeyValueView *)self keyLabel];
+  [keyLabel setText:keyCopy];
 
-  v9 = [(CertUIKeyValueView *)self valueLabel];
-  [v9 setText:v6];
+  valueLabel = [(CertUIKeyValueView *)self valueLabel];
+  [valueLabel setText:valueCopy];
 
   [(CertUIKeyValueView *)self setNeedsLayout];
 }
 
-- (void)setHighlightTextColor:(id)a3
+- (void)setHighlightTextColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v4 = a3;
-    v5 = [(CertUIKeyValueView *)self keyLabel];
-    [v5 setTextColor:v4];
+    colorCopy = color;
+    keyLabel = [(CertUIKeyValueView *)self keyLabel];
+    [keyLabel setTextColor:colorCopy];
 
-    v6 = [(CertUIKeyValueView *)self valueLabel];
-    [v6 setTextColor:v4];
+    valueLabel = [(CertUIKeyValueView *)self valueLabel];
+    [valueLabel setTextColor:colorCopy];
   }
 }
 
-- (void)setCheckmarkLabelText:(id)a3 checkmarkLabelColor:(id)a4 showCheckmark:(BOOL)a5
+- (void)setCheckmarkLabelText:(id)text checkmarkLabelColor:(id)color showCheckmark:(BOOL)checkmark
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  checkmarkCopy = checkmark;
+  colorCopy = color;
+  textCopy = text;
   [(CertUIKeyValueView *)self _createVerifiedComponentsIfNeeded];
-  if (v5)
+  if (checkmarkCopy)
   {
     v10 = MEMORY[0x277D755B8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -455,25 +455,25 @@
     v12 = 0;
   }
 
-  v13 = [(CertUIKeyValueView *)self verifiedLabel];
-  [v13 setText:v9];
+  verifiedLabel = [(CertUIKeyValueView *)self verifiedLabel];
+  [verifiedLabel setText:textCopy];
 
-  v14 = [(CertUIKeyValueView *)self verifiedLabel];
-  [v14 setTextColor:v8];
+  verifiedLabel2 = [(CertUIKeyValueView *)self verifiedLabel];
+  [verifiedLabel2 setTextColor:colorCopy];
 
   v16 = [v12 imageWithRenderingMode:2];
 
-  v15 = [(CertUIKeyValueView *)self verifiedImageView];
-  [v15 setImage:v16];
+  verifiedImageView = [(CertUIKeyValueView *)self verifiedImageView];
+  [verifiedImageView setImage:v16];
 
   [(CertUIKeyValueView *)self setNeedsLayout];
 }
 
-- (void)setPreferredValueLabelOriginX:(double)a3
+- (void)setPreferredValueLabelOriginX:(double)x
 {
-  if (a3 >= 0.0 && self->_preferredValueLabelOriginX != a3)
+  if (x >= 0.0 && self->_preferredValueLabelOriginX != x)
   {
-    self->_preferredValueLabelOriginX = a3;
+    self->_preferredValueLabelOriginX = x;
     [(CertUIKeyValueView *)self setNeedsLayout];
   }
 }
@@ -498,10 +498,10 @@
 
 - (id)verifiedFont
 {
-  v2 = [(CertUIKeyValueView *)self detailFont];
-  v3 = [v2 fontDescriptor];
+  detailFont = [(CertUIKeyValueView *)self detailFont];
+  fontDescriptor = [detailFont fontDescriptor];
 
-  v4 = [v3 fontDescriptorWithSymbolicTraits:2];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v5 = [MEMORY[0x277D74300] fontWithDescriptor:v4 size:0.0];
 

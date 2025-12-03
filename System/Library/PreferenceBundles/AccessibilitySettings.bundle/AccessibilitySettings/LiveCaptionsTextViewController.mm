@@ -1,10 +1,10 @@
 @interface LiveCaptionsTextViewController
-- (id)readPreferredContentSizeCategoryNameForAppID:(id)a3;
+- (id)readPreferredContentSizeCategoryNameForAppID:(id)d;
 @end
 
 @implementation LiveCaptionsTextViewController
 
-- (id)readPreferredContentSizeCategoryNameForAppID:(id)a3
+- (id)readPreferredContentSizeCategoryNameForAppID:(id)d
 {
   v3 = _AXSLiveCaptionsCopyContentSizeCategoryName();
 

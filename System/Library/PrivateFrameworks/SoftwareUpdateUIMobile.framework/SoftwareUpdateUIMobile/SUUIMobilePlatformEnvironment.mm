@@ -1,10 +1,10 @@
 @interface SUUIMobilePlatformEnvironment
-- (void)onAutomationEnabledStateChanged:(BOOL)a3;
+- (void)onAutomationEnabledStateChanged:(BOOL)changed;
 @end
 
 @implementation SUUIMobilePlatformEnvironment
 
-- (void)onAutomationEnabledStateChanged:(BOOL)a3
+- (void)onAutomationEnabledStateChanged:(BOOL)changed
 {
   MEMORY[0x277D82BE0](self);
   v3 = sub_26B128B88();

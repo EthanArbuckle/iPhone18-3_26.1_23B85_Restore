@@ -1,16 +1,16 @@
 @interface RPAppAudioCaptureManager
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)a3;
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)stereo;
 + (AudioStreamBasicDescription)descriptionForHQLR;
-- (BOOL)handleStartAudioQueueFailed:(int)a3 didFailHandler:(id)a4;
+- (BOOL)handleStartAudioQueueFailed:(int)failed didFailHandler:(id)handler;
 - (RPAppAudioCaptureManager)init;
-- (id)newAudioTapForAudioCaptureConfig:(id)a3;
-- (void)startWithConfig:(id)a3 outputHandler:(id)a4 didStartHandler:(id)a5;
+- (id)newAudioTapForAudioCaptureConfig:(id)config;
+- (void)startWithConfig:(id)config outputHandler:(id)handler didStartHandler:(id)startHandler;
 - (void)stop;
 @end
 
 @implementation RPAppAudioCaptureManager
 
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)a3
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)stereo
 {
   retstr->mSampleRate = 44100.0;
   *&retstr->mFormatID = 0xE6C70636DLL;
@@ -45,11 +45,11 @@
 + (AudioStreamBasicDescription)descriptionForHQLR
 {
   v7 = [[AVAudioFormat alloc] initWithCommonFormat:1 sampleRate:1 channels:0 interleaved:48000.0];
-  v4 = [v7 streamDescription];
-  v5 = v4[1];
-  *&retstr->mSampleRate = *v4;
+  streamDescription = [v7 streamDescription];
+  v5 = streamDescription[1];
+  *&retstr->mSampleRate = *streamDescription;
   *&retstr->mBytesPerPacket = v5;
-  *&retstr->mBitsPerChannel = *(v4 + 4);
+  *&retstr->mBitsPerChannel = *(streamDescription + 4);
 
   return result;
 }
@@ -82,15 +82,15 @@
   return v2;
 }
 
-- (BOOL)handleStartAudioQueueFailed:(int)a3 didFailHandler:(id)a4
+- (BOOL)handleStartAudioQueueFailed:(int)failed didFailHandler:(id)handler
 {
-  v5 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (failed)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100064FC0();
-      if (!v5)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
@@ -98,38 +98,38 @@
       goto LABEL_5;
     }
 
-    if (v5)
+    if (handlerCopy)
     {
 LABEL_5:
       v6 = [NSError _rpUserErrorForCode:-5803 userInfo:0];
-      v5[2](v5, v6);
+      handlerCopy[2](handlerCopy, v6);
     }
   }
 
 LABEL_6:
 
-  return a3 != 0;
+  return failed != 0;
 }
 
-- (void)startWithConfig:(id)a3 outputHandler:(id)a4 didStartHandler:(id)a5
+- (void)startWithConfig:(id)config outputHandler:(id)handler didStartHandler:(id)startHandler
 {
-  var2 = a3.var2;
-  v7 = *&a3.var0;
-  v9 = a4;
-  v10 = a5;
+  var2 = config.var2;
+  v7 = *&config.var0;
+  handlerCopy = handler;
+  startHandlerCopy = startHandler;
   audioDispatchQueue = self->_audioDispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = sub_10004679C;
   block[3] = &unk_1000A24D8;
   block[4] = self;
-  v16 = v9;
+  v16 = handlerCopy;
   v18 = v7;
   v19 = var2;
-  v17 = v10;
-  v12 = v10;
+  v17 = startHandlerCopy;
+  v12 = startHandlerCopy;
   v13 = var2;
-  v14 = v9;
+  v14 = handlerCopy;
   dispatch_async(audioDispatchQueue, block);
 }
 
@@ -144,10 +144,10 @@ LABEL_6:
   dispatch_sync(audioDispatchQueue, block);
 }
 
-- (id)newAudioTapForAudioCaptureConfig:(id)a3
+- (id)newAudioTapForAudioCaptureConfig:(id)config
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = config.var2;
+  v4 = *&config.var0;
   v5 = [[AVAudioFormat alloc] initWithStreamDescription:&self->_audioBasicDescription];
   if (!v5)
   {

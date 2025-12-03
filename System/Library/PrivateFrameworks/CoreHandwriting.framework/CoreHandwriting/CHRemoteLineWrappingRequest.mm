@@ -1,38 +1,38 @@
 @interface CHRemoteLineWrappingRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteLineWrappingRequest:(id)a3;
-- (CHRemoteLineWrappingRequest)initWithCoder:(id)a3;
-- (CHRemoteLineWrappingRequest)initWithLineWrappableGroups:(id)a3 options:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteLineWrappingRequest:(id)request;
+- (CHRemoteLineWrappingRequest)initWithCoder:(id)coder;
+- (CHRemoteLineWrappingRequest)initWithLineWrappableGroups:(id)groups options:(id)options;
 - (unint64_t)hash;
 @end
 
 @implementation CHRemoteLineWrappingRequest
 
-- (CHRemoteLineWrappingRequest)initWithLineWrappableGroups:(id)a3 options:(id)a4
+- (CHRemoteLineWrappingRequest)initWithLineWrappableGroups:(id)groups options:(id)options
 {
-  v6 = a3;
+  groupsCopy = groups;
   v10.receiver = self;
   v10.super_class = CHRemoteLineWrappingRequest;
   v7 = [(CHRemoteLineWrappingRequest *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_lineWrappableGroups, a3);
+    objc_storeStrong(&v7->_lineWrappableGroups, groups);
   }
 
   return v8;
 }
 
-- (CHRemoteLineWrappingRequest)initWithCoder:(id)a3
+- (CHRemoteLineWrappingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CHRemoteLineWrappingRequest;
   v5 = [(CHRemoteLineWrappingRequest *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v10 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v7, v6, @"lineWrappableGroups", v8, v9);
+    v10 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v7, v6, @"lineWrappableGroups", v8, v9);
     lineWrappableGroups = v5->_lineWrappableGroups;
     v5->_lineWrappableGroups = v10;
   }
@@ -40,22 +40,22 @@
   return v5;
 }
 
-- (BOOL)isEqualToRemoteLineWrappingRequest:(id)a3
+- (BOOL)isEqualToRemoteLineWrappingRequest:(id)request
 {
-  v9 = a3;
-  if (self == v9)
+  requestCopy = request;
+  if (self == requestCopy)
   {
     goto LABEL_9;
   }
 
   v10 = objc_msgSend_enableCachingIfAvailable(self, v4, v5, v6, v7, v8);
-  if (v10 != objc_msgSend_enableCachingIfAvailable(v9, v11, v12, v13, v14, v15))
+  if (v10 != objc_msgSend_enableCachingIfAvailable(requestCopy, v11, v12, v13, v14, v15))
   {
     goto LABEL_4;
   }
 
   v21 = objc_msgSend_lineWrappableGroups(self, v16, v17, v18, v19, v20);
-  v27 = objc_msgSend_lineWrappableGroups(v9, v22, v23, v24, v25, v26);
+  v27 = objc_msgSend_lineWrappableGroups(requestCopy, v22, v23, v24, v25, v26);
 
   if (v21 != v27)
   {
@@ -63,7 +63,7 @@
   }
 
   v34 = objc_msgSend_options(self, v28, v29, v30, v31, v32);
-  v40 = objc_msgSend_options(v9, v35, v36, v37, v38, v39);
+  v40 = objc_msgSend_options(requestCopy, v35, v36, v37, v38, v39);
 
   if (v34 == v40)
   {
@@ -75,11 +75,11 @@ LABEL_9:
   v51 = objc_msgSend_options(self, v41, v42, v43, v44, v45);
   if (v51)
   {
-    v57 = objc_msgSend_options(v9, v46, v47, v48, v49, v50);
+    v57 = objc_msgSend_options(requestCopy, v46, v47, v48, v49, v50);
     if (v57)
     {
       v58 = objc_msgSend_options(self, v52, v53, v54, v55, v56);
-      v64 = objc_msgSend_options(v9, v59, v60, v61, v62, v63);
+      v64 = objc_msgSend_options(requestCopy, v59, v60, v61, v62, v63);
       isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v58, v65, v64, v66, v67, v68);
 
       if (isEqualToDictionary)
@@ -100,13 +100,13 @@ LABEL_10:
   return v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteLineWrappingRequest = objc_msgSend_isEqualToRemoteLineWrappingRequest_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteLineWrappingRequest = objc_msgSend_isEqualToRemoteLineWrappingRequest_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteLineWrappingRequest;
   }

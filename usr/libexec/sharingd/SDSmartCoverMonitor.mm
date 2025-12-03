@@ -1,23 +1,23 @@
 @interface SDSmartCoverMonitor
-- (BOOL)isSmartCoverClosed:(__IOHIDEventSystemClient *)a3;
+- (BOOL)isSmartCoverClosed:(__IOHIDEventSystemClient *)closed;
 - (SDSmartCoverMonitor)init;
 - (id)description;
-- (unsigned)getSmartCoverState:(__CFArray *)a3 usage:(unsigned int)a4;
+- (unsigned)getSmartCoverState:(__CFArray *)state usage:(unsigned int)usage;
 - (void)dealloc;
-- (void)handleButtonEvent:(__IOHIDEvent *)a3;
-- (void)handleEvent:(__IOHIDEvent *)a3;
+- (void)handleButtonEvent:(__IOHIDEvent *)event;
+- (void)handleEvent:(__IOHIDEvent *)event;
 - (void)installSmartCoverMonitor;
-- (void)postNotification:(id)a3;
-- (void)updateSmartCoverIsClosed:(BOOL)a3;
+- (void)postNotification:(id)notification;
+- (void)updateSmartCoverIsClosed:(BOOL)closed;
 @end
 
 @implementation SDSmartCoverMonitor
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[NSNotificationCenter defaultCenter];
-  [v4 postNotificationName:v3 object:0 userInfo:0];
+  [v4 postNotificationName:notificationCopy object:0 userInfo:0];
 }
 
 - (SDSmartCoverMonitor)init
@@ -113,16 +113,16 @@
   return v3;
 }
 
-- (void)updateSmartCoverIsClosed:(BOOL)a3
+- (void)updateSmartCoverIsClosed:(BOOL)closed
 {
-  if (self->_smartCoverIsClosed != a3)
+  if (self->_smartCoverIsClosed != closed)
   {
-    v3 = a3;
+    closedCopy = closed;
     v5 = daemon_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (closedCopy)
       {
         v6 = @"YES";
       }
@@ -132,12 +132,12 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "smartCoverIsClosed changed: closed %@", &v7, 0xCu);
     }
 
-    self->_smartCoverIsClosed = v3;
+    self->_smartCoverIsClosed = closedCopy;
     [(SDSmartCoverMonitor *)self postNotification:@"com.apple.sharingd.SmartCoverClosedChanged"];
   }
 }
 
-- (void)handleButtonEvent:(__IOHIDEvent *)a3
+- (void)handleButtonEvent:(__IOHIDEvent *)event
 {
   IntegerValue = IOHIDEventGetIntegerValue();
   v5 = IOHIDEventGetIntegerValue();
@@ -214,42 +214,42 @@ LABEL_23:
   [(SDSmartCoverMonitor *)self updateSmartCoverIsClosed:v13, *v14, *&v14[16]];
 }
 
-- (void)handleEvent:(__IOHIDEvent *)a3
+- (void)handleEvent:(__IOHIDEvent *)event
 {
-  if (a3)
+  if (event)
   {
-    CFRetain(a3);
+    CFRetain(event);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(SDSmartCoverMonitor *)self smartCoverIsClosed];
+  smartCoverIsClosed = [(SDSmartCoverMonitor *)self smartCoverIsClosed];
   if (IOHIDEventGetType() == 3)
   {
-    [(SDSmartCoverMonitor *)self handleButtonEvent:a3];
+    [(SDSmartCoverMonitor *)self handleButtonEvent:event];
   }
 
-  v6 = [(SDSmartCoverMonitor *)self smartCoverIsClosed];
-  if (v5 != v6)
+  smartCoverIsClosed2 = [(SDSmartCoverMonitor *)self smartCoverIsClosed];
+  if (smartCoverIsClosed != smartCoverIsClosed2)
   {
-    [(SDSmartCoverMonitor *)self updateSmartCoverIsClosed:v6];
+    [(SDSmartCoverMonitor *)self updateSmartCoverIsClosed:smartCoverIsClosed2];
   }
 
-  if (a3)
+  if (event)
   {
-    CFRelease(a3);
+    CFRelease(event);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isSmartCoverClosed:(__IOHIDEventSystemClient *)a3
+- (BOOL)isSmartCoverClosed:(__IOHIDEventSystemClient *)closed
 {
-  if (!a3)
+  if (!closed)
   {
     return 0;
   }
 
-  v4 = IOHIDEventSystemClientCopyServices(a3);
+  v4 = IOHIDEventSystemClientCopyServices(closed);
   v5 = [(SDSmartCoverMonitor *)self getSmartCoverState:v4 usage:1];
   v6 = [(SDSmartCoverMonitor *)self getSmartCoverState:v4 usage:2];
   v7 = v6 | v5;
@@ -290,14 +290,14 @@ LABEL_23:
   return v8;
 }
 
-- (unsigned)getSmartCoverState:(__CFArray *)a3 usage:(unsigned int)a4
+- (unsigned)getSmartCoverState:(__CFArray *)state usage:(unsigned int)usage
 {
-  if (!a3)
+  if (!state)
   {
     return 0;
   }
 
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(state);
   if (Count < 1)
   {
     return 0;
@@ -307,7 +307,7 @@ LABEL_23:
   v8 = 0;
   for (i = 0; i != v7; ++i)
   {
-    CFArrayGetValueAtIndex(a3, i);
+    CFArrayGetValueAtIndex(state, i);
     KeyboardEvent = IOHIDEventCreateKeyboardEvent();
     v11 = IOHIDServiceClientCopyEvent();
     if (v11)
@@ -315,15 +315,15 @@ LABEL_23:
       v12 = v11;
       if (IOHIDEventGetIntegerValue())
       {
-        v13 = a4;
+        usageCopy = usage;
       }
 
       else
       {
-        v13 = 0;
+        usageCopy = 0;
       }
 
-      v8 |= v13;
+      v8 |= usageCopy;
       CFRelease(v12);
     }
 

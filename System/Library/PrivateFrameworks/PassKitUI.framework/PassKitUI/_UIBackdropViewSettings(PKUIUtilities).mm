@@ -35,17 +35,17 @@
   {
 LABEL_7:
     v8 = v7;
-    v9 = [v4 grayscaleTintMaskImage];
-    [v5 setGrayscaleTintMaskImage:v9];
+    grayscaleTintMaskImage = [v4 grayscaleTintMaskImage];
+    [v5 setGrayscaleTintMaskImage:grayscaleTintMaskImage];
 
     [v5 setGrayscaleTintMaskAlpha:v8];
 LABEL_8:
     [v5 setLightenGrayscaleWithSourceOver:{objc_msgSend(v4, "lightenGrayscaleWithSourceOver")}];
   }
 
-  v10 = [v4 colorTint];
-  [v5 setColorTint:v10];
-  if (v10)
+  colorTint = [v4 colorTint];
+  [v5 setColorTint:colorTint];
+  if (colorTint)
   {
     [v5 setColorTintAlpha:0.0];
   }
@@ -75,8 +75,8 @@ LABEL_8:
   if (v13 > 0.0)
   {
     v14 = v13;
-    v15 = [v4 filterMaskImage];
-    [v5 setFilterMaskImage:v15];
+    filterMaskImage = [v4 filterMaskImage];
+    [v5 setFilterMaskImage:filterMaskImage];
 
     [v5 setFilterMaskAlpha:v14];
   }
@@ -87,8 +87,8 @@ LABEL_8:
     [v5 setSaturationDeltaFactor:1.0];
   }
 
-  v17 = [v4 legibleColor];
-  [v5 setLegibleColor:v17];
+  legibleColor = [v4 legibleColor];
+  [v5 setLegibleColor:legibleColor];
 
 LABEL_20:
   return v5;

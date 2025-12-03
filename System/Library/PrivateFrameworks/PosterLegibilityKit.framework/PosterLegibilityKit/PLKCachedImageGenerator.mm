@@ -1,16 +1,16 @@
 @interface PLKCachedImageGenerator
 - (PFTScheduler)keyScheduler;
-- (PLKCachedImageGenerator)initWithCache:(id)a3 keyGenerator:(id)a4 imageGenerator:(id)a5;
-- (PLKCachedImageGenerator)initWithImageGenerator:(id)a3;
-- (id)cacheKeyFutureForObject:(id)a3 context:(id)a4;
-- (id)imageFutureForCacheKey:(id)a3;
-- (id)imageFutureForObject:(id)a3;
-- (id)imageFutureForObject:(id)a3 context:(id)a4;
-- (id)imageFutureForObject:(id)a3 persistenceOptions:(id)a4 context:(id)a5;
-- (id)prewarmObjects:(id)a3 context:(id)a4;
-- (id)removeImagesForCacheKeys:(id)a3;
-- (id)removeImagesForPredicate:(id)a3;
-- (void)setKeyScheduler:(id)a3;
+- (PLKCachedImageGenerator)initWithCache:(id)cache keyGenerator:(id)generator imageGenerator:(id)imageGenerator;
+- (PLKCachedImageGenerator)initWithImageGenerator:(id)generator;
+- (id)cacheKeyFutureForObject:(id)object context:(id)context;
+- (id)imageFutureForCacheKey:(id)key;
+- (id)imageFutureForObject:(id)object;
+- (id)imageFutureForObject:(id)object context:(id)context;
+- (id)imageFutureForObject:(id)object persistenceOptions:(id)options context:(id)context;
+- (id)prewarmObjects:(id)objects context:(id)context;
+- (id)removeImagesForCacheKeys:(id)keys;
+- (id)removeImagesForPredicate:(id)predicate;
+- (void)setKeyScheduler:(id)scheduler;
 @end
 
 @implementation PLKCachedImageGenerator
@@ -24,41 +24,41 @@
   return v3;
 }
 
-- (PLKCachedImageGenerator)initWithImageGenerator:(id)a3
+- (PLKCachedImageGenerator)initWithImageGenerator:(id)generator
 {
   [(PLKCachedImageGenerator *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (PLKCachedImageGenerator)initWithCache:(id)a3 keyGenerator:(id)a4 imageGenerator:(id)a5
+- (PLKCachedImageGenerator)initWithCache:(id)cache keyGenerator:(id)generator imageGenerator:(id)imageGenerator
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  generatorCopy = generator;
+  imageGeneratorCopy = imageGenerator;
   v12 = PLKLogCaching();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v9;
+    v32 = cacheCopy;
     _os_log_impl(&dword_21E5D5000, v12, OS_LOG_TYPE_DEFAULT, "-[PLKCachedImageGenerator(%p) Setting up with cache %{public}@", buf, 0x16u);
   }
 
   v28.receiver = self;
   v28.super_class = PLKCachedImageGenerator;
-  v13 = [(PLKImageGenerator *)&v28 initWithImageGenerator:v11];
+  v13 = [(PLKImageGenerator *)&v28 initWithImageGenerator:imageGeneratorCopy];
 
   if (v13)
   {
     if ([MEMORY[0x277CBEBD0] plk_dumpMappedImageCache])
     {
-      [v9 removeAllImagesWithCompletion:0];
+      [cacheCopy removeAllImagesWithCompletion:0];
     }
 
-    v14 = [v10 copy];
+    v14 = [generatorCopy copy];
     keyGenerator = v13->_keyGenerator;
     v13->_keyGenerator = v14;
 
@@ -81,7 +81,7 @@
     prewarmScheduler = v13->_prewarmScheduler;
     v13->_prewarmScheduler = v24;
 
-    objc_storeStrong(&v13->_cache, a3);
+    objc_storeStrong(&v13->_cache, cache);
     v13->_cacheKeyFutureLock = 0;
     v13->_imageFutureLock = 0;
     v13->_prewarmLock = 0;
@@ -92,31 +92,31 @@
   return v13;
 }
 
-- (id)imageFutureForObject:(id)a3
+- (id)imageFutureForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLKCachedImageGenerator *)self defaultPersistenceOptions];
-  v6 = [(PLKCachedImageGenerator *)self imageFutureForObject:v4 persistenceOptions:v5 context:0];
+  objectCopy = object;
+  defaultPersistenceOptions = [(PLKCachedImageGenerator *)self defaultPersistenceOptions];
+  v6 = [(PLKCachedImageGenerator *)self imageFutureForObject:objectCopy persistenceOptions:defaultPersistenceOptions context:0];
 
   return v6;
 }
 
-- (id)imageFutureForObject:(id)a3 context:(id)a4
+- (id)imageFutureForObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLKCachedImageGenerator *)self defaultPersistenceOptions];
-  v9 = [(PLKCachedImageGenerator *)self imageFutureForObject:v7 persistenceOptions:v8 context:v6];
+  contextCopy = context;
+  objectCopy = object;
+  defaultPersistenceOptions = [(PLKCachedImageGenerator *)self defaultPersistenceOptions];
+  v9 = [(PLKCachedImageGenerator *)self imageFutureForObject:objectCopy persistenceOptions:defaultPersistenceOptions context:contextCopy];
 
   return v9;
 }
 
-- (id)imageFutureForObject:(id)a3 persistenceOptions:(id)a4 context:(id)a5
+- (id)imageFutureForObject:(id)object persistenceOptions:(id)options context:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v28 = a4;
-  v9 = a5;
+  objectCopy = object;
+  optionsCopy = options;
+  contextCopy = context;
   v10 = PLKLogCaching();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
 
@@ -125,55 +125,55 @@
     v12 = PLKLogCaching();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(PLKImageGenerator *)self label];
-      v23 = v22;
+      label = [(PLKImageGenerator *)self label];
+      v23 = label;
       v24 = &stru_282F9B218;
       *location = 138413314;
-      if (v22)
+      if (label)
       {
-        v24 = v22;
+        v24 = label;
       }
 
       *&location[4] = v24;
       v40 = 2048;
-      v41 = self;
+      selfCopy = self;
       v42 = 2112;
-      v43 = v8;
+      v43 = objectCopy;
       v44 = 2114;
-      v45 = v28;
+      v45 = optionsCopy;
       v46 = 2112;
-      v47 = v9;
+      v47 = contextCopy;
       _os_log_debug_impl(&dword_21E5D5000, v12, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) imageFutureForObject:%@]", location, 0x34u);
     }
   }
 
   objc_initWeak(location, self);
   v25 = self->_cache;
-  v27 = [(PLKImageGenerator *)self imageGenerator];
-  v13 = [(PLKImageGenerator *)self workScheduler];
-  v26 = [MEMORY[0x277CBEAA8] date];
-  v14 = [(PLKImageGenerator *)self collectStatistics];
+  imageGenerator = [(PLKImageGenerator *)self imageGenerator];
+  workScheduler = [(PLKImageGenerator *)self workScheduler];
+  date = [MEMORY[0x277CBEAA8] date];
+  collectStatistics = [(PLKImageGenerator *)self collectStatistics];
   v15 = self->_imageFutureLRUCache;
-  v16 = [[__PLKLRUCacheKeyTuple alloc] initWithObject:v8 context:v9];
+  v16 = [[__PLKLRUCacheKeyTuple alloc] initWithObject:objectCopy context:contextCopy];
   os_unfair_recursive_lock_lock_with_options();
   v17 = [(PLKLRUCache *)v15 objectForKey:v16];
   if (!v17)
   {
-    v18 = [(PLKCachedImageGenerator *)self cacheKeyFutureForObject:v8 context:v9];
+    v18 = [(PLKCachedImageGenerator *)self cacheKeyFutureForObject:objectCopy context:contextCopy];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_context___block_invoke;
     v29[3] = &unk_27835B4E8;
-    v30 = v28;
+    v30 = optionsCopy;
     v31 = v25;
-    v32 = v8;
-    v33 = v9;
-    v36 = v27;
-    v34 = v13;
-    v38 = v14;
+    v32 = objectCopy;
+    v33 = contextCopy;
+    v36 = imageGenerator;
+    v34 = workScheduler;
+    v38 = collectStatistics;
     objc_copyWeak(&v37, location);
     v19 = v18;
-    v35 = v26;
+    v35 = date;
     v17 = [v18 flatMap:v29];
     [(PLKLRUCache *)v15 setObject:v17 forKey:v16];
 
@@ -355,12 +355,12 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cacheKeyFutureForObject:(id)a3 context:(id)a4
+- (id)cacheKeyFutureForObject:(id)object context:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy)
   {
     v8 = PLKLogCaching();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -370,33 +370,33 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
       v10 = PLKLogCaching();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [(PLKImageGenerator *)self label];
-        v25 = v24;
+        label = [(PLKImageGenerator *)self label];
+        v25 = label;
         v26 = &stru_282F9B218;
         *buf = 138413058;
-        if (v24)
+        if (label)
         {
-          v26 = v24;
+          v26 = label;
         }
 
         v39 = v26;
         v40 = 2048;
-        v41 = self;
+        selfCopy3 = self;
         v42 = 2112;
-        v43 = v6;
+        v43 = objectCopy;
         v44 = 2112;
-        v45 = v7;
+        v45 = contextCopy;
         _os_log_debug_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) cacheKeyFutureForObject:%@]", buf, 0x2Au);
       }
     }
 
-    v33 = [(PLKCachedImageGenerator *)self keyGenerator];
-    v11 = [(PLKCachedImageGenerator *)self keyScheduler];
-    v12 = [[__PLKLRUCacheKeyTuple alloc] initWithObject:v6 context:v7];
+    keyGenerator = [(PLKCachedImageGenerator *)self keyGenerator];
+    keyScheduler = [(PLKCachedImageGenerator *)self keyScheduler];
+    v12 = [[__PLKLRUCacheKeyTuple alloc] initWithObject:objectCopy context:contextCopy];
     v13 = self->_cacheKeyFutureLRUCache;
     os_unfair_recursive_lock_lock_with_options();
-    v14 = [(PLKLRUCache *)v13 objectForKey:v12];
-    if (v14)
+    cancelledFuture = [(PLKLRUCache *)v13 objectForKey:v12];
+    if (cancelledFuture)
     {
       v15 = PLKLogCaching();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -406,22 +406,22 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
         v17 = PLKLogCaching();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v27 = [(PLKImageGenerator *)self label];
-          v28 = v27;
+          label2 = [(PLKImageGenerator *)self label];
+          v28 = label2;
           v29 = &stru_282F9B218;
           *buf = 138413058;
-          if (v27)
+          if (label2)
           {
-            v29 = v27;
+            v29 = label2;
           }
 
           v39 = v29;
           v40 = 2048;
-          v41 = self;
+          selfCopy3 = self;
           v42 = 2112;
-          v43 = v6;
+          v43 = objectCopy;
           v44 = 2112;
-          v45 = v7;
+          v45 = contextCopy;
           _os_log_debug_impl(&dword_21E5D5000, v17, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) cacheKeyFutureForObject:%@] bingo bango", buf, 0x2Au);
         }
       }
@@ -437,22 +437,22 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
         v20 = PLKLogCaching();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v30 = [(PLKImageGenerator *)self label];
-          v31 = v30;
+          label3 = [(PLKImageGenerator *)self label];
+          v31 = label3;
           v32 = &stru_282F9B218;
           *buf = 138413058;
-          if (v30)
+          if (label3)
           {
-            v32 = v30;
+            v32 = label3;
           }
 
           v39 = v32;
           v40 = 2048;
-          v41 = self;
+          selfCopy3 = self;
           v42 = 2112;
-          v43 = v6;
+          v43 = objectCopy;
           v44 = 2112;
-          v45 = v7;
+          v45 = contextCopy;
           _os_log_debug_impl(&dword_21E5D5000, v20, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) cacheKeyFutureForObject:%@] Faulting in....", buf, 0x2Au);
         }
       }
@@ -462,11 +462,11 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
       v34[1] = 3221225472;
       v34[2] = __59__PLKCachedImageGenerator_cacheKeyFutureForObject_context___block_invoke;
       v34[3] = &unk_27835B510;
-      v37 = v33;
-      v35 = v6;
-      v36 = v7;
-      v14 = [v21 futureWithBlock:v34 scheduler:v11];
-      [(PLKLRUCache *)v13 setObject:v14 forKey:v12];
+      v37 = keyGenerator;
+      v35 = objectCopy;
+      v36 = contextCopy;
+      cancelledFuture = [v21 futureWithBlock:v34 scheduler:keyScheduler];
+      [(PLKLRUCache *)v13 setObject:cancelledFuture forKey:v12];
     }
 
     os_unfair_recursive_lock_unlock();
@@ -474,18 +474,18 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
 
   else
   {
-    v14 = [MEMORY[0x277D3EC50] cancelledFuture];
+    cancelledFuture = [MEMORY[0x277D3EC50] cancelledFuture];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return cancelledFuture;
 }
 
-- (id)imageFutureForCacheKey:(id)a3
+- (id)imageFutureForCacheKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = PLKLogCaching();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -495,29 +495,29 @@ void __75__PLKCachedImageGenerator_imageFutureForObject_persistenceOptions_conte
       v7 = PLKLogCaching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(PLKCachedImageGenerator *)self imageFutureForCacheKey:v4, v7];
+        [(PLKCachedImageGenerator *)self imageFutureForCacheKey:keyCopy, v7];
       }
     }
 
     v8 = self->_cache;
-    v9 = [(PLKImageGenerator *)self workScheduler];
+    workScheduler = [(PLKImageGenerator *)self workScheduler];
     v10 = MEMORY[0x277D3EC50];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke;
     v14[3] = &unk_27835B538;
     v15 = v8;
-    v16 = v4;
+    v16 = keyCopy;
     v11 = v8;
-    v12 = [v10 futureWithBlock:v14 scheduler:v9];
+    cancelledFuture = [v10 futureWithBlock:v14 scheduler:workScheduler];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D3EC50] cancelledFuture];
+    cancelledFuture = [MEMORY[0x277D3EC50] cancelledFuture];
   }
 
-  return v12;
+  return cancelledFuture;
 }
 
 id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t a1, void *a2)
@@ -549,11 +549,11 @@ id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t 
   return v4;
 }
 
-- (id)prewarmObjects:(id)a3 context:(id)a4
+- (id)prewarmObjects:(id)objects context:(id)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  contextCopy = context;
   v8 = PLKLogCaching();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -562,15 +562,15 @@ id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t 
     v10 = PLKLogCaching();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(PLKImageGenerator *)self label];
+      label = [(PLKImageGenerator *)self label];
       *location = 138413058;
-      *&location[4] = v34;
+      *&location[4] = label;
       v54 = 2048;
-      v55 = self;
+      selfCopy = self;
       v56 = 2112;
-      v57 = v6;
+      v57 = objectsCopy;
       v58 = 2112;
-      v59 = v7;
+      v59 = contextCopy;
       _os_log_debug_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) prewarmObjects:%@]", location, 0x2Au);
     }
   }
@@ -578,16 +578,16 @@ id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t 
   v11 = _os_activity_create(&dword_21E5D5000, "[PLKCachedImageGenerator prewarmObjects:context:]", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v12 = [MEMORY[0x277D3EC38] activityWrapping:v11];
 
-  v36 = [v12 track];
+  track = [v12 track];
 
   objc_initWeak(location, self);
-  v13 = [(PLKImageGenerator *)self label];
+  label2 = [(PLKImageGenerator *)self label];
   v14 = self->_prewarmScheduler;
   v15 = self->_cache;
   v16 = self->_cacheKeyFutureLRUCache;
   v17 = MEMORY[0x277CBEB98];
-  v18 = [(BSUIMappedImageCache *)v15 allKeys];
-  v19 = [v17 setWithArray:v18];
+  allKeys = [(BSUIMappedImageCache *)v15 allKeys];
+  v19 = [v17 setWithArray:allKeys];
 
   v20 = MEMORY[0x277D3EC50];
   v47[0] = MEMORY[0x277D85DD0];
@@ -595,13 +595,13 @@ id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t 
   v47[2] = __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke;
   v47[3] = &unk_27835B560;
   objc_copyWeak(&v52, location);
-  v35 = v6;
+  v35 = objectsCopy;
   v48 = v35;
-  v21 = v7;
+  v21 = contextCopy;
   v49 = v21;
   v22 = v16;
   v50 = v22;
-  v23 = v13;
+  v23 = label2;
   v51 = v23;
   v24 = [v20 futureWithBlock:v47 scheduler:v14];
   v40[0] = MEMORY[0x277D85DD0];
@@ -624,7 +624,7 @@ id __50__PLKCachedImageGenerator_imageFutureForCacheKey___block_invoke(uint64_t 
   v38[1] = 3221225472;
   v38[2] = __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke_43;
   v38[3] = &unk_27835B600;
-  v31 = v36;
+  v31 = track;
   v39 = v31;
   v37 = [v30 flatMap:v38];
 
@@ -876,13 +876,13 @@ id __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke_43(uint64
   return v4;
 }
 
-- (id)removeImagesForCacheKeys:(id)a3
+- (id)removeImagesForCacheKeys:(id)keys
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
-    v5 = [(PLKImageGenerator *)self label];
+    label = [(PLKImageGenerator *)self label];
     v6 = PLKLogCaching();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
 
@@ -892,11 +892,11 @@ id __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke_43(uint64
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v29 = v5;
+        v29 = label;
         v30 = 2048;
-        v31 = self;
+        selfCopy = self;
         v32 = 2112;
-        v33 = v4;
+        v33 = keysCopy;
         _os_log_debug_impl(&dword_21E5D5000, v8, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) removeImagesForCacheKeys:%@]", buf, 0x20u);
       }
     }
@@ -904,21 +904,21 @@ id __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke_43(uint64
     v9 = _os_activity_create(&dword_21E5D5000, "[PLKCachedImageGenerator removeImagesForCacheKeys:]", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = [MEMORY[0x277D3EC38] activityWrapping:v9];
 
-    v11 = [v10 track];
+    track = [v10 track];
 
     v12 = self->_cache;
     os_unfair_recursive_lock_lock_with_options();
-    v13 = [v4 bs_array];
+    bs_array = [keysCopy bs_array];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke;
     v24[3] = &unk_27835B650;
     v25 = v12;
-    v26 = v5;
-    v27 = self;
-    v14 = v5;
+    v26 = label;
+    selfCopy2 = self;
+    v14 = label;
     v15 = v12;
-    v16 = [v13 bs_mapNoNulls:v24];
+    v16 = [bs_array bs_mapNoNulls:v24];
 
     os_unfair_recursive_lock_unlock();
     v17 = [MEMORY[0x277D3EC50] join:v16];
@@ -926,14 +926,14 @@ id __50__PLKCachedImageGenerator_prewarmObjects_context___block_invoke_43(uint64
     v22[1] = 3221225472;
     v22[2] = __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46;
     v22[3] = &unk_27835B420;
-    v23 = v11;
-    v18 = v11;
+    v23 = track;
+    v18 = track;
     v19 = [v17 flatMap:v22];
   }
 
   else
   {
-    v19 = [MEMORY[0x277D3EC50] futureWithResult:v4];
+    v19 = [MEMORY[0x277D3EC50] futureWithResult:keysCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1001,16 +1001,16 @@ id __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46(uint
   return v6;
 }
 
-- (id)removeImagesForPredicate:(id)a3
+- (id)removeImagesForPredicate:(id)predicate
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     objc_initWeak(&location, self);
-    v5 = [(PLKImageGenerator *)self label];
+    label = [(PLKImageGenerator *)self label];
     v6 = self->_cache;
-    v7 = [(PLKCachedImageGenerator *)self keyScheduler];
+    keyScheduler = [(PLKCachedImageGenerator *)self keyScheduler];
     v8 = PLKLogCaching();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -1020,11 +1020,11 @@ id __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46(uint
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v32 = v5;
+        v32 = label;
         v33 = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 2112;
-        v36 = v4;
+        v36 = predicateCopy;
         _os_log_debug_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_DEBUG, "[PLKCachedImageGenerator(%@%p) removeImagesForPredicate:%@]", buf, 0x20u);
       }
     }
@@ -1032,7 +1032,7 @@ id __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46(uint
     v11 = _os_activity_create(&dword_21E5D5000, "[PLKCachedImageGenerator removeImagesForCacheKeys:]", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = [MEMORY[0x277D3EC38] activityWrapping:v11];
 
-    v13 = [v12 track];
+    track = [v12 track];
 
     v14 = MEMORY[0x277D3EC50];
     v27[0] = MEMORY[0x277D85DD0];
@@ -1041,20 +1041,20 @@ id __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46(uint
     v27[3] = &unk_27835B310;
     v15 = v6;
     v28 = v15;
-    v16 = v4;
+    v16 = predicateCopy;
     v29 = v16;
-    v17 = [v14 futureWithBlock:v27 scheduler:v7];
+    cancelledFuture = [v14 futureWithBlock:v27 scheduler:keyScheduler];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __52__PLKCachedImageGenerator_removeImagesForPredicate___block_invoke_2;
     v22[3] = &unk_27835B678;
     objc_copyWeak(&v26, &location);
-    v18 = v5;
+    v18 = label;
     v23 = v18;
     v24 = v16;
-    v19 = v13;
+    v19 = track;
     v25 = v19;
-    [v17 addCompletionBlock:v22];
+    [cancelledFuture addCompletionBlock:v22];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
@@ -1062,12 +1062,12 @@ id __52__PLKCachedImageGenerator_removeImagesForCacheKeys___block_invoke_46(uint
 
   else
   {
-    v17 = [MEMORY[0x277D3EC50] cancelledFuture];
+    cancelledFuture = [MEMORY[0x277D3EC50] cancelledFuture];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return cancelledFuture;
 }
 
 id __52__PLKCachedImageGenerator_removeImagesForPredicate___block_invoke(uint64_t a1)
@@ -1129,18 +1129,18 @@ void __52__PLKCachedImageGenerator_removeImagesForPredicate___block_invoke_2(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setKeyScheduler:(id)a3
+- (void)setKeyScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   os_unfair_recursive_lock_lock_with_options();
-  if (!v4)
+  if (!schedulerCopy)
   {
     v5 = [MEMORY[0x277D3EC60] operationQueueSchedulerWithMaxConcurrentOperationCount:4 qualityOfService:1 name:@"PLKCachedImageGeneratorKeyScheduler"];
-    v4 = [MEMORY[0x277D3EC60] offMainThreadSchedulerWithBackgroundScheduler:v5];
+    schedulerCopy = [MEMORY[0x277D3EC60] offMainThreadSchedulerWithBackgroundScheduler:v5];
   }
 
   keyScheduler = self->_keyScheduler;
-  self->_keyScheduler = v4;
+  self->_keyScheduler = schedulerCopy;
 
   os_unfair_recursive_lock_unlock();
 }

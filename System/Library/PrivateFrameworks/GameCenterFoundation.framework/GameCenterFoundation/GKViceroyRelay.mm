@@ -1,48 +1,48 @@
 @interface GKViceroyRelay
-- (BOOL)shouldStartRelayForPlayerID:(id)a3;
+- (BOOL)shouldStartRelayForPlayerID:(id)d;
 - (GKTransportClientDelegate)clientDelegate;
 - (GKTransportMatchDataDelegate)matchDataDelegate;
-- (GKViceroyRelay)initWithClientDelegate:(id)a3 connection:(id)a4 matchDataDelegate:(id)a5 daemonProxy:(id)a6;
-- (id)dataFromBase64String:(id)a3;
-- (id)initiateRelayInfoFromPush:(id)a3 forPlayerID:(id)a4;
-- (id)initiateRelayInfoFromServerResponse:(id)a3 forPlayerID:(id)a4;
-- (id)updateRelayInfoFromPush:(id)a3 forPlayerID:(id)a4;
-- (void)acceptRelayResponse:(id)a3 playerID:(id)a4;
-- (void)didReceiveRelayPushData:(id)a3;
-- (void)didReceiveRelayPushNotification:(id)a3;
+- (GKViceroyRelay)initWithClientDelegate:(id)delegate connection:(id)connection matchDataDelegate:(id)dataDelegate daemonProxy:(id)proxy;
+- (id)dataFromBase64String:(id)string;
+- (id)initiateRelayInfoFromPush:(id)push forPlayerID:(id)d;
+- (id)initiateRelayInfoFromServerResponse:(id)response forPlayerID:(id)d;
+- (id)updateRelayInfoFromPush:(id)push forPlayerID:(id)d;
+- (void)acceptRelayResponse:(id)response playerID:(id)d;
+- (void)didReceiveRelayPushData:(id)data;
+- (void)didReceiveRelayPushNotification:(id)notification;
 - (void)disconnect;
-- (void)handleRelayPushData:(id)a3 onlyIfPreemptive:(BOOL)a4;
-- (void)initiateRelayConnectionForPlayerID:(id)a3 connectionContext:(id)a4;
-- (void)initiateRelayResponse:(id)a3 playerID:(id)a4;
-- (void)preemptRelay:(id)a3;
-- (void)relayDidInitiateConnection:(id)a3 forPlayerID:(id)a4;
-- (void)relayDidUpdateConnection:(id)a3 forPlayerID:(id)a4;
-- (void)requestRelayInitiateForPlayerID:(id)a3 connectionContext:(id)a4;
-- (void)requestRelayUpdateForPlayerID:(id)a3 connectionContext:(id)a4;
-- (void)sessionDidInitiateOrUpdateRelay:(id)a3 playerID:(id)a4;
-- (void)updateRelayConnectionForPlayerID:(id)a3 connectionContext:(id)a4;
+- (void)handleRelayPushData:(id)data onlyIfPreemptive:(BOOL)preemptive;
+- (void)initiateRelayConnectionForPlayerID:(id)d connectionContext:(id)context;
+- (void)initiateRelayResponse:(id)response playerID:(id)d;
+- (void)preemptRelay:(id)relay;
+- (void)relayDidInitiateConnection:(id)connection forPlayerID:(id)d;
+- (void)relayDidUpdateConnection:(id)connection forPlayerID:(id)d;
+- (void)requestRelayInitiateForPlayerID:(id)d connectionContext:(id)context;
+- (void)requestRelayUpdateForPlayerID:(id)d connectionContext:(id)context;
+- (void)sessionDidInitiateOrUpdateRelay:(id)relay playerID:(id)d;
+- (void)updateRelayConnectionForPlayerID:(id)d connectionContext:(id)context;
 @end
 
 @implementation GKViceroyRelay
 
-- (GKViceroyRelay)initWithClientDelegate:(id)a3 connection:(id)a4 matchDataDelegate:(id)a5 daemonProxy:(id)a6
+- (GKViceroyRelay)initWithClientDelegate:(id)delegate connection:(id)connection matchDataDelegate:(id)dataDelegate daemonProxy:(id)proxy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  connectionCopy = connection;
+  dataDelegateCopy = dataDelegate;
+  proxyCopy = proxy;
   v18.receiver = self;
   v18.super_class = GKViceroyRelay;
   v14 = [(GKViceroyRelay *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_weakClientDelegate, v10);
-    objc_storeStrong(&v15->_connection, a4);
-    objc_storeWeak(&v15->_matchDataDelegateWeak, v12);
-    objc_storeStrong(&v15->_daemonProxy, a6);
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v15 selector:sel_didReceiveRelayPushNotification_ name:@"GKRelayPushNotification" object:0];
+    objc_storeWeak(&v14->_weakClientDelegate, delegateCopy);
+    objc_storeStrong(&v15->_connection, connection);
+    objc_storeWeak(&v15->_matchDataDelegateWeak, dataDelegateCopy);
+    objc_storeStrong(&v15->_daemonProxy, proxy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_didReceiveRelayPushNotification_ name:@"GKRelayPushNotification" object:0];
   }
 
   return v15;
@@ -50,15 +50,15 @@
 
 - (void)disconnect
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)acceptRelayResponse:(id)a3 playerID:(id)a4
+- (void)acceptRelayResponse:(id)response playerID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -69,26 +69,26 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = dCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = responseCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Accept relay response for playerID: %@ - response: %@", &v12, 0x16u);
   }
 
-  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:v7])
+  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:dCopy])
   {
-    v10 = [(GKViceroyRelay *)self initiateRelayInfoFromServerResponse:v6 forPlayerID:v7];
-    [(GKViceroyRelay *)self initiateRelayConnectionForPlayerID:v7 connectionContext:v10];
+    v10 = [(GKViceroyRelay *)self initiateRelayInfoFromServerResponse:responseCopy forPlayerID:dCopy];
+    [(GKViceroyRelay *)self initiateRelayConnectionForPlayerID:dCopy connectionContext:v10];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRelayPushData:(id)a3 onlyIfPreemptive:(BOOL)a4
+- (void)handleRelayPushData:(id)data onlyIfPreemptive:(BOOL)preemptive
 {
-  v6 = a3;
-  v13 = v6;
-  if (a4)
+  dataCopy = data;
+  v13 = dataCopy;
+  if (preemptive)
   {
     v7 = +[GKPreferences shared];
     if (([v7 preemptiveRelay] & 1) == 0)
@@ -105,27 +105,27 @@
       goto LABEL_9;
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = v13;
   }
 
   else
   {
-    v12 = v6;
-    v10 = self;
+    v12 = dataCopy;
+    selfCopy2 = self;
     v11 = v12;
   }
 
-  [(GKViceroyRelay *)v10 didReceiveRelayPushData:v11];
+  [(GKViceroyRelay *)selfCopy2 didReceiveRelayPushData:v11];
 LABEL_8:
   v9 = v13;
 LABEL_9:
 }
 
-- (void)preemptRelay:(id)a3
+- (void)preemptRelay:(id)relay
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  relayCopy = relay;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -136,39 +136,39 @@ LABEL_9:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = relayCopy;
     _os_log_impl(&dword_227904000, v5, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Preempt relay for playerID:%@", &v10, 0xCu);
   }
 
-  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:v4])
+  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:relayCopy])
   {
-    v7 = [(GKViceroyRelay *)self matchDataDelegate];
-    v8 = [v7 getConnectionContextForPlayerID:v4];
+    matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+    v8 = [matchDataDelegate getConnectionContextForPlayerID:relayCopy];
 
-    [(GKViceroyRelay *)self requestRelayInitiateForPlayerID:v4 connectionContext:v8];
+    [(GKViceroyRelay *)self requestRelayInitiateForPlayerID:relayCopy connectionContext:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveRelayPushNotification:(id)a3
+- (void)didReceiveRelayPushNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [(GKViceroyRelay *)self didReceiveRelayPushData:v4];
+  userInfo = [notification userInfo];
+  [(GKViceroyRelay *)self didReceiveRelayPushData:userInfo];
 }
 
-- (void)didReceiveRelayPushData:(id)a3
+- (void)didReceiveRelayPushData:(id)data
 {
-  v4 = a3;
-  v5 = [(GKViceroyRelay *)self clientDelegate];
+  dataCopy = data;
+  clientDelegate = [(GKViceroyRelay *)self clientDelegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__GKViceroyRelay_didReceiveRelayPushData___block_invoke;
   v7[3] = &unk_2785DD5E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 relayDidReceivePushData:v6 completionHandler:v7];
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
+  [clientDelegate relayDidReceivePushData:v6 completionHandler:v7];
 }
 
 uint64_t __42__GKViceroyRelay_didReceiveRelayPushData___block_invoke(uint64_t a1, void *a2)
@@ -216,84 +216,84 @@ LABEL_10:
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sessionDidInitiateOrUpdateRelay:(id)a3 playerID:(id)a4
+- (void)sessionDidInitiateOrUpdateRelay:(id)relay playerID:(id)d
 {
-  v27 = a3;
-  v6 = a4;
-  v7 = [v27 objectForKey:@"GKSRelayInitiateInfo"];
+  relayCopy = relay;
+  dCopy = d;
+  v7 = [relayCopy objectForKey:@"GKSRelayInitiateInfo"];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = [v7 objectForKey:*MEMORY[0x277CE5690]];
-    [v8 setObject:v9 forKey:@"self-blob"];
+    [dictionary setObject:v9 forKey:@"self-blob"];
 
     v10 = [v7 objectForKey:*MEMORY[0x277CE5698]];
-    [v8 setObject:v10 forKey:@"self-nat-ip"];
+    [dictionary setObject:v10 forKey:@"self-nat-ip"];
 
     v11 = [v7 objectForKey:*MEMORY[0x277CE56A0]];
-    [v8 setObject:v11 forKey:@"self-nat-type"];
+    [dictionary setObject:v11 forKey:@"self-nat-type"];
 
     v12 = [v7 objectForKey:*MEMORY[0x277CE5658]];
-    [v8 setObject:v12 forKey:@"peer-blob"];
+    [dictionary setObject:v12 forKey:@"peer-blob"];
 
     v13 = [v7 objectForKey:*MEMORY[0x277CE5660]];
-    [v8 setObject:v13 forKey:@"peer-nat-ip"];
+    [dictionary setObject:v13 forKey:@"peer-nat-ip"];
 
     v14 = [v7 objectForKey:*MEMORY[0x277CE5668]];
-    [v8 setObject:v14 forKey:@"peer-nat-type"];
+    [dictionary setObject:v14 forKey:@"peer-nat-type"];
 
-    [(GKViceroyRelay *)self relayDidInitiateConnection:v8 forPlayerID:v6];
+    [(GKViceroyRelay *)self relayDidInitiateConnection:dictionary forPlayerID:dCopy];
   }
 
   else
   {
-    v8 = [v27 objectForKey:@"GKSRelayUpdateInfo"];
-    if (v8)
+    dictionary = [relayCopy objectForKey:@"GKSRelayUpdateInfo"];
+    if (dictionary)
     {
-      v15 = [MEMORY[0x277CBEB38] dictionary];
-      v16 = [v8 objectForKey:*MEMORY[0x277CE56D8]];
-      [v15 setObject:v16 forKey:@"relay-type"];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v16 = [dictionary objectForKey:*MEMORY[0x277CE56D8]];
+      [dictionary2 setObject:v16 forKey:@"relay-type"];
 
-      v17 = [v8 objectForKey:*MEMORY[0x277CE5650]];
-      [v15 setObject:v17 forKey:@"relay-connection-id"];
+      v17 = [dictionary objectForKey:*MEMORY[0x277CE5650]];
+      [dictionary2 setObject:v17 forKey:@"relay-connection-id"];
 
-      v18 = [v8 objectForKey:*MEMORY[0x277CE56D0]];
-      [v15 setObject:v18 forKey:@"relay-transaction-id-alloc"];
+      v18 = [dictionary objectForKey:*MEMORY[0x277CE56D0]];
+      [dictionary2 setObject:v18 forKey:@"relay-transaction-id-alloc"];
 
-      v19 = [v8 objectForKey:*MEMORY[0x277CE56C8]];
-      [v15 setObject:v19 forKey:@"relay-token-alloc-res"];
+      v19 = [dictionary objectForKey:*MEMORY[0x277CE56C8]];
+      [dictionary2 setObject:v19 forKey:@"relay-token-alloc-res"];
 
-      v20 = [v8 objectForKey:*MEMORY[0x277CE5670]];
-      [v15 setObject:v20 forKey:@"peer-relay-ip"];
+      v20 = [dictionary objectForKey:*MEMORY[0x277CE5670]];
+      [dictionary2 setObject:v20 forKey:@"peer-relay-ip"];
 
-      v21 = [v8 objectForKey:*MEMORY[0x277CE5688]];
-      [v15 setObject:v21 forKey:@"peer-relay-port"];
+      v21 = [dictionary objectForKey:*MEMORY[0x277CE5688]];
+      [dictionary2 setObject:v21 forKey:@"peer-relay-port"];
 
-      v22 = [v8 objectForKey:*MEMORY[0x277CE56A8]];
-      [v15 setObject:v22 forKey:@"self-relay-ip"];
+      v22 = [dictionary objectForKey:*MEMORY[0x277CE56A8]];
+      [dictionary2 setObject:v22 forKey:@"self-relay-ip"];
 
-      v23 = [v8 objectForKey:*MEMORY[0x277CE56C0]];
-      [v15 setObject:v23 forKey:@"self-relay-port"];
+      v23 = [dictionary objectForKey:*MEMORY[0x277CE56C0]];
+      [dictionary2 setObject:v23 forKey:@"self-relay-port"];
 
-      v24 = [v8 objectForKey:*MEMORY[0x277CE56B0]];
-      [v15 setObject:v24 forKey:@"self-relay-nat-ip"];
+      v24 = [dictionary objectForKey:*MEMORY[0x277CE56B0]];
+      [dictionary2 setObject:v24 forKey:@"self-relay-nat-ip"];
 
-      v25 = [v8 objectForKey:*MEMORY[0x277CE56B8]];
-      [v15 setObject:v25 forKey:@"self-relay-nat-port"];
+      v25 = [dictionary objectForKey:*MEMORY[0x277CE56B8]];
+      [dictionary2 setObject:v25 forKey:@"self-relay-nat-port"];
 
-      v26 = [v8 objectForKey:*MEMORY[0x277CE5648]];
-      [v15 setObject:v26 forKey:@"client-data"];
+      v26 = [dictionary objectForKey:*MEMORY[0x277CE5648]];
+      [dictionary2 setObject:v26 forKey:@"client-data"];
 
-      [(GKViceroyRelay *)self relayDidUpdateConnection:v15 forPlayerID:v6];
+      [(GKViceroyRelay *)self relayDidUpdateConnection:dictionary2 forPlayerID:dCopy];
     }
   }
 }
 
-- (BOOL)shouldStartRelayForPlayerID:(id)a3
+- (BOOL)shouldStartRelayForPlayerID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKViceroyRelay *)self matchDataDelegate];
-  v6 = [v5 getConnectionContextForPlayerID:v4];
+  dCopy = d;
+  matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+  v6 = [matchDataDelegate getConnectionContextForPlayerID:dCopy];
 
   if ([v6 relayInitiated] & 1) != 0 || (objc_msgSend(v6, "connected"))
   {
@@ -309,17 +309,17 @@ LABEL_10:
   return v7;
 }
 
-- (void)relayDidInitiateConnection:(id)a3 forPlayerID:(id)a4
+- (void)relayDidInitiateConnection:(id)connection forPlayerID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:v7])
+  connectionCopy = connection;
+  dCopy = d;
+  if ([(GKViceroyRelay *)self shouldStartRelayForPlayerID:dCopy])
   {
-    v8 = [(GKViceroyRelay *)self matchDataDelegate];
-    v9 = [v8 updateConnectionInfo:v6 forPlayerID:v7];
+    matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+    v9 = [matchDataDelegate updateConnectionInfo:connectionCopy forPlayerID:dCopy];
 
-    [(GKViceroyRelay *)self requestRelayInitiateForPlayerID:v7 connectionContext:v9];
+    [(GKViceroyRelay *)self requestRelayInitiateForPlayerID:dCopy connectionContext:v9];
   }
 
   else
@@ -334,7 +334,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = dCopy;
       _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Not starting relay for playerID: %@", &v13, 0xCu);
     }
   }
@@ -342,14 +342,14 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestRelayInitiateForPlayerID:(id)a3 connectionContext:(id)a4
+- (void)requestRelayInitiateForPlayerID:(id)d connectionContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 info];
-  v9 = [v8 objectForKey:@"missing-client-data"];
-  v10 = [v9 BOOLValue];
+  dCopy = d;
+  contextCopy = context;
+  info = [contextCopy info];
+  v9 = [info objectForKey:@"missing-client-data"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -362,48 +362,48 @@ LABEL_10:
   {
     v13 = v11;
     *buf = 138412802;
-    v38 = v6;
+    v38 = dCopy;
     v39 = 1024;
-    v40 = [v7 connected];
+    connected = [contextCopy connected];
     v41 = 1024;
-    v42 = v10;
+    v42 = bOOLValue;
     _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Request relayInit for playerID: %@ connected: %d missingClientData: %d", buf, 0x18u);
   }
 
-  if (!(v10 & 1 | (([v7 connected] & 1) == 0)))
+  if (!(bOOLValue & 1 | (([contextCopy connected] & 1) == 0)))
   {
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [v7 info];
-    v16 = [v15 objectForKey:@"session-token"];
-    [v14 setObject:v16 forKey:@"session-token"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    info2 = [contextCopy info];
+    v16 = [info2 objectForKey:@"session-token"];
+    [dictionary setObject:v16 forKey:@"session-token"];
 
-    v17 = [v7 info];
-    v18 = [v17 objectForKey:@"self-nat-ip"];
-    [v14 setObject:v18 forKey:@"self-nat-ip"];
+    info3 = [contextCopy info];
+    v18 = [info3 objectForKey:@"self-nat-ip"];
+    [dictionary setObject:v18 forKey:@"self-nat-ip"];
 
-    v19 = [v7 info];
-    v20 = [v19 objectForKey:@"self-blob"];
-    [v14 setObject:v20 forKey:@"self-blob"];
+    info4 = [contextCopy info];
+    v20 = [info4 objectForKey:@"self-blob"];
+    [dictionary setObject:v20 forKey:@"self-blob"];
 
-    v21 = [v7 info];
-    v22 = [v21 objectForKey:@"peer-id"];
-    [v14 setObject:v22 forKey:@"peer-id"];
+    info5 = [contextCopy info];
+    v22 = [info5 objectForKey:@"peer-id"];
+    [dictionary setObject:v22 forKey:@"peer-id"];
 
-    v23 = [v7 info];
-    v24 = [v23 objectForKey:@"peer-push-token"];
-    [v14 setObject:v24 forKey:@"peer-push-token"];
+    info6 = [contextCopy info];
+    v24 = [info6 objectForKey:@"peer-push-token"];
+    [dictionary setObject:v24 forKey:@"peer-push-token"];
 
-    v25 = [v7 info];
-    v26 = [v25 objectForKey:@"peer-nat-type"];
-    [v14 setObject:v26 forKey:@"peer-nat-type"];
+    info7 = [contextCopy info];
+    v26 = [info7 objectForKey:@"peer-nat-type"];
+    [dictionary setObject:v26 forKey:@"peer-nat-type"];
 
-    v27 = [v7 info];
-    v28 = [v27 objectForKey:@"peer-nat-ip"];
-    [v14 setObject:v28 forKey:@"peer-nat-ip"];
+    info8 = [contextCopy info];
+    v28 = [info8 objectForKey:@"peer-nat-ip"];
+    [dictionary setObject:v28 forKey:@"peer-nat-ip"];
 
-    v29 = [v7 info];
-    v30 = [v29 objectForKey:@"peer-blob"];
-    [v14 setObject:v30 forKey:@"peer-blob"];
+    info9 = [contextCopy info];
+    v30 = [info9 objectForKey:@"peer-blob"];
+    [dictionary setObject:v30 forKey:@"peer-blob"];
 
     v31 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -418,14 +418,14 @@ LABEL_10:
       _os_log_impl(&dword_227904000, v31, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Client process calling method initiateRelayRequest in multiplayerService", buf, 2u);
     }
 
-    v33 = [(GKViceroyRelay *)self daemonProxy];
+    daemonProxy = [(GKViceroyRelay *)self daemonProxy];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___block_invoke;
     v35[3] = &unk_2785DD608;
     v35[4] = self;
-    v36 = v6;
-    [v33 initiateRelayRequest:v14 completionHandler:v35];
+    v36 = dCopy;
+    [daemonProxy initiateRelayRequest:dictionary completionHandler:v35];
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -468,11 +468,11 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   }
 }
 
-- (id)initiateRelayInfoFromPush:(id)a3 forPlayerID:(id)a4
+- (id)initiateRelayInfoFromPush:(id)push forPlayerID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pushCopy = push;
+  dCopy = d;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -483,55 +483,55 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138412546;
-    v29 = v7;
+    v29 = dCopy;
     v30 = 2112;
-    v31 = v6;
+    v31 = pushCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Got initRelay info from push for playerID: %@ - userInfo: %@", &v28, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [v6 objectForKey:@"t"];
-  [v10 setObject:v11 forKey:@"relay-type"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = [pushCopy objectForKey:@"t"];
+  [dictionary setObject:v11 forKey:@"relay-type"];
 
-  v12 = [v6 objectForKey:@"k"];
+  v12 = [pushCopy objectForKey:@"k"];
   v13 = [(GKViceroyRelay *)self dataFromBase64String:v12];
-  [v10 setObject:v13 forKey:@"relay-connection-id"];
+  [dictionary setObject:v13 forKey:@"relay-connection-id"];
 
-  v14 = [v6 objectForKey:@"q"];
+  v14 = [pushCopy objectForKey:@"q"];
   v15 = [(GKViceroyRelay *)self dataFromBase64String:v14];
-  [v10 setObject:v15 forKey:@"relay-transaction-id-alloc"];
+  [dictionary setObject:v15 forKey:@"relay-transaction-id-alloc"];
 
-  v16 = [v6 objectForKey:@"h"];
+  v16 = [pushCopy objectForKey:@"h"];
   v17 = [(GKViceroyRelay *)self dataFromBase64String:v16];
-  [v10 setObject:v17 forKey:@"self-relay-ip"];
+  [dictionary setObject:v17 forKey:@"self-relay-ip"];
 
-  v18 = [v6 objectForKey:@"o"];
-  [v10 setObject:v18 forKey:@"self-relay-port"];
+  v18 = [pushCopy objectForKey:@"o"];
+  [dictionary setObject:v18 forKey:@"self-relay-port"];
 
-  v19 = [v6 objectForKey:@"H"];
+  v19 = [pushCopy objectForKey:@"H"];
   v20 = [(GKViceroyRelay *)self dataFromBase64String:v19];
-  [v10 setObject:v20 forKey:@"peer-relay-ip"];
+  [dictionary setObject:v20 forKey:@"peer-relay-ip"];
 
-  v21 = [v6 objectForKey:@"O"];
-  [v10 setObject:v21 forKey:@"peer-relay-port"];
+  v21 = [pushCopy objectForKey:@"O"];
+  [dictionary setObject:v21 forKey:@"peer-relay-port"];
 
-  v22 = [v6 objectForKey:@"r"];
+  v22 = [pushCopy objectForKey:@"r"];
   v23 = [(GKViceroyRelay *)self dataFromBase64String:v22];
-  [v10 setObject:v23 forKey:@"relay-token-alloc-req"];
+  [dictionary setObject:v23 forKey:@"relay-token-alloc-req"];
 
-  v24 = [(GKViceroyRelay *)self matchDataDelegate];
-  v25 = [v24 updateConnectionInfo:v10 forPlayerID:v7];
+  matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+  v25 = [matchDataDelegate updateConnectionInfo:dictionary forPlayerID:dCopy];
 
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-- (void)initiateRelayResponse:(id)a3 playerID:(id)a4
+- (void)initiateRelayResponse:(id)response playerID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -542,23 +542,23 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = dCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = responseCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Initiate relay response for playerID: %@ - response: %@", &v12, 0x16u);
   }
 
-  v10 = [(GKViceroyRelay *)self initiateRelayInfoFromServerResponse:v6 forPlayerID:v7];
-  [(GKViceroyRelay *)self initiateRelayConnectionForPlayerID:v7 connectionContext:v10];
+  v10 = [(GKViceroyRelay *)self initiateRelayInfoFromServerResponse:responseCopy forPlayerID:dCopy];
+  [(GKViceroyRelay *)self initiateRelayConnectionForPlayerID:dCopy connectionContext:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initiateRelayInfoFromServerResponse:(id)a3 forPlayerID:(id)a4
+- (id)initiateRelayInfoFromServerResponse:(id)response forPlayerID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -569,50 +569,50 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    v24 = v7;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v6;
+    v26 = responseCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Got initiateRelay info for playerID: %@ - from response: %@", &v23, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [v6 objectForKey:@"relay-type"];
-  [v10 setObject:v11 forKey:@"relay-type"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = [responseCopy objectForKey:@"relay-type"];
+  [dictionary setObject:v11 forKey:@"relay-type"];
 
-  v12 = [v6 objectForKey:@"relay-connection-id"];
-  [v10 setObject:v12 forKey:@"relay-connection-id"];
+  v12 = [responseCopy objectForKey:@"relay-connection-id"];
+  [dictionary setObject:v12 forKey:@"relay-connection-id"];
 
-  v13 = [v6 objectForKey:@"relay-transaction-id-alloc"];
-  [v10 setObject:v13 forKey:@"relay-transaction-id-alloc"];
+  v13 = [responseCopy objectForKey:@"relay-transaction-id-alloc"];
+  [dictionary setObject:v13 forKey:@"relay-transaction-id-alloc"];
 
-  v14 = [v6 objectForKey:@"self-relay-ip"];
-  [v10 setObject:v14 forKey:@"self-relay-ip"];
+  v14 = [responseCopy objectForKey:@"self-relay-ip"];
+  [dictionary setObject:v14 forKey:@"self-relay-ip"];
 
-  v15 = [v6 objectForKey:@"self-relay-port"];
-  [v10 setObject:v15 forKey:@"self-relay-port"];
+  v15 = [responseCopy objectForKey:@"self-relay-port"];
+  [dictionary setObject:v15 forKey:@"self-relay-port"];
 
-  v16 = [v6 objectForKey:@"peer-relay-ip"];
-  [v10 setObject:v16 forKey:@"peer-relay-ip"];
+  v16 = [responseCopy objectForKey:@"peer-relay-ip"];
+  [dictionary setObject:v16 forKey:@"peer-relay-ip"];
 
-  v17 = [v6 objectForKey:@"peer-relay-port"];
-  [v10 setObject:v17 forKey:@"peer-relay-port"];
+  v17 = [responseCopy objectForKey:@"peer-relay-port"];
+  [dictionary setObject:v17 forKey:@"peer-relay-port"];
 
-  v18 = [v6 objectForKey:@"relay-token-alloc-req"];
-  [v10 setObject:v18 forKey:@"relay-token-alloc-req"];
+  v18 = [responseCopy objectForKey:@"relay-token-alloc-req"];
+  [dictionary setObject:v18 forKey:@"relay-token-alloc-req"];
 
-  v19 = [(GKViceroyRelay *)self matchDataDelegate];
-  v20 = [v19 updateConnectionInfo:v10 forPlayerID:v7];
+  matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+  v20 = [matchDataDelegate updateConnectionInfo:dictionary forPlayerID:dCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (void)initiateRelayConnectionForPlayerID:(id)a3 connectionContext:(id)a4
+- (void)initiateRelayConnectionForPlayerID:(id)d connectionContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -624,46 +624,46 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   {
     v10 = v8;
     v34 = 138412546;
-    v35 = v6;
+    v35 = dCopy;
     v36 = 1024;
-    LODWORD(v37) = [v7 connected];
+    LODWORD(v37) = [contextCopy connected];
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Initiate relay connection for player: %@ connected: %d", &v34, 0x12u);
   }
 
-  if ([v7 connected])
+  if ([contextCopy connected])
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [v7 info];
-    v13 = [v12 objectForKeyedSubscript:@"relay-type"];
-    [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277CE56D8]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    info = [contextCopy info];
+    v13 = [info objectForKeyedSubscript:@"relay-type"];
+    [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x277CE56D8]];
 
-    v14 = [v7 info];
-    v15 = [v14 objectForKeyedSubscript:@"relay-connection-id"];
-    [v11 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE5650]];
+    info2 = [contextCopy info];
+    v15 = [info2 objectForKeyedSubscript:@"relay-connection-id"];
+    [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277CE5650]];
 
-    v16 = [v7 info];
-    v17 = [v16 objectForKeyedSubscript:@"relay-transaction-id-alloc"];
-    [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x277CE56D0]];
+    info3 = [contextCopy info];
+    v17 = [info3 objectForKeyedSubscript:@"relay-transaction-id-alloc"];
+    [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x277CE56D0]];
 
-    v18 = [v7 info];
-    v19 = [v18 objectForKeyedSubscript:@"relay-token-alloc-req"];
-    [v11 setObject:v19 forKeyedSubscript:*MEMORY[0x277CE56C8]];
+    info4 = [contextCopy info];
+    v19 = [info4 objectForKeyedSubscript:@"relay-token-alloc-req"];
+    [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CE56C8]];
 
-    v20 = [v7 info];
-    v21 = [v20 objectForKeyedSubscript:@"peer-relay-ip"];
-    [v11 setObject:v21 forKeyedSubscript:*MEMORY[0x277CE5670]];
+    info5 = [contextCopy info];
+    v21 = [info5 objectForKeyedSubscript:@"peer-relay-ip"];
+    [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x277CE5670]];
 
-    v22 = [v7 info];
-    v23 = [v22 objectForKeyedSubscript:@"peer-relay-port"];
-    [v11 setObject:v23 forKeyedSubscript:*MEMORY[0x277CE5688]];
+    info6 = [contextCopy info];
+    v23 = [info6 objectForKeyedSubscript:@"peer-relay-port"];
+    [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x277CE5688]];
 
-    v24 = [v7 info];
-    v25 = [v24 objectForKeyedSubscript:@"self-relay-ip"];
-    [v11 setObject:v25 forKeyedSubscript:*MEMORY[0x277CE56A8]];
+    info7 = [contextCopy info];
+    v25 = [info7 objectForKeyedSubscript:@"self-relay-ip"];
+    [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x277CE56A8]];
 
-    v26 = [v7 info];
-    v27 = [v26 objectForKeyedSubscript:@"self-relay-port"];
-    [v11 setObject:v27 forKeyedSubscript:*MEMORY[0x277CE56C0]];
+    info8 = [contextCopy info];
+    v27 = [info8 objectForKeyedSubscript:@"self-relay-port"];
+    [dictionary setObject:v27 forKeyedSubscript:*MEMORY[0x277CE56C0]];
 
     v28 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -675,42 +675,42 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v34 = 138412546;
-      v35 = v6;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v11;
+      v37 = dictionary;
       _os_log_impl(&dword_227904000, v28, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] initiateRelayWithParticipant for playerID: %@ - with relayInfo: %@", &v34, 0x16u);
     }
 
-    v30 = [(GKViceroyRelay *)self connection];
-    v31 = [v7 info];
-    v32 = [v31 objectForKeyedSubscript:@"peer-blob"];
-    [v30 initiateRelayWithParticipant:v6 withConnectionData:v32 withRelayInfo:v11 didInitiate:0];
+    connection = [(GKViceroyRelay *)self connection];
+    info9 = [contextCopy info];
+    v32 = [info9 objectForKeyedSubscript:@"peer-blob"];
+    [connection initiateRelayWithParticipant:dCopy withConnectionData:v32 withRelayInfo:dictionary didInitiate:0];
 
-    [v7 setHasInitRelayInfo:1];
-    if ([v7 hasUpdateRelayInfo])
+    [contextCopy setHasInitRelayInfo:1];
+    if ([contextCopy hasUpdateRelayInfo])
     {
-      [(GKViceroyRelay *)self updateRelayConnectionForPlayerID:v6 connectionContext:v7];
+      [(GKViceroyRelay *)self updateRelayConnectionForPlayerID:dCopy connectionContext:contextCopy];
     }
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relayDidUpdateConnection:(id)a3 forPlayerID:(id)a4
+- (void)relayDidUpdateConnection:(id)connection forPlayerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKViceroyRelay *)self matchDataDelegate];
-  v9 = [v8 updateConnectionInfo:v7 forPlayerID:v6];
+  dCopy = d;
+  connectionCopy = connection;
+  matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+  v9 = [matchDataDelegate updateConnectionInfo:connectionCopy forPlayerID:dCopy];
 
-  [(GKViceroyRelay *)self requestRelayUpdateForPlayerID:v6 connectionContext:v9];
+  [(GKViceroyRelay *)self requestRelayUpdateForPlayerID:dCopy connectionContext:v9];
 }
 
-- (id)updateRelayInfoFromPush:(id)a3 forPlayerID:(id)a4
+- (id)updateRelayInfoFromPush:(id)push forPlayerID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pushCopy = push;
+  dCopy = d;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -721,41 +721,41 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138412546;
-    v28 = v7;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v6;
+    v30 = pushCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Got updateRelay info for playerID: %@ - userInfo: %@", &v27, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [v6 objectForKey:@"t"];
-  [v10 setObject:v11 forKey:@"relay-type"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = [pushCopy objectForKey:@"t"];
+  [dictionary setObject:v11 forKey:@"relay-type"];
 
-  v12 = [v6 objectForKey:@"k"];
+  v12 = [pushCopy objectForKey:@"k"];
   v13 = [(GKViceroyRelay *)self dataFromBase64String:v12];
-  [v10 setObject:v13 forKey:@"relay-connection-id"];
+  [dictionary setObject:v13 forKey:@"relay-connection-id"];
 
-  v14 = [v6 objectForKey:@"q"];
+  v14 = [pushCopy objectForKey:@"q"];
   v15 = [(GKViceroyRelay *)self dataFromBase64String:v14];
-  [v10 setObject:v15 forKey:@"relay-transaction-id-chan-bind"];
+  [dictionary setObject:v15 forKey:@"relay-transaction-id-chan-bind"];
 
-  v16 = [v6 objectForKey:@"r"];
+  v16 = [pushCopy objectForKey:@"r"];
   v17 = [(GKViceroyRelay *)self dataFromBase64String:v16];
-  [v10 setObject:v17 forKey:@"relay-token-chan-bind"];
+  [dictionary setObject:v17 forKey:@"relay-token-chan-bind"];
 
-  v18 = [v6 objectForKey:@"U"];
+  v18 = [pushCopy objectForKey:@"U"];
   v19 = [(GKViceroyRelay *)self dataFromBase64String:v18];
-  [v10 setObject:v19 forKey:@"peer-relay-nat-ip"];
+  [dictionary setObject:v19 forKey:@"peer-relay-nat-ip"];
 
-  v20 = [v6 objectForKey:@"V"];
-  [v10 setObject:v20 forKey:@"peer-relay-nat-port"];
+  v20 = [pushCopy objectForKey:@"V"];
+  [dictionary setObject:v20 forKey:@"peer-relay-nat-port"];
 
-  v21 = [v6 objectForKey:@"L"];
+  v21 = [pushCopy objectForKey:@"L"];
   v22 = [(GKViceroyRelay *)self dataFromBase64String:v21];
-  [v10 setObject:v22 forKey:@"client-data"];
+  [dictionary setObject:v22 forKey:@"client-data"];
 
-  v23 = [(GKViceroyRelay *)self matchDataDelegate];
-  v24 = [v23 updateConnectionInfo:v10 forPlayerID:v7];
+  matchDataDelegate = [(GKViceroyRelay *)self matchDataDelegate];
+  v24 = [matchDataDelegate updateConnectionInfo:dictionary forPlayerID:dCopy];
 
   [v24 setHasUpdateRelayInfo:1];
   v25 = *MEMORY[0x277D85DE8];
@@ -763,11 +763,11 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   return v24;
 }
 
-- (void)requestRelayUpdateForPlayerID:(id)a3 connectionContext:(id)a4
+- (void)requestRelayUpdateForPlayerID:(id)d connectionContext:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -779,70 +779,70 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
   {
     v10 = v8;
     *buf = 138412546;
-    v47 = v6;
+    v47 = dCopy;
     v48 = 1024;
-    v49 = [v7 connected];
+    connected = [contextCopy connected];
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Request relayUpdate for playerID: %@ connected: %d", buf, 0x12u);
   }
 
-  if ([v7 connected])
+  if ([contextCopy connected])
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [v7 info];
-    v13 = [v12 objectForKey:@"session-token"];
-    [v11 setObject:v13 forKey:@"session-token"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    info = [contextCopy info];
+    v13 = [info objectForKey:@"session-token"];
+    [dictionary setObject:v13 forKey:@"session-token"];
 
-    v14 = [v7 info];
-    v15 = [v14 objectForKey:@"peer-id"];
-    [v11 setObject:v15 forKey:@"peer-id"];
+    info2 = [contextCopy info];
+    v15 = [info2 objectForKey:@"peer-id"];
+    [dictionary setObject:v15 forKey:@"peer-id"];
 
-    v16 = [v7 info];
-    v17 = [v16 objectForKey:@"peer-push-token"];
-    [v11 setObject:v17 forKey:@"peer-push-token"];
+    info3 = [contextCopy info];
+    v17 = [info3 objectForKey:@"peer-push-token"];
+    [dictionary setObject:v17 forKey:@"peer-push-token"];
 
-    v18 = [v7 info];
-    v19 = [v18 objectForKey:@"relay-type"];
-    [v11 setObject:v19 forKey:@"relay-type"];
+    info4 = [contextCopy info];
+    v19 = [info4 objectForKey:@"relay-type"];
+    [dictionary setObject:v19 forKey:@"relay-type"];
 
-    v20 = [v7 info];
-    v21 = [v20 objectForKey:@"relay-connection-id"];
-    [v11 setObject:v21 forKey:@"relay-connection-id"];
+    info5 = [contextCopy info];
+    v21 = [info5 objectForKey:@"relay-connection-id"];
+    [dictionary setObject:v21 forKey:@"relay-connection-id"];
 
-    v22 = [v7 info];
-    v23 = [v22 objectForKey:@"relay-transaction-id-alloc"];
-    [v11 setObject:v23 forKey:@"relay-transaction-id-alloc"];
+    info6 = [contextCopy info];
+    v23 = [info6 objectForKey:@"relay-transaction-id-alloc"];
+    [dictionary setObject:v23 forKey:@"relay-transaction-id-alloc"];
 
-    v24 = [v7 info];
-    v25 = [v24 objectForKey:@"self-relay-ip"];
-    [v11 setObject:v25 forKey:@"self-relay-ip"];
+    info7 = [contextCopy info];
+    v25 = [info7 objectForKey:@"self-relay-ip"];
+    [dictionary setObject:v25 forKey:@"self-relay-ip"];
 
-    v26 = [v7 info];
-    v27 = [v26 objectForKey:@"self-relay-port"];
-    [v11 setObject:v27 forKey:@"self-relay-port"];
+    info8 = [contextCopy info];
+    v27 = [info8 objectForKey:@"self-relay-port"];
+    [dictionary setObject:v27 forKey:@"self-relay-port"];
 
-    v28 = [v7 info];
-    v29 = [v28 objectForKey:@"peer-relay-ip"];
-    [v11 setObject:v29 forKey:@"peer-relay-ip"];
+    info9 = [contextCopy info];
+    v29 = [info9 objectForKey:@"peer-relay-ip"];
+    [dictionary setObject:v29 forKey:@"peer-relay-ip"];
 
-    v30 = [v7 info];
-    v31 = [v30 objectForKey:@"peer-relay-port"];
-    [v11 setObject:v31 forKey:@"peer-relay-port"];
+    info10 = [contextCopy info];
+    v31 = [info10 objectForKey:@"peer-relay-port"];
+    [dictionary setObject:v31 forKey:@"peer-relay-port"];
 
-    v32 = [v7 info];
-    v33 = [v32 objectForKey:@"self-relay-nat-ip"];
-    [v11 setObject:v33 forKey:@"self-relay-nat-ip"];
+    info11 = [contextCopy info];
+    v33 = [info11 objectForKey:@"self-relay-nat-ip"];
+    [dictionary setObject:v33 forKey:@"self-relay-nat-ip"];
 
-    v34 = [v7 info];
-    v35 = [v34 objectForKey:@"self-relay-nat-port"];
-    [v11 setObject:v35 forKey:@"self-relay-nat-port"];
+    info12 = [contextCopy info];
+    v35 = [info12 objectForKey:@"self-relay-nat-port"];
+    [dictionary setObject:v35 forKey:@"self-relay-nat-port"];
 
-    v36 = [v7 info];
-    v37 = [v36 objectForKey:@"relay-token-alloc-res"];
-    [v11 setObject:v37 forKey:@"relay-token-alloc-res"];
+    info13 = [contextCopy info];
+    v37 = [info13 objectForKey:@"relay-token-alloc-res"];
+    [dictionary setObject:v37 forKey:@"relay-token-alloc-res"];
 
-    v38 = [v7 info];
-    v39 = [v38 objectForKey:@"client-data"];
-    [v11 setObject:v39 forKey:@"self-relay-blob"];
+    info14 = [contextCopy info];
+    v39 = [info14 objectForKey:@"client-data"];
+    [dictionary setObject:v39 forKey:@"self-relay-blob"];
 
     v40 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -854,17 +854,17 @@ void __68__GKViceroyRelay_requestRelayInitiateForPlayerID_connectionContext___bl
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v6;
+      v47 = dCopy;
       _os_log_impl(&dword_227904000, v40, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Calling update relay request for playerID: %@", buf, 0xCu);
     }
 
-    v42 = [(GKViceroyRelay *)self daemonProxy];
+    daemonProxy = [(GKViceroyRelay *)self daemonProxy];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __66__GKViceroyRelay_requestRelayUpdateForPlayerID_connectionContext___block_invoke;
     v44[3] = &unk_2785DD630;
-    v45 = v6;
-    [v42 updateRelayRequest:v11 completionHandler:v44];
+    v45 = dCopy;
+    [daemonProxy updateRelayRequest:dictionary completionHandler:v44];
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -910,11 +910,11 @@ void __66__GKViceroyRelay_requestRelayUpdateForPlayerID_connectionContext___bloc
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRelayConnectionForPlayerID:(id)a3 connectionContext:(id)a4
+- (void)updateRelayConnectionForPlayerID:(id)d connectionContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -926,50 +926,50 @@ void __66__GKViceroyRelay_requestRelayUpdateForPlayerID_connectionContext___bloc
   {
     v10 = v8;
     v36 = 138412546;
-    v37 = v6;
+    v37 = dCopy;
     v38 = 1024;
-    LODWORD(v39) = [v7 connected];
+    LODWORD(v39) = [contextCopy connected];
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] Update relay connection for playerID: %@ connected: %d", &v36, 0x12u);
   }
 
-  if ([v7 connected])
+  if ([contextCopy connected])
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [v7 info];
-    v13 = [v12 objectForKeyedSubscript:@"relay-type"];
-    [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277CE56D8]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    info = [contextCopy info];
+    v13 = [info objectForKeyedSubscript:@"relay-type"];
+    [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x277CE56D8]];
 
-    v14 = [v7 info];
-    v15 = [v14 objectForKeyedSubscript:@"relay-connection-id"];
-    [v11 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE5650]];
+    info2 = [contextCopy info];
+    v15 = [info2 objectForKeyedSubscript:@"relay-connection-id"];
+    [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277CE5650]];
 
-    v16 = [v7 info];
-    v17 = [v16 objectForKeyedSubscript:@"relay-transaction-id-chan-bind"];
-    [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x277CE56D0]];
+    info3 = [contextCopy info];
+    v17 = [info3 objectForKeyedSubscript:@"relay-transaction-id-chan-bind"];
+    [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x277CE56D0]];
 
-    v18 = [v7 info];
-    v19 = [v18 objectForKeyedSubscript:@"relay-token-chan-bind"];
-    [v11 setObject:v19 forKeyedSubscript:*MEMORY[0x277CE56C8]];
+    info4 = [contextCopy info];
+    v19 = [info4 objectForKeyedSubscript:@"relay-token-chan-bind"];
+    [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CE56C8]];
 
-    v20 = [v7 info];
-    v21 = [v20 objectForKeyedSubscript:@"peer-relay-nat-ip"];
-    [v11 setObject:v21 forKeyedSubscript:*MEMORY[0x277CE5678]];
+    info5 = [contextCopy info];
+    v21 = [info5 objectForKeyedSubscript:@"peer-relay-nat-ip"];
+    [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x277CE5678]];
 
-    v22 = [v7 info];
-    v23 = [v22 objectForKeyedSubscript:@"peer-relay-nat-port"];
-    [v11 setObject:v23 forKeyedSubscript:*MEMORY[0x277CE5680]];
+    info6 = [contextCopy info];
+    v23 = [info6 objectForKeyedSubscript:@"peer-relay-nat-port"];
+    [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x277CE5680]];
 
-    v24 = [v7 info];
-    v25 = [v24 objectForKeyedSubscript:@"client-data"];
-    [v11 setObject:v25 forKeyedSubscript:*MEMORY[0x277CE5648]];
+    info7 = [contextCopy info];
+    v25 = [info7 objectForKeyedSubscript:@"client-data"];
+    [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x277CE5648]];
 
-    v26 = [v7 info];
-    v27 = [v26 objectForKeyedSubscript:@"peer-relay-ip"];
-    [v11 setObject:v27 forKeyedSubscript:*MEMORY[0x277CE5670]];
+    info8 = [contextCopy info];
+    v27 = [info8 objectForKeyedSubscript:@"peer-relay-ip"];
+    [dictionary setObject:v27 forKeyedSubscript:*MEMORY[0x277CE5670]];
 
-    v28 = [v7 info];
-    v29 = [v28 objectForKeyedSubscript:@"peer-relay-port"];
-    [v11 setObject:v29 forKeyedSubscript:*MEMORY[0x277CE5688]];
+    info9 = [contextCopy info];
+    v29 = [info9 objectForKeyedSubscript:@"peer-relay-port"];
+    [dictionary setObject:v29 forKeyedSubscript:*MEMORY[0x277CE5688]];
 
     v30 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -981,26 +981,26 @@ void __66__GKViceroyRelay_requestRelayUpdateForPlayerID_connectionContext___bloc
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v36 = 138412546;
-      v37 = v6;
+      v37 = dCopy;
       v38 = 2112;
-      v39 = v11;
+      v39 = dictionary;
       _os_log_impl(&dword_227904000, v30, OS_LOG_TYPE_DEFAULT, "[GKViceroyRelay] updateRelayConnectionForPlayer for playerID: %@ - with relayInfo: %@", &v36, 0x16u);
     }
 
-    v32 = [(GKViceroyRelay *)self connection];
-    v33 = [v7 info];
-    v34 = [v33 objectForKeyedSubscript:@"peer-blob"];
-    [v32 updateRelayWithParticipant:v6 withConnectionData:v34 withRelayInfo:v11 didInitiate:0];
+    connection = [(GKViceroyRelay *)self connection];
+    info10 = [contextCopy info];
+    v34 = [info10 objectForKeyedSubscript:@"peer-blob"];
+    [connection updateRelayWithParticipant:dCopy withConnectionData:v34 withRelayInfo:dictionary didInitiate:0];
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataFromBase64String:(id)a3
+- (id)dataFromBase64String:(id)string
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:0];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithBase64EncodedString:stringCopy options:0];
 
   return v5;
 }

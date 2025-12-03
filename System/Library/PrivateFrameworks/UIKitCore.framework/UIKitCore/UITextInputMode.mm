@@ -2,7 +2,7 @@
 + (NSArray)activeInputModes;
 + (UITextInputMode)currentInputMode;
 - (NSString)primaryLanguage;
-- (UITextInputMode)initWithCoder:(id)a3;
+- (UITextInputMode)initWithCoder:(id)coder;
 @end
 
 @implementation UITextInputMode
@@ -12,38 +12,38 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UITextInputMode *)self primaryLanguage];
+    primaryLanguage = [(UITextInputMode *)self primaryLanguage];
   }
 
   else
   {
-    v3 = 0;
+    primaryLanguage = 0;
   }
 
-  return v3;
+  return primaryLanguage;
 }
 
 + (UITextInputMode)currentInputMode
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
+  currentInputMode = [v2 currentInputMode];
 
-  return v3;
+  return currentInputMode;
 }
 
 + (NSArray)activeInputModes
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 activeInputModes];
+  activeInputModes = [v2 activeInputModes];
 
-  return v3;
+  return activeInputModes;
 }
 
-- (UITextInputMode)initWithCoder:(id)a3
+- (UITextInputMode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
 
-  v5 = [[UIKeyboardInputMode alloc] initWithCoder:v4];
+  v5 = [[UIKeyboardInputMode alloc] initWithCoder:coderCopy];
   return &v5->super;
 }
 

@@ -1,17 +1,17 @@
 @interface ISKVOProxyManager
 + (ISKVOProxyManager)sharedManager;
 - (ISKVOProxyManager)init;
-- (id)addProxyWithTarget:(id)a3 queue:(id)a4 keyPaths:(id)a5 delegate:(id)a6;
-- (void)removeProxyWithIdentifier:(id)a3;
+- (id)addProxyWithTarget:(id)target queue:(id)queue keyPaths:(id)paths delegate:(id)delegate;
+- (void)removeProxyWithIdentifier:(id)identifier;
 @end
 
 @implementation ISKVOProxyManager
 
-- (void)removeProxyWithIdentifier:(id)a3
+- (void)removeProxyWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     recordsQueue = self->_recordsQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -19,7 +19,7 @@
     v7[2] = __47__ISKVOProxyManager_removeProxyWithIdentifier___block_invoke;
     v7[3] = &unk_279A2A348;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(recordsQueue, v7);
   }
 }
@@ -42,31 +42,31 @@ void __47__ISKVOProxyManager_removeProxyWithIdentifier___block_invoke(uint64_t a
   }
 }
 
-- (id)addProxyWithTarget:(id)a3 queue:(id)a4 keyPaths:(id)a5 delegate:(id)a6
+- (id)addProxyWithTarget:(id)target queue:(id)queue keyPaths:(id)paths delegate:(id)delegate
 {
-  v10 = a4;
+  queueCopy = queue;
   v11 = MEMORY[0x277CCAD78];
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [v11 UUID];
-  v16 = [v15 UUIDString];
+  delegateCopy = delegate;
+  pathsCopy = paths;
+  targetCopy = target;
+  uUID = [v11 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v17 = [[ISKVOProxy alloc] initWithTarget:v14 keyPaths:v13 identifier:v16 delegate:v12];
-  v18 = [[ISKVOProxyRecord alloc] initWithProxy:v17 queue:v10];
+  v17 = [[ISKVOProxy alloc] initWithTarget:targetCopy keyPaths:pathsCopy identifier:uUIDString delegate:delegateCopy];
+  v18 = [[ISKVOProxyRecord alloc] initWithProxy:v17 queue:queueCopy];
   recordsQueue = self->_recordsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__ISKVOProxyManager_addProxyWithTarget_queue_keyPaths_delegate___block_invoke;
   block[3] = &unk_279A29A70;
   block[4] = self;
-  v20 = v16;
+  v20 = uUIDString;
   v28 = v20;
   v29 = v18;
-  v30 = v10;
+  v30 = queueCopy;
   v31 = v17;
   v21 = v17;
-  v22 = v10;
+  v22 = queueCopy;
   v23 = v18;
   dispatch_async(recordsQueue, block);
   v24 = v31;

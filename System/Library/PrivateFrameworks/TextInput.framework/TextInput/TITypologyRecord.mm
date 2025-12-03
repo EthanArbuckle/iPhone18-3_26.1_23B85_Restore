@@ -1,9 +1,9 @@
 @interface TITypologyRecord
 + (id)recordClasses;
 - (TITypologyRecord)init;
-- (TITypologyRecord)initWithCoder:(id)a3;
-- (id)textSummaryForAutocorrection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TITypologyRecord)initWithCoder:(id)coder;
+- (id)textSummaryForAutocorrection:(id)autocorrection;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TITypologyRecord
@@ -15,57 +15,57 @@
   v2 = [(TITypologyRecord *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v2->_timestamp = v4;
 
-    v5 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     recordID = v2->_recordID;
-    v2->_recordID = v5;
+    v2->_recordID = uUID;
   }
 
   return v2;
 }
 
-- (id)textSummaryForAutocorrection:(id)a3
+- (id)textSummaryForAutocorrection:(id)autocorrection
 {
-  v3 = a3;
-  v4 = [v3 input];
-  v5 = [v3 candidate];
+  autocorrectionCopy = autocorrection;
+  input = [autocorrectionCopy input];
+  candidate = [autocorrectionCopy candidate];
 
-  if ([v4 length] && (objc_msgSend(MEMORY[0x1E696AB08], "alphanumericCharacterSet"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "invertedSet"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v4, "rangeOfCharacterFromSet:", v7), v7, v6, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if ([input length] && (objc_msgSend(MEMORY[0x1E696AB08], "alphanumericCharacterSet"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "invertedSet"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(input, "rangeOfCharacterFromSet:", v7), v7, v6, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"{%@→%@}", v4, v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"{%@→%@}", input, candidate];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"{%@}", v5, v11];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"{%@}", candidate, v11];
   }
   v9 = ;
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeObject:self->_recordID forKey:@"recordID"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeObject:self->_recordID forKey:@"recordID"];
 }
 
-- (TITypologyRecord)initWithCoder:(id)a3
+- (TITypologyRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TITypologyRecord;
   v5 = [(TITypologyRecord *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
     recordID = v5->_recordID;
     v5->_recordID = v7;
   }

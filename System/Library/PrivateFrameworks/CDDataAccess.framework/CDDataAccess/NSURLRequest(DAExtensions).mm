@@ -14,11 +14,11 @@
     v11 = 138412546;
     v12 = a3;
     v13 = 2112;
-    v14 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_24244C000, v5, v6, "Applying storage session %@ to request %@", &v11, 0x16u);
   }
 
-  [a1 _CFURLRequest];
+  [self _CFURLRequest];
   MutableCopy = CFURLRequestCreateMutableCopy();
   _CFURLRequestSetStorageSession();
   v8 = [objc_alloc(MEMORY[0x277CBAB50]) _initWithCFURLRequest:MutableCopy];

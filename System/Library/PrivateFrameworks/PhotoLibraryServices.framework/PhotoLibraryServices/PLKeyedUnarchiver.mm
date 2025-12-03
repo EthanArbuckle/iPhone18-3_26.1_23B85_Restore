@@ -1,18 +1,18 @@
 @interface PLKeyedUnarchiver
-+ (id)secureUnarchivedObjectWithData:(id)a3 ofClass:(Class)a4;
-+ (id)secureUnarchivedObjectWithData:(id)a3 ofClasses:(id)a4;
++ (id)secureUnarchivedObjectWithData:(id)data ofClass:(Class)class;
++ (id)secureUnarchivedObjectWithData:(id)data ofClasses:(id)classes;
 @end
 
 @implementation PLKeyedUnarchiver
 
-+ (id)secureUnarchivedObjectWithData:(id)a3 ofClasses:(id)a4
++ (id)secureUnarchivedObjectWithData:(id)data ofClasses:(id)classes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  classesCopy = classes;
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
+  dataCopy = data;
   v13 = 0;
-  v8 = [[v6 alloc] initForReadingFromData:v7 error:&v13];
+  v8 = [[v6 alloc] initForReadingFromData:dataCopy error:&v13];
 
   v9 = v13;
   if (!v8)
@@ -26,17 +26,17 @@
     }
   }
 
-  v11 = [v8 decodeObjectOfClasses:v5 forKey:*MEMORY[0x1E696A508]];
+  v11 = [v8 decodeObjectOfClasses:classesCopy forKey:*MEMORY[0x1E696A508]];
 
   return v11;
 }
 
-+ (id)secureUnarchivedObjectWithData:(id)a3 ofClass:(Class)a4
++ (id)secureUnarchivedObjectWithData:(id)data ofClass:(Class)class
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [a1 secureUnarchivedObjectWithData:v7 ofClasses:v8];
+  dataCopy = data;
+  v8 = [v6 setWithObject:class];
+  v9 = [self secureUnarchivedObjectWithData:dataCopy ofClasses:v8];
 
   return v9;
 }

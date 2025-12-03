@@ -1,5 +1,5 @@
 @interface CKBannerViewFactory
-+ (id)bannerWithTitle:(id)a3 subtitleString:(id)a4 avatarImages:(id)a5 contacts:(id)a6 customImage:(id)a7 actionButtonObjects:(id)a8 forceImageCentering:(BOOL)a9 xButtonHandler:(id)aBlock;
++ (id)bannerWithTitle:(id)title subtitleString:(id)string avatarImages:(id)images contacts:(id)contacts customImage:(id)image actionButtonObjects:(id)objects forceImageCentering:(BOOL)centering xButtonHandler:(id)aBlock;
 + (id)notDefaultTextingAppBanner;
 + (id)unexpectedlyLoggedOutBanner;
 + (id)updateAppleIDSettingsBanner;
@@ -9,14 +9,14 @@
 
 @implementation CKBannerViewFactory
 
-+ (id)bannerWithTitle:(id)a3 subtitleString:(id)a4 avatarImages:(id)a5 contacts:(id)a6 customImage:(id)a7 actionButtonObjects:(id)a8 forceImageCentering:(BOOL)a9 xButtonHandler:(id)aBlock
++ (id)bannerWithTitle:(id)title subtitleString:(id)string avatarImages:(id)images contacts:(id)contacts customImage:(id)image actionButtonObjects:(id)objects forceImageCentering:(BOOL)centering xButtonHandler:(id)aBlock
 {
   v16 = _Block_copy(aBlock);
-  if (a3)
+  if (title)
   {
     v30 = sub_190D56F10();
-    a3 = v17;
-    if (a4)
+    title = v17;
+    if (string)
     {
       goto LABEL_3;
     }
@@ -25,12 +25,12 @@
   else
   {
     v30 = 0;
-    if (a4)
+    if (string)
     {
 LABEL_3:
       v18 = sub_190D56F10();
-      a4 = v19;
-      if (!a5)
+      string = v19;
+      if (!images)
       {
         goto LABEL_5;
       }
@@ -40,18 +40,18 @@ LABEL_3:
   }
 
   v18 = 0;
-  if (a5)
+  if (images)
   {
 LABEL_4:
     sub_1902188FC(0, &qword_1EAD44EB0);
-    a5 = sub_190D57180();
+    images = sub_190D57180();
   }
 
 LABEL_5:
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  if (v20)
+  contactsCopy = contacts;
+  imageCopy = image;
+  objectsCopy = objects;
+  if (contactsCopy)
   {
     sub_1902188FC(0, &qword_1EAD44E40);
     v23 = sub_190D57180();
@@ -79,7 +79,7 @@ LABEL_5:
 
   *&v29 = v16;
   *(&v29 + 1) = v25;
-  sub_1909267E4(v30, a3, v18, a4, a5, v23, v21, v24, a9, v29);
+  sub_1909267E4(v30, title, v18, string, images, v23, imageCopy, v24, centering, v29);
   v27 = v26;
   sub_19022123C(v16);
 

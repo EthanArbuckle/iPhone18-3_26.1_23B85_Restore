@@ -1,23 +1,23 @@
 @interface PearlCoreAnalytics
 + (void)sendDisplayPearlGlassesBannerNotificationEvent;
 + (void)sendEnrollPearlGlassesBannerNotificationEvent;
-- (BOOL)postSimpleCoreAnalyticsEvent:(id)a3 fromAWDMetric:(id)a4;
+- (BOOL)postSimpleCoreAnalyticsEvent:(id)event fromAWDMetric:(id)metric;
 - (BOOL)setupDailyUpdateTimer;
 - (PearlCoreAnalytics)init;
-- (id)isBacklitSun:(id *)a3;
-- (int)sequenceTypeToCaptureMethod:(unsigned __int8)a3 forSequence:(unsigned __int8)a4;
+- (id)isBacklitSun:(id *)sun;
+- (int)sequenceTypeToCaptureMethod:(unsigned __int8)method forSequence:(unsigned __int8)sequence;
 - (void)analyzeSecureFaceDetectStop;
-- (void)analyzeSecureFrameMeta:(id)a3 faceDetected:(BOOL)a4;
+- (void)analyzeSecureFrameMeta:(id)meta faceDetected:(BOOL)detected;
 - (void)checkDailyUpdate;
-- (void)checkYogiError:(int)a3;
+- (void)checkYogiError:(int)error;
 - (void)getDailyUpdateAnalytics;
-- (void)sendBioLockoutEventAnalytics:(id)a3;
-- (void)sendEnrollEventAnalytics:(id)a3 orientation:(unint64_t)a4;
-- (void)sendFaceDetectEventAnalytics:(id)a3 fromMatch:(BOOL)a4 orientation:(unint64_t)a5;
-- (void)sendMatchEventAnalytics:(id)a3 orientation:(unint64_t)a4 identities:(id)a5;
-- (void)sendPasscodeChallengeEventAnalytics:(id)a3 orientation:(unint64_t)a4;
-- (void)sendPearlAbcEvent:(unint64_t)a3;
-- (void)serviceMatchWithServer:(id)a3;
+- (void)sendBioLockoutEventAnalytics:(id)analytics;
+- (void)sendEnrollEventAnalytics:(id)analytics orientation:(unint64_t)orientation;
+- (void)sendFaceDetectEventAnalytics:(id)analytics fromMatch:(BOOL)match orientation:(unint64_t)orientation;
+- (void)sendMatchEventAnalytics:(id)analytics orientation:(unint64_t)orientation identities:(id)identities;
+- (void)sendPasscodeChallengeEventAnalytics:(id)analytics orientation:(unint64_t)orientation;
+- (void)sendPearlAbcEvent:(unint64_t)event;
+- (void)serviceMatchWithServer:(id)server;
 - (void)setupDailyUpdateTimer;
 @end
 
@@ -31,9 +31,9 @@
   if (v2)
   {
     v2->_isInternalBuild = isInternalBuild();
-    v3 = [[PearlCoreAnalyticsDailyUpdateEvent alloc] initWithPersistedData];
+    initWithPersistedData = [[PearlCoreAnalyticsDailyUpdateEvent alloc] initWithPersistedData];
     dailyEvent = v2->_dailyEvent;
-    v2->_dailyEvent = v3;
+    v2->_dailyEvent = initWithPersistedData;
 
     v5 = objc_alloc(MEMORY[0x29EDBFD68]);
     v6 = [v5 initWithPersistedDataWithName:*MEMORY[0x29EDBFDE0]];
@@ -54,9 +54,9 @@
 
 - (void)checkDailyUpdate
 {
-  v3 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v4 = [(BiometricKitCoreAnalyticsEvent *)self->_dailyEvent previousEventDate];
-  v5 = [v3 isDateInToday:v4];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  previousEventDate = [(BiometricKitCoreAnalyticsEvent *)self->_dailyEvent previousEventDate];
+  v5 = [currentCalendar isDateInToday:previousEventDate];
 
   if ((v5 & 1) == 0)
   {
@@ -95,9 +95,9 @@ LABEL_2:
   }
 }
 
-- (void)serviceMatchWithServer:(id)a3
+- (void)serviceMatchWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   if (__osLog)
   {
     v5 = __osLog;
@@ -114,14 +114,14 @@ LABEL_2:
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics serviceMatch\n", v6, 2u);
   }
 
-  [(BiometricKitCoreAnalyticsLockState *)self->_lockState serviceMatchWithServer:v4];
+  [(BiometricKitCoreAnalyticsLockState *)self->_lockState serviceMatchWithServer:serverCopy];
 }
 
-- (void)sendMatchEventAnalytics:(id)a3 orientation:(unint64_t)a4 identities:(id)a5
+- (void)sendMatchEventAnalytics:(id)analytics orientation:(unint64_t)orientation identities:(id)identities
 {
   v191 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v165 = a5;
+  analyticsCopy = analytics;
+  identitiesCopy = identities;
   v8 = __osLog;
   if (!__osLog)
   {
@@ -132,121 +132,121 @@ LABEL_2:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = v7 != 0;
+    *&buf[4] = analyticsCopy != 0;
     _os_log_impl(&dword_296CA4000, v9, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics sendMatchEventAnalytics: matchMessage: %d\n", buf, 8u);
   }
 
-  v168 = v7;
+  v168 = analyticsCopy;
 
   v170 = objc_alloc_init(PearlCoreAnalyticsMatchEvent);
-  v10 = [(PearlCoreAnalyticsEvent *)v170 getAWDMetric];
+  getAWDMetric = [(PearlCoreAnalyticsEvent *)v170 getAWDMetric];
   v189 = 0u;
   memset(v190, 0, 90);
   *buf = 0u;
-  if (!v7)
+  if (!analyticsCopy)
   {
     [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
     goto LABEL_177;
   }
 
-  if ([v7 length] <= 0x18A)
+  if ([analyticsCopy length] <= 0x18A)
   {
     [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
     goto LABEL_177;
   }
 
-  v11 = v7;
-  v12 = [v7 bytes];
-  v13 = self;
-  objc_sync_enter(v13);
-  obj = v13;
-  [v10 setCaptureMethod:{-[PearlCoreAnalytics sequenceTypeToCaptureMethod:forSequence:](v13, "sequenceTypeToCaptureMethod:forSequence:", *(v12 + 350), *(v12 + 15))}];
-  if (v13->_isInternalBuild)
+  v11 = analyticsCopy;
+  bytes = [analyticsCopy bytes];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  [getAWDMetric setCaptureMethod:{-[PearlCoreAnalytics sequenceTypeToCaptureMethod:forSequence:](selfCopy, "sequenceTypeToCaptureMethod:forSequence:", *(bytes + 350), *(bytes + 15))}];
+  if (selfCopy->_isInternalBuild)
   {
-    [v10 setCombinedSequenceEnabled:*(v12 + 300)];
+    [getAWDMetric setCombinedSequenceEnabled:*(bytes + 300)];
   }
 
-  [v10 setMatchType:*(v12 + 359)];
-  v14 = *(v12 + 51);
-  v15 = *(v12 + 55);
-  v16 = *(v12 + 59);
-  v17 = *(v12 + 105);
-  v18 = *(v12 + 109);
-  v19 = *(v12 + 113);
-  v160 = *(v12 + 157);
-  v20 = *(v12 + 161);
-  v166 = *(v12 + 165);
-  v164 = (v12 + 51);
-  [v10 setOverallResult:*(v12 + 13)];
-  v21 = *(v12 + 2);
-  [v10 setOverallTime:absoluteToMiliseconds()];
-  v22 = *(v12 + 3);
-  [v10 setOverallTimeWithRetries:absoluteToMiliseconds()];
-  [v10 setMatchCancelled:*(v12 + 332)];
-  if (*(v12 + 351))
+  [getAWDMetric setMatchType:*(bytes + 359)];
+  v14 = *(bytes + 51);
+  v15 = *(bytes + 55);
+  v16 = *(bytes + 59);
+  v17 = *(bytes + 105);
+  v18 = *(bytes + 109);
+  v19 = *(bytes + 113);
+  v160 = *(bytes + 157);
+  v20 = *(bytes + 161);
+  v166 = *(bytes + 165);
+  v164 = (bytes + 51);
+  [getAWDMetric setOverallResult:*(bytes + 13)];
+  v21 = *(bytes + 2);
+  [getAWDMetric setOverallTime:absoluteToMiliseconds()];
+  v22 = *(bytes + 3);
+  [getAWDMetric setOverallTimeWithRetries:absoluteToMiliseconds()];
+  [getAWDMetric setMatchCancelled:*(bytes + 332)];
+  if (*(bytes + 351))
   {
-    [v10 setTimeSinceSleep:absoluteToMiliseconds()];
+    [getAWDMetric setTimeSinceSleep:absoluteToMiliseconds()];
   }
 
-  v23 = *(v12 + 41);
+  v23 = *(bytes + 41);
   v24 = absoluteToMiliseconds();
   if (v24)
   {
-    [v10 setFaceDetectEndTime:v24];
+    [getAWDMetric setFaceDetectEndTime:v24];
   }
 
-  [v10 setFaceDetectResult:*(v12 + 49)];
+  [getAWDMetric setFaceDetectResult:*(bytes + 49)];
   v25 = v15 + v14 + v16;
-  [v10 setFaceDetectFrameCount:v25];
-  [v10 setFaceDetectFrameFloodCount:*v164];
-  [v10 setFaceDetectFrameSparseCount:*(v12 + 55)];
-  [v10 setFaceDetectFrameDenseCount:*(v12 + 59)];
-  v26 = *(v12 + 94);
+  [getAWDMetric setFaceDetectFrameCount:v25];
+  [getAWDMetric setFaceDetectFrameFloodCount:*v164];
+  [getAWDMetric setFaceDetectFrameSparseCount:*(bytes + 55)];
+  [getAWDMetric setFaceDetectFrameDenseCount:*(bytes + 59)];
+  v26 = *(bytes + 94);
   v27 = absoluteToMiliseconds();
   if (v27)
   {
-    [v10 setBioCheckEndTime:v27];
+    [getAWDMetric setBioCheckEndTime:v27];
   }
 
-  [v10 setBioCheckResult:*(v12 + 51)];
-  if (*(v12 + 51) == -1)
+  [getAWDMetric setBioCheckResult:*(bytes + 51)];
+  if (*(bytes + 51) == -1)
   {
-    [v10 setHasBioCheckResult:0];
+    [getAWDMetric setHasBioCheckResult:0];
   }
 
-  [v10 setBioCheckFrameCount:(v18 + v17 + v19)];
-  [v10 setBioCheckFrameFloodCount:*(v12 + 105)];
-  [v10 setBioCheckFrameSparseCount:*(v12 + 109)];
-  [v10 setBioCheckFrameDenseCount:*(v12 + 113)];
-  v28 = *(v12 + 147);
+  [getAWDMetric setBioCheckFrameCount:(v18 + v17 + v19)];
+  [getAWDMetric setBioCheckFrameFloodCount:*(bytes + 105)];
+  [getAWDMetric setBioCheckFrameSparseCount:*(bytes + 109)];
+  [getAWDMetric setBioCheckFrameDenseCount:*(bytes + 113)];
+  v28 = *(bytes + 147);
   v29 = absoluteToMiliseconds();
   if (v29)
   {
-    [v10 setProbingPatternEndTime:v29];
+    [getAWDMetric setProbingPatternEndTime:v29];
   }
 
-  [v10 setProbingPatternResult:*(v12 + 155)];
-  if (*(v12 + 155) == -1)
+  [getAWDMetric setProbingPatternResult:*(bytes + 155)];
+  if (*(bytes + 155) == -1)
   {
-    [v10 setHasProbingPatternResult:0];
+    [getAWDMetric setHasProbingPatternResult:0];
   }
 
-  [v10 setProbingPatternFrameCount:(v20 + v160 + v166)];
-  [v10 setProbingPatternFrameFloodCount:*(v12 + 157)];
-  [v10 setProbingPatternFrameSparseCount:*(v12 + 161)];
-  [v10 setProbingPatternFrameDenseCount:*(v12 + 165)];
-  [v10 setAmbientLux:*v12];
-  [v10 setMatchForUnlock:*(v12 + 277) & 1];
-  [v10 setFailedUnlockAttemptsFromFD:*(v12 + 281)];
-  [v10 setFailedUnlockAttemptsFromBiocheck:*(v12 + 285)];
-  [v10 setFailedMatchAttemptsFromFD:*(v12 + 289)];
-  [v10 setFailedMatchAttemptsFromBiocheck:*(v12 + 293)];
-  if (*(v12 + 232) == 2)
+  [getAWDMetric setProbingPatternFrameCount:(v20 + v160 + v166)];
+  [getAWDMetric setProbingPatternFrameFloodCount:*(bytes + 157)];
+  [getAWDMetric setProbingPatternFrameSparseCount:*(bytes + 161)];
+  [getAWDMetric setProbingPatternFrameDenseCount:*(bytes + 165)];
+  [getAWDMetric setAmbientLux:*bytes];
+  [getAWDMetric setMatchForUnlock:*(bytes + 277) & 1];
+  [getAWDMetric setFailedUnlockAttemptsFromFD:*(bytes + 281)];
+  [getAWDMetric setFailedUnlockAttemptsFromBiocheck:*(bytes + 285)];
+  [getAWDMetric setFailedMatchAttemptsFromFD:*(bytes + 289)];
+  [getAWDMetric setFailedMatchAttemptsFromBiocheck:*(bytes + 293)];
+  if (*(bytes + 232) == 2)
   {
-    v30 = *(v12 + 233);
-    v31 = *(v12 + 234);
-    v32 = *(v12 + 225) == 0;
-    if (*(v12 + 234))
+    v30 = *(bytes + 233);
+    v31 = *(bytes + 234);
+    v32 = *(bytes + 225) == 0;
+    if (*(bytes + 234))
     {
       v167 = 0;
       v33 = 0;
@@ -257,11 +257,11 @@ LABEL_2:
 
     else
     {
-      v36 = *(v12 + 226) == 0;
-      v35 = *(v12 + 227) == 0;
-      v34 = *(v12 + 236) == 0;
-      v33 = *(v12 + 237) == 0;
-      v167 = *(v12 + 235) == 0;
+      v36 = *(bytes + 226) == 0;
+      v35 = *(bytes + 227) == 0;
+      v34 = *(bytes + 236) == 0;
+      v33 = *(bytes + 237) == 0;
+      v167 = *(bytes + 235) == 0;
     }
   }
 
@@ -277,24 +277,24 @@ LABEL_2:
     v32 = 0;
   }
 
-  if (*(v12 + 252) == 3)
+  if (*(bytes + 252) == 3)
   {
-    if (*(v12 + 155) >= 1)
+    if (*(bytes + 155) >= 1)
     {
-      [v10 setProbingPatternFailure:1];
+      [getAWDMetric setProbingPatternFailure:1];
     }
 
-    if (*(v12 + 253) && ([v10 captureMethod] != 3 || !v30))
+    if (*(bytes + 253) && ([getAWDMetric captureMethod] != 3 || !v30))
     {
-      v30 = *(v12 + 253);
+      v30 = *(bytes + 253);
     }
 
-    if (*(v12 + 254))
+    if (*(bytes + 254))
     {
-      v37 = [v10 captureMethod];
-      if (v31 && v37 == 3)
+      captureMethod = [getAWDMetric captureMethod];
+      if (v31 && captureMethod == 3)
       {
-        if (*(v12 + 245))
+        if (*(bytes + 245))
         {
           v32 = v32;
         }
@@ -307,10 +307,10 @@ LABEL_2:
         goto LABEL_60;
       }
 
-      v31 = *(v12 + 254);
+      v31 = *(bytes + 254);
     }
 
-    if (*(v12 + 245))
+    if (*(bytes + 245))
     {
       v32 = v32;
     }
@@ -322,7 +322,7 @@ LABEL_2:
 
     if (!v31)
     {
-      if (*(v12 + 246))
+      if (*(bytes + 246))
       {
         v36 = v36;
       }
@@ -332,7 +332,7 @@ LABEL_2:
         v36 = 1;
       }
 
-      if (*(v12 + 247))
+      if (*(bytes + 247))
       {
         v35 = v35;
       }
@@ -342,7 +342,7 @@ LABEL_2:
         v35 = 1;
       }
 
-      if (*(v12 + 256))
+      if (*(bytes + 256))
       {
         v34 = v34;
       }
@@ -352,7 +352,7 @@ LABEL_2:
         v34 = 1;
       }
 
-      if (*(v12 + 257))
+      if (*(bytes + 257))
       {
         v33 = v33;
       }
@@ -362,7 +362,7 @@ LABEL_2:
         v33 = 1;
       }
 
-      if (*(v12 + 255))
+      if (*(bytes + 255))
       {
         v38 = v167;
       }
@@ -377,33 +377,33 @@ LABEL_2:
   }
 
 LABEL_60:
-  [v10 setMatcherFailure:v32];
-  [v10 setMatchDepthFailure:v35];
-  [v10 setMatchFloodFailure:v36];
-  [v10 setAsFloodFailure:v34];
-  [v10 setAsDepthFailure:v33];
-  [v10 setFeatureGenerationError:v30];
-  [v10 setMatchFeatureVectorError:v31];
-  [v10 setAsFailure:v167];
-  [v10 setOnlineTemplateUpdated:*(v12 + 199) != 0];
-  [v10 setPasscodeChallengeAllowed:*(v12 + 200) != 0];
-  v161 = v12 + 63;
-  if (*(v12 + 63) == 1)
+  [getAWDMetric setMatcherFailure:v32];
+  [getAWDMetric setMatchDepthFailure:v35];
+  [getAWDMetric setMatchFloodFailure:v36];
+  [getAWDMetric setAsFloodFailure:v34];
+  [getAWDMetric setAsDepthFailure:v33];
+  [getAWDMetric setFeatureGenerationError:v30];
+  [getAWDMetric setMatchFeatureVectorError:v31];
+  [getAWDMetric setAsFailure:v167];
+  [getAWDMetric setOnlineTemplateUpdated:*(bytes + 199) != 0];
+  [getAWDMetric setPasscodeChallengeAllowed:*(bytes + 200) != 0];
+  v161 = bytes + 63;
+  if (*(bytes + 63) == 1)
   {
-    [v10 setFaceDetectFaceDistance:*(v12 + 69)];
-    [v10 setFaceDetectCamRectX:*(v12 + 71)];
-    [v10 setFaceDetectCamRectY:*(v12 + 73)];
-    [v10 setFaceDetectCamRectW:*(v12 + 75)];
-    [v10 setFaceDetectCamRectH:*(v12 + 77)];
-    [v10 setFaceDetectPPMRequestedBudget:*(v12 + 79)];
-    [v10 setFaceDetectPPMAllocatedBudget:*(v12 + 80)];
-    v39 = v12 + 63;
-    if (*(v12 + 81) != -1)
+    [getAWDMetric setFaceDetectFaceDistance:*(bytes + 69)];
+    [getAWDMetric setFaceDetectCamRectX:*(bytes + 71)];
+    [getAWDMetric setFaceDetectCamRectY:*(bytes + 73)];
+    [getAWDMetric setFaceDetectCamRectW:*(bytes + 75)];
+    [getAWDMetric setFaceDetectCamRectH:*(bytes + 77)];
+    [getAWDMetric setFaceDetectPPMRequestedBudget:*(bytes + 79)];
+    [getAWDMetric setFaceDetectPPMAllocatedBudget:*(bytes + 80)];
+    v39 = bytes + 63;
+    if (*(bytes + 81) != -1)
     {
       v40 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:?];
       [(PearlCoreAnalyticsMatchEvent *)v170 setCamLux:v40];
 
-      v39 = v12 + 63;
+      v39 = bytes + 63;
     }
   }
 
@@ -412,66 +412,66 @@ LABEL_60:
     v39 = 0;
   }
 
-  if (*(v12 + 117) == 1)
+  if (*(bytes + 117) == 1)
   {
-    [v10 setBioCheckFaceDistance:*(v12 + 123)];
-    [v10 setBioCheckCamRectX:*(v12 + 125)];
-    [v10 setBioCheckCamRectY:*(v12 + 127)];
-    [v10 setBioCheckCamRectW:*(v12 + 129)];
-    [v10 setBioCheckCamRectH:*(v12 + 131)];
-    [v10 setBioCheckPPMRequestedBudget:*(v12 + 133)];
-    [v10 setBioCheckPPMAllocatedBudget:*(v12 + 134)];
-    if ([v10 captureMethod] != 3)
+    [getAWDMetric setBioCheckFaceDistance:*(bytes + 123)];
+    [getAWDMetric setBioCheckCamRectX:*(bytes + 125)];
+    [getAWDMetric setBioCheckCamRectY:*(bytes + 127)];
+    [getAWDMetric setBioCheckCamRectW:*(bytes + 129)];
+    [getAWDMetric setBioCheckCamRectH:*(bytes + 131)];
+    [getAWDMetric setBioCheckPPMRequestedBudget:*(bytes + 133)];
+    [getAWDMetric setBioCheckPPMAllocatedBudget:*(bytes + 134)];
+    if ([getAWDMetric captureMethod] != 3)
     {
-      v41 = [(PearlCoreAnalytics *)obj isBacklitSun:v12 + 117];
+      v41 = [(PearlCoreAnalytics *)obj isBacklitSun:bytes + 117];
       [(PearlCoreAnalyticsMatchEvent *)v170 setBacklitSun:v41];
     }
 
-    v39 = v12 + 117;
+    v39 = bytes + 117;
   }
 
-  if (*(v12 + 169) == 1)
+  if (*(bytes + 169) == 1)
   {
-    [v10 setProbingPatternFaceDistance:*(v12 + 175)];
-    [v10 setProbingPatternCamRectX:*(v12 + 177)];
-    [v10 setProbingPatternCamRectY:*(v12 + 179)];
-    [v10 setProbingPatternCamRectW:*(v12 + 181)];
-    [v10 setProbingPatternCamRectH:*(v12 + 183)];
-    if ([v10 captureMethod] != 3)
+    [getAWDMetric setProbingPatternFaceDistance:*(bytes + 175)];
+    [getAWDMetric setProbingPatternCamRectX:*(bytes + 177)];
+    [getAWDMetric setProbingPatternCamRectY:*(bytes + 179)];
+    [getAWDMetric setProbingPatternCamRectW:*(bytes + 181)];
+    [getAWDMetric setProbingPatternCamRectH:*(bytes + 183)];
+    if ([getAWDMetric captureMethod] != 3)
     {
-      v39 = v12 + 117;
+      v39 = bytes + 117;
     }
 
-    v42 = [(PearlCoreAnalyticsMatchEvent *)v170 backlitSun];
-    v43 = v42 == 0;
+    backlitSun = [(PearlCoreAnalyticsMatchEvent *)v170 backlitSun];
+    v43 = backlitSun == 0;
 
     if (v43)
     {
-      v44 = [(PearlCoreAnalytics *)obj isBacklitSun:v12 + 169];
+      v44 = [(PearlCoreAnalytics *)obj isBacklitSun:bytes + 169];
       [(PearlCoreAnalyticsMatchEvent *)v170 setBacklitSun:v44];
     }
   }
 
   if (v39)
   {
-    [v10 setSensorTemperature:*(v39 + 2)];
+    [getAWDMetric setSensorTemperature:*(v39 + 2)];
     if (*(v39 + 2) == -273)
     {
-      [v10 setHasSensorTemperature:0];
+      [getAWDMetric setHasSensorTemperature:0];
     }
 
-    [v10 setFaceDistance:{*(v39 + 3), v161}];
-    [v10 setHasOcclusion:v39[1]];
-    [v10 setCamRectX:*(v39 + 4)];
-    [v10 setCamRectY:*(v39 + 5)];
-    [v10 setCamRectW:*(v39 + 6)];
-    [v10 setCamRectH:*(v39 + 7)];
+    [getAWDMetric setFaceDistance:{*(v39 + 3), v161}];
+    [getAWDMetric setHasOcclusion:v39[1]];
+    [getAWDMetric setCamRectX:*(v39 + 4)];
+    [getAWDMetric setCamRectY:*(v39 + 5)];
+    [getAWDMetric setCamRectW:*(v39 + 6)];
+    [getAWDMetric setCamRectH:*(v39 + 7)];
   }
 
-  if (*(v12 + 204))
+  if (*(bytes + 204))
   {
-    v45 = *(v12 + 213);
-    v46 = *(v12 + 205);
+    v45 = *(bytes + 213);
+    v46 = *(bytes + 205);
   }
 
   else
@@ -480,21 +480,21 @@ LABEL_60:
     v45 = -1;
   }
 
-  [v10 setRfcSetIndex:{v46, v161}];
-  [v10 setRfcFrameIndex:v45];
+  [getAWDMetric setRfcSetIndex:{v46, v161}];
+  [getAWDMetric setRfcFrameIndex:v45];
   if (v46 == -1)
   {
-    [v10 setHasRfcSetIndex:0];
+    [getAWDMetric setHasRfcSetIndex:0];
   }
 
   if (v45 == -1)
   {
-    [v10 setHasRfcFrameIndex:0];
+    [getAWDMetric setHasRfcFrameIndex:0];
   }
 
-  if (*(v12 + 202) == 1 && *(v12 + 265))
+  if (*(bytes + 202) == 1 && *(bytes + 265))
   {
-    v47 = *(v12 + 266);
+    v47 = *(bytes + 266);
     v48 = 1;
   }
 
@@ -504,35 +504,35 @@ LABEL_60:
     v48 = 0;
   }
 
-  [v10 setBioLockout:v48];
-  [v10 setBioLockoutReason:v47];
-  [v10 setCameraErr:*(v12 + 4)];
-  if (*(v12 + 202) == 1)
+  [getAWDMetric setBioLockout:v48];
+  [getAWDMetric setBioLockoutReason:v47];
+  [getAWDMetric setCameraErr:*(bytes + 4)];
+  if (*(bytes + 202) == 1)
   {
-    if ((v12[67] & 0x80000000) == 0)
+    if ((bytes[67] & 0x80000000) == 0)
     {
-      [v10 setOnlineTemplateAge:?];
+      [getAWDMetric setOnlineTemplateAge:?];
     }
 
-    if ((v12[68] & 0x80000000) == 0)
+    if ((bytes[68] & 0x80000000) == 0)
     {
-      [v10 setShortTermTemplateAge:?];
+      [getAWDMetric setShortTermTemplateAge:?];
     }
   }
 
-  [v10 setAutoRetry:*(v12 + 297)];
-  [v10 setAutoRetryAllowed:*(v12 + 298)];
+  [getAWDMetric setAutoRetry:*(bytes + 297)];
+  [getAWDMetric setAutoRetryAllowed:*(bytes + 298)];
   if (obj->_isInternalBuild)
   {
-    [v10 setAutoRetryEnabled:*(v12 + 301)];
+    [getAWDMetric setAutoRetryEnabled:*(bytes + 301)];
   }
 
-  [v10 setMatchIdentityCount:*(v12 + 299)];
+  [getAWDMetric setMatchIdentityCount:*(bytes + 299)];
   v177 = 0u;
   v178 = 0u;
   v175 = 0u;
   v176 = 0u;
-  v49 = v165;
+  v49 = identitiesCopy;
   v50 = [v49 countByEnumeratingWithState:&v175 objects:v187 count:16];
   if (v50)
   {
@@ -546,9 +546,9 @@ LABEL_60:
           objc_enumerationMutation(v49);
         }
 
-        v53 = [*(*(&v175 + 1) + 8 * i) creationTime];
-        [v53 timeIntervalSince1970];
-        [v10 addIdentityCreationTime:(v54 * 1000.0)];
+        creationTime = [*(*(&v175 + 1) + 8 * i) creationTime];
+        [creationTime timeIntervalSince1970];
+        [getAWDMetric addIdentityCreationTime:(v54 * 1000.0)];
       }
 
       v50 = [v49 countByEnumeratingWithState:&v175 objects:v187 count:16];
@@ -557,147 +557,147 @@ LABEL_60:
     while (v50);
   }
 
-  v55 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 302)];
+  v55 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 302)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackNoFaceDetected:v55];
 
-  v56 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 303)];
+  v56 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 303)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackFaceTooClose:v56];
 
-  v57 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 304)];
+  v57 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 304)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackFaceTooFar:v57];
 
-  v58 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 305)];
+  v58 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 305)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackPoseOutOfRange:v58];
 
-  v59 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 306)];
+  v59 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 306)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackNoAttention:v59];
 
-  v60 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 307)];
+  v60 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 307)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackFaceOccluded:v60];
 
-  v61 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 308)];
+  v61 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 308)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackCameraObstructed:v61];
 
-  v62 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 309)];
+  v62 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 309)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackPartialOutOfFOV:v62];
 
-  v63 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 310)];
+  v63 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 310)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackPoseMarginal:v63];
 
-  v64 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 311)];
+  v64 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 311)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackNoseAndMouthOccluded:v64];
 
-  v65 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 312)];
+  v65 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 312)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementInfoFeedbackDepthCameraObstructed:v65];
 
-  v66 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 367)];
+  v66 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 367)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusNoFaceDetected:v66];
 
-  v67 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 368)];
+  v67 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 368)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusFaceTooClose:v67];
 
-  v68 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 369)];
+  v68 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 369)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusFaceTooFar:v68];
 
-  v69 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 370)];
+  v69 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 370)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusPoseOutOfRange:v69];
 
-  v70 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 371)];
+  v70 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 371)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusNoAttention:v70];
 
-  v71 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 372)];
+  v71 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 372)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusFaceOccluded:v71];
 
-  v72 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 373)];
+  v72 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 373)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusCameraObstructed:v72];
 
-  v73 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 374)];
+  v73 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 374)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusPartialOutOfFOV:v73];
 
-  v74 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 375)];
+  v74 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 375)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusPoseMarginal:v74];
 
-  v75 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 376)];
+  v75 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 376)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusNoseAndMouthOccluded:v75];
 
-  v76 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 377)];
+  v76 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 377)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusDepthCameraObstructed:v76];
 
-  v77 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 378)];
+  v77 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 378)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEngagementStatusFPDFailure:v77];
 
-  if (*(v12 + 314) == 1)
+  if (*(bytes + 314) == 1)
   {
-    v78 = [MEMORY[0x29EDBA0F8] stringWithCString:v12 + 315 encoding:1];
-    [v10 setCameraHWParameters:v78];
+    v78 = [MEMORY[0x29EDBA0F8] stringWithCString:bytes + 315 encoding:1];
+    [getAWDMetric setCameraHWParameters:v78];
   }
 
-  [v10 setDeviceOrientation:a4];
-  if (*(v12 + 349) == 1)
+  [getAWDMetric setDeviceOrientation:orientation];
+  if (*(bytes + 349) == 1)
   {
-    [v10 setFaceOrientation:*(v12 + 333)];
-    [v10 setFacePitch:*(v12 + 337)];
-    [v10 setFaceYaw:*(v12 + 341)];
-    [v10 setFaceRoll:*(v12 + 345)];
-    v79 = *(v12 + 333);
+    [getAWDMetric setFaceOrientation:*(bytes + 333)];
+    [getAWDMetric setFacePitch:*(bytes + 337)];
+    [getAWDMetric setFaceYaw:*(bytes + 341)];
+    [getAWDMetric setFaceRoll:*(bytes + 345)];
+    v79 = *(bytes + 333);
     BKLogCode();
   }
 
-  if (v25 || *(v12 + 4))
+  if (v25 || *(bytes + 4))
   {
-    [(PearlCoreAnalytics *)obj checkYogiError:*(v12 + 4)];
+    [(PearlCoreAnalytics *)obj checkYogiError:*(bytes + 4)];
   }
 
-  v80 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 360)];
+  v80 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 360)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setGlassesDetected:v80];
 
-  v81 = *(v12 + 362) + *(v12 + 361) + *(v12 + 363);
+  v81 = *(bytes + 362) + *(bytes + 361) + *(bytes + 363);
   v82 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v81];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType0:v82];
 
-  v83 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 361)];
+  v83 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 361)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType0NoGlasses:v83];
 
-  v84 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 362)];
+  v84 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 362)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType0WithGlasses:v84];
 
-  v85 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 363)];
+  v85 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 363)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType0Unknown:v85];
 
-  LODWORD(v85) = *(v12 + 365) + *(v12 + 364) + *(v12 + 366);
+  LODWORD(v85) = *(bytes + 365) + *(bytes + 364) + *(bytes + 366);
   v86 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v85];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType1:v86];
 
-  v87 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 364)];
+  v87 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 364)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType1NoGlasses:v87];
 
-  v88 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 365)];
+  v88 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 365)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType1WithGlasses:v88];
 
-  v89 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 366)];
+  v89 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 366)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountType1Unknown:v89];
 
   v90 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v85 + v81];
   [(PearlCoreAnalyticsMatchEvent *)v170 setEnrolledTemplateCountTotal:v90];
 
-  v91 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 93)];
+  v91 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 93)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setGmcRun:v91];
 
-  v92 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v12 + 394)];
+  v92 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 394)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setMatchTrigger:v92];
 
-  v93 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 392)];
+  v93 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 392)];
   [(PearlCoreAnalyticsMatchEvent *)v170 setUnsupportedOrientation:v93];
 
   if (obj->_isInternalBuild)
   {
-    v94 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 393)];
+    v94 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 393)];
     [(PearlCoreAnalyticsMatchEvent *)v170 setSecureFaceDetectBootArgsUsed:v94];
   }
 
-  if (obj->_secureFaceDetectSupported && *(v12 + 394) == 1 && !*(v12 + 387) && (*(v12 + 393) & 1) == 0 && (*(v12 + 297) & 1) == 0)
+  if (obj->_secureFaceDetectSupported && *(bytes + 394) == 1 && !*(bytes + 387) && (*(bytes + 393) & 1) == 0 && (*(bytes + 297) & 1) == 0)
   {
-    v95 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v96 = __osLog;
     if (!__osLog)
     {
@@ -720,11 +720,11 @@ LABEL_60:
     v99 = v98;
     if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
     {
-      v100 = *(v12 + 379);
-      v101 = *(v12 + 383);
-      v102 = *(v12 + 387);
-      v103 = *(v12 + 391);
-      v104 = *(v12 + 392);
+      v100 = *(bytes + 379);
+      v101 = *(bytes + 383);
+      v102 = *(bytes + 387);
+      v103 = *(bytes + 391);
+      v104 = *(bytes + 392);
       *v180 = 67110144;
       *&v180[4] = v100;
       *&v180[8] = 1024;
@@ -738,14 +738,14 @@ LABEL_60:
       _os_log_impl(&dword_296CA4000, v99, OS_LOG_TYPE_ERROR, "PearlCoreAnalytics sendMatchEventAnalytics: SecureFaceDetectInfo: state: %u sessionID: %u reason: %u timeout: %u unsupportedOrientation: %u\n", v180, 0x20u);
     }
 
-    v105 = [(PearlCoreAnalyticsEvent *)obj->_secureFaceDetect getPrintableArray];
-    [v95 addObjectsFromArray:v105];
+    getPrintableArray = [(PearlCoreAnalyticsEvent *)obj->_secureFaceDetect getPrintableArray];
+    [array addObjectsFromArray:getPrintableArray];
 
-    v106 = [(PearlCoreAnalyticsEvent *)obj->_previousSecureFaceDetect getPrintableArray];
-    [v95 addObjectsFromArray:v106];
+    getPrintableArray2 = [(PearlCoreAnalyticsEvent *)obj->_previousSecureFaceDetect getPrintableArray];
+    [array addObjectsFromArray:getPrintableArray2];
 
-    v107 = [(PearlCoreAnalyticsEvent *)v170 getPrintableArray];
-    [v95 addObjectsFromArray:v107];
+    getPrintableArray3 = [(PearlCoreAnalyticsEvent *)v170 getPrintableArray];
+    [array addObjectsFromArray:getPrintableArray3];
 
     v108 = __osLog;
     if (!__osLog)
@@ -764,7 +764,7 @@ LABEL_60:
     v174 = 0u;
     v171 = 0u;
     v172 = 0u;
-    v110 = v95;
+    v110 = array;
     v111 = [v110 countByEnumeratingWithState:&v171 objects:v179 count:16];
     if (v111)
     {
@@ -803,7 +803,7 @@ LABEL_60:
     [(PearlCoreAnalytics *)obj sendPearlAbcEvent:9];
   }
 
-  v117 = *(v12 + 383);
+  v117 = *(bytes + 383);
   if (!v117)
   {
     goto LABEL_162;
@@ -819,31 +819,31 @@ LABEL_195:
     goto LABEL_177;
   }
 
-  v119 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)secureFaceDetect sessionID];
-  if ([v119 unsignedIntValue] == v117)
+  sessionID = [(PearlCoreAnalyticsSecureFaceDetectEvent *)secureFaceDetect sessionID];
+  if ([sessionID unsignedIntValue] == v117)
   {
   }
 
   else
   {
-    v120 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
-    v121 = [v120 unsignedIntValue] == v117;
+    sessionID2 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
+    v121 = [sessionID2 unsignedIntValue] == v117;
 
     if (!v121)
     {
-      if (*(v12 + 379) == 1)
+      if (*(bytes + 379) == 1)
       {
         [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
         goto LABEL_195;
       }
 
-      if (*(v12 + 51) != -1)
+      if (*(bytes + 51) != -1)
       {
         [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
         goto LABEL_195;
       }
 
-      if (*(v12 + 155) != -1)
+      if (*(bytes + 155) != -1)
       {
         [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
         goto LABEL_195;
@@ -859,27 +859,27 @@ LABEL_195:
       v130 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSince1970:0.0];
       [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect setSequenceEndDate:v130];
 
-      v122 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v117];
-      [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect setSessionID:v122];
+      sessionID3 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v117];
+      [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect setSessionID:sessionID3];
       goto LABEL_156;
     }
   }
 
-  v122 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_secureFaceDetect sessionID];
-  if ([v122 unsignedIntValue] != v117)
+  sessionID3 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_secureFaceDetect sessionID];
+  if ([sessionID3 unsignedIntValue] != v117)
   {
 LABEL_156:
 
     goto LABEL_157;
   }
 
-  v123 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
-  v124 = [v123 unsignedIntValue] == v117;
+  sessionID4 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
+  v124 = [sessionID4 unsignedIntValue] == v117;
 
   if (!v124)
   {
-    v125 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_secureFaceDetect sequenceStartDate];
-    v126 = v125 == 0;
+    sequenceStartDate = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_secureFaceDetect sequenceStartDate];
+    v126 = sequenceStartDate == 0;
 
     if (v126)
     {
@@ -887,22 +887,22 @@ LABEL_156:
       goto LABEL_195;
     }
 
-    if (*(v12 + 51) != -1)
+    if (*(bytes + 51) != -1)
     {
       [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
       goto LABEL_195;
     }
 
-    if (*(v12 + 155) != -1)
+    if (*(bytes + 155) != -1)
     {
       [PearlCoreAnalytics sendMatchEventAnalytics:orientation:identities:];
       goto LABEL_195;
     }
 
     [(PearlCoreAnalytics *)obj analyzeSecureFaceDetectStop];
-    if (*(v12 + 49) == 255)
+    if (*(bytes + 49) == 255)
     {
-      [v10 setHasFaceDetectResult:0];
+      [getAWDMetric setHasFaceDetectResult:0];
     }
   }
 
@@ -914,8 +914,8 @@ LABEL_157:
     goto LABEL_195;
   }
 
-  v132 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v131 sequenceStartDate];
-  v133 = v132 == 0;
+  sequenceStartDate2 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v131 sequenceStartDate];
+  v133 = sequenceStartDate2 == 0;
 
   if (v133)
   {
@@ -923,8 +923,8 @@ LABEL_157:
     goto LABEL_195;
   }
 
-  v134 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sequenceEndDate];
-  v135 = v134 == 0;
+  sequenceEndDate = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sequenceEndDate];
+  v135 = sequenceEndDate == 0;
 
   if (v135)
   {
@@ -932,8 +932,8 @@ LABEL_157:
     goto LABEL_195;
   }
 
-  v136 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
-  v137 = [v136 unsignedIntValue] == v117;
+  sessionID5 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect sessionID];
+  v137 = [sessionID5 unsignedIntValue] == v117;
 
   if (!v137)
   {
@@ -941,91 +941,91 @@ LABEL_157:
     goto LABEL_195;
   }
 
-  v138 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v12 + 379)];
+  v138 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 379)];
   [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect setSecureFaceDetectState:v138];
 
-  v139 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v12 + 387)];
+  v139 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 387)];
   [(PearlCoreAnalyticsSecureFaceDetectEvent *)obj->_previousSecureFaceDetect setSecureFaceDetectReason:v139];
 
-  v140 = [(BiometricKitCoreAnalyticsEvent *)obj->_previousSecureFaceDetect dictionaryRepresentation];
-  [(PearlCoreAnalyticsMatchEvent *)v170 setSecureFaceDetectDict:v140];
+  dictionaryRepresentation = [(BiometricKitCoreAnalyticsEvent *)obj->_previousSecureFaceDetect dictionaryRepresentation];
+  [(PearlCoreAnalyticsMatchEvent *)v170 setSecureFaceDetectDict:dictionaryRepresentation];
 
 LABEL_162:
-  if ([v10 hasFaceDetectResult] && !objc_msgSend(v10, "faceDetectResult"))
+  if ([getAWDMetric hasFaceDetectResult] && !objc_msgSend(getAWDMetric, "faceDetectResult"))
   {
-    v141 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v10, "overallTime") - objc_msgSend(v10, "faceDetectEndTime")}];
+    v141 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(getAWDMetric, "overallTime") - objc_msgSend(getAWDMetric, "faceDetectEndTime")}];
     [(PearlCoreAnalyticsMatchEvent *)v170 setOverallTimeFaceDetected:v141];
   }
 
-  v142 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v10, "overallTime") / 0xAuLL}];
+  v142 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(getAWDMetric, "overallTime") / 0xAuLL}];
   [(PearlCoreAnalyticsMatchEvent *)v170 setOverallTimeBounded:v142];
 
-  v143 = [(PearlCoreAnalyticsMatchEvent *)v170 overallTimeFaceDetected];
+  overallTimeFaceDetected = [(PearlCoreAnalyticsMatchEvent *)v170 overallTimeFaceDetected];
 
-  if (v143)
+  if (overallTimeFaceDetected)
   {
     v144 = MEMORY[0x29EDBA070];
-    v145 = [(PearlCoreAnalyticsMatchEvent *)v170 overallTimeFaceDetected];
-    v146 = [v144 numberWithUnsignedInt:{objc_msgSend(v145, "unsignedIntValue") / 0xAuLL}];
+    overallTimeFaceDetected2 = [(PearlCoreAnalyticsMatchEvent *)v170 overallTimeFaceDetected];
+    v146 = [v144 numberWithUnsignedInt:{objc_msgSend(overallTimeFaceDetected2, "unsignedIntValue") / 0xAuLL}];
     [(PearlCoreAnalyticsMatchEvent *)v170 setOverallTimeFaceDetectedBounded:v146];
   }
 
-  if ([v10 hasFaceDetectEndTime])
+  if ([getAWDMetric hasFaceDetectEndTime])
   {
-    v147 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v10, "faceDetectEndTime") / 0xAuLL}];
+    v147 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(getAWDMetric, "faceDetectEndTime") / 0xAuLL}];
     [(PearlCoreAnalyticsMatchEvent *)v170 setFaceDetectEndTimeBounded:v147];
   }
 
   objc_sync_exit(obj);
 
-  if (*(v12 + 221))
+  if (*(bytes + 221))
   {
     [(PearlCoreAnalytics *)obj sendPearlAbcEvent:?];
   }
 
   [(BiometricKitCoreAnalyticsEvent *)v170 postEvent];
-  v148 = *(v12 + 41);
-  *buf = *(v12 + 4);
+  v148 = *(bytes + 41);
+  *buf = *(bytes + 4);
   *&buf[8] = v148;
-  BYTE1(v189) = *(v12 + 49);
-  v149 = *v12;
-  HIDWORD(v189) = *(v12 + 59);
+  BYTE1(v189) = *(bytes + 49);
+  v149 = *bytes;
+  HIDWORD(v189) = *(bytes + 59);
   LODWORD(v190[0]) = v149;
   *(&v189 + 4) = *v164;
   v150 = *v162;
   *(&v190[1] + 2) = *(v162 + 14);
   *(v190 + 4) = v150;
-  *(&v190[2] + 10) = *(v12 + 310);
-  *(&v190[2] + 2) = *(v12 + 302);
-  *(&v190[4] + 7) = *(v12 + 375);
-  *(&v190[3] + 15) = *(v12 + 367);
-  v151 = *(v12 + 333);
-  BYTE14(v190[3]) = *(v12 + 349);
+  *(&v190[2] + 10) = *(bytes + 310);
+  *(&v190[2] + 2) = *(bytes + 302);
+  *(&v190[4] + 7) = *(bytes + 375);
+  *(&v190[3] + 15) = *(bytes + 367);
+  v151 = *(bytes + 333);
+  BYTE14(v190[3]) = *(bytes + 349);
   *(&v190[2] + 14) = v151;
-  v152 = *(v12 + 379);
-  *(&v190[5] + 2) = *(v12 + 386);
+  v152 = *(bytes + 379);
+  *(&v190[5] + 2) = *(bytes + 386);
   *(&v190[4] + 11) = v152;
-  if (*(v12 + 4) && v148 >= *(v12 + 5))
+  if (*(bytes + 4) && v148 >= *(bytes + 5))
   {
-    BYTE2(v189) = *(v12 + 4);
+    BYTE2(v189) = *(bytes + 4);
   }
 
   v153 = [MEMORY[0x29EDB8DA0] dataWithBytes:buf length:122];
-  [(PearlCoreAnalytics *)obj sendFaceDetectEventAnalytics:v153 fromMatch:1 orientation:a4];
-  v154 = *(v12 + 49);
+  [(PearlCoreAnalytics *)obj sendFaceDetectEventAnalytics:v153 fromMatch:1 orientation:orientation];
+  v154 = *(bytes + 49);
   BKLogCode();
-  v155 = *(v12 + 51);
+  v155 = *(bytes + 51);
   BKLogCode();
-  v156 = *(v12 + 155);
+  v156 = *(bytes + 155);
   BKLogCode();
-  *(v12 + 13);
+  *(bytes + 13);
   BKLogEvent();
-  if ((*v12 & 0x80000000) == 0)
+  if ((*bytes & 0x80000000) == 0)
   {
     BKLogCode();
   }
 
-  [(PearlCoreAnalyticsDailyUpdateEvent *)obj->_dailyEvent updateDailyMatchValues:v12];
+  [(PearlCoreAnalyticsDailyUpdateEvent *)obj->_dailyEvent updateDailyMatchValues:bytes];
 
 LABEL_177:
   v157 = __osLog;
@@ -1044,10 +1044,10 @@ LABEL_177:
   v159 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sendFaceDetectEventAnalytics:(id)a3 fromMatch:(BOOL)a4 orientation:(unint64_t)a5
+- (void)sendFaceDetectEventAnalytics:(id)analytics fromMatch:(BOOL)match orientation:(unint64_t)orientation
 {
   v90 = *MEMORY[0x29EDCA608];
-  v7 = a3;
+  analyticsCopy = analytics;
   if (__osLog)
   {
     v8 = __osLog;
@@ -1061,92 +1061,92 @@ LABEL_177:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = v7 != 0;
+    *&buf[4] = analyticsCopy != 0;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics sendFaceDetectEventAnalytics: fdMessage: %d\n", buf, 8u);
   }
 
-  v87 = v7;
+  v87 = analyticsCopy;
   v9 = objc_alloc_init(PearlCoreAnalyticsFaceDetectEvent);
-  if (!v7)
+  if (!analyticsCopy)
   {
     [PearlCoreAnalytics sendFaceDetectEventAnalytics:buf fromMatch:? orientation:?];
 LABEL_50:
     v82 = v88;
-    v35 = *buf;
+    dictionaryRepresentation = *buf;
     goto LABEL_42;
   }
 
-  if ([v7 length] <= 0x79)
+  if ([analyticsCopy length] <= 0x79)
   {
     [PearlCoreAnalytics sendFaceDetectEventAnalytics:buf fromMatch:? orientation:?];
     goto LABEL_50;
   }
 
-  v10 = v7;
-  v11 = [v7 bytes];
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = *(v11 + 20);
-  v14 = *(v11 + 24);
-  v15 = *(v11 + 28);
-  v16 = *(v11 + 8);
+  v10 = analyticsCopy;
+  bytes = [analyticsCopy bytes];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = *(bytes + 20);
+  v14 = *(bytes + 24);
+  v15 = *(bytes + 28);
+  v16 = *(bytes + 8);
   v17 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:absoluteToMiliseconds()];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setOverallTime:v17];
 
-  v18 = [MEMORY[0x29EDBA070] numberWithInt:*(v11 + 32)];
+  v18 = [MEMORY[0x29EDBA070] numberWithInt:*(bytes + 32)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setAmbientLux:v18];
 
-  v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:a5];
+  v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:orientation];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setDeviceOrientation:v19];
 
-  v20 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 120)];
+  v20 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 120)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setUnsupportedOrientation:v20];
 
-  if (v12->_isInternalBuild)
+  if (selfCopy->_isInternalBuild)
   {
-    v21 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 121)];
+    v21 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 121)];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setSecureFaceDetectBootArgsUsed:v21];
   }
 
   v22 = (v14 + v13 + v15);
-  if (*(v11 + 115))
+  if (*(bytes + 115))
   {
-    secureFaceDetect = v12->_secureFaceDetect;
+    secureFaceDetect = selfCopy->_secureFaceDetect;
     if (!secureFaceDetect)
     {
       [PearlCoreAnalytics sendFaceDetectEventAnalytics:fromMatch:orientation:];
       goto LABEL_57;
     }
 
-    v24 = *(v11 + 111);
-    v25 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)secureFaceDetect sessionID];
-    v26 = [v25 unsignedIntValue];
-    v27 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect sessionID];
-    if (v26 == [v27 unsignedIntValue])
+    v24 = *(bytes + 111);
+    sessionID = [(PearlCoreAnalyticsSecureFaceDetectEvent *)secureFaceDetect sessionID];
+    unsignedIntValue = [sessionID unsignedIntValue];
+    sessionID2 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect sessionID];
+    if (unsignedIntValue == [sessionID2 unsignedIntValue])
     {
-      v28 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect sessionID];
-      v29 = [v28 unsignedIntValue] == v24;
+      sessionID3 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect sessionID];
+      v29 = [sessionID3 unsignedIntValue] == v24;
 
       if (!v29)
       {
-        if (*(v11 + 107) == 1)
+        if (*(bytes + 107) == 1)
         {
           [PearlCoreAnalytics sendFaceDetectEventAnalytics:fromMatch:orientation:];
           goto LABEL_57;
         }
 
         v30 = objc_alloc_init(PearlCoreAnalyticsSecureFaceDetectEvent);
-        previousSecureFaceDetect = v12->_previousSecureFaceDetect;
-        v12->_previousSecureFaceDetect = v30;
+        previousSecureFaceDetect = selfCopy->_previousSecureFaceDetect;
+        selfCopy->_previousSecureFaceDetect = v30;
 
         v32 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSince1970:0.0];
-        [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect setSequenceStartDate:v32];
+        [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect setSequenceStartDate:v32];
 
         v33 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSince1970:0.0];
-        [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect setSequenceEndDate:v33];
+        [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect setSequenceEndDate:v33];
 
         v34 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v24];
-        [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect setSessionID:v34];
+        [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect setSessionID:v34];
 
         goto LABEL_20;
       }
@@ -1156,20 +1156,20 @@ LABEL_50:
     {
     }
 
-    v36 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_secureFaceDetect sessionID];
-    v37 = [v36 unsignedIntValue] == v24;
+    sessionID4 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_secureFaceDetect sessionID];
+    v37 = [sessionID4 unsignedIntValue] == v24;
 
     if (v37)
     {
-      [(PearlCoreAnalytics *)v12 analyzeSecureFaceDetectStop];
+      [(PearlCoreAnalytics *)selfCopy analyzeSecureFaceDetectStop];
     }
 
 LABEL_20:
-    v38 = v12->_previousSecureFaceDetect;
+    v38 = selfCopy->_previousSecureFaceDetect;
     if (v38)
     {
-      v39 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v38 sequenceStartDate];
-      v40 = v39 == 0;
+      sequenceStartDate = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v38 sequenceStartDate];
+      v40 = sequenceStartDate == 0;
 
       if (v40)
       {
@@ -1178,8 +1178,8 @@ LABEL_20:
 
       else
       {
-        v41 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect sequenceEndDate];
-        v42 = v41 == 0;
+        sequenceEndDate = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect sequenceEndDate];
+        v42 = sequenceEndDate == 0;
 
         if (v42)
         {
@@ -1188,16 +1188,16 @@ LABEL_20:
 
         else
         {
-          v43 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect sessionID];
-          v44 = [v43 unsignedIntValue] == v24;
+          sessionID5 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect sessionID];
+          v44 = [sessionID5 unsignedIntValue] == v24;
 
           if (v44)
           {
-            v45 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 107)];
-            [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect setSecureFaceDetectState:v45];
+            v45 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 107)];
+            [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect setSecureFaceDetectState:v45];
 
-            v46 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 115)];
-            [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect setSecureFaceDetectReason:v46];
+            v46 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 115)];
+            [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect setSecureFaceDetectReason:v46];
 
             if (v22)
             {
@@ -1206,19 +1206,19 @@ LABEL_20:
 
             else
             {
-              v47 = *(v11 + 17) == 255;
+              v47 = *(bytes + 17) == 255;
             }
 
-            v48 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)v12->_previousSecureFaceDetect secureFaceDetectFaceDetected];
-            v49 = [v48 BOOLValue];
+            secureFaceDetectFaceDetected = [(PearlCoreAnalyticsSecureFaceDetectEvent *)selfCopy->_previousSecureFaceDetect secureFaceDetectFaceDetected];
+            bOOLValue = [secureFaceDetectFaceDetected BOOLValue];
 
-            if ((v49 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFailed:MEMORY[0x29EDB8EB0]];
             }
 
-            v35 = [(BiometricKitCoreAnalyticsEvent *)v12->_previousSecureFaceDetect dictionaryRepresentation];
-            [(PearlCoreAnalyticsFaceDetectEvent *)v9 setSecureFaceDetectDict:v35];
+            dictionaryRepresentation = [(BiometricKitCoreAnalyticsEvent *)selfCopy->_previousSecureFaceDetect dictionaryRepresentation];
+            [(PearlCoreAnalyticsFaceDetectEvent *)v9 setSecureFaceDetectDict:dictionaryRepresentation];
             if (v47)
             {
               goto LABEL_36;
@@ -1238,122 +1238,122 @@ LABEL_20:
     }
 
 LABEL_57:
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
 
     v82 = 0;
-    v35 = 0;
+    dictionaryRepresentation = 0;
     goto LABEL_42;
   }
 
-  v35 = 0;
+  dictionaryRepresentation = 0;
 LABEL_30:
-  v50 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v11 + 17)];
+  v50 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 17)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectResult:v50];
 
   v51 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v22];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFrameCount:v51];
 
-  v52 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 20)];
+  v52 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 20)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFrameFloodCount:v52];
 
-  v53 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 24)];
+  v53 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 24)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFrameSparseCount:v53];
 
-  v54 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 28)];
+  v54 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 28)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFrameDenseCount:v54];
 
-  v55 = [MEMORY[0x29EDBA070] numberWithChar:*(v11 + 18)];
+  v55 = [MEMORY[0x29EDBA070] numberWithChar:*(bytes + 18)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCameraErr:v55];
 
-  if (*(v11 + 38) != -273)
+  if (*(bytes + 38) != -273)
   {
     v56 = [MEMORY[0x29EDBA070] numberWithInt:?];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setSensorTemperature:v56];
   }
 
-  v57 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(v11 + 42)];
+  v57 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(bytes + 42)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDistance:v57];
 
-  v58 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 37)];
+  v58 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 37)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setHasOcclusion:v58];
 
-  v59 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(v11 + 44)];
+  v59 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(bytes + 44)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCamRectX:v59];
 
-  v60 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(v11 + 46)];
+  v60 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(bytes + 46)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCamRectY:v60];
 
-  v61 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(v11 + 48)];
+  v61 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(bytes + 48)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCamRectW:v61];
 
-  v62 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(v11 + 50)];
+  v62 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:*(bytes + 50)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCamRectH:v62];
 
-  v63 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v11 + 52)];
+  v63 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 52)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setPPMRequestedBudget:v63];
 
-  v64 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(v11 + 53)];
+  v64 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:*(bytes + 53)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setPPMAllocatedBudget:v64];
 
-  if (*(v11 + 54) != -1)
+  if (*(bytes + 54) != -1)
   {
     v65 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:?];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setCamLux:v65];
   }
 
-  v66 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 66)];
+  v66 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 66)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackNoFaceDetected:v66];
 
-  v67 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 67)];
+  v67 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 67)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackFaceTooClose:v67];
 
-  v68 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 68)];
+  v68 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 68)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackFaceTooFar:v68];
 
-  v69 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 69)];
+  v69 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 69)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackPoseOutOfRange:v69];
 
-  v70 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 70)];
+  v70 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 70)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackNoAttention:v70];
 
-  v71 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 71)];
+  v71 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 71)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackFaceOccluded:v71];
 
-  v72 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 72)];
+  v72 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 72)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackCameraObstructed:v72];
 
-  v73 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 73)];
+  v73 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 73)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackPartialOutOfFOV:v73];
 
-  v74 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 74)];
+  v74 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 74)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackPoseMarginal:v74];
 
-  v75 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 75)];
+  v75 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 75)];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setEngagementInfoFeedbackNoseAndMouthOccluded:v75];
 
-  v76 = [MEMORY[0x29EDBA070] numberWithBool:*(v11 + 17) > 1u];
+  v76 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 17) > 1u];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceDetectFailed:v76];
 
-  v77 = [MEMORY[0x29EDBA070] numberWithBool:(*(v11 + 17) < 0x13uLL) & (0x41040u >> *(v11 + 17))];
+  v77 = [MEMORY[0x29EDBA070] numberWithBool:(*(bytes + 17) < 0x13uLL) & (0x41040u >> *(bytes + 17))];
   [(PearlCoreAnalyticsFaceDetectEvent *)v9 setAttentionDetectFailed:v77];
 
-  if (*(v11 + 94) == 1)
+  if (*(bytes + 94) == 1)
   {
-    v78 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(v11 + 78)];
+    v78 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:*(bytes + 78)];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceOrientation:v78];
 
-    v79 = [MEMORY[0x29EDBA070] numberWithInt:*(v11 + 82)];
+    v79 = [MEMORY[0x29EDBA070] numberWithInt:*(bytes + 82)];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFacePitch:v79];
 
-    v80 = [MEMORY[0x29EDBA070] numberWithInt:*(v11 + 86)];
+    v80 = [MEMORY[0x29EDBA070] numberWithInt:*(bytes + 86)];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceYaw:v80];
 
-    v81 = [MEMORY[0x29EDBA070] numberWithInt:*(v11 + 90)];
+    v81 = [MEMORY[0x29EDBA070] numberWithInt:*(bytes + 90)];
     [(PearlCoreAnalyticsFaceDetectEvent *)v9 setFaceRoll:v81];
   }
 
 LABEL_36:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v82 = [(BiometricKitCoreAnalyticsEvent *)v9 dictionaryRepresentationArchiving:0];
   if (![(BiometricKitCoreAnalyticsEvent *)v9 postEvent])
@@ -1361,10 +1361,10 @@ LABEL_36:
     [PearlCoreAnalytics sendFaceDetectEventAnalytics:fromMatch:orientation:];
   }
 
-  if (!a4)
+  if (!match)
   {
     v83 = [(BiometricKitCoreAnalyticsEvent *)[PearlCoreAnalyticsFaceDetectEvent alloc] initWithName:@"com.apple.biometrickit.pearl.attentionCheck" dictionary:v82];
-    [(PearlCoreAnalyticsFaceDetectEvent *)v83 setSecureFaceDetectDict:v35];
+    [(PearlCoreAnalyticsFaceDetectEvent *)v83 setSecureFaceDetectDict:dictionaryRepresentation];
     if (![(BiometricKitCoreAnalyticsEvent *)v83 postEvent])
     {
       [PearlCoreAnalytics sendFaceDetectEventAnalytics:fromMatch:orientation:];
@@ -1391,10 +1391,10 @@ LABEL_42:
   v85 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sendEnrollEventAnalytics:(id)a3 orientation:(unint64_t)a4
+- (void)sendEnrollEventAnalytics:(id)analytics orientation:(unint64_t)orientation
 {
   v30 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  analyticsCopy = analytics;
   v7 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -1409,117 +1409,117 @@ LABEL_42:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v29[0] = 67109120;
-    v29[1] = v6 != 0;
+    v29[1] = analyticsCopy != 0;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics sendEnrollEventAnalytics: enrollMessage: %d\n", v29, 8u);
   }
 
   v9 = objc_alloc_init(PearlCoreAnalyticsEnrollEvent);
-  v10 = [(PearlCoreAnalyticsEvent *)v9 getAWDMetric];
-  if (v6)
+  getAWDMetric = [(PearlCoreAnalyticsEvent *)v9 getAWDMetric];
+  if (analyticsCopy)
   {
-    if ([v6 length] <= 0xF9)
+    if ([analyticsCopy length] <= 0xF9)
     {
       [PearlCoreAnalytics sendEnrollEventAnalytics:orientation:];
     }
 
     else
     {
-      v11 = v6;
-      v12 = [v6 bytes];
-      v13 = self;
-      objc_sync_enter(v13);
-      [v10 setOverallResult:*v12];
-      v14 = *(v12 + 10);
-      [v10 setOverallTime:absoluteToMiliseconds()];
-      [v10 setDoubleErrorCountsOK:*(v12 + 5)];
-      [v10 setDoubleErrorCountsMoreFrames:*(v12 + 6)];
-      [v10 setDoubleErrorCountsNoFace:*(v12 + 7)];
-      [v10 setDoubleErrorCountsFaceOutOfFOV:*(v12 + 9)];
-      [v10 setDoubleErrorCountsMultipleFaces:*(v12 + 8)];
-      [v10 setDoubleErrorCountsFaceTooClose:*(v12 + 10)];
-      [v10 setDoubleErrorCountsFaceTooFar:*(v12 + 11)];
-      [v10 setDoubleErrorCountsPoseOutRange:*(v12 + 12)];
-      [v10 setDoubleErrorCountsBinCovered:*(v12 + 13)];
-      [v10 setDoubleErrorCountsOccluded:*(v12 + 14)];
-      [v10 setDoubleErrorCountsUpperFaceOccluded:*(v12 + 15)];
-      [v10 setDoubleErrorCountsLowerFaceOccluded:*(v12 + 16)];
-      [v10 setFrameErrorCountsOK:*(v12 + 17)];
-      [v10 setFrameErrorCountsMoreFrames:*(v12 + 18)];
-      [v10 setFrameErrorCountsNoFace:*(v12 + 19)];
-      [v10 setFrameErrorCountsFaceOutOfFOV:*(v12 + 21)];
-      [v10 setFrameErrorCountsMultipleFaces:*(v12 + 20)];
-      [v10 setFrameErrorCountsFaceTooClose:*(v12 + 22)];
-      [v10 setFrameErrorCountsFaceTooFar:*(v12 + 23)];
-      [v10 setFrameErrorCountsPoseOutRange:*(v12 + 24)];
-      [v10 setFrameErrorCountsBinCovered:*(v12 + 25)];
-      [v10 setFrameErrorCountsOccluded:*(v12 + 26)];
-      [v10 setFrameErrorCountsUpperFaceOccluded:*(v12 + 27)];
-      [v10 setFrameErrorCountsLowerFaceOccluded:*(v12 + 28)];
-      [v10 setFrameCountBin00:*(v12 + 37)];
-      [v10 setFrameCountBin01:*(v12 + 38)];
-      [v10 setFrameCountBin02:*(v12 + 39)];
-      [v10 setFrameCountBin10:*(v12 + 40)];
-      [v10 setFrameCountBin11:*(v12 + 41)];
-      [v10 setFrameCountBin12:*(v12 + 42)];
-      [v10 setFrameCountBin20:*(v12 + 43)];
-      [v10 setFrameCountBin21:*(v12 + 44)];
-      [v10 setFrameCountBin22:*(v12 + 45)];
-      [v10 setBioCaptureSequenceCount:*(v12 + 29)];
-      [v10 setAmbientLux:*(v12 + 30)];
-      [v10 setFeatureGenerationError:v12[184]];
-      [v10 setEnrollFeatureVectorError:v12[185]];
-      [v10 setCameraErr:v12[19]];
-      [v10 setEnrollResult:v12[1]];
-      [v10 setFaceDistance:*(v12 + 103)];
-      [v10 setSensorTemperature:*(v12 + 202)];
-      if (*(v12 + 202) == -273)
+      v11 = analyticsCopy;
+      bytes = [analyticsCopy bytes];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [getAWDMetric setOverallResult:*bytes];
+      v14 = *(bytes + 10);
+      [getAWDMetric setOverallTime:absoluteToMiliseconds()];
+      [getAWDMetric setDoubleErrorCountsOK:*(bytes + 5)];
+      [getAWDMetric setDoubleErrorCountsMoreFrames:*(bytes + 6)];
+      [getAWDMetric setDoubleErrorCountsNoFace:*(bytes + 7)];
+      [getAWDMetric setDoubleErrorCountsFaceOutOfFOV:*(bytes + 9)];
+      [getAWDMetric setDoubleErrorCountsMultipleFaces:*(bytes + 8)];
+      [getAWDMetric setDoubleErrorCountsFaceTooClose:*(bytes + 10)];
+      [getAWDMetric setDoubleErrorCountsFaceTooFar:*(bytes + 11)];
+      [getAWDMetric setDoubleErrorCountsPoseOutRange:*(bytes + 12)];
+      [getAWDMetric setDoubleErrorCountsBinCovered:*(bytes + 13)];
+      [getAWDMetric setDoubleErrorCountsOccluded:*(bytes + 14)];
+      [getAWDMetric setDoubleErrorCountsUpperFaceOccluded:*(bytes + 15)];
+      [getAWDMetric setDoubleErrorCountsLowerFaceOccluded:*(bytes + 16)];
+      [getAWDMetric setFrameErrorCountsOK:*(bytes + 17)];
+      [getAWDMetric setFrameErrorCountsMoreFrames:*(bytes + 18)];
+      [getAWDMetric setFrameErrorCountsNoFace:*(bytes + 19)];
+      [getAWDMetric setFrameErrorCountsFaceOutOfFOV:*(bytes + 21)];
+      [getAWDMetric setFrameErrorCountsMultipleFaces:*(bytes + 20)];
+      [getAWDMetric setFrameErrorCountsFaceTooClose:*(bytes + 22)];
+      [getAWDMetric setFrameErrorCountsFaceTooFar:*(bytes + 23)];
+      [getAWDMetric setFrameErrorCountsPoseOutRange:*(bytes + 24)];
+      [getAWDMetric setFrameErrorCountsBinCovered:*(bytes + 25)];
+      [getAWDMetric setFrameErrorCountsOccluded:*(bytes + 26)];
+      [getAWDMetric setFrameErrorCountsUpperFaceOccluded:*(bytes + 27)];
+      [getAWDMetric setFrameErrorCountsLowerFaceOccluded:*(bytes + 28)];
+      [getAWDMetric setFrameCountBin00:*(bytes + 37)];
+      [getAWDMetric setFrameCountBin01:*(bytes + 38)];
+      [getAWDMetric setFrameCountBin02:*(bytes + 39)];
+      [getAWDMetric setFrameCountBin10:*(bytes + 40)];
+      [getAWDMetric setFrameCountBin11:*(bytes + 41)];
+      [getAWDMetric setFrameCountBin12:*(bytes + 42)];
+      [getAWDMetric setFrameCountBin20:*(bytes + 43)];
+      [getAWDMetric setFrameCountBin21:*(bytes + 44)];
+      [getAWDMetric setFrameCountBin22:*(bytes + 45)];
+      [getAWDMetric setBioCaptureSequenceCount:*(bytes + 29)];
+      [getAWDMetric setAmbientLux:*(bytes + 30)];
+      [getAWDMetric setFeatureGenerationError:bytes[184]];
+      [getAWDMetric setEnrollFeatureVectorError:bytes[185]];
+      [getAWDMetric setCameraErr:bytes[19]];
+      [getAWDMetric setEnrollResult:bytes[1]];
+      [getAWDMetric setFaceDistance:*(bytes + 103)];
+      [getAWDMetric setSensorTemperature:*(bytes + 202)];
+      if (*(bytes + 202) == -273)
       {
-        [v10 setHasSensorTemperature:0];
+        [getAWDMetric setHasSensorTemperature:0];
       }
 
-      [v10 setEnrollType:v12[248]];
-      [v10 setNoseAndMouthOccluded:v12[239]];
-      if (*(v12 + 218) != -1)
+      [getAWDMetric setEnrollType:bytes[248]];
+      [getAWDMetric setNoseAndMouthOccluded:bytes[239]];
+      if (*(bytes + 218) != -1)
       {
         v15 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:?];
         [(PearlCoreAnalyticsEnrollEvent *)v9 setCamLux:v15];
       }
 
-      v16 = [(PearlCoreAnalytics *)v13 isBacklitSun:v12 + 200];
+      v16 = [(PearlCoreAnalytics *)selfCopy isBacklitSun:bytes + 200];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setBacklitSun:v16];
 
-      [v10 setEnrolledTemplateCountType0:0];
-      [v10 setEnrolledTemplateCountType0:{objc_msgSend(v10, "enrolledTemplateCountType0") + v12[242]}];
-      [v10 setEnrolledTemplateCountType0:{objc_msgSend(v10, "enrolledTemplateCountType0") + v12[243]}];
-      [v10 setEnrolledTemplateCountType0:{objc_msgSend(v10, "enrolledTemplateCountType0") + v12[244]}];
-      v17 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[242]];
+      [getAWDMetric setEnrolledTemplateCountType0:0];
+      [getAWDMetric setEnrolledTemplateCountType0:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType0") + bytes[242]}];
+      [getAWDMetric setEnrolledTemplateCountType0:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType0") + bytes[243]}];
+      [getAWDMetric setEnrolledTemplateCountType0:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType0") + bytes[244]}];
+      v17 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[242]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType0NoGlasses:v17];
 
-      v18 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[243]];
+      v18 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[243]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType0WithGlasses:v18];
 
-      v19 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[244]];
+      v19 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[244]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType0Unknown:v19];
 
-      [v10 setEnrolledTemplateCountType1:0];
-      [v10 setEnrolledTemplateCountType1:{objc_msgSend(v10, "enrolledTemplateCountType1") + v12[245]}];
-      [v10 setEnrolledTemplateCountType1:{objc_msgSend(v10, "enrolledTemplateCountType1") + v12[246]}];
-      [v10 setEnrolledTemplateCountType1:{objc_msgSend(v10, "enrolledTemplateCountType1") + v12[247]}];
-      v20 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[245]];
+      [getAWDMetric setEnrolledTemplateCountType1:0];
+      [getAWDMetric setEnrolledTemplateCountType1:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType1") + bytes[245]}];
+      [getAWDMetric setEnrolledTemplateCountType1:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType1") + bytes[246]}];
+      [getAWDMetric setEnrolledTemplateCountType1:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType1") + bytes[247]}];
+      v20 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[245]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType1NoGlasses:v20];
 
-      v21 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[246]];
+      v21 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[246]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType1WithGlasses:v21];
 
-      v22 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:v12[247]];
+      v22 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:bytes[247]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setEnrolledTemplateCountType1Unknown:v22];
 
-      [v10 setEnrolledTemplateCountTotal:{objc_msgSend(v10, "enrolledTemplateCountType1") + objc_msgSend(v10, "enrolledTemplateCountType0")}];
-      [v10 setEnrolledIdentityCount:{objc_msgSend(v10, "enrolledTemplateCountType0")}];
-      if (v12[127])
+      [getAWDMetric setEnrolledTemplateCountTotal:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType1") + objc_msgSend(getAWDMetric, "enrolledTemplateCountType0")}];
+      [getAWDMetric setEnrolledIdentityCount:{objc_msgSend(getAWDMetric, "enrolledTemplateCountType0")}];
+      if (bytes[127])
       {
-        v24 = *(v12 + 16);
-        v23 = *(v12 + 17);
+        v24 = *(bytes + 16);
+        v23 = *(bytes + 17);
       }
 
       else
@@ -1528,37 +1528,37 @@ LABEL_42:
         v23 = -1;
       }
 
-      [v10 setRfcSetIndex:v24];
-      [v10 setRfcFrameIndex:v23];
+      [getAWDMetric setRfcSetIndex:v24];
+      [getAWDMetric setRfcFrameIndex:v23];
       if (v24 == -1)
       {
-        [v10 setHasRfcSetIndex:0];
+        [getAWDMetric setHasRfcSetIndex:0];
       }
 
       if (v23 == -1)
       {
-        [v10 setHasRfcFrameIndex:0];
+        [getAWDMetric setHasRfcFrameIndex:0];
       }
 
-      v25 = !*(v12 + 17) && *(v12 + 19) && *(v12 + 103) == 0;
-      [v10 setFailedNoFace:v25];
-      [v10 setDeviceOrientation:a4];
-      if (*(v12 + 36))
+      v25 = !*(bytes + 17) && *(bytes + 19) && *(bytes + 103) == 0;
+      [getAWDMetric setFailedNoFace:v25];
+      [getAWDMetric setDeviceOrientation:orientation];
+      if (*(bytes + 36))
       {
-        [(PearlCoreAnalytics *)v13 sendPearlAbcEvent:?];
+        [(PearlCoreAnalytics *)selfCopy sendPearlAbcEvent:?];
       }
 
-      [(PearlCoreAnalytics *)v13 checkYogiError:v12[19]];
-      v26 = [MEMORY[0x29EDBA070] numberWithBool:v12[249]];
+      [(PearlCoreAnalytics *)selfCopy checkYogiError:bytes[19]];
+      v26 = [MEMORY[0x29EDBA070] numberWithBool:bytes[249]];
       [(PearlCoreAnalyticsEnrollEvent *)v9 setGlassesDetected:v26];
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
       if (![(BiometricKitCoreAnalyticsEvent *)v9 postEvent])
       {
         [PearlCoreAnalytics sendEnrollEventAnalytics:orientation:];
       }
 
-      [(BiometricKitCoreAnalyticsEvent *)v13->_dailyEvent persistData];
+      [(BiometricKitCoreAnalyticsEvent *)selfCopy->_dailyEvent persistData];
     }
   }
 
@@ -1586,10 +1586,10 @@ LABEL_42:
   v28 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sendPasscodeChallengeEventAnalytics:(id)a3 orientation:(unint64_t)a4
+- (void)sendPasscodeChallengeEventAnalytics:(id)analytics orientation:(unint64_t)orientation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  analyticsCopy = analytics;
   v7 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -1604,48 +1604,48 @@ LABEL_42:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v18[0] = 67109120;
-    v18[1] = v6 != 0;
+    v18[1] = analyticsCopy != 0;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics sendPasscodeChallengeEventAnalytics: passChallengeMessage: %d\n", v18, 8u);
   }
 
   v9 = objc_alloc_init(PearlCoreAnalyticsPasscodeChallengeEvent);
-  v10 = [(PearlCoreAnalyticsEvent *)v9 getAWDMetric];
-  if (v6)
+  getAWDMetric = [(PearlCoreAnalyticsEvent *)v9 getAWDMetric];
+  if (analyticsCopy)
   {
-    if ([v6 length] <= 0x3D)
+    if ([analyticsCopy length] <= 0x3D)
     {
       [PearlCoreAnalytics sendPasscodeChallengeEventAnalytics:orientation:];
     }
 
     else
     {
-      v11 = v6;
-      v12 = [v6 bytes];
-      v13 = self;
-      objc_sync_enter(v13);
-      v14 = *(v12 + 2);
-      [v10 setOverallTime:absoluteToMiliseconds()];
-      [v10 setPasscodeChallengeResult:*(v12 + 26)];
-      [v10 setPasscodeChallengeTemplateUpdated:*(v12 + 28) != 0];
-      [v10 setAmbientLux:*v12];
-      [v10 setSensorTemperature:v12[8]];
-      if (v12[8] == -273)
+      v11 = analyticsCopy;
+      bytes = [analyticsCopy bytes];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v14 = *(bytes + 2);
+      [getAWDMetric setOverallTime:absoluteToMiliseconds()];
+      [getAWDMetric setPasscodeChallengeResult:*(bytes + 26)];
+      [getAWDMetric setPasscodeChallengeTemplateUpdated:*(bytes + 28) != 0];
+      [getAWDMetric setAmbientLux:*bytes];
+      [getAWDMetric setSensorTemperature:bytes[8]];
+      if (bytes[8] == -273)
       {
-        [v10 setHasSensorTemperature:0];
+        [getAWDMetric setHasSensorTemperature:0];
       }
 
-      [v10 setFaceDistance:*(v12 + 18)];
-      [v10 setAttentionScore:v12[1]];
-      [v10 setHasOcclusion:*(v12 + 31)];
-      [v10 setPpmRequestedBudget:*(v12 + 46)];
-      [v10 setPpmAllocatedBudget:*(v12 + 47)];
-      [v10 setMatchIdentityCount:*(v12 + 29)];
-      [v10 setDeviceOrientation:a4];
-      [v10 setMatchType:*(v12 + 60)];
-      v15 = [MEMORY[0x29EDBA070] numberWithBool:*(v12 + 61)];
+      [getAWDMetric setFaceDistance:*(bytes + 18)];
+      [getAWDMetric setAttentionScore:bytes[1]];
+      [getAWDMetric setHasOcclusion:*(bytes + 31)];
+      [getAWDMetric setPpmRequestedBudget:*(bytes + 46)];
+      [getAWDMetric setPpmAllocatedBudget:*(bytes + 47)];
+      [getAWDMetric setMatchIdentityCount:*(bytes + 29)];
+      [getAWDMetric setDeviceOrientation:orientation];
+      [getAWDMetric setMatchType:*(bytes + 60)];
+      v15 = [MEMORY[0x29EDBA070] numberWithBool:*(bytes + 61)];
       [(PearlCoreAnalyticsPasscodeChallengeEvent *)v9 setGlassesDetected:v15];
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
       if (![(BiometricKitCoreAnalyticsEvent *)v9 postEvent])
       {
         [PearlCoreAnalytics sendPasscodeChallengeEventAnalytics:orientation:];
@@ -1677,10 +1677,10 @@ LABEL_42:
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sendBioLockoutEventAnalytics:(id)a3
+- (void)sendBioLockoutEventAnalytics:(id)analytics
 {
   v14 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -1695,25 +1695,25 @@ LABEL_42:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v13[0] = 67109120;
-    v13[1] = v4 != 0;
+    v13[1] = analyticsCopy != 0;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics sendPasscodeChallengeEventAnalytics: sendBioLockoutEventAnalytics: %d\n", v13, 8u);
   }
 
   v7 = objc_alloc_init(AWDBiometricKitBioLockoutEvent);
-  if (v4)
+  if (analyticsCopy)
   {
-    if ([v4 length])
+    if ([analyticsCopy length])
     {
-      v8 = v4;
-      v9 = [v4 bytes];
-      if (v9)
+      v8 = analyticsCopy;
+      bytes = [analyticsCopy bytes];
+      if (bytes)
       {
-        v10 = self;
-        objc_sync_enter(v10);
-        [(AWDBiometricKitBioLockoutEvent *)v7 setBioLockoutReason:*v9];
-        objc_sync_exit(v10);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        [(AWDBiometricKitBioLockoutEvent *)v7 setBioLockoutReason:*bytes];
+        objc_sync_exit(selfCopy);
 
-        if (![(PearlCoreAnalytics *)v10 postSimpleCoreAnalyticsEvent:@"com.apple.biometrickit.pearl.bioLockoutEvent" fromAWDMetric:v7])
+        if (![(PearlCoreAnalytics *)selfCopy postSimpleCoreAnalyticsEvent:@"com.apple.biometrickit.pearl.bioLockoutEvent" fromAWDMetric:v7])
         {
           [PearlCoreAnalytics sendBioLockoutEventAnalytics:];
         }
@@ -1768,11 +1768,11 @@ LABEL_42:
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (void)analyzeSecureFrameMeta:(id)a3 faceDetected:(BOOL)a4
+- (void)analyzeSecureFrameMeta:(id)meta faceDetected:(BOOL)detected
 {
-  v63 = a4;
+  detectedCopy = detected;
   v81 = *MEMORY[0x29EDCA608];
-  v65 = a3;
+  metaCopy = meta;
   if (__osLog)
   {
     v7 = __osLog;
@@ -1789,8 +1789,8 @@ LABEL_42:
     _os_log_impl(&dword_296CA4000, v7, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics analyzeSecureFrameMeta\n", buf, 2u);
   }
 
-  v8 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect sequenceStartDate];
-  v9 = v8 == 0;
+  sequenceStartDate = [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect sequenceStartDate];
+  v9 = sequenceStartDate == 0;
 
   if (v9)
   {
@@ -1798,20 +1798,20 @@ LABEL_42:
     goto LABEL_83;
   }
 
-  v10 = v65;
-  if (!v65)
+  v10 = metaCopy;
+  if (!metaCopy)
   {
     [PearlCoreAnalytics analyzeSecureFrameMeta:faceDetected:];
     goto LABEL_83;
   }
 
-  v64 = self;
-  objc_sync_enter(v64);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v65;
+  obj = metaCopy;
   v11 = [obj countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (!v11)
   {
@@ -1832,8 +1832,8 @@ LABEL_42:
       }
 
       v13 = *(*(&v75 + 1) + 8 * i);
-      v14 = [v13 type];
-      v15 = v14 == v72;
+      type = [v13 type];
+      v15 = type == v72;
 
       if (v15)
       {
@@ -1904,14 +1904,14 @@ LABEL_42:
 
       else
       {
-        v16 = [v13 type];
-        v17 = v16 == v71;
+        type2 = [v13 type];
+        v17 = type2 == v71;
 
         if (v17)
         {
           v23 = v13;
-          v24 = [v23 hasPayingAttention];
-          if (v24)
+          hasPayingAttention = [v23 hasPayingAttention];
+          if (hasPayingAttention)
           {
             v5 = [MEMORY[0x29EDBA070] numberWithBool:{objc_msgSend(v23, "payingAttention")}];
             v25 = v5;
@@ -1923,12 +1923,12 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectPayingAttention:v25];
-          if (v24)
+          if (hasPayingAttention)
           {
           }
 
-          v26 = [v23 hasOccludedFeatures];
-          if (v26)
+          hasOccludedFeatures = [v23 hasOccludedFeatures];
+          if (hasOccludedFeatures)
           {
             v10 = [MEMORY[0x29EDBA070] numberWithBool:{objc_msgSend(v23, "occludedFeatures")}];
             v27 = v10;
@@ -1940,12 +1940,12 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectOccludedFeatures:v27];
-          if (v26)
+          if (hasOccludedFeatures)
           {
           }
 
-          v28 = [v23 hasPitchAngle];
-          if (v28)
+          hasPitchAngle = [v23 hasPitchAngle];
+          if (hasPitchAngle)
           {
             v29 = MEMORY[0x29EDBA070];
             [v23 pitchAngle];
@@ -1959,12 +1959,12 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFacePitch:v31];
-          if (v28)
+          if (hasPitchAngle)
           {
           }
 
-          v32 = [v23 hasYawAngle];
-          if (v32)
+          hasYawAngle = [v23 hasYawAngle];
+          if (hasYawAngle)
           {
             v33 = MEMORY[0x29EDBA070];
             [v23 yawAngle];
@@ -1978,12 +1978,12 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFaceYaw:v35];
-          if (v32)
+          if (hasYawAngle)
           {
           }
 
-          v36 = [v23 hasRollAngle];
-          if (v36)
+          hasRollAngle = [v23 hasRollAngle];
+          if (hasRollAngle)
           {
             v37 = MEMORY[0x29EDBA070];
             [v23 rollAngle];
@@ -1997,12 +1997,12 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFaceRoll:v39];
-          if (v36)
+          if (hasRollAngle)
           {
           }
 
-          v40 = [v23 hasDistance];
-          if (v40)
+          hasDistance = [v23 hasDistance];
+          if (hasDistance)
           {
             v41 = MEMORY[0x29EDBA070];
             [v23 distance];
@@ -2016,7 +2016,7 @@ LABEL_42:
           }
 
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFaceDistance:v43];
-          if (v40)
+          if (hasDistance)
           {
           }
 
@@ -2040,9 +2040,9 @@ LABEL_42:
           v55 = [v53 numberWithUnsignedInt:v54];
           [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectCamRectH:v55];
 
-          v56 = [v23 hasOrientation];
-          v57 = v56;
-          if (v56)
+          hasOrientation = [v23 hasOrientation];
+          v57 = hasOrientation;
+          if (hasOrientation)
           {
             v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v23, "orientation")}];
             v58 = v21;
@@ -2064,8 +2064,8 @@ LABEL_42:
 
         else
         {
-          v18 = [v13 type];
-          v19 = v18 == v69;
+          type3 = [v13 type];
+          v19 = type3 == v69;
 
           if (!v19)
           {
@@ -2091,16 +2091,16 @@ LABEL_77:
 LABEL_80:
 
   v59 = MEMORY[0x29EDBA070];
-  v60 = [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect secureFaceDetectFrameCount];
-  v61 = [v59 numberWithUnsignedInt:{objc_msgSend(v60, "unsignedIntValue") + 1}];
+  secureFaceDetectFrameCount = [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect secureFaceDetectFrameCount];
+  v61 = [v59 numberWithUnsignedInt:{objc_msgSend(secureFaceDetectFrameCount, "unsignedIntValue") + 1}];
   [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFrameCount:v61];
 
-  if (v63)
+  if (detectedCopy)
   {
     [(PearlCoreAnalyticsSecureFaceDetectEvent *)self->_secureFaceDetect setSecureFaceDetectFaceDetected:MEMORY[0x29EDB8EB0]];
   }
 
-  objc_sync_exit(v64);
+  objc_sync_exit(selfCopy);
 
 LABEL_83:
   v62 = *MEMORY[0x29EDCA608];
@@ -2119,7 +2119,7 @@ LABEL_83:
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sendPearlAbcEvent:(unint64_t)a3
+- (void)sendPearlAbcEvent:(unint64_t)event
 {
   v8 = *MEMORY[0x29EDCA608];
   if (![(BiometricAutoBugCapture *)self->_pearlAbc sendAutoBugCaptureEvent:?])
@@ -2137,7 +2137,7 @@ LABEL_83:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v6 = 134217984;
-      v7 = a3;
+      eventCopy = event;
       _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_ERROR, "Failed to send auto bug capture event: %llu\n", &v6, 0xCu);
     }
   }
@@ -2145,9 +2145,9 @@ LABEL_83:
   v5 = *MEMORY[0x29EDCA608];
 }
 
-- (int)sequenceTypeToCaptureMethod:(unsigned __int8)a3 forSequence:(unsigned __int8)a4
+- (int)sequenceTypeToCaptureMethod:(unsigned __int8)method forSequence:(unsigned __int8)sequence
 {
-  if (a4 == 2)
+  if (sequence == 2)
   {
     v4 = 3;
   }
@@ -2157,18 +2157,18 @@ LABEL_83:
     v4 = 2;
   }
 
-  if (a3 == 3)
+  if (method == 3)
   {
     return v4;
   }
 
   else
   {
-    return a3 == 2;
+    return method == 2;
   }
 }
 
-- (void)checkYogiError:(int)a3
+- (void)checkYogiError:(int)error
 {
   v15 = *MEMORY[0x29EDCA608];
   if (__osLog)
@@ -2185,28 +2185,28 @@ LABEL_83:
   {
     dailyEvent = self->_dailyEvent;
     v7 = v5;
-    v8 = [(PearlCoreAnalyticsDailyUpdateEvent *)dailyEvent yogiErrorDate];
+    yogiErrorDate = [(PearlCoreAnalyticsDailyUpdateEvent *)dailyEvent yogiErrorDate];
     v12[0] = 67109378;
-    v12[1] = a3;
+    v12[1] = error;
     v13 = 2112;
-    v14 = v8;
+    v14 = yogiErrorDate;
     _os_log_impl(&dword_296CA4000, v7, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics checkYogiError cameraErr: %d _yogiErrorDate: %@\n", v12, 0x12u);
   }
 
-  v9 = [(PearlCoreAnalyticsDailyUpdateEvent *)self->_dailyEvent yogiErrorDate];
+  yogiErrorDate2 = [(PearlCoreAnalyticsDailyUpdateEvent *)self->_dailyEvent yogiErrorDate];
 
-  if (a3 == 1)
+  if (error == 1)
   {
-    if (!v9)
+    if (!yogiErrorDate2)
     {
-      v10 = [MEMORY[0x29EDB8DB0] date];
-      [(PearlCoreAnalyticsDailyUpdateEvent *)self->_dailyEvent setYogiErrorDate:v10];
+      date = [MEMORY[0x29EDB8DB0] date];
+      [(PearlCoreAnalyticsDailyUpdateEvent *)self->_dailyEvent setYogiErrorDate:date];
 
       [(BiometricKitCoreAnalyticsEvent *)self->_dailyEvent persistData];
     }
   }
 
-  else if (v9)
+  else if (yogiErrorDate2)
   {
     [(PearlCoreAnalyticsDailyUpdateEvent *)self->_dailyEvent setYogiErrorDate:0];
   }
@@ -2214,11 +2214,11 @@ LABEL_83:
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)postSimpleCoreAnalyticsEvent:(id)a3 fromAWDMetric:(id)a4
+- (BOOL)postSimpleCoreAnalyticsEvent:(id)event fromAWDMetric:(id)metric
 {
   v16 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  metricCopy = metric;
   if (__osLog)
   {
     v7 = __osLog;
@@ -2232,17 +2232,17 @@ LABEL_83:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412546;
-    v13 = v5;
+    v13 = eventCopy;
     v14 = 2048;
-    v15 = v6;
+    v15 = metricCopy;
     _os_log_impl(&dword_296CA4000, v7, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics postSimpleCoreAnalyticsEvent eventName: %@ awdMetric: %p\n", &v12, 0x16u);
   }
 
-  v8 = [[PearlCoreAnalyticsEvent alloc] initWithName:v5 awdMetric:v6];
-  v9 = [(BiometricKitCoreAnalyticsEvent *)v8 postEvent];
+  v8 = [[PearlCoreAnalyticsEvent alloc] initWithName:eventCopy awdMetric:metricCopy];
+  postEvent = [(BiometricKitCoreAnalyticsEvent *)v8 postEvent];
 
   v10 = *MEMORY[0x29EDCA608];
-  return v9;
+  return postEvent;
 }
 
 + (void)sendDisplayPearlGlassesBannerNotificationEvent
@@ -2271,7 +2271,7 @@ LABEL_83:
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (id)isBacklitSun:(id *)a3
+- (id)isBacklitSun:(id *)sun
 {
   v24 = *MEMORY[0x29EDCA608];
   if (__osLog)
@@ -2284,12 +2284,12 @@ LABEL_83:
     v3 = MEMORY[0x29EDCA988];
   }
 
-  if (a3)
+  if (sun)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v5 = *(&a3->var11 + 2);
-      v6 = *(&a3->var10 + 2);
+      v5 = *(&sun->var11 + 2);
+      v6 = *(&sun->var10 + 2);
       v19[0] = 67109376;
       v19[1] = v5;
       v20 = 1024;
@@ -2297,10 +2297,10 @@ LABEL_83:
       _os_log_impl(&dword_296CA4000, v3, OS_LOG_TYPE_DEBUG, "PearlCoreAnalytics isBacklitSun frameInfo->ambientLux: %u frameInfo->floodExposure: %u\n", v19, 0xEu);
     }
 
-    v7 = *(&a3->var11 + 2);
+    v7 = *(&sun->var11 + 2);
     if (v7 != -1)
     {
-      v8 = *(&a3->var10 + 2);
+      v8 = *(&sun->var10 + 2);
       if (v8 != -1)
       {
         v9 = exp(v7 * 0.000230175689 + v8 * 0.000196729648 + -2.28890686);
@@ -2336,8 +2336,8 @@ LABEL_10:
     OUTLINED_FUNCTION_13(&dword_296CA4000, v4, v5, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", v6, v7, v8, v9, v13);
   }
 
-  v10 = *a1;
-  *a2 = *a1;
+  v10 = *self;
+  *a2 = *self;
   result = v10 == 0;
   v12 = *MEMORY[0x29EDCA608];
   return result;

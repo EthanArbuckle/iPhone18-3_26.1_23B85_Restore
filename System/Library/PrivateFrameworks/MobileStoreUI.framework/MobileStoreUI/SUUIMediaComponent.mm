@@ -1,19 +1,19 @@
 @interface SUUIMediaComponent
-- (SUUIMediaComponent)initWithArtwork:(id)a3;
-- (SUUIMediaComponent)initWithArtworkProvider:(id)a3 appearance:(int64_t)a4;
-- (SUUIMediaComponent)initWithCustomPageContext:(id)a3;
-- (SUUIMediaComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
+- (SUUIMediaComponent)initWithArtwork:(id)artwork;
+- (SUUIMediaComponent)initWithArtworkProvider:(id)provider appearance:(int64_t)appearance;
+- (SUUIMediaComponent)initWithCustomPageContext:(id)context;
+- (SUUIMediaComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
 - (id)bestThumbnailArtwork;
-- (id)bestThumbnailForWidth:(double)a3;
-- (id)valueForMetricsField:(id)a3;
+- (id)bestThumbnailForWidth:(double)width;
+- (id)valueForMetricsField:(id)field;
 @end
 
 @implementation SUUIMediaComponent
 
-- (SUUIMediaComponent)initWithArtwork:(id)a3
+- (SUUIMediaComponent)initWithArtwork:(id)artwork
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  artworkCopy = artwork;
   v12.receiver = self;
   v12.super_class = SUUIMediaComponent;
   v5 = [(SUUIMediaComponent *)&v12 init];
@@ -26,7 +26,7 @@
     v6->_thumbnailArtworkProvider = v7;
 
     v9 = v6->_thumbnailArtworkProvider;
-    v13[0] = v4;
+    v13[0] = artworkCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [(SUUIArtworkProviding *)v9 setArtworks:v10];
   }
@@ -34,18 +34,18 @@
   return v6;
 }
 
-- (SUUIMediaComponent)initWithArtworkProvider:(id)a3 appearance:(int64_t)a4
+- (SUUIMediaComponent)initWithArtworkProvider:(id)provider appearance:(int64_t)appearance
 {
-  v6 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = SUUIMediaComponent;
   v7 = [(SUUIMediaComponent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_mediaAppearance = a4;
+    v7->_mediaAppearance = appearance;
     v7->_mediaType = 0;
-    v9 = [v6 copy];
+    v9 = [providerCopy copy];
     thumbnailArtworkProvider = v8->_thumbnailArtworkProvider;
     v8->_thumbnailArtworkProvider = v9;
   }
@@ -53,19 +53,19 @@
   return v8;
 }
 
-- (SUUIMediaComponent)initWithCustomPageContext:(id)a3
+- (SUUIMediaComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v35.receiver = self;
   v35.super_class = SUUIMediaComponent;
-  v5 = [(SUUIPageComponent *)&v35 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v35 initWithCustomPageContext:contextCopy];
   if (!v5)
   {
     goto LABEL_33;
   }
 
-  v6 = [v4 componentDictionary];
-  v7 = [v6 objectForKey:@"title"];
+  componentDictionary = [contextCopy componentDictionary];
+  v7 = [componentDictionary objectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -74,7 +74,7 @@
     v5->_accessibilityLabel = v8;
   }
 
-  v10 = [v6 objectForKey:@"align"];
+  v10 = [componentDictionary objectForKey:@"align"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -82,7 +82,7 @@
     v5->_alignment = SUUIPageComponentAlignmentForString(v10);
   }
 
-  v11 = [v6 objectForKey:@"duration"];
+  v11 = [componentDictionary objectForKey:@"duration"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -90,26 +90,26 @@
     v5->_duration = v12;
   }
 
-  v13 = [v6 objectForKey:@"link"];
+  v13 = [componentDictionary objectForKey:@"link"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v4 copy];
+    v14 = [contextCopy copy];
     [v14 setComponentDictionary:v13];
     v15 = [[SUUILink alloc] initWithComponentContext:v14];
     link = v5->_link;
     v5->_link = v15;
   }
 
-  v17 = [v6 objectForKey:@"adamId"];
+  v17 = [componentDictionary objectForKey:@"adamId"];
 
   if (objc_opt_respondsToSelector())
   {
     v5->_mediaIdentifier = [v17 longLongValue];
   }
 
-  v18 = [v6 objectForKey:@"subType"];
+  v18 = [componentDictionary objectForKey:@"subType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -130,14 +130,14 @@ LABEL_17:
   }
 
 LABEL_18:
-  v20 = [v6 objectForKey:@"url"];
+  v20 = [componentDictionary objectForKey:@"url"];
 
   if (!v20)
   {
-    v21 = [v6 objectForKey:@"audioUrl"];
+    v21 = [componentDictionary objectForKey:@"audioUrl"];
     if (!v21)
     {
-      v21 = [v6 objectForKey:@"videoUrl"];
+      v21 = [componentDictionary objectForKey:@"videoUrl"];
     }
 
     v20 = v21;
@@ -151,13 +151,13 @@ LABEL_18:
     v5->_mediaURLString = v22;
   }
 
-  v24 = [v6 objectForKey:@"artwork"];
+  v24 = [componentDictionary objectForKey:@"artwork"];
 
   v25 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v24];
   thumbnailArtworkProvider = v5->_thumbnailArtworkProvider;
   v5->_thumbnailArtworkProvider = v25;
 
-  v27 = [v6 objectForKey:@"title"];
+  v27 = [componentDictionary objectForKey:@"title"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@ LABEL_18:
     v5->_title = v28;
   }
 
-  v30 = [v6 objectForKey:@"titleSize"];
+  v30 = [componentDictionary objectForKey:@"titleSize"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -186,7 +186,7 @@ LABEL_18:
   }
 
   v5->_titleFontSize = *&v31;
-  v33 = [v6 objectForKey:@"titleWeight"];
+  v33 = [componentDictionary objectForKey:@"titleWeight"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -198,16 +198,16 @@ LABEL_33:
   return v5;
 }
 
-- (SUUIMediaComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUIMediaComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = SUUIMediaComponent;
-  v7 = [(SUUIPageComponent *)&v13 initWithFeaturedContentContext:v6 kind:a4];
+  v7 = [(SUUIPageComponent *)&v13 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v7)
   {
-    v8 = [v6 componentDictionary];
-    v9 = [v8 objectForKey:@"artwork"];
+    componentDictionary = [contextCopy componentDictionary];
+    v9 = [componentDictionary objectForKey:@"artwork"];
     v10 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v9];
     thumbnailArtworkProvider = v7->_thumbnailArtworkProvider;
     v7->_thumbnailArtworkProvider = v10;
@@ -220,8 +220,8 @@ LABEL_33:
 
 - (id)bestThumbnailArtwork
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   thumbnailArtworkProvider = self->_thumbnailArtworkProvider;
@@ -239,35 +239,35 @@ LABEL_33:
   return v7;
 }
 
-- (id)bestThumbnailForWidth:(double)a3
+- (id)bestThumbnailForWidth:(double)width
 {
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
-  v7 = v6 * a3;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v7 = v6 * width;
 
-  v8 = [(SUUIArtworkProviding *)self->_thumbnailArtworkProvider artworkForSize:v7];
-  if (!v8)
+  bestThumbnailArtwork = [(SUUIArtworkProviding *)self->_thumbnailArtworkProvider artworkForSize:v7];
+  if (!bestThumbnailArtwork)
   {
-    v8 = [(SUUIMediaComponent *)self bestThumbnailArtwork];
+    bestThumbnailArtwork = [(SUUIMediaComponent *)self bestThumbnailArtwork];
   }
 
-  return v8;
+  return bestThumbnailArtwork;
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A490]])
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A490]])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mediaIdentifier];
+    title = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mediaIdentifier];
 LABEL_6:
-    v6 = v5;
+    v6 = title;
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A8]))
+  if (([fieldCopy isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A8]))
   {
-    v5 = [(SUUIMediaComponent *)self title];
+    title = [(SUUIMediaComponent *)self title];
     goto LABEL_6;
   }
 

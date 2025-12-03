@@ -1,24 +1,24 @@
 @interface PKPathUtility
-+ (BOOL)edge:(Edge)a3 intersectsEdge:(Edge)a4;
-+ (BOOL)edgeSet:(const void *)a3 containsEdge:(Edge)a4;
-+ (BOOL)newEdgeWithPoint:(CGPoint)a3 betweenEdge:(Edge)a4 intersectsOtherEdgesInHull:(const void *)a5;
-+ (BOOL)vector:(const void *)a3 containsPoint:(CGPoint)a4;
-+ (CGPoint)pointWithMinAngleForEdge:(Edge)a3 fromPoints:(const void *)a4 minAngle:(double *)a5;
-+ (CGRect)boundingBoxOfPoints:(const void *)a3 rotatedAroundPoint:(CGPoint)a4 byAngle:(double)a5;
-+ (Edge)longestEdgeInHull:(const void *)a3 atIndex:(int *)a4 visitedEdges:(const void *)a5;
-+ (double)averageDistanceForEdge:(Edge)a3 withPoints:(const void *)a4;
-+ (id)bezierPathFromPoints:(const void *)a3;
-+ (vector<CGPoint,)centripetalCatmullRomPointsFromConvexHull:(id)a2 alpha:(SEL)a3 granularity:(const void *)a4;
-+ (vector<CGPoint,)smoothedHullForPoints:(id)a2 alpha:(SEL)a3 granularity:(const void *)a4 minAngleFactor:(double)a5 maxLengthThreshold:(double)a6 edgeRemovalConstant:(double)a7;
-+ (vector<CGPoint,)unorderedSimplifiedPointsFromPoints:(id)a2 factor:(SEL)a3;
-+ (void)convexHull:(void *)a3 forPoints:(const void *)a4;
-+ (void)openConvexHullToConcave:(void *)a3 points:(const void *)a4 minAngleFactor:(double)a5 maxLengthThreshold:(double)a6 edgeRemovalConstant:(double)a7;
-+ (void)smoothedHullForPoints:(const void *)a3 completion:(id)a4;
++ (BOOL)edge:(Edge)edge intersectsEdge:(Edge)intersectsEdge;
++ (BOOL)edgeSet:(const void *)set containsEdge:(Edge)edge;
++ (BOOL)newEdgeWithPoint:(CGPoint)point betweenEdge:(Edge)edge intersectsOtherEdgesInHull:(const void *)hull;
++ (BOOL)vector:(const void *)vector containsPoint:(CGPoint)point;
++ (CGPoint)pointWithMinAngleForEdge:(Edge)edge fromPoints:(const void *)points minAngle:(double *)angle;
++ (CGRect)boundingBoxOfPoints:(const void *)points rotatedAroundPoint:(CGPoint)point byAngle:(double)angle;
++ (Edge)longestEdgeInHull:(const void *)hull atIndex:(int *)index visitedEdges:(const void *)edges;
++ (double)averageDistanceForEdge:(Edge)edge withPoints:(const void *)points;
++ (id)bezierPathFromPoints:(const void *)points;
++ (vector<CGPoint,)centripetalCatmullRomPointsFromConvexHull:(id)hull alpha:(SEL)alpha granularity:(const void *)granularity;
++ (vector<CGPoint,)smoothedHullForPoints:(id)points alpha:(SEL)alpha granularity:(const void *)granularity minAngleFactor:(double)factor maxLengthThreshold:(double)threshold edgeRemovalConstant:(double)constant;
++ (vector<CGPoint,)unorderedSimplifiedPointsFromPoints:(id)points factor:(SEL)factor;
++ (void)convexHull:(void *)hull forPoints:(const void *)points;
++ (void)openConvexHullToConcave:(void *)concave points:(const void *)points minAngleFactor:(double)factor maxLengthThreshold:(double)threshold edgeRemovalConstant:(double)constant;
++ (void)smoothedHullForPoints:(const void *)points completion:(id)completion;
 @end
 
 @implementation PKPathUtility
 
-+ (vector<CGPoint,)unorderedSimplifiedPointsFromPoints:(id)a2 factor:(SEL)a3
++ (vector<CGPoint,)unorderedSimplifiedPointsFromPoints:(id)points factor:(SEL)factor
 {
   memset(v28, 0, sizeof(v28));
   v29 = 1065353216;
@@ -165,20 +165,20 @@ LABEL_43:
   }
 }
 
-+ (void)smoothedHullForPoints:(const void *)a3 completion:(id)a4
++ (void)smoothedHullForPoints:(const void *)points completion:(id)completion
 {
-  v6 = a4;
-  if (*a3 == *(a3 + 1))
+  completionCopy = completion;
+  if (*points == *(points + 1))
   {
-    v8 = [MEMORY[0x1E69DC728] bezierPath];
-    v6[2](v6, v8);
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    completionCopy[2](completionCopy, bezierPath);
   }
 
   else
   {
-    [a1 smoothedHullForPoints:a3 alpha:0.5 granularity:100.0 minAngleFactor:1.57079633 maxLengthThreshold:5.0 edgeRemovalConstant:0.3];
-    v7 = [a1 bezierPathFromPoints:__p];
-    v6[2](v6, v7);
+    [self smoothedHullForPoints:points alpha:0.5 granularity:100.0 minAngleFactor:1.57079633 maxLengthThreshold:5.0 edgeRemovalConstant:0.3];
+    v7 = [self bezierPathFromPoints:__p];
+    completionCopy[2](completionCopy, v7);
 
     if (__p[0])
     {
@@ -188,47 +188,47 @@ LABEL_43:
   }
 }
 
-+ (id)bezierPathFromPoints:(const void *)a3
++ (id)bezierPathFromPoints:(const void *)points
 {
-  if (*(a3 + 1) - *a3 < 0x11uLL)
+  if (*(points + 1) - *points < 0x11uLL)
   {
-    v4 = 0;
+    bezierPath = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC728] bezierPath];
-    [v4 moveToPoint:{**a3, *(*a3 + 8)}];
-    v5 = *a3;
-    if (*(a3 + 1) - *a3 >= 0x11uLL)
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [bezierPath moveToPoint:{**points, *(*points + 8)}];
+    v5 = *points;
+    if (*(points + 1) - *points >= 0x11uLL)
     {
       v6 = 0;
       v7 = 1;
       do
       {
-        [v4 addLineToPoint:{v5[v6 + 2], v5[v6 + 3]}];
+        [bezierPath addLineToPoint:{v5[v6 + 2], v5[v6 + 3]}];
         ++v7;
-        v5 = *a3;
+        v5 = *points;
         v6 += 2;
       }
 
-      while (v7 < (*(a3 + 1) - *a3) >> 4);
+      while (v7 < (*(points + 1) - *points) >> 4);
     }
 
-    [v4 closePath];
+    [bezierPath closePath];
   }
 
-  return v4;
+  return bezierPath;
 }
 
-+ (vector<CGPoint,)smoothedHullForPoints:(id)a2 alpha:(SEL)a3 granularity:(const void *)a4 minAngleFactor:(double)a5 maxLengthThreshold:(double)a6 edgeRemovalConstant:(double)a7
++ (vector<CGPoint,)smoothedHullForPoints:(id)points alpha:(SEL)alpha granularity:(const void *)granularity minAngleFactor:(double)factor maxLengthThreshold:(double)threshold edgeRemovalConstant:(double)constant
 {
   __p = 0;
   v18 = 0;
   v19 = 0;
-  [PKPathUtility convexHull:&__p forPoints:a4];
-  [a2 openConvexHullToConcave:&__p points:a4 minAngleFactor:a7 maxLengthThreshold:a8 edgeRemovalConstant:a9];
-  [a2 centripetalCatmullRomPointsFromConvexHull:&__p alpha:a5 granularity:a6];
+  [PKPathUtility convexHull:&__p forPoints:granularity];
+  [points openConvexHullToConcave:&__p points:granularity minAngleFactor:constant maxLengthThreshold:a8 edgeRemovalConstant:a9];
+  [points centripetalCatmullRomPointsFromConvexHull:&__p alpha:factor granularity:threshold];
   result = __p;
   if (__p)
   {
@@ -239,12 +239,12 @@ LABEL_43:
   return result;
 }
 
-+ (void)convexHull:(void *)a3 forPoints:(const void *)a4
++ (void)convexHull:(void *)hull forPoints:(const void *)points
 {
-  *(a3 + 1) = *a3;
-  v6 = *a4;
-  v7 = *(a4 + 1);
-  v8 = &v7[-*a4] >> 4;
+  *(hull + 1) = *hull;
+  v6 = *points;
+  v7 = *(points + 1);
+  v8 = &v7[-*points] >> 4;
   if (v8 > 2)
   {
     __p = 0;
@@ -347,23 +347,23 @@ LABEL_43:
     v27 = (v41 - v40) >> 4;
     if (v27 > 2)
     {
-      std::vector<CGPoint>::reserve(a3, (v41 - v40) >> 4);
-      std::vector<CGPoint>::push_back[abi:ne200100](a3, &v43);
-      std::vector<CGPoint>::push_back[abi:ne200100](a3, v40 + 1);
-      std::vector<CGPoint>::push_back[abi:ne200100](a3, v40 + 2);
+      std::vector<CGPoint>::reserve(hull, (v41 - v40) >> 4);
+      std::vector<CGPoint>::push_back[abi:ne200100](hull, &v43);
+      std::vector<CGPoint>::push_back[abi:ne200100](hull, v40 + 1);
+      std::vector<CGPoint>::push_back[abi:ne200100](hull, v40 + 2);
       v26 = v40;
       if ((v41 - v40) >= 0x31)
       {
         v28 = 3;
         do
         {
-          v29 = *(a3 + 1);
+          v29 = *(hull + 1);
           v30 = &v26[16 * v28];
           v31 = *v30;
           v32 = v30[1];
-          v33 = v29 - *a3;
+          v33 = v29 - *hull;
           v34 = v29 - 16;
-          v35 = *a3 - 32;
+          v35 = *hull - 32;
           while (1)
           {
             v36 = (*(v35 + v33 + 24) - *(v35 + v33 + 8)) * (v31 - *(v35 + v33 + 16)) - (*(v35 + v33 + 16) - *(v35 + v33)) * (v32 - *(v35 + v33 + 24));
@@ -374,12 +374,12 @@ LABEL_43:
               break;
             }
 
-            *(a3 + 1) = v34;
+            *(hull + 1) = v34;
             v33 -= 16;
             v34 -= 16;
           }
 
-          std::vector<CGPoint>::push_back[abi:ne200100](a3, v30);
+          std::vector<CGPoint>::push_back[abi:ne200100](hull, v30);
           ++v28;
           v26 = v40;
         }
@@ -388,9 +388,9 @@ LABEL_43:
       }
     }
 
-    else if (&v40 != a3)
+    else if (&v40 != hull)
     {
-      std::vector<CGPoint>::__assign_with_size[abi:ne200100]<CGPoint*,CGPoint*>(a3, v40, v41, v27);
+      std::vector<CGPoint>::__assign_with_size[abi:ne200100]<CGPoint*,CGPoint*>(hull, v40, v41, v27);
       v26 = v40;
     }
 
@@ -407,27 +407,27 @@ LABEL_43:
     }
   }
 
-  else if (a3 != a4)
+  else if (hull != points)
   {
 
-    std::vector<CGPoint>::__assign_with_size[abi:ne200100]<CGPoint*,CGPoint*>(a3, v6, v7, v8);
+    std::vector<CGPoint>::__assign_with_size[abi:ne200100]<CGPoint*,CGPoint*>(hull, v6, v7, v8);
   }
 }
 
-+ (vector<CGPoint,)centripetalCatmullRomPointsFromConvexHull:(id)a2 alpha:(SEL)a3 granularity:(const void *)a4
++ (vector<CGPoint,)centripetalCatmullRomPointsFromConvexHull:(id)hull alpha:(SEL)alpha granularity:(const void *)granularity
 {
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   std::vector<CGPoint>::reserve(retstr, 0);
-  v72 = **a4;
+  v72 = **granularity;
   std::vector<CGPoint>::push_back[abi:ne200100](retstr, &v72);
-  v11 = *a4;
-  v10 = *(a4 + 1);
-  if (v10 != *a4)
+  v11 = *granularity;
+  v10 = *(granularity + 1);
+  if (v10 != *granularity)
   {
     v12 = 0;
-    v13 = (v10 - *a4) >> 4;
+    v13 = (v10 - *granularity) >> 4;
     v15 = *(&v72 + 1);
     v14 = *&v72;
     v16 = a5;
@@ -522,8 +522,8 @@ LABEL_43:
         }
 
         while (v43 < v34);
-        v11 = *a4;
-        v10 = *(a4 + 1);
+        v11 = *granularity;
+        v10 = *(granularity + 1);
         v16 = v57;
       }
     }
@@ -534,11 +534,11 @@ LABEL_43:
   return result;
 }
 
-+ (double)averageDistanceForEdge:(Edge)a3 withPoints:(const void *)a4
++ (double)averageDistanceForEdge:(Edge)edge withPoints:(const void *)points
 {
-  v4 = *a4;
-  v5 = *(a4 + 1);
-  if (*a4 == v5)
+  v4 = *points;
+  v5 = *(points + 1);
+  if (*points == v5)
   {
     return NAN;
   }
@@ -548,9 +548,9 @@ LABEL_43:
   do
   {
     v8 = v4[1];
-    if (*v4 != a3.var0.x || v8 != a3.var0.y)
+    if (*v4 != edge.var0.x || v8 != edge.var0.y)
     {
-      v10 = sqrt((a3.var0.y - v8) * (a3.var0.y - v8) + (a3.var0.x - *v4) * (a3.var0.x - *v4));
+      v10 = sqrt((edge.var0.y - v8) * (edge.var0.y - v8) + (edge.var0.x - *v4) * (edge.var0.x - *v4));
       if (v10 < 150.0)
       {
         ++v6;
@@ -565,17 +565,17 @@ LABEL_43:
   return v7 / v6;
 }
 
-+ (CGPoint)pointWithMinAngleForEdge:(Edge)a3 fromPoints:(const void *)a4 minAngle:(double *)a5
++ (CGPoint)pointWithMinAngleForEdge:(Edge)edge fromPoints:(const void *)points minAngle:(double *)angle
 {
   v7 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v8 = *(a4 + 1) - *a4;
+  v8 = *(points + 1) - *points;
   if (v8)
   {
     v9 = v8 >> 4;
-    v10 = 1.0 / sqrt((a3.var0.y - a3.var1.y) * (a3.var0.y - a3.var1.y) + (a3.var0.x - a3.var1.x) * (a3.var0.x - a3.var1.x));
-    v26 = (a3.var0.y - a3.var1.y) * v10;
-    v27 = (a3.var0.x - a3.var1.x) * v10;
+    v10 = 1.0 / sqrt((edge.var0.y - edge.var1.y) * (edge.var0.y - edge.var1.y) + (edge.var0.x - edge.var1.x) * (edge.var0.x - edge.var1.x));
+    v26 = (edge.var0.y - edge.var1.y) * v10;
+    v27 = (edge.var0.x - edge.var1.x) * v10;
     if (v9 <= 1)
     {
       v11 = 1;
@@ -586,20 +586,20 @@ LABEL_43:
       v11 = v9;
     }
 
-    v12 = (*a4 + 8);
+    v12 = (*points + 8);
     v13 = 1.79769313e308;
     do
     {
       v15 = *(v12 - 1);
       v14 = *v12;
-      v16 = a3.var0.y - *v12;
-      v17 = 1.0 / sqrt(v16 * v16 + (a3.var0.x - v15) * (a3.var0.x - v15));
-      v18 = (a3.var0.x - v15) * v17;
+      v16 = edge.var0.y - *v12;
+      v17 = 1.0 / sqrt(v16 * v16 + (edge.var0.x - v15) * (edge.var0.x - v15));
+      v18 = (edge.var0.x - v15) * v17;
       v19 = v16 * v17;
-      v20 = *v12 - a3.var1.y;
-      v21 = 1.0 / sqrt(v20 * v20 + (v15 - a3.var1.x) * (v15 - a3.var1.x));
+      v20 = *v12 - edge.var1.y;
+      v21 = 1.0 / sqrt(v20 * v20 + (v15 - edge.var1.x) * (v15 - edge.var1.x));
       v29 = v20 * v21;
-      v30 = (v15 - a3.var1.x) * v21;
+      v30 = (v15 - edge.var1.x) * v21;
       v22 = acos(v26 * v19 + v18 * v27);
       v23 = acos(v19 * v29 + v18 * v30);
       if (v22 > v23)
@@ -626,7 +626,7 @@ LABEL_43:
     v13 = 1.79769313e308;
   }
 
-  *a5 = v13;
+  *angle = v13;
   v24 = v7;
   v25 = v6;
   result.y = v25;
@@ -634,16 +634,16 @@ LABEL_43:
   return result;
 }
 
-+ (Edge)longestEdgeInHull:(const void *)a3 atIndex:(int *)a4 visitedEdges:(const void *)a5
++ (Edge)longestEdgeInHull:(const void *)hull atIndex:(int *)index visitedEdges:(const void *)edges
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v8 = **a3;
-  v7 = *(*a3 + 8);
-  v9 = v6 - *a3;
+  v5 = *hull;
+  v6 = *(hull + 1);
+  v8 = **hull;
+  v7 = *(*hull + 8);
+  v9 = v6 - *hull;
   v11 = *(v6 - 16);
   v10 = *(v6 - 8);
-  *a4 = (v9 >> 4) - 1;
+  *index = (v9 >> 4) - 1;
   v29 = v10;
   if (v9 == 32)
   {
@@ -663,9 +663,9 @@ LABEL_43:
       v22 = v20[1];
       v23 = v20[2];
       v24 = v20[3];
-      if (([a1 edgeSet:a5 containsEdge:{*v20, v22, v23, v24}] & 1) == 0 && sqrt((v22 - v24) * (v22 - v24) + (v21 - v23) * (v21 - v23)) > v19)
+      if (([self edgeSet:edges containsEdge:{*v20, v22, v23, v24}] & 1) == 0 && sqrt((v22 - v24) * (v22 - v24) + (v21 - v23) * (v21 - v23)) > v19)
       {
-        *a4 = v18;
+        *index = v18;
         v29 = v24;
         v11 = v23;
         v12 = v22;
@@ -673,11 +673,11 @@ LABEL_43:
       }
 
       ++v18;
-      v5 = *a3;
+      v5 = *hull;
       v17 += 2;
     }
 
-    while (((*(a3 + 1) - *a3) >> 4) - 2 > v18);
+    while (((*(hull + 1) - *hull) >> 4) - 2 > v18);
   }
 
   v25 = v8;
@@ -691,12 +691,12 @@ LABEL_43:
   return result;
 }
 
-+ (void)openConvexHullToConcave:(void *)a3 points:(const void *)a4 minAngleFactor:(double)a5 maxLengthThreshold:(double)a6 edgeRemovalConstant:(double)a7
++ (void)openConvexHullToConcave:(void *)concave points:(const void *)points minAngleFactor:(double)factor maxLengthThreshold:(double)threshold edgeRemovalConstant:(double)constant
 {
   v37 = 0;
   memset(v35, 0, sizeof(v35));
   v36 = 1065353216;
-  [PKPathUtility longestEdgeInHull:a3 atIndex:&v37 visitedEdges:v35];
+  [PKPathUtility longestEdgeInHull:concave atIndex:&v37 visitedEdges:v35];
   while (1)
   {
     v16 = v12;
@@ -707,27 +707,27 @@ LABEL_43:
     v34[1] = v13;
     v34[2] = v14;
     v34[3] = v15;
-    if (sqrt((v13 - v15) * (v13 - v15) + (v12 - v14) * (v12 - v14)) <= a6 || [PKPathUtility edgeSet:v35 containsEdge:v12, v13, v14, v15])
+    if (sqrt((v13 - v15) * (v13 - v15) + (v12 - v14) * (v12 - v14)) <= threshold || [PKPathUtility edgeSet:v35 containsEdge:v12, v13, v14, v15])
     {
       break;
     }
 
-    [PKPathUtility averageDistanceForEdge:a4 withPoints:v16, v17, v18, v19];
-    if (sqrt((v17 - v19) * (v17 - v19) + (v16 - v18) * (v16 - v18)) <= v20 * a7 || (v33 = 0.0, v32 = 0uLL, [PKPathUtility pointWithMinAngleForEdge:a4 fromPoints:&v33 minAngle:v16, v17, v18, v19], v32.n128_u64[0] = v21, v32.n128_u64[1] = v22, v33 >= a5) || [PKPathUtility vector:a3 containsPoint:?]|| [PKPathUtility newEdgeWithPoint:a3 betweenEdge:v32.n128_f64[0] intersectsOtherEdgesInHull:v32.n128_f64[1], v16, v17, v18, v19])
+    [PKPathUtility averageDistanceForEdge:points withPoints:v16, v17, v18, v19];
+    if (sqrt((v17 - v19) * (v17 - v19) + (v16 - v18) * (v16 - v18)) <= v20 * constant || (v33 = 0.0, v32 = 0uLL, [PKPathUtility pointWithMinAngleForEdge:points fromPoints:&v33 minAngle:v16, v17, v18, v19], v32.n128_u64[0] = v21, v32.n128_u64[1] = v22, v33 >= factor) || [PKPathUtility vector:concave containsPoint:?]|| [PKPathUtility newEdgeWithPoint:concave betweenEdge:v32.n128_f64[0] intersectsOtherEdgesInHull:v32.n128_f64[1], v16, v17, v18, v19])
     {
     }
 
     else
     {
-      std::vector<CGPoint>::insert(a3, (*a3 + 16 * v37 + 16), &v32);
+      std::vector<CGPoint>::insert(concave, (*concave + 16 * v37 + 16), &v32);
     }
 
-    [PKPathUtility longestEdgeInHull:a3 atIndex:&v37 visitedEdges:v35];
+    [PKPathUtility longestEdgeInHull:concave atIndex:&v37 visitedEdges:v35];
   }
 
-  v23 = *a3;
-  v24 = *(a3 + 1);
-  if ((v24 - *a3) >= 0x11)
+  v23 = *concave;
+  v24 = *(concave + 1);
+  if ((v24 - *concave) >= 0x11)
   {
     v25 = 0;
     v26 = 1;
@@ -743,11 +743,11 @@ LABEL_43:
         if (v24 != v29 + 32)
         {
           memmove((v29 + 16), (v29 + 32), v24 - (v29 + 32));
-          v23 = *a3;
+          v23 = *concave;
         }
 
         v24 = v30 + v31;
-        *(a3 + 1) = v30 + v31;
+        *(concave + 1) = v30 + v31;
       }
 
       else
@@ -763,24 +763,24 @@ LABEL_43:
   }
 }
 
-+ (BOOL)newEdgeWithPoint:(CGPoint)a3 betweenEdge:(Edge)a4 intersectsOtherEdgesInHull:(const void *)a5
++ (BOOL)newEdgeWithPoint:(CGPoint)point betweenEdge:(Edge)edge intersectsOtherEdgesInHull:(const void *)hull
 {
-  x = a4.var1.x;
-  v6 = *a5;
-  v5 = *(a5 + 1);
-  if (v5 - *a5 == 16)
+  x = edge.var1.x;
+  v6 = *hull;
+  v5 = *(hull + 1);
+  if (v5 - *hull == 16)
   {
     return 0;
   }
 
-  y = a4.var1.y;
-  v9 = a4.var0.y;
-  v10 = a4.var0.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = edge.var1.y;
+  v9 = edge.var0.y;
+  v10 = edge.var0.x;
+  v11 = point.y;
+  v12 = point.x;
   v13 = 0;
   v14 = 0;
-  v28 = a4.var1.y;
+  v28 = edge.var1.y;
   while (1)
   {
     v15 = v6 + v13;
@@ -821,10 +821,10 @@ LABEL_43:
       return 1;
     }
 
-    v6 = *a5;
-    v5 = *(a5 + 1);
-    v12 = a3.x;
-    v11 = a3.y;
+    v6 = *hull;
+    v5 = *(hull + 1);
+    v12 = point.x;
+    v11 = point.y;
 LABEL_22:
     ++v14;
     v13 += 16;
@@ -835,19 +835,19 @@ LABEL_22:
   }
 }
 
-+ (BOOL)edge:(Edge)a3 intersectsEdge:(Edge)a4
++ (BOOL)edge:(Edge)edge intersectsEdge:(Edge)intersectsEdge
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
-  v9 = a3;
-  v8 = a4;
-  return DKDIntersectionOfLines(&v9.var0.x, &v8.var0.x, &v6, &v7, v5, 0, 0);
+  edgeCopy = edge;
+  intersectsEdgeCopy = intersectsEdge;
+  return DKDIntersectionOfLines(&edgeCopy.var0.x, &intersectsEdgeCopy.var0.x, &v6, &v7, v5, 0, 0);
 }
 
-+ (BOOL)vector:(const void *)a3 containsPoint:(CGPoint)a4
++ (BOOL)vector:(const void *)vector containsPoint:(CGPoint)point
 {
-  v4 = *a3;
-  v5 = *(a3 + 1) - *a3;
+  v4 = *vector;
+  v5 = *(vector + 1) - *vector;
   if (!v5)
   {
     return 0;
@@ -864,7 +864,7 @@ LABEL_22:
     v7 = v6;
   }
 
-  if (*v4 == a4.x && v4[1] == a4.y)
+  if (*v4 == point.x && v4[1] == point.y)
   {
     return 1;
   }
@@ -885,19 +885,19 @@ LABEL_22:
     v9 += 2;
   }
 
-  while (v12 != a4.x || v13 != a4.y);
+  while (v12 != point.x || v13 != point.y);
   return v6 > v11;
 }
 
-+ (BOOL)edgeSet:(const void *)a3 containsEdge:(Edge)a4
++ (BOOL)edgeSet:(const void *)set containsEdge:(Edge)edge
 {
-  y = a4.var1.y;
-  x = a4.var1.x;
-  v6 = a4.var0.y;
-  v7 = a4.var0.x;
-  v19 = a4;
-  v9 = PKHashBytes(&v19, 32);
-  v10 = *(a3 + 8);
+  y = edge.var1.y;
+  x = edge.var1.x;
+  v6 = edge.var0.y;
+  v7 = edge.var0.x;
+  edgeCopy = edge;
+  v9 = PKHashBytes(&edgeCopy, 32);
+  v10 = *(set + 8);
   if (v10)
   {
     v11 = vcnt_s8(v10);
@@ -912,7 +912,7 @@ LABEL_22:
       v12 = (*&v10 + 0xFFFFFFFFLL) & v9;
     }
 
-    v13 = *(*a3 + 8 * v12);
+    v13 = *(*set + 8 * v12);
     if (v13)
     {
       for (i = *v13; i; i = *i)
@@ -953,13 +953,13 @@ LABEL_22:
   return 0;
 }
 
-+ (CGRect)boundingBoxOfPoints:(const void *)a3 rotatedAroundPoint:(CGPoint)a4 byAngle:(double)a5
++ (CGRect)boundingBoxOfPoints:(const void *)points rotatedAroundPoint:(CGPoint)point byAngle:(double)angle
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = __sincosf_stret(v8);
-  v10 = *(a3 + 1) - *a3;
+  y = point.y;
+  x = point.x;
+  angleCopy = angle;
+  v9 = __sincosf_stret(angleCopy);
+  v10 = *(points + 1) - *points;
   if (v10)
   {
     cosval = v9.__cosval;
@@ -970,7 +970,7 @@ LABEL_22:
       v13 = 1;
     }
 
-    v14 = (*a3 + 8);
+    v14 = (*points + 8);
     v15 = 1.79769313e308;
     v16 = -1.79769313e308;
     v17 = -1.79769313e308;

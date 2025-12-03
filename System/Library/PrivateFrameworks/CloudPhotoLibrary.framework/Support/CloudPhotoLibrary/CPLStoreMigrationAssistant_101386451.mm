@@ -1,80 +1,80 @@
 @interface CPLStoreMigrationAssistant_101386451
-- (BOOL)_isCloudScopedIdentifier:(id)a3 aSuspiciousRemappingToCloudScopedIdentifier:(id)a4 primaryScope:(id)a5;
-- (BOOL)_isSuspiciousAsset:(id)a3 isBadAsset:(BOOL *)a4;
-- (BOOL)_performMigrationForRemappedRecord:(id)a3 primaryScope:(id)a4 sharingScope:(id)a5 revertedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)_performMigrationWithPrimaryScope:(id)a3 sharingScope:(id)a4 error:(id *)a5;
-- (BOOL)_revertRecordWithLocalScopedIdentifier:(id)a3 class:(Class)a4 revertedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)performMigrationWithError:(id *)a3;
-- (CPLStoreMigrationAssistant_101386451)initWithStore:(id)a3;
-- (int64_t)checkPushedChange:(id)a3;
+- (BOOL)_isCloudScopedIdentifier:(id)identifier aSuspiciousRemappingToCloudScopedIdentifier:(id)scopedIdentifier primaryScope:(id)scope;
+- (BOOL)_isSuspiciousAsset:(id)asset isBadAsset:(BOOL *)badAsset;
+- (BOOL)_performMigrationForRemappedRecord:(id)record primaryScope:(id)scope sharingScope:(id)sharingScope revertedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)_performMigrationWithPrimaryScope:(id)scope sharingScope:(id)sharingScope error:(id *)error;
+- (BOOL)_revertRecordWithLocalScopedIdentifier:(id)identifier class:(Class)class revertedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)performMigrationWithError:(id *)error;
+- (CPLStoreMigrationAssistant_101386451)initWithStore:(id)store;
+- (int64_t)checkPushedChange:(id)change;
 @end
 
 @implementation CPLStoreMigrationAssistant_101386451
 
-- (CPLStoreMigrationAssistant_101386451)initWithStore:(id)a3
+- (CPLStoreMigrationAssistant_101386451)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = CPLStoreMigrationAssistant_101386451;
-  v5 = [(CPLStoreMigrationAssistant_101386451 *)&v25 initWithStore:v4];
+  v5 = [(CPLStoreMigrationAssistant_101386451 *)&v25 initWithStore:storeCopy];
   if (v5)
   {
-    v6 = [v4 scopes];
+    scopes = [storeCopy scopes];
     scopes = v5->_scopes;
-    v5->_scopes = v6;
+    v5->_scopes = scopes;
 
-    v8 = [v4 remappedRecords];
+    remappedRecords = [storeCopy remappedRecords];
     remappedRecords = v5->_remappedRecords;
-    v5->_remappedRecords = v8;
+    v5->_remappedRecords = remappedRecords;
 
-    v10 = [v4 idMapping];
+    idMapping = [storeCopy idMapping];
     idMapping = v5->_idMapping;
-    v5->_idMapping = v10;
+    v5->_idMapping = idMapping;
 
-    v12 = [v4 revertRecords];
+    revertRecords = [storeCopy revertRecords];
     revertRecords = v5->_revertRecords;
-    v5->_revertRecords = v12;
+    v5->_revertRecords = revertRecords;
 
-    v14 = [v4 cloudCache];
+    cloudCache = [storeCopy cloudCache];
     cloudCache = v5->_cloudCache;
-    v5->_cloudCache = v14;
+    v5->_cloudCache = cloudCache;
 
-    v16 = [v4 pushRepository];
+    pushRepository = [storeCopy pushRepository];
     pushRepository = v5->_pushRepository;
-    v5->_pushRepository = v16;
+    v5->_pushRepository = pushRepository;
 
-    v18 = [v4 pullQueue];
+    pullQueue = [storeCopy pullQueue];
     pullQueue = v5->_pullQueue;
-    v5->_pullQueue = v18;
+    v5->_pullQueue = pullQueue;
 
-    v20 = [v4 platformObject];
+    platformObject = [storeCopy platformObject];
     pqStore = v5->_pqStore;
-    v5->_pqStore = v20;
+    v5->_pqStore = platformObject;
 
-    v22 = [(CPLPrequeliteStore *)v5->_pqStore pqlConnection];
+    pqlConnection = [(CPLPrequeliteStore *)v5->_pqStore pqlConnection];
     db = v5->_db;
-    v5->_db = v22;
+    v5->_db = pqlConnection;
   }
 
   return v5;
 }
 
-- (BOOL)_isCloudScopedIdentifier:(id)a3 aSuspiciousRemappingToCloudScopedIdentifier:(id)a4 primaryScope:(id)a5
+- (BOOL)_isCloudScopedIdentifier:(id)identifier aSuspiciousRemappingToCloudScopedIdentifier:(id)scopedIdentifier primaryScope:(id)scope
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  scopeCopy = scope;
+  scopedIdentifierCopy = scopedIdentifier;
+  identifierCopy = identifier;
   v11 = [CPLScopedIdentifier alloc];
-  v12 = [v8 scopeIdentifier];
-  v13 = [v10 identifier];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  identifier = [identifierCopy identifier];
 
-  v14 = [v11 initWithScopeIdentifier:v12 identifier:v13 scopeIndex:{objc_msgSend(v8, "cloudIndex")}];
+  v14 = [v11 initWithScopeIdentifier:scopeIdentifier identifier:identifier scopeIndex:{objc_msgSend(scopeCopy, "cloudIndex")}];
   v15 = [CPLScopedIdentifier alloc];
-  v16 = [v8 scopeIdentifier];
-  v17 = [v9 identifier];
+  scopeIdentifier2 = [scopeCopy scopeIdentifier];
+  identifier2 = [scopedIdentifierCopy identifier];
 
-  v18 = [v8 cloudIndex];
-  v19 = [v15 initWithScopeIdentifier:v16 identifier:v17 scopeIndex:v18];
+  cloudIndex = [scopeCopy cloudIndex];
+  v19 = [v15 initWithScopeIdentifier:scopeIdentifier2 identifier:identifier2 scopeIndex:cloudIndex];
 
   v24 = 0;
   v20 = [(CPLEngineIDMapping *)self->_idMapping localScopedIdentifierForCloudScopedIdentifier:v14 isFinal:&v24];
@@ -92,24 +92,24 @@
   return v22;
 }
 
-- (BOOL)_isSuspiciousAsset:(id)a3 isBadAsset:(BOOL *)a4
+- (BOOL)_isSuspiciousAsset:(id)asset isBadAsset:(BOOL *)badAsset
 {
-  v6 = a3;
-  if ([v6 isAssetChange])
+  assetCopy = asset;
+  if ([assetCopy isAssetChange])
   {
-    *a4 = 0;
-    v7 = [v6 scopedIdentifier];
-    v8 = [v7 scopeIdentifier];
-    v9 = [(CPLEngineScopeStorage *)self->_scopes mainScopeIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    *badAsset = 0;
+    scopedIdentifier = [assetCopy scopedIdentifier];
+    scopeIdentifier = [scopedIdentifier scopeIdentifier];
+    mainScopeIdentifier = [(CPLEngineScopeStorage *)self->_scopes mainScopeIdentifier];
+    v10 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
     LOBYTE(v11) = 0;
     if (v10)
     {
-      v12 = [(CPLEngineScopeStorage *)self->_scopes primaryScope];
-      v13 = [(CPLEngineScopeStorage *)self->_scopes sharingScopeForScope:v12];
+      primaryScope = [(CPLEngineScopeStorage *)self->_scopes primaryScope];
+      v13 = [(CPLEngineScopeStorage *)self->_scopes sharingScopeForScope:primaryScope];
       v14 = v13;
-      if (v12)
+      if (primaryScope)
       {
         v15 = v13 == 0;
       }
@@ -127,15 +127,15 @@
       else
       {
         v34 = 0;
-        v16 = [(CPLEngineIDMapping *)self->_idMapping cloudScopedIdentifierForLocalScopedIdentifier:v7 isFinal:&v34];
+        v16 = [(CPLEngineIDMapping *)self->_idMapping cloudScopedIdentifierForLocalScopedIdentifier:scopedIdentifier isFinal:&v34];
         v17 = v16;
         if (v16)
         {
           v18 = [CPLScopedIdentifier alloc];
-          v19 = [v14 scopeIdentifier];
+          scopeIdentifier2 = [v14 scopeIdentifier];
           v29 = v17;
-          v20 = [v17 identifier];
-          v21 = [v18 initWithScopeIdentifier:v19 identifier:v20 scopeIndex:{objc_msgSend(v14, "cloudIndex")}];
+          identifier = [v17 identifier];
+          v21 = [v18 initWithScopeIdentifier:scopeIdentifier2 identifier:identifier scopeIndex:{objc_msgSend(v14, "cloudIndex")}];
 
           v22 = [(CPLEngineRemappedRecords *)self->_remappedRecords realScopedIdentifierForRemappedScopedIdentifier:v21];
           if ([v22 isEqual:v21])
@@ -160,10 +160,10 @@
                     objc_enumerationMutation(v23);
                   }
 
-                  if ([(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:*(*(&v30 + 1) + 8 * i) aSuspiciousRemappingToCloudScopedIdentifier:v21 primaryScope:v12])
+                  if ([(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:*(*(&v30 + 1) + 8 * i) aSuspiciousRemappingToCloudScopedIdentifier:v21 primaryScope:primaryScope])
                   {
                     LOBYTE(v11) = 1;
-                    *a4 = 1;
+                    *badAsset = 1;
                     goto LABEL_24;
                   }
                 }
@@ -187,7 +187,7 @@ LABEL_24:
 
           else
           {
-            LOBYTE(v11) = [(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:v21 aSuspiciousRemappingToCloudScopedIdentifier:v22 primaryScope:v12];
+            LOBYTE(v11) = [(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:v21 aSuspiciousRemappingToCloudScopedIdentifier:v22 primaryScope:primaryScope];
           }
         }
 
@@ -207,11 +207,11 @@ LABEL_24:
   return v11;
 }
 
-- (int64_t)checkPushedChange:(id)a3
+- (int64_t)checkPushedChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8 = 0;
-  if ([(CPLStoreMigrationAssistant_101386451 *)self _isSuspiciousAsset:v4 isBadAsset:&v8])
+  if ([(CPLStoreMigrationAssistant_101386451 *)self _isSuspiciousAsset:changeCopy isBadAsset:&v8])
   {
     if (v8)
     {
@@ -222,7 +222,7 @@ LABEL_24:
     {
       v7.receiver = self;
       v7.super_class = CPLStoreMigrationAssistant_101386451;
-      v5 = [(CPLStoreMigrationAssistant_101386451 *)&v7 checkPushedChange:v4];
+      v5 = [(CPLStoreMigrationAssistant_101386451 *)&v7 checkPushedChange:changeCopy];
     }
   }
 
@@ -234,32 +234,32 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)_revertRecordWithLocalScopedIdentifier:(id)a3 class:(Class)a4 revertedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_revertRecordWithLocalScopedIdentifier:(id)identifier class:(Class)class revertedCount:(unint64_t *)count error:(id *)error
 {
-  v8 = [(CPLEngineRevertRecords *)self->_revertRecords addRecordsToRevertWithLocalScopedIdentifier:a3 class:a4 error:a6];
+  v8 = [(CPLEngineRevertRecords *)self->_revertRecords addRecordsToRevertWithLocalScopedIdentifier:identifier class:class error:error];
   if (v8)
   {
-    *a5 += [(PQLConnection *)self->_db changes];
+    *count += [(PQLConnection *)self->_db changes];
   }
 
   return v8;
 }
 
-- (BOOL)_performMigrationForRemappedRecord:(id)a3 primaryScope:(id)a4 sharingScope:(id)a5 revertedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)_performMigrationForRemappedRecord:(id)record primaryScope:(id)scope sharingScope:(id)sharingScope revertedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  recordCopy = record;
+  scopeCopy = scope;
+  sharingScopeCopy = sharingScope;
   pqStore = self->_pqStore;
-  v17 = [v14 scopeIdentifier];
-  v18 = [v15 scopeIdentifier];
-  [(CPLPrequeliteStore *)pqStore recordUpgradeEvent:@"Inspecting local state for %@ + %@", v17, v18];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  scopeIdentifier2 = [sharingScopeCopy scopeIdentifier];
+  [(CPLPrequeliteStore *)pqStore recordUpgradeEvent:@"Inspecting local state for %@ + %@", scopeIdentifier, scopeIdentifier2];
 
-  v19 = sub_1001941F8(v13);
-  v20 = sub_100194210(v13);
-  LODWORD(v18) = [(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:v19 aSuspiciousRemappingToCloudScopedIdentifier:v20 primaryScope:v14];
+  v19 = sub_1001941F8(recordCopy);
+  v20 = sub_100194210(recordCopy);
+  LODWORD(scopeIdentifier2) = [(CPLStoreMigrationAssistant_101386451 *)self _isCloudScopedIdentifier:v19 aSuspiciousRemappingToCloudScopedIdentifier:v20 primaryScope:scopeCopy];
 
-  if (!v18)
+  if (!scopeIdentifier2)
   {
     v30 = 0;
     goto LABEL_57;
@@ -270,9 +270,9 @@ LABEL_24:
     v21 = sub_10014BE6C();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = sub_100194210(v13);
+      v22 = sub_100194210(recordCopy);
       *buf = 138412546;
-      v101 = v13;
+      v101 = recordCopy;
       v102 = 2112;
       v103 = v22;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ is suspicious: will make sure to drop %@ in client", buf, 0x16u);
@@ -280,12 +280,12 @@ LABEL_24:
   }
 
   v80 = a2;
-  v83 = a6;
+  countCopy = count;
   v23 = [CPLScopedIdentifier alloc];
-  v24 = [v14 scopeIdentifier];
-  v25 = sub_100194210(v13);
-  v26 = [v25 identifier];
-  v27 = [v23 initWithScopeIdentifier:v24 identifier:v26 scopeIndex:{objc_msgSend(v14, "cloudIndex")}];
+  scopeIdentifier3 = [scopeCopy scopeIdentifier];
+  v25 = sub_100194210(recordCopy);
+  identifier = [v25 identifier];
+  v27 = [v23 initWithScopeIdentifier:scopeIdentifier3 identifier:identifier scopeIndex:{objc_msgSend(scopeCopy, "cloudIndex")}];
 
   v28 = v27;
   v29 = [(CPLEngineCloudCache *)self->_cloudCache recordWithScopedIdentifier:v27 isFinal:0];
@@ -300,17 +300,17 @@ LABEL_24:
   {
     v30 = 0;
 LABEL_19:
-    v85 = a7;
+    errorCopy = error;
     v95 = 0;
     v42 = [CPLScopedIdentifier alloc];
-    v43 = [v14 scopeIdentifier];
-    v44 = sub_1001941F8(v13);
-    v45 = [v44 identifier];
-    v46 = [v42 initWithScopeIdentifier:v43 identifier:v45 scopeIndex:{objc_msgSend(v14, "cloudIndex")}];
+    scopeIdentifier4 = [scopeCopy scopeIdentifier];
+    v44 = sub_1001941F8(recordCopy);
+    identifier2 = [v44 identifier];
+    v46 = [v42 initWithScopeIdentifier:scopeIdentifier4 identifier:identifier2 scopeIndex:{objc_msgSend(scopeCopy, "cloudIndex")}];
 
     v47 = v46;
     v48 = [(CPLEngineIDMapping *)self->_idMapping localScopedIdentifierForCloudScopedIdentifier:v46 isFinal:&v95];
-    [v48 setScopeIndex:{objc_msgSend(v14, "localIndex")}];
+    [v48 setScopeIndex:{objc_msgSend(scopeCopy, "localIndex")}];
     v49 = [(CPLEnginePushRepository *)self->_pushRepository changeWithScopedIdentifier:v48];
     if (!v49)
     {
@@ -335,11 +335,11 @@ LABEL_19:
         }
       }
 
-      v82 = v15;
-      v60 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
-      v61 = [v49 _pushContext];
+      v82 = sharingScopeCopy;
+      platformObject = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
+      _pushContext = [v49 _pushContext];
       v88 = v30;
-      v62 = [v60 _overwriteChange:v49 pushContext:v61 error:&v88];
+      v62 = [platformObject _overwriteChange:v49 pushContext:_pushContext error:&v88];
       v63 = v88;
 
       if (!v62)
@@ -348,17 +348,17 @@ LABEL_19:
         v30 = v63;
         v47 = v76;
         v28 = v79;
-        v15 = v82;
+        sharingScopeCopy = v82;
         goto LABEL_56;
       }
 
       v87 = v63;
-      v58 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v48 class:objc_opt_class() revertedCount:v83 error:&v87];
+      v58 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v48 class:objc_opt_class() revertedCount:countCopy error:&v87];
       v64 = v87;
       v47 = v76;
       v28 = v79;
       v30 = v63;
-      v15 = v82;
+      sharingScopeCopy = v82;
       goto LABEL_54;
     }
 
@@ -384,9 +384,9 @@ LABEL_38:
     v78 = v28;
     if ([v49 isDelete] && objc_msgSend(v49, "isAssetChange"))
     {
-      v52 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
+      platformObject2 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
       v93 = 0;
-      v73 = [v52 getRelatedScopedIdentifier:&v93 forRecordWithScopedIdentifier:v48];
+      v73 = [platformObject2 getRelatedScopedIdentifier:&v93 forRecordWithScopedIdentifier:v48];
       v53 = v93;
 
       if ((v73 & 1) == 0)
@@ -414,9 +414,9 @@ LABEL_38:
           }
 
           v74 = v54;
-          v56 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
+          platformObject3 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
           v92 = v30;
-          v57 = [v56 deleteChangeWithScopedIdentifier:v81 error:&v92];
+          v57 = [platformObject3 deleteChangeWithScopedIdentifier:v81 error:&v92];
           v72 = v92;
 
           if ((v57 & 1) == 0)
@@ -431,7 +431,7 @@ LABEL_38:
           }
 
           v91 = v72;
-          v71 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v81 class:objc_opt_class() revertedCount:v83 error:&v91];
+          v71 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v81 class:objc_opt_class() revertedCount:countCopy error:&v91];
           v30 = v91;
 
           if (!v71)
@@ -452,9 +452,9 @@ LABEL_38:
     }
 
     v65 = v30;
-    v66 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
+    platformObject4 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
     v90 = v30;
-    v67 = [v66 deleteChangeWithScopedIdentifier:v48 error:&v90];
+    v67 = [platformObject4 deleteChangeWithScopedIdentifier:v48 error:&v90];
     v30 = v90;
 
     if (!v67)
@@ -467,7 +467,7 @@ LABEL_56:
 
       if ((v58 & 1) == 0)
       {
-        a7 = v85;
+        error = errorCopy;
         goto LABEL_59;
       }
 
@@ -477,7 +477,7 @@ LABEL_57:
     }
 
     v89 = v30;
-    v58 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v48 class:objc_opt_class() revertedCount:v83 error:&v89];
+    v58 = [(CPLStoreMigrationAssistant_101386451 *)self _revertRecordWithLocalScopedIdentifier:v48 class:objc_opt_class() revertedCount:countCopy error:&v89];
     v64 = v89;
     v47 = v75;
     v28 = v78;
@@ -498,9 +498,9 @@ LABEL_54:
     }
   }
 
-  v32 = [(CPLEngineCloudCache *)self->_cloudCache platformObject];
+  platformObject5 = [(CPLEngineCloudCache *)self->_cloudCache platformObject];
   v99 = 0;
-  v33 = [v32 _deleteRecordWithScopedIdentifier:v28 error:&v99];
+  v33 = [platformObject5 _deleteRecordWithScopedIdentifier:v28 error:&v99];
   v30 = v99;
 
   if (!v33)
@@ -508,10 +508,10 @@ LABEL_54:
     goto LABEL_48;
   }
 
-  v84 = a7;
-  v34 = [(CPLEngineChangePipe *)self->_pullQueue platformObject];
+  errorCopy2 = error;
+  platformObject6 = [(CPLEngineChangePipe *)self->_pullQueue platformObject];
   v98 = v30;
-  v35 = [v34 _deleteAllChangesWithScopedIdentifier:v28 error:&v98];
+  v35 = [platformObject6 _deleteAllChangesWithScopedIdentifier:v28 error:&v98];
   v36 = v98;
 
   if (v35)
@@ -519,20 +519,20 @@ LABEL_54:
     buf[0] = 0;
     v77 = v28;
     v37 = [(CPLEngineIDMapping *)self->_idMapping localScopedIdentifierForCloudScopedIdentifier:v28 isFinal:buf];
-    [v37 setScopeIndex:{objc_msgSend(v14, "localIndex")}];
-    v38 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
+    [v37 setScopeIndex:{objc_msgSend(scopeCopy, "localIndex")}];
+    platformObject7 = [(CPLEnginePushRepository *)self->_pushRepository platformObject];
     v97 = v36;
-    v39 = [v38 deleteChangeWithScopedIdentifier:v37 error:&v97];
+    v39 = [platformObject7 deleteChangeWithScopedIdentifier:v37 error:&v97];
     v30 = v97;
 
     if (v39)
     {
       v96 = v30;
-      v40 = -[CPLStoreMigrationAssistant_101386451 _revertRecordWithLocalScopedIdentifier:class:revertedCount:error:](self, "_revertRecordWithLocalScopedIdentifier:class:revertedCount:error:", v37, [v86 recordClass], v83, &v96);
+      v40 = -[CPLStoreMigrationAssistant_101386451 _revertRecordWithLocalScopedIdentifier:class:revertedCount:error:](self, "_revertRecordWithLocalScopedIdentifier:class:revertedCount:error:", v37, [v86 recordClass], countCopy, &v96);
       v41 = v96;
 
       v30 = v41;
-      a7 = v84;
+      error = errorCopy2;
       v28 = v77;
       if (!v40)
       {
@@ -542,14 +542,14 @@ LABEL_54:
       goto LABEL_19;
     }
 
-    a7 = v84;
+    error = errorCopy2;
     v28 = v77;
   }
 
   else
   {
     v30 = v36;
-    a7 = v84;
+    error = errorCopy2;
   }
 
 LABEL_48:
@@ -560,11 +560,11 @@ LABEL_59:
     sub_1001B806C();
   }
 
-  if (a7)
+  if (error)
   {
     v69 = v30;
     v68 = 0;
-    *a7 = v30;
+    *error = v30;
   }
 
   else
@@ -577,19 +577,19 @@ LABEL_64:
   return v68;
 }
 
-- (BOOL)_performMigrationWithPrimaryScope:(id)a3 sharingScope:(id)a4 error:(id *)a5
+- (BOOL)_performMigrationWithPrimaryScope:(id)scope sharingScope:(id)sharingScope error:(id *)error
 {
-  v47 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineRemappedRecords *)self->_remappedRecords platformObject];
+  scopeCopy = scope;
+  sharingScopeCopy = sharingScope;
+  platformObject = [(CPLEngineRemappedRecords *)self->_remappedRecords platformObject];
   [(CPLEngineIDMapping *)self->_idMapping platformObject];
-  v46 = v45 = v8;
+  v46 = v45 = platformObject;
   v56 = 0;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v9 = [v8 remappedRecordEnumeratorInScope:v7];
+  v9 = [platformObject remappedRecordEnumeratorInScope:sharingScopeCopy];
   v10 = [v9 countByEnumeratingWithState:&v52 objects:v61 count:16];
   v42 = v10;
   v11 = 0;
@@ -613,7 +613,7 @@ LABEL_64:
         v17 = *(*(&v52 + 1) + 8 * v15);
         v18 = objc_autoreleasePoolPush();
         v51 = v16;
-        LODWORD(v17) = [(CPLStoreMigrationAssistant_101386451 *)self _performMigrationForRemappedRecord:v17 primaryScope:v47 sharingScope:v7 revertedCount:&v56 error:&v51];
+        LODWORD(v17) = [(CPLStoreMigrationAssistant_101386451 *)self _performMigrationForRemappedRecord:v17 primaryScope:scopeCopy sharingScope:sharingScopeCopy revertedCount:&v56 error:&v51];
         v12 = v51;
 
         if (!v17)
@@ -658,9 +658,9 @@ LABEL_64:
   [(CPLPrequeliteStore *)self->_pqStore recordUpgradeEvent:@"Inspected %lu remapped records for migration and scheduled %lu reverted changes", v11, v56];
   if (v56)
   {
-    v20 = [(CPLStoreMigrationAssistant_101386451 *)self store];
+    store = [(CPLStoreMigrationAssistant_101386451 *)self store];
     v50 = v12;
-    v21 = [v20 addPushPullGatekeeper:self error:&v50];
+    v21 = [store addPushPullGatekeeper:self error:&v50];
     v22 = v50;
 
     if (!v42 || (v21 & 1) == 0)
@@ -687,7 +687,7 @@ LABEL_24:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v7;
+        v58 = sharingScopeCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Resetting sync anchor for %@ to ensure all remapped records have been refreshed", buf, 0xCu);
       }
     }
@@ -695,7 +695,7 @@ LABEL_24:
     [(CPLPrequeliteStore *)self->_pqStore recordUpgradeEvent:@"Resetting sync anchor for shared scope"];
     scopes = self->_scopes;
     v49 = v12;
-    v28 = [(CPLEngineScopeStorage *)scopes resetSyncAnchorForScope:v7 error:&v49];
+    v28 = [(CPLEngineScopeStorage *)scopes resetSyncAnchorForScope:sharingScopeCopy error:&v49];
     v22 = v49;
 
     if ((v28 & 1) == 0)
@@ -705,9 +705,9 @@ LABEL_24:
   }
 
 LABEL_31:
-  v29 = [(CPLEngineScopeStorage *)self->_scopes platformObject];
-  v30 = [v29 creationDateForScope:v47];
-  v31 = [v29 creationDateForScope:v7];
+  platformObject2 = [(CPLEngineScopeStorage *)self->_scopes platformObject];
+  v30 = [platformObject2 creationDateForScope:scopeCopy];
+  v31 = [platformObject2 creationDateForScope:sharingScopeCopy];
   v32 = +[NSUserDefaults standardUserDefaults];
   [v32 doubleForKey:@"CPLRewindForSparseRecordsInterval"];
   v34 = v33;
@@ -735,7 +735,7 @@ LABEL_49:
     }
   }
 
-  v36 = [(CPLEngineScopeStorage *)self->_scopes scopeChangeForScope:v47];
+  v36 = [(CPLEngineScopeStorage *)self->_scopes scopeChangeForScope:scopeCopy];
   if (v36 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -744,7 +744,7 @@ LABEL_49:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v47;
+        v58 = scopeCopy;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Resetting sync anchor for %@ to ensure we catch up with missing sparse private records and relationships to them", buf, 0xCu);
       }
     }
@@ -752,7 +752,7 @@ LABEL_49:
     [(CPLPrequeliteStore *)self->_pqStore recordUpgradeEvent:@"Resetting sync anchor for private scope"];
     v38 = self->_scopes;
     v48 = v22;
-    v39 = [(CPLEngineScopeStorage *)v38 resetSyncAnchorForScope:v47 error:&v48];
+    v39 = [(CPLEngineScopeStorage *)v38 resetSyncAnchorForScope:scopeCopy error:&v48];
     v40 = v48;
 
     v22 = v40;
@@ -775,11 +775,11 @@ LABEL_18:
   }
 
   v23 = v45;
-  if (a5)
+  if (error)
   {
     v24 = v22;
     v25 = 0;
-    *a5 = v22;
+    *error = v22;
   }
 
   else
@@ -792,12 +792,12 @@ LABEL_50:
   return v25;
 }
 
-- (BOOL)performMigrationWithError:(id *)a3
+- (BOOL)performMigrationWithError:(id *)error
 {
-  v5 = [(CPLStoreMigrationAssistant_101386451 *)self store];
-  v6 = [v5 scopes];
-  v7 = [v6 primaryScope];
-  if (v7 && ([v6 valueForFlag:16 forScope:v7] & 1) == 0 && (objc_msgSend(v6, "sharingScopeForScope:", v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  store = [(CPLStoreMigrationAssistant_101386451 *)self store];
+  scopes = [store scopes];
+  primaryScope = [scopes primaryScope];
+  if (primaryScope && ([scopes valueForFlag:16 forScope:primaryScope] & 1) == 0 && (objc_msgSend(scopes, "sharingScopeForScope:", primaryScope), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     if ((_CPLSilentLogging & 1) == 0)
@@ -811,9 +811,9 @@ LABEL_50:
       }
     }
 
-    if ([v5 forceApplyPendingChangeSessionUpdateWithError:a3])
+    if ([store forceApplyPendingChangeSessionUpdateWithError:error])
     {
-      v11 = [(CPLStoreMigrationAssistant_101386451 *)self _performMigrationWithPrimaryScope:v7 sharingScope:v9 error:a3];
+      v11 = [(CPLStoreMigrationAssistant_101386451 *)self _performMigrationWithPrimaryScope:primaryScope sharingScope:v9 error:error];
     }
 
     else

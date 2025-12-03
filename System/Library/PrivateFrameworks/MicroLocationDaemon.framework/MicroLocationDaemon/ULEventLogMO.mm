@@ -1,28 +1,28 @@
 @interface ULEventLogMO
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULEventLogDO>)convertToDO;
 @end
 
 @implementation ULEventLogMO
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [[ULEventLogMO alloc] initWithContext:v5];
-  if (*(a3 + 23) >= 0)
+  contextCopy = context;
+  v6 = [[ULEventLogMO alloc] initWithContext:contextCopy];
+  if (*(o + 23) >= 0)
   {
-    v7 = a3;
+    oCopy = o;
   }
 
   else
   {
-    v7 = *a3;
+    oCopy = *o;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
+  v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:oCopy];
   [(ULEventLogMO *)v6 setEvent:v8];
 
-  [(ULEventLogMO *)v6 setTimestamp:*(a3 + 3)];
+  [(ULEventLogMO *)v6 setTimestamp:*(o + 3)];
 
   return v6;
 }
@@ -30,11 +30,11 @@
 - (optional<ULEventLogDO>)convertToDO
 {
   v2 = v1;
-  v4 = [v1 event];
-  v5 = v4;
-  if (v4)
+  event = [v1 event];
+  v5 = event;
+  if (event)
   {
-    [v4 stdString];
+    [event stdString];
   }
 
   else

@@ -1,34 +1,34 @@
 @interface CUBluetoothScalablePipe
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4;
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error;
 - (CUBluetoothScalablePipe)init;
-- (int)_readBytes:(char *)a3 minLen:(unint64_t)a4 maxLen:(unint64_t)a5 offset:(unint64_t *)a6;
-- (int)_writeIOArray:(iovec *)a3 ioCount:(int *)a4;
-- (unint64_t)_writeBytes:(const char *)a3 length:(unint64_t)a4;
-- (void)_abortReadsWithError:(id)a3;
-- (void)_abortWritesWithError:(id)a3;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
+- (int)_readBytes:(char *)bytes minLen:(unint64_t)len maxLen:(unint64_t)maxLen offset:(unint64_t *)offset;
+- (int)_writeIOArray:(iovec *)array ioCount:(int *)count;
+- (unint64_t)_writeBytes:(const char *)bytes length:(unint64_t)length;
+- (void)_abortReadsWithError:(id)error;
+- (void)_abortWritesWithError:(id)error;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_ensureStarted;
-- (void)_ensureStopped:(id)a3;
+- (void)_ensureStopped:(id)stopped;
 - (void)_handleBTPeerHostStateChanged;
 - (void)_invalidate;
-- (void)_prepareReadRequest:(id)a3;
+- (void)_prepareReadRequest:(id)request;
 - (void)_processReads;
 - (void)_processWrites;
 - (void)_setupPipe;
 - (void)_tearDownPipe;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)readWithRequest:(id)a3;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)writeWithRequest:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)readWithRequest:(id)request;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
+- (void)setLabel:(id)label;
+- (void)writeWithRequest:(id)request;
 @end
 
 @implementation CUBluetoothScalablePipe
@@ -41,8 +41,8 @@
     v4 = self->_writeRequestCurrent;
     if (!v4)
     {
-      v14 = [(NSMutableArray *)self->_writeRequests firstObject];
-      if (!v14)
+      firstObject = [(NSMutableArray *)self->_writeRequests firstObject];
+      if (!firstObject)
       {
         if (!self->_writeSuspended)
         {
@@ -54,7 +54,7 @@
         goto LABEL_25;
       }
 
-      v4 = v14;
+      v4 = firstObject;
       [(NSMutableArray *)self->_writeRequests removeObjectAtIndex:0];
       v20 = 0;
       [(CUBluetoothScalablePipe *)self _prepareWriteRequest:v4 error:&v20];
@@ -138,13 +138,13 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v5 = [(NSMutableArray *)self->_readRequests firstObject];
-    if (!v5)
+    firstObject = [(NSMutableArray *)self->_readRequests firstObject];
+    if (!firstObject)
     {
       break;
     }
 
-    obja = v5;
+    obja = firstObject;
     [(NSMutableArray *)self->_readRequests removeObjectAtIndex:0];
     [(CUBluetoothScalablePipe *)self _prepareReadRequest:obja];
     objc_storeStrong(&self->_readRequestCurrent, obja);
@@ -167,9 +167,9 @@ LABEL_5:
     {
       ucat = self->_ucat;
 LABEL_7:
-      v14 = [(CUReadRequest *)obj minLength];
+      minLength = [(CUReadRequest *)obj minLength];
       [(CUReadRequest *)obj maxLength];
-      LogPrintF(ucat, "[CUBluetoothScalablePipe _processReads]", 9u, "Read channel, %zu min, %zu max, %zu offset, %zu nread, %#m\n", v15, v16, v17, v18, v14);
+      LogPrintF(ucat, "[CUBluetoothScalablePipe _processReads]", 9u, "Read channel, %zu min, %zu max, %zu offset, %zu nread, %#m\n", v15, v16, v17, v18, minLength);
     }
 
 LABEL_9:
@@ -222,15 +222,15 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
-  v34 = a4;
-  v7 = a5;
+  disconnectCopy = disconnect;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v8 = [v34 name];
-    v9 = [v8 isEqual:self->_identifier];
+    name = [disconnectCopy name];
+    v9 = [name isEqual:self->_identifier];
 
     ucat = self->_ucat;
     var0 = ucat->var0;
@@ -238,7 +238,7 @@ LABEL_18:
     {
       if (var0 <= 30)
       {
-        v12 = v34;
+        v12 = disconnectCopy;
         if (var0 == -1)
         {
           if (!_LogCategory_Initialize(self->_ucat, 0x1Eu))
@@ -247,24 +247,24 @@ LABEL_18:
           }
 
           ucat = self->_ucat;
-          v12 = v34;
+          v12 = disconnectCopy;
         }
 
-        v13 = [v12 name];
-        v14 = [v34 peer];
-        v33 = [v14 identifier];
-        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidDisconnect:error:]", 0x1Eu, "Pipe disconnected: ID '%@', Peer %@, %{error}\n", v15, v16, v17, v18, v13);
+        name2 = [v12 name];
+        peer = [disconnectCopy peer];
+        identifier = [peer identifier];
+        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidDisconnect:error:]", 0x1Eu, "Pipe disconnected: ID '%@', Peer %@, %{error}\n", v15, v16, v17, v18, name2);
       }
 
 LABEL_10:
-      v19 = v7;
-      if (!v19)
+      name3 = errorCopy;
+      if (!name3)
       {
-        v19 = NSErrorWithOSStatusF(4294960543, "Pipe disconnected", v24, v25, v26, v27, v28, v29, v32);
+        name3 = NSErrorWithOSStatusF(4294960543, "Pipe disconnected", v24, v25, v26, v27, v28, v29, v32);
       }
 
-      [(CUBluetoothScalablePipe *)self _abortReadsWithError:v19];
-      [(CUBluetoothScalablePipe *)self _abortWritesWithError:v19];
+      [(CUBluetoothScalablePipe *)self _abortReadsWithError:name3];
+      [(CUBluetoothScalablePipe *)self _abortWritesWithError:name3];
       [(CUBluetoothScalablePipe *)self _tearDownPipe];
       btPipe = self->_btPipe;
       self->_btPipe = 0;
@@ -283,8 +283,8 @@ LABEL_10:
     if (var0 != -1)
     {
 LABEL_8:
-      v19 = [v34 name];
-      LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidDisconnect:error:]", 0x1Eu, "Ignoring pipeDidDisconnect for unknown identifier ('%@' not '%@'): %{error}\n", v20, v21, v22, v23, v19);
+      name3 = [disconnectCopy name];
+      LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidDisconnect:error:]", 0x1Eu, "Ignoring pipeDidDisconnect for unknown identifier ('%@' not '%@'): %{error}\n", v20, v21, v22, v23, name3);
 LABEL_13:
 
       goto LABEL_14;
@@ -300,20 +300,20 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
-  v47 = a4;
+  connectCopy = connect;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = v47;
+  v7 = connectCopy;
   if (!self->_invalidateCalled)
   {
-    v8 = [v47 name];
-    v9 = [v8 isEqual:self->_identifier];
+    name = [connectCopy name];
+    v9 = [name isEqual:self->_identifier];
 
     if ((v9 & 1) == 0)
     {
       ucat = self->_ucat;
-      v7 = v47;
+      v7 = connectCopy;
       if (ucat->var0 > 30)
       {
         goto LABEL_21;
@@ -321,9 +321,9 @@ LABEL_14:
 
       if (ucat->var0 == -1)
       {
-        v6 = _LogCategory_Initialize(self->_ucat, 0x1Eu);
-        v7 = v47;
-        if (!v6)
+        _ensureStarted = _LogCategory_Initialize(self->_ucat, 0x1Eu);
+        v7 = connectCopy;
+        if (!_ensureStarted)
         {
           goto LABEL_21;
         }
@@ -331,8 +331,8 @@ LABEL_14:
         ucat = self->_ucat;
       }
 
-      v28 = [v7 name];
-      LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x1Eu, "Ignoring pipeDidConnect for unknown identifier ('%@' not '%@')\n", v29, v30, v31, v32, v28);
+      name2 = [v7 name];
+      LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x1Eu, "Ignoring pipeDidConnect for unknown identifier ('%@' not '%@')\n", v29, v30, v31, v32, name2);
 
       goto LABEL_20;
     }
@@ -341,10 +341,10 @@ LABEL_14:
     if (!btPipe)
     {
 LABEL_14:
-      v36 = [v47 peer];
-      v37 = [v36 identifier];
+      peer = [connectCopy peer];
+      identifier = [peer identifier];
       peerIdentifier = self->_peerIdentifier;
-      self->_peerIdentifier = v37;
+      self->_peerIdentifier = identifier;
 
       v39 = self->_ucat;
       if (v39->var0 <= 30)
@@ -359,17 +359,17 @@ LABEL_14:
           v39 = self->_ucat;
         }
 
-        v40 = [v47 name];
-        [v47 type];
-        [v47 priority];
-        LogPrintF(v39, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x1Eu, "Pipe connected: ID '%@', Peer %@, Type %s, Priority %s\n", v41, v42, v43, v44, v40);
+        name3 = [connectCopy name];
+        [connectCopy type];
+        [connectCopy priority];
+        LogPrintF(v39, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x1Eu, "Pipe connected: ID '%@', Peer %@, Type %s, Priority %s\n", v41, v42, v43, v44, name3);
       }
 
 LABEL_19:
-      objc_storeStrong(&self->_btPipe, a4);
-      v6 = [(CUBluetoothScalablePipe *)self _ensureStarted];
+      objc_storeStrong(&self->_btPipe, connect);
+      _ensureStarted = [(CUBluetoothScalablePipe *)self _ensureStarted];
 LABEL_20:
-      v7 = v47;
+      v7 = connectCopy;
       goto LABEL_21;
     }
 
@@ -387,13 +387,13 @@ LABEL_20:
         btPipe = self->_btPipe;
       }
 
-      v18 = [(CBScalablePipe *)btPipe name];
-      v19 = [(CBScalablePipe *)self->_btPipe peer];
-      v20 = [v19 identifier];
-      v21 = [v47 name];
-      v22 = [v47 peer];
-      v46 = [v22 identifier];
-      LogPrintF(v17, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x5Au, "Pipe connect when already connected: '%@', Peer %@ -> '%@', Peer %@\n", v23, v24, v25, v26, v18);
+      name4 = [(CBScalablePipe *)btPipe name];
+      peer2 = [(CBScalablePipe *)self->_btPipe peer];
+      identifier2 = [peer2 identifier];
+      name5 = [connectCopy name];
+      peer3 = [connectCopy peer];
+      identifier3 = [peer3 identifier];
+      LogPrintF(v17, "[CUBluetoothScalablePipe scalablePipeManager:pipeDidConnect:]", 0x5Au, "Pipe connect when already connected: '%@', Peer %@ -> '%@', Peer %@\n", v23, v24, v25, v26, name4);
     }
 
 LABEL_13:
@@ -412,17 +412,17 @@ LABEL_13:
 
 LABEL_21:
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](_ensureStarted, v7);
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
-  v17 = a4;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = v17;
+  v6 = endpointCopy;
   if (!self->_invalidateCalled)
   {
-    v13 = [v17 isEqual:self->_identifier];
+    v13 = [endpointCopy isEqual:self->_identifier];
     ucat = self->_ucat;
     v14 = *ucat;
     if (v13)
@@ -439,7 +439,7 @@ LABEL_21:
           ucat = self->_ucat;
         }
 
-        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didUnregisterEndpoint:]", 0x1Eu, "Endpoint unregistered '%@'\n", v9, v10, v11, v12, v17);
+        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didUnregisterEndpoint:]", 0x1Eu, "Endpoint unregistered '%@'\n", v9, v10, v11, v12, endpointCopy);
       }
 
 LABEL_10:
@@ -450,7 +450,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v6 = v17;
+    v6 = endpointCopy;
     if (v14 > 30)
     {
       goto LABEL_12;
@@ -461,12 +461,12 @@ LABEL_10:
 LABEL_8:
       ucat = LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didUnregisterEndpoint:]", 0x1Eu, "Ignoring didRegisterEndpoint for unknown identifier ('%@' not '%@')\n", v9, v10, v11, v12, v6);
 LABEL_11:
-      v6 = v17;
+      v6 = endpointCopy;
       goto LABEL_12;
     }
 
     ucat = _LogCategory_Initialize(ucat, 0x1Eu);
-    v6 = v17;
+    v6 = endpointCopy;
     if (ucat)
     {
       ucat = self->_ucat;
@@ -479,21 +479,21 @@ LABEL_12:
   MEMORY[0x1EEE66BB8](ucat, v6);
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
-  v16 = a4;
-  v7 = a5;
+  endpointCopy = endpoint;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
     goto LABEL_20;
   }
 
-  if ([v16 isEqual:self->_identifier])
+  if ([endpointCopy isEqual:self->_identifier])
   {
     ucat = self->_ucat;
     var0 = ucat->var0;
-    if (v7)
+    if (errorCopy)
     {
       if (var0 > 90)
       {
@@ -509,7 +509,7 @@ LABEL_12:
       {
         ucat = self->_ucat;
 LABEL_6:
-        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didRegisterEndpoint:error:]", 0x5Au, "### didRegisterEndpoint error: %{error}\n", v8, v9, v10, v11, v7);
+        LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didRegisterEndpoint:error:]", 0x5Au, "### didRegisterEndpoint error: %{error}\n", v8, v9, v10, v11, errorCopy);
         goto LABEL_20;
       }
 
@@ -518,7 +518,7 @@ LABEL_6:
 
     if (var0 <= 30)
     {
-      v15 = v16;
+      v15 = endpointCopy;
       if (var0 == -1)
       {
         if (!_LogCategory_Initialize(ucat, 0x1Eu))
@@ -527,7 +527,7 @@ LABEL_6:
         }
 
         ucat = self->_ucat;
-        v15 = v16;
+        v15 = endpointCopy;
       }
 
       LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManager:didRegisterEndpoint:error:]", 0x1Eu, "Endpoint registered '%@'\n", v8, v9, v10, v11, v15);
@@ -555,18 +555,18 @@ LABEL_19:
     v14 = self->_ucat;
   }
 
-  LogPrintF(v14, "[CUBluetoothScalablePipe scalablePipeManager:didRegisterEndpoint:error:]", 0x1Eu, "Ignoring didRegisterEndpoint for unknown identifier ('%@' not '%@'): %{error}\n", v8, v9, v10, v11, v16);
+  LogPrintF(v14, "[CUBluetoothScalablePipe scalablePipeManager:didRegisterEndpoint:error:]", 0x1Eu, "Ignoring didRegisterEndpoint for unknown identifier ('%@' not '%@'): %{error}\n", v8, v9, v10, v11, endpointCopy);
 LABEL_20:
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
-  v17 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = v17;
+  v4 = stateCopy;
   if (!self->_invalidateCalled)
   {
-    v11 = [v17 state];
+    state = [stateCopy state];
     ucat = self->_ucat;
     if (ucat->var0 > 30)
     {
@@ -583,29 +583,29 @@ LABEL_20:
       ucat = self->_ucat;
     }
 
-    if (v11 > 0xA)
+    if (state > 0xA)
     {
       v13 = "?";
     }
 
     else
     {
-      v13 = off_1E73A3018[v11];
+      v13 = off_1E73A3018[state];
     }
 
     LogPrintF(ucat, "[CUBluetoothScalablePipe scalablePipeManagerDidUpdateState:]", 0x1Eu, "Bluetooth scalable pipe state changed: %s\n", v7, v8, v9, v10, v13);
 LABEL_10:
-    if (v11 <= 2)
+    if (state <= 2)
     {
-      v4 = v17;
-      if (v11 == 1)
+      v4 = stateCopy;
+      if (state == 1)
       {
         v14 = "Resetting";
       }
 
       else
       {
-        if (v11 != 2)
+        if (state != 2)
         {
           goto LABEL_27;
         }
@@ -616,8 +616,8 @@ LABEL_10:
 
     else
     {
-      v4 = v17;
-      switch(v11)
+      v4 = stateCopy;
+      switch(state)
       {
         case 3:
           v14 = "Unauthorized";
@@ -654,15 +654,15 @@ LABEL_25:
     [(CUBluetoothScalablePipe *)self _ensureStopped:v16];
 
 LABEL_26:
-    v4 = v17;
+    v4 = stateCopy;
   }
 
 LABEL_27:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"hostState", a4, a5, a6}])
+  if ([path isEqualToString:{@"hostState", object, change, context}])
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -685,17 +685,17 @@ _BYTE *__74__CUBluetoothScalablePipe_observeValueForKeyPath_ofObject_change_cont
   return result;
 }
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v14 = a3;
-  v10 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUBluetoothScalablePipe _completeWriteRequest:error:]", 9u, "Write completed: %{error}\n", v6, v7, v8, v9, v10);
+      LogPrintF(ucat, "[CUBluetoothScalablePipe _completeWriteRequest:error:]", 9u, "Write completed: %{error}\n", v6, v7, v8, v9, errorCopy);
       goto LABEL_5;
     }
 
@@ -707,21 +707,21 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = v14[1];
-  v14[1] = v10;
+  v12 = requestCopy[1];
+  requestCopy[1] = errorCopy;
 
-  v13 = [v14 completion];
-  [v14 setCompletion:0];
-  if (v13)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v13[2](v13);
+    completion[2](completion);
   }
 }
 
-- (void)_abortWritesWithError:(id)a3
+- (void)_abortWritesWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_writeRequestCurrent || [(NSMutableArray *)self->_writeRequests count])
   {
     ucat = self->_ucat;
@@ -730,7 +730,7 @@ LABEL_5:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBluetoothScalablePipe _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBluetoothScalablePipe _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -749,7 +749,7 @@ LABEL_7:
     writeRequestCurrent = self->_writeRequestCurrent;
     self->_writeRequestCurrent = 0;
 
-    [(CUBluetoothScalablePipe *)self _completeWriteRequest:v10 error:v8];
+    [(CUBluetoothScalablePipe *)self _completeWriteRequest:v10 error:errorCopy];
   }
 
   v21 = 0u;
@@ -775,7 +775,7 @@ LABEL_7:
 
         v10 = *(*(&v19 + 1) + 8 * v16);
 
-        [(CUBluetoothScalablePipe *)self _completeWriteRequest:v10 error:v8];
+        [(CUBluetoothScalablePipe *)self _completeWriteRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -796,17 +796,17 @@ LABEL_7:
   }
 }
 
-- (unint64_t)_writeBytes:(const char *)a3 length:(unint64_t)a4
+- (unint64_t)_writeBytes:(const char *)bytes length:(unint64_t)length
 {
-  v5 = a3;
-  if (!a4)
+  bytesCopy2 = bytes;
+  if (!length)
   {
-    return v5 - a3;
+    return bytesCopy2 - bytes;
   }
 
   v7 = 0;
-  v8 = &a3[a4];
-  v5 = a3;
+  v8 = &bytes[length];
+  bytesCopy2 = bytes;
   while (1)
   {
     next_slot = os_channel_get_next_slot();
@@ -834,16 +834,16 @@ LABEL_7:
 
 LABEL_8:
     os_channel_set_slot_properties();
-    if (v5 == v8)
+    if (bytesCopy2 == v8)
     {
-      v5 = v8;
+      bytesCopy2 = v8;
       goto LABEL_12;
     }
   }
 
   if (!v7)
   {
-    return v5 - a3;
+    return bytesCopy2 - bytes;
   }
 
 LABEL_12:
@@ -889,19 +889,19 @@ LABEL_20:
     }
   }
 
-  return v5 - a3;
+  return bytesCopy2 - bytes;
 }
 
-- (int)_writeIOArray:(iovec *)a3 ioCount:(int *)a4
+- (int)_writeIOArray:(iovec *)array ioCount:(int *)count
 {
-  v4 = *a4;
+  v4 = *count;
   if (!v4)
   {
     return 0;
   }
 
-  v8 = *a3;
-  v9 = &(*a3)[v4];
+  v8 = *array;
+  v9 = &(*array)[v4];
   v10 = 16 * v4;
   while (1)
   {
@@ -924,40 +924,40 @@ LABEL_20:
 
   v8->iov_base = v8->iov_base + v11;
   v8->iov_len = v14;
-  *a3 = v8;
-  *a4 = (v9 - v8) >> 4;
+  *array = v8;
+  *count = (v9 - v8) >> 4;
   return 35;
 }
 
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dataArray];
-  v8 = v7;
-  if (!v7)
+  requestCopy = request;
+  dataArray = [requestCopy dataArray];
+  v8 = dataArray;
+  if (!dataArray)
   {
-    *(v6 + 34) = v6 + 16;
-    LODWORD(v18) = [v6 bytesIOCount];
+    *(requestCopy + 34) = requestCopy + 16;
+    LODWORD(v18) = [requestCopy bytesIOCount];
     goto LABEL_14;
   }
 
-  v9 = [v7 count];
-  if (v9 <= [v6 bytesIOMaxCount])
+  v9 = [dataArray count];
+  if (v9 <= [requestCopy bytesIOMaxCount])
   {
-    v19 = v6 + 16;
+    v19 = requestCopy + 16;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
     v20 = v8;
     v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
-    v22 = v6 + 16;
+    v22 = requestCopy + 16;
     if (v21)
     {
       v23 = v21;
       v24 = *v40;
-      v22 = v6 + 16;
+      v22 = requestCopy + 16;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -979,25 +979,25 @@ LABEL_20:
       while (v23);
     }
 
-    *(v6 + 34) = v19;
+    *(requestCopy + 34) = v19;
     v18 = (v22 - v19) >> 4;
 LABEL_14:
-    *(v6 + 70) = v18;
-    *(v6 + 36) = 0;
-    v27 = *(v6 + 1);
-    *(v6 + 1) = 0;
+    *(requestCopy + 70) = v18;
+    *(requestCopy + 36) = 0;
+    v27 = *(requestCopy + 1);
+    *(requestCopy + 1) = 0;
 
     if (gLogCategory_CUBluetoothScalablePipe > 9 || gLogCategory_CUBluetoothScalablePipe == -1 && !_LogCategory_Initialize(&gLogCategory_CUBluetoothScalablePipe, 9u))
     {
       goto LABEL_27;
     }
 
-    v32 = *(v6 + 70);
+    v32 = *(requestCopy + 70);
     if (v32)
     {
       v33 = 0;
       v34 = 16 * v32;
-      v35 = (*(v6 + 34) + 8);
+      v35 = (*(requestCopy + 34) + 8);
       do
       {
         v36 = *v35;
@@ -1023,7 +1023,7 @@ LABEL_14:
       }
 
       ucat = self->_ucat;
-      v32 = *(v6 + 70);
+      v32 = *(requestCopy + 70);
     }
 
     LogPrintF(ucat, "[CUBluetoothScalablePipe _prepareWriteRequest:error:]", 9u, "Write prepared (%d iov, %zu total)\n", v28, v29, v30, v31, v32);
@@ -1032,11 +1032,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
-    v10 = [v6 bytesIOMaxCount];
-    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, v10);
-    *a4 = v17 = 0;
+    bytesIOMaxCount = [requestCopy bytesIOMaxCount];
+    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, bytesIOMaxCount);
+    *error = v17 = 0;
   }
 
   else
@@ -1049,17 +1049,17 @@ LABEL_28:
   return v17;
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CUBluetoothScalablePipe_writeWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1085,14 +1085,14 @@ void __44__CUBluetoothScalablePipe_writeWithRequest___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
-    v8 = v16;
+    v8 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -1104,27 +1104,27 @@ LABEL_3:
     if (_LogCategory_Initialize(self->_ucat, 9u))
     {
       ucat = self->_ucat;
-      v8 = v16;
+      v8 = requestCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  v14 = v16[2];
-  v16[2] = v6;
+  v14 = requestCopy[2];
+  requestCopy[2] = errorCopy;
 
-  v15 = [v16 completion];
-  [v16 setCompletion:0];
-  if (v15)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v15[2](v15);
+    completion[2](completion);
   }
 }
 
-- (void)_abortReadsWithError:(id)a3
+- (void)_abortReadsWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_readRequestCurrent || [(NSMutableArray *)self->_readRequests count])
   {
     ucat = self->_ucat;
@@ -1133,7 +1133,7 @@ LABEL_5:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBluetoothScalablePipe _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBluetoothScalablePipe _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -1152,7 +1152,7 @@ LABEL_7:
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
 
-    [(CUBluetoothScalablePipe *)self _completeReadRequest:v10 error:v8];
+    [(CUBluetoothScalablePipe *)self _completeReadRequest:v10 error:errorCopy];
   }
 
   v21 = 0u;
@@ -1178,7 +1178,7 @@ LABEL_7:
 
         v10 = *(*(&v19 + 1) + 8 * v16);
 
-        [(CUBluetoothScalablePipe *)self _completeReadRequest:v10 error:v8];
+        [(CUBluetoothScalablePipe *)self _completeReadRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -1199,13 +1199,13 @@ LABEL_7:
   }
 }
 
-- (int)_readBytes:(char *)a3 minLen:(unint64_t)a4 maxLen:(unint64_t)a5 offset:(unint64_t *)a6
+- (int)_readBytes:(char *)bytes minLen:(unint64_t)len maxLen:(unint64_t)maxLen offset:(unint64_t *)offset
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = &a3[*a6];
-  v10 = a5 - *a6;
-  if (a5 == *a6)
+  lenCopy2 = len;
+  bytesCopy2 = bytes;
+  v9 = &bytes[*offset];
+  v10 = maxLen - *offset;
+  if (maxLen == *offset)
   {
     goto LABEL_26;
   }
@@ -1214,7 +1214,7 @@ LABEL_7:
   v13 = (self->_btReadLeftoverEnd - btReadLeftoverPtr);
   if (v13)
   {
-    v14 = v13 >= v10 ? a5 - *a6 : self->_btReadLeftoverEnd - btReadLeftoverPtr;
+    v14 = v13 >= v10 ? maxLen - *offset : self->_btReadLeftoverEnd - btReadLeftoverPtr;
     memcpy(v9, btReadLeftoverPtr, v14);
     self->_btReadLeftoverPtr += v14;
     v9 += v14;
@@ -1253,8 +1253,8 @@ LABEL_11:
     }
   }
 
-  v8 = a3;
-  v7 = a4;
+  bytesCopy2 = bytes;
+  lenCopy2 = len;
   if (i)
   {
     v23 = os_channel_advance_slot();
@@ -1301,8 +1301,8 @@ LABEL_24:
   }
 
 LABEL_26:
-  *a6 = v9 - v8;
-  if (v9 - v8 >= v7)
+  *offset = v9 - bytesCopy2;
+  if (v9 - bytesCopy2 >= lenCopy2)
   {
     return 0;
   }
@@ -1313,67 +1313,67 @@ LABEL_26:
   }
 }
 
-- (void)_prepareReadRequest:(id)a3
+- (void)_prepareReadRequest:(id)request
 {
-  v21 = a3;
-  if ([v21 bufferBytes])
+  requestCopy = request;
+  if ([requestCopy bufferBytes])
   {
-    v21[1] = [v21 bufferBytes];
-    [v21 setData:0];
+    requestCopy[1] = [requestCopy bufferBytes];
+    [requestCopy setData:0];
   }
 
   else
   {
-    v4 = [v21 bufferData];
+    bufferData = [requestCopy bufferData];
 
-    if (v4)
+    if (bufferData)
     {
-      v5 = [v21 bufferData];
-      v6 = [v5 length];
-      v7 = [v21 maxLength];
+      bufferData2 = [requestCopy bufferData];
+      v6 = [bufferData2 length];
+      maxLength = [requestCopy maxLength];
 
-      if (v6 < v7)
+      if (v6 < maxLength)
       {
-        v8 = [v21 maxLength];
-        v9 = [v21 bufferData];
-        [v9 setLength:v8];
+        maxLength2 = [requestCopy maxLength];
+        bufferData3 = [requestCopy bufferData];
+        [bufferData3 setLength:maxLength2];
       }
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v21, "maxLength")}];
-      [v21 setBufferData:v10];
+      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(requestCopy, "maxLength")}];
+      [requestCopy setBufferData:v10];
     }
 
-    v11 = [v21 bufferData];
-    v21[1] = [v11 mutableBytes];
+    bufferData4 = [requestCopy bufferData];
+    requestCopy[1] = [bufferData4 mutableBytes];
 
-    v12 = [v21 bufferData];
-    [v21 setData:v12];
+    bufferData5 = [requestCopy bufferData];
+    [requestCopy setData:bufferData5];
   }
 
-  v13 = v21[2];
-  v21[2] = 0;
-  v21[3] = 0;
+  v13 = requestCopy[2];
+  requestCopy[2] = 0;
+  requestCopy[3] = 0;
 
   ucat = self->_ucat;
   if (ucat->var0 <= 9)
   {
-    v15 = v21;
+    v15 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_10:
-      v16 = [v15 minLength];
-      [v21 maxLength];
-      LogPrintF(ucat, "[CUBluetoothScalablePipe _prepareReadRequest:]", 9u, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, v16);
+      minLength = [v15 minLength];
+      [requestCopy maxLength];
+      LogPrintF(ucat, "[CUBluetoothScalablePipe _prepareReadRequest:]", 9u, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, minLength);
       goto LABEL_12;
     }
 
     if (_LogCategory_Initialize(self->_ucat, 9u))
     {
       ucat = self->_ucat;
-      v15 = v21;
+      v15 = requestCopy;
       goto LABEL_10;
     }
   }
@@ -1381,17 +1381,17 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CUBluetoothScalablePipe_readWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1421,17 +1421,17 @@ void __43__CUBluetoothScalablePipe_readWithRequest___block_invoke(uint64_t a1, u
 {
   if (self->_btPeerKVORegistered)
   {
-    v7 = [(CBScalablePipe *)self->_btPipe peer];
-    v8 = [v7 hostState];
+    peer = [(CBScalablePipe *)self->_btPipe peer];
+    hostState = [peer hostState];
 
-    if (v8 == 1)
+    if (hostState == 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = 2 * (v8 == 2);
+      v9 = 2 * (hostState == 2);
     }
   }
 
@@ -1551,8 +1551,8 @@ LABEL_6:
   if (self->_btPeerKVORegistered)
   {
     self->_btPeerKVORegistered = 0;
-    v13 = [(CBScalablePipe *)self->_btPipe peer];
-    [v13 removeObserver:self forKeyPath:@"hostState" context:0];
+    peer = [(CBScalablePipe *)self->_btPipe peer];
+    [peer removeObserver:self forKeyPath:@"hostState" context:0];
 
     [(CUBluetoothScalablePipe *)self _handleBTPeerHostStateChanged];
   }
@@ -1573,9 +1573,9 @@ LABEL_6:
 - (void)_setupPipe
 {
   v3 = self->_btPipe;
-  v4 = [(CBScalablePipe *)v3 channel];
-  self->_btChannel = v4;
-  if (!v4)
+  channel = [(CBScalablePipe *)v3 channel];
+  self->_btChannel = channel;
+  if (!channel)
   {
     ucat = self->_ucat;
     if (ucat->var0 <= 90)
@@ -1768,11 +1768,11 @@ LABEL_51:
   [(CUBluetoothScalablePipe *)self _tearDownPipe];
 }
 
-- (void)_ensureStopped:(id)a3
+- (void)_ensureStopped:(id)stopped
 {
-  v4 = a3;
-  [(CUBluetoothScalablePipe *)self _abortReadsWithError:v4];
-  [(CUBluetoothScalablePipe *)self _abortWritesWithError:v4];
+  stoppedCopy = stopped;
+  [(CUBluetoothScalablePipe *)self _abortReadsWithError:stoppedCopy];
+  [(CUBluetoothScalablePipe *)self _abortWritesWithError:stoppedCopy];
 
   [(CUBluetoothScalablePipe *)self _tearDownPipe];
   btPipe = self->_btPipe;
@@ -1912,11 +1912,11 @@ LABEL_19:
 
       if (!self->_btPeerKVORegistered)
       {
-        v18 = [(CBScalablePipe *)*p_btPipe peer];
-        v19 = v18;
-        if (v18)
+        peer = [(CBScalablePipe *)*p_btPipe peer];
+        v19 = peer;
+        if (peer)
         {
-          [v18 addObserver:self forKeyPath:@"hostState" options:0 context:0];
+          [peer addObserver:self forKeyPath:@"hostState" options:0 context:0];
           self->_btPeerKVORegistered = 1;
           [(CUBluetoothScalablePipe *)self _handleBTPeerHostStateChanged];
         }
@@ -2007,13 +2007,13 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v4 = [(CBScalablePipeManager *)self->_btPipeManager state];
-  if (v4 == 5)
+  state = [(CBScalablePipeManager *)self->_btPipeManager state];
+  if (state == 5)
   {
     goto LABEL_11;
   }
 
-  v9 = v4;
+  v9 = state;
   v10 = self->_ucat;
   if (v10->var0 > 20)
   {
@@ -2130,17 +2130,17 @@ LABEL_11:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CUBluetoothScalablePipe_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2214,13 +2214,13 @@ LABEL_12:
 LABEL_15:
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9498;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

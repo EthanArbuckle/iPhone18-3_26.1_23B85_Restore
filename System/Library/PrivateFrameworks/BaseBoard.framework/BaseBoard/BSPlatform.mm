@@ -351,8 +351,8 @@ void __30__BSPlatform_isCarrierInstall__block_invoke()
 
 - (BOOL)isMultiCore
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processorCount] > 1;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = [processInfo processorCount] > 1;
 
   return v3;
 }

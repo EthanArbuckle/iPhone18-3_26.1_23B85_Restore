@@ -1,12 +1,12 @@
 @interface SafariWebsiteDataDataSource
-+ (void)_clearContentBlockerStatisticsForProfileWithIdentifier:(id)a3;
-+ (void)deleteAllDataForProfileWithIdentifier:(id)a3;
++ (void)_clearContentBlockerStatisticsForProfileWithIdentifier:(id)identifier;
++ (void)deleteAllDataForProfileWithIdentifier:(id)identifier;
 - (id)removeDataMessage;
 - (id)removeDataPromptTitle;
-- (void)_addWebSecurityDomainsToArray:(id)a3 withCompletion:(id)a4;
-- (void)_addWebsiteDataRecord:(id)a3 toArray:(id)a4;
-- (void)createSpecifiersWithCompletionHandler:(id)a3;
-- (void)deleteDataForSpecifier:(id)a3;
+- (void)_addWebSecurityDomainsToArray:(id)array withCompletion:(id)completion;
+- (void)_addWebsiteDataRecord:(id)record toArray:(id)array;
+- (void)createSpecifiersWithCompletionHandler:(id)handler;
+- (void)deleteDataForSpecifier:(id)specifier;
 @end
 
 @implementation SafariWebsiteDataDataSource
@@ -43,9 +43,9 @@
   return v2;
 }
 
-- (void)createSpecifiersWithCompletionHandler:(id)a3
+- (void)createSpecifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSMutableArray array];
   objc_initWeak(&location, self);
   v6 = dispatch_get_global_queue(0, 0);
@@ -55,9 +55,9 @@
   v9[3] = &unk_8A7D8;
   objc_copyWeak(&v12, &location);
   v10 = v5;
-  v11 = v4;
+  v11 = handlerCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = handlerCopy;
   dispatch_async(v6, v9);
 
   objc_destroyWeak(&v12);
@@ -99,9 +99,9 @@ void __69__SafariWebsiteDataDataSource_createSpecifiersWithCompletionHandler___b
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)deleteAllDataForProfileWithIdentifier:(id)a3
++ (void)deleteAllDataForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -116,15 +116,15 @@ void __69__SafariWebsiteDataDataSource_createSpecifiersWithCompletionHandler___b
   +[CloudTabServices clearTabsForCurrentDevice];
   killSafari();
   killSafariViewService();
-  [a1 _clearContentBlockerStatisticsForProfileWithIdentifier:v4];
+  [self _clearContentBlockerStatisticsForProfileWithIdentifier:identifierCopy];
   v6 = dispatch_group_create();
   v7 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__SafariWebsiteDataDataSource_deleteAllDataForProfileWithIdentifier___block_invoke_27;
   block[3] = &unk_895D8;
-  v11 = v4;
-  v8 = v4;
+  v11 = identifierCopy;
+  v8 = identifierCopy;
   dispatch_group_async(v6, v7, block);
 
   v9[0] = _NSConcreteStackBlock;
@@ -217,10 +217,10 @@ void __69__SafariWebsiteDataDataSource_deleteAllDataForProfileWithIdentifier___b
   [v20 clearAllWebsitesData];
 }
 
-+ (void)_clearContentBlockerStatisticsForProfileWithIdentifier:(id)a3
++ (void)_clearContentBlockerStatisticsForProfileWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([WBSContentBlockerStatisticsSQLiteStore storeExistsForProfileWithIdentifier:v3])
+  identifierCopy = identifier;
+  if ([WBSContentBlockerStatisticsSQLiteStore storeExistsForProfileWithIdentifier:identifierCopy])
   {
     v10 = 0;
     v11 = &v10;
@@ -233,7 +233,7 @@ void __69__SafariWebsiteDataDataSource_deleteAllDataForProfileWithIdentifier___b
     v9[4] = &v10;
     v4 = [UIApp beginBackgroundTaskWithName:@"com.apple.mobilesafari.ClearAllStatistics" expirationHandler:v9];
     v11[3] = v4;
-    [WBSContentBlockerStatisticsSQLiteStore storeForProfileWithIdentifier:v3];
+    [WBSContentBlockerStatisticsSQLiteStore storeForProfileWithIdentifier:identifierCopy];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __86__SafariWebsiteDataDataSource__clearContentBlockerStatisticsForProfileWithIdentifier___block_invoke_2;
@@ -269,10 +269,10 @@ id __86__SafariWebsiteDataDataSource__clearContentBlockerStatisticsForProfileWit
   return [v2 endBackgroundTask:v3];
 }
 
-- (void)deleteDataForSpecifier:(id)a3
+- (void)deleteDataForSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"websiteDataRecordKey"];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"websiteDataRecordKey"];
 
   if (v4)
   {
@@ -282,50 +282,50 @@ id __86__SafariWebsiteDataDataSource__clearContentBlockerStatisticsForProfileWit
     [v5 enqueueTask:v6];
 
     v7 = +[WBSSavedAccountStore sharedStore];
-    v8 = [v4 domain];
-    v10 = v8;
+    domain = [v4 domain];
+    v10 = domain;
     v9 = [NSArray arrayWithObjects:&v10 count:1];
     [v7 removeLegacyPlatformCredentialsForDomains:v9];
   }
 }
 
-- (void)_addWebsiteDataRecord:(id)a3 toArray:(id)a4
+- (void)_addWebsiteDataRecord:(id)record toArray:(id)array
 {
   v14[0] = @"name";
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 domain];
-  v15[0] = v7;
+  arrayCopy = array;
+  recordCopy = record;
+  domain = [recordCopy domain];
+  v15[0] = domain;
   v14[1] = @"userInfo";
   v12[0] = @"websiteDataRecordKey";
   v12[1] = @"profileIdentifiersKey";
-  v13[0] = v6;
-  v8 = [v6 profileIdentifiers];
-  v13[1] = v8;
+  v13[0] = recordCopy;
+  profileIdentifiers = [recordCopy profileIdentifiers];
+  v13[1] = profileIdentifiers;
   v9 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   v15[1] = v9;
   v14[2] = @"usage";
-  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 usage]);
+  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [recordCopy usage]);
   v15[2] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  [v5 addObject:v11];
+  [arrayCopy addObject:v11];
 }
 
-- (void)_addWebSecurityDomainsToArray:(id)a3 withCompletion:(id)a4
+- (void)_addWebSecurityDomainsToArray:(id)array withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  completionCopy = completion;
   v8 = objc_alloc_init(WebBookmarksSettingsGateway);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __76__SafariWebsiteDataDataSource__addWebSecurityDomainsToArray_withCompletion___block_invoke;
   v11[3] = &unk_8A828;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = arrayCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = arrayCopy;
   [v8 getSafariWebDataUsageWithCompletion:v11];
 }
 

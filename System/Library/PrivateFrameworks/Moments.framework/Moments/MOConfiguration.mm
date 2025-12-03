@@ -1,9 +1,9 @@
 @interface MOConfiguration
 + (id)sharedInstance;
-- (BOOL)isAllowedToPromptEventCategory:(unint64_t)a3;
-- (BOOL)isAllowedToPromptResourceType:(unint64_t)a3;
+- (BOOL)isAllowedToPromptEventCategory:(unint64_t)category;
+- (BOOL)isAllowedToPromptResourceType:(unint64_t)type;
 - (MOConfiguration)init;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
 - (void)dealloc;
 - (void)onEventStreamsUpdated;
 - (void)reset;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __33__MOConfiguration_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -105,12 +105,12 @@ uint64_t __33__MOConfiguration_sharedInstance__block_invoke(uint64_t a1)
   self->cachedResourceStreamPermissions = v6;
 }
 
-- (BOOL)isAllowedToPromptEventCategory:(unint64_t)a3
+- (BOOL)isAllowedToPromptEventCategory:(unint64_t)category
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  v7 = [(NSMutableDictionary *)self->cachedEventStreamPermissions objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->cachedEventStreamPermissions objectForKey:stringValue];
   v8 = v7;
   v15 = 0;
   v16 = &v15;
@@ -118,8 +118,8 @@ uint64_t __33__MOConfiguration_sharedInstance__block_invoke(uint64_t a1)
   v18 = 0;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
-    *(v16 + 24) = v9;
+    bOOLValue = [v7 BOOLValue];
+    *(v16 + 24) = bOOLValue;
   }
 
   else
@@ -130,22 +130,22 @@ uint64_t __33__MOConfiguration_sharedInstance__block_invoke(uint64_t a1)
     v14[2] = __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke;
     v14[3] = &unk_278774D68;
     v14[4] = &v15;
-    v14[5] = a3;
+    v14[5] = category;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke_110;
     v13[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-    v13[4] = a3;
+    v13[4] = category;
     [(MOConnectionManager *)connectionManager callSyncProxyUsingBlock:v14 onError:v13];
     v11 = [MEMORY[0x277CCABB0] numberWithBool:*(v16 + 24)];
-    [(NSMutableDictionary *)self->cachedEventStreamPermissions setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->cachedEventStreamPermissions setObject:v11 forKeyedSubscript:stringValue];
 
-    v9 = *(v16 + 24);
+    bOOLValue = *(v16 + 24);
   }
 
   _Block_object_dispose(&v15, 8);
 
-  return v9 & 1;
+  return bOOLValue & 1;
 }
 
 void __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -201,12 +201,12 @@ void __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke_110(uin
   }
 }
 
-- (BOOL)isAllowedToPromptResourceType:(unint64_t)a3
+- (BOOL)isAllowedToPromptResourceType:(unint64_t)type
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  v6 = [v5 stringValue];
+  stringValue = [v5 stringValue];
 
-  v7 = [(NSMutableDictionary *)self->cachedResourceStreamPermissions objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->cachedResourceStreamPermissions objectForKey:stringValue];
   v8 = v7;
   v15 = 0;
   v16 = &v15;
@@ -214,8 +214,8 @@ void __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke_110(uin
   v18 = 0;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
-    *(v16 + 24) = v9;
+    bOOLValue = [v7 BOOLValue];
+    *(v16 + 24) = bOOLValue;
   }
 
   else
@@ -226,22 +226,22 @@ void __50__MOConfiguration_isAllowedToPromptEventCategory___block_invoke_110(uin
     v14[2] = __49__MOConfiguration_isAllowedToPromptResourceType___block_invoke;
     v14[3] = &unk_278774D68;
     v14[4] = &v15;
-    v14[5] = a3;
+    v14[5] = type;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __49__MOConfiguration_isAllowedToPromptResourceType___block_invoke_113;
     v13[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-    v13[4] = a3;
+    v13[4] = type;
     [(MOConnectionManager *)connectionManager callSyncProxyUsingBlock:v14 onError:v13];
     v11 = [MEMORY[0x277CCABB0] numberWithBool:*(v16 + 24)];
-    [(NSMutableDictionary *)self->cachedResourceStreamPermissions setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->cachedResourceStreamPermissions setObject:v11 forKeyedSubscript:stringValue];
 
-    v9 = *(v16 + 24);
+    bOOLValue = *(v16 + 24);
   }
 
   _Block_object_dispose(&v15, 8);
 
-  return v9 & 1;
+  return bOOLValue & 1;
 }
 
 void __49__MOConfiguration_isAllowedToPromptResourceType___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -297,7 +297,7 @@ void __49__MOConfiguration_isAllowedToPromptResourceType___block_invoke_113(uint
   }
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v3 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284110480];
   v4 = MEMORY[0x277CBEB98];

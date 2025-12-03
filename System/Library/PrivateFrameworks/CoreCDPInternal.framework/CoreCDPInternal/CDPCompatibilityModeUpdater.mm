@@ -1,15 +1,15 @@
 @interface CDPCompatibilityModeUpdater
-+ (BOOL)_onlyOctagonRKNotSetWithContext:(id)a3;
-+ (BOOL)setSOSCompatibilityMode:(BOOL)a3 context:(id)a4 error:(id *)a5;
++ (BOOL)_onlyOctagonRKNotSetWithContext:(id)context;
++ (BOOL)setSOSCompatibilityMode:(BOOL)mode context:(id)context error:(id *)error;
 @end
 
 @implementation CDPCompatibilityModeUpdater
 
-+ (BOOL)setSOSCompatibilityMode:(BOOL)a3 context:(id)a4 error:(id *)a5
++ (BOOL)setSOSCompatibilityMode:(BOOL)mode context:(id)context error:(id *)error
 {
-  v6 = a3;
+  modeCopy = mode;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  contextCopy = context;
   if (![MEMORY[0x277CFD560] deferSOSFromSignIn] || !+[CDPDOctagonTrustProxyImpl octagonIsSOSFeatureEnabled](CDPDOctagonTrustProxyImpl, "octagonIsSOSFeatureEnabled"))
   {
     v19 = _CDPLogSystem();
@@ -19,13 +19,13 @@
       _os_log_impl(&dword_24510B000, v19, OS_LOG_TYPE_DEFAULT, "DeferSOSFromSignIn is false or platform does not support SOS, SOSCCSetCompatibilityMode will not be called.", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v21 = -5004;
 LABEL_21:
       [v20 cdp_errorWithCode:v21];
-      *a5 = LOBYTE(v15) = 0;
+      *error = LOBYTE(v15) = 0;
       goto LABEL_37;
     }
 
@@ -34,7 +34,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v6 && ![a1 _onlyOctagonRKNotSetWithContext:v8])
+  if (!modeCopy && ![self _onlyOctagonRKNotSetWithContext:contextCopy])
   {
     v30 = _CDPLogSystem();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -43,7 +43,7 @@ LABEL_36:
       _os_log_impl(&dword_24510B000, v30, OS_LOG_TYPE_DEFAULT, "Ignore disable SOSCCSetCompatibilityMode", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v21 = -5315;
@@ -77,7 +77,7 @@ LABEL_36:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *v35 = v6;
+    *v35 = modeCopy;
     _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "Setting SOSCCSetCompatibilityMode: %d", buf, 8u);
   }
 
@@ -114,29 +114,29 @@ LABEL_36:
   v25 = v24;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
   {
-    v26 = [v22 code];
+    code = [v22 code];
     *buf = 67240192;
-    *v35 = v26;
+    *v35 = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v25, OS_SIGNPOST_INTERVAL_END, v10, "SOSCCSetCompatibilityMode", " releaseError=%{public,signpost.telemetry:number1,name=releaseError}d ", buf, 8u);
   }
 
   v27 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v22 code];
+    code2 = [v22 code];
     *buf = 134218496;
     *v35 = v10;
     *&v35[8] = 2048;
     *&v35[10] = Nanoseconds / 1000000000.0;
     v36 = 1026;
-    v37 = v28;
+    v37 = code2;
     _os_log_impl(&dword_24510B000, v27, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: SOSCCSetCompatibilityMode  releaseError=%{public,signpost.telemetry:number1,name=releaseError}d ", buf, 0x1Cu);
   }
 
-  if (a5)
+  if (error)
   {
     v29 = v22;
-    *a5 = v22;
+    *error = v22;
   }
 
 LABEL_37:
@@ -144,11 +144,11 @@ LABEL_37:
   return v15;
 }
 
-+ (BOOL)_onlyOctagonRKNotSetWithContext:(id)a3
++ (BOOL)_onlyOctagonRKNotSetWithContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [[CDPRecoveryKeyStatusProvider alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[CDPRecoveryKeyStatusProvider alloc] initWithContext:contextCopy];
 
   if ([(CDPRecoveryKeyStatusProvider *)v4 idmsHasRK])
   {

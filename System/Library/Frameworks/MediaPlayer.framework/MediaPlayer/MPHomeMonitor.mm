@@ -4,8 +4,8 @@
 + (void)setupIfNecessary;
 - (BOOL)isSoundCheckEnabled;
 - (MPHomeMonitor)init;
-- (void)_postNotificationWithName:(id)a3;
-- (void)setSoundCheckEnabled:(BOOL)a3;
+- (void)_postNotificationWithName:(id)name;
+- (void)setSoundCheckEnabled:(BOOL)enabled;
 @end
 
 @implementation MPHomeMonitor
@@ -15,46 +15,46 @@
   v2 = _os_feature_enabled_impl();
   if (v2)
   {
-    v3 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-    v4 = [v3 isAudioAccessory];
+    currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+    isAudioAccessory = [currentDeviceInfo isAudioAccessory];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isAudioAccessory;
   }
 
   return v2;
 }
 
-- (void)_postNotificationWithName:(id)a3
+- (void)_postNotificationWithName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = nameCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "<MPHomeMonitor %p> Posting Notification: %@", &v7, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:v4 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:self];
 }
 
-- (void)setSoundCheckEnabled:(BOOL)a3
+- (void)setSoundCheckEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[MPHomeManagerObserver sharedObserver];
-  [v4 setSoundCheckEnabled:v3];
+  [v4 setSoundCheckEnabled:enabledCopy];
 }
 
 - (BOOL)isSoundCheckEnabled
 {
   v2 = +[MPHomeManagerObserver sharedObserver];
-  v3 = [v2 isSoundCheckEnabled];
+  isSoundCheckEnabled = [v2 isSoundCheckEnabled];
 
-  return v3;
+  return isSoundCheckEnabled;
 }
 
 - (MPHomeMonitor)init
@@ -110,9 +110,9 @@ void __30__MPHomeMonitor_sharedMonitor__block_invoke()
     v4 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 setupDidComplete];
+      setupDidComplete = [v3 setupDidComplete];
       v6 = @"Setting up";
-      if (v5)
+      if (setupDidComplete)
       {
         v6 = @"Setup complete";
       }

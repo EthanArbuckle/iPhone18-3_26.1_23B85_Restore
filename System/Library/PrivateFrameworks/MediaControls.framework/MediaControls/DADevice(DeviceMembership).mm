@@ -6,11 +6,11 @@
 
 - (BOOL)isKnown
 {
-  v2 = [a1 bluetoothIdentifier];
-  if (v2)
+  bluetoothIdentifier = [self bluetoothIdentifier];
+  if (bluetoothIdentifier)
   {
-    v3 = [a1 networkEndpoint];
-    v4 = v3 != 0;
+    networkEndpoint = [self networkEndpoint];
+    v4 = networkEndpoint != 0;
   }
 
   else

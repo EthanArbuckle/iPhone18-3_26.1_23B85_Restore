@@ -1,16 +1,16 @@
 @interface WFCompactPlatterPresentationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation WFCompactPlatterPresentationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFCompactPlatterPresentationController" hasInstanceVariable:@"_containerView" withType:"UIView"];
-  [v3 validateClass:@"WFCompactPlatterView"];
-  [v3 validateClass:@"WFCompactPlatterView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFCompactPlatterPresentationController" hasInstanceMethod:@"presentationTransitionDidEnd:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFCompactPlatterPresentationController" hasInstanceVariable:@"_containerView" withType:"UIView"];
+  [validationsCopy validateClass:@"WFCompactPlatterView"];
+  [validationsCopy validateClass:@"WFCompactPlatterView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFCompactPlatterPresentationController" hasInstanceMethod:@"presentationTransitionDidEnd:" withFullSignature:{"v", "B", 0}];
 }
 
 uint64_t __84__WFCompactPlatterPresentationControllerAccessibility_presentationTransitionDidEnd___block_invoke(uint64_t a1, void *a2)

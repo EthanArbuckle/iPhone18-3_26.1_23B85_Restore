@@ -1,25 +1,25 @@
 @interface IDSPhoneUserRegistryRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegistryRequest:(id)a3;
-- (IDSPhoneUserRegistryRequest)initWithServiceType:(int64_t)a3 uniqueIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegistryRequest:(id)request;
+- (IDSPhoneUserRegistryRequest)initWithServiceType:(int64_t)type uniqueIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSPhoneUserRegistryRequest
 
-- (IDSPhoneUserRegistryRequest)initWithServiceType:(int64_t)a3 uniqueIdentifier:(id)a4
+- (IDSPhoneUserRegistryRequest)initWithServiceType:(int64_t)type uniqueIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = IDSPhoneUserRegistryRequest;
   v8 = [(IDSPhoneUserRegistryRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_serviceType = a3;
-    objc_storeStrong(&v8->_uniqueIdentifier, a4);
+    v8->_serviceType = type;
+    objc_storeStrong(&v8->_uniqueIdentifier, identifier);
   }
 
   return v9;
@@ -29,28 +29,28 @@
 {
   v3 = objc_opt_class();
   v4 = [NSNumber numberWithInteger:[(IDSPhoneUserRegistryRequest *)self serviceType]];
-  v5 = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
-  v6 = [NSString stringWithFormat:@"<%@: %p serviceType = %@; uniqueIdentifier = %@>", v3, self, v4, v5];;
+  uniqueIdentifier = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
+  v6 = [NSString stringWithFormat:@"<%@: %p serviceType = %@; uniqueIdentifier = %@>", v3, self, v4, uniqueIdentifier];;
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(IDSPhoneUserRegistryRequest *)self serviceType];
-  v4 = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
-  v5 = [v4 hash];
+  serviceType = [(IDSPhoneUserRegistryRequest *)self serviceType];
+  uniqueIdentifier = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
+  v5 = [uniqueIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ serviceType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSPhoneUserRegistryRequest *)self isEqualToRegistryRequest:v4];
+    v5 = [(IDSPhoneUserRegistryRequest *)self isEqualToRegistryRequest:equalCopy];
   }
 
   else
@@ -61,23 +61,23 @@
   return v5;
 }
 
-- (BOOL)isEqualToRegistryRequest:(id)a3
+- (BOOL)isEqualToRegistryRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (self == requestCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [(IDSPhoneUserRegistryRequest *)v4 uniqueIdentifier];
-    v7 = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
-    if ([v6 isEqualToString:v7])
+    uniqueIdentifier = [(IDSPhoneUserRegistryRequest *)requestCopy uniqueIdentifier];
+    uniqueIdentifier2 = [(IDSPhoneUserRegistryRequest *)self uniqueIdentifier];
+    if ([uniqueIdentifier isEqualToString:uniqueIdentifier2])
     {
-      v8 = [(IDSPhoneUserRegistryRequest *)v5 serviceType];
-      v9 = v8 == [(IDSPhoneUserRegistryRequest *)self serviceType];
+      serviceType = [(IDSPhoneUserRegistryRequest *)v5 serviceType];
+      v9 = serviceType == [(IDSPhoneUserRegistryRequest *)self serviceType];
     }
 
     else
@@ -89,7 +89,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   serviceType = self->_serviceType;

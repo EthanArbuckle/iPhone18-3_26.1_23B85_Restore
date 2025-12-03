@@ -1,7 +1,7 @@
 @interface NTKSimulatedLocationManager
 - (NTKSimulatedLocationManager)init;
 - (id)companionLocation;
-- (id)startLocationUpdatesWithIdentifier:(id)a3 handler:(id)a4;
+- (id)startLocationUpdatesWithIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation NTKSimulatedLocationManager
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (id)startLocationUpdatesWithIdentifier:(id)a3 handler:(id)a4
+- (id)startLocationUpdatesWithIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__NTKSimulatedLocationManager_startLocationUpdatesWithIdentifier_handler___block_invoke;
   v8[3] = &unk_27877E570;
   v8[4] = self;
-  v9 = v5;
-  v6 = v5;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   return &stru_284110E98;

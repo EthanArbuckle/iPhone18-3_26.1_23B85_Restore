@@ -19,7 +19,7 @@
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [(CIImage *)inputImage imageByClampingToExtent];
+      imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
       v22.origin.x = v7;
       v22.origin.y = v9;
       v22.size.width = v11;
@@ -27,7 +27,7 @@
       v23 = CGRectInset(v22, -6.0, -6.0);
       inputBorderWidth = self->inputBorderWidth;
       inputOpacityBounds = self->inputOpacityBounds;
-      v20[0] = v14;
+      v20[0] = imageByClampingToExtent;
       v20[1] = inputBorderWidth;
       inputContourOpacityBounds = self->inputContourOpacityBounds;
       v20[2] = inputOpacityBounds;

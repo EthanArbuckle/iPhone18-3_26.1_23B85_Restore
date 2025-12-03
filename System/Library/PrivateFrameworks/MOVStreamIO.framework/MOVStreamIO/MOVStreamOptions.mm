@@ -13,7 +13,7 @@
 - (id)standardDefaultValues;
 - (unint64_t)bitrateOverride;
 - (void)checkBossMode;
-- (void)checkHasValue:(id)a3 changedForKey:(id)a4;
+- (void)checkHasValue:(id)value changedForKey:(id)key;
 - (void)registerStandardDefaults;
 @end
 
@@ -47,8 +47,8 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
   if (v2)
   {
     [(MOVStreamOptions *)v2 registerStandardDefaults];
-    v4 = [(MOVStreamOptions *)v3 localDefaults];
-    v5 = [v4 objectForKey:@"MIOBossMode"];
+    localDefaults = [(MOVStreamOptions *)v3 localDefaults];
+    v5 = [localDefaults objectForKey:@"MIOBossMode"];
     v3->_debugMode = [v5 BOOLValue];
 
     if (v3->_debugMode)
@@ -67,8 +67,8 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
 
 - (void)checkBossMode
 {
-  v4 = [(MOVStreamOptions *)self localDefaults];
-  v3 = [v4 objectForKey:@"MIOBossMode"];
+  localDefaults = [(MOVStreamOptions *)self localDefaults];
+  v3 = [localDefaults objectForKey:@"MIOBossMode"];
   self->_debugMode = [v3 BOOLValue];
 }
 
@@ -77,9 +77,9 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
   v2 = localDefaults_defaults;
   if (!localDefaults_defaults)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v4 = localDefaults_defaults;
-    localDefaults_defaults = v3;
+    localDefaults_defaults = standardUserDefaults;
 
     v2 = localDefaults_defaults;
   }
@@ -91,17 +91,17 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(MOVStreamOptions *)self standardDefaultValues];
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(standardDefaultValues, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MOVStreamOptions *)self standardDefaultValues];
-  v7 = [v6 allKeys];
+  standardDefaultValues2 = [(MOVStreamOptions *)self standardDefaultValues];
+  allKeys = [standardDefaultValues2 allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -112,17 +112,17 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [(MOVStreamOptions *)self localDefaults];
-        v14 = [v13 objectForKey:v12];
+        localDefaults = [(MOVStreamOptions *)self localDefaults];
+        v14 = [localDefaults objectForKey:v12];
 
         [v5 setObject:v14 forKey:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -138,54 +138,54 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)disableFrameReordering
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIODisableFrameReordering"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIODisableFrameReordering"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIODisableFrameReordering"];
-    v5 = [v4 BOOLValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIODisableFrameReordering"];
+    bOOLValue = [standardDefaultValues BOOLValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIODisableFrameReordering"];
-    v5 = [v6 BOOLValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIODisableFrameReordering"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (double)bitrateMultiplier
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOBitrateMultiplier"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOBitrateMultiplier"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOBitrateMultiplier"];
-    [v4 doubleValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOBitrateMultiplier"];
+    [standardDefaultValues doubleValue];
     v6 = v5;
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v7 = [v4 objectForKey:@"MIOBitrateMultiplier"];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v7 = [standardDefaultValues objectForKey:@"MIOBitrateMultiplier"];
     [v7 doubleValue];
     v6 = v8;
   }
@@ -197,105 +197,105 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOBitrateOverride"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOBitrateOverride"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOBitrateOverride"];
-    v5 = [v4 integerValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOBitrateOverride"];
+    integerValue = [standardDefaultValues integerValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIOBitrateOverride"];
-    v5 = [v6 integerValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIOBitrateOverride"];
+    integerValue = [v6 integerValue];
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)forceColorLossless
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOForceColorLossless"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOForceColorLossless"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOForceColorLossless"];
-    v5 = [v4 BOOLValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOForceColorLossless"];
+    bOOLValue = [standardDefaultValues BOOLValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIOForceColorLossless"];
-    v5 = [v6 BOOLValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIOForceColorLossless"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)force10bitMonoByVT
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOForce10bitMonoByVT"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOForce10bitMonoByVT"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOForce10bitMonoByVT"];
-    v5 = [v4 BOOLValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOForce10bitMonoByVT"];
+    bOOLValue = [standardDefaultValues BOOLValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIOForce10bitMonoByVT"];
-    v5 = [v6 BOOLValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIOForce10bitMonoByVT"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)forceLossless8bitMonoByVT
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOForceLossless8bitMonoByVT"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOForceLossless8bitMonoByVT"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOForceLossless8bitMonoByVT"];
-    v5 = [v4 BOOLValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOForceLossless8bitMonoByVT"];
+    bOOLValue = [standardDefaultValues BOOLValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIOForceLossless8bitMonoByVT"];
-    v5 = [v6 BOOLValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIOForceLossless8bitMonoByVT"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)skipSourceHint
 {
   if (self->_debugMode)
   {
-    v3 = [(MOVStreamOptions *)self localDefaults];
-    v4 = [v3 objectForKey:@"MIOSkipSourceHint"];
+    localDefaults = [(MOVStreamOptions *)self localDefaults];
+    standardDefaultValues = [localDefaults objectForKey:@"MIOSkipSourceHint"];
 
-    [(MOVStreamOptions *)self checkHasValue:v4 changedForKey:@"MIOSkipSourceHint"];
-    v5 = [v4 BOOLValue];
+    [(MOVStreamOptions *)self checkHasValue:standardDefaultValues changedForKey:@"MIOSkipSourceHint"];
+    bOOLValue = [standardDefaultValues BOOLValue];
   }
 
   else
   {
-    v4 = [(MOVStreamOptions *)self standardDefaultValues];
-    v6 = [v4 objectForKey:@"MIOSkipSourceHint"];
-    v5 = [v6 BOOLValue];
+    standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+    v6 = [standardDefaultValues objectForKey:@"MIOSkipSourceHint"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)standardDefaultValues
@@ -330,28 +330,28 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
   return v2;
 }
 
-- (void)checkHasValue:(id)a3 changedForKey:(id)a4
+- (void)checkHasValue:(id)value changedForKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOVStreamOptions *)self standardDefaultValues];
-  v9 = [v8 objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+  v9 = [standardDefaultValues objectForKey:keyCopy];
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v7];
+  valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", valueCopy];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v9];
-  if (([v10 isEqual:v11] & 1) == 0)
+  if (([valueCopy isEqual:v11] & 1) == 0)
   {
     v12 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
-      v14 = v6;
+      v14 = keyCopy;
       v15 = 2114;
       v16 = v11;
       v17 = 2114;
-      v18 = v10;
+      v18 = valueCopy;
       _os_log_impl(&dword_257883000, v12, OS_LOG_TYPE_INFO, "[WARNING] Default setting for '%{public}@' was changed from '%{public}@' to '%{public}@'. This can affect your recordings!", buf, 0x20u);
     }
   }
@@ -359,9 +359,9 @@ uint64_t __33__MOVStreamOptions_sharedOptions__block_invoke()
 
 - (void)registerStandardDefaults
 {
-  v4 = [(MOVStreamOptions *)self localDefaults];
-  v3 = [(MOVStreamOptions *)self standardDefaultValues];
-  [v4 registerDefaults:v3];
+  localDefaults = [(MOVStreamOptions *)self localDefaults];
+  standardDefaultValues = [(MOVStreamOptions *)self standardDefaultValues];
+  [localDefaults registerDefaults:standardDefaultValues];
 }
 
 @end

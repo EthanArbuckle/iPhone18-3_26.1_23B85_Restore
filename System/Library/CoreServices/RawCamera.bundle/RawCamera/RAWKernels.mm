@@ -1,12 +1,12 @@
 @interface RAWKernels
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)kernelWithName:(id)a3;
-+ (id)kernelWithName:(id)a3 group:(id)a4;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)kernelWithName:(id)name;
++ (id)kernelWithName:(id)name group:(id)group;
 + (id)sharedKernels;
 - (RAWKernels)init;
-- (id)kernelSourceForGroup:(id)a3;
-- (id)kernelWithName:(id)a3 group:(id)a4;
-- (id)loadKernelsForGroup:(id)a3;
+- (id)kernelSourceForGroup:(id)group;
+- (id)kernelWithName:(id)name group:(id)group;
+- (id)loadKernelsForGroup:(id)group;
 @end
 
 @implementation RAWKernels
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (id)kernelSourceForGroup:(id)a3
+- (id)kernelSourceForGroup:(id)group
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"default", v5, v6))
+  groupCopy = group;
+  if (objc_msgSend_isEqualToString_(groupCopy, v4, @"default", v5, v6))
   {
     v10 = 1319;
     v11 = &unk_23390AC29;
@@ -37,7 +37,7 @@
     goto LABEL_8;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v7, @"NR", v8, v9))
+  if (objc_msgSend_isEqualToString_(groupCopy, v7, @"NR", v8, v9))
   {
     v10 = 10736;
     v11 = &unk_23390B150;
@@ -47,7 +47,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (objc_msgSend_isEqualToString_(v3, v12, @"LC", v13, v14))
+  if (objc_msgSend_isEqualToString_(groupCopy, v12, @"LC", v13, v14))
   {
     v10 = 1246;
     v11 = &unk_23390DB40;
@@ -56,7 +56,7 @@ LABEL_5:
 
   else
   {
-    if (objc_msgSend_isEqualToString_(v3, v16, @"DM", v17, v18))
+    if (objc_msgSend_isEqualToString_(groupCopy, v16, @"DM", v17, v18))
     {
       v10 = 13404;
       v11 = &unk_23390E01E;
@@ -64,42 +64,42 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    if (objc_msgSend_isEqualToString_(v3, v12, @"DeFringe", v13, v14))
+    if (objc_msgSend_isEqualToString_(groupCopy, v12, @"DeFringe", v13, v14))
     {
       v10 = 3299;
       v11 = &unk_23391147A;
       objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v35, 21373, v36, v37);
     }
 
-    else if (objc_msgSend_isEqualToString_(v3, v35, @"GM", v36, v37))
+    else if (objc_msgSend_isEqualToString_(groupCopy, v35, @"GM", v36, v37))
     {
       v10 = 1089;
       v11 = &unk_23391215D;
       objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v38, 5164, v39, v40);
     }
 
-    else if (objc_msgSend_isEqualToString_(v3, v38, @"HM", v39, v40))
+    else if (objc_msgSend_isEqualToString_(groupCopy, v38, @"HM", v39, v40))
     {
       v10 = 345;
       v11 = &unk_23391259E;
       objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v41, 1925, v42, v43);
     }
 
-    else if (objc_msgSend_isEqualToString_(v3, v41, @"Boost", v42, v43))
+    else if (objc_msgSend_isEqualToString_(groupCopy, v41, @"Boost", v42, v43))
     {
       v10 = 2121;
       v11 = &unk_2339126F7;
       objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v44, 16155, v45, v46);
     }
 
-    else if (objc_msgSend_isEqualToString_(v3, v44, @"GainMap", v45, v46))
+    else if (objc_msgSend_isEqualToString_(groupCopy, v44, @"GainMap", v45, v46))
     {
       v10 = 524;
       v11 = &unk_233912F40;
       objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v47, 1410, v48, v49);
     }
 
-    else if (objc_msgSend_isEqualToString_(v3, v47, @"V8LNR", v48, v49))
+    else if (objc_msgSend_isEqualToString_(groupCopy, v47, @"V8LNR", v48, v49))
     {
       v10 = 5068;
       v11 = &unk_23391314C;
@@ -108,7 +108,7 @@ LABEL_5:
 
     else
     {
-      if (objc_msgSend_isEqualToString_(v3, v50, @"V8CNR", v51, v52))
+      if (objc_msgSend_isEqualToString_(groupCopy, v50, @"V8CNR", v51, v52))
       {
         v10 = 5080;
         v11 = &unk_233914518;
@@ -116,7 +116,7 @@ LABEL_5:
         goto LABEL_5;
       }
 
-      if (objc_msgSend_isEqualToString_(v3, v12, @"V8VIEW", v13, v14))
+      if (objc_msgSend_isEqualToString_(groupCopy, v12, @"V8VIEW", v13, v14))
       {
         v10 = 954;
         v11 = &unk_2339158F0;
@@ -125,7 +125,7 @@ LABEL_5:
 
       else
       {
-        if (!objc_msgSend_isEqualToString_(v3, v53, @"LTM", v54, v55))
+        if (!objc_msgSend_isEqualToString_(groupCopy, v53, @"LTM", v54, v55))
         {
           v33 = 0;
           goto LABEL_14;
@@ -160,22 +160,22 @@ LABEL_14:
   return v33;
 }
 
-- (id)loadKernelsForGroup:(id)a3
+- (id)loadKernelsForGroup:(id)group
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v5->priv, v6, v4, v7, v8);
+  groupCopy = group;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_objectForKeyedSubscript_(selfCopy->priv, v6, groupCopy, v7, v8);
 
   if (v9)
   {
-    v13 = objc_msgSend_objectForKeyedSubscript_(v5->priv, v10, v4, v11, v12);
+    v13 = objc_msgSend_objectForKeyedSubscript_(selfCopy->priv, v10, groupCopy, v11, v12);
   }
 
   else
   {
-    v46 = objc_msgSend_kernelSourceForGroup_(v5, v10, v4, v11, v12);
+    v46 = objc_msgSend_kernelSourceForGroup_(selfCopy, v10, groupCopy, v11, v12);
     v16 = objc_msgSend_kernelsWithString_messageLog_(MEMORY[0x277CBF760], v14, v46, 0, v15);
     v21 = objc_msgSend_count(v16, v17, v18, v19, v20);
     v22 = objc_alloc(MEMORY[0x277CBEB38]);
@@ -210,33 +210,33 @@ LABEL_14:
     }
 
     v13 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEAC0], v40, v26, v41, v42);
-    objc_msgSend_setObject_forKeyedSubscript_(v5->priv, v43, v13, v4, v44);
+    objc_msgSend_setObject_forKeyedSubscript_(selfCopy->priv, v43, v13, groupCopy, v44);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
 + (id)sharedKernels
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_27DE3DE28)
   {
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v3 = qword_27DE3DE28;
 
   return v3;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_27DE3DE28)
   {
     v5 = 0;
@@ -244,44 +244,44 @@ LABEL_14:
 
   else
   {
-    v9.receiver = v4;
+    v9.receiver = selfCopy;
     v9.super_class = &OBJC_METACLASS___RAWKernels;
-    v6 = objc_msgSendSuper2(&v9, sel_allocWithZone_, a3);
+    v6 = objc_msgSendSuper2(&v9, sel_allocWithZone_, zone);
     v7 = qword_27DE3DE28;
     qword_27DE3DE28 = v6;
 
     v5 = qword_27DE3DE28;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (id)kernelWithName:(id)a3 group:(id)a4
+- (id)kernelWithName:(id)name group:(id)group
 {
-  v6 = a3;
-  v10 = objc_msgSend_loadKernelsForGroup_(self, v7, a4, v8, v9);
-  v14 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v6, v12, v13);
+  nameCopy = name;
+  v10 = objc_msgSend_loadKernelsForGroup_(self, v7, group, v8, v9);
+  v14 = objc_msgSend_objectForKeyedSubscript_(v10, v11, nameCopy, v12, v13);
 
   return v14;
 }
 
-+ (id)kernelWithName:(id)a3
++ (id)kernelWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_sharedKernels(RAWKernels, v4, v5, v6, v7);
-  v11 = objc_msgSend_kernelWithName_group_(v8, v9, v3, @"default", v10);
+  v11 = objc_msgSend_kernelWithName_group_(v8, v9, nameCopy, @"default", v10);
 
   return v11;
 }
 
-+ (id)kernelWithName:(id)a3 group:(id)a4
++ (id)kernelWithName:(id)name group:(id)group
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  groupCopy = group;
   v11 = objc_msgSend_sharedKernels(RAWKernels, v7, v8, v9, v10);
-  v14 = objc_msgSend_kernelWithName_group_(v11, v12, v5, v6, v13);
+  v14 = objc_msgSend_kernelWithName_group_(v11, v12, nameCopy, groupCopy, v13);
 
   return v14;
 }

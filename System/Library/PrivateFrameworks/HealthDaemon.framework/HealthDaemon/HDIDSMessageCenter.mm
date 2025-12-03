@@ -1,46 +1,46 @@
 @interface HDIDSMessageCenter
-+ (id)createPersistentDictionaryWithURL:(id)a3;
-- (HDIDSMessageCenter)initWithIDSServiceIdentifier:(id)a3 persistentDictionary:(id)a4 queue:(id)a5 daemon:(id)a6;
++ (id)createPersistentDictionaryWithURL:(id)l;
+- (HDIDSMessageCenter)initWithIDSServiceIdentifier:(id)identifier persistentDictionary:(id)dictionary queue:(id)queue daemon:(id)daemon;
 - (HDIDSMessageCenterDelegate)delegate;
-- (id)_pbMappingForMessageID:(uint64_t)a1;
-- (id)deviceForFromID:(id)a3;
+- (id)_pbMappingForMessageID:(uint64_t)d;
+- (id)deviceForFromID:(id)d;
 - (id)nanoSyncDevices;
-- (void)_handleError:(void *)a3 context:;
+- (void)_handleError:(void *)error context:;
 - (void)_logPrefix;
-- (void)_updateExpireTimerWithTimestamp:(uint64_t)a1;
-- (void)cancelPendingRequestsWithMessageID:(unsigned __int16)a3 device:(id)a4;
+- (void)_updateExpireTimerWithTimestamp:(uint64_t)timestamp;
+- (void)cancelPendingRequestsWithMessageID:(unsigned __int16)d device:(id)device;
 - (void)dealloc;
 - (void)invalidate;
-- (void)obliterateWithReason:(id)a3 preserveCopy:(BOOL)a4;
+- (void)obliterateWithReason:(id)reason preserveCopy:(BOOL)copy;
 - (void)resume;
-- (void)sendRequest:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)sendRequest:(id)request;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 @end
 
 @implementation HDIDSMessageCenter
 
 - (id)nanoSyncDevices
 {
-  v2 = [(HDIDSMessageCenter *)self idsService];
-  v3 = [v2 devices];
+  idsService = [(HDIDSMessageCenter *)self idsService];
+  devices = [idsService devices];
 
-  return v3;
+  return devices;
 }
 
 - (void)_logPrefix
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = MEMORY[0x277CCACA8];
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v1 = [v2 stringWithFormat:@"%@: %@", v4, v1[3]];
+    selfCopy = [v2 stringWithFormat:@"%@: %@", v4, selfCopy[3]];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)resume
@@ -48,15 +48,15 @@
   v4 = atomic_load(&self->_invalidated);
   if (v4)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"atomic_load(&_invalidated) == false"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"atomic_load(&_invalidated) == false"}];
   }
 
   if (self->_service)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:291 description:{@"Cannot use %@ after using -resume", v11}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:291 description:{@"Cannot use %@ after using -resume", v11}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
@@ -82,39 +82,39 @@ void __28__HDIDSMessageCenter_resume__block_invoke(uint64_t a1)
   dispatch_resume(v2);
 }
 
-- (id)deviceForFromID:(id)a3
+- (id)deviceForFromID:(id)d
 {
-  v4 = a3;
-  v5 = [(HDIDSMessageCenter *)self idsService];
-  v6 = [v5 deviceForFromID:v4];
+  dCopy = d;
+  idsService = [(HDIDSMessageCenter *)self idsService];
+  v6 = [idsService deviceForFromID:dCopy];
 
   if (!v6)
   {
-    v7 = [(HDIDSMessageCenter *)self idsService];
-    v6 = [v7 linkedDeviceForFromID:v4 withRelationship:2];
+    idsService2 = [(HDIDSMessageCenter *)self idsService];
+    v6 = [idsService2 linkedDeviceForFromID:dCopy withRelationship:2];
   }
 
   return v6;
 }
 
-- (HDIDSMessageCenter)initWithIDSServiceIdentifier:(id)a3 persistentDictionary:(id)a4 queue:(id)a5 daemon:(id)a6
+- (HDIDSMessageCenter)initWithIDSServiceIdentifier:(id)identifier persistentDictionary:(id)dictionary queue:(id)queue daemon:(id)daemon
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  queueCopy = queue;
+  daemonCopy = daemon;
+  if (identifierCopy)
   {
-    if (v12)
+    if (dictionaryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"persistentDictionary != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"persistentDictionary != nil"}];
 
-    if (v13)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -122,23 +122,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v33 = [MEMORY[0x277CCA890] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"serviceIdentifier != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"serviceIdentifier != nil"}];
 
-  if (!v12)
+  if (!dictionaryCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (queueCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v35 = [MEMORY[0x277CCA890] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"queue != NULL"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"queue != NULL"}];
 
 LABEL_4:
   v39.receiver = self;
@@ -147,8 +147,8 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_daemon, v14);
-    v17 = [v11 copy];
+    objc_storeWeak(&v15->_daemon, daemonCopy);
+    v17 = [identifierCopy copy];
     serviceIdentifier = v16->_serviceIdentifier;
     v16->_serviceIdentifier = v17;
 
@@ -156,7 +156,7 @@ LABEL_4:
     shortServiceIdentifier = v16->_shortServiceIdentifier;
     v16->_shortServiceIdentifier = v19;
 
-    objc_storeStrong(&v16->_queue, a5);
+    objc_storeStrong(&v16->_queue, queue);
     v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
     requestHandlers = v16->_requestHandlers;
     v16->_requestHandlers = v21;
@@ -173,7 +173,7 @@ LABEL_4:
     pbMapping = v16->_pbMapping;
     v16->_pbMapping = v27;
 
-    objc_storeStrong(&v16->_persistentContextStore, a4);
+    objc_storeStrong(&v16->_persistentContextStore, dictionary);
     objc_initWeak(&location, v16);
     v29 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v16->_queue);
     expireTimer = v16->_expireTimer;
@@ -302,34 +302,34 @@ void __32__HDIDSMessageCenter_invalidate__block_invoke(uint64_t a1)
   *(v2 + 96) = 0;
 }
 
-- (void)obliterateWithReason:(id)a3 preserveCopy:(BOOL)a4
+- (void)obliterateWithReason:(id)reason preserveCopy:(BOOL)copy
 {
-  v6 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HDIDSMessageCenter_obliterateWithReason_preserveCopy___block_invoke;
   block[3] = &unk_27861F830;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = reasonCopy;
+  copyCopy = copy;
+  v8 = reasonCopy;
   dispatch_sync(queue, block);
 }
 
-+ (id)createPersistentDictionaryWithURL:(id)a3
++ (id)createPersistentDictionaryWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[HDIDSPersistentDictionary alloc] initWithURL:v3 objectClass:objc_opt_class()];
+  lCopy = l;
+  v4 = [[HDIDSPersistentDictionary alloc] initWithURL:lCopy objectClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)_pbMappingForMessageID:(uint64_t)a1
+- (id)_pbMappingForMessageID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    v2 = *(a1 + 72);
+    v2 = *(d + 72);
     v3 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a2];
     v4 = [v2 objectForKeyedSubscript:v3];
   }
@@ -396,11 +396,11 @@ LABEL_4:
   }
 }
 
-- (void)_updateExpireTimerWithTimestamp:(uint64_t)a1
+- (void)_updateExpireTimerWithTimestamp:(uint64_t)timestamp
 {
-  if (a1)
+  if (timestamp)
   {
-    v4 = *(a1 + 88);
+    v4 = *(timestamp + 88);
     if (v4 == 0.0 || v4 > a2)
     {
       v6 = a2 - CFAbsoluteTimeGetCurrent();
@@ -409,79 +409,79 @@ LABEL_4:
         v6 = 0.0;
       }
 
-      v7 = *(a1 + 96);
+      v7 = *(timestamp + 96);
       v8 = dispatch_time(0, (v6 * 1000000000.0));
       dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-      *(a1 + 88) = a2;
+      *(timestamp + 88) = a2;
     }
   }
 }
 
-- (void)_handleError:(void *)a3 context:
+- (void)_handleError:(void *)error context:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  errorCopy = error;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 120));
-    if (v6)
+    dispatch_assert_queue_V2(*(self + 120));
+    if (errorCopy)
     {
-      if (v6[2])
+      if (errorCopy[2])
       {
-        [*(a1 + 80) removeObjectForKey:?];
-        [*(a1 + 80) didReceiveError:v5 forMessageID:v6[2]];
+        [*(self + 80) removeObjectForKey:?];
+        [*(self + 80) didReceiveError:v5 forMessageID:errorCopy[2]];
       }
 
-      v7 = *(v6 + 5);
+      v7 = *(errorCopy + 5);
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:sel__handleError_context_ object:a1 file:@"HDIDSMessageCenter.m" lineNumber:517 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__handleError_context_ object:self file:@"HDIDSMessageCenter.m" lineNumber:517 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
       v7 = 0;
     }
 
-    v8 = *(a1 + 56);
+    v8 = *(self + 56);
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v7];
     v10 = [v8 objectForKey:v9];
 
     if (v10)
     {
-      v11 = [v5 userInfo];
-      v12 = [v11 mutableCopy];
+      userInfo = [v5 userInfo];
+      v12 = [userInfo mutableCopy];
 
-      [v12 setObject:v6 forKey:@"HDIDSContext"];
+      [v12 setObject:errorCopy forKey:@"HDIDSContext"];
       v13 = MEMORY[0x277CCA9B8];
-      v14 = [v5 domain];
-      v15 = [v13 errorWithDomain:v14 code:objc_msgSend(v5 userInfo:{"code"), v12}];
+      domain = [v5 domain];
+      v15 = [v13 errorWithDomain:domain code:objc_msgSend(v5 userInfo:{"code"), v12}];
 
       v18 = 0;
       [v10 getValue:&v18];
-      WeakRetained = objc_loadWeakRetained((a1 + 112));
+      WeakRetained = objc_loadWeakRetained((self + 112));
       [WeakRetained performSelector:v18 withObject:v15];
     }
   }
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
-  v5 = a3;
-  v6 = [v5 toParticipant];
+  requestCopy = request;
+  toParticipant = [requestCopy toParticipant];
 
-  if (!v6)
+  if (!toParticipant)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"request.toParticipant != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"request.toParticipant != nil"}];
   }
 
-  v7 = [v5 idsIdentifier];
+  idsIdentifier = [requestCopy idsIdentifier];
 
-  if (v7)
+  if (idsIdentifier)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:320 description:@"You cannot call sendRequest twice for the same request object"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:320 description:@"You cannot call sendRequest twice for the same request object"];
   }
 
   queue = self->_queue;
@@ -489,10 +489,10 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = __34__HDIDSMessageCenter_sendRequest___block_invoke;
   block[3] = &unk_278614E78;
-  v13 = v5;
+  v13 = requestCopy;
   v14 = a2;
   block[4] = self;
-  v9 = v5;
+  v9 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -1045,13 +1045,13 @@ LABEL_41:
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelPendingRequestsWithMessageID:(unsigned __int16)a3 device:(id)a4
+- (void)cancelPendingRequestsWithMessageID:(unsigned __int16)d device:(id)device
 {
-  v7 = a4;
-  if (!v7)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:542 description:{@"Invalid parameter not satisfying: %@", @"device != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:542 description:{@"Invalid parameter not satisfying: %@", @"device != nil"}];
   }
 
   queue = self->_queue;
@@ -1059,11 +1059,11 @@ LABEL_41:
   block[1] = 3221225472;
   block[2] = __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_invoke;
   block[3] = &unk_27862AF68;
-  v12 = v7;
+  v12 = deviceCopy;
   v13 = a2;
-  v14 = a3;
+  dCopy = d;
   block[4] = self;
-  v9 = v7;
+  v9 = deviceCopy;
   dispatch_async(queue, block);
 }
 
@@ -1147,23 +1147,23 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v17 = a5;
-  v10 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v11 = atomic_load(&self->_invalidated);
   if ((v11 & 1) == 0)
   {
-    v12 = [(HDIDSPersistentDictionary *)self->_persistentContextStore objectForKey:v17];
+    v12 = [(HDIDSPersistentDictionary *)self->_persistentContextStore objectForKey:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      if (a6)
+      if (success)
       {
         if (*(v12 + 8) != 1 || (responseHandlers = self->_responseHandlers, [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v12 + 10)], v15 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](responseHandlers, "objectForKey:", v15), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
         {
-          [(HDIDSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:v17];
+          [(HDIDSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:identifierCopy];
         }
 
         [(HDIDSPersistentDictionary *)self->_persistentContextStore didFinishSending:v13[2]];
@@ -1171,32 +1171,32 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
 
       else
       {
-        if (!v10)
+        if (!errorCopy)
         {
-          v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HDIDSErrorDomain" code:3 userInfo:0];
+          errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"HDIDSErrorDomain" code:3 userInfo:0];
         }
 
-        [(HDIDSPersistentDictionary *)self->_persistentContextStore didReceiveError:v10 forMessageID:v13[2]];
-        [(HDIDSMessageCenter *)self _handleError:v10 context:v13];
+        [(HDIDSPersistentDictionary *)self->_persistentContextStore didReceiveError:errorCopy forMessageID:v13[2]];
+        [(HDIDSMessageCenter *)self _handleError:errorCopy context:v13];
       }
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v129 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   queue = self->_queue;
-  v16 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(queue);
   service = self->_service;
 
-  if (service == v16)
+  if (service == serviceCopy)
   {
-    v18 = [(HDIDSMessageCenter *)self deviceForFromID:v13];
+    v18 = [(HDIDSMessageCenter *)self deviceForFromID:dCopy];
     v19 = [HDIDSParticipant alloc];
     v119 = v18;
     if (v18)
@@ -1206,32 +1206,32 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
 
     else
     {
-      v20 = [(HDIDSParticipant *)v19 initWithIdentifier:v13];
+      v20 = [(HDIDSParticipant *)v19 initWithIdentifier:dCopy];
     }
 
     v21 = v20;
-    v22 = [(HDIDSParticipant *)v20 deviceIdentifier];
-    v23 = [v14 incomingResponseIdentifier];
+    deviceIdentifier = [(HDIDSParticipant *)v20 deviceIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-    v24 = [v12 length];
-    if (v23)
+    v24 = [dataCopy length];
+    if (incomingResponseIdentifier)
     {
       if (v24 >= 2)
       {
-        v115 = v22;
-        v113 = *[v12 bytes];
-        obj = [v12 subdataWithRange:{2, objc_msgSend(v12, "length") - 2}];
+        v115 = deviceIdentifier;
+        v113 = *[dataCopy bytes];
+        obj = [dataCopy subdataWithRange:{2, objc_msgSend(dataCopy, "length") - 2}];
         persistentContextStore = self->_persistentContextStore;
-        v26 = [v14 incomingResponseIdentifier];
-        v27 = [(HDIDSPersistentDictionary *)persistentContextStore objectForKey:v26];
+        incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+        v27 = [(HDIDSPersistentDictionary *)persistentContextStore objectForKey:incomingResponseIdentifier2];
 
         _HKInitializeLogging();
         v28 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           v107 = v21;
-          v29 = [(HDIDSMessageCenter *)self _logPrefix];
-          v30 = [v14 incomingResponseIdentifier];
+          _logPrefix = [(HDIDSMessageCenter *)self _logPrefix];
+          incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
           if (v27)
           {
             v31 = *(v27 + 16);
@@ -1244,17 +1244,17 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
 
           v32 = v31;
           *buf = 138544642;
-          v122 = v29;
+          v122 = _logPrefix;
           v123 = 2114;
-          *v124 = v30;
+          *v124 = incomingResponseIdentifier3;
           *&v124[8] = 2114;
           *&v124[10] = v31;
           *&v124[18] = 1024;
           *&v124[20] = v113;
           v125 = 2114;
-          v126 = v13;
+          v126 = dCopy;
           v127 = 2048;
-          v128 = [v12 length];
+          v128 = [dataCopy length];
           _os_log_impl(&dword_228986000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ incoming response %{public}@ to request %{public}@ messageID:%u from %{public}@ (%tu bytes)", buf, 0x3Au);
 
           v21 = v107;
@@ -1262,15 +1262,15 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
 
         if (v27)
         {
-          v111 = v13;
+          v111 = dCopy;
           v33 = self->_persistentContextStore;
-          v34 = [v14 outgoingResponseIdentifier];
+          outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
           v35 = *(v27 + 16);
-          -[HDIDSPersistentDictionary didReceiveResponse:toRequest:deviceID:type:length:](v33, "didReceiveResponse:toRequest:deviceID:type:length:", v34, v35, v115, v113, [v12 length]);
+          -[HDIDSPersistentDictionary didReceiveResponse:toRequest:deviceID:type:length:](v33, "didReceiveResponse:toRequest:deviceID:type:length:", outgoingResponseIdentifier, v35, v115, v113, [dataCopy length]);
 
           v36 = self->_persistentContextStore;
-          v37 = [v14 incomingResponseIdentifier];
-          [(HDIDSPersistentDictionary *)v36 removeObjectForKey:v37];
+          incomingResponseIdentifier4 = [contextCopy incomingResponseIdentifier];
+          [(HDIDSPersistentDictionary *)v36 removeObjectForKey:incomingResponseIdentifier4];
 
           if (*(v27 + 10) != v113)
           {
@@ -1279,17 +1279,17 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               v95 = v38;
-              v96 = [(HDIDSMessageCenter *)self _logPrefix];
+              _logPrefix2 = [(HDIDSMessageCenter *)self _logPrefix];
               v97 = *(v27 + 10);
-              v98 = [v14 incomingResponseIdentifier];
+              incomingResponseIdentifier5 = [contextCopy incomingResponseIdentifier];
               *buf = 138544130;
-              v122 = v96;
+              v122 = _logPrefix2;
               v123 = 1024;
               *v124 = v113;
               *&v124[4] = 1024;
               *&v124[6] = v97;
               *&v124[10] = 2114;
-              *&v124[12] = v98;
+              *&v124[12] = incomingResponseIdentifier5;
               _os_log_error_impl(&dword_228986000, v95, OS_LOG_TYPE_ERROR, "%{public}@ unexpected message ID (%u != %u) for message %{public}@", buf, 0x22u);
             }
           }
@@ -1301,10 +1301,10 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               v99 = v39;
-              v100 = [(HDIDSMessageCenter *)self _logPrefix];
+              _logPrefix3 = [(HDIDSMessageCenter *)self _logPrefix];
               v101 = *(v27 + 16);
               *buf = 138543618;
-              v122 = v100;
+              v122 = _logPrefix3;
               v123 = 2114;
               *v124 = v101;
               _os_log_error_impl(&dword_228986000, v99, OS_LOG_TYPE_ERROR, "%{public}@ unexpected response %{public}@", buf, 0x16u);
@@ -1315,7 +1315,7 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
           v41 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v27 + 10)];
           v42 = [(NSMutableDictionary *)responseHandlers objectForKey:v41];
 
-          v13 = v111;
+          dCopy = v111;
           if (v42)
           {
             aSelector = 0;
@@ -1348,11 +1348,11 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
               }
             }
 
-            v49 = [v14 outgoingResponseIdentifier];
-            v51 = v49;
+            outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+            v51 = outgoingResponseIdentifier2;
             if (v44)
             {
-              objc_setProperty_nonatomic_copy(v44, v50, v49, 32);
+              objc_setProperty_nonatomic_copy(v44, v50, outgoingResponseIdentifier2, 32);
 
               objc_setProperty_nonatomic_copy(v44, v52, *(v27 + 16), 40);
               objc_storeStrong(&v44->_requestSent, *(v27 + 40));
@@ -1368,12 +1368,12 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
             {
               log = v53;
-              v105 = [(HDIDSMessageCenter *)self _logPrefix];
-              [v14 outgoingResponseIdentifier];
+              _logPrefix4 = [(HDIDSMessageCenter *)self _logPrefix];
+              [contextCopy outgoingResponseIdentifier];
               v89 = v108 = v21;
               v90 = NSStringFromSelector(aSelector);
               *buf = 138413058;
-              v122 = v105;
+              v122 = _logPrefix4;
               v123 = 2112;
               *v124 = v89;
               *&v124[8] = 1024;
@@ -1396,9 +1396,9 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               v102 = v83;
-              v103 = [(HDIDSMessageCenter *)self _logPrefix];
+              _logPrefix5 = [(HDIDSMessageCenter *)self _logPrefix];
               *buf = 138543618;
-              v122 = v103;
+              v122 = _logPrefix5;
               v123 = 1024;
               *v124 = v113;
               _os_log_error_impl(&dword_228986000, v102, OS_LOG_TYPE_ERROR, "%{public}@ no registered response handler for message: %hu", buf, 0x12u);
@@ -1413,21 +1413,21 @@ void __64__HDIDSMessageCenter_cancelPendingRequestsWithMessageID_device___block_
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v80 = v79;
-            v81 = [(HDIDSMessageCenter *)self _logPrefix];
-            v82 = [v14 incomingResponseIdentifier];
+            _logPrefix6 = [(HDIDSMessageCenter *)self _logPrefix];
+            incomingResponseIdentifier6 = [contextCopy incomingResponseIdentifier];
             *buf = 138543874;
-            v122 = v81;
+            v122 = _logPrefix6;
             v123 = 1024;
             *v124 = v113;
             *&v124[4] = 2114;
-            *&v124[6] = v82;
+            *&v124[6] = incomingResponseIdentifier6;
             _os_log_impl(&dword_228986000, v80, OS_LOG_TYPE_DEFAULT, "%{public}@ could not find context for message: %hu identifier %{public}@", buf, 0x1Cu);
           }
 
           v27 = 0;
         }
 
-        v22 = v115;
+        deviceIdentifier = v115;
         goto LABEL_56;
       }
 
@@ -1441,40 +1441,40 @@ LABEL_57:
       goto LABEL_57;
     }
 
-    v55 = [v12 bytes];
-    v56 = *v55;
-    v114 = *(v55 + 2);
+    bytes = [dataCopy bytes];
+    v56 = *bytes;
+    v114 = *(bytes + 2);
     _HKInitializeLogging();
     v57 = *MEMORY[0x277CCC328];
-    v116 = v22;
+    v116 = deviceIdentifier;
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       obja = v57;
-      v112 = [(HDIDSMessageCenter *)self _logPrefix];
-      v58 = [v14 outgoingResponseIdentifier];
+      _logPrefix7 = [(HDIDSMessageCenter *)self _logPrefix];
+      outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
       HDStringFromHDIDSPriority(v114);
       v60 = v59 = v21;
       *buf = 138544642;
-      v122 = v112;
+      v122 = _logPrefix7;
       v123 = 2114;
-      *v124 = v58;
+      *v124 = outgoingResponseIdentifier3;
       *&v124[8] = 1024;
       *&v124[10] = v56;
       *&v124[14] = 2114;
       *&v124[16] = v60;
       v125 = 2114;
-      v126 = v13;
+      v126 = dCopy;
       v127 = 2048;
-      v128 = [v12 length];
+      v128 = [dataCopy length];
       _os_log_impl(&dword_228986000, obja, OS_LOG_TYPE_DEFAULT, "%{public}@ incoming request %{public}@ messageID:%u pri:%{public}@ from %{public}@ (%tu bytes)", buf, 0x3Au);
 
       v21 = v59;
-      v22 = v116;
+      deviceIdentifier = v116;
     }
 
     v61 = self->_persistentContextStore;
-    v62 = [v14 outgoingResponseIdentifier];
-    -[HDIDSPersistentDictionary didReceiveRequest:deviceID:type:length:](v61, "didReceiveRequest:deviceID:type:length:", v62, v22, v56, [v12 length]);
+    outgoingResponseIdentifier4 = [contextCopy outgoingResponseIdentifier];
+    -[HDIDSPersistentDictionary didReceiveRequest:deviceID:type:length:](v61, "didReceiveRequest:deviceID:type:length:", outgoingResponseIdentifier4, deviceIdentifier, v56, [dataCopy length]);
 
     v63 = objc_alloc_init(HDIDSIncomingRequest);
     v64 = v63;
@@ -1486,34 +1486,34 @@ LABEL_57:
     }
 
     obj = v64;
-    if ([v14 expectsPeerResponse])
+    if ([contextCopy expectsPeerResponse])
     {
-      v65 = [v14 outgoingResponseIdentifier];
+      outgoingResponseIdentifier5 = [contextCopy outgoingResponseIdentifier];
 
-      if (!v65)
+      if (!outgoingResponseIdentifier5)
       {
-        v66 = [MEMORY[0x277CCA890] currentHandler];
-        [v66 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:684 description:@"*** IDS BUG! idsContext must have an outgoingResponseIdentifier or expectsPeerResponse must be false."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:684 description:@"*** IDS BUG! idsContext must have an outgoingResponseIdentifier or expectsPeerResponse must be false."];
       }
     }
 
-    v67 = [v14 outgoingResponseIdentifier];
-    v69 = v67;
+    outgoingResponseIdentifier6 = [contextCopy outgoingResponseIdentifier];
+    v69 = outgoingResponseIdentifier6;
     if (obj)
     {
-      objc_setProperty_nonatomic_copy(obj, v68, v67, 32);
+      objc_setProperty_nonatomic_copy(obj, v68, outgoingResponseIdentifier6, 32);
 
       *(obj + 6) = v114;
-      *(obj + 16) = [v14 expectsPeerResponse];
+      *(obj + 16) = [contextCopy expectsPeerResponse];
     }
 
     else
     {
 
-      [v14 expectsPeerResponse];
+      [contextCopy expectsPeerResponse];
     }
 
-    v70 = [v12 subdataWithRange:{3, objc_msgSend(v12, "length") - 3}];
+    v70 = [dataCopy subdataWithRange:{3, objc_msgSend(dataCopy, "length") - 3}];
     if (obj)
     {
       objc_storeStrong(obj + 5, v70);
@@ -1551,25 +1551,25 @@ LABEL_57:
       [v27 getValue:&aSelector];
       _HKInitializeLogging();
       v77 = *MEMORY[0x277CCC328];
-      v22 = v116;
+      deviceIdentifier = v116;
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
       {
         v91 = v77;
-        v92 = [(HDIDSMessageCenter *)self _logPrefix];
-        v93 = [v14 outgoingResponseIdentifier];
+        _logPrefix8 = [(HDIDSMessageCenter *)self _logPrefix];
+        outgoingResponseIdentifier7 = [contextCopy outgoingResponseIdentifier];
         NSStringFromSelector(aSelector);
         v94 = v109 = v21;
         *buf = 138413058;
-        v122 = v92;
+        v122 = _logPrefix8;
         v123 = 2112;
-        *v124 = v93;
+        *v124 = outgoingResponseIdentifier7;
         *&v124[8] = 1024;
         *&v124[10] = v56;
         *&v124[14] = 2112;
         *&v124[16] = v94;
         _os_log_debug_impl(&dword_228986000, v91, OS_LOG_TYPE_DEBUG, "%@ dispatching incoming request %@ with message id %u to '%@'", buf, 0x26u);
 
-        v22 = v116;
+        deviceIdentifier = v116;
         v21 = v109;
       }
 
@@ -1582,7 +1582,7 @@ LABEL_57:
     v85 = objc_loadWeakRetained(&self->_delegate);
     v86 = objc_opt_respondsToSelector();
 
-    v22 = v116;
+    deviceIdentifier = v116;
     if (v86)
     {
       v87 = objc_loadWeakRetained(&self->_delegate);
@@ -1604,9 +1604,9 @@ LABEL_57:
       }
 
       v87 = v88;
-      v104 = [(HDIDSMessageCenter *)self _logPrefix];
+      _logPrefix9 = [(HDIDSMessageCenter *)self _logPrefix];
       *buf = 138543618;
-      v122 = v104;
+      v122 = _logPrefix9;
       v123 = 1024;
       *v124 = v56;
       _os_log_error_impl(&dword_228986000, v87, OS_LOG_TYPE_ERROR, "%{public}@ received a message of type %u for which no request handler was registered.", buf, 0x12u);
@@ -1624,32 +1624,32 @@ LABEL_58:
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  blockCopy = block;
   queue = self->_queue;
-  v11 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(queue);
   service = self->_service;
 
-  if (service == v11)
+  if (service == serviceCopy)
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(HDIDSMessageCenter *)self _logPrefix];
+      _logPrefix = [(HDIDSMessageCenter *)self _logPrefix];
       serviceIdentifier = self->_serviceIdentifier;
-      v17 = [v8 hd_shortDescription];
+      hd_shortDescription = [deviceCopy hd_shortDescription];
       v22 = 138543874;
-      v23 = v15;
+      v23 = _logPrefix;
       v24 = 2114;
       v25 = serviceIdentifier;
       v26 = 2114;
-      v27 = v17;
+      v27 = hd_shortDescription;
       _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ active paired IDSDevice for %{public}@ did switch: %{public}@", &v22, 0x20u);
     }
 
@@ -1659,7 +1659,7 @@ LABEL_58:
     if (v19)
     {
       v20 = objc_loadWeakRetained(&self->_delegate);
-      [v20 messageCenter:self activeDeviceDidChange:v8 acknowledgementHandler:v9];
+      [v20 messageCenter:self activeDeviceDidChange:deviceCopy acknowledgementHandler:blockCopy];
     }
   }
 

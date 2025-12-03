@@ -1,38 +1,38 @@
 @interface AMSUIManageSubsriptionSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (AMSUIManageSubsriptionSpecifierProvider)initWithAccountManager:(id)a3;
+- (AMSUIManageSubsriptionSpecifierProvider)initWithAccountManager:(id)manager;
 - (BOOL)_isSingleIdentity;
 - (NSArray)specifiers;
 - (id)_appleAccount;
 - (id)_bag;
 - (id)_findViewController;
 - (id)_storeAccount;
-- (void)_loadManageSubsWithSpecifier:(id)a3;
-- (void)_subscriptionsSpecifierWasTapped:(id)a3;
+- (void)_loadManageSubsWithSpecifier:(id)specifier;
+- (void)_subscriptionsSpecifierWasTapped:(id)tapped;
 - (void)dealloc;
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIManageSubsriptionSpecifierProvider
 
-- (AMSUIManageSubsriptionSpecifierProvider)initWithAccountManager:(id)a3
+- (AMSUIManageSubsriptionSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = AMSUIManageSubsriptionSpecifierProvider;
   v6 = [(AMSUIManageSubsriptionSpecifierProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     objc_initWeak(&location, v7);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__AMSUIManageSubsriptionSpecifierProvider_initWithAccountManager___block_invoke;
     v9[3] = &unk_1E7F24F40;
     objc_copyWeak(&v10, &location);
-    [v5 addAccountChangeObserver:v7 handler:v9];
+    [managerCopy addAccountChangeObserver:v7 handler:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -300,8 +300,8 @@ void __66__AMSUIManageSubsriptionSpecifierProvider_initWithAccountManager___bloc
 
 - (void)dealloc
 {
-  v3 = [(AMSUIManageSubsriptionSpecifierProvider *)self accountManager];
-  [v3 removeAccountChangeObserver:self];
+  accountManager = [(AMSUIManageSubsriptionSpecifierProvider *)self accountManager];
+  [accountManager removeAccountChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AMSUIManageSubsriptionSpecifierProvider;
@@ -317,9 +317,9 @@ void __66__AMSUIManageSubsriptionSpecifierProvider_initWithAccountManager___bloc
     goto LABEL_2;
   }
 
-  v5 = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
+  _storeAccount = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
 
-  if (!v5)
+  if (!_storeAccount)
   {
     v17 = self->_specifiers;
     self->_specifiers = MEMORY[0x1E695E0F0];
@@ -336,10 +336,10 @@ LABEL_2:
   v8 = [MEMORY[0x1E69C5748] preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:2 edit:0];
   [v8 setControllerLoadAction:sel__subscriptionsSpecifierWasTapped_];
   [v8 setIdentifier:@"SUBSCRIPTIONS"];
-  v9 = [MEMORY[0x1E698DDA0] sharedNetworkObserver];
-  v10 = [v9 isNetworkReachable];
+  mEMORY[0x1E698DDA0] = [MEMORY[0x1E698DDA0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698DDA0] isNetworkReachable];
 
-  if ((v10 & 1) == 0)
+  if ((isNetworkReachable & 1) == 0)
   {
     [v8 setProperty:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E69C58C8]];
   }
@@ -348,9 +348,9 @@ LABEL_2:
   {
     [v8 setProperty:objc_opt_class() forKey:*MEMORY[0x1E69C5860]];
     [v8 setProperty:v7 forKey:*MEMORY[0x1E69C59A8]];
-    v11 = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
-    v12 = [v11 aa_formattedUsername];
-    [v8 setProperty:v12 forKey:*MEMORY[0x1E69C59A0]];
+    _storeAccount2 = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
+    aa_formattedUsername = [_storeAccount2 aa_formattedUsername];
+    [v8 setProperty:aa_formattedUsername forKey:*MEMORY[0x1E69C59A0]];
   }
 
   v18[0] = v8;
@@ -367,27 +367,27 @@ LABEL_9:
 
 - (BOOL)_isSingleIdentity
 {
-  v3 = [(AMSUIManageSubsriptionSpecifierProvider *)self _appleAccount];
-  v4 = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
-  v5 = v4;
+  _appleAccount = [(AMSUIManageSubsriptionSpecifierProvider *)self _appleAccount];
+  _storeAccount = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
+  v5 = _storeAccount;
   v6 = 1;
-  if (v3 && v4)
+  if (_appleAccount && _storeAccount)
   {
-    v7 = [v3 ams_altDSID];
-    v8 = [v5 ams_altDSID];
-    if ([v7 length] && objc_msgSend(v8, "length"))
+    ams_altDSID = [_appleAccount ams_altDSID];
+    ams_altDSID2 = [v5 ams_altDSID];
+    if ([ams_altDSID length] && objc_msgSend(ams_altDSID2, "length"))
     {
-      v6 = [v7 isEqualToString:v8];
+      v6 = [ams_altDSID isEqualToString:ams_altDSID2];
     }
 
     else
     {
-      v9 = [v3 ams_DSID];
-      v10 = [v5 ams_DSID];
-      v11 = v10;
-      if (v10)
+      ams_DSID = [_appleAccount ams_DSID];
+      ams_DSID2 = [v5 ams_DSID];
+      v11 = ams_DSID2;
+      if (ams_DSID2)
       {
-        v12 = v10;
+        v12 = ams_DSID2;
       }
 
       else
@@ -395,7 +395,7 @@ LABEL_9:
         v12 = &unk_1F394A5E8;
       }
 
-      v6 = [v9 isEqualToNumber:v12];
+      v6 = [ams_DSID isEqualToNumber:v12];
     }
   }
 
@@ -404,7 +404,7 @@ LABEL_9:
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -426,34 +426,34 @@ LABEL_9:
     _Unwind_Resume(v7);
   }
 
-  v5 = [v2 objectForKeyedSubscript:*v3];
+  v5 = [accounts objectForKeyedSubscript:*v3];
 
   return v5;
 }
 
 - (id)_storeAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
   v3 = getAIDAServiceTypeStore();
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [accounts objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)_subscriptionsSpecifierWasTapped:(id)a3
+- (void)_subscriptionsSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(AMSUIManageSubsriptionSpecifierProvider *)self delegate];
-  [v5 specifierProvider:self willBeginLoadingSpecifier:v4];
+  tappedCopy = tapped;
+  delegate = [(AMSUIManageSubsriptionSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self willBeginLoadingSpecifier:tappedCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__AMSUIManageSubsriptionSpecifierProvider__subscriptionsSpecifierWasTapped___block_invoke;
   v10[3] = &unk_1E7F243C0;
   v10[4] = self;
-  v11 = v4;
+  v11 = tappedCopy;
   v6 = v10;
-  v7 = v4;
+  v7 = tappedCopy;
   v8 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -465,28 +465,28 @@ LABEL_9:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = [AMSUIAuthenticateTask alloc];
-  v10 = [(AMSUIManageSubsriptionSpecifierProvider *)self _findViewController];
-  v12 = [(AMSUIAuthenticateTask *)v9 initWithRequest:v8 presentingViewController:v10];
+  _findViewController = [(AMSUIManageSubsriptionSpecifierProvider *)self _findViewController];
+  v12 = [(AMSUIAuthenticateTask *)v9 initWithRequest:requestCopy presentingViewController:_findViewController];
 
-  v11 = [(AMSAuthenticateTask *)v12 performAuthentication];
-  [v11 addFinishBlock:v7];
+  performAuthentication = [(AMSAuthenticateTask *)v12 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = [AMSUIAlertDialogTask alloc];
-  v10 = [(AMSUIManageSubsriptionSpecifierProvider *)self _findViewController];
-  v12 = [(AMSUIAlertDialogTask *)v9 initWithRequest:v8 presentingViewController:v10];
+  _findViewController = [(AMSUIManageSubsriptionSpecifierProvider *)self _findViewController];
+  v12 = [(AMSUIAlertDialogTask *)v9 initWithRequest:requestCopy presentingViewController:_findViewController];
 
-  v11 = [(AMSUIAlertDialogTask *)v12 present];
-  [v11 addFinishBlock:v7];
+  present = [(AMSUIAlertDialogTask *)v12 present];
+  [present addFinishBlock:completionCopy];
 }
 
 - (id)_bag
@@ -508,24 +508,24 @@ LABEL_9:
 
 - (id)_findViewController
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 windows];
-  v4 = [v3 firstObject];
-  v5 = [v4 rootViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
+  firstObject = [windows firstObject];
+  rootViewController = [firstObject rootViewController];
 
-  return v5;
+  return rootViewController;
 }
 
-- (void)_loadManageSubsWithSpecifier:(id)a3
+- (void)_loadManageSubsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AMSUIManageSubsriptionSpecifierProvider *)self _bag];
+  _bag = [(AMSUIManageSubsriptionSpecifierProvider *)self _bag];
   v6 = AMSSetLogKey();
-  v7 = [v5 URLForKey:@"manageSubscriptionsV2Url"];
+  v7 = [_bag URLForKey:@"manageSubscriptionsV2Url"];
   v8 = [AMSUIWebViewController alloc];
-  v9 = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
-  v10 = [(AMSUIWebViewController *)v8 initWithBag:v5 account:v9 clientInfo:0];
+  _storeAccount = [(AMSUIManageSubsriptionSpecifierProvider *)self _storeAccount];
+  v10 = [(AMSUIWebViewController *)v8 initWithBag:_bag account:_storeAccount clientInfo:0];
 
   v11 = +[AMSUIWebAppearance tableViewAppearance];
   [(AMSUIWebViewController *)v10 setAppearance:v11];
@@ -537,8 +537,8 @@ LABEL_9:
   v18[2] = __72__AMSUIManageSubsriptionSpecifierProvider__loadManageSubsWithSpecifier___block_invoke;
   v18[3] = &unk_1E7F24B50;
   v18[4] = self;
-  v19 = v4;
-  v13 = v4;
+  v19 = specifierCopy;
+  v13 = specifierCopy;
   [v12 addFinishBlock:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;

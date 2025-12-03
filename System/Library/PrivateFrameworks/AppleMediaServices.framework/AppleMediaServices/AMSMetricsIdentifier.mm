@@ -28,14 +28,14 @@
 - (id)generateEventFields
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v2 = [(AMSMetricsIdentifier *)self generateIdentifier];
-  v3 = v2;
-  if (v2)
+  generateIdentifier = [(AMSMetricsIdentifier *)self generateIdentifier];
+  v3 = generateIdentifier;
+  if (generateIdentifier)
   {
     v6[0] = @"clientGeneratedId";
     v6[1] = @"clientId";
     v7[0] = MEMORY[0x1E695E118];
-    v7[1] = v2;
+    v7[1] = generateIdentifier;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   }
 

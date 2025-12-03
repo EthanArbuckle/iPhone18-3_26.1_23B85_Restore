@@ -1,10 +1,10 @@
 @interface MFMoveMessageTriageInteraction
-- (BOOL)isPermittedWithTargetAccount:(id)a3;
+- (BOOL)isPermittedWithTargetAccount:(id)account;
 - (id)cardTitle;
 - (id)shortTitle;
 - (id)title;
 - (id)triageAction;
-- (void)_dispatchInteractionWithCompletion:(id)a3;
+- (void)_dispatchInteractionWithCompletion:(id)completion;
 @end
 
 @implementation MFMoveMessageTriageInteraction
@@ -13,24 +13,24 @@
 {
   if (!self->_triageAction)
   {
-    v3 = [(MFMoveMessageTriageInteraction *)self targetMailboxType];
+    targetMailboxType = [(MFMoveMessageTriageInteraction *)self targetMailboxType];
     v4 = [MSMoveTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    if (v3)
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    if (targetMailboxType)
     {
       LOBYTE(v14) = 0;
-      v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self destinationMailboxType:"actor") flagChange:self copyMessages:{v3, 0, v14}];
+      v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self destinationMailboxType:"actor") flagChange:self copyMessages:{targetMailboxType, 0, v14}];
       triageAction = self->_triageAction;
       self->_triageAction = v6;
     }
 
     else
     {
-      v8 = [(MFTriageInteraction *)self origin];
-      v9 = [(MFTriageInteraction *)self actor];
+      origin = [(MFTriageInteraction *)self origin];
+      actor = [(MFTriageInteraction *)self actor];
       triageAction = [(MFMoveMessageTriageInteraction *)self targetMailbox];
       LOBYTE(v14) = 0;
-      v10 = [v4 initWithMessageListSelection:v5 origin:v8 actor:v9 delegate:self destinationMailbox:triageAction flagChange:0 copyMessages:v14];
+      v10 = [v4 initWithMessageListSelection:messageListItemSelection origin:origin actor:actor delegate:self destinationMailbox:triageAction flagChange:0 copyMessages:v14];
       v11 = self->_triageAction;
       self->_triageAction = v10;
     }
@@ -41,18 +41,18 @@
   return v12;
 }
 
-- (BOOL)isPermittedWithTargetAccount:(id)a3
+- (BOOL)isPermittedWithTargetAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(MFTriageInteraction *)self messageListItemSelection];
-  v6 = [v5 messageListItems];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  obj = messageListItems;
+  v7 = [messageListItems countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
     v22 = v7;
@@ -71,8 +71,8 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v9 = [v8 mailboxes];
-        v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        mailboxes = [v8 mailboxes];
+        v10 = [mailboxes countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v10)
         {
           v11 = *v27;
@@ -82,19 +82,19 @@
             {
               if (*v27 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(mailboxes);
               }
 
               v13 = *(*(&v26 + 1) + 8 * j);
               v14 = +[UIApplication sharedApplication];
-              v15 = [v14 accountsProvider];
-              v16 = [v13 accountIdentifier];
-              v17 = [v15 legacyMailAccountForObjectID:v16];
+              accountsProvider = [v14 accountsProvider];
+              accountIdentifier = [v13 accountIdentifier];
+              v17 = [accountsProvider legacyMailAccountForObjectID:accountIdentifier];
 
               if (v17)
               {
                 v18 = +[MCProfileConnection sharedConnection];
-                v19 = [MailAccount canMoveMessagesFromAccount:v17 toAccount:v4 profileConnection:v18];
+                v19 = [MailAccount canMoveMessagesFromAccount:v17 toAccount:accountCopy profileConnection:v18];
 
                 if (!v19)
                 {
@@ -105,7 +105,7 @@
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v10 = [mailboxes countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v10)
             {
               continue;
@@ -133,13 +133,13 @@ LABEL_20:
   return v20;
 }
 
-- (void)_dispatchInteractionWithCompletion:(id)a3
+- (void)_dispatchInteractionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_1001FE7B0(self);
   v5.receiver = self;
   v5.super_class = MFMoveMessageTriageInteraction;
-  [(MFTriageInteraction *)&v5 _dispatchInteractionWithCompletion:v4];
+  [(MFTriageInteraction *)&v5 _dispatchInteractionWithCompletion:completionCopy];
 }
 
 - (id)title

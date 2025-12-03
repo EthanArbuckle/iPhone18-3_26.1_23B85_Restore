@@ -1,13 +1,13 @@
 @interface NTKHeartRateRichComplicationRectangularView
 - (NTKHeartRateRichComplicationRectangularView)init;
-- (double)_xValueForPointFromChartPoint:(id)a3 inRect:(CGRect)a4;
-- (double)_yValueForPointFromChartPointValue:(id)a3 betweenHigh:(id)a4 andLow:(id)a5 inRect:(CGRect)a6;
+- (double)_xValueForPointFromChartPoint:(id)point inRect:(CGRect)rect;
+- (double)_yValueForPointFromChartPointValue:(id)value betweenHigh:(id)high andLow:(id)low inRect:(CGRect)rect;
 - (void)_loadLockedState;
 - (void)_loadNoDataState;
-- (void)_loadWithMetadata:(id)a3;
-- (void)_updateDailyLabel:(id)a3 withBPM:(id)a4;
-- (void)drawGraph:(CGContext *)a3 rect:(CGRect)a4;
-- (void)loadWithMetadata:(id)a3;
+- (void)_loadWithMetadata:(id)metadata;
+- (void)_updateDailyLabel:(id)label withBPM:(id)m;
+- (void)drawGraph:(CGContext *)graph rect:(CGRect)rect;
+- (void)loadWithMetadata:(id)metadata;
 @end
 
 @implementation NTKHeartRateRichComplicationRectangularView
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (void)drawGraph:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawGraph:(CGContext *)graph rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
-  v11 = [v10 count];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  chartPoints = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
+  v11 = [chartPoints count];
 
   if (v11)
   {
@@ -42,11 +42,11 @@
     v13 = y + v12;
     [(NTKHeartRateRichComplicationRectangularView *)self cornerRadius];
     v15 = height + v14 * -2.0;
-    v16 = [(NTKHeartRateRichComplicationRectangularView *)self highBPM];
-    [v16 doubleValue];
+    highBPM = [(NTKHeartRateRichComplicationRectangularView *)self highBPM];
+    [highBPM doubleValue];
     v18 = v17;
-    v19 = [(NTKHeartRateRichComplicationRectangularView *)self lowBPM];
-    [v19 doubleValue];
+    lowBPM = [(NTKHeartRateRichComplicationRectangularView *)self lowBPM];
+    [lowBPM doubleValue];
     v21 = v20;
 
     v28.origin.x = x;
@@ -61,7 +61,7 @@
       v23 = (v18 - v21) * (v24 * 3.0 / v22);
     }
 
-    v25 = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
+    chartPoints2 = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __62__NTKHeartRateRichComplicationRectangularView_drawGraph_rect___block_invoke;
@@ -72,13 +72,13 @@
     *&v27[7] = width;
     *&v27[8] = v15;
     *&v27[9] = v23;
-    v27[10] = a3;
-    [v25 enumerateObjectsUsingBlock:v27];
+    v27[10] = graph;
+    [chartPoints2 enumerateObjectsUsingBlock:v27];
 
-    v26 = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
-    CGContextSetFillColorWithColor(a3, [v26 CGColor]);
+    accentColor = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
+    CGContextSetFillColorWithColor(graph, [accentColor CGColor]);
 
-    CGContextDrawPath(a3, kCGPathFill);
+    CGContextDrawPath(graph, kCGPathFill);
   }
 }
 
@@ -202,22 +202,22 @@ void __62__NTKHeartRateRichComplicationRectangularView_drawGraph_rect___block_in
 LABEL_7:
 }
 
-- (void)loadWithMetadata:(id)a3
+- (void)loadWithMetadata:(id)metadata
 {
-  v6 = a3;
-  if ([v6 count])
+  metadataCopy = metadata;
+  if ([metadataCopy count])
   {
-    v4 = [v6 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsLocked"];
-    v5 = [v4 BOOLValue];
+    v4 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsLocked"];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       [(NTKHeartRateRichComplicationRectangularView *)self _loadLockedState];
     }
 
     else
     {
-      [(NTKHeartRateRichComplicationRectangularView *)self _loadWithMetadata:v6];
+      [(NTKHeartRateRichComplicationRectangularView *)self _loadWithMetadata:metadataCopy];
     }
   }
 
@@ -239,9 +239,9 @@ LABEL_7:
   }
 
   v4 = NTKClockFaceLocalizedString(@"HEART_RATE_SIGNATURE_LARGE_LOCKED", @"Unlock to View");
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 preferredLocale];
-  v7 = [v4 uppercaseStringWithLocale:v6];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocale = [mainBundle preferredLocale];
+  v7 = [v4 uppercaseStringWithLocale:preferredLocale];
   [(NTKRichComplicationRectangularDailyGraphView *)self resetToNoDataState:v7];
 
   [(NTKHeartRateRichComplicationRectangularView *)self setHighBPM:&unk_284182F68];
@@ -259,9 +259,9 @@ LABEL_7:
   }
 
   v4 = NTKClockFaceLocalizedString(@"HEART_RATE_SIGNATURE_LARGE_NO_DATA", @"No Heart Rate Data");
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 preferredLocale];
-  v7 = [v4 uppercaseStringWithLocale:v6];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocale = [mainBundle preferredLocale];
+  v7 = [v4 uppercaseStringWithLocale:preferredLocale];
   [(NTKRichComplicationRectangularDailyGraphView *)self resetToNoDataState:v7];
 
   [(NTKHeartRateRichComplicationRectangularView *)self setHighBPM:&unk_284182F68];
@@ -269,11 +269,11 @@ LABEL_7:
   [(NTKHeartRateRichComplicationRectangularView *)self setChartPoints:0];
 }
 
-- (void)_loadWithMetadata:(id)a3
+- (void)_loadWithMetadata:(id)metadata
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDate"];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDate"];
   if (v5)
   {
     [(NTKHeartRateRichComplicationRectangularView *)self setMeasurementDate:v5];
@@ -281,11 +281,11 @@ LABEL_7:
 
   else
   {
-    v6 = [MEMORY[0x277CBBAD8] complicationDate];
-    [(NTKHeartRateRichComplicationRectangularView *)self setMeasurementDate:v6];
+    complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
+    [(NTKHeartRateRichComplicationRectangularView *)self setMeasurementDate:complicationDate];
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyBPM"];
+  v7 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyBPM"];
   if (v7)
   {
     v8 = [MEMORY[0x277CCABB8] localizedStringFromNumber:v7 numberStyle:0];
@@ -294,8 +294,8 @@ LABEL_7:
     v11 = [v9 stringWithFormat:v10, v8];
 
     v12 = [MEMORY[0x277CBBB88] textProviderWithText:v11];
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [v12 setTintColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v12 setTintColor:whiteColor];
 
     v14 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -307,18 +307,18 @@ LABEL_7:
       _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "NTKHeartRateRichComplicationRectangularView: loadWithMetadata with bpm:%{public}@ bpmTextProvider:%@", buf, 0x16u);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsNow"];
-    v16 = [v15 BOOLValue];
+    v15 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyIsNow"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       v62 = v11;
       v17 = v8;
       v18 = MEMORY[0x277CBBB88];
       v19 = NTKClockFaceLocalizedString(@"HEART_RATE_TIME_NOW", @"Now");
-      v20 = [MEMORY[0x277CCA8D8] mainBundle];
-      v21 = [v20 preferredLocale];
-      v22 = [v19 uppercaseStringWithLocale:v21];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      preferredLocale = [mainBundle preferredLocale];
+      v22 = [v19 uppercaseStringWithLocale:preferredLocale];
       v23 = [v18 textProviderWithText:v22];
 
       v24 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
@@ -335,10 +335,10 @@ LABEL_7:
 
     else
     {
-      v30 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyFutureEntry"];
-      v31 = [v30 BOOLValue];
+      v30 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyFutureEntry"];
+      bOOLValue2 = [v30 BOOLValue];
 
-      if (v31)
+      if (bOOLValue2)
       {
         v32 = 48;
       }
@@ -357,11 +357,11 @@ LABEL_7:
 
       v35 = *v34;
       v36 = MEMORY[0x277CBBB60];
-      v37 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
-      v23 = [v36 textProviderWithDate:v37 style:v35 units:v32];
+      measurementDate = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
+      v23 = [v36 textProviderWithDate:measurementDate style:v35 units:v32];
 
-      v38 = [MEMORY[0x277CBBAD8] complicationDate];
-      [v23 setRelativeToDate:v38];
+      complicationDate2 = [MEMORY[0x277CBBAD8] complicationDate];
+      [v23 setRelativeToDate:complicationDate2];
 
       [v23 setTimeTravelUpdateFrequency:0];
       [v23 setDisableOffsetPrefix:1];
@@ -374,11 +374,11 @@ LABEL_7:
     v41 = NTKClockFaceLocalizedString(@"HEART_RATE_SIGNATURE_LARGE_CURRENT_READING_FORMAT", @"%1$@ %2$@");
     v42 = [v40 textProviderWithFormat:v41, v12, v23];
 
-    v43 = [MEMORY[0x277D75348] whiteColor];
-    [v42 setTintColor:v43];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [v42 setTintColor:whiteColor2];
 
-    v44 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-    [v44 setTextProvider:v42];
+    titleLabel = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+    [titleLabel setTextProvider:v42];
   }
 
   else
@@ -387,65 +387,65 @@ LABEL_7:
     v26 = NTKClockFaceLocalizedString(@"HEART_RATE_TITLE", @"Heart Rate");
     v27 = [v25 textProviderWithText:v26];
 
-    v28 = [MEMORY[0x277D75348] whiteColor];
-    [v27 setTintColor:v28];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [v27 setTintColor:whiteColor3];
 
-    v29 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-    [v29 setTextProvider:v27];
+    titleLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+    [titleLabel2 setTextProvider:v27];
   }
 
-  v45 = [MEMORY[0x277CBEA80] currentCalendar];
-  v46 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
-  v47 = [v45 startOfDayForDate:v46];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  measurementDate2 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
+  v47 = [currentCalendar startOfDayForDate:measurementDate2];
 
-  v48 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
-  v49 = [v45 hk_startOfDateByAddingDays:1 toDate:v48];
+  measurementDate3 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
+  v49 = [currentCalendar hk_startOfDateByAddingDays:1 toDate:measurementDate3];
 
   v50 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v47 endDate:v49];
   [(NTKHeartRateRichComplicationRectangularView *)self setMeasurementDateDayInterval:v50];
 
-  v51 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyHighBPM"];
+  v51 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyHighBPM"];
   [(NTKHeartRateRichComplicationRectangularView *)self setHighBPM:v51];
 
-  v52 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  v53 = [(NTKHeartRateRichComplicationRectangularView *)self highBPM];
-  [(NTKHeartRateRichComplicationRectangularView *)self _updateDailyLabel:v52 withBPM:v53];
+  dailyHighLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  highBPM = [(NTKHeartRateRichComplicationRectangularView *)self highBPM];
+  [(NTKHeartRateRichComplicationRectangularView *)self _updateDailyLabel:dailyHighLabel withBPM:highBPM];
 
-  v54 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyLowBPM"];
+  v54 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyDailyLowBPM"];
   [(NTKHeartRateRichComplicationRectangularView *)self setLowBPM:v54];
 
-  v55 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  v56 = [(NTKHeartRateRichComplicationRectangularView *)self lowBPM];
-  [(NTKHeartRateRichComplicationRectangularView *)self _updateDailyLabel:v55 withBPM:v56];
+  dailyLowLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  lowBPM = [(NTKHeartRateRichComplicationRectangularView *)self lowBPM];
+  [(NTKHeartRateRichComplicationRectangularView *)self _updateDailyLabel:dailyLowLabel withBPM:lowBPM];
 
-  v57 = [v4 objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyChartPoints"];
+  v57 = [metadataCopy objectForKeyedSubscript:@"NTKHeartRateRichComplicationMetadataKeyChartPoints"];
   [(NTKHeartRateRichComplicationRectangularView *)self setChartPoints:v57];
 
   v58 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
-    v60 = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
-    v61 = [v60 count];
+    measurementDate4 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDate];
+    chartPoints = [(NTKHeartRateRichComplicationRectangularView *)self chartPoints];
+    v61 = [chartPoints count];
     *buf = 138543618;
-    v64 = v59;
+    v64 = measurementDate4;
     v65 = 2048;
     v66 = v61;
     _os_log_impl(&dword_22D9C5000, v58, OS_LOG_TYPE_DEFAULT, "NTKHeartRateRichComplicationRectangularView: Load with metadata. measurementDate? %{public}@, chartPointCount? %lu", buf, 0x16u);
   }
 }
 
-- (double)_xValueForPointFromChartPoint:(id)a3 inRect:(CGRect)a4
+- (double)_xValueForPointFromChartPoint:(id)point inRect:(CGRect)rect
 {
-  v5 = [a3 xValue];
+  xValue = [point xValue];
   MEMORY[0x2318D92B0]();
 
-  v6 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDateDayInterval];
-  v7 = [v6 startDate];
+  measurementDateDayInterval = [(NTKHeartRateRichComplicationRectangularView *)self measurementDateDayInterval];
+  startDate = [measurementDateDayInterval startDate];
   MEMORY[0x2318D92B0]();
 
-  v8 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDateDayInterval];
-  v9 = [v8 endDate];
+  measurementDateDayInterval2 = [(NTKHeartRateRichComplicationRectangularView *)self measurementDateDayInterval];
+  endDate = [measurementDateDayInterval2 endDate];
   MEMORY[0x2318D92B0]();
 
   FIUIChartRelativePositionForXPlaneValue();
@@ -454,26 +454,26 @@ LABEL_7:
   return result;
 }
 
-- (double)_yValueForPointFromChartPointValue:(id)a3 betweenHigh:(id)a4 andLow:(id)a5 inRect:(CGRect)a6
+- (double)_yValueForPointFromChartPointValue:(id)value betweenHigh:(id)high andLow:(id)low inRect:(CGRect)rect
 {
-  v9 = a5;
-  v10 = a4;
-  [a3 doubleValue];
-  [v9 doubleValue];
+  lowCopy = low;
+  highCopy = high;
+  [value doubleValue];
+  [lowCopy doubleValue];
 
-  [v10 doubleValue];
+  [highCopy doubleValue];
   FIUIChartRelativePositionForYPlaneValue();
 
   MEMORY[0x282161310](self);
   return result;
 }
 
-- (void)_updateDailyLabel:(id)a3 withBPM:(id)a4
+- (void)_updateDailyLabel:(id)label withBPM:(id)m
 {
-  v8 = a3;
-  if (a4)
+  labelCopy = label;
+  if (m)
   {
-    [MEMORY[0x277CCABB8] localizedStringFromNumber:a4 numberStyle:0];
+    [MEMORY[0x277CCABB8] localizedStringFromNumber:m numberStyle:0];
   }
 
   else
@@ -481,10 +481,10 @@ LABEL_7:
     +[NTKRichComplicationRectangularDailyGraphView dailyFormattedNoData];
   }
   v6 = ;
-  [v8 setText:v6];
+  [labelCopy setText:v6];
 
-  v7 = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
-  [v8 setTextColor:v7];
+  accentColor = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
+  [labelCopy setTextColor:accentColor];
 }
 
 @end

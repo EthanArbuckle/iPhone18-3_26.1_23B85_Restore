@@ -2,7 +2,7 @@
 - (AXSSMotionTrackingHIDManager)init;
 - (AXSSMotionTrackingHIDManagerDelegate)delegate;
 - (NSArray)devices;
-- (void)_deviceNotification:(id)a3 added:(BOOL)a4;
+- (void)_deviceNotification:(id)notification added:(BOOL)added;
 - (void)dealloc;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -17,9 +17,9 @@
   v2 = [(AXSSMotionTrackingHIDManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     devices = v2->__devices;
-    v2->__devices = v3;
+    v2->__devices = array;
 
     v5 = dispatch_queue_create("com.apple.MotionTrackingHIDManager.hidManagerDispatchQueue", 0);
     hidManagerDispatchQueue = v2->__hidManagerDispatchQueue;
@@ -47,7 +47,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C0E8A000, a2, OS_LOG_TYPE_DEBUG, "AXSSMotionTrackingHIDManager: startMonitoring %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -78,35 +78,35 @@ void __47__AXSSMotionTrackingHIDManager_startMonitoring__block_invoke_2(uint64_t
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C0E8A000, a2, OS_LOG_TYPE_DEBUG, "AXSSMotionTrackingHIDManager: stopMonitoring %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
 - (NSArray)devices
 {
-  v2 = [(AXSSMotionTrackingHIDManager *)self _devices];
-  v3 = [v2 copy];
+  _devices = [(AXSSMotionTrackingHIDManager *)self _devices];
+  v3 = [_devices copy];
 
   return v3;
 }
 
-- (void)_deviceNotification:(id)a3 added:(BOOL)a4
+- (void)_deviceNotification:(id)notification added:(BOOL)added
 {
-  v4 = a4;
-  v6 = a3;
+  addedCopy = added;
+  notificationCopy = notification;
   v7 = AXSSLogForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSSMotionTrackingHIDManager *)v6 _deviceNotification:v4 added:v7];
+    [(AXSSMotionTrackingHIDManager *)notificationCopy _deviceNotification:addedCopy added:v7];
   }
 
-  if (v4)
+  if (addedCopy)
   {
-    if (![AXSSMotionTrackingUtilities axss_HIDDeviceIsMFiAuthenticated:v6])
+    if (![AXSSMotionTrackingUtilities axss_HIDDeviceIsMFiAuthenticated:notificationCopy])
     {
-      v10 = AXSSLogForCategory(2);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      firstObject = AXSSLogForCategory(2);
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         [AXSSMotionTrackingHIDManager _deviceNotification:added:];
       }
@@ -115,14 +115,14 @@ void __47__AXSSMotionTrackingHIDManager_startMonitoring__block_invoke_2(uint64_t
     }
 
     v8 = +[AXSSMotionTrackingUtilities axss_xPositionElementMatchingDict];
-    v9 = [v6 elementsMatching:v8];
-    v10 = [v9 firstObject];
+    v9 = [notificationCopy elementsMatching:v8];
+    firstObject = [v9 firstObject];
 
     v11 = +[AXSSMotionTrackingUtilities axss_yPositionElementMatchingDict];
-    v12 = [v6 elementsMatching:v11];
-    v13 = [v12 firstObject];
+    v12 = [notificationCopy elementsMatching:v11];
+    firstObject2 = [v12 firstObject];
 
-    if (!v10 || !v13)
+    if (!firstObject || !firstObject2)
     {
       v21 = AXSSLogForCategory(2);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -133,25 +133,25 @@ void __47__AXSSMotionTrackingHIDManager_startMonitoring__block_invoke_2(uint64_t
       goto LABEL_19;
     }
 
-    v14 = [(AXSSMotionTrackingHIDManager *)self _devices];
-    [v14 addObject:v6];
+    _devices = [(AXSSMotionTrackingHIDManager *)self _devices];
+    [_devices addObject:notificationCopy];
   }
 
   else
   {
-    v15 = [(AXSSMotionTrackingHIDManager *)self _devices];
-    v16 = [v15 containsObject:v6];
+    _devices2 = [(AXSSMotionTrackingHIDManager *)self _devices];
+    v16 = [_devices2 containsObject:notificationCopy];
 
     if (!v16)
     {
       goto LABEL_21;
     }
 
-    v10 = [(AXSSMotionTrackingHIDManager *)self _devices];
-    [v10 removeObject:v6];
+    firstObject = [(AXSSMotionTrackingHIDManager *)self _devices];
+    [firstObject removeObject:notificationCopy];
   }
 
-  v17 = [(AXSSMotionTrackingHIDManager *)self delegate];
+  delegate = [(AXSSMotionTrackingHIDManager *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
@@ -162,10 +162,10 @@ void __47__AXSSMotionTrackingHIDManager_startMonitoring__block_invoke_2(uint64_t
       [AXSSMotionTrackingHIDManager _deviceNotification:v19 added:?];
     }
 
-    v10 = [(AXSSMotionTrackingHIDManager *)self delegate];
-    v13 = [(AXSSMotionTrackingHIDManager *)self _devices];
-    v20 = [v13 copy];
-    [v10 motionTrackingHIDManager:self updatedDevices:v20];
+    firstObject = [(AXSSMotionTrackingHIDManager *)self delegate];
+    firstObject2 = [(AXSSMotionTrackingHIDManager *)self _devices];
+    v20 = [firstObject2 copy];
+    [firstObject motionTrackingHIDManager:self updatedDevices:v20];
 
 LABEL_19:
 LABEL_20:

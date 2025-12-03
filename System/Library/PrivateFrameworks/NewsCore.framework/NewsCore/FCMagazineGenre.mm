@@ -1,9 +1,9 @@
 @interface FCMagazineGenre
-+ (id)magazineGenreWithGenre:(id)a3 localizedDescription:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)magazineGenreWithGenre:(id)genre localizedDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (FCMagazineGenre)init;
-- (FCMagazineGenre)initWithConfigDictionary:(id)a3;
-- (FCMagazineGenre)initWithGenre:(id)a3 localizedDescription:(id)a4;
+- (FCMagazineGenre)initWithConfigDictionary:(id)dictionary;
+- (FCMagazineGenre)initWithGenre:(id)genre localizedDescription:(id)description;
 - (unint64_t)hash;
 @end
 
@@ -35,30 +35,30 @@
   objc_exception_throw(v6);
 }
 
-- (FCMagazineGenre)initWithConfigDictionary:(id)a3
+- (FCMagazineGenre)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"genre", 0);
-  v6 = FCAppConfigurationStringValue(v4, @"localizedDescription", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"genre", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"localizedDescription", 0);
 
   v7 = [(FCMagazineGenre *)self initWithGenre:v5 localizedDescription:v6];
   return v7;
 }
 
-- (FCMagazineGenre)initWithGenre:(id)a3 localizedDescription:(id)a4
+- (FCMagazineGenre)initWithGenre:(id)genre localizedDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  genreCopy = genre;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = FCMagazineGenre;
   v8 = [(FCMagazineGenre *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [genreCopy copy];
     genre = v8->_genre;
     v8->_genre = v9;
 
-    v11 = [v7 copy];
+    v11 = [descriptionCopy copy];
     localizedDescription = v8->_localizedDescription;
     v8->_localizedDescription = v11;
   }
@@ -66,15 +66,15 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -93,14 +93,14 @@
   if (v6)
   {
     v7 = MEMORY[0x1E69E58C0];
-    v8 = [(FCMagazineGenre *)self genre];
-    v9 = [v6 genre];
-    if ([v7 nf_object:v8 isEqualToObject:v9])
+    genre = [(FCMagazineGenre *)self genre];
+    genre2 = [v6 genre];
+    if ([v7 nf_object:genre isEqualToObject:genre2])
     {
       v10 = MEMORY[0x1E69E58C0];
-      v11 = [(FCMagazineGenre *)self localizedDescription];
-      v12 = [v6 localizedDescription];
-      v13 = [v10 nf_object:v11 isEqualToObject:v12];
+      localizedDescription = [(FCMagazineGenre *)self localizedDescription];
+      localizedDescription2 = [v6 localizedDescription];
+      v13 = [v10 nf_object:localizedDescription isEqualToObject:localizedDescription2];
     }
 
     else
@@ -119,19 +119,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCMagazineGenre *)self genre];
-  v4 = [v3 hash];
-  v5 = [(FCMagazineGenre *)self localizedDescription];
-  v6 = [v5 hash];
+  genre = [(FCMagazineGenre *)self genre];
+  v4 = [genre hash];
+  localizedDescription = [(FCMagazineGenre *)self localizedDescription];
+  v6 = [localizedDescription hash];
 
   return v6 ^ v4;
 }
 
-+ (id)magazineGenreWithGenre:(id)a3 localizedDescription:(id)a4
++ (id)magazineGenreWithGenre:(id)genre localizedDescription:(id)description
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FCMagazineGenre alloc] initWithGenre:v6 localizedDescription:v5];
+  descriptionCopy = description;
+  genreCopy = genre;
+  v7 = [[FCMagazineGenre alloc] initWithGenre:genreCopy localizedDescription:descriptionCopy];
 
   return v7;
 }

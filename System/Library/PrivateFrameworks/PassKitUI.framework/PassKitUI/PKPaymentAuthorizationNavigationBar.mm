@@ -1,8 +1,8 @@
 @interface PKPaymentAuthorizationNavigationBar
-+ (id)_leftBarButtonItemWithImage:(id)a3;
++ (id)_leftBarButtonItemWithImage:(id)image;
 + (id)applePayBarButtonItem;
-+ (id)cardOnFileBarButtonItemForRequestor:(unint64_t)a3;
-- (PKPaymentAuthorizationNavigationBar)initWithFrame:(CGRect)a3;
++ (id)cardOnFileBarButtonItemForRequestor:(unint64_t)requestor;
+- (PKPaymentAuthorizationNavigationBar)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)didUpdateInterfaceStyle;
 - (void)layoutSubviews;
@@ -10,14 +10,14 @@
 
 @implementation PKPaymentAuthorizationNavigationBar
 
-+ (id)_leftBarButtonItemWithImage:(id)a3
++ (id)_leftBarButtonItemWithImage:(id)image
 {
   v3 = MEMORY[0x1E69DCAE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[v3 alloc] initWithImage:imageCopy];
 
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  [v5 setTintColor:v6];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v5 setTintColor:labelColor];
 
   [v5 bounds];
   v8 = v7;
@@ -26,10 +26,10 @@
   v14 = v13;
   v15 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, v9, v11, v13}];
   [v15 addSubview:v5];
-  v16 = [MEMORY[0x1E69DC668] sharedApplication];
-  v17 = [v16 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v18 = 4.0;
   }
@@ -54,21 +54,21 @@
   return v19;
 }
 
-+ (id)cardOnFileBarButtonItemForRequestor:(unint64_t)a3
++ (id)cardOnFileBarButtonItemForRequestor:(unint64_t)requestor
 {
-  if (a3 > 5)
+  if (requestor > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E8023158[a3];
+    v4 = off_1E8023158[requestor];
   }
 
   v5 = PKUIImageNamed(v4);
   v6 = [v5 imageWithRenderingMode:2];
-  v7 = [a1 _leftBarButtonItemWithImage:v6];
+  v7 = [self _leftBarButtonItemWithImage:v6];
 
   return v7;
 }
@@ -77,16 +77,16 @@
 {
   v3 = PKUIImageNamed(@"Payment_Logo");
   v4 = [v3 imageWithRenderingMode:2];
-  v5 = [a1 _leftBarButtonItemWithImage:v4];
+  v5 = [self _leftBarButtonItemWithImage:v4];
 
   return v5;
 }
 
-- (PKPaymentAuthorizationNavigationBar)initWithFrame:(CGRect)a3
+- (PKPaymentAuthorizationNavigationBar)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PKPaymentAuthorizationNavigationBar;
-  v3 = [(PKPaymentAuthorizationNavigationBar *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentAuthorizationNavigationBar *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -98,8 +98,8 @@
     [(UILabel *)v6 setFont:v7];
 
     v8 = v3->_environmentLabel;
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UILabel *)v8 setTextColor:tertiaryLabelColor];
 
     v10 = v3->_environmentLabel;
     v11 = PKLocalizedEnvironmentHint();
@@ -132,13 +132,13 @@
   v8 = __Block_byref_object_copy__60;
   v9 = __Block_byref_object_dispose__60;
   v10 = 0;
-  v3 = [(PKPaymentAuthorizationNavigationBar *)self traitCollection];
+  traitCollection = [(PKPaymentAuthorizationNavigationBar *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__PKPaymentAuthorizationNavigationBar_didUpdateInterfaceStyle__block_invoke;
   v4[3] = &unk_1E8011A18;
   v4[4] = &v5;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 
   [(PKPaymentAuthorizationNavigationBar *)self setShadowImage:v6[5]];
   _Block_object_dispose(&v5, 8);
@@ -159,23 +159,23 @@ void __62__PKPaymentAuthorizationNavigationBar_didUpdateInterfaceStyle__block_in
   v14.receiver = self;
   v14.super_class = PKPaymentAuthorizationNavigationBar;
   [(PKPaymentAuthorizationNavigationBar *)&v14 layoutSubviews];
-  v3 = [(PKPaymentAuthorizationNavigationBar *)self backItem];
+  backItem = [(PKPaymentAuthorizationNavigationBar *)self backItem];
 
   v4 = 0.0;
-  if (!v3)
+  if (!backItem)
   {
-    v5 = [(PKPaymentAuthorizationNavigationBar *)self topItem];
-    v6 = [v5 leftBarButtonItem];
-    v7 = [v6 customView];
+    topItem = [(PKPaymentAuthorizationNavigationBar *)self topItem];
+    leftBarButtonItem = [topItem leftBarButtonItem];
+    customView = [leftBarButtonItem customView];
 
-    if (v7)
+    if (customView)
     {
       [(UILabel *)self->_environmentLabel frame];
-      v8 = [MEMORY[0x1E69DC668] sharedApplication];
-      v9 = [v8 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      [v7 frame];
-      if (v9 == 1)
+      [customView frame];
+      if (userInterfaceLayoutDirection == 1)
       {
         CGRectGetMinX(*&v10);
       }

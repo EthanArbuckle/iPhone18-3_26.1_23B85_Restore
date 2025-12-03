@@ -1,17 +1,17 @@
 @interface MFBase64Encoder
-- (MFBase64Encoder)initWithConsumers:(id)a3;
-- (int64_t)appendData:(id)a3;
+- (MFBase64Encoder)initWithConsumers:(id)consumers;
+- (int64_t)appendData:(id)data;
 - (void)done;
-- (void)setAllowSlash:(BOOL)a3;
+- (void)setAllowSlash:(BOOL)slash;
 @end
 
 @implementation MFBase64Encoder
 
-- (MFBase64Encoder)initWithConsumers:(id)a3
+- (MFBase64Encoder)initWithConsumers:(id)consumers
 {
   v4.receiver = self;
   v4.super_class = MFBase64Encoder;
-  result = [(MFBaseFilterDataConsumer *)&v4 initWithConsumers:a3];
+  result = [(MFBaseFilterDataConsumer *)&v4 initWithConsumers:consumers];
   if (result)
   {
     result->_padChar = 61;
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v3 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v3 = MEMORY[0x1EEE9AC00](self, a2, data);
   v42 = *MEMORY[0x1E69E9840];
   v5 = v4;
   v38 = v5;
-  v6 = [v38 bytes];
+  bytes = [v38 bytes];
   v7 = [v5 length];
   memset(__b, 170, sizeof(__b));
   v8 = *(v3 + 32);
@@ -43,7 +43,7 @@
       v9 = 3 - v8;
     }
 
-    memmove((v3 + 40 + v8), v6, v9);
+    memmove((v3 + 40 + v8), bytes, v9);
     v10 = *(v3 + 32) + v9;
     *(v3 + 32) = v10;
     v11 = v7 - v9;
@@ -90,8 +90,8 @@
   v37 = v11;
   if (v11)
   {
-    v35 = v6;
-    v20 = &v6[v9];
+    v35 = bytes;
+    v20 = &bytes[v9];
     v36 = 3 * (v11 / 3);
     for (i = &v20[v36]; v20 < i; v20 += 3)
     {
@@ -277,10 +277,10 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAllowSlash:(BOOL)a3
+- (void)setAllowSlash:(BOOL)slash
 {
   v3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+,";
-  if (a3)
+  if (slash)
   {
     v3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   }

@@ -1,22 +1,22 @@
 @interface PDFView_QSExtras
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityQuickSpeakContent;
 - (id)_accessibilitySpeakTextSelectionViews;
-- (void)_accessibilityQuickSpeakTextRectsWithRange:(_NSRange)a3 string:(id)a4 highlightRects:(id)a5 sentenceRects:(id)a6 singleTextRect:(CGRect *)a7;
-- (void)_axConvertRange:(_NSRange)a3 toRects:(id)a4 operatingPage:(id)a5;
+- (void)_accessibilityQuickSpeakTextRectsWithRange:(_NSRange)range string:(id)string highlightRects:(id)rects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect;
+- (void)_axConvertRange:(_NSRange)range toRects:(id)rects operatingPage:(id)page;
 @end
 
 @implementation PDFView_QSExtras
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PDFView" hasInstanceMethod:@"currentSelection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PDFPageLayerSelectionEffect"];
-  [v3 validateClass:@"PDFView" hasInstanceVariable:@"_private" withType:"PDFViewPrivate"];
-  [v3 validateClass:@"PDFViewPrivate" hasInstanceVariable:@"scrollView" withType:"PDFScrollView"];
-  [v3 validateClass:@"PDFScrollView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"PDFScrollView" hasInstanceMethod:@"pdfDocumentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PDFView" hasInstanceMethod:@"currentSelection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PDFPageLayerSelectionEffect"];
+  [validationsCopy validateClass:@"PDFView" hasInstanceVariable:@"_private" withType:"PDFViewPrivate"];
+  [validationsCopy validateClass:@"PDFViewPrivate" hasInstanceVariable:@"scrollView" withType:"PDFScrollView"];
+  [validationsCopy validateClass:@"PDFScrollView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"PDFScrollView" hasInstanceMethod:@"pdfDocumentView" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySpeakTextSelectionViews
@@ -29,27 +29,27 @@
   v4 = [v3 safeValueForKey:@"pdfDocumentView"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [MEMORY[0x29EDB8DE8] array];
-  v7 = [v5 layer];
-  v8 = [v7 sublayers];
-  [v6 axSafelyAddObjectsFromArray:v8];
+  array = [MEMORY[0x29EDB8DE8] array];
+  layer = [v5 layer];
+  sublayers = [layer sublayers];
+  [array axSafelyAddObjectsFromArray:sublayers];
 
-  if ([v6 count])
+  if ([array count])
   {
     while (1)
     {
-      v9 = [v6 objectAtIndex:0];
+      v9 = [array objectAtIndex:0];
       NSClassFromString(&cfstr_Pdfpagelayerse.isa);
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v10 = [v9 sublayers];
-      [v6 axSafelyAddObjectsFromArray:v10];
+      sublayers2 = [v9 sublayers];
+      [array axSafelyAddObjectsFromArray:sublayers2];
 
-      [v6 removeObjectAtIndex:0];
-      if (![v6 count])
+      [array removeObjectAtIndex:0];
+      if (![array count])
       {
         goto LABEL_4;
       }
@@ -70,20 +70,20 @@ LABEL_4:
   return v11;
 }
 
-- (void)_axConvertRange:(_NSRange)a3 toRects:(id)a4 operatingPage:(id)a5
+- (void)_axConvertRange:(_NSRange)range toRects:(id)rects operatingPage:(id)page
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v23 = *MEMORY[0x29EDCA608];
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 selectionForRange:{location, length}];
+  rectsCopy = rects;
+  pageCopy = page;
+  v11 = [pageCopy selectionForRange:{location, length}];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v11 selectionsByLine];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selectionsByLine = [v11 selectionsByLine];
+  v13 = [selectionsByLine countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = *v19;
@@ -94,19 +94,19 @@ LABEL_4:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(selectionsByLine);
         }
 
-        [*(*(&v18 + 1) + 8 * v15) boundsForPage:v10];
-        [(PDFView_QSExtras *)self convertRect:v10 fromPage:?];
+        [*(*(&v18 + 1) + 8 * v15) boundsForPage:pageCopy];
+        [(PDFView_QSExtras *)self convertRect:pageCopy fromPage:?];
         v16 = [MEMORY[0x29EDBA168] valueWithRect:?];
-        [v9 addObject:v16];
+        [rectsCopy addObject:v16];
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [selectionsByLine countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
@@ -115,26 +115,26 @@ LABEL_4:
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_accessibilityQuickSpeakTextRectsWithRange:(_NSRange)a3 string:(id)a4 highlightRects:(id)a5 sentenceRects:(id)a6 singleTextRect:(CGRect *)a7
+- (void)_accessibilityQuickSpeakTextRectsWithRange:(_NSRange)range string:(id)string highlightRects:(id)rects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v54 = *MEMORY[0x29EDCA608];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x29EDBD6C8] sharedInstance];
-  v16 = [v15 ignoreLogging];
+  stringCopy = string;
+  rectsCopy = rects;
+  sentenceRectsCopy = sentenceRects;
+  mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+  ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-  if ((v16 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v17 = [MEMORY[0x29EDBD6C8] identifier];
+    identifier = [MEMORY[0x29EDBD6C8] identifier];
     v18 = AXLoggerForFacility();
 
     v19 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v18, v19))
     {
-      v20 = v12;
+      v20 = stringCopy;
       v21 = AXColorizeFormatLog();
       v47 = location;
       v49 = length;
@@ -146,7 +146,7 @@ LABEL_4:
         _os_log_impl(&dword_29C1E5000, v18, v19, "%{public}@", buf, 0xCu);
       }
 
-      v12 = v20;
+      stringCopy = v20;
     }
   }
 
@@ -159,24 +159,24 @@ LABEL_4:
     abort();
   }
 
-  v25 = [v24 string];
-  if (location + length <= [v25 length])
+  string = [v24 string];
+  if (location + length <= [string length])
   {
-    v50 = [v24 pages];
-    v26 = [v50 firstObject];
-    v27 = [v24 indexOfFirstCharacterOnPage:v26];
+    pages = [v24 pages];
+    firstObject = [pages firstObject];
+    v27 = [v24 indexOfFirstCharacterOnPage:firstObject];
     v28 = length;
-    v29 = v13;
+    v29 = rectsCopy;
     [(PDFView_QSExtras *)self _axConvertRange:v27 + location toRects:v28 operatingPage:?];
-    v51 = v12;
-    v30 = [v12 ax_sentenceFromPosition:location inDirection:v27 + location != 0];
-    [(PDFView_QSExtras *)self _axConvertRange:v30 + v27 toRects:v31 operatingPage:v14, v26];
-    v32 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v33 = [v32 ignoreLogging];
+    v51 = stringCopy;
+    v30 = [stringCopy ax_sentenceFromPosition:location inDirection:v27 + location != 0];
+    [(PDFView_QSExtras *)self _axConvertRange:v30 + v27 toRects:v31 operatingPage:sentenceRectsCopy, firstObject];
+    mEMORY[0x29EDBD6C8]2 = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x29EDBD6C8]2 ignoreLogging];
 
-    if ((v33 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v34 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier2 = [MEMORY[0x29EDBD6C8] identifier];
       v35 = AXLoggerForFacility();
 
       v36 = AXOSLogLevelFromAXLogLevel();
@@ -194,13 +194,13 @@ LABEL_4:
       }
     }
 
-    v39 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v40 = [v39 ignoreLogging];
+    mEMORY[0x29EDBD6C8]3 = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging3 = [mEMORY[0x29EDBD6C8]3 ignoreLogging];
 
-    v13 = v29;
-    if ((v40 & 1) == 0)
+    rectsCopy = v29;
+    if ((ignoreLogging3 & 1) == 0)
     {
-      v41 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier3 = [MEMORY[0x29EDBD6C8] identifier];
       v42 = AXLoggerForFacility();
 
       v43 = AXOSLogLevelFromAXLogLevel();
@@ -217,7 +217,7 @@ LABEL_4:
       }
     }
 
-    v12 = v51;
+    stringCopy = v51;
   }
 
   v46 = *MEMORY[0x29EDCA608];
@@ -228,9 +228,9 @@ LABEL_4:
   v2 = [(PDFView_QSExtras *)self safeValueForKey:@"currentSelection"];
   v3 = __UIAccessibilitySafeClass();
 
-  v4 = [v3 string];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
 @end

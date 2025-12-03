@@ -1,23 +1,23 @@
 @interface SBSwitcherCaptureApplicationActivationWatchdog
-- (SBSwitcherCaptureApplicationActivationWatchdog)initWithDelegate:(id)a3;
-- (id)_addEntryForEntity:(id)a3;
-- (id)_entryForEntity:(id)a3;
-- (id)_entryForMonitor:(id)a3;
-- (id)_entryForSceneHandle:(id)a3;
-- (void)_beginMonitoringAppRepresentedByEntity:(id)a3;
-- (void)_endMonitoringAppRepresentedByEntity:(id)a3;
-- (void)_removeEntryForEntity:(id)a3;
-- (void)captureApplicationMonitor:(id)a3 hasMetLaunchRequirements:(BOOL)a4 unmetReason:(id)a5;
-- (void)foregroundWorkspaceEntitiesUpdatedTo:(id)a3;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4;
+- (SBSwitcherCaptureApplicationActivationWatchdog)initWithDelegate:(id)delegate;
+- (id)_addEntryForEntity:(id)entity;
+- (id)_entryForEntity:(id)entity;
+- (id)_entryForMonitor:(id)monitor;
+- (id)_entryForSceneHandle:(id)handle;
+- (void)_beginMonitoringAppRepresentedByEntity:(id)entity;
+- (void)_endMonitoringAppRepresentedByEntity:(id)entity;
+- (void)_removeEntryForEntity:(id)entity;
+- (void)captureApplicationMonitor:(id)monitor hasMetLaunchRequirements:(BOOL)requirements unmetReason:(id)reason;
+- (void)foregroundWorkspaceEntitiesUpdatedTo:(id)to;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle;
 @end
 
 @implementation SBSwitcherCaptureApplicationActivationWatchdog
 
-- (SBSwitcherCaptureApplicationActivationWatchdog)initWithDelegate:(id)a3
+- (SBSwitcherCaptureApplicationActivationWatchdog)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = SBSwitcherCaptureApplicationActivationWatchdog;
   v5 = [(SBSwitcherCaptureApplicationActivationWatchdog *)&v9 init];
@@ -27,23 +27,23 @@
     watchdogEntries = v5->_watchdogEntries;
     v5->_watchdogEntries = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
 }
 
-- (void)foregroundWorkspaceEntitiesUpdatedTo:(id)a3
+- (void)foregroundWorkspaceEntitiesUpdatedTo:(id)to
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v32 = [v4 mutableCopy];
+  toCopy = to;
+  v32 = [toCopy mutableCopy];
   v5 = [(NSSet *)self->_lastEntitiesUpdate mutableCopy];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v6 = v4;
+  v6 = toCopy;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v7)
   {
@@ -203,30 +203,30 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
   return result;
 }
 
-- (void)_beginMonitoringAppRepresentedByEntity:(id)a3
+- (void)_beginMonitoringAppRepresentedByEntity:(id)entity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 applicationSceneEntity];
-  v6 = [v5 sceneHandle];
+  entityCopy = entity;
+  applicationSceneEntity = [entityCopy applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
 
-  v7 = [v6 sceneIfExists];
+  sceneIfExists = [sceneHandle sceneIfExists];
   v8 = SBLogCaptureApplication();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (sceneIfExists)
   {
     if (v9)
     {
-      v10 = [v4 applicationSceneEntity];
-      v11 = [v10 application];
-      v12 = [v11 bundleIdentifier];
+      applicationSceneEntity2 = [entityCopy applicationSceneEntity];
+      application = [applicationSceneEntity2 application];
+      bundleIdentifier = [application bundleIdentifier];
       v18 = 138543362;
-      v19 = v12;
+      v19 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Unlocked: Capture watchdog monitoring BEGINNING for %{public}@", &v18, 0xCu);
     }
 
-    v13 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _addEntryForEntity:v4];
-    v14 = [[SBCaptureApplicationLaunchMonitor alloc] initWithScene:v7 delegate:self];
+    v13 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _addEntryForEntity:entityCopy];
+    v14 = [[SBCaptureApplicationLaunchMonitor alloc] initWithScene:sceneIfExists delegate:self];
     [v13 setCaptureAppLaunchMonitor:v14];
     [(SBCaptureApplicationLaunchMonitor *)v14 start];
   }
@@ -235,52 +235,52 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
   {
     if (v9)
     {
-      v15 = [v4 applicationSceneEntity];
-      v16 = [v15 application];
-      v17 = [v16 bundleIdentifier];
+      applicationSceneEntity3 = [entityCopy applicationSceneEntity];
+      application2 = [applicationSceneEntity3 application];
+      bundleIdentifier2 = [application2 bundleIdentifier];
       v18 = 138543362;
-      v19 = v17;
+      v19 = bundleIdentifier2;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Unlocked: Capture watchdog monitoring PENDING for %{public}@", &v18, 0xCu);
     }
 
-    v13 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _addEntryForEntity:v4];
-    [v13 setSceneHandle:v6];
-    [v6 addObserver:self];
+    v13 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _addEntryForEntity:entityCopy];
+    [v13 setSceneHandle:sceneHandle];
+    [sceneHandle addObserver:self];
   }
 }
 
-- (void)_endMonitoringAppRepresentedByEntity:(id)a3
+- (void)_endMonitoringAppRepresentedByEntity:(id)entity
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:v4];
+  entityCopy = entity;
+  v5 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:entityCopy];
   if (v5)
   {
     v6 = SBLogCaptureApplication();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 applicationSceneEntity];
-      v8 = [v7 application];
-      v9 = [v8 bundleIdentifier];
+      applicationSceneEntity = [entityCopy applicationSceneEntity];
+      application = [applicationSceneEntity application];
+      bundleIdentifier = [application bundleIdentifier];
       v11 = 138543362;
-      v12 = v9;
+      v12 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Unlocked: Capture watchdog ENDED for %{public}@", &v11, 0xCu);
     }
 
-    v10 = [v5 captureAppLaunchMonitor];
-    [v10 invalidate];
+    captureAppLaunchMonitor = [v5 captureAppLaunchMonitor];
+    [captureAppLaunchMonitor invalidate];
 
-    [(SBSwitcherCaptureApplicationActivationWatchdog *)self _removeEntryForEntity:v4];
+    [(SBSwitcherCaptureApplicationActivationWatchdog *)self _removeEntryForEntity:entityCopy];
   }
 }
 
-- (void)captureApplicationMonitor:(id)a3 hasMetLaunchRequirements:(BOOL)a4 unmetReason:(id)a5
+- (void)captureApplicationMonitor:(id)monitor hasMetLaunchRequirements:(BOOL)requirements unmetReason:(id)reason
 {
-  v6 = a4;
+  requirementsCopy = requirements;
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForMonitor:v9];
+  monitorCopy = monitor;
+  reasonCopy = reason;
+  v11 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForMonitor:monitorCopy];
   if (!v11)
   {
     [SBSwitcherCaptureApplicationActivationWatchdog captureApplicationMonitor:a2 hasMetLaunchRequirements:? unmetReason:?];
@@ -290,50 +290,50 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
   v13 = SBLogCaptureApplication();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 entity];
-    v15 = [v14 applicationSceneEntity];
-    v16 = [v15 application];
-    v17 = [v16 bundleIdentifier];
+    entity = [v12 entity];
+    applicationSceneEntity = [entity applicationSceneEntity];
+    application = [applicationSceneEntity application];
+    bundleIdentifier = [application bundleIdentifier];
     v21[0] = 67109378;
-    v21[1] = v6;
+    v21[1] = requirementsCopy;
     v22 = 2114;
-    v23 = v17;
+    v23 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Unlocked: Capture watchdog met requirements? (%{BOOL}u) for %{public}@", v21, 0x12u);
   }
 
-  if (!v6)
+  if (!requirementsCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v19 = [v12 entity];
-    [WeakRetained watchdog:self requestsTerminationOf:v19 forReason:v10];
+    entity2 = [v12 entity];
+    [WeakRetained watchdog:self requestsTerminationOf:entity2 forReason:reasonCopy];
   }
 
-  v20 = [v12 entity];
-  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _endMonitoringAppRepresentedByEntity:v20];
+  entity3 = [v12 entity];
+  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _endMonitoringAppRepresentedByEntity:entity3];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForSceneHandle:v12];
+  handleCopy = handle;
+  sceneCopy = scene;
+  v8 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForSceneHandle:handleCopy];
   if (!v8)
   {
     [SBSwitcherCaptureApplicationActivationWatchdog sceneHandle:a2 didCreateScene:?];
   }
 
   v9 = v8;
-  v10 = [v8 entity];
-  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _removeEntryForEntity:v10];
+  entity = [v8 entity];
+  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _removeEntryForEntity:entity];
 
-  v11 = [v9 entity];
-  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _beginMonitoringAppRepresentedByEntity:v11];
+  entity2 = [v9 entity];
+  [(SBSwitcherCaptureApplicationActivationWatchdog *)self _beginMonitoringAppRepresentedByEntity:entity2];
 }
 
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  sceneHandleCopy = sceneHandle;
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unhandled"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -345,7 +345,7 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"SBSwitcherCaptureApplicationActivationWatchdog.m";
     v21 = 1024;
@@ -360,10 +360,10 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
   __break(0);
 }
 
-- (id)_entryForEntity:(id)a3
+- (id)_entryForEntity:(id)entity
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entityCopy = entity;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -383,8 +383,8 @@ uint64_t __87__SBSwitcherCaptureApplicationActivationWatchdog_foregroundWorkspac
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 entity];
-        v11 = [v10 isAnalogousToEntity:v4];
+        entity = [v9 entity];
+        v11 = [entity isAnalogousToEntity:entityCopy];
 
         if (v11)
         {
@@ -408,10 +408,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_entryForMonitor:(id)a3
+- (id)_entryForMonitor:(id)monitor
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  monitorCopy = monitor;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -431,9 +431,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 captureAppLaunchMonitor];
+        captureAppLaunchMonitor = [v9 captureAppLaunchMonitor];
 
-        if (v10 == v4)
+        if (captureAppLaunchMonitor == monitorCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -455,10 +455,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_entryForSceneHandle:(id)a3
+- (id)_entryForSceneHandle:(id)handle
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handleCopy = handle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -478,8 +478,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 sceneHandle];
-        v11 = [v10 isEqual:v4];
+        sceneHandle = [v9 sceneHandle];
+        v11 = [sceneHandle isEqual:handleCopy];
 
         if (v11)
         {
@@ -503,10 +503,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_addEntryForEntity:(id)a3
+- (id)_addEntryForEntity:(id)entity
 {
-  v5 = a3;
-  v6 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:v5];
+  entityCopy = entity;
+  v6 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:entityCopy];
 
   if (v6)
   {
@@ -514,20 +514,20 @@ LABEL_11:
   }
 
   v7 = objc_alloc_init(_SBWatchdogEntry);
-  [(_SBWatchdogEntry *)v7 setEntity:v5];
+  [(_SBWatchdogEntry *)v7 setEntity:entityCopy];
   [(NSHashTable *)self->_watchdogEntries addObject:v7];
 
   return v7;
 }
 
-- (void)_removeEntryForEntity:(id)a3
+- (void)_removeEntryForEntity:(id)entity
 {
-  v6 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:a3];
-  v4 = [v6 sceneHandle];
-  v5 = v4;
-  if (v4)
+  v6 = [(SBSwitcherCaptureApplicationActivationWatchdog *)self _entryForEntity:entity];
+  sceneHandle = [v6 sceneHandle];
+  v5 = sceneHandle;
+  if (sceneHandle)
   {
-    [v4 removeObserver:self];
+    [sceneHandle removeObserver:self];
     [v6 setSceneHandle:0];
   }
 

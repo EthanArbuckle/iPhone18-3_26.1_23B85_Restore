@@ -9,12 +9,12 @@
 - (id)specifiers;
 - (int64_t)defaultAppStickinessDuration;
 - (void)reloadAll;
-- (void)returnToClockSettingDidChange:(int64_t)a3;
-- (void)saveReturnToAppSettings:(id)a3;
-- (void)setAlwaysReturnToAppInSession:(id)a3;
-- (void)setCustomReturnToClock:(id)a3;
-- (void)setReturnToAppTimeout:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)returnToClockSettingDidChange:(int64_t)change;
+- (void)saveReturnToAppSettings:(id)settings;
+- (void)setAlwaysReturnToAppInSession:(id)session;
+- (void)setCustomReturnToClock:(id)clock;
+- (void)setReturnToAppTimeout:(id)timeout;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CSLPRFReturnToAppSettingsViewController
@@ -36,8 +36,8 @@
 
   if (!WeakRetained)
   {
-    v4 = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
-    v5 = [v4 propertyForKey:@"ReturnToAppSettingsModel"];
+    specifier = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
+    v5 = [specifier propertyForKey:@"ReturnToAppSettingsModel"];
     objc_storeWeak(&self->_returnToAppSettingsModel, v5);
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -55,8 +55,8 @@
 
   if (!WeakRetained)
   {
-    v4 = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
-    v5 = [v4 propertyForKey:@"ReturnToAppSettingsDelegate"];
+    specifier = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
+    v5 = [specifier propertyForKey:@"ReturnToAppSettingsDelegate"];
     objc_storeWeak(&self->_returnToAppSettingsDelegate, v5);
   }
 
@@ -67,17 +67,17 @@
 
 - (id)bundleID
 {
-  v2 = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
-  v3 = [v2 identifier];
+  specifier = [(CSLPRFReturnToAppSettingsViewController *)self specifier];
+  identifier = [specifier identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)returnToAppSettings
 {
-  v3 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
-  v4 = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
-  v5 = [v3 settingsForBundleID:v4];
+  returnToAppSettingsModel = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
+  bundleID = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
+  v5 = [returnToAppSettingsModel settingsForBundleID:bundleID];
 
   if (v5)
   {
@@ -94,39 +94,39 @@
   return v7;
 }
 
-- (void)saveReturnToAppSettings:(id)a3
+- (void)saveReturnToAppSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
-  v6 = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
-  [v5 setSettings:v4 forBundleID:v6];
+  settingsCopy = settings;
+  returnToAppSettingsModel = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
+  bundleID = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
+  [returnToAppSettingsModel setSettings:settingsCopy forBundleID:bundleID];
 
-  v7 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
-  [v7 saveAppSettings];
+  returnToAppSettingsModel2 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsModel];
+  [returnToAppSettingsModel2 saveAppSettings];
 
   [(CSLPRFReturnToAppSettingsViewController *)self reloadSpecifiers];
 }
 
 - (int64_t)defaultAppStickinessDuration
 {
-  v2 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsDelegate];
-  v3 = [v2 currentAppTimeoutSetting];
-  v4 = [v3 integerValue];
+  returnToAppSettingsDelegate = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettingsDelegate];
+  currentAppTimeoutSetting = [returnToAppSettingsDelegate currentAppTimeoutSetting];
+  integerValue = [currentAppTimeoutSetting integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (id)_unlocalizedCustomFooter
 {
-  v2 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppTimeout];
-  v3 = [v2 integerValue];
+  returnToAppTimeout = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppTimeout];
+  integerValue = [returnToAppTimeout integerValue];
 
   result = @"RETURN_TO_CLOCK_AFTER_2_MINUTES_APP_FOOTER";
-  if (v3 <= 29)
+  if (integerValue <= 29)
   {
-    if (v3 != -1)
+    if (integerValue != -1)
     {
-      if (v3 == &dword_4 + 1)
+      if (integerValue == &dword_4 + 1)
       {
         return result;
       }
@@ -139,14 +139,14 @@
 
   else
   {
-    if (v3 != &dword_1C + 2)
+    if (integerValue != &dword_1C + 2)
     {
-      if (v3 == stru_68.segname)
+      if (integerValue == stru_68.segname)
       {
         return result;
       }
 
-      if (v3 == "rk/UIKit")
+      if (integerValue == "rk/UIKit")
       {
         return @"RETURN_TO_CLOCK_AFTER_1_HOUR_APP_FOOTER";
       }
@@ -160,22 +160,22 @@
 
 - (id)specifiers
 {
-  v3 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
   v4 = cslprf_sessions_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
+    bundleID = [(CSLPRFReturnToAppSettingsViewController *)self bundleID];
     *buf = 138412546;
-    v33 = v5;
+    v33 = bundleID;
     v34 = 2112;
-    v35 = v3;
+    v35 = returnToAppSettings;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Building return to app specifiers for %@ %@", buf, 0x16u);
   }
 
-  v6 = [v3 hasCustomReturnToAppTimeout];
+  hasCustomReturnToAppTimeout = [returnToAppSettings hasCustomReturnToAppTimeout];
   v7 = +[NSMutableArray array];
   v8 = [CSLPRFReturnToClockCustomGroup alloc];
-  if (v6)
+  if (hasCustomReturnToAppTimeout)
   {
     returnToClockSettingGroup = &stru_C5E8;
   }
@@ -185,28 +185,28 @@
     returnToClockSettingGroup = [(CSLPRFReturnToAppSettingsViewController *)self _unlocalizedCustomFooter];
   }
 
-  v10 = [(CSLPRFReturnToClockCustomGroup *)v8 initWithDelegate:self custom:v6 header:0 footer:returnToClockSettingGroup];
+  v10 = [(CSLPRFReturnToClockCustomGroup *)v8 initWithDelegate:self custom:hasCustomReturnToAppTimeout header:0 footer:returnToClockSettingGroup];
   p_returnToClockCustomGroup = &self->_returnToClockCustomGroup;
   returnToClockCustomGroup = self->_returnToClockCustomGroup;
   self->_returnToClockCustomGroup = v10;
 
-  if (v6)
+  if (hasCustomReturnToAppTimeout)
   {
-    v13 = [*p_returnToClockCustomGroup specifiers];
-    [v7 addObjectsFromArray:v13];
+    specifiers = [*p_returnToClockCustomGroup specifiers];
+    [v7 addObjectsFromArray:specifiers];
 
     v14 = [CSLPRFReturnToClockSettingGroup alloc];
-    [v3 returnToAppTimeout];
+    [returnToAppSettings returnToAppTimeout];
     v16 = [(CSLPRFReturnToClockSettingGroup *)v14 initWithDelegate:self returnToClockSetting:v15 header:&stru_C5E8 appSpecific:1];
     p_returnToClockCustomGroup = &self->_returnToClockSettingGroup;
     returnToClockSettingGroup = self->_returnToClockSettingGroup;
     self->_returnToClockSettingGroup = v16;
   }
 
-  v17 = [*p_returnToClockCustomGroup specifiers];
-  [v7 addObjectsFromArray:v17];
+  specifiers2 = [*p_returnToClockCustomGroup specifiers];
+  [v7 addObjectsFromArray:specifiers2];
 
-  if ([v3 sessionCapable])
+  if ([returnToAppSettings sessionCapable])
   {
     v18 = [NSBundle bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"RETURN_TO_APP_IN_SESSION_LABEL" value:&stru_C5E8 table:@"CompanionWakeSettings"];
@@ -235,29 +235,29 @@
   return v29;
 }
 
-- (void)setCustomReturnToClock:(id)a3
+- (void)setCustomReturnToClock:(id)clock
 {
-  v4 = a3;
-  v7 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
-  v5 = [v4 BOOLValue];
+  clockCopy = clock;
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  bOOLValue = [clockCopy BOOLValue];
 
-  v6 = 0.0;
-  if (v5)
+  defaultAppStickinessDuration = 0.0;
+  if (bOOLValue)
   {
-    v6 = [(CSLPRFReturnToAppSettingsViewController *)self defaultAppStickinessDuration];
+    defaultAppStickinessDuration = [(CSLPRFReturnToAppSettingsViewController *)self defaultAppStickinessDuration];
   }
 
-  [v7 setReturnToAppTimeout:v6];
-  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:v7];
+  [returnToAppSettings setReturnToAppTimeout:defaultAppStickinessDuration];
+  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:returnToAppSettings];
 }
 
 - (id)returnToAppTimeout
 {
-  v3 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
   v4 = [NSNumber numberWithInteger:[(CSLPRFReturnToAppSettingsViewController *)self defaultAppStickinessDuration]];
-  if ([v3 hasCustomReturnToAppTimeout])
+  if ([returnToAppSettings hasCustomReturnToAppTimeout])
   {
-    [v3 returnToAppTimeout];
+    [returnToAppSettings returnToAppTimeout];
     v5 = [NSNumber numberWithDouble:?];
 
     v4 = v5;
@@ -266,15 +266,15 @@
   return v4;
 }
 
-- (void)setReturnToAppTimeout:(id)a3
+- (void)setReturnToAppTimeout:(id)timeout
 {
-  v4 = a3;
-  v7 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
-  [v4 floatValue];
+  timeoutCopy = timeout;
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  [timeoutCopy floatValue];
   v6 = v5;
 
-  [v7 setReturnToAppTimeout:v6];
-  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:v7];
+  [returnToAppSettings setReturnToAppTimeout:v6];
+  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:returnToAppSettings];
 }
 
 - (id)alwaysReturnToAppInSession
@@ -286,31 +286,31 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "alwaysReturnToAppInSession", v7, 2u);
   }
 
-  v4 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 alwaysReturnToAppInSession]);
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [returnToAppSettings alwaysReturnToAppInSession]);
 
   return v5;
 }
 
-- (void)setAlwaysReturnToAppInSession:(id)a3
+- (void)setAlwaysReturnToAppInSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = cslprf_sessions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = sessionCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "setAlwaysReturnToAppInSession:%@", &v7, 0xCu);
   }
 
-  v6 = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
-  [v6 setAlwaysReturnToAppInSession:{objc_msgSend(v4, "BOOLValue")}];
-  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:v6];
+  returnToAppSettings = [(CSLPRFReturnToAppSettingsViewController *)self returnToAppSettings];
+  [returnToAppSettings setAlwaysReturnToAppInSession:{objc_msgSend(sessionCopy, "BOOLValue")}];
+  [(CSLPRFReturnToAppSettingsViewController *)self saveReturnToAppSettings:returnToAppSettings];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(CSLPRFReturnToAppSettingsViewController *)self indexForIndexPath:a4];
+  v5 = [(CSLPRFReturnToAppSettingsViewController *)self indexForIndexPath:path];
   v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v5];
   v7 = cslprf_sessions_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -327,9 +327,9 @@
   }
 }
 
-- (void)returnToClockSettingDidChange:(int64_t)a3
+- (void)returnToClockSettingDidChange:(int64_t)change
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:change];
   [(CSLPRFReturnToAppSettingsViewController *)self setReturnToAppTimeout:v4];
 }
 

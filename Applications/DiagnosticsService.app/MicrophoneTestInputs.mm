@@ -1,13 +1,13 @@
 @interface MicrophoneTestInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation MicrophoneTestInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_1000010DC(v4);
 
   return self & 1;

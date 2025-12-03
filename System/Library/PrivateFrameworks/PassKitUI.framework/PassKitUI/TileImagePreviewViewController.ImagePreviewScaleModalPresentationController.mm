@@ -1,8 +1,8 @@
 @interface TileImagePreviewViewController.ImagePreviewScaleModalPresentationController
-- (_TtCC9PassKitUI30TileImagePreviewViewControllerP33_C6DB725DC789A0DB9606D336BF0F8DF944ImagePreviewScaleModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (_TtCC9PassKitUI30TileImagePreviewViewControllerP33_C6DB725DC789A0DB9606D336BF0F8DF944ImagePreviewScaleModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
@@ -10,15 +10,15 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD370C20();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
-    v5 = self;
+    selfCopy = self;
     v4 = sub_1BD370B6C();
     [v4 removeFromSuperview];
   }
@@ -26,21 +26,21 @@
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD370EF4();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v4 = self;
+    selfCopy = self;
     v3 = sub_1BD370B6C();
     [v3 removeFromSuperview];
   }
 }
 
-- (_TtCC9PassKitUI30TileImagePreviewViewControllerP33_C6DB725DC789A0DB9606D336BF0F8DF944ImagePreviewScaleModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtCC9PassKitUI30TileImagePreviewViewControllerP33_C6DB725DC789A0DB9606D336BF0F8DF944ImagePreviewScaleModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

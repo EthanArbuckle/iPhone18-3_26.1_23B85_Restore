@@ -1,13 +1,13 @@
 @interface SXEmbedVideoComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXEmbedVideoComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v5 = [(SXComponentSizer *)self component];
-  [v5 aspectRatio];
+  component = [(SXComponentSizer *)self component];
+  [component aspectRatio];
   v7 = v6;
 
   v8 = v7 == 0.0 || v7 == 1.79769313e308;
@@ -17,7 +17,7 @@
     v9 = v7;
   }
 
-  return a3 / v9;
+  return width / v9;
 }
 
 @end

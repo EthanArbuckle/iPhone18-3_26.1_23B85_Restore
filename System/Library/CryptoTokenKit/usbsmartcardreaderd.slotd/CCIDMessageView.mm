@@ -1,14 +1,14 @@
 @interface CCIDMessageView
-+ (id)createWithData:(id)a3;
-- (CCIDMessageView)initWithData:(id)a3;
-- (CCIDMessageView)initWithLength:(unint64_t)a3;
++ (id)createWithData:(id)data;
+- (CCIDMessageView)initWithData:(id)data;
+- (CCIDMessageView)initWithLength:(unint64_t)length;
 - (CCIDSlotStatus)status;
 - (NSData)aPayload;
 - (char)bError;
-- (id)ICCStatusToString:(unsigned __int8)a3;
-- (id)commandStatusToString:(unsigned __int8)a3;
+- (id)ICCStatusToString:(unsigned __int8)string;
+- (id)commandStatusToString:(unsigned __int8)string;
 - (id)description;
-- (id)errorToString:(char)a3;
+- (id)errorToString:(char)string;
 - (unsigned)bBWI;
 - (unsigned)bChainParameter;
 - (unsigned)bPowerSelect;
@@ -18,87 +18,87 @@
 - (unsigned)dwLength;
 - (unsigned)messageType;
 - (unsigned)wLevelParameter;
-- (void)setBBWI:(unsigned __int8)a3;
-- (void)setBChainParameter:(unsigned __int8)a3;
-- (void)setBError:(char)a3;
-- (void)setBPowerSelect:(unsigned __int8)a3;
-- (void)setBProtocolNum:(unsigned __int8)a3;
-- (void)setBSeq:(unsigned __int8)a3;
-- (void)setBSlot:(unsigned __int8)a3;
-- (void)setDwLength:(unsigned int)a3;
-- (void)setMessageType:(unsigned __int8)a3;
-- (void)setPayload:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)setWLevelParameter:(unsigned __int16)a3;
+- (void)setBBWI:(unsigned __int8)i;
+- (void)setBChainParameter:(unsigned __int8)parameter;
+- (void)setBError:(char)error;
+- (void)setBPowerSelect:(unsigned __int8)select;
+- (void)setBProtocolNum:(unsigned __int8)num;
+- (void)setBSeq:(unsigned __int8)seq;
+- (void)setBSlot:(unsigned __int8)slot;
+- (void)setDwLength:(unsigned int)length;
+- (void)setMessageType:(unsigned __int8)type;
+- (void)setPayload:(id)payload;
+- (void)setStatus:(id)status;
+- (void)setWLevelParameter:(unsigned __int16)parameter;
 @end
 
 @implementation CCIDMessageView
 
-- (CCIDMessageView)initWithLength:(unint64_t)a3
+- (CCIDMessageView)initWithLength:(unint64_t)length
 {
   v4.receiver = self;
   v4.super_class = CCIDMessageView;
-  return [(TKDataView *)&v4 initWithLength:a3];
+  return [(TKDataView *)&v4 initWithLength:length];
 }
 
-- (CCIDMessageView)initWithData:(id)a3
+- (CCIDMessageView)initWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = CCIDMessageView;
-  return [(TKDataView *)&v4 initWithData:a3];
+  return [(TKDataView *)&v4 initWithData:data];
 }
 
-+ (id)createWithData:(id)a3
++ (id)createWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[CCIDMessageView alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[CCIDMessageView alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (id)errorToString:(char)a3
+- (id)errorToString:(char)string
 {
-  if (a3 + 32) < 0x21 && ((0x1F9FD8001uLL >> (a3 + 32)))
+  if (string + 32) < 0x21 && ((0x1F9FD8001uLL >> (string + 32)))
   {
-    v4 = *(&off_100024B28 + (a3 + 32));
+    string = *(&off_100024B28 + (string + 32));
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"0x%.2x", a3];
+    string = [NSString stringWithFormat:@"0x%.2x", string];
   }
 
-  return v4;
+  return string;
 }
 
-- (id)ICCStatusToString:(unsigned __int8)a3
+- (id)ICCStatusToString:(unsigned __int8)string
 {
-  if (a3 > 2u)
+  if (string > 2u)
   {
     return @"Undefined";
   }
 
   else
   {
-    return *(&off_100024C30 + a3);
+    return *(&off_100024C30 + string);
   }
 }
 
-- (id)commandStatusToString:(unsigned __int8)a3
+- (id)commandStatusToString:(unsigned __int8)string
 {
   v3 = @"TimeExtension";
   v4 = @"Undefined";
-  if (a3 == 64)
+  if (string == 64)
   {
     v4 = @"Failed";
   }
 
-  if (a3 != 128)
+  if (string != 128)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -122,24 +122,24 @@
   if ([(CCIDMessageView *)self messageType]== 128 || [(CCIDMessageView *)self messageType]== 129 || [(CCIDMessageView *)self messageType]== 130 || [(CCIDMessageView *)self messageType]== 132)
   {
     [v3 appendString:@"errorAndStatus: { "];
-    v5 = [(CCIDMessageView *)self status];
-    v6 = -[CCIDMessageView ICCStatusToString:](self, "ICCStatusToString:", [v5 bmICCStatus]);
+    status = [(CCIDMessageView *)self status];
+    v6 = -[CCIDMessageView ICCStatusToString:](self, "ICCStatusToString:", [status bmICCStatus]);
     [v3 appendFormat:@"bmICCStatus: %@ ", v6];
 
-    v7 = [(CCIDMessageView *)self status];
-    v8 = -[CCIDMessageView commandStatusToString:](self, "commandStatusToString:", [v7 bmCommandStatus]);
+    status2 = [(CCIDMessageView *)self status];
+    v8 = -[CCIDMessageView commandStatusToString:](self, "commandStatusToString:", [status2 bmCommandStatus]);
     [v3 appendFormat:@"bmCommandStatus: %@ ", v8];
 
-    v9 = [(CCIDMessageView *)self status];
-    if ([v9 bmCommandStatus])
+    status3 = [(CCIDMessageView *)self status];
+    if ([status3 bmCommandStatus])
     {
     }
 
     else
     {
-      v10 = [(CCIDMessageView *)self bError];
+      bError = [(CCIDMessageView *)self bError];
 
-      if (!v10)
+      if (!bError)
       {
 LABEL_9:
         [v3 appendString:@" }"];
@@ -167,185 +167,185 @@ LABEL_10:
 - (unsigned)messageType
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{0, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{0, 1}];
 
   return v4;
 }
 
-- (void)setMessageType:(unsigned __int8)a3
+- (void)setMessageType:(unsigned __int8)type
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:0 withBytes:{1, &v4}];
+  typeCopy = type;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:0 withBytes:{1, &typeCopy}];
 }
 
 - (unsigned)dwLength
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{1, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{1, 4}];
 
   return v4;
 }
 
-- (void)setDwLength:(unsigned int)a3
+- (void)setDwLength:(unsigned int)length
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:1 withBytes:{4, &v4}];
+  lengthCopy = length;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:1 withBytes:{4, &lengthCopy}];
 }
 
 - (unsigned)bSlot
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{5, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{5, 1}];
 
   return v4;
 }
 
-- (void)setBSlot:(unsigned __int8)a3
+- (void)setBSlot:(unsigned __int8)slot
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:5 withBytes:{1, &v4}];
+  slotCopy = slot;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:5 withBytes:{1, &slotCopy}];
 }
 
 - (unsigned)bSeq
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{6, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{6, 1}];
 
   return v4;
 }
 
-- (void)setBSeq:(unsigned __int8)a3
+- (void)setBSeq:(unsigned __int8)seq
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:6 withBytes:{1, &v4}];
+  seqCopy = seq;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:6 withBytes:{1, &seqCopy}];
 }
 
 - (CCIDSlotStatus)status
 {
   v3 = objc_opt_new();
-  v4 = [(TKDataView *)self buffer];
-  [v4 getBytes:objc_msgSend(v3 range:{"statusPtr"), 7, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:objc_msgSend(v3 range:{"statusPtr"), 7, 1}];
 
   return v3;
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v4 = a3;
-  v6 = [(TKDataView *)self mutableBuffer];
-  v5 = [v4 statusPtr];
+  statusCopy = status;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  statusPtr = [statusCopy statusPtr];
 
-  [v6 replaceBytesInRange:7 withBytes:{1, v5}];
+  [mutableBuffer replaceBytesInRange:7 withBytes:{1, statusPtr}];
 }
 
 - (unsigned)bBWI
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{7, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{7, 1}];
 
   return v4;
 }
 
-- (void)setBBWI:(unsigned __int8)a3
+- (void)setBBWI:(unsigned __int8)i
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:7 withBytes:{1, &v4}];
+  iCopy = i;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:7 withBytes:{1, &iCopy}];
 }
 
 - (unsigned)bPowerSelect
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{7, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{7, 1}];
 
   return v4;
 }
 
-- (void)setBPowerSelect:(unsigned __int8)a3
+- (void)setBPowerSelect:(unsigned __int8)select
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:7 withBytes:{1, &v4}];
+  selectCopy = select;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:7 withBytes:{1, &selectCopy}];
 }
 
 - (unsigned)bProtocolNum
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{7, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{7, 1}];
 
   return v4;
 }
 
-- (void)setBProtocolNum:(unsigned __int8)a3
+- (void)setBProtocolNum:(unsigned __int8)num
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:7 withBytes:{1, &v4}];
+  numCopy = num;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:7 withBytes:{1, &numCopy}];
 }
 
 - (char)bError
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{8, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{8, 1}];
 
   return v4;
 }
 
-- (void)setBError:(char)a3
+- (void)setBError:(char)error
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:8 withBytes:{1, &v4}];
+  errorCopy = error;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:8 withBytes:{1, &errorCopy}];
 }
 
 - (unsigned)wLevelParameter
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{8, 2}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{8, 2}];
 
   return v4;
 }
 
-- (void)setWLevelParameter:(unsigned __int16)a3
+- (void)setWLevelParameter:(unsigned __int16)parameter
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:8 withBytes:{2, &v4}];
+  parameterCopy = parameter;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:8 withBytes:{2, &parameterCopy}];
 }
 
 - (unsigned)bChainParameter
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{9, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{9, 1}];
 
   return v4;
 }
 
-- (void)setBChainParameter:(unsigned __int8)a3
+- (void)setBChainParameter:(unsigned __int8)parameter
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:8 withBytes:{1, &v4}];
+  parameterCopy = parameter;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:8 withBytes:{1, &parameterCopy}];
 }
 
 - (NSData)aPayload
 {
-  v3 = [(TKDataView *)self buffer];
-  v4 = [v3 length];
+  buffer = [(TKDataView *)self buffer];
+  v4 = [buffer length];
   v5 = qword_10002BF30;
 
   if (v4 <= v5)
@@ -355,25 +355,25 @@ LABEL_10:
 
   else
   {
-    v6 = [(TKDataView *)self buffer];
+    buffer2 = [(TKDataView *)self buffer];
     v7 = qword_10002BF30;
-    v8 = [(TKDataView *)self buffer];
-    v9 = [v8 length];
-    v10 = [v6 subdataWithRange:{v7, &v9[-qword_10002BF30]}];
+    buffer3 = [(TKDataView *)self buffer];
+    v9 = [buffer3 length];
+    v10 = [buffer2 subdataWithRange:{v7, &v9[-qword_10002BF30]}];
   }
 
   return v10;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  v4 = a3;
-  v8 = [(TKDataView *)self mutableBuffer];
+  payloadCopy = payload;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
   v5 = qword_10002BF30;
-  v6 = [v4 length];
-  v7 = [v4 bytes];
+  v6 = [payloadCopy length];
+  bytes = [payloadCopy bytes];
 
-  [v8 replaceBytesInRange:v5 withBytes:{v6, v7}];
+  [mutableBuffer replaceBytesInRange:v5 withBytes:{v6, bytes}];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface HKMedicalIDEditorDateCell
 - (id)formattedValue;
 - (void)_configureDatePicker;
-- (void)_dateChanged:(id)a3;
+- (void)_dateChanged:(id)changed;
 - (void)_hideDatePicker;
 - (void)_showDatePicker;
 - (void)beginEditing;
-- (void)setDateValue:(id)a3;
+- (void)setDateValue:(id)value;
 @end
 
 @implementation HKMedicalIDEditorDateCell
@@ -23,15 +23,15 @@
     v3 = formattedValue___dateFormatter;
   }
 
-  v6 = [(HKMedicalIDEditorDateCell *)self dateValue];
-  v7 = [v3 stringFromDate:v6];
+  dateValue = [(HKMedicalIDEditorDateCell *)self dateValue];
+  v7 = [v3 stringFromDate:dateValue];
 
   return v7;
 }
 
-- (void)setDateValue:(id)a3
+- (void)setDateValue:(id)value
 {
-  objc_storeStrong(&self->_dateValue, a3);
+  objc_storeStrong(&self->_dateValue, value);
 
   [(HKMedicalIDEditorCell *)self updateValueLabel];
 }
@@ -46,17 +46,17 @@
 
     [(UIDatePicker *)self->_picker setPreferredDatePickerStyle:1];
     [(UIDatePicker *)self->_picker setDatePickerMode:1];
-    v5 = [MEMORY[0x1E695DF00] date];
-    [(UIDatePicker *)self->_picker setMaximumDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    [(UIDatePicker *)self->_picker setMaximumDate:date];
 
     v6 = MEMORY[0x1E695DF00];
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [v6 hk_minimumDateForBirthDateWithCalendar:v7];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v8 = [v6 hk_minimumDateForBirthDateWithCalendar:currentCalendar];
     [(UIDatePicker *)self->_picker setMinimumDate:v8];
 
     v9 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v10 = [(HKMedicalIDEditorCell *)self inputTextField];
-    [v10 setInputView:v9];
+    inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+    [inputTextField setInputView:v9];
 
     [(UIDatePicker *)self->_picker addTarget:self action:sel__dateChanged_ forControlEvents:4096];
   }
@@ -68,8 +68,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695DF00] date];
-    [(UIDatePicker *)self->_picker setDate:v11];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [(UIDatePicker *)self->_picker setDate:date2];
   }
 
   [(HKMedicalIDEditorDateCell *)self reloadInputViews];
@@ -80,28 +80,28 @@
   [(HKMedicalIDEditorDateCell *)self _configureDatePicker];
   if (!self->_dateValue)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateValue = self->_dateValue;
-    self->_dateValue = v3;
+    self->_dateValue = date;
 
     [(HKMedicalIDEditorCell *)self updateValueLabel];
   }
 
-  v5 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v5 becomeFirstResponder];
+  inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField becomeFirstResponder];
 }
 
 - (void)_hideDatePicker
 {
-  v2 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v2 resignFirstResponder];
+  inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
-- (void)_dateChanged:(id)a3
+- (void)_dateChanged:(id)changed
 {
-  v4 = [(UIDatePicker *)self->_picker date];
+  date = [(UIDatePicker *)self->_picker date];
   dateValue = self->_dateValue;
-  self->_dateValue = v4;
+  self->_dateValue = date;
 
   [(HKMedicalIDEditorCell *)self valueDidChange];
 }

@@ -1,41 +1,41 @@
 @interface QDSchemaQDTuplesGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDTuplesGenerated)initWithDictionary:(id)a3;
-- (QDSchemaQDTuplesGenerated)initWithJSON:(id)a3;
+- (QDSchemaQDTuplesGenerated)initWithDictionary:(id)dictionary;
+- (QDSchemaQDTuplesGenerated)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMaximumTupleWidth:(BOOL)a3;
-- (void)setHasWasToolTupleLimitReached:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMaximumTupleWidth:(BOOL)width;
+- (void)setHasWasToolTupleLimitReached:(BOOL)reached;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDTuplesGenerated
 
-- (QDSchemaQDTuplesGenerated)initWithDictionary:(id)a3
+- (QDSchemaQDTuplesGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = QDSchemaQDTuplesGenerated;
   v5 = [(QDSchemaQDTuplesGenerated *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numberOfTuples"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numberOfTuples"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDTuplesGenerated setNumberOfTuples:](v5, "setNumberOfTuples:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"maximumTupleWidth"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"maximumTupleWidth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDTuplesGenerated setMaximumTupleWidth:](v5, "setMaximumTupleWidth:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"wasToolTupleLimitReached"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"wasToolTupleLimitReached"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (QDSchemaQDTuplesGenerated)initWithJSON:(id)a3
+- (QDSchemaQDTuplesGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDTuplesGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDTuplesGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDTuplesGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_wasToolTupleLimitReached + 1);
   if ((v4 & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[QDSchemaQDTuplesGenerated maximumTupleWidth](self, "maximumTupleWidth")}];
-    [v3 setObject:v7 forKeyedSubscript:@"maximumTupleWidth"];
+    [dictionary setObject:v7 forKeyedSubscript:@"maximumTupleWidth"];
 
     v4 = *(&self->_wasToolTupleLimitReached + 1);
     if ((v4 & 1) == 0)
@@ -110,19 +110,19 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[QDSchemaQDTuplesGenerated numberOfTuples](self, "numberOfTuples")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numberOfTuples"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numberOfTuples"];
 
   if ((*(&self->_wasToolTupleLimitReached + 1) & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[QDSchemaQDTuplesGenerated wasToolTupleLimitReached](self, "wasToolTupleLimitReached")}];
-    [v3 setObject:v5 forKeyedSubscript:@"wasToolTupleLimitReached"];
+    [dictionary setObject:v5 forKeyedSubscript:@"wasToolTupleLimitReached"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   v5 = *(&self->_wasToolTupleLimitReached + 1);
-  v6 = v4[17];
+  v6 = equalCopy[17];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -183,13 +183,13 @@ LABEL_4:
   if (v5)
   {
     numberOfTuples = self->_numberOfTuples;
-    if (numberOfTuples != [v4 numberOfTuples])
+    if (numberOfTuples != [equalCopy numberOfTuples])
     {
       goto LABEL_14;
     }
 
     v5 = *(&self->_wasToolTupleLimitReached + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -201,10 +201,10 @@ LABEL_4:
   if (v8)
   {
     maximumTupleWidth = self->_maximumTupleWidth;
-    if (maximumTupleWidth == [v4 maximumTupleWidth])
+    if (maximumTupleWidth == [equalCopy maximumTupleWidth])
     {
       v5 = *(&self->_wasToolTupleLimitReached + 1);
-      v6 = v4[17];
+      v6 = equalCopy[17];
       goto LABEL_10;
     }
 
@@ -223,7 +223,7 @@ LABEL_10:
   if (v10)
   {
     wasToolTupleLimitReached = self->_wasToolTupleLimitReached;
-    if (wasToolTupleLimitReached != [v4 wasToolTupleLimitReached])
+    if (wasToolTupleLimitReached != [equalCopy wasToolTupleLimitReached])
     {
       goto LABEL_14;
     }
@@ -235,15 +235,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_wasToolTupleLimitReached + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_wasToolTupleLimitReached + 1);
     if ((v5 & 2) == 0)
     {
@@ -263,20 +263,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*(&self->_wasToolTupleLimitReached + 1) & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasWasToolTupleLimitReached:(BOOL)a3
+- (void)setHasWasToolTupleLimitReached:(BOOL)reached
 {
-  if (a3)
+  if (reached)
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_5:
   *(&self->_wasToolTupleLimitReached + 1) = *(&self->_wasToolTupleLimitReached + 1) & 0xFB | v3;
 }
 
-- (void)setHasMaximumTupleWidth:(BOOL)a3
+- (void)setHasMaximumTupleWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }

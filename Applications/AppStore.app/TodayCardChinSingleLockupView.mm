@@ -1,6 +1,6 @@
 @interface TodayCardChinSingleLockupView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityElements;
 - (void)handleTap;
 - (void)layoutSubviews;
@@ -11,14 +11,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100713838();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100713A24(width);
   v7 = v6;
 
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10071483C(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10071483C(touchCopy);
 
   return v9;
 }
@@ -44,7 +44,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore29TodayCardChinSingleLockupView_clickActionHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 
@@ -72,13 +72,13 @@
   if (isa)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

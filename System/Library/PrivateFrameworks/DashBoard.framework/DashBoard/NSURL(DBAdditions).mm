@@ -10,11 +10,11 @@
 - (BOOL)db_urlHasCaseInsensitiveScheme:()DBAdditions
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = v5;
-  if (v5)
+  scheme = [self scheme];
+  v6 = scheme;
+  if (scheme)
   {
-    v7 = [v5 caseInsensitiveCompare:v4] == 0;
+    v7 = [scheme caseInsensitiveCompare:v4] == 0;
   }
 
   else
@@ -27,25 +27,25 @@
 
 - (uint64_t)db_isNowPlayingURL
 {
-  v2 = [a1 scheme];
-  v3 = [v2 lowercaseString];
-  if ([v3 isEqualToString:@"nowplaying"])
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
+  if ([lowercaseString isEqualToString:@"nowplaying"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 absoluteString];
-    if ([v5 hasSuffix:@"nowplaying"])
+    absoluteString = [self absoluteString];
+    if ([absoluteString hasSuffix:@"nowplaying"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [a1 absoluteString];
-      v4 = [v6 isEqualToString:@"music://cardisplay/show-now-playing"];
+      absoluteString2 = [self absoluteString];
+      v4 = [absoluteString2 isEqualToString:@"music://cardisplay/show-now-playing"];
     }
   }
 
@@ -54,21 +54,21 @@
 
 - (uint64_t)db_isPhoneCallURL
 {
-  v2 = [MEMORY[0x277CBEBC0] TUDialRequestSchemeDefaultApp];
-  v3 = [a1 db_urlHasCaseInsensitiveScheme:v2];
+  tUDialRequestSchemeDefaultApp = [MEMORY[0x277CBEBC0] TUDialRequestSchemeDefaultApp];
+  v3 = [self db_urlHasCaseInsensitiveScheme:tUDialRequestSchemeDefaultApp];
 
   return v3;
 }
 
 - (uint64_t)db_isFaceTimeURL
 {
-  if ([a1 isFaceTimeURL] & 1) != 0 || (objc_msgSend(a1, "isFaceTimeAppJoinConversationLinkURL") & 1) != 0 || (objc_msgSend(a1, "isFaceTimeAudioURL"))
+  if ([self isFaceTimeURL] & 1) != 0 || (objc_msgSend(self, "isFaceTimeAppJoinConversationLinkURL") & 1) != 0 || (objc_msgSend(self, "isFaceTimeAudioURL"))
   {
     return 1;
   }
 
-  v3 = [a1 absoluteString];
-  v4 = [v3 containsString:@"facetime.apple.com/join"];
+  absoluteString = [self absoluteString];
+  v4 = [absoluteString containsString:@"facetime.apple.com/join"];
 
   return v4;
 }

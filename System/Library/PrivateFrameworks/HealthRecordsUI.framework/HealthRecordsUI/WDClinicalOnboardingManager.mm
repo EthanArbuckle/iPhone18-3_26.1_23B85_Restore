@@ -3,20 +3,20 @@
 - (HKNavigationController)onboardingTileNavigationController;
 - (HRProfile)profile;
 - (WDClinicalOnboardingManager)init;
-- (WDClinicalOnboardingManager)initWithProfile:(id)a3;
+- (WDClinicalOnboardingManager)initWithProfile:(id)profile;
 - (WDClinicalOnboardingOAuthNavigationViewController)inFlightLoginViewController;
-- (id)_deepLinkOnboardingViewControllerWithOptions:(unint64_t)a3 sourceIdentifier:(id)a4;
-- (id)gatewayProxyWithActivity:(id)a3;
+- (id)_deepLinkOnboardingViewControllerWithOptions:(unint64_t)options sourceIdentifier:(id)identifier;
+- (id)gatewayProxyWithActivity:(id)activity;
 - (id)getPendingOnboardingGatewayAndClear;
-- (void)_didDismissLoginViewController:(id)a3;
-- (void)_dismissInFlightLoginViewControllerIfExistsWithCompletion:(id)a3;
-- (void)_onboardWithActivity:(id)a3 gatewayProxy:(id)a4 hasGatewayBackedAccounts:(BOOL)a5 presentingViewController:(id)a6;
-- (void)_presentAccount:(id)a3 presentingViewController:(id)a4 sourceIdentifier:(id)a5;
-- (void)_startLoginWithLoginViewController:(id)a3 presentingViewController:(id)a4;
-- (void)_startOrReplaceLoginWithLoginViewController:(id)a3 presentingViewController:(id)a4;
+- (void)_didDismissLoginViewController:(id)controller;
+- (void)_dismissInFlightLoginViewControllerIfExistsWithCompletion:(id)completion;
+- (void)_onboardWithActivity:(id)activity gatewayProxy:(id)proxy hasGatewayBackedAccounts:(BOOL)accounts presentingViewController:(id)controller;
+- (void)_presentAccount:(id)account presentingViewController:(id)controller sourceIdentifier:(id)identifier;
+- (void)_startLoginWithLoginViewController:(id)controller presentingViewController:(id)viewController;
+- (void)_startOrReplaceLoginWithLoginViewController:(id)controller presentingViewController:(id)viewController;
 - (void)dealloc;
-- (void)onboardWithActivity:(id)a3 presentingViewController:(id)a4;
-- (void)registerInflightOnboardingViewController:(id)a3 completion:(id)a4;
+- (void)onboardWithActivity:(id)activity presentingViewController:(id)controller;
+- (void)registerInflightOnboardingViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation WDClinicalOnboardingManager
@@ -31,16 +31,16 @@
   return 0;
 }
 
-- (WDClinicalOnboardingManager)initWithProfile:(id)a3
+- (WDClinicalOnboardingManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = WDClinicalOnboardingManager;
   v5 = [(WDClinicalOnboardingManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
@@ -48,34 +48,34 @@
 
 - (void)dealloc
 {
-  v3 = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  inFlightLoginViewController = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
+  [inFlightLoginViewController dismissViewControllerAnimated:1 completion:0];
 
   v4.receiver = self;
   v4.super_class = WDClinicalOnboardingManager;
   [(WDClinicalOnboardingManager *)&v4 dealloc];
 }
 
-- (void)onboardWithActivity:(id)a3 presentingViewController:(id)a4
+- (void)onboardWithActivity:(id)activity presentingViewController:(id)controller
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  controllerCopy = controller;
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B948];
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(WDClinicalOnboardingManager *)self logPrefix];
+    logPrefix = [(WDClinicalOnboardingManager *)self logPrefix];
     v11 = HKSensitiveLogItem();
     *buf = 138543618;
-    v27 = v10;
+    v27 = logPrefix;
     v28 = 2114;
     v29 = v11;
     _os_log_impl(&dword_1D101F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ is onboarding with activity %{public}@", buf, 0x16u);
   }
 
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
+  v12 = [activityCopy objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
   objc_opt_class();
   v13 = HKSafeObject();
 
@@ -83,21 +83,21 @@
   objc_opt_class();
   v15 = HKSafeObject();
 
-  v16 = [(WDClinicalOnboardingManager *)self gatewayProxyWithActivity:v6];
+  v16 = [(WDClinicalOnboardingManager *)self gatewayProxyWithActivity:activityCopy];
   if (v16)
   {
-    v17 = [(WDClinicalOnboardingManager *)self profile];
-    v18 = [v17 clinicalAccountStore];
+    profile = [(WDClinicalOnboardingManager *)self profile];
+    clinicalAccountStore = [profile clinicalAccountStore];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewController___block_invoke;
     v20[3] = &unk_1E83DD2E0;
     v21 = v16;
-    v22 = self;
-    v23 = v7;
+    selfCopy = self;
+    v23 = controllerCopy;
     v24 = v15;
-    v25 = v6;
-    [v18 fetchAllAccountsWithCompletion:v20];
+    v25 = activityCopy;
+    [clinicalAccountStore fetchAllAccountsWithCompletion:v20];
 
     v19 = v21;
   }
@@ -106,7 +106,7 @@
   {
     v19 = [(WDClinicalOnboardingManager *)self _deepLinkOnboardingViewControllerWithOptions:0 sourceIdentifier:v15];
     [v19 setShowProviderNotFound:1];
-    [(WDClinicalOnboardingManager *)self _startOrReplaceLoginWithLoginViewController:v19 presentingViewController:v7];
+    [(WDClinicalOnboardingManager *)self _startOrReplaceLoginWithLoginViewController:v19 presentingViewController:controllerCopy];
   }
 }
 
@@ -173,15 +173,15 @@ BOOL __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewControl
   return v3;
 }
 
-- (void)_onboardWithActivity:(id)a3 gatewayProxy:(id)a4 hasGatewayBackedAccounts:(BOOL)a5 presentingViewController:(id)a6
+- (void)_onboardWithActivity:(id)activity gatewayProxy:(id)proxy hasGatewayBackedAccounts:(BOOL)accounts presentingViewController:(id)controller
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  activityCopy = activity;
+  proxyCopy = proxy;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v13 = *MEMORY[0x1E69A3EB8];
-  v14 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
+  v14 = [activityCopy objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
   objc_opt_class();
   v39[6] = 0;
   v15 = HKSafeObject();
@@ -189,8 +189,8 @@ BOOL __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewControl
 
   if (v15)
   {
-    v38 = v12;
-    v17 = v11;
+    v38 = controllerCopy;
+    v17 = proxyCopy;
     v18 = *MEMORY[0x1E69A3ED0];
     v19 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69A3ED0]];
     objc_opt_class();
@@ -202,24 +202,24 @@ BOOL __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewControl
     {
       _HKInitializeLogging();
       v26 = *MEMORY[0x1E696B948];
-      v11 = v17;
+      proxyCopy = v17;
       if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR))
       {
         v27 = v26;
-        v28 = [(WDClinicalOnboardingManager *)self logPrefix];
+        logPrefix = [(WDClinicalOnboardingManager *)self logPrefix];
         v29 = [v15 objectForKeyedSubscript:v18];
         objc_opt_class();
         v30 = HKSensitiveLogItem();
         v31 = HKSensitiveLogItem();
         *buf = 138543874;
-        v41 = v28;
+        v41 = logPrefix;
         v42 = 2114;
         v43 = v30;
         v44 = 2114;
         v45 = v31;
         _os_log_error_impl(&dword_1D101F000, v27, OS_LOG_TYPE_ERROR, "%{public}@ was not able to parse onboarding options of type %{public}@ with error %{public}@", buf, 0x20u);
 
-        v11 = v17;
+        proxyCopy = v17;
       }
 
       goto LABEL_15;
@@ -238,17 +238,17 @@ BOOL __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewControl
 
     else
     {
-      if (!a5)
+      if (!accounts)
       {
         [(WDClinicalOnboardingManager *)self setPendingOnboardingGateway:v17];
         v24 = +[HRViewControllerFactory shared];
-        v32 = [(WDClinicalOnboardingManager *)self profile];
+        profile = [(WDClinicalOnboardingManager *)self profile];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __115__WDClinicalOnboardingManager__onboardWithActivity_gatewayProxy_hasGatewayBackedAccounts_presentingViewController___block_invoke;
         v39[3] = &unk_1E83DD308;
         v39[4] = self;
-        [v24 makeAndPresentOnboardingTileViewControllerFor:v32 from:v38 sourceIdentifier:v23 animated:1 completion:v39];
+        [v24 makeAndPresentOnboardingTileViewControllerFor:profile from:v38 sourceIdentifier:v23 animated:1 completion:v39];
 
         goto LABEL_14;
       }
@@ -260,10 +260,10 @@ BOOL __76__WDClinicalOnboardingManager_onboardWithActivity_presentingViewControl
     [(WDClinicalOnboardingManager *)self _startOrReplaceLoginWithLoginViewController:v24 presentingViewController:v38];
 LABEL_14:
 
-    v11 = v17;
+    proxyCopy = v17;
 LABEL_15:
 
-    v12 = v38;
+    controllerCopy = v38;
     goto LABEL_16;
   }
 
@@ -272,13 +272,13 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR))
   {
     v33 = v25;
-    v34 = [(WDClinicalOnboardingManager *)self logPrefix];
-    v35 = [v10 objectForKeyedSubscript:v13];
+    logPrefix2 = [(WDClinicalOnboardingManager *)self logPrefix];
+    v35 = [activityCopy objectForKeyedSubscript:v13];
     objc_opt_class();
     v36 = HKSensitiveLogItem();
     v37 = HKSensitiveLogItem();
     *buf = 138543874;
-    v41 = v34;
+    v41 = logPrefix2;
     v42 = 2114;
     v43 = v36;
     v44 = 2114;
@@ -290,22 +290,22 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_deepLinkOnboardingViewControllerWithOptions:(unint64_t)a3 sourceIdentifier:(id)a4
+- (id)_deepLinkOnboardingViewControllerWithOptions:(unint64_t)options sourceIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = [WDClinicalOnboardingOAuthNavigationViewController alloc];
-  v8 = [(WDClinicalOnboardingManager *)self profile];
-  v9 = [(WDClinicalOnboardingOAuthNavigationViewController *)v7 initWithContext:5 onboardingOptions:a3 sourceIdentifier:v6 profile:v8 existingAccount:0];
+  profile = [(WDClinicalOnboardingManager *)self profile];
+  v9 = [(WDClinicalOnboardingOAuthNavigationViewController *)v7 initWithContext:5 onboardingOptions:options sourceIdentifier:identifierCopy profile:profile existingAccount:0];
 
   return v9;
 }
 
-- (id)gatewayProxyWithActivity:(id)a3
+- (id)gatewayProxyWithActivity:(id)activity
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = *MEMORY[0x1E69A3EB8];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
+  v6 = [activityCopy objectForKeyedSubscript:*MEMORY[0x1E69A3EB8]];
   objc_opt_class();
   v7 = HKSafeObject();
   v8 = 0;
@@ -361,13 +361,13 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_ERROR))
   {
     v17 = v15;
-    v18 = [(WDClinicalOnboardingManager *)self logPrefix];
-    v19 = [v4 objectForKeyedSubscript:v5];
+    logPrefix = [(WDClinicalOnboardingManager *)self logPrefix];
+    v19 = [activityCopy objectForKeyedSubscript:v5];
     objc_opt_class();
     v20 = HKSensitiveLogItem();
     v21 = HKSensitiveLogItem();
     *buf = 138543874;
-    v23 = v18;
+    v23 = logPrefix;
     v24 = 2114;
     v25 = v20;
     v26 = 2114;
@@ -381,37 +381,37 @@ LABEL_15:
   return v14;
 }
 
-- (void)_presentAccount:(id)a3 presentingViewController:(id)a4 sourceIdentifier:(id)a5
+- (void)_presentAccount:(id)account presentingViewController:(id)controller sourceIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  accountCopy = account;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v11 = +[HRViewControllerFactory shared];
-  v12 = [(WDClinicalOnboardingManager *)self profile];
-  v16 = [v11 makeAccountDetailViewControllerForAccount:v10 profile:v12 sourceIdentifier:v8];
+  profile = [(WDClinicalOnboardingManager *)self profile];
+  v16 = [v11 makeAccountDetailViewControllerForAccount:accountCopy profile:profile sourceIdentifier:identifierCopy];
 
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v16 action:sel_dismissAnimated_];
-  v14 = [v16 navigationItem];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem = [v16 navigationItem];
+  [navigationItem setRightBarButtonItem:v13];
 
   v15 = [objc_alloc(MEMORY[0x1E69A4420]) initWithRootViewController:v16];
-  [v9 presentViewController:v15 animated:1 completion:0];
+  [controllerCopy presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)registerInflightOnboardingViewController:(id)a3 completion:(id)a4
+- (void)registerInflightOnboardingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__WDClinicalOnboardingManager_registerInflightOnboardingViewController_completion___block_invoke;
   v10[3] = &unk_1E83DD330;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = controllerCopy;
   [(WDClinicalOnboardingManager *)self _dismissInFlightLoginViewControllerIfExistsWithCompletion:v10];
 }
 
@@ -437,19 +437,19 @@ void __83__WDClinicalOnboardingManager_registerInflightOnboardingViewController_
   }
 }
 
-- (void)_startOrReplaceLoginWithLoginViewController:(id)a3 presentingViewController:(id)a4
+- (void)_startOrReplaceLoginWithLoginViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__WDClinicalOnboardingManager__startOrReplaceLoginWithLoginViewController_presentingViewController___block_invoke;
   v10[3] = &unk_1E83DD358;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = viewControllerCopy;
+  v8 = viewControllerCopy;
+  v9 = controllerCopy;
   [(WDClinicalOnboardingManager *)self _dismissInFlightLoginViewControllerIfExistsWithCompletion:v10];
 }
 
@@ -464,31 +464,31 @@ uint64_t __100__WDClinicalOnboardingManager__startOrReplaceLoginWithLoginViewCon
   return [v3 _startLoginWithLoginViewController:a1[5] presentingViewController:a2];
 }
 
-- (void)_startLoginWithLoginViewController:(id)a3 presentingViewController:(id)a4
+- (void)_startLoginWithLoginViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
   {
     [WDClinicalOnboardingManager _startLoginWithLoginViewController:presentingViewController:];
   }
 
-  [(WDClinicalOnboardingManager *)self setInFlightLoginViewController:v6];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  [(WDClinicalOnboardingManager *)self setInFlightLoginViewController:controllerCopy];
+  [viewControllerCopy presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)_dismissInFlightLoginViewControllerIfExistsWithCompletion:(id)a3
+- (void)_dismissInFlightLoginViewControllerIfExistsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  inFlightLoginViewController = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
+  v6 = inFlightLoginViewController;
+  if (inFlightLoginViewController)
   {
-    v7 = [v5 presentingViewController];
-    if (v7)
+    presentingViewController = [inFlightLoginViewController presentingViewController];
+    if (presentingViewController)
     {
-      v8 = v7;
+      v8 = presentingViewController;
       _HKInitializeLogging();
       if (os_log_type_enabled(*MEMORY[0x1E696B948], OS_LOG_TYPE_DEBUG))
       {
@@ -502,7 +502,7 @@ uint64_t __100__WDClinicalOnboardingManager__startOrReplaceLoginWithLoginViewCon
       v10[4] = self;
       v11 = v6;
       v12 = v8;
-      v13 = v4;
+      v13 = completionCopy;
       v9 = v8;
       [v9 dismissViewControllerAnimated:1 completion:v10];
 
@@ -512,9 +512,9 @@ uint64_t __100__WDClinicalOnboardingManager__startOrReplaceLoginWithLoginViewCon
     [(WDClinicalOnboardingManager *)self setInFlightLoginViewController:0];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_9:
@@ -534,12 +534,12 @@ uint64_t __89__WDClinicalOnboardingManager__dismissInFlightLoginViewControllerIf
   return result;
 }
 
-- (void)_didDismissLoginViewController:(id)a3
+- (void)_didDismissLoginViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
+  controllerCopy = controller;
+  inFlightLoginViewController = [(WDClinicalOnboardingManager *)self inFlightLoginViewController];
 
-  if (v5 == v4)
+  if (inFlightLoginViewController == controllerCopy)
   {
     [(WDClinicalOnboardingManager *)self setInFlightLoginViewController:0];
   }

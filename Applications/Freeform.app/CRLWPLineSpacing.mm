@@ -1,8 +1,8 @@
 @interface CRLWPLineSpacing
 + (id)lineSpacing;
-- (BOOL)isEqual:(id)a3;
-- (CRLWPLineSpacing)initWithMode:(int64_t)a3 amount:(double)a4 baselineRule:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPLineSpacing)initWithMode:(int64_t)mode amount:(double)amount baselineRule:(double)rule;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,24 +15,24 @@
   return v2;
 }
 
-- (CRLWPLineSpacing)initWithMode:(int64_t)a3 amount:(double)a4 baselineRule:(double)a5
+- (CRLWPLineSpacing)initWithMode:(int64_t)mode amount:(double)amount baselineRule:(double)rule
 {
   v9.receiver = self;
   v9.super_class = CRLWPLineSpacing;
   result = [(CRLWPLineSpacing *)&v9 init];
   if (result)
   {
-    result->_mode = a3;
-    result->_amount = a4;
-    result->_baselineRule = a5;
+    result->_mode = mode;
+    result->_amount = amount;
+    result->_baselineRule = rule;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mode = self->_mode;
   amount = self->_amount;
   baselineRule = self->_baselineRule;
@@ -40,11 +40,11 @@
   return [v4 initWithMode:mode amount:amount baselineRule:baselineRule];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   if (v6 && self->_mode == *(v6 + 8) && ((amount = self->_amount, v8 = *(v6 + 16), amount == v8) || vabdd_f64(amount, v8) < fabs(v8 * 0.000000999999997)))
   {
     baselineRule = self->_baselineRule;

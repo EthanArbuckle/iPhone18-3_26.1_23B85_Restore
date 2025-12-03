@@ -2,7 +2,7 @@
 + (id)configurationForCarPlay;
 + (id)configurationForDigitalCrown;
 + (id)defaultConfiguration;
-- (_MKZoomingGestureControlConfiguration)initWithDecelerationThreshold:(double)a3 maximumZoomInVelocity:(double)a4 maximumZoomOutVelocity:(double)a5 zoomOutFrictionScale:(double)a6 zoomDraggingResistance:(double)a7;
+- (_MKZoomingGestureControlConfiguration)initWithDecelerationThreshold:(double)threshold maximumZoomInVelocity:(double)velocity maximumZoomOutVelocity:(double)outVelocity zoomOutFrictionScale:(double)scale zoomDraggingResistance:(double)resistance;
 @end
 
 @implementation _MKZoomingGestureControlConfiguration
@@ -14,18 +14,18 @@
   return v2;
 }
 
-- (_MKZoomingGestureControlConfiguration)initWithDecelerationThreshold:(double)a3 maximumZoomInVelocity:(double)a4 maximumZoomOutVelocity:(double)a5 zoomOutFrictionScale:(double)a6 zoomDraggingResistance:(double)a7
+- (_MKZoomingGestureControlConfiguration)initWithDecelerationThreshold:(double)threshold maximumZoomInVelocity:(double)velocity maximumZoomOutVelocity:(double)outVelocity zoomOutFrictionScale:(double)scale zoomDraggingResistance:(double)resistance
 {
   v13.receiver = self;
   v13.super_class = _MKZoomingGestureControlConfiguration;
   result = [(_MKZoomingGestureControlConfiguration *)&v13 init];
   if (result)
   {
-    result->_decelerationThreshold = a3;
-    result->_maximumZoomInVelocity = a4;
-    result->_maximumZoomOutVelocity = a5;
-    result->_zoomOutFrictionScale = a6;
-    result->_zoomDraggingResistance = a7;
+    result->_decelerationThreshold = threshold;
+    result->_maximumZoomInVelocity = velocity;
+    result->_maximumZoomOutVelocity = outVelocity;
+    result->_zoomOutFrictionScale = scale;
+    result->_zoomDraggingResistance = resistance;
   }
 
   return result;

@@ -4,10 +4,10 @@
 + (SKTileDefinition)tileDefinitionWithTexture:(SKTexture *)texture size:(CGSize)size;
 + (SKTileDefinition)tileDefinitionWithTextures:(NSArray *)textures normalTextures:(NSArray *)normalTextures size:(CGSize)size timePerFrame:(CGFloat)timePerFrame;
 + (SKTileDefinition)tileDefinitionWithTextures:(NSArray *)textures size:(CGSize)size timePerFrame:(CGFloat)timePerFrame;
-- (BOOL)isEqualToNode:(id)a3;
+- (BOOL)isEqualToNode:(id)node;
 - (CGSize)size;
 - (SKTileDefinition)init;
-- (SKTileDefinition)initWithCoder:(id)a3;
+- (SKTileDefinition)initWithCoder:(id)coder;
 - (SKTileDefinition)initWithTexture:(SKTexture *)texture;
 - (SKTileDefinition)initWithTexture:(SKTexture *)texture normalTexture:(SKTexture *)normalTexture size:(CGSize)size;
 - (SKTileDefinition)initWithTexture:(SKTexture *)texture size:(CGSize)size;
@@ -15,10 +15,10 @@
 - (SKTileDefinition)initWithTextures:(NSArray *)textures size:(CGSize)size timePerFrame:(CGFloat)timePerFrame;
 - (SKTileGroupRule)parentRule;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDataWithTexture:(id)a3 normalTexture:(id)a4 tileName:(id)a5 size:(CGSize)a6;
-- (void)setDataWithTextures:(id)a3 normalTextures:(id)a4 timePerFrame:(double)a5 tileName:(id)a6 size:(CGSize)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDataWithTexture:(id)texture normalTexture:(id)normalTexture tileName:(id)name size:(CGSize)size;
+- (void)setDataWithTextures:(id)textures normalTextures:(id)normalTextures timePerFrame:(double)frame tileName:(id)name size:(CGSize)size;
 - (void)setFlipHorizontally:(BOOL)flipHorizontally;
 - (void)setFlipVertically:(BOOL)flipVertically;
 - (void)setNormalTextures:(NSArray *)normalTextures;
@@ -71,10 +71,10 @@
   [(SKTileDefinition *)self didChangeValueForKey:@"normalTextures"];
 }
 
-- (SKTileDefinition)initWithCoder:(id)a3
+- (SKTileDefinition)initWithCoder:(id)coder
 {
   v29[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = SKTileDefinition;
   v5 = [(SKTileDefinition *)&v26 init];
@@ -91,8 +91,8 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:7];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
     v9 = MEMORY[0x277CBEB98];
     v28[0] = objc_opt_class();
@@ -100,7 +100,7 @@
     v28[2] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_textures"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_textures"];
     textures = v5->_textures;
     v5->_textures = v12;
 
@@ -110,63 +110,63 @@
     v27[2] = objc_opt_class();
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_normals"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_normals"];
     normals = v5->_normals;
     v5->_normals = v17;
 
-    v19 = [v4 decodeObjectOfClasses:v6 forKey:@"_userData"];
+    v19 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_userData"];
     [(SKTileDefinition *)v5 setUserData:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
     [(SKTileDefinition *)v5 setUid:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     [(SKTileDefinition *)v5 setName:v21];
 
-    [v4 decodeDoubleForKey:@"_width"];
+    [coderCopy decodeDoubleForKey:@"_width"];
     v23 = v22;
-    [v4 decodeDoubleForKey:@"_height"];
+    [coderCopy decodeDoubleForKey:@"_height"];
     [(SKTileDefinition *)v5 setSize:v23, v24];
-    [v4 decodeDoubleForKey:@"_timePerFrame"];
+    [coderCopy decodeDoubleForKey:@"_timePerFrame"];
     [(SKTileDefinition *)v5 setTimePerFrame:?];
-    -[SKTileDefinition setPlacementWeight:](v5, "setPlacementWeight:", [v4 decodeIntegerForKey:@"_placementWeight"]);
-    v5->_orientation = [v4 decodeIntegerForKey:@"_orientation"];
+    -[SKTileDefinition setPlacementWeight:](v5, "setPlacementWeight:", [coderCopy decodeIntegerForKey:@"_placementWeight"]);
+    v5->_orientation = [coderCopy decodeIntegerForKey:@"_orientation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_textures forKey:@"_textures"];
-  [v8 encodeObject:self->_normals forKey:@"_normals"];
-  v4 = [(SKTileDefinition *)self userData];
-  [v8 encodeObject:v4 forKey:@"_userData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_textures forKey:@"_textures"];
+  [coderCopy encodeObject:self->_normals forKey:@"_normals"];
+  userData = [(SKTileDefinition *)self userData];
+  [coderCopy encodeObject:userData forKey:@"_userData"];
 
   v5 = [(SKTileDefinition *)self uid];
-  [v8 encodeObject:v5 forKey:@"_uid"];
+  [coderCopy encodeObject:v5 forKey:@"_uid"];
 
-  v6 = [(SKTileDefinition *)self name];
-  [v8 encodeObject:v6 forKey:@"_name"];
+  name = [(SKTileDefinition *)self name];
+  [coderCopy encodeObject:name forKey:@"_name"];
 
   [(SKTileDefinition *)self size];
-  [v8 encodeDouble:@"_width" forKey:?];
+  [coderCopy encodeDouble:@"_width" forKey:?];
   [(SKTileDefinition *)self size];
-  [v8 encodeDouble:@"_height" forKey:v7];
+  [coderCopy encodeDouble:@"_height" forKey:v7];
   [(SKTileDefinition *)self timePerFrame];
-  [v8 encodeDouble:@"_timePerFrame" forKey:?];
-  [v8 encodeInteger:-[SKTileDefinition placementWeight](self forKey:{"placementWeight"), @"_placementWeight"}];
-  [v8 encodeInteger:self->_orientation forKey:@"_orientation"];
+  [coderCopy encodeDouble:@"_timePerFrame" forKey:?];
+  [coderCopy encodeInteger:-[SKTileDefinition placementWeight](self forKey:{"placementWeight"), @"_placementWeight"}];
+  [coderCopy encodeInteger:self->_orientation forKey:@"_orientation"];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (self != nodeCopy)
   {
-    v6 = v4;
+    v6 = nodeCopy;
     if (self->_orientation != v6->_orientation)
     {
       goto LABEL_21;
@@ -188,16 +188,16 @@
       goto LABEL_21;
     }
 
-    v13 = [(SKTileDefinition *)self name];
-    if (v13)
+    name = [(SKTileDefinition *)self name];
+    if (name)
     {
     }
 
     else
     {
-      v15 = [(SKTileDefinition *)v6 name];
+      name2 = [(SKTileDefinition *)v6 name];
 
-      if (!v15)
+      if (!name2)
       {
 LABEL_10:
         if (self->_placementWeight == v6->_placementWeight)
@@ -284,9 +284,9 @@ LABEL_22:
       }
     }
 
-    v16 = [(SKTileDefinition *)self name];
-    v17 = [(SKTileDefinition *)v6 name];
-    v18 = [v16 isEqualToString:v17];
+    name3 = [(SKTileDefinition *)self name];
+    name4 = [(SKTileDefinition *)v6 name];
+    v18 = [name3 isEqualToString:name4];
 
     if ((v18 & 1) == 0)
     {
@@ -309,9 +309,9 @@ LABEL_23:
   return [(SKTileDefinition *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -330,55 +330,55 @@ LABEL_23:
   return v5;
 }
 
-- (void)setDataWithTexture:(id)a3 normalTexture:(id)a4 tileName:(id)a5 size:(CGSize)a6
+- (void)setDataWithTexture:(id)texture normalTexture:(id)normalTexture tileName:(id)name size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v17 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEB18] array];
+  height = size.height;
+  width = size.width;
+  textureCopy = texture;
+  normalTextureCopy = normalTexture;
+  nameCopy = name;
+  array = [MEMORY[0x277CBEB18] array];
   textures = self->_textures;
-  self->_textures = v13;
+  self->_textures = array;
 
-  if (v17)
+  if (textureCopy)
   {
-    [(NSMutableArray *)self->_textures addObject:v17];
+    [(NSMutableArray *)self->_textures addObject:textureCopy];
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   normals = self->_normals;
-  self->_normals = v15;
+  self->_normals = array2;
 
-  if (v11)
+  if (normalTextureCopy)
   {
-    [(NSMutableArray *)self->_normals addObject:v11];
+    [(NSMutableArray *)self->_normals addObject:normalTextureCopy];
   }
 
-  [v17 setFilteringMode:0];
+  [textureCopy setFilteringMode:0];
   self->_timePerFrame = 0.0;
-  [(SKTileDefinition *)self setName:v12];
+  [(SKTileDefinition *)self setName:nameCopy];
   [(SKTileDefinition *)self setSize:width, height];
   [(SKTileDefinition *)self setPlacementWeight:1];
 }
 
-- (void)setDataWithTextures:(id)a3 normalTextures:(id)a4 timePerFrame:(double)a5 tileName:(id)a6 size:(CGSize)a7
+- (void)setDataWithTextures:(id)textures normalTextures:(id)normalTextures timePerFrame:(double)frame tileName:(id)name size:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = [MEMORY[0x277CBEB18] arrayWithArray:v13];
+  texturesCopy = textures;
+  normalTexturesCopy = normalTextures;
+  nameCopy = name;
+  v16 = [MEMORY[0x277CBEB18] arrayWithArray:texturesCopy];
   textures = self->_textures;
   self->_textures = v16;
 
-  v18 = [MEMORY[0x277CBEB18] arrayWithArray:v14];
+  v18 = [MEMORY[0x277CBEB18] arrayWithArray:normalTexturesCopy];
   normals = self->_normals;
   self->_normals = v18;
 
-  self->_timePerFrame = a5;
+  self->_timePerFrame = frame;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -408,10 +408,10 @@ LABEL_23:
     while (v21);
   }
 
-  [(SKTileDefinition *)self setName:v15];
-  v24 = [MEMORY[0x277CCAD78] UUID];
-  v25 = [v24 UUIDString];
-  [(SKTileDefinition *)self setUid:v25];
+  [(SKTileDefinition *)self setName:nameCopy];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(SKTileDefinition *)self setUid:uUIDString];
 
   [(SKTileDefinition *)self setSize:width, height];
   self->_orientation = 0;
@@ -529,9 +529,9 @@ LABEL_23:
   height = size.height;
   width = size.width;
   v6 = texture;
-  v7 = [[SKTileDefinition alloc] initWithTexture:v6 size:width, height];
+  height = [[SKTileDefinition alloc] initWithTexture:v6 size:width, height];
 
-  return v7;
+  return height;
 }
 
 + (SKTileDefinition)tileDefinitionWithTexture:(SKTexture *)texture normalTexture:(SKTexture *)normalTexture size:(CGSize)size
@@ -540,9 +540,9 @@ LABEL_23:
   width = size.width;
   v8 = texture;
   v9 = normalTexture;
-  v10 = [[SKTileDefinition alloc] initWithTexture:v8 normalTexture:v9 size:width, height];
+  height = [[SKTileDefinition alloc] initWithTexture:v8 normalTexture:v9 size:width, height];
 
-  return v10;
+  return height;
 }
 
 + (SKTileDefinition)tileDefinitionWithTextures:(NSArray *)textures size:(CGSize)size timePerFrame:(CGFloat)timePerFrame
@@ -550,9 +550,9 @@ LABEL_23:
   height = size.height;
   width = size.width;
   v8 = textures;
-  v9 = [[SKTileDefinition alloc] initWithTextures:v8 size:width timePerFrame:height, timePerFrame];
+  timePerFrame = [[SKTileDefinition alloc] initWithTextures:v8 size:width timePerFrame:height, timePerFrame];
 
-  return v9;
+  return timePerFrame;
 }
 
 + (SKTileDefinition)tileDefinitionWithTextures:(NSArray *)textures normalTextures:(NSArray *)normalTextures size:(CGSize)size timePerFrame:(CGFloat)timePerFrame
@@ -561,9 +561,9 @@ LABEL_23:
   width = size.width;
   v10 = textures;
   v11 = normalTextures;
-  v12 = [[SKTileDefinition alloc] initWithTextures:v10 normalTextures:v11 size:width timePerFrame:height, timePerFrame];
+  timePerFrame = [[SKTileDefinition alloc] initWithTextures:v10 normalTextures:v11 size:width timePerFrame:height, timePerFrame];
 
-  return v12;
+  return timePerFrame;
 }
 
 - (CGSize)size

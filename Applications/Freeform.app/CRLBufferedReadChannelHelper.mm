@@ -1,21 +1,21 @@
 @interface CRLBufferedReadChannelHelper
 - (CRLBufferedReadChannelHelper)init;
-- (CRLBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3;
-- (void)readWithHandler:(id)a3;
-- (void)readWithHandlerAndWait:(id)a3;
+- (CRLBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel;
+- (void)readWithHandler:(id)handler;
+- (void)readWithHandlerAndWait:(id)wait;
 @end
 
 @implementation CRLBufferedReadChannelHelper
 
-- (CRLBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3
+- (CRLBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v10.receiver = self;
   v10.super_class = CRLBufferedReadChannelHelper;
   v5 = [(CRLBufferedReadChannelHelper *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!channelCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -44,7 +44,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:371 isFatal:0 description:"invalid nil value for '%{public}s'", "bufferedReadChannel"];
     }
 
-    objc_storeWeak(&v5->_bufferedReadChannel, v4);
+    objc_storeWeak(&v5->_bufferedReadChannel, channelCopy);
   }
 
   return v5;
@@ -100,16 +100,16 @@
   objc_exception_throw(v10);
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_bufferedReadChannel);
-  [WeakRetained setStreamReadChannelSourceHandler:v4];
+  [WeakRetained setStreamReadChannelSourceHandler:handlerCopy];
 }
 
-- (void)readWithHandlerAndWait:(id)a3
+- (void)readWithHandlerAndWait:(id)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {

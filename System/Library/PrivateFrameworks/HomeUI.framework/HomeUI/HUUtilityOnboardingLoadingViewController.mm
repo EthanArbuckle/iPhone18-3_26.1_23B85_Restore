@@ -1,11 +1,11 @@
 @interface HUUtilityOnboardingLoadingViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)setDelegate:(id)a3;
+- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUUtilityOnboardingLoadingViewController
@@ -18,25 +18,25 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUUtilityOnboardingLoadingViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFDC06C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20CFDC744(a3);
+  selfCopy = self;
+  sub_20CFDC744(appear);
 }
 
 - (Class)onboardingFlowClass
@@ -46,14 +46,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingLoadingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

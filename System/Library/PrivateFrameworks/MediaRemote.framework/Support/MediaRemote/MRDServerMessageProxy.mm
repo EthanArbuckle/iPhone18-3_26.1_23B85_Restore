@@ -1,38 +1,38 @@
 @interface MRDServerMessageProxy
-+ (id)proxyForObject:(id)a3 protocol:(id)a4;
-+ (id)proxyForObjects:(id)a3 protocol:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
++ (id)proxyForObject:(id)object protocol:(id)protocol;
++ (id)proxyForObjects:(id)objects protocol:(id)protocol;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MRDServerMessageProxy
 
-+ (id)proxyForObject:(id)a3 protocol:(id)a4
++ (id)proxyForObject:(id)object protocol:(id)protocol
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSArray arrayWithObjects:&v11 count:1];
+  objectCopy = object;
+  protocolCopy = protocol;
+  objectCopy2 = object;
+  v8 = [NSArray arrayWithObjects:&objectCopy count:1];
 
-  v9 = [a1 proxyForObjects:v8 protocol:{v6, v11}];
+  v9 = [self proxyForObjects:v8 protocol:{protocolCopy, objectCopy}];
 
   return v9;
 }
 
-+ (id)proxyForObjects:(id)a3 protocol:(id)a4
++ (id)proxyForObjects:(id)objects protocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
+  objectsCopy = objects;
+  protocolCopy = protocol;
+  v8 = [self alloc];
   v9 = +[NSHashTable weakObjectsHashTable];
   [v8 setObjects:v9];
 
-  [v8 setProtocol:v7];
+  [v8 setProtocol:protocolCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v6;
+  v10 = objectsCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -48,8 +48,8 @@
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [v8 objects];
-        [v16 addObject:v15];
+        objects = [v8 objects];
+        [objects addObject:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -61,17 +61,17 @@
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MRDServerMessageProxy *)self objects];
-  v6 = [v5 allObjects];
+  objects = [(MRDServerMessageProxy *)self objects];
+  allObjects = [objects allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -83,40 +83,40 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        [v4 selector];
+        [invocationCopy selector];
         if (objc_opt_respondsToSelector())
         {
-          [v4 invokeWithTarget:v11];
+          [invocationCopy invokeWithTarget:v11];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  if (a3 == a2)
+  if (selector == a2)
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = [(MRDServerMessageProxy *)self protocol];
-    types = protocol_getMethodDescription(v6, a3, 0, 1).types;
+    protocol = [(MRDServerMessageProxy *)self protocol];
+    types = protocol_getMethodDescription(protocol, selector, 0, 1).types;
 
-    if (types || ([(MRDServerMessageProxy *)self protocol], v8 = objc_claimAutoreleasedReturnValue(), types = protocol_getMethodDescription(v8, a3, 1, 1).types, v8, types))
+    if (types || ([(MRDServerMessageProxy *)self protocol], v8 = objc_claimAutoreleasedReturnValue(), types = protocol_getMethodDescription(v8, selector, 1, 1).types, v8, types))
     {
       v9 = [NSMethodSignature signatureWithObjCTypes:types];
     }

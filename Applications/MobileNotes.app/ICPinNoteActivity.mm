@@ -1,24 +1,24 @@
 @interface ICPinNoteActivity
-- (ICPinNoteActivity)initWithNote:(id)a3 eventReporter:(id)a4;
+- (ICPinNoteActivity)initWithNote:(id)note eventReporter:(id)reporter;
 - (id)activityImage;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICPinNoteActivity
 
-- (ICPinNoteActivity)initWithNote:(id)a3 eventReporter:(id)a4
+- (ICPinNoteActivity)initWithNote:(id)note eventReporter:(id)reporter
 {
-  v7 = a3;
-  v8 = a4;
+  noteCopy = note;
+  reporterCopy = reporter;
   v12.receiver = self;
   v12.super_class = ICPinNoteActivity;
   v9 = [(ICPinNoteActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_note, a3);
-    objc_storeStrong(&v10->_eventReporter, a4);
+    objc_storeStrong(&v9->_note, note);
+    objc_storeStrong(&v10->_eventReporter, reporter);
   }
 
   return v10;
@@ -26,11 +26,11 @@
 
 - (id)activityTitle
 {
-  v2 = [(ICPinNoteActivity *)self note];
-  v3 = [v2 isPinned];
+  note = [(ICPinNoteActivity *)self note];
+  isPinned = [note isPinned];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isPinned)
   {
     v6 = @"Unpin Note";
   }
@@ -47,10 +47,10 @@
 
 - (id)activityImage
 {
-  v2 = [(ICPinNoteActivity *)self note];
-  v3 = [v2 isPinned];
+  note = [(ICPinNoteActivity *)self note];
+  isPinned = [note isPinned];
   v4 = @"pin.fill";
-  if (v3)
+  if (isPinned)
   {
     v4 = @"pin.slash.fill";
   }
@@ -62,28 +62,28 @@
   return v6;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(ICPinNoteActivity *)self note];
-  v6 = [v5 managedObjectContext];
+  note = [(ICPinNoteActivity *)self note];
+  managedObjectContext = [note managedObjectContext];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100139050;
   v13 = &unk_100645C78;
   objc_copyWeak(&v14, &location);
-  [v6 performBlockAndWait:&v10];
+  [managedObjectContext performBlockAndWait:&v10];
 
   v7 = [(ICPinNoteActivity *)self eventReporter:v10];
-  v8 = [(ICPinNoteActivity *)self note];
-  [v7 submitNotePinEventForModernNote:v8 contextPath:1];
+  note2 = [(ICPinNoteActivity *)self note];
+  [v7 submitNotePinEventForModernNote:note2 contextPath:1];
 
   [(ICPinNoteActivity *)self activityDidFinish:1];
-  if (v4)
+  if (completionCopy)
   {
-    v9 = [(ICPinNoteActivity *)self activityType];
-    v4[2](v4, 1, v9);
+    activityType = [(ICPinNoteActivity *)self activityType];
+    completionCopy[2](completionCopy, 1, activityType);
   }
 
   objc_destroyWeak(&v14);

@@ -1,19 +1,19 @@
 @interface HMDMatterCommandActionUtilities
-+ (id)commandsInMemoryRepresentation:(id)a3;
-+ (id)commandsInStoreRepresentation:(id)a3;
++ (id)commandsInMemoryRepresentation:(id)representation;
++ (id)commandsInStoreRepresentation:(id)representation;
 @end
 
 @implementation HMDMatterCommandActionUtilities
 
-+ (id)commandsInMemoryRepresentation:(id)a3
++ (id)commandsInMemoryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = representationCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -68,15 +68,15 @@
   return v18;
 }
 
-+ (id)commandsInStoreRepresentation:(id)a3
++ (id)commandsInStoreRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = representationCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {

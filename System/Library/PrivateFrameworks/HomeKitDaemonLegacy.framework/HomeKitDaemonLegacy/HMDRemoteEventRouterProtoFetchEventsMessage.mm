@@ -1,28 +1,28 @@
 @interface HMDRemoteEventRouterProtoFetchEventsMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFetchType:(id)a3;
+- (int)StringAsFetchType:(id)type;
 - (int)fetchType;
 - (unint64_t)hash;
-- (void)addTopics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopics:(id)topics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoFetchEventsMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -48,9 +48,9 @@
     while (v7);
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_fetchType = *(v4 + 2);
+    self->_fetchType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -73,16 +73,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   topics = self->_topics;
-  if (topics | *(v4 + 2))
+  if (topics | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)topics isEqual:?])
     {
@@ -90,10 +90,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_fetchType == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_fetchType == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -108,10 +108,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -132,7 +132,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addTopics:v11];
 
         ++v10;
@@ -155,35 +155,35 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HMDRemoteEventRouterProtoFetchEventsMessage *)self topicsCount])
   {
-    [v8 clearTopics];
-    v4 = [(HMDRemoteEventRouterProtoFetchEventsMessage *)self topicsCount];
-    if (v4)
+    [toCopy clearTopics];
+    topicsCount = [(HMDRemoteEventRouterProtoFetchEventsMessage *)self topicsCount];
+    if (topicsCount)
     {
-      v5 = v4;
+      v5 = topicsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMDRemoteEventRouterProtoFetchEventsMessage *)self topicsAtIndex:i];
-        [v8 addTopics:v7];
+        [toCopy addTopics:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 2) = self->_fetchType;
-    *(v8 + 24) |= 1u;
+    *(toCopy + 2) = self->_fetchType;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -228,7 +228,7 @@ LABEL_9:
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_topics count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_topics, "count")}];
@@ -251,8 +251,8 @@ LABEL_9:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -261,7 +261,7 @@ LABEL_9:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"topics"];
+    [dictionary setObject:v4 forKey:@"topics"];
   }
 
   if (*&self->_has)
@@ -285,12 +285,12 @@ LABEL_9:
       v12 = @"SingleHop";
     }
 
-    [v3 setObject:v12 forKey:@"fetchType"];
+    [dictionary setObject:v12 forKey:@"fetchType"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -299,23 +299,23 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoFetchEventsMessage;
   v4 = [(HMDRemoteEventRouterProtoFetchEventsMessage *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoFetchEventsMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoFetchEventsMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsFetchType:(id)a3
+- (int)StringAsFetchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SingleHop"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SingleHop"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"MultiHop"];
+    v4 = [typeCopy isEqualToString:@"MultiHop"];
   }
 
   return v4;
@@ -334,22 +334,22 @@ LABEL_9:
   }
 }
 
-- (void)addTopics:(id)a3
+- (void)addTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   topics = self->_topics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!topics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topics;
     self->_topics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     topics = self->_topics;
   }
 
-  [(NSMutableArray *)topics addObject:v4];
+  [(NSMutableArray *)topics addObject:topicsCopy];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface MSDDemoUnitServer
 - (MSDDemoUnitServer)init;
-- (id)taskInfoFromCommandRequest:(id)a3;
-- (void)checkIn:(id)a3;
-- (void)findMyHub:(id)a3;
-- (void)markAsNotDemo:(id)a3;
-- (void)storeSearch:(id)a3;
+- (id)taskInfoFromCommandRequest:(id)request;
+- (void)checkIn:(id)in;
+- (void)findMyHub:(id)hub;
+- (void)markAsNotDemo:(id)demo;
+- (void)storeSearch:(id)search;
 @end
 
 @implementation MSDDemoUnitServer
@@ -26,55 +26,55 @@
   return v2;
 }
 
-- (void)findMyHub:(id)a3
+- (void)findMyHub:(id)hub
 {
-  v4 = a3;
-  [v4 logicSync];
-  v5 = [v4 getUrl];
-  [(MSDServer *)self sendRequest:v4 toEndpoint:v5 postData:1 maxRetry:3];
+  hubCopy = hub;
+  [hubCopy logicSync];
+  getUrl = [hubCopy getUrl];
+  [(MSDServer *)self sendRequest:hubCopy toEndpoint:getUrl postData:1 maxRetry:3];
 }
 
-- (void)checkIn:(id)a3
+- (void)checkIn:(id)in
 {
-  v4 = a3;
-  v5 = [v4 getUrl];
-  [(MSDServer *)self sendRequest:v4 toEndpoint:v5 postData:1 maxRetry:3];
+  inCopy = in;
+  getUrl = [inCopy getUrl];
+  [(MSDServer *)self sendRequest:inCopy toEndpoint:getUrl postData:1 maxRetry:3];
 }
 
-- (void)markAsNotDemo:(id)a3
+- (void)markAsNotDemo:(id)demo
 {
-  v4 = a3;
-  v5 = [v4 getUrl];
-  [(MSDServer *)self sendRequest:v4 toEndpoint:v5 postData:1 maxRetry:3];
+  demoCopy = demo;
+  getUrl = [demoCopy getUrl];
+  [(MSDServer *)self sendRequest:demoCopy toEndpoint:getUrl postData:1 maxRetry:3];
 }
 
-- (void)storeSearch:(id)a3
+- (void)storeSearch:(id)search
 {
-  v4 = a3;
-  v5 = [v4 getUrl];
-  [(MSDServer *)self sendQueryForRequest:v4 toPath:v5 maxRetry:3];
+  searchCopy = search;
+  getUrl = [searchCopy getUrl];
+  [(MSDServer *)self sendQueryForRequest:searchCopy toPath:getUrl maxRetry:3];
 }
 
-- (id)taskInfoFromCommandRequest:(id)a3
+- (id)taskInfoFromCommandRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MSDFMHSessionTaskInfo);
-  v6 = [v4 server];
-  [(MSDHubSessionTaskInfo *)v5 setServer:v6];
+  server = [requestCopy server];
+  [(MSDHubSessionTaskInfo *)v5 setServer:server];
 
-  v7 = [v4 port];
-  [(MSDHubSessionTaskInfo *)v5 setPort:v7];
+  port = [requestCopy port];
+  [(MSDHubSessionTaskInfo *)v5 setPort:port];
 
-  v8 = [(MSDDemoUnitServer *)self hmacKey];
-  [(MSDHubSessionTaskInfo *)v5 setHmacKey:v8];
+  hmacKey = [(MSDDemoUnitServer *)self hmacKey];
+  [(MSDHubSessionTaskInfo *)v5 setHmacKey:hmacKey];
 
-  v9 = [v4 deviceUDID];
-  [(MSDHubSessionTaskInfo *)v5 setDeviceUDID:v9];
+  deviceUDID = [requestCopy deviceUDID];
+  [(MSDHubSessionTaskInfo *)v5 setDeviceUDID:deviceUDID];
 
-  -[MSDFMHSessionTaskInfo setUseBAAAuthentication:](v5, "setUseBAAAuthentication:", [v4 useBAAAuthentication]);
-  v10 = [v4 urlOverride];
+  -[MSDFMHSessionTaskInfo setUseBAAAuthentication:](v5, "setUseBAAAuthentication:", [requestCopy useBAAAuthentication]);
+  urlOverride = [requestCopy urlOverride];
 
-  [(MSDFMHSessionTaskInfo *)v5 setFmhURLOverride:v10];
+  [(MSDFMHSessionTaskInfo *)v5 setFmhURLOverride:urlOverride];
 
   return v5;
 }

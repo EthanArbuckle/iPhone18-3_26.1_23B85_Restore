@@ -4,7 +4,7 @@
 - (void)_publishFeedbackArbitrationRecordForNearMiss;
 - (void)_resetSettingsConnection;
 - (void)dealloc;
-- (void)publishArbitrationParticipationContext:(id)a3;
+- (void)publishArbitrationParticipationContext:(id)context;
 @end
 
 @implementation SCDAArbitrationParticipationController
@@ -48,17 +48,17 @@ LABEL_6:
   }
 }
 
-- (void)publishArbitrationParticipationContext:(id)a3
+- (void)publishArbitrationParticipationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__SCDAArbitrationParticipationController_publishArbitrationParticipationContext___block_invoke;
   v7[3] = &unk_1E85D38A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 

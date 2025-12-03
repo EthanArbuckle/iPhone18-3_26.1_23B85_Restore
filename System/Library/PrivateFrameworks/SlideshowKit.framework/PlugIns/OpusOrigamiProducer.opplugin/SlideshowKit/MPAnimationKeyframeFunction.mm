@@ -1,36 +1,36 @@
 @interface MPAnimationKeyframeFunction
-+ (id)keyframeFunctionWithFunction:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5 withDuration:(double)a6;
-+ (id)keyframeFunctionWithFunction:(id)a3 atTime:(double)a4 withDuration:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)keyframeFunctionWithFunction:(id)function atTime:(double)time offsetType:(unint64_t)type withDuration:(double)duration;
++ (id)keyframeFunctionWithFunction:(id)function atTime:(double)time withDuration:(double)duration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initKeyframeFunctionWithFunction:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5 withDuration:(double)a6;
+- (id)initKeyframeFunctionWithFunction:(id)function atTime:(double)time offsetType:(unint64_t)type withDuration:(double)duration;
 - (void)dealloc;
-- (void)setDuration:(double)a3;
-- (void)setFunction:(id)a3;
-- (void)setFunctionParameters:(id)a3;
-- (void)setFunctionTimeFactor:(double)a3;
-- (void)setFunctionTimeOffset:(double)a3;
-- (void)setInnerEaseInControl:(double)a3;
-- (void)setInnerEaseOutControl:(double)a3;
+- (void)setDuration:(double)duration;
+- (void)setFunction:(id)function;
+- (void)setFunctionParameters:(id)parameters;
+- (void)setFunctionTimeFactor:(double)factor;
+- (void)setFunctionTimeOffset:(double)offset;
+- (void)setInnerEaseInControl:(double)control;
+- (void)setInnerEaseOutControl:(double)control;
 @end
 
 @implementation MPAnimationKeyframeFunction
 
-+ (id)keyframeFunctionWithFunction:(id)a3 atTime:(double)a4 withDuration:(double)a5
++ (id)keyframeFunctionWithFunction:(id)function atTime:(double)time withDuration:(double)duration
 {
-  v5 = [[a1 alloc] initKeyframeFunctionWithFunction:a3 atTime:0 offsetType:a4 withDuration:a5];
+  v5 = [[self alloc] initKeyframeFunctionWithFunction:function atTime:0 offsetType:time withDuration:duration];
 
   return v5;
 }
 
-+ (id)keyframeFunctionWithFunction:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5 withDuration:(double)a6
++ (id)keyframeFunctionWithFunction:(id)function atTime:(double)time offsetType:(unint64_t)type withDuration:(double)duration
 {
-  v6 = [[a1 alloc] initKeyframeFunctionWithFunction:a3 atTime:a5 offsetType:a4 withDuration:a6];
+  v6 = [[self alloc] initKeyframeFunctionWithFunction:function atTime:type offsetType:time withDuration:duration];
 
   return v6;
 }
 
-- (id)initKeyframeFunctionWithFunction:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5 withDuration:(double)a6
+- (id)initKeyframeFunctionWithFunction:(id)function atTime:(double)time offsetType:(unint64_t)type withDuration:(double)duration
 {
   v13.receiver = self;
   v13.super_class = MPAnimationKeyframeFunction;
@@ -38,24 +38,24 @@
   v11 = v10;
   if (v10)
   {
-    v10->_duration = a6;
-    v10->_function = a3;
+    v10->_duration = duration;
+    v10->_function = function;
     v11->_functionTimeOffset = 0.0;
     v11->_functionTimeFactor = 1.0;
     v11->_innerEaseInControl = 0.0;
     v11->_innerEaseOutControl = 0.0;
-    v11->super._time = a4;
-    v11->super._offsetType = a5;
+    v11->super._time = time;
+    v11->super._offsetType = type;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPAnimationKeyframeFunction;
-  v4 = [(MPAnimationKeyframe *)&v6 copyWithZone:a3];
+  v4 = [(MPAnimationKeyframe *)&v6 copyWithZone:zone];
   [v4 setFunction:self->_function];
   [v4 setFunctionParameters:{-[NSDictionary copy](self->_functionParameters, "copy")}];
   [v4 setDuration:self->_duration];
@@ -94,9 +94,9 @@
   return [(NSString *)v5 stringByAppendingFormat:@"\t               Has MCKeyframe: %@\n", v6];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  self->_duration = a3;
+  self->_duration = duration;
   keyframe = self->super._keyframe;
   if (keyframe)
   {
@@ -110,16 +110,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v6 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setFunctionTimeOffset:(double)a3
+- (void)setFunctionTimeOffset:(double)offset
 {
-  self->_functionTimeOffset = a3;
+  self->_functionTimeOffset = offset;
   keyframe = self->super._keyframe;
   if (keyframe)
   {
@@ -133,16 +133,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v6 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setFunctionTimeFactor:(double)a3
+- (void)setFunctionTimeFactor:(double)factor
 {
-  self->_functionTimeFactor = a3;
+  self->_functionTimeFactor = factor;
   keyframe = self->super._keyframe;
   if (keyframe)
   {
@@ -156,21 +156,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v6 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setInnerEaseInControl:(double)a3
+- (void)setInnerEaseInControl:(double)control
 {
-  self->_innerEaseInControl = a3;
+  self->_innerEaseInControl = control;
   keyframe = self->super._keyframe;
   if (keyframe)
   {
-    *&a3 = a3;
-    [(MCAnimationKeyframe *)keyframe setInnerEaseInControl:a3];
+    *&control = control;
+    [(MCAnimationKeyframe *)keyframe setInnerEaseInControl:control];
   }
 
   parentPath = self->super._parentPath;
@@ -180,21 +180,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v6 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setInnerEaseOutControl:(double)a3
+- (void)setInnerEaseOutControl:(double)control
 {
-  self->_innerEaseOutControl = a3;
+  self->_innerEaseOutControl = control;
   keyframe = self->super._keyframe;
   if (keyframe)
   {
-    *&a3 = a3;
-    [(MCAnimationKeyframe *)keyframe setInnerEaseOutControl:a3];
+    *&control = control;
+    [(MCAnimationKeyframe *)keyframe setInnerEaseOutControl:control];
   }
 
   parentPath = self->super._parentPath;
@@ -204,14 +204,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v6 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setFunction:(id)a3
+- (void)setFunction:(id)function
 {
   function = self->_function;
   if (function)
@@ -220,11 +220,11 @@
     self->_function = 0;
   }
 
-  self->_function = [a3 copy];
+  self->_function = [function copy];
   keyframe = self->super._keyframe;
   if (keyframe)
   {
-    [(MCAnimationKeyframe *)keyframe setFunction:a3];
+    [(MCAnimationKeyframe *)keyframe setFunction:function];
   }
 
   parentPath = self->super._parentPath;
@@ -234,14 +234,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v8 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }
 
-- (void)setFunctionParameters:(id)a3
+- (void)setFunctionParameters:(id)parameters
 {
   functionParameters = self->_functionParameters;
   if (functionParameters)
@@ -250,11 +250,11 @@
     self->_functionParameters = 0;
   }
 
-  self->_functionParameters = [a3 copy];
+  self->_functionParameters = [parameters copy];
   keyframe = self->super._keyframe;
   if (keyframe)
   {
-    [(MCAnimationKeyframe *)keyframe setFunctionParameters:a3];
+    [(MCAnimationKeyframe *)keyframe setFunctionParameters:parameters];
   }
 
   parentPath = self->super._parentPath;
@@ -264,9 +264,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v8 duplicateAnimationPaths];
+      [animatedParent duplicateAnimationPaths];
     }
   }
 }

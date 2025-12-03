@@ -6,14 +6,14 @@
 - (NSString)plugInsPath;
 - (NSString)supportPath;
 - (NSURL)url;
-- (PKBundle)initWithExecutablePath:(id)a3;
-- (PKBundle)initWithExecutableURL:(id)a3;
-- (PKBundle)initWithPath:(id)a3;
-- (PKBundle)initWithURL:(id)a3;
-- (PKBundle)initWithXPCBundle:(id)a3;
-- (id)bundleDirectory:(id)a3;
+- (PKBundle)initWithExecutablePath:(id)path;
+- (PKBundle)initWithExecutableURL:(id)l;
+- (PKBundle)initWithPath:(id)path;
+- (PKBundle)initWithURL:(id)l;
+- (PKBundle)initWithXPCBundle:(id)bundle;
+- (id)bundleDirectory:(id)directory;
 - (id)initForMainBundle;
-- (id)stringProperty:(int)a3;
+- (id)stringProperty:(int)property;
 @end
 
 @implementation PKBundle
@@ -37,23 +37,23 @@
   return v4;
 }
 
-- (PKBundle)initWithURL:(id)a3
+- (PKBundle)initWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(PKBundle *)self initWithPath:v4];
+  path = [l path];
+  v5 = [(PKBundle *)self initWithPath:path];
 
   return v5;
 }
 
-- (PKBundle)initWithPath:(id)a3
+- (PKBundle)initWithPath:(id)path
 {
-  v4 = a3;
-  [v4 UTF8String];
+  pathCopy = path;
+  [pathCopy UTF8String];
   v5 = xpc_bundle_create();
   if (xpc_bundle_get_property())
   {
     self = [(PKBundle *)self initWithXPCBundle:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -65,14 +65,14 @@
       sub_1C68B722C();
     }
 
-    v8 = [v4 lastPathComponent];
-    v9 = [v8 pathExtension];
-    v10 = [v9 isEqualToString:@"appex"];
+    lastPathComponent = [pathCopy lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    v10 = [pathExtension isEqualToString:@"appex"];
 
     if (v10)
     {
       v11 = objc_alloc(MEMORY[0x1E69635D0]);
-      v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4 isDirectory:1];
+      v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:1];
       v17 = 0;
       v13 = [v11 initWithURL:v12 error:&v17];
       v14 = v17;
@@ -87,24 +87,24 @@
       }
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PKBundle)initWithExecutableURL:(id)a3
+- (PKBundle)initWithExecutableURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(PKBundle *)self initWithExecutablePath:v4];
+  path = [l path];
+  v5 = [(PKBundle *)self initWithExecutablePath:path];
 
   return v5;
 }
 
-- (PKBundle)initWithExecutablePath:(id)a3
+- (PKBundle)initWithExecutablePath:(id)path
 {
-  v4 = a3;
-  [v4 UTF8String];
+  pathCopy = path;
+  [pathCopy UTF8String];
   v5 = xpc_bundle_create();
   if (xpc_bundle_get_property())
   {
@@ -113,7 +113,7 @@
 
   else
   {
-    v6 = [(PKBundle *)self initWithPath:v4];
+    v6 = [(PKBundle *)self initWithPath:pathCopy];
   }
 
   v7 = v6;
@@ -121,24 +121,24 @@
   return v7;
 }
 
-- (PKBundle)initWithXPCBundle:(id)a3
+- (PKBundle)initWithXPCBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v8.receiver = self;
   v8.super_class = PKBundle;
   v5 = [(PKBundle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKBundle *)v5 set_bundle:v4];
+    [(PKBundle *)v5 set_bundle:bundleCopy];
   }
 
   return v6;
 }
 
-- (id)stringProperty:(int)a3
+- (id)stringProperty:(int)property
 {
-  v3 = [(PKBundle *)self _bundle];
+  _bundle = [(PKBundle *)self _bundle];
   property = xpc_bundle_get_property();
 
   if (property)
@@ -156,7 +156,7 @@
 
 - (NSDictionary)infoDictionary
 {
-  v3 = [(PKBundle *)self _bundle];
+  _bundle = [(PKBundle *)self _bundle];
   v4 = xpc_bundle_get_info_dictionary();
 
   if (!v4)
@@ -183,7 +183,7 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(PKBundle *)self _bundle];
+  _bundle = [(PKBundle *)self _bundle];
   v3 = xpc_bundle_get_info_dictionary();
 
   if (v3)
@@ -202,8 +202,8 @@
 - (NSURL)url
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(PKBundle *)self path];
-  v4 = [v2 fileURLWithPath:v3];
+  path = [(PKBundle *)self path];
+  v4 = [v2 fileURLWithPath:path];
 
   return v4;
 }
@@ -219,7 +219,7 @@
 {
   if (!self->_supportPath)
   {
-    v3 = [(PKBundle *)self _bundle];
+    _bundle = [(PKBundle *)self _bundle];
     property = xpc_bundle_get_property();
 
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:property];
@@ -234,11 +234,11 @@
   return v7;
 }
 
-- (id)bundleDirectory:(id)a3
+- (id)bundleDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(PKBundle *)self supportPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  directoryCopy = directory;
+  supportPath = [(PKBundle *)self supportPath];
+  v6 = [supportPath stringByAppendingPathComponent:directoryCopy];
 
   return v6;
 }

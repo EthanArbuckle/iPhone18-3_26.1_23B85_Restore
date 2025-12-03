@@ -1,25 +1,25 @@
 @interface IPSettingsUtilities
 + (void)mirrorToWatchIfNecessary;
-+ (void)runPostLanguageChangeOperationsWithNotifications:(BOOL)a3;
-+ (void)writeLanguageAndLocaleConfigurationIfNeededWithCompletion:(id)a3;
++ (void)runPostLanguageChangeOperationsWithNotifications:(BOOL)notifications;
++ (void)writeLanguageAndLocaleConfigurationIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation IPSettingsUtilities
 
-+ (void)runPostLanguageChangeOperationsWithNotifications:(BOOL)a3
++ (void)runPostLanguageChangeOperationsWithNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.purplebuddy"];
+  notificationsCopy = notifications;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
   if ((v7 & 1) == 0)
   {
     [MEMORY[0x277CBEAF8] enableDefaultKeyboardForPreferredLanguages];
   }
 
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = [v8 beginActivityWithOptions:0xFFFFFFLL reason:@"com.apple.InternationalSettings.setLanguagesToIdMS"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v9 = [processInfo beginActivityWithOptions:0xFFFFFFLL reason:@"com.apple.InternationalSettings.setLanguagesToIdMS"];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -27,25 +27,25 @@
   v19[3] = &unk_2787A8F28;
   v10 = v9;
   v20 = v10;
-  [a1 writeLanguageAndLocaleConfigurationIfNeededWithCompletion:v19];
-  [a1 mirrorToWatchIfNecessary];
-  v11 = [MEMORY[0x277CBEAF8] preferredLocale];
-  v12 = [v11 regionCode];
+  [self writeLanguageAndLocaleConfigurationIfNeededWithCompletion:v19];
+  [self mirrorToWatchIfNecessary];
+  preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+  regionCode = [preferredLocale regionCode];
 
-  if (![v12 length])
+  if (![regionCode length])
   {
     v13 = @"001";
 
-    v12 = v13;
+    regionCode = v13;
   }
 
-  v14 = xpc_string_create([v12 cStringUsingEncoding:1]);
+  v14 = xpc_string_create([regionCode cStringUsingEncoding:1]);
   v15 = os_eligibility_set_input();
 
   if (v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [IPSettingsUtilities runPostLanguageChangeOperationsWithNotifications:v15];
-    if (!v3)
+    if (!notificationsCopy)
     {
       goto LABEL_9;
     }
@@ -53,7 +53,7 @@
     goto LABEL_8;
   }
 
-  if (v3)
+  if (notificationsCopy)
   {
 LABEL_8:
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -73,26 +73,26 @@ void __72__IPSettingsUtilities_runPostLanguageChangeOperationsWithNotifications_
   [v2 endActivity:*(a1 + 32)];
 }
 
-+ (void)writeLanguageAndLocaleConfigurationIfNeededWithCompletion:(id)a3
++ (void)writeLanguageAndLocaleConfigurationIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [getUMUserManagerClass() sharedManager];
-  v5 = [v4 isMultiUser];
+  completionCopy = completion;
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  isMultiUser = [sharedManager isMultiUser];
 
-  if (v5)
+  if (isMultiUser)
   {
     v6 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__IPSettingsUtilities_writeLanguageAndLocaleConfigurationIfNeededWithCompletion___block_invoke;
     block[3] = &unk_2787A8F78;
-    v8 = v3;
+    v8 = completionCopy;
     dispatch_async(v6, block);
   }
 
-  else if (v3)
+  else if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -166,16 +166,16 @@ uint64_t __81__IPSettingsUtilities_writeLanguageAndLocaleConfigurationIfNeededWi
 
 + (void)mirrorToWatchIfNecessary
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v8 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  v5 = [v8 valueForProperty:*MEMORY[0x277D2BB28]];
-  v6 = [v5 BOOLValue];
+  v5 = [firstObject valueForProperty:*MEMORY[0x277D2BB28]];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = objc_alloc_init(IPWatchLocaleController);
-  if ([(IPWatchLocaleController *)v7 isMirroringEnabled]&& (v6 & 1) == 0)
+  if ([(IPWatchLocaleController *)v7 isMirroringEnabled]&& (bOOLValue & 1) == 0)
   {
     [(IPWatchLocaleController *)v7 mirrorLanguagesAndLocaleToWatch];
   }

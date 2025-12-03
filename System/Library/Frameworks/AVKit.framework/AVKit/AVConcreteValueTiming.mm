@@ -1,7 +1,7 @@
 @interface AVConcreteValueTiming
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_timing;
-- (AVConcreteValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVConcreteValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVConcreteValueTiming
@@ -22,18 +22,18 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AVConcreteValueTiming;
-  return [(AVValueTiming *)&v4 copyWithZone:a3];
+  return [(AVValueTiming *)&v4 copyWithZone:zone];
 }
 
-- (AVConcreteValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5
+- (AVConcreteValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate
 {
-  self->_value = a3;
-  self->_timeStamp = a4;
-  self->_rate = a5;
+  self->_value = value;
+  self->_timeStamp = stamp;
+  self->_rate = rate;
   return self;
 }
 

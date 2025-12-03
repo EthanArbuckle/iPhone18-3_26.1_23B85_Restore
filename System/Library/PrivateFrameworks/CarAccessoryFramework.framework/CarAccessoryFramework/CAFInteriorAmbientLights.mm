@@ -12,26 +12,26 @@
 - (CAFUInt32Range)brightnessRange;
 - (NSString)primaryColor;
 - (unsigned)brightness;
-- (void)registerObserver:(id)a3;
-- (void)setPrimaryColor:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setPrimaryColor:(id)color;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFInteriorAmbientLights
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFInteriorAmbientLights;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -44,12 +44,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -65,13 +65,13 @@
 - (CAFStringCharacteristic)primaryColorCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000052000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000001"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000052000001"];
@@ -90,29 +90,29 @@
 
 - (NSString)primaryColor
 {
-  v2 = [(CAFInteriorAmbientLights *)self primaryColorCharacteristic];
-  v3 = [v2 stringValue];
+  primaryColorCharacteristic = [(CAFInteriorAmbientLights *)self primaryColorCharacteristic];
+  stringValue = [primaryColorCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (void)setPrimaryColor:(id)a3
+- (void)setPrimaryColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CAFInteriorAmbientLights *)self primaryColorCharacteristic];
-  [v5 setStringValue:v4];
+  colorCopy = color;
+  primaryColorCharacteristic = [(CAFInteriorAmbientLights *)self primaryColorCharacteristic];
+  [primaryColorCharacteristic setStringValue:colorCopy];
 }
 
 - (CAFUInt32Characteristic)brightnessCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000052000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000002"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000052000002"];
@@ -131,24 +131,24 @@
 
 - (unsigned)brightness
 {
-  v2 = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
-  v3 = [v2 uint32Value];
+  brightnessCharacteristic = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
+  uint32Value = [brightnessCharacteristic uint32Value];
 
-  return v3;
+  return uint32Value;
 }
 
 - (CAFUInt32Range)brightnessRange
 {
-  v2 = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
-  v3 = [v2 range];
+  brightnessCharacteristic = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
+  range = [brightnessCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (BOOL)hasBrightness
 {
-  v2 = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
-  v3 = v2 != 0;
+  brightnessCharacteristic = [(CAFInteriorAmbientLights *)self brightnessCharacteristic];
+  v3 = brightnessCharacteristic != 0;
 
   return v3;
 }
@@ -156,13 +156,13 @@
 - (CAFSupportedColorsCharacteristic)supportedColorsCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000052000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000003"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000052000003"];
@@ -181,16 +181,16 @@
 
 - (CAFSupportedColors)supportedColors
 {
-  v2 = [(CAFInteriorAmbientLights *)self supportedColorsCharacteristic];
-  v3 = [v2 supportedColorsValue];
+  supportedColorsCharacteristic = [(CAFInteriorAmbientLights *)self supportedColorsCharacteristic];
+  supportedColorsValue = [supportedColorsCharacteristic supportedColorsValue];
 
-  return v3;
+  return supportedColorsValue;
 }
 
 - (BOOL)hasSupportedColors
 {
-  v2 = [(CAFInteriorAmbientLights *)self supportedColorsCharacteristic];
-  v3 = v2 != 0;
+  supportedColorsCharacteristic = [(CAFInteriorAmbientLights *)self supportedColorsCharacteristic];
+  v3 = supportedColorsCharacteristic != 0;
 
   return v3;
 }
@@ -198,13 +198,13 @@
 - (BOOL)registeredForPrimaryColor
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000052000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000001"];
 
   return v10;
 }
@@ -212,13 +212,13 @@
 - (BOOL)registeredForBrightness
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000052000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000002"];
 
   return v10;
 }
@@ -226,13 +226,13 @@
 - (BOOL)registeredForSupportedColors
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000052000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000052000003"];
 
   return v10;
 }

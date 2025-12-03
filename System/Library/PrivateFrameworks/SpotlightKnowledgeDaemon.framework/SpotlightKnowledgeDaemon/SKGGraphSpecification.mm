@@ -1,6 +1,6 @@
 @interface SKGGraphSpecification
-- (Class)edgeClassWithLabel:(id)a3 domain:(unsigned __int16)a4;
-- (Class)nodeClassWithLabel:(id)a3 domain:(unsigned __int16)a4;
+- (Class)edgeClassWithLabel:(id)label domain:(unsigned __int16)domain;
+- (Class)nodeClassWithLabel:(id)label domain:(unsigned __int16)domain;
 - (SKGGraphSpecification)init;
 @end
 
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (Class)nodeClassWithLabel:(id)a3 domain:(unsigned __int16)a4
+- (Class)nodeClassWithLabel:(id)label domain:(unsigned __int16)domain
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = +[SKGUserNode label];
-  v6 = [v4 isEqual:v5];
+  v6 = [labelCopy isEqual:v5];
 
   if (v6)
   {
@@ -34,7 +34,7 @@
   else
   {
     v8 = +[SKGPersonNode label];
-    v9 = [v4 isEqual:v8];
+    v9 = [labelCopy isEqual:v8];
 
     if (v9)
     {
@@ -44,7 +44,7 @@
     else
     {
       v10 = +[SKGContactNode label];
-      v11 = [v4 isEqual:v10];
+      v11 = [labelCopy isEqual:v10];
 
       if (v11)
       {
@@ -54,7 +54,7 @@
       else
       {
         v12 = +[SKGPhotoNode label];
-        v13 = [v4 isEqual:v12];
+        v13 = [labelCopy isEqual:v12];
 
         if (v13)
         {
@@ -64,7 +64,7 @@
         else
         {
           v14 = +[SKGEntityNode label];
-          v15 = [v4 isEqual:v14];
+          v15 = [labelCopy isEqual:v14];
 
           if (v15)
           {
@@ -74,7 +74,7 @@
           else
           {
             v16 = +[SKGDisplayNameNode label];
-            v17 = [v4 isEqual:v16];
+            v17 = [labelCopy isEqual:v16];
 
             if (v17)
             {
@@ -84,7 +84,7 @@
             else
             {
               v18 = +[SKGNameNode label];
-              v19 = [v4 isEqual:v18];
+              v19 = [labelCopy isEqual:v18];
 
               if (v19)
               {
@@ -94,7 +94,7 @@
               else
               {
                 v20 = +[SKGNameKeyNode label];
-                v21 = [v4 isEqual:v20];
+                v21 = [labelCopy isEqual:v20];
 
                 if (v21)
                 {
@@ -104,7 +104,7 @@
                 else
                 {
                   v22 = +[SKGEmailNode label];
-                  v23 = [v4 isEqual:v22];
+                  v23 = [labelCopy isEqual:v22];
 
                   if (v23)
                   {
@@ -114,7 +114,7 @@
                   else
                   {
                     v24 = +[SKGPhoneNode label];
-                    v25 = [v4 isEqual:v24];
+                    v25 = [labelCopy isEqual:v24];
 
                     if (v25)
                     {
@@ -124,7 +124,7 @@
                     else
                     {
                       v26 = +[SKGReferenceNode label];
-                      v27 = [v4 isEqual:v26];
+                      v27 = [labelCopy isEqual:v26];
 
                       if (v27)
                       {
@@ -134,7 +134,7 @@
                       else
                       {
                         v28 = +[SKGPersonaNode label];
-                        v29 = [v4 isEqual:v28];
+                        v29 = [labelCopy isEqual:v28];
 
                         if (v29)
                         {
@@ -144,7 +144,7 @@
                         else
                         {
                           v30 = +[SKGDomainNode label];
-                          v31 = [v4 isEqual:v30];
+                          v31 = [labelCopy isEqual:v30];
 
                           v7 = off_27893BCE8;
                           if (v31)
@@ -170,11 +170,11 @@
   return v33;
 }
 
-- (Class)edgeClassWithLabel:(id)a3 domain:(unsigned __int16)a4
+- (Class)edgeClassWithLabel:(id)label domain:(unsigned __int16)domain
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = +[SKGUserEdge name];
-  v6 = [v4 isEqual:v5];
+  v6 = [labelCopy isEqual:v5];
 
   if (v6)
   {
@@ -184,7 +184,7 @@
   else
   {
     v8 = +[SKGPersonEdge name];
-    v9 = [v4 isEqual:v8];
+    v9 = [labelCopy isEqual:v8];
 
     if (v9)
     {
@@ -194,7 +194,7 @@
     else
     {
       v10 = +[SKGContactEdge name];
-      v11 = [v4 isEqual:v10];
+      v11 = [labelCopy isEqual:v10];
 
       if (v11)
       {
@@ -204,7 +204,7 @@
       else
       {
         v12 = +[SKGPhotoEdge name];
-        v13 = [v4 isEqual:v12];
+        v13 = [labelCopy isEqual:v12];
 
         if (v13)
         {
@@ -214,7 +214,7 @@
         else
         {
           v14 = +[SKGEntityEdge name];
-          v15 = [v4 isEqual:v14];
+          v15 = [labelCopy isEqual:v14];
 
           if (v15)
           {
@@ -224,7 +224,7 @@
           else
           {
             v16 = +[SKGDisplayNameEdge name];
-            v17 = [v4 isEqual:v16];
+            v17 = [labelCopy isEqual:v16];
 
             if (v17)
             {
@@ -234,7 +234,7 @@
             else
             {
               v18 = +[SKGNameEdge name];
-              v19 = [v4 isEqual:v18];
+              v19 = [labelCopy isEqual:v18];
 
               if (v19)
               {
@@ -244,7 +244,7 @@
               else
               {
                 v20 = +[SKGNameKeyEdge name];
-                v21 = [v4 isEqual:v20];
+                v21 = [labelCopy isEqual:v20];
 
                 if (v21)
                 {
@@ -254,7 +254,7 @@
                 else
                 {
                   v22 = +[SKGEmailEdge name];
-                  v23 = [v4 isEqual:v22];
+                  v23 = [labelCopy isEqual:v22];
 
                   if (v23)
                   {
@@ -264,7 +264,7 @@
                   else
                   {
                     v24 = +[SKGPhoneEdge name];
-                    v25 = [v4 isEqual:v24];
+                    v25 = [labelCopy isEqual:v24];
 
                     if (v25)
                     {
@@ -274,7 +274,7 @@
                     else
                     {
                       v26 = +[SKGReferenceEdge name];
-                      v27 = [v4 isEqual:v26];
+                      v27 = [labelCopy isEqual:v26];
 
                       if (v27)
                       {
@@ -284,7 +284,7 @@
                       else
                       {
                         v28 = +[SKGPersonaEdge name];
-                        v29 = [v4 isEqual:v28];
+                        v29 = [labelCopy isEqual:v28];
 
                         if (v29)
                         {
@@ -294,7 +294,7 @@
                         else
                         {
                           v30 = +[SKGDomainEdge name];
-                          v31 = [v4 isEqual:v30];
+                          v31 = [labelCopy isEqual:v30];
 
                           v7 = off_27893BC50;
                           if (v31)

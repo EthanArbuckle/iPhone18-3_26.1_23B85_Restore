@@ -1,14 +1,14 @@
 @interface NWConnection
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)connectionWithConnectedSocket:(int)a3;
-+ (id)connectionWithEndpoint:(id)a3 parameters:(id)a4;
-+ (id)connectionWithInternalConnection:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)connectionWithConnectedSocket:(int)socket;
++ (id)connectionWithEndpoint:(id)endpoint parameters:(id)parameters;
++ (id)connectionWithInternalConnection:(id)connection;
 - (BOOL)hasBetterPath;
 - (BOOL)isViable;
 - (NSError)error;
-- (NWConnection)initWithConnectedSocket:(int)a3;
-- (NWConnection)initWithEndpoint:(id)a3 parameters:(id)a4;
-- (NWConnection)initWithInternalConnection:(id)a3;
+- (NWConnection)initWithConnectedSocket:(int)socket;
+- (NWConnection)initWithEndpoint:(id)endpoint parameters:(id)parameters;
+- (NWConnection)initWithInternalConnection:(id)connection;
 - (NWEndpoint)connectedLocalEndpoint;
 - (NWEndpoint)connectedRemoteEndpoint;
 - (NWEndpoint)endpoint;
@@ -28,11 +28,11 @@
 
 @implementation NWConnection
 
-+ (id)connectionWithInternalConnection:(id)a3
++ (id)connectionWithInternalConnection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = nw_connection_copy_parameters(v3);
+  connectionCopy = connection;
+  v4 = nw_connection_copy_parameters(connectionCopy);
   data_mode = nw_parameters_get_data_mode(v4);
   if (data_mode == 1)
   {
@@ -45,7 +45,7 @@
   {
     v7 = NWStreamConnection;
 LABEL_5:
-    v8 = [[v7 alloc] initWithInternalConnection:v3];
+    v8 = [[v7 alloc] initWithInternalConnection:connectionCopy];
     goto LABEL_23;
   }
 
@@ -155,7 +155,7 @@ LABEL_23:
   return v8;
 }
 
-+ (id)connectionWithConnectedSocket:(int)a3
++ (id)connectionWithConnectedSocket:(int)socket
 {
   v20 = *MEMORY[0x1E69E9840];
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -257,26 +257,26 @@ LABEL_11:
   return 0;
 }
 
-+ (id)connectionWithEndpoint:(id)a3 parameters:(id)a4
++ (id)connectionWithEndpoint:(id)endpoint parameters:(id)parameters
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 dataMode] == 2)
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  if ([parametersCopy dataMode] == 2)
   {
     v7 = NWStreamConnection;
 LABEL_7:
-    v8 = [[v7 alloc] initWithEndpoint:v5 parameters:v6];
+    v8 = [[v7 alloc] initWithEndpoint:endpointCopy parameters:parametersCopy];
     goto LABEL_8;
   }
 
-  if ([v6 dataMode] == 1)
+  if ([parametersCopy dataMode] == 1)
   {
     v7 = NWDatagramConnection;
     goto LABEL_7;
   }
 
-  if ([v6 dataMode] == 3)
+  if ([parametersCopy dataMode] == 3)
   {
     v7 = NWMessageConnection;
     goto LABEL_7;
@@ -288,7 +288,7 @@ LABEL_7:
   *buf = 136446466;
   v28 = "+[NWConnection connectionWithEndpoint:parameters:]";
   v29 = 1024;
-  v30 = [v6 dataMode];
+  dataMode = [parametersCopy dataMode];
   LODWORD(v24) = 18;
   v11 = _os_log_send_and_compose_impl();
 
@@ -304,11 +304,11 @@ LABEL_7:
       v13 = type;
       if (os_log_type_enabled(v12, type))
       {
-        v14 = [v6 dataMode];
+        dataMode2 = [parametersCopy dataMode];
         *buf = 136446466;
         v28 = "+[NWConnection connectionWithEndpoint:parameters:]";
         v29 = 1024;
-        v30 = v14;
+        dataMode = dataMode2;
         v15 = "%{public}s Parameters must specify a valid data mode for new connections (received %u)";
 LABEL_22:
         v21 = v12;
@@ -332,11 +332,11 @@ LABEL_23:
         {
           if (v18)
           {
-            v19 = [v6 dataMode];
+            dataMode3 = [parametersCopy dataMode];
             *buf = 136446722;
             v28 = "+[NWConnection connectionWithEndpoint:parameters:]";
             v29 = 1024;
-            v30 = v19;
+            dataMode = dataMode3;
             v31 = 2082;
             v32 = backtrace_string;
             _os_log_impl(&dword_181A37000, v12, v17, "%{public}s Parameters must specify a valid data mode for new connections (received %u), dumping backtrace:%{public}s", buf, 0x1Cu);
@@ -351,11 +351,11 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v23 = [v6 dataMode];
+        dataMode4 = [parametersCopy dataMode];
         *buf = 136446466;
         v28 = "+[NWConnection connectionWithEndpoint:parameters:]";
         v29 = 1024;
-        v30 = v23;
+        dataMode = dataMode4;
         v15 = "%{public}s Parameters must specify a valid data mode for new connections (received %u), no backtrace";
         v21 = v12;
         v22 = v17;
@@ -368,11 +368,11 @@ LABEL_23:
       v13 = type;
       if (os_log_type_enabled(v12, type))
       {
-        v20 = [v6 dataMode];
+        dataMode5 = [parametersCopy dataMode];
         *buf = 136446466;
         v28 = "+[NWConnection connectionWithEndpoint:parameters:]";
         v29 = 1024;
-        v30 = v20;
+        dataMode = dataMode5;
         v15 = "%{public}s Parameters must specify a valid data mode for new connections (received %u), backtrace limit exceeded";
         goto LABEL_22;
       }
@@ -393,19 +393,19 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"connectionState"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"viable") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"hasBetterPath") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"error") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"currentPath"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"connectionState"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"viable") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"hasBetterPath") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"error") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"currentPath"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NWConnection;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
@@ -414,8 +414,8 @@ LABEL_8:
 - (NWParameters)parameters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = nw_connection_copy_parameters(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = nw_connection_copy_parameters(internalConnection);
 
   if (v3)
   {
@@ -529,8 +529,8 @@ LABEL_15:
 - (NWEndpoint)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = nw_connection_copy_endpoint(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = nw_connection_copy_endpoint(internalConnection);
 
   if (v3)
   {
@@ -643,62 +643,62 @@ LABEL_15:
 
 - (NWPath)currentPath
 {
-  v2 = [(NWConnection *)self copyCurrentPath];
+  copyCurrentPath = [(NWConnection *)self copyCurrentPath];
 
-  return v2;
+  return copyCurrentPath;
 }
 
 - (id)copyCurrentPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWConnection *)v2 internalPath];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalPath = [(NWConnection *)selfCopy internalPath];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalPath;
 }
 
 - (NSError)error
 {
-  v2 = [(NWConnection *)self copyError];
+  copyError = [(NWConnection *)self copyError];
 
-  return v2;
+  return copyError;
 }
 
 - (id)copyError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWConnection *)v2 internalError];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalError = [(NWConnection *)selfCopy internalError];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalError;
 }
 
 - (BOOL)hasBetterPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWConnection *)v2 internalHasBetterPath];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalHasBetterPath = [(NWConnection *)selfCopy internalHasBetterPath];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalHasBetterPath;
 }
 
 - (BOOL)isViable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWConnection *)v2 internalIsViable];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalIsViable = [(NWConnection *)selfCopy internalIsViable];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalIsViable;
 }
 
 - (NWEndpoint)connectedRemoteEndpoint
 {
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = nw_connection_copy_connected_remote_endpoint(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = nw_connection_copy_connected_remote_endpoint(internalConnection);
 
   if (v3)
   {
@@ -715,8 +715,8 @@ LABEL_15:
 
 - (NWEndpoint)connectedLocalEndpoint
 {
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = nw_connection_copy_connected_local_endpoint(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = nw_connection_copy_connected_local_endpoint(internalConnection);
 
   if (v3)
   {
@@ -733,12 +733,12 @@ LABEL_15:
 
 - (int64_t)connectionState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWConnection *)v2 internalConnectionState];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalConnectionState = [(NWConnection *)selfCopy internalConnectionState];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return internalConnectionState;
 }
 
 - (unsigned)tlsConnectionTime
@@ -746,8 +746,8 @@ LABEL_15:
   v5[0] = 0;
   v5[1] = 0;
   v6 = 0;
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = nw_connection_fillout_tcp_statistics(v2, v5);
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = nw_connection_fillout_tcp_statistics(internalConnection, v5);
 
   if (v3)
   {
@@ -762,49 +762,49 @@ LABEL_15:
 
 - (void)cancelCurrentEndpoint
 {
-  v2 = [(NWConnection *)self internalConnection];
-  nw_connection_cancel_current_endpoint(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  nw_connection_cancel_current_endpoint(internalConnection);
 }
 
 - (void)forceCancel
 {
-  v2 = [(NWConnection *)self internalConnection];
-  nw_connection_force_cancel(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  nw_connection_force_cancel(internalConnection);
 }
 
 - (void)cancel
 {
-  v2 = [(NWConnection *)self internalConnection];
-  nw_connection_cancel(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  nw_connection_cancel(internalConnection);
 }
 
 - (int)getConnectedSocket
 {
-  v2 = [(NWConnection *)self internalConnection];
-  connected_socket = nw_connection_get_connected_socket(v2);
+  internalConnection = [(NWConnection *)self internalConnection];
+  connected_socket = nw_connection_get_connected_socket(internalConnection);
 
   return connected_socket;
 }
 
 - (id)description
 {
-  v2 = [(NWConnection *)self internalConnection];
-  v3 = [v2 description];
+  internalConnection = [(NWConnection *)self internalConnection];
+  v3 = [internalConnection description];
 
   return v3;
 }
 
-- (NWConnection)initWithInternalConnection:(id)a3
+- (NWConnection)initWithInternalConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = NWConnection;
   v5 = [(NWConnection *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    [(NWConnection *)v5 setInternalConnection:v4];
+    [(NWConnection *)v5 setInternalConnection:connectionCopy];
     [(NWConnection *)v6 setInternalConnectionState:2];
     [(NWConnection *)v6 start];
     v7 = v6;
@@ -893,7 +893,7 @@ LABEL_3:
   return v6;
 }
 
-- (NWConnection)initWithConnectedSocket:(int)a3
+- (NWConnection)initWithConnectedSocket:(int)socket
 {
   v34 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
@@ -1009,12 +1009,12 @@ LABEL_20:
     }
   }
 
-  v6 = nw_connection_create_with_connected_socket(a3, v5);
+  v6 = nw_connection_create_with_connected_socket(socket, v5);
   [(NWConnection *)v4 setInternalConnection:v6];
 
-  v7 = [(NWConnection *)v4 internalConnection];
+  internalConnection = [(NWConnection *)v4 internalConnection];
 
-  if (!v7)
+  if (!internalConnection)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1118,36 +1118,36 @@ LABEL_22:
   return v8;
 }
 
-- (NWConnection)initWithEndpoint:(id)a3 parameters:(id)a4
+- (NWConnection)initWithEndpoint:(id)endpoint parameters:(id)parameters
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   v25.receiver = self;
   v25.super_class = NWConnection;
   v8 = [(NWConnection *)&v25 init];
   if (v8)
   {
-    v9 = [v7 internalParameters];
-    indefinite_set = nw_parameters_get_indefinite_set(v9);
+    internalParameters = [parametersCopy internalParameters];
+    indefinite_set = nw_parameters_get_indefinite_set(internalParameters);
 
     if ((indefinite_set & 1) == 0)
     {
-      [v7 setIndefinite:0];
+      [parametersCopy setIndefinite:0];
     }
 
-    v11 = [v6 internalEndpoint];
-    v12 = [v7 internalParameters];
-    v13 = nw_connection_create(v11, v12);
+    internalEndpoint = [endpointCopy internalEndpoint];
+    internalParameters2 = [parametersCopy internalParameters];
+    v13 = nw_connection_create(internalEndpoint, internalParameters2);
     [(NWConnection *)v8 setInternalConnection:v13];
 
-    v14 = [(NWConnection *)v8 internalConnection];
+    internalConnection = [(NWConnection *)v8 internalConnection];
 
-    if (v14)
+    if (internalConnection)
     {
       [(NWConnection *)v8 setInternalConnectionState:2];
       [(NWConnection *)v8 start];
-      v14 = v8;
+      internalConnection = v8;
     }
 
     goto LABEL_6;
@@ -1230,58 +1230,58 @@ LABEL_22:
     free(v17);
   }
 
-  v14 = 0;
+  internalConnection = 0;
 LABEL_6:
 
-  return v14;
+  return internalConnection;
 }
 
 - (void)start
 {
   objc_initWeak(&location, self);
-  v3 = [(NWConnection *)self internalConnection];
+  internalConnection = [(NWConnection *)self internalConnection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __21__NWConnection_start__block_invoke;
   handler[3] = &unk_1E6A3D280;
   objc_copyWeak(&v17, &location);
-  nw_connection_set_state_changed_handler(v3, handler);
+  nw_connection_set_state_changed_handler(internalConnection, handler);
 
-  v4 = [(NWConnection *)self internalConnection];
+  internalConnection2 = [(NWConnection *)self internalConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __21__NWConnection_start__block_invoke_15;
   v14[3] = &unk_1E6A2D770;
   objc_copyWeak(&v15, &location);
-  nw_connection_set_viability_changed_handler(v4, v14);
+  nw_connection_set_viability_changed_handler(internalConnection2, v14);
 
-  v5 = [(NWConnection *)self internalConnection];
+  internalConnection3 = [(NWConnection *)self internalConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __21__NWConnection_start__block_invoke_19;
   v12[3] = &unk_1E6A2D770;
   objc_copyWeak(&v13, &location);
-  nw_connection_set_better_path_available_handler(v5, v12);
+  nw_connection_set_better_path_available_handler(internalConnection3, v12);
 
-  v6 = [(NWConnection *)self internalConnection];
+  internalConnection4 = [(NWConnection *)self internalConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __21__NWConnection_start__block_invoke_20;
   v10[3] = &unk_1E6A3D2D8;
   objc_copyWeak(&v11, &location);
-  nw_connection_set_path_changed_handler(v6, v10);
+  nw_connection_set_path_changed_handler(internalConnection4, v10);
 
-  v7 = [(NWConnection *)self internalConnection];
+  internalConnection5 = [(NWConnection *)self internalConnection];
   if (NWCopyInternalQueue_init_once != -1)
   {
     dispatch_once(&NWCopyInternalQueue_init_once, &__block_literal_global_66536);
   }
 
   v8 = NWCopyInternalQueue_nwQueue;
-  nw_connection_set_queue(v7, v8);
+  nw_connection_set_queue(internalConnection5, v8);
 
-  v9 = [(NWConnection *)self internalConnection];
-  nw_connection_start(v9);
+  internalConnection6 = [(NWConnection *)self internalConnection];
+  nw_connection_start(internalConnection6);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);

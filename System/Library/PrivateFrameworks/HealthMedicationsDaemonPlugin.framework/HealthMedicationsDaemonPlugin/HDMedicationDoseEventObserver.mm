@@ -1,56 +1,56 @@
 @interface HDMedicationDoseEventObserver
-- (BOOL)_rescheduleIfNecessaryWithDoseEvents:(id)a3;
-- (HDMedicationDoseEventObserver)initWithProfile:(id)a3;
-- (HDMedicationDoseEventObserver)initWithProfile:(id)a3 notificationSyncManager:(id)a4;
-- (void)_logDoseEventSamplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (BOOL)_rescheduleIfNecessaryWithDoseEvents:(id)events;
+- (HDMedicationDoseEventObserver)initWithProfile:(id)profile;
+- (HDMedicationDoseEventObserver)initWithProfile:(id)profile notificationSyncManager:(id)manager;
+- (void)_logDoseEventSamplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDMedicationDoseEventObserver
 
-- (HDMedicationDoseEventObserver)initWithProfile:(id)a3
+- (HDMedicationDoseEventObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 healthMedicationsProfileExtension];
-  v6 = [v5 medicationNotificationSyncManager];
-  v7 = [(HDMedicationDoseEventObserver *)self initWithProfile:v4 notificationSyncManager:v6];
+  profileCopy = profile;
+  healthMedicationsProfileExtension = [profileCopy healthMedicationsProfileExtension];
+  medicationNotificationSyncManager = [healthMedicationsProfileExtension medicationNotificationSyncManager];
+  v7 = [(HDMedicationDoseEventObserver *)self initWithProfile:profileCopy notificationSyncManager:medicationNotificationSyncManager];
 
   return v7;
 }
 
-- (HDMedicationDoseEventObserver)initWithProfile:(id)a3 notificationSyncManager:(id)a4
+- (HDMedicationDoseEventObserver)initWithProfile:(id)profile notificationSyncManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = HDMedicationDoseEventObserver;
   v8 = [(HDMedicationDoseEventObserver *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_notificationSyncManager, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_notificationSyncManager, manager);
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
-    v11 = [WeakRetained dataManager];
-    v12 = [MEMORY[0x277CCD658] medicationDoseEventType];
-    [v11 addObserver:v9 forDataType:v12];
+    dataManager = [WeakRetained dataManager];
+    medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+    [dataManager addObserver:v9 forDataType:medicationDoseEventType];
   }
 
   return v9;
 }
 
-- (BOOL)_rescheduleIfNecessaryWithDoseEvents:(id)a3
+- (BOOL)_rescheduleIfNecessaryWithDoseEvents:(id)events
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 hk_containsObjectPassingTest:&__block_literal_global_16];
+  v4 = [events hk_containsObjectPassingTest:&__block_literal_global_16];
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained healthMedicationsProfileExtension];
-    v7 = [v6 medicationScheduleManager];
+    healthMedicationsProfileExtension = [WeakRetained healthMedicationsProfileExtension];
+    medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
-    [v7 rescheduleMedicationsSynchronously:0];
+    [medicationScheduleManager rescheduleMedicationsSynchronously:0];
   }
 
   else
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25181C000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Samples added are of not schduled doses. Skipping reschedule.", &v11, 0xCu);
     }
   }
@@ -77,11 +77,11 @@ BOOL __70__HDMedicationDoseEventObserver__rescheduleIfNecessaryWithDoseEvents___
   return v3;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  anchorCopy = anchor;
   _HKInitializeLogging();
   v8 = HKLogMedication();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -91,19 +91,19 @@ BOOL __70__HDMedicationDoseEventObserver__rescheduleIfNecessaryWithDoseEvents___
     v10 = HKLogMedication();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(addedCopy, "count")}];
       *buf = 138543874;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v23;
       v29 = 2114;
-      v30 = v7;
+      v30 = anchorCopy;
       _os_log_debug_impl(&dword_25181C000, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] %{public}@ new samples added. anchor: %{public}@", buf, 0x20u);
     }
   }
 
-  [(HDMedicationDoseEventObserver *)self _logDoseEventSamplesAdded:v6 anchor:v7];
-  v11 = [(HDMedicationDoseEventObserver *)self _rescheduleIfNecessaryWithDoseEvents:v6];
+  [(HDMedicationDoseEventObserver *)self _logDoseEventSamplesAdded:addedCopy anchor:anchorCopy];
+  v11 = [(HDMedicationDoseEventObserver *)self _rescheduleIfNecessaryWithDoseEvents:addedCopy];
   samplesAddedDidRecheduleHandler = self->_samplesAddedDidRecheduleHandler;
   if (samplesAddedDidRecheduleHandler)
   {
@@ -111,24 +111,24 @@ BOOL __70__HDMedicationDoseEventObserver__rescheduleIfNecessaryWithDoseEvents___
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained syncIdentityManager];
-  v15 = [v14 currentSyncIdentity];
-  v16 = [v15 entity];
-  v17 = [v16 persistentID];
+  syncIdentityManager = [WeakRetained syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  entity = [currentSyncIdentity entity];
+  persistentID = [entity persistentID];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __53__HDMedicationDoseEventObserver_samplesAdded_anchor___block_invoke;
   v24[3] = &__block_descriptor_40_e31_B16__0__HKMedicationDoseEvent_8l;
-  v24[4] = v17;
-  if ([v6 hk_containsObjectPassingTest:v24])
+  v24[4] = persistentID;
+  if ([addedCopy hk_containsObjectPassingTest:v24])
   {
-    [(HDMedicationNotificationSyncManager *)self->_notificationSyncManager doseEventsAdded:v6];
+    [(HDMedicationNotificationSyncManager *)self->_notificationSyncManager doseEventsAdded:addedCopy];
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ observed medication samples added", objc_opt_class()];
     v19 = objc_loadWeakRetained(&self->_profile);
-    v20 = [v19 healthMedicationsProfileExtension];
-    v21 = [v20 medicationSyncRequester];
-    [v21 requestSyncsWithReason:v18];
+    healthMedicationsProfileExtension = [v19 healthMedicationsProfileExtension];
+    medicationSyncRequester = [healthMedicationsProfileExtension medicationSyncRequester];
+    [medicationSyncRequester requestSyncsWithReason:v18];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -143,11 +143,11 @@ BOOL __53__HDMedicationDoseEventObserver_samplesAdded_anchor___block_invoke(uint
   return v5;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  anchorCopy = anchor;
   _HKInitializeLogging();
   v8 = HKLogMedication();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -157,21 +157,21 @@ BOOL __53__HDMedicationDoseEventObserver_samplesAdded_anchor___block_invoke(uint
     v10 = HKLogMedication();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(removedCopy, "count")}];
       *buf = 138544130;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v21;
       v26 = 2114;
-      v27 = v6;
+      v27 = removedCopy;
       v28 = 2114;
-      v29 = v7;
+      v29 = anchorCopy;
       _os_log_debug_impl(&dword_25181C000, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] %{public}@ samples of types removed: %{public}@. anchor: %{public}@", buf, 0x2Au);
     }
   }
 
-  v11 = [MEMORY[0x277CCD658] medicationDoseEventType];
-  v12 = [v6 containsObject:v11];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+  v12 = [removedCopy containsObject:medicationDoseEventType];
 
   if (v12)
   {
@@ -185,31 +185,31 @@ BOOL __53__HDMedicationDoseEventObserver_samplesAdded_anchor___block_invoke(uint
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v23 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_25181C000, v15, OS_LOG_TYPE_INFO, "[%{public}@] dose event samples removed, requesting sync", buf, 0xCu);
       }
     }
 
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ observed medication samples removed", objc_opt_class()];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v18 = [WeakRetained healthMedicationsProfileExtension];
-    v19 = [v18 medicationSyncRequester];
-    [v19 requestSyncsWithReason:v16];
+    healthMedicationsProfileExtension = [WeakRetained healthMedicationsProfileExtension];
+    medicationSyncRequester = [healthMedicationsProfileExtension medicationSyncRequester];
+    [medicationSyncRequester requestSyncsWithReason:v16];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logDoseEventSamplesAdded:(id)a3 anchor:(id)a4
+- (void)_logDoseEventSamplesAdded:(id)added anchor:(id)anchor
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  anchorCopy = anchor;
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([v6 count] <= 9)
+  if ([addedCopy count] <= 9)
   {
     [v8 appendFormat:@"["];
-    [v8 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v6, &__block_literal_global_343_0}];
+    [v8 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{addedCopy, &__block_literal_global_343_0}];
     [v8 appendFormat:@"]"];
   }
 
@@ -218,11 +218,11 @@ BOOL __53__HDMedicationDoseEventObserver_samplesAdded_anchor___block_invoke(uint
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138544130;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = [v6 count];
+    v14 = [addedCopy count];
     v15 = 2114;
-    v16 = v7;
+    v16 = anchorCopy;
     v17 = 2114;
     v18 = v8;
     _os_log_impl(&dword_25181C000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] %ld dose event samples added. anchor: %{public}@ %{public}@", &v11, 0x2Au);

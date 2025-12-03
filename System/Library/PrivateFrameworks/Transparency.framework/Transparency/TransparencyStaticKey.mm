@@ -1,32 +1,32 @@
 @interface TransparencyStaticKey
-+ (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5 complete:(id)a6;
-- (void)deleteKTSession:(id)a3 complete:(id)a4;
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4;
-- (void)getKTSessionByID:(id)a3 complete:(id)a4;
-- (void)listKTSessions:(id)a3;
-- (void)setupKTSession:(id)a3 complete:(id)a4;
-- (void)transparencyHaveContact:(id)a3 complete:(id)a4;
++ (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token complete:(id)complete;
+- (void)deleteKTSession:(id)session complete:(id)complete;
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete;
+- (void)getKTSessionByID:(id)d complete:(id)complete;
+- (void)listKTSessions:(id)sessions;
+- (void)setupKTSession:(id)session complete:(id)complete;
+- (void)transparencyHaveContact:(id)contact complete:(id)complete;
 @end
 
 @implementation TransparencyStaticKey
 
-- (void)setupKTSession:(id)a3 complete:(id)a4
+- (void)setupKTSession:(id)session complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__TransparencyStaticKey_setupKTSession_complete___block_invoke;
   v11[3] = &unk_1E8702370;
-  v12 = v5;
-  v13 = v6;
+  v12 = sessionCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__TransparencyStaticKey_setupKTSession_complete___block_invoke_2_306;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = sessionCopy;
   [TransparencyXPCConnection invokeIDSXPCWithBlock:v11 errorHandler:v9];
 }
 
@@ -104,23 +104,23 @@ uint64_t __49__TransparencyStaticKey_setupKTSession_complete___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deleteKTSession:(id)a3 complete:(id)a4
+- (void)deleteKTSession:(id)session complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__TransparencyStaticKey_deleteKTSession_complete___block_invoke;
   v11[3] = &unk_1E8702370;
-  v12 = v5;
-  v13 = v6;
+  v12 = sessionCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__TransparencyStaticKey_deleteKTSession_complete___block_invoke_2_314;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = sessionCopy;
   [TransparencyXPCConnection invokeIDSXPCWithBlock:v11 errorHandler:v9];
 }
 
@@ -198,14 +198,14 @@ uint64_t __50__TransparencyStaticKey_deleteKTSession_complete___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)listKTSessions:(id)a3
+- (void)listKTSessions:(id)sessions
 {
-  v3 = a3;
+  sessionsCopy = sessions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__TransparencyStaticKey_listKTSessions___block_invoke;
   v7[3] = &unk_1E87023E8;
-  v8 = v3;
+  v8 = sessionsCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__TransparencyStaticKey_listKTSessions___block_invoke_2_321;
@@ -288,23 +288,23 @@ uint64_t __40__TransparencyStaticKey_listKTSessions___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__TransparencyStaticKey_getKTSessionByHandle_complete___block_invoke;
   v11[3] = &unk_1E8702370;
-  v12 = v5;
-  v13 = v6;
+  v12 = handleCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__TransparencyStaticKey_getKTSessionByHandle_complete___block_invoke_2_327;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = handleCopy;
   [TransparencyXPCConnection invokeIDSXPCWithBlock:v11 errorHandler:v9];
 }
 
@@ -382,23 +382,23 @@ uint64_t __55__TransparencyStaticKey_getKTSessionByHandle_complete___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getKTSessionByID:(id)a3 complete:(id)a4
+- (void)getKTSessionByID:(id)d complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__TransparencyStaticKey_getKTSessionByID_complete___block_invoke;
   v11[3] = &unk_1E8702370;
-  v12 = v5;
-  v13 = v6;
+  v12 = dCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__TransparencyStaticKey_getKTSessionByID_complete___block_invoke_2_334;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = dCopy;
   [TransparencyXPCConnection invokeIDSXPCWithBlock:v11 errorHandler:v9];
 }
 
@@ -476,29 +476,29 @@ uint64_t __51__TransparencyStaticKey_getKTSessionByID_complete___block_invoke_3(
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5 complete:(id)a6
++ (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token complete:(id)complete
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  rCopy = r;
+  handleCopy = handle;
+  tokenCopy = token;
+  completeCopy = complete;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __60__TransparencyStaticKey_sasTTR_toHandle_pushToken_complete___block_invoke;
   v19[3] = &unk_1E8702438;
-  v20 = v9;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
+  v20 = rCopy;
+  v21 = handleCopy;
+  v22 = tokenCopy;
+  v23 = completeCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__TransparencyStaticKey_sasTTR_toHandle_pushToken_complete___block_invoke_2_340;
   v17[3] = &unk_1E87013C8;
   v18 = v23;
   v13 = v23;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v14 = tokenCopy;
+  v15 = handleCopy;
+  v16 = rCopy;
   [TransparencyXPCConnection invokeIDSXPCWithBlock:v19 errorHandler:v17];
 }
 
@@ -578,23 +578,23 @@ uint64_t __60__TransparencyStaticKey_sasTTR_toHandle_pushToken_complete___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyHaveContact:(id)a3 complete:(id)a4
+- (void)transparencyHaveContact:(id)contact complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__TransparencyStaticKey_transparencyHaveContact_complete___block_invoke;
   v11[3] = &unk_1E8702488;
-  v12 = v5;
-  v13 = v6;
+  v12 = contactCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__TransparencyStaticKey_transparencyHaveContact_complete___block_invoke_3;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = contactCopy;
   [TransparencyXPCConnection invokeIDSSupportWithBlock:v11 errorHandler:v9];
 }
 

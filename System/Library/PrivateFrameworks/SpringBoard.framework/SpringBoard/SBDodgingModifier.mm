@@ -1,55 +1,55 @@
 @interface SBDodgingModifier
-- (id)_handleEvent:(id)a3;
+- (id)_handleEvent:(id)event;
 @end
 
 @implementation SBDodgingModifier
 
-- (id)_handleEvent:(id)a3
+- (id)_handleEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBDodgingModifier;
-  v6 = [(SBChainableModifier *)&v10 _handleEvent:v5];
-  v7 = [v5 type];
-  if (v7 > 2)
+  v6 = [(SBChainableModifier *)&v10 _handleEvent:eventCopy];
+  type = [eventCopy type];
+  if (type > 2)
   {
-    switch(v7)
+    switch(type)
     {
       case 3:
-        v8 = [(SBDodgingModifier *)self handleAnimationCompletionEvent:v5];
+        v8 = [(SBDodgingModifier *)self handleAnimationCompletionEvent:eventCopy];
         break;
       case 4:
-        v8 = [(SBDodgingModifier *)self handleRotationEvent:v5];
+        v8 = [(SBDodgingModifier *)self handleRotationEvent:eventCopy];
         break;
       case 5:
-        v8 = [(SBDodgingModifier *)self handlePreferenceChangeEvent:v5];
+        v8 = [(SBDodgingModifier *)self handlePreferenceChangeEvent:eventCopy];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (v7)
+  else if (type)
   {
-    if (v7 == 1)
+    if (type == 1)
     {
-      v8 = [(SBDodgingModifier *)self handleRemovalEvent:v5];
+      v8 = [(SBDodgingModifier *)self handleRemovalEvent:eventCopy];
     }
 
     else
     {
-      if (v7 != 2)
+      if (type != 2)
       {
         goto LABEL_15;
       }
 
-      v8 = [(SBDodgingModifier *)self handleCustomEvent:v5];
+      v8 = [(SBDodgingModifier *)self handleCustomEvent:eventCopy];
     }
   }
 
   else
   {
-    v8 = [(SBDodgingModifier *)self handleInsertionEvent:v5];
+    v8 = [(SBDodgingModifier *)self handleInsertionEvent:eventCopy];
   }
 
   v3 = v8;

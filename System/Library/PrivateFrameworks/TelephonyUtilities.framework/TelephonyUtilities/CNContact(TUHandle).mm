@@ -8,21 +8,21 @@
 {
   v3 = a3;
   v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
-  v5 = [v3 value];
-  if ([v5 length])
+  value = [v3 value];
+  if ([value length])
   {
-    [v4 addObject:v5];
+    [v4 addObject:value];
   }
 
-  v6 = [v3 normalizedValue];
-  if ([v6 length])
+  normalizedValue = [v3 normalizedValue];
+  if ([normalizedValue length])
   {
-    [v4 addObject:v6];
+    [v4 addObject:normalizedValue];
   }
 
-  v7 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 @end

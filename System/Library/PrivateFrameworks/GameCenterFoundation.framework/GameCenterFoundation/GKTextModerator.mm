@@ -1,9 +1,9 @@
 @interface GKTextModerator
-+ (BOOL)isAvailableForLocale:(id)a3;
++ (BOOL)isAvailableForLocale:(id)locale;
 + (GKTextModerator)defaultTextModerator;
 + (GKTextModerator)localeAgnosticTextModerator;
-+ (id)forLocale:(id)a3;
-- (BOOL)shouldFilter:(id)a3;
++ (id)forLocale:(id)locale;
+- (BOOL)shouldFilter:(id)filter;
 - (NSLocale)locale;
 @end
 
@@ -15,7 +15,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   GKTextModerator.locale.getter();
 
   v8 = sub_227A71D0C();
@@ -29,11 +29,11 @@
   return v9;
 }
 
-- (BOOL)shouldFilter:(id)a3
+- (BOOL)shouldFilter:(id)filter
 {
   v4 = sub_227A724EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = GKTextModerator.shouldFilter(_:)(v8);
@@ -55,7 +55,7 @@
   return v2;
 }
 
-+ (BOOL)isAvailableForLocale:(id)a3
++ (BOOL)isAvailableForLocale:(id)locale
 {
   v3 = sub_227A71D0C();
   v4 = *(v3 - 8);
@@ -68,7 +68,7 @@
   return v8;
 }
 
-+ (id)forLocale:(id)a3
++ (id)forLocale:(id)locale
 {
   v3 = sub_227A71D0C();
   v4 = *(v3 - 8);

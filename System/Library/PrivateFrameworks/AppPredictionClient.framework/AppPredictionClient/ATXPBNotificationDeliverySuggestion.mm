@@ -1,108 +1,108 @@
 @interface ATXPBNotificationDeliverySuggestion
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)oneofNotificationDeliverySuggestionAsString:(int)a3;
-- (int)StringAsOneofNotificationDeliverySuggestion:(id)a3;
+- (id)oneofNotificationDeliverySuggestionAsString:(int)string;
+- (int)StringAsOneofNotificationDeliverySuggestion:(id)suggestion;
 - (int)oneofNotificationDeliverySuggestion;
 - (unint64_t)hash;
 - (void)clearOneofValuesForOneofNotificationDeliverySuggestion;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOneofNotificationDeliverySuggestion:(BOOL)a3;
-- (void)setHasScope:(BOOL)a3;
-- (void)setInterruptionManagerTuning:(id)a3;
-- (void)setPromoting:(id)a3;
-- (void)setQuieting:(id)a3;
-- (void)setSendMessagesToDigest:(id)a3;
-- (void)setSendToDigest:(id)a3;
-- (void)setSmartPause:(id)a3;
-- (void)setTurnOffNotificationsForApp:(id)a3;
-- (void)setUrgencyTuning:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOneofNotificationDeliverySuggestion:(BOOL)suggestion;
+- (void)setHasScope:(BOOL)scope;
+- (void)setInterruptionManagerTuning:(id)tuning;
+- (void)setPromoting:(id)promoting;
+- (void)setQuieting:(id)quieting;
+- (void)setSendMessagesToDigest:(id)digest;
+- (void)setSendToDigest:(id)digest;
+- (void)setSmartPause:(id)pause;
+- (void)setTurnOffNotificationsForApp:(id)app;
+- (void)setUrgencyTuning:(id)tuning;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBNotificationDeliverySuggestion
 
-- (void)setSmartPause:(id)a3
+- (void)setSmartPause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 1;
   smartPause = self->_smartPause;
-  self->_smartPause = v4;
+  self->_smartPause = pauseCopy;
 }
 
-- (void)setQuieting:(id)a3
+- (void)setQuieting:(id)quieting
 {
-  v4 = a3;
+  quietingCopy = quieting;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 2;
   quieting = self->_quieting;
-  self->_quieting = v4;
+  self->_quieting = quietingCopy;
 }
 
-- (void)setPromoting:(id)a3
+- (void)setPromoting:(id)promoting
 {
-  v4 = a3;
+  promotingCopy = promoting;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 3;
   promoting = self->_promoting;
-  self->_promoting = v4;
+  self->_promoting = promotingCopy;
 }
 
-- (void)setInterruptionManagerTuning:(id)a3
+- (void)setInterruptionManagerTuning:(id)tuning
 {
-  v4 = a3;
+  tuningCopy = tuning;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 4;
   interruptionManagerTuning = self->_interruptionManagerTuning;
-  self->_interruptionManagerTuning = v4;
+  self->_interruptionManagerTuning = tuningCopy;
 }
 
-- (void)setSendToDigest:(id)a3
+- (void)setSendToDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 5;
   sendToDigest = self->_sendToDigest;
-  self->_sendToDigest = v4;
+  self->_sendToDigest = digestCopy;
 }
 
-- (void)setUrgencyTuning:(id)a3
+- (void)setUrgencyTuning:(id)tuning
 {
-  v4 = a3;
+  tuningCopy = tuning;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 6;
   urgencyTuning = self->_urgencyTuning;
-  self->_urgencyTuning = v4;
+  self->_urgencyTuning = tuningCopy;
 }
 
-- (void)setSendMessagesToDigest:(id)a3
+- (void)setSendMessagesToDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 7;
   sendMessagesToDigest = self->_sendMessagesToDigest;
-  self->_sendMessagesToDigest = v4;
+  self->_sendMessagesToDigest = digestCopy;
 }
 
-- (void)setTurnOffNotificationsForApp:(id)a3
+- (void)setTurnOffNotificationsForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   [(ATXPBNotificationDeliverySuggestion *)self clearOneofValuesForOneofNotificationDeliverySuggestion];
   *&self->_has |= 2u;
   self->_oneofNotificationDeliverySuggestion = 8;
   turnOffNotificationsForApp = self->_turnOffNotificationsForApp;
-  self->_turnOffNotificationsForApp = v4;
+  self->_turnOffNotificationsForApp = appCopy;
 }
 
 - (int)oneofNotificationDeliverySuggestion
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)setHasOneofNotificationDeliverySuggestion:(BOOL)a3
+- (void)setHasOneofNotificationDeliverySuggestion:(BOOL)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
     v3 = 2;
   }
@@ -133,65 +133,65 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)oneofNotificationDeliverySuggestionAsString:(int)a3
+- (id)oneofNotificationDeliverySuggestionAsString:(int)string
 {
-  if (a3 >= 9)
+  if (string >= 9)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C6970[a3];
+    v4 = off_1E80C6970[string];
   }
 
   return v4;
 }
 
-- (int)StringAsOneofNotificationDeliverySuggestion:(id)a3
+- (int)StringAsOneofNotificationDeliverySuggestion:(id)suggestion
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  suggestionCopy = suggestion;
+  if ([suggestionCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"smartPause"])
+  else if ([suggestionCopy isEqualToString:@"smartPause"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"quieting"])
+  else if ([suggestionCopy isEqualToString:@"quieting"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"promoting"])
+  else if ([suggestionCopy isEqualToString:@"promoting"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"interruptionManagerTuning"])
+  else if ([suggestionCopy isEqualToString:@"interruptionManagerTuning"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"sendToDigest"])
+  else if ([suggestionCopy isEqualToString:@"sendToDigest"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"urgencyTuning"])
+  else if ([suggestionCopy isEqualToString:@"urgencyTuning"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"sendMessagesToDigest"])
+  else if ([suggestionCopy isEqualToString:@"sendMessagesToDigest"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"turnOffNotificationsForApp"])
+  else if ([suggestionCopy isEqualToString:@"turnOffNotificationsForApp"])
   {
     v4 = 8;
   }
@@ -233,9 +233,9 @@
   self->_turnOffNotificationsForApp = 0;
 }
 
-- (void)setHasScope:(BOOL)a3
+- (void)setHasScope:(BOOL)scope
 {
-  if (a3)
+  if (scope)
   {
     v3 = 4;
   }
@@ -254,69 +254,69 @@
   v8.receiver = self;
   v8.super_class = ATXPBNotificationDeliverySuggestion;
   v4 = [(ATXPBNotificationDeliverySuggestion *)&v8 description];
-  v5 = [(ATXPBNotificationDeliverySuggestion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBNotificationDeliverySuggestion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   smartPause = self->_smartPause;
   if (smartPause)
   {
-    v5 = [(ATXPBNotificationSmartPauseSuggestion *)smartPause dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"smartPause"];
+    dictionaryRepresentation = [(ATXPBNotificationSmartPauseSuggestion *)smartPause dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"smartPause"];
   }
 
   quieting = self->_quieting;
   if (quieting)
   {
-    v7 = [(ATXPBNotificationQuietingSuggestion *)quieting dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"quieting"];
+    dictionaryRepresentation2 = [(ATXPBNotificationQuietingSuggestion *)quieting dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"quieting"];
   }
 
   promoting = self->_promoting;
   if (promoting)
   {
-    v9 = [(ATXPBNotificationPromotingSuggestion *)promoting dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"promoting"];
+    dictionaryRepresentation3 = [(ATXPBNotificationPromotingSuggestion *)promoting dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"promoting"];
   }
 
   interruptionManagerTuning = self->_interruptionManagerTuning;
   if (interruptionManagerTuning)
   {
-    v11 = [(ATXPBInterruptionManagerTuningSuggestion *)interruptionManagerTuning dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"interruptionManagerTuning"];
+    dictionaryRepresentation4 = [(ATXPBInterruptionManagerTuningSuggestion *)interruptionManagerTuning dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"interruptionManagerTuning"];
   }
 
   sendToDigest = self->_sendToDigest;
   if (sendToDigest)
   {
-    v13 = [(ATXPBSendToDigestSuggestion *)sendToDigest dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"sendToDigest"];
+    dictionaryRepresentation5 = [(ATXPBSendToDigestSuggestion *)sendToDigest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"sendToDigest"];
   }
 
   urgencyTuning = self->_urgencyTuning;
   if (urgencyTuning)
   {
-    v15 = [(ATXPBUrgencyTuningSuggestion *)urgencyTuning dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"urgencyTuning"];
+    dictionaryRepresentation6 = [(ATXPBUrgencyTuningSuggestion *)urgencyTuning dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"urgencyTuning"];
   }
 
   sendMessagesToDigest = self->_sendMessagesToDigest;
   if (sendMessagesToDigest)
   {
-    v17 = [(ATXPBSendMessagesToDigestSuggestion *)sendMessagesToDigest dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"sendMessagesToDigest"];
+    dictionaryRepresentation7 = [(ATXPBSendMessagesToDigestSuggestion *)sendMessagesToDigest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"sendMessagesToDigest"];
   }
 
   turnOffNotificationsForApp = self->_turnOffNotificationsForApp;
   if (turnOffNotificationsForApp)
   {
-    v19 = [(ATXPBTurnOffNotificationsForAppSuggestion *)turnOffNotificationsForApp dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"turnOffNotificationsForApp"];
+    dictionaryRepresentation8 = [(ATXPBTurnOffNotificationsForAppSuggestion *)turnOffNotificationsForApp dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"turnOffNotificationsForApp"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -332,20 +332,20 @@
       v21 = off_1E80C6970[oneofNotificationDeliverySuggestion];
     }
 
-    [v3 setObject:v21 forKey:@"OneofNotificationDeliverySuggestion"];
+    [dictionary setObject:v21 forKey:@"OneofNotificationDeliverySuggestion"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
   if (has)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v24 forKey:@"timestamp"];
+    [dictionary setObject:v24 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -353,203 +353,203 @@
   if ((has & 4) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithInt:self->_scope];
-    [v3 setObject:v25 forKey:@"scope"];
+    [dictionary setObject:v25 forKey:@"scope"];
   }
 
   entityIdentifier = self->_entityIdentifier;
   if (entityIdentifier)
   {
-    [v3 setObject:entityIdentifier forKey:@"entityIdentifier"];
+    [dictionary setObject:entityIdentifier forKey:@"entityIdentifier"];
   }
 
   triggerNotificationUUID = self->_triggerNotificationUUID;
   if (triggerNotificationUUID)
   {
-    [v3 setObject:triggerNotificationUUID forKey:@"triggerNotificationUUID"];
+    [dictionary setObject:triggerNotificationUUID forKey:@"triggerNotificationUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_entityIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_triggerNotificationUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_smartPause)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_quieting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_promoting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_interruptionManagerTuning)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendToDigest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_urgencyTuning)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendMessagesToDigest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_turnOffNotificationsForApp)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_oneofNotificationDeliverySuggestion;
-    *(v4 + 120) |= 2u;
+    toCopy[8] = self->_oneofNotificationDeliverySuggestion;
+    *(toCopy + 120) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v6;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 120) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 120) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[14] = self->_scope;
-    *(v4 + 120) |= 4u;
+    toCopy[14] = self->_scope;
+    *(toCopy + 120) |= 4u;
   }
 
   if (self->_entityIdentifier)
   {
     [v6 setEntityIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_triggerNotificationUUID)
   {
     [v6 setTriggerNotificationUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_smartPause)
   {
     [v6 setSmartPause:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_quieting)
   {
     [v6 setQuieting:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_promoting)
   {
     [v6 setPromoting:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_interruptionManagerTuning)
   {
     [v6 setInterruptionManagerTuning:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendToDigest)
   {
     [v6 setSendToDigest:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_urgencyTuning)
   {
     [v6 setUrgencyTuning:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendMessagesToDigest)
   {
     [v6 setSendMessagesToDigest:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_turnOffNotificationsForApp)
   {
     [v6 setTurnOffNotificationsForApp:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -557,7 +557,7 @@
     *(v5 + 120) |= 2u;
   }
 
-  v7 = [(NSString *)self->_uuid copyWithZone:a3];
+  v7 = [(NSString *)self->_uuid copyWithZone:zone];
   v8 = *(v6 + 112);
   *(v6 + 112) = v7;
 
@@ -575,53 +575,53 @@
     *(v6 + 120) |= 4u;
   }
 
-  v10 = [(NSString *)self->_entityIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_entityIdentifier copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
-  v12 = [(NSString *)self->_triggerNotificationUUID copyWithZone:a3];
+  v12 = [(NSString *)self->_triggerNotificationUUID copyWithZone:zone];
   v13 = *(v6 + 88);
   *(v6 + 88) = v12;
 
-  v14 = [(ATXPBNotificationSmartPauseSuggestion *)self->_smartPause copyWithZone:a3];
+  v14 = [(ATXPBNotificationSmartPauseSuggestion *)self->_smartPause copyWithZone:zone];
   v15 = *(v6 + 80);
   *(v6 + 80) = v14;
 
-  v16 = [(ATXPBNotificationQuietingSuggestion *)self->_quieting copyWithZone:a3];
+  v16 = [(ATXPBNotificationQuietingSuggestion *)self->_quieting copyWithZone:zone];
   v17 = *(v6 + 48);
   *(v6 + 48) = v16;
 
-  v18 = [(ATXPBNotificationPromotingSuggestion *)self->_promoting copyWithZone:a3];
+  v18 = [(ATXPBNotificationPromotingSuggestion *)self->_promoting copyWithZone:zone];
   v19 = *(v6 + 40);
   *(v6 + 40) = v18;
 
-  v20 = [(ATXPBInterruptionManagerTuningSuggestion *)self->_interruptionManagerTuning copyWithZone:a3];
+  v20 = [(ATXPBInterruptionManagerTuningSuggestion *)self->_interruptionManagerTuning copyWithZone:zone];
   v21 = *(v6 + 24);
   *(v6 + 24) = v20;
 
-  v22 = [(ATXPBSendToDigestSuggestion *)self->_sendToDigest copyWithZone:a3];
+  v22 = [(ATXPBSendToDigestSuggestion *)self->_sendToDigest copyWithZone:zone];
   v23 = *(v6 + 72);
   *(v6 + 72) = v22;
 
-  v24 = [(ATXPBUrgencyTuningSuggestion *)self->_urgencyTuning copyWithZone:a3];
+  v24 = [(ATXPBUrgencyTuningSuggestion *)self->_urgencyTuning copyWithZone:zone];
   v25 = *(v6 + 104);
   *(v6 + 104) = v24;
 
-  v26 = [(ATXPBSendMessagesToDigestSuggestion *)self->_sendMessagesToDigest copyWithZone:a3];
+  v26 = [(ATXPBSendMessagesToDigestSuggestion *)self->_sendMessagesToDigest copyWithZone:zone];
   v27 = *(v6 + 64);
   *(v6 + 64) = v26;
 
-  v28 = [(ATXPBTurnOffNotificationsForAppSuggestion *)self->_turnOffNotificationsForApp copyWithZone:a3];
+  v28 = [(ATXPBTurnOffNotificationsForAppSuggestion *)self->_turnOffNotificationsForApp copyWithZone:zone];
   v29 = *(v6 + 96);
   *(v6 + 96) = v28;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
@@ -629,19 +629,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_oneofNotificationDeliverySuggestion != *(v4 + 8))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_oneofNotificationDeliverySuggestion != *(equalCopy + 8))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 120) & 2) != 0)
+  else if ((*(equalCopy + 120) & 2) != 0)
   {
     goto LABEL_40;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 14))
+  if (uuid | *(equalCopy + 14))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -655,38 +655,38 @@ LABEL_40:
 
   if (has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_40;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 120) & 4) == 0 || self->_scope != *(v4 + 14))
+    if ((*(equalCopy + 120) & 4) == 0 || self->_scope != *(equalCopy + 14))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 120) & 4) != 0)
+  else if ((*(equalCopy + 120) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   entityIdentifier = self->_entityIdentifier;
-  if (entityIdentifier | *(v4 + 2) && ![(NSString *)entityIdentifier isEqual:?])
+  if (entityIdentifier | *(equalCopy + 2) && ![(NSString *)entityIdentifier isEqual:?])
   {
     goto LABEL_40;
   }
 
   triggerNotificationUUID = self->_triggerNotificationUUID;
-  if (triggerNotificationUUID | *(v4 + 11))
+  if (triggerNotificationUUID | *(equalCopy + 11))
   {
     if (![(NSString *)triggerNotificationUUID isEqual:?])
     {
@@ -695,7 +695,7 @@ LABEL_40:
   }
 
   smartPause = self->_smartPause;
-  if (smartPause | *(v4 + 10))
+  if (smartPause | *(equalCopy + 10))
   {
     if (![(ATXPBNotificationSmartPauseSuggestion *)smartPause isEqual:?])
     {
@@ -704,7 +704,7 @@ LABEL_40:
   }
 
   quieting = self->_quieting;
-  if (quieting | *(v4 + 6))
+  if (quieting | *(equalCopy + 6))
   {
     if (![(ATXPBNotificationQuietingSuggestion *)quieting isEqual:?])
     {
@@ -713,7 +713,7 @@ LABEL_40:
   }
 
   promoting = self->_promoting;
-  if (promoting | *(v4 + 5))
+  if (promoting | *(equalCopy + 5))
   {
     if (![(ATXPBNotificationPromotingSuggestion *)promoting isEqual:?])
     {
@@ -722,7 +722,7 @@ LABEL_40:
   }
 
   interruptionManagerTuning = self->_interruptionManagerTuning;
-  if (interruptionManagerTuning | *(v4 + 3))
+  if (interruptionManagerTuning | *(equalCopy + 3))
   {
     if (![(ATXPBInterruptionManagerTuningSuggestion *)interruptionManagerTuning isEqual:?])
     {
@@ -731,7 +731,7 @@ LABEL_40:
   }
 
   sendToDigest = self->_sendToDigest;
-  if (sendToDigest | *(v4 + 9))
+  if (sendToDigest | *(equalCopy + 9))
   {
     if (![(ATXPBSendToDigestSuggestion *)sendToDigest isEqual:?])
     {
@@ -740,7 +740,7 @@ LABEL_40:
   }
 
   urgencyTuning = self->_urgencyTuning;
-  if (urgencyTuning | *(v4 + 13))
+  if (urgencyTuning | *(equalCopy + 13))
   {
     if (![(ATXPBUrgencyTuningSuggestion *)urgencyTuning isEqual:?])
     {
@@ -749,7 +749,7 @@ LABEL_40:
   }
 
   sendMessagesToDigest = self->_sendMessagesToDigest;
-  if (sendMessagesToDigest | *(v4 + 8))
+  if (sendMessagesToDigest | *(equalCopy + 8))
   {
     if (![(ATXPBSendMessagesToDigestSuggestion *)sendMessagesToDigest isEqual:?])
     {
@@ -758,7 +758,7 @@ LABEL_40:
   }
 
   turnOffNotificationsForApp = self->_turnOffNotificationsForApp;
-  if (turnOffNotificationsForApp | *(v4 + 12))
+  if (turnOffNotificationsForApp | *(equalCopy + 12))
   {
     v17 = [(ATXPBTurnOffNotificationsForAppSuggestion *)turnOffNotificationsForApp isEqual:?];
   }
@@ -841,18 +841,18 @@ LABEL_41:
   return v19 ^ v20 ^ [(ATXPBTurnOffNotificationsForAppSuggestion *)self->_turnOffNotificationsForApp hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[30] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[30] & 2) != 0)
   {
-    self->_oneofNotificationDeliverySuggestion = v4[8];
+    self->_oneofNotificationDeliverySuggestion = fromCopy[8];
     *&self->_has |= 2u;
   }
 
-  v23 = v4;
-  if (*(v4 + 14))
+  v23 = fromCopy;
+  if (*(fromCopy + 14))
   {
     [(ATXPBNotificationDeliverySuggestion *)self setUuid:?];
     v5 = v23;

@@ -1,18 +1,18 @@
 @interface SASmsDraftShow
-- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)a3;
+- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)handler;
 @end
 
 @implementation SASmsDraftShow
 
-- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)a3
+- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v5 = a3;
+    handlerCopy = handler;
     v6 = [STShowDraftMessageRequest alloc];
-    v8 = [(SASmsDraftShow *)self smsIdentifier];
-    v7 = [v6 _initWithDraftMessageIdentifier:v8];
-    (*(a3 + 2))(v5, v7);
+    smsIdentifier = [(SASmsDraftShow *)self smsIdentifier];
+    v7 = [v6 _initWithDraftMessageIdentifier:smsIdentifier];
+    (*(handler + 2))(handlerCopy, v7);
   }
 }
 

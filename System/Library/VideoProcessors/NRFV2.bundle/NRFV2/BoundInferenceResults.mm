@@ -1,36 +1,36 @@
 @interface BoundInferenceResults
-- (BoundInferenceResults)initWithResult:(id)a3 andMetal:(id)a4;
+- (BoundInferenceResults)initWithResult:(id)result andMetal:(id)metal;
 - (void)dealloc;
 @end
 
 @implementation BoundInferenceResults
 
-- (BoundInferenceResults)initWithResult:(id)a3 andMetal:(id)a4
+- (BoundInferenceResults)initWithResult:(id)result andMetal:(id)metal
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  metalCopy = metal;
   v77.receiver = self;
   v77.super_class = BoundInferenceResults;
   v11 = [(BoundInferenceResults *)&v77 init];
   if (v11)
   {
-    if (v6)
+    if (resultCopy)
     {
-      if (v7)
+      if (metalCopy)
       {
-        v12 = objc_msgSend_status(v6, v8, v9, v10);
+        v12 = objc_msgSend_status(resultCopy, v8, v9, v10);
         if (v12)
         {
-          sub_29587FA44(v12, v6);
+          sub_29587FA44(v12, resultCopy);
         }
 
         else
         {
           v11->_skinMaskPixelBuffer = 0;
-          if (objc_msgSend_skinMask(v6, v13, v14, v15))
+          if (objc_msgSend_skinMask(resultCopy, v13, v14, v15))
           {
-            v19 = objc_msgSend_skinMask(v6, v16, v17, v18);
-            v21 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(v7, v20, v19, 10, 1, 0);
+            v19 = objc_msgSend_skinMask(resultCopy, v16, v17, v18);
+            v21 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalCopy, v20, v19, 10, 1, 0);
             skinMask = v11->_skinMask;
             v11->_skinMask = v21;
 
@@ -40,7 +40,7 @@
               goto LABEL_35;
             }
 
-            v26 = objc_msgSend_skinMask(v6, v23, v24, v25);
+            v26 = objc_msgSend_skinMask(resultCopy, v23, v24, v25);
             if (v26)
             {
               v26 = CFRetain(v26);
@@ -50,10 +50,10 @@
           }
 
           v11->_skyMaskPixelBuffer = 0;
-          if (objc_msgSend_skyMask(v6, v16, v17, v18))
+          if (objc_msgSend_skyMask(resultCopy, v16, v17, v18))
           {
-            v30 = objc_msgSend_skyMask(v6, v27, v28, v29);
-            v32 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(v7, v31, v30, 10, 1, 0);
+            v30 = objc_msgSend_skyMask(resultCopy, v27, v28, v29);
+            v32 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalCopy, v31, v30, 10, 1, 0);
             skyMask = v11->_skyMask;
             v11->_skyMask = v32;
 
@@ -63,7 +63,7 @@
               goto LABEL_35;
             }
 
-            v37 = objc_msgSend_skyMask(v6, v34, v35, v36);
+            v37 = objc_msgSend_skyMask(resultCopy, v34, v35, v36);
             if (v37)
             {
               v37 = CFRetain(v37);
@@ -72,49 +72,49 @@
             v11->_skyMaskPixelBuffer = v37;
           }
 
-          if (!objc_msgSend_personMask(v6, v27, v28, v29) || (v41 = objc_msgSend_personMask(v6, v38, v39, v40), objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(v7, v42, v41, 25, 1, 0), v43 = objc_claimAutoreleasedReturnValue(), personMask = v11->_personMask, v11->_personMask = v43, personMask, v11->_personMask))
+          if (!objc_msgSend_personMask(resultCopy, v27, v28, v29) || (v41 = objc_msgSend_personMask(resultCopy, v38, v39, v40), objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalCopy, v42, v41, 25, 1, 0), v43 = objc_claimAutoreleasedReturnValue(), personMask = v11->_personMask, v11->_personMask = v43, personMask, v11->_personMask))
           {
-            v45 = objc_msgSend_faceLandmarks(v6, v38, v39, v40);
+            v45 = objc_msgSend_faceLandmarks(resultCopy, v38, v39, v40);
 
             if (v45)
             {
-              v49 = objc_msgSend_faceLandmarks(v6, v46, v47, v48);
+              v49 = objc_msgSend_faceLandmarks(resultCopy, v46, v47, v48);
               faceLandmarks = v11->_faceLandmarks;
               v11->_faceLandmarks = v49;
             }
 
-            v51 = objc_msgSend_lowResPersonInstanceMasks(v6, v46, v47, v48);
+            v51 = objc_msgSend_lowResPersonInstanceMasks(resultCopy, v46, v47, v48);
 
             if (v51)
             {
-              v55 = objc_msgSend_lowResPersonInstanceMasks(v6, v52, v53, v54);
+              v55 = objc_msgSend_lowResPersonInstanceMasks(resultCopy, v52, v53, v54);
               instanceMasks = v11->_instanceMasks;
               v11->_instanceMasks = v55;
             }
 
-            v57 = objc_msgSend_skinToneClassificationsForFaces(v6, v52, v53, v54);
+            v57 = objc_msgSend_skinToneClassificationsForFaces(resultCopy, v52, v53, v54);
 
             if (v57)
             {
-              v61 = objc_msgSend_skinToneClassificationsForFaces(v6, v58, v59, v60);
+              v61 = objc_msgSend_skinToneClassificationsForFaces(resultCopy, v58, v59, v60);
               skinToneClassification = v11->_skinToneClassification;
               v11->_skinToneClassification = v61;
             }
 
-            v63 = objc_msgSend_lowResPersonInstanceConfidences(v6, v58, v59, v60);
+            v63 = objc_msgSend_lowResPersonInstanceConfidences(resultCopy, v58, v59, v60);
 
             if (v63)
             {
-              v67 = objc_msgSend_lowResPersonInstanceConfidences(v6, v64, v65, v66);
+              v67 = objc_msgSend_lowResPersonInstanceConfidences(resultCopy, v64, v65, v66);
               maskConfidences = v11->_maskConfidences;
               v11->_maskConfidences = v67;
             }
 
-            v69 = objc_msgSend_smartCameraSceneType(v6, v64, v65, v66);
+            v69 = objc_msgSend_smartCameraSceneType(resultCopy, v64, v65, v66);
 
             if (v69)
             {
-              v73 = objc_msgSend_smartCameraSceneType(v6, v70, v71, v72);
+              v73 = objc_msgSend_smartCameraSceneType(resultCopy, v70, v71, v72);
               sceneType = v11->_sceneType;
               v11->_sceneType = v73;
             }

@@ -1,25 +1,25 @@
 @interface PBRepresentationToRepresentationCoercion
-- (BOOL)canCoerceToRepresentationOfType:(id)a3;
-- (PBRepresentationToRepresentationCoercion)initWithSourceType:(id)a3 destinationType:(id)a4 conversionBlock:(id)a5;
-- (void)coerceRepresentationData:(id)a3 representationURL:(id)a4 toRepresentationOfType:(id)a5 completionBlock:(id)a6;
+- (BOOL)canCoerceToRepresentationOfType:(id)type;
+- (PBRepresentationToRepresentationCoercion)initWithSourceType:(id)type destinationType:(id)destinationType conversionBlock:(id)block;
+- (void)coerceRepresentationData:(id)data representationURL:(id)l toRepresentationOfType:(id)type completionBlock:(id)block;
 @end
 
 @implementation PBRepresentationToRepresentationCoercion
 
-- (PBRepresentationToRepresentationCoercion)initWithSourceType:(id)a3 destinationType:(id)a4 conversionBlock:(id)a5
+- (PBRepresentationToRepresentationCoercion)initWithSourceType:(id)type destinationType:(id)destinationType conversionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  destinationTypeCopy = destinationType;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = PBRepresentationToRepresentationCoercion;
   v12 = [(PBRepresentationToRepresentationCoercion *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourceType, a3);
-    objc_storeStrong(&v13->_destinationType, a4);
-    v14 = MEMORY[0x25F8AC430](v11);
+    objc_storeStrong(&v12->_sourceType, type);
+    objc_storeStrong(&v13->_destinationType, destinationType);
+    v14 = MEMORY[0x25F8AC430](blockCopy);
     coercionBlock = v13->_coercionBlock;
     v13->_coercionBlock = v14;
   }
@@ -27,44 +27,44 @@
   return v13;
 }
 
-- (BOOL)canCoerceToRepresentationOfType:(id)a3
+- (BOOL)canCoerceToRepresentationOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(PBRepresentationToRepresentationCoercion *)self destinationType];
-  v6 = UTTypeConformsTo(v5, v4);
+  typeCopy = type;
+  destinationType = [(PBRepresentationToRepresentationCoercion *)self destinationType];
+  v6 = UTTypeConformsTo(destinationType, typeCopy);
 
   return v6 != 0;
 }
 
-- (void)coerceRepresentationData:(id)a3 representationURL:(id)a4 toRepresentationOfType:(id)a5 completionBlock:(id)a6
+- (void)coerceRepresentationData:(id)data representationURL:(id)l toRepresentationOfType:(id)type completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  lCopy = l;
+  typeCopy = type;
+  blockCopy = block;
   v14 = [(NSString *)self->_sourceType copy];
-  v15 = [(PBRepresentationToRepresentationCoercion *)self destinationType];
-  v16 = UTTypeConformsTo(v15, v12);
+  destinationType = [(PBRepresentationToRepresentationCoercion *)self destinationType];
+  v16 = UTTypeConformsTo(destinationType, typeCopy);
 
   if (v16)
   {
-    v17 = [(PBRepresentationToRepresentationCoercion *)self coercionBlock];
-    v18 = [(PBRepresentationToRepresentationCoercion *)self destinationType];
+    coercionBlock = [(PBRepresentationToRepresentationCoercion *)self coercionBlock];
+    destinationType2 = [(PBRepresentationToRepresentationCoercion *)self destinationType];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __126__PBRepresentationToRepresentationCoercion_coerceRepresentationData_representationURL_toRepresentationOfType_completionBlock___block_invoke;
     v21[3] = &unk_279A07598;
     v22 = v14;
-    v23 = v12;
-    v24 = v13;
-    (v17)[2](v17, v18, v10, v11, v21);
+    v23 = typeCopy;
+    v24 = blockCopy;
+    (coercionBlock)[2](coercionBlock, destinationType2, dataCopy, lCopy, v21);
   }
 
   else
   {
-    v19 = [(PBRepresentationToRepresentationCoercion *)self sourceType];
-    v20 = PBCannotCoerceRepresentationOfTypeToRepresentationOfTypeError(v19, v12, 0);
-    (*(v13 + 2))(v13, 0, v20);
+    sourceType = [(PBRepresentationToRepresentationCoercion *)self sourceType];
+    v20 = PBCannotCoerceRepresentationOfTypeToRepresentationOfTypeError(sourceType, typeCopy, 0);
+    (*(blockCopy + 2))(blockCopy, 0, v20);
   }
 }
 

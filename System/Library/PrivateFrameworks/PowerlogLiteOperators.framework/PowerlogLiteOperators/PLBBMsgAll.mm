@@ -2,7 +2,7 @@
 + (id)entryEventNoneBBMsgAll;
 - (void)logEventNoneBBMsgAll;
 - (void)refreshBBMsgAll;
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5;
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type;
 @end
 
 @implementation PLBBMsgAll
@@ -27,25 +27,25 @@
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"Payload";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v20[0] = commonTypeDict_StringFormat;
   v19[1] = @"Error";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v20[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v20[1] = commonTypeDict_StringFormat2;
   v19[2] = @"Type";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat;
   v19[3] = @"SeqNum";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat2;
   v19[4] = @"BBDate";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_DateFormat];
-  v20[4] = v11;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v20[4] = commonTypeDict_DateFormat;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
   v24[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -77,9 +77,9 @@
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgAll refreshBBMsgAll]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgAll.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgAll refreshBBMsgAll]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:58];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:58];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -123,9 +123,9 @@ uint64_t __29__PLBBMsgAll_refreshBBMsgAll__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgAll logEventNoneBBMsgAll]", block, v15, v16, v17, v18];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgAll.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgAll logEventNoneBBMsgAll]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:65];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:65];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -152,12 +152,12 @@ uint64_t __34__PLBBMsgAll_logEventNoneBBMsgAll__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  nameCopy = name;
+  typeCopy = type;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -173,14 +173,14 @@ uint64_t __34__PLBBMsgAll_logEventNoneBBMsgAll__block_invoke(uint64_t a1)
 
     if (byte_2811F3FB2 == 1)
     {
-      v40 = v10;
-      v41 = v9;
+      v40 = typeCopy;
+      v41 = nameCopy;
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMsgAll sendAndLogPLEntry:withName:withType:]"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgAll.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgAll sendAndLogPLEntry:withName:withType:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:81];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:81];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -190,8 +190,8 @@ uint64_t __34__PLBBMsgAll_logEventNoneBBMsgAll__block_invoke(uint64_t a1)
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v10 = v40;
-      v9 = v41;
+      typeCopy = v40;
+      nameCopy = v41;
     }
   }
 
@@ -210,62 +210,62 @@ uint64_t __34__PLBBMsgAll_logEventNoneBBMsgAll__block_invoke(uint64_t a1)
 
     if (byte_2811F3FB3 == 1)
     {
-      v19 = v10;
-      v20 = v9;
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", v9, v10];
+      v19 = typeCopy;
+      v20 = nameCopy;
+      typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", nameCopy, typeCopy];
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMsgAll.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMsgAll sendAndLogPLEntry:withName:withType:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:82];
+      [v22 logMessage:typeCopy fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:82];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v45 = v21;
+        v45 = typeCopy;
         _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v20;
-      v10 = v19;
+      nameCopy = v20;
+      typeCopy = v19;
     }
   }
 
-  v27 = [(PLBBMsgAll *)self payload];
-  [v8 setObject:v27 forKeyedSubscript:@"Payload"];
+  payload = [(PLBBMsgAll *)self payload];
+  [entryCopy setObject:payload forKeyedSubscript:@"Payload"];
 
-  v28 = [(PLBBMsgRoot *)self msgType];
-  [v8 setObject:v28 forKeyedSubscript:@"Type"];
+  msgType = [(PLBBMsgRoot *)self msgType];
+  [entryCopy setObject:msgType forKeyedSubscript:@"Type"];
 
-  v29 = [(PLBBMsgAll *)self seqNum];
-  [v8 setObject:v29 forKeyedSubscript:@"SeqNum"];
+  seqNum = [(PLBBMsgAll *)self seqNum];
+  [entryCopy setObject:seqNum forKeyedSubscript:@"SeqNum"];
 
-  v30 = [(PLBBMsgAll *)self bbDate];
-  [v8 setObject:v30 forKeyedSubscript:@"BBDate"];
+  bbDate = [(PLBBMsgAll *)self bbDate];
+  [entryCopy setObject:bbDate forKeyedSubscript:@"BBDate"];
 
-  v31 = [(PLBBMsgAll *)self error];
-  [v8 setObject:v31 forKeyedSubscript:@"Error"];
+  error = [(PLBBMsgAll *)self error];
+  [entryCopy setObject:error forKeyedSubscript:@"Error"];
 
-  v32 = [(PLBBMsgAll *)self bbDate];
+  bbDate2 = [(PLBBMsgAll *)self bbDate];
 
-  if (v32)
+  if (bbDate2)
   {
-    v33 = [(PLBBMsgAll *)self bbDate];
-    v34 = [v33 convertFromBasebandToMonotonic];
-    [v8 setEntryDate:v34];
+    bbDate3 = [(PLBBMsgAll *)self bbDate];
+    convertFromBasebandToMonotonic = [bbDate3 convertFromBasebandToMonotonic];
+    [entryCopy setEntryDate:convertFromBasebandToMonotonic];
   }
 
   if ([MEMORY[0x277D3F208] isBasebandProto])
   {
-    v35 = [(PLBBMsgRoot *)self agent];
-    v36 = [v8 dictionary];
-    v37 = [v8 entryDate];
-    [v35 logForSubsystem:@"BasebandMetrics" category:@"MessageAll" data:v36 date:v37];
+    agent = [(PLBBMsgRoot *)self agent];
+    dictionary = [entryCopy dictionary];
+    entryDate = [entryCopy entryDate];
+    [agent logForSubsystem:@"BasebandMetrics" category:@"MessageAll" data:dictionary date:entryDate];
   }
 
-  v38 = [(PLBBMsgRoot *)self agent];
-  [v38 logEntry:v8];
+  agent2 = [(PLBBMsgRoot *)self agent];
+  [agent2 logEntry:entryCopy];
 
   v39 = *MEMORY[0x277D85DE8];
 }

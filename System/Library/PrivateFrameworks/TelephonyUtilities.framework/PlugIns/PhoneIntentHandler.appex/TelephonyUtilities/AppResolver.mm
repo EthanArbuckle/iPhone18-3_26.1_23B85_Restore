@@ -1,19 +1,19 @@
 @interface AppResolver
-- (BOOL)appSupportsDeprecatedCallingIntents:(id)a3;
+- (BOOL)appSupportsDeprecatedCallingIntents:(id)intents;
 @end
 
 @implementation AppResolver
 
-- (BOOL)appSupportsDeprecatedCallingIntents:(id)a3
+- (BOOL)appSupportsDeprecatedCallingIntents:(id)intents
 {
-  v3 = a3;
+  intentsCopy = intents;
   v15 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v15];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:intentsCopy allowPlaceholder:1 error:&v15];
   v5 = v15;
   if (!v5)
   {
-    v8 = [v4 compatibilityObject];
-    v9 = [v8 plugInKitPlugins];
+    compatibilityObject = [v4 compatibilityObject];
+    plugInKitPlugins = [compatibilityObject plugInKitPlugins];
     v10 = INSupportedIntentsByExtensions();
 
     v11 = [v10 containsObject:INStartCallIntentIdentifier];
@@ -47,7 +47,7 @@
   v6 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_10002F3D4(v3, v5, v6);
+    sub_10002F3D4(intentsCopy, v5, v6);
   }
 
 LABEL_5:

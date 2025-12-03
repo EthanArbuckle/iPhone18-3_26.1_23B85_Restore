@@ -2,17 +2,17 @@
 + (id)cloudBadgeImage;
 - (BOOL)_isRTL;
 - (CGSize)checkmarkImageSize;
-- (PXPeopleBootstrapCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PXPeopleBootstrapCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIImage)image;
 - (void)_updateCellSizing;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setConfirmed:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 contentsRect:(CGRect)a4;
-- (void)setIsMergeCandidate:(BOOL)a3;
-- (void)setIsVerified:(BOOL)a3;
-- (void)setPresentationStatus:(unint64_t)a3;
+- (void)setConfirmed:(BOOL)confirmed;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image contentsRect:(CGRect)rect;
+- (void)setIsMergeCandidate:(BOOL)candidate;
+- (void)setIsVerified:(BOOL)verified;
+- (void)setPresentationStatus:(unint64_t)status;
 @end
 
 @implementation PXPeopleBootstrapCollectionViewCell
@@ -28,27 +28,27 @@
 
 - (void)_updateCellSizing
 {
-  v3 = [(PXPeopleBootstrapCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PXPeopleBootstrapCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v53 = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
-  [v53 setFrame:{v5, v7, v9, v11}];
+  imageView = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
+  [imageView setFrame:{v5, v7, v9, v11}];
   v12 = *MEMORY[0x1E695F058];
   rect = *(MEMORY[0x1E695F058] + 8);
-  v13 = [(PXPeopleBootstrapCollectionViewCell *)self badgeView];
-  v14 = [v13 image];
-  [v14 size];
+  badgeView = [(PXPeopleBootstrapCollectionViewCell *)self badgeView];
+  image = [badgeView image];
+  [image size];
   v16 = v15;
   v49 = v17;
   v18 = +[PXPeopleUISettings sharedInstance];
-  v19 = [v18 displayBootstrapSuggestionType];
+  displayBootstrapSuggestionType = [v18 displayBootstrapSuggestionType];
 
-  v20 = [(PXPeopleBootstrapCollectionViewCell *)self traitCollection];
-  [v20 displayScale];
+  traitCollection = [(PXPeopleBootstrapCollectionViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v22 = v21;
 
   v56.origin.x = v5;
@@ -70,12 +70,12 @@
   Height = CGRectGetHeight(v58);
   [PXPeopleFaceCropManager roundedCornerRadiusForTargetSize:v9 displayScale:v11, v22];
   v26 = v25;
-  v27 = [(PXPeopleBootstrapCollectionViewCell *)self layer];
-  [v27 setCornerRadius:v26];
+  layer = [(PXPeopleBootstrapCollectionViewCell *)self layer];
+  [layer setCornerRadius:v26];
 
-  v28 = [(PXPeopleBootstrapCollectionViewCell *)self _isRTL];
+  _isRTL = [(PXPeopleBootstrapCollectionViewCell *)self _isRTL];
   v29 = 5.0;
-  if (!v28)
+  if (!_isRTL)
   {
     v59.origin.x = v5;
     v59.origin.y = v54;
@@ -88,17 +88,17 @@
   [(PXPeopleBootstrapCollectionViewCell *)self checkmarkImageSize];
   v31 = v30;
   v33 = v32;
-  v34 = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
-  [v34 setFrame:{v29, v23, v31, v33}];
+  selectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
+  [selectedCheckmarkView setFrame:{v29, v23, v31, v33}];
 
-  v35 = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
-  [v35 setFrame:{v29, v23, v31, v33}];
+  unselectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
+  [unselectedCheckmarkView setFrame:{v29, v23, v31, v33}];
 
-  if (v19)
+  if (displayBootstrapSuggestionType)
   {
     if ([(PXPeopleBootstrapCollectionViewCell *)self isMergeCandidate]&& [(PXPeopleBootstrapCollectionViewCell *)self isVerified])
     {
-      v36 = [MEMORY[0x1E69DC888] blueColor];
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
     }
 
     else
@@ -112,24 +112,24 @@
       {
         [MEMORY[0x1E69DC888] greenColor];
       }
-      v36 = ;
+      blueColor = ;
     }
 
-    v37 = v36;
-    v38 = [v36 CGColor];
+    v37 = blueColor;
+    cGColor = [blueColor CGColor];
 
-    v39 = [(PXPeopleBootstrapCollectionViewCell *)self layer];
-    [v39 setBorderColor:v38];
+    layer2 = [(PXPeopleBootstrapCollectionViewCell *)self layer];
+    [layer2 setBorderColor:cGColor];
 
-    v40 = [(PXPeopleBootstrapCollectionViewCell *)self layer];
-    [v40 setBorderWidth:2.0];
+    layer3 = [(PXPeopleBootstrapCollectionViewCell *)self layer];
+    [layer3 setBorderWidth:2.0];
   }
 
   v41 = v5;
   v42 = v54;
   v43 = v9;
   v44 = v11;
-  if (v28)
+  if (_isRTL)
   {
     v45 = CGRectGetMinX(*&v41) + 5.0;
     v46 = v16;
@@ -146,67 +146,67 @@
     v45 = v47 - CGRectGetWidth(v60);
   }
 
-  [v13 setFrame:{v45, v50 - Height, v46, v49}];
+  [badgeView setFrame:{v45, v50 - Height, v46, v49}];
 }
 
 - (BOOL)_isRTL
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
   return v3;
 }
 
-- (void)setConfirmed:(BOOL)a3
+- (void)setConfirmed:(BOOL)confirmed
 {
-  v3 = a3;
-  v5 = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
-  [v5 setHidden:v3 ^ 1];
+  confirmedCopy = confirmed;
+  selectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
+  [selectedCheckmarkView setHidden:confirmedCopy ^ 1];
 
-  v6 = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
-  [v6 setHidden:v3];
+  unselectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
+  [unselectedCheckmarkView setHidden:confirmedCopy];
 }
 
-- (void)setIsVerified:(BOOL)a3
+- (void)setIsVerified:(BOOL)verified
 {
-  if (self->_isVerified != a3)
+  if (self->_isVerified != verified)
   {
-    self->_isVerified = a3;
+    self->_isVerified = verified;
     [(PXPeopleBootstrapCollectionViewCell *)self _updateCellSizing];
   }
 }
 
-- (void)setIsMergeCandidate:(BOOL)a3
+- (void)setIsMergeCandidate:(BOOL)candidate
 {
-  if (self->_isMergeCandidate != a3)
+  if (self->_isMergeCandidate != candidate)
   {
-    self->_isMergeCandidate = a3;
+    self->_isMergeCandidate = candidate;
     [(PXPeopleBootstrapCollectionViewCell *)self _updateCellSizing];
   }
 }
 
-- (void)setPresentationStatus:(unint64_t)a3
+- (void)setPresentationStatus:(unint64_t)status
 {
-  if (self->_presentationStatus != a3)
+  if (self->_presentationStatus != status)
   {
-    self->_presentationStatus = a3;
-    v6 = [(PXPeopleBootstrapCollectionViewCell *)self badgeView];
-    v15 = v6;
-    if (a3 == 3)
+    self->_presentationStatus = status;
+    badgeView = [(PXPeopleBootstrapCollectionViewCell *)self badgeView];
+    v15 = badgeView;
+    if (status == 3)
     {
       v8 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
       v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle.fill"];
       v10 = [v9 imageWithSymbolConfiguration:v8];
 
-      v11 = [MEMORY[0x1E69DC888] systemGray2Color];
-      [v15 setTintColor:v11];
+      systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+      [v15 setTintColor:systemGray2Color];
 
       [v15 setImage:v10];
       [v15 setHidden:0];
       [(PXPeopleBootstrapCollectionViewCell *)self _updateCellSizing];
     }
 
-    else if (a3 == 1)
+    else if (status == 1)
     {
       v7 = +[PXPeopleBootstrapCollectionViewCell cloudBadgeImage];
       [v15 setImage:v7];
@@ -217,33 +217,33 @@
 
     else
     {
-      [v6 setHidden:1];
+      [badgeView setHidden:1];
     }
 
-    v12 = [v15 isHidden];
-    v13 = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
-    [v13 setHidden:v12 ^ 1u];
+    isHidden = [v15 isHidden];
+    selectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self selectedCheckmarkView];
+    [selectedCheckmarkView setHidden:isHidden ^ 1u];
 
-    v14 = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
-    [v14 setHidden:v12 ^ 1u];
+    unselectedCheckmarkView = [(PXPeopleBootstrapCollectionViewCell *)self unselectedCheckmarkView];
+    [unselectedCheckmarkView setHidden:isHidden ^ 1u];
   }
 }
 
 - (UIImage)image
 {
-  v2 = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
-  v3 = [v2 image];
+  imageView = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3 contentsRect:(CGRect)a4
+- (void)setImage:(id)image contentsRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (image)
   {
     v9 = 2;
   }
@@ -253,12 +253,12 @@
     v9 = 3;
   }
 
-  v10 = a3;
-  v12 = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
-  [v12 setImage:v10];
+  imageCopy = image;
+  imageView = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
+  [imageView setImage:imageCopy];
 
-  v11 = [v12 layer];
-  [v11 setContentsRect:{x, y, width, height}];
+  layer = [imageView layer];
+  [layer setContentsRect:{x, y, width, height}];
 
   [(PXPeopleBootstrapCollectionViewCell *)self setPresentationStatus:v9];
 }
@@ -271,17 +271,17 @@
   [(PXPeopleBootstrapCollectionViewCell *)self setImageRequest:0];
   [(PXPeopleBootstrapCollectionViewCell *)self setIsMergeCandidate:0];
   [(PXPeopleBootstrapCollectionViewCell *)self setIsVerified:0];
-  v3 = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
-  [v3 setImage:0];
+  imageView = [(PXPeopleBootstrapCollectionViewCell *)self imageView];
+  [imageView setImage:0];
 
   [(PXPeopleBootstrapCollectionViewCell *)self setPresentationStatus:0];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PXPeopleBootstrapCollectionViewCell;
-  [(PXPeopleBootstrapCollectionViewCell *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXPeopleBootstrapCollectionViewCell *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PXPeopleBootstrapCollectionViewCell *)self _updateCellSizing];
 }
 
@@ -293,17 +293,17 @@
   [(PXPeopleBootstrapCollectionViewCell *)self _updateCellSizing];
 }
 
-- (PXPeopleBootstrapCollectionViewCell)initWithFrame:(CGRect)a3
+- (PXPeopleBootstrapCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v32.receiver = self;
   v32.super_class = PXPeopleBootstrapCollectionViewCell;
-  v5 = [(PXPeopleBootstrapCollectionViewCell *)&v32 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PXPeopleBootstrapCollectionViewCell *)&v32 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PXPeopleBootstrapCollectionViewCell *)v5 contentView];
+    contentView = [(PXPeopleBootstrapCollectionViewCell *)v5 contentView];
     v6->_presentationStatus = 0;
     v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{0.0, 0.0, width, height}];
     imageView = v6->_imageView;
@@ -311,13 +311,13 @@
 
     [(UIImageView *)v6->_imageView setContentMode:1];
     [(UIImageView *)v6->_imageView setAccessibilityIgnoresInvertColors:1];
-    v10 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(UIImageView *)v6->_imageView setBackgroundColor:v10];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(UIImageView *)v6->_imageView setBackgroundColor:quaternarySystemFillColor];
 
-    [v7 addSubview:v6->_imageView];
+    [contentView addSubview:v6->_imageView];
     v11 = MEMORY[0x1E69DD250];
-    v12 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v13 = [v11 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:v12];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v13 = [v11 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:systemBlueColor];
     selectedCheckmarkView = v6->_selectedCheckmarkView;
     v6->_selectedCheckmarkView = v13;
 
@@ -325,8 +325,8 @@
     [(UIView *)v6->_selectedCheckmarkView setUserInteractionEnabled:0];
     [(UIView *)v6->_selectedCheckmarkView setAccessibilityIgnoresInvertColors:1];
     v15 = MEMORY[0x1E69DD250];
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    v17 = [v15 px_circularGlyphViewWithName:@"circle" backgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v17 = [v15 px_circularGlyphViewWithName:@"circle" backgroundColor:clearColor];
     unselectedCheckmarkView = v6->_unselectedCheckmarkView;
     v6->_unselectedCheckmarkView = v17;
 
@@ -337,8 +337,8 @@
     p_width = &v6->_checkmarkImageSize.width;
     v6->_checkmarkImageSize.width = v20;
     v6->_checkmarkImageSize.height = v21;
-    [v7 addSubview:v6->_selectedCheckmarkView];
-    [v7 addSubview:v6->_unselectedCheckmarkView];
+    [contentView addSubview:v6->_selectedCheckmarkView];
+    [contentView addSubview:v6->_unselectedCheckmarkView];
     v22 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     badgeView = v6->_badgeView;
     v6->_badgeView = v22;
@@ -349,7 +349,7 @@
     v25 = +[PXPeopleBootstrapCollectionViewCell cloudBadgeImage];
     [(UIImageView *)v6->_badgeView setImage:v25];
 
-    [v7 addSubview:v6->_badgeView];
+    [contentView addSubview:v6->_badgeView];
     [(UIImageView *)v6->_badgeView setHidden:1];
     [(UIImageView *)v6->_badgeView setUserInteractionEnabled:0];
     [(UIImageView *)v6->_badgeView setAccessibilityIgnoresInvertColors:1];

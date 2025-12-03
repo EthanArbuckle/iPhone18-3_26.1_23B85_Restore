@@ -1,50 +1,50 @@
 @interface ATXDefaultWidgetStack
-- (ATXDefaultWidgetStack)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXDefaultWidgetStack)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_JSONCompatible:(id)a3 compact:(BOOL)a4;
+- (id)_JSONCompatible:(id)compatible compact:(BOOL)compact;
 - (id)compactDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXDefaultWidgetStack
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_smallDefaultStack copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_smallDefaultStack copyWithZone:zone];
   [v5 setSmallDefaultStack:v6];
 
-  v7 = [(NSArray *)self->_mediumDefaultStack copyWithZone:a3];
+  v7 = [(NSArray *)self->_mediumDefaultStack copyWithZone:zone];
   [v5 setMediumDefaultStack:v7];
 
-  v8 = [(NSArray *)self->_largeDefaultStack copyWithZone:a3];
+  v8 = [(NSArray *)self->_largeDefaultStack copyWithZone:zone];
   [v5 setLargeDefaultStack:v8];
 
-  v9 = [(NSArray *)self->_extraLargeDefaultStack copyWithZone:a3];
+  v9 = [(NSArray *)self->_extraLargeDefaultStack copyWithZone:zone];
   [v5 setExtraLargeDefaultStack:v9];
 
   [v5 setSuggestedSize:self->_suggestedSize];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   smallDefaultStack = self->_smallDefaultStack;
-  v5 = a3;
-  [v5 encodeObject:smallDefaultStack forKey:@"smallDefaultStack"];
-  [v5 encodeObject:self->_mediumDefaultStack forKey:@"mediumDefaultStack"];
-  [v5 encodeObject:self->_largeDefaultStack forKey:@"largeDefaultStack"];
-  [v5 encodeObject:self->_extraLargeDefaultStack forKey:@"extraLargeDefaultStack"];
-  [v5 encodeInteger:self->_suggestedSize forKey:@"suggestedSize"];
+  coderCopy = coder;
+  [coderCopy encodeObject:smallDefaultStack forKey:@"smallDefaultStack"];
+  [coderCopy encodeObject:self->_mediumDefaultStack forKey:@"mediumDefaultStack"];
+  [coderCopy encodeObject:self->_largeDefaultStack forKey:@"largeDefaultStack"];
+  [coderCopy encodeObject:self->_extraLargeDefaultStack forKey:@"extraLargeDefaultStack"];
+  [coderCopy encodeInteger:self->_suggestedSize forKey:@"suggestedSize"];
 }
 
-- (ATXDefaultWidgetStack)initWithCoder:(id)a3
+- (ATXDefaultWidgetStack)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = ATXDefaultWidgetStack;
   v5 = [(ATXDefaultWidgetStack *)&v27 init];
@@ -53,48 +53,48 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"smallDefaultStack"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"smallDefaultStack"];
     smallDefaultStack = v5->_smallDefaultStack;
     v5->_smallDefaultStack = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"mediumDefaultStack"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"mediumDefaultStack"];
     mediumDefaultStack = v5->_mediumDefaultStack;
     v5->_mediumDefaultStack = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"largeDefaultStack"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"largeDefaultStack"];
     largeDefaultStack = v5->_largeDefaultStack;
     v5->_largeDefaultStack = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"extraLargeDefaultStack"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"extraLargeDefaultStack"];
     extraLargeDefaultStack = v5->_extraLargeDefaultStack;
     v5->_extraLargeDefaultStack = v24;
 
-    v5->_suggestedSize = [v4 decodeIntegerForKey:@"suggestedSize"];
+    v5->_suggestedSize = [coderCopy decodeIntegerForKey:@"suggestedSize"];
   }
 
   return v5;
 }
 
-- (id)_JSONCompatible:(id)a3 compact:(BOOL)a4
+- (id)_JSONCompatible:(id)compatible compact:(BOOL)compact
 {
-  v4 = a4;
+  compactCopy = compact;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  compatibleCopy = compatible;
   v6 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = compatibleCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -110,7 +110,7 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (v4)
+        if (compactCopy)
         {
           [v12 compactDescription];
         }
@@ -156,8 +156,8 @@
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ATXDefaultWidgetStack *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  dictionaryRepresentation = [(ATXDefaultWidgetStack *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v4;
 }
@@ -194,10 +194,10 @@
   return self->_suggestedSize - (v6 - v5 + 32 * v5) + 32 * (v6 - v5 + 32 * v5);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -207,7 +207,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_smallDefaultStack;
       v7 = v6;
       if (v6 == v5->_smallDefaultStack)

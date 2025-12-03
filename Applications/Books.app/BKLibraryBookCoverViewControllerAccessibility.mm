@@ -44,8 +44,8 @@
 - (void)_bkaxApplyAccessibilityInfo
 {
   v4 = sub_1000765EC(@"back.button");
-  v3 = [(BKLibraryBookCoverViewControllerAccessibility *)self _bkaxBackButton];
-  [v3 setAccessibilityLabel:v4];
+  _bkaxBackButton = [(BKLibraryBookCoverViewControllerAccessibility *)self _bkaxBackButton];
+  [_bkaxBackButton setAccessibilityLabel:v4];
 }
 
 @end

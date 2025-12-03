@@ -1,32 +1,32 @@
 @interface WBSFaviconRequestsController
 - (CGSize)size;
-- (WBSFaviconRequestsController)initWithSiteMetadataManager:(id)a3;
-- (void)_issueRequest:(id)a3 isOneTime:(BOOL)a4 withToken:(id)a5 completion:(id)a6;
-- (void)cancelAllRegistrationsWithCompletionHandler:(id)a3;
+- (WBSFaviconRequestsController)initWithSiteMetadataManager:(id)manager;
+- (void)_issueRequest:(id)request isOneTime:(BOOL)time withToken:(id)token completion:(id)completion;
+- (void)cancelAllRegistrationsWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)registerOneTimeRequestForDomain:(id)a3 withToken:(id)a4 completion:(id)a5;
-- (void)registerOneTimeRequestForURLString:(id)a3 withToken:(id)a4 completion:(id)a5;
-- (void)registerOneTimeRequestForURLString:(id)a3 withToken:(id)a4 returnDefaultIconIfNoneAvailable:(BOOL)a5 iconSize:(CGSize)a6 isURLTypedByUser:(BOOL)a7 completion:(id)a8;
-- (void)registerRequestForDomain:(id)a3 withToken:(id)a4 completion:(id)a5;
-- (void)registerRequestForURLString:(id)a3 withToken:(id)a4 completion:(id)a5;
-- (void)registerRequestForURLString:(id)a3 withToken:(id)a4 returnDefaultIconIfNoneAvailable:(BOOL)a5 iconSize:(CGSize)a6 isURLTypedByUser:(BOOL)a7 completion:(id)a8;
+- (void)registerOneTimeRequestForDomain:(id)domain withToken:(id)token completion:(id)completion;
+- (void)registerOneTimeRequestForURLString:(id)string withToken:(id)token completion:(id)completion;
+- (void)registerOneTimeRequestForURLString:(id)string withToken:(id)token returnDefaultIconIfNoneAvailable:(BOOL)available iconSize:(CGSize)size isURLTypedByUser:(BOOL)user completion:(id)completion;
+- (void)registerRequestForDomain:(id)domain withToken:(id)token completion:(id)completion;
+- (void)registerRequestForURLString:(id)string withToken:(id)token completion:(id)completion;
+- (void)registerRequestForURLString:(id)string withToken:(id)token returnDefaultIconIfNoneAvailable:(BOOL)available iconSize:(CGSize)size isURLTypedByUser:(BOOL)user completion:(id)completion;
 @end
 
 @implementation WBSFaviconRequestsController
 
-- (WBSFaviconRequestsController)initWithSiteMetadataManager:(id)a3
+- (WBSFaviconRequestsController)initWithSiteMetadataManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = WBSFaviconRequestsController;
   v6 = [(WBSFaviconRequestsController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v6->_manager, manager);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     tokenToRequestToken = v7->_tokenToRequestToken;
-    v7->_tokenToRequestToken = v8;
+    v7->_tokenToRequestToken = strongToStrongObjectsMapTable;
 
     v7->_priority = 0;
     v7->_size = WBSFaviconRequestSmallIconSize;
@@ -47,23 +47,23 @@
   [(WBSFaviconRequestsController *)&v4 dealloc];
 }
 
-- (void)registerRequestForDomain:(id)a3 withToken:(id)a4 completion:(id)a5
+- (void)registerRequestForDomain:(id)domain withToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  domainCopy = domain;
   v11 = [WBSFaviconRequest alloc];
   [(WBSFaviconRequestsController *)self size];
-  v12 = [(WBSFaviconRequest *)v11 initWithDomain:v10 iconSize:1 fallbackType:?];
+  v12 = [(WBSFaviconRequest *)v11 initWithDomain:domainCopy iconSize:1 fallbackType:?];
 
-  [(WBSFaviconRequestsController *)self _issueRequest:v12 isOneTime:0 withToken:v9 completion:v8];
+  [(WBSFaviconRequestsController *)self _issueRequest:v12 isOneTime:0 withToken:tokenCopy completion:completionCopy];
 }
 
-- (void)registerRequestForURLString:(id)a3 withToken:(id)a4 completion:(id)a5
+- (void)registerRequestForURLString:(id)string withToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  stringCopy = string;
   [(WBSFaviconRequestsController *)self size];
   v12 = v11;
   v14 = v13;
@@ -71,39 +71,39 @@
   v16[1] = 3221225472;
   v16[2] = __81__WBSFaviconRequestsController_registerRequestForURLString_withToken_completion___block_invoke;
   v16[3] = &unk_1E8284D48;
-  v17 = v8;
-  v15 = v8;
-  [(WBSFaviconRequestsController *)self registerRequestForURLString:v10 withToken:v9 returnDefaultIconIfNoneAvailable:1 iconSize:0 isURLTypedByUser:v16 completion:v12, v14];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(WBSFaviconRequestsController *)self registerRequestForURLString:stringCopy withToken:tokenCopy returnDefaultIconIfNoneAvailable:1 iconSize:0 isURLTypedByUser:v16 completion:v12, v14];
 }
 
-- (void)registerRequestForURLString:(id)a3 withToken:(id)a4 returnDefaultIconIfNoneAvailable:(BOOL)a5 iconSize:(CGSize)a6 isURLTypedByUser:(BOOL)a7 completion:(id)a8
+- (void)registerRequestForURLString:(id)string withToken:(id)token returnDefaultIconIfNoneAvailable:(BOOL)available iconSize:(CGSize)size isURLTypedByUser:(BOOL)user completion:(id)completion
 {
-  v8 = a7;
-  height = a6.height;
-  width = a6.width;
-  v11 = a5;
+  userCopy = user;
+  height = size.height;
+  width = size.width;
+  availableCopy = available;
   v15 = MEMORY[0x1E695DFF8];
-  v16 = a8;
-  v17 = a4;
-  if (v8)
+  completionCopy = completion;
+  tokenCopy = token;
+  if (userCopy)
   {
-    [v15 safari_URLWithUserTypedString:a3];
+    [v15 safari_URLWithUserTypedString:string];
   }
 
   else
   {
-    [v15 URLWithString:a3];
+    [v15 URLWithString:string];
   }
   v19 = ;
-  v18 = [[WBSFaviconRequest alloc] initWithURL:v19 iconSize:v11 fallbackType:v8 isURLTypedByUser:width, height];
-  [(WBSFaviconRequestsController *)self _issueRequest:v18 isOneTime:0 withToken:v17 completion:v16];
+  height = [[WBSFaviconRequest alloc] initWithURL:v19 iconSize:availableCopy fallbackType:userCopy isURLTypedByUser:width, height];
+  [(WBSFaviconRequestsController *)self _issueRequest:height isOneTime:0 withToken:tokenCopy completion:completionCopy];
 }
 
-- (void)registerOneTimeRequestForURLString:(id)a3 withToken:(id)a4 completion:(id)a5
+- (void)registerOneTimeRequestForURLString:(id)string withToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  stringCopy = string;
   [(WBSFaviconRequestsController *)self size];
   v12 = v11;
   v14 = v13;
@@ -111,73 +111,73 @@
   v16[1] = 3221225472;
   v16[2] = __88__WBSFaviconRequestsController_registerOneTimeRequestForURLString_withToken_completion___block_invoke;
   v16[3] = &unk_1E8284D48;
-  v17 = v8;
-  v15 = v8;
-  [(WBSFaviconRequestsController *)self registerOneTimeRequestForURLString:v10 withToken:v9 returnDefaultIconIfNoneAvailable:1 iconSize:0 isURLTypedByUser:v16 completion:v12, v14];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(WBSFaviconRequestsController *)self registerOneTimeRequestForURLString:stringCopy withToken:tokenCopy returnDefaultIconIfNoneAvailable:1 iconSize:0 isURLTypedByUser:v16 completion:v12, v14];
 }
 
-- (void)registerOneTimeRequestForURLString:(id)a3 withToken:(id)a4 returnDefaultIconIfNoneAvailable:(BOOL)a5 iconSize:(CGSize)a6 isURLTypedByUser:(BOOL)a7 completion:(id)a8
+- (void)registerOneTimeRequestForURLString:(id)string withToken:(id)token returnDefaultIconIfNoneAvailable:(BOOL)available iconSize:(CGSize)size isURLTypedByUser:(BOOL)user completion:(id)completion
 {
-  v8 = a7;
-  height = a6.height;
-  width = a6.width;
-  v11 = a5;
+  userCopy = user;
+  height = size.height;
+  width = size.width;
+  availableCopy = available;
   v15 = MEMORY[0x1E695DFF8];
-  v16 = a8;
-  v17 = a4;
-  if (v8)
+  completionCopy = completion;
+  tokenCopy = token;
+  if (userCopy)
   {
-    [v15 safari_URLWithUserTypedString:a3];
+    [v15 safari_URLWithUserTypedString:string];
   }
 
   else
   {
-    [v15 URLWithString:a3];
+    [v15 URLWithString:string];
   }
   v19 = ;
-  v18 = [[WBSFaviconRequest alloc] initWithURL:v19 iconSize:v11 fallbackType:v8 isURLTypedByUser:width, height];
-  [(WBSFaviconRequestsController *)self _issueRequest:v18 isOneTime:1 withToken:v17 completion:v16];
+  height = [[WBSFaviconRequest alloc] initWithURL:v19 iconSize:availableCopy fallbackType:userCopy isURLTypedByUser:width, height];
+  [(WBSFaviconRequestsController *)self _issueRequest:height isOneTime:1 withToken:tokenCopy completion:completionCopy];
 }
 
-- (void)registerOneTimeRequestForDomain:(id)a3 withToken:(id)a4 completion:(id)a5
+- (void)registerOneTimeRequestForDomain:(id)domain withToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  domainCopy = domain;
   v11 = [WBSFaviconRequest alloc];
   [(WBSFaviconRequestsController *)self size];
-  v12 = [(WBSFaviconRequest *)v11 initWithDomain:v10 iconSize:1 fallbackType:?];
+  v12 = [(WBSFaviconRequest *)v11 initWithDomain:domainCopy iconSize:1 fallbackType:?];
 
-  [(WBSFaviconRequestsController *)self _issueRequest:v12 isOneTime:1 withToken:v9 completion:v8];
+  [(WBSFaviconRequestsController *)self _issueRequest:v12 isOneTime:1 withToken:tokenCopy completion:completionCopy];
 }
 
-- (void)cancelAllRegistrationsWithCompletionHandler:(id)a3
+- (void)cancelAllRegistrationsWithCompletionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   v4 = self->_tokenToRequestToken;
   objc_sync_enter(v4);
   manager = self->_manager;
-  v6 = [(NSMapTable *)self->_tokenToRequestToken objectEnumerator];
-  v7 = [v6 allObjects];
-  [(WBSSiteMetadataManager *)manager cancelRequestsWithTokens:v7 completionHandler:v8];
+  objectEnumerator = [(NSMapTable *)self->_tokenToRequestToken objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  [(WBSSiteMetadataManager *)manager cancelRequestsWithTokens:allObjects completionHandler:handlerCopy];
 
   [(NSMapTable *)self->_tokenToRequestToken removeAllObjects];
   objc_sync_exit(v4);
 }
 
-- (void)_issueRequest:(id)a3 isOneTime:(BOOL)a4 withToken:(id)a5 completion:(id)a6
+- (void)_issueRequest:(id)request isOneTime:(BOOL)time withToken:(id)token completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  timeCopy = time;
+  requestCopy = request;
+  tokenCopy = token;
+  completionCopy = completion;
   v13 = self->_tokenToRequestToken;
   objc_sync_enter(v13);
   manager = self->_manager;
-  v15 = [(NSMapTable *)self->_tokenToRequestToken objectForKey:v11];
+  v15 = [(NSMapTable *)self->_tokenToRequestToken objectForKey:tokenCopy];
   [(WBSSiteMetadataManager *)manager cancelRequestWithToken:v15];
 
-  [(NSMapTable *)self->_tokenToRequestToken removeObjectForKey:v11];
+  [(NSMapTable *)self->_tokenToRequestToken removeObjectForKey:tokenCopy];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3042000000;
@@ -190,8 +190,8 @@
   v30 = 0;
   objc_initWeak(&location, self);
   v16 = self->_manager;
-  v17 = [(WBSFaviconRequestsController *)self priority];
-  if (v8)
+  priority = [(WBSFaviconRequestsController *)self priority];
+  if (timeCopy)
   {
     v18 = v24;
     v24[0] = MEMORY[0x1E69E9820];
@@ -202,9 +202,9 @@
     objc_copyWeak(&v25, &location);
     v24[6] = &v27;
     v24[7] = &v31;
-    v24[4] = v11;
-    v24[5] = v12;
-    v20 = [(WBSSiteMetadataManager *)v16 registerOneTimeRequest:v10 priority:v17 responseHandler:v24];
+    v24[4] = tokenCopy;
+    v24[5] = completionCopy;
+    v20 = [(WBSSiteMetadataManager *)v16 registerOneTimeRequest:requestCopy priority:priority responseHandler:v24];
   }
 
   else
@@ -218,9 +218,9 @@
     objc_copyWeak(&v23, &location);
     v22[6] = &v27;
     v22[7] = &v31;
-    v22[4] = v11;
-    v22[5] = v12;
-    v20 = [(WBSSiteMetadataManager *)v16 registerRequest:v10 priority:v17 responseHandler:v22];
+    v22[4] = tokenCopy;
+    v22[5] = completionCopy;
+    v20 = [(WBSSiteMetadataManager *)v16 registerRequest:requestCopy priority:priority responseHandler:v22];
   }
 
   v21 = v20;
@@ -230,7 +230,7 @@
   if (v21)
   {
     objc_storeWeak(v32 + 5, v21);
-    [(NSMapTable *)self->_tokenToRequestToken setObject:v21 forKey:v11];
+    [(NSMapTable *)self->_tokenToRequestToken setObject:v21 forKey:tokenCopy];
   }
 
   objc_destroyWeak(&location);

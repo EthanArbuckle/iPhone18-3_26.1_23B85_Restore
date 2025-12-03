@@ -1,29 +1,29 @@
 @interface _TVDescriptiveAlertView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)preferredFocusEnvironments;
-- (void)_scrollDown:(id)a3;
-- (void)_scrollInDirection:(double)a3;
-- (void)_scrollUp:(id)a3;
+- (void)_scrollDown:(id)down;
+- (void)_scrollInDirection:(double)direction;
+- (void)_scrollUp:(id)up;
 - (void)_setupGestureRecognizers;
 - (void)layoutSubviews;
-- (void)setBgImage:(id)a3;
-- (void)setChildViews:(id)a3;
+- (void)setBgImage:(id)image;
+- (void)setChildViews:(id)views;
 @end
 
 @implementation _TVDescriptiveAlertView
 
-- (void)setBgImage:(id)a3
+- (void)setBgImage:(id)image
 {
-  v4 = a3;
-  if (self->_bgImage != v4)
+  imageCopy = image;
+  if (self->_bgImage != imageCopy)
   {
     bgImageView = self->_bgImageView;
-    if (v4)
+    if (imageCopy)
     {
       if (bgImageView)
       {
 LABEL_8:
-        [(UIImageView *)bgImageView setImage:v4];
+        [(UIImageView *)bgImageView setImage:imageCopy];
         goto LABEL_9;
       }
     }
@@ -51,25 +51,25 @@ LABEL_8:
 
 LABEL_9:
   bgImage = self->_bgImage;
-  self->_bgImage = v4;
+  self->_bgImage = imageCopy;
 }
 
-- (void)setChildViews:(id)a3
+- (void)setChildViews:(id)views
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   v44 = [(NSArray *)self->_childViews mutableCopy];
-  v5 = [(_TVDescriptiveAlertView *)self window];
-  v6 = [v5 screen];
-  v7 = [v6 focusedView];
+  window = [(_TVDescriptiveAlertView *)self window];
+  screen = [window screen];
+  focusedView = [screen focusedView];
 
-  if (![(UIView *)v7 isDescendantOfView:self])
+  if (![(UIView *)focusedView isDescendantOfView:self])
   {
 
-    v7 = 0;
+    focusedView = 0;
   }
 
-  v8 = [v4 copy];
+  v8 = [viewsCopy copy];
   childViews = self->_childViews;
   self->_childViews = v8;
 
@@ -99,7 +99,7 @@ LABEL_35:
 
   v15 = v13;
   v40 = v13 == 0;
-  v41 = v4;
+  v41 = viewsCopy;
   v16 = 0;
   v17 = 0;
   obj = v12;
@@ -148,13 +148,13 @@ LABEL_35:
             goto LABEL_19;
           }
 
-          v23 = [v21 preferredFocusEnvironments];
-          if ([v23 count])
+          preferredFocusEnvironments = [v21 preferredFocusEnvironments];
+          if ([preferredFocusEnvironments count])
           {
-            v24 = [v21 preferredFocusEnvironments];
-            v25 = [v24 firstObject];
+            preferredFocusEnvironments2 = [v21 preferredFocusEnvironments];
+            firstObject = [preferredFocusEnvironments2 firstObject];
 
-            v26 = v25 == v21;
+            v26 = firstObject == v21;
             v18 = v42;
             if (v26)
             {
@@ -163,30 +163,30 @@ LABEL_35:
 
 LABEL_19:
             v27 = v21;
-            v23 = self->_defaultFocusView;
+            preferredFocusEnvironments = self->_defaultFocusView;
             self->_defaultFocusView = v27;
           }
         }
       }
 
 LABEL_21:
-      v28 = [v21 tv_associatedIKViewElement];
-      v29 = [v28 autoHighlightIdentifier];
+      tv_associatedIKViewElement = [v21 tv_associatedIKViewElement];
+      autoHighlightIdentifier = [tv_associatedIKViewElement autoHighlightIdentifier];
 
-      if (v29)
+      if (autoHighlightIdentifier)
       {
         if (!v16)
         {
           v16 = v21;
         }
 
-        v30 = [v21 tv_associatedIKViewElement];
-        [v30 resetProperty:2];
+        tv_associatedIKViewElement2 = [v21 tv_associatedIKViewElement];
+        [tv_associatedIKViewElement2 resetProperty:2];
       }
 
-      v31 = [v21 superview];
+      superview = [v21 superview];
 
-      if (v31 == self)
+      if (superview == self)
       {
         [v44 removeObject:v21];
       }
@@ -218,14 +218,14 @@ LABEL_21:
     v32 = v16;
     v12 = self->_defaultFocusView;
     self->_defaultFocusView = v32;
-    v4 = v41;
+    viewsCopy = v41;
     v14 = v40;
     goto LABEL_35;
   }
 
   v32 = 0;
   v14 = 1;
-  v4 = v41;
+  viewsCopy = v41;
 LABEL_37:
   v33 = [v42 copy];
   viewsAboveScrollView = self->_viewsAboveScrollView;
@@ -236,11 +236,11 @@ LABEL_37:
   self->_viewsBelowScrollView = v35;
 
   [v44 makeObjectsPerformSelector:sel_removeFromSuperview];
-  if ([(UIView *)v7 isDescendantOfView:self])
+  if ([(UIView *)focusedView isDescendantOfView:self])
   {
     if (v14)
     {
-      v37 = v7;
+      v37 = focusedView;
     }
 
     else
@@ -279,14 +279,14 @@ LABEL_37:
   scrollView = self->_scrollView;
   if (scrollView)
   {
-    v4 = [(UIScrollView *)scrollView panGestureRecognizer];
-    [v4 setAllowedTouchTypes:&unk_287E48738];
+    panGestureRecognizer = [(UIScrollView *)scrollView panGestureRecognizer];
+    [panGestureRecognizer setAllowedTouchTypes:&unk_287E48738];
 
-    v5 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-    [v5 _setHysteresis:240.0];
+    panGestureRecognizer2 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+    [panGestureRecognizer2 _setHysteresis:240.0];
 
-    v6 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-    [(_TVDescriptiveAlertView *)self addGestureRecognizer:v6];
+    panGestureRecognizer3 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+    [(_TVDescriptiveAlertView *)self addGestureRecognizer:panGestureRecognizer3];
 
     v7 = [objc_alloc(MEMORY[0x277D761B0]) initWithTarget:self action:sel__scrollUp_];
     upButtonGesture = self->_upButtonGesture;
@@ -305,10 +305,10 @@ LABEL_37:
   }
 }
 
-- (void)_scrollUp:(id)a3
+- (void)_scrollUp:(id)up
 {
-  v4 = [a3 state];
-  if (v4 == 2)
+  state = [up state];
+  if (state == 2)
   {
     if (!self->_waiting)
     {
@@ -318,7 +318,7 @@ LABEL_37:
     self->_waiting = 1;
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
 
     [(_TVDescriptiveAlertView *)self _scrollUp];
@@ -330,10 +330,10 @@ LABEL_37:
   }
 }
 
-- (void)_scrollDown:(id)a3
+- (void)_scrollDown:(id)down
 {
-  v4 = [a3 state];
-  if (v4 == 2)
+  state = [down state];
+  if (state == 2)
   {
     if (!self->_waiting)
     {
@@ -343,7 +343,7 @@ LABEL_37:
     self->_waiting = 1;
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
 
     [(_TVDescriptiveAlertView *)self _scrollDown];
@@ -355,7 +355,7 @@ LABEL_37:
   }
 }
 
-- (void)_scrollInDirection:(double)a3
+- (void)_scrollInDirection:(double)direction
 {
   [(UIScrollView *)self->_scrollView contentOffset];
   v6 = v5;
@@ -365,11 +365,11 @@ LABEL_37:
   [(UIScrollView *)self->_scrollView contentSize];
   v11 = v10;
   [(UIScrollView *)self->_scrollView contentInset];
-  v13 = v8 + a3 * (v9 * 0.5);
+  v13 = v8 + direction * (v9 * 0.5);
   v15 = -v14;
   if (v13 >= -v14)
   {
-    v15 = v8 + a3 * (v9 * 0.5);
+    v15 = v8 + direction * (v9 * 0.5);
     if (v13 > v11 - v9)
     {
       v15 = v11 - v9 + v12;
@@ -547,43 +547,43 @@ LABEL_37:
       while (v78);
     }
 
-    v91 = [(UIView *)self tv_contentAlignment];
-    if (v91 == 3)
+    tv_contentAlignment = [(UIView *)self tv_contentAlignment];
+    if (tv_contentAlignment == 3)
     {
-      v96 = [(NSArray *)self->_viewsBelowScrollView lastObject];
-      v97 = v96;
-      if (v96 || (v97 = self->_scrollView) != 0)
+      lastObject = [(NSArray *)self->_viewsBelowScrollView lastObject];
+      v97 = lastObject;
+      if (lastObject || (v97 = self->_scrollView) != 0)
       {
-        v98 = v97;
+        lastObject2 = v97;
       }
 
       else
       {
-        v98 = [(NSArray *)self->_viewsAboveScrollView lastObject];
+        lastObject2 = [(NSArray *)self->_viewsAboveScrollView lastObject];
       }
 
-      v99 = v98;
+      v99 = lastObject2;
 
       [(_TVDescriptiveAlertView *)self bounds];
       CGRectGetHeight(v145);
       [(UIScrollView *)v99 tv_margin];
     }
 
-    else if (v91 == 1)
+    else if (tv_contentAlignment == 1)
     {
-      v92 = [(NSArray *)self->_viewsAboveScrollView firstObject];
-      v93 = v92;
-      if (v92 || (v93 = self->_scrollView) != 0)
+      firstObject = [(NSArray *)self->_viewsAboveScrollView firstObject];
+      v93 = firstObject;
+      if (firstObject || (v93 = self->_scrollView) != 0)
       {
-        v94 = v93;
+        firstObject2 = v93;
       }
 
       else
       {
-        v94 = [(NSArray *)self->_viewsBelowScrollView firstObject];
+        firstObject2 = [(NSArray *)self->_viewsBelowScrollView firstObject];
       }
 
-      v95 = v94;
+      v95 = firstObject2;
 
       [(UIScrollView *)v95 tv_margin];
     }
@@ -709,8 +709,8 @@ LABEL_37:
     v113 = 0u;
     v114 = 0u;
     v115 = 0u;
-    v42 = [(NSArray *)self->_viewsBelowScrollView reverseObjectEnumerator];
-    v43 = [v42 countByEnumeratingWithState:&v112 objects:v136 count:16];
+    reverseObjectEnumerator = [(NSArray *)self->_viewsBelowScrollView reverseObjectEnumerator];
+    v43 = [reverseObjectEnumerator countByEnumeratingWithState:&v112 objects:v136 count:16];
     if (v43)
     {
       v44 = v43;
@@ -724,7 +724,7 @@ LABEL_37:
         {
           if (*v113 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v48 = *(*(&v112 + 1) + 8 * v46);
@@ -741,7 +741,7 @@ LABEL_37:
         }
 
         while (v44 != v46);
-        v44 = [v42 countByEnumeratingWithState:&v112 objects:v136 count:16];
+        v44 = [reverseObjectEnumerator countByEnumeratingWithState:&v112 objects:v136 count:16];
       }
 
       while (v44);
@@ -766,11 +766,11 @@ LABEL_37:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v50 = *MEMORY[0x277D85DE8];
-  [(_TVDescriptiveAlertView *)self bounds:a3.width];
+  [(_TVDescriptiveAlertView *)self bounds:fits.width];
   v5 = CGRectGetWidth(v52);
   v44 = 0u;
   v45 = 0u;
@@ -817,8 +817,8 @@ LABEL_37:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v20 = [(NSArray *)self->_viewsBelowScrollView reverseObjectEnumerator];
-  v21 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_viewsBelowScrollView reverseObjectEnumerator];
+  v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v21)
   {
     v22 = v21;
@@ -832,7 +832,7 @@ LABEL_37:
       {
         if (*v41 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v26 = *(*(&v40 + 1) + 8 * v24);
@@ -846,7 +846,7 @@ LABEL_37:
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v22);

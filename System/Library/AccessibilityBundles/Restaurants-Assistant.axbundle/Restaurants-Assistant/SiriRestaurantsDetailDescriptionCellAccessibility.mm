@@ -1,15 +1,15 @@
 @interface SiriRestaurantsDetailDescriptionCellAccessibility
-- (void)_setPriceInfoWithRestaurant:(id)a3;
+- (void)_setPriceInfoWithRestaurant:(id)restaurant;
 @end
 
 @implementation SiriRestaurantsDetailDescriptionCellAccessibility
 
-- (void)_setPriceInfoWithRestaurant:(id)a3
+- (void)_setPriceInfoWithRestaurant:(id)restaurant
 {
-  v4 = a3;
+  restaurantCopy = restaurant;
   v18.receiver = self;
   v18.super_class = SiriRestaurantsDetailDescriptionCellAccessibility;
-  [(SiriRestaurantsDetailDescriptionCellAccessibility *)&v18 _setPriceInfoWithRestaurant:v4];
+  [(SiriRestaurantsDetailDescriptionCellAccessibility *)&v18 _setPriceInfoWithRestaurant:restaurantCopy];
   objc_opt_class();
   v5 = [(SiriRestaurantsDetailDescriptionCellAccessibility *)self safeValueForKey:@"_priceLabel"];
   v6 = __UIAccessibilityCastAsClass();
@@ -29,14 +29,14 @@
   [v7 enumerateAttribute:@"NSColor" inRange:0 options:v8 usingBlock:{0, v12}];
   if (v14[4] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v7 string];
-    [v6 setAccessibilityLabel:v9];
+    string = [v7 string];
+    [v6 setAccessibilityLabel:string];
   }
 
   else
   {
-    v9 = [v7 string];
-    v10 = [v9 substringWithRange:{v14[4], v14[5]}];
+    string = [v7 string];
+    v10 = [string substringWithRange:{v14[4], v14[5]}];
     v11 = UIAXPriceRangeDescription();
     [v6 setAccessibilityLabel:v11];
   }

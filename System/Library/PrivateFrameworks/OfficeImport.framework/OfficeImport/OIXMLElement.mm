@@ -1,36 +1,36 @@
 @interface OIXMLElement
-+ (OIXMLElement)elementWithType:(unsigned __int8)a3;
-+ (OIXMLElement)elementWithType:(unsigned __int8)a3 stringValue:(id)a4;
-- (OIXMLElement)initWithType:(unsigned __int8)a3;
-- (OIXMLElement)initWithType:(unsigned __int8)a3 stringValue:(id)a4;
++ (OIXMLElement)elementWithType:(unsigned __int8)type;
++ (OIXMLElement)elementWithType:(unsigned __int8)type stringValue:(id)value;
+- (OIXMLElement)initWithType:(unsigned __int8)type;
+- (OIXMLElement)initWithType:(unsigned __int8)type stringValue:(id)value;
 - (id)closingTagString;
 - (id)contentString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)openingTagString;
 - (id)stringValue;
 - (int64_t)attributeCount;
 - (int64_t)childrenCount;
-- (void)_appendXMLStringToString:(__CFString *)a3 level:(int)a4;
-- (void)addAttribute:(id)a3;
-- (void)addChild:(id)a3;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)setStringValue:(id)a3;
+- (void)_appendXMLStringToString:(__CFString *)string level:(int)level;
+- (void)addAttribute:(id)attribute;
+- (void)addChild:(id)child;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation OIXMLElement
 
 - (id)openingTagString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   chars = 60;
-  CFStringAppendCharacters(v3, &chars, 1);
-  v4 = [(OIXMLElement *)self name];
-  CFStringAppend(v3, v4);
+  CFStringAppendCharacters(string, &chars, 1);
+  name = [(OIXMLElement *)self name];
+  CFStringAppend(string, name);
 
   if ([(OIXMLElement *)self attributeCount]== 1)
   {
-    CFStringAppend(v3, @" ");
-    [self->_attributes _appendXMLStringToString:v3 level:0];
+    CFStringAppend(string, @" ");
+    [self->_attributes _appendXMLStringToString:string level:0];
   }
 
   else
@@ -42,16 +42,16 @@
       for (i = 0; i != v6; ++i)
       {
         v8 = [self->_attributes objectAtIndex:i];
-        CFStringAppend(v3, @" ");
-        [v8 _appendXMLStringToString:v3 level:0];
+        CFStringAppend(string, @" ");
+        [v8 _appendXMLStringToString:string level:0];
       }
     }
   }
 
   v10 = 62;
-  CFStringAppendCharacters(v3, &v10, 1);
+  CFStringAppendCharacters(string, &v10, 1);
 
-  return v3;
+  return string;
 }
 
 - (int64_t)attributeCount
@@ -95,63 +95,63 @@
 - (id)closingTagString
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(OIXMLElement *)self name];
-  v4 = [v2 stringWithFormat:@"</%@>", v3];
+  name = [(OIXMLElement *)self name];
+  v4 = [v2 stringWithFormat:@"</%@>", name];
 
   return v4;
 }
 
-- (OIXMLElement)initWithType:(unsigned __int8)a3
+- (OIXMLElement)initWithType:(unsigned __int8)type
 {
   v5.receiver = self;
   v5.super_class = OIXMLElement;
   result = [(OIXMLElement *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (OIXMLElement)initWithType:(unsigned __int8)a3 stringValue:(id)a4
+- (OIXMLElement)initWithType:(unsigned __int8)type stringValue:(id)value
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(OIXMLElement *)self initWithType:v4];
+  typeCopy = type;
+  valueCopy = value;
+  v7 = [(OIXMLElement *)self initWithType:typeCopy];
   v8 = v7;
   if (v7)
   {
-    [(OIXMLElement *)v7 setStringValue:v6];
+    [(OIXMLElement *)v7 setStringValue:valueCopy];
   }
 
   return v8;
 }
 
-+ (OIXMLElement)elementWithType:(unsigned __int8)a3
++ (OIXMLElement)elementWithType:(unsigned __int8)type
 {
-  v3 = [[OIXMLElement alloc] initWithType:a3 stringValue:0];
+  v3 = [[OIXMLElement alloc] initWithType:type stringValue:0];
 
   return v3;
 }
 
-+ (OIXMLElement)elementWithType:(unsigned __int8)a3 stringValue:(id)a4
++ (OIXMLElement)elementWithType:(unsigned __int8)type stringValue:(id)value
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [[OIXMLElement alloc] initWithType:v4 stringValue:v5];
+  typeCopy = type;
+  valueCopy = value;
+  v6 = [[OIXMLElement alloc] initWithType:typeCopy stringValue:valueCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [[OIXMLElement alloc] initWithType:self->_type];
-  v6 = [self->_attributes copyWithZone:a3];
+  v6 = [self->_attributes copyWithZone:zone];
   attributes = v5->_attributes;
   v5->_attributes = v6;
 
-  v8 = [self->_children copyWithZone:a3];
+  v8 = [self->_children copyWithZone:zone];
   children = v5->_children;
   v5->_children = v8;
 
@@ -160,11 +160,11 @@
   return v5;
 }
 
-- (void)addAttribute:(id)a3
+- (void)addAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   attributes = self->_attributes;
-  v11 = v5;
+  v11 = attributeCopy;
   if (attributes)
   {
     if (self->_hasMultipleAttributes)
@@ -187,15 +187,15 @@
 
   else
   {
-    objc_storeStrong(&self->_attributes, a3);
+    objc_storeStrong(&self->_attributes, attribute);
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v5 = a3;
+  childCopy = child;
   children = self->_children;
-  v11 = v5;
+  v11 = childCopy;
   if (children)
   {
     if (self->_hasMultipleChildren)
@@ -218,15 +218,15 @@
 
   else
   {
-    objc_storeStrong(&self->_children, a3);
+    objc_storeStrong(&self->_children, child);
   }
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v7 = a3;
+  childCopy = child;
   children = self->_children;
-  v13 = v7;
+  v13 = childCopy;
   if (children)
   {
     if (self->_hasMultipleChildren)
@@ -242,23 +242,23 @@
       v12 = self->_children;
       self->_children = v11;
 
-      [self->_children insertObject:v13 atIndex:a4];
+      [self->_children insertObject:v13 atIndex:index];
       self->_hasMultipleChildren = 1;
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_children, a3);
+    objc_storeStrong(&self->_children, child);
   }
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v6 = a3;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v4 = [[OIXMLTextNode alloc] initWithStringValue:v6];
+    v4 = [[OIXMLTextNode alloc] initWithStringValue:valueCopy];
     children = self->_children;
     if (children)
     {
@@ -288,33 +288,33 @@
       for (i = 0; i != v6; ++i)
       {
         v8 = [self->_children objectAtIndex:i];
-        v9 = [v8 stringValue];
-        [v3 appendString:v9];
+        stringValue = [v8 stringValue];
+        [v3 appendString:stringValue];
       }
     }
   }
 
   else if (children)
   {
-    v10 = [children stringValue];
-    [v3 appendString:v10];
+    stringValue2 = [children stringValue];
+    [v3 appendString:stringValue2];
   }
 
   return v3;
 }
 
-- (void)_appendXMLStringToString:(__CFString *)a3 level:(int)a4
+- (void)_appendXMLStringToString:(__CFString *)string level:(int)level
 {
-  v7 = [(OIXMLElement *)self name];
-  if (v7)
+  name = [(OIXMLElement *)self name];
+  if (name)
   {
     chars = 60;
-    CFStringAppendCharacters(a3, &chars, 1);
-    CFStringAppend(a3, v7);
+    CFStringAppendCharacters(string, &chars, 1);
+    CFStringAppend(string, name);
     if ([(OIXMLElement *)self attributeCount]== 1)
     {
-      CFStringAppend(a3, @" ");
-      [self->_attributes _appendXMLStringToString:a3 level:(a4 + 1)];
+      CFStringAppend(string, @" ");
+      [self->_attributes _appendXMLStringToString:string level:(level + 1)];
     }
 
     else
@@ -328,21 +328,21 @@
         {
           v12 = [self->_attributes objectAtIndex:i];
 
-          CFStringAppend(a3, @" ");
-          [v12 _appendXMLStringToString:a3 level:(a4 + 1)];
+          CFStringAppend(string, @" ");
+          [v12 _appendXMLStringToString:string level:(level + 1)];
           v10 = v12;
         }
 
 LABEL_9:
-        v13 = [(OIXMLElement *)self childrenCount];
+        childrenCount = [(OIXMLElement *)self childrenCount];
         v18 = 62;
-        CFStringAppendCharacters(a3, &v18, 1);
-        if (v13 == 1)
+        CFStringAppendCharacters(string, &v18, 1);
+        if (childrenCount == 1)
         {
-          [self->_children _appendXMLStringToString:a3 level:(a4 + 1)];
+          [self->_children _appendXMLStringToString:string level:(level + 1)];
         }
 
-        else if (v13 < 1)
+        else if (childrenCount < 1)
         {
           if ([(OIXMLElement *)self isEmptyHTMLElement])
           {
@@ -360,19 +360,19 @@ LABEL_17:
           {
             v12 = [self->_children objectAtIndex:v14];
 
-            [v12 _appendXMLStringToString:a3 level:(a4 + 1)];
+            [v12 _appendXMLStringToString:string level:(level + 1)];
             ++v14;
             v15 = v12;
           }
 
-          while (v13 != v14);
+          while (childrenCount != v14);
         }
 
         *v17 = 3080252;
-        CFStringAppendCharacters(a3, v17, 2);
-        CFStringAppend(a3, v7);
+        CFStringAppendCharacters(string, v17, 2);
+        CFStringAppend(string, name);
         v16 = 62;
-        CFStringAppendCharacters(a3, &v16, 1);
+        CFStringAppendCharacters(string, &v16, 1);
         goto LABEL_17;
       }
     }
@@ -386,12 +386,12 @@ LABEL_18:
 
 - (id)contentString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(OIXMLElement *)self childrenCount];
+  string = [MEMORY[0x277CCAB68] string];
+  childrenCount = [(OIXMLElement *)self childrenCount];
   children = self->_children;
-  if (v4 == 1)
+  if (childrenCount == 1)
   {
-    [children _appendXMLStringToString:v3 level:0];
+    [children _appendXMLStringToString:string level:0];
   }
 
   else
@@ -403,12 +403,12 @@ LABEL_18:
       for (i = 0; i != v7; ++i)
       {
         v9 = [self->_children objectAtIndex:i];
-        [v9 _appendXMLStringToString:v3 level:0];
+        [v9 _appendXMLStringToString:string level:0];
       }
     }
   }
 
-  return v3;
+  return string;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface HMDAction
 + (id)logCategory;
-- (BOOL)isAssociatedWithAccessory:(id)a3;
-- (BOOL)isCompatibleWithAction:(id)a3;
+- (BOOL)isAssociatedWithAccessory:(id)accessory;
+- (BOOL)isCompatibleWithAction:(id)action;
 - (BOOL)isUnsecuringAction;
 - (HMDAction)init;
-- (HMDAction)initWithCoder:(id)a3;
-- (HMDAction)initWithUUID:(id)a3 actionSet:(id)a4;
+- (HMDAction)initWithCoder:(id)coder;
+- (HMDAction)initWithUUID:(id)d actionSet:(id)set;
 - (HMDActionSet)actionSet;
 - (NSArray)associatedAccessories;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)stateDump;
 - (NSUUID)modelParentIdentifier;
 - (id)attributeDescriptions;
-- (id)backingStoreObjectsWithChangeType:(unint64_t)a3 version:(int64_t)a4;
+- (id)backingStoreObjectsWithChangeType:(unint64_t)type version:(int64_t)version;
 - (id)logIdentifier;
 - (id)modelBackedObjects;
-- (id)modelObjectWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4;
+- (id)modelObjectWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version;
 - (unint64_t)type;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithSource:(unint64_t)a3 clientName:(id)a4 completionHandler:(id)a5;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateActionSetIfNil:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithSource:(unint64_t)source clientName:(id)name completionHandler:(id)handler;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateActionSetIfNil:(id)nil;
 @end
 
 @implementation HMDAction
@@ -37,8 +37,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAction *)self uuid];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uuid = [(HMDAction *)self uuid];
+  v5 = [v3 initWithName:@"UUID" value:uuid];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDAction *)self type];
@@ -52,35 +52,35 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDAction *)self actionSet];
-  [v4 encodeConditionalObject:v5 forKey:@"actionActionSet"];
+  coderCopy = coder;
+  actionSet = [(HMDAction *)self actionSet];
+  [coderCopy encodeConditionalObject:actionSet forKey:@"actionActionSet"];
 
-  v7 = [(HMDAction *)self uuid];
-  v6 = [v7 UUIDString];
-  [v4 encodeObject:v6 forKey:@"actionUUID"];
+  uuid = [(HMDAction *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"actionUUID"];
 }
 
-- (HMDAction)initWithCoder:(id)a3
+- (HMDAction)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionActionSet"];
-    v8 = [(HMDAction *)self initWithUUID:v6 actionSet:v7];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionActionSet"];
+    selfCopy = [(HMDAction *)self initWithUUID:v6 actionSet:v7];
 
-    v9 = v8;
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -102,19 +102,19 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAction *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDAction *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  v11 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,7 +131,7 @@
   if (!v13)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -148,7 +148,7 @@
 
     objc_autoreleasePoolPop(v14);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v10 respondWithError:v19];
+    [messageCopy respondWithError:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -164,10 +164,10 @@
   return v2;
 }
 
-- (id)backingStoreObjectsWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)backingStoreObjectsWithChangeType:(unint64_t)type version:(int64_t)version
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HMDAction *)self modelObjectWithChangeType:a3 version:a4];
+  v4 = [(HMDAction *)self modelObjectWithChangeType:type version:version];
   v5 = v4;
   if (v4)
   {
@@ -185,13 +185,13 @@
   return v6;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version
 {
-  v6 = objc_alloc([(HMDAction *)self modelClass:a3]);
+  v6 = objc_alloc([(HMDAction *)self modelClass:type]);
   uuid = self->_uuid;
   WeakRetained = objc_loadWeakRetained(&self->_actionSet);
-  v9 = [WeakRetained uuid];
-  v10 = [v6 initWithObjectChangeType:a3 uuid:uuid parentUUID:v9];
+  uuid = [WeakRetained uuid];
+  v10 = [v6 initWithObjectChangeType:type uuid:uuid parentUUID:uuid];
 
   return v10;
 }
@@ -199,9 +199,9 @@
 - (NSUUID)modelParentIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionSet);
-  v3 = [WeakRetained uuid];
+  uuid = [WeakRetained uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)isUnsecuringAction
@@ -217,18 +217,18 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)isCompatibleWithAction:(id)a3
+- (BOOL)isCompatibleWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HMDAction *)self type];
-  v6 = [v4 type];
+  actionCopy = action;
+  type = [(HMDAction *)self type];
+  type2 = [actionCopy type];
 
-  return v5 == v6;
+  return type == type2;
 }
 
-- (BOOL)isAssociatedWithAccessory:(id)a3
+- (BOOL)isAssociatedWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -253,19 +253,19 @@
   objc_exception_throw(v7);
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)modelObjectWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
+  dCopy = d;
+  uuidCopy = uuid;
   v10 = [objc_alloc(-[HMDAction modelClass](self "modelClass"))];
 
   return v10;
 }
 
-- (void)executeWithSource:(unint64_t)a3 clientName:(id)a4 completionHandler:(id)a5
+- (void)executeWithSource:(unint64_t)source clientName:(id)name completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -281,9 +281,9 @@
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = *MEMORY[0x277CD2060];
-  v3 = [(HMDAction *)self uuid];
-  v4 = [v3 UUIDString];
-  v10[0] = v4;
+  uuid = [(HMDAction *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v10[0] = uUIDString;
   v9[1] = *MEMORY[0x277CD2058];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAction type](self, "type")}];
   v10[1] = v5;
@@ -297,9 +297,9 @@
 - (NSString)stateDump
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDAction *)self uuid];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringWithFormat:@"Action uuid: %@", v4];
+  uuid = [(HMDAction *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v5 = [v2 stringWithFormat:@"Action uuid: %@", uUIDString];
 
   return v5;
 }
@@ -317,29 +317,29 @@
   objc_exception_throw(v7);
 }
 
-- (void)updateActionSetIfNil:(id)a3
+- (void)updateActionSetIfNil:(id)nil
 {
-  v5 = a3;
-  v4 = [(HMDAction *)self actionSet];
+  nilCopy = nil;
+  actionSet = [(HMDAction *)self actionSet];
 
-  if (!v4)
+  if (!actionSet)
   {
-    [(HMDAction *)self setActionSet:v5];
+    [(HMDAction *)self setActionSet:nilCopy];
   }
 }
 
-- (HMDAction)initWithUUID:(id)a3 actionSet:(id)a4
+- (HMDAction)initWithUUID:(id)d actionSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = HMDAction;
   v9 = [(HMDAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeWeak(&v10->_actionSet, v8);
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeWeak(&v10->_actionSet, setCopy);
   }
 
   return v10;

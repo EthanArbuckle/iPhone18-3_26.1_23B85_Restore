@@ -1,57 +1,57 @@
 @interface LPiTunesMediaPlaylistMetadata
 + (id)transcriptBoldTextFont;
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesMediaPlaylistMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesMediaPlaylistMetadata)initWithCoder:(id)coder;
 - (id)_activeUserStateHandle;
-- (id)actionURLForTransformer:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)statusForTransformer:(id)a3;
-- (id)storeIdentifierForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (id)actionURLForTransformer:(id)transformer;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)statusForTransformer:(id)transformer;
+- (id)storeIdentifierForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesMediaPlaylistMetadata
 
-- (LPiTunesMediaPlaylistMetadata)initWithCoder:(id)a3
+- (LPiTunesMediaPlaylistMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = LPiTunesMediaPlaylistMetadata;
   v5 = [(LPiTunesMediaPlaylistMetadata *)&v24 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"name");
+    v10 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = decodeStringForKey(v4, @"curator");
+    v12 = decodeStringForKey(coderCopy, @"curator");
     curator = v5->_curator;
     v5->_curator = v12;
 
-    v14 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"curatorProfileURL"];
+    v14 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"curatorProfileURL"];
     curatorProfileURL = v5->_curatorProfileURL;
     v5->_curatorProfileURL = v14;
 
-    v16 = decodeStringForKey(v4, @"curatorHandle");
+    v16 = decodeStringForKey(coderCopy, @"curatorHandle");
     curatorHandle = v5->_curatorHandle;
     v5->_curatorHandle = v16;
 
-    v18 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v18 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v18;
 
-    v20 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
+    v20 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
     artworkMetadata = v5->_artworkMetadata;
     v5->_artworkMetadata = v20;
 
@@ -61,47 +61,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
-  [v4 _lp_encodeStringIfNotNil:self->_curator forKey:@"curator"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_curatorProfileURL forKey:@"curatorProfileURL"];
-  [v4 _lp_encodeStringIfNotNil:self->_curatorHandle forKey:@"curatorHandle"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_curator forKey:@"curator"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_curatorProfileURL forKey:@"curatorProfileURL"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_curatorHandle forKey:@"curatorHandle"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesMediaPlaylistMetadata allocWithZone:a3];
+  v4 = [LPiTunesMediaPlaylistMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(LPiTunesMediaPlaylistMetadata *)self name];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setName:v7];
+    name = [(LPiTunesMediaPlaylistMetadata *)self name];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setName:name];
 
-    v8 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setCurator:v8];
+    curator = [(LPiTunesMediaPlaylistMetadata *)self curator];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setCurator:curator];
 
-    v9 = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setCuratorProfileURL:v9];
+    curatorProfileURL = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setCuratorProfileURL:curatorProfileURL];
 
-    v10 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setCuratorHandle:v10];
+    curatorHandle = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setCuratorHandle:curatorHandle];
 
-    v11 = [(LPiTunesMediaPlaylistMetadata *)self artwork];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setArtwork:v11];
+    artwork = [(LPiTunesMediaPlaylistMetadata *)self artwork];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setArtwork:artwork];
 
-    v12 = [(LPiTunesMediaPlaylistMetadata *)self artworkMetadata];
-    [(LPiTunesMediaPlaylistMetadata *)v4 setArtworkMetadata:v12];
+    artworkMetadata = [(LPiTunesMediaPlaylistMetadata *)self artworkMetadata];
+    [(LPiTunesMediaPlaylistMetadata *)v4 setArtworkMetadata:artworkMetadata];
 
     v13 = v4;
   }
@@ -109,12 +109,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesMediaPlaylistMetadata;
-  if ([(LPiTunesMediaPlaylistMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesMediaPlaylistMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -124,7 +124,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_storeFrontIdentifier) & 1) != 0 && objectsAreEqual_0(v6[3], self->_storeIdentifier) && objectsAreEqual_0(v6[4], self->_name) && objectsAreEqual_0(v6[5], self->_curator) && objectsAreEqual_0(v6[8], self->_artwork) && objectsAreEqual_0(v6[9], self->_artworkMetadata) && objectsAreEqual_0(v6[6], self->_curatorProfileURL))
       {
         v5 = objectsAreEqual_0(v6[7], self->_curatorProfileURL);
@@ -145,11 +145,11 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 URL];
+  transformerCopy = transformer;
+  v5 = [transformerCopy URL];
   v6 = [v5 _lp_valueForQueryKey:@"a"];
   v7 = [v6 _lp_isEqualIgnoringCase:@"join"];
 
@@ -163,28 +163,28 @@
     v8 = 9;
   }
 
-  v9 = [v4 commonPresentationPropertiesForStyle:v8];
+  v9 = [transformerCopy commonPresentationPropertiesForStyle:v8];
   v10 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v9 setCaptionBar:v10];
 
-  v11 = [(LPiTunesMediaPlaylistMetadata *)self name];
-  v12 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-  v13 = appleMusicWordmark(v4);
-  populateCaptionBar(v9, v11, v12, v13, 1, v4);
+  name = [(LPiTunesMediaPlaylistMetadata *)self name];
+  curator = [(LPiTunesMediaPlaylistMetadata *)self curator];
+  v13 = appleMusicWordmark(transformerCopy);
+  populateCaptionBar(v9, name, curator, v13, 1, transformerCopy);
 
-  v14 = [(LPiTunesMediaPlaylistMetadata *)self artwork];
-  [v4 _populateProperties:v9 withPrimaryImage:v14];
+  artwork = [(LPiTunesMediaPlaylistMetadata *)self artwork];
+  [transformerCopy _populateProperties:v9 withPrimaryImage:artwork];
 
   if (v7)
   {
-    if (sizeClassAllowsAppleMusicCollaborationFooter([v4 effectiveSizeClass]))
+    if (sizeClassAllowsAppleMusicCollaborationFooter([transformerCopy effectiveSizeClass]))
     {
-      if ([v4 isInComposeContext])
+      if ([transformerCopy isInComposeContext])
       {
         v15 = objc_alloc_init(LPCollaborationFooterPresentationProperties);
         v16 = MEMORY[0x1E69DCAD8];
-        v17 = [MEMORY[0x1E69DC888] labelColor];
-        v38[0] = v17;
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        v38[0] = labelColor;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
         v19 = [v16 configurationWithPaletteColors:v18];
 
@@ -198,8 +198,8 @@
         v23 = LPLocalizedString(@"Anyone with the link will be able to add, delete, and reorder songs.");
         [(LPCollaborationFooterPresentationProperties *)v15 setSubtitle:v23];
 
-        v24 = [v9 captionBar];
-        [v24 setCollaborationFooter:v15];
+        captionBar = [v9 captionBar];
+        [captionBar setCollaborationFooter:v15];
       }
 
       else
@@ -214,25 +214,25 @@
         [(LPCaptionButtonPresentationProperties *)v32 setActions:v35];
 
         [(LPCaptionButtonPresentationProperties *)v32 setShape:2];
-        v36 = [v9 captionBar];
-        [v36 setButton:v32];
+        captionBar2 = [v9 captionBar];
+        [captionBar2 setButton:v32];
       }
     }
   }
 
   else
   {
-    v25 = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
-    v26 = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
-    v27 = v26;
-    if (!v26)
+    storeIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
+    storeFrontIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
+    v27 = storeFrontIdentifier;
+    if (!storeFrontIdentifier)
     {
-      v12 = [v4 canonicalURL];
-      v27 = storefrontIdentifierFromURL(v12);
+      curator = [transformerCopy canonicalURL];
+      v27 = storefrontIdentifierFromURL(curator);
     }
 
-    v28 = [LPInlineMediaPlaybackInformation playlistPlaybackInformationWithStoreIdentifier:v25 storefrontIdentifier:v27];
-    if (!v26)
+    v28 = [LPInlineMediaPlaybackInformation playlistPlaybackInformationWithStoreIdentifier:storeIdentifier storefrontIdentifier:v27];
+    if (!storeFrontIdentifier)
     {
     }
 
@@ -242,60 +242,60 @@
   return v9;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v4 = [(LPiTunesMediaPlaylistMetadata *)self curator];
+  curator = [(LPiTunesMediaPlaylistMetadata *)self curator];
 
   v5 = MEMORY[0x1E696AEC0];
-  if (v4)
+  if (curator)
   {
     v6 = LPLocalizedString(@"Playlist: %@ – %@");
-    v7 = [(LPiTunesMediaPlaylistMetadata *)self name];
-    v8 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-    v9 = [v5 localizedStringWithFormat:v6, v7, v8];
+    name = [(LPiTunesMediaPlaylistMetadata *)self name];
+    curator2 = [(LPiTunesMediaPlaylistMetadata *)self curator];
+    v9 = [v5 localizedStringWithFormat:v6, name, curator2];
   }
 
   else
   {
     v6 = LPLocalizedString(@"Playlist: %@");
-    v7 = [(LPiTunesMediaPlaylistMetadata *)self name];
-    v9 = [v5 localizedStringWithFormat:v6, v7];
+    name = [(LPiTunesMediaPlaylistMetadata *)self name];
+    v9 = [v5 localizedStringWithFormat:v6, name];
   }
 
   return v9;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v8 = a3;
-  v4 = [(LPiTunesMediaPlaylistMetadata *)self name];
-  v5 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-  v6 = joinedByEmDash(v4, v5);
-  [v8 setTitle:v6];
+  compatibilityCopy = compatibility;
+  name = [(LPiTunesMediaPlaylistMetadata *)self name];
+  curator = [(LPiTunesMediaPlaylistMetadata *)self curator];
+  v6 = joinedByEmDash(name, curator);
+  [compatibilityCopy setTitle:v6];
 
-  v7 = [(LPiTunesMediaPlaylistMetadata *)self artwork];
-  [v8 setImage:v7];
+  artwork = [(LPiTunesMediaPlaylistMetadata *)self artwork];
+  [compatibilityCopy setImage:artwork];
 }
 
-- (id)storeIdentifierForTransformer:(id)a3
+- (id)storeIdentifierForTransformer:(id)transformer
 {
-  v3 = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
+  storeIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 + (id)transcriptBoldTextFont
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (transcriptBoldTextFont_contentSizeCategory_165 != v3)
+  if (transcriptBoldTextFont_contentSizeCategory_165 != preferredContentSizeCategory)
   {
     v4 = emphasizedPreferredFontForTextStyle(*MEMORY[0x1E69DDD10]);
     v5 = transcriptBoldTextFont_font_166;
     transcriptBoldTextFont_font_166 = v4;
 
-    objc_storeStrong(&transcriptBoldTextFont_contentSizeCategory_165, v3);
+    objc_storeStrong(&transcriptBoldTextFont_contentSizeCategory_165, preferredContentSizeCategory);
   }
 
   v6 = transcriptBoldTextFont_font_166;
@@ -306,14 +306,14 @@
 
 - (id)_activeUserStateHandle
 {
-  v2 = [MEMORY[0x1E69E4460] shared];
-  v3 = [v2 activeUserState];
+  mEMORY[0x1E69E4460] = [MEMORY[0x1E69E4460] shared];
+  activeUserState = [mEMORY[0x1E69E4460] activeUserState];
 
-  if (v3)
+  if (activeUserState)
   {
-    v4 = [v3 music];
-    v5 = [v4 userProfile];
-    v6 = [v5 handle];
+    music = [activeUserState music];
+    userProfile = [music userProfile];
+    handle = [userProfile handle];
   }
 
   else
@@ -325,19 +325,19 @@
       _os_log_impl(&dword_1AE886000, v7, OS_LOG_TYPE_DEFAULT, "Failed to get active iTunes user state.", v9, 2u);
     }
 
-    v6 = 0;
+    handle = 0;
   }
 
-  return v6;
+  return handle;
 }
 
-- (id)statusForTransformer:(id)a3
+- (id)statusForTransformer:(id)transformer
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transformerCopy = transformer;
   v5 = +[LPiTunesStoreInformation shared];
-  v6 = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
-  v7 = [v5 userStateForMediaStorefrontIdentifier:v6];
+  storeFrontIdentifier = [(LPiTunesMediaPlaylistMetadata *)self storeFrontIdentifier];
+  v7 = [v5 userStateForMediaStorefrontIdentifier:storeFrontIdentifier];
 
   v8 = subscribeToAppleMusicStatus(v7);
   if (v8)
@@ -349,7 +349,7 @@
       _os_log_impl(&dword_1AE886000, v9, OS_LOG_TYPE_DEFAULT, "Failed to show playlist transformer status label; showing subscription status text instead.", buf, 2u);
     }
 
-    v10 = [LPiTunesMediaSongMetadata statusForText:v8 withTransformer:v4];
+    v10 = [LPiTunesMediaSongMetadata statusForText:v8 withTransformer:transformerCopy];
     goto LABEL_25;
   }
 
@@ -369,18 +369,18 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  v11 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-  if (!v11)
+  curator = [(LPiTunesMediaPlaylistMetadata *)self curator];
+  if (!curator)
   {
     goto LABEL_16;
   }
 
-  v12 = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
-  if (!v12)
+  curatorProfileURL = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
+  if (!curatorProfileURL)
   {
-    v15 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+    curatorHandle = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
 
-    if (v15)
+    if (curatorHandle)
     {
       goto LABEL_12;
     }
@@ -398,12 +398,12 @@ LABEL_16:
   }
 
 LABEL_12:
-  v16 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
-  if (v16)
+  curatorHandle2 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+  if (curatorHandle2)
   {
-    v17 = [(LPiTunesMediaPlaylistMetadata *)self _activeUserStateHandle];
-    v18 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
-    v19 = [v17 isEqual:v18];
+    _activeUserStateHandle = [(LPiTunesMediaPlaylistMetadata *)self _activeUserStateHandle];
+    curatorHandle3 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+    v19 = [_activeUserStateHandle isEqual:curatorHandle3];
 
     if (v19)
     {
@@ -420,31 +420,31 @@ LABEL_12:
   }
 
   v34[0] = *MEMORY[0x1E69DB648];
-  v20 = [objc_opt_class() transcriptBoldTextFont];
-  v35[0] = v20;
+  transcriptBoldTextFont = [objc_opt_class() transcriptBoldTextFont];
+  v35[0] = transcriptBoldTextFont;
   v34[1] = *MEMORY[0x1E69DB650];
-  v21 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v35[1] = v21;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v35[1] = systemBlueColor;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
   v22 = objc_alloc_init(MEMORY[0x1E696ADF8]);
-  v23 = [(LPiTunesMediaPlaylistMetadata *)self curator];
-  v24 = [v22 personNameComponentsFromString:v23];
+  curator2 = [(LPiTunesMediaPlaylistMetadata *)self curator];
+  v24 = [v22 personNameComponentsFromString:curator2];
 
-  v25 = [v24 givenName];
+  givenName = [v24 givenName];
   v26 = objc_alloc(MEMORY[0x1E696AD40]);
   v27 = MEMORY[0x1E696AEC0];
   v28 = LPLocalizedString(@"Follow %@ on Apple Music");
-  v29 = v25;
-  if (!v25)
+  curator3 = givenName;
+  if (!givenName)
   {
-    v29 = [(LPiTunesMediaPlaylistMetadata *)self curator];
+    curator3 = [(LPiTunesMediaPlaylistMetadata *)self curator];
   }
 
-  v30 = [v27 localizedStringWithFormat:v28, v29];
+  v30 = [v27 localizedStringWithFormat:v28, curator3];
   v10 = [v26 initWithString:v30 attributes:v32];
 
-  if (!v25)
+  if (!givenName)
   {
   }
 
@@ -453,39 +453,39 @@ LABEL_25:
   return v10;
 }
 
-- (id)actionURLForTransformer:(id)a3
+- (id)actionURLForTransformer:(id)transformer
 {
-  v4 = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
+  curatorProfileURL = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
 
-  if (v4)
+  if (curatorProfileURL)
   {
-    v5 = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
+    curatorProfileURL2 = [(LPiTunesMediaPlaylistMetadata *)self curatorProfileURL];
   }
 
   else
   {
-    v6 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+    curatorHandle = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
 
-    if (v6)
+    if (curatorHandle)
     {
       v7 = objc_alloc_init(MEMORY[0x1E696AF20]);
       [v7 setScheme:@"https"];
       [v7 setHost:@"music.apple.com"];
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
-      v10 = [v8 stringWithFormat:@"/profile/%@", v9];
+      curatorHandle2 = [(LPiTunesMediaPlaylistMetadata *)self curatorHandle];
+      v10 = [v8 stringWithFormat:@"/profile/%@", curatorHandle2];
       [v7 setPath:v10];
 
-      v5 = [v7 URL];
+      curatorProfileURL2 = [v7 URL];
     }
 
     else
     {
-      v5 = 0;
+      curatorProfileURL2 = 0;
     }
   }
 
-  return v5;
+  return curatorProfileURL2;
 }
 
 @end

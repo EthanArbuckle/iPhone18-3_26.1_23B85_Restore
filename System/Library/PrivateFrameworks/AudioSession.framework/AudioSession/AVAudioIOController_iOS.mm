@@ -1,24 +1,24 @@
 @interface AVAudioIOController_iOS
-- (AVAudioIOController_iOS)initWithSession:(id)a3 xpcConnection:(shared_ptr<avas:(shared_ptr<avas:(unsigned int)a6 :(BOOL)a7 client::DeviceTimeClient>)a5 :client::XPCConnection>)a4 deviceTimeClient:timingSlot:isDecoupledInput:;
+- (AVAudioIOController_iOS)initWithSession:(id)session xpcConnection:(shared_ptr<avas:(shared_ptr<avas:(unsigned int)connection :(BOOL)a7 client::DeviceTimeClient>)a5 :client::XPCConnection>)a4 deviceTimeClient:timingSlot:isDecoupledInput:;
 - (AVAudioIOPeriod)IOPeriod;
 - (BOOL)isRunning;
 - (__n128)isRunning;
 - (id).cxx_construct;
-- (int64_t)createIOEventBlock:(id)a3;
-- (void)destroyIOEventBlock:(int64_t)a3;
+- (int64_t)createIOEventBlock:(id)block;
+- (void)destroyIOEventBlock:(int64_t)block;
 - (void)isRunning;
-- (void)privateDispatchIOControllerEvent:(unint64_t)a3;
+- (void)privateDispatchIOControllerEvent:(unint64_t)event;
 @end
 
 @implementation AVAudioIOController_iOS
 
-- (AVAudioIOController_iOS)initWithSession:(id)a3 xpcConnection:(shared_ptr<avas:(shared_ptr<avas:(unsigned int)a6 :(BOOL)a7 client::DeviceTimeClient>)a5 :client::XPCConnection>)a4 deviceTimeClient:timingSlot:isDecoupledInput:
+- (AVAudioIOController_iOS)initWithSession:(id)session xpcConnection:(shared_ptr<avas:(shared_ptr<avas:(unsigned int)connection :(BOOL)a7 client::DeviceTimeClient>)a5 :client::XPCConnection>)a4 deviceTimeClient:timingSlot:isDecoupledInput:
 {
   cntrl = a5.__cntrl_;
   ptr = a5.__ptr_;
   v9 = a4.__cntrl_;
   v10 = a4.__ptr_;
-  v12 = a3;
+  sessionCopy = session;
   v23.receiver = self;
   v23.super_class = AVAudioIOController_iOS;
   v13 = [(AVAudioIOController_iOS *)&v23 init];
@@ -45,7 +45,7 @@
     if (v17)
     {
       atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
-      objc_initWeak(v14 + 1, v12);
+      objc_initWeak(v14 + 1, sessionCopy);
       v14[16] = cntrl;
       *(v14 + 3) = v18;
       *(v14 + 4) = v17;
@@ -61,7 +61,7 @@
 
     else
     {
-      objc_initWeak(v14 + 1, v12);
+      objc_initWeak(v14 + 1, sessionCopy);
       v14[16] = cntrl;
       *(v14 + 3) = v18;
       *(v14 + 4) = 0;
@@ -96,11 +96,11 @@
 - (BOOL)isRunning
 {
   v7[4] = *MEMORY[0x1E69E9840];
-  v6 = self;
+  selfCopy = self;
   v5 = 0;
   v2 = avas::client::DeviceTimeGlobalState::instance(self);
   v7[0] = &unk_1F215D3B8;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[2] = &v5;
   v7[3] = v7;
   (*(*v2 + 16))(v2, v7);
@@ -147,10 +147,10 @@ LABEL_8:
   avas::client::XPCConnection::sync_message<double,unsigned long>(v9, &v20);
   v10 = objc_autoreleasePoolPush();
   v11 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},double,unsigned long>::sync_proxy(&v20);
-  v12 = [WeakRetained opaqueSessionID];
+  opaqueSessionID = [WeakRetained opaqueSessionID];
   v13 = *(self + 16);
   v14 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},double,unsigned long>::reply(&v20);
-  [v11 getIOControllerPeriod:v12 decoupledInput:v13 reply:v14];
+  [v11 getIOControllerPeriod:opaqueSessionID decoupledInput:v13 reply:v14];
 
   objc_autoreleasePoolPop(v10);
   if (v22)
@@ -181,14 +181,14 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)createIOEventBlock:(id)a3
+- (int64_t)createIOEventBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(self + 1);
   if (WeakRetained)
   {
     os_unfair_lock_lock(self + 12);
-    v6 = v4;
+    v6 = blockCopy;
     v12 = add;
     v13 = v6;
     v8 = *(self + 9);
@@ -222,14 +222,14 @@ LABEL_9:
   return v10;
 }
 
-- (void)destroyIOEventBlock:(int64_t)a3
+- (void)destroyIOEventBlock:(int64_t)block
 {
   os_unfair_lock_lock(self + 12);
   v6 = *(self + 8);
   v5 = *(self + 9);
   if (v6 != v5)
   {
-    while (*v6 != a3)
+    while (*v6 != block)
     {
       v6 += 2;
       if (v6 == v5)
@@ -266,7 +266,7 @@ LABEL_9:
   os_unfair_lock_unlock(self + 12);
 }
 
-- (void)privateDispatchIOControllerEvent:(unint64_t)a3
+- (void)privateDispatchIOControllerEvent:(unint64_t)event
 {
   os_unfair_lock_lock(self + 12);
   v4 = *(self + 8);
@@ -292,21 +292,21 @@ LABEL_9:
 - (__n128)isRunning
 {
   *a2 = &unk_1F215D3B8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
 
 - (void)isRunning
 {
-  v2 = atomic_load((**(a1 + 8) + 40));
+  v2 = atomic_load((**(self + 8) + 40));
   if (v2 >= 0x21F)
   {
     goto LABEL_14;
   }
 
   caulk::concurrent::atomic_value<avas::SessionSharedState,2,3>::load((a2 + 104 * v2 + 8), v8);
-  if (*(**(a1 + 8) + 16) == 1)
+  if (*(**(self + 8) + 16) == 1)
   {
     if (v10 == 1 && v8[0] != 255)
     {
@@ -315,7 +315,7 @@ LABEL_9:
         v5 = a2 + 136 * v8[0];
 LABEL_12:
         caulk::concurrent::atomic_value<avas::MinimalTimeStamp,2,3>::load((v5 + 56480), v7);
-        **(a1 + 16) = v7[0];
+        **(self + 16) = v7[0];
         return;
       }
 

@@ -1,28 +1,28 @@
 @interface CDPPiggybackingChannel
-- (CDPPiggybackingChannel)initWithContext:(id)a3;
-- (id)_replyContextWithPakeData:(id)a3;
-- (void)sendPayload:(id)a3 completion:(id)a4;
+- (CDPPiggybackingChannel)initWithContext:(id)context;
+- (id)_replyContextWithPakeData:(id)data;
+- (void)sendPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation CDPPiggybackingChannel
 
-- (CDPPiggybackingChannel)initWithContext:(id)a3
+- (CDPPiggybackingChannel)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(CDPPiggybackingChannel *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (void)sendPayload:(id)a3 completion:(id)a4
+- (void)sendPayload:(id)payload completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  payloadCopy = payload;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -30,15 +30,15 @@
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Sending payload over piggybacking channel", buf, 2u);
   }
 
-  v9 = [(CDPPiggybackingChannel *)self _replyContextWithPakeData:v7];
+  v9 = [(CDPPiggybackingChannel *)self _replyContextWithPakeData:payloadCopy];
 
   v10 = objc_alloc_init(MEMORY[0x277CF0178]);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__CDPPiggybackingChannel_sendPayload_completion___block_invoke;
   v12[3] = &unk_278E26420;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v10 performCircleRequestWithContext:v9 completion:v12];
 }
 
@@ -62,19 +62,19 @@ void __49__CDPPiggybackingChannel_sendPayload_completion___block_invoke(uint64_t
   v7();
 }
 
-- (id)_replyContextWithPakeData:(id)a3
+- (id)_replyContextWithPakeData:(id)data
 {
   context = self->_context;
-  v5 = a3;
-  v6 = [(CDPContext *)context resumeContext];
-  v7 = [v6 payload];
-  v8 = [v7 replyPayload];
-  v9 = [(CDPContext *)self->_context resumeContext];
-  [v9 setPayload:v8];
+  dataCopy = data;
+  resumeContext = [(CDPContext *)context resumeContext];
+  payload = [resumeContext payload];
+  replyPayload = [payload replyPayload];
+  resumeContext2 = [(CDPContext *)self->_context resumeContext];
+  [resumeContext2 setPayload:replyPayload];
 
-  v10 = [(CDPContext *)self->_context resumeContext];
-  v11 = [v10 payload];
-  [v11 setClientInfo:v5];
+  resumeContext3 = [(CDPContext *)self->_context resumeContext];
+  payload2 = [resumeContext3 payload];
+  [payload2 setClientInfo:dataCopy];
 
   v12 = self->_context;
 

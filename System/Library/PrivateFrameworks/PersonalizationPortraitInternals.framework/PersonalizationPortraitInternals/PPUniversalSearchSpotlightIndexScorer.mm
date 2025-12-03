@@ -1,20 +1,20 @@
 @interface PPUniversalSearchSpotlightIndexScorer
 - (PPUniversalSearchSpotlightIndexScorer)init;
-- (PPUniversalSearchSpotlightIndexScorer)initWithLocalTopicStore:(id)a3;
-- (double)computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector:(id)a3;
-- (double)computeSpotlightIndexTopicSubscoreFromPortraitExtractions:(id)a3;
+- (PPUniversalSearchSpotlightIndexScorer)initWithLocalTopicStore:(id)store;
+- (double)computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector:(id)vector;
+- (double)computeSpotlightIndexTopicSubscoreFromPortraitExtractions:(id)extractions;
 - (id)topicAlgorithmWeights;
 @end
 
 @implementation PPUniversalSearchSpotlightIndexScorer
 
-- (double)computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector:(id)a3
+- (double)computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector:(id)vector
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vectorCopy = vector;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
-  v6 = [v4 allKeys];
-  v7 = [v5 initWithArray:v6];
+  allKeys = [vectorCopy allKeys];
+  v7 = [v5 initWithArray:allKeys];
 
   v39 = 0;
   v40 = &v39;
@@ -26,7 +26,7 @@
   v37[3] = __Block_byref_object_copy__19394;
   v37[4] = __Block_byref_object_dispose__19395;
   v38 = objc_opt_new();
-  v8 = [(_PASLazyPurgeableResult *)self->_cachedPortraitTopicScores result];
+  result = [(_PASLazyPurgeableResult *)self->_cachedPortraitTopicScores result];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector___block_invoke;
@@ -35,10 +35,10 @@
   v9 = v7;
   v34 = v9;
   v36 = v37;
-  [v8 enumerateKeysAndObjectsUsingBlock:v33];
+  [result enumerateKeysAndObjectsUsingBlock:v33];
 
   v10 = v40[3];
-  v11 = [(PPUniversalSearchSpotlightIndexScorer *)self topicAlgorithmWeights];
+  topicAlgorithmWeights = [(PPUniversalSearchSpotlightIndexScorer *)self topicAlgorithmWeights];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -52,11 +52,11 @@
   v20[2] = __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScoreComponentFromDocumentTopicVector___block_invoke_2;
   v20[3] = &unk_278976DE0;
   v22 = v37;
-  v12 = v11;
+  v12 = topicAlgorithmWeights;
   v21 = v12;
   v23 = &v25;
   v24 = &v29;
-  [v4 enumerateKeysAndObjectsUsingBlock:v20];
+  [vectorCopy enumerateKeysAndObjectsUsingBlock:v20];
   v13 = v26[3];
   v14 = 0.0;
   if (v13 != 0.0)
@@ -121,16 +121,16 @@ void __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScor
   }
 }
 
-- (double)computeSpotlightIndexTopicSubscoreFromPortraitExtractions:(id)a3
+- (double)computeSpotlightIndexTopicSubscoreFromPortraitExtractions:(id)extractions
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extractionsCopy = extractions;
   v4 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = extractionsCopy;
   v29 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v29)
   {
@@ -151,8 +151,8 @@ void __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScor
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v7 = [v6 topics];
-        v8 = [v7 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        topics = [v6 topics];
+        v8 = [topics countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v8)
         {
           v9 = v8;
@@ -163,35 +163,35 @@ void __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScor
             {
               if (*v32 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(topics);
               }
 
               v12 = *(*(&v31 + 1) + 8 * i);
-              v13 = [v12 item];
-              v14 = [v13 topicIdentifier];
-              v15 = [v14 hasPrefix:@"Q"];
+              item = [v12 item];
+              topicIdentifier = [item topicIdentifier];
+              v15 = [topicIdentifier hasPrefix:@"Q"];
 
               if (v15)
               {
-                v16 = [v12 item];
-                v17 = [v16 topicIdentifier];
-                v18 = [v4 objectForKeyedSubscript:v17];
+                item2 = [v12 item];
+                topicIdentifier2 = [item2 topicIdentifier];
+                v18 = [v4 objectForKeyedSubscript:topicIdentifier2];
 
                 if (!v18)
                 {
                   v18 = objc_opt_new();
-                  v19 = [v12 item];
-                  v20 = [v19 topicIdentifier];
-                  [v4 setObject:v18 forKeyedSubscript:v20];
+                  item3 = [v12 item];
+                  topicIdentifier3 = [item3 topicIdentifier];
+                  [v4 setObject:v18 forKeyedSubscript:topicIdentifier3];
                 }
 
-                v21 = [v6 topicAlgorithm];
+                topicAlgorithm = [v6 topicAlgorithm];
                 [v12 score];
-                [v18 addToCountForAlgorithm:v21 value:?];
+                [v18 addToCountForAlgorithm:topicAlgorithm value:?];
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v9 = [topics countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v9);
@@ -229,16 +229,16 @@ void __105__PPUniversalSearchSpotlightIndexScorer_computeSpotlightIndexTopicScor
   return v2;
 }
 
-- (PPUniversalSearchSpotlightIndexScorer)initWithLocalTopicStore:(id)a3
+- (PPUniversalSearchSpotlightIndexScorer)initWithLocalTopicStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = PPUniversalSearchSpotlightIndexScorer;
   v7 = [(PPUniversalSearchSpotlightIndexScorer *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_topicStore, a3);
+    objc_storeStrong(&v7->_topicStore, store);
     objc_initWeak(&location, v8);
     v9 = objc_alloc(MEMORY[0x277D425E8]);
     v13[0] = MEMORY[0x277D85DD0];

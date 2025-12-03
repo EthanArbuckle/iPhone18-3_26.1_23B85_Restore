@@ -2,35 +2,35 @@
 - (CGSize)colorInputSize;
 - (CGSize)colorOutputSize;
 - (CGSize)disparitySize;
-- (PTRenderPipelineDescriptor)initWithDevice:(id)a3 version:(unint64_t)a4 colorInputSize:(CGSize)a5 colorOutputSize:(CGSize)a6 disparitySize:(CGSize)a7;
+- (PTRenderPipelineDescriptor)initWithDevice:(id)device version:(unint64_t)version colorInputSize:(CGSize)size colorOutputSize:(CGSize)outputSize disparitySize:(CGSize)disparitySize;
 - (id)copy;
 @end
 
 @implementation PTRenderPipelineDescriptor
 
-- (PTRenderPipelineDescriptor)initWithDevice:(id)a3 version:(unint64_t)a4 colorInputSize:(CGSize)a5 colorOutputSize:(CGSize)a6 disparitySize:(CGSize)a7
+- (PTRenderPipelineDescriptor)initWithDevice:(id)device version:(unint64_t)version colorInputSize:(CGSize)size colorOutputSize:(CGSize)outputSize disparitySize:(CGSize)disparitySize
 {
-  height = a7.height;
-  width = a7.width;
-  v9 = a6.height;
-  v10 = a6.width;
-  v11 = a5.height;
-  v12 = a5.width;
-  v16 = a3;
+  height = disparitySize.height;
+  width = disparitySize.width;
+  v9 = outputSize.height;
+  v10 = outputSize.width;
+  v11 = size.height;
+  v12 = size.width;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = PTRenderPipelineDescriptor;
   v17 = [(PTRenderPipelineDescriptor *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_device, a3);
+    objc_storeStrong(&v17->_device, device);
     v18->_colorInputSize.width = v12;
     v18->_colorInputSize.height = v11;
     v18->_colorOutputSize.width = v10;
     v18->_colorOutputSize.height = v9;
     v18->_disparitySize.width = width;
     v18->_disparitySize.height = height;
-    v18->_version = a4;
+    v18->_version = version;
     v18->_debugRendering = 0;
     *&v18->_verbose = 0;
     v18->_useRGBA = 0;

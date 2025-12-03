@@ -2,45 +2,45 @@
 - (BOOL)isLowPowerModePeriodicWakeUpNotificationSubscribed;
 - (BOOL)isVoiceLqmSubscribed;
 - (WRM_iRATClientController)init;
-- (id)getMobilityContextFromList:(unint64_t)a3;
+- (id)getMobilityContextFromList:(unint64_t)list;
 - (id)getStaleContextFromList;
 - (int)getMyClientType;
-- (void)addMobilityContextToList:(id)a3;
+- (void)addMobilityContextToList:(id)list;
 - (void)deactivateMobilityContexts;
 - (void)dealloc;
-- (void)deleteMobilityContext:(unint64_t)a3;
+- (void)deleteMobilityContext:(unint64_t)context;
 - (void)existingContexts;
-- (void)handleBBAssertBGAppActive:(id)a3;
-- (void)handleBasebandMetricsInterfaceRequest:(id)a3;
-- (void)handleCommCenterBasebandOperatingChange:(id)a3;
-- (void)handleDisconnection:(id)a3;
-- (void)handleGetStreamingMetrics:(id)a3;
-- (void)handleIWLANMetrics:(id)a3;
-- (void)handleLinkPrefGetMetrics:(id)a3;
-- (void)handleLinkPrefSubscribe:(id)a3;
-- (void)handleLinkPrefSubscribeCM:(id)a3;
-- (void)handleLinkPrefSubscribeFaceTimeCalling:(id)a3;
-- (void)handleLinkPrefSubscribeIDS:(id)a3;
-- (void)handleLinkPreferenceNotification:(BOOL)a3;
-- (void)handleLinkPreferenceNotificationCM:(BOOL)a3;
-- (void)handleLinkPreferenceNotificationFaceTimeCalling:(BOOL)a3 :(id)a4 :(id)a5;
-- (void)handleLinkPreferenceNotificationIDS:(BOOL)a3;
-- (void)handleMessage:(id)a3;
-- (void)handleMetricsReportFaceTimeCalling:(id)a3;
-- (void)handleMetricsReportIDS:(id)a3;
-- (void)handleSIPStalledMetrics:(id)a3;
-- (void)handleStallCM:(id)a3;
-- (void)handleSubscribeStatusUpdate:(id)a3;
-- (void)handleSubscribeStatusUpdateCM:(id)a3;
-- (void)handleSubscribeStatusUpdateFaceTimeCalling:(id)a3;
-- (void)handleSubscribeStatusUpdateIDS:(id)a3;
-- (void)handleSubscribeStatusUpdateTerminus:(id)a3;
-- (void)postiRATNotificationToEnableDisableCellData:(unint64_t)a3 :(BOOL)a4;
+- (void)handleBBAssertBGAppActive:(id)active;
+- (void)handleBasebandMetricsInterfaceRequest:(id)request;
+- (void)handleCommCenterBasebandOperatingChange:(id)change;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleGetStreamingMetrics:(id)metrics;
+- (void)handleIWLANMetrics:(id)metrics;
+- (void)handleLinkPrefGetMetrics:(id)metrics;
+- (void)handleLinkPrefSubscribe:(id)subscribe;
+- (void)handleLinkPrefSubscribeCM:(id)m;
+- (void)handleLinkPrefSubscribeFaceTimeCalling:(id)calling;
+- (void)handleLinkPrefSubscribeIDS:(id)s;
+- (void)handleLinkPreferenceNotification:(BOOL)notification;
+- (void)handleLinkPreferenceNotificationCM:(BOOL)m;
+- (void)handleLinkPreferenceNotificationFaceTimeCalling:(BOOL)calling :(id)a4 :(id)a5;
+- (void)handleLinkPreferenceNotificationIDS:(BOOL)s;
+- (void)handleMessage:(id)message;
+- (void)handleMetricsReportFaceTimeCalling:(id)calling;
+- (void)handleMetricsReportIDS:(id)s;
+- (void)handleSIPStalledMetrics:(id)metrics;
+- (void)handleStallCM:(id)m;
+- (void)handleSubscribeStatusUpdate:(id)update;
+- (void)handleSubscribeStatusUpdateCM:(id)m;
+- (void)handleSubscribeStatusUpdateFaceTimeCalling:(id)calling;
+- (void)handleSubscribeStatusUpdateIDS:(id)s;
+- (void)handleSubscribeStatusUpdateTerminus:(id)terminus;
+- (void)postiRATNotificationToEnableDisableCellData:(unint64_t)data :(BOOL)a4;
 - (void)purgeStaleMobilityContexts;
 - (void)removeAllMobilityContextsFromList;
-- (void)removeMobilityContextFromList:(id)a3;
-- (void)setLowPowerModePeriodicWakeUpNotificationSubscribed:(BOOL)a3;
-- (void)setVoiceLqmSubscribed:(BOOL)a3;
+- (void)removeMobilityContextFromList:(id)list;
+- (void)setLowPowerModePeriodicWakeUpNotificationSubscribed:(BOOL)subscribed;
+- (void)setVoiceLqmSubscribed:(BOOL)subscribed;
 @end
 
 @implementation WRM_iRATClientController
@@ -103,45 +103,45 @@
   [(WCM_Controller *)&v4 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
-  [WCM_Logging logLevel:24 message:@"Received message-id: %lld from iRAT Client, params are %@", uint64, a3];
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
+  [WCM_Logging logLevel:24 message:@"Received message-id: %lld from iRAT Client, params are %@", uint64, message];
   if (uint64 <= 599)
   {
     switch(uint64)
     {
       case 400:
 
-        [(WRM_iRATClientController *)self handleLinkPrefSubscribe:a3];
+        [(WRM_iRATClientController *)self handleLinkPrefSubscribe:message];
         break;
       case 401:
 
-        [(WRM_iRATClientController *)self handleSubscribeStatusUpdate:a3];
+        [(WRM_iRATClientController *)self handleSubscribeStatusUpdate:message];
         break;
       case 402:
 
-        [(WRM_iRATClientController *)self handleLinkPrefSubscribeIDS:a3];
+        [(WRM_iRATClientController *)self handleLinkPrefSubscribeIDS:message];
         break;
       case 403:
 
-        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateIDS:a3];
+        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateIDS:message];
         break;
       case 404:
 
-        [(WRM_iRATClientController *)self handleLinkPrefSubscribeCM:a3];
+        [(WRM_iRATClientController *)self handleLinkPrefSubscribeCM:message];
         break;
       case 405:
 
-        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateCM:a3];
+        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateCM:message];
         break;
       case 406:
 
-        [(WRM_iRATClientController *)self handleLinkPrefSubscribeFaceTimeCalling:a3];
+        [(WRM_iRATClientController *)self handleLinkPrefSubscribeFaceTimeCalling:message];
         break;
       case 407:
 
-        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateFaceTimeCalling:a3];
+        [(WRM_iRATClientController *)self handleSubscribeStatusUpdateFaceTimeCalling:message];
         break;
       case 408:
       case 409:
@@ -152,43 +152,43 @@
         goto LABEL_30;
       case 410:
 
-        [(WRM_iRATClientController *)self handleCommCenterBasebandOperatingChange:a3];
+        [(WRM_iRATClientController *)self handleCommCenterBasebandOperatingChange:message];
         break;
       case 411:
 
-        [(WRM_iRATClientController *)self handleBBAssertBGAppActive:a3];
+        [(WRM_iRATClientController *)self handleBBAssertBGAppActive:message];
         break;
       case 412:
       case 418:
 
-        [(WRM_iRATClientController *)self handleStallCM:a3];
+        [(WRM_iRATClientController *)self handleStallCM:message];
         break;
       case 415:
 
-        [(WRM_iRATClientController *)self handleLinkPrefGetMetrics:a3];
+        [(WRM_iRATClientController *)self handleLinkPrefGetMetrics:message];
         break;
       case 416:
 
-        [(WRM_iRATClientController *)self handleIWLANMetrics:a3];
+        [(WRM_iRATClientController *)self handleIWLANMetrics:message];
         break;
       case 417:
 
-        [(WRM_iRATClientController *)self handleGetStreamingMetrics:a3];
+        [(WRM_iRATClientController *)self handleGetStreamingMetrics:message];
         break;
       case 419:
         v7 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-        [v7 handleDataPlanUpdate:a3];
+        [v7 handleDataPlanUpdate:message];
         break;
       case 420:
 
-        [(WRM_iRATClientController *)self handleSIPStalledMetrics:a3];
+        [(WRM_iRATClientController *)self handleSIPStalledMetrics:message];
         break;
       case 423:
         [WCM_Logging logLevel:28 message:@"MLPredictedThroughput: WRMMLPredictedThroughput: handleMessage"];
         v8 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-        [v8 handleGetMLPredictedThroughput:a3];
+        [v8 handleGetMLPredictedThroughput:message];
         break;
       default:
         if ((uint64 - 201) >= 2)
@@ -196,7 +196,7 @@
           goto LABEL_30;
         }
 
-        [(WRM_iRATClientController *)self handleMetricsReportFaceTimeCalling:a3];
+        [(WRM_iRATClientController *)self handleMetricsReportFaceTimeCalling:message];
         break;
     }
 
@@ -210,7 +210,7 @@
       if (uint64 == 600)
       {
 
-        [(WRM_iRATClientController *)self handleMetricsReportIDS:a3];
+        [(WRM_iRATClientController *)self handleMetricsReportIDS:message];
         return;
       }
 
@@ -240,7 +240,7 @@ LABEL_30:
 
       v6 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-      [v6 handleGetVoiceLqmValue:a3];
+      [v6 handleGetVoiceLqmValue:message];
     }
   }
 
@@ -250,7 +250,7 @@ LABEL_30:
     {
 LABEL_18:
 
-      [(WRM_iRATClientController *)self handleBasebandMetricsInterfaceRequest:a3];
+      [(WRM_iRATClientController *)self handleBasebandMetricsInterfaceRequest:message];
       return;
     }
 
@@ -263,32 +263,32 @@ LABEL_18:
   }
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
-  v5 = [(WRM_iRATClientController *)self getMyClientType];
-  v6 = [(WCM_Controller *)self getProcessId];
-  [WCM_Logging logLevel:18 message:@"handleDisconnection from client %d, pid %d", v5, v6];
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  getProcessId = [(WCM_Controller *)self getProcessId];
+  [WCM_Logging logLevel:18 message:@"handleDisconnection from client %d, pid %d", getMyClientType, getProcessId];
   v7 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-  [v7 handleDisconnection:a3 pid:v6];
+  [v7 handleDisconnection:disconnection pid:getProcessId];
 }
 
-- (void)handleLinkPrefSubscribe:(id)a3
+- (void)handleLinkPrefSubscribe:(id)subscribe
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(subscribe, "kClientType", getMyClientType);
+  value = xpc_dictionary_get_value(subscribe, "kMessageArgs");
   v6 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList");
   if (v6)
   {
     v7 = v6;
-    v19 = a3;
+    subscribeCopy = subscribe;
     count = xpc_array_get_count(v6);
     if (count)
     {
       v9 = count;
       v10 = 0;
-      if (v4 == 22)
+      if (getMyClientType == 22)
       {
         v11 = "ClientCoreMediaStreaming";
       }
@@ -298,7 +298,7 @@ LABEL_18:
         v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
       }
 
-      v12 = (v4 - 1);
+      v12 = (getMyClientType - 1);
       do
       {
         v13 = xpc_array_get_value(v7, v10);
@@ -311,7 +311,7 @@ LABEL_18:
           v17 = off_10023F608[v12];
         }
 
-        [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribe:]", v10++, uint64, v15, v16, v4, v17];
+        [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribe:]", v10++, uint64, v15, v16, getMyClientType, v17];
       }
 
       while (v9 != v10);
@@ -319,7 +319,7 @@ LABEL_18:
 
     v18 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v18 updateControllerState:v19];
+    [v18 updateControllerState:subscribeCopy];
   }
 
   else
@@ -329,15 +329,15 @@ LABEL_18:
   }
 }
 
-- (void)handleLinkPrefSubscribeIDS:(id)a3
+- (void)handleLinkPrefSubscribeIDS:(id)s
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(s, "kClientType", getMyClientType);
+  value = xpc_dictionary_get_value(s, "kMessageArgs");
   if (value && (v6 = value, (v7 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0))
   {
     v8 = v7;
-    v21 = a3;
+    sCopy = s;
     uint64 = xpc_dictionary_get_uint64(v6, "kWRMSubscriptionType");
     [WCM_Logging logLevel:27 message:@"handleLinkPrefSubscribeIDS: Subscription Type: %llu", uint64];
     count = xpc_array_get_count(v8);
@@ -345,7 +345,7 @@ LABEL_18:
     {
       v10 = count;
       v11 = 0;
-      if (v4 == 22)
+      if (getMyClientType == 22)
       {
         v12 = "ClientCoreMediaStreaming";
       }
@@ -355,7 +355,7 @@ LABEL_18:
         v12 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
       }
 
-      v13 = (v4 - 1);
+      v13 = (getMyClientType - 1);
       do
       {
         v14 = xpc_array_get_value(v8, v11);
@@ -368,7 +368,7 @@ LABEL_18:
           v18 = off_10023F608[v13];
         }
 
-        [WCM_Logging logLevel:27 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeIDS:]", v11++, v15, v16, v17, v4, v18];
+        [WCM_Logging logLevel:27 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeIDS:]", v11++, v15, v16, v17, getMyClientType, v18];
       }
 
       while (v10 != v11);
@@ -384,7 +384,7 @@ LABEL_18:
       v19 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
     }
 
-    [v19 updateControllerState:v21];
+    [v19 updateControllerState:sCopy];
   }
 
   else
@@ -394,14 +394,14 @@ LABEL_18:
   }
 }
 
-- (void)handleLinkPrefGetMetrics:(id)a3
+- (void)handleLinkPrefGetMetrics:(id)metrics
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  xpc_dictionary_set_uint64(metrics, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  if (xpc_dictionary_get_value(metrics, "kMessageArgs"))
   {
     v4 = +[WRM_FT_HandoverManager WRM_FT_HandoverManagerSingleton];
 
-    [v4 updateControllerState:a3];
+    [v4 updateControllerState:metrics];
   }
 
   else
@@ -411,21 +411,21 @@ LABEL_18:
   }
 }
 
-- (void)handleLinkPrefSubscribeFaceTimeCalling:(id)a3
+- (void)handleLinkPrefSubscribeFaceTimeCalling:(id)calling
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(calling, "kClientType", getMyClientType);
+  value = xpc_dictionary_get_value(calling, "kMessageArgs");
   if (value && (v6 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0)
   {
     v7 = v6;
-    v19 = a3;
+    callingCopy = calling;
     count = xpc_array_get_count(v6);
     if (count)
     {
       v9 = count;
       v10 = 0;
-      if (v4 == 22)
+      if (getMyClientType == 22)
       {
         v11 = "ClientCoreMediaStreaming";
       }
@@ -435,7 +435,7 @@ LABEL_18:
         v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
       }
 
-      v12 = (v4 - 1);
+      v12 = (getMyClientType - 1);
       do
       {
         v13 = xpc_array_get_value(v7, v10);
@@ -448,7 +448,7 @@ LABEL_18:
           v17 = off_10023F608[v12];
         }
 
-        [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeFaceTimeCalling:]", v10++, uint64, v15, v16, v4, v17];
+        [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeFaceTimeCalling:]", v10++, uint64, v15, v16, getMyClientType, v17];
       }
 
       while (v9 != v10);
@@ -456,7 +456,7 @@ LABEL_18:
 
     v18 = +[WRM_FT_HandoverManager WRM_FT_HandoverManagerSingleton];
 
-    [v18 updateControllerState:v19];
+    [v18 updateControllerState:callingCopy];
   }
 
   else
@@ -466,10 +466,10 @@ LABEL_18:
   }
 }
 
-- (void)handleMetricsReportIDS:(id)a3
+- (void)handleMetricsReportIDS:(id)s
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  if (xpc_dictionary_get_uint64(a3, "kWRMSubscriptionType") == 1)
+  xpc_dictionary_set_uint64(s, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  if (xpc_dictionary_get_uint64(s, "kWRMSubscriptionType") == 1)
   {
     v4 = +[WRM_FT_HandoverManager WRM_FT_HandoverManagerSingleton];
   }
@@ -479,42 +479,42 @@ LABEL_18:
     v4 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
   }
 
-  [v4 updateControllerState:a3];
+  [v4 updateControllerState:s];
 }
 
-- (void)handleMetricsReportFaceTimeCalling:(id)a3
+- (void)handleMetricsReportFaceTimeCalling:(id)calling
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  xpc_dictionary_set_uint64(calling, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
   v4 = +[WRM_FT_HandoverManager WRM_FT_HandoverManagerSingleton];
 
-  [v4 updateControllerState:a3];
+  [v4 updateControllerState:calling];
 }
 
-- (void)handleGetStreamingMetrics:(id)a3
+- (void)handleGetStreamingMetrics:(id)metrics
 {
   v4 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-  [v4 updateControllerState:a3];
+  [v4 updateControllerState:metrics];
 }
 
-- (void)handleLinkPrefSubscribeCM:(id)a3
+- (void)handleLinkPrefSubscribeCM:(id)m
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(m, "kClientType", getMyClientType);
+  value = xpc_dictionary_get_value(m, "kMessageArgs");
   if (value)
   {
     v6 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList");
     if (v6)
     {
       v7 = v6;
-      v20 = a3;
+      mCopy = m;
       count = xpc_array_get_count(v6);
       if (count)
       {
         v9 = count;
         v10 = 0;
-        if (v4 == 22)
+        if (getMyClientType == 22)
         {
           v11 = "ClientCoreMediaStreaming";
         }
@@ -524,7 +524,7 @@ LABEL_18:
           v11 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
         }
 
-        v12 = (v4 - 1);
+        v12 = (getMyClientType - 1);
         do
         {
           v13 = xpc_array_get_value(v7, v10);
@@ -537,7 +537,7 @@ LABEL_18:
             v17 = off_10023F608[v12];
           }
 
-          [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeCM:]", v10++, uint64, v15, v16, v4, v17];
+          [WCM_Logging logLevel:18 message:@"%s: Record#=%d, Application Type=%llu, LinkQoS=%llu, Bandwidth=%llu Client Type=%d(%s)", "[WRM_iRATClientController handleLinkPrefSubscribeCM:]", v10++, uint64, v15, v16, getMyClientType, v17];
         }
 
         while (v9 != v10);
@@ -545,7 +545,7 @@ LABEL_18:
 
       v18 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-      [v18 updateControllerState:v20];
+      [v18 updateControllerState:mCopy];
       return;
     }
 
@@ -560,10 +560,10 @@ LABEL_18:
   [WCM_Logging logLevel:16 message:v19];
 }
 
-- (void)handleSubscribeStatusUpdateTerminus:(id)a3
+- (void)handleSubscribeStatusUpdateTerminus:(id)terminus
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(terminus, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(terminus, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -571,7 +571,7 @@ LABEL_18:
     [WCM_Logging logLevel:18 message:@"Application link preference %d active %d", uint64, xpc_dictionary_get_BOOL(v5, "kWRMProximityAppLinkPreferenceActive")];
     v7 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
 
-    [v7 updateControllerState:a3];
+    [v7 updateControllerState:terminus];
   }
 
   else
@@ -581,10 +581,10 @@ LABEL_18:
   }
 }
 
-- (void)handleSubscribeStatusUpdateIDS:(id)a3
+- (void)handleSubscribeStatusUpdateIDS:(id)s
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(s, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(s, "kMessageArgs");
   if (value && (v5 = value, (v6 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0))
   {
     v7 = v6;
@@ -611,7 +611,7 @@ LABEL_18:
       v13 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
     }
 
-    [v13 updateControllerState:a3];
+    [v13 updateControllerState:s];
   }
 
   else
@@ -621,14 +621,14 @@ LABEL_18:
   }
 }
 
-- (void)handleStallCM:(id)a3
+- (void)handleStallCM:(id)m
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  xpc_dictionary_set_uint64(m, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  if (xpc_dictionary_get_value(m, "kMessageArgs"))
   {
     v4 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-    [v4 updateControllerState:a3];
+    [v4 updateControllerState:m];
   }
 
   else
@@ -638,10 +638,10 @@ LABEL_18:
   }
 }
 
-- (void)handleSubscribeStatusUpdateCM:(id)a3
+- (void)handleSubscribeStatusUpdateCM:(id)m
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(m, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(m, "kMessageArgs");
   if (value && (v5 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0)
   {
     v6 = v5;
@@ -659,7 +659,7 @@ LABEL_18:
 
     v12 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-    [v12 updateControllerState:a3];
+    [v12 updateControllerState:m];
   }
 
   else
@@ -669,10 +669,10 @@ LABEL_18:
   }
 }
 
-- (void)handleSubscribeStatusUpdateFaceTimeCalling:(id)a3
+- (void)handleSubscribeStatusUpdateFaceTimeCalling:(id)calling
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(calling, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(calling, "kMessageArgs");
   if (value && (v5 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0)
   {
     v6 = v5;
@@ -690,7 +690,7 @@ LABEL_18:
 
     v12 = +[WRM_FT_HandoverManager WRM_FT_HandoverManagerSingleton];
 
-    [v12 updateControllerState:a3];
+    [v12 updateControllerState:calling];
   }
 
   else
@@ -700,10 +700,10 @@ LABEL_18:
   }
 }
 
-- (void)handleSubscribeStatusUpdate:(id)a3
+- (void)handleSubscribeStatusUpdate:(id)update
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(update, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(update, "kMessageArgs");
   if (value && (v5 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList")) != 0)
   {
     v6 = v5;
@@ -721,7 +721,7 @@ LABEL_18:
 
     v12 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v12 updateControllerState:a3];
+    [v12 updateControllerState:update];
   }
 
   else
@@ -731,75 +731,75 @@ LABEL_18:
   }
 }
 
-- (void)handleSIPStalledMetrics:(id)a3
+- (void)handleSIPStalledMetrics:(id)metrics
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(metrics, "kClientType", getMyClientType);
+  if (xpc_dictionary_get_value(metrics, "kMessageArgs"))
   {
     v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v5 updateControllerState:a3];
+    [v5 updateControllerState:metrics];
   }
 
   else
   {
-    [WCM_Logging logLevel:16 message:@"Discarding invalid WRMIWLANWiFiCallTunnelStalled message from client : %d", v4];
+    [WCM_Logging logLevel:16 message:@"Discarding invalid WRMIWLANWiFiCallTunnelStalled message from client : %d", getMyClientType];
   }
 }
 
-- (void)handleIWLANMetrics:(id)a3
+- (void)handleIWLANMetrics:(id)metrics
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(metrics, "kClientType", getMyClientType);
+  if (xpc_dictionary_get_value(metrics, "kMessageArgs"))
   {
     v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v5 updateControllerState:a3];
+    [v5 updateControllerState:metrics];
   }
 
   else
   {
-    [WCM_Logging logLevel:16 message:@"Discarding invalid WRMiWLANMetricsReport message from client : %d", v4];
+    [WCM_Logging logLevel:16 message:@"Discarding invalid WRMiWLANMetricsReport message from client : %d", getMyClientType];
   }
 }
 
-- (void)handleCommCenterBasebandOperatingChange:(id)a3
+- (void)handleCommCenterBasebandOperatingChange:(id)change
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(change, "kClientType", getMyClientType);
+  if (xpc_dictionary_get_value(change, "kMessageArgs"))
   {
     v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v5 updateProximityState:a3];
+    [v5 updateProximityState:change];
   }
 
   else
   {
-    [WCM_Logging logLevel:16 message:@"Discarding invalid CommCenterBasebandOperatingChange message from client : %d", v4];
+    [WCM_Logging logLevel:16 message:@"Discarding invalid CommCenterBasebandOperatingChange message from client : %d", getMyClientType];
   }
 }
 
-- (void)handleBBAssertBGAppActive:(id)a3
+- (void)handleBBAssertBGAppActive:(id)active
 {
-  v4 = [(WRM_iRATClientController *)self getMyClientType];
-  xpc_dictionary_set_uint64(a3, "kClientType", v4);
-  [WCM_Logging logLevel:18 message:@"handleBBAssertBGAppActive message from client : %d", v4];
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  xpc_dictionary_set_uint64(active, "kClientType", getMyClientType);
+  [WCM_Logging logLevel:18 message:@"handleBBAssertBGAppActive message from client : %d", getMyClientType];
   v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-  [v5 updateControllerState:a3];
+  [v5 updateControllerState:active];
 }
 
-- (void)handleBasebandMetricsInterfaceRequest:(id)a3
+- (void)handleBasebandMetricsInterfaceRequest:(id)request
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  xpc_dictionary_set_uint64(request, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  if (xpc_dictionary_get_value(request, "kMessageArgs"))
   {
     v4 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
 
-    [v4 updateControllerState:a3];
+    [v4 updateControllerState:request];
   }
 
   else
@@ -809,16 +809,16 @@ LABEL_18:
   }
 }
 
-- (void)addMobilityContextToList:(id)a3
+- (void)addMobilityContextToList:(id)list
 {
-  [*(&self->mQueue + 4) addObject:a3];
+  [*(&self->mQueue + 4) addObject:list];
 
   [(WRM_iRATClientController *)self existingContexts];
 }
 
-- (void)removeMobilityContextFromList:(id)a3
+- (void)removeMobilityContextFromList:(id)list
 {
-  [*(&self->mQueue + 4) removeObject:a3];
+  [*(&self->mQueue + 4) removeObject:list];
 
   [(WRM_iRATClientController *)self existingContexts];
 }
@@ -830,9 +830,9 @@ LABEL_18:
   [WCM_Logging logLevel:18 message:@"Released all mobility contests from iRAT Client"];
 }
 
-- (void)deleteMobilityContext:(unint64_t)a3
+- (void)deleteMobilityContext:(unint64_t)context
 {
-  v4 = [(WRM_iRATClientController *)self getMobilityContextFromList:a3];
+  v4 = [(WRM_iRATClientController *)self getMobilityContextFromList:context];
   if (v4)
   {
     v5 = v4;
@@ -840,7 +840,7 @@ LABEL_18:
   }
 }
 
-- (id)getMobilityContextFromList:(unint64_t)a3
+- (id)getMobilityContextFromList:(unint64_t)list
 {
   v11 = 0u;
   v12 = 0u;
@@ -865,7 +865,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 getApplicationType] == a3)
+    if ([v9 getApplicationType] == list)
     {
       return v9;
     }
@@ -928,17 +928,17 @@ LABEL_3:
 
 - (void)purgeStaleMobilityContexts
 {
-  v3 = [(WRM_iRATClientController *)self getStaleContextFromList];
-  if (v3)
+  getStaleContextFromList = [(WRM_iRATClientController *)self getStaleContextFromList];
+  if (getStaleContextFromList)
   {
-    v4 = v3;
+    getStaleContextFromList2 = getStaleContextFromList;
     do
     {
-      [(WRM_iRATClientController *)self removeMobilityContextFromList:v4];
-      v4 = [(WRM_iRATClientController *)self getStaleContextFromList];
+      [(WRM_iRATClientController *)self removeMobilityContextFromList:getStaleContextFromList2];
+      getStaleContextFromList2 = [(WRM_iRATClientController *)self getStaleContextFromList];
     }
 
-    while (v4);
+    while (getStaleContextFromList2);
   }
 }
 
@@ -975,10 +975,10 @@ LABEL_3:
 
 - (void)existingContexts
 {
-  v3 = [(WRM_iRATClientController *)self getMyClientType];
-  if ((v3 - 1) >= 0x15)
+  getMyClientType = [(WRM_iRATClientController *)self getMyClientType];
+  if ((getMyClientType - 1) >= 0x15)
   {
-    if (v3 == 22)
+    if (getMyClientType == 22)
     {
       v4 = "ClientCoreMediaStreaming";
     }
@@ -991,15 +991,15 @@ LABEL_3:
 
   else
   {
-    v4 = off_10023F608[(v3 - 1)];
+    v4 = off_10023F608[(getMyClientType - 1)];
   }
 
-  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"Client Type: %d(%s), Number of active sessions: %lu", v3, v4, [*(&self->mQueue + 4) count]);
+  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"Client Type: %d(%s), Number of active sessions: %lu", getMyClientType, v4, [*(&self->mQueue + 4) count]);
 }
 
-- (void)handleLinkPreferenceNotification:(BOOL)a3
+- (void)handleLinkPreferenceNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v25 = +[WRM_MetricsService getSingleton];
   v5 = xpc_array_create(0, 0);
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"handleLinkPreferenceNotification: Total number of contexts in iRAT client: %d", [*(&self->mQueue + 4) count]);
@@ -1007,21 +1007,21 @@ LABEL_3:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = self;
+  selfCopy = self;
   v6 = *(&self->mQueue + 4);
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v7)
   {
 LABEL_29:
     [WCM_Logging logLevel:24 message:@"No need to send link preference notification."];
-    if (!v3)
+    if (!notificationCopy)
     {
       goto LABEL_31;
     }
 
 LABEL_30:
-    [(WRM_iRATClientController *)v26 purgeStaleMobilityContexts];
-    [(WRM_iRATClientController *)v26 deactivateMobilityContexts];
+    [(WRM_iRATClientController *)selfCopy purgeStaleMobilityContexts];
+    [(WRM_iRATClientController *)selfCopy deactivateMobilityContexts];
     goto LABEL_31;
   }
 
@@ -1039,7 +1039,7 @@ LABEL_30:
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
-      if (v3)
+      if (notificationCopy)
       {
         if ([v13 mobilityContextStale])
         {
@@ -1052,37 +1052,37 @@ LABEL_30:
         continue;
       }
 
-      v14 = [v13 getConnectedLinkType];
-      v15 = [v13 getMappedApplicationType];
-      v16 = [v13 getHandoverReasonType];
-      [v25 getReasonStr:v16 :string];
+      getConnectedLinkType = [v13 getConnectedLinkType];
+      getMappedApplicationType = [v13 getMappedApplicationType];
+      getHandoverReasonType = [v13 getHandoverReasonType];
+      [v25 getReasonStr:getHandoverReasonType :string];
       v17 = xpc_dictionary_create(0, 0, 0);
-      xpc_dictionary_set_uint64(v17, "kWRMApplicationType", v15);
-      xpc_dictionary_set_uint64(v17, "kWRMLinkType", v14);
-      xpc_dictionary_set_uint64(v17, "kWRMSubscribeSlotInfo", [(WRM_iRATClientController *)v26 getActiveSlot]);
-      xpc_dictionary_set_uint64(v17, "kWRMLinkTypeChangeReasonCode", v16);
+      xpc_dictionary_set_uint64(v17, "kWRMApplicationType", getMappedApplicationType);
+      xpc_dictionary_set_uint64(v17, "kWRMLinkType", getConnectedLinkType);
+      xpc_dictionary_set_uint64(v17, "kWRMSubscribeSlotInfo", [(WRM_iRATClientController *)selfCopy getActiveSlot]);
+      xpc_dictionary_set_uint64(v17, "kWRMLinkTypeChangeReasonCode", getHandoverReasonType);
       xpc_dictionary_set_string(v17, "kWRMLinkTypeChangeReasonString", string);
       xpc_array_append_value(v9, v17);
       v18 = "UNKNOWN_APP!!!";
-      if (v15 == 2)
+      if (getMappedApplicationType == 2)
       {
         v18 = "CT_Th_Call";
       }
 
-      if (v15 == 1)
+      if (getMappedApplicationType == 1)
       {
         v18 = "CT_VOICE";
       }
 
-      if (!v15)
+      if (!getMappedApplicationType)
       {
         v18 = "CT_DATA";
       }
 
-      if (v14 >= 3)
+      if (getConnectedLinkType >= 3)
       {
         v19 = "UNKNOWN_WRM_IWLAN_LINK_TYPE!!!";
-        if (v14 == 3)
+        if (getConnectedLinkType == 3)
         {
           v19 = "WRM_IWLAN_BLUETOOTH";
         }
@@ -1090,10 +1090,10 @@ LABEL_30:
 
       else
       {
-        v19 = off_10023F6B0[v14];
+        v19 = off_10023F6B0[getConnectedLinkType];
       }
 
-      [WCM_Logging logLevel:24 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v18, v15, v14, v19];
+      [WCM_Logging logLevel:24 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v18, getMappedApplicationType, getConnectedLinkType, v19];
       v10 = 1;
     }
 
@@ -1109,7 +1109,7 @@ LABEL_30:
 
   v20 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_value(v20, "kWRMApplicationTypeList", v5);
-  [(WCM_Controller *)v26 sendMessage:1300 withArgs:v20];
+  [(WCM_Controller *)selfCopy sendMessage:1300 withArgs:v20];
   [WCM_Logging logLevel:24 message:@"Sending Link Preference Notification."];
   count = xpc_array_get_count(v5);
   if (count)
@@ -1123,7 +1123,7 @@ LABEL_30:
   }
 
   xpc_release(v20);
-  if (v3)
+  if (notificationCopy)
   {
     goto LABEL_30;
   }
@@ -1132,7 +1132,7 @@ LABEL_31:
   xpc_release(v5);
 }
 
-- (void)handleLinkPreferenceNotificationIDS:(BOOL)a3
+- (void)handleLinkPreferenceNotificationIDS:(BOOL)s
 {
   v4 = xpc_array_create(0, 0);
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 27, @"handleLinkPreferenceNotification: Total number of contexts in iRAT client: %d", [*(&self->mQueue + 4) count]);
@@ -1148,8 +1148,8 @@ LABEL_31:
   }
 
   v7 = v6;
-  v23 = self;
-  v8 = 0;
+  selfCopy = self;
+  getSubscriptionType = 0;
   v9 = 0;
   v10 = *v25;
   do
@@ -1164,33 +1164,33 @@ LABEL_31:
       v12 = *(*(&v24 + 1) + 8 * i);
       if ([v12 linkPreferenceNotificationRequired])
       {
-        v13 = [v12 getConnectedLinkType];
-        v14 = [v12 getApplicationType];
-        v8 = [v12 getSubscriptionType];
+        getConnectedLinkType = [v12 getConnectedLinkType];
+        getApplicationType = [v12 getApplicationType];
+        getSubscriptionType = [v12 getSubscriptionType];
         v15 = xpc_dictionary_create(0, 0, 0);
-        xpc_dictionary_set_uint64(v15, "kWRMApplicationType", v14);
-        xpc_dictionary_set_uint64(v15, "kWRMLinkType", v13);
+        xpc_dictionary_set_uint64(v15, "kWRMApplicationType", getApplicationType);
+        xpc_dictionary_set_uint64(v15, "kWRMLinkType", getConnectedLinkType);
         xpc_array_append_value(v4, v15);
         v16 = "UNKNOWN_APP!!!";
-        if (v14 == 2)
+        if (getApplicationType == 2)
         {
           v16 = "CT_Th_Call";
         }
 
-        if (v14 == 1)
+        if (getApplicationType == 1)
         {
           v16 = "CT_VOICE";
         }
 
-        if (!v14)
+        if (!getApplicationType)
         {
           v16 = "CT_DATA";
         }
 
-        if (v13 >= 3)
+        if (getConnectedLinkType >= 3)
         {
           v17 = "UNKNOWN_WRM_IWLAN_LINK_TYPE!!!";
-          if (v13 == 3)
+          if (getConnectedLinkType == 3)
           {
             v17 = "WRM_IWLAN_BLUETOOTH";
           }
@@ -1198,10 +1198,10 @@ LABEL_31:
 
         else
         {
-          v17 = off_10023F6B0[v13];
+          v17 = off_10023F6B0[getConnectedLinkType];
         }
 
-        [WCM_Logging logLevel:27 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v16, v14, v13, v17];
+        [WCM_Logging logLevel:27 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v16, getApplicationType, getConnectedLinkType, v17];
         [v12 setLinkPreferenceNotificationRequired:0];
         v9 = 1;
       }
@@ -1215,8 +1215,8 @@ LABEL_31:
   {
     v18 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_value(v18, "kWRMApplicationTypeList", v4);
-    xpc_dictionary_set_uint64(v18, "kWRMSubscriptionType", v8);
-    [(WCM_Controller *)v23 sendMessage:1301 withArgs:v18];
+    xpc_dictionary_set_uint64(v18, "kWRMSubscriptionType", getSubscriptionType);
+    [(WCM_Controller *)selfCopy sendMessage:1301 withArgs:v18];
     [WCM_Logging logLevel:27 message:@"Sending Link Preference Notification."];
     count = xpc_array_get_count(v4);
     if (count)
@@ -1241,7 +1241,7 @@ LABEL_25:
   xpc_release(v4);
 }
 
-- (void)handleLinkPreferenceNotificationCM:(BOOL)a3
+- (void)handleLinkPreferenceNotificationCM:(BOOL)m
 {
   v4 = xpc_array_create(0, 0);
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"handleLinkPreferenceNotification: Total number of contexts in iRAT client: %d", [*(&self->mQueue + 4) count]);
@@ -1257,7 +1257,7 @@ LABEL_25:
   }
 
   v6 = v5;
-  v27 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = *v32;
   v28 = *v32;
@@ -1275,44 +1275,44 @@ LABEL_25:
       v10 = *(*(&v31 + 1) + 8 * v9);
       if ([v10 linkPreferenceNotificationRequired])
       {
-        v11 = [v10 getConnectedLinkType];
-        v12 = [v10 getApplicationType];
-        v13 = [v10 getMinEvalBW];
-        v14 = [v10 getMaxEvalBW];
+        getConnectedLinkType = [v10 getConnectedLinkType];
+        getApplicationType = [v10 getApplicationType];
+        getMinEvalBW = [v10 getMinEvalBW];
+        getMaxEvalBW = [v10 getMaxEvalBW];
         v15 = v4;
-        v16 = [v10 getMinMovEvalBW];
-        v17 = [v10 getMaxMovEvalBW];
+        getMinMovEvalBW = [v10 getMinMovEvalBW];
+        getMaxMovEvalBW = [v10 getMaxMovEvalBW];
         v18 = xpc_dictionary_create(0, 0, 0);
-        xpc_dictionary_set_uint64(v18, "kWRMApplicationType", v12);
-        xpc_dictionary_set_uint64(v18, "kWRMLinkType", v11);
-        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkBandwidthEstimateMin", v13);
-        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkBandwidthEstimateMax", v14);
-        v19 = v16;
+        xpc_dictionary_set_uint64(v18, "kWRMApplicationType", getApplicationType);
+        xpc_dictionary_set_uint64(v18, "kWRMLinkType", getConnectedLinkType);
+        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkBandwidthEstimateMin", getMinEvalBW);
+        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkBandwidthEstimateMax", getMaxEvalBW);
+        v19 = getMinMovEvalBW;
         v4 = v15;
         xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkMovBandwidthEstimateMin", v19);
-        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkMovBandwidthEstimateMax", v17);
+        xpc_dictionary_set_uint64(v18, "kWRMCurrentLinkMovBandwidthEstimateMax", getMaxMovEvalBW);
         xpc_dictionary_set_uint64(v18, "kWRMCellLoad", [+[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton](WRM_EnhancedCTService "wrm_EnhancedCTServiceSingleton")]);
         xpc_array_append_value(v15, v18);
         v20 = "UNKNOWN_APP!!!";
-        if (v12 == 2)
+        if (getApplicationType == 2)
         {
           v20 = "CT_Th_Call";
         }
 
-        if (v12 == 1)
+        if (getApplicationType == 1)
         {
           v20 = "CT_VOICE";
         }
 
-        if (!v12)
+        if (!getApplicationType)
         {
           v20 = "CT_DATA";
         }
 
-        if (v11 >= 3)
+        if (getConnectedLinkType >= 3)
         {
           v21 = "UNKNOWN_WRM_IWLAN_LINK_TYPE!!!";
-          if (v11 == 3)
+          if (getConnectedLinkType == 3)
           {
             v21 = "WRM_IWLAN_BLUETOOTH";
           }
@@ -1320,10 +1320,10 @@ LABEL_25:
 
         else
         {
-          v21 = off_10023F6B0[v11];
+          v21 = off_10023F6B0[getConnectedLinkType];
         }
 
-        [WCM_Logging logLevel:24 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v20, v12, v11, v21];
+        [WCM_Logging logLevel:24 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v20, getApplicationType, getConnectedLinkType, v21];
         [v10 setLinkPreferenceNotificationRequired:0];
         v7 = 1;
         v8 = v28;
@@ -1342,7 +1342,7 @@ LABEL_25:
   {
     v22 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_value(v22, "kWRMApplicationTypeList", v4);
-    [(WCM_Controller *)v27 sendMessage:1302 withArgs:v22];
+    [(WCM_Controller *)selfCopy sendMessage:1302 withArgs:v22];
     [WCM_Logging logLevel:24 message:@"Sending Link Preference Notification."];
     count = xpc_array_get_count(v4);
     if (count)
@@ -1367,9 +1367,9 @@ LABEL_25:
   xpc_release(v4);
 }
 
-- (void)handleLinkPreferenceNotificationFaceTimeCalling:(BOOL)a3 :(id)a4 :(id)a5
+- (void)handleLinkPreferenceNotificationFaceTimeCalling:(BOOL)calling :(id)a4 :(id)a5
 {
-  v7 = a3;
+  callingCopy = calling;
   v36 = +[WRM_MetricsService getSingleton];
   v9 = xpc_array_create(0, 0);
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleLinkPreferenceNotification: Total number of contexts in iRAT client: %d", [*(&self->mQueue + 4) count]);
@@ -1383,7 +1383,7 @@ LABEL_25:
   {
 LABEL_28:
     [WCM_Logging logLevel:29 message:@"No need to send link preference notification."];
-    if (!v7)
+    if (!callingCopy)
     {
       goto LABEL_30;
     }
@@ -1398,7 +1398,7 @@ LABEL_29:
   v33 = a4;
   v34 = a5;
   v13 = v9;
-  v35 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = *v38;
   do
@@ -1411,7 +1411,7 @@ LABEL_29:
       }
 
       v17 = *(*(&v37 + 1) + 8 * i);
-      if (v7)
+      if (callingCopy)
       {
         if ([v17 mobilityContextStale])
         {
@@ -1424,36 +1424,36 @@ LABEL_29:
         continue;
       }
 
-      v18 = [v17 getConnectedLinkType];
-      v19 = [v17 getApplicationType];
-      v20 = [v17 getHandoverReasonType];
-      [v36 getReasonStr:v20 :string];
+      getConnectedLinkType = [v17 getConnectedLinkType];
+      getApplicationType = [v17 getApplicationType];
+      getHandoverReasonType = [v17 getHandoverReasonType];
+      [v36 getReasonStr:getHandoverReasonType :string];
       v21 = xpc_dictionary_create(0, 0, 0);
-      xpc_dictionary_set_uint64(v21, "kWRMApplicationType", v19);
-      xpc_dictionary_set_uint64(v21, "kWRMLinkType", v18);
-      xpc_dictionary_set_uint64(v21, "kWRMLinkTypeChangeReasonCode", v20);
+      xpc_dictionary_set_uint64(v21, "kWRMApplicationType", getApplicationType);
+      xpc_dictionary_set_uint64(v21, "kWRMLinkType", getConnectedLinkType);
+      xpc_dictionary_set_uint64(v21, "kWRMLinkTypeChangeReasonCode", getHandoverReasonType);
       xpc_dictionary_set_string(v21, "kWRMLinkTypeChangeReasonString", string);
       xpc_array_append_value(v13, v21);
       v22 = "UNKNOWN_APP!!!";
-      if (v19 == 2)
+      if (getApplicationType == 2)
       {
         v22 = "CT_Th_Call";
       }
 
-      if (v19 == 1)
+      if (getApplicationType == 1)
       {
         v22 = "CT_VOICE";
       }
 
-      if (!v19)
+      if (!getApplicationType)
       {
         v22 = "CT_DATA";
       }
 
-      if (v18 >= 3)
+      if (getConnectedLinkType >= 3)
       {
         v23 = "UNKNOWN_WRM_IWLAN_LINK_TYPE!!!";
-        if (v18 == 3)
+        if (getConnectedLinkType == 3)
         {
           v23 = "WRM_IWLAN_BLUETOOTH";
         }
@@ -1461,10 +1461,10 @@ LABEL_29:
 
       else
       {
-        v23 = off_10023F6B0[v18];
+        v23 = off_10023F6B0[getConnectedLinkType];
       }
 
-      [WCM_Logging logLevel:29 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v22, v19, v18, v23];
+      [WCM_Logging logLevel:29 message:@"{%s}Link Preference Notification required for application type =%lld, preferred = %d(%s)", v22, getApplicationType, getConnectedLinkType, v23];
       v14 = 1;
     }
 
@@ -1472,7 +1472,7 @@ LABEL_29:
   }
 
   while (v12);
-  self = v35;
+  self = selfCopy;
   v9 = v13;
   if ((v14 & 1) == 0)
   {
@@ -1481,9 +1481,9 @@ LABEL_29:
 
   v24 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_value(v24, "kWRMApplicationTypeList", v9);
-  v25 = [v33 getServingCellType];
-  v26 = v25;
-  switch(v25)
+  getServingCellType = [v33 getServingCellType];
+  v26 = getServingCellType;
+  switch(getServingCellType)
   {
     case 9u:
       [v33 getNrRSRP];
@@ -1509,7 +1509,7 @@ LABEL_33:
     xpc_dictionary_set_int64(v24, "kwCCA", [v34 getCCA]);
   }
 
-  [(WCM_Controller *)v35 sendMessage:1303 withArgs:v24];
+  [(WCM_Controller *)selfCopy sendMessage:1303 withArgs:v24];
   [WCM_Logging logLevel:29 message:@"Sending Link Preference Notification."];
   count = xpc_array_get_count(v9);
   if (count)
@@ -1523,7 +1523,7 @@ LABEL_33:
   }
 
   xpc_release(v24);
-  if (v7)
+  if (callingCopy)
   {
     goto LABEL_29;
   }
@@ -1532,12 +1532,12 @@ LABEL_30:
   xpc_release(v9);
 }
 
-- (void)postiRATNotificationToEnableDisableCellData:(unint64_t)a3 :(BOOL)a4
+- (void)postiRATNotificationToEnableDisableCellData:(unint64_t)data :(BOOL)a4
 {
   v4 = a4;
   v7 = xpc_array_create(0, 0);
   v8 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_uint64(v8, "kWRMApplicationType", a3);
+  xpc_dictionary_set_uint64(v8, "kWRMApplicationType", data);
   v9 = !v4;
   xpc_dictionary_set_uint64(v8, "kWRMLinkType", v9);
   xpc_array_append_value(v7, v8);
@@ -1580,14 +1580,14 @@ LABEL_30:
   return v3;
 }
 
-- (void)setLowPowerModePeriodicWakeUpNotificationSubscribed:(BOOL)a3
+- (void)setLowPowerModePeriodicWakeUpNotificationSubscribed:(BOOL)subscribed
 {
   v3 = *(&self->mActive + 4);
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10007DD88;
   v4[3] = &unk_10023E008;
-  v5 = a3;
+  subscribedCopy = subscribed;
   v4[4] = self;
   dispatch_async(v3, v4);
 }
@@ -1611,14 +1611,14 @@ LABEL_30:
   return v3;
 }
 
-- (void)setVoiceLqmSubscribed:(BOOL)a3
+- (void)setVoiceLqmSubscribed:(BOOL)subscribed
 {
   v3 = *(&self->mActive + 4);
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10007DF38;
   v4[3] = &unk_10023E008;
-  v5 = a3;
+  subscribedCopy = subscribed;
   v4[4] = self;
   dispatch_async(v3, v4);
 }

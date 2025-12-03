@@ -6,15 +6,15 @@
 - (int)_tcpStart;
 - (uint64_t)_bonjourUpdateService;
 - (uint64_t)_tcpStart;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_bonjourUpdateTXT;
 - (void)_cleanup;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
 @end
 
 @implementation RPLegacyService
@@ -86,23 +86,23 @@
   return 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__RPLegacyService_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
   {
     [RPLegacyService _activateWithCompletion:];
@@ -157,13 +157,13 @@ LABEL_14:
   }
 
 LABEL_20:
-  v7 = v9;
-  if (v9)
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8 = RPErrorF();
-    (*(v9 + 2))(v9, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
 
-    v7 = v9;
+    v7 = completionCopy;
   }
 }
 
@@ -248,23 +248,23 @@ LABEL_20:
   }
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__RPLegacyService_registerRequestID_options_handler___block_invoke;
   v15[3] = &unk_1E7C935C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -307,8 +307,8 @@ void __53__RPLegacyService_registerRequestID_options_handler___block_invoke(uint
       [(RPLegacyService *)self _bonjourUpdateService];
     }
 
-    v4 = [(RPLegacyService *)self _bonjourUpdateTXT];
-    if (!v4)
+    _bonjourUpdateTXT = [(RPLegacyService *)self _bonjourUpdateTXT];
+    if (!_bonjourUpdateTXT)
     {
       v5 = *p_bonjourAdvertiser;
       v6 = BonjourAdvertiserUpdate();
@@ -333,8 +333,8 @@ void __53__RPLegacyService_registerRequestID_options_handler___block_invoke(uint
       }
     }
 
-    v4 = BonjourAdvertiserCreate();
-    if (!v4)
+    _bonjourUpdateTXT = BonjourAdvertiserCreate();
+    if (!_bonjourUpdateTXT)
     {
       bonjourAdvertiser = self->_bonjourAdvertiser;
       dispatchQueue = self->_dispatchQueue;
@@ -345,8 +345,8 @@ void __53__RPLegacyService_registerRequestID_options_handler___block_invoke(uint
       v12 = self->_bonjourAdvertiser;
       [(NSString *)self->_serviceType UTF8String];
       BonjourAdvertiserSetServiceType();
-      v4 = [(RPLegacyService *)self _bonjourUpdateTXT];
-      if (!v4)
+      _bonjourUpdateTXT = [(RPLegacyService *)self _bonjourUpdateTXT];
+      if (!_bonjourUpdateTXT)
       {
         v14 = *p_bonjourAdvertiser;
         v6 = BonjourAdvertiserStart();
@@ -362,7 +362,7 @@ LABEL_7:
     }
   }
 
-  v7 = v4;
+  v7 = _bonjourUpdateTXT;
 LABEL_17:
   if (gLogCategory_RPLegacySupport <= 60 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
   {
@@ -411,8 +411,8 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 UTF8String];
-        v11 = strlen(v10);
+        uTF8String = [v9 UTF8String];
+        v11 = strlen(uTF8String);
         if (v11 < 0x100)
         {
           v12 = v11;
@@ -435,10 +435,10 @@ LABEL_35:
         goto LABEL_34;
       }
 
-      v10 = 0;
+      uTF8String = 0;
       v12 = 0;
 LABEL_12:
-      v13 = TXTRecordSetValue(&txtRecord, [v8 UTF8String], v12, v10);
+      v13 = TXTRecordSetValue(&txtRecord, [v8 UTF8String], v12, uTF8String);
       if (v13)
       {
         v16 = v13;
@@ -575,8 +575,8 @@ LABEL_7:
 
 - (uint64_t)_bonjourUpdateService
 {
-  v2 = *(a1 + 72);
-  v3 = *(a1 + 32);
+  v2 = *(self + 72);
+  v3 = *(self + 32);
   return LogPrintF();
 }
 
@@ -596,7 +596,7 @@ LABEL_7:
 
 - (uint64_t)_tcpStart
 {
-  v3 = *(a1 + 72);
+  v3 = *(self + 72);
   v4 = *a2;
   return LogPrintF();
 }

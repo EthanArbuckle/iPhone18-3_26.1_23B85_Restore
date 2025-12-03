@@ -1,24 +1,24 @@
 @interface CTStewieSatSmsSummaryMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieSatSmsSummaryMessage)initWithCoder:(id)a3;
-- (CTStewieSatSmsSummaryMessage)initWithPendingSatSmsTotalCount:(int64_t)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieSatSmsSummaryMessage)initWithCoder:(id)coder;
+- (CTStewieSatSmsSummaryMessage)initWithPendingSatSmsTotalCount:(int64_t)count error:(id *)error;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieSatSmsSummaryMessage
 
-- (CTStewieSatSmsSummaryMessage)initWithPendingSatSmsTotalCount:(int64_t)a3 error:(id *)a4
+- (CTStewieSatSmsSummaryMessage)initWithPendingSatSmsTotalCount:(int64_t)count error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CTStewieSatSmsSummaryMessage;
-  v5 = [(CTStewieSatSmsSummaryMessage *)&v9 init:a3];
+  v5 = [(CTStewieSatSmsSummaryMessage *)&v9 init:count];
   v6 = v5;
   if (v5)
   {
-    v5->_pendingSatSmsTotalCount = a3;
+    v5->_pendingSatSmsTotalCount = count;
     v7 = v5;
   }
 
@@ -34,19 +34,19 @@
   return v3;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v4 = a3;
-  v5 = [(CTStewieSatSmsSummaryMessage *)self pendingSatSmsTotalCount];
-  LOBYTE(v5) = v5 == [v4 pendingSatSmsTotalCount];
+  otherCopy = other;
+  pendingSatSmsTotalCount = [(CTStewieSatSmsSummaryMessage *)self pendingSatSmsTotalCount];
+  LOBYTE(pendingSatSmsTotalCount) = pendingSatSmsTotalCount == [otherCopy pendingSatSmsTotalCount];
 
-  return v5;
+  return pendingSatSmsTotalCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -54,29 +54,29 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsSummaryMessage *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsSummaryMessage *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPendingSatSmsTotalCount:{-[CTStewieSatSmsSummaryMessage pendingSatSmsTotalCount](self, "pendingSatSmsTotalCount")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CTStewieSatSmsSummaryMessage pendingSatSmsTotalCount](self forKey:{"pendingSatSmsTotalCount"), @"pendingSatSmsTotalCount"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieSatSmsSummaryMessage pendingSatSmsTotalCount](self forKey:{"pendingSatSmsTotalCount"), @"pendingSatSmsTotalCount"}];
 }
 
-- (CTStewieSatSmsSummaryMessage)initWithCoder:(id)a3
+- (CTStewieSatSmsSummaryMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CTStewieSatSmsSummaryMessage initWithPendingSatSmsTotalCount:error:](self, "initWithPendingSatSmsTotalCount:error:", [v4 decodeIntegerForKey:@"pendingSatSmsTotalCount"], 0);
+  coderCopy = coder;
+  v5 = -[CTStewieSatSmsSummaryMessage initWithPendingSatSmsTotalCount:error:](self, "initWithPendingSatSmsTotalCount:error:", [coderCopy decodeIntegerForKey:@"pendingSatSmsTotalCount"], 0);
 
   return v5;
 }

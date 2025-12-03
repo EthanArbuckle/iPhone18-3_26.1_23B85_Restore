@@ -1,13 +1,13 @@
 @interface HMDAuditAllowedAccessoryForRestrictedGuestOperation
 + (id)logCategory;
-- (BOOL)_anyModificationsFailedExcludingAlreadyExistsError:(id)a3 responseError:(id *)a4;
-- (BOOL)mainWithError:(id *)a3;
-- (HMDAuditAllowedAccessoryForRestrictedGuestOperation)initWithAccessory:(id)a3 restrictedGuest:(id)a4;
+- (BOOL)_anyModificationsFailedExcludingAlreadyExistsError:(id)error responseError:(id *)responseError;
+- (BOOL)mainWithError:(id *)error;
+- (HMDAuditAllowedAccessoryForRestrictedGuestOperation)initWithAccessory:(id)accessory restrictedGuest:(id)guest;
 - (NSUUID)guestUUID;
-- (id)_auditHAPAccessory:(id)a3 forRestrictedGuest:(id)a4 inHome:(id)a5 flow:(id)a6;
-- (id)_auditMatterAccessory:(id)a3 forRestrictedGuest:(id)a4 inHome:(id)a5 flow:(id)a6;
-- (id)executeOperationWithHomeManager:(id)a3 flow:(id)a4;
-- (id)loadConfiguredCredentialsOnMatterAccessory:(id)a3 forUser:(id)a4 inHome:(id)a5 flow:(id)a6;
+- (id)_auditHAPAccessory:(id)accessory forRestrictedGuest:(id)guest inHome:(id)home flow:(id)flow;
+- (id)_auditMatterAccessory:(id)accessory forRestrictedGuest:(id)guest inHome:(id)home flow:(id)flow;
+- (id)executeOperationWithHomeManager:(id)manager flow:(id)flow;
+- (id)loadConfiguredCredentialsOnMatterAccessory:(id)accessory forUser:(id)user inHome:(id)home flow:(id)flow;
 - (id)logIdentifier;
 @end
 
@@ -15,15 +15,15 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)_anyModificationsFailedExcludingAlreadyExistsError:(id)a3 responseError:(id *)a4
+- (BOOL)_anyModificationsFailedExcludingAlreadyExistsError:(id)error responseError:(id *)responseError
 {
-  v5 = a3;
+  errorCopy = error;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -35,12 +35,12 @@
   v9[2] = __120__HMDAuditAllowedAccessoryForRestrictedGuestOperation__anyModificationsFailedExcludingAlreadyExistsError_responseError___block_invoke;
   v9[3] = &unk_27867BB48;
   v9[4] = &v10;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [errorCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
   v6 = v11[5];
   if (v6)
   {
     v6 = v6;
-    *a4 = v6;
+    *responseError = v6;
   }
 
   v7 = v6 != 0;
@@ -84,83 +84,83 @@ void __120__HMDAuditAllowedAccessoryForRestrictedGuestOperation__anyModification
 LABEL_7:
 }
 
-- (id)_auditHAPAccessory:(id)a3 forRestrictedGuest:(id)a4 inHome:(id)a5 flow:(id)a6
+- (id)_auditHAPAccessory:(id)accessory forRestrictedGuest:(id)guest inHome:(id)home flow:(id)flow
 {
   v101 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v79 = a5;
-  v12 = a6;
+  accessoryCopy = accessory;
+  guestCopy = guest;
+  homeCopy = home;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
-    v18 = [v11 shortDescription];
-    [v10 shortDescription];
-    v19 = v11;
-    v20 = v10;
-    v22 = v21 = v12;
+    uUID = [flowCopy UUID];
+    shortDescription = [guestCopy shortDescription];
+    [accessoryCopy shortDescription];
+    v19 = guestCopy;
+    v20 = accessoryCopy;
+    v22 = v21 = flowCopy;
     *buf = 138544130;
     *&buf[4] = v16;
     v95 = 2112;
-    v96 = v17;
+    v96 = uUID;
     v97 = 2112;
-    v98 = v18;
+    v98 = shortDescription;
     v99 = 2112;
     v100 = v22;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Attempting to add restricted guest [%@] from the HAP accessory [%@]", buf, 0x2Au);
 
-    v12 = v21;
-    v10 = v20;
-    v11 = v19;
+    flowCopy = v21;
+    accessoryCopy = v20;
+    guestCopy = v19;
   }
 
   objc_autoreleasePoolPop(v13);
   v23 = objc_opt_new();
-  v24 = [v11 restrictedGuestAccessSettings];
-  v25 = [v24 schedule];
+  restrictedGuestAccessSettings = [guestCopy restrictedGuestAccessSettings];
+  schedule = [restrictedGuestAccessSettings schedule];
 
   v26 = objc_autoreleasePoolPush();
-  v27 = v14;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   v29 = os_log_type_enabled(v28, OS_LOG_TYPE_INFO);
-  if (v25)
+  if (schedule)
   {
     if (v29)
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [v12 UUID];
-      [v11 description];
+      uUID2 = [flowCopy UUID];
+      [guestCopy description];
       v76 = v27;
       v32 = v23;
-      v33 = v11;
-      v35 = v34 = v12;
-      v36 = [v10 shortDescription];
+      v33 = guestCopy;
+      v35 = v34 = flowCopy;
+      shortDescription2 = [accessoryCopy shortDescription];
       *buf = 138544130;
       *&buf[4] = v30;
       v95 = 2112;
-      v96 = v31;
+      v96 = uUID2;
       v97 = 2112;
       v98 = v35;
       v99 = 2112;
-      v100 = v36;
+      v100 = shortDescription2;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Restricted Guest [%@] schedule is restricted so no credentials should be on the HAP accessory [%@]. Attempting to remove.", buf, 0x2Au);
 
-      v12 = v34;
-      v11 = v33;
+      flowCopy = v34;
+      guestCopy = v33;
       v23 = v32;
       v27 = v76;
     }
 
     objc_autoreleasePoolPop(v26);
     [v23 setCredentialsRemoved:1];
-    v37 = [[HMDAuditProhibitedAccessoryForRestrictedGuestOperation alloc] initWithAccessory:v10 restrictedGuest:v11];
-    v38 = v79;
-    v39 = [v79 homeManager];
-    v40 = [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)v37 executeOperationWithHomeManager:v39 flow:v12];
+    array = [[HMDAuditProhibitedAccessoryForRestrictedGuestOperation alloc] initWithAccessory:accessoryCopy restrictedGuest:guestCopy];
+    v38 = homeCopy;
+    homeManager = [homeCopy homeManager];
+    v40 = [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)array executeOperationWithHomeManager:homeManager flow:flowCopy];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAccessory_forRestrictedGuest_inHome_flow___block_invoke_103;
@@ -171,25 +171,25 @@ LABEL_7:
 
   else
   {
-    v38 = v79;
+    v38 = homeCopy;
     if (v29)
     {
       v42 = HMFGetLogIdentifier();
-      v43 = [v12 UUID];
+      uUID3 = [flowCopy UUID];
       *buf = 138543618;
       *&buf[4] = v42;
       v95 = 2112;
-      v96 = v43;
+      v96 = uUID3;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Schedule is unrestricted, attempt to add credentials", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v26);
-    v37 = [MEMORY[0x277CBEB18] array];
-    if ([v10 supportsAccessCode])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([accessoryCopy supportsAccessCode])
     {
-      v44 = [v11 accessCode];
+      accessCode = [guestCopy accessCode];
 
-      if (v44)
+      if (accessCode)
       {
         v77 = v23;
         v45 = objc_autoreleasePoolPush();
@@ -199,31 +199,31 @@ LABEL_7:
         {
           HMFGetLogIdentifier();
           v74 = v45;
-          v49 = v48 = v12;
-          v50 = [v48 UUID];
+          v49 = v48 = flowCopy;
+          uUID4 = [v48 UUID];
           *buf = 138543618;
           *&buf[4] = v49;
           v95 = 2112;
-          v96 = v50;
+          v96 = uUID4;
           _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Adding access codes if not on the accessory already", buf, 0x16u);
 
-          v12 = v48;
+          flowCopy = v48;
           v45 = v74;
         }
 
         v69 = v46;
         objc_autoreleasePoolPop(v45);
-        v73 = [v79 accessCodeManager];
+        accessCodeManager = [homeCopy accessCodeManager];
         v51 = objc_alloc(MEMORY[0x277CD1648]);
-        v75 = [v11 accessCode];
-        v71 = [v51 initWithStringValue:v75];
-        v70 = [v11 uuid];
-        v72 = [v10 uuid];
-        v93 = v72;
+        accessCode2 = [guestCopy accessCode];
+        v71 = [v51 initWithStringValue:accessCode2];
+        uuid = [guestCopy uuid];
+        uuid2 = [accessoryCopy uuid];
+        v93 = uuid2;
         v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v93 count:1];
-        v53 = [v73 addNewAccessCode:v71 forUserWithUUID:v70 toAccessoriesWithUUIDs:v52 withRetries:1 flow:v12];
+        v53 = [accessCodeManager addNewAccessCode:v71 forUserWithUUID:uuid toAccessoriesWithUUIDs:v52 withRetries:1 flow:flowCopy];
         [v53 hmfFuture];
-        v55 = v54 = v12;
+        v55 = v54 = flowCopy;
         v91[0] = MEMORY[0x277D85DD0];
         v91[1] = 3221225472;
         v91[2] = __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAccessory_forRestrictedGuest_inHome_flow___block_invoke;
@@ -231,14 +231,14 @@ LABEL_7:
         v91[4] = v69;
         v92 = v54;
         v56 = [v55 then:v91];
-        [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)v37 addObject:v56];
+        [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)array addObject:v56];
 
-        v12 = v54;
+        flowCopy = v54;
         v23 = v77;
       }
     }
 
-    if ([v10 supportsWalletKey])
+    if ([accessoryCopy supportsWalletKey])
     {
       v57 = objc_autoreleasePoolPush();
       v58 = v27;
@@ -246,41 +246,41 @@ LABEL_7:
       if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
       {
         v60 = HMFGetLogIdentifier();
-        [v12 UUID];
+        [flowCopy UUID];
         v78 = v23;
-        v61 = v11;
-        v62 = v10;
-        v64 = v63 = v12;
+        v61 = guestCopy;
+        v62 = accessoryCopy;
+        v64 = v63 = flowCopy;
         *buf = 138543618;
         *&buf[4] = v60;
         v95 = 2112;
         v96 = v64;
         _os_log_impl(&dword_229538000, v59, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Starting add pairing key audit", buf, 0x16u);
 
-        v12 = v63;
-        v10 = v62;
-        v11 = v61;
+        flowCopy = v63;
+        accessoryCopy = v62;
+        guestCopy = v61;
         v23 = v78;
       }
 
       objc_autoreleasePoolPop(v57);
       *buf = 0;
       v65 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-      [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)v37 addObject:v65];
+      [(HMDAuditProhibitedAccessoryForRestrictedGuestOperation *)array addObject:v65];
 
       v66 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAccessory_forRestrictedGuest_inHome_flow___block_invoke_95;
       block[3] = &unk_2786891E0;
-      v87 = v10;
-      v88 = v12;
+      v87 = accessoryCopy;
+      v88 = flowCopy;
       v89 = *buf;
       v90 = v58;
       dispatch_async(v66, block);
     }
 
-    v39 = [HMDAuditProhibitedAccessoryForRestrictedGuestOperation awaitForAllSettledFutures:v37];
+    homeManager = [HMDAuditProhibitedAccessoryForRestrictedGuestOperation awaitForAllSettledFutures:array];
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
     v84[2] = __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAccessory_forRestrictedGuest_inHome_flow___block_invoke_100;
@@ -291,7 +291,7 @@ LABEL_7:
     v82[2] = __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAccessory_forRestrictedGuest_inHome_flow___block_invoke_2_102;
     v82[3] = &unk_278689CD8;
     v83 = v85;
-    v41 = [v39 then:v84 orRecover:v82];
+    v41 = [homeManager then:v84 orRecover:v82];
 
     v40 = v85;
   }
@@ -499,70 +499,70 @@ uint64_t __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAcc
   return v6;
 }
 
-- (id)loadConfiguredCredentialsOnMatterAccessory:(id)a3 forUser:(id)a4 inHome:(id)a5 flow:(id)a6
+- (id)loadConfiguredCredentialsOnMatterAccessory:(id)accessory forUser:(id)user inHome:(id)home flow:(id)flow
 {
   v84 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  userCopy = user;
+  homeCopy = home;
+  flowCopy = flow;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
-  v68 = v15;
-  v70 = v10;
+  v68 = selfCopy;
+  v70 = accessoryCopy;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v13 UUID];
-    v19 = [v10 shortDescription];
-    [v11 shortDescription];
-    v21 = v20 = v11;
-    [v12 name];
-    v22 = v13;
-    v24 = v23 = v12;
+    uUID = [flowCopy UUID];
+    shortDescription = [accessoryCopy shortDescription];
+    [userCopy shortDescription];
+    v21 = v20 = userCopy;
+    [homeCopy name];
+    v22 = flowCopy;
+    v24 = v23 = homeCopy;
     *buf = 138544386;
     v75 = v17;
     v76 = 2112;
-    v77 = v18;
+    v77 = uUID;
     v78 = 2112;
-    v79 = v19;
+    v79 = shortDescription;
     v80 = 2112;
     v81 = v21;
     v82 = 2112;
     v83 = v24;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] loadConfiguredCredentialsOnMatterAccessory with accessory: %@, forUser: %@, inHome: %@", buf, 0x34u);
 
-    v12 = v23;
-    v13 = v22;
+    homeCopy = v23;
+    flowCopy = v22;
 
-    v11 = v20;
-    v10 = v70;
+    userCopy = v20;
+    accessoryCopy = v70;
 
-    v15 = v68;
+    selfCopy = v68;
   }
 
   objc_autoreleasePoolPop(v14);
-  v25 = [v11 accessCode];
-  v26 = [MEMORY[0x277CBEB18] array];
-  v27 = [v10 supportsMatterAccessCode];
+  accessCode = [userCopy accessCode];
+  array = [MEMORY[0x277CBEB18] array];
+  supportsMatterAccessCode = [accessoryCopy supportsMatterAccessCode];
 
-  if (v27 && v25)
+  if (supportsMatterAccessCode && accessCode)
   {
-    v66 = v26;
-    v28 = v11;
+    v66 = array;
+    v28 = userCopy;
     v29 = objc_autoreleasePoolPush();
-    v30 = v15;
+    v30 = selfCopy;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = HMFGetLogIdentifier();
-      [v13 UUID];
+      [flowCopy UUID];
       v33 = v60 = v29;
-      [v11 shortDescription];
-      v62 = v25;
-      v35 = v34 = v12;
-      v36 = [v10 shortDescription];
+      [userCopy shortDescription];
+      v62 = accessCode;
+      v35 = v34 = homeCopy;
+      shortDescription2 = [accessoryCopy shortDescription];
       *buf = 138544130;
       v75 = v32;
       v76 = 2112;
@@ -570,62 +570,62 @@ uint64_t __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAcc
       v78 = 2112;
       v79 = v35;
       v80 = 2112;
-      v81 = v36;
+      v81 = shortDescription2;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Attempting to add RG's [%@] access code to accessory [%@]", buf, 0x2Au);
 
-      v12 = v34;
-      v25 = v62;
+      homeCopy = v34;
+      accessCode = v62;
 
       v29 = v60;
     }
 
-    v65 = v12;
+    v65 = homeCopy;
 
     objc_autoreleasePoolPop(v29);
-    v63 = [v12 accessCodeManager];
-    v37 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v25];
+    accessCodeManager = [homeCopy accessCodeManager];
+    v37 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:accessCode];
     v61 = v28;
-    v38 = [v28 uuid];
-    v39 = [v70 uuid];
-    v73 = v39;
+    uuid = [v28 uuid];
+    uuid2 = [v70 uuid];
+    v73 = uuid2;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v73 count:1];
-    v41 = [v63 addNewAccessCode:v37 forUserWithUUID:v38 toAccessoriesWithUUIDs:v40 withRetries:1 flow:v13];
+    v41 = [accessCodeManager addNewAccessCode:v37 forUserWithUUID:uuid toAccessoriesWithUUIDs:v40 withRetries:1 flow:flowCopy];
     [v41 hmfFuture];
-    v43 = v42 = v25;
+    v43 = v42 = accessCode;
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __118__HMDAuditAllowedAccessoryForRestrictedGuestOperation_loadConfiguredCredentialsOnMatterAccessory_forUser_inHome_flow___block_invoke;
     v71[3] = &unk_278678B98;
     v71[4] = v30;
-    v72 = v13;
+    v72 = flowCopy;
     v44 = [v43 then:v71];
-    v26 = v66;
+    array = v66;
     [v66 addObject:v44];
 
-    v25 = v42;
-    v12 = v65;
+    accessCode = v42;
+    homeCopy = v65;
 
-    v10 = v70;
-    v11 = v61;
+    accessoryCopy = v70;
+    userCopy = v61;
 
-    v15 = v68;
+    selfCopy = v68;
   }
 
-  if ([v10 supportsWalletKey])
+  if ([accessoryCopy supportsWalletKey])
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = v15;
+    v46 = selfCopy;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
       v48 = HMFGetLogIdentifier();
-      [v13 UUID];
+      [flowCopy UUID];
       v49 = v69 = v45;
-      [v11 shortDescription];
-      v50 = v64 = v25;
-      [v10 shortDescription];
-      v67 = v26;
-      v52 = v51 = v13;
+      [userCopy shortDescription];
+      v50 = v64 = accessCode;
+      [accessoryCopy shortDescription];
+      v67 = array;
+      v52 = v51 = flowCopy;
       *buf = 138544130;
       v75 = v48;
       v76 = 2112;
@@ -636,22 +636,22 @@ uint64_t __105__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditHAPAcc
       v81 = v52;
       _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Attempting to add or update RG's [%@] issuer key to accessory [%@]", buf, 0x2Au);
 
-      v13 = v51;
-      v26 = v67;
+      flowCopy = v51;
+      array = v67;
 
-      v25 = v64;
+      accessCode = v64;
       v45 = v69;
     }
 
     objc_autoreleasePoolPop(v45);
-    v53 = [v12 nfcReaderKeyManager];
-    v54 = [v53 accessoryManager];
-    v55 = [v54 addOrUpdateIssuerKeyForUser:v11 toMatterAccessory:v10 flow:v13];
-    v56 = [v55 hmfFuture];
-    [v26 addObject:v56];
+    nfcReaderKeyManager = [homeCopy nfcReaderKeyManager];
+    accessoryManager = [nfcReaderKeyManager accessoryManager];
+    v55 = [accessoryManager addOrUpdateIssuerKeyForUser:userCopy toMatterAccessory:accessoryCopy flow:flowCopy];
+    hmfFuture = [v55 hmfFuture];
+    [array addObject:hmfFuture];
   }
 
-  v57 = [HMDAuditProhibitedAccessoryForRestrictedGuestOperation awaitForAllSettledFutures:v26];
+  v57 = [HMDAuditProhibitedAccessoryForRestrictedGuestOperation awaitForAllSettledFutures:array];
 
   v58 = *MEMORY[0x277D85DE8];
 
@@ -723,54 +723,54 @@ uint64_t __118__HMDAuditAllowedAccessoryForRestrictedGuestOperation_loadConfigur
   return v18;
 }
 
-- (id)_auditMatterAccessory:(id)a3 forRestrictedGuest:(id)a4 inHome:(id)a5 flow:(id)a6
+- (id)_auditMatterAccessory:(id)accessory forRestrictedGuest:(id)guest inHome:(id)home flow:(id)flow
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  guestCopy = guest;
+  homeCopy = home;
+  flowCopy = flow;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v17 = v33 = v12;
-    v18 = [v13 UUID];
-    v19 = [v11 shortDescription];
-    v20 = [MEMORY[0x277CFE9F8] shortDescription];
+    v17 = v33 = homeCopy;
+    uUID = [flowCopy UUID];
+    shortDescription = [guestCopy shortDescription];
+    shortDescription2 = [MEMORY[0x277CFE9F8] shortDescription];
     *buf = 138544130;
     v46 = v17;
     v47 = 2112;
-    v48 = v18;
+    v48 = uUID;
     v49 = 2112;
-    v50 = v19;
+    v50 = shortDescription;
     v51 = 2112;
-    v52 = v20;
+    v52 = shortDescription2;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Attempting to add restricted guest [%@] to matter accessory [%@]", buf, 0x2Au);
 
-    v12 = v33;
+    homeCopy = v33;
   }
 
   objc_autoreleasePoolPop(v14);
   v21 = objc_opt_new();
-  v22 = [v10 waitForDoorLockClusterObjectWithFlow:v13];
+  v22 = [accessoryCopy waitForDoorLockClusterObjectWithFlow:flowCopy];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatterAccessory_forRestrictedGuest_inHome_flow___block_invoke;
   v38[3] = &unk_278678B48;
-  v39 = v10;
-  v40 = v11;
-  v41 = v12;
-  v42 = v13;
-  v43 = v15;
+  v39 = accessoryCopy;
+  v40 = guestCopy;
+  v41 = homeCopy;
+  v42 = flowCopy;
+  v43 = selfCopy;
   v23 = v21;
   v44 = v23;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
+  v24 = accessoryCopy;
+  v25 = guestCopy;
+  v26 = homeCopy;
+  v27 = flowCopy;
   v28 = [v22 then:v38];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -881,20 +881,20 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
   }
 }
 
-- (id)executeOperationWithHomeManager:(id)a3 flow:(id)a4
+- (id)executeOperationWithHomeManager:(id)manager flow:(id)flow
 {
   v112 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(HMDBackgroundOperation *)self setHomeManager:v6];
+  managerCopy = manager;
+  flowCopy = flow;
+  [(HMDBackgroundOperation *)self setHomeManager:managerCopy];
   v8 = objc_opt_new();
-  v9 = [(HMDBackgroundOperation *)self userData];
-  v10 = [v9 objectForKeyedSubscript:@"sharedUserUUIDKey"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v10 = [userData objectForKeyedSubscript:@"sharedUserUUIDKey"];
 
-  v11 = [objc_opt_class() findUserWithUUID:v10 fromHomeManager:v6];
+  v11 = [objc_opt_class() findUserWithUUID:v10 fromHomeManager:managerCopy];
   v12 = objc_opt_class();
-  v13 = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
-  v14 = [v12 findAccessoryUsing:v13 homeManager:v6];
+  accessoryUUID = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
+  v14 = [v12 findAccessoryUsing:accessoryUUID homeManager:managerCopy];
 
   v15 = v14;
   v16 = v11;
@@ -911,7 +911,7 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
 
   v18 = v17;
 
-  v19 = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
+  accessoryOperationStatus = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
   if (v18)
   {
     v20 = v11 == 0;
@@ -922,23 +922,23 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
     v20 = 1;
   }
 
-  v21 = v20 || v19 == 0;
+  v21 = v20 || accessoryOperationStatus == 0;
   v103 = v18;
   if (v21)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      [v7 UUID];
+      [flowCopy UUID];
       v26 = v98 = v10;
-      [(HMDAccessoryBackgroundOperation *)v23 accessoryUUID];
+      [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
       contexta = v8;
-      v93 = v6;
-      v28 = v27 = v7;
-      [(HMDAccessoryBackgroundOperation *)v23 accessoryIdentifier];
+      v93 = managerCopy;
+      v28 = v27 = flowCopy;
+      [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
       v29 = v15;
       v31 = v30 = v16;
       *buf = 138544130;
@@ -954,9 +954,9 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
       v16 = v30;
       v15 = v29;
 
-      v7 = v27;
+      flowCopy = v27;
       v8 = contexta;
-      v6 = v93;
+      managerCopy = v93;
 
       v10 = v98;
     }
@@ -969,20 +969,20 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
     goto LABEL_30;
   }
 
-  if (v19 == 1)
+  if (accessoryOperationStatus == 1)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       v36 = HMFGetLogIdentifier();
-      [v7 UUID];
+      [flowCopy UUID];
       v37 = v99 = v10;
       [v15 shortDescription];
       contextb = v8;
-      v94 = v6;
-      v39 = v38 = v7;
+      v94 = managerCopy;
+      v39 = v38 = flowCopy;
       [v16 shortDescription];
       v40 = v15;
       v42 = v41 = v16;
@@ -999,9 +999,9 @@ uint64_t __108__HMDAuditAllowedAccessoryForRestrictedGuestOperation__auditMatter
       v16 = v41;
       v15 = v40;
 
-      v7 = v38;
+      flowCopy = v38;
       v8 = contextb;
-      v6 = v94;
+      managerCopy = v94;
 
       v10 = v99;
     }
@@ -1022,19 +1022,19 @@ LABEL_30:
   if (([v18 supportsAnyInPersonAccess] & 1) == 0)
   {
     v58 = objc_autoreleasePoolPush();
-    v59 = self;
+    selfCopy3 = self;
     v60 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
     {
       v61 = HMFGetLogIdentifier();
-      [v7 UUID];
+      [flowCopy UUID];
       v96 = v16;
       v62 = v101 = v10;
       [v15 shortDescription];
       v63 = v15;
-      v64 = v6;
+      v64 = managerCopy;
       v65 = v8;
-      v67 = v66 = v7;
+      v67 = v66 = flowCopy;
       *buf = 138543874;
       v105 = v61;
       v106 = 2112;
@@ -1043,9 +1043,9 @@ LABEL_30:
       v109 = v67;
       _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Accessory [%@] does not support features that enforce access directly. Hence marking this operation as finished.", buf, 0x20u);
 
-      v7 = v66;
+      flowCopy = v66;
       v8 = v65;
-      v6 = v64;
+      managerCopy = v64;
       v15 = v63;
 
       v16 = v96;
@@ -1058,41 +1058,41 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  v45 = [v18 home];
-  if (v45)
+  home = [v18 home];
+  if (home)
   {
-    v46 = [v16 isRestrictedGuest];
+    isRestrictedGuest = [v16 isRestrictedGuest];
     context = objc_autoreleasePoolPush();
-    v47 = self;
+    selfCopy4 = self;
     v48 = HMFGetOSLogHandle();
     v49 = os_log_type_enabled(v48, OS_LOG_TYPE_INFO);
-    if (v46)
+    if (isRestrictedGuest)
     {
       v95 = v16;
       if (v49)
       {
         v50 = HMFGetLogIdentifier();
-        v51 = [v7 UUID];
+        uUID = [flowCopy UUID];
         [v103 shortDescription];
         v52 = v100 = v10;
         [v95 shortDescription];
         v87 = v15;
-        v53 = v6;
+        v53 = managerCopy;
         v54 = v8;
-        v56 = v55 = v7;
+        v56 = v55 = flowCopy;
         *buf = 138544130;
         v105 = v50;
         v106 = 2112;
-        v107 = v51;
+        v107 = uUID;
         v108 = 2112;
         v109 = v52;
         v110 = 2112;
         v111 = v56;
         _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] All checks are completed, now attempting to audit allowed accessory [%@] with restricted guest [%@]", buf, 0x2Au);
 
-        v7 = v55;
+        flowCopy = v55;
         v8 = v54;
-        v6 = v53;
+        managerCopy = v53;
         v15 = v87;
 
         v10 = v100;
@@ -1103,12 +1103,12 @@ LABEL_30:
       v16 = v95;
       if ([v103 supportsCHIP])
       {
-        [(HMDAuditAllowedAccessoryForRestrictedGuestOperation *)v47 _auditMatterAccessory:v103 forRestrictedGuest:v95 inHome:v45 flow:v7];
+        [(HMDAuditAllowedAccessoryForRestrictedGuestOperation *)selfCopy4 _auditMatterAccessory:v103 forRestrictedGuest:v95 inHome:home flow:flowCopy];
       }
 
       else
       {
-        [(HMDAuditAllowedAccessoryForRestrictedGuestOperation *)v47 _auditHAPAccessory:v103 forRestrictedGuest:v95 inHome:v45 flow:v7];
+        [(HMDAuditAllowedAccessoryForRestrictedGuestOperation *)selfCopy4 _auditHAPAccessory:v103 forRestrictedGuest:v95 inHome:home flow:flowCopy];
       }
       v69 = ;
       goto LABEL_43;
@@ -1117,7 +1117,7 @@ LABEL_30:
     if (v49)
     {
       v83 = HMFGetLogIdentifier();
-      [v7 UUID];
+      [flowCopy UUID];
       v88 = v15;
       v85 = v84 = v10;
       *buf = 138543874;
@@ -1140,20 +1140,20 @@ LABEL_30:
   else
   {
     v72 = objc_autoreleasePoolPush();
-    v73 = self;
+    selfCopy5 = self;
     v74 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v75 = contextc = v72;
-      [v7 UUID];
+      [flowCopy UUID];
       v97 = v16;
       v76 = v102 = v10;
       [v15 shortDescription];
       v77 = v15;
-      v78 = v6;
+      v78 = managerCopy;
       v79 = v8;
-      v81 = v80 = v7;
+      v81 = v80 = flowCopy;
       *buf = 138543874;
       v105 = v75;
       v106 = 2112;
@@ -1162,9 +1162,9 @@ LABEL_30:
       v109 = v81;
       _os_log_impl(&dword_229538000, v74, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Accessory [%@] does not have a home", buf, 0x20u);
 
-      v7 = v80;
+      flowCopy = v80;
       v8 = v79;
-      v6 = v78;
+      managerCopy = v78;
       v15 = v77;
 
       v16 = v97;
@@ -1192,8 +1192,8 @@ LABEL_31:
 
 - (NSUUID)guestUUID
 {
-  v2 = [(HMDBackgroundOperation *)self userData];
-  v3 = [v2 objectForKeyedSubscript:@"sharedUserUUIDKey"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v3 = [userData objectForKeyedSubscript:@"sharedUserUUIDKey"];
 
   if (v3)
   {
@@ -1208,26 +1208,26 @@ LABEL_31:
   }
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+  internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
-    v10 = [(HMDAccessoryBackgroundOperation *)v6 accessoryUUID];
-    v11 = [(HMDBackgroundOperation *)v6 userData];
-    v12 = [v11 objectForKeyedSubscript:@"sharedUserUUIDKey"];
+    uUID = [internalOnlyInitializer UUID];
+    accessoryUUID = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+    userData = [(HMDBackgroundOperation *)selfCopy userData];
+    v12 = [userData objectForKeyedSubscript:@"sharedUserUUIDKey"];
     *buf = 138544130;
     v57 = v8;
     v58 = 2112;
-    v59 = v9;
+    v59 = uUID;
     v60 = 2112;
-    v61 = v10;
+    v61 = accessoryUUID;
     v62 = 2112;
     v63 = v12;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Restricted Guest}] Performing audit for allowed accessory [%@] for restricted guest [%@]", buf, 0x2Au);
@@ -1243,30 +1243,30 @@ LABEL_31:
   v54[1] = 3221225472;
   v54[2] = __69__HMDAuditAllowedAccessoryForRestrictedGuestOperation_mainWithError___block_invoke;
   v54[3] = &unk_2786898D8;
-  v54[4] = v6;
-  v17 = v4;
+  v54[4] = selfCopy;
+  v17 = internalOnlyInitializer;
   v55 = v17;
   v18 = [v16 inContext:v15 perform:v54];
   v52 = 0;
   v53 = 0;
   v19 = [v18 waitForResult:&v53 orError:&v52 withTimeout:1.2e11];
   v20 = objc_autoreleasePoolPush();
-  v21 = v6;
+  v21 = selfCopy;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v50 = v18;
     v24 = v23 = v15;
-    v25 = [v17 UUID];
-    v26 = [(HMDAccessoryBackgroundOperation *)v21 accessoryUUID];
+    uUID2 = [v17 UUID];
+    accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)v21 accessoryUUID];
     v27 = HMFBooleanToString();
     *buf = 138544386;
     v57 = v24;
     v58 = 2112;
-    v59 = v25;
+    v59 = uUID2;
     v60 = 2112;
-    v61 = v26;
+    v61 = accessoryUUID2;
     v62 = 2112;
     v63 = v27;
     v64 = 2112;
@@ -1286,17 +1286,17 @@ LABEL_31:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [v17 UUID];
+      uUID3 = [v17 UUID];
       *buf = 138543618;
       v57 = v38;
       v58 = 2112;
-      v59 = v39;
+      v59 = uUID3;
       _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Operation timed out", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v35);
-    v33 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
       v34 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8];
       goto LABEL_15;
@@ -1315,33 +1315,33 @@ LABEL_16:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = HMFGetLogIdentifier();
-      v32 = [v17 UUID];
+      uUID4 = [v17 UUID];
       *buf = 138543874;
       v57 = v31;
       v58 = 2112;
-      v59 = v32;
+      v59 = uUID4;
       v60 = 2112;
       v61 = v52;
       _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Operation should not have resulted in a rejected promise. File a radar. Operation failed to succeed with error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v28);
-    v33 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
       v34 = v52;
 LABEL_15:
       LOBYTE(v40) = 0;
-      *v33 = v34;
+      *errorCopy2 = v34;
       goto LABEL_24;
     }
 
     goto LABEL_16;
   }
 
-  v41 = [v53 error];
+  error = [v53 error];
 
-  if (v41)
+  if (error)
   {
     v42 = objc_autoreleasePoolPush();
     v43 = v21;
@@ -1349,21 +1349,21 @@ LABEL_15:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
       v45 = HMFGetLogIdentifier();
-      v46 = [v17 UUID];
-      v47 = [v53 error];
+      uUID5 = [v17 UUID];
+      error2 = [v53 error];
       *buf = 138543874;
       v57 = v45;
       v58 = 2112;
-      v59 = v46;
+      v59 = uUID5;
       v60 = 2112;
-      v61 = v47;
+      v61 = error2;
       _os_log_impl(&dword_229538000, v44, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Operation failed to succeed with error: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v42);
-    if (a3)
+    if (error)
     {
-      *a3 = [v53 error];
+      *error = [v53 error];
     }
 
     v40 = [v53 shouldReschedule] ^ 1;
@@ -1399,36 +1399,36 @@ HMDAuditAllowedAccessoryForRestrictedGuestOperation *__69__HMDAuditAllowedAccess
   }
 }
 
-- (HMDAuditAllowedAccessoryForRestrictedGuestOperation)initWithAccessory:(id)a3 restrictedGuest:(id)a4
+- (HMDAuditAllowedAccessoryForRestrictedGuestOperation)initWithAccessory:(id)accessory restrictedGuest:(id)guest
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [v6 identifier];
-  v10 = [v6 home];
+  accessoryCopy = accessory;
+  guestCopy = guest;
+  uuid = [accessoryCopy uuid];
+  identifier = [accessoryCopy identifier];
+  home = [accessoryCopy home];
 
-  if (v10)
+  if (home)
   {
-    v11 = [v6 home];
-    v12 = [v7 pairingIdentity];
-    v13 = [v11 uuid];
+    home2 = [accessoryCopy home];
+    pairingIdentity = [guestCopy pairingIdentity];
+    uuid2 = [home2 uuid];
     v25 = @"sharedUserUUIDKey";
-    v14 = [v7 uuid];
-    v26 = v14;
+    uuid3 = [guestCopy uuid];
+    v26 = uuid3;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v24.receiver = self;
     v24.super_class = HMDAuditAllowedAccessoryForRestrictedGuestOperation;
     v23 = 0;
-    v16 = [(HMDAddAccessoryPairingOperation *)&v24 initWithAccessoryUUID:v8 accessoryIdentifier:v9 newPairingIdentity:v12 homeUUIDWhereAccessoryWasPaired:v13 asOwner:0 asAdmin:0 shouldUpdateKeyChainEntry:v23 userData:v15];
+    selfCopy = [(HMDAddAccessoryPairingOperation *)&v24 initWithAccessoryUUID:uuid accessoryIdentifier:identifier newPairingIdentity:pairingIdentity homeUUIDWhereAccessoryWasPaired:uuid2 asOwner:0 asAdmin:0 shouldUpdateKeyChainEntry:v23 userData:v15];
 
-    v17 = v16;
+    v17 = selfCopy;
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1436,9 +1436,9 @@ HMDAuditAllowedAccessoryForRestrictedGuestOperation *__69__HMDAuditAllowedAccess
       *buf = 138543874;
       v28 = v20;
       v29 = 2112;
-      v30 = v8;
+      v30 = uuid;
       v31 = 2112;
-      v32 = v9;
+      v32 = identifier;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Accessory is not associated with a home, cannot create add accessory pairing operation for accessory: %@/%@", buf, 0x20u);
     }
 

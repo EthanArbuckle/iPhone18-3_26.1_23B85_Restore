@@ -1,20 +1,20 @@
 @interface UploadNewDataCell.PassthroughButton
-- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithCoder:(id)a3;
-- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithCoder:(id)coder;
+- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UploadNewDataCell.PassthroughButton
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for UploadNewDataCell.PassthroughButton();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(UploadNewDataCell.PassthroughButton *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(UploadNewDataCell.PassthroughButton *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -37,23 +37,23 @@ LABEL_5:
   return v7;
 }
 
-- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithFrame:(CGRect)a3
+- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for UploadNewDataCell.PassthroughButton();
   return [(UploadNewDataCell.PassthroughButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithCoder:(id)a3
+- (_TtCC15HealthRecordsUI17UploadNewDataCellP33_6F80709EAB63D26AFFB2023EBC32517B17PassthroughButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UploadNewDataCell.PassthroughButton();
-  v4 = a3;
-  v5 = [(UploadNewDataCell.PassthroughButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UploadNewDataCell.PassthroughButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

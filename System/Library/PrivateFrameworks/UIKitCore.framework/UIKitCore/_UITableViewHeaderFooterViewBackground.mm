@@ -1,15 +1,15 @@
 @interface _UITableViewHeaderFooterViewBackground
-- (_UITableViewHeaderFooterViewBackground)initWithFrame:(CGRect)a3;
-- (void)applyBackgroundConfiguration:(id)a3;
+- (_UITableViewHeaderFooterViewBackground)initWithFrame:(CGRect)frame;
+- (void)applyBackgroundConfiguration:(id)configuration;
 @end
 
 @implementation _UITableViewHeaderFooterViewBackground
 
-- (_UITableViewHeaderFooterViewBackground)initWithFrame:(CGRect)a3
+- (_UITableViewHeaderFooterViewBackground)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UITableViewHeaderFooterViewBackground;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,14 +19,14 @@
   return v4;
 }
 
-- (void)applyBackgroundConfiguration:(id)a3
+- (void)applyBackgroundConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   systemBackgroundView = self->_systemBackgroundView;
-  v9 = v4;
-  if (!v4 || systemBackgroundView)
+  v9 = configurationCopy;
+  if (!configurationCopy || systemBackgroundView)
   {
-    [(UIView *)systemBackgroundView setHidden:v4 == 0];
+    [(UIView *)systemBackgroundView setHidden:configurationCopy == 0];
     if (v9)
     {
       [(_UISystemBackgroundView *)self->_systemBackgroundView setConfiguration:v9];
@@ -41,7 +41,7 @@
 
   else
   {
-    v6 = [[_UISystemBackgroundView alloc] initWithConfiguration:v4 containerView:self];
+    v6 = [[_UISystemBackgroundView alloc] initWithConfiguration:configurationCopy containerView:self];
     v7 = self->_systemBackgroundView;
     self->_systemBackgroundView = v6;
 

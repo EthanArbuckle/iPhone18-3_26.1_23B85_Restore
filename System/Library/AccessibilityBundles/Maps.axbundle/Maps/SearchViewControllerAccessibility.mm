@@ -1,23 +1,23 @@
 @interface SearchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateSubviews;
 - (void)dealloc;
-- (void)setCurrentDataSource:(id)a3;
+- (void)setCurrentDataSource:(id)source;
 - (void)viewDidLoad;
 @end
 
 @implementation SearchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchViewController" hasInstanceVariable:@"_contentTableView" withType:"UITableView"];
-  [v3 validateClass:@"SearchViewController" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
-  [v3 validateClass:@"SearchViewController" hasInstanceMethod:@"setCurrentDataSource:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SearchViewController" hasInstanceMethod:@"showDropDownIfNeeded:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SearchViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SearchViewController" hasInstanceVariable:@"_userProfileButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceVariable:@"_contentTableView" withType:"UITableView"];
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceMethod:@"setCurrentDataSource:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceMethod:@"showDropDownIfNeeded:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SearchViewController" hasInstanceVariable:@"_userProfileButton" withType:"UIButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,19 +51,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:@"AXCollapseMapsChromeNotification" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AXCollapseMapsChromeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SearchViewControllerAccessibility;
   [(SearchViewControllerAccessibility *)&v4 dealloc];
 }
 
-- (void)setCurrentDataSource:(id)a3
+- (void)setCurrentDataSource:(id)source
 {
   v4.receiver = self;
   v4.super_class = SearchViewControllerAccessibility;
-  [(SearchViewControllerAccessibility *)&v4 setCurrentDataSource:a3];
+  [(SearchViewControllerAccessibility *)&v4 setCurrentDataSource:source];
   [(SearchViewControllerAccessibility *)self _axAnnotateSubviews];
 }
 

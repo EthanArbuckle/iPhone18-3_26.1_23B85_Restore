@@ -3,12 +3,12 @@
 - (GEOCountryConfiguration)countryConfiguration;
 - (GEOLocation)currentUserLocation;
 - (NSString)voiceLanguageIdentifier;
-- (RouteRequestBuilderFactory)initWithTransportTypeRequestInfoProvider:(id)a3 waypointSet:(id)a4;
+- (RouteRequestBuilderFactory)initWithTransportTypeRequestInfoProvider:(id)provider waypointSet:(id)set;
 - (id)_routeAttributesBuilders;
 - (id)makeRouteRequestBuilder;
 - (unint64_t)navigationMode;
-- (void)setCountryConfiguration:(id)a3;
-- (void)setVoiceLanguageIdentifier:(id)a3;
+- (void)setCountryConfiguration:(id)configuration;
+- (void)setVoiceLanguageIdentifier:(id)identifier;
 @end
 
 @implementation RouteRequestBuilderFactory
@@ -17,15 +17,15 @@
 {
   v3 = +[NSMutableArray array];
   v4 = [DefaultRouteAttributesBuilder alloc];
-  v5 = [(RouteRequestBuilderFactory *)self waypointSet];
-  v6 = [v5 destination];
-  v7 = [(RouteRequestBuilderFactory *)self countryConfiguration];
-  v8 = [(RouteRequestBuilderFactory *)self voiceLanguageIdentifier];
-  v9 = [(DefaultRouteAttributesBuilder *)v4 initWithDestination:v6 countryConfiguration:v7 voiceLanguageIdentifier:v8 useMetricSystem:[(RouteRequestBuilderFactory *)self useMetricSystem]];
+  waypointSet = [(RouteRequestBuilderFactory *)self waypointSet];
+  destination = [waypointSet destination];
+  countryConfiguration = [(RouteRequestBuilderFactory *)self countryConfiguration];
+  voiceLanguageIdentifier = [(RouteRequestBuilderFactory *)self voiceLanguageIdentifier];
+  v9 = [(DefaultRouteAttributesBuilder *)v4 initWithDestination:destination countryConfiguration:countryConfiguration voiceLanguageIdentifier:voiceLanguageIdentifier useMetricSystem:[(RouteRequestBuilderFactory *)self useMetricSystem]];
 
   [v3 addObject:v9];
-  v10 = [(RouteRequestBuilderFactory *)self transportTypeRequestInfoProvider];
-  v11 = [v10 makeRouteAttributesBuilderWithNavigationMode:{-[RouteRequestBuilderFactory navigationMode](self, "navigationMode")}];
+  transportTypeRequestInfoProvider = [(RouteRequestBuilderFactory *)self transportTypeRequestInfoProvider];
+  v11 = [transportTypeRequestInfoProvider makeRouteAttributesBuilderWithNavigationMode:{-[RouteRequestBuilderFactory navigationMode](self, "navigationMode")}];
 
   [v3 addObject:v11];
 
@@ -35,29 +35,29 @@
 - (id)makeRouteRequestBuilder
 {
   v16 = [RouteRequestBuilder alloc];
-  v3 = [(RouteRequestBuilderFactory *)self waypointSet];
-  v4 = [(RouteRequestBuilderFactory *)self transportTypeRequestInfoProvider];
-  v5 = [v4 maximumRouteCount];
-  v6 = [(RouteRequestBuilderFactory *)self _routeAttributesBuilders];
-  v7 = [(RouteRequestBuilderFactory *)self currentUserLocation];
-  v8 = [(RouteRequestBuilderFactory *)self initiator];
-  v9 = [(RouteRequestBuilderFactory *)self traits];
-  v10 = [(RouteRequestBuilderFactory *)self isResumingMultipointRoute];
-  v11 = [(RouteRequestBuilderFactory *)self resumeRouteHandle];
-  v12 = [(RouteRequestBuilderFactory *)self persistentData];
-  LOBYTE(v15) = v10;
-  v13 = [(RouteRequestBuilder *)v16 initWithWaypointSet:v3 maximumRouteCount:v5 routeAttributesBuilders:v6 currentUserLocation:v7 initiator:v8 traits:v9 isResumingMultipointRoute:v15 resumeRouteHandle:v11 persistentData:v12];
+  waypointSet = [(RouteRequestBuilderFactory *)self waypointSet];
+  transportTypeRequestInfoProvider = [(RouteRequestBuilderFactory *)self transportTypeRequestInfoProvider];
+  maximumRouteCount = [transportTypeRequestInfoProvider maximumRouteCount];
+  _routeAttributesBuilders = [(RouteRequestBuilderFactory *)self _routeAttributesBuilders];
+  currentUserLocation = [(RouteRequestBuilderFactory *)self currentUserLocation];
+  initiator = [(RouteRequestBuilderFactory *)self initiator];
+  traits = [(RouteRequestBuilderFactory *)self traits];
+  isResumingMultipointRoute = [(RouteRequestBuilderFactory *)self isResumingMultipointRoute];
+  resumeRouteHandle = [(RouteRequestBuilderFactory *)self resumeRouteHandle];
+  persistentData = [(RouteRequestBuilderFactory *)self persistentData];
+  LOBYTE(v15) = isResumingMultipointRoute;
+  v13 = [(RouteRequestBuilder *)v16 initWithWaypointSet:waypointSet maximumRouteCount:maximumRouteCount routeAttributesBuilders:_routeAttributesBuilders currentUserLocation:currentUserLocation initiator:initiator traits:traits isResumingMultipointRoute:v15 resumeRouteHandle:resumeRouteHandle persistentData:persistentData];
 
   return v13;
 }
 
 - (unint64_t)navigationMode
 {
-  v2 = [(RouteRequestBuilderFactory *)self waypointSet];
-  v3 = [v2 origin];
-  v4 = [v3 isCurrentLocation];
+  waypointSet = [(RouteRequestBuilderFactory *)self waypointSet];
+  origin = [waypointSet origin];
+  isCurrentLocation = [origin isCurrentLocation];
 
-  return v4;
+  return isCurrentLocation;
 }
 
 - (GEOLocation)currentUserLocation
@@ -65,15 +65,15 @@
   v2 = +[MKLocationManager sharedLocationManager];
   if ([v2 hasLocation] && (objc_msgSend(v2, "isLastLocationStale") & 1) == 0)
   {
-    v3 = [v2 currentLocation];
+    currentLocation = [v2 currentLocation];
   }
 
   else
   {
-    v3 = 0;
+    currentLocation = 0;
   }
 
-  return v3;
+  return currentLocation;
 }
 
 - (NSString)voiceLanguageIdentifier
@@ -81,34 +81,34 @@
   voiceLanguageIdentifier = self->_voiceLanguageIdentifier;
   if (voiceLanguageIdentifier)
   {
-    v3 = voiceLanguageIdentifier;
+    currentVoiceLanguage = voiceLanguageIdentifier;
   }
 
   else
   {
     v4 = +[MNNavigationService sharedService];
-    v3 = [v4 currentVoiceLanguage];
+    currentVoiceLanguage = [v4 currentVoiceLanguage];
   }
 
-  return v3;
+  return currentVoiceLanguage;
 }
 
-- (void)setVoiceLanguageIdentifier:(id)a3
+- (void)setVoiceLanguageIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   voiceLanguageIdentifier = self->_voiceLanguageIdentifier;
-  if (voiceLanguageIdentifier != v4)
+  if (voiceLanguageIdentifier != identifierCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)voiceLanguageIdentifier isEqualToString:v4];
-    v4 = v9;
+    v9 = identifierCopy;
+    v6 = [(NSString *)voiceLanguageIdentifier isEqualToString:identifierCopy];
+    identifierCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
       v8 = self->_voiceLanguageIdentifier;
       self->_voiceLanguageIdentifier = v7;
 
-      v4 = v9;
+      identifierCopy = v9;
     }
   }
 }
@@ -129,16 +129,16 @@
   return v3;
 }
 
-- (void)setCountryConfiguration:(id)a3
+- (void)setCountryConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   countryConfiguration = self->_countryConfiguration;
   p_countryConfiguration = &self->_countryConfiguration;
-  if (countryConfiguration != v5)
+  if (countryConfiguration != configurationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_countryConfiguration, a3);
-    v5 = v8;
+    v8 = configurationCopy;
+    objc_storeStrong(p_countryConfiguration, configuration);
+    configurationCopy = v8;
   }
 }
 
@@ -150,23 +150,23 @@
   }
 
   v3 = +[NSLocale currentLocale];
-  v4 = [v3 _navigation_distanceUsesMetricSystem];
+  _navigation_distanceUsesMetricSystem = [v3 _navigation_distanceUsesMetricSystem];
 
-  return v4;
+  return _navigation_distanceUsesMetricSystem;
 }
 
-- (RouteRequestBuilderFactory)initWithTransportTypeRequestInfoProvider:(id)a3 waypointSet:(id)a4
+- (RouteRequestBuilderFactory)initWithTransportTypeRequestInfoProvider:(id)provider waypointSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = RouteRequestBuilderFactory;
   v9 = [(RouteRequestBuilderFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transportTypeRequestInfoProvider, a3);
-    objc_storeStrong(&v10->_waypointSet, a4);
+    objc_storeStrong(&v9->_transportTypeRequestInfoProvider, provider);
+    objc_storeStrong(&v10->_waypointSet, set);
   }
 
   return v10;

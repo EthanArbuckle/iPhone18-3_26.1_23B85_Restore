@@ -6,8 +6,8 @@
 
 - (UIEdgeInsets)_accessibilityContentInset
 {
-  v3 = [(MediaControlsUIScrollViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"AXMediaControlsScrollViewIdentifier"] && (UIAccessibilityIsSwitchControlRunning() || _AXSCommandAndControlEnabled()))
+  accessibilityIdentification = [(MediaControlsUIScrollViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"AXMediaControlsScrollViewIdentifier"] && (UIAccessibilityIsSwitchControlRunning() || _AXSCommandAndControlEnabled()))
   {
     v4 = *MEMORY[0x29EDC80C8];
     v5 = *(MEMORY[0x29EDC80C8] + 8);

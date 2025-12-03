@@ -1,8 +1,8 @@
 @interface _MKJunctionElement
 - (CGPoint)leftBasePoint;
-- (CGPoint)leftEdgePointAtDistanceFromBase:(double)a3;
+- (CGPoint)leftEdgePointAtDistanceFromBase:(double)base;
 - (CGPoint)rightBasePoint;
-- (CGPoint)rightEdgePointAtDistanceFromBase:(double)a3;
+- (CGPoint)rightEdgePointAtDistanceFromBase:(double)base;
 - (id)description;
 @end
 
@@ -38,29 +38,29 @@
   return v8;
 }
 
-- (CGPoint)rightEdgePointAtDistanceFromBase:(double)a3
+- (CGPoint)rightEdgePointAtDistanceFromBase:(double)base
 {
   [(_MKJunctionElement *)self rightBasePoint];
   v6 = v5;
   v8 = v7;
   [(_MKJunctionElement *)self angle];
   v10 = __sincos_stret(v9);
-  v11 = v8 + a3 * v10.__sinval;
-  v12 = v6 + a3 * v10.__cosval;
+  v11 = v8 + base * v10.__sinval;
+  v12 = v6 + base * v10.__cosval;
   result.y = v11;
   result.x = v12;
   return result;
 }
 
-- (CGPoint)leftEdgePointAtDistanceFromBase:(double)a3
+- (CGPoint)leftEdgePointAtDistanceFromBase:(double)base
 {
   [(_MKJunctionElement *)self leftBasePoint];
   v6 = v5;
   v8 = v7;
   [(_MKJunctionElement *)self angle];
   v10 = __sincos_stret(v9);
-  v11 = v8 + a3 * v10.__sinval;
-  v12 = v6 + a3 * v10.__cosval;
+  v11 = v8 + base * v10.__sinval;
+  v12 = v6 + base * v10.__cosval;
   result.y = v11;
   result.x = v12;
   return result;

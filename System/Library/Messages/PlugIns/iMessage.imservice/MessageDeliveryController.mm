@@ -1,85 +1,85 @@
 @interface MessageDeliveryController
-- (BOOL)_hasRecentlyMessaged:(id)a3;
-- (BOOL)_shouldSendAuxXML:(id)a3;
-- (BOOL)_transferIsUserGeneratedOrEmojiSticker:(id)a3;
-- (BOOL)forceBackwardsCompatibleMessageForBundleID:(id)a3;
-- (BOOL)handleScheduledMessageSend:(id)a3 sentSuccessfully:(BOOL)a4 idsMessage:(id)a5 messageDictionary:(id)a6 canInlineAttachments:(BOOL)a7 msgPayloadUploadDictionary:(id)a8 fromID:(id)a9 fromAccount:(id)a10 originalIDSIdentifier:(id)a11;
-- (BOOL)isLQMEnabled:(id)a3;
-- (BOOL)isReceiverHQTransferCapable:(id)a3 fromID:(id)a4;
-- (BOOL)sendToLocalPeersFile:(id)a3 dictionary:(id)a4;
-- (BOOL)shouldSendBackwardsCompatibleMessageForBundleID:(id)a3;
-- (MessageDeliveryController)initWithSession:(id)a3;
-- (id)_associatedMessageFallbackHashForMessageItem:(id)a3;
-- (id)_chatForChatIdentifier:(id)a3;
-- (id)_compressedAttributionInfoForMessage:(id)a3;
-- (id)_computeRegPropertiesForNewFeatures:(id)a3 currentRegProperties:(id)a4 currentInterestingProp:(id)a5;
-- (id)_copyGenmojiHEICFileToTemporaryDirectory:(id)a3;
-- (id)_fallbackHashForMessageItemWithGUID:(id)a3;
-- (id)_fallbackMessageItemByConvertingGenmojiToUnknownEmojiCharacterInOriginalMessageItem:(id)a3;
-- (id)_fallbackMessageItemForRequiredRegPropertiesTextMessage:(id)a3;
-- (id)_fallbackMessageItemForTranslationsWithOriginalMessageItem:(id)a3;
-- (id)_fallbackMessageItemFromLinkMetadata:(id)a3 originalMessageItem:(id)a4;
-- (id)_fileTransferGUIDsInMessageBody:(id)a3;
-- (id)_getQueueIdentifierFromGUID:(id)a3;
-- (id)_keyTransparencyEnforcementDictionaryForChatIdentifier:(id)a3;
-- (id)_nonAdaptiveFileTransferForAdaptiveImageFileTransfer:(id)a3;
-- (id)_propertyForExpressiveSendStyle:(id)a3;
-- (id)_receivingDevicesForHandle:(id)a3 skippedDestinations:(id)a4;
-- (id)_receivingDevicesForParticipants:(id)a3 skippedDestinations:(id)a4;
+- (BOOL)_hasRecentlyMessaged:(id)messaged;
+- (BOOL)_shouldSendAuxXML:(id)l;
+- (BOOL)_transferIsUserGeneratedOrEmojiSticker:(id)sticker;
+- (BOOL)forceBackwardsCompatibleMessageForBundleID:(id)d;
+- (BOOL)handleScheduledMessageSend:(id)send sentSuccessfully:(BOOL)successfully idsMessage:(id)message messageDictionary:(id)dictionary canInlineAttachments:(BOOL)attachments msgPayloadUploadDictionary:(id)uploadDictionary fromID:(id)d fromAccount:(id)self0 originalIDSIdentifier:(id)self1;
+- (BOOL)isLQMEnabled:(id)enabled;
+- (BOOL)isReceiverHQTransferCapable:(id)capable fromID:(id)d;
+- (BOOL)sendToLocalPeersFile:(id)file dictionary:(id)dictionary;
+- (BOOL)shouldSendBackwardsCompatibleMessageForBundleID:(id)d;
+- (MessageDeliveryController)initWithSession:(id)session;
+- (id)_associatedMessageFallbackHashForMessageItem:(id)item;
+- (id)_chatForChatIdentifier:(id)identifier;
+- (id)_compressedAttributionInfoForMessage:(id)message;
+- (id)_computeRegPropertiesForNewFeatures:(id)features currentRegProperties:(id)properties currentInterestingProp:(id)prop;
+- (id)_copyGenmojiHEICFileToTemporaryDirectory:(id)directory;
+- (id)_fallbackHashForMessageItemWithGUID:(id)d;
+- (id)_fallbackMessageItemByConvertingGenmojiToUnknownEmojiCharacterInOriginalMessageItem:(id)item;
+- (id)_fallbackMessageItemForRequiredRegPropertiesTextMessage:(id)message;
+- (id)_fallbackMessageItemForTranslationsWithOriginalMessageItem:(id)item;
+- (id)_fallbackMessageItemFromLinkMetadata:(id)metadata originalMessageItem:(id)item;
+- (id)_fileTransferGUIDsInMessageBody:(id)body;
+- (id)_getQueueIdentifierFromGUID:(id)d;
+- (id)_keyTransparencyEnforcementDictionaryForChatIdentifier:(id)identifier;
+- (id)_nonAdaptiveFileTransferForAdaptiveImageFileTransfer:(id)transfer;
+- (id)_propertyForExpressiveSendStyle:(id)style;
+- (id)_receivingDevicesForHandle:(id)handle skippedDestinations:(id)destinations;
+- (id)_receivingDevicesForParticipants:(id)participants skippedDestinations:(id)destinations;
 - (id)_replicationSourceIDForSending;
-- (id)_threadOriginatorFallbackHashForMessageItem:(id)a3;
-- (id)_updateSuccessfulEditsForScheduledMessage:(id)a3;
-- (id)_updateSuccessfulRetractionsForScheduledMessage:(id)a3;
-- (id)activeDeviceForHandle:(id)a3;
+- (id)_threadOriginatorFallbackHashForMessageItem:(id)item;
+- (id)_updateSuccessfulEditsForScheduledMessage:(id)message;
+- (id)_updateSuccessfulRetractionsForScheduledMessage:(id)message;
+- (id)activeDeviceForHandle:(id)handle;
 - (id)attachmentController;
-- (id)backwardCompatibilityPrefixForLanguageCode:(id)a3;
+- (id)backwardCompatibilityPrefixForLanguageCode:(id)code;
 - (id)groupController;
-- (id)idsDeviceFromPushToken:(id)a3;
-- (id)idsOptionsWithMessageItem:(id)a3 toID:(id)a4 fromID:(id)a5 sendGUIDData:(id)a6 alternateCallbackID:(id)a7 isBusinessMessage:(BOOL)a8 chatIdentifier:(id)a9 requiredRegProperties:(id)value interestingRegProperties:(id)a11 requiresLackOfRegProperties:(id)a12 deliveryContext:(id)a13 isGroupChat:(BOOL)a14 canInlineAttachments:(BOOL)a15 msgPayloadUploadDictionary:(id)a16 messageDictionary:(id)a17;
-- (id)messageDictionaryWithMessageItem:(id)a3 isBusiness:(BOOL)a4 chatIdentifier:(id)a5 toParticipants:(id)a6 originallyToParticipants:(id)a7 additionalContext:(id)a8 msgPayloadUploadDictionary:(id)a9 originalPayload:(id)a10;
+- (id)idsDeviceFromPushToken:(id)token;
+- (id)idsOptionsWithMessageItem:(id)item toID:(id)d fromID:(id)iD sendGUIDData:(id)data alternateCallbackID:(id)callbackID isBusinessMessage:(BOOL)message chatIdentifier:(id)identifier requiredRegProperties:(id)value interestingRegProperties:(id)self1 requiresLackOfRegProperties:(id)self2 deliveryContext:(id)self3 isGroupChat:(BOOL)self4 canInlineAttachments:(BOOL)self5 msgPayloadUploadDictionary:(id)self6 messageDictionary:(id)self7;
+- (id)messageDictionaryWithMessageItem:(id)item isBusiness:(BOOL)business chatIdentifier:(id)identifier toParticipants:(id)participants originallyToParticipants:(id)toParticipants additionalContext:(id)context msgPayloadUploadDictionary:(id)dictionary originalPayload:(id)self0;
 - (id)pairedDevice;
-- (void)_addIdentifierToPendingTimestampUpdateMap:(id)a3 alternateCallbackId:(id)a4;
-- (void)_appendMyNicknameToMessageDictionary:(id)a3 forMessage:(id)a4 chat:(id)a5;
-- (void)_appendMyTranscriptBackgroundVersionToMessageDictionary:(id)a3 forMessage:(id)a4 chat:(id)a5;
-- (void)_appendOffGridAvailabilityPropertiesToMessageDictionary:(id)a3 participantHandleID:(id)a4;
-- (void)_appendRecipientAvailabilityVerificationInfoToMessageDictionary:(id)a3 forChat:(id)a4;
-- (void)_appendRecipientNicknameTruncatedRecordIDToMessageDictionary:(id)a3 forChat:(id)a4;
-- (void)_appendSeenOffGridStatusToMessageDictionary:(id)a3 forChat:(id)a4;
-- (void)_checkStickerRepositioningMetadata:(id)a3;
-- (void)_enqueueSendMessageWorkBlock:(id)a3 forURIs:(id)a4;
-- (void)_enqueueUpdateBlock:(id)a3 willSendBlock:(id)a4 identifier:(id)a5 callbackID:(id)a6 messageCommandOption:(id)a7;
-- (void)_sendBackwardCompatibilityMessageForEditedMessage:(id)a3 usingMessageGUID:(id)a4 toBackwardCompatabilityDestinations:(id)a5 withOriginalDestinations:(id)a6 chatIdentifier:(id)a7 fromAccount:(id)a8 fromID:(id)a9 backwardCompatabilityText:(id)a10 completionBlock:(id)a11;
-- (void)_sendMessage:(id)a3 context:(id)a4 deliveryContext:(id)a5 fromID:(id)a6 fromAccount:(id)a7 toID:(id)a8 chatIdentifier:(id)a9 toSessionToken:(id)a10 toGroup:(id)a11 toParticipants:(id)a12 originallyToParticipants:(id)a13 requiredRegProperties:(id)a14 interestingRegProperties:(id)a15 requiresLackOfRegProperties:(id)a16 canInlineAttachments:(BOOL)a17 type:(int64_t)a18 msgPayloadUploadDictionary:(id)a19 originalPayload:(id)a20 replyToMessageGUID:(id)a21 fallbackCount:(unint64_t)a22 willSendBlock:(id)a23 completionBlock:(id)a24;
-- (void)_sendNicknameToRecipientsIfNeededForChat:(id)a3 forMessage:(id)a4;
-- (void)_setReplyToGUIDForMessage:(id)a3 messageDictionary:(id)a4;
-- (void)_updateExpectedOffGridCapableDeliveryReceiptsForMessage:(id)a3 chatIdentifier:(id)a4 numberOfExpectedOffGridCapableDeliveries:(unint64_t)a5;
-- (void)_updateTimeStampForMessageIdentifierIfNeeded:(id)a3 pendingTimeStampUpdateIdentifier:(id)a4 alternateCallbackID:(id)a5 messageContext:(id)a6;
-- (void)appendChatRelatedPropertiesToMessageDictionary:(id)a3 forMessage:(id)a4 chatIdentifier:(id)a5;
-- (void)cancelScheduledMessageWithGUID:(id)a3 fromID:(id)a4;
-- (void)cancelScheduledMessageWithGUID:(id)a3 fromID:(id)a4 destinations:(id)a5 cancelType:(unint64_t)a6;
+- (void)_addIdentifierToPendingTimestampUpdateMap:(id)map alternateCallbackId:(id)id;
+- (void)_appendMyNicknameToMessageDictionary:(id)dictionary forMessage:(id)message chat:(id)chat;
+- (void)_appendMyTranscriptBackgroundVersionToMessageDictionary:(id)dictionary forMessage:(id)message chat:(id)chat;
+- (void)_appendOffGridAvailabilityPropertiesToMessageDictionary:(id)dictionary participantHandleID:(id)d;
+- (void)_appendRecipientAvailabilityVerificationInfoToMessageDictionary:(id)dictionary forChat:(id)chat;
+- (void)_appendRecipientNicknameTruncatedRecordIDToMessageDictionary:(id)dictionary forChat:(id)chat;
+- (void)_appendSeenOffGridStatusToMessageDictionary:(id)dictionary forChat:(id)chat;
+- (void)_checkStickerRepositioningMetadata:(id)metadata;
+- (void)_enqueueSendMessageWorkBlock:(id)block forURIs:(id)is;
+- (void)_enqueueUpdateBlock:(id)block willSendBlock:(id)sendBlock identifier:(id)identifier callbackID:(id)d messageCommandOption:(id)option;
+- (void)_sendBackwardCompatibilityMessageForEditedMessage:(id)message usingMessageGUID:(id)d toBackwardCompatabilityDestinations:(id)destinations withOriginalDestinations:(id)originalDestinations chatIdentifier:(id)identifier fromAccount:(id)account fromID:(id)iD backwardCompatabilityText:(id)self0 completionBlock:(id)self1;
+- (void)_sendMessage:(id)message context:(id)context deliveryContext:(id)deliveryContext fromID:(id)d fromAccount:(id)account toID:(id)iD chatIdentifier:(id)identifier toSessionToken:(id)self0 toGroup:(id)self1 toParticipants:(id)self2 originallyToParticipants:(id)self3 requiredRegProperties:(id)self4 interestingRegProperties:(id)self5 requiresLackOfRegProperties:(id)self6 canInlineAttachments:(BOOL)self7 type:(int64_t)self8 msgPayloadUploadDictionary:(id)self9 originalPayload:(id)payload replyToMessageGUID:(id)uID fallbackCount:(unint64_t)count willSendBlock:(id)block completionBlock:(id)completionBlock;
+- (void)_sendNicknameToRecipientsIfNeededForChat:(id)chat forMessage:(id)message;
+- (void)_setReplyToGUIDForMessage:(id)message messageDictionary:(id)dictionary;
+- (void)_updateExpectedOffGridCapableDeliveryReceiptsForMessage:(id)message chatIdentifier:(id)identifier numberOfExpectedOffGridCapableDeliveries:(unint64_t)deliveries;
+- (void)_updateTimeStampForMessageIdentifierIfNeeded:(id)needed pendingTimeStampUpdateIdentifier:(id)identifier alternateCallbackID:(id)d messageContext:(id)context;
+- (void)appendChatRelatedPropertiesToMessageDictionary:(id)dictionary forMessage:(id)message chatIdentifier:(id)identifier;
+- (void)cancelScheduledMessageWithGUID:(id)d fromID:(id)iD;
+- (void)cancelScheduledMessageWithGUID:(id)d fromID:(id)iD destinations:(id)destinations cancelType:(unint64_t)type;
 - (void)dealloc;
-- (void)failMessageSendWithMessageDictionary:(id)a3 URIs:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)handleScheduledMessageSendFailure:(id)a3;
-- (void)noteRecentMessageForPeople:(id)a3;
-- (void)sendBubblePayloadMessageDictionary:(id)a3 fromID:(id)a4 fromAccount:(id)a5 toURIs:(id)a6 toGroup:(id)a7 priority:(int64_t)a8 options:(id)a9 completionBlock:(id)a10;
-- (void)sendCloseSessionMessageDictionary:(id)a3 toBusinessURI:(id)a4 fromURI:(id)a5 fromAccount:(id)a6 completionBlock:(id)a7;
-- (void)sendEditedMessage:(id)a3 partIndex:(int64_t)a4 editType:(unint64_t)a5 destinations:(id)a6 chatIdentifier:(id)a7 account:(id)a8 fromID:(id)a9 backwardCompatabilityText:(id)a10 unsupportedDestinationsHandler:(id)a11 completionBlock:(id)a12;
-- (void)sendHQAttachmentsForMessage:(id)a3 context:(id)a4 fromID:(id)a5 fromAccount:(id)a6 chatIdentifier:(id)a7 toGroup:(id)a8 originallyToParticipants:(id)a9 canInlineAttachments:(BOOL)a10 recipients:(id)a11 completionBlock:(id)a12;
-- (void)sendMessage:(id)a3 context:(id)a4 groupContext:(id)a5 toGroup:(id)a6 toParticipants:(id)a7 originallyToParticipants:(id)a8 fromID:(id)a9 fromAccount:(id)a10 chatIdentifier:(id)a11 originalPayload:(id)a12 replyToMessageGUID:(id)a13 fakeSavedReceiptBlock:(id)a14 completionBlock:(id)a15;
-- (void)sendMessageDictionary:(id)a3 encryptDictionary:(BOOL)a4 fromID:(id)a5 fromAccount:(id)a6 toURIs:(id)a7 toGroup:(id)a8 priority:(int64_t)a9 options:(id)a10 willSendBlock:(id)a11 callCompletionOnSuccess:(BOOL)a12 callCompletionOnLast:(BOOL)a13 completionBlock:(id)a14;
-- (void)sendMessageError:(int64_t)a3 toToken:(id)a4 toID:(id)a5 toGroup:(id)a6 fromID:(id)a7 fromAccount:(id)a8 forMessageID:(id)a9 completionBlock:(id)a10;
-- (void)sendMessageErrorWithInfo:(int64_t)a3 toToken:(id)a4 toID:(id)a5 toGroup:(id)a6 fromID:(id)a7 fromAccount:(id)a8 forMessageID:(id)a9 additionalInfo:(id)a10 fileSize:(id)value failureTimeSeconds:(double)a12 failReasonMessage:(id)a13 completionBlock:(id)a14;
-- (void)sendRepositionedStickerMetadata:(id)a3 forEditedMessage:(id)a4 destinations:(id)a5 account:(id)a6 fromID:(id)a7 completionBlock:(id)a8;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 alternateCallbackID:(id)a6 willSendToDestinations:(id)a7 skippedDestinations:(id)a8 registrationPropertyToDestinations:(id)a9;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 messageIdentifier:(id)a5 alternateCallbackID:(id)a6 updatedWithResponseCode:(int64_t)a7 error:(id)a8 lastCall:(BOOL)a9 messageContext:(id)a10;
-- (void)service:(id)a3 didFlushCacheForKTPeerURI:(id)a4;
-- (void)service:(id)a3 didFlushCacheForRemoteURI:(id)a4 fromURI:(id)a5 guid:(id)a6;
+- (void)failMessageSendWithMessageDictionary:(id)dictionary URIs:(id)is error:(id)error completionHandler:(id)handler;
+- (void)handleScheduledMessageSendFailure:(id)failure;
+- (void)noteRecentMessageForPeople:(id)people;
+- (void)sendBubblePayloadMessageDictionary:(id)dictionary fromID:(id)d fromAccount:(id)account toURIs:(id)is toGroup:(id)group priority:(int64_t)priority options:(id)options completionBlock:(id)self0;
+- (void)sendCloseSessionMessageDictionary:(id)dictionary toBusinessURI:(id)i fromURI:(id)rI fromAccount:(id)account completionBlock:(id)block;
+- (void)sendEditedMessage:(id)message partIndex:(int64_t)index editType:(unint64_t)type destinations:(id)destinations chatIdentifier:(id)identifier account:(id)account fromID:(id)d backwardCompatabilityText:(id)self0 unsupportedDestinationsHandler:(id)self1 completionBlock:(id)self2;
+- (void)sendHQAttachmentsForMessage:(id)message context:(id)context fromID:(id)d fromAccount:(id)account chatIdentifier:(id)identifier toGroup:(id)group originallyToParticipants:(id)participants canInlineAttachments:(BOOL)self0 recipients:(id)self1 completionBlock:(id)self2;
+- (void)sendMessage:(id)message context:(id)context groupContext:(id)groupContext toGroup:(id)group toParticipants:(id)participants originallyToParticipants:(id)toParticipants fromID:(id)d fromAccount:(id)self0 chatIdentifier:(id)self1 originalPayload:(id)self2 replyToMessageGUID:(id)self3 fakeSavedReceiptBlock:(id)self4 completionBlock:(id)self5;
+- (void)sendMessageDictionary:(id)dictionary encryptDictionary:(BOOL)encryptDictionary fromID:(id)d fromAccount:(id)account toURIs:(id)is toGroup:(id)group priority:(int64_t)priority options:(id)self0 willSendBlock:(id)self1 callCompletionOnSuccess:(BOOL)self2 callCompletionOnLast:(BOOL)self3 completionBlock:(id)self4;
+- (void)sendMessageError:(int64_t)error toToken:(id)token toID:(id)d toGroup:(id)group fromID:(id)iD fromAccount:(id)account forMessageID:(id)messageID completionBlock:(id)self0;
+- (void)sendMessageErrorWithInfo:(int64_t)info toToken:(id)token toID:(id)d toGroup:(id)group fromID:(id)iD fromAccount:(id)account forMessageID:(id)messageID additionalInfo:(id)self0 fileSize:(id)value failureTimeSeconds:(double)self2 failReasonMessage:(id)self3 completionBlock:(id)self4;
+- (void)sendRepositionedStickerMetadata:(id)metadata forEditedMessage:(id)message destinations:(id)destinations account:(id)account fromID:(id)d completionBlock:(id)block;
+- (void)service:(id)service account:(id)account identifier:(id)identifier alternateCallbackID:(id)d willSendToDestinations:(id)destinations skippedDestinations:(id)skippedDestinations registrationPropertyToDestinations:(id)toDestinations;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account messageIdentifier:(id)identifier alternateCallbackID:(id)d updatedWithResponseCode:(int64_t)code error:(id)error lastCall:(BOOL)call messageContext:(id)self0;
+- (void)service:(id)service didFlushCacheForKTPeerURI:(id)i;
+- (void)service:(id)service didFlushCacheForRemoteURI:(id)i fromURI:(id)rI guid:(id)guid;
 @end
 
 @implementation MessageDeliveryController
 
-- (MessageDeliveryController)initWithSession:(id)a3
+- (MessageDeliveryController)initWithSession:(id)session
 {
   v11.receiver = self;
   v11.super_class = MessageDeliveryController;
@@ -104,23 +104,23 @@
     v9 = [v8 initWithService:IDSServiceNameiMessageForBusiness];
     v4->_idsBizService = v9;
     [(IDSService *)v9 addDelegate:v4 queue:&_dispatch_main_q];
-    objc_storeWeak(&v4->_session, a3);
+    objc_storeWeak(&v4->_session, session);
   }
 
   return v4;
 }
 
-- (id)_keyTransparencyEnforcementDictionaryForChatIdentifier:(id)a3
+- (id)_keyTransparencyEnforcementDictionaryForChatIdentifier:(id)identifier
 {
-  v4 = [(IDSService *)self->_idsService serviceIdentifier];
-  if (![v4 isEqualToString:IDSServiceNameiMessage])
+  serviceIdentifier = [(IDSService *)self->_idsService serviceIdentifier];
+  if (![serviceIdentifier isEqualToString:IDSServiceNameiMessage])
   {
     return 0;
   }
 
-  v5 = [+[IMDChatRegistry sharedInstance](IMDChatRegistry existingSMSChatForID:"existingSMSChatForID:", a3];
+  identifier = [+[IMDChatRegistry sharedInstance](IMDChatRegistry existingSMSChatForID:"existingSMSChatForID:", identifier];
 
-  return [v5 keyTransparencyURIToUUIDMapping];
+  return [identifier keyTransparencyURIToUUIDMapping];
 }
 
 - (void)dealloc
@@ -136,28 +136,28 @@
 
 - (id)attachmentController
 {
-  v2 = [(MessageDeliveryController *)self session];
+  session = [(MessageDeliveryController *)self session];
 
-  return [(MessageServiceSession *)v2 attachmentController];
+  return [(MessageServiceSession *)session attachmentController];
 }
 
 - (id)groupController
 {
-  v2 = [(MessageDeliveryController *)self session];
+  session = [(MessageDeliveryController *)self session];
 
-  return [(MessageServiceSession *)v2 groupController];
+  return [(MessageServiceSession *)session groupController];
 }
 
-- (void)_updateTimeStampForMessageIdentifierIfNeeded:(id)a3 pendingTimeStampUpdateIdentifier:(id)a4 alternateCallbackID:(id)a5 messageContext:(id)a6
+- (void)_updateTimeStampForMessageIdentifierIfNeeded:(id)needed pendingTimeStampUpdateIdentifier:(id)identifier alternateCallbackID:(id)d messageContext:(id)context
 {
-  if ([a6 serverReceivedTime] && objc_msgSend(a4, "length") && objc_msgSend(a4, "isEqualToString:", a3))
+  if ([context serverReceivedTime] && objc_msgSend(identifier, "length") && objc_msgSend(identifier, "isEqualToString:", needed))
   {
     v11 = [-[MessageDeliveryController messageStore](self "messageStore")];
-    v12 = [v11 messageSummaryInfo];
+    messageSummaryInfo = [v11 messageSummaryInfo];
     v13 = IMMessageSummaryInfoUpdatedDateWithServerTime;
-    v14 = [objc_msgSend(v12 objectForKey:{IMMessageSummaryInfoUpdatedDateWithServerTime), "BOOLValue"}];
-    v15 = [v11 messageSummaryInfo];
-    v16 = [objc_msgSend(v15 objectForKey:{IMMessageSummaryInfoHasBeenRetried), "BOOLValue"}];
+    v14 = [objc_msgSend(messageSummaryInfo objectForKey:{IMMessageSummaryInfoUpdatedDateWithServerTime), "BOOLValue"}];
+    messageSummaryInfo2 = [v11 messageSummaryInfo];
+    v16 = [objc_msgSend(messageSummaryInfo2 objectForKey:{IMMessageSummaryInfoHasBeenRetried), "BOOLValue"}];
     v17 = v16;
     if (!v11 || (v14 & 1) != 0 || (v16 & 1) != 0 || [v11 scheduleType])
     {
@@ -166,10 +166,10 @@
         v18 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v19 = [v11 scheduleType];
+          scheduleType = [v11 scheduleType];
           v20 = @"NO";
           v27 = 138413058;
-          v28 = a3;
+          neededCopy = needed;
           if (v17)
           {
             v21 = @"YES";
@@ -188,9 +188,9 @@
 
           v30 = v20;
           v31 = 2112;
-          v32 = v21;
+          neededCopy2 = v21;
           v33 = 2048;
-          v34 = v19;
+          v34 = scheduleType;
           _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "We already updated the time on message %@ with a server time (%@) or this message has been retried (%@) or this is a future scheduled message (%lu) -- skipping server time update", &v27, 0x2Au);
         }
       }
@@ -205,13 +205,13 @@
         {
           [objc_msgSend(v11 "time")];
           v24 = v23;
-          [objc_msgSend(a6 "serverReceivedTime")];
+          [objc_msgSend(context "serverReceivedTime")];
           v27 = 134218498;
-          v28 = v24;
+          neededCopy = v24;
           v29 = 2048;
           v30 = v25;
           v31 = 2112;
-          v32 = a3;
+          neededCopy2 = needed;
           _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, "Going to update message time from: %f to: %f for identifier: %@", &v27, 0x20u);
         }
       }
@@ -223,17 +223,17 @@
       }
 
       [(__CFDictionary *)Mutable setObject:[NSNumber forKey:"numberWithBool:" numberWithBool:?], v13];
-      [v11 setTime:{objc_msgSend(a6, "serverReceivedTime")}];
+      [v11 setTime:{objc_msgSend(context, "serverReceivedTime")}];
       [v11 setMessageSummaryInfo:Mutable];
 
       [-[MessageDeliveryController messageStore](self "messageStore")];
       [(MessageDeliveryControllerDelegate *)[(MessageDeliveryController *)self delegate] messageDeliveryController:self serverUpdatedTimestampMessage:v11];
-      [(NSMutableDictionary *)self->_pendingTimestampUpdate removeObjectForKey:a5];
+      [(NSMutableDictionary *)self->_pendingTimestampUpdate removeObjectForKey:d];
     }
   }
 }
 
-- (void)service:(id)a3 didFlushCacheForRemoteURI:(id)a4 fromURI:(id)a5 guid:(id)a6
+- (void)service:(id)service didFlushCacheForRemoteURI:(id)i fromURI:(id)rI guid:(id)guid
 {
   if (IMOSLoggingEnabled())
   {
@@ -241,21 +241,21 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = 138413058;
-      v12 = a4;
+      iCopy = i;
       v13 = 2112;
-      v14 = a5;
+      rICopy = rI;
       v15 = 2112;
-      v16 = a6;
+      guidCopy = guid;
       v17 = 2112;
-      v18 = [(MessageDeliveryController *)self delegate];
+      delegate = [(MessageDeliveryController *)self delegate];
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Received flushed cached message from %@ to %@ guid %@ delegate %@", &v11, 0x2Au);
     }
   }
 
-  [(MessageDeliveryControllerDelegate *)[(MessageDeliveryController *)self delegate] messageDeliveryController:self didFlushCacheForRemoteURI:a4 fromURI:a5 guid:a6];
+  [(MessageDeliveryControllerDelegate *)[(MessageDeliveryController *)self delegate] messageDeliveryController:self didFlushCacheForRemoteURI:i fromURI:rI guid:guid];
 }
 
-- (void)service:(id)a3 didFlushCacheForKTPeerURI:(id)a4
+- (void)service:(id)service didFlushCacheForKTPeerURI:(id)i
 {
   if (IMOSLoggingEnabled())
   {
@@ -263,21 +263,21 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = a4;
+      iCopy = i;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Received flushed cache for KT Peer URI %@", &v7, 0xCu);
     }
   }
 
-  [(MessageDeliveryControllerDelegate *)[(MessageDeliveryController *)self delegate] messageDeliveryController:self didFlushCacheForKTPeerURI:a4];
+  [(MessageDeliveryControllerDelegate *)[(MessageDeliveryController *)self delegate] messageDeliveryController:self didFlushCacheForKTPeerURI:i];
 }
 
-- (void)service:(id)a3 account:(id)a4 messageIdentifier:(id)a5 alternateCallbackID:(id)a6 updatedWithResponseCode:(int64_t)a7 error:(id)a8 lastCall:(BOOL)a9 messageContext:(id)a10
+- (void)service:(id)service account:(id)account messageIdentifier:(id)identifier alternateCallbackID:(id)d updatedWithResponseCode:(int64_t)code error:(id)error lastCall:(BOOL)call messageContext:(id)self0
 {
-  if (a5)
+  if (identifier)
   {
-    if ([a6 length])
+    if ([d length])
     {
-      v15 = [(NSMutableDictionary *)self->_pendingTimestampUpdate objectForKey:a6];
+      v15 = [(NSMutableDictionary *)self->_pendingTimestampUpdate objectForKey:d];
     }
 
     else
@@ -291,20 +291,20 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = @"NO";
-        if (a9)
+        if (call)
         {
           v17 = @"YES";
         }
 
-        [objc_msgSend(a10 serverReceivedTime];
+        [objc_msgSend(context serverReceivedTime];
         *buf = 134219522;
-        v34 = a7;
+        identifierCopy4 = code;
         v35 = 2112;
-        v36 = a5;
+        identifierCopy = identifier;
         v37 = 2112;
-        v38 = a6;
+        dCopy = d;
         v39 = 2112;
-        v40 = a8;
+        errorCopy = error;
         v41 = 2112;
         v42 = v29;
         v43 = 2112;
@@ -315,26 +315,26 @@
       }
     }
 
-    v18 = [(NSMutableDictionary *)self->_pendingSends objectForKey:a5];
+    v18 = [(NSMutableDictionary *)self->_pendingSends objectForKey:identifier];
     if ([v18 count])
     {
-      [(MessageDeliveryController *)self _updateTimeStampForMessageIdentifierIfNeeded:a5 pendingTimeStampUpdateIdentifier:v15 alternateCallbackID:a6 messageContext:a10];
-      v19 = sub_883DC(a7, a8);
+      [(MessageDeliveryController *)self _updateTimeStampForMessageIdentifierIfNeeded:identifier pendingTimeStampUpdateIdentifier:v15 alternateCallbackID:d messageContext:context];
+      v19 = sub_883DC(code, error);
       v20 = v19;
-      if (a6)
+      if (d)
       {
-        v21 = [v18 objectForKey:a6];
+        v21 = [v18 objectForKey:d];
         if (v21)
         {
-          v21[2](v21, v20, a9);
+          v21[2](v21, v20, call);
         }
 
-        if (a9)
+        if (call)
         {
-          [v18 removeObjectForKey:a6];
+          [v18 removeObjectForKey:d];
           if (![v18 count])
           {
-            [(NSMutableDictionary *)self->_pendingSends removeObjectForKey:a5];
+            [(NSMutableDictionary *)self->_pendingSends removeObjectForKey:identifier];
             if (![(NSMutableDictionary *)self->_pendingSends count])
             {
 
@@ -342,13 +342,13 @@
             }
           }
 
-          v22 = [(NSMutableDictionary *)self->_pendingWillSendBlocks objectForKey:a5];
-          if ([v22 objectForKey:a6])
+          v22 = [(NSMutableDictionary *)self->_pendingWillSendBlocks objectForKey:identifier];
+          if ([v22 objectForKey:d])
           {
-            [v22 removeObjectForKey:a6];
+            [v22 removeObjectForKey:d];
             if (![v22 count])
             {
-              [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:a5];
+              [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:identifier];
               if (![(NSMutableDictionary *)self->_pendingWillSendBlocks count])
               {
 
@@ -362,13 +362,13 @@
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v34 = a5;
+                identifierCopy4 = identifier;
                 _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "Delivery got lastCall update for %@ without having gotten a willSend update.", buf, 0xCu);
               }
             }
           }
 
-          [(NSMutableDictionary *)self->_pendingTimestampUpdate removeObjectForKey:a6];
+          [(NSMutableDictionary *)self->_pendingTimestampUpdate removeObjectForKey:d];
           if (![(NSMutableDictionary *)self->_pendingTimestampUpdate count])
           {
             pendingTimestampUpdate = self->_pendingTimestampUpdate;
@@ -387,11 +387,11 @@ LABEL_39:
         v30[2] = sub_420DC;
         v30[3] = &unk_112C88;
         v31 = v19;
-        v32 = a9;
+        callCopy = call;
         [v18 enumerateKeysAndObjectsUsingBlock:v30];
-        if (a9)
+        if (call)
         {
-          if ([-[NSMutableDictionary objectForKey:](self->_pendingWillSendBlocks objectForKey:{a5), "count"}])
+          if ([-[NSMutableDictionary objectForKey:](self->_pendingWillSendBlocks objectForKey:{identifier), "count"}])
           {
             if (v20)
             {
@@ -401,14 +401,14 @@ LABEL_39:
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v34 = a5;
+                  identifierCopy4 = identifier;
                   _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Delivery got lastCall update for %@ without having gotten a willSend update.", buf, 0xCu);
                 }
               }
             }
           }
 
-          [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:a5];
+          [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:identifier];
           if (![(NSMutableDictionary *)self->_pendingWillSendBlocks count])
           {
             pendingWillSendBlocks = self->_pendingWillSendBlocks;
@@ -426,16 +426,16 @@ LABEL_39:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v34 = a5;
+        identifierCopy4 = identifier;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "No pending sends for identifier %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 alternateCallbackID:(id)a6 willSendToDestinations:(id)a7 skippedDestinations:(id)a8 registrationPropertyToDestinations:(id)a9
+- (void)service:(id)service account:(id)account identifier:(id)identifier alternateCallbackID:(id)d willSendToDestinations:(id)destinations skippedDestinations:(id)skippedDestinations registrationPropertyToDestinations:(id)toDestinations
 {
-  if (a5)
+  if (identifier)
   {
     if (IMOSLoggingEnabled())
     {
@@ -443,34 +443,34 @@ LABEL_39:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v18 = 138413314;
-        v19 = a5;
+        identifierCopy2 = identifier;
         v20 = 2112;
-        v21 = a6;
+        dCopy = d;
         v22 = 2112;
-        v23 = a7;
+        destinationsCopy = destinations;
         v24 = 2112;
-        v25 = a8;
+        skippedDestinationsCopy = skippedDestinations;
         v26 = 2112;
-        v27 = a9;
+        toDestinationsCopy = toDestinations;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Received %@ callbackID %@ willSendTo %@ skipped %@ propertyMap %@", &v18, 0x34u);
       }
     }
 
-    v15 = [(NSMutableDictionary *)self->_pendingWillSendBlocks objectForKey:a5];
+    v15 = [(NSMutableDictionary *)self->_pendingWillSendBlocks objectForKey:identifier];
     if ([v15 count])
     {
-      if (a6)
+      if (d)
       {
-        v16 = [v15 objectForKey:a6];
+        v16 = [v15 objectForKey:d];
         if (v16)
         {
-          v16[2](v16, a7, a8, a9);
+          v16[2](v16, destinations, skippedDestinations, toDestinations);
         }
 
-        [v15 removeObjectForKey:a6];
+        [v15 removeObjectForKey:d];
         if (![v15 count])
         {
-          [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:a5];
+          [(NSMutableDictionary *)self->_pendingWillSendBlocks removeObjectForKey:identifier];
           if (![(NSMutableDictionary *)self->_pendingWillSendBlocks count])
           {
 
@@ -486,18 +486,18 @@ LABEL_39:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = a5;
+        identifierCopy2 = identifier;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "No pending will send blocks for identifier %@", &v18, 0xCu);
       }
     }
   }
 }
 
-- (void)_enqueueUpdateBlock:(id)a3 willSendBlock:(id)a4 identifier:(id)a5 callbackID:(id)a6 messageCommandOption:(id)a7
+- (void)_enqueueUpdateBlock:(id)block willSendBlock:(id)sendBlock identifier:(id)identifier callbackID:(id)d messageCommandOption:(id)option
 {
-  if (a5 && a6)
+  if (identifier && d)
   {
-    if (a7 && [a7 integerValue] == &stru_20.flags)
+    if (option && [option integerValue] == &stru_20.flags)
     {
       if (IMOSLoggingEnabled())
       {
@@ -505,9 +505,9 @@ LABEL_39:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v22 = 138412546;
-          v23 = a5;
+          identifierCopy3 = identifier;
           v24 = 2112;
-          v25 = a6;
+          dCopy3 = d;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "We have a command 100 we need to update the timestamp for identifier: %@ alternateCallbackID: %@", &v22, 0x16u);
         }
       }
@@ -519,7 +519,7 @@ LABEL_39:
         self->_pendingTimestampUpdate = pendingTimestampUpdate;
       }
 
-      if ([(NSMutableDictionary *)pendingTimestampUpdate objectForKey:a6])
+      if ([(NSMutableDictionary *)pendingTimestampUpdate objectForKey:d])
       {
         if (IMOSLoggingEnabled())
         {
@@ -527,19 +527,19 @@ LABEL_39:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             v22 = 138412546;
-            v23 = a5;
+            identifierCopy3 = identifier;
             v24 = 2112;
-            v25 = a6;
+            dCopy3 = d;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "We already have identifier (%@) to update the timestamp for callbackID (%@)", &v22, 0x16u);
           }
         }
       }
 
-      [(NSMutableDictionary *)self->_pendingTimestampUpdate setObject:a5 forKey:a6];
+      [(NSMutableDictionary *)self->_pendingTimestampUpdate setObject:identifier forKey:d];
     }
 
-    v15 = _Block_copy(a3);
-    v16 = _Block_copy(a4);
+    v15 = _Block_copy(block);
+    v16 = _Block_copy(sendBlock);
     if (v15)
     {
       pendingSends = self->_pendingSends;
@@ -549,13 +549,13 @@ LABEL_39:
         self->_pendingSends = pendingSends;
       }
 
-      v18 = [(NSMutableDictionary *)pendingSends objectForKey:a5];
+      v18 = [(NSMutableDictionary *)pendingSends objectForKey:identifier];
       if (!v18)
       {
         v18 = objc_alloc_init(NSMutableDictionary);
         if (v18)
         {
-          CFDictionarySetValue(self->_pendingSends, a5, v18);
+          CFDictionarySetValue(self->_pendingSends, identifier, v18);
         }
 
         else
@@ -569,7 +569,7 @@ LABEL_39:
         }
       }
 
-      CFDictionarySetValue(v18, a6, v15);
+      CFDictionarySetValue(v18, d, v15);
     }
 
     if (v16)
@@ -581,13 +581,13 @@ LABEL_39:
         self->_pendingWillSendBlocks = pendingWillSendBlocks;
       }
 
-      v21 = [(NSMutableDictionary *)pendingWillSendBlocks objectForKey:a5];
+      v21 = [(NSMutableDictionary *)pendingWillSendBlocks objectForKey:identifier];
       if (!v21)
       {
         v21 = objc_alloc_init(NSMutableDictionary);
         if (v21)
         {
-          CFDictionarySetValue(self->_pendingWillSendBlocks, a5, v21);
+          CFDictionarySetValue(self->_pendingWillSendBlocks, identifier, v21);
         }
 
         else
@@ -601,7 +601,7 @@ LABEL_39:
         }
       }
 
-      CFDictionarySetValue(v21, a6, v16);
+      CFDictionarySetValue(v21, d, v16);
     }
   }
 
@@ -611,69 +611,69 @@ LABEL_39:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v22 = 138412546;
-      v23 = a5;
+      identifierCopy3 = identifier;
       v24 = 2112;
-      v25 = a6;
+      dCopy3 = d;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "Nil identifier %@ or callbackID %@ passed into _enqueueUpdateBlock -- we won't be able to process IDS send feedback!", &v22, 0x16u);
     }
   }
 }
 
-- (id)messageDictionaryWithMessageItem:(id)a3 isBusiness:(BOOL)a4 chatIdentifier:(id)a5 toParticipants:(id)a6 originallyToParticipants:(id)a7 additionalContext:(id)a8 msgPayloadUploadDictionary:(id)a9 originalPayload:(id)a10
+- (id)messageDictionaryWithMessageItem:(id)item isBusiness:(BOOL)business chatIdentifier:(id)identifier toParticipants:(id)participants originallyToParticipants:(id)toParticipants additionalContext:(id)context msgPayloadUploadDictionary:(id)dictionary originalPayload:(id)self0
 {
-  value = a4;
+  value = business;
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v106 = a3;
+      contextCopy = item;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Creating message dictionary for message item: %@", buf, 0xCu);
     }
   }
 
-  if (a3)
+  if (item)
   {
     v15 = objc_alloc_init(NSMutableDictionary);
-    if ((([a3 isAudioMessage] & 1) != 0 || objc_msgSend(objc_msgSend(a3, "balloonBundleID"), "length")) && (objc_msgSend(a3, "isFinished") & 1) == 0)
+    if ((([item isAudioMessage] & 1) != 0 || objc_msgSend(objc_msgSend(item, "balloonBundleID"), "length")) && (objc_msgSend(item, "isFinished") & 1) == 0)
     {
       CFDictionarySetValue(v15, @"u", &__kCFBooleanTrue);
     }
 
-    if ([a3 isAudioMessage])
+    if ([item isAudioMessage])
     {
       CFDictionarySetValue(v15, @"a", &__kCFBooleanTrue);
     }
 
-    if ([a3 isAutoReply])
+    if ([item isAutoReply])
     {
       CFDictionarySetValue(v15, @"ar", &__kCFBooleanTrue);
     }
 
-    if ([a3 isFromExternalSource])
+    if ([item isFromExternalSource])
     {
       CFDictionarySetValue(v15, @"ms", &__kCFBooleanTrue);
     }
 
-    if ([a3 isSOS])
+    if ([item isSOS])
     {
       CFDictionarySetValue(v15, @"sos", &__kCFBooleanTrue);
     }
 
-    if ([a3 isCritical])
+    if ([item isCritical])
     {
       CFDictionarySetValue(v15, @"c", &__kCFBooleanTrue);
     }
 
-    [(MessageDeliveryController *)self _setReplyToGUIDForMessage:a3 messageDictionary:v15];
-    v16 = [a3 threadIdentifier];
-    if (v16)
+    [(MessageDeliveryController *)self _setReplyToGUIDForMessage:item messageDictionary:v15];
+    threadIdentifier = [item threadIdentifier];
+    if (threadIdentifier)
     {
-      CFDictionarySetValue(v15, @"tg", v16);
+      CFDictionarySetValue(v15, @"tg", threadIdentifier);
       if ([(MessageServiceSession *)[(MessageDeliveryController *)self session] isReplicating])
       {
-        v17 = [(MessageDeliveryController *)self _threadOriginatorFallbackHashForMessageItem:a3];
+        v17 = [(MessageDeliveryController *)self _threadOriginatorFallbackHashForMessageItem:item];
         if (v17)
         {
           CFDictionarySetValue(v15, @"tgf", v17);
@@ -686,19 +686,19 @@ LABEL_39:
           {
             v19 = [v17 length];
             *buf = 134217984;
-            v106 = v19;
+            contextCopy = v19;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "setThreadOriginatorFallbackHash: len %llu", buf, 0xCu);
           }
         }
       }
     }
 
-    if ([a3 associatedMessageGUID])
+    if ([item associatedMessageGUID])
     {
-      v20 = [a3 associatedMessageGUID];
-      if (v20)
+      associatedMessageGUID = [item associatedMessageGUID];
+      if (associatedMessageGUID)
       {
-        CFDictionarySetValue(v15, @"amk", v20);
+        CFDictionarySetValue(v15, @"amk", associatedMessageGUID);
       }
 
       if (IMOSLoggingEnabled())
@@ -706,16 +706,16 @@ LABEL_39:
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [a3 associatedMessageGUID];
+          associatedMessageGUID2 = [item associatedMessageGUID];
           *buf = 138412290;
-          v106 = v22;
+          contextCopy = associatedMessageGUID2;
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "setAssociatedMessageGUID: %@", buf, 0xCu);
         }
       }
 
       if ([(MessageServiceSession *)[(MessageDeliveryController *)self session] isReplicating])
       {
-        v23 = [(MessageDeliveryController *)self _associatedMessageFallbackHashForMessageItem:a3];
+        v23 = [(MessageDeliveryController *)self _associatedMessageFallbackHashForMessageItem:item];
         if (v23)
         {
           CFDictionarySetValue(v15, @"amf", v23);
@@ -728,16 +728,16 @@ LABEL_39:
           {
             v25 = [v23 length];
             *buf = 134217984;
-            v106 = v25;
+            contextCopy = v25;
             _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "setAssociatedMessageFallbackHash: len %llu", buf, 0xCu);
           }
         }
       }
     }
 
-    if ([a3 associatedMessageType])
+    if ([item associatedMessageType])
     {
-      v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 associatedMessageType]);
+      v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [item associatedMessageType]);
       if (v26)
       {
         CFDictionarySetValue(v15, @"amt", v26);
@@ -748,20 +748,20 @@ LABEL_39:
         v27 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
-          v28 = [a3 associatedMessageType];
+          associatedMessageType = [item associatedMessageType];
           *buf = 134217984;
-          v106 = v28;
+          contextCopy = associatedMessageType;
           _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "setAssociatedMessageType: %lld", buf, 0xCu);
         }
       }
     }
 
-    v29 = [a3 associatedMessageRange];
+    associatedMessageRange = [item associatedMessageRange];
     v31 = v30;
     if (v30 && !value)
     {
-      v32 = v29;
-      v33 = [NSNumber numberWithUnsignedInteger:v29];
+      v32 = associatedMessageRange;
+      v33 = [NSNumber numberWithUnsignedInteger:associatedMessageRange];
       if (v33)
       {
         CFDictionarySetValue(v15, @"amrlc", v33);
@@ -782,18 +782,18 @@ LABEL_39:
           v109.length = v31;
           v36 = NSStringFromRange(v109);
           *buf = 138412290;
-          v106 = v36;
+          contextCopy = v36;
           _os_log_impl(&dword_0, v35, OS_LOG_TYPE_INFO, "setAssociatedMessageRange: %@", buf, 0xCu);
         }
       }
     }
 
-    if ([a3 associatedMessageEmoji])
+    if ([item associatedMessageEmoji])
     {
-      v37 = [a3 associatedMessageEmoji];
-      if (v37)
+      associatedMessageEmoji = [item associatedMessageEmoji];
+      if (associatedMessageEmoji)
       {
-        CFDictionarySetValue(v15, @"ame", v37);
+        CFDictionarySetValue(v15, @"ame", associatedMessageEmoji);
       }
 
       if (IMOSLoggingEnabled())
@@ -807,22 +807,22 @@ LABEL_39:
       }
     }
 
-    v39 = [a3 messageSummaryInfoForSending];
-    if ([v39 count])
+    messageSummaryInfoForSending = [item messageSummaryInfoForSending];
+    if ([messageSummaryInfoForSending count])
     {
-      v40 = [NSData dataWithMessageSummaryInfoDictionary:v39];
+      v40 = [NSData dataWithMessageSummaryInfoDictionary:messageSummaryInfoForSending];
       if (v40)
       {
         CFDictionarySetValue(v15, @"msi", v40);
       }
     }
 
-    if ([objc_msgSend(a3 balloonBundleID])
+    if ([objc_msgSend(item balloonBundleID])
     {
-      v41 = [a3 balloonBundleID];
-      if (v41)
+      balloonBundleID = [item balloonBundleID];
+      if (balloonBundleID)
       {
-        CFDictionarySetValue(v15, @"bid", v41);
+        CFDictionarySetValue(v15, @"bid", balloonBundleID);
       }
 
       if (IMOSLoggingEnabled())
@@ -830,20 +830,20 @@ LABEL_39:
         v42 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
-          v43 = [a3 balloonBundleID];
+          balloonBundleID2 = [item balloonBundleID];
           *buf = 138412290;
-          v106 = v43;
+          contextCopy = balloonBundleID2;
           _os_log_impl(&dword_0, v42, OS_LOG_TYPE_INFO, "Set balloonBundleID: %@", buf, 0xCu);
         }
       }
     }
 
-    if ([objc_msgSend(a3 "expressiveSendStyleID")])
+    if ([objc_msgSend(item "expressiveSendStyleID")])
     {
-      v44 = [a3 expressiveSendStyleID];
-      if (v44)
+      expressiveSendStyleID = [item expressiveSendStyleID];
+      if (expressiveSendStyleID)
       {
-        CFDictionarySetValue(v15, @"iid", v44);
+        CFDictionarySetValue(v15, @"iid", expressiveSendStyleID);
       }
 
       if (IMOSLoggingEnabled())
@@ -851,17 +851,17 @@ LABEL_39:
         v45 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
         {
-          v46 = [a3 expressiveSendStyleID];
+          expressiveSendStyleID2 = [item expressiveSendStyleID];
           *buf = 138412290;
-          v106 = v46;
+          contextCopy = expressiveSendStyleID2;
           _os_log_impl(&dword_0, v45, OS_LOG_TYPE_INFO, "Set expressiveSendStyleID: %@", buf, 0xCu);
         }
       }
     }
 
-    if ([objc_msgSend(a3 "typingIndicatorIcon")])
+    if ([objc_msgSend(item "typingIndicatorIcon")])
     {
-      v47 = [objc_msgSend(a3 "typingIndicatorIcon")];
+      v47 = [objc_msgSend(item "typingIndicatorIcon")];
       if (v47)
       {
         CFDictionarySetValue(v15, @"tic", v47);
@@ -872,15 +872,15 @@ LABEL_39:
         v48 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
         {
-          v49 = [a3 guid];
+          guid = [item guid];
           *buf = 138412290;
-          v106 = v49;
+          contextCopy = guid;
           _os_log_impl(&dword_0, v48, OS_LOG_TYPE_INFO, "Set typing indicator data for guid %@", buf, 0xCu);
         }
       }
     }
 
-    v50 = [(MessageDeliveryController *)self _compressedAttributionInfoForMessage:a3];
+    v50 = [(MessageDeliveryController *)self _compressedAttributionInfoForMessage:item];
     if (v50)
     {
       CFDictionarySetValue(v15, @"ati", v50);
@@ -890,19 +890,19 @@ LABEL_39:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
           v52 = [v50 length];
-          v53 = [a3 guid];
+          guid2 = [item guid];
           *buf = 134218242;
-          v106 = v52;
+          contextCopy = v52;
           v107 = 2112;
-          v108 = v53;
+          v108 = guid2;
           _os_log_impl(&dword_0, v51, OS_LOG_TYPE_INFO, "set attribution info data (%tu bytes) for guid %@", buf, 0x16u);
         }
       }
     }
 
-    if (!a7)
+    if (!toParticipants)
     {
-      a7 = a6;
+      toParticipants = participants;
     }
 
     if (IMOSLoggingEnabled())
@@ -911,27 +911,27 @@ LABEL_39:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v106 = a7;
+        contextCopy = toParticipants;
         _os_log_impl(&dword_0, v54, OS_LOG_TYPE_INFO, "participants: %@", buf, 0xCu);
       }
     }
 
-    if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")] && objc_msgSend(a3, "isGroupTypingMessage"))
+    if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")] && objc_msgSend(item, "isGroupTypingMessage"))
     {
       CFDictionarySetValue(v15, @"gt", &__kCFBooleanTrue);
-      if (a7)
+      if (toParticipants)
       {
-        CFDictionarySetValue(v15, @"p", a7);
+        CFDictionarySetValue(v15, @"p", toParticipants);
       }
 
-      if (([a3 isFinished] & 1) == 0)
+      if (([item isFinished] & 1) == 0)
       {
         CFDictionarySetValue(v15, @"u", &__kCFBooleanTrue);
       }
     }
 
-    v55 = [(MessageDeliveryController *)self _shouldSendAuxXML:a3];
-    if (([a3 isTypingMessage] & 1) == 0)
+    v55 = [(MessageDeliveryController *)self _shouldSendAuxXML:item];
+    if (([item isTypingMessage] & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -945,17 +945,17 @@ LABEL_39:
           }
 
           *buf = 138412290;
-          v106 = v57;
+          contextCopy = v57;
           _os_log_impl(&dword_0, v56, OS_LOG_TYPE_INFO, "sendAuxXMLVersion: %@", buf, 0xCu);
         }
       }
     }
 
-    if ([a3 isFinished])
+    if ([item isFinished])
     {
-      v58 = -[SuperToMessageParserContext initWithAttributedString:includeMessageParts:isAudioMessage:]([SuperToMessageParserContext alloc], "initWithAttributedString:includeMessageParts:isAudioMessage:", [a3 body], objc_msgSend(a3, "shouldSendPartIndexesInMessageBody"), objc_msgSend(a3, "isAudioMessage"));
+      v58 = -[SuperToMessageParserContext initWithAttributedString:includeMessageParts:isAudioMessage:]([SuperToMessageParserContext alloc], "initWithAttributedString:includeMessageParts:isAudioMessage:", [item body], objc_msgSend(item, "shouldSendPartIndexesInMessageBody"), objc_msgSend(item, "isAudioMessage"));
       [+[IMAttributedStringParser sharedInstance](IMAttributedStringParser parseContext:"parseContext:", v58];
-      v59 = [objc_msgSend(a3 "body")];
+      v59 = [objc_msgSend(item "body")];
       if ([(SuperToMessageParserContext *)v58 isSimpleString])
       {
         v60 = 1;
@@ -963,7 +963,7 @@ LABEL_39:
 
       else
       {
-        if ([objc_msgSend(a3 "body")])
+        if ([objc_msgSend(item "body")])
         {
           v61 = v59 == 0;
         }
@@ -976,20 +976,20 @@ LABEL_39:
         v60 = v61;
       }
 
-      v62 = [(SuperToMessageParserContext *)v58 outHTML];
-      v63 = [(SuperToMessageParserContext *)v58 AuxHTML];
+      outHTML = [(SuperToMessageParserContext *)v58 outHTML];
+      auxHTML = [(SuperToMessageParserContext *)v58 AuxHTML];
       if (@"1")
       {
         CFDictionarySetValue(v15, @"v", @"1");
       }
 
-      v64 = [(MessageDeliveryController *)self _replicationSourceIDForSending];
-      if (v64)
+      _replicationSourceIDForSending = [(MessageDeliveryController *)self _replicationSourceIDForSending];
+      if (_replicationSourceIDForSending)
       {
-        CFDictionarySetValue(v15, @"rp", v64);
+        CFDictionarySetValue(v15, @"rp", _replicationSourceIDForSending);
       }
 
-      if (v62)
+      if (outHTML)
       {
         v65 = v60;
       }
@@ -1001,10 +1001,10 @@ LABEL_39:
 
       if ((v65 & 1) == 0)
       {
-        CFDictionarySetValue(v15, @"x", v62);
+        CFDictionarySetValue(v15, @"x", outHTML);
       }
 
-      if (v63)
+      if (auxHTML)
       {
         v66 = v55;
       }
@@ -1016,7 +1016,7 @@ LABEL_39:
 
       if (v66 == 1)
       {
-        CFDictionarySetValue(v15, @"ix", v63);
+        CFDictionarySetValue(v15, @"ix", auxHTML);
       }
 
       if (v59)
@@ -1024,29 +1024,29 @@ LABEL_39:
         CFDictionarySetValue(v15, @"t", v59);
       }
 
-      v67 = [a3 subject];
-      if (v67)
+      subject = [item subject];
+      if (subject)
       {
-        CFDictionarySetValue(v15, @"s", v67);
+        CFDictionarySetValue(v15, @"s", subject);
       }
 
-      if (a7)
+      if (toParticipants)
       {
-        CFDictionarySetValue(v15, @"p", a7);
+        CFDictionarySetValue(v15, @"p", toParticipants);
       }
 
-      if ([a3 isExpirable])
+      if ([item isExpirable])
       {
         CFDictionarySetValue(v15, @"e", &__kCFBooleanTrue);
       }
     }
 
-    if ((([a3 isTypingMessage] | value) & 1) == 0)
+    if ((([item isTypingMessage] | value) & 1) == 0)
     {
-      v68 = [a3 contactsAvatarRecipeData];
-      if (v68)
+      contactsAvatarRecipeData = [item contactsAvatarRecipeData];
+      if (contactsAvatarRecipeData)
       {
-        CFDictionarySetValue(v15, @"sld", v68);
+        CFDictionarySetValue(v15, @"sld", contactsAvatarRecipeData);
         if (IMOSLoggingEnabled())
         {
           v69 = OSLogHandleForIMFoundationCategory();
@@ -1058,15 +1058,15 @@ LABEL_39:
         }
       }
 
-      [(MessageDeliveryController *)self _sendNicknameToRecipientsIfNeededForChat:[(MessageDeliveryController *)self _chatForChatIdentifier:a5] forMessage:a3];
-      [(MessageDeliveryController *)self appendChatRelatedPropertiesToMessageDictionary:v15 forMessage:a3 chatIdentifier:a5];
+      [(MessageDeliveryController *)self _sendNicknameToRecipientsIfNeededForChat:[(MessageDeliveryController *)self _chatForChatIdentifier:identifier] forMessage:item];
+      [(MessageDeliveryController *)self appendChatRelatedPropertiesToMessageDictionary:v15 forMessage:item chatIdentifier:identifier];
     }
 
-    v70 = [a3 bizIntent];
-    v71 = v70;
-    if (v70)
+    bizIntent = [item bizIntent];
+    v71 = bizIntent;
+    if (bizIntent)
     {
-      v72 = [v70 objectForKey:@"biz-intent-id"];
+      v72 = [bizIntent objectForKey:@"biz-intent-id"];
       v73 = [v71 objectForKey:@"biz-group-id"];
       if (v72)
       {
@@ -1079,41 +1079,41 @@ LABEL_39:
       }
     }
 
-    if ([a3 locale])
+    if ([item locale])
     {
-      v74 = [a3 locale];
-      if (v74)
+      locale = [item locale];
+      if (locale)
       {
-        CFDictionarySetValue(v15, @"bloc", v74);
+        CFDictionarySetValue(v15, @"bloc", locale);
       }
     }
 
     if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags sharedFeatureFlags])
     {
-      v75 = [(MessageDeliveryController *)self _chatForChatIdentifier:a5];
+      v75 = [(MessageDeliveryController *)self _chatForChatIdentifier:identifier];
       if ([v75 containsActiveBIASession])
       {
-        v76 = [v75 lastUsedBIAUserID];
-        if ([v76 length])
+        lastUsedBIAUserID = [v75 lastUsedBIAUserID];
+        if ([lastUsedBIAUserID length])
         {
-          if (v76)
+          if (lastUsedBIAUserID)
           {
-            CFDictionarySetValue(v15, @"buid", v76);
+            CFDictionarySetValue(v15, @"buid", lastUsedBIAUserID);
           }
 
-          v77 = [v75 lastUsedBIAReferenceID];
-          v78 = [v77 length];
-          if (v77 && v78)
+          lastUsedBIAReferenceID = [v75 lastUsedBIAReferenceID];
+          v78 = [lastUsedBIAReferenceID length];
+          if (lastUsedBIAReferenceID && v78)
           {
-            CFDictionarySetValue(v15, @"brid", v77);
+            CFDictionarySetValue(v15, @"brid", lastUsedBIAReferenceID);
           }
         }
       }
     }
 
-    if ([objc_msgSend(a3 "payloadData")])
+    if ([objc_msgSend(item "payloadData")])
     {
-      if (a9)
+      if (dictionary)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1125,29 +1125,29 @@ LABEL_39:
           }
         }
 
-        CFDictionarySetValue(v15, @"bpdi", a9);
+        CFDictionarySetValue(v15, @"bpdi", dictionary);
       }
 
       else
       {
-        v80 = a10;
-        if (!a10)
+        payloadCopy = payload;
+        if (!payload)
         {
-          v80 = [a3 payloadData];
+          payloadCopy = [item payloadData];
         }
 
-        valuea = [v80 _FTCopyGzippedData];
-        v81 = [a3 balloonBundleID];
-        if ([v81 isEqualToString:IMBalloonPluginIdentifierRichLinks] && objc_msgSend(objc_msgSend(a3, "fileTransferGUIDs"), "count"))
+        valuea = [payloadCopy _FTCopyGzippedData];
+        balloonBundleID3 = [item balloonBundleID];
+        if ([balloonBundleID3 isEqualToString:IMBalloonPluginIdentifierRichLinks] && objc_msgSend(objc_msgSend(item, "fileTransferGUIDs"), "count"))
         {
           if (IMOSLoggingEnabled())
           {
             v82 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
             {
-              v83 = [a3 guid];
+              guid3 = [item guid];
               *buf = 138412290;
-              v106 = v83;
+              contextCopy = guid3;
               _os_log_impl(&dword_0, v82, OS_LOG_TYPE_INFO, "Trying to recombine rich link payload from attachments for msg guid %@", buf, 0xCu);
             }
           }
@@ -1157,8 +1157,8 @@ LABEL_39:
           v103 = 0u;
           v100 = 0u;
           v101 = 0u;
-          v85 = [a3 fileTransferGUIDs];
-          v86 = [v85 countByEnumeratingWithState:&v100 objects:v104 count:16];
+          fileTransferGUIDs = [item fileTransferGUIDs];
+          v86 = [fileTransferGUIDs countByEnumeratingWithState:&v100 objects:v104 count:16];
           if (v86)
           {
             v87 = *v101;
@@ -1168,7 +1168,7 @@ LABEL_39:
               {
                 if (*v101 != v87)
                 {
-                  objc_enumerationMutation(v85);
+                  objc_enumerationMutation(fileTransferGUIDs);
                 }
 
                 v89 = [+[IMDFileTransferCenter sharedInstance](IMDFileTransferCenter transferForGUID:"transferForGUID:", *(*(&v100 + 1) + 8 * i)];
@@ -1182,13 +1182,13 @@ LABEL_39:
                 }
               }
 
-              v86 = [v85 countByEnumeratingWithState:&v100 objects:v104 count:16];
+              v86 = [fileTransferGUIDs countByEnumeratingWithState:&v100 objects:v104 count:16];
             }
 
             while (v86);
           }
 
-          [a3 payloadData];
+          [item payloadData];
           valuea = [IMSharedHelperCombinedPluginPayloadDictionaryDataWithAttachmentURLs() _FTCopyGzippedData];
         }
 
@@ -1202,32 +1202,32 @@ LABEL_39:
           v91 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v91, OS_LOG_TYPE_INFO))
           {
-            v92 = [a3 guid];
+            guid4 = [item guid];
             *buf = 138412290;
-            v106 = v92;
+            contextCopy = guid4;
             _os_log_impl(&dword_0, v91, OS_LOG_TYPE_INFO, "set balloon payload for msg guid %@", buf, 0xCu);
           }
         }
       }
     }
 
-    if ([objc_msgSend(a3 "replicatedFallbackGUIDs")])
+    if ([objc_msgSend(item "replicatedFallbackGUIDs")])
     {
-      -[__CFDictionary setObject:forKeyedSubscript:](v15, "setObject:forKeyedSubscript:", [a3 replicatedFallbackGUIDs], @"rf");
+      -[__CFDictionary setObject:forKeyedSubscript:](v15, "setObject:forKeyedSubscript:", [item replicatedFallbackGUIDs], @"rf");
     }
 
     if ([(__CFDictionary *)v15 count])
     {
-      if ([a8 count])
+      if ([context count])
       {
-        [(__CFDictionary *)v15 addEntriesFromDictionary:a8];
+        [(__CFDictionary *)v15 addEntriesFromDictionary:context];
         if (IMOSLoggingEnabled())
         {
           v93 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v106 = a8;
+            contextCopy = context;
             _os_log_impl(&dword_0, v93, OS_LOG_TYPE_INFO, " => Adding context: %@", buf, 0xCu);
           }
         }
@@ -1249,7 +1249,7 @@ LABEL_39:
   return v15;
 }
 
-- (id)idsOptionsWithMessageItem:(id)a3 toID:(id)a4 fromID:(id)a5 sendGUIDData:(id)a6 alternateCallbackID:(id)a7 isBusinessMessage:(BOOL)a8 chatIdentifier:(id)a9 requiredRegProperties:(id)value interestingRegProperties:(id)a11 requiresLackOfRegProperties:(id)a12 deliveryContext:(id)a13 isGroupChat:(BOOL)a14 canInlineAttachments:(BOOL)a15 msgPayloadUploadDictionary:(id)a16 messageDictionary:(id)a17
+- (id)idsOptionsWithMessageItem:(id)item toID:(id)d fromID:(id)iD sendGUIDData:(id)data alternateCallbackID:(id)callbackID isBusinessMessage:(BOOL)message chatIdentifier:(id)identifier requiredRegProperties:(id)value interestingRegProperties:(id)self1 requiresLackOfRegProperties:(id)self2 deliveryContext:(id)self3 isGroupChat:(BOOL)self4 canInlineAttachments:(BOOL)self5 msgPayloadUploadDictionary:(id)self6 messageDictionary:(id)self7
 {
   if (IMOSLoggingEnabled())
   {
@@ -1257,12 +1257,12 @@ LABEL_39:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *v63 = a3;
+      *v63 = item;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "Setting IDS options with messageItem: %@", buf, 0xCu);
     }
   }
 
-  v24 = [a4 isEqualToString:a5];
+  v24 = [d isEqualToString:iD];
   v25 = [NSNumber numberWithInteger:100];
   if (v24)
   {
@@ -1271,14 +1271,14 @@ LABEL_39:
 
   else
   {
-    v26 = [a3 isTypingMessage] ^ 1;
+    v26 = [item isTypingMessage] ^ 1;
   }
 
   v27 = [NSNumber numberWithBool:v26];
-  v28 = [NSMutableDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, v25, IDSSendMessageOptionCommandKey, v27, IDSSendMessageOptionWantsResponseKey, a5, IDSSendMessageOptionFromIDKey, a6, IDSSendMessageOptionUUIDKey, a7, IDSSendMessageOptionAlternateCallbackIdentifierKey, 0];
-  if (!a8)
+  v28 = [NSMutableDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, v25, IDSSendMessageOptionCommandKey, v27, IDSSendMessageOptionWantsResponseKey, iD, IDSSendMessageOptionFromIDKey, data, IDSSendMessageOptionUUIDKey, callbackID, IDSSendMessageOptionAlternateCallbackIdentifierKey, 0];
+  if (!message)
   {
-    v29 = [(MessageDeliveryController *)self _keyTransparencyEnforcementDictionaryForChatIdentifier:a9];
+    v29 = [(MessageDeliveryController *)self _keyTransparencyEnforcementDictionaryForChatIdentifier:identifier];
     if (v29)
     {
       CFDictionarySetValue(v28, @"IDSSendMessageOptionKTVerificationUUIDKey", v29);
@@ -1290,44 +1290,44 @@ LABEL_39:
     CFDictionarySetValue(v28, IDSSendMessageOptionRequireAllRegistrationPropertiesKey, value);
   }
 
-  if (a11)
+  if (properties)
   {
-    CFDictionarySetValue(v28, IDSSendMessageOptionInterestingRegistrationPropertiesKey, a11);
+    CFDictionarySetValue(v28, IDSSendMessageOptionInterestingRegistrationPropertiesKey, properties);
   }
 
   CFDictionarySetValue(v28, IDSSendMessageOptionEnforceRemoteTimeoutsKey, &__kCFBooleanFalse);
-  if (a13)
+  if (context)
   {
     if (IMOSLoggingEnabled())
     {
       v30 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [a3 guid];
+        guid = [item guid];
         *buf = 138412802;
-        *v63 = v31;
+        *v63 = guid;
         *&v63[8] = 2112;
-        v64 = a13;
+        contextCopy = context;
         v65 = 1024;
-        v66 = a14;
+        chatCopy = chat;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_INFO, "Requsting delivery status for message GUID %@ due to delivery context %@ isGroupChat %{BOOL}d", buf, 0x1Cu);
       }
     }
 
-    CFDictionarySetValue(v28, IDSSendMessageOptionDeliveryStatusContextKey, a13);
+    CFDictionarySetValue(v28, IDSSendMessageOptionDeliveryStatusContextKey, context);
     CFDictionarySetValue(v28, IDSSendMessageOptionWantsDeliveryStatusKey, &__kCFBooleanTrue);
   }
 
-  if (((a14 | v24) & 1) == 0 && ([a3 isTypingMessage] & 1) == 0)
+  if (((chat | v24) & 1) == 0 && ([item isTypingMessage] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
       v32 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
-        v33 = [a3 guid];
+        guid2 = [item guid];
         *buf = 138412290;
-        *v63 = v33;
+        *v63 = guid2;
         _os_log_impl(&dword_0, v32, OS_LOG_TYPE_INFO, "Requsting delivery status for message GUID %@ because !isGroupChat", buf, 0xCu);
       }
     }
@@ -1335,53 +1335,53 @@ LABEL_39:
     CFDictionarySetValue(v28, IDSSendMessageOptionWantsDeliveryStatusKey, &__kCFBooleanTrue);
   }
 
-  if ([a3 isTypingMessage])
+  if ([item isTypingMessage])
   {
     CFDictionarySetValue(v28, IDSSendMessageOptionFireAndForgetKey, &__kCFBooleanTrue);
   }
 
-  if (a12)
+  if (regProperties)
   {
-    CFDictionarySetValue(v28, IDSSendMessageOptionRequireLackOfRegistrationPropertiesKey, a12);
+    CFDictionarySetValue(v28, IDSSendMessageOptionRequireLackOfRegistrationPropertiesKey, regProperties);
   }
 
-  if (([a3 isTypingMessage] & 1) == 0 && objc_msgSend(+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags, "sharedFeatureFlags"), "certifiedDeliveryEnabled") && !a8)
+  if (([item isTypingMessage] & 1) == 0 && objc_msgSend(+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags, "sharedFeatureFlags"), "certifiedDeliveryEnabled") && !message)
   {
     CFDictionarySetValue(v28, IDSSendMessageOptionWantsCertifiedDeliveryKey, &__kCFBooleanTrue);
   }
 
-  if ([a17 count])
+  if ([messageDictionary count])
   {
-    v34 = [a17 valueForKey:@"oe"];
+    v34 = [messageDictionary valueForKey:@"oe"];
     if (v34)
     {
       CFDictionarySetValue(v28, @"IDSSendMessageOptionOriginalTimestampKey", v34);
     }
 
     v35 = JWEncodeDictionary();
-    if ([objc_msgSend(a3 "fileTransferGUIDs")] && !a15 || (v36 = objc_msgSend(objc_msgSend(a3, "payloadData"), "length"), a16) && v36)
+    if ([objc_msgSend(item "fileTransferGUIDs")] && !attachments || (v36 = objc_msgSend(objc_msgSend(item, "payloadData"), "length"), dictionary) && v36)
     {
       if (IMOSLoggingEnabled())
       {
         v37 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
         {
-          v38 = [a3 fileTransferGUIDs];
+          fileTransferGUIDs = [item fileTransferGUIDs];
           v39 = @"NO";
-          if (a15)
+          if (attachments)
           {
             v39 = @"YES";
           }
 
           *buf = 138412546;
-          *v63 = v38;
+          *v63 = fileTransferGUIDs;
           *&v63[8] = 2112;
-          v64 = v39;
+          contextCopy = v39;
           _os_log_impl(&dword_0, v37, OS_LOG_TYPE_INFO, "Not compressing data, %@, canInlineAttachments: %@", buf, 0x16u);
         }
       }
 
-      v40 = v35;
+      _FTCopyGzippedData = v35;
     }
 
     else
@@ -1391,25 +1391,25 @@ LABEL_39:
         v41 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v42 = [a3 fileTransferGUIDs];
+          fileTransferGUIDs2 = [item fileTransferGUIDs];
           v43 = @"NO";
-          if (a15)
+          if (attachments)
           {
             v43 = @"YES";
           }
 
           *buf = 138412546;
-          *v63 = v42;
+          *v63 = fileTransferGUIDs2;
           *&v63[8] = 2112;
-          v64 = v43;
+          contextCopy = v43;
           _os_log_impl(&dword_0, v41, OS_LOG_TYPE_INFO, "Compressing data, %@, canInlineAttachments: %@", buf, 0x16u);
         }
       }
 
-      v40 = [v35 _FTCopyGzippedData];
+      _FTCopyGzippedData = [v35 _FTCopyGzippedData];
     }
 
-    v44 = v40;
+    v44 = _FTCopyGzippedData;
     if (IMOSLoggingEnabled())
     {
       v45 = OSLogHandleForIMFoundationCategory();
@@ -1441,7 +1441,7 @@ LABEL_39:
   }
 
   v50 = &IDSSendMessageOptionTimeoutKey;
-  if (![a3 scheduleType])
+  if (![item scheduleType])
   {
     v56 = &off_119698;
     goto LABEL_77;
@@ -1453,9 +1453,9 @@ LABEL_39:
     CFDictionarySetValue(v28, IDSSendMessageOptionTimeoutKey, v51);
   }
 
-  [objc_msgSend(a3 time];
+  [objc_msgSend(item time];
   v53 = v52;
-  if ([a3 scheduleType] == &dword_0 + 1)
+  if ([item scheduleType] == &dword_0 + 1)
   {
     if (v53 > 0.0)
     {
@@ -1467,7 +1467,7 @@ LABEL_39:
     }
 
     CFDictionarySetValue(v28, IMIDSSendMessageOptionAlwaysIncludeSelfKey, &__kCFBooleanTrue);
-    v55 = -[MessageDeliveryController _getQueueIdentifierFromGUID:](self, "_getQueueIdentifierFromGUID:", [a3 guid]);
+    v55 = -[MessageDeliveryController _getQueueIdentifierFromGUID:](self, "_getQueueIdentifierFromGUID:", [item guid]);
     if (v55)
     {
       CFDictionarySetValue(v28, IDSSendMessageOptionQueueOneIdentifierKey, v55);
@@ -1482,11 +1482,11 @@ LABEL_77:
     }
   }
 
-  else if ([a3 scheduleType] == &dword_0 + 2)
+  else if ([item scheduleType] == &dword_0 + 2)
   {
     if (v53 > 0.0)
     {
-      [objc_msgSend(a3 "time")];
+      [objc_msgSend(item "time")];
       v57 = [NSNumber numberWithDouble:?];
       if (v57)
       {
@@ -1495,7 +1495,7 @@ LABEL_77:
     }
 
     CFDictionarySetValue(v28, IMIDSSendMessageOptionAlwaysIncludeSelfKey, &__kCFBooleanTrue);
-    v56 = -[MessageDeliveryController _getQueueIdentifierFromGUID:](self, "_getQueueIdentifierFromGUID:", [a3 guid]);
+    v56 = -[MessageDeliveryController _getQueueIdentifierFromGUID:](self, "_getQueueIdentifierFromGUID:", [item guid]);
     if (v56)
     {
       v50 = &IDSSendMessageOptionQueueOneIdentifierKey;
@@ -1503,24 +1503,24 @@ LABEL_77:
     }
   }
 
-  v58 = [a3 telemetryMetrics];
-  if (v58)
+  telemetryMetrics = [item telemetryMetrics];
+  if (telemetryMetrics)
   {
-    CFDictionarySetValue(v28, IDSSendMessageOptionSendMetricsKey, v58);
+    CFDictionarySetValue(v28, IDSSendMessageOptionSendMetricsKey, telemetryMetrics);
   }
 
-  v59 = [a3 telemetryMetricsReasonCode];
-  if (v59)
+  telemetryMetricsReasonCode = [item telemetryMetricsReasonCode];
+  if (telemetryMetricsReasonCode)
   {
-    CFDictionarySetValue(v28, IDSSendMessageOptionSendReasonKey, v59);
+    CFDictionarySetValue(v28, IDSSendMessageOptionSendReasonKey, telemetryMetricsReasonCode);
   }
 
   return v28;
 }
 
-- (id)_getQueueIdentifierFromGUID:(id)a3
+- (id)_getQueueIdentifierFromGUID:(id)d
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [d dataUsingEncoding:4];
   v4 = [[NSMutableData alloc] initWithLength:32];
   CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), objc_msgSend(v4, "mutableBytes"));
   v5 = [v4 base64EncodedStringWithOptions:0];
@@ -1528,14 +1528,14 @@ LABEL_77:
   return v5;
 }
 
-- (BOOL)_shouldSendAuxXML:(id)a3
+- (BOOL)_shouldSendAuxXML:(id)l
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 fileTransferGUIDs];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  fileTransferGUIDs = [l fileTransferGUIDs];
+  v4 = [fileTransferGUIDs countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v4)
   {
     v6 = *v17;
@@ -1547,7 +1547,7 @@ LABEL_77:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fileTransferGUIDs);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -1573,7 +1573,7 @@ LABEL_77:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v4 = [fileTransferGUIDs countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v4)
       {
         continue;
@@ -1605,15 +1605,15 @@ LABEL_15:
   return v11;
 }
 
-- (id)_compressedAttributionInfoForMessage:(id)a3
+- (id)_compressedAttributionInfoForMessage:(id)message
 {
   v4 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [a3 fileTransferGUIDs];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  fileTransferGUIDs = [message fileTransferGUIDs];
+  v6 = [fileTransferGUIDs countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (!v6)
   {
     return 0;
@@ -1629,14 +1629,14 @@ LABEL_15:
     {
       if (*v21 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(fileTransferGUIDs);
       }
 
       v11 = *(*(&v20 + 1) + 8 * i);
       v12 = [+[IMDFileTransferCenter transferForGUID:v18], "transferForGUID:", v11];
       if ([v12 attributionInfo])
       {
-        v13 = [v12 attributionInfo];
+        attributionInfo = [v12 attributionInfo];
         v8 = 1;
       }
 
@@ -1653,13 +1653,13 @@ LABEL_15:
           }
         }
 
-        v13 = +[NSNull null];
+        attributionInfo = +[NSNull null];
       }
 
-      [v4 addObject:v13];
+      [v4 addObject:attributionInfo];
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v6 = [fileTransferGUIDs countByEnumeratingWithState:&v20 objects:v26 count:16];
   }
 
   while (v6);
@@ -1687,7 +1687,7 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)forceBackwardsCompatibleMessageForBundleID:(id)a3
+- (BOOL)forceBackwardsCompatibleMessageForBundleID:(id)d
 {
   v15[0] = IMBalloonExtensionIDWithSuffix();
   v15[1] = IMBalloonExtensionIDWithSuffix();
@@ -1711,7 +1711,7 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v8) isEqualToString:a3])
+        if ([*(*(&v10 + 1) + 8 * v8) isEqualToString:d])
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -1735,43 +1735,43 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)shouldSendBackwardsCompatibleMessageForBundleID:(id)a3
+- (BOOL)shouldSendBackwardsCompatibleMessageForBundleID:(id)d
 {
-  if (![a3 hasPrefix:@"com.apple.messages.MSMessageExtensionBalloonPlugin"])
+  if (![d hasPrefix:@"com.apple.messages.MSMessageExtensionBalloonPlugin"])
   {
     return 1;
   }
 
-  return [(MessageDeliveryController *)self forceBackwardsCompatibleMessageForBundleID:a3];
+  return [(MessageDeliveryController *)self forceBackwardsCompatibleMessageForBundleID:d];
 }
 
-- (id)_chatForChatIdentifier:(id)a3
+- (id)_chatForChatIdentifier:(id)identifier
 {
-  result = [(MessageServiceSession *)[(MessageDeliveryController *)self session] chatForChatIdentifier:a3 style:45 updatingAccount:1];
+  result = [(MessageServiceSession *)[(MessageDeliveryController *)self session] chatForChatIdentifier:identifier style:45 updatingAccount:1];
   if (!result)
   {
-    v6 = [(MessageDeliveryController *)self session];
+    session = [(MessageDeliveryController *)self session];
 
-    return [(MessageServiceSession *)v6 chatForChatIdentifier:a3 style:43 updatingAccount:1];
+    return [(MessageServiceSession *)session chatForChatIdentifier:identifier style:43 updatingAccount:1];
   }
 
   return result;
 }
 
-- (void)_sendNicknameToRecipientsIfNeededForChat:(id)a3 forMessage:(id)a4
+- (void)_sendNicknameToRecipientsIfNeededForChat:(id)chat forMessage:(id)message
 {
-  if ([a4 shouldSendMeCard])
+  if ([message shouldSendMeCard])
   {
-    if (0xCCCCCCCCCCCCCCCDLL * [a3 numMessagesSent] <= 0x3333333333333333)
+    if (0xCCCCCCCCCCCCCCCDLL * [chat numMessagesSent] <= 0x3333333333333333)
     {
-      [a3 meCardUpdated];
+      [chat meCardUpdated];
     }
 
     else
     {
-      v5 = [a3 numMessagesSent];
-      v6 = [a3 meCardUpdated];
-      if (v5 != &dword_0 + 1 && !v6)
+      numMessagesSent = [chat numMessagesSent];
+      meCardUpdated = [chat meCardUpdated];
+      if (numMessagesSent != &dword_0 + 1 && !meCardUpdated)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1795,8 +1795,8 @@ LABEL_11:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [a3 participants];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    participants = [chat participants];
+    v11 = [participants countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = *v16;
@@ -1806,20 +1806,20 @@ LABEL_11:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(participants);
           }
 
           [v9 addObject:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "ID")}];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [participants countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
     }
 
     [+[IMDNicknameController sharedInstance](IMDNicknameController markHandlesAsAllowed:"markHandlesAsAllowed:", v9];
-    -[IMDNicknameController sendPersonalNicknameToRecipients:chatGUID:fromHandle:onlySendToThoseLoggedOutOfIMessage:](+[IMDNicknameController sharedInstance](IMDNicknameController, "sharedInstance"), "sendPersonalNicknameToRecipients:chatGUID:fromHandle:onlySendToThoseLoggedOutOfIMessage:", [a3 participants], objc_msgSend(a3, "guid"), objc_msgSend(a3, "lastAddressedLocalHandle"), 1);
+    -[IMDNicknameController sendPersonalNicknameToRecipients:chatGUID:fromHandle:onlySendToThoseLoggedOutOfIMessage:](+[IMDNicknameController sharedInstance](IMDNicknameController, "sharedInstance"), "sendPersonalNicknameToRecipients:chatGUID:fromHandle:onlySendToThoseLoggedOutOfIMessage:", [chat participants], objc_msgSend(chat, "guid"), objc_msgSend(chat, "lastAddressedLocalHandle"), 1);
     return;
   }
 
@@ -1835,7 +1835,7 @@ LABEL_11:
   }
 }
 
-- (void)_appendMyTranscriptBackgroundVersionToMessageDictionary:(id)a3 forMessage:(id)a4 chat:(id)a5
+- (void)_appendMyTranscriptBackgroundVersionToMessageDictionary:(id)dictionary forMessage:(id)message chat:(id)chat
 {
   v8 = [IDSServerBag sharedInstanceForBagType:1];
   v9 = [v8 objectForKey:@"include-transcript-background-info-in-regular-iMessages"];
@@ -1843,7 +1843,7 @@ LABEL_11:
   {
     v10 = [v8 objectForKey:@"include-transcript-background-version-information-interval"];
     v11 = ([v10 integerValue] < 1 ? &dword_0 + 3 : objc_msgSend(v10, "integerValue"));
-    if (([a5 numMessagesSent] % v11 == 2 || objc_msgSend(a5, "numMessagesSent") == &dword_0 + 1) && objc_msgSend(a5, "transcriptBackgroundVersion") && objc_msgSend(a5, "transcriptBackgroundPath"))
+    if (([chat numMessagesSent] % v11 == 2 || objc_msgSend(chat, "numMessagesSent") == &dword_0 + 1) && objc_msgSend(chat, "transcriptBackgroundVersion") && objc_msgSend(chat, "transcriptBackgroundPath"))
     {
       if (IMOSLoggingEnabled())
       {
@@ -1851,31 +1851,31 @@ LABEL_11:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = 138412290;
-          v14 = [a4 guid];
+          guid = [message guid];
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Including transcript background version in this message %@", &v13, 0xCu);
         }
       }
 
-      [a3 setObject:objc_msgSend(a5 forKey:{"transcriptBackgroundVersion"), @"tbid"}];
+      [dictionary setObject:objc_msgSend(chat forKey:{"transcriptBackgroundVersion"), @"tbid"}];
     }
   }
 }
 
-- (void)_appendMyNicknameToMessageDictionary:(id)a3 forMessage:(id)a4 chat:(id)a5
+- (void)_appendMyNicknameToMessageDictionary:(id)dictionary forMessage:(id)message chat:(id)chat
 {
-  if ([a4 shouldSendMeCard])
+  if ([message shouldSendMeCard])
   {
-    if (0xCCCCCCCCCCCCCCCDLL * [a5 numMessagesSent] <= 0x3333333333333333)
+    if (0xCCCCCCCCCCCCCCCDLL * [chat numMessagesSent] <= 0x3333333333333333)
     {
-      v10 = [a5 meCardUpdated];
+      meCardUpdated = [chat meCardUpdated];
     }
 
     else
     {
-      v8 = [a5 numMessagesSent];
-      v9 = [a5 meCardUpdated];
-      v10 = v9;
-      if (v8 != &dword_0 + 1 && !v9)
+      numMessagesSent = [chat numMessagesSent];
+      meCardUpdated2 = [chat meCardUpdated];
+      meCardUpdated = meCardUpdated2;
+      if (numMessagesSent != &dword_0 + 1 && !meCardUpdated2)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1894,9 +1894,9 @@ LABEL_11:
       }
     }
 
-    v13 = [+[IMDNicknameController sharedInstance](IMDNicknameController newNicknameInfoToSend];
+    newNicknameInfoToSend = [+[IMDNicknameController sharedInstance](IMDNicknameController newNicknameInfoToSend];
     v14 = IMOSLoggingEnabled();
-    if (v13)
+    if (newNicknameInfoToSend)
     {
       if (v14)
       {
@@ -1904,7 +1904,7 @@ LABEL_11:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v27 = 138412290;
-          v28 = [a4 guid];
+          guid = [message guid];
           _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "Including me card in this message %@", &v27, 0xCu);
         }
       }
@@ -1916,8 +1916,8 @@ LABEL_11:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v17 = [a5 participants];
-        v18 = [v17 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        participants = [chat participants];
+        v18 = [participants countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v18)
         {
           v19 = *v23;
@@ -1927,20 +1927,20 @@ LABEL_11:
             {
               if (*v23 != v19)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(participants);
               }
 
               [v16 addObject:{objc_msgSend(*(*(&v22 + 1) + 8 * i), "ID")}];
             }
 
-            v18 = [v17 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v18 = [participants countByEnumeratingWithState:&v22 objects:v26 count:16];
           }
 
           while (v18);
         }
 
         [+[IMDNicknameController sharedInstance](IMDNicknameController markHandlesAsAllowed:"markHandlesAsAllowed:", v16];
-        [a3 addEntriesFromDictionary:v13];
+        [dictionary addEntriesFromDictionary:newNicknameInfoToSend];
       }
     }
 
@@ -1950,14 +1950,14 @@ LABEL_11:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v27 = 138412290;
-        v28 = [a4 guid];
+        guid = [message guid];
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "Me card data not available, not including in message %@", &v27, 0xCu);
       }
     }
 
-    if (v10)
+    if (meCardUpdated)
     {
-      [a5 setMeCardUpdated:0];
+      [chat setMeCardUpdated:0];
     }
 
     return;
@@ -1975,9 +1975,9 @@ LABEL_11:
   }
 }
 
-- (void)_appendRecipientAvailabilityVerificationInfoToMessageDictionary:(id)a3 forChat:(id)a4
+- (void)_appendRecipientAvailabilityVerificationInfoToMessageDictionary:(id)dictionary forChat:(id)chat
 {
-  if ([a4 style] != 45)
+  if ([chat style] != 45)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1995,7 +1995,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v7 = [objc_msgSend(a4 "participants")];
+  v7 = [objc_msgSend(chat "participants")];
   if (v7)
   {
     v8 = [objc_msgSend(v7 "ID")];
@@ -2003,7 +2003,7 @@ LABEL_11:
     {
       if ((+[IMDAvailabilityVerificationManager deviceSupportsSubscriptionValidationTokens]& 1) != 0)
       {
-        if (0xAAAAAAAAAAAAAAABLL * [a4 numMessagesSent] + 0x5555555555555555 >= 0x5555555555555555)
+        if (0xAAAAAAAAAAAAAAABLL * [chat numMessagesSent] + 0x5555555555555555 >= 0x5555555555555555)
         {
           if (IMOSLoggingEnabled())
           {
@@ -2021,32 +2021,32 @@ LABEL_11:
 
         else
         {
-          [(MessageDeliveryController *)self _appendOffGridAvailabilityPropertiesToMessageDictionary:a3 participantHandleID:v8];
+          [(MessageDeliveryController *)self _appendOffGridAvailabilityPropertiesToMessageDictionary:dictionary participantHandleID:v8];
         }
 
-        if (0xAAAAAAAAAAAAAAABLL * [a4 numMessagesSent] < 0x5555555555555556)
+        if (0xAAAAAAAAAAAAAAABLL * [chat numMessagesSent] < 0x5555555555555556)
         {
           v15 = [+[IMDAvailabilityVerificationManager sharedInstance](IMDAvailabilityVerificationManager cachedAvailabilityVerificationTokensForHandleID:"cachedAvailabilityVerificationTokensForHandleID:", v8];
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 subscriptionValidationToken];
+            subscriptionValidationToken = [v15 subscriptionValidationToken];
             if (IMOSLoggingEnabled())
             {
               v18 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
               {
                 v22 = 138412546;
-                v23 = v17;
+                v23 = subscriptionValidationToken;
                 v24 = 2112;
                 v25 = v8;
                 _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "Appending subscriptionValidationToken %@ to message for handleID %@", &v22, 0x16u);
               }
             }
 
-            [a3 setObject:v17 forKey:@"arc"];
-            v19 = [v16 encryptionValidationToken];
-            if (v19)
+            [dictionary setObject:subscriptionValidationToken forKey:@"arc"];
+            encryptionValidationToken = [v16 encryptionValidationToken];
+            if (encryptionValidationToken)
             {
               if (IMOSLoggingEnabled())
               {
@@ -2054,14 +2054,14 @@ LABEL_11:
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
                 {
                   v22 = 138412546;
-                  v23 = v19;
+                  v23 = encryptionValidationToken;
                   v24 = 2112;
                   v25 = v8;
                   _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "Appending encryptionValidationToken %@ to message for handleID %@", &v22, 0x16u);
                 }
               }
 
-              [a3 setObject:v19 forKey:@"are"];
+              [dictionary setObject:encryptionValidationToken forKey:@"are"];
             }
           }
 
@@ -2129,29 +2129,29 @@ LABEL_10:
   }
 }
 
-- (void)_appendOffGridAvailabilityPropertiesToMessageDictionary:(id)a3 participantHandleID:(id)a4
+- (void)_appendOffGridAvailabilityPropertiesToMessageDictionary:(id)dictionary participantHandleID:(id)d
 {
-  v6 = [+[IMDOffGridAvailabilityVerificationManager sharedInstance](IMDOffGridAvailabilityVerificationManager cachedAvailabilityTokensForHandleID:"cachedAvailabilityTokensForHandleID:", a4];
+  v6 = [+[IMDOffGridAvailabilityVerificationManager sharedInstance](IMDOffGridAvailabilityVerificationManager cachedAvailabilityTokensForHandleID:"cachedAvailabilityTokensForHandleID:", d];
   if (v6)
   {
     v7 = v6;
-    v8 = [v6 subscriptionValidationToken];
-    v9 = [v7 encryptionValidationToken];
+    subscriptionValidationToken = [v6 subscriptionValidationToken];
+    encryptionValidationToken = [v7 encryptionValidationToken];
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = 138412546;
-        v14 = v8;
+        v14 = subscriptionValidationToken;
         v15 = 2112;
-        v16 = a4;
+        dCopy2 = d;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Appending offGridRecipientSubscriptionValidationTokenKey %@ to message for handleID %@", &v13, 0x16u);
       }
     }
 
-    [a3 setObject:v8 forKeyedSubscript:@"aogrs"];
-    if (v9)
+    [dictionary setObject:subscriptionValidationToken forKeyedSubscript:@"aogrs"];
+    if (encryptionValidationToken)
     {
       if (IMOSLoggingEnabled())
       {
@@ -2159,14 +2159,14 @@ LABEL_10:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v13 = 138412546;
-          v14 = v9;
+          v14 = encryptionValidationToken;
           v15 = 2112;
-          v16 = a4;
+          dCopy2 = d;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Appending offGridRecipientEncryptionValidationTokenKey %@ to message for handleID %@", &v13, 0x16u);
         }
       }
 
-      [a3 setObject:v9 forKeyedSubscript:@"aogre"];
+      [dictionary setObject:encryptionValidationToken forKeyedSubscript:@"aogre"];
     }
   }
 
@@ -2180,25 +2180,25 @@ LABEL_10:
   }
 }
 
-- (void)appendChatRelatedPropertiesToMessageDictionary:(id)a3 forMessage:(id)a4 chatIdentifier:(id)a5
+- (void)appendChatRelatedPropertiesToMessageDictionary:(id)dictionary forMessage:(id)message chatIdentifier:(id)identifier
 {
-  v8 = [(MessageDeliveryController *)self _chatForChatIdentifier:a5];
+  v8 = [(MessageDeliveryController *)self _chatForChatIdentifier:identifier];
   if (v8)
   {
     v9 = v8;
     if ([(MessageDeliveryController *)self _nicknameFeatureEnabled])
     {
-      [(MessageDeliveryController *)self _appendMyNicknameToMessageDictionary:a3 forMessage:a4 chat:v9];
-      [(MessageDeliveryController *)self _appendRecipientNicknameTruncatedRecordIDToMessageDictionary:a3 forChat:v9];
+      [(MessageDeliveryController *)self _appendMyNicknameToMessageDictionary:dictionary forMessage:message chat:v9];
+      [(MessageDeliveryController *)self _appendRecipientNicknameTruncatedRecordIDToMessageDictionary:dictionary forChat:v9];
     }
 
     if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")])
     {
-      [(MessageDeliveryController *)self _appendMyTranscriptBackgroundVersionToMessageDictionary:a3 forMessage:a4 chat:v9];
+      [(MessageDeliveryController *)self _appendMyTranscriptBackgroundVersionToMessageDictionary:dictionary forMessage:message chat:v9];
     }
 
-    [(MessageDeliveryController *)self _appendRecipientAvailabilityVerificationInfoToMessageDictionary:a3 forChat:v9];
-    [(MessageDeliveryController *)self _appendSeenOffGridStatusToMessageDictionary:a3 forChat:v9];
+    [(MessageDeliveryController *)self _appendRecipientAvailabilityVerificationInfoToMessageDictionary:dictionary forChat:v9];
+    [(MessageDeliveryController *)self _appendSeenOffGridStatusToMessageDictionary:dictionary forChat:v9];
     v10 = [v9 numMessagesSent] + 1;
 
     [v9 setNumMessagesSent:v10];
@@ -2214,11 +2214,11 @@ LABEL_10:
   }
 }
 
-- (void)_appendRecipientNicknameTruncatedRecordIDToMessageDictionary:(id)a3 forChat:(id)a4
+- (void)_appendRecipientNicknameTruncatedRecordIDToMessageDictionary:(id)dictionary forChat:(id)chat
 {
-  if ([a4 style] == 45)
+  if ([chat style] == 45)
   {
-    v6 = [objc_msgSend(a4 "participants")];
+    v6 = [objc_msgSend(chat "participants")];
     if (v6)
     {
       v7 = v6;
@@ -2253,7 +2253,7 @@ LABEL_10:
             }
           }
 
-          [a3 setObject:v11 forKey:MessageDictionaryNicknameParticipantTruncatedRIDKey];
+          [dictionary setObject:v11 forKey:MessageDictionaryNicknameParticipantTruncatedRIDKey];
         }
       }
 
@@ -2273,7 +2273,7 @@ LABEL_10:
   }
 }
 
-- (void)_appendSeenOffGridStatusToMessageDictionary:(id)a3 forChat:(id)a4
+- (void)_appendSeenOffGridStatusToMessageDictionary:(id)dictionary forChat:(id)chat
 {
   if (IMOSLoggingEnabled())
   {
@@ -2285,9 +2285,9 @@ LABEL_10:
     }
   }
 
-  if ([a4 style] == 45)
+  if ([chat style] == 45)
   {
-    v7 = [objc_msgSend(a4 "participants")];
+    v7 = [objc_msgSend(chat "participants")];
     if (v7)
     {
       v10[0] = _NSConcreteStackBlock;
@@ -2295,7 +2295,7 @@ LABEL_10:
       v10[2] = sub_45EA4;
       v10[3] = &unk_112CB0;
       v10[4] = v7;
-      v10[5] = a3;
+      v10[5] = dictionary;
       [v7 cachedOffGridModeAndLastPublisherWithCompletion:v10];
       return;
     }
@@ -2325,11 +2325,11 @@ LABEL_13:
   }
 }
 
-- (id)_computeRegPropertiesForNewFeatures:(id)a3 currentRegProperties:(id)a4 currentInterestingProp:(id)a5
+- (id)_computeRegPropertiesForNewFeatures:(id)features currentRegProperties:(id)properties currentInterestingProp:(id)prop
 {
-  if (a4)
+  if (properties)
   {
-    v7 = [NSMutableSet setWithSet:a4];
+    v7 = [NSMutableSet setWithSet:properties];
   }
 
   else
@@ -2338,9 +2338,9 @@ LABEL_13:
   }
 
   v8 = v7;
-  if (a5)
+  if (prop)
   {
-    v9 = [NSMutableSet setWithSet:a5];
+    v9 = [NSMutableSet setWithSet:prop];
   }
 
   else
@@ -2350,8 +2350,8 @@ LABEL_13:
 
   v10 = v9;
   v41 = v9;
-  v42 = a3;
-  if ([a3 isTypingMessage])
+  featuresCopy = features;
+  if ([features isTypingMessage])
   {
     if (IMOSLoggingEnabled())
     {
@@ -2359,7 +2359,7 @@ LABEL_13:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v51 = [a3 guid];
+        guid = [features guid];
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Not adding required reg properties for typing message msg %@", buf, 0xCu);
       }
     }
@@ -2369,10 +2369,10 @@ LABEL_13:
   }
 
   [(NSMutableSet *)v10 addObject:IDSRegistrationPropertySupportsStewie];
-  if ([a3 associatedMessageType] && objc_msgSend(a3, "associatedMessageType") >= 1001)
+  if ([features associatedMessageType] && objc_msgSend(features, "associatedMessageType") >= 1001)
   {
     [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsAcknowledgementsV1];
-    v13 = [objc_msgSend(a3 "messageSummaryInfo")];
+    v13 = [objc_msgSend(features "messageSummaryInfo")];
     if ([v13 isEqualToString:IMBalloonPluginIdentifierPhotosExtension])
     {
       [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsPhotosExtensionV2];
@@ -2386,36 +2386,36 @@ LABEL_13:
     v12 = 0;
   }
 
-  v14 = [a3 associatedMessageType];
-  if (v14 == &stru_798.nreloc + 2 || v14 == &stru_BA0.segname[14] || (v15 = [a3 associatedMessageType], v15 == &stru_BA0.segname[15]) || v15 == &stru_798.nreloc + 3)
+  associatedMessageType = [features associatedMessageType];
+  if (associatedMessageType == &stru_798.nreloc + 2 || associatedMessageType == &stru_BA0.segname[14] || (v15 = [features associatedMessageType], v15 == &stru_BA0.segname[15]) || v15 == &stru_798.nreloc + 3)
   {
     [(NSMutableSet *)v8 addObject:@"supports-stick-moji-backs"];
     v12 = 1;
   }
 
-  if ([objc_msgSend(a3 "balloonBundleID")])
+  if ([objc_msgSend(features "balloonBundleID")])
   {
     [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsPolls];
     v12 = 1;
   }
 
-  if ([a3 associatedMessageType] == &stru_F58.reserved2)
+  if ([features associatedMessageType] == &stru_F58.reserved2)
   {
     [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsPolls];
     v12 = 1;
   }
 
-  if ([objc_msgSend(a3 "balloonBundleID")])
+  if ([objc_msgSend(features "balloonBundleID")])
   {
-    v16 = [a3 balloonBundleID];
-    if (([v16 isEqualToString:IMBalloonPluginIdentifierRichLinks] & 1) == 0)
+    balloonBundleID = [features balloonBundleID];
+    if (([balloonBundleID isEqualToString:IMBalloonPluginIdentifierRichLinks] & 1) == 0)
     {
-      [a3 handle];
+      [features handle];
       IsBusinessID = IMStringIsBusinessID();
-      v18 = [a3 balloonBundleID];
+      balloonBundleID2 = [features balloonBundleID];
       if (IsBusinessID)
       {
-        if ([(MessageDeliveryController *)self shouldSendBackwardsCompatibleMessageForBundleID:v18])
+        if ([(MessageDeliveryController *)self shouldSendBackwardsCompatibleMessageForBundleID:balloonBundleID2])
         {
           v19 = @"supports-biz-forward-compat-apps-v1";
 LABEL_36:
@@ -2423,12 +2423,12 @@ LABEL_36:
         }
       }
 
-      else if ([v18 isEqualToString:IMBalloonExtensionIDWithSuffix()])
+      else if ([balloonBundleID2 isEqualToString:IMBalloonExtensionIDWithSuffix()])
       {
         [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsActivitySharing];
       }
 
-      else if ([objc_msgSend(a3 "balloonBundleID")])
+      else if ([objc_msgSend(features "balloonBundleID")])
       {
         v19 = IDSRegistrationPropertySupportsPhotosExtensionV1;
         goto LABEL_36;
@@ -2439,7 +2439,7 @@ LABEL_36:
     }
   }
 
-  [a3 payloadData];
+  [features payloadData];
   v20 = IMBalloonPluginRequiredCapabilitiesWithMessageData();
   if ([v20 count])
   {
@@ -2447,25 +2447,25 @@ LABEL_36:
     v12 = 1;
   }
 
-  if ([a3 isAudioMessage] && (objc_msgSend(a3, "backwardsCompatibleVersion") & 1) == 0)
+  if ([features isAudioMessage] && (objc_msgSend(features, "backwardsCompatibleVersion") & 1) == 0)
   {
     [(NSMutableSet *)v8 addObject:@"supports-audio-messaging-v2"];
     v12 = 1;
   }
 
-  v21 = [a3 expressiveSendStyleID];
+  expressiveSendStyleID = [features expressiveSendStyleID];
   v22 = IMImpactEffectID_InvisibleInk;
-  if ([v21 isEqualToString:IMImpactEffectID_InvisibleInk])
+  if ([expressiveSendStyleID isEqualToString:IMImpactEffectID_InvisibleInk])
   {
     [(NSMutableSet *)v8 addObject:IDSRegistrationPropertySupportsInvisibleInkV1];
     v12 = 1;
   }
 
-  if ([objc_msgSend(a3 "expressiveSendStyleID")])
+  if ([objc_msgSend(features "expressiveSendStyleID")])
   {
-    if (([objc_msgSend(a3 "expressiveSendStyleID")] & 1) == 0)
+    if (([objc_msgSend(features "expressiveSendStyleID")] & 1) == 0)
     {
-      v23 = -[MessageDeliveryController _propertyForExpressiveSendStyle:](self, "_propertyForExpressiveSendStyle:", [a3 expressiveSendStyleID]);
+      v23 = -[MessageDeliveryController _propertyForExpressiveSendStyle:](self, "_propertyForExpressiveSendStyle:", [features expressiveSendStyleID]);
       if (v23)
       {
         v24 = v23;
@@ -2485,14 +2485,14 @@ LABEL_36:
     }
   }
 
-  if ([objc_msgSend(a3 "fileTransferGUIDs")])
+  if ([objc_msgSend(features "fileTransferGUIDs")])
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v26 = [a3 fileTransferGUIDs];
-    v27 = [v26 countByEnumeratingWithState:&v46 objects:v52 count:16];
+    fileTransferGUIDs = [features fileTransferGUIDs];
+    v27 = [fileTransferGUIDs countByEnumeratingWithState:&v46 objects:v52 count:16];
     if (v27)
     {
       v28 = *v47;
@@ -2505,13 +2505,13 @@ LABEL_36:
         {
           if (*v47 != v28)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(fileTransferGUIDs);
           }
 
           v31 = [+[IMDFileTransferCenter sharedInstance](IMDFileTransferCenter transferForGUID:"transferForGUID:", *(*(&v46 + 1) + 8 * i)];
-          v32 = [v31 isAutoloopVideo];
+          isAutoloopVideo = [v31 isAutoloopVideo];
           v33 = v29;
-          if ((v32 & 1) != 0 || [v31 isAnimojiV2] && (v34 = objc_msgSend(v31, "wantsAlphaRemoved"), v33 = v44, (v34 & 1) == 0))
+          if ((isAutoloopVideo & 1) != 0 || [v31 isAnimojiV2] && (v34 = objc_msgSend(v31, "wantsAlphaRemoved"), v33 = v44, (v34 & 1) == 0))
           {
             [(NSMutableSet *)v8 addObject:v33];
             LOBYTE(v12) = 1;
@@ -2530,7 +2530,7 @@ LABEL_36:
           }
         }
 
-        v27 = [v26 countByEnumeratingWithState:&v46 objects:v52 count:16];
+        v27 = [fileTransferGUIDs countByEnumeratingWithState:&v46 objects:v52 count:16];
       }
 
       while (v27);
@@ -2539,11 +2539,11 @@ LABEL_36:
 
   if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")])
   {
-    v35 = [v42 messageSummaryInfo];
-    if (v35)
+    messageSummaryInfo = [featuresCopy messageSummaryInfo];
+    if (messageSummaryInfo)
     {
-      v36 = [v35 objectForKey:IMMessageSummaryInfoTranslatedMessageParts];
-      v37 = v42;
+      v36 = [messageSummaryInfo objectForKey:IMMessageSummaryInfoTranslatedMessageParts];
+      v37 = featuresCopy;
       if (!v36)
       {
         goto LABEL_74;
@@ -2554,7 +2554,7 @@ LABEL_36:
     }
   }
 
-  v37 = v42;
+  v37 = featuresCopy;
 LABEL_74:
   if ([v37 isBeingRetried])
   {
@@ -2564,9 +2564,9 @@ LABEL_74:
 LABEL_76:
   if ([(MessageServiceSession *)[(MessageDeliveryController *)self session] isReplicating])
   {
-    v38 = [v42 isSOS];
+    isSOS = [featuresCopy isSOS];
     v39 = &IDSRegistrationPropertySupportsSOSAlerting;
-    if (!v38)
+    if (!isSOS)
     {
       v39 = &IDSRegistrationPropertySupportsHybridGroupsV1;
     }
@@ -2577,9 +2577,9 @@ LABEL_76:
   return [NSDictionary dictionaryWithObjectsAndKeys:v8, @"req", v41, @"int", [NSNumber numberWithBool:v12 & 1], @"newFeature", 0];
 }
 
-- (BOOL)_transferIsUserGeneratedOrEmojiSticker:(id)a3
+- (BOOL)_transferIsUserGeneratedOrEmojiSticker:(id)sticker
 {
-  if ([a3 isSticker] && (v4 = objc_msgSend(a3, "attributionInfo"), v5 = objc_msgSend(v4, "objectForKeyedSubscript:", IMFileTransferAttributionInfoBundleIDKey), objc_msgSend(v5, "length")))
+  if ([sticker isSticker] && (v4 = objc_msgSend(sticker, "attributionInfo"), v5 = objc_msgSend(v4, "objectForKeyedSubscript:", IMFileTransferAttributionInfoBundleIDKey), objc_msgSend(v5, "length")))
   {
     v6 = [v5 isEqualToString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:%@", IMBalloonBundleIdentifierCling)}];
     v7 = v6 | [v5 isEqualToString:{+[IMEmojiSticker defaultEmojiStickerPackID](IMEmojiSticker, "defaultEmojiStickerPackID")}];
@@ -2593,26 +2593,26 @@ LABEL_76:
   return v7 & 1;
 }
 
-- (id)_propertyForExpressiveSendStyle:(id)a3
+- (id)_propertyForExpressiveSendStyle:(id)style
 {
-  if (![a3 length] || (objc_msgSend(a3, "isEqualToString:", IMImpactEffectID_InvisibleInk) & 1) != 0)
+  if (![style length] || (objc_msgSend(style, "isEqualToString:", IMImpactEffectID_InvisibleInk) & 1) != 0)
   {
     return 0;
   }
 
   v4 = IDSRegistrationPropertySupportsImpactEffectsV1;
-  if (![a3 containsString:IMFullScreenMomentID])
+  if (![style containsString:IMFullScreenMomentID])
   {
     return v4;
   }
 
-  if (([a3 hasSuffix:@"CKSparklesEffect"] & 1) != 0 || objc_msgSend(a3, "hasSuffix:", @"CKHeartEffect"))
+  if (([style hasSuffix:@"CKSparklesEffect"] & 1) != 0 || objc_msgSend(style, "hasSuffix:", @"CKHeartEffect"))
   {
     v6 = &IDSRegistrationPropertySupportsFullScreenMomentsV2;
     return *v6;
   }
 
-  if (([a3 hasSuffix:@"CKEchoEffect"] & 1) != 0 || objc_msgSend(a3, "hasSuffix:", @"CKSpotlightEffect"))
+  if (([style hasSuffix:@"CKEchoEffect"] & 1) != 0 || objc_msgSend(style, "hasSuffix:", @"CKSpotlightEffect"))
   {
     v6 = &IDSRegistrationPropertySupportsFullScreenMomentsV3;
     return *v6;
@@ -2621,14 +2621,14 @@ LABEL_76:
   return v4;
 }
 
-- (void)_setReplyToGUIDForMessage:(id)a3 messageDictionary:(id)a4
+- (void)_setReplyToGUIDForMessage:(id)message messageDictionary:(id)dictionary
 {
-  if (([a3 isTypingMessage] & 1) == 0 && objc_msgSend(objc_msgSend(a3, "replyToGUID"), "length"))
+  if (([message isTypingMessage] & 1) == 0 && objc_msgSend(objc_msgSend(message, "replyToGUID"), "length"))
   {
-    v6 = [a3 replyToGUID];
-    if (v6)
+    replyToGUID = [message replyToGUID];
+    if (replyToGUID)
     {
-      CFDictionarySetValue(a4, @"r", v6);
+      CFDictionarySetValue(dictionary, @"r", replyToGUID);
     }
 
     if (IMOSLoggingEnabled())
@@ -2637,42 +2637,42 @@ LABEL_76:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = 138412546;
-        v9 = [a3 replyToGUID];
+        replyToGUID2 = [message replyToGUID];
         v10 = 2112;
-        v11 = [a3 guid];
+        guid = [message guid];
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "setReplyToMessageGUID: %@ for message: %@", &v8, 0x16u);
       }
     }
   }
 }
 
-- (void)_sendMessage:(id)a3 context:(id)a4 deliveryContext:(id)a5 fromID:(id)a6 fromAccount:(id)a7 toID:(id)a8 chatIdentifier:(id)a9 toSessionToken:(id)a10 toGroup:(id)a11 toParticipants:(id)a12 originallyToParticipants:(id)a13 requiredRegProperties:(id)a14 interestingRegProperties:(id)a15 requiresLackOfRegProperties:(id)a16 canInlineAttachments:(BOOL)a17 type:(int64_t)a18 msgPayloadUploadDictionary:(id)a19 originalPayload:(id)a20 replyToMessageGUID:(id)a21 fallbackCount:(unint64_t)a22 willSendBlock:(id)a23 completionBlock:(id)a24
+- (void)_sendMessage:(id)message context:(id)context deliveryContext:(id)deliveryContext fromID:(id)d fromAccount:(id)account toID:(id)iD chatIdentifier:(id)identifier toSessionToken:(id)self0 toGroup:(id)self1 toParticipants:(id)self2 originallyToParticipants:(id)self3 requiredRegProperties:(id)self4 interestingRegProperties:(id)self5 requiresLackOfRegProperties:(id)self6 canInlineAttachments:(BOOL)self7 type:(int64_t)self8 msgPayloadUploadDictionary:(id)self9 originalPayload:(id)payload replyToMessageGUID:(id)uID fallbackCount:(unint64_t)count willSendBlock:(id)block completionBlock:(id)completionBlock
 {
-  v96 = a23;
-  v27 = a13;
-  if (![a13 count] && objc_msgSend(a12, "count"))
+  blockCopy = block;
+  participantsCopy = toParticipants;
+  if (![toParticipants count] && objc_msgSend(participants, "count"))
   {
-    v27 = a12;
+    participantsCopy = participants;
   }
 
-  v102 = v27;
+  v102 = participantsCopy;
   v28 = +[NSDate date];
-  if ([a12 count])
+  if ([participants count])
   {
-    v94 = a6;
-    v95 = a24;
-    v93 = a7;
-    v29 = [a7 serviceName];
-    v30 = [v29 isEqualToString:IDSServiceNameiMessageForBusiness];
-    [a3 addTelemetryMetricForKey:0];
+    dCopy = d;
+    completionBlockCopy = completionBlock;
+    accountCopy = account;
+    serviceName = [account serviceName];
+    v30 = [serviceName isEqualToString:IDSServiceNameiMessageForBusiness];
+    [message addTelemetryMetricForKey:0];
     v31 = 1;
-    if (a18 <= 1)
+    if (type <= 1)
     {
-      if (a18)
+      if (type)
       {
-        if (a18 == 1)
+        if (type == 1)
         {
-          if (([a3 isTypingMessage] & 1) == 0)
+          if (([message isTypingMessage] & 1) == 0)
           {
             if (IMOSLoggingEnabled())
             {
@@ -2680,9 +2680,9 @@ LABEL_76:
               if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                *&buf[4] = [a3 guid];
+                *&buf[4] = [message guid];
                 *&buf[12] = 2112;
-                *&buf[14] = a12;
+                *&buf[14] = participants;
                 _os_log_impl(&dword_0, v35, OS_LOG_TYPE_INFO, "Send attachments action  guid %@ (URIs: %@)", buf, 0x16u);
               }
             }
@@ -2692,34 +2692,34 @@ LABEL_76:
           v118[1] = 3221225472;
           v119 = sub_48794;
           v120 = &unk_112D50;
-          v121 = a3;
-          v122 = self;
-          v123 = a5;
-          v124 = v94;
-          v125 = v93;
-          v126 = a8;
-          v127 = a9;
-          v128 = a11;
-          v129 = a12;
-          v130 = v27;
-          v131 = a14;
-          v132 = a15;
-          v140 = a17;
-          v133 = a16;
-          v134 = a19;
-          v135 = a20;
-          v136 = a21;
-          v139 = a22;
-          v137 = a23;
-          v138 = a24;
-          if ([objc_msgSend(a3 "fileTransferGUIDs")])
+          messageCopy = message;
+          selfCopy = self;
+          deliveryContextCopy = deliveryContext;
+          v124 = dCopy;
+          v125 = accountCopy;
+          iDCopy = iD;
+          identifierCopy = identifier;
+          groupCopy = group;
+          participantsCopy2 = participants;
+          v130 = participantsCopy;
+          propertiesCopy = properties;
+          regPropertiesCopy = regProperties;
+          attachmentsCopy = attachments;
+          ofRegPropertiesCopy = ofRegProperties;
+          dictionaryCopy = dictionary;
+          payloadCopy = payload;
+          uIDCopy = uID;
+          countCopy = count;
+          blockCopy2 = block;
+          completionBlockCopy2 = completionBlock;
+          if ([objc_msgSend(message "fileTransferGUIDs")])
           {
-            [(MessageDeliveryController *)self _sendAttachmentsForMessage:a3 canSendInline:a17 displayIDs:v27 additionalContext:a4 fromID:v94 recipients:a12 uploadStartTime:v28 fromAccount:v93 completionBlock:v118];
+            [(MessageDeliveryController *)self _sendAttachmentsForMessage:message canSendInline:attachments displayIDs:participantsCopy additionalContext:context fromID:dCopy recipients:participants uploadStartTime:v28 fromAccount:accountCopy completionBlock:v118];
           }
 
           else
           {
-            v119(v118, a3, v27, a4, 1, 0);
+            v119(v118, message, participantsCopy, context, 1, 0);
           }
 
           return;
@@ -2734,23 +2734,23 @@ LABEL_76:
           if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            *&buf[4] = [a3 guid];
+            *&buf[4] = [message guid];
             *&buf[12] = 2112;
-            *&buf[14] = a12;
+            *&buf[14] = participants;
             _os_log_impl(&dword_0, v50, OS_LOG_TYPE_INFO, "Send message action guid %@ (URIs: %@)", buf, 0x16u);
           }
         }
 
-        if ([a3 collaborationInitiationRequestInfo] && (objc_msgSend(a3, "isTypingOrCancelTypingMessage") & 1) == 0)
+        if ([message collaborationInitiationRequestInfo] && (objc_msgSend(message, "isTypingOrCancelTypingMessage") & 1) == 0)
         {
           if (IMOSLoggingEnabled())
           {
             v82 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
             {
-              v83 = [a3 guid];
+              guid = [message guid];
               *buf = 138412290;
-              *&buf[4] = v83;
+              *&buf[4] = guid;
               _os_log_impl(&dword_0, v82, OS_LOG_TYPE_INFO, "guid: %@ detected collaborationInitiationRequestInfo, offloading collaboration send.", buf, 0xCu);
             }
           }
@@ -2759,25 +2759,25 @@ LABEL_76:
           v117[1] = 3221225472;
           v117[2] = sub_48A64;
           v117[3] = &unk_112D78;
-          v117[4] = a24;
-          LOBYTE(v88) = a17;
-          [(MessageDeliveryController *)self _sendMessage:a3 context:a4 deliveryContext:a5 fromID:v94 fromAccount:v93 toID:a8 chatIdentifier:a9 toSessionToken:a10 toGroup:a11 toParticipants:a12 originallyToParticipants:v27 requiredRegProperties:a14 interestingRegProperties:a15 requiresLackOfRegProperties:a16 canInlineAttachments:v88 type:4 msgPayloadUploadDictionary:a19 originalPayload:a20 replyToMessageGUID:a21 fallbackCount:a22 willSendBlock:0 completionBlock:v117];
+          v117[4] = completionBlock;
+          LOBYTE(v88) = attachments;
+          [(MessageDeliveryController *)self _sendMessage:message context:context deliveryContext:deliveryContext fromID:dCopy fromAccount:accountCopy toID:iD chatIdentifier:identifier toSessionToken:token toGroup:group toParticipants:participants originallyToParticipants:participantsCopy requiredRegProperties:properties interestingRegProperties:regProperties requiresLackOfRegProperties:ofRegProperties canInlineAttachments:v88 type:4 msgPayloadUploadDictionary:dictionary originalPayload:payload replyToMessageGUID:uID fallbackCount:count willSendBlock:0 completionBlock:v117];
           return;
         }
 
-        v51 = [(MessageDeliveryController *)self messageDictionaryWithMessageItem:a3 isBusiness:v30 chatIdentifier:a9 toParticipants:a12 originallyToParticipants:v27 additionalContext:a4 msgPayloadUploadDictionary:a19 originalPayload:a20];
-        v31 = v93 == 0;
-        if (v93)
+        v51 = [(MessageDeliveryController *)self messageDictionaryWithMessageItem:message isBusiness:v30 chatIdentifier:identifier toParticipants:participants originallyToParticipants:participantsCopy additionalContext:context msgPayloadUploadDictionary:dictionary originalPayload:payload];
+        v31 = accountCopy == 0;
+        if (accountCopy)
         {
-          v90 = [[NSSet alloc] initWithArray:a12];
-          v52 = [v27 count];
-          v53 = [a8 isEqualToString:v94];
+          v90 = [[NSSet alloc] initWithArray:participants];
+          v52 = [participantsCopy count];
+          v53 = [iD isEqualToString:dCopy];
           if (IMOSLoggingEnabled())
           {
             v54 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
             {
-              v55 = [a3 isTypingMessage];
+              isTypingMessage = [message isTypingMessage];
               v56 = @"NO";
               *buf = 138413570;
               *&buf[4] = v90;
@@ -2791,7 +2791,7 @@ LABEL_76:
                 v57 = @"YES";
               }
 
-              if (v55)
+              if (isTypingMessage)
               {
                 v58 = @"YES";
               }
@@ -2802,16 +2802,16 @@ LABEL_76:
               }
 
               *&buf[12] = 2112;
-              *&buf[14] = v94;
+              *&buf[14] = dCopy;
               *&buf[22] = 2112;
               if (v53)
               {
                 v56 = @"YES";
               }
 
-              v145 = a8;
+              iDCopy2 = iD;
               v146 = 2112;
-              v147 = v57;
+              groupCopy2 = v57;
               v148 = 2112;
               v149 = v58;
               v150 = 2112;
@@ -2821,7 +2821,7 @@ LABEL_76:
           }
 
           theDicta = objc_alloc_init(NSMutableDictionary);
-          v59 = [a3 guid];
+          guid2 = [message guid];
           v60 = IDSGetUUIDData();
           v89 = +[NSString stringGUID];
           if (IMOSLoggingEnabled())
@@ -2830,35 +2830,35 @@ LABEL_76:
             if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              *&buf[4] = v59;
+              *&buf[4] = guid2;
               *&buf[12] = 2112;
               *&buf[14] = v60;
               *&buf[22] = 2112;
-              v145 = v89;
+              iDCopy2 = v89;
               _os_log_impl(&dword_0, v61, OS_LOG_TYPE_INFO, "Setting send guid to %@  %@ (with alternate callback guid %@)", buf, 0x20u);
             }
           }
 
-          if ([a3 isTapToRetry])
+          if ([message isTapToRetry])
           {
             CFDictionarySetValue(theDicta, @"tr", &__kCFBooleanTrue);
-            [a3 setIsTapToRetry:0];
+            [message setIsTapToRetry:0];
           }
 
-          v62 = [(MessageDeliveryController *)self _computeRegPropertiesForNewFeatures:a3 currentRegProperties:a14 currentInterestingProp:a15];
+          v62 = [(MessageDeliveryController *)self _computeRegPropertiesForNewFeatures:message currentRegProperties:properties currentInterestingProp:regProperties];
           v99 = [v62 objectForKey:@"req"];
           v98 = [v62 objectForKey:@"int"];
           v63 = [objc_msgSend(v62 objectForKey:{@"newFeature", "BOOLValue"}];
-          v64 = [a3 sendAlternateLayoutAsText];
+          sendAlternateLayoutAsText = [message sendAlternateLayoutAsText];
           if (IMOSLoggingEnabled())
           {
             v65 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
             {
-              v66 = [a3 guid];
+              guid3 = [message guid];
               v67 = @"NO";
               *buf = 138413314;
-              *&buf[4] = v66;
+              *&buf[4] = guid3;
               *&buf[12] = 2112;
               if (v63)
               {
@@ -2871,15 +2871,15 @@ LABEL_76:
               }
 
               *&buf[14] = v99;
-              if (v64)
+              if (sendAlternateLayoutAsText)
               {
                 v67 = @"YES";
               }
 
               *&buf[22] = 2112;
-              v145 = v98;
+              iDCopy2 = v98;
               v146 = 2112;
-              v147 = v68;
+              groupCopy2 = v68;
               v148 = 2112;
               v149 = v67;
               _os_log_impl(&dword_0, v65, OS_LOG_TYPE_INFO, "msg guid %@ Required reg properties %@ interesting properties %@ newFeature %@ sendPropsCompatMsgAsText %@", buf, 0x34u);
@@ -2887,39 +2887,39 @@ LABEL_76:
           }
 
           v69 = v63 ^ 1;
-          if (a22 > 5)
+          if (count > 5)
           {
             v69 = 1;
           }
 
           if ((v69 & 1) == 0)
           {
-            [a3 payloadData];
+            [message payloadData];
             v70 = IMBalloonPluginFallbackLinkMetadata();
             v116[0] = _NSConcreteStackBlock;
             v116[1] = 3221225472;
-            v96 = v116;
+            blockCopy = v116;
             v116[2] = sub_48BB8;
             v116[3] = &unk_112E18;
-            v116[16] = a22;
-            v116[4] = a3;
+            v116[16] = count;
+            v116[4] = message;
             v116[5] = self;
-            v116[6] = v94;
-            v116[7] = a4;
-            v116[8] = a5;
-            v116[9] = v93;
-            v116[10] = a9;
+            v116[6] = dCopy;
+            v116[7] = context;
+            v116[8] = deliveryContext;
+            v116[9] = accountCopy;
+            v116[10] = identifier;
             v116[11] = v102;
-            v116[12] = a20;
-            v116[13] = a21;
-            v116[15] = a24;
+            v116[12] = payload;
+            v116[13] = uID;
+            v116[15] = completionBlock;
             v116[14] = v70;
           }
 
-          [a3 addTelemetryMetricForKey:2];
-          BYTE1(v87) = a17;
+          [message addTelemetryMetricForKey:2];
+          BYTE1(v87) = attachments;
           LOBYTE(v87) = v52 > 2;
-          v71 = [(MessageDeliveryController *)self idsOptionsWithMessageItem:a3 toID:a8 fromID:v94 sendGUIDData:v60 alternateCallbackID:v89 isBusinessMessage:v30 chatIdentifier:a9 requiredRegProperties:v99 interestingRegProperties:v98 requiresLackOfRegProperties:a16 deliveryContext:a5 isGroupChat:v87 canInlineAttachments:a19 msgPayloadUploadDictionary:v51 messageDictionary:?];
+          v71 = [(MessageDeliveryController *)self idsOptionsWithMessageItem:message toID:iD fromID:dCopy sendGUIDData:v60 alternateCallbackID:v89 isBusinessMessage:v30 chatIdentifier:identifier requiredRegProperties:v99 interestingRegProperties:v98 requiresLackOfRegProperties:ofRegProperties deliveryContext:deliveryContext isGroupChat:v87 canInlineAttachments:dictionary msgPayloadUploadDictionary:v51 messageDictionary:?];
           if (IMOSLoggingEnabled())
           {
             v72 = OSLogHandleForIMFoundationCategory();
@@ -2928,16 +2928,16 @@ LABEL_76:
               *buf = 138413058;
               *&buf[4] = theDicta;
               *&buf[12] = 2112;
-              *&buf[14] = v93;
+              *&buf[14] = accountCopy;
               *&buf[22] = 2112;
-              v145 = v71;
+              iDCopy2 = v71;
               v146 = 2112;
-              v147 = a11;
+              groupCopy2 = group;
               _os_log_impl(&dword_0, v72, OS_LOG_TYPE_INFO, "Sending IDS message: %@ from account: %@ options: %@ group: %@", buf, 0x2Au);
             }
           }
 
-          if (a11)
+          if (group)
           {
             if (IMOSLoggingEnabled())
             {
@@ -2945,13 +2945,13 @@ LABEL_76:
               if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                *&buf[4] = a11;
+                *&buf[4] = group;
                 _os_log_impl(&dword_0, v73, OS_LOG_TYPE_INFO, "Setting toDestinations to be group: %@", buf, 0xCu);
               }
             }
           }
 
-          if (![v93 accountType])
+          if (![accountCopy accountType])
           {
             IMGreenTeaPhoneNumberTransmitLog();
           }
@@ -2966,12 +2966,12 @@ LABEL_76:
 
           v75 = *(&self->super.isa + v74);
           v76 = v90;
-          if (a11)
+          if (group)
           {
             v76 = [NSSet setWithObject:?];
           }
 
-          if (([IMIDSService service:v75 sendMessage:theDicta fromAccount:v93 toDestinations:v76 priority:300 options:v71 identifier:&v114 error:&v115]& 1) == 0)
+          if (([IMIDSService service:v75 sendMessage:theDicta fromAccount:accountCopy toDestinations:v76 priority:300 options:v71 identifier:&v114 error:&v115]& 1) == 0)
           {
             if (IMOSLoggingEnabled())
             {
@@ -2984,19 +2984,19 @@ LABEL_76:
               }
             }
 
-            if ([a3 scheduleType] == &dword_0 + 2)
+            if ([message scheduleType] == &dword_0 + 2)
             {
-              [(MessageDeliveryController *)self handleScheduledMessageSendFailure:a3];
+              [(MessageDeliveryController *)self handleScheduledMessageSendFailure:message];
             }
 
-            (*(a24 + 2))(a24, self, v102, 0, 4, [a3 backwardsCompatibleVersion], 0, 1);
+            (*(completionBlock + 2))(completionBlock, self, v102, 0, 4, [message backwardsCompatibleVersion], 0, 1);
 
             return;
           }
 
           if (v114)
           {
-            v95 = [a24 copy];
+            completionBlockCopy = [completionBlock copy];
             if (IMOSLoggingEnabled())
             {
               v77 = OSLogHandleForIMFoundationCategory();
@@ -3021,7 +3021,7 @@ LABEL_76:
             *buf = 0;
             *&buf[8] = buf;
             *&buf[16] = 0x2020000000;
-            LOBYTE(v145) = 0;
+            LOBYTE(iDCopy2) = 0;
             v112[0] = _NSConcreteStackBlock;
             v112[1] = 3221225472;
             v112[2] = sub_4A6B4;
@@ -3029,14 +3029,14 @@ LABEL_76:
             v112[14] = buf;
             v112[4] = v114;
             v112[5] = self;
-            v112[6] = a3;
+            v112[6] = message;
             v112[7] = theDicta;
-            v113 = a17;
+            attachmentsCopy2 = attachments;
             v112[8] = v51;
-            v112[9] = a19;
-            v112[10] = v94;
-            v112[11] = v93;
-            v112[13] = v95;
+            v112[9] = dictionary;
+            v112[10] = dCopy;
+            v112[11] = accountCopy;
+            v112[13] = completionBlockCopy;
             v112[12] = v102;
             if ([v51 count])
             {
@@ -3048,7 +3048,7 @@ LABEL_76:
               v81 = 0;
             }
 
-            [(MessageDeliveryController *)self _enqueueUpdateBlock:v112 willSendBlock:v96 identifier:v114 callbackID:v89 messageCommandOption:v81];
+            [(MessageDeliveryController *)self _enqueueUpdateBlock:v112 willSendBlock:blockCopy identifier:v114 callbackID:v89 messageCommandOption:v81];
             _Block_object_dispose(buf, 8);
           }
         }
@@ -3061,17 +3061,17 @@ LABEL_76:
             if (os_log_type_enabled(v84, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              *&buf[4] = v94;
+              *&buf[4] = dCopy;
               _os_log_impl(&dword_0, v84, OS_LOG_TYPE_INFO, "We found no account for fromID %@", buf, 0xCu);
             }
           }
 
-          (*(a24 + 2))(a24, self, v27, 0, 31, [a3 backwardsCompatibleVersion], 0, 1);
+          (*(completionBlock + 2))(completionBlock, self, participantsCopy, 0, 31, [message backwardsCompatibleVersion], 0, 1);
         }
       }
 
 LABEL_131:
-      if (v31 && v95)
+      if (v31 && completionBlockCopy)
       {
         if (IMOSLoggingEnabled())
         {
@@ -3083,16 +3083,16 @@ LABEL_131:
           }
         }
 
-        (*(v95 + 2))(v95, self, v102, 0, 22, [a3 backwardsCompatibleVersion], 0, 1);
+        (*(completionBlockCopy + 2))(completionBlockCopy, self, v102, 0, 22, [message backwardsCompatibleVersion], 0, 1);
       }
 
       return;
     }
 
-    switch(a18)
+    switch(type)
     {
       case 2:
-        if (([a3 isTypingMessage] & 1) == 0)
+        if (([message isTypingMessage] & 1) == 0)
         {
           if (IMOSLoggingEnabled())
           {
@@ -3100,31 +3100,31 @@ LABEL_131:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              *&buf[4] = [a3 guid];
+              *&buf[4] = [message guid];
               *&buf[12] = 2112;
-              *&buf[14] = a12;
+              *&buf[14] = participants;
               _os_log_impl(&dword_0, v36, OS_LOG_TYPE_INFO, "Send payload action  guid %@ (URIs: %@)", buf, 0x16u);
             }
           }
         }
 
-        v37 = a20;
-        if (!a20)
+        payloadCopy2 = payload;
+        if (!payload)
         {
-          v37 = [a3 payloadData];
+          payloadCopy2 = [message payloadData];
         }
 
-        theDict = [v37 _FTCopyGzippedData];
-        v38 = [a3 balloonBundleID];
-        if ([v38 isEqualToString:IMBalloonPluginIdentifierRichLinks])
+        theDict = [payloadCopy2 _FTCopyGzippedData];
+        balloonBundleID = [message balloonBundleID];
+        if ([balloonBundleID isEqualToString:IMBalloonPluginIdentifierRichLinks])
         {
           v39 = objc_alloc_init(NSMutableArray);
           v110 = 0u;
           v111 = 0u;
           v108 = 0u;
           v109 = 0u;
-          v40 = [a3 fileTransferGUIDs];
-          v41 = [v40 countByEnumeratingWithState:&v108 objects:v143 count:16];
+          fileTransferGUIDs = [message fileTransferGUIDs];
+          v41 = [fileTransferGUIDs countByEnumeratingWithState:&v108 objects:v143 count:16];
           if (v41)
           {
             v42 = *v109;
@@ -3134,7 +3134,7 @@ LABEL_131:
               {
                 if (*v109 != v42)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(fileTransferGUIDs);
                 }
 
                 v44 = [+[IMDFileTransferCenter sharedInstance](IMDFileTransferCenter transferForGUID:"transferForGUID:", *(*(&v108 + 1) + 8 * i)];
@@ -3144,7 +3144,7 @@ LABEL_131:
                 }
               }
 
-              v41 = [v40 countByEnumeratingWithState:&v108 objects:v143 count:16];
+              v41 = [fileTransferGUIDs countByEnumeratingWithState:&v108 objects:v143 count:16];
             }
 
             while (v41);
@@ -3154,14 +3154,14 @@ LABEL_131:
           {
             v45 = objc_autoreleasePoolPush();
 
-            [a3 payloadData];
+            [message payloadData];
             theDict = [IMSharedHelperCombinedPluginPayloadDictionaryDataWithAttachmentURLs() _FTCopyGzippedData];
             if (IMOSLoggingEnabled())
             {
               v46 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
               {
-                v47 = [a20 isEqual:theDict];
+                v47 = [payload isEqual:theDict];
                 v48 = @"NO";
                 if (v47)
                 {
@@ -3182,26 +3182,26 @@ LABEL_131:
         v106[1] = 3221225472;
         v106[2] = sub_4AAC8;
         v106[3] = &unk_112E68;
-        v106[4] = a3;
+        v106[4] = message;
         v106[5] = self;
-        v106[6] = a4;
-        v106[7] = a5;
-        v106[8] = v94;
-        v106[9] = v93;
-        v106[10] = a8;
-        v106[11] = a9;
-        v106[12] = a11;
-        v106[13] = a12;
-        v106[14] = v27;
-        v106[15] = a14;
-        v106[16] = a15;
-        v106[17] = a16;
-        v107 = a17;
-        v106[18] = a20;
-        v106[19] = a21;
-        v106[22] = a22;
-        v106[20] = a23;
-        v106[21] = a24;
+        v106[6] = context;
+        v106[7] = deliveryContext;
+        v106[8] = dCopy;
+        v106[9] = accountCopy;
+        v106[10] = iD;
+        v106[11] = identifier;
+        v106[12] = group;
+        v106[13] = participants;
+        v106[14] = participantsCopy;
+        v106[15] = properties;
+        v106[16] = regProperties;
+        v106[17] = ofRegProperties;
+        attachmentsCopy3 = attachments;
+        v106[18] = payload;
+        v106[19] = uID;
+        v106[22] = count;
+        v106[20] = block;
+        v106[21] = completionBlock;
         [-[MessageDeliveryController attachmentController](self "attachmentController")];
 
         break;
@@ -3212,7 +3212,7 @@ LABEL_131:
           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = a12;
+            *&buf[4] = participants;
             _os_log_impl(&dword_0, v49, OS_LOG_TYPE_INFO, "Send fallback action (Peers: %@)", buf, 0xCu);
           }
         }
@@ -3222,26 +3222,26 @@ LABEL_131:
         v104[2] = sub_4AD44;
         v104[3] = &unk_112E90;
         v104[4] = self;
-        v104[5] = a5;
-        v104[6] = v94;
-        v104[7] = v93;
-        v104[8] = a8;
-        v104[9] = a9;
-        v104[10] = a11;
-        v104[11] = a12;
-        v104[12] = v27;
-        v104[13] = a14;
-        v104[14] = a15;
-        v104[15] = a16;
-        v105 = a17;
-        v104[16] = a19;
-        v104[17] = a20;
-        v104[21] = a24;
-        v104[22] = a22;
-        v104[19] = a3;
-        v104[20] = a23;
-        v104[18] = a21;
-        if ([a3 associatedMessageType] != &stru_F58.reserved2)
+        v104[5] = deliveryContext;
+        v104[6] = dCopy;
+        v104[7] = accountCopy;
+        v104[8] = iD;
+        v104[9] = identifier;
+        v104[10] = group;
+        v104[11] = participants;
+        v104[12] = participantsCopy;
+        v104[13] = properties;
+        v104[14] = regProperties;
+        v104[15] = ofRegProperties;
+        attachmentsCopy4 = attachments;
+        v104[16] = dictionary;
+        v104[17] = payload;
+        v104[21] = completionBlock;
+        v104[22] = count;
+        v104[19] = message;
+        v104[20] = block;
+        v104[18] = uID;
+        if ([message associatedMessageType] != &stru_F58.reserved2)
         {
           [-[MessageDeliveryController attachmentController](self "attachmentController")];
         }
@@ -3254,9 +3254,9 @@ LABEL_131:
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            *&buf[4] = [a3 guid];
+            *&buf[4] = [message guid];
             *&buf[12] = 2112;
-            *&buf[14] = a12;
+            *&buf[14] = participants;
             _os_log_impl(&dword_0, v32, OS_LOG_TYPE_INFO, "Send collaboration action  guid %@ (URIs: %@)", buf, 0x16u);
           }
         }
@@ -3265,58 +3265,58 @@ LABEL_131:
         v141[1] = 3221225472;
         v141[2] = sub_480D0;
         v141[3] = &unk_112D28;
-        v141[4] = a3;
+        v141[4] = message;
         v141[5] = self;
-        v141[6] = a12;
-        v141[7] = a4;
-        v141[8] = a5;
-        v141[9] = v94;
-        v141[10] = v93;
-        v141[11] = a8;
-        v141[12] = a9;
-        v141[13] = a11;
-        v141[14] = v27;
-        v141[15] = a14;
-        v141[16] = a15;
-        v141[17] = a16;
-        v142 = a17;
-        v141[18] = a19;
-        v141[19] = a20;
-        v141[21] = a24;
-        v141[20] = a21;
-        v141[23] = a22;
-        v141[22] = a23;
-        [[[_TtC8iMessage28CollaborationDeliveryRequest alloc] initWithRecipients:a12 message:a3] sendWithCompletionHandler:v141];
+        v141[6] = participants;
+        v141[7] = context;
+        v141[8] = deliveryContext;
+        v141[9] = dCopy;
+        v141[10] = accountCopy;
+        v141[11] = iD;
+        v141[12] = identifier;
+        v141[13] = group;
+        v141[14] = participantsCopy;
+        v141[15] = properties;
+        v141[16] = regProperties;
+        v141[17] = ofRegProperties;
+        attachmentsCopy5 = attachments;
+        v141[18] = dictionary;
+        v141[19] = payload;
+        v141[21] = completionBlock;
+        v141[20] = uID;
+        v141[23] = count;
+        v141[22] = block;
+        [[[_TtC8iMessage28CollaborationDeliveryRequest alloc] initWithRecipients:participants message:message] sendWithCompletionHandler:v141];
         return;
       default:
         goto LABEL_131;
     }
   }
 
-  else if (a24)
+  else if (completionBlock)
   {
-    v33 = [a3 backwardsCompatibleVersion];
-    v34 = *(a24 + 2);
+    backwardsCompatibleVersion = [message backwardsCompatibleVersion];
+    v34 = *(completionBlock + 2);
 
-    v34(a24, self, v27, 0, 4, v33, 0, 1);
+    v34(completionBlock, self, participantsCopy, 0, 4, backwardsCompatibleVersion, 0, 1);
   }
 }
 
-- (void)handleScheduledMessageSendFailure:(id)a3
+- (void)handleScheduledMessageSendFailure:(id)failure
 {
-  v5 = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [a3 guid]);
+  v5 = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [failure guid]);
   if ([v5 scheduleType] == &dword_0 + 2 && objc_msgSend(v5, "scheduleState") == &dword_0 + 2)
   {
-    v6 = [a3 editedPartIndexes];
-    v7 = [a3 retractedPartIndexes];
-    if ([v6 count])
+    editedPartIndexes = [failure editedPartIndexes];
+    retractedPartIndexes = [failure retractedPartIndexes];
+    if ([editedPartIndexes count])
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_4B294;
       v14[3] = &unk_112EB8;
-      v14[4] = a3;
-      [v6 enumerateIndexesUsingBlock:v14];
+      v14[4] = failure;
+      [editedPartIndexes enumerateIndexesUsingBlock:v14];
       if (IMOSLoggingEnabled())
       {
         v8 = OSLogHandleForIMFoundationCategory();
@@ -3328,15 +3328,15 @@ LABEL_131:
       }
     }
 
-    if ([v7 count])
+    if ([retractedPartIndexes count])
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_4B2A0;
       v12[3] = &unk_112EB8;
-      v12[4] = a3;
-      [v7 enumerateIndexesUsingBlock:v12];
-      [a3 setFileTransferGUIDs:{objc_msgSend(a3, "scheduledMessageOriginalTransferGUIDs")}];
+      v12[4] = failure;
+      [retractedPartIndexes enumerateIndexesUsingBlock:v12];
+      [failure setFileTransferGUIDs:{objc_msgSend(failure, "scheduledMessageOriginalTransferGUIDs")}];
       if (IMOSLoggingEnabled())
       {
         v9 = OSLogHandleForIMFoundationCategory();
@@ -3362,34 +3362,34 @@ LABEL_131:
 
   else
   {
-    [a3 setScheduleType:{objc_msgSend(v5, "scheduleType")}];
-    [a3 setScheduleState:{objc_msgSend(v5, "scheduleState")}];
-    [a3 setMessageSummaryInfo:{objc_msgSend(v5, "messageSummaryInfo")}];
-    [a3 setBody:{objc_msgSend(v5, "body")}];
-    v11 = [v5 errorCode];
+    [failure setScheduleType:{objc_msgSend(v5, "scheduleType")}];
+    [failure setScheduleState:{objc_msgSend(v5, "scheduleState")}];
+    [failure setMessageSummaryInfo:{objc_msgSend(v5, "messageSummaryInfo")}];
+    [failure setBody:{objc_msgSend(v5, "body")}];
+    errorCode = [v5 errorCode];
 
-    [a3 setErrorCode:v11];
+    [failure setErrorCode:errorCode];
   }
 }
 
-- (BOOL)handleScheduledMessageSend:(id)a3 sentSuccessfully:(BOOL)a4 idsMessage:(id)a5 messageDictionary:(id)a6 canInlineAttachments:(BOOL)a7 msgPayloadUploadDictionary:(id)a8 fromID:(id)a9 fromAccount:(id)a10 originalIDSIdentifier:(id)a11
+- (BOOL)handleScheduledMessageSend:(id)send sentSuccessfully:(BOOL)successfully idsMessage:(id)message messageDictionary:(id)dictionary canInlineAttachments:(BOOL)attachments msgPayloadUploadDictionary:(id)uploadDictionary fromID:(id)d fromAccount:(id)self0 originalIDSIdentifier:(id)self1
 {
-  v12 = a7;
-  v16 = a3;
-  v18 = [a3 editedPartIndexes];
-  v19 = [v16 retractedPartIndexes];
-  if (!a4)
+  attachmentsCopy = attachments;
+  sendCopy = send;
+  editedPartIndexes = [send editedPartIndexes];
+  retractedPartIndexes = [sendCopy retractedPartIndexes];
+  if (!successfully)
   {
-    [(MessageDeliveryController *)self handleScheduledMessageSendFailure:v16];
+    [(MessageDeliveryController *)self handleScheduledMessageSendFailure:sendCopy];
 LABEL_55:
     LOBYTE(v45) = 0;
     return v45;
   }
 
-  v20 = v19;
-  if ([v18 count] || objc_msgSend(v20, "count"))
+  v20 = retractedPartIndexes;
+  if ([editedPartIndexes count] || objc_msgSend(v20, "count"))
   {
-    v16 = [(MessageDeliveryController *)self _updateSuccessfulRetractionsForScheduledMessage:[(MessageDeliveryController *)self _updateSuccessfulEditsForScheduledMessage:v16]];
+    sendCopy = [(MessageDeliveryController *)self _updateSuccessfulRetractionsForScheduledMessage:[(MessageDeliveryController *)self _updateSuccessfulEditsForScheduledMessage:sendCopy]];
     [-[MessageDeliveryController messageStore](self "messageStore")];
   }
 
@@ -3403,42 +3403,42 @@ LABEL_55:
     }
   }
 
-  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 scheduleType]);
+  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [sendCopy scheduleType]);
   if (v22)
   {
-    CFDictionarySetValue(a6, @"st", v22);
+    CFDictionarySetValue(dictionary, @"st", v22);
   }
 
-  v23 = [v16 time];
-  if (v23)
+  time = [sendCopy time];
+  if (time)
   {
-    CFDictionarySetValue(a6, @"sd", v23);
+    CFDictionarySetValue(dictionary, @"sd", time);
   }
 
   v24 = JWEncodeDictionary();
-  if ([objc_msgSend(v16 "fileTransferGUIDs")] && !v12 || (v25 = objc_msgSend(objc_msgSend(v16, "payloadData"), "length"), a8) && v25)
+  if ([objc_msgSend(sendCopy "fileTransferGUIDs")] && !attachmentsCopy || (v25 = objc_msgSend(objc_msgSend(sendCopy, "payloadData"), "length"), uploadDictionary) && v25)
   {
     if (IMOSLoggingEnabled())
     {
       v26 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
-        v27 = [v16 fileTransferGUIDs];
+        fileTransferGUIDs = [sendCopy fileTransferGUIDs];
         v28 = @"NO";
-        if (v12)
+        if (attachmentsCopy)
         {
           v28 = @"YES";
         }
 
         *buf = 138412546;
-        *&buf[4] = v27;
+        *&buf[4] = fileTransferGUIDs;
         v55 = 2112;
         v56 = v28;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "Not compressing data, %@, canInlineAttachments: %@", buf, 0x16u);
       }
     }
 
-    v29 = v24;
+    _FTCopyGzippedData = v24;
   }
 
   else
@@ -3448,27 +3448,27 @@ LABEL_55:
       v30 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [v16 fileTransferGUIDs];
+        fileTransferGUIDs2 = [sendCopy fileTransferGUIDs];
         v32 = @"NO";
-        if (v12)
+        if (attachmentsCopy)
         {
           v32 = @"YES";
         }
 
         *buf = 138412546;
-        *&buf[4] = v31;
+        *&buf[4] = fileTransferGUIDs2;
         v55 = 2112;
         v56 = v32;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_INFO, "Compressing data, %@, canInlineAttachments: %@", buf, 0x16u);
       }
     }
 
-    v29 = [v24 _FTCopyGzippedData];
+    _FTCopyGzippedData = [v24 _FTCopyGzippedData];
   }
 
-  v33 = v29;
+  v33 = _FTCopyGzippedData;
   v34 = [NSNumber numberWithInteger:100];
-  [v16 guid];
+  [sendCopy guid];
   v35 = IDSGetUUIDData();
   v36 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
   v37 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v34, IDSSendMessageOptionCommandKey, &__kCFBooleanTrue, IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, &__kCFBooleanTrue, IDSSendMessageOptionWantsResponseKey, v35, IDSSendMessageOptionUUIDKey, v33, IDSSendMessageOptionDataToEncryptKey, v36, IDSSendMessageOptionTimeoutKey, &__kCFBooleanFalse, IDSSendMessageOptionEnforceRemoteTimeoutsKey, 0];
@@ -3491,15 +3491,15 @@ LABEL_55:
     [+[IMMetricsCollector sharedInstance](IMMetricsCollector forceAutoBugCaptureWithSubType:"forceAutoBugCaptureWithSubType:errorPayload:type:context:" errorPayload:@"Null IDS Identifier" type:0 context:@"SendLater", @"IDSCopyBestGuessIDForID returned a null token while trying to send scheduled message to peer devices"];
   }
 
-  if (a9)
+  if (d)
   {
-    CFDictionarySetValue(v37, IDSSendMessageOptionFromIDKey, a9);
+    CFDictionarySetValue(v37, IDSSendMessageOptionFromIDKey, d);
   }
 
   v41 = [v39 count];
-  v42 = [objc_msgSend(objc_msgSend(a10 "devices")];
+  v42 = [objc_msgSend(objc_msgSend(account "devices")];
   v43 = v42;
-  if (a10)
+  if (account)
   {
     v44 = v41 != 0;
   }
@@ -3509,14 +3509,14 @@ LABEL_55:
     v44 = 0;
   }
 
-  if (v42 < 1 || !v44 || ![a10 devices])
+  if (v42 < 1 || !v44 || ![account devices])
   {
     if (IMOSLoggingEnabled())
     {
       v47 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
-        v48 = [a10 devices];
+        devices = [account devices];
         v49 = @"NO";
         *buf = 138413058;
         if (v43 <= 0)
@@ -3538,9 +3538,9 @@ LABEL_55:
         v55 = 2112;
         v56 = v50;
         v57 = 2112;
-        v58 = a10;
+        accountCopy = account;
         v59 = 2112;
-        v60 = v48;
+        v60 = devices;
         _os_log_impl(&dword_0, v47, OS_LOG_TYPE_INFO, "We did not have ids accounts to send scheduled messages out -- bailing {haveTokenURISToSendTo %@ hasPeerDevicesSupportingSendLater %@ idsAccount %@ devices %@}", buf, 0x2Au);
       }
     }
@@ -3549,7 +3549,7 @@ LABEL_55:
   }
 
   *buf = 0;
-  v45 = [IMIDSService service:self->_idsService sendMessage:a5 fromAccount:a10 toDestinations:v39 priority:300 options:v37 identifier:0 error:buf];
+  v45 = [IMIDSService service:self->_idsService sendMessage:message fromAccount:account toDestinations:v39 priority:300 options:v37 identifier:0 error:buf];
   if (v45)
   {
     if (IMOSLoggingEnabled())
@@ -3575,18 +3575,18 @@ LABEL_55:
   return v45;
 }
 
-- (id)_updateSuccessfulRetractionsForScheduledMessage:(id)a3
+- (id)_updateSuccessfulRetractionsForScheduledMessage:(id)message
 {
-  v5 = [a3 retractedPartIndexes];
+  retractedPartIndexes = [message retractedPartIndexes];
   v6 = +[NSMutableArray array];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_4BC64;
   v9[3] = &unk_112F20;
-  v9[4] = a3;
+  v9[4] = message;
   v9[5] = self;
   v9[6] = v6;
-  [v5 enumerateIndexesUsingBlock:v9];
+  [retractedPartIndexes enumerateIndexesUsingBlock:v9];
   if ([v6 count])
   {
     if (IMOSLoggingEnabled())
@@ -3603,26 +3603,26 @@ LABEL_55:
     [+[IMDAttachmentStore sharedInstance](IMDAttachmentStore deleteAttachmentsWithGUIDs:"deleteAttachmentsWithGUIDs:", v6];
   }
 
-  [a3 setRetractedPartIndexes:{+[NSIndexSet indexSet](NSIndexSet, "indexSet")}];
-  return a3;
+  [message setRetractedPartIndexes:{+[NSIndexSet indexSet](NSIndexSet, "indexSet")}];
+  return message;
 }
 
-- (id)_updateSuccessfulEditsForScheduledMessage:(id)a3
+- (id)_updateSuccessfulEditsForScheduledMessage:(id)message
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4BD90;
   v5[3] = &unk_112EB8;
-  v5[4] = a3;
-  [objc_msgSend(a3 "editedPartIndexes")];
-  [a3 setEditedPartIndexes:{+[NSIndexSet indexSet](NSIndexSet, "indexSet")}];
-  return a3;
+  v5[4] = message;
+  [objc_msgSend(message "editedPartIndexes")];
+  [message setEditedPartIndexes:{+[NSIndexSet indexSet](NSIndexSet, "indexSet")}];
+  return message;
 }
 
-- (void)_updateExpectedOffGridCapableDeliveryReceiptsForMessage:(id)a3 chatIdentifier:(id)a4 numberOfExpectedOffGridCapableDeliveries:(unint64_t)a5
+- (void)_updateExpectedOffGridCapableDeliveryReceiptsForMessage:(id)message chatIdentifier:(id)identifier numberOfExpectedOffGridCapableDeliveries:(unint64_t)deliveries
 {
-  v7 = a3;
-  if (([a3 isTypingMessage] & 1) == 0)
+  messageCopy = message;
+  if (([message isTypingMessage] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3630,61 +3630,61 @@ LABEL_55:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v12 = 134217984;
-        v13 = a5;
+        deliveriesCopy = deliveries;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Got %llu expected off grid capable deliveries", &v12, 0xCu);
       }
     }
 
-    if (a5)
+    if (deliveries)
     {
-      v10 = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [v7 guid]);
+      v10 = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [messageCopy guid]);
       if (v10)
       {
-        v7 = v10;
+        messageCopy = v10;
       }
 
-      [v7 setExpectedOffGridCapableDeliveries:a5];
-      v11 = [(MessageDeliveryController *)self _chatForChatIdentifier:a4];
+      [messageCopy setExpectedOffGridCapableDeliveries:deliveries];
+      v11 = [(MessageDeliveryController *)self _chatForChatIdentifier:identifier];
       if ([v11 style] == 45)
       {
         [+[IMDOffGridAvailabilityTracker sharedTracker](IMDOffGridAvailabilityTracker "sharedTracker")];
       }
 
-      [+[IMDMessageStore sharedInstance](IMDMessageStore storeMessage:"storeMessage:forceReplace:modifyError:modifyFlags:flagMask:" forceReplace:v7 modifyError:0 modifyFlags:0 flagMask:0, 0];
+      [+[IMDMessageStore sharedInstance](IMDMessageStore storeMessage:"storeMessage:forceReplace:modifyError:modifyFlags:flagMask:" forceReplace:messageCopy modifyError:0 modifyFlags:0 flagMask:0, 0];
     }
   }
 }
 
-- (id)_fileTransferGUIDsInMessageBody:(id)a3
+- (id)_fileTransferGUIDsInMessageBody:(id)body
 {
-  v4 = [a3 length];
+  v4 = [body length];
   v5 = objc_alloc_init(NSMutableOrderedSet);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4BFF0;
   v7[3] = &unk_112F48;
   v7[4] = v5;
-  [a3 enumerateAttribute:IMFileTransferGUIDAttributeName inRange:0 options:v4 usingBlock:{0, v7}];
+  [body enumerateAttribute:IMFileTransferGUIDAttributeName inRange:0 options:v4 usingBlock:{0, v7}];
   return [v5 array];
 }
 
-- (id)_associatedMessageFallbackHashForMessageItem:(id)a3
+- (id)_associatedMessageFallbackHashForMessageItem:(id)item
 {
-  [a3 associatedMessageGUID];
+  [item associatedMessageGUID];
   v4 = IMAssociatedMessageDecodeGUID();
 
   return [(MessageDeliveryController *)self _fallbackHashForMessageItemWithGUID:v4];
 }
 
-- (id)_threadOriginatorFallbackHashForMessageItem:(id)a3
+- (id)_threadOriginatorFallbackHashForMessageItem:(id)item
 {
-  [a3 threadIdentifier];
+  [item threadIdentifier];
   OriginatorGUID = IMMessageThreadIdentifierGetOriginatorGUID();
 
   return [(MessageDeliveryController *)self _fallbackHashForMessageItemWithGUID:OriginatorGUID];
 }
 
-- (id)_fallbackHashForMessageItemWithGUID:(id)a3
+- (id)_fallbackHashForMessageItemWithGUID:(id)d
 {
   v4 = [-[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore "sharedInstance")];
   if (IMOSLoggingEnabled())
@@ -3695,7 +3695,7 @@ LABEL_55:
       v7 = 134218242;
       v8 = [v4 length];
       v9 = 2112;
-      v10 = a3;
+      dCopy = d;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Using fallback hash with length %llu for message GUID %@", &v7, 0x16u);
     }
   }
@@ -3703,40 +3703,40 @@ LABEL_55:
   return v4;
 }
 
-- (BOOL)_hasRecentlyMessaged:(id)a3
+- (BOOL)_hasRecentlyMessaged:(id)messaged
 {
   v4 = +[IMDRecentsController sharedInstance];
 
-  return [(IMDRecentsController *)v4 hasRecentlyMessaged:a3];
+  return [(IMDRecentsController *)v4 hasRecentlyMessaged:messaged];
 }
 
-- (void)noteRecentMessageForPeople:(id)a3
+- (void)noteRecentMessageForPeople:(id)people
 {
   v4 = +[IMDRecentsController sharedInstance];
 
-  [(IMDRecentsController *)v4 noteRecentMessageForPeople:a3];
+  [(IMDRecentsController *)v4 noteRecentMessageForPeople:people];
 }
 
-- (id)activeDeviceForHandle:(id)a3
+- (id)activeDeviceForHandle:(id)handle
 {
   v4 = +[IMDRecentsController sharedInstance];
 
-  return [(IMDRecentsController *)v4 activeDeviceForHandle:a3];
+  return [(IMDRecentsController *)v4 activeDeviceForHandle:handle];
 }
 
-- (id)_receivingDevicesForHandle:(id)a3 skippedDestinations:(id)a4
+- (id)_receivingDevicesForHandle:(id)handle skippedDestinations:(id)destinations
 {
   v7 = objc_alloc_init(NSMutableSet);
-  v8 = [(MessageDeliveryController *)self activeDeviceForHandle:a3];
+  v8 = [(MessageDeliveryController *)self activeDeviceForHandle:handle];
   if (v8)
   {
     v9 = v8;
-    v10 = [v8 idsDestination];
+    idsDestination = [v8 idsDestination];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v27 objects:v34 count:16];
+    v11 = [destinations countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v11)
     {
       v13 = *v28;
@@ -3748,10 +3748,10 @@ LABEL_55:
         {
           if (*v28 != v13)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(destinations);
           }
 
-          if ([v10 isEqualToString:{*(*(&v27 + 1) + 8 * i), v22}])
+          if ([idsDestination isEqualToString:{*(*(&v27 + 1) + 8 * i), v22}])
           {
             if (IMOSLoggingEnabled())
             {
@@ -3777,12 +3777,12 @@ LABEL_55:
                 }
               }
 
-              [v7 addObject:v10];
+              [v7 addObject:idsDestination];
             }
           }
         }
 
-        v11 = [a4 countByEnumeratingWithState:&v27 objects:v34 count:16];
+        v11 = [destinations countByEnumeratingWithState:&v27 objects:v34 count:16];
       }
 
       while (v11);
@@ -3795,7 +3795,7 @@ LABEL_55:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v17 = [destinations countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v17)
     {
       v18 = *v24;
@@ -3805,17 +3805,17 @@ LABEL_55:
         {
           if (*v24 != v18)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(destinations);
           }
 
           v20 = *(*(&v23 + 1) + 8 * j);
-          if ([v20 containsString:a3])
+          if ([v20 containsString:handle])
           {
             [v7 addObject:v20];
           }
         }
 
-        v17 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v17 = [destinations countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v17);
@@ -3825,7 +3825,7 @@ LABEL_55:
   return [v7 copy];
 }
 
-- (id)_receivingDevicesForParticipants:(id)a3 skippedDestinations:(id)a4
+- (id)_receivingDevicesForParticipants:(id)participants skippedDestinations:(id)destinations
 {
   v7 = objc_alloc_init(NSMutableSet);
   v9[0] = _NSConcreteStackBlock;
@@ -3833,17 +3833,17 @@ LABEL_55:
   v9[2] = sub_4C67C;
   v9[3] = &unk_112F70;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = destinations;
   v9[6] = v7;
-  [a3 enumerateObjectsUsingBlock:v9];
+  [participants enumerateObjectsUsingBlock:v9];
   return [v7 copy];
 }
 
-- (void)_enqueueSendMessageWorkBlock:(id)a3 forURIs:(id)a4
+- (void)_enqueueSendMessageWorkBlock:(id)block forURIs:(id)is
 {
-  if (a3)
+  if (block)
   {
-    if ([a4 count])
+    if ([is count])
     {
       if (IMOSLoggingEnabled())
       {
@@ -3851,7 +3851,7 @@ LABEL_55:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v10 = 138412290;
-          v11 = a4;
+          isCopy = is;
           _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Enqueueing block for set: %@", &v10, 0xCu);
         }
       }
@@ -3863,19 +3863,19 @@ LABEL_55:
         self->_deliveryQueues = deliveryQueues;
       }
 
-      [(IMMultiQueue *)deliveryQueues addBlock:a3 withTimeout:a4 forKey:@"enqueued message" description:300.0];
+      [(IMMultiQueue *)deliveryQueues addBlock:block withTimeout:is forKey:@"enqueued message" description:300.0];
     }
 
     else
     {
-      v9 = *(a3 + 2);
+      v9 = *(block + 2);
 
-      v9(a3, 0);
+      v9(block, 0);
     }
   }
 }
 
-- (void)sendMessage:(id)a3 context:(id)a4 groupContext:(id)a5 toGroup:(id)a6 toParticipants:(id)a7 originallyToParticipants:(id)a8 fromID:(id)a9 fromAccount:(id)a10 chatIdentifier:(id)a11 originalPayload:(id)a12 replyToMessageGUID:(id)a13 fakeSavedReceiptBlock:(id)a14 completionBlock:(id)a15
+- (void)sendMessage:(id)message context:(id)context groupContext:(id)groupContext toGroup:(id)group toParticipants:(id)participants originallyToParticipants:(id)toParticipants fromID:(id)d fromAccount:(id)self0 chatIdentifier:(id)self1 originalPayload:(id)self2 replyToMessageGUID:(id)self3 fakeSavedReceiptBlock:(id)self4 completionBlock:(id)self5
 {
   if (IMOSLoggingEnabled())
   {
@@ -3883,22 +3883,22 @@ LABEL_55:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138413570;
-      v42 = [a3 guid];
+      messageCopy = [message guid];
       v43 = 2112;
-      v44 = a7;
+      dCopy2 = participants;
       v45 = 2112;
-      v46 = a9;
+      accountCopy2 = d;
       v47 = 2112;
-      v48 = a10;
+      accountCopy = account;
       v49 = 2112;
-      v50 = a4;
+      contextCopy = context;
       v51 = 2112;
-      v52 = a11;
+      identifierCopy = identifier;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "Send Message: %@  to people: %@  fromPeer: %@ fromAccount %@ context: %@, chat identifier %@", buf, 0x3Eu);
     }
   }
 
-  if (([a3 isTypingMessage] & 1) == 0)
+  if (([message isTypingMessage] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3907,7 +3907,7 @@ LABEL_55:
       {
         v20 = [+[NetworkChangeNotifier sharedInstance](NetworkChangeNotifier linkQualityValueForInterfaceType:"linkQualityValueForInterfaceType:", 3];
         *buf = 67109120;
-        LODWORD(v42) = v20;
+        LODWORD(messageCopy) = v20;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "  Cell Link Quality: %d", buf, 8u);
       }
     }
@@ -3919,32 +3919,32 @@ LABEL_55:
       {
         v22 = [+[NetworkChangeNotifier sharedInstance](NetworkChangeNotifier linkQualityValueForInterfaceType:"linkQualityValueForInterfaceType:", 2];
         *buf = 67109120;
-        LODWORD(v42) = v22;
+        LODWORD(messageCopy) = v22;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "  WiFi Link Quality: %d", buf, 8u);
       }
     }
   }
 
-  if ([a7 count])
+  if ([participants count])
   {
-    if (a9 && a10)
+    if (d && account)
     {
-      v23 = [(MessageDeliveryController *)self _hasRecentlyMessaged:a7];
+      v23 = [(MessageDeliveryController *)self _hasRecentlyMessaged:participants];
       if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")] && !(v23 & 1 | ((IMGetCachedDomainBoolForKeyWithDefaultValue() & 1) == 0)))
       {
         if (([+[IMDRecentsController hasRecentMessageFrom:"hasRecentMessageFrom:"]!= 0)
         {
 LABEL_35:
-          v28 = [a3 isTypingMessage];
-          v29 = PeopleSetByAddingMyID(a9, a8);
-          v30 = a7;
-          if ((v28 & 1) == 0)
+          isTypingMessage = [message isTypingMessage];
+          v29 = PeopleSetByAddingMyID(d, toParticipants);
+          participantsCopy2 = participants;
+          if ((isTypingMessage & 1) == 0)
           {
-            v30 = PeopleSetByAddingMyID(a9, a7);
+            participantsCopy2 = PeopleSetByAddingMyID(d, participants);
           }
 
-          v31 = [a3 balloonBundleID];
-          if ([v31 isEqualToString:IMBalloonPluginIdentifierRichLinks])
+          balloonBundleID = [message balloonBundleID];
+          if ([balloonBundleID isEqualToString:IMBalloonPluginIdentifierRichLinks])
           {
             if (IMOSLoggingEnabled())
             {
@@ -3956,32 +3956,32 @@ LABEL_35:
               }
             }
 
-            v33 = [a3 collaborationInitiationRequestInfo];
-            a3 = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [a3 guid]);
-            [a3 setCollaborationInitiationRequestInfo:v33];
+            collaborationInitiationRequestInfo = [message collaborationInitiationRequestInfo];
+            message = -[IMDMessageStore messageWithGUID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "messageWithGUID:", [message guid]);
+            [message setCollaborationInitiationRequestInfo:collaborationInitiationRequestInfo];
           }
 
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = sub_4CEB0;
           v40[3] = &unk_113060;
-          v40[4] = a3;
-          v40[5] = a9;
+          v40[4] = message;
+          v40[5] = d;
           v40[6] = v35;
           v40[7] = self;
-          v40[8] = a4;
-          v40[9] = a10;
-          v40[10] = a11;
+          v40[8] = context;
+          v40[9] = account;
+          v40[10] = identifier;
           v40[11] = v37;
           v40[12] = v29;
-          v40[13] = a12;
-          v40[14] = a13;
-          v40[17] = a14;
-          v40[18] = a15;
-          v40[15] = v30;
-          v40[16] = a8;
+          v40[13] = payload;
+          v40[14] = iD;
+          v40[17] = block;
+          v40[18] = completionBlock;
+          v40[15] = participantsCopy2;
+          v40[16] = toParticipants;
           [(MessageDeliveryController *)self _enqueueSendMessageWorkBlock:v40 forURIs:v29];
-          [(MessageDeliveryController *)self noteRecentMessageForPeople:a7];
+          [(MessageDeliveryController *)self noteRecentMessageForPeople:participants];
           return;
         }
       }
@@ -3997,12 +3997,12 @@ LABEL_35:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v42 = a7;
+          messageCopy = participants;
           _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "We have no session to %@", buf, 0xCu);
         }
       }
 
-      if (![a3 isTypingMessage])
+      if (![message isTypingMessage])
       {
         goto LABEL_35;
       }
@@ -4012,16 +4012,16 @@ LABEL_35:
         v26 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [a3 guid];
+          guid = [message guid];
           *buf = 138412290;
-          v42 = v27;
+          messageCopy = guid;
           _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "%@ is a typing indicator, marking as delivery success", buf, 0xCu);
         }
       }
 
-      if (a15)
+      if (completionBlock)
       {
-        (*(a15 + 2))(a15, self, a7, 1, 0, [a3 backwardsCompatibleVersion], 0, 1);
+        (*(completionBlock + 2))(completionBlock, self, participants, 1, 0, [message backwardsCompatibleVersion], 0, 1);
       }
     }
 
@@ -4033,36 +4033,36 @@ LABEL_35:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v42 = a3;
+          messageCopy = message;
           v43 = 2112;
-          v44 = a9;
+          dCopy2 = d;
           v45 = 2112;
-          v46 = a10;
+          accountCopy2 = account;
           _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "*********** Failing message: %@    empty source ID or idsAccount supplied (%@:%@)", buf, 0x20u);
         }
       }
 
-      if (a15)
+      if (completionBlock)
       {
-        (*(a15 + 2))(a15, self, a7, 0, 33, [a3 backwardsCompatibleVersion], 0, 1);
+        (*(completionBlock + 2))(completionBlock, self, participants, 0, 33, [message backwardsCompatibleVersion], 0, 1);
       }
     }
   }
 
-  else if (a15)
+  else if (completionBlock)
   {
-    (*(a15 + 2))(a15, self, a7, 0, 21, [a3 backwardsCompatibleVersion], 0, 1);
+    (*(completionBlock + 2))(completionBlock, self, participants, 0, 21, [message backwardsCompatibleVersion], 0, 1);
   }
 }
 
-- (BOOL)isLQMEnabled:(id)a3
+- (BOOL)isLQMEnabled:(id)enabled
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 fileTransferGUIDs];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  fileTransferGUIDs = [enabled fileTransferGUIDs];
+  v4 = [fileTransferGUIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v4)
   {
     return 0;
@@ -4076,7 +4076,7 @@ LABEL_3:
   {
     if (*v11 != v6)
     {
-      objc_enumerationMutation(v3);
+      objc_enumerationMutation(fileTransferGUIDs);
     }
 
     v8 = 1;
@@ -4087,7 +4087,7 @@ LABEL_3:
 
     if (v5 == ++v7)
     {
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [fileTransferGUIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         goto LABEL_3;
@@ -4098,17 +4098,17 @@ LABEL_3:
   }
 }
 
-- (BOOL)isReceiverHQTransferCapable:(id)a3 fromID:(id)a4
+- (BOOL)isReceiverHQTransferCapable:(id)capable fromID:(id)d
 {
-  v5 = [[IDSURI alloc] initWithPrefixedURI:a4];
-  v6 = [IMIDSIDQueryController _currentCachedRemoteDevicesForDestinations:a3 service:IDSServiceNameiMessage preferredFromID:v5 listenerID:@"MessageDeliveryController"];
+  v5 = [[IDSURI alloc] initWithPrefixedURI:d];
+  v6 = [IMIDSIDQueryController _currentCachedRemoteDevicesForDestinations:capable service:IDSServiceNameiMessage preferredFromID:v5 listenerID:@"MessageDeliveryController"];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  allValues = [v6 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = *v25;
@@ -4120,7 +4120,7 @@ LABEL_3:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
@@ -4166,7 +4166,7 @@ LABEL_3:
       }
 
       while (v11 != v8);
-      v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -4188,7 +4188,7 @@ LABEL_3:
   return v16;
 }
 
-- (void)sendHQAttachmentsForMessage:(id)a3 context:(id)a4 fromID:(id)a5 fromAccount:(id)a6 chatIdentifier:(id)a7 toGroup:(id)a8 originallyToParticipants:(id)a9 canInlineAttachments:(BOOL)a10 recipients:(id)a11 completionBlock:(id)a12
+- (void)sendHQAttachmentsForMessage:(id)message context:(id)context fromID:(id)d fromAccount:(id)account chatIdentifier:(id)identifier toGroup:(id)group originallyToParticipants:(id)participants canInlineAttachments:(BOOL)self0 recipients:(id)self1 completionBlock:(id)self2
 {
   v22 = 0;
   v23 = &v22;
@@ -4196,7 +4196,7 @@ LABEL_3:
   v25 = sub_4EC70;
   v26 = sub_4EC80;
   v27 = objc_alloc_init(NSMutableArray);
-  for (i = [objc_msgSend(a3 "fileTransferGUIDs")]; i; --i)
+  for (i = [objc_msgSend(message "fileTransferGUIDs")]; i; --i)
   {
     v19 = objc_alloc_init(NSMutableDictionary);
     [v23[5] addObject:v19];
@@ -4206,26 +4206,26 @@ LABEL_3:
   v21[1] = 3221225472;
   v21[2] = sub_4EC8C;
   v21[3] = &unk_1130D8;
-  v21[4] = a3;
+  v21[4] = message;
   v21[5] = self;
-  v21[6] = a5;
-  v21[7] = a6;
-  v21[8] = a9;
-  v21[9] = a8;
-  v21[10] = a12;
+  v21[6] = d;
+  v21[7] = account;
+  v21[8] = participants;
+  v21[9] = group;
+  v21[10] = block;
   v21[11] = &v22;
-  [a3 setIsHQTransfer:1];
+  [message setIsHQTransfer:1];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_4F2CC;
   v20[3] = &unk_113100;
   v20[4] = &v22;
-  [objc_msgSend(a3 "fileTransferGUIDs")];
-  -[MessageDeliveryController _sendAttachmentsForMessage:canSendInline:displayIDs:additionalContext:fromID:recipients:uploadStartTime:fromAccount:completionBlock:](self, "_sendAttachmentsForMessage:canSendInline:displayIDs:additionalContext:fromID:recipients:uploadStartTime:fromAccount:completionBlock:", a3, a10, a9, a4, a5, a11, [a3 time], a6, v21);
+  [objc_msgSend(message "fileTransferGUIDs")];
+  -[MessageDeliveryController _sendAttachmentsForMessage:canSendInline:displayIDs:additionalContext:fromID:recipients:uploadStartTime:fromAccount:completionBlock:](self, "_sendAttachmentsForMessage:canSendInline:displayIDs:additionalContext:fromID:recipients:uploadStartTime:fromAccount:completionBlock:", message, attachments, participants, context, d, recipients, [message time], account, v21);
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)sendMessageError:(int64_t)a3 toToken:(id)a4 toID:(id)a5 toGroup:(id)a6 fromID:(id)a7 fromAccount:(id)a8 forMessageID:(id)a9 completionBlock:(id)a10
+- (void)sendMessageError:(int64_t)error toToken:(id)token toID:(id)d toGroup:(id)group fromID:(id)iD fromAccount:(id)account forMessageID:(id)messageID completionBlock:(id)self0
 {
   if (IMOSLoggingEnabled())
   {
@@ -4233,15 +4233,15 @@ LABEL_3:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 134219010;
-      v25 = a3;
+      errorCopy = error;
       v26 = 2112;
-      v27 = a9;
+      messageIDCopy = messageID;
       v28 = 2112;
-      v29 = a4;
+      tokenCopy = token;
       v30 = 2112;
-      v31 = a5;
+      dCopy = d;
       v32 = 2112;
-      v33 = a7;
+      iDCopy = iD;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Sending MessageError: %ld  forMessageID: %@  to token: %@  toPeer: %@  fromPeer: %@", buf, 0x34u);
     }
   }
@@ -4253,12 +4253,12 @@ LABEL_3:
     CFDictionarySetValue(v18, IDSFailedUUIDKey, v19);
   }
 
-  if (a9)
+  if (messageID)
   {
-    CFDictionarySetValue(v18, IDSFailedMessageIDKey, a9);
+    CFDictionarySetValue(v18, IDSFailedMessageIDKey, messageID);
   }
 
-  v20 = [NSNumber numberWithInteger:a3];
+  v20 = [NSNumber numberWithInteger:error];
   if (v20)
   {
     CFDictionarySetValue(v18, IDSFailureReasonKey, v20);
@@ -4266,20 +4266,20 @@ LABEL_3:
 
   v21 = [NSNumber numberWithInteger:120];
   v22 = [NSMutableDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, &__kCFBooleanTrue, IDSSendMessageOptionWantsResponseKey, v21, IDSSendMessageOptionCommandKey, 0];
-  if (a4)
+  if (token)
   {
-    a5 = IDSCopyIDForTokenWithID();
+    d = IDSCopyIDForTokenWithID();
   }
 
   else
   {
-    v23 = a5;
+    dCopy2 = d;
   }
 
-  [(MessageDeliveryController *)self sendMessageDictionary:v18 fromID:a7 fromAccount:a8 toURIs:[NSSet setWithObject:?]options:a6 completionBlock:300, v22, a10];
+  [(MessageDeliveryController *)self sendMessageDictionary:v18 fromID:iD fromAccount:account toURIs:[NSSet setWithObject:?]options:group completionBlock:300, v22, block];
 }
 
-- (void)sendMessageErrorWithInfo:(int64_t)a3 toToken:(id)a4 toID:(id)a5 toGroup:(id)a6 fromID:(id)a7 fromAccount:(id)a8 forMessageID:(id)a9 additionalInfo:(id)a10 fileSize:(id)value failureTimeSeconds:(double)a12 failReasonMessage:(id)a13 completionBlock:(id)a14
+- (void)sendMessageErrorWithInfo:(int64_t)info toToken:(id)token toID:(id)d toGroup:(id)group fromID:(id)iD fromAccount:(id)account forMessageID:(id)messageID additionalInfo:(id)self0 fileSize:(id)value failureTimeSeconds:(double)self2 failReasonMessage:(id)self3 completionBlock:(id)self4
 {
   if (IMOSLoggingEnabled())
   {
@@ -4287,17 +4287,17 @@ LABEL_3:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 134219266;
-      v31 = a3;
+      infoCopy = info;
       v32 = 2112;
-      v33 = a9;
+      messageIDCopy = messageID;
       v34 = 2112;
-      v35 = a4;
+      tokenCopy = token;
       v36 = 2112;
-      v37 = a5;
+      dCopy = d;
       v38 = 2112;
-      v39 = a7;
+      iDCopy = iD;
       v40 = 2112;
-      v41 = a10;
+      additionalInfoCopy = additionalInfo;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "Sending MessageError: %ld  forMessageID: %@  to token: %@  toPeer: %@  fromPeer: %@ additionalInfo: %@", buf, 0x3Eu);
     }
   }
@@ -4309,20 +4309,20 @@ LABEL_3:
     CFDictionarySetValue(v22, IDSFailedUUIDKey, v23);
   }
 
-  if (a9)
+  if (messageID)
   {
-    CFDictionarySetValue(v22, IDSFailedMessageIDKey, a9);
+    CFDictionarySetValue(v22, IDSFailedMessageIDKey, messageID);
   }
 
-  v24 = [NSNumber numberWithInteger:a3];
+  v24 = [NSNumber numberWithInteger:info];
   if (v24)
   {
     CFDictionarySetValue(v22, IDSFailureReasonKey, v24);
   }
 
-  if (a10)
+  if (additionalInfo)
   {
-    CFDictionarySetValue(v22, @"aDI", a10);
+    CFDictionarySetValue(v22, @"aDI", additionalInfo);
   }
 
   if (value)
@@ -4332,12 +4332,12 @@ LABEL_3:
 
   if (IMSendAdditionalMMCSErrorInfoToMadrid())
   {
-    if (a13)
+    if (message)
     {
-      CFDictionarySetValue(v22, @"fRM", a13);
+      CFDictionarySetValue(v22, @"fRM", message);
     }
 
-    v25 = [NSNumber numberWithInteger:llround(a12 * 1000.0)];
+    v25 = [NSNumber numberWithInteger:llround(seconds * 1000.0)];
     if (v25)
     {
       CFDictionarySetValue(v22, @"fTE", v25);
@@ -4346,22 +4346,22 @@ LABEL_3:
 
   v26 = [NSNumber numberWithInteger:120];
   v27 = [NSMutableDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, &__kCFBooleanTrue, IDSSendMessageOptionWantsResponseKey, v26, IDSSendMessageOptionCommandKey, 0];
-  if (a4)
+  if (token)
   {
-    a5 = IDSCopyIDForTokenWithID();
+    d = IDSCopyIDForTokenWithID();
   }
 
   else
   {
-    v28 = a5;
+    dCopy2 = d;
   }
 
-  [(MessageDeliveryController *)self sendMessageDictionary:v22 fromID:a7 fromAccount:a8 toURIs:[NSSet setWithObject:?]options:a6 completionBlock:300, v27, a14];
+  [(MessageDeliveryController *)self sendMessageDictionary:v22 fromID:iD fromAccount:account toURIs:[NSSet setWithObject:?]options:group completionBlock:300, v27, block];
 }
 
-- (void)sendBubblePayloadMessageDictionary:(id)a3 fromID:(id)a4 fromAccount:(id)a5 toURIs:(id)a6 toGroup:(id)a7 priority:(int64_t)a8 options:(id)a9 completionBlock:(id)a10
+- (void)sendBubblePayloadMessageDictionary:(id)dictionary fromID:(id)d fromAccount:(id)account toURIs:(id)is toGroup:(id)group priority:(int64_t)priority options:(id)options completionBlock:(id)self0
 {
-  v17 = PeopleSetByAddingMyID(a4, [a6 allObjects]);
+  v17 = PeopleSetByAddingMyID(d, [is allObjects]);
   if (IMOSLoggingEnabled())
   {
     v18 = OSLogHandleForIMFoundationCategory();
@@ -4379,18 +4379,18 @@ LABEL_3:
   v19[3] = &unk_113128;
   v19[4] = v17;
   v19[5] = self;
-  v19[6] = a3;
-  v19[7] = a4;
-  v19[8] = a5;
-  v19[9] = a6;
-  v19[10] = a7;
-  v19[11] = a9;
-  v19[12] = a10;
-  v19[13] = a8;
+  v19[6] = dictionary;
+  v19[7] = d;
+  v19[8] = account;
+  v19[9] = is;
+  v19[10] = group;
+  v19[11] = options;
+  v19[12] = block;
+  v19[13] = priority;
   [(MessageDeliveryController *)self _enqueueSendMessageWorkBlock:v19 forURIs:v17];
 }
 
-- (void)failMessageSendWithMessageDictionary:(id)a3 URIs:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)failMessageSendWithMessageDictionary:(id)dictionary URIs:(id)is error:(id)error completionHandler:(id)handler
 {
   if (IMOSLoggingEnabled())
   {
@@ -4398,30 +4398,30 @@ LABEL_3:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = 138412802;
-      v13 = a3;
+      dictionaryCopy = dictionary;
       v14 = 2112;
-      v15 = a4;
+      isCopy = is;
       v16 = 2112;
-      v17 = a5;
+      errorCopy = error;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "IDS sendMessage for message %@ to URIs %@ did not succeed, error %@", &v12, 0x20u);
     }
   }
 
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, self, [a4 allObjects], 0, 4, 0);
+    (*(handler + 2))(handler, self, [is allObjects], 0, 4, 0);
   }
 }
 
-- (void)sendMessageDictionary:(id)a3 encryptDictionary:(BOOL)a4 fromID:(id)a5 fromAccount:(id)a6 toURIs:(id)a7 toGroup:(id)a8 priority:(int64_t)a9 options:(id)a10 willSendBlock:(id)a11 callCompletionOnSuccess:(BOOL)a12 callCompletionOnLast:(BOOL)a13 completionBlock:(id)a14
+- (void)sendMessageDictionary:(id)dictionary encryptDictionary:(BOOL)encryptDictionary fromID:(id)d fromAccount:(id)account toURIs:(id)is toGroup:(id)group priority:(int64_t)priority options:(id)self0 willSendBlock:(id)self1 callCompletionOnSuccess:(BOOL)self2 callCompletionOnLast:(BOOL)self3 completionBlock:(id)self4
 {
   v48 = 0;
   v49 = 0;
-  if (a6)
+  if (account)
   {
-    v19 = a4;
-    [a10 objectForKeyedSubscript:IDSSendMessageOptionCommandKey];
-    v20 = [a10 mutableCopy];
+    encryptDictionaryCopy = encryptDictionary;
+    [options objectForKeyedSubscript:IDSSendMessageOptionCommandKey];
+    v20 = [options mutableCopy];
     if (!v20)
     {
       v20 = objc_alloc_init(NSMutableDictionary);
@@ -4438,17 +4438,17 @@ LABEL_3:
       sub_BC9F8();
     }
 
-    if (a5)
+    if (d)
     {
-      CFDictionarySetValue(v20, IDSSendMessageOptionFromIDKey, a5);
+      CFDictionarySetValue(v20, IDSSendMessageOptionFromIDKey, d);
     }
 
     CFDictionarySetValue(v20, IDSSendMessageOptionEnforceRemoteTimeoutsKey, &__kCFBooleanFalse);
     CFDictionarySetValue(v20, IDSSendMessageOptionTimeoutKey, &off_119698);
-    if (v19 && [a3 count])
+    if (encryptDictionaryCopy && [dictionary count])
     {
       v22 = JWEncodeDictionary();
-      v23 = [v22 _FTCopyGzippedData];
+      _FTCopyGzippedData = [v22 _FTCopyGzippedData];
       if (IMOSLoggingEnabled())
       {
         v24 = OSLogHandleForIMFoundationCategory();
@@ -4457,7 +4457,7 @@ LABEL_3:
           *buf = 67109376;
           *v52 = [v22 length];
           *&v52[4] = 1024;
-          *&v52[6] = [v23 length];
+          *&v52[6] = [_FTCopyGzippedData length];
           _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "Compressed message data from: %u to: %u in sendMessageDictionary", buf, 0xEu);
         }
       }
@@ -4467,18 +4467,18 @@ LABEL_3:
         v25 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v23 length];
+          v26 = [_FTCopyGzippedData length];
           *buf = 67109120;
           *v52 = v26;
           _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "Adding data to be encrypted of size %u", buf, 8u);
         }
       }
 
-      [(__CFDictionary *)v20 setObject:v23 forKey:IDSSendMessageOptionDataToEncryptKey];
+      [(__CFDictionary *)v20 setObject:_FTCopyGzippedData forKey:IDSSendMessageOptionDataToEncryptKey];
     }
 
-    v27 = [a6 serviceName];
-    v28 = [v27 isEqualToString:IDSServiceNameiMessageForBusiness];
+    serviceName = [account serviceName];
+    v28 = [serviceName isEqualToString:IDSServiceNameiMessageForBusiness];
     v29 = 40;
     if (v28)
     {
@@ -4493,14 +4493,14 @@ LABEL_3:
       {
         v32 = @"NO";
         *buf = 138413058;
-        *v52 = a6;
+        *v52 = account;
         *&v52[8] = 2112;
         if (v28)
         {
           v32 = @"YES";
         }
 
-        v53 = a8;
+        dictionaryCopy = group;
         v54 = 2112;
         v55 = v30;
         v56 = 2112;
@@ -4509,7 +4509,7 @@ LABEL_3:
       }
     }
 
-    v33 = [[NSMutableDictionary alloc] initWithDictionary:a3];
+    v33 = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     v50[0] = MessageDictionaryMeCardSharingAudienceKey;
     v50[1] = MessageDictionaryMeCardSharingEnabledKey;
     v50[2] = MessageDictionaryMeCardSharingNameForkedKey;
@@ -4548,30 +4548,30 @@ LABEL_3:
       [v33 setObject:v35 forKey:@"pID"];
     }
 
-    v36 = a7;
-    if (a8)
+    isCopy = is;
+    if (group)
     {
-      v36 = [NSSet setWithObject:a8];
+      isCopy = [NSSet setWithObject:group];
     }
 
-    v37 = [IMIDSService service:v30 sendMessage:v33 fromAccount:a6 toDestinations:v36 priority:a9 options:v20 identifier:&v48 error:&v49];
+    v37 = [IMIDSService service:v30 sendMessage:v33 fromAccount:account toDestinations:isCopy priority:priority options:v20 identifier:&v48 error:&v49];
 
-    if (a14 && ((v37 ^ 1) & 1) == 0 && v48)
+    if (completionBlock && ((v37 ^ 1) & 1) == 0 && v48)
     {
-      v38 = [a7 allObjects];
+      allObjects = [is allObjects];
       if (IMOSLoggingEnabled())
       {
         v39 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
         {
-          v40 = [v38 count];
+          v40 = [allObjects count];
           *buf = 134217984;
           *v52 = v40;
           _os_log_impl(&dword_0, v39, OS_LOG_TYPE_INFO, "Result URIs Size: %lu", buf, 0xCu);
         }
       }
 
-      v41 = [a14 copy];
+      v41 = [completionBlock copy];
       if (IMOSLoggingEnabled())
       {
         v42 = OSLogHandleForIMFoundationCategory();
@@ -4587,13 +4587,13 @@ LABEL_3:
       v45[1] = 3221225472;
       v45[2] = sub_505E0;
       v45[3] = &unk_113150;
-      v46 = a12;
-      v47 = a13;
+      successCopy = success;
+      lastCopy = last;
       v45[4] = v48;
       v45[5] = self;
-      v45[6] = v38;
+      v45[6] = allObjects;
       v45[7] = v41;
-      [MessageDeliveryController _enqueueUpdateBlock:"_enqueueUpdateBlock:willSendBlock:identifier:callbackID:messageCommandOption:" willSendBlock:v45 identifier:a11 callbackID:? messageCommandOption:?];
+      [MessageDeliveryController _enqueueUpdateBlock:"_enqueueUpdateBlock:willSendBlock:identifier:callbackID:messageCommandOption:" willSendBlock:v45 identifier:block callbackID:? messageCommandOption:?];
       if (IMOSLoggingEnabled())
       {
         v43 = OSLogHandleForIMFoundationCategory();
@@ -4602,7 +4602,7 @@ LABEL_3:
           *buf = 138412546;
           *v52 = v48;
           *&v52[8] = 2112;
-          v53 = a3;
+          dictionaryCopy = dictionary;
           _os_log_impl(&dword_0, v43, OS_LOG_TYPE_INFO, "Received IDS identifier %@ for message %@", buf, 0x16u);
         }
       }
@@ -4610,18 +4610,18 @@ LABEL_3:
 
     else
     {
-      [(MessageDeliveryController *)self failMessageSendWithMessageDictionary:a3 URIs:a7 error:v49 completionHandler:a14];
+      [(MessageDeliveryController *)self failMessageSendWithMessageDictionary:dictionary URIs:is error:v49 completionHandler:completionBlock];
     }
   }
 
   else
   {
 
-    [(MessageDeliveryController *)self failMessageSendWithMessageDictionary:a3 URIs:a7 error:0 completionHandler:a14];
+    [(MessageDeliveryController *)self failMessageSendWithMessageDictionary:dictionary URIs:is error:0 completionHandler:completionBlock];
   }
 }
 
-- (void)sendCloseSessionMessageDictionary:(id)a3 toBusinessURI:(id)a4 fromURI:(id)a5 fromAccount:(id)a6 completionBlock:(id)a7
+- (void)sendCloseSessionMessageDictionary:(id)dictionary toBusinessURI:(id)i fromURI:(id)rI fromAccount:(id)account completionBlock:(id)block
 {
   if (IMOSLoggingEnabled())
   {
@@ -4629,40 +4629,40 @@ LABEL_3:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = a4;
+      iCopy2 = i;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "sendCloseSessionMessageDictionary for biz URI: %@", buf, 0xCu);
     }
   }
 
   if (IMStringIsBusinessID())
   {
-    v13 = [NSSet setWithObjects:a4, a5, 0];
+    v13 = [NSSet setWithObjects:i, rI, 0];
     +[NSString stringGUID];
     v14 = [NSNumber numberWithInteger:170];
     v15 = IDSGetUUIDData();
     v16 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
-    v17 = [NSDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, v14, IDSSendMessageOptionCommandKey, v15, IDSSendMessageOptionUUIDKey, v16, IDSSendMessageOptionTimeoutKey, a5, IDSSendMessageOptionFromIDKey, &__kCFBooleanTrue, IDSSendMessageOptionWantsResponseKey, &__kCFBooleanFalse, IDSSendMessageOptionEnforceRemoteTimeoutsKey, 0];
-    v18 = [NSMutableDictionary dictionaryWithDictionary:a3];
+    v17 = [NSDictionary dictionaryWithObjectsAndKeys:IDSSendMessageOptionTopLevelDictionaryKey, &__kCFBooleanTrue, IDSSendMessageOptionSkipPayloadCheckKey, v14, IDSSendMessageOptionCommandKey, v15, IDSSendMessageOptionUUIDKey, v16, IDSSendMessageOptionTimeoutKey, rI, IDSSendMessageOptionFromIDKey, &__kCFBooleanTrue, IDSSendMessageOptionWantsResponseKey, &__kCFBooleanFalse, IDSSendMessageOptionEnforceRemoteTimeoutsKey, 0];
+    v18 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
     if ([+[IMFeatureFlags sharedFeatureFlags](IMFeatureFlags "sharedFeatureFlags")])
     {
-      v19 = [(MessageDeliveryController *)self _chatForChatIdentifier:a4];
+      v19 = [(MessageDeliveryController *)self _chatForChatIdentifier:i];
       if ([v19 containsActiveBIASession])
       {
-        v20 = [v19 BIAContext];
-        if ([v20 count])
+        bIAContext = [v19 BIAContext];
+        if ([bIAContext count])
         {
-          if ([v20 count])
+          if ([bIAContext count])
           {
-            CFDictionarySetValue(v18, @"bcon", v20);
+            CFDictionarySetValue(v18, @"bcon", bIAContext);
           }
         }
       }
     }
 
-    [(MessageDeliveryController *)self sendMessageDictionary:[(NSMutableDictionary *)v18 copy] encryptDictionary:1 fromID:a5 fromAccount:a6 toURIs:v13 toGroup:0 priority:300 options:v17 willSendBlock:0 completionBlock:0];
-    if (a7)
+    [(MessageDeliveryController *)self sendMessageDictionary:[(NSMutableDictionary *)v18 copy] encryptDictionary:1 fromID:rI fromAccount:account toURIs:v13 toGroup:0 priority:300 options:v17 willSendBlock:0 completionBlock:0];
+    if (block)
     {
-      (*(a7 + 2))(a7, self, [(NSSet *)v13 allObjects], 0, 4, 0);
+      (*(block + 2))(block, self, [(NSSet *)v13 allObjects], 0, 4, 0);
     }
   }
 
@@ -4672,13 +4672,13 @@ LABEL_3:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = a4;
+      iCopy2 = i;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "sendCloseSessionMessageDictionary called for non biz URI: %@", buf, 0xCu);
     }
   }
 }
 
-- (BOOL)sendToLocalPeersFile:(id)a3 dictionary:(id)a4
+- (BOOL)sendToLocalPeersFile:(id)file dictionary:(id)dictionary
 {
   if (IMOSLoggingEnabled())
   {
@@ -4699,16 +4699,16 @@ LABEL_3:
     v29 = IDSSendMessageOptionLocalDeliveryKey;
     v30 = &__kCFBooleanTrue;
     v10 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    if (a3)
+    if (file)
     {
-      v11 = [a4 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryDictKey];
+      v11 = [dictionary objectForKeyedSubscript:IMDRelayLocalMessageDictionaryDictKey];
       v27[0] = IMDRelayLocalMessageDictionaryGUIDKey;
       v28[0] = [v11 objectForKeyedSubscript:?];
       v27[1] = IMDRelayLocalMessageDictionaryAttachmentIndexKey;
       v28[1] = [v11 objectForKeyedSubscript:?];
       v27[2] = IMDRelayLocalMessageDictionaryTypeKey;
       v28[2] = IMDRelayLocalMessageTypeRemoteFileResponse;
-      v12 = [(IDSService *)self->_idsService sendResourceAtURL:a3 metadata:[NSDictionary dictionaryWithObjects:? forKeys:? count:?]error:v9, 300, v10, &v20, &v19];
+      v12 = [(IDSService *)self->_idsService sendResourceAtURL:file metadata:[NSDictionary dictionaryWithObjects:? forKeys:? count:?]error:v9, 300, v10, &v20, &v19];
       if (!IMOSLoggingEnabled())
       {
         goto LABEL_21;
@@ -4737,7 +4737,7 @@ LABEL_3:
 
     else
     {
-      v12 = [IMIDSService service:self->_idsService sendMessage:a4 fromAccount:0 toDestinations:v9 priority:300 options:v10 identifier:&v20 error:&v19];
+      v12 = [IMIDSService service:self->_idsService sendMessage:dictionary fromAccount:0 toDestinations:v9 priority:300 options:v10 identifier:&v20 error:&v19];
       if (!IMOSLoggingEnabled())
       {
         goto LABEL_21;
@@ -4790,8 +4790,8 @@ LABEL_21:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -4801,7 +4801,7 @@ LABEL_3:
     {
       if (*v11 != v4)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(devices);
       }
 
       v6 = *(*(&v10 + 1) + 8 * v5);
@@ -4812,7 +4812,7 @@ LABEL_3:
 
       if (v3 == ++v5)
       {
-        v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+        v3 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
         if (v3)
         {
           goto LABEL_3;
@@ -4853,14 +4853,14 @@ LABEL_14:
   return 0;
 }
 
-- (id)idsDeviceFromPushToken:(id)a3
+- (id)idsDeviceFromPushToken:(id)token
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(IDSService *)self->_idsService devices];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -4874,7 +4874,7 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(devices);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -4885,7 +4885,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -4896,9 +4896,9 @@ LABEL_3:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -4906,34 +4906,34 @@ LABEL_3:
     {
       v12 = @"NO";
       v13 = 138413058;
-      v14 = a3;
+      serviceCopy = service;
       v15 = 2112;
-      if (v8)
+      if (successCopy)
       {
         v12 = @"YES";
       }
 
-      v16 = a5;
+      identifierCopy = identifier;
       v17 = 2112;
       v18 = v12;
       v19 = 2112;
-      v20 = a7;
+      errorCopy = error;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Service %@ sent Message with ID %@ and sucess %@ with Error %@", &v13, 0x2Au);
     }
   }
 }
 
-- (void)sendEditedMessage:(id)a3 partIndex:(int64_t)a4 editType:(unint64_t)a5 destinations:(id)a6 chatIdentifier:(id)a7 account:(id)a8 fromID:(id)a9 backwardCompatabilityText:(id)a10 unsupportedDestinationsHandler:(id)a11 completionBlock:(id)a12
+- (void)sendEditedMessage:(id)message partIndex:(int64_t)index editType:(unint64_t)type destinations:(id)destinations chatIdentifier:(id)identifier account:(id)account fromID:(id)d backwardCompatabilityText:(id)self0 unsupportedDestinationsHandler:(id)self1 completionBlock:(id)self2
 {
   v54 = +[NSString stringGUID];
-  v52 = a3;
-  v16 = [a3 guid];
-  if (![v16 length])
+  messageCopy = message;
+  guid = [message guid];
+  if (![guid length])
   {
     [+[IMMetricsCollector sharedInstance](IMMetricsCollector forceAutoBugCaptureWithSubType:"forceAutoBugCaptureWithSubType:errorPayload:" errorPayload:@"Sending Edited Message with no GUID", 0];
   }
 
-  if ([a10 length])
+  if ([text length])
   {
     v49 = +[NSString stringGUID];
   }
@@ -4951,12 +4951,12 @@ LABEL_3:
       *buf = 138412546;
       *&buf[4] = v54;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = guid;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Sending edit command with guid %@ for edit of message with guid %@", buf, 0x16u);
     }
   }
 
-  v18 = [v52 body];
+  body = [messageCopy body];
   v19 = objc_alloc_init(NSMutableDictionary);
   v20 = v19;
   if (@"1")
@@ -4964,59 +4964,59 @@ LABEL_3:
     CFDictionarySetValue(v19, @"v", @"1");
   }
 
-  v21 = [(MessageDeliveryController *)self _replicationSourceIDForSending];
-  if (v21)
+  _replicationSourceIDForSending = [(MessageDeliveryController *)self _replicationSourceIDForSending];
+  if (_replicationSourceIDForSending)
   {
-    CFDictionarySetValue(v20, @"rp", v21);
+    CFDictionarySetValue(v20, @"rp", _replicationSourceIDForSending);
   }
 
-  if (v16)
+  if (guid)
   {
-    CFDictionarySetValue(v20, @"emg", v16);
+    CFDictionarySetValue(v20, @"emg", guid);
   }
 
-  v22 = [NSNumber numberWithInteger:a4];
+  v22 = [NSNumber numberWithInteger:index];
   if (v22)
   {
     CFDictionarySetValue(v20, @"epi", v22);
   }
 
-  v23 = [NSNumber numberWithUnsignedInteger:a5];
+  v23 = [NSNumber numberWithUnsignedInteger:type];
   if (v23)
   {
     CFDictionarySetValue(v20, @"et", v23);
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
-    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [objc_msgSend(v52 subject] == 0);
+    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [objc_msgSend(messageCopy subject] == 0);
     if (v31)
     {
       CFDictionarySetValue(v20, @"rs", v31);
     }
   }
 
-  else if (a5 == 1)
+  else if (type == 1)
   {
-    v24 = [v18 __im_messagePartMatchingPartIndex:a4];
+    v24 = [body __im_messagePartMatchingPartIndex:index];
     v25 = -[SuperToMessageParserContext initWithAttributedString:includeMessageParts:]([SuperToMessageParserContext alloc], "initWithAttributedString:includeMessageParts:", [v24 messagePartBody], 1);
     [+[IMAttributedStringParser sharedInstance](IMAttributedStringParser parseContext:"parseContext:", v25];
-    v26 = [(SuperToMessageParserContext *)v25 outHTML];
-    if (v26)
+    outHTML = [(SuperToMessageParserContext *)v25 outHTML];
+    if (outHTML)
     {
-      CFDictionarySetValue(v20, @"epb", v26);
+      CFDictionarySetValue(v20, @"epb", outHTML);
     }
 
-    v27 = [v52 translationsForMessagePart:{objc_msgSend(v24, "messagePartIndex")}];
+    v27 = [messageCopy translationsForMessagePart:{objc_msgSend(v24, "messagePartIndex")}];
     if ([v27 count])
     {
       v28 = [[IMTranslatedMessagePart alloc] initWithDictionaryRepresentation:{objc_msgSend(v27, "firstObject")}];
       v29 = -[SuperToMessageParserContext initWithAttributedString:includeMessageParts:]([SuperToMessageParserContext alloc], "initWithAttributedString:includeMessageParts:", [v28 translatedText], 1);
       [+[IMAttributedStringParser sharedInstance](IMAttributedStringParser parseContext:"parseContext:", v29];
-      v30 = [(SuperToMessageParserContext *)v29 outHTML];
-      if (v30)
+      outHTML2 = [(SuperToMessageParserContext *)v29 outHTML];
+      if (outHTML2)
       {
-        CFDictionarySetValue(v20, @"ept", v30);
+        CFDictionarySetValue(v20, @"ept", outHTML2);
       }
     }
   }
@@ -5024,9 +5024,9 @@ LABEL_3:
   v32 = [NSSet setWithObject:IDSRegistrationPropertySupportsRetractAndEditMessages];
   if ([(MessageServiceSession *)[(MessageDeliveryController *)self session] isReplicating])
   {
-    v33 = [v52 isSOS];
+    isSOS = [messageCopy isSOS];
     v34 = &IDSRegistrationPropertySupportsSOSAlerting;
-    if (!v33)
+    if (!isSOS)
     {
       v34 = &IDSRegistrationPropertySupportsHybridGroupsV1;
     }
@@ -5041,14 +5041,14 @@ LABEL_3:
   if ([(__CFDictionary *)v20 count])
   {
     v38 = JWEncodeDictionary();
-    v39 = [v38 _FTCopyGzippedData];
+    _FTCopyGzippedData = [v38 _FTCopyGzippedData];
     if (IMOSLoggingEnabled())
     {
       v40 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         v41 = [v38 length];
-        v42 = [v39 length];
+        v42 = [_FTCopyGzippedData length];
         *buf = 134218240;
         *&buf[4] = v41;
         *&buf[12] = 2048;
@@ -5062,17 +5062,17 @@ LABEL_3:
       v43 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
-        v44 = [v39 length];
+        v44 = [_FTCopyGzippedData length];
         *buf = 134217984;
         *&buf[4] = v44;
         _os_log_impl(&dword_0, v43, OS_LOG_TYPE_INFO, "Adding data to be encrypted of size: %lu", buf, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)v37 setObject:v39 forKey:IDSSendMessageOptionDataToEncryptKey];
+    [(NSMutableDictionary *)v37 setObject:_FTCopyGzippedData forKey:IDSSendMessageOptionDataToEncryptKey];
   }
 
-  v45 = [[NSSet alloc] initWithArray:a6];
+  v45 = [[NSSet alloc] initWithArray:destinations];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -5093,16 +5093,16 @@ LABEL_3:
   v57[1] = 3221225472;
   v57[2] = sub_52124;
   v57[3] = &unk_1131C8;
-  v57[4] = a9;
+  v57[4] = d;
   v57[5] = v49;
-  v57[6] = a10;
+  v57[6] = text;
   v57[7] = v46;
   v57[8] = self;
-  v57[9] = v52;
-  v57[10] = a6;
-  v57[11] = a7;
-  v57[12] = a8;
-  v57[13] = a11;
+  v57[9] = messageCopy;
+  v57[10] = destinations;
+  v57[11] = identifier;
+  v57[12] = account;
+  v57[13] = handler;
   v57[14] = v58;
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
@@ -5114,7 +5114,7 @@ LABEL_3:
   v56[5] = v46;
   dispatch_group_enter(v46);
   LOWORD(v47) = 256;
-  [(MessageDeliveryController *)self sendMessageDictionary:v48 encryptDictionary:1 fromID:a9 fromAccount:a8 toURIs:v45 toGroup:0 priority:300 options:v37 willSendBlock:v57 callCompletionOnSuccess:v47 callCompletionOnLast:v56 completionBlock:?];
+  [(MessageDeliveryController *)self sendMessageDictionary:v48 encryptDictionary:1 fromID:d fromAccount:account toURIs:v45 toGroup:0 priority:300 options:v37 willSendBlock:v57 callCompletionOnSuccess:v47 callCompletionOnLast:v56 completionBlock:?];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_52474;
@@ -5122,14 +5122,14 @@ LABEL_3:
   block[6] = buf;
   block[7] = v59;
   block[4] = self;
-  block[5] = a12;
+  block[5] = block;
   dispatch_group_notify(v46, &_dispatch_main_q, block);
 
   _Block_object_dispose(v59, 8);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_sendBackwardCompatibilityMessageForEditedMessage:(id)a3 usingMessageGUID:(id)a4 toBackwardCompatabilityDestinations:(id)a5 withOriginalDestinations:(id)a6 chatIdentifier:(id)a7 fromAccount:(id)a8 fromID:(id)a9 backwardCompatabilityText:(id)a10 completionBlock:(id)a11
+- (void)_sendBackwardCompatibilityMessageForEditedMessage:(id)message usingMessageGUID:(id)d toBackwardCompatabilityDestinations:(id)destinations withOriginalDestinations:(id)originalDestinations chatIdentifier:(id)identifier fromAccount:(id)account fromID:(id)iD backwardCompatabilityText:(id)self0 completionBlock:(id)self1
 {
   if (IMOSLoggingEnabled())
   {
@@ -5137,36 +5137,36 @@ LABEL_3:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = a5;
+      destinationsCopy = destinations;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Sending backwards compatible edit message text to %@", buf, 0xCu);
     }
   }
 
-  v18 = [[IMMessageItem alloc] initWithSender:objc_msgSend(a3 time:"sender") body:objc_msgSend(a3 attributes:"dateEdited") fileTransferGUIDs:a10 flags:0 error:0 guid:objc_msgSend(a3 threadIdentifier:{"flags"), 0, a4, objc_msgSend(a3, "threadIdentifier")}];
-  [v18 setDestinationCallerID:{objc_msgSend(a9, "_stripFZIDPrefix")}];
-  v19 = [(MessageDeliveryController *)self _chatForChatIdentifier:a7];
-  v20 = [(MessageDeliveryController *)self session];
-  v21 = [(MessageDeliveryController *)self groupController];
+  v18 = [[IMMessageItem alloc] initWithSender:objc_msgSend(message time:"sender") body:objc_msgSend(message attributes:"dateEdited") fileTransferGUIDs:text flags:0 error:0 guid:objc_msgSend(message threadIdentifier:{"flags"), 0, d, objc_msgSend(message, "threadIdentifier")}];
+  [v18 setDestinationCallerID:{objc_msgSend(iD, "_stripFZIDPrefix")}];
+  v19 = [(MessageDeliveryController *)self _chatForChatIdentifier:identifier];
+  session = [(MessageDeliveryController *)self session];
+  groupController = [(MessageDeliveryController *)self groupController];
   idsService = self->_idsService;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_52788;
   v24[3] = &unk_113268;
   v24[4] = self;
-  v24[5] = a7;
-  v24[6] = a5;
-  v24[7] = a6;
+  v24[5] = identifier;
+  v24[6] = destinations;
+  v24[7] = originalDestinations;
   v24[9] = v18;
-  v24[10] = a11;
-  v24[8] = a3;
-  [v21 sendMessage:v18 toChat:v19 fromID:a9 fromAccount:a8 session:v20 service:idsService completionBlock:v24];
+  v24[10] = block;
+  v24[8] = message;
+  [groupController sendMessage:v18 toChat:v19 fromID:iD fromAccount:account session:session service:idsService completionBlock:v24];
 }
 
-- (void)sendRepositionedStickerMetadata:(id)a3 forEditedMessage:(id)a4 destinations:(id)a5 account:(id)a6 fromID:(id)a7 completionBlock:(id)a8
+- (void)sendRepositionedStickerMetadata:(id)metadata forEditedMessage:(id)message destinations:(id)destinations account:(id)account fromID:(id)d completionBlock:(id)block
 {
   [(MessageDeliveryController *)self _checkStickerRepositioningMetadata:?];
   v12 = +[NSString stringGUID];
-  v13 = [a4 guid];
+  guid = [message guid];
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
@@ -5175,7 +5175,7 @@ LABEL_3:
       *buf = 138412546;
       *&buf[4] = v12;
       *&buf[12] = 2112;
-      *&buf[14] = v13;
+      *&buf[14] = guid;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Sending sticker reposition command with guid %@ for sticker chat item with guid %@", buf, 0x16u);
     }
   }
@@ -5187,20 +5187,20 @@ LABEL_3:
     CFDictionarySetValue(v15, @"v", @"1");
   }
 
-  v17 = [(MessageDeliveryController *)self _replicationSourceIDForSending];
-  if (v17)
+  _replicationSourceIDForSending = [(MessageDeliveryController *)self _replicationSourceIDForSending];
+  if (_replicationSourceIDForSending)
   {
-    CFDictionarySetValue(v16, @"rp", v17);
+    CFDictionarySetValue(v16, @"rp", _replicationSourceIDForSending);
   }
 
-  if (v13)
+  if (guid)
   {
-    CFDictionarySetValue(v16, @"scig", v13);
+    CFDictionarySetValue(v16, @"scig", guid);
   }
 
-  if (a3)
+  if (metadata)
   {
-    CFDictionarySetValue(v16, @"srpi", a3);
+    CFDictionarySetValue(v16, @"srpi", metadata);
   }
 
   if (IMOSLoggingEnabled())
@@ -5226,14 +5226,14 @@ LABEL_3:
   if ([(__CFDictionary *)v16 count])
   {
     v24 = JWEncodeDictionary();
-    v25 = [v24 _FTCopyGzippedData];
+    _FTCopyGzippedData = [v24 _FTCopyGzippedData];
     if (IMOSLoggingEnabled())
     {
       v26 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = [v24 length];
-        v28 = [v25 length];
+        v28 = [_FTCopyGzippedData length];
         *buf = 134218240;
         *&buf[4] = v27;
         *&buf[12] = 2048;
@@ -5247,17 +5247,17 @@ LABEL_3:
       v29 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [v25 length];
+        v30 = [_FTCopyGzippedData length];
         *buf = 134217984;
         *&buf[4] = v30;
         _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "Adding data to be encrypted of size: %lu", buf, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)v23 setObject:v25 forKey:IDSSendMessageOptionDataToEncryptKey];
+    [(NSMutableDictionary *)v23 setObject:_FTCopyGzippedData forKey:IDSSendMessageOptionDataToEncryptKey];
   }
 
-  v31 = [[NSSet alloc] initWithArray:a5];
+  v31 = [[NSSet alloc] initWithArray:destinations];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -5281,7 +5281,7 @@ LABEL_3:
   v37[4] = v12;
   v37[5] = v32;
   dispatch_group_enter(v32);
-  [(MessageDeliveryController *)self sendMessageDictionary:v21 encryptDictionary:1 fromID:a7 fromAccount:a6 toURIs:v31 toGroup:0 priority:300 options:v23 willSendBlock:0 completionBlock:v37];
+  [(MessageDeliveryController *)self sendMessageDictionary:v21 encryptDictionary:1 fromID:d fromAccount:account toURIs:v31 toGroup:0 priority:300 options:v23 willSendBlock:0 completionBlock:v37];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_53188;
@@ -5289,7 +5289,7 @@ LABEL_3:
   block[6] = buf;
   block[7] = v38;
   block[4] = self;
-  block[5] = a8;
+  block[5] = block;
   block[8] = v40;
   dispatch_group_notify(v32, &_dispatch_main_q, block);
 
@@ -5298,9 +5298,9 @@ LABEL_3:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_checkStickerRepositioningMetadata:(id)a3
+- (void)_checkStickerRepositioningMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
     if (![IMSharedHelperMissingKeysInStickerUserInfo() count])
     {
@@ -5334,7 +5334,7 @@ LABEL_3:
   [+[IMMetricsCollector sharedInstance](IMMetricsCollector forceAutoBugCaptureWithSubType:"forceAutoBugCaptureWithSubType:errorPayload:type:context:" errorPayload:@"AttemptedInvalidStickerReposition" type:[NSError context:"errorWithDomain:code:userInfo:" errorWithDomain:0 code:[NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1] userInfo:?], v5, 0];
 }
 
-- (void)cancelScheduledMessageWithGUID:(id)a3 fromID:(id)a4
+- (void)cancelScheduledMessageWithGUID:(id)d fromID:(id)iD
 {
   v17 = 0;
   v18 = 0;
@@ -5343,7 +5343,7 @@ LABEL_3:
   v28[0] = IDSSendMessageOptionQueueOneIdentifierKey;
   v28[1] = IDSSendMessageOptionFromIDKey;
   v29[0] = v7;
-  v29[1] = a4;
+  v29[1] = iD;
   v9 = [(IDSService *)idsService cancelMessageWithOptions:[NSDictionary dictionaryWithObjects:v28 forKeys:2 count:?], &v17, &v18];
   if ([v17 length])
   {
@@ -5362,16 +5362,16 @@ LABEL_3:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v20 = v17;
+          dCopy3 = v17;
           v21 = 2112;
-          v22 = a3;
+          iDCopy = d;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "We already have identifier (%@) for messageGUID (%@)", buf, 0x16u);
         }
       }
     }
 
     v12 = self->_pendingCancelScheduledMessageGUIDs;
-    v27[0] = a3;
+    v27[0] = d;
     v27[1] = &off_1193C8;
     v13 = [NSArray arrayWithObjects:v27 count:2];
     [(NSMutableDictionary *)v12 setObject:v13 forKey:v17];
@@ -5383,7 +5383,7 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = a3;
+      dCopy3 = d;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Failed to get identifier from IDS for cancel scheduled message with GUID: %@", buf, 0xCu);
     }
   }
@@ -5400,9 +5400,9 @@ LABEL_3:
         v16 = @"YES";
       }
 
-      v20 = a3;
+      dCopy3 = d;
       v21 = 2112;
-      v22 = a4;
+      iDCopy = iD;
       v23 = 2112;
       v24 = v16;
       v25 = 2112;
@@ -5412,7 +5412,7 @@ LABEL_3:
   }
 }
 
-- (void)cancelScheduledMessageWithGUID:(id)a3 fromID:(id)a4 destinations:(id)a5 cancelType:(unint64_t)a6
+- (void)cancelScheduledMessageWithGUID:(id)d fromID:(id)iD destinations:(id)destinations cancelType:(unint64_t)type
 {
   v36 = 0;
   v37 = 0;
@@ -5420,20 +5420,20 @@ LABEL_3:
   v54[0] = IDSSendMessageOptionQueueOneIdentifierKey;
   v54[1] = IDSSendMessageOptionFromIDKey;
   v55[0] = v11;
-  v55[1] = a4;
+  v55[1] = iD;
   v12 = [+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary mutableCopy:v55];
   v13 = v12;
-  if (a6 != 2)
+  if (type != 2)
   {
     [v12 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionAlwaysIncludeSelfKey];
   }
 
-  v14 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(a5, "count")}];
+  v14 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(destinations, "count")}];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = [a5 countByEnumeratingWithState:&v32 objects:v53 count:16];
+  v15 = [destinations countByEnumeratingWithState:&v32 objects:v53 count:16];
   if (v15)
   {
     v16 = *v33;
@@ -5444,7 +5444,7 @@ LABEL_3:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(destinations);
         }
 
         v18 = *(*(&v32 + 1) + 8 * v17);
@@ -5453,7 +5453,7 @@ LABEL_3:
       }
 
       while (v15 != v17);
-      v15 = [a5 countByEnumeratingWithState:&v32 objects:v53 count:16];
+      v15 = [destinations countByEnumeratingWithState:&v32 objects:v53 count:16];
     }
 
     while (v15);
@@ -5479,7 +5479,7 @@ LABEL_3:
     v24 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [NSNumber numberWithUnsignedInteger:a6];
+      v25 = [NSNumber numberWithUnsignedInteger:type];
       v26 = @"NO";
       *buf = 138413826;
       if (v23)
@@ -5487,11 +5487,11 @@ LABEL_3:
         v26 = @"YES";
       }
 
-      v40 = a3;
+      dCopy3 = d;
       v41 = 2112;
-      v42 = a4;
+      dCopy2 = iD;
       v43 = 2112;
-      v44 = a5;
+      destinationsCopy = destinations;
       v45 = 2112;
       v46 = v25;
       v47 = 2112;
@@ -5519,16 +5519,16 @@ LABEL_3:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v40 = v36;
+        dCopy3 = v36;
         v41 = 2112;
-        v42 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "We already have identifier (%@) for messageGUID (%@)", buf, 0x16u);
       }
     }
 
     v29 = self->_pendingCancelScheduledMessageGUIDs;
-    v38[0] = a3;
-    v38[1] = [NSNumber numberWithUnsignedInteger:a6];
+    v38[0] = d;
+    v38[1] = [NSNumber numberWithUnsignedInteger:type];
     v30 = [NSArray arrayWithObjects:v38 count:2];
     [(NSMutableDictionary *)v29 setObject:v30 forKey:v36];
   }
@@ -5539,33 +5539,33 @@ LABEL_3:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v40 = a3;
+      dCopy3 = d;
       _os_log_impl(&dword_0, v31, OS_LOG_TYPE_INFO, "Failed to get identifier from IDS for cancel scheduled message with GUID: %@", buf, 0xCu);
     }
   }
 }
 
-- (id)_fallbackMessageItemFromLinkMetadata:(id)a3 originalMessageItem:(id)a4
+- (id)_fallbackMessageItemFromLinkMetadata:(id)metadata originalMessageItem:(id)item
 {
-  v6 = [[NSAttributedString alloc] initWithString:{objc_msgSend(objc_msgSend(a3, "URL"), "absoluteString")}];
-  v7 = [v6 __im_attributedStringByAssigningMessagePartNumbers];
+  v6 = [[NSAttributedString alloc] initWithString:{objc_msgSend(objc_msgSend(metadata, "URL"), "absoluteString")}];
+  __im_attributedStringByAssigningMessagePartNumbers = [v6 __im_attributedStringByAssigningMessagePartNumbers];
   v8 = objc_alloc_init(LPMessagesPayload);
-  [v8 setMetadata:a3];
+  [v8 setMetadata:metadata];
   v12 = 0;
   [v8 dataRepresentationWithOutOfLineAttachments:&v12];
   v9 = IMSharedHelperCombinedPluginPayloadDictionaryData();
-  v10 = [[IMMessageItem alloc] initWithSender:objc_msgSend(a4 time:"sender") body:objc_msgSend(a4 attributes:"time") fileTransferGUIDs:v7 flags:0 error:0 guid:objc_msgSend(a4 threadIdentifier:{"flags"), 0, objc_msgSend(a4, "guid"), 0}];
+  v10 = [[IMMessageItem alloc] initWithSender:objc_msgSend(item time:"sender") body:objc_msgSend(item attributes:"time") fileTransferGUIDs:__im_attributedStringByAssigningMessagePartNumbers flags:0 error:0 guid:objc_msgSend(item threadIdentifier:{"flags"), 0, objc_msgSend(item, "guid"), 0}];
   [v10 setBalloonBundleID:IMBalloonPluginIdentifierRichLinks];
   [v10 setPayloadData:v9];
 
   return v10;
 }
 
-- (id)_fallbackMessageItemForTranslationsWithOriginalMessageItem:(id)a3
+- (id)_fallbackMessageItemForTranslationsWithOriginalMessageItem:(id)item
 {
-  v3 = a3;
-  v4 = [a3 messageSummaryInfo];
-  v5 = [v4 objectForKeyedSubscript:IMMessageSummaryInfoTranslatedMessageParts];
+  itemCopy = item;
+  messageSummaryInfo = [item messageSummaryInfo];
+  v5 = [messageSummaryInfo objectForKeyedSubscript:IMMessageSummaryInfoTranslatedMessageParts];
   if (v5)
   {
     v41 = 0;
@@ -5573,20 +5573,20 @@ LABEL_3:
     if (v6)
     {
       v7 = v6;
-      v8 = [v3 body];
-      v9 = [v8 mutableCopy];
+      body = [itemCopy body];
+      v9 = [body mutableCopy];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v35 = [v7 countByEnumeratingWithState:&v37 objects:v44 count:16];
-      v31 = v3;
+      v31 = itemCopy;
       if (v35)
       {
         v10 = *v38;
         v11 = &MessageDictionaryNicknameIgnoredListVersionKey_ptr;
         v32 = *v38;
-        v33 = v8;
+        v33 = body;
         do
         {
           for (i = 0; i != v35; i = i + 1)
@@ -5597,11 +5597,11 @@ LABEL_3:
             }
 
             v13 = *(*(&v37 + 1) + 8 * i);
-            v14 = [v13 integerValue];
+            integerValue = [v13 integerValue];
             v15 = [v7 objectForKeyedSubscript:v13];
             if ([v15 count])
             {
-              v16 = [v8 __im_messagePartMatchingPartIndex:v14];
+              v16 = [body __im_messagePartMatchingPartIndex:integerValue];
               if (v16)
               {
                 v17 = v16;
@@ -5627,12 +5627,12 @@ LABEL_3:
                   }
 
                   v23 = [[NSAttributedString alloc] initWithString:{objc_msgSend(v20[81], "stringWithFormat:", @"%@\n\n%@", objc_msgSend(objc_msgSend(v17, "messagePartBody"), "string"), v21)}];
-                  v24 = [v19 __im_messageTextByReplacingMessagePartIndex:v14 withNewPartText:v23];
+                  v24 = [v19 __im_messageTextByReplacingMessagePartIndex:integerValue withNewPartText:v23];
 
                   v9 = [v24 mutableCopy];
                   v11 = v20;
                   v10 = v32;
-                  v8 = v33;
+                  body = v33;
                 }
 
                 else
@@ -5641,7 +5641,7 @@ LABEL_3:
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 134217984;
-                    v43 = v14;
+                    v43 = integerValue;
                     _os_log_error_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "Invalid translation data for part %ld", buf, 0xCu);
                   }
                 }
@@ -5653,7 +5653,7 @@ LABEL_3:
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 134217984;
-                  v43 = v14;
+                  v43 = integerValue;
                   _os_log_error_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "Could not find message part at index %ld", buf, 0xCu);
                 }
               }
@@ -5686,16 +5686,16 @@ LABEL_3:
     }
   }
 
-  return v3;
+  return itemCopy;
 }
 
-- (id)_fallbackMessageItemForRequiredRegPropertiesTextMessage:(id)a3
+- (id)_fallbackMessageItemForRequiredRegPropertiesTextMessage:(id)message
 {
-  [a3 payloadData];
+  [message payloadData];
   result = IMBalloonPluginFallbackText();
   if (result)
   {
-    v5 = [[IMMessageItem alloc] initWithSender:objc_msgSend(a3 time:"sender") body:objc_msgSend(a3 attributes:"time") fileTransferGUIDs:objc_msgSend([NSAttributedString alloc] flags:"initWithString:" error:result) guid:0 threadIdentifier:{0, objc_msgSend(a3, "flags"), 0, +[NSString stringGUID](NSString, "stringGUID"), 0}];
+    v5 = [[IMMessageItem alloc] initWithSender:objc_msgSend(message time:"sender") body:objc_msgSend(message attributes:"time") fileTransferGUIDs:objc_msgSend([NSAttributedString alloc] flags:"initWithString:" error:result) guid:0 threadIdentifier:{0, objc_msgSend(message, "flags"), 0, +[NSString stringGUID](NSString, "stringGUID"), 0}];
 
     return v5;
   }
@@ -5703,15 +5703,15 @@ LABEL_3:
   return result;
 }
 
-- (id)_fallbackMessageItemByConvertingGenmojiToUnknownEmojiCharacterInOriginalMessageItem:(id)a3
+- (id)_fallbackMessageItemByConvertingGenmojiToUnknownEmojiCharacterInOriginalMessageItem:(id)item
 {
-  v3 = a3;
-  v5 = [a3 body];
-  if (v5)
+  itemCopy = item;
+  body = [item body];
+  if (body)
   {
-    v6 = v5;
-    v7 = [v3 copyWithFlags:{objc_msgSend(v3, "flags")}];
-    [v7 _setMessageID:{objc_msgSend(v3, "messageID")}];
+    v6 = body;
+    v7 = [itemCopy copyWithFlags:{objc_msgSend(itemCopy, "flags")}];
+    [v7 _setMessageID:{objc_msgSend(itemCopy, "messageID")}];
     v8 = +[IMDFileTransferCenter sharedInstance];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -5734,7 +5734,7 @@ LABEL_3:
     v24[4] = v9;
     v24[5] = v31;
     [v6 __im_visitMessageParts:v24];
-    v10 = [objc_msgSend(v3 "fileTransferGUIDs")];
+    v10 = [objc_msgSend(itemCopy "fileTransferGUIDs")];
     if ([v9 count])
     {
       v11 = objc_alloc_init(NSMutableArray);
@@ -5785,32 +5785,32 @@ LABEL_3:
     [v7 setFileTransferGUIDs:v18];
     [v7 setBackwardsCompatibleVersion:1];
 
-    v3 = v7;
+    itemCopy = v7;
     _Block_object_dispose(&v25, 8);
   }
 
-  return v3;
+  return itemCopy;
 }
 
-- (id)_nonAdaptiveFileTransferForAdaptiveImageFileTransfer:(id)a3
+- (id)_nonAdaptiveFileTransferForAdaptiveImageFileTransfer:(id)transfer
 {
-  v3 = a3;
-  if (a3)
+  transferCopy = transfer;
+  if (transfer)
   {
-    v4 = -[MessageDeliveryController _copyGenmojiHEICFileToTemporaryDirectory:](self, "_copyGenmojiHEICFileToTemporaryDirectory:", [a3 localPath]);
+    v4 = -[MessageDeliveryController _copyGenmojiHEICFileToTemporaryDirectory:](self, "_copyGenmojiHEICFileToTemporaryDirectory:", [transfer localPath]);
     if (v4)
     {
       v5 = v4;
-      v6 = [v4 lastPathComponent];
-      v7 = [v3 totalBytes];
-      v8 = [v3 hfsType];
-      v9 = [v3 hfsCreator];
-      v10 = [v3 hfsFlags];
+      lastPathComponent = [v4 lastPathComponent];
+      totalBytes = [transferCopy totalBytes];
+      hfsType = [transferCopy hfsType];
+      hfsCreator = [transferCopy hfsCreator];
+      hfsFlags = [transferCopy hfsFlags];
       v11 = +[IMDFileTransferCenter sharedInstance];
-      v3 = [(IMDFileTransferCenter *)v11 transferForGUID:[(IMDFileTransferCenter *)v11 guidForNewOutgoingTransferWithFilename:v6 isDirectory:0 totalBytes:v7 hfsType:v8 hfsCreator:v9 hfsFlags:v10]];
-      [v3 _setLocalPath:v5];
-      [v3 setIsTemporaryBackwardCompatibilityAsset:1];
-      [v3 setIsGenmojiFallback:1];
+      transferCopy = [(IMDFileTransferCenter *)v11 transferForGUID:[(IMDFileTransferCenter *)v11 guidForNewOutgoingTransferWithFilename:lastPathComponent isDirectory:0 totalBytes:totalBytes hfsType:hfsType hfsCreator:hfsCreator hfsFlags:hfsFlags]];
+      [transferCopy _setLocalPath:v5];
+      [transferCopy setIsTemporaryBackwardCompatibilityAsset:1];
+      [transferCopy setIsGenmojiFallback:1];
     }
 
     else
@@ -5825,13 +5825,13 @@ LABEL_3:
     }
   }
 
-  return v3;
+  return transferCopy;
 }
 
-- (id)_copyGenmojiHEICFileToTemporaryDirectory:(id)a3
+- (id)_copyGenmojiHEICFileToTemporaryDirectory:(id)directory
 {
-  v4 = [a3 lastPathComponent];
-  if (!v4)
+  lastPathComponent = [directory lastPathComponent];
+  if (!lastPathComponent)
   {
     v10 = IMLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -5842,7 +5842,7 @@ LABEL_3:
     return 0;
   }
 
-  v15 = v4;
+  v15 = lastPathComponent;
   v5 = [objc_msgSend(IMSafeTemporaryDirectory() im_URLByAppendingPathComponents:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v15, 1)), "path"}];
   v6 = +[NSFileManager defaultManager];
   if ([(NSFileManager *)v6 fileExistsAtPath:v5])
@@ -5866,7 +5866,7 @@ LABEL_3:
   }
 
   *buf = 0;
-  if (![(NSFileManager *)v6 copyItemAtPath:a3 toPath:v5 error:buf])
+  if (![(NSFileManager *)v6 copyItemAtPath:directory toPath:v5 error:buf])
   {
     if ([objc_msgSend(*buf "domain")] && objc_msgSend(*buf, "code") == &stru_1F8.sectname[12])
     {
@@ -5904,18 +5904,18 @@ LABEL_3:
   return [NSNumber numberWithInteger:v3];
 }
 
-- (void)_addIdentifierToPendingTimestampUpdateMap:(id)a3 alternateCallbackId:(id)a4
+- (void)_addIdentifierToPendingTimestampUpdateMap:(id)map alternateCallbackId:(id)id
 {
-  if (a3)
+  if (map)
   {
-    [(NSMutableDictionary *)self->_pendingTimestampUpdate setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_pendingTimestampUpdate setObject:map forKey:id];
   }
 }
 
-- (id)backwardCompatibilityPrefixForLanguageCode:(id)a3
+- (id)backwardCompatibilityPrefixForLanguageCode:(id)code
 {
   sub_BD704();
-  v4 = a3;
+  codeCopy = code;
   sub_BD6F4();
   sub_BD8B4();
   sub_BD6E4();

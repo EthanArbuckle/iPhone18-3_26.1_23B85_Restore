@@ -5,14 +5,14 @@
 - (BOOL)isNetworkReachable;
 - (FLNetworkObserver)init;
 - (id)_init;
-- (id)addNetworkReachableBlock:(id)a3;
+- (id)addNetworkReachableBlock:(id)block;
 - (void)_networkReachabilityDidChange;
 - (void)_startPathMonitor;
 - (void)_stopPathMonitor;
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4;
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
 - (void)disableAirplaneMode;
-- (void)removeNetworkReachableObserver:(id)a3;
+- (void)removeNetworkReachableObserver:(id)observer;
 @end
 
 @implementation FLNetworkObserver
@@ -35,9 +35,9 @@
     observerQueue = v2->_observerQueue;
     v2->_observerQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     invocationByObserver = v2->_invocationByObserver;
-    v2->_invocationByObserver = v5;
+    v2->_invocationByObserver = dictionary;
 
     [(FLNetworkObserver *)v2 _startPathMonitor];
   }
@@ -157,8 +157,8 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSMutableDictionary *)self->_invocationByObserver allValues];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_invocationByObserver allValues];
+  v3 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -171,7 +171,7 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -185,7 +185,7 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -232,14 +232,14 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [v6 methodSignatureForSelector:a4];
+  observerCopy = observer;
+  v7 = [observerCopy methodSignatureForSelector:selector];
   v8 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v7];
-  [v8 setSelector:a4];
-  [v8 setTarget:v6];
-  v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v6];
+  [v8 setSelector:selector];
+  [v8 setTarget:observerCopy];
+  v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:observerCopy];
 
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -254,9 +254,9 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
   dispatch_sync(observerQueue, block);
 }
 
-- (id)addNetworkReachableBlock:(id)a3
+- (id)addNetworkReachableBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v5 = [_FLNetworkObserverBlock alloc];
   v9[0] = MEMORY[0x277D85DD0];
@@ -264,7 +264,7 @@ void __38__FLNetworkObserver__startPathMonitor__block_invoke(uint64_t a1, void *
   v9[2] = __46__FLNetworkObserver_addNetworkReachableBlock___block_invoke;
   v9[3] = &unk_278E35B20;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v10 = v6;
   v7 = [(_FLNetworkObserverBlock *)v5 _initWithBlock:v9 networkObserver:self];
   [(FLNetworkObserver *)self addNetworkReachableObserver:v7 selector:sel_executeBlock];
@@ -286,9 +286,9 @@ void __46__FLNetworkObserver_addNetworkReachableBlock___block_invoke(uint64_t a1
   }
 }
 
-- (void)removeNetworkReachableObserver:(id)a3
+- (void)removeNetworkReachableObserver:(id)observer
 {
-  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:observer];
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

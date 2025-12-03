@@ -2,7 +2,7 @@
 - (BOOL)arePropertiesReadonly;
 - (BOOL)isContentReadonly;
 - (BOOL)isLocal;
-- (DAABLegacyContainer)initWithABSource:(void *)a3;
+- (DAABLegacyContainer)initWithABSource:(void *)source;
 - (id)accountIdentifier;
 - (id)asContainer;
 - (id)cTag;
@@ -17,28 +17,28 @@
 - (void)dealloc;
 - (void)markAsDefault;
 - (void)markForDeletion;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setCTag:(id)a3;
-- (void)setConstraintsPath:(id)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setMeContactIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSyncData:(id)a3;
-- (void)setSyncTag:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)updateSaveRequest:(id)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setCTag:(id)tag;
+- (void)setConstraintsPath:(id)path;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setMeContactIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setSyncData:(id)data;
+- (void)setSyncTag:(id)tag;
+- (void)setType:(int64_t)type;
+- (void)updateSaveRequest:(id)request;
 @end
 
 @implementation DAABLegacyContainer
 
-- (DAABLegacyContainer)initWithABSource:(void *)a3
+- (DAABLegacyContainer)initWithABSource:(void *)source
 {
   v6.receiver = self;
   v6.super_class = DAABLegacyContainer;
   v4 = [(DAABLegacyContainer *)&v6 init];
   if (v4)
   {
-    v4->_source = CFRetain(a3);
+    v4->_source = CFRetain(source);
     ABSourceSetShouldIgnoreCapabilitiesRestrictions();
   }
 
@@ -55,31 +55,31 @@
 
 - (id)identifier
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AA8]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AA8]);
 
   return v3;
 }
 
 - (id)name
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AC0]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AC0]);
 
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9AC0], value, 0);
+  value = name;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9AC0], value, 0);
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AD0]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AD0]);
   v4 = [v3 integerValue] == 0;
 
   return v4;
@@ -87,109 +87,109 @@
 
 - (int64_t)type
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AD0]);
-  v4 = [v3 integerValue];
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AD0]);
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = [(DAABLegacyContainer *)self source];
+  source = [(DAABLegacyContainer *)self source];
   v5 = *MEMORY[0x277CE9AD0];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
 
-  ABRecordSetValue(v4, v5, v6, 0);
+  ABRecordSetValue(source, v5, v6, 0);
 }
 
 - (id)externalIdentifier
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9A90]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9A90]);
 
   return v3;
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9A90], value, 0);
+  value = identifier;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9A90], value, 0);
 }
 
 - (id)cTag
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9A98]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9A98]);
 
   return v3;
 }
 
-- (void)setCTag:(id)a3
+- (void)setCTag:(id)tag
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9A98], value, 0);
+  value = tag;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9A98], value, 0);
 }
 
 - (id)syncTag
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AA0]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AA0]);
 
   return v3;
 }
 
-- (void)setSyncTag:(id)a3
+- (void)setSyncTag:(id)tag
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9AA0], value, 0);
+  value = tag;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9AA0], value, 0);
 }
 
 - (id)syncData
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9AC8]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9AC8]);
 
   return v3;
 }
 
-- (void)setSyncData:(id)a3
+- (void)setSyncData:(id)data
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9AC8], value, 0);
+  value = data;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9AC8], value, 0);
 }
 
 - (id)constraintsPath
 {
-  v2 = [(DAABLegacyContainer *)self source];
-  v3 = ABRecordCopyValue(v2, *MEMORY[0x277CE9A80]);
+  source = [(DAABLegacyContainer *)self source];
+  v3 = ABRecordCopyValue(source, *MEMORY[0x277CE9A80]);
 
   return v3;
 }
 
-- (void)setConstraintsPath:(id)a3
+- (void)setConstraintsPath:(id)path
 {
-  value = a3;
-  v4 = [(DAABLegacyContainer *)self source];
-  ABRecordSetValue(v4, *MEMORY[0x277CE9A80], value, 0);
+  value = path;
+  source = [(DAABLegacyContainer *)self source];
+  ABRecordSetValue(source, *MEMORY[0x277CE9A80], value, 0);
 }
 
 - (BOOL)isContentReadonly
 {
-  v2 = [(DAABLegacyContainer *)self source];
+  source = [(DAABLegacyContainer *)self source];
 
-  return MEMORY[0x28213B548](v2);
+  return MEMORY[0x28213B548](source);
 }
 
 - (BOOL)arePropertiesReadonly
 {
-  v2 = [(DAABLegacyContainer *)self source];
+  source = [(DAABLegacyContainer *)self source];
 
-  return MEMORY[0x28213B538](v2);
+  return MEMORY[0x28213B538](source);
 }
 
 - (id)meContactidentifier
@@ -198,22 +198,22 @@
   [(DAABLegacyContainer *)self source];
   v3 = *MEMORY[0x277CE9AB8];
   v4 = [v2 numberWithInt:ABRecordGetIntValue()];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
-- (void)setMeContactIdentifier:(id)a3
+- (void)setMeContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(DAABLegacyContainer *)self source];
   AddressBook = ABRecordGetAddressBook();
-  v6 = [v4 intValue];
+  intValue = [identifierCopy intValue];
 
-  PersonWithRecordID = ABAddressBookGetPersonWithRecordID(AddressBook, v6);
-  v8 = [(DAABLegacyContainer *)self source];
+  PersonWithRecordID = ABAddressBookGetPersonWithRecordID(AddressBook, intValue);
+  source = [(DAABLegacyContainer *)self source];
 
-  MEMORY[0x28213B560](v8, PersonWithRecordID, 0);
+  MEMORY[0x28213B560](source, PersonWithRecordID, 0);
 }
 
 - (id)accountIdentifier
@@ -222,42 +222,42 @@
   [(DAABLegacyContainer *)self source];
   v3 = *MEMORY[0x277CE9A70];
   v4 = [v2 numberWithInt:ABRecordGetIntValue()];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DAABLegacyContainer *)self source];
+  identifierCopy = identifier;
+  source = [(DAABLegacyContainer *)self source];
   v6 = *MEMORY[0x277CE9A70];
-  v7 = [v4 intValue];
+  intValue = [identifierCopy intValue];
 
-  MEMORY[0x28213B528](v5, v6, v7, 0);
+  MEMORY[0x28213B528](source, v6, intValue, 0);
 }
 
 - (void)markForDeletion
 {
   [(DAABLegacyContainer *)self source];
   AddressBook = ABRecordGetAddressBook();
-  v4 = [(DAABLegacyContainer *)self source];
+  source = [(DAABLegacyContainer *)self source];
 
-  ABAddressBookRemoveRecord(AddressBook, v4, 0);
+  ABAddressBookRemoveRecord(AddressBook, source, 0);
 }
 
 - (void)markAsDefault
 {
   [(DAABLegacyContainer *)self source];
   AddressBook = ABRecordGetAddressBook();
-  v4 = [(DAABLegacyContainer *)self source];
+  source = [(DAABLegacyContainer *)self source];
 
-  MEMORY[0x28213B358](AddressBook, v4, 1);
+  MEMORY[0x28213B358](AddressBook, source, 1);
 }
 
-- (void)updateSaveRequest:(id)a3
+- (void)updateSaveRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"DAABLegacyContainer cannot update CNSaveRequest" userInfo:0];
   objc_exception_throw(v4);
 }

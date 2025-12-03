@@ -1,27 +1,27 @@
 @interface AAUIAccountMigrationHook
-- (AAUIAccountMigrationHook)initWithAltDSID:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAccountMigrationHook)initWithAltDSID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_invokeShieldMigrationFlowWithPendingDOB:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_invokeShieldMigrationFlowWithPendingDOB:(id)b completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAccountMigrationHook
 
-- (AAUIAccountMigrationHook)initWithAltDSID:(id)a3
+- (AAUIAccountMigrationHook)initWithAltDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = AAUIAccountMigrationHook;
   v6 = [(AAUIAccountMigrationHook *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_altDSID, a3);
-    v8 = [MEMORY[0x1E6959A48] defaultStore];
-    v9 = [v8 aa_appleAccountWithAltDSID:v5];
+    objc_storeStrong(&v6->_altDSID, d);
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    v9 = [defaultStore aa_appleAccountWithAltDSID:dCopy];
     appleAccount = v7->_appleAccount;
     v7->_appleAccount = v9;
 
@@ -33,21 +33,21 @@
   return v7;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"age:migration"];
+  name = [element name];
+  v4 = [name isEqualToString:@"age:migration"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -62,12 +62,12 @@
   return v7;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
+  completionCopy = completion;
+  attributesCopy = attributes;
   objc_opt_class();
-  v10 = [v9 objectForKeyedSubscript:@"birthday"];
+  v10 = [attributesCopy objectForKeyedSubscript:@"birthday"];
 
   v11 = v10;
   if (objc_opt_isKindOfClass())
@@ -86,17 +86,17 @@
     [AAUIAccountMigrationHook processElement:v12 attributes:v13 objectModel:? completion:?];
   }
 
-  [(AAUIAccountMigrationHook *)self _invokeShieldMigrationFlowWithPendingDOB:v12 completion:v8];
+  [(AAUIAccountMigrationHook *)self _invokeShieldMigrationFlowWithPendingDOB:v12 completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  modelCopy = model;
   objc_opt_class();
-  v8 = [v7 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"birthday"];
+  v9 = [clientInfo objectForKeyedSubscript:@"birthday"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -120,19 +120,19 @@
   v15[3] = &unk_1E820B708;
   v15[4] = self;
   v16 = v10;
-  v17 = v6;
-  v13 = v6;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = v10;
   [WeakRetained dismissObjectModelsAnimated:1 completion:v15];
 }
 
-- (void)_invokeShieldMigrationFlowWithPendingDOB:(id)a3 completion:(id)a4
+- (void)_invokeShieldMigrationFlowWithPendingDOB:(id)b completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUIAccountMigrationHook *)self appleAccount];
+  bCopy = b;
+  completionCopy = completion;
+  appleAccount = [(AAUIAccountMigrationHook *)self appleAccount];
 
-  if (v8)
+  if (appleAccount)
   {
     v9 = objc_alloc_init(MEMORY[0x1E698DE80]);
     [v9 setAuthenticationType:2];
@@ -140,7 +140,7 @@
     [v9 setAltDSID:self->_altDSID];
     v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v10 setDateFormat:@"yyyy-MM-dd"];
-    v11 = [v10 dateFromString:v6];
+    v11 = [v10 dateFromString:bCopy];
     if (v11)
     {
       v12 = [objc_alloc(MEMORY[0x1E698DC88]) initWithPendingDOB:v11];
@@ -150,14 +150,14 @@
       v21 = 0x3032000000;
       v22 = __Block_byref_object_copy_;
       v23 = __Block_byref_object_dispose_;
-      v24 = [(AAUIAccountMigrationHook *)self authController];
+      authController = [(AAUIAccountMigrationHook *)self authController];
       v13 = v20[5];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __80__AAUIAccountMigrationHook__invokeShieldMigrationFlowWithPendingDOB_completion___block_invoke;
       v16[3] = &unk_1E820B730;
       v18 = &v19;
-      v17 = v7;
+      v17 = completionCopy;
       [v13 authenticateWithContext:v9 completion:v16];
 
       _Block_object_dispose(&v19, 8);
@@ -168,12 +168,12 @@
       v15 = _AAUILogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [AAUIAccountMigrationHook _invokeShieldMigrationFlowWithPendingDOB:v6 completion:v15];
+        [AAUIAccountMigrationHook _invokeShieldMigrationFlowWithPendingDOB:bCopy completion:v15];
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
     }
   }
@@ -186,9 +186,9 @@
       [AAUIAccountMigrationHook _invokeShieldMigrationFlowWithPendingDOB:v14 completion:?];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }

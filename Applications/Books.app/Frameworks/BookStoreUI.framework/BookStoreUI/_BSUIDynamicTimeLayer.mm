@@ -1,10 +1,10 @@
 @interface _BSUIDynamicTimeLayer
 - (_BSUIDynamicTimeLayer)init;
-- (id)newTextLayerAtFrame:(CGRect)a3 character:(id)a4;
+- (id)newTextLayerAtFrame:(CGRect)frame character:(id)character;
 - (void)_generateDigits;
-- (void)setColor:(id)a3;
-- (void)setFont:(id)a3 useFontFallback:(BOOL)a4;
-- (void)setReadingTime:(int64_t)a3 animate:(BOOL)a4;
+- (void)setColor:(id)color;
+- (void)setFont:(id)font useFontFallback:(BOOL)fallback;
+- (void)setReadingTime:(int64_t)time animate:(BOOL)animate;
 @end
 
 @implementation _BSUIDynamicTimeLayer
@@ -45,15 +45,15 @@
   self->_digits = v8;
 }
 
-- (void)setFont:(id)a3 useFontFallback:(BOOL)a4
+- (void)setFont:(id)font useFontFallback:(BOOL)fallback
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 fontDescriptor];
+  fallbackCopy = fallback;
+  fontCopy = font;
+  fontDescriptor = [fontCopy fontDescriptor];
   v29[0] = &off_39B470;
   v28[0] = UIFontFeatureTypeIdentifierKey;
   v28[1] = UIFontFeatureSelectorIdentifierKey;
-  if (v4)
+  if (fallbackCopy)
   {
     v8 = 6;
   }
@@ -78,12 +78,12 @@
   v24 = UIFontDescriptorFeatureSettingsAttribute;
   v25 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  v14 = [v7 fontDescriptorByAddingAttributes:v13];
+  v14 = [fontDescriptor fontDescriptorByAddingAttributes:v13];
 
   if (!+[BSUIDefaults disableReadingGoalFontFallbackWorkaround])
   {
     v22 = UIFontDescriptorCascadeListAttribute;
-    [v6 pointSize];
+    [fontCopy pointSize];
     v15 = [UIFontDescriptor fontDescriptorWithName:@"GeezaPro" size:?];
     v21 = v15;
     v16 = [NSArray arrayWithObjects:&v21 count:1];
@@ -94,85 +94,85 @@
     v14 = v18;
   }
 
-  [v6 pointSize];
+  [fontCopy pointSize];
   v19 = [UIFont fontWithDescriptor:v14 size:?];
   font = self->_font;
   self->_font = v19;
 }
 
-- (id)newTextLayerAtFrame:(CGRect)a3 character:(id)a4
+- (id)newTextLayerAtFrame:(CGRect)frame character:(id)character
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  characterCopy = character;
   v10 = objc_opt_new();
   [v10 setAnchorPoint:{0.0, 0.0}];
   [v10 setFrame:{x, y, width, height}];
-  v11 = [(_BSUIDynamicTimeLayer *)self font];
-  [v10 setFont:v11];
+  font = [(_BSUIDynamicTimeLayer *)self font];
+  [v10 setFont:font];
 
-  v12 = [(_BSUIDynamicTimeLayer *)self font];
-  [v12 pointSize];
+  font2 = [(_BSUIDynamicTimeLayer *)self font];
+  [font2 pointSize];
   [v10 setFontSize:?];
 
-  v13 = [(_BSUIDynamicTimeLayer *)self color];
-  [v10 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+  color = [(_BSUIDynamicTimeLayer *)self color];
+  [v10 setForegroundColor:{objc_msgSend(color, "CGColor")}];
 
   [v10 setAlignmentMode:kCAAlignmentCenter];
   [(_BSUIDynamicTimeLayer *)self contentsScale];
   [v10 setContentsScale:?];
-  [v10 setString:v9];
+  [v10 setString:characterCopy];
 
   return v10;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = +[UITraitCollection _currentTraitCollection];
-  v6 = [v4 resolvedColorWithTraitCollection:v5];
+  v6 = [colorCopy resolvedColorWithTraitCollection:v5];
   color = self->_color;
   self->_color = v6;
 
-  v8 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
+  outgoingLayers = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_3FDE4;
   v14[3] = &unk_3885B0;
-  v9 = v4;
+  v9 = colorCopy;
   v15 = v9;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [outgoingLayers enumerateObjectsUsingBlock:v14];
 
-  v10 = [(_BSUIDynamicTimeLayer *)self currentLayers];
+  currentLayers = [(_BSUIDynamicTimeLayer *)self currentLayers];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_3FE48;
   v12[3] = &unk_3885B0;
   v13 = v9;
   v11 = v9;
-  [v10 enumerateObjectsUsingBlock:v12];
+  [currentLayers enumerateObjectsUsingBlock:v12];
 }
 
-- (void)setReadingTime:(int64_t)a3 animate:(BOOL)a4
+- (void)setReadingTime:(int64_t)time animate:(BOOL)animate
 {
-  v4 = a4;
-  v7 = a3 & ~(a3 >> 63);
+  animateCopy = animate;
+  v7 = time & ~(time >> 63);
   if ([(_BSUIDynamicTimeLayer *)self savedAnimatedReadingTime]== v7)
   {
     return;
   }
 
-  v69 = v4;
+  v69 = animateCopy;
   [(_BSUIDynamicTimeLayer *)self setSavedAnimatedReadingTime:v7];
-  v8 = [(_BSUIDynamicTimeLayer *)self useFontFallback];
-  v9 = [(_BSUIDynamicTimeLayer *)self font];
-  [v9 pointSize];
+  useFontFallback = [(_BSUIDynamicTimeLayer *)self useFontFallback];
+  font = [(_BSUIDynamicTimeLayer *)self font];
+  [font pointSize];
   v11 = v10 / 72.0;
 
   v12 = 38.0;
-  if (v8)
+  if (useFontFallback)
   {
     v12 = 44.0;
   }
@@ -183,17 +183,17 @@
   v16 = v15;
   v17 = 3;
   v18 = 2;
-  if (a3 <= 599)
+  if (time <= 599)
   {
     v18 = 3;
   }
 
-  if (a3 <= 5999)
+  if (time <= 5999)
   {
     v17 = v18;
   }
 
-  if (a3 <= 59999)
+  if (time <= 59999)
   {
     v19 = v17;
   }
@@ -204,7 +204,7 @@
   }
 
   v20 = v19;
-  if (a3 >= 600)
+  if (time >= 600)
   {
     v21 = v19;
   }
@@ -216,7 +216,7 @@
 
   v22 = v14 + v13 * v20;
   v23 = v13 * v20;
-  if (a3 >= 600)
+  if (time >= 600)
   {
     v24 = v23;
   }
@@ -233,7 +233,7 @@
   }
 
   v26 = timeSeparator;
-  v27 = [(_BSUIDynamicTimeLayer *)self currentLayers];
+  currentLayers = [(_BSUIDynamicTimeLayer *)self currentLayers];
   v28 = [NSMutableArray arrayWithCapacity:v19 + 1];
   v101[0] = 0;
   v101[1] = v101;
@@ -243,8 +243,8 @@
   v99[1] = v99;
   v99[2] = 0x2020000000;
   v100 = 0;
-  v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v27 count]);
-  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v27 count]);
+  v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [currentLayers count]);
+  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [currentLayers count]);
   v90[0] = _NSConcreteStackBlock;
   v90[1] = 3221225472;
   v90[2] = sub_4088C;
@@ -253,7 +253,7 @@
   v90[4] = self;
   v71 = v28;
   v91 = v71;
-  v31 = v27;
+  v31 = currentLayers;
   v92 = v31;
   v70 = v26;
   v93 = v70;
@@ -265,10 +265,10 @@
   v95 = v33;
   v34 = objc_retainBlock(v90);
   v35 = v7 / 0x3C;
-  if (a3 < 600)
+  if (time < 600)
   {
-    v36 = [(NSArray *)self->_digits objectAtIndexedSubscript:v7 / 0x3C];
-    (v34[2])(v34, v36, v13);
+    0x3C = [(NSArray *)self->_digits objectAtIndexedSubscript:v7 / 0x3C];
+    (v34[2])(v34, 0x3C, v13);
 
     (v34[2])(v34, v70, v14);
     v37 = v7 % 0x3C;
@@ -281,7 +281,7 @@
     goto LABEL_26;
   }
 
-  if (a3 >= 60000)
+  if (time >= 60000)
   {
     v41 = [(NSArray *)self->_digits objectAtIndexedSubscript:(v7 / 0xEA60 - 10 * ((v7 / 0xEA60 * 0x199999999999999AuLL) >> 64))];
     (v34[2])(v34, v41, v13);
@@ -293,7 +293,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3 >> 4 >= 0x177)
+  if (time >> 4 >= 0x177)
   {
     goto LABEL_24;
   }
@@ -317,8 +317,8 @@ LABEL_26:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v46 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
-  v47 = [v46 countByEnumeratingWithState:&v86 objects:v105 count:16];
+  outgoingLayers = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
+  v47 = [outgoingLayers countByEnumeratingWithState:&v86 objects:v105 count:16];
   if (v47)
   {
     v48 = *v87;
@@ -328,13 +328,13 @@ LABEL_26:
       {
         if (*v87 != v48)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(outgoingLayers);
         }
 
         [*(*(&v86 + 1) + 8 * j) removeFromSuperlayer];
       }
 
-      v47 = [v46 countByEnumeratingWithState:&v86 objects:v105 count:16];
+      v47 = [outgoingLayers countByEnumeratingWithState:&v86 objects:v105 count:16];
     }
 
     while (v47);
@@ -379,8 +379,8 @@ LABEL_26:
   if (v69)
   {
     v56 = [v52 count];
-    v57 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
-    if (v56 >= [v57 count])
+    outgoingLayers2 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
+    if (v56 >= [outgoingLayers2 count])
     {
       v58 = 0.0;
     }
@@ -398,14 +398,14 @@ LABEL_26:
     v81[6] = 0x3FB47AE147AE147BLL;
     v81[4] = self;
     [v52 enumerateObjectsUsingBlock:v81];
-    v59 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
+    outgoingLayers3 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
     v80[0] = _NSConcreteStackBlock;
     v80[1] = 3221225472;
     v80[2] = sub_40CE8;
     v80[3] = &unk_388628;
     v80[4] = self;
     v80[5] = 0x3FB47AE147AE147BLL;
-    [v59 enumerateObjectsUsingBlock:v80];
+    [outgoingLayers3 enumerateObjectsUsingBlock:v80];
   }
 
   else
@@ -443,8 +443,8 @@ LABEL_26:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v65 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
-    v66 = [v65 countByEnumeratingWithState:&v72 objects:v102 count:16];
+    outgoingLayers4 = [(_BSUIDynamicTimeLayer *)self outgoingLayers];
+    v66 = [outgoingLayers4 countByEnumeratingWithState:&v72 objects:v102 count:16];
     if (v66)
     {
       v67 = *v73;
@@ -454,13 +454,13 @@ LABEL_26:
         {
           if (*v73 != v67)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(outgoingLayers4);
           }
 
           [*(*(&v72 + 1) + 8 * n) removeFromSuperlayer];
         }
 
-        v66 = [v65 countByEnumeratingWithState:&v72 objects:v102 count:16];
+        v66 = [outgoingLayers4 countByEnumeratingWithState:&v72 objects:v102 count:16];
       }
 
       while (v66);

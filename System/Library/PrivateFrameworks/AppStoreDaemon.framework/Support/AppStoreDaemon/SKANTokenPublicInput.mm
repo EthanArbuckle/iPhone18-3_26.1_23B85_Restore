@@ -1,22 +1,22 @@
 @interface SKANTokenPublicInput
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsRedownload:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsRedownload:(BOOL)redownload;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SKANTokenPublicInput
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsRedownload:(BOOL)a3
+- (void)setHasIsRedownload:(BOOL)redownload
 {
-  if (a3)
+  if (redownload)
   {
     v3 = 4;
   }
@@ -49,8 +49,8 @@
   v7.receiver = self;
   v7.super_class = SKANTokenPublicInput;
   v3 = [(SKANTokenPublicInput *)&v7 description];
-  v4 = [(SKANTokenPublicInput *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SKANTokenPublicInput *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -97,14 +97,14 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -115,18 +115,18 @@ LABEL_5:
       while (1)
       {
         v39 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v39 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v39 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v39 & 0x7F) << v6;
@@ -144,9 +144,9 @@ LABEL_5:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -161,18 +161,18 @@ LABEL_15:
         while (1)
         {
           v42 = 0;
-          v31 = [a3 position] + 1;
-          if (v31 >= [a3 position] && (v32 = objc_msgSend(a3, "position") + 1, v32 <= objc_msgSend(a3, "length")))
+          v31 = [from position] + 1;
+          if (v31 >= [from position] && (v32 = objc_msgSend(from, "position") + 1, v32 <= objc_msgSend(from, "length")))
           {
-            v33 = [a3 data];
-            [v33 getBytes:&v42 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v42 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v30 |= (v42 & 0x7F) << v28;
@@ -190,7 +190,7 @@ LABEL_15:
           }
         }
 
-        v34 = (v30 != 0) & ~[a3 hasError];
+        v34 = (v30 != 0) & ~[from hasError];
 LABEL_54:
         self->_isRedownload = v34;
       }
@@ -206,18 +206,18 @@ LABEL_54:
           while (1)
           {
             v40 = 0;
-            v25 = [a3 position] + 1;
-            if (v25 >= [a3 position] && (v26 = objc_msgSend(a3, "position") + 1, v26 <= objc_msgSend(a3, "length")))
+            v25 = [from position] + 1;
+            if (v25 >= [from position] && (v26 = objc_msgSend(from, "position") + 1, v26 <= objc_msgSend(from, "length")))
             {
-              v27 = [a3 data];
-              [v27 getBytes:&v40 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v40 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v24 |= (v40 & 0x7F) << v22;
@@ -235,7 +235,7 @@ LABEL_54:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -269,18 +269,18 @@ LABEL_52:
           while (1)
           {
             v41 = 0;
-            v18 = [a3 position] + 1;
-            if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+            v18 = [from position] + 1;
+            if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
             {
-              v20 = [a3 data];
-              [v20 getBytes:&v41 range:{objc_msgSend(a3, "position"), 1}];
+              data4 = [from data];
+              [data4 getBytes:&v41 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v17 |= (v41 & 0x7F) << v15;
@@ -298,7 +298,7 @@ LABEL_52:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v21 = 0;
           }
@@ -316,25 +316,25 @@ LABEL_58:
       }
 
 LABEL_60:
-      v37 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v37 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v35) = [a3 hasError] ^ 1;
+  LOBYTE(v35) = [from hasError] ^ 1;
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -354,25 +354,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_appAdamId;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_appAdamId;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -391,21 +391,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_timestamp;
-  *(v4 + 28) |= 2u;
+  toCopy[2] = self->_timestamp;
+  *(toCopy + 28) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 24) = self->_isRedownload;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 24) = self->_isRedownload;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -442,44 +442,44 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_appAdamId != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_appAdamId != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_14;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
 LABEL_14:
       v5 = 0;
@@ -488,13 +488,13 @@ LABEL_14:
 
     if (self->_isRedownload)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_14;
     }
@@ -547,15 +547,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_appAdamId = *(v4 + 1);
+    self->_appAdamId = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -568,17 +568,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_timestamp = *(v4 + 2);
+  self->_timestamp = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_isRedownload = *(v4 + 24);
+    self->_isRedownload = *(fromCopy + 24);
     *&self->_has |= 4u;
   }
 

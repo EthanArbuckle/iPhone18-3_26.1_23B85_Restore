@@ -1,14 +1,14 @@
 @interface CalendarTipsManager
 + (id)sharedManager;
 - (CalendarTipsManager)init;
-- (void)addObserversForController:(id)a3 todayButton:(id)a4;
+- (void)addObserversForController:(id)controller todayButton:(id)button;
 - (void)configureTipsCenter;
-- (void)dismissTipDueToUserNavigationWithCompletionBlock:(id)a3;
-- (void)donateIsPortraitOrientation:(BOOL)a3;
-- (void)donateIsSelectedDateFiveDaysAwayFromToday:(BOOL)a3;
-- (void)donateShouldDisplayTip:(BOOL)a3;
+- (void)dismissTipDueToUserNavigationWithCompletionBlock:(id)block;
+- (void)donateIsPortraitOrientation:(BOOL)orientation;
+- (void)donateIsSelectedDateFiveDaysAwayFromToday:(BOOL)today;
+- (void)donateShouldDisplayTip:(BOOL)tip;
 - (void)donateTodayButtonPressed;
-- (void)updatePresentedControllerTo:(id)a3;
+- (void)updatePresentedControllerTo:(id)to;
 @end
 
 @implementation CalendarTipsManager
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_100054474;
   block[3] = &unk_10020F5F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002518D8 != -1)
   {
     dispatch_once(&qword_1002518D8, block);
@@ -43,31 +43,31 @@
   [v2 configureTipsCenter];
 }
 
-- (void)addObserversForController:(id)a3 todayButton:(id)a4
+- (void)addObserversForController:(id)controller todayButton:(id)button
 {
-  v5 = a4;
-  v6 = a3;
+  buttonCopy = button;
+  controllerCopy = controller;
   v7 = +[_TtC9MobileCal11TipsManager shared];
-  [v7 addTipObserversFor:v6 todayButton:v5];
+  [v7 addTipObserversFor:controllerCopy todayButton:buttonCopy];
 }
 
-- (void)updatePresentedControllerTo:(id)a3
+- (void)updatePresentedControllerTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   v4 = +[_TtC9MobileCal11TipsManager shared];
-  [v4 updatePresentedController:v3];
+  [v4 updatePresentedController:toCopy];
 }
 
-- (void)dismissTipDueToUserNavigationWithCompletionBlock:(id)a3
+- (void)dismissTipDueToUserNavigationWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[_TtC9MobileCal11TipsManager shared];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100054684;
   v6[3] = &unk_10020F680;
-  v7 = v3;
-  v5 = v3;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [v4 dismissTipIfPresentedWithCompletionBlock:v6];
 }
 
@@ -77,25 +77,25 @@
   [v2 jumpToTodayActionPerformed];
 }
 
-- (void)donateIsPortraitOrientation:(BOOL)a3
+- (void)donateIsPortraitOrientation:(BOOL)orientation
 {
-  v3 = a3;
+  orientationCopy = orientation;
   v4 = +[_TtC9MobileCal11TipsManager shared];
-  [v4 setIsPortraitOrientationTo:v3];
+  [v4 setIsPortraitOrientationTo:orientationCopy];
 }
 
-- (void)donateIsSelectedDateFiveDaysAwayFromToday:(BOOL)a3
+- (void)donateIsSelectedDateFiveDaysAwayFromToday:(BOOL)today
 {
-  v3 = a3;
+  todayCopy = today;
   v4 = +[_TtC9MobileCal11TipsManager shared];
-  [v4 setIsSelectedDateFiveDaysAwayFromTodayTo:v3];
+  [v4 setIsSelectedDateFiveDaysAwayFromTodayTo:todayCopy];
 }
 
-- (void)donateShouldDisplayTip:(BOOL)a3
+- (void)donateShouldDisplayTip:(BOOL)tip
 {
-  v3 = a3;
+  tipCopy = tip;
   v4 = +[_TtC9MobileCal11TipsManager shared];
-  [v4 setShouldDisplayJumpToTodayTipTo:v3];
+  [v4 setShouldDisplayJumpToTodayTipTo:tipCopy];
 }
 
 @end

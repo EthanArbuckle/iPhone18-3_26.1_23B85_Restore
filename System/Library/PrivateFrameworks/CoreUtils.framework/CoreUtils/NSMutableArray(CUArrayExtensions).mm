@@ -6,13 +6,13 @@
 
 - (id)popFirstObject
 {
-  v2 = [a1 firstObject];
-  if (v2)
+  firstObject = [self firstObject];
+  if (firstObject)
   {
-    [a1 removeObjectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
-  return v2;
+  return firstObject;
 }
 
 @end

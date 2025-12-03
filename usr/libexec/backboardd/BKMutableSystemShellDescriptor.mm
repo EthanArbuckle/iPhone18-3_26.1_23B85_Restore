@@ -1,26 +1,26 @@
 @interface BKMutableSystemShellDescriptor
-- (void)setBundleIdentifier:(id)a3;
-- (void)setBundlePath:(id)a3;
-- (void)setJobLabel:(id)a3;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setBundlePath:(id)path;
+- (void)setJobLabel:(id)label;
 @end
 
 @implementation BKMutableSystemShellDescriptor
 
-- (void)setJobLabel:(id)a3
+- (void)setJobLabel:(id)label
 {
-  v15 = a3;
-  if (v15)
+  labelCopy = label;
+  if (labelCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [v15 classForCoder];
-      if (!v7)
+      classForCoder = [labelCopy classForCoder];
+      if (!classForCoder)
       {
-        v7 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v8 = NSStringFromClass(v7);
+      v8 = NSStringFromClass(classForCoder);
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"jobLabel", v8, v10];
@@ -35,7 +35,7 @@
         v18 = 2114;
         v19 = v14;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
         v23 = @"BKSystemShellDescriptor.m";
         v24 = 1024;
@@ -52,26 +52,26 @@
     }
   }
 
-  v5 = [v15 copy];
+  v5 = [labelCopy copy];
   jobLabel = self->super._jobLabel;
   self->super._jobLabel = v5;
 }
 
-- (void)setBundlePath:(id)a3
+- (void)setBundlePath:(id)path
 {
-  v15 = a3;
-  if (v15)
+  pathCopy = path;
+  if (pathCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [v15 classForCoder];
-      if (!v7)
+      classForCoder = [pathCopy classForCoder];
+      if (!classForCoder)
       {
-        v7 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v8 = NSStringFromClass(v7);
+      v8 = NSStringFromClass(classForCoder);
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"bundlePath", v8, v10];
@@ -86,7 +86,7 @@
         v18 = 2114;
         v19 = v14;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
         v23 = @"BKSystemShellDescriptor.m";
         v24 = 1024;
@@ -103,26 +103,26 @@
     }
   }
 
-  v5 = [v15 copy];
+  v5 = [pathCopy copy];
   bundlePath = self->super._bundlePath;
   self->super._bundlePath = v5;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v15 = a3;
-  if (v15)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [v15 classForCoder];
-      if (!v7)
+      classForCoder = [identifierCopy classForCoder];
+      if (!classForCoder)
       {
-        v7 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v8 = NSStringFromClass(v7);
+      v8 = NSStringFromClass(classForCoder);
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"bundleIdentifier", v8, v10];
@@ -137,7 +137,7 @@
         v18 = 2114;
         v19 = v14;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
         v23 = @"BKSystemShellDescriptor.m";
         v24 = 1024;
@@ -154,7 +154,7 @@
     }
   }
 
-  v5 = [v15 copy];
+  v5 = [identifierCopy copy];
   bundleIdentifier = self->super._bundleIdentifier;
   self->super._bundleIdentifier = v5;
 }

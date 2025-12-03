@@ -1,7 +1,7 @@
 @interface COSSEIDDetailsController
 - (id)SEIDString;
 - (id)specifiers;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSSEIDDetailsController
@@ -12,8 +12,8 @@
   v4 = *&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(COSSEIDDetailsController *)self SEIDString];
-    if (v5)
+    sEIDString = [(COSSEIDDetailsController *)self SEIDString];
+    if (sEIDString)
     {
       v6 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:"SEIDString:" detail:0 cell:4 edit:0];
       [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -33,31 +33,31 @@
 
 - (id)SEIDString
 {
-  v2 = [(COSSEIDDetailsController *)self device];
-  v3 = [v2 valueForProperty:NRDevicePropertySEID];
+  device = [(COSSEIDDetailsController *)self device];
+  v3 = [device valueForProperty:NRDevicePropertySEID];
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSSEIDDetailsController;
-  [(COSSEIDDetailsController *)&v16 viewWillAppear:a3];
+  [(COSSEIDDetailsController *)&v16 viewWillAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"SEID" table:@"About" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"SEID" table:@"About" locale:v6 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
-  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:v4];
+  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:bundleURL];
 
   v11 = [_NSLocalizedStringResource alloc];
   v12 = +[NSLocale currentLocale];
-  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:v4];
+  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:bundleURL];
 
   v17[0] = v13;
   v17[1] = v10;

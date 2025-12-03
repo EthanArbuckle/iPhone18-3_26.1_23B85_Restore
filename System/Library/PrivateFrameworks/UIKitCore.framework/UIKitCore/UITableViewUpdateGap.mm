@@ -1,20 +1,20 @@
 @interface UITableViewUpdateGap
 - (id)description;
 - (id)updateItems;
-- (uint64_t)initWithUpdateItem:(void *)a1;
-- (void)addUpdateItem:(uint64_t)a1;
+- (uint64_t)initWithUpdateItem:(void *)item;
+- (void)addUpdateItem:(uint64_t)item;
 @end
 
 @implementation UITableViewUpdateGap
 
-- (uint64_t)initWithUpdateItem:(void *)a1
+- (uint64_t)initWithUpdateItem:(void *)item
 {
-  if (!a1)
+  if (!item)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = item;
   v6.super_class = UITableViewUpdateGap;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (void)addUpdateItem:(uint64_t)a1
+- (void)addUpdateItem:(uint64_t)item
 {
   v13 = *MEMORY[0x1E69E9840];
   if (!a2)
@@ -38,19 +38,19 @@
 
   if (*(a2 + 32) == 100)
   {
-    *(a1 + 24) |= 1u;
+    *(item + 24) |= 1u;
   }
 
   v4 = *(a2 + 20);
   if (!v4)
   {
 LABEL_8:
-    v5 = *(a1 + 16);
+    v5 = *(item + 16);
     if (!v5)
     {
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a2, 0}];
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v9;
+      v7 = *(item + 16);
+      *(item + 16) = v9;
       goto LABEL_17;
     }
 
@@ -59,12 +59,12 @@ LABEL_8:
 
   if (v4 == 1)
   {
-    v5 = *(a1 + 8);
+    v5 = *(item + 8);
     if (!v5)
     {
       v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a2, 0}];
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(item + 8);
+      *(item + 8) = v6;
 LABEL_17:
 
       return;
@@ -134,30 +134,30 @@ LABEL_9:
 
 - (id)updateItems
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      v2 = [a1 arrayByAddingObjectsFromArray:a2];
+      selfCopy = [self arrayByAddingObjectsFromArray:a2];
     }
 
     else
     {
-      v2 = a1;
+      selfCopy = self;
     }
   }
 
   else if (a2)
   {
-    v2 = a2;
+    selfCopy = a2;
   }
 
   else
   {
-    v2 = MEMORY[0x1E695E0F0];
+    selfCopy = MEMORY[0x1E695E0F0];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

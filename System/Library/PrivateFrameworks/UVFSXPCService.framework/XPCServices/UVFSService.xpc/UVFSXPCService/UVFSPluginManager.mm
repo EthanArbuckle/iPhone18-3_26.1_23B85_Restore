@@ -1,6 +1,6 @@
 @interface UVFSPluginManager
 + (id)getSupportedFilesystems;
-+ (id)getUVFSPluginForFS:(id)a3 withError:(id *)a4;
++ (id)getUVFSPluginForFS:(id)s withError:(id *)error;
 @end
 
 @implementation UVFSPluginManager
@@ -42,13 +42,13 @@
   return v5;
 }
 
-+ (id)getUVFSPluginForFS:(id)a3 withError:(id *)a4
++ (id)getUVFSPluginForFS:(id)s withError:(id *)error
 {
-  v5 = a3;
+  sCopy = s;
   v6 = +[UVFSPluginManager getSupportedFilesystems];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -56,7 +56,7 @@
     sub_10001E4D0();
   }
 
-  if ([v6 containsObject:v5])
+  if ([v6 containsObject:sCopy])
   {
     v7 = qword_10003FDF0;
     if (!qword_10003FDF0)
@@ -79,7 +79,7 @@
       v7 = qword_10003FDF0;
     }
 
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:sCopy];
 
     v9 = os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG);
     if (v8)
@@ -89,7 +89,7 @@
         sub_10001E630();
       }
 
-      v10 = [qword_10003FDF0 objectForKeyedSubscript:v5];
+      v10 = [qword_10003FDF0 objectForKeyedSubscript:sCopy];
       [(UVFSPlugin *)v10 takeAReference];
     }
 
@@ -100,18 +100,18 @@
         sub_10001E698();
       }
 
-      v10 = [[UVFSPlugin alloc] initWithFSName:v5 andWithError:a4];
-      [qword_10003FDF0 setObject:v10 forKeyedSubscript:v5];
+      v10 = [[UVFSPlugin alloc] initWithFSName:sCopy andWithError:error];
+      [qword_10003FDF0 setObject:v10 forKeyedSubscript:sCopy];
     }
 
     v12 = userfs_log_default;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [qword_10003FDF0 objectForKeyedSubscript:v5];
+      v14 = [qword_10003FDF0 objectForKeyedSubscript:sCopy];
       v15 = v14;
-      if (a4)
+      if (error)
       {
-        v16 = *a4;
+        v16 = *error;
       }
 
       else
@@ -120,7 +120,7 @@
       }
 
       *buf = 138412802;
-      v20 = v5;
+      v20 = sCopy;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
@@ -128,14 +128,14 @@
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "getUVFSPluginForFS:finish:%@:%@:%@", buf, 0x20u);
     }
 
-    v11 = [qword_10003FDF0 objectForKeyedSubscript:v5];
+    v11 = [qword_10003FDF0 objectForKeyedSubscript:sCopy];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))

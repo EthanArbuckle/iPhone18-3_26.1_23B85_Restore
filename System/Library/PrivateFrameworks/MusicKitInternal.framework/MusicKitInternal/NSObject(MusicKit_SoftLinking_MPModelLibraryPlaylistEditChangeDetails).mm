@@ -17,73 +17,73 @@
   getMPModelLibraryPlaylistEditChangeDetailsClass();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)musicKit_changeDetails_type
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 type];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  type = [_musicKit_self_changeDetails type];
 
-  if ((v2 - 1) >= 6)
+  if ((type - 1) >= 6)
   {
     return 0;
   }
 
   else
   {
-    return v2;
+    return type;
   }
 }
 
 - (id)musicKit_changeDetails_itemIdentifier
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 itemIdentifier];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  itemIdentifier = [_musicKit_self_changeDetails itemIdentifier];
 
-  return v2;
+  return itemIdentifier;
 }
 
 - (id)musicKit_changeDetails_itemPositionIdentifier
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 itemPositionIdentifier];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  itemPositionIdentifier = [_musicKit_self_changeDetails itemPositionIdentifier];
 
-  return v2;
+  return itemPositionIdentifier;
 }
 
 - (id)musicKit_changeDetails_referenceItemPositionIdentifier
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 referenceItemPositionIdentifier];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  referenceItemPositionIdentifier = [_musicKit_self_changeDetails referenceItemPositionIdentifier];
 
-  return v2;
+  return referenceItemPositionIdentifier;
 }
 
 - (uint64_t)musicKit_changeDetails_isLastItem
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 isLastItem];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  isLastItem = [_musicKit_self_changeDetails isLastItem];
 
-  return v2;
+  return isLastItem;
 }
 
 - (id)musicKit_changeDetails_item
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 item];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  item = [_musicKit_self_changeDetails item];
 
-  if (v2)
+  if (item)
   {
-    v3 = [objc_alloc(MEMORY[0x1E6977640]) initWithUnderlyingModelObject:v2];
+    v3 = [objc_alloc(MEMORY[0x1E6977640]) initWithUnderlyingModelObject:item];
   }
 
   else
@@ -96,12 +96,12 @@
 
 - (id)musicKit_changeDetails_referenceItem
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 referenceItem];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  referenceItem = [_musicKit_self_changeDetails referenceItem];
 
-  if (v2)
+  if (referenceItem)
   {
-    v3 = [objc_alloc(MEMORY[0x1E6977640]) initWithUnderlyingModelObject:v2];
+    v3 = [objc_alloc(MEMORY[0x1E6977640]) initWithUnderlyingModelObject:referenceItem];
   }
 
   else
@@ -114,10 +114,10 @@
 
 - (id)musicKit_changeDetails_playlistName
 {
-  v1 = [a1 _musicKit_self_changeDetails];
-  v2 = [v1 playlistName];
+  _musicKit_self_changeDetails = [self _musicKit_self_changeDetails];
+  playlistName = [_musicKit_self_changeDetails playlistName];
 
-  return v2;
+  return playlistName;
 }
 
 @end

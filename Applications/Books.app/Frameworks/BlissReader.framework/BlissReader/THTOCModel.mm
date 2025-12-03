@@ -1,47 +1,47 @@
 @interface THTOCModel
-- (id)displayPageNumberForPageIndex:(unint64_t)a3;
-- (id)toc:(id)a3 tileModelForChapterIndex:(int64_t)a4;
+- (id)displayPageNumberForPageIndex:(unint64_t)index;
+- (id)toc:(id)toc tileModelForChapterIndex:(int64_t)index;
 - (unint64_t)pageIndex;
-- (unint64_t)toc:(id)a3 numberOfTilesInDivision:(int64_t)a4;
+- (unint64_t)toc:(id)toc numberOfTilesInDivision:(int64_t)division;
 - (void)dealloc;
-- (void)setBookSubtitle:(id)a3;
-- (void)setBookTitle:(id)a3;
-- (void)setTiles:(id)a3;
-- (void)setTocHeaderImageData:(id)a3;
+- (void)setBookSubtitle:(id)subtitle;
+- (void)setBookTitle:(id)title;
+- (void)setTiles:(id)tiles;
+- (void)setTocHeaderImageData:(id)data;
 @end
 
 @implementation THTOCModel
 
-- (void)setTiles:(id)a3
+- (void)setTiles:(id)tiles
 {
   [(THTOCModel *)self willModify];
-  v5 = a3;
+  tilesCopy = tiles;
 
-  self->mTiles = a3;
+  self->mTiles = tiles;
 }
 
-- (void)setBookTitle:(id)a3
+- (void)setBookTitle:(id)title
 {
   [(THTOCModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [title copy];
 
   self->mBookTitle = v5;
 }
 
-- (void)setBookSubtitle:(id)a3
+- (void)setBookSubtitle:(id)subtitle
 {
   [(THTOCModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [subtitle copy];
 
   self->mBookSubtitle = v5;
 }
 
-- (void)setTocHeaderImageData:(id)a3
+- (void)setTocHeaderImageData:(id)data
 {
   [(THTOCModel *)self willModify];
-  v5 = a3;
+  dataCopy = data;
 
-  self->mTocHeaderImageData = a3;
+  self->mTocHeaderImageData = data;
 }
 
 - (void)dealloc
@@ -71,14 +71,14 @@
   return result;
 }
 
-- (id)displayPageNumberForPageIndex:(unint64_t)a3
+- (id)displayPageNumberForPageIndex:(unint64_t)index
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(THTOCModel *)self tiles];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tiles = [(THTOCModel *)self tiles];
+  v5 = [(NSArray *)tiles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,29 +90,29 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(tiles);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
-      if ([v10 pageIndex] > a3)
+      if ([v10 pageIndex] > index)
       {
         break;
       }
 
-      if ([v10 displayPageNumberForPageIndex:a3])
+      if ([v10 displayPageNumberForPageIndex:index])
       {
         v7 = v10;
       }
 
       if (v6 == ++v9)
       {
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [(NSArray *)tiles countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;
         }
 
-        return [v7 displayPageNumberForPageIndex:a3];
+        return [v7 displayPageNumberForPageIndex:index];
       }
     }
   }
@@ -122,31 +122,31 @@ LABEL_3:
     v7 = 0;
   }
 
-  return [v7 displayPageNumberForPageIndex:a3];
+  return [v7 displayPageNumberForPageIndex:index];
 }
 
-- (unint64_t)toc:(id)a3 numberOfTilesInDivision:(int64_t)a4
+- (unint64_t)toc:(id)toc numberOfTilesInDivision:(int64_t)division
 {
-  if (![(NSArray *)[(THTOCModel *)self tiles:a3] count])
+  if (![(NSArray *)[(THTOCModel *)self tiles:toc] count])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THTOCModel *)self tiles];
+  tiles = [(THTOCModel *)self tiles];
 
-  return [(NSArray *)v5 count];
+  return [(NSArray *)tiles count];
 }
 
-- (id)toc:(id)a3 tileModelForChapterIndex:(int64_t)a4
+- (id)toc:(id)toc tileModelForChapterIndex:(int64_t)index
 {
-  if ([(NSArray *)[(THTOCModel *)self tiles] count]<= a4)
+  if ([(NSArray *)[(THTOCModel *)self tiles] count]<= index)
   {
     return 0;
   }
 
-  v6 = [(THTOCModel *)self tiles];
+  tiles = [(THTOCModel *)self tiles];
 
-  return [(NSArray *)v6 objectAtIndex:a4];
+  return [(NSArray *)tiles objectAtIndex:index];
 }
 
 @end

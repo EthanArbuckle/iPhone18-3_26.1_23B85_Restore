@@ -1,37 +1,37 @@
 @interface FITrailingIntervalController
-- (BOOL)addEvent:(id)a3 withError:(id *)a4;
-- (FITrailingIntervalController)initWithQuantityType:(id)a3 threshold:(id)a4 startDate:(id)a5;
+- (BOOL)addEvent:(id)event withError:(id *)error;
+- (FITrailingIntervalController)initWithQuantityType:(id)type threshold:(id)threshold startDate:(id)date;
 - (HKQuantity)quantity;
-- (double)activeDurationUntilDate:(id)a3;
+- (double)activeDurationUntilDate:(id)date;
 - (double)committedDuration;
-- (double)idleDurationUntilDate:(id)a3;
-- (void)_addPauseEvent:(id)a3;
-- (void)_addResumeEvent:(id)a3;
+- (double)idleDurationUntilDate:(id)date;
+- (void)_addPauseEvent:(id)event;
+- (void)_addResumeEvent:(id)event;
 - (void)_determineAndProcessThresholdReached;
 - (void)_processUncommittedSamples;
-- (void)_updateSlicesWithSamples:(id)a3;
-- (void)addSample:(id)a3;
-- (void)addSamples:(id)a3;
-- (void)setThreshold:(id)a3;
+- (void)_updateSlicesWithSamples:(id)samples;
+- (void)addSample:(id)sample;
+- (void)addSamples:(id)samples;
+- (void)setThreshold:(id)threshold;
 @end
 
 @implementation FITrailingIntervalController
 
-- (FITrailingIntervalController)initWithQuantityType:(id)a3 threshold:(id)a4 startDate:(id)a5
+- (FITrailingIntervalController)initWithQuantityType:(id)type threshold:(id)threshold startDate:(id)date
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  thresholdCopy = threshold;
+  dateCopy = date;
   v22.receiver = self;
   v22.super_class = FITrailingIntervalController;
   v12 = [(FITrailingIntervalController *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_quantityType, a3);
-    objc_storeStrong(&v13->_threshold, a4);
-    v14 = [[FITrailingQuantityTimeSlice alloc] initWithQuantityType:v9 startDate:v11];
+    objc_storeStrong(&v12->_quantityType, type);
+    objc_storeStrong(&v13->_threshold, threshold);
+    v14 = [[FITrailingQuantityTimeSlice alloc] initWithQuantityType:typeCopy startDate:dateCopy];
     v23[0] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     slices = v13->_slices;
@@ -49,22 +49,22 @@
   return v13;
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  sampleCopy = sample;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  sampleCopy2 = sample;
+  v6 = [v4 arrayWithObjects:&sampleCopy count:1];
 
-  [(FITrailingIntervalController *)self addSamples:v6, v8, v9];
+  [(FITrailingIntervalController *)self addSamples:v6, sampleCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSamples:(id)a3
+- (void)addSamples:(id)samples
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = FIFilterSamplesByType(a3, self->_quantityType);
+  v4 = FIFilterSamplesByType(samples, self->_quantityType);
   v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -86,10 +86,10 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 startDate];
-        v12 = [(NSArray *)self->_slices lastObject];
-        v13 = [v12 endDate];
-        v14 = [v11 hk_isBeforeDate:v13];
+        startDate = [v10 startDate];
+        lastObject = [(NSArray *)self->_slices lastObject];
+        endDate = [lastObject endDate];
+        v14 = [startDate hk_isBeforeDate:endDate];
 
         if (v14)
         {
@@ -127,8 +127,8 @@
   v21[3] = __Block_byref_object_copy__2;
   v21[4] = __Block_byref_object_dispose__2;
   v3 = MEMORY[0x277CCD7E8];
-  v4 = [(HKQuantityType *)self->_quantityType canonicalUnit];
-  v22 = [v3 quantityWithUnit:v4 doubleValue:0.0];
+  canonicalUnit = [(HKQuantityType *)self->_quantityType canonicalUnit];
+  v22 = [v3 quantityWithUnit:canonicalUnit doubleValue:0.0];
 
   v17 = 0;
   v18 = &v17;
@@ -150,9 +150,9 @@
   v10[6] = v21;
   v10[7] = &v11;
   [(NSArray *)slices enumerateObjectsWithOptions:2 usingBlock:v10];
-  v6 = [v12[5] reverseObjectEnumerator];
-  v7 = [v6 allObjects];
-  v8 = [v7 copy];
+  reverseObjectEnumerator = [v12[5] reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  v8 = [allObjects copy];
   v9 = self->_slices;
   self->_slices = v8;
 
@@ -222,16 +222,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_updateSlicesWithSamples:(id)a3
+- (void)_updateSlicesWithSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   slices = self->_slices;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__FITrailingIntervalController__updateSlicesWithSamples___block_invoke;
   v9[3] = &unk_279004BD8;
-  v10 = v4;
-  v6 = v4;
+  v10 = samplesCopy;
+  v6 = samplesCopy;
   v7 = [(NSArray *)slices fi_mapUsingBlock:v9];
   v8 = self->_slices;
   self->_slices = v7;
@@ -256,12 +256,12 @@ id __57__FITrailingIntervalController__updateSlicesWithSamples___block_invoke(ui
   }
 }
 
-- (BOOL)addEvent:(id)a3 withError:(id *)a4
+- (BOOL)addEvent:(id)event withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSArray *)self->_pauseResumeEvents lastObject];
-  v8 = v6;
-  v9 = v7;
+  eventCopy = event;
+  lastObject = [(NSArray *)self->_pauseResumeEvents lastObject];
+  v8 = eventCopy;
+  v9 = lastObject;
   if ([v8 type] != 1 && objc_msgSend(v8, "type") != 2)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"Event must be pause or resume event.  Event type: %ld", objc_msgSend(v8, "type"), v25];
@@ -270,24 +270,24 @@ id __57__FITrailingIntervalController__updateSlicesWithSamples___block_invoke(ui
 
   if (v9)
   {
-    v10 = [v8 dateInterval];
-    v11 = [v10 startDate];
-    v12 = [v9 dateInterval];
-    v13 = [v12 startDate];
-    v14 = [v11 hk_isBeforeDate:v13];
+    dateInterval = [v8 dateInterval];
+    startDate = [dateInterval startDate];
+    dateInterval2 = [v9 dateInterval];
+    startDate2 = [dateInterval2 startDate];
+    v14 = [startDate hk_isBeforeDate:startDate2];
 
     if (v14)
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v9 dateInterval];
-      v17 = [v16 startDate];
-      v18 = [v8 dateInterval];
-      v19 = [v18 startDate];
-      v20 = [v15 stringWithFormat:@"New event date must be after previous date. Previous event date: %@. New event date: %@.", v17, v19];
+      dateInterval3 = [v9 dateInterval];
+      startDate3 = [dateInterval3 startDate];
+      dateInterval4 = [v8 dateInterval];
+      startDate4 = [dateInterval4 startDate];
+      v20 = [v15 stringWithFormat:@"New event date must be after previous date. Previous event date: %@. New event date: %@.", startDate3, startDate4];
 
 LABEL_10:
       v21 = FIIntervalErrorWithDescription(v20);
-      FISetOutErrorIfNotNull(a4, v21);
+      FISetOutErrorIfNotNull(error, v21);
 
       v22 = 0;
       goto LABEL_20;
@@ -320,13 +320,13 @@ LABEL_10:
 
 LABEL_15:
 
-  v23 = [v8 type];
-  if (v23 == 2)
+  type = [v8 type];
+  if (type == 2)
   {
     [(FITrailingIntervalController *)self _addResumeEvent:v8];
   }
 
-  else if (v23 == 1)
+  else if (type == 1)
   {
     [(FITrailingIntervalController *)self _addPauseEvent:v8];
   }
@@ -337,52 +337,52 @@ LABEL_20:
   return v22;
 }
 
-- (void)_addPauseEvent:(id)a3
+- (void)_addPauseEvent:(id)event
 {
-  v14 = a3;
+  eventCopy = event;
   if ([(NSArray *)self->_slices count])
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithArray:self->_slices];
     v5 = [(NSArray *)v4 count]- 1;
-    v6 = [(NSArray *)v4 lastObject];
-    v7 = [v14 dateInterval];
-    v8 = [v7 startDate];
-    v9 = [v6 settingEndDate:v8];
+    lastObject = [(NSArray *)v4 lastObject];
+    dateInterval = [eventCopy dateInterval];
+    startDate = [dateInterval startDate];
+    v9 = [lastObject settingEndDate:startDate];
     [(NSArray *)v4 replaceObjectAtIndex:v5 withObject:v9];
 
     slices = self->_slices;
     self->_slices = v4;
     v11 = v4;
 
-    v12 = [(NSArray *)self->_pauseResumeEvents arrayByAddingObject:v14];
+    v12 = [(NSArray *)self->_pauseResumeEvents arrayByAddingObject:eventCopy];
     pauseResumeEvents = self->_pauseResumeEvents;
     self->_pauseResumeEvents = v12;
   }
 }
 
-- (void)_addResumeEvent:(id)a3
+- (void)_addResumeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [FITrailingQuantityTimeSlice alloc];
   quantityType = self->_quantityType;
-  v7 = [v4 dateInterval];
-  v8 = [v7 startDate];
-  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:v8];
+  dateInterval = [eventCopy dateInterval];
+  startDate = [dateInterval startDate];
+  v13 = [(FITrailingQuantityTimeSlice *)v5 initWithQuantityType:quantityType startDate:startDate];
 
   v9 = [(NSArray *)self->_slices arrayByAddingObject:v13];
   slices = self->_slices;
   self->_slices = v9;
 
   [(FITrailingIntervalController *)self _processUncommittedSamples];
-  v11 = [(NSArray *)self->_pauseResumeEvents arrayByAddingObject:v4];
+  v11 = [(NSArray *)self->_pauseResumeEvents arrayByAddingObject:eventCopy];
 
   pauseResumeEvents = self->_pauseResumeEvents;
   self->_pauseResumeEvents = v11;
 }
 
-- (void)setThreshold:(id)a3
+- (void)setThreshold:(id)threshold
 {
-  objc_storeStrong(&self->_threshold, a3);
+  objc_storeStrong(&self->_threshold, threshold);
 
   [(FITrailingIntervalController *)self _determineAndProcessThresholdReached];
 }
@@ -429,10 +429,10 @@ LABEL_20:
   return v6;
 }
 
-- (double)activeDurationUntilDate:(id)a3
+- (double)activeDurationUntilDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -453,7 +453,7 @@ LABEL_20:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v14 + 1) + 8 * i) activeDurationUntilDate:{v4, v14}];
+        [*(*(&v14 + 1) + 8 * i) activeDurationUntilDate:{dateCopy, v14}];
         v9 = v9 + v11;
       }
 
@@ -472,9 +472,9 @@ LABEL_20:
   return v9;
 }
 
-- (double)idleDurationUntilDate:(id)a3
+- (double)idleDurationUntilDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -484,7 +484,7 @@ LABEL_20:
   v9[1] = 3221225472;
   v9[2] = __54__FITrailingIntervalController_idleDurationUntilDate___block_invoke;
   v9[3] = &unk_279004C00;
-  v6 = v4;
+  v6 = dateCopy;
   v10 = v6;
   v11 = &v12;
   [(NSArray *)slices enumerateObjectsWithOptions:2 usingBlock:v9];
@@ -555,8 +555,8 @@ void __54__FITrailingIntervalController_idleDurationUntilDate___block_invoke(uin
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCD7E8];
-  v4 = [(HKQuantityType *)self->_quantityType canonicalUnit];
-  v5 = [v3 quantityWithUnit:v4 doubleValue:0.0];
+  canonicalUnit = [(HKQuantityType *)self->_quantityType canonicalUnit];
+  v5 = [v3 quantityWithUnit:canonicalUnit doubleValue:0.0];
 
   v17 = 0u;
   v18 = 0u;
@@ -579,8 +579,8 @@ void __54__FITrailingIntervalController_idleDurationUntilDate___block_invoke(uin
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v10) committedTotal];
-        v5 = [v11 _quantityByAddingQuantity:v12];
+        committedTotal = [*(*(&v15 + 1) + 8 * v10) committedTotal];
+        v5 = [v11 _quantityByAddingQuantity:committedTotal];
 
         ++v10;
         v11 = v5;

@@ -1,6 +1,6 @@
 @interface NPKContactlessPaymentSessionAnalyticsManager
 - (NPKContactlessPaymentSessionAnalyticsManager)init;
-- (void)contactlessPaymentSessionManager:(id)a3 didChangeSessionState:(id)a4;
+- (void)contactlessPaymentSessionManager:(id)manager didChangeSessionState:(id)state;
 @end
 
 @implementation NPKContactlessPaymentSessionAnalyticsManager
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)contactlessPaymentSessionManager:(id)a3 didChangeSessionState:(id)a4
+- (void)contactlessPaymentSessionManager:(id)manager didChangeSessionState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   analyticsQueue = self->_analyticsQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __103__NPKContactlessPaymentSessionAnalyticsManager_contactlessPaymentSessionManager_didChangeSessionState___block_invoke;
   v8[3] = &unk_2799454E0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = stateCopy;
+  selfCopy = self;
+  v7 = stateCopy;
   dispatch_async(analyticsQueue, v8);
 }
 

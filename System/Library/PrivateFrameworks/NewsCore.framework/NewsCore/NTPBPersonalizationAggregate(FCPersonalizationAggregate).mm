@@ -14,23 +14,23 @@
   v13[5] = *MEMORY[0x1E69E9840];
   v12[0] = @"clicks";
   v2 = MEMORY[0x1E696AD98];
-  [a1 clicks];
+  [self clicks];
   v3 = [v2 numberWithDouble:?];
   v13[0] = v3;
   v12[1] = @"impressions";
   v4 = MEMORY[0x1E696AD98];
-  [a1 impressions];
+  [self impressions];
   v5 = [v4 numberWithDouble:?];
   v13[1] = v5;
   v12[2] = @"eventCount";
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "eventCount")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "eventCount")}];
   v13[2] = v6;
   v12[3] = @"timestamp";
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "timestamp")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "timestamp")}];
   v13[3] = v7;
   v12[4] = @"featureKey";
-  v8 = [a1 featureKey];
-  v13[4] = v8;
+  featureKey = [self featureKey];
+  v13[4] = featureKey;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:5];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -41,9 +41,9 @@
 - (uint64_t)lastModified
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 timestamp];
+  timestamp = [self timestamp];
 
-  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:v2];
+  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:timestamp];
 }
 
 - (double)personalizationValueWithBaseline:()FCPersonalizationAggregate decayRate:baselineClicksMultiplier:
@@ -55,19 +55,19 @@
     [v8 clicks];
     v11 = v10;
     [v9 impressions];
-    [a1 _personalizationValueWithBaselineClicks:v11 baselineImpressions:v12 decayRate:a2 baselineClicksMultiplier:a3];
+    [self _personalizationValueWithBaselineClicks:v11 baselineImpressions:v12 decayRate:a2 baselineClicksMultiplier:a3];
 LABEL_5:
     v14 = v13;
     goto LABEL_6;
   }
 
-  [a1 impressions];
+  [self impressions];
   v14 = 0.0;
   if (v15 > 0.0)
   {
-    [a1 clicks];
+    [self clicks];
     v17 = v16;
-    [a1 impressions];
+    [self impressions];
     FCClamp(v17 / v18, 0.0, 1.0);
     goto LABEL_5;
   }
@@ -84,16 +84,16 @@ LABEL_6:
   v12 = v11;
   if (!v10)
   {
-    v29 = a1;
+    selfCopy2 = self;
     v30 = v12;
 LABEL_10:
-    [v29 personalizationValueWithBaseline:v30 decayRate:a2 baselineClicksMultiplier:a3];
+    [selfCopy2 personalizationValueWithBaseline:v30 decayRate:a2 baselineClicksMultiplier:a3];
     goto LABEL_11;
   }
 
   if (!v11)
   {
-    v29 = a1;
+    selfCopy2 = self;
     v30 = v10;
     goto LABEL_10;
   }
@@ -123,7 +123,7 @@ LABEL_10:
   v25 = v24;
   [v10 impressions];
   v27 = FCPersonalizationLinearImpressionCount(v26, a2);
-  [a1 _personalizationValueWithBaselineClicks:(v25 + pow(a2 baselineImpressions:v27) * v15) decayRate:v23 baselineClicksMultiplier:{a2, 1.0}];
+  [self _personalizationValueWithBaselineClicks:(v25 + pow(a2 baselineImpressions:v27) * v15) decayRate:v23 baselineClicksMultiplier:{a2, 1.0}];
 LABEL_11:
   v31 = v28;
 
@@ -133,12 +133,12 @@ LABEL_11:
 - (double)relativePersonalizationValueWithCorrelatedAggregate:()FCPersonalizationAggregate baseline:decayFactor:baselineClicksMultiplier:
 {
   v10 = a6;
-  [a1 personalizationValueWithCorrelatedAggregate:a5 baseline:v10 decayRate:a2 baselineClicksMultiplier:a3];
+  [self personalizationValueWithCorrelatedAggregate:a5 baseline:v10 decayRate:a2 baselineClicksMultiplier:a3];
   v12 = v11;
   [v10 personalizationValueWithBaseline:0 decayRate:a2];
   v14 = v13;
 
-  [a1 powerWithDecayFactor:a2];
+  [self powerWithDecayFactor:a2];
   return (v12 - v14) * v15;
 }
 
@@ -161,13 +161,13 @@ LABEL_11:
     v9 = v7 * a2;
   }
 
-  [a1 clicks];
+  [self clicks];
   v11 = v10;
-  [a1 impressions];
+  [self impressions];
   v13 = FCPersonalizationLinearImpressionCount(v12, a4);
-  [a1 impressions];
+  [self impressions];
   v15 = v14;
-  [a1 impressions];
+  [self impressions];
   v17 = FCPersonalizationLinearImpressionCount(v16, a4);
   v18 = v15 + pow(a4, v17) * v9;
   if (v18 <= 0.0)

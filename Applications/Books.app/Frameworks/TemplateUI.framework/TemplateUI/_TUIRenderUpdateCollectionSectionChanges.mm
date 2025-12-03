@@ -1,33 +1,33 @@
 @interface _TUIRenderUpdateCollectionSectionChanges
 - (NSString)description;
-- (_TUIRenderUpdateCollectionSectionChanges)initWithSectionUpdates:(id)a3 model:(id)a4;
-- (void)applyToContext:(id)a3;
+- (_TUIRenderUpdateCollectionSectionChanges)initWithSectionUpdates:(id)updates model:(id)model;
+- (void)applyToContext:(id)context;
 @end
 
 @implementation _TUIRenderUpdateCollectionSectionChanges
 
-- (_TUIRenderUpdateCollectionSectionChanges)initWithSectionUpdates:(id)a3 model:(id)a4
+- (_TUIRenderUpdateCollectionSectionChanges)initWithSectionUpdates:(id)updates model:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = _TUIRenderUpdateCollectionSectionChanges;
   v8 = [(_TUIRenderUpdateCollectionSectionChanges *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [updatesCopy copy];
     sectionUpdates = v8->_sectionUpdates;
     v8->_sectionUpdates = v9;
 
-    objc_storeStrong(&v8->_model, a4);
+    objc_storeStrong(&v8->_model, model);
   }
 
   return v8;
 }
 
-- (void)applyToContext:(id)a3
+- (void)applyToContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -47,7 +47,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) applyToContext:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8) applyToContext:{contextCopy, v9}];
         v8 = v8 + 1;
       }
 

@@ -1,15 +1,15 @@
 @interface MTLProfileControl
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 @end
 
 @implementation MTLProfileControl
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 4) = *&self->_uscCliqueTraceLevel;
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && self->_uscCliqueTraceLevel == *(a3 + 8) && self->_uscEmitPosition == *(a3 + 9) && self->_uscEmitThreadControlFlow == *(a3 + 10);
+  return Class == object_getClass(equal) && self->_uscCliqueTraceLevel == *(equal + 8) && self->_uscEmitPosition == *(equal + 9) && self->_uscEmitThreadControlFlow == *(equal + 10);
 }
 
 - (unint64_t)hash
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v4.receiver = self;
   v4.super_class = MTLProfileControl;

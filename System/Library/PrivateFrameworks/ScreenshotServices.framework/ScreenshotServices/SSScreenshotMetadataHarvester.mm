@@ -1,32 +1,32 @@
 @interface SSScreenshotMetadataHarvester
-+ (BOOL)canGenerateDocumentForIdentifier:(id)a3;
-+ (id)_applicationScreenshotServiceWithPrivateDelegate:(BOOL)a3;
++ (BOOL)canGenerateDocumentForIdentifier:(id)identifier;
++ (id)_applicationScreenshotServiceWithPrivateDelegate:(BOOL)delegate;
 + (id)_contentRectsForMetadata;
-+ (id)_screenshotServiceForWindowScene:(id)a3 wantsPrivateDelegate:(BOOL)a4;
-+ (id)_screenshotServicesDelegateWithIdentifier:(id)a3;
-+ (id)screenshotServiceWithIdentifier:(id)a3;
-+ (void)_crawlView:(id)a3 executingBlock:(id)a4;
-+ (void)_crawlViewController:(id)a3 executingBlock:(id)a4;
-+ (void)_grabPDFRepresentationForIdentifier:(id)a3 withCallback:(id)a4;
-+ (void)_grabUserActivityTitleWithCallback:(id)a3;
-+ (void)harvestScreenshotMetadataAndRespondToAction:(id)a3;
-+ (void)sendResponseForAction:(id)a3 withObject:(id)a4 forKey:(unint64_t)a5;
++ (id)_screenshotServiceForWindowScene:(id)scene wantsPrivateDelegate:(BOOL)delegate;
++ (id)_screenshotServicesDelegateWithIdentifier:(id)identifier;
++ (id)screenshotServiceWithIdentifier:(id)identifier;
++ (void)_crawlView:(id)view executingBlock:(id)block;
++ (void)_crawlViewController:(id)controller executingBlock:(id)block;
++ (void)_grabPDFRepresentationForIdentifier:(id)identifier withCallback:(id)callback;
++ (void)_grabUserActivityTitleWithCallback:(id)callback;
++ (void)harvestScreenshotMetadataAndRespondToAction:(id)action;
++ (void)sendResponseForAction:(id)action withObject:(id)object forKey:(unint64_t)key;
 @end
 
 @implementation SSScreenshotMetadataHarvester
 
-+ (void)_crawlViewController:(id)a3 executingBlock:(id)a4
++ (void)_crawlViewController:(id)controller executingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v7[2](v7, v6);
+  controllerCopy = controller;
+  blockCopy = block;
+  blockCopy[2](blockCopy, controllerCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 childViewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childViewControllers = [controllerCopy childViewControllers];
+  v9 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -38,40 +38,40 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [a1 _crawlViewController:*(*(&v15 + 1) + 8 * v12++) executingBlock:v7];
+        [self _crawlViewController:*(*(&v15 + 1) + 8 * v12++) executingBlock:blockCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [v6 presentedViewController];
+  presentedViewController = [controllerCopy presentedViewController];
 
-  if (v13)
+  if (presentedViewController)
   {
-    v14 = [v6 presentedViewController];
-    [a1 _crawlViewController:v14 executingBlock:v7];
+    presentedViewController2 = [controllerCopy presentedViewController];
+    [self _crawlViewController:presentedViewController2 executingBlock:blockCopy];
   }
 }
 
-+ (void)_crawlView:(id)a3 executingBlock:(id)a4
++ (void)_crawlView:(id)view executingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v7[2](v7, v6);
+  viewCopy = view;
+  blockCopy = block;
+  blockCopy[2](blockCopy, viewCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v6 subviews];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [viewCopy subviews];
+  v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -83,14 +83,14 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
-        [a1 _crawlView:*(*(&v13 + 1) + 8 * v12++) executingBlock:v7];
+        [self _crawlView:*(*(&v13 + 1) + 8 * v12++) executingBlock:blockCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -99,19 +99,19 @@
 
 + (id)_contentRectsForMetadata
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v5 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v6 = [v5 rootViewController];
+  array = [MEMORY[0x1E695DF70] array];
+  keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+  keyWindow2 = [MEMORY[0x1E69DD2E8] keyWindow];
+  rootViewController = [keyWindow2 rootViewController];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __57__SSScreenshotMetadataHarvester__contentRectsForMetadata__block_invoke;
   v21 = &unk_1E8590200;
-  v7 = v4;
+  v7 = keyWindow;
   v22 = v7;
-  v8 = v3;
+  v8 = array;
   v23 = v8;
-  [a1 _crawlViewController:v6 executingBlock:&v18];
+  [self _crawlViewController:rootViewController executingBlock:&v18];
 
   [MEMORY[0x1E69DCD68] visiblePeripheralFrame];
   x = v24.origin.x;
@@ -154,18 +154,18 @@ void __57__SSScreenshotMetadataHarvester__contentRectsForMetadata__block_invoke(
   }
 }
 
-+ (void)_grabUserActivityTitleWithCallback:(id)a3
++ (void)_grabUserActivityTitleWithCallback:(id)callback
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
+  callbackCopy = callback;
+  _currentUserActivityUUID = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
   v5 = MEMORY[0x1E69636A8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__SSScreenshotMetadataHarvester__grabUserActivityTitleWithCallback___block_invoke;
   v7[3] = &unk_1E8590278;
-  v8 = v3;
-  v6 = v3;
-  [v5 _fetchUserActivityWithUUID:v4 completionHandler:v7];
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  [v5 _fetchUserActivityWithUUID:_currentUserActivityUUID completionHandler:v7];
 }
 
 void __68__SSScreenshotMetadataHarvester__grabUserActivityTitleWithCallback___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -237,18 +237,18 @@ void __68__SSScreenshotMetadataHarvester__grabUserActivityTitleWithCallback___bl
   }
 }
 
-+ (id)screenshotServiceWithIdentifier:(id)a3
++ (id)screenshotServiceWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [connectedScenes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -259,13 +259,13 @@ LABEL_3:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(connectedScenes);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
-      v11 = [v10 _FBSScene];
-      v12 = [v11 identifier];
-      v13 = [v12 isEqual:v3];
+      _FBSScene = [v10 _FBSScene];
+      identifier = [_FBSScene identifier];
+      v13 = [identifier isEqual:identifierCopy];
 
       if (v13)
       {
@@ -274,7 +274,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [connectedScenes countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -321,7 +321,7 @@ LABEL_15:
   return v16;
 }
 
-+ (id)_applicationScreenshotServiceWithPrivateDelegate:(BOOL)a3
++ (id)_applicationScreenshotServiceWithPrivateDelegate:(BOOL)delegate
 {
   v11 = 0;
   v12 = &v11;
@@ -329,16 +329,16 @@ LABEL_15:
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__SSScreenshotMetadataHarvester__applicationScreenshotServiceWithPrivateDelegate___block_invoke;
   v9[3] = &unk_1E85902A0;
-  v10 = a3;
+  delegateCopy = delegate;
   v9[4] = &v11;
-  v9[5] = a1;
-  [v6 enumerateObjectsUsingBlock:v9];
+  v9[5] = self;
+  [connectedScenes enumerateObjectsUsingBlock:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -361,53 +361,53 @@ void __82__SSScreenshotMetadataHarvester__applicationScreenshotServiceWithPrivat
   }
 }
 
-+ (id)_screenshotServiceForWindowScene:(id)a3 wantsPrivateDelegate:(BOOL)a4
++ (id)_screenshotServiceForWindowScene:(id)scene wantsPrivateDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 _screenshotServiceIfPresent];
-  v7 = v6;
-  if (v4)
+  delegateCopy = delegate;
+  sceneCopy = scene;
+  _screenshotServiceIfPresent = [sceneCopy _screenshotServiceIfPresent];
+  v7 = _screenshotServiceIfPresent;
+  if (delegateCopy)
   {
-    [v6 privateDelegate];
+    [_screenshotServiceIfPresent privateDelegate];
   }
 
   else
   {
-    [v6 delegate];
+    [_screenshotServiceIfPresent delegate];
   }
   v8 = ;
 
-  if (![v5 activationState])
+  if (![sceneCopy activationState])
   {
     if (!v8)
     {
-      v9 = 0;
+      _screenshotServiceIfPresent2 = 0;
       goto LABEL_11;
     }
 
 LABEL_9:
-    v9 = [v5 _screenshotServiceIfPresent];
+    _screenshotServiceIfPresent2 = [sceneCopy _screenshotServiceIfPresent];
     goto LABEL_11;
   }
 
-  v9 = 0;
-  if ([v5 activationState] == 1 && v8)
+  _screenshotServiceIfPresent2 = 0;
+  if ([sceneCopy activationState] == 1 && v8)
   {
     goto LABEL_9;
   }
 
 LABEL_11:
 
-  return v9;
+  return _screenshotServiceIfPresent2;
 }
 
-+ (id)_screenshotServicesDelegateWithIdentifier:(id)a3
++ (id)_screenshotServicesDelegateWithIdentifier:(id)identifier
 {
-  v3 = [a1 screenshotServiceWithIdentifier:a3];
-  v4 = [v3 privateDelegate];
+  v3 = [self screenshotServiceWithIdentifier:identifier];
+  privateDelegate = [v3 privateDelegate];
 
-  if (v4)
+  if (privateDelegate)
   {
     [v3 privateDelegate];
   }
@@ -421,22 +421,22 @@ LABEL_11:
   return v5;
 }
 
-+ (void)_grabPDFRepresentationForIdentifier:(id)a3 withCallback:(id)a4
++ (void)_grabPDFRepresentationForIdentifier:(id)identifier withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
-  v20 = [a1 _screenshotServicesDelegateWithIdentifier:v6];
+  v20 = [self _screenshotServicesDelegateWithIdentifier:identifierCopy];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy_;
   v13[4] = __Block_byref_object_dispose_;
-  v14 = [a1 screenshotServiceWithIdentifier:v6];
+  v14 = [self screenshotServiceWithIdentifier:identifierCopy];
   if (!v16[5])
   {
     goto LABEL_7;
@@ -472,7 +472,7 @@ LABEL_7:
   v12[3] = &unk_1E85902F0;
   v12[5] = &v15;
 LABEL_8:
-  v9 = v7;
+  v9 = callbackCopy;
   v8[4] = v9;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 
@@ -503,54 +503,54 @@ void __82__SSScreenshotMetadataHarvester__grabPDFRepresentationForIdentifier_wit
   [v1 screenshotService:v2 generatePDFRepresentationWithCompletion:v3];
 }
 
-+ (BOOL)canGenerateDocumentForIdentifier:(id)a3
++ (BOOL)canGenerateDocumentForIdentifier:(id)identifier
 {
-  v3 = [a1 _screenshotServicesDelegateWithIdentifier:a3];
+  v3 = [self _screenshotServicesDelegateWithIdentifier:identifier];
 
   return v3 != 0;
 }
 
-+ (void)sendResponseForAction:(id)a3 withObject:(id)a4 forKey:(unint64_t)a5
++ (void)sendResponseForAction:(id)action withObject:(id)object forKey:(unint64_t)key
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 canSendResponse];
+  actionCopy = action;
+  objectCopy = object;
+  canSendResponse = [actionCopy canSendResponse];
   v10 = os_log_create("com.apple.screenshotservices", "MetadataHarvester");
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (canSendResponse)
   {
     if (v11)
     {
       v13 = 134217984;
-      v14 = a5;
+      keyCopy2 = key;
       _os_log_impl(&dword_1D9E04000, v10, OS_LOG_TYPE_DEFAULT, "Send response for action with key: %lu", &v13, 0xCu);
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E698E700]);
-    [v10 setObject:v8 forSetting:a5];
+    [v10 setObject:objectCopy forSetting:key];
     v12 = [MEMORY[0x1E698E600] responseWithInfo:v10];
-    [v7 sendResponse:v12];
+    [actionCopy sendResponse:v12];
   }
 
   else if (v11)
   {
     v13 = 134217984;
-    v14 = a5;
+    keyCopy2 = key;
     _os_log_impl(&dword_1D9E04000, v10, OS_LOG_TYPE_DEFAULT, "Unable to send response for action with key: %lu", &v13, 0xCu);
   }
 }
 
-+ (void)harvestScreenshotMetadataAndRespondToAction:(id)a3
++ (void)harvestScreenshotMetadataAndRespondToAction:(id)action
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 info];
-  [v5 flagForSetting:7];
+  actionCopy = action;
+  info = [actionCopy info];
+  [info flagForSetting:7];
   IsYes = BSSettingFlagIsYes();
 
-  v7 = [v4 info];
-  v8 = [v7 objectForSetting:10];
+  info2 = [actionCopy info];
+  v8 = [info2 objectForSetting:10];
 
   if (IsYes)
   {
@@ -577,17 +577,17 @@ void __82__SSScreenshotMetadataHarvester__grabPDFRepresentationForIdentifier_wit
     v30 = v33;
     v12 = v9;
     v28 = v12;
-    v32 = a1;
-    v13 = v4;
+    selfCopy = self;
+    v13 = actionCopy;
     v29 = v13;
-    [a1 _grabPDFRepresentationForIdentifier:v27 withCallback:v26];
+    [self _grabPDFRepresentationForIdentifier:v27 withCallback:v26];
     v14 = dispatch_time(0, 10000000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__SSScreenshotMetadataHarvester_harvestScreenshotMetadataAndRespondToAction___block_invoke_31;
     block[3] = &unk_1E8590390;
     v24 = v33;
-    v25 = a1;
+    selfCopy2 = self;
     v22 = v12;
     v23 = v13;
     v15 = v13;
@@ -600,20 +600,20 @@ void __82__SSScreenshotMetadataHarvester__grabPDFRepresentationForIdentifier_wit
   else
   {
     v17 = objc_alloc_init(SSHarvestedApplicationMetadata);
-    v18 = [a1 _contentRectsForMetadata];
-    [(SSHarvestedApplicationMetadata *)v17 setContentRects:v18];
+    _contentRectsForMetadata = [self _contentRectsForMetadata];
+    [(SSHarvestedApplicationMetadata *)v17 setContentRects:_contentRectsForMetadata];
 
-    -[SSHarvestedApplicationMetadata setCanGenerateDocument:](v17, "setCanGenerateDocument:", [a1 canGenerateDocumentForIdentifier:v8]);
+    -[SSHarvestedApplicationMetadata setCanGenerateDocument:](v17, "setCanGenerateDocument:", [self canGenerateDocumentForIdentifier:v8]);
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __77__SSScreenshotMetadataHarvester_harvestScreenshotMetadataAndRespondToAction___block_invoke;
     v35[3] = &unk_1E8590340;
-    v37 = v4;
-    v38 = a1;
+    v37 = actionCopy;
+    selfCopy3 = self;
     v36 = v17;
-    v19 = v4;
+    v19 = actionCopy;
     v20 = v17;
-    [a1 _grabUserActivityTitleWithCallback:v35];
+    [self _grabUserActivityTitleWithCallback:v35];
   }
 }
 

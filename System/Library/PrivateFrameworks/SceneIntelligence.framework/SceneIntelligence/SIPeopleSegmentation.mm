@@ -4,11 +4,11 @@
 - (BOOL)_initTemporalBuffer;
 - (CGSize)getInputResolution;
 - (CGSize)getOutputResolution;
-- (SIPeopleSegmentation)initWithNetworkConfiguration:(id)a3;
-- (int64_t)copyResultsToData:(id)a3;
-- (int64_t)evaluateForInput:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (int64_t)evaluateForInput:(id)a3 output:(id)a4;
-- (int64_t)switchNetworkConfiguration:(int64_t)a3;
+- (SIPeopleSegmentation)initWithNetworkConfiguration:(id)configuration;
+- (int64_t)copyResultsToData:(id)data;
+- (int64_t)evaluateForInput:(__CVBuffer *)input outputBuffer:(__CVBuffer *)buffer;
+- (int64_t)evaluateForInput:(id)input output:(id)output;
+- (int64_t)switchNetworkConfiguration:(int64_t)configuration;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   return result;
 }
 
-- (SIPeopleSegmentation)initWithNetworkConfiguration:(id)a3
+- (SIPeopleSegmentation)initWithNetworkConfiguration:(id)configuration
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = SIPeopleSegmentation;
-  v5 = [(SIModel *)&v15 initWithNetworkConfiguration:v4];
+  v5 = [(SIModel *)&v15 initWithNetworkConfiguration:configurationCopy];
   if (!v5)
   {
 LABEL_7:
@@ -86,10 +86,10 @@ LABEL_8:
 
 - (CGSize)getInputResolution
 {
-  v3 = [(SIModel *)self network];
-  v4 = [v3 getInputWidth:kSIMPeopleSegmentationInputTensorName];
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getInputHeight:kSIMPeopleSegmentationInputTensorName];
+  network = [(SIModel *)self network];
+  v4 = [network getInputWidth:kSIMPeopleSegmentationInputTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getInputHeight:kSIMPeopleSegmentationInputTensorName];
 
   v7 = v4;
   v8 = v6;
@@ -100,10 +100,10 @@ LABEL_8:
 
 - (CGSize)getOutputResolution
 {
-  v3 = [(SIModel *)self network];
-  v4 = [v3 getOutputWidth:kSIMPeopleSegmentationOutputTensorName];
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getOutputHeight:kSIMPeopleSegmentationOutputTensorName];
+  network = [(SIModel *)self network];
+  v4 = [network getOutputWidth:kSIMPeopleSegmentationOutputTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getOutputHeight:kSIMPeopleSegmentationOutputTensorName];
 
   v7 = v4;
   v8 = v6;
@@ -112,14 +112,14 @@ LABEL_8:
   return result;
 }
 
-- (int64_t)switchNetworkConfiguration:(int64_t)a3
+- (int64_t)switchNetworkConfiguration:(int64_t)configuration
 {
-  v5 = [(SIModel *)self config];
-  v6 = [v5 networkModeEnum];
+  config = [(SIModel *)self config];
+  networkModeEnum = [config networkModeEnum];
 
   v10.receiver = self;
   v10.super_class = SIPeopleSegmentation;
-  v7 = [(SIModel *)&v10 switchNetworkConfiguration:a3];
+  v7 = [(SIModel *)&v10 switchNetworkConfiguration:configuration];
   if (v7)
   {
     v8 = 1;
@@ -127,7 +127,7 @@ LABEL_8:
 
   else
   {
-    v8 = v6 == a3;
+    v8 = networkModeEnum == configuration;
   }
 
   if (!v8)
@@ -169,40 +169,40 @@ LABEL_8:
   return v7 == 0;
 }
 
-- (int64_t)evaluateForInput:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (int64_t)evaluateForInput:(__CVBuffer *)input outputBuffer:(__CVBuffer *)buffer
 {
-  v7 = [(SIModel *)self inputs];
-  v8 = [v7 objectForKeyedSubscript:kSIMPeopleSegmentationInputTensorName];
-  [v8 setPixelBuffer:a3];
+  inputs = [(SIModel *)self inputs];
+  v8 = [inputs objectForKeyedSubscript:kSIMPeopleSegmentationInputTensorName];
+  [v8 setPixelBuffer:input];
 
   temporalBuffer = self->_temporalBuffer;
-  v10 = [(SIModel *)self inputs];
-  v11 = [v10 objectForKeyedSubscript:kSIMPeopleSegmentationTemporalTensorName];
+  inputs2 = [(SIModel *)self inputs];
+  v11 = [inputs2 objectForKeyedSubscript:kSIMPeopleSegmentationTemporalTensorName];
   [v11 setPixelBuffer:temporalBuffer];
 
-  v12 = [(SIModel *)self outputs];
-  v13 = [v12 objectForKeyedSubscript:kSIMPeopleSegmentationOutputTensorName];
-  [v13 setPixelBuffer:a4];
+  outputs = [(SIModel *)self outputs];
+  v13 = [outputs objectForKeyedSubscript:kSIMPeopleSegmentationOutputTensorName];
+  [v13 setPixelBuffer:buffer];
 
-  v14 = [(SIModel *)self inputs];
-  v15 = [(SIModel *)self outputs];
-  v16 = [(SIModel *)self evaluateWithInput:v14 outputs:v15];
+  inputs3 = [(SIModel *)self inputs];
+  outputs2 = [(SIModel *)self outputs];
+  v16 = [(SIModel *)self evaluateWithInput:inputs3 outputs:outputs2];
 
   return v16;
 }
 
-- (int64_t)evaluateForInput:(id)a3 output:(id)a4
+- (int64_t)evaluateForInput:(id)input output:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SIPeopleSegmentation evaluateForInput:outputBuffer:](self, "evaluateForInput:outputBuffer:", [v6 inputImageBuffer], objc_msgSend(v7, "segmentation"));
+  inputCopy = input;
+  outputCopy = output;
+  v8 = -[SIPeopleSegmentation evaluateForInput:outputBuffer:](self, "evaluateForInput:outputBuffer:", [inputCopy inputImageBuffer], objc_msgSend(outputCopy, "segmentation"));
 
   return v8;
 }
 
-- (int64_t)copyResultsToData:(id)a3
+- (int64_t)copyResultsToData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(SIPeopleSegmentation *)self getOutputResolution];
   v6 = v5;
   [(SIPeopleSegmentation *)self getOutputResolution];
@@ -222,9 +222,9 @@ LABEL_8:
   }
 
   kdebug_trace();
-  CVPixelBufferLockBaseAddress([v4 segmentation], 0);
-  BaseAddress = CVPixelBufferGetBaseAddress([v4 segmentation]);
-  BytesPerRow = CVPixelBufferGetBytesPerRow([v4 segmentation]);
+  CVPixelBufferLockBaseAddress([dataCopy segmentation], 0);
+  BaseAddress = CVPixelBufferGetBaseAddress([dataCopy segmentation]);
+  BytesPerRow = CVPixelBufferGetBytesPerRow([dataCopy segmentation]);
   CVPixelBufferLockBaseAddress(self->_temporalBuffer, 0);
   v14 = CVPixelBufferGetBaseAddress(self->_temporalBuffer);
   v15 = CVPixelBufferGetBytesPerRow(self->_temporalBuffer);
@@ -251,7 +251,7 @@ LABEL_8:
   }
 
   CVPixelBufferUnlockBaseAddress(self->_temporalBuffer, 0);
-  CVPixelBufferUnlockBaseAddress([v4 segmentation], 0);
+  CVPixelBufferUnlockBaseAddress([dataCopy segmentation], 0);
   kdebug_trace();
 
   return 0;

@@ -1,31 +1,31 @@
 @interface PULivePhotoVideoOverlayTileViewController
 + (OS_dispatch_queue)srlCompensationLoadingQueue;
-- (BOOL)livePhotoView:(id)a3 canBeginPlaybackWithStyle:(int64_t)a4;
+- (BOOL)livePhotoView:(id)view canBeginPlaybackWithStyle:(int64_t)style;
 - (PULivePhotoVideoOverlayTileViewControllerDelegate)delegate;
-- (double)livePhotoView:(id)a3 extraMinimumTouchDurationForTouch:(id)a4 withStyle:(int64_t)a5;
+- (double)livePhotoView:(id)view extraMinimumTouchDurationForTouch:(id)touch withStyle:(int64_t)style;
 - (id)loadView;
-- (void)_handleLoadedSRLCompensationAmount:(id)a3 forAsset:(id)a4;
+- (void)_handleLoadedSRLCompensationAmount:(id)amount forAsset:(id)asset;
 - (void)_updateLivePhotoViewModulator;
 - (void)_updateLivePhotoViewModulatorInput;
 - (void)_updateLivePhotoViewPhoto;
 - (void)_updateMergedVideo;
 - (void)_updatePlaybackEnabled;
 - (void)_updateSRLCompensation;
-- (void)_videoCurrentTimeDidChange:(id *)a3;
+- (void)_videoCurrentTimeDidChange:(id *)change;
 - (void)becomeReusable;
 - (void)dealloc;
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setImageModulationManager:(id)a3;
-- (void)setLivePhotoViewModulator:(id)a3;
-- (void)setMergedVideo:(id)a3;
-- (void)setMergedVideoProvider:(id)a3;
-- (void)setPlaybackAssetReference:(id)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setDelegate:(id)delegate;
+- (void)setImageModulationManager:(id)manager;
+- (void)setLivePhotoViewModulator:(id)modulator;
+- (void)setMergedVideo:(id)video;
+- (void)setMergedVideoProvider:(id)provider;
+- (void)setPlaybackAssetReference:(id)reference;
+- (void)setVideoPlayer:(id)player;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PULivePhotoVideoOverlayTileViewController
@@ -37,18 +37,18 @@
   return WeakRetained;
 }
 
-- (void)_handleLoadedSRLCompensationAmount:(id)a3 forAsset:(id)a4
+- (void)_handleLoadedSRLCompensationAmount:(id)amount forAsset:(id)asset
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
-  v8 = [v7 assets];
-  v9 = [v8 firstObject];
+  amountCopy = amount;
+  assetCopy = asset;
+  mergedVideo = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
+  assets = [mergedVideo assets];
+  firstObject = [assets firstObject];
 
-  if (v9 == v6)
+  if (firstObject == assetCopy)
   {
-    v10 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-    [v10 setOverrideSRLCompensationAmount:v11];
+    livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+    [livePhotoView setOverrideSRLCompensationAmount:amountCopy];
   }
 }
 
@@ -62,13 +62,13 @@
 
   if (![v3 livePhotoSRLCompensationManualMode])
   {
-    v6 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
-    v7 = [v6 assets];
-    v8 = [v7 firstObject];
+    mergedVideo = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
+    assets = [mergedVideo assets];
+    firstObject = [assets firstObject];
 
     objc_initWeak(&location, self);
-    v9 = [objc_opt_class() srlCompensationLoadingQueue];
-    v11 = v8;
+    srlCompensationLoadingQueue = [objc_opt_class() srlCompensationLoadingQueue];
+    v11 = firstObject;
     objc_copyWeak(&v12, &location);
     PXDispatchAsyncWithSignpost();
 
@@ -84,8 +84,8 @@ LABEL_5:
   [v3 livePhotoSRLCompensationManualValue];
   v5 = [v4 numberWithDouble:?];
 LABEL_6:
-  v10 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  [v10 setOverrideSRLCompensationAmount:v5];
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  [livePhotoView setOverrideSRLCompensationAmount:v5];
 }
 
 void __67__PULivePhotoVideoOverlayTileViewController__updateSRLCompensation__block_invoke(uint64_t a1)
@@ -112,21 +112,21 @@ void __67__PULivePhotoVideoOverlayTileViewController__updateSRLCompensation__blo
 
 - (void)_updatePlaybackEnabled
 {
-  v3 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  v4 = [v3 player];
-  v5 = [v4 currentPlaybackStyle];
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  player = [livePhotoView player];
+  currentPlaybackStyle = [player currentPlaybackStyle];
 
-  if (!v5)
+  if (!currentPlaybackStyle)
   {
-    v17 = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
-    v6 = [v17 currentAssetReference];
-    v7 = [v17 assetViewModelForAssetReference:v6];
-    v8 = [v6 asset];
-    v9 = [v8 playbackStyle];
+    browsingViewModel = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
+    currentAssetReference = [browsingViewModel currentAssetReference];
+    v7 = [browsingViewModel assetViewModelForAssetReference:currentAssetReference];
+    asset = [currentAssetReference asset];
+    playbackStyle = [asset playbackStyle];
 
-    if (v9 == 3 && ([v17 currentAssetTransitionProgress], PXFloatEqualToFloatWithTolerance()) && (objc_msgSend(v7, "isAccessoryViewVisible") & 1) == 0 && (objc_msgSend(v7, "irisPlayer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isActivated"), v10, (v11 & 1) == 0))
+    if (playbackStyle == 3 && ([browsingViewModel currentAssetTransitionProgress], PXFloatEqualToFloatWithTolerance()) && (objc_msgSend(v7, "isAccessoryViewVisible") & 1) == 0 && (objc_msgSend(v7, "irisPlayer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isActivated"), v10, (v11 & 1) == 0))
     {
-      v16 = [v7 asset];
+      asset2 = [v7 asset];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -136,47 +136,47 @@ void __67__PULivePhotoVideoOverlayTileViewController__updateSRLCompensation__blo
       isKindOfClass = 0;
     }
 
-    v13 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-    v14 = [v13 playbackGestureRecognizer];
-    [v14 setEnabled:isKindOfClass & 1];
+    livePhotoView2 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+    playbackGestureRecognizer = [livePhotoView2 playbackGestureRecognizer];
+    [playbackGestureRecognizer setEnabled:isKindOfClass & 1];
 
-    v15 = [(PULivePhotoVideoOverlayTileViewController *)self containerView];
-    [v15 setHidden:(isKindOfClass & 1) == 0];
+    containerView = [(PULivePhotoVideoOverlayTileViewController *)self containerView];
+    [containerView setHidden:(isKindOfClass & 1) == 0];
   }
 }
 
-- (void)_videoCurrentTimeDidChange:(id *)a3
+- (void)_videoCurrentTimeDidChange:(id *)change
 {
-  v15 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  v5 = [v15 player];
-  if ([v5 currentPlaybackStyle] == 1 && !-[PULivePhotoVideoOverlayTileViewController isPresentedForSecondScreen](self, "isPresentedForSecondScreen"))
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  player = [livePhotoView player];
+  if ([player currentPlaybackStyle] == 1 && !-[PULivePhotoVideoOverlayTileViewController isPresentedForSecondScreen](self, "isPresentedForSecondScreen"))
   {
-    v6 = [(PULivePhotoVideoOverlayTileViewController *)self willEndCurrentPlayback];
+    willEndCurrentPlayback = [(PULivePhotoVideoOverlayTileViewController *)self willEndCurrentPlayback];
 
-    if (!v6)
+    if (!willEndCurrentPlayback)
     {
       v22 = NAN;
-      v7 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
-      v20 = *&a3->var0;
-      var3 = a3->var3;
-      v8 = [v7 assetAtTime:&v20 progress:&v22];
+      mergedVideo = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
+      v20 = *&change->var0;
+      var3 = change->var3;
+      v8 = [mergedVideo assetAtTime:&v20 progress:&v22];
 
       if (v8)
       {
-        v9 = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
+        browsingViewModel = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
         v10 = [[PUAssetReference alloc] initWithAsset:v8 assetCollection:0 indexPath:0 dataSourceIdentifier:0];
-        v11 = [v9 assetsDataSource];
-        v12 = [v11 assetReferenceForAssetReference:v10];
+        assetsDataSource = [browsingViewModel assetsDataSource];
+        v12 = [assetsDataSource assetReferenceForAssetReference:v10];
 
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __72__PULivePhotoVideoOverlayTileViewController__videoCurrentTimeDidChange___block_invoke;
         v16[3] = &unk_1E7B7F350;
-        v17 = v9;
+        v17 = browsingViewModel;
         v18 = v12;
         v19 = v22;
         v13 = v12;
-        v14 = v9;
+        v14 = browsingViewModel;
         [v14 performChanges:v16];
       }
     }
@@ -189,26 +189,26 @@ void __67__PULivePhotoVideoOverlayTileViewController__updateSRLCompensation__blo
 
 - (void)_updateMergedVideo
 {
-  v3 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  v6 = [v3 player];
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  player = [livePhotoView player];
 
-  if (![v6 currentPlaybackStyle])
+  if (![player currentPlaybackStyle])
   {
-    v4 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideoProvider];
-    v5 = [v4 mergedVideo];
-    [(PULivePhotoVideoOverlayTileViewController *)self setMergedVideo:v5];
+    mergedVideoProvider = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideoProvider];
+    mergedVideo = [mergedVideoProvider mergedVideo];
+    [(PULivePhotoVideoOverlayTileViewController *)self setMergedVideo:mergedVideo];
   }
 }
 
 - (void)_updateLivePhotoViewModulatorInput
 {
-  v3 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
+  livePhotoViewModulator = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __79__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewModulatorInput__block_invoke;
   v4[3] = &unk_1E7B7AF58;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [livePhotoViewModulator performChanges:v4];
 }
 
 void __79__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewModulatorInput__block_invoke(uint64_t a1, void *a2)
@@ -220,32 +220,32 @@ void __79__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewModulat
   [v3 setLivePhotoView:v4];
 }
 
-- (void)setLivePhotoViewModulator:(id)a3
+- (void)setLivePhotoViewModulator:(id)modulator
 {
-  v5 = a3;
-  if (self->_livePhotoViewModulator != v5)
+  modulatorCopy = modulator;
+  if (self->_livePhotoViewModulator != modulatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_livePhotoViewModulator, a3);
+    v6 = modulatorCopy;
+    objc_storeStrong(&self->_livePhotoViewModulator, modulator);
     [(PULivePhotoVideoOverlayTileViewController *)self _updateLivePhotoViewModulatorInput];
-    v5 = v6;
+    modulatorCopy = v6;
   }
 }
 
 - (void)_updateLivePhotoViewModulator
 {
-  v10 = [(PULivePhotoVideoOverlayTileViewController *)self imageModulationManager];
-  v3 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
-  [v10 checkInLivePhotoViewModulator:v3];
+  imageModulationManager = [(PULivePhotoVideoOverlayTileViewController *)self imageModulationManager];
+  livePhotoViewModulator = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
+  [imageModulationManager checkInLivePhotoViewModulator:livePhotoViewModulator];
 
-  v4 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
-  v5 = [v4 assets];
-  v6 = [v5 firstObject];
+  mergedVideo = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideo];
+  assets = [mergedVideo assets];
+  firstObject = [assets firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [MEMORY[0x1E69C35F0] optionsForAsset:v6];
-    v9 = [v10 checkoutLivePhotoViewModulatorWithOptions:{v7, v8}];
+    v7 = [MEMORY[0x1E69C35F0] optionsForAsset:firstObject];
+    v9 = [imageModulationManager checkoutLivePhotoViewModulatorWithOptions:{v7, v8}];
     [(PULivePhotoVideoOverlayTileViewController *)self setLivePhotoViewModulator:v9];
   }
 
@@ -255,28 +255,28 @@ void __79__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewModulat
   }
 }
 
-- (void)setImageModulationManager:(id)a3
+- (void)setImageModulationManager:(id)manager
 {
-  v5 = a3;
-  if (self->_imageModulationManager != v5)
+  managerCopy = manager;
+  if (self->_imageModulationManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_imageModulationManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_imageModulationManager, manager);
     [(PULivePhotoVideoOverlayTileViewController *)self _updateLivePhotoViewModulator];
-    v5 = v6;
+    managerCopy = v6;
   }
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
-    v7 = [(PULivePhotoVideoOverlayTileViewController *)self videoPlayerTimeObserver];
-    [(ISWrappedAVPlayer *)videoPlayer removeTimeObserver:v7];
+    videoPlayerTimeObserver = [(PULivePhotoVideoOverlayTileViewController *)self videoPlayerTimeObserver];
+    [(ISWrappedAVPlayer *)videoPlayer removeTimeObserver:videoPlayerTimeObserver];
 
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     objc_initWeak(&location, self);
     CMTimeMake(&v13, 1, 60);
     v8 = MEMORY[0x1E69E96A0];
@@ -286,7 +286,7 @@ void __79__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewModulat
     v11[2] = __60__PULivePhotoVideoOverlayTileViewController_setVideoPlayer___block_invoke;
     v11[3] = &unk_1E7B7D380;
     objc_copyWeak(&v12, &location);
-    v10 = [(ISWrappedAVPlayer *)v5 addPeriodicTimeObserverForInterval:&v13 queue:v8 usingBlock:v11];
+    v10 = [(ISWrappedAVPlayer *)playerCopy addPeriodicTimeObserverForInterval:&v13 queue:v8 usingBlock:v11];
     [(PULivePhotoVideoOverlayTileViewController *)self setVideoPlayerTimeObserver:v10];
 
     objc_destroyWeak(&v12);
@@ -304,29 +304,29 @@ void __60__PULivePhotoVideoOverlayTileViewController_setVideoPlayer___block_invo
 
 - (void)_updateLivePhotoViewPhoto
 {
-  v3 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
-  v4 = [v3 livePhotoVideoPlaybackTileViewControllerCurrentImage:self];
+  delegate = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
+  v4 = [delegate livePhotoVideoPlaybackTileViewControllerCurrentImage:self];
 
-  v5 = [v4 CGImage];
-  v6 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  [v6 setOverridePhoto:v5];
+  cGImage = [v4 CGImage];
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  [livePhotoView setOverridePhoto:cGImage];
 
   v13 = 0;
   v12 = 0;
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
-  v8 = [v7 livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:self outGainMapAvailable:&v13 outGainMapValue:&v12];
+  delegate2 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
+  v8 = [delegate2 livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:self outGainMapAvailable:&v13 outGainMapValue:&v12];
 
   if (v13 == 1)
   {
-    v9 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
+    livePhotoViewModulator = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoViewModulator];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __70__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewPhoto__block_invoke;
     v10[3] = &__block_descriptor_52_e43_v16__0___PXMutableLivePhotoViewModulator__8l;
-    v10[4] = v5;
+    v10[4] = cGImage;
     v10[5] = v8;
     v11 = v12;
-    [v9 performChanges:v10];
+    [livePhotoViewModulator performChanges:v10];
   }
 }
 
@@ -348,82 +348,82 @@ void __70__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewPhoto__
   [v5 setGainMapValue:v4];
 }
 
-- (void)setPlaybackAssetReference:(id)a3
+- (void)setPlaybackAssetReference:(id)reference
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_playbackAssetReference != v5)
+  referenceCopy = reference;
+  if (self->_playbackAssetReference != referenceCopy)
   {
-    objc_storeStrong(&self->_playbackAssetReference, a3);
-    if (v5)
+    objc_storeStrong(&self->_playbackAssetReference, reference);
+    if (referenceCopy)
     {
-      v6 = [(PUTileController *)self tilingView];
+      tilingView = [(PUTileController *)self tilingView];
       v14[0] = self;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      [v6 detachTileControllers:v7];
+      [tilingView detachTileControllers:v7];
 
-      v8 = [(PUTileViewController *)self view];
-      v9 = [(PUTileController *)self tilingView];
-      v10 = [v9 superview];
-      [v8 px_transferToSuperview:v10];
+      view = [(PUTileViewController *)self view];
+      tilingView2 = [(PUTileController *)self tilingView];
+      superview = [tilingView2 superview];
+      [view px_transferToSuperview:superview];
     }
 
     else
     {
-      v11 = [(PUTileViewController *)self view];
-      v12 = [(PUTileController *)self tilingView];
-      [v11 px_transferToSuperview:v12];
+      view2 = [(PUTileViewController *)self view];
+      tilingView3 = [(PUTileController *)self tilingView];
+      [view2 px_transferToSuperview:tilingView3];
 
-      v8 = [(PUTileController *)self tilingView];
-      v13 = self;
-      v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-      [v8 reattachTileControllers:v9 withContext:0];
+      view = [(PUTileController *)self tilingView];
+      selfCopy = self;
+      tilingView2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
+      [view reattachTileControllers:tilingView2 withContext:0];
     }
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
+  modelCopy = model;
+  changeCopy = change;
+  browsingViewModel = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
 
-  if (v8 != v6)
+  if (browsingViewModel != modelCopy)
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       browsingViewModel = self->_browsingViewModel;
       *buf = 138412802;
-      v36 = self;
+      selfCopy = self;
       v37 = 2112;
       v38 = browsingViewModel;
       v39 = 2112;
-      v40 = v6;
+      v40 = modelCopy;
       _os_log_fault_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_FAULT, "Unexpected browsing view model sent a change to %@. Expected %@, but got %@.", buf, 0x20u);
     }
   }
 
-  v10 = [v7 isScrubbingActivationDidChange];
-  v11 = [v7 currentAssetTransitionProgressDidChange];
-  v12 = [v7 currentAssetDidChange] | v11 | v10;
-  v13 = [v6 currentAssetReference];
-  if (v13 && (v12 & 1) == 0)
+  isScrubbingActivationDidChange = [changeCopy isScrubbingActivationDidChange];
+  currentAssetTransitionProgressDidChange = [changeCopy currentAssetTransitionProgressDidChange];
+  v12 = [changeCopy currentAssetDidChange] | currentAssetTransitionProgressDidChange | isScrubbingActivationDidChange;
+  currentAssetReference = [modelCopy currentAssetReference];
+  if (currentAssetReference && (v12 & 1) == 0)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [v7 assetViewModelChangesByAssetReference];
-    v15 = [v14 objectForKeyedSubscript:v13];
+    assetViewModelChangesByAssetReference = [changeCopy assetViewModelChangesByAssetReference];
+    v15 = [assetViewModelChangesByAssetReference objectForKeyedSubscript:currentAssetReference];
 
     v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v16)
     {
       v17 = v16;
       v18 = *v31;
-      v29 = self;
+      selfCopy2 = self;
       while (2)
       {
         for (i = 0; i != v17; ++i)
@@ -434,20 +434,20 @@ void __70__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewPhoto__
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = [v20 irisPlayerChange];
-          v22 = [v21 activatedDidChange];
+          irisPlayerChange = [v20 irisPlayerChange];
+          activatedDidChange = [irisPlayerChange activatedDidChange];
 
-          if (v22 & 1) != 0 || ([v20 accessoryViewVisibilityChanged])
+          if (activatedDidChange & 1) != 0 || ([v20 accessoryViewVisibilityChanged])
           {
             v12 = 1;
-            self = v29;
+            self = selfCopy2;
             goto LABEL_19;
           }
         }
 
         v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
         v12 = 0;
-        self = v29;
+        self = selfCopy2;
         if (v17)
         {
           continue;
@@ -465,17 +465,17 @@ void __70__PULivePhotoVideoOverlayTileViewController__updateLivePhotoViewPhoto__
 LABEL_19:
   }
 
-  v23 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  if ([v7 livePhotoShouldPlayDidChange])
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  if ([changeCopy livePhotoShouldPlayDidChange])
   {
-    v24 = [v23 playbackGestureRecognizer];
-    v25 = [v24 isEnabled];
+    playbackGestureRecognizer = [livePhotoView playbackGestureRecognizer];
+    isEnabled = [playbackGestureRecognizer isEnabled];
 
-    if (v25)
+    if (isEnabled)
     {
-      v26 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-      v27 = [v26 playerView];
-      [v27 setPlaybackFilterTouchActive:{objc_msgSend(v6, "livePhotoShouldPlay")}];
+      livePhotoView2 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+      playerView = [livePhotoView2 playerView];
+      [playerView setPlaybackFilterTouchActive:{objc_msgSend(modelCopy, "livePhotoShouldPlay")}];
     }
   }
 
@@ -485,16 +485,16 @@ LABEL_19:
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (MergedVideoProviderContext_32337 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (MergedVideoProviderContext_32337 == context)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ((v6 & 2) == 0)
+      if ((changeCopy & 2) == 0)
       {
         goto LABEL_16;
       }
@@ -502,10 +502,10 @@ LABEL_19:
 
     else
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PULivePhotoVideoOverlayTileViewController.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"[observable isKindOfClass:PUOneUpMergedVideoProvider.class]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULivePhotoVideoOverlayTileViewController.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"[observable isKindOfClass:PUOneUpMergedVideoProvider.class]"}];
 
-      if ((v6 & 2) == 0)
+      if ((changeCopy & 2) == 0)
       {
         goto LABEL_16;
       }
@@ -518,15 +518,15 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (VideoPlayerChangeContext != a5)
+  if (VideoPlayerChangeContext != context)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PULivePhotoVideoOverlayTileViewController.m" lineNumber:251 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PULivePhotoVideoOverlayTileViewController.m" lineNumber:251 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x40) != 0 && ![(PULivePhotoVideoOverlayTileViewController *)self isPresentedForSecondScreen])
+  if ((changeCopy & 0x40) != 0 && ![(PULivePhotoVideoOverlayTileViewController *)self isPresentedForSecondScreen])
   {
     v15[10] = MEMORY[0x1E69E9820];
     v15[11] = 3221225472;
@@ -536,11 +536,11 @@ LABEL_19:
     px_dispatch_on_main_queue();
   }
 
-  if (v6 < 0 && ![(PULivePhotoVideoOverlayTileViewController *)self isPresentedForSecondScreen])
+  if (changeCopy < 0 && ![(PULivePhotoVideoOverlayTileViewController *)self isPresentedForSecondScreen])
   {
-    v10 = [(PULivePhotoVideoOverlayTileViewController *)self playbackAssetReference];
+    playbackAssetReference = [(PULivePhotoVideoOverlayTileViewController *)self playbackAssetReference];
 
-    if (v10)
+    if (playbackAssetReference)
     {
       v15[5] = MEMORY[0x1E69E9820];
       v15[6] = 3221225472;
@@ -551,7 +551,7 @@ LABEL_19:
     }
   }
 
-  if ((v6 & 4) != 0)
+  if ((changeCopy & 4) != 0)
   {
     v11 = v15;
     v15[0] = MEMORY[0x1E69E9820];
@@ -636,46 +636,46 @@ void __74__PULivePhotoVideoOverlayTileViewController_observable_didChange_contex
   [v4 setIsAttemptingToPlayVideoOverlay:v3];
 }
 
-- (double)livePhotoView:(id)a3 extraMinimumTouchDurationForTouch:(id)a4 withStyle:(int64_t)a5
+- (double)livePhotoView:(id)view extraMinimumTouchDurationForTouch:(id)touch withStyle:(int64_t)style
 {
-  v6 = a4;
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
-  [v7 livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:self locationProvider:v6];
+  touchCopy = touch;
+  delegate = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
+  [delegate livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:self locationProvider:touchCopy];
   v9 = v8;
 
   return v9;
 }
 
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style
 {
-  v5 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView:a3];
+  v5 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView:view];
   [v5 setHidden:1];
 
   [(PULivePhotoVideoOverlayTileViewController *)self setPlaybackAssetReference:0];
-  v6 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
-  [v6 livePhotoVideoPlaybackTileViewControllerDidEndPlaying:self];
+  delegate = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
+  [delegate livePhotoVideoPlaybackTileViewControllerDidEndPlaying:self];
 
   [(PULivePhotoVideoOverlayTileViewController *)self _updateMergedVideo];
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
-  [(PULivePhotoVideoOverlayTileViewController *)self setWillEndCurrentPlayback:0, a4];
+  [(PULivePhotoVideoOverlayTileViewController *)self setWillEndCurrentPlayback:0, style];
   [(PULivePhotoVideoOverlayTileViewController *)self _updateLivePhotoViewPhoto];
-  v5 = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
-  v6 = [v5 currentAssetReference];
-  [(PULivePhotoVideoOverlayTileViewController *)self setPlaybackAssetReference:v6];
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
-  v8 = [v7 livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:self];
+  browsingViewModel = [(PULivePhotoVideoOverlayTileViewController *)self browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  [(PULivePhotoVideoOverlayTileViewController *)self setPlaybackAssetReference:currentAssetReference];
+  delegate = [(PULivePhotoVideoOverlayTileViewController *)self delegate];
+  v8 = [delegate livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:self];
 
-  v9 = [v8 modelTileTransform];
-  [(PULivePhotoVideoOverlayTileViewController *)self setModelTileTransform:v9];
+  modelTileTransform = [v8 modelTileTransform];
+  [(PULivePhotoVideoOverlayTileViewController *)self setModelTileTransform:modelTileTransform];
 
-  v10 = [v8 modelTileTransform];
-  v11 = [v10 hasUserZoomedIn];
+  modelTileTransform2 = [v8 modelTileTransform];
+  hasUserZoomedIn = [modelTileTransform2 hasUserZoomedIn];
 
-  v12 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-  [v12 setHidden:0];
+  livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+  [livePhotoView setHidden:0];
 
   if (![(PULivePhotoVideoOverlayTileViewController *)self isPresentedForSecondScreen])
   {
@@ -683,8 +683,8 @@ void __74__PULivePhotoVideoOverlayTileViewController_observable_didChange_contex
     v15 = 3221225472;
     v16 = __86__PULivePhotoVideoOverlayTileViewController_livePhotoView_willBeginPlaybackWithStyle___block_invoke;
     v17 = &unk_1E7B7FF98;
-    v18 = v5;
-    v19 = v11;
+    v18 = browsingViewModel;
+    v19 = hasUserZoomedIn;
     [v18 performChanges:&v14];
   }
 
@@ -707,16 +707,16 @@ uint64_t __86__PULivePhotoVideoOverlayTileViewController_livePhotoView_willBegin
   return [*(a1 + 32) setVideoOverlayPlayState:v1];
 }
 
-- (BOOL)livePhotoView:(id)a3 canBeginPlaybackWithStyle:(int64_t)a4
+- (BOOL)livePhotoView:(id)view canBeginPlaybackWithStyle:(int64_t)style
 {
-  v4 = self;
-  v5 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView:a3];
-  v6 = [v5 playbackGestureRecognizer];
+  selfCopy = self;
+  v5 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView:view];
+  playbackGestureRecognizer = [v5 playbackGestureRecognizer];
 
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)v4 delegate];
-  LOBYTE(v4) = [v7 livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:v4 locationProvider:v6];
+  delegate = [(PULivePhotoVideoOverlayTileViewController *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:selfCopy locationProvider:playbackGestureRecognizer];
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)becomeReusable
@@ -751,20 +751,20 @@ uint64_t __86__PULivePhotoVideoOverlayTileViewController_livePhotoView_willBegin
   [(PHLivePhotoView *)self->_livePhotoView setHidden:1];
   [(PHLivePhotoView *)self->_livePhotoView setClipsToBounds:1];
   [(PHLivePhotoView *)self->_livePhotoView setShouldApplyTargetReadiness:0];
-  v7 = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideoProvider];
-  v8 = [v7 livePhotoPlayer];
-  [(PHLivePhotoView *)self->_livePhotoView setPlayer:v8];
+  mergedVideoProvider = [(PULivePhotoVideoOverlayTileViewController *)self mergedVideoProvider];
+  livePhotoPlayer = [mergedVideoProvider livePhotoPlayer];
+  [(PHLivePhotoView *)self->_livePhotoView setPlayer:livePhotoPlayer];
 
-  v9 = [(PHLivePhotoView *)self->_livePhotoView player];
-  v10 = [v9 videoPlayer];
-  [(PULivePhotoVideoOverlayTileViewController *)self setVideoPlayer:v10];
+  player = [(PHLivePhotoView *)self->_livePhotoView player];
+  videoPlayer = [player videoPlayer];
+  [(PULivePhotoVideoOverlayTileViewController *)self setVideoPlayer:videoPlayer];
 
-  v11 = [(PHLivePhotoView *)self->_livePhotoView player];
-  [v11 registerChangeObserver:self context:VideoPlayerChangeContext];
+  player2 = [(PHLivePhotoView *)self->_livePhotoView player];
+  [player2 registerChangeObserver:self context:VideoPlayerChangeContext];
 
   [(UIView *)self->_containerView addSubview:self->_livePhotoView];
-  v12 = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
-  v18[0] = v12;
+  playbackGestureRecognizer = [(PHLivePhotoView *)self->_livePhotoView playbackGestureRecognizer];
+  v18[0] = playbackGestureRecognizer;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   playbackGestureRecognizers = self->_playbackGestureRecognizers;
   self->_playbackGestureRecognizers = v13;
@@ -787,9 +787,9 @@ uint64_t __86__PULivePhotoVideoOverlayTileViewController_livePhotoView_willBegin
   [(PUTileViewController *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -801,60 +801,60 @@ uint64_t __86__PULivePhotoVideoOverlayTileViewController_livePhotoView_willBegin
   }
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   browsingViewModel = self->_browsingViewModel;
-  if (browsingViewModel != v5)
+  if (browsingViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)browsingViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_browsingViewModel, a3);
+    objc_storeStrong(&self->_browsingViewModel, model);
     browsingViewModel = [(PUBrowsingViewModel *)self->_browsingViewModel registerChangeObserver:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingViewModel, v5);
+  MEMORY[0x1EEE66BB8](browsingViewModel, modelCopy);
 }
 
-- (void)setMergedVideoProvider:(id)a3
+- (void)setMergedVideoProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   mergedVideoProvider = self->_mergedVideoProvider;
-  if (mergedVideoProvider != v5)
+  if (mergedVideoProvider != providerCopy)
   {
-    v12 = v5;
+    v12 = providerCopy;
     [(PUOneUpMergedVideoProvider *)mergedVideoProvider unregisterChangeObserver:self context:MergedVideoProviderContext_32337];
-    objc_storeStrong(&self->_mergedVideoProvider, a3);
+    objc_storeStrong(&self->_mergedVideoProvider, provider);
     [(PUOneUpMergedVideoProvider *)self->_mergedVideoProvider registerChangeObserver:self context:MergedVideoProviderContext_32337];
-    v7 = [(PUOneUpMergedVideoProvider *)v12 livePhotoPlayer];
-    v8 = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
-    [v8 setPlayer:v7];
+    livePhotoPlayer = [(PUOneUpMergedVideoProvider *)v12 livePhotoPlayer];
+    livePhotoView = [(PULivePhotoVideoOverlayTileViewController *)self livePhotoView];
+    [livePhotoView setPlayer:livePhotoPlayer];
 
-    v9 = [(PHLivePhotoView *)self->_livePhotoView player];
-    v10 = [v9 videoPlayer];
-    [(PULivePhotoVideoOverlayTileViewController *)self setVideoPlayer:v10];
+    player = [(PHLivePhotoView *)self->_livePhotoView player];
+    videoPlayer = [player videoPlayer];
+    [(PULivePhotoVideoOverlayTileViewController *)self setVideoPlayer:videoPlayer];
 
-    v11 = [(PHLivePhotoView *)self->_livePhotoView player];
-    [v11 registerChangeObserver:self context:VideoPlayerChangeContext];
+    player2 = [(PHLivePhotoView *)self->_livePhotoView player];
+    [player2 registerChangeObserver:self context:VideoPlayerChangeContext];
 
     mergedVideoProvider = [(PULivePhotoVideoOverlayTileViewController *)self _updateMergedVideo];
-    v5 = v12;
+    providerCopy = v12;
   }
 
-  MEMORY[0x1EEE66BB8](mergedVideoProvider, v5);
+  MEMORY[0x1EEE66BB8](mergedVideoProvider, providerCopy);
 }
 
-- (void)setMergedVideo:(id)a3
+- (void)setMergedVideo:(id)video
 {
-  v5 = a3;
-  if (self->_mergedVideo != v5)
+  videoCopy = video;
+  if (self->_mergedVideo != videoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mergedVideo, a3);
+    v6 = videoCopy;
+    objc_storeStrong(&self->_mergedVideo, video);
     [(PULivePhotoVideoOverlayTileViewController *)self _updateLivePhotoViewModulator];
     [(PULivePhotoVideoOverlayTileViewController *)self _updateSRLCompensation];
-    v5 = v6;
+    videoCopy = v6;
   }
 }
 

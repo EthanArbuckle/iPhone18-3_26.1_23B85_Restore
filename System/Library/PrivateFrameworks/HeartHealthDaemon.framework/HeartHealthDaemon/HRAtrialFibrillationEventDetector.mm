@@ -1,29 +1,29 @@
 @interface HRAtrialFibrillationEventDetector
-- (BOOL)_queue_analyzeCurrentConfirmationCycleSamples:(id)a3 withAlgorithmVersion:(int64_t)a4;
+- (BOOL)_queue_analyzeCurrentConfirmationCycleSamples:(id)samples withAlgorithmVersion:(int64_t)version;
 - (BOOL)_queue_detectionDisabled;
-- (BOOL)_queue_detectionDisabledWithFeatureStatus:(id)a3;
+- (BOOL)_queue_detectionDisabledWithFeatureStatus:(id)status;
 - (BOOL)_queue_inConfirmationCycle;
-- (HRAtrialFibrillationEventDetector)initWithProfile:(id)a3 availabilityManager:(id)a4 featureStatusManager:(id)a5 notificationManager:(id)a6;
-- (HRAtrialFibrillationEventDetector)initWithProfile:(id)a3 availabilityManager:(id)a4 notificationManager:(id)a5;
+- (HRAtrialFibrillationEventDetector)initWithProfile:(id)profile availabilityManager:(id)manager featureStatusManager:(id)statusManager notificationManager:(id)notificationManager;
+- (HRAtrialFibrillationEventDetector)initWithProfile:(id)profile availabilityManager:(id)manager notificationManager:(id)notificationManager;
 - (NSArray)_unitTest_confirmationCycleSamples;
 - (NSDate)_unitTest_latestAnalyzedSampleDate;
 - (NSNumber)_unitTest_lastAlgorithmVersionUsed;
 - (NSNumber)_unitTest_lastAnalyzedSampleAnchor;
-- (id)_getProductVersionWithError:(id *)a3;
-- (id)_initWithAnalyticsCollector:(id)a3 availabilityManager:(id)a4 featureStatusManager:(id)a5 profile:(id)a6;
-- (id)_processTachograms:(id)a3 withAlgorithmVersion:(int64_t)a4;
+- (id)_getProductVersionWithError:(id *)error;
+- (id)_initWithAnalyticsCollector:(id)collector availabilityManager:(id)manager featureStatusManager:(id)statusManager profile:(id)profile;
+- (id)_processTachograms:(id)tachograms withAlgorithmVersion:(int64_t)version;
 - (id)_queue_confirmationCycleSamples;
-- (id)_queue_filterSamplesByDateThreshold:(id)a3;
+- (id)_queue_filterSamplesByDateThreshold:(id)threshold;
 - (id)_queue_lastAlgorithmVersionUsed;
 - (id)_queue_lastAnalyzedSampleAnchor;
 - (id)_queue_latestAnalyzedSampleDate;
-- (id)_queue_orderedConfirmationCycleSamplesFromSamples:(id)a3 requestedUUIDs:(id)a4;
-- (id)_queue_orderedConfirmationCycleSamplesFromUUIDs:(id)a3;
+- (id)_queue_orderedConfirmationCycleSamplesFromSamples:(id)samples requestedUUIDs:(id)ds;
+- (id)_queue_orderedConfirmationCycleSamplesFromUUIDs:(id)ds;
 - (id)diagnosticDescription;
 - (int64_t)_currentAlgorithmVersion;
 - (void)_currentAlgorithmVersion;
-- (void)_queue_alertUserWithDate:(id)a3 positiveTachogramUUIDs:(id)a4;
-- (void)_queue_analyzeFilteredSeriesSamples:(id)a3 lastAnchor:(id)a4;
+- (void)_queue_alertUserWithDate:(id)date positiveTachogramUUIDs:(id)ds;
+- (void)_queue_analyzeFilteredSeriesSamples:(id)samples lastAnchor:(id)anchor;
 - (void)_queue_analyzeTachogramsSinceLastAnchor;
 - (void)_queue_confirmationCycleSamples;
 - (void)_queue_detectionDisabled;
@@ -34,47 +34,47 @@
 - (void)_queue_lastAnalyzedSampleAnchor;
 - (void)_queue_latestAnalyzedSampleDate;
 - (void)_queue_requestAnotherTachogram;
-- (void)_queue_seriesSamplesAdded:(id)a3 lastAnchor:(id)a4;
-- (void)_queue_setConfirmationCycleSamples:(id)a3;
-- (void)_queue_setLastAlgorithmVersionUsed:(id)a3;
-- (void)_queue_setLastAnalyzedSampleAnchor:(id)a3;
-- (void)_queue_setLatestAnalyzedSampleDate:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_queue_seriesSamplesAdded:(id)added lastAnchor:(id)anchor;
+- (void)_queue_setConfirmationCycleSamples:(id)samples;
+- (void)_queue_setLastAlgorithmVersionUsed:(id)used;
+- (void)_queue_setLastAnalyzedSampleAnchor:(id)anchor;
+- (void)_queue_setLatestAnalyzedSampleDate:(id)date;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HRAtrialFibrillationEventDetector
 
-- (HRAtrialFibrillationEventDetector)initWithProfile:(id)a3 availabilityManager:(id)a4 notificationManager:(id)a5
+- (HRAtrialFibrillationEventDetector)initWithProfile:(id)profile availabilityManager:(id)manager notificationManager:(id)notificationManager
 {
   v8 = MEMORY[0x277CCD460];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithFeatureAvailabilityProviding:v10 healthDataSource:v11];
-  v13 = [(HRAtrialFibrillationEventDetector *)self initWithProfile:v11 availabilityManager:v10 featureStatusManager:v12 notificationManager:v9];
+  notificationManagerCopy = notificationManager;
+  managerCopy = manager;
+  profileCopy = profile;
+  v12 = [[v8 alloc] initWithFeatureAvailabilityProviding:managerCopy healthDataSource:profileCopy];
+  v13 = [(HRAtrialFibrillationEventDetector *)self initWithProfile:profileCopy availabilityManager:managerCopy featureStatusManager:v12 notificationManager:notificationManagerCopy];
 
   return v13;
 }
 
-- (HRAtrialFibrillationEventDetector)initWithProfile:(id)a3 availabilityManager:(id)a4 featureStatusManager:(id)a5 notificationManager:(id)a6
+- (HRAtrialFibrillationEventDetector)initWithProfile:(id)profile availabilityManager:(id)manager featureStatusManager:(id)statusManager notificationManager:(id)notificationManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  managerCopy = manager;
+  statusManagerCopy = statusManager;
+  notificationManagerCopy = notificationManager;
   v34.receiver = self;
   v34.super_class = HRAtrialFibrillationEventDetector;
   v14 = [(HRAtrialFibrillationEventDetector *)&v34 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_availabilityManager, a4);
-    objc_storeStrong(&v15->_notificationManager, a6);
-    objc_storeStrong(&v15->_statusManager, a5);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_availabilityManager, manager);
+    objc_storeStrong(&v15->_notificationManager, notificationManager);
+    objc_storeStrong(&v15->_statusManager, statusManager);
     v16 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v16;
@@ -98,11 +98,11 @@
     v15->_analyticsCollector = v28;
 
     v30 = objc_loadWeakRetained(&v15->_profile);
-    v31 = [v30 daemon];
-    [v31 registerForDaemonReady:v15];
+    daemon = [v30 daemon];
+    [daemon registerForDaemonReady:v15];
 
-    v32 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v32 addObject:v15];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v15];
   }
 
   return v15;
@@ -111,16 +111,16 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD920] heartbeatSeriesType];
-  [v4 removeObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  [dataManager removeObserver:self forDataType:heartbeatSeriesType];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 database];
-  [v7 removeProtectedDataObserver:self];
+  database = [v6 database];
+  [database removeProtectedDataObserver:self];
 
-  v8 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v8 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   if (notify_is_valid_token(self->_settingDidUpdateNotificationToken))
   {
@@ -132,14 +132,14 @@
   [(HRAtrialFibrillationEventDetector *)&v9 dealloc];
 }
 
-- (id)_initWithAnalyticsCollector:(id)a3 availabilityManager:(id)a4 featureStatusManager:(id)a5 profile:(id)a6
+- (id)_initWithAnalyticsCollector:(id)collector availabilityManager:(id)manager featureStatusManager:(id)statusManager profile:(id)profile
 {
-  v11 = a3;
-  v12 = [(HRAtrialFibrillationEventDetector *)self initWithProfile:a6 availabilityManager:a4 featureStatusManager:a5 notificationManager:0];
+  collectorCopy = collector;
+  v12 = [(HRAtrialFibrillationEventDetector *)self initWithProfile:profile availabilityManager:manager featureStatusManager:statusManager notificationManager:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_analyticsCollector, a3);
+    objc_storeStrong(&v12->_analyticsCollector, collector);
     v13->__unitTesting = 1;
   }
 
@@ -274,25 +274,25 @@ uint64_t __71__HRAtrialFibrillationEventDetector__unitTest_lastAnalyzedSampleAnc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained dataManager];
-  v6 = [MEMORY[0x277CCD920] heartbeatSeriesType];
-  [v5 addObserver:self forDataType:v6];
+  dataManager = [WeakRetained dataManager];
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  [dataManager addObserver:self forDataType:heartbeatSeriesType];
 
   v7 = objc_loadWeakRetained(&self->_profile);
-  v8 = [v7 database];
-  [v8 addProtectedDataObserver:self];
+  database = [v7 database];
+  [database addProtectedDataObserver:self];
 
-  v9 = [@"HKHeartRateSettingsDidChangeNotification" UTF8String];
+  uTF8String = [@"HKHeartRateSettingsDidChangeNotification" UTF8String];
   queue = self->_queue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __49__HRAtrialFibrillationEventDetector_daemonReady___block_invoke;
   handler[3] = &unk_278660710;
   handler[4] = self;
-  notify_register_dispatch(v9, &self->_settingDidUpdateNotificationToken, queue, handler);
+  notify_register_dispatch(uTF8String, &self->_settingDidUpdateNotificationToken, queue, handler);
 }
 
 uint64_t __49__HRAtrialFibrillationEventDetector_daemonReady___block_invoke(uint64_t a1)
@@ -308,9 +308,9 @@ uint64_t __49__HRAtrialFibrillationEventDetector_daemonReady___block_invoke(uint
   return result;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -342,10 +342,10 @@ uint64_t __78__HRAtrialFibrillationEventDetector_database_protectedDataDidBecome
   }
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  anchorCopy = anchor;
   statusManager = self->_statusManager;
   v24 = 0;
   v7 = [(HKFeatureStatusManager *)statusManager featureStatusWithError:&v24];
@@ -354,14 +354,14 @@ uint64_t __78__HRAtrialFibrillationEventDetector_database_protectedDataDidBecome
   {
     v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCBF48]];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCBFC8]];
-      v13 = [v12 BOOLValue];
+      bOOLValue2 = [v12 BOOLValue];
 
-      if (v13)
+      if (bOOLValue2)
       {
         queue = self->_queue;
         v21[0] = MEMORY[0x277D85DD0];
@@ -370,7 +370,7 @@ uint64_t __78__HRAtrialFibrillationEventDetector_database_protectedDataDidBecome
         v21[3] = &unk_278660440;
         v21[4] = self;
         v22 = v7;
-        v23 = v5;
+        v23 = anchorCopy;
         dispatch_async(queue, v21);
 
 LABEL_12:
@@ -533,9 +533,9 @@ LABEL_9:
   v7[4] = self;
   v3 = [MEMORY[0x277D10748] maintenanceOperationWithName:@"com.apple.HeartRhythm.AtrialFibrillationEventDetector" asynchronousBlock:v7];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 maintenanceWorkCoordinator];
-  [v6 enqueueMaintenanceOperation:v3];
+  daemon = [WeakRetained daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v3];
 }
 
 void __91__HRAtrialFibrillationEventDetector__queue_enqueueMaintainanceOperationForMissedTachograms__block_invoke(uint64_t a1, void *a2)
@@ -567,7 +567,7 @@ uint64_t __91__HRAtrialFibrillationEventDetector__queue_enqueueMaintainanceOpera
 
 - (void)_queue_analyzeTachogramsSinceLastAnchor
 {
-  OUTLINED_FUNCTION_5_1(a1, a2, a3, 5.8382e-34);
+  OUTLINED_FUNCTION_5_1(self, a2, a3, 5.8382e-34);
   _os_log_error_impl(&dword_229486000, v5, OS_LOG_TYPE_ERROR, "[%{public}@] Check for samples since last anchor failed: %@", v4, 0x16u);
 }
 
@@ -631,21 +631,21 @@ uint64_t __76__HRAtrialFibrillationEventDetector__queue_analyzeTachogramsSinceLa
   return 1;
 }
 
-- (void)_queue_seriesSamplesAdded:(id)a3 lastAnchor:(id)a4
+- (void)_queue_seriesSamplesAdded:(id)added lastAnchor:(id)anchor
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  anchorCopy = anchor;
   queue = self->_queue;
-  v8 = a3;
+  addedCopy = added;
   dispatch_assert_queue_V2(queue);
-  v9 = [(HRAtrialFibrillationEventDetector *)self _currentAlgorithmVersion];
+  _currentAlgorithmVersion = [(HRAtrialFibrillationEventDetector *)self _currentAlgorithmVersion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__HRAtrialFibrillationEventDetector__queue_seriesSamplesAdded_lastAnchor___block_invoke;
   v16[3] = &unk_2786607D0;
   v16[4] = self;
-  v16[5] = v9;
-  v10 = [v8 hk_filter:v16];
+  v16[5] = _currentAlgorithmVersion;
+  v10 = [addedCopy hk_filter:v16];
 
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2D8];
@@ -663,12 +663,12 @@ uint64_t __76__HRAtrialFibrillationEventDetector__queue_analyzeTachogramsSinceLa
 
   if ([v10 count])
   {
-    [(HRAtrialFibrillationEventDetector *)self _queue_analyzeFilteredSeriesSamples:v10 lastAnchor:v6];
+    [(HRAtrialFibrillationEventDetector *)self _queue_analyzeFilteredSeriesSamples:v10 lastAnchor:anchorCopy];
   }
 
   else
   {
-    [(HRAtrialFibrillationEventDetector *)self _queue_setLastAnalyzedSampleAnchor:v6];
+    [(HRAtrialFibrillationEventDetector *)self _queue_setLastAnalyzedSampleAnchor:anchorCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -762,10 +762,10 @@ LABEL_16:
   return v8;
 }
 
-- (id)_queue_filterSamplesByDateThreshold:(id)a3
+- (id)_queue_filterSamplesByDateThreshold:(id)threshold
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  thresholdCopy = threshold;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-172800.0];
   v15[0] = MEMORY[0x277D85DD0];
@@ -774,9 +774,9 @@ LABEL_16:
   v15[3] = &unk_2786607F8;
   v6 = v5;
   v16 = v6;
-  v7 = [v4 hk_filter:v15];
+  v7 = [thresholdCopy hk_filter:v15];
   v8 = [v7 count];
-  if (v8 < [v4 count])
+  if (v8 < [thresholdCopy count])
   {
     _HKInitializeLogging();
     v9 = *MEMORY[0x277CCC2D8];
@@ -784,7 +784,7 @@ LABEL_16:
     {
       v10 = v9;
       v11 = HRLogSensitiveClassName();
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count") - objc_msgSend(v7, "count")}];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(thresholdCopy, "count") - objc_msgSend(v7, "count")}];
       *buf = 138543874;
       v18 = v11;
       v19 = 2112;
@@ -808,30 +808,30 @@ uint64_t __73__HRAtrialFibrillationEventDetector__queue_filterSamplesByDateThres
   return v4;
 }
 
-- (void)_queue_analyzeFilteredSeriesSamples:(id)a3 lastAnchor:(id)a4
+- (void)_queue_analyzeFilteredSeriesSamples:(id)samples lastAnchor:(id)anchor
 {
-  v6 = a4;
+  anchorCopy = anchor;
   queue = self->_queue;
-  v8 = a3;
+  samplesCopy = samples;
   dispatch_assert_queue_V2(queue);
-  v9 = [MEMORY[0x277CBEB18] array];
-  [v9 addObjectsFromArray:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObjectsFromArray:samplesCopy];
 
-  [v9 sortUsingComparator:&__block_literal_global_337];
+  [array sortUsingComparator:&__block_literal_global_337];
   v10 = MEMORY[0x277D105E0];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v19 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSamples_lastAnchor___block_invoke_2;
   v16[3] = &unk_278660840;
   v16[4] = self;
-  v13 = v9;
+  v13 = array;
   v17 = v13;
-  v14 = v6;
+  v14 = anchorCopy;
   v18 = v14;
-  LOBYTE(v10) = [v10 performWriteTransactionWithHealthDatabase:v12 error:&v19 block:v16];
+  LOBYTE(v10) = [v10 performWriteTransactionWithHealthDatabase:database error:&v19 block:v16];
   v15 = v19;
 
   if ((v10 & 1) == 0)
@@ -909,13 +909,13 @@ uint64_t __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSam
   return 1;
 }
 
-- (BOOL)_queue_analyzeCurrentConfirmationCycleSamples:(id)a3 withAlgorithmVersion:(int64_t)a4
+- (BOOL)_queue_analyzeCurrentConfirmationCycleSamples:(id)samples withAlgorithmVersion:(int64_t)version
 {
   v58 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v7 = a3;
+  samplesCopy = samples;
   dispatch_assert_queue_V2(queue);
-  v8 = [(HRAtrialFibrillationEventDetector *)self _queue_filterSamplesByDateThreshold:v7];
+  v8 = [(HRAtrialFibrillationEventDetector *)self _queue_filterSamplesByDateThreshold:samplesCopy];
 
   if ([v8 count])
   {
@@ -924,16 +924,16 @@ uint64_t __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSam
     v50 = 0x3032000000;
     v51 = __Block_byref_object_copy__4;
     v52 = __Block_byref_object_dispose__4;
-    v9 = [v8 firstObject];
-    v53 = [v9 startDate];
+    firstObject = [v8 firstObject];
+    startDate = [firstObject startDate];
 
     v42 = 0;
     v43 = &v42;
     v44 = 0x3032000000;
     v45 = __Block_byref_object_copy__4;
     v46 = __Block_byref_object_dispose__4;
-    v10 = [v8 firstObject];
-    v47 = [v10 endDate];
+    firstObject2 = [v8 firstObject];
+    endDate = [firstObject2 endDate];
 
     _HKInitializeLogging();
     v11 = MEMORY[0x277CCC2D8];
@@ -955,42 +955,42 @@ uint64_t __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSam
       _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending sample(s) to analyzer: %@", buf, 0x16u);
     }
 
-    v15 = [(HRAtrialFibrillationEventDetector *)self _processTachograms:v8 withAlgorithmVersion:a4];
+    v15 = [(HRAtrialFibrillationEventDetector *)self _processTachograms:v8 withAlgorithmVersion:version];
     analyticsCollector = self->_analyticsCollector;
     v17 = objc_alloc(MEMORY[0x277CCA970]);
     v18 = [v17 initWithStartDate:v49[5] endDate:v43[5]];
-    [(HRAtrialFibrillationAnalyticsCollector *)analyticsCollector collectAnalyticsForResult:v15 algorithmVersion:a4 samplesDateInterval:v18];
+    [(HRAtrialFibrillationAnalyticsCollector *)analyticsCollector collectAnalyticsForResult:v15 algorithmVersion:version samplesDateInterval:v18];
 
     -[HRAtrialFibrillationAnalyticsCollector updateCountAnalyzedTachogramsWithCount:keyValueDomain:](self->_analyticsCollector, "updateCountAnalyzedTachogramsWithCount:keyValueDomain:", [v8 count], self->_syncedKeyValueDomain);
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     [(HRAtrialFibrillationEventDetector *)self _queue_setLastAlgorithmVersionUsed:v19];
 
-    v20 = [v8 lastObject];
-    v21 = [v20 endDate];
-    [(HRAtrialFibrillationEventDetector *)self _queue_setLatestAnalyzedSampleDate:v21];
+    lastObject = [v8 lastObject];
+    endDate2 = [lastObject endDate];
+    [(HRAtrialFibrillationEventDetector *)self _queue_setLatestAnalyzedSampleDate:endDate2];
 
-    v22 = [v15 userShouldBeAlerted];
-    if (v22)
+    userShouldBeAlerted = [v15 userShouldBeAlerted];
+    if (userShouldBeAlerted)
     {
       _HKInitializeLogging();
       v23 = *v11;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v24 = HRLogSensitiveClassName();
-        v25 = [v15 uuidsForNextCycle];
+        uuidsForNextCycle = [v15 uuidsForNextCycle];
         *buf = 138543618;
         v55 = v24;
         v56 = 2112;
-        v57 = v25;
+        v57 = uuidsForNextCycle;
         _os_log_impl(&dword_229486000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Result indicated user should be notified, UUIDs for next cycle: %@", buf, 0x16u);
       }
 
-      v26 = [v8 firstObject];
-      v27 = [v26 endDate];
-      v28 = [v8 hk_foldRightFrom:v27 with:&__block_literal_global_346];
+      firstObject3 = [v8 firstObject];
+      endDate3 = [firstObject3 endDate];
+      uuidsForNextCycle4 = [v8 hk_foldRightFrom:endDate3 with:&__block_literal_global_346];
 
-      v29 = [v15 positiveUUIDs];
-      [(HRAtrialFibrillationEventDetector *)self _queue_alertUserWithDate:v28 positiveTachogramUUIDs:v29];
+      positiveUUIDs = [v15 positiveUUIDs];
+      [(HRAtrialFibrillationEventDetector *)self _queue_alertUserWithDate:uuidsForNextCycle4 positiveTachogramUUIDs:positiveUUIDs];
 
       [(HRAtrialFibrillationEventDetector *)self _queue_endConfirmationCycleIfNeeded];
     }
@@ -1007,8 +1007,8 @@ uint64_t __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSam
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
             v37 = HRLogSensitiveClassName();
-            v38 = [v15 uuidsForNextCycle];
-            [(HRAtrialFibrillationEventDetector *)v37 _queue_analyzeCurrentConfirmationCycleSamples:v38 withAlgorithmVersion:buf];
+            uuidsForNextCycle2 = [v15 uuidsForNextCycle];
+            [(HRAtrialFibrillationEventDetector *)v37 _queue_analyzeCurrentConfirmationCycleSamples:uuidsForNextCycle2 withAlgorithmVersion:buf];
           }
         }
 
@@ -1022,20 +1022,20 @@ uint64_t __84__HRAtrialFibrillationEventDetector__queue_analyzeFilteredSeriesSam
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         v32 = HRLogSensitiveClassName();
-        v33 = [v15 uuidsForNextCycle];
+        uuidsForNextCycle3 = [v15 uuidsForNextCycle];
         *buf = 138543618;
         v55 = v32;
         v56 = 2112;
-        v57 = v33;
+        v57 = uuidsForNextCycle3;
         _os_log_impl(&dword_229486000, v31, OS_LOG_TYPE_DEFAULT, "[%{public}@] Result indicated more samples are needed, UUIDs for next cycle: %@", buf, 0x16u);
       }
 
-      v28 = [v15 uuidsForNextCycle];
-      v34 = [(HRAtrialFibrillationEventDetector *)self _queue_orderedConfirmationCycleSamplesFromSamples:v8 requestedUUIDs:v28];
+      uuidsForNextCycle4 = [v15 uuidsForNextCycle];
+      v34 = [(HRAtrialFibrillationEventDetector *)self _queue_orderedConfirmationCycleSamplesFromSamples:v8 requestedUUIDs:uuidsForNextCycle4];
       [(HRAtrialFibrillationEventDetector *)self _queue_setConfirmationCycleSamples:v34];
     }
 
-    v30 = v22 ^ 1;
+    v30 = userShouldBeAlerted ^ 1;
 LABEL_19:
 
     _Block_object_dispose(&v42, 8);
@@ -1088,15 +1088,15 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   return v6;
 }
 
-- (id)_processTachograms:(id)a3 withAlgorithmVersion:(int64_t)a4
+- (id)_processTachograms:(id)tachograms withAlgorithmVersion:(int64_t)version
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HRAtrialFibrillationEventDetector *)self _unitTest_processTachograms];
-  v8 = v7;
-  if (v7)
+  tachogramsCopy = tachograms;
+  _unitTest_processTachograms = [(HRAtrialFibrillationEventDetector *)self _unitTest_processTachograms];
+  v8 = _unitTest_processTachograms;
+  if (_unitTest_processTachograms)
   {
-    v9 = (*(v7 + 16))(v7, v6);
+    v9 = (*(_unitTest_processTachograms + 16))(_unitTest_processTachograms, tachogramsCopy);
   }
 
   else
@@ -1110,12 +1110,12 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
       v16 = 138543618;
       v17 = v12;
       v18 = 2048;
-      v19 = a4;
+      versionCopy = version;
       _os_log_impl(&dword_229486000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analyzing tachograms with algorithm version %ld", &v16, 0x16u);
     }
 
     v13 = [objc_alloc(MEMORY[0x277D13018]) initWithIrregularRhythmVersion:{-[HRAtrialFibrillationEventDetector _currentAlgorithmVersion](self, "_currentAlgorithmVersion")}];
-    v9 = [v13 processTachograms:v6];
+    v9 = [v13 processTachograms:tachogramsCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1131,7 +1131,7 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   v4 = v7;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -1142,10 +1142,10 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
       [HRAtrialFibrillationEventDetector _currentAlgorithmVersion];
     }
 
-    v5 = 1;
+    integerValue = 1;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)_queue_detectionDisabled
@@ -1183,23 +1183,23 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   }
 }
 
-- (BOOL)_queue_detectionDisabledWithFeatureStatus:(id)a3
+- (BOOL)_queue_detectionDisabledWithFeatureStatus:(id)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   if ([(HRAtrialFibrillationEventDetector *)self _unitTesting])
   {
-    v5 = [(HRAtrialFibrillationEventDetector *)self _unitTest_detectionDisabled];
+    _unitTest_detectionDisabled = [(HRAtrialFibrillationEventDetector *)self _unitTest_detectionDisabled];
   }
 
   else
   {
     v6 = *MEMORY[0x277CCBEA0];
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-    v8 = [v7 areAllRequirementsSatisfied];
+    v7 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    areAllRequirementsSatisfied = [v7 areAllRequirementsSatisfied];
 
-    if ((v8 & 1) == 0)
+    if ((areAllRequirementsSatisfied & 1) == 0)
     {
       _HKInitializeLogging();
       v9 = *MEMORY[0x277CCC2D8];
@@ -1207,28 +1207,28 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
       {
         v10 = v9;
         v11 = HRLogSensitiveClassName();
-        v12 = [v4 objectForKeyedSubscript:v6];
-        v13 = [v12 unsatisfiedRequirementIdentifiers];
+        v12 = [statusCopy objectForKeyedSubscript:v6];
+        unsatisfiedRequirementIdentifiers = [v12 unsatisfiedRequirementIdentifiers];
         v16 = 138543618;
         v17 = v11;
         v18 = 2114;
-        v19 = v13;
+        v19 = unsatisfiedRequirementIdentifiers;
         _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Detection is disabled, unsatisfied usage requirements: %{public}@", &v16, 0x16u);
       }
     }
 
-    v5 = v8 ^ 1;
+    _unitTest_detectionDisabled = areAllRequirementsSatisfied ^ 1;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v5;
+  return _unitTest_detectionDisabled;
 }
 
 - (BOOL)_queue_inConfirmationCycle
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HRAtrialFibrillationEventDetector *)self _queue_confirmationCycleSamples];
-  v4 = [v3 count] != 0;
+  _queue_confirmationCycleSamples = [(HRAtrialFibrillationEventDetector *)self _queue_confirmationCycleSamples];
+  v4 = [_queue_confirmationCycleSamples count] != 0;
 
   return v4;
 }
@@ -1260,12 +1260,12 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
 {
   v12 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HRAtrialFibrillationEventDetector *)self _unitTest_moreTachogramsRequestedHandler];
+  _unitTest_moreTachogramsRequestedHandler = [(HRAtrialFibrillationEventDetector *)self _unitTest_moreTachogramsRequestedHandler];
 
-  if (v3)
+  if (_unitTest_moreTachogramsRequestedHandler)
   {
-    v9 = [(HRAtrialFibrillationEventDetector *)self _unitTest_moreTachogramsRequestedHandler];
-    v9[2]();
+    _unitTest_moreTachogramsRequestedHandler2 = [(HRAtrialFibrillationEventDetector *)self _unitTest_moreTachogramsRequestedHandler];
+    _unitTest_moreTachogramsRequestedHandler2[2]();
     v4 = *MEMORY[0x277D85DE8];
   }
 
@@ -1286,18 +1286,18 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   }
 }
 
-- (void)_queue_alertUserWithDate:(id)a3 positiveTachogramUUIDs:(id)a4
+- (void)_queue_alertUserWithDate:(id)date positiveTachogramUUIDs:(id)ds
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(HRAtrialFibrillationEventDetector *)self _unitTest_userAlertedHandler];
+  _unitTest_userAlertedHandler = [(HRAtrialFibrillationEventDetector *)self _unitTest_userAlertedHandler];
 
-  if (v8)
+  if (_unitTest_userAlertedHandler)
   {
-    v9 = [(HRAtrialFibrillationEventDetector *)self _unitTest_userAlertedHandler];
-    (v9)[2](v9, v6, v7);
+    _unitTest_userAlertedHandler2 = [(HRAtrialFibrillationEventDetector *)self _unitTest_userAlertedHandler];
+    (_unitTest_userAlertedHandler2)[2](_unitTest_userAlertedHandler2, dateCopy, dsCopy);
   }
 
   else
@@ -1311,30 +1311,30 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
       v50[0] = v10;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
       v13 = MEMORY[0x277CCD0B0];
-      v14 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-      v15 = [v13 categorySampleWithType:v14 value:0 startDate:v6 endDate:v6 metadata:v12];
+      atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+      v15 = [v13 categorySampleWithType:atrialFibrillationEventType value:0 startDate:dateCopy endDate:dateCopy metadata:v12];
 
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v17 = [WeakRetained deviceManager];
+      deviceManager = [WeakRetained deviceManager];
       v44 = 0;
-      v18 = [v17 currentDeviceEntityWithError:&v44];
+      v18 = [deviceManager currentDeviceEntityWithError:&v44];
       v11 = v44;
 
       if (v18)
       {
         v41 = v12;
         v19 = objc_loadWeakRetained(&self->_profile);
-        v20 = [v19 dataProvenanceManager];
+        dataProvenanceManager = [v19 dataProvenanceManager];
         v40 = v18;
-        v21 = [v20 defaultLocalDataProvenanceWithDeviceEntity:v18];
+        v21 = [dataProvenanceManager defaultLocalDataProvenanceWithDeviceEntity:v18];
 
         v22 = objc_loadWeakRetained(&self->_profile);
-        v23 = [v22 dataManager];
+        dataManager = [v22 dataManager];
         v48 = v15;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
         v43 = 0;
         v39 = v21;
-        v25 = [v23 insertDataObjects:v24 withProvenance:v21 creationDate:&v43 error:CFAbsoluteTimeGetCurrent()];
+        v25 = [dataManager insertDataObjects:v24 withProvenance:v21 creationDate:&v43 error:CFAbsoluteTimeGetCurrent()];
         v26 = v15;
         v27 = v25;
         v28 = v43;
@@ -1342,11 +1342,11 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
         if (v27)
         {
           v29 = objc_loadWeakRetained(&self->_profile);
-          v30 = [v29 associationManager];
+          associationManager = [v29 associationManager];
           v38 = v26;
-          v31 = [v26 UUID];
+          uUID = [v26 UUID];
           v42 = v28;
-          v32 = [v30 associateObjectUUIDs:v7 objectUUID:v31 error:&v42];
+          v32 = [associationManager associateObjectUUIDs:dsCopy objectUUID:uUID error:&v42];
           v11 = v42;
 
           _HKInitializeLogging();
@@ -1421,13 +1421,13 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getProductVersionWithError:(id *)a3
+- (id)_getProductVersionWithError:(id *)error
 {
-  v3 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self->_availabilityManager pairedFeatureAttributesWithError:a3];
-  v4 = [v3 watchAttributes];
-  v5 = [v4 updateVersion];
+  v3 = [(HDHRIrregularRhythmNotificationsFeatureAvailabilityManager *)self->_availabilityManager pairedFeatureAttributesWithError:error];
+  watchAttributes = [v3 watchAttributes];
+  updateVersion = [watchAttributes updateVersion];
 
-  return v5;
+  return updateVersion;
 }
 
 - (void)_queue_forceHealthKitSync
@@ -1456,13 +1456,13 @@ id __104__HRAtrialFibrillationEventDetector__queue_analyzeCurrentConfirmationCyc
   v7 = v6;
   if (v5)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __68__HRAtrialFibrillationEventDetector__queue_confirmationCycleSamples__block_invoke;
     v17 = &unk_2786608B0;
-    v18 = v8;
-    v9 = v8;
+    v18 = array;
+    v9 = array;
     [v5 hk_enumerateUUIDsUsingBlock:&v14];
     v10 = [(HRAtrialFibrillationEventDetector *)self _queue_orderedConfirmationCycleSamplesFromUUIDs:v9, v14, v15, v16, v17];
     v11 = self->_cachedConfirmationCycleSamples;
@@ -1495,18 +1495,18 @@ LABEL_5:
   return v12;
 }
 
-- (id)_queue_orderedConfirmationCycleSamplesFromUUIDs:(id)a3
+- (id)_queue_orderedConfirmationCycleSamplesFromUUIDs:(id)ds
 {
   queue = self->_queue;
-  v5 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(queue);
   v6 = MEMORY[0x277D10848];
-  v7 = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v9 = HDDataEntityPredicateForDataUUIDs();
 
   v14 = 0;
-  v10 = [v6 samplesWithType:v7 profile:WeakRetained encodingOptions:0 predicate:v9 limit:0 anchor:0 error:&v14];
+  v10 = [v6 samplesWithType:heartbeatSeriesType profile:WeakRetained encodingOptions:0 predicate:v9 limit:0 anchor:0 error:&v14];
   v11 = v14;
 
   if (!v10)
@@ -1533,16 +1533,16 @@ uint64_t __85__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycle
   return v7;
 }
 
-- (id)_queue_orderedConfirmationCycleSamplesFromSamples:(id)a3 requestedUUIDs:(id)a4
+- (id)_queue_orderedConfirmationCycleSamplesFromSamples:(id)samples requestedUUIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycleSamplesFromSamples_requestedUUIDs___block_invoke;
   v12[3] = &unk_2786607F8;
-  v6 = v5;
+  v6 = dsCopy;
   v13 = v6;
-  v7 = [a3 hk_filter:v12];
+  v7 = [samples hk_filter:v12];
   v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_359];
 
   v9 = [v8 count];
@@ -1578,19 +1578,19 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
   return v7;
 }
 
-- (void)_queue_setConfirmationCycleSamples:(id)a3
+- (void)_queue_setConfirmationCycleSamples:(id)samples
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  samplesCopy = samples;
   dispatch_assert_queue_V2(self->_queue);
-  if (([v5 isEqual:self->_cachedConfirmationCycleSamples] & 1) == 0)
+  if (([samplesCopy isEqual:self->_cachedConfirmationCycleSamples] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v5;
+    v7 = samplesCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -1606,8 +1606,8 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * v11) UUID];
-          [v6 hk_appendBytesWithUUID:v12];
+          uUID = [*(*(&v18 + 1) + 8 * v11) UUID];
+          [data hk_appendBytesWithUUID:uUID];
 
           ++v11;
         }
@@ -1621,7 +1621,7 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
 
     localKeyValueDomain = self->_localKeyValueDomain;
     v17 = 0;
-    v14 = [(HDKeyValueDomain *)localKeyValueDomain setData:v6 forKey:@"ConfirmationCycleUUIDs" error:&v17];
+    v14 = [(HDKeyValueDomain *)localKeyValueDomain setData:data forKey:@"ConfirmationCycleUUIDs" error:&v17];
     v15 = v17;
     if ((v14 & 1) == 0)
     {
@@ -1632,21 +1632,21 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
       }
     }
 
-    objc_storeStrong(&self->_cachedConfirmationCycleSamples, a3);
+    objc_storeStrong(&self->_cachedConfirmationCycleSamples, samples);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setLastAlgorithmVersionUsed:(id)a3
+- (void)_queue_setLastAlgorithmVersionUsed:(id)used
 {
-  v5 = a3;
+  usedCopy = used;
   dispatch_assert_queue_V2(self->_queue);
-  if (([v5 isEqual:self->_cachedLastAlgorithmVersionUsed] & 1) == 0)
+  if (([usedCopy isEqual:self->_cachedLastAlgorithmVersionUsed] & 1) == 0)
   {
     localKeyValueDomain = self->_localKeyValueDomain;
     v9 = 0;
-    v7 = [(HDKeyValueDomain *)localKeyValueDomain setNumber:v5 forKey:@"LastAlgorithmVersionUsed" error:&v9];
+    v7 = [(HDKeyValueDomain *)localKeyValueDomain setNumber:usedCopy forKey:@"LastAlgorithmVersionUsed" error:&v9];
     v8 = v9;
     if ((v7 & 1) == 0)
     {
@@ -1657,7 +1657,7 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
       }
     }
 
-    objc_storeStrong(&self->_cachedLastAlgorithmVersionUsed, a3);
+    objc_storeStrong(&self->_cachedLastAlgorithmVersionUsed, used);
   }
 }
 
@@ -1700,16 +1700,16 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
   return cachedLastAlgorithmVersionUsed;
 }
 
-- (void)_queue_setLatestAnalyzedSampleDate:(id)a3
+- (void)_queue_setLatestAnalyzedSampleDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  if (([v5 isEqual:self->_cachedLatestAnalyzedSampleDate] & 1) == 0)
+  if (([dateCopy isEqual:self->_cachedLatestAnalyzedSampleDate] & 1) == 0)
   {
     syncedKeyValueDomain = self->_syncedKeyValueDomain;
     v7 = *MEMORY[0x277CCE4A0];
     v10 = 0;
-    v8 = [(HDKeyValueDomain *)syncedKeyValueDomain setDate:v5 forKey:v7 error:&v10];
+    v8 = [(HDKeyValueDomain *)syncedKeyValueDomain setDate:dateCopy forKey:v7 error:&v10];
     v9 = v10;
     if ((v8 & 1) == 0)
     {
@@ -1720,7 +1720,7 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
       }
     }
 
-    objc_storeStrong(&self->_cachedLatestAnalyzedSampleDate, a3);
+    objc_storeStrong(&self->_cachedLatestAnalyzedSampleDate, date);
   }
 }
 
@@ -1764,13 +1764,13 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
   return cachedLatestAnalyzedSampleDate;
 }
 
-- (void)_queue_setLastAnalyzedSampleAnchor:(id)a3
+- (void)_queue_setLastAnalyzedSampleAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_queue);
   localKeyValueDomain = self->_localKeyValueDomain;
   v10 = 0;
-  v6 = [(HDKeyValueDomain *)localKeyValueDomain setNumber:v4 forKey:@"LastAnalyzedSampleAnchor" error:&v10];
+  v6 = [(HDKeyValueDomain *)localKeyValueDomain setNumber:anchorCopy forKey:@"LastAnalyzedSampleAnchor" error:&v10];
   v7 = v10;
   if ((v6 & 1) == 0)
   {
@@ -1782,8 +1782,8 @@ uint64_t __102__HRAtrialFibrillationEventDetector__queue_orderedConfirmationCycl
   }
 
   cachedLastAnalyzedSampleAnchor = self->_cachedLastAnalyzedSampleAnchor;
-  self->_cachedLastAnalyzedSampleAnchor = v4;
-  v9 = v4;
+  self->_cachedLastAnalyzedSampleAnchor = anchorCopy;
+  v9 = anchorCopy;
 }
 
 - (id)_queue_lastAnalyzedSampleAnchor

@@ -1,25 +1,25 @@
 @interface AXSSDocumentTextRuleBasic
 - (AXSSDocumentTextRuleBasic)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index;
 - (unint64_t)hash;
-- (void)setAvoidWords:(id)a3;
+- (void)setAvoidWords:(id)words;
 @end
 
 @implementation AXSSDocumentTextRuleBasic
 
-- (void)setAvoidWords:(id)a3
+- (void)setAvoidWords:(id)words
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wordsCopy = words;
   v5 = objc_opt_new();
-  v17 = self;
-  v6 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
-  if (v6)
+  selfCopy = self;
+  avoidPhrases = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
+  if (avoidPhrases)
   {
-    v7 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
-    v8 = [v7 mutableCopy];
+    avoidPhrases2 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
+    v8 = [avoidPhrases2 mutableCopy];
   }
 
   else
@@ -31,7 +31,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = wordsCopy;
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -77,36 +77,36 @@
     while (v9);
   }
 
-  avoidWords = v17->_avoidWords;
-  v17->_avoidWords = v5;
+  avoidWords = selfCopy->_avoidWords;
+  selfCopy->_avoidWords = v5;
 
-  [(AXSSDocumentTextRuleBasic *)v17 setAvoidPhrases:v8];
+  [(AXSSDocumentTextRuleBasic *)selfCopy setAvoidPhrases:v8];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v47 = a5;
-  v53 = a7;
-  v48 = v11;
-  if ([v11 length])
+  wordCopy = word;
+  previousWordCopy = previousWord;
+  textCopy = text;
+  v48 = wordCopy;
+  if ([wordCopy length])
   {
-    v12 = [v11 string];
-    v13 = [(AXSSDocumentTextRuleBasic *)self caseSensitive];
-    v14 = [(AXSSDocumentTextRuleBasic *)self avoidWords];
+    string = [wordCopy string];
+    caseSensitive = [(AXSSDocumentTextRuleBasic *)self caseSensitive];
+    avoidWords = [(AXSSDocumentTextRuleBasic *)self avoidWords];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __110__AXSSDocumentTextRuleBasic_issuesForWord_atRange_previousWord_previousWordRange_inText_ignoreRuleUntilIndex___block_invoke;
     v63[3] = &unk_278BF0490;
-    v46 = v12;
+    v46 = string;
     v64 = v46;
-    v65 = !v13;
+    v65 = !caseSensitive;
     v50 = v65;
-    v15 = [v14 indexOfObjectPassingTest:v63];
+    v15 = [avoidWords indexOfObjectPassingTest:v63];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -119,21 +119,21 @@
       [v16 setOffendingText:v48];
       [v16 setRange:{location, length}];
       v18 = objc_opt_class();
-      v19 = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
-      v20 = [v48 string];
-      v21 = [v18 matchReplacementArrayCapitalization:v19 withSource:v20];
+      suggestedWords = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
+      string2 = [v48 string];
+      v21 = [v18 matchReplacementArrayCapitalization:suggestedWords withSource:string2];
       [v16 setSuggestions:v21];
 
       v22 = MEMORY[0x277CCACA8];
-      v23 = [v48 string];
-      v24 = [v22 stringWithFormat:@"The term '%@' may not be the best choice. Consider one of the following terms.", v23];
+      string3 = [v48 string];
+      v24 = [v22 stringWithFormat:@"The term '%@' may not be the best choice. Consider one of the following terms.", string3];
       [v16 setNote:v24];
 
       [v16 setKind:4];
     }
 
-    v25 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
-    v26 = [v25 count] == 0;
+    avoidPhrases = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
+    v26 = [avoidPhrases count] == 0;
 
     if (!v26)
     {
@@ -157,10 +157,10 @@
 
             v29 = *(*(&v59 + 1) + 8 * i);
             v30 = [v29 length];
-            if (v30 + location < [v53 length])
+            if (v30 + location < [textCopy length])
             {
-              v31 = [v53 string];
-              v32 = [v31 substringWithRange:{location, v30}];
+              string4 = [textCopy string];
+              v32 = [string4 substringWithRange:{location, v30}];
 
               if (![v29 compare:v32 options:1])
               {
@@ -168,8 +168,8 @@
                 v56 = &v55;
                 v57 = 0x2020000000;
                 v58 = 0;
-                v33 = [v53 string];
-                v34 = [v53 length];
+                string5 = [textCopy string];
+                v34 = [textCopy length];
                 v54[0] = MEMORY[0x277D85DD0];
                 v54[1] = 3221225472;
                 v54[2] = __110__AXSSDocumentTextRuleBasic_issuesForWord_atRange_previousWord_previousWordRange_inText_ignoreRuleUntilIndex___block_invoke_2;
@@ -177,12 +177,12 @@
                 v54[5] = location;
                 v54[6] = v30;
                 v54[4] = &v55;
-                [v33 enumerateSubstringsInRange:location options:v34 - location usingBlock:{3, v54}];
+                [string5 enumerateSubstringsInRange:location options:v34 - location usingBlock:{3, v54}];
 
                 if (*(v56 + 24) == 1)
                 {
-                  v35 = [v53 string];
-                  v36 = [v35 substringWithRange:{location, v30}];
+                  string6 = [textCopy string];
+                  v36 = [string6 substringWithRange:{location, v30}];
 
                   if ([v29 compare:v36 options:v50])
                   {
@@ -193,14 +193,14 @@
                   {
                     v37 = objc_opt_new();
 
-                    v38 = [v53 attributedSubstringFromRange:{location, v30}];
+                    v38 = [textCopy attributedSubstringFromRange:{location, v30}];
                     [v37 setOffendingText:v38];
 
                     [v37 setRange:{location, v30}];
                     v39 = objc_opt_class();
-                    v40 = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
-                    v41 = [v48 string];
-                    v42 = [v39 matchReplacementArrayCapitalization:v40 withSource:v41];
+                    suggestedWords2 = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
+                    string7 = [v48 string];
+                    v42 = [v39 matchReplacementArrayCapitalization:suggestedWords2 withSource:string7];
                     [v37 setSuggestions:v42];
 
                     v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"The term '%@' may not be the best choice. Consider one of the following terms.", v29];
@@ -281,46 +281,46 @@ void *__110__AXSSDocumentTextRuleBasic_issuesForWord_atRange_previousWord_previo
 
 - (unint64_t)hash
 {
-  v3 = [(AXSSDocumentTextRuleBasic *)self avoidWords];
-  v4 = [v3 hash];
-  v5 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
-  v8 = [v7 hash];
-  v9 = [(AXSSDocumentTextRuleBasic *)self note];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(AXSSDocumentTextRuleBasic *)self caseSensitive];
+  avoidWords = [(AXSSDocumentTextRuleBasic *)self avoidWords];
+  v4 = [avoidWords hash];
+  avoidPhrases = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
+  v6 = [avoidPhrases hash] ^ v4;
+  suggestedWords = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
+  v8 = [suggestedWords hash];
+  note = [(AXSSDocumentTextRuleBasic *)self note];
+  v10 = v6 ^ v8 ^ [note hash];
+  caseSensitive = [(AXSSDocumentTextRuleBasic *)self caseSensitive];
 
-  return v10 ^ v11;
+  return v10 ^ caseSensitive;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = AXSSDocumentTextRuleBasic;
-  v4 = [(AXSSDocumentTextRule *)&v10 copyWithZone:a3];
-  v5 = [(AXSSDocumentTextRuleBasic *)self avoidWords];
-  [v4 setAvoidWords:v5];
+  v4 = [(AXSSDocumentTextRule *)&v10 copyWithZone:zone];
+  avoidWords = [(AXSSDocumentTextRuleBasic *)self avoidWords];
+  [v4 setAvoidWords:avoidWords];
 
-  v6 = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
-  [v4 setAvoidPhrases:v6];
+  avoidPhrases = [(AXSSDocumentTextRuleBasic *)self avoidPhrases];
+  [v4 setAvoidPhrases:avoidPhrases];
 
-  v7 = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
-  [v4 setSuggestedWords:v7];
+  suggestedWords = [(AXSSDocumentTextRuleBasic *)self suggestedWords];
+  [v4 setSuggestedWords:suggestedWords];
 
-  v8 = [(AXSSDocumentTextRuleBasic *)self note];
-  [v4 setNote:v8];
+  note = [(AXSSDocumentTextRuleBasic *)self note];
+  [v4 setNote:note];
 
   [v4 setCaseSensitive:{-[AXSSDocumentTextRuleBasic caseSensitive](self, "caseSensitive")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
-  if (v5 == v6)
+  equalCopy = equal;
+  selfCopy = self;
+  v6 = equalCopy;
+  if (selfCopy == v6)
   {
     v8 = 1;
   }
@@ -328,41 +328,41 @@ void *__110__AXSSDocumentTextRuleBasic_issuesForWord_atRange_previousWord_previo
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v19.receiver = v5, v19.super_class = AXSSDocumentTextRuleBasic, [(AXSSDocumentTextRule *)&v19 isEqual:v6]) && (v7 = [(AXSSDocumentTextRuleBasic *)v5 caseSensitive], v7 == [(AXSSDocumentTextRuleBasic *)v6 caseSensitive]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v19.receiver = selfCopy, v19.super_class = AXSSDocumentTextRuleBasic, [(AXSSDocumentTextRule *)&v19 isEqual:v6]) && (v7 = [(AXSSDocumentTextRuleBasic *)selfCopy caseSensitive], v7 == [(AXSSDocumentTextRuleBasic *)v6 caseSensitive]))
     {
-      v10 = [(AXSSDocumentTextRuleBasic *)v5 avoidWords];
-      v11 = [(AXSSDocumentTextRuleBasic *)v6 avoidWords];
-      if (v10 | v11 && ![v10 isEqual:v11])
+      avoidWords = [(AXSSDocumentTextRuleBasic *)selfCopy avoidWords];
+      avoidWords2 = [(AXSSDocumentTextRuleBasic *)v6 avoidWords];
+      if (avoidWords | avoidWords2 && ![avoidWords isEqual:avoidWords2])
       {
         v8 = 0;
       }
 
       else
       {
-        v12 = [(AXSSDocumentTextRuleBasic *)v5 avoidPhrases];
-        v13 = [(AXSSDocumentTextRuleBasic *)v6 avoidPhrases];
-        if (v12 | v13 && ![v12 isEqual:v13])
+        avoidPhrases = [(AXSSDocumentTextRuleBasic *)selfCopy avoidPhrases];
+        avoidPhrases2 = [(AXSSDocumentTextRuleBasic *)v6 avoidPhrases];
+        if (avoidPhrases | avoidPhrases2 && ![avoidPhrases isEqual:avoidPhrases2])
         {
           v8 = 0;
         }
 
         else
         {
-          v14 = [(AXSSDocumentTextRuleBasic *)v5 suggestedWords];
-          v15 = [(AXSSDocumentTextRuleBasic *)v6 suggestedWords];
-          if (v14 | v15 && ![v14 isEqual:v15])
+          suggestedWords = [(AXSSDocumentTextRuleBasic *)selfCopy suggestedWords];
+          suggestedWords2 = [(AXSSDocumentTextRuleBasic *)v6 suggestedWords];
+          if (suggestedWords | suggestedWords2 && ![suggestedWords isEqual:suggestedWords2])
           {
             v8 = 0;
           }
 
           else
           {
-            v18 = v12;
-            v16 = [(AXSSDocumentTextRuleBasic *)v5 note];
-            v17 = [(AXSSDocumentTextRuleBasic *)v6 note];
-            if (v16 | v17)
+            v18 = avoidPhrases;
+            note = [(AXSSDocumentTextRuleBasic *)selfCopy note];
+            note2 = [(AXSSDocumentTextRuleBasic *)v6 note];
+            if (note | note2)
             {
-              v8 = [v16 isEqual:v17];
+              v8 = [note isEqual:note2];
             }
 
             else
@@ -370,7 +370,7 @@ void *__110__AXSSDocumentTextRuleBasic_issuesForWord_atRange_previousWord_previo
               v8 = 1;
             }
 
-            v12 = v18;
+            avoidPhrases = v18;
           }
         }
       }

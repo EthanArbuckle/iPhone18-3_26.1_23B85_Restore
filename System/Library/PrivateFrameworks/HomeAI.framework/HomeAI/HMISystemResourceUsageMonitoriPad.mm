@@ -1,7 +1,7 @@
 @interface HMISystemResourceUsageMonitoriPad
 - (BOOL)computeResourceUsageLevel;
 - (HMISystemResourceUsageMonitorDelegate)delegate;
-- (HMISystemResourceUsageMonitoriPad)initWithWorkQueue:(id)a3;
+- (HMISystemResourceUsageMonitoriPad)initWithWorkQueue:(id)queue;
 - (void)handleResourceUsageNotification;
 - (void)possibleComputeResourceChange;
 - (void)start;
@@ -9,42 +9,42 @@
 
 @implementation HMISystemResourceUsageMonitoriPad
 
-- (HMISystemResourceUsageMonitoriPad)initWithWorkQueue:(id)a3
+- (HMISystemResourceUsageMonitoriPad)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = HMISystemResourceUsageMonitoriPad;
   v6 = [(HMISystemResourceUsageMonitoriPad *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
     v8 = objc_alloc_init(HMISystemResourceUsage);
     currentSystemResourceUsage = v7->_currentSystemResourceUsage;
     v7->_currentSystemResourceUsage = v8;
 
     v7->_displayOn = 1;
     v10 = [HMINotifydObserver alloc];
-    v11 = [(HMISystemResourceUsageMonitoriPad *)v7 workQueue];
+    workQueue = [(HMISystemResourceUsageMonitoriPad *)v7 workQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __55__HMISystemResourceUsageMonitoriPad_initWithWorkQueue___block_invoke;
     v23[3] = &unk_2787548D8;
     v12 = v7;
     v24 = v12;
-    v13 = [(HMINotifydObserver *)v10 initWithNotificationName:"com.apple.iokit.hid.displayStatus" andQueue:v11 andCallback:v23];
+    v13 = [(HMINotifydObserver *)v10 initWithNotificationName:"com.apple.iokit.hid.displayStatus" andQueue:workQueue andCallback:v23];
     notifydObserverForDisplayState = v12->_notifydObserverForDisplayState;
     v12->_notifydObserverForDisplayState = v13;
 
     v15 = [HMINotifydObserver alloc];
-    v16 = [(HMISystemResourceUsageMonitoriPad *)v12 workQueue];
+    workQueue2 = [(HMISystemResourceUsageMonitoriPad *)v12 workQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__HMISystemResourceUsageMonitoriPad_initWithWorkQueue___block_invoke_4;
     v21[3] = &unk_2787548D8;
     v17 = v12;
     v22 = v17;
-    v18 = [(HMINotifydObserver *)v15 initWithNotificationName:"com.apple.springboard.lockstate" andQueue:v16 andCallback:v21];
+    v18 = [(HMINotifydObserver *)v15 initWithNotificationName:"com.apple.springboard.lockstate" andQueue:workQueue2 andCallback:v21];
     notifydObserverForLockState = v17->_notifydObserverForLockState;
     v17->_notifydObserverForLockState = v18;
   }
@@ -98,52 +98,52 @@ void __55__HMISystemResourceUsageMonitoriPad_initWithWorkQueue___block_invoke_4(
 
 - (void)start
 {
-  v3 = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMISystemResourceUsageMonitoriPad *)self possibleComputeResourceChange];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277D0F200] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277D0F200] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277D0F1F8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277D0F1F8] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277CCA5E8] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handleResourceUsageNotification name:*MEMORY[0x277CCA5E8] object:0];
 
-  v7 = [MEMORY[0x277D0F8C8] sharedManager];
-  [v7 start];
+  mEMORY[0x277D0F8C8] = [MEMORY[0x277D0F8C8] sharedManager];
+  [mEMORY[0x277D0F8C8] start];
 
-  v8 = [(HMISystemResourceUsageMonitoriPad *)self notifydObserverForDisplayState];
-  [v8 start];
+  notifydObserverForDisplayState = [(HMISystemResourceUsageMonitoriPad *)self notifydObserverForDisplayState];
+  [notifydObserverForDisplayState start];
 
-  v9 = [(HMISystemResourceUsageMonitoriPad *)self notifydObserverForLockState];
-  [v9 start];
+  notifydObserverForLockState = [(HMISystemResourceUsageMonitoriPad *)self notifydObserverForLockState];
+  [notifydObserverForLockState start];
 }
 
 - (void)handleResourceUsageNotification
 {
-  v3 = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
+  workQueue = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMISystemResourceUsageMonitoriPad_handleResourceUsageNotification__block_invoke;
   block[3] = &unk_278752868;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)possibleComputeResourceChange
 {
-  v3 = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMISystemResourceUsageMonitoriPad *)self computeResourceUsageLevel])
   {
-    v5 = [(HMISystemResourceUsageMonitoriPad *)self delegate];
+    delegate = [(HMISystemResourceUsageMonitoriPad *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(HMISystemResourceUsageMonitoriPad *)self currentSystemResourceUsage];
-      [v5 systemResourceUsageDidChangeTo:{objc_msgSend(v4, "systemResourceUsageLevel")}];
+      currentSystemResourceUsage = [(HMISystemResourceUsageMonitoriPad *)self currentSystemResourceUsage];
+      [delegate systemResourceUsageDidChangeTo:{objc_msgSend(currentSystemResourceUsage, "systemResourceUsageLevel")}];
     }
   }
 }
@@ -151,16 +151,16 @@ void __55__HMISystemResourceUsageMonitoriPad_initWithWorkQueue___block_invoke_4(
 - (BOOL)computeResourceUsageLevel
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitoriPad *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v5)
+  if (isLowPowerModeEnabled)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -182,11 +182,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v12 = [MEMORY[0x277D0F8C8] sharedManager];
-  v13 = [v12 batteryState];
+  mEMORY[0x277D0F8C8] = [MEMORY[0x277D0F8C8] sharedManager];
+  batteryState = [mEMORY[0x277D0F8C8] batteryState];
 
-  v14 = [MEMORY[0x277D0F8C8] sharedManager];
-  [v14 batteryLevel];
+  mEMORY[0x277D0F8C8]2 = [MEMORY[0x277D0F8C8] sharedManager];
+  [mEMORY[0x277D0F8C8]2 batteryLevel];
   v16 = v15;
 
   if ([(HMISystemResourceUsageMonitoriPad *)self isDisplayOn])
@@ -199,10 +199,10 @@ LABEL_4:
     v17 = 0;
   }
 
-  if ((v13 - 2) < 2)
+  if ((batteryState - 2) < 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     v26 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
     if (!v17)
@@ -236,10 +236,10 @@ LABEL_4:
     goto LABEL_20;
   }
 
-  if (!v13)
+  if (!batteryState)
   {
     v6 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy3 = self;
     v8 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -256,11 +256,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v13 == 1)
+  if (batteryState == 1)
   {
     v18 = v16;
     v6 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v8 = HMFGetOSLogHandle();
     v20 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
     if (v18 <= 0.2)
@@ -299,15 +299,15 @@ LABEL_22:
   v11 = 0;
 LABEL_24:
   v28 = [(HMISystemResourceUsageMonitoriPad *)self currentSystemResourceUsage:*v33];
-  v29 = [v28 systemResourceUsageLevel];
+  systemResourceUsageLevel = [v28 systemResourceUsageLevel];
 
-  if (v29 != v11)
+  if (systemResourceUsageLevel != v11)
   {
-    v30 = [(HMISystemResourceUsageMonitoriPad *)self currentSystemResourceUsage];
-    [v30 setSystemResourceUsageLevel:v11];
+    currentSystemResourceUsage = [(HMISystemResourceUsageMonitoriPad *)self currentSystemResourceUsage];
+    [currentSystemResourceUsage setSystemResourceUsageLevel:v11];
   }
 
-  return v29 != v11;
+  return systemResourceUsageLevel != v11;
 }
 
 - (HMISystemResourceUsageMonitorDelegate)delegate

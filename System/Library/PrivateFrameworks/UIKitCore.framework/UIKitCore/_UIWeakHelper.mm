@@ -1,5 +1,5 @@
 @interface _UIWeakHelper
-- (_UIWeakHelper)initWithDeallocationBlock:(id)a3;
+- (_UIWeakHelper)initWithDeallocationBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -28,16 +28,16 @@
   [(_UIWeakHelper *)&v5 dealloc];
 }
 
-- (_UIWeakHelper)initWithDeallocationBlock:(id)a3
+- (_UIWeakHelper)initWithDeallocationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = _UIWeakHelper;
   v5 = [(_UIWeakHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIWeakHelper *)v5 setDeallocationBlock:v4];
+    [(_UIWeakHelper *)v5 setDeallocationBlock:blockCopy];
   }
 
   return v6;

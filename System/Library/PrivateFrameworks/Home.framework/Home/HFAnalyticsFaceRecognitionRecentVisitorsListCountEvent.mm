@@ -1,15 +1,15 @@
 @interface HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent
-- (HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent)initWithData:(id)a3;
+- (HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent
 
-- (HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent)initWithData:(id)a3
+- (HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"faceCropCount"];
+  v5 = [dataCopy objectForKeyedSubscript:@"faceCropCount"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"clusteredNoNamePersonCount"];
+  v8 = [dataCopy objectForKeyedSubscript:@"clusteredNoNamePersonCount"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"unknownFaceCropCount"];
+  v11 = [dataCopy objectForKeyedSubscript:@"unknownFaceCropCount"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -86,20 +86,20 @@
 {
   v10.receiver = self;
   v10.super_class = HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent;
-  v3 = [(HFAnalyticsEvent *)&v10 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v10 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self faceCropCount];
-  [v4 na_safeSetObject:v5 forKey:@"faceCropCount"];
+  faceCropCount = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self faceCropCount];
+  [v4 na_safeSetObject:faceCropCount forKey:@"faceCropCount"];
 
-  v6 = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self clusteredNoNamePersonCount];
-  [v4 na_safeSetObject:v6 forKey:@"clusteredNoNamePersonCount"];
+  clusteredNoNamePersonCount = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self clusteredNoNamePersonCount];
+  [v4 na_safeSetObject:clusteredNoNamePersonCount forKey:@"clusteredNoNamePersonCount"];
 
-  v7 = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self unknownFaceCropCount];
-  [v4 na_safeSetObject:v7 forKey:@"unknownFaceCropCount"];
+  unknownFaceCropCount = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self unknownFaceCropCount];
+  [v4 na_safeSetObject:unknownFaceCropCount forKey:@"unknownFaceCropCount"];
 
-  v8 = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self unknownPersonCountTotal];
-  [v4 na_safeSetObject:v8 forKey:@"unknownCountIdentityTotal"];
+  unknownPersonCountTotal = [(HFAnalyticsFaceRecognitionRecentVisitorsListCountEvent *)self unknownPersonCountTotal];
+  [v4 na_safeSetObject:unknownPersonCountTotal forKey:@"unknownCountIdentityTotal"];
 
   return v4;
 }

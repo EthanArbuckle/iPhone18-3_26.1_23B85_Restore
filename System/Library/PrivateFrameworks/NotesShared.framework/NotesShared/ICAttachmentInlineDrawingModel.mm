@@ -1,7 +1,7 @@
 @interface ICAttachmentInlineDrawingModel
 - (BOOL)showThumbnailInNoteList;
 - (id)additionalIndexableTextContentInNote;
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4;
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content;
 - (id)newDrawingFromMergeableData;
 - (id)searchableTextContentInNote;
 - (id)standaloneTitleForNote;
@@ -17,55 +17,55 @@
     return 0;
   }
 
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 previewImages];
-  v5 = [v4 count] != 0;
+  attachment = [(ICAttachmentModel *)self attachment];
+  previewImages = [attachment previewImages];
+  v5 = [previewImages count] != 0;
 
   return v5;
 }
 
 - (id)standaloneTitleForNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 userTitle];
+  attachment = [(ICAttachmentModel *)self attachment];
+  userTitle = [attachment userTitle];
 
-  if (v4)
+  if (userTitle)
   {
-    v5 = v4;
+    title = userTitle;
   }
 
   else
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v5 = [v6 title];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    title = [attachment2 title];
   }
 
-  if (![v5 length])
+  if (![title length])
   {
     v7 = +[ICNote defaultTitleForEmptyNote];
 
-    v5 = v7;
+    title = v7;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)additionalIndexableTextContentInNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 additionalIndexableText];
+  attachment = [(ICAttachmentModel *)self attachment];
+  additionalIndexableText = [attachment additionalIndexableText];
 
-  return v3;
+  return additionalIndexableText;
 }
 
 - (id)searchableTextContentInNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 summary];
+  attachment = [(ICAttachmentModel *)self attachment];
+  summary = [attachment summary];
 
-  if (v3)
+  if (summary)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v3];
+    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:summary];
   }
 
   else
@@ -76,15 +76,15 @@
   return v4;
 }
 
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content
 {
-  *a3 = @"img";
-  v4 = [(ICAttachmentModel *)self attachment];
-  v5 = [v4 fallbackImageData];
+  *name = @"img";
+  attachment = [(ICAttachmentModel *)self attachment];
+  fallbackImageData = [attachment fallbackImageData];
 
-  if (v5)
+  if (fallbackImageData)
   {
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    v6 = [fallbackImageData base64EncodedStringWithOptions:0];
     v7 = +[ICAttachment fallbackImageUTI];
     v8 = [ICAttachment mimeTypeFromUTI:v7];
 
@@ -101,13 +101,13 @@
 
 - (id)newDrawingFromMergeableData
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 mergeableData];
+  attachment = [(ICAttachmentModel *)self attachment];
+  mergeableData = [attachment mergeableData];
 
-  if ([v3 length])
+  if ([mergeableData length])
   {
     v8 = 0;
-    v4 = [objc_alloc(MEMORY[0x277CD95F8]) initWithData:v3 error:&v8];
+    v4 = [objc_alloc(MEMORY[0x277CD95F8]) initWithData:mergeableData error:&v8];
     v5 = v8;
     if (v5)
     {
@@ -131,7 +131,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "newDrawingFromMergeableData error creating currentDrawing %@", &v2, 0xCu);
 }
 

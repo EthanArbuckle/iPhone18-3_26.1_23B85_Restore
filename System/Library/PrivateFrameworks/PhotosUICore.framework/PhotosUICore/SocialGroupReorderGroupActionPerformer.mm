@@ -1,5 +1,5 @@
 @interface SocialGroupReorderGroupActionPerformer
-- (_TtC12PhotosUICore38SocialGroupReorderGroupActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5;
+- (_TtC12PhotosUICore38SocialGroupReorderGroupActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters;
 - (void)performBackgroundTask;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)performBackgroundTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A45B368C();
 }
 
-- (_TtC12PhotosUICore38SocialGroupReorderGroupActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5
+- (_TtC12PhotosUICore38SocialGroupReorderGroupActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for PXActionParameterKey();
@@ -21,13 +21,13 @@
   v9 = self + OBJC_IVAR____TtC12PhotosUICore38SocialGroupReorderGroupActionPerformer_destinationIndex;
   *v9 = 0;
   v9[8] = 1;
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  referenceCopy = reference;
   v12 = sub_1A524C3D4();
 
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v13 = [(PXAssetCollectionActionPerformer *)&v15 initWithActionType:v10 assetCollectionReference:v11 parameters:v12];
+  v13 = [(PXAssetCollectionActionPerformer *)&v15 initWithActionType:typeCopy assetCollectionReference:referenceCopy parameters:v12];
 
   return v13;
 }

@@ -1,23 +1,23 @@
 @interface HFRoomItemProvider
 - (HFRoomItemProvider)init;
-- (HFRoomItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFRoomItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFRoomItemProvider
 
-- (HFRoomItemProvider)initWithHome:(id)a3
+- (HFRoomItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFRoomItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     roomItems = v7->_roomItems;
     v7->_roomItems = v8;
@@ -28,18 +28,18 @@
 
 - (HFRoomItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFRoomItemProvider.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFRoomItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRoomItemProvider.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFRoomItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFRoomItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFRoomItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -53,11 +53,11 @@
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v13, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFRoomItemProvider *)self home];
-  v5 = [v4 hf_activeRooms];
+  home = [(HFRoomItemProvider *)self home];
+  hf_activeRooms = [home hf_activeRooms];
 
-  v6 = [(HFRoomItemProvider *)self filter];
-  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v6 itemMap:v3];
+  filter = [(HFRoomItemProvider *)self filter];
+  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:hf_activeRooms filter:filter itemMap:v3];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__HFRoomItemProvider_reloadItems__block_invoke_2;
@@ -105,11 +105,11 @@ id __33__HFRoomItemProvider_reloadItems__block_invoke_2(uint64_t a1, void *a2)
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFRoomItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"room";
   v8[1] = @"user";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

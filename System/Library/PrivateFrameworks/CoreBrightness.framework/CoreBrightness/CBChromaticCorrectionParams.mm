@@ -1,39 +1,39 @@
 @interface CBChromaticCorrectionParams
-- (BOOL)initBezierWithPrefix:(id)a3 fromParser:(id)a4;
-- (BOOL)initCommonWithPrefix:(id)a3 fromParser:(id)a4;
-- (BOOL)initFromParserOG:(id)a3 withName:(id)a4 andPrefix:(id)a5;
-- (BOOL)initTablesWithPrefix:(id)a3 fromParser:(id)a4;
-- (id)initFromParser:(id)a3 withName:(id)a4 andPrefix:(id)a5;
+- (BOOL)initBezierWithPrefix:(id)prefix fromParser:(id)parser;
+- (BOOL)initCommonWithPrefix:(id)prefix fromParser:(id)parser;
+- (BOOL)initFromParserOG:(id)g withName:(id)name andPrefix:(id)prefix;
+- (BOOL)initTablesWithPrefix:(id)prefix fromParser:(id)parser;
+- (id)initFromParser:(id)parser withName:(id)name andPrefix:(id)prefix;
 - (void)dealloc;
 @end
 
 @implementation CBChromaticCorrectionParams
 
-- (BOOL)initBezierWithPrefix:(id)a3 fromParser:(id)a4
+- (BOOL)initBezierWithPrefix:(id)prefix fromParser:(id)parser
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
-  v41 = a4;
-  v40 = [a4 loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-bezier-anchors", a3), &self->_rampBezierAnchorsOG}];
-  if (v44->_rampBezierAnchorsOG)
+  prefixCopy = prefix;
+  parserCopy = parser;
+  v40 = [parser loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-bezier-anchors", prefix), &self->_rampBezierAnchorsOG}];
+  if (selfCopy->_rampBezierAnchorsOG)
   {
     if (v40 == 3)
     {
-      if (*v44->_rampBezierAnchorsOG >= 0.0 && *v44->_rampBezierAnchorsOG <= 1.0)
+      if (*selfCopy->_rampBezierAnchorsOG >= 0.0 && *selfCopy->_rampBezierAnchorsOG <= 1.0)
       {
-        if (v44->_rampBezierAnchorsOG[1] >= 0.0 && v44->_rampBezierAnchorsOG[1] <= 1.0)
+        if (selfCopy->_rampBezierAnchorsOG[1] >= 0.0 && selfCopy->_rampBezierAnchorsOG[1] <= 1.0)
         {
-          if (v44->_rampBezierAnchorsOG[2] >= 0.0 && v44->_rampBezierAnchorsOG[2] <= 1.0)
+          if (selfCopy->_rampBezierAnchorsOG[2] >= 0.0 && selfCopy->_rampBezierAnchorsOG[2] <= 1.0)
           {
             return 1;
           }
 
           else
           {
-            if (v44->_log)
+            if (selfCopy->_log)
             {
-              v8 = v44->_log;
+              v8 = selfCopy->_log;
             }
 
             else
@@ -67,9 +67,9 @@
 
         else
         {
-          if (v44->_log)
+          if (selfCopy->_log)
           {
-            v12 = v44->_log;
+            v12 = selfCopy->_log;
           }
 
           else
@@ -103,9 +103,9 @@
 
       else
       {
-        if (v44->_log)
+        if (selfCopy->_log)
         {
-          v16 = v44->_log;
+          v16 = selfCopy->_log;
         }
 
         else
@@ -139,9 +139,9 @@
 
     else
     {
-      if (v44->_log)
+      if (selfCopy->_log)
       {
-        v20 = v44->_log;
+        v20 = selfCopy->_log;
       }
 
       else
@@ -175,9 +175,9 @@
 
   else
   {
-    if (v44->_log)
+    if (selfCopy->_log)
     {
-      v24 = v44->_log;
+      v24 = selfCopy->_log;
     }
 
     else
@@ -209,46 +209,46 @@
   }
 }
 
-- (BOOL)initCommonWithPrefix:(id)a3 fromParser:(id)a4
+- (BOOL)initCommonWithPrefix:(id)prefix fromParser:(id)parser
 {
-  v99 = self;
+  selfCopy = self;
   v98 = a2;
-  v97 = a3;
-  v96 = a4;
-  if ([a4 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-lux-activation-threshold", a3), &self->_luxActivationThreshold}])
+  prefixCopy = prefix;
+  parserCopy = parser;
+  if ([parser loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-lux-activation-threshold", prefix), &self->_luxActivationThreshold}])
   {
-    if (v99->_luxActivationThreshold >= 0.0)
+    if (selfCopy->_luxActivationThreshold >= 0.0)
     {
-      if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-nits-activation-threshold", v97), &v99->_nitsActivationThreshold}])
+      if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-nits-activation-threshold", prefixCopy), &selfCopy->_nitsActivationThreshold}])
       {
-        if (v99->_nitsActivationThreshold >= 0.0)
+        if (selfCopy->_nitsActivationThreshold >= 0.0)
         {
-          if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-up-duration", v97), &v99->_rampUpDuration}])
+          if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-up-duration", prefixCopy), &selfCopy->_rampUpDuration}])
           {
-            if (v99->_rampUpDuration >= 0.0)
+            if (selfCopy->_rampUpDuration >= 0.0)
             {
-              if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-up-lux-threshold", v97), &v99->_rampUpLuxDeltaThreshold}])
+              if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-up-lux-threshold", prefixCopy), &selfCopy->_rampUpLuxDeltaThreshold}])
               {
-                if (v99->_rampUpLuxDeltaThreshold >= 0.0)
+                if (selfCopy->_rampUpLuxDeltaThreshold >= 0.0)
                 {
-                  if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-down-duration", v97), &v99->_rampDownDuration}])
+                  if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-down-duration", prefixCopy), &selfCopy->_rampDownDuration}])
                   {
-                    if (v99->_rampDownDuration >= 0.0)
+                    if (selfCopy->_rampDownDuration >= 0.0)
                     {
-                      if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-down-lux-threshold", v97), &v99->_rampDownLuxDeltaThreshold}])
+                      if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-down-lux-threshold", prefixCopy), &selfCopy->_rampDownLuxDeltaThreshold}])
                       {
-                        if (v99->_rampDownLuxDeltaThreshold >= 0.0)
+                        if (selfCopy->_rampDownLuxDeltaThreshold >= 0.0)
                         {
-                          if ([v96 loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-update-rate", v97), &v99->_rampUpdateRate}])
+                          if ([parserCopy loadFloat:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-ramp-update-rate", prefixCopy), &selfCopy->_rampUpdateRate}])
                           {
                             return 1;
                           }
 
                           else
                           {
-                            if (v99->_log)
+                            if (selfCopy->_log)
                             {
-                              v8 = v99->_log;
+                              v8 = selfCopy->_log;
                             }
 
                             else
@@ -282,9 +282,9 @@
 
                         else
                         {
-                          if (v99->_log)
+                          if (selfCopy->_log)
                           {
-                            v12 = v99->_log;
+                            v12 = selfCopy->_log;
                           }
 
                           else
@@ -318,9 +318,9 @@
 
                       else
                       {
-                        if (v99->_log)
+                        if (selfCopy->_log)
                         {
-                          v16 = v99->_log;
+                          v16 = selfCopy->_log;
                         }
 
                         else
@@ -354,9 +354,9 @@
 
                     else
                     {
-                      if (v99->_log)
+                      if (selfCopy->_log)
                       {
-                        v20 = v99->_log;
+                        v20 = selfCopy->_log;
                       }
 
                       else
@@ -390,9 +390,9 @@
 
                   else
                   {
-                    if (v99->_log)
+                    if (selfCopy->_log)
                     {
-                      v24 = v99->_log;
+                      v24 = selfCopy->_log;
                     }
 
                     else
@@ -426,9 +426,9 @@
 
                 else
                 {
-                  if (v99->_log)
+                  if (selfCopy->_log)
                   {
-                    v28 = v99->_log;
+                    v28 = selfCopy->_log;
                   }
 
                   else
@@ -462,9 +462,9 @@
 
               else
               {
-                if (v99->_log)
+                if (selfCopy->_log)
                 {
-                  v32 = v99->_log;
+                  v32 = selfCopy->_log;
                 }
 
                 else
@@ -498,9 +498,9 @@
 
             else
             {
-              if (v99->_log)
+              if (selfCopy->_log)
               {
-                v36 = v99->_log;
+                v36 = selfCopy->_log;
               }
 
               else
@@ -534,9 +534,9 @@
 
           else
           {
-            if (v99->_log)
+            if (selfCopy->_log)
             {
-              v40 = v99->_log;
+              v40 = selfCopy->_log;
             }
 
             else
@@ -570,9 +570,9 @@
 
         else
         {
-          if (v99->_log)
+          if (selfCopy->_log)
           {
-            v44 = v99->_log;
+            v44 = selfCopy->_log;
           }
 
           else
@@ -606,9 +606,9 @@
 
       else
       {
-        if (v99->_log)
+        if (selfCopy->_log)
         {
-          v48 = v99->_log;
+          v48 = selfCopy->_log;
         }
 
         else
@@ -642,9 +642,9 @@
 
     else
     {
-      if (v99->_log)
+      if (selfCopy->_log)
       {
-        v52 = v99->_log;
+        v52 = selfCopy->_log;
       }
 
       else
@@ -678,9 +678,9 @@
 
   else
   {
-    if (v99->_log)
+    if (selfCopy->_log)
     {
-      v56 = v99->_log;
+      v56 = selfCopy->_log;
     }
 
     else
@@ -712,25 +712,25 @@
   }
 }
 
-- (BOOL)initTablesWithPrefix:(id)a3 fromParser:(id)a4
+- (BOOL)initTablesWithPrefix:(id)prefix fromParser:(id)parser
 {
   v68 = *MEMORY[0x1E69E9840];
-  v64 = self;
+  selfCopy = self;
   v63 = a2;
-  v62 = a3;
-  v61 = a4;
-  self->_luxTableSizeOG = [a4 loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-lux-table", a3), &self->_luxTableOG}];
-  if (v64->_luxTableOG)
+  prefixCopy = prefix;
+  parserCopy = parser;
+  self->_luxTableSizeOG = [parser loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-lux-table", prefix), &self->_luxTableOG}];
+  if (selfCopy->_luxTableOG)
   {
-    if (v64->_luxTableSizeOG)
+    if (selfCopy->_luxTableSizeOG)
     {
-      for (i = 0; i < v64->_luxTableSizeOG - 1; ++i)
+      for (i = 0; i < selfCopy->_luxTableSizeOG - 1; ++i)
       {
-        if (v64->_luxTableOG[i] >= v64->_luxTableOG[i + 1])
+        if (selfCopy->_luxTableOG[i] >= selfCopy->_luxTableOG[i + 1])
         {
-          if (v64->_log)
+          if (selfCopy->_log)
           {
-            v28 = v64->_log;
+            v28 = selfCopy->_log;
           }
 
           else
@@ -763,18 +763,18 @@
         }
       }
 
-      v64->_nitsTableSizeOG = [v61 loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-nits-table", v62), &v64->_nitsTableOG}];
-      if (v64->_nitsTableOG)
+      selfCopy->_nitsTableSizeOG = [parserCopy loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-nits-table", prefixCopy), &selfCopy->_nitsTableOG}];
+      if (selfCopy->_nitsTableOG)
       {
-        if (v64->_nitsTableSizeOG)
+        if (selfCopy->_nitsTableSizeOG)
         {
-          for (j = 0; j < v64->_nitsTableSizeOG - 1; ++j)
+          for (j = 0; j < selfCopy->_nitsTableSizeOG - 1; ++j)
           {
-            if (v64->_nitsTableOG[j] >= v64->_nitsTableOG[j + 1])
+            if (selfCopy->_nitsTableOG[j] >= selfCopy->_nitsTableOG[j + 1])
             {
-              if (v64->_log)
+              if (selfCopy->_log)
               {
-                v16 = v64->_log;
+                v16 = selfCopy->_log;
               }
 
               else
@@ -807,28 +807,28 @@
             }
           }
 
-          v64->_strengthTableSizeOG = [v61 loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-strength-table", v62), &v64->_strengthTableOG}];
-          if (v64->_strengthTableOG)
+          selfCopy->_strengthTableSizeOG = [parserCopy loadFloatArray:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"%@-strength-table", prefixCopy), &selfCopy->_strengthTableOG}];
+          if (selfCopy->_strengthTableOG)
           {
-            if (v64->_strengthTableSizeOG == v64->_nitsTableSizeOG * v64->_luxTableSizeOG)
+            if (selfCopy->_strengthTableSizeOG == selfCopy->_nitsTableSizeOG * selfCopy->_luxTableSizeOG)
             {
               for (k = 0; ; ++k)
               {
-                if (k >= v64->_strengthTableSizeOG)
+                if (k >= selfCopy->_strengthTableSizeOG)
                 {
                   v65 = 1;
                   goto LABEL_102;
                 }
 
-                if (v64->_strengthTableOG[k] < 0.0 || v64->_strengthTableOG[k] > 1.0)
+                if (selfCopy->_strengthTableOG[k] < 0.0 || selfCopy->_strengthTableOG[k] > 1.0)
                 {
                   break;
                 }
               }
 
-              if (v64->_log)
+              if (selfCopy->_log)
               {
-                v6 = v64->_log;
+                v6 = selfCopy->_log;
               }
 
               else
@@ -848,7 +848,7 @@
 
               if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
               {
-                __os_log_helper_16_0_2_8_0_8_0(v66, k, COERCE__INT64(v64->_strengthTableOG[k]));
+                __os_log_helper_16_0_2_8_0_8_0(v66, k, COERCE__INT64(selfCopy->_strengthTableOG[k]));
                 _os_log_error_impl(&dword_1DE8E5000, v6, OS_LOG_TYPE_ERROR, "Strength table element #%lu with value %f is out of the valid [0, 1] range", v66, 0x16u);
               }
 
@@ -857,9 +857,9 @@
 
             else
             {
-              if (v64->_log)
+              if (selfCopy->_log)
               {
-                v8 = v64->_log;
+                v8 = selfCopy->_log;
               }
 
               else
@@ -879,7 +879,7 @@
 
               if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
               {
-                __os_log_helper_16_0_3_8_0_8_0_8_0(v67, v64->_strengthTableSizeOG, v64->_luxTableSizeOG, v64->_nitsTableSizeOG);
+                __os_log_helper_16_0_3_8_0_8_0_8_0(v67, selfCopy->_strengthTableSizeOG, selfCopy->_luxTableSizeOG, selfCopy->_nitsTableSizeOG);
                 _os_log_error_impl(&dword_1DE8E5000, v8, OS_LOG_TYPE_ERROR, "Strength table has wrong size %lu for lux table size %lu and nits table size %lu", v67, 0x20u);
               }
 
@@ -889,9 +889,9 @@
 
           else
           {
-            if (v64->_log)
+            if (selfCopy->_log)
             {
-              v12 = v64->_log;
+              v12 = selfCopy->_log;
             }
 
             else
@@ -925,9 +925,9 @@
 
         else
         {
-          if (v64->_log)
+          if (selfCopy->_log)
           {
-            v20 = v64->_log;
+            v20 = selfCopy->_log;
           }
 
           else
@@ -961,9 +961,9 @@
 
       else
       {
-        if (v64->_log)
+        if (selfCopy->_log)
         {
-          v24 = v64->_log;
+          v24 = selfCopy->_log;
         }
 
         else
@@ -997,9 +997,9 @@
 
     else
     {
-      if (v64->_log)
+      if (selfCopy->_log)
       {
-        v32 = v64->_log;
+        v32 = selfCopy->_log;
       }
 
       else
@@ -1033,9 +1033,9 @@
 
   else
   {
-    if (v64->_log)
+    if (selfCopy->_log)
     {
-      v36 = v64->_log;
+      v36 = selfCopy->_log;
     }
 
     else
@@ -1071,136 +1071,136 @@ LABEL_102:
   return v65 & 1;
 }
 
-- (id)initFromParser:(id)a3 withName:(id)a4 andPrefix:(id)a5
+- (id)initFromParser:(id)parser withName:(id)name andPrefix:(id)prefix
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
-  v18 = a5;
+  parserCopy = parser;
+  nameCopy = name;
+  prefixCopy = prefix;
   v17.receiver = self;
   v17.super_class = CBChromaticCorrectionParams;
-  v22 = [(CBChromaticCorrectionParams *)&v17 init];
-  if (v22)
+  selfCopy = [(CBChromaticCorrectionParams *)&v17 init];
+  if (selfCopy)
   {
-    v5 = os_log_create("com.apple.CoreBrightness.BacklightNode", [objc_msgSend(v19 "capitalizedString")]);
-    v22->_log = v5;
+    v5 = os_log_create("com.apple.CoreBrightness.BacklightNode", [objc_msgSend(nameCopy "capitalizedString")]);
+    selfCopy->_log = v5;
     v16 = 0;
-    if ([(CBChromaticCorrectionParams *)v22 initFromParserOG:v20 withName:v19 andPrefix:v18])
+    if ([(CBChromaticCorrectionParams *)selfCopy initFromParserOG:parserCopy withName:nameCopy andPrefix:prefixCopy])
     {
       v6 = [CBFloatArray alloc];
-      v7 = [(CBFloatArray *)v6 initWithValues:v22->_luxTableOG andCount:v22->_luxTableSizeOG];
-      v22->_luxTable = v7;
+      v7 = [(CBFloatArray *)v6 initWithValues:selfCopy->_luxTableOG andCount:selfCopy->_luxTableSizeOG];
+      selfCopy->_luxTable = v7;
       v8 = [CBFloatArray alloc];
-      v9 = [(CBFloatArray *)v8 initWithValues:v22->_nitsTableOG andCount:v22->_nitsTableSizeOG];
-      v22->_nitsTable = v9;
+      v9 = [(CBFloatArray *)v8 initWithValues:selfCopy->_nitsTableOG andCount:selfCopy->_nitsTableSizeOG];
+      selfCopy->_nitsTable = v9;
       v15 = [CBFloatArray2D alloc];
-      strengthTableOG = v22->_strengthTableOG;
-      v14 = [(CBFloatArray *)v22->_nitsTable count];
-      v10 = [(CBFloatArray2D *)v15 initWithValues:strengthTableOG andCountCols:v14 andRows:[(CBFloatArray *)v22->_luxTable count]];
-      v22->_strengthTable = v10;
-      v11 = [MEMORY[0x1E695DEC8] newArrayFromFloats:v22->_rampBezierAnchorsOG size:3];
-      v22->_rampBezierAnchors = v11;
+      strengthTableOG = selfCopy->_strengthTableOG;
+      v14 = [(CBFloatArray *)selfCopy->_nitsTable count];
+      v10 = [(CBFloatArray2D *)v15 initWithValues:strengthTableOG andCountCols:v14 andRows:[(CBFloatArray *)selfCopy->_luxTable count]];
+      selfCopy->_strengthTable = v10;
+      v11 = [MEMORY[0x1E695DEC8] newArrayFromFloats:selfCopy->_rampBezierAnchorsOG size:3];
+      selfCopy->_rampBezierAnchors = v11;
       v16 = 1;
     }
 
-    if (v22->_luxTableOG)
+    if (selfCopy->_luxTableOG)
     {
-      free(v22->_luxTableOG);
+      free(selfCopy->_luxTableOG);
     }
 
-    if (v22->_nitsTableOG)
+    if (selfCopy->_nitsTableOG)
     {
-      free(v22->_nitsTableOG);
+      free(selfCopy->_nitsTableOG);
     }
 
-    if (v22->_strengthTableOG)
+    if (selfCopy->_strengthTableOG)
     {
-      free(v22->_strengthTableOG);
+      free(selfCopy->_strengthTableOG);
     }
 
-    if (v22->_rampBezierAnchorsOG)
+    if (selfCopy->_rampBezierAnchorsOG)
     {
-      free(v22->_rampBezierAnchorsOG);
+      free(selfCopy->_rampBezierAnchorsOG);
     }
 
     if ((v16 & 1) == 0)
     {
-      MEMORY[0x1E69E5920](v22);
+      MEMORY[0x1E69E5920](selfCopy);
       return 0;
     }
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_luxTable);
-  MEMORY[0x1E69E5920](v5->_nitsTable);
-  MEMORY[0x1E69E5920](v5->_strengthTable);
-  v2 = MEMORY[0x1E69E5920](v5->_rampBezierAnchors).n128_u64[0];
-  if (v5->_log)
+  MEMORY[0x1E69E5920](selfCopy->_nitsTable);
+  MEMORY[0x1E69E5920](selfCopy->_strengthTable);
+  v2 = MEMORY[0x1E69E5920](selfCopy->_rampBezierAnchors).n128_u64[0];
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
-    v5->_log = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
+    selfCopy->_log = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBChromaticCorrectionParams;
   [(CBChromaticCorrectionParams *)&v3 dealloc];
 }
 
-- (BOOL)initFromParserOG:(id)a3 withName:(id)a4 andPrefix:(id)a5
+- (BOOL)initFromParserOG:(id)g withName:(id)name andPrefix:(id)prefix
 {
   v77 = *MEMORY[0x1E69E9840];
-  v60 = self;
+  selfCopy = self;
   v59 = a2;
-  v58 = a3;
-  v57 = a4;
-  v56 = a5;
-  if (a3)
+  gCopy = g;
+  nameCopy = name;
+  prefixCopy = prefix;
+  if (g)
   {
     v52 = 0;
-    if (([v58 loadInt:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"supports-%@", v57), &v52}] & 1) != 0 && v52)
+    if (([gCopy loadInt:objc_msgSend(MEMORY[0x1E696AEC0] toDestination:{"stringWithFormat:", @"supports-%@", nameCopy), &v52}] & 1) != 0 && v52)
     {
-      if ([(CBChromaticCorrectionParams *)v60 initCommonWithPrefix:v56 fromParser:v58])
+      if ([(CBChromaticCorrectionParams *)selfCopy initCommonWithPrefix:prefixCopy fromParser:gCopy])
       {
-        if ([(CBChromaticCorrectionParams *)v60 initTablesWithPrefix:v56 fromParser:v58])
+        if ([(CBChromaticCorrectionParams *)selfCopy initTablesWithPrefix:prefixCopy fromParser:gCopy])
         {
-          if ([(CBChromaticCorrectionParams *)v60 initBezierWithPrefix:v56 fromParser:v58])
+          if ([(CBChromaticCorrectionParams *)selfCopy initBezierWithPrefix:prefixCopy fromParser:gCopy])
           {
             v51 = objc_alloc_init(MEMORY[0x1E696AD60]);
-            for (i = 0; i < v60->_luxTableSizeOG; ++i)
+            for (i = 0; i < selfCopy->_luxTableSizeOG; ++i)
             {
               v5 = "";
-              if (i != v60->_luxTableSizeOG - 1)
+              if (i != selfCopy->_luxTableSizeOG - 1)
               {
                 v5 = ",";
               }
 
-              [v51 appendFormat:@" %f%s", v60->_luxTableOG[i], v5];
+              [v51 appendFormat:@" %f%s", selfCopy->_luxTableOG[i], v5];
             }
 
             [v51 appendString:@" "];
             v49 = objc_alloc_init(MEMORY[0x1E696AD60]);
-            for (j = 0; j < v60->_nitsTableSizeOG; ++j)
+            for (j = 0; j < selfCopy->_nitsTableSizeOG; ++j)
             {
               v6 = "";
-              if (j != v60->_nitsTableSizeOG - 1)
+              if (j != selfCopy->_nitsTableSizeOG - 1)
               {
                 v6 = ",";
               }
 
-              [v49 appendFormat:@" %f%s", v60->_nitsTableOG[j], v6];
+              [v49 appendFormat:@" %f%s", selfCopy->_nitsTableOG[j], v6];
             }
 
             [v49 appendString:@" "];
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v38 = v60->_log;
+              v38 = selfCopy->_log;
             }
 
             else
@@ -1220,13 +1220,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v75, COERCE__INT64(v60->_luxActivationThreshold));
+              __os_log_helper_16_0_1_8_0(v75, COERCE__INT64(selfCopy->_luxActivationThreshold));
               _os_log_impl(&dword_1DE8E5000, v38, OS_LOG_TYPE_DEFAULT, "LuxActivationThreshold=%f", v75, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v36 = v60->_log;
+              v36 = selfCopy->_log;
             }
 
             else
@@ -1246,13 +1246,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v74, COERCE__INT64(v60->_nitsActivationThreshold));
+              __os_log_helper_16_0_1_8_0(v74, COERCE__INT64(selfCopy->_nitsActivationThreshold));
               _os_log_impl(&dword_1DE8E5000, v36, OS_LOG_TYPE_DEFAULT, "NitsActivationThreshold=%f", v74, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v34 = v60->_log;
+              v34 = selfCopy->_log;
             }
 
             else
@@ -1272,13 +1272,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v73, COERCE__INT64(v60->_rampUpdateRate));
+              __os_log_helper_16_0_1_8_0(v73, COERCE__INT64(selfCopy->_rampUpdateRate));
               _os_log_impl(&dword_1DE8E5000, v34, OS_LOG_TYPE_DEFAULT, "RampUpdateRate=%f", v73, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v32 = v60->_log;
+              v32 = selfCopy->_log;
             }
 
             else
@@ -1298,13 +1298,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_3_8_0_8_0_8_0(v72, COERCE__INT64(*v60->_rampBezierAnchorsOG), COERCE__INT64(v60->_rampBezierAnchorsOG[1]), COERCE__INT64(v60->_rampBezierAnchorsOG[2]));
+              __os_log_helper_16_0_3_8_0_8_0_8_0(v72, COERCE__INT64(*selfCopy->_rampBezierAnchorsOG), COERCE__INT64(selfCopy->_rampBezierAnchorsOG[1]), COERCE__INT64(selfCopy->_rampBezierAnchorsOG[2]));
               _os_log_impl(&dword_1DE8E5000, v32, OS_LOG_TYPE_DEFAULT, "RampBezierAnchors={ %f, %f, %f }", v72, 0x20u);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v30 = v60->_log;
+              v30 = selfCopy->_log;
             }
 
             else
@@ -1324,13 +1324,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v71, COERCE__INT64(v60->_rampUpDuration));
+              __os_log_helper_16_0_1_8_0(v71, COERCE__INT64(selfCopy->_rampUpDuration));
               _os_log_impl(&dword_1DE8E5000, v30, OS_LOG_TYPE_DEFAULT, "RampUpDuration=%f", v71, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v28 = v60->_log;
+              v28 = selfCopy->_log;
             }
 
             else
@@ -1350,13 +1350,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v70, COERCE__INT64(v60->_rampUpLuxDeltaThreshold));
+              __os_log_helper_16_0_1_8_0(v70, COERCE__INT64(selfCopy->_rampUpLuxDeltaThreshold));
               _os_log_impl(&dword_1DE8E5000, v28, OS_LOG_TYPE_DEFAULT, "RampUpLuxDeltaThreshold=%f", v70, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v26 = v60->_log;
+              v26 = selfCopy->_log;
             }
 
             else
@@ -1376,13 +1376,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v69, COERCE__INT64(v60->_rampDownDuration));
+              __os_log_helper_16_0_1_8_0(v69, COERCE__INT64(selfCopy->_rampDownDuration));
               _os_log_impl(&dword_1DE8E5000, v26, OS_LOG_TYPE_DEFAULT, "RampDownDuration=%f", v69, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v24 = v60->_log;
+              v24 = selfCopy->_log;
             }
 
             else
@@ -1402,13 +1402,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v68, COERCE__INT64(v60->_rampDownLuxDeltaThreshold));
+              __os_log_helper_16_0_1_8_0(v68, COERCE__INT64(selfCopy->_rampDownLuxDeltaThreshold));
               _os_log_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_DEFAULT, "RampDownLuxDeltaThreshold=%f", v68, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v22 = v60->_log;
+              v22 = selfCopy->_log;
             }
 
             else
@@ -1428,13 +1428,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v67, v60->_luxTableSizeOG);
+              __os_log_helper_16_0_1_8_0(v67, selfCopy->_luxTableSizeOG);
               _os_log_impl(&dword_1DE8E5000, v22, OS_LOG_TYPE_DEFAULT, "LuxTableSize=%lu", v67, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v20 = v60->_log;
+              v20 = selfCopy->_log;
             }
 
             else
@@ -1458,9 +1458,9 @@ LABEL_102:
               _os_log_impl(&dword_1DE8E5000, v20, OS_LOG_TYPE_DEFAULT, "LuxTable={%s}", v66, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v18 = v60->_log;
+              v18 = selfCopy->_log;
             }
 
             else
@@ -1480,13 +1480,13 @@ LABEL_102:
 
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v65, v60->_nitsTableSizeOG);
+              __os_log_helper_16_0_1_8_0(v65, selfCopy->_nitsTableSizeOG);
               _os_log_impl(&dword_1DE8E5000, v18, OS_LOG_TYPE_DEFAULT, "NitsTableSize=%lu", v65, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v16 = v60->_log;
+              v16 = selfCopy->_log;
             }
 
             else
@@ -1510,9 +1510,9 @@ LABEL_102:
               _os_log_impl(&dword_1DE8E5000, v16, OS_LOG_TYPE_DEFAULT, "NitsTable={%s}", v64, 0xCu);
             }
 
-            if (v60->_log)
+            if (selfCopy->_log)
             {
-              v14 = v60->_log;
+              v14 = selfCopy->_log;
             }
 
             else
@@ -1532,19 +1532,19 @@ LABEL_102:
 
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              __os_log_helper_16_0_1_8_0(v63, v60->_strengthTableSizeOG);
+              __os_log_helper_16_0_1_8_0(v63, selfCopy->_strengthTableSizeOG);
               _os_log_impl(&dword_1DE8E5000, v14, OS_LOG_TYPE_DEFAULT, "StrengthTableSize=%lu", v63, 0xCu);
             }
 
-            for (k = 0; k < v60->_luxTableSizeOG; ++k)
+            for (k = 0; k < selfCopy->_luxTableSizeOG; ++k)
             {
               v46 = objc_alloc_init(MEMORY[0x1E696AD60]);
-              for (m = 0; m < v60->_nitsTableSizeOG; ++m)
+              for (m = 0; m < selfCopy->_nitsTableSizeOG; ++m)
               {
-                [(CBChromaticCorrectionParams *)v60 getStrengthForRow:k andColumn:m];
+                [(CBChromaticCorrectionParams *)selfCopy getStrengthForRow:k andColumn:m];
                 v8 = v7;
                 v9 = "";
-                if (m != v60->_nitsTableSizeOG - 1)
+                if (m != selfCopy->_nitsTableSizeOG - 1)
                 {
                   v9 = ",";
                 }
@@ -1552,9 +1552,9 @@ LABEL_102:
                 [v46 appendFormat:@" %f%s ", *&v8, v9];
               }
 
-              if (v60->_log)
+              if (selfCopy->_log)
               {
-                v12 = v60->_log;
+                v12 = selfCopy->_log;
               }
 
               else
@@ -1606,9 +1606,9 @@ LABEL_102:
 
     else
     {
-      if (v60->_log)
+      if (selfCopy->_log)
       {
-        v40 = v60->_log;
+        v40 = selfCopy->_log;
       }
 
       else
@@ -1628,7 +1628,7 @@ LABEL_102:
 
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v76, [v57 capitalizedString]);
+        __os_log_helper_16_2_1_8_64(v76, [nameCopy capitalizedString]);
         _os_log_error_impl(&dword_1DE8E5000, v40, OS_LOG_TYPE_ERROR, "%@ is not supported", v76, 0xCu);
       }
 
@@ -1638,9 +1638,9 @@ LABEL_102:
 
   else
   {
-    if (v60->_log)
+    if (selfCopy->_log)
     {
-      v44 = v60->_log;
+      v44 = selfCopy->_log;
     }
 
     else

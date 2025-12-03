@@ -3,17 +3,17 @@
 - (BOOL)shouldSuggestConversionToGroceryList;
 - (NSArray)unsavedReminderIDsForCategorization;
 - (NSString)groceryLocaleID;
-- (REMListGroceryContextChangeItem)initWithListChangeItem:(id)a3;
-- (void)categorizeGroceryItemsWithReminderIDs:(id)a3;
-- (void)setGroceryLocaleID:(id)a3;
+- (REMListGroceryContextChangeItem)initWithListChangeItem:(id)item;
+- (void)categorizeGroceryItemsWithReminderIDs:(id)ds;
+- (void)setGroceryLocaleID:(id)d;
 @end
 
 @implementation REMListGroceryContextChangeItem
 
-- (REMListGroceryContextChangeItem)initWithListChangeItem:(id)a3
+- (REMListGroceryContextChangeItem)initWithListChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "listChangeItem");
   }
@@ -24,7 +24,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listChangeItem, a3);
+    objc_storeStrong(&v6->_listChangeItem, item);
   }
 
   return v7;
@@ -32,65 +32,65 @@
 
 - (BOOL)shouldCategorizeGroceryItems
 {
-  v2 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v3 = [v2 shouldCategorizeGroceryItems];
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  shouldCategorizeGroceryItems = [listChangeItem shouldCategorizeGroceryItems];
 
-  return v3;
+  return shouldCategorizeGroceryItems;
 }
 
 - (BOOL)shouldSuggestConversionToGroceryList
 {
-  v2 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v3 = [v2 shouldSuggestConversionToGroceryList];
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  shouldSuggestConversionToGroceryList = [listChangeItem shouldSuggestConversionToGroceryList];
 
-  return v3;
+  return shouldSuggestConversionToGroceryList;
 }
 
 - (NSString)groceryLocaleID
 {
-  v2 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v3 = [v2 groceryLocaleID];
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  groceryLocaleID = [listChangeItem groceryLocaleID];
 
-  return v3;
+  return groceryLocaleID;
 }
 
-- (void)setGroceryLocaleID:(id)a3
+- (void)setGroceryLocaleID:(id)d
 {
-  v4 = a3;
-  v5 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  [v5 setGroceryLocaleID:v4];
+  dCopy = d;
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  [listChangeItem setGroceryLocaleID:dCopy];
 }
 
 - (NSArray)unsavedReminderIDsForCategorization
 {
-  v2 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v3 = [v2 unsavedReminderIDsForCategorization];
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  unsavedReminderIDsForCategorization = [listChangeItem unsavedReminderIDsForCategorization];
 
-  return v3;
+  return unsavedReminderIDsForCategorization;
 }
 
-- (void)categorizeGroceryItemsWithReminderIDs:(id)a3
+- (void)categorizeGroceryItemsWithReminderIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v6 = [v5 unsavedReminderIDsForCategorization];
+  dsCopy = ds;
+  listChangeItem = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  unsavedReminderIDsForCategorization = [listChangeItem unsavedReminderIDsForCategorization];
 
-  v7 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-  v11 = v7;
-  if (v6)
+  listChangeItem2 = [(REMListGroceryContextChangeItem *)self listChangeItem];
+  v11 = listChangeItem2;
+  if (unsavedReminderIDsForCategorization)
   {
-    v8 = [v7 unsavedReminderIDsForCategorization];
-    v9 = [v8 arrayByAddingObjectsFromArray:v4];
+    unsavedReminderIDsForCategorization2 = [listChangeItem2 unsavedReminderIDsForCategorization];
+    v9 = [unsavedReminderIDsForCategorization2 arrayByAddingObjectsFromArray:dsCopy];
 
-    v10 = [(REMListGroceryContextChangeItem *)self listChangeItem];
-    [v10 setUnsavedReminderIDsForCategorization:v9];
+    listChangeItem3 = [(REMListGroceryContextChangeItem *)self listChangeItem];
+    [listChangeItem3 setUnsavedReminderIDsForCategorization:v9];
 
-    v4 = v8;
+    dsCopy = unsavedReminderIDsForCategorization2;
   }
 
   else
   {
-    [v7 setUnsavedReminderIDsForCategorization:v4];
+    [listChangeItem2 setUnsavedReminderIDsForCategorization:dsCopy];
   }
 }
 

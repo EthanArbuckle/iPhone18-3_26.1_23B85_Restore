@@ -1,14 +1,14 @@
 @interface MBDSMSToSuper_PAR_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDSMSToSuper_PAR_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v8 = a4;
+  contextCopy = context;
   v9 = objc_alloc_init(SMSPart);
-  [v8 _addPart:v9];
+  [contextCopy _addPart:v9];
 }
 
 @end

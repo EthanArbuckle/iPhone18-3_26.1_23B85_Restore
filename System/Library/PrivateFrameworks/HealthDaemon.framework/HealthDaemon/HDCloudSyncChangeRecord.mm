@@ -1,31 +1,31 @@
 @interface HDCloudSyncChangeRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isChangeRecord:(id)a3;
-+ (BOOL)isChangeRecord:(id)a3 inSequence:(id)a4;
-+ (BOOL)isChangeRecordID:(id)a3;
-+ (HDSyncAnchorRangeMap)_decodedSyncAnchorRangeMapForAnchorRangeData:(uint64_t)a1;
-+ (id)_assetForCKRecord:(uint64_t)a3 error:;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isChangeRecord:(id)record;
++ (BOOL)isChangeRecord:(id)record inSequence:(id)sequence;
++ (BOOL)isChangeRecordID:(id)d;
++ (HDSyncAnchorRangeMap)_decodedSyncAnchorRangeMapForAnchorRangeData:(uint64_t)data;
++ (id)_assetForCKRecord:(uint64_t)record error:;
 + (id)assetKeys;
-+ (id)changesetArchiveContentDataForCKRecord:(id)a3 error:(id *)a4;
-+ (id)changesetArchiveFileHandleForCKRecord:(id)a3 error:(id *)a4;
-+ (id)changesetArchiveURLForCKRecord:(id)a3 error:(id *)a4;
++ (id)changesetArchiveContentDataForCKRecord:(id)record error:(id *)error;
++ (id)changesetArchiveFileHandleForCKRecord:(id)record error:(id *)error;
++ (id)changesetArchiveURLForCKRecord:(id)record error:(id *)error;
 + (id)fieldsForUnprotectedSerialization;
 + (id)nonAssetKeys;
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4;
++ (id)recordWithCKRecord:(id)record error:(id *)error;
 - (CKRecordID)sequenceRecordID;
 - (CKReference)parentRecordReference;
-- (HDCloudSyncChangeRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
-- (HDCloudSyncChangeRecord)initWithSyncAnchorRangeMap:(id)a3 finalForSequence:(BOOL)a4 changesetArchiveFileHandle:(id)a5 sequenceRecord:(id)a6 protocolVersion:(int)a7;
+- (HDCloudSyncChangeRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
+- (HDCloudSyncChangeRecord)initWithSyncAnchorRangeMap:(id)map finalForSequence:(BOOL)sequence changesetArchiveFileHandle:(id)handle sequenceRecord:(id)record protocolVersion:(int)version;
 - (HDSyncAnchorRangeMap)decodedSyncAnchorRangeMap;
 - (NSNumber)changeSize;
 - (NSURL)changesetArchiveFileURL;
-- (id)initWithCKRecord:(uint64_t)a3 schemaVersion:(void *)a4 underlyingChange:;
-- (int64_t)compare:(id)a3;
+- (id)initWithCKRecord:(uint64_t)record schemaVersion:(void *)version underlyingChange:;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation HDCloudSyncChangeRecord
 
-- (HDCloudSyncChangeRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncChangeRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -35,101 +35,101 @@
   return 0;
 }
 
-- (HDCloudSyncChangeRecord)initWithSyncAnchorRangeMap:(id)a3 finalForSequence:(BOOL)a4 changesetArchiveFileHandle:(id)a5 sequenceRecord:(id)a6 protocolVersion:(int)a7
+- (HDCloudSyncChangeRecord)initWithSyncAnchorRangeMap:(id)map finalForSequence:(BOOL)sequence changesetArchiveFileHandle:(id)handle sequenceRecord:(id)record protocolVersion:(int)version
 {
-  v41 = a4;
-  v43 = a3;
-  v10 = a5;
-  v11 = a6;
+  sequenceCopy = sequence;
+  mapCopy = map;
+  handleCopy = handle;
+  recordCopy = record;
   v12 = objc_alloc(MEMORY[0x277CBC5A0]);
-  v13 = v11;
+  v13 = recordCopy;
   objc_opt_self();
-  v14 = [v13 recordID];
-  v15 = [v14 zoneID];
+  recordID = [v13 recordID];
+  zoneID = [recordID zoneID];
   v44 = 0;
-  v16 = [v15 hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v44];
+  v16 = [zoneID hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v44];
 
   v17 = objc_alloc(MEMORY[0x277CBC5D0]);
   if (v16)
   {
     v39 = a2;
     v18 = MEMORY[0x277CCACA8];
-    v38 = [v13 recordID];
-    v19 = [v38 recordName];
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    v22 = [v18 stringWithFormat:@"%@/Change/%@", v19, v21];
+    recordID2 = [v13 recordID];
+    recordName = [recordID2 recordName];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v22 = [v18 stringWithFormat:@"%@/Change/%@", recordName, uUIDString];
     [v13 recordID];
-    v23 = v10;
+    v23 = handleCopy;
     v25 = v24 = v12;
-    v26 = [v25 zoneID];
-    v27 = [v17 initWithRecordName:v22 zoneID:v26];
+    zoneID2 = [v25 zoneID];
+    v27 = [v17 initWithRecordName:v22 zoneID:zoneID2];
 
-    v28 = v38;
+    uUID2 = recordID2;
     v12 = v24;
-    v10 = v23;
+    handleCopy = v23;
 
     a2 = v39;
   }
 
   else
   {
-    v28 = [MEMORY[0x277CCAD78] UUID];
-    v19 = [v28 UUIDString];
-    v20 = [v13 recordID];
-    v21 = [v20 zoneID];
-    v27 = [v17 initWithRecordName:v19 zoneID:v21];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    recordName = [uUID2 UUIDString];
+    uUID = [v13 recordID];
+    uUIDString = [uUID zoneID];
+    v27 = [v17 initWithRecordName:recordName zoneID:uUIDString];
   }
 
   v29 = [v12 initWithRecordType:@"CloudSyncChangeRecord" recordID:v27];
   [v13 incrementChildRecordCount];
-  [v10 seekToEndOfFile];
-  v30 = [v10 offsetInFile];
-  if ((v30 - 5242880) < 0xFFFFFFFFFFB00001)
+  [handleCopy seekToEndOfFile];
+  offsetInFile = [handleCopy offsetInFile];
+  if ((offsetInFile - 5242880) < 0xFFFFFFFFFFB00001)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"HDCloudSyncChangeRecord.m" lineNumber:85 description:{@"changeSize (%lld) is invalid for anchors %@", v30, v43}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncChangeRecord.m" lineNumber:85 description:{@"changeSize (%lld) is invalid for anchors %@", offsetInFile, mapCopy}];
   }
 
-  v31 = [objc_alloc(MEMORY[0x277CBC190]) initWithFileDescriptor:{objc_msgSend(v10, "fileDescriptor")}];
+  v31 = [objc_alloc(MEMORY[0x277CBC190]) initWithFileDescriptor:{objc_msgSend(handleCopy, "fileDescriptor")}];
   [v31 setItemTypeHint:@"fxd"];
-  v32 = [v13 changeIndex];
-  v33 = [v13 record];
-  v34 = [v33 recordID];
-  v35 = [(HDCloudSyncChangeRecord *)self initWithSyncAnchorRangeMap:v43 changeIndex:v32 changesetAsset:v31 changeSize:v30 protocolVersion:a7 finalForSequence:v41 sequenceRecordID:v34 record:v29 schemaVersion:1];
+  changeIndex = [v13 changeIndex];
+  record = [v13 record];
+  recordID3 = [record recordID];
+  v35 = [(HDCloudSyncChangeRecord *)self initWithSyncAnchorRangeMap:mapCopy changeIndex:changeIndex changesetAsset:v31 changeSize:offsetInFile protocolVersion:version finalForSequence:sequenceCopy sequenceRecordID:recordID3 record:v29 schemaVersion:1];
 
   return v35;
 }
 
-- (id)initWithCKRecord:(uint64_t)a3 schemaVersion:(void *)a4 underlyingChange:
+- (id)initWithCKRecord:(uint64_t)record schemaVersion:(void *)version underlyingChange:
 {
-  v8 = a4;
-  if (a1)
+  versionCopy = version;
+  if (self)
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = HDCloudSyncChangeRecord;
-    v9 = objc_msgSendSuper2(&v20, sel_initWithCKRecord_schemaVersion_, a2, a3);
+    v9 = objc_msgSendSuper2(&v20, sel_initWithCKRecord_schemaVersion_, a2, record);
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(v9 + 3, a4);
-      v11 = [v10 record];
-      v12 = [v10[3] anchorRangeMap];
-      v13 = [v12 data];
-      v14 = [v11 encryptedValues];
-      [v14 setObject:v13 forKeyedSubscript:@"EntityAnchorRangeMap"];
+      objc_storeStrong(v9 + 3, version);
+      record = [v10 record];
+      anchorRangeMap = [v10[3] anchorRangeMap];
+      data = [anchorRangeMap data];
+      encryptedValues = [record encryptedValues];
+      [encryptedValues setObject:data forKeyedSubscript:@"EntityAnchorRangeMap"];
 
       v15 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v10[3], "changeIndex")}];
-      [v11 setObject:v15 forKeyedSubscript:@"CurrentChangeIndex"];
+      [record setObject:v15 forKeyedSubscript:@"CurrentChangeIndex"];
 
       v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v10[3], "changeSize")}];
-      [v11 setObject:v16 forKeyedSubscript:@"ChangeSize"];
+      [record setObject:v16 forKeyedSubscript:@"ChangeSize"];
 
       v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v10[3], "protocolVersion")}];
-      [v11 setObject:v17 forKeyedSubscript:@"ProtocolVersion"];
+      [record setObject:v17 forKeyedSubscript:@"ProtocolVersion"];
 
       v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10[3], "finalForSequence")}];
-      [v11 setObject:v18 forKeyedSubscript:@"Options"];
+      [record setObject:v18 forKeyedSubscript:@"Options"];
     }
   }
 
@@ -144,7 +144,7 @@
 + (id)fieldsForUnprotectedSerialization
 {
   v26[6] = *MEMORY[0x277D85DE8];
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS___HDCloudSyncChangeRecord;
   v2 = objc_msgSendSuper2(&v19, sel_fieldsForUnprotectedSerialization);
   v25 = objc_opt_class();
@@ -179,15 +179,15 @@
   return v11;
 }
 
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4
++ (id)recordWithCKRecord:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 recordType];
-  v9 = [v8 isEqualToString:@"CloudSyncChangeRecord"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v9 = [recordType isEqualToString:@"CloudSyncChangeRecord"];
 
   if (v9)
   {
-    v10 = [v7 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
+    v10 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
     if (!v10)
     {
       v16 = 0;
@@ -196,7 +196,7 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v11 = [v7 hd_requiredValueForKey:@"SequenceRecord" type:objc_opt_class() error:a4];
+    v11 = [recordCopy hd_requiredValueForKey:@"SequenceRecord" type:objc_opt_class() error:error];
     if (!v11)
     {
       v16 = 0;
@@ -206,16 +206,16 @@ LABEL_52:
     }
 
     v48 = 0;
-    v12 = [v7 hd_optionalEncryptedValueForKey:@"UnderlyingMessage" type:objc_opt_class() error:&v48];
+    v12 = [recordCopy hd_optionalEncryptedValueForKey:@"UnderlyingMessage" type:objc_opt_class() error:&v48];
     v13 = v48;
     v14 = v13;
     if (!v12 && v13)
     {
-      if (a4)
+      if (error)
       {
         v15 = v13;
         v16 = 0;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -232,48 +232,48 @@ LABEL_52:
       v22 = [[HDCloudSyncCodableChange alloc] initWithData:v12];
       if (v22)
       {
-        v16 = -[HDCloudSyncChangeRecord initWithCKRecord:schemaVersion:underlyingChange:]([HDCloudSyncChangeRecord alloc], v7, [v10 integerValue], v22);
+        v16 = -[HDCloudSyncChangeRecord initWithCKRecord:schemaVersion:underlyingChange:]([HDCloudSyncChangeRecord alloc], recordCopy, [v10 integerValue], v22);
 LABEL_50:
 
 LABEL_51:
         goto LABEL_52;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Underlying message present but does not decode."];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Underlying message present but does not decode."];
     }
 
     else
     {
-      v22 = [v7 hd_requiredValueForKey:@"CurrentChangeIndex" type:objc_opt_class() error:a4];
+      v22 = [recordCopy hd_requiredValueForKey:@"CurrentChangeIndex" type:objc_opt_class() error:error];
       if (v22)
       {
-        v23 = [v7 hd_requiredEncryptedValueForKey:@"EntityAnchorRangeMap" type:objc_opt_class() error:a4];
+        v23 = [recordCopy hd_requiredEncryptedValueForKey:@"EntityAnchorRangeMap" type:objc_opt_class() error:error];
         if (v23)
         {
-          v24 = [(HDCloudSyncChangeRecord *)a1 _decodedSyncAnchorRangeMapForAnchorRangeData:v23];
+          v24 = [(HDCloudSyncChangeRecord *)self _decodedSyncAnchorRangeMapForAnchorRangeData:v23];
           if (v24)
           {
-            v25 = [v7 hd_requiredValueForKey:@"ProtocolVersion" type:objc_opt_class() error:a4];
+            v25 = [recordCopy hd_requiredValueForKey:@"ProtocolVersion" type:objc_opt_class() error:error];
             if (v25)
             {
               v42 = v24;
               v44 = v25;
               v47 = 0;
-              v26 = [v7 hd_optionalValueForKey:@"Options" type:objc_opt_class() error:&v47];
+              v26 = [recordCopy hd_optionalValueForKey:@"Options" type:objc_opt_class() error:&v47];
               v27 = v47;
               v43 = v26;
               if (v26 || !v27)
               {
                 v41 = v27;
                 v46 = 0;
-                v29 = [v7 hd_optionalValueForKey:@"ChangeSize" type:objc_opt_class() error:&v46];
+                v29 = [recordCopy hd_optionalValueForKey:@"ChangeSize" type:objc_opt_class() error:&v46];
                 v30 = v46;
                 v40 = v29;
                 if (v29 || !v30)
                 {
                   v39 = v30;
                   v45 = 0;
-                  v32 = [v7 hd_optionalValueForKey:@"ChangeSet" type:objc_opt_class() error:&v45];
+                  v32 = [recordCopy hd_optionalValueForKey:@"ChangeSet" type:objc_opt_class() error:&v45];
                   v33 = v45;
                   v38 = v32;
                   if (v32 || !v33)
@@ -284,19 +284,19 @@ LABEL_51:
                     [(HDCloudSyncCodableChange *)v35 setChangeIndex:[(HDCloudSyncCodableChange *)v22 longLongValue]];
                     -[HDCloudSyncCodableChange setProtocolVersion:](v35, "setProtocolVersion:", [v44 integerValue]);
                     -[HDCloudSyncCodableChange setFinalForSequence:](v35, "setFinalForSequence:", [v43 longLongValue] != 0);
-                    v36 = [v42 codableSyncAnchorRangeMap];
-                    [(HDCloudSyncCodableChange *)v35 setAnchorRangeMap:v36];
+                    codableSyncAnchorRangeMap = [v42 codableSyncAnchorRangeMap];
+                    [(HDCloudSyncCodableChange *)v35 setAnchorRangeMap:codableSyncAnchorRangeMap];
 
-                    v16 = -[HDCloudSyncChangeRecord initWithCKRecord:schemaVersion:underlyingChange:]([HDCloudSyncChangeRecord alloc], v7, [v10 integerValue], v35);
+                    v16 = -[HDCloudSyncChangeRecord initWithCKRecord:schemaVersion:underlyingChange:]([HDCloudSyncChangeRecord alloc], recordCopy, [v10 integerValue], v35);
                   }
 
                   else
                   {
                     v34 = v33;
-                    if (a4)
+                    if (error)
                     {
                       v16 = 0;
-                      *a4 = v33;
+                      *error = v33;
                     }
 
                     else
@@ -312,10 +312,10 @@ LABEL_51:
                 else
                 {
                   v31 = v30;
-                  if (a4)
+                  if (error)
                   {
                     v16 = 0;
-                    *a4 = v30;
+                    *error = v30;
                   }
 
                   else
@@ -331,10 +331,10 @@ LABEL_51:
               else
               {
                 v28 = v27;
-                if (a4)
+                if (error)
                 {
                   v16 = 0;
-                  *a4 = v27;
+                  *error = v27;
                 }
 
                 else
@@ -356,7 +356,7 @@ LABEL_51:
 
           else
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Unable to decode anchor range map."];
+            [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Unable to decode anchor range map."];
             v16 = 0;
           }
         }
@@ -376,14 +376,14 @@ LABEL_51:
 
   v17 = MEMORY[0x277CCA9B8];
   v18 = objc_opt_class();
-  v19 = [v7 recordType];
-  v20 = [v17 hk_errorForInvalidArgument:@"@" class:v18 selector:a2 format:{@"record has type (%@), but expected (%@)", v19, @"CloudSyncChangeRecord"}];
+  recordType2 = [recordCopy recordType];
+  v20 = [v17 hk_errorForInvalidArgument:@"@" class:v18 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType2, @"CloudSyncChangeRecord"}];
   if (v20)
   {
-    if (a4)
+    if (error)
     {
       v21 = v20;
-      *a4 = v20;
+      *error = v20;
     }
 
     else
@@ -398,7 +398,7 @@ LABEL_54:
   return v16;
 }
 
-+ (HDSyncAnchorRangeMap)_decodedSyncAnchorRangeMapForAnchorRangeData:(uint64_t)a1
++ (HDSyncAnchorRangeMap)_decodedSyncAnchorRangeMapForAnchorRangeData:(uint64_t)data
 {
   v16 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -450,23 +450,23 @@ LABEL_10:
   return v4;
 }
 
-+ (BOOL)isChangeRecord:(id)a3
++ (BOOL)isChangeRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncChangeRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncChangeRecord"];
 
   return v4;
 }
 
-+ (BOOL)isChangeRecordID:(id)a3
++ (BOOL)isChangeRecordID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 recordName];
-  if ([v4 rangeOfString:@"/Change/"] == 0x7FFFFFFFFFFFFFFFLL)
+  dCopy = d;
+  recordName = [dCopy recordName];
+  if ([recordName rangeOfString:@"/Change/"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = objc_alloc(MEMORY[0x277CCAD78]);
-    v6 = [v3 recordName];
-    v7 = [v5 initWithUUIDString:v6];
+    recordName2 = [dCopy recordName];
+    v7 = [v5 initWithUUIDString:recordName2];
     v8 = v7 != 0;
   }
 
@@ -478,19 +478,19 @@ LABEL_10:
   return v8;
 }
 
-+ (BOOL)isChangeRecord:(id)a3 inSequence:(id)a4
++ (BOOL)isChangeRecord:(id)record inSequence:(id)sequence
 {
-  v5 = a4;
-  v6 = a3;
+  sequenceCopy = sequence;
+  recordCopy = record;
   v13 = 0;
-  v7 = [v6 hd_requiredValueForKey:@"SequenceRecord" type:objc_opt_class() error:&v13];
+  v7 = [recordCopy hd_requiredValueForKey:@"SequenceRecord" type:objc_opt_class() error:&v13];
 
   if (v7)
   {
-    v8 = [v7 recordID];
-    v9 = [v5 record];
-    v10 = [v9 recordID];
-    v11 = [v8 isEqual:v10];
+    recordID = [v7 recordID];
+    record = [sequenceCopy record];
+    recordID2 = [record recordID];
+    v11 = [recordID isEqual:recordID2];
   }
 
   else
@@ -501,9 +501,9 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
@@ -562,14 +562,14 @@ void __36__HDCloudSyncChangeRecord_assetKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)changesetArchiveContentDataForCKRecord:(id)a3 error:(id *)a4
++ (id)changesetArchiveContentDataForCKRecord:(id)record error:(id *)error
 {
-  v6 = [(HDCloudSyncChangeRecord *)a1 _assetForCKRecord:a3 error:a4];
+  v6 = [(HDCloudSyncChangeRecord *)self _assetForCKRecord:record error:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 assetContent];
-    if (v8)
+    assetContent = [v6 assetContent];
+    if (assetContent)
     {
       goto LABEL_9;
     }
@@ -577,10 +577,10 @@ void __36__HDCloudSyncChangeRecord_assetKeys__block_invoke()
     v9 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"record has nil assetContent"];
     if (v9)
     {
-      if (a4)
+      if (error)
       {
         v10 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -590,63 +590,63 @@ void __36__HDCloudSyncChangeRecord_assetKeys__block_invoke()
     }
   }
 
-  v8 = 0;
+  assetContent = 0;
 LABEL_9:
 
-  return v8;
+  return assetContent;
 }
 
-+ (id)_assetForCKRecord:(uint64_t)a3 error:
++ (id)_assetForCKRecord:(uint64_t)record error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 hd_requiredValueForKey:@"ChangeSet" type:objc_opt_class() error:a3];
+  v5 = [v4 hd_requiredValueForKey:@"ChangeSet" type:objc_opt_class() error:record];
 
   return v5;
 }
 
-+ (id)changesetArchiveFileHandleForCKRecord:(id)a3 error:(id *)a4
++ (id)changesetArchiveFileHandleForCKRecord:(id)record error:(id *)error
 {
-  v4 = [(HDCloudSyncChangeRecord *)a1 _assetForCKRecord:a3 error:a4];
+  v4 = [(HDCloudSyncChangeRecord *)self _assetForCKRecord:record error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fileHandle];
+    fileHandle = [v4 fileHandle];
   }
 
   else
   {
-    v6 = 0;
+    fileHandle = 0;
   }
 
-  return v6;
+  return fileHandle;
 }
 
-+ (id)changesetArchiveURLForCKRecord:(id)a3 error:(id *)a4
++ (id)changesetArchiveURLForCKRecord:(id)record error:(id *)error
 {
-  v4 = [(HDCloudSyncChangeRecord *)a1 _assetForCKRecord:a3 error:a4];
+  v4 = [(HDCloudSyncChangeRecord *)self _assetForCKRecord:record error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fileURL];
+    fileURL = [v4 fileURL];
   }
 
   else
   {
-    v6 = 0;
+    fileURL = 0;
   }
 
-  return v6;
+  return fileURL;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncChangeRecord *)self changeIndex];
-  if (v5 >= [v4 changeIndex])
+  compareCopy = compare;
+  changeIndex = [(HDCloudSyncChangeRecord *)self changeIndex];
+  if (changeIndex >= [compareCopy changeIndex])
   {
-    v7 = [(HDCloudSyncChangeRecord *)self changeIndex];
-    v6 = v7 > [v4 changeIndex];
+    changeIndex2 = [(HDCloudSyncChangeRecord *)self changeIndex];
+    v6 = changeIndex2 > [compareCopy changeIndex];
   }
 
   else
@@ -660,27 +660,27 @@ LABEL_9:
 - (NSNumber)changeSize
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HDCloudSyncCodableChange *)self->_underlyingChange changeSize];
+  changeSize = [(HDCloudSyncCodableChange *)self->_underlyingChange changeSize];
 
-  return [v2 numberWithLongLong:v3];
+  return [v2 numberWithLongLong:changeSize];
 }
 
 - (NSURL)changesetArchiveFileURL
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"ChangeSet"];
-  v4 = [v3 fileURL];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"ChangeSet"];
+  fileURL = [v3 fileURL];
 
-  return v4;
+  return fileURL;
 }
 
 - (HDSyncAnchorRangeMap)decodedSyncAnchorRangeMap
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = [HDSyncAnchorRangeMap alloc];
-  v4 = [(HDCloudSyncCodableChange *)self->_underlyingChange anchorRangeMap];
+  anchorRangeMap = [(HDCloudSyncCodableChange *)self->_underlyingChange anchorRangeMap];
   v13 = 0;
-  v5 = [(HDSyncAnchorRangeMap *)v3 initWithCodableSyncAnchorRangeMap:v4 error:&v13];
+  v5 = [(HDSyncAnchorRangeMap *)v3 initWithCodableSyncAnchorRangeMap:anchorRangeMap error:&v13];
   v6 = v13;
 
   if (!v5)
@@ -691,9 +691,9 @@ LABEL_9:
     {
       underlyingChange = self->_underlyingChange;
       v9 = v7;
-      v10 = [(HDCloudSyncCodableChange *)underlyingChange anchorRangeMap];
+      anchorRangeMap2 = [(HDCloudSyncCodableChange *)underlyingChange anchorRangeMap];
       *buf = 138412290;
-      v15 = v10;
+      v15 = anchorRangeMap2;
       _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "Failed to decode sync anchor range map: %@", buf, 0xCu);
     }
   }
@@ -705,18 +705,18 @@ LABEL_9:
 
 - (CKRecordID)sequenceRecordID
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"SequenceRecord"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"SequenceRecord"];
 
-  v4 = [v3 recordID];
+  recordID = [v3 recordID];
 
-  return v4;
+  return recordID;
 }
 
 - (CKReference)parentRecordReference
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"SequenceRecord"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"SequenceRecord"];
 
   return v3;
 }

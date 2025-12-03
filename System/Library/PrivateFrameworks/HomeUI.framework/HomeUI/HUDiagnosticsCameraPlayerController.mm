@@ -2,52 +2,52 @@
 - (AVPlayerViewController)cameraPlayerViewController;
 - (HFCameraPlaybackEngine)playbackEngine;
 - (HUClipScrubberDataSource)clipScrubberDataSource;
-- (HUDiagnosticsCameraPlayerController)initWithCameraPlayerViewController:(id)a3 playbackEngine:(id)a4 clipScrubberDataSource:(id)a5 cameraProfile:(id)a6;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (HUDiagnosticsCameraPlayerController)initWithCameraPlayerViewController:(id)controller playbackEngine:(id)engine clipScrubberDataSource:(id)source cameraProfile:(id)profile;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)dismissDetailsViewController;
 - (void)dismissDiagnosticDetails;
 - (void)displayDiagnosticDetails;
 - (void)launchPlaybackEngineDiagnosticsView;
-- (void)updateWithPlaybackEngine:(id)a3;
+- (void)updateWithPlaybackEngine:(id)engine;
 @end
 
 @implementation HUDiagnosticsCameraPlayerController
 
-- (HUDiagnosticsCameraPlayerController)initWithCameraPlayerViewController:(id)a3 playbackEngine:(id)a4 clipScrubberDataSource:(id)a5 cameraProfile:(id)a6
+- (HUDiagnosticsCameraPlayerController)initWithCameraPlayerViewController:(id)controller playbackEngine:(id)engine clipScrubberDataSource:(id)source cameraProfile:(id)profile
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  engineCopy = engine;
+  sourceCopy = source;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = HUDiagnosticsCameraPlayerController;
   v14 = [(HUDiagnosticsCameraPlayerController *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_cameraPlayerViewController, v10);
-    objc_storeWeak(&v15->_playbackEngine, v11);
-    objc_storeWeak(&v15->_clipScrubberDataSource, v12);
-    objc_storeStrong(&v15->_cameraProfile, a6);
+    objc_storeWeak(&v14->_cameraPlayerViewController, controllerCopy);
+    objc_storeWeak(&v15->_playbackEngine, engineCopy);
+    objc_storeWeak(&v15->_clipScrubberDataSource, sourceCopy);
+    objc_storeStrong(&v15->_cameraProfile, profile);
     v16 = [objc_alloc(MEMORY[0x277D753B8]) initWithDelegate:v15];
     WeakRetained = objc_loadWeakRetained(&v15->_cameraPlayerViewController);
-    v18 = [WeakRetained view];
-    [v18 addInteraction:v16];
+    view = [WeakRetained view];
+    [view addInteraction:v16];
   }
 
   return v15;
 }
 
-- (void)updateWithPlaybackEngine:(id)a3
+- (void)updateWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
-  [v5 updateWithPlaybackEngine:v4];
+  engineCopy = engine;
+  diagnosticsView = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
+  [diagnosticsView updateWithPlaybackEngine:engineCopy];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D753B0];
   v9[0] = MEMORY[0x277D85DD0];
@@ -149,51 +149,51 @@ void __93__HUDiagnosticsCameraPlayerController_contextMenuInteraction_configurat
 
 - (void)launchPlaybackEngineDiagnosticsView
 {
-  v3 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  v4 = [v3 view];
-  [v4 bounds];
+  cameraPlayerViewController = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  view = [cameraPlayerViewController view];
+  [view bounds];
   v6 = v5 + -330.0;
-  v7 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  v8 = [v7 view];
-  [v8 bounds];
+  cameraPlayerViewController2 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  view2 = [cameraPlayerViewController2 view];
+  [view2 bounds];
   v10 = v9;
 
   v11 = [[HUDiagnosticsCameraTimelineView alloc] initWithFrame:0.0, v6, v10, 160.0];
   [(HUDiagnosticsCameraPlayerController *)self setDiagnosticsView:v11];
 
-  v12 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
-  [v12 setOverrideUserInterfaceStyle:2];
+  diagnosticsView = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
+  [diagnosticsView setOverrideUserInterfaceStyle:2];
 
-  v13 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  v14 = [v13 customControlsView];
-  v15 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
-  [v14 addSubview:v15];
+  cameraPlayerViewController3 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  customControlsView = [cameraPlayerViewController3 customControlsView];
+  diagnosticsView2 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
+  [customControlsView addSubview:diagnosticsView2];
 
-  v16 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
-  v17 = [v16 moreButton];
-  [v17 addTarget:self action:sel_displayDiagnosticDetails forControlEvents:64];
+  diagnosticsView3 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
+  moreButton = [diagnosticsView3 moreButton];
+  [moreButton addTarget:self action:sel_displayDiagnosticDetails forControlEvents:64];
 
-  v19 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
-  v18 = [(HUDiagnosticsCameraPlayerController *)self playbackEngine];
-  [v19 updateWithPlaybackEngine:v18];
+  diagnosticsView4 = [(HUDiagnosticsCameraPlayerController *)self diagnosticsView];
+  playbackEngine = [(HUDiagnosticsCameraPlayerController *)self playbackEngine];
+  [diagnosticsView4 updateWithPlaybackEngine:playbackEngine];
 }
 
 - (void)displayDiagnosticDetails
 {
-  v3 = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
-  v4 = [v3 currentEvent];
-  v5 = [v4 containerType];
+  clipScrubberDataSource = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
+  currentEvent = [clipScrubberDataSource currentEvent];
+  containerType = [currentEvent containerType];
 
-  if (v5 == 1)
+  if (containerType == 1)
   {
     v6 = objc_opt_class();
-    v7 = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
-    v8 = [v7 currentEvent];
-    if (v8)
+    clipScrubberDataSource2 = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
+    currentEvent2 = [clipScrubberDataSource2 currentEvent];
+    if (currentEvent2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = currentEvent2;
       }
 
       else
@@ -201,34 +201,34 @@ void __93__HUDiagnosticsCameraPlayerController_contextMenuInteraction_configurat
         v9 = 0;
       }
 
-      v29 = v8;
+      v29 = currentEvent2;
       if (v9)
       {
         goto LABEL_9;
       }
 
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v10 handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v11 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
     }
 
     v29 = 0;
 LABEL_9:
 
     v12 = [HUDiagnosticsCameraClipViewController alloc];
-    v13 = [(HUDiagnosticsCameraPlayerController *)self cameraProfile];
-    v14 = [(HUDiagnosticsCameraClipViewController *)v12 initWithRecordingEvent:v29 cameraProfile:v13];
+    cameraProfile = [(HUDiagnosticsCameraPlayerController *)self cameraProfile];
+    v14 = [(HUDiagnosticsCameraClipViewController *)v12 initWithRecordingEvent:v29 cameraProfile:cameraProfile];
     goto LABEL_18;
   }
 
   v15 = objc_opt_class();
-  v16 = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
-  v17 = [v16 currentEvent];
-  if (v17)
+  clipScrubberDataSource3 = [(HUDiagnosticsCameraPlayerController *)self clipScrubberDataSource];
+  currentEvent3 = [clipScrubberDataSource3 currentEvent];
+  if (currentEvent3)
   {
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = currentEvent3;
     }
 
     else
@@ -236,47 +236,47 @@ LABEL_9:
       v18 = 0;
     }
 
-    v29 = v17;
+    v29 = currentEvent3;
     if (v18)
     {
       goto LABEL_17;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
   }
 
   v29 = 0;
 LABEL_17:
 
   v21 = [HUDiagnosticsReachabilityEventViewController alloc];
-  v13 = [(HUDiagnosticsCameraPlayerController *)self cameraProfile];
-  v14 = [(HUDiagnosticsReachabilityEventViewController *)v21 initWithReachabilityEvent:v29 cameraProfile:v13];
+  cameraProfile = [(HUDiagnosticsCameraPlayerController *)self cameraProfile];
+  v14 = [(HUDiagnosticsReachabilityEventViewController *)v21 initWithReachabilityEvent:v29 cameraProfile:cameraProfile];
 LABEL_18:
   v22 = v14;
 
   v23 = objc_alloc(MEMORY[0x277D751E0]);
   v24 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
   v25 = [v23 initWithTitle:v24 style:2 target:self action:sel_dismissDiagnosticDetails];
-  v26 = [v22 navigationItem];
-  [v26 setLeftBarButtonItem:v25];
+  navigationItem = [v22 navigationItem];
+  [navigationItem setLeftBarButtonItem:v25];
 
   v27 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v22];
-  v28 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  [v28 presentViewController:v27 animated:1 completion:0];
+  cameraPlayerViewController = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  [cameraPlayerViewController presentViewController:v27 animated:1 completion:0];
 }
 
 - (void)dismissDiagnosticDetails
 {
-  v2 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  cameraPlayerViewController = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  [cameraPlayerViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)dismissDetailsViewController
 {
-  v2 = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  cameraPlayerViewController = [(HUDiagnosticsCameraPlayerController *)self cameraPlayerViewController];
+  [cameraPlayerViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (AVPlayerViewController)cameraPlayerViewController

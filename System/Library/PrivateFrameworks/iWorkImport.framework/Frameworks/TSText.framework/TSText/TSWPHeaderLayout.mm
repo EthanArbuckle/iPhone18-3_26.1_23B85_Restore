@@ -1,13 +1,13 @@
 @interface TSWPHeaderLayout
-- (CGSize)maximumFrameSizeForChild:(id)a3;
-- (TSWPHeaderLayout)initWithInfo:(id)a3;
-- (TSWPHeaderLayout)initWithInfo:(id)a3 frame:(CGRect)a4;
-- (TSWPHeaderLayout)initWithInfo:(id)a3 storage:(id)a4 frame:(CGRect)a5;
+- (CGSize)maximumFrameSizeForChild:(id)child;
+- (TSWPHeaderLayout)initWithInfo:(id)info;
+- (TSWPHeaderLayout)initWithInfo:(id)info frame:(CGRect)frame;
+- (TSWPHeaderLayout)initWithInfo:(id)info storage:(id)storage frame:(CGRect)frame;
 @end
 
 @implementation TSWPHeaderLayout
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   [(TSWPLayout *)self maxSize];
   v5 = v4 * 0.800000012;
@@ -16,50 +16,50 @@
   return result;
 }
 
-- (TSWPHeaderLayout)initWithInfo:(id)a3 frame:(CGRect)a4
+- (TSWPHeaderLayout)initWithInfo:(id)info frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = TSWPHeaderLayout;
   swift_unknownObjectRetain();
-  v9 = [(TSWPLayout *)&v11 initWithInfo:a3 frame:x, y, width, height];
+  height = [(TSWPLayout *)&v11 initWithInfo:info frame:x, y, width, height];
   swift_unknownObjectRelease();
-  if (v9)
+  if (height)
   {
   }
 
-  return v9;
+  return height;
 }
 
-- (TSWPHeaderLayout)initWithInfo:(id)a3 storage:(id)a4 frame:(CGRect)a5
+- (TSWPHeaderLayout)initWithInfo:(id)info storage:(id)storage frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = TSWPHeaderLayout;
   swift_unknownObjectRetain();
-  v11 = a4;
-  v12 = [(TSWPLayout *)&v14 initWithInfo:a3 storage:v11 frame:x, y, width, height];
+  storageCopy = storage;
+  height = [(TSWPLayout *)&v14 initWithInfo:info storage:storageCopy frame:x, y, width, height];
   swift_unknownObjectRelease();
 
-  if (v12)
+  if (height)
   {
   }
 
-  return v12;
+  return height;
 }
 
-- (TSWPHeaderLayout)initWithInfo:(id)a3
+- (TSWPHeaderLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = TSWPHeaderLayout;
   swift_unknownObjectRetain();
-  v4 = [(TSWPLayout *)&v6 initWithInfo:a3];
+  v4 = [(TSWPLayout *)&v6 initWithInfo:info];
   swift_unknownObjectRelease();
   if (v4)
   {

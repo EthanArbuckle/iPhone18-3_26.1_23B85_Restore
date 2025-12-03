@@ -1,17 +1,17 @@
 @interface EBPane
-+ (void)readXlPaneFrom:(XlSheetPresentation *)a3 state:(id)a4;
-+ (void)writePaneForSheet:(id)a3 toXlSheetPresentation:(XlSheetPresentation *)a4 xlWindow2:(XlWindow2 *)a5;
++ (void)readXlPaneFrom:(XlSheetPresentation *)from state:(id)state;
++ (void)writePaneForSheet:(id)sheet toXlSheetPresentation:(XlSheetPresentation *)presentation xlWindow2:(XlWindow2 *)window2;
 @end
 
 @implementation EBPane
 
-+ (void)readXlPaneFrom:(XlSheetPresentation *)a3 state:(id)a4
++ (void)readXlPaneFrom:(XlSheetPresentation *)from state:(id)state
 {
-  v5 = a4;
-  var3 = a3->var3;
+  stateCopy = state;
+  var3 = from->var3;
   if (var3)
   {
-    v12 = v5;
+    v12 = stateCopy;
     v7 = +[EDPane pane];
     [v7 setActivePane:*(var3 + 6)];
     LOWORD(v8) = *(var3 + 8);
@@ -21,20 +21,20 @@
     v10 = [EDReference referenceWithFirstRow:*(var3 + 10) lastRow:*(var3 + 10) firstColumn:*(var3 + 11) lastColumn:*(var3 + 11)];
     [v7 setTopLeftCell:v10];
 
-    v11 = [v12 edSheet];
-    [v11 setPane:v7];
+    edSheet = [v12 edSheet];
+    [edSheet setPane:v7];
 
-    v5 = v12;
+    stateCopy = v12;
   }
 }
 
-+ (void)writePaneForSheet:(id)a3 toXlSheetPresentation:(XlSheetPresentation *)a4 xlWindow2:(XlWindow2 *)a5
++ (void)writePaneForSheet:(id)sheet toXlSheetPresentation:(XlSheetPresentation *)presentation xlWindow2:(XlWindow2 *)window2
 {
-  v5 = a3;
+  sheetCopy = sheet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 pane];
+    [sheetCopy pane];
     if (objc_claimAutoreleasedReturnValue())
     {
       operator new();

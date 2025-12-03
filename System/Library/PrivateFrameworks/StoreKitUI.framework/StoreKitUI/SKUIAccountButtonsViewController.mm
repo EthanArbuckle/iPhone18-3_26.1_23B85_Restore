@@ -2,36 +2,36 @@
 - (BOOL)isGiftingHidden;
 - (BOOL)isTermsAndConditionsHidden;
 - (SKUIAccountButtonsDelegate)delegate;
-- (SKUIAccountButtonsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIAccountButtonsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_buttonsView;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_accountStoreChangedNotification:(id)a3;
-- (void)_ecommerceLinkAction:(id)a3;
-- (void)_giftAction:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_accountStoreChangedNotification:(id)notification;
+- (void)_ecommerceLinkAction:(id)action;
+- (void)_giftAction:(id)action;
 - (void)_openIForgot;
-- (void)_redeemButtonAction:(id)a3;
+- (void)_redeemButtonAction:(id)action;
 - (void)_reloadAccountsButton;
 - (void)_reloadRestrictions;
-- (void)_restrictionsChangedNotification:(id)a3;
+- (void)_restrictionsChangedNotification:(id)notification;
 - (void)_sendDidSignIn;
-- (void)_signInButtonAction:(id)a3;
+- (void)_signInButtonAction:(id)action;
 - (void)_signOut;
-- (void)_termsAndConditionsButtonAction:(id)a3;
-- (void)_usernameButtonAction:(id)a3;
+- (void)_termsAndConditionsButtonAction:(id)action;
+- (void)_usernameButtonAction:(id)action;
 - (void)_viewAppleID;
 - (void)dealloc;
 - (void)loadView;
-- (void)setECommerceLink:(id)a3;
-- (void)setGiftingHidden:(BOOL)a3;
-- (void)setTermsAndConditionsHidden:(BOOL)a3;
+- (void)setECommerceLink:(id)link;
+- (void)setGiftingHidden:(BOOL)hidden;
+- (void)setTermsAndConditionsHidden:(BOOL)hidden;
 @end
 
 @implementation SKUIAccountButtonsViewController
 
-- (SKUIAccountButtonsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIAccountButtonsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIAccountButtonsViewController initWithNibName:bundle:];
@@ -39,12 +39,12 @@
 
   v11.receiver = self;
   v11.super_class = SKUIAccountButtonsViewController;
-  v8 = [(SKUIAccountButtonsViewController *)&v11 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIAccountButtonsViewController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v8 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x277D69D70] object:0];
-    [v9 addObserver:v8 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x277D69D70] object:0];
+    [defaultCenter addObserver:v8 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
   }
 
   return v8;
@@ -52,20 +52,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D69D70] object:0];
-  v4 = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
-  [v4 removeTarget:self action:0 forControlEvents:64];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D69D70] object:0];
+  appleIDButton = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
+  [appleIDButton removeTarget:self action:0 forControlEvents:64];
 
-  v5 = [(SKUIAccountButtonsView *)self->_buttonsView ECommerceButton];
-  [v5 removeTarget:self action:0 forControlEvents:64];
+  eCommerceButton = [(SKUIAccountButtonsView *)self->_buttonsView ECommerceButton];
+  [eCommerceButton removeTarget:self action:0 forControlEvents:64];
 
-  v6 = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
-  [v6 removeTarget:self action:0 forControlEvents:64];
+  redeemButton = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
+  [redeemButton removeTarget:self action:0 forControlEvents:64];
 
-  v7 = [(SKUIAccountButtonsView *)self->_buttonsView termsAndConditionsButton];
-  [v7 removeTarget:self action:0 forControlEvents:64];
+  termsAndConditionsButton = [(SKUIAccountButtonsView *)self->_buttonsView termsAndConditionsButton];
+  [termsAndConditionsButton removeTarget:self action:0 forControlEvents:64];
 
   v8.receiver = self;
   v8.super_class = SKUIAccountButtonsViewController;
@@ -74,65 +74,65 @@
 
 - (BOOL)isGiftingHidden
 {
-  v2 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-  v3 = [v2 isGiftingHidden];
+  _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+  isGiftingHidden = [_buttonsView isGiftingHidden];
 
-  return v3;
+  return isGiftingHidden;
 }
 
 - (BOOL)isTermsAndConditionsHidden
 {
-  v2 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-  v3 = [v2 isTermsAndConditionsHidden];
+  _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+  isTermsAndConditionsHidden = [_buttonsView isTermsAndConditionsHidden];
 
-  return v3;
+  return isTermsAndConditionsHidden;
 }
 
-- (void)setECommerceLink:(id)a3
+- (void)setECommerceLink:(id)link
 {
-  v5 = a3;
-  if (self->_ecommerceLink != v5)
+  linkCopy = link;
+  if (self->_ecommerceLink != linkCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_ecommerceLink, a3);
-    v6 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-    v7 = [(SKUILink *)v8 title];
-    [v6 setECommerceLinkTitle:v7];
+    v8 = linkCopy;
+    objc_storeStrong(&self->_ecommerceLink, link);
+    _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+    title = [(SKUILink *)v8 title];
+    [_buttonsView setECommerceLinkTitle:title];
 
-    v5 = v8;
+    linkCopy = v8;
   }
 }
 
-- (void)setGiftingHidden:(BOOL)a3
+- (void)setGiftingHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-  [v4 setGiftingHidden:v3];
+  hiddenCopy = hidden;
+  _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+  [_buttonsView setGiftingHidden:hiddenCopy];
 }
 
-- (void)setTermsAndConditionsHidden:(BOOL)a3
+- (void)setTermsAndConditionsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-  [v4 setTermsAndConditionsHidden:v3];
+  hiddenCopy = hidden;
+  _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+  [_buttonsView setTermsAndConditionsHidden:hiddenCopy];
 }
 
 - (void)loadView
 {
-  v3 = [(SKUIAccountButtonsViewController *)self _buttonsView];
-  [(SKUIAccountButtonsViewController *)self setView:v3];
+  _buttonsView = [(SKUIAccountButtonsViewController *)self _buttonsView];
+  [(SKUIAccountButtonsViewController *)self setView:_buttonsView];
 
   [(SKUIAccountButtonsViewController *)self _reloadAccountsButton];
 
   [(SKUIAccountButtonsViewController *)self _reloadRestrictions];
 }
 
-- (void)_ecommerceLinkAction:(id)a3
+- (void)_ecommerceLinkAction:(id)action
 {
-  v6 = [(SKUIAccountButtonsViewController *)self delegate];
+  delegate = [(SKUIAccountButtonsViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 accountButtonsViewControllerDidTapECommerceLink:self];
+    [delegate accountButtonsViewControllerDidTapECommerceLink:self];
   }
 
   else
@@ -146,7 +146,7 @@
   }
 }
 
-- (void)_giftAction:(id)a3
+- (void)_giftAction:(id)action
 {
   v5 = [[SKUIGift alloc] initWithGiftCategory:0];
   v4 = [[SKUIGiftViewController alloc] initWithGift:v5];
@@ -154,20 +154,20 @@
   [(SKUIAccountButtonsViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_redeemButtonAction:(id)a3
+- (void)_redeemButtonAction:(id)action
 {
   v4 = [[SKUIRedeemViewController alloc] initWithRedeemCategory:0];
   [(SKUIRedeemViewController *)v4 setClientContext:self->_clientContext];
   [(SKUIAccountButtonsViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_signInButtonAction:(id)a3
+- (void)_signInButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D69A50]);
-  v6 = [MEMORY[0x277D69A58] contextForSignIn];
-  v7 = [v5 initWithAuthenticationContext:v6];
+  contextForSignIn = [MEMORY[0x277D69A58] contextForSignIn];
+  v7 = [v5 initWithAuthenticationContext:contextForSignIn];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -207,19 +207,19 @@ void __56__SKUIAccountButtonsViewController__signInButtonAction___block_invoke_2
   }
 }
 
-- (void)_termsAndConditionsButtonAction:(id)a3
+- (void)_termsAndConditionsButtonAction:(id)action
 {
-  v3 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SKUIMetricsOpenURL(v3);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SKUIMetricsOpenURL(termsAndConditionsURL);
 }
 
-- (void)_usernameButtonAction:(id)a3
+- (void)_usernameButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  v6 = [v5 activeAccount];
+  actionCopy = action;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (!v6)
+  if (!activeAccount)
   {
     [(SKUIAccountButtonsViewController *)self _reloadAccountsButton];
     goto LABEL_28;
@@ -229,8 +229,8 @@ void __56__SKUIAccountButtonsViewController__signInButtonAction___block_invoke_2
   {
     v7 = objc_alloc_init(MEMORY[0x277D75110]);
     v8 = MEMORY[0x277CF0300];
-    v9 = [v6 accountName];
-    v10 = [v8 formattedUsernameFromUsername:v9];
+    accountName = [activeAccount accountName];
+    v10 = [v8 formattedUsernameFromUsername:accountName];
     [v7 setMessage:v10];
 
     [v7 setPreferredStyle:1];
@@ -254,9 +254,9 @@ void __56__SKUIAccountButtonsViewController__signInButtonAction___block_invoke_2
 
     else
     {
-      v13 = [(SKUIClientContext *)self->_clientContext isManagedAppleID];
+      isManagedAppleID = [(SKUIClientContext *)self->_clientContext isManagedAppleID];
       objc_initWeak(&location, self);
-      if (v13)
+      if (isManagedAppleID)
       {
         v14 = 1;
 LABEL_16:
@@ -384,7 +384,7 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
   [WeakRetained _openIForgot];
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -394,7 +394,7 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_restrictionsChangedNotification:(id)a3
+- (void)_restrictionsChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -404,7 +404,7 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
@@ -426,17 +426,17 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
     v5 = self->_buttonsView;
     self->_buttonsView = v4;
 
-    v6 = [(SKUIAccountButtonsView *)self->_buttonsView ECommerceButton];
-    [v6 addTarget:self action:sel__ecommerceLinkAction_ forControlEvents:64];
+    eCommerceButton = [(SKUIAccountButtonsView *)self->_buttonsView ECommerceButton];
+    [eCommerceButton addTarget:self action:sel__ecommerceLinkAction_ forControlEvents:64];
 
-    v7 = [(SKUIAccountButtonsView *)self->_buttonsView giftingButton];
-    [v7 addTarget:self action:sel__giftAction_ forControlEvents:64];
+    giftingButton = [(SKUIAccountButtonsView *)self->_buttonsView giftingButton];
+    [giftingButton addTarget:self action:sel__giftAction_ forControlEvents:64];
 
-    v8 = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
-    [v8 addTarget:self action:sel__redeemButtonAction_ forControlEvents:64];
+    redeemButton = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
+    [redeemButton addTarget:self action:sel__redeemButtonAction_ forControlEvents:64];
 
-    v9 = [(SKUIAccountButtonsView *)self->_buttonsView termsAndConditionsButton];
-    [v9 addTarget:self action:sel__termsAndConditionsButtonAction_ forControlEvents:64];
+    termsAndConditionsButton = [(SKUIAccountButtonsView *)self->_buttonsView termsAndConditionsButton];
+    [termsAndConditionsButton addTarget:self action:sel__termsAndConditionsButtonAction_ forControlEvents:64];
 
     buttonsView = self->_buttonsView;
   }
@@ -450,21 +450,21 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
   v5 = [v2 initWithURLBagKey:*MEMORY[0x277D6A5F0]];
   [v5 setITunesStoreURL:0];
   v3 = [objc_alloc(MEMORY[0x277D7FD10]) initWithOpenURLRequest:v5];
-  v4 = [MEMORY[0x277D7FD20] mainQueue];
-  [v4 addOperation:v3];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v3];
 }
 
 - (void)_reloadAccountsButton
 {
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v15 = [v3 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v4 = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
-  if (v15)
+  appleIDButton = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
+  if (activeAccount)
   {
     v5 = MEMORY[0x277CF0300];
-    v6 = [v15 accountName];
-    v7 = [v5 formattedUsernameFromUsername:v6];
+    accountName = [activeAccount accountName];
+    v7 = [v5 formattedUsernameFromUsername:accountName];
 
     clientContext = self->_clientContext;
     if (clientContext)
@@ -478,12 +478,12 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
     }
     v10 = ;
     v11 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v7];
-    [v4 setTitle:v11 forState:0];
-    [v4 removeTarget:self action:0 forControlEvents:64];
-    [v4 addTarget:self action:sel__usernameButtonAction_ forControlEvents:64];
+    [appleIDButton setTitle:v11 forState:0];
+    [appleIDButton removeTarget:self action:0 forControlEvents:64];
+    [appleIDButton addTarget:self action:sel__usernameButtonAction_ forControlEvents:64];
     buttonsView = self->_buttonsView;
-    v13 = [v15 creditsString];
-    [(SKUIAccountButtonsView *)buttonsView setAccountCredits:v13];
+    creditsString = [activeAccount creditsString];
+    [(SKUIAccountButtonsView *)buttonsView setAccountCredits:creditsString];
   }
 
   else
@@ -499,10 +499,10 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
       [SKUIClientContext localizedStringForKey:@"ACCOUNT_BUTTON_SIGN_IN" inBundles:0];
     }
     v14 = ;
-    [v4 setTitle:v14 forState:0];
+    [appleIDButton setTitle:v14 forState:0];
 
-    [v4 removeTarget:self action:0 forControlEvents:64];
-    [v4 addTarget:self action:sel__signInButtonAction_ forControlEvents:64];
+    [appleIDButton removeTarget:self action:0 forControlEvents:64];
+    [appleIDButton addTarget:self action:sel__signInButtonAction_ forControlEvents:64];
     [(SKUIAccountButtonsView *)self->_buttonsView setAccountCredits:0];
   }
 
@@ -511,21 +511,21 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
 
 - (void)_reloadRestrictions
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
 
   v5 = +[SKUIItemStateCenter defaultCenter];
-  v6 = [v5 isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [v5 isRunningInStoreDemoMode];
 
-  v7 = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
-  v8 = v6 ^ 1u;
-  [v7 setEnabled:v4 & v8];
+  appleIDButton = [(SKUIAccountButtonsView *)self->_buttonsView appleIDButton];
+  v8 = isRunningInStoreDemoMode ^ 1u;
+  [appleIDButton setEnabled:v4 & v8];
 
-  v9 = [(SKUIAccountButtonsView *)self->_buttonsView giftingButton];
-  [v9 setEnabled:v8];
+  giftingButton = [(SKUIAccountButtonsView *)self->_buttonsView giftingButton];
+  [giftingButton setEnabled:v8];
 
-  v10 = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
-  [v10 setEnabled:v8];
+  redeemButton = [(SKUIAccountButtonsView *)self->_buttonsView redeemButton];
+  [redeemButton setEnabled:v8];
 }
 
 - (void)_sendDidSignIn
@@ -542,11 +542,11 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
 
 - (void)_signOut
 {
-  v7 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v7 activeAccount];
-  if (v3)
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  if (activeAccount)
   {
-    [v7 signOutAccount:v3];
+    [defaultStore signOutAccount:activeAccount];
     [(SKUIAccountButtonsViewController *)self _reloadAccountsButton];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -561,10 +561,10 @@ void __58__SKUIAccountButtonsViewController__usernameButtonAction___block_invoke
 
 - (void)_viewAppleID
 {
-  v5 = [(SKUIClientContext *)self->_clientContext clientInterface];
+  clientInterface = [(SKUIClientContext *)self->_clientContext clientInterface];
   v3 = objc_alloc_init(MEMORY[0x277D7FD90]);
   [v3 setCanMoveToOverlay:0];
-  [v3 setClientInterface:v5];
+  [v3 setClientInterface:clientInterface];
   [v3 setStyle:2];
   v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
   [v4 setDelegate:self];

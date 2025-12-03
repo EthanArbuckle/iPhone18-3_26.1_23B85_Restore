@@ -7,14 +7,14 @@
 - (uint64_t)accNav_safeToBeConvertedToUnit:()AccessoryNavigation
 {
   v4 = a3;
-  v5 = [a1 unit];
+  unit = [self unit];
   if (objc_opt_respondsToSelector())
   {
   }
 
   else
   {
-    v6 = [a1 unit];
+    unit2 = [self unit];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -25,7 +25,7 @@
     }
   }
 
-  v8 = [a1 canBeConvertedToUnit:v4];
+  v8 = [self canBeConvertedToUnit:v4];
 LABEL_6:
 
   return v8;

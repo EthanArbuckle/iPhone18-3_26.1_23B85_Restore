@@ -1,11 +1,11 @@
 @interface BSPortDeathSentinel
-+ (void)monitorSendRight:(id)a3 withHandler:(id)a4;
++ (void)monitorSendRight:(id)right withHandler:(id)handler;
 - (BOOL)isValid;
-- (BSPortDeathSentinel)initWithSendRight:(id)a3;
-- (void)activateWithHandler:(id)a3;
+- (BSPortDeathSentinel)initWithSendRight:(id)right;
+- (void)activateWithHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation BSPortDeathSentinel
@@ -47,12 +47,12 @@ void __33__BSPortDeathSentinel_invalidate__block_invoke(uint64_t a1)
   [(BSPortDeathSentinel *)&v4 dealloc];
 }
 
-- (BSPortDeathSentinel)initWithSendRight:(id)a3
+- (BSPortDeathSentinel)initWithSendRight:(id)right
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  rightCopy = right;
   NSClassFromString(&cfstr_Bsmachportsend.isa);
-  if (!v5)
+  if (!rightCopy)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@ void __33__BSPortDeathSentinel_invalidate__block_invoke(uint64_t a1)
       v23 = 2114;
       v24 = v13;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BSPortDeathSentinel.m";
       v29 = 1024;
@@ -94,7 +94,7 @@ void __33__BSPortDeathSentinel_invalidate__block_invoke(uint64_t a1)
       v23 = 2114;
       v24 = v18;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BSPortDeathSentinel.m";
       v29 = 1024;
@@ -115,7 +115,7 @@ void __33__BSPortDeathSentinel_invalidate__block_invoke(uint64_t a1)
   v6 = [(BSPortDeathSentinel *)&v20 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [rightCopy copy];
     sendRight = v6->_sendRight;
     v6->_sendRight = v7;
 
@@ -125,38 +125,38 @@ void __33__BSPortDeathSentinel_invalidate__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (void)monitorSendRight:(id)a3 withHandler:(id)a4
++ (void)monitorSendRight:(id)right withHandler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"BSPortDeathSentinel.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSPortDeathSentinel.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
   }
 
-  v6 = [[BSPortDeathSentinel alloc] initWithSendRight:a3];
+  v6 = [[BSPortDeathSentinel alloc] initWithSendRight:right];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__BSPortDeathSentinel_monitorSendRight_withHandler___block_invoke;
   v11[3] = &unk_1E72CB2B0;
   v12 = v6;
-  v13 = a4;
+  handlerCopy = handler;
   v7 = v6;
   [(BSPortDeathSentinel *)v7 activateWithHandler:v11];
 }
 
-- (void)activateWithHandler:(id)a3
+- (void)activateWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSPortDeathSentinel.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSPortDeathSentinel.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__BSPortDeathSentinel_activateWithHandler___block_invoke;
   v7[3] = &unk_1E72CB880;
-  v7[5] = a3;
+  v7[5] = handler;
   v7[6] = a2;
   v7[4] = self;
   __lockAndExecute(&self->_lock, v7);
@@ -259,13 +259,13 @@ void __43__BSPortDeathSentinel_activateWithHandler___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__BSPortDeathSentinel_setQueue___block_invoke;
   v3[3] = &unk_1E72CB8A8;
-  v3[5] = a3;
+  v3[5] = queue;
   v3[6] = a2;
   v3[4] = self;
   __lockAndExecute(&self->_lock, v3);

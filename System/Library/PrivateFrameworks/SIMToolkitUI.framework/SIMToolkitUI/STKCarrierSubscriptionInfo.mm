@@ -1,21 +1,21 @@
 @interface STKCarrierSubscriptionInfo
-- (STKCarrierSubscriptionInfo)initWithShowClass0SMSFromField:(BOOL)a3 canShowClass0SMSOverInCallAlerts:(BOOL)a4 ussdAlwaysFilteredPatterns:(id)a5 ussdSometimesFilteredPatterns:(id)a6;
+- (STKCarrierSubscriptionInfo)initWithShowClass0SMSFromField:(BOOL)field canShowClass0SMSOverInCallAlerts:(BOOL)alerts ussdAlwaysFilteredPatterns:(id)patterns ussdSometimesFilteredPatterns:(id)filteredPatterns;
 @end
 
 @implementation STKCarrierSubscriptionInfo
 
-- (STKCarrierSubscriptionInfo)initWithShowClass0SMSFromField:(BOOL)a3 canShowClass0SMSOverInCallAlerts:(BOOL)a4 ussdAlwaysFilteredPatterns:(id)a5 ussdSometimesFilteredPatterns:(id)a6
+- (STKCarrierSubscriptionInfo)initWithShowClass0SMSFromField:(BOOL)field canShowClass0SMSOverInCallAlerts:(BOOL)alerts ussdAlwaysFilteredPatterns:(id)patterns ussdSometimesFilteredPatterns:(id)filteredPatterns
 {
-  v10 = a5;
-  v11 = a6;
+  patternsCopy = patterns;
+  filteredPatternsCopy = filteredPatterns;
   v21.receiver = self;
   v21.super_class = STKCarrierSubscriptionInfo;
   v12 = [(STKCarrierSubscriptionInfo *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    v12->_canShowClass0SMSOverInCallAlerts = a4;
-    v12->_showClass0SMSFromField = a3;
+    v12->_canShowClass0SMSOverInCallAlerts = alerts;
+    v12->_showClass0SMSFromField = field;
     v14 = [(NSArray *)v12->_ussdAlwaysFilteredPatterns copy];
     ussdAlwaysFilteredPatterns = v13->_ussdAlwaysFilteredPatterns;
     v13->_ussdAlwaysFilteredPatterns = v14;
@@ -24,7 +24,7 @@
     ussdSometimesFilteredPatterns = v13->_ussdSometimesFilteredPatterns;
     v13->_ussdSometimesFilteredPatterns = v16;
 
-    v18 = [[STKUSSDFilter alloc] initWithAlwaysFilteredPatterns:v10 sometimesFilteredPatterns:v11];
+    v18 = [[STKUSSDFilter alloc] initWithAlwaysFilteredPatterns:patternsCopy sometimesFilteredPatterns:filteredPatternsCopy];
     ussdFilter = v13->_ussdFilter;
     v13->_ussdFilter = v18;
   }

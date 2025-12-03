@@ -1,18 +1,18 @@
 @interface CRCarKitIAPRemoteServiceAgent
 - (BOOL)_lock_wiredCarPlaySimulatorActive;
-- (CRCarKitIAPRemoteServiceAgent)initWithDelegate:(id)a3;
+- (CRCarKitIAPRemoteServiceAgent)initWithDelegate:(id)delegate;
 - (CRCarPlaySimulatorDelegate)delegate;
 - (void)_cleanup;
 - (void)_cleanupACCTransport;
 - (void)_cleanupRemoteXPC;
 - (void)_closeXPCConnection;
-- (void)_handleLockdownConnection:(_lockdown_connection *)a3 info:(__CFDictionary *)a4;
+- (void)_handleLockdownConnection:(_lockdown_connection *)connection info:(__CFDictionary *)info;
 - (void)_handleReads;
-- (void)_handleReadsWithBlock:(id)a3;
-- (void)_sendData:(const char *)a3 length:(unint64_t)a4;
+- (void)_handleReadsWithBlock:(id)block;
+- (void)_sendData:(const char *)data length:(unint64_t)length;
 - (void)_setupACCTransportClient;
 - (void)_startListeners;
-- (void)setLock_lockdownConnection:(_lockdown_connection *)a3;
+- (void)setLock_lockdownConnection:(_lockdown_connection *)connection;
 @end
 
 @implementation CRCarKitIAPRemoteServiceAgent
@@ -38,9 +38,9 @@
   else
   {
     v4 = [NSData dataWithBytes:v11 length:v3];
-    v5 = [sub_100002980() sharedClient];
-    v6 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
-    [v5 processIncomingData:v4 forEndpointWithUUID:v6];
+    sharedClient = [sub_100002980() sharedClient];
+    endpointUUID = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
+    [sharedClient processIncomingData:v4 forEndpointWithUUID:endpointUUID];
 
     v7 = CarGeneralLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -52,16 +52,16 @@
   }
 }
 
-- (CRCarKitIAPRemoteServiceAgent)initWithDelegate:(id)a3
+- (CRCarKitIAPRemoteServiceAgent)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CRCarKitIAPRemoteServiceAgent;
   v5 = [(CRCarKitIAPRemoteServiceAgent *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = dispatch_queue_create("com.apple.carkit.remote_xpc_handler_queue", 0);
     rxpcQueue = v6->_rxpcQueue;
@@ -77,16 +77,16 @@
   return v6;
 }
 
-- (void)setLock_lockdownConnection:(_lockdown_connection *)a3
+- (void)setLock_lockdownConnection:(_lockdown_connection *)connection
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  self->_lock_lockdownConnection = a3;
-  v5 = [(CRCarKitIAPRemoteServiceAgent *)self _lock_wiredCarPlaySimulatorActive];
-  v6 = [(CRCarKitIAPRemoteServiceAgent *)self delegate];
-  [v6 setCarPlaySimulatorActive:v5];
+  self->_lock_lockdownConnection = connection;
+  _lock_wiredCarPlaySimulatorActive = [(CRCarKitIAPRemoteServiceAgent *)self _lock_wiredCarPlaySimulatorActive];
+  delegate = [(CRCarKitIAPRemoteServiceAgent *)self delegate];
+  [delegate setCarPlaySimulatorActive:_lock_wiredCarPlaySimulatorActive];
 
-  v7 = [(CRCarKitIAPRemoteServiceAgent *)self delegate];
-  [v7 setRemoteDeviceConnected:0];
+  delegate2 = [(CRCarKitIAPRemoteServiceAgent *)self delegate];
+  [delegate2 setRemoteDeviceConnected:0];
 }
 
 - (BOOL)_lock_wiredCarPlaySimulatorActive
@@ -113,13 +113,13 @@
   objc_copyWeak(&v14, buf);
   v4 = objc_retainBlock(v13);
   v5 = sub_100002980();
-  v6 = [v5 sharedClient];
-  v7 = [v6 createConnectionWithType:1 andIdentifier:0];
+  sharedClient = [v5 sharedClient];
+  v7 = [sharedClient createConnectionWithType:1 andIdentifier:0];
   [(CRCarKitIAPRemoteServiceAgent *)self setConnectionUUID:v7];
 
-  v8 = [v5 sharedClient];
-  v9 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
-  v10 = [v8 createEndpointWithTransportType:8 andProtocol:4 andIdentifier:0 andDataOutHandler:v4 forConnectionWithUUID:v9 publishConnection:1];
+  sharedClient2 = [v5 sharedClient];
+  connectionUUID = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
+  v10 = [sharedClient2 createEndpointWithTransportType:8 andProtocol:4 andIdentifier:0 andDataOutHandler:v4 forConnectionWithUUID:connectionUUID publishConnection:1];
   [(CRCarKitIAPRemoteServiceAgent *)self setEndpointUUID:v10];
 
   v11 = CarGeneralLogging();
@@ -133,7 +133,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_handleLockdownConnection:(_lockdown_connection *)a3 info:(__CFDictionary *)a4
+- (void)_handleLockdownConnection:(_lockdown_connection *)connection info:(__CFDictionary *)info
 {
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -144,7 +144,7 @@
 
   [(CRCarKitIAPRemoteServiceAgent *)self _setupACCTransportClient];
   os_unfair_lock_lock(&self->_lock);
-  [(CRCarKitIAPRemoteServiceAgent *)self setLock_lockdownConnection:a3];
+  [(CRCarKitIAPRemoteServiceAgent *)self setLock_lockdownConnection:connection];
   os_unfair_lock_unlock(&self->_lock);
   objc_initWeak(buf, self);
   v7[0] = _NSConcreteStackBlock;
@@ -189,7 +189,7 @@
   v12[3] = &unk_1000DEAA0;
   objc_copyWeak(v13, &location);
   v6 = objc_retainBlock(v12);
-  v7 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownQueue];
+  lockdownQueue = [(CRCarKitIAPRemoteServiceAgent *)self lockdownQueue];
   v8 = lockdown_checkin_xpc();
 
   if (v8)
@@ -200,9 +200,9 @@
       sub_1000869AC();
     }
 
-    v10 = [(CRCarKitIAPRemoteServiceAgent *)self rxpcListener];
+    rxpcListener = [(CRCarKitIAPRemoteServiceAgent *)self rxpcListener];
 
-    if (!v10)
+    if (!rxpcListener)
     {
       v11 = CarGeneralLogging();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -217,7 +217,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_sendData:(const char *)a3 length:(unint64_t)a4
+- (void)_sendData:(const char *)data length:(unint64_t)length
 {
   if ([(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSocket]< 1)
   {
@@ -251,7 +251,7 @@
     }
   }
 
-  else if ((write([(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSocket], a3, a4) & 0x80000000) != 0)
+  else if ((write([(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSocket], data, length) & 0x80000000) != 0)
   {
 
     [(CRCarKitIAPRemoteServiceAgent *)self _cleanupRemoteXPC];
@@ -260,20 +260,20 @@
 
 - (void)_closeXPCConnection
 {
-  v3 = [(CRCarKitIAPRemoteServiceAgent *)self rxpcConnection];
+  rxpcConnection = [(CRCarKitIAPRemoteServiceAgent *)self rxpcConnection];
 
-  if (v3)
+  if (rxpcConnection)
   {
-    v4 = [(CRCarKitIAPRemoteServiceAgent *)self rxpcConnection];
+    rxpcConnection2 = [(CRCarKitIAPRemoteServiceAgent *)self rxpcConnection];
     xpc_remote_connection_cancel();
 
     [(CRCarKitIAPRemoteServiceAgent *)self setRxpcConnection:0];
   }
 }
 
-- (void)_handleReadsWithBlock:(id)a3
+- (void)_handleReadsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   [(CRCarKitIAPRemoteServiceAgent *)self lock_lockdownConnection];
   socket = lockdown_get_socket();
@@ -292,22 +292,22 @@
 
   else
   {
-    v6 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownQueue];
-    v7 = dispatch_source_create(&_dispatch_source_type_read, socket, 0, v6);
+    lockdownQueue = [(CRCarKitIAPRemoteServiceAgent *)self lockdownQueue];
+    v7 = dispatch_source_create(&_dispatch_source_type_read, socket, 0, lockdownQueue);
     [(CRCarKitIAPRemoteServiceAgent *)self setLockdownSource:v7];
 
     objc_initWeak(&location, self);
-    v8 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
+    lockdownSource = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100041034;
     handler[3] = &unk_1000DDAD8;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
-    dispatch_source_set_event_handler(v8, handler);
+    v12 = blockCopy;
+    dispatch_source_set_event_handler(lockdownSource, handler);
 
-    v9 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
-    dispatch_resume(v9);
+    lockdownSource2 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
+    dispatch_resume(lockdownSource2);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -317,12 +317,12 @@
 - (void)_cleanup
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
+  lockdownSource = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
 
-  if (v3)
+  if (lockdownSource)
   {
-    v4 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
-    dispatch_source_cancel(v4);
+    lockdownSource2 = [(CRCarKitIAPRemoteServiceAgent *)self lockdownSource];
+    dispatch_source_cancel(lockdownSource2);
 
     [(CRCarKitIAPRemoteServiceAgent *)self setLockdownSource:0];
   }
@@ -344,8 +344,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelling Remote XPC connection and cleaning up ACC Transport", v5, 2u);
   }
 
-  v4 = [(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSource];
-  dispatch_source_cancel(v4);
+  remoteXPCSource = [(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSource];
+  dispatch_source_cancel(remoteXPCSource);
 
   [(CRCarKitIAPRemoteServiceAgent *)self setRemoteXPCSource:0];
   close([(CRCarKitIAPRemoteServiceAgent *)self remoteXPCSocket]);
@@ -355,30 +355,30 @@
 - (void)_cleanupACCTransport
 {
   v3 = sub_100002980();
-  v4 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
+  endpointUUID = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
 
-  if (v4)
+  if (endpointUUID)
   {
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
+      endpointUUID2 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
       v18 = 138412290;
-      v19 = v6;
+      v19 = endpointUUID2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Destroying endpoint with UUID', %@", &v18, 0xCu);
     }
 
-    v7 = [v3 sharedClient];
-    v8 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
-    [v7 destroyEndpointWithUUID:v8];
+    sharedClient = [v3 sharedClient];
+    endpointUUID3 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
+    [sharedClient destroyEndpointWithUUID:endpointUUID3];
 
     v9 = CarGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
+      endpointUUID4 = [(CRCarKitIAPRemoteServiceAgent *)self endpointUUID];
       v11 = NSStringFromBOOL();
       v18 = 138412546;
-      v19 = v10;
+      v19 = endpointUUID4;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Destroying endpoint with UUID', %@. Successful?: %@", &v18, 0x16u);
@@ -387,21 +387,21 @@
     [(CRCarKitIAPRemoteServiceAgent *)self setEndpointUUID:0];
   }
 
-  v12 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
+  connectionUUID = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
 
-  if (v12)
+  if (connectionUUID)
   {
-    v13 = [v3 sharedClient];
-    v14 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
-    [v13 destroyConnectionWithUUID:v14];
+    sharedClient2 = [v3 sharedClient];
+    connectionUUID2 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
+    [sharedClient2 destroyConnectionWithUUID:connectionUUID2];
 
     v15 = CarGeneralLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
+      connectionUUID3 = [(CRCarKitIAPRemoteServiceAgent *)self connectionUUID];
       v17 = NSStringFromBOOL();
       v18 = 138412546;
-      v19 = v16;
+      v19 = connectionUUID3;
       v20 = 2112;
       v21 = v17;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Destroying connection with UUID', %@. Successful?: %@", &v18, 0x16u);

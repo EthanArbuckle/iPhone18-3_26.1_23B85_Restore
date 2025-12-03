@@ -1,14 +1,14 @@
 @interface _UISearchBarBackgroundCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UISearchBarBackgroundCacheKey)initWithBarPosition:(int64_t)a3 usesContiguousBarBackground:(BOOL)a4 scale:(double)a5 alpha:(double)a6 height:(double)a7 statusBarHeight:(double)a8 backgroundColor:(CGColor *)a9 strokeColor:(CGColor *)a10;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UISearchBarBackgroundCacheKey)initWithBarPosition:(int64_t)position usesContiguousBarBackground:(BOOL)background scale:(double)scale alpha:(double)alpha height:(double)height statusBarHeight:(double)barHeight backgroundColor:(CGColor *)color strokeColor:(CGColor *)self0;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation _UISearchBarBackgroundCacheKey
 
-- (_UISearchBarBackgroundCacheKey)initWithBarPosition:(int64_t)a3 usesContiguousBarBackground:(BOOL)a4 scale:(double)a5 alpha:(double)a6 height:(double)a7 statusBarHeight:(double)a8 backgroundColor:(CGColor *)a9 strokeColor:(CGColor *)a10
+- (_UISearchBarBackgroundCacheKey)initWithBarPosition:(int64_t)position usesContiguousBarBackground:(BOOL)background scale:(double)scale alpha:(double)alpha height:(double)height statusBarHeight:(double)barHeight backgroundColor:(CGColor *)color strokeColor:(CGColor *)self0
 {
   v21.receiver = self;
   v21.super_class = _UISearchBarBackgroundCacheKey;
@@ -16,16 +16,16 @@
   v19 = v18;
   if (v18)
   {
-    v18->_barPosition = a3;
-    v18->_usesContiguousBarBackground = a4;
-    v18->_scale = a5;
-    v18->_alpha = a6;
-    v18->_height = a7;
-    v18->_statusBarHeight = a8;
-    CGColorRetain(a9);
-    v19->_backgroundColor = a9;
-    CGColorRetain(a10);
-    v19->_strokeColor = a10;
+    v18->_barPosition = position;
+    v18->_usesContiguousBarBackground = background;
+    v18->_scale = scale;
+    v18->_alpha = alpha;
+    v18->_height = height;
+    v18->_statusBarHeight = barHeight;
+    CGColorRetain(color);
+    v19->_backgroundColor = color;
+    CGColorRetain(strokeColor);
+    v19->_strokeColor = strokeColor;
   }
 
   return v19;
@@ -59,10 +59,10 @@
   return barPosition ^ usesContiguousBarBackground ^ scale ^ height ^ statusBarHeight ^ v10 ^ strokeColor ^ (alpha * 100.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -70,17 +70,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISearchBarBackgroundCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISearchBarBackgroundCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 && self->_barPosition == v4[1] && self->_usesContiguousBarBackground == *(v4 + 16) && self->_scale == *(v4 + 3) && self->_alpha == *(v4 + 4) && self->_height == *(v4 + 5) && self->_statusBarHeight == *(v4 + 6) && CGColorEqualToColor(self->_backgroundColor, v4[7]) && CGColorEqualToColor(self->_strokeColor, v5[8]);
+  keyCopy = key;
+  v5 = keyCopy;
+  v6 = keyCopy && self->_barPosition == keyCopy[1] && self->_usesContiguousBarBackground == *(keyCopy + 16) && self->_scale == *(keyCopy + 3) && self->_alpha == *(keyCopy + 4) && self->_height == *(keyCopy + 5) && self->_statusBarHeight == *(keyCopy + 6) && CGColorEqualToColor(self->_backgroundColor, keyCopy[7]) && CGColorEqualToColor(self->_strokeColor, v5[8]);
 
   return v6;
 }

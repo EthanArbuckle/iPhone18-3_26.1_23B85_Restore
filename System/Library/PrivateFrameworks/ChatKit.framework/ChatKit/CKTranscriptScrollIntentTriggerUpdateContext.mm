@@ -1,19 +1,19 @@
 @interface CKTranscriptScrollIntentTriggerUpdateContext
-- (CKTranscriptScrollIntentTriggerUpdateContext)initWithContentOffsetScrollIntent:(int64_t)a3 currentScrollIntent:(int64_t)a4;
+- (CKTranscriptScrollIntentTriggerUpdateContext)initWithContentOffsetScrollIntent:(int64_t)intent currentScrollIntent:(int64_t)scrollIntent;
 - (id)description;
 @end
 
 @implementation CKTranscriptScrollIntentTriggerUpdateContext
 
-- (CKTranscriptScrollIntentTriggerUpdateContext)initWithContentOffsetScrollIntent:(int64_t)a3 currentScrollIntent:(int64_t)a4
+- (CKTranscriptScrollIntentTriggerUpdateContext)initWithContentOffsetScrollIntent:(int64_t)intent currentScrollIntent:(int64_t)scrollIntent
 {
   v7.receiver = self;
   v7.super_class = CKTranscriptScrollIntentTriggerUpdateContext;
   result = [(CKTranscriptScrollIntentTriggerUpdateContext *)&v7 init];
   if (result)
   {
-    result->_contentOffsetScrollIntent = a3;
-    result->_currentScrollIntent = a4;
+    result->_contentOffsetScrollIntent = intent;
+    result->_currentScrollIntent = scrollIntent;
   }
 
   return result;

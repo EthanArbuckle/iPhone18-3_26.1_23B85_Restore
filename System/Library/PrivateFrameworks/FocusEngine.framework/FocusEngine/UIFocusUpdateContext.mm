@@ -1,7 +1,7 @@
 @interface UIFocusUpdateContext
 + (_UIDebugIssueReportFormatter)_defaultValidationReportFormatter;
 - (BOOL)_isInitialMovement;
-- (BOOL)_isValidInFocusSystem:(id)a3;
+- (BOOL)_isValidInFocusSystem:(id)system;
 - (BOOL)_validate;
 - (CGVector)_focusVelocity;
 - (NSArray)linearSortedFocusItems;
@@ -15,22 +15,22 @@
 - (_UIDynamicFocusGroupMap)_focusGroupMap;
 - (_UIFocusGuideImpl)_focusedGuideImpl;
 - (_UIFocusItemInfo)_destinationItemInfo;
-- (id)_initWithContext:(id)a3;
-- (id)_initWithFocusMovementRequest:(id)a3 nextFocusedItem:(id)a4;
-- (id)_initWithFocusUpdateRequest:(id)a3;
+- (id)_initWithContext:(id)context;
+- (id)_initWithFocusMovementRequest:(id)request nextFocusedItem:(id)item;
+- (id)_initWithFocusUpdateRequest:(id)request;
 - (id)description;
 - (id)nextFocusedItem;
 - (id)previouslyFocusedItem;
 - (int64_t)_groupFilter;
 - (void)_cacheFocusBehavior;
 - (void)_didUpdateFocus;
-- (void)_setFocusMapSearchInfo:(id)a3;
-- (void)_setFocusedGuideImpl:(id)a3;
-- (void)_setInitialDestinationEnvironment:(id)a3;
-- (void)_setSourceItemInfo:(id)a3;
+- (void)_setFocusMapSearchInfo:(id)info;
+- (void)_setFocusedGuideImpl:(id)impl;
+- (void)_setInitialDestinationEnvironment:(id)environment;
+- (void)_setSourceItemInfo:(id)info;
 - (void)_updateDestinationItemIfNeeded;
-- (void)_updateWithFocusGroupMap:(id)a3;
-- (void)_willUpdateFocusFromFocusedItem:(id)a3;
+- (void)_updateWithFocusGroupMap:(id)map;
+- (void)_willUpdateFocusFromFocusedItem:(id)item;
 @end
 
 @implementation UIFocusUpdateContext
@@ -46,13 +46,13 @@
   return [(UIFocusUpdateContext *)self _initWithFocusUpdateRequest:0];
 }
 
-- (id)_initWithFocusUpdateRequest:(id)a3
+- (id)_initWithFocusUpdateRequest:(id)request
 {
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIFocusUpdateContext.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusUpdateContext.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v17.receiver = self;
@@ -61,49 +61,49 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_request, a3);
-    v9 = [v6 focusSystem];
-    v10 = [v9 focusedItem];
-    v11 = [_UIFocusItemInfo infoWithItem:v10];
+    objc_storeStrong(&v7->_request, request);
+    focusSystem = [requestCopy focusSystem];
+    focusedItem = [focusSystem focusedItem];
+    v11 = [_UIFocusItemInfo infoWithItem:focusedItem];
     sourceItemInfo = v8->_sourceItemInfo;
     v8->_sourceItemInfo = v11;
 
-    if ([v6 isFocusRemovalRequest])
+    if ([requestCopy isFocusRemovalRequest])
     {
       objc_storeWeak(&v8->_initialDestinationEnvironment, 0);
     }
 
     else
     {
-      v13 = [v6 destinationEnvironment];
-      if (v13)
+      destinationEnvironment = [requestCopy destinationEnvironment];
+      if (destinationEnvironment)
       {
-        objc_storeWeak(&v8->_initialDestinationEnvironment, v13);
+        objc_storeWeak(&v8->_initialDestinationEnvironment, destinationEnvironment);
       }
 
       else
       {
-        v14 = [v6 environment];
-        objc_storeWeak(&v8->_initialDestinationEnvironment, v14);
+        environment = [requestCopy environment];
+        objc_storeWeak(&v8->_initialDestinationEnvironment, environment);
       }
     }
 
     *&v8->_flags |= 4u;
-    [v6 cacheCurrentFocusSystem];
+    [requestCopy cacheCurrentFocusSystem];
     [(UIFocusUpdateContext *)v8 _cacheFocusBehavior];
   }
 
   return v8;
 }
 
-- (id)_initWithFocusMovementRequest:(id)a3 nextFocusedItem:(id)a4
+- (id)_initWithFocusMovementRequest:(id)request nextFocusedItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  requestCopy = request;
+  itemCopy = item;
+  if (!requestCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIFocusUpdateContext.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusUpdateContext.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v19.receiver = self;
@@ -112,19 +112,19 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_request, a3);
-    v12 = [v8 movementInfo];
+    objc_storeStrong(&v10->_request, request);
+    movementInfo = [requestCopy movementInfo];
     focusMovement = v11->_focusMovement;
-    v11->_focusMovement = v12;
+    v11->_focusMovement = movementInfo;
 
-    v14 = [v8 focusedItemInfo];
+    focusedItemInfo = [requestCopy focusedItemInfo];
     sourceItemInfo = v11->_sourceItemInfo;
-    v11->_sourceItemInfo = v14;
+    v11->_sourceItemInfo = focusedItemInfo;
 
-    objc_storeWeak(&v11->_initialDestinationEnvironment, v9);
+    objc_storeWeak(&v11->_initialDestinationEnvironment, itemCopy);
     *&v11->_flags |= 4u;
-    v16 = [v8 movementInfo];
-    *&v11->_flags = *&v11->_flags & 0xF7 | (8 * (([v16 heading] & 0x300) != 0));
+    movementInfo2 = [requestCopy movementInfo];
+    *&v11->_flags = *&v11->_flags & 0xF7 | (8 * (([movementInfo2 heading] & 0x300) != 0));
 
     [(UIFocusUpdateContext *)v11 _cacheFocusBehavior];
   }
@@ -132,40 +132,40 @@
   return v11;
 }
 
-- (id)_initWithContext:(id)a3
+- (id)_initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = UIFocusUpdateContext;
   v5 = [(UIFocusUpdateContext *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_request, v4[9]);
-    objc_storeStrong(&v6->_sourceItemInfo, v4[10]);
-    objc_storeStrong(&v6->_destinationItemInfo, v4[3]);
-    objc_storeStrong(&v6->_focusMovement, v4[11]);
-    WeakRetained = objc_loadWeakRetained(v4 + 13);
+    objc_storeStrong(&v5->_request, contextCopy[9]);
+    objc_storeStrong(&v6->_sourceItemInfo, contextCopy[10]);
+    objc_storeStrong(&v6->_destinationItemInfo, contextCopy[3]);
+    objc_storeStrong(&v6->_focusMovement, contextCopy[11]);
+    WeakRetained = objc_loadWeakRetained(contextCopy + 13);
     objc_storeWeak(&v6->_initialDestinationEnvironment, WeakRetained);
 
-    v8 = objc_loadWeakRetained(v4 + 2);
+    v8 = objc_loadWeakRetained(contextCopy + 2);
     objc_storeWeak(&v6->_focusedGuideImpl, v8);
 
-    v6->_focusRedirectedByGuide = *(v4 + 13);
-    v9 = *&v6->_flags & 0xFE | v4[1] & 1;
+    v6->_focusRedirectedByGuide = *(contextCopy + 13);
+    v9 = *&v6->_flags & 0xFE | contextCopy[1] & 1;
     *&v6->_flags = v9;
-    v10 = v9 & 0xFFFFFFFD | (2 * ((*(v4 + 8) >> 1) & 1));
+    v10 = v9 & 0xFFFFFFFD | (2 * ((*(contextCopy + 8) >> 1) & 1));
     *&v6->_flags = v10;
-    v11 = v10 & 0xFFFFFFFB | (4 * ((*(v4 + 8) >> 2) & 1));
+    v11 = v10 & 0xFFFFFFFB | (4 * ((*(contextCopy + 8) >> 2) & 1));
     *&v6->_flags = v11;
-    *&v6->_flags = v11 & 0xF7 | v4[1] & 8;
-    v12 = objc_loadWeakRetained(v4 + 4);
+    *&v6->_flags = v11 & 0xF7 | contextCopy[1] & 8;
+    v12 = objc_loadWeakRetained(contextCopy + 4);
     objc_storeWeak(&v6->_commonAncestorEnvironment, v12);
 
-    *&v6->_flags = *&v6->_flags & 0xEF | v4[1] & 0x10;
-    v13 = [v4 focusBehavior];
+    *&v6->_flags = *&v6->_flags & 0xEF | contextCopy[1] & 0x10;
+    focusBehavior = [contextCopy focusBehavior];
     focusBehavior = v6->_focusBehavior;
-    v6->_focusBehavior = v13;
+    v6->_focusBehavior = focusBehavior;
   }
 
   return v6;
@@ -173,21 +173,21 @@
 
 - (void)_cacheFocusBehavior
 {
-  v3 = [(UIFocusUpdateContext *)self _request];
-  v6 = [v3 focusSystem];
+  _request = [(UIFocusUpdateContext *)self _request];
+  focusSystem = [_request focusSystem];
 
-  v4 = [v6 behavior];
+  behavior = [focusSystem behavior];
   focusBehavior = self->_focusBehavior;
-  self->_focusBehavior = v4;
+  self->_focusBehavior = behavior;
 }
 
-- (BOOL)_isValidInFocusSystem:(id)a3
+- (BOOL)_isValidInFocusSystem:(id)system
 {
   request = self->_request;
-  v5 = a3;
-  v6 = [(_UIFocusUpdateRequesting *)request focusSystem];
+  systemCopy = system;
+  focusSystem = [(_UIFocusUpdateRequesting *)request focusSystem];
 
-  if (v6 != v5)
+  if (focusSystem != systemCopy)
   {
     return 0;
   }
@@ -208,9 +208,9 @@
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 1;
-  v3 = [(UIFocusUpdateContext *)self previouslyFocusedItem];
-  v4 = [(UIFocusUpdateContext *)self nextFocusedItem];
-  v5 = [(UIFocusUpdateContext *)self _request];
+  previouslyFocusedItem = [(UIFocusUpdateContext *)self previouslyFocusedItem];
+  nextFocusedItem = [(UIFocusUpdateContext *)self nextFocusedItem];
+  _request = [(UIFocusUpdateContext *)self _request];
   v6 = self->_validationReport;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -220,12 +220,12 @@
   v7 = v6;
   v41 = v7;
   v8 = MEMORY[0x24C24D980](v40);
-  if (v3 != v4)
+  if (previouslyFocusedItem != nextFocusedItem)
   {
     goto LABEL_10;
   }
 
-  if ([v5 allowsFocusingCurrentItem])
+  if ([_request allowsFocusingCurrentItem])
   {
 LABEL_3:
     v9 = v44 + 3;
@@ -239,24 +239,24 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v11 = [(UIFocusUpdateContext *)self _focusRedirectedByGuide];
+  _focusRedirectedByGuide = [(UIFocusUpdateContext *)self _focusRedirectedByGuide];
   v9 = v44 + 3;
-  if (!v11)
+  if (!_focusRedirectedByGuide)
   {
     if (*v9)
     {
       goto LABEL_10;
     }
 
-    v12 = [(UIFocusUpdateContext *)self _focusMovement];
-    if (!v12)
+    _focusMovement = [(UIFocusUpdateContext *)self _focusMovement];
+    if (!_focusMovement)
     {
       goto LABEL_10;
     }
 
-    v13 = [(UIFocusUpdateContext *)self _initialDestinationEnvironment];
+    _initialDestinationEnvironment = [(UIFocusUpdateContext *)self _initialDestinationEnvironment];
 
-    if (v3 == v13)
+    if (previouslyFocusedItem == _initialDestinationEnvironment)
     {
       goto LABEL_10;
     }
@@ -269,14 +269,14 @@ LABEL_4:
 LABEL_10:
   if (v8[2](v8))
   {
-    v14 = [v5 requiresNextFocusedItem];
-    v15 = v4 ? 0 : v14;
+    requiresNextFocusedItem = [_request requiresNextFocusedItem];
+    v15 = nextFocusedItem ? 0 : requiresNextFocusedItem;
     if (v15 == 1)
     {
       *(v44 + 24) = 0;
       if (v7)
       {
-        if (v3)
+        if (previouslyFocusedItem)
         {
           v16 = [_UIDebugIssue issueWithDescription:@"There is no next focused item, but updating focus to nil is not allowed."];
           [(_UIDebugIssueReport *)v7 addIssue:v16];
@@ -286,7 +286,7 @@ LABEL_10:
   }
 
   v17 = v8[2](v8);
-  if (v4)
+  if (nextFocusedItem)
   {
     v18 = v17;
   }
@@ -298,16 +298,16 @@ LABEL_10:
 
   if (v18 == 1)
   {
-    v19 = [(_UIFocusUpdateRequesting *)self->_request focusSystem];
-    v20 = [UIFocusSystem focusSystemForEnvironment:v4];
+    focusSystem = [(_UIFocusUpdateRequesting *)self->_request focusSystem];
+    v20 = [UIFocusSystem focusSystemForEnvironment:nextFocusedItem];
 
-    if (v19 != v20)
+    if (focusSystem != v20)
     {
       *(v44 + 24) = 0;
     }
   }
 
-  if (v8[2](v8) && [v5 requiresEnvironmentValidation])
+  if (v8[2](v8) && [_request requiresEnvironmentValidation])
   {
     if (v7)
     {
@@ -321,34 +321,34 @@ LABEL_10:
       v22 = 0;
     }
 
-    v23 = [v5 focusSystem];
+    focusSystem2 = [_request focusSystem];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __33__UIFocusUpdateContext__validate__block_invoke_2;
     v32[3] = &unk_279014B10;
-    v33 = v3;
+    v33 = previouslyFocusedItem;
     v39 = &v43;
-    v34 = v4;
-    v35 = self;
+    v34 = nextFocusedItem;
+    selfCopy = self;
     v24 = v21;
     v36 = v24;
     v38 = v8;
     v25 = v22;
     v37 = v25;
-    [v23 _performWithoutFocusUpdates:v32];
+    [focusSystem2 _performWithoutFocusUpdates:v32];
 
     if (v7)
     {
-      v26 = [v24 subissues];
-      v27 = [v26 count];
+      subissues = [v24 subissues];
+      v27 = [subissues count];
 
       if (v27)
       {
         [(_UIDebugIssueReport *)v7 addIssue:v24];
       }
 
-      v28 = [v25 subissues];
-      v29 = [v28 count];
+      subissues2 = [v25 subissues];
+      v29 = [subissues2 count];
 
       if (v29)
       {
@@ -456,25 +456,25 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
 - (id)previouslyFocusedItem
 {
-  v2 = [(UIFocusUpdateContext *)self _sourceItemInfo];
-  v3 = [v2 item];
+  _sourceItemInfo = [(UIFocusUpdateContext *)self _sourceItemInfo];
+  item = [_sourceItemInfo item];
 
-  return v3;
+  return item;
 }
 
 - (id)nextFocusedItem
 {
-  v2 = [(UIFocusUpdateContext *)self _destinationItemInfo];
-  v3 = [v2 item];
+  _destinationItemInfo = [(UIFocusUpdateContext *)self _destinationItemInfo];
+  item = [_destinationItemInfo item];
 
-  return v3;
+  return item;
 }
 
-- (void)_setSourceItemInfo:(id)a3
+- (void)_setSourceItemInfo:(id)info
 {
-  if (self->_sourceItemInfo != a3)
+  if (self->_sourceItemInfo != info)
   {
-    v4 = [a3 copy];
+    v4 = [info copy];
     sourceItemInfo = self->_sourceItemInfo;
     self->_sourceItemInfo = v4;
 
@@ -492,15 +492,15 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
 - (NSArray)linearSortedFocusItems
 {
-  v2 = [(UIFocusUpdateContext *)self _focusMapSearchInfo];
-  v3 = [v2 linearSortedFocusItems];
+  _focusMapSearchInfo = [(UIFocusUpdateContext *)self _focusMapSearchInfo];
+  linearSortedFocusItems = [_focusMapSearchInfo linearSortedFocusItems];
 
-  return v3;
+  return linearSortedFocusItems;
 }
 
-- (void)_setInitialDestinationEnvironment:(id)a3
+- (void)_setInitialDestinationEnvironment:(id)environment
 {
-  obj = a3;
+  obj = environment;
   WeakRetained = objc_loadWeakRetained(&self->_initialDestinationEnvironment);
 
   v5 = obj;
@@ -521,17 +521,17 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
     if (WeakRetained)
     {
       v4 = objc_alloc_init(_UIDeepestPreferredEnvironmentSearch);
-      v5 = [(UIFocusUpdateContext *)self _request];
-      -[_UIDeepestPreferredEnvironmentSearch setAllowsOverridingPreferedFocusEnvironments:](v4, "setAllowsOverridingPreferedFocusEnvironments:", [v5 allowsOverridingPreferedFocusEnvironments]);
+      _request = [(UIFocusUpdateContext *)self _request];
+      -[_UIDeepestPreferredEnvironmentSearch setAllowsOverridingPreferedFocusEnvironments:](v4, "setAllowsOverridingPreferedFocusEnvironments:", [_request allowsOverridingPreferedFocusEnvironments]);
 
       if (self->_preferredFocusReport)
       {
-        v6 = [MEMORY[0x277D817A0] rootNode];
-        [(_UIDeepestPreferredEnvironmentSearch *)v4 setDebugLog:v6];
+        rootNode = [MEMORY[0x277D817A0] rootNode];
+        [(_UIDeepestPreferredEnvironmentSearch *)v4 setDebugLog:rootNode];
       }
 
-      v7 = [(UIFocusUpdateContext *)self _request];
-      v8 = [(_UIDeepestPreferredEnvironmentSearch *)v4 deepestPreferredFocusableItemForEnvironment:WeakRetained withRequest:v7];
+      _request2 = [(UIFocusUpdateContext *)self _request];
+      v8 = [(_UIDeepestPreferredEnvironmentSearch *)v4 deepestPreferredFocusableItemForEnvironment:WeakRetained withRequest:_request2];
 
       v9 = [_UIFocusItemInfo infoWithItem:v8];
       destinationItemInfo = self->_destinationItemInfo;
@@ -540,8 +540,8 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
       preferredFocusReport = self->_preferredFocusReport;
       if (preferredFocusReport)
       {
-        v12 = [(_UIDeepestPreferredEnvironmentSearch *)v4 debugLog];
-        v13 = [v12 description];
+        debugLog = [(_UIDeepestPreferredEnvironmentSearch *)v4 debugLog];
+        v13 = [debugLog description];
         [(_UIDebugLogReport *)preferredFocusReport addMessage:v13];
       }
     }
@@ -559,9 +559,9 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 {
   if ((*&self->_flags & 0x10) == 0)
   {
-    v3 = [(UIFocusUpdateContext *)self previouslyFocusedItem];
-    v4 = [(UIFocusUpdateContext *)self nextFocusedItem];
-    v5 = _UIFocusEnvironmentFirstCommonAncestor(v3, v4);
+    previouslyFocusedItem = [(UIFocusUpdateContext *)self previouslyFocusedItem];
+    nextFocusedItem = [(UIFocusUpdateContext *)self nextFocusedItem];
+    v5 = _UIFocusEnvironmentFirstCommonAncestor(previouslyFocusedItem, nextFocusedItem);
     objc_storeWeak(&self->_commonAncestorEnvironment, v5);
 
     *&self->_flags |= 0x10u;
@@ -574,10 +574,10 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
 - (UIFocusHeading)focusHeading
 {
-  v2 = [(UIFocusUpdateContext *)self _focusMovement];
-  v3 = [v2 heading];
+  _focusMovement = [(UIFocusUpdateContext *)self _focusMovement];
+  heading = [_focusMovement heading];
 
-  return v3;
+  return heading;
 }
 
 - (CGVector)_focusVelocity
@@ -585,8 +585,8 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
   [(UIFocusUpdateContext *)self _destinationViewDistanceOffscreen];
   if (v3 == 0.0)
   {
-    v4 = [(UIFocusUpdateContext *)self _focusMovement];
-    [v4 _velocity];
+    _focusMovement = [(UIFocusUpdateContext *)self _focusMovement];
+    [_focusMovement _velocity];
     v6 = v5;
     v8 = v7;
   }
@@ -606,15 +606,15 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
 - (BOOL)_isInitialMovement
 {
-  v2 = [(UIFocusUpdateContext *)self _focusMovement];
-  v3 = [v2 _isInitialMovement];
+  _focusMovement = [(UIFocusUpdateContext *)self _focusMovement];
+  _isInitialMovement = [_focusMovement _isInitialMovement];
 
-  return v3;
+  return _isInitialMovement;
 }
 
-- (void)_setFocusedGuideImpl:(id)a3
+- (void)_setFocusedGuideImpl:(id)impl
 {
-  obj = a3;
+  obj = impl;
   WeakRetained = objc_loadWeakRetained(&self->_focusedGuideImpl);
 
   if (WeakRetained != obj)
@@ -628,19 +628,19 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 - (UIFocusGuide)_focusedGuide
 {
   WeakRetained = objc_loadWeakRetained(&self->_focusedGuideImpl);
-  v3 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)_setFocusMapSearchInfo:(id)a3
+- (void)_setFocusMapSearchInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infoCopy = info;
   p_focusMapSearchInfo = &self->_focusMapSearchInfo;
-  if (self->_focusMapSearchInfo != v5)
+  if (self->_focusMapSearchInfo != infoCopy)
   {
-    objc_storeStrong(&self->_focusMapSearchInfo, a3);
+    objc_storeStrong(&self->_focusMapSearchInfo, info);
     v7 = *p_focusMapSearchInfo;
     if (*p_focusMapSearchInfo)
     {
@@ -648,8 +648,8 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = [(_UIFocusMapSearchInfo *)v7 destinationRegions];
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      destinationRegions = [(_UIFocusMapSearchInfo *)v7 destinationRegions];
+      v9 = [destinationRegions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         v10 = v9;
@@ -661,14 +661,14 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(destinationRegions);
             }
 
             [*(*(&v13 + 1) + 8 * v12++) _willParticipateAsDestinationRegionInFocusUpdate:self];
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v10 = [destinationRegions countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v10);
@@ -677,18 +677,18 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_willUpdateFocusFromFocusedItem:(id)a3
+- (void)_willUpdateFocusFromFocusedItem:(id)item
 {
-  v7 = a3;
-  v4 = [(UIFocusUpdateContext *)self previouslyFocusedItem];
+  itemCopy = item;
+  previouslyFocusedItem = [(UIFocusUpdateContext *)self previouslyFocusedItem];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = itemCopy;
+  if (previouslyFocusedItem != itemCopy)
   {
-    v6 = [_UIFocusItemInfo infoWithItem:v7];
+    v6 = [_UIFocusItemInfo infoWithItem:itemCopy];
     [(UIFocusUpdateContext *)self _setSourceItemInfo:v6];
 
-    v5 = v7;
+    v5 = itemCopy;
   }
 }
 
@@ -699,10 +699,10 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UIFocusUpdateContext *)self _focusMapSearchInfo];
-  v4 = [v3 destinationRegions];
+  _focusMapSearchInfo = [(UIFocusUpdateContext *)self _focusMapSearchInfo];
+  destinationRegions = [_focusMapSearchInfo destinationRegions];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [destinationRegions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -714,27 +714,27 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(destinationRegions);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) _didParticipateAsDestinationRegionInFocusUpdate:self];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [destinationRegions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(UIFocusUpdateContext *)self _focusedGuideImpl];
-  [v9 focusDidUpdateViaGuide];
+  _focusedGuideImpl = [(UIFocusUpdateContext *)self _focusedGuideImpl];
+  [_focusedGuideImpl focusDidUpdateViaGuide];
 }
 
-- (void)_updateWithFocusGroupMap:(id)a3
+- (void)_updateWithFocusGroupMap:(id)map
 {
-  v4 = a3;
-  v5 = [[_UIDynamicFocusGroupMap alloc] initWithBackingFocusGroupMap:v4];
+  mapCopy = map;
+  v5 = [[_UIDynamicFocusGroupMap alloc] initWithBackingFocusGroupMap:mapCopy];
 
   [(UIFocusUpdateContext *)self _setFocusGroupMap:v5];
   previouslyFocusedGroupIdentifier = self->_previouslyFocusedGroupIdentifier;
@@ -749,11 +749,11 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
   if (!self->_focusGroupMap && [(UIFocusUpdateContext *)self _isFilteredToGroup])
   {
     v3 = [_UIDynamicFocusGroupMap alloc];
-    v4 = [(UIFocusUpdateContext *)self _request];
-    v5 = [v4 focusSystem];
-    v6 = [v5 focusItemContainer];
-    v7 = [v6 coordinateSpace];
-    v8 = [(_UIDynamicFocusGroupMap *)v3 initWithCoordinateSpace:v7];
+    _request = [(UIFocusUpdateContext *)self _request];
+    focusSystem = [_request focusSystem];
+    focusItemContainer = [focusSystem focusItemContainer];
+    coordinateSpace = [focusItemContainer coordinateSpace];
+    v8 = [(_UIDynamicFocusGroupMap *)v3 initWithCoordinateSpace:coordinateSpace];
     focusGroupMap = self->_focusGroupMap;
     self->_focusGroupMap = v8;
   }
@@ -767,11 +767,11 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 {
   if (!self->_previouslyFocusedGroupIdentifier && [(UIFocusUpdateContext *)self _isFilteredToGroup])
   {
-    v3 = [(UIFocusUpdateContext *)self previouslyFocusedItem];
-    if (v3)
+    previouslyFocusedItem = [(UIFocusUpdateContext *)self previouslyFocusedItem];
+    if (previouslyFocusedItem)
     {
-      v4 = [(UIFocusUpdateContext *)self _focusGroupMap];
-      v5 = [v4 focusGroupIdentifierForItem:v3];
+      _focusGroupMap = [(UIFocusUpdateContext *)self _focusGroupMap];
+      v5 = [_focusGroupMap focusGroupIdentifierForItem:previouslyFocusedItem];
       previouslyFocusedGroupIdentifier = self->_previouslyFocusedGroupIdentifier;
       self->_previouslyFocusedGroupIdentifier = v5;
     }
@@ -786,11 +786,11 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 {
   if (!self->_nextFocusedGroupIdentifier && [(UIFocusUpdateContext *)self _isFilteredToGroup])
   {
-    v3 = [(UIFocusUpdateContext *)self nextFocusedItem];
-    if (v3)
+    nextFocusedItem = [(UIFocusUpdateContext *)self nextFocusedItem];
+    if (nextFocusedItem)
     {
-      v4 = [(UIFocusUpdateContext *)self _focusGroupMap];
-      v5 = [v4 focusGroupIdentifierForItem:v3];
+      _focusGroupMap = [(UIFocusUpdateContext *)self _focusGroupMap];
+      v5 = [_focusGroupMap focusGroupIdentifierForItem:nextFocusedItem];
       nextFocusedGroupIdentifier = self->_nextFocusedGroupIdentifier;
       self->_nextFocusedGroupIdentifier = v5;
     }
@@ -803,10 +803,10 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
 - (int64_t)_groupFilter
 {
-  v2 = [(UIFocusUpdateContext *)self _focusMovement];
-  v3 = [v2 _groupFilter];
+  _focusMovement = [(UIFocusUpdateContext *)self _focusMovement];
+  _groupFilter = [_focusMovement _groupFilter];
 
-  return v3;
+  return _groupFilter;
 }
 
 + (_UIDebugIssueReportFormatter)_defaultValidationReportFormatter
@@ -821,13 +821,13 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(UIFocusUpdateContext *)self previouslyFocusedItem];
-  if (v4)
+  previouslyFocusedItem = [(UIFocusUpdateContext *)self previouslyFocusedItem];
+  if (previouslyFocusedItem)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, v4];
+    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, previouslyFocusedItem];
   }
 
   else
@@ -837,13 +837,13 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
 
   v9 = [v3 appendObject:v8 withName:@"previouslyFocusedItem"];
 
-  v10 = [(UIFocusUpdateContext *)self nextFocusedItem];
-  if (v10)
+  nextFocusedItem = [(UIFocusUpdateContext *)self nextFocusedItem];
+  if (nextFocusedItem)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v11 stringWithFormat:@"<%@: %p>", v13, v10];
+    v14 = [v11 stringWithFormat:@"<%@: %p>", v13, nextFocusedItem];
   }
 
   else
@@ -862,9 +862,9 @@ void __33__UIFocusUpdateContext__validate__block_invoke_2(uint64_t a1)
     v19 = [v3 appendObject:v18 withName:@"groupFilter"];
   }
 
-  v20 = [v3 build];
+  build = [v3 build];
 
-  return v20;
+  return build;
 }
 
 - (_UIFocusGuideImpl)_focusedGuideImpl

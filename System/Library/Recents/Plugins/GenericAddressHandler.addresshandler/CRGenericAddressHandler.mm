@@ -1,8 +1,8 @@
 @interface CRGenericAddressHandler
-- (id)addressFromExternalAddress:(id)a3 kind:(id)a4;
-- (id)externalAddressFromAddress:(id)a3 kind:(id)a4;
+- (id)addressFromExternalAddress:(id)address kind:(id)kind;
+- (id)externalAddressFromAddress:(id)address kind:(id)kind;
 - (id)supportedAddressKinds;
-- (id)syncKeyForAddress:(id)a3 kind:(id)a4;
+- (id)syncKeyForAddress:(id)address kind:(id)kind;
 @end
 
 @implementation CRGenericAddressHandler
@@ -16,20 +16,20 @@
   return [NSSet setWithArray:[NSArray arrayWithObjects:v3 count:4]];
 }
 
-- (id)syncKeyForAddress:(id)a3 kind:(id)a4
+- (id)syncKeyForAddress:(id)address kind:(id)kind
 {
-  if (!a3 || !a4)
+  if (!address || !kind)
   {
     return 0;
   }
 
-  if ([CRAddressKindEmail isEqualToString:a4])
+  if ([CRAddressKindEmail isEqualToString:kind])
   {
-    v8 = [a3 cr_copyIDNAEncodedEmailAddress];
-    v9 = [v8 cr_lowercaseStringWithStandardLocale];
+    cr_copyIDNAEncodedEmailAddress = [address cr_copyIDNAEncodedEmailAddress];
+    cr_lowercaseStringWithStandardLocale = [cr_copyIDNAEncodedEmailAddress cr_lowercaseStringWithStandardLocale];
   }
 
-  else if ([CRAddressKindPhoneNumber isEqualToString:a4])
+  else if ([CRAddressKindPhoneNumber isEqualToString:kind])
   {
     v11 = PNCopyBestGuessCountryCodeForNumber();
     if (v11)
@@ -51,11 +51,11 @@
       String = CFPhoneNumberCreateString();
       if (!String)
       {
-        String = [a3 cr_lowercaseStringWithStandardLocale];
+        String = [address cr_lowercaseStringWithStandardLocale];
       }
     }
 
-    v9 = String;
+    cr_lowercaseStringWithStandardLocale = String;
     CFRelease(v12);
     if (v15)
     {
@@ -70,51 +70,51 @@
 
   else
   {
-    if ([CRAddressKindInstantMessage isEqualToString:a4])
+    if ([CRAddressKindInstantMessage isEqualToString:kind])
     {
-      v17 = [a3 cr_lowercaseStringWithStandardLocale];
+      addressCopy = [address cr_lowercaseStringWithStandardLocale];
     }
 
     else
     {
-      if (![CRAddressKindURL isEqualToString:a4])
+      if (![CRAddressKindURL isEqualToString:kind])
       {
         [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"CRGenericAddressHandler.m" description:74, @"%@: unexpected kind passed to %s", objc_opt_class(), "[CRGenericAddressHandler syncKeyForAddress:kind:]"];
       }
 
-      v17 = a3;
+      addressCopy = address;
     }
 
-    v9 = v17;
+    cr_lowercaseStringWithStandardLocale = addressCopy;
   }
 
-  v18 = [objc_msgSend(v9 dataUsingEncoding:{4), "cr_md5DigestHexString"}];
+  v18 = [objc_msgSend(cr_lowercaseStringWithStandardLocale dataUsingEncoding:{4), "cr_md5DigestHexString"}];
 
   return v18;
 }
 
-- (id)externalAddressFromAddress:(id)a3 kind:(id)a4
+- (id)externalAddressFromAddress:(id)address kind:(id)kind
 {
-  if (![CRAddressKindEmail isEqualToString:a4])
+  if (![CRAddressKindEmail isEqualToString:kind])
   {
-    return a3;
+    return address;
   }
 
-  v5 = [a3 cr_copyIDNADecodedEmailAddress];
+  cr_copyIDNADecodedEmailAddress = [address cr_copyIDNADecodedEmailAddress];
 
-  return v5;
+  return cr_copyIDNADecodedEmailAddress;
 }
 
-- (id)addressFromExternalAddress:(id)a3 kind:(id)a4
+- (id)addressFromExternalAddress:(id)address kind:(id)kind
 {
-  if (![CRAddressKindEmail isEqualToString:a4])
+  if (![CRAddressKindEmail isEqualToString:kind])
   {
-    return a3;
+    return address;
   }
 
-  v5 = [a3 cr_copyIDNADecodedEmailAddress];
+  cr_copyIDNADecodedEmailAddress = [address cr_copyIDNADecodedEmailAddress];
 
-  return v5;
+  return cr_copyIDNADecodedEmailAddress;
 }
 
 @end

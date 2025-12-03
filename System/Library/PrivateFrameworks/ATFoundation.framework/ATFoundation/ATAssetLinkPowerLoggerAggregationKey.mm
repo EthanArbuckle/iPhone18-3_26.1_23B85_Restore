@@ -1,15 +1,15 @@
 @interface ATAssetLinkPowerLoggerAggregationKey
-- (ATAssetLinkPowerLoggerAggregationKey)initWithLinkType:(int64_t)a3 dataclass:(id)a4 assetType:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ATAssetLinkPowerLoggerAggregationKey)initWithLinkType:(int64_t)type dataclass:(id)dataclass assetType:(id)assetType;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation ATAssetLinkPowerLoggerAggregationKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -19,26 +19,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATAssetLinkPowerLoggerAggregationKey *)v5 linkType];
-      if (v6 == [(ATAssetLinkPowerLoggerAggregationKey *)self linkType])
+      v5 = equalCopy;
+      linkType = [(ATAssetLinkPowerLoggerAggregationKey *)v5 linkType];
+      if (linkType == [(ATAssetLinkPowerLoggerAggregationKey *)self linkType])
       {
-        v7 = [(ATAssetLinkPowerLoggerAggregationKey *)v5 dataclass];
-        v8 = [(ATAssetLinkPowerLoggerAggregationKey *)self dataclass];
-        if ([v7 isEqualToString:v8])
+        dataclass = [(ATAssetLinkPowerLoggerAggregationKey *)v5 dataclass];
+        dataclass2 = [(ATAssetLinkPowerLoggerAggregationKey *)self dataclass];
+        if ([dataclass isEqualToString:dataclass2])
         {
-          v9 = [(ATAssetLinkPowerLoggerAggregationKey *)v5 assetType];
-          v10 = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
-          if (v9 == v10)
+          assetType = [(ATAssetLinkPowerLoggerAggregationKey *)v5 assetType];
+          assetType2 = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
+          if (assetType == assetType2)
           {
             v13 = 1;
           }
 
           else
           {
-            v11 = [(ATAssetLinkPowerLoggerAggregationKey *)v5 assetType];
-            v12 = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
-            v13 = [v11 isEqualToString:v12];
+            assetType3 = [(ATAssetLinkPowerLoggerAggregationKey *)v5 assetType];
+            assetType4 = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
+            v13 = [assetType3 isEqualToString:assetType4];
           }
         }
 
@@ -65,28 +65,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ATAssetLinkPowerLoggerAggregationKey *)self linkType];
-  v4 = [(ATAssetLinkPowerLoggerAggregationKey *)self dataclass];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
-  v7 = [v6 hash];
+  linkType = [(ATAssetLinkPowerLoggerAggregationKey *)self linkType];
+  dataclass = [(ATAssetLinkPowerLoggerAggregationKey *)self dataclass];
+  v5 = [dataclass hash] ^ linkType;
+  assetType = [(ATAssetLinkPowerLoggerAggregationKey *)self assetType];
+  v7 = [assetType hash];
 
   return v5 ^ v7;
 }
 
-- (ATAssetLinkPowerLoggerAggregationKey)initWithLinkType:(int64_t)a3 dataclass:(id)a4 assetType:(id)a5
+- (ATAssetLinkPowerLoggerAggregationKey)initWithLinkType:(int64_t)type dataclass:(id)dataclass assetType:(id)assetType
 {
-  v9 = a4;
-  v10 = a5;
+  dataclassCopy = dataclass;
+  assetTypeCopy = assetType;
   v14.receiver = self;
   v14.super_class = ATAssetLinkPowerLoggerAggregationKey;
   v11 = [(ATAssetLinkPowerLoggerAggregationKey *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_linkType = a3;
-    objc_storeStrong(&v11->_dataclass, a4);
-    objc_storeStrong(&v12->_assetType, a5);
+    v11->_linkType = type;
+    objc_storeStrong(&v11->_dataclass, dataclass);
+    objc_storeStrong(&v12->_assetType, assetType);
   }
 
   return v12;

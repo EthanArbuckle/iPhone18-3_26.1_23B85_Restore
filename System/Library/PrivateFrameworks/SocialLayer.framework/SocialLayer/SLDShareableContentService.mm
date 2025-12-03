@@ -1,36 +1,36 @@
 @interface SLDShareableContentService
 + (id)sharedService;
-+ (void)setupInterface:(id)a3;
-- (BOOL)_connShouldAllowBackgroundCollaboration:(id)a3;
-- (BOOL)allowsConnection:(id)a3;
-- (BOOL)populateInitiatorMetadata:(id)a3 name:(id)a4 email:(id)a5;
++ (void)setupInterface:(id)interface;
+- (BOOL)_connShouldAllowBackgroundCollaboration:(id)collaboration;
+- (BOOL)allowsConnection:(id)connection;
+- (BOOL)populateInitiatorMetadata:(id)metadata name:(id)name email:(id)email;
 - (SLDShareableContentService)init;
-- (id)_applicationIdentifierForConnection:(id)a3;
-- (id)visibleApplicationForSceneIdentifier:(id)a3;
+- (id)_applicationIdentifierForConnection:(id)connection;
+- (id)visibleApplicationForSceneIdentifier:(id)identifier;
 - (id)visibleApplications;
 - (void)dealloc;
-- (void)fetchAsynchronousLPMetadataFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5;
-- (void)fetchShareableContentFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 requestedTypeIdentifier:(id)a5 requestedItemProviderIndex:(int64_t)a6 responseHandler:(id)a7;
-- (void)fetchShareableContentMetadataFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5;
-- (void)launchApplicationWithBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 forActions:(id)a5 completionHandler:(id)a6;
-- (void)loadRepresentationFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 requestedTypeIdentifier:(id)a5 requestedItemProviderIndex:(int64_t)a6 completionHandler:(id)a7;
-- (void)performAction:(id)a3 onApplicationWithBundleIdentifier:(id)a4 sceneIdentifier:(id)a5;
-- (void)populateInitiatorMetadata:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)presentMessageComposeSheetForSceneIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveAsynchronousLPMetadataMatchingBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5;
-- (void)retrieveShareableContentMetadataMatchingBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5;
-- (void)shareCollaborationData:(id)a3 faceTimeConversationUUID:(id)a4 completionHandler:(id)a5;
+- (void)fetchAsynchronousLPMetadataFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion;
+- (void)fetchShareableContentFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier requestedTypeIdentifier:(id)typeIdentifier requestedItemProviderIndex:(int64_t)index responseHandler:(id)handler;
+- (void)fetchShareableContentMetadataFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion;
+- (void)launchApplicationWithBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier forActions:(id)actions completionHandler:(id)handler;
+- (void)loadRepresentationFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier requestedTypeIdentifier:(id)typeIdentifier requestedItemProviderIndex:(int64_t)index completionHandler:(id)handler;
+- (void)performAction:(id)action onApplicationWithBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier;
+- (void)populateInitiatorMetadata:(id)metadata request:(id)request completionHandler:(id)handler;
+- (void)presentMessageComposeSheetForSceneIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveAsynchronousLPMetadataMatchingBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion;
+- (void)retrieveShareableContentMetadataMatchingBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion;
+- (void)shareCollaborationData:(id)data faceTimeConversationUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation SLDShareableContentService
 
-+ (void)setupInterface:(id)a3
++ (void)setupInterface:(id)interface
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  [v4 setClasses:v6 forSelector:sel_retrieveShareableContentMetadataMatchingBundleIdentifier_sceneIdentifier_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v6 forSelector:sel_retrieveShareableContentMetadataMatchingBundleIdentifier_sceneIdentifier_completion_ argumentIndex:0 ofReply:1];
 }
 
 + (id)sharedService
@@ -66,15 +66,15 @@ uint64_t __43__SLDShareableContentService_sharedService__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
     objc_initWeak(&location, v2);
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __34__SLDShareableContentService_init__block_invoke;
     v13 = &unk_278926DD8;
     objc_copyWeak(&v14, &location);
-    [v6 setTransitionHandler:&v10];
-    v7 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v6, v10, v11, v12, v13}];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:&v10];
+    v7 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationForDefaultMainDisplayMonitor, v10, v11, v12, v13}];
     layoutMonitor = v2->_layoutMonitor;
     v2->_layoutMonitor = v7;
 
@@ -151,10 +151,10 @@ void __34__SLDShareableContentService_init__block_invoke_2(uint64_t a1)
   [(SLDShareableContentService *)&v3 dealloc];
 }
 
-- (BOOL)allowsConnection:(id)a3
+- (BOOL)allowsConnection:(id)connection
 {
-  v3 = a3;
-  IsEntitledForShareableContent = SLDConnectionIsEntitledForShareableContent(v3);
+  connectionCopy = connection;
+  IsEntitledForShareableContent = SLDConnectionIsEntitledForShareableContent(connectionCopy);
   if ((IsEntitledForShareableContent & 1) == 0)
   {
     v5 = SLShareableContentLogHandle();
@@ -170,16 +170,16 @@ void __34__SLDShareableContentService_init__block_invoke_2(uint64_t a1)
 - (id)visibleApplications
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(SLDShareableContentService *)self layoutMonitor];
-  v4 = [v3 currentLayout];
-  v5 = [v4 elements];
+  layoutMonitor = [(SLDShareableContentService *)self layoutMonitor];
+  currentLayout = [layoutMonitor currentLayout];
+  elements = [currentLayout elements];
 
-  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(elements, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v5;
+  v6 = elements;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
@@ -195,19 +195,19 @@ void __34__SLDShareableContentService_init__block_invoke_2(uint64_t a1)
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [MEMORY[0x277CCAE80] currentConnection];
-        v13 = [v11 bundleIdentifier];
-        v14 = [(SLDShareableContentService *)self _applicationIdentifierForConnection:v12];
-        v15 = [v13 isEqualToString:v14];
+        currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v14 = [(SLDShareableContentService *)self _applicationIdentifierForConnection:currentConnection];
+        v15 = [bundleIdentifier isEqualToString:v14];
 
         if (v15)
         {
           v16 = SLShareableContentLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v11 bundleIdentifier];
+            bundleIdentifier2 = [v11 bundleIdentifier];
             *buf = 138412290;
-            v31 = v17;
+            v31 = bundleIdentifier2;
             v18 = v16;
             v19 = OS_LOG_TYPE_INFO;
             v20 = "[VisibleApplications] Skipping element for %@ because it's from the process requesting shareable content";
@@ -218,17 +218,17 @@ LABEL_16:
 
         else
         {
-          v21 = [v11 bundleIdentifier];
-          v22 = [v21 isEqualToString:@"com.apple.purplebuddy"];
+          bundleIdentifier3 = [v11 bundleIdentifier];
+          v22 = [bundleIdentifier3 isEqualToString:@"com.apple.purplebuddy"];
 
           if (v22)
           {
             v16 = SLShareableContentLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [v11 bundleIdentifier];
+              bundleIdentifier2 = [v11 bundleIdentifier];
               *buf = 138412290;
-              v31 = v17;
+              v31 = bundleIdentifier2;
               v18 = v16;
               v19 = OS_LOG_TYPE_DEFAULT;
               v20 = "[VisibleApplications] Skipping element for %@ as Purple Buddy is not a valid source of shareable content";
@@ -247,9 +247,9 @@ LABEL_16:
             v16 = SLShareableContentLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
-              v17 = [v11 bundleIdentifier];
+              bundleIdentifier2 = [v11 bundleIdentifier];
               *buf = 138412290;
-              v31 = v17;
+              v31 = bundleIdentifier2;
               v18 = v16;
               v19 = OS_LOG_TYPE_INFO;
               v20 = "[VisibleApplications] Skipping element for %@ because it's not a UI application element";
@@ -272,16 +272,16 @@ LABEL_18:
   return v25;
 }
 
-- (id)visibleApplicationForSceneIdentifier:(id)a3
+- (id)visibleApplicationForSceneIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(SLDShareableContentService *)self visibleApplications];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  visibleApplications = [(SLDShareableContentService *)self visibleApplications];
+  v6 = [visibleApplications countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -293,12 +293,12 @@ LABEL_18:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleApplications);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v4];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:identifierCopy];
 
         if (v13)
         {
@@ -308,7 +308,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [visibleApplications countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -324,25 +324,25 @@ LABEL_18:
   return v8;
 }
 
-- (void)launchApplicationWithBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 forActions:(id)a5 completionHandler:(id)a6
+- (void)launchApplicationWithBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier forActions:(id)actions completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (v8)
+  identifierCopy = identifier;
+  actionsCopy = actions;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0ABF0]];
-    [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x277D0ABD0]];
-    v12 = [MEMORY[0x277D0AD60] optionsWithDictionary:v11];
-    v13 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0ABF0]];
+    [dictionary setObject:actionsCopy forKeyedSubscript:*MEMORY[0x277D0ABD0]];
+    v12 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __113__SLDShareableContentService_launchApplicationWithBundleIdentifier_sceneIdentifier_forActions_completionHandler___block_invoke;
     v15[3] = &unk_278926380;
-    v16 = v8;
-    v17 = v10;
-    [v13 openApplication:v16 withOptions:v12 completion:v15];
+    v16 = identifierCopy;
+    v17 = handlerCopy;
+    [serviceWithDefaultShellEndpoint openApplication:v16 withOptions:v12 completion:v15];
   }
 
   else
@@ -353,9 +353,9 @@ LABEL_18:
       [SLDShareableContentService launchApplicationWithBundleIdentifier:sceneIdentifier:forActions:completionHandler:];
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -392,60 +392,60 @@ void __113__SLDShareableContentService_launchApplicationWithBundleIdentifier_sce
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performAction:(id)a3 onApplicationWithBundleIdentifier:(id)a4 sceneIdentifier:(id)a5
+- (void)performAction:(id)action onApplicationWithBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 action];
-  v13[0] = v10;
+  sceneIdentifierCopy = sceneIdentifier;
+  identifierCopy = identifier;
+  action = [action action];
+  v13[0] = action;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  [(SLDShareableContentService *)self launchApplicationWithBundleIdentifier:v9 sceneIdentifier:v8 forActions:v11 completionHandler:0];
+  [(SLDShareableContentService *)self launchApplicationWithBundleIdentifier:identifierCopy sceneIdentifier:sceneIdentifierCopy forActions:v11 completionHandler:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateInitiatorMetadata:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)populateInitiatorMetadata:(id)metadata request:(id)request completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 collaborationMetadata];
-  if (v11)
+  metadataCopy = metadata;
+  requestCopy = request;
+  handlerCopy = handler;
+  collaborationMetadata = [requestCopy collaborationMetadata];
+  if (collaborationMetadata)
   {
     v12 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v11;
+      *&buf[4] = collaborationMetadata;
       _os_log_impl(&dword_231772000, v12, OS_LOG_TYPE_DEFAULT, "Populating initiator name and handle from custom collaboration metadata: %@", buf, 0xCu);
     }
 
-    v13 = [v11 initiatorHandle];
-    [v8 setInitiatorHandle:v13];
+    initiatorHandle = [collaborationMetadata initiatorHandle];
+    [metadataCopy setInitiatorHandle:initiatorHandle];
 
-    v14 = [v11 initiatorNameComponents];
-    [v8 setInitiatorNameComponents:v14];
+    initiatorNameComponents = [collaborationMetadata initiatorNameComponents];
+    [metadataCopy setInitiatorNameComponents:initiatorNameComponents];
 
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_13;
   }
 
-  v15 = [v9 fileURL];
-  if (v15)
+  fileURL = [requestCopy fileURL];
+  if (fileURL)
   {
 
 LABEL_8:
     v17 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 fileURL];
-      v19 = [v9 containerSetupInfo];
+      fileURL2 = [requestCopy fileURL];
+      containerSetupInfo = [requestCopy containerSetupInfo];
       *buf = 138412546;
-      *&buf[4] = v18;
+      *&buf[4] = fileURL2;
       *&buf[12] = 2112;
-      *&buf[14] = v19;
+      *&buf[14] = containerSetupInfo;
       _os_log_impl(&dword_231772000, v17, OS_LOG_TYPE_DEFAULT, "Populating initiator name and handle from initiator metadata (fileURL: %@, containerSetupInfo: %@", buf, 0x16u);
     }
 
@@ -467,23 +467,23 @@ LABEL_8:
 
     v21 = v20;
     _Block_object_dispose(&v29, 8);
-    v22 = [v9 fileURL];
-    v23 = [v9 containerSetupInfo];
+    fileURL3 = [requestCopy fileURL];
+    containerSetupInfo2 = [requestCopy containerSetupInfo];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __82__SLDShareableContentService_populateInitiatorMetadata_request_completionHandler___block_invoke;
     v26[3] = &unk_278926E28;
     v26[4] = self;
-    v28 = v10;
-    v27 = v8;
-    [v20 userNameAndEmail:v22 containerSetupInfo:v23 completionHandler:v26];
+    v28 = handlerCopy;
+    v27 = metadataCopy;
+    [v20 userNameAndEmail:fileURL3 containerSetupInfo:containerSetupInfo2 completionHandler:v26];
 
     goto LABEL_13;
   }
 
-  v16 = [v9 containerSetupInfo];
+  containerSetupInfo3 = [requestCopy containerSetupInfo];
 
-  if (v16)
+  if (containerSetupInfo3)
   {
     goto LABEL_8;
   }
@@ -495,7 +495,7 @@ LABEL_8:
     _os_log_impl(&dword_231772000, v25, OS_LOG_TYPE_DEFAULT, "Not populating initiator name and handle for shareable content with no collaborative representations", buf, 2u);
   }
 
-  v10[2](v10, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_13:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -536,51 +536,51 @@ uint64_t __82__SLDShareableContentService_populateInitiatorMetadata_request_comp
   return v5(v2, v3, v4);
 }
 
-- (BOOL)populateInitiatorMetadata:(id)a3 name:(id)a4 email:(id)a5
+- (BOOL)populateInitiatorMetadata:(id)metadata name:(id)name email:(id)email
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = (v8 | a5) != 0;
-  if (v8 | a5)
+  metadataCopy = metadata;
+  nameCopy = name;
+  v9 = (nameCopy | email) != 0;
+  if (nameCopy | email)
   {
-    [v7 setInitiatorHandle:a5];
-    if (v8)
+    [metadataCopy setInitiatorHandle:email];
+    if (nameCopy)
     {
       v10 = objc_alloc_init(MEMORY[0x277CCAC08]);
-      v11 = [v10 personNameComponentsFromString:v8];
-      [v7 setInitiatorNameComponents:v11];
+      v11 = [v10 personNameComponentsFromString:nameCopy];
+      [metadataCopy setInitiatorNameComponents:v11];
     }
   }
 
   return v9;
 }
 
-- (void)fetchShareableContentMetadataFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5
+- (void)fetchShareableContentMetadataFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  completionCopy = completion;
   v11 = [SLFetchShareableContentMetadataAction alloc];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __107__SLDShareableContentService_fetchShareableContentMetadataFromBundleIdentifier_sceneIdentifier_completion___block_invoke;
   v17[3] = &unk_278926E78;
-  v19 = self;
-  v20 = v10;
-  v18 = v8;
-  v12 = v10;
-  v13 = v8;
-  v14 = [(SLShareableContentAction *)v11 initWithSceneIdentifier:v9 responseHandler:v17];
+  selfCopy = self;
+  v20 = completionCopy;
+  v18 = identifierCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = [(SLShareableContentAction *)v11 initWithSceneIdentifier:sceneIdentifierCopy responseHandler:v17];
   v15 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v9;
+    v22 = sceneIdentifierCopy;
     _os_log_impl(&dword_231772000, v15, OS_LOG_TYPE_DEFAULT, "Fetching shareable content metadata for scene: %{public}@", buf, 0xCu);
   }
 
-  [(SLDShareableContentService *)self performAction:v14 onApplicationWithBundleIdentifier:v13 sceneIdentifier:v9];
+  [(SLDShareableContentService *)self performAction:v14 onApplicationWithBundleIdentifier:v13 sceneIdentifier:sceneIdentifierCopy];
   v16 = *MEMORY[0x277D85DE8];
 }
 
@@ -653,31 +653,31 @@ void __107__SLDShareableContentService_fetchShareableContentMetadataFromBundleId
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchAsynchronousLPMetadataFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5
+- (void)fetchAsynchronousLPMetadataFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  completionCopy = completion;
   v11 = [SLFetchAsynchronousLPMetadataAction alloc];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __105__SLDShareableContentService_fetchAsynchronousLPMetadataFromBundleIdentifier_sceneIdentifier_completion___block_invoke;
   v20 = &unk_278926EA0;
-  v21 = v8;
-  v22 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = [(SLShareableContentAction *)v11 initWithSceneIdentifier:v9 responseHandler:&v17];
+  v21 = identifierCopy;
+  v22 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = [(SLShareableContentAction *)v11 initWithSceneIdentifier:sceneIdentifierCopy responseHandler:&v17];
   v15 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v24 = v9;
+    v24 = sceneIdentifierCopy;
     _os_log_impl(&dword_231772000, v15, OS_LOG_TYPE_DEFAULT, "Fetching asynchronous content metadata for scene: %{public}@", buf, 0xCu);
   }
 
-  [(SLDShareableContentService *)self performAction:v14 onApplicationWithBundleIdentifier:v13 sceneIdentifier:v9, v17, v18, v19, v20];
+  [(SLDShareableContentService *)self performAction:v14 onApplicationWithBundleIdentifier:v13 sceneIdentifier:sceneIdentifierCopy, v17, v18, v19, v20];
   v16 = *MEMORY[0x277D85DE8];
 }
 
@@ -703,20 +703,20 @@ void __105__SLDShareableContentService_fetchAsynchronousLPMetadataFromBundleIden
   }
 }
 
-- (void)fetchShareableContentFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 requestedTypeIdentifier:(id)a5 requestedItemProviderIndex:(int64_t)a6 responseHandler:(id)a7
+- (void)fetchShareableContentFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier requestedTypeIdentifier:(id)typeIdentifier requestedItemProviderIndex:(int64_t)index responseHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([v12 length])
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  typeIdentifierCopy = typeIdentifier;
+  handlerCopy = handler;
+  if ([identifierCopy length])
   {
-    v16 = v12;
-    if (v16)
+    bundleIdentifier = identifierCopy;
+    if (bundleIdentifier)
     {
 LABEL_3:
-      v17 = [[SLFetchShareableContentAction alloc] initWithSceneIdentifier:v13 requestedTypeIdentifier:v14 requestedItemProviderIndex:a6 responseHandler:v15];
-      [(SLDShareableContentService *)self performAction:v17 onApplicationWithBundleIdentifier:v16 sceneIdentifier:v13];
+      v17 = [[SLFetchShareableContentAction alloc] initWithSceneIdentifier:sceneIdentifierCopy requestedTypeIdentifier:typeIdentifierCopy requestedItemProviderIndex:index responseHandler:handlerCopy];
+      [(SLDShareableContentService *)self performAction:v17 onApplicationWithBundleIdentifier:bundleIdentifier sceneIdentifier:sceneIdentifierCopy];
 
       goto LABEL_8;
     }
@@ -724,10 +724,10 @@ LABEL_3:
 
   else
   {
-    v18 = [(SLDShareableContentService *)self visibleApplicationForSceneIdentifier:v13];
-    v16 = [v18 bundleIdentifier];
+    v18 = [(SLDShareableContentService *)self visibleApplicationForSceneIdentifier:sceneIdentifierCopy];
+    bundleIdentifier = [v18 bundleIdentifier];
 
-    if (v16)
+    if (bundleIdentifier)
     {
       goto LABEL_3;
     }
@@ -736,31 +736,31 @@ LABEL_3:
   v19 = SLShareableContentLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [SLDShareableContentService fetchShareableContentFromBundleIdentifier:v13 sceneIdentifier:self requestedTypeIdentifier:? requestedItemProviderIndex:? responseHandler:?];
+    [SLDShareableContentService fetchShareableContentFromBundleIdentifier:sceneIdentifierCopy sceneIdentifier:self requestedTypeIdentifier:? requestedItemProviderIndex:? responseHandler:?];
   }
 
-  (*(v15 + 2))(v15, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_8:
 }
 
-- (void)retrieveShareableContentMetadataMatchingBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5
+- (void)retrieveShareableContentMetadataMatchingBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDShareableContentService *)self queue];
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  completionCopy = completion;
+  queue = [(SLDShareableContentService *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __114__SLDShareableContentService_retrieveShareableContentMetadataMatchingBundleIdentifier_sceneIdentifier_completion___block_invoke;
   v15[3] = &unk_278926F68;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = sceneIdentifierCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = sceneIdentifierCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
 void __114__SLDShareableContentService_retrieveShareableContentMetadataMatchingBundleIdentifier_sceneIdentifier_completion___block_invoke(id *a1)
@@ -973,24 +973,24 @@ void __114__SLDShareableContentService_retrieveShareableContentMetadataMatchingB
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveAsynchronousLPMetadataMatchingBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 completion:(id)a5
+- (void)retrieveAsynchronousLPMetadataMatchingBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDShareableContentService *)self queue];
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  completionCopy = completion;
+  queue = [(SLDShareableContentService *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __112__SLDShareableContentService_retrieveAsynchronousLPMetadataMatchingBundleIdentifier_sceneIdentifier_completion___block_invoke;
   v15[3] = &unk_278926F68;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = sceneIdentifierCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = sceneIdentifierCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
 void __112__SLDShareableContentService_retrieveAsynchronousLPMetadataMatchingBundleIdentifier_sceneIdentifier_completion___block_invoke(id *a1)
@@ -1185,19 +1185,19 @@ void __112__SLDShareableContentService_retrieveAsynchronousLPMetadataMatchingBun
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadRepresentationFromBundleIdentifier:(id)a3 sceneIdentifier:(id)a4 requestedTypeIdentifier:(id)a5 requestedItemProviderIndex:(int64_t)a6 completionHandler:(id)a7
+- (void)loadRepresentationFromBundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier requestedTypeIdentifier:(id)typeIdentifier requestedItemProviderIndex:(int64_t)index completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a7;
+  sceneIdentifierCopy = sceneIdentifier;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __154__SLDShareableContentService_loadRepresentationFromBundleIdentifier_sceneIdentifier_requestedTypeIdentifier_requestedItemProviderIndex_completionHandler___block_invoke;
   v16[3] = &unk_278926FE0;
-  v17 = v12;
-  v18 = v13;
-  v14 = v13;
-  v15 = v12;
-  [(SLDShareableContentService *)self fetchShareableContentFromBundleIdentifier:a3 sceneIdentifier:v15 requestedTypeIdentifier:a5 requestedItemProviderIndex:a6 responseHandler:v16];
+  v17 = sceneIdentifierCopy;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = sceneIdentifierCopy;
+  [(SLDShareableContentService *)self fetchShareableContentFromBundleIdentifier:identifier sceneIdentifier:v15 requestedTypeIdentifier:typeIdentifier requestedItemProviderIndex:index responseHandler:v16];
 }
 
 void __154__SLDShareableContentService_loadRepresentationFromBundleIdentifier_sceneIdentifier_requestedTypeIdentifier_requestedItemProviderIndex_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1216,11 +1216,11 @@ void __154__SLDShareableContentService_loadRepresentationFromBundleIdentifier_sc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)presentMessageComposeSheetForSceneIdentifier:(id)a3 completion:(id)a4
+- (void)presentMessageComposeSheetForSceneIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDShareableContentService *)self visibleApplicationForSceneIdentifier:v6];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = [(SLDShareableContentService *)self visibleApplicationForSceneIdentifier:identifierCopy];
   if (v8)
   {
     v9 = [SLSendShareableContentAction alloc];
@@ -1228,11 +1228,11 @@ void __154__SLDShareableContentService_loadRepresentationFromBundleIdentifier_sc
     v14 = 3221225472;
     v15 = __86__SLDShareableContentService_presentMessageComposeSheetForSceneIdentifier_completion___block_invoke;
     v16 = &unk_278927008;
-    v17 = v6;
-    v18 = v7;
+    v17 = identifierCopy;
+    v18 = completionCopy;
     v10 = [(SLShareableContentAction *)v9 initWithSceneIdentifier:v17 responseHandler:&v13];
-    v11 = [v8 bundleIdentifier];
-    [(SLDShareableContentService *)self performAction:v10 onApplicationWithBundleIdentifier:v11 sceneIdentifier:0];
+    bundleIdentifier = [v8 bundleIdentifier];
+    [(SLDShareableContentService *)self performAction:v10 onApplicationWithBundleIdentifier:bundleIdentifier sceneIdentifier:0];
   }
 
   else
@@ -1243,7 +1243,7 @@ void __154__SLDShareableContentService_loadRepresentationFromBundleIdentifier_sc
       [SLDShareableContentService presentMessageComposeSheetForSceneIdentifier:? completion:?];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1262,17 +1262,17 @@ void __86__SLDShareableContentService_presentMessageComposeSheetForSceneIdentifi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)shareCollaborationData:(id)a3 faceTimeConversationUUID:(id)a4 completionHandler:(id)a5
+- (void)shareCollaborationData:(id)data faceTimeConversationUUID:(id)d completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAE80] currentConnection];
-  v12 = [(SLDShareableContentService *)self _connShouldAllowBackgroundCollaboration:v11];
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v12 = [(SLDShareableContentService *)self _connShouldAllowBackgroundCollaboration:currentConnection];
 
   v13 = SLDaemonLogHandle();
-  v14 = v13;
+  dictionary = v13;
   if (v12)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1286,26 +1286,26 @@ void __86__SLDShareableContentService_presentMessageComposeSheetForSceneIdentifi
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_231772000, v14, OS_LOG_TYPE_INFO, "Initiating process has background collaboration entitlement, proceeding to initiate collaboration", buf, 2u);
+      _os_log_impl(&dword_231772000, dictionary, OS_LOG_TYPE_INFO, "Initiating process has background collaboration entitlement, proceeding to initiate collaboration", buf, 2u);
     }
 
-    v29 = v10;
+    v29 = handlerCopy;
 
     v15 = [objc_alloc(MEMORY[0x277CCAE58]) initWithActivityType:@"com.apple.Messages.BackgroundCollaboration"];
     [(SLDShareableContentService *)self setActivity:v15];
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    [v14 setObject:v8 forKeyedSubscript:@"shud"];
-    [v14 setObject:v9 forKeyedSubscript:@"FaceTimeUUID"];
-    v16 = [v14 copy];
-    v17 = [(SLDShareableContentService *)self activity];
-    [v17 setUserInfo:v16];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:dataCopy forKeyedSubscript:@"shud"];
+    [dictionary setObject:dCopy forKeyedSubscript:@"FaceTimeUUID"];
+    v16 = [dictionary copy];
+    activity = [(SLDShareableContentService *)self activity];
+    [activity setUserInfo:v16];
 
     v18 = SLDaemonLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v36 = v14;
+      v36 = dictionary;
       _os_log_impl(&dword_231772000, v18, OS_LOG_TYPE_INFO, "Initiating collaboration via messages using userInfoDictionary %@", buf, 0xCu);
     }
 
@@ -1325,17 +1325,17 @@ void __86__SLDShareableContentService_presentMessageComposeSheetForSceneIdentifi
       v24 = v28 = v20;
       [v24 becomeCurrent];
 
-      v25 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v26 = [(SLDShareableContentService *)self activity];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      activity2 = [(SLDShareableContentService *)self activity];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __96__SLDShareableContentService_shareCollaborationData_faceTimeConversationUUID_completionHandler___block_invoke;
       v30[3] = &unk_278927030;
       v30[4] = self;
       v31 = v29;
-      [v25 openUserActivity:v26 usingApplicationRecord:v21 configuration:v22 completionHandler:v30];
+      [defaultWorkspace openUserActivity:activity2 usingApplicationRecord:v21 configuration:v22 completionHandler:v30];
 
-      v10 = v29;
+      handlerCopy = v29;
       v20 = v28;
     }
 
@@ -1388,9 +1388,9 @@ void __96__SLDShareableContentService_shareCollaborationData_faceTimeConversatio
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_connShouldAllowBackgroundCollaboration:(id)a3
+- (BOOL)_connShouldAllowBackgroundCollaboration:(id)collaboration
 {
-  v3 = [MEMORY[0x277CF0CD0] processHandleForNSXPCConnection:a3];
+  v3 = [MEMORY[0x277CF0CD0] processHandleForNSXPCConnection:collaboration];
   if (v3)
   {
     v4 = 0;
@@ -1404,14 +1404,14 @@ void __96__SLDShareableContentService_shareCollaborationData_faceTimeConversatio
   return v4;
 }
 
-- (id)_applicationIdentifierForConnection:(id)a3
+- (id)_applicationIdentifierForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
+  connectionCopy = connection;
+  v4 = connectionCopy;
   v5 = MEMORY[0x277CC1E90];
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -1422,9 +1422,9 @@ void __96__SLDShareableContentService_shareCollaborationData_faceTimeConversatio
   v12 = 0;
   v6 = [v5 bundleRecordForAuditToken:v13 error:&v12];
   v7 = v12;
-  v8 = [v6 applicationIdentifier];
+  applicationIdentifier = [v6 applicationIdentifier];
 
-  if (!v8)
+  if (!applicationIdentifier)
   {
     v9 = SLShareableContentLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1433,9 +1433,9 @@ void __96__SLDShareableContentService_shareCollaborationData_faceTimeConversatio
     }
   }
 
-  v10 = [v6 applicationIdentifier];
+  applicationIdentifier2 = [v6 applicationIdentifier];
 
-  return v10;
+  return applicationIdentifier2;
 }
 
 - (void)allowsConnection:.cold.1()

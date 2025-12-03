@@ -1,8 +1,8 @@
 @interface VSPersistentStorage
 + (id)defaultStorageDirectoryURL;
 + (void)defaultStorageDirectoryURL;
-- (VSPersistentStorage)initWithAccountStore:(id)a3;
-- (VSPersistentStorage)initWithAccountStore:(id)a3 channelsCenterClass:(Class)a4;
+- (VSPersistentStorage)initWithAccountStore:(id)store;
+- (VSPersistentStorage)initWithAccountStore:(id)store channelsCenterClass:(Class)class;
 @end
 
 @implementation VSPersistentStorage
@@ -11,20 +11,20 @@
 {
   v2 = [VSOptional optionalWithObject:@"/var/mobile/Library/Application Support"];
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [v2 forceUnwrapObject];
-  v5 = [v3 fileURLWithPath:v4];
+  forceUnwrapObject = [v2 forceUnwrapObject];
+  v5 = [v3 fileURLWithPath:forceUnwrapObject];
 
   v6 = [v5 URLByAppendingPathComponent:@"com.apple.VideoSubscriberAccount"];
   v7 = [VSOptional optionalWithObject:v6];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v9 = [v7 forceUnwrapObject];
-  v10 = [v9 path];
+  forceUnwrapObject2 = [v7 forceUnwrapObject];
+  path = [forceUnwrapObject2 path];
 
-  if (v10 && ([v8 fileExistsAtPath:v10] & 1) == 0)
+  if (path && ([v8 fileExistsAtPath:path] & 1) == 0)
   {
     v15 = 0;
-    [v8 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v15];
+    [v8 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v15];
     v11 = v15;
     if (v11)
     {
@@ -36,22 +36,22 @@
     }
   }
 
-  v13 = [v7 forceUnwrapObject];
+  forceUnwrapObject3 = [v7 forceUnwrapObject];
 
-  return v13;
+  return forceUnwrapObject3;
 }
 
-- (VSPersistentStorage)initWithAccountStore:(id)a3 channelsCenterClass:(Class)a4
+- (VSPersistentStorage)initWithAccountStore:(id)store channelsCenterClass:(Class)class
 {
-  v6 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = VSPersistentStorage;
   v7 = [(VSPersistentStorage *)&v17 init];
   if (v7)
   {
-    if (v6)
+    if (storeCopy)
     {
-      v8 = v6;
+      v8 = storeCopy;
     }
 
     else
@@ -62,7 +62,7 @@
     accountStore = v7->_accountStore;
     v7->_accountStore = v8;
 
-    v10 = [[a4 alloc] initWithAccountStore:v7->_accountStore];
+    v10 = [[class alloc] initWithAccountStore:v7->_accountStore];
     channelsCenter = v7->_channelsCenter;
     v7->_channelsCenter = v10;
 
@@ -78,10 +78,10 @@
   return v7;
 }
 
-- (VSPersistentStorage)initWithAccountStore:(id)a3
+- (VSPersistentStorage)initWithAccountStore:(id)store
 {
-  v4 = a3;
-  v5 = [(VSPersistentStorage *)self initWithAccountStore:v4 channelsCenterClass:objc_opt_class()];
+  storeCopy = store;
+  v5 = [(VSPersistentStorage *)self initWithAccountStore:storeCopy channelsCenterClass:objc_opt_class()];
 
   return v5;
 }
@@ -90,7 +90,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23AB8E000, a2, OS_LOG_TYPE_ERROR, "Error creating persistent storage directory %@", &v2, 0xCu);
 }
 

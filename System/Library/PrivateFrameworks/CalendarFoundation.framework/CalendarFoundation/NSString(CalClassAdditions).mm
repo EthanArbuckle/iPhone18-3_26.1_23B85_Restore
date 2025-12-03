@@ -59,7 +59,7 @@
 
 - (id)trimWhiteSpace
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTrimWhitespace(v1);
   v2 = [(__CFString *)v1 copy];
 
@@ -68,62 +68,62 @@
 
 - (id)quote
 {
-  if ([a1 rangeOfString:@""] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@""] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696AD60] stringWithString:a1];
-    [v2 replaceOccurrencesOfString:@" withString:@"'" options:2 range:{0, objc_msgSend(v2, "length"")}];
+    selfCopy = [MEMORY[0x1E696AD60] stringWithString:self];
+    [selfCopy replaceOccurrencesOfString:@" withString:@"'" options:2 range:{0, objc_msgSend(selfCopy, "length"")}];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)unquote
 {
-  if ([a1 rangeOfString:@"\\""] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"\\""] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696AD60] stringWithString:a1];
-    [v2 replaceOccurrencesOfString:@"\ withString:@" options:2 range:{0, objc_msgSend(v2, "length")}];
+    selfCopy = [MEMORY[0x1E696AD60] stringWithString:self];
+    [selfCopy replaceOccurrencesOfString:@"\ withString:@" options:2 range:{0, objc_msgSend(selfCopy, "length")}];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)stringRemovingMailto
 {
-  v1 = a1;
-  if ([v1 hasMailto])
+  selfCopy = self;
+  if ([selfCopy hasMailto])
   {
-    v2 = [v1 substringFromIndex:7];
+    v2 = [selfCopy substringFromIndex:7];
 
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)appendSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)stringByURLUnquoting
@@ -139,11 +139,11 @@
 
 - (id)stringByTrimmingWhitespaceAndRemovingNewlines
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v5 = [v3 stringByReplacingCharactersInSet:v4 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v5 = [v3 stringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v5;
 }
@@ -151,10 +151,10 @@
 - (BOOL)isMailURL
 {
   v2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES[c] 'message:.*'"];
-  v3 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
-  v4 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  uRLFragmentAllowedCharacterSet = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
+  v4 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
 
-  if ([v2 evaluateWithObject:a1] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v4), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([v2 evaluateWithObject:self] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v4), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = 1;
   }
@@ -163,7 +163,7 @@
   {
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES[c] 'mailitem:[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}?.*'"];
 
-    if ([v7 evaluateWithObject:a1])
+    if ([v7 evaluateWithObject:self])
     {
       v8 = [MEMORY[0x1E695DFF8] URLWithString:v4];
       v6 = v8 != 0;
@@ -183,7 +183,7 @@
 - (BOOL)isAddressBookURL
 {
   v2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES[c] 'addressbook://[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}:ABPerson'"];
-  if ([v2 evaluateWithObject:a1] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", a1), v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
+  if ([v2 evaluateWithObject:self] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", self), v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     v4 = 1;
   }
@@ -192,9 +192,9 @@
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES[c] 'addressbook://[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}'"];
 
-    if ([v5 evaluateWithObject:a1])
+    if ([v5 evaluateWithObject:self])
     {
-      v6 = [MEMORY[0x1E695DFF8] URLWithString:a1];
+      v6 = [MEMORY[0x1E695DFF8] URLWithString:self];
       v4 = v6 != 0;
     }
 
@@ -212,10 +212,10 @@
 - (BOOL)resemblesEmailAddress
 {
   result = 0;
-  if ([a1 rangeOfString:@"/"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"/"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = [a1 rangeOfString:@"@"];
-    if (v2 != 0x7FFFFFFFFFFFFFFFLL && [a1 rangeOfString:@"." options:0 range:{v2 + v3, objc_msgSend(a1, "length") - (v2 + v3)}] != 0x7FFFFFFFFFFFFFFFLL)
+    v2 = [self rangeOfString:@"@"];
+    if (v2 != 0x7FFFFFFFFFFFFFFFLL && [self rangeOfString:@"." options:0 range:{v2 + v3, objc_msgSend(self, "length") - (v2 + v3)}] != 0x7FFFFFFFFFFFFFFFLL)
     {
       return 1;
     }
@@ -226,17 +226,17 @@
 
 - (id)removeSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)stringByEncodingSlashes
@@ -248,15 +248,15 @@
 
   v2 = stringByEncodingSlashes_allowedCharacters;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (id)radarLink
 {
   v2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF MATCHES[c] '<rdar:\\/\\/problem\\/\\\\d{8}\\>.*'"];
-  if ([v2 evaluateWithObject:a1])
+  if ([v2 evaluateWithObject:self])
   {
-    v3 = [a1 substringToIndex:{objc_msgSend(a1, "rangeOfString:", @">"}];
+    v3 = [self substringToIndex:{objc_msgSend(self, "rangeOfString:", @">"}];
   }
 
   else
@@ -276,13 +276,13 @@
 
   v2 = stringByURLQuoting_allowedCharacters;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (id)stringByURLQuotingPaths
 {
-  v2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
   return v3;
 }
@@ -296,13 +296,13 @@
 
   v2 = stringByURLEscapingAllReservedCharacters_allowedCharacters;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (id)stringByRemovingLastPathComponent
 {
-  v1 = [a1 stringByDeletingLastPathComponent];
-  v2 = [v1 stringByAppendingString:@"/"];
+  stringByDeletingLastPathComponent = [self stringByDeletingLastPathComponent];
+  v2 = [stringByDeletingLastPathComponent stringByAppendingString:@"/"];
 
   return v2;
 }
@@ -310,18 +310,18 @@
 - (BOOL)hasSuffixCaseInsensitive:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = v5 - [v4 length];
-  v7 = v6 >= 0 && [a1 compare:v4 options:1 range:v6 locale:{objc_msgSend(v4, "length"), 0}] == 0;
+  v7 = v6 >= 0 && [self compare:v4 options:1 range:v6 locale:{objc_msgSend(v4, "length"), 0}] == 0;
 
   return v7;
 }
 
 - (id)userFromEmail
 {
-  if ([a1 resemblesEmailAddress])
+  if ([self resemblesEmailAddress])
   {
-    v2 = [a1 componentsSeparatedByString:@"@"];
+    v2 = [self componentsSeparatedByString:@"@"];
     v3 = [v2 objectAtIndex:0];
   }
 
@@ -335,71 +335,71 @@
 
 - (id)hostFromEmail
 {
-  if ([a1 resemblesEmailAddress])
+  if ([self resemblesEmailAddress])
   {
-    v2 = [a1 componentsSeparatedByString:@"@"];
-    v3 = [v2 lastObject];
+    v2 = [self componentsSeparatedByString:@"@"];
+    lastObject = [v2 lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)stringAddingMailto
 {
-  if ([a1 hasMailto])
+  if ([self hasMailto])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [@"mailto:" stringByAppendingString:a1];
+    selfCopy = [@"mailto:" stringByAppendingString:self];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)stringAddingTel
 {
-  if ([a1 hasTel])
+  if ([self hasTel])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [@"tel:" stringByAppendingString:a1];
+    selfCopy = [@"tel:" stringByAppendingString:self];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)stringRemovingTel
 {
-  v1 = a1;
-  if ([v1 hasTel])
+  selfCopy = self;
+  if ([selfCopy hasTel])
   {
-    v2 = [v1 substringFromIndex:4];
+    v2 = [selfCopy substringFromIndex:4];
 
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)cal_isPhoneNumber
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v3 = _phoneNumberDetector();
-    v4 = [v3 matchesInString:a1 options:0 range:{0, v2}];
+    v4 = [v3 matchesInString:self options:0 range:{0, v2}];
 
     v18 = 0u;
     v19 = 0u;
@@ -424,8 +424,8 @@
           if ([v10 resultType] == 32)
           {
             v11 = [v10 URL];
-            v12 = [v11 scheme];
-            v13 = [v12 isEqualToString:@"tel"];
+            scheme = [v11 scheme];
+            v13 = [scheme isEqualToString:@"tel"];
 
             if (v13)
             {
@@ -461,40 +461,40 @@ LABEL_15:
 
 - (id)phoneURL
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v3 = v2;
     v4 = _phoneNumberDetector();
-    v5 = [v4 matchesInString:a1 options:0 range:{0, v3}];
+    v5 = [v4 matchesInString:self options:0 range:{0, v3}];
 
     if ([v5 count])
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 phoneNumber];
-      v8 = [v6 URL];
+      firstObject = [v5 firstObject];
+      phoneNumber = [firstObject phoneNumber];
+      v8 = [firstObject URL];
       v9 = v8;
       if (v8 && ([v8 scheme], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"tel"), v10, v11))
       {
         v12 = v9;
       }
 
-      else if ([v7 length])
+      else if ([phoneNumber length])
       {
         v13 = MEMORY[0x1E695DFF8];
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", v7];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", phoneNumber];
         v12 = [v13 URLWithString:v14];
 
         if (!v12)
         {
-          v15 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
-          v16 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+          uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+          v16 = [phoneNumber stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
           v17 = MEMORY[0x1E695DFF8];
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", v16];
           v12 = [v17 URLWithString:v18];
 
-          v7 = v16;
+          phoneNumber = v16;
         }
       }
 
@@ -520,31 +520,31 @@ LABEL_15:
 
 - (id)calDataDetectedURL
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v3 = v2;
     v4 = _phoneNumberDetector();
-    v5 = [v4 matchesInString:a1 options:0 range:{0, v3}];
+    v5 = [v4 matchesInString:self options:0 range:{0, v3}];
 
     if ([v5 count])
     {
-      v6 = [v5 firstObject];
-      v7 = [v6 URL];
+      firstObject = [v5 firstObject];
+      v7 = [firstObject URL];
       if (!v7)
       {
-        v8 = [v6 phoneNumber];
-        if (v8)
+        phoneNumber = [firstObject phoneNumber];
+        if (phoneNumber)
         {
-          v9 = v8;
+          v9 = phoneNumber;
           v10 = MEMORY[0x1E695DFF8];
-          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", v8];
+          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", phoneNumber];
           v7 = [v10 URLWithString:v11];
 
           if (!v7)
           {
-            v12 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
-            v13 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+            uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+            v13 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
             v14 = MEMORY[0x1E695DFF8];
             v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", @"tel", v13];
@@ -588,11 +588,11 @@ LABEL_15:
     v2 = CalUncommentedAddress_uncommentedAddresses;
   }
 
-  v5 = [v2 objectForKey:a1];
+  v5 = [v2 objectForKey:self];
   objc_sync_exit(@"AddressParsing");
   if (!v5)
   {
-    v6 = [a1 length];
+    v6 = [self length];
     v7 = NSZoneMalloc(0, 2 * v6 + 2);
     v8 = v7;
     v9 = MEMORY[0x1E69E9830];
@@ -607,7 +607,7 @@ LABEL_15:
       v10 = v7;
       do
       {
-        v14 = [a1 characterAtIndex:v11];
+        v14 = [self characterAtIndex:v11];
         v15 = v14;
         if (v14 == 92)
         {
@@ -634,7 +634,7 @@ LABEL_13:
           }
 
           *v10 = 92;
-          *(v10 + 1) = [a1 characterAtIndex:v11 + 1];
+          *(v10 + 1) = [self characterAtIndex:v11 + 1];
           v10 += 4;
           ++v11;
         }
@@ -733,7 +733,7 @@ LABEL_27:
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:v8 length:v18 >> 1];
     NSZoneFree(0, v8);
     objc_sync_enter(@"AddressParsing");
-    [CalUncommentedAddress_uncommentedAddresses setObject:v5 forKey:a1];
+    [CalUncommentedAddress_uncommentedAddresses setObject:v5 forKey:self];
     objc_sync_exit(@"AddressParsing");
   }
 
@@ -756,17 +756,17 @@ LABEL_27:
     v3 = CalAddressComment_addressComments;
   }
 
-  v6 = [v3 objectForKey:a1];
+  v6 = [v3 objectForKey:self];
   objc_sync_exit(@"AddressParsing");
   if (v6)
   {
     goto LABEL_84;
   }
 
-  v7 = [a1 length];
+  v7 = [self length];
   v8 = NSZoneMalloc(0, 2 * v7 + 2);
   v9 = NSZoneMalloc(0, 2 * v7 + 2);
-  [a1 getCharacters:v9];
+  [self getCharacters:v9];
   v10 = MEMORY[0x1E69E9830];
   v47 = v9;
   if (v7 < 1)
@@ -826,7 +826,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  v46 = a1;
+  selfCopy = self;
   v20 = 0;
   v21 = 0;
   v22 = 0;
@@ -956,7 +956,7 @@ LABEL_54:
 
   while (v7);
   v33 = ((v23 != 0) | v22);
-  a1 = v46;
+  self = selfCopy;
   p_name = (&OBJC_PROTOCOL___NSCopying + 8);
   do
   {
@@ -977,7 +977,7 @@ LABEL_57:
   *(v8 + v34) = 0;
   if (v33)
   {
-    v38 = a1;
+    selfCopy2 = self;
     goto LABEL_77;
   }
 
@@ -1011,9 +1011,9 @@ LABEL_57:
 LABEL_71:
       v37 = (v8 + v34 - 2);
       *(v8 + v34 - 2) = 0;
-      v38 = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 + 1 length:{(v34 >> 1) - 2, v46}];
+      selfCopy2 = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 + 1 length:{(v34 >> 1) - 2, selfCopy}];
 
-      v39 = v38;
+      v39 = selfCopy2;
       v41 = v34 <= 4;
       v34 -= 2;
       if (v41)
@@ -1029,20 +1029,20 @@ LABEL_71:
 
   v37 = (v8 + v34);
 LABEL_76:
-  v38 = v39;
+  selfCopy2 = v39;
 LABEL_77:
   v42 = v47;
-  if (!v38)
+  if (!selfCopy2)
   {
 LABEL_78:
     if (v37 == v8)
     {
-      v38 = 0;
+      selfCopy2 = 0;
     }
 
     else
     {
-      v38 = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 length:v37 - v8];
+      selfCopy2 = [MEMORY[0x1E696AEC0] stringWithCharacters:v8 length:v37 - v8];
     }
   }
 
@@ -1050,15 +1050,15 @@ LABEL_78:
   NSZoneFree(0, v42);
   if (v37 == v8)
   {
-    v43 = a1;
+    selfCopy3 = self;
 
-    v38 = v43;
+    selfCopy2 = selfCopy3;
   }
 
   objc_sync_enter(@"AddressParsing");
-  v6 = [v38 copy];
+  v6 = [selfCopy2 copy];
 
-  [p_name[301] setObject:v6 forKey:a1];
+  [p_name[301] setObject:v6 forKey:self];
   objc_sync_exit(@"AddressParsing");
 LABEL_84:
   v44 = v6;
@@ -1069,14 +1069,14 @@ LABEL_84:
 - (uint64_t)isEqualAsURL:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 appendSlashIfNeeded];
-  v6 = [v5 stringByURLUnquoting];
+  appendSlashIfNeeded = [self appendSlashIfNeeded];
+  stringByURLUnquoting = [appendSlashIfNeeded stringByURLUnquoting];
 
-  v7 = [v4 appendSlashIfNeeded];
+  appendSlashIfNeeded2 = [v4 appendSlashIfNeeded];
 
-  v8 = [v7 stringByURLUnquoting];
+  stringByURLUnquoting2 = [appendSlashIfNeeded2 stringByURLUnquoting];
 
-  v9 = [v6 isEqualToString:v8];
+  v9 = [stringByURLUnquoting isEqualToString:stringByURLUnquoting2];
   return v9;
 }
 
@@ -1092,7 +1092,7 @@ LABEL_84:
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5)
   {
     v6 = v5;
@@ -1105,7 +1105,7 @@ LABEL_84:
         v8 = v6 - v7;
       }
 
-      [a1 getCharacters:v11 range:{v7, v8}];
+      [self getCharacters:v11 range:{v7, v8}];
       if (v8)
       {
         for (i = 0; i < v8; ++i)
@@ -1143,27 +1143,27 @@ LABEL_84:
 
 - (uint64_t)isPathToAppleScript
 {
-  v1 = [a1 pathExtension];
-  v2 = [v1 lowercaseString];
-  v3 = [v2 isEqualToString:@"scpt"];
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v3 = [lowercaseString isEqualToString:@"scpt"];
 
   return v3;
 }
 
 - (uint64_t)isPathToVCalData
 {
-  v2 = [a1 pathExtension];
-  v3 = [v2 lowercaseString];
-  if ([v3 isEqualToString:@"vcs"])
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  if ([lowercaseString isEqualToString:@"vcs"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 pathExtension];
-    v6 = [v5 lowercaseString];
-    v4 = [v6 isEqualToString:@"vcal"];
+    pathExtension2 = [self pathExtension];
+    lowercaseString2 = [pathExtension2 lowercaseString];
+    v4 = [lowercaseString2 isEqualToString:@"vcal"];
   }
 
   return v4;
@@ -1171,64 +1171,64 @@ LABEL_84:
 
 - (uint64_t)isPathToICalData
 {
-  v1 = [a1 pathExtension];
-  v2 = [v1 lowercaseString];
-  v3 = [v2 isEqualToString:@"ics"];
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v3 = [lowercaseString isEqualToString:@"ics"];
 
   return v3;
 }
 
 - (uint64_t)isPathToBackupFile
 {
-  v1 = [a1 pathExtension];
-  v2 = [v1 lowercaseString];
-  v3 = [v2 isEqualToString:@"icbu"];
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v3 = [lowercaseString isEqualToString:@"icbu"];
 
   return v3;
 }
 
 - (uint64_t)isPathToICalBookmark
 {
-  v1 = [a1 pathExtension];
-  v2 = [v1 lowercaseString];
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  v3 = [v2 isEqualToString:@"icaltodo"];
+  v3 = [lowercaseString isEqualToString:@"icaltodo"];
   return v3;
 }
 
 - (id)trimFinalChar:()CalClassAdditions
 {
-  if ([a1 length] && objc_msgSend(a1, "characterAtIndex:", objc_msgSend(a1, "length") - 1) == a3)
+  if ([self length] && objc_msgSend(self, "characterAtIndex:", objc_msgSend(self, "length") - 1) == a3)
   {
-    v5 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)trimFirstChar:()CalClassAdditions
 {
-  if ([a1 length] && objc_msgSend(a1, "characterAtIndex:", 0) == a3)
+  if ([self length] && objc_msgSend(self, "characterAtIndex:", 0) == a3)
   {
-    v5 = [a1 substringFromIndex:1];
+    selfCopy = [self substringFromIndex:1];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)trimChar:()CalClassAdditions
 {
-  v4 = [a1 trimFirstChar:?];
+  v4 = [self trimFirstChar:?];
   v5 = [v4 trimFinalChar:a3];
 
   return v5;
@@ -1236,47 +1236,47 @@ LABEL_84:
 
 - (id)trimFinalComma
 {
-  if ([a1 length] && objc_msgSend(a1, "characterAtIndex:", objc_msgSend(a1, "length") - 1) == 44)
+  if ([self length] && objc_msgSend(self, "characterAtIndex:", objc_msgSend(self, "length") - 1) == 44)
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)trimFirstComma
 {
-  if ([a1 length] && objc_msgSend(a1, "characterAtIndex:", 0) == 44)
+  if ([self length] && objc_msgSend(self, "characterAtIndex:", 0) == 44)
   {
-    v2 = [a1 substringFromIndex:1];
+    selfCopy = [self substringFromIndex:1];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)trimCommas
 {
-  v1 = [a1 trimFirstComma];
-  v2 = [v1 trimFinalComma];
+  trimFirstComma = [self trimFirstComma];
+  trimFinalComma = [trimFirstComma trimFinalComma];
 
-  return v2;
+  return trimFinalComma;
 }
 
 - (id)searchAndReplaceString:()CalClassAdditions withString:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+  v8 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v8 setCharactersToBeSkipped:0];
   if ([v8 scanString:v6 intoString:0])
@@ -1318,8 +1318,8 @@ LABEL_84:
 
 + (id)stringWithFileSystemRepresentation:()CalClassAdditions
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 stringWithFileSystemRepresentation:a3 length:strlen(a3)];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager stringWithFileSystemRepresentation:a3 length:strlen(a3)];
 
   return v5;
 }
@@ -1331,7 +1331,7 @@ LABEL_84:
     [NSString(CalClassAdditions) CalSafeFilename];
   }
 
-  v2 = [a1 stringByReplacingCharactersInSet:CalSafeFilename_disallowedCharacters withString:@"-"];
+  v2 = [self stringByReplacingCharactersInSet:CalSafeFilename_disallowedCharacters withString:@"-"];
   if ([(__CFString *)v2 hasPrefix:@"."])
   {
     do
@@ -1360,7 +1360,7 @@ LABEL_84:
 
 - (id)CalSafeHFSPathComponentName
 {
-  v1 = [a1 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+  v1 = [self stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
   v2 = [v1 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
   return v2;
@@ -1369,7 +1369,7 @@ LABEL_84:
 - (id)stringByReplacingCharactersInSet:()CalClassAdditions withString:
 {
   v6 = a4;
-  v7 = [a1 componentsSeparatedByCharactersInSet:a3];
+  v7 = [self componentsSeparatedByCharactersInSet:a3];
   v8 = [v7 componentsJoinedByString:v6];
 
   return v8;
@@ -1378,10 +1378,10 @@ LABEL_84:
 - (id)stringByRemovingPrefixCaseInsensitive:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 copy];
-  if ([a1 hasPrefixCaseInsensitive:v4])
+  v5 = [self copy];
+  if ([self hasPrefixCaseInsensitive:v4])
   {
-    v6 = [a1 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v6 = [self substringFromIndex:{objc_msgSend(v4, "length")}];
 
     v5 = v6;
   }
@@ -1403,15 +1403,15 @@ LABEL_84:
 
 - (uint64_t)CalHasAutoCommentPrefix
 {
-  v1 = [a1 componentsSeparatedByString:@"\n"];
-  v2 = [v1 firstObject];
+  v1 = [self componentsSeparatedByString:@"\n"];
+  firstObject = [v1 firstObject];
 
-  v3 = [MEMORY[0x1E696AEC0] CalAutoCommentPrefix];
+  calAutoCommentPrefix = [MEMORY[0x1E696AEC0] CalAutoCommentPrefix];
   v4 = 1;
-  v5 = [v3 substringFromIndex:1];
-  if (([v2 containsString:v3] & 1) == 0)
+  v5 = [calAutoCommentPrefix substringFromIndex:1];
+  if (([firstObject containsString:calAutoCommentPrefix] & 1) == 0)
   {
-    v4 = [v2 containsString:v5];
+    v4 = [firstObject containsString:v5];
   }
 
   return v4;
@@ -1419,10 +1419,10 @@ LABEL_84:
 
 - (__CFString)CalStringByRemovingAutoComment
 {
-  v2 = [a1 copy];
-  if ([a1 CalHasAutoCommentPrefix])
+  v2 = [self copy];
+  if ([self CalHasAutoCommentPrefix])
   {
-    v3 = [a1 rangeOfString:@"\n"];
+    v3 = [self rangeOfString:@"\n"];
     if (v3 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = &stru_1F379FFA8;
@@ -1430,7 +1430,7 @@ LABEL_84:
 
     else
     {
-      v4 = [a1 substringFromIndex:v3 + 1];
+      v4 = [self substringFromIndex:v3 + 1];
     }
 
     v2 = v4;
@@ -1441,18 +1441,18 @@ LABEL_84:
 
 - (id)CalStringWithOnlyAutoComment
 {
-  if ([a1 CalHasAutoCommentPrefix])
+  if ([self CalHasAutoCommentPrefix])
   {
-    v2 = [a1 rangeOfString:@"\n"];
+    v2 = [self rangeOfString:@"\n"];
     if (v2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = [a1 copy];
+      v3 = [self copy];
       v4 = [v3 stringByAppendingString:@"\n"];
     }
 
     else
     {
-      v4 = [a1 substringToIndex:v2 + 1];
+      v4 = [self substringToIndex:v2 + 1];
     }
   }
 
@@ -1467,7 +1467,7 @@ LABEL_84:
 - (id)cal_stringWithNormalizedSpacesForUnitTesting
 {
   v2 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"  "];
-  v3 = [a1 stringByReplacingCharactersInSet:v2 withString:@" "];
+  v3 = [self stringByReplacingCharactersInSet:v2 withString:@" "];
 
   return v3;
 }

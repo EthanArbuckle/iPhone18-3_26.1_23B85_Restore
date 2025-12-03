@@ -81,19 +81,19 @@ void __38__WBSManagedNewTabPageController_init__block_invoke(uint64_t a1)
 
 - (int64_t)_computeManagedNewTabPageType
 {
-  v2 = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
-  v3 = [v2 newTabStartPage];
+  safari = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
+  newTabStartPage = [safari newTabStartPage];
 
-  if (v3)
+  if (newTabStartPage)
   {
-    v4 = [v3 pageType];
+    pageType = [newTabStartPage pageType];
     v5 = 3;
-    if (v4 != 2)
+    if (pageType != 2)
     {
       v5 = 1;
     }
 
-    if (v4 == 3)
+    if (pageType == 3)
     {
       v6 = 2;
     }
@@ -114,21 +114,21 @@ void __38__WBSManagedNewTabPageController_init__block_invoke(uint64_t a1)
 
 - (int64_t)managedNewTabPageState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasCachedNewTabPageState)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasCachedNewTabPageState)
   {
-    cachedNewTabPageState = v2->_cachedNewTabPageState;
+    cachedNewTabPageState = selfCopy->_cachedNewTabPageState;
   }
 
   else
   {
-    cachedNewTabPageState = [(WBSManagedNewTabPageController *)v2 _computeManagedNewTabPageType];
-    v2->_cachedNewTabPageState = cachedNewTabPageState;
-    v2->_hasCachedNewTabPageState = 1;
+    cachedNewTabPageState = [(WBSManagedNewTabPageController *)selfCopy _computeManagedNewTabPageType];
+    selfCopy->_cachedNewTabPageState = cachedNewTabPageState;
+    selfCopy->_hasCachedNewTabPageState = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return cachedNewTabPageState;
 }
@@ -152,17 +152,17 @@ void __38__WBSManagedNewTabPageController_init__block_invoke_2(uint64_t a1, void
 
 - (NSString)managedNewTabPageHomepageURLString
 {
-  v2 = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
-  v3 = [v2 newTabStartPage];
-  v4 = [v3 homepageURL];
+  safari = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
+  newTabStartPage = [safari newTabStartPage];
+  homepageURL = [newTabStartPage homepageURL];
 
-  if (v4)
+  if (homepageURL)
   {
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:homepageURL];
     v6 = v5;
     if (v5 && [v5 safari_isHTTPFamilyURL])
     {
-      v7 = v4;
+      v7 = homepageURL;
     }
 
     else
@@ -181,11 +181,11 @@ void __38__WBSManagedNewTabPageController_init__block_invoke_2(uint64_t a1, void
 
 - (NSString)managedNewTabPageExtensionComposedIdentifier
 {
-  v2 = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
-  v3 = [v2 newTabStartPage];
-  v4 = [v3 extensionIdentifier];
+  safari = [(MOEffectiveSettingsStore *)self->_managedSettingsStore safari];
+  newTabStartPage = [safari newTabStartPage];
+  extensionIdentifier = [newTabStartPage extensionIdentifier];
 
-  return v4;
+  return extensionIdentifier;
 }
 
 @end

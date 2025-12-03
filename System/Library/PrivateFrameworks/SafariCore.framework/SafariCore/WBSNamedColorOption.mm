@@ -1,45 +1,45 @@
 @interface WBSNamedColorOption
-+ (id)colorWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WBSNamedColorOption)initWithCoder:(id)a3;
-- (WBSNamedColorOption)initWithColorName:(id)a3 red:(double)a4 green:(double)a5 blue:(double)a6 alpha:(double)a7 accessibilityName:(id)a8;
++ (id)colorWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (WBSNamedColorOption)initWithCoder:(id)coder;
+- (WBSNamedColorOption)initWithColorName:(id)name red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha accessibilityName:(id)accessibilityName;
 - (id)dataRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSNamedColorOption
 
-- (WBSNamedColorOption)initWithColorName:(id)a3 red:(double)a4 green:(double)a5 blue:(double)a6 alpha:(double)a7 accessibilityName:(id)a8
+- (WBSNamedColorOption)initWithColorName:(id)name red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha accessibilityName:(id)accessibilityName
 {
-  v15 = a3;
-  v16 = a8;
+  nameCopy = name;
+  accessibilityNameCopy = accessibilityName;
   v21.receiver = self;
   v21.super_class = WBSNamedColorOption;
   v17 = [(WBSNamedColorOption *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_colorName, a3);
-    v18->_redComponent = a4;
-    v18->_greenComponent = a5;
-    v18->_blueComponent = a6;
-    v18->_alphaComponent = a7;
-    objc_storeStrong(&v18->_accessibilityName, a8);
+    objc_storeStrong(&v17->_colorName, name);
+    v18->_redComponent = red;
+    v18->_greenComponent = green;
+    v18->_blueComponent = blue;
+    v18->_alphaComponent = alpha;
+    objc_storeStrong(&v18->_accessibilityName, accessibilityName);
     v19 = v18;
   }
 
   return v18;
 }
 
-+ (id)colorWithData:(id)a3
++ (id)colorWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 0;
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v7];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v7];
     if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v5 = 0;
@@ -73,32 +73,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   colorName = self->_colorName;
-  v5 = a3;
-  [v5 encodeObject:colorName forKey:@"colorName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:colorName forKey:@"colorName"];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_redComponent];
-  [v5 encodeObject:v6 forKey:@"redComponent"];
+  [coderCopy encodeObject:v6 forKey:@"redComponent"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_greenComponent];
-  [v5 encodeObject:v7 forKey:@"greenComponent"];
+  [coderCopy encodeObject:v7 forKey:@"greenComponent"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_blueComponent];
-  [v5 encodeObject:v8 forKey:@"blueComponent"];
+  [coderCopy encodeObject:v8 forKey:@"blueComponent"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_alphaComponent];
-  [v5 encodeObject:v9 forKey:@"alphaComponent"];
+  [coderCopy encodeObject:v9 forKey:@"alphaComponent"];
 }
 
-- (WBSNamedColorOption)initWithCoder:(id)a3
+- (WBSNamedColorOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redComponent"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenComponent"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blueComponent"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alphaComponent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redComponent"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenComponent"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blueComponent"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alphaComponent"];
 
   [v6 floatValue];
   v11 = v10;
@@ -112,10 +112,10 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -125,10 +125,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       colorName = self->_colorName;
-      v7 = [(WBSNamedColorOption *)v5 colorName];
-      if (WBSIsEqual(colorName, v7) && (redComponent = self->_redComponent, [(WBSNamedColorOption *)v5 redComponent], redComponent == v9) && (greenComponent = self->_greenComponent, [(WBSNamedColorOption *)v5 greenComponent], greenComponent == v11) && (blueComponent = self->_blueComponent, [(WBSNamedColorOption *)v5 blueComponent], blueComponent == v13))
+      colorName = [(WBSNamedColorOption *)v5 colorName];
+      if (WBSIsEqual(colorName, colorName) && (redComponent = self->_redComponent, [(WBSNamedColorOption *)v5 redComponent], redComponent == v9) && (greenComponent = self->_greenComponent, [(WBSNamedColorOption *)v5 greenComponent], greenComponent == v11) && (blueComponent = self->_blueComponent, [(WBSNamedColorOption *)v5 blueComponent], blueComponent == v13))
       {
         alphaComponent = self->_alphaComponent;
         [(WBSNamedColorOption *)v5 alphaComponent];

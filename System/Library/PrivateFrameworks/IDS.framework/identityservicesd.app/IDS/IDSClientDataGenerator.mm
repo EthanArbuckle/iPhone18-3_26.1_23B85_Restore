@@ -1,25 +1,25 @@
 @interface IDSClientDataGenerator
 + (BOOL)_isKTAsyncEnrollmentDisabledViaServerBag;
 + (BOOL)_isKTAsyncEnrollmentDisabledViaUserDefaults;
-+ (id)_createClientDatasForServiceTypes:(id)a3 withAppleIDRegistrationsForServiceTypes:(id)a4 ktRegDataByServiceType:(id)a5 publicIdentityData:(id)a6 publicIdentityError:(id)a7 keyStore:(id)a8 isPresenceCapable:(BOOL)a9 isStewieCapable:(BOOL)a10;
-+ (id)clientDatasForRegistrations:(id)a3 registerID:(id)a4 keyStore:(id)a5 keyTransparencyVerifier:(id)a6;
-+ (id)serviceTypesFromRegistrations:(id)a3;
-+ (id)serviceTypesFromRegistrations:(id)a3 withRegistrationType:(int)a4;
-+ (void)_fetchPresenceCapabilityForServiceTypes:(id)a3 withCompletion:(id)a4;
-+ (void)_fetchStewieCapabilityForServiceTypes:(id)a3 withCompletion:(id)a4;
++ (id)_createClientDatasForServiceTypes:(id)types withAppleIDRegistrationsForServiceTypes:(id)serviceTypes ktRegDataByServiceType:(id)type publicIdentityData:(id)data publicIdentityError:(id)error keyStore:(id)store isPresenceCapable:(BOOL)capable isStewieCapable:(BOOL)self0;
++ (id)clientDatasForRegistrations:(id)registrations registerID:(id)d keyStore:(id)store keyTransparencyVerifier:(id)verifier;
++ (id)serviceTypesFromRegistrations:(id)registrations;
++ (id)serviceTypesFromRegistrations:(id)registrations withRegistrationType:(int)type;
++ (void)_fetchPresenceCapabilityForServiceTypes:(id)types withCompletion:(id)completion;
++ (void)_fetchStewieCapabilityForServiceTypes:(id)types withCompletion:(id)completion;
 @end
 
 @implementation IDSClientDataGenerator
 
-+ (id)serviceTypesFromRegistrations:(id)a3
++ (id)serviceTypesFromRegistrations:(id)registrations
 {
-  v3 = a3;
+  registrationsCopy = registrations;
   v4 = objc_alloc_init(NSMutableDictionary);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = registrationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -35,8 +35,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 serviceType];
-        [v4 setObject:v10 forKey:v11];
+        serviceType = [v10 serviceType];
+        [v4 setObject:v10 forKey:serviceType];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -48,15 +48,15 @@
   return v4;
 }
 
-+ (id)serviceTypesFromRegistrations:(id)a3 withRegistrationType:(int)a4
++ (id)serviceTypesFromRegistrations:(id)registrations withRegistrationType:(int)type
 {
-  v5 = a3;
+  registrationsCopy = registrations;
   v6 = objc_alloc_init(NSMutableDictionary);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = registrationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -72,10 +72,10 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 registrationType] == a4)
+        if ([v12 registrationType] == type)
         {
-          v13 = [v12 serviceType];
-          [v6 setObject:v12 forKey:v13];
+          serviceType = [v12 serviceType];
+          [v6 setObject:v12 forKey:serviceType];
         }
       }
 
@@ -88,12 +88,12 @@
   return v6;
 }
 
-+ (id)clientDatasForRegistrations:(id)a3 registerID:(id)a4 keyStore:(id)a5 keyTransparencyVerifier:(id)a6
++ (id)clientDatasForRegistrations:(id)registrations registerID:(id)d keyStore:(id)store keyTransparencyVerifier:(id)verifier
 {
-  v127 = a3;
-  v126 = a4;
-  v130 = a5;
-  v125 = a6;
+  registrationsCopy = registrations;
+  dCopy = d;
+  storeCopy = store;
+  verifierCopy = verifier;
   v129 = objc_alloc_init(CUTUnsafePromiseSeal);
   v147[0] = 0;
   v147[1] = v147;
@@ -108,27 +108,27 @@
   v145[4] = sub_10000BC24;
   v146 = objc_alloc_init(NSMutableDictionary);
   v144 = 0;
-  v9 = [v130 publicMessageProtectionIdentityDataToRegisterWithError:&v144];
+  v9 = [storeCopy publicMessageProtectionIdentityDataToRegisterWithError:&v144];
   v128 = v144;
-  v10 = [v9 publicLegacyIdentityData];
-  LODWORD(a6) = v10 == 0;
+  publicLegacyIdentityData = [v9 publicLegacyIdentityData];
+  LODWORD(verifier) = publicLegacyIdentityData == 0;
 
-  if (!a6)
+  if (!verifier)
   {
-    v11 = [v130 errorContainerToReport];
+    errorContainerToReport = [storeCopy errorContainerToReport];
     v12 = [IDSNGMKeyLoadingMetric alloc];
-    v13 = [v9 publicNGMIdentityData];
-    v14 = [v9 publicNGMPrekeyData];
-    v124 = [(IDSNGMKeyLoadingMetric *)v12 initWithErrorContainer:v11 missingIdentity:v13 == 0 missingPrekey:v14 == 0];
+    publicNGMIdentityData = [v9 publicNGMIdentityData];
+    publicNGMPrekeyData = [v9 publicNGMPrekeyData];
+    v124 = [(IDSNGMKeyLoadingMetric *)v12 initWithErrorContainer:errorContainerToReport missingIdentity:publicNGMIdentityData == 0 missingPrekey:publicNGMPrekeyData == 0];
 
     v15 = [IDSRTCLogger loggerWithCategory:4000];
     [v15 logMetric:v124];
 
-    v16 = [v9 publicNGMIdentityData];
-    if (v16)
+    publicNGMIdentityData2 = [v9 publicNGMIdentityData];
+    if (publicNGMIdentityData2)
     {
-      v17 = [v9 publicNGMPrekeyData];
-      v18 = v17 == 0;
+      publicNGMPrekeyData2 = [v9 publicNGMPrekeyData];
+      v18 = publicNGMPrekeyData2 == 0;
 
       if (!v18)
       {
@@ -139,8 +139,8 @@
     v19 = +[IMRGLog registration];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      v107 = [v9 publicNGMIdentityData];
-      if (v107)
+      publicNGMIdentityData3 = [v9 publicNGMIdentityData];
+      if (publicNGMIdentityData3)
       {
         v108 = @"YES";
       }
@@ -151,8 +151,8 @@
       }
 
       v120 = v108;
-      v109 = [v9 publicNGMPrekeyData];
-      if (v109)
+      publicNGMPrekeyData3 = [v9 publicNGMPrekeyData];
+      if (publicNGMPrekeyData3)
       {
         v110 = @"YES";
       }
@@ -163,7 +163,7 @@
       }
 
       v119 = v110;
-      if ([v11 hasRegisteredContainer])
+      if ([errorContainerToReport hasRegisteredContainer])
       {
         v111 = @"YES";
       }
@@ -174,7 +174,7 @@
       }
 
       v118 = v111;
-      if ([v11 hasUnregisteredContainer])
+      if ([errorContainerToReport hasUnregisteredContainer])
       {
         v112 = @"YES";
       }
@@ -185,29 +185,29 @@
       }
 
       v117 = v112;
-      if ([v11 hasUnregisteredContainer])
+      if ([errorContainerToReport hasUnregisteredContainer])
       {
-        [v11 unregisteredKeychainError];
+        [errorContainerToReport unregisteredKeychainError];
       }
 
       else
       {
-        [v11 registeredKeychainError];
+        [errorContainerToReport registeredKeychainError];
       }
       v121 = ;
-      if ([v11 hasUnregisteredContainer])
+      if ([errorContainerToReport hasUnregisteredContainer])
       {
-        [v11 unregisteredDeserializationError];
+        [errorContainerToReport unregisteredDeserializationError];
       }
 
       else
       {
-        [v11 registeredKeychainError];
+        [errorContainerToReport registeredKeychainError];
       }
       v113 = ;
-      v114 = [v11 generationError];
-      v115 = [v11 rollingError];
-      v116 = [v11 identityToRegisterError];
+      generationError = [errorContainerToReport generationError];
+      rollingError = [errorContainerToReport rollingError];
+      identityToRegisterError = [errorContainerToReport identityToRegisterError];
       *buf = 138414338;
       v150 = v120;
       v151 = 2112;
@@ -221,11 +221,11 @@
       v159 = 2112;
       v160 = v113;
       v161 = 2112;
-      v162 = v114;
+      v162 = generationError;
       v163 = 2112;
-      v164 = v115;
+      v164 = rollingError;
       v165 = 2112;
-      v166 = v116;
+      v166 = identityToRegisterError;
       _os_log_fault_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "Registering without an NGM key { hasIdentityData: %@, hasPrekeyData: %@, hasRegIdentity: %@, hasUnregIdentity: %@, keychainError: %@, serializationError: %@, generationError: %@, rollingError: %@, dataToRegisterError: %@ }", buf, 0x5Cu);
     }
 
@@ -234,8 +234,8 @@
       goto LABEL_62;
     }
 
-    v20 = [v9 publicNGMIdentityData];
-    if (v20)
+    publicNGMIdentityData4 = [v9 publicNGMIdentityData];
+    if (publicNGMIdentityData4)
     {
       v21 = @"YES";
     }
@@ -245,8 +245,8 @@
       v21 = @"NO";
     }
 
-    v22 = [v9 publicNGMPrekeyData];
-    if (v22)
+    publicNGMPrekeyData4 = [v9 publicNGMPrekeyData];
+    if (publicNGMPrekeyData4)
     {
       v23 = @"YES";
     }
@@ -256,9 +256,9 @@
       v23 = @"NO";
     }
 
-    v24 = [v11 hasRegisteredContainer];
-    v25 = [v11 hasUnregisteredContainer];
-    if (v24)
+    hasRegisteredContainer = [errorContainerToReport hasRegisteredContainer];
+    hasUnregisteredContainer = [errorContainerToReport hasUnregisteredContainer];
+    if (hasRegisteredContainer)
     {
       v26 = @"YES";
     }
@@ -268,7 +268,7 @@
       v26 = @"NO";
     }
 
-    if (v25)
+    if (hasUnregisteredContainer)
     {
       v27 = @"YES";
     }
@@ -280,16 +280,16 @@
 
     v28 = [NSString stringWithFormat:@"EC Key Loading Failure (iden:%@, pre:%@, reg:%@, unreg:%@)", v21, v23, v26, v27];
 
-    v29 = [v11 registeredKeychainError];
-    if (v29)
+    registeredKeychainError = [errorContainerToReport registeredKeychainError];
+    if (registeredKeychainError)
     {
-      v30 = [v11 shouldHaveRegisteredIdentity];
-      if (v30)
+      shouldHaveRegisteredIdentity = [errorContainerToReport shouldHaveRegisteredIdentity];
+      if (shouldHaveRegisteredIdentity)
       {
-        v31 = [v11 shouldHaveRegisteredIdentity];
-        v32 = [v31 BOOLValue];
+        shouldHaveRegisteredIdentity2 = [errorContainerToReport shouldHaveRegisteredIdentity];
+        bOOLValue = [shouldHaveRegisteredIdentity2 BOOLValue];
 
-        if (!v32)
+        if (!bOOLValue)
         {
           goto LABEL_32;
         }
@@ -299,17 +299,17 @@
       {
       }
 
-      v36 = [v11 registeredKeychainError];
-      v37 = [v36 domain];
+      registeredKeychainError2 = [errorContainerToReport registeredKeychainError];
+      domain = [registeredKeychainError2 domain];
 
-      v38 = [v11 registeredKeychainError];
-      v39 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v38 code]);
+      registeredKeychainError3 = [errorContainerToReport registeredKeychainError];
+      v39 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [registeredKeychainError3 code]);
 
-      v40 = [v11 registeredKeychainError];
-      v41 = [v40 userInfo];
+      registeredKeychainError4 = [errorContainerToReport registeredKeychainError];
+      userInfo = [registeredKeychainError4 userInfo];
 
-      v42 = [v41 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
-      v43 = [v37 isEqualToString:@"IDSKeychainWrapperErrorDomain"];
+      v42 = [userInfo objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
+      v43 = [domain isEqualToString:@"IDSKeychainWrapperErrorDomain"];
       if (v42)
       {
         v44 = v43;
@@ -327,41 +327,41 @@
         v39 = v45;
       }
 
-      v46 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (regKeychain %@:%ld)", v37, [v39 integerValue]);
+      v46 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (regKeychain %@:%ld)", domain, [v39 integerValue]);
       v47 = [v28 stringByAppendingString:v46];
 
       v28 = v47;
     }
 
 LABEL_32:
-    v48 = [v11 registeredDeserializationError];
-    if (!v48)
+    registeredDeserializationError = [errorContainerToReport registeredDeserializationError];
+    if (!registeredDeserializationError)
     {
       goto LABEL_38;
     }
 
-    v49 = [v11 shouldHaveRegisteredIdentity];
-    if (v49)
+    shouldHaveRegisteredIdentity3 = [errorContainerToReport shouldHaveRegisteredIdentity];
+    if (shouldHaveRegisteredIdentity3)
     {
-      v50 = [v11 shouldHaveRegisteredIdentity];
-      v51 = [v50 BOOLValue];
+      shouldHaveRegisteredIdentity4 = [errorContainerToReport shouldHaveRegisteredIdentity];
+      bOOLValue2 = [shouldHaveRegisteredIdentity4 BOOLValue];
 
-      if (!v51)
+      if (!bOOLValue2)
       {
 LABEL_38:
-        v57 = [v11 unregisteredKeychainError];
-        if (!v57)
+        unregisteredKeychainError = [errorContainerToReport unregisteredKeychainError];
+        if (!unregisteredKeychainError)
         {
           goto LABEL_49;
         }
 
-        v58 = [v11 shouldHaveUnregisteredIdentity];
-        if (v58)
+        shouldHaveUnregisteredIdentity = [errorContainerToReport shouldHaveUnregisteredIdentity];
+        if (shouldHaveUnregisteredIdentity)
         {
-          v59 = [v11 shouldHaveUnregisteredIdentity];
-          v60 = [v59 BOOLValue];
+          shouldHaveUnregisteredIdentity2 = [errorContainerToReport shouldHaveUnregisteredIdentity];
+          bOOLValue3 = [shouldHaveUnregisteredIdentity2 BOOLValue];
 
-          if (!v60)
+          if (!bOOLValue3)
           {
             goto LABEL_49;
           }
@@ -371,17 +371,17 @@ LABEL_38:
         {
         }
 
-        v61 = [v11 unregisteredKeychainError];
-        v62 = [v61 domain];
+        unregisteredKeychainError2 = [errorContainerToReport unregisteredKeychainError];
+        domain2 = [unregisteredKeychainError2 domain];
 
-        v63 = [v11 unregisteredKeychainError];
-        v64 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v63 code]);
+        unregisteredKeychainError3 = [errorContainerToReport unregisteredKeychainError];
+        v64 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [unregisteredKeychainError3 code]);
 
-        v65 = [v11 unregisteredKeychainError];
-        v66 = [v65 userInfo];
+        unregisteredKeychainError4 = [errorContainerToReport unregisteredKeychainError];
+        userInfo2 = [unregisteredKeychainError4 userInfo];
 
-        v67 = [v66 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
-        v68 = [v62 isEqualToString:@"IDSKeychainWrapperErrorDomain"];
+        v67 = [userInfo2 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
+        v68 = [domain2 isEqualToString:@"IDSKeychainWrapperErrorDomain"];
         if (v67)
         {
           v69 = v68;
@@ -399,21 +399,21 @@ LABEL_38:
           v64 = v70;
         }
 
-        v71 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (unregKeychain %@:%ld)", v62, [v64 integerValue]);
+        v71 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (unregKeychain %@:%ld)", domain2, [v64 integerValue]);
         v72 = [v28 stringByAppendingString:v71];
 
         v28 = v72;
 LABEL_49:
-        v73 = [v11 unregisteredDeserializationError];
-        if (v73)
+        unregisteredDeserializationError = [errorContainerToReport unregisteredDeserializationError];
+        if (unregisteredDeserializationError)
         {
-          v74 = [v11 shouldHaveUnregisteredIdentity];
-          if (v74)
+          shouldHaveUnregisteredIdentity3 = [errorContainerToReport shouldHaveUnregisteredIdentity];
+          if (shouldHaveUnregisteredIdentity3)
           {
-            v75 = [v11 shouldHaveUnregisteredIdentity];
-            v76 = [v75 BOOLValue];
+            shouldHaveUnregisteredIdentity4 = [errorContainerToReport shouldHaveUnregisteredIdentity];
+            bOOLValue4 = [shouldHaveUnregisteredIdentity4 BOOLValue];
 
-            if (!v76)
+            if (!bOOLValue4)
             {
               goto LABEL_55;
             }
@@ -423,50 +423,50 @@ LABEL_49:
           {
           }
 
-          v77 = [v11 unregisteredDeserializationError];
-          v78 = [v77 domain];
-          v79 = [v11 unregisteredDeserializationError];
-          v80 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (unregDeserial %@:%ld)", v78, [v79 code]);
+          unregisteredDeserializationError2 = [errorContainerToReport unregisteredDeserializationError];
+          domain3 = [unregisteredDeserializationError2 domain];
+          unregisteredDeserializationError3 = [errorContainerToReport unregisteredDeserializationError];
+          v80 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (unregDeserial %@:%ld)", domain3, [unregisteredDeserializationError3 code]);
           v81 = [v28 stringByAppendingString:v80];
 
           v28 = v81;
         }
 
 LABEL_55:
-        v82 = [v11 generationError];
+        generationError2 = [errorContainerToReport generationError];
 
-        if (v82)
+        if (generationError2)
         {
-          v83 = [v11 generationError];
-          v84 = [v83 domain];
-          v85 = [v11 generationError];
-          v86 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (generate %@:%ld)", v84, [v85 code]);
+          generationError3 = [errorContainerToReport generationError];
+          domain4 = [generationError3 domain];
+          generationError4 = [errorContainerToReport generationError];
+          v86 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (generate %@:%ld)", domain4, [generationError4 code]);
           v87 = [v28 stringByAppendingString:v86];
 
           v28 = v87;
         }
 
-        v88 = [v11 rollingError];
+        rollingError2 = [errorContainerToReport rollingError];
 
-        if (v88)
+        if (rollingError2)
         {
-          v89 = [v11 rollingError];
-          v90 = [v89 domain];
-          v91 = [v11 rollingError];
-          v92 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (rolling %@:%ld)", v90, [v91 code]);
+          rollingError3 = [errorContainerToReport rollingError];
+          domain5 = [rollingError3 domain];
+          rollingError4 = [errorContainerToReport rollingError];
+          v92 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (rolling %@:%ld)", domain5, [rollingError4 code]);
           v93 = [v28 stringByAppendingString:v92];
 
           v28 = v93;
         }
 
-        v94 = [v11 identityToRegisterError];
+        identityToRegisterError2 = [errorContainerToReport identityToRegisterError];
 
-        if (v94)
+        if (identityToRegisterError2)
         {
-          v95 = [v11 identityToRegisterError];
-          v96 = [v95 domain];
-          v97 = [v11 identityToRegisterError];
-          v98 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (toRegister %@:%ld)", v96, [v97 code]);
+          identityToRegisterError3 = [errorContainerToReport identityToRegisterError];
+          domain6 = [identityToRegisterError3 domain];
+          identityToRegisterError4 = [errorContainerToReport identityToRegisterError];
+          v98 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (toRegister %@:%ld)", domain6, [identityToRegisterError4 code]);
           v99 = [v28 stringByAppendingString:v98];
 
           v28 = v99;
@@ -478,21 +478,21 @@ LABEL_55:
         v141[3] = &unk_100BD88C0;
         v100 = v28;
         v142 = v100;
-        v143 = v11;
+        v143 = errorContainerToReport;
         [IDSAutoBugCapture triggerCaptureWithEvent:202 context:v100 completion:v141];
 
 LABEL_62:
-        v101 = [a1 serviceTypesFromRegistrations:v127];
-        v102 = [a1 serviceTypesFromRegistrations:v127 withRegistrationType:1];
+        v101 = [self serviceTypesFromRegistrations:registrationsCopy];
+        v102 = [self serviceTypesFromRegistrations:registrationsCopy withRegistrationType:1];
         v131[0] = _NSConcreteStackBlock;
         v131[1] = 3221225472;
         v131[2] = sub_1003FF620;
         v131[3] = &unk_100BDB1C0;
-        v140 = a1;
+        selfCopy = self;
         v103 = v101;
         v132 = v103;
         v138 = v145;
-        v133 = v130;
+        v133 = storeCopy;
         v134 = v9;
         v139 = v147;
         v104 = v102;
@@ -500,8 +500,8 @@ LABEL_62:
         v136 = v128;
         v105 = v129;
         v137 = v105;
-        [a1 _fetchKTDataSignatureForServiceTypes:v103 publicIdentityData:v134 registerID:v126 keyStore:v133 withCompletion:v131];
-        v35 = [v105 promise];
+        [self _fetchKTDataSignatureForServiceTypes:v103 publicIdentityData:v134 registerID:dCopy keyStore:v133 withCompletion:v131];
+        promise = [v105 promise];
 
         goto LABEL_63;
       }
@@ -511,10 +511,10 @@ LABEL_62:
     {
     }
 
-    v52 = [v11 registeredDeserializationError];
-    v53 = [v52 domain];
-    v54 = [v11 registeredDeserializationError];
-    v55 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (regDeserial %@:%ld)", v53, [v54 code]);
+    registeredDeserializationError2 = [errorContainerToReport registeredDeserializationError];
+    domain7 = [registeredDeserializationError2 domain];
+    registeredDeserializationError3 = [errorContainerToReport registeredDeserializationError];
+    v55 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" (regDeserial %@:%ld)", domain7, [registeredDeserializationError3 code]);
     v56 = [v28 stringByAppendingString:v55];
 
     v28 = v56;
@@ -530,30 +530,30 @@ LABEL_62:
   v34 = [NSError errorWithDomain:@"IDSClientDataErrorDomain" code:-2000 userInfo:0];
   [v129 failWithError:v34];
 
-  v35 = [v129 promise];
+  promise = [v129 promise];
 LABEL_63:
 
   _Block_object_dispose(v145, 8);
   _Block_object_dispose(v147, 8);
 
-  return v35;
+  return promise;
 }
 
-+ (id)_createClientDatasForServiceTypes:(id)a3 withAppleIDRegistrationsForServiceTypes:(id)a4 ktRegDataByServiceType:(id)a5 publicIdentityData:(id)a6 publicIdentityError:(id)a7 keyStore:(id)a8 isPresenceCapable:(BOOL)a9 isStewieCapable:(BOOL)a10
++ (id)_createClientDatasForServiceTypes:(id)types withAppleIDRegistrationsForServiceTypes:(id)serviceTypes ktRegDataByServiceType:(id)type publicIdentityData:(id)data publicIdentityError:(id)error keyStore:(id)store isPresenceCapable:(BOOL)capable isStewieCapable:(BOOL)self0
 {
-  v15 = a3;
-  v266 = a4;
-  v280 = a5;
-  v16 = a6;
-  v149 = a7;
-  v279 = a8;
+  typesCopy = types;
+  serviceTypesCopy = serviceTypes;
+  typeCopy = type;
+  dataCopy = data;
+  errorCopy = error;
+  storeCopy = store;
   v17 = objc_alloc_init(NSMutableDictionary);
   v285 = 0u;
   v286 = 0u;
   v287 = 0u;
   v288 = 0u;
-  v18 = v15;
-  v19 = v16;
+  v18 = typesCopy;
+  v19 = dataCopy;
   obj = v18;
   v281 = [v18 countByEnumeratingWithState:&v285 objects:v297 count:16];
   if (v281)
@@ -688,7 +688,7 @@ LABEL_63:
     v21 = &uuid_unparse_upper_ptr;
     v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
     v23 = &OBJC_METACLASS___IDSStewieDeviceInfo;
-    v274 = v16;
+    v274 = dataCopy;
     v278 = v17;
     do
     {
@@ -702,16 +702,16 @@ LABEL_63:
 
         v25 = *(*(&v285 + 1) + 8 * v24);
         v26 = objc_alloc_init(NSMutableDictionary);
-        v27 = [v21[504] registration];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+        registration = [v21[504] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
         {
-          sub_10091CB7C(v295, v19, &v296, v27);
+          sub_10091CB7C(v295, v19, &v296, registration);
         }
 
-        v28 = [v19 publicLegacyIdentityData];
-        if (v28)
+        publicLegacyIdentityData = [v19 publicLegacyIdentityData];
+        if (publicLegacyIdentityData)
         {
-          CFDictionarySetValue(v26, key, v28);
+          CFDictionarySetValue(v26, key, publicLegacyIdentityData);
         }
 
         v29 = _IDSIdentityVersionNumber();
@@ -721,51 +721,51 @@ LABEL_63:
         }
 
         CFDictionarySetValue(v26, v276, &__kCFBooleanTrue);
-        v30 = [v22[372] sharedInstance];
-        v31 = [v30 isC2KEquipment];
+        sharedInstance = [v22[372] sharedInstance];
+        isC2KEquipment = [sharedInstance isC2KEquipment];
 
-        if (v31)
+        if (isC2KEquipment)
         {
           CFDictionarySetValue(v26, v265, &__kCFBooleanTrue);
         }
 
         if (IDSIsGameCenterRegistrationServiceType())
         {
-          v32 = [v266 objectForKey:v25];
+          v32 = [serviceTypesCopy objectForKey:v25];
           if (v32)
           {
             v33 = +[FTPasswordManager sharedInstance];
-            v34 = [v32 userID];
-            v35 = [v33 gameCenterPropertiesFromAccountWithUsername:v34];
+            userID = [v32 userID];
+            registration3 = [v33 gameCenterPropertiesFromAccountWithUsername:userID];
 
-            v36 = [v21[504] registration];
-            if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+            registration2 = [v21[504] registration];
+            if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v290 = v35;
-              _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Game center contacts client data: %@", buf, 0xCu);
+              v290 = registration3;
+              _os_log_impl(&_mh_execute_header, registration2, OS_LOG_TYPE_DEFAULT, "Game center contacts client data: %@", buf, 0xCu);
             }
 
-            if (v35)
+            if (registration3)
             {
-              v37 = [v35 contactsAssociationID];
-              if (v37)
+              contactsAssociationID = [registration3 contactsAssociationID];
+              if (contactsAssociationID)
               {
-                CFDictionarySetValue(v26, v157, v37);
+                CFDictionarySetValue(v26, v157, contactsAssociationID);
               }
 
-              v38 = [v35 contactsSharingState];
-              if (v38)
+              contactsSharingState = [registration3 contactsSharingState];
+              if (contactsSharingState)
               {
-                CFDictionarySetValue(v26, v156, v38);
+                CFDictionarySetValue(v26, v156, contactsSharingState);
               }
 
-              v39 = [v35 contactsLastUpdatedDate];
+              contactsLastUpdatedDate = [registration3 contactsLastUpdatedDate];
 
-              if (v39)
+              if (contactsLastUpdatedDate)
               {
-                v40 = [v35 contactsLastUpdatedDate];
-                [v40 timeIntervalSince1970];
+                contactsLastUpdatedDate2 = [registration3 contactsLastUpdatedDate];
+                [contactsLastUpdatedDate2 timeIntervalSince1970];
                 v41 = [NSNumber numberWithDouble:?];
 
                 if (v41)
@@ -788,13 +788,13 @@ LABEL_63:
 
           else
           {
-            v35 = [v21[504] registration];
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+            registration3 = [v21[504] registration];
+            if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
             {
               v44 = [obj objectForKey:v25];
               *buf = 138412290;
               v290 = v44;
-              _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Game center registration %@ found. Skipping", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, registration3, OS_LOG_TYPE_DEFAULT, "Game center registration %@ found. Skipping", buf, 0xCu);
             }
           }
 
@@ -802,29 +802,29 @@ LABEL_63:
           v23 = &OBJC_METACLASS___IDSStewieDeviceInfo;
         }
 
-        v45 = [v19 publicNGMIdentityData];
-        if (v45 && (v46 = v45, [v19 publicNGMPrekeyData], v47 = objc_claimAutoreleasedReturnValue(), v47, v46, v47))
+        publicNGMIdentityData = [v19 publicNGMIdentityData];
+        if (publicNGMIdentityData && (v46 = publicNGMIdentityData, [v19 publicNGMPrekeyData], v47 = objc_claimAutoreleasedReturnValue(), v47, v46, v47))
         {
-          v48 = [v19 publicNGMPrekeyData];
-          if (v48)
+          publicNGMPrekeyData = [v19 publicNGMPrekeyData];
+          if (publicNGMPrekeyData)
           {
-            CFDictionarySetValue(v26, v179, v48);
+            CFDictionarySetValue(v26, v179, publicNGMPrekeyData);
           }
 
-          v49 = [v19 NGMVersion];
-          if (v49)
+          nGMVersion = [v19 NGMVersion];
+          if (nGMVersion)
           {
-            CFDictionarySetValue(v26, v178, v49);
+            CFDictionarySetValue(v26, v178, nGMVersion);
           }
         }
 
         else
         {
-          v49 = [v21[504] registration];
-          if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
+          nGMVersion = [v21[504] registration];
+          if (os_log_type_enabled(nGMVersion, OS_LOG_TYPE_FAULT))
           {
-            v139 = [v19 publicNGMIdentityData];
-            if (v139)
+            publicNGMIdentityData2 = [v19 publicNGMIdentityData];
+            if (publicNGMIdentityData2)
             {
               v140 = @"YES";
             }
@@ -834,9 +834,9 @@ LABEL_63:
               v140 = @"NO";
             }
 
-            v141 = [v274 publicNGMPrekeyData];
+            publicNGMPrekeyData2 = [v274 publicNGMPrekeyData];
             *buf = 138544131;
-            if (v141)
+            if (publicNGMPrekeyData2)
             {
               v142 = @"YES";
             }
@@ -847,7 +847,7 @@ LABEL_63:
             }
 
             v23 = &OBJC_METACLASS___IDSStewieDeviceInfo;
-            v290 = v149;
+            v290 = errorCopy;
             v291 = 2113;
             *v292 = v140;
             v19 = v274;
@@ -855,13 +855,13 @@ LABEL_63:
             *&v292[10] = v142;
             v293 = 2113;
             v294 = v274;
-            _os_log_fault_impl(&_mh_execute_header, v49, OS_LOG_TYPE_FAULT, "Missing ngm public identity data from [<IDSClientDataRegistrationKeyManager> publicMessageProtectionIdentityDataToRegisterWithError:] -- {error: %{public}@, publicNGMIdentityData: %{private}@, publicNGMPrekeyData: %{private}@, publicIdentityData: %{private}@ }", buf, 0x2Au);
+            _os_log_fault_impl(&_mh_execute_header, nGMVersion, OS_LOG_TYPE_FAULT, "Missing ngm public identity data from [<IDSClientDataRegistrationKeyManager> publicMessageProtectionIdentityDataToRegisterWithError:] -- {error: %{public}@, publicNGMIdentityData: %{private}@, publicNGMPrekeyData: %{private}@, publicIdentityData: %{private}@ }", buf, 0x2Au);
 
             v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
           }
         }
 
-        v50 = [v279 keyTransparencyVersionNumberToRegisterForServiceType:v25];
+        v50 = [storeCopy keyTransparencyVersionNumberToRegisterForServiceType:v25];
         if ([v50 unsignedIntValue])
         {
           v51 = v50;
@@ -873,31 +873,31 @@ LABEL_63:
 
         v284 = v50;
         v52 = [obj objectForKeyedSubscript:v25];
-        v53 = [&v23[25] sharedInstance];
+        sharedInstance2 = [&v23[25] sharedInstance];
         v283 = v52;
-        v54 = [v52 serviceIdentifier];
-        v55 = [v53 serviceWithIdentifier:v54];
+        serviceIdentifier = [v52 serviceIdentifier];
+        v55 = [sharedInstance2 serviceWithIdentifier:serviceIdentifier];
 
         if ([v55 adHocServiceType])
         {
-          v56 = [&v23[25] sharedInstance];
-          v57 = [v56 primaryServiceForAdhocServiceType:{objc_msgSend(v55, "adHocServiceType")}];
+          sharedInstance3 = [&v23[25] sharedInstance];
+          v57 = [sharedInstance3 primaryServiceForAdhocServiceType:{objc_msgSend(v55, "adHocServiceType")}];
 
           v55 = v57;
         }
 
-        v58 = [v280 objectForKeyedSubscript:v25];
+        v58 = [typeCopy objectForKeyedSubscript:v25];
         v59 = +[IDSFoundationLog KeyTransparency];
         v60 = v59;
         if (!v58)
         {
           if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
           {
-            v67 = [v55 ktRegistrationDataIndex];
+            ktRegistrationDataIndex = [v55 ktRegistrationDataIndex];
             *buf = v148;
             v290 = v25;
             v291 = 1024;
-            *v292 = v67;
+            *v292 = ktRegistrationDataIndex;
             v68 = v60;
             v69 = "No KT Registration Data found for key index. { serviceType: %@, ktKeyIndex: %u }";
             v70 = 18;
@@ -911,11 +911,11 @@ LABEL_59:
 
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = [v55 ktRegistrationDataIndex];
+          ktRegistrationDataIndex2 = [v55 ktRegistrationDataIndex];
           *buf = 138412802;
           v290 = v25;
           v291 = 1024;
-          *v292 = v61;
+          *v292 = ktRegistrationDataIndex2;
           *&v292[4] = 2112;
           *&v292[6] = v58;
           _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Found KT Registration Data for key index. { serviceType: %@, ktKeyIndex: %u, ktRegData: %@ }", buf, 0x1Cu);
@@ -923,23 +923,23 @@ LABEL_59:
 
         if ([v55 ktRegistrationDataIndex])
         {
-          v62 = [v58 ktPublicAccountKey];
-          if (v62 && (v63 = v62, [v58 ktDataSignature], v64 = objc_claimAutoreleasedReturnValue(), v64, v63, v64))
+          ktPublicAccountKey = [v58 ktPublicAccountKey];
+          if (ktPublicAccountKey && (v63 = ktPublicAccountKey, [v58 ktDataSignature], v64 = objc_claimAutoreleasedReturnValue(), v64, v63, v64))
           {
-            v65 = [v58 ktDataSignature];
-            if (v65)
+            ktDataSignature = [v58 ktDataSignature];
+            if (ktDataSignature)
             {
-              CFDictionarySetValue(v26, v155, v65);
+              CFDictionarySetValue(v26, v155, ktDataSignature);
             }
 
             v60 = +[IDSFoundationLog KeyTransparency];
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
             {
-              v66 = [v55 ktRegistrationDataIndex];
+              ktRegistrationDataIndex3 = [v55 ktRegistrationDataIndex];
               *buf = 138412802;
               v290 = v25;
               v291 = 1024;
-              *v292 = v66;
+              *v292 = ktRegistrationDataIndex3;
               *&v292[4] = 2112;
               *&v292[6] = v58;
               _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Adding KT data signature to IDS client data. { serviceType: %@, ktKeyIndex: %u, ktRegData: %@ }", buf, 0x1Cu);
@@ -951,11 +951,11 @@ LABEL_59:
             v60 = +[IDSFoundationLog KeyTransparency];
             if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
             {
-              v144 = [v55 ktRegistrationDataIndex];
+              ktRegistrationDataIndex4 = [v55 ktRegistrationDataIndex];
               *buf = 138412802;
               v290 = v25;
               v291 = 1024;
-              *v292 = v144;
+              *v292 = ktRegistrationDataIndex4;
               *&v292[4] = 2112;
               *&v292[6] = v58;
               v68 = v60;
@@ -1030,17 +1030,17 @@ LABEL_60:
           }
 
           CFDictionarySetValue(v26, v271, &__kCFBooleanTrue);
-          v76 = [v22[372] sharedInstance];
-          if ([v76 deviceType] == 2)
+          sharedInstance4 = [v22[372] sharedInstance];
+          if ([sharedInstance4 deviceType] == 2)
           {
 
             goto LABEL_103;
           }
 
-          v103 = [v22[372] sharedInstance];
-          v104 = [v103 deviceType];
+          sharedInstance5 = [v22[372] sharedInstance];
+          deviceType = [sharedInstance5 deviceType];
 
-          v105 = v104 == 6;
+          v105 = deviceType == 6;
           v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
           if (v105)
           {
@@ -1056,60 +1056,60 @@ LABEL_103:
           CFDictionarySetValue(v26, v224, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v223, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v222, &__kCFBooleanTrue);
-          v106 = [v22[372] sharedInstance];
-          v107 = [v106 supportsHEIFEncoding];
+          sharedInstance6 = [v22[372] sharedInstance];
+          supportsHEIFEncoding = [sharedInstance6 supportsHEIFEncoding];
 
-          if (v107)
+          if (supportsHEIFEncoding)
           {
             CFDictionarySetValue(v26, v203, &__kCFBooleanTrue);
           }
 
           CFDictionarySetValue(v26, v268, &__kCFBooleanTrue);
-          v108 = [v22[372] sharedInstance];
-          v109 = [v108 supportsAnimojiV2];
+          sharedInstance7 = [v22[372] sharedInstance];
+          supportsAnimojiV2 = [sharedInstance7 supportsAnimojiV2];
 
-          if (v109)
+          if (supportsAnimojiV2)
           {
             CFDictionarySetValue(v26, v202, &__kCFBooleanTrue);
           }
 
-          v110 = [v22[372] sharedInstance];
-          v111 = [v110 supportsZelkova];
+          sharedInstance8 = [v22[372] sharedInstance];
+          supportsZelkova = [sharedInstance8 supportsZelkova];
 
-          if (v111)
+          if (supportsZelkova)
           {
             CFDictionarySetValue(v26, v207, &__kCFBooleanTrue);
           }
 
-          v112 = [v22[372] sharedInstance];
-          v113 = [v112 supportsHDRdecoding];
+          sharedInstance9 = [v22[372] sharedInstance];
+          supportsHDRdecoding = [sharedInstance9 supportsHDRdecoding];
 
-          v114 = [NSNumber numberWithBool:v113];
+          v114 = [NSNumber numberWithBool:supportsHDRdecoding];
           if (v114)
           {
             CFDictionarySetValue(v26, v208, v114);
           }
 
           CFDictionarySetValue(v26, v267, &__kCFBooleanFalse);
-          v115 = [v22[372] sharedInstance];
-          v116 = [v115 supportsUWB];
+          sharedInstance10 = [v22[372] sharedInstance];
+          supportsUWB = [sharedInstance10 supportsUWB];
 
-          if (v116)
+          if (supportsUWB)
           {
             CFDictionarySetValue(v26, v210, &__kCFBooleanTrue);
           }
 
-          v117 = [v22[372] sharedInstance];
-          if ([v117 deviceType] == 2)
+          sharedInstance11 = [v22[372] sharedInstance];
+          if ([sharedInstance11 deviceType] == 2)
           {
 
             goto LABEL_135;
           }
 
-          v132 = [v22[372] sharedInstance];
-          v133 = [v132 deviceType];
+          sharedInstance12 = [v22[372] sharedInstance];
+          deviceType2 = [sharedInstance12 deviceType];
 
-          v105 = v133 == 6;
+          v105 = deviceType2 == 6;
           v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
           if (v105)
           {
@@ -1121,16 +1121,16 @@ LABEL_135:
           CFDictionarySetValue(v26, v220, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v219, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v218, &__kCFBooleanTrue);
-          v134 = [v22[372] sharedInstance];
-          v135 = [v134 supportsEmojiImages];
+          sharedInstance13 = [v22[372] sharedInstance];
+          supportsEmojiImages = [sharedInstance13 supportsEmojiImages];
 
-          if (v135)
+          if (supportsEmojiImages)
           {
             CFDictionarySetValue(v26, v181, &__kCFBooleanTrue);
           }
 
           CFDictionarySetValue(v26, v217, &__kCFBooleanTrue);
-          if (a10)
+          if (stewieCapable)
           {
             CFDictionarySetValue(v26, v180, &__kCFBooleanTrue);
           }
@@ -1164,34 +1164,34 @@ LABEL_135:
           CFDictionarySetValue(v26, v193, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v273, &__kCFBooleanTrue);
           CFDictionarySetValue(v26, v272, &__kCFBooleanTrue);
-          if (a9)
+          if (capable)
           {
             CFDictionarySetValue(v26, v165, &__kCFBooleanTrue);
           }
 
           CFDictionarySetValue(v26, v192, &__kCFBooleanTrue);
-          v77 = [v22[372] sharedInstance];
-          v78 = [v77 supportsFMDV2];
+          sharedInstance14 = [v22[372] sharedInstance];
+          supportsFMDV2 = [sharedInstance14 supportsFMDV2];
 
-          if (v78)
+          if (supportsFMDV2)
           {
             CFDictionarySetValue(v26, v164, &__kCFBooleanTrue);
           }
 
-          v79 = [v22[372] sharedInstance];
-          if ([v79 deviceType] == 2)
+          sharedInstance15 = [v22[372] sharedInstance];
+          if ([sharedInstance15 deviceType] == 2)
           {
             goto LABEL_82;
           }
 
-          v80 = [v22[372] sharedInstance];
-          if ([v80 deviceType] == 6)
+          sharedInstance16 = [v22[372] sharedInstance];
+          if ([sharedInstance16 deviceType] == 6)
           {
             goto LABEL_81;
           }
 
-          v81 = [v22[372] sharedInstance];
-          if ([v81 deviceType] == 4)
+          sharedInstance17 = [v22[372] sharedInstance];
+          if ([sharedInstance17 deviceType] == 4)
           {
 
 LABEL_81:
@@ -1203,78 +1203,78 @@ LABEL_83:
 
           else
           {
-            v143 = [v22[372] sharedInstance];
-            v150 = [v143 deviceType];
+            sharedInstance18 = [v22[372] sharedInstance];
+            deviceType3 = [sharedInstance18 deviceType];
 
             v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
-            if (v150 == 3)
+            if (deviceType3 == 3)
             {
               goto LABEL_83;
             }
           }
 
           CFDictionarySetValue(v26, v191, &__kCFBooleanTrue);
-          v82 = [v22[372] sharedInstance];
-          v83 = [v82 supportsKeySharing];
+          sharedInstance19 = [v22[372] sharedInstance];
+          supportsKeySharing = [sharedInstance19 supportsKeySharing];
 
-          if (v83)
+          if (supportsKeySharing)
           {
             CFDictionarySetValue(v26, v163, &__kCFBooleanTrue);
           }
 
-          v84 = [v22[372] sharedInstance];
-          v85 = [v84 supportsHarmony];
+          sharedInstance20 = [v22[372] sharedInstance];
+          supportsHarmony = [sharedInstance20 supportsHarmony];
 
-          if (v85)
+          if (supportsHarmony)
           {
             CFDictionarySetValue(v26, v162, &__kCFBooleanTrue);
           }
 
-          v86 = [v22[372] sharedInstance];
-          v87 = [v86 supportsManateeForAppleCash];
+          sharedInstance21 = [v22[372] sharedInstance];
+          supportsManateeForAppleCash = [sharedInstance21 supportsManateeForAppleCash];
 
-          if (v87)
+          if (supportsManateeForAppleCash)
           {
             CFDictionarySetValue(v26, v161, &__kCFBooleanTrue);
           }
 
-          v88 = [v22[372] sharedInstance];
-          v89 = [v88 supportsRegionForAppleCash];
+          sharedInstance22 = [v22[372] sharedInstance];
+          supportsRegionForAppleCash = [sharedInstance22 supportsRegionForAppleCash];
 
-          if (v89)
+          if (supportsRegionForAppleCash)
           {
             CFDictionarySetValue(v26, v160, &__kCFBooleanTrue);
           }
 
-          v90 = [v22[372] sharedInstance];
-          v91 = [v90 supportsUWB];
+          sharedInstance23 = [v22[372] sharedInstance];
+          supportsUWB2 = [sharedInstance23 supportsUWB];
 
-          if (v91)
+          if (supportsUWB2)
           {
             CFDictionarySetValue(v26, v210, &__kCFBooleanTrue);
           }
 
-          v92 = [v22[372] sharedInstance];
-          v93 = [v92 supportsHomeKitResident];
+          sharedInstance24 = [v22[372] sharedInstance];
+          supportsHomeKitResident = [sharedInstance24 supportsHomeKitResident];
 
-          if (v93)
+          if (supportsHomeKitResident)
           {
             CFDictionarySetValue(v26, v159, &__kCFBooleanTrue);
           }
 
           CFDictionarySetValue(v26, v190, &__kCFBooleanTrue);
-          v94 = [v22[372] sharedInstance];
-          v95 = [v94 supportsManateeActivitySharing];
+          sharedInstance25 = [v22[372] sharedInstance];
+          supportsManateeActivitySharing = [sharedInstance25 supportsManateeActivitySharing];
 
-          if (v95)
+          if (supportsManateeActivitySharing)
           {
             CFDictionarySetValue(v26, v158, &__kCFBooleanTrue);
           }
 
-          v96 = [v22[372] sharedInstance];
-          v97 = [v96 supportsZelkova];
+          sharedInstance26 = [v22[372] sharedInstance];
+          supportsZelkova2 = [sharedInstance26 supportsZelkova];
 
-          if (v97)
+          if (supportsZelkova2)
           {
             CFDictionarySetValue(v26, v207, &__kCFBooleanTrue);
           }
@@ -1307,19 +1307,19 @@ LABEL_144:
 
         CFDictionarySetValue(v26, v175, &__kCFBooleanTrue);
         CFDictionarySetValue(v26, v174, &__kCFBooleanTrue);
-        v118 = [v22[372] sharedInstance];
-        v119 = [v118 isGreenTea];
+        sharedInstance27 = [v22[372] sharedInstance];
+        isGreenTea = [sharedInstance27 isGreenTea];
 
-        if (v119)
+        if (isGreenTea)
         {
           CFDictionarySetValue(v26, v153, &__kCFBooleanTrue);
         }
 
         CFDictionarySetValue(v26, v173, &__kCFBooleanTrue);
-        v120 = [v22[372] sharedInstance];
-        v121 = [v120 supportsVenice];
+        sharedInstance28 = [v22[372] sharedInstance];
+        supportsVenice = [sharedInstance28 supportsVenice];
 
-        if ((v121 & 1) == 0)
+        if ((supportsVenice & 1) == 0)
         {
           CFDictionarySetValue(v26, v152, &__kCFBooleanTrue);
         }
@@ -1332,43 +1332,43 @@ LABEL_144:
 
         CFDictionarySetValue(v26, v171, &__kCFBooleanTrue);
         CFDictionarySetValue(v26, v170, &__kCFBooleanTrue);
-        v122 = [v22[372] sharedInstance];
-        v123 = [v122 supportsHEIFEncoding];
+        sharedInstance29 = [v22[372] sharedInstance];
+        supportsHEIFEncoding2 = [sharedInstance29 supportsHEIFEncoding];
 
-        if (v123)
+        if (supportsHEIFEncoding2)
         {
           CFDictionarySetValue(v26, v203, &__kCFBooleanTrue);
         }
 
         CFDictionarySetValue(v26, v268, &__kCFBooleanTrue);
-        v124 = [v22[372] sharedInstance];
-        v125 = [v124 supportsAnimojiV2];
+        sharedInstance30 = [v22[372] sharedInstance];
+        supportsAnimojiV22 = [sharedInstance30 supportsAnimojiV2];
 
-        if (v125)
+        if (supportsAnimojiV22)
         {
           CFDictionarySetValue(v26, v202, &__kCFBooleanTrue);
         }
 
-        v126 = [v22[372] sharedInstance];
-        v127 = [v126 supportsHDRdecoding];
+        sharedInstance31 = [v22[372] sharedInstance];
+        supportsHDRdecoding2 = [sharedInstance31 supportsHDRdecoding];
 
-        v128 = [NSNumber numberWithBool:v127];
+        v128 = [NSNumber numberWithBool:supportsHDRdecoding2];
         if (v128)
         {
           CFDictionarySetValue(v26, v208, v128);
         }
 
         CFDictionarySetValue(v26, v267, &__kCFBooleanFalse);
-        v129 = [v22[372] sharedInstance];
-        v130 = [v129 supportsUWB];
+        sharedInstance32 = [v22[372] sharedInstance];
+        supportsUWB3 = [sharedInstance32 supportsUWB];
 
-        if (v130)
+        if (supportsUWB3)
         {
           CFDictionarySetValue(v26, v210, &__kCFBooleanTrue);
         }
 
-        v131 = [v22[372] sharedInstance];
-        if ([v131 deviceType] == 2)
+        sharedInstance33 = [v22[372] sharedInstance];
+        if ([sharedInstance33 deviceType] == 2)
         {
 
 LABEL_149:
@@ -1376,10 +1376,10 @@ LABEL_149:
           goto LABEL_150;
         }
 
-        v137 = [v22[372] sharedInstance];
-        v138 = [v137 deviceType];
+        sharedInstance34 = [v22[372] sharedInstance];
+        deviceType4 = [sharedInstance34 deviceType];
 
-        v105 = v138 == 6;
+        v105 = deviceType4 == 6;
         v22 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
         if (v105)
         {
@@ -1436,26 +1436,26 @@ LABEL_145:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)_fetchStewieCapabilityForServiceTypes:(id)a3 withCompletion:(id)a4
++ (void)_fetchStewieCapabilityForServiceTypes:(id)types withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v5;
+  v7 = typesCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -1498,7 +1498,7 @@ LABEL_145:
       v17[3] = &unk_100BDB288;
       v14 = v12;
       v18 = v14;
-      v19 = v6;
+      v19 = completionCopy;
       v20 = buf;
       v15 = objc_retainBlock(v17);
       dispatch_time(0, 10000000000);
@@ -1520,14 +1520,14 @@ LABEL_145:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Not checking stewie capability because we're not registering madrid", buf, 2u);
   }
 
-  (*(v6 + 2))(v6, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_14:
 }
 
-+ (void)_fetchPresenceCapabilityForServiceTypes:(id)a3 withCompletion:(id)a4
++ (void)_fetchPresenceCapabilityForServiceTypes:(id)types withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v7 = IMWeakLinkClass();
   if (!v7)
   {
@@ -1546,7 +1546,7 @@ LABEL_14:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v5;
+  v9 = typesCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v10)
   {
@@ -1561,7 +1561,7 @@ LABEL_15:
 
 LABEL_17:
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_18;
   }
 
@@ -1608,7 +1608,7 @@ LABEL_17:
   v19[3] = &unk_100BDB288;
   v16 = v14;
   v20 = v16;
-  v21 = v6;
+  v21 = completionCopy;
   v22 = buf;
   v17 = objc_retainBlock(v19);
   dispatch_time(0, 10000000000);

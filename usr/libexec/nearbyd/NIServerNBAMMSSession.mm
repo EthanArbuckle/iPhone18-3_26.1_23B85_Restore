@@ -3,60 +3,60 @@
 - (BOOL)_encryptAndUpdateMutualAuthPayload;
 - (BOOL)_isCryptoDisabled;
 - (BOOL)_shouldSendMutualAuthMessage;
-- (BOOL)_shouldUseFinderToken:(id)a3 findeeToken:(id)a4;
+- (BOOL)_shouldUseFinderToken:(id)token findeeToken:(id)findeeToken;
 - (BOOL)_validateTokensAndRangingParameters;
-- (NIServerNBAMMSSession)initWithQueue:(id)a3 identityString:(id)a4 stateUpdateHandler:(id)a5 mutualAuthHandler:(id)a6;
+- (NIServerNBAMMSSession)initWithQueue:(id)queue identityString:(id)string stateUpdateHandler:(id)handler mutualAuthHandler:(id)authHandler;
 - (SessionClientsStatus)sessionClientsStatus;
 - (id).cxx_construct;
-- (id)_decrypt:(id)a3;
-- (id)_encrypt:(id)a3;
+- (id)_decrypt:(id)_decrypt;
+- (id)_encrypt:(id)_encrypt;
 - (id)_getState;
 - (id)identityString;
 - (id)printableState;
-- (id)registerNBAMMSSessionWithToken:(id)a3 isFinder:(BOOL)a4 client:(id)a5 serviceRequest:(const void *)a6 startRangingOptions:(const void *)a7 sharedProtocol:(int)a8;
-- (id)sessionClientForFinder:(BOOL)a3;
-- (id)sessionTokenForFinder:(BOOL)a3;
-- (optional<rose::RoseServiceRequest>)sessionServiceRequestForFinder:(SEL)a3;
-- (optional<rose::RoseStartRangingOptions>)sessionStartRangingOptionsForFinder:(SEL)a3;
-- (shared_ptr<rose::objects::NBAMMSSession>)_buildNbammsSession:(const void *)a3;
-- (unsigned)_encodeSignallingDataInMessageID:(unsigned __int8)a3;
+- (id)registerNBAMMSSessionWithToken:(id)token isFinder:(BOOL)finder client:(id)client serviceRequest:(const void *)request startRangingOptions:(const void *)options sharedProtocol:(int)protocol;
+- (id)sessionClientForFinder:(BOOL)finder;
+- (id)sessionTokenForFinder:(BOOL)finder;
+- (optional<rose::RoseServiceRequest>)sessionServiceRequestForFinder:(SEL)finder;
+- (optional<rose::RoseStartRangingOptions>)sessionStartRangingOptionsForFinder:(SEL)finder;
+- (shared_ptr<rose::objects::NBAMMSSession>)_buildNbammsSession:(const void *)session;
+- (unsigned)_encodeSignallingDataInMessageID:(unsigned __int8)d;
 - (vector<NMISessionRole,)attachedRoles;
-- (void)_armMutualAuthTimerForFinder:(BOOL)a3;
-- (void)_didReceiveInvalidation:(int)a3;
-- (void)_didReceiveNewSolution:(const void *)a3;
-- (void)_didReceivePeerData:(const void *)a3;
-- (void)_didReceiveUnsuccessfulSolution:(const void *)a3;
+- (void)_armMutualAuthTimerForFinder:(BOOL)finder;
+- (void)_didReceiveInvalidation:(int)invalidation;
+- (void)_didReceiveNewSolution:(const void *)solution;
+- (void)_didReceivePeerData:(const void *)data;
+- (void)_didReceiveUnsuccessfulSolution:(const void *)solution;
 - (void)_handleCryptoFailure;
 - (void)_handleNonMutualAuthMessage;
 - (void)_initializeEncryptionSessionIfNecessary;
 - (void)_logStatisticsIfNecessary;
-- (void)_processNonMutualAuthMessageForFinder:(BOOL)a3;
-- (void)_processPeerMessage:(void *)a3 machAbsTimestamp:(double)a4 wasEncrypted:(BOOL)a5;
-- (void)_processPeerMutualAuthState:(const MutualAuthState *)a3 peerIsFinder:(BOOL)a4;
-- (void)_receivedAidingAndSignallingMessage:(const void *)a3 machAbsTimestamp:(double)a4;
-- (void)_receivedCryptoSessionConfigMessage:(const void *)a3;
-- (void)_receivedMutualAuthMessage:(const void *)a3;
+- (void)_processNonMutualAuthMessageForFinder:(BOOL)finder;
+- (void)_processPeerMessage:(void *)message machAbsTimestamp:(double)timestamp wasEncrypted:(BOOL)encrypted;
+- (void)_processPeerMutualAuthState:(const MutualAuthState *)state peerIsFinder:(BOOL)finder;
+- (void)_receivedAidingAndSignallingMessage:(const void *)message machAbsTimestamp:(double)timestamp;
+- (void)_receivedCryptoSessionConfigMessage:(const void *)message;
+- (void)_receivedMutualAuthMessage:(const void *)message;
 - (void)_reportMutualAuthStates;
-- (void)_resetCryptoStateIncludingFailures:(BOOL)a3;
+- (void)_resetCryptoStateIncludingFailures:(BOOL)failures;
 - (void)_resetStatistics;
-- (void)_serviceRequestStatusUpdate:(const ServiceRequestStatusUpdate *)a3;
+- (void)_serviceRequestStatusUpdate:(const ServiceRequestStatusUpdate *)update;
 - (void)_updateCryptoSessionConfigPayload;
 - (void)_updateSessionPayload;
 - (void)informMutualAuthFailuresToClients;
-- (void)refreshRangingForToken:(id)a3 withNewStartOptions:(const void *)a4;
-- (void)unregisterNBAMMSSessionForToken:(id)a3;
-- (void)updateAlgorithmAidingData:(const void *)a3 token:(id)a4;
-- (void)updateSignallingData:(const void *)a3 token:(id)a4;
+- (void)refreshRangingForToken:(id)token withNewStartOptions:(const void *)options;
+- (void)unregisterNBAMMSSessionForToken:(id)token;
+- (void)updateAlgorithmAidingData:(const void *)data token:(id)token;
+- (void)updateSignallingData:(const void *)data token:(id)token;
 @end
 
 @implementation NIServerNBAMMSSession
 
-- (NIServerNBAMMSSession)initWithQueue:(id)a3 identityString:(id)a4 stateUpdateHandler:(id)a5 mutualAuthHandler:(id)a6
+- (NIServerNBAMMSSession)initWithQueue:(id)queue identityString:(id)string stateUpdateHandler:(id)handler mutualAuthHandler:(id)authHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  stringCopy = string;
+  handlerCopy = handler;
+  authHandlerCopy = authHandler;
   v36.receiver = self;
   v36.super_class = NIServerNBAMMSSession;
   v15 = [(NIServerNBAMMSSession *)&v36 init];
@@ -64,8 +64,8 @@
   v17 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_internalQueue, a3);
-    objc_storeStrong(&v16->_identityString, a4);
+    objc_storeStrong(&v15->_internalQueue, queue);
+    objc_storeStrong(&v16->_identityString, string);
     cntrl = v17->_nbammsSession.__cntrl_;
     v17->_nbammsSession.__ptr_ = 0;
     v17->_nbammsSession.__cntrl_ = 0;
@@ -184,11 +184,11 @@
       *(&v17->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ + 2) = 0;
     }
 
-    v31 = objc_retainBlock(v13);
+    v31 = objc_retainBlock(handlerCopy);
     val = v17->_findeeAlgorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.var0.__val_;
     *&v17->_findeeAlgorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.var0.__val_ = v31;
 
-    v33 = objc_retainBlock(v14);
+    v33 = objc_retainBlock(authHandlerCopy);
     v34 = *&v17->_findeeAlgorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_;
     *&v17->_findeeAlgorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_ = v33;
 
@@ -200,34 +200,34 @@
   return v17;
 }
 
-- (id)registerNBAMMSSessionWithToken:(id)a3 isFinder:(BOOL)a4 client:(id)a5 serviceRequest:(const void *)a6 startRangingOptions:(const void *)a7 sharedProtocol:(int)a8
+- (id)registerNBAMMSSessionWithToken:(id)token isFinder:(BOOL)finder client:(id)client serviceRequest:(const void *)request startRangingOptions:(const void *)options sharedProtocol:(int)protocol
 {
-  v12 = a4;
-  v13 = a3;
-  v100 = a3;
-  v15 = a5;
-  v16 = self;
-  v17 = v15;
+  finderCopy = finder;
+  tokenCopy = token;
+  tokenCopy2 = token;
+  clientCopy = client;
+  selfCopy2 = self;
+  v17 = clientCopy;
   dispatch_assert_queue_V2(self->_internalQueue);
   v18 = qword_1009F9820;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v99 = v17;
     identityString = self->_identityString;
-    v20 = [v100 descriptionInternal];
+    descriptionInternal = [tokenCopy2 descriptionInternal];
     *buf = 138412802;
     v113 = identityString;
     v114 = 2112;
-    v115 = v20;
+    v115 = descriptionInternal;
     v116 = 2080;
-    v117 = sub_100009210(v12);
+    v117 = sub_100009210(finderCopy);
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#find-range,Registering %@ with token %@, role %s", buf, 0x20u);
 
     v17 = v99;
-    v16 = self;
+    selfCopy2 = self;
   }
 
-  if (!v100)
+  if (!tokenCopy2)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -251,40 +251,40 @@
     goto LABEL_26;
   }
 
-  if (v16->_nbammsSession.__ptr_)
+  if (selfCopy2->_nbammsSession.__ptr_)
   {
-    if (v16->_sharedProtocol == a8)
+    if (selfCopy2->_sharedProtocol == protocol)
     {
-      if (!v16->_finderAttached && !v16->_finderToken && v12)
+      if (!selfCopy2->_finderAttached && !selfCopy2->_finderToken && finderCopy)
       {
-        v16->_finderAttached = 1;
-        objc_storeWeak(&v16->_finderClient, v17);
-        sub_100283A48(&v16->_finderMutualAuthState);
-        if (BYTE2(v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) == 1)
+        selfCopy2->_finderAttached = 1;
+        objc_storeWeak(&selfCopy2->_finderClient, v17);
+        sub_100283A48(&selfCopy2->_finderMutualAuthState);
+        if (BYTE2(selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) == 1)
         {
-          BYTE2(v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 0;
+          BYTE2(selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 0;
         }
 
-        v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__null_state_ = 1;
-        objc_storeStrong(&v16->_finderToken, v13);
-        v25 = v16;
-        engaged = v16->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_;
-        memcpy(&v25->_finderRoseServiceRequest, a6, 0x240uLL);
+        selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__null_state_ = 1;
+        objc_storeStrong(&selfCopy2->_finderToken, tokenCopy);
+        v25 = selfCopy2;
+        engaged = selfCopy2->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_;
+        memcpy(&v25->_finderRoseServiceRequest, request, 0x240uLL);
         if (!engaged)
         {
           v25->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ = 1;
         }
 
         scheduling_interval_usec = v25->_finderStartRangingOptions.var0.__val_.scheduling_interval_usec;
-        v29 = *(a7 + 1);
-        v28 = *(a7 + 2);
-        *&v25->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *a7;
+        v29 = *(options + 1);
+        v28 = *(options + 2);
+        *&v25->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *options;
         *v25->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.irk = v29;
         *&v25->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = v28;
-        v30 = *(a7 + 6);
-        v32 = *(a7 + 3);
-        v31 = *(a7 + 4);
-        *&v25->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(a7 + 5);
+        v30 = *(options + 6);
+        v32 = *(options + 3);
+        v31 = *(options + 4);
+        *&v25->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(options + 5);
         *&v25->_finderStartRangingOptions.var0.__val_.start_time_or_offset_usec = v30;
         *&v25->_finderStartRangingOptions.var0.__null_state_ = v32;
         *(&v25->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0 + 12) = v31;
@@ -305,36 +305,36 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      if ((v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) == 0 && !v16->_findeeMutualAuthState.outboundChallenge && !v12)
+      if ((selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) == 0 && !selfCopy2->_findeeMutualAuthState.outboundChallenge && !finderCopy)
       {
-        HIBYTE(v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 1;
-        objc_storeWeak(&v16->_finderStartRangingOptions.var0.__val_.secondary_duty_cycle, v17);
-        sub_100283A48(&v16->_finderStartRangingOptions.__engaged_);
-        if (*(&v16->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ + 2))
+        HIBYTE(selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 1;
+        objc_storeWeak(&selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_duty_cycle, v17);
+        sub_100283A48(&selfCopy2->_finderStartRangingOptions.__engaged_);
+        if (*(&selfCopy2->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ + 2))
         {
-          *(&v16->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ + 2) = 0;
+          *(&selfCopy2->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ + 2) = 0;
         }
 
-        v16->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ = 1;
-        objc_storeStrong(&v16->_findeeMutualAuthState.outboundChallenge, v13);
-        v38 = v16;
-        v39 = v16->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_;
-        memcpy(&v38->_findeeMutualAuthState.outboundResponse, a6, 0x240uLL);
+        selfCopy2->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ = 1;
+        objc_storeStrong(&selfCopy2->_findeeMutualAuthState.outboundChallenge, tokenCopy);
+        v38 = selfCopy2;
+        v39 = selfCopy2->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_;
+        memcpy(&v38->_findeeMutualAuthState.outboundResponse, request, 0x240uLL);
         if (!v39)
         {
           v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_ = 1;
         }
 
         v40 = v38->_findeeStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0.__val_.__elems_[12];
-        v42 = *(a7 + 1);
-        v41 = *(a7 + 2);
-        *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.vendor_id.var0.__null_state_ = *a7;
+        v42 = *(options + 1);
+        v41 = *(options + 2);
+        *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.vendor_id.var0.__null_state_ = *options;
         *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.peer_addr_arr.__elems_[6] = v42;
         *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_bch.var0.__null_state_ = v41;
-        v43 = *(a7 + 6);
-        v45 = *(a7 + 3);
-        v44 = *(a7 + 4);
-        *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = *(a7 + 5);
+        v43 = *(options + 6);
+        v45 = *(options + 3);
+        v44 = *(options + 4);
+        *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = *(options + 5);
         *&v38->_findeeStartRangingOptions.var0.__null_state_ = v43;
         *&v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = v45;
         *v38->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.irk = v44;
@@ -374,22 +374,22 @@ LABEL_54:
           v21 = qword_1009F9820;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v47 = [(NIServerNBAMMSSession *)v36 _getState];
+            _getState = [(NIServerNBAMMSSession *)v36 _getState];
             *buf = 138412290;
-            v113 = v47;
+            v113 = _getState;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "#find-range,NBAMMS session state (after register): %@", buf, 0xCu);
           }
 
 LABEL_95:
-          v13 = 0;
+          tokenCopy = 0;
           goto LABEL_96;
         }
 
         if ([(NIServerNBAMMSSession *)v33 _validateTokensAndRangingParameters])
         {
-          v13 = [(NIServerNBAMMSSession *)v36 _shouldUseFinderToken:v36->_finderToken findeeToken:v36->_findeeMutualAuthState.outboundChallenge];
+          tokenCopy = [(NIServerNBAMMSSession *)v36 _shouldUseFinderToken:v36->_finderToken findeeToken:v36->_findeeMutualAuthState.outboundChallenge];
           v74 = 1112;
-          if (v13)
+          if (tokenCopy)
           {
             v74 = 304;
           }
@@ -409,9 +409,9 @@ LABEL_95:
             v78 = qword_1009F9820;
             if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
             {
-              v79 = [(NIServerNBAMMSSession *)v36 _getState];
+              _getState2 = [(NIServerNBAMMSSession *)v36 _getState];
               *buf = 138412290;
-              v113 = v79;
+              v113 = _getState2;
               _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "#find-range,NBAMMS session state (after register): %@", buf, 0xCu);
             }
 
@@ -421,9 +421,9 @@ LABEL_95:
           v80 = qword_1009F9820;
           if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
           {
-            v81 = [v21 descriptionInternal];
+            descriptionInternal2 = [v21 descriptionInternal];
             *buf = 138412290;
-            v113 = v81;
+            v113 = descriptionInternal2;
             _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "#find-range,Reciprocal finding, re-configuring with new token %@", buf, 0xCu);
           }
 
@@ -452,7 +452,7 @@ LABEL_95:
             [(NIServerNBAMMSSession *)v36 _resetCryptoStateIncludingFailures:1];
           }
 
-          if (v13)
+          if (tokenCopy)
           {
             if (v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_)
             {
@@ -476,12 +476,12 @@ LABEL_122:
               v101 = NSLocalizedFailureReasonErrorKey;
               v102 = @"Could not build ranging session";
               v87 = [NSDictionary dictionaryWithObjects:&v102 forKeys:&v101 count:1];
-              v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v87];
+              tokenCopy = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v87];
 
               goto LABEL_135;
             }
 
-            if (v13)
+            if (tokenCopy)
             {
               if (v36->_finderStartRangingOptions.var0.__val_.scheduling_interval_usec)
               {
@@ -513,7 +513,7 @@ LABEL_131:
                   }
 
                   v94 = 1704;
-                  if (v13)
+                  if (tokenCopy)
                   {
                     v94 = 896;
                   }
@@ -549,9 +549,9 @@ LABEL_93:
                   v21 = qword_1009F9820;
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                   {
-                    v72 = [(NIServerNBAMMSSession *)v36 _getState];
+                    _getState3 = [(NIServerNBAMMSSession *)v36 _getState];
                     LODWORD(v109) = 138412290;
-                    *(&v109 + 4) = v72;
+                    *(&v109 + 4) = _getState3;
                     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "#find-range,NBAMMS session state (after register): %@", &v109, 0xCu);
                   }
 
@@ -565,7 +565,7 @@ LABEL_93:
                   sub_1004B62A0(buf);
                 }
 
-                v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
+                tokenCopy = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
 LABEL_135:
                 v90 = 0;
                 goto LABEL_145;
@@ -585,7 +585,7 @@ LABEL_135:
         }
 
 LABEL_14:
-        v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:0];
+        tokenCopy = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:0];
         goto LABEL_97;
       }
 
@@ -604,7 +604,7 @@ LABEL_14:
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B621C(&v16->_sharedProtocol);
+        sub_1004B621C(&selfCopy2->_sharedProtocol);
       }
 
       v105 = NSLocalizedFailureReasonErrorKey;
@@ -614,13 +614,13 @@ LABEL_14:
     }
 
 LABEL_26:
-    v13 = v22;
+    tokenCopy = v22;
 LABEL_96:
 
     goto LABEL_97;
   }
 
-  [(NIServerNBAMMSSession *)v16 _buildNbammsSession:a6];
+  [(NIServerNBAMMSSession *)selfCopy2 _buildNbammsSession:request];
   if (!v109)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -631,12 +631,12 @@ LABEL_96:
     v107 = NSLocalizedFailureReasonErrorKey;
     v108 = @"Could not build ranging session";
     v35 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-    v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v35];
+    tokenCopy = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v35];
 
     goto LABEL_40;
   }
 
-  v23 = sub_10034024C(v109, a7);
+  v23 = sub_10034024C(v109, options);
   if (v23)
   {
     v24 = qword_1009F9820;
@@ -646,36 +646,36 @@ LABEL_96:
       sub_1004B62A0(buf);
     }
 
-    v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
+    tokenCopy = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
 LABEL_40:
-    v36 = v16;
+    v36 = selfCopy2;
     v37 = 0;
     goto LABEL_90;
   }
 
-  if (v12)
+  if (finderCopy)
   {
-    v16->_finderAttached = 1;
-    objc_storeWeak(&v16->_finderClient, v17);
-    objc_storeStrong(&v16->_finderToken, v13);
-    v36 = v16;
-    v48 = v16->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_;
-    memcpy(&v36->_finderRoseServiceRequest, a6, 0x240uLL);
+    selfCopy2->_finderAttached = 1;
+    objc_storeWeak(&selfCopy2->_finderClient, v17);
+    objc_storeStrong(&selfCopy2->_finderToken, tokenCopy);
+    v36 = selfCopy2;
+    v48 = selfCopy2->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_;
+    memcpy(&v36->_finderRoseServiceRequest, request, 0x240uLL);
     if (!v48)
     {
       v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ = 1;
     }
 
     v49 = v36->_finderStartRangingOptions.var0.__val_.scheduling_interval_usec;
-    v51 = *(a7 + 1);
-    v50 = *(a7 + 2);
-    *&v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *a7;
+    v51 = *(options + 1);
+    v50 = *(options + 2);
+    *&v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *options;
     *v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.irk = v51;
     *&v36->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = v50;
-    v52 = *(a7 + 6);
-    v54 = *(a7 + 3);
-    v53 = *(a7 + 4);
-    *&v36->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(a7 + 5);
+    v52 = *(options + 6);
+    v54 = *(options + 3);
+    v53 = *(options + 4);
+    *&v36->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(options + 5);
     *&v36->_finderStartRangingOptions.var0.__val_.start_time_or_offset_usec = v52;
     *&v36->_finderStartRangingOptions.var0.__null_state_ = v54;
     *(&v36->_finderStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0 + 12) = v53;
@@ -701,27 +701,27 @@ LABEL_40:
 
   else
   {
-    HIBYTE(v16->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 1;
-    objc_storeWeak(&v16->_finderStartRangingOptions.var0.__val_.secondary_duty_cycle, v17);
-    objc_storeStrong(&v16->_findeeMutualAuthState.outboundChallenge, v13);
-    v36 = v16;
-    v56 = v16->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_;
-    memcpy(&v36->_findeeMutualAuthState.outboundResponse, a6, 0x240uLL);
+    HIBYTE(selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_) = 1;
+    objc_storeWeak(&selfCopy2->_finderStartRangingOptions.var0.__val_.secondary_duty_cycle, v17);
+    objc_storeStrong(&selfCopy2->_findeeMutualAuthState.outboundChallenge, tokenCopy);
+    v36 = selfCopy2;
+    v56 = selfCopy2->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_;
+    memcpy(&v36->_findeeMutualAuthState.outboundResponse, request, 0x240uLL);
     if (!v56)
     {
       v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_ = 1;
     }
 
     v57 = v36->_findeeStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0.__val_.__elems_[12];
-    v59 = *(a7 + 1);
-    v58 = *(a7 + 2);
-    *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.vendor_id.var0.__null_state_ = *a7;
+    v59 = *(options + 1);
+    v58 = *(options + 2);
+    *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.vendor_id.var0.__null_state_ = *options;
     *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.peer_addr_arr.__elems_[6] = v59;
     *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.nb_bch.var0.__null_state_ = v58;
-    v60 = *(a7 + 6);
-    v62 = *(a7 + 3);
-    v61 = *(a7 + 4);
-    *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = *(a7 + 5);
+    v60 = *(options + 6);
+    v62 = *(options + 3);
+    v61 = *(options + 4);
+    *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = *(options + 5);
     *&v36->_findeeStartRangingOptions.var0.__null_state_ = v60;
     *&v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = v62;
     *v36->_findeeRoseServiceRequest.var0.__val_.range_enable_params.nbamms.irk = v61;
@@ -766,8 +766,8 @@ LABEL_81:
     sub_10000AD84(v64);
   }
 
-  v36->_sharedProtocol = a8;
-  objc_storeStrong(&v36->_sessionToken, v13);
+  v36->_sharedProtocol = protocol;
+  objc_storeStrong(&v36->_sessionToken, tokenCopy);
   v36->_sessionState = 1;
   v65 = v36->_findeeAlgorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.var0.__val_;
   if (v65 != 0.0)
@@ -776,15 +776,15 @@ LABEL_81:
   }
 
   v66 = v36->_sessionStartRangingOptions.__engaged_;
-  v68 = *(a7 + 1);
-  v67 = *(a7 + 2);
-  *&v36->_sessionStartRangingOptions.var0.__null_state_ = *a7;
+  v68 = *(options + 1);
+  v67 = *(options + 2);
+  *&v36->_sessionStartRangingOptions.var0.__null_state_ = *options;
   *(&v36->_sessionStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0 + 12) = v68;
   *&v36->_sessionStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = v67;
-  v69 = *(a7 + 5);
-  v70 = *(a7 + 6);
-  v71 = *(a7 + 4);
-  *&v36->_sessionStartRangingOptions.var0.__val_.start_time_or_offset_usec = *(a7 + 3);
+  v69 = *(options + 5);
+  v70 = *(options + 6);
+  v71 = *(options + 4);
+  *&v36->_sessionStartRangingOptions.var0.__val_.start_time_or_offset_usec = *(options + 3);
   *&v36->_sessionStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__null_state_ = v70;
   *&v36->_sessionStartRangingOptions.var0.__val_.dither_constant_msec.var0.__null_state_ = v69;
   *&v36->_sessionStartRangingOptions.var0.__val_.scheduling_interval_usec = v71;
@@ -810,26 +810,26 @@ LABEL_90:
 
 LABEL_97:
 
-  return v13;
+  return tokenCopy;
 }
 
-- (void)unregisterNBAMMSSessionForToken:(id)a3
+- (void)unregisterNBAMMSSessionForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     identityString = self->_identityString;
-    v7 = [v4 descriptionInternal];
+    descriptionInternal = [tokenCopy descriptionInternal];
     *buf = 138412546;
     *&buf[4] = identityString;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = descriptionInternal;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-range,Unregistering session %@ with token %@", buf, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_internalQueue);
-  if ([v4 isEqual:self->_finderToken])
+  if ([tokenCopy isEqual:self->_finderToken])
   {
     finderToken = self->_finderToken;
     self->_finderToken = 0;
@@ -870,7 +870,7 @@ LABEL_97:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = tokenCopy;
       v12 = "#find-range,Finder role with token %@ is detached";
 LABEL_31:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
@@ -879,14 +879,14 @@ LABEL_31:
 
   else
   {
-    if (![v4 isEqual:self->_findeeMutualAuthState.outboundChallenge])
+    if (![tokenCopy isEqual:self->_findeeMutualAuthState.outboundChallenge])
     {
       v26 = qword_1009F9820;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v4 descriptionInternal];
+        descriptionInternal2 = [tokenCopy descriptionInternal];
         *buf = 138412290;
-        *&buf[4] = v27;
+        *&buf[4] = descriptionInternal2;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "#find-range,Not ranging with token %@, return", buf, 0xCu);
       }
 
@@ -937,7 +937,7 @@ LABEL_31:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = tokenCopy;
       v12 = "#find-range,Findee role is detached with token %@ is detached";
       goto LABEL_31;
     }
@@ -1177,9 +1177,9 @@ LABEL_56:
     v26 = qword_1009F9820;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(NIServerNBAMMSSession *)self _getState];
+      _getState = [(NIServerNBAMMSSession *)self _getState];
       *buf = 138412290;
-      *&buf[4] = v32;
+      *&buf[4] = _getState;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "#find-range,NBAMMS session state (after unregister): %@", buf, 0xCu);
     }
 
@@ -1187,28 +1187,28 @@ LABEL_75:
   }
 }
 
-- (void)refreshRangingForToken:(id)a3 withNewStartOptions:(const void *)a4
+- (void)refreshRangingForToken:(id)token withNewStartOptions:(const void *)options
 {
-  v6 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_internalQueue);
   if (!self->_nbammsSession.__ptr_ || !self->_sessionStartRangingOptions.__engaged_)
   {
     goto LABEL_33;
   }
 
-  if (*(a4 + 112) == 1)
+  if (*(options + 112) == 1)
   {
-    if ([(NIDiscoveryToken *)self->_finderToken isEqual:v6])
+    if ([(NIDiscoveryToken *)self->_finderToken isEqual:tokenCopy])
     {
       v7 = qword_1009F9820;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        if ((*(a4 + 112) & 1) == 0)
+        if ((*(options + 112) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        v8 = sub_100285534(a4);
+        v8 = sub_100285534(options);
         *buf = 138412290;
         v37 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-range,refreshRanging: Updated finder start ranging options: %@", buf, 0xCu);
@@ -1219,7 +1219,7 @@ LABEL_75:
 
     else
     {
-      if (![(NSData *)self->_findeeMutualAuthState.outboundChallenge isEqual:v6])
+      if (![(NSData *)self->_findeeMutualAuthState.outboundChallenge isEqual:tokenCopy])
       {
         goto LABEL_15;
       }
@@ -1227,12 +1227,12 @@ LABEL_75:
       v7 = qword_1009F9820;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        if ((*(a4 + 112) & 1) == 0)
+        if ((*(options + 112) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        v10 = sub_100285534(a4);
+        v10 = sub_100285534(options);
         *buf = 138412290;
         v37 = v10;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-range,refreshRanging: Updated findee start ranging options: %@", buf, 0xCu);
@@ -1242,50 +1242,50 @@ LABEL_75:
     }
 
     v11 = self + v9;
-    v12 = *a4;
-    v13 = *(a4 + 1);
-    v14 = *(a4 + 3);
-    *(v11 + 2) = *(a4 + 2);
+    v12 = *options;
+    v13 = *(options + 1);
+    v14 = *(options + 3);
+    *(v11 + 2) = *(options + 2);
     *(v11 + 3) = v14;
     *v11 = v12;
     *(v11 + 1) = v13;
-    v15 = *(a4 + 4);
-    v16 = *(a4 + 5);
-    v17 = *(a4 + 6);
-    v11[112] = *(a4 + 112);
+    v15 = *(options + 4);
+    v16 = *(options + 5);
+    v17 = *(options + 6);
+    v11[112] = *(options + 112);
     *(v11 + 5) = v16;
     *(v11 + 6) = v17;
     *(v11 + 4) = v15;
   }
 
 LABEL_15:
-  if ([(NIDiscoveryToken *)self->_sessionToken isEqual:v6])
+  if ([(NIDiscoveryToken *)self->_sessionToken isEqual:tokenCopy])
   {
-    if (*(a4 + 112) == 1)
+    if (*(options + 112) == 1)
     {
-      v18 = *a4;
-      v19 = *(a4 + 1);
-      v20 = *(a4 + 2);
-      *&self->_sessionStartRangingOptions.var0.__val_.start_time_or_offset_usec = *(a4 + 3);
+      v18 = *options;
+      v19 = *(options + 1);
+      v20 = *(options + 2);
+      *&self->_sessionStartRangingOptions.var0.__val_.start_time_or_offset_usec = *(options + 3);
       *&self->_sessionStartRangingOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = v20;
       *(&self->_sessionStartRangingOptions.var0.__val_.peer.var0.__val_.uuid.var0 + 12) = v19;
       *&self->_sessionStartRangingOptions.var0.__null_state_ = v18;
-      v21 = *(a4 + 4);
-      v22 = *(a4 + 5);
-      v23 = *(a4 + 6);
-      self->_sessionStartRangingOptions.__engaged_ = *(a4 + 112);
+      v21 = *(options + 4);
+      v22 = *(options + 5);
+      v23 = *(options + 6);
+      self->_sessionStartRangingOptions.__engaged_ = *(options + 112);
       *&self->_sessionStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__null_state_ = v23;
       *&self->_sessionStartRangingOptions.var0.__val_.dither_constant_msec.var0.__null_state_ = v22;
       *&self->_sessionStartRangingOptions.var0.__val_.scheduling_interval_usec = v21;
       v24 = qword_1009F9820;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        if ((*(a4 + 112) & 1) == 0)
+        if ((*(options + 112) & 1) == 0)
         {
           sub_1000195BC();
         }
 
-        v25 = sub_100285534(a4);
+        v25 = sub_100285534(options);
         *buf = 138412290;
         v37 = v25;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "#find-range,refreshRanging: Updated session start ranging options: %@", buf, 0xCu);
@@ -1305,7 +1305,7 @@ LABEL_15:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         identityString = self->_identityString;
-        v30 = [v6 descriptionInternal];
+        descriptionInternal = [tokenCopy descriptionInternal];
         sub_100342F8C(v26, __p);
         if (v35 >= 0)
         {
@@ -1320,7 +1320,7 @@ LABEL_15:
         *buf = 138412802;
         v37 = identityString;
         v38 = 2112;
-        v39 = v30;
+        v39 = descriptionInternal;
         v40 = 2080;
         v41 = v31;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "#find-range,refreshRanging for %@ with token %@: Failed to refresh ranging. Return code: %s", buf, 0x20u);
@@ -1334,11 +1334,11 @@ LABEL_15:
     else if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v32 = self->_identityString;
-      v33 = [v6 descriptionInternal];
+      descriptionInternal2 = [tokenCopy descriptionInternal];
       *buf = 138412546;
       v37 = v32;
       v38 = 2112;
-      v39 = v33;
+      v39 = descriptionInternal2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "#find-range,refreshRanging: Success for %@, token: %@!", buf, 0x16u);
     }
   }
@@ -1370,12 +1370,12 @@ LABEL_33:
   return result;
 }
 
-- (id)sessionTokenForFinder:(BOOL)a3
+- (id)sessionTokenForFinder:(BOOL)finder
 {
-  v3 = a3;
+  finderCopy = finder;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = 1112;
-  if (v3)
+  if (finderCopy)
   {
     v5 = 304;
   }
@@ -1385,12 +1385,12 @@ LABEL_33:
   return v6;
 }
 
-- (id)sessionClientForFinder:(BOOL)a3
+- (id)sessionClientForFinder:(BOOL)finder
 {
-  v3 = a3;
+  finderCopy = finder;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = 1048;
-  if (v3)
+  if (finderCopy)
   {
     v5 = 240;
   }
@@ -1400,7 +1400,7 @@ LABEL_33:
   return WeakRetained;
 }
 
-- (optional<rose::RoseServiceRequest>)sessionServiceRequestForFinder:(SEL)a3
+- (optional<rose::RoseServiceRequest>)sessionServiceRequestForFinder:(SEL)finder
 {
   v4 = a4;
   dispatch_assert_queue_V2(self->_internalQueue);
@@ -1413,7 +1413,7 @@ LABEL_33:
   return memcpy(retstr, self + v7, 0x248uLL);
 }
 
-- (optional<rose::RoseStartRangingOptions>)sessionStartRangingOptionsForFinder:(SEL)a3
+- (optional<rose::RoseStartRangingOptions>)sessionStartRangingOptionsForFinder:(SEL)finder
 {
   v4 = a4;
   dispatch_assert_queue_V2(self->_internalQueue);
@@ -1446,14 +1446,14 @@ LABEL_33:
   v4 = WeakRetained;
   if ((self->_finderMutualAuthState.outboundAuthState - 5 < 2 || self->_finderMutualAuthState.inboundAuthState == 2) && WeakRetained)
   {
-    v5 = [WeakRetained clientQueue];
+    clientQueue = [WeakRetained clientQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100285BB4;
     block[3] = &unk_10098B940;
     objc_copyWeak(&v13, &location);
     v12 = v4;
-    dispatch_async(v5, block);
+    dispatch_async(clientQueue, block);
 
     objc_destroyWeak(&v13);
   }
@@ -1464,14 +1464,14 @@ LABEL_33:
   {
     if (v6)
     {
-      v7 = [v6 clientQueue];
+      clientQueue2 = [v6 clientQueue];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_100285C24;
       v8[3] = &unk_10098B940;
       objc_copyWeak(&v10, &location);
       v9 = v6;
-      dispatch_async(v7, v8);
+      dispatch_async(clientQueue2, v8);
 
       objc_destroyWeak(&v10);
     }
@@ -1572,11 +1572,11 @@ LABEL_19:
   return result;
 }
 
-- (void)updateAlgorithmAidingData:(const void *)a3 token:(id)a4
+- (void)updateAlgorithmAidingData:(const void *)data token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_internalQueue);
-  if ([v6 isEqual:self->_finderToken])
+  if ([tokenCopy isEqual:self->_finderToken])
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1584,27 +1584,27 @@ LABEL_19:
     }
   }
 
-  else if ([v6 isEqual:self->_findeeMutualAuthState.outboundChallenge])
+  else if ([tokenCopy isEqual:self->_findeeMutualAuthState.outboundChallenge])
   {
     v7 = (&self->_findeeStartRangingOptions.var0.__val_.peer.var0.__val_.rose_mac_address.var0 + 3);
-    v8 = *a3;
-    v9 = *(a3 + 2);
+    v8 = *data;
+    v9 = *(data + 2);
     if (self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_ == 1)
     {
-      *&self->_findeeStartRangingOptions.var0.__val_.peer.__engaged_ = *(a3 + 1);
+      *&self->_findeeStartRangingOptions.var0.__val_.peer.__engaged_ = *(data + 1);
       *&self->_findeeStartRangingOptions.var0.__val_.start_time_type = v9;
       *v7 = v8;
-      v10 = *(a3 + 3);
-      v11 = *(a3 + 4);
-      v12 = *(a3 + 6);
-      *&self->_findeeStartRangingOptions.var0.__val_.secondary_duty_cycle.var0.__null_state_ = *(a3 + 5);
+      v10 = *(data + 3);
+      v11 = *(data + 4);
+      v12 = *(data + 6);
+      *&self->_findeeStartRangingOptions.var0.__val_.secondary_duty_cycle.var0.__null_state_ = *(data + 5);
       *&self->_findeeAlgorithmAidingData.var0.__null_state_ = v12;
       *&self->_findeeStartRangingOptions.var0.__val_.conn_evt_trigger_desc.var0.__null_state_ = v10;
       *&self->_findeeStartRangingOptions.var0.__val_.secondary_scheduling_delay_usec.var0.__null_state_ = v11;
-      v13 = *(a3 + 7);
-      v14 = *(a3 + 8);
-      v15 = *(a3 + 9);
-      *(&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH2 + 2) = *(a3 + 154);
+      v13 = *(data + 7);
+      v14 = *(data + 8);
+      v15 = *(data + 9);
+      *(&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH2 + 2) = *(data + 154);
       *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v14;
       *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = v15;
       *&self->_findeeAlgorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = v13;
@@ -1612,20 +1612,20 @@ LABEL_19:
 
     else
     {
-      *&self->_findeeStartRangingOptions.var0.__val_.peer.__engaged_ = *(a3 + 1);
+      *&self->_findeeStartRangingOptions.var0.__val_.peer.__engaged_ = *(data + 1);
       *&self->_findeeStartRangingOptions.var0.__val_.start_time_type = v9;
       *v7 = v8;
-      v16 = *(a3 + 3);
-      v17 = *(a3 + 4);
-      v18 = *(a3 + 6);
-      *&self->_findeeStartRangingOptions.var0.__val_.secondary_duty_cycle.var0.__null_state_ = *(a3 + 5);
+      v16 = *(data + 3);
+      v17 = *(data + 4);
+      v18 = *(data + 6);
+      *&self->_findeeStartRangingOptions.var0.__val_.secondary_duty_cycle.var0.__null_state_ = *(data + 5);
       *&self->_findeeAlgorithmAidingData.var0.__null_state_ = v18;
       *&self->_findeeStartRangingOptions.var0.__val_.conn_evt_trigger_desc.var0.__null_state_ = v16;
       *&self->_findeeStartRangingOptions.var0.__val_.secondary_scheduling_delay_usec.var0.__null_state_ = v17;
-      v19 = *(a3 + 7);
-      v20 = *(a3 + 8);
-      v21 = *(a3 + 10);
-      *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = *(a3 + 9);
+      v19 = *(data + 7);
+      v20 = *(data + 8);
+      v21 = *(data + 10);
+      *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = *(data + 9);
       *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementV = v21;
       *&self->_findeeAlgorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = v19;
       *&self->_findeeAlgorithmAidingData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v20;
@@ -1636,15 +1636,15 @@ LABEL_19:
   }
 }
 
-- (void)updateSignallingData:(const void *)a3 token:(id)a4
+- (void)updateSignallingData:(const void *)data token:(id)token
 {
-  v11 = a4;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_internalQueue);
-  if ([v11 isEqual:self->_finderToken])
+  if ([tokenCopy isEqual:self->_finderToken])
   {
     engaged = self->_finderStartRangingOptions.var0.__val_.dither_constant_msec.__engaged_;
-    v7 = *(a3 + 8);
-    self->_finderStartRangingOptions.var0.__val_.conn_evt_trigger_desc = *a3;
+    v7 = *(data + 8);
+    self->_finderStartRangingOptions.var0.__val_.conn_evt_trigger_desc = *data;
     self->_finderStartRangingOptions.var0.__val_.dither_constant_msec.var0.__null_state_ = v7;
     if (!engaged)
     {
@@ -1656,14 +1656,14 @@ LABEL_7:
 
   else
   {
-    if (![v11 isEqual:self->_findeeMutualAuthState.outboundChallenge])
+    if (![tokenCopy isEqual:self->_findeeMutualAuthState.outboundChallenge])
     {
       goto LABEL_9;
     }
 
     v9 = BYTE1(self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1);
-    v10 = *(a3 + 8);
-    self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.applicabilityTimestamp = *a3;
+    v10 = *(data + 8);
+    self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.applicabilityTimestamp = *data;
     LOBYTE(self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1) = v10;
     if ((v9 & 1) == 0)
     {
@@ -1728,8 +1728,8 @@ LABEL_20:
     v8 = qword_1009F9820;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-      sub_1004B6474(v9, self);
+      sessionIdentifier = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+      sub_1004B6474(sessionIdentifier, self);
     }
 
     [(NIServerNBAMMSSession *)self _handleCryptoFailure];
@@ -1879,7 +1879,7 @@ LABEL_7:
   return v8;
 }
 
-- (void)_receivedAidingAndSignallingMessage:(const void *)a3 machAbsTimestamp:(double)a4
+- (void)_receivedAidingAndSignallingMessage:(const void *)message machAbsTimestamp:(double)timestamp
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -1889,8 +1889,8 @@ LABEL_7:
   ++*&self->_findeeAlgorithmAidingData.var0.__val_.location_data.__engaged_;
   [(NIServerNBAMMSSession *)self _logStatisticsIfNecessary];
   [(NIServerNBAMMSSession *)self _handleNonMutualAuthMessage];
-  v7 = *(a3 + 1);
-  v8 = *a3 + 1;
+  v7 = *(message + 1);
+  v8 = *message + 1;
   v66 = 0;
   v67 = 0;
   v65 = 0;
@@ -1919,7 +1919,7 @@ LABEL_7:
   v53 = v10;
   if (sub_10026E5F4(&v65, &__p, &v52))
   {
-    *(&v61 + 1) = a4;
+    *(&v61 + 1) = timestamp;
     v11 = 1;
     LOBYTE(v62) = 1;
     objc_initWeak(&location, self);
@@ -1938,7 +1938,7 @@ LABEL_7:
 
     if (v11 && WeakRetained)
     {
-      v15 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1002869F0;
@@ -1958,7 +1958,7 @@ LABEL_7:
       v41 = v57;
       v49 = v52;
       v50 = v53;
-      dispatch_async(v15, block);
+      dispatch_async(clientQueue, block);
 
       objc_destroyWeak(&v37);
     }
@@ -1982,7 +1982,7 @@ LABEL_18:
 
     if (engaged && v16)
     {
-      v18 = [v16 clientQueue];
+      clientQueue2 = [v16 clientQueue];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100286A68;
@@ -2002,7 +2002,7 @@ LABEL_18:
       v25 = v57;
       v33 = v52;
       v34 = v53;
-      dispatch_async(v18, v19);
+      dispatch_async(clientQueue2, v19);
 
       objc_destroyWeak(&v21);
     }
@@ -2029,15 +2029,15 @@ LABEL_21:
   v3 = objc_opt_new();
   identityString = self->_identityString;
   ptr = self->_nbammsSession.__ptr_;
-  v6 = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
-  v7 = v6;
+  descriptionInternal = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
+  v7 = descriptionInternal;
   v8 = "YES";
   if (!ptr)
   {
     v8 = "NO";
   }
 
-  v9 = [NSString stringWithFormat:@"Name: %@. Created: %s. Session token: %@", identityString, v8, v6];
+  v9 = [NSString stringWithFormat:@"Name: %@. Created: %s. Session token: %@", identityString, v8, descriptionInternal];
   [v3 addObject:v9];
 
   engaged = self->_sessionStartRangingOptions.__engaged_;
@@ -2079,7 +2079,7 @@ LABEL_21:
     v15 = "NO";
   }
 
-  v16 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
+  descriptionInternal2 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
   v17 = self->_finderStartRangingOptions.var0.__val_.dither_constant_msec.__engaged_;
   if (v17)
   {
@@ -2100,7 +2100,7 @@ LABEL_21:
     p_p = "0";
   }
 
-  v19 = [NSString stringWithFormat:@"    Finder attached: %s, client: %s, token: %@, signalling: %s", v13, v15, v16, p_p];
+  v19 = [NSString stringWithFormat:@"    Finder attached: %s, client: %s, token: %@, signalling: %s", v13, v15, descriptionInternal2, p_p];
   [v3 addObject:v19];
 
   if (v17 && SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -2147,7 +2147,7 @@ LABEL_21:
     v25 = "NO";
   }
 
-  v26 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
+  descriptionInternal3 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
   v27 = BYTE1(self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1);
   if (v27 == 1)
   {
@@ -2168,7 +2168,7 @@ LABEL_21:
     v28 = "0";
   }
 
-  v29 = [NSString stringWithFormat:@"    Findee attached: %s, client: %s, token: %@, signalling: %s, aiding: %d", v23, v25, v26, v28, self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_];
+  v29 = [NSString stringWithFormat:@"    Findee attached: %s, client: %s, token: %@, signalling: %s, aiding: %d", v23, v25, descriptionInternal3, v28, self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_];
   [v3 addObject:v29];
 
   if (v27 && SHIBYTE(v59.__r_.__value_.__r.__words[2]) < 0)
@@ -2227,9 +2227,9 @@ LABEL_21:
   [v3 addObject:v39];
 
   v40 = sub_1002861A4(self->_cryptoSessionState);
-  v41 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+  sessionIdentifier = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
   v42 = CUPrintNSObjectMasked();
-  v43 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
+  sessionIdentifier2 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
   v44 = CUPrintNSObjectMasked();
   v45 = [NSString stringWithFormat:@"    Crypto state: %@. Self: %@. Peer: %@. Failures: %d", v40, v42, v44, self->_cryptoFailures];
   [v3 addObject:v45];
@@ -2301,19 +2301,19 @@ LABEL_21:
   return v3;
 }
 
-- (void)_serviceRequestStatusUpdate:(const ServiceRequestStatusUpdate *)a3
+- (void)_serviceRequestStatusUpdate:(const ServiceRequestStatusUpdate *)update
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   if (self->_finderAttached || (self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) != 0)
   {
-    v19 = *&a3->var0;
-    var2 = a3->var2;
+    v19 = *&update->var0;
+    var2 = update->var2;
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_finderClient);
     v6 = WeakRetained;
     if (WeakRetained)
     {
-      v7 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100287C34;
@@ -2322,7 +2322,7 @@ LABEL_21:
       v15 = v6;
       v16[1] = v19;
       v17 = var2;
-      dispatch_async(v7, block);
+      dispatch_async(clientQueue, block);
 
       objc_destroyWeak(v16);
     }
@@ -2331,7 +2331,7 @@ LABEL_21:
 
     if (v8)
     {
-      v9 = [v8 clientQueue];
+      clientQueue2 = [v8 clientQueue];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100287CA8;
@@ -2340,7 +2340,7 @@ LABEL_21:
       v11 = v8;
       v12[1] = v19;
       v13 = var2;
-      dispatch_async(v9, v10);
+      dispatch_async(clientQueue2, v10);
 
       objc_destroyWeak(v12);
     }
@@ -2354,9 +2354,9 @@ LABEL_21:
   }
 }
 
-- (void)_didReceiveNewSolution:(const void *)a3
+- (void)_didReceiveNewSolution:(const void *)solution
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, solution);
   v5 = v4;
   v6 = v3;
   dispatch_assert_queue_V2(*(v3 + 8));
@@ -2410,7 +2410,7 @@ LABEL_21:
 
     if (v13 && WeakRetained)
     {
-      v14 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3321888768;
       block[2] = sub_10028845C;
@@ -2425,7 +2425,7 @@ LABEL_21:
       sub_1000207A0(&v58, v79);
       memcpy(v62, v83, sizeof(v62));
       sub_10002096C(&v63, v84);
-      dispatch_async(v14, block);
+      dispatch_async(clientQueue, block);
 
       if (v66 == 1 && __p)
       {
@@ -2512,7 +2512,7 @@ LABEL_46:
 
     if (v16 && v15)
     {
-      v17 = [v15 clientQueue];
+      clientQueue2 = [v15 clientQueue];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3321888768;
       v19[2] = sub_100288650;
@@ -2527,7 +2527,7 @@ LABEL_46:
       sub_1000207A0(&v34, v79);
       memcpy(v38, v83, sizeof(v38));
       sub_10002096C(&v39, v84);
-      dispatch_async(v17, v19);
+      dispatch_async(clientQueue2, v19);
 
       if (v42 == 1 && v40)
       {
@@ -2573,9 +2573,9 @@ LABEL_46:
   }
 }
 
-- (void)_didReceiveUnsuccessfulSolution:(const void *)a3
+- (void)_didReceiveUnsuccessfulSolution:(const void *)solution
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, solution);
   v5 = v4;
   v6 = v3;
   dispatch_assert_queue_V2(*(v3 + 8));
@@ -2609,7 +2609,7 @@ LABEL_46:
 
     if (v10 && WeakRetained)
     {
-      v11 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3321888768;
       block[2] = sub_100288D7C;
@@ -2624,7 +2624,7 @@ LABEL_46:
       sub_1000207A0(&v55, v76);
       memcpy(v59, v80, sizeof(v59));
       sub_10002096C(&v60, v81);
-      dispatch_async(v11, block);
+      dispatch_async(clientQueue, block);
 
       if (v63 == 1 && __p)
       {
@@ -2711,7 +2711,7 @@ LABEL_41:
 
     if (v13 && v12)
     {
-      v14 = [v12 clientQueue];
+      clientQueue2 = [v12 clientQueue];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3321888768;
       v16[2] = sub_100288DF0;
@@ -2726,7 +2726,7 @@ LABEL_41:
       sub_1000207A0(&v31, v76);
       memcpy(v35, v80, sizeof(v35));
       sub_10002096C(&v36, v81);
-      dispatch_async(v14, v16);
+      dispatch_async(clientQueue2, v16);
 
       if (v39 == 1 && v37)
       {
@@ -2772,19 +2772,19 @@ LABEL_41:
   }
 }
 
-- (void)_didReceivePeerData:(const void *)a3
+- (void)_didReceivePeerData:(const void *)data
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   sub_100224EF8();
   if (self->_finderAttached || (self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) != 0)
   {
-    v5 = *(a3 + 1);
-    v6 = *(a3 + 2);
+    v5 = *(data + 1);
+    v6 = *(data + 2);
     if (v6 == v5)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B67C0(a3 + 4, a3 + 2);
+        sub_1004B67C0(data + 4, data + 2);
       }
     }
 
@@ -2849,7 +2849,7 @@ LABEL_29:
           v18 = 0;
           sub_100025100(__p, [v10 length]);
           [v10 getBytes:__p[0] length:{objc_msgSend(v10, "length")}];
-          [(NIServerNBAMMSSession *)self _processPeerMessage:__p machAbsTimestamp:1 wasEncrypted:*(a3 + 4)];
+          [(NIServerNBAMMSSession *)self _processPeerMessage:__p machAbsTimestamp:1 wasEncrypted:*(data + 4)];
           if (__p[0])
           {
             __p[1] = __p[0];
@@ -2862,8 +2862,8 @@ LABEL_29:
           v11 = qword_1009F9820;
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
-            v12 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
-            sub_1004B677C(v12, self);
+            sessionIdentifier = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
+            sub_1004B677C(sessionIdentifier, self);
           }
 
           [(NIServerNBAMMSSession *)self _handleCryptoFailure];
@@ -2874,7 +2874,7 @@ LABEL_29:
 
       memset(__p, 0, 24);
       sub_100296B98(__p, (v5 + 1), v6, v6 - (v5 + 1));
-      [(NIServerNBAMMSSession *)self _processPeerMessage:__p machAbsTimestamp:0 wasEncrypted:*(a3 + 4)];
+      [(NIServerNBAMMSSession *)self _processPeerMessage:__p machAbsTimestamp:0 wasEncrypted:*(data + 4)];
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -2889,13 +2889,13 @@ LABEL_29:
   }
 }
 
-- (void)_processPeerMessage:(void *)a3 machAbsTimestamp:(double)a4 wasEncrypted:(BOOL)a5
+- (void)_processPeerMessage:(void *)message machAbsTimestamp:(double)timestamp wasEncrypted:(BOOL)encrypted
 {
-  v6 = a3 + 8;
-  if (*(a3 + 1) != *a3)
+  v6 = message + 8;
+  if (*(message + 1) != *message)
   {
-    v7 = a5;
-    v10 = **a3;
+    encryptedCopy = encrypted;
+    v10 = **message;
     memset(&v61[7], 0, 17);
     v11 = sub_1000054A8();
     v12 = sub_100003AA8(v11[144]);
@@ -2912,28 +2912,28 @@ LABEL_29:
     if ((v10 & 0x18) == 0)
     {
 LABEL_19:
-      **a3 &= 7u;
+      **message &= 7u;
       if ((v10 & 7) == 2)
       {
-        if (v7)
+        if (encryptedCopy)
         {
-          [(NIServerNBAMMSSession *)self _receivedAidingAndSignallingMessage:a3 machAbsTimestamp:a4];
+          [(NIServerNBAMMSSession *)self _receivedAidingAndSignallingMessage:message machAbsTimestamp:timestamp];
           goto LABEL_32;
         }
       }
 
       else if ((v10 & 7) == 1)
       {
-        if (v7)
+        if (encryptedCopy)
         {
-          [(NIServerNBAMMSSession *)self _receivedMutualAuthMessage:a3];
+          [(NIServerNBAMMSSession *)self _receivedMutualAuthMessage:message];
           goto LABEL_32;
         }
       }
 
-      else if ((v10 & 7) == 0 && !v7)
+      else if ((v10 & 7) == 0 && !encryptedCopy)
       {
-        [(NIServerNBAMMSSession *)self _receivedCryptoSessionConfigMessage:a3];
+        [(NIServerNBAMMSSession *)self _receivedCryptoSessionConfigMessage:message];
 LABEL_32:
         [(NIServerNBAMMSSession *)self _updateSessionPayload];
         return;
@@ -2942,12 +2942,12 @@ LABEL_32:
       v22 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        v23 = **a3;
+        v23 = **message;
         identityString = self->_identityString;
         LODWORD(location) = 67109634;
         HIDWORD(location) = v23;
         v57 = 1024;
-        v58 = v7;
+        v58 = encryptedCopy;
         v59 = 2112;
         v60 = identityString;
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "#find-range,Unrecognized message ID %d. Was encrypted: %d. %@", &location, 0x18u);
@@ -2974,7 +2974,7 @@ LABEL_32:
 
     if (outboundAuthState && WeakRetained)
     {
-      v18 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100289660;
@@ -2993,7 +2993,7 @@ LABEL_32:
       v53 = 0;
       v54 = v13 | (v25 << 16);
       v55 = v14;
-      dispatch_async(v18, block);
+      dispatch_async(clientQueue, block);
 
       objc_destroyWeak(&v43);
     }
@@ -3017,7 +3017,7 @@ LABEL_18:
 
     if (engaged && v19)
     {
-      v21 = [v19 clientQueue];
+      clientQueue2 = [v19 clientQueue];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_1002896D8;
@@ -3036,7 +3036,7 @@ LABEL_18:
       v38 = 0;
       v39 = v13 | (v25 << 16);
       v40 = v14;
-      dispatch_async(v21, v26);
+      dispatch_async(clientQueue2, v26);
 
       objc_destroyWeak(&v28);
     }
@@ -3046,11 +3046,11 @@ LABEL_18:
 
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
-    sub_1004B6830(v6, a3);
+    sub_1004B6830(v6, message);
   }
 }
 
-- (void)_didReceiveInvalidation:(int)a3
+- (void)_didReceiveInvalidation:(int)invalidation
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   if (self->_finderAttached || (self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) != 0)
@@ -3060,15 +3060,15 @@ LABEL_18:
     v6 = WeakRetained;
     if (WeakRetained)
     {
-      v7 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100289940;
       block[3] = &unk_10098B138;
       objc_copyWeak(&v16, &location);
       v15 = v6;
-      v17 = a3;
-      dispatch_async(v7, block);
+      invalidationCopy = invalidation;
+      dispatch_async(clientQueue, block);
 
       objc_destroyWeak(&v16);
     }
@@ -3077,15 +3077,15 @@ LABEL_18:
 
     if (v8)
     {
-      v9 = [v8 clientQueue];
+      clientQueue2 = [v8 clientQueue];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1002899B4;
       v10[3] = &unk_10098B138;
       objc_copyWeak(&v12, &location);
       v11 = v8;
-      v13 = a3;
-      dispatch_async(v9, v10);
+      invalidationCopy2 = invalidation;
+      dispatch_async(clientQueue2, v10);
 
       objc_destroyWeak(&v12);
     }
@@ -3104,9 +3104,9 @@ LABEL_18:
   finderToken = self->_finderToken;
   if (finderToken && self->_findeeMutualAuthState.outboundChallenge)
   {
-    v4 = [(NIDiscoveryToken *)finderToken getIRK];
-    v5 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge getIRK];
-    if (-[NSObject length](v4, "length") == 16 && [v5 length] == 16 && !-[NSObject isEqualToData:](v4, "isEqualToData:", v5))
+    getIRK = [(NIDiscoveryToken *)finderToken getIRK];
+    getIRK2 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge getIRK];
+    if (-[NSObject length](getIRK, "length") == 16 && [getIRK2 length] == 16 && !-[NSObject isEqualToData:](getIRK, "isEqualToData:", getIRK2))
     {
       if (self->_finderRoseServiceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ && self->_findeeRoseServiceRequest.var0.__val_.range_enable_params.localization.interval_ms.__engaged_)
       {
@@ -3134,14 +3134,14 @@ LABEL_18:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         identityString = self->_identityString;
-        v13 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
-        v14 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
+        descriptionInternal = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
+        descriptionInternal2 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
         v15 = 138412802;
         v16 = identityString;
         v17 = 2112;
-        v18 = v13;
+        v18 = descriptionInternal;
         v19 = 2112;
-        v20 = v14;
+        v20 = descriptionInternal2;
         _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "#find-range,Finder or findee token of %@ has invalid length or they have equal IRKs, finder: %@, findee: %@", &v15, 0x20u);
       }
     }
@@ -3152,19 +3152,19 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v4 = qword_1009F9820;
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  getIRK = qword_1009F9820;
+  if (os_log_type_enabled(getIRK, OS_LOG_TYPE_ERROR))
   {
     v9 = self->_identityString;
-    v10 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
-    v11 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
+    descriptionInternal3 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
+    descriptionInternal4 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
     v15 = 138412802;
     v16 = v9;
     v17 = 2112;
-    v18 = v10;
+    v18 = descriptionInternal3;
     v19 = 2112;
-    v20 = v11;
-    _os_log_error_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "#find-range,One or both tokens for %@ are nil - finder: %@, findee: %@", &v15, 0x20u);
+    v20 = descriptionInternal4;
+    _os_log_error_impl(&_mh_execute_header, getIRK, OS_LOG_TYPE_ERROR, "#find-range,One or both tokens for %@ are nil - finder: %@, findee: %@", &v15, 0x20u);
   }
 
   v7 = 0;
@@ -3173,19 +3173,19 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_shouldUseFinderToken:(id)a3 findeeToken:(id)a4
+- (BOOL)_shouldUseFinderToken:(id)token findeeToken:(id)findeeToken
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  tokenCopy = token;
+  findeeTokenCopy = findeeToken;
+  v7 = findeeTokenCopy;
+  if (!tokenCopy)
   {
     v12 = "finderToken != nil";
     v13 = 2037;
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!findeeTokenCopy)
   {
     v12 = "findeeToken != nil";
     v13 = 2038;
@@ -3193,16 +3193,16 @@ LABEL_9:
     __assert_rtn("[NIServerNBAMMSSession _shouldUseFinderToken:findeeToken:]", "NIServerFindingRanging.mm", v13, v12);
   }
 
-  v8 = [v5 getIRK];
-  v9 = [v7 getIRK];
+  getIRK = [tokenCopy getIRK];
+  getIRK2 = [v7 getIRK];
   v16 = 0;
   v17 = 0;
   v14 = 0;
   v15 = 0;
-  [v8 getBytes:&v16 range:{0, 8}];
-  [v8 getBytes:&v17 range:{8, 8}];
-  [v9 getBytes:&v14 range:{0, 8}];
-  [v9 getBytes:&v15 range:{8, 8}];
+  [getIRK getBytes:&v16 range:{0, 8}];
+  [getIRK getBytes:&v17 range:{8, 8}];
+  [getIRK2 getBytes:&v14 range:{0, 8}];
+  [getIRK2 getBytes:&v15 range:{8, 8}];
   if (v17 == v15)
   {
     v10 = v16 > v14;
@@ -3216,7 +3216,7 @@ LABEL_9:
   return v10;
 }
 
-- (shared_ptr<rose::objects::NBAMMSSession>)_buildNbammsSession:(const void *)a3
+- (shared_ptr<rose::objects::NBAMMSSession>)_buildNbammsSession:(const void *)session
 {
   v4 = sub_100004A08(buf, [(NSString *)self->_identityString UTF8String]);
   v5 = std::string::insert(v4, 0, "Finding.");
@@ -3231,7 +3231,7 @@ LABEL_9:
     operator delete(*buf);
   }
 
-  v7 = self;
+  selfCopy = self;
   operator new();
 }
 
@@ -3249,7 +3249,7 @@ LABEL_9:
     v5 = "NO";
   }
 
-  v6 = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
+  descriptionInternal = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
   if (self->_finderAttached)
   {
     v7 = "YES";
@@ -3260,16 +3260,16 @@ LABEL_9:
     v7 = "NO";
   }
 
-  v8 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
+  descriptionInternal2 = [(NIDiscoveryToken *)self->_finderToken descriptionInternal];
   v9 = sub_1002877EC(&self->_finderMutualAuthState.outboundAuthState);
   if (HIBYTE(self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_))
   {
     v4 = "YES";
   }
 
-  v10 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
+  descriptionInternal3 = [(NSData *)self->_findeeMutualAuthState.outboundChallenge descriptionInternal];
   v11 = sub_1002877EC(&self->_finderStartRangingOptions.__engaged_);
-  v12 = [NSString stringWithFormat:@"%@: %s, token: %@. Finder: %s, token: %@, authState: %@. Findee: %s, token: %@, authState: %@", identityString, v5, v6, v7, v8, v9, v4, v10, v11];
+  v12 = [NSString stringWithFormat:@"%@: %s, token: %@. Finder: %s, token: %@, authState: %@. Findee: %s, token: %@, authState: %@", identityString, v5, descriptionInternal, v7, descriptionInternal2, v9, v4, descriptionInternal3, v11];
 
   return v12;
 }
@@ -3314,7 +3314,7 @@ LABEL_9:
   *&self->_findeeAlgorithmAidingData.var0.__val_.location_data.var0.__null_state_ = 0u;
 }
 
-- (unsigned)_encodeSignallingDataInMessageID:(unsigned __int8)a3
+- (unsigned)_encodeSignallingDataInMessageID:(unsigned __int8)d
 {
   v5 = sub_1000054A8();
   sub_100003AA8(v5[144]);
@@ -3325,7 +3325,7 @@ LABEL_9:
     LOBYTE(v7) = 0;
   }
 
-  v8 = v7 | a3;
+  v8 = v7 | d;
   v9 = (v6 >> 28) & 0x10;
   if ((v6 & 0x10000000000) == 0)
   {
@@ -3341,11 +3341,11 @@ LABEL_9:
   {
     [(NIServerNBAMMSSession *)self _initializeEncryptionSessionIfNecessary];
     cryptoSessionState = self->_cryptoSessionState;
-    v4 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-    v5 = [v4 length];
+    sessionIdentifier = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+    v5 = [sessionIdentifier length];
 
-    v6 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-    sub_100025100(&__p, [v6 length] + 8);
+    sessionIdentifier2 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+    sub_100025100(&__p, [sessionIdentifier2 length] + 8);
 
     *__p = 0;
     v7 = __p;
@@ -3354,13 +3354,13 @@ LABEL_9:
     v7[3] = v5;
     *(v7 + 1) = 0;
     v8 = __p;
-    v9 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-    v10 = [v9 bytes];
-    v11 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-    memcpy(v8 + 8, v10, [v11 length]);
+    sessionIdentifier3 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+    bytes = [sessionIdentifier3 bytes];
+    sessionIdentifier4 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+    memcpy(v8 + 8, bytes, [sessionIdentifier4 length]);
 
-    v12 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
-    v13 = [v12 length] + 8;
+    sessionIdentifier5 = [(NIServerCryptoSession *)self->_selfEncryptionSession sessionIdentifier];
+    v13 = [sessionIdentifier5 length] + 8;
 
     if (v13 != (v16 - __p))
     {
@@ -3392,7 +3392,7 @@ LABEL_9:
   }
 }
 
-- (void)_receivedCryptoSessionConfigMessage:(const void *)a3
+- (void)_receivedCryptoSessionConfigMessage:(const void *)message
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -3401,14 +3401,14 @@ LABEL_9:
 
   ++self->_findeeAlgorithmAidingData.var0.__val_.location_data.var0.__val_.uncertainty;
   [(NIServerNBAMMSSession *)self _logStatisticsIfNecessary];
-  v5 = *a3;
-  v6 = *(a3 + 1) - *a3;
+  v5 = *message;
+  v6 = *(message + 1) - *message;
   if (v6 <= 6)
   {
     v7 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      v8 = *(a3 + 2) - *a3;
+      v8 = *(message + 2) - *message;
       identityString = self->_identityString;
       v39 = 67109378;
       *v40 = v8;
@@ -3440,33 +3440,33 @@ LABEL_12:
   {
     v18 = *(v5 + 1);
     v19 = [NSData dataWithBytes:v5 + 7 length:*(v5 + 2)];
-    v20 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
-    v21 = [v19 isEqualToData:v20];
+    sessionIdentifier = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
+    v21 = [v19 isEqualToData:sessionIdentifier];
 
     if ((v21 & 1) == 0)
     {
       v22 = qword_1009F9820;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
+        sessionIdentifier2 = [(NIServerCryptoSession *)self->_peerDecryptionSession sessionIdentifier];
         v24 = CUPrintNSObjectMasked();
         v25 = CUPrintNSObjectMasked();
-        v26 = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
+        descriptionInternal = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
         v27 = self->_identityString;
         v39 = 138478595;
         *v40 = v24;
         *&v40[8] = 2113;
         *&v40[10] = v25;
         *&v40[18] = 2113;
-        v41 = v26;
+        v41 = descriptionInternal;
         v42 = 2112;
         v43 = v27;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#find-range,#crypto Init peer session. Old ID: %{private}@. New ID: %{private}@. Token: %{private}@, %@", &v39, 0x2Au);
       }
 
       v28 = [NIServerCryptoSession alloc];
-      v29 = [(NIDiscoveryToken *)self->_sessionToken getIRK];
-      v30 = [(NIServerCryptoSession *)v28 initWithKeyDerivationKey:v29 sessionIdentifier:v19 encrypt:0];
+      getIRK = [(NIDiscoveryToken *)self->_sessionToken getIRK];
+      v30 = [(NIServerCryptoSession *)v28 initWithKeyDerivationKey:getIRK sessionIdentifier:v19 encrypt:0];
       peerDecryptionSession = self->_peerDecryptionSession;
       self->_peerDecryptionSession = v30;
     }
@@ -3518,7 +3518,7 @@ LABEL_20:
   v15 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
-    v16 = *(a3 + 2) - *a3;
+    v16 = *(message + 2) - *message;
     v17 = self->_identityString;
     v39 = 67109634;
     *v40 = v13;
@@ -3542,20 +3542,20 @@ LABEL_20:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = CUPrintNSObjectMasked();
-      v6 = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
+      descriptionInternal = [(NIDiscoveryToken *)self->_sessionToken descriptionInternal];
       identityString = self->_identityString;
       v12 = 138478339;
       v13 = v5;
       v14 = 2113;
-      v15 = v6;
+      v15 = descriptionInternal;
       v16 = 2112;
       v17 = identityString;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#find-range,#crypto Init self session. ID: %{private}@. Token: %{private}@. %@", &v12, 0x20u);
     }
 
     v8 = [NIServerCryptoSession alloc];
-    v9 = [(NIDiscoveryToken *)self->_sessionToken getIRK];
-    v10 = [(NIServerCryptoSession *)v8 initWithKeyDerivationKey:v9 sessionIdentifier:v3 encrypt:1];
+    getIRK = [(NIDiscoveryToken *)self->_sessionToken getIRK];
+    v10 = [(NIServerCryptoSession *)v8 initWithKeyDerivationKey:getIRK sessionIdentifier:v3 encrypt:1];
     selfEncryptionSession = self->_selfEncryptionSession;
     self->_selfEncryptionSession = v10;
 
@@ -3563,17 +3563,17 @@ LABEL_20:
   }
 }
 
-- (id)_encrypt:(id)a3
+- (id)_encrypt:(id)_encrypt
 {
-  v4 = a3;
+  _encryptCopy = _encrypt;
   if ([(NIServerNBAMMSSession *)self _isCryptoDisabled])
   {
-    v5 = v4;
+    v5 = _encryptCopy;
   }
 
   else
   {
-    v5 = [(NIServerCryptoSession *)self->_selfEncryptionSession encrypt:v4];
+    v5 = [(NIServerCryptoSession *)self->_selfEncryptionSession encrypt:_encryptCopy];
   }
 
   v6 = v5;
@@ -3581,17 +3581,17 @@ LABEL_20:
   return v6;
 }
 
-- (id)_decrypt:(id)a3
+- (id)_decrypt:(id)_decrypt
 {
-  v4 = a3;
+  _decryptCopy = _decrypt;
   if ([(NIServerNBAMMSSession *)self _isCryptoDisabled])
   {
-    v5 = v4;
+    v5 = _decryptCopy;
   }
 
   else
   {
-    v5 = [(NIServerCryptoSession *)self->_peerDecryptionSession decrypt:v4];
+    v5 = [(NIServerCryptoSession *)self->_peerDecryptionSession decrypt:_decryptCopy];
   }
 
   v6 = v5;
@@ -3599,9 +3599,9 @@ LABEL_20:
   return v6;
 }
 
-- (void)_resetCryptoStateIncludingFailures:(BOOL)a3
+- (void)_resetCryptoStateIncludingFailures:(BOOL)failures
 {
-  v3 = a3;
+  failuresCopy = failures;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -3610,7 +3610,7 @@ LABEL_20:
     v11[0] = 67240706;
     v11[1] = cryptoFailures;
     v12 = 1026;
-    v13 = v3;
+    v13 = failuresCopy;
     v14 = 2112;
     v15 = identityString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-range,#crypto Reset state. Failures: %{public}d. Reset: %{public}d, %@", v11, 0x18u);
@@ -3633,7 +3633,7 @@ LABEL_20:
   }
 
   self->_cryptoSessionState = v10;
-  if (v3)
+  if (failuresCopy)
   {
     self->_cryptoFailures = 0;
   }
@@ -3654,14 +3654,14 @@ LABEL_20:
     if (WeakRetained)
     {
       objc_initWeak(&location, self);
-      v5 = [WeakRetained clientQueue];
+      clientQueue = [WeakRetained clientQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10028B2F0;
       block[3] = &unk_10098B940;
       objc_copyWeak(&v13, &location);
       v12 = WeakRetained;
-      dispatch_async(v5, block);
+      dispatch_async(clientQueue, block);
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -3672,14 +3672,14 @@ LABEL_20:
     if (v6)
     {
       objc_initWeak(&location, self);
-      v7 = [v6 clientQueue];
+      clientQueue2 = [v6 clientQueue];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10028B360;
       v8[3] = &unk_10098B940;
       objc_copyWeak(&v10, &location);
       v9 = v6;
-      dispatch_async(v7, v8);
+      dispatch_async(clientQueue2, v8);
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -3717,10 +3717,10 @@ LABEL_20:
   [(NIServerNBAMMSSession *)self _reportMutualAuthStates];
 }
 
-- (void)_processNonMutualAuthMessageForFinder:(BOOL)a3
+- (void)_processNonMutualAuthMessageForFinder:(BOOL)finder
 {
-  v3 = a3;
-  if (a3)
+  finderCopy = finder;
+  if (finder)
   {
     if (!self->_finderAttached)
     {
@@ -3761,7 +3761,7 @@ LABEL_20:
         v9 = qword_1009F9820;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = sub_100009210(v3);
+          v10 = sub_100009210(finderCopy);
           identityString = self->_identityString;
           v17 = 136315394;
           v18 = v10;
@@ -3797,7 +3797,7 @@ LABEL_20:
       v13 = qword_1009F9820;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = sub_100009210(v3);
+        v14 = sub_100009210(finderCopy);
         v15 = sub_1002877EC(v6);
         v16 = self->_identityString;
         v17 = 136315650;
@@ -4070,7 +4070,7 @@ LABEL_24:
   return v21;
 }
 
-- (void)_receivedMutualAuthMessage:(const void *)a3
+- (void)_receivedMutualAuthMessage:(const void *)message
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -4079,8 +4079,8 @@ LABEL_24:
 
   ++*(&self->_findeeAlgorithmAidingData.var0.__val_.location_data.var0.__val_.uncertainty + 1);
   [(NIServerNBAMMSSession *)self _logStatisticsIfNecessary];
-  v5 = *a3;
-  if (*(a3 + 1) - *a3 > 0x14uLL)
+  v5 = *message;
+  if (*(message + 1) - *message > 0x14uLL)
   {
     v6 = *v5;
     *&v18[13] = *(v5 + 13);
@@ -4121,14 +4121,14 @@ LABEL_24:
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
-    sub_1004B6CFC(a3 + 2, a3);
+    sub_1004B6CFC(message + 2, message);
   }
 }
 
-- (void)_processPeerMutualAuthState:(const MutualAuthState *)a3 peerIsFinder:(BOOL)a4
+- (void)_processPeerMutualAuthState:(const MutualAuthState *)state peerIsFinder:(BOOL)finder
 {
-  v4 = a4;
-  if (a4)
+  finderCopy = finder;
+  if (finder)
   {
     if ((self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__val_ & 0x1000000) != 0)
     {
@@ -4154,14 +4154,14 @@ LABEL_6:
     v34 = *(v10 + 5);
     v35 = *(v10 + 12);
     *(v10 + 12) = 0;
-    outboundAuthState = a3->outboundAuthState;
+    outboundAuthState = state->outboundAuthState;
     if (outboundAuthState != 1)
     {
       if ((*v10 & 0xFE) != 0xA)
       {
         if ((outboundAuthState & 0xFE) != 0xA)
         {
-          if (a3->outboundResponse && ![(NSData *)a3->outboundChallenge isEqualToData:*v11])
+          if (state->outboundResponse && ![(NSData *)state->outboundChallenge isEqualToData:*v11])
           {
             sub_10028C97C(v10, 0xAu);
             goto LABEL_11;
@@ -4169,16 +4169,16 @@ LABEL_6:
 
           if (*(v10 + 1))
           {
-            if (a3->outboundChallenge && ([*v11 isEqualToData:?] & 1) == 0)
+            if (state->outboundChallenge && ([*v11 isEqualToData:?] & 1) == 0)
             {
-              objc_storeStrong(v10 + 4, a3->outboundChallenge);
+              objc_storeStrong(v10 + 4, state->outboundChallenge);
               sub_10028CA28(v10, v9);
               *v10 = 3;
             }
 
-            if (a3->outboundResponse && ([*(v10 + 5) isEqualToData:?] & 1) == 0)
+            if (state->outboundResponse && ([*(v10 + 5) isEqualToData:?] & 1) == 0)
             {
-              objc_storeStrong(v10 + 5, a3->outboundResponse);
+              objc_storeStrong(v10 + 5, state->outboundResponse);
               if (sub_10028CB30(v10, v9))
               {
                 v22 = 1;
@@ -4192,7 +4192,7 @@ LABEL_6:
               v10[24] = v22;
             }
 
-            inboundAuthState = a3->inboundAuthState;
+            inboundAuthState = state->inboundAuthState;
             if (inboundAuthState == 1)
             {
               v24 = 4;
@@ -4231,8 +4231,8 @@ LABEL_11:
       v13 = qword_1009F9820;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = sub_100009210(v4);
-        v15 = sub_1002877EC(&a3->outboundAuthState);
+        v14 = sub_100009210(finderCopy);
+        v15 = sub_1002877EC(&state->outboundAuthState);
         v25 = 136315394;
         v26 = v14;
         v27 = 2112;
@@ -4243,7 +4243,7 @@ LABEL_11:
       v16 = qword_1009F9820;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = sub_100009210(!v4);
+        v17 = sub_100009210(!finderCopy);
         v18 = sub_1002877EC(v29);
         v25 = 136315394;
         v26 = v17;
@@ -4255,7 +4255,7 @@ LABEL_11:
       v19 = qword_1009F9820;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = sub_100009210(!v4);
+        v20 = sub_100009210(!finderCopy);
         v21 = sub_1002877EC(v10);
         v25 = 136315394;
         v26 = v20;
@@ -4268,7 +4268,7 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  if (!a3->outboundAuthState)
+  if (!state->outboundAuthState)
   {
     return;
   }
@@ -4276,8 +4276,8 @@ LABEL_11:
   v9 = qword_1009F9820;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_100009210(v4);
-    sub_1002877EC(&a3->outboundAuthState);
+    sub_100009210(finderCopy);
+    sub_1002877EC(&state->outboundAuthState);
     objc_claimAutoreleasedReturnValue();
     sub_1004B6D6C();
   }
@@ -4285,9 +4285,9 @@ LABEL_11:
 LABEL_23:
 }
 
-- (void)_armMutualAuthTimerForFinder:(BOOL)a3
+- (void)_armMutualAuthTimerForFinder:(BOOL)finder
 {
-  if (a3)
+  if (finder)
   {
     secondary_scheduling_delay_usec = self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_delay_usec;
     if (secondary_scheduling_delay_usec)
@@ -4310,7 +4310,7 @@ LABEL_23:
     handler[2] = sub_10028D05C;
     handler[3] = &unk_1009A19F0;
     objc_copyWeak(&v26, &location);
-    v27 = a3;
+    finderCopy = finder;
     dispatch_source_set_event_handler(v10, handler);
     dispatch_resume(*&self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_delay_usec);
     self->_finderStartRangingOptions.var0.__val_.secondary_scheduling_interval_usec.var0.__null_state_ = 0;
@@ -4349,7 +4349,7 @@ LABEL_10:
     v22[2] = sub_10028D180;
     v22[3] = &unk_1009A19F0;
     objc_copyWeak(&v23, &location);
-    v24 = a3;
+    finderCopy2 = finder;
     dispatch_source_set_event_handler(*&v20, v22);
     dispatch_resume(*&self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH2);
     self->_findeeAlgorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ = 0;

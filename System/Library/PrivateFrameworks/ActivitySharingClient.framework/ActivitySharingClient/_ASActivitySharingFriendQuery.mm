@@ -1,19 +1,19 @@
 @interface _ASActivitySharingFriendQuery
 - (_ASActivitySharingFriendQuery)init;
-- (_ASActivitySharingFriendQuery)initWithActivitySharingClient:(id)a3 updateHandler:(id)a4;
-- (void)fitnessAppsStateObserver:(id)a3 applicationInstallStateDidChangeForBundleIdentifiers:(id)a4;
+- (_ASActivitySharingFriendQuery)initWithActivitySharingClient:(id)client updateHandler:(id)handler;
+- (void)fitnessAppsStateObserver:(id)observer applicationInstallStateDidChangeForBundleIdentifiers:(id)identifiers;
 - (void)handleFriendListUpdate;
 @end
 
 @implementation _ASActivitySharingFriendQuery
 
-- (_ASActivitySharingFriendQuery)initWithActivitySharingClient:(id)a3 updateHandler:(id)a4
+- (_ASActivitySharingFriendQuery)initWithActivitySharingClient:(id)client updateHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
-  v8 = sub_23E5B6AA8(v7, sub_23E5B6FA8, v6);
+  clientCopy = client;
+  v8 = sub_23E5B6AA8(clientCopy, sub_23E5B6FA8, v6);
 
   return v8;
 }
@@ -21,7 +21,7 @@
 - (void)handleFriendListUpdate
 {
   v2 = qword_280C09100;
-  v4 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -40,9 +40,9 @@
   return result;
 }
 
-- (void)fitnessAppsStateObserver:(id)a3 applicationInstallStateDidChangeForBundleIdentifiers:(id)a4
+- (void)fitnessAppsStateObserver:(id)observer applicationInstallStateDidChangeForBundleIdentifiers:(id)identifiers
 {
-  v4 = self;
+  selfCopy = self;
   _s21ActivitySharingClient0aB11FriendQueryC24fitnessAppsStateObserver_018applicationInstallH29DidChangeForBundleIdentifiersySo09FIFitnessghI0C_SaySSGtF_0();
 }
 

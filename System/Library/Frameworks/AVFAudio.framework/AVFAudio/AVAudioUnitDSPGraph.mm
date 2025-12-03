@@ -1,8 +1,8 @@
 @interface AVAudioUnitDSPGraph
 - (AVAudioUnitDSPGraph)init;
 - (BOOL)loadAudioDSPManager;
-- (BOOL)loadAudioUnitProcessingStripAtURL:(id)a3 error:(id *)a4;
-- (BOOL)loadDSPGraphAtURL:(id)a3 error:(id *)a4;
+- (BOOL)loadAudioUnitProcessingStripAtURL:(id)l error:(id *)error;
+- (BOOL)loadDSPGraphAtURL:(id)l error:(id *)error;
 - (NSURL)auProcessingStripURL;
 - (NSURL)dspGraphURL;
 @end
@@ -107,14 +107,14 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)loadAudioUnitProcessingStripAtURL:(id)a3 error:(id *)a4
+- (BOOL)loadAudioUnitProcessingStripAtURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v14 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:a3 error:a4];
+  v14 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:l error:error];
   if (!v14)
   {
     return 0;
@@ -125,7 +125,7 @@ LABEL_9:
   v7 = v6 == 0;
   if (v6)
   {
-    v8 = a4 == 0;
+    v8 = error == 0;
   }
 
   else
@@ -135,7 +135,7 @@ LABEL_9:
 
   if (!v8)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:v6 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:v6 userInfo:0];
   }
 
   if (v13 == 1)
@@ -151,37 +151,37 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)loadDSPGraphAtURL:(id)a3 error:(id *)a4
+- (BOOL)loadDSPGraphAtURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
-    v6 = [a3 relativePath];
-    if (!v6)
+    *error = 0;
+    relativePath = [l relativePath];
+    if (!relativePath)
     {
       v7 = 0;
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:-50 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:-50 userInfo:0];
       return v7;
     }
   }
 
   else
   {
-    v6 = [a3 relativePath];
-    if (!v6)
+    relativePath = [l relativePath];
+    if (!relativePath)
     {
       return 0;
     }
   }
 
-  v8 = v6;
+  v8 = relativePath;
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v13, self->super.super._impl);
   v12 = v8;
   v9 = (*(*self->super.super._impl + 160))(self->super.super._impl, 1685287015, 0, 0, &v12, 8);
   v7 = v9 == 0;
   if (v9)
   {
-    v10 = a4 == 0;
+    v10 = error == 0;
   }
 
   else
@@ -191,7 +191,7 @@ LABEL_9:
 
   if (!v10)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:v9 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreaudio.avfaudio" code:v9 userInfo:0];
   }
 
   if (v16 == 1)

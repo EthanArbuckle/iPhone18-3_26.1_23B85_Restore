@@ -1,47 +1,47 @@
 @interface NTKCompanionSyncedComplication
 - (NSString)localizedName;
-- (NTKCompanionSyncedComplication)initWithRemoteApplication:(id)a3 descriptor:(id)a4;
+- (NTKCompanionSyncedComplication)initWithRemoteApplication:(id)application descriptor:(id)descriptor;
 @end
 
 @implementation NTKCompanionSyncedComplication
 
-- (NTKCompanionSyncedComplication)initWithRemoteApplication:(id)a3 descriptor:(id)a4
+- (NTKCompanionSyncedComplication)initWithRemoteApplication:(id)application descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  descriptorCopy = descriptor;
   v21.receiver = self;
   v21.super_class = NTKCompanionSyncedComplication;
   v8 = [(NTKCompanionSyncedComplication *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_descriptor, a4);
-    v10 = [v6 watchKitAppExtensionBundleID];
-    v11 = v10;
-    if (v10)
+    objc_storeStrong(&v8->_descriptor, descriptor);
+    watchKitAppExtensionBundleID = [applicationCopy watchKitAppExtensionBundleID];
+    v11 = watchKitAppExtensionBundleID;
+    if (watchKitAppExtensionBundleID)
     {
-      v12 = v10;
+      bundleIdentifier = watchKitAppExtensionBundleID;
     }
 
     else
     {
-      v12 = [v6 bundleIdentifier];
+      bundleIdentifier = [applicationCopy bundleIdentifier];
     }
 
     clientIdentifier = v9->_clientIdentifier;
-    v9->_clientIdentifier = v12;
+    v9->_clientIdentifier = bundleIdentifier;
 
-    v14 = [v6 bundleIdentifier];
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
     appBundleIdentifier = v9->_appBundleIdentifier;
-    v9->_appBundleIdentifier = v14;
+    v9->_appBundleIdentifier = bundleIdentifier2;
 
-    v16 = [v6 companionAppBundleID];
+    companionAppBundleID = [applicationCopy companionAppBundleID];
     companionBundleIdentifier = v9->_companionBundleIdentifier;
-    v9->_companionBundleIdentifier = v16;
+    v9->_companionBundleIdentifier = companionAppBundleID;
 
-    v18 = [v6 applicationName];
+    applicationName = [applicationCopy applicationName];
     fallbackName = v9->_fallbackName;
-    v9->_fallbackName = v18;
+    v9->_fallbackName = applicationName;
   }
 
   return v9;
@@ -72,7 +72,7 @@
       *buf = 138412802;
       v18 = v15;
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v9;
       _os_log_error_impl(&dword_22D9C5000, v13, OS_LOG_TYPE_ERROR, "Manager could not find record with bundle ID %@ for complication %@ - %{public}@", buf, 0x20u);
@@ -81,15 +81,15 @@
     goto LABEL_7;
   }
 
-  v10 = [v8 localizedName];
+  localizedName = [v8 localizedName];
   v11 = *p_localizedName;
-  *p_localizedName = v10;
+  *p_localizedName = localizedName;
 
   if (![*p_localizedName length])
   {
-    v12 = [v8 localizedShortName];
+    localizedShortName = [v8 localizedShortName];
     v13 = *p_localizedName;
-    *p_localizedName = v12;
+    *p_localizedName = localizedShortName;
 LABEL_7:
   }
 

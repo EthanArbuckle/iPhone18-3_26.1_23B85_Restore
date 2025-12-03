@@ -1,11 +1,11 @@
 @interface CapturedInvocationTrampoline
-- (CapturedInvocationTrampoline)initWithTarget:(id)a3 outInvocation:(id *)a4;
-- (void)forwardInvocation:(id)a3;
+- (CapturedInvocationTrampoline)initWithTarget:(id)target outInvocation:(id *)invocation;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CapturedInvocationTrampoline
 
-- (CapturedInvocationTrampoline)initWithTarget:(id)a3 outInvocation:(id *)a4
+- (CapturedInvocationTrampoline)initWithTarget:(id)target outInvocation:(id *)invocation
 {
   v9.receiver = self;
   v9.super_class = CapturedInvocationTrampoline;
@@ -13,20 +13,20 @@
   v7 = v6;
   if (v6)
   {
-    [(InvocationTrampoline *)v6 setTarget:a3];
-    v7->_outInvocation = a4;
+    [(InvocationTrampoline *)v6 setTarget:target];
+    v7->_outInvocation = invocation;
   }
 
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 setTarget:{-[InvocationTrampoline target](self, "target")}];
+  [invocation setTarget:{-[InvocationTrampoline target](self, "target")}];
   outInvocation = self->_outInvocation;
   if (outInvocation)
   {
-    *outInvocation = a3;
+    *outInvocation = invocation;
   }
 }
 

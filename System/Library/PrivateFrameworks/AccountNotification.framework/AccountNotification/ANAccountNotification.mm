@@ -1,93 +1,93 @@
 @interface ANAccountNotification
-- (ANAccountNotification)initWithCoder:(id)a3;
-- (ANAccountNotification)initWithDictionaryRepresentation:(id)a3;
-- (ANAccountNotification)initWithManagedObject:(id)a3;
+- (ANAccountNotification)initWithCoder:(id)coder;
+- (ANAccountNotification)initWithDictionaryRepresentation:(id)representation;
+- (ANAccountNotification)initWithManagedObject:(id)object;
 - (id)dictionaryRepresentation;
-- (id)initForAccountWithType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initForAccountWithType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANAccountNotification
 
-- (id)initForAccountWithType:(id)a3
+- (id)initForAccountWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = ANAccountNotification;
   v5 = [(ANAccountNotification *)&v12 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [typeCopy identifier];
     accountTypeID = v5->_accountTypeID;
-    v5->_accountTypeID = v6;
+    v5->_accountTypeID = identifier;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v5->_identifier;
-    v5->_identifier = v9;
+    v5->_identifier = uUIDString;
   }
 
   return v5;
 }
 
-- (ANAccountNotification)initWithManagedObject:(id)a3
+- (ANAccountNotification)initWithManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v34.receiver = self;
   v34.super_class = ANAccountNotification;
   v5 = [(ANAccountNotification *)&v34 init];
   if (v5)
   {
-    v6 = [v4 accountTypeID];
+    accountTypeID = [objectCopy accountTypeID];
     accountTypeID = v5->_accountTypeID;
-    v5->_accountTypeID = v6;
+    v5->_accountTypeID = accountTypeID;
 
-    v8 = [v4 identifier];
+    identifier = [objectCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v8;
+    v5->_identifier = identifier;
 
-    v10 = [v4 callbackMachServiceName];
+    callbackMachServiceName = [objectCopy callbackMachServiceName];
     callbackMachService = v5->_callbackMachService;
-    v5->_callbackMachService = v10;
+    v5->_callbackMachService = callbackMachServiceName;
 
-    v12 = [v4 title];
+    title = [objectCopy title];
     title = v5->_title;
-    v5->_title = v12;
+    v5->_title = title;
 
-    v14 = [v4 message];
+    message = [objectCopy message];
     message = v5->_message;
-    v5->_message = v14;
+    v5->_message = message;
 
-    v16 = [v4 date];
+    date = [objectCopy date];
     date = v5->_date;
-    v5->_date = v16;
+    v5->_date = date;
 
-    v18 = [v4 userInfo];
+    userInfo = [objectCopy userInfo];
     userInfo = v5->_userInfo;
-    v5->_userInfo = v18;
+    v5->_userInfo = userInfo;
 
-    v20 = [v4 eventID];
+    eventID = [objectCopy eventID];
     eventIdentifier = v5->_eventIdentifier;
-    v5->_eventIdentifier = v20;
+    v5->_eventIdentifier = eventID;
 
-    v22 = [v4 activateAction];
+    activateAction = [objectCopy activateAction];
 
-    if (v22)
+    if (activateAction)
     {
       v23 = [ANNotificationAction alloc];
-      v24 = [v4 activateAction];
-      v25 = [(ANNotificationAction *)v23 initWithManagedObject:v24];
+      activateAction2 = [objectCopy activateAction];
+      v25 = [(ANNotificationAction *)v23 initWithManagedObject:activateAction2];
       activateAction = v5->_activateAction;
       v5->_activateAction = v25;
     }
 
-    v27 = [v4 dismissAction];
+    dismissAction = [objectCopy dismissAction];
 
-    if (v27)
+    if (dismissAction)
     {
       v28 = [ANNotificationAction alloc];
-      v29 = [v4 dismissAction];
-      v30 = [(ANNotificationAction *)v28 initWithManagedObject:v29];
+      dismissAction2 = [objectCopy dismissAction];
+      v30 = [(ANNotificationAction *)v28 initWithManagedObject:dismissAction2];
       dismissAction = v5->_dismissAction;
       v5->_dismissAction = v30;
     }
@@ -98,47 +98,47 @@
   return v32;
 }
 
-- (ANAccountNotification)initWithCoder:(id)a3
+- (ANAccountNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = ANAccountNotification;
   v5 = [(ANAccountNotification *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountTypeID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountTypeID"];
     accountTypeID = v5->_accountTypeID;
     v5->_accountTypeID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventIdentifier"];
     eventIdentifier = v5->_eventIdentifier;
     v5->_eventIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
     message = v5->_message;
     v5->_message = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
     date = v5->_date;
     v5->_date = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_callbackMachService"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_callbackMachService"];
     callbackMachService = v5->_callbackMachService;
     v5->_callbackMachService = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_activateAction"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_activateAction"];
     activateAction = v5->_activateAction;
     v5->_activateAction = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dismissAction"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dismissAction"];
     dismissAction = v5->_dismissAction;
     v5->_dismissAction = v22;
 
@@ -149,82 +149,82 @@
     v28 = objc_opt_class();
     v29 = objc_opt_class();
     v30 = [v24 setWithObjects:{v25, v26, v27, v28, v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"_userInfo"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"_userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v31;
 
-    v5->_destinations = [v4 decodeIntegerForKey:@"_destinations"];
-    v5->_sectionSubtype = [v4 decodeIntegerForKey:@"_sectionSubtype"];
+    v5->_destinations = [coderCopy decodeIntegerForKey:@"_destinations"];
+    v5->_sectionSubtype = [coderCopy decodeIntegerForKey:@"_sectionSubtype"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountTypeID = self->_accountTypeID;
-  v5 = a3;
-  [v5 encodeObject:accountTypeID forKey:@"_accountTypeID"];
-  [v5 encodeObject:self->_eventIdentifier forKey:@"_eventIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_message forKey:@"_message"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_date forKey:@"_date"];
-  [v5 encodeObject:self->_callbackMachService forKey:@"_callbackMachService"];
-  [v5 encodeObject:self->_activateAction forKey:@"_activateAction"];
-  [v5 encodeObject:self->_dismissAction forKey:@"_dismissAction"];
-  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
-  [v5 encodeInteger:self->_destinations forKey:@"_destinations"];
-  [v5 encodeInteger:self->_sectionSubtype forKey:@"_sectionSubtype"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountTypeID forKey:@"_accountTypeID"];
+  [coderCopy encodeObject:self->_eventIdentifier forKey:@"_eventIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_message forKey:@"_message"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_date forKey:@"_date"];
+  [coderCopy encodeObject:self->_callbackMachService forKey:@"_callbackMachService"];
+  [coderCopy encodeObject:self->_activateAction forKey:@"_activateAction"];
+  [coderCopy encodeObject:self->_dismissAction forKey:@"_dismissAction"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
+  [coderCopy encodeInteger:self->_destinations forKey:@"_destinations"];
+  [coderCopy encodeInteger:self->_sectionSubtype forKey:@"_sectionSubtype"];
 }
 
-- (ANAccountNotification)initWithDictionaryRepresentation:(id)a3
+- (ANAccountNotification)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v31.receiver = self;
   v31.super_class = ANAccountNotification;
   v5 = [(ANAccountNotification *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"_accountTypeID"];
+    v6 = [representationCopy objectForKeyedSubscript:@"_accountTypeID"];
     accountTypeID = v5->_accountTypeID;
     v5->_accountTypeID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"_eventIdentifier"];
+    v8 = [representationCopy objectForKeyedSubscript:@"_eventIdentifier"];
     eventIdentifier = v5->_eventIdentifier;
     v5->_eventIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"_identifier"];
+    v10 = [representationCopy objectForKeyedSubscript:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"_title"];
+    v12 = [representationCopy objectForKeyedSubscript:@"_title"];
     title = v5->_title;
     v5->_title = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"_message"];
+    v14 = [representationCopy objectForKeyedSubscript:@"_message"];
     message = v5->_message;
     v5->_message = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"_date"];
+    v16 = [representationCopy objectForKeyedSubscript:@"_date"];
     date = v5->_date;
     v5->_date = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"_callbackMachService"];
+    v18 = [representationCopy objectForKeyedSubscript:@"_callbackMachService"];
     callbackMachService = v5->_callbackMachService;
     v5->_callbackMachService = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"_userInfo"];
+    v20 = [representationCopy objectForKeyedSubscript:@"_userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"_destinations"];
+    v22 = [representationCopy objectForKeyedSubscript:@"_destinations"];
     v5->_destinations = [v22 integerValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"_sectionSubtype"];
+    v23 = [representationCopy objectForKeyedSubscript:@"_sectionSubtype"];
     v5->_sectionSubtype = [v23 integerValue];
 
-    v24 = [v4 objectForKeyedSubscript:@"_activateAction"];
+    v24 = [representationCopy objectForKeyedSubscript:@"_activateAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -233,7 +233,7 @@
       v5->_activateAction = v25;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"_dismissAction"];
+    v27 = [representationCopy objectForKeyedSubscript:@"_dismissAction"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -264,11 +264,11 @@
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_sectionSubtype];
   [v3 setObject:v5 forKeyedSubscript:@"_sectionSubtype"];
 
-  v6 = [(ANNotificationAction *)self->_activateAction dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"_activateAction"];
+  dictionaryRepresentation = [(ANNotificationAction *)self->_activateAction dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"_activateAction"];
 
-  v7 = [(ANNotificationAction *)self->_dismissAction dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"_dismissAction"];
+  dictionaryRepresentation2 = [(ANNotificationAction *)self->_dismissAction dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"_dismissAction"];
 
   v8 = [v3 copy];
 

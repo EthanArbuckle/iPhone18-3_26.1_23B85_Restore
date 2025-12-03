@@ -1,25 +1,25 @@
 @interface LTSStatsStore
-+ (BOOL)writeDictionary:(id)a3 toFile:(id)a4;
++ (BOOL)writeDictionary:(id)dictionary toFile:(id)file;
 + (id)getBootUUID;
 + (id)getPrevStatsSinceBoot;
-+ (id)readFromFile:(id)a3;
-+ (void)saveStatsSinceBoot:(id)a3;
++ (id)readFromFile:(id)file;
++ (void)saveStatsSinceBoot:(id)boot;
 - (id)getDeviceSerialNumber;
 - (id)getLifetimeStats;
-- (id)getLifetimeStatsForVersion:(unint64_t)a3;
-- (id)getfileNameForChannel:(id)a3;
-- (id)initForChannel:(id)a3;
-- (void)saveLifetimeStats:(id)a3 forVersion:(unint64_t)a4;
-- (void)setChannelExistsForChannel:(id)a3;
+- (id)getLifetimeStatsForVersion:(unint64_t)version;
+- (id)getfileNameForChannel:(id)channel;
+- (id)initForChannel:(id)channel;
+- (void)saveLifetimeStats:(id)stats forVersion:(unint64_t)version;
+- (void)setChannelExistsForChannel:(id)channel;
 @end
 
 @implementation LTSStatsStore
 
-- (id)getfileNameForChannel:(id)a3
+- (id)getfileNameForChannel:(id)channel
 {
   v4 = off_100014948;
   v5 = 14;
-  while (![a3 isEqualToString:*(v4 - 1)])
+  while (![channel isEqualToString:*(v4 - 1)])
   {
     v4 += 4;
     if (!--v5)
@@ -35,11 +35,11 @@ LABEL_6:
   return v6;
 }
 
-- (void)setChannelExistsForChannel:(id)a3
+- (void)setChannelExistsForChannel:(id)channel
 {
   v4 = off_100014940;
   v5 = 14;
-  while (![a3 isEqualToString:*v4])
+  while (![channel isEqualToString:*v4])
   {
     v4 += 4;
     if (!--v5)
@@ -76,20 +76,20 @@ LABEL_6:
   return v3;
 }
 
-- (id)initForChannel:(id)a3
+- (id)initForChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v20.receiver = self;
   v20.super_class = LTSStatsStore;
   v5 = [(LTSStatsStore *)&v20 init];
-  [(LTSStatsStore *)v5 setChannelExistsForChannel:v4];
-  v6 = [(LTSStatsStore *)v5 getfileNameForChannel:v4];
+  [(LTSStatsStore *)v5 setChannelExistsForChannel:channelCopy];
+  v6 = [(LTSStatsStore *)v5 getfileNameForChannel:channelCopy];
   fileName = v5->_fileName;
   v5->_fileName = v6;
 
   if (v5->_fileName)
   {
-    v8 = [(LTSStatsStore *)v5 getDeviceSerialNumber];
+    getDeviceSerialNumber = [(LTSStatsStore *)v5 getDeviceSerialNumber];
     v9 = [LTSStatsStore readFromFile:v5->_fileName];
     lts = v5->_lts;
     v5->_lts = v9;
@@ -99,7 +99,7 @@ LABEL_6:
     {
       v12 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:@"Serial"];
       v13 = v12;
-      if (!v12 || [v12 compare:v8])
+      if (!v12 || [v12 compare:getDeviceSerialNumber])
       {
         if (os_log_type_enabled(off_100014B00, OS_LOG_TYPE_ERROR))
         {
@@ -110,7 +110,7 @@ LABEL_6:
         v15 = v5->_lts;
         v5->_lts = v14;
 
-        [(NSMutableDictionary *)v5->_lts setObject:v8 forKeyedSubscript:@"Serial"];
+        [(NSMutableDictionary *)v5->_lts setObject:getDeviceSerialNumber forKeyedSubscript:@"Serial"];
       }
     }
 
@@ -120,7 +120,7 @@ LABEL_6:
       v17 = v5->_lts;
       v5->_lts = v16;
 
-      [(NSMutableDictionary *)v5->_lts setObject:v8 forKeyedSubscript:@"Serial"];
+      [(NSMutableDictionary *)v5->_lts setObject:getDeviceSerialNumber forKeyedSubscript:@"Serial"];
     }
 
     if (v5->_lts)
@@ -144,14 +144,14 @@ LABEL_6:
   return v18;
 }
 
-+ (BOOL)writeDictionary:(id)a3 toFile:(id)a4
++ (BOOL)writeDictionary:(id)dictionary toFile:(id)file
 {
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  fileCopy = file;
   v7 = [NSMutableString stringWithString:@"/var/db/SoC/"];
   v8 = +[NSFileManager defaultManager];
   v26 = 0;
-  [v7 appendString:v6];
+  [v7 appendString:fileCopy];
   v29 = NSFileProtectionKey;
   v30 = NSFileProtectionCompleteUntilFirstUserAuthentication;
   v9 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
@@ -162,7 +162,7 @@ LABEL_6:
   if ([v8 fileExistsAtPath:@"/var/db/SoC/" isDirectory:&v26] && v26 == 1)
   {
     [NSOutputStream outputStreamToFileAtPath:v7 append:0];
-    v12 = v11 = v5;
+    v12 = v11 = dictionaryCopy;
     [v12 open];
     v24 = 0;
     v21 = v11;
@@ -183,7 +183,7 @@ LABEL_6:
       v18 = off_100014B00;
       if (v16)
       {
-        v5 = v21;
+        dictionaryCopy = v21;
         if (os_log_type_enabled(off_100014B00, OS_LOG_TYPE_DEBUG))
         {
           sub_100008284(v7, v13, v18);
@@ -194,7 +194,7 @@ LABEL_6:
 
       else
       {
-        v5 = v21;
+        dictionaryCopy = v21;
         if (os_log_type_enabled(off_100014B00, OS_LOG_TYPE_ERROR))
         {
           sub_10000821C();
@@ -214,7 +214,7 @@ LABEL_6:
       }
 
       v19 = 0;
-      v5 = v21;
+      dictionaryCopy = v21;
     }
 
     v10 = v14;
@@ -233,11 +233,11 @@ LABEL_6:
   return v19;
 }
 
-+ (id)readFromFile:(id)a3
++ (id)readFromFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = [NSMutableString stringWithString:@"/var/db/SoC/"];
-  [v4 appendString:v3];
+  [v4 appendString:fileCopy];
 
   v5 = [NSInputStream inputStreamWithFileAtPath:v4];
   [v5 open];
@@ -273,16 +273,16 @@ LABEL_6:
   return v3;
 }
 
-- (id)getLifetimeStatsForVersion:(unint64_t)a3
+- (id)getLifetimeStatsForVersion:(unint64_t)version
 {
   v5 = [(NSMutableDictionary *)self->_lts objectForKeyedSubscript:@"version"];
   v6 = v5;
-  if (v5 && [(NSString *)v5 unsignedLongLongValue]== a3)
+  if (v5 && [(NSString *)v5 unsignedLongLongValue]== version)
   {
-    v7 = [(LTSStatsStore *)self getLifetimeStats];
-    v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
+    getLifetimeStats = [(LTSStatsStore *)self getLifetimeStats];
+    v8 = [NSMutableDictionary dictionaryWithDictionary:getLifetimeStats];
     v9 = v8;
-    if (v7)
+    if (getLifetimeStats)
     {
       goto LABEL_11;
     }
@@ -297,7 +297,7 @@ LABEL_6:
       v15 = 138543874;
       v16 = v6;
       v17 = 2048;
-      v18 = a3;
+      versionCopy = version;
       v19 = 2114;
       v20 = fileName;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "LTS on-disk version(%{public}@) doesn't match with current version(%lld) for domain %{public}@\n", &v15, 0x20u);
@@ -319,18 +319,18 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Returning empty dictionary for lifetime stats of domain %{public}@", &v15, 0xCu);
   }
 
-  v7 = 0;
+  getLifetimeStats = 0;
 LABEL_11:
 
   return v9;
 }
 
-- (void)saveLifetimeStats:(id)a3 forVersion:(unint64_t)a4
+- (void)saveLifetimeStats:(id)stats forVersion:(unint64_t)version
 {
-  v6 = a3;
-  v7 = [NSNumber numberWithUnsignedLongLong:a4];
+  statsCopy = stats;
+  v7 = [NSNumber numberWithUnsignedLongLong:version];
   [(NSMutableDictionary *)self->_lts setObject:v7 forKey:@"version"];
-  [(NSMutableDictionary *)self->_lts setObject:v6 forKey:@"LifetimeStats"];
+  [(NSMutableDictionary *)self->_lts setObject:statsCopy forKey:@"LifetimeStats"];
 
   [LTSStatsStore writeDictionary:self->_lts toFile:self->_fileName];
   v8 = off_100014B00;
@@ -368,14 +368,14 @@ LABEL_11:
   return v5;
 }
 
-+ (void)saveStatsSinceBoot:(id)a3
++ (void)saveStatsSinceBoot:(id)boot
 {
-  v3 = a3;
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  bootCopy = boot;
+  v4 = [NSMutableDictionary dictionaryWithDictionary:bootCopy];
   v5 = +[LTSStatsStore getBootUUID];
   if (v5)
   {
-    [v4 setObject:v3 forKey:@"PrevStatsSinceBoot"];
+    [v4 setObject:bootCopy forKey:@"PrevStatsSinceBoot"];
     [v4 setObject:v5 forKey:@"bootuuid"];
     [LTSStatsStore writeDictionary:v4 toFile:@"lts.statssinceboot.plist"];
   }

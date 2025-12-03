@@ -1,35 +1,35 @@
 @interface ATXWidgetDescriptorCache
 + (id)sharedInstance;
 - (ATXWidgetDescriptorCache)init;
-- (ATXWidgetDescriptorCache)initWithCachePath:(id)a3 legacyCachePath:(id)a4;
-- (ATXWidgetDescriptorCache)initWithProvider:(id)a3 cachePath:(id)a4 legacyCachePath:(id)a5;
-- (BOOL)_queue_writeAllDescriptorMetadata:(id)a3 error:(id *)a4;
+- (ATXWidgetDescriptorCache)initWithCachePath:(id)path legacyCachePath:(id)cachePath;
+- (ATXWidgetDescriptorCache)initWithProvider:(id)provider cachePath:(id)path legacyCachePath:(id)cachePath;
+- (BOOL)_queue_writeAllDescriptorMetadata:(id)metadata error:(id *)error;
 - (NSSet)allWidgetDescriptorsAllowedOnLockscreen;
 - (NSSet)complicationWidgetDescriptors;
 - (NSSet)homeScreenDescriptors;
 - (NSSet)inlineComplicationWidgetDescriptors;
 - (NSSet)landscapeModularComplicationWidgetDescriptors;
 - (NSSet)modularComplicationWidgetDescriptors;
-- (id)_fetchAccessoryWidgetDescriptorMetadataOnInternalQueueWithError:(id *)a3;
-- (id)_fetchHomeScreenWidgetDescriptorMetadataOnInternalQueueWithError:(id *)a3;
-- (id)_mergeNewDescriptorsWithCachedMetadataOnInternalQueue:(id)a3 descriptors:(id)a4;
+- (id)_fetchAccessoryWidgetDescriptorMetadataOnInternalQueueWithError:(id *)error;
+- (id)_fetchHomeScreenWidgetDescriptorMetadataOnInternalQueueWithError:(id *)error;
+- (id)_mergeNewDescriptorsWithCachedMetadataOnInternalQueue:(id)queue descriptors:(id)descriptors;
 - (id)_queue_allVisibleDescriptors;
-- (id)_queue_fetchAllDescriptorMetadataWithError:(id *)a3;
-- (id)_queue_fetchAllLegacyDescriptorMetadataWithError:(id *)a3;
+- (id)_queue_fetchAllDescriptorMetadataWithError:(id *)error;
+- (id)_queue_fetchAllLegacyDescriptorMetadataWithError:(id *)error;
 - (id)_queue_homeScreenWidgetDescriptors;
 - (id)_updateAllDescriptorMetadataOnInternalQueue;
-- (id)fetchAccessoryWidgetDescriptorMetadataWithError:(id *)a3;
-- (id)fetchHomeScreenWidgetDescriptorMetadataWithError:(id *)a3;
-- (id)homeScreenDescriptorForContainerBundleId:(id)a3 widgetKind:(id)a4;
-- (id)homeScreenDescriptorForExtensionBundleId:(id)a3 kind:(id)a4;
-- (id)homeScreenDescriptorForIntent:(id)a3;
-- (id)homeScreenDescriptorForWidget:(id)a3;
-- (void)_queue_descriptorsDidChangeForDescriptorProvider:(id)a3;
+- (id)fetchAccessoryWidgetDescriptorMetadataWithError:(id *)error;
+- (id)fetchHomeScreenWidgetDescriptorMetadataWithError:(id *)error;
+- (id)homeScreenDescriptorForContainerBundleId:(id)id widgetKind:(id)kind;
+- (id)homeScreenDescriptorForExtensionBundleId:(id)id kind:(id)kind;
+- (id)homeScreenDescriptorForIntent:(id)intent;
+- (id)homeScreenDescriptorForWidget:(id)widget;
+- (void)_queue_descriptorsDidChangeForDescriptorProvider:(id)provider;
 - (void)_updateDescriptorMappings;
 - (void)dealloc;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXWidgetDescriptorCache
@@ -64,10 +64,10 @@ uint64_t __42__ATXWidgetDescriptorCache_sharedInstance__block_invoke()
   return v5;
 }
 
-- (ATXWidgetDescriptorCache)initWithCachePath:(id)a3 legacyCachePath:(id)a4
+- (ATXWidgetDescriptorCache)initWithCachePath:(id)path legacyCachePath:(id)cachePath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  cachePathCopy = cachePath;
   if ([MEMORY[0x1E698AFE8] widgetSuggestionsEnabled])
   {
     v8 = [objc_alloc(MEMORY[0x1E6994390]) initIncludingIntents:0];
@@ -78,16 +78,16 @@ uint64_t __42__ATXWidgetDescriptorCache_sharedInstance__block_invoke()
     v8 = 0;
   }
 
-  v9 = [(ATXWidgetDescriptorCache *)self initWithProvider:v8 cachePath:v6 legacyCachePath:v7];
+  v9 = [(ATXWidgetDescriptorCache *)self initWithProvider:v8 cachePath:pathCopy legacyCachePath:cachePathCopy];
 
   return v9;
 }
 
-- (ATXWidgetDescriptorCache)initWithProvider:(id)a3 cachePath:(id)a4 legacyCachePath:(id)a5
+- (ATXWidgetDescriptorCache)initWithProvider:(id)provider cachePath:(id)path legacyCachePath:(id)cachePath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  pathCopy = path;
+  cachePathCopy = cachePath;
   v36.receiver = self;
   v36.super_class = ATXWidgetDescriptorCache;
   v11 = [(ATXWidgetDescriptorCache *)&v36 init];
@@ -103,11 +103,11 @@ uint64_t __42__ATXWidgetDescriptorCache_sharedInstance__block_invoke()
     observerQueue = v11->_observerQueue;
     v11->_observerQueue = v16;
 
-    v18 = [v9 copy];
+    v18 = [pathCopy copy];
     cachePath = v11->_cachePath;
     v11->_cachePath = v18;
 
-    v20 = [v10 copy];
+    v20 = [cachePathCopy copy];
     legacyCachePath = v11->_legacyCachePath;
     v11->_legacyCachePath = v20;
 
@@ -133,7 +133,7 @@ uint64_t __42__ATXWidgetDescriptorCache_sharedInstance__block_invoke()
     v30[2] = __71__ATXWidgetDescriptorCache_initWithProvider_cachePath_legacyCachePath___block_invoke_29;
     v30[3] = &unk_1E80C0958;
     v31 = v11;
-    v32 = v8;
+    v32 = providerCopy;
     dispatch_async(v28, v30);
 
     objc_destroyWeak(&v34);
@@ -215,31 +215,31 @@ LABEL_7:
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__ATXWidgetDescriptorCache_registerObserver___block_invoke;
   v7[3] = &unk_1E80C0958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ATXWidgetDescriptorCache_unregisterObserver___block_invoke;
   v7[3] = &unk_1E80C0958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -289,7 +289,7 @@ uint64_t __49__ATXWidgetDescriptorCache_homeScreenDescriptors__block_invoke(uint
 - (NSSet)allWidgetDescriptorsAllowedOnLockscreen
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v4 = objc_opt_new();
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -297,7 +297,7 @@ uint64_t __49__ATXWidgetDescriptorCache_homeScreenDescriptors__block_invoke(uint
   block[2] = __67__ATXWidgetDescriptorCache_allWidgetDescriptorsAllowedOnLockscreen__block_invoke;
   block[3] = &unk_1E80C14B8;
   block[4] = self;
-  v14 = v3;
+  v14 = isiPad;
   v6 = v4;
   v13 = v6;
   dispatch_sync(internalQueue, block);
@@ -364,7 +364,7 @@ void __67__ATXWidgetDescriptorCache_allWidgetDescriptorsAllowedOnLockscreen__blo
 - (NSSet)complicationWidgetDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v4 = objc_opt_new();
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -372,7 +372,7 @@ void __67__ATXWidgetDescriptorCache_allWidgetDescriptorsAllowedOnLockscreen__blo
   block[2] = __57__ATXWidgetDescriptorCache_complicationWidgetDescriptors__block_invoke;
   block[3] = &unk_1E80C14B8;
   block[4] = self;
-  v14 = v3;
+  v14 = isiPad;
   v6 = v4;
   v13 = v6;
   dispatch_sync(internalQueue, block);
@@ -439,7 +439,7 @@ void __57__ATXWidgetDescriptorCache_complicationWidgetDescriptors__block_invoke(
 - (NSSet)modularComplicationWidgetDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v4 = objc_opt_new();
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -447,7 +447,7 @@ void __57__ATXWidgetDescriptorCache_complicationWidgetDescriptors__block_invoke(
   block[2] = __64__ATXWidgetDescriptorCache_modularComplicationWidgetDescriptors__block_invoke;
   block[3] = &unk_1E80C14B8;
   block[4] = self;
-  v14 = v3;
+  v14 = isiPad;
   v6 = v4;
   v13 = v6;
   dispatch_sync(internalQueue, block);
@@ -514,7 +514,7 @@ void __64__ATXWidgetDescriptorCache_modularComplicationWidgetDescriptors__block_
 - (NSSet)landscapeModularComplicationWidgetDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v4 = objc_opt_new();
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -522,7 +522,7 @@ void __64__ATXWidgetDescriptorCache_modularComplicationWidgetDescriptors__block_
   block[2] = __73__ATXWidgetDescriptorCache_landscapeModularComplicationWidgetDescriptors__block_invoke;
   block[3] = &unk_1E80C14B8;
   block[4] = self;
-  v14 = v3;
+  v14 = isiPad;
   v6 = v4;
   v13 = v6;
   dispatch_sync(internalQueue, block);
@@ -589,7 +589,7 @@ void __73__ATXWidgetDescriptorCache_landscapeModularComplicationWidgetDescriptor
 - (NSSet)inlineComplicationWidgetDescriptors
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C5CF8] isiPad];
+  isiPad = [MEMORY[0x1E69C5CF8] isiPad];
   v4 = objc_opt_new();
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -597,7 +597,7 @@ void __73__ATXWidgetDescriptorCache_landscapeModularComplicationWidgetDescriptor
   block[2] = __63__ATXWidgetDescriptorCache_inlineComplicationWidgetDescriptors__block_invoke;
   block[3] = &unk_1E80C14B8;
   block[4] = self;
-  v14 = v3;
+  v14 = isiPad;
   v6 = v4;
   v13 = v6;
   dispatch_sync(internalQueue, block);
@@ -695,8 +695,8 @@ BOOL __56__ATXWidgetDescriptorCache__queue_allVisibleDescriptors__block_invoke(u
 - (id)_queue_homeScreenWidgetDescriptors
 {
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [(ATXWidgetDescriptorCache *)self _queue_allVisibleDescriptors];
-  v4 = [v3 _pas_filteredSetWithTest:&__block_literal_global_37_1];
+  _queue_allVisibleDescriptors = [(ATXWidgetDescriptorCache *)self _queue_allVisibleDescriptors];
+  v4 = [_queue_allVisibleDescriptors _pas_filteredSetWithTest:&__block_literal_global_37_1];
 
   return v4;
 }
@@ -715,16 +715,16 @@ BOOL __56__ATXWidgetDescriptorCache__queue_allVisibleDescriptors__block_invoke(u
   [(ATXWidgetDescriptorCache *)&v4 dealloc];
 }
 
-- (id)homeScreenDescriptorForIntent:(id)a3
+- (id)homeScreenDescriptorForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 launchId];
+  intentCopy = intent;
+  launchId = [intentCopy launchId];
 
-  if (v5)
+  if (launchId)
   {
-    v6 = [v4 launchId];
-    v7 = [v4 atx_intentType];
-    v8 = keyForStrings(v6, v7);
+    launchId2 = [intentCopy launchId];
+    atx_intentType = [intentCopy atx_intentType];
+    v8 = keyForStrings(launchId2, atx_intentType);
 
     v17 = 0;
     v18 = &v17;
@@ -779,10 +779,10 @@ void __58__ATXWidgetDescriptorCache_homeScreenDescriptorForIntent___block_invoke
   }
 }
 
-- (id)homeScreenDescriptorForContainerBundleId:(id)a3 widgetKind:(id)a4
+- (id)homeScreenDescriptorForContainerBundleId:(id)id widgetKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  kindCopy = kind;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -794,12 +794,12 @@ void __58__ATXWidgetDescriptorCache_homeScreenDescriptorForIntent___block_invoke
   v13[1] = 3221225472;
   v13[2] = __80__ATXWidgetDescriptorCache_homeScreenDescriptorForContainerBundleId_widgetKind___block_invoke;
   v13[3] = &unk_1E80C5AA0;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = idCopy;
+  v15 = kindCopy;
+  selfCopy = self;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
+  v9 = kindCopy;
+  v10 = idCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v19[5];
 
@@ -828,31 +828,31 @@ void __80__ATXWidgetDescriptorCache_homeScreenDescriptorForContainerBundleId_wid
   }
 }
 
-- (id)homeScreenDescriptorForWidget:(id)a3
+- (id)homeScreenDescriptorForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 appBundleId];
-  v6 = [v4 widgetKind];
+  widgetCopy = widget;
+  appBundleId = [widgetCopy appBundleId];
+  widgetKind = [widgetCopy widgetKind];
 
-  v7 = [(ATXWidgetDescriptorCache *)self homeScreenDescriptorForContainerBundleId:v5 widgetKind:v6];
+  v7 = [(ATXWidgetDescriptorCache *)self homeScreenDescriptorForContainerBundleId:appBundleId widgetKind:widgetKind];
 
   return v7;
 }
 
-- (id)homeScreenDescriptorForExtensionBundleId:(id)a3 kind:(id)a4
+- (id)homeScreenDescriptorForExtensionBundleId:(id)id kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXWidgetDescriptorCache *)self homeScreenDescriptors];
+  idCopy = id;
+  kindCopy = kind;
+  homeScreenDescriptors = [(ATXWidgetDescriptorCache *)self homeScreenDescriptors];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId_kind___block_invoke;
   v13[3] = &unk_1E80C5AC8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 bs_firstObjectPassingTest:v13];
+  v14 = idCopy;
+  v15 = kindCopy;
+  v9 = kindCopy;
+  v10 = idCopy;
+  v11 = [homeScreenDescriptors bs_firstObjectPassingTest:v13];
 
   return v11;
 }
@@ -876,11 +876,11 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
   return v7;
 }
 
-- (id)_mergeNewDescriptorsWithCachedMetadataOnInternalQueue:(id)a3 descriptors:(id)a4
+- (id)_mergeNewDescriptorsWithCachedMetadataOnInternalQueue:(id)queue descriptors:(id)descriptors
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  descriptorsCopy = descriptors;
   dispatch_assert_queue_V2(self->_internalQueue);
   v8 = objc_opt_new();
   v32 = [MEMORY[0x1E695DF00] now];
@@ -898,7 +898,7 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v7;
+  obj = descriptorsCopy;
   v12 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v12)
   {
@@ -906,7 +906,7 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
     v14 = *v36;
     v15 = off_1E80BF000;
     v30 = *v36;
-    v31 = v6;
+    v31 = queueCopy;
     do
     {
       v16 = 0;
@@ -921,7 +921,7 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
         v17 = *(*(&v35 + 1) + 8 * v16);
         v18 = objc_autoreleasePoolPush();
         v19 = [objc_alloc(v15[381]) initWithDescriptor:v17];
-        v20 = [v6 objectForKeyedSubscript:v19];
+        v20 = [queueCopy objectForKeyedSubscript:v19];
         if (v20)
         {
           [v8 setObject:v20 forKeyedSubscript:v19];
@@ -941,14 +941,14 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
           }
 
           v23 = [ATXWidgetDescriptorCacheMetadata alloc];
-          v24 = [v17 extensionIdentity];
-          v25 = [v24 containerBundleIdentifier];
-          v26 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v23, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v32, v25, [v17 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v17, "atx_hasAccessoryWidgetFamiliesOnly"));
+          extensionIdentity = [v17 extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+          v26 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v23, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v32, containerBundleIdentifier, [v17 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v17, "atx_hasAccessoryWidgetFamiliesOnly"));
           v8 = v21;
           [v21 setObject:v26 forKeyedSubscript:v19];
 
           v14 = v30;
-          v6 = v31;
+          queueCopy = v31;
           v15 = off_1E80BF000;
           v13 = v33;
         }
@@ -974,10 +974,10 @@ uint64_t __74__ATXWidgetDescriptorCache_homeScreenDescriptorForExtensionBundleId
   v3 = objc_autoreleasePoolPush();
   dispatch_assert_queue_V2(self->_internalQueue);
   v4 = [(ATXWidgetDescriptorCache *)self _queue_fetchAllDescriptorMetadataWithError:0];
-  v5 = [(ATXWidgetDescriptorCache *)self _queue_allVisibleDescriptors];
-  v6 = [(ATXWidgetDescriptorCache *)self _mergeNewDescriptorsWithCachedMetadataOnInternalQueue:v4 descriptors:v5];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:self->_legacyCachePath];
+  _queue_allVisibleDescriptors = [(ATXWidgetDescriptorCache *)self _queue_allVisibleDescriptors];
+  v6 = [(ATXWidgetDescriptorCache *)self _mergeNewDescriptorsWithCachedMetadataOnInternalQueue:v4 descriptors:_queue_allVisibleDescriptors];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:self->_legacyCachePath];
 
   if (![v4 isEqualToDictionary:v6] || v8)
   {
@@ -993,10 +993,10 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       legacyCachePath = self->_legacyCachePath;
       v17 = v10;
-      v13 = [v11 removeItemAtPath:legacyCachePath error:&v17];
+      v13 = [defaultManager2 removeItemAtPath:legacyCachePath error:&v17];
       v14 = v17;
 
       if (v13)
@@ -1033,7 +1033,7 @@ LABEL_14:
   return v6;
 }
 
-- (id)fetchAccessoryWidgetDescriptorMetadataWithError:(id *)a3
+- (id)fetchAccessoryWidgetDescriptorMetadataWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1056,9 +1056,9 @@ LABEL_14:
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(internalQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -1086,7 +1086,7 @@ void __76__ATXWidgetDescriptorCache_fetchAccessoryWidgetDescriptorMetadataWithEr
   }
 }
 
-- (id)fetchHomeScreenWidgetDescriptorMetadataWithError:(id *)a3
+- (id)fetchHomeScreenWidgetDescriptorMetadataWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1109,9 +1109,9 @@ void __76__ATXWidgetDescriptorCache_fetchAccessoryWidgetDescriptorMetadataWithEr
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(internalQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -1139,7 +1139,7 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
   }
 }
 
-- (id)_fetchAccessoryWidgetDescriptorMetadataOnInternalQueueWithError:(id *)a3
+- (id)_fetchAccessoryWidgetDescriptorMetadataOnInternalQueueWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   v15 = 0;
@@ -1150,29 +1150,29 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
   {
     v8 = objc_autoreleasePoolPush();
     v9 = [v5 keysOfEntriesPassingTest:&__block_literal_global_50];
-    v10 = [v9 allObjects];
+    allObjects = [v9 allObjects];
 
-    [v5 removeObjectsForKeys:v10];
+    [v5 removeObjectsForKeys:allObjects];
     objc_autoreleasePoolPop(v8);
-    if (a3)
+    if (error)
     {
       v11 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     v12 = v5;
   }
 
-  else if (a3)
+  else if (error)
   {
     v13 = v6;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v5;
 }
 
-- (id)_fetchHomeScreenWidgetDescriptorMetadataOnInternalQueueWithError:(id *)a3
+- (id)_fetchHomeScreenWidgetDescriptorMetadataOnInternalQueueWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   v15 = 0;
@@ -1183,29 +1183,29 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
   {
     v8 = objc_autoreleasePoolPush();
     v9 = [v5 keysOfEntriesPassingTest:&__block_literal_global_52];
-    v10 = [v9 allObjects];
+    allObjects = [v9 allObjects];
 
-    [v5 removeObjectsForKeys:v10];
+    [v5 removeObjectsForKeys:allObjects];
     objc_autoreleasePoolPop(v8);
-    if (a3)
+    if (error)
     {
       v11 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     v12 = v5;
   }
 
-  else if (a3)
+  else if (error)
   {
     v13 = v6;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v5;
 }
 
-- (id)_queue_fetchAllDescriptorMetadataWithError:(id *)a3
+- (id)_queue_fetchAllDescriptorMetadataWithError:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internalQueue);
@@ -1236,10 +1236,10 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
     v49 = [v15 countByEnumeratingWithState:&v53 objects:v63 count:16];
     if (v49)
     {
-      v16 = self;
+      selfCopy = self;
       v48 = *v54;
       v45 = v15;
-      v46 = self;
+      selfCopy2 = self;
       do
       {
         for (i = 0; i != v49; ++i)
@@ -1252,7 +1252,7 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
           v18 = *(*(&v53 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
           v20 = [v15 objectForKeyedSubscript:v18];
-          allDescriptors = v16->_allDescriptors;
+          allDescriptors = selfCopy->_allDescriptors;
           v52[0] = MEMORY[0x1E69E9820];
           v52[1] = 3221225472;
           v52[2] = __71__ATXWidgetDescriptorCache__queue_fetchAllDescriptorMetadataWithError___block_invoke;
@@ -1264,50 +1264,50 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
             v50 = v19;
             v23 = [ATXWidgetDescriptorCacheMetadata alloc];
             v51 = v20;
-            v24 = [v20 installDate];
-            v25 = v24;
-            if (!v24)
+            installDate = [v20 installDate];
+            v25 = installDate;
+            if (!installDate)
             {
               v25 = [MEMORY[0x1E695DF00] now];
               v44 = v25;
             }
 
-            v26 = [v22 extensionIdentity];
-            v27 = [v26 containerBundleIdentifier];
-            v28 = v27;
-            if (!v27)
+            extensionIdentity = [v22 extensionIdentity];
+            containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+            containerBundleId = containerBundleIdentifier;
+            if (!containerBundleIdentifier)
             {
-              v28 = [v51 containerBundleId];
-              v43 = v28;
+              containerBundleId = [v51 containerBundleId];
+              v43 = containerBundleId;
             }
 
-            v29 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v23, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v25, v28, [v22 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v22, "atx_hasAccessoryWidgetFamiliesOnly"));
+            v29 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v23, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v25, containerBundleId, [v22 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v22, "atx_hasAccessoryWidgetFamiliesOnly"));
             [v47 setObject:v29 forKeyedSubscript:v18];
 
-            if (!v27)
+            if (!containerBundleIdentifier)
             {
             }
 
             v15 = v45;
-            if (!v24)
+            if (!installDate)
             {
             }
 
-            v16 = v46;
+            selfCopy = selfCopy2;
             v19 = v50;
             v20 = v51;
           }
 
           else
           {
-            v24 = __atxlog_handle_default();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+            installDate = __atxlog_handle_default();
+            if (os_log_type_enabled(installDate, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315394;
               v60 = "[ATXWidgetDescriptorCache _queue_fetchAllDescriptorMetadataWithError:]";
               v61 = 2112;
               v62 = v18;
-              _os_log_impl(&dword_1BF549000, v24, OS_LOG_TYPE_DEFAULT, "%s: could not find descriptor matching %@ that was present in cached metadata", buf, 0x16u);
+              _os_log_impl(&dword_1BF549000, installDate, OS_LOG_TYPE_DEFAULT, "%s: could not find descriptor matching %@ that was present in cached metadata", buf, 0x16u);
             }
           }
 
@@ -1344,7 +1344,7 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
         [(ATXWidgetDescriptorCache *)v33 _queue_fetchAllDescriptorMetadataWithError:v14, v36];
       }
 
-      if (a3)
+      if (error)
       {
         if (v33)
         {
@@ -1357,7 +1357,7 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
         }
 
         v47 = 0;
-        *a3 = v37;
+        *error = v37;
       }
 
       else
@@ -1375,11 +1375,11 @@ void __77__ATXWidgetDescriptorCache_fetchHomeScreenWidgetDescriptorMetadataWithE
       [ATXWidgetDescriptorCache _queue_fetchAllDescriptorMetadataWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v35 = v14;
       v47 = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -1402,26 +1402,26 @@ uint64_t __71__ATXWidgetDescriptorCache__queue_fetchAllDescriptorMetadataWithErr
   return v6;
 }
 
-- (BOOL)_queue_writeAllDescriptorMetadata:(id)a3 error:(id *)a4
+- (BOOL)_queue_writeAllDescriptorMetadata:(id)metadata error:(id *)error
 {
   internalQueue = self->_internalQueue;
-  v7 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(internalQueue);
   v8 = objc_alloc(MEMORY[0x1E698AFF0]);
   cachePath = self->_cachePath;
   v10 = __atxlog_handle_default();
   v11 = [v8 initWithCacheFilePath:cachePath loggingHandle:v10 debugName:@"widget descriptor metadata"];
 
-  LOBYTE(a4) = [v11 storeSecureCodedObject:v7 error:a4];
-  return a4;
+  LOBYTE(error) = [v11 storeSecureCodedObject:metadataCopy error:error];
+  return error;
 }
 
-- (id)_queue_fetchAllLegacyDescriptorMetadataWithError:(id *)a3
+- (id)_queue_fetchAllLegacyDescriptorMetadataWithError:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = objc_alloc(MEMORY[0x1E698AFF0]);
-  v45 = self;
+  selfCopy = self;
   legacyCachePath = self->_legacyCachePath;
   v7 = __atxlog_handle_default();
   v8 = [v5 initWithCacheFilePath:legacyCachePath loggingHandle:v7 debugName:@"legacy widget descriptor metadata"];
@@ -1432,7 +1432,7 @@ uint64_t __71__ATXWidgetDescriptorCache__queue_fetchAllDescriptorMetadataWithErr
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v9 initWithObjects:{v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:a3 error:-1.0];
+  v15 = [v8 readSecureCodedObjectWithMaxValidAge:v14 allowableClasses:error error:-1.0];
   if (v15)
   {
     v43 = objc_opt_new();
@@ -1484,7 +1484,7 @@ uint64_t __71__ATXWidgetDescriptorCache__queue_fetchAllDescriptorMetadataWithErr
           v23 = extensionBundleIdAndKindKey(v21);
         }
 
-        allDescriptors = v45->_allDescriptors;
+        allDescriptors = selfCopy->_allDescriptors;
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataWithError___block_invoke;
@@ -1511,9 +1511,9 @@ uint64_t __71__ATXWidgetDescriptorCache__queue_fetchAllDescriptorMetadataWithErr
 
           v32 = [[ATXWidgetPersonality alloc] initWithDescriptor:v26];
           v33 = [ATXWidgetDescriptorCacheMetadata alloc];
-          v34 = [v26 extensionIdentity];
-          v35 = [v34 containerBundleIdentifier];
-          v36 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v33, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v31, v35, [v26 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v26, "atx_hasAccessoryWidgetFamiliesOnly"));
+          extensionIdentity = [v26 extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+          v36 = -[ATXWidgetDescriptorCacheMetadata initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:](v33, "initWithInstallDate:containerBundleId:hasHomeScreenWidgetFamiliesOnly:hasAccessoryWidgetFamiliesOnly:", v31, containerBundleIdentifier, [v26 atx_hasHomeScreenWidgetFamiliesOnly], objc_msgSend(v26, "atx_hasAccessoryWidgetFamiliesOnly"));
           [v43 setObject:v36 forKeyedSubscript:v32];
 
           v19 = v41;
@@ -1576,22 +1576,22 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
 
 - (void)_updateDescriptorMappings
 {
-  v2 = self;
+  selfCopy = self;
   v58 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [(ATXWidgetDescriptorCache *)v2 _updateAllDescriptorMetadataOnInternalQueue];
-  v4 = v3;
-  if (v2->_coalescedDescriptorUpdateOptions)
+  _updateAllDescriptorMetadataOnInternalQueue = [(ATXWidgetDescriptorCache *)selfCopy _updateAllDescriptorMetadataOnInternalQueue];
+  v4 = _updateAllDescriptorMetadataOnInternalQueue;
+  if (selfCopy->_coalescedDescriptorUpdateOptions)
   {
-    v46 = v3;
-    v47 = v2;
-    v6 = [(ATXWidgetDescriptorCache *)v2 _queue_homeScreenWidgetDescriptors];
+    v46 = _updateAllDescriptorMetadataOnInternalQueue;
+    v47 = selfCopy;
+    _queue_homeScreenWidgetDescriptors = [(ATXWidgetDescriptorCache *)selfCopy _queue_homeScreenWidgetDescriptors];
     v48 = objc_opt_new();
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v6;
+    obj = _queue_homeScreenWidgetDescriptors;
     v7 = [obj countByEnumeratingWithState:&v53 objects:buf count:16];
     if (v7)
     {
@@ -1610,23 +1610,23 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
 
           v13 = *(*(&v53 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 intentType];
-          v16 = [v15 componentsSeparatedByString:v10];
-          v17 = [v16 lastObject];
+          intentType = [v13 intentType];
+          v16 = [intentType componentsSeparatedByString:v10];
+          lastObject = [v16 lastObject];
 
-          if ([v17 hasPrefix:v11])
+          if ([lastObject hasPrefix:v11])
           {
-            v18 = [v17 substringFromIndex:{-[__CFString length](v11, "length")}];
+            v18 = [lastObject substringFromIndex:{-[__CFString length](v11, "length")}];
 
-            v17 = v18;
+            lastObject = v18;
           }
 
-          v19 = [v13 extensionIdentity];
-          v20 = [v19 containerBundleIdentifier];
+          extensionIdentity = [v13 extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-          if (v20)
+          if (containerBundleIdentifier)
           {
-            v21 = v17 == 0;
+            v21 = lastObject == 0;
           }
 
           else
@@ -1636,9 +1636,9 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
 
           if (!v21)
           {
-            v22 = [v13 extensionIdentity];
-            v23 = [v22 containerBundleIdentifier];
-            keyForStrings(v23, v17);
+            extensionIdentity2 = [v13 extensionIdentity];
+            containerBundleIdentifier2 = [extensionIdentity2 containerBundleIdentifier];
+            keyForStrings(containerBundleIdentifier2, lastObject);
             v50 = v14;
             v24 = v8;
             v25 = v9;
@@ -1688,15 +1688,15 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
 
           v36 = *(*(&v53 + 1) + 8 * j);
           v37 = objc_autoreleasePoolPush();
-          v38 = [v36 extensionIdentity];
-          v39 = [v38 containerBundleIdentifier];
+          extensionIdentity3 = [v36 extensionIdentity];
+          containerBundleIdentifier3 = [extensionIdentity3 containerBundleIdentifier];
 
-          if (v39)
+          if (containerBundleIdentifier3)
           {
-            v40 = [v36 extensionIdentity];
-            v41 = [v40 containerBundleIdentifier];
-            v42 = [v36 kind];
-            v43 = keyForStrings(v41, v42);
+            extensionIdentity4 = [v36 extensionIdentity];
+            containerBundleIdentifier4 = [extensionIdentity4 containerBundleIdentifier];
+            kind = [v36 kind];
+            v43 = keyForStrings(containerBundleIdentifier4, kind);
 
             [(NSDictionary *)v31 setObject:v36 forKeyedSubscript:v43];
           }
@@ -1712,7 +1712,7 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
 
     v5 = v51;
 
-    v2 = v47;
+    selfCopy = v47;
     containerBundleIdAndKindToHomeScreenDescriptorDictionary = v47->_containerBundleIdAndKindToHomeScreenDescriptorDictionary;
     v47->_containerBundleIdAndKindToHomeScreenDescriptorDictionary = v31;
 
@@ -1739,7 +1739,7 @@ uint64_t __77__ATXWidgetDescriptorCache__queue_fetchAllLegacyDescriptorMetadataW
     }
   }
 
-  v2->_coalescedDescriptorUpdateOptions = 0;
+  selfCopy->_coalescedDescriptorUpdateOptions = 0;
 }
 
 void __53__ATXWidgetDescriptorCache__updateDescriptorMappings__block_invoke(uint64_t a1)
@@ -1748,31 +1748,31 @@ void __53__ATXWidgetDescriptorCache__updateDescriptorMappings__block_invoke(uint
   [v2 postNotificationName:@"ATXHomeScreenWidgetDescriptorCacheRefresh" object:*(a1 + 32)];
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__ATXWidgetDescriptorCache_descriptorsDidChangeForDescriptorProvider___block_invoke;
   v7[3] = &unk_1E80C0958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)_queue_descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)_queue_descriptorsDidChangeForDescriptorProvider:(id)provider
 {
   v33 = *MEMORY[0x1E69E9840];
   internalQueue = self->_internalQueue;
-  v5 = a3;
+  providerCopy = provider;
   dispatch_assert_queue_V2(internalQueue);
-  v6 = [(ATXWidgetDescriptorCache *)self _queue_homeScreenWidgetDescriptors];
-  v7 = v6;
-  if (v6)
+  _queue_homeScreenWidgetDescriptors = [(ATXWidgetDescriptorCache *)self _queue_homeScreenWidgetDescriptors];
+  v7 = _queue_homeScreenWidgetDescriptors;
+  if (_queue_homeScreenWidgetDescriptors)
   {
-    v8 = v6;
+    v8 = _queue_homeScreenWidgetDescriptors;
   }
 
   else
@@ -1782,10 +1782,10 @@ void __53__ATXWidgetDescriptorCache__updateDescriptorMappings__block_invoke(uint
 
   v9 = v8;
 
-  v10 = [v5 descriptors];
+  descriptors = [providerCopy descriptors];
 
   allDescriptors = self->_allDescriptors;
-  self->_allDescriptors = v10;
+  self->_allDescriptors = descriptors;
 
   v12 = self->_allDescriptors;
   v13 = __atxlog_handle_default();
@@ -1824,11 +1824,11 @@ void __53__ATXWidgetDescriptorCache__updateDescriptorMappings__block_invoke(uint
   _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
 LABEL_10:
 
-  v19 = [(ATXWidgetDescriptorCache *)self _queue_homeScreenWidgetDescriptors];
-  v20 = v19;
-  if (v19)
+  _queue_homeScreenWidgetDescriptors2 = [(ATXWidgetDescriptorCache *)self _queue_homeScreenWidgetDescriptors];
+  v20 = _queue_homeScreenWidgetDescriptors2;
+  if (_queue_homeScreenWidgetDescriptors2)
   {
-    v21 = v19;
+    v21 = _queue_homeScreenWidgetDescriptors2;
   }
 
   else
@@ -1844,15 +1844,15 @@ LABEL_10:
   }
 
   [(ATXWidgetDescriptorCache *)self _scheduleCoalescedDescriptorUpdateOperation];
-  v23 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   observerQueue = self->_observerQueue;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __77__ATXWidgetDescriptorCache__queue_descriptorsDidChangeForDescriptorProvider___block_invoke;
   v26[3] = &unk_1E80C0958;
-  v27 = v23;
-  v28 = self;
-  v25 = v23;
+  v27 = allObjects;
+  selfCopy = self;
+  v25 = allObjects;
   dispatch_async(observerQueue, v26);
 }
 

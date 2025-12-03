@@ -8,53 +8,53 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277D3F8F0]);
-  v6 = [v4 location];
+  location = [v4 location];
 
-  if (v6)
+  if (location)
   {
     v7 = objc_alloc(MEMORY[0x277D3F888]);
-    v8 = [v4 location];
-    v9 = [v7 initWithRTLocation:v8];
+    location2 = [v4 location];
+    v9 = [v7 initWithRTLocation:location2];
     [v5 setLocation:v9];
   }
 
-  v10 = [v4 entry];
+  entry = [v4 entry];
 
-  if (v10)
+  if (entry)
   {
-    v11 = [v4 entry];
-    [v11 timeIntervalSinceReferenceDate];
+    entry2 = [v4 entry];
+    [entry2 timeIntervalSinceReferenceDate];
     [v5 setEntryTimeCFAbsolute:?];
   }
 
-  v12 = [v4 exit];
+  exit = [v4 exit];
 
-  if (v12)
+  if (exit)
   {
-    v13 = [v4 exit];
-    [v13 timeIntervalSinceReferenceDate];
+    exit2 = [v4 exit];
+    [exit2 timeIntervalSinceReferenceDate];
     [v5 setExitTimeCFAbsolute:?];
   }
 
-  v14 = [v4 placeInference];
-  v15 = [v14 loiIdentifier];
+  placeInference = [v4 placeInference];
+  loiIdentifier = [placeInference loiIdentifier];
 
-  if (v15)
+  if (loiIdentifier)
   {
     v16 = objc_alloc(MEMORY[0x277CBEA90]);
-    v17 = [v4 placeInference];
-    v18 = [v17 loiIdentifier];
-    v19 = [v16 initWithUUID:v18];
+    placeInference2 = [v4 placeInference];
+    loiIdentifier2 = [placeInference2 loiIdentifier];
+    v19 = [v16 initWithUUID:loiIdentifier2];
     [v5 setLoiIdentifier:v19];
   }
 
-  v20 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  if (v20)
+  if (identifier)
   {
     v21 = objc_alloc(MEMORY[0x277CBEA90]);
-    v22 = [v4 identifier];
-    v23 = [v21 initWithUUID:v22];
+    identifier2 = [v4 identifier];
+    v23 = [v21 initWithUUID:identifier2];
     [v5 setIdentifier:v23];
   }
 

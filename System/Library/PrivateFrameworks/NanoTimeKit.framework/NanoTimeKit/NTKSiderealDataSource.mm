@@ -1,23 +1,23 @@
 @interface NTKSiderealDataSource
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)a3;
-+ (BOOL)_date:(id)a3 isBetweenDate:(id)a4 andDate:(id)a5;
-+ (double)reverseInterpolateBetweenCalendricalMidnights:(id)a3;
-+ (id)_dayEventsFromEvents:(id)a3;
-+ (id)_eventWithType:(int64_t)a3 time:(id)a4;
-+ (id)_solarEventsForLocation:(id)a3 atDate:(id)a4;
-+ (id)_solarSectorsForEvents:(id)a3;
-+ (id)_waypointsForTransitInfo:(id)a3 andEvents:(id)a4;
-+ (id)siderealDataForLocation:(id)a3 atDate:(id)a4 useXR:(BOOL)a5;
-+ (int64_t)_endOfDayEventFollowingSolarEvent:(int64_t)a3;
-+ (int64_t)_startOfDayEventPreceedingFirstSolarEvent:(int64_t)a3;
-- (BOOL)_didLocationChangeSignificantlyFromOldLocation:(id)a3 toNewLocation:(id)a4;
-- (NTKSiderealDataSource)initWithXR:(BOOL)a3;
-- (void)_locationManagerUpdatedLocation:(id)a3 error:(id)a4;
-- (void)_notifySiderealDataDidUpdate:(id)a3;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)location;
++ (BOOL)_date:(id)_date isBetweenDate:(id)date andDate:(id)andDate;
++ (double)reverseInterpolateBetweenCalendricalMidnights:(id)midnights;
++ (id)_dayEventsFromEvents:(id)events;
++ (id)_eventWithType:(int64_t)type time:(id)time;
++ (id)_solarEventsForLocation:(id)location atDate:(id)date;
++ (id)_solarSectorsForEvents:(id)events;
++ (id)_waypointsForTransitInfo:(id)info andEvents:(id)events;
++ (id)siderealDataForLocation:(id)location atDate:(id)date useXR:(BOOL)r;
++ (int64_t)_endOfDayEventFollowingSolarEvent:(int64_t)event;
++ (int64_t)_startOfDayEventPreceedingFirstSolarEvent:(int64_t)event;
+- (BOOL)_didLocationChangeSignificantlyFromOldLocation:(id)location toNewLocation:(id)newLocation;
+- (NTKSiderealDataSource)initWithXR:(BOOL)r;
+- (void)_locationManagerUpdatedLocation:(id)location error:(id)error;
+- (void)_notifySiderealDataDidUpdate:(id)update;
 - (void)_updateData;
-- (void)_updateDataIfNeededToDate:(id)a3 atLocation:(id)a4;
-- (void)_updateForSignificantTimeChange:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateDataIfNeededToDate:(id)date atLocation:(id)location;
+- (void)_updateForSignificantTimeChange:(id)change;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)startLocationUpdates;
 - (void)stopLocationUpdates;
@@ -25,18 +25,18 @@
 
 @implementation NTKSiderealDataSource
 
-- (NTKSiderealDataSource)initWithXR:(BOOL)a3
+- (NTKSiderealDataSource)initWithXR:(BOOL)r
 {
   v27.receiver = self;
   v27.super_class = NTKSiderealDataSource;
   v4 = [(NTKSiderealDataSource *)&v27 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v4->_observers;
-    v4->_observers = v5;
+    v4->_observers = weakObjectsHashTable;
 
-    v4->_useXR = a3;
+    v4->_useXR = r;
     v4->_locationManagerRefCount = 0;
     v7 = +[NTKSiderealData loadCached];
     v8 = v7;
@@ -49,13 +49,13 @@
         _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "NTKSiderealDataSource: found cached data.", buf, 2u);
       }
 
-      v10 = [v8 referenceLocation];
+      referenceLocation = [v8 referenceLocation];
       currentReferenceLocation = v4->_currentReferenceLocation;
-      v4->_currentReferenceLocation = v10;
+      v4->_currentReferenceLocation = referenceLocation;
 
-      v12 = [v8 referenceDate];
+      referenceDate = [v8 referenceDate];
       currentReferenceDate = v4->_currentReferenceDate;
-      v4->_currentReferenceDate = v12;
+      v4->_currentReferenceDate = referenceDate;
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -77,9 +77,9 @@
       }
 
       v17 = +[NTKLocationManager sharedLocationManager];
-      v18 = [v17 anyLocation];
+      anyLocation = [v17 anyLocation];
       v19 = v4->_currentReferenceLocation;
-      v4->_currentReferenceLocation = v18;
+      v4->_currentReferenceLocation = anyLocation;
 
       v20 = +[NTKDate faceDate];
       v21 = v4->_currentReferenceDate;
@@ -88,9 +88,9 @@
       [(NTKSiderealDataSource *)v4 _updateData];
     }
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v4 selector:sel__updateForSignificantTimeChange_ name:*MEMORY[0x277CBE780] object:0];
-    [v22 addObserver:v4 selector:sel__updateForSignificantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateForSignificantTimeChange_ name:*MEMORY[0x277CBE780] object:0];
+    [defaultCenter addObserver:v4 selector:sel__updateForSignificantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
   }
 
   return v4;
@@ -98,22 +98,22 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE780] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D766F0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE780] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D766F0] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKSiderealDataSource;
   [(NTKSiderealDataSource *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observers = self->_observers;
-  v5 = a3;
-  [(NSHashTable *)observers addObject:v5];
-  v6 = [(NTKPromise *)self->_currentData object];
-  [v5 dataSourceDidUpdateSolarData:v6];
+  observerCopy = observer;
+  [(NSHashTable *)observers addObject:observerCopy];
+  object = [(NTKPromise *)self->_currentData object];
+  [observerCopy dataSourceDidUpdateSolarData:object];
 }
 
 - (void)_updateData
@@ -181,21 +181,21 @@ uint64_t __36__NTKSiderealDataSource__updateData__block_invoke_2(uint64_t a1)
   return [v2 _notifySiderealDataDidUpdate:v3];
 }
 
-- (void)_updateDataIfNeededToDate:(id)a3 atLocation:(id)a4
+- (void)_updateDataIfNeededToDate:(id)date atLocation:(id)location
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 isDate:v10 inSameDayAsDate:self->_currentReferenceDate];
+  dateCopy = date;
+  locationCopy = location;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar isDate:dateCopy inSameDayAsDate:self->_currentReferenceDate];
 
   if ((v9 & 1) == 0)
   {
-    objc_storeStrong(&self->_currentReferenceDate, a3);
+    objc_storeStrong(&self->_currentReferenceDate, date);
   }
 
-  if (!v7 || !self->_currentReferenceDate || [(NTKSiderealDataSource *)self _didLocationChangeSignificantlyFromOldLocation:self->_currentReferenceLocation toNewLocation:v7])
+  if (!locationCopy || !self->_currentReferenceDate || [(NTKSiderealDataSource *)self _didLocationChangeSignificantlyFromOldLocation:self->_currentReferenceLocation toNewLocation:locationCopy])
   {
-    objc_storeStrong(&self->_currentReferenceLocation, a4);
+    objc_storeStrong(&self->_currentReferenceLocation, location);
 LABEL_7:
     [(NTKSiderealDataSource *)self _updateData];
     goto LABEL_8;
@@ -209,22 +209,22 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_notifySiderealDataDidUpdate:(id)a3
+- (void)_notifySiderealDataDidUpdate:(id)update
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 solarEvents];
-    v7 = [v4 daytimeEvents];
-    v8 = [v4 waypoints];
+    solarEvents = [updateCopy solarEvents];
+    daytimeEvents = [updateCopy daytimeEvents];
+    waypoints = [updateCopy waypoints];
     *buf = 138412802;
-    v20 = v6;
+    v20 = solarEvents;
     v21 = 2112;
-    v22 = v7;
+    v22 = daytimeEvents;
     v23 = 2112;
-    v24 = v8;
+    v24 = waypoints;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_INFO, "[NTKSiderealDataSource] _notifyDidUpdate: solarEvents: %@ dayAngles: %@ waypoints: %@", buf, 0x20u);
   }
 
@@ -248,7 +248,7 @@ LABEL_8:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) dataSourceDidUpdateSolarData:{v4, v14}];
+        [*(*(&v14 + 1) + 8 * v13++) dataSourceDidUpdateSolarData:{updateCopy, v14}];
       }
 
       while (v11 != v13);
@@ -259,29 +259,29 @@ LABEL_8:
   }
 }
 
-- (void)_updateForSignificantTimeChange:(id)a3
+- (void)_updateForSignificantTimeChange:(id)change
 {
   v5 = +[NTKTimeOffsetManager sharedManager];
-  v4 = [v5 faceDisplayTime];
-  [(NTKSiderealDataSource *)self updateModelWithDate:v4];
+  faceDisplayTime = [v5 faceDisplayTime];
+  [(NTKSiderealDataSource *)self updateModelWithDate:faceDisplayTime];
 }
 
-- (void)_locationManagerUpdatedLocation:(id)a3 error:(id)a4
+- (void)_locationManagerUpdatedLocation:(id)location error:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   v8 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138478083;
-    v10 = v6;
+    v10 = locationCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "[NTKSiderealDataSource] _locationManagerUpdatedLocation with location:%{private}@ and error:%@", &v9, 0x16u);
   }
 
-  [(NTKSiderealDataSource *)self _updateDataIfNeededToDate:self->_currentReferenceDate atLocation:v6];
+  [(NTKSiderealDataSource *)self _updateDataIfNeededToDate:self->_currentReferenceDate atLocation:locationCopy];
 }
 
 - (void)startLocationUpdates
@@ -349,10 +349,10 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)_didLocationChangeSignificantlyFromOldLocation:(id)a3 toNewLocation:(id)a4
+- (BOOL)_didLocationChangeSignificantlyFromOldLocation:(id)location toNewLocation:(id)newLocation
 {
   v10 = *MEMORY[0x277D85DE8];
-  [a3 distanceFromLocation:a4];
+  [location distanceFromLocation:newLocation];
   v5 = v4;
   v6 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -365,11 +365,11 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
   return v5 >= 250000.0;
 }
 
-+ (id)siderealDataForLocation:(id)a3 atDate:(id)a4 useXR:(BOOL)a5
++ (id)siderealDataForLocation:(id)location atDate:(id)date useXR:(BOOL)r
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  dateCopy = date;
   v8 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -378,11 +378,11 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_INFO, "[NTKSiderealDataSource] %s", buf, 0xCu);
   }
 
-  v36 = v6;
-  [NTKSiderealDataSource _geoLocationForLocation:v6];
+  v36 = locationCopy;
+  [NTKSiderealDataSource _geoLocationForLocation:locationCopy];
   v10 = v9;
   v12 = v11;
-  v13 = [off_27877BED8 transitInfoForDate:v7 location:? sunAltitude:?];
+  v13 = [off_27877BED8 transitInfoForDate:dateCopy location:? sunAltitude:?];
   v14 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -392,8 +392,8 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
   }
 
   v15 = v13;
-  v16 = [v13 solarNoon];
-  v17 = [objc_alloc(MEMORY[0x277D0EB38]) initWithLocation:v16 date:0 body:{v10, v12}];
+  solarNoon = [v13 solarNoon];
+  v17 = [objc_alloc(MEMORY[0x277D0EB38]) initWithLocation:solarNoon date:0 body:{v10, v12}];
   v18 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -405,11 +405,11 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
 
   v34 = v17;
 
-  v20 = NTKStartOfDayForDate(v7);
-  v21 = v7;
-  v22 = NTKEndOfDayForDate(v7);
-  v35 = v16;
-  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v16];
+  v20 = NTKStartOfDayForDate(dateCopy);
+  v21 = dateCopy;
+  v22 = NTKEndOfDayForDate(dateCopy);
+  v35 = solarNoon;
+  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:solarNoon];
   v23 = malloc_type_malloc(0x5A4uLL, 0x100004052888210uLL);
   for (i = 0; i != 361; ++i)
   {
@@ -425,28 +425,28 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
   v29 = [NTKSiderealDataSource _solarSectorsForEvents:v28];
   v30 = [NTKSiderealDataSource _dayEventsFromEvents:v28];
   v31 = [NTKSiderealDataSource _waypointsForTransitInfo:v15 andEvents:v28];
-  LOBYTE(v33) = a5;
+  LOBYTE(v33) = r;
   v38 = [[NTKSiderealData alloc] initWithReferenceDate:v21 referenceLocation:v36 sunriseSunsetInfo:v15 solarEvents:v28 daytimeEvents:v30 sectors:v29 waypoints:v31 altitudes:v23 useXR:v33];
   free(v23);
 
   return v38;
 }
 
-+ (id)_solarEventsForLocation:(id)a3 atDate:(id)a4
++ (id)_solarEventsForLocation:(id)location atDate:(id)date
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = location.var1;
+  var0 = location.var0;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = NTKStartOfDayForDate(v6);
-  v8 = NTKEndOfDayForDate(v6);
+  dateCopy = date;
+  v7 = NTKStartOfDayForDate(dateCopy);
+  v8 = NTKEndOfDayForDate(dateCopy);
   [v7 timeIntervalSinceReferenceDate];
   v10 = v9;
   [v8 timeIntervalSinceReferenceDate];
   v12 = v11;
   v13 = objc_alloc(MEMORY[0x277D0ED50]);
   v14 = [v13 initWithLocation:var0 time:var1 altitudeInDegrees:v10 accuracy:{*MEMORY[0x277D0E7C0], 60.0}];
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0;
   do
   {
@@ -458,7 +458,7 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
       {
         v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
         v21 = [NTKSiderealDataSource _eventWithType:v17 time:v20];
-        [v15 addObject:v21];
+        [array addObject:v21];
       }
     }
 
@@ -466,15 +466,15 @@ void __45__NTKSiderealDataSource_startLocationUpdates__block_invoke(uint64_t a1,
   }
 
   while (v17 != 9);
-  [v15 sortUsingComparator:&__block_literal_global_41];
-  v22 = [MEMORY[0x277CBEB40] orderedSetWithArray:v15];
+  [array sortUsingComparator:&__block_literal_global_41];
+  v22 = [MEMORY[0x277CBEB40] orderedSetWithArray:array];
   if ([v22 count])
   {
-    v23 = [v22 firstObject];
-    v24 = +[NTKSiderealDataSource _startOfDayEventPreceedingFirstSolarEvent:](NTKSiderealDataSource, "_startOfDayEventPreceedingFirstSolarEvent:", [v23 type]);
+    firstObject = [v22 firstObject];
+    v24 = +[NTKSiderealDataSource _startOfDayEventPreceedingFirstSolarEvent:](NTKSiderealDataSource, "_startOfDayEventPreceedingFirstSolarEvent:", [firstObject type]);
 
-    v25 = [v22 lastObject];
-    v26 = +[NTKSiderealDataSource _endOfDayEventFollowingSolarEvent:](NTKSiderealDataSource, "_endOfDayEventFollowingSolarEvent:", [v25 type]);
+    lastObject = [v22 lastObject];
+    v26 = +[NTKSiderealDataSource _endOfDayEventFollowingSolarEvent:](NTKSiderealDataSource, "_endOfDayEventFollowingSolarEvent:", [lastObject type]);
   }
 
   else
@@ -521,13 +521,13 @@ uint64_t __56__NTKSiderealDataSource__solarEventsForLocation_atDate___block_invo
   return v7;
 }
 
-+ (id)_dayEventsFromEvents:(id)a3
++ (id)_dayEventsFromEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  eventsCopy = events;
   v5 = [v3 predicateWithBlock:&__block_literal_global_193];
-  v6 = [v4 filteredOrderedSetUsingPredicate:v5];
+  v6 = [eventsCopy filteredOrderedSetUsingPredicate:v5];
 
   if ([v6 count] < 2)
   {
@@ -537,15 +537,15 @@ uint64_t __56__NTKSiderealDataSource__solarEventsForLocation_atDate___block_invo
       [NTKSiderealDataSource _dayEventsFromEvents:v11];
     }
 
-    v10 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB70] orderedSet];
   }
 
   else
   {
     v7 = MEMORY[0x277CBEB70];
-    v8 = [v6 firstObject];
-    v9 = [v6 lastObject];
-    v10 = [v7 orderedSetWithObjects:{v8, v9, 0}];
+    firstObject = [v6 firstObject];
+    lastObject = [v6 lastObject];
+    orderedSet = [v7 orderedSetWithObjects:{firstObject, lastObject, 0}];
   }
 
   v12 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
@@ -554,35 +554,35 @@ uint64_t __56__NTKSiderealDataSource__solarEventsForLocation_atDate___block_invo
     *buf = 136315394;
     v16 = "+[NTKSiderealDataSource _dayEventsFromEvents:]";
     v17 = 2112;
-    v18 = v10;
+    v18 = orderedSet;
     _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_INFO, "[NTKSiderealDataSource] %s: updated day events: %@", buf, 0x16u);
   }
 
-  v13 = [v10 copy];
+  v13 = [orderedSet copy];
 
   return v13;
 }
 
-+ (id)_solarSectorsForEvents:(id)a3
++ (id)_solarSectorsForEvents:(id)events
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB40] orderedSet];
-  if ([v3 count] != 1)
+  eventsCopy = events;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  if ([eventsCopy count] != 1)
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
-      v7 = [v3 objectAtIndexedSubscript:{++v5 % objc_msgSend(v3, "count")}];
+      v6 = [eventsCopy objectAtIndexedSubscript:v5];
+      v7 = [eventsCopy objectAtIndexedSubscript:{++v5 % objc_msgSend(eventsCopy, "count")}];
       v8 = [[NTKSiderealSector alloc] initWithStartingEvent:v6 endingEvent:v7];
       if (![(NTKSiderealSector *)v8 type])
       {
-        v9 = [(NTKSiderealSector *)v8 startingEvent];
-        [v9 angle];
+        startingEvent = [(NTKSiderealSector *)v8 startingEvent];
+        [startingEvent angle];
         v11 = 4.71238898 - v10;
 
-        v12 = [(NTKSiderealSector *)v8 endingEvent];
-        [v12 angle];
+        endingEvent = [(NTKSiderealSector *)v8 endingEvent];
+        [endingEvent angle];
         v14 = 4.71238898 - v13;
 
         v15 = 0.0;
@@ -600,52 +600,52 @@ uint64_t __56__NTKSiderealDataSource__solarEventsForLocation_atDate___block_invo
         [(NTKSiderealSector *)v8 setGradientEndPoint:COERCE_DOUBLE(__PAIR64__(LODWORD(v19.__sinval), LODWORD(v19.__cosval)))];
       }
 
-      [v4 addObject:v8];
+      [orderedSet addObject:v8];
     }
 
-    while ([v3 count] - 1 > v5);
+    while ([eventsCopy count] - 1 > v5);
   }
 
-  v20 = [v4 copy];
+  v20 = [orderedSet copy];
 
   return v20;
 }
 
-+ (id)_waypointsForTransitInfo:(id)a3 andEvents:(id)a4
++ (id)_waypointsForTransitInfo:(id)info andEvents:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [v5 solarNoon];
+  infoCopy = info;
+  eventsCopy = events;
+  array = [MEMORY[0x277CBEB18] array];
+  solarNoon = [infoCopy solarNoon];
 
-  if (v8)
+  if (solarNoon)
   {
-    v9 = [v5 solarNoon];
-    [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v9];
+    solarNoon2 = [infoCopy solarNoon];
+    [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:solarNoon2];
     [NTKSiderealDataSource _solarPercentageToDegree:?];
     v10 = [NTKSiderealWaypoint waypointWithType:0 degree:?];
-    [v7 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [v5 solarMidnight];
+  solarMidnight = [infoCopy solarMidnight];
 
-  if (v11)
+  if (solarMidnight)
   {
-    v12 = [v5 solarMidnight];
-    [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v12];
+    solarMidnight2 = [infoCopy solarMidnight];
+    [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:solarMidnight2];
     [NTKSiderealDataSource _solarPercentageToDegree:?];
     v13 = [NTKSiderealWaypoint waypointWithType:1 degree:?];
-    [v7 addObject:v13];
+    [array addObject:v13];
   }
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__NTKSiderealDataSource__waypointsForTransitInfo_andEvents___block_invoke;
   v18[3] = &unk_2787806B8;
-  v14 = v7;
+  v14 = array;
   v19 = v14;
-  [v6 enumerateObjectsUsingBlock:v18];
+  [eventsCopy enumerateObjectsUsingBlock:v18];
   v15 = _NTKLoggingObjectForDomain(36, "NTKLoggingDomainSidereal");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -672,20 +672,20 @@ void __60__NTKSiderealDataSource__waypointsForTransitInfo_andEvents___block_invo
   }
 }
 
-+ (id)_eventWithType:(int64_t)a3 time:(id)a4
++ (id)_eventWithType:(int64_t)type time:(id)time
 {
-  v5 = a4;
-  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v5];
-  v7 = [NTKSiderealSolarEvent eventWithType:a3 time:v5 degree:v6 * 360.0];
+  timeCopy = time;
+  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:timeCopy];
+  v7 = [NTKSiderealSolarEvent eventWithType:type time:timeCopy degree:v6 * 360.0];
 
   return v7;
 }
 
-+ (int64_t)_startOfDayEventPreceedingFirstSolarEvent:(int64_t)a3
++ (int64_t)_startOfDayEventPreceedingFirstSolarEvent:(int64_t)event
 {
-  if (a3 >= 1)
+  if (event >= 1)
   {
-    return a3 - 1;
+    return event - 1;
   }
 
   else
@@ -694,11 +694,11 @@ void __60__NTKSiderealDataSource__waypointsForTransitInfo_andEvents___block_invo
   }
 }
 
-+ (int64_t)_endOfDayEventFollowingSolarEvent:(int64_t)a3
++ (int64_t)_endOfDayEventFollowingSolarEvent:(int64_t)event
 {
-  if (a3 <= 8)
+  if (event <= 8)
   {
-    return a3 + 1;
+    return event + 1;
   }
 
   else
@@ -707,51 +707,51 @@ void __60__NTKSiderealDataSource__waypointsForTransitInfo_andEvents___block_invo
   }
 }
 
-+ (BOOL)_date:(id)a3 isBetweenDate:(id)a4 andDate:(id)a5
++ (BOOL)_date:(id)_date isBetweenDate:(id)date andDate:(id)andDate
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 compare:a4] != -1 && objc_msgSend(v7, "compare:", v8) != 1;
+  _dateCopy = _date;
+  andDateCopy = andDate;
+  v9 = [_dateCopy compare:date] != -1 && objc_msgSend(_dateCopy, "compare:", andDateCopy) != 1;
 
   return v9;
 }
 
-+ (double)reverseInterpolateBetweenCalendricalMidnights:(id)a3
++ (double)reverseInterpolateBetweenCalendricalMidnights:(id)midnights
 {
-  v4 = a3;
+  midnightsCopy = midnights;
   v5 = objc_opt_class();
   objc_sync_enter(v5);
   if (!reverseInterpolateBetweenCalendricalMidnights___currentCalendar)
   {
-    v6 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     v7 = reverseInterpolateBetweenCalendricalMidnights___currentCalendar;
-    reverseInterpolateBetweenCalendricalMidnights___currentCalendar = v6;
+    reverseInterpolateBetweenCalendricalMidnights___currentCalendar = autoupdatingCurrentCalendar;
   }
 
-  if (!reverseInterpolateBetweenCalendricalMidnights___cachedDate || ([reverseInterpolateBetweenCalendricalMidnights___currentCalendar isDate:v4 inSameDayAsDate:?] & 1) == 0)
+  if (!reverseInterpolateBetweenCalendricalMidnights___cachedDate || ([reverseInterpolateBetweenCalendricalMidnights___currentCalendar isDate:midnightsCopy inSameDayAsDate:?] & 1) == 0)
   {
-    objc_storeStrong(&reverseInterpolateBetweenCalendricalMidnights___cachedDate, a3);
-    v8 = NTKStartOfDayForDate(v4);
+    objc_storeStrong(&reverseInterpolateBetweenCalendricalMidnights___cachedDate, midnights);
+    v8 = NTKStartOfDayForDate(midnightsCopy);
     v9 = reverseInterpolateBetweenCalendricalMidnights___cachedStartOfDay;
     reverseInterpolateBetweenCalendricalMidnights___cachedStartOfDay = v8;
 
-    v10 = NTKStartOfNextDayForDate(v4);
+    v10 = NTKStartOfNextDayForDate(midnightsCopy);
     v11 = reverseInterpolateBetweenCalendricalMidnights___cachedStartOfNextDay;
     reverseInterpolateBetweenCalendricalMidnights___cachedStartOfNextDay = v10;
   }
 
-  v12 = NTKPercentageOfDayDoneForDateWithStartAndEnd(v4, reverseInterpolateBetweenCalendricalMidnights___cachedStartOfDay, reverseInterpolateBetweenCalendricalMidnights___cachedStartOfNextDay);
+  v12 = NTKPercentageOfDayDoneForDateWithStartAndEnd(midnightsCopy, reverseInterpolateBetweenCalendricalMidnights___cachedStartOfDay, reverseInterpolateBetweenCalendricalMidnights___cachedStartOfNextDay);
   objc_sync_exit(v5);
 
   return v12;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)location
 {
-  v3 = a3;
-  [v3 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v5 = v4;
-  [v3 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
 
   v8 = v5;

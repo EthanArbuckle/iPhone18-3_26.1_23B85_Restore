@@ -11,36 +11,36 @@
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyle:2];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)widgetQuaternaryVibrancyEffect
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyle:3];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)widgetPrimaryHighlightVibrancyEffect
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyleNamed:@"platterClientPrimaryHighlight"];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 + (id)widgetSecondaryHighlightVibrancyEffect
 {
   v0 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
   v1 = [v0 _visualStylingForStyleNamed:@"platterClientSecondaryHighlight"];
-  v2 = [v1 visualEffect];
+  visualEffect = [v1 visualEffect];
 
-  return v2;
+  return visualEffect;
 }
 
 @end

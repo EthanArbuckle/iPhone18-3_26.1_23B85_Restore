@@ -1,11 +1,11 @@
 @interface PKBillPaymentCircularView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKBillPaymentCircularView)init;
 - (void)_updateColors;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 applyColor:(BOOL)a4;
-- (void)setPrimaryColor:(id)a3;
-- (void)setSecondaryColor:(id)a3;
+- (void)setImage:(id)image applyColor:(BOOL)color;
+- (void)setPrimaryColor:(id)color;
+- (void)setSecondaryColor:(id)color;
 @end
 
 @implementation PKBillPaymentCircularView
@@ -29,22 +29,22 @@
     imageView = v2->_imageView;
     v2->_imageView = v7;
 
-    v9 = [(PKBillPaymentCircularView *)v2 _defaultSecondaryColor];
+    _defaultSecondaryColor = [(PKBillPaymentCircularView *)v2 _defaultSecondaryColor];
     secondaryColor = v2->_secondaryColor;
-    v2->_secondaryColor = v9;
+    v2->_secondaryColor = _defaultSecondaryColor;
 
-    objc_storeStrong(&v2->_primaryColor, v9);
+    objc_storeStrong(&v2->_primaryColor, _defaultSecondaryColor);
     [(PKBillPaymentCircularView *)v2 addSubview:v2->_secondaryView];
     [(PKBillPaymentCircularView *)v2 addSubview:v2->_primaryView];
     [(PKBillPaymentCircularView *)v2 addSubview:v2->_imageView];
-    v11 = [(PKBillPaymentCircularView *)v2 layer];
-    v12 = [MEMORY[0x1E69DC888] blackColor];
-    [v11 setShadowColor:{objc_msgSend(v12, "CGColor")}];
+    layer = [(PKBillPaymentCircularView *)v2 layer];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v11 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-    [v11 setShadowRadius:4.0];
+    [layer setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [layer setShadowRadius:4.0];
     LODWORD(v13) = 0.25;
-    [v11 setShadowOpacity:v13];
+    [layer setShadowOpacity:v13];
     __33__PKBillPaymentCircularView_init__block_invoke(v2->_primaryView);
     __33__PKBillPaymentCircularView_init__block_invoke(v2->_secondaryView);
     [(PKBillPaymentCircularView *)v2 _updateColors];
@@ -103,12 +103,12 @@ void __33__PKBillPaymentCircularView_init__block_invoke(void *a1)
   v27 = v22;
   v28 = v21;
   [(UIView *)self->_primaryView setFrame:v13, v14, v16, v17];
-  v23 = [(UIView *)self->_primaryView layer];
-  [v23 setCornerRadius:v16 * 0.5];
+  layer = [(UIView *)self->_primaryView layer];
+  [layer setCornerRadius:v16 * 0.5];
 
   [(UIView *)self->_secondaryView setFrame:v4, v6, v8, v10];
-  v24 = [(UIView *)self->_secondaryView layer];
-  [v24 setCornerRadius:v8 * 0.5];
+  layer2 = [(UIView *)self->_secondaryView layer];
+  [layer2 setCornerRadius:v8 * 0.5];
 
   [(UIImageView *)self->_imageView setFrame:v30, v29, v28, v27];
   v32.origin.x = v4;
@@ -121,29 +121,29 @@ void __33__PKBillPaymentCircularView_init__block_invoke(void *a1)
     self->_shadowFrame.origin.y = v6;
     self->_shadowFrame.size.width = v8;
     self->_shadowFrame.size.height = v10;
-    v25 = [(PKBillPaymentCircularView *)self layer];
+    layer3 = [(PKBillPaymentCircularView *)self layer];
     v26 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{v4, v6, v8, v10}];
-    [v25 setShadowPath:{objc_msgSend(v26, "CGPath")}];
+    [layer3 setShadowPath:{objc_msgSend(v26, "CGPath")}];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = fmin(a3.width, a3.height);
+  v3 = fmin(fits.width, fits.height);
   v4 = v3;
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setImage:(id)a3 applyColor:(BOOL)a4
+- (void)setImage:(id)image applyColor:(BOOL)color
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (self->_image != v7)
+  colorCopy = color;
+  imageCopy = image;
+  v8 = imageCopy;
+  if (self->_image != imageCopy)
   {
-    if (v4)
+    if (colorCopy)
     {
       primaryColor = self->_primaryColor;
       if (!primaryColor)
@@ -151,16 +151,16 @@ void __33__PKBillPaymentCircularView_init__block_invoke(void *a1)
         primaryColor = self->_secondaryColor;
       }
 
-      v10 = [(UIImage *)v7 _flatImageWithColor:primaryColor];
+      v10 = [(UIImage *)imageCopy _flatImageWithColor:primaryColor];
     }
 
     else
     {
-      v10 = v7;
+      v10 = imageCopy;
     }
 
     v11 = v10;
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(PKBillPaymentCircularView *)self setNeedsLayout];
     if (self->_image)
     {
@@ -192,12 +192,12 @@ void __33__PKBillPaymentCircularView_init__block_invoke(void *a1)
   [(UIView *)secondaryView setBackgroundColor:secondaryColor];
 }
 
-- (void)setPrimaryColor:(id)a3
+- (void)setPrimaryColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     primaryColor = self->_primaryColor;
     self->_primaryColor = v4;
 
@@ -205,15 +205,15 @@ void __33__PKBillPaymentCircularView_init__block_invoke(void *a1)
   }
 }
 
-- (void)setSecondaryColor:(id)a3
+- (void)setSecondaryColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [(PKBillPaymentCircularView *)self _defaultSecondaryColor];
+    colorCopy = [(PKBillPaymentCircularView *)self _defaultSecondaryColor];
   }
 
-  v7 = v4;
+  v7 = colorCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
     v5 = [v7 copy];

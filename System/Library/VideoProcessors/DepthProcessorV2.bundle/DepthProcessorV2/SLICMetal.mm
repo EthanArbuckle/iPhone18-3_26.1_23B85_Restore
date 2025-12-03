@@ -1,29 +1,29 @@
 @interface SLICMetal
-- (SLICMetal)initWithParameters:(id)a3 andMetalContext:(id)a4;
-- (id)_createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4;
-- (int)_slicCompileShadersWithLibrary:(id)a3;
+- (SLICMetal)initWithParameters:(id)parameters andMetalContext:(id)context;
+- (id)_createTextureOfSize:(CGSize)size withFormat:(unint64_t)format;
+- (int)_slicCompileShadersWithLibrary:(id)library;
 - (int)_slicEnsureConnectivity;
 - (int)_slicFinalReductionResult;
-- (int)_slicFindCenterAssociation:(id *)a3;
+- (int)_slicFindCenterAssociation:(id *)association;
 - (int)_slicInitClusterCenters;
 - (int)_slicUpdateClusterCenter;
 - (int)allocateResources;
-- (int)processSLICToOutputSPixelCentersIdsAndCounts:(id)a3 outputSPixelColor:(id)a4 outputIndexes:(id)a5 inputImage:(id)a6 parameters:(id *)a7;
-- (void)_swapTexturesAtIndex:(int)a3 and:(int)a4;
+- (int)processSLICToOutputSPixelCentersIdsAndCounts:(id)counts outputSPixelColor:(id)color outputIndexes:(id)indexes inputImage:(id)image parameters:(id *)parameters;
+- (void)_swapTexturesAtIndex:(int)index and:(int)and;
 - (void)dealloc;
 - (void)releaseResources;
 @end
 
 @implementation SLICMetal
 
-- (SLICMetal)initWithParameters:(id)a3 andMetalContext:(id)a4
+- (SLICMetal)initWithParameters:(id)parameters andMetalContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  parametersCopy = parameters;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (parametersCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       v50.receiver = self;
       v50.super_class = SLICMetal;
@@ -31,7 +31,7 @@
       self = v10;
       if (v10)
       {
-        objc_storeStrong(&v10->_mtlContext, a4);
+        objc_storeStrong(&v10->_mtlContext, context);
         v16 = objc_msgSend_device(self->_mtlContext, v11, v12, v13, v14, v15);
         mtlDevice = self->_mtlDevice;
         self->_mtlDevice = v16;
@@ -40,10 +40,10 @@
         mtlCommandQueue = self->_mtlCommandQueue;
         self->_mtlCommandQueue = v23;
 
-        objc_storeStrong(&self->_parameters, a3);
-        objc_msgSend_superPixelSize(v7, v25, v26, v27, v28, v29);
+        objc_storeStrong(&self->_parameters, parameters);
+        objc_msgSend_superPixelSize(parametersCopy, v25, v26, v27, v28, v29);
         v31 = v30;
-        objc_msgSend_superPixelSize(v7, v32, v33, v34, v35, v36);
+        objc_msgSend_superPixelSize(parametersCopy, v32, v33, v34, v35, v36);
         self->_no_grid_per_center = vcvtps_s32_f32(((v31 * v37) * 9.0) * 0.0039062);
         v43 = objc_msgSend_library(self->_mtlContext, v38, v39, v40, v41, v42);
         v48 = objc_msgSend__slicCompileShadersWithLibrary_(self, v44, v43, v45, v46, v47);
@@ -96,16 +96,16 @@
   [(SLICMetal *)&v7 dealloc];
 }
 
-- (int)processSLICToOutputSPixelCentersIdsAndCounts:(id)a3 outputSPixelColor:(id)a4 outputIndexes:(id)a5 inputImage:(id)a6 parameters:(id *)a7
+- (int)processSLICToOutputSPixelCentersIdsAndCounts:(id)counts outputSPixelColor:(id)color outputIndexes:(id)indexes inputImage:(id)image parameters:(id *)parameters
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  objc_storeStrong(&self->_slicTextures[2], a3);
-  objc_storeStrong(&self->_slicTextures[3], a4);
-  objc_storeStrong(&self->_slicTextures[6], a5);
-  objc_storeStrong(&self->_slicTextures[8], a6);
+  countsCopy = counts;
+  colorCopy = color;
+  indexesCopy = indexes;
+  imageCopy = image;
+  objc_storeStrong(&self->_slicTextures[2], counts);
+  objc_storeStrong(&self->_slicTextures[3], color);
+  objc_storeStrong(&self->_slicTextures[6], indexes);
+  objc_storeStrong(&self->_slicTextures[8], image);
   v22 = objc_msgSend_commandBuffer(self->_mtlContext, v17, v18, v19, v20, v21);
   mtlCommandBuffer = self->_mtlCommandBuffer;
   self->_mtlCommandBuffer = v22;
@@ -121,7 +121,7 @@
 
     else
     {
-      CenterAssociation = objc_msgSend__slicFindCenterAssociation_(self, v30, a7, v31, v32, v33);
+      CenterAssociation = objc_msgSend__slicFindCenterAssociation_(self, v30, parameters, v31, v32, v33);
       if (CenterAssociation)
       {
         v93 = CenterAssociation;
@@ -149,7 +149,7 @@
             goto LABEL_14;
           }
 
-          v57 = objc_msgSend__slicFindCenterAssociation_(self, v53, a7, v54, v55, v56);
+          v57 = objc_msgSend__slicFindCenterAssociation_(self, v53, parameters, v54, v55, v56);
           if (v57)
           {
             break;
@@ -214,28 +214,28 @@ LABEL_14:
   return v93;
 }
 
-- (void)_swapTexturesAtIndex:(int)a3 and:(int)a4
+- (void)_swapTexturesAtIndex:(int)index and:(int)and
 {
   slicTextures = self->_slicTextures;
-  v6 = &self->_slicTextures[a3];
+  v6 = &self->_slicTextures[index];
   v7 = *v6;
-  objc_storeStrong(v6, slicTextures[a4]);
-  v8 = slicTextures[a4];
-  slicTextures[a4] = v7;
+  objc_storeStrong(v6, slicTextures[and]);
+  v8 = slicTextures[and];
+  slicTextures[and] = v7;
 }
 
-- (id)_createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4
+- (id)_createTextureOfSize:(CGSize)size withFormat:(unint64_t)format
 {
-  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, a4, a3.width, a3.height, 0);
+  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, format, size.width, size.height, 0);
   objc_msgSend_setUsage_(v5, v6, 3, v7, v8, v9);
   v14 = objc_msgSend_newTextureWithDescriptor_(self->_mtlDevice, v10, v5, v11, v12, v13);
 
   return v14;
 }
 
-- (int)_slicCompileShadersWithLibrary:(id)a3
+- (int)_slicCompileShadersWithLibrary:(id)library
 {
-  objc_msgSend_superPixelSize(self->_parameters, a2, a3, v3, v4, v5);
+  objc_msgSend_superPixelSize(self->_parameters, a2, library, v3, v4, v5);
   v57 = v7;
   no_grid_per_center = self->_no_grid_per_center;
   objc_msgSend_superPixelSize(self->_parameters, v8, v9, v10, v11, v12);
@@ -405,15 +405,15 @@ LABEL_9:
   return v55;
 }
 
-- (int)_slicFindCenterAssociation:(id *)a3
+- (int)_slicFindCenterAssociation:(id *)association
 {
   v5 = self->_slicComputePipelinesStates[1];
   v6 = self->_mtlCommandBuffer;
   v7 = self->_slicTextures[8];
   objc_msgSend_defaultsSlicoSpatialBias(self->_parameters, v8, v9, v10, v11, v12);
-  if (a3)
+  if (association)
   {
-    var0 = a3->var0;
+    var0 = association->var0;
   }
 
   else

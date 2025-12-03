@@ -1,17 +1,17 @@
 @interface NTKCUltraCubePhotoListViewController
-- (NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6;
-- (void)customUltraCubeControllerDidFinish:(id)a3;
+- (NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view;
+- (void)customUltraCubeControllerDidFinish:(id)finish;
 @end
 
 @implementation NTKCUltraCubePhotoListViewController
 
-- (NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6
+- (NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_NTKCUltraCubePhotoListViewController alloc] initWithUltraCubePhotosEditor:v12 forFace:v11 inGallery:v6 faceView:v10];
+  galleryCopy = gallery;
+  viewCopy = view;
+  faceCopy = face;
+  editorCopy = editor;
+  v13 = [[_NTKCUltraCubePhotoListViewController alloc] initWithUltraCubePhotosEditor:editorCopy forFace:faceCopy inGallery:galleryCopy faceView:viewCopy];
 
   v17.receiver = self;
   v17.super_class = NTKCUltraCubePhotoListViewController;
@@ -26,10 +26,10 @@
   return v15;
 }
 
-- (void)customUltraCubeControllerDidFinish:(id)a3
+- (void)customUltraCubeControllerDidFinish:(id)finish
 {
-  v4 = [(NTKCUltraCubePhotoListViewController *)self delegate];
-  [v4 customUltraCubeControllerDidFinish:self];
+  delegate = [(NTKCUltraCubePhotoListViewController *)self delegate];
+  [delegate customUltraCubeControllerDidFinish:self];
 }
 
 @end

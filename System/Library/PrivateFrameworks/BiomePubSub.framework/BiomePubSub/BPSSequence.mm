@@ -1,24 +1,24 @@
 @interface BPSSequence
-- (BPSSequence)initWithEnumerator:(id)a3;
-- (BPSSequence)initWithSequence:(id)a3;
+- (BPSSequence)initWithEnumerator:(id)enumerator;
+- (BPSSequence)initWithSequence:(id)sequence;
 - (id)bookmark;
 - (id)nextEvent;
-- (id)validateBookmark:(id)a3;
-- (void)applyBookmark:(id)a3;
+- (id)validateBookmark:(id)bookmark;
+- (void)applyBookmark:(id)bookmark;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSSequence
 
 - (id)nextEvent
 {
-  v3 = [(BPSSequence *)self enumerator];
-  v4 = [v3 nextObject];
+  enumerator = [(BPSSequence *)self enumerator];
+  nextObject = [enumerator nextObject];
 
-  if (v4)
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
   }
 
   else
@@ -26,100 +26,100 @@
     [(BPSSequence *)self setFinished:1];
   }
 
-  return v4;
+  return nextObject;
 }
 
 - (id)bookmark
 {
-  v3 = [(BPSSequence *)self enumerator];
+  enumerator = [(BPSSequence *)self enumerator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(BPSSequence *)self enumerator];
-    v6 = [v5 bookmark];
+    enumerator2 = [(BPSSequence *)self enumerator];
+    bookmark = [enumerator2 bookmark];
   }
 
   else
   {
-    v6 = 0;
+    bookmark = 0;
   }
 
-  return v6;
+  return bookmark;
 }
 
 - (void)reset
 {
   [(BPSSequence *)self setFinished:0];
-  v3 = [(BPSSequence *)self enumerator];
+  enumerator = [(BPSSequence *)self enumerator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(BPSSequence *)self enumerator];
-    [v5 reset];
+    enumerator2 = [(BPSSequence *)self enumerator];
+    [enumerator2 reset];
   }
 }
 
-- (BPSSequence)initWithSequence:(id)a3
+- (BPSSequence)initWithSequence:(id)sequence
 {
-  v4 = a3;
-  v5 = [[BPSBookmarkableArrayEnumerator alloc] initWithArray:v4];
+  sequenceCopy = sequence;
+  v5 = [[BPSBookmarkableArrayEnumerator alloc] initWithArray:sequenceCopy];
 
   v6 = [(BPSSequence *)self initWithBookmarkableEnumerator:v5];
   return v6;
 }
 
-- (BPSSequence)initWithEnumerator:(id)a3
+- (BPSSequence)initWithEnumerator:(id)enumerator
 {
-  v4 = a3;
+  enumeratorCopy = enumerator;
   v8.receiver = self;
   v8.super_class = BPSSequence;
   v5 = [(BPSSequence *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BPSSequence *)v5 setEnumerator:v4];
+    [(BPSSequence *)v5 setEnumerator:enumeratorCopy];
   }
 
   return v6;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v8 = a3;
-  v4 = [(BPSSequence *)self enumerator];
-  v5 = [[_BPSSequenceInner alloc] initWithDownstream:v8 enumerator:v4];
-  if (v4)
+  subscribeCopy = subscribe;
+  enumerator = [(BPSSequence *)self enumerator];
+  v5 = [[_BPSSequenceInner alloc] initWithDownstream:subscribeCopy enumerator:enumerator];
+  if (enumerator)
   {
-    [v8 receiveSubscription:v5];
+    [subscribeCopy receiveSubscription:v5];
   }
 
   else
   {
     v6 = objc_opt_new();
-    [v8 receiveSubscription:v6];
+    [subscribeCopy receiveSubscription:v6];
 
     v7 = +[BPSCompletion success];
-    [v8 receiveCompletion:v7];
+    [subscribeCopy receiveCompletion:v7];
 
     [(_BPSSequenceInner *)v5 cancel];
   }
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [(BPSSequence *)self enumerator];
+  bookmarkCopy = bookmark;
+  enumerator = [(BPSSequence *)self enumerator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(BPSSequence *)self enumerator];
-    v8 = [v7 validateBookmark:v4];
+    enumerator2 = [(BPSSequence *)self enumerator];
+    v8 = [enumerator2 validateBookmark:bookmarkCopy];
   }
 
   else
@@ -130,17 +130,17 @@
   return v8;
 }
 
-- (void)applyBookmark:(id)a3
+- (void)applyBookmark:(id)bookmark
 {
-  v7 = a3;
-  v4 = [(BPSSequence *)self enumerator];
+  bookmarkCopy = bookmark;
+  enumerator = [(BPSSequence *)self enumerator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(BPSSequence *)self enumerator];
-    [v6 applyBookmark:v7];
+    enumerator2 = [(BPSSequence *)self enumerator];
+    [enumerator2 applyBookmark:bookmarkCopy];
   }
 }
 

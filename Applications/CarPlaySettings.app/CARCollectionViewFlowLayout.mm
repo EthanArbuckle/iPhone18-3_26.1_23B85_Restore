@@ -2,7 +2,7 @@
 - (CARCollectionViewFlowLayout)init;
 - (CGSize)collectionViewContentSize;
 - (CGSize)lastContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation CARCollectionViewFlowLayout
@@ -31,9 +31,9 @@
   if (v4 != v8 || v6 != v7)
   {
     [(CARCollectionViewFlowLayout *)self setLastContentSize:v4, v6];
-    v10 = [(CARCollectionViewFlowLayout *)self collectionView];
-    v11 = [v10 delegate];
-    v12 = [v11 conformsToProtocol:&OBJC_PROTOCOL___CARCollectionViewFlowLayoutDelegate];
+    collectionView = [(CARCollectionViewFlowLayout *)self collectionView];
+    delegate = [collectionView delegate];
+    v12 = [delegate conformsToProtocol:&OBJC_PROTOCOL___CARCollectionViewFlowLayoutDelegate];
 
     if (v12)
     {
@@ -55,17 +55,17 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v48.receiver = self;
   v48.super_class = CARCollectionViewFlowLayout;
-  v4 = [(CARCollectionViewFlowLayout *)&v48 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(CARCollectionViewFlowLayout *)self collectionView];
-  v6 = [v5 traitCollection];
-  v7 = [v6 layoutDirection];
+  v4 = [(CARCollectionViewFlowLayout *)&v48 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  collectionView = [(CARCollectionViewFlowLayout *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v8 = [(CARCollectionViewFlowLayout *)self collectionView];
-  [v8 frame];
+  collectionView2 = [(CARCollectionViewFlowLayout *)self collectionView];
+  [collectionView2 frame];
   Width = CGRectGetWidth(v51);
 
   [(CARCollectionViewFlowLayout *)self sectionInset];
@@ -80,7 +80,7 @@
   if (v15)
   {
     v16 = v15;
-    if (v7 == 1)
+    if (layoutDirection == 1)
     {
       v17 = Width - v13;
     }
@@ -106,7 +106,7 @@
         if (v22 > v19 || ([v21 frame], vabdd_f64(v23, v19) < 0.01))
         {
           [(CARCollectionViewFlowLayout *)self sectionInset];
-          if (v7 == 1)
+          if (layoutDirection == 1)
           {
             v17 = Width - v25;
           }
@@ -117,8 +117,8 @@
           }
         }
 
-        v26 = [v21 representedElementKind];
-        v27 = [v26 isEqualToString:UICollectionElementKindSectionHeader];
+        representedElementKind = [v21 representedElementKind];
+        v27 = [representedElementKind isEqualToString:UICollectionElementKindSectionHeader];
 
         if (v27)
         {
@@ -133,7 +133,7 @@
         else
         {
           v32 = v17;
-          if (v7 == 1)
+          if (layoutDirection == 1)
           {
             [v21 frame];
             v32 = v17 - v33;
@@ -149,7 +149,7 @@
           v39 = v38;
           [(CARCollectionViewFlowLayout *)self minimumInteritemSpacing];
           v41 = v40 + v39;
-          if (v7 == 1)
+          if (layoutDirection == 1)
           {
             v41 = -v41;
           }

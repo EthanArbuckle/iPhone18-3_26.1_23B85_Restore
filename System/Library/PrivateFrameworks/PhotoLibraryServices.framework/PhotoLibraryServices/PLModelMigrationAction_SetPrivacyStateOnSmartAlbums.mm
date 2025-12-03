@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_SetPrivacyStateOnSmartAlbums
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetPrivacyStateOnSmartAlbums
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v109 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -22,12 +22,12 @@
   v7 = +[PLGenericAlbum entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"kind", 1507];
-  [v8 setPredicate:v9];
+  1507 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"kind", 1507];
+  [v8 setPredicate:1507];
 
   [v8 setFetchBatchSize:100];
   v63 = 0;
-  v10 = [v5 executeFetchRequest:v8 error:&v63];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v63];
   v58 = v63;
   if (v10)
   {
@@ -41,7 +41,7 @@
     v62 = &v64;
     v12 = v11;
     v60 = v12;
-    v13 = [v5 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v59];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v59];
     if (v13)
     {
       v65[3] = 3;
@@ -50,8 +50,8 @@
 
       if (v15)
       {
-        v16 = [(PLModelMigrationActionCore *)self logger];
-        v17 = v16 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v17 = logger == 0;
 
         if (v17)
         {
@@ -142,8 +142,8 @@
 
       if (v33)
       {
-        v34 = [(PLModelMigrationActionCore *)self logger];
-        v35 = v34 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v35 = logger2 == 0;
 
         if (v35)
         {
@@ -218,8 +218,8 @@
 
     if (v24)
     {
-      v25 = [(PLModelMigrationActionCore *)self logger];
-      v26 = v25 == 0;
+      logger3 = [(PLModelMigrationActionCore *)self logger];
+      v26 = logger3 == 0;
 
       if (v26)
       {
@@ -305,10 +305,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v50 = v65[3];
   v51 = v69[5];
-  if (v50 != 1 && a4)
+  if (v50 != 1 && error)
   {
     v51 = v51;
-    *a4 = v51;
+    *error = v51;
   }
 
   v52 = v65[3];

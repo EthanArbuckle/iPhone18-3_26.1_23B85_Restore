@@ -1,50 +1,50 @@
 @interface TSWPChangeSession
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSession:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSession:(id)session;
 - (unint64_t)hash;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setAuthor:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setSessionUID:(unsigned int)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAuthor:(id)author;
+- (void)setDate:(id)date;
+- (void)setSessionUID:(unsigned int)d;
 @end
 
 @implementation TSWPChangeSession
 
-- (void)setSessionUID:(unsigned int)a3
+- (void)setSessionUID:(unsigned int)d
 {
-  if (self->_sessionUID != a3)
+  if (self->_sessionUID != d)
   {
-    objc_msgSend_willModify(self, a2, *&a3);
-    self->_sessionUID = a3;
+    objc_msgSend_willModify(self, a2, *&d);
+    self->_sessionUID = d;
   }
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v7 = a3;
-  if (self->_author != v7)
-  {
-    objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_author, a3);
-  }
-}
-
-- (void)setDate:(id)a3
-{
-  v7 = a3;
-  if (self->_date != v7)
+  authorCopy = author;
+  if (self->_author != authorCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_date, a3);
+    objc_storeStrong(&self->_author, author);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
+  if (self->_date != dateCopy)
+  {
+    objc_msgSend_willModify(self, v5, v6);
+    objc_storeStrong(&self->_date, date);
+  }
+}
+
+- (void)loadFromUnarchiver:(id)unarchiver
+{
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[170]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[170]);
 
   v7 = *(v6 + 16);
   if ((v7 & 4) != 0)
@@ -61,7 +61,7 @@
     v16[2] = sub_276E0F558;
     v16[3] = &unk_27A6F4DF8;
     v16[4] = self;
-    v9 = v4;
+    v9 = unarchiverCopy;
     v10 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v9, v11, v8, v10, 0, v16);
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v15 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v15, v4, sub_276E0F8EC, off_2812DC408[170]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276E0F8EC, off_2812DC408[170]);
 
   sessionUID = self->_sessionUID;
   v8 = *(v5 + 16);
@@ -113,7 +113,7 @@
       *(v5 + 24) = v10;
     }
 
-    objc_msgSend_setStrongReference_message_(v15, v6, author, v10);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v6, author, v10);
   }
 
   date = self->_date;
@@ -137,10 +137,10 @@
   }
 }
 
-- (BOOL)isEqualToSession:(id)a3
+- (BOOL)isEqualToSession:(id)session
 {
-  v6 = a3;
-  if (self == v6)
+  sessionCopy = session;
+  if (self == sessionCopy)
   {
     isEqual = 1;
   }
@@ -148,16 +148,16 @@
   else
   {
     v7 = objc_msgSend_objectUUID(self, v4, v5);
-    v10 = objc_msgSend_objectUUID(v6, v8, v9);
+    v10 = objc_msgSend_objectUUID(sessionCopy, v8, v9);
     isEqual = objc_msgSend_isEqual_(v7, v11, v10);
   }
 
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)

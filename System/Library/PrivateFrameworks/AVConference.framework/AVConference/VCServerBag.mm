@@ -1,9 +1,9 @@
 @interface VCServerBag
-+ (BOOL)verifyRequiredKeys:(id *)a3;
-+ (BOOL)verifyRequiredKeys:(id)a3 withError:(id *)a4;
-+ (BOOL)verifyRequiredVoiceChatKeys:(id *)a3;
++ (BOOL)verifyRequiredKeys:(id *)keys;
++ (BOOL)verifyRequiredKeys:(id)keys withError:(id *)error;
++ (BOOL)verifyRequiredVoiceChatKeys:(id *)keys;
 + (id)sharedInstance;
-+ (void)checkKeysAgainstHardcodedPrefs:(id)a3;
++ (void)checkKeysAgainstHardcodedPrefs:(id)prefs;
 + (void)pullStoreBagKeys;
 + (void)retrieveBag;
 - (VCServerBag)init;
@@ -43,7 +43,7 @@ VCServerBag *__29__VCServerBag_sharedInstance__block_invoke()
 - (void)waitForBagLoad
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A53F0] sharedInstance];
+  mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
   pthread_mutex_lock(&self->isLoadedMutex);
   v13.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   v13.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
@@ -65,22 +65,22 @@ VCServerBag *__29__VCServerBag_sharedInstance__block_invoke()
       }
     }
 
-    v6 = [v3 isLoaded];
-    self->isLoaded = v6;
-    if ((v6 & 1) == 0)
+    isLoaded = [mEMORY[0x1E69A53F0] isLoaded];
+    self->isLoaded = isLoaded;
+    if ((isLoaded & 1) == 0)
     {
       v7 = MEMORY[0x1E69E9820];
       v8 = 3221225472;
       v9 = __29__VCServerBag_waitForBagLoad__block_invoke;
       v10 = &unk_1E85F37F0;
-      v11 = self;
-      v12 = v3;
+      selfCopy = self;
+      v12 = mEMORY[0x1E69A53F0];
       if (waitForBagLoad_onceToken != -1)
       {
         dispatch_once(&waitForBagLoad_onceToken, &v7);
       }
 
-      [v3 startBagLoad];
+      [mEMORY[0x1E69A53F0] startBagLoad];
       v13 = xmmword_1DBD50D20;
       pthread_cond_timedwait_relative_np(&self->isLoadedCondition, &self->isLoadedMutex, &v13);
     }
@@ -436,17 +436,17 @@ uint64_t __29__VCServerBag_waitForBagLoad__block_invoke_2(uint64_t a1, void *a2)
   [v2 addObject:@"vc-enable-hevc-v2"];
   v44 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = +[GKSConnectivitySettings getAllSettings];
-  v14 = [MEMORY[0x1E69A53F0] sharedInstance];
-  v46 = v14;
+  mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+  v46 = mEMORY[0x1E69A53F0];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v15 = VRTraceErrorLogLevelToCSTR();
     v16 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (v14)
+      if (mEMORY[0x1E69A53F0])
       {
-        v17 = [objc_msgSend(v14 "description")];
+        v17 = [objc_msgSend(mEMORY[0x1E69A53F0] "description")];
         if (v13)
         {
 LABEL_5:
@@ -463,7 +463,7 @@ LABEL_8:
           v60 = 2080;
           v61 = v18;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Pulling bag to see if we need anything:%s, currentSettings = %s", buf, 0x30u);
-          v14 = v46;
+          mEMORY[0x1E69A53F0] = v46;
           goto LABEL_9;
         }
       }
@@ -532,7 +532,7 @@ LABEL_9:
             }
           }
 
-          v27 = [v14 objectForKey:v23];
+          v27 = [mEMORY[0x1E69A53F0] objectForKey:v23];
           if (v27)
           {
             [v44 setObject:v27 forKeyedSubscript:v23];
@@ -566,7 +566,7 @@ LABEL_9:
             }
           }
 
-          v14 = v46;
+          mEMORY[0x1E69A53F0] = v46;
         }
       }
 
@@ -582,7 +582,7 @@ LABEL_9:
   }
 }
 
-+ (void)checkKeysAgainstHardcodedPrefs:(id)a3
++ (void)checkKeysAgainstHardcodedPrefs:(id)prefs
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695E8A0];
@@ -634,10 +634,10 @@ LABEL_9:
 + (void)retrieveBag
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A53F0] sharedInstance];
-  if (([v2 isLoaded] & 1) == 0)
+  mEMORY[0x1E69A53F0] = [MEMORY[0x1E69A53F0] sharedInstance];
+  if (([mEMORY[0x1E69A53F0] isLoaded] & 1) == 0)
   {
-    [v2 startBagLoad];
+    [mEMORY[0x1E69A53F0] startBagLoad];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -653,19 +653,19 @@ LABEL_9:
       v9 = 1024;
       v10 = 244;
       v11 = 1024;
-      v12 = [v2 isLoaded];
+      isLoaded = [mEMORY[0x1E69A53F0] isLoaded];
       v13 = 2048;
-      v14 = v2;
+      v14 = mEMORY[0x1E69A53F0];
       v15 = 1024;
-      v16 = [v2 isServerAvailable];
+      isServerAvailable = [mEMORY[0x1E69A53F0] isServerAvailable];
       v17 = 1024;
-      v18 = [v2 isLoading];
+      isLoading = [mEMORY[0x1E69A53F0] isLoading];
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Retrieving server bag %d, %p, %d, %d", &v5, 0x38u);
     }
   }
 }
 
-+ (BOOL)verifyRequiredKeys:(id)a3 withError:(id *)a4
++ (BOOL)verifyRequiredKeys:(id)keys withError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v6 = +[GKSConnectivitySettings getAllSettings];
@@ -673,7 +673,7 @@ LABEL_9:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  v7 = [keys countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -684,7 +684,7 @@ LABEL_9:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keys);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -718,12 +718,12 @@ LABEL_9:
             }
           }
 
-          [GKVoiceChatError getNSError:a4 code:32000 detailedCode:112 filePath:0 description:@"No store bag is present so we failed the call." reason:@"Missing required store bag keys."];
+          [GKVoiceChatError getNSError:error code:32000 detailedCode:112 filePath:0 description:@"No store bag is present so we failed the call." reason:@"Missing required store bag keys."];
           return 0;
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v8 = [keys countByEnumeratingWithState:&v27 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -752,21 +752,21 @@ LABEL_9:
   return 1;
 }
 
-+ (BOOL)verifyRequiredVoiceChatKeys:(id *)a3
++ (BOOL)verifyRequiredVoiceChatKeys:(id *)keys
 {
   v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"gk-commnat-main0", @"gk-commnat-main1", @"gk-commnat-cohort", 0}];
-  LOBYTE(a3) = [a1 verifyRequiredKeys:v5 withError:a3];
+  LOBYTE(keys) = [self verifyRequiredKeys:v5 withError:keys];
 
-  return a3;
+  return keys;
 }
 
-+ (BOOL)verifyRequiredKeys:(id *)a3
++ (BOOL)verifyRequiredKeys:(id *)keys
 {
   v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"gk-commnat-main0", @"gk-commnat-main1", @"gk-commnat-cohort", @"gk-commnat-main0-name", @"gk-commnat-main1-name", @"gk-commnat-cohort-name", 0}];
-  v6 = [a1 verifyRequiredKeys:v5 withError:a3];
+  v6 = [self verifyRequiredKeys:v5 withError:keys];
   if ((v6 & 1) == 0 && VRTraceIsInternalOSInstalled())
   {
-    [a1 checkKeysAgainstHardcodedPrefs:v5];
+    [self checkKeysAgainstHardcodedPrefs:v5];
   }
 
   return v6;

@@ -1,10 +1,10 @@
 @interface ACCFeatureServer
-- (ACCFeatureServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (void)addSubscriber:(id)a3;
+- (ACCFeatureServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
 - (void)decrementUserCount;
 - (void)incrementUserCount;
-- (void)removeSubscriber:(id)a3;
+- (void)removeSubscriber:(id)subscriber;
 - (void)sendNotification;
 - (void)sendUpdatedSubscriberList;
 - (void)startServer;
@@ -13,17 +13,17 @@
 
 @implementation ACCFeatureServer
 
-- (ACCFeatureServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCFeatureServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v7 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = ACCFeatureServer;
   v8 = [(ACCFeatureServer *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_xpcServiceName, a3);
-    v9->_notification = a4;
+    objc_storeStrong(&v8->_xpcServiceName, name);
+    v9->_notification = notification;
     v9->_isServerStarted = 0;
     v9->_featureUserCount = 0;
     v10 = objc_alloc_init(NSCountedSet);
@@ -164,13 +164,13 @@
   objc_sync_exit(obj);
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  if (v4)
+  subscriberCopy = subscriber;
+  if (subscriberCopy)
   {
-    v5 = [(ACCFeatureServer *)self subFeatureSubscribers];
-    [v5 addObject:v4];
+    subFeatureSubscribers = [(ACCFeatureServer *)self subFeatureSubscribers];
+    [subFeatureSubscribers addObject:subscriberCopy];
 
     if (gLogObjects)
     {
@@ -200,11 +200,11 @@
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(ACCFeatureServer *)self subFeatureSubscribers];
+      subFeatureSubscribers2 = [(ACCFeatureServer *)self subFeatureSubscribers];
       v10 = 138412546;
-      v11 = v4;
+      v11 = subscriberCopy;
       v12 = 2048;
-      v13 = [v9 countForObject:v4];
+      v13 = [subFeatureSubscribers2 countForObject:subscriberCopy];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Added subscriber for key: %@... New count: %lu", &v10, 0x16u);
     }
 
@@ -212,13 +212,13 @@
   }
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  if (v4)
+  subscriberCopy = subscriber;
+  if (subscriberCopy)
   {
-    v5 = [(ACCFeatureServer *)self subFeatureSubscribers];
-    [v5 removeObject:v4];
+    subFeatureSubscribers = [(ACCFeatureServer *)self subFeatureSubscribers];
+    [subFeatureSubscribers removeObject:subscriberCopy];
 
     if (gLogObjects)
     {
@@ -248,11 +248,11 @@
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(ACCFeatureServer *)self subFeatureSubscribers];
+      subFeatureSubscribers2 = [(ACCFeatureServer *)self subFeatureSubscribers];
       v10 = 138412546;
-      v11 = v4;
+      v11 = subscriberCopy;
       v12 = 2048;
-      v13 = [v9 countForObject:v4];
+      v13 = [subFeatureSubscribers2 countForObject:subscriberCopy];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Removed subscriber for key: %@... New count: %lu", &v10, 0x16u);
     }
 

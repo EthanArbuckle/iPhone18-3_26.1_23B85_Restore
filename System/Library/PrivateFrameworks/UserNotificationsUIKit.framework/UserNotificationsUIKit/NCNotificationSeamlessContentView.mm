@@ -1,17 +1,17 @@
 @interface NCNotificationSeamlessContentView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
-- (BOOL)notificationLabel:(id)a3 requestsInteractionWithURL:(id)a4;
-- (CGRect)_textFrameForBounds:(CGRect)a3 ignoreBadgedIconView:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
+- (BOOL)notificationLabel:(id)label requestsInteractionWithURL:(id)l;
+- (CGRect)_textFrameForBounds:(CGRect)bounds ignoreBadgedIconView:(BOOL)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits;
 - (MTVisualStylingProvider)importantTextVisualStylingProvider;
 - (NCNotificationListCellDynamicHeightTraits)currentTraits;
-- (NCNotificationSeamlessContentView)initWithFrame:(CGRect)a3;
+- (NCNotificationSeamlessContentView)initWithFrame:(CGRect)frame;
 - (NCNotificationSeamlessContentViewDelegate)delegate;
 - (UIImageConfiguration)importantTextImageConfiguration;
 - (id)_dateLabelFont;
 - (id)_dateLabelPreferredFont;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_adjustInlineActionButtonBackgroundColor;
 - (void)_configureCrossfadingContentViewIfNecessary;
 - (void)_configureDateLabel;
@@ -20,7 +20,7 @@
 - (void)_configureSecondaryLabelBottomAlignedIfNecessary;
 - (void)_configureSecondaryLabelTopAlignedGroupCollapsedIfNecessary;
 - (void)_configureSecondaryLabelTopAlignedIfNecessary;
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4 traits:(id)a5;
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only traits:(id)traits;
 - (void)_recycleDateLabel;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_tearDownDateLabel;
@@ -36,44 +36,44 @@
 - (void)_updateTextAttributesForSecondaryTextElementTopAligned;
 - (void)_updateTextAttributesForSecondaryTextElementTopAlignedGroupCollapsed;
 - (void)_updateTextAttributesIfNecessary;
-- (void)_updateVisualStylingOfImageView:(id)a3 ifSymbolImageWithStyle:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)dateLabelDidChange:(id)a3;
+- (void)_updateVisualStylingOfImageView:(id)view ifSymbolImageWithStyle:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
+- (void)dateLabelDidChange:(id)change;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAlignContentToBottom:(BOOL)a3;
-- (void)setAllowContentToCrossFade:(BOOL)a3;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setFooterSummaryAttributionText:(id)a3;
-- (void)setFooterText:(id)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setImportantAttributedText:(id)a3;
-- (void)setImportantText:(id)a3;
-- (void)setImportantTextVisualStylingProvider:(id)a3;
-- (void)setInlineAction:(id)a3;
-- (void)setIsGroupCollapsed:(BOOL)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSecondaryTextCompact:(id)a3;
-- (void)setSecondaryTextGroupCollapsed:(id)a3;
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setShadowsEnabled:(BOOL)a3;
-- (void)setTextMenusEnabled:(BOOL)a3;
-- (void)setThumbnail:(id)a3;
-- (void)setThumbnailAlignedWithSecondaryText:(BOOL)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setURLInteractionEnabled:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlignContentToBottom:(BOOL)bottom;
+- (void)setAllowContentToCrossFade:(BOOL)fade;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateAlpha:(double)alpha;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setFooterSummaryAttributionText:(id)text;
+- (void)setFooterText:(id)text;
+- (void)setHideDate:(BOOL)date;
+- (void)setImportantAttributedText:(id)text;
+- (void)setImportantText:(id)text;
+- (void)setImportantTextVisualStylingProvider:(id)provider;
+- (void)setInlineAction:(id)action;
+- (void)setIsGroupCollapsed:(BOOL)collapsed;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setPrimaryText:(id)text;
+- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setSecondaryTextCompact:(id)compact;
+- (void)setSecondaryTextGroupCollapsed:(id)collapsed;
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setShadowsEnabled:(BOOL)enabled;
+- (void)setTextMenusEnabled:(BOOL)enabled;
+- (void)setThumbnail:(id)thumbnail;
+- (void)setThumbnailAlignedWithSecondaryText:(BOOL)text;
+- (void)setTimeZone:(id)zone;
+- (void)setURLInteractionEnabled:(BOOL)enabled;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationSeamlessContentView
@@ -89,17 +89,17 @@
 - (void)_adjustInlineActionButtonBackgroundColor
 {
   inlineActionButton = self->_inlineActionButton;
-  v6 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  v5 = [v6 colorWithAlphaComponent:{dbl_21E946240[objc_msgSend(v4, "userInterfaceStyle") == 2]}];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  traitCollection = [(NCNotificationSeamlessContentView *)self traitCollection];
+  v5 = [systemBlackColor colorWithAlphaComponent:{dbl_21E946240[objc_msgSend(traitCollection, "userInterfaceStyle") == 2]}];
   [(UIButton *)inlineActionButton setBackgroundColor:v5];
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(NCNotificationSeamlessContentView *)self window];
+  window = [(NCNotificationSeamlessContentView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(NCNotificationSeamlessContentView *)self adjustForContentSizeCategoryChange];
@@ -222,10 +222,10 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
   v5 = [v2 configurationWithTextStyle:*v4 scale:1];
   v6 = MEMORY[0x277D755D0];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  v13[0] = v7;
-  v8 = [MEMORY[0x277D75348] tintColor];
-  v13[1] = v8;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v13[0] = whiteColor;
+  tintColor = [MEMORY[0x277D75348] tintColor];
+  v13[1] = tintColor;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v10 = [v6 configurationWithPaletteColors:v9];
   v11 = [v5 configurationByApplyingConfiguration:v10];
@@ -235,19 +235,19 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
 - (id)_dateLabelFont
 {
-  v3 = [(BSUIDateLabel *)self->_dateLabel font];
-  v4 = v3;
-  if (v3)
+  font = [(BSUIDateLabel *)self->_dateLabel font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    _dateLabelPreferredFont = font;
   }
 
   else
   {
-    v5 = [(NCNotificationSeamlessContentView *)self _dateLabelPreferredFont];
+    _dateLabelPreferredFont = [(NCNotificationSeamlessContentView *)self _dateLabelPreferredFont];
   }
 
-  v6 = v5;
+  v6 = _dateLabelPreferredFont;
 
   return v6;
 }
@@ -270,18 +270,18 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
 - (NCNotificationListCellDynamicHeightTraits)currentTraits
 {
-  v2 = [(NCNotificationSeamlessContentView *)self delegate];
+  delegate = [(NCNotificationSeamlessContentView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 currentTraits];
+    currentTraits = [delegate currentTraits];
   }
 
   else
   {
-    v3 = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
+    currentTraits = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
   }
 
-  v4 = v3;
+  v4 = currentTraits;
 
   return v4;
 }
@@ -305,11 +305,11 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     }
 
     [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned setPreferredTextStyle:*v4];
-    v5 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
-    v6 = [v5 nc_contentType];
+    secondaryTextCompact = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
+    nc_contentType = [secondaryTextCompact nc_contentType];
 
     v7 = MEMORY[0x277D74420];
-    if (v6 != 6)
+    if (nc_contentType != 6)
     {
       v7 = MEMORY[0x277D74418];
     }
@@ -368,13 +368,13 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 - (void)_updateTextAttributesForInlineActionButton
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(UIAction *)self->_inlineAction title];
-  if ([v3 length])
+  title = [(UIAction *)self->_inlineAction title];
+  if ([title length])
   {
-    v4 = [(UIButton *)self->_inlineActionButton configuration];
-    if (!v4)
+    configuration = [(UIButton *)self->_inlineActionButton configuration];
+    if (!configuration)
     {
-      v4 = [MEMORY[0x277D75230] plainButtonConfiguration];
+      configuration = [MEMORY[0x277D75230] plainButtonConfiguration];
     }
 
     IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(self->_preferredContentSizeCategory);
@@ -390,14 +390,14 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     v13 = *MEMORY[0x277D740A8];
     v14[0] = v8;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v11 = [v9 initWithString:v3 attributes:v10];
+    v11 = [v9 initWithString:title attributes:v10];
 
-    [v4 setAttributedTitle:v11];
-    [v4 setContentInsets:{8.0, 22.0, 8.0, 22.0}];
-    [v4 setButtonSize:0];
-    [(UIButton *)self->_inlineActionButton setConfiguration:v4];
-    v12 = [(UIButton *)self->_inlineActionButton titleLabel];
-    [v12 setLineBreakMode:4];
+    [configuration setAttributedTitle:v11];
+    [configuration setContentInsets:{8.0, 22.0, 8.0, 22.0}];
+    [configuration setButtonSize:0];
+    [(UIButton *)self->_inlineActionButton setConfiguration:configuration];
+    titleLabel = [(UIButton *)self->_inlineActionButton titleLabel];
+    [titleLabel setLineBreakMode:4];
 
     self->_hasUpdatedContent = 1;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
@@ -440,8 +440,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   dateLabel = self->_dateLabel;
   if (dateLabel)
   {
-    v4 = [(NCNotificationSeamlessContentView *)self _dateLabelPreferredFont];
-    [(BSUIDateLabel *)dateLabel setFont:v4];
+    _dateLabelPreferredFont = [(NCNotificationSeamlessContentView *)self _dateLabelPreferredFont];
+    [(BSUIDateLabel *)dateLabel setFont:_dateLabelPreferredFont];
 
     [(BSUIDateLabel *)self->_dateLabel setNumberOfLines:1];
     [(BSUIDateLabel *)self->_dateLabel setLineBreakMode:3];
@@ -464,8 +464,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
 - (void)_configureDateLabel
 {
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  v4 = [v3 startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:self->_dateAllDay forStyle:self->_dateFormatStyle];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  v4 = [mEMORY[0x277CF0D50] startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:self->_dateAllDay forStyle:self->_dateFormatStyle];
   dateLabel = self->_dateLabel;
   self->_dateLabel = v4;
 
@@ -493,10 +493,10 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
 - (void)_updateTextAttributes
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   [(NCNotificationSeamlessContentView *)self _updateTextAttributesForPrimaryTextLabel];
   [(NCNotificationSeamlessContentView *)self _updateTextAttributesForPrimarySubtitleTextLabel];
@@ -546,8 +546,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(NCNotificationSeamlessContentView *)self currentTraits];
-    [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:0 measuringOnly:v11 traits:v4, v6, v8, v10];
+    currentTraits = [(NCNotificationSeamlessContentView *)self currentTraits];
+    [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:0 measuringOnly:currentTraits traits:v4, v6, v8, v10];
 
     if (self->_hasUpdatedContent)
     {
@@ -598,8 +598,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     [(NCNotificationSeamlessContentView *)self addSubview:self->_importantTextLabel];
     [(NCNotificationSeamlessContentView *)self _updateTextAttributesForImportantTextLabel];
     v5 = self->_importantTextLabel;
-    v6 = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
-    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:v5 style:1 visualStylingProvider:v6 outgoingProvider:0];
+    importantTextVisualStylingProvider = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
+    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:v5 style:1 visualStylingProvider:importantTextVisualStylingProvider outgoingProvider:0];
 
     v7 = self->_importantTextLabel;
 
@@ -607,11 +607,11 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (NCNotificationSeamlessContentView)initWithFrame:(CGRect)a3
+- (NCNotificationSeamlessContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCNotificationSeamlessContentView;
-  v3 = [(NCNotificationSeamlessContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationSeamlessContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -624,25 +624,25 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   return v4;
 }
 
-- (void)setURLInteractionEnabled:(BOOL)a3
+- (void)setURLInteractionEnabled:(BOOL)enabled
 {
-  if (self->_URLInteractionEnabled != a3)
+  if (self->_URLInteractionEnabled != enabled)
   {
-    v4 = a3;
-    self->_URLInteractionEnabled = a3;
+    enabledCopy = enabled;
+    self->_URLInteractionEnabled = enabled;
     [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAligned setURLInteractionEnabled:?];
-    [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAlignedGroupCollapsed setURLInteractionEnabled:v4];
-    [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned setURLInteractionEnabled:v4];
+    [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAlignedGroupCollapsed setURLInteractionEnabled:enabledCopy];
+    [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned setURLInteractionEnabled:enabledCopy];
 
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setTextMenusEnabled:(BOOL)a3
+- (void)setTextMenusEnabled:(BOOL)enabled
 {
-  if (self->_textMenusEnabled != a3)
+  if (self->_textMenusEnabled != enabled)
   {
-    self->_textMenusEnabled = a3;
+    self->_textMenusEnabled = enabled;
     [(UILabel *)self->_primaryTextLabel nc_setMenuEnabled:?];
     [(UILabel *)self->_primarySubtitleTextLabel nc_setMenuEnabled:self->_textMenusEnabled];
     [(UILabel *)self->_importantTextLabel nc_setMenuEnabled:self->_textMenusEnabled];
@@ -655,26 +655,26 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setThumbnailAlignedWithSecondaryText:(BOOL)a3
+- (void)setThumbnailAlignedWithSecondaryText:(BOOL)text
 {
-  if (self->_thumbnailAlignedWithSecondaryText != a3)
+  if (self->_thumbnailAlignedWithSecondaryText != text)
   {
-    self->_thumbnailAlignedWithSecondaryText = a3;
+    self->_thumbnailAlignedWithSecondaryText = text;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v11 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCNotificationSeamlessContentView *)self primaryText];
   v5 = BSEqualStrings();
 
-  v6 = v11;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     primaryTextLabel = self->_primaryTextLabel;
-    if (v11)
+    if (textCopy)
     {
       if (!primaryTextLabel)
       {
@@ -689,7 +689,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
         [(UIView *)self->_crossfadingContentView addSubview:self->_primaryTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateTextAttributesForPrimaryTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:0 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-        v6 = v11;
+        v6 = textCopy;
         primaryTextLabel = self->_primaryTextLabel;
       }
 
@@ -710,17 +710,17 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   MEMORY[0x2821F9730]();
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v11 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
-  v6 = v11;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-    if (v11)
+    if (textCopy)
     {
       if (!primarySubtitleTextLabel)
       {
@@ -735,7 +735,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
         [(UIView *)self->_crossfadingContentView addSubview:self->_primarySubtitleTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateTextAttributesForPrimarySubtitleTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:0 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-        v6 = v11;
+        v6 = textCopy;
         primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
       }
 
@@ -756,21 +756,21 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v8 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self secondaryText];
+  textCopy = text;
+  secondaryText = [(NCNotificationSeamlessContentView *)self secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    if (v8)
+    if (textCopy)
     {
       [(NCNotificationSeamlessContentView *)self _configureSecondaryLabelTopAlignedIfNecessary];
-      [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAligned setAttributedText:v8];
+      [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAligned setAttributedText:textCopy];
       [(NCNotificationSeamlessContentView *)self _updateTextAttributesForSecondaryTextElementTopAligned];
       secondaryTextElementTopAligned = self->_secondaryTextElementTopAligned;
-      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.TopAligned", [v8 nc_contentType]);
+      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.TopAligned", [textCopy nc_contentType]);
       [(NCNotificationBodyLabel *)secondaryTextElementTopAligned setAccessibilityIdentifier:v7];
     }
 
@@ -786,21 +786,21 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setSecondaryTextCompact:(id)a3
+- (void)setSecondaryTextCompact:(id)compact
 {
-  v8 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
+  compactCopy = compact;
+  secondaryTextCompact = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    if (v8)
+    if (compactCopy)
     {
       [(NCNotificationSeamlessContentView *)self _configureSecondaryLabelBottomAlignedIfNecessary];
-      [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned setAttributedText:v8];
+      [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned setAttributedText:compactCopy];
       [(NCNotificationSeamlessContentView *)self _updateTextAttributesForSecondaryTextElementBottomAligned];
       secondaryTextElementBottomAligned = self->_secondaryTextElementBottomAligned;
-      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.BottomAligned", [v8 nc_contentType]);
+      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.BottomAligned", [compactCopy nc_contentType]);
       [(NCNotificationBodyLabel *)secondaryTextElementBottomAligned setAccessibilityIdentifier:v7];
     }
 
@@ -816,21 +816,21 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setSecondaryTextGroupCollapsed:(id)a3
+- (void)setSecondaryTextGroupCollapsed:(id)collapsed
 {
-  v8 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
+  collapsedCopy = collapsed;
+  secondaryTextGroupCollapsed = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    if (v8)
+    if (collapsedCopy)
     {
       [(NCNotificationSeamlessContentView *)self _configureSecondaryLabelTopAlignedGroupCollapsedIfNecessary];
-      [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAlignedGroupCollapsed setAttributedText:v8];
+      [(NCNotificationBodyLabel *)self->_secondaryTextElementTopAlignedGroupCollapsed setAttributedText:collapsedCopy];
       [(NCNotificationSeamlessContentView *)self _updateTextAttributesForSecondaryTextElementTopAlignedGroupCollapsed];
       secondaryTextElementTopAlignedGroupCollapsed = self->_secondaryTextElementTopAlignedGroupCollapsed;
-      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.TopAligned", [v8 nc_contentType]);
+      v7 = NCStringFromAutomationAccessibilityIdentifierAndContentType(@"NotificationBody.TopAligned", [collapsedCopy nc_contentType]);
       [(NCNotificationBodyLabel *)secondaryTextElementTopAlignedGroupCollapsed setAccessibilityIdentifier:v7];
     }
 
@@ -846,18 +846,18 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setImportantText:(id)a3
+- (void)setImportantText:(id)text
 {
-  v7 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self importantText];
+  textCopy = text;
+  importantText = [(NCNotificationSeamlessContentView *)self importantText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    if (v7)
+    if (textCopy)
     {
       [(NCNotificationSeamlessContentView *)self _configureImportantTextLabelIfNecessary];
-      [(UILabel *)self->_importantTextLabel setText:v7];
+      [(UILabel *)self->_importantTextLabel setText:textCopy];
     }
 
     else
@@ -872,18 +872,18 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setImportantAttributedText:(id)a3
+- (void)setImportantAttributedText:(id)text
 {
-  v7 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self importantAttributedText];
+  textCopy = text;
+  importantAttributedText = [(NCNotificationSeamlessContentView *)self importantAttributedText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    if (v7)
+    if (textCopy)
     {
       [(NCNotificationSeamlessContentView *)self _configureImportantTextLabelIfNecessary];
-      [(UILabel *)self->_importantTextLabel setAttributedText:v7];
+      [(UILabel *)self->_importantTextLabel setAttributedText:textCopy];
     }
 
     else
@@ -898,42 +898,42 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setImportantTextVisualStylingProvider:(id)a3
+- (void)setImportantTextVisualStylingProvider:(id)provider
 {
-  v8 = a3;
+  providerCopy = provider;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
-    if (([v5 isAutomaticallyUpdatingView:self->_importantTextLabel] & 1) == 0)
+    importantTextVisualStylingProvider = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
+    if (([importantTextVisualStylingProvider isAutomaticallyUpdatingView:self->_importantTextLabel] & 1) == 0)
     {
 
-      v5 = 0;
+      importantTextVisualStylingProvider = 0;
     }
 
-    objc_storeStrong(&self->_importantTextVisualStylingProvider, a3);
+    objc_storeStrong(&self->_importantTextVisualStylingProvider, provider);
     importantTextLabel = self->_importantTextLabel;
-    v7 = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
-    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:importantTextLabel style:1 visualStylingProvider:v7 outgoingProvider:v5];
+    importantTextVisualStylingProvider2 = [(NCNotificationSeamlessContentView *)self importantTextVisualStylingProvider];
+    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:importantTextLabel style:1 visualStylingProvider:importantTextVisualStylingProvider2 outgoingProvider:importantTextVisualStylingProvider];
   }
 }
 
-- (void)setInlineAction:(id)a3
+- (void)setInlineAction:(id)action
 {
-  v14 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self inlineAction];
+  actionCopy = action;
+  inlineAction = [(NCNotificationSeamlessContentView *)self inlineAction];
   v5 = BSEqualObjects();
 
-  v6 = v14;
+  v6 = actionCopy;
   if ((v5 & 1) == 0)
   {
-    v7 = [v14 copy];
+    v7 = [actionCopy copy];
     inlineAction = self->_inlineAction;
     self->_inlineAction = v7;
 
-    v9 = [(UIAction *)self->_inlineAction title];
+    title = [(UIAction *)self->_inlineAction title];
 
     inlineActionButton = self->_inlineActionButton;
-    if (v9)
+    if (title)
     {
       if (!inlineActionButton)
       {
@@ -962,21 +962,21 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
     self->_hasUpdatedContent = 1;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
-    v6 = v14;
+    v6 = actionCopy;
   }
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v11 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self footerText];
+  textCopy = text;
+  footerText = [(NCNotificationSeamlessContentView *)self footerText];
   v5 = BSEqualObjects();
 
-  v6 = v11;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     footerTextLabel = self->_footerTextLabel;
-    if (v11)
+    if (textCopy)
     {
       if (!footerTextLabel)
       {
@@ -989,7 +989,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
         [(UIView *)self->_crossfadingContentView addSubview:self->_footerTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateTextAttributesForFooterTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:1 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-        v6 = v11;
+        v6 = textCopy;
         footerTextLabel = self->_footerTextLabel;
       }
 
@@ -1010,17 +1010,17 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   MEMORY[0x2821F9730]();
 }
 
-- (void)setFooterSummaryAttributionText:(id)a3
+- (void)setFooterSummaryAttributionText:(id)text
 {
-  v11 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
+  textCopy = text;
+  footerSummaryAttributionText = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
   v5 = BSEqualObjects();
 
-  v6 = v11;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     footerSummaryAttributionTextLabel = self->_footerSummaryAttributionTextLabel;
-    if (v11)
+    if (textCopy)
     {
       if (!footerSummaryAttributionTextLabel)
       {
@@ -1033,7 +1033,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
         [(UIView *)self->_crossfadingContentView addSubview:self->_footerSummaryAttributionTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateTextAttributesForFooterSummaryAttributionTextLabel];
         [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerSummaryAttributionTextLabel style:1 visualStylingProvider:self->_strokeVisualStylingProvider outgoingProvider:0];
-        v6 = v11;
+        v6 = textCopy;
         footerSummaryAttributionTextLabel = self->_footerSummaryAttributionTextLabel;
       }
 
@@ -1054,12 +1054,12 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   MEMORY[0x2821F9730]();
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -1068,54 +1068,54 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  if (self->_dateAllDay != a3)
+  if (self->_dateAllDay != day)
   {
-    self->_dateAllDay = a3;
+    self->_dateAllDay = day;
     [(NCNotificationSeamlessContentView *)self _tearDownDateLabel];
 
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3)
+  if (self->_dateFormatStyle != style)
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(NCNotificationSeamlessContentView *)self _tearDownDateLabel];
 
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  if (self->_hideDate != a3)
+  if (self->_hideDate != date)
   {
-    self->_hideDate = a3;
+    self->_hideDate = date;
     [(NCNotificationSeamlessContentView *)self _tearDownDateLabel];
 
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
-  if (self->_dateAlpha != a3)
+  if (self->_dateAlpha != alpha)
   {
-    self->_dateAlpha = a3;
+    self->_dateAlpha = alpha;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -1124,12 +1124,12 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v10 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_badgedIconDescription, a3);
+    objc_storeStrong(&self->_badgedIconDescription, description);
     badgedIconView = self->_badgedIconView;
     if (self->_badgedIconDescription)
     {
@@ -1140,7 +1140,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
       else
       {
-        v7 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:v10 pointSize:38.0];
+        v7 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:descriptionCopy pointSize:38.0];
         v8 = self->_badgedIconView;
         self->_badgedIconView = v7;
 
@@ -1162,25 +1162,25 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (void)setShadowsEnabled:(BOOL)a3
+- (void)setShadowsEnabled:(BOOL)enabled
 {
-  if (self->_shadowsEnabled != a3)
+  if (self->_shadowsEnabled != enabled)
   {
-    self->_shadowsEnabled = a3;
+    self->_shadowsEnabled = enabled;
     [(NCBadgedIconView *)self->_badgedIconView setShadowEnabled:?];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v12 = a3;
-  v4 = [(NCNotificationSeamlessContentView *)self thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(NCNotificationSeamlessContentView *)self thumbnail];
   v5 = BSEqualObjects();
 
-  v6 = v12;
+  v6 = thumbnailCopy;
   if ((v5 & 1) == 0)
   {
-    if (v12 && !self->_thumbnailImageView)
+    if (thumbnailCopy && !self->_thumbnailImageView)
     {
       v7 = objc_alloc_init(MEMORY[0x277D755E8]);
       thumbnailImageView = self->_thumbnailImageView;
@@ -1191,13 +1191,13 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
       [(UIImageView *)self->_thumbnailImageView setClipsToBounds:1];
       [(NCNotificationSeamlessContentView *)self _configureCrossfadingContentViewIfNecessary];
       [(UIView *)self->_crossfadingContentView addSubview:self->_thumbnailImageView];
-      v6 = v12;
+      v6 = thumbnailCopy;
     }
 
     [(UIImageView *)self->_thumbnailImageView setImage:v6];
     v9 = [(NCNotificationSeamlessContentView *)self visualStylingProviderForCategory:1];
     [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:0 visualStylingProvider:v9 outgoingProvider:v9];
-    if (!v12)
+    if (!thumbnailCopy)
     {
       v10 = self->_thumbnailImageView;
       if (v10)
@@ -1215,61 +1215,61 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   MEMORY[0x2821F9730]();
 }
 
-- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_primaryTextMaximumNumberOfLines != a3)
+  if (self->_primaryTextMaximumNumberOfLines != lines)
   {
-    self->_primaryTextMaximumNumberOfLines = a3;
+    self->_primaryTextMaximumNumberOfLines = lines;
     [(NCNotificationSeamlessContentView *)self _setNeedsTextAttributesUpdate];
     self->_hasUpdatedContent = 1;
   }
 }
 
-- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_primarySubtitleTextMaximumNumberOfLines != a3)
+  if (self->_primarySubtitleTextMaximumNumberOfLines != lines)
   {
-    self->_primarySubtitleTextMaximumNumberOfLines = a3;
+    self->_primarySubtitleTextMaximumNumberOfLines = lines;
     [(NCNotificationSeamlessContentView *)self _setNeedsTextAttributesUpdate];
     self->_hasUpdatedContent = 1;
   }
 }
 
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_secondaryTextMaximumNumberOfLines != a3)
+  if (self->_secondaryTextMaximumNumberOfLines != lines)
   {
-    self->_secondaryTextMaximumNumberOfLines = a3;
+    self->_secondaryTextMaximumNumberOfLines = lines;
     [(NCNotificationSeamlessContentView *)self _setNeedsTextAttributesUpdate];
     self->_hasUpdatedContent = 1;
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  if (self->_screenCaptureProhibited != a3)
+  if (self->_screenCaptureProhibited != prohibited)
   {
-    self->_screenCaptureProhibited = a3;
+    self->_screenCaptureProhibited = prohibited;
     [(NCNotificationSeamlessContentView *)self nc_setScreenCaptureProhibited:?];
   }
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -1281,66 +1281,66 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   return v12;
 }
 
-- (void)setAlignContentToBottom:(BOOL)a3
+- (void)setAlignContentToBottom:(BOOL)bottom
 {
-  if (self->_alignContentToBottom != a3)
+  if (self->_alignContentToBottom != bottom)
   {
-    self->_alignContentToBottom = a3;
+    self->_alignContentToBottom = bottom;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setIsGroupCollapsed:(BOOL)a3
+- (void)setIsGroupCollapsed:(BOOL)collapsed
 {
-  if (self->_isGroupCollapsed != a3)
+  if (self->_isGroupCollapsed != collapsed)
   {
-    self->_isGroupCollapsed = a3;
+    self->_isGroupCollapsed = collapsed;
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setAllowContentToCrossFade:(BOOL)a3
+- (void)setAllowContentToCrossFade:(BOOL)fade
 {
-  if (self->_allowContentToCrossFade != a3)
+  if (self->_allowContentToCrossFade != fade)
   {
-    self->_allowContentToCrossFade = a3;
-    v14 = [(NCNotificationSeamlessContentView *)self secondaryText];
+    self->_allowContentToCrossFade = fade;
+    secondaryText = [(NCNotificationSeamlessContentView *)self secondaryText];
     [(NCNotificationSeamlessContentView *)self setSecondaryText:0];
-    v5 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
+    secondaryTextCompact = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
     [(NCNotificationSeamlessContentView *)self setSecondaryTextCompact:0];
-    v6 = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
+    secondaryTextGroupCollapsed = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
     [(NCNotificationSeamlessContentView *)self setSecondaryTextGroupCollapsed:0];
-    v7 = [(NCNotificationSeamlessContentView *)self primaryText];
+    primaryText = [(NCNotificationSeamlessContentView *)self primaryText];
     [(NCNotificationSeamlessContentView *)self setPrimaryText:0];
-    v8 = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
+    primarySubtitleText = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
     [(NCNotificationSeamlessContentView *)self setPrimarySubtitleText:0];
-    v9 = [(NCNotificationSeamlessContentView *)self inlineAction];
+    inlineAction = [(NCNotificationSeamlessContentView *)self inlineAction];
     [(NCNotificationSeamlessContentView *)self setInlineAction:0];
-    v10 = [(NCNotificationSeamlessContentView *)self footerText];
+    footerText = [(NCNotificationSeamlessContentView *)self footerText];
     [(NCNotificationSeamlessContentView *)self setFooterText:0];
-    v11 = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
+    footerSummaryAttributionText = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
     [(NCNotificationSeamlessContentView *)self setFooterSummaryAttributionText:0];
-    v12 = [(NCNotificationSeamlessContentView *)self thumbnail];
+    thumbnail = [(NCNotificationSeamlessContentView *)self thumbnail];
     [(NCNotificationSeamlessContentView *)self setThumbnail:0];
     [(UIView *)self->_crossfadingContentView removeFromSuperview];
     crossfadingContentView = self->_crossfadingContentView;
     self->_crossfadingContentView = 0;
 
     [(NCNotificationSeamlessContentView *)self _configureCrossfadingContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self setSecondaryText:v14];
-    [(NCNotificationSeamlessContentView *)self setSecondaryTextCompact:v5];
-    [(NCNotificationSeamlessContentView *)self setSecondaryTextGroupCollapsed:v6];
-    [(NCNotificationSeamlessContentView *)self setPrimaryText:v7];
-    [(NCNotificationSeamlessContentView *)self setPrimarySubtitleText:v8];
-    [(NCNotificationSeamlessContentView *)self setInlineAction:v9];
-    [(NCNotificationSeamlessContentView *)self setFooterText:v10];
-    [(NCNotificationSeamlessContentView *)self setFooterSummaryAttributionText:v11];
-    [(NCNotificationSeamlessContentView *)self setThumbnail:v12];
+    [(NCNotificationSeamlessContentView *)self setSecondaryText:secondaryText];
+    [(NCNotificationSeamlessContentView *)self setSecondaryTextCompact:secondaryTextCompact];
+    [(NCNotificationSeamlessContentView *)self setSecondaryTextGroupCollapsed:secondaryTextGroupCollapsed];
+    [(NCNotificationSeamlessContentView *)self setPrimaryText:primaryText];
+    [(NCNotificationSeamlessContentView *)self setPrimarySubtitleText:primarySubtitleText];
+    [(NCNotificationSeamlessContentView *)self setInlineAction:inlineAction];
+    [(NCNotificationSeamlessContentView *)self setFooterText:footerText];
+    [(NCNotificationSeamlessContentView *)self setFooterSummaryAttributionText:footerSummaryAttributionText];
+    [(NCNotificationSeamlessContentView *)self setThumbnail:thumbnail];
     [(NCNotificationSeamlessContentView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v15 = *MEMORY[0x277CBF3A8];
   BSRectWithSize();
@@ -1348,8 +1348,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NCNotificationSeamlessContentView *)self currentTraits];
-  [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:&v15 measuringOnly:v12 traits:v5, v7, v9, v11];
+  currentTraits = [(NCNotificationSeamlessContentView *)self currentTraits];
+  [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:&v15 measuringOnly:currentTraits traits:v5, v7, v9, v11];
 
   v14 = *(&v15 + 1);
   v13 = *&v15;
@@ -1358,25 +1358,25 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = NCNotificationSeamlessContentView;
-  [(NCNotificationSeamlessContentView *)&v7 traitCollectionDidChange:a3];
+  [(NCNotificationSeamlessContentView *)&v7 traitCollectionDidChange:change];
   badgedIconView = self->_badgedIconView;
-  v5 = [(NCNotificationSeamlessContentView *)self window];
-  v6 = [v5 traitCollection];
-  -[NCBadgedIconView setOverrideUserInterfaceStyle:](badgedIconView, "setOverrideUserInterfaceStyle:", [v6 userInterfaceStyle]);
+  window = [(NCNotificationSeamlessContentView *)self window];
+  traitCollection = [window traitCollection];
+  -[NCBadgedIconView setOverrideUserInterfaceStyle:](badgedIconView, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
   [(NCNotificationSeamlessContentView *)self _adjustInlineActionButtonBackgroundColor];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits
 {
   v8 = *MEMORY[0x277CBF3A8];
-  v5 = a4;
+  traitsCopy = traits;
   BSRectWithSize();
-  [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:&v8 measuringOnly:v5 traits:?];
+  [(NCNotificationSeamlessContentView *)self _layoutSubviewInBounds:&v8 measuringOnly:traitsCopy traits:?];
 
   v7 = *(&v8 + 1);
   v6 = *&v8;
@@ -1385,7 +1385,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   return result;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
   if (strokeVisualStylingProvider)
@@ -1397,39 +1397,39 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   {
     v6.receiver = self;
     v6.super_class = NCNotificationSeamlessContentView;
-    v4 = [(NCNotificationSeamlessContentView *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(NCNotificationSeamlessContentView *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  if (strokeVisualStylingProvider != v6)
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v11 = v6;
-    v8 = v6;
+    v11 = providerCopy;
+    v8 = providerCopy;
     v9 = self->_strokeVisualStylingProvider;
     self->_strokeVisualStylingProvider = v8;
     v10 = strokeVisualStylingProvider;
 
-    [(NCNotificationListBaseContentView *)self->_secondaryTextElementTopAligned setVisualStylingProvider:v8 forCategory:a4];
-    [(NCNotificationListBaseContentView *)self->_secondaryTextElementBottomAligned setVisualStylingProvider:v8 forCategory:a4];
-    [(NCNotificationListBaseContentView *)self->_secondaryTextElementTopAlignedGroupCollapsed setVisualStylingProvider:v8 forCategory:a4];
-    [(NCNotificationSeamlessContentView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:a4 outgoingProvider:v10];
+    [(NCNotificationListBaseContentView *)self->_secondaryTextElementTopAligned setVisualStylingProvider:v8 forCategory:category];
+    [(NCNotificationListBaseContentView *)self->_secondaryTextElementBottomAligned setVisualStylingProvider:v8 forCategory:category];
+    [(NCNotificationListBaseContentView *)self->_secondaryTextElementTopAlignedGroupCollapsed setVisualStylingProvider:v8 forCategory:category];
+    [(NCNotificationSeamlessContentView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:category outgoingProvider:v10];
 
-    v6 = v11;
+    providerCopy = v11;
   }
 }
 
-- (void)dateLabelDidChange:(id)a3
+- (void)dateLabelDidChange:(id)change
 {
   [(BSUIDateLabel *)self->_dateLabel sizeToFit];
   [(NCNotificationSeamlessContentView *)self setNeedsLayout];
-  v4 = [(NCNotificationSeamlessContentView *)self primaryText];
-  v5 = [v4 length];
+  primaryText = [(NCNotificationSeamlessContentView *)self primaryText];
+  v5 = [primaryText length];
 
   if (v5 && [(UILabel *)self->_primaryTextLabel numberOfLines]!= 1)
   {
@@ -1441,40 +1441,40 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 }
 
-- (BOOL)notificationLabel:(id)a3 requestsInteractionWithURL:(id)a4
+- (BOOL)notificationLabel:(id)label requestsInteractionWithURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained notificationSeamlessContentView:self requestsInteractionWithURL:v5];
+    [WeakRetained notificationSeamlessContentView:self requestsInteractionWithURL:lCopy];
   }
 
   return 0;
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)_updateVisualStylingOfImageView:(id)a3 ifSymbolImageWithStyle:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfImageView:(id)view ifSymbolImageWithStyle:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a3;
-    v14 = [v12 image];
-    if ([v14 isSymbolImage])
+    outgoingProviderCopy = outgoingProvider;
+    providerCopy = provider;
+    viewCopy = view;
+    image = [viewCopy image];
+    if ([image isSymbolImage])
     {
-      v13 = v11;
+      v13 = providerCopy;
     }
 
     else
@@ -1482,30 +1482,30 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
       v13 = 0;
     }
 
-    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:v12 style:a4 visualStylingProvider:v13 outgoingProvider:v10];
+    [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:viewCopy style:style visualStylingProvider:v13 outgoingProvider:outgoingProviderCopy];
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   badgedIconView = self->_badgedIconView;
-  v8 = a5;
-  v9 = a3;
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:badgedIconView style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_inlineActionButton style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerSummaryAttributionTextLabel style:1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:0 visualStylingProvider:v9 outgoingProvider:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:badgedIconView style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_inlineActionButton style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfView:self->_footerSummaryAttributionTextLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationSeamlessContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
-- (CGRect)_textFrameForBounds:(CGRect)a3 ignoreBadgedIconView:(BOOL)a4
+- (CGRect)_textFrameForBounds:(CGRect)bounds ignoreBadgedIconView:(BOOL)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(NCNotificationSeamlessContentView *)self isHorizontalMarginPaddingDisabled])
   {
     v10 = 0.0;
@@ -1516,7 +1516,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     v10 = 14.0;
   }
 
-  if (!a4 && self->_badgedIconView)
+  if (!view && self->_badgedIconView)
   {
     v10 = v10 + 50.0;
   }
@@ -1541,8 +1541,8 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     v12 = v10;
   }
 
-  v13 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v13 displayScale];
+  traitCollection = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection displayScale];
   UIFloorToScale();
   v15 = v14;
   v28.origin.x = x;
@@ -1555,12 +1555,12 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   v29.size.width = width;
   v29.size.height = height;
   v17 = CGRectGetHeight(v29);
-  v18 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v18 displayScale];
+  traitCollection2 = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection2 displayScale];
   UIFloorToScale();
   v20 = v17 - v19;
-  v21 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v21 displayScale];
+  traitCollection3 = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection3 displayScale];
   UIFloorToScale();
   v23 = v20 - v22;
 
@@ -1575,17 +1575,17 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   return result;
 }
 
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4 traits:(id)a5
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only traits:(id)traits
 {
   v384 = *MEMORY[0x277D85DE8];
-  v249 = a5;
+  traitsCopy = traits;
   [(NCNotificationSeamlessContentView *)self _updateTextAttributesIfNecessary];
-  v254 = a4;
-  v8 = a4 == 0;
-  v259 = [(NCNotificationSeamlessContentView *)self _shouldReverseLayoutDirection];
+  onlyCopy = only;
+  v8 = only == 0;
+  _shouldReverseLayoutDirection = [(NCNotificationSeamlessContentView *)self _shouldReverseLayoutDirection];
   IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(self->_preferredContentSizeCategory);
-  v9 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection displayScale];
   v240 = v10;
 
   v379 = 0;
@@ -1600,34 +1600,34 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   aBlock[5] = &v379;
   aBlock[4] = self;
   v11 = _Block_copy(aBlock);
-  v12 = [v249 alignContentToBottom];
-  v250 = [v249 isGroupCollapsed];
-  v253 = v12 ^ 1;
-  if (v12 & 1 | ((v250 & 1) == 0))
+  alignContentToBottom = [traitsCopy alignContentToBottom];
+  isGroupCollapsed = [traitsCopy isGroupCollapsed];
+  v253 = alignContentToBottom ^ 1;
+  if (alignContentToBottom & 1 | ((isGroupCollapsed & 1) == 0))
   {
     v252 = 0;
-    v242 = v12 ^ 1;
-    v243 = v12;
+    v242 = alignContentToBottom ^ 1;
+    v243 = alignContentToBottom;
   }
 
   else
   {
-    v13 = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
-    v252 = [v13 length] != 0;
+    footerSummaryAttributionText = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
+    v252 = [footerSummaryAttributionText length] != 0;
 
     v242 = !v252;
     v243 = v252;
   }
 
-  [(NCNotificationSeamlessContentView *)self _textFrameForBounds:0 ignoreBadgedIconView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NCNotificationSeamlessContentView *)self _textFrameForBounds:0 ignoreBadgedIconView:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v244 = v14;
   v245 = v15;
   v246 = v17;
   v247 = v16;
-  if (v12)
+  if (alignContentToBottom)
   {
-    v18 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
-    v258 = [v18 nc_contentType] == 6;
+    secondaryTextCompact = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
+    v258 = [secondaryTextCompact nc_contentType] == 6;
   }
 
   else
@@ -1635,7 +1635,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     v258 = 0;
   }
 
-  if (v254)
+  if (onlyCopy)
   {
     v266 = 0;
   }
@@ -1661,7 +1661,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
     goto LABEL_23;
   }
 
-  [(BSUIDateLabel *)dateLabel sizeThatFits:a3.size.width, a3.size.height];
+  [(BSUIDateLabel *)dateLabel sizeThatFits:bounds.size.width, bounds.size.height];
   BSRectWithSize();
   p_x = &v372->origin.x;
   v372[1].origin.x = v22;
@@ -1672,7 +1672,7 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   v27 = v245;
   v29 = v246;
   v28 = v247;
-  if (v259)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMinX(*&v26);
   }
@@ -1684,11 +1684,11 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
   }
 
   v372[1].origin.x = MinX;
-  if (v12 && ([(NCNotificationSeamlessContentView *)self thumbnail], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (alignContentToBottom && ([(NCNotificationSeamlessContentView *)self thumbnail], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    Height = CGRectGetHeight(a3);
-    v35 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v35 displayScale];
+    Height = CGRectGetHeight(bounds);
+    traitCollection2 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection2 displayScale];
     UIFloorToScale();
     v372[1].origin.y = Height - v36 - CGRectGetHeight(v372[1]);
 
@@ -1697,12 +1697,12 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 
   else
   {
-    v32 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v32 displayScale];
+    traitCollection3 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection3 displayScale];
     UIFloorToScale();
     v372[1].origin.y = v33 + 2.0;
 
-    if (!v12)
+    if (!alignContentToBottom)
     {
       goto LABEL_20;
     }
@@ -1711,11 +1711,11 @@ void __55__NCNotificationSeamlessContentView__tearDownDateLabel__block_invoke(ui
 LABEL_20:
   if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76840], self->_preferredContentSizeCategory) == NSOrderedDescending)
   {
-    v37 = [(NCNotificationSeamlessContentView *)self _dateLabelFont];
-    v38 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v38 displayScale];
+    _dateLabelFont = [(NCNotificationSeamlessContentView *)self _dateLabelFont];
+    traitCollection4 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection4 displayScale];
     UIFloorToScale();
-    [v37 _scaledValueForValue:v39 + 2.0];
+    [_dateLabelFont _scaledValueForValue:v39 + 2.0];
     v372[1].origin.y = v40;
   }
 
@@ -1728,7 +1728,7 @@ LABEL_20:
   v11[2](v11, self->_dateLabel);
 LABEL_23:
   v46 = self->_dateAlpha <= 0.0 || self->_date == 0;
-  v47 = [(NCNotificationSeamlessContentView *)self thumbnail];
+  thumbnail = [(NCNotificationSeamlessContentView *)self thumbnail];
 
   v365 = 0;
   v366 = &v365;
@@ -1740,16 +1740,16 @@ LABEL_23:
   v358[1] = 3221225472;
   v358[2] = __81__NCNotificationSeamlessContentView__layoutSubviewInBounds_measuringOnly_traits___block_invoke_3;
   v358[3] = &unk_27836FE48;
-  v363 = v259;
+  v363 = _shouldReverseLayoutDirection;
   v360 = &v365;
   v358[4] = self;
-  v362 = a3;
+  boundsCopy = bounds;
   v361 = &v371;
-  v364 = v12;
+  v364 = alignContentToBottom;
   v264 = v11;
   v359 = v264;
   v248 = _Block_copy(v358);
-  if (v47)
+  if (thumbnail)
   {
     if (self->_thumbnailAlignedWithSecondaryText)
     {
@@ -1796,28 +1796,28 @@ LABEL_32:
   v350[1] = 3221225472;
   v350[2] = __81__NCNotificationSeamlessContentView__layoutSubviewInBounds_measuringOnly_traits___block_invoke_4;
   v350[3] = &unk_27836FE70;
-  v351 = v259;
+  v351 = _shouldReverseLayoutDirection;
   v350[4] = &v352;
   v261 = _Block_copy(v350);
   v348[0] = MEMORY[0x277D85DD0];
   v348[1] = 3221225472;
   v348[2] = __81__NCNotificationSeamlessContentView__layoutSubviewInBounds_measuringOnly_traits___block_invoke_5;
   v348[3] = &__block_descriptor_33_e104__CGRect__CGPoint_dd__CGSize_dd__72__0_CGRect__CGPoint_dd__CGSize_dd__8_CGRect__CGPoint_dd__CGSize_dd__40l;
-  v349 = v259;
+  v349 = _shouldReverseLayoutDirection;
   v51 = _Block_copy(v348);
-  v52 = [(NCNotificationSeamlessContentView *)self primaryText];
-  v53 = [v52 length] == 0;
+  primaryText = [(NCNotificationSeamlessContentView *)self primaryText];
+  v53 = [primaryText length] == 0;
 
-  v54 = [(NCNotificationSeamlessContentView *)self primaryText];
-  if ([v54 length])
+  primaryText2 = [(NCNotificationSeamlessContentView *)self primaryText];
+  if ([primaryText2 length])
   {
     v55 = 0;
   }
 
   else
   {
-    v56 = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
-    v55 = ([v56 length] | v47) == 0;
+    primarySubtitleText = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
+    v55 = ([primarySubtitleText length] | thumbnail) == 0;
   }
 
   v57 = self->_dateLabel;
@@ -1839,17 +1839,17 @@ LABEL_32:
   v339[1] = 3221225472;
   v339[2] = __81__NCNotificationSeamlessContentView__layoutSubviewInBounds_measuringOnly_traits___block_invoke_6;
   v339[3] = &unk_27836FEB8;
-  v344 = a3;
+  boundsCopy2 = bounds;
   v339[4] = self;
   v341 = v346;
   v241 = v51;
   v340 = v241;
   v342 = &v371;
-  v345 = v12;
+  v345 = alignContentToBottom;
   v343 = &v365;
   v59 = _Block_copy(v339);
-  v60 = [(NCNotificationSeamlessContentView *)self importantText];
-  v61 = [v60 length] == 0;
+  importantText = [(NCNotificationSeamlessContentView *)self importantText];
+  v61 = [importantText length] == 0;
 
   if (!v61)
   {
@@ -1882,20 +1882,20 @@ LABEL_32:
 
   else
   {
-    v70 = [(NCNotificationSeamlessContentView *)self importantText];
-    v71 = [v70 length] != 0;
+    importantText2 = [(NCNotificationSeamlessContentView *)self importantText];
+    v71 = [importantText2 length] != 0;
 
-    (*(v59 + 2))(v59, (v71 || v46) & (v47 != 0), 0, 0);
+    (*(v59 + 2))(v59, (v71 || v46) & (thumbnail != 0), 0, 0);
     v72 = v261[2](v261, self->_primaryTextLabel, v253);
     v256 = v73;
     x = v72;
     rect = v74;
     v76 = v75;
-    if (v12)
+    if (alignContentToBottom)
     {
-      v77 = CGRectGetHeight(a3);
-      v78 = [(NCNotificationSeamlessContentView *)self traitCollection];
-      [v78 displayScale];
+      v77 = CGRectGetHeight(bounds);
+      traitCollection5 = [(NCNotificationSeamlessContentView *)self traitCollection];
+      [traitCollection5 displayScale];
       UIFloorToScale();
       v80 = v79;
       v388.size.width = v256;
@@ -1922,7 +1922,7 @@ LABEL_32:
     v83 = _Block_copy(v327);
     [v266 addObject:v83];
 
-    if (v47 && self->_thumbnailAlignedWithSecondaryText)
+    if (thumbnail && self->_thumbnailAlignedWithSecondaryText)
     {
       v248[2]();
       v389.size.width = v256;
@@ -1936,9 +1936,9 @@ LABEL_32:
     }
   }
 
-  if (!(v12 & 1 | !IsAccessibilityCategory) && self->_date)
+  if (!(alignContentToBottom & 1 | !IsAccessibilityCategory) && self->_date)
   {
-    (*(v59 + 2))(v59, v47 != 0, 0, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, 0, 0);
     v86 = v261[2](v261, self->_dateLabel, 1);
     v87 = &v372->origin.x;
     v372[1].origin.x = v86;
@@ -1956,17 +1956,17 @@ LABEL_32:
     [v266 addObject:v91];
   }
 
-  if (v47 && CGRectIsEmpty(v366[1]))
+  if (thumbnail && CGRectIsEmpty(v366[1]))
   {
     v248[2]();
   }
 
-  v92 = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
-  v93 = [v92 length] == 0;
+  primarySubtitleText2 = [(NCNotificationSeamlessContentView *)self primarySubtitleText];
+  v93 = [primarySubtitleText2 length] == 0;
 
   if (!v93)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v94 = v261[2](v261, self->_primarySubtitleTextLabel, 1);
     v96 = v95;
     v98 = v97;
@@ -1985,13 +1985,13 @@ LABEL_32:
     [v266 addObject:v101];
   }
 
-  v102 = [(NCNotificationSeamlessContentView *)self secondaryText];
-  v103 = [v102 length] == 0;
+  secondaryText = [(NCNotificationSeamlessContentView *)self secondaryText];
+  v103 = [secondaryText length] == 0;
 
-  v104 = v12 | v250;
-  if (((v103 | v104) & 1) == 0)
+  traitCollection10 = alignContentToBottom | isGroupCollapsed;
+  if (((v103 | traitCollection10) & 1) == 0)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v105 = v261[2](v261, self->_secondaryTextElementTopAligned, 1);
     v107 = v106;
     v109 = v108;
@@ -2010,13 +2010,13 @@ LABEL_32:
     [v266 addObject:v112];
   }
 
-  v113 = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
-  v114 = [v113 length] != 0;
+  secondaryTextGroupCollapsed = [(NCNotificationSeamlessContentView *)self secondaryTextGroupCollapsed];
+  v114 = [secondaryTextGroupCollapsed length] != 0;
 
-  v115 = v253 & v250;
-  if ((v114 & v115) != 0)
+  traitCollection11 = v253 & isGroupCollapsed;
+  if ((v114 & traitCollection11) != 0)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v116 = v261[2](v261, self->_secondaryTextElementTopAlignedGroupCollapsed, 1);
     v118 = v117;
     v120 = v119;
@@ -2035,8 +2035,8 @@ LABEL_32:
     [v266 addObject:v123];
   }
 
-  v124 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
-  v125 = [v124 length] == 0;
+  secondaryTextCompact2 = [(NCNotificationSeamlessContentView *)self secondaryTextCompact];
+  v125 = [secondaryTextCompact2 length] == 0;
 
   if (((v125 | v253 | IsAccessibilityCategory) & 1) == 0)
   {
@@ -2050,7 +2050,7 @@ LABEL_32:
 
     else
     {
-      v127 = v126(v59, v47 != 0, 0, 0);
+      v127 = v126(v59, thumbnail != 0, 0, 0);
       v133 = v132;
       v131 = v134;
       v390.size.width = v256;
@@ -2058,9 +2058,9 @@ LABEL_32:
       v390.origin.y = r1;
       v390.size.height = rect;
       Width = CGRectGetWidth(v390);
-      v136 = [(NCNotificationSeamlessContentView *)self thumbnail];
+      thumbnail2 = [(NCNotificationSeamlessContentView *)self thumbnail];
       v137 = 0.0;
-      if (!v136)
+      if (!thumbnail2)
       {
         v137 = CGRectGetWidth(v372[1]) + 10.0;
       }
@@ -2071,9 +2071,9 @@ LABEL_32:
     [(NCNotificationBodyLabel *)self->_secondaryTextElementBottomAligned sizeThatFits:v129, v131];
     v139 = v138;
     v141 = v140;
-    v142 = CGRectGetHeight(a3);
-    v143 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v143 displayScale];
+    v142 = CGRectGetHeight(bounds);
+    traitCollection6 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection6 displayScale];
     UIFloorToScale();
     v145 = v144;
     v391.origin.x = 0.0;
@@ -2099,8 +2099,8 @@ LABEL_32:
 
     else
     {
-      v152 = [(NCNotificationSeamlessContentView *)self primaryText];
-      v153 = [v152 length] == 0;
+      primaryText3 = [(NCNotificationSeamlessContentView *)self primaryText];
+      v153 = [primaryText3 length] == 0;
 
       if (!v153)
       {
@@ -2108,7 +2108,7 @@ LABEL_32:
         v154 = x;
         v156 = r1;
         v157 = rect;
-        if (v259)
+        if (_shouldReverseLayoutDirection)
         {
           v158 = CGRectGetMinX(*&v154);
           v392.origin.x = 0.0;
@@ -2139,12 +2139,12 @@ LABEL_32:
     [v266 addObject:v159];
   }
 
-  v160 = [(UIAction *)self->_inlineAction title];
-  v161 = [v160 length] == 0;
+  title = [(UIAction *)self->_inlineAction title];
+  v161 = [title length] == 0;
 
   if (!v161)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v162 = v261[2](v261, self->_inlineActionButton, 0);
     v164 = v163;
     v166 = v165;
@@ -2164,12 +2164,12 @@ LABEL_32:
     [v266 addObject:v169];
   }
 
-  v170 = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
-  v171 = [v170 length] != 0;
+  footerSummaryAttributionText2 = [(NCNotificationSeamlessContentView *)self footerSummaryAttributionText];
+  v171 = [footerSummaryAttributionText2 length] != 0;
 
   if (v171 && v252)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v172 = v261[2](v261, self->_footerSummaryAttributionTextLabel, 1);
     v174 = v173;
     v176 = v175;
@@ -2189,12 +2189,12 @@ LABEL_32:
     [v266 addObject:v179];
   }
 
-  v180 = [(NCNotificationSeamlessContentView *)self footerText];
-  v181 = [v180 length] == 0;
+  footerText = [(NCNotificationSeamlessContentView *)self footerText];
+  v181 = [footerText length] == 0;
 
   if (!v181 && !v243)
   {
-    (*(v59 + 2))(v59, v47 != 0, IsAccessibilityCategory, 0);
+    (*(v59 + 2))(v59, thumbnail != 0, IsAccessibilityCategory, 0);
     v182 = v261[2](v261, self->_footerTextLabel, 1);
     v184 = v183;
     v186 = v185;
@@ -2214,9 +2214,9 @@ LABEL_32:
     [v266 addObject:v189];
   }
 
-  if (v259)
+  if (_shouldReverseLayoutDirection)
   {
-    CGRectGetWidth(a3);
+    CGRectGetWidth(bounds);
   }
 
   [(NCNotificationSeamlessContentView *)self isHorizontalMarginPaddingDisabled];
@@ -2236,12 +2236,12 @@ LABEL_32:
     v197 = v201;
   }
 
-  if (v12)
+  if (alignContentToBottom)
   {
     [(NCNotificationSeamlessContentView *)self bounds];
     v202 = CGRectGetHeight(v393);
-    v203 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v203 displayScale];
+    traitCollection7 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection7 displayScale];
     UIFloorToScale();
     v205 = v204;
     v394.origin.x = v191;
@@ -2271,8 +2271,8 @@ LABEL_32:
       rect = v396.size.height;
     }
 
-    v207 = [(NCNotificationSeamlessContentView *)self importantText];
-    v208 = [v207 length] == 0;
+    importantText3 = [(NCNotificationSeamlessContentView *)self importantText];
+    v208 = [importantText3 length] == 0;
 
     if (!v208)
     {
@@ -2299,9 +2299,9 @@ LABEL_32:
   v277[3] = &unk_27836FF30;
   v277[4] = self;
   v278 = v258;
-  v279 = v12;
-  v280 = ((v12 | v250) & 1) == 0;
-  v281 = v253 & v250;
+  v279 = alignContentToBottom;
+  v280 = ((alignContentToBottom | isGroupCollapsed) & 1) == 0;
+  v281 = v253 & isGroupCollapsed;
   v213 = _Block_copy(v277);
   [v266 addObject:v213];
 
@@ -2311,37 +2311,37 @@ LABEL_32:
   v271[3] = &unk_27836FF58;
   v271[4] = self;
   v272 = v258;
-  v273 = v12;
-  v274 = v12;
+  v273 = alignContentToBottom;
+  v274 = alignContentToBottom;
   v275 = v252;
   v276 = v242;
   v214 = _Block_copy(v271);
   [v266 addObject:v214];
 
-  v215 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v215 displayScale];
+  traitCollection8 = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection8 displayScale];
   UIFloorToScale();
   v217 = v216;
   v218 = CGRectGetHeight(v353[1]);
-  v219 = [(NCNotificationSeamlessContentView *)self traitCollection];
-  [v219 displayScale];
+  traitCollection9 = [(NCNotificationSeamlessContentView *)self traitCollection];
+  [traitCollection9 displayScale];
   UIFloorToScale();
   v221 = v220;
 
   if (self->_date && !UIContentSizeCategoryIsAccessibilityCategory(self->_preferredContentSizeCategory))
   {
-    v215 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v215 displayScale];
+    traitCollection8 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection8 displayScale];
     UIFloorToScale();
     v225 = v224;
-    v219 = [(NCNotificationSeamlessContentView *)self _dateLabelFont];
-    [v219 lineHeight];
-    v104 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v104 displayScale];
+    traitCollection9 = [(NCNotificationSeamlessContentView *)self _dateLabelFont];
+    [traitCollection9 lineHeight];
+    traitCollection10 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection10 displayScale];
     UICeilToScale();
     v227 = v226;
-    v115 = [(NCNotificationSeamlessContentView *)self traitCollection];
-    [v115 displayScale];
+    traitCollection11 = [(NCNotificationSeamlessContentView *)self traitCollection];
+    [traitCollection11 displayScale];
     UIFloorToScale();
     v222 = v225 + 2.0 + v227 + v228;
     v223 = 1;
@@ -2359,8 +2359,8 @@ LABEL_32:
     v222 = 16.0;
   }
 
-  v229 = [(NCNotificationSeamlessContentView *)self thumbnail];
-  if (v229)
+  thumbnail3 = [(NCNotificationSeamlessContentView *)self thumbnail];
+  if (thumbnail3)
   {
     v230 = 32.0;
   }
@@ -2375,17 +2375,17 @@ LABEL_32:
   }
 
   v231 = v222 + v230 + 16.0;
-  if (v254)
+  if (onlyCopy)
   {
-    CGRectGetWidth(a3);
+    CGRectGetWidth(bounds);
     UISizeRoundToScale();
-    v254->width = v232;
-    v254->height = v233;
+    onlyCopy->width = v232;
+    onlyCopy->height = v233;
   }
 
   else
   {
-    if ((v12 & 1) == 0 && fmax(v231, 66.0) > v217 + v218 + v221)
+    if ((alignContentToBottom & 1) == 0 && fmax(v231, 66.0) > v217 + v218 + v221)
     {
       UIRectCenteredYInRectScale();
       v234 = CGRectGetMinY(v398);
@@ -2749,8 +2749,8 @@ uint64_t __81__NCNotificationSeamlessContentView__layoutSubviewInBounds_measurin
   [(BSUIDateLabel *)self->_dateLabel setDelegate:0];
   [(BSUIDateLabel *)self->_dateLabel setHidden:0];
   [(MTVisualStylingProvider *)self->_strokeVisualStylingProvider stopAutomaticallyUpdatingView:self->_dateLabel];
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  [v3 recycleLabel:self->_dateLabel];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  [mEMORY[0x277CF0D50] recycleLabel:self->_dateLabel];
 }
 
 @end

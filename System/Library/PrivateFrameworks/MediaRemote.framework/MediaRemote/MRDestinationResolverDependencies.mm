@@ -1,12 +1,12 @@
 @interface MRDestinationResolverDependencies
 + (id)defaultDependencies;
-- (id)addPlayerPathInvalidationHandler:(id)a3 queue:(id)a4 handler:(id)a5;
-- (id)createEndpointObserverWithUID:(id)a3;
-- (void)createPlayerPathForEndpoint:(id)a3 client:(id)a4 player:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)resolvePlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)retrieveEndpointForContextUID:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)retrieveEndpointForUID:(id)a3 endpointGroupUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)retrieveOutputDeviceUIDForOrigin:(id)a3 queue:(id)a4 completion:(id)a5;
+- (id)addPlayerPathInvalidationHandler:(id)handler queue:(id)queue handler:(id)a5;
+- (id)createEndpointObserverWithUID:(id)d;
+- (void)createPlayerPathForEndpoint:(id)endpoint client:(id)client player:(id)player queue:(id)queue completion:(id)completion;
+- (void)resolvePlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)retrieveEndpointForContextUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)retrieveEndpointForUID:(id)d endpointGroupUID:(id)iD queue:(id)queue completion:(id)completion;
+- (void)retrieveOutputDeviceUIDForOrigin:(id)origin queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRDestinationResolverDependencies
@@ -30,14 +30,14 @@ void __56__MRDestinationResolverDependencies_defaultDependencies__block_invoke()
   defaultDependencies__defaultDependencies = v0;
 }
 
-- (void)createPlayerPathForEndpoint:(id)a3 client:(id)a4 player:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)createPlayerPathForEndpoint:(id)endpoint client:(id)client player:(id)player queue:(id)queue completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  endpointCopy = endpoint;
+  clientCopy = client;
+  playerCopy = player;
+  queueCopy = queue;
+  completionCopy = completion;
   v29 = @"MREndpointConnectionReasonUserInfoKey";
   v30[0] = @"MRNowPlayingController";
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
@@ -45,16 +45,16 @@ void __56__MRDestinationResolverDependencies_defaultDependencies__block_invoke()
   v23[1] = 3221225472;
   v23[2] = __96__MRDestinationResolverDependencies_createPlayerPathForEndpoint_client_player_queue_completion___block_invoke;
   v23[3] = &unk_1E769AF98;
-  v27 = v13;
-  v28 = v15;
-  v24 = v14;
-  v25 = v11;
-  v26 = v12;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v15;
-  v21 = v14;
+  v27 = playerCopy;
+  v28 = completionCopy;
+  v24 = queueCopy;
+  v25 = endpointCopy;
+  v26 = clientCopy;
+  v17 = playerCopy;
+  v18 = clientCopy;
+  v19 = endpointCopy;
+  v20 = completionCopy;
+  v21 = queueCopy;
   [v19 connectToExternalDeviceWithUserInfo:v16 completion:v23];
 
   v22 = *MEMORY[0x1E69E9840];
@@ -102,39 +102,39 @@ void __96__MRDestinationResolverDependencies_createPlayerPathForEndpoint_client_
   }
 }
 
-- (void)resolvePlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)resolvePlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__MRDestinationResolverDependencies_resolvePlayerPath_queue_completion___block_invoke;
   v9[3] = &unk_1E769C298;
-  v10 = v7;
-  v8 = v7;
-  MRMediaRemoteNowPlayingResolvePlayerPath(a3, a4, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  MRMediaRemoteNowPlayingResolvePlayerPath(path, queue, v9);
 }
 
-- (void)retrieveEndpointForContextUID:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)retrieveEndpointForContextUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  dCopy = d;
+  completionCopy = completion;
+  queueCopy = queue;
   v10 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue_completion___block_invoke;
   v17[3] = &unk_1E769B680;
-  v18 = v7;
+  v18 = dCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue_completion___block_invoke_2;
   v14[3] = &unk_1E769C360;
   v15 = v10;
-  v16 = v8;
-  v11 = v8;
+  v16 = completionCopy;
+  v11 = completionCopy;
   v12 = v10;
-  v13 = v7;
-  [(MRAVLightweightReconnaissanceSession *)v12 searchEndpointsWithPredicate:v17 timeout:@"MRNowPlayingController-partialGroupUID" reason:v9 queue:v14 completion:3.0];
+  v13 = dCopy;
+  [(MRAVLightweightReconnaissanceSession *)v12 searchEndpointsWithPredicate:v17 timeout:@"MRNowPlayingController-partialGroupUID" reason:queueCopy queue:v14 completion:3.0];
 }
 
 uint64_t __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -155,22 +155,22 @@ void __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue
   v6(v5, a2, a3);
 }
 
-- (void)retrieveEndpointForUID:(id)a3 endpointGroupUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)retrieveEndpointForUID:(id)d endpointGroupUID:(id)iD queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 isEqualToString:@"proactiveEndpoint"];
-  v14 = [v9 isEqualToString:@"userSelectedEndpoint"];
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = [dCopy isEqualToString:@"proactiveEndpoint"];
+  v14 = [dCopy isEqualToString:@"userSelectedEndpoint"];
   if ((v13 & 1) != 0 || v14)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __94__MRDestinationResolverDependencies_retrieveEndpointForUID_endpointGroupUID_queue_completion___block_invoke;
     v25[3] = &unk_1E769C338;
-    v26 = v12;
-    MRAVEndpointResolveActiveSystemEndpointWithType(v13, v11, v25, 3.0);
+    v26 = completionCopy;
+    MRAVEndpointResolveActiveSystemEndpointWithType(v13, queueCopy, v25, 3.0);
     v16 = v26;
   }
 
@@ -178,7 +178,7 @@ void __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue
   {
     v15 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
     v16 = v15;
-    if (v10)
+    if (iDCopy)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -187,8 +187,8 @@ void __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue
       v17 = &v23;
       v23 = v15;
       v18 = &v24;
-      v24 = v12;
-      [(MRAVLightweightReconnaissanceSession *)v16 searchEndpointsForGroupUID:v10 timeout:@"MRNowPlayingController-recon" reason:v11 queue:v22 completion:3.0];
+      v24 = completionCopy;
+      [(MRAVLightweightReconnaissanceSession *)v16 searchEndpointsForGroupUID:iDCopy timeout:@"MRNowPlayingController-recon" reason:queueCopy queue:v22 completion:3.0];
     }
 
     else
@@ -200,8 +200,8 @@ void __84__MRDestinationResolverDependencies_retrieveEndpointForContextUID_queue
       v17 = &v20;
       v20 = v15;
       v18 = &v21;
-      v21 = v12;
-      [(MRAVLightweightReconnaissanceSession *)v16 searchEndpointsForOutputDeviceUID:v9 timeout:@"MRNowPlayingController-recon" reason:v11 queue:v19 completion:3.0];
+      v21 = completionCopy;
+      [(MRAVLightweightReconnaissanceSession *)v16 searchEndpointsForOutputDeviceUID:dCopy timeout:@"MRNowPlayingController-recon" reason:queueCopy queue:v19 completion:3.0];
     }
   }
 }
@@ -222,16 +222,16 @@ void __94__MRDestinationResolverDependencies_retrieveEndpointForUID_endpointGrou
   v6(v5, a2, a3);
 }
 
-- (void)retrieveOutputDeviceUIDForOrigin:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)retrieveOutputDeviceUIDForOrigin:(id)origin queue:(id)queue completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__MRDestinationResolverDependencies_retrieveOutputDeviceUIDForOrigin_queue_completion___block_invoke;
   v9[3] = &unk_1E769C298;
-  v10 = v7;
-  v8 = v7;
-  MRMediaRemoteGetDeviceInfo(a3, a4, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  MRMediaRemoteGetDeviceInfo(origin, queue, v9);
 }
 
 void __87__MRDestinationResolverDependencies_retrieveOutputDeviceUIDForOrigin_queue_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -241,7 +241,7 @@ void __87__MRDestinationResolverDependencies_retrieveOutputDeviceUIDForOrigin_qu
   (*(v4 + 16))(v4, v5, a3);
 }
 
-- (id)addPlayerPathInvalidationHandler:(id)a3 queue:(id)a4 handler:(id)a5
+- (id)addPlayerPathInvalidationHandler:(id)handler queue:(id)queue handler:(id)a5
 {
   v7 = a5;
   v11[0] = MEMORY[0x1E69E9820];
@@ -250,15 +250,15 @@ void __87__MRDestinationResolverDependencies_retrieveOutputDeviceUIDForOrigin_qu
   v11[3] = &unk_1E769D570;
   v12 = v7;
   v8 = v7;
-  v9 = MRMediaRemoteAddPlayerPathInvalidationHandler(a3, a4, v11);
+  v9 = MRMediaRemoteAddPlayerPathInvalidationHandler(handler, queue, v11);
 
   return v9;
 }
 
-- (id)createEndpointObserverWithUID:(id)a3
+- (id)createEndpointObserverWithUID:(id)d
 {
-  v3 = a3;
-  v4 = [[MRAVEndpointObserver alloc] initWithOutputDeviceUID:v3];
+  dCopy = d;
+  v4 = [[MRAVEndpointObserver alloc] initWithOutputDeviceUID:dCopy];
 
   return v4;
 }

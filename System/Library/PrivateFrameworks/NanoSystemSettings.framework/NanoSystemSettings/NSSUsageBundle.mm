@@ -1,7 +1,7 @@
 @interface NSSUsageBundle
-- (NSSUsageBundle)initWithCoder:(id)a3;
+- (NSSUsageBundle)initWithCoder:(id)coder;
 - (unint64_t)totalSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSUsageBundle
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_categories forKey:@"categories"];
-  [v5 encodeBool:self->_purgeable forKey:@"purgeable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_categories forKey:@"categories"];
+  [coderCopy encodeBool:self->_purgeable forKey:@"purgeable"];
 }
 
-- (NSSUsageBundle)initWithCoder:(id)a3
+- (NSSUsageBundle)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NSSUsageBundle;
   v5 = [(NSSUsageBundle *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
@@ -79,11 +79,11 @@
     v18[1] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"categories"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"categories"];
     categories = v5->_categories;
     v5->_categories = v13;
 
-    v5->_purgeable = [v4 decodeBoolForKey:@"purgeable"];
+    v5->_purgeable = [coderCopy decodeBoolForKey:@"purgeable"];
   }
 
   v15 = *MEMORY[0x277D85DE8];

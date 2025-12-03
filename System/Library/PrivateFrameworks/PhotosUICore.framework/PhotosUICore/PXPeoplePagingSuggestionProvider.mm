@@ -2,11 +2,11 @@
 - (BOOL)hasNextSuggestions;
 - (BOOL)hasPreviousSuggestions;
 - (PXPeoplePagingSuggestionProvider)init;
-- (id)nextSuggestionsWithPageLimit:(int64_t)a3;
+- (id)nextSuggestionsWithPageLimit:(int64_t)limit;
 - (id)previousSuggestions;
-- (void)appendSuggestionArray:(id)a3;
+- (void)appendSuggestionArray:(id)array;
 - (void)removeAllSuggestions;
-- (void)removeSuggestions:(id)a3;
+- (void)removeSuggestions:(id)suggestions;
 @end
 
 @implementation PXPeoplePagingSuggestionProvider
@@ -14,23 +14,23 @@
 - (void)removeAllSuggestions
 {
   [(PXPeoplePagingSuggestionProvider *)self setCurrentSuggestions:0];
-  v3 = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
-  [v3 removeAllObjects];
+  visitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
+  [visitedSuggestions removeAllObjects];
 
-  v4 = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
-  [v4 removeAllObjects];
+  unvisitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
+  [unvisitedSuggestions removeAllObjects];
 }
 
-- (void)removeSuggestions:(id)a3
+- (void)removeSuggestions:(id)suggestions
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
-  v6 = [v5 mutableCopy];
-  [v6 removeObjectsInArray:v4];
+  suggestionsCopy = suggestions;
+  currentSuggestions = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
+  v6 = [currentSuggestions mutableCopy];
+  [v6 removeObjectsInArray:suggestionsCopy];
   v7 = [v6 count];
-  v25 = v5;
-  if (v7 != [v5 count])
+  v25 = currentSuggestions;
+  if (v7 != [currentSuggestions count])
   {
     if (v7)
     {
@@ -51,7 +51,7 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
   v29 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v29)
@@ -94,13 +94,13 @@
               {
                 v19 = v18;
                 v20 = [v17 mutableCopy];
-                [v20 removeObjectsInArray:v4];
+                [v20 removeObjectsInArray:suggestionsCopy];
                 v21 = [v20 count];
                 if (v21)
                 {
                   if (v19 != v21)
                   {
-                    [v17 removeObjectsInArray:v4];
+                    [v17 removeObjectsInArray:suggestionsCopy];
                   }
                 }
 
@@ -136,84 +136,84 @@
 
   if ([v26 count])
   {
-    v22 = [(PXPeoplePagingSuggestionProvider *)v23 visitedSuggestions];
-    [v22 removeObjectsInArray:v26];
+    visitedSuggestions = [(PXPeoplePagingSuggestionProvider *)selfCopy visitedSuggestions];
+    [visitedSuggestions removeObjectsInArray:v26];
   }
 }
 
-- (void)appendSuggestionArray:(id)a3
+- (void)appendSuggestionArray:(id)array
 {
-  v6 = a3;
-  if ([v6 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [v6 mutableCopy];
-    v5 = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
-    [v5 addObject:v4];
+    v4 = [arrayCopy mutableCopy];
+    unvisitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
+    [unvisitedSuggestions addObject:v4];
   }
 }
 
-- (id)nextSuggestionsWithPageLimit:(int64_t)a3
+- (id)nextSuggestionsWithPageLimit:(int64_t)limit
 {
-  v5 = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
-  v6 = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
-  v7 = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
-  v8 = [v7 firstObject];
-  v9 = [v8 count];
-  if ([v5 count])
+  currentSuggestions = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
+  visitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
+  unvisitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
+  firstObject = [unvisitedSuggestions firstObject];
+  limitCopy = [firstObject count];
+  if ([currentSuggestions count])
   {
-    v10 = [v6 lastObject];
-    v11 = [v5 mutableCopy];
-    if (v10)
+    lastObject = [visitedSuggestions lastObject];
+    v11 = [currentSuggestions mutableCopy];
+    if (lastObject)
     {
-      [v10 addObject:v11];
+      [lastObject addObject:v11];
     }
 
     else
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [v12 addObject:v11];
-      [v6 addObject:v12];
+      [visitedSuggestions addObject:v12];
     }
 
     [(PXPeoplePagingSuggestionProvider *)self setCurrentSuggestions:MEMORY[0x1E695E0F0]];
   }
 
-  if (!v8 || v9)
+  if (!firstObject || limitCopy)
   {
-    if (v9)
+    if (limitCopy)
     {
       goto LABEL_11;
     }
 
-    v13 = 0;
+    firstObject2 = 0;
 LABEL_15:
     v15 = MEMORY[0x1E695E0F0];
     goto LABEL_16;
   }
 
-  [v7 removeObjectAtIndex:0];
-  v13 = [v7 firstObject];
+  [unvisitedSuggestions removeObjectAtIndex:0];
+  firstObject2 = [unvisitedSuggestions firstObject];
 
-  v9 = [v13 count];
+  limitCopy = [firstObject2 count];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v6 addObject:v14];
+  [visitedSuggestions addObject:v14];
 
-  if (!v9)
+  if (!limitCopy)
   {
     goto LABEL_15;
   }
 
-  v8 = v13;
+  firstObject = firstObject2;
 LABEL_11:
-  if (v9 >= a3)
+  if (limitCopy >= limit)
   {
-    v9 = a3;
+    limitCopy = limit;
   }
 
-  v15 = [v8 subarrayWithRange:{0, v9}];
-  [v8 removeObjectsInRange:{0, v9}];
+  v15 = [firstObject subarrayWithRange:{0, limitCopy}];
+  [firstObject removeObjectsInRange:{0, limitCopy}];
   [(PXPeoplePagingSuggestionProvider *)self setCurrentSuggestions:v15];
-  v13 = v8;
+  firstObject2 = firstObject;
 LABEL_16:
 
   return v15;
@@ -223,42 +223,42 @@ LABEL_16:
 {
   if ([(PXPeoplePagingSuggestionProvider *)self hasPreviousSuggestions])
   {
-    v3 = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
-    v4 = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
-    v5 = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
-    v6 = [v3 lastObject];
-    v7 = [v6 count];
+    visitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
+    unvisitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
+    currentSuggestions = [(PXPeoplePagingSuggestionProvider *)self currentSuggestions];
+    lastObject = [visitedSuggestions lastObject];
+    v7 = [lastObject count];
     if (!v7)
     {
-      [v3 removeLastObject];
-      [v4 removeAllObjects];
-      v8 = [v3 lastObject];
+      [visitedSuggestions removeLastObject];
+      [unvisitedSuggestions removeAllObjects];
+      lastObject2 = [visitedSuggestions lastObject];
 
-      v5 = 0;
-      v6 = v8;
+      currentSuggestions = 0;
+      lastObject = lastObject2;
     }
 
-    v9 = [v6 lastObject];
-    [v6 removeObject:v9];
-    v10 = [v5 count];
+    v6LastObject = [lastObject lastObject];
+    [lastObject removeObject:v6LastObject];
+    v10 = [currentSuggestions count];
     if (v7)
     {
       v11 = v10;
       if (v10)
       {
-        v12 = [v4 firstObject];
-        if (!v12)
+        firstObject = [unvisitedSuggestions firstObject];
+        if (!firstObject)
         {
-          v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          [v4 insertObject:v12 atIndex:0];
+          firstObject = objc_alloc_init(MEMORY[0x1E695DF70]);
+          [unvisitedSuggestions insertObject:firstObject atIndex:0];
         }
 
         v13 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v11}];
-        [v12 insertObjects:v5 atIndexes:v13];
+        [firstObject insertObjects:currentSuggestions atIndexes:v13];
       }
     }
 
-    v14 = [v9 copy];
+    v14 = [v6LastObject copy];
 
     [(PXPeoplePagingSuggestionProvider *)self setCurrentSuggestions:v14];
   }
@@ -273,17 +273,17 @@ LABEL_16:
 
 - (BOOL)hasPreviousSuggestions
 {
-  v2 = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
-  v3 = [v2 lastObject];
-  v4 = [v3 lastObject];
-  if ([v4 count])
+  visitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self visitedSuggestions];
+  lastObject = [visitedSuggestions lastObject];
+  v3LastObject = [lastObject lastObject];
+  if ([v3LastObject count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v2 count];
+    v6 = [visitedSuggestions count];
     if (v6 < 2)
     {
       v5 = 0;
@@ -291,10 +291,10 @@ LABEL_16:
 
     else
     {
-      v7 = [v2 objectAtIndexedSubscript:v6 - 2];
+      v7 = [visitedSuggestions objectAtIndexedSubscript:v6 - 2];
 
       v5 = [v7 count] != 0;
-      v4 = v7;
+      v3LastObject = v7;
     }
   }
 
@@ -303,24 +303,24 @@ LABEL_16:
 
 - (BOOL)hasNextSuggestions
 {
-  v2 = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
-  v3 = [v2 firstObject];
-  if ([v3 count])
+  unvisitedSuggestions = [(PXPeoplePagingSuggestionProvider *)self unvisitedSuggestions];
+  firstObject = [unvisitedSuggestions firstObject];
+  if ([firstObject count])
   {
     v4 = 1;
   }
 
-  else if ([v2 count] < 2)
+  else if ([unvisitedSuggestions count] < 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v2 objectAtIndexedSubscript:1];
+    v5 = [unvisitedSuggestions objectAtIndexedSubscript:1];
 
     v4 = [v5 count] != 0;
-    v3 = v5;
+    firstObject = v5;
   }
 
   return v4;

@@ -1,32 +1,32 @@
 @interface SVXServiceCommandTransaction
-- (SVXServiceCommandTransaction)initWithPerformer:(id)a3 command:(id)a4 handlers:(id)a5 taskTracker:(id)a6 dependencies:(id)a7 completion:(id)a8;
+- (SVXServiceCommandTransaction)initWithPerformer:(id)performer command:(id)command handlers:(id)handlers taskTracker:(id)tracker dependencies:(id)dependencies completion:(id)completion;
 - (id)description;
-- (void)_addBlockedTransaction:(id)a3;
+- (void)_addBlockedTransaction:(id)transaction;
 - (void)_didHandleAll;
 - (void)_didPrepareAll;
-- (void)_dispatchCompletionWithResult:(id)a3;
+- (void)_dispatchCompletionWithResult:(id)result;
 - (void)_handle;
-- (void)_handler:(id)a3 didHandleWithResult:(id)a4 completion:(id)a5;
+- (void)_handler:(id)_handler didHandleWithResult:(id)result completion:(id)completion;
 - (void)_invalidate;
 - (void)_prepare;
-- (void)_removeBlockingTransaction:(id)a3;
+- (void)_removeBlockingTransaction:(id)transaction;
 - (void)_unblockDependentTransactions;
-- (void)addBlockedTransaction:(id)a3;
+- (void)addBlockedTransaction:(id)transaction;
 - (void)dealloc;
-- (void)handler:(id)a3 didHandleWithResult:(id)a4 completion:(id)a5;
-- (void)handler:(id)a3 didPrepareSuccessfully:(BOOL)a4 context:(id)a5 completion:(id)a6;
+- (void)handler:(id)handler didHandleWithResult:(id)result completion:(id)completion;
+- (void)handler:(id)handler didPrepareSuccessfully:(BOOL)successfully context:(id)context completion:(id)completion;
 - (void)invalidate;
-- (void)removeBlockingTransaction:(id)a3;
+- (void)removeBlockingTransaction:(id)transaction;
 @end
 
 @implementation SVXServiceCommandTransaction
 
-- (void)_dispatchCompletionWithResult:(id)a3
+- (void)_dispatchCompletionWithResult:(id)result
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3);
+    completion[2](completion, result);
     v5 = self->_completion;
     self->_completion = 0;
   }
@@ -36,15 +36,15 @@
 {
   if ([(NSHashTable *)self->_blockedTransactions count])
   {
-    v3 = [(NSHashTable *)self->_blockedTransactions setRepresentation];
+    setRepresentation = [(NSHashTable *)self->_blockedTransactions setRepresentation];
     performer = self->_performer;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__SVXServiceCommandTransaction__unblockDependentTransactions__block_invoke;
     v6[3] = &unk_279C68FE8;
-    v7 = v3;
-    v8 = self;
-    v5 = v3;
+    v7 = setRepresentation;
+    selfCopy = self;
+    v5 = setRepresentation;
     [(SVXPerforming *)performer performBlock:v6 withOptions:0];
   }
 }
@@ -94,14 +94,14 @@ void __61__SVXServiceCommandTransaction__unblockDependentTransactions__block_inv
     *buf = 136315394;
     v15 = "[SVXServiceCommandTransaction _invalidate]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v3, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
   self->_state = 5;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
-  v5 = [(SAAceCommand *)self->_command aceId];
-  v6 = [v4 initWithFormat:@"Service command handling context invalidated for command %@.", v5];
+  aceId = [(SAAceCommand *)self->_command aceId];
+  v6 = [v4 initWithFormat:@"Service command handling context invalidated for command %@.", aceId];
   v7 = [SVXServiceCommandResult resultFailureWithErrorCode:0 reason:v6];
   [(SVXServiceCommandTransaction *)self _dispatchCompletionWithResult:v7];
 
@@ -134,7 +134,7 @@ void __61__SVXServiceCommandTransaction__unblockDependentTransactions__block_inv
     v14 = 136315394;
     v15 = "[SVXServiceCommandTransaction _didHandleAll]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v4, OS_LOG_TYPE_INFO, "%s %@", &v14, 0x16u);
   }
 
@@ -145,8 +145,8 @@ void __61__SVXServiceCommandTransaction__unblockDependentTransactions__block_inv
     v6 = [(NSMutableDictionary *)self->_handledResultsByHandlerIdentifier count];
     if (v6 == 1)
     {
-      v9 = [(NSMutableDictionary *)self->_handledResultsByHandlerIdentifier allValues];
-      v10 = [v9 firstObject];
+      allValues = [(NSMutableDictionary *)self->_handledResultsByHandlerIdentifier allValues];
+      firstObject = [allValues firstObject];
     }
 
     else
@@ -166,11 +166,11 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v9 = [(NSMutableDictionary *)self->_handledResultsByHandlerIdentifier allValues];
-      v10 = [SVXServiceCommandResult resultWithResults:v9];
+      allValues = [(NSMutableDictionary *)self->_handledResultsByHandlerIdentifier allValues];
+      firstObject = [SVXServiceCommandResult resultWithResults:allValues];
     }
 
-    v7 = v10;
+    v7 = firstObject;
 
     goto LABEL_12;
   }
@@ -181,7 +181,7 @@ LABEL_12:
     v14 = 136315394;
     v15 = "[SVXServiceCommandTransaction _didHandleAll]";
     v16 = 2048;
-    v17 = state;
+    selfCopy = state;
     _os_log_impl(&dword_2695B9000, v8, OS_LOG_TYPE_INFO, "%s Ignored because state is %ld.", &v14, 0x16u);
   }
 
@@ -189,12 +189,12 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handler:(id)a3 didHandleWithResult:(id)a4 completion:(id)a5
+- (void)_handler:(id)_handler didHandleWithResult:(id)result completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  _handlerCopy = _handler;
+  resultCopy = result;
+  completionCopy = completion;
   v11 = MEMORY[0x277CEF098];
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -202,14 +202,14 @@ LABEL_13:
     v20 = 136315394;
     v21 = "[SVXServiceCommandTransaction _handler:didHandleWithResult:completion:]";
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s %@", &v20, 0x16u);
   }
 
   state = self->_state;
   if (state == 3)
   {
-    if (v9)
+    if (resultCopy)
     {
       handledResultsByHandlerIdentifier = self->_handledResultsByHandlerIdentifier;
       if (!handledResultsByHandlerIdentifier)
@@ -221,8 +221,8 @@ LABEL_13:
         handledResultsByHandlerIdentifier = self->_handledResultsByHandlerIdentifier;
       }
 
-      v17 = [v8 identifier];
-      [(NSMutableDictionary *)handledResultsByHandlerIdentifier setObject:v9 forKey:v17];
+      identifier = [_handlerCopy identifier];
+      [(NSMutableDictionary *)handledResultsByHandlerIdentifier setObject:resultCopy forKey:identifier];
     }
   }
 
@@ -234,14 +234,14 @@ LABEL_13:
       v20 = 136315394;
       v21 = "[SVXServiceCommandTransaction _handler:didHandleWithResult:completion:]";
       v22 = 2048;
-      v23 = state;
+      selfCopy = state;
       _os_log_impl(&dword_2695B9000, v18, OS_LOG_TYPE_INFO, "%s Ignored because state is %ld.", &v20, 0x16u);
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -257,7 +257,7 @@ LABEL_13:
     *buf = 136315394;
     v42 = "[SVXServiceCommandTransaction _handle]";
     v43 = 2112;
-    v44 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v4, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -273,7 +273,7 @@ LABEL_13:
         *buf = 136315394;
         v42 = "[SVXServiceCommandTransaction _handle]";
         v43 = 2112;
-        v44 = blockingTransactions;
+        selfCopy = blockingTransactions;
         v8 = "%s Ignored because blocked by %@.";
         v9 = v6;
 LABEL_9:
@@ -306,14 +306,14 @@ LABEL_9:
 
             v14 = *(*(&v36 + 1) + 8 * i);
             dispatch_group_enter(v11);
-            v15 = [v14 identifier];
-            v16 = [(NSMutableDictionary *)self->_preparedResultsByHandlerIdentifier objectForKey:v15];
-            v17 = [v16 BOOLValue];
+            identifier = [v14 identifier];
+            v16 = [(NSMutableDictionary *)self->_preparedResultsByHandlerIdentifier objectForKey:identifier];
+            bOOLValue = [v16 BOOLValue];
 
-            if (v17)
+            if (bOOLValue)
             {
               command = self->_command;
-              v19 = [(NSMutableDictionary *)self->_preparedContextsByHandlerIdentifier objectForKey:v15];
+              v19 = [(NSMutableDictionary *)self->_preparedContextsByHandlerIdentifier objectForKey:identifier];
               taskTracker = self->_taskTracker;
               v33[0] = MEMORY[0x277D85DD0];
               v33[1] = 3221225472;
@@ -330,8 +330,8 @@ LABEL_9:
             else
             {
               v21 = objc_alloc(MEMORY[0x277CCACA8]);
-              v22 = [(SAAceCommand *)self->_command aceId];
-              v23 = [v21 initWithFormat:@"Failed to prepare command %@.", v22];
+              aceId = [(SAAceCommand *)self->_command aceId];
+              v23 = [v21 initWithFormat:@"Failed to prepare command %@.", aceId];
               v24 = [SVXServiceCommandResult resultFailureWithErrorCode:0 reason:v23];
               v31[0] = MEMORY[0x277D85DD0];
               v31[1] = 3221225472;
@@ -370,7 +370,7 @@ LABEL_9:
       *buf = 136315394;
       v42 = "[SVXServiceCommandTransaction _handle]";
       v43 = 2048;
-      v44 = state;
+      selfCopy = state;
       v8 = "%s Ignored because state is %ld.";
       v9 = v10;
       goto LABEL_9;
@@ -421,7 +421,7 @@ void __39__SVXServiceCommandTransaction__handle__block_invoke_5(uint64_t a1)
     v8 = 136315394;
     v9 = "[SVXServiceCommandTransaction _didPrepareAll]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v4, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
@@ -440,7 +440,7 @@ void __39__SVXServiceCommandTransaction__handle__block_invoke_5(uint64_t a1)
       v8 = 136315394;
       v9 = "[SVXServiceCommandTransaction _didPrepareAll]";
       v10 = 2048;
-      v11 = state;
+      selfCopy = state;
       _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s Ignored because state is %ld.", &v8, 0x16u);
     }
   }
@@ -458,7 +458,7 @@ void __39__SVXServiceCommandTransaction__handle__block_invoke_5(uint64_t a1)
     *buf = 136315394;
     v31 = "[SVXServiceCommandTransaction _prepare]";
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v4, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -471,7 +471,7 @@ void __39__SVXServiceCommandTransaction__handle__block_invoke_5(uint64_t a1)
       *buf = 136315394;
       v31 = "[SVXServiceCommandTransaction _prepare]";
       v32 = 2048;
-      v33 = state;
+      selfCopy = state;
       _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s Ignored because state is %ld.", buf, 0x16u);
     }
   }
@@ -585,36 +585,36 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
   [WeakRetained _didPrepareAll];
 }
 
-- (void)_removeBlockingTransaction:(id)a3
+- (void)_removeBlockingTransaction:(id)transaction
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[SVXServiceCommandTransaction _removeBlockingTransaction:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = transactionCopy;
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s %@ is no longer blocked by %@.", &v7, 0x20u);
   }
 
-  [(NSMutableSet *)self->_blockingTransactions removeObject:v4];
+  [(NSMutableSet *)self->_blockingTransactions removeObject:transactionCopy];
   [(SVXServiceCommandTransaction *)self _handle];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addBlockedTransaction:(id)a3
+- (void)_addBlockedTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = v4;
-  v9 = v4;
+  transactionCopy = transaction;
+  v5 = transactionCopy;
+  v9 = transactionCopy;
   if ((self->_state & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    [v4 removeBlockingTransaction:self];
+    [transactionCopy removeBlockingTransaction:self];
   }
 
   else
@@ -622,9 +622,9 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
     blockedTransactions = self->_blockedTransactions;
     if (!blockedTransactions)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_blockedTransactions;
-      self->_blockedTransactions = v7;
+      self->_blockedTransactions = weakObjectsHashTable;
 
       v5 = v9;
       blockedTransactions = self->_blockedTransactions;
@@ -634,72 +634,72 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
   }
 }
 
-- (void)handler:(id)a3 didHandleWithResult:(id)a4 completion:(id)a5
+- (void)handler:(id)handler didHandleWithResult:(id)result completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  resultCopy = result;
+  completionCopy = completion;
   performer = self->_performer;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__SVXServiceCommandTransaction_handler_didHandleWithResult_completion___block_invoke;
   v15[3] = &unk_279C69038;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = handlerCopy;
+  v17 = resultCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = resultCopy;
+  v14 = handlerCopy;
   [(SVXPerforming *)performer performBlock:v15];
 }
 
-- (void)handler:(id)a3 didPrepareSuccessfully:(BOOL)a4 context:(id)a5 completion:(id)a6
+- (void)handler:(id)handler didPrepareSuccessfully:(BOOL)successfully context:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  handlerCopy = handler;
+  contextCopy = context;
+  completionCopy = completion;
   performer = self->_performer;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__SVXServiceCommandTransaction_handler_didPrepareSuccessfully_context_completion___block_invoke;
   v17[3] = &unk_279C69010;
   v17[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = handlerCopy;
+  successfullyCopy = successfully;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = contextCopy;
+  v16 = handlerCopy;
   [(SVXPerforming *)performer performBlock:v17];
 }
 
-- (void)removeBlockingTransaction:(id)a3
+- (void)removeBlockingTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   performer = self->_performer;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SVXServiceCommandTransaction_removeBlockingTransaction___block_invoke;
   v7[3] = &unk_279C68FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   [(SVXPerforming *)performer performBlock:v7];
 }
 
-- (void)addBlockedTransaction:(id)a3
+- (void)addBlockedTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   performer = self->_performer;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SVXServiceCommandTransaction_addBlockedTransaction___block_invoke;
   v7[3] = &unk_279C68FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   [(SVXPerforming *)performer performBlock:v7];
 }
 
@@ -714,37 +714,37 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
   [(SVXPerforming *)performer performBlock:v3];
 }
 
-- (SVXServiceCommandTransaction)initWithPerformer:(id)a3 command:(id)a4 handlers:(id)a5 taskTracker:(id)a6 dependencies:(id)a7 completion:(id)a8
+- (SVXServiceCommandTransaction)initWithPerformer:(id)performer command:(id)command handlers:(id)handlers taskTracker:(id)tracker dependencies:(id)dependencies completion:(id)completion
 {
   v64 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v49 = a7;
-  v19 = a8;
+  performerCopy = performer;
+  commandCopy = command;
+  handlersCopy = handlers;
+  trackerCopy = tracker;
+  dependenciesCopy = dependencies;
+  completionCopy = completion;
   v61.receiver = self;
   v61.super_class = SVXServiceCommandTransaction;
   v20 = [(SVXServiceCommandTransaction *)&v61 init];
   v21 = v20;
   if (v20)
   {
-    v45 = v18;
-    v48 = v15;
-    objc_storeStrong(&v20->_performer, a3);
+    v45 = trackerCopy;
+    v48 = performerCopy;
+    objc_storeStrong(&v20->_performer, performer);
     v21->_state = 0;
-    v47 = v16;
-    v22 = [v16 copy];
+    v47 = commandCopy;
+    v22 = [commandCopy copy];
     command = v21->_command;
     v21->_command = v22;
 
-    v24 = [v17 copy];
+    v24 = [handlersCopy copy];
     handlers = v21->_handlers;
     v21->_handlers = v24;
 
-    objc_storeStrong(&v21->_taskTracker, a6);
-    v44 = v19;
-    v26 = MEMORY[0x26D642680](v19);
+    objc_storeStrong(&v21->_taskTracker, tracker);
+    v44 = completionCopy;
+    v26 = MEMORY[0x26D642680](completionCopy);
     completion = v21->_completion;
     v21->_completion = v26;
 
@@ -752,8 +752,8 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v46 = v17;
-    obj = v17;
+    v46 = handlersCopy;
+    obj = handlersCopy;
     v28 = [obj countByEnumeratingWithState:&v57 objects:v63 count:16];
     if (v28)
     {
@@ -771,7 +771,7 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
           v32 = *(*(&v57 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v33 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v49, "count")}];
+            v33 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dependenciesCopy, "count")}];
             blockingTransactions = v21->_blockingTransactions;
             v21->_blockingTransactions = v33;
 
@@ -779,7 +779,7 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
             v56 = 0u;
             v53 = 0u;
             v54 = 0u;
-            v35 = v49;
+            v35 = dependenciesCopy;
             v36 = [v35 countByEnumeratingWithState:&v53 objects:v62 count:16];
             if (v36)
             {
@@ -824,11 +824,11 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
     v52 = v21;
     [(SVXPerforming *)performer performBlock:v51 withOptions:0];
 
-    v16 = v47;
-    v15 = v48;
-    v18 = v45;
-    v17 = v46;
-    v19 = v44;
+    commandCopy = v47;
+    performerCopy = v48;
+    trackerCopy = v45;
+    handlersCopy = v46;
+    completionCopy = v44;
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -838,8 +838,8 @@ void __40__SVXServiceCommandTransaction__prepare__block_invoke_5(uint64_t a1)
 - (void)dealloc
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SAAceCommand *)self->_command aceId];
-  v5 = [v3 initWithFormat:@"Service command handling context deallocated for command %@.", v4];
+  aceId = [(SAAceCommand *)self->_command aceId];
+  v5 = [v3 initWithFormat:@"Service command handling context deallocated for command %@.", aceId];
   v6 = [SVXServiceCommandResult resultFailureWithErrorCode:0 reason:v5];
   [(SVXServiceCommandTransaction *)self _dispatchCompletionWithResult:v6];
 

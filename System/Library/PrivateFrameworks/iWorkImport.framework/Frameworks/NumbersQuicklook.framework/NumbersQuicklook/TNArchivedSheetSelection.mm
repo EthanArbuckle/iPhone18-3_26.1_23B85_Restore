@@ -1,17 +1,17 @@
 @interface TNArchivedSheetSelection
-- (TNArchivedSheetSelection)initWithContext:(id)a3;
+- (TNArchivedSheetSelection)initWithContext:(id)context;
 - (void)dealloc;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TNArchivedSheetSelection
 
-- (TNArchivedSheetSelection)initWithContext:(id)a3
+- (TNArchivedSheetSelection)initWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = TNArchivedSheetSelection;
-  v4 = [(TNArchivedSheetSelection *)&v8 initWithContext:a3];
+  v4 = [(TNArchivedSheetSelection *)&v8 initWithContext:context];
   if (v4)
   {
     v5 = objc_msgSend_selectionForSheet_paginated_(TNSheetSelection, v3, 0, 0);
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(a3, v5, off_2812DAFE8[8]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiver, v5, off_2812DAFE8[8]);
   v7 = *(v6 + 32);
   v15[0] = 0;
   v15[1] = v15;
@@ -41,12 +41,12 @@
   v10 = objc_opt_class();
   if (v8)
   {
-    objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(a3, v9, v8, v10, 0, v14);
+    objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(unarchiver, v9, v8, v10, 0, v14);
   }
 
   else
   {
-    objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(a3, v9, MEMORY[0x277D80A18], v10, 0, v14);
+    objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(unarchiver, v9, MEMORY[0x277D80A18], v10, 0, v14);
   }
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -56,14 +56,14 @@
   v12[4] = self;
   v12[5] = v15;
   v13 = v7;
-  objc_msgSend_addFinalizeHandler_(a3, v11, v12);
+  objc_msgSend_addFinalizeHandler_(unarchiver, v11, v12);
   _Block_object_dispose(v15, 8);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(a3, v5, sub_275F372C8, off_2812DAFE8[8]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiver, v5, sub_275F372C8, off_2812DAFE8[8]);
   v9 = objc_msgSend_selection(self, v7, v8);
   isPaginated = objc_msgSend_isPaginated(v9, v10, v11);
   *(v6 + 16) |= 2u;
@@ -87,7 +87,7 @@
       *(v6 + 24) = v25;
     }
 
-    objc_msgSend_setWeakReference_message_(a3, v23, v24, v25);
+    objc_msgSend_setWeakReference_message_(archiver, v23, v24, v25);
   }
 }
 

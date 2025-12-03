@@ -1,22 +1,22 @@
 @interface HDRaceRouteGenerationQueueEntity
-+ (BOOL)finishWorkoutCluster:(id)a3 concreteCluster:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)populateWithWorkoutClusters:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)clearQueueWithTransaction:(id)a3 error:(id *)a4;
++ (BOOL)finishWorkoutCluster:(id)cluster concreteCluster:(id)concreteCluster transaction:(id)transaction error:(id *)error;
++ (BOOL)populateWithWorkoutClusters:(id)clusters transaction:(id)transaction error:(id *)error;
++ (id)clearQueueWithTransaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)nextWorkoutClusterWithTransaction:(id)a3 error:(id *)a4;
++ (id)nextWorkoutClusterWithTransaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
 @end
 
 @implementation HDRaceRouteGenerationQueueEntity
 
-+ (BOOL)populateWithWorkoutClusters:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)populateWithWorkoutClusters:(id)clusters transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  clustersCopy = clusters;
+  transactionCopy = transaction;
+  if ([clustersCopy count])
   {
     v10 = [MEMORY[0x277CCAB68] stringWithString:@"INSERT OR IGNORE INTO RacePreviousRoute_generation_queue (workout_cluster_id) VALUES (?)"];
-    if ([v8 count] >= 2)
+    if ([clustersCopy count] >= 2)
     {
       v11 = 1;
       do
@@ -25,16 +25,16 @@
         ++v11;
       }
 
-      while ([v8 count] > v11);
+      while ([clustersCopy count] > v11);
     }
 
-    v12 = [v9 databaseForEntityClass:a1];
+    v12 = [transactionCopy databaseForEntityClass:self];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __82__HDRaceRouteGenerationQueueEntity_populateWithWorkoutClusters_transaction_error___block_invoke;
     v15[3] = &unk_278614860;
-    v16 = v8;
-    v13 = [v12 executeUncachedSQL:v10 error:a5 bindingHandler:v15 enumerationHandler:0];
+    v16 = clustersCopy;
+    v13 = [v12 executeUncachedSQL:v10 error:error bindingHandler:v15 enumerationHandler:0];
   }
 
   else
@@ -67,24 +67,24 @@ unint64_t __82__HDRaceRouteGenerationQueueEntity_populateWithWorkoutClusters_tra
   return result;
 }
 
-+ (id)nextWorkoutClusterWithTransaction:(id)a3 error:(id *)a4
++ (id)nextWorkoutClusterWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__53;
   v16 = __Block_byref_object_dispose__53;
   v17 = 0;
-  v7 = [v6 databaseForEntityClass:a1];
+  v7 = [transactionCopy databaseForEntityClass:self];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__HDRaceRouteGenerationQueueEntity_nextWorkoutClusterWithTransaction_error___block_invoke;
   v11[3] = &unk_278614620;
   v11[4] = &v12;
-  LODWORD(a4) = [v7 executeSQL:@"SELECT workout_cluster_id FROM RacePreviousRoute_generation_queue WHERE concrete_cluster_id IS NULL LIMIT 1" error:a4 bindingHandler:0 enumerationHandler:v11];
+  LODWORD(error) = [v7 executeSQL:@"SELECT workout_cluster_id FROM RacePreviousRoute_generation_queue WHERE concrete_cluster_id IS NULL LIMIT 1" error:error bindingHandler:0 enumerationHandler:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v13[5];
   }
@@ -110,22 +110,22 @@ uint64_t __76__HDRaceRouteGenerationQueueEntity_nextWorkoutClusterWithTransactio
   return 0;
 }
 
-+ (BOOL)finishWorkoutCluster:(id)a3 concreteCluster:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)finishWorkoutCluster:(id)cluster concreteCluster:(id)concreteCluster transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 databaseForEntityClass:a1];
+  clusterCopy = cluster;
+  concreteClusterCopy = concreteCluster;
+  v12 = [transaction databaseForEntityClass:self];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __91__HDRaceRouteGenerationQueueEntity_finishWorkoutCluster_concreteCluster_transaction_error___block_invoke;
   v16[3] = &unk_278613038;
-  v17 = v11;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
-  LOBYTE(a6) = [v12 executeSQL:@"UPDATE RacePreviousRoute_generation_queue SET concrete_cluster_id = ? WHERE workout_cluster_id = ?" error:a6 bindingHandler:v16 enumerationHandler:0];
+  v17 = concreteClusterCopy;
+  v18 = clusterCopy;
+  v13 = clusterCopy;
+  v14 = concreteClusterCopy;
+  LOBYTE(error) = [v12 executeSQL:@"UPDATE RacePreviousRoute_generation_queue SET concrete_cluster_id = ? WHERE workout_cluster_id = ?" error:error bindingHandler:v16 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __91__HDRaceRouteGenerationQueueEntity_finishWorkoutCluster_concreteCluster_transaction_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -136,9 +136,9 @@ uint64_t __91__HDRaceRouteGenerationQueueEntity_finishWorkoutCluster_concreteClu
   return sqlite3_bind_int64(a2, 2, v4);
 }
 
-+ (id)clearQueueWithTransaction:(id)a3 error:(id *)a4
++ (id)clearQueueWithTransaction:(id)transaction error:(id *)error
 {
-  v5 = [a3 databaseForEntityClass:a1];
+  v5 = [transaction databaseForEntityClass:self];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -146,7 +146,7 @@ uint64_t __91__HDRaceRouteGenerationQueueEntity_finishWorkoutCluster_concreteClu
   v12[3] = &unk_278614098;
   v7 = v6;
   v13 = v7;
-  if ([v5 executeSQL:@"SELECT concrete_cluster_id FROM RacePreviousRoute_generation_queue WHERE concrete_cluster_id IS NOT NULL" error:a4 bindingHandler:0 enumerationHandler:v12] && (v8 = v5, objc_opt_self(), v9 = objc_msgSend(v8, "executeSQL:error:bindingHandler:enumerationHandler:", @"DELETE FROM RacePreviousRoute_generation_queue", a4, 0, 0), v8, v9))
+  if ([v5 executeSQL:@"SELECT concrete_cluster_id FROM RacePreviousRoute_generation_queue WHERE concrete_cluster_id IS NOT NULL" error:error bindingHandler:0 enumerationHandler:v12] && (v8 = v5, objc_opt_self(), v9 = objc_msgSend(v8, "executeSQL:error:bindingHandler:enumerationHandler:", @"DELETE FROM RacePreviousRoute_generation_queue", error, 0, 0), v8, v9))
   {
     v10 = [v7 copy];
   }

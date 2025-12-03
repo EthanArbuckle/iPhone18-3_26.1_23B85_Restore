@@ -1,14 +1,14 @@
 @interface AccountButtonWrapper
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication20AccountButtonWrapper)initWithCoder:(id)a3;
-- (_TtC16MusicApplication20AccountButtonWrapper)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication20AccountButtonWrapper)initWithCoder:(id)coder;
+- (_TtC16MusicApplication20AccountButtonWrapper)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AccountButtonWrapper
 
-- (_TtC16MusicApplication20AccountButtonWrapper)initWithCoder:(id)a3
+- (_TtC16MusicApplication20AccountButtonWrapper)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication20AccountButtonWrapper_button) = 0;
   result = sub_ABAFD0();
@@ -35,7 +35,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_3F1110();
   v5 = v4;
 
@@ -46,9 +46,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_3F115C();
   v5 = v4;
   v7 = v6;
@@ -60,7 +60,7 @@
   return result;
 }
 
-- (_TtC16MusicApplication20AccountButtonWrapper)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication20AccountButtonWrapper)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

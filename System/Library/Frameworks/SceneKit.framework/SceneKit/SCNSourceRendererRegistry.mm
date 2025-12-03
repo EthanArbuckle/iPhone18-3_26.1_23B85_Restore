@@ -1,12 +1,12 @@
 @interface SCNSourceRendererRegistry
 + (id)sharedRegistry;
 - (SCNSourceRendererRegistry)init;
-- (id)sourceRendererForEngineContext:(__C3DEngineContext *)a3 source:(id)a4 textureSource:(id)a5 targetTexture:(id)a6;
+- (id)sourceRendererForEngineContext:(__C3DEngineContext *)context source:(id)source textureSource:(id)textureSource targetTexture:(id)texture;
 - (void)dealloc;
-- (void)endFrameForEngineContext:(__C3DEngineContext *)a3;
-- (void)removeSourceRenderersForEngineContext:(__C3DEngineContext *)a3;
-- (void)removeSourceRenderersForSource:(id)a3;
-- (void)rendererDidChange:(id)a3;
+- (void)endFrameForEngineContext:(__C3DEngineContext *)context;
+- (void)removeSourceRenderersForEngineContext:(__C3DEngineContext *)context;
+- (void)removeSourceRenderersForSource:(id)source;
+- (void)rendererDidChange:(id)change;
 @end
 
 @implementation SCNSourceRendererRegistry
@@ -54,21 +54,21 @@ SCNSourceRendererRegistry *__43__SCNSourceRendererRegistry_sharedRegistry__block
   return result;
 }
 
-- (void)rendererDidChange:(id)a3
+- (void)rendererDidChange:(id)change
 {
   if (pthread_main_np())
   {
-    v4 = [a3 layer];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    layer = [change layer];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNLayerTreeDidChange" object:v4];
+    [defaultCenter postNotificationName:@"SCNLayerTreeDidChange" object:layer];
   }
 
   else
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] activateBackground:1];
-    v6 = [a3 layer];
+    layer2 = [change layer];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     v7 = MEMORY[0x277CD9FF0];
 
@@ -76,19 +76,19 @@ SCNSourceRendererRegistry *__43__SCNSourceRendererRegistry_sharedRegistry__block
   }
 }
 
-- (id)sourceRendererForEngineContext:(__C3DEngineContext *)a3 source:(id)a4 textureSource:(id)a5 targetTexture:(id)a6
+- (id)sourceRendererForEngineContext:(__C3DEngineContext *)context source:(id)source textureSource:(id)textureSource targetTexture:(id)texture
 {
   v37[1] = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&sourceRendererRegistryAccessMutex);
-  Value = CFDictionaryGetValue(self->_registry, a3);
+  Value = CFDictionaryGetValue(self->_registry, context);
   if (!Value)
   {
     Value = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x277CBF150]);
-    CFDictionarySetValue(self->_registry, a3, Value);
+    CFDictionarySetValue(self->_registry, context, Value);
     CFRelease(Value);
   }
 
-  v12 = CFDictionaryGetValue(Value, a4);
+  v12 = CFDictionaryGetValue(Value, source);
   if (v12)
   {
     v13 = v12;
@@ -99,7 +99,7 @@ SCNSourceRendererRegistry *__43__SCNSourceRendererRegistry_sharedRegistry__block
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 setScene:a4];
+        [v13 setScene:source];
       }
     }
 
@@ -111,25 +111,25 @@ SCNSourceRendererRegistry *__43__SCNSourceRendererRegistry_sharedRegistry__block
   {
     if (objc_opt_respondsToSelector())
     {
-      v14 = [a4 rendererOptions];
-      if (!v14)
+      rendererOptions = [source rendererOptions];
+      if (!rendererOptions)
       {
 LABEL_19:
         v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
 LABEL_20:
         v19 = v18;
-        if (a6)
+        if (texture)
         {
           [v18 setObject:C3DColorSpaceLinearSRGB() forKeyedSubscript:*MEMORY[0x277CDA818]];
-          RenderContext = C3DEngineContextGetRenderContext(a3);
+          RenderContext = C3DEngineContextGetRenderContext(context);
           [v19 setObject:-[SCNMTLRenderContext commandQueue](RenderContext) forKeyedSubscript:*MEMORY[0x277CDA820]];
           [v19 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDA810]];
-          v21 = [MEMORY[0x277CD9F40] rendererWithMTLTexture:a6 options:v19];
+          v21 = [MEMORY[0x277CD9F40] rendererWithMTLTexture:texture options:v19];
         }
 
         else
         {
-          GLContext = C3DRendererContextGetGLContext([a5 rendererContextForTextureSourceWithEngineContext:a3]);
+          GLContext = C3DRendererContextGetGLContext([textureSource rendererContextForTextureSourceWithEngineContext:context]);
           if (!GLContext)
           {
             v23 = scn_default_log();
@@ -156,21 +156,21 @@ LABEL_20:
 
     else
     {
-      if (![objc_msgSend(a4 valueForKey:{@"SCN_isBackingUIView", "BOOLValue"}])
+      if (![objc_msgSend(source valueForKey:{@"SCN_isBackingUIView", "BOOLValue"}])
       {
         goto LABEL_19;
       }
 
       v36 = @"kCARendererFlags";
       v37[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-      v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      if (!v14)
+      rendererOptions = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
+      if (!rendererOptions)
       {
         goto LABEL_19;
       }
     }
 
-    v18 = [v14 mutableCopy];
+    v18 = [rendererOptions mutableCopy];
     goto LABEL_20;
   }
 
@@ -182,7 +182,7 @@ LABEL_20:
   }
 
   v15 = NSClassFromString(&cfstr_Skscnrenderer.isa);
-  v16 = C3DEngineContextGetRenderContext(a3);
+  v16 = C3DEngineContextGetRenderContext(context);
   if (v16)
   {
     v17 = [(objc_class *)v15 rendererWithDevice:[(SCNMTLRenderContext *)v16 device] options:0];
@@ -190,20 +190,20 @@ LABEL_20:
 
   else
   {
-    v17 = [(objc_class *)v15 rendererWithContext:C3DEngineContextGetGLContext(a3) options:0];
+    v17 = [(objc_class *)v15 rendererWithContext:C3DEngineContextGetGLContext(context) options:0];
   }
 
   v13 = v17;
-  [v17 setScene:a4];
+  [v17 setScene:source];
   [v13 setBackingScaleFactor:1.0];
-  [a4 size];
+  [source size];
   v34 = v33;
-  [a4 size];
+  [source size];
   [v13 setBounds:{0.0, 0.0, v34, v35}];
   if (v13)
   {
 LABEL_27:
-    CFDictionarySetValue(Value, a4, v13);
+    CFDictionarySetValue(Value, source, v13);
   }
 
 LABEL_28:
@@ -212,18 +212,18 @@ LABEL_28:
   return v13;
 }
 
-- (void)removeSourceRenderersForEngineContext:(__C3DEngineContext *)a3
+- (void)removeSourceRenderersForEngineContext:(__C3DEngineContext *)context
 {
   os_unfair_lock_lock(&sourceRendererRegistryAccessMutex);
-  CFDictionaryRemoveValue(self->_registry, a3);
+  CFDictionaryRemoveValue(self->_registry, context);
 
   os_unfair_lock_unlock(&sourceRendererRegistryAccessMutex);
 }
 
-- (void)endFrameForEngineContext:(__C3DEngineContext *)a3
+- (void)endFrameForEngineContext:(__C3DEngineContext *)context
 {
   os_unfair_lock_lock(&sourceRendererRegistryAccessMutex);
-  Value = CFDictionaryGetValue(self->_registry, a3);
+  Value = CFDictionaryGetValue(self->_registry, context);
   if (Value)
   {
     v6 = Value;
@@ -253,10 +253,10 @@ LABEL_28:
   os_unfair_lock_unlock(&sourceRendererRegistryAccessMutex);
 }
 
-- (void)removeSourceRenderersForSource:(id)a3
+- (void)removeSourceRenderersForSource:(id)source
 {
   os_unfair_lock_lock(&sourceRendererRegistryAccessMutex);
-  CFDictionaryApplyFunction(self->_registry, _removeSourceRendererForSource, a3);
+  CFDictionaryApplyFunction(self->_registry, _removeSourceRendererForSource, source);
 
   os_unfair_lock_unlock(&sourceRendererRegistryAccessMutex);
 }

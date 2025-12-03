@@ -1,23 +1,23 @@
 @interface UIDragEvent
-+ (BOOL)_isSessionIDValid:(unsigned int)a3;
-+ (void)_invalidateSessionID:(unsigned int)a3;
++ (BOOL)_isSessionIDValid:(unsigned int)valid;
++ (void)_invalidateSessionID:(unsigned int)d;
 - (BOOL)_isReadyForReset;
-- (BOOL)_sendEventToGestureRecognizer:(id)a3;
+- (BOOL)_sendEventToGestureRecognizer:(id)recognizer;
 - (CGPoint)locationInSceneReferenceSpace;
-- (CGPoint)locationInView:(id)a3;
-- (UIDragEvent)initWithDragSessionID:(unsigned int)a3 environment:(id)a4;
+- (CGPoint)locationInView:(id)view;
+- (UIDragEvent)initWithDragSessionID:(unsigned int)d environment:(id)environment;
 - (id)_allWindows;
-- (id)_gestureRecognizersForWindow:(id)a3;
+- (id)_gestureRecognizersForWindow:(id)window;
 - (id)_updatingDropGestureRecognizers;
 - (unsigned)_touchRoutingPolicyContextID;
-- (void)_dragFailedWithCallback:(id)a3;
-- (void)_ignoreGestureRecognizer:(id)a3;
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4;
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3;
-- (void)_removeQueriedOwnerForDynamicGesturesIfNeeded:(id)a3;
+- (void)_dragFailedWithCallback:(id)callback;
+- (void)_ignoreGestureRecognizer:(id)recognizer;
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components;
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event;
+- (void)_removeQueriedOwnerForDynamicGesturesIfNeeded:(id)needed;
 - (void)_reset;
 - (void)_sendIfNeeded;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
 - (void)_setNeedsHitTestReset;
 - (void)_updateFromCurrentSample;
 - (void)_updateGesturesFromCurrentSample;
@@ -27,15 +27,15 @@
 
 @implementation UIDragEvent
 
-- (UIDragEvent)initWithDragSessionID:(unsigned int)a3 environment:(id)a4
+- (UIDragEvent)initWithDragSessionID:(unsigned int)d environment:(id)environment
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&d;
+  environmentCopy = environment;
   if ([objc_opt_class() _isSessionIDValid:v4])
   {
     v27.receiver = self;
     v27.super_class = UIDragEvent;
-    v7 = [(UIEvent *)&v27 _initWithEnvironment:v6];
+    v7 = [(UIEvent *)&v27 _initWithEnvironment:environmentCopy];
     v8 = v7;
     if (v7)
     {
@@ -64,9 +64,9 @@
       v20 = v8[24];
       v8[24] = v19;
 
-      v21 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v22 = v8[25];
-      v8[25] = v21;
+      v8[25] = weakObjectsHashTable;
 
       v23 = objc_opt_new();
       v24 = v8[26];
@@ -74,18 +74,18 @@
     }
 
     self = v8;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-- (id)_gestureRecognizersForWindow:(id)a3
+- (id)_gestureRecognizersForWindow:(id)window
 {
   v4 = objc_opt_new();
   [v4 unionSet:self->_beginningGestureRecognizers];
@@ -97,14 +97,14 @@
   return v4;
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
   v7.receiver = self;
   v7.super_class = UIDragEvent;
   [(UIEvent *)&v7 _setHIDEvent:?];
-  if (a3)
+  if (event)
   {
-    v5 = [_UIDragEventSample sampleFromHIDEvent:a3];
+    v5 = [_UIDragEventSample sampleFromHIDEvent:event];
     currentSample = self->_currentSample;
     self->_currentSample = v5;
 
@@ -114,10 +114,10 @@
 
 - (id)_allWindows
 {
-  v2 = [(_UIDragEventSample *)self->_currentSample window];
-  if (v2)
+  window = [(_UIDragEventSample *)self->_currentSample window];
+  if (window)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:window];
   }
 
   else
@@ -128,15 +128,15 @@
   return v3;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   currentSample = self->_currentSample;
-  v5 = a3;
+  viewCopy = view;
   [(_UIDragEventSample *)currentSample locationInWindow];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIDragEventSample *)self->_currentSample window];
-  [v10 convertPoint:v5 toView:{v7, v9}];
+  window = [(_UIDragEventSample *)self->_currentSample window];
+  [window convertPoint:viewCopy toView:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
@@ -152,8 +152,8 @@
   [(_UIDragEventSample *)self->_currentSample locationInWindow];
   v4 = v3;
   v6 = v5;
-  v7 = [(_UIDragEventSample *)self->_currentSample window];
-  [v7 _convertPointToSceneReferenceSpace:{v4, v6}];
+  window = [(_UIDragEventSample *)self->_currentSample window];
+  [window _convertPointToSceneReferenceSpace:{v4, v6}];
   v9 = v8;
   v11 = v10;
 
@@ -164,42 +164,42 @@
   return result;
 }
 
-- (BOOL)_sendEventToGestureRecognizer:(id)a3
+- (BOOL)_sendEventToGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v5 = 168;
-  if ([(NSMutableSet *)self->_exitingGestureRecognizers containsObject:v4])
+  if ([(NSMutableSet *)self->_exitingGestureRecognizers containsObject:recognizerCopy])
   {
-    [v4 _componentsCancelled:0 withEvent:self];
+    [recognizerCopy _componentsCancelled:0 withEvent:self];
   }
 
   else
   {
-    if ([(NSMutableSet *)self->_updatingGestureRecognizers containsObject:v4])
+    if ([(NSMutableSet *)self->_updatingGestureRecognizers containsObject:recognizerCopy])
     {
-      [v4 _componentsChanged:0 withEvent:self];
+      [recognizerCopy _componentsChanged:0 withEvent:self];
       goto LABEL_8;
     }
 
-    if ([(NSMutableSet *)self->_beginningGestureRecognizers containsObject:v4])
+    if ([(NSMutableSet *)self->_beginningGestureRecognizers containsObject:recognizerCopy])
     {
-      [v4 _componentsBegan:0 withEvent:self];
-      [(NSMutableSet *)self->_beginningGestureRecognizers removeObject:v4];
-      [(NSMutableSet *)self->_updatingGestureRecognizers addObject:v4];
+      [recognizerCopy _componentsBegan:0 withEvent:self];
+      [(NSMutableSet *)self->_beginningGestureRecognizers removeObject:recognizerCopy];
+      [(NSMutableSet *)self->_updatingGestureRecognizers addObject:recognizerCopy];
       goto LABEL_8;
     }
 
     v5 = 176;
-    if (![(NSMutableSet *)self->_endingGestureRecognizers containsObject:v4])
+    if (![(NSMutableSet *)self->_endingGestureRecognizers containsObject:recognizerCopy])
     {
       v6 = 0;
       goto LABEL_9;
     }
 
-    [v4 _componentsEnded:0 withEvent:self];
+    [recognizerCopy _componentsEnded:0 withEvent:self];
   }
 
-  [*(&self->super.super.isa + v5) removeObject:v4];
+  [*(&self->super.super.isa + v5) removeObject:recognizerCopy];
 LABEL_8:
   v6 = 1;
 LABEL_9:
@@ -207,35 +207,35 @@ LABEL_9:
   return v6;
 }
 
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components
 {
   beginningGestureRecognizers = self->_beginningGestureRecognizers;
-  v6 = a3;
-  [(NSMutableSet *)beginningGestureRecognizers removeObject:v6];
-  [(NSMutableSet *)self->_updatingGestureRecognizers removeObject:v6];
+  recognizerCopy = recognizer;
+  [(NSMutableSet *)beginningGestureRecognizers removeObject:recognizerCopy];
+  [(NSMutableSet *)self->_updatingGestureRecognizers removeObject:recognizerCopy];
 }
 
-- (void)_ignoreGestureRecognizer:(id)a3
+- (void)_ignoreGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   v4 = [(UIDragEvent *)self _gestureRecognizersForWindow:0];
-  v5 = [v4 containsObject:v6];
+  v5 = [v4 containsObject:recognizerCopy];
 
   if (v5)
   {
-    [(NSMutableSet *)self->_ignoredGestureRecognizers addObject:v6];
+    [(NSMutableSet *)self->_ignoredGestureRecognizers addObject:recognizerCopy];
   }
 }
 
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [eventCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -247,26 +247,26 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventCopy);
         }
 
         [(UIDragEvent *)self _ignoreGestureRecognizer:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [eventCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_removeQueriedOwnerForDynamicGesturesIfNeeded:(id)a3
+- (void)_removeQueriedOwnerForDynamicGesturesIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(NSHashTable *)self->_ownersQueriedForDynamicGestures containsObject:?])
   {
-    [(NSHashTable *)self->_ownersQueriedForDynamicGestures removeObject:v4];
+    [(NSHashTable *)self->_ownersQueriedForDynamicGestures removeObject:neededCopy];
   }
 }
 
@@ -276,11 +276,11 @@ LABEL_9:
   if (([(_UIDragEventSample *)self->_currentSample isApplicationEnter]|| [(_UIDragEventSample *)self->_currentSample isApplicationWithin]|| [(_UIDragEventSample *)self->_currentSample isPolicyDriven]) && !self->_dragFailed)
   {
     [(_UIDragEventSample *)self->_currentSample isApplicationEnter];
-    v3 = [(_UIDragEventSample *)self->_currentSample window];
-    v4 = [v3 screen];
-    v5 = [v4 _dragManager];
+    window = [(_UIDragEventSample *)self->_currentSample window];
+    screen = [window screen];
+    _dragManager = [screen _dragManager];
 
-    if ([v5 hasPendingSessionRequests])
+    if ([_dragManager hasPendingSessionRequests])
     {
       objc_initWeak(&location, self);
       v12 = MEMORY[0x1E69E9820];
@@ -288,7 +288,7 @@ LABEL_9:
       v14 = __39__UIDragEvent__updateFromCurrentSample__block_invoke;
       v15 = &unk_1E70F5A28;
       objc_copyWeak(&v16, &location);
-      [v5 performAfterCompletingPendingSessionRequests:&v12];
+      [_dragManager performAfterCompletingPendingSessionRequests:&v12];
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
     }
@@ -297,7 +297,7 @@ LABEL_9:
     {
       if (!self->_sessionSource)
       {
-        v6 = [v5 sessionSourceWithIdentifier:{-[UIDragEvent dragSessionID](self, "dragSessionID")}];
+        v6 = [_dragManager sessionSourceWithIdentifier:{-[UIDragEvent dragSessionID](self, "dragSessionID")}];
         sessionSource = self->_sessionSource;
         self->_sessionSource = v6;
 
@@ -306,7 +306,7 @@ LABEL_9:
 
       if (!self->_sessionDestination)
       {
-        v8 = [v5 dragDestinationWithEvent:self];
+        v8 = [_dragManager dragDestinationWithEvent:self];
         sessionDestination = self->_sessionDestination;
         self->_sessionDestination = v8;
       }
@@ -315,9 +315,9 @@ LABEL_9:
 
   [(_UIInternalDraggingSessionSource *)self->_sessionSource setDragEvent:self, v12, v13, v14, v15];
   [(_UIInternalDraggingSessionSource *)self->_sessionSource updateCentroidFromDragEvent];
-  v10 = [(_UIDragEventSample *)self->_currentSample isApplicationExit];
+  isApplicationExit = [(_UIDragEventSample *)self->_currentSample isApplicationExit];
   v11 = self->_sessionSource;
-  if (v10)
+  if (isApplicationExit)
   {
     [(_UIInternalDraggingSessionSource *)v11 dragDidExitApp];
     [(_UIInternalDraggingSessionDestination *)self->_sessionDestination dragDidExitApp];
@@ -369,8 +369,8 @@ void __39__UIDragEvent__updateFromCurrentSample__block_invoke(uint64_t a1)
       v7 = v5;
 
       [(UIDragEvent *)self _updateFromCurrentSample];
-      v8 = [UIApp _gestureEnvironment];
-      [(UIGestureEnvironment *)v8 _updateForEvent:0 window:?];
+      _gestureEnvironment = [UIApp _gestureEnvironment];
+      [(UIGestureEnvironment *)_gestureEnvironment _updateForEvent:0 window:?];
 
       v9 = self->_currentSample;
       self->_currentSample = v4;
@@ -378,8 +378,8 @@ void __39__UIDragEvent__updateFromCurrentSample__block_invoke(uint64_t a1)
     }
 
     [(UIDragEvent *)self _updateFromCurrentSample];
-    v11 = [UIApp _gestureEnvironment];
-    [(UIGestureEnvironment *)v11 _updateForEvent:0 window:?];
+    _gestureEnvironment2 = [UIApp _gestureEnvironment];
+    [(UIGestureEnvironment *)_gestureEnvironment2 _updateForEvent:0 window:?];
   }
 }
 
@@ -421,17 +421,17 @@ LABEL_7:
 
   if (self->_eventView == self->_previousEventView)
   {
-    v54 = [(UIDragEvent *)self _updatingDropGestureRecognizers];
-    if ([v54 count])
+    _updatingDropGestureRecognizers = [(UIDragEvent *)self _updatingDropGestureRecognizers];
+    if ([_updatingDropGestureRecognizers count])
     {
-      v43 = v54;
+      v43 = _updatingDropGestureRecognizers;
     }
 
     else
     {
-      v46 = [(_UIDragEventSample *)self->_currentSample isPolicyDriven];
+      isPolicyDriven = [(_UIDragEventSample *)self->_currentSample isPolicyDriven];
 
-      if (v46)
+      if (isPolicyDriven)
       {
         return;
       }
@@ -452,10 +452,10 @@ LABEL_7:
   {
     [(NSMutableSet *)self->_exitingGestureRecognizers removeAllObjects];
     v52 = objc_opt_new();
-    v53 = self;
-    v7 = self->_eventView;
+    selfCopy = self;
+    _parentGestureRecognizerContainer = self->_eventView;
     v8 = &OBJC_IVAR____UITileLayer_maskPath;
-    if (v7)
+    if (_parentGestureRecognizerContainer)
     {
       while (1)
       {
@@ -463,8 +463,8 @@ LABEL_7:
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v9 = [(UIView *)v7 gestureRecognizers];
-        v10 = [v9 countByEnumeratingWithState:&v74 objects:v81 count:16];
+        gestureRecognizers = [(UIView *)_parentGestureRecognizerContainer gestureRecognizers];
+        v10 = [gestureRecognizers countByEnumeratingWithState:&v74 objects:v81 count:16];
         if (v10)
         {
           v11 = v10;
@@ -475,7 +475,7 @@ LABEL_7:
             {
               if (*v75 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(gestureRecognizers);
               }
 
               v14 = *(*(&v74 + 1) + 8 * i);
@@ -488,9 +488,9 @@ LABEL_7:
                     if ([v14 state] <= 2)
                     {
                       [v52 addObject:v14];
-                      if (([*(&v53->super.super.isa + v8[587]) containsObject:v14] & 1) == 0 && (-[NSMutableSet containsObject:](v53->_ignoredGestureRecognizers, "containsObject:", v14) & 1) == 0 && -[UIGestureRecognizer _internalShouldReceiveEvent:](v14, v53))
+                      if (([*(&selfCopy->super.super.isa + v8[587]) containsObject:v14] & 1) == 0 && (-[NSMutableSet containsObject:](selfCopy->_ignoredGestureRecognizers, "containsObject:", v14) & 1) == 0 && -[UIGestureRecognizer _internalShouldReceiveEvent:](v14, selfCopy))
                       {
-                        [(NSMutableSet *)v53->_beginningGestureRecognizers addObject:v14];
+                        [(NSMutableSet *)selfCopy->_beginningGestureRecognizers addObject:v14];
                       }
                     }
                   }
@@ -498,19 +498,19 @@ LABEL_7:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v74 objects:v81 count:16];
+            v11 = [gestureRecognizers countByEnumeratingWithState:&v74 objects:v81 count:16];
           }
 
           while (v11);
         }
 
-        if (!_IsKindOfUIView(v7))
+        if (!_IsKindOfUIView(_parentGestureRecognizerContainer))
         {
           goto LABEL_50;
         }
 
-        v15 = v7;
-        if (![(NSHashTable *)v53->_ownersQueriedForDynamicGestures containsObject:v15])
+        v15 = _parentGestureRecognizerContainer;
+        if (![(NSHashTable *)selfCopy->_ownersQueriedForDynamicGestures containsObject:v15])
         {
           break;
         }
@@ -518,27 +518,27 @@ LABEL_7:
 LABEL_49:
 
 LABEL_50:
-        v7 = [(UIView *)v7 _parentGestureRecognizerContainer];
-        if (!v7)
+        _parentGestureRecognizerContainer = [(UIView *)_parentGestureRecognizerContainer _parentGestureRecognizerContainer];
+        if (!_parentGestureRecognizerContainer)
         {
           goto LABEL_51;
         }
       }
 
-      [(NSHashTable *)v53->_ownersQueriedForDynamicGestures addObject:v15];
+      [(NSHashTable *)selfCopy->_ownersQueriedForDynamicGestures addObject:v15];
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v69 = __47__UIDragEvent__updateGesturesFromCurrentSample__block_invoke;
       v70 = &unk_1E7128A10;
-      v71 = v53;
+      v71 = selfCopy;
       v73 = v15;
       v72 = v52;
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v16 = [(UIView *)v15 interactions];
-      v17 = [v16 countByEnumeratingWithState:&v64 objects:v80 count:16];
+      interactions = [(UIView *)v15 interactions];
+      v17 = [interactions countByEnumeratingWithState:&v64 objects:v80 count:16];
       if (v17)
       {
         v18 = v17;
@@ -551,7 +551,7 @@ LABEL_50:
           {
             if (*v65 != v20)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(interactions);
             }
 
             v22 = *(*(&v64 + 1) + 8 * j);
@@ -559,12 +559,12 @@ LABEL_50:
             {
               objc_opt_class();
               v19 |= objc_opt_isKindOfClass();
-              v23 = [v22 _dynamicGestureRecognizersForEvent:v53];
+              v23 = [v22 _dynamicGestureRecognizersForEvent:selfCopy];
               v69(v68, v23);
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v64 objects:v80 count:16];
+          v18 = [interactions countByEnumeratingWithState:&v64 objects:v80 count:16];
         }
 
         while (v18);
@@ -585,18 +585,18 @@ LABEL_50:
       v25 = _UIDragEventPasteConfigurationForOwner(v24);
       if (v25)
       {
-        v26 = [(UIView *)v24 _dynamicDropInteraction];
-        if (!v26)
+        _dynamicDropInteraction = [(UIView *)v24 _dynamicDropInteraction];
+        if (!_dynamicDropInteraction)
         {
-          v26 = [[UIDropInteraction alloc] _initWithPasteConfiguration:v25];
-          [(UIView *)v24 _setDynamicDropInteraction:v26];
-          [v26 _setWantsDefaultVisualBehavior:0];
-          [v26 setAllowsSimultaneousDropSessions:1];
-          [v26 didMoveToOwner:v24];
+          _dynamicDropInteraction = [[UIDropInteraction alloc] _initWithPasteConfiguration:v25];
+          [(UIView *)v24 _setDynamicDropInteraction:_dynamicDropInteraction];
+          [_dynamicDropInteraction _setWantsDefaultVisualBehavior:0];
+          [_dynamicDropInteraction setAllowsSimultaneousDropSessions:1];
+          [_dynamicDropInteraction didMoveToOwner:v24];
         }
 
-        [(NSMutableSet *)v53->_dynamicInteractions addObject:v26];
-        v27 = [v26 _dynamicGestureRecognizersForEvent:v53];
+        [(NSMutableSet *)selfCopy->_dynamicInteractions addObject:_dynamicDropInteraction];
+        v27 = [_dynamicDropInteraction _dynamicGestureRecognizersForEvent:selfCopy];
         v69(v68, v27);
 
         v8 = &OBJC_IVAR____UITileLayer_maskPath;
@@ -607,14 +607,14 @@ LABEL_48:
     }
 
 LABEL_51:
-    v28 = v53;
-    if ([(NSMutableSet *)v53->_beginningGestureRecognizers count])
+    v28 = selfCopy;
+    if ([(NSMutableSet *)selfCopy->_beginningGestureRecognizers count])
     {
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      obj = v53->_beginningGestureRecognizers;
+      obj = selfCopy->_beginningGestureRecognizers;
       v29 = v52;
       v49 = [(NSMutableSet *)obj countByEnumeratingWithState:&v60 objects:v79 count:16];
       v30 = 0;
@@ -665,12 +665,12 @@ LABEL_51:
                       continue;
                     }
 
-                    v39 = [v32 container];
-                    v40 = [v38 container];
-                    v41 = isDescendantOfContainer(v39, v40, 0);
+                    container = [v32 container];
+                    container2 = [v38 container];
+                    v41 = isDescendantOfContainer(container, container2, 0);
 
                     v29 = v52;
-                    v28 = v53;
+                    v28 = selfCopy;
                     if (!v41)
                     {
                       continue;
@@ -711,10 +711,10 @@ LABEL_51:
     else
     {
       v44 = v8[587];
-      [(NSMutableSet *)v53->_exitingGestureRecognizers unionSet:*(&v53->super.super.isa + v44)];
+      [(NSMutableSet *)selfCopy->_exitingGestureRecognizers unionSet:*(&selfCopy->super.super.isa + v44)];
       v42 = v52;
-      [(NSMutableSet *)v53->_exitingGestureRecognizers minusSet:v52];
-      [*(&v53->super.super.isa + v44) minusSet:v53->_exitingGestureRecognizers];
+      [(NSMutableSet *)selfCopy->_exitingGestureRecognizers minusSet:v52];
+      [*(&selfCopy->super.super.isa + v44) minusSet:selfCopy->_exitingGestureRecognizers];
     }
 
     v45 = [MEMORY[0x1E695DFA8] setWithSet:v28->_ignoredGestureRecognizers];
@@ -818,9 +818,9 @@ uint64_t __46__UIDragEvent__updatingDropGestureRecognizers__block_invoke(uint64_
       v24 = 0u;
       v25 = 0u;
       WeakRetained = objc_loadWeakRetained(&self->super._eventEnvironment);
-      v4 = [(UIEventEnvironment *)WeakRetained _dragEvents];
+      _dragEvents = [(UIEventEnvironment *)WeakRetained _dragEvents];
 
-      v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [_dragEvents countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v5)
       {
         v6 = v5;
@@ -832,14 +832,14 @@ uint64_t __46__UIDragEvent__updatingDropGestureRecognizers__block_invoke(uint64_
           {
             if (*v25 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(_dragEvents);
             }
 
             v9 = *(*(&v24 + 1) + 8 * v8);
             if (v9 != self)
             {
-              v10 = [*(*(&v24 + 1) + 8 * v8) dragSessionID];
-              if (v10 == [(UIDragEvent *)self dragSessionID])
+              dragSessionID = [*(*(&v24 + 1) + 8 * v8) dragSessionID];
+              if (dragSessionID == [(UIDragEvent *)self dragSessionID])
               {
                 [(UIDragEvent *)v9 _ignoreDragEnd];
               }
@@ -849,7 +849,7 @@ uint64_t __46__UIDragEvent__updatingDropGestureRecognizers__block_invoke(uint64_
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v6 = [_dragEvents countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v6);
@@ -867,9 +867,9 @@ LABEL_13:
       v20 = 0u;
       v21 = 0u;
       v11 = objc_loadWeakRetained(&self->super._eventEnvironment);
-      v4 = [(UIEventEnvironment *)v11 _dragEvents];
+      _dragEvents = [(UIEventEnvironment *)v11 _dragEvents];
 
-      v12 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v12 = [_dragEvents countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v12)
       {
         v13 = v12;
@@ -880,14 +880,14 @@ LABEL_19:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_dragEvents);
           }
 
           v16 = *(*(&v20 + 1) + 8 * v15);
           if (v16 != self)
           {
-            v17 = [*(*(&v20 + 1) + 8 * v15) dragSessionID];
-            if (v17 == [(UIDragEvent *)self dragSessionID]&& ![(_UIDragEventSample *)v16->_currentSample isDragEnd])
+            dragSessionID2 = [*(*(&v20 + 1) + 8 * v15) dragSessionID];
+            if (dragSessionID2 == [(UIDragEvent *)self dragSessionID]&& ![(_UIDragEventSample *)v16->_currentSample isDragEnd])
             {
               goto LABEL_13;
             }
@@ -895,7 +895,7 @@ LABEL_19:
 
           if (v13 == ++v15)
           {
-            v13 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v13 = [_dragEvents countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v13)
             {
               goto LABEL_19;
@@ -924,17 +924,17 @@ LABEL_28:
   }
 }
 
-- (void)_dragFailedWithCallback:(id)a3
+- (void)_dragFailedWithCallback:(id)callback
 {
-  v5 = a3;
-  if (!v5)
+  callbackCopy = callback;
+  if (!callbackCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIDragEvent.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"callback != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragEvent.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"callback != nil"}];
   }
 
   self->_dragFailed = 1;
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(callbackCopy);
   dragFailedCallback = self->_dragFailedCallback;
   self->_dragFailedCallback = v6;
 
@@ -973,10 +973,10 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
 
 - (unsigned)_touchRoutingPolicyContextID
 {
-  v3 = [(_UIDragEventSample *)self->_currentSample windowServerHitTestContextID];
-  if ([(_UIInternalDraggingSessionSource *)self->_sessionSource touchRoutingPolicyContainsContextIDToAlwaysSend:v3])
+  windowServerHitTestContextID = [(_UIDragEventSample *)self->_currentSample windowServerHitTestContextID];
+  if ([(_UIInternalDraggingSessionSource *)self->_sessionSource touchRoutingPolicyContainsContextIDToAlwaysSend:windowServerHitTestContextID])
   {
-    return v3;
+    return windowServerHitTestContextID;
   }
 
   else
@@ -985,19 +985,19 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)_invalidateSessionID:(unsigned int)a3
++ (void)_invalidateSessionID:(unsigned int)d
 {
-  if (a3)
+  if (d)
   {
     v3 = _MergedGlobals_23_7[0];
-    _MergedGlobals_23_7[_MergedGlobals_23_7[0] + 1] = a3;
+    _MergedGlobals_23_7[_MergedGlobals_23_7[0] + 1] = d;
     _MergedGlobals_23_7[0] = (v3 + 1) % 0xAu;
   }
 }
 
-+ (BOOL)_isSessionIDValid:(unsigned int)a3
++ (BOOL)_isSessionIDValid:(unsigned int)valid
 {
-  if (!a3)
+  if (!valid)
   {
     return 0;
   }
@@ -1011,7 +1011,7 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
       break;
     }
 
-    if (v4 == a3)
+    if (v4 == valid)
     {
       return 0;
     }
@@ -1030,8 +1030,8 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UIDragEvent *)self _updatingDropGestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _updatingDropGestureRecognizers = [(UIDragEvent *)self _updatingDropGestureRecognizers];
+  v4 = [_updatingDropGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1043,7 +1043,7 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_updatingDropGestureRecognizers);
         }
 
         if (([(UIGestureRecognizer *)*(*(&v8 + 1) + 8 * v7) _internalShouldReceiveEvent:?]& 1) != 0)
@@ -1056,7 +1056,7 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_updatingDropGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v5)
       {
         continue;
@@ -1106,8 +1106,8 @@ void __39__UIDragEvent__dragFailedWithCallback___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 container];
-        [v11 removeGestureRecognizer:v10];
+        container = [v10 container];
+        [container removeGestureRecognizer:v10];
       }
 
       v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];

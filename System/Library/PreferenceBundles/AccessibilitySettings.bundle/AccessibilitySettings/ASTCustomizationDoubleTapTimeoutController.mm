@@ -1,6 +1,6 @@
 @interface ASTCustomizationDoubleTapTimeoutController
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation ASTCustomizationDoubleTapTimeoutController
@@ -14,10 +14,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchDoubleTapActionTimeout:a3];
+  [v4 setAssistiveTouchDoubleTapActionTimeout:user];
 }
 
 @end

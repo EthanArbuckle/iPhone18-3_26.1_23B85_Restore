@@ -1,27 +1,27 @@
 @interface PRXTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (PRXTextField)initWithFrame:(CGRect)a3;
+- (PRXTextField)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PRXTextField
 
-- (PRXTextField)initWithFrame:(CGRect)a3
+- (PRXTextField)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PRXTextField;
-  v3 = [(PRXTextField *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRXTextField *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PRXTextField *)v3 setBorderStyle:3];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(PRXTextField *)v4 _setBackgroundStrokeColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PRXTextField *)v4 _setBackgroundStrokeColor:clearColor];
 
-    v6 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(PRXTextField *)v4 _setBackgroundFillColor:v6];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(PRXTextField *)v4 _setBackgroundFillColor:secondarySystemBackgroundColor];
 
     [(PRXTextField *)v4 _setRoundedRectBackgroundCornerRadius:12.0];
     v7 = v4;
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v9.receiver = self;
   v9.super_class = PRXTextField;
-  [(PRXTextField *)&v9 textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PRXTextField *)&v9 textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v8 = fmax(v7, 20.0);
   if (width + -40.0 < v5)
   {
@@ -60,12 +60,12 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v9.receiver = self;
   v9.super_class = PRXTextField;
-  [(PRXTextField *)&v9 editingRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PRXTextField *)&v9 editingRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v8 = fmax(v7, 20.0);
   if (width + -40.0 < v5)
   {
@@ -79,12 +79,12 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v9.receiver = self;
   v9.super_class = PRXTextField;
-  [(PRXTextField *)&v9 placeholderRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PRXTextField *)&v9 placeholderRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v8 = fmax(v7, 20.0);
   if (width + -40.0 < v5)
   {

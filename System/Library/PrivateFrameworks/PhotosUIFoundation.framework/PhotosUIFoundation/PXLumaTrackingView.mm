@@ -1,11 +1,11 @@
 @interface PXLumaTrackingView
-- (PXLumaTrackingView)initWithCoder:(id)a3;
-- (PXLumaTrackingView)initWithFrame:(CGRect)a3 threshold:(double)a4;
+- (PXLumaTrackingView)initWithCoder:(id)coder;
+- (PXLumaTrackingView)initWithFrame:(CGRect)frame threshold:(double)threshold;
 - (PXLumaTrackingViewDelegate)delegate;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
 - (void)layoutSubviews;
-- (void)setLumaLevel:(int64_t)a3;
-- (void)setLumaTrackingEnabled:(BOOL)a3;
+- (void)setLumaLevel:(int64_t)level;
+- (void)setLumaTrackingEnabled:(BOOL)enabled;
 @end
 
 @implementation PXLumaTrackingView
@@ -17,16 +17,16 @@
   return WeakRetained;
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
-  if (a4 == 1)
+  if (level == 1)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = a4 == 2;
+    v4 = level == 2;
   }
 
   [(PXLumaTrackingView *)self setLumaLevel:v4];
@@ -41,48 +41,48 @@
   [(_UILumaTrackingBackdropView *)self->_backdropView setFrame:?];
 }
 
-- (void)setLumaTrackingEnabled:(BOOL)a3
+- (void)setLumaTrackingEnabled:(BOOL)enabled
 {
-  if (self->_lumaTrackingEnabled != a3)
+  if (self->_lumaTrackingEnabled != enabled)
   {
-    self->_lumaTrackingEnabled = a3;
-    [(_UILumaTrackingBackdropView *)self->_backdropView setPaused:!a3];
+    self->_lumaTrackingEnabled = enabled;
+    [(_UILumaTrackingBackdropView *)self->_backdropView setPaused:!enabled];
   }
 }
 
-- (void)setLumaLevel:(int64_t)a3
+- (void)setLumaLevel:(int64_t)level
 {
-  if (self->_lumaLevel != a3)
+  if (self->_lumaLevel != level)
   {
-    self->_lumaLevel = a3;
-    v6 = [(PXLumaTrackingView *)self delegate];
-    [v6 lumaTrackingView:self didTransitionToLevel:a3];
+    self->_lumaLevel = level;
+    delegate = [(PXLumaTrackingView *)self delegate];
+    [delegate lumaTrackingView:self didTransitionToLevel:level];
   }
 }
 
-- (PXLumaTrackingView)initWithCoder:(id)a3
+- (PXLumaTrackingView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXLumaTrackingView.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXLumaTrackingView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLumaTrackingView.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXLumaTrackingView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXLumaTrackingView)initWithFrame:(CGRect)a3 threshold:(double)a4
+- (PXLumaTrackingView)initWithFrame:(CGRect)frame threshold:(double)threshold
 {
   v17.receiver = self;
   v17.super_class = PXLumaTrackingView;
-  v5 = [(PXLumaTrackingView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXLumaTrackingView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_thresholdLuma = a4;
+    v5->_thresholdLuma = threshold;
     v7 = objc_alloc(MEMORY[0x1E69DD5D8]);
-    v8 = fmax(a4 + -0.05, 0.0);
-    if (a4 + 0.05 <= 1.0)
+    v8 = fmax(threshold + -0.05, 0.0);
+    if (threshold + 0.05 <= 1.0)
     {
-      v9 = a4 + 0.05;
+      v9 = threshold + 0.05;
     }
 
     else

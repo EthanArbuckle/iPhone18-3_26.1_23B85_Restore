@@ -1,31 +1,31 @@
 @interface SearchMailboxSuggestion
-+ (id)suggestionForMailboxes:(id)a3;
-- (SearchMailboxSuggestion)initWithCoder:(id)a3;
-- (SearchMailboxSuggestion)initWithMailboxes:(id)a3;
++ (id)suggestionForMailboxes:(id)mailboxes;
+- (SearchMailboxSuggestion)initWithCoder:(id)coder;
+- (SearchMailboxSuggestion)initWithMailboxes:(id)mailboxes;
 - (id)subtitle;
 - (id)title;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SearchMailboxSuggestion
 
-+ (id)suggestionForMailboxes:(id)a3
++ (id)suggestionForMailboxes:(id)mailboxes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMailboxes:v4];
+  mailboxesCopy = mailboxes;
+  v5 = [[self alloc] initWithMailboxes:mailboxesCopy];
 
   return v5;
 }
 
-- (SearchMailboxSuggestion)initWithMailboxes:(id)a3
+- (SearchMailboxSuggestion)initWithMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v9.receiver = self;
   v9.super_class = SearchMailboxSuggestion;
   v5 = [(SearchMailboxSuggestion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mailboxesCopy copy];
     mailboxes = v5->_mailboxes;
     v5->_mailboxes = v6;
   }
@@ -33,29 +33,29 @@
   return v5;
 }
 
-- (SearchMailboxSuggestion)initWithCoder:(id)a3
+- (SearchMailboxSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"EFPropertyKey_mailboxes"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"EFPropertyKey_mailboxes"];
 
   v8 = [(SearchMailboxSuggestion *)self initWithMailboxes:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v3 = objc_opt_self();
-  v4 = [v3 mailboxes];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_self.mailboxes"];
+  mailboxes = [v3 mailboxes];
+  [coderCopy encodeObject:mailboxes forKey:@"EFPropertyKey_self.mailboxes"];
 }
 
 - (id)title
 {
-  v3 = [(SearchMailboxSuggestion *)self mailboxes];
-  v4 = [v3 count];
+  mailboxes = [(SearchMailboxSuggestion *)self mailboxes];
+  v4 = [mailboxes count];
 
   if (v4 >= 2)
   {
@@ -66,11 +66,11 @@
     }
   }
 
-  v6 = [(SearchMailboxSuggestion *)self mailboxes];
-  v7 = [v6 firstObject];
-  v8 = [v7 name];
+  mailboxes2 = [(SearchMailboxSuggestion *)self mailboxes];
+  firstObject = [mailboxes2 firstObject];
+  name = [firstObject name];
 
-  return v8;
+  return name;
 }
 
 - (id)subtitle
@@ -78,8 +78,8 @@
   subtitle = self->_subtitle;
   if (!subtitle)
   {
-    v4 = [(SearchMailboxSuggestion *)self mailboxes];
-    v5 = [v4 count];
+    mailboxes = [(SearchMailboxSuggestion *)self mailboxes];
+    v5 = [mailboxes count];
 
     if (v5 >= 2)
     {
@@ -91,36 +91,36 @@
     }
 
     v7 = +[NSMutableArray array];
-    v8 = [(SearchMailboxSuggestion *)self mailboxes];
-    v9 = [v8 firstObject];
+    mailboxes2 = [(SearchMailboxSuggestion *)self mailboxes];
+    firstObject = [mailboxes2 firstObject];
 
-    v10 = [v9 parent];
-    if (v10)
+    parent = [firstObject parent];
+    if (parent)
     {
       do
       {
-        if ([v10 isTopLevelMailbox])
+        if ([parent isTopLevelMailbox])
         {
           break;
         }
 
-        v11 = [v10 name];
-        [v7 insertObject:v11 atIndex:0];
+        name = [parent name];
+        [v7 insertObject:name atIndex:0];
 
-        v12 = [v10 parent];
+        v10Parent = [parent parent];
 
-        v10 = v12;
+        parent = v10Parent;
       }
 
-      while (v12);
+      while (v10Parent);
     }
 
-    v13 = +[EMMailbox receivingAccounts];
-    if ([v13 count] >= 2)
+    account2 = +[EMMailbox receivingAccounts];
+    if ([account2 count] >= 2)
     {
-      v14 = [v9 account];
+      account = [firstObject account];
 
-      if (!v14)
+      if (!account)
       {
 LABEL_13:
         v16 = [NSBundle bundleForClass:objc_opt_class()];
@@ -134,9 +134,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v13 = [v9 account];
-      v15 = [v13 name];
-      [v7 insertObject:v15 atIndex:0];
+      account2 = [firstObject account];
+      name2 = [account2 name];
+      [v7 insertObject:name2 atIndex:0];
     }
 
     goto LABEL_13;

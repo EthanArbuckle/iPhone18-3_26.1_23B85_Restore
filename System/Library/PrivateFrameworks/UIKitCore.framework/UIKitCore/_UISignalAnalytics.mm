@@ -1,29 +1,29 @@
 @interface _UISignalAnalytics
 + (id)getIAChannelWritingTools;
-+ (id)getIAGenmojiImageTypeFromImageGlyph:(id)a3;
++ (id)getIAGenmojiImageTypeFromImageGlyph:(id)glyph;
 + (id)getIAPayloadKeyWritingToolsUI;
 + (id)getIAPayloadValueWritingToolsUICandidateBar;
 + (id)getIASignalWritingToolsPanelRequested;
-+ (void)asyncSendPencilSignal:(id)a3 payload:(id)a4;
-+ (void)asyncSendSafariSignal:(id)a3 payload:(id)a4;
-+ (void)asyncSendSignal:(id)a3 toChannel:(id)a4 withNullableUniqueStringID:(id)a5 withPayload:(id)a6;
-+ (void)sendGenmojiCreationSignal:(id)a3 payload:(id)a4;
-+ (void)sendGenmojiSignal:(id)a3 payload:(id)a4;
-+ (void)sendSignal:(id)a3 toChannel:(id)a4 withPayload:(id)a5;
-+ (void)sendWritingToolsSignal:(id)a3 payload:(id)a4;
++ (void)asyncSendPencilSignal:(id)signal payload:(id)payload;
++ (void)asyncSendSafariSignal:(id)signal payload:(id)payload;
++ (void)asyncSendSignal:(id)signal toChannel:(id)channel withNullableUniqueStringID:(id)d withPayload:(id)payload;
++ (void)sendGenmojiCreationSignal:(id)signal payload:(id)payload;
++ (void)sendGenmojiSignal:(id)signal payload:(id)payload;
++ (void)sendSignal:(id)signal toChannel:(id)channel withPayload:(id)payload;
++ (void)sendWritingToolsSignal:(id)signal payload:(id)payload;
 @end
 
 @implementation _UISignalAnalytics
 
-+ (void)sendSignal:(id)a3 toChannel:(id)a4 withPayload:(id)a5
++ (void)sendSignal:(id)signal toChannel:(id)channel withPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  signalCopy = signal;
+  channelCopy = channel;
+  payloadCopy = payload;
   IASignalAnalyticsClass = getIASignalAnalyticsClass();
   if (IASignalAnalyticsClass)
   {
-    [IASignalAnalyticsClass sendSignal:v7 toChannel:v8 withPayload:v9];
+    [IASignalAnalyticsClass sendSignal:signalCopy toChannel:channelCopy withPayload:payloadCopy];
   }
 
   else
@@ -37,16 +37,16 @@
   }
 }
 
-+ (void)asyncSendSignal:(id)a3 toChannel:(id)a4 withNullableUniqueStringID:(id)a5 withPayload:(id)a6
++ (void)asyncSendSignal:(id)signal toChannel:(id)channel withNullableUniqueStringID:(id)d withPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  signalCopy = signal;
+  channelCopy = channel;
+  dCopy = d;
+  payloadCopy = payload;
   IASignalAnalyticsClass = getIASignalAnalyticsClass();
   if (IASignalAnalyticsClass)
   {
-    [IASignalAnalyticsClass asyncSendSignal:v9 toChannel:v10 withNullableUniqueStringID:v11 withPayload:v12];
+    [IASignalAnalyticsClass asyncSendSignal:signalCopy toChannel:channelCopy withNullableUniqueStringID:dCopy withPayload:payloadCopy];
   }
 
   else
@@ -60,44 +60,44 @@
   }
 }
 
-+ (void)sendGenmojiSignal:(id)a3 payload:(id)a4
++ (void)sendGenmojiSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[_UISignalAnalytics getIAChannelGenmoji];
-  [_UISignalAnalytics sendSignal:v6 toChannel:v7 withPayload:v5];
+  [_UISignalAnalytics sendSignal:signalCopy toChannel:v7 withPayload:payloadCopy];
 }
 
-+ (void)sendGenmojiCreationSignal:(id)a3 payload:(id)a4
++ (void)sendGenmojiCreationSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[_UISignalAnalytics getIAChannelGenmojiCreation];
-  [_UISignalAnalytics sendSignal:v6 toChannel:v7 withPayload:v5];
+  [_UISignalAnalytics sendSignal:signalCopy toChannel:v7 withPayload:payloadCopy];
 }
 
-+ (void)sendWritingToolsSignal:(id)a3 payload:(id)a4
++ (void)sendWritingToolsSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[_UISignalAnalytics getIAChannelWritingTools];
-  [_UISignalAnalytics sendSignal:v6 toChannel:v7 withPayload:v5];
+  [_UISignalAnalytics sendSignal:signalCopy toChannel:v7 withPayload:payloadCopy];
 }
 
-+ (void)asyncSendPencilSignal:(id)a3 payload:(id)a4
++ (void)asyncSendPencilSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[_UISignalAnalytics getIAChannelPencil];
-  [_UISignalAnalytics asyncSendSignal:v6 toChannel:v7 withNullableUniqueStringID:0 withPayload:v5];
+  [_UISignalAnalytics asyncSendSignal:signalCopy toChannel:v7 withNullableUniqueStringID:0 withPayload:payloadCopy];
 }
 
-+ (void)asyncSendSafariSignal:(id)a3 payload:(id)a4
++ (void)asyncSendSafariSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[_UISignalAnalytics getIAChannelSafari];
-  [_UISignalAnalytics asyncSendSignal:v6 toChannel:v7 withNullableUniqueStringID:0 withPayload:v5];
+  [_UISignalAnalytics asyncSendSignal:signalCopy toChannel:v7 withNullableUniqueStringID:0 withPayload:payloadCopy];
 }
 
 + (id)getIAChannelWritingTools
@@ -125,9 +125,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIAChannelWritingTools(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -160,9 +160,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalWritingToolsPanelRequested(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:26 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -195,9 +195,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIAPayloadKeyWritingToolsUI(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:27 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -230,9 +230,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIAPayloadValueWritingToolsUICandidateBar(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UISignalAnalytics.m" lineNumber:29 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -240,51 +240,51 @@
   return result;
 }
 
-+ (id)getIAGenmojiImageTypeFromImageGlyph:(id)a3
++ (id)getIAGenmojiImageTypeFromImageGlyph:(id)glyph
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v3 stickerSourceType];
+  glyphCopy = glyph;
+  type = [glyphCopy type];
+  stickerSourceType = [glyphCopy stickerSourceType];
 
   v6 = _UISignalAnalyticsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134218240;
-    v10 = v4;
+    v10 = type;
     v11 = 2048;
-    v12 = v5;
+    v12 = stickerSourceType;
     _os_log_debug_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEBUG, "getIAGenmojiImageTypeFromImageGlyph type:%lu stickerSourceType:%lu", &v9, 0x16u);
   }
 
-  if (v4 == 3)
+  if (type == 3)
   {
     goto LABEL_11;
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
 LABEL_14:
     v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiImageTypeMemoji];
     goto LABEL_16;
   }
 
-  if (v4 != 1)
+  if (type != 1)
   {
 LABEL_15:
     v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiUnspecified];
     goto LABEL_16;
   }
 
-  if (v5 <= 3)
+  if (stickerSourceType <= 3)
   {
-    if (v5 == 1)
+    if (stickerSourceType == 1)
     {
       v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiImageTypeStickers1P];
       goto LABEL_16;
     }
 
-    if (v5 == 3)
+    if (stickerSourceType == 3)
     {
       goto LABEL_14;
     }
@@ -292,16 +292,16 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v5 == 4)
+  if (stickerSourceType == 4)
   {
 LABEL_11:
     v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiImageTypeEmoji];
     goto LABEL_16;
   }
 
-  if (v5 != 5)
+  if (stickerSourceType != 5)
   {
-    if (v5 == 6)
+    if (stickerSourceType == 6)
     {
       v7 = +[_UISignalAnalytics getIAPayloadValueGenmojiImageTypeGenmoji];
       goto LABEL_16;

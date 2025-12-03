@@ -1,20 +1,20 @@
 @interface RTStoredPredictedContextRequestFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (RTStoredPredictedContextRequestFetchOptions)initWithCoder:(id)a3;
-- (RTStoredPredictedContextRequestFetchOptions)initWithDateInterval:(id)a3 inferenceTriggerReason:(int64_t)a4 resultSortDescriptors:(id)a5 limit:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (RTStoredPredictedContextRequestFetchOptions)initWithCoder:(id)coder;
+- (RTStoredPredictedContextRequestFetchOptions)initWithDateInterval:(id)interval inferenceTriggerReason:(int64_t)reason resultSortDescriptors:(id)descriptors limit:(id)limit;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredPredictedContextRequestFetchOptions
 
-- (RTStoredPredictedContextRequestFetchOptions)initWithDateInterval:(id)a3 inferenceTriggerReason:(int64_t)a4 resultSortDescriptors:(id)a5 limit:(id)a6
+- (RTStoredPredictedContextRequestFetchOptions)initWithDateInterval:(id)interval inferenceTriggerReason:(int64_t)reason resultSortDescriptors:(id)descriptors limit:(id)limit
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13 && ![v13 unsignedIntegerValue])
+  intervalCopy = interval;
+  descriptorsCopy = descriptors;
+  limitCopy = limit;
+  v14 = limitCopy;
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -23,7 +23,7 @@
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: !limit || (limit && limit.unsignedIntegerValue > 0)", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -34,42 +34,42 @@
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_dateInterval, a3);
-      v16->_inferenceTriggerReason = a4;
-      objc_storeStrong(&v16->_resultSortDescriptors, a5);
-      objc_storeStrong(&v16->_limit, a6);
+      objc_storeStrong(&v15->_dateInterval, interval);
+      v16->_inferenceTriggerReason = reason;
+      objc_storeStrong(&v16->_resultSortDescriptors, descriptors);
+      objc_storeStrong(&v16->_limit, limit);
     }
 
     self = v16;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v6 = a3;
-  [v6 encodeObject:dateInterval forKey:@"dateInterval"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_inferenceTriggerReason];
-  [v6 encodeObject:v5 forKey:@"inferenceTriggerReason"];
+  [coderCopy encodeObject:v5 forKey:@"inferenceTriggerReason"];
 
-  [v6 encodeObject:self->_resultSortDescriptors forKey:@"resultSortDescriptors"];
-  [v6 encodeObject:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_resultSortDescriptors forKey:@"resultSortDescriptors"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
 }
 
-- (RTStoredPredictedContextRequestFetchOptions)initWithCoder:(id)a3
+- (RTStoredPredictedContextRequestFetchOptions)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v22 = [v3 decodeIntegerForKey:@"inferenceTriggerReason"];
+  coderCopy = coder;
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v22 = [coderCopy decodeIntegerForKey:@"inferenceTriggerReason"];
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v25 = v3;
-  v7 = [v3 decodeObjectOfClasses:v6 forKey:@"resultSortDescriptors"];
+  v25 = coderCopy;
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"resultSortDescriptors"];
 
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v26 = 0u;
@@ -112,29 +112,29 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RTStoredPredictedContextRequestFetchOptions *)self dateInterval];
-    v8 = [(RTStoredPredictedContextRequestFetchOptions *)v6 dateInterval];
-    if ([v7 isEqualToDateInterval:v8] && (v9 = -[RTStoredPredictedContextRequestFetchOptions inferenceTriggerReason](self, "inferenceTriggerReason"), v9 == -[RTStoredPredictedContextRequestFetchOptions inferenceTriggerReason](v6, "inferenceTriggerReason")))
+    dateInterval = [(RTStoredPredictedContextRequestFetchOptions *)self dateInterval];
+    dateInterval2 = [(RTStoredPredictedContextRequestFetchOptions *)v6 dateInterval];
+    if ([dateInterval isEqualToDateInterval:dateInterval2] && (v9 = -[RTStoredPredictedContextRequestFetchOptions inferenceTriggerReason](self, "inferenceTriggerReason"), v9 == -[RTStoredPredictedContextRequestFetchOptions inferenceTriggerReason](v6, "inferenceTriggerReason")))
     {
-      v10 = [(RTStoredPredictedContextRequestFetchOptions *)self resultSortDescriptors];
-      v11 = [(RTStoredPredictedContextRequestFetchOptions *)v6 resultSortDescriptors];
-      if ([v10 isEqual:v11])
+      resultSortDescriptors = [(RTStoredPredictedContextRequestFetchOptions *)self resultSortDescriptors];
+      resultSortDescriptors2 = [(RTStoredPredictedContextRequestFetchOptions *)v6 resultSortDescriptors];
+      if ([resultSortDescriptors isEqual:resultSortDescriptors2])
       {
-        v12 = [(RTStoredPredictedContextRequestFetchOptions *)self limit];
-        v13 = [(RTStoredPredictedContextRequestFetchOptions *)v6 limit];
-        v14 = [v12 isEqual:v13];
+        limit = [(RTStoredPredictedContextRequestFetchOptions *)self limit];
+        limit2 = [(RTStoredPredictedContextRequestFetchOptions *)v6 limit];
+        v14 = [limit isEqual:limit2];
       }
 
       else
@@ -160,11 +160,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTStoredPredictedContextRequestFetchOptions *)self dateInterval];
-  v5 = [(RTStoredPredictedContextRequestFetchOptions *)self inferenceTriggerReason];
-  v6 = [(RTStoredPredictedContextRequestFetchOptions *)self resultSortDescriptors];
-  v7 = [(RTStoredPredictedContextRequestFetchOptions *)self limit];
-  v8 = [v3 stringWithFormat:@"dateInterval, %@, inferenceTriggerReason, %lu, resultSortDescriptors, %@, limit, %lu", v4, v5, v6, v7];
+  dateInterval = [(RTStoredPredictedContextRequestFetchOptions *)self dateInterval];
+  inferenceTriggerReason = [(RTStoredPredictedContextRequestFetchOptions *)self inferenceTriggerReason];
+  resultSortDescriptors = [(RTStoredPredictedContextRequestFetchOptions *)self resultSortDescriptors];
+  limit = [(RTStoredPredictedContextRequestFetchOptions *)self limit];
+  v8 = [v3 stringWithFormat:@"dateInterval, %@, inferenceTriggerReason, %lu, resultSortDescriptors, %@, limit, %lu", dateInterval, inferenceTriggerReason, resultSortDescriptors, limit];
 
   return v8;
 }

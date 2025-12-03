@@ -1,17 +1,17 @@
 @interface RestaurantReservationCollectionViewFlowLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation RestaurantReservationCollectionViewFlowLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v25.receiver = self;
   v25.super_class = RestaurantReservationCollectionViewFlowLayout;
-  v4 = [(RestaurantReservationCollectionViewFlowLayout *)&v25 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v20 = self;
-  v5 = [(RestaurantReservationCollectionViewFlowLayout *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  v4 = [(RestaurantReservationCollectionViewFlowLayout *)&v25 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  selfCopy = self;
+  collectionView = [(RestaurantReservationCollectionViewFlowLayout *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v23 = 0u;
   v24 = 0u;
@@ -34,8 +34,8 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = [v12 indexPath];
-        if (([v6 containsObject:v13] & 1) != 0 || objc_msgSend(v12, "representedElementCategory") == 1)
+        indexPath = [v12 indexPath];
+        if (([indexPathsForSelectedItems containsObject:indexPath] & 1) != 0 || objc_msgSend(v12, "representedElementCategory") == 1)
         {
 
           v14 = 1.0;
@@ -43,14 +43,14 @@
 
         else
         {
-          v15 = [(RestaurantReservationCollectionViewFlowLayout *)v20 dimmableIndexPaths];
-          v16 = [v12 indexPath];
-          v17 = [v15 containsObject:v16];
+          dimmableIndexPaths = [(RestaurantReservationCollectionViewFlowLayout *)selfCopy dimmableIndexPaths];
+          indexPath2 = [v12 indexPath];
+          v17 = [dimmableIndexPaths containsObject:indexPath2];
 
           v14 = 1.0;
           if (v17)
           {
-            if ([(RestaurantReservationCollectionViewFlowLayout *)v20 dimUnselected])
+            if ([(RestaurantReservationCollectionViewFlowLayout *)selfCopy dimUnselected])
             {
               v14 = 0.200000003;
             }

@@ -1,62 +1,62 @@
 @interface STHistoricalScreenTimeCell
-- (STHistoricalScreenTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STHistoricalScreenTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)value;
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4 numberOfLines:(unint64_t)a5;
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout numberOfLines:(unint64_t)lines;
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to;
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setValue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setValue:(id)value;
 @end
 
 @implementation STHistoricalScreenTimeCell
 
-- (STHistoricalScreenTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STHistoricalScreenTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v30.receiver = self;
   v30.super_class = STHistoricalScreenTimeCell;
-  v5 = [(STTableCell *)&v30 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STTableCell *)&v30 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = [STHistoricalUsageViewController historicalUsageViewControllerOfType:1 graphHeight:90.0];
   historicalUsageViewController = v5->_historicalUsageViewController;
   v5->_historicalUsageViewController = v6;
 
-  v8 = [(STTableCell *)v5 childViewControllers];
-  [v8 addObject:v5->_historicalUsageViewController];
+  childViewControllers = [(STTableCell *)v5 childViewControllers];
+  [childViewControllers addObject:v5->_historicalUsageViewController];
 
   v9 = objc_opt_new();
   topItemsView = v5->_topItemsView;
   v5->_topItemsView = v9;
 
   [(STHorizontallySegmentedView *)v5->_topItemsView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(STHistoricalScreenTimeCell *)v5 contentView];
-  v12 = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v11 addSubview:v12];
-  [v11 addSubview:v5->_topItemsView];
-  v29 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag_1.isa, v12, v5->_topItemsView, 0);
+  contentView = [(STHistoricalScreenTimeCell *)v5 contentView];
+  view = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentView addSubview:view];
+  [contentView addSubview:v5->_topItemsView];
+  v29 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag_1.isa, view, v5->_topItemsView, 0);
   v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[historicalUsageView][_topItemsView]-11.0-|" options:0 metrics:0 views:v29];
   v14 = [v13 mutableCopy];
 
-  v15 = [(STTableCell *)v5 contentLayoutGuide];
-  v16 = [v15 leadingAnchor];
-  v17 = [v12 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  contentLayoutGuide = [(STTableCell *)v5 contentLayoutGuide];
+  leadingAnchor = [contentLayoutGuide leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v14 addObject:v18];
 
-  v19 = [v15 trailingAnchor];
-  v20 = [v12 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor = [contentLayoutGuide trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v14 addObject:v21];
 
-  v22 = [v15 leadingAnchor];
-  v23 = [(STHorizontallySegmentedView *)v5->_topItemsView leadingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  leadingAnchor3 = [contentLayoutGuide leadingAnchor];
+  leadingAnchor4 = [(STHorizontallySegmentedView *)v5->_topItemsView leadingAnchor];
+  v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v14 addObject:v24];
 
-  v25 = [v15 trailingAnchor];
-  v26 = [(STHorizontallySegmentedView *)v5->_topItemsView trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  trailingAnchor3 = [contentLayoutGuide trailingAnchor];
+  trailingAnchor4 = [(STHorizontallySegmentedView *)v5->_topItemsView trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v14 addObject:v27];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v14];
@@ -77,29 +77,29 @@
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextHistoricalScreenTimeCell")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextHistoricalScreenTimeCell")
   {
     [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
 
-    if ([v10 isEqualToString:@"currentViewMode"])
+    if ([pathCopy isEqualToString:@"currentViewMode"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -112,21 +112,21 @@
     {
       [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
 
-      if ([v10 isEqualToString:@"titleView.hasMultilineLayout"])
+      if ([pathCopy isEqualToString:@"titleView.hasMultilineLayout"])
       {
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v16 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null3 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v16)
+        if (v12 == null3)
         {
 
           v12 = 0;
         }
 
-        v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v17 = [MEMORY[0x277CBEB68] null];
+        v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null4 = [MEMORY[0x277CBEB68] null];
 
-        if (v14 == v17)
+        if (v14 == null4)
         {
 
           v14 = 0;
@@ -139,24 +139,24 @@
       {
         [(STHistoricalScreenTimeCell *)self topItemsView];
 
-        if (![v10 isEqualToString:@"numberOfLines"])
+        if (![pathCopy isEqualToString:@"numberOfLines"])
         {
           goto LABEL_22;
         }
 
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v18 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v18)
+        if (v12 == null5)
         {
 
           v12 = 0;
         }
 
-        v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v19 = [MEMORY[0x277CBEB68] null];
+        v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null6 = [MEMORY[0x277CBEB68] null];
 
-        if (v14 == v19)
+        if (v14 == null6)
         {
 
           v14 = 0;
@@ -171,106 +171,106 @@
 
   v20.receiver = self;
   v20.super_class = STHistoricalScreenTimeCell;
-  [(STHistoricalScreenTimeCell *)&v20 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STHistoricalScreenTimeCell *)&v20 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_22:
 }
 
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v7 = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
-    v8 = [v7 titleView];
-    v9 = [v8 hasMultilineLayout];
+    historicalUsageViewController = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
+    titleView = [historicalUsageViewController titleView];
+    hasMultilineLayout = [titleView hasMultilineLayout];
 
-    v10 = [(STHistoricalScreenTimeCell *)self topItemsView];
-    v11 = [v10 numberOfLines];
-    v12 = [v11 unsignedIntegerValue];
+    topItemsView = [(STHistoricalScreenTimeCell *)self topItemsView];
+    numberOfLines = [topItemsView numberOfLines];
+    unsignedIntegerValue = [numberOfLines unsignedIntegerValue];
 
-    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:a4 hasMultilineLayout:v9 numberOfLines:v12];
+    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:to hasMultilineLayout:hasMultilineLayout numberOfLines:unsignedIntegerValue];
   }
 }
 
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v5 = a4;
-    v7 = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
-    v8 = [v7 currentViewMode];
+    toCopy = to;
+    historicalUsageViewController = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
+    currentViewMode = [historicalUsageViewController currentViewMode];
 
-    v9 = [(STHistoricalScreenTimeCell *)self topItemsView];
-    v10 = [v9 numberOfLines];
-    v11 = [v10 unsignedIntegerValue];
+    topItemsView = [(STHistoricalScreenTimeCell *)self topItemsView];
+    numberOfLines = [topItemsView numberOfLines];
+    unsignedIntegerValue = [numberOfLines unsignedIntegerValue];
 
-    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:v8 hasMultilineLayout:v5 numberOfLines:v11];
+    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:currentViewMode hasMultilineLayout:toCopy numberOfLines:unsignedIntegerValue];
   }
 }
 
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v10 = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
-    v7 = [v10 currentViewMode];
-    v8 = [v10 titleView];
-    v9 = [v8 hasMultilineLayout];
+    historicalUsageViewController = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
+    currentViewMode = [historicalUsageViewController currentViewMode];
+    titleView = [historicalUsageViewController titleView];
+    hasMultilineLayout = [titleView hasMultilineLayout];
 
-    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:v7 hasMultilineLayout:v9 numberOfLines:a4];
+    [(STHistoricalScreenTimeCell *)self _handleEffectiveChangeForViewMode:currentViewMode hasMultilineLayout:hasMultilineLayout numberOfLines:to];
   }
 }
 
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4 numberOfLines:(unint64_t)a5
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout numberOfLines:(unint64_t)lines
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13[1] = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalScreenTimeCell-%lu-%d-%lu", a3, v6, a5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  lines = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalScreenTimeCell-%lu-%d-%lu", mode, layoutCopy, lines];
   v12 = @"HistoricalScreenTimeSpecifierIdentifier";
-  v13[0] = v10;
+  v13[0] = lines;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v9 postNotificationName:@"HistoricalScreenTimeSpecifierIdentifierDidChange" object:self userInfo:v11];
+  [defaultCenter postNotificationName:@"HistoricalScreenTimeSpecifierIdentifierDidChange" object:self userInfo:v11];
 
   [(STHistoricalScreenTimeCell *)self setNeedsUpdateConstraints];
-  [v9 postNotificationName:0x2876773C8 object:self];
+  [defaultCenter postNotificationName:0x2876773C8 object:self];
 }
 
 - (id)value
 {
   v4.receiver = self;
   v4.super_class = STHistoricalScreenTimeCell;
-  v2 = [(PSTableCell *)&v4 value];
+  value = [(PSTableCell *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 conformsToProtocol:&unk_2876DCA10])
+  valueCopy = value;
+  v5 = valueCopy;
+  if (!valueCopy || [valueCopy conformsToProtocol:&unk_2876DCA10])
   {
     v38.receiver = self;
     v38.super_class = STHistoricalScreenTimeCell;
     [(PSTableCell *)&v38 setValue:v5];
-    v30 = self;
-    v6 = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
-    [v6 setCoordinator:v5];
+    selfCopy = self;
+    historicalUsageViewController = [(STHistoricalScreenTimeCell *)self historicalUsageViewController];
+    [historicalUsageViewController setCoordinator:v5];
 
-    v7 = [v5 viewModel];
-    v8 = [v7 selectedUsageReport];
+    viewModel = [v5 viewModel];
+    selectedUsageReport = [viewModel selectedUsageReport];
 
-    v9 = [v8 topUsageItemsWithMaxCount:3 type:3 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
+    v9 = [selectedUsageReport topUsageItemsWithMaxCount:3 type:3 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
     v31 = v5;
     if (![v9 count])
     {
-      v10 = [v8 topUsageItemsWithMaxCount:3 type:2 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
+      v10 = [selectedUsageReport topUsageItemsWithMaxCount:3 type:2 includeAggregateItem:0 nonAggregateItems:0 darkColors:0];
 
       v9 = v10;
     }
 
-    v29 = v8;
+    v29 = selectedUsageReport;
     v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v34 = 0u;
     v35 = 0u;
@@ -292,30 +292,30 @@ LABEL_22:
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 totalUsage];
-          [v16 doubleValue];
+          totalUsage = [v15 totalUsage];
+          [totalUsage doubleValue];
           v18 = v17;
 
           v19 = [STSegmentItem alloc];
-          v20 = [v15 displayName];
+          displayName = [v15 displayName];
           if (v18 >= 60.0)
           {
-            v21 = objc_opt_new();
-            [v21 setAllowedUnits:96];
-            [v21 setUnitsStyle:1];
+            st_sharedAbbreviatedSecondsDateFormatter = objc_opt_new();
+            [st_sharedAbbreviatedSecondsDateFormatter setAllowedUnits:96];
+            [st_sharedAbbreviatedSecondsDateFormatter setUnitsStyle:1];
             v22 = 96;
           }
 
           else
           {
-            v21 = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
+            st_sharedAbbreviatedSecondsDateFormatter = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
             v22 = 128;
           }
 
-          v23 = [v21 stringFromTimeInterval:v18];
+          v23 = [st_sharedAbbreviatedSecondsDateFormatter stringFromTimeInterval:v18];
 
-          v24 = [v15 color];
-          v25 = [(STSegmentItem *)v19 initWithTitleText:v20 detailText:v23 titleColor:v24 detailImage:0 detailImageTintColor:0];
+          color = [v15 color];
+          v25 = [(STSegmentItem *)v19 initWithTitleText:displayName detailText:v23 titleColor:color detailImage:0 detailImageTintColor:0];
 
           v26 = objc_opt_new();
           [v26 setAllowedUnits:v22];
@@ -332,8 +332,8 @@ LABEL_22:
       while (v12);
     }
 
-    v28 = [(STHistoricalScreenTimeCell *)v30 topItemsView];
-    [v28 setSegmentItems:v33];
+    topItemsView = [(STHistoricalScreenTimeCell *)selfCopy topItemsView];
+    [topItemsView setSegmentItems:v33];
 
     v5 = v31;
   }

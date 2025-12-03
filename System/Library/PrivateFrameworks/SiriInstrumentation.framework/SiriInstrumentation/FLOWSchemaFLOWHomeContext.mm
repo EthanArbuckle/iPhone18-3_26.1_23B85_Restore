@@ -1,49 +1,49 @@
 @interface FLOWSchemaFLOWHomeContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppleTvCount:(BOOL)a3;
-- (void)setHasHasCurrentHome:(BOOL)a3;
-- (void)setHasHomePodCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppleTvCount:(BOOL)count;
+- (void)setHasHasCurrentHome:(BOOL)home;
+- (void)setHasHomePodCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeContext
 
-- (FLOWSchemaFLOWHomeContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWHomeContext;
   v5 = [(FLOWSchemaFLOWHomeContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"homeCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"homeCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeContext setHomeCount:](v5, "setHomeCount:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"homePodCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"homePodCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeContext setHomePodCount:](v5, "setHomePodCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appleTvCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appleTvCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeContext setAppleTvCount:](v5, "setAppleTvCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasCurrentHome"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasCurrentHome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_hasCurrentHome + 1);
   if ((v4 & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeContext appleTvCount](self, "appleTvCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"appleTvCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"appleTvCount"];
 
     v4 = *(&self->_hasCurrentHome + 1);
     if ((v4 & 8) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWHomeContext hasCurrentHome](self, "hasCurrentHome")}];
-  [v3 setObject:v8 forKeyedSubscript:@"hasCurrentHome"];
+  [dictionary setObject:v8 forKeyedSubscript:@"hasCurrentHome"];
 
   v4 = *(&self->_hasCurrentHome + 1);
   if ((v4 & 1) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeContext homeCount](self, "homeCount")}];
-  [v3 setObject:v9 forKeyedSubscript:@"homeCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"homeCount"];
 
   if ((*(&self->_hasCurrentHome + 1) & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeContext homePodCount](self, "homePodCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"homePodCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"homePodCount"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   v5 = *(&self->_hasCurrentHome + 1);
-  v6 = v4[21];
+  v6 = equalCopy[21];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (v5)
   {
     homeCount = self->_homeCount;
-    if (homeCount != [v4 homeCount])
+    if (homeCount != [equalCopy homeCount])
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_hasCurrentHome + 1);
-    v6 = v4[21];
+    v6 = equalCopy[21];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     homePodCount = self->_homePodCount;
-    if (homePodCount != [v4 homePodCount])
+    if (homePodCount != [equalCopy homePodCount])
     {
       goto LABEL_18;
     }
 
     v5 = *(&self->_hasCurrentHome + 1);
-    v6 = v4[21];
+    v6 = equalCopy[21];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     appleTvCount = self->_appleTvCount;
-    if (appleTvCount == [v4 appleTvCount])
+    if (appleTvCount == [equalCopy appleTvCount])
     {
       v5 = *(&self->_hasCurrentHome + 1);
-      v6 = v4[21];
+      v6 = equalCopy[21];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     hasCurrentHome = self->_hasCurrentHome;
-    if (hasCurrentHome != [v4 hasCurrentHome])
+    if (hasCurrentHome != [equalCopy hasCurrentHome])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_hasCurrentHome + 1);
   if (v4)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasHasCurrentHome:(BOOL)a3
+- (void)setHasHasCurrentHome:(BOOL)home
 {
-  if (a3)
+  if (home)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *(&self->_hasCurrentHome + 1) = *(&self->_hasCurrentHome + 1) & 0xF7 | v3;
 }
 
-- (void)setHasAppleTvCount:(BOOL)a3
+- (void)setHasAppleTvCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *(&self->_hasCurrentHome + 1) = *(&self->_hasCurrentHome + 1) & 0xFB | v3;
 }
 
-- (void)setHasHomePodCount:(BOOL)a3
+- (void)setHasHomePodCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

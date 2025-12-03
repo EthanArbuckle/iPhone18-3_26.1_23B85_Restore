@@ -1,90 +1,90 @@
 @interface VNDetectHumanHandPoseRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
 + (NSArray)supportedJointNamesForRevision:(NSUInteger)revision error:(NSError *)error;
 + (NSArray)supportedJointsGroupNamesForRevision:(NSUInteger)revision error:(NSError *)error;
 + (id)_supportedJointNamesRevision1;
 + (id)_supportedJointsGroupNamesRevision1;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error;
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error;
 - (NSUInteger)maximumHandCount;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (unint64_t)hash;
 - (void)setMaximumHandCount:(NSUInteger)maximumHandCount;
-- (void)setProcessedResults:(id)a3;
+- (void)setProcessedResults:(id)results;
 @end
 
 @implementation VNDetectHumanHandPoseRequest
 
 - (void)setMaximumHandCount:(NSUInteger)maximumHandCount
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumHandCount:maximumHandCount];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumHandCount:maximumHandCount];
 }
 
 - (NSUInteger)maximumHandCount
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumHandCount];
+  configuration = [(VNRequest *)self configuration];
+  maximumHandCount = [configuration maximumHandCount];
 
-  return v3;
+  return maximumHandCount;
 }
 
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error
 {
   if ([(VNRequest *)self revision]== 1)
   {
-    v5 = [objc_opt_class() _supportedJointsGroupNamesRevision1];
+    _supportedJointsGroupNamesRevision1 = [objc_opt_class() _supportedJointsGroupNamesRevision1];
   }
 
   else if (error)
   {
     v6 = [VNError errorForUnsupportedRevision:[(VNRequest *)self revision] ofRequest:self];
     v7 = v6;
-    v5 = 0;
+    _supportedJointsGroupNamesRevision1 = 0;
     *error = v6;
   }
 
   else
   {
-    v5 = 0;
+    _supportedJointsGroupNamesRevision1 = 0;
   }
 
-  return v5;
+  return _supportedJointsGroupNamesRevision1;
 }
 
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error
 {
   if ([(VNRequest *)self revision]== 1)
   {
-    v5 = [objc_opt_class() _supportedJointNamesRevision1];
+    _supportedJointNamesRevision1 = [objc_opt_class() _supportedJointNamesRevision1];
   }
 
   else if (error)
   {
     v6 = [VNError errorForUnsupportedRevision:[(VNRequest *)self revision] ofRequest:self];
     v7 = v6;
-    v5 = 0;
+    _supportedJointNamesRevision1 = 0;
     *error = v6;
   }
 
   else
   {
-    v5 = 0;
+    _supportedJointNamesRevision1 = 0;
   }
 
-  return v5;
+  return _supportedJointNamesRevision1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = VNDetectHumanHandPoseRequest;
-  v4 = [(VNRequest *)&v6 copyWithZone:a3];
+  v4 = [(VNRequest *)&v6 copyWithZone:zone];
   if (v4)
   {
     [v4 setMaximumHandCount:{-[VNDetectHumanHandPoseRequest maximumHandCount](self, "maximumHandCount")}];
@@ -93,10 +93,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -105,11 +105,11 @@
   {
     v9.receiver = self;
     v9.super_class = VNDetectHumanHandPoseRequest;
-    if ([(VNDetectHumanHandPoseRequest *)&v9 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNDetectHumanHandPoseRequest *)&v9 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
-      v7 = v6 == [(VNDetectHumanHandPoseRequest *)v5 maximumHandCount];
+      v5 = equalCopy;
+      maximumHandCount = [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
+      v7 = maximumHandCount == [(VNDetectHumanHandPoseRequest *)v5 maximumHandCount];
     }
 
     else
@@ -128,33 +128,33 @@
   return [(VNDetectHumanHandPoseRequest *)self maximumHandCount]^ __ROR8__([(VNDetectHumanHandPoseRequest *)&v3 hash], 51);
 }
 
-- (void)setProcessedResults:(id)a3
+- (void)setProcessedResults:(id)results
 {
-  v4 = a3;
-  v5 = [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
-  if ([v4 count] > v5)
+  resultsCopy = results;
+  maximumHandCount = [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
+  if ([resultsCopy count] > maximumHandCount)
   {
-    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v5}];
-    v7 = [v4 objectsAtIndexes:v6];
+    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, maximumHandCount}];
+    v7 = [resultsCopy objectsAtIndexes:v6];
 
-    v4 = v7;
+    resultsCopy = v7;
   }
 
   v8.receiver = self;
   v8.super_class = VNDetectHumanHandPoseRequest;
-  [(VNRequest *)&v8 setProcessedResults:v4];
+  [(VNRequest *)&v8 setProcessedResults:resultsCopy];
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v21 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:revision loadedInSession:session error:error];
     v12 = v21;
     if (v11)
     {
@@ -165,13 +165,13 @@
       v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNDetectHumanHandPoseRequest maximumHandCount](self, "maximumHandCount")}];
       [v12 setObject:v14 forKeyedSubscript:@"VNHumanHandPoseDetectorProcessOption_MaximumHandCount"];
 
-      v15 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v16 = [v11 processUsingQualityOfServiceClass:v15 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v16 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v17 = v16 != 0;
       if (v16)
       {
-        if (a3 == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
+        if (revision == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
         {
           v18 = &__block_literal_global_125;
           v19 = [v16 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_125];
@@ -197,15 +197,15 @@
   return v17;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = VNDetectHumanHandPoseRequest;
-  if ([(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4])
+  if ([(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy])
   {
-    v5 = [v4 maximumHandCount];
-    v6 = v5 >= [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
+    maximumHandCount = [configurationCopy maximumHandCount];
+    v6 = maximumHandCount >= [(VNDetectHumanHandPoseRequest *)self maximumHandCount];
   }
 
   else
@@ -216,29 +216,29 @@
   return v6;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v8.receiver = self;
   v8.super_class = VNDetectHumanHandPoseRequest;
-  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRequest usesCPUOnly](self, "usesCPUOnly")}];
   [v5 setObject:v6 forKey:@"VNHumanPoseDetectorInitOption_UseCPUOnly"];
 
   return v5;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNHumanHandPoseDetectorType";
     v5 = @"VNHumanHandPoseDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -348,18 +348,18 @@ void __61__VNDetectHumanHandPoseRequest__supportedJointNamesRevision1__block_inv
   +[VNDetectHumanHandPoseRequest _supportedJointNamesRevision1]::jointNames = v0;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNDetectHumanHandPoseRequest;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
 @end

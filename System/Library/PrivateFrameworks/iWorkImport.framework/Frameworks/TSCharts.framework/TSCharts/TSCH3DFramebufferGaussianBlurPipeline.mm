@@ -1,6 +1,6 @@
 @interface TSCH3DFramebufferGaussianBlurPipeline
 + (id)effectsArray;
-- (TSCH3DFramebufferGaussianBlurPipeline)initWithProcessor:(id)a3 session:(id)a4;
+- (TSCH3DFramebufferGaussianBlurPipeline)initWithProcessor:(id)processor session:(id)session;
 - (void)updateShaderEffectsStates;
 @end
 
@@ -18,13 +18,13 @@
   return v15;
 }
 
-- (TSCH3DFramebufferGaussianBlurPipeline)initWithProcessor:(id)a3 session:(id)a4
+- (TSCH3DFramebufferGaussianBlurPipeline)initWithProcessor:(id)processor session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  processorCopy = processor;
+  sessionCopy = session;
   v20.receiver = self;
   v20.super_class = TSCH3DFramebufferGaussianBlurPipeline;
-  v8 = [(TSCH3DFramebufferCopyPipeline *)&v20 initWithProcessor:v6 session:v7];
+  v8 = [(TSCH3DFramebufferCopyPipeline *)&v20 initWithProcessor:processorCopy session:sessionCopy];
   if (v8)
   {
     v9 = objc_opt_class();

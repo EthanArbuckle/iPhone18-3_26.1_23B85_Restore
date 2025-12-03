@@ -1,22 +1,22 @@
 @interface NSSQLXPCFetchRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
+- (BOOL)executeRequestCore:(id *)core;
 @end
 
 @implementation NSSQLXPCFetchRequestContext
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   v5 = _rawRowDataForXPCRequest(self);
   [(NSSQLStoreRequestContext *)self setResult:v5];
 
-  if (a3 && *a3)
+  if (core && *core)
   {
     if (!self)
     {
       return [(NSSQLStoreRequestContext *)self result]!= 0;
     }
 
-    objc_setProperty_nonatomic(self, v6, *a3, 40);
+    objc_setProperty_nonatomic(self, v6, *core, 40);
   }
 
   else if (!self)

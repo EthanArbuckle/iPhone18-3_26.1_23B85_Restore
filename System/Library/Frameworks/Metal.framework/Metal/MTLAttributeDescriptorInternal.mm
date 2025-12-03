@@ -1,27 +1,27 @@
 @interface MTLAttributeDescriptorInternal
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBufferIndex:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBufferIndex:(unint64_t)index;
 @end
 
 @implementation MTLAttributeDescriptorInternal
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_vertexFormat;
   *(result + 2) = self->_offset;
   *(result + 3) = self->_bufferIndex;
   return result;
 }
 
-- (void)setBufferIndex:(unint64_t)a3
+- (void)setBufferIndex:(unint64_t)index
 {
-  if (a3 >= 0x1F)
+  if (index >= 0x1F)
   {
     [MTLAttributeDescriptorInternal setBufferIndex:];
   }
 
-  self->_bufferIndex = a3;
+  self->_bufferIndex = index;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface DataStream
 + (id)logCategory;
-- (BOOL)handleFirstMessageReceivedOnDataStream:(id)a3 payload:(id)a4;
-- (DataStream)initWithTransport:(id)a3 sessionEncryption:(id)a4 workQueue:(id)a5 logIdentifier:(id)a6;
-- (DataStream)initWithTransport:(id)a3 sessionEncryption:(id)a4 workQueue:(id)a5 logIdentifier:(id)a6 connectionTimer:(id)a7 helloMessageResponseTimer:(id)a8;
+- (BOOL)handleFirstMessageReceivedOnDataStream:(id)stream payload:(id)payload;
+- (DataStream)initWithTransport:(id)transport sessionEncryption:(id)encryption workQueue:(id)queue logIdentifier:(id)identifier;
+- (DataStream)initWithTransport:(id)transport sessionEncryption:(id)encryption workQueue:(id)queue logIdentifier:(id)identifier connectionTimer:(id)timer helloMessageResponseTimer:(id)responseTimer;
 - (DataStreamDelegate)delegate;
 - (id)createRequestIdentifier;
-- (id)protocolWithName:(id)a3;
+- (id)protocolWithName:(id)name;
 - (void)_evaluateActiveStatusChange;
-- (void)_failPendingMessagesWithError:(id)a3;
+- (void)_failPendingMessagesWithError:(id)error;
 - (void)_handlePendingEvents;
 - (void)_handlePendingRequests;
-- (void)_sendMessageWithHeader:(id)a3 payload:(id)a4 completion:(id)a5;
-- (void)addProtocol:(id)a3 name:(id)a4;
+- (void)_sendMessageWithHeader:(id)header payload:(id)payload completion:(id)completion;
+- (void)addProtocol:(id)protocol name:(id)name;
 - (void)close;
 - (void)connect;
-- (void)fulfillPendingRequestWithResponseHeader:(id)a3 payload:(id)a4;
+- (void)fulfillPendingRequestWithResponseHeader:(id)header payload:(id)payload;
 - (void)invalidate;
-- (void)sendEventForProtocol:(id)a3 topic:(id)a4 payload:(id)a5 completion:(id)a6;
-- (void)sendRequestForProtocol:(id)a3 topic:(id)a4 identifier:(unint64_t)a5 payload:(id)a6 completion:(id)a7;
-- (void)sendRequestForProtocol:(id)a3 topic:(id)a4 payload:(id)a5 completion:(id)a6;
-- (void)setActive:(BOOL)a3;
-- (void)setTrafficClass:(unint64_t)a3;
+- (void)sendEventForProtocol:(id)protocol topic:(id)topic payload:(id)payload completion:(id)completion;
+- (void)sendRequestForProtocol:(id)protocol topic:(id)topic identifier:(unint64_t)identifier payload:(id)payload completion:(id)completion;
+- (void)sendRequestForProtocol:(id)protocol topic:(id)topic payload:(id)payload completion:(id)completion;
+- (void)setActive:(BOOL)active;
+- (void)setTrafficClass:(unint64_t)class;
 - (void)startConnectionTimer;
 - (void)startHelloMessageResponseTimer;
-- (void)timerDidFire:(id)a3;
-- (void)transport:(id)a3 didFailWithError:(id)a4;
-- (void)transport:(id)a3 didReceiveRawFrame:(id)a4;
-- (void)transportDidClose:(id)a3;
-- (void)transportDidOpen:(id)a3;
+- (void)timerDidFire:(id)fire;
+- (void)transport:(id)transport didFailWithError:(id)error;
+- (void)transport:(id)transport didReceiveRawFrame:(id)frame;
+- (void)transportDidClose:(id)close;
+- (void)transportDidOpen:(id)open;
 @end
 
 @implementation DataStream
@@ -44,47 +44,47 @@
   return v1;
 }
 
-- (DataStream)initWithTransport:(id)a3 sessionEncryption:(id)a4 workQueue:(id)a5 logIdentifier:(id)a6
+- (DataStream)initWithTransport:(id)transport sessionEncryption:(id)encryption workQueue:(id)queue logIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  encryptionCopy = encryption;
+  transportCopy = transport;
   v14 = [[HMFTimer alloc] initWithTimeInterval:0 options:10.0];
   v15 = [[HMFTimer alloc] initWithTimeInterval:0 options:10.0];
-  v16 = [(DataStream *)self initWithTransport:v13 sessionEncryption:v12 workQueue:v11 logIdentifier:v10 connectionTimer:v14 helloMessageResponseTimer:v15];
+  v16 = [(DataStream *)self initWithTransport:transportCopy sessionEncryption:encryptionCopy workQueue:queueCopy logIdentifier:identifierCopy connectionTimer:v14 helloMessageResponseTimer:v15];
 
   return v16;
 }
 
-- (DataStream)initWithTransport:(id)a3 sessionEncryption:(id)a4 workQueue:(id)a5 logIdentifier:(id)a6 connectionTimer:(id)a7 helloMessageResponseTimer:(id)a8
+- (DataStream)initWithTransport:(id)transport sessionEncryption:(id)encryption workQueue:(id)queue logIdentifier:(id)identifier connectionTimer:(id)timer helloMessageResponseTimer:(id)responseTimer
 {
-  v33 = a3;
-  v32 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  transportCopy = transport;
+  encryptionCopy = encryption;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  timerCopy = timer;
+  responseTimerCopy = responseTimer;
   v34.receiver = self;
   v34.super_class = DataStream;
   v19 = [(DataStream *)&v34 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_transport, a3);
-    objc_storeStrong(&v20->_sessionEncryption, a4);
-    objc_storeStrong(&v20->_workQueue, a5);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_transport, transport);
+    objc_storeStrong(&v20->_sessionEncryption, encryption);
+    objc_storeStrong(&v20->_workQueue, queue);
+    v21 = [identifierCopy copy];
     logIdentifier = v20->_logIdentifier;
     v20->_logIdentifier = v21;
 
-    objc_storeStrong(&v20->_connectionTimer, a7);
-    objc_storeStrong(&v20->_helloMessageResponseTimer, a8);
+    objc_storeStrong(&v20->_connectionTimer, timer);
+    objc_storeStrong(&v20->_helloMessageResponseTimer, responseTimer);
     v23 = +[NSMapTable strongToStrongObjectsMapTable];
     protocols = v20->_protocols;
     v20->_protocols = v23;
 
-    v25 = [[DataStreamControlProtocol alloc] initWithLogIdentifier:v16];
+    v25 = [[DataStreamControlProtocol alloc] initWithLogIdentifier:identifierCopy];
     controlProtocol = v20->_controlProtocol;
     v20->_controlProtocol = v25;
 
@@ -100,20 +100,20 @@
   return v20;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(DataStream *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  activeCopy = active;
+  workQueue = [(DataStream *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (self->_active != v3)
+  if (self->_active != activeCopy)
   {
-    self->_active = v3;
-    v6 = self;
+    self->_active = activeCopy;
+    selfCopy = self;
     v7 = sub_10007FAA0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = sub_10007FAFC(v6);
+      v8 = sub_10007FAFC(selfCopy);
       active = self->_active;
       v10 = HMFBooleanToString();
       v12 = 138543618;
@@ -123,51 +123,51 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@DataStream changes active to %@", &v12, 0x16u);
     }
 
-    v11 = [(DataStream *)v6 delegate];
-    [v11 dataStreamDidUpdateActiveStatus:v6];
+    delegate = [(DataStream *)selfCopy delegate];
+    [delegate dataStreamDidUpdateActiveStatus:selfCopy];
   }
 }
 
 - (void)connect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10007FAA0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = sub_10007FAFC(v2);
+    v4 = sub_10007FAFC(selfCopy);
     v6 = 138543362;
     v7 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@DataStream connecting", &v6, 0xCu);
   }
 
-  [(DataStream *)v2 startConnectionTimer];
-  v5 = [(DataStream *)v2 transport];
-  [v5 connect];
+  [(DataStream *)selfCopy startConnectionTimer];
+  transport = [(DataStream *)selfCopy transport];
+  [transport connect];
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10007FAA0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = sub_10007FAFC(v2);
+    v4 = sub_10007FAFC(selfCopy);
     *buf = 138543362;
     v18 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@DataStream invalidated", buf, 0xCu);
   }
 
-  v5 = [(DataStream *)v2 transport];
-  [v5 invalidate];
+  transport = [(DataStream *)selfCopy transport];
+  [transport invalidate];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(DataStream *)v2 protocols];
-  v7 = [v6 objectEnumerator];
+  protocols = [(DataStream *)selfCopy protocols];
+  objectEnumerator = [protocols objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -179,15 +179,15 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) dataStreamInitiatedClose:v2];
+        [*(*(&v12 + 1) + 8 * v11) dataStreamInitiatedClose:selfCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -196,27 +196,27 @@
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10007FAA0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = sub_10007FAFC(v2);
+    v4 = sub_10007FAFC(selfCopy);
     *buf = 138543362;
     v18 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@DataStream closing", buf, 0xCu);
   }
 
-  v5 = [(DataStream *)v2 transport];
-  [v5 close];
+  transport = [(DataStream *)selfCopy transport];
+  [transport close];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(DataStream *)v2 protocols];
-  v7 = [v6 objectEnumerator];
+  protocols = [(DataStream *)selfCopy protocols];
+  objectEnumerator = [protocols objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -228,81 +228,81 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) dataStreamInitiatedClose:v2];
+        [*(*(&v12 + 1) + 8 * v11) dataStreamInitiatedClose:selfCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)addProtocol:(id)a3 name:(id)a4
+- (void)addProtocol:(id)protocol name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DataStream *)self protocols];
-  [v8 setObject:v7 forKey:v6];
+  nameCopy = name;
+  protocolCopy = protocol;
+  protocols = [(DataStream *)self protocols];
+  [protocols setObject:protocolCopy forKey:nameCopy];
 
   [(DataStream *)self _evaluateActiveStatusChange];
 }
 
-- (id)protocolWithName:(id)a3
+- (id)protocolWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(DataStream *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  workQueue = [(DataStream *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(DataStream *)self protocols];
-  v7 = [v6 objectForKey:v4];
+  protocols = [(DataStream *)self protocols];
+  v7 = [protocols objectForKey:nameCopy];
 
   return v7;
 }
 
 - (id)createRequestIdentifier
 {
-  v3 = [(DataStream *)self nextRequestIdentifier];
+  nextRequestIdentifier = [(DataStream *)self nextRequestIdentifier];
   [(DataStream *)self setNextRequestIdentifier:[(DataStream *)self nextRequestIdentifier]+ 1];
 
-  return [NSNumber numberWithUnsignedLongLong:v3];
+  return [NSNumber numberWithUnsignedLongLong:nextRequestIdentifier];
 }
 
-- (void)_sendMessageWithHeader:(id)a3 payload:(id)a4 completion:(id)a5
+- (void)_sendMessageWithHeader:(id)header payload:(id)payload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DataStream *)self sessionEncryption];
+  headerCopy = header;
+  payloadCopy = payload;
+  completionCopy = completion;
+  sessionEncryption = [(DataStream *)self sessionEncryption];
 
-  if (v11)
+  if (sessionEncryption)
   {
-    v12 = [(DataStream *)self sessionEncryption];
+    sessionEncryption2 = [(DataStream *)self sessionEncryption];
     v23 = 0;
-    v13 = [DataStreamMessageCoder encryptEncryptedOPACKHeader:v8 payload:v9 sessionEncryption:v12 error:&v23];
+    v13 = [DataStreamMessageCoder encryptEncryptedOPACKHeader:headerCopy payload:payloadCopy sessionEncryption:sessionEncryption2 error:&v23];
     v14 = v23;
   }
 
   else
   {
     v22 = 0;
-    v13 = [DataStreamMessageCoder buildUnencryptedOPACKHeader:v8 payload:v9 error:&v22];
+    v13 = [DataStreamMessageCoder buildUnencryptedOPACKHeader:headerCopy payload:payloadCopy error:&v22];
     v14 = v22;
   }
 
-  v15 = self;
+  selfCopy = self;
   v16 = sub_10007FAA0();
   v17 = v16;
   if (v14)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v18 = sub_10007FAFC(v15);
+      v18 = sub_10007FAFC(selfCopy);
       *buf = 138543618;
       v25 = v18;
       v26 = 2112;
@@ -310,112 +310,112 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@DataStream encoding message failed (%@)", buf, 0x16u);
     }
 
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   else
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v19 = sub_10007FAFC(v15);
-      v20 = [(DataStream *)v15 pendingRequests];
+      v19 = sub_10007FAFC(selfCopy);
+      pendingRequests = [(DataStream *)selfCopy pendingRequests];
       *buf = 138543874;
       v25 = v19;
       v26 = 2112;
-      v27 = v8;
+      v27 = headerCopy;
       v28 = 2112;
-      v29 = v20;
+      v29 = pendingRequests;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%{public}@DataStream Sending Message: %@ --> %@", buf, 0x20u);
     }
 
-    v21 = [(DataStream *)v15 transport];
-    [v21 sendRawFrame:v13 completion:v10];
+    transport = [(DataStream *)selfCopy transport];
+    [transport sendRawFrame:v13 completion:completionCopy];
   }
 }
 
-- (void)sendEventForProtocol:(id)a3 topic:(id)a4 payload:(id)a5 completion:(id)a6
+- (void)sendEventForProtocol:(id)protocol topic:(id)topic payload:(id)payload completion:(id)completion
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  protocolCopy = protocol;
+  topicCopy = topic;
+  payloadCopy = payload;
+  completionCopy = completion;
   if ([(DataStream *)self firstMessageReceived])
   {
-    v13 = [(DataStream *)self controlProtocol];
-    v14 = [v13 helloMessageResponseReceived];
+    controlProtocol = [(DataStream *)self controlProtocol];
+    helloMessageResponseReceived = [controlProtocol helloMessageResponseReceived];
 
-    if (v14)
+    if (helloMessageResponseReceived)
     {
-      v15 = [DataStreamMessageCoder eventHeaderForProtocol:v17 topic:v10];
-      [(DataStream *)self _sendMessageWithHeader:v15 payload:v11 completion:v12];
+      v15 = [DataStreamMessageCoder eventHeaderForProtocol:protocolCopy topic:topicCopy];
+      [(DataStream *)self _sendMessageWithHeader:v15 payload:payloadCopy completion:completionCopy];
     }
 
     else
     {
       v15 = [NSError errorWithDomain:@"DKErrorDomain" code:22 userInfo:0];
-      v12[2](v12, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 
   else
   {
-    v15 = [[DataStreamPendingEvent alloc] initWithProtocol:v17 topic:v10 payload:v11 completion:v12];
-    v16 = [(DataStream *)self pendingEvents];
-    [v16 addObject:v15];
+    v15 = [[DataStreamPendingEvent alloc] initWithProtocol:protocolCopy topic:topicCopy payload:payloadCopy completion:completionCopy];
+    pendingEvents = [(DataStream *)self pendingEvents];
+    [pendingEvents addObject:v15];
   }
 }
 
-- (void)sendRequestForProtocol:(id)a3 topic:(id)a4 identifier:(unint64_t)a5 payload:(id)a6 completion:(id)a7
+- (void)sendRequestForProtocol:(id)protocol topic:(id)topic identifier:(unint64_t)identifier payload:(id)payload completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [NSNumber numberWithUnsignedInteger:a5];
-  v17 = [DataStreamMessageCoder requestHeaderForProtocol:v15 topic:v14 identifier:v16];
+  completionCopy = completion;
+  payloadCopy = payload;
+  topicCopy = topic;
+  protocolCopy = protocol;
+  v16 = [NSNumber numberWithUnsignedInteger:identifier];
+  v17 = [DataStreamMessageCoder requestHeaderForProtocol:protocolCopy topic:topicCopy identifier:v16];
 
-  [(DataStream *)self _sendMessageWithHeader:v17 payload:v13 completion:v12];
+  [(DataStream *)self _sendMessageWithHeader:v17 payload:payloadCopy completion:completionCopy];
 }
 
-- (void)sendRequestForProtocol:(id)a3 topic:(id)a4 payload:(id)a5 completion:(id)a6
+- (void)sendRequestForProtocol:(id)protocol topic:(id)topic payload:(id)payload completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(DataStream *)self createRequestIdentifier];
+  protocolCopy = protocol;
+  topicCopy = topic;
+  payloadCopy = payload;
+  completionCopy = completion;
+  createRequestIdentifier = [(DataStream *)self createRequestIdentifier];
   if ([(DataStream *)self firstMessageReceived])
   {
-    v15 = [(DataStream *)self controlProtocol];
-    v16 = [v15 helloMessageResponseReceived];
+    controlProtocol = [(DataStream *)self controlProtocol];
+    helloMessageResponseReceived = [controlProtocol helloMessageResponseReceived];
 
-    if ((v16 & 1) == 0)
+    if ((helloMessageResponseReceived & 1) == 0)
     {
       v19 = [NSError errorWithDomain:@"DKErrorDomain" code:22 userInfo:0];
-      (*(v13 + 2))(v13, v19, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v19, 0, 0);
 
       goto LABEL_7;
     }
 
-    v17 = [DataStreamMessageCoder requestHeaderForProtocol:v10 topic:v11 identifier:v14];
+    v17 = [DataStreamMessageCoder requestHeaderForProtocol:protocolCopy topic:topicCopy identifier:createRequestIdentifier];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100012390;
     v20[3] = &unk_1002733E8;
-    v26 = v13;
-    v21 = v14;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    v25 = self;
+    v26 = completionCopy;
+    v21 = createRequestIdentifier;
+    v22 = protocolCopy;
+    v23 = topicCopy;
+    v24 = payloadCopy;
+    selfCopy = self;
     [(DataStream *)self _sendMessageWithHeader:v17 payload:v24 completion:v20];
   }
 
   else
   {
-    v17 = [[DataStreamPendingRequest alloc] initWithIdentifier:v14 protocol:v10 topic:v11 payload:v12 callback:v13];
-    v18 = [(DataStream *)self pendingRequests];
-    [v18 addObject:v17];
+    v17 = [[DataStreamPendingRequest alloc] initWithIdentifier:createRequestIdentifier protocol:protocolCopy topic:topicCopy payload:payloadCopy callback:completionCopy];
+    pendingRequests = [(DataStream *)self pendingRequests];
+    [pendingRequests addObject:v17];
   }
 
 LABEL_7:
@@ -423,15 +423,15 @@ LABEL_7:
 
 - (void)_evaluateActiveStatusChange
 {
-  v3 = [(DataStream *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(DataStream *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(DataStream *)self protocols];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  protocols = [(DataStream *)self protocols];
+  v5 = [protocols countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -441,22 +441,22 @@ LABEL_7:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(protocols);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [(DataStream *)self protocols];
-        v10 = [v9 objectForKey:v8];
-        v11 = [v10 isActive];
+        protocols2 = [(DataStream *)self protocols];
+        v10 = [protocols2 objectForKey:v8];
+        isActive = [v10 isActive];
 
-        if (v11)
+        if (isActive)
         {
           v5 = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [protocols countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -471,33 +471,33 @@ LABEL_11:
   [(DataStream *)self setActive:v5];
 }
 
-- (void)setTrafficClass:(unint64_t)a3
+- (void)setTrafficClass:(unint64_t)class
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_10007FAA0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = sub_10007FAFC(v4);
+    v6 = sub_10007FAFC(selfCopy);
     v8 = 138543618;
     v9 = v6;
     v10 = 2048;
-    v11 = a3;
+    classCopy = class;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@Setting traffic class %lu on transport", &v8, 0x16u);
   }
 
-  v7 = [(DataStream *)v4 transport];
-  [v7 setTrafficClass:a3];
+  transport = [(DataStream *)selfCopy transport];
+  [transport setTrafficClass:class];
 }
 
-- (void)_failPendingMessagesWithError:(id)a3
+- (void)_failPendingMessagesWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(DataStream *)self pendingRequests];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  pendingRequests = [(DataStream *)self pendingRequests];
+  v6 = [pendingRequests countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -509,31 +509,31 @@ LABEL_11:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pendingRequests);
         }
 
-        v10 = [*(*(&v23 + 1) + 8 * v9) callback];
-        (v10)[2](v10, v4, 0, 0);
+        callback = [*(*(&v23 + 1) + 8 * v9) callback];
+        (callback)[2](callback, errorCopy, 0, 0);
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [pendingRequests countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(DataStream *)self pendingRequests];
-  [v11 removeAllObjects];
+  pendingRequests2 = [(DataStream *)self pendingRequests];
+  [pendingRequests2 removeAllObjects];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(DataStream *)self pendingEvents];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  pendingEvents = [(DataStream *)self pendingEvents];
+  v13 = [pendingEvents countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -545,57 +545,57 @@ LABEL_11:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pendingEvents);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) completion];
-        (v17)[2](v17, v4);
+        completion = [*(*(&v19 + 1) + 8 * v16) completion];
+        (completion)[2](completion, errorCopy);
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v14 = [pendingEvents countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(DataStream *)self pendingEvents];
-  [v18 removeAllObjects];
+  pendingEvents2 = [(DataStream *)self pendingEvents];
+  [pendingEvents2 removeAllObjects];
 }
 
-- (void)transport:(id)a3 didFailWithError:(id)a4
+- (void)transport:(id)transport didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(DataStream *)self delegate];
-  v7 = self;
+  errorCopy = error;
+  delegate = [(DataStream *)self delegate];
+  selfCopy = self;
   v8 = sub_10007FAA0();
   v9 = v8;
-  if (v6)
+  if (delegate)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v10 = sub_10007FAFC(v7);
+      v10 = sub_10007FAFC(selfCopy);
       *buf = 138543618;
       v25 = v10;
       v26 = 2112;
-      v27 = v5;
+      v27 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%{public}@Data stream failure (%@)", buf, 0x16u);
     }
 
-    [v6 dataStream:v7 didFailWithError:v5];
+    [delegate dataStream:selfCopy didFailWithError:errorCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = sub_10007FAFC(v7);
+      v11 = sub_10007FAFC(selfCopy);
       *buf = 138543618;
       v25 = v11;
       v26 = 2112;
-      v27 = v5;
+      v27 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@Data stream failure (%@); but no delegate", buf, 0x16u);
     }
   }
@@ -604,10 +604,10 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(DataStream *)v7 protocols];
-  v13 = [v12 objectEnumerator];
+  protocols = [(DataStream *)selfCopy protocols];
+  objectEnumerator = [protocols objectEnumerator];
 
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v14 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v14)
   {
     v15 = v14;
@@ -619,52 +619,52 @@ LABEL_11:
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v18 = *(*(&v19 + 1) + 8 * v17);
         if (v18)
         {
-          [v18 dataStream:v7 didFailWithError:v5];
+          [v18 dataStream:selfCopy didFailWithError:errorCopy];
         }
 
         v17 = v17 + 1;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v15 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v15);
   }
 
-  [(DataStream *)v7 _failPendingMessagesWithError:v5];
+  [(DataStream *)selfCopy _failPendingMessagesWithError:errorCopy];
 }
 
-- (void)transportDidClose:(id)a3
+- (void)transportDidClose:(id)close
 {
-  v4 = [(DataStream *)self delegate];
-  v5 = self;
+  delegate = [(DataStream *)self delegate];
+  selfCopy = self;
   v6 = sub_10007FAA0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (delegate)
   {
     if (v7)
     {
-      v8 = sub_10007FAFC(v5);
+      v8 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v23 = v8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Data stream closed", buf, 0xCu);
     }
 
-    [v4 dataStreamDidClose:v5];
+    [delegate dataStreamDidClose:selfCopy];
   }
 
   else
   {
     if (v7)
     {
-      v9 = sub_10007FAFC(v5);
+      v9 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v23 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Data stream closed (but no delegate!)", buf, 0xCu);
@@ -675,10 +675,10 @@ LABEL_11:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(DataStream *)v5 protocols];
-  v11 = [v10 objectEnumerator];
+  protocols = [(DataStream *)selfCopy protocols];
+  objectEnumerator = [protocols objectEnumerator];
 
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v12 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -690,67 +690,67 @@ LABEL_11:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v17 + 1) + 8 * v15) dataStreamDidClose:v5];
+        [*(*(&v17 + 1) + 8 * v15) dataStreamDidClose:selfCopy];
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
   }
 
   v16 = [NSError errorWithDomain:@"DKErrorDomain" code:39 userInfo:0];
-  [(DataStream *)v5 _failPendingMessagesWithError:v16];
+  [(DataStream *)selfCopy _failPendingMessagesWithError:v16];
 }
 
-- (void)transportDidOpen:(id)a3
+- (void)transportDidOpen:(id)open
 {
   [(DataStream *)self setConnectionTimer:0];
-  v4 = [(DataStream *)self delegate];
-  v5 = self;
+  delegate = [(DataStream *)self delegate];
+  selfCopy = self;
   v6 = sub_10007FAA0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (delegate)
   {
     if (v7)
     {
-      v8 = sub_10007FAFC(v5);
+      v8 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v24 = v8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Data stream OPEN!", buf, 0xCu);
     }
 
-    [v4 dataStreamDidOpen:v5];
+    [delegate dataStreamDidOpen:selfCopy];
   }
 
   else
   {
     if (v7)
     {
-      v9 = sub_10007FAFC(v5);
+      v9 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v24 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Data stream OPEN (but no delegate!)", buf, 0xCu);
     }
   }
 
-  v10 = [(DataStream *)v5 controlProtocol];
-  [v10 dataStreamDidOpen:v5];
+  controlProtocol = [(DataStream *)selfCopy controlProtocol];
+  [controlProtocol dataStreamDidOpen:selfCopy];
 
-  [(DataStream *)v5 startHelloMessageResponseTimer];
+  [(DataStream *)selfCopy startHelloMessageResponseTimer];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(DataStream *)v5 protocols];
-  v12 = [v11 objectEnumerator];
+  protocols = [(DataStream *)selfCopy protocols];
+  objectEnumerator = [protocols objectEnumerator];
 
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v13 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -762,31 +762,31 @@ LABEL_11:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v17 = *(*(&v18 + 1) + 8 * v16);
         if (v17)
         {
-          [v17 dataStreamDidOpen:v5];
+          [v17 dataStreamDidOpen:selfCopy];
         }
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
   }
 }
 
-- (BOOL)handleFirstMessageReceivedOnDataStream:(id)a3 payload:(id)a4
+- (BOOL)handleFirstMessageReceivedOnDataStream:(id)stream payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"protocol"];
+  streamCopy = stream;
+  payloadCopy = payload;
+  v8 = [streamCopy objectForKeyedSubscript:@"protocol"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -801,18 +801,18 @@ LABEL_11:
   v10 = v9;
   if (([(DataStream *)v10 isEqualToString:@"control"]& 1) == 0)
   {
-    v11 = self;
+    selfCopy = self;
     v13 = sub_10007FAA0();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_16:
-      v16 = 0;
+      helloMessageResponseReceived = 0;
       goto LABEL_17;
     }
 
-    v17 = sub_10007FAFC(v11);
+    selfCopy2 = sub_10007FAFC(selfCopy);
     v21 = 138543874;
-    v22 = v17;
+    v22 = selfCopy2;
     v23 = 2112;
     v24 = @"control";
     v25 = 2112;
@@ -823,11 +823,11 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"response"];
+  selfCopy = [streamCopy objectForKeyedSubscript:@"response"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = selfCopy;
   }
 
   else
@@ -838,43 +838,43 @@ LABEL_15:
   v13 = v12;
   if (!v13)
   {
-    v17 = self;
+    selfCopy2 = self;
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v17);
+      v19 = sub_10007FAFC(selfCopy2);
       v21 = 138543874;
       v22 = v19;
       v23 = 2112;
       v24 = @"response";
       v25 = 2112;
-      v26 = v11;
+      v26 = selfCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@Received unexpected %@ key value: %@", &v21, 0x20u);
     }
 
     goto LABEL_15;
   }
 
-  v14 = [(DataStream *)self controlProtocol];
-  [v14 dataStream:self didReceiveResponse:v11 header:v6 payload:v7];
+  controlProtocol = [(DataStream *)self controlProtocol];
+  [controlProtocol dataStream:self didReceiveResponse:selfCopy header:streamCopy payload:payloadCopy];
 
-  v15 = [(DataStream *)self controlProtocol];
-  v16 = [v15 helloMessageResponseReceived];
+  controlProtocol2 = [(DataStream *)self controlProtocol];
+  helloMessageResponseReceived = [controlProtocol2 helloMessageResponseReceived];
 
 LABEL_17:
-  return v16;
+  return helloMessageResponseReceived;
 }
 
 - (void)_handlePendingRequests
 {
-  v3 = [(DataStream *)self pendingRequests];
-  v4 = [v3 copy];
+  pendingRequests = [(DataStream *)self pendingRequests];
+  v4 = [pendingRequests copy];
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10007FAA0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = sub_10007FAFC(v5);
+    v7 = sub_10007FAFC(selfCopy);
     v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
     *buf = 138543618;
     v26 = v7;
@@ -883,8 +883,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Sending out all pending requests [%@]", buf, 0x16u);
   }
 
-  v9 = [(DataStream *)v5 pendingRequests];
-  [v9 removeAllObjects];
+  pendingRequests2 = [(DataStream *)selfCopy pendingRequests];
+  [pendingRequests2 removeAllObjects];
 
   v22 = 0u;
   v23 = 0u;
@@ -906,11 +906,11 @@ LABEL_17:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 protocol];
-        v17 = [v15 topic];
-        v18 = [v15 payload];
-        v19 = [v15 callback];
-        [(DataStream *)v5 sendRequestForProtocol:v16 topic:v17 payload:v18 completion:v19];
+        protocol = [v15 protocol];
+        topic = [v15 topic];
+        payload = [v15 payload];
+        callback = [v15 callback];
+        [(DataStream *)selfCopy sendRequestForProtocol:protocol topic:topic payload:payload completion:callback];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -922,14 +922,14 @@ LABEL_17:
 
 - (void)_handlePendingEvents
 {
-  v3 = [(DataStream *)self pendingEvents];
-  v4 = [v3 copy];
+  pendingEvents = [(DataStream *)self pendingEvents];
+  v4 = [pendingEvents copy];
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10007FAA0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = sub_10007FAFC(v5);
+    v7 = sub_10007FAFC(selfCopy);
     v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
     *buf = 138543618;
     v26 = v7;
@@ -938,8 +938,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@Sending out all pending events [%@]", buf, 0x16u);
   }
 
-  v9 = [(DataStream *)v5 pendingEvents];
-  [v9 removeAllObjects];
+  pendingEvents2 = [(DataStream *)selfCopy pendingEvents];
+  [pendingEvents2 removeAllObjects];
 
   v22 = 0u;
   v23 = 0u;
@@ -961,11 +961,11 @@ LABEL_17:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 protocol];
-        v17 = [v15 topic];
-        v18 = [v15 payload];
-        v19 = [v15 completion];
-        [(DataStream *)v5 sendEventForProtocol:v16 topic:v17 payload:v18 completion:v19];
+        protocol = [v15 protocol];
+        topic = [v15 topic];
+        payload = [v15 payload];
+        completion = [v15 completion];
+        [(DataStream *)selfCopy sendEventForProtocol:protocol topic:topic payload:payload completion:completion];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -975,40 +975,40 @@ LABEL_17:
   }
 }
 
-- (void)transport:(id)a3 didReceiveRawFrame:(id)a4
+- (void)transport:(id)transport didReceiveRawFrame:(id)frame
 {
-  v5 = a4;
-  v6 = [(DataStream *)self delegate];
-  v7 = self;
+  frameCopy = frame;
+  delegate = [(DataStream *)self delegate];
+  selfCopy = self;
   v8 = sub_10007FAA0();
   v9 = v8;
-  if (v6)
+  if (delegate)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = sub_10007FAFC(v7);
+      v10 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v63 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@Data stream received frame", buf, 0xCu);
     }
 
-    [v6 dataStreamDidReceiveRawFrame:v7];
+    [delegate dataStreamDidReceiveRawFrame:selfCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = sub_10007FAFC(v7);
+      v11 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v63 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@Data stream received frame; but no delegate", buf, 0xCu);
     }
   }
 
-  if (![v5 length])
+  if (![frameCopy length])
   {
-    v12 = v7;
+    v12 = selfCopy;
     v17 = sub_10007FAA0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1022,7 +1022,7 @@ LABEL_17:
   }
 
   v12 = 0;
-  v13 = *[v5 bytes];
+  v13 = *[frameCopy bytes];
   if (v13 > 1)
   {
     if (v13 != 2)
@@ -1031,11 +1031,11 @@ LABEL_17:
       v18 = 0;
       if (v13 == 3)
       {
-        v20 = [(DataStream *)v7 sessionEncryption];
+        sessionEncryption = [(DataStream *)selfCopy sessionEncryption];
 
-        if (v20)
+        if (sessionEncryption)
         {
-          v21 = v7;
+          v21 = selfCopy;
           v22 = sub_10007FAA0();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
@@ -1060,7 +1060,7 @@ LABEL_27:
         v57 = 0;
         v58 = 0;
         v56 = 0;
-        v16 = [DataStreamMessageCoder unpackUnencryptedOPACKFrame:v5 receivedHeader:&v58 receivedPayload:&v57 error:&v56];
+        v16 = [DataStreamMessageCoder unpackUnencryptedOPACKFrame:frameCopy receivedHeader:&v58 receivedPayload:&v57 error:&v56];
         v12 = v58;
         v17 = v57;
         v18 = v56;
@@ -1071,7 +1071,7 @@ LABEL_27:
       }
 
 LABEL_28:
-      v29 = v7;
+      v29 = selfCopy;
       v30 = sub_10007FAA0();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -1087,7 +1087,7 @@ LABEL_28:
     }
 
 LABEL_21:
-    v25 = v7;
+    v25 = selfCopy;
     v22 = sub_10007FAA0();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1113,11 +1113,11 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  v14 = [(DataStream *)v7 sessionEncryption];
+  sessionEncryption2 = [(DataStream *)selfCopy sessionEncryption];
 
-  if (!v14)
+  if (!sessionEncryption2)
   {
-    v28 = v7;
+    v28 = selfCopy;
     v22 = sub_10007FAA0();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1131,11 +1131,11 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v15 = [(DataStream *)v7 sessionEncryption];
+  sessionEncryption3 = [(DataStream *)selfCopy sessionEncryption];
   v60 = 0;
   v61 = 0;
   v59 = 0;
-  v16 = [DataStreamMessageCoder decryptEncryptedOPACKFrame:v5 sessionEncryption:v15 receivedHeader:&v61 receivedPayload:&v60 error:&v59];
+  v16 = [DataStreamMessageCoder decryptEncryptedOPACKFrame:frameCopy sessionEncryption:sessionEncryption3 receivedHeader:&v61 receivedPayload:&v60 error:&v59];
   v12 = v61;
   v17 = v60;
   v18 = v59;
@@ -1151,7 +1151,7 @@ LABEL_33:
     goto LABEL_28;
   }
 
-  if ([(DataStream *)v7 firstMessageReceived])
+  if ([(DataStream *)selfCopy firstMessageReceived])
   {
     v32 = [(DataStream *)v12 objectForKeyedSubscript:@"response"];
     objc_opt_class();
@@ -1169,7 +1169,7 @@ LABEL_33:
 
     if (v34)
     {
-      [(DataStream *)v7 fulfillPendingRequestWithResponseHeader:v12 payload:v17];
+      [(DataStream *)selfCopy fulfillPendingRequestWithResponseHeader:v12 payload:v17];
 LABEL_75:
 
       goto LABEL_31;
@@ -1209,10 +1209,10 @@ LABEL_75:
 
         if (v43)
         {
-          v44 = [(DataStream *)v7 controlProtocol];
-          v45 = v44;
+          controlProtocol = [(DataStream *)selfCopy controlProtocol];
+          v45 = controlProtocol;
 LABEL_64:
-          [(DataStream *)v44 dataStream:v7 didReceiveEvent:v43 header:v12 payload:v17];
+          [(DataStream *)controlProtocol dataStream:selfCopy didReceiveEvent:v43 header:v12 payload:v17];
 LABEL_74:
 
           goto LABEL_75;
@@ -1234,22 +1234,22 @@ LABEL_74:
 
         if (v52)
         {
-          v53 = [(DataStream *)v7 controlProtocol];
-          v45 = v53;
+          controlProtocol2 = [(DataStream *)selfCopy controlProtocol];
+          v45 = controlProtocol2;
 LABEL_81:
-          [(DataStream *)v53 dataStream:v7 didReceiveRequest:v52 header:v12 payload:v17];
+          [(DataStream *)controlProtocol2 dataStream:selfCopy didReceiveRequest:v52 header:v12 payload:v17];
           goto LABEL_74;
         }
       }
 
       else
       {
-        v49 = [(DataStream *)v7 protocols];
-        v45 = [v49 objectForKey:v41];
+        protocols = [(DataStream *)selfCopy protocols];
+        v45 = [protocols objectForKey:v41];
 
         if (!v45)
         {
-          v46 = v7;
+          v46 = selfCopy;
           v47 = sub_10007FAA0();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
           {
@@ -1280,7 +1280,7 @@ LABEL_81:
 
         if (v43)
         {
-          v44 = v45;
+          controlProtocol = v45;
           goto LABEL_64;
         }
 
@@ -1300,12 +1300,12 @@ LABEL_81:
 
         if (v52)
         {
-          v53 = v45;
+          controlProtocol2 = v45;
           goto LABEL_81;
         }
       }
 
-      v45 = v7;
+      v45 = selfCopy;
       v46 = sub_10007FAA0();
       if (!os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
@@ -1320,7 +1320,7 @@ LABEL_81:
 
     else
     {
-      v45 = v7;
+      v45 = selfCopy;
       v46 = sub_10007FAA0();
       if (!os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
@@ -1342,9 +1342,9 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  if (![(DataStream *)v7 handleFirstMessageReceivedOnDataStream:v12 payload:v17])
+  if (![(DataStream *)selfCopy handleFirstMessageReceivedOnDataStream:v12 payload:v17])
   {
-    v35 = v7;
+    v35 = selfCopy;
     v36 = sub_10007FAA0();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -1357,26 +1357,26 @@ LABEL_72:
     [(DataStream *)v35 close];
   }
 
-  [(DataStream *)v7 setFirstMessageReceived:1];
-  v38 = [(DataStream *)v7 helloMessageResponseTimer];
-  [v38 suspend];
+  [(DataStream *)selfCopy setFirstMessageReceived:1];
+  helloMessageResponseTimer = [(DataStream *)selfCopy helloMessageResponseTimer];
+  [helloMessageResponseTimer suspend];
 
-  [(DataStream *)v7 setHelloMessageResponseTimer:0];
-  [(DataStream *)v7 _handlePendingRequests];
-  [(DataStream *)v7 _handlePendingEvents];
+  [(DataStream *)selfCopy setHelloMessageResponseTimer:0];
+  [(DataStream *)selfCopy _handlePendingRequests];
+  [(DataStream *)selfCopy _handlePendingEvents];
 LABEL_31:
 }
 
-- (void)fulfillPendingRequestWithResponseHeader:(id)a3 payload:(id)a4
+- (void)fulfillPendingRequestWithResponseHeader:(id)header payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  payloadCopy = payload;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(DataStream *)self pendingRequests];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  pendingRequests = [(DataStream *)self pendingRequests];
+  v9 = [pendingRequests countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1387,18 +1387,18 @@ LABEL_3:
     {
       if (*v20 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(pendingRequests);
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
-      if ([v13 matchesResponseHeader:v6])
+      if ([v13 matchesResponseHeader:headerCopy])
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+        v10 = [pendingRequests countByEnumeratingWithState:&v19 objects:v29 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -1408,18 +1408,18 @@ LABEL_3:
       }
     }
 
-    v14 = v13;
+    selfCopy = v13;
 
-    if (!v14)
+    if (!selfCopy)
     {
       goto LABEL_12;
     }
 
-    v15 = [(DataStream *)v14 callback];
-    (v15)[2](v15, 0, v6, v7);
+    callback = [(DataStream *)selfCopy callback];
+    (callback)[2](callback, 0, headerCopy, payloadCopy);
 
-    v16 = [(DataStream *)self pendingRequests];
-    [v16 removeObject:v14];
+    pendingRequests2 = [(DataStream *)self pendingRequests];
+    [pendingRequests2 removeObject:selfCopy];
   }
 
   else
@@ -1427,64 +1427,64 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    v14 = self;
-    v16 = sub_10007FAA0();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    selfCopy = self;
+    pendingRequests2 = sub_10007FAA0();
+    if (os_log_type_enabled(pendingRequests2, OS_LOG_TYPE_INFO))
     {
-      v17 = sub_10007FAFC(v14);
-      v18 = [(DataStream *)v14 pendingRequests];
+      v17 = sub_10007FAFC(selfCopy);
+      pendingRequests3 = [(DataStream *)selfCopy pendingRequests];
       *buf = 138543874;
       v24 = v17;
       v25 = 2112;
-      v26 = v6;
+      v26 = headerCopy;
       v27 = 2112;
-      v28 = v18;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%{public}@No pending request found for response with header: %@. Pending %@", buf, 0x20u);
+      v28 = pendingRequests3;
+      _os_log_impl(&_mh_execute_header, pendingRequests2, OS_LOG_TYPE_INFO, "%{public}@No pending request found for response with header: %@. Pending %@", buf, 0x20u);
     }
   }
 }
 
 - (void)startConnectionTimer
 {
-  v3 = [(DataStream *)self connectionTimer];
-  [v3 setDelegate:self];
+  connectionTimer = [(DataStream *)self connectionTimer];
+  [connectionTimer setDelegate:self];
 
-  v4 = [(DataStream *)self workQueue];
-  v5 = [(DataStream *)self connectionTimer];
-  [v5 setDelegateQueue:v4];
+  workQueue = [(DataStream *)self workQueue];
+  connectionTimer2 = [(DataStream *)self connectionTimer];
+  [connectionTimer2 setDelegateQueue:workQueue];
 
-  v6 = [(DataStream *)self connectionTimer];
-  [v6 resume];
+  connectionTimer3 = [(DataStream *)self connectionTimer];
+  [connectionTimer3 resume];
 }
 
 - (void)startHelloMessageResponseTimer
 {
-  v3 = [(DataStream *)self helloMessageResponseTimer];
-  [v3 setDelegate:self];
+  helloMessageResponseTimer = [(DataStream *)self helloMessageResponseTimer];
+  [helloMessageResponseTimer setDelegate:self];
 
-  v4 = [(DataStream *)self workQueue];
-  v5 = [(DataStream *)self helloMessageResponseTimer];
-  [v5 setDelegateQueue:v4];
+  workQueue = [(DataStream *)self workQueue];
+  helloMessageResponseTimer2 = [(DataStream *)self helloMessageResponseTimer];
+  [helloMessageResponseTimer2 setDelegateQueue:workQueue];
 
-  v6 = [(DataStream *)self helloMessageResponseTimer];
-  [v6 resume];
+  helloMessageResponseTimer3 = [(DataStream *)self helloMessageResponseTimer];
+  [helloMessageResponseTimer3 resume];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(DataStream *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(DataStream *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(DataStream *)self connectionTimer];
+  connectionTimer = [(DataStream *)self connectionTimer];
 
-  if (v6 == v4)
+  if (connectionTimer == fireCopy)
   {
-    v12 = self;
+    selfCopy = self;
     v9 = sub_10007FAA0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = sub_10007FAFC(v12);
+      v10 = sub_10007FAFC(selfCopy);
       v13 = 138543362;
       v14 = v10;
       v11 = "%{public}@Data stream failed to connect in time; closing!";
@@ -1497,15 +1497,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(DataStream *)self helloMessageResponseTimer];
+  helloMessageResponseTimer = [(DataStream *)self helloMessageResponseTimer];
 
-  if (v7 == v4)
+  if (helloMessageResponseTimer == fireCopy)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = sub_10007FAA0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = sub_10007FAFC(v8);
+      v10 = sub_10007FAFC(selfCopy2);
       v13 = 138543362;
       v14 = v10;
       v11 = "%{public}@Data stream failed to receive first message in time; closing!";

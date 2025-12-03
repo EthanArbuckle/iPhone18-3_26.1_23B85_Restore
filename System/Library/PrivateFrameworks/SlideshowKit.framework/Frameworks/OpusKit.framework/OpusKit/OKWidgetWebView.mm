@@ -1,29 +1,29 @@
 @interface OKWidgetWebView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetWebView)initWithWidget:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetWebView)initWithWidget:(id)widget;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForRefresh;
 - (void)reloadWebView;
-- (void)setSettingOptions:(id)a3;
-- (void)setSettingScaleToFit:(BOOL)a3;
-- (void)setSettingUrlText:(id)a3;
-- (void)setSettingWebDidLoadActionScript:(id)a3;
-- (void)webViewDidFinishLoad:(id)a3;
+- (void)setSettingOptions:(id)options;
+- (void)setSettingScaleToFit:(BOOL)fit;
+- (void)setSettingUrlText:(id)text;
+- (void)setSettingWebDidLoadActionScript:(id)script;
+- (void)webViewDidFinishLoad:(id)load;
 @end
 
 @implementation OKWidgetWebView
 
-- (OKWidgetWebView)initWithWidget:(id)a3
+- (OKWidgetWebView)initWithWidget:(id)widget
 {
   v8.receiver = self;
   v8.super_class = OKWidgetWebView;
-  v3 = [(OKWidgetViewProxy *)&v8 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v8 initWithWidget:widget];
   v4 = v3;
   if (v3)
   {
@@ -88,7 +88,7 @@
 + (id)supportedSettings
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetWebView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v13[0] = @"urlText";
@@ -119,27 +119,27 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetWebView;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
-- (void)setSettingOptions:(id)a3
+- (void)setSettingOptions:(id)options
 {
   if (([(NSDictionary *)self->_options isEqual:?]& 1) == 0)
   {
 
-    [(OKWidgetWebView *)self setOptions:a3];
+    [(OKWidgetWebView *)self setOptions:options];
   }
 }
 
-- (void)setSettingUrlText:(id)a3
+- (void)setSettingUrlText:(id)text
 {
   if (![(NSString *)self->_urlText isEqualToString:?])
   {
-    [(OKWidgetWebView *)self setUrlText:a3];
+    [(OKWidgetWebView *)self setUrlText:text];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __37__OKWidgetWebView_setSettingUrlText___block_invoke;
@@ -149,16 +149,16 @@
   }
 }
 
-- (void)setSettingScaleToFit:(BOOL)a3
+- (void)setSettingScaleToFit:(BOOL)fit
 {
-  if (self->_scaleToFit != a3)
+  if (self->_scaleToFit != fit)
   {
-    self->_scaleToFit = a3;
+    self->_scaleToFit = fit;
     [(OKWidgetWebView *)self setNeedsLayout];
   }
 }
 
-- (void)setSettingWebDidLoadActionScript:(id)a3
+- (void)setSettingWebDidLoadActionScript:(id)script
 {
   webDidLoadActionScript = self->_webDidLoadActionScript;
   if (webDidLoadActionScript)
@@ -167,28 +167,28 @@
     self->_webDidLoadActionScript = 0;
   }
 
-  self->_webDidLoadActionScript = [a3 copy];
+  self->_webDidLoadActionScript = [script copy];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v4.receiver = self;
   v4.super_class = OKWidgetWebView;
-  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:display];
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v4.receiver = self;
   v4.super_class = OKWidgetWebView;
-  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:warmup];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v4.receiver = self;
   v4.super_class = OKWidgetWebView;
-  return [(OKWidgetViewProxy *)&v4 prepareForUnload:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForUnload:unload];
 }
 
 - (void)prepareForRefresh
@@ -200,8 +200,8 @@
 
 - (void)reloadWebView
 {
-  v3 = [(OKWidgetWebView *)self urlText];
-  v4 = [(OKDocument *)[[(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentation] document] URLForResource:[(NSString *)v3 stringByDeletingPathExtension] withExtension:[(NSString *)v3 pathExtension]];
+  urlText = [(OKWidgetWebView *)self urlText];
+  v4 = [(OKDocument *)[[(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentation] document] URLForResource:[(NSString *)urlText stringByDeletingPathExtension] withExtension:[(NSString *)urlText pathExtension]];
   v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v9 = 0;
   v6 = [v5 fileExistsAtPath:objc_msgSend(v4 isDirectory:{"path"), &v9}];
@@ -213,29 +213,29 @@
   }
 
   self->_isFrameLoaded = 0;
-  v8 = [(OKWidgetWebView *)self webView];
-  -[UIWebView loadRequest:](v8, "loadRequest:", [MEMORY[0x277CCAD20] requestWithURL:v4]);
+  webView = [(OKWidgetWebView *)self webView];
+  -[UIWebView loadRequest:](webView, "loadRequest:", [MEMORY[0x277CCAD20] requestWithURL:v4]);
 }
 
-- (void)webViewDidFinishLoad:(id)a3
+- (void)webViewDidFinishLoad:(id)load
 {
   self->_isFrameLoaded = 1;
   if (self->_webDidLoadActionScript)
   {
-    v4 = [(OKWidgetViewProxy *)self delegate];
+    delegate = [(OKWidgetViewProxy *)self delegate];
     webDidLoadActionScript = self->_webDidLoadActionScript;
     v6 = MEMORY[0x277CBEC10];
 
-    [(OKWidgetViewDelegate *)v4 evaluateScript:webDidLoadActionScript withInfoDictionary:v6 andCompletionBlock:0 forWidgetView:self];
+    [(OKWidgetViewDelegate *)delegate evaluateScript:webDidLoadActionScript withInfoDictionary:v6 andCompletionBlock:0 forWidgetView:self];
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetWebView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetWebView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetWebView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetWebView", "objectForKeyedSubscript:", @"prototype"}];
   v5 = *MEMORY[0x277CD4618];
   v6 = MEMORY[0x277CBEC28];
   v13[0] = *MEMORY[0x277CD4620];
@@ -247,7 +247,7 @@
   v8 = MEMORY[0x277CBEC38];
   v15[2] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"isFrameLoaded" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, v13, 3)}];
-  v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetWebView", "objectForKeyedSubscript:", @"prototype"}];
+  v9 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetWebView", "objectForKeyedSubscript:", @"prototype"}];
   v10 = *MEMORY[0x277CD4638];
   v11[0] = *MEMORY[0x277CD4630];
   v11[1] = v10;

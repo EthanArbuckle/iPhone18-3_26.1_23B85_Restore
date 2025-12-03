@@ -1,21 +1,21 @@
 @interface NPKProtoCatalogChangedRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResyncID:(BOOL)a3;
-- (void)setHasSyncID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResyncID:(BOOL)d;
+- (void)setHasSyncID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCatalogChangedRequest
 
-- (void)setHasResyncID:(BOOL)a3
+- (void)setHasResyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSyncID:(BOOL)a3
+- (void)setHasSyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCatalogChangedRequest;
   v4 = [(NPKProtoCatalogChangedRequest *)&v8 description];
-  v5 = [(NPKProtoCatalogChangedRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCatalogChangedRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   companionCatalog = self->_companionCatalog;
   if (companionCatalog)
   {
-    v5 = [(NPKProtoCatalog *)companionCatalog dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"companionCatalog"];
+    dictionaryRepresentation = [(NPKProtoCatalog *)companionCatalog dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"companionCatalog"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_resyncID];
-    [v3 setObject:v11 forKey:@"resyncID"];
+    [dictionary setObject:v11 forKey:@"resyncID"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -90,35 +90,35 @@ LABEL_5:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lastKnownResyncID];
-  [v3 setObject:v12 forKey:@"lastKnownResyncID"];
+  [dictionary setObject:v12 forKey:@"lastKnownResyncID"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_syncID];
-    [v3 setObject:v7 forKey:@"syncID"];
+    [dictionary setObject:v7 forKey:@"syncID"];
   }
 
 LABEL_7:
   watchCatalog = self->_watchCatalog;
   if (watchCatalog)
   {
-    v9 = [(NPKProtoCatalog *)watchCatalog dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"watchCatalog"];
+    dictionaryRepresentation2 = [(NPKProtoCatalog *)watchCatalog dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"watchCatalog"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_companionCatalog)
   {
     [NPKProtoCatalogChangedRequest writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteSubmessage();
   has = self->_has;
   if ((has & 2) != 0)
@@ -150,16 +150,16 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setCompanionCatalog:self->_companionCatalog];
-  v4 = v6;
+  toCopy = to;
+  [toCopy setCompanionCatalog:self->_companionCatalog];
+  v4 = toCopy;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v6 + 5) = self->_resyncID;
-    *(v6 + 40) |= 2u;
+    *(toCopy + 5) = self->_resyncID;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -178,27 +178,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v6 + 4) = self->_lastKnownResyncID;
-  *(v6 + 40) |= 1u;
+  *(toCopy + 4) = self->_lastKnownResyncID;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v6 + 6) = self->_syncID;
-    *(v6 + 40) |= 4u;
+    *(toCopy + 6) = self->_syncID;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_5:
   if (self->_watchCatalog)
   {
-    [v6 setWatchCatalog:?];
-    v4 = v6;
+    [toCopy setWatchCatalog:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoCatalog *)self->_companionCatalog copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoCatalog *)self->_companionCatalog copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -238,23 +238,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NPKProtoCatalog *)self->_watchCatalog copyWithZone:a3];
+  v9 = [(NPKProtoCatalog *)self->_watchCatalog copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   companionCatalog = self->_companionCatalog;
-  if (companionCatalog | *(v4 + 1))
+  if (companionCatalog | *(equalCopy + 1))
   {
     if (![(NPKProtoCatalog *)companionCatalog isEqual:?])
     {
@@ -262,16 +262,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_resyncID != *(v4 + 5))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_resyncID != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_21:
     v8 = 0;
@@ -280,32 +280,32 @@ LABEL_21:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_lastKnownResyncID != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_lastKnownResyncID != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_syncID != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_syncID != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   watchCatalog = self->_watchCatalog;
-  if (watchCatalog | *(v4 + 4))
+  if (watchCatalog | *(equalCopy + 4))
   {
     v8 = [(NPKProtoCatalog *)watchCatalog isEqual:?];
   }
@@ -361,12 +361,12 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NPKProtoCatalog *)self->_watchCatalog hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   companionCatalog = self->_companionCatalog;
-  v6 = *(v4 + 1);
-  v10 = v4;
+  v6 = *(fromCopy + 1);
+  v10 = fromCopy;
   if (companionCatalog)
   {
     if (!v6)
@@ -387,14 +387,14 @@ LABEL_4:
     [(NPKProtoCatalogChangedRequest *)self setCompanionCatalog:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 2) != 0)
   {
-    self->_resyncID = *(v4 + 5);
+    self->_resyncID = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -407,23 +407,23 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 40) & 1) == 0)
+  else if ((*(fromCopy + 40) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_lastKnownResyncID = *(v4 + 4);
+  self->_lastKnownResyncID = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_10:
-    self->_syncID = *(v4 + 6);
+    self->_syncID = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
 LABEL_11:
   watchCatalog = self->_watchCatalog;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   if (watchCatalog)
   {
     if (!v9)
@@ -444,7 +444,7 @@ LABEL_11:
     [(NPKProtoCatalogChangedRequest *)self setWatchCatalog:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_20:
 }
 

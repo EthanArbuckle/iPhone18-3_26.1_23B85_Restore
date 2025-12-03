@@ -1,40 +1,40 @@
 @interface CHSynthesisStyleSample
-+ (BOOL)_embeddingHasNaN:(const void *)a3;
-+ (BOOL)isZHJARadical:(id)a3;
-+ (float)cosineSimilarityBetweenFirstVector:(const void *)a3 secondVector:(const void *)a4;
-+ (float)distanceBetweenFirstVector:(const void *)a3 secondVector:(const void *)a4;
-+ (id)characterCoverageWithString:(id)a3 script:(int64_t)a4;
-+ (id)floatVectorToArray:(void *)a3;
-+ (id)normalizeDrawing:(id)a3 transcription:(id)a4 script:(int64_t)a5;
-+ (id)normalizeStyleSample:(id)a3;
-+ (id)sampleWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6;
-+ (id)sampleWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6 embeddingVector:(const void *)a7;
++ (BOOL)_embeddingHasNaN:(const void *)n;
++ (BOOL)isZHJARadical:(id)radical;
++ (float)cosineSimilarityBetweenFirstVector:(const void *)vector secondVector:(const void *)secondVector;
++ (float)distanceBetweenFirstVector:(const void *)vector secondVector:(const void *)secondVector;
++ (id)characterCoverageWithString:(id)string script:(int64_t)script;
++ (id)floatVectorToArray:(void *)array;
++ (id)normalizeDrawing:(id)drawing transcription:(id)transcription script:(int64_t)script;
++ (id)normalizeStyleSample:(id)sample;
++ (id)sampleWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers;
++ (id)sampleWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers embeddingVector:(const void *)vector;
 + (id)zhjaIDSMapping;
-+ (int64_t)shiftTimestep:(int64_t)a3 offset:(int64_t)a4;
-+ (int64_t)synthesisLengthForString:(id)a3 script:(int64_t)a4;
-+ (vector<float,)floatArrayToVector:(id)a2;
-+ (vector<float,)floatMultiArrayToVector:(id)a2;
-+ (void)normalizeVector:(void *)a3;
-- (BOOL)isEqual:(id)a3;
-- (CHSynthesisStyleSample)initWithCoder:(id)a3;
-- (CHSynthesisStyleSample)initWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6 embeddingVector:(const void *)a7;
-- (float)cosineSimilarityToSample:(id)a3;
-- (float)distanceToSample:(id)a3;
++ (int64_t)shiftTimestep:(int64_t)timestep offset:(int64_t)offset;
++ (int64_t)synthesisLengthForString:(id)string script:(int64_t)script;
++ (vector<float,)floatArrayToVector:(id)vector;
++ (vector<float,)floatMultiArrayToVector:(id)vector;
++ (void)normalizeVector:(void *)vector;
+- (BOOL)isEqual:(id)equal;
+- (CHSynthesisStyleSample)initWithCoder:(id)coder;
+- (CHSynthesisStyleSample)initWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers embeddingVector:(const void *)vector;
+- (float)cosineSimilarityToSample:(id)sample;
+- (float)distanceToSample:(id)sample;
 - (id).cxx_construct;
 - (id)characterCoverage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)transcriptionLengthForSynthesis;
 - (vector<float,)embeddingVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementSamplingCount;
 - (void)setEmbeddingVector:()vector<float;
-- (void)shiftTimestepsByOffset:(int64_t)a3;
-- (void)updateStyleEmbedding:(id)a3 script:(int64_t)a4;
+- (void)shiftTimestepsByOffset:(int64_t)offset;
+- (void)updateStyleEmbedding:(id)embedding script:(int64_t)script;
 @end
 
 @implementation CHSynthesisStyleSample
 
-+ (vector<float,)floatMultiArrayToVector:(id)a2
++ (vector<float,)floatMultiArrayToVector:(id)vector
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = a4;
@@ -112,7 +112,7 @@
   return result;
 }
 
-+ (vector<float,)floatArrayToVector:(id)a2
++ (vector<float,)floatArrayToVector:(id)vector
 {
   v5 = a4;
   v21 = 0;
@@ -167,12 +167,12 @@
   return result;
 }
 
-+ (id)floatVectorToArray:(void *)a3
++ (id)floatVectorToArray:(void *)array
 {
-  v12 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], a2, (*(a3 + 1) - *a3) >> 2, v3, v4, v5);
-  v14 = *a3;
-  v15 = *(a3 + 1);
-  if (*a3 != v15)
+  v12 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], a2, (*(array + 1) - *array) >> 2, v3, v4, v5);
+  v14 = *array;
+  v15 = *(array + 1);
+  if (*array != v15)
   {
     do
     {
@@ -189,24 +189,24 @@
   return v12;
 }
 
-+ (float)distanceBetweenFirstVector:(const void *)a3 secondVector:(const void *)a4
++ (float)distanceBetweenFirstVector:(const void *)vector secondVector:(const void *)secondVector
 {
   __C = -1.0;
-  vDSP_distancesq(*a3, 1, *a4, 1, &__C, (*(a3 + 1) - *a3) >> 2);
+  vDSP_distancesq(*vector, 1, *secondVector, 1, &__C, (*(vector + 1) - *vector) >> 2);
   return sqrtf(__C);
 }
 
-+ (float)cosineSimilarityBetweenFirstVector:(const void *)a3 secondVector:(const void *)a4
++ (float)cosineSimilarityBetweenFirstVector:(const void *)vector secondVector:(const void *)secondVector
 {
   __C = -1.0;
-  vDSP_dotpr(*a3, 1, *a4, 1, &__C, (*(a3 + 1) - *a3) >> 2);
+  vDSP_dotpr(*vector, 1, *secondVector, 1, &__C, (*(vector + 1) - *vector) >> 2);
   return __C;
 }
 
-+ (void)normalizeVector:(void *)a3
++ (void)normalizeVector:(void *)vector
 {
-  v7 = *a3;
-  v8 = *(a3 + 1) - *a3;
+  v7 = *vector;
+  v8 = *(vector + 1) - *vector;
   if (!v8)
   {
     return;
@@ -268,7 +268,7 @@ LABEL_16:
             }
 
 LABEL_17:
-            vDSP_vsdiv(*a3, 1, &__C, *a3, 1, (*(a3 + 1) - *a3) >> 2);
+            vDSP_vsdiv(*vector, 1, &__C, *vector, 1, (*(vector + 1) - *vector) >> 2);
             return;
           }
         }
@@ -304,15 +304,15 @@ LABEL_4:
   }
 }
 
-+ (BOOL)_embeddingHasNaN:(const void *)a3
++ (BOOL)_embeddingHasNaN:(const void *)n
 {
-  v3 = *(a3 + 1);
-  if (*a3 == v3)
+  v3 = *(n + 1);
+  if (*n == v3)
   {
     return 0;
   }
 
-  v4 = *a3 + 4;
+  v4 = *n + 4;
   do
   {
     result = 0;
@@ -324,13 +324,13 @@ LABEL_4:
   return result;
 }
 
-+ (id)normalizeDrawing:(id)a3 transcription:(id)a4 script:(int64_t)a5
++ (id)normalizeDrawing:(id)drawing transcription:(id)transcription script:(int64_t)script
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v14 = objc_msgSend_strokeCount(v7, v9, v10, v11, v12, v13);
-  if (!v8 || !v14)
+  drawingCopy = drawing;
+  transcriptionCopy = transcription;
+  v14 = objc_msgSend_strokeCount(drawingCopy, v9, v10, v11, v12, v13);
+  if (!transcriptionCopy || !v14)
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -339,7 +339,7 @@ LABEL_4:
       {
 LABEL_11:
 
-        v36 = v7;
+        v36 = drawingCopy;
         goto LABEL_27;
       }
     }
@@ -381,31 +381,31 @@ LABEL_5:
 
 LABEL_6:
 
-  v21 = objc_msgSend_strokeCount(v7, v16, v17, v18, v19, v20);
+  v21 = objc_msgSend_strokeCount(drawingCopy, v16, v17, v18, v19, v20);
   v83 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x1E696AC90], v22, 0, v21, v23, v24);
   v92[0] = v83;
   v84 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v25, v92, 1, v26, v27);
-  v91 = v8;
+  v91 = transcriptionCopy;
   v85 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v28, &v91, 1, v29, v30);
-  if (a5 >= 4)
+  if (script >= 4)
   {
     objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v31, 0, v32, v33, v34);
   }
 
   else
   {
-    objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v31, off_1E6DDDCD0[a5], v32, v33, v34);
+    objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v31, off_1E6DDDCD0[script], v32, v33, v34);
   }
   v37 = ;
   v38 = objc_opt_class();
-  v40 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalPoints_locale_strokeClassification_shouldCancel_(v38, v39, v7, v85, v84, v8, 0, v37, 1, &unk_1EF1BC9D0);
+  v40 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalPoints_locale_strokeClassification_shouldCancel_(v38, v39, drawingCopy, v85, v84, transcriptionCopy, 0, v37, 1, &unk_1EF1BC9D0);
   v44 = v40;
   if (v40)
   {
     v86 = v40;
     v45 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v41, &v86, 1, v42, v43);
     v46 = objc_alloc_init(CHTransformationParameters);
-    if (objc_msgSend_length(v8, v47, v48, v49, v50, v51) >= 3)
+    if (objc_msgSend_length(transcriptionCopy, v47, v48, v49, v50, v51) >= 3)
     {
       objc_msgSend_setOrientationBehavior_(v46, v52, 2, v53, v54, v55);
     }
@@ -443,13 +443,13 @@ LABEL_6:
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v88 = v7;
+      v88 = drawingCopy;
       v89 = 2112;
-      v90 = v8;
+      v90 = transcriptionCopy;
       _os_log_impl(&dword_18366B000, v81, OS_LOG_TYPE_DEBUG, "Transformed text line is nil for drawing %@ and transcription %@", buf, 0x16u);
     }
 
-    v36 = v7;
+    v36 = drawingCopy;
   }
 
 LABEL_27:
@@ -457,29 +457,29 @@ LABEL_27:
   return v36;
 }
 
-+ (id)normalizeStyleSample:(id)a3
++ (id)normalizeStyleSample:(id)sample
 {
-  v3 = a3;
-  v9 = objc_msgSend_drawing(v3, v4, v5, v6, v7, v8);
-  v15 = objc_msgSend_transcription(v3, v10, v11, v12, v13, v14);
-  v21 = objc_msgSend_script(v3, v16, v17, v18, v19, v20);
+  sampleCopy = sample;
+  v9 = objc_msgSend_drawing(sampleCopy, v4, v5, v6, v7, v8);
+  v15 = objc_msgSend_transcription(sampleCopy, v10, v11, v12, v13, v14);
+  v21 = objc_msgSend_script(sampleCopy, v16, v17, v18, v19, v20);
   v24 = objc_msgSend_normalizeDrawing_transcription_script_(CHSynthesisStyleSample, v22, v9, v15, v21, v23);
 
-  v30 = objc_msgSend_transcription(v3, v25, v26, v27, v28, v29);
-  v36 = objc_msgSend_script(v3, v31, v32, v33, v34, v35);
-  v42 = objc_msgSend_strokeIdentifiers(v3, v37, v38, v39, v40, v41);
+  v30 = objc_msgSend_transcription(sampleCopy, v25, v26, v27, v28, v29);
+  v36 = objc_msgSend_script(sampleCopy, v31, v32, v33, v34, v35);
+  v42 = objc_msgSend_strokeIdentifiers(sampleCopy, v37, v38, v39, v40, v41);
   v44 = objc_msgSend_sampleWithTranscription_drawing_script_strokeIdentifiers_(CHSynthesisStyleSample, v43, v30, v24, v36, v42);
 
   return v44;
 }
 
-- (void)updateStyleEmbedding:(id)a3 script:(int64_t)a4
+- (void)updateStyleEmbedding:(id)embedding script:(int64_t)script
 {
-  v11 = a3;
-  if (v11)
+  embeddingCopy = embedding;
+  if (embeddingCopy)
   {
-    self->_script = a4;
-    objc_msgSend_floatMultiArrayToVector_(CHSynthesisStyleSample, v6, v11, v8, v9, v10);
+    self->_script = script;
+    objc_msgSend_floatMultiArrayToVector_(CHSynthesisStyleSample, v6, embeddingCopy, v8, v9, v10);
     begin = self->_embeddingVector.__begin_;
     if (begin)
     {
@@ -502,20 +502,20 @@ LABEL_27:
   }
 }
 
-- (float)distanceToSample:(id)a3
+- (float)distanceToSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   objc_msgSend_embeddingVector(self, v5, v6, v7, v8, v9);
   v15 = *buf;
   if (v65 != *buf)
   {
-    if (!v4)
+    if (!sampleCopy)
     {
       v22 = 1;
       goto LABEL_15;
     }
 
-    objc_msgSend_embeddingVector(v4, v10, v11, v12, v13, v14);
+    objc_msgSend_embeddingVector(sampleCopy, v10, v11, v12, v13, v14);
     v16 = v61;
     if (v62 == v61)
     {
@@ -529,7 +529,7 @@ LABEL_27:
     else
     {
       objc_msgSend_embeddingVector(self, v10, v11, v12, v13, v14);
-      objc_msgSend_embeddingVector(v4, v17, v18, v19, v20, v21);
+      objc_msgSend_embeddingVector(sampleCopy, v17, v18, v19, v20, v21);
       v22 = v60 - __p != v58 - v57;
       if (v57)
       {
@@ -590,13 +590,13 @@ LABEL_17:
   v29 = *buf;
   if (v65 != *buf)
   {
-    if (!v4)
+    if (!sampleCopy)
     {
       v41 = 1;
       goto LABEL_37;
     }
 
-    objc_msgSend_embeddingVector(v4, v24, v25, v26, v27, v28);
+    objc_msgSend_embeddingVector(sampleCopy, v24, v25, v26, v27, v28);
     v35 = v61;
     if (v62 == v61)
     {
@@ -610,7 +610,7 @@ LABEL_17:
     else
     {
       objc_msgSend_embeddingVector(self, v30, v31, v32, v33, v34);
-      objc_msgSend_embeddingVector(v4, v36, v37, v38, v39, v40);
+      objc_msgSend_embeddingVector(sampleCopy, v36, v37, v38, v39, v40);
       v41 = v60 - __p != v58 - v57;
       if (v57)
       {
@@ -667,9 +667,9 @@ LABEL_39:
 
   v43 = objc_opt_class();
   objc_msgSend_embeddingVector(self, v44, v45, v46, v47, v48);
-  if (v4)
+  if (sampleCopy)
   {
-    objc_msgSend_embeddingVector(v4, v49, v50, v51, v52, v53);
+    objc_msgSend_embeddingVector(sampleCopy, v49, v50, v51, v52, v53);
   }
 
   else
@@ -696,16 +696,16 @@ LABEL_39:
   return v55;
 }
 
-- (float)cosineSimilarityToSample:(id)a3
+- (float)cosineSimilarityToSample:(id)sample
 {
-  v4 = a3;
-  v10 = v4;
-  if (self->_embeddingVector.__end_ == self->_embeddingVector.__begin_ || !v4)
+  sampleCopy = sample;
+  v10 = sampleCopy;
+  if (self->_embeddingVector.__end_ == self->_embeddingVector.__begin_ || !sampleCopy)
   {
     goto LABEL_13;
   }
 
-  objc_msgSend_embeddingVector(v4, v5, v6, v7, v8, v9);
+  objc_msgSend_embeddingVector(sampleCopy, v5, v6, v7, v8, v9);
   if (v65 == __p)
   {
     if (v65)
@@ -874,21 +874,21 @@ LABEL_31:
   return v47;
 }
 
-- (CHSynthesisStyleSample)initWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6 embeddingVector:(const void *)a7
+- (CHSynthesisStyleSample)initWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers embeddingVector:(const void *)vector
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  transcriptionCopy = transcription;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   v38.receiver = self;
   v38.super_class = CHSynthesisStyleSample;
   v16 = [(CHSynthesisStyleSample *)&v38 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_transcription, a3);
-    objc_storeStrong(&v17->_drawing, a4);
-    v17->_script = a5;
-    objc_storeStrong(&v17->_strokeIdentifiers, a6);
+    objc_storeStrong(&v16->_transcription, transcription);
+    objc_storeStrong(&v17->_drawing, drawing);
+    v17->_script = script;
+    objc_storeStrong(&v17->_strokeIdentifiers, identifiers);
     v23 = objc_msgSend_now(MEMORY[0x1E695DF00], v18, v19, v20, v21, v22);
     creationDate = v17->_creationDate;
     v17->_creationDate = v23;
@@ -900,7 +900,7 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    if (objc_msgSend__embeddingHasNaN_(CHSynthesisStyleSample, v25, a7, v26, v27, v28))
+    if (objc_msgSend__embeddingHasNaN_(CHSynthesisStyleSample, v25, vector, v26, v27, v28))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -952,9 +952,9 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (&v17->_embeddingVector != a7)
+    if (&v17->_embeddingVector != vector)
     {
-      sub_18372F694(&v17->_embeddingVector, *a7, *(a7 + 1), (*(a7 + 1) - *a7) >> 2);
+      sub_18372F694(&v17->_embeddingVector, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 2);
     }
 
     objc_msgSend_normalizeVector_(CHSynthesisStyleSample, v29, &v17->_embeddingVector, v30, v31, v32);
@@ -965,16 +965,16 @@ LABEL_20:
   return v17;
 }
 
-+ (id)sampleWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6
++ (id)sampleWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  transcriptionCopy = transcription;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   __p = 0;
   v17 = 0;
   v18 = 0;
   v12 = [CHSynthesisStyleSample alloc];
-  v14 = objc_msgSend_initWithTranscription_drawing_script_strokeIdentifiers_embeddingVector_(v12, v13, v9, v10, a5, v11, &__p);
+  v14 = objc_msgSend_initWithTranscription_drawing_script_strokeIdentifiers_embeddingVector_(v12, v13, transcriptionCopy, drawingCopy, script, identifiersCopy, &__p);
   if (__p)
   {
     v17 = __p;
@@ -984,40 +984,40 @@ LABEL_20:
   return v14;
 }
 
-+ (id)sampleWithTranscription:(id)a3 drawing:(id)a4 script:(int64_t)a5 strokeIdentifiers:(id)a6 embeddingVector:(const void *)a7
++ (id)sampleWithTranscription:(id)transcription drawing:(id)drawing script:(int64_t)script strokeIdentifiers:(id)identifiers embeddingVector:(const void *)vector
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  transcriptionCopy = transcription;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
   v14 = [CHSynthesisStyleSample alloc];
-  v16 = objc_msgSend_initWithTranscription_drawing_script_strokeIdentifiers_embeddingVector_(v14, v15, v11, v12, a5, v13, a7);
+  v16 = objc_msgSend_initWithTranscription_drawing_script_strokeIdentifiers_embeddingVector_(v14, v15, transcriptionCopy, drawingCopy, script, identifiersCopy, vector);
 
   return v16;
 }
 
-- (CHSynthesisStyleSample)initWithCoder:(id)a3
+- (CHSynthesisStyleSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"transcription", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"transcription", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"drawing", v12, v13);
-  v19 = objc_msgSend_decodeIntegerForKey_(v4, v15, @"script", v16, v17, v18);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"drawing", v12, v13);
+  v19 = objc_msgSend_decodeIntegerForKey_(coderCopy, v15, @"script", v16, v17, v18);
   v20 = MEMORY[0x1E695DFD8];
   v21 = objc_opt_class();
   v22 = objc_opt_class();
   v27 = objc_msgSend_setWithObjects_(v20, v23, v21, v24, v25, v26, v22, 0);
-  v31 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v28, v27, @"strokeIdentifiers", v29, v30);
+  v31 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v28, v27, @"strokeIdentifiers", v29, v30);
   v32 = objc_opt_class();
-  v36 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v33, v32, @"embeddingVector", v34, v35);
+  v36 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v33, v32, @"embeddingVector", v34, v35);
   objc_msgSend_floatArrayToVector_(CHSynthesisStyleSample, v37, v36, v38, v39, v40);
   v46 = objc_msgSend_initWithTranscription_drawing_script_strokeIdentifiers_embeddingVector_(self, v41, v9, v14, v19, v31, __p);
   if (v46)
   {
-    v46->_creationTimestep = objc_msgSend_decodeIntegerForKey_(v4, v42, @"creationTimestep", v43, v44, v45);
-    v46->_samplingCount = objc_msgSend_decodeIntegerForKey_(v4, v47, @"samplingCount", v48, v49, v50);
+    v46->_creationTimestep = objc_msgSend_decodeIntegerForKey_(coderCopy, v42, @"creationTimestep", v43, v44, v45);
+    v46->_samplingCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v47, @"samplingCount", v48, v49, v50);
     v51 = objc_opt_class();
-    v55 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v52, v51, @"creationDate", v53, v54);
+    v55 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v52, v51, @"creationDate", v53, v54);
     creationDate = v46->_creationDate;
     v46->_creationDate = v55;
   }
@@ -1031,22 +1031,22 @@ LABEL_20:
   return v46;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v33 = a3;
-  objc_msgSend_encodeObject_forKey_(v33, v4, self->_transcription, @"transcription", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v33, v7, self->_drawing, @"drawing", v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v33, v10, self->_script, @"script", v11, v12);
-  objc_msgSend_encodeObject_forKey_(v33, v13, self->_strokeIdentifiers, @"strokeIdentifiers", v14, v15);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_transcription, @"transcription", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_drawing, @"drawing", v8, v9);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v10, self->_script, @"script", v11, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_strokeIdentifiers, @"strokeIdentifiers", v14, v15);
   v20 = objc_msgSend_floatVectorToArray_(CHSynthesisStyleSample, v16, &self->_embeddingVector, v17, v18, v19);
-  objc_msgSend_encodeObject_forKey_(v33, v21, v20, @"embeddingVector", v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, v20, @"embeddingVector", v22, v23);
 
-  objc_msgSend_encodeInteger_forKey_(v33, v24, self->_creationTimestep, @"creationTimestep", v25, v26);
-  objc_msgSend_encodeInteger_forKey_(v33, v27, self->_samplingCount, @"samplingCount", v28, v29);
-  objc_msgSend_encodeObject_forKey_(v33, v30, self->_creationDate, @"creationDate", v31, v32);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v24, self->_creationTimestep, @"creationTimestep", v25, v26);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v27, self->_samplingCount, @"samplingCount", v28, v29);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, self->_creationDate, @"creationDate", v31, v32);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSynthesisStyleSample alloc];
   v10 = objc_msgSend_transcription(self, v5, v6, v7, v8, v9);
@@ -1090,24 +1090,24 @@ LABEL_20:
   return v3;
 }
 
-+ (int64_t)synthesisLengthForString:(id)a3 script:(int64_t)a4
++ (int64_t)synthesisLengthForString:(id)string script:(int64_t)script
 {
-  v5 = a3;
-  v11 = v5;
+  stringCopy = string;
+  v11 = stringCopy;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (a4 == 3)
+  if (script == 3)
   {
-    v12 = objc_msgSend_decomposedStringWithCanonicalMapping(v5, v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_decomposedStringWithCanonicalMapping(stringCopy, v6, v7, v8, v9, v10);
     v18 = objc_msgSend_length(v12, v13, v14, v15, v16, v17);
     v25[3] = v18;
   }
 
   else
   {
-    v19 = objc_msgSend_length(v5, v6, v7, v8, v9, v10);
+    v19 = objc_msgSend_length(stringCopy, v6, v7, v8, v9, v10);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = sub_18376D2A8;
@@ -1131,28 +1131,28 @@ LABEL_20:
   return v17;
 }
 
-+ (BOOL)isZHJARadical:(id)a3
++ (BOOL)isZHJARadical:(id)radical
 {
-  v7 = a3;
+  radicalCopy = radical;
   if (qword_1EA84CEA0 != -1)
   {
     dispatch_once(&qword_1EA84CEA0, &unk_1EF1BCA10);
   }
 
-  v8 = objc_msgSend_containsObject_(qword_1EA84CE98, v3, v7, v4, v5, v6);
+  v8 = objc_msgSend_containsObject_(qword_1EA84CE98, v3, radicalCopy, v4, v5, v6);
 
   return v8;
 }
 
-+ (id)characterCoverageWithString:(id)a3 script:(int64_t)a4
++ (id)characterCoverageWithString:(id)string script:(int64_t)script
 {
-  v5 = a3;
+  stringCopy = string;
   v16 = objc_msgSend_set(MEMORY[0x1E695DFA8], v6, v7, v8, v9, v10);
-  if (a4 > 1)
+  if (script > 1)
   {
-    if (a4 == 3)
+    if (script == 3)
     {
-      v19 = objc_msgSend_decomposedStringWithCanonicalMapping(v5, v11, v12, v13, v14, v15);
+      v19 = objc_msgSend_decomposedStringWithCanonicalMapping(stringCopy, v11, v12, v13, v14, v15);
       v38 = objc_msgSend_length(v19, v33, v34, v35, v36, v37);
       v46 = MEMORY[0x1E69E9820];
       v47 = 3221225472;
@@ -1165,20 +1165,20 @@ LABEL_20:
 
     else
     {
-      if (a4 != 2)
+      if (script != 2)
       {
         goto LABEL_9;
       }
 
       v20 = objc_msgSend_set(MEMORY[0x1E695DFA8], v11, v12, v13, v14, v15);
-      v26 = objc_msgSend_length(v5, v21, v22, v23, v24, v25);
+      v26 = objc_msgSend_length(stringCopy, v21, v22, v23, v24, v25);
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = sub_18376D8FC;
       v53[3] = &unk_1E6DDBF00;
       v19 = v20;
       v54 = v19;
-      objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v5, v27, 0, v26, 2, v53);
+      objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(stringCopy, v27, 0, v26, 2, v53);
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = sub_18376D908;
@@ -1192,13 +1192,13 @@ LABEL_20:
 
   else
   {
-    v17 = objc_msgSend_length(v5, v11, v12, v13, v14, v15);
+    v17 = objc_msgSend_length(stringCopy, v11, v12, v13, v14, v15);
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = sub_18376D8F0;
     v55[3] = &unk_1E6DDBF00;
     v56 = v16;
-    objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v5, v18, 0, v17, 2, v55);
+    objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(stringCopy, v18, 0, v17, 2, v55);
     v19 = v56;
   }
 
@@ -1220,10 +1220,10 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToDate = 1;
   }
@@ -1233,7 +1233,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v11 = objc_msgSend_drawing(self, v6, v7, v8, v9, v10);
       v17 = objc_msgSend_drawing(v5, v12, v13, v14, v15, v16);
       isEqualToDrawing = objc_msgSend_isEqualToDrawing_(v11, v18, v17, v19, v20, v21);
@@ -1357,17 +1357,17 @@ LABEL_31:
   objc_msgSend_setSamplingCount_(self, v7, v8, v9, v10, v11);
 }
 
-- (void)shiftTimestepsByOffset:(int64_t)a3
+- (void)shiftTimestepsByOffset:(int64_t)offset
 {
-  v8 = objc_msgSend_creationTimestep(self, a2, a3, v3, v4, v5);
-  v13 = objc_msgSend_shiftTimestep_offset_(CHSynthesisStyleSample, v9, v8, a3, v10, v11);
+  v8 = objc_msgSend_creationTimestep(self, a2, offset, v3, v4, v5);
+  v13 = objc_msgSend_shiftTimestep_offset_(CHSynthesisStyleSample, v9, v8, offset, v10, v11);
 
   objc_msgSend_setCreationTimestep_(self, v12, v13, v14, v15, v16);
 }
 
-+ (int64_t)shiftTimestep:(int64_t)a3 offset:(int64_t)a4
++ (int64_t)shiftTimestep:(int64_t)timestep offset:(int64_t)offset
 {
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((offset & 0x8000000000000000) == 0)
   {
     goto LABEL_10;
   }
@@ -1407,9 +1407,9 @@ LABEL_8:
 LABEL_9:
 
 LABEL_10:
-  if (a4 >= 0)
+  if (offset >= 0)
   {
-    return a3 - a4;
+    return timestep - offset;
   }
 
   else

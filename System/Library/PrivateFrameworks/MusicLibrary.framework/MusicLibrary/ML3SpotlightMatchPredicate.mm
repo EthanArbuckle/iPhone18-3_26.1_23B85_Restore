@@ -1,16 +1,16 @@
 @interface ML3SpotlightMatchPredicate
-+ (id)predicateWithProperties:(id)a3 searchString:(id)a4;
-- (ML3SpotlightMatchPredicate)initWithSearchString:(id)a3 matchingProperties:(id)a4;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
++ (id)predicateWithProperties:(id)properties searchString:(id)string;
+- (ML3SpotlightMatchPredicate)initWithSearchString:(id)string matchingProperties:(id)properties;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
 - (void)dealloc;
 @end
 
 @implementation ML3SpotlightMatchPredicate
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   if (self->_searchProperties)
   {
     v6 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"ML3SpotlightMatch(");
@@ -54,13 +54,13 @@
     }
 
     [v6 appendString:@""]);
-    [v5 appendString:v6];
+    [stringCopy appendString:v6];
   }
 
   else
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ML3SpotlightMatch(%@, %@, %@, %@)", @"item_search.search_title", @"item_search.search_album", @"item_search.search_artist", @"item_search.search_composer"];
-    [v5 appendString:v13];
+    [stringCopy appendString:v13];
   }
 }
 
@@ -71,28 +71,28 @@
   [(ML3SpotlightMatchPredicate *)&v2 dealloc];
 }
 
-- (ML3SpotlightMatchPredicate)initWithSearchString:(id)a3 matchingProperties:(id)a4
+- (ML3SpotlightMatchPredicate)initWithSearchString:(id)string matchingProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = ML3SpotlightMatchPredicate;
   v9 = [(ML3SpotlightMatchPredicate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_searchString, a3);
-    objc_storeStrong(&v10->_searchProperties, a4);
+    objc_storeStrong(&v9->_searchString, string);
+    objc_storeStrong(&v10->_searchProperties, properties);
   }
 
   return v10;
 }
 
-+ (id)predicateWithProperties:(id)a3 searchString:(id)a4
++ (id)predicateWithProperties:(id)properties searchString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ML3SpotlightMatchPredicate alloc] initWithSearchString:v6 matchingProperties:v5];
+  propertiesCopy = properties;
+  stringCopy = string;
+  v7 = [[ML3SpotlightMatchPredicate alloc] initWithSearchString:stringCopy matchingProperties:propertiesCopy];
 
   return v7;
 }

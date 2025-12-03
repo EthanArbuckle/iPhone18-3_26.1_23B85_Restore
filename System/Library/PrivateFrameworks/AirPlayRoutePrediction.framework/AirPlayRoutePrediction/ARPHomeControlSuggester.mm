@@ -1,17 +1,17 @@
 @interface ARPHomeControlSuggester
 + (id)defaultCorrelationsSessionFile;
 + (id)suggester;
-- (ARPHomeControlSuggester)initWithScoreThresholdForMicrolocationSuggestionsConsidered:(double)a3 highScoreThresholdForMicroLocationSuggestionMerge:(double)a4 lowScoreThresholdForMicroLocationSuggestionMerge:(double)a5 highScoreThresholdForTimeBasedSuggestionMerge:(double)a6 lowScoreThresholdForTimeBasedSuggestionMerge:(double)a7;
-- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)a3;
-- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)a3 events:(id)a4 useScenes:(BOOL)a5;
-- (id)homeKitEventsWithLookbackDays:(int64_t)a3;
-- (id)microlocationBasedsuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5;
+- (ARPHomeControlSuggester)initWithScoreThresholdForMicrolocationSuggestionsConsidered:(double)considered highScoreThresholdForMicroLocationSuggestionMerge:(double)merge lowScoreThresholdForMicroLocationSuggestionMerge:(double)suggestionMerge highScoreThresholdForTimeBasedSuggestionMerge:(double)basedSuggestionMerge lowScoreThresholdForTimeBasedSuggestionMerge:(double)timeBasedSuggestionMerge;
+- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)suggestions;
+- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)suggestions events:(id)events useScenes:(BOOL)scenes;
+- (id)homeKitEventsWithLookbackDays:(int64_t)days;
+- (id)microlocationBasedsuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file;
 - (id)mostRecentHomeKitEvent;
-- (id)nextActionBasedsuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5;
-- (id)suggestionsWithMaxSuggestions:(unint64_t)a3;
-- (id)suggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5;
-- (id)timeBasedSuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 fallBackToFrequency:(BOOL)a5;
-- (id)timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:(unint64_t)a3 events:(id)a4 referenceDate:(id)a5;
+- (id)nextActionBasedsuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file;
+- (id)suggestionsWithMaxSuggestions:(unint64_t)suggestions;
+- (id)suggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file;
+- (id)timeBasedSuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date fallBackToFrequency:(BOOL)frequency;
+- (id)timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:(unint64_t)suggestions events:(id)events referenceDate:(id)date;
 @end
 
 @implementation ARPHomeControlSuggester
@@ -51,9 +51,9 @@
   if (v5)
   {
     v6 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
-    v10 = [v9 stringByAppendingPathComponent:@"AirPlayRoutePrediction/HomeControlSuggestions/correlations.archive"];
+    v10 = [firstObject stringByAppendingPathComponent:@"AirPlayRoutePrediction/HomeControlSuggestions/correlations.archive"];
     v11 = ARPHomeControlLog();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -66,10 +66,10 @@
     goto LABEL_15;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 stringWithFileSystemRepresentation:v16->pw_dir length:strlen(v16->pw_dir)];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  firstObject = [defaultManager stringWithFileSystemRepresentation:v16->pw_dir length:strlen(v16->pw_dir)];
 
-  v10 = [v9 stringByAppendingPathComponent:@"/Library/AirPlayRoutePrediction/HomeControlSuggestions/correlations.archive"];
+  v10 = [firstObject stringByAppendingPathComponent:@"/Library/AirPlayRoutePrediction/HomeControlSuggestions/correlations.archive"];
   v11 = ARPHomeControlLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -94,39 +94,39 @@ LABEL_16:
   return v2;
 }
 
-- (ARPHomeControlSuggester)initWithScoreThresholdForMicrolocationSuggestionsConsidered:(double)a3 highScoreThresholdForMicroLocationSuggestionMerge:(double)a4 lowScoreThresholdForMicroLocationSuggestionMerge:(double)a5 highScoreThresholdForTimeBasedSuggestionMerge:(double)a6 lowScoreThresholdForTimeBasedSuggestionMerge:(double)a7
+- (ARPHomeControlSuggester)initWithScoreThresholdForMicrolocationSuggestionsConsidered:(double)considered highScoreThresholdForMicroLocationSuggestionMerge:(double)merge lowScoreThresholdForMicroLocationSuggestionMerge:(double)suggestionMerge highScoreThresholdForTimeBasedSuggestionMerge:(double)basedSuggestionMerge lowScoreThresholdForTimeBasedSuggestionMerge:(double)timeBasedSuggestionMerge
 {
   v13.receiver = self;
   v13.super_class = ARPHomeControlSuggester;
   result = [(ARPHomeControlSuggester *)&v13 init];
   if (result)
   {
-    result->_scoreThresholdForMicrolocationSuggestionsConsidered = a3;
-    result->_highScoreThresholdForMicroLocationSuggestionMerge = a4;
-    result->_lowScoreThresholdForMicroLocationSuggestionMerge = a5;
-    result->_highScoreThresholdForTimeBasedSuggestionMerge = a6;
-    result->_lowScoreThresholdForTimeBasedSuggestionMerge = a7;
+    result->_scoreThresholdForMicrolocationSuggestionsConsidered = considered;
+    result->_highScoreThresholdForMicroLocationSuggestionMerge = merge;
+    result->_lowScoreThresholdForMicroLocationSuggestionMerge = suggestionMerge;
+    result->_highScoreThresholdForTimeBasedSuggestionMerge = basedSuggestionMerge;
+    result->_lowScoreThresholdForTimeBasedSuggestionMerge = timeBasedSuggestionMerge;
     result->_scoreSceneBoost = 0.0;
   }
 
   return result;
 }
 
-- (id)suggestionsWithMaxSuggestions:(unint64_t)a3
+- (id)suggestionsWithMaxSuggestions:(unint64_t)suggestions
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [objc_opt_class() defaultCorrelationsSessionFile];
-  v7 = [(ARPHomeControlSuggester *)self suggestionsWithMaxSuggestions:a3 referenceDate:v5 correlationsFile:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  defaultCorrelationsSessionFile = [objc_opt_class() defaultCorrelationsSessionFile];
+  v7 = [(ARPHomeControlSuggester *)self suggestionsWithMaxSuggestions:suggestions referenceDate:date correlationsFile:defaultCorrelationsSessionFile];
 
   return v7;
 }
 
-- (id)suggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5
+- (id)suggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file
 {
   v136 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ARPHomeControlSuggester *)self timeBasedSuggestionsWithMaxSuggestions:a3 referenceDate:v8 fallBackToFrequency:0];
+  dateCopy = date;
+  fileCopy = file;
+  v10 = [(ARPHomeControlSuggester *)self timeBasedSuggestionsWithMaxSuggestions:suggestions referenceDate:dateCopy fallBackToFrequency:0];
   v11 = ARPHomeControlLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -136,7 +136,7 @@ LABEL_16:
     _os_log_impl(&dword_23EB15000, v11, OS_LOG_TYPE_INFO, "Total suggestions from time-bucketing = %@", buf, 0xCu);
   }
 
-  v13 = [(ARPHomeControlSuggester *)self microlocationBasedsuggestionsWithMaxSuggestions:a3 referenceDate:v8 correlationsFile:v9];
+  v13 = [(ARPHomeControlSuggester *)self microlocationBasedsuggestionsWithMaxSuggestions:suggestions referenceDate:dateCopy correlationsFile:fileCopy];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
@@ -147,8 +147,8 @@ LABEL_16:
 
   v103 = v13;
 
-  v15 = [(ARPHomeControlSuggester *)self homeKitEventsSortedByStartDate];
-  v16 = [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:a3 events:v15 useScenes:0];
+  homeKitEventsSortedByStartDate = [(ARPHomeControlSuggester *)self homeKitEventsSortedByStartDate];
+  v16 = [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:suggestions events:homeKitEventsSortedByStartDate useScenes:0];
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -160,11 +160,11 @@ LABEL_16:
 
   v98 = v16;
 
-  v97 = self;
-  v105 = a3;
-  v101 = v9;
-  v102 = v8;
-  v18 = [(ARPHomeControlSuggester *)self nextActionBasedsuggestionsWithMaxSuggestions:a3 referenceDate:v8 correlationsFile:v9];
+  selfCopy = self;
+  suggestionsCopy = suggestions;
+  v101 = fileCopy;
+  v102 = dateCopy;
+  v18 = [(ARPHomeControlSuggester *)self nextActionBasedsuggestionsWithMaxSuggestions:suggestions referenceDate:dateCopy correlationsFile:fileCopy];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
@@ -175,7 +175,7 @@ LABEL_16:
 
   v99 = v18;
 
-  v20 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
@@ -198,12 +198,12 @@ LABEL_16:
         v25 = *(*(&v123 + 1) + 8 * i);
         [v25 setSuggestionReason:@"Time-bucket"];
         v26 = MEMORY[0x277CCABB0];
-        v27 = [v20 objectForKeyedSubscript:v25];
+        v27 = [dictionary objectForKeyedSubscript:v25];
         [v27 doubleValue];
         v29 = v28;
         [v25 score];
         v31 = [v26 numberWithDouble:v29 + v30 * 2.0];
-        [v20 setObject:v31 forKeyedSubscript:v25];
+        [dictionary setObject:v31 forKeyedSubscript:v25];
       }
 
       v22 = [obj countByEnumeratingWithState:&v123 objects:v135 count:16];
@@ -236,12 +236,12 @@ LABEL_16:
         v37 = *(*(&v119 + 1) + 8 * j);
         [v37 setSuggestionReason:@"Microlocation"];
         v38 = MEMORY[0x277CCABB0];
-        v39 = [v20 objectForKeyedSubscript:v37];
+        v39 = [dictionary objectForKeyedSubscript:v37];
         [v39 doubleValue];
         v41 = v40;
         [v37 score];
         v43 = [v38 numberWithDouble:v41 + v42];
-        [v20 setObject:v43 forKeyedSubscript:v37];
+        [dictionary setObject:v43 forKeyedSubscript:v37];
       }
 
       v34 = [v32 countByEnumeratingWithState:&v119 objects:v134 count:16];
@@ -274,12 +274,12 @@ LABEL_16:
         v49 = *(*(&v115 + 1) + 8 * k);
         [v49 setSuggestionReason:@"Next Action"];
         v50 = MEMORY[0x277CCABB0];
-        v51 = [v20 objectForKeyedSubscript:v49];
+        v51 = [dictionary objectForKeyedSubscript:v49];
         [v51 doubleValue];
         v53 = v52;
         [v49 score];
         v55 = [v50 numberWithDouble:v53 + v54];
-        [v20 setObject:v55 forKeyedSubscript:v49];
+        [dictionary setObject:v55 forKeyedSubscript:v49];
       }
 
       v46 = [v44 countByEnumeratingWithState:&v115 objects:v133 count:16];
@@ -312,12 +312,12 @@ LABEL_16:
         v61 = *(*(&v111 + 1) + 8 * m);
         [v61 setSuggestionReason:@"Frequency-MRU"];
         v62 = MEMORY[0x277CCABB0];
-        v63 = [v20 objectForKeyedSubscript:v61];
+        v63 = [dictionary objectForKeyedSubscript:v61];
         [v63 doubleValue];
         v65 = v64;
         [v61 score];
         v67 = [v62 numberWithDouble:v65 + v66];
-        [v20 setObject:v67 forKeyedSubscript:v61];
+        [dictionary setObject:v67 forKeyedSubscript:v61];
       }
 
       v58 = [v56 countByEnumeratingWithState:&v111 objects:v132 count:16];
@@ -326,26 +326,26 @@ LABEL_16:
     while (v58);
   }
 
-  v68 = [v20 keysSortedByValueUsingComparator:&__block_literal_global_2];
-  v69 = [v68 firstObject];
-  [v69 score];
+  v68 = [dictionary keysSortedByValueUsingComparator:&__block_literal_global_2];
+  firstObject = [v68 firstObject];
+  [firstObject score];
   v71 = v70;
-  v72 = [v68 lastObject];
-  [v72 score];
+  lastObject = [v68 lastObject];
+  [lastObject score];
   v74 = v71 - v73;
 
   if (v74 <= 0.00001)
   {
-    v76 = [(ARPHomeControlSuggester *)v97 homeKitEventsSortedByStartDate];
-    v75 = v105;
-    v77 = [(ARPHomeControlSuggester *)v97 frequencybasedSuggestionsWitMaxSuggestions:v105 events:v76 useScenes:1];
+    homeKitEventsSortedByStartDate2 = [(ARPHomeControlSuggester *)selfCopy homeKitEventsSortedByStartDate];
+    v75 = suggestionsCopy;
+    v77 = [(ARPHomeControlSuggester *)selfCopy frequencybasedSuggestionsWitMaxSuggestions:suggestionsCopy events:homeKitEventsSortedByStartDate2 useScenes:1];
 
     v68 = v77;
   }
 
   else
   {
-    v75 = v105;
+    v75 = suggestionsCopy;
   }
 
   v78 = [v68 count];
@@ -470,15 +470,15 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
   return v9;
 }
 
-- (id)microlocationBasedsuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5
+- (id)microlocationBasedsuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file
 {
   v89[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  dateCopy = date;
+  fileCopy = file;
+  if (fileCopy)
   {
     v85 = 0;
-    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v9 options:1 error:&v85];
+    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:fileCopy options:1 error:&v85];
     v11 = v85;
     if (v11)
     {
@@ -494,20 +494,20 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
 
     else
     {
-      v71 = a3;
+      suggestionsCopy = suggestions;
       v84 = 0;
       v76 = v10;
       v15 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v84];
       v72 = v84;
-      v77 = [v15 microlocationCorrelationsDictionary];
-      v78 = [v15 archiveDate];
+      microlocationCorrelationsDictionary = [v15 microlocationCorrelationsDictionary];
+      archiveDate = [v15 archiveDate];
 
       v16 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:0];
       v17 = MEMORY[0x277CFE1E0];
-      v18 = [MEMORY[0x277CBEAA8] distantPast];
-      v19 = [v17 predicateForEventsWithStartInDateRangeFrom:v18 to:v8];
-      v20 = [MEMORY[0x277CFE298] microLocationVisitStream];
-      v89[0] = v20;
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v19 = [v17 predicateForEventsWithStartInDateRangeFrom:distantPast to:dateCopy];
+      microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
+      v89[0] = microLocationVisitStream;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:1];
       v75 = v16;
       v88 = v16;
@@ -520,15 +520,15 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
       [v23 setClientName:v26];
 
       [v23 setTracker:&__block_literal_global_37];
-      v27 = [(ARPHomeControlSuggester *)self knowledgeStore];
+      knowledgeStore = [(ARPHomeControlSuggester *)self knowledgeStore];
       v83 = v72;
-      v28 = [v27 executeQuery:v23 error:&v83];
+      v28 = [knowledgeStore executeQuery:v23 error:&v83];
       v12 = v83;
 
       v74 = v28;
       if (v12)
       {
-        v29 = v78;
+        v29 = archiveDate;
         v30 = ARPLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -537,31 +537,31 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
 
         v14 = MEMORY[0x277CBEBF8];
         v10 = v76;
-        v13 = v77;
+        v13 = microlocationCorrelationsDictionary;
         v31 = v75;
       }
 
       else
       {
         v69 = v23;
-        v73 = [v28 firstObject];
-        v32 = [v73 startDate];
+        firstObject = [v28 firstObject];
+        startDate = [firstObject startDate];
         v33 = 0;
-        v68 = v32;
-        if (v78)
+        v68 = startDate;
+        if (archiveDate)
         {
-          v34 = v32;
-          if (v32)
+          v34 = startDate;
+          if (startDate)
           {
-            [v8 timeIntervalSinceDate:?];
-            if (v35 <= 600.0 && ([v8 timeIntervalSinceDate:v34], v36 <= 600.0))
+            [dateCopy timeIntervalSinceDate:?];
+            if (v35 <= 600.0 && ([dateCopy timeIntervalSinceDate:v34], v36 <= 600.0))
             {
-              v37 = [v73 metadata];
-              v38 = [MEMORY[0x277CFE230] probabilityVector];
-              v39 = [v37 objectForKeyedSubscript:v38];
+              metadata = [firstObject metadata];
+              probabilityVector = [MEMORY[0x277CFE230] probabilityVector];
+              v39 = [metadata objectForKeyedSubscript:probabilityVector];
 
-              v40 = [v39 allValues];
-              v41 = [v40 valueForKeyPath:@"@max.self"];
+              allValues = [v39 allValues];
+              v41 = [allValues valueForKeyPath:@"@max.self"];
 
               [v41 doubleValue];
               v43 = v42;
@@ -569,10 +569,10 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
               if (v43 >= v44)
               {
                 v45 = [v39 allKeysForObject:v41];
-                v46 = [v45 firstObject];
+                firstObject2 = [v45 firstObject];
 
-                v47 = [v46 UUIDString];
-                v33 = [v77 objectForKeyedSubscript:v47];
+                uUIDString = [firstObject2 UUIDString];
+                v33 = [microlocationCorrelationsDictionary objectForKeyedSubscript:uUIDString];
               }
 
               else
@@ -588,10 +588,10 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
           }
         }
 
-        v70 = v8;
-        v48 = [MEMORY[0x277CBEB40] orderedSet];
-        v49 = [v33 allValues];
-        v50 = [v49 valueForKeyPath:@"@sum.self"];
+        v70 = dateCopy;
+        orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+        allValues2 = [v33 allValues];
+        v50 = [allValues2 valueForKeyPath:@"@sum.self"];
         [v50 doubleValue];
         v52 = v51;
 
@@ -599,8 +599,8 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v53 = [v33 allKeys];
-        v54 = [v53 countByEnumeratingWithState:&v79 objects:v87 count:16];
+        allKeys = [v33 allKeys];
+        v54 = [allKeys countByEnumeratingWithState:&v79 objects:v87 count:16];
         if (v54)
         {
           v55 = v54;
@@ -611,7 +611,7 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
             {
               if (*v80 != v56)
               {
-                objc_enumerationMutation(v53);
+                objc_enumerationMutation(allKeys);
               }
 
               v58 = *(*(&v79 + 1) + 8 * i);
@@ -619,29 +619,29 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
               [v59 floatValue];
               [v58 setScore:v60 / v52];
 
-              [v48 addObject:v58];
+              [orderedSet addObject:v58];
             }
 
-            v55 = [v53 countByEnumeratingWithState:&v79 objects:v87 count:16];
+            v55 = [allKeys countByEnumeratingWithState:&v79 objects:v87 count:16];
           }
 
           while (v55);
         }
 
-        v61 = [v48 array];
-        v62 = [v61 mutableCopy];
+        array = [orderedSet array];
+        v62 = [array mutableCopy];
 
         v63 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:0];
         v86 = v63;
         v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
         [v62 sortUsingDescriptors:v64];
 
-        v65 = v71;
-        if (v71)
+        v65 = suggestionsCopy;
+        if (suggestionsCopy)
         {
           v10 = v76;
-          v13 = v77;
-          if ([v62 count] < v71)
+          v13 = microlocationCorrelationsDictionary;
+          if ([v62 count] < suggestionsCopy)
           {
             v65 = [v62 count];
           }
@@ -653,15 +653,15 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
         {
           v14 = v62;
           v10 = v76;
-          v13 = v77;
+          v13 = microlocationCorrelationsDictionary;
         }
 
-        v29 = v78;
+        v29 = archiveDate;
 
         v24 = v69;
-        v8 = v70;
+        dateCopy = v70;
         v31 = v75;
-        v30 = v73;
+        v30 = firstObject;
       }
     }
   }
@@ -676,24 +676,24 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
   return v14;
 }
 
-- (id)nextActionBasedsuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 correlationsFile:(id)a5
+- (id)nextActionBasedsuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date correlationsFile:(id)file
 {
   v83[14] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if (!v7)
+  fileCopy = file;
+  if (!fileCopy)
   {
     v12 = MEMORY[0x277CBEBF8];
     goto LABEL_43;
   }
 
   v81 = 0;
-  v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v7 options:1 error:&v81];
+  v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:fileCopy options:1 error:&v81];
   v9 = v81;
   if (v9)
   {
     v10 = v9;
-    v11 = ARPLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    nextActionCorrelationsDictionary = ARPLog();
+    if (os_log_type_enabled(nextActionCorrelationsDictionary, OS_LOG_TYPE_ERROR))
     {
       [ARPHomeControlSuggester nextActionBasedsuggestionsWithMaxSuggestions:referenceDate:correlationsFile:];
     }
@@ -702,18 +702,18 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
     goto LABEL_42;
   }
 
-  v62 = a3;
-  v72 = v7;
+  suggestionsCopy = suggestions;
+  v72 = fileCopy;
   v80 = 0;
   v71 = v8;
   v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v80];
   v70 = v80;
-  v11 = [v13 nextActionCorrelationsDictionary];
-  v69 = [v13 archiveDate];
+  nextActionCorrelationsDictionary = [v13 nextActionCorrelationsDictionary];
+  archiveDate = [v13 archiveDate];
 
-  v14 = [(ARPHomeControlSuggester *)self mostRecentHomeKitEvent];
+  mostRecentHomeKitEvent = [(ARPHomeControlSuggester *)self mostRecentHomeKitEvent];
   v73 = MEMORY[0x277CBEB98];
-  v75 = v14;
+  v75 = mostRecentHomeKitEvent;
   v68 = getHMServiceTypeSpeaker();
   v83[0] = v68;
   v67 = getHMServiceTypeDoorbell();
@@ -750,9 +750,9 @@ uint64_t __88__ARPHomeControlSuggester_suggestionsWithMaxSuggestions_referenceDa
   {
     v26 = 0;
 LABEL_26:
-    v42 = [MEMORY[0x277CBEB40] orderedSet];
-    v43 = [v26 allValues];
-    v44 = [v43 valueForKeyPath:@"@sum.self"];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    allValues = [v26 allValues];
+    v44 = [allValues valueForKeyPath:@"@sum.self"];
     [v44 doubleValue];
     v46 = v45;
 
@@ -760,8 +760,8 @@ LABEL_26:
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v47 = [v11 allKeys];
-    v48 = [v47 countByEnumeratingWithState:&v76 objects:v82 count:16];
+    allKeys = [nextActionCorrelationsDictionary allKeys];
+    v48 = [allKeys countByEnumeratingWithState:&v76 objects:v82 count:16];
     if (v48)
     {
       v49 = v48;
@@ -772,33 +772,33 @@ LABEL_26:
         {
           if (*v77 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(allKeys);
           }
 
           v52 = *(*(&v76 + 1) + 8 * i);
           v53 = [v26 objectForKeyedSubscript:v52];
           [v53 floatValue];
           v55 = v54 + 1.0;
-          v56 = [v11 allKeys];
-          [v52 setScore:{v55 / (v46 + objc_msgSend(v56, "count"))}];
+          allKeys2 = [nextActionCorrelationsDictionary allKeys];
+          [v52 setScore:{v55 / (v46 + objc_msgSend(allKeys2, "count"))}];
 
-          [v42 addObject:v52];
+          [orderedSet addObject:v52];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v76 objects:v82 count:16];
+        v49 = [allKeys countByEnumeratingWithState:&v76 objects:v82 count:16];
       }
 
       while (v49);
     }
 
-    v57 = [v42 array];
-    v58 = [v57 mutableCopy];
+    array = [orderedSet array];
+    v58 = [array mutableCopy];
 
-    v59 = v62;
-    if (v62)
+    v59 = suggestionsCopy;
+    if (suggestionsCopy)
     {
       v24 = v75;
-      if ([v58 count] < v62)
+      if ([v58 count] < suggestionsCopy)
       {
         v59 = [v58 count];
       }
@@ -815,8 +815,8 @@ LABEL_26:
     goto LABEL_41;
   }
 
-  v25 = [v75 eventBody];
-  v26 = [v25 valueForKey:@"base"];
+  eventBody = [v75 eventBody];
+  v26 = [eventBody valueForKey:@"base"];
 
   if (!v26)
   {
@@ -829,25 +829,25 @@ LABEL_26:
     goto LABEL_40;
   }
 
-  v27 = [v75 eventBody];
+  eventBody2 = [v75 eventBody];
   getBMHomeKitClientAccessoryControlEventClass();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v29 = [v75 eventBody];
-  v30 = v29;
+  eventBody3 = [v75 eventBody];
+  eventBody4 = eventBody3;
   if ((isKindOfClass & 1) == 0)
   {
     getBMHomeKitClientActionSetEventClass();
     objc_opt_class();
     v37 = objc_opt_isKindOfClass();
 
-    v30 = [v75 eventBody];
+    eventBody4 = [v75 eventBody];
     if (v37)
     {
       v33 = objc_alloc_init(ARPHomeControlSuggestion);
       [(ARPHomeControlSuggestion *)v33 setType:1];
-      v38 = [v30 actionSetUniqueIdentifier];
+      actionSetUniqueIdentifier = [eventBody4 actionSetUniqueIdentifier];
     }
 
     else
@@ -862,55 +862,55 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v30 = [v75 eventBody];
+      eventBody4 = [v75 eventBody];
       v33 = objc_alloc_init(ARPHomeControlSuggestion);
       [(ARPHomeControlSuggestion *)v33 setType:0];
-      v38 = [v30 accessoryUniqueIdentifier];
+      actionSetUniqueIdentifier = [eventBody4 accessoryUniqueIdentifier];
     }
 
-    v40 = v38;
-    [(ARPHomeControlSuggestion *)v33 setTargetUUID:v38];
+    v40 = actionSetUniqueIdentifier;
+    [(ARPHomeControlSuggestion *)v33 setTargetUUID:actionSetUniqueIdentifier];
 
-    v36 = [v26 homeUniqueIdentifier];
-    [(ARPHomeControlSuggestion *)v33 setHomeUUID:v36];
+    homeUniqueIdentifier = [v26 homeUniqueIdentifier];
+    [(ARPHomeControlSuggestion *)v33 setHomeUUID:homeUniqueIdentifier];
 LABEL_20:
 
     if (v33)
     {
-      v30 = [v11 objectForKeyedSubscript:v33];
+      eventBody4 = [nextActionCorrelationsDictionary objectForKeyedSubscript:v33];
       goto LABEL_24;
     }
 
 LABEL_23:
-    v30 = 0;
+    eventBody4 = 0;
 LABEL_24:
-    v41 = [v30 count];
+    v41 = [eventBody4 count];
 
     if (v41)
     {
 
-      v26 = v30;
+      v26 = eventBody4;
       goto LABEL_26;
     }
 
     goto LABEL_39;
   }
 
-  v31 = [v29 serviceType];
-  v32 = [v74 containsObject:v31];
+  serviceType = [eventBody3 serviceType];
+  v32 = [v74 containsObject:serviceType];
 
   if ((v32 & 1) == 0)
   {
     v33 = objc_alloc_init(ARPHomeControlSuggestion);
     [(ARPHomeControlSuggestion *)v33 setType:0];
-    v34 = [v30 accessoryUniqueIdentifier];
-    [(ARPHomeControlSuggestion *)v33 setTargetUUID:v34];
+    accessoryUniqueIdentifier = [eventBody4 accessoryUniqueIdentifier];
+    [(ARPHomeControlSuggestion *)v33 setTargetUUID:accessoryUniqueIdentifier];
 
-    v35 = [v26 homeUniqueIdentifier];
-    [(ARPHomeControlSuggestion *)v33 setHomeUUID:v35];
+    homeUniqueIdentifier2 = [v26 homeUniqueIdentifier];
+    [(ARPHomeControlSuggestion *)v33 setHomeUUID:homeUniqueIdentifier2];
 
-    v36 = [v30 serviceUniqueIdentifier];
-    [(ARPHomeControlSuggestion *)v33 setAccessoryServiceUUID:v36];
+    homeUniqueIdentifier = [eventBody4 serviceUniqueIdentifier];
+    [(ARPHomeControlSuggestion *)v33 setAccessoryServiceUUID:homeUniqueIdentifier];
     goto LABEL_20;
   }
 
@@ -920,7 +920,7 @@ LABEL_40:
   v12 = MEMORY[0x277CBEBF8];
 LABEL_41:
   v8 = v71;
-  v7 = v72;
+  fileCopy = v72;
   v10 = v70;
 
 LABEL_42:
@@ -931,11 +931,11 @@ LABEL_43:
   return v12;
 }
 
-- (id)timeBasedSuggestionsWithMaxSuggestions:(unint64_t)a3 referenceDate:(id)a4 fallBackToFrequency:(BOOL)a5
+- (id)timeBasedSuggestionsWithMaxSuggestions:(unint64_t)suggestions referenceDate:(id)date fallBackToFrequency:(BOOL)frequency
 {
-  v5 = a5;
+  frequencyCopy = frequency;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dateCopy = date;
   v9 = [(ARPHomeControlSuggester *)self homeKitEventsWithLookbackDays:30];
   [(ARPHomeControlSuggester *)self setHomeKitEventsSortedByStartDate:v9];
   v10 = ARPHomeControlLog();
@@ -947,9 +947,9 @@ LABEL_43:
     _os_log_impl(&dword_23EB15000, v10, OS_LOG_TYPE_INFO, "Total HomeKit events = %@", buf, 0xCu);
   }
 
-  v12 = [MEMORY[0x277CBEB40] orderedSet];
-  v33 = v8;
-  v13 = [(ARPHomeControlSuggester *)self timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:a3 events:v9 referenceDate:v8];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  v33 = dateCopy;
+  v13 = [(ARPHomeControlSuggester *)self timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:suggestions events:v9 referenceDate:dateCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -968,7 +968,7 @@ LABEL_43:
           objc_enumerationMutation(v13);
         }
 
-        [v12 addObject:*(*(&v42 + 1) + 8 * i)];
+        [orderedSet addObject:*(*(&v42 + 1) + 8 * i)];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -977,16 +977,16 @@ LABEL_43:
     while (v15);
   }
 
-  if (v5)
+  if (frequencyCopy)
   {
-    if (a3)
+    if (suggestions)
     {
-      if ([v12 count] >= a3)
+      if ([orderedSet count] >= suggestions)
       {
         goto LABEL_32;
       }
 
-      [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:a3 events:v9 useScenes:0];
+      [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:suggestions events:v9 useScenes:0];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
@@ -1006,12 +1006,12 @@ LABEL_15:
           }
 
           v23 = *(*(&v38 + 1) + 8 * v22);
-          if ([v12 count] >= a3)
+          if ([orderedSet count] >= suggestions)
           {
             break;
           }
 
-          [v12 addObject:v23];
+          [orderedSet addObject:v23];
           if (v20 == ++v22)
           {
             v20 = [v18 countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -1056,7 +1056,7 @@ LABEL_15:
               objc_enumerationMutation(v18);
             }
 
-            [v12 addObject:*(*(&v34 + 1) + 8 * j)];
+            [orderedSet addObject:*(*(&v34 + 1) + 8 * j)];
           }
 
           v27 = [v18 countByEnumeratingWithState:&v34 objects:v46 count:16];
@@ -1068,30 +1068,30 @@ LABEL_15:
   }
 
 LABEL_32:
-  v30 = [v12 array];
+  array = [orderedSet array];
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return array;
 }
 
-- (id)timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:(unint64_t)a3 events:(id)a4 referenceDate:(id)a5
+- (id)timeBucketFrequencyBasedSuggestionsWithMaxSuggestions:(unint64_t)suggestions events:(id)events referenceDate:(id)date
 {
-  v24 = self;
-  v25 = a3;
+  selfCopy = self;
+  suggestionsCopy = suggestions;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
-  v29 = [MEMORY[0x277CBEA80] currentCalendar];
-  v26 = v7;
-  v8 = [v29 components:32 fromDate:v7];
-  v9 = [v8 hour];
-  v27 = [MEMORY[0x277CBEB18] array];
+  eventsCopy = events;
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v26 = dateCopy;
+  v8 = [currentCalendar components:32 fromDate:dateCopy];
+  hour = [v8 hour];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = eventsCopy;
   v10 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -1107,18 +1107,18 @@ LABEL_32:
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 eventBody];
-        v16 = [v15 valueForKey:@"base"];
-        v17 = [v16 dateInterval];
-        v18 = [v17 startDate];
+        eventBody = [v14 eventBody];
+        v16 = [eventBody valueForKey:@"base"];
+        dateInterval = [v16 dateInterval];
+        startDate = [dateInterval startDate];
 
-        if (v18)
+        if (startDate)
         {
-          v19 = [v29 components:32 fromDate:v18];
+          v19 = [currentCalendar components:32 fromDate:startDate];
 
-          if (([v19 hour] ^ v9) <= 3)
+          if (([v19 hour] ^ hour) <= 3)
           {
-            [v27 addObject:v14];
+            [array addObject:v14];
           }
 
           v8 = v19;
@@ -1140,21 +1140,21 @@ LABEL_32:
     while (v11);
   }
 
-  v21 = [(ARPHomeControlSuggester *)v24 frequencybasedSuggestionsWitMaxSuggestions:v25 events:v27];
+  v21 = [(ARPHomeControlSuggester *)selfCopy frequencybasedSuggestionsWitMaxSuggestions:suggestionsCopy events:array];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)a3 events:(id)a4 useScenes:(BOOL)a5
+- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)suggestions events:(id)events useScenes:(BOOL)scenes
 {
-  v131 = a5;
+  scenesCopy = scenes;
   v169[5] = *MEMORY[0x277D85DE8];
-  v147 = a4;
-  v146 = [MEMORY[0x277CBEB38] dictionary];
-  v130 = [MEMORY[0x277CBEB38] dictionary];
-  v149 = [MEMORY[0x277CBEB38] dictionary];
+  eventsCopy = events;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CFE2E0];
   v169[0] = *MEMORY[0x277CFE2C0];
@@ -1198,17 +1198,17 @@ LABEL_32:
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v168 count:14];
   v137 = [v136 setWithArray:v18];
 
-  v19 = [v147 lastObject];
-  v20 = [v19 eventBody];
-  v21 = [v20 valueForKey:@"base"];
-  v22 = [v21 dateInterval];
-  v145 = [v22 startDate];
+  lastObject = [eventsCopy lastObject];
+  eventBody = [lastObject eventBody];
+  v21 = [eventBody valueForKey:@"base"];
+  dateInterval = [v21 dateInterval];
+  startDate = [dateInterval startDate];
 
   v162 = 0u;
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v23 = v147;
+  v23 = eventsCopy;
   v133 = v9;
   v135 = v23;
   v148 = [v23 countByEnumeratingWithState:&v160 objects:v167 count:16];
@@ -1216,14 +1216,14 @@ LABEL_32:
   {
     v139 = 0;
     v24 = 0;
-    v26 = v146;
+    v26 = dictionary;
     goto LABEL_38;
   }
 
   v139 = 0;
   v24 = 0;
   v25 = *v161;
-  v26 = v146;
+  v26 = dictionary;
   v143 = *v161;
   do
   {
@@ -1236,75 +1236,75 @@ LABEL_32:
       }
 
       v28 = *(*(&v160 + 1) + 8 * v27);
-      v29 = [v28 eventBody];
-      v30 = [v29 valueForKey:@"base"];
+      eventBody2 = [v28 eventBody];
+      v30 = [eventBody2 valueForKey:@"base"];
 
       if (!v30)
       {
-        v41 = ARPLog();
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+        eventBody5 = ARPLog();
+        if (os_log_type_enabled(eventBody5, OS_LOG_TYPE_ERROR))
         {
-          [ARPHomeControlSuggester frequencybasedSuggestionsWitMaxSuggestions:v159 events:v41 useScenes:?];
+          [ARPHomeControlSuggester frequencybasedSuggestionsWitMaxSuggestions:v159 events:eventBody5 useScenes:?];
         }
 
         goto LABEL_31;
       }
 
-      v31 = [v30 source];
-      v32 = [v9 containsObject:v31];
+      source = [v30 source];
+      v32 = [v9 containsObject:source];
 
       if (v32)
       {
         goto LABEL_32;
       }
 
-      v33 = [v30 dateInterval];
-      v34 = [v33 startDate];
-      [v145 timeIntervalSinceDate:v34];
+      dateInterval2 = [v30 dateInterval];
+      startDate2 = [dateInterval2 startDate];
+      [startDate timeIntervalSinceDate:startDate2];
       v36 = (v35 / 86400.0);
 
       v37 = exp(v36 * -0.5);
-      v38 = [v28 eventBody];
+      eventBody3 = [v28 eventBody];
       getBMHomeKitClientAccessoryControlEventClass();
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v40 = [v28 eventBody];
-      v41 = v40;
+      eventBody4 = [v28 eventBody];
+      eventBody5 = eventBody4;
       if (isKindOfClass)
       {
-        v42 = [v40 serviceType];
-        v43 = [v137 containsObject:v42];
+        serviceType = [eventBody4 serviceType];
+        v43 = [v137 containsObject:serviceType];
 
         if (v43)
         {
-          v26 = v146;
+          v26 = dictionary;
           goto LABEL_17;
         }
 
         v53 = objc_alloc_init(ARPHomeControlSuggestion);
         [(ARPHomeControlSuggestion *)v53 setType:0];
-        v54 = [v41 accessoryUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v53 setTargetUUID:v54];
+        accessoryUniqueIdentifier = [eventBody5 accessoryUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v53 setTargetUUID:accessoryUniqueIdentifier];
 
-        v55 = [v30 homeUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v53 setHomeUUID:v55];
+        homeUniqueIdentifier = [v30 homeUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v53 setHomeUUID:homeUniqueIdentifier];
 
-        v56 = [v41 serviceUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v53 setAccessoryServiceUUID:v56];
+        serviceUniqueIdentifier = [eventBody5 serviceUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v53 setAccessoryServiceUUID:serviceUniqueIdentifier];
 
-        v57 = [v24 dateInterval];
-        v58 = [v57 startDate];
+        dateInterval3 = [v24 dateInterval];
+        startDate3 = [dateInterval3 startDate];
         v141 = v24;
-        if (v58)
+        if (startDate3)
         {
-          v59 = v58;
+          v59 = startDate3;
           v60 = v24;
-          v61 = [v30 dateInterval];
-          v62 = [v61 startDate];
-          v63 = [v60 dateInterval];
-          v64 = [v63 startDate];
-          [v62 timeIntervalSinceDate:v64];
+          dateInterval4 = [v30 dateInterval];
+          startDate4 = [dateInterval4 startDate];
+          dateInterval5 = [v60 dateInterval];
+          startDate5 = [dateInterval5 startDate];
+          [startDate4 timeIntervalSinceDate:startDate5];
           v66 = v65;
 
           goto LABEL_23;
@@ -1319,25 +1319,25 @@ LABEL_25:
       objc_opt_class();
       v44 = objc_opt_isKindOfClass();
 
-      v41 = [v28 eventBody];
+      eventBody5 = [v28 eventBody];
       if (v44)
       {
         v45 = objc_alloc_init(ARPHomeControlSuggestion);
         [(ARPHomeControlSuggestion *)v45 setType:1];
-        v46 = [v41 actionSetUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v45 setTargetUUID:v46];
+        actionSetUniqueIdentifier = [eventBody5 actionSetUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v45 setTargetUUID:actionSetUniqueIdentifier];
 
-        v47 = [v30 homeUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v45 setHomeUUID:v47];
+        homeUniqueIdentifier2 = [v30 homeUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v45 setHomeUUID:homeUniqueIdentifier2];
 
-        v26 = v146;
-        if (v131)
+        v26 = dictionary;
+        if (scenesCopy)
         {
           v48 = MEMORY[0x277CCABB0];
-          v49 = [v149 objectForKeyedSubscript:v45];
+          v49 = [dictionary3 objectForKeyedSubscript:v45];
           [v49 floatValue];
           v51 = [v48 numberWithDouble:v37 + v50];
-          [v149 setObject:v51 forKeyedSubscript:v45];
+          [dictionary3 setObject:v51 forKeyedSubscript:v45];
 
           v23 = v135;
         }
@@ -1358,52 +1358,52 @@ LABEL_31:
 
       if (v67)
       {
-        v41 = [v28 eventBody];
+        eventBody5 = [v28 eventBody];
         v53 = objc_alloc_init(ARPHomeControlSuggestion);
         [(ARPHomeControlSuggestion *)v53 setType:0];
-        v68 = [v41 accessoryUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v53 setTargetUUID:v68];
+        accessoryUniqueIdentifier2 = [eventBody5 accessoryUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v53 setTargetUUID:accessoryUniqueIdentifier2];
 
-        v69 = [v30 homeUniqueIdentifier];
-        [(ARPHomeControlSuggestion *)v53 setHomeUUID:v69];
+        homeUniqueIdentifier3 = [v30 homeUniqueIdentifier];
+        [(ARPHomeControlSuggestion *)v53 setHomeUUID:homeUniqueIdentifier3];
 
-        v57 = [v24 dateInterval];
-        v70 = [v57 startDate];
+        dateInterval3 = [v24 dateInterval];
+        startDate6 = [dateInterval3 startDate];
         v141 = v24;
-        if (!v70)
+        if (!startDate6)
         {
           goto LABEL_25;
         }
 
-        v59 = v70;
-        v71 = [v30 dateInterval];
-        v72 = [v71 startDate];
-        v73 = [v24 dateInterval];
-        v74 = [v73 startDate];
-        [v72 timeIntervalSinceDate:v74];
+        v59 = startDate6;
+        dateInterval6 = [v30 dateInterval];
+        startDate7 = [dateInterval6 startDate];
+        dateInterval7 = [v24 dateInterval];
+        startDate8 = [dateInterval7 startDate];
+        [startDate7 timeIntervalSinceDate:startDate8];
         v66 = v75;
 
 LABEL_23:
         if (v66 <= 1.0)
         {
           v76 = MEMORY[0x277CCABB0];
-          v77 = [v130 objectForKeyedSubscript:v53];
+          v77 = [dictionary2 objectForKeyedSubscript:v53];
           [v77 doubleValue];
           v79 = [v76 numberWithDouble:v37 + v78];
-          [v130 setObject:v79 forKeyedSubscript:v53];
+          [dictionary2 setObject:v79 forKeyedSubscript:v53];
 
-          v26 = v146;
+          v26 = dictionary;
           goto LABEL_29;
         }
 
 LABEL_26:
-        v80 = [v139 dateInterval];
-        v81 = [v80 startDate];
-        v82 = [v30 dateInterval];
-        v83 = [v82 startDate];
-        v84 = [v81 isEqualToDate:v83];
+        dateInterval8 = [v139 dateInterval];
+        startDate9 = [dateInterval8 startDate];
+        dateInterval9 = [v30 dateInterval];
+        startDate10 = [dateInterval9 startDate];
+        v84 = [startDate9 isEqualToDate:startDate10];
 
-        v26 = v146;
+        v26 = dictionary;
         if (v84)
         {
           v9 = v133;
@@ -1414,10 +1414,10 @@ LABEL_26:
         else
         {
           v85 = MEMORY[0x277CCABB0];
-          v86 = [v146 objectForKeyedSubscript:v53];
+          v86 = [dictionary objectForKeyedSubscript:v53];
           [v86 doubleValue];
           v88 = [v85 numberWithDouble:v37 + v87];
-          [v146 setObject:v88 forKeyedSubscript:v53];
+          [dictionary setObject:v88 forKeyedSubscript:v53];
 
           v77 = v139;
           v139 = v30;
@@ -1433,7 +1433,7 @@ LABEL_29:
         goto LABEL_31;
       }
 
-      v26 = v146;
+      v26 = dictionary;
       v25 = v143;
 LABEL_32:
 
@@ -1449,8 +1449,8 @@ LABEL_32:
 LABEL_38:
   v90 = v24;
 
-  v91 = [v26 allValues];
-  v92 = [v91 valueForKeyPath:@"@sum.self"];
+  allValues = [v26 allValues];
+  v92 = [allValues valueForKeyPath:@"@sum.self"];
   [v92 doubleValue];
   v94 = v93;
 
@@ -1458,8 +1458,8 @@ LABEL_38:
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  v95 = [v26 allKeys];
-  v96 = [v95 countByEnumeratingWithState:&v154 objects:v166 count:16];
+  allKeys = [v26 allKeys];
+  v96 = [allKeys countByEnumeratingWithState:&v154 objects:v166 count:16];
   if (v96)
   {
     v97 = v96;
@@ -1470,7 +1470,7 @@ LABEL_38:
       {
         if (*v155 != v98)
         {
-          objc_enumerationMutation(v95);
+          objc_enumerationMutation(allKeys);
         }
 
         v100 = *(*(&v154 + 1) + 8 * i);
@@ -1479,14 +1479,14 @@ LABEL_38:
         [v100 setScore:v102 / v94];
       }
 
-      v97 = [v95 countByEnumeratingWithState:&v154 objects:v166 count:16];
+      v97 = [allKeys countByEnumeratingWithState:&v154 objects:v166 count:16];
     }
 
     while (v97);
   }
 
-  v103 = [v149 allValues];
-  v104 = [v103 valueForKeyPath:@"@sum.self"];
+  allValues2 = [dictionary3 allValues];
+  v104 = [allValues2 valueForKeyPath:@"@sum.self"];
   [v104 doubleValue];
   v106 = v105;
 
@@ -1494,8 +1494,8 @@ LABEL_38:
   v153 = 0u;
   v150 = 0u;
   v151 = 0u;
-  v107 = [v149 allKeys];
-  v108 = [v107 countByEnumeratingWithState:&v150 objects:v165 count:16];
+  allKeys2 = [dictionary3 allKeys];
+  v108 = [allKeys2 countByEnumeratingWithState:&v150 objects:v165 count:16];
   if (v108)
   {
     v109 = v108;
@@ -1506,52 +1506,52 @@ LABEL_38:
       {
         if (*v151 != v110)
         {
-          objc_enumerationMutation(v107);
+          objc_enumerationMutation(allKeys2);
         }
 
         v112 = *(*(&v150 + 1) + 8 * j);
-        v113 = [v149 objectForKeyedSubscript:v112];
+        v113 = [dictionary3 objectForKeyedSubscript:v112];
         [v113 doubleValue];
         [v112 setScore:v114 / v106];
       }
 
-      v109 = [v107 countByEnumeratingWithState:&v150 objects:v165 count:16];
+      v109 = [allKeys2 countByEnumeratingWithState:&v150 objects:v165 count:16];
     }
 
     while (v109);
   }
 
   v115 = MEMORY[0x277CBEB18];
-  v116 = [v26 allKeys];
-  v117 = [v115 arrayWithArray:v116];
+  allKeys3 = [v26 allKeys];
+  v117 = [v115 arrayWithArray:allKeys3];
 
   if (![v117 count])
   {
     v118 = MEMORY[0x277CBEB18];
-    v119 = [v130 allKeys];
-    v120 = [v118 arrayWithArray:v119];
+    allKeys4 = [dictionary2 allKeys];
+    v120 = [v118 arrayWithArray:allKeys4];
 
     v117 = v120;
   }
 
-  v121 = [v149 allKeys];
-  [v117 addObjectsFromArray:v121];
+  allKeys5 = [dictionary3 allKeys];
+  [v117 addObjectsFromArray:allKeys5];
 
   v122 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:0];
   v164 = v122;
   v123 = [MEMORY[0x277CBEA60] arrayWithObjects:&v164 count:1];
   [v117 sortUsingDescriptors:v123];
 
-  v124 = a3;
-  if (a3)
+  suggestionsCopy = suggestions;
+  if (suggestions)
   {
     v125 = v135;
-    if ([v117 count] < a3)
+    if ([v117 count] < suggestions)
     {
-      v124 = [v117 count];
+      suggestionsCopy = [v117 count];
     }
 
-    v126 = [v117 subarrayWithRange:{0, v124}];
+    v126 = [v117 subarrayWithRange:{0, suggestionsCopy}];
   }
 
   else
@@ -1565,19 +1565,19 @@ LABEL_38:
   return v126;
 }
 
-- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)a3
+- (id)frequencybasedSuggestionsWitMaxSuggestions:(unint64_t)suggestions
 {
   v5 = [(ARPHomeControlSuggester *)self homeKitEventsWithLookbackDays:30];
-  v6 = [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:a3 events:v5];
+  v6 = [(ARPHomeControlSuggester *)self frequencybasedSuggestionsWitMaxSuggestions:suggestions events:v5];
 
   return v6;
 }
 
-- (id)homeKitEventsWithLookbackDays:(int64_t)a3
+- (id)homeKitEventsWithLookbackDays:(int64_t)days
 {
-  v28 = self;
+  selfCopy = self;
   v42[2] = *MEMORY[0x277D85DE8];
-  v3 = CFAbsoluteTimeGetCurrent() + (1440 * a3) * -60.0;
+  v3 = CFAbsoluteTimeGetCurrent() + (1440 * days) * -60.0;
   getBMHomeKitClientAccessoryControlStreamClass();
   v4 = objc_opt_new();
   v29 = [v4 publisherFromStartTime:v3];
@@ -1654,7 +1654,7 @@ LABEL_38:
           }
 
           v22 = *(*(&v30 + 1) + 8 * v21);
-          v23 = [v22 eventBody];
+          eventBody = [v22 eventBody];
           getBMHomeKitClientMediaAccessoryControlEventClass();
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -1665,7 +1665,7 @@ LABEL_38:
 
           else
           {
-            v24 = [v22 eventBody];
+            eventBody2 = [v22 eventBody];
             getBMHomeKitClientAccessoryControlEventClass();
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
@@ -1692,7 +1692,7 @@ LABEL_38:
 
       if (v20 > 0.0)
       {
-        [(ARPHomeControlSuggester *)v28 setScoreSceneBoost:v19 / v20 * 4.0];
+        [(ARPHomeControlSuggester *)selfCopy setScoreSceneBoost:v19 / v20 * 4.0];
       }
     }
 
@@ -1784,7 +1784,7 @@ void __57__ARPHomeControlSuggester_homeKitEventsWithLookbackDays___block_invoke_
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     v12 = [v4 orderedMergeWithOthers:v11 comparator:&__block_literal_global_66];
 
-    v13 = [v12 last];
+    last = [v12 last];
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
@@ -1796,7 +1796,7 @@ void __57__ARPHomeControlSuggester_homeKitEventsWithLookbackDays___block_invoke_
     v18[2] = __49__ARPHomeControlSuggester_mostRecentHomeKitEvent__block_invoke_3;
     v18[3] = &unk_278C64650;
     v18[4] = &v19;
-    v14 = [v13 sinkWithCompletion:&__block_literal_global_68 receiveInput:v18];
+    v14 = [last sinkWithCompletion:&__block_literal_global_68 receiveInput:v18];
     v15 = v20[5];
     _Block_object_dispose(&v19, 8);
   }

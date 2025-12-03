@@ -1,12 +1,12 @@
 @interface ASFriend
-+ (ASFriend)friendWithCodableFriend:(id)a3;
++ (ASFriend)friendWithCodableFriend:(id)friend;
 - (ASCompetition)competitionPendingAcceptance;
 - (ASCompetition)currentCompetition;
 - (ASCompetition)currentOrMostRecentCompetition;
 - (ASCompetition)mostRecentlyCompletedCompetition;
-- (ASFriend)initWithActivitySnapshots:(id)a3 friendAchievements:(id)a4 friendWorkouts:(id)a5 contact:(id)a6 competitions:(id)a7;
+- (ASFriend)initWithActivitySnapshots:(id)snapshots friendAchievements:(id)achievements friendWorkouts:(id)workouts contact:(id)contact competitions:(id)competitions;
 - (BOOL)canSeeMyActivityData;
-- (BOOL)estimatedIsStandaloneForSnapshotIndex:(id)a3;
+- (BOOL)estimatedIsStandaloneForSnapshotIndex:(id)index;
 - (BOOL)hasCompetitionHistory;
 - (BOOL)hasCompetitionRequestFromMe;
 - (BOOL)hasCompletedCompetition;
@@ -16,14 +16,14 @@
 - (BOOL)ignoredCompetitionRequestFromMe;
 - (BOOL)inviteRequestToMeWasAccepted;
 - (BOOL)isActivityDataCurrentlyVisibleToMe;
-- (BOOL)isActivityDataVisibleToMeForDate:(id)a3;
+- (BOOL)isActivityDataVisibleToMeForDate:(id)date;
 - (BOOL)isAwaitingCompetitionResponseFromMe;
 - (BOOL)isAwaitingInviteResponseFromMe;
 - (BOOL)isCompetitionActive;
 - (BOOL)isCurrentlyHidingActivityDataFromMe;
 - (BOOL)isEligibleToReceiveCompetitionRequest;
 - (BOOL)isFriendshipCurrentlyActive;
-- (BOOL)isHidingActivityDataFromMeForDate:(id)a3;
+- (BOOL)isHidingActivityDataFromMeForDate:(id)date;
 - (BOOL)isMe;
 - (BOOL)isMuted;
 - (BOOL)isMyActivityDataCurrentlyHidden;
@@ -47,33 +47,33 @@
 - (_HKFitnessFriendActivitySnapshot)currentSnapshot;
 - (_HKFitnessFriendActivitySnapshot)currentSnapshotWithGoalsCarriedForward;
 - (_HKFitnessFriendActivitySnapshot)mostRecentSnapshot;
-- (id)_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDescription;
-- (id)snapshotWithGoalsCarriedForwardForSnapshotIndex:(id)a3;
+- (id)snapshotWithGoalsCarriedForwardForSnapshotIndex:(id)index;
 - (unint64_t)numberOfCompetitionWinsAgainstMe;
 - (unint64_t)numberOfCompetitionWinsByMe;
-- (void)setSnapshots:(id)a3;
+- (void)setSnapshots:(id)snapshots;
 @end
 
 @implementation ASFriend
 
 - (NSTimeZone)timeZone
 {
-  v2 = [(ASFriend *)self mostRecentSnapshot];
-  v3 = [v2 timeZone];
-  if (!v3)
+  mostRecentSnapshot = [(ASFriend *)self mostRecentSnapshot];
+  timeZone = [mostRecentSnapshot timeZone];
+  if (!timeZone)
   {
-    v3 = [MEMORY[0x277CBEBB0] localTimeZone];
+    timeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   }
 
-  return v3;
+  return timeZone;
 }
 
 - (_HKFitnessFriendActivitySnapshot)mostRecentSnapshot
 {
-  v2 = [(NSDictionary *)self->_snapshots allValues];
+  allValues = [(NSDictionary *)self->_snapshots allValues];
   v3 = _HKMostRecentActivitySnapshotInSnapshots();
 
   return v3;
@@ -81,8 +81,8 @@
 
 - (BOOL)isMe
 {
-  v2 = [(ASFriend *)self contact];
-  v3 = v2 == 0;
+  contact = [(ASFriend *)self contact];
+  v3 = contact == 0;
 
   return v3;
 }
@@ -91,14 +91,14 @@
 {
   if ([(ASFriend *)self isMe])
   {
-    v3 = ActivitySharingBundle();
-    [v3 localizedStringForKey:@"ME" value:&stru_2850D2AA8 table:@"Localizable"];
+    contact = ActivitySharingBundle();
+    [contact localizedStringForKey:@"ME" value:&stru_2850D2AA8 table:@"Localizable"];
   }
 
   else
   {
-    v3 = [(ASFriend *)self contact];
-    [v3 displayName];
+    contact = [(ASFriend *)self contact];
+    [contact displayName];
   }
   v4 = ;
 
@@ -107,79 +107,79 @@
 
 - (BOOL)isFriendshipCurrentlyActive
 {
-  v3 = [(ASContact *)self->_contact primaryRelationship];
-  v4 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  if ([v3 isFriendshipActive])
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  if ([primaryRelationship isFriendshipActive])
   {
-    v5 = [v4 isFriendshipActive];
+    isFriendshipActive = [primaryRemoteRelationship isFriendshipActive];
   }
 
   else
   {
-    v5 = 0;
+    isFriendshipActive = 0;
   }
 
-  return v5;
+  return isFriendshipActive;
 }
 
 - (BOOL)isActivityDataCurrentlyVisibleToMe
 {
-  v2 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v3 = [v2 isActivityDataVisible];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  isActivityDataVisible = [primaryRemoteRelationship isActivityDataVisible];
 
-  return v3;
+  return isActivityDataVisible;
 }
 
 - (_HKFitnessFriendActivitySnapshot)currentSnapshotWithGoalsCarriedForward
 {
-  v3 = [(ASFriend *)self currentSnapshot];
-  if (!v3)
+  currentSnapshot = [(ASFriend *)self currentSnapshot];
+  if (!currentSnapshot)
   {
-    v4 = [(ASFriend *)self currentCacheIndex];
-    v3 = -[ASFriend _emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:](self, "_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:", [v4 integerValue]);
+    currentCacheIndex = [(ASFriend *)self currentCacheIndex];
+    currentSnapshot = -[ASFriend _emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:](self, "_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:", [currentCacheIndex integerValue]);
   }
 
-  return v3;
+  return currentSnapshot;
 }
 
 - (ASCompetition)currentCompetition
 {
   if ([(ASFriend *)self isCompetitionActive])
   {
-    v3 = [(NSArray *)self->_competitions lastObject];
+    lastObject = [(NSArray *)self->_competitions lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (_HKFitnessFriendActivitySnapshot)currentSnapshot
 {
-  v3 = [(ASFriend *)self currentCacheIndex];
-  v4 = [(NSDictionary *)self->_snapshots objectForKeyedSubscript:v3];
+  currentCacheIndex = [(ASFriend *)self currentCacheIndex];
+  v4 = [(NSDictionary *)self->_snapshots objectForKeyedSubscript:currentCacheIndex];
 
   return v4;
 }
 
 - (BOOL)isCompetitionActive
 {
-  v3 = [(ASContact *)self->_contact primaryRelationship];
-  v4 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v5 = ([v3 isCompetitionActive] & 1) != 0 || objc_msgSend(v3, "hasCompletedCompetition") && (objc_msgSend(v4, "isCompetitionActive") & 1) != 0;
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  v5 = ([primaryRelationship isCompetitionActive] & 1) != 0 || objc_msgSend(primaryRelationship, "hasCompletedCompetition") && (objc_msgSend(primaryRemoteRelationship, "isCompetitionActive") & 1) != 0;
 
   return v5;
 }
 
 - (BOOL)hasInviteRequestFromMe
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 hasOutgoingInviteRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  hasOutgoingInviteRequest = [primaryRelationship hasOutgoingInviteRequest];
 
-  return v3;
+  return hasOutgoingInviteRequest;
 }
 
 - (NSNumber)currentCacheIndex
@@ -187,7 +187,7 @@
   currentCacheIndex = self->_currentCacheIndex;
   if (!currentCacheIndex)
   {
-    v4 = [(ASFriend *)self currentDateComponents];
+    currentDateComponents = [(ASFriend *)self currentDateComponents];
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:_HKCacheIndexFromDateComponents()];
     v6 = self->_currentCacheIndex;
     self->_currentCacheIndex = v5;
@@ -200,28 +200,28 @@
 
 - (id)description
 {
-  v3 = [(ASContact *)self->_contact relationship];
-  v4 = [(ASContact *)self->_contact remoteRelationship];
+  relationship = [(ASContact *)self->_contact relationship];
+  remoteRelationship = [(ASContact *)self->_contact remoteRelationship];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(ASContact *)self->_contact displayName];
-  v7 = [(ASFriend *)self UUID];
-  v8 = [v5 stringWithFormat:@"ASFriend %@ (%@), local relationship: %@, remote relationship: %@, competitions: %@", v6, v7, v3, v4, self->_competitions];
+  displayName = [(ASContact *)self->_contact displayName];
+  uUID = [(ASFriend *)self UUID];
+  v8 = [v5 stringWithFormat:@"ASFriend %@ (%@), local relationship: %@, remote relationship: %@, competitions: %@", displayName, uUID, relationship, remoteRelationship, self->_competitions];
 
   return v8;
 }
 
 - (NSDateComponents)currentDateComponents
 {
-  v2 = [(ASFriend *)self timeZone];
+  timeZone = [(ASFriend *)self timeZone];
   if (currentDateComponents_onceToken != -1)
   {
     [ASFriend currentDateComponents];
   }
 
-  [currentDateComponents___friendTimeZoneCalendar setTimeZone:v2];
+  [currentDateComponents___friendTimeZoneCalendar setTimeZone:timeZone];
   v3 = currentDateComponents___friendTimeZoneCalendar;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 components:30 fromDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v3 components:30 fromDate:date];
 
   return v5;
 }
@@ -236,19 +236,19 @@
 
   else
   {
-    v5 = [(ASFriend *)self contact];
-    v6 = [v5 fullName];
+    contact = [(ASFriend *)self contact];
+    fullName = [contact fullName];
 
-    v7 = [(ASFriend *)self contact];
-    v3 = v7;
-    if (v6)
+    contact2 = [(ASFriend *)self contact];
+    v3 = contact2;
+    if (fullName)
     {
-      [v7 fullName];
+      [contact2 fullName];
     }
 
     else
     {
-      [v7 displayName];
+      [contact2 displayName];
     }
     v4 = ;
   }
@@ -258,43 +258,43 @@
   return v8;
 }
 
-+ (ASFriend)friendWithCodableFriend:(id)a3
++ (ASFriend)friendWithCodableFriend:(id)friend
 {
-  v3 = a3;
-  v4 = [v3 contact];
-  v5 = [ASContact contactWithCodableContact:v4];
+  friendCopy = friend;
+  contact = [friendCopy contact];
+  v5 = [ASContact contactWithCodableContact:contact];
 
-  v6 = [v3 snapshots];
+  snapshots = [friendCopy snapshots];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke;
   v28[3] = &unk_278C46360;
   v29 = v5;
   v7 = v5;
-  v8 = [v6 hk_map:v28];
+  v8 = [snapshots hk_map:v28];
 
   v9 = ASSnapshotDictionaryByIndex(v8);
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v3 workouts];
-  v12 = [v10 setWithArray:v11];
-  v13 = [v7 UUID];
-  v14 = ASWorkoutsFromCodableWorkouts(v12, v13);
+  workouts = [friendCopy workouts];
+  v12 = [v10 setWithArray:workouts];
+  uUID = [v7 UUID];
+  v14 = ASWorkoutsFromCodableWorkouts(v12, uUID);
 
-  v15 = [v14 allObjects];
-  v16 = ASWorkoutDictionaryByIndex(v15);
+  allObjects = [v14 allObjects];
+  v16 = ASWorkoutDictionaryByIndex(allObjects);
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v3 achievements];
-  v19 = [v17 setWithArray:v18];
-  v20 = [v7 UUID];
-  v21 = ASAchievementsFromCodableAchievements(v19, v20);
+  achievements = [friendCopy achievements];
+  v19 = [v17 setWithArray:achievements];
+  uUID2 = [v7 UUID];
+  v21 = ASAchievementsFromCodableAchievements(v19, uUID2);
 
-  v22 = [v21 allObjects];
-  v23 = ASAchievementDictionaryByIndex(v22);
+  allObjects2 = [v21 allObjects];
+  v23 = ASAchievementDictionaryByIndex(allObjects2);
 
-  v24 = [v3 competitions];
+  competitions = [friendCopy competitions];
 
-  v25 = [v24 hk_map:&__block_literal_global_304];
+  v25 = [competitions hk_map:&__block_literal_global_304];
 
   v26 = [[ASFriend alloc] initWithActivitySnapshots:v9 friendAchievements:v23 friendWorkouts:v16 contact:v7 competitions:v25];
 
@@ -312,24 +312,24 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
   return v6;
 }
 
-- (ASFriend)initWithActivitySnapshots:(id)a3 friendAchievements:(id)a4 friendWorkouts:(id)a5 contact:(id)a6 competitions:(id)a7
+- (ASFriend)initWithActivitySnapshots:(id)snapshots friendAchievements:(id)achievements friendWorkouts:(id)workouts contact:(id)contact competitions:(id)competitions
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  snapshotsCopy = snapshots;
+  achievementsCopy = achievements;
+  workoutsCopy = workouts;
+  contactCopy = contact;
+  competitionsCopy = competitions;
   v21.receiver = self;
   v21.super_class = ASFriend;
   v17 = [(ASFriend *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_snapshots, a3);
-    objc_storeStrong(&v18->_friendAchievements, a4);
-    objc_storeStrong(&v18->_friendWorkouts, a5);
-    objc_storeStrong(&v18->_contact, a6);
-    objc_storeStrong(&v18->_competitions, a7);
+    objc_storeStrong(&v17->_snapshots, snapshots);
+    objc_storeStrong(&v18->_friendAchievements, achievements);
+    objc_storeStrong(&v18->_friendWorkouts, workouts);
+    objc_storeStrong(&v18->_contact, contact);
+    objc_storeStrong(&v18->_competitions, competitions);
   }
 
   return v18;
@@ -339,19 +339,19 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"==================================================================\n"];
-  v4 = [(ASFriend *)self displayName];
-  v5 = [(ASFriend *)self fullName];
-  v6 = [(ASFriend *)self UUID];
-  v7 = [(ASFriend *)self timeZone];
-  [v3 appendFormat:@"%@ [%@] (%@) %@\n", v4, v5, v6, v7];
+  displayName = [(ASFriend *)self displayName];
+  fullName = [(ASFriend *)self fullName];
+  uUID = [(ASFriend *)self UUID];
+  timeZone = [(ASFriend *)self timeZone];
+  [v3 appendFormat:@"%@ [%@] (%@) %@\n", displayName, fullName, uUID, timeZone];
 
   [v3 appendFormat:@"==================================================================\n\n"];
-  v8 = [(ASContact *)self->_contact fullDescription];
-  [v3 appendFormat:@"%@\n", v8];
+  fullDescription = [(ASContact *)self->_contact fullDescription];
+  [v3 appendFormat:@"%@\n", fullDescription];
 
-  v9 = [(ASContact *)self->_contact relationshipStorage];
-  v10 = [v9 fullDescription];
-  [v3 appendFormat:@"%@", v10];
+  relationshipStorage = [(ASContact *)self->_contact relationshipStorage];
+  fullDescription2 = [relationshipStorage fullDescription];
+  [v3 appendFormat:@"%@", fullDescription2];
 
   [v3 appendFormat:@"Competitions: %@\n", self->_competitions];
   [v3 appendFormat:@"Snapshots: %@\n", self->_snapshots];
@@ -366,14 +366,14 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSDictionary *)self->_snapshots copyWithZone:a3];
-  v7 = [(NSDictionary *)self->_friendAchievements copyWithZone:a3];
-  v8 = [(NSDictionary *)self->_friendWorkouts copyWithZone:a3];
-  v9 = [(ASContact *)self->_contact copyWithZone:a3];
-  v10 = [(NSArray *)self->_competitions copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSDictionary *)self->_snapshots copyWithZone:zone];
+  v7 = [(NSDictionary *)self->_friendAchievements copyWithZone:zone];
+  v8 = [(NSDictionary *)self->_friendWorkouts copyWithZone:zone];
+  v9 = [(ASContact *)self->_contact copyWithZone:zone];
+  v10 = [(NSArray *)self->_competitions copyWithZone:zone];
   v11 = [v5 initWithActivitySnapshots:v6 friendAchievements:v7 friendWorkouts:v8 contact:v9 competitions:v10];
 
   return v11;
@@ -381,63 +381,63 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 
 - (BOOL)canSeeMyActivityData
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 isActivityDataVisible];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  isActivityDataVisible = [primaryRelationship isActivityDataVisible];
 
-  return v3;
+  return isActivityDataVisible;
 }
 
 - (BOOL)isMyActivityDataCurrentlyHidden
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 isHidingActivityData];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  isHidingActivityData = [primaryRelationship isHidingActivityData];
 
-  return v3;
+  return isHidingActivityData;
 }
 
 - (BOOL)isCurrentlyHidingActivityDataFromMe
 {
-  v2 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v3 = [v2 isHidingActivityData];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  isHidingActivityData = [primaryRemoteRelationship isHidingActivityData];
 
-  return v3;
+  return isHidingActivityData;
 }
 
-- (BOOL)isActivityDataVisibleToMeForDate:(id)a3
+- (BOOL)isActivityDataVisibleToMeForDate:(id)date
 {
   contact = self->_contact;
-  v4 = a3;
-  v5 = [(ASContact *)contact primaryRemoteRelationship];
-  v6 = [v5 relationshipSnapshotForDate:v4];
+  dateCopy = date;
+  primaryRemoteRelationship = [(ASContact *)contact primaryRemoteRelationship];
+  v6 = [primaryRemoteRelationship relationshipSnapshotForDate:dateCopy];
 
-  LOBYTE(v5) = [v6 isActivityDataVisible];
-  return v5;
+  LOBYTE(primaryRemoteRelationship) = [v6 isActivityDataVisible];
+  return primaryRemoteRelationship;
 }
 
 - (BOOL)isMuted
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 isMuteEnabled];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  isMuteEnabled = [primaryRelationship isMuteEnabled];
 
-  return v3;
+  return isMuteEnabled;
 }
 
 - (BOOL)isAwaitingInviteResponseFromMe
 {
   v3 = ASSecureCloudEnabled();
-  v4 = [(ASContact *)self->_contact primaryRelationship];
-  v5 = [v4 isAwaitingInviteResponse];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  isAwaitingInviteResponse = [primaryRelationship isAwaitingInviteResponse];
   v6 = v3 ^ 1;
-  v7 = (v3 ^ 1) & v5;
-  if (v6 & 1) == 0 && (v5)
+  v7 = (v3 ^ 1) & isAwaitingInviteResponse;
+  if (v6 & 1) == 0 && (isAwaitingInviteResponse)
   {
-    if ([v4 cloudType] == 1)
+    if ([primaryRelationship cloudType] == 1)
     {
-      v8 = [(ASContact *)self->_contact pendingRelationshipShareItem];
-      if (v8)
+      pendingRelationshipShareItem = [(ASContact *)self->_contact pendingRelationshipShareItem];
+      if (pendingRelationshipShareItem)
       {
-        v9 = [(ASContact *)self->_contact pendingLegacyShareLocations];
-        v7 = v9 != 0;
+        pendingLegacyShareLocations = [(ASContact *)self->_contact pendingLegacyShareLocations];
+        v7 = pendingLegacyShareLocations != 0;
       }
 
       else
@@ -458,19 +458,19 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 - (BOOL)sentInviteRequestToMe
 {
   v3 = ASSecureCloudEnabled();
-  v4 = [(ASContact *)self->_contact primaryRelationship];
-  v5 = [v4 hasIncomingInviteRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  hasIncomingInviteRequest = [primaryRelationship hasIncomingInviteRequest];
   v6 = v3 ^ 1;
-  v7 = (v3 ^ 1) & v5;
-  if (v6 & 1) == 0 && (v5)
+  v7 = (v3 ^ 1) & hasIncomingInviteRequest;
+  if (v6 & 1) == 0 && (hasIncomingInviteRequest)
   {
-    if ([v4 cloudType] == 1)
+    if ([primaryRelationship cloudType] == 1)
     {
-      v8 = [(ASContact *)self->_contact pendingRelationshipShareItem];
-      if (v8)
+      pendingRelationshipShareItem = [(ASContact *)self->_contact pendingRelationshipShareItem];
+      if (pendingRelationshipShareItem)
       {
-        v9 = [(ASContact *)self->_contact pendingLegacyShareLocations];
-        v7 = v9 != 0;
+        pendingLegacyShareLocations = [(ASContact *)self->_contact pendingLegacyShareLocations];
+        v7 = pendingLegacyShareLocations != 0;
       }
 
       else
@@ -490,11 +490,11 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 
 - (BOOL)inviteRequestToMeWasAccepted
 {
-  v3 = [(ASContact *)self->_contact primaryRelationship];
-  if ([v3 hasIncomingInviteRequest])
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  if ([primaryRelationship hasIncomingInviteRequest])
   {
-    v4 = [(ASContact *)self->_contact primaryRelationship];
-    v5 = [v4 isAwaitingInviteResponse] ^ 1;
+    primaryRelationship2 = [(ASContact *)self->_contact primaryRelationship];
+    v5 = [primaryRelationship2 isAwaitingInviteResponse] ^ 1;
   }
 
   else
@@ -507,63 +507,63 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 
 - (NSDate)dateForLatestOutgoingInviteRequest
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 dateForLatestOutgoingInviteRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  dateForLatestOutgoingInviteRequest = [primaryRelationship dateForLatestOutgoingInviteRequest];
 
-  return v3;
+  return dateForLatestOutgoingInviteRequest;
 }
 
 - (NSDate)dateForLatestDataHiddenFromMe
 {
-  v2 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v3 = [v2 dateForLatestDataHidden];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  dateForLatestDataHidden = [primaryRemoteRelationship dateForLatestDataHidden];
 
-  return v3;
+  return dateForLatestDataHidden;
 }
 
 - (NSDate)dateForLatestDataHidden
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 dateForLatestDataHidden];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  dateForLatestDataHidden = [primaryRelationship dateForLatestDataHidden];
 
-  return v3;
+  return dateForLatestDataHidden;
 }
 
 - (NSDate)dateActivityDataInitiallyBecameVisibleToMe
 {
-  v2 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v3 = [v2 dateActivityDataInitiallyBecameVisible];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  dateActivityDataInitiallyBecameVisible = [primaryRemoteRelationship dateActivityDataInitiallyBecameVisible];
 
-  return v3;
+  return dateActivityDataInitiallyBecameVisible;
 }
 
-- (BOOL)isHidingActivityDataFromMeForDate:(id)a3
+- (BOOL)isHidingActivityDataFromMeForDate:(id)date
 {
   contact = self->_contact;
-  v4 = a3;
-  v5 = [(ASContact *)contact primaryRemoteRelationship];
-  v6 = [v5 relationshipSnapshotForDate:v4];
+  dateCopy = date;
+  primaryRemoteRelationship = [(ASContact *)contact primaryRemoteRelationship];
+  v6 = [primaryRemoteRelationship relationshipSnapshotForDate:dateCopy];
 
-  LOBYTE(v5) = [v6 isHidingActivityData];
-  return v5;
+  LOBYTE(primaryRemoteRelationship) = [v6 isHidingActivityData];
+  return primaryRemoteRelationship;
 }
 
 - (NSDate)dateForLatestRelationshipStart
 {
-  v3 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v4 = [v3 dateForLatestRelationshipStart];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  dateForLatestRelationshipStart = [primaryRemoteRelationship dateForLatestRelationshipStart];
 
-  v5 = [(ASContact *)self->_contact primaryRelationship];
-  v6 = [v5 dateForLatestRelationshipStart];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  dateForLatestRelationshipStart2 = [primaryRelationship dateForLatestRelationshipStart];
 
-  if ([(NSDate *)v4 hk_isAfterDate:v6])
+  if ([(NSDate *)dateForLatestRelationshipStart hk_isAfterDate:dateForLatestRelationshipStart2])
   {
-    v7 = v4;
+    v7 = dateForLatestRelationshipStart;
   }
 
   else
   {
-    v7 = v6;
+    v7 = dateForLatestRelationshipStart2;
   }
 
   v8 = v7;
@@ -573,18 +573,18 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 
 - (NSDate)dateForLatestOutgoingCompetitionRequest
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 dateForLatestOutgoingCompetitionRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  dateForLatestOutgoingCompetitionRequest = [primaryRelationship dateForLatestOutgoingCompetitionRequest];
 
-  return v3;
+  return dateForLatestOutgoingCompetitionRequest;
 }
 
 - (NSDate)dateForLatestIncomingCompetitionRequest
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 dateForLatestIncomingCompetitionRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  dateForLatestIncomingCompetitionRequest = [primaryRelationship dateForLatestIncomingCompetitionRequest];
 
-  return v3;
+  return dateForLatestIncomingCompetitionRequest;
 }
 
 - (BOOL)isAwaitingCompetitionResponseFromMe
@@ -594,11 +594,11 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
     return 0;
   }
 
-  v4 = [(ASContact *)self->_contact primaryRelationship];
-  if ([v4 hasIncomingCompetitionRequest])
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  if ([primaryRelationship hasIncomingCompetitionRequest])
   {
-    v5 = [(ASFriend *)self dateForLatestIncomingCompetitionRequest];
-    HasExpired = ASCompetitionRequestHasExpired(v5);
+    dateForLatestIncomingCompetitionRequest = [(ASFriend *)self dateForLatestIncomingCompetitionRequest];
+    HasExpired = ASCompetitionRequestHasExpired(dateForLatestIncomingCompetitionRequest);
 
     v3 = HasExpired ^ 1;
   }
@@ -613,20 +613,20 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
 
 - (BOOL)hasCompetitionRequestFromMe
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 hasOutgoingCompetitionRequest];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  hasOutgoingCompetitionRequest = [primaryRelationship hasOutgoingCompetitionRequest];
 
-  return v3;
+  return hasOutgoingCompetitionRequest;
 }
 
 - (BOOL)hasPendingCompetitionRequestFromMe
 {
   if (![(ASFriend *)self isCompetitionActive])
   {
-    v3 = [(ASFriend *)self hasCompetitionRequestFromMe];
-    if (!v3)
+    hasCompetitionRequestFromMe = [(ASFriend *)self hasCompetitionRequestFromMe];
+    if (!hasCompetitionRequestFromMe)
     {
-      return v3;
+      return hasCompetitionRequestFromMe;
     }
 
     if (![(ASFriend *)self ignoredCompetitionRequestFromMe])
@@ -634,34 +634,34 @@ id __51__ASFriend_DomainCodable__friendWithCodableFriend___block_invoke(uint64_t
       goto LABEL_6;
     }
 
-    v4 = [(ASContact *)self->_contact primaryRemoteRelationship];
-    v5 = [v4 dateForLatestIgnoredCompetitionRequest];
-    v6 = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
-    v7 = [v5 hk_isAfterDate:v6];
+    primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+    dateForLatestIgnoredCompetitionRequest = [primaryRemoteRelationship dateForLatestIgnoredCompetitionRequest];
+    dateForLatestOutgoingCompetitionRequest = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
+    v7 = [dateForLatestIgnoredCompetitionRequest hk_isAfterDate:dateForLatestOutgoingCompetitionRequest];
 
     if ((v7 & 1) == 0)
     {
 LABEL_6:
-      v8 = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
-      HasExpired = ASCompetitionRequestHasExpired(v8);
+      dateForLatestOutgoingCompetitionRequest2 = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
+      HasExpired = ASCompetitionRequestHasExpired(dateForLatestOutgoingCompetitionRequest2);
 
-      LOBYTE(v3) = HasExpired ^ 1;
-      return v3;
+      LOBYTE(hasCompetitionRequestFromMe) = HasExpired ^ 1;
+      return hasCompetitionRequestFromMe;
     }
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(hasCompetitionRequestFromMe) = 0;
+  return hasCompetitionRequestFromMe;
 }
 
 - (BOOL)ignoredCompetitionRequestFromMe
 {
-  v3 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  if ([v3 hasIgnoredCompetitionRequest])
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  if ([primaryRemoteRelationship hasIgnoredCompetitionRequest])
   {
-    v4 = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
-    v5 = [v3 dateForLatestIgnoredCompetitionRequest];
-    v6 = [v5 hk_isAfterDate:v4];
+    dateForLatestOutgoingCompetitionRequest = [(ASFriend *)self dateForLatestOutgoingCompetitionRequest];
+    dateForLatestIgnoredCompetitionRequest = [primaryRemoteRelationship dateForLatestIgnoredCompetitionRequest];
+    v6 = [dateForLatestIgnoredCompetitionRequest hk_isAfterDate:dateForLatestOutgoingCompetitionRequest];
   }
 
   else
@@ -683,9 +683,9 @@ LABEL_6:
   v4 = competitions;
   if ([(NSArray *)v4 count])
   {
-    v5 = [(ASFriend *)self isCompetitionActive];
-    v6 = [(ASFriend *)self hasCompletedCompetition];
-    if (v5 || !v6)
+    isCompetitionActive = [(ASFriend *)self isCompetitionActive];
+    hasCompletedCompetition = [(ASFriend *)self hasCompletedCompetition];
+    if (isCompetitionActive || !hasCompletedCompetition)
     {
       v7 = [(NSArray *)v4 subarrayWithRange:0, [(NSArray *)v4 count]- 1];
 
@@ -702,10 +702,10 @@ LABEL_6:
 
 - (ASCompetition)mostRecentlyCompletedCompetition
 {
-  v2 = [(ASFriend *)self completedCompetitions];
-  v3 = [v2 lastObject];
+  completedCompetitions = [(ASFriend *)self completedCompetitions];
+  lastObject = [completedCompetitions lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (ASCompetition)currentOrMostRecentCompetition
@@ -728,48 +728,48 @@ LABEL_6:
 {
   if ([(ASFriend *)self hasPendingCompetitionRequestFromMe]|| [(ASFriend *)self isAwaitingCompetitionResponseFromMe])
   {
-    v3 = [(NSArray *)self->_competitions lastObject];
+    lastObject = [(NSArray *)self->_competitions lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)hasCompletedCompetition
 {
-  v2 = [(ASContact *)self->_contact primaryRelationship];
-  v3 = [v2 hasCompletedCompetition];
+  primaryRelationship = [(ASContact *)self->_contact primaryRelationship];
+  hasCompletedCompetition = [primaryRelationship hasCompletedCompetition];
 
-  return v3;
+  return hasCompletedCompetition;
 }
 
 - (BOOL)hasCompletedFirstDayOfCurrentCompetition
 {
-  v3 = [(ASFriend *)self isCompetitionActive];
-  if (v3)
+  isCompetitionActive = [(ASFriend *)self isCompetitionActive];
+  if (isCompetitionActive)
   {
-    v4 = [(ASFriend *)self currentCompetition];
-    v5 = [v4 stage];
+    currentCompetition = [(ASFriend *)self currentCompetition];
+    stage = [currentCompetition stage];
 
-    if (v5 == 1)
+    if (stage == 1)
     {
-      v6 = [(ASFriend *)self currentCompetition];
-      v7 = [v6 isFirstDayOfCompetition];
+      currentCompetition2 = [(ASFriend *)self currentCompetition];
+      isFirstDayOfCompetition = [currentCompetition2 isFirstDayOfCompetition];
 
-      LOBYTE(v3) = v7 ^ 1;
+      LOBYTE(isCompetitionActive) = isFirstDayOfCompetition ^ 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isCompetitionActive) = 0;
     }
   }
 
-  return v3;
+  return isCompetitionActive;
 }
 
 - (BOOL)isEligibleToReceiveCompetitionRequest
@@ -787,24 +787,24 @@ LABEL_6:
 
 - (BOOL)hasCompetitionHistory
 {
-  v2 = [(ASFriend *)self completedCompetitions];
-  v3 = [v2 count] != 0;
+  completedCompetitions = [(ASFriend *)self completedCompetitions];
+  v3 = [completedCompetitions count] != 0;
 
   return v3;
 }
 
 - (unint64_t)numberOfCompetitionWinsAgainstMe
 {
-  v2 = [(ASFriend *)self completedCompetitions];
-  v3 = ASCompetitionWinCountForParticipant(v2, 1);
+  completedCompetitions = [(ASFriend *)self completedCompetitions];
+  v3 = ASCompetitionWinCountForParticipant(completedCompetitions, 1);
 
   return v3;
 }
 
 - (unint64_t)numberOfCompetitionWinsByMe
 {
-  v2 = [(ASFriend *)self completedCompetitions];
-  v3 = ASCompetitionWinCountForParticipant(v2, 0);
+  completedCompetitions = [(ASFriend *)self completedCompetitions];
+  v3 = ASCompetitionWinCountForParticipant(completedCompetitions, 0);
 
   return v3;
 }
@@ -812,35 +812,35 @@ LABEL_6:
 - (NSDate)earliestCompetitionVictoryOrPotentialVictoryDate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   if ([(ASFriend *)self isCompetitionActive])
   {
-    v4 = [(ASFriend *)self currentCompetition];
+    currentCompetition = [(ASFriend *)self currentCompetition];
   }
 
   else
   {
-    v5 = [(ASFriend *)self competitionPendingAcceptance];
+    competitionPendingAcceptance = [(ASFriend *)self competitionPendingAcceptance];
 
-    if (!v5)
+    if (!competitionPendingAcceptance)
     {
       goto LABEL_6;
     }
 
-    v4 = [(ASFriend *)self competitionPendingAcceptance];
+    currentCompetition = [(ASFriend *)self competitionPendingAcceptance];
   }
 
-  v6 = v4;
-  v7 = [v4 endDate];
+  v6 = currentCompetition;
+  endDate = [currentCompetition endDate];
 
-  v3 = v7;
+  distantFuture = endDate;
 LABEL_6:
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(ASFriend *)self completedCompetitions];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  completedCompetitions = [(ASFriend *)self completedCompetitions];
+  v9 = [completedCompetitions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -851,25 +851,25 @@ LABEL_6:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(completedCompetitions);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         if ([v13 isParticipantWinning:0])
         {
-          v14 = [v13 endDate];
-          v15 = [v14 hk_isBeforeDate:v3];
+          endDate2 = [v13 endDate];
+          v15 = [endDate2 hk_isBeforeDate:distantFuture];
 
           if (v15)
           {
-            v16 = [v13 endDate];
+            endDate3 = [v13 endDate];
 
-            v3 = v16;
+            distantFuture = endDate3;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [completedCompetitions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -877,37 +877,37 @@ LABEL_6:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return distantFuture;
 }
 
-- (void)setSnapshots:(id)a3
+- (void)setSnapshots:(id)snapshots
 {
-  objc_storeStrong(&self->_snapshots, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_snapshots, snapshots);
+  snapshotsCopy = snapshots;
   currentCacheIndex = self->_currentCacheIndex;
   self->_currentCacheIndex = 0;
 }
 
-- (id)_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:(int64_t)a3
+- (id)_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:(int64_t)index
 {
-  v4 = [(ASFriend *)self mostRecentSnapshot];
-  if (v4)
+  mostRecentSnapshot = [(ASFriend *)self mostRecentSnapshot];
+  if (mostRecentSnapshot)
   {
     v5 = _HKStartDateForSnapshotIndex();
     v6 = _HKEndDateForSnapshotIndex();
     v7 = MEMORY[0x277CCDDC8];
-    v8 = [v4 sourceUUID];
-    v9 = [v7 _fitnessFriendActivitySnapshotWithSnapshotIndex:a3 startDate:v5 endDate:v6 sourceUUID:v8];
+    sourceUUID = [mostRecentSnapshot sourceUUID];
+    v9 = [v7 _fitnessFriendActivitySnapshotWithSnapshotIndex:index startDate:v5 endDate:v6 sourceUUID:sourceUUID];
 
-    [v4 mmg];
+    [mostRecentSnapshot mmg];
     [v9 setMmg:?];
-    [v4 energyBurnedGoal];
+    [mostRecentSnapshot energyBurnedGoal];
     [v9 setEnergyBurnedGoal:?];
-    [v4 briskMinutesGoal];
+    [mostRecentSnapshot briskMinutesGoal];
     [v9 setBriskMinutesGoal:?];
-    [v4 activeHoursGoal];
+    [mostRecentSnapshot activeHoursGoal];
     [v9 setActiveHoursGoal:?];
-    [v9 setAmm:{objc_msgSend(v4, "amm")}];
+    [v9 setAmm:{objc_msgSend(mostRecentSnapshot, "amm")}];
     [v9 setHasCarriedForwardGoals:1];
   }
 
@@ -919,46 +919,46 @@ LABEL_6:
   return v9;
 }
 
-- (id)snapshotWithGoalsCarriedForwardForSnapshotIndex:(id)a3
+- (id)snapshotWithGoalsCarriedForwardForSnapshotIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(ASFriend *)self snapshots];
-  v6 = [v5 objectForKey:v4];
+  indexCopy = index;
+  snapshots = [(ASFriend *)self snapshots];
+  v6 = [snapshots objectForKey:indexCopy];
 
   if (!v6)
   {
-    v6 = -[ASFriend _emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:](self, "_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:", [v4 integerValue]);
+    v6 = -[ASFriend _emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:](self, "_emptySnapshotWithGoalsCarriedForwardForSnapshotIndex:", [indexCopy integerValue]);
   }
 
   return v6;
 }
 
-- (BOOL)estimatedIsStandaloneForSnapshotIndex:(id)a3
+- (BOOL)estimatedIsStandaloneForSnapshotIndex:(id)index
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_snapshots objectForKeyedSubscript:v4];
+  indexCopy = index;
+  v5 = [(NSDictionary *)self->_snapshots objectForKeyedSubscript:indexCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 activitySummary];
-    v8 = [v7 _isStandalonePhoneSummary];
+    activitySummary = [v5 activitySummary];
+    _isStandalonePhoneSummary = [activitySummary _isStandalonePhoneSummary];
   }
 
   else
   {
-    v9 = [(NSDictionary *)self->_snapshots allKeys];
-    v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_341];
+    allKeys = [(NSDictionary *)self->_snapshots allKeys];
+    v10 = [allKeys sortedArrayUsingComparator:&__block_literal_global_341];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v10;
-    v11 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    activitySummary = v10;
+    v11 = [activitySummary countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v11)
     {
-      v28 = self;
+      selfCopy = self;
       v12 = 0;
       v13 = *v30;
       while (2)
@@ -969,21 +969,21 @@ LABEL_6:
         {
           if (*v30 != v13)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activitySummary);
           }
 
           v16 = *(*(&v29 + 1) + 8 * v14);
-          v17 = [v16 longLongValue];
-          v18 = [v4 longLongValue];
+          longLongValue = [v16 longLongValue];
+          longLongValue2 = [indexCopy longLongValue];
           v12 = v16;
-          if (v17 >= v18)
+          if (longLongValue >= longLongValue2)
           {
 
             if (v15 && v12)
             {
-              v21 = [v4 longLongValue];
-              v22 = v21 - [v15 longLongValue];
-              if (v22 >= [v12 longLongValue] - v21)
+              longLongValue3 = [indexCopy longLongValue];
+              v22 = longLongValue3 - [v15 longLongValue];
+              if (v22 >= [v12 longLongValue] - longLongValue3)
               {
                 v20 = v12;
               }
@@ -1023,7 +1023,7 @@ LABEL_6:
         }
 
         while (v11 != v14);
-        v11 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v11 = [activitySummary countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v11)
         {
           continue;
@@ -1041,12 +1041,12 @@ LABEL_6:
       }
 
 LABEL_24:
-      v23 = [(NSDictionary *)v28->_snapshots objectForKeyedSubscript:v20];
+      v23 = [(NSDictionary *)selfCopy->_snapshots objectForKeyedSubscript:v20];
       if (v23)
       {
-        v24 = v23;
-        v25 = [v23 activitySummary];
-        v8 = [v25 _isStandalonePhoneSummary];
+        mEMORY[0x277CCDD30] = v23;
+        activitySummary2 = [v23 activitySummary];
+        _isStandalonePhoneSummary = [activitySummary2 _isStandalonePhoneSummary];
 
         goto LABEL_29;
       }
@@ -1061,14 +1061,14 @@ LABEL_24:
     }
 
 LABEL_28:
-    v24 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v8 = [v24 isStandalonePhoneFitnessMode];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    _isStandalonePhoneSummary = [mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode];
     v15 = v11;
 LABEL_29:
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v8;
+  return _isStandalonePhoneSummary;
 }
 
 uint64_t __50__ASFriend_estimatedIsStandaloneForSnapshotIndex___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1092,10 +1092,10 @@ uint64_t __50__ASFriend_estimatedIsStandaloneForSnapshotIndex___block_invoke(uin
 
 - (BOOL)supportsCompetitions
 {
-  v2 = [(ASContact *)self->_contact primaryRemoteRelationship];
-  v3 = [v2 supportsCompetitions];
+  primaryRemoteRelationship = [(ASContact *)self->_contact primaryRemoteRelationship];
+  supportsCompetitions = [primaryRemoteRelationship supportsCompetitions];
 
-  return v3;
+  return supportsCompetitions;
 }
 
 - (BOOL)needsDowngradeRequestAcknowledgment
@@ -1105,11 +1105,11 @@ uint64_t __50__ASFriend_estimatedIsStandaloneForSnapshotIndex___block_invoke(uin
     return 0;
   }
 
-  v3 = [(ASContact *)self->_contact relationshipStorage];
-  v4 = [v3 legacyRemoteRelationship];
-  v5 = [v4 secureCloudDowngradeNeedsAcknowledgement];
+  relationshipStorage = [(ASContact *)self->_contact relationshipStorage];
+  legacyRemoteRelationship = [relationshipStorage legacyRemoteRelationship];
+  secureCloudDowngradeNeedsAcknowledgement = [legacyRemoteRelationship secureCloudDowngradeNeedsAcknowledgement];
 
-  return v5;
+  return secureCloudDowngradeNeedsAcknowledgement;
 }
 
 uint64_t __33__ASFriend_currentDateComponents__block_invoke()

@@ -1,15 +1,15 @@
 @interface NLGhostPacerAccumulatorFactory
-+ (id)makeWithActivityType:(id)a3 liveWorkoutConfiguration:(id)a4;
++ (id)makeWithActivityType:(id)type liveWorkoutConfiguration:(id)configuration;
 - (NLGhostPacerAccumulatorFactory)init;
 @end
 
 @implementation NLGhostPacerAccumulatorFactory
 
-+ (id)makeWithActivityType:(id)a3 liveWorkoutConfiguration:(id)a4
++ (id)makeWithActivityType:(id)type liveWorkoutConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = specialized static GhostPacerAccumulatorFactory.make(activityType:liveWorkoutConfiguration:)(v5, v6);
+  typeCopy = type;
+  configurationCopy = configuration;
+  v7 = specialized static GhostPacerAccumulatorFactory.make(activityType:liveWorkoutConfiguration:)(typeCopy, configurationCopy);
 
   return v7;
 }

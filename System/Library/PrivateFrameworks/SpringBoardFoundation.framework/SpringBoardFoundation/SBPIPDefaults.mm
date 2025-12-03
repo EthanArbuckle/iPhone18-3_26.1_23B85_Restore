@@ -1,9 +1,9 @@
 @interface SBPIPDefaults
-- (double)lastKnownSizeForContentType:(id)a3;
-- (unint64_t)lastKnownCornerPositionForContentType:(id)a3;
+- (double)lastKnownSizeForContentType:(id)type;
+- (unint64_t)lastKnownCornerPositionForContentType:(id)type;
 - (void)_bindAndRegisterDefaults;
-- (void)setLastKnownCornerPosition:(unint64_t)a3 contentType:(id)a4;
-- (void)setLastKnownSize:(double)a3 contentType:(id)a4;
+- (void)setLastKnownCornerPosition:(unint64_t)position contentType:(id)type;
+- (void)setLastKnownSize:(double)size contentType:(id)type;
 @end
 
 @implementation SBPIPDefaults
@@ -30,33 +30,33 @@
   [(BSAbstractDefaultDomain *)self _bindProperty:v9 withDefaultKey:@"SBPIPLastKnownSizeByContentType" toDefaultValue:0 options:1];
 }
 
-- (unint64_t)lastKnownCornerPositionForContentType:(id)a3
+- (unint64_t)lastKnownCornerPositionForContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(SBPIPDefaults *)self lastKnownCornerPositionByContentType];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  lastKnownCornerPositionByContentType = [(SBPIPDefaults *)self lastKnownCornerPositionByContentType];
+  v6 = [lastKnownCornerPositionByContentType objectForKey:typeCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 3;
+    unsignedIntegerValue = 3;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setLastKnownCornerPosition:(unint64_t)a3 contentType:(id)a4
+- (void)setLastKnownCornerPosition:(unint64_t)position contentType:(id)type
 {
-  v6 = a4;
-  v7 = [(SBPIPDefaults *)self lastKnownCornerPositionByContentType];
-  v10 = v7;
-  if (v7)
+  typeCopy = type;
+  lastKnownCornerPositionByContentType = [(SBPIPDefaults *)self lastKnownCornerPositionByContentType];
+  v10 = lastKnownCornerPositionByContentType;
+  if (lastKnownCornerPositionByContentType)
   {
-    [MEMORY[0x1E695DF90] dictionaryWithDictionary:v7];
+    [MEMORY[0x1E695DF90] dictionaryWithDictionary:lastKnownCornerPositionByContentType];
   }
 
   else
@@ -64,17 +64,17 @@
     [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
   v8 = ;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v8 setObject:v9 forKey:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
+  [v8 setObject:v9 forKey:typeCopy];
 
   [(SBPIPDefaults *)self setLastKnownCornerPositionByContentType:v8];
 }
 
-- (double)lastKnownSizeForContentType:(id)a3
+- (double)lastKnownSizeForContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(SBPIPDefaults *)self lastKnownSizeByContentType];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  lastKnownSizeByContentType = [(SBPIPDefaults *)self lastKnownSizeByContentType];
+  v6 = [lastKnownSizeByContentType objectForKey:typeCopy];
 
   [v6 doubleValue];
   v8 = v7;
@@ -82,14 +82,14 @@
   return v8;
 }
 
-- (void)setLastKnownSize:(double)a3 contentType:(id)a4
+- (void)setLastKnownSize:(double)size contentType:(id)type
 {
-  v6 = a4;
-  v7 = [(SBPIPDefaults *)self lastKnownSizeByContentType];
-  v10 = v7;
-  if (v7)
+  typeCopy = type;
+  lastKnownSizeByContentType = [(SBPIPDefaults *)self lastKnownSizeByContentType];
+  v10 = lastKnownSizeByContentType;
+  if (lastKnownSizeByContentType)
   {
-    [MEMORY[0x1E695DF90] dictionaryWithDictionary:v7];
+    [MEMORY[0x1E695DF90] dictionaryWithDictionary:lastKnownSizeByContentType];
   }
 
   else
@@ -97,8 +97,8 @@
     [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   }
   v8 = ;
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v8 setObject:v9 forKey:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:size];
+  [v8 setObject:v9 forKey:typeCopy];
 
   [(SBPIPDefaults *)self setLastKnownSizeByContentType:v8];
 }

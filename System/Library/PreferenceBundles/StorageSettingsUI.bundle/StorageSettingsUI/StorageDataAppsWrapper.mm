@@ -1,8 +1,8 @@
 @interface StorageDataAppsWrapper
 - (void)dealloc;
-- (void)startObservingWithUpdateHandler:(id)a3;
+- (void)startObservingWithUpdateHandler:(id)handler;
 - (void)stopObserving;
-- (void)updateApps:(id)a3;
+- (void)updateApps:(id)apps;
 @end
 
 @implementation StorageDataAppsWrapper
@@ -15,12 +15,12 @@
   [(StorageDataAppsWrapper *)&v3 dealloc];
 }
 
-- (void)startObservingWithUpdateHandler:(id)a3
+- (void)startObservingWithUpdateHandler:(id)handler
 {
   if (!self->isMonitoring)
   {
     self->isMonitoring = 1;
-    v5 = objc_retainBlock(a3);
+    v5 = objc_retainBlock(handler);
     updateHandler = self->updateHandler;
     self->updateHandler = v5;
 
@@ -53,29 +53,29 @@
   }
 }
 
-- (void)updateApps:(id)a3
+- (void)updateApps:(id)apps
 {
   v39 = objc_alloc_init(SAAppSizerResults);
   v3 = +[STStorageAppsMonitor sharedMonitor];
-  v4 = [v3 apps];
+  apps = [v3 apps];
 
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[STStorageDataNotifier sharedNotifier];
   [v6 postLoadingComplete];
 
   v7 = +[STStorageDiskMonitor sharedMonitor];
-  v8 = [v7 storageSpace];
-  v37 = [v8 totalBytes];
+  storageSpace = [v7 storageSpace];
+  totalBytes = [storageSpace totalBytes];
 
   v9 = +[STStorageDiskMonitor sharedMonitor];
-  v10 = [v9 storageSpace];
-  v36 = [v10 usedBytes];
+  storageSpace2 = [v9 storageSpace];
+  usedBytes = [storageSpace2 usedBytes];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v4;
+  obj = apps;
   v11 = &swift_slowDealloc_ptr;
   v43 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   v12 = 0;
@@ -94,18 +94,18 @@
 
         v14 = *(*(&v48 + 1) + 8 * i);
         v15 = objc_alloc_init(v11[155]);
-        v16 = [v14 appSize];
-        [v15 setFixedSize:{objc_msgSend(v16, "fixed")}];
+        appSize = [v14 appSize];
+        [v15 setFixedSize:{objc_msgSend(appSize, "fixed")}];
 
-        v17 = [v14 appSize];
-        [v15 setDataSize:{objc_msgSend(v17, "docsAndData")}];
+        appSize2 = [v14 appSize];
+        [v15 setDataSize:{objc_msgSend(appSize2, "docsAndData")}];
 
-        v18 = [v14 appSize];
-        v19 = [v18 userTotal];
+        appSize3 = [v14 appSize];
+        userTotal = [appSize3 userTotal];
 
         v20 = +[NSMutableSet set];
-        v21 = [v14 childApps];
-        v22 = [v21 count];
+        childApps = [v14 childApps];
+        v22 = [childApps count];
 
         if (v22)
         {
@@ -113,8 +113,8 @@
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v23 = [v14 childApps];
-          v24 = [v23 countByEnumeratingWithState:&v44 objects:v52 count:16];
+          childApps2 = [v14 childApps];
+          v24 = [childApps2 countByEnumeratingWithState:&v44 objects:v52 count:16];
           if (v24)
           {
             v25 = v24;
@@ -125,14 +125,14 @@
               {
                 if (*v45 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(childApps2);
                 }
 
-                v28 = [*(*(&v44 + 1) + 8 * j) bundleIdentifier];
-                [v20 addObject:v28];
+                bundleIdentifier = [*(*(&v44 + 1) + 8 * j) bundleIdentifier];
+                [v20 addObject:bundleIdentifier];
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              v25 = [childApps2 countByEnumeratingWithState:&v44 objects:v52 count:16];
             }
 
             while (v25);
@@ -143,11 +143,11 @@
 
         else
         {
-          v23 = [v14 bundleIdentifier];
-          [v20 addObject:v23];
+          childApps2 = [v14 bundleIdentifier];
+          [v20 addObject:childApps2];
         }
 
-        v12 += v19;
+        v12 += userTotal;
 
         [v5 setObject:v15 forKey:v20];
       }
@@ -165,15 +165,15 @@
   v32 = [NSSet setWithObject:@"com.apple.fakeapp.System"];
   [v29 setObject:v30 forKey:v32];
 
-  v33 = &v36[-v12 - v31];
+  v33 = &usedBytes[-v12 - v31];
   v34 = objc_alloc_init(v11[155]);
   [v34 setDataSize:v33];
   v35 = [NSSet setWithObject:@"com.apple.fakeapp.SystemData"];
   [v29 setObject:v34 forKey:v35];
 
   [v39 setAppData:v29];
-  [v39 setDiskUsed:v36];
-  [v39 setDiskCapacity:v37];
+  [v39 setDiskUsed:usedBytes];
+  [v39 setDiskCapacity:totalBytes];
   (*(self->updateHandler + 2))();
 }
 

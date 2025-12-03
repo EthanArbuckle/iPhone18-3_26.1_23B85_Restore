@@ -1,35 +1,35 @@
 @interface PPLocationStorage
-- (BOOL)decayFeedbackCountsWithDecayRate:(double)a3 shouldContinueBlock:(id)a4;
-- (BOOL)deleteAllLocationFeedbackCountRecordsOlderThanDate:(id)a3;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 atLeastOneLocationRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 atLeastOneLocationRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 atLeastOneLocationRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 atLeastOneLocationRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllLocationsOlderThanDate:(id)a3 atLeastOneLocationRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 error:(id *)a8;
-- (BOOL)iterLocationRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)pruneOrphanedLocationFeedbackCountRecordsWithLimit:(unint64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 isComplete:(BOOL *)a6;
-- (PPLocationStorage)initWithDatabase:(id)a3;
-- (id)sourceStats:(unint64_t)a3 withExcludedAlgorithms:(id)a4;
-- (id)tempViewForSourceIdsExcludedAlgorithms:(id)a3 txnWitness:(id)a4;
-- (void)_deleteLocationsWithRowIds:(void *)a3 txnWitness:(uint64_t)a4 atLeastOneLocationRemoved:(uint64_t)a5 deletedCount:;
+- (BOOL)decayFeedbackCountsWithDecayRate:(double)rate shouldContinueBlock:(id)block;
+- (BOOL)deleteAllLocationFeedbackCountRecordsOlderThanDate:(id)date;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id documentIds:(id)ids atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupIds:(id)ids atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsOlderThanDate:(id)date atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync error:(id *)error;
+- (BOOL)iterLocationRecordsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)pruneOrphanedLocationFeedbackCountRecordsWithLimit:(unint64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count isComplete:(BOOL *)complete;
+- (PPLocationStorage)initWithDatabase:(id)database;
+- (id)sourceStats:(unint64_t)stats withExcludedAlgorithms:(id)algorithms;
+- (id)tempViewForSourceIdsExcludedAlgorithms:(id)algorithms txnWitness:(id)witness;
+- (void)_deleteLocationsWithRowIds:(void *)ids txnWitness:(uint64_t)witness atLeastOneLocationRemoved:(uint64_t)removed deletedCount:;
 - (void)dealloc;
 @end
 
 @implementation PPLocationStorage
 
-- (id)tempViewForSourceIdsExcludedAlgorithms:(id)a3 txnWitness:(id)a4
+- (id)tempViewForSourceIdsExcludedAlgorithms:(id)algorithms txnWitness:(id)witness
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  algorithmsCopy = algorithms;
+  witnessCopy = witness;
+  if ([algorithmsCopy count])
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v5 allObjects];
-    v9 = [v8 _pas_componentsJoinedByString:{@", "}];
+    allObjects = [algorithmsCopy allObjects];
+    v9 = [allObjects _pas_componentsJoinedByString:{@", "}];
     v10 = [v7 initWithFormat:@"SELECT source_id FROM loc_records WHERE algorithm NOT IN (%@)", v9];
 
-    v11 = [PPSQLDatabase createTempViewContainingRowsFromQuery:v10 descriptiveTableName:@"loc_sourceids" txnWitness:v6];
+    v11 = [PPSQLDatabase createTempViewContainingRowsFromQuery:v10 descriptiveTableName:@"loc_sourceids" txnWitness:witnessCopy];
   }
 
   else
@@ -40,7 +40,7 @@
   return v11;
 }
 
-- (BOOL)pruneOrphanedLocationFeedbackCountRecordsWithLimit:(unint64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 isComplete:(BOOL *)a6
+- (BOOL)pruneOrphanedLocationFeedbackCountRecordsWithLimit:(unint64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count isComplete:(BOOL *)complete
 {
   v10 = 0;
   v11 = &v10;
@@ -53,10 +53,10 @@
   v9[3] = &unk_278978F88;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
-  v9[8] = a5;
-  v9[9] = a6;
+  v9[6] = limit;
+  v9[7] = offset;
+  v9[8] = count;
+  v9[9] = complete;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v9];
   v7 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -70,9 +70,9 @@ uint64_t __106__PPLocationStorage_pruneOrphanedLocationFeedbackCountRecordsWithL
   return result;
 }
 
-- (BOOL)deleteAllLocationFeedbackCountRecordsOlderThanDate:(id)a3
+- (BOOL)deleteAllLocationFeedbackCountRecordsOlderThanDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -84,7 +84,7 @@ uint64_t __106__PPLocationStorage_pruneOrphanedLocationFeedbackCountRecordsWithL
   v8[3] = &unk_278978F60;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = dateCopy;
   v9 = v6;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v8];
   LOBYTE(db) = *(v12 + 24);
@@ -100,9 +100,9 @@ uint64_t __72__PPLocationStorage_deleteAllLocationFeedbackCountRecordsOlderThanD
   return result;
 }
 
-- (id)sourceStats:(unint64_t)a3 withExcludedAlgorithms:(id)a4
+- (id)sourceStats:(unint64_t)stats withExcludedAlgorithms:(id)algorithms
 {
-  v6 = a4;
+  algorithmsCopy = algorithms;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -115,10 +115,10 @@ uint64_t __72__PPLocationStorage_deleteAllLocationFeedbackCountRecordsOlderThanD
   v11[2] = __56__PPLocationStorage_sourceStats_withExcludedAlgorithms___block_invoke;
   v11[3] = &unk_278978F38;
   v11[4] = self;
-  v8 = v6;
+  v8 = algorithmsCopy;
   v12 = v8;
   v13 = &v15;
-  v14 = a3;
+  statsCopy = stats;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v11];
   v9 = v16[5];
 
@@ -152,25 +152,25 @@ void __56__PPLocationStorage_sourceStats_withExcludedAlgorithms___block_invoke(u
   }
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 atLeastOneLocationRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
   db = self->_db;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __130__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupId_olderThanDate_atLeastOneLocationRemoved_deletedCount_error___block_invoke;
   v21[3] = &unk_278978F10;
   v21[4] = self;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v25 = a6;
-  v26 = a7;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
+  v22 = idCopy;
+  v23 = groupIdCopy;
+  v24 = dateCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v17 = dateCopy;
+  v18 = groupIdCopy;
+  v19 = idCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v21];
 
   return 1;
@@ -187,13 +187,13 @@ void __130__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupId_
   [(PPLocationStorage *)a1[4] _deleteLocationsWithRowIds:v8 txnWitness:v7 atLeastOneLocationRemoved:a1[8] deletedCount:a1[9]];
 }
 
-- (void)_deleteLocationsWithRowIds:(void *)a3 txnWitness:(uint64_t)a4 atLeastOneLocationRemoved:(uint64_t)a5 deletedCount:
+- (void)_deleteLocationsWithRowIds:(void *)ids txnWitness:(uint64_t)witness atLeastOneLocationRemoved:(uint64_t)removed deletedCount:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v17 = a1;
-  if (a1)
+  idsCopy = ids;
+  selfCopy = self;
+  if (self)
   {
     if ([v7 count])
     {
@@ -217,7 +217,7 @@ void __130__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupId_
             }
 
             v13 = *(*(&v22 + 1) + 8 * v12);
-            v14 = [v8 db];
+            v14 = [idsCopy db];
             v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE FROM %@ WHERE loc_id IN _pas_nsindexset(:rowIds)", v13];
             v20[0] = MEMORY[0x277D85DD0];
             v20[1] = 3221225472;
@@ -237,25 +237,25 @@ void __130__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupId_
       }
     }
 
-    [*(v17 + 32) deleteRecordsForRowIds:v7 txnWitness:v8 atLeastOneClusterRemoved:a4 deletedCount:a5];
+    [*(selfCopy + 32) deleteRecordsForRowIds:v7 txnWitness:idsCopy atLeastOneClusterRemoved:witness deletedCount:removed];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 atLeastOneLocationRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a3;
+  idCopy = id;
   db = self->_db;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __108__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_atLeastOneLocationRemoved_deletedCount_error___block_invoke;
   v13[3] = &unk_278978EC0;
   v13[4] = self;
-  v14 = v9;
-  v15 = a4;
-  v16 = a5;
-  v11 = v9;
+  v14 = idCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v11 = idCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v13];
 
   return 1;
@@ -271,11 +271,11 @@ void __108__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_atLeastO
   [(PPLocationStorage *)v3 _deleteLocationsWithRowIds:v7 txnWitness:v6 atLeastOneLocationRemoved:a1[6] deletedCount:a1[7]];
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 atLeastOneLocationRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupIds:(id)ids atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  if ([v12 count])
+  idCopy = id;
+  idsCopy = ids;
+  if ([idsCopy count])
   {
     db = self->_db;
     v15[0] = MEMORY[0x277D85DD0];
@@ -283,23 +283,23 @@ void __108__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_atLeastO
     v15[2] = __117__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupIds_atLeastOneLocationRemoved_deletedCount_error___block_invoke;
     v15[3] = &unk_278978EE8;
     v15[4] = self;
-    v16 = v11;
-    v17 = v12;
-    v18 = a5;
-    v19 = a6;
+    v16 = idCopy;
+    v17 = idsCopy;
+    removedCopy = removed;
+    countCopy = count;
     [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v15];
   }
 
   else
   {
-    if (a5)
+    if (removed)
     {
-      *a5 = 0;
+      *removed = 0;
     }
 
-    if (a6)
+    if (count)
     {
-      *a6 = 0;
+      *count = 0;
     }
   }
 
@@ -316,22 +316,22 @@ void __117__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_groupIds
   [(PPLocationStorage *)a1[4] _deleteLocationsWithRowIds:v7 txnWitness:v6 atLeastOneLocationRemoved:a1[7] deletedCount:a1[8]];
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 atLeastOneLocationRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id documentIds:(id)ids atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  idCopy = id;
+  idsCopy = ids;
   db = self->_db;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __120__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_documentIds_atLeastOneLocationRemoved_deletedCount_error___block_invoke;
   v17[3] = &unk_278978EE8;
   v17[4] = self;
-  v18 = v11;
-  v19 = v12;
-  v20 = a5;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
+  v18 = idCopy;
+  v19 = idsCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v14 = idsCopy;
+  v15 = idCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v17];
 
   return 1;
@@ -347,19 +347,19 @@ void __120__PPLocationStorage_deleteAllLocationsFromSourcesWithBundleId_document
   [(PPLocationStorage *)a1[4] _deleteLocationsWithRowIds:v7 txnWitness:v6 atLeastOneLocationRemoved:a1[7] deletedCount:a1[8]];
 }
 
-- (BOOL)deleteAllLocationsOlderThanDate:(id)a3 atLeastOneLocationRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllLocationsOlderThanDate:(id)date atLeastOneLocationRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a3;
+  dateCopy = date;
   db = self->_db;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__PPLocationStorage_deleteAllLocationsOlderThanDate_atLeastOneLocationRemoved_deletedCount_error___block_invoke;
   v13[3] = &unk_278978EC0;
   v13[4] = self;
-  v14 = v9;
-  v15 = a4;
-  v16 = a5;
-  v11 = v9;
+  v14 = dateCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v11 = dateCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v13];
 
   return 1;
@@ -375,25 +375,25 @@ void __98__PPLocationStorage_deleteAllLocationsOlderThanDate_atLeastOneLocationR
   [(PPLocationStorage *)v3 _deleteLocationsWithRowIds:v7 txnWitness:v6 atLeastOneLocationRemoved:a1[6] deletedCount:a1[7]];
 }
 
-- (BOOL)decayFeedbackCountsWithDecayRate:(double)a3 shouldContinueBlock:(id)a4
+- (BOOL)decayFeedbackCountsWithDecayRate:(double)rate shouldContinueBlock:(id)block
 {
   do
   {
-    v7 = (*(a4 + 2))(a4, a2);
+    v7 = (*(block + 2))(block, a2);
   }
 
-  while (v7 && ![(PPRecordStorageHelper *)self->_storageHelper decayFeedbackWithDatabase:self->_db client:5 decayRate:a3]);
+  while (v7 && ![(PPRecordStorageHelper *)self->_storageHelper decayFeedbackWithDatabase:self->_db client:5 decayRate:rate]);
   return v7;
 }
 
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 error:(id *)a8
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  locationsCopy = locations;
+  sourceCopy = source;
+  entitiesCopy = entities;
   v17 = 1;
-  if ([v14 count])
+  if ([locationsCopy count])
   {
     v30 = 0;
     v31 = &v30;
@@ -406,20 +406,20 @@ void __98__PPLocationStorage_deleteAllLocationsOlderThanDate_atLeastOneLocationR
     v23[3] = &unk_278978E48;
     v27 = &v30;
     v23[4] = self;
-    v24 = v14;
-    v25 = v15;
-    v26 = v16;
-    v28 = a6;
-    v29 = a7;
+    v24 = locationsCopy;
+    v25 = sourceCopy;
+    v26 = entitiesCopy;
+    algorithmCopy = algorithm;
+    syncCopy = sync;
     [(PPSQLDatabase *)db writeTransactionWithClient:5 block:v23];
     v17 = *(v31 + 24);
-    if (a8 && (v31[3] & 1) == 0)
+    if (error && (v31[3] & 1) == 0)
     {
       v19 = objc_alloc(MEMORY[0x277CCA9B8]);
       v34 = *MEMORY[0x277CCA450];
       v35[0] = @"The donated data is invalid.";
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-      *a8 = [v19 initWithDomain:*MEMORY[0x277D3A580] code:9 userInfo:v20];
+      *error = [v19 initWithDomain:*MEMORY[0x277D3A580] code:9 userInfo:v20];
 
       v17 = *(v31 + 24);
     }
@@ -767,20 +767,20 @@ void __49__PPLocationStorage_clearWithError_deletedCount___block_invoke(uint64_t
   [v4 prepAndRunQuery:@"DELETE FROM loc_records_clp_areasOfInterest" onPrep:0 onRow:0 onError:0];
 }
 
-- (BOOL)iterLocationRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterLocationRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 limit])
+  queryCopy = query;
+  blockCopy = block;
+  if ([queryCopy limit])
   {
     v9 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"SELECT * FROM sources AS src CROSS JOIN loc_records AS loc ON loc.source_id = src.id WHERE 1 "];
     v10 = objc_opt_new();
-    v11 = [v7 fromDate];
+    fromDate = [queryCopy fromDate];
 
-    if (v11)
+    if (fromDate)
     {
-      if ([v7 filterByRelevanceDate])
+      if ([queryCopy filterByRelevanceDate])
       {
         v12 = @"AND COALESCE(src.relevance_seconds_from_1970, src.seconds_from_1970) >= :fromDateEpoch ";
       }
@@ -795,16 +795,16 @@ void __49__PPLocationStorage_clearWithError_deletedCount___block_invoke(uint64_t
       aBlock[1] = 3221225472;
       aBlock[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke;
       aBlock[3] = &unk_278978CF8;
-      v74 = v7;
+      v74 = queryCopy;
       v13 = _Block_copy(aBlock);
       [v10 addObject:v13];
     }
 
-    v14 = [v7 toDate];
+    toDate = [queryCopy toDate];
 
-    if (v14)
+    if (toDate)
     {
-      if ([v7 filterByRelevanceDate])
+      if ([queryCopy filterByRelevanceDate])
       {
         v15 = @"AND COALESCE(src.relevance_seconds_from_1970, src.seconds_from_1970) <= :toDateEpoch ";
       }
@@ -819,115 +819,115 @@ void __49__PPLocationStorage_clearWithError_deletedCount___block_invoke(uint64_t
       v71[1] = 3221225472;
       v71[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_2;
       v71[3] = &unk_278978CF8;
-      v72 = v7;
+      v72 = queryCopy;
       v16 = _Block_copy(v71);
       [v10 addObject:v16];
     }
 
-    if ([v7 deviceFilter])
+    if ([queryCopy deviceFilter])
     {
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"AND loc.is_remote = %u ", objc_msgSend(v7, "deviceFilter") == 2];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"AND loc.is_remote = %u ", objc_msgSend(queryCopy, "deviceFilter") == 2];
       [v9 appendString:v17];
     }
 
-    if ([v7 excludingWithoutSentiment])
+    if ([queryCopy excludingWithoutSentiment])
     {
       [v9 appendString:@"AND loc.sentiment_score != 0 "];
     }
 
-    v18 = [v7 matchingSourceBundleIds];
-    if ([v18 count])
+    matchingSourceBundleIds = [queryCopy matchingSourceBundleIds];
+    if ([matchingSourceBundleIds count])
     {
       [v9 appendString:@"AND src.bundle_id IN _pas_nsset(:matchingSourceBundleIds) "];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
       v69[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_3;
       v69[3] = &unk_278978CF8;
-      v70 = v18;
+      v70 = matchingSourceBundleIds;
       v19 = _Block_copy(v69);
       [v10 addObject:v19];
     }
 
-    v20 = [v7 excludingSourceBundleIds];
-    if ([v20 count])
+    excludingSourceBundleIds = [queryCopy excludingSourceBundleIds];
+    if ([excludingSourceBundleIds count])
     {
       [v9 appendString:@"AND src.bundle_id NOT IN _pas_nsset(:excludingSourceBundleIds) "];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_4;
       v67[3] = &unk_278978CF8;
-      v68 = v20;
+      v68 = excludingSourceBundleIds;
       v21 = _Block_copy(v67);
       [v10 addObject:v21];
     }
 
-    v22 = [v7 matchingContactHandle];
-    v23 = [v22 length] == 0;
+    matchingContactHandle = [queryCopy matchingContactHandle];
+    v23 = [matchingContactHandle length] == 0;
 
     if (!v23)
     {
       v24 = [[PPContactStorage alloc] initWithDatabase:self->_db foundInAppsHarvestStoreGetter:&__block_literal_global_24663];
-      v25 = [v7 matchingContactHandle];
-      v26 = [(PPContactStorage *)v24 sourcesForContactHandle:v25];
+      matchingContactHandle2 = [queryCopy matchingContactHandle];
+      v26 = [(PPContactStorage *)v24 sourcesForContactHandle:matchingContactHandle2];
 
       v27 = [(PPSourceStorage *)self->_sourceStorage whereSourceIdInSubclauseWithSourceIds:v26 tableNameAlias:@"src" binders:v10];
       [v9 appendString:v27];
     }
 
-    v28 = [v7 matchingCategories];
-    if ([v28 count])
+    matchingCategories = [queryCopy matchingCategories];
+    if ([matchingCategories count])
     {
       [v9 appendString:@"AND loc.category IN _pas_nsset(:matchingCategories) "];
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_6;
       v65[3] = &unk_278978CF8;
-      v66 = v28;
+      v66 = matchingCategories;
       v29 = _Block_copy(v65);
       [v10 addObject:v29];
     }
 
-    v30 = [v7 matchingAlgorithms];
-    if ([v30 count])
+    matchingAlgorithms = [queryCopy matchingAlgorithms];
+    if ([matchingAlgorithms count])
     {
       [v9 appendString:@"AND loc.algorithm IN _pas_nsset(:matchingAlgorithms) "];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_7;
       v63[3] = &unk_278978CF8;
-      v64 = v30;
+      v64 = matchingAlgorithms;
       v31 = _Block_copy(v63);
       [v10 addObject:v31];
     }
 
-    v32 = [v7 excludingAlgorithms];
-    if ([v32 count])
+    excludingAlgorithms = [queryCopy excludingAlgorithms];
+    if ([excludingAlgorithms count])
     {
       [v9 appendString:@"AND loc.algorithm NOT IN _pas_nsset(:excludingAlgorithms) "];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_8;
       v61[3] = &unk_278978CF8;
-      v62 = v32;
+      v62 = excludingAlgorithms;
       v33 = _Block_copy(v61);
       [v10 addObject:v33];
     }
 
-    v34 = [v7 fuzzyMatchingString];
+    fuzzyMatchingString = [queryCopy fuzzyMatchingString];
 
-    if (v34)
+    if (fuzzyMatchingString)
     {
       [v9 appendString:@"AND loc.lc_description || loc.clp_locality || loc.clp_administrativeArea LIKE :fuzzyString "];
       v59[0] = MEMORY[0x277D85DD0];
       v59[1] = 3221225472;
       v59[2] = __62__PPLocationStorage_iterLocationRecordsWithQuery_error_block___block_invoke_9;
       v59[3] = &unk_278978CF8;
-      v60 = v7;
+      v60 = queryCopy;
       v35 = _Block_copy(v59);
       [v10 addObject:v35];
     }
 
-    if ([v7 orderByAscendingDate])
+    if ([queryCopy orderByAscendingDate])
     {
       v36 = @"ORDER BY src.seconds_from_1970 ASC";
     }
@@ -953,10 +953,10 @@ void __49__PPLocationStorage_clearWithError_deletedCount___block_invoke(uint64_t
     v47 = v38;
     v39 = v10;
     v48 = v39;
-    v49 = self;
+    selfCopy = self;
     v52 = &v53;
-    v51 = v8;
-    v50 = v7;
+    v51 = blockCopy;
+    v50 = queryCopy;
     [(PPSQLDatabase *)db readTransactionWithClient:5 block:v46];
     if (v54[5])
     {
@@ -1383,15 +1383,15 @@ uint64_t __68__PPLocationStorage__areasOfInterestForLocationRecordId_txnWitness_
   [(PPLocationStorage *)&v3 dealloc];
 }
 
-- (PPLocationStorage)initWithDatabase:(id)a3
+- (PPLocationStorage)initWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = [PPTrialWrapper alloc];
   v6 = objc_opt_new();
   v7 = +[PPTrialWrapper sharedTrialClient];
-  v8 = [(PPTrialWrapper *)v5 initWithSettings:v6 database:v4 trialClient:v7];
+  v8 = [(PPTrialWrapper *)v5 initWithSettings:v6 database:databaseCopy trialClient:v7];
 
-  v9 = [(PPLocationStorage *)self initWithDatabase:v4 maxRecords:1000 dkStorage:0 loadEmptyDatabaseFromDK:0 trialWrapper:v8];
+  v9 = [(PPLocationStorage *)self initWithDatabase:databaseCopy maxRecords:1000 dkStorage:0 loadEmptyDatabaseFromDK:0 trialWrapper:v8];
   return v9;
 }
 

@@ -1,15 +1,15 @@
 @interface DMFCategoryPolicyMonitor
 + (NSSet)policyTypes;
-- (DMFCategoryPolicyMonitor)initWithPolicyChangeHandler:(id)a3;
+- (DMFCategoryPolicyMonitor)initWithPolicyChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 completionHandler:(id)a4;
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation DMFCategoryPolicyMonitor
 
-- (DMFCategoryPolicyMonitor)initWithPolicyChangeHandler:(id)a3
+- (DMFCategoryPolicyMonitor)initWithPolicyChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = DMFCategoryPolicyMonitor;
   v5 = [(DMFCategoryPolicyMonitor *)&v17 init];
@@ -19,10 +19,10 @@
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    if (v4)
+    if (handlerCopy)
     {
-      v8 = [objc_opt_class() policyTypes];
-      v9 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.category" policyTypes:v8 callback:v4];
+      policyTypes = [objc_opt_class() policyTypes];
+      v9 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.category" policyTypes:policyTypes callback:handlerCopy];
       v10 = +[DMFPolicyMonitor policyMonitor];
       v11 = v5->_identifier;
       v14[0] = MEMORY[0x1E69E9820];
@@ -30,8 +30,8 @@
       v14[2] = __56__DMFCategoryPolicyMonitor_initWithPolicyChangeHandler___block_invoke;
       v14[3] = &unk_1E8616088;
       v15 = v5;
-      v16 = v8;
-      v12 = v8;
+      v16 = policyTypes;
+      v12 = policyTypes;
       [v10 addRegistration:v9 forPolicyMonitorIdentifier:v11 completionHandler:v14];
     }
   }
@@ -89,12 +89,12 @@ void __39__DMFCategoryPolicyMonitor_policyTypes__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v7 = +[DMFPolicyMonitor policyMonitor];
-  [v7 requestPoliciesForCategoryIdentifiers:v6 completionHandler:v5];
+  [v7 requestPoliciesForCategoryIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
 void __56__DMFCategoryPolicyMonitor_initWithPolicyChangeHandler___block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

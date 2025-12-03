@@ -7,32 +7,32 @@
 - (void)execute
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryEndCollaborationChangeRequest *)self->_request collaborationToEnd];
-  v5 = [v4 identifiers];
+  collaborationToEnd = [(MPModelLibraryEndCollaborationChangeRequest *)self->_request collaborationToEnd];
+  identifiers = [collaborationToEnd identifiers];
 
-  v6 = [v5 personalizedStore];
-  v7 = [v6 cloudID];
+  personalizedStore = [identifiers personalizedStore];
+  cloudID = [personalizedStore cloudID];
 
-  v8 = [v5 library];
-  v9 = [v8 persistentID];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
   v10 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MPModelLibraryEndCollaborationChangeRequest *)self->_request collaborationToEnd];
+    collaborationToEnd2 = [(MPModelLibraryEndCollaborationChangeRequest *)self->_request collaborationToEnd];
     *buf = 138543874;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v11;
+    v21 = collaborationToEnd2;
     v22 = 2048;
-    v23 = v7;
+    v23 = cloudID;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ ending collaboration %{public}@ (cloudID = %lld)", buf, 0x20u);
   }
 
-  if (!v9)
+  if (!persistentID)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPModelLibraryEndCollaborationChangeRequestOperation.m" lineNumber:29 description:@"Must provide a playlist in the library"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryEndCollaborationChangeRequestOperation.m" lineNumber:29 description:@"Must provide a playlist in the library"];
   }
 
   v12 = +[MPCloudController sharedCloudController];
@@ -41,10 +41,10 @@
   v15[2] = __63__MPModelLibraryEndCollaborationChangeRequestOperation_execute__block_invoke;
   v15[3] = &unk_1E767B718;
   v15[4] = self;
-  v16 = v5;
-  v17 = v9;
-  v13 = v5;
-  [v12 endCollaborationWithPersistentID:v9 completion:v15];
+  v16 = identifiers;
+  v17 = persistentID;
+  v13 = identifiers;
+  [v12 endCollaborationWithPersistentID:persistentID completion:v15];
 }
 
 void __63__MPModelLibraryEndCollaborationChangeRequestOperation_execute__block_invoke(uint64_t a1, uint64_t a2, void *a3)

@@ -1,58 +1,58 @@
 @interface FPDDomainExtensionBackend
-- (BOOL)isProviderForRealPathURL:(id)a3;
-- (FPDDomainExtensionBackend)initWithDomain:(id)a3;
+- (BOOL)isProviderForRealPathURL:(id)l;
+- (FPDDomainExtensionBackend)initWithDomain:(id)domain;
 - (NSArray)rootURLs;
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5;
-- (id)evictItemAtURL:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6;
-- (id)newFileProviderProxyWithTimeoutValue:(double)a3 request:(id)a4;
-- (id)nsfpRequest:(id)a3;
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8;
-- (void)_cancelProvidingItemAtURL:(id)a3 withKey:(id)a4 request:(id)a5;
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)clearDiagnosticState:(id)a3;
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4;
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 urlWrapper:(id)a5 options:(unint64_t)a6 bounceOnCollision:(BOOL)a7 request:(id)a8 completionHandler:(id)a9;
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)dumpStateTo:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5;
-- (void)enumerateWithSettings:(id)a3 lifetimeExtender:(id)a4 observer:(id)a5 completionHandler:(id)a6;
-- (void)evictItemWithID:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)fetchFPCKTelemetryWithCompletionHandler:(id)a3;
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7;
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4;
-- (void)getKnownFolderLocations:(unint64_t)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)getSavedDiagnostics:(id)a3;
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3;
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error;
+- (id)evictItemAtURL:(id)l evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler;
+- (id)newFileProviderProxyWithTimeoutValue:(double)value request:(id)request;
+- (id)nsfpRequest:(id)request;
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler;
+- (void)_cancelProvidingItemAtURL:(id)l withKey:(id)key request:(id)request;
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler;
+- (void)clearDiagnosticState:(id)state;
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler;
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields urlWrapper:(id)wrapper options:(unint64_t)options bounceOnCollision:(BOOL)collision request:(id)request completionHandler:(id)handler;
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)dumpStateTo:(id)to options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler;
+- (void)enumerateWithSettings:(id)settings lifetimeExtender:(id)extender observer:(id)observer completionHandler:(id)handler;
+- (void)evictItemWithID:(id)d evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler;
+- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)fetchFPCKTelemetryWithCompletionHandler:(id)handler;
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler;
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler;
+- (void)getKnownFolderLocations:(unint64_t)locations request:(id)request completionHandler:(id)handler;
+- (void)getSavedDiagnostics:(id)diagnostics;
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler;
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler;
 - (void)invalidate;
-- (void)itemChangedAtURL:(id)a3 request:(id)a4;
-- (void)itemForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)itemForURL:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)itemIDForURL:(id)a3 requireProviderItemID:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)launchFeedbackForDomain:(id)a3 itemIdentifier:(id)a4 triggeringError:(id)a5 when:(id)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8;
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)materializeItemWithID:(id)a3 requestedRange:(_NSRange)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)putBackURLForTrashedItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5;
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4;
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5;
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5;
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithURL:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)setPutBackInfoOnItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)stateWithCompletionHandler:(id)a3;
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6;
-- (void)valuesForAttributes:(id)a3 forURL:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)waitForStabilizationForRequest:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5;
-- (void)wakeForPushWithCompletionHandler:(id)a3;
-- (void)workingSetDidChangeWithCompletionHandler:(id)a3;
+- (void)itemChangedAtURL:(id)l request:(id)request;
+- (void)itemForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l request:(id)request completionHandler:(id)handler;
+- (void)itemForURL:(id)l options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)itemIDForURL:(id)l requireProviderItemID:(BOOL)d request:(id)request completionHandler:(id)handler;
+- (void)launchFeedbackForDomain:(id)domain itemIdentifier:(id)identifier triggeringError:(id)error when:(id)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler;
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler;
+- (void)materializeItemWithID:(id)d requestedRange:(_NSRange)range request:(id)request completionHandler:(id)handler;
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)putBackURLForTrashedItemAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler;
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler;
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler;
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)setPutBackInfoOnItemAtURL:(id)l completionHandler:(id)handler;
+- (void)stateWithCompletionHandler:(id)handler;
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler;
+- (void)valuesForAttributes:(id)attributes forURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)waitForStabilizationForRequest:(id)request mode:(unint64_t)mode completionHandler:(id)handler;
+- (void)wakeForPushWithCompletionHandler:(id)handler;
+- (void)workingSetDidChangeWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPDDomainExtensionBackend
@@ -60,34 +60,34 @@
 - (NSArray)rootURLs
 {
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v3 = [WeakRetained extensionStorageURLs];
+  extensionStorageURLs = [WeakRetained extensionStorageURLs];
 
-  return v3;
+  return extensionStorageURLs;
 }
 
-- (FPDDomainExtensionBackend)initWithDomain:(id)a3
+- (FPDDomainExtensionBackend)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v18.receiver = self;
   v18.super_class = FPDDomainExtensionBackend;
   v5 = [(FPDDomainExtensionBackend *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_domain, v4);
+    v7 = objc_storeWeak(&v5->_domain, domainCopy);
     v8 = MEMORY[0x1E696AEC0];
     v9 = v7;
-    v10 = [v4 providerDomainID];
-    v11 = [v10 fp_obfuscatedProviderDomainID];
-    v12 = [v8 stringWithFormat:@"extension backend: %@", v11];
+    providerDomainID = [domainCopy providerDomainID];
+    fp_obfuscatedProviderDomainID = [providerDomainID fp_obfuscatedProviderDomainID];
+    v12 = [v8 stringWithFormat:@"extension backend: %@", fp_obfuscatedProviderDomainID];
 
     v13 = dispatch_workloop_create([v12 UTF8String]);
     queue = v6->_queue;
     v6->_queue = v13;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     provideFileCompletionsByURL = v6->_provideFileCompletionsByURL;
-    v6->_provideFileCompletionsByURL = v15;
+    v6->_provideFileCompletionsByURL = dictionary;
   }
 
   return v6;
@@ -105,24 +105,24 @@
     }
 
     v4 = objc_loadWeakRetained(&self->_domain);
-    v5 = [v4 serialQueue];
-    if (!v5)
+    serialQueue = [v4 serialQueue];
+    if (!serialQueue)
     {
       [FPDDomainExtensionBackend invalidate];
     }
 
     v6 = objc_loadWeakRetained(&self->_domain);
-    v7 = [v6 serialQueue];
-    dispatch_assert_queue_V2(v7);
+    serialQueue2 = [v6 serialQueue];
+    dispatch_assert_queue_V2(serialQueue2);
 
     v8 = fp_current_or_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = objc_loadWeakRetained(&self->_domain);
-      v10 = [v9 providerDomainID];
-      v11 = [v10 fp_obfuscatedProviderDomainID];
+      providerDomainID = [v9 providerDomainID];
+      fp_obfuscatedProviderDomainID = [providerDomainID fp_obfuscatedProviderDomainID];
       v13 = 138412290;
-      v14 = v11;
+      v14 = fp_obfuscatedProviderDomainID;
       _os_log_impl(&dword_1CEFC7000, v8, OS_LOG_TYPE_INFO, "[INFO] ♻️  invalidating extension backend for %@", &v13, 0xCu);
     }
 
@@ -183,24 +183,24 @@ void __39__FPDDomainExtensionBackend_invalidate__block_invoke(uint64_t a1, void 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isProviderForRealPathURL:(id)a3
+- (BOOL)isProviderForRealPathURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v6 = [WeakRetained provider];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+  provider = [WeakRetained provider];
+  identifier = [provider identifier];
+  v8 = [identifier isEqualToString:@"com.apple.FileProvider.LocalStorage"];
 
-  if (v8 && ([MEMORY[0x1E695DFF8] fp_homeDirectory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "fp_realpathURL"), v10 = objc_claimAutoreleasedReturnValue(), v9, LOBYTE(v9) = objc_msgSend(v4, "fp_matchesApplicationContainerURL:", v10), v10, (v9 & 1) != 0))
+  if (v8 && ([MEMORY[0x1E695DFF8] fp_homeDirectory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "fp_realpathURL"), v10 = objc_claimAutoreleasedReturnValue(), v9, LOBYTE(v9) = objc_msgSend(lCopy, "fp_matchesApplicationContainerURL:", v10), v10, (v9 & 1) != 0))
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    v12 = [(FPDDomainExtensionBackend *)self coordinationRootURLs];
-    v13 = [v12 mutableCopy];
+    coordinationRootURLs = [(FPDDomainExtensionBackend *)self coordinationRootURLs];
+    v13 = [coordinationRootURLs mutableCopy];
 
     v21 = 0u;
     v22 = 0u;
@@ -220,7 +220,7 @@ void __39__FPDDomainExtensionBackend_invalidate__block_invoke(uint64_t a1, void 
             objc_enumerationMutation(v14);
           }
 
-          if ([*(*(&v19 + 1) + 8 * i) fp_realPathRelationshipToItemAtRealPathURL:{v4, v19}] < 2)
+          if ([*(*(&v19 + 1) + 8 * i) fp_realPathRelationshipToItemAtRealPathURL:{lCopy, v19}] < 2)
           {
             LOBYTE(v11) = 1;
             goto LABEL_14;
@@ -244,46 +244,46 @@ LABEL_14:
   return v11;
 }
 
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = FPNotSupportedError();
+    *error = FPNotSupportedError();
   }
 
   return 0;
 }
 
-- (id)newFileProviderProxyWithTimeoutValue:(double)a3 request:(id)a4
+- (id)newFileProviderProxyWithTimeoutValue:(double)value request:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v8 = [WeakRetained session];
+  session = [WeakRetained session];
 
-  if (v8)
+  if (session)
   {
-    v9 = [v8 newFileProviderProxyWithTimeout:objc_msgSend(v6 pid:{"pid"), a3}];
+    v9 = [session newFileProviderProxyWithTimeout:objc_msgSend(requestCopy pid:{"pid"), value}];
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x1E69674B0]);
     v11 = FPDomainUnavailableError();
-    v9 = [v10 initWithConnection:0 protocol:&unk_1F4C8C390 orError:v11 name:@"invalidated extension" requestPid:{objc_msgSend(v6, "pid")}];
+    v9 = [v10 initWithConnection:0 protocol:&unk_1F4C8C390 orError:v11 name:@"invalidated extension" requestPid:{objc_msgSend(requestCopy, "pid")}];
   }
 
   return v9;
 }
 
-- (id)nsfpRequest:(id)a3
+- (id)nsfpRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v6 = [WeakRetained session];
+  session = [WeakRetained session];
 
-  if (v6)
+  if (session)
   {
-    [v4 nsfpRequestForSession:v6 isSpeculative:0];
+    [requestCopy nsfpRequestForSession:session isSpeculative:0];
   }
 
   else
@@ -295,18 +295,18 @@ LABEL_14:
   return v7;
 }
 
-- (void)itemForURL:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)itemForURL:(id)l options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v16 = v10;
-  v17 = v9;
-  v18 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v16 = requestCopy;
+  v17 = lCopy;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  v15 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -348,18 +348,18 @@ void __74__FPDDomainExtensionBackend_itemForURL_options_request_completionHandle
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)itemIDForURL:(id)a3 requireProviderItemID:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)itemIDForURL:(id)l requireProviderItemID:(BOOL)d request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v16 = v10;
-  v17 = v9;
-  v18 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v16 = requestCopy;
+  v17 = lCopy;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  v15 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -414,28 +414,28 @@ void __90__FPDDomainExtensionBackend_itemIDForURL_requireProviderItemID_request_
   }
 }
 
-- (void)putBackURLForTrashedItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)putBackURLForTrashedItemAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
-- (void)setPutBackInfoOnItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)setPutBackInfoOnItemAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPNotSupportedError();
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)_cancelProvidingItemAtURL:(id)a3 withKey:(id)a4 request:(id)a5
+- (void)_cancelProvidingItemAtURL:(id)l withKey:(id)key request:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  keyCopy = key;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v12 = [WeakRetained serialQueue];
-  dispatch_assert_queue_V2(v12);
+  serialQueue = [WeakRetained serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v13 = fp_current_or_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -443,14 +443,14 @@ void __90__FPDDomainExtensionBackend_itemIDForURL_requireProviderItemID_request_
     [(FPDDomainExtensionBackend *)v13 _cancelProvidingItemAtURL:v14 withKey:v15 request:v16, v17, v18, v19, v20];
   }
 
-  v21 = [(NSMutableDictionary *)self->_provideFileCompletionsByURL objectForKeyedSubscript:v8];
-  v22 = [v21 objectForKeyedSubscript:v9];
+  v21 = [(NSMutableDictionary *)self->_provideFileCompletionsByURL objectForKeyedSubscript:lCopy];
+  v22 = [v21 objectForKeyedSubscript:keyCopy];
   if (!v22)
   {
     v26 = fp_current_or_default_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [FPDDomainExtensionBackend _cancelProvidingItemAtURL:v8 withKey:? request:?];
+      [FPDDomainExtensionBackend _cancelProvidingItemAtURL:lCopy withKey:? request:?];
     }
 
     goto LABEL_10;
@@ -459,7 +459,7 @@ void __90__FPDDomainExtensionBackend_itemIDForURL_requireProviderItemID_request_
   v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
   (v22)[2](v22, v23);
 
-  [v21 setObject:0 forKeyedSubscript:v9];
+  [v21 setObject:0 forKeyedSubscript:keyCopy];
   if (![v21 count])
   {
     v24 = fp_current_or_default_log();
@@ -468,13 +468,13 @@ void __90__FPDDomainExtensionBackend_itemIDForURL_requireProviderItemID_request_
       [FPDDomainExtensionBackend _cancelProvidingItemAtURL:withKey:request:];
     }
 
-    [(NSMutableDictionary *)self->_provideFileCompletionsByURL setObject:0 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_provideFileCompletionsByURL setObject:0 forKeyedSubscript:lCopy];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __71__FPDDomainExtensionBackend__cancelProvidingItemAtURL_withKey_request___block_invoke;
     v27[3] = &unk_1E83BE580;
-    v28 = v8;
-    v25 = [(FPDDomainExtensionBackend *)self evictItemAtURL:v28 evictionReason:3 request:v10 completionHandler:v27];
+    v28 = lCopy;
+    v25 = [(FPDDomainExtensionBackend *)self evictItemAtURL:v28 evictionReason:3 request:requestCopy completionHandler:v27];
     v26 = v28;
 LABEL_10:
   }
@@ -499,13 +499,13 @@ void __71__FPDDomainExtensionBackend__cancelProvidingItemAtURL_withKey_request__
   }
 }
 
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
   v85 = *MEMORY[0x1E69E9840];
-  v67 = a3;
-  v65 = a4;
-  v66 = a6;
-  v11 = a7;
+  lCopy = l;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -514,28 +514,28 @@ void __71__FPDDomainExtensionBackend__cancelProvidingItemAtURL_withKey_request__
 
   if (self->_invalidated)
   {
-    v20 = FPUserCancelledError();
-    v11[2](v11, v20);
+    serialQueue = FPUserCancelledError();
+    handlerCopy[2](handlerCopy, serialQueue);
     v21 = 0;
     goto LABEL_29;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v20 = [WeakRetained serialQueue];
+  serialQueue = [WeakRetained serialQueue];
 
   v23 = objc_loadWeakRetained(&self->_domain);
   v61 = [v23 log];
 
-  v24 = [MEMORY[0x1E69DF068] sharedManager];
-  v63 = [v24 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v80 = 0;
-  v64 = [v63 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
   v25 = objc_loadWeakRetained(&self->_domain);
-  v26 = [v25 nsDomain];
-  v27 = [v26 personaIdentifier];
-  v28 = v27;
-  if (v64 == v27)
+  nsDomain = [v25 nsDomain];
+  personaIdentifier = [nsDomain personaIdentifier];
+  v28 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
     v40 = 0;
@@ -545,14 +545,14 @@ LABEL_17:
   }
 
   v29 = objc_loadWeakRetained(&self->_domain);
-  v30 = [v29 nsDomain];
-  v31 = [v30 personaIdentifier];
-  v32 = [v64 isEqualToString:v31];
+  nsDomain2 = [v29 nsDomain];
+  personaIdentifier2 = [nsDomain2 personaIdentifier];
+  v32 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v32 & 1) == 0 && voucher_process_can_use_arbitrary_personas())
   {
     v79 = 0;
-    v33 = [v63 copyCurrentPersonaContextWithError:&v79];
+    v33 = [currentPersona copyCurrentPersonaContextWithError:&v79];
     v34 = v79;
     v35 = v80;
     v80 = v33;
@@ -567,9 +567,9 @@ LABEL_17:
     }
 
     v37 = objc_loadWeakRetained(&self->_domain);
-    v38 = [v37 nsDomain];
-    v39 = [v38 personaIdentifier];
-    v40 = [v63 generateAndRestorePersonaContextWithPersonaUniqueString:v39];
+    nsDomain3 = [v37 nsDomain];
+    personaIdentifier3 = [nsDomain3 personaIdentifier];
+    v40 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
     if (!v40)
     {
@@ -580,10 +580,10 @@ LABEL_17:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v41 = objc_loadWeakRetained(&self->_domain);
-      v42 = [v41 nsDomain];
-      v43 = [v42 personaIdentifier];
+      nsDomain4 = [v41 nsDomain];
+      personaIdentifier4 = [nsDomain4 personaIdentifier];
       *buf = 138412546;
-      v82 = v43;
+      v82 = personaIdentifier4;
       v83 = 2112;
       v84 = v40;
       _os_log_error_impl(&dword_1CEFC7000, v25, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
@@ -594,10 +594,10 @@ LABEL_17:
 
   v40 = 0;
 LABEL_18:
-  dispatch_assert_queue_V2(v20);
-  if (a5 >> 29)
+  dispatch_assert_queue_V2(serialQueue);
+  if (options >> 29)
   {
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     v21 = 0;
   }
 
@@ -605,16 +605,16 @@ LABEL_18:
   {
     v21 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
     v44 = [MEMORY[0x1E696B098] valueWithPointer:v21];
-    v45 = [(NSMutableDictionary *)self->_provideFileCompletionsByURL objectForKeyedSubscript:v67];
-    v46 = [v45 count];
-    if (!v45)
+    dictionary = [(NSMutableDictionary *)self->_provideFileCompletionsByURL objectForKeyedSubscript:lCopy];
+    v46 = [dictionary count];
+    if (!dictionary)
     {
-      v45 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_provideFileCompletionsByURL setObject:v45 forKeyedSubscript:v67];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_provideFileCompletionsByURL setObject:dictionary forKeyedSubscript:lCopy];
     }
 
-    v47 = _Block_copy(v11);
-    [v45 setObject:v47 forKeyedSubscript:v44];
+    v47 = _Block_copy(handlerCopy);
+    [dictionary setObject:v47 forKeyedSubscript:v44];
 
     [v21 setCancellable:1];
     objc_initWeak(buf, self);
@@ -623,24 +623,24 @@ LABEL_18:
     v72[2] = __103__FPDDomainExtensionBackend_startProvidingItemAtURL_readerID_readingOptions_request_completionHandler___block_invoke;
     v72[3] = &unk_1E83BE5D0;
     objc_copyWeak(&v78, buf);
-    v60 = v11;
-    v48 = v20;
-    v49 = v20;
+    v60 = handlerCopy;
+    v48 = serialQueue;
+    v49 = serialQueue;
     v73 = v49;
     v50 = v61;
     v74 = v50;
-    v51 = v67;
+    v51 = lCopy;
     v75 = v51;
     v59 = v44;
     v76 = v59;
-    v52 = v66;
+    v52 = requestCopy;
     v77 = v52;
     [v21 setCancellationHandler:v72];
     if (v46)
     {
       v53 = fp_current_or_default_log();
-      v20 = v48;
-      v11 = v60;
+      serialQueue = v48;
+      handlerCopy = v60;
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
       {
         [FPDDomainExtensionBackend startProvidingItemAtURL:readerID:readingOptions:request:completionHandler:];
@@ -659,8 +659,8 @@ LABEL_18:
       fp_dispatch_async_with_logs();
       v56 = v21;
 
-      v20 = v48;
-      v11 = v60;
+      serialQueue = v48;
+      handlerCopy = v60;
     }
 
     objc_destroyWeak(&v78);
@@ -857,20 +857,20 @@ void __103__FPDDomainExtensionBackend_startProvidingItemAtURL_readerID_readingOp
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 urlWrapper:(id)a5 options:(unint64_t)a6 bounceOnCollision:(BOOL)a7 request:(id)a8 completionHandler:(id)a9
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields urlWrapper:(id)wrapper options:(unint64_t)options bounceOnCollision:(BOOL)collision request:(id)request completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a8;
-  v15 = a9;
+  templateCopy = template;
+  wrapperCopy = wrapper;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v21 = v14;
-  v22 = v12;
-  v23 = v15;
-  v17 = v15;
-  v18 = v13;
-  v19 = v12;
-  v20 = v14;
+  v21 = requestCopy;
+  v22 = templateCopy;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = wrapperCopy;
+  v19 = templateCopy;
+  v20 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -927,18 +927,18 @@ void __125__FPDDomainExtensionBackend_createItemBasedOnTemplate_fields_urlWrappe
   }
 }
 
-- (id)evictItemAtURL:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6
+- (id)evictItemAtURL:(id)l evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v17 = requestCopy;
+  v18 = lCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  v15 = requestCopy;
   fp_dispatch_async_with_logs();
 
   return 0;
@@ -992,17 +992,17 @@ void __85__FPDDomainExtensionBackend_evictItemAtURL_evictionReason_request_compl
   }
 }
 
-- (void)evictItemWithID:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6
+- (void)evictItemWithID:(id)d evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v16 = requestCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = requestCopy;
+  v15 = dCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1055,21 +1055,21 @@ void __86__FPDDomainExtensionBackend_evictItemWithID_evictionReason_request_comp
   }
 }
 
-- (void)materializeItemWithID:(id)a3 requestedRange:(_NSRange)a4 request:(id)a5 completionHandler:(id)a6
+- (void)materializeItemWithID:(id)d requestedRange:(_NSRange)range request:(id)request completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = FPNotSupportedError();
-  (*(a6 + 2))(v7, v8);
+  (*(handler + 2))(handlerCopy, v8);
 }
 
-- (void)itemChangedAtURL:(id)a3 request:(id)a4
+- (void)itemChangedAtURL:(id)l request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  requestCopy = request;
   queue = self->_queue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = requestCopy;
+  v9 = lCopy;
+  v10 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1105,17 +1105,17 @@ void __54__FPDDomainExtensionBackend_itemChangedAtURL_request___block_invoke_269
   }
 }
 
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a8;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v18 = v12;
-  v19 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
+  v18 = requestCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
+  v17 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1173,18 +1173,18 @@ void __146__FPDDomainExtensionBackend_URLForItemID_creatingPlaceholderIfMissing_
   }
 }
 
-- (void)itemForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 request:(id)a6 completionHandler:(id)a7
+- (void)itemForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l request:(id)request completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v17 = requestCopy;
+  v18 = dCopy;
+  v19 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dCopy;
+  v16 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1242,39 +1242,39 @@ void __125__FPDDomainExtensionBackend_itemForItemID_creatingPlaceholderIfMissing
   }
 }
 
-- (void)dumpStateTo:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)dumpStateTo:(id)to options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v8)
+  optionsCopy = options;
+  toCopy = to;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (optionsCopy)
   {
     goto LABEL_4;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v14 = [WeakRetained provider];
-  v15 = [v14 identifier];
-  v16 = [v15 hasPrefix:@"com.apple."];
+  provider = [WeakRetained provider];
+  identifier = [provider identifier];
+  v16 = [identifier hasPrefix:@"com.apple."];
 
   if ((v16 & 1) == 0)
   {
 LABEL_4:
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     v17 = objc_loadWeakRetained(&self->_domain);
-    v18 = [v17 provider];
-    v19 = [v18 identifier];
-    [v19 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+    provider2 = [v17 provider];
+    identifier2 = [provider2 identifier];
+    [identifier2 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
 
     queue = self->_queue;
-    v21 = v11;
-    v22 = v10;
-    v23 = v12;
+    v21 = requestCopy;
+    v22 = toCopy;
+    v23 = handlerCopy;
     fp_dispatch_async_with_logs();
   }
 }
@@ -1356,29 +1356,29 @@ void __75__FPDDomainExtensionBackend_dumpStateTo_options_request_completionHandl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchFPCKTelemetryWithCompletionHandler:(id)a3
+- (void)fetchFPCKTelemetryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPNotSupportedError();
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)waitForStabilizationForRequest:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5
+- (void)waitForStabilizationForRequest:(id)request mode:(unint64_t)mode completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v12 = v7;
-  v13 = v8;
-  v10 = v8;
-  v11 = v7;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1388,21 +1388,21 @@ void __83__FPDDomainExtensionBackend_waitForStabilizationForRequest_mode_complet
   [v2 waitForStabilizationWithCompletionHandler:*(a1 + 48)];
 }
 
-- (void)enumerateWithSettings:(id)a3 lifetimeExtender:(id)a4 observer:(id)a5 completionHandler:(id)a6
+- (void)enumerateWithSettings:(id)settings lifetimeExtender:(id)extender observer:(id)observer completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  settingsCopy = settings;
+  extenderCopy = extender;
+  observerCopy = observer;
+  handlerCopy = handler;
   queue = self->_queue;
-  v19 = v10;
-  v22 = v13;
-  v20 = v11;
-  v21 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v19 = settingsCopy;
+  v22 = handlerCopy;
+  v20 = extenderCopy;
+  v21 = observerCopy;
+  v15 = observerCopy;
+  v16 = extenderCopy;
+  v17 = handlerCopy;
+  v18 = settingsCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1496,25 +1496,25 @@ void __95__FPDDomainExtensionBackend_enumerateWithSettings_lifetimeExtender_obse
   v11();
 }
 
-- (void)valuesForAttributes:(id)a3 forURL:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)valuesForAttributes:(id)attributes forURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attributesCopy = attributes;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82__FPDDomainExtensionBackend_valuesForAttributes_forURL_request_completionHandler___block_invoke;
   v18[3] = &unk_1E83BE8F0;
-  v22 = v10;
-  v23 = v13;
-  v19 = v11;
-  v20 = self;
-  v21 = v12;
-  v14 = v10;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
+  v22 = attributesCopy;
+  v23 = handlerCopy;
+  v19 = lCopy;
+  selfCopy = self;
+  v21 = requestCopy;
+  v14 = attributesCopy;
+  v15 = requestCopy;
+  v16 = handlerCopy;
+  v17 = lCopy;
   [(FPDDomainExtensionBackend *)self itemIDForURL:v17 requireProviderItemID:0 request:v15 completionHandler:v18];
 }
 
@@ -1583,19 +1583,19 @@ void __82__FPDDomainExtensionBackend_valuesForAttributes_forURL_request_completi
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)stateWithCompletionHandler:(id)a3
+- (void)stateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)wakeForPushWithCompletionHandler:(id)a3
+- (void)wakeForPushWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
-  v7 = v4;
-  v6 = v4;
+  v7 = handlerCopy;
+  v6 = handlerCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1607,15 +1607,15 @@ void __62__FPDDomainExtensionBackend_wakeForPushWithCompletionHandler___block_in
   [v3 wakeForPushWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = requestCopy;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1630,24 +1630,24 @@ void __90__FPDDomainExtensionBackend_fetchOperationServiceOrEndpointWithRequest_
   [v2 fetchOperationServiceEndpoint:v3];
 }
 
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPNotSupportedError();
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v16 = requestCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
+  v15 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1657,15 +1657,15 @@ void __101__FPDDomainExtensionBackend_fetchServicesForItemID_allowRestrictedSour
   [v2 fetchServicesForItemID:*(a1 + 48) allowRestrictedSources:*(a1 + 64) completionHandler:*(a1 + 56)];
 }
 
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = requestCopy;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1675,24 +1675,24 @@ void __78__FPDDomainExtensionBackend_fetchVendorEndpointWithRequest_completionHa
   [v2 fetchVendorEndpoint:*(a1 + 48)];
 }
 
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  changesCopy = changes;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v16 = requestCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = changesCopy;
+  v15 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1741,18 +1741,18 @@ LABEL_7:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v15 = requestCopy;
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
+  v14 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1762,18 +1762,18 @@ void __70__FPDDomainExtensionBackend_trashItemAtURL_request_completionHandler___
   [v2 trashItemAtURL:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
   queue = self->_queue;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v15 = lCopy;
+  v16 = infoCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = infoCopy;
+  v14 = lCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1817,36 +1817,36 @@ LABEL_7:
   (*(v6 + 16))(v6, v7);
 }
 
-- (void)workingSetDidChangeWithCompletionHandler:(id)a3
+- (void)workingSetDidChangeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v6 = [WeakRetained indexer];
+  indexer = [WeakRetained indexer];
 
-  if (v6)
+  if (indexer)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__FPDDomainExtensionBackend_workingSetDidChangeWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E83BE990;
-    v8 = v4;
-    [v6 signalChangesWithCompletionHandler:v7];
+    v8 = handlerCopy;
+    [indexer signalChangesWithCompletionHandler:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)getKnownFolderLocations:(unint64_t)a3 request:(id)a4 completionHandler:(id)a5
+- (void)getKnownFolderLocations:(unint64_t)locations request:(id)request completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v12 = v8;
-  v10 = v8;
-  v11 = v7;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1856,56 +1856,56 @@ void __79__FPDDomainExtensionBackend_getKnownFolderLocations_request_completionH
   [v2 getKnownFolderLocations:*(a1 + 56) completionHandler:*(a1 + 48)];
 }
 
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = FPNotSupportedError();
-  (*(a6 + 2))(v7, 0, MEMORY[0x1E695E0F0], v8);
+  (*(handler + 2))(handlerCopy, 0, MEMORY[0x1E695E0F0], v8);
 }
 
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a7;
+  completionHandlerCopy = completionHandler;
   v9 = FPNotSupportedError();
-  (*(a7 + 2))(v8, v9);
+  (*(completionHandler + 2))(completionHandlerCopy, v9);
 }
 
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, MEMORY[0x1E695E0F0], v7);
+  (*(handler + 2))(handlerCopy, MEMORY[0x1E695E0F0], v7);
 }
 
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithURL:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  wrapperCopy = wrapper;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
-  v22 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v19 = requestCopy;
+  v20 = wrapperCopy;
+  v21 = lCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = lCopy;
+  v17 = wrapperCopy;
+  v18 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1922,18 +1922,18 @@ void __105__FPDDomainExtensionBackend_setAlternateContentsURLWrapper_forDocument
   [v2 setAlternateContentsURL:v3 forDocumentWithURL:v4 completionHandler:v5];
 }
 
-- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v15 = requestCopy;
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
+  v14 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1949,18 +1949,18 @@ void __106__FPDDomainExtensionBackend_fetchAlternateContentsURLWrapperForDocumen
   [v2 fetchAlternateContentsURLWrapperForURL:v3 completionHandler:v4];
 }
 
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v15 = requestCopy;
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
+  v14 = requestCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -1976,12 +1976,12 @@ void __108__FPDDomainExtensionBackend_didUpdateAlternateContentsDocumentForDocum
   [v2 didUpdateAlternateContentsDocumentForDocumentWithURL:v3 completionHandler:v4];
 }
 
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
-  v8 = v5;
-  v7 = v5;
+  v8 = handlerCopy;
+  v7 = handlerCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -2005,14 +2005,14 @@ void __77__FPDDomainExtensionBackend_reindexAllItemsWithDropReason_completionHan
   }
 }
 
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
-  v12 = v8;
-  v10 = v7;
-  v11 = v8;
+  v12 = handlerCopy;
+  v10 = identifiersCopy;
+  v11 = handlerCopy;
   fp_dispatch_async_with_logs();
 }
 
@@ -2036,21 +2036,21 @@ void __87__FPDDomainExtensionBackend_reindexItemsWithIndexReason_identifiers_com
   }
 }
 
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = fp_current_or_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [FPDDomainExtensionBackend triggerFeedbackApprovalRequestForItemURL:domain:uiOnly:completionHandler:];
   }
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)launchFeedbackForDomain:(id)a3 itemIdentifier:(id)a4 triggeringError:(id)a5 when:(id)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8
+- (void)launchFeedbackForDomain:(id)domain itemIdentifier:(id)identifier triggeringError:(id)error when:(id)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -2058,12 +2058,12 @@ void __87__FPDDomainExtensionBackend_reindexItemsWithIndexReason_identifiers_com
   }
 
   v10 = FPNotSupportedError();
-  v8[2](v8, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)getSavedDiagnostics:(id)a3
+- (void)getSavedDiagnostics:(id)diagnostics
 {
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -2071,12 +2071,12 @@ void __87__FPDDomainExtensionBackend_reindexItemsWithIndexReason_identifiers_com
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, 0, v5);
+  diagnosticsCopy[2](diagnosticsCopy, 0, v5);
 }
 
-- (void)clearDiagnosticState:(id)a3
+- (void)clearDiagnosticState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -2084,12 +2084,12 @@ void __87__FPDDomainExtensionBackend_reindexItemsWithIndexReason_identifiers_com
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, v5);
+  stateCopy[2](stateCopy, v5);
 }
 
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -2097,20 +2097,20 @@ void __87__FPDDomainExtensionBackend_reindexItemsWithIndexReason_identifiers_com
   }
 
   v7 = FPNotSupportedError();
-  v5[2](v5, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  extenderCopy = extender;
+  handlerCopy = handler;
   queue = self->_queue;
-  v15 = v9;
-  v16 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v15 = extenderCopy;
+  v16 = handlerCopy;
+  v12 = requestCopy;
+  v13 = extenderCopy;
+  v14 = handlerCopy;
   fp_dispatch_async_with_logs();
 }
 

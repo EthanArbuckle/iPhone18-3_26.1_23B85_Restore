@@ -1,10 +1,10 @@
 @interface FigCaptureAudioFileRecordingSettings
 - (FigCaptureAudioFileRecordingSettings)init;
-- (FigCaptureAudioFileRecordingSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FigCaptureAudioFileRecordingSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigCaptureAudioFileRecordingSettings
@@ -16,37 +16,37 @@
   return [(FigCaptureRecordingSettings *)&v3 init];
 }
 
-- (FigCaptureAudioFileRecordingSettings)initWithCoder:(id)a3
+- (FigCaptureAudioFileRecordingSettings)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = FigCaptureAudioFileRecordingSettings;
   v4 = [(FigCaptureRecordingSettings *)&v7 initWithCoder:?];
   if (v4)
   {
-    -[FigCaptureAudioFileRecordingSettings setAudioSettings:](v4, "setAudioSettings:", [a3 decodePropertyListForKey:@"audioSettings"]);
-    -[FigCaptureAudioFileRecordingSettings setCinematicAudioSettings:](v4, "setCinematicAudioSettings:", [a3 decodePropertyListForKey:@"cinematicAudioSettings"]);
+    -[FigCaptureAudioFileRecordingSettings setAudioSettings:](v4, "setAudioSettings:", [coder decodePropertyListForKey:@"audioSettings"]);
+    -[FigCaptureAudioFileRecordingSettings setCinematicAudioSettings:](v4, "setCinematicAudioSettings:", [coder decodePropertyListForKey:@"cinematicAudioSettings"]);
     AllowedClassSetForMetadataItems = FigCaptureMetadataUtilitiesCreateAllowedClassSetForMetadataItems();
-    -[FigCaptureAudioFileRecordingSettings setMetadata:](v4, "setMetadata:", [a3 decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"metadata"]);
+    -[FigCaptureAudioFileRecordingSettings setMetadata:](v4, "setMetadata:", [coder decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"metadata"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FigCaptureAudioFileRecordingSettings;
   [(FigCaptureRecordingSettings *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:-[FigCaptureAudioFileRecordingSettings audioSettings](self forKey:{"audioSettings"), @"audioSettings"}];
-  [a3 encodeObject:-[FigCaptureAudioFileRecordingSettings cinematicAudioSettings](self forKey:{"cinematicAudioSettings"), @"cinematicAudioSettings"}];
-  [a3 encodeObject:-[FigCaptureAudioFileRecordingSettings metadata](self forKey:{"metadata"), @"metadata"}];
+  [coder encodeObject:-[FigCaptureAudioFileRecordingSettings audioSettings](self forKey:{"audioSettings"), @"audioSettings"}];
+  [coder encodeObject:-[FigCaptureAudioFileRecordingSettings cinematicAudioSettings](self forKey:{"cinematicAudioSettings"), @"cinematicAudioSettings"}];
+  [coder encodeObject:-[FigCaptureAudioFileRecordingSettings metadata](self forKey:{"metadata"), @"metadata"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCaptureAudioFileRecordingSettings;
-  v4 = [(FigCaptureRecordingSettings *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureRecordingSettings *)&v6 copyWithZone:zone];
   [v4 setAudioSettings:self->_audioSettings];
   [v4 setCinematicAudioSettings:self->_cinematicAudioSettings];
   [v4 setMetadata:self->_metadata];
@@ -92,10 +92,10 @@
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
-  v12 = [(FigCaptureRecordingSettings *)self settingsID];
-  v13 = [(NSURL *)[(FigCaptureRecordingSettings *)self outputURL] lastPathComponent];
+  settingsID = [(FigCaptureRecordingSettings *)self settingsID];
+  lastPathComponent = [(NSURL *)[(FigCaptureRecordingSettings *)self outputURL] lastPathComponent];
   [(FigCaptureRecordingSettings *)self maxDuration];
-  return [v10 stringWithFormat:@"%@ %p: captureID:%lld URL:%@ maxDur:%f maxSize:%lld diskLim:%lld%@", v11, self, v12, v13, CMTimeGetSeconds(&time), -[FigCaptureRecordingSettings maxFileSize](self, "maxFileSize"), -[FigCaptureRecordingSettings minFreeDiskSpaceLimit](self, "minFreeDiskSpaceLimit"), v6];
+  return [v10 stringWithFormat:@"%@ %p: captureID:%lld URL:%@ maxDur:%f maxSize:%lld diskLim:%lld%@", v11, self, settingsID, lastPathComponent, CMTimeGetSeconds(&time), -[FigCaptureRecordingSettings maxFileSize](self, "maxFileSize"), -[FigCaptureRecordingSettings minFreeDiskSpaceLimit](self, "minFreeDiskSpaceLimit"), v6];
 }
 
 @end

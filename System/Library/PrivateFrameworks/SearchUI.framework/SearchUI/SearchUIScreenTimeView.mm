@@ -1,6 +1,6 @@
 @interface SearchUIScreenTimeView
 - (SearchUIScreenTimeView)init;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIScreenTimeView
@@ -25,23 +25,23 @@
 
     [SearchUIAutoLayout requireIntrinsicSizeForView:v8];
     [(SearchUIScreenTimeView *)v3 addArrangedSubview:v8];
-    v9 = [MEMORY[0x1E69D91A0] secondaryLabel];
-    v10 = [MEMORY[0x1E69D9138] shortSubheadFont];
-    [v9 setFont:v10];
+    secondaryLabel = [MEMORY[0x1E69D91A0] secondaryLabel];
+    shortSubheadFont = [MEMORY[0x1E69D9138] shortSubheadFont];
+    [secondaryLabel setFont:shortSubheadFont];
 
-    [v9 setNumberOfLines:0];
-    [(SearchUIScreenTimeView *)v3 addArrangedSubview:v9];
-    [(SearchUIScreenTimeView *)v3 setLabel:v9];
+    [secondaryLabel setNumberOfLines:0];
+    [(SearchUIScreenTimeView *)v3 addArrangedSubview:secondaryLabel];
+    [(SearchUIScreenTimeView *)v3 setLabel:secondaryLabel];
   }
 
   return v3;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v5 = [a3 title];
-  v4 = [(SearchUIScreenTimeView *)self label];
-  [v4 setText:v5];
+  title = [model title];
+  label = [(SearchUIScreenTimeView *)self label];
+  [label setText:title];
 }
 
 @end

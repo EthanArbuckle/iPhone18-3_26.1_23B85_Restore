@@ -1,29 +1,29 @@
 @interface NTKFaceColorUpNextEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 @end
 
 @implementation NTKFaceColorUpNextEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1104;
   v5[3] = &unk_185E8;
-  v5[4] = a1;
-  v3 = sub_1104(v5, a3);
+  v5[4] = self;
+  v3 = sub_1104(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 pdrDeviceVersion] >= 0x50000)
+  deviceCopy = device;
+  if ([deviceCopy pdrDeviceVersion] >= 0x50000)
   {
-    [v3 isRunningGraceOrLater];
+    [deviceCopy isRunningGraceOrLater];
     v4 = &off_192B0;
   }
 
@@ -35,26 +35,26 @@
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v6 = a4;
-  if ([v6 pdrDeviceVersion] >= 0x50000)
+  deviceCopy = device;
+  if ([deviceCopy pdrDeviceVersion] >= 0x50000)
   {
-    if (a3 == 201)
+    if (value == 201)
     {
       v7 = @"siri-dark";
     }
 
-    else if (a3 == 202)
+    else if (value == 202)
     {
       v7 = @"siri-grey";
     }
 
     else
     {
-      v9.receiver = a1;
+      v9.receiver = self;
       v9.super_class = &OBJC_METACLASS___NTKFaceColorUpNextEditOption;
-      v7 = objc_msgSendSuper2(&v9, "_snapshotKeyForValue:forDevice:", a3, v6);
+      v7 = objc_msgSendSuper2(&v9, "_snapshotKeyForValue:forDevice:", value, deviceCopy);
     }
   }
 

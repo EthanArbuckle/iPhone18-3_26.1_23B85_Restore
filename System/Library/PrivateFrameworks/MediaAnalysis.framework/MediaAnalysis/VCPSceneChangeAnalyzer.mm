@@ -1,10 +1,10 @@
 @interface VCPSceneChangeAnalyzer
-- (BOOL)decideLensSwitchPoint:(void *)a3;
+- (BOOL)decideLensSwitchPoint:(void *)point;
 - (VCPSceneChangeAnalyzer)init;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)finalizeAnalysisPass:(id *)a3;
-- (void)ComputeSceneDelta:(void *)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)finalizeAnalysisPass:(id *)pass;
+- (void)ComputeSceneDelta:(void *)delta;
 - (void)PrintSegments;
 @end
 
@@ -21,9 +21,9 @@
     v4 = *(v2 + 1792);
     *(v2 + 1792) = v3;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = *(v2 + 1793);
-    *(v2 + 1793) = v5;
+    *(v2 + 1793) = array;
 
     v2[14352] = 1;
     v2[14353] = 1;
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (void)ComputeSceneDelta:(void *)a3
+- (void)ComputeSceneDelta:(void *)delta
 {
-  v3 = *a3;
-  v4 = *a3 - 3;
-  if (*a3 >= 3)
+  v3 = *delta;
+  v4 = *delta - 3;
+  if (*delta >= 3)
   {
     if (v3 <= 0xC)
     {
@@ -60,7 +60,7 @@
     }
 
     v8 = ma::FrameBuffer::Get(&self->_frameBuffer, v3 - 2);
-    v9 = ma::Histogram::EarthMoverDistance((a3 + 360), (v8 + 360));
+    v9 = ma::Histogram::EarthMoverDistance((delta + 360), (v8 + 360));
     if (v7)
     {
       sceneDeltaBuffer = self->_sceneDeltaBuffer;
@@ -83,33 +83,33 @@
     }
 
     self->_sceneDeltaBuffer[v4 % 0xA] = v9;
-    *(a3 + 75) = v9;
-    *(a3 + 76) = v14;
+    *(delta + 75) = v9;
+    *(delta + 76) = v14;
   }
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v28[0] = *a4;
-  duration = *a5;
+  v28[0] = *timestamp;
+  duration = *duration;
   CMTimeRangeMake(&v29, v28, &duration);
   v10 = *&v29.start.epoch;
   *&self->_frameBuffer.buffer_[34].motion_result_.significant_values_[5] = *&v29.start.value;
   *&self->_frameBuffer.buffer_[34].motion_result_.confidence_[3] = v10;
   *&self->_frameBuffer.buffer_[34].motion_result_.action_score_ = *&v29.duration.timescale;
   Next = ma::FrameBuffer::GetNext(&self->_frameBuffer);
-  v29.start = *a4;
-  v28[0] = *a5;
-  *&v12 = ma::Frame::Initialize(Next, &v29.start, v28, a3, 1).n128_u64[0];
+  v29.start = *timestamp;
+  v28[0] = *duration;
+  *&v12 = ma::Frame::Initialize(Next, &v29.start, v28, frame, 1).n128_u64[0];
   v14 = v13;
   if (!v13)
   {
     if (BYTE1(self->_frameBuffer.buffer_[34].motion_result_.significant_values_[4]) == 1)
     {
       v15 = *self->_frameBuffer.buffer_[34].motion_result_.significant_values_;
-      *&v29.start.value = *&a4->var0;
-      v29.start.epoch = a4->var3;
+      *&v29.start.value = *&timestamp->var0;
+      v29.start.epoch = timestamp->var3;
       [v15 resetSegment:&v29];
       BYTE1(self->_frameBuffer.buffer_[34].motion_result_.significant_values_[4]) = 0;
       *(&self->_frameBuffer.buffer_[34].motion_result_.is_stable_ + 1) = 0;
@@ -122,8 +122,8 @@
       {
         *(&self->_frameBuffer.buffer_[34].motion_result_.is_stable_ + 1) = 1;
         v16 = *self->_frameBuffer.buffer_[34].motion_result_.significant_values_;
-        *&v29.start.value = *&a4->var0;
-        v29.start.epoch = a4->var3;
+        *&v29.start.value = *&timestamp->var0;
+        v29.start.epoch = timestamp->var3;
         [v16 finalizeAtTime:&v29];
         v17 = *&self->_frameBuffer.buffer_[34].motion_result_.significant_values_[2];
         v31[0] = @"start";
@@ -164,8 +164,8 @@
         *self->_frameBuffer.buffer_[34].motion_result_.significant_values_ = v24;
 
         v26 = *self->_frameBuffer.buffer_[34].motion_result_.significant_values_;
-        *&v29.start.value = *&a4->var0;
-        v29.start.epoch = a4->var3;
+        *&v29.start.value = *&timestamp->var0;
+        v29.start.epoch = timestamp->var3;
         [v26 resetSegment:&v29];
       }
 
@@ -173,8 +173,8 @@
       {
         *(&self->_frameBuffer.buffer_[34].motion_result_.is_stable_ + 1) = 0;
         v19 = *self->_frameBuffer.buffer_[34].motion_result_.significant_values_;
-        *&v29.start.value = *&a4->var0;
-        v29.start.epoch = a4->var3;
+        *&v29.start.value = *&timestamp->var0;
+        v29.start.epoch = timestamp->var3;
         [v19 updateSegment:&v29];
       }
     }
@@ -227,17 +227,17 @@
   }
 }
 
-- (BOOL)decideLensSwitchPoint:(void *)a3
+- (BOOL)decideLensSwitchPoint:(void *)point
 {
-  v4 = *(a3 + 76);
+  v4 = *(point + 76);
   is_stable = self->_frameBuffer.buffer_[34].motion_result_.is_stable_;
   if (is_stable)
   {
     if (v4 < 1.0)
     {
-      v6 = [*self->_frameBuffer.buffer_[34].motion_result_.significant_values_ numOfFrames];
+      numOfFrames = [*self->_frameBuffer.buffer_[34].motion_result_.significant_values_ numOfFrames];
       v7 = 0;
-      if (v6 >= 4)
+      if (numOfFrames >= 4)
       {
         goto LABEL_11;
       }
@@ -246,7 +246,7 @@
     return 0;
   }
 
-  if (v4 <= 6.8 || *(a3 + 75) <= 3.5)
+  if (v4 <= 6.8 || *(point + 75) <= 3.5)
   {
     return 0;
   }
@@ -258,7 +258,7 @@ LABEL_11:
   return result;
 }
 
-- (int)finalizeAnalysisPass:(id *)a3
+- (int)finalizeAnalysisPass:(id *)pass
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = *self->_frameBuffer.buffer_[34].motion_result_.significant_values_;

@@ -1,29 +1,29 @@
 @interface TSCHChartAxisStyle
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
-+ (id)identifierForCategoryStyleWithRoleIndex:(unint64_t)a3 ordinal:(unint64_t)a4;
-+ (id)identifierForValueStyleWithRoleIndex:(unint64_t)a3 ordinal:(unint64_t)a4;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
++ (id)identifierForCategoryStyleWithRoleIndex:(unint64_t)index ordinal:(unint64_t)ordinal;
++ (id)identifierForValueStyleWithRoleIndex:(unint64_t)index ordinal:(unint64_t)ordinal;
 + (id)imageFillProperties;
 + (id)properties;
-+ (int)defaultIntValueForProperty:(int)a3;
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3;
-- (TSCHChartAxisStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_upgrade3DChartPropertiesFrom2DProperties:(id)a3;
-- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)a3;
-- (void)saveToArchiver:(id)a3;
++ (int)defaultIntValueForProperty:(int)property;
++ (int)muxDefaultPropertyForSpecificProperty:(int)property;
+- (TSCHChartAxisStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_upgrade3DChartPropertiesFrom2DProperties:(id)properties;
+- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)usage;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSCHChartAxisStyle
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, v5, v6, v7, "+[TSCHChartAxisStyle defaultStyleWithContext:]");
@@ -34,59 +34,59 @@
   }
 
   v23 = objc_alloc(objc_opt_class());
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v23, v24, v25, v26, v27, v4, 0, 0, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v23, v24, v25, v26, v27, contextCopy, 0, 0, 0);
 
   return isVariation;
 }
 
-+ (id)identifierForValueStyleWithRoleIndex:(unint64_t)a3 ordinal:(unint64_t)a4
++ (id)identifierForValueStyleWithRoleIndex:(unint64_t)index ordinal:(unint64_t)ordinal
 {
-  v7 = objc_msgSend_presetStyleDescriptorForValueStyleOrdinal_(a1, a2, v4, v5, v6, a4);
+  v7 = objc_msgSend_presetStyleDescriptorForValueStyleOrdinal_(self, a2, v4, v5, v6, ordinal);
   v8 = String();
 
   return v8;
 }
 
-+ (id)identifierForCategoryStyleWithRoleIndex:(unint64_t)a3 ordinal:(unint64_t)a4
++ (id)identifierForCategoryStyleWithRoleIndex:(unint64_t)index ordinal:(unint64_t)ordinal
 {
-  v7 = objc_msgSend_presetStyleDescriptorForCategoryStyleOrdinal_(a1, a2, v4, v5, v6, a4);
+  v7 = objc_msgSend_presetStyleDescriptorForCategoryStyleOrdinal_(self, a2, v4, v5, v6, ordinal);
   v8 = String();
 
   return v8;
 }
 
-- (TSCHChartAxisStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSCHChartAxisStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
   v7.receiver = self;
   v7.super_class = TSCHChartAxisStyle;
-  return [(TSCHChartAxisStyle *)&v7 initWithContext:a3 name:a4 overridePropertyMap:a5 isVariation:a6];
+  return [(TSCHChartAxisStyle *)&v7 initWithContext:context name:name overridePropertyMap:map isVariation:variation];
 }
 
-- (void)p_upgrade3DChartPropertiesFrom2DProperties:(id)a3
+- (void)p_upgrade3DChartPropertiesFrom2DProperties:(id)properties
 {
-  v3 = a3;
-  sub_2762C3928(1251, 1247, 1233, 1231, v3);
-  sub_2762C3928(1250, 1246, 1232, 1230, v3);
+  propertiesCopy = properties;
+  sub_2762C3928(1251, 1247, 1233, 1231, propertiesCopy);
+  sub_2762C3928(1250, 1246, 1232, 1230, propertiesCopy);
 }
 
-- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)a3
+- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)usage
 {
-  v12 = a3;
+  usageCopy = usage;
   v7 = objc_msgSend_propertySetWithProperties_(MEMORY[0x277D80AC0], v3, v4, v5, v6, 1249, 1255, 1248, 1254, 0);
-  objc_msgSend_upgradeShadowProperties_inMap_(TSCHStyleUtilities, v8, v9, v10, v11, v7, v12);
+  objc_msgSend_upgradeShadowProperties_inMap_(TSCHStyleUtilities, v8, v9, v10, v11, v7, usageCopy);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_messageType(v4, v5, v6, v7, v8) == 5012)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_messageType(unarchiverCopy, v5, v6, v7, v8) == 5012)
   {
-    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, unarchiverCopy);
   }
 
   else
   {
-    v13 = v4;
+    v13 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v18 = objc_msgSend_messageWithDescriptor_(v13, v14, v15, v16, v17, off_2812ED2B8[16]);
 
@@ -481,11 +481,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, v6, v7, v8, sub_2762C5F9C, off_2812ED2B8[16]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, v6, v7, v8, sub_2762C5F9C, off_2812ED2B8[16]);
 
   *(v9 + 40) |= 1u;
   v10 = *(v9 + 48);
@@ -503,7 +503,7 @@
 
   v299.receiver = self;
   v299.super_class = TSCHChartAxisStyle;
-  [(TSCHChartAxisStyle *)&v299 saveToArchive:v10 archiver:v4];
+  [(TSCHChartAxisStyle *)&v299 saveToArchive:v10 archiver:archiverCopy];
   sub_27640EFA8();
   v12 = google::protobuf::internal::ExtensionSet::MutableMessage();
   google::protobuf::internal::ExtensionSet::SetBool((v9 + 16), TSCH::axis_supports_radar, 8, 1, 0);
@@ -539,7 +539,7 @@
       *(v12 + 32) = v35;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v31, v30, v32, v33, v34, v35, v4);
+    objc_msgSend_saveToArchive_archiver_(v31, v30, v32, v33, v34, v35, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v26, v27, v28, v29, 1233))
@@ -559,7 +559,7 @@
       *(v12 + 40) = v46;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v42, v41, v43, v44, v45, v46, v4);
+    objc_msgSend_saveToArchive_archiver_(v42, v41, v43, v44, v45, v46, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v37, v38, v39, v40, 1237))
@@ -649,7 +649,7 @@
       *(v12 + 48) = v102;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v98, v97, v99, v100, v101, v102, v4);
+    objc_msgSend_saveToArchive_archiver_(v98, v97, v99, v100, v101, v102, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v93, v94, v95, v96, 1249))
@@ -669,7 +669,7 @@
       *(v12 + 56) = v113;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v109, v108, v110, v111, v112, v113, v4);
+    objc_msgSend_saveToArchive_archiver_(v109, v108, v110, v111, v112, v113, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v104, v105, v106, v107, 1250))
@@ -689,7 +689,7 @@
       *(v12 + 64) = v124;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v120, v119, v121, v122, v123, v124, v4);
+    objc_msgSend_saveToArchive_archiver_(v120, v119, v121, v122, v123, v124, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v115, v116, v117, v118, 1251))
@@ -709,7 +709,7 @@
       *(v12 + 72) = v135;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v131, v130, v132, v133, v134, v135, v4);
+    objc_msgSend_saveToArchive_archiver_(v131, v130, v132, v133, v134, v135, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v126, v127, v128, v129, 1252))
@@ -743,7 +743,7 @@
       *(v12 + 80) = v154;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v150, v149, v151, v152, v153, v154, v4);
+    objc_msgSend_saveToArchive_archiver_(v150, v149, v151, v152, v153, v154, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v145, v146, v147, v148, 1255))
@@ -763,7 +763,7 @@
       *(v12 + 88) = v165;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v161, v160, v162, v163, v164, v165, v4);
+    objc_msgSend_saveToArchive_archiver_(v161, v160, v162, v163, v164, v165, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v156, v157, v158, v159, 1256))
@@ -783,7 +783,7 @@
       *(v12 + 96) = v176;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v172, v171, v173, v174, v175, v176, v4);
+    objc_msgSend_saveToArchive_archiver_(v172, v171, v173, v174, v175, v176, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v167, v168, v169, v170, 1257))
@@ -803,7 +803,7 @@
       *(v12 + 104) = v187;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v183, v182, v184, v185, v186, v187, v4);
+    objc_msgSend_saveToArchive_archiver_(v183, v182, v184, v185, v186, v187, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v178, v179, v180, v181, 1265))
@@ -961,11 +961,11 @@
   }
 }
 
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, off_2812EE5D0[20]);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, off_2812EE5D0[20]);
 
   if (*(v9 + 32))
   {
@@ -979,7 +979,7 @@
 
   v84.receiver = self;
   v84.super_class = TSCHChartAxisStyle;
-  [(TSCHChartAxisStyle *)&v84 loadFromArchive:v10 unarchiver:v4];
+  [(TSCHChartAxisStyle *)&v84 loadFromArchive:v10 unarchiver:unarchiverCopy];
   v11 = objc_alloc_init(MEMORY[0x277D80AB8]);
   v16 = v11;
   v17 = *(v9 + 16);
@@ -997,7 +997,7 @@
 
   if ((v17 & 2) != 0)
   {
-    v19 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 40), v4);
+    v19 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 40), unarchiverCopy);
     if (v19)
     {
       objc_msgSend_setObject_forProperty_(v16, v18, v20, v21, v22, v19, 1251);
@@ -1008,7 +1008,7 @@
 
   if ((v17 & 4) != 0)
   {
-    v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 48), v4);
+    v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 48), unarchiverCopy);
     if (v24)
     {
       objc_msgSend_setObject_forProperty_(v16, v23, v25, v26, v27, v24, 1257);
@@ -1050,7 +1050,7 @@
 
   if ((v17 & 8) != 0)
   {
-    v29 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 56), v4);
+    v29 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 56), unarchiverCopy);
     if (v29)
     {
       objc_msgSend_setObject_forProperty_(v16, v28, v30, v31, v32, v29, 1249);
@@ -1061,7 +1061,7 @@
 
   if ((v17 & 0x10) != 0)
   {
-    v34 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 64), v4);
+    v34 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 64), unarchiverCopy);
     if (v34)
     {
       objc_msgSend_setObject_forProperty_(v16, v33, v35, v36, v37, v34, 1255);
@@ -1104,7 +1104,7 @@
 
   if ((v17 & 0x20) != 0)
   {
-    v39 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 72), v4);
+    v39 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 72), unarchiverCopy);
     if (v39)
     {
       objc_msgSend_setObject_forProperty_(v16, v38, v40, v41, v42, v39, 1250);
@@ -1115,7 +1115,7 @@
 
   if ((v17 & 0x40) != 0)
   {
-    v44 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 80), v4);
+    v44 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 80), unarchiverCopy);
     if (v44)
     {
       objc_msgSend_setObject_forProperty_(v16, v43, v45, v46, v47, v44, 1256);
@@ -1169,7 +1169,7 @@
 
   if ((v17 & 0x80) != 0)
   {
-    v49 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 88), v4);
+    v49 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 88), unarchiverCopy);
     if (v49)
     {
       objc_msgSend_setObject_forProperty_(v16, v48, v50, v51, v52, v49, 1248);
@@ -1180,7 +1180,7 @@
 
   if ((v17 & 0x100) != 0)
   {
-    v54 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 96), v4);
+    v54 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v12, v13, v14, v15, *(v9 + 96), unarchiverCopy);
     if (v54)
     {
       objc_msgSend_setObject_forProperty_(v16, v53, v55, v56, v57, v54, 1254);
@@ -1252,7 +1252,7 @@
   v59 = *(v9 + 16);
   if ((v59 & 0x200) != 0)
   {
-    v61 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 104), v4);
+    v61 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 104), unarchiverCopy);
     if (v61)
     {
       objc_msgSend_setObject_forProperty_(v16, v60, v62, v63, v64, v61, 1233);
@@ -1263,7 +1263,7 @@
 
   if ((v59 & 0x400) != 0)
   {
-    v66 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 112), v4);
+    v66 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v12, v13, v14, v15, *(v9 + 112), unarchiverCopy);
     if (v66)
     {
       objc_msgSend_setObject_forProperty_(v16, v65, v67, v68, v69, v66, 1232);
@@ -1285,23 +1285,23 @@
   }
 
   objc_storeStrong((&self->super.super.super.super.isa + *MEMORY[0x277D80AF0]), v16);
-  if (objc_msgSend_hasPreUFFVersion(v4, v71, v72, v73, v74))
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v71, v72, v73, v74))
   {
-    v79 = objc_msgSend_preUFFVersion(v4, v75, v76, v77, v78);
+    v79 = objc_msgSend_preUFFVersion(unarchiverCopy, v75, v76, v77, v78);
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = sub_2762C5818;
     v83[3] = &unk_27A6B7688;
     v83[4] = self;
     v83[5] = v79;
-    objc_msgSend_addFinalizeHandler_(v4, v80, COERCE_DOUBLE(3221225472), v81, v82, v83);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v80, COERCE_DOUBLE(3221225472), v81, v82, v83);
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
@@ -1335,7 +1335,7 @@
   v57 = v9;
   v66 = v57;
   v68 = &v69;
-  v58 = v7;
+  v58 = contextCopy;
   v67 = v58;
   objc_msgSend_enumeratePropertiesUsingBlock_(v28, v59, v60, v61, v62, v65);
   v63 = v70[3];
@@ -1344,9 +1344,9 @@
   return v63;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v12 = objc_msgSend_copy(self, v8, v9, v10, v11);
@@ -1366,7 +1366,7 @@
   v55[4] = self;
   v46 = v7;
   v56 = v46;
-  v58 = a3;
+  fractionCopy = fraction;
   v47 = v12;
   v57 = v47;
   objc_msgSend_enumeratePropertiesUsingBlock_(v17, v48, v49, v50, v51, v55);
@@ -1400,9 +1400,9 @@
   return v3;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47660 != -1)
   {
     sub_2764A7D14();
@@ -1434,7 +1434,7 @@
       }
 
 LABEL_18:
-      v14.receiver = a1;
+      v14.receiver = self;
       v14.super_class = &OBJC_METACLASS___TSCHChartAxisStyle;
       return objc_msgSendSuper2(&v14, sel_defaultIntValueForProperty_, v6);
     }
@@ -1471,9 +1471,9 @@ LABEL_18:
   return result;
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47670 != -1)
   {
     sub_2764A7D28();
@@ -1507,7 +1507,7 @@ LABEL_18:
     else
     {
 LABEL_12:
-      v14.receiver = a1;
+      v14.receiver = self;
       v14.super_class = &OBJC_METACLASS___TSCHChartAxisStyle;
       objc_msgSendSuper2(&v14, sel_defaultFloatValueForProperty_, v6);
     }
@@ -1516,9 +1516,9 @@ LABEL_12:
   return result;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47680 != -1)
   {
     sub_2764A7D3C();
@@ -1576,7 +1576,7 @@ LABEL_21:
     }
 
 LABEL_27:
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = &OBJC_METACLASS___TSCHChartAxisStyle;
     v8 = objc_msgSendSuper2(&v17, sel_defaultValueForProperty_, v6);
     goto LABEL_20;
@@ -1603,17 +1603,17 @@ LABEL_23:
   return v9;
 }
 
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3
++ (int)muxDefaultPropertyForSpecificProperty:(int)property
 {
   if (qword_280A47690 != -1)
   {
     sub_2764A7D50();
   }
 
-  result = objc_msgSend_containsKey_(qword_280A47688, a2, v3, v4, v5, a3);
+  result = objc_msgSend_containsKey_(qword_280A47688, a2, v3, v4, v5, property);
   if (result)
   {
-    return objc_msgSend_intForKey_(qword_280A47688, v8, v9, v10, v11, a3);
+    return objc_msgSend_intForKey_(qword_280A47688, v8, v9, v10, v11, property);
   }
 
   return result;

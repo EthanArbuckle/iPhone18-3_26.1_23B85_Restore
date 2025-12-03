@@ -60,8 +60,8 @@
   v5.super_class = BKZoomingScrollViewAccessibility;
   [(BKZoomingScrollViewAccessibility *)&v5 accessibilityScrollDownPage];
   v3 = UIAccessibilityAnnouncementNotification;
-  v4 = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityScrollStatus = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
+  UIAccessibilityPostNotification(v3, _accessibilityScrollStatus);
 }
 
 - (void)accessibilityScrollUpPage
@@ -72,8 +72,8 @@
   v5.super_class = BKZoomingScrollViewAccessibility;
   [(BKZoomingScrollViewAccessibility *)&v5 accessibilityScrollUpPage];
   v3 = UIAccessibilityAnnouncementNotification;
-  v4 = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityScrollStatus = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
+  UIAccessibilityPostNotification(v3, _accessibilityScrollStatus);
 }
 
 - (void)accessibilityScrollLeftPage
@@ -84,8 +84,8 @@
   v5.super_class = BKZoomingScrollViewAccessibility;
   [(BKZoomingScrollViewAccessibility *)&v5 accessibilityScrollLeftPage];
   v3 = UIAccessibilityAnnouncementNotification;
-  v4 = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityScrollStatus = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
+  UIAccessibilityPostNotification(v3, _accessibilityScrollStatus);
 }
 
 - (void)accessibilityScrollRightPage
@@ -96,8 +96,8 @@
   v5.super_class = BKZoomingScrollViewAccessibility;
   [(BKZoomingScrollViewAccessibility *)&v5 accessibilityScrollRightPage];
   v3 = UIAccessibilityAnnouncementNotification;
-  v4 = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityScrollStatus = [(BKZoomingScrollViewAccessibility *)self _accessibilityScrollStatus];
+  UIAccessibilityPostNotification(v3, _accessibilityScrollStatus);
 }
 
 @end

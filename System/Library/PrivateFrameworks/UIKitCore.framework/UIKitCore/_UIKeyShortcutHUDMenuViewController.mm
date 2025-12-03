@@ -1,22 +1,22 @@
 @interface _UIKeyShortcutHUDMenuViewController
-- (BOOL)shouldPersistSelectionForCellAtIndexPath:(id)a3;
+- (BOOL)shouldPersistSelectionForCellAtIndexPath:(id)path;
 - (UIKeyShortcutHUDMetrics)metrics;
 - (_UIKeyShortcutHUDCollectionViewManager)collectionViewManager;
 - (_UIKeyShortcutHUDMenu)menu;
 - (_UIKeyShortcutHUDMenuViewControllerDelegate)delegate;
 - (id)_searchModeCollectionViewLayout;
 - (id)_standardModeCollectionViewLayout;
-- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)a3;
-- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)a3;
+- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)path;
+- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)path;
 - (void)_configureCollectionView;
-- (void)_displayMenu:(id)a3 animatingDifferences:(BOOL)a4;
+- (void)_displayMenu:(id)menu animatingDifferences:(BOOL)differences;
 - (void)_setupSubviews;
 - (void)didScrollCollectionView;
-- (void)flashShortcutIfVisible:(id)a3 completionHandler:(id)a4;
-- (void)performActionForSelectingCellAtIndexPath:(id)a3;
-- (void)scrollToCategory:(id)a3 withCategoryIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)setMenu:(id)a3 animated:(BOOL)a4;
-- (void)setSearching:(BOOL)a3;
+- (void)flashShortcutIfVisible:(id)visible completionHandler:(id)handler;
+- (void)performActionForSelectingCellAtIndexPath:(id)path;
+- (void)scrollToCategory:(id)category withCategoryIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setMenu:(id)menu animated:(BOOL)animated;
+- (void)setSearching:(BOOL)searching;
 - (void)viewDidLoad;
 @end
 
@@ -36,69 +36,69 @@
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
   [WeakRetained menuPlatterCornerRadius];
   v5 = v4;
-  v6 = [(UIViewController *)self view];
-  v7 = [v6 layer];
-  [v7 setCornerRadius:v5];
+  view = [(UIViewController *)self view];
+  layer = [view layer];
+  [layer setCornerRadius:v5];
 
   v8 = *MEMORY[0x1E69796E8];
-  v9 = [(UIViewController *)self view];
-  v10 = [v9 layer];
-  [v10 setCornerCurve:v8];
+  view2 = [(UIViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 setCornerCurve:v8];
 
   v11 = objc_loadWeakRetained(&self->_metrics);
-  v12 = [v11 menuPanelCornerMask];
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 layer];
-  [v14 setMaskedCorners:v12];
+  menuPanelCornerMask = [v11 menuPanelCornerMask];
+  view3 = [(UIViewController *)self view];
+  layer3 = [view3 layer];
+  [layer3 setMaskedCorners:menuPanelCornerMask];
 
-  v15 = [(UIViewController *)self view];
-  v16 = [v15 layer];
-  [v16 setMasksToBounds:1];
+  view4 = [(UIViewController *)self view];
+  layer4 = [view4 layer];
+  [layer4 setMasksToBounds:1];
 
   v17 = objc_loadWeakRetained(&self->_metrics);
   [v17 menuPanelStrokeWidth];
   v19 = v18;
-  v20 = [(UIViewController *)self view];
-  v21 = [v20 layer];
-  [v21 setBorderWidth:v19];
+  view5 = [(UIViewController *)self view];
+  layer5 = [view5 layer];
+  [layer5 setBorderWidth:v19];
 
   v22 = objc_loadWeakRetained(&self->_metrics);
-  v23 = [v22 platterStrokeColor];
-  v24 = [(UIViewController *)self traitCollection];
-  v25 = [v23 resolvedColorWithTraitCollection:v24];
-  v26 = [v25 CGColor];
-  v27 = [(UIViewController *)self view];
-  v28 = [v27 layer];
-  [v28 setBorderColor:v26];
+  platterStrokeColor = [v22 platterStrokeColor];
+  traitCollection = [(UIViewController *)self traitCollection];
+  v25 = [platterStrokeColor resolvedColorWithTraitCollection:traitCollection];
+  cGColor = [v25 CGColor];
+  view6 = [(UIViewController *)self view];
+  layer6 = [view6 layer];
+  [layer6 setBorderColor:cGColor];
 
   v29 = objc_loadWeakRetained(&self->_metrics);
   [v29 platterZPosition];
   v31 = v30;
-  v32 = [(UIViewController *)self view];
-  v33 = [v32 layer];
-  [v33 setZPosition:v31];
+  view7 = [(UIViewController *)self view];
+  layer7 = [view7 layer];
+  [layer7 setZPosition:v31];
 
   v34 = [UIVisualEffectView alloc];
   v35 = objc_loadWeakRetained(&self->_metrics);
-  v36 = [v35 platterVisualEffect];
-  v37 = [(UIVisualEffectView *)v34 initWithEffect:v36];
+  platterVisualEffect = [v35 platterVisualEffect];
+  v37 = [(UIVisualEffectView *)v34 initWithEffect:platterVisualEffect];
   visualEffectView = self->_visualEffectView;
   self->_visualEffectView = v37;
 
-  v39 = [(UIViewController *)self view];
-  [v39 bounds];
+  view8 = [(UIViewController *)self view];
+  [view8 bounds];
   [(UIView *)self->_visualEffectView setFrame:?];
 
   [(UIView *)self->_visualEffectView setAutoresizingMask:18];
   v40 = [UICollectionView alloc];
-  v41 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  [v41 bounds];
+  contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  [contentView bounds];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  v50 = [(_UIKeyShortcutHUDMenuViewController *)self _standardModeCollectionViewLayout];
-  v51 = [(UICollectionView *)v40 initWithFrame:v50 collectionViewLayout:v43, v45, v47, v49];
+  _standardModeCollectionViewLayout = [(_UIKeyShortcutHUDMenuViewController *)self _standardModeCollectionViewLayout];
+  v51 = [(UICollectionView *)v40 initWithFrame:_standardModeCollectionViewLayout collectionViewLayout:v43, v45, v47, v49];
   collectionView = self->_collectionView;
   self->_collectionView = v51;
 
@@ -110,11 +110,11 @@
   [(UICollectionView *)self->_collectionView setContentInset:0.0, v55, 0.0, v57];
 
   [(UIView *)self->_collectionView setAutoresizingMask:18];
-  v58 = [(UIViewController *)self view];
-  [v58 addSubview:self->_visualEffectView];
+  view9 = [(UIViewController *)self view];
+  [view9 addSubview:self->_visualEffectView];
 
-  v59 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  [v59 addSubview:self->_collectionView];
+  contentView2 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  [contentView2 addSubview:self->_collectionView];
 }
 
 - (void)_configureCollectionView
@@ -202,7 +202,7 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
   v50 = [off_1E70ECB30 itemWithLayoutSize:v51 supplementaryItems:v11];
 
-  v12 = self;
+  selfCopy = self;
   v13 = objc_loadWeakRetained(&self->_metrics);
   [v13 minShortcutCellWidth];
   v14 = [off_1E70ECB18 estimatedDimension:?];
@@ -213,25 +213,25 @@
   v19 = [off_1E70ECB18 absoluteDimension:{v17 * objc_msgSend(v18, "numCellsPerColumn")}];
   v49 = [off_1E70ECB40 sizeWithWidthDimension:v14 heightDimension:v19];
 
-  v20 = objc_loadWeakRetained(&v12->_metrics);
+  v20 = objc_loadWeakRetained(&selfCopy->_metrics);
   v21 = [off_1E70ECB28 verticalGroupWithLayoutSize:v49 repeatingSubitem:v50 count:{objc_msgSend(v20, "numCellsPerColumn")}];
 
-  v22 = v12;
-  v23 = objc_loadWeakRetained(&v12->_metrics);
+  v22 = selfCopy;
+  v23 = objc_loadWeakRetained(&selfCopy->_metrics);
   [v23 menuCellHeight];
   v24 = [off_1E70ECB48 fixedSpacing:?];
   v25 = [off_1E70ECB20 spacingForLeading:0 top:v24 trailing:0 bottom:0];
   [v21 setEdgeSpacing:v25];
 
   v26 = [off_1E70ECB38 sectionWithGroup:v21];
-  v27 = objc_loadWeakRetained(&v12->_metrics);
+  v27 = objc_loadWeakRetained(&selfCopy->_metrics);
   [v27 menuColumnSpacing];
   [v26 setInterGroupSpacing:?];
 
-  v28 = objc_loadWeakRetained(&v12->_metrics);
+  v28 = objc_loadWeakRetained(&selfCopy->_metrics);
   [v28 minShortcutCellWidth];
   v29 = [off_1E70ECB18 estimatedDimension:?];
-  v30 = objc_loadWeakRetained(&v12->_metrics);
+  v30 = objc_loadWeakRetained(&selfCopy->_metrics);
   [v30 menuCellHeight];
   v31 = [off_1E70ECB18 absoluteDimension:?];
   v32 = [off_1E70ECB40 sizeWithWidthDimension:v29 heightDimension:v31];
@@ -270,7 +270,7 @@
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v3 = [off_1E70ECB18 fractionalWidthDimension:1.0];
-  v4 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
   [WeakRetained separatorWidth];
   v6 = [off_1E70ECB18 absoluteDimension:?];
@@ -289,8 +289,8 @@
   v12 = [off_1E70ECB30 itemWithLayoutSize:v39 supplementaryItems:v11];
 
   v13 = [off_1E70ECB18 fractionalWidthDimension:1.0];
-  v14 = v4;
-  v15 = objc_loadWeakRetained(&v4->_metrics);
+  v14 = selfCopy;
+  v15 = objc_loadWeakRetained(&selfCopy->_metrics);
   [v15 menuCellHeight];
   v16 = [off_1E70ECB18 absoluteDimension:?];
   v17 = [off_1E70ECB40 sizeWithWidthDimension:v13 heightDimension:v16];
@@ -329,22 +329,22 @@
   return v37;
 }
 
-- (void)setMenu:(id)a3 animated:(BOOL)a4
+- (void)setMenu:(id)menu animated:(BOOL)animated
 {
-  v4 = a4;
-  obj = a3;
+  animatedCopy = animated;
+  obj = menu;
   WeakRetained = objc_loadWeakRetained(&self->_menu);
 
   v7 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_menu, obj);
-    v8 = [(UIViewController *)self isViewLoaded];
+    isViewLoaded = [(UIViewController *)self isViewLoaded];
     v7 = obj;
-    if (v8)
+    if (isViewLoaded)
     {
       v9 = objc_loadWeakRetained(&self->_menu);
-      [(_UIKeyShortcutHUDMenuViewController *)self _displayMenu:v9 animatingDifferences:v4];
+      [(_UIKeyShortcutHUDMenuViewController *)self _displayMenu:v9 animatingDifferences:animatedCopy];
 
       v10 = objc_loadWeakRetained(&self->_collectionViewManager);
       [v10 reloadAllVisibleSeparatorsForClient:self];
@@ -354,18 +354,18 @@
   }
 }
 
-- (void)_displayMenu:(id)a3 animatingDifferences:(BOOL)a4
+- (void)_displayMenu:(id)menu animatingDifferences:(BOOL)differences
 {
-  v16 = a4;
+  differencesCopy = differences;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  menuCopy = menu;
   v6 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 children];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  children = [menuCopy children];
+  v8 = [children countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -376,7 +376,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(children);
         }
 
         v21 = *(*(&v17 + 1) + 8 * i);
@@ -384,18 +384,18 @@
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
         [v6 appendSectionsWithIdentifiers:v13];
 
-        v14 = [v12 children];
-        [v6 appendItemsWithIdentifiers:v14];
+        children2 = [v12 children];
+        [v6 appendItemsWithIdentifiers:children2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v9 = [children countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v9);
   }
 
   dataSource = self->_dataSource;
-  if (v16)
+  if (differencesCopy)
   {
     [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v6 animatingDifferences:1];
   }
@@ -406,27 +406,27 @@
   }
 }
 
-- (void)performActionForSelectingCellAtIndexPath:(id)a3
+- (void)performActionForSelectingCellAtIndexPath:(id)path
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
+  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
   if (v4)
   {
     v6 = v4;
-    v5 = [(_UIKeyShortcutHUDMenuViewController *)self delegate];
-    [v5 menuViewController:self didSelectShortcut:v6];
+    delegate = [(_UIKeyShortcutHUDMenuViewController *)self delegate];
+    [delegate menuViewController:self didSelectShortcut:v6];
 
     v4 = v6;
   }
 }
 
-- (BOOL)shouldPersistSelectionForCellAtIndexPath:(id)a3
+- (BOOL)shouldPersistSelectionForCellAtIndexPath:(id)path
 {
-  v3 = self;
-  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
-  v5 = [(_UIKeyShortcutHUDMenuViewController *)v3 delegate];
-  LOBYTE(v3) = [v5 menuViewController:v3 shouldPersistSelectionForShortcut:v4];
+  selfCopy = self;
+  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  delegate = [(_UIKeyShortcutHUDMenuViewController *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate menuViewController:selfCopy shouldPersistSelectionForShortcut:v4];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)didScrollCollectionView
@@ -456,8 +456,8 @@
       else
       {
         WeakRetained = objc_loadWeakRetained(&self->_menu);
-        v20 = [WeakRetained children];
-        v19 = [v20 count] - 1;
+        children = [WeakRetained children];
+        v19 = [children count] - 1;
       }
     }
 
@@ -470,53 +470,53 @@
     {
       [(_UIKeyShortcutHUDMenuViewController *)self setCurrentScrolledToCategoryIndex:v19];
       v21 = objc_loadWeakRetained(&self->_menu);
-      v22 = [v21 children];
-      v24 = [v22 objectAtIndexedSubscript:{-[_UIKeyShortcutHUDMenuViewController currentScrolledToCategoryIndex](self, "currentScrolledToCategoryIndex")}];
+      children2 = [v21 children];
+      v24 = [children2 objectAtIndexedSubscript:{-[_UIKeyShortcutHUDMenuViewController currentScrolledToCategoryIndex](self, "currentScrolledToCategoryIndex")}];
 
-      v23 = [(_UIKeyShortcutHUDMenuViewController *)self delegate];
-      [v23 menuViewController:self didScrollToCategory:v24 withCategoryIndex:{-[_UIKeyShortcutHUDMenuViewController currentScrolledToCategoryIndex](self, "currentScrolledToCategoryIndex")}];
+      delegate = [(_UIKeyShortcutHUDMenuViewController *)self delegate];
+      [delegate menuViewController:self didScrollToCategory:v24 withCategoryIndex:{-[_UIKeyShortcutHUDMenuViewController currentScrolledToCategoryIndex](self, "currentScrolledToCategoryIndex")}];
     }
   }
 }
 
-- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)a3
+- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [v4 indexPath];
-  if (v6)
+  indexPath = [pathCopy indexPath];
+  if (indexPath)
   {
-    v7 = v6;
-    v8 = [v4 client];
+    v7 = indexPath;
+    client = [pathCopy client];
 
-    if (v8 == self)
+    if (client == self)
     {
-      if (-[_UIKeyShortcutHUDMenuViewController isSearching](self, "isSearching") || ([v4 indexPath], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "item") + 1, WeakRetained = objc_loadWeakRetained(&self->_metrics), v12 = v10 % objc_msgSend(WeakRetained, "numCellsPerColumn"), WeakRetained, v9, v12))
+      if (-[_UIKeyShortcutHUDMenuViewController isSearching](self, "isSearching") || ([pathCopy indexPath], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "item") + 1, WeakRetained = objc_loadWeakRetained(&self->_metrics), v12 = v10 % objc_msgSend(WeakRetained, "numCellsPerColumn"), WeakRetained, v9, v12))
       {
-        [v5 addObject:v4];
-        v13 = [v4 indexPath];
-        v14 = [v13 section];
-        if (v14 < [(UICollectionView *)self->_collectionView numberOfSections])
+        [v5 addObject:pathCopy];
+        indexPath2 = [pathCopy indexPath];
+        section = [indexPath2 section];
+        if (section < [(UICollectionView *)self->_collectionView numberOfSections])
         {
-          v15 = [v4 indexPath];
-          v16 = [v15 item];
+          indexPath3 = [pathCopy indexPath];
+          item = [indexPath3 item];
           collectionView = self->_collectionView;
-          v18 = [v4 indexPath];
-          v19 = -[UICollectionView numberOfItemsInSection:](collectionView, "numberOfItemsInSection:", [v18 section]) - 1;
+          indexPath4 = [pathCopy indexPath];
+          v19 = -[UICollectionView numberOfItemsInSection:](collectionView, "numberOfItemsInSection:", [indexPath4 section]) - 1;
 
-          if (v16 >= v19)
+          if (item >= v19)
           {
             goto LABEL_9;
           }
 
           v20 = MEMORY[0x1E696AC88];
-          v21 = [v4 indexPath];
-          v22 = [v21 item];
-          v23 = [v4 indexPath];
-          v24 = [v20 indexPathForItem:v22 + 1 inSection:{objc_msgSend(v23, "section")}];
-          v13 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:self indexPath:v24];
+          indexPath5 = [pathCopy indexPath];
+          item2 = [indexPath5 item];
+          indexPath6 = [pathCopy indexPath];
+          v24 = [v20 indexPathForItem:item2 + 1 inSection:{objc_msgSend(indexPath6, "section")}];
+          indexPath2 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:self indexPath:v24];
 
-          [v5 addObject:v13];
+          [v5 addObject:indexPath2];
         }
       }
     }
@@ -527,55 +527,55 @@ LABEL_9:
   return v5;
 }
 
-- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)a3
+- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [v4 indexPath];
-  if (v6)
+  indexPath = [pathCopy indexPath];
+  if (indexPath)
   {
-    v7 = v6;
-    v8 = [v4 client];
+    v7 = indexPath;
+    client = [pathCopy client];
 
-    if (v8 == self)
+    if (client == self)
     {
       if ([(_UIKeyShortcutHUDMenuViewController *)self isSearching])
       {
-        [v5 addObject:v4];
-        v9 = [v4 indexPath];
-        v10 = [v9 item];
+        [v5 addObject:pathCopy];
+        indexPath2 = [pathCopy indexPath];
+        item = [indexPath2 item];
 
-        if (v10 <= 0)
+        if (item <= 0)
         {
           goto LABEL_10;
         }
 
 LABEL_9:
         v19 = MEMORY[0x1E696AC88];
-        v20 = [v4 indexPath];
-        v21 = [v20 item] - 1;
-        v22 = [v4 indexPath];
-        v23 = [v19 indexPathForItem:v21 inSection:{objc_msgSend(v22, "section")}];
+        indexPath3 = [pathCopy indexPath];
+        v21 = [indexPath3 item] - 1;
+        indexPath4 = [pathCopy indexPath];
+        v23 = [v19 indexPathForItem:v21 inSection:{objc_msgSend(indexPath4, "section")}];
         v24 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:self indexPath:v23];
 
         [v5 addObject:v24];
         goto LABEL_10;
       }
 
-      v11 = [v4 indexPath];
-      v12 = [v11 item] + 1;
+      indexPath5 = [pathCopy indexPath];
+      v12 = [indexPath5 item] + 1;
       WeakRetained = objc_loadWeakRetained(&self->_metrics);
       v14 = v12 % [WeakRetained numCellsPerColumn];
 
       if (v14)
       {
-        [v5 addObject:v4];
+        [v5 addObject:pathCopy];
       }
 
-      v15 = [v4 indexPath];
-      v16 = [v15 item];
+      indexPath6 = [pathCopy indexPath];
+      item2 = [indexPath6 item];
       v17 = objc_loadWeakRetained(&self->_metrics);
-      v18 = v16 % [v17 numCellsPerColumn];
+      v18 = item2 % [v17 numCellsPerColumn];
 
       if (v18)
       {
@@ -589,16 +589,16 @@ LABEL_10:
   return v5;
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  if (self->_searching != a3)
+  if (self->_searching != searching)
   {
-    self->_searching = a3;
+    self->_searching = searching;
     collectionView = self->_collectionView;
-    if (a3)
+    if (searching)
     {
-      v6 = [(_UIKeyShortcutHUDMenuViewController *)self _searchModeCollectionViewLayout];
-      [(UICollectionView *)collectionView setCollectionViewLayout:v6];
+      _searchModeCollectionViewLayout = [(_UIKeyShortcutHUDMenuViewController *)self _searchModeCollectionViewLayout];
+      [(UICollectionView *)collectionView setCollectionViewLayout:_searchModeCollectionViewLayout];
 
       WeakRetained = objc_loadWeakRetained(&self->_metrics);
       [WeakRetained searchModeMenuTopContentInset];
@@ -614,8 +614,8 @@ LABEL_10:
 
     else
     {
-      v17 = [(_UIKeyShortcutHUDMenuViewController *)self _standardModeCollectionViewLayout];
-      [(UICollectionView *)collectionView setCollectionViewLayout:v17];
+      _standardModeCollectionViewLayout = [(_UIKeyShortcutHUDMenuViewController *)self _standardModeCollectionViewLayout];
+      [(UICollectionView *)collectionView setCollectionViewLayout:_standardModeCollectionViewLayout];
 
       WeakRetained = objc_loadWeakRetained(&self->_metrics);
       [WeakRetained menuHorizontalContentInset];
@@ -636,13 +636,13 @@ LABEL_10:
   }
 }
 
-- (void)scrollToCategory:(id)a3 withCategoryIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)scrollToCategory:(id)category withCategoryIndex:(int64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   [(UIScrollView *)self->_collectionView contentInset];
   v9 = v8;
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
-  [WeakRetained horizontalOffsetForCategoryAtIndex:a4];
+  [WeakRetained horizontalOffsetForCategoryAtIndex:index];
   v12 = v11;
 
   v13 = v12 - (v9 + v9);
@@ -659,25 +659,25 @@ LABEL_10:
 
   collectionView = self->_collectionView;
   [(UIScrollView *)collectionView contentOffset];
-  [(UICollectionView *)collectionView setContentOffset:v5 animated:v18];
+  [(UICollectionView *)collectionView setContentOffset:animatedCopy animated:v18];
 
-  [(_UIKeyShortcutHUDMenuViewController *)self setCurrentScrolledToCategoryIndex:a4];
+  [(_UIKeyShortcutHUDMenuViewController *)self setCurrentScrolledToCategoryIndex:index];
 }
 
-- (void)flashShortcutIfVisible:(id)a3 completionHandler:(id)a4
+- (void)flashShortcutIfVisible:(id)visible completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:a3];
-  v8 = [(_UIKeyShortcutHUDMenuViewController *)self collectionViewManager];
+  handlerCopy = handler;
+  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:visible];
+  collectionViewManager = [(_UIKeyShortcutHUDMenuViewController *)self collectionViewManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80___UIKeyShortcutHUDMenuViewController_flashShortcutIfVisible_completionHandler___block_invoke;
   v11[3] = &unk_1E7107E48;
   v12 = v7;
-  v13 = v6;
+  v13 = handlerCopy;
   v9 = v7;
-  v10 = v6;
-  [v8 client:self flashCellIfPossibleAtIndexPath:v9 completionHandler:v11];
+  v10 = handlerCopy;
+  [collectionViewManager client:self flashCellIfPossibleAtIndexPath:v9 completionHandler:v11];
 }
 
 - (_UIKeyShortcutHUDMenuViewControllerDelegate)delegate

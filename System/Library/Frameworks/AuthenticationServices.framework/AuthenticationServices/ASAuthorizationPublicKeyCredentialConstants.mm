@@ -1,20 +1,20 @@
 @interface ASAuthorizationPublicKeyCredentialConstants
-+ (int64_t)publicAttachmentFromInternal:(id)a3;
++ (int64_t)publicAttachmentFromInternal:(id)internal;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialConstants
 
-+ (int64_t)publicAttachmentFromInternal:(id)a3
++ (int64_t)publicAttachmentFromInternal:(id)internal
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E698DF88]])
+  internalCopy = internal;
+  if ([internalCopy isEqualToString:*MEMORY[0x1E698DF88]])
   {
     v4 = 0;
   }
 
   else
   {
-    [v3 isEqualToString:*MEMORY[0x1E698DF80]];
+    [internalCopy isEqualToString:*MEMORY[0x1E698DF80]];
     v4 = 1;
   }
 

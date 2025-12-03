@@ -1,7 +1,7 @@
 @interface PGYearChapterTitleGenerator
-- (PGYearChapterTitleGenerator)initWithTriggeredMemory:(id)a3;
+- (PGYearChapterTitleGenerator)initWithTriggeredMemory:(id)memory;
 - (id)generateChapterTitles;
-- (id)momentNodesByChapterYearNodeWithMomentNodes:(id)a3;
+- (id)momentNodesByChapterYearNodeWithMomentNodes:(id)nodes;
 @end
 
 @implementation PGYearChapterTitleGenerator
@@ -58,10 +58,10 @@ void __52__PGYearChapterTitleGenerator_generateChapterTitles__block_invoke(uint6
   }
 }
 
-- (id)momentNodesByChapterYearNodeWithMomentNodes:(id)a3
+- (id)momentNodesByChapterYearNodeWithMomentNodes:(id)nodes
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = +[PGGraphMomentNode dateOfMoment];
   v5 = +[PGGraphDateNode yearOfDate];
   v6 = objc_alloc(MEMORY[0x277D22C00]);
@@ -70,25 +70,25 @@ void __52__PGYearChapterTitleGenerator_generateChapterTitles__block_invoke(uint6
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v8 = [v6 initWithSteps:v7];
 
-  v9 = [MEMORY[0x277D22BF8] adjacencyWithSources:v3 relation:v8 targetsClass:objc_opt_class()];
+  v9 = [MEMORY[0x277D22BF8] adjacencyWithSources:nodesCopy relation:v8 targetsClass:objc_opt_class()];
 
-  v10 = [v9 transposed];
+  transposed = [v9 transposed];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return transposed;
 }
 
-- (PGYearChapterTitleGenerator)initWithTriggeredMemory:(id)a3
+- (PGYearChapterTitleGenerator)initWithTriggeredMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v10.receiver = self;
   v10.super_class = PGYearChapterTitleGenerator;
   v5 = [(PGYearChapterTitleGenerator *)&v10 init];
   if (v5)
   {
-    v6 = [v4 memoryMomentNodes];
-    v7 = [(PGYearChapterTitleGenerator *)v5 momentNodesByChapterYearNodeWithMomentNodes:v6];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    v7 = [(PGYearChapterTitleGenerator *)v5 momentNodesByChapterYearNodeWithMomentNodes:memoryMomentNodes];
     momentNodesByChapterYearNode = v5->_momentNodesByChapterYearNode;
     v5->_momentNodesByChapterYearNode = v7;
   }

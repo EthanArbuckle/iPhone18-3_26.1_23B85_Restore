@@ -1,8 +1,8 @@
 @interface VKLabelExternalIconElement
-- (VKLabelExternalIconElement)initWithCoder:(id)a3;
-- (VKLabelExternalIconElement)initWithIconElement:(const void *)a3;
+- (VKLabelExternalIconElement)initWithCoder:(id)coder;
+- (VKLabelExternalIconElement)initWithIconElement:(const void *)element;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKLabelExternalIconElement
@@ -15,12 +15,12 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_element.size._e[0];
-  v9 = v4;
-  [v4 encodeFloat:@"sizeX" forKey:v5];
+  v9 = coderCopy;
+  [coderCopy encodeFloat:@"sizeX" forKey:v5];
   *&v6 = self->_element.size._e[1];
   [v9 encodeFloat:@"sizeY" forKey:v6];
   *&v7 = self->_element.anchorPoint._e[0];
@@ -31,41 +31,41 @@
   [v9 encodeInt32:self->_element.minZoom forKey:@"minZoom"];
 }
 
-- (VKLabelExternalIconElement)initWithCoder:(id)a3
+- (VKLabelExternalIconElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = VKLabelExternalIconElement;
   v5 = [(VKLabelExternalIconElement *)&v11 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"sizeX"];
+    [coderCopy decodeFloatForKey:@"sizeX"];
     v5->_element.size._e[0] = v6;
-    [v4 decodeFloatForKey:@"sizeY"];
+    [coderCopy decodeFloatForKey:@"sizeY"];
     v5->_element.size._e[1] = v7;
-    [v4 decodeFloatForKey:@"anchorPointX"];
+    [coderCopy decodeFloatForKey:@"anchorPointX"];
     v5->_element.anchorPoint._e[0] = v8;
-    [v4 decodeFloatForKey:@"anchorPointY"];
+    [coderCopy decodeFloatForKey:@"anchorPointY"];
     v5->_element.anchorPoint._e[1] = v9;
-    v5->_element.isRound = [v4 decodeBoolForKey:@"isRound"];
-    v5->_element.minZoom = [v4 decodeInt32ForKey:@"minZoom"];
+    v5->_element.isRound = [coderCopy decodeBoolForKey:@"isRound"];
+    v5->_element.minZoom = [coderCopy decodeInt32ForKey:@"minZoom"];
   }
 
   return v5;
 }
 
-- (VKLabelExternalIconElement)initWithIconElement:(const void *)a3
+- (VKLabelExternalIconElement)initWithIconElement:(const void *)element
 {
   v5.receiver = self;
   v5.super_class = VKLabelExternalIconElement;
   result = [(VKLabelExternalIconElement *)&v5 init];
   if (result)
   {
-    result->_element.size._e[0] = *a3;
-    result->_element.size._e[1] = *(a3 + 1);
-    result->_element.anchorPoint._e[0] = *(a3 + 2);
-    result->_element.anchorPoint._e[1] = *(a3 + 3);
-    *&result->_element.isRound = *(a3 + 8);
+    result->_element.size._e[0] = *element;
+    result->_element.size._e[1] = *(element + 1);
+    result->_element.anchorPoint._e[0] = *(element + 2);
+    result->_element.anchorPoint._e[1] = *(element + 3);
+    *&result->_element.isRound = *(element + 8);
   }
 
   return result;

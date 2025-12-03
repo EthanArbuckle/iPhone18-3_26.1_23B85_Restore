@@ -3,23 +3,23 @@
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
-- (WKTextSelectionRectCustomHandleInfo)initWithFloatQuad:(const FloatQuad *)a3 isHorizontal:(BOOL)a4;
+- (WKTextSelectionRectCustomHandleInfo)initWithFloatQuad:(const FloatQuad *)quad isHorizontal:(BOOL)horizontal;
 - (id).cxx_construct;
 @end
 
 @implementation WKTextSelectionRectCustomHandleInfo
 
-- (WKTextSelectionRectCustomHandleInfo)initWithFloatQuad:(const FloatQuad *)a3 isHorizontal:(BOOL)a4
+- (WKTextSelectionRectCustomHandleInfo)initWithFloatQuad:(const FloatQuad *)quad isHorizontal:(BOOL)horizontal
 {
   v8.receiver = self;
   v8.super_class = WKTextSelectionRectCustomHandleInfo;
   result = [(WKTextSelectionRectCustomHandleInfo *)&v8 init];
   if (result)
   {
-    v7 = *&a3->m_p3.m_x;
-    *&result->_quad.m_p1.m_x = *&a3->m_p1.m_x;
+    v7 = *&quad->m_p3.m_x;
+    *&result->_quad.m_p1.m_x = *&quad->m_p1.m_x;
     *&result->_quad.m_p3.m_x = v7;
-    result->_isHorizontal = a4;
+    result->_isHorizontal = horizontal;
   }
 
   return result;

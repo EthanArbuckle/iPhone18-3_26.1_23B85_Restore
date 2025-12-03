@@ -1,15 +1,15 @@
 @interface TRIKnownEnvVarFactorsReader
-+ (id)_knownFactorsFromPlistURL:(id)a3;
-+ (id)knownFactorsFromPaths:(id)a3;
++ (id)_knownFactorsFromPlistURL:(id)l;
++ (id)knownFactorsFromPaths:(id)paths;
 @end
 
 @implementation TRIKnownEnvVarFactorsReader
 
-+ (id)_knownFactorsFromPlistURL:(id)a3
++ (id)_knownFactorsFromPlistURL:(id)l
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithContentsOfURL:v4 error:0];
+  lCopy = l;
+  v5 = [[v3 alloc] initWithContentsOfURL:lCopy error:0];
 
   if (v5)
   {
@@ -33,20 +33,20 @@
   return v7;
 }
 
-+ (id)knownFactorsFromPaths:(id)a3
++ (id)knownFactorsFromPaths:(id)paths
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v6 = [v4 allowEnvVarDefaultLevelsDir];
-  v7 = [v5 initWithString:v6];
+  allowEnvVarDefaultLevelsDir = [pathsCopy allowEnvVarDefaultLevelsDir];
+  v7 = [v5 initWithString:allowEnvVarDefaultLevelsDir];
 
   if (v7)
   {
-    v25 = v4;
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    v25 = pathsCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v24 = v7;
-    v9 = [v8 enumeratorAtURL:v7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 errorHandler:&__block_literal_global_23];
+    v9 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 errorHandler:&__block_literal_global_23];
 
     v10 = objc_opt_new();
     v26 = 0u;
@@ -69,13 +69,13 @@
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 pathExtension];
-          v18 = [v17 isEqualToString:@"plist"];
+          pathExtension = [v16 pathExtension];
+          v18 = [pathExtension isEqualToString:@"plist"];
 
           if (v18)
           {
             v19 = objc_autoreleasePoolPush();
-            v20 = [a1 _knownFactorsFromPlistURL:v16];
+            v20 = [self _knownFactorsFromPlistURL:v16];
             [v10 addObjectsFromArray:v20];
 
             objc_autoreleasePoolPop(v19);
@@ -90,7 +90,7 @@
 
     v21 = [v10 copy];
     v7 = v24;
-    v4 = v25;
+    pathsCopy = v25;
   }
 
   else

@@ -1,33 +1,33 @@
 @interface NISession
-+ (BOOL)_supportedPlatform:(id)a3;
++ (BOOL)_supportedPlatform:(id)platform;
 + (BOOL)isSupported;
 + (NIInternalDeviceCapability)internalDeviceCapabilities;
 + (NSArray)activelyInteractingDiscoveryTokens;
 + (NSArray)interactableDiscoveryTokens;
 + (id)_localDeviceLogger;
 + (id)deviceCapabilities;
-+ (id)generateBluetoothDeviceTokenWithPublicAddress:(id)a3 IRK:(id)a4;
-+ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)a3;
++ (id)generateBluetoothDeviceTokenWithPublicAddress:(id)address IRK:(id)k;
++ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)identifier;
 + (id)generateFindingDiscoveryToken;
-+ (id)generateFindingDiscoveryTokenWithIdentityResolvingKey:(id)a3;
-+ (id)generateFindingDiscoveryTokenWithSharedSecret:(id)a3;
++ (id)generateFindingDiscoveryTokenWithIdentityResolvingKey:(id)key;
++ (id)generateFindingDiscoveryTokenWithSharedSecret:(id)secret;
 + (id)localDevicePrintableState;
 + (id)observerSession;
-+ (id)setLocalDeviceDebugParameters:(id)a3;
-+ (id)setLocalDeviceInteractableDiscoveryTokens:(id)a3;
++ (id)setLocalDeviceDebugParameters:(id)parameters;
++ (id)setLocalDeviceInteractableDiscoveryTokens:(id)tokens;
 + (void)_queryAndCacheCapabilities;
-+ (void)generateSOSBeaconSearcherDataMatchingSubjectData:(id)a3 completion:(id)a4;
-+ (void)generateSOSBeaconSubjectDataWithCompletion:(id)a3;
-+ (void)getAsyncActivelyInteractingDiscoveryTokens:(id)a3;
-+ (void)getAsyncInteractableDiscoveryTokens:(id)a3;
-+ (void)setAsyncLocalDeviceInteractableDiscoveryTokens:(id)a3 completion:(id)a4;
++ (void)generateSOSBeaconSearcherDataMatchingSubjectData:(id)data completion:(id)completion;
++ (void)generateSOSBeaconSubjectDataWithCompletion:(id)completion;
++ (void)getAsyncActivelyInteractingDiscoveryTokens:(id)tokens;
++ (void)getAsyncInteractableDiscoveryTokens:(id)tokens;
++ (void)setAsyncLocalDeviceInteractableDiscoveryTokens:(id)tokens completion:(id)completion;
 - (BOOL)_configurationSupportsRetry;
 - (BOOL)_isInternalClient;
-- (BOOL)_isValidARSession:(id)a3 andConfiguration:(id)a4;
+- (BOOL)_isValidARSession:(id)session andConfiguration:(id)configuration;
 - (BOOL)_shouldReConnectToDaemonAfterCrash;
 - (BOOL)_shouldReRunSessionAfterSessionInterruptionEnded;
-- (BOOL)_tryToRecoverFromFailure:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_tryToRecoverFromFailure:(id)failure;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExtendedDistanceMeasurementAllowed;
 - (BOOL)isPreciseRangingAllowed;
 - (BOOL)isRangingLimitExceeded;
@@ -40,108 +40,108 @@
 - (NIInternalSessionDelegate)internalDelegate;
 - (NISystemEventNotifier)systemEventNotifier;
 - (NSString)description;
-- (double)lightEstimateFromARLightEstimate:(id)a3;
+- (double)lightEstimateFromARLightEstimate:(id)estimate;
 - (id).cxx_construct;
 - (id)_getSessionFailureError;
-- (id)_initAndConnectToServerWithOptions:(unint64_t)a3;
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4;
-- (id)_setURSKTTL:(unint64_t)a3;
-- (id)_verifyError:(id)a3;
+- (id)_initAndConnectToServerWithOptions:(unint64_t)options;
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier;
+- (id)_setURSKTTL:(unint64_t)l;
+- (id)_verifyError:(id)error;
 - (id)delegate;
 - (id)deleteURSKs;
 - (int64_t)motionState;
-- (int64_t)niVisionInputTrackingStateFromARTRackingState:(int64_t)a3;
+- (int64_t)niVisionInputTrackingStateFromARTRackingState:(int64_t)state;
 - (simd_float4x4)worldTransformForObject:(NINearbyObject *)object;
-- (void)_addObject:(id)a3;
-- (void)_addRegionPredicate:(id)a3;
+- (void)_addObject:(id)object;
+- (void)_addRegionPredicate:(id)predicate;
 - (void)_configureAndRunInternalARSession;
-- (void)_handleARSession:(id)a3 willRunWithConfiguration:(id)a4;
-- (void)_handleARSessionDidChangeState:(unint64_t)a3;
-- (void)_handleARSessionDidFailWithError:(id)a3;
-- (void)_handleARSessionDidUpdateFrame:(id)a3;
+- (void)_handleARSession:(id)session willRunWithConfiguration:(id)configuration;
+- (void)_handleARSessionDidChangeState:(unint64_t)state;
+- (void)_handleARSessionDidFailWithError:(id)error;
+- (void)_handleARSessionDidUpdateFrame:(id)frame;
 - (void)_handleARSessionInterruptionEnded;
 - (void)_handleARSessionWasInterrupted;
-- (void)_handleActivationError:(id)a3;
-- (void)_handleActivationSuccess:(id)a3;
-- (void)_handlePauseSessionError:(id)a3;
+- (void)_handleActivationError:(id)error;
+- (void)_handleActivationSuccess:(id)success;
+- (void)_handlePauseSessionError:(id)error;
 - (void)_handlePauseSessionSuccess;
-- (void)_handleRunSessionError:(id)a3;
+- (void)_handleRunSessionError:(id)error;
 - (void)_handleRunSessionSuccess;
-- (void)_internalRunWithConfiguration:(id)a3;
-- (void)_interruptSessionWithInternalReason:(int64_t)a3 cachedInterruption:(BOOL)a4 nearbydReSuspension:(BOOL)a5;
+- (void)_internalRunWithConfiguration:(id)configuration;
+- (void)_interruptSessionWithInternalReason:(int64_t)reason cachedInterruption:(BOOL)interruption nearbydReSuspension:(BOOL)suspension;
 - (void)_invalidateInternal;
 - (void)_invalidateInternalARSessionIfNeeded;
-- (void)_invalidateSessionAndNotifyError:(id)a3;
-- (void)_logDurationAndSubmit:(BOOL)a3;
+- (void)_invalidateSessionAndNotifyError:(id)error;
+- (void)_logDurationAndSubmit:(BOOL)submit;
 - (void)_logTime;
-- (void)_notifyDidInvalidateWithError:(id)a3;
-- (void)_osLogNearbyObjectUpdate:(id)a3;
+- (void)_notifyDidInvalidateWithError:(id)error;
+- (void)_osLogNearbyObjectUpdate:(id)update;
 - (void)_pauseInternalARSessionIfNeeded;
-- (void)_performBlockOnDelegateQueue:(id)a3 ifRespondsToSelector:(SEL)a4 evenIfNotRunning:(BOOL)a5;
-- (void)_processUpdatedLockState:(unsigned __int16)a3;
-- (void)_provideTruthTag:(id)a3;
+- (void)_performBlockOnDelegateQueue:(id)queue ifRespondsToSelector:(SEL)selector evenIfNotRunning:(BOOL)running;
+- (void)_processUpdatedLockState:(unsigned __int16)state;
+- (void)_provideTruthTag:(id)tag;
 - (void)_reinterruptSessionWithCachedInterruption;
-- (void)_removeObject:(id)a3;
-- (void)_removeRegionPredicate:(id)a3;
-- (void)_sendRemoteDevice:(id)a3 changedState:(int64_t)a4;
+- (void)_removeObject:(id)object;
+- (void)_removeRegionPredicate:(id)predicate;
+- (void)_sendRemoteDevice:(id)device changedState:(int64_t)state;
 - (void)_serverConnectionInterrupted;
 - (void)_serverConnectionInvalidated;
-- (void)_setARSessionInternal:(id)a3;
-- (void)_submitErrorMetric:(id)a3;
+- (void)_setARSessionInternal:(id)internal;
+- (void)_submitErrorMetric:(id)metric;
 - (void)dealloc;
-- (void)didDiscoverNearbyObject:(id)a3;
-- (void)didGenerateShareableConfigurationData:(id)a3 forObject:(id)a4;
-- (void)didPrefetchAcwgUrsk:(unsigned int)a3 error:(id)a4;
-- (void)didProcessAcwgM1MsgWithResponse:(id)a3 error:(id)a4;
-- (void)didProcessAcwgM3MsgWithResponse:(id)a3 error:(id)a4;
-- (void)didProcessAcwgRangingSessionResumeRequestMsgWithResponse:(id)a3 error:(id)a4;
-- (void)didReceiveAopSFZoneUpdate:(id)a3;
-- (void)didReceiveRangingAuthRecommendation:(BOOL)a3 forObject:(id)a4;
-- (void)didRemoveNearbyObjects:(id)a3 withReason:(unint64_t)a4;
-- (void)didStartAcwgRanging:(int64_t)a3;
-- (void)didSuspendAcwgRanging:(int64_t)a3;
-- (void)didUpdateAlgorithmState:(id)a3 forObject:(id)a4;
-- (void)didUpdateDLTDOAMeasurements:(id)a3;
-- (void)didUpdateHealthStatus:(int64_t)a3;
-- (void)didUpdateHomeDeviceUWBRangingAvailability:(BOOL)a3;
-- (void)didUpdateLocalDiscoveryToken:(id)a3;
-- (void)didUpdateMotionState:(int64_t)a3;
-- (void)didUpdateNICoordinates:(id)a3;
-- (void)didUpdateNearbyObjects:(id)a3;
-- (void)didUpdateState:(int64_t)a3 forItem:(id)a4;
+- (void)didDiscoverNearbyObject:(id)object;
+- (void)didGenerateShareableConfigurationData:(id)data forObject:(id)object;
+- (void)didPrefetchAcwgUrsk:(unsigned int)ursk error:(id)error;
+- (void)didProcessAcwgM1MsgWithResponse:(id)response error:(id)error;
+- (void)didProcessAcwgM3MsgWithResponse:(id)response error:(id)error;
+- (void)didProcessAcwgRangingSessionResumeRequestMsgWithResponse:(id)response error:(id)error;
+- (void)didReceiveAopSFZoneUpdate:(id)update;
+- (void)didReceiveRangingAuthRecommendation:(BOOL)recommendation forObject:(id)object;
+- (void)didRemoveNearbyObjects:(id)objects withReason:(unint64_t)reason;
+- (void)didStartAcwgRanging:(int64_t)ranging;
+- (void)didSuspendAcwgRanging:(int64_t)ranging;
+- (void)didUpdateAlgorithmState:(id)state forObject:(id)object;
+- (void)didUpdateDLTDOAMeasurements:(id)measurements;
+- (void)didUpdateHealthStatus:(int64_t)status;
+- (void)didUpdateHomeDeviceUWBRangingAvailability:(BOOL)availability;
+- (void)didUpdateLocalDiscoveryToken:(id)token;
+- (void)didUpdateMotionState:(int64_t)state;
+- (void)didUpdateNICoordinates:(id)coordinates;
+- (void)didUpdateNearbyObjects:(id)objects;
+- (void)didUpdateState:(int64_t)state forItem:(id)item;
 - (void)discoveryToken;
 - (void)invalidate;
-- (void)object:(id)a3 didUpdateRegion:(id)a4 previousRegion:(id)a5;
+- (void)object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
 - (void)pause;
-- (void)prefetchAcwgUrsk:(unsigned int)a3;
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4;
-- (void)processAcwgM3Msg:(id)a3;
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4;
-- (void)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5;
-- (void)processDCKMessage:(id)a3 responseCallback:(id)a4;
-- (void)processVisionInput:(id)a3;
-- (void)relayDCKMessage:(id)a3;
-- (void)requestAcwgRangingSessionSuspend:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4;
+- (void)prefetchAcwgUrsk:(unsigned int)ursk;
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason;
+- (void)processAcwgM3Msg:(id)msg;
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason;
+- (void)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter;
+- (void)processDCKMessage:(id)message responseCallback:(id)callback;
+- (void)processVisionInput:(id)input;
+- (void)relayDCKMessage:(id)message;
+- (void)requestAcwgRangingSessionSuspend:(unsigned int)suspend withSuspendTriggerReason:(int64_t)reason;
 - (void)runWithConfiguration:(NIConfiguration *)configuration;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionShouldAttemptRelocalization:(id)a3 completion:(id)a4;
-- (void)sessionWasInterrupted:(id)a3;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)session:(id)session willRunWithConfiguration:(id)configuration;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionShouldAttemptRelocalization:(id)relocalization completion:(id)completion;
+- (void)sessionWasInterrupted:(id)interrupted;
 - (void)setARSession:(ARSession *)session;
-- (void)setConfigurationForTesting:(id)a3;
+- (void)setConfigurationForTesting:(id)testing;
 - (void)setDelegate:(id)delegate;
 - (void)setDelegateQueue:(dispatch_queue_t)delegateQueue;
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4;
-- (void)systemDidUpdateResourceUsageLimitExceeded:(BOOL)a3 forSessionConfigurationTypeWithName:(id)a4;
-- (void)systemDidUpdateState:(id)a3;
-- (void)updateResponderDeviceIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)uwbSessionDidFailWithError:(id)a3;
-- (void)uwbSessionDidInvalidateWithError:(id)a3;
-- (void)uwbSessionInterruptedWithReason:(int64_t)a3 timestamp:(double)a4;
-- (void)uwbSessionInterruptionReasonEnded:(int64_t)a3 timestamp:(double)a4;
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason;
+- (void)systemDidUpdateResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationTypeWithName:(id)name;
+- (void)systemDidUpdateState:(id)state;
+- (void)updateResponderDeviceIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)uwbSessionDidFailWithError:(id)error;
+- (void)uwbSessionDidInvalidateWithError:(id)error;
+- (void)uwbSessionInterruptedWithReason:(int64_t)reason timestamp:(double)timestamp;
+- (void)uwbSessionInterruptionReasonEnded:(int64_t)ended timestamp:(double)timestamp;
 @end
 
 @implementation NISession
@@ -207,7 +207,7 @@
   return v3;
 }
 
-- (id)_initAndConnectToServerWithOptions:(unint64_t)a3
+- (id)_initAndConnectToServerWithOptions:(unint64_t)options
 {
   v38 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
@@ -216,10 +216,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_connectionOptions = a3;
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    v4->_connectionOptions = options;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     internalID = v5->_internalID;
-    v5->_internalID = v6;
+    v5->_internalID = uUID;
 
     atomic_store(0, &v5->_readyForCallbacks);
     v5->_startTime = 0.0;
@@ -245,7 +245,7 @@
     exportedObjectForwarder = v5->_exportedObjectForwarder;
     v5->_exportedObjectForwarder = v15;
 
-    v17 = [[NIServerConnection alloc] initWithSessionID:v5->_internalID queue:v5->_queue exportedObject:v5->_exportedObjectForwarder options:a3];
+    v17 = [[NIServerConnection alloc] initWithSessionID:v5->_internalID queue:v5->_queue exportedObject:v5->_exportedObjectForwarder options:options];
     connection = v5->_connection;
     v5->_connection = v17;
 
@@ -282,13 +282,13 @@
       }
     }
 
-    v25 = [(NISession *)v5 _remoteObject];
+    _remoteObject = [(NISession *)v5 _remoteObject];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __48__NISession__initAndConnectToServerWithOptions___block_invoke_891;
     v28[3] = &unk_1E7F139A8;
     v29 = v5;
-    [v25 activate:v28];
+    [_remoteObject activate:v28];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&v33);
@@ -327,18 +327,18 @@ void __48__NISession__initAndConnectToServerWithOptions___block_invoke_891(uint6
   }
 }
 
-+ (BOOL)_supportedPlatform:(id)a3
++ (BOOL)_supportedPlatform:(id)platform
 {
-  v3 = [a3 objectForKey:@"SupportedPlatform"];
-  v4 = [v3 BOOLValue];
+  v3 = [platform objectForKey:@"SupportedPlatform"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (void)_queryAndCacheCapabilities
 {
   v2 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v3 = [v2 remoteObjectProxy];
+  remoteObjectProxy = [v2 remoteObjectProxy];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -353,7 +353,7 @@ void __48__NISession__initAndConnectToServerWithOptions___block_invoke_891(uint6
   v12 = &v13;
   v5 = v4;
   v11 = v5;
-  [v3 queryDeviceCapabilities:&v7];
+  [remoteObjectProxy queryDeviceCapabilities:&v7];
   v6 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v5, v6);
   [v2 invalidate];
@@ -369,10 +369,10 @@ void __39__NISession__queryAndCacheCapabilities__block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_osLogNearbyObjectUpdate:(id)a3
+- (void)_osLogNearbyObjectUpdate:(id)update
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = [MEMORY[0x1E695DF00] now];
   ++self->_objectUpdateLogging.totalUpdates;
   v15[0] = MEMORY[0x1E69E9820];
@@ -380,7 +380,7 @@ void __39__NISession__queryAndCacheCapabilities__block_invoke(uint64_t a1, void 
   v15[2] = __38__NISession__osLogNearbyObjectUpdate___block_invoke;
   v15[3] = &unk_1E7F139F8;
   v15[4] = self;
-  [v4 enumerateObjectsUsingBlock:v15];
+  [updateCopy enumerateObjectsUsingBlock:v15];
   if (self->_lastObjectUpdateLogTime)
   {
     [v5 timeIntervalSinceDate:?];
@@ -506,9 +506,9 @@ id __21__NISession__logTime__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_logDurationAndSubmit:(BOOL)a3
+- (void)_logDurationAndSubmit:(BOOL)submit
 {
-  v3 = a3;
+  submitCopy = submit;
   if (self->_startTime != 0.0)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -516,7 +516,7 @@ id __21__NISession__logTime__block_invoke(uint64_t a1)
     self->_startTime = 0.0;
   }
 
-  if (v3)
+  if (submitCopy)
   {
     AnalyticsSendEventLazy();
   }
@@ -535,23 +535,23 @@ id __35__NISession__logDurationAndSubmit___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_submitErrorMetric:(id)a3
+- (void)_submitErrorMetric:(id)metric
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  metricCopy = metric;
+  v4 = metricCopy;
+  if (metricCopy)
   {
-    v5 = [v3 userInfo];
+    userInfo = [metricCopy userInfo];
 
-    if (v5)
+    if (userInfo)
     {
-      v6 = [v4 userInfo];
-      v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
+      userInfo2 = [v4 userInfo];
+      v7 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
 
       if (!v7)
       {
-        v8 = [v4 userInfo];
-        v7 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+        userInfo3 = [v4 userInfo];
+        v7 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
         if (!v7)
         {
@@ -631,8 +631,8 @@ id __25__NISession_setDelegate___block_invoke(uint64_t a1)
   v5 = delegateQueue;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:518 description:{@"Invalid parameter not satisfying: %@", @"delegateQueue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:518 description:{@"Invalid parameter not satisfying: %@", @"delegateQueue"}];
   }
 
   queue = self->_queue;
@@ -777,8 +777,8 @@ void __27__NISession_discoveryToken__block_invoke_3(uint64_t a1)
 
 - (BOOL)_isInternalClient
 {
-  v2 = [(NISession *)self activationResponse];
-  v3 = [v2 objectForKey:@"InternalClient"];
+  activationResponse = [(NISession *)self activationResponse];
+  v3 = [activationResponse objectForKey:@"InternalClient"];
 
   v4 = 0;
   if (v3)
@@ -798,8 +798,8 @@ void __27__NISession_discoveryToken__block_invoke_3(uint64_t a1)
   v5 = configuration;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:635 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:635 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   queue = self->_queue;
@@ -1171,26 +1171,26 @@ uint64_t __23__NISession_invalidate__block_invoke(uint64_t a1)
   dispatch_sync(queue, v8);
 }
 
-- (void)_setARSessionInternal:(id)a3
+- (void)_setARSessionInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v4 state] == 1)
+  if ([internalCopy state] == 1)
   {
-    v5 = [v4 configuration];
-    [(NISession *)self _handleARSession:v4 willRunWithConfiguration:v5];
+    configuration = [internalCopy configuration];
+    [(NISession *)self _handleARSession:internalCopy willRunWithConfiguration:configuration];
   }
 
   currentConfiguration = self->_currentConfiguration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NISessionVisionContext *)self->_visionContext arSession];
-    if ([v7 state] == 2)
+    arSession = [(NISessionVisionContext *)self->_visionContext arSession];
+    if ([arSession state] == 2)
     {
-      v8 = [v4 state];
+      state = [internalCopy state];
 
-      if (v8 != 2)
+      if (state != 2)
       {
         if (+[NIPlatformInfo isInternalBuild])
         {
@@ -1211,9 +1211,9 @@ uint64_t __23__NISession_invalidate__block_invoke(uint64_t a1)
     }
   }
 
-  [(NISessionVisionContext *)self->_visionContext setArSession:v4];
-  v10 = [(NISessionVisionContext *)self->_visionContext arSession];
-  [v10 _addObserver:self];
+  [(NISessionVisionContext *)self->_visionContext setArSession:internalCopy];
+  arSession2 = [(NISessionVisionContext *)self->_visionContext arSession];
+  [arSession2 _addObserver:self];
 }
 
 - (simd_float4x4)worldTransformForObject:(NINearbyObject *)object
@@ -1289,20 +1289,20 @@ uint32x4_t __37__NISession_worldTransformForObject___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [(NSUUID *)self->_internalID isEqual:v4->_internalID];
+      v5 = [(NSUUID *)self->_internalID isEqual:equalCopy->_internalID];
     }
   }
 
@@ -1391,17 +1391,17 @@ void __24__NISession_description__block_invoke(uint64_t a1)
   [v4 appendFormat:@", Config: %@", v6];
 }
 
-- (void)setConfigurationForTesting:(id)a3
+- (void)setConfigurationForTesting:(id)testing
 {
-  v4 = a3;
+  testingCopy = testing;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__NISession_setConfigurationForTesting___block_invoke;
   v7[3] = &unk_1E7F13A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testingCopy;
+  v6 = testingCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1409,7 +1409,7 @@ void __24__NISession_description__block_invoke(uint64_t a1)
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NISession *)self internalState];
+  internalState = [(NISession *)self internalState];
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
@@ -1417,7 +1417,7 @@ void __24__NISession_description__block_invoke(uint64_t a1)
     {
       internalID = self->_internalID;
       v6 = log;
-      v7 = NISessionInternalStateToString(v3);
+      v7 = NISessionInternalStateToString(internalState);
       v10 = 138412546;
       v11 = internalID;
       v12 = 2112;
@@ -1427,10 +1427,10 @@ void __24__NISession_description__block_invoke(uint64_t a1)
   }
 
   [(NISession *)self setInternalState:8];
-  if (v3 != 7)
+  if (internalState != 7)
   {
-    v8 = [(NISession *)self _getSessionFailureError];
-    [(NISession *)self _notifyDidInvalidateWithError:v8];
+    _getSessionFailureError = [(NISession *)self _getSessionFailureError];
+    [(NISession *)self _notifyDidInvalidateWithError:_getSessionFailureError];
   }
 
   dispatch_semaphore_signal(self->_discoveryTokenSemaphore);
@@ -1559,8 +1559,8 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
 
 - (BOOL)_shouldReConnectToDaemonAfterCrash
 {
-  v3 = [(NISession *)self _configurationSupportsRetry];
-  v4 = [(NISession *)self internalState]== 3 && v3;
+  _configurationSupportsRetry = [(NISession *)self _configurationSupportsRetry];
+  v4 = [(NISession *)self internalState]== 3 && _configurationSupportsRetry;
   if (v4)
   {
     if (+[NIPlatformInfo isInternalBuild])
@@ -1577,10 +1577,10 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)didRemoveNearbyObjects:(id)a3 withReason:(unint64_t)a4
+- (void)didRemoveNearbyObjects:(id)objects withReason:(unint64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectsCopy = objects;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -1588,9 +1588,9 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109379;
-      v15 = a4;
+      reasonCopy = reason;
       v16 = 2113;
-      v17 = v6;
+      v17 = objectsCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: removed objects with reason: %d. Objects: %{private}@", buf, 0x12u);
     }
   }
@@ -1603,7 +1603,7 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
     [(NISession *)self setInternalState:5];
   }
 
-  if (a4 == 1)
+  if (reason == 1)
   {
     v10 = v12;
     v12[0] = MEMORY[0x1E69E9820];
@@ -1611,12 +1611,12 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
     v12[2] = __47__NISession_didRemoveNearbyObjects_withReason___block_invoke_2;
     v12[3] = &unk_1E7F13A70;
     v12[4] = self;
-    v12[5] = v6;
+    v12[5] = objectsCopy;
     [(NISession *)self _performBlockOnDelegateQueue:v12 ifRespondsToSelector:sel_session_didRemoveNearbyObjects_withReason_];
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!reason)
   {
     v10 = v13;
     v13[0] = MEMORY[0x1E69E9820];
@@ -1624,7 +1624,7 @@ void __41__NISession__serverConnectionInterrupted__block_invoke_2(uint64_t a1)
     v13[2] = __47__NISession_didRemoveNearbyObjects_withReason___block_invoke;
     v13[3] = &unk_1E7F13A70;
     v13[4] = self;
-    v13[5] = v6;
+    v13[5] = objectsCopy;
     [(NISession *)self _performBlockOnDelegateQueue:v13 ifRespondsToSelector:sel_session_didRemoveNearbyObjects_withReason_];
 LABEL_11:
   }
@@ -1659,30 +1659,30 @@ id __47__NISession_didRemoveNearbyObjects_withReason___block_invoke_3(uint64_t a
   return v2;
 }
 
-- (void)didUpdateNearbyObjects:(id)a3
+- (void)didUpdateNearbyObjects:(id)objects
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   dispatch_assert_queue_V2(self->_queue);
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __36__NISession_didUpdateNearbyObjects___block_invoke;
   v19 = &unk_1E7F13A70;
-  v20 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = objectsCopy;
   v21 = v5;
   [(NISession *)self _performBlockOnDelegateQueue:&v16 ifRespondsToSelector:sel_session_didUpdateNearbyObjects_];
   self->_updatedNearbyObjects = 1;
-  [(NISession *)self _osLogNearbyObjectUpdate:v5, v16, v17, v18, v19, v20];
-  v6 = [v5 firstObject];
-  v7 = [v6 resetARSession];
+  [(NISession *)self _osLogNearbyObjectUpdate:v5, v16, v17, v18, v19, selfCopy];
+  firstObject = [v5 firstObject];
+  resetARSession = [firstObject resetARSession];
 
-  if (v7)
+  if (resetARSession)
   {
-    v8 = [(NISessionVisionContext *)self->_visionContext arSession];
+    arSession = [(NISessionVisionContext *)self->_visionContext arSession];
 
-    v9 = [(NISessionVisionContext *)self->_visionContext arSession];
-    v10 = [v9 state];
+    arSession2 = [(NISessionVisionContext *)self->_visionContext arSession];
+    state = [arSession2 state];
 
     if (+[NIPlatformInfo isInternalBuild])
     {
@@ -1690,19 +1690,19 @@ id __47__NISession_didRemoveNearbyObjects_withReason___block_invoke_3(uint64_t a
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
-        v23 = v8 != 0;
+        v23 = arSession != 0;
         v24 = 1024;
-        v25 = v10 == 1;
+        v25 = state == 1;
         _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: reset ARSession (Exists: %d. Running: %d)", buf, 0xEu);
       }
     }
 
-    if (v8 && v10 == 1)
+    if (arSession && state == 1)
     {
-      v12 = [(NISessionVisionContext *)self->_visionContext arSession];
-      v13 = [(NISessionVisionContext *)self->_visionContext arSession];
-      v14 = [v13 configuration];
-      [v12 runWithConfiguration:v14 options:15];
+      arSession3 = [(NISessionVisionContext *)self->_visionContext arSession];
+      arSession4 = [(NISessionVisionContext *)self->_visionContext arSession];
+      configuration = [arSession4 configuration];
+      [arSession3 runWithConfiguration:configuration options:15];
     }
   }
 
@@ -1715,34 +1715,34 @@ void __36__NISession_didUpdateNearbyObjects___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateNearbyObjects:*(a1 + 40)];
 }
 
-- (void)uwbSessionDidFailWithError:(id)a3
+- (void)uwbSessionDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [NISession uwbSessionDidFailWithError:];
   }
 
-  if (![(NISession *)self _tryToRecoverFromFailure:v4])
+  if (![(NISession *)self _tryToRecoverFromFailure:errorCopy])
   {
-    [(NISession *)self _invalidateSessionAndNotifyError:v4];
+    [(NISession *)self _invalidateSessionAndNotifyError:errorCopy];
   }
 }
 
-- (void)uwbSessionDidInvalidateWithError:(id)a3
+- (void)uwbSessionDidInvalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [NISession uwbSessionDidInvalidateWithError:];
   }
 
-  [(NISession *)self _invalidateSessionAndNotifyError:v4];
+  [(NISession *)self _invalidateSessionAndNotifyError:errorCopy];
 }
 
-- (void)uwbSessionInterruptedWithReason:(int64_t)a3 timestamp:(double)a4
+- (void)uwbSessionInterruptedWithReason:(int64_t)reason timestamp:(double)timestamp
 {
   v34 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1752,13 +1752,13 @@ void __36__NISession_didUpdateNearbyObjects___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NISessionInternalStateToString([(NISession *)self internalState]);
-      v9 = UWBSessionInterruptionReasonInternalToString(a3);
+      v9 = UWBSessionInterruptionReasonInternalToString(reason);
       *buf = 138478339;
       v29 = v8;
       v30 = 2113;
       v31 = v9;
       v32 = 2048;
-      v33 = a4;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_1BAC42000, v7, OS_LOG_TYPE_DEFAULT, "DelegateProxy: suspension reason started. State: %{private}@. Reason: %{private}@. Timestamp: %f", buf, 0x20u);
     }
   }
@@ -1775,7 +1775,7 @@ void __36__NISession_didUpdateNearbyObjects___block_invoke(uint64_t a1)
   {
     v12 = *begin;
     v13 = UWBSessionInterruptionReasonInternalToString(*begin);
-    v14 = v12 == a3;
+    v14 = v12 == reason;
   }
 
   end = self->_interruptions.__end_;
@@ -1808,8 +1808,8 @@ void __36__NISession_didUpdateNearbyObjects___block_invoke(uint64_t a1)
     }
 
     v23 = 16 * v20;
-    *v23 = a3;
-    *(v23 + 8) = a4;
+    *v23 = reason;
+    *(v23 + 8) = timestamp;
     v17 = (16 * v20 + 16);
     v24 = (v23 - 16 * (v19 >> 4));
     memcpy(v24, v18, v19);
@@ -1825,15 +1825,15 @@ void __36__NISession_didUpdateNearbyObjects___block_invoke(uint64_t a1)
 
   else
   {
-    *end = a3;
-    *(end + 1) = a4;
+    *end = reason;
+    *(end + 1) = timestamp;
     v17 = (end + 16);
   }
 
   self->_interruptions.__end_ = v17;
   v27 = v13;
   AnalyticsSendEventLazy();
-  [(NISession *)self _interruptSessionWithInternalReason:a3 cachedInterruption:0 nearbydReSuspension:v14];
+  [(NISession *)self _interruptSessionWithInternalReason:reason cachedInterruption:0 nearbydReSuspension:v14];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -1857,7 +1857,7 @@ id __55__NISession_uwbSessionInterruptedWithReason_timestamp___block_invoke(uint
   return v5;
 }
 
-- (void)uwbSessionInterruptionReasonEnded:(int64_t)a3 timestamp:(double)a4
+- (void)uwbSessionInterruptionReasonEnded:(int64_t)ended timestamp:(double)timestamp
 {
   v33 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1867,13 +1867,13 @@ id __55__NISession_uwbSessionInterruptedWithReason_timestamp___block_invoke(uint
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NISessionInternalStateToString([(NISession *)self internalState]);
-      v9 = UWBSessionInterruptionReasonInternalToString(a3);
+      v9 = UWBSessionInterruptionReasonInternalToString(ended);
       *buf = 138478339;
       *&buf[4] = v8;
       *&buf[12] = 2113;
       *&buf[14] = v9;
       *&buf[22] = 2048;
-      v32 = a4;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_1BAC42000, v7, OS_LOG_TYPE_DEFAULT, "DelegateProxy: suspension reason ended. State: %{private}@. Reason: %{private}@. Timestamp: %f", buf, 0x20u);
     }
   }
@@ -1896,7 +1896,7 @@ id __55__NISession_uwbSessionInterruptedWithReason_timestamp___block_invoke(uint
     v15 = 0;
     do
     {
-      if (*(begin + v12) == a3)
+      if (*(begin + v12) == ended)
       {
         v15 = 1;
       }
@@ -1978,8 +1978,8 @@ id __55__NISession_uwbSessionInterruptedWithReason_timestamp___block_invoke(uint
     v28[6] = 3221225472;
     v28[7] = __57__NISession_uwbSessionInterruptionReasonEnded_timestamp___block_invoke;
     v28[8] = &__block_descriptor_56_e19___NSDictionary_8__0l;
-    v28[9] = a3;
-    *&v28[10] = a4;
+    v28[9] = ended;
+    *&v28[10] = timestamp;
     v28[11] = 0;
     AnalyticsSendEventLazy();
     if (begin == end)
@@ -2005,7 +2005,7 @@ id __55__NISession_uwbSessionInterruptedWithReason_timestamp___block_invoke(uint
       [(NISession *)self _performBlockOnDelegateQueue:v28 ifRespondsToSelector:sel_sessionSuspensionEnded_];
     }
 
-    v24 = InternalInterruptionReasonToNISessionSuspensionReason(a3);
+    v24 = InternalInterruptionReasonToNISessionSuspensionReason(ended);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __57__NISession_uwbSessionInterruptionReasonEnded_timestamp___block_invoke_2;
@@ -2062,10 +2062,10 @@ void __57__NISession_uwbSessionInterruptionReasonEnded_timestamp___block_invoke_
   [WeakRetained session:*(a1 + 32) suspensionReasonEnded:*(a1 + 40) isNoLongerSuspended:*(a1 + 48)];
 }
 
-- (void)didUpdateLocalDiscoveryToken:(id)a3
+- (void)didUpdateLocalDiscoveryToken:(id)token
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -2073,12 +2073,12 @@ void __57__NISession_uwbSessionInterruptionReasonEnded_timestamp___block_invoke_
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v10 = v5;
+      v10 = tokenCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: updated token %{private}@", buf, 0xCu);
     }
   }
 
-  objc_storeStrong(&self->_discoveryToken, a3);
+  objc_storeStrong(&self->_discoveryToken, token);
   dispatch_semaphore_signal(self->_discoveryTokenSemaphore);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -2096,17 +2096,17 @@ void __42__NISession_didUpdateLocalDiscoveryToken___block_invoke(uint64_t a1)
   [WeakRetained sessionDidUpdateDiscoveryToken:*(a1 + 32)];
 }
 
-- (void)didReceiveRangingAuthRecommendation:(BOOL)a3 forObject:(id)a4
+- (void)didReceiveRangingAuthRecommendation:(BOOL)recommendation forObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   dispatch_assert_queue_V2(self->_queue);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__NISession_didReceiveRangingAuthRecommendation_forObject___block_invoke;
   v8[3] = &unk_1E7F13BC0;
   v8[4] = self;
-  v10 = a3;
-  v7 = v6;
+  recommendationCopy = recommendation;
+  v7 = objectCopy;
   v9 = v7;
   [(NISession *)self _performBlockOnDelegateQueue:v8 ifRespondsToSelector:sel_session_didReceiveRangingAuthRecommendation_forObject_];
 }
@@ -2117,10 +2117,10 @@ void __59__NISession_didReceiveRangingAuthRecommendation_forObject___block_invok
   [WeakRetained session:*(a1 + 32) didReceiveRangingAuthRecommendation:*(a1 + 48) forObject:*(a1 + 40)];
 }
 
-- (void)didDiscoverNearbyObject:(id)a3
+- (void)didDiscoverNearbyObject:(id)object
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -2128,7 +2128,7 @@ void __59__NISession_didReceiveRangingAuthRecommendation_forObject___block_invok
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v11 = v4;
+      v11 = objectCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: discovered object: %{private}@", buf, 0xCu);
     }
   }
@@ -2138,7 +2138,7 @@ void __59__NISession_didReceiveRangingAuthRecommendation_forObject___block_invok
   v8[2] = __37__NISession_didDiscoverNearbyObject___block_invoke;
   v8[3] = &unk_1E7F13A70;
   v8[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   v9 = v6;
   [(NISession *)self _performBlockOnDelegateQueue:v8 ifRespondsToSelector:sel_session_didDiscoverNearbyObject_];
 
@@ -2151,12 +2151,12 @@ void __37__NISession_didDiscoverNearbyObject___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didDiscoverNearbyObject:*(a1 + 40)];
 }
 
-- (void)object:(id)a3 didUpdateRegion:(id)a4 previousRegion:(id)a5
+- (void)object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -2164,11 +2164,11 @@ void __37__NISession_didDiscoverNearbyObject___block_invoke(uint64_t a1)
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478339;
-      v21 = v9;
+      v21 = regionCopy;
       v22 = 2113;
-      v23 = v10;
+      v23 = previousRegionCopy;
       v24 = 2113;
-      v25 = v8;
+      v25 = objectCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: updated region %{private}@ (previous: %{private}@). Object: %{private}@", buf, 0x20u);
     }
   }
@@ -2178,11 +2178,11 @@ void __37__NISession_didDiscoverNearbyObject___block_invoke(uint64_t a1)
   v16[2] = __51__NISession_object_didUpdateRegion_previousRegion___block_invoke;
   v16[3] = &unk_1E7F13BE8;
   v16[4] = self;
-  v12 = v8;
+  v12 = objectCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = regionCopy;
   v18 = v13;
-  v14 = v10;
+  v14 = previousRegionCopy;
   v19 = v14;
   [(NISession *)self _performBlockOnDelegateQueue:v16 ifRespondsToSelector:sel_session_object_didUpdateRegion_previousRegion_];
 
@@ -2195,16 +2195,16 @@ void __51__NISession_object_didUpdateRegion_previousRegion___block_invoke(void *
   [WeakRetained session:a1[4] object:a1[5] didUpdateRegion:a1[6] previousRegion:a1[7]];
 }
 
-- (void)didUpdateMotionState:(int64_t)a3
+- (void)didUpdateMotionState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_queue);
-  self->_motionState = a3;
+  self->_motionState = state;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__NISession_didUpdateMotionState___block_invoke;
   v5[3] = &unk_1E7F13C10;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = state;
   [(NISession *)self _performBlockOnDelegateQueue:v5 ifRespondsToSelector:sel_session_didUpdateLocalMotionState_];
 }
 
@@ -2214,7 +2214,7 @@ void __34__NISession_didUpdateMotionState___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateLocalMotionState:*(a1 + 40)];
 }
 
-- (void)didUpdateHomeDeviceUWBRangingAvailability:(BOOL)a3
+- (void)didUpdateHomeDeviceUWBRangingAvailability:(BOOL)availability
 {
   dispatch_assert_queue_V2(self->_queue);
   v5[0] = MEMORY[0x1E69E9820];
@@ -2222,7 +2222,7 @@ void __34__NISession_didUpdateMotionState___block_invoke(uint64_t a1)
   v5[2] = __55__NISession_didUpdateHomeDeviceUWBRangingAvailability___block_invoke;
   v5[3] = &unk_1E7F13C38;
   v5[4] = self;
-  v6 = a3;
+  availabilityCopy = availability;
   [(NISession *)self _performBlockOnDelegateQueue:v5 ifRespondsToSelector:sel_session_didUpdateHomeDeviceUWBRangingAvailability_];
 }
 
@@ -2232,16 +2232,16 @@ void __55__NISession_didUpdateHomeDeviceUWBRangingAvailability___block_invoke(ui
   [WeakRetained session:*(a1 + 32) didUpdateHomeDeviceUWBRangingAvailability:*(a1 + 40)];
 }
 
-- (void)relayDCKMessage:(id)a3
+- (void)relayDCKMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__NISession_relayDCKMessage___block_invoke;
   v6[3] = &unk_1E7F13A70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v6 ifRespondsToSelector:sel_session_relayDCKMessage_];
 }
 
@@ -2251,14 +2251,14 @@ void __29__NISession_relayDCKMessage___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) relayDCKMessage:*(a1 + 40)];
 }
 
-- (void)didUpdateHealthStatus:(int64_t)a3
+- (void)didUpdateHealthStatus:(int64_t)status
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__NISession_didUpdateHealthStatus___block_invoke;
   v3[3] = &unk_1E7F13C10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = status;
   [(NISession *)self _performBlockOnDelegateQueue:v3 ifRespondsToSelector:sel_session_didUpdateHealthStatus_];
 }
 
@@ -2268,19 +2268,19 @@ void __35__NISession_didUpdateHealthStatus___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateHealthStatus:*(a1 + 40)];
 }
 
-- (void)didProcessAcwgM1MsgWithResponse:(id)a3 error:(id)a4
+- (void)didProcessAcwgM1MsgWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__NISession_didProcessAcwgM1MsgWithResponse_error___block_invoke;
   v10[3] = &unk_1E7F13C60;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = responseCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = responseCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v10 ifRespondsToSelector:sel_session_didProcessAcwgM1MsgWithResponse_error_];
 }
 
@@ -2290,19 +2290,19 @@ void __51__NISession_didProcessAcwgM1MsgWithResponse_error___block_invoke(void *
   [WeakRetained session:a1[4] didProcessAcwgM1MsgWithResponse:a1[5] error:a1[6]];
 }
 
-- (void)didProcessAcwgM3MsgWithResponse:(id)a3 error:(id)a4
+- (void)didProcessAcwgM3MsgWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__NISession_didProcessAcwgM3MsgWithResponse_error___block_invoke;
   v10[3] = &unk_1E7F13C60;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = responseCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = responseCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v10 ifRespondsToSelector:sel_session_didProcessAcwgM3MsgWithResponse_error_];
 }
 
@@ -2312,19 +2312,19 @@ void __51__NISession_didProcessAcwgM3MsgWithResponse_error___block_invoke(void *
   [WeakRetained session:a1[4] didProcessAcwgM3MsgWithResponse:a1[5] error:a1[6]];
 }
 
-- (void)didProcessAcwgRangingSessionResumeRequestMsgWithResponse:(id)a3 error:(id)a4
+- (void)didProcessAcwgRangingSessionResumeRequestMsgWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__NISession_didProcessAcwgRangingSessionResumeRequestMsgWithResponse_error___block_invoke;
   v10[3] = &unk_1E7F13C60;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = responseCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = responseCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v10 ifRespondsToSelector:sel_session_didProcessAcwgRangingSessionResumeRequestMsgWithResponse_error_];
 }
 
@@ -2334,15 +2334,15 @@ void __76__NISession_didProcessAcwgRangingSessionResumeRequestMsgWithResponse_er
   [WeakRetained session:a1[4] didProcessAcwgRangingSessionResumeRequestMsgWithResponse:a1[5] error:a1[6]];
 }
 
-- (void)requestAcwgRangingSessionSuspend:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4
+- (void)requestAcwgRangingSessionSuspend:(unsigned int)suspend withSuspendTriggerReason:(int64_t)reason
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__NISession_requestAcwgRangingSessionSuspend_withSuspendTriggerReason___block_invoke;
   v4[3] = &unk_1E7F13C88;
-  v5 = a3;
+  suspendCopy = suspend;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = reason;
   [(NISession *)self _performBlockOnDelegateQueue:v4 ifRespondsToSelector:sel_session_requestAcwgRangingSessionSuspend_withSuspendTriggerReason_];
 }
 
@@ -2352,14 +2352,14 @@ void __71__NISession_requestAcwgRangingSessionSuspend_withSuspendTriggerReason__
   [WeakRetained session:*(a1 + 32) requestAcwgRangingSessionSuspend:*(a1 + 48) withSuspendTriggerReason:*(a1 + 40)];
 }
 
-- (void)didStartAcwgRanging:(int64_t)a3
+- (void)didStartAcwgRanging:(int64_t)ranging
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__NISession_didStartAcwgRanging___block_invoke;
   v3[3] = &unk_1E7F13C10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = ranging;
   [(NISession *)self _performBlockOnDelegateQueue:v3 ifRespondsToSelector:sel_session_didStartAcwgRanging_];
 }
 
@@ -2369,14 +2369,14 @@ void __33__NISession_didStartAcwgRanging___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didStartAcwgRanging:*(a1 + 40)];
 }
 
-- (void)didSuspendAcwgRanging:(int64_t)a3
+- (void)didSuspendAcwgRanging:(int64_t)ranging
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__NISession_didSuspendAcwgRanging___block_invoke;
   v3[3] = &unk_1E7F13C10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = ranging;
   [(NISession *)self _performBlockOnDelegateQueue:v3 ifRespondsToSelector:sel_session_didSuspendAcwgRanging_];
 }
 
@@ -2386,17 +2386,17 @@ void __35__NISession_didSuspendAcwgRanging___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didSuspendAcwgRanging:*(a1 + 40)];
 }
 
-- (void)didPrefetchAcwgUrsk:(unsigned int)a3 error:(id)a4
+- (void)didPrefetchAcwgUrsk:(unsigned int)ursk error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__NISession_didPrefetchAcwgUrsk_error___block_invoke;
   v8[3] = &unk_1E7F13CB0;
-  v10 = a3;
+  urskCopy = ursk;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = errorCopy;
+  v7 = errorCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v8 ifRespondsToSelector:sel_session_didPrefetchAcwgUrsk_error_];
 }
 
@@ -2406,16 +2406,16 @@ void __39__NISession_didPrefetchAcwgUrsk_error___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didPrefetchAcwgUrsk:*(a1 + 48) error:*(a1 + 40)];
 }
 
-- (void)didReceiveAopSFZoneUpdate:(id)a3
+- (void)didReceiveAopSFZoneUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__NISession_didReceiveAopSFZoneUpdate___block_invoke;
   v6[3] = &unk_1E7F13A70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(NISession *)self _performBlockOnDelegateQueue:v6 ifRespondsToSelector:sel_session_didReceiveAopSFZoneUpdate_];
 }
 
@@ -2425,20 +2425,20 @@ void __39__NISession_didReceiveAopSFZoneUpdate___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didReceiveAopSFZoneUpdate:*(a1 + 40)];
 }
 
-- (void)didGenerateShareableConfigurationData:(id)a3 forObject:(id)a4
+- (void)didGenerateShareableConfigurationData:(id)data forObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  objectCopy = object;
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478083;
-      v16 = v6;
+      v16 = dataCopy;
       v17 = 2113;
-      v18 = v7;
+      v18 = objectCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: generated shareable config: %{private}@. Object: %{private}@", buf, 0x16u);
     }
   }
@@ -2448,9 +2448,9 @@ void __39__NISession_didReceiveAopSFZoneUpdate___block_invoke(uint64_t a1)
   v12[2] = __61__NISession_didGenerateShareableConfigurationData_forObject___block_invoke;
   v12[3] = &unk_1E7F13C60;
   v12[4] = self;
-  v9 = v6;
+  v9 = dataCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = objectCopy;
   v14 = v10;
   [(NISession *)self _performBlockOnDelegateQueue:v12 ifRespondsToSelector:sel_session_didGenerateShareableConfigurationData_forObject_];
 
@@ -2463,17 +2463,17 @@ void __61__NISession_didGenerateShareableConfigurationData_forObject___block_inv
   [WeakRetained session:a1[4] didGenerateShareableConfigurationData:a1[5] forObject:a1[6]];
 }
 
-- (void)systemDidUpdateState:(id)a3
+- (void)systemDidUpdateState:(id)state
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v11 = v4;
+      v11 = stateCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: system updated state: %{private}@", buf, 0xCu);
     }
   }
@@ -2483,7 +2483,7 @@ void __61__NISession_didGenerateShareableConfigurationData_forObject___block_inv
   v8[2] = __34__NISession_systemDidUpdateState___block_invoke;
   v8[3] = &unk_1E7F13A70;
   v8[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   v9 = v6;
   [(NISession *)self _performBlockOnDelegateQueue:v8 ifRespondsToSelector:sel_systemConfigurator_didUpdateState_];
 
@@ -2496,32 +2496,32 @@ void __34__NISession_systemDidUpdateState___block_invoke(uint64_t a1)
   [WeakRetained systemConfigurator:*(a1 + 32) didUpdateState:*(a1 + 40)];
 }
 
-- (void)systemDidUpdateResourceUsageLimitExceeded:(BOOL)a3 forSessionConfigurationTypeWithName:(id)a4
+- (void)systemDidUpdateResourceUsageLimitExceeded:(BOOL)exceeded forSessionConfigurationTypeWithName:(id)name
 {
-  v4 = a3;
+  exceededCopy = exceeded;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  nameCopy = name;
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67174915;
-      v13 = v4;
+      v13 = exceededCopy;
       v14 = 2113;
-      v15 = v6;
+      v15 = nameCopy;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: system updated resource usage limit exceeded: %{private}d. Configuration type: %{private}@", buf, 0x12u);
     }
   }
 
-  v8 = NSClassFromString(v6);
+  v8 = NSClassFromString(nameCopy);
   if (v8)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __91__NISession_systemDidUpdateResourceUsageLimitExceeded_forSessionConfigurationTypeWithName___block_invoke;
     v10[3] = &unk_1E7F13CD8;
-    v11 = v4;
+    v11 = exceededCopy;
     v10[4] = self;
     v10[5] = v8;
     [(NISession *)self _performBlockOnDelegateQueue:v10 ifRespondsToSelector:sel_systemConfigurator_didUpdateResourceUsageLimitExceeded_forSessionConfigurationType_];
@@ -2536,34 +2536,34 @@ void __91__NISession_systemDidUpdateResourceUsageLimitExceeded_forSessionConfigu
   [WeakRetained systemConfigurator:*(a1 + 32) didUpdateResourceUsageLimitExceeded:*(a1 + 48) forSessionConfigurationType:*(a1 + 40)];
 }
 
-- (void)didUpdateAlgorithmState:(id)a3 forObject:(id)a4
+- (void)didUpdateAlgorithmState:(id)state forObject:(id)object
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 convergence];
+  stateCopy = state;
+  objectCopy = object;
+  convergence = [stateCopy convergence];
   v9 = objc_opt_new();
-  if ([v6 insufficientSignalStrength])
+  if ([stateCopy insufficientSignalStrength])
   {
     [v9 addObject:@"insufficientSignalStrength"];
   }
 
-  if ([v6 insufficientHorizontalSweep])
+  if ([stateCopy insufficientHorizontalSweep])
   {
     [v9 addObject:@"insufficientHorizontalSweep"];
   }
 
-  if ([v6 insufficientVerticalSweep])
+  if ([stateCopy insufficientVerticalSweep])
   {
     [v9 addObject:@"insufficientVerticalSweep"];
   }
 
-  if ([v6 insufficientMovement])
+  if ([stateCopy insufficientMovement])
   {
     [v9 addObject:@"insufficientMovement"];
   }
 
-  if ([v6 insufficientLighting])
+  if ([stateCopy insufficientLighting])
   {
     [v9 addObject:@"insufficientLighting"];
   }
@@ -2574,9 +2574,9 @@ void __91__NISession_systemDidUpdateResourceUsageLimitExceeded_forSessionConfigu
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109635;
-      v24 = v8;
+      v24 = convergence;
       v25 = 2113;
-      v26 = v7;
+      v26 = objectCopy;
       v27 = 2113;
       v28 = v9;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "DelegateProxy: algorithm convergence status: %d. Object: %{private}@. Reasons: %{private}@", buf, 0x1Cu);
@@ -2588,10 +2588,10 @@ void __91__NISession_systemDidUpdateResourceUsageLimitExceeded_forSessionConfigu
   v19[2] = __47__NISession_didUpdateAlgorithmState_forObject___block_invoke;
   v19[3] = &unk_1E7F13D00;
   v19[4] = self;
-  v22 = v8;
+  v22 = convergence;
   v11 = v9;
   v20 = v11;
-  v12 = v7;
+  v12 = objectCopy;
   v21 = v12;
   [(NISession *)self _performBlockOnDelegateQueue:v19 ifRespondsToSelector:sel_session_didUpdateAlgorithmConvergence_forObject_];
   v16[0] = MEMORY[0x1E69E9820];
@@ -2599,7 +2599,7 @@ void __91__NISession_systemDidUpdateResourceUsageLimitExceeded_forSessionConfigu
   v16[2] = __47__NISession_didUpdateAlgorithmState_forObject___block_invoke_2;
   v16[3] = &unk_1E7F13C60;
   v16[4] = self;
-  v13 = v6;
+  v13 = stateCopy;
   v17 = v13;
   v14 = v12;
   v18 = v14;
@@ -2622,9 +2622,9 @@ void __47__NISession_didUpdateAlgorithmState_forObject___block_invoke_2(void *a1
   [WeakRetained session:a1[4] didUpdateAlgorithmState:a1[5] forObject:a1[6]];
 }
 
-- (void)didUpdateState:(int64_t)a3 forItem:(id)a4
+- (void)didUpdateState:(int64_t)state forItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   currentConfiguration = self->_currentConfiguration;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2642,20 +2642,20 @@ void __47__NISession_didUpdateAlgorithmState_forObject___block_invoke_2(void *a1
     goto LABEL_30;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0:
 LABEL_13:
-      [(NISession *)self _sendRemoteDevice:v6 changedState:a3];
+      [(NISession *)self _sendRemoteDevice:itemCopy changedState:state];
       break;
     case 2:
-      a3 = 4;
+      state = 4;
       goto LABEL_13;
     case 1:
       v8 = [(NIConfiguration *)self->_currentConfiguration copy];
       if ([v8 preferredUpdateRate] == 3)
       {
-        [(NISession *)self _sendRemoteDevice:v6 changedState:1];
+        [(NISession *)self _sendRemoteDevice:itemCopy changedState:1];
         if (+[NIPlatformInfo isInternalBuild])
         {
           v9 = self->_log;
@@ -2709,7 +2709,7 @@ LABEL_13:
           v12 = 1;
         }
 
-        [(NISession *)self _sendRemoteDevice:v6 changedState:v12];
+        [(NISession *)self _sendRemoteDevice:itemCopy changedState:v12];
       }
 
       self->_itemLocalizerDidPrewarmRanging = 1;
@@ -2721,16 +2721,16 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)didUpdateNICoordinates:(id)a3
+- (void)didUpdateNICoordinates:(id)coordinates
 {
-  v4 = a3;
+  coordinatesCopy = coordinates;
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__NISession_didUpdateNICoordinates___block_invoke;
   v6[3] = &unk_1E7F13A70;
   v6[4] = self;
-  v5 = v4;
+  v5 = coordinatesCopy;
   v7 = v5;
   [(NISession *)self _performBlockOnDelegateQueue:v6 ifRespondsToSelector:sel_session_didUpdateNICoordinates_];
 }
@@ -2741,16 +2741,16 @@ void __36__NISession_didUpdateNICoordinates___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateNICoordinates:*(a1 + 40)];
 }
 
-- (void)didUpdateDLTDOAMeasurements:(id)a3
+- (void)didUpdateDLTDOAMeasurements:(id)measurements
 {
-  v4 = a3;
+  measurementsCopy = measurements;
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__NISession_didUpdateDLTDOAMeasurements___block_invoke;
   v6[3] = &unk_1E7F13A70;
   v6[4] = self;
-  v5 = v4;
+  v5 = measurementsCopy;
   v7 = v5;
   [(NISession *)self _performBlockOnDelegateQueue:v6 ifRespondsToSelector:sel_session_didUpdateDLTDOAMeasurements_];
 }
@@ -2761,35 +2761,35 @@ void __41__NISession_didUpdateDLTDOAMeasurements___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateDLTDOAMeasurements:*(a1 + 40)];
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = a4;
+  frameCopy = frame;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__NISession_session_didUpdateFrame___block_invoke;
   v8[3] = &unk_1E7F13A70;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = frameCopy;
+  v7 = frameCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__NISession_session_didFailWithError___block_invoke;
   v8[3] = &unk_1E7F13A70;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2800,7 +2800,7 @@ void __41__NISession_didUpdateDLTDOAMeasurements___block_invoke(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2811,7 +2811,7 @@ void __41__NISession_didUpdateDLTDOAMeasurements___block_invoke(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -2819,34 +2819,34 @@ void __41__NISession_didUpdateDLTDOAMeasurements___block_invoke(uint64_t a1)
   v5[2] = __36__NISession_session_didChangeState___block_invoke;
   v5[3] = &unk_1E7F13C10;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_async(queue, v5);
 }
 
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4
+- (void)session:(id)session willRunWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__NISession_session_willRunWithConfiguration___block_invoke;
   block[3] = &unk_1E7F13C60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = sessionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)sessionShouldAttemptRelocalization:(id)a3 completion:(id)a4
+- (void)sessionShouldAttemptRelocalization:(id)relocalization completion:(id)completion
 {
-  v6 = a4;
-  if (!v6)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:1664 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:1664 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   queue = self->_queue;
@@ -2855,8 +2855,8 @@ void __41__NISession_didUpdateDLTDOAMeasurements___block_invoke(uint64_t a1)
   block[2] = __59__NISession_sessionShouldAttemptRelocalization_completion___block_invoke;
   block[3] = &unk_1E7F13D28;
   block[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -2875,61 +2875,61 @@ uint64_t __59__NISession_sessionShouldAttemptRelocalization_completion___block_i
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_handleARSessionDidUpdateFrame:(id)a3
+- (void)_handleARSessionDidUpdateFrame:(id)frame
 {
-  v26 = a3;
+  frameCopy = frame;
   dispatch_assert_queue_V2(self->_queue);
   if ([(NISession *)self internalState]== 3)
   {
-    [(NISessionVisionContext *)self->_visionContext setLatestARFrame:v26];
-    v4 = [v26 camera];
-    v5 = -[NISession niVisionInputTrackingStateFromARTRackingState:](self, "niVisionInputTrackingStateFromARTRackingState:", [v4 trackingState]);
+    [(NISessionVisionContext *)self->_visionContext setLatestARFrame:frameCopy];
+    camera = [frameCopy camera];
+    v5 = -[NISession niVisionInputTrackingStateFromARTRackingState:](self, "niVisionInputTrackingStateFromARTRackingState:", [camera trackingState]);
 
-    v6 = [v26 worldTrackingState];
+    worldTrackingState = [frameCopy worldTrackingState];
 
-    if (v6)
+    if (worldTrackingState)
     {
-      v7 = [v26 worldTrackingState];
-      v6 = [v7 majorRelocalization];
+      worldTrackingState2 = [frameCopy worldTrackingState];
+      worldTrackingState = [worldTrackingState2 majorRelocalization];
 
-      v8 = [v26 worldTrackingState];
-      v9 = [v8 minorRelocalization];
+      worldTrackingState3 = [frameCopy worldTrackingState];
+      minorRelocalization = [worldTrackingState3 minorRelocalization];
     }
 
     else
     {
-      v9 = 0;
+      minorRelocalization = 0;
     }
 
     v10 = [NIVisionInput alloc];
-    [v26 timestamp];
+    [frameCopy timestamp];
     v12 = v11;
-    v13 = [v26 camera];
-    [v13 transform];
+    camera2 = [frameCopy camera];
+    [camera2 transform];
     v24 = v15;
     v25 = v14;
     v22 = v17;
     v23 = v16;
-    v18 = [v26 lightEstimate];
-    [(NISession *)self lightEstimateFromARLightEstimate:v18];
-    v20 = [(NIVisionInput *)v10 initWithTimestamp:v5 devicePose:v6 trackingState:v9 lightEstimate:v12 majorRelocalization:v25 minorRelocalization:v24, v23, v22, v19];
+    lightEstimate = [frameCopy lightEstimate];
+    [(NISession *)self lightEstimateFromARLightEstimate:lightEstimate];
+    v20 = [(NIVisionInput *)v10 initWithTimestamp:v5 devicePose:worldTrackingState trackingState:minorRelocalization lightEstimate:v12 majorRelocalization:v25 minorRelocalization:v24, v23, v22, v19];
 
-    v21 = [(NISession *)self _remoteObject];
-    [v21 processVisionInput:v20];
+    _remoteObject = [(NISession *)self _remoteObject];
+    [_remoteObject processVisionInput:v20];
   }
 }
 
-- (void)_handleARSessionDidFailWithError:(id)a3
+- (void)_handleARSessionDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     [NISession _handleARSessionDidFailWithError:];
   }
 
-  v5 = [(NISession *)self _remoteObject];
-  [v5 arSessionDidFailWithError:v4];
+  _remoteObject = [(NISession *)self _remoteObject];
+  [_remoteObject arSessionDidFailWithError:errorCopy];
 }
 
 - (void)_handleARSessionWasInterrupted
@@ -2945,8 +2945,8 @@ uint64_t __59__NISession_sessionShouldAttemptRelocalization_completion___block_i
     }
   }
 
-  v4 = [(NISession *)self _remoteObject];
-  [v4 arSessionWasInterrupted];
+  _remoteObject = [(NISession *)self _remoteObject];
+  [_remoteObject arSessionWasInterrupted];
 }
 
 - (void)_handleARSessionInterruptionEnded
@@ -2962,11 +2962,11 @@ uint64_t __59__NISession_sessionShouldAttemptRelocalization_completion___block_i
     }
   }
 
-  v4 = [(NISession *)self _remoteObject];
-  [v4 arSessionInterruptionEnded];
+  _remoteObject = [(NISession *)self _remoteObject];
+  [_remoteObject arSessionInterruptionEnded];
 }
 
-- (void)_handleARSessionDidChangeState:(unint64_t)a3
+- (void)_handleARSessionDidChangeState:(unint64_t)state
 {
   v8 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -2976,29 +2976,29 @@ uint64_t __59__NISession_sessionShouldAttemptRelocalization_completion___block_i
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = a3;
+      v7[1] = state;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "ARSession: changed state: %d", v7, 8u);
     }
   }
 
-  [(NISessionVisionContext *)self->_visionContext setArSessionState:a3];
+  [(NISessionVisionContext *)self->_visionContext setArSessionState:state];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleARSession:(id)a3 willRunWithConfiguration:(id)a4
+- (void)_handleARSession:(id)session willRunWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_queue);
-  if (![(NISession *)self _isValidARSession:v6 andConfiguration:v7])
+  if (![(NISession *)self _isValidARSession:sessionCopy andConfiguration:configurationCopy])
   {
     if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       [NISession _handleARSession:willRunWithConfiguration:];
     }
 
-    v8 = [(NISession *)self _remoteObject];
-    [v8 arSessionWillRunWithInvalidConfiguration];
+    _remoteObject = [(NISession *)self _remoteObject];
+    [_remoteObject arSessionWillRunWithInvalidConfiguration];
   }
 }
 
@@ -3023,13 +3023,13 @@ void __46__NISession__configureAndRunInternalARSession__block_invoke(uint64_t a1
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isValidARSession:(id)a3 andConfiguration:(id)a4
+- (BOOL)_isValidARSession:(id)session andConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v6)
+  if (!sessionCopy)
   {
     if (!+[NIPlatformInfo isInternalBuild])
     {
@@ -3055,19 +3055,19 @@ void __46__NISession__configureAndRunInternalARSession__block_invoke(uint64_t a1
 
   if ([(NISessionVisionContext *)self->_visionContext isARSessionInternal])
   {
-    v9 = [(NISessionVisionContext *)self->_visionContext arSession];
+    arSession = [(NISessionVisionContext *)self->_visionContext arSession];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __48__NISession__isValidARSession_andConfiguration___block_invoke;
     v26[3] = &unk_1E7F13D50;
     v26[4] = self;
-    [(NISession *)self sessionShouldAttemptRelocalization:v9 completion:v26];
+    [(NISession *)self sessionShouldAttemptRelocalization:arSession completion:v26];
 
     goto LABEL_6;
   }
 
-  v15 = [v6 delegate];
-  if (!v15)
+  delegate = [sessionCopy delegate];
+  if (!delegate)
   {
     if (!+[NIPlatformInfo isInternalBuild])
     {
@@ -3085,7 +3085,7 @@ void __46__NISession__configureAndRunInternalARSession__block_invoke(uint64_t a1
     goto LABEL_27;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v15 sessionShouldAttemptRelocalization:v6])
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate sessionShouldAttemptRelocalization:sessionCopy])
   {
     if (!+[NIPlatformInfo isInternalBuild])
     {
@@ -3112,7 +3112,7 @@ LABEL_28:
     v21 = self->_log;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v15 sessionShouldAttemptRelocalization:v6];
+      v22 = [delegate sessionShouldAttemptRelocalization:sessionCopy];
       v23 = "NO";
       if (v22)
       {
@@ -3126,7 +3126,7 @@ LABEL_28:
   }
 
 LABEL_6:
-  if (!v7)
+  if (!configurationCopy)
   {
     if (!+[NIPlatformInfo isInternalBuild])
     {
@@ -3147,7 +3147,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    v10 = configurationCopy;
     if ([v10 worldAlignment])
     {
       if (!+[NIPlatformInfo isInternalBuild])
@@ -3167,8 +3167,8 @@ LABEL_6:
 
     else
     {
-      v24 = [v10 initialWorldMap];
-      v25 = v24 == 0;
+      initialWorldMap = [v10 initialWorldMap];
+      v25 = initialWorldMap == 0;
 
       if (v25)
       {
@@ -3257,8 +3257,8 @@ void __48__NISession__isValidARSession_andConfiguration___block_invoke(uint64_t 
   dispatch_assert_queue_V2(self->_queue);
   if ([(NISessionVisionContext *)self->_visionContext isARSessionInternal]&& [(NISessionVisionContext *)self->_visionContext isARSessionInClientProcess])
   {
-    v3 = [(NISessionVisionContext *)self->_visionContext arSession];
-    [v3 pause];
+    arSession = [(NISessionVisionContext *)self->_visionContext arSession];
+    [arSession pause];
   }
 }
 
@@ -3267,37 +3267,37 @@ void __48__NISession__isValidARSession_andConfiguration___block_invoke(uint64_t 
   dispatch_assert_queue_V2(self->_queue);
   if ([(NISessionVisionContext *)self->_visionContext isARSessionInternal]&& [(NISessionVisionContext *)self->_visionContext isARSessionInClientProcess])
   {
-    v3 = [(NISessionVisionContext *)self->_visionContext arSession];
-    [v3 pause];
+    arSession = [(NISessionVisionContext *)self->_visionContext arSession];
+    [arSession pause];
 
-    v4 = [(NISessionVisionContext *)self->_visionContext arSession];
-    [v4 _removeObserver:self];
+    arSession2 = [(NISessionVisionContext *)self->_visionContext arSession];
+    [arSession2 _removeObserver:self];
 
     visionContext = self->_visionContext;
     self->_visionContext = 0;
   }
 }
 
-- (int64_t)niVisionInputTrackingStateFromARTRackingState:(int64_t)a3
+- (int64_t)niVisionInputTrackingStateFromARTRackingState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (double)lightEstimateFromARLightEstimate:(id)a3
+- (double)lightEstimateFromARLightEstimate:(id)estimate
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  estimateCopy = estimate;
+  v4 = estimateCopy;
+  if (estimateCopy)
   {
-    [v3 ambientIntensity];
+    [estimateCopy ambientIntensity];
     v6 = v5;
   }
 
@@ -3309,22 +3309,22 @@ void __48__NISession__isValidARSession_andConfiguration___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)_invalidateSessionAndNotifyError:(id)a3
+- (void)_invalidateSessionAndNotifyError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  [(NISession *)self _notifyDidInvalidateWithError:v4];
+  [(NISession *)self _notifyDidInvalidateWithError:errorCopy];
   [(NISession *)self _invalidateInternal];
 }
 
-- (void)_interruptSessionWithInternalReason:(int64_t)a3 cachedInterruption:(BOOL)a4 nearbydReSuspension:(BOOL)a5
+- (void)_interruptSessionWithInternalReason:(int64_t)reason cachedInterruption:(BOOL)interruption nearbydReSuspension:(BOOL)suspension
 {
-  v6 = a4;
+  interruptionCopy = interruption;
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NISession *)self internalState]== 6 && !v6)
+  if ([(NISession *)self internalState]== 6 && !interruptionCopy)
   {
-    if (a5)
+    if (suspension)
     {
       goto LABEL_11;
     }
@@ -3333,7 +3333,7 @@ void __48__NISession__isValidARSession_andConfiguration___block_invoke(uint64_t 
   }
 
   [(NISession *)self setInternalState:6];
-  if (!a5)
+  if (!suspension)
   {
     if (+[NIPlatformInfo isInternalBuild])
     {
@@ -3354,7 +3354,7 @@ void __48__NISession__isValidARSession_andConfiguration___block_invoke(uint64_t 
     v14[4] = self;
     [(NISession *)self _performBlockOnDelegateQueue:v14 ifRespondsToSelector:sel_sessionWasSuspended_];
 LABEL_10:
-    v11 = InternalInterruptionReasonToNISessionSuspensionReason(a3);
+    v11 = InternalInterruptionReasonToNISessionSuspensionReason(reason);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __88__NISession__interruptSessionWithInternalReason_cachedInterruption_nearbydReSuspension___block_invoke_2;
@@ -3384,7 +3384,7 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NISession *)self internalState];
+  internalState = [(NISession *)self internalState];
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
@@ -3392,7 +3392,7 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
     {
       internalID = self->_internalID;
       v6 = log;
-      v7 = NISessionInternalStateToString(v3);
+      v7 = NISessionInternalStateToString(internalState);
       v10 = 138412546;
       v11 = internalID;
       v12 = 2112;
@@ -3401,7 +3401,7 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
     }
   }
 
-  if (v3 <= 6)
+  if (internalState <= 6)
   {
     [(NISession *)self _logDurationAndSubmit:self->_updatedNearbyObjects];
     [(NISession *)self setInternalState:7];
@@ -3416,10 +3416,10 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleActivationError:(id)a3
+- (void)_handleActivationError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (+[NIPlatformInfo isInternalBuild])
   {
     v5 = self->_log;
@@ -3432,21 +3432,21 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
       v11 = 2112;
       v12 = v7;
       v13 = 2112;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&dword_1BAC42000, v5, OS_LOG_TYPE_DEFAULT, "Activation error [%@]. State: %@. Error: %@", &v9, 0x20u);
     }
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NISession *)self _invalidateSessionAndNotifyError:v4];
+  [(NISession *)self _invalidateSessionAndNotifyError:errorCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleActivationSuccess:(id)a3
+- (void)_handleActivationSuccess:(id)success
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  successCopy = success;
   if (+[NIPlatformInfo isInternalBuild])
   {
     v5 = self->_log;
@@ -3459,7 +3459,7 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
       v11 = 2112;
       v12 = v7;
       v13 = 2112;
-      v14 = v4;
+      v14 = successCopy;
       _os_log_impl(&dword_1BAC42000, v5, OS_LOG_TYPE_DEFAULT, "Activation success [%@]. State: %@. Response: %@", &v9, 0x20u);
     }
   }
@@ -3476,20 +3476,20 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
     [(NISession *)self setInternalState:1];
   }
 
-  if (!v4)
+  if (!successCopy)
   {
     __assert_rtn("[NISession _handleActivationSuccess:]", "NISession.mm", 2015, "activationResponse != nil");
   }
 
-  [(NISession *)self setActivationResponse:v4];
+  [(NISession *)self setActivationResponse:successCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRunSessionError:(id)a3
+- (void)_handleRunSessionError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (+[NIPlatformInfo isInternalBuild])
   {
     v5 = self->_log;
@@ -3502,15 +3502,15 @@ void __88__NISession__interruptSessionWithInternalReason_cachedInterruption_near
       v11 = 2112;
       v12 = v7;
       v13 = 2112;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&dword_1BAC42000, v5, OS_LOG_TYPE_DEFAULT, "Run session error [%@]. State: %@. Error: %@", &v9, 0x20u);
     }
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (![(NISession *)self _tryToRecoverFromFailure:v4])
+  if (![(NISession *)self _tryToRecoverFromFailure:errorCopy])
   {
-    [(NISession *)self _invalidateSessionAndNotifyError:v4];
+    [(NISession *)self _invalidateSessionAndNotifyError:errorCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -3560,10 +3560,10 @@ void __37__NISession__handleRunSessionSuccess__block_invoke(uint64_t a1)
   [WeakRetained sessionDidStartRunning:*(a1 + 32)];
 }
 
-- (void)_handlePauseSessionError:(id)a3
+- (void)_handlePauseSessionError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (+[NIPlatformInfo isInternalBuild])
   {
     v5 = self->_log;
@@ -3576,13 +3576,13 @@ void __37__NISession__handleRunSessionSuccess__block_invoke(uint64_t a1)
       v11 = 2112;
       v12 = v7;
       v13 = 2112;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&dword_1BAC42000, v5, OS_LOG_TYPE_DEFAULT, "Pause session error [%@]. State: %@. Error: %@", &v9, 0x20u);
     }
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NISession *)self _invalidateSessionAndNotifyError:v4];
+  [(NISession *)self _invalidateSessionAndNotifyError:errorCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -3615,16 +3615,16 @@ void __37__NISession__handleRunSessionSuccess__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performBlockOnDelegateQueue:(id)a3 ifRespondsToSelector:(SEL)a4 evenIfNotRunning:(BOOL)a5
+- (void)_performBlockOnDelegateQueue:(id)queue ifRespondsToSelector:(SEL)selector evenIfNotRunning:(BOOL)running
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
+  runningCopy = running;
+  queueCopy = queue;
+  v9 = queueCopy;
   v10 = atomic_load(&self->_readyForCallbacks);
-  if ((v10 & 1) != 0 || v5)
+  if ((v10 & 1) != 0 || runningCopy)
   {
-    block = v8;
-    if (a4)
+    block = queueCopy;
+    if (selector)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -3661,26 +3661,26 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)_verifyError:(id)a3
+- (id)_verifyError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 code];
-  if ((v5 + 5889) < 8)
+  errorCopy = error;
+  code = [errorCopy code];
+  if ((code + 5889) < 8)
   {
-    v6 = [v4 code];
-    v7 = [v4 userInfo];
-    v8 = NIErrorWithCodeAndUserInfo(v6, v7);
+    code2 = [errorCopy code];
+    userInfo = [errorCopy userInfo];
+    v8 = NIErrorWithCodeAndUserInfo(code2, userInfo);
 LABEL_5:
     v9 = v8;
 
     goto LABEL_6;
   }
 
-  if ((v5 + 10017) < 2)
+  if ((code + 10017) < 2)
   {
-    v7 = [v4 userInfo];
-    v8 = NIErrorWithCodeAndUserInfo(-5887, v7);
+    userInfo = [errorCopy userInfo];
+    v8 = NIErrorWithCodeAndUserInfo(-5887, userInfo);
     goto LABEL_5;
   }
 
@@ -3689,8 +3689,8 @@ LABEL_5:
     v12 = self->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid error code blocked from being sent to NISessionDelegate.  Error: %@", v4];
-      [(NISession *)v13 _verifyError:buf, v12];
+      errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid error code blocked from being sent to NISessionDelegate.  Error: %@", errorCopy];
+      [(NISession *)errorCopy _verifyError:buf, v12];
     }
   }
 
@@ -3702,17 +3702,17 @@ LABEL_6:
   return v9;
 }
 
-- (void)_notifyDidInvalidateWithError:(id)a3
+- (void)_notifyDidInvalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(NISession *)self _isInternalClient])
   {
-    v5 = v4;
+    v5 = errorCopy;
   }
 
   else
   {
-    v5 = [(NISession *)self _verifyError:v4];
+    v5 = [(NISession *)self _verifyError:errorCopy];
   }
 
   v6 = v5;
@@ -3726,11 +3726,11 @@ LABEL_6:
   v9 = 3221225472;
   v10 = __43__NISession__notifyDidInvalidateWithError___block_invoke;
   v11 = &unk_1E7F13A70;
-  v12 = self;
+  selfCopy = self;
   v7 = v6;
   v13 = v7;
   [(NISession *)self _performBlockOnDelegateQueue:&v8 ifRespondsToSelector:sel_session_didInvalidateWithError_];
-  [(NISession *)self _submitErrorMetric:v4, v8, v9, v10, v11, v12];
+  [(NISession *)self _submitErrorMetric:errorCopy, v8, v9, v10, v11, selfCopy];
 }
 
 void __43__NISession__notifyDidInvalidateWithError___block_invoke(uint64_t a1)
@@ -3755,26 +3755,26 @@ void __43__NISession__notifyDidInvalidateWithError___block_invoke(uint64_t a1)
 - (BOOL)_shouldReRunSessionAfterSessionInterruptionEnded
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(NISession *)self _configurationSupportsRetry];
+  _configurationSupportsRetry = [(NISession *)self _configurationSupportsRetry];
   if (+[NIPlatformInfo isInternalBuild])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = _configurationSupportsRetry;
       _os_log_impl(&dword_1BAC42000, log, OS_LOG_TYPE_DEFAULT, "_shouldReRunSessionAfterSessionInterruptionEnded %d", v7, 8u);
     }
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return _configurationSupportsRetry;
 }
 
-- (void)_internalRunWithConfiguration:(id)a3
+- (void)_internalRunWithConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (+[NIPlatformInfo isInternalBuild])
   {
     v5 = self->_log;
@@ -3782,7 +3782,7 @@ void __43__NISession__notifyDidInvalidateWithError___block_invoke(uint64_t a1)
     {
       v6 = NISessionInternalStateToString([(NISession *)self internalState]);
       *buf = 138412546;
-      v11 = v4;
+      v11 = configurationCopy;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&dword_1BAC42000, v5, OS_LOG_TYPE_DEFAULT, "Calling _internalRunWithConfiguration with Config: %@, internal state: %@", buf, 0x16u);
@@ -3790,13 +3790,13 @@ void __43__NISession__notifyDidInvalidateWithError___block_invoke(uint64_t a1)
   }
 
   [(NISession *)self setInternalState:2];
-  v7 = [(NISession *)self _remoteObject];
+  _remoteObject = [(NISession *)self _remoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__NISession__internalRunWithConfiguration___block_invoke;
   v9[3] = &unk_1E7F13AE0;
   v9[4] = self;
-  [v7 runWithConfiguration:v4 reply:v9];
+  [_remoteObject runWithConfiguration:configurationCopy reply:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -3817,28 +3817,28 @@ void __43__NISession__internalRunWithConfiguration___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_sendRemoteDevice:(id)a3 changedState:(int64_t)a4
+- (void)_sendRemoteDevice:(id)device changedState:(int64_t)state
 {
-  v9 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [NIDiscoveryToken generateTokenWithUUID:v9];
+  v7 = [NIDiscoveryToken generateTokenWithUUID:deviceCopy];
   if (!v7)
   {
     __assert_rtn("[NISession _sendRemoteDevice:changedState:]", "NISession.mm", 2162, "dicoveryTokenFromUUID != nil");
   }
 
   v8 = [[NINearbyObject alloc] initWithToken:v7];
-  [(NINearbyObject *)v8 setItemState:a4];
+  [(NINearbyObject *)v8 setItemState:state];
   [v6 addObject:v8];
   [(NISession *)self didUpdateNearbyObjects:v6];
 }
 
-- (BOOL)_tryToRecoverFromFailure:(id)a3
+- (BOOL)_tryToRecoverFromFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   dispatch_assert_queue_V2(self->_queue);
-  if (!-[NISession _configurationSupportsRetry](self, "_configurationSupportsRetry") || [v4 code] == -5889 || objc_msgSend(v4, "code") == -5888 || objc_msgSend(v4, "code") == 304 || objc_msgSend(v4, "code") == 300)
+  if (!-[NISession _configurationSupportsRetry](self, "_configurationSupportsRetry") || [failureCopy code] == -5889 || objc_msgSend(failureCopy, "code") == -5888 || objc_msgSend(failureCopy, "code") == 304 || objc_msgSend(failureCopy, "code") == 300)
   {
     v5 = 0;
   }
@@ -3954,36 +3954,36 @@ void __38__NISession__tryToRecoverFromFailure___block_invoke(uint64_t a1)
 
   v3 = +[NISession cachedPlatformCapabilities];
   v4 = [v3 objectForKey:@"UWBSupportedPlatform"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = +[NISession cachedPlatformCapabilities];
   v7 = [v6 objectForKey:@"WifiSupportedPlatform"];
-  v8 = [v7 BOOLValue];
+  bOOLValue2 = [v7 BOOLValue];
 
   v9 = +[NISession cachedPlatformCapabilities];
   v10 = [v9 objectForKey:@"UWBSupportedPlatformPDOA"];
-  v11 = [v10 BOOLValue];
+  bOOLValue3 = [v10 BOOLValue];
 
   v12 = +[NISession cachedPlatformCapabilities];
   v13 = [v12 objectForKey:@"UWBSupportedPlatformSyntheticAperture"];
-  v14 = [v13 BOOLValue];
+  bOOLValue4 = [v13 BOOLValue];
 
   v15 = +[NISession cachedPlatformCapabilities];
   v16 = [v15 objectForKey:@"UWBSupportedPlatformExtendedDistance"];
-  v17 = [v16 BOOLValue];
+  bOOLValue5 = [v16 BOOLValue];
 
-  v18 = [[NIDeviceCapabilities alloc] initWithFineRangingSupport:v5 coarseRangingSupport:v8 aoaSupport:v11 extendedDistanceMeasurementSupport:v17 syntheticApertureSupport:v14];
+  v18 = [[NIDeviceCapabilities alloc] initWithFineRangingSupport:bOOLValue coarseRangingSupport:bOOLValue2 aoaSupport:bOOLValue3 extendedDistanceMeasurementSupport:bOOLValue5 syntheticApertureSupport:bOOLValue4];
 
   return v18;
 }
 
-- (void)_addObject:(id)a3
+- (void)_addObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2343 description:{@"Invalid parameter not satisfying: %@", @"discoveryToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2343 description:{@"Invalid parameter not satisfying: %@", @"discoveryToken"}];
   }
 
   queue = self->_queue;
@@ -3992,8 +3992,8 @@ void __38__NISession__tryToRecoverFromFailure___block_invoke(uint64_t a1)
   block[2] = __34__NISession_Internal___addObject___block_invoke;
   block[3] = &unk_1E7F13A70;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = objectCopy;
+  v7 = objectCopy;
   dispatch_sync(queue, block);
 }
 
@@ -4032,13 +4032,13 @@ void __34__NISession_Internal___addObject___block_invoke_3(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)_removeObject:(id)a3
+- (void)_removeObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2357 description:{@"Invalid parameter not satisfying: %@", @"discoveryToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2357 description:{@"Invalid parameter not satisfying: %@", @"discoveryToken"}];
   }
 
   queue = self->_queue;
@@ -4047,8 +4047,8 @@ void __34__NISession_Internal___addObject___block_invoke_3(uint64_t a1)
   block[2] = __37__NISession_Internal___removeObject___block_invoke;
   block[3] = &unk_1E7F13A70;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = objectCopy;
+  v7 = objectCopy;
   dispatch_sync(queue, block);
 }
 
@@ -4087,16 +4087,16 @@ void __37__NISession_Internal___removeObject___block_invoke_3(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)_addRegionPredicate:(id)a3
+- (void)_addRegionPredicate:(id)predicate
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2371 description:@"_addRegionPredicate is deprecated"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2371 description:@"_addRegionPredicate is deprecated"];
 }
 
-- (void)_removeRegionPredicate:(id)a3
+- (void)_removeRegionPredicate:(id)predicate
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2375 description:@"_removeRegionPredicate is deprecated"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2375 description:@"_removeRegionPredicate is deprecated"];
 }
 
 + (id)observerSession
@@ -4196,7 +4196,7 @@ void __59__NISession_Internal__isExtendedDistanceMeasurementAllowed__block_invok
   }
 }
 
-- (void)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5
+- (void)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -4204,9 +4204,9 @@ void __59__NISession_Internal__isExtendedDistanceMeasurementAllowed__block_invok
   v6[2] = __87__NISession_Internal__processBluetoothHostTimeSyncWithType_btcClockTicks_eventCounter___block_invoke;
   v6[3] = &unk_1E7F13DF0;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = type;
+  v6[6] = ticks;
+  v6[7] = counter;
   dispatch_sync(queue, v6);
 }
 
@@ -4253,14 +4253,14 @@ void __87__NISession_Internal__processBluetoothHostTimeSyncWithType_btcClockTick
   [WeakRetained session:a1[4] didProcessBluetoothHostTimeSyncWithResponse:a1[5] error:a1[6]];
 }
 
-- (void)processDCKMessage:(id)a3 responseCallback:(id)a4
+- (void)processDCKMessage:(id)message responseCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  messageCopy = message;
+  callbackCopy = callback;
+  v9 = callbackCopy;
+  if (messageCopy)
   {
-    if (v8)
+    if (callbackCopy)
     {
       goto LABEL_3;
     }
@@ -4268,8 +4268,8 @@ void __87__NISession_Internal__processBluetoothHostTimeSyncWithType_btcClockTick
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2543 description:{@"Invalid parameter not satisfying: %@", @"dckMessage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2543 description:{@"Invalid parameter not satisfying: %@", @"dckMessage"}];
 
     if (v9)
     {
@@ -4277,11 +4277,11 @@ void __87__NISession_Internal__processBluetoothHostTimeSyncWithType_btcClockTick
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2544 description:{@"Invalid parameter not satisfying: %@", @"responseCallback"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2544 description:{@"Invalid parameter not satisfying: %@", @"responseCallback"}];
 
 LABEL_3:
-  if ([v7 length])
+  if ([messageCopy length])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -4289,7 +4289,7 @@ LABEL_3:
     block[2] = __56__NISession_CarKey__processDCKMessage_responseCallback___block_invoke_2;
     block[3] = &unk_1E7F13EB0;
     block[4] = self;
-    v18 = v7;
+    v18 = messageCopy;
     v19 = v9;
     v11 = v9;
     dispatch_sync(queue, block);
@@ -4388,12 +4388,12 @@ void __32__NISession_CarKey__deleteURSKs__block_invoke(uint64_t a1)
   [v2 deleteURSKs:v3];
 }
 
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  kCopy = k;
+  v7 = kCopy;
+  if (kCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -4407,8 +4407,8 @@ void __32__NISession_CarKey__deleteURSKs__block_invoke(uint64_t a1)
     block[2] = __57__NISession_CarKey___setDebugURSK_transactionIdentifier___block_invoke;
     block[3] = &unk_1E7F13F00;
     block[4] = self;
-    v17 = a4;
-    v15 = v6;
+    identifierCopy = identifier;
+    v15 = kCopy;
     v16 = &v18;
     dispatch_sync(queue, block);
     v9 = v19[5];
@@ -4503,7 +4503,7 @@ void __43__NISession_CarKey__isRangingLimitExceeded__block_invoke_2(uint64_t a1,
   return carKeyEventNotifier;
 }
 
-- (id)_setURSKTTL:(unint64_t)a3
+- (id)_setURSKTTL:(unint64_t)l
 {
   v7 = 0;
   v8 = &v7;
@@ -4517,7 +4517,7 @@ void __43__NISession_CarKey__isRangingLimitExceeded__block_invoke_2(uint64_t a1,
   block[2] = __41__NISession_CarKey_Project___setURSKTTL___block_invoke;
   block[3] = &unk_1E7F13F28;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = l;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -4553,13 +4553,13 @@ void __41__NISession_CarKey_Project___setURSKTTL___block_invoke(uint64_t a1)
   return acwgEventNotifier;
 }
 
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason
 {
-  v7 = a3;
-  if (!v7)
+  msgCopy = msg;
+  if (!msgCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2716 description:{@"Invalid parameter not satisfying: %@", @"m1Msg"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2716 description:{@"Invalid parameter not satisfying: %@", @"m1Msg"}];
   }
 
   queue = self->_queue;
@@ -4568,9 +4568,9 @@ void __41__NISession_CarKey_Project___setURSKTTL___block_invoke(uint64_t a1)
   block[2] = __61__NISession_Acwg__processAcwgM1Msg_withSessionTriggerReason___block_invoke;
   block[3] = &unk_1E7F13F50;
   block[4] = self;
-  v12 = v7;
-  v13 = a4;
-  v9 = v7;
+  v12 = msgCopy;
+  reasonCopy = reason;
+  v9 = msgCopy;
   dispatch_sync(queue, block);
 }
 
@@ -4580,13 +4580,13 @@ void __61__NISession_Acwg__processAcwgM1Msg_withSessionTriggerReason___block_inv
   [v2 processAcwgM1Msg:*(a1 + 40) withSessionTriggerReason:*(a1 + 48)];
 }
 
-- (void)processAcwgM3Msg:(id)a3
+- (void)processAcwgM3Msg:(id)msg
 {
-  v5 = a3;
-  if (!v5)
+  msgCopy = msg;
+  if (!msgCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2726 description:{@"Invalid parameter not satisfying: %@", @"m3Msg"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2726 description:{@"Invalid parameter not satisfying: %@", @"m3Msg"}];
   }
 
   queue = self->_queue;
@@ -4595,8 +4595,8 @@ void __61__NISession_Acwg__processAcwgM1Msg_withSessionTriggerReason___block_inv
   block[2] = __36__NISession_Acwg__processAcwgM3Msg___block_invoke;
   block[3] = &unk_1E7F13A70;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = msgCopy;
+  v7 = msgCopy;
   dispatch_sync(queue, block);
 }
 
@@ -4606,16 +4606,16 @@ void __36__NISession_Acwg__processAcwgM3Msg___block_invoke(uint64_t a1)
   [v2 processAcwgM3Msg:*(a1 + 40)];
 }
 
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__NISession_Acwg__suspendAcwgRanging_withSuspendTriggerReason___block_invoke;
   block[3] = &unk_1E7F13C88;
-  v6 = a3;
+  rangingCopy = ranging;
   block[4] = self;
-  block[5] = a4;
+  block[5] = reason;
   dispatch_sync(queue, block);
 }
 
@@ -4625,16 +4625,16 @@ void __63__NISession_Acwg__suspendAcwgRanging_withSuspendTriggerReason___block_i
   [v2 suspendAcwgRanging:*(a1 + 48) withSuspendTriggerReason:*(a1 + 40)];
 }
 
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__NISession_Acwg__processAcwgRangingSessionResumeRequestMsg_withResumeTriggerReason___block_invoke;
   block[3] = &unk_1E7F13C88;
-  v6 = a3;
+  msgCopy = msg;
   block[4] = self;
-  block[5] = a4;
+  block[5] = reason;
   dispatch_sync(queue, block);
 }
 
@@ -4644,7 +4644,7 @@ void __85__NISession_Acwg__processAcwgRangingSessionResumeRequestMsg_withResumeT
   [v2 processAcwgRangingSessionResumeRequestMsg:*(a1 + 48) withResumeTriggerReason:*(a1 + 40)];
 }
 
-- (void)prefetchAcwgUrsk:(unsigned int)a3
+- (void)prefetchAcwgUrsk:(unsigned int)ursk
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -4652,7 +4652,7 @@ void __85__NISession_Acwg__processAcwgRangingSessionResumeRequestMsg_withResumeT
   v4[2] = __36__NISession_Acwg__prefetchAcwgUrsk___block_invoke;
   v4[3] = &unk_1E7F13F78;
   v4[4] = self;
-  v5 = a3;
+  urskCopy = ursk;
   dispatch_sync(queue, v4);
 }
 
@@ -4662,7 +4662,7 @@ void __36__NISession_Acwg__prefetchAcwgUrsk___block_invoke(uint64_t a1)
   [v2 prefetchAcwgUrsk:*(a1 + 40)];
 }
 
-- (void)_processUpdatedLockState:(unsigned __int16)a3
+- (void)_processUpdatedLockState:(unsigned __int16)state
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -4670,7 +4670,7 @@ void __36__NISession_Acwg__prefetchAcwgUrsk___block_invoke(uint64_t a1)
   v4[2] = __44__NISession_Acwg___processUpdatedLockState___block_invoke;
   v4[3] = &unk_1E7F13FA0;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(queue, v4);
 }
 
@@ -4680,13 +4680,13 @@ void __44__NISession_Acwg___processUpdatedLockState___block_invoke(uint64_t a1)
   [v2 processUpdatedLockState:*(a1 + 40)];
 }
 
-- (void)updateResponderDeviceIdentifier:(id)a3 completionHandler:(id)a4
+- (void)updateResponderDeviceIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -4694,33 +4694,33 @@ void __44__NISession_Acwg___processUpdatedLockState___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2771 description:{@"Invalid parameter not satisfying: %@", @"deviceIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2771 description:{@"Invalid parameter not satisfying: %@", @"deviceIdentifier"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2772 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2772 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__NISession_Vision__processVisionInput___block_invoke;
   v7[3] = &unk_1E7F13A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = inputCopy;
+  v6 = inputCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -4730,33 +4730,33 @@ void __40__NISession_Vision__processVisionInput___block_invoke(uint64_t a1)
   [v2 processVisionInput:*(a1 + 40)];
 }
 
-+ (id)generateBluetoothDeviceTokenWithPublicAddress:(id)a3 IRK:(id)a4
++ (id)generateBluetoothDeviceTokenWithPublicAddress:(id)address IRK:(id)k
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  addressCopy = address;
+  kCopy = k;
+  if (!kCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NISession.mm" lineNumber:2832 description:{@"Invalid parameter not satisfying: %@", @"IRK"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2832 description:{@"Invalid parameter not satisfying: %@", @"IRK"}];
   }
 
-  if ([v8 length] != 16)
+  if ([kCopy length] != 16)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"NISession.mm" lineNumber:2833 description:{@"Invalid parameter not satisfying: %@", @"[IRK length] == NIDiscoveryTokenIRKLengthBytes"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2833 description:{@"Invalid parameter not satisfying: %@", @"[IRK length] == NIDiscoveryTokenIRKLengthBytes"}];
   }
 
   v17[0] = &unk_1F38D7A58;
   v17[1] = &unk_1F38D7A70;
-  v18[0] = v8;
-  v18[1] = v7;
+  v18[0] = kCopy;
+  v18[1] = addressCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v10 = MEMORY[0x1BFAFF9B0](v9, 8, 0);
   if (!v10)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"NISession.mm" lineNumber:2839 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"NISession.mm" lineNumber:2839 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
   }
 
   v11 = [[NIDiscoveryToken alloc] initWithBytes:v10];
@@ -4774,12 +4774,12 @@ void __40__NISession_Vision__processVisionInput___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)generateFindingDiscoveryTokenWithSharedSecret:(id)a3
++ (id)generateFindingDiscoveryTokenWithSharedSecret:(id)secret
 {
-  v3 = a3;
-  if ([v3 length] == 16)
+  secretCopy = secret;
+  if ([secretCopy length] == 16)
   {
-    v4 = [NIDiscoveryToken generateFindingTokenWithIRK:v3];
+    v4 = [NIDiscoveryToken generateFindingTokenWithIRK:secretCopy];
   }
 
   else
@@ -4790,16 +4790,16 @@ void __40__NISession_Vision__processVisionInput___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)generateFindingDiscoveryTokenWithIdentityResolvingKey:(id)a3
++ (id)generateFindingDiscoveryTokenWithIdentityResolvingKey:(id)key
 {
-  v3 = [NISession generateFindingDiscoveryTokenWithSharedSecret:a3];
+  v3 = [NISession generateFindingDiscoveryTokenWithSharedSecret:key];
 
   return v3;
 }
 
-+ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)a3
++ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)identifier
 {
-  v3 = [NIDiscoveryToken generateDiscoveryTokenFromBeaconIdentifier:a3];
+  v3 = [NIDiscoveryToken generateDiscoveryTokenFromBeaconIdentifier:identifier];
 
   return v3;
 }
@@ -4819,17 +4819,17 @@ void __40__NISession_Vision__processVisionInput___block_invoke(uint64_t a1)
   return findingNotifier;
 }
 
-- (void)_provideTruthTag:(id)a3
+- (void)_provideTruthTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__NISession_Perf___provideTruthTag___block_invoke;
   v7[3] = &unk_1E7F13A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tagCopy;
+  v6 = tagCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -4873,12 +4873,12 @@ void __55__NISession_LocalDeviceInteraction___localDeviceLogger__block_invoke()
   +[NISession(LocalDeviceInteraction) _localDeviceLogger]::logger = v0;
 }
 
-+ (void)setAsyncLocalDeviceInteractableDiscoveryTokens:(id)a3 completion:(id)a4
++ (void)setAsyncLocalDeviceInteractableDiscoveryTokens:(id)tokens completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 copy];
+  tokensCopy = tokens;
+  completionCopy = completion;
+  v7 = [tokensCopy copy];
   v8 = +[NISession _localDeviceLogger];
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -4892,18 +4892,18 @@ void __55__NISession_LocalDeviceInteraction___localDeviceLogger__block_invoke()
   }
 
   v10 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v11 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__NISession_LocalDeviceInteraction__setAsyncLocalDeviceInteractableDiscoveryTokens_completion___block_invoke;
   v16[3] = &unk_1E7F14090;
   v12 = v8;
   v17 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v19 = v13;
   v14 = v10;
   v18 = v14;
-  [v11 setLocalDeviceInteractableDiscoveryTokens:v7 reply:v16];
+  [remoteObjectProxy setLocalDeviceInteractableDiscoveryTokens:v7 reply:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -4934,9 +4934,9 @@ void __95__NISession_LocalDeviceInteraction__setAsyncLocalDeviceInteractableDisc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)getAsyncInteractableDiscoveryTokens:(id)a3
++ (void)getAsyncInteractableDiscoveryTokens:(id)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = +[NISession _localDeviceLogger];
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4945,18 +4945,18 @@ void __95__NISession_LocalDeviceInteraction__setAsyncLocalDeviceInteractableDisc
   }
 
   v5 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v6 = [v5 remoteObjectProxy];
+  remoteObjectProxy = [v5 remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__NISession_LocalDeviceInteraction__getAsyncInteractableDiscoveryTokens___block_invoke;
   v10[3] = &unk_1E7F140B8;
   v7 = v4;
   v11 = v7;
-  v8 = v3;
+  v8 = tokensCopy;
   v13 = v8;
   v9 = v5;
   v12 = v9;
-  [v6 getInteractableDiscoveryTokens:v10];
+  [remoteObjectProxy getInteractableDiscoveryTokens:v10];
 }
 
 void __73__NISession_LocalDeviceInteraction__getAsyncInteractableDiscoveryTokens___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4988,9 +4988,9 @@ void __73__NISession_LocalDeviceInteraction__getAsyncInteractableDiscoveryTokens
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)getAsyncActivelyInteractingDiscoveryTokens:(id)a3
++ (void)getAsyncActivelyInteractingDiscoveryTokens:(id)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = +[NISession _localDeviceLogger];
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4999,18 +4999,18 @@ void __73__NISession_LocalDeviceInteraction__getAsyncInteractableDiscoveryTokens
   }
 
   v5 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v6 = [v5 remoteObjectProxy];
+  remoteObjectProxy = [v5 remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__NISession_LocalDeviceInteraction__getAsyncActivelyInteractingDiscoveryTokens___block_invoke;
   v10[3] = &unk_1E7F140B8;
   v7 = v4;
   v11 = v7;
-  v8 = v3;
+  v8 = tokensCopy;
   v13 = v8;
   v9 = v5;
   v12 = v9;
-  [v6 getActivelyInteractingDiscoveryTokens:v10];
+  [remoteObjectProxy getActivelyInteractingDiscoveryTokens:v10];
 }
 
 void __80__NISession_LocalDeviceInteraction__getAsyncActivelyInteractingDiscoveryTokens___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5050,11 +5050,11 @@ void __83__NISession_LocalDeviceInteraction__setLocalDeviceCanInteract_withDisco
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)setLocalDeviceDebugParameters:(id)a3
++ (id)setLocalDeviceDebugParameters:(id)parameters
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 copy];
+  parametersCopy = parameters;
+  v4 = [parametersCopy copy];
   v5 = +[NISession _localDeviceLogger];
   if (+[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5064,7 +5064,7 @@ void __83__NISession_LocalDeviceInteraction__setLocalDeviceCanInteract_withDisco
   }
 
   v6 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v7 = [v6 remoteObjectProxy];
+  remoteObjectProxy = [v6 remoteObjectProxy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -5084,7 +5084,7 @@ void __83__NISession_LocalDeviceInteraction__setLocalDeviceCanInteract_withDisco
   p_buf = &buf;
   v9 = v8;
   v20 = v9;
-  [v7 setLocalDeviceDebugParameters:v4 reply:v19];
+  [remoteObjectProxy setLocalDeviceDebugParameters:v4 reply:v19];
   v10 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v9, v10);
   [v6 invalidate];
@@ -5125,11 +5125,11 @@ void __67__NISession_LocalDeviceInteraction__setLocalDeviceDebugParameters___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)setLocalDeviceInteractableDiscoveryTokens:(id)a3
++ (id)setLocalDeviceInteractableDiscoveryTokens:(id)tokens
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 copy];
+  tokensCopy = tokens;
+  v4 = [tokensCopy copy];
   v5 = +[NISession _localDeviceLogger];
   if (+[NIPlatformInfo isInternalBuild])
   {
@@ -5143,7 +5143,7 @@ void __67__NISession_LocalDeviceInteraction__setLocalDeviceDebugParameters___blo
   }
 
   v7 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v8 = [v7 remoteObjectProxy];
+  remoteObjectProxy = [v7 remoteObjectProxy];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -5163,7 +5163,7 @@ void __67__NISession_LocalDeviceInteraction__setLocalDeviceDebugParameters___blo
   v23 = buf;
   v10 = v9;
   v21 = v10;
-  [v8 setLocalDeviceInteractableDiscoveryTokens:v4 reply:v20];
+  [remoteObjectProxy setLocalDeviceInteractableDiscoveryTokens:v4 reply:v20];
   v11 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v10, v11);
   [v7 invalidate];
@@ -5215,7 +5215,7 @@ void __79__NISession_LocalDeviceInteraction__setLocalDeviceInteractableDiscovery
   }
 
   v3 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v4 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -5242,7 +5242,7 @@ void __79__NISession_LocalDeviceInteraction__setLocalDeviceInteractableDiscovery
   v26 = &v27;
   v6 = v5;
   v23 = v6;
-  [v4 getInteractableDiscoveryTokens:&v19];
+  [remoteObjectProxy getInteractableDiscoveryTokens:&v19];
   v7 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v6, v7);
   [v3 invalidate];
@@ -5315,7 +5315,7 @@ void __64__NISession_LocalDeviceInteraction__interactableDiscoveryTokens__block_
   }
 
   v3 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v4 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -5342,7 +5342,7 @@ void __64__NISession_LocalDeviceInteraction__interactableDiscoveryTokens__block_
   v26 = &v27;
   v6 = v5;
   v23 = v6;
-  [v4 getActivelyInteractingDiscoveryTokens:&v19];
+  [remoteObjectProxy getActivelyInteractingDiscoveryTokens:&v19];
   v7 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v6, v7);
   [v3 invalidate];
@@ -5415,7 +5415,7 @@ void __71__NISession_LocalDeviceInteraction__activelyInteractingDiscoveryTokens_
   }
 
   v3 = [NIServerConnection createOneShotConnectionAndResume:1];
-  v4 = [v3 remoteObjectProxy];
+  remoteObjectProxy = [v3 remoteObjectProxy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -5442,7 +5442,7 @@ void __71__NISession_LocalDeviceInteraction__activelyInteractingDiscoveryTokens_
   v24 = &v25;
   v6 = v5;
   v21 = v6;
-  [v4 getLocalDevicePrintableState:&v17];
+  [remoteObjectProxy getLocalDevicePrintableState:&v17];
   v7 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v6, v7);
   [v3 invalidate];
@@ -5497,30 +5497,30 @@ void __62__NISession_LocalDeviceInteraction__localDevicePrintableState__block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)generateSOSBeaconSubjectDataWithCompletion:(id)a3
++ (void)generateSOSBeaconSubjectDataWithCompletion:(id)completion
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E696A578];
   v9[0] = @"Operation not enabled";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v5];
-  v3[2](v3, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)generateSOSBeaconSearcherDataMatchingSubjectData:(id)a3 completion:(id)a4
++ (void)generateSOSBeaconSearcherDataMatchingSubjectData:(id)data completion:(id)completion
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  completionCopy = completion;
   v5 = MEMORY[0x1E696ABC0];
   v9 = *MEMORY[0x1E696A578];
   v10[0] = @"Operation not enabled";
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [v5 errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v6];
-  v4[2](v4, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 
   v8 = *MEMORY[0x1E69E9840];
 }

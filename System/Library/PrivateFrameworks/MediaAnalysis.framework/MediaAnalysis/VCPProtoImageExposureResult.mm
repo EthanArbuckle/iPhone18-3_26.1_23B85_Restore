@@ -1,32 +1,32 @@
 @interface VCPProtoImageExposureResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageExposureResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"quality"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
   if (v4)
   {
     v5 = objc_alloc_init(VCPProtoImageExposureResult);
     [v4 floatValue];
     [(VCPProtoImageExposureResult *)v5 setExposure:?];
-    v6 = [v3 objectForKeyedSubscript:@"attributes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
 
     if (v6)
     {
-      v7 = [v3 objectForKeyedSubscript:@"attributes"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
       v8 = [v7 objectForKeyedSubscript:@"underExpose"];
 
       if (v8)
@@ -85,32 +85,32 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageExposureResult;
   v4 = [(VCPProtoImageExposureResult *)&v8 description];
-  v5 = [(VCPProtoImageExposureResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageExposureResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_exposure;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"exposure"];
+  [dictionary setObject:v5 forKey:@"exposure"];
 
   if (*&self->_has)
   {
     *&v6 = self->_underExpose;
     v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-    [v3 setObject:v7 forKey:@"underExpose"];
+    [dictionary setObject:v7 forKey:@"underExpose"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   if (*&self->_has)
   {
@@ -118,19 +118,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = LODWORD(self->_exposure);
+  *(to + 2) = LODWORD(self->_exposure);
   if (*&self->_has)
   {
-    *(a3 + 3) = LODWORD(self->_underExpose);
-    *(a3 + 16) |= 1u;
+    *(to + 3) = LODWORD(self->_underExpose);
+    *(to + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = LODWORD(self->_exposure);
   if (*&self->_has)
   {
@@ -141,18 +141,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_exposure != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_exposure != *(equalCopy + 2))
   {
     goto LABEL_7;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_underExpose == *(v4 + 3))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_underExpose == *(equalCopy + 3))
     {
       v5 = 1;
       goto LABEL_8;
@@ -229,12 +229,12 @@ LABEL_8:
   return v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_exposure = *(a3 + 2);
-  if (*(a3 + 16))
+  self->_exposure = *(from + 2);
+  if (*(from + 16))
   {
-    self->_underExpose = *(a3 + 3);
+    self->_underExpose = *(from + 3);
     *&self->_has |= 1u;
   }
 }

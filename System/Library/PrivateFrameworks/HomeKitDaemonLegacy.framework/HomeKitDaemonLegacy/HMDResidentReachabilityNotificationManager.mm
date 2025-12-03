@@ -9,22 +9,22 @@
 - (HMDHome)home;
 - (HMDIDSServerBag)idsServerBag;
 - (HMDRemoteDeviceMonitor)deviceMonitor;
-- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)a3 workQueue:(id)a4;
-- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)a3 workQueue:(id)a4 timerFactory:(id)a5 bulletinBoard:(id)a6;
+- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)context workQueue:(id)queue;
+- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)context workQueue:(id)queue timerFactory:(id)factory bulletinBoard:(id)board;
 - (id)_createTimer;
 - (id)logIdentifier;
-- (void)_handleCameraProfileSettingsDidChange:(id)a3;
-- (void)_handleCameraProfileUnconfigured:(id)a3;
-- (void)_handleNetworkReachabilityChange:(id)a3;
-- (void)_handleResidentAdded:(id)a3;
-- (void)_handleResidentRemoved:(id)a3;
-- (void)_handleResidentUpdated:(id)a3;
+- (void)_handleCameraProfileSettingsDidChange:(id)change;
+- (void)_handleCameraProfileUnconfigured:(id)unconfigured;
+- (void)_handleNetworkReachabilityChange:(id)change;
+- (void)_handleResidentAdded:(id)added;
+- (void)_handleResidentRemoved:(id)removed;
+- (void)_handleResidentUpdated:(id)updated;
 - (void)_startDebounceTimer;
 - (void)_startUnreachableBulletinDebounceTimer;
-- (void)_updatePrimaryResidentLostTime:(id)a3;
-- (void)configureWithHome:(id)a3 deviceMonitor:(id)a4;
-- (void)configureWithHome:(id)a3 deviceMonitor:(id)a4 notificationCenter:(id)a5 idsServerBag:(id)a6 completionHandler:(id)a7;
-- (void)timerDidFire:(id)a3;
+- (void)_updatePrimaryResidentLostTime:(id)time;
+- (void)configureWithHome:(id)home deviceMonitor:(id)monitor;
+- (void)configureWithHome:(id)home deviceMonitor:(id)monitor notificationCenter:(id)center idsServerBag:(id)bag completionHandler:(id)handler;
+- (void)timerDidFire:(id)fire;
 - (void)updateNotificationEnabled;
 @end
 
@@ -53,26 +53,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDResidentReachabilityNotificationManager *)self evaluateDebounceTimer];
+  evaluateDebounceTimer = [(HMDResidentReachabilityNotificationManager *)self evaluateDebounceTimer];
 
-  if (v6 == v4)
+  if (evaluateDebounceTimer == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -83,16 +83,16 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDResidentReachabilityNotificationManager *)v8 setEvaluateDebounceTimer:0];
-    [(HMDResidentReachabilityNotificationManager *)v8 _evaluateReachabilityBulletinAndPostponeUnreachableBulletin:1];
+    [(HMDResidentReachabilityNotificationManager *)selfCopy setEvaluateDebounceTimer:0];
+    [(HMDResidentReachabilityNotificationManager *)selfCopy _evaluateReachabilityBulletinAndPostponeUnreachableBulletin:1];
   }
 
-  v11 = [(HMDResidentReachabilityNotificationManager *)self unreachableBulletinDebounceTimer];
+  unreachableBulletinDebounceTimer = [(HMDResidentReachabilityNotificationManager *)self unreachableBulletinDebounceTimer];
 
-  if (v11 == v4)
+  if (unreachableBulletinDebounceTimer == fireCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -103,8 +103,8 @@
     }
 
     objc_autoreleasePoolPop(v12);
-    [(HMDResidentReachabilityNotificationManager *)v13 setUnreachableBulletinDebounceTimer:0];
-    [(HMDResidentReachabilityNotificationManager *)v13 _evaluateReachabilityBulletinAndPostponeUnreachableBulletin:0];
+    [(HMDResidentReachabilityNotificationManager *)selfCopy2 setUnreachableBulletinDebounceTimer:0];
+    [(HMDResidentReachabilityNotificationManager *)selfCopy2 _evaluateReachabilityBulletinAndPostponeUnreachableBulletin:0];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -113,19 +113,19 @@
 - (id)_createTimer
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDResidentReachabilityNotificationManager *)self idsServerBag];
-  v5 = [v4 residentSelectionReachabilityNotificationAfterConnectivityDelay];
+  idsServerBag = [(HMDResidentReachabilityNotificationManager *)self idsServerBag];
+  residentSelectionReachabilityNotificationAfterConnectivityDelay = [idsServerBag residentSelectionReachabilityNotificationAfterConnectivityDelay];
 
-  if (v5)
+  if (residentSelectionReachabilityNotificationAfterConnectivityDelay)
   {
-    [v5 doubleValue];
+    [residentSelectionReachabilityNotificationAfterConnectivityDelay doubleValue];
     if (fabs(v6) < 2.22044605e-16)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -140,7 +140,7 @@
       goto LABEL_11;
     }
 
-    [v5 doubleValue];
+    [residentSelectionReachabilityNotificationAfterConnectivityDelay doubleValue];
     v12 = v13;
   }
 
@@ -150,7 +150,7 @@
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -163,12 +163,12 @@
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [(HMDResidentReachabilityNotificationManager *)v15 timerFactory];
-  v11 = v18[2](v12);
+  timerFactory = [(HMDResidentReachabilityNotificationManager *)selfCopy2 timerFactory];
+  v11 = timerFactory[2](v12);
 
-  [v11 setDelegate:v15];
-  v19 = [(HMDResidentReachabilityNotificationManager *)v15 workQueue];
-  [v11 setDelegateQueue:v19];
+  [v11 setDelegate:selfCopy2];
+  workQueue2 = [(HMDResidentReachabilityNotificationManager *)selfCopy2 workQueue];
+  [v11 setDelegateQueue:workQueue2];
 
   [v11 resume];
 LABEL_11:
@@ -181,12 +181,12 @@ LABEL_11:
 - (void)_startUnreachableBulletinDebounceTimer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentReachabilityNotificationManager *)self unreachableBulletinDebounceTimer];
+  unreachableBulletinDebounceTimer = [(HMDResidentReachabilityNotificationManager *)self unreachableBulletinDebounceTimer];
 
-  if (v3)
+  if (unreachableBulletinDebounceTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -202,7 +202,7 @@ LABEL_11:
 
   else
   {
-    v10 = [(HMDResidentReachabilityNotificationManager *)self _createTimer];
+    _createTimer = [(HMDResidentReachabilityNotificationManager *)self _createTimer];
     [(HMDResidentReachabilityNotificationManager *)self setUnreachableBulletinDebounceTimer:?];
     v9 = *MEMORY[0x277D85DE8];
   }
@@ -211,12 +211,12 @@ LABEL_11:
 - (void)_startDebounceTimer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentReachabilityNotificationManager *)self evaluateDebounceTimer];
+  evaluateDebounceTimer = [(HMDResidentReachabilityNotificationManager *)self evaluateDebounceTimer];
 
-  if (v3)
+  if (evaluateDebounceTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -232,7 +232,7 @@ LABEL_11:
 
   else
   {
-    v10 = [(HMDResidentReachabilityNotificationManager *)self _createTimer];
+    _createTimer = [(HMDResidentReachabilityNotificationManager *)self _createTimer];
     [(HMDResidentReachabilityNotificationManager *)self setEvaluateDebounceTimer:?];
     v9 = *MEMORY[0x277D85DE8];
   }
@@ -240,30 +240,30 @@ LABEL_11:
 
 - (BOOL)shouldPostUnreachableNotification
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self reachabilityContext];
-  v3 = [v2 mostRecentReachability];
+  reachabilityContext = [(HMDResidentReachabilityNotificationManager *)self reachabilityContext];
+  mostRecentReachability = [reachabilityContext mostRecentReachability];
 
-  if (v3)
+  if (mostRecentReachability)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [mostRecentReachability BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldPostReachableNotification
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self reachabilityContext];
-  v3 = [v2 mostRecentReachability];
+  reachabilityContext = [(HMDResidentReachabilityNotificationManager *)self reachabilityContext];
+  mostRecentReachability = [reachabilityContext mostRecentReachability];
 
-  if (v3)
+  if (mostRecentReachability)
   {
-    v4 = [v3 BOOLValue] ^ 1;
+    v4 = [mostRecentReachability BOOLValue] ^ 1;
   }
 
   else
@@ -276,9 +276,9 @@ LABEL_11:
 
 - (BOOL)anyEnabledResidentSupportsReachabilityNotifications
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v3 = [v2 enabledResidents];
-  v4 = [v3 na_any:&__block_literal_global_50_138470];
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  enabledResidents = [home enabledResidents];
+  v4 = [enabledResidents na_any:&__block_literal_global_50_138470];
 
   return v4;
 }
@@ -298,10 +298,10 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v2 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v3 = [v2 accessories];
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  accessories = [home accessories];
 
-  v21 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v21 = [accessories countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
     v4 = *v27;
@@ -312,7 +312,7 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
       {
         if (*v27 != v4)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessories);
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
@@ -333,8 +333,8 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v8 cameraProfiles];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        cameraProfiles = [v8 cameraProfiles];
+        v10 = [cameraProfiles countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
           v11 = v10;
@@ -345,16 +345,16 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
             {
               if (*v23 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(cameraProfiles);
               }
 
-              v14 = [*(*(&v22 + 1) + 8 * j) currentSettings];
-              if (([v14 supportedFeatures] & 2) != 0)
+              currentSettings = [*(*(&v22 + 1) + 8 * j) currentSettings];
+              if (([currentSettings supportedFeatures] & 2) != 0)
               {
-                v15 = [v14 notificationSettings];
-                v16 = [v15 isReachabilityEventNotificationEnabled];
+                notificationSettings = [currentSettings notificationSettings];
+                isReachabilityEventNotificationEnabled = [notificationSettings isReachabilityEventNotificationEnabled];
 
-                if (v16)
+                if (isReachabilityEventNotificationEnabled)
                 {
 
                   v17 = 1;
@@ -367,7 +367,7 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v11 = [cameraProfiles countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v11)
             {
               continue;
@@ -381,7 +381,7 @@ uint64_t __97__HMDResidentReachabilityNotificationManager_anyEnabledResidentSupp
       }
 
       v17 = 0;
-      v21 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v21 = [accessories countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v21);
@@ -400,12 +400,12 @@ LABEL_24:
 
 - (BOOL)hasMultipleResidents
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v3 = [v2 enabledResidents];
-  v4 = [v3 na_filter:&__block_literal_global_47_138473];
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  enabledResidents = [home enabledResidents];
+  v4 = [enabledResidents na_filter:&__block_literal_global_47_138473];
 
-  LOBYTE(v2) = [v4 count] > 1;
-  return v2;
+  LOBYTE(home) = [v4 count] > 1;
+  return home;
 }
 
 uint64_t __66__HMDResidentReachabilityNotificationManager_hasMultipleResidents__block_invoke(uint64_t a1, void *a2)
@@ -418,9 +418,9 @@ uint64_t __66__HMDResidentReachabilityNotificationManager_hasMultipleResidents__
 
 - (BOOL)hasReachableResidents
 {
-  v2 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v3 = [v2 enabledResidents];
-  v4 = [v3 na_any:&__block_literal_global_45_138475];
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  enabledResidents = [home enabledResidents];
+  v4 = [enabledResidents na_any:&__block_literal_global_45_138475];
 
   return v4;
 }
@@ -445,21 +445,21 @@ uint64_t __67__HMDResidentReachabilityNotificationManager_hasReachableResidents_
 - (void)updateNotificationEnabled
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDResidentReachabilityNotificationManager *)self isReachabilityEventNotificationEnabledForAnyCamera];
-  v5 = [(HMDResidentReachabilityNotificationManager *)self notificationEnabled];
+  isReachabilityEventNotificationEnabledForAnyCamera = [(HMDResidentReachabilityNotificationManager *)self isReachabilityEventNotificationEnabledForAnyCamera];
+  notificationEnabled = [(HMDResidentReachabilityNotificationManager *)self notificationEnabled];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v4 == v5)
+  if (isReachabilityEventNotificationEnabledForAnyCamera == notificationEnabled)
   {
     if (v9)
     {
       v15 = HMFGetLogIdentifier();
-      [(HMDResidentReachabilityNotificationManager *)v7 notificationEnabled];
+      [(HMDResidentReachabilityNotificationManager *)selfCopy notificationEnabled];
       v16 = HMFEnabledStatusToString();
       v18 = 138543618;
       v19 = v15;
@@ -476,7 +476,7 @@ uint64_t __67__HMDResidentReachabilityNotificationManager_hasReachableResidents_
     if (v9)
     {
       v10 = HMFGetLogIdentifier();
-      [(HMDResidentReachabilityNotificationManager *)v7 notificationEnabled];
+      [(HMDResidentReachabilityNotificationManager *)selfCopy notificationEnabled];
       v11 = HMFEnabledStatusToString();
       v12 = HMFEnabledStatusToString();
       v18 = 138543874;
@@ -489,29 +489,29 @@ uint64_t __67__HMDResidentReachabilityNotificationManager_hasReachableResidents_
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDResidentReachabilityNotificationManager *)v7 setNotificationEnabled:v4];
-    if (![(HMDResidentReachabilityNotificationManager *)v7 notificationEnabled])
+    [(HMDResidentReachabilityNotificationManager *)selfCopy setNotificationEnabled:isReachabilityEventNotificationEnabledForAnyCamera];
+    if (![(HMDResidentReachabilityNotificationManager *)selfCopy notificationEnabled])
     {
       v13 = [[HMDResidentReachabilityContext alloc] initWithMostRecentReachability:0];
-      [(HMDResidentReachabilityNotificationManager *)v7 setReachabilityContext:v13];
+      [(HMDResidentReachabilityNotificationManager *)selfCopy setReachabilityContext:v13];
 
-      v14 = [(HMDResidentReachabilityNotificationManager *)v7 home];
-      [v14 saveToCurrentAccountWithReason:@"Camera reachability notification disabled"];
+      home = [(HMDResidentReachabilityNotificationManager *)selfCopy home];
+      [home saveToCurrentAccountWithReason:@"Camera reachability notification disabled"];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCameraProfileUnconfigured:(id)a3
+- (void)_handleCameraProfileUnconfigured:(id)unconfigured
 {
-  v4 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDResidentReachabilityNotificationManager__handleCameraProfileUnconfigured___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __79__HMDResidentReachabilityNotificationManager__handleCameraProfileUnconfigured___block_invoke(uint64_t a1)
@@ -534,18 +534,18 @@ uint64_t __79__HMDResidentReachabilityNotificationManager__handleCameraProfileUn
   return result;
 }
 
-- (void)_handleCameraProfileSettingsDidChange:(id)a3
+- (void)_handleCameraProfileSettingsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  changeCopy = change;
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__HMDResidentReachabilityNotificationManager__handleCameraProfileSettingsDidChange___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __84__HMDResidentReachabilityNotificationManager__handleCameraProfileSettingsDidChange___block_invoke(uint64_t a1)
@@ -592,18 +592,18 @@ uint64_t __84__HMDResidentReachabilityNotificationManager__handleCameraProfileSe
   return result;
 }
 
-- (void)_handleResidentUpdated:(id)a3
+- (void)_handleResidentUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  updatedCopy = updated;
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HMDResidentReachabilityNotificationManager__handleResidentUpdated___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  v6 = updatedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __69__HMDResidentReachabilityNotificationManager__handleResidentUpdated___block_invoke(uint64_t a1)
@@ -631,13 +631,13 @@ uint64_t __69__HMDResidentReachabilityNotificationManager__handleResidentUpdated
   return result;
 }
 
-- (void)_updatePrimaryResidentLostTime:(id)a3
+- (void)_updatePrimaryResidentLostTime:(id)time
 {
-  v4 = a3;
-  v17 = [(HMDResidentReachabilityNotificationManager *)self home];
-  v5 = [v4 userInfo];
+  timeCopy = time;
+  home = [(HMDResidentReachabilityNotificationManager *)self home];
+  userInfo = [timeCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -652,37 +652,37 @@ uint64_t __69__HMDResidentReachabilityNotificationManager__handleResidentUpdated
 
   v8 = v7;
 
-  v9 = [v17 residentDeviceManager];
-  v10 = [v9 primaryResidentDevice];
-  v11 = [v8 isEqual:v10];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
+  v11 = [v8 isEqual:primaryResidentDevice];
 
-  v12 = v17;
+  v12 = home;
   if (v11)
   {
-    v13 = [v17 residentDeviceManager];
-    v14 = [v13 primaryResidentDevice];
-    v15 = [v14 isReachable];
+    residentDeviceManager2 = [home residentDeviceManager];
+    primaryResidentDevice2 = [residentDeviceManager2 primaryResidentDevice];
+    isReachable = [primaryResidentDevice2 isReachable];
 
     v16 = 0.0;
-    if ((v15 & 1) == 0)
+    if ((isReachable & 1) == 0)
     {
       HMFUptime();
     }
 
     [(HMDResidentReachabilityNotificationManager *)self setPrimaryResidentUnreachableTime:v16];
-    v12 = v17;
+    v12 = home;
   }
 }
 
-- (void)_handleResidentRemoved:(id)a3
+- (void)_handleResidentRemoved:(id)removed
 {
-  v4 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HMDResidentReachabilityNotificationManager__handleResidentRemoved___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __69__HMDResidentReachabilityNotificationManager__handleResidentRemoved___block_invoke(uint64_t a1)
@@ -729,15 +729,15 @@ void __69__HMDResidentReachabilityNotificationManager__handleResidentRemoved___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResidentAdded:(id)a3
+- (void)_handleResidentAdded:(id)added
 {
-  v4 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDResidentReachabilityNotificationManager__handleResidentAdded___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __67__HMDResidentReachabilityNotificationManager__handleResidentAdded___block_invoke(uint64_t a1)
@@ -771,15 +771,15 @@ uint64_t __67__HMDResidentReachabilityNotificationManager__handleResidentAdded__
   return result;
 }
 
-- (void)_handleNetworkReachabilityChange:(id)a3
+- (void)_handleNetworkReachabilityChange:(id)change
 {
-  v4 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDResidentReachabilityNotificationManager__handleNetworkReachabilityChange___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __79__HMDResidentReachabilityNotificationManager__handleNetworkReachabilityChange___block_invoke(uint64_t a1)
@@ -824,32 +824,32 @@ uint64_t __79__HMDResidentReachabilityNotificationManager__handleNetworkReachabi
   return result;
 }
 
-- (void)configureWithHome:(id)a3 deviceMonitor:(id)a4 notificationCenter:(id)a5 idsServerBag:(id)a6 completionHandler:(id)a7
+- (void)configureWithHome:(id)home deviceMonitor:(id)monitor notificationCenter:(id)center idsServerBag:(id)bag completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a6;
-  objc_storeWeak(&self->_deviceMonitor, v13);
-  objc_storeWeak(&self->_home, v12);
-  objc_storeWeak(&self->_idsServerBag, v16);
+  homeCopy = home;
+  monitorCopy = monitor;
+  centerCopy = center;
+  handlerCopy = handler;
+  bagCopy = bag;
+  objc_storeWeak(&self->_deviceMonitor, monitorCopy);
+  objc_storeWeak(&self->_home, homeCopy);
+  objc_storeWeak(&self->_idsServerBag, bagCopy);
 
-  v17 = [(HMDResidentReachabilityNotificationManager *)self workQueue];
+  workQueue = [(HMDResidentReachabilityNotificationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__HMDResidentReachabilityNotificationManager_configureWithHome_deviceMonitor_notificationCenter_idsServerBag_completionHandler___block_invoke;
   block[3] = &unk_279734668;
   block[4] = self;
-  v23 = v14;
-  v24 = v12;
-  v25 = v13;
-  v26 = v15;
-  v18 = v15;
-  v19 = v13;
-  v20 = v12;
-  v21 = v14;
-  dispatch_async(v17, block);
+  v23 = centerCopy;
+  v24 = homeCopy;
+  v25 = monitorCopy;
+  v26 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = monitorCopy;
+  v20 = homeCopy;
+  v21 = centerCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __128__HMDResidentReachabilityNotificationManager_configureWithHome_deviceMonitor_notificationCenter_idsServerBag_completionHandler___block_invoke(uint64_t a1)
@@ -897,48 +897,48 @@ uint64_t __128__HMDResidentReachabilityNotificationManager_configureWithHome_dev
   return result;
 }
 
-- (void)configureWithHome:(id)a3 deviceMonitor:(id)a4
+- (void)configureWithHome:(id)home deviceMonitor:(id)monitor
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v6 defaultCenter];
-  v9 = [v8 homeManager];
-  v10 = [v9 idsServerBag];
-  [(HMDResidentReachabilityNotificationManager *)self configureWithHome:v8 deviceMonitor:v7 notificationCenter:v11 idsServerBag:v10 completionHandler:0];
+  monitorCopy = monitor;
+  homeCopy = home;
+  defaultCenter = [v6 defaultCenter];
+  homeManager = [homeCopy homeManager];
+  idsServerBag = [homeManager idsServerBag];
+  [(HMDResidentReachabilityNotificationManager *)self configureWithHome:homeCopy deviceMonitor:monitorCopy notificationCenter:defaultCenter idsServerBag:idsServerBag completionHandler:0];
 }
 
-- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)a3 workQueue:(id)a4 timerFactory:(id)a5 bulletinBoard:(id)a6
+- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)context workQueue:(id)queue timerFactory:(id)factory bulletinBoard:(id)board
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  queueCopy = queue;
+  factoryCopy = factory;
+  boardCopy = board;
   v20.receiver = self;
   v20.super_class = HMDResidentReachabilityNotificationManager;
   v15 = [(HMDResidentReachabilityNotificationManager *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_reachabilityContext, a3);
-    objc_storeStrong(&v16->_workQueue, a4);
-    v17 = _Block_copy(v13);
+    objc_storeStrong(&v15->_reachabilityContext, context);
+    objc_storeStrong(&v16->_workQueue, queue);
+    v17 = _Block_copy(factoryCopy);
     timerFactory = v16->_timerFactory;
     v16->_timerFactory = v17;
 
-    objc_storeStrong(&v16->_bulletinBoard, a6);
+    objc_storeStrong(&v16->_bulletinBoard, board);
     v16->_notificationEnabled = 0;
   }
 
   return v16;
 }
 
-- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)a3 workQueue:(id)a4
+- (HMDResidentReachabilityNotificationManager)initWithResidentReachabilityContext:(id)context workQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  contextCopy = context;
   v8 = +[HMDBulletinBoard sharedBulletinBoard];
-  v9 = [(HMDResidentReachabilityNotificationManager *)self initWithResidentReachabilityContext:v7 workQueue:v6 timerFactory:&__block_literal_global_138531 bulletinBoard:v8];
+  v9 = [(HMDResidentReachabilityNotificationManager *)self initWithResidentReachabilityContext:contextCopy workQueue:queueCopy timerFactory:&__block_literal_global_138531 bulletinBoard:v8];
 
   return v9;
 }

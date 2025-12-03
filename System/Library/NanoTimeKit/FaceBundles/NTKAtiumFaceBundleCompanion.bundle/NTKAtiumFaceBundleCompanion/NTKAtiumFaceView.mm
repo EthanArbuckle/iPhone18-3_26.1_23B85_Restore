@@ -1,54 +1,54 @@
 @interface NTKAtiumFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKAtiumFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (id)_snapshotWithPigment:(id)a3 analogDialShape:(unint64_t)a4 size:(CGSize)a5 scale:(double)a6;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKAtiumFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (id)_snapshotWithPigment:(id)pigment analogDialShape:(unint64_t)shape size:(CGSize)size scale:(double)scale;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromShape:(unint64_t)a4 toShape:(unint64_t)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromShape:(unint64_t)shape toShape:(unint64_t)toShape;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_reorderSwitcherSnapshotView;
-- (void)_setShape:(unint64_t)a3;
+- (void)_setShape:(unint64_t)shape;
 - (void)_setUpMetalView;
 - (void)_tearDownMetalView;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateColors;
-- (void)_updateColorsWithInterpolatedPalette:(id)a3;
-- (void)_updateComplicationColorsWithPalette:(id)a3;
+- (void)_updateColorsWithInterpolatedPalette:(id)palette;
+- (void)_updateComplicationColorsWithPalette:(id)palette;
 - (void)_updateContentTransform;
-- (void)_updateFaceColorsWithPalette:(id)a3;
-- (void)_updateQuadColorsWithPalette:(id)a3 forQuad:(id)a4;
+- (void)_updateFaceColorsWithPalette:(id)palette;
+- (void)_updateQuadColorsWithPalette:(id)palette forQuad:(id)quad;
 - (void)_updateShape;
-- (void)atiumQuadDidUpdateAnimatingOverrideDate:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)atiumQuadDidUpdateAnimatingOverrideDate:(id)date;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKAtiumFaceView
 
-- (NTKAtiumFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAtiumFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v9 = a4;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKAtiumFaceView;
-  v10 = [(NTKAtiumFaceView *)&v15 initWithFaceStyle:a3 forDevice:v9 clientIdentifier:a5];
+  v10 = [(NTKAtiumFaceView *)&v15 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a4);
-    [NTKAnalogUtilities dialDiameterForDevice:v9];
+    objc_storeStrong(&v10->_device, device);
+    [NTKAnalogUtilities dialDiameterForDevice:deviceCopy];
     *&v12 = v12;
     v11->_dialDiameter = *&v12;
     v11->_dialDiameterScale = 1.0;
-    v13 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:v11 dialDiameter:v9 device:v11->_dialDiameter];
+    v13 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:v11 dialDiameter:deviceCopy device:v11->_dialDiameter];
     [(NTKAtiumFaceView *)v11 setComplicationFactory:v13];
     v11->_breathScaleModifier = 1.0;
     v11->_rubberBandScaleModifier = 1.0;
@@ -81,23 +81,23 @@
   [(NTKAtiumFaceView *)&v2 _applyFrozen];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKAtiumFaceView;
-  v6 = a3;
-  [(NTKAtiumFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKAtiumQuad *)self->_compositeQuad setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKAtiumFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKAtiumQuad *)self->_compositeQuad setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKAtiumFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKAtiumFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKAtiumFaceView *)self switcherSnapshotView];
-    [(NTKAtiumFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKAtiumFaceView *)self switcherSnapshotView];
+    [(NTKAtiumFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -117,8 +117,8 @@
 
   [(NTKAtiumQuad *)self->_compositeQuad setDelegate:self];
   [(CLKUIMetalQuadView *)self->_quadView addQuad:self->_compositeQuad];
-  v7 = [(NTKAtiumFaceView *)self contentView];
-  [v7 addSubview:self->_quadView];
+  contentView = [(NTKAtiumFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKAtiumFaceView *)self bounds];
   [(CLKUIMetalQuadView *)self->_quadView setFrame:?];
@@ -146,24 +146,24 @@
   return v2;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v9 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
     [(NTKAtiumFaceView *)self _updateColors];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    -[NTKAtiumFaceView _setShape:](self, "_setShape:", [v9 dialShape]);
+    -[NTKAtiumFaceView _setShape:](self, "_setShape:", [optionCopy dialShape]);
   }
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
-  if (a3 > 0xA || ((1 << a3) & 0x403) == 0)
+  if (mode > 0xA || ((1 << mode) & 0x403) == 0)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -177,10 +177,10 @@
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -188,61 +188,61 @@
   return result;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v15.receiver = self;
   v15.super_class = NTKAtiumFaceView;
   [NTKAtiumFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKAtiumFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKAtiumFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKAtiumFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKAtiumFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKAtiumFaceView *)self complicationContainerView];
-  [v10 setAlpha:v9];
+  complicationContainerView = [(NTKAtiumFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v9];
 
-  [(NTKAtiumFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKAtiumFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKAtiumFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKAtiumFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKAtiumFaceView *)self timeView];
-  [v13 setAlpha:v12];
+  timeView = [(NTKAtiumFaceView *)self timeView];
+  [timeView setAlpha:v12];
 
-  v14 = [(NTKAtiumFaceView *)self contentView];
-  [v14 setAlpha:v12];
+  contentView = [(NTKAtiumFaceView *)self contentView];
+  [contentView setAlpha:v12];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v15 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v14 = [(NTKAtiumFaceView *)self interpolatedColorPalette];
-    [(NTKAtiumFaceView *)self _updateColorsWithInterpolatedPalette:v14];
+    interpolatedColorPalette = [(NTKAtiumFaceView *)self interpolatedColorPalette];
+    [(NTKAtiumFaceView *)self _updateColorsWithInterpolatedPalette:interpolatedColorPalette];
   }
 
-  else if (a6 == 15)
+  else if (mode == 15)
   {
-    -[NTKAtiumFaceView _applyTransitionFraction:fromShape:toShape:](self, "_applyTransitionFraction:fromShape:toShape:", [v15 dialShape], objc_msgSend(v12, "dialShape"), a3);
+    -[NTKAtiumFaceView _applyTransitionFraction:fromShape:toShape:](self, "_applyTransitionFraction:fromShape:toShape:", [optionCopy dialShape], objc_msgSend(toOptionCopy, "dialShape"), fraction);
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v7.receiver = self;
   v7.super_class = NTKAtiumFaceView;
-  [(NTKAtiumFaceView *)&v7 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKAtiumFaceView *)&v7 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
   NTKLargeElementScaleForBreathingFraction();
   self->_breathScaleModifier = v6;
   [(NTKAtiumFaceView *)self _updateContentTransform];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v7.receiver = self;
   v7.super_class = NTKAtiumFaceView;
-  [(NTKAtiumFaceView *)&v7 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKAtiumFaceView *)&v7 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
   NTKScaleForRubberBandingFraction();
   self->_rubberBandScaleModifier = v6;
   [(NTKAtiumFaceView *)self _updateContentTransform];
@@ -261,95 +261,95 @@
 
 - (void)_updateColors
 {
-  v3 = [(NTKAtiumFaceView *)self colorPalette];
-  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:v3 forQuad:self->_compositeQuad];
-  [(NTKAtiumFaceView *)self _updateFaceColorsWithPalette:v3];
+  colorPalette = [(NTKAtiumFaceView *)self colorPalette];
+  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:colorPalette forQuad:self->_compositeQuad];
+  [(NTKAtiumFaceView *)self _updateFaceColorsWithPalette:colorPalette];
 }
 
-- (void)_updateQuadColorsWithPalette:(id)a3 forQuad:(id)a4
+- (void)_updateQuadColorsWithPalette:(id)palette forQuad:(id)quad
 {
-  v5 = a4;
-  v6 = a3;
-  v13 = [v6 lightColor1];
-  v7 = [v6 lightColor2];
-  v8 = [v6 lightColor3];
-  v9 = [v6 isThreeColor];
-  [v5 setFirstLightColor:v13];
-  [v5 setSecondLightColor:v7];
-  [v5 setBackgroundLightColor:v8];
-  v10 = [v6 isRainbow];
-  [v5 setRecolorLightingTextureEnabled:((v10 | v9) & 1) == 0];
-  [v5 setUseRainbowTexture:v10];
-  [v5 setUseThreeColorTexture:v9];
-  [v6 tritiumMaskMultiplier];
+  quadCopy = quad;
+  paletteCopy = palette;
+  lightColor1 = [paletteCopy lightColor1];
+  lightColor2 = [paletteCopy lightColor2];
+  lightColor3 = [paletteCopy lightColor3];
+  isThreeColor = [paletteCopy isThreeColor];
+  [quadCopy setFirstLightColor:lightColor1];
+  [quadCopy setSecondLightColor:lightColor2];
+  [quadCopy setBackgroundLightColor:lightColor3];
+  isRainbow = [paletteCopy isRainbow];
+  [quadCopy setRecolorLightingTextureEnabled:((isRainbow | isThreeColor) & 1) == 0];
+  [quadCopy setUseRainbowTexture:isRainbow];
+  [quadCopy setUseThreeColorTexture:isThreeColor];
+  [paletteCopy tritiumMaskMultiplier];
   v12 = v11;
 
-  [v5 setTritiumMaskMultiplier:v12];
+  [quadCopy setTritiumMaskMultiplier:v12];
 }
 
-- (void)_updateFaceColorsWithPalette:(id)a3
+- (void)_updateFaceColorsWithPalette:(id)palette
 {
-  v12 = a3;
-  v4 = [(NTKAtiumFaceView *)self timeView];
-  v5 = [v12 handsColor];
-  v6 = [v12 handsColor];
-  [v4 applyHourMinuteHandsStrokeColor:v5 fillColor:v6];
+  paletteCopy = palette;
+  timeView = [(NTKAtiumFaceView *)self timeView];
+  handsColor = [paletteCopy handsColor];
+  handsColor2 = [paletteCopy handsColor];
+  [timeView applyHourMinuteHandsStrokeColor:handsColor fillColor:handsColor2];
 
-  v7 = [(NTKAtiumFaceView *)self timeView];
+  timeView2 = [(NTKAtiumFaceView *)self timeView];
   v8 = +[UIColor whiteColor];
-  [v7 applySecondHandColor:v8];
+  [timeView2 applySecondHandColor:v8];
 
-  v9 = [(NTKAtiumFaceView *)self timeView];
-  v10 = [v9 minuteHandView];
+  timeView3 = [(NTKAtiumFaceView *)self timeView];
+  minuteHandView = [timeView3 minuteHandView];
   v11 = +[UIColor blackColor];
-  [v10 setHandDotColor:v11];
+  [minuteHandView setHandDotColor:v11];
 
-  [(NTKAtiumFaceView *)self _updateComplicationColorsWithPalette:v12];
+  [(NTKAtiumFaceView *)self _updateComplicationColorsWithPalette:paletteCopy];
 }
 
-- (void)_updateComplicationColorsWithPalette:(id)a3
+- (void)_updateComplicationColorsWithPalette:(id)palette
 {
-  v4 = [a3 cornerComplicationColor];
-  [(NTKAtiumFaceView *)self setAlternateComplicationColor:v4];
-  [(NTKAtiumFaceView *)self setComplicationColor:v4];
-  [(NTKAtiumFaceView *)self setInterpolatedComplicationColor:v4];
+  cornerComplicationColor = [palette cornerComplicationColor];
+  [(NTKAtiumFaceView *)self setAlternateComplicationColor:cornerComplicationColor];
+  [(NTKAtiumFaceView *)self setComplicationColor:cornerComplicationColor];
+  [(NTKAtiumFaceView *)self setInterpolatedComplicationColor:cornerComplicationColor];
   [(NTKAtiumFaceView *)self _updateComplicationsWithComplicationColor];
 }
 
-- (void)_updateColorsWithInterpolatedPalette:(id)a3
+- (void)_updateColorsWithInterpolatedPalette:(id)palette
 {
-  v4 = a3;
-  v13 = [v4 fromPalette];
-  v5 = [v4 toPalette];
-  [v4 transitionFraction];
+  paletteCopy = palette;
+  fromPalette = [paletteCopy fromPalette];
+  toPalette = [paletteCopy toPalette];
+  [paletteCopy transitionFraction];
   v7 = v6;
-  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:v13 forQuad:self->_compositeQuad];
-  [(NTKAtiumFaceView *)self _updateFaceColorsWithPalette:v4];
+  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:fromPalette forQuad:self->_compositeQuad];
+  [(NTKAtiumFaceView *)self _updateFaceColorsWithPalette:paletteCopy];
 
-  v8 = [v5 lightColor1];
-  v9 = [v5 lightColor2];
-  v10 = [v5 lightColor3];
-  v11 = [v5 isThreeColor];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendFirstLightColor:v8];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendSecondLightColor:v9];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendBackgroundLightColor:v10];
-  v12 = [v5 isRainbow];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendRecolorLightingTextureEnabled:((v12 | v11) & 1) == 0];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendUseRainbowTexture:v12];
-  [(NTKAtiumQuad *)self->_compositeQuad setBlendUseThreeColorTexture:v11];
+  lightColor1 = [toPalette lightColor1];
+  lightColor2 = [toPalette lightColor2];
+  lightColor3 = [toPalette lightColor3];
+  isThreeColor = [toPalette isThreeColor];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendFirstLightColor:lightColor1];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendSecondLightColor:lightColor2];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendBackgroundLightColor:lightColor3];
+  isRainbow = [toPalette isRainbow];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendRecolorLightingTextureEnabled:((isRainbow | isThreeColor) & 1) == 0];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendUseRainbowTexture:isRainbow];
+  [(NTKAtiumQuad *)self->_compositeQuad setBlendUseThreeColorTexture:isThreeColor];
   [(NTKAtiumQuad *)self->_compositeQuad setBlendTransitionFraction:v7];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = NTKAtiumFaceView;
-  [(NTKAtiumFaceView *)&v7 _configureComplicationView:v6 forSlot:a4];
+  [(NTKAtiumFaceView *)&v7 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
@@ -367,7 +367,7 @@
     v16[3] = &unk_C588;
     v16[4] = self;
     v3 = objc_retainBlock(v16);
-    v4 = [(NTKAtiumFaceView *)self device];
+    device = [(NTKAtiumFaceView *)self device];
     NTKDefaultCornerComplicationScaleForFullscreenOpaqueFaceForDevice();
     v6 = v5;
 
@@ -395,11 +395,11 @@
   }
 }
 
-- (void)_setShape:(unint64_t)a3
+- (void)_setShape:(unint64_t)shape
 {
-  if (self->_shape != a3)
+  if (self->_shape != shape)
   {
-    self->_shape = a3;
+    self->_shape = shape;
     [(NTKAtiumFaceView *)self _updateShape];
   }
 }
@@ -408,15 +408,15 @@
 {
   if (![(NTKAtiumFaceView *)self editing])
   {
-    v3 = [(NTKAtiumFaceView *)self complicationContainerView];
-    v4 = v3;
+    complicationContainerView = [(NTKAtiumFaceView *)self complicationContainerView];
+    v4 = complicationContainerView;
     v5 = 0.0;
     if (!self->_shape)
     {
       v5 = 1.0;
     }
 
-    [v3 setAlpha:v5];
+    [complicationContainerView setAlpha:v5];
   }
 
   shape = self->_shape;
@@ -441,35 +441,35 @@
   [(NTKAtiumQuad *)compositeQuad setDialSize:v8];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromShape:(unint64_t)a4 toShape:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromShape:(unint64_t)shape toShape:(unint64_t)toShape
 {
   v6 = 0.0;
-  if (!a4)
+  if (!shape)
   {
     v6 = 1.0;
-    a3 = 1.0 - a3;
+    fraction = 1.0 - fraction;
   }
 
-  if (a4 == a5)
+  if (shape == toShape)
   {
-    v7 = v6;
+    fractionCopy = v6;
   }
 
   else
   {
-    v7 = a3;
+    fractionCopy = fraction;
   }
 
-  [(NTKAtiumQuad *)self->_compositeQuad setDialSize:self->_dialDiameter * 2.0 - v7 * self->_dialDiameter];
-  v8 = [(NTKAtiumFaceView *)self complicationContainerView];
-  [v8 setAlpha:v7 * NTKEditModeDimmedAlpha];
+  [(NTKAtiumQuad *)self->_compositeQuad setDialSize:self->_dialDiameter * 2.0 - fractionCopy * self->_dialDiameter];
+  complicationContainerView = [(NTKAtiumFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:fractionCopy * NTKEditModeDimmedAlpha];
 }
 
-- (void)atiumQuadDidUpdateAnimatingOverrideDate:(id)a3
+- (void)atiumQuadDidUpdateAnimatingOverrideDate:(id)date
 {
-  v4 = [a3 isAnimatingOverrideDate];
+  isAnimatingOverrideDate = [date isAnimatingOverrideDate];
   quadView = self->_quadView;
-  if (v4)
+  if (isAnimatingOverrideDate)
   {
     v6 = 0;
   }
@@ -484,28 +484,28 @@
   [(CLKUIMetalQuadView *)v7 setPreferredFramesPerSecond:v6];
 }
 
-- (id)_snapshotWithPigment:(id)a3 analogDialShape:(unint64_t)a4 size:(CGSize)a5 scale:(double)a6
+- (id)_snapshotWithPigment:(id)pigment analogDialShape:(unint64_t)shape size:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   y = CGPointZero.y;
-  v12 = a3;
-  v13 = [CLKUIQuadView quadViewWithFrame:@"Atm" identifier:CGPointZero.x, y, width, height];
+  pigmentCopy = pigment;
+  height = [CLKUIQuadView quadViewWithFrame:@"Atm" identifier:CGPointZero.x, y, width, height];
   v14 = [[NTKAtiumQuad alloc] initWithDevice:self->_device];
   [(NTKAtiumQuad *)v14 setOpaque:1];
-  v15 = [(NTKAtiumFaceView *)self faceColorPalette];
-  [v15 setPigmentEditOption:v12];
+  faceColorPalette = [(NTKAtiumFaceView *)self faceColorPalette];
+  [faceColorPalette setPigmentEditOption:pigmentCopy];
 
-  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:v15 forQuad:v14];
+  [(NTKAtiumFaceView *)self _updateQuadColorsWithPalette:faceColorPalette forQuad:v14];
   [(NTKAtiumQuad *)v14 setShadowStrength:0.0];
-  if (a4 == 1)
+  if (shape == 1)
   {
     dialDiameter = self->_dialDiameter + self->_dialDiameter;
   }
 
   else
   {
-    if (a4)
+    if (shape)
     {
       goto LABEL_6;
     }
@@ -515,20 +515,20 @@
 
   [(NTKAtiumQuad *)v14 setDialSize:dialDiameter];
 LABEL_6:
-  [v13 addQuad:v14];
-  v17 = [v13 snapshotInRect:CGPointZero.x scale:y time:{width, height, a6, 0.0}];
+  [height addQuad:v14];
+  v17 = [height snapshotInRect:CGPointZero.x scale:y time:{width, height, scale, 0.0}];
   v18 = [[UIImageView alloc] initWithFrame:{CGPointZero.x, y, width, height}];
   [v18 setImage:v17];
   v19 = [NTKRoundedCornerOverlayView alloc];
-  v20 = [(NTKAtiumFaceView *)self device];
-  v21 = [v19 initWithFrame:v20 forDeviceCornerRadius:{CGPointZero.x, y, width, height}];
+  device = [(NTKAtiumFaceView *)self device];
+  v21 = [v19 initWithFrame:device forDeviceCornerRadius:{CGPointZero.x, y, width, height}];
 
   [v18 addSubview:v21];
   v26.width = width;
   v26.height = height;
   UIGraphicsBeginImageContextWithOptions(v26, 0, 0.0);
-  v22 = [v18 layer];
-  [v22 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [v18 layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v23 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -536,9 +536,9 @@ LABEL_6:
   return v23;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_CCD8;
   }
@@ -549,11 +549,11 @@ LABEL_6:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (!qword_12000)
     {
@@ -562,21 +562,21 @@ LABEL_6:
       qword_12000 = v10;
     }
 
-    v12 = [v9 objectForKeyedSubscript:&off_CB78];
-    v13 = [v9 objectForKeyedSubscript:&off_CB60];
-    v14 = v8;
+    v12 = [optionsCopy objectForKeyedSubscript:&off_CB78];
+    v13 = [optionsCopy objectForKeyedSubscript:&off_CB60];
+    v14 = optionCopy;
 
     v15 = [NSString stringWithFormat:@"%@-%@", v14, v13];
     v16 = [qword_12000 objectForKey:v15];
     if (!v16)
     {
       v17 = [objc_opt_class() pigmentFromOption:v13];
-      v18 = [v14 dialShape];
+      dialShape = [v14 dialShape];
       [(NTKAtiumFaceView *)self frame];
       v20 = v19;
       v22 = v21;
       [(CLKDevice *)self->_device screenScale];
-      v16 = [(NTKAtiumFaceView *)self _snapshotWithPigment:v17 analogDialShape:v18 size:v20 scale:v22, v23];
+      v16 = [(NTKAtiumFaceView *)self _snapshotWithPigment:v17 analogDialShape:dialShape size:v20 scale:v22, v23];
 
       [qword_12000 setObject:v16 forKey:v15];
     }
@@ -586,7 +586,7 @@ LABEL_6:
   {
     v25.receiver = self;
     v25.super_class = NTKAtiumFaceView;
-    v16 = [(NTKAtiumFaceView *)&v25 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v16 = [(NTKAtiumFaceView *)&v25 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v16;

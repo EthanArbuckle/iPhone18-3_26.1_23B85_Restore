@@ -1,10 +1,10 @@
 @interface WFListeningModePickerParameter
 - (WFAction)action;
-- (WFListeningModePickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)setAction:(id)a3;
+- (WFListeningModePickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
+- (void)setAction:(id)action;
 @end
 
 @implementation WFListeningModePickerParameter
@@ -16,20 +16,20 @@
   return WeakRetained;
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  if ([a4 isEqualToString:@"WFRoute"])
+  if ([key isEqualToString:@"WFRoute"])
   {
 
     [(WFDynamicEnumerationParameter *)self clearPossibleStates];
   }
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = a4;
-  v5 = [v4 value];
-  v6 = [v5 isEqualToString:@"Normal"];
+  stateCopy = state;
+  value = [stateCopy value];
+  v6 = [value isEqualToString:@"Normal"];
 
   if (v6)
   {
@@ -39,8 +39,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v4 value];
-  v9 = [v8 isEqualToString:@"ActiveNoiseCancellation"];
+  value2 = [stateCopy value];
+  v9 = [value2 isEqualToString:@"ActiveNoiseCancellation"];
 
   if (v9)
   {
@@ -48,8 +48,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [v4 value];
-  v11 = [v10 isEqualToString:@"Transparency"];
+  value3 = [stateCopy value];
+  v11 = [value3 isEqualToString:@"Transparency"];
 
   if (v11)
   {
@@ -57,8 +57,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v12 = [v4 value];
-  v13 = [v12 isEqualToString:@"Adaptive"];
+  value4 = [stateCopy value];
+  v13 = [value4 isEqualToString:@"Adaptive"];
 
   if (v13)
   {
@@ -72,23 +72,23 @@ LABEL_10:
   return v14;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [(WFListeningModePickerParameter *)self action];
-  v8 = [v7 parameterStateForKey:@"WFRoute"];
+  handlerCopy = handler;
+  action = [(WFListeningModePickerParameter *)self action];
+  v8 = [action parameterStateForKey:@"WFRoute"];
 
-  v9 = [v8 value];
-  if (v9)
+  value = [v8 value];
+  if (value)
   {
     v10 = objc_opt_new();
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __96__WFListeningModePickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
     v17[3] = &unk_278C1C3A0;
-    v20 = v6;
-    v18 = v9;
+    v20 = handlerCopy;
+    v18 = value;
     v19 = v10;
     v11 = v10;
     [v11 findRouteMatchingDescriptor:v18 timeout:v17 completionHandler:15.0];
@@ -105,7 +105,7 @@ LABEL_10:
     v22[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v15 = [v13 errorWithDomain:v14 code:5 userInfo:v12];
-    (*(v6 + 2))(v6, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -194,9 +194,9 @@ id __96__WFListeningModePickerParameter_loadPossibleStatesForEnumeration_searchT
   return v4;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  obj = a3;
+  obj = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
   [WeakRetained removeEventObserver:self];
 
@@ -204,11 +204,11 @@ id __96__WFListeningModePickerParameter_loadPossibleStatesForEnumeration_searchT
   [obj addEventObserver:self];
 }
 
-- (WFListeningModePickerParameter)initWithDefinition:(id)a3
+- (WFListeningModePickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFListeningModePickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

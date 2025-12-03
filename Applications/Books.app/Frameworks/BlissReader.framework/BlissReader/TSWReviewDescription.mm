@@ -1,37 +1,37 @@
 @interface TSWReviewDescription
-- (TSWReviewDescription)initWithContext:(id)a3;
-- (id)questionAtIndex:(unint64_t)a3;
+- (TSWReviewDescription)initWithContext:(id)context;
+- (id)questionAtIndex:(unint64_t)index;
 - (int64_t)numberOfQuestions;
-- (unint64_t)indexOfQuestion:(id)a3;
-- (void)addQuestion:(id)a3;
+- (unint64_t)indexOfQuestion:(id)question;
+- (void)addQuestion:(id)question;
 - (void)dealloc;
-- (void)setQuestionDescriptions:(id)a3;
-- (void)setReviewQuestionNumberStyle:(id)a3;
+- (void)setQuestionDescriptions:(id)descriptions;
+- (void)setReviewQuestionNumberStyle:(id)style;
 @end
 
 @implementation TSWReviewDescription
 
-- (void)setQuestionDescriptions:(id)a3
+- (void)setQuestionDescriptions:(id)descriptions
 {
   [(TSWReviewDescription *)self willModify];
-  v5 = a3;
+  descriptionsCopy = descriptions;
 
-  self->mQuestionDescriptions = a3;
+  self->mQuestionDescriptions = descriptions;
 }
 
-- (void)setReviewQuestionNumberStyle:(id)a3
+- (void)setReviewQuestionNumberStyle:(id)style
 {
   [(TSWReviewDescription *)self willModify];
-  v5 = a3;
+  styleCopy = style;
 
-  self->mQuestionNumberStyle = a3;
+  self->mQuestionNumberStyle = style;
 }
 
-- (TSWReviewDescription)initWithContext:(id)a3
+- (TSWReviewDescription)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TSWReviewDescription;
-  v3 = [(TSWReviewDescription *)&v5 initWithContext:a3];
+  v3 = [(TSWReviewDescription *)&v5 initWithContext:context];
   if (v3)
   {
     [(TSWReviewDescription *)v3 setQuestionDescriptions:+[NSMutableArray array]];
@@ -50,32 +50,32 @@
   [(TSWReviewDescription *)&v3 dealloc];
 }
 
-- (void)addQuestion:(id)a3
+- (void)addQuestion:(id)question
 {
-  v4 = [(TSWReviewDescription *)self questionDescriptions];
+  questionDescriptions = [(TSWReviewDescription *)self questionDescriptions];
 
-  [(NSMutableArray *)v4 addObject:a3];
+  [(NSMutableArray *)questionDescriptions addObject:question];
 }
 
-- (id)questionAtIndex:(unint64_t)a3
+- (id)questionAtIndex:(unint64_t)index
 {
-  v4 = [(TSWReviewDescription *)self questionDescriptions];
+  questionDescriptions = [(TSWReviewDescription *)self questionDescriptions];
 
-  return [(NSMutableArray *)v4 objectAtIndex:a3];
+  return [(NSMutableArray *)questionDescriptions objectAtIndex:index];
 }
 
-- (unint64_t)indexOfQuestion:(id)a3
+- (unint64_t)indexOfQuestion:(id)question
 {
-  v4 = [(TSWReviewDescription *)self questionDescriptions];
+  questionDescriptions = [(TSWReviewDescription *)self questionDescriptions];
 
-  return [(NSMutableArray *)v4 indexOfObjectIdenticalTo:a3];
+  return [(NSMutableArray *)questionDescriptions indexOfObjectIdenticalTo:question];
 }
 
 - (int64_t)numberOfQuestions
 {
-  v2 = [(TSWReviewDescription *)self questionDescriptions];
+  questionDescriptions = [(TSWReviewDescription *)self questionDescriptions];
 
-  return [(NSMutableArray *)v2 count];
+  return [(NSMutableArray *)questionDescriptions count];
 }
 
 @end

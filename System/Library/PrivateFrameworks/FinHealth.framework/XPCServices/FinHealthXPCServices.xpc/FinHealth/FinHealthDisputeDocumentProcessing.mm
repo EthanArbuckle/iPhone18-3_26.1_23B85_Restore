@@ -1,12 +1,12 @@
 @interface FinHealthDisputeDocumentProcessing
 + (id)sharedInstance;
-- (BOOL)isTransactionAddressFieldPresentIn:(id)a3 forTransactionAddressField:(id)a4;
+- (BOOL)isTransactionAddressFieldPresentIn:(id)in forTransactionAddressField:(id)field;
 - (id)_init;
-- (id)fetchReceiptPhotosFromDate:(id)a3;
-- (id)generateRankingScore:(id)a3 forTransaction:(id)a4;
-- (id)getDisputeDocumentSuggestionsForTransaction:(id)a3 withDisputeDocumentType:(unint64_t)a4;
-- (id)processDisputeDocument:(id)a3;
-- (id)sortDisputeDocumentSuggestions:(id)a3;
+- (id)fetchReceiptPhotosFromDate:(id)date;
+- (id)generateRankingScore:(id)score forTransaction:(id)transaction;
+- (id)getDisputeDocumentSuggestionsForTransaction:(id)transaction withDisputeDocumentType:(unint64_t)type;
+- (id)processDisputeDocument:(id)document;
+- (id)sortDisputeDocumentSuggestions:(id)suggestions;
 @end
 
 @implementation FinHealthDisputeDocumentProcessing
@@ -97,20 +97,20 @@
   return v2;
 }
 
-- (id)getDisputeDocumentSuggestionsForTransaction:(id)a3 withDisputeDocumentType:(unint64_t)a4
+- (id)getDisputeDocumentSuggestionsForTransaction:(id)transaction withDisputeDocumentType:(unint64_t)type
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_opt_new();
   v9 = v8;
-  if (a4 == 1)
+  if (type == 1)
   {
     v39 = v7;
-    v41 = v6;
-    v10 = [v6 transactionDate];
-    v11 = [v10 dateByAddingTimeInterval:-secondsForThreeHours];
+    v41 = transactionCopy;
+    transactionDate = [transactionCopy transactionDate];
+    v11 = [transactionDate dateByAddingTimeInterval:-secondsForThreeHours];
 
-    v40 = self;
+    selfCopy = self;
     v38 = v11;
     v12 = [(FinHealthDisputeDocumentProcessing *)self fetchReceiptPhotosFromDate:v11];
     v13 = FinHealthLogObject();
@@ -131,26 +131,26 @@
       {
         v15 = objc_autoreleasePoolPush();
         v16 = [v12 objectAtIndex:v14];
-        v17 = [v16 characterRecognitionProperties];
-        v18 = [v17 characterRecognitionData];
+        characterRecognitionProperties = [v16 characterRecognitionProperties];
+        characterRecognitionData = [characterRecognitionProperties characterRecognitionData];
 
         v19 = [NSDecimalNumber decimalNumberWithString:v44];
-        if (v18)
+        if (characterRecognitionData)
         {
           v45 = v15;
           v20 = objc_autoreleasePoolPush();
           v21 = objc_opt_class();
           v46 = 0;
-          v22 = [NSKeyedUnarchiver unarchivedObjectOfClass:v21 fromData:v18 error:&v46];
+          v22 = [NSKeyedUnarchiver unarchivedObjectOfClass:v21 fromData:characterRecognitionData error:&v46];
           v23 = v46;
           if (v23)
           {
             v24 = FinHealthLogObject();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v16 uuid];
+              uuid = [v16 uuid];
               *buf = 138412546;
-              v48 = v25;
+              v48 = uuid;
               v49 = 2112;
               v50 = v23;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Error unarchiving photo %@ : %@", buf, 0x16u);
@@ -161,9 +161,9 @@
 
           if (v22)
           {
-            v26 = [v22 getTranscript];
-            v27 = [(FinHealthDisputeDocumentProcessing *)v40 processDisputeDocument:v26];
-            v28 = [(FinHealthDisputeDocumentProcessing *)v40 generateRankingScore:v27 forTransaction:v41];
+            getTranscript = [v22 getTranscript];
+            v27 = [(FinHealthDisputeDocumentProcessing *)selfCopy processDisputeDocument:getTranscript];
+            v28 = [(FinHealthDisputeDocumentProcessing *)selfCopy generateRankingScore:v27 forTransaction:v41];
 
             v9 = v42;
             v19 = v28;
@@ -175,8 +175,8 @@
         }
 
         v29 = [FHSmartCompoundFeatureRankedValue alloc];
-        v30 = [v16 uuid];
-        v31 = [v29 initWithLabelAndRank:v30 featureRank:v19];
+        uuid2 = [v16 uuid];
+        v31 = [v29 initWithLabelAndRank:uuid2 featureRank:v19];
 
         v32 = [[FHSmartFeatureDisputeDocumentSuggestion alloc] initWithRankedValue:v31 type:1];
         [v9 addObject:v32];
@@ -189,15 +189,15 @@
     }
 
     v33 = [v9 copy];
-    v34 = [(FinHealthDisputeDocumentProcessing *)v40 sortDisputeDocumentSuggestions:v33];
+    v34 = [(FinHealthDisputeDocumentProcessing *)selfCopy sortDisputeDocumentSuggestions:v33];
 
     v35 = FinHealthLogObject();
-    v6 = v41;
+    transactionCopy = v41;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
-      v36 = [v41 identifier];
+      identifier = [v41 identifier];
       *buf = 138412546;
-      v48 = v36;
+      v48 = identifier;
       v49 = 2112;
       v50 = v34;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "Dispute Document Suggestions for %@ : %@", buf, 0x16u);
@@ -216,15 +216,15 @@
   return v34;
 }
 
-- (id)fetchReceiptPhotosFromDate:(id)a3
+- (id)fetchReceiptPhotosFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
-  v5 = [NSPredicate predicateWithFormat:@"dateCreated >= %@", v3];
+  dateCopy = [NSPredicate predicateWithFormat:@"dateCreated >= %@", dateCopy];
 
-  v6 = [NSPredicate predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier == %d AND $s.confidence > 0.9).@count > 0", PHAssetJunkSceneClassificationIdentifierReceiptOrDocument];
-  v13[0] = v5;
-  v13[1] = v6;
+  pHAssetJunkSceneClassificationIdentifierReceiptOrDocument = [NSPredicate predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier == %d AND $s.confidence > 0.9).@count > 0", PHAssetJunkSceneClassificationIdentifierReceiptOrDocument];
+  v13[0] = dateCopy;
+  v13[1] = pHAssetJunkSceneClassificationIdentifierReceiptOrDocument;
   v7 = [NSArray arrayWithObjects:v13 count:2];
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
   [v4 setInternalPredicate:v8];
@@ -239,9 +239,9 @@
   return v10;
 }
 
-- (id)sortDisputeDocumentSuggestions:(id)a3
+- (id)sortDisputeDocumentSuggestions:(id)suggestions
 {
-  v3 = [a3 sortedArrayUsingComparator:&stru_100020F30];
+  v3 = [suggestions sortedArrayUsingComparator:&stru_100020F30];
   v4 = photoSuggestionDefaultNum;
   v5 = [v3 count];
   if (v4 >= v5)
@@ -259,16 +259,16 @@
   return v7;
 }
 
-- (id)processDisputeDocument:(id)a3
+- (id)processDisputeDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v28 = 0;
   v6 = [NSDataDetector dataDetectorWithTypes:24 error:&v28];
   v23 = v28;
   v22 = v6;
-  [v6 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  [v6 matchesInString:documentCopy options:0 range:{0, objc_msgSend(documentCopy, "length")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -289,20 +289,20 @@
 
         v12 = *(*(&v24 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 addressComponents];
+        addressComponents = [v12 addressComponents];
 
-        if (v14)
+        if (addressComponents)
         {
-          v15 = [v12 addressComponents];
-          [v4 addObject:v15];
+          addressComponents2 = [v12 addressComponents];
+          [v4 addObject:addressComponents2];
         }
 
-        v16 = [v12 date];
+        date = [v12 date];
 
-        if (v16)
+        if (date)
         {
-          v17 = [v12 date];
-          [v5 addObject:v17];
+          date2 = [v12 date];
+          [v5 addObject:date2];
         }
 
         objc_autoreleasePoolPop(v13);
@@ -321,21 +321,21 @@
   v19 = [v5 copy];
   v29[2] = FHDisputeDocumentProcessingTextKey;
   v30[1] = v19;
-  v30[2] = v3;
+  v30[2] = documentCopy;
   v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
 
   return v20;
 }
 
-- (id)generateRankingScore:(id)a3 forTransaction:(id)a4
+- (id)generateRankingScore:(id)score forTransaction:(id)transaction
 {
-  v30 = a3;
-  v6 = a4;
-  v29 = [v6 displayName];
-  v7 = [v6 transactionDate];
-  v28 = [v30 objectForKeyedSubscript:FHDisputeDocumentProcessingDateKey];
-  v27 = [v30 objectForKeyedSubscript:FHDisputeDocumentProcessingLocationKey];
-  v26 = [v30 objectForKey:FHDisputeDocumentProcessingTextKey];
+  scoreCopy = score;
+  transactionCopy = transaction;
+  displayName = [transactionCopy displayName];
+  transactionDate = [transactionCopy transactionDate];
+  v28 = [scoreCopy objectForKeyedSubscript:FHDisputeDocumentProcessingDateKey];
+  v27 = [scoreCopy objectForKeyedSubscript:FHDisputeDocumentProcessingLocationKey];
+  v26 = [scoreCopy objectForKey:FHDisputeDocumentProcessingTextKey];
   v25 = [(NSArray *)self->_rankingDimensionFactors count];
   v8 = [NSDecimalNumber decimalNumberWithString:photoSuggestionDefaultScore];
   v9 = objc_opt_new();
@@ -351,17 +351,17 @@
   v45[2] = sub_10000F148;
   v45[3] = &unk_100020F58;
   v45[4] = self;
-  v24 = v7;
+  v24 = transactionDate;
   v46 = v24;
   v47 = &v48;
   [v28 enumerateObjectsUsingBlock:v45];
   [v9 addObject:v49[5]];
   v11 = [NSDecimalNumber decimalNumberWithString:v10];
-  if (v29)
+  if (displayName)
   {
-    v12 = [v26 lowercaseString];
-    v13 = [v29 lowercaseString];
-    v14 = [v12 rangeOfString:v13] == 0x7FFFFFFFFFFFFFFFLL;
+    lowercaseString = [v26 lowercaseString];
+    lowercaseString2 = [displayName lowercaseString];
+    v14 = [lowercaseString rangeOfString:lowercaseString2] == 0x7FFFFFFFFFFFFFFFLL;
 
     if (!v14)
     {
@@ -383,7 +383,7 @@
   v36[2] = sub_10000F254;
   v36[3] = &unk_100020F80;
   v36[4] = self;
-  v16 = v6;
+  v16 = transactionCopy;
   v37 = v16;
   v38 = &v39;
   [v27 enumerateObjectsUsingBlock:v36];
@@ -437,19 +437,19 @@
   return v8;
 }
 
-- (BOOL)isTransactionAddressFieldPresentIn:(id)a3 forTransactionAddressField:(id)a4
+- (BOOL)isTransactionAddressFieldPresentIn:(id)in forTransactionAddressField:(id)field
 {
-  if (!a4)
+  if (!field)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = [a3 lowercaseString];
-  v7 = [v5 lowercaseString];
+  fieldCopy = field;
+  lowercaseString = [in lowercaseString];
+  lowercaseString2 = [fieldCopy lowercaseString];
 
-  LOBYTE(v5) = [v6 containsString:v7];
-  return v5;
+  LOBYTE(fieldCopy) = [lowercaseString containsString:lowercaseString2];
+  return fieldCopy;
 }
 
 @end

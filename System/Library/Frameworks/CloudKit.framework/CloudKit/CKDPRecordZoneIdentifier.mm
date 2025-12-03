@@ -1,15 +1,15 @@
 @interface CKDPRecordZoneIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)databaseTypeAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)databaseTypeAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDatabaseType:(id)a3;
+- (int)StringAsDatabaseType:(id)type;
 - (int)databaseType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordZoneIdentifier
@@ -27,40 +27,40 @@
   }
 }
 
-- (id)databaseTypeAsString:(int)a3
+- (id)databaseTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_1E70BF120[a3 - 1];
+    v4 = off_1E70BF120[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsDatabaseType:(id)a3
+- (int)StringAsDatabaseType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"privateDB"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"privateDB"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"publicDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"publicDB"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"sharedDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"sharedDB"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"orgDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"orgDB"))
   {
     v6 = 4;
   }
@@ -121,65 +121,65 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ownerIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     databaseType = self->_databaseType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   value = self->_value;
-  v8 = v4;
+  v8 = toCopy;
   if (value)
   {
-    objc_msgSend_setValue_(v4, v5, value);
-    v4 = v8;
+    objc_msgSend_setValue_(toCopy, v5, value);
+    toCopy = v8;
   }
 
   ownerIdentifier = self->_ownerIdentifier;
   if (ownerIdentifier)
   {
     objc_msgSend_setOwnerIdentifier_(v8, v5, ownerIdentifier);
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_databaseType;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_databaseType;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_value, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_value, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_ownerIdentifier, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_ownerIdentifier, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
@@ -192,17 +192,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_10;
   }
 
   value = self->_value;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (value | v9)
   {
     if (!objc_msgSend_isEqual_(value, v7, v9))
@@ -212,7 +212,7 @@
   }
 
   ownerIdentifier = self->_ownerIdentifier;
-  v11 = v4[2];
+  v11 = equalCopy[2];
   if (ownerIdentifier | v11)
   {
     if (!objc_msgSend_isEqual_(ownerIdentifier, v7, v11))
@@ -221,10 +221,10 @@
     }
   }
 
-  v12 = (v4[4] & 1) == 0;
+  v12 = (equalCopy[4] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[4] & 1) != 0 && self->_databaseType == *(v4 + 2))
+    if ((equalCopy[4] & 1) != 0 && self->_databaseType == *(equalCopy + 2))
     {
       v12 = 1;
       goto LABEL_11;
@@ -256,12 +256,12 @@ LABEL_11:
   return v7 ^ v4 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   value = self->_value;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (value)
   {
     if (!v6)
@@ -269,7 +269,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(value, v4, v6);
+    objc_msgSend_mergeFrom_(value, fromCopy, v6);
   }
 
   else
@@ -279,13 +279,13 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    objc_msgSend_setValue_(self, v4, v6);
+    objc_msgSend_setValue_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   ownerIdentifier = self->_ownerIdentifier;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (ownerIdentifier)
   {
     if (!v8)
@@ -293,7 +293,7 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    ownerIdentifier = objc_msgSend_mergeFrom_(ownerIdentifier, v4, v8);
+    ownerIdentifier = objc_msgSend_mergeFrom_(ownerIdentifier, fromCopy, v8);
   }
 
   else
@@ -303,18 +303,18 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    ownerIdentifier = objc_msgSend_setOwnerIdentifier_(self, v4, v8);
+    ownerIdentifier = objc_msgSend_setOwnerIdentifier_(self, fromCopy, v8);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_databaseType = *(v4 + 2);
+    self->_databaseType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](ownerIdentifier, v4);
+  MEMORY[0x1EEE66BB8](ownerIdentifier, fromCopy);
 }
 
 @end

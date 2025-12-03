@@ -1,5 +1,5 @@
 @interface CAMDrawerVideoStabilizationButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,17 +8,17 @@
 
 @implementation CAMDrawerVideoStabilizationButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerVideoStabilizationButton" hasInstanceMethod:@"videoStabilizationMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMDrawerVideoStabilizationButton" hasInstanceMethod:@"setVideoStabilizationMode:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerVideoStabilizationButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerVideoStabilizationButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerVideoStabilizationButton" hasInstanceMethod:@"videoStabilizationMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMDrawerVideoStabilizationButton" hasInstanceMethod:@"setVideoStabilizationMode:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerVideoStabilizationButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerVideoStabilizationButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -26,14 +26,14 @@
   if (AXRequestingClient() == 3)
   {
     v3 = [(CAMDrawerVideoStabilizationButtonAccessibility *)self safeValueForKey:@"videoStabilizationMode"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
     v7 = MEMORY[0x29EDCA5F8];
     v8 = 3221225472;
     v9 = __71__CAMDrawerVideoStabilizationButtonAccessibility_accessibilityActivate__block_invoke;
     v10 = &unk_29F2ACC58;
-    v11 = self;
-    v12 = v4 == 0;
+    selfCopy = self;
+    v12 = integerValue == 0;
     AXPerformSafeBlock();
     return 1;
   }
@@ -56,15 +56,15 @@ void __71__CAMDrawerVideoStabilizationButtonAccessibility_accessibilityActivate_
 - (id)accessibilityValue
 {
   v2 = [(CAMDrawerVideoStabilizationButtonAccessibility *)self safeValueForKey:@"videoStabilizationMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (!v3)
+  if (!integerValue)
   {
     v4 = @"Action_Mode_Off";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     v4 = @"Action_Mode_On";
 LABEL_5:

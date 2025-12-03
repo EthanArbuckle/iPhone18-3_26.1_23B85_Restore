@@ -1,21 +1,21 @@
 @interface HFActionNaturalLanguageOptions
-- (HFActionNaturalLanguageOptions)initWithHome:(id)a3 formattingContext:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setObjectsInContext:(id)a3;
+- (HFActionNaturalLanguageOptions)initWithHome:(id)home formattingContext:(int64_t)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setObjectsInContext:(id)context;
 @end
 
 @implementation HFActionNaturalLanguageOptions
 
-- (HFActionNaturalLanguageOptions)initWithHome:(id)a3 formattingContext:(int64_t)a4
+- (HFActionNaturalLanguageOptions)initWithHome:(id)home formattingContext:(int64_t)context
 {
-  v7 = a3;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HFActionNaturalLanguageOptions;
-  v8 = [(HFSubstringNaturalLanguageOptions *)&v13 initWithFormattingContext:a4 formattingStyle:3];
+  v8 = [(HFSubstringNaturalLanguageOptions *)&v13 initWithFormattingContext:context formattingStyle:3];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
+    objc_storeStrong(&v8->_home, home);
     v10 = [MEMORY[0x277CBEB98] set];
     objectsInContext = v9->_objectsInContext;
     v9->_objectsInContext = v10;
@@ -28,17 +28,17 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = HFActionNaturalLanguageOptions;
-  v4 = [(HFSubstringNaturalLanguageOptions *)&v9 copyWithZone:a3];
-  v5 = [(HFActionNaturalLanguageOptions *)self home];
-  [v4 setHome:v5];
+  v4 = [(HFSubstringNaturalLanguageOptions *)&v9 copyWithZone:zone];
+  home = [(HFActionNaturalLanguageOptions *)self home];
+  [v4 setHome:home];
 
   [v4 setFormattingStyle:{-[HFSubstringNaturalLanguageOptions formattingStyle](self, "formattingStyle")}];
-  v6 = [(HFActionNaturalLanguageOptions *)self objectsInContext];
-  v7 = [v6 copy];
+  objectsInContext = [(HFActionNaturalLanguageOptions *)self objectsInContext];
+  v7 = [objectsInContext copy];
   [v4 setObjectsInContext:v7];
 
   [v4 setUseMediaContainersNotInContext:{-[HFActionNaturalLanguageOptions useMediaContainersNotInContext](self, "useMediaContainersNotInContext")}];
@@ -46,16 +46,16 @@
   return v4;
 }
 
-- (void)setObjectsInContext:(id)a3
+- (void)setObjectsInContext:(id)context
 {
-  v8 = a3;
-  v4 = [(NSSet *)self->_objectsInContext isEqual:v8];
-  v5 = v8;
+  contextCopy = context;
+  v4 = [(NSSet *)self->_objectsInContext isEqual:contextCopy];
+  v5 = contextCopy;
   if ((v4 & 1) == 0)
   {
-    if (v8)
+    if (contextCopy)
     {
-      v6 = v8;
+      v6 = contextCopy;
     }
 
     else
@@ -66,7 +66,7 @@
     objectsInContext = self->_objectsInContext;
     self->_objectsInContext = v6;
 
-    v5 = v8;
+    v5 = contextCopy;
   }
 }
 

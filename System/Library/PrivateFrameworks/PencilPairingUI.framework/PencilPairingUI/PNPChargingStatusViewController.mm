@@ -1,21 +1,21 @@
 @interface PNPChargingStatusViewController
 - (CGSize)preferredContentSize;
-- (PNPChargingStatusViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PNPChargingStatusViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PNPPlatterViewControllerPlatterDelegate)platterDelegate;
 - (PNPViewControllerAppearanceDelegate)appearanceDelegate;
 - (unint64_t)preferredEdge;
 - (void)_configureAutoDismiss;
 - (void)loadView;
-- (void)setDeviceState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDeviceState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PNPChargingStatusViewController
 
-- (PNPChargingStatusViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PNPChargingStatusViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PNPChargingStatusViewController;
@@ -32,16 +32,16 @@
   return v4;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
   chargingStatusView = self->_chargingStatusView;
-  v5 = a3;
-  [(PNPChargingStatusView *)chargingStatusView setDeviceState:v5];
-  v6 = [(PNPChargingStatusViewController *)self _platterContainerView];
-  [v6 setEdge:{objc_msgSend(v5, "edge")}];
+  stateCopy = state;
+  [(PNPChargingStatusView *)chargingStatusView setDeviceState:stateCopy];
+  _platterContainerView = [(PNPChargingStatusViewController *)self _platterContainerView];
+  [_platterContainerView setEdge:{objc_msgSend(stateCopy, "edge")}];
 
-  LOBYTE(v6) = [v5 batteryLevelUnknown];
-  if ((v6 & 1) == 0)
+  LOBYTE(_platterContainerView) = [stateCopy batteryLevelUnknown];
+  if ((_platterContainerView & 1) == 0)
   {
 
     [(PNPChargingStatusViewController *)self _configureAutoDismiss];
@@ -63,29 +63,29 @@
   chargingStatusView = self->_chargingStatusView;
   self->_chargingStatusView = v3;
 
-  v5 = [(PNPChargingStatusViewController *)self _platterContainerView];
-  [v5 setContentView:self->_chargingStatusView];
+  _platterContainerView = [(PNPChargingStatusViewController *)self _platterContainerView];
+  [_platterContainerView setContentView:self->_chargingStatusView];
 
-  v6 = [(PNPChargingStatusViewController *)self _platterContainerView];
-  [v6 setEdge:{-[PNPChargingStatusViewController preferredEdge](self, "preferredEdge")}];
+  _platterContainerView2 = [(PNPChargingStatusViewController *)self _platterContainerView];
+  [_platterContainerView2 setEdge:{-[PNPChargingStatusViewController preferredEdge](self, "preferredEdge")}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[PencilSettings sharedPencilSettings];
   [v5 migrateObsoletedAXOpaqueTouchSetting];
 
   v8.receiver = self;
   v8.super_class = PNPChargingStatusViewController;
-  [(PNPChargingStatusViewController *)&v8 viewDidAppear:v3];
-  v6 = [(PNPChargingStatusViewController *)self _platterContainerView];
+  [(PNPChargingStatusViewController *)&v8 viewDidAppear:appearCopy];
+  _platterContainerView = [(PNPChargingStatusViewController *)self _platterContainerView];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__PNPChargingStatusViewController_viewDidAppear___block_invoke;
   v7[3] = &unk_279A0A060;
   v7[4] = self;
-  PNPPlatterPresentPlatterContainerView(v6, v3, v7);
+  PNPPlatterPresentPlatterContainerView(_platterContainerView, appearCopy, v7);
 }
 
 void __49__PNPChargingStatusViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -95,15 +95,15 @@ void __49__PNPChargingStatusViewController_viewDidAppear___block_invoke(uint64_t
   PNPChargingStatusConfigureAutoDismissWithTime(v1, v2, 8.0);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __86__PNPChargingStatusViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_279A0A088;
-  v5 = a3;
+  sizeCopy = size;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 void __86__PNPChargingStatusViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -118,17 +118,17 @@ void __86__PNPChargingStatusViewController_viewWillTransitionToSize_withTransiti
 
 - (void)_configureAutoDismiss
 {
-  v3 = [(PNPChargingStatusViewController *)self _platterContainerView];
-  PNPChargingStatusConfigureAutoDismiss(self, v3);
+  _platterContainerView = [(PNPChargingStatusViewController *)self _platterContainerView];
+  PNPChargingStatusConfigureAutoDismiss(self, _platterContainerView);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PNPChargingStatusViewController;
-  [(PNPChargingStatusViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PNPChargingStatusViewController *)self appearanceDelegate];
-  [v4 viewControllerDidDismiss:self];
+  [(PNPChargingStatusViewController *)&v5 viewDidDisappear:disappear];
+  appearanceDelegate = [(PNPChargingStatusViewController *)self appearanceDelegate];
+  [appearanceDelegate viewControllerDidDismiss:self];
 }
 
 - (CGSize)preferredContentSize
@@ -141,10 +141,10 @@ void __86__PNPChargingStatusViewController_viewWillTransitionToSize_withTransiti
 
 - (unint64_t)preferredEdge
 {
-  v2 = [(PNPChargingStatusViewController *)self deviceState];
-  v3 = [v2 edge];
+  deviceState = [(PNPChargingStatusViewController *)self deviceState];
+  edge = [deviceState edge];
 
-  return v3;
+  return edge;
 }
 
 - (PNPPlatterViewControllerPlatterDelegate)platterDelegate

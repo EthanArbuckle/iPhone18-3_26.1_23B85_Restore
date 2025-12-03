@@ -1,7 +1,7 @@
 @interface HMBModelIndexedQuery
-+ (id)queryWithSQLPredicate:(id)a3 ascending:(BOOL)a4 indexedProperties:(id)a5 arguments:(id)a6;
++ (id)queryWithSQLPredicate:(id)predicate ascending:(BOOL)ascending indexedProperties:(id)properties arguments:(id)arguments;
 - (BOOL)hasExpectedIndexes;
-- (HMBModelIndexedQuery)initWithSQLPredicate:(id)a3 initialSequence:(id)a4 maximumRowsPerSelect:(unint64_t)a5 indexNameSuffix:(id)a6 indexedColumns:(id)a7 arguments:(id)a8;
+- (HMBModelIndexedQuery)initWithSQLPredicate:(id)predicate initialSequence:(id)sequence maximumRowsPerSelect:(unint64_t)select indexNameSuffix:(id)suffix indexedColumns:(id)columns arguments:(id)arguments;
 - (NSString)indexName;
 @end
 
@@ -18,47 +18,47 @@ LABEL_12:
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMBModelIndexedQuery *)self indexName];
-  v5 = [v3 stringWithFormat:@"INDEX %@", v4];
+  indexName = [(HMBModelIndexedQuery *)self indexName];
+  v5 = [v3 stringWithFormat:@"INDEX %@", indexName];
 
-  v6 = [(HMBModelQuery *)self preparedQueries];
-  v7 = [v6 objectEnumerator];
+  preparedQueries = [(HMBModelQuery *)self preparedQueries];
+  objectEnumerator = [preparedQueries objectEnumerator];
 
-  v8 = [v7 nextObject];
-  if (!v8)
+  nextObject = [objectEnumerator nextObject];
+  if (!nextObject)
   {
     goto LABEL_12;
   }
 
-  v9 = v8;
+  v9 = nextObject;
   while (1)
   {
-    v10 = [v9 queryPlans];
+    queryPlans = [v9 queryPlans];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __42__HMBModelIndexedQuery_hasExpectedIndexes__block_invoke;
     v23[3] = &unk_2786E1490;
     v11 = v5;
     v24 = v11;
-    v25 = self;
-    v12 = [v10 na_any:v23];
+    selfCopy = self;
+    v12 = [queryPlans na_any:v23];
 
     if ((v12 & 1) == 0)
     {
       break;
     }
 
-    v13 = [v7 nextObject];
+    nextObject2 = [objectEnumerator nextObject];
 
-    v9 = v13;
-    if (!v13)
+    v9 = nextObject2;
+    if (!nextObject2)
     {
       goto LABEL_10;
     }
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -74,13 +74,13 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [v9 queryPlans];
+  queryPlans2 = [v9 queryPlans];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __42__HMBModelIndexedQuery_hasExpectedIndexes__block_invoke_174;
   v22[3] = &unk_2786E14B8;
-  v22[4] = v15;
-  [v19 hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
+  v22[4] = selfCopy2;
+  [queryPlans2 hmf_enumerateWithAutoreleasePoolUsingBlock:v22];
 
 LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
@@ -149,26 +149,26 @@ uint64_t __42__HMBModelIndexedQuery_hasExpectedIndexes__block_invoke_2(uint64_t 
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NSStringFromClass([(HMBModelQuery *)self modelClass]);
-  v5 = [(HMBModelIndexedQuery *)self indexNameSuffix];
-  v6 = [v3 stringWithFormat:@"qi_%@_%@", v4, v5];
+  indexNameSuffix = [(HMBModelIndexedQuery *)self indexNameSuffix];
+  v6 = [v3 stringWithFormat:@"qi_%@_%@", v4, indexNameSuffix];
 
   return v6;
 }
 
-- (HMBModelIndexedQuery)initWithSQLPredicate:(id)a3 initialSequence:(id)a4 maximumRowsPerSelect:(unint64_t)a5 indexNameSuffix:(id)a6 indexedColumns:(id)a7 arguments:(id)a8
+- (HMBModelIndexedQuery)initWithSQLPredicate:(id)predicate initialSequence:(id)sequence maximumRowsPerSelect:(unint64_t)select indexNameSuffix:(id)suffix indexedColumns:(id)columns arguments:(id)arguments
 {
-  v14 = a6;
-  v15 = a7;
+  suffixCopy = suffix;
+  columnsCopy = columns;
   v22.receiver = self;
   v22.super_class = HMBModelIndexedQuery;
-  v16 = [(HMBModelQuery *)&v22 initWithSQLPredicate:a3 initialSequence:a4 maximumRowsPerSelect:a5 arguments:a8];
+  v16 = [(HMBModelQuery *)&v22 initWithSQLPredicate:predicate initialSequence:sequence maximumRowsPerSelect:select arguments:arguments];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [suffixCopy copy];
     indexNameSuffix = v16->_indexNameSuffix;
     v16->_indexNameSuffix = v17;
 
-    v19 = [v15 copy];
+    v19 = [columnsCopy copy];
     indexedColumns = v16->_indexedColumns;
     v16->_indexedColumns = v19;
   }
@@ -176,27 +176,27 @@ uint64_t __42__HMBModelIndexedQuery_hasExpectedIndexes__block_invoke_2(uint64_t 
   return v16;
 }
 
-+ (id)queryWithSQLPredicate:(id)a3 ascending:(BOOL)a4 indexedProperties:(id)a5 arguments:(id)a6
++ (id)queryWithSQLPredicate:(id)predicate ascending:(BOOL)ascending indexedProperties:(id)properties arguments:(id)arguments
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (!v9)
+  ascendingCopy = ascending;
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  argumentsCopy = arguments;
+  if (!predicateCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!propertiesCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = argumentsCopy;
+  if (!argumentsCopy)
   {
 LABEL_12:
     v19 = _HMFPreconditionFailure();
@@ -204,7 +204,7 @@ LABEL_12:
   }
 
   v13 = +[HMBSQLQueryIterator maximumRowsPerSelect];
-  if (v8)
+  if (ascendingCopy)
   {
     v14 = &unk_283EB9E10;
   }
@@ -214,12 +214,12 @@ LABEL_12:
     v14 = &unk_283EB9E28;
   }
 
-  v15 = [v10 componentsJoinedByString:@"_"];
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count") + 2}];
+  v15 = [propertiesCopy componentsJoinedByString:@"_"];
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count") + 2}];
   [v16 addObject:@"_store_id"];
-  [v16 addObjectsFromArray:v10];
+  [v16 addObjectsFromArray:propertiesCopy];
   [v16 addObject:@"_record_id"];
-  v17 = [[HMBModelIndexedQuery alloc] initWithSQLPredicate:v9 initialSequence:v14 maximumRowsPerSelect:v13 indexNameSuffix:v15 indexedColumns:v16 arguments:v12];
+  v17 = [[HMBModelIndexedQuery alloc] initWithSQLPredicate:predicateCopy initialSequence:v14 maximumRowsPerSelect:v13 indexNameSuffix:v15 indexedColumns:v16 arguments:v12];
 
   return v17;
 }

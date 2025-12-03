@@ -1,65 +1,65 @@
 @interface SessionSceneDelegate
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (void)dealloc;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation SessionSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10004D49C(v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10004D49C(sceneCopy, sessionCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_10004D708();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100049400(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100049400(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_10004D854();
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_10004D94C();
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_100049794(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_100049794(backgroundCopy);
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [(SessionSceneDelegate *)v4 description];
+  selfCopy = self;
+  v5 = [(SessionSceneDelegate *)selfCopy description];
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -72,18 +72,18 @@
 
   [v3 logInfo:v10];
 
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = type metadata accessor for SessionSceneDelegate();
   [(SessionSceneDelegate *)&v11 dealloc];
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   sub_10002BB3C(0, &qword_100115DD0, BSAction_ptr);
   sub_10004DE88(&qword_100115DD8, &qword_100115DD0, BSAction_ptr);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   v9 = sub_10004DA44(v6);
 
   if (v9)

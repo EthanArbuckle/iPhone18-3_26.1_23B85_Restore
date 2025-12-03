@@ -116,21 +116,21 @@
   v10 = __sincos_stret(v8);
   v11 = sin(v9 + v9);
   v12 = [CIVector vectorWithX:v10.__cosval * v10.__cosval / ((v4 + v4) * v4) + v10.__sinval * v10.__sinval / ((v7 + v7) * v7) Y:(v11 / (v7 * 4.0 * v7) - v11 / (v4 * 4.0 * v4)) Z:v10.__sinval * v10.__sinval / ((v4 + v4) * v4) + v10.__cosval * v10.__cosval / ((v7 + v7) * v7) W:v58];
-  v13 = [(CIPortraitLightingStudio *)self _extractRedStudio];
+  _extractRedStudio = [(CIPortraitLightingStudio *)self _extractRedStudio];
   [(CIImage *)self->inputImage extent];
   inputImage = self->inputImage;
-  v18 = [v13 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v14, v15, v16, v17}];
-  v19 = [v18 imageByClampingToExtent];
+  v18 = [_extractRedStudio applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v14, v15, v16, v17}];
+  imageByClampingToExtent = [v18 imageByClampingToExtent];
   [(NSNumber *)self->inputScale doubleValue];
-  v21 = [v19 imageByApplyingGaussianBlurWithSigma:v20 * 12.0];
+  v21 = [imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:v20 * 12.0];
   [(CIImage *)self->inputImage extent];
   v22 = [v21 imageByCroppingToRect:?];
-  v23 = [(CIPortraitLightingStudio *)self _cheapEdgePreserve];
+  _cheapEdgePreserve = [(CIPortraitLightingStudio *)self _cheapEdgePreserve];
   [(CIImage *)self->inputImage extent];
   v60[0] = v18;
   v60[1] = v22;
-  v28 = [v23 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v60, 2), v24, v25, v26, v27}];
-  v29 = [(CIPortraitLightingStudio *)self _studioLightKernel];
+  v28 = [_cheapEdgePreserve applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v60, 2), v24, v25, v26, v27}];
+  _studioLightKernel = [(CIPortraitLightingStudio *)self _studioLightKernel];
   [(CIVector *)self->inputEyes X];
   v31 = v30;
   [(CIVector *)self->inputEyes Z];
@@ -164,7 +164,7 @@
   v59[5] = inputStrength;
   *&v46 = v45 * v45;
   v59[6] = [NSNumber numberWithFloat:v46];
-  return [v29 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v59, 7), v47, v49, v51, v53}];
+  return [_studioLightKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v59, 7), v47, v49, v51, v53}];
 }
 
 @end

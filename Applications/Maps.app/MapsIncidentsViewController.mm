@@ -1,30 +1,30 @@
 @interface MapsIncidentsViewController
-- (BOOL)_isValidURLForWebView:(id)a3;
+- (BOOL)_isValidURLForWebView:(id)view;
 - (CGSize)_calculatePreferredContentSize;
 - (void)_updatePreferredContentSize;
-- (void)openUrlForAdvisoryNotice:(id)a3;
-- (void)setTransitIncidents:(id)a3;
+- (void)openUrlForAdvisoryNotice:(id)notice;
+- (void)setTransitIncidents:(id)incidents;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MapsIncidentsViewController
 
-- (void)openUrlForAdvisoryNotice:(id)a3
+- (void)openUrlForAdvisoryNotice:(id)notice
 {
-  v4 = a3;
+  noticeCopy = notice;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_100797CB8;
   v15 = sub_100797CC8;
-  v16 = [[NSURL alloc] initWithString:v4];
+  v16 = [[NSURL alloc] initWithString:noticeCopy];
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
   v9[3] = sub_100797CB8;
   v9[4] = sub_100797CC8;
-  v10 = self;
+  selfCopy = self;
   v5 = UIApp;
   v6 = v12[5];
   v17 = UIApplicationOpenURLOptionUniversalLinksOnly;
@@ -42,19 +42,19 @@
   _Block_object_dispose(&v11, 8);
 }
 
-- (BOOL)_isValidURLForWebView:(id)a3
+- (BOOL)_isValidURLForWebView:(id)view
 {
-  v3 = [a3 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [view scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v4 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"https"];
+    v5 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v5;
@@ -62,22 +62,22 @@
 
 - (CGSize)_calculatePreferredContentSize
 {
-  v3 = [(MapsIncidentsViewController *)self tableView];
-  [v3 frame];
+  tableView = [(MapsIncidentsViewController *)self tableView];
+  [tableView frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(MapsIncidentsViewController *)self tableView];
-  [v8 contentSize];
+  tableView2 = [(MapsIncidentsViewController *)self tableView];
+  [tableView2 contentSize];
   v10 = v9;
   v11 = 282.0;
 
-  v12 = [(MapsIncidentsViewController *)self tableView];
-  [v12 setFrame:{v5, v7, 282.0, v10}];
+  tableView3 = [(MapsIncidentsViewController *)self tableView];
+  [tableView3 setFrame:{v5, v7, 282.0, v10}];
 
   height = CGSizeZero.height;
-  v14 = [(MapsIncidentsViewController *)self tableView];
-  [v14 contentSize];
+  tableView4 = [(MapsIncidentsViewController *)self tableView];
+  [tableView4 contentSize];
   v16 = v15;
   v18 = v17;
 
@@ -86,19 +86,19 @@
     v20 = 10;
     while (1)
     {
-      v21 = [(MapsIncidentsViewController *)self tableView];
-      [v21 contentSize];
+      tableView5 = [(MapsIncidentsViewController *)self tableView];
+      [tableView5 contentSize];
       v11 = v22;
       v10 = v23;
 
-      v24 = [(MapsIncidentsViewController *)self tableView];
-      [v24 setFrame:{v5, v7, v11, v10}];
+      tableView6 = [(MapsIncidentsViewController *)self tableView];
+      [tableView6 setFrame:{v5, v7, v11, v10}];
 
-      v25 = [(MapsIncidentsViewController *)self tableView];
-      [v25 layoutIfNeeded];
+      tableView7 = [(MapsIncidentsViewController *)self tableView];
+      [tableView7 layoutIfNeeded];
 
-      v26 = [(MapsIncidentsViewController *)self tableView];
-      [v26 contentSize];
+      tableView8 = [(MapsIncidentsViewController *)self tableView];
+      [tableView8 contentSize];
       v28 = v27;
       v30 = v29;
 
@@ -152,19 +152,19 @@
   }
 }
 
-- (void)setTransitIncidents:(id)a3
+- (void)setTransitIncidents:(id)incidents
 {
   v4.receiver = self;
   v4.super_class = MapsIncidentsViewController;
-  [(MapsIncidentsViewController *)&v4 setTransitIncidents:a3];
+  [(MapsIncidentsViewController *)&v4 setTransitIncidents:incidents];
   [(MapsIncidentsViewController *)self _updatePreferredContentSize];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MapsIncidentsViewController;
-  [(MapsIncidentsViewController *)&v4 viewWillAppear:a3];
+  [(MapsIncidentsViewController *)&v4 viewWillAppear:appear];
   [(MapsIncidentsViewController *)self _updatePreferredContentSize];
 }
 
@@ -173,21 +173,21 @@
   v11.receiver = self;
   v11.super_class = MapsIncidentsViewController;
   [(MapsIncidentsViewController *)&v11 viewDidLoad];
-  v3 = [(MapsIncidentsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"MapsIncidentsView"];
+  view = [(MapsIncidentsViewController *)self view];
+  [view setAccessibilityIdentifier:@"MapsIncidentsView"];
 
   v4 = +[UIColor clearColor];
-  v5 = [(MapsIncidentsViewController *)self tableView];
-  [v5 setBackgroundColor:v4];
+  tableView = [(MapsIncidentsViewController *)self tableView];
+  [tableView setBackgroundColor:v4];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v9 = [(MapsIncidentsViewController *)self tableView];
-  [v9 setLayoutMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
+  tableView2 = [(MapsIncidentsViewController *)self tableView];
+  [tableView2 setLayoutMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-  v10 = [(MapsIncidentsViewController *)self tableView];
-  [v10 setPreservesSuperviewLayoutMargins:1];
+  tableView3 = [(MapsIncidentsViewController *)self tableView];
+  [tableView3 setPreservesSuperviewLayoutMargins:1];
 
   [(MapsIncidentsViewController *)self setViewRespectsSystemMinimumLayoutMargins:0];
 }

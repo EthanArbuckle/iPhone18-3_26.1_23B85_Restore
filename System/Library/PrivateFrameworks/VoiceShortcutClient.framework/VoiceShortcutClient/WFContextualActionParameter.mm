@@ -1,68 +1,68 @@
 @interface WFContextualActionParameter
-- (BOOL)isEqual:(id)a3;
-- (WFContextualActionParameter)initWithCoder:(id)a3;
-- (WFContextualActionParameter)initWithType:(id)a3 displayString:(id)a4 wfParameterKey:(id)a5 wfSerializedRepresentation:(id)a6 askEachTime:(BOOL)a7 askEachTimeCollectionFilter:(id)a8 actionInput:(BOOL)a9;
+- (BOOL)isEqual:(id)equal;
+- (WFContextualActionParameter)initWithCoder:(id)coder;
+- (WFContextualActionParameter)initWithType:(id)type displayString:(id)string wfParameterKey:(id)key wfSerializedRepresentation:(id)representation askEachTime:(BOOL)time askEachTimeCollectionFilter:(id)filter actionInput:(BOOL)input;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContextualActionParameter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeObject:type forKey:@"type"];
-  [v5 encodeObject:self->_displayString forKey:@"displayString"];
-  [v5 encodeObject:self->_wfParameterKey forKey:@"wfParameterKey"];
-  [v5 encodeObject:self->_wfSerializedRepresentation forKey:@"wfSerializedRepresentation"];
-  [v5 encodeBool:self->_askEachTime forKey:@"askEachTime"];
-  [v5 encodeObject:self->_askEachTimeCollectionFilter forKey:@"askEachTimeCollectionFilter"];
-  [v5 encodeBool:self->_actionInput forKey:@"actionInput"];
+  coderCopy = coder;
+  [coderCopy encodeObject:type forKey:@"type"];
+  [coderCopy encodeObject:self->_displayString forKey:@"displayString"];
+  [coderCopy encodeObject:self->_wfParameterKey forKey:@"wfParameterKey"];
+  [coderCopy encodeObject:self->_wfSerializedRepresentation forKey:@"wfSerializedRepresentation"];
+  [coderCopy encodeBool:self->_askEachTime forKey:@"askEachTime"];
+  [coderCopy encodeObject:self->_askEachTimeCollectionFilter forKey:@"askEachTimeCollectionFilter"];
+  [coderCopy encodeBool:self->_actionInput forKey:@"actionInput"];
 }
 
-- (WFContextualActionParameter)initWithCoder:(id)a3
+- (WFContextualActionParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wfParameterKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayString"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"askEachTimeCollectionFilter"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wfParameterKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayString"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"askEachTimeCollectionFilter"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"wfSerializedRepresentation"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"wfSerializedRepresentation"];
 
-  v15 = [v4 decodeBoolForKey:@"askEachTime"];
-  v16 = [v4 decodeBoolForKey:@"actionInput"];
+  v15 = [coderCopy decodeBoolForKey:@"askEachTime"];
+  v16 = [coderCopy decodeBoolForKey:@"actionInput"];
 
   if (v5)
   {
     LOBYTE(v20) = v16;
     v17 = v21;
     self = [(WFContextualActionParameter *)self initWithType:v5 displayString:v6 wfParameterKey:v21 wfSerializedRepresentation:v14 askEachTime:v15 askEachTimeCollectionFilter:v7 actionInput:v20];
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
     v17 = v21;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -71,10 +71,10 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v7 = [(WFContextualActionParameter *)v6 type];
-    v8 = [(WFContextualActionParameter *)self type];
-    v9 = v7;
-    v10 = v8;
+    type = [(WFContextualActionParameter *)v6 type];
+    type2 = [(WFContextualActionParameter *)self type];
+    v9 = type;
+    v10 = type2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -101,10 +101,10 @@ LABEL_47:
       }
     }
 
-    v16 = [(WFContextualActionParameter *)v6 wfParameterKey];
-    v17 = [(WFContextualActionParameter *)self wfParameterKey];
-    v14 = v16;
-    v18 = v17;
+    wfParameterKey = [(WFContextualActionParameter *)v6 wfParameterKey];
+    wfParameterKey2 = [(WFContextualActionParameter *)self wfParameterKey];
+    v14 = wfParameterKey;
+    v18 = wfParameterKey2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -131,10 +131,10 @@ LABEL_46:
       }
     }
 
-    v22 = [(WFContextualActionParameter *)v6 displayString];
-    v23 = [(WFContextualActionParameter *)self displayString];
-    v20 = v22;
-    v24 = v23;
+    displayString = [(WFContextualActionParameter *)v6 displayString];
+    displayString2 = [(WFContextualActionParameter *)self displayString];
+    v20 = displayString;
+    v24 = displayString2;
     v51 = v24;
     if (v20 == v24)
     {
@@ -172,10 +172,10 @@ LABEL_45:
     }
 
     v50 = v20;
-    v27 = [(WFContextualActionParameter *)v6 wfSerializedRepresentation];
-    v28 = [(WFContextualActionParameter *)self wfSerializedRepresentation];
-    v26 = v27;
-    v29 = v28;
+    wfSerializedRepresentation = [(WFContextualActionParameter *)v6 wfSerializedRepresentation];
+    wfSerializedRepresentation2 = [(WFContextualActionParameter *)self wfSerializedRepresentation];
+    v26 = wfSerializedRepresentation;
+    v29 = wfSerializedRepresentation2;
     v30 = v26;
     v31 = v29;
     if (v26 == v29)
@@ -204,8 +204,8 @@ LABEL_45:
       }
     }
 
-    v36 = [(WFContextualActionParameter *)v6 isAskEachTime];
-    if (v36 != [(WFContextualActionParameter *)self isAskEachTime])
+    isAskEachTime = [(WFContextualActionParameter *)v6 isAskEachTime];
+    if (isAskEachTime != [(WFContextualActionParameter *)self isAskEachTime])
     {
 LABEL_31:
       LOBYTE(v12) = 0;
@@ -214,10 +214,10 @@ LABEL_31:
       goto LABEL_43;
     }
 
-    v37 = [(WFContextualActionParameter *)v6 askEachTimeCollectionFilter];
-    v38 = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
-    v39 = v37;
-    v40 = v38;
+    askEachTimeCollectionFilter = [(WFContextualActionParameter *)v6 askEachTimeCollectionFilter];
+    askEachTimeCollectionFilter2 = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
+    v39 = askEachTimeCollectionFilter;
+    v40 = askEachTimeCollectionFilter2;
     v48 = v39;
     if (v39 == v40)
     {
@@ -260,8 +260,8 @@ LABEL_42:
       }
     }
 
-    v42 = [(WFContextualActionParameter *)v6 isActionInput];
-    v12 = v42 ^ [(WFContextualActionParameter *)self isActionInput]^ 1;
+    isActionInput = [(WFContextualActionParameter *)v6 isActionInput];
+    v12 = isActionInput ^ [(WFContextualActionParameter *)self isActionInput]^ 1;
     goto LABEL_40;
   }
 
@@ -274,45 +274,45 @@ LABEL_49:
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFContextualActionParameter *)self type];
+  type = [(WFContextualActionParameter *)self type];
 
-  if (v4)
+  if (type)
   {
-    v5 = [(WFContextualActionParameter *)self type];
-    v6 = [v3 combineContentsOfPropertyListObject:v5];
+    type2 = [(WFContextualActionParameter *)self type];
+    v6 = [v3 combineContentsOfPropertyListObject:type2];
   }
 
-  v7 = [(WFContextualActionParameter *)self wfParameterKey];
+  wfParameterKey = [(WFContextualActionParameter *)self wfParameterKey];
 
-  if (v7)
+  if (wfParameterKey)
   {
-    v8 = [(WFContextualActionParameter *)self wfParameterKey];
-    v9 = [v3 combineContentsOfPropertyListObject:v8];
+    wfParameterKey2 = [(WFContextualActionParameter *)self wfParameterKey];
+    v9 = [v3 combineContentsOfPropertyListObject:wfParameterKey2];
   }
 
-  v10 = [(WFContextualActionParameter *)self displayString];
+  displayString = [(WFContextualActionParameter *)self displayString];
 
-  if (v10)
+  if (displayString)
   {
-    v11 = [(WFContextualActionParameter *)self displayString];
-    v12 = [v3 combineContentsOfPropertyListObject:v11];
+    displayString2 = [(WFContextualActionParameter *)self displayString];
+    v12 = [v3 combineContentsOfPropertyListObject:displayString2];
   }
 
-  v13 = [(WFContextualActionParameter *)self wfSerializedRepresentation];
+  wfSerializedRepresentation = [(WFContextualActionParameter *)self wfSerializedRepresentation];
 
-  if (v13)
+  if (wfSerializedRepresentation)
   {
-    v14 = [(WFContextualActionParameter *)self wfSerializedRepresentation];
-    v15 = [v3 combineContentsOfPropertyListObject:v14];
+    wfSerializedRepresentation2 = [(WFContextualActionParameter *)self wfSerializedRepresentation];
+    v15 = [v3 combineContentsOfPropertyListObject:wfSerializedRepresentation2];
   }
 
   v16 = [v3 combineBool:{-[WFContextualActionParameter isAskEachTime](self, "isAskEachTime")}];
-  v17 = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
+  askEachTimeCollectionFilter = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
 
-  if (v17)
+  if (askEachTimeCollectionFilter)
   {
-    v18 = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
-    v19 = [v3 combineContentsOfPropertyListObject:v18];
+    askEachTimeCollectionFilter2 = [(WFContextualActionParameter *)self askEachTimeCollectionFilter];
+    v19 = [v3 combineContentsOfPropertyListObject:askEachTimeCollectionFilter2];
   }
 
   v20 = [v3 combineBool:{-[WFContextualActionParameter isActionInput](self, "isActionInput")}];
@@ -321,17 +321,17 @@ LABEL_49:
   return v21;
 }
 
-- (WFContextualActionParameter)initWithType:(id)a3 displayString:(id)a4 wfParameterKey:(id)a5 wfSerializedRepresentation:(id)a6 askEachTime:(BOOL)a7 askEachTimeCollectionFilter:(id)a8 actionInput:(BOOL)a9
+- (WFContextualActionParameter)initWithType:(id)type displayString:(id)string wfParameterKey:(id)key wfSerializedRepresentation:(id)representation askEachTime:(BOOL)time askEachTimeCollectionFilter:(id)filter actionInput:(BOOL)input
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  if (!v16)
+  typeCopy = type;
+  stringCopy = string;
+  keyCopy = key;
+  representationCopy = representation;
+  filterCopy = filter;
+  if (!typeCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"WFContextualActionParameter.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualActionParameter.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
   v31.receiver = self;
@@ -339,22 +339,22 @@ LABEL_49:
   v21 = [(WFContextualActionParameter *)&v31 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [typeCopy copy];
     type = v21->_type;
     v21->_type = v22;
 
-    v24 = [v17 copy];
+    v24 = [stringCopy copy];
     displayString = v21->_displayString;
     v21->_displayString = v24;
 
-    v26 = [v18 copy];
+    v26 = [keyCopy copy];
     wfParameterKey = v21->_wfParameterKey;
     v21->_wfParameterKey = v26;
 
-    objc_storeStrong(&v21->_wfSerializedRepresentation, a6);
-    v21->_askEachTime = a7;
-    objc_storeStrong(&v21->_askEachTimeCollectionFilter, a8);
-    v21->_actionInput = a9;
+    objc_storeStrong(&v21->_wfSerializedRepresentation, representation);
+    v21->_askEachTime = time;
+    objc_storeStrong(&v21->_askEachTimeCollectionFilter, filter);
+    v21->_actionInput = input;
     v28 = v21;
   }
 

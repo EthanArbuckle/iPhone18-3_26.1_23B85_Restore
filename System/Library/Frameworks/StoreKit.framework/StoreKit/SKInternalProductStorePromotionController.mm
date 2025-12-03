@@ -1,7 +1,7 @@
 @interface SKInternalProductStorePromotionController
 + (id)defaultController;
-- (void)_handleReply:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)fetchOverridesForVisibilityAndOrderForApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_handleReply:(id)reply error:(id)error completionHandler:(id)handler;
+- (void)fetchOverridesForVisibilityAndOrderForApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation SKInternalProductStorePromotionController
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __62__SKInternalProductStorePromotionController_defaultController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultController_onceToken != -1)
   {
     dispatch_once(&defaultController_onceToken, block);
@@ -32,27 +32,27 @@ uint64_t __62__SKInternalProductStorePromotionController_defaultController__bloc
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)_handleReply:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_handleReply:(id)reply error:(id)error completionHandler:(id)handler
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || v9)
+  replyCopy = reply;
+  errorCopy = error;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!replyCopy || errorCopy)
   {
-    if (v9)
+    if (errorCopy)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        [SKInternalProductStorePromotionController _handleReply:v9 error:? completionHandler:?];
+        [SKInternalProductStorePromotionController _handleReply:errorCopy error:? completionHandler:?];
       }
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v48 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[%{public}@]: No promotion info found", buf, 0xCu);
     }
 
@@ -62,7 +62,7 @@ uint64_t __62__SKInternalProductStorePromotionController_defaultController__bloc
     v43[2] = __82__SKInternalProductStorePromotionController__handleReply_error_completionHandler___block_invoke;
     v43[3] = &unk_1E7B27B30;
     v45 = v11;
-    v44 = v9;
+    v44 = errorCopy;
     v28 = v11;
     dispatch_async(v29, v43);
 
@@ -71,20 +71,20 @@ uint64_t __62__SKInternalProductStorePromotionController_defaultController__bloc
 
   else
   {
-    v30 = v10;
+    v30 = handlerCopy;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      [SKInternalProductStorePromotionController _handleReply:v8 error:? completionHandler:?];
+      [SKInternalProductStorePromotionController _handleReply:replyCopy error:? completionHandler:?];
     }
 
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = [MEMORY[0x1E695DFA8] set];
     v32 = [MEMORY[0x1E695DFA8] set];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v12 = v8;
+    v12 = replyCopy;
     v13 = [v12 countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (v13)
     {
@@ -105,16 +105,16 @@ uint64_t __62__SKInternalProductStorePromotionController_defaultController__bloc
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && ([v19 integerValue] & 0x8000000000000000) == 0)
           {
-            [v33 addObject:v18];
+            [array addObject:v18];
             v20 = [v17 valueForKey:0x1F29BE000];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               if ([v20 integerValue])
               {
-                v21 = [v20 integerValue];
+                integerValue = [v20 integerValue];
                 v22 = v32;
-                if (v21 == 1 || (v23 = [v20 integerValue], v22 = v31, v23 == 2))
+                if (integerValue == 1 || (v23 = [v20 integerValue], v22 = v31, v23 == 2))
                 {
                   [v22 addObject:v18];
                 }
@@ -134,17 +134,17 @@ uint64_t __62__SKInternalProductStorePromotionController_defaultController__bloc
     block[1] = 3221225472;
     block[2] = __82__SKInternalProductStorePromotionController__handleReply_error_completionHandler___block_invoke_4;
     block[3] = &unk_1E7B28690;
-    v35 = v33;
+    v35 = array;
     v36 = v31;
     v37 = v32;
     v38 = v30;
     v25 = v30;
     v26 = v32;
     v27 = v31;
-    v28 = v33;
+    v28 = array;
     dispatch_async(v24, block);
 
-    v9 = 0;
+    errorCopy = 0;
   }
 }
 
@@ -156,10 +156,10 @@ void __82__SKInternalProductStorePromotionController__handleReply_error_completi
   (*(v2 + 16))(v2, MEMORY[0x1E695E0F0], v4, v3, *(a1 + 32));
 }
 
-- (void)fetchOverridesForVisibilityAndOrderForApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchOverridesForVisibilityAndOrderForApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = +[SKServiceBroker defaultBroker];
     v11[0] = MEMORY[0x1E69E9820];
@@ -167,7 +167,7 @@ void __82__SKInternalProductStorePromotionController__handleReply_error_completi
     v11[2] = __129__SKInternalProductStorePromotionController_fetchOverridesForVisibilityAndOrderForApplicationBundleIdentifier_completionHandler___block_invoke;
     v11[3] = &unk_1E7B286B8;
     v11[4] = self;
-    v7 = v5;
+    v7 = handlerCopy;
     v12 = v7;
     v8 = [v6 storeKitServiceWithErrorHandler:v11];
 

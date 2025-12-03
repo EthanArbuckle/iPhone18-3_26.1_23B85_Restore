@@ -1,29 +1,29 @@
 @interface APOdmlAnalytics
 + (id)_versionAndIdentifiers;
-+ (void)sendEvent:(id)a3 additionalDetails:(id)a4;
-+ (void)sendTimedEvent:(id)a3 statusSuccess:(BOOL)a4 additionalDetails:(id)a5 startDate:(id)a6 endDate:(id)a7;
++ (void)sendEvent:(id)event additionalDetails:(id)details;
++ (void)sendTimedEvent:(id)event statusSuccess:(BOOL)success additionalDetails:(id)details startDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation APOdmlAnalytics
 
-+ (void)sendEvent:(id)a3 additionalDetails:(id)a4
++ (void)sendEvent:(id)event additionalDetails:(id)details
 {
-  v27 = a3;
-  v6 = a4;
+  eventCopy = event;
+  detailsCopy = details;
   v7 = MEMORY[0x277CCACA8];
-  v10 = objc_msgSend_eventName(a1, v8, v9);
+  v10 = objc_msgSend_eventName(self, v8, v9);
   v12 = objc_msgSend_stringWithFormat_(v7, v11, @"%@.%@", @"com.apple.ap.SearchAdsODML", v10);
 
-  v16 = objc_msgSend__versionAndIdentifiers(a1, v13, v14);
-  if (v27)
+  v16 = objc_msgSend__versionAndIdentifiers(self, v13, v14);
+  if (eventCopy)
   {
     objc_msgSend_setValue_forKey_(v16, v15, @"2", @"statusCode");
     v17 = MEMORY[0x277CCACA8];
-    v20 = objc_msgSend_code(v27, v18, v19);
+    v20 = objc_msgSend_code(eventCopy, v18, v19);
     v22 = objc_msgSend_stringWithFormat_(v17, v21, @"%ld", v20);
     objc_msgSend_setValue_forKey_(v16, v23, v22, @"statusDetails");
 
-    if (!v6)
+    if (!detailsCopy)
     {
       goto LABEL_4;
     }
@@ -32,34 +32,34 @@
   }
 
   objc_msgSend_setValue_forKey_(v16, v15, @"1", @"statusCode");
-  if (v6)
+  if (detailsCopy)
   {
 LABEL_3:
-    objc_msgSend_addEntriesFromDictionary_(v16, v24, v6);
+    objc_msgSend_addEntriesFromDictionary_(v16, v24, detailsCopy);
   }
 
 LABEL_4:
   v25 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEAC0], v24, v16);
-  objc_msgSend__analyticsSendEvent_eventPayload_(a1, v26, v12, v25);
+  objc_msgSend__analyticsSendEvent_eventPayload_(self, v26, v12, v25);
 }
 
-+ (void)sendTimedEvent:(id)a3 statusSuccess:(BOOL)a4 additionalDetails:(id)a5 startDate:(id)a6 endDate:(id)a7
++ (void)sendTimedEvent:(id)event statusSuccess:(BOOL)success additionalDetails:(id)details startDate:(id)date endDate:(id)endDate
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  detailsCopy = details;
+  dateCopy = date;
+  endDateCopy = endDate;
   v16 = MEMORY[0x277CCACA8];
-  v19 = objc_msgSend_eventName(a1, v17, v18);
+  v19 = objc_msgSend_eventName(self, v17, v18);
   v21 = objc_msgSend_stringWithFormat_(v16, v20, @"%@.%@", @"com.apple.ap.SearchAdsODML", v19);
 
   v24 = 0.0;
-  if (v14)
+  if (dateCopy)
   {
-    if (v15)
+    if (endDateCopy)
     {
-      objc_msgSend_timeIntervalSinceDate_(v15, v22, v14);
+      objc_msgSend_timeIntervalSinceDate_(endDateCopy, v22, dateCopy);
       v24 = v25;
       if (v25 < 0.0)
       {
@@ -74,31 +74,31 @@ LABEL_4:
     }
   }
 
-  v27 = objc_msgSend__versionAndIdentifiers(a1, v22, v23);
+  v27 = objc_msgSend__versionAndIdentifiers(self, v22, v23);
   objc_msgSend_setValue_forKey_(v27, v28, @"1", @"statusCode");
   v31 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v29, v30, v24);
   objc_msgSend_setValue_forKey_(v27, v32, v31, @"processingTime");
 
-  if (v12)
+  if (eventCopy)
   {
-    if (!a4)
+    if (!success)
     {
       objc_msgSend_setValue_forKey_(v27, v33, @"2", @"statusCode");
     }
 
     v35 = MEMORY[0x277CCACA8];
-    v36 = objc_msgSend_code(v12, v33, v34);
+    v36 = objc_msgSend_code(eventCopy, v33, v34);
     v38 = objc_msgSend_stringWithFormat_(v35, v37, @"%ld", v36);
     objc_msgSend_setValue_forKey_(v27, v39, v38, @"statusDetails");
   }
 
-  if (v13)
+  if (detailsCopy)
   {
-    objc_msgSend_addEntriesFromDictionary_(v27, v33, v13);
+    objc_msgSend_addEntriesFromDictionary_(v27, v33, detailsCopy);
   }
 
   v40 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEAC0], v33, v27);
-  objc_msgSend__analyticsSendEvent_eventPayload_(a1, v41, v21, v40);
+  objc_msgSend__analyticsSendEvent_eventPayload_(self, v41, v21, v40);
 
   v42 = *MEMORY[0x277D85DE8];
 }

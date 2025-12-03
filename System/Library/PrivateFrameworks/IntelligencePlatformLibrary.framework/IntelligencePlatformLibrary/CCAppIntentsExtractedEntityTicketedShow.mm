@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityTicketedShow
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityTicketedShow)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityTicketedShow)initWithReservationID:(id)a3 eventName:(id)a4 provider:(id)a5 customerNames:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 seatNumbers:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 endDate:(id)a12 endDateTimeZone:(id)a13 duration:(id)a14 ticketType:(id)a15 link:(id)a16 cost:(id)a17 costCode:(id)a18 eventSubType:(id)a19 error:(id *)a20;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityTicketedShow)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppIntentsExtractedEntityTicketedShow)initWithReservationID:(id)d eventName:(id)name provider:(id)provider customerNames:(id)names startLocationName:(id)locationName startLocationAddress:(id)address seatNumbers:(id)numbers startDate:(id)self0 startDateTimeZone:(id)self1 endDate:(id)self2 endDateTimeZone:(id)self3 duration:(id)self4 ticketType:(id)self5 link:(id)self6 cost:(id)self7 costCode:(id)self8 eventSubType:(id)self9 error:(id *)error;
 - (NSArray)customerNames;
 - (NSArray)seatNumbers;
 - (NSString)cost;
@@ -19,39 +19,39 @@
 - (NSString)startLocationName;
 - (NSString)ticketType;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityTicketedShow
 
-- (CCAppIntentsExtractedEntityTicketedShow)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityTicketedShow)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v29 = [v6 objectForKeyedSubscript:@"reservationID"];
-    v28 = [v6 objectForKeyedSubscript:@"eventName"];
-    v27 = [v6 objectForKeyedSubscript:@"provider"];
-    v21 = [v6 objectForKeyedSubscript:@"customerNames"];
-    v20 = [v6 objectForKeyedSubscript:@"startLocationName"];
-    v19 = [v6 objectForKeyedSubscript:@"startLocationAddress"];
-    v26 = [v6 objectForKeyedSubscript:@"seatNumbers"];
-    v25 = [v6 objectForKeyedSubscript:@"startDate"];
-    v24 = [v6 objectForKeyedSubscript:@"startDateTimeZone"];
-    v17 = [v6 objectForKeyedSubscript:@"endDate"];
-    v16 = [v6 objectForKeyedSubscript:@"endDateTimeZone"];
-    v18 = [v6 objectForKeyedSubscript:@"duration"];
-    v15 = [v6 objectForKeyedSubscript:@"ticketType"];
-    [v6 objectForKeyedSubscript:@"link"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"reservationID"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"eventName"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"customerNames"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"startLocationName"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"startLocationAddress"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"seatNumbers"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"startDateTimeZone"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"endDateTimeZone"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"ticketType"];
+    [dictionaryCopy objectForKeyedSubscript:@"link"];
     v9 = v23 = v8;
-    v10 = [v6 objectForKeyedSubscript:@"cost"];
-    [v6 objectForKeyedSubscript:@"costCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cost"];
+    [dictionaryCopy objectForKeyedSubscript:@"costCode"];
     v11 = v22 = self;
-    v12 = [v6 objectForKeyedSubscript:@"eventSubType"];
-    v13 = [[CCAppIntentsExtractedEntityTicketedShow alloc] initWithReservationID:v29 eventName:v28 provider:v27 customerNames:v21 startLocationName:v20 startLocationAddress:v19 seatNumbers:v26 startDate:v25 startDateTimeZone:v24 endDate:v17 endDateTimeZone:v16 duration:v18 ticketType:v15 link:v9 cost:v10 costCode:v11 eventSubType:v12 error:a4];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventSubType"];
+    v13 = [[CCAppIntentsExtractedEntityTicketedShow alloc] initWithReservationID:v29 eventName:v28 provider:v27 customerNames:v21 startLocationName:v20 startLocationAddress:v19 seatNumbers:v26 startDate:v25 startDateTimeZone:v24 endDate:v17 endDateTimeZone:v16 duration:v18 ticketType:v15 link:v9 cost:v10 costCode:v11 eventSubType:v12 error:error];
 
     self = v22;
     v8 = v23;
@@ -71,68 +71,68 @@
   v3 = objc_opt_new();
   if (self->_reservationID)
   {
-    v4 = [(CCAppIntentsExtractedEntityTicketedShow *)self reservationID];
-    [v3 setObject:v4 forKeyedSubscript:@"reservationID"];
+    reservationID = [(CCAppIntentsExtractedEntityTicketedShow *)self reservationID];
+    [v3 setObject:reservationID forKeyedSubscript:@"reservationID"];
   }
 
   if (self->_eventName)
   {
-    v5 = [(CCAppIntentsExtractedEntityTicketedShow *)self eventName];
-    [v3 setObject:v5 forKeyedSubscript:@"eventName"];
+    eventName = [(CCAppIntentsExtractedEntityTicketedShow *)self eventName];
+    [v3 setObject:eventName forKeyedSubscript:@"eventName"];
   }
 
   if (self->_provider)
   {
-    v6 = [(CCAppIntentsExtractedEntityTicketedShow *)self provider];
-    [v3 setObject:v6 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityTicketedShow *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_customerNames)
   {
-    v7 = [(CCAppIntentsExtractedEntityTicketedShow *)self customerNames];
-    [v3 setObject:v7 forKeyedSubscript:@"customerNames"];
+    customerNames = [(CCAppIntentsExtractedEntityTicketedShow *)self customerNames];
+    [v3 setObject:customerNames forKeyedSubscript:@"customerNames"];
   }
 
   if (self->_startLocationName)
   {
-    v8 = [(CCAppIntentsExtractedEntityTicketedShow *)self startLocationName];
-    [v3 setObject:v8 forKeyedSubscript:@"startLocationName"];
+    startLocationName = [(CCAppIntentsExtractedEntityTicketedShow *)self startLocationName];
+    [v3 setObject:startLocationName forKeyedSubscript:@"startLocationName"];
   }
 
   if (self->_startLocationAddress)
   {
-    v9 = [(CCAppIntentsExtractedEntityTicketedShow *)self startLocationAddress];
-    [v3 setObject:v9 forKeyedSubscript:@"startLocationAddress"];
+    startLocationAddress = [(CCAppIntentsExtractedEntityTicketedShow *)self startLocationAddress];
+    [v3 setObject:startLocationAddress forKeyedSubscript:@"startLocationAddress"];
   }
 
   if (self->_seatNumbers)
   {
-    v10 = [(CCAppIntentsExtractedEntityTicketedShow *)self seatNumbers];
-    [v3 setObject:v10 forKeyedSubscript:@"seatNumbers"];
+    seatNumbers = [(CCAppIntentsExtractedEntityTicketedShow *)self seatNumbers];
+    [v3 setObject:seatNumbers forKeyedSubscript:@"seatNumbers"];
   }
 
   if (self->_startDate)
   {
-    v11 = [(CCAppIntentsExtractedEntityTicketedShow *)self startDate];
-    [v3 setObject:v11 forKeyedSubscript:@"startDate"];
+    startDate = [(CCAppIntentsExtractedEntityTicketedShow *)self startDate];
+    [v3 setObject:startDate forKeyedSubscript:@"startDate"];
   }
 
   if (self->_startDateTimeZone)
   {
-    v12 = [(CCAppIntentsExtractedEntityTicketedShow *)self startDateTimeZone];
-    [v3 setObject:v12 forKeyedSubscript:@"startDateTimeZone"];
+    startDateTimeZone = [(CCAppIntentsExtractedEntityTicketedShow *)self startDateTimeZone];
+    [v3 setObject:startDateTimeZone forKeyedSubscript:@"startDateTimeZone"];
   }
 
   if (self->_endDate)
   {
-    v13 = [(CCAppIntentsExtractedEntityTicketedShow *)self endDate];
-    [v3 setObject:v13 forKeyedSubscript:@"endDate"];
+    endDate = [(CCAppIntentsExtractedEntityTicketedShow *)self endDate];
+    [v3 setObject:endDate forKeyedSubscript:@"endDate"];
   }
 
   if (self->_endDateTimeZone)
   {
-    v14 = [(CCAppIntentsExtractedEntityTicketedShow *)self endDateTimeZone];
-    [v3 setObject:v14 forKeyedSubscript:@"endDateTimeZone"];
+    endDateTimeZone = [(CCAppIntentsExtractedEntityTicketedShow *)self endDateTimeZone];
+    [v3 setObject:endDateTimeZone forKeyedSubscript:@"endDateTimeZone"];
   }
 
   if (self->_hasDuration)
@@ -145,32 +145,32 @@
 
   if (self->_ticketType)
   {
-    v17 = [(CCAppIntentsExtractedEntityTicketedShow *)self ticketType];
-    [v3 setObject:v17 forKeyedSubscript:@"ticketType"];
+    ticketType = [(CCAppIntentsExtractedEntityTicketedShow *)self ticketType];
+    [v3 setObject:ticketType forKeyedSubscript:@"ticketType"];
   }
 
   if (self->_link)
   {
-    v18 = [(CCAppIntentsExtractedEntityTicketedShow *)self link];
-    [v3 setObject:v18 forKeyedSubscript:@"link"];
+    link = [(CCAppIntentsExtractedEntityTicketedShow *)self link];
+    [v3 setObject:link forKeyedSubscript:@"link"];
   }
 
   if (self->_cost)
   {
-    v19 = [(CCAppIntentsExtractedEntityTicketedShow *)self cost];
-    [v3 setObject:v19 forKeyedSubscript:@"cost"];
+    cost = [(CCAppIntentsExtractedEntityTicketedShow *)self cost];
+    [v3 setObject:cost forKeyedSubscript:@"cost"];
   }
 
   if (self->_costCode)
   {
-    v20 = [(CCAppIntentsExtractedEntityTicketedShow *)self costCode];
-    [v3 setObject:v20 forKeyedSubscript:@"costCode"];
+    costCode = [(CCAppIntentsExtractedEntityTicketedShow *)self costCode];
+    [v3 setObject:costCode forKeyedSubscript:@"costCode"];
   }
 
   if (self->_eventSubType)
   {
-    v21 = [(CCAppIntentsExtractedEntityTicketedShow *)self eventSubType];
-    [v3 setObject:v21 forKeyedSubscript:@"eventSubType"];
+    eventSubType = [(CCAppIntentsExtractedEntityTicketedShow *)self eventSubType];
+    [v3 setObject:eventSubType forKeyedSubscript:@"eventSubType"];
   }
 
   v22 = [v3 copy];
@@ -178,112 +178,112 @@
   return v22;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v23 = a3;
+  blockCopy = block;
   if (self->_reservationID)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27428 stringValue:self->_reservationID];
-    v23[2](v23, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_eventName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27429 stringValue:self->_eventName];
-    v23[2](v23, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_provider)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27430 stringValue:self->_provider];
-    v23[2](v23, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_customerNames)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27431 repeatedStringValue:self->_customerNames];
-    v23[2](v23, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_startLocationName)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27432 stringValue:self->_startLocationName];
-    v23[2](v23, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_startLocationAddress)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27433 stringValue:self->_startLocationAddress];
-    v23[2](v23, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_seatNumbers)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27434 repeatedStringValue:self->_seatNumbers];
-    v23[2](v23, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_startDate)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27435 stringValue:self->_startDate];
-    v23[2](v23, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_startDateTimeZone)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27436 stringValue:self->_startDateTimeZone];
-    v23[2](v23, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_endDate)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27437 stringValue:self->_endDate];
-    v23[2](v23, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_endDateTimeZone)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27438 stringValue:self->_endDateTimeZone];
-    v23[2](v23, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_hasDuration)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27439 doubleValue:self->_duration];
-    v23[2](v23, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_ticketType)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27440 stringValue:self->_ticketType];
-    v23[2](v23, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_link)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27441 stringValue:self->_link];
-    v23[2](v23, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_cost)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27442 stringValue:self->_cost];
-    v23[2](v23, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_costCode)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27443 stringValue:self->_costCode];
-    v23[2](v23, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
-  v21 = v23;
+  v21 = blockCopy;
   if (self->_eventSubType)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27444 stringValue:self->_eventSubType];
-    v23[2](v23, v22);
+    blockCopy[2](blockCopy, v22);
 
-    v21 = v23;
+    v21 = blockCopy;
   }
 }
 
@@ -399,10 +399,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] >= *&v7[*MEMORY[0x1E6993AB0]])
@@ -587,13 +587,13 @@ LABEL_49:
             {
               v32 = objc_opt_class();
               NSStringFromClass(v32);
-              v49 = a4;
-              v34 = v33 = v6;
+              errorCopy = error;
+              v34 = v33 = dataCopy;
               v35 = *&v7[*v11];
               v10 = CCSkipFieldErrorForMessage();
 
-              v6 = v33;
-              a4 = v49;
+              dataCopy = v33;
+              error = errorCopy;
             }
 
 LABEL_54:
@@ -657,10 +657,10 @@ LABEL_60:
     v43 = NSStringFromClass(v42);
     v44 = *&v7[*v41];
     CCInvalidBufferErrorForMessage();
-    v46 = v45 = v6;
+    v46 = v45 = dataCopy;
     CCSetError();
 
-    v6 = v45;
+    dataCopy = v45;
   }
 
   v47 = 0;
@@ -669,34 +669,34 @@ LABEL_65:
   return v47;
 }
 
-- (CCAppIntentsExtractedEntityTicketedShow)initWithReservationID:(id)a3 eventName:(id)a4 provider:(id)a5 customerNames:(id)a6 startLocationName:(id)a7 startLocationAddress:(id)a8 seatNumbers:(id)a9 startDate:(id)a10 startDateTimeZone:(id)a11 endDate:(id)a12 endDateTimeZone:(id)a13 duration:(id)a14 ticketType:(id)a15 link:(id)a16 cost:(id)a17 costCode:(id)a18 eventSubType:(id)a19 error:(id *)a20
+- (CCAppIntentsExtractedEntityTicketedShow)initWithReservationID:(id)d eventName:(id)name provider:(id)provider customerNames:(id)names startLocationName:(id)locationName startLocationAddress:(id)address seatNumbers:(id)numbers startDate:(id)self0 startDateTimeZone:(id)self1 endDate:(id)self2 endDateTimeZone:(id)self3 duration:(id)self4 ticketType:(id)self5 link:(id)self6 cost:(id)self7 costCode:(id)self8 eventSubType:(id)self9 error:(id *)error
 {
   v111 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
-  v93 = a8;
-  v92 = a9;
-  v91 = a10;
-  v90 = a11;
-  v89 = a12;
-  v88 = a13;
-  v87 = a14;
-  v86 = a15;
-  v85 = a16;
-  v84 = a17;
-  v83 = a18;
-  v82 = a19;
+  dCopy = d;
+  nameCopy = name;
+  providerCopy = provider;
+  namesCopy = names;
+  locationNameCopy = locationName;
+  addressCopy = address;
+  numbersCopy = numbers;
+  dateCopy = date;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  timeZoneCopy = timeZone;
+  durationCopy = duration;
+  typeCopy = type;
+  linkCopy = link;
+  costCopy = cost;
+  codeCopy = code;
+  subTypeCopy = subType;
   v30 = objc_opt_new();
   v31 = 0x1E696A000uLL;
-  if (!v25)
+  if (!dCopy)
   {
     v33 = 0;
 LABEL_5:
-    v80 = v25;
-    if (v26)
+    v80 = dCopy;
+    if (nameCopy)
     {
       objc_opt_class();
       v107 = v33;
@@ -709,11 +709,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v27)
+      if (!providerCopy)
       {
 LABEL_8:
         v33 = v35;
-        if (v28)
+        if (namesCopy)
         {
           goto LABEL_9;
         }
@@ -725,7 +725,7 @@ LABEL_8:
     else
     {
       v35 = v33;
-      if (!v27)
+      if (!providerCopy)
       {
         goto LABEL_8;
       }
@@ -742,7 +742,7 @@ LABEL_8:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v28)
+    if (namesCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -759,7 +759,7 @@ LABEL_9:
       v104 = 0u;
       v101 = 0u;
       v102 = 0u;
-      v37 = v28;
+      v37 = namesCopy;
       v38 = [v37 countByEnumeratingWithState:&v101 objects:v110 count:16];
       if (v38)
       {
@@ -785,7 +785,7 @@ LABEL_9:
       }
 
       v31 = 0x1E696A000;
-      if (!v29)
+      if (!locationNameCopy)
       {
         goto LABEL_18;
       }
@@ -795,12 +795,12 @@ LABEL_9:
 
 LABEL_23:
     v35 = v33;
-    if (!v29)
+    if (!locationNameCopy)
     {
 LABEL_18:
       v33 = v35;
 LABEL_26:
-      if (v93)
+      if (addressCopy)
       {
         v48 = *(v31 + 3776);
         objc_opt_class();
@@ -821,7 +821,7 @@ LABEL_26:
         v35 = v33;
       }
 
-      if (v92)
+      if (numbersCopy)
       {
         v50 = *(v31 + 3776);
         objc_opt_class();
@@ -838,7 +838,7 @@ LABEL_26:
         v97 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v52 = v92;
+        v52 = numbersCopy;
         v53 = [v52 countByEnumeratingWithState:&v94 objects:v109 count:16];
         if (v53)
         {
@@ -871,7 +871,7 @@ LABEL_26:
         v33 = v35;
       }
 
-      if (v91)
+      if (dateCopy)
       {
         v58 = *(v31 + 3776);
         objc_opt_class();
@@ -891,7 +891,7 @@ LABEL_26:
         v35 = v33;
       }
 
-      if (v90)
+      if (zoneCopy)
       {
         v60 = *(v31 + 3776);
         objc_opt_class();
@@ -911,7 +911,7 @@ LABEL_26:
         v33 = v35;
       }
 
-      if (v89)
+      if (endDateCopy)
       {
         v62 = *(v31 + 3776);
         objc_opt_class();
@@ -931,7 +931,7 @@ LABEL_26:
         v35 = v33;
       }
 
-      if (v88)
+      if (timeZoneCopy)
       {
         v64 = *(v31 + 3776);
         objc_opt_class();
@@ -951,7 +951,7 @@ LABEL_26:
         v33 = v35;
       }
 
-      if (v87)
+      if (durationCopy)
       {
         objc_opt_class();
         v66 = CCValidateIsInstanceOfExpectedClass();
@@ -962,7 +962,7 @@ LABEL_26:
           goto LABEL_76;
         }
 
-        [v87 doubleValue];
+        [durationCopy doubleValue];
         CCPBDataWriterWriteDoubleField();
       }
 
@@ -971,7 +971,7 @@ LABEL_26:
         v35 = v33;
       }
 
-      if (v86)
+      if (typeCopy)
       {
         v67 = *(v31 + 3776);
         objc_opt_class();
@@ -991,7 +991,7 @@ LABEL_26:
         v33 = v35;
       }
 
-      if (v85)
+      if (linkCopy)
       {
         v69 = *(v31 + 3776);
         objc_opt_class();
@@ -1011,7 +1011,7 @@ LABEL_26:
         v35 = v33;
       }
 
-      if (!v84)
+      if (!costCopy)
       {
         v33 = v35;
         goto LABEL_73;
@@ -1026,7 +1026,7 @@ LABEL_26:
       {
         CCPBDataWriterWriteStringField();
 LABEL_73:
-        if (!v83)
+        if (!codeCopy)
         {
           v35 = v33;
           goto LABEL_78;
@@ -1041,7 +1041,7 @@ LABEL_73:
         {
           CCPBDataWriterWriteStringField();
 LABEL_78:
-          if (!v82)
+          if (!subTypeCopy)
           {
             v33 = v35;
             goto LABEL_85;
@@ -1056,11 +1056,11 @@ LABEL_78:
           {
             CCPBDataWriterWriteStringField();
 LABEL_85:
-            v25 = v80;
-            v79 = [v30 immutableData];
-            v44 = [(CCItemMessage *)self initWithData:v79 error:a20];
+            dCopy = v80;
+            immutableData = [v30 immutableData];
+            selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v43 = v44;
+            v43 = selfCopy2;
             goto LABEL_83;
           }
 
@@ -1072,8 +1072,8 @@ LABEL_76:
         v43 = 0;
         v33 = v35;
 LABEL_82:
-        v44 = self;
-        v25 = v80;
+        selfCopy2 = self;
+        dCopy = v80;
         goto LABEL_83;
       }
 
@@ -1111,7 +1111,7 @@ LABEL_24:
 
   CCSetError();
   v43 = 0;
-  v44 = self;
+  selfCopy2 = self;
 LABEL_83:
 
   v77 = *MEMORY[0x1E69E9840];

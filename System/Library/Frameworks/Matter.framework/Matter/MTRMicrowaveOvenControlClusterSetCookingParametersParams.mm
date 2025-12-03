@@ -1,8 +1,8 @@
 @interface MTRMicrowaveOvenControlClusterSetCookingParametersParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRMicrowaveOvenControlClusterSetCookingParametersParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMicrowaveOvenControlClusterSetCookingParametersParams);
-  v5 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setCookMode:v5];
+  cookMode = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setCookMode:cookMode];
 
-  v6 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setCookTime:v6];
+  cookTime = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setCookTime:cookTime];
 
-  v7 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setPowerSetting:v7];
+  powerSetting = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setPowerSetting:powerSetting];
 
-  v8 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setWattSettingIndex:v8];
+  wattSettingIndex = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setWattSettingIndex:wattSettingIndex];
 
-  v9 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setStartAfterSetting:v9];
+  startAfterSetting = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setStartAfterSetting:startAfterSetting];
 
-  v10 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self timedInvokeTimeoutMs];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self timedInvokeTimeoutMs];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self serverSideProcessingTimeout];
-  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self serverSideProcessingTimeout];
+  [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,7 +78,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v31) = 0;
   v32 = 0;
@@ -88,50 +88,50 @@
   v30[0] = 0;
   v30[1] = 0;
   v29 = v30;
-  v5 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
+  cookMode = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
 
-  if (v5)
+  if (cookMode)
   {
     v31 = 1;
-    v6 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
-    HIBYTE(v31) = [v6 unsignedCharValue];
+    cookMode2 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookMode];
+    HIBYTE(v31) = [cookMode2 unsignedCharValue];
   }
 
-  v7 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
+  cookTime = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
 
-  if (v7)
+  if (cookTime)
   {
     v32 = 1;
-    v33 = 0;
-    v8 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
-    v33 = [v8 unsignedIntValue];
+    unsignedIntValue = 0;
+    cookTime2 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self cookTime];
+    unsignedIntValue = [cookTime2 unsignedIntValue];
   }
 
-  v9 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
+  powerSetting = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
 
-  if (v9)
+  if (powerSetting)
   {
     v34 = 1;
-    v10 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
-    HIBYTE(v34) = [v10 unsignedCharValue];
+    powerSetting2 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self powerSetting];
+    HIBYTE(v34) = [powerSetting2 unsignedCharValue];
   }
 
-  v11 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
+  wattSettingIndex = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
 
-  if (v11)
+  if (wattSettingIndex)
   {
     v35 = 1;
-    v12 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
-    HIBYTE(v35) = [v12 unsignedCharValue];
+    wattSettingIndex2 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self wattSettingIndex];
+    HIBYTE(v35) = [wattSettingIndex2 unsignedCharValue];
   }
 
-  v13 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
+  startAfterSetting = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
 
-  if (v13)
+  if (startAfterSetting)
   {
     v36 = 1;
-    v14 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
-    HIBYTE(v36) = [v14 BOOLValue];
+    startAfterSetting2 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self startAfterSetting];
+    HIBYTE(v36) = [startAfterSetting2 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v28);
@@ -153,8 +153,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v28);
-      v15 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v28);
+      v15 = sub_2393C7114(reader, 21, 256);
       v18 = v22;
       v17 = v15;
     }
@@ -182,19 +182,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRMicrowaveOvenControlClusterSetCookingParametersParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -205,7 +205,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x335800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

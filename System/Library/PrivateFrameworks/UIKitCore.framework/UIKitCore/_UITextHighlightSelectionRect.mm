@@ -1,18 +1,18 @@
 @interface _UITextHighlightSelectionRect
-+ (id)endingSelectionRectWithRect:(CGRect)a3;
-+ (id)selectionRectWithRect:(CGRect)a3;
-+ (id)startingSelectionRectWithRect:(CGRect)a3;
++ (id)endingSelectionRectWithRect:(CGRect)rect;
++ (id)selectionRectWithRect:(CGRect)rect;
++ (id)startingSelectionRectWithRect:(CGRect)rect;
 - (CGRect)rect;
 @end
 
 @implementation _UITextHighlightSelectionRect
 
-+ (id)selectionRectWithRect:(CGRect)a3
++ (id)selectionRectWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(_UITextHighlightSelectionRect);
   v7->_rect.origin.x = x;
   v7->_rect.origin.y = y;
@@ -22,16 +22,16 @@
   return v7;
 }
 
-+ (id)startingSelectionRectWithRect:(CGRect)a3
++ (id)startingSelectionRectWithRect:(CGRect)rect
 {
-  result = [_UITextHighlightSelectionRect selectionRectWithRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [_UITextHighlightSelectionRect selectionRectWithRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   *(result + 24) = 1;
   return result;
 }
 
-+ (id)endingSelectionRectWithRect:(CGRect)a3
++ (id)endingSelectionRectWithRect:(CGRect)rect
 {
-  result = [_UITextHighlightSelectionRect selectionRectWithRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [_UITextHighlightSelectionRect selectionRectWithRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   *(result + 25) = 1;
   return result;
 }

@@ -8,10 +8,10 @@
 {
   v6 = a4;
   v7 = a3;
-  [a1 willChangeValueForKey:v7];
+  [self willChangeValueForKey:v7];
   v6[2](v6);
 
-  [a1 didChangeValueForKey:v7];
+  [self didChangeValueForKey:v7];
 }
 
 @end

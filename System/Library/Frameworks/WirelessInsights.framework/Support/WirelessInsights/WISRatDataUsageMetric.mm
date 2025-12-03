@@ -1,15 +1,15 @@
 @interface WISRatDataUsageMetric
 + (id)getSharedInstance;
 - (WISRatDataUsageMetric)init;
-- (void)cellularRadioTechChangedForContext:(id)a3 To:(id)a4;
-- (void)currentDataContextChangedTo:(id)a3;
+- (void)cellularRadioTechChangedForContext:(id)context To:(id)to;
+- (void)currentDataContextChangedTo:(id)to;
 - (void)dealloc;
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5;
-- (void)networkPathMonitorUpdate:(nw_path *)a3;
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state;
+- (void)networkPathMonitorUpdate:(nw_path *)update;
 - (void)populateActiveDataContextInfo;
-- (void)populateInfoForContext:(id)a3;
-- (void)registrationStatusChangedForContext:(id)a3 To:(id)a4;
-- (void)stewieStateChangedTo:(id)a3;
+- (void)populateInfoForContext:(id)context;
+- (void)registrationStatusChangedForContext:(id)context To:(id)to;
+- (void)stewieStateChangedTo:(id)to;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002E430;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D82E8 != -1)
   {
     dispatch_once(&qword_1002D82E8, block);
@@ -43,23 +43,23 @@
     [(WISRatDataUsageMetric *)v2 setCtRelay:v3];
 
     [(WISRatDataUsageMetric *)v2 setNetworkPathMonitor:nw_path_monitor_create()];
-    v4 = [(WISRatDataUsageMetric *)v2 networkPathMonitor];
+    networkPathMonitor = [(WISRatDataUsageMetric *)v2 networkPathMonitor];
     update_handler[0] = _NSConcreteStackBlock;
     update_handler[1] = 3221225472;
     update_handler[2] = sub_100015A24;
     update_handler[3] = &unk_1002AB4A8;
     v5 = v2;
     v13 = v5;
-    nw_path_monitor_set_update_handler(v4, update_handler);
+    nw_path_monitor_set_update_handler(networkPathMonitor, update_handler);
     nw_path_monitor_set_queue([(WISRatDataUsageMetric *)v5 networkPathMonitor], [(WISRatDataUsageMetric *)v5 queue]);
-    v6 = [(WISRatDataUsageMetric *)v5 queue];
+    queue = [(WISRatDataUsageMetric *)v5 queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10002E680;
     v10[3] = &unk_1002AB4D0;
     v7 = v5;
     v11 = v7;
-    dispatch_async(v6, v10);
+    dispatch_async(queue, v10);
     v8 = v7;
   }
 
@@ -91,10 +91,10 @@
 
 - (void)populateActiveDataContextInfo
 {
-  v3 = [(WISRatDataUsageMetric *)self ctRelay];
-  v4 = [v3 coreTelephonyClient];
+  ctRelay = [(WISRatDataUsageMetric *)self ctRelay];
+  coreTelephonyClient = [ctRelay coreTelephonyClient];
   v7 = 0;
-  v5 = [v4 getCurrentDataSubscriptionContextSync:&v7];
+  v5 = [coreTelephonyClient getCurrentDataSubscriptionContextSync:&v7];
   v6 = v7;
 
   if (v6 || !v5)
@@ -113,19 +113,19 @@
   }
 }
 
-- (void)populateInfoForContext:(id)a3
+- (void)populateInfoForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
-    [v4 uuid];
+    [contextCopy uuid];
     objc_claimAutoreleasedReturnValue();
     sub_1001FC360();
   }
 
-  v5 = [(WISRatDataUsageMetric *)self ctRelay];
+  ctRelay = [(WISRatDataUsageMetric *)self ctRelay];
   v26 = 0;
-  v6 = [v5 copyCTRegistrationStatus:v4 error:&v26];
+  v6 = [ctRelay copyCTRegistrationStatus:contextCopy error:&v26];
   v7 = v26;
 
   if (v7 || !v6)
@@ -142,9 +142,9 @@
 
   else
   {
-    v8 = [(WISRatDataUsageMetric *)self ctRelay];
+    ctRelay2 = [(WISRatDataUsageMetric *)self ctRelay];
     v25 = 0;
-    v9 = [v8 getLowDataMode:v4 error:&v25];
+    v9 = [ctRelay2 getLowDataMode:contextCopy error:&v25];
     v7 = v25;
 
     if (v7)
@@ -165,9 +165,9 @@
       v9 = 0;
     }
 
-    v10 = [(WISRatDataUsageMetric *)self ctRelay];
+    ctRelay3 = [(WISRatDataUsageMetric *)self ctRelay];
     v24 = 0;
-    v11 = [v10 getInterfaceCostExpensive:v4 error:&v24];
+    v11 = [ctRelay3 getInterfaceCostExpensive:contextCopy error:&v24];
     v7 = v24;
 
     if (!v7)
@@ -180,9 +180,9 @@
 
       v11 = 1;
 LABEL_11:
-      v12 = [(WISRatDataUsageMetric *)self ctRelay];
+      ctRelay4 = [(WISRatDataUsageMetric *)self ctRelay];
       v23 = 0;
-      v22 = [v12 copyCTRegistrationDisplayStatus:v4 error:&v23];
+      v22 = [ctRelay4 copyCTRegistrationDisplayStatus:contextCopy error:&v23];
       v7 = v23;
 
       if (v7 || !v22)
@@ -199,21 +199,21 @@ LABEL_11:
 
       else
       {
-        v13 = [v22 isSatelliteSystem];
-        v14 = [(WISRatDataUsageMetric *)self ctRelay];
-        v15 = [v14 getStewieState];
-        v16 = [v15 isStewieActive];
+        isSatelliteSystem = [v22 isSatelliteSystem];
+        ctRelay5 = [(WISRatDataUsageMetric *)self ctRelay];
+        getStewieState = [ctRelay5 getStewieState];
+        isStewieActive = [getStewieState isStewieActive];
 
         v17 = [RatDataUsageState alloc];
-        v18 = [v4 uuid];
-        v19 = [(RatDataUsageState *)v17 initWithContext:v18 cellularRegistrationState:v6 isCellularLowDataModeEnabled:v9 isCellularInterfaceExpensive:v11 isSatelliteSystem:v13 isStewieActive:v16];
+        uuid = [contextCopy uuid];
+        v19 = [(RatDataUsageState *)v17 initWithContext:uuid cellularRegistrationState:v6 isCellularLowDataModeEnabled:v9 isCellularInterfaceExpensive:v11 isSatelliteSystem:isSatelliteSystem isStewieActive:isStewieActive];
         [(WISRatDataUsageMetric *)self setState:v19];
 
-        v20 = [(WISRatDataUsageMetric *)self ctRelay];
-        [v20 getRadioAccessTechnology:v4 delegate:self];
+        ctRelay6 = [(WISRatDataUsageMetric *)self ctRelay];
+        [ctRelay6 getRadioAccessTechnology:contextCopy delegate:self];
 
-        v21 = [(WISRatDataUsageMetric *)self ctRelay];
-        [v21 getAirplaneModeStatus:self];
+        ctRelay7 = [(WISRatDataUsageMetric *)self ctRelay];
+        [ctRelay7 getAirplaneModeStatus:self];
       }
 
       goto LABEL_27;
@@ -232,16 +232,16 @@ LABEL_11:
 LABEL_27:
 }
 
-- (void)networkPathMonitorUpdate:(nw_path *)a3
+- (void)networkPathMonitorUpdate:(nw_path *)update
 {
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_1001FC4B4();
   }
 
-  v5 = [(WISRatDataUsageMetric *)self state];
+  state = [(WISRatDataUsageMetric *)self state];
 
-  if (v5)
+  if (state)
   {
     goto LABEL_7;
   }
@@ -252,9 +252,9 @@ LABEL_27:
   }
 
   [(WISRatDataUsageMetric *)self populateActiveDataContextInfo];
-  v6 = [(WISRatDataUsageMetric *)self state];
+  state2 = [(WISRatDataUsageMetric *)self state];
 
-  if (v6)
+  if (state2)
   {
 LABEL_7:
     v7 = nw_path_copy_interface();
@@ -291,7 +291,7 @@ LABEL_7:
     v15[4] = &v17;
     v15[5] = &v21;
     v15[6] = &v25;
-    nw_path_enumerate_interfaces(a3, v15);
+    nw_path_enumerate_interfaces(update, v15);
     if (v8)
     {
       v11 = [[NetworkInterfaceInfo alloc] initWithIndex:interface_index type:type];
@@ -318,8 +318,8 @@ LABEL_7:
       sub_1001FC560();
     }
 
-    v14 = [(WISRatDataUsageMetric *)self state];
-    [v14 updateNetworkPathsToPrimary:v11 secondary:v13];
+    state3 = [(WISRatDataUsageMetric *)self state];
+    [state3 updateNetworkPathsToPrimary:v11 secondary:v13];
 
     _Block_object_dispose(&v17, 8);
     _Block_object_dispose(&v21, 8);
@@ -339,158 +339,158 @@ LABEL_7:
     sub_1001FC620();
   }
 
-  v3 = [(WISRatDataUsageMetric *)self state];
-  [v3 submitToCA];
+  state = [(WISRatDataUsageMetric *)self state];
+  [state submitToCA];
 
   [(WISRatDataUsageMetric *)self setState:0];
   [(WISRatDataUsageMetric *)self populateActiveDataContextInfo];
 }
 
-- (void)currentDataContextChangedTo:(id)a3
+- (void)currentDataContextChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_1001FC65C();
   }
 
-  v5 = [(WISRatDataUsageMetric *)self state];
-  [v5 submitToCA];
+  state = [(WISRatDataUsageMetric *)self state];
+  [state submitToCA];
 
   [(WISRatDataUsageMetric *)self setState:0];
-  [(WISRatDataUsageMetric *)self populateInfoForContext:v4];
+  [(WISRatDataUsageMetric *)self populateInfoForContext:toCopy];
 }
 
-- (void)registrationStatusChangedForContext:(id)a3 To:(id)a4
+- (void)registrationStatusChangedForContext:(id)context To:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(WISRatDataUsageMetric *)self state];
-  v10 = [v9 contextUUID];
-  v11 = [v8 isEqual:v10];
+  contextCopy = context;
+  toCopy = to;
+  uuid = [contextCopy uuid];
+  state = [(WISRatDataUsageMetric *)self state];
+  contextUUID = [state contextUUID];
+  v11 = [uuid isEqual:contextUUID];
 
   if (v11)
   {
-    v12 = [(WISRatDataUsageMetric *)self state];
-    [v12 updateRegistrationStateTo:v7];
+    state2 = [(WISRatDataUsageMetric *)self state];
+    [state2 updateRegistrationStateTo:toCopy];
   }
 
   else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
-    [v6 uuid];
+    [contextCopy uuid];
     objc_claimAutoreleasedReturnValue();
     sub_1001FC698();
   }
 }
 
-- (void)cellularRadioTechChangedForContext:(id)a3 To:(id)a4
+- (void)cellularRadioTechChangedForContext:(id)context To:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(WISRatDataUsageMetric *)self state];
-  v10 = [v9 contextUUID];
-  v11 = [v8 isEqual:v10];
+  contextCopy = context;
+  toCopy = to;
+  uuid = [contextCopy uuid];
+  state = [(WISRatDataUsageMetric *)self state];
+  contextUUID = [state contextUUID];
+  v11 = [uuid isEqual:contextUUID];
 
   if (v11)
   {
-    v12 = [(WISRatDataUsageMetric *)self state];
-    [v12 updateCellularRadioTechTo:v7];
+    state2 = [(WISRatDataUsageMetric *)self state];
+    [state2 updateCellularRadioTechTo:toCopy];
   }
 
   else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
-    [v6 uuid];
+    [contextCopy uuid];
     objc_claimAutoreleasedReturnValue();
     sub_1001FC6DC();
   }
 }
 
-- (void)stewieStateChangedTo:(id)a3
+- (void)stewieStateChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_1001FC7EC();
   }
 
-  v5 = [(WISRatDataUsageMetric *)self state];
-  [v5 updateIsStewieActiveTo:{objc_msgSend(v4, "isStewieActive")}];
+  state = [(WISRatDataUsageMetric *)self state];
+  [state updateIsStewieActiveTo:{objc_msgSend(toCopy, "isStewieActive")}];
 }
 
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 <= 8)
+  updateCopy = update;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (key <= 8)
   {
-    if (a4 > 6)
+    if (key > 6)
     {
-      if (a4 == 7)
+      if (key == 7)
       {
-        if (v8)
+        if (stateCopy)
         {
-          -[WISRatDataUsageMetric airplaneModeStateChanged:](self, "airplaneModeStateChanged:", [v8 BOOLValue]);
+          -[WISRatDataUsageMetric airplaneModeStateChanged:](self, "airplaneModeStateChanged:", [stateCopy BOOLValue]);
         }
       }
 
-      else if (v10 && v8)
+      else if (updateCopy && stateCopy)
       {
-        [(WISRatDataUsageMetric *)self registrationStatusChangedForContext:v10 To:v8];
+        [(WISRatDataUsageMetric *)self registrationStatusChangedForContext:updateCopy To:stateCopy];
       }
     }
 
-    else if (a4 == 3)
+    else if (key == 3)
     {
-      if (v10)
+      if (updateCopy)
       {
-        [(WISRatDataUsageMetric *)self currentDataContextChangedTo:v10];
+        [(WISRatDataUsageMetric *)self currentDataContextChangedTo:updateCopy];
       }
     }
 
-    else if (a4 == 6)
+    else if (key == 6)
     {
       [(WISRatDataUsageMetric *)self subscriptionInfoDidChange];
     }
   }
 
-  else if (a4 <= 10)
+  else if (key <= 10)
   {
-    if (a4 == 9)
+    if (key == 9)
     {
-      if (v10 && v8)
+      if (updateCopy && stateCopy)
       {
-        [(WISRatDataUsageMetric *)self cellularRadioTechChangedForContext:v10 To:v8];
+        [(WISRatDataUsageMetric *)self cellularRadioTechChangedForContext:updateCopy To:stateCopy];
       }
     }
 
-    else if (v10 && v8)
+    else if (updateCopy && stateCopy)
     {
-      -[WISRatDataUsageMetric lowDataModeChangedForContext:To:](self, "lowDataModeChangedForContext:To:", v10, [v8 BOOLValue]);
+      -[WISRatDataUsageMetric lowDataModeChangedForContext:To:](self, "lowDataModeChangedForContext:To:", updateCopy, [stateCopy BOOLValue]);
     }
   }
 
-  else if (a4 == 11)
+  else if (key == 11)
   {
-    if (v10 && v8)
+    if (updateCopy && stateCopy)
     {
-      -[WISRatDataUsageMetric interfaceCostExpensiveChangedForContext:To:](self, "interfaceCostExpensiveChangedForContext:To:", v10, [v8 BOOLValue]);
+      -[WISRatDataUsageMetric interfaceCostExpensiveChangedForContext:To:](self, "interfaceCostExpensiveChangedForContext:To:", updateCopy, [stateCopy BOOLValue]);
     }
   }
 
-  else if (a4 == 12)
+  else if (key == 12)
   {
-    if (v8)
+    if (stateCopy)
     {
-      [(WISRatDataUsageMetric *)self stewieStateChangedTo:v8];
+      [(WISRatDataUsageMetric *)self stewieStateChangedTo:stateCopy];
     }
   }
 
-  else if (a4 == 13 && v10 && v8)
+  else if (key == 13 && updateCopy && stateCopy)
   {
-    -[WISRatDataUsageMetric satelliteRegistrationStatusChangedForContext:To:](self, "satelliteRegistrationStatusChangedForContext:To:", v10, [v8 BOOLValue]);
+    -[WISRatDataUsageMetric satelliteRegistrationStatusChangedForContext:To:](self, "satelliteRegistrationStatusChangedForContext:To:", updateCopy, [stateCopy BOOLValue]);
   }
 }
 

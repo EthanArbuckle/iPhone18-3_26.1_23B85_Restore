@@ -18,7 +18,7 @@
 
 - (BOOL)nonEmptyNoteExistsForLegacyAccountWithObjectID:()ICLegacyContext
 {
-  v1 = [a1 allVisibleNotesForAccountWithObjectID:?];
+  v1 = [self allVisibleNotesForAccountWithObjectID:?];
   v2 = [v1 count] != 0;
 
   return v2;
@@ -27,10 +27,10 @@
 - (id)allVisibleNotesForAccountWithObjectID:()ICLegacyContext
 {
   v4 = a3;
-  v5 = [a1 collectionForObjectID:v4];
+  v5 = [self collectionForObjectID:v4];
   if (v5)
   {
-    v6 = [a1 allVisibleNotesInCollection:v5 sorted:1];
+    v6 = [self allVisibleNotesInCollection:v5 sorted:1];
   }
 
   else
@@ -58,20 +58,20 @@
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((noteCollectionObject) != nil)" functionName:"-[NoteContext(ICLegacyContext) allVisibleNotesInFolder:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "noteCollectionObject"}];
   }
 
-  v6 = [a1 allVisibleNotesInCollection:v5];
+  v6 = [self allVisibleNotesInCollection:v5];
 
   return v6;
 }
 
 - (uint64_t)countOfVisibleNotesForAccountWithObjectID:()ICLegacyContext
 {
-  v2 = [a1 collectionForObjectID:?];
+  v2 = [self collectionForObjectID:?];
   if (!v2)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((noteCollectionObject) != nil)" functionName:"-[NoteContext(ICLegacyContext) countOfVisibleNotesForAccountWithObjectID:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "noteCollectionObject"}];
   }
 
-  v3 = [a1 countOfVisibleNotesInCollection:v2];
+  v3 = [self countOfVisibleNotesInCollection:v2];
 
   return v3;
 }
@@ -87,7 +87,7 @@
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((accountObject) != nil)" functionName:"-[NoteContext(ICLegacyContext) countOfVisibleNotesForAccount:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "accountObject"}];
   }
 
-  v6 = [a1 countOfVisibleNotesInCollection:v5];
+  v6 = [self countOfVisibleNotesInCollection:v5];
 
   return v6;
 }
@@ -96,23 +96,23 @@
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 collectionForObjectID:v4];
+  v5 = [self collectionForObjectID:v4];
   if (v5)
   {
-    v6 = [a1 newFetchRequestForNotes];
-    v7 = [MEMORY[0x277D35930] visibleNotesPredicate];
-    v21[0] = v7;
-    v8 = [v5 predicateForNotes];
-    v21[1] = v8;
+    newFetchRequestForNotes = [self newFetchRequestForNotes];
+    visibleNotesPredicate = [MEMORY[0x277D35930] visibleNotesPredicate];
+    v21[0] = visibleNotesPredicate;
+    predicateForNotes = [v5 predicateForNotes];
+    v21[1] = predicateForNotes;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
 
     v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v9];
-    [v6 setPredicate:v10];
+    [newFetchRequestForNotes setPredicate:v10];
 
-    [v6 setResultType:1];
-    v11 = [a1 managedObjectContext];
+    [newFetchRequestForNotes setResultType:1];
+    managedObjectContext = [self managedObjectContext];
     v18 = 0;
-    v12 = [v11 executeFetchRequest:v6 error:&v18];
+    v12 = [managedObjectContext executeFetchRequest:newFetchRequestForNotes error:&v18];
     v13 = v18;
 
     if (v13)
@@ -127,12 +127,12 @@
 
   else
   {
-    v6 = os_log_create("com.apple.notes", "HTML");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    newFetchRequestForNotes = os_log_create("com.apple.notes", "HTML");
+    if (os_log_type_enabled(newFetchRequestForNotes, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v20 = v4;
-      _os_log_impl(&dword_214D51000, v6, OS_LOG_TYPE_INFO, "Collection is nil fetching note IDs for account %@", buf, 0xCu);
+      _os_log_impl(&dword_214D51000, newFetchRequestForNotes, OS_LOG_TYPE_INFO, "Collection is nil fetching note IDs for account %@", buf, 0xCu);
     }
 
     v12 = 0;
@@ -156,13 +156,13 @@
 - (void)performBlock:()ICLegacyContext
 {
   v4 = a3;
-  v5 = [a1 managedObjectContext];
-  v6 = [v5 concurrencyType];
+  managedObjectContext = [self managedObjectContext];
+  concurrencyType = [managedObjectContext concurrencyType];
 
-  if (v6)
+  if (concurrencyType)
   {
-    v8 = [a1 managedObjectContext];
-    [v8 performBlock:v4];
+    managedObjectContext2 = [self managedObjectContext];
+    [managedObjectContext2 performBlock:v4];
   }
 
   else
@@ -180,13 +180,13 @@
 - (void)performBlockAndWait:()ICLegacyContext
 {
   v4 = a3;
-  v5 = [a1 managedObjectContext];
-  v6 = [v5 concurrencyType];
+  managedObjectContext = [self managedObjectContext];
+  concurrencyType = [managedObjectContext concurrencyType];
 
-  if (v6)
+  if (concurrencyType)
   {
-    v8 = [a1 managedObjectContext];
-    [v8 performBlockAndWait:v4];
+    managedObjectContext2 = [self managedObjectContext];
+    [managedObjectContext2 performBlockAndWait:v4];
   }
 
   else
@@ -204,8 +204,8 @@
 - (id)objectWithID:()ICLegacyContext
 {
   v4 = a3;
-  v5 = [a1 managedObjectContext];
-  v6 = [v5 objectWithID:v4];
+  managedObjectContext = [self managedObjectContext];
+  v6 = [managedObjectContext objectWithID:v4];
 
   return v6;
 }
@@ -213,8 +213,8 @@
 - (id)existingObjectWithID:()ICLegacyContext error:
 {
   v6 = a3;
-  v7 = [a1 managedObjectContext];
-  v8 = [v7 existingObjectWithID:v6 error:a4];
+  managedObjectContext = [self managedObjectContext];
+  v8 = [managedObjectContext existingObjectWithID:v6 error:a4];
 
   return v8;
 }
@@ -222,16 +222,16 @@
 - (id)ic_objectsWithIDs:()ICLegacyContext
 {
   v4 = a3;
-  v5 = [a1 managedObjectContext];
-  v6 = [v5 ic_objectsWithIDs:v4];
+  managedObjectContext = [self managedObjectContext];
+  v6 = [managedObjectContext ic_objectsWithIDs:v4];
 
   return v6;
 }
 
 - (void)reset
 {
-  v1 = [a1 managedObjectContext];
-  [v1 reset];
+  managedObjectContext = [self managedObjectContext];
+  [managedObjectContext reset];
 }
 
 - (id)attachmentForIdentifier:()ICLegacyContext
@@ -240,9 +240,9 @@
   v5 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"NoteAttachment"];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(contentID ==[c] %@)", v4];
   [v5 setPredicate:v6];
-  v7 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v13 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v13];
+  v8 = [managedObjectContext executeFetchRequest:v5 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -254,9 +254,9 @@
     }
   }
 
-  v11 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
 - (void)allVisibleNotesForAccountWithObjectID:()ICLegacyContext .cold.1(uint64_t a1, NSObject *a2)

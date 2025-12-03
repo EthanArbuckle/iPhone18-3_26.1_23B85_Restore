@@ -1,22 +1,22 @@
 @interface CNUIContactSaveResult
-- (CNUIContactSaveResult)initWithSuccess:(BOOL)a3 contact:(id)a4 identifiersOfIssuedSaveRequests:(id)a5;
+- (CNUIContactSaveResult)initWithSuccess:(BOOL)success contact:(id)contact identifiersOfIssuedSaveRequests:(id)requests;
 @end
 
 @implementation CNUIContactSaveResult
 
-- (CNUIContactSaveResult)initWithSuccess:(BOOL)a3 contact:(id)a4 identifiersOfIssuedSaveRequests:(id)a5
+- (CNUIContactSaveResult)initWithSuccess:(BOOL)success contact:(id)contact identifiersOfIssuedSaveRequests:(id)requests
 {
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  requestsCopy = requests;
   v15.receiver = self;
   v15.super_class = CNUIContactSaveResult;
   v11 = [(CNUIContactSaveResult *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_success = a3;
-    objc_storeStrong(&v11->_contact, a4);
-    objc_storeStrong(&v12->_identifiersOfIssuedSaveRequests, a5);
+    v11->_success = success;
+    objc_storeStrong(&v11->_contact, contact);
+    objc_storeStrong(&v12->_identifiersOfIssuedSaveRequests, requests);
     v13 = v12;
   }
 

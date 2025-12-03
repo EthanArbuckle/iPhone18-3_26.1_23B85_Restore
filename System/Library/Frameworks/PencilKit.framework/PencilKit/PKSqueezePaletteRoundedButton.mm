@@ -39,23 +39,23 @@
   }
 
   v7 = v6 * 0.5;
-  v8 = [(PKSqueezePaletteRoundedButton *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(PKSqueezePaletteRoundedButton *)self layer];
+  [layer setCornerRadius:v7];
 
-  v9 = [(PKSqueezePaletteRoundedButton *)self layer];
-  [v9 setMasksToBounds:1];
+  layer2 = [(PKSqueezePaletteRoundedButton *)self layer];
+  [layer2 setMasksToBounds:1];
 
-  v10 = [(PKSqueezePaletteRoundedButton *)self layer];
-  [v10 setAllowsEdgeAntialiasing:1];
+  layer3 = [(PKSqueezePaletteRoundedButton *)self layer];
+  [layer3 setAllowsEdgeAntialiasing:1];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [(PKSqueezePaletteRoundedButton *)self layer];
-  v12 = [v11 sublayers];
+  layer4 = [(PKSqueezePaletteRoundedButton *)self layer];
+  sublayers = [layer4 sublayers];
 
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v13 = [sublayers countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -67,14 +67,14 @@
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v17 + 1) + 8 * v16++) setAllowsEdgeAntialiasing:1];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v14 = [sublayers countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v14);

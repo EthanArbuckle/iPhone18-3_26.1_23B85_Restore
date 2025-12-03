@@ -1,64 +1,64 @@
 @interface SBGridLayoutSwitcherModifier
-- (BOOL)_isIndexVisible:(unint64_t)a3;
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGRect)_frameForIndex:(unint64_t)a3 ignoringScrollOffset:(BOOL)a4;
-- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)a3 ignoringScrollOffset:(BOOL)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
+- (BOOL)_isIndexVisible:(unint64_t)visible;
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGRect)_frameForIndex:(unint64_t)index ignoringScrollOffset:(BOOL)offset;
+- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)index ignoringScrollOffset:(BOOL)offset;
+- (CGRect)frameForIndex:(unint64_t)index;
 - (CGSize)_contentSize;
 - (CGSize)_fittedContentSize;
 - (CGSize)_scaledCardSize;
-- (SBGridLayoutSwitcherModifier)initWithAlignment:(unint64_t)a3 layoutDirection:(unint64_t)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (_NSRange)visibleAppLayoutRangeForContentOffset:(CGPoint)a3;
+- (SBGridLayoutSwitcherModifier)initWithAlignment:(unint64_t)alignment layoutDirection:(unint64_t)direction;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (_NSRange)visibleAppLayoutRangeForContentOffset:(CGPoint)offset;
 - (double)_cardHeaderHeight;
 - (double)_cornerRadius;
 - (double)_horizontalSpacing;
 - (double)_verticalSpacing;
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3;
-- (double)minimumTranslationToKillIndex:(unint64_t)a3;
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search;
+- (double)minimumTranslationToKillIndex:(unint64_t)index;
 - (double)scale;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleSwitcherSettingsChangedEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleScrollEvent:(id)event;
+- (id)handleSwitcherSettingsChangedEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)scrollViewAttributes;
 - (id)visibleAppLayouts;
-- (unint64_t)_columnForIndex:(unint64_t)a3;
-- (unint64_t)_firstTrailingIndexForContentOffset:(CGPoint)a3;
+- (unint64_t)_columnForIndex:(unint64_t)index;
+- (unint64_t)_firstTrailingIndexForContentOffset:(CGPoint)offset;
 - (unint64_t)_indexOfLeadingCard;
 - (unint64_t)_numberOfSpaces;
-- (unint64_t)_rowForIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3;
+- (unint64_t)_rowForIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index;
 - (void)_applyPrototypeSettings;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBGridLayoutSwitcherModifier
 
-- (SBGridLayoutSwitcherModifier)initWithAlignment:(unint64_t)a3 layoutDirection:(unint64_t)a4
+- (SBGridLayoutSwitcherModifier)initWithAlignment:(unint64_t)alignment layoutDirection:(unint64_t)direction
 {
   v7.receiver = self;
   v7.super_class = SBGridLayoutSwitcherModifier;
   result = [(SBSwitcherModifier *)&v7 init];
   if (result)
   {
-    result->_alignment = a3;
-    result->_layoutDirection = a4;
+    result->_alignment = alignment;
+    result->_layoutDirection = direction;
   }
 
   return result;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBGridLayoutSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBGridLayoutSwitcherModifier *)self _applyPrototypeSettings];
   }
@@ -66,8 +66,8 @@
 
 - (double)scale
 {
-  v3 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  [v3 gridSwitcherPageScale];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  [switcherSettings gridSwitcherPageScale];
   v5 = v4;
 
   [(SBGridLayoutSwitcherModifier *)self containerViewBounds];
@@ -82,9 +82,9 @@
   return result;
 }
 
-- (_NSRange)visibleAppLayoutRangeForContentOffset:(CGPoint)a3
+- (_NSRange)visibleAppLayoutRangeForContentOffset:(CGPoint)offset
 {
-  [(SBGridLayoutSwitcherModifier *)self scrollViewContentOffset:a3.x];
+  [(SBGridLayoutSwitcherModifier *)self scrollViewContentOffset:offset.x];
   v4 = [(SBGridLayoutSwitcherModifier *)self _firstTrailingIndexForContentOffset:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -137,13 +137,13 @@ LABEL_2:
     goto LABEL_36;
   }
 
-  v8 = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces];
-  if (v7 >= v8)
+  _numberOfSpaces = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces];
+  if (v7 >= _numberOfSpaces)
   {
     goto LABEL_2;
   }
 
-  v9 = v8;
+  v9 = _numberOfSpaces;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   do
@@ -224,21 +224,21 @@ LABEL_36:
   return result;
 }
 
-- (id)handleSwitcherSettingsChangedEvent:(id)a3
+- (id)handleSwitcherSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBGridLayoutSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBGridLayoutSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
-  v4 = a3;
-  [v4 contentOffset];
+  eventCopy = event;
+  [eventCopy contentOffset];
   x = self->_previousContentOffset.x;
   if (x != 1.79769313e308 || self->_previousContentOffset.y != 1.79769313e308)
   {
@@ -249,15 +249,15 @@ LABEL_36:
   self->_previousContentOffset.y = v6;
   v11.receiver = self;
   v11.super_class = SBGridLayoutSwitcherModifier;
-  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:v4];
+  v9 = [(SBSwitcherModifier *)&v11 handleScrollEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 toEnvironmentMode] == 2 && objc_msgSend(v4, "fromEnvironmentMode") != 2)
+  eventCopy = event;
+  if ([eventCopy toEnvironmentMode] == 2 && objc_msgSend(eventCopy, "fromEnvironmentMode") != 2)
   {
     self->_previousContentOffset = SBInvalidPoint;
     self->_isScrollingForward = 1;
@@ -265,14 +265,14 @@ LABEL_36:
 
   v7.receiver = self;
   v7.super_class = SBGridLayoutSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
 
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  [(SBGridLayoutSwitcherModifier *)self _frameForIndex:a3 ignoringScrollOffset:1];
+  [(SBGridLayoutSwitcherModifier *)self _frameForIndex:index ignoringScrollOffset:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -287,31 +287,31 @@ LABEL_36:
   v5 = v4;
   v11.receiver = self;
   v11.super_class = SBGridLayoutSwitcherModifier;
-  v6 = [(SBGridLayoutSwitcherModifier *)&v11 visibleAppLayouts];
-  v7 = [(SBGridLayoutSwitcherModifier *)self appLayouts];
-  v8 = [v7 subarrayWithRange:{v3, v5}];
-  v9 = [v6 setByAddingObjectsFromArray:v8];
+  visibleAppLayouts = [(SBGridLayoutSwitcherModifier *)&v11 visibleAppLayouts];
+  appLayouts = [(SBGridLayoutSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts subarrayWithRange:{v3, v5}];
+  v9 = [visibleAppLayouts setByAddingObjectsFromArray:v8];
 
   return v9;
 }
 
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout
 {
-  v3 = [(SBGridLayoutSwitcherModifier *)self homeGrabberSettings];
-  v4 = [v3 isEnabled];
+  homeGrabberSettings = [(SBGridLayoutSwitcherModifier *)self homeGrabberSettings];
+  isEnabled = [homeGrabberSettings isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (BOOL)_isIndexVisible:(unint64_t)a3
+- (BOOL)_isIndexVisible:(unint64_t)visible
 {
-  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:a3 ignoringScrollOffset:1];
+  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:visible ignoringScrollOffset:1];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  [v12 switcherCardShadowRadius];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCardShadowRadius];
   v14 = v13;
 
   [(SBGridLayoutSwitcherModifier *)self switcherViewBounds];
@@ -324,33 +324,33 @@ LABEL_36:
   return CGRectIntersectsRect(v22, *&v15);
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v3 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v5 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v5 setUpdateMode:1];
-  v6 = [v4 layoutSettings];
-  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:v6];
+  layoutSettings = [animationSettings layoutSettings];
+  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:layoutSettings];
 
-  v7 = [v4 opacitySettings];
-  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:v7];
+  opacitySettings = [animationSettings opacitySettings];
+  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:opacitySettings];
 
   return v5;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
-  [(SBGridLayoutSwitcherModifier *)self frameForIndex:a3];
+  [(SBGridLayoutSwitcherModifier *)self frameForIndex:index];
 
   return CGRectGetWidth(*&v3);
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBGridLayoutSwitcherModifier *)self _cornerRadius];
-  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:a3];
+  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:index];
 
   SBRectCornerRadiiForRadius();
   result.topRight = v8;
@@ -365,15 +365,15 @@ LABEL_36:
   [(SBGridLayoutSwitcherModifier *)self scrollViewContentOffset];
   v3 = [(SBGridLayoutSwitcherModifier *)self visibleAppLayoutRangeForContentOffset:?];
   v5 = v4;
-  v6 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  v7 = [v6 numberOfSnapshotsToCacheInSwitcher];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  numberOfSnapshotsToCacheInSwitcher = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
 
   isScrollingForward = self->_isScrollingForward;
 
-  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:v7, isScrollingForward];
+  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v3 numberOfSnapshotsToCache:v5 biasForward:numberOfSnapshotsToCacheInSwitcher, isScrollingForward];
 }
 
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index
 {
   result = [(SBGridLayoutSwitcherModifier *)self _indexOfLeadingCard];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
@@ -384,7 +384,7 @@ LABEL_36:
   return result;
 }
 
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index
 {
   if ([(SBGridLayoutSwitcherModifier *)self _numberOfSpaces]< 2)
   {
@@ -438,10 +438,10 @@ LABEL_36:
   return v3;
 }
 
-- (double)minimumTranslationToKillIndex:(unint64_t)a3
+- (double)minimumTranslationToKillIndex:(unint64_t)index
 {
   [(SBGridLayoutSwitcherModifier *)self frameForIndex:?];
-  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:a3];
+  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:index];
   SBTransformedRectWithScale();
 
   return CGRectGetMinY(*&v5);
@@ -494,25 +494,25 @@ LABEL_36:
   return result;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
-  v7 = [(SBGridLayoutSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBGridLayoutSwitcherModifier *)self isRTLEnabled];
   [(SBGridLayoutSwitcherModifier *)self _contentSize];
   v9 = v8;
   [(SBGridLayoutSwitcherModifier *)self switcherViewBounds];
   v11 = v10;
-  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:a3 ignoringScrollOffset:1];
+  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:index ignoringScrollOffset:1];
   v13 = v12;
   [(SBGridLayoutSwitcherModifier *)self _horizontalSpacing];
   v15 = v14 + v13;
-  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:a3 ignoringScrollOffset:0];
+  [(SBGridLayoutSwitcherModifier *)self _frameWithScaleAppliedForIndex:index ignoringScrollOffset:0];
   v17 = v16;
   v18 = 0.0;
-  if (a4 > 1)
+  if (alignment > 1)
   {
-    if (a4 == 2)
+    if (alignment == 2)
     {
-      if (!v7)
+      if (!isRTLEnabled)
       {
         v18 = v15 + v15;
         goto LABEL_15;
@@ -525,14 +525,14 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if (a4 != 3)
+    if (alignment != 3)
     {
       goto LABEL_15;
     }
 
 LABEL_8:
     v18 = v15;
-    if (!v7)
+    if (!isRTLEnabled)
     {
       goto LABEL_15;
     }
@@ -541,14 +541,14 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!alignment)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (alignment == 1)
   {
-    if (v7)
+    if (isRTLEnabled)
     {
       v18 = v15 - v11;
     }
@@ -563,7 +563,7 @@ LABEL_8:
 LABEL_15:
   v22 = v17 + v18;
   v23 = 0.0;
-  if (v7)
+  if (isRTLEnabled)
   {
     v24 = 0.0;
   }
@@ -584,33 +584,33 @@ LABEL_15:
   return result;
 }
 
-- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)a3
+- (double)distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:(unint64_t)search
 {
-  v5 = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
+  numberOfRowsInGridSwitcher = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
   [(SBGridLayoutSwitcherModifier *)self _horizontalSpacing];
   layoutDirection = self->_layoutDirection;
 
-  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:a3 numberOfRows:v5 padding:layoutDirection layoutDirection:?];
+  [(SBSwitcherModifier *)self distanceToLeadingEdgeOfLeadingCardFromTrailingEdgeOfScreenWithVisibleIndexToStartSearch:search numberOfRows:numberOfRowsInGridSwitcher padding:layoutDirection layoutDirection:?];
   return result;
 }
 
 - (void)_applyPrototypeSettings
 {
-  v6 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  [v6 gridSwitcherHorizontalInterpageSpacingLandscape];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  [switcherSettings gridSwitcherHorizontalInterpageSpacingLandscape];
   kGridSwitcherHorizontalInterpageSpacingLandscape = v2;
-  [v6 gridSwitcherVerticalNaturalSpacingLandscape];
+  [switcherSettings gridSwitcherVerticalNaturalSpacingLandscape];
   kGridSwitcherVerticalNaturalSpacingLandscape = v3;
-  [v6 gridSwitcherHorizontalInterpageSpacingPortrait];
+  [switcherSettings gridSwitcherHorizontalInterpageSpacingPortrait];
   kGridSwitcherHorizontalInterpageSpacingPortrait = v4;
-  [v6 gridSwitcherVerticalNaturalSpacingPortrait];
+  [switcherSettings gridSwitcherVerticalNaturalSpacingPortrait];
   kGridSwitcherVerticalNaturalSpacingPortrait = v5;
 }
 
-- (unint64_t)_firstTrailingIndexForContentOffset:(CGPoint)a3
+- (unint64_t)_firstTrailingIndexForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  v5 = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces:a3.x];
+  x = offset.x;
+  v5 = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces:offset.x];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -640,10 +640,10 @@ LABEL_15:
 
   v15 = [(SBGridLayoutSwitcherModifier *)self _numberOfColumns]- v13;
   v16 = v6 - 1;
-  v17 = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
-  if (v16 >= v15 * v17 - 1)
+  numberOfRowsInGridSwitcher = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
+  if (v16 >= v15 * numberOfRowsInGridSwitcher - 1)
   {
-    return v15 * v17 - 1;
+    return v15 * numberOfRowsInGridSwitcher - 1;
   }
 
   else
@@ -652,26 +652,26 @@ LABEL_15:
   }
 }
 
-- (CGRect)_frameForIndex:(unint64_t)a3 ignoringScrollOffset:(BOOL)a4
+- (CGRect)_frameForIndex:(unint64_t)index ignoringScrollOffset:(BOOL)offset
 {
-  v4 = a4;
-  v7 = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces];
-  v8 = a3;
-  if (v7)
+  offsetCopy = offset;
+  _numberOfSpaces = [(SBGridLayoutSwitcherModifier *)self _numberOfSpaces];
+  indexCopy2 = index;
+  if (_numberOfSpaces)
   {
     if (self->_layoutDirection)
     {
-      v8 = v7 + ~a3;
+      indexCopy2 = _numberOfSpaces + ~index;
     }
 
     else
     {
-      v8 = a3;
+      indexCopy2 = index;
     }
   }
 
-  [(SBGridLayoutSwitcherModifier *)self _rowForIndex:v8];
-  [(SBGridLayoutSwitcherModifier *)self _columnForIndex:v8];
+  [(SBGridLayoutSwitcherModifier *)self _rowForIndex:indexCopy2];
+  [(SBGridLayoutSwitcherModifier *)self _columnForIndex:indexCopy2];
   [(SBGridLayoutSwitcherModifier *)self switcherViewBounds];
   [(SBGridLayoutSwitcherModifier *)self _scaledCardSize];
   [(SBGridLayoutSwitcherModifier *)self _horizontalSpacing];
@@ -705,14 +705,14 @@ LABEL_15:
 
   v22.receiver = self;
   v22.super_class = SBGridLayoutSwitcherModifier;
-  [(SBGridLayoutSwitcherModifier *)&v22 frameForIndex:a3];
+  [(SBGridLayoutSwitcherModifier *)&v22 frameForIndex:index];
   SBRectWithSize();
   SBUnintegralizedRectCenteredAboutPoint();
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  if (v4)
+  if (offsetCopy)
   {
     [(SBGridLayoutSwitcherModifier *)self scrollViewContentOffset];
     v10 = v10 - v17;
@@ -760,53 +760,53 @@ LABEL_15:
   return result;
 }
 
-- (unint64_t)_rowForIndex:(unint64_t)a3
+- (unint64_t)_rowForIndex:(unint64_t)index
 {
-  v4 = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
-  if (v4 <= 1)
+  numberOfRowsInGridSwitcher = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
+  if (numberOfRowsInGridSwitcher <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = numberOfRowsInGridSwitcher;
   }
 
-  return a3 % v5;
+  return index % v5;
 }
 
-- (unint64_t)_columnForIndex:(unint64_t)a3
+- (unint64_t)_columnForIndex:(unint64_t)index
 {
-  v4 = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
-  if (v4 <= 1)
+  numberOfRowsInGridSwitcher = [(SBGridLayoutSwitcherModifier *)self numberOfRowsInGridSwitcher];
+  if (numberOfRowsInGridSwitcher <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = numberOfRowsInGridSwitcher;
   }
 
-  return a3 / v5;
+  return index / v5;
 }
 
 - (double)_cardHeaderHeight
 {
-  v2 = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
-  [v2 spacingBetweenSnapshotAndIcon];
+  switcherSettings = [(SBGridLayoutSwitcherModifier *)self switcherSettings];
+  [switcherSettings spacingBetweenSnapshotAndIcon];
   v4 = v3;
-  [v2 iconSideLength];
+  [switcherSettings iconSideLength];
   v6 = v4 + v5;
 
   return v6;
 }
 
-- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)a3 ignoringScrollOffset:(BOOL)a4
+- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)index ignoringScrollOffset:(BOOL)offset
 {
-  [(SBGridLayoutSwitcherModifier *)self _frameForIndex:a3 ignoringScrollOffset:a4];
-  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:a3];
+  [(SBGridLayoutSwitcherModifier *)self _frameForIndex:index ignoringScrollOffset:offset];
+  [(SBGridLayoutSwitcherModifier *)self scaleForIndex:index];
 
   SBTransformedRectWithScale();
   result.size.height = v9;
@@ -818,8 +818,8 @@ LABEL_15:
 
 - (unint64_t)_numberOfSpaces
 {
-  v2 = [(SBGridLayoutSwitcherModifier *)self appLayouts];
-  v3 = [v2 count];
+  appLayouts = [(SBGridLayoutSwitcherModifier *)self appLayouts];
+  v3 = [appLayouts count];
 
   return v3;
 }

@@ -41,9 +41,9 @@
       [v11 setSuggestedName:v13];
 
       v29[0] = *MEMORY[0x1E69A68A0];
-      v14 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v15 = *MEMORY[0x1E69A6898];
-      v30[0] = v14;
+      v30[0] = lastPathComponent;
       v30[1] = v7;
       v16 = *MEMORY[0x1E69A6890];
       v29[1] = v15;
@@ -117,7 +117,7 @@
   v8[3] = &unk_1E72F0030;
   v9 = v4;
   v6 = v4;
-  v7 = [a1 loadDataRepresentationForTypeIdentifier:v5 completionHandler:v8];
+  v7 = [self loadDataRepresentationForTypeIdentifier:v5 completionHandler:v8];
 }
 
 @end

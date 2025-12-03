@@ -1,48 +1,48 @@
 @interface SBLockScreenPluginApplicationAction
-+ (id)actionWithBundleID:(id)a3;
-+ (id)actionWithURL:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)actionWithBundleID:(id)d;
++ (id)actionWithURL:(id)l;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBLockScreenPluginApplicationAction
 
-+ (id)actionWithURL:(id)a3
++ (id)actionWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 action];
-  [v5 setURL:v4];
+  lCopy = l;
+  action = [self action];
+  [action setURL:lCopy];
 
-  [v5 setAuthenticationPolicy:0];
+  [action setAuthenticationPolicy:0];
 
-  return v5;
+  return action;
 }
 
-+ (id)actionWithBundleID:(id)a3
++ (id)actionWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 action];
-  [v5 setBundleID:v4];
+  dCopy = d;
+  action = [self action];
+  [action setBundleID:dCopy];
 
-  [v5 setAuthenticationPolicy:0];
+  [action setAuthenticationPolicy:0];
 
-  return v5;
+  return action;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenPluginApplicationAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenPluginApplicationAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBLockScreenPluginAction *)self label];
-  v5 = [v3 appendObject:v4 withName:@"label" skipIfNil:1];
+  label = [(SBLockScreenPluginAction *)self label];
+  v5 = [v3 appendObject:label withName:@"label" skipIfNil:1];
 
   v6 = [v3 appendObject:self->_bundleID withName:@"bundleID" skipIfNil:1];
   v7 = [v3 appendObject:self->_url withName:@"URL" skipIfNil:1];
@@ -51,12 +51,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenPluginApplicationAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenPluginApplicationAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface AccountPageViewControllerDelegate
 - (_TtC8AppStoreP33_EB9D63B1EF811ECF6E030954F78C05E433AccountPageViewControllerDelegate)init;
-- (void)accountPageViewControllerDidFinish:(id)a3;
+- (void)accountPageViewControllerDidFinish:(id)finish;
 @end
 
 @implementation AccountPageViewControllerDelegate
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (void)accountPageViewControllerDidFinish:(id)a3
+- (void)accountPageViewControllerDidFinish:(id)finish
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
@@ -29,10 +29,10 @@
   v9[2] = sub_100007A08;
   v9[3] = &unk_1008C0CD8;
   v6 = _Block_copy(v9);
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  finishCopy = finish;
 
-  [v8 dismissViewControllerAnimated:1 completion:v6];
+  [finishCopy dismissViewControllerAnimated:1 completion:v6];
 
   _Block_release(v6);
 }

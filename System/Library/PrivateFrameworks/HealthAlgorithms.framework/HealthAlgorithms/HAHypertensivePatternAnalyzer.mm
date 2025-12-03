@@ -1,12 +1,12 @@
 @interface HAHypertensivePatternAnalyzer
-+ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)a3 forDateInterval:(id)a4;
++ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)measurements forDateInterval:(id)interval;
 @end
 
 @implementation HAHypertensivePatternAnalyzer
 
-+ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)a3 forDateInterval:(id)a4
++ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)measurements forDateInterval:(id)interval
 {
-  v4 = [HAHermitNotificationAlgorithms analyzeMeasurements:a3 forDateInterval:a4];
+  v4 = [HAHermitNotificationAlgorithms analyzeMeasurements:measurements forDateInterval:interval];
   v5 = v5;
   result.var1 = v5;
   result.var0 = v4;

@@ -1,34 +1,34 @@
 @interface CKImpactEffectManager
-+ (BOOL)identifierIsAnimatedImpactEffect:(id)a3;
-+ (BOOL)identifierIsValidImpactEffect:(id)a3;
-+ (BOOL)identifierShouldPlayInWindow:(id)a3;
++ (BOOL)identifierIsAnimatedImpactEffect:(id)effect;
++ (BOOL)identifierIsValidImpactEffect:(id)effect;
++ (BOOL)identifierShouldPlayInWindow:(id)window;
 + (id)effectIdentifiers;
-+ (id)localizedEffectNameForEffectWithIdentifier:(id)a3;
-+ (id)maskingStringForID:(id)a3;
++ (id)localizedEffectNameForEffectWithIdentifier:(id)identifier;
++ (id)maskingStringForID:(id)d;
 - (CKImpactEffectManager)init;
 - (CKSendAnimationBalloonProvider)sendAnimationBalloonProvider;
 - (CKSendAnimationManagerDelegate)delegate;
 - (CKSendAnimationManagerDelegate)sendAnimationManagerDelegate;
-- (id)_sendAnimationContextForIdentifier:(id)a3 message:(id)a4 isSender:(BOOL)a5 beginAnimationFromTranscriptPresentedState:(BOOL)a6;
-- (id)cloneBalloonForAnimationWithChatItem:(id)a3;
-- (void)_animateLastMessage:(id)a3 withEffectIdentifier:(id)a4 beginAnimationFromTranscriptPresentedState:(BOOL)a5;
-- (void)_applyTranscriptTraitsAsOverridesFrom:(id)a3 toDestination:(id)a4;
-- (void)_audioSessionOptionsWillChange:(id)a3;
+- (id)_sendAnimationContextForIdentifier:(id)identifier message:(id)message isSender:(BOOL)sender beginAnimationFromTranscriptPresentedState:(BOOL)state;
+- (id)cloneBalloonForAnimationWithChatItem:(id)item;
+- (void)_animateLastMessage:(id)message withEffectIdentifier:(id)identifier beginAnimationFromTranscriptPresentedState:(BOOL)state;
+- (void)_applyTranscriptTraitsAsOverridesFrom:(id)from toDestination:(id)destination;
+- (void)_audioSessionOptionsWillChange:(id)change;
 - (void)_cleanupExpressiveSendComponents;
 - (void)_renderEffectInView;
 - (void)_renderEffectInWindow;
 - (void)_sizeAnimationWindow;
-- (void)_visibleCells:(id *)a3 aboveItem:(id)a4;
-- (void)animateMessages:(id)a3;
-- (void)animateMessages:(id)a3 withEffectIdentifier:(id)a4 beginAnimationFromTranscriptPresentedState:(BOOL)a5;
-- (void)animationDidFinishWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
+- (void)_visibleCells:(id *)cells aboveItem:(id)item;
+- (void)animateMessages:(id)messages;
+- (void)animateMessages:(id)messages withEffectIdentifier:(id)identifier beginAnimationFromTranscriptPresentedState:(BOOL)state;
+- (void)animationDidFinishWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
 - (void)dealloc;
-- (void)matchScrollViewOffset:(id)a3;
-- (void)playSoundForEffectIdentifier:(id)a3;
-- (void)playUndoSendAnimationForChatItem:(id)a3;
+- (void)matchScrollViewOffset:(id)offset;
+- (void)playSoundForEffectIdentifier:(id)identifier;
+- (void)playUndoSendAnimationForChatItem:(id)item;
 - (void)popAnimationDidBegin;
-- (void)setupAudioPlayerWithURL:(id)a3;
+- (void)setupAudioPlayerWithURL:(id)l;
 - (void)stopAllEffects;
 - (void)stopPlayingSound;
 @end
@@ -59,10 +59,10 @@ void __42__CKImpactEffectManager_effectIdentifiers__block_invoke()
   effectIdentifiers_effects = v0;
 }
 
-+ (id)maskingStringForID:(id)a3
++ (id)maskingStringForID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
   {
     v4 = @"SUMMARY_IMPACT_MESSAGE";
 LABEL_11:
@@ -72,25 +72,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
   {
     v4 = @"SUMMARY_LOUD_MESSAGE";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
   {
     v4 = @"SUMMARY_GENTLE_MESSAGE";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"])
   {
     v4 = @"SUMMARY_INVISIBLE_INK_MESSAGE";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
   {
     v4 = @"SUMMARY_FOCUS_MESSAGE";
     goto LABEL_11;
@@ -102,28 +102,28 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)identifierIsValidImpactEffect:(id)a3
++ (BOOL)identifierIsValidImpactEffect:(id)effect
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.loud") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.gentle") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.focus"))
+  effectCopy = effect;
+  if ([effectCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"] & 1) != 0 || (objc_msgSend(effectCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.loud") & 1) != 0 || (objc_msgSend(effectCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.gentle") & 1) != 0 || (objc_msgSend(effectCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink") & 1) != 0 || (objc_msgSend(effectCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.focus"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"];
+    v4 = [effectCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"];
   }
 
   return v4;
 }
 
-+ (BOOL)identifierIsAnimatedImpactEffect:(id)a3
++ (BOOL)identifierIsAnimatedImpactEffect:(id)effect
 {
-  v4 = a3;
-  if ([a1 identifierIsValidImpactEffect:v4])
+  effectCopy = effect;
+  if ([self identifierIsValidImpactEffect:effectCopy])
   {
-    v5 = [v4 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"] ^ 1;
+    v5 = [effectCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"] ^ 1;
   }
 
   else
@@ -134,9 +134,9 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)identifierShouldPlayInWindow:(id)a3
++ (BOOL)identifierShouldPlayInWindow:(id)window
 {
-  v3 = [a3 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"];
+  v3 = [window isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"];
   if (v3)
   {
     LOBYTE(v3) = CKIsRunningInMessages() != 0;
@@ -145,16 +145,16 @@ LABEL_12:
   return v3;
 }
 
-+ (id)localizedEffectNameForEffectWithIdentifier:(id)a3
++ (id)localizedEffectNameForEffectWithIdentifier:(id)identifier
 {
   v3 = localizedEffectNameForEffectWithIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[CKImpactEffectManager localizedEffectNameForEffectWithIdentifier:];
   }
 
-  v5 = [localizedEffectNameForEffectWithIdentifier__effectNames objectForKey:v4];
+  v5 = [localizedEffectNameForEffectWithIdentifier__effectNames objectForKey:identifierCopy];
 
   return v5;
 }
@@ -190,26 +190,26 @@ void __68__CKImpactEffectManager_localizedEffectNameForEffectWithIdentifier___bl
   return [(CKImpactEffectManager *)&v3 init];
 }
 
-- (void)animateMessages:(id)a3
+- (void)animateMessages:(id)messages
 {
-  v5 = [a3 lastObject];
-  v4 = [v5 expressiveSendStyleID];
-  [(CKImpactEffectManager *)self _animateLastMessage:v5 withEffectIdentifier:v4 beginAnimationFromTranscriptPresentedState:0];
+  lastObject = [messages lastObject];
+  expressiveSendStyleID = [lastObject expressiveSendStyleID];
+  [(CKImpactEffectManager *)self _animateLastMessage:lastObject withEffectIdentifier:expressiveSendStyleID beginAnimationFromTranscriptPresentedState:0];
 }
 
-- (void)animateMessages:(id)a3 withEffectIdentifier:(id)a4 beginAnimationFromTranscriptPresentedState:(BOOL)a5
+- (void)animateMessages:(id)messages withEffectIdentifier:(id)identifier beginAnimationFromTranscriptPresentedState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 lastObject];
-  [(CKImpactEffectManager *)self _animateLastMessage:v9 withEffectIdentifier:v8 beginAnimationFromTranscriptPresentedState:v5];
+  stateCopy = state;
+  identifierCopy = identifier;
+  lastObject = [messages lastObject];
+  [(CKImpactEffectManager *)self _animateLastMessage:lastObject withEffectIdentifier:identifierCopy beginAnimationFromTranscriptPresentedState:stateCopy];
 }
 
-- (void)setupAudioPlayerWithURL:(id)a3
+- (void)setupAudioPlayerWithURL:(id)l
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[CKImpactEffectMediaObject alloc] initWithImpactEffectAudioFileURL:v4];
+  lCopy = l;
+  v5 = [[CKImpactEffectMediaObject alloc] initWithImpactEffectAudioFileURL:lCopy];
 
   v6 = [CKAudioController alloc];
   v12[0] = v5;
@@ -223,22 +223,22 @@ void __68__CKImpactEffectManager_localizedEffectNameForEffectWithIdentifier___bl
   [(CKAudioController *)self->_audioController setShouldStopPlayingWhenSilent:1];
   [(CKAudioController *)self->_audioController setShouldDuckOthers:0];
   [(CKAudioController *)self->_audioController setShouldUseSpeaker:1];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = +[CKAudioSessionController shareInstance];
-  [v10 addObserver:self selector:sel__audioSessionOptionsWillChange_ name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v11];
+  [defaultCenter addObserver:self selector:sel__audioSessionOptionsWillChange_ name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v11];
 }
 
-- (void)playSoundForEffectIdentifier:(id)a3
+- (void)playSoundForEffectIdentifier:(id)identifier
 {
-  v7 = a3;
-  if ([v7 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
   {
     v4 = @"Pop";
   }
 
   else
   {
-    if (![v7 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
+    if (![identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
     {
       goto LABEL_8;
     }
@@ -251,7 +251,7 @@ void __68__CKImpactEffectManager_localizedEffectNameForEffectWithIdentifier___bl
 
   [(CKImpactEffectManager *)self setupAudioPlayerWithURL:v6];
   [(CKAudioController *)self->_audioController prepareToPlay];
-  if (([v7 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"] & 1) == 0)
+  if (([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"] & 1) == 0)
   {
     [(CKAudioController *)self->_audioController play];
   }
@@ -259,15 +259,15 @@ void __68__CKImpactEffectManager_localizedEffectNameForEffectWithIdentifier___bl
 LABEL_8:
 }
 
-- (void)playUndoSendAnimationForChatItem:(id)a3
+- (void)playUndoSendAnimationForChatItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKImpactEffectManager *)self delegate];
-  v6 = [v5 collectionViewControllerForImpactEffectManager:self];
+  itemCopy = item;
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v6 = [delegate collectionViewControllerForImpactEffectManager:self];
 
-  v7 = [v6 chatItems];
-  v8 = [v4 message];
-  v9 = [v7 __ck_indexOfPartOfMessage:v8 withMessagePartIndex:{objc_msgSend(v4, "index")}];
+  chatItems = [v6 chatItems];
+  message = [itemCopy message];
+  v9 = [chatItems __ck_indexOfPartOfMessage:message withMessagePartIndex:{objc_msgSend(itemCopy, "index")}];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = IMLogHandleForCategory();
@@ -279,30 +279,30 @@ LABEL_8:
 
   else
   {
-    v10 = [v7 objectAtIndexedSubscript:v9];
-    v11 = [v10 IMChatItem];
-    v12 = [v11 guid];
+    v10 = [chatItems objectAtIndexedSubscript:v9];
+    iMChatItem = [v10 IMChatItem];
+    guid = [iMChatItem guid];
 
     undoSendChatItemGUID = self->_undoSendChatItemGUID;
-    self->_undoSendChatItemGUID = v12;
+    self->_undoSendChatItemGUID = guid;
   }
 
-  v14 = [v4 message];
-  [(CKImpactEffectManager *)self _animateLastMessage:v14 withEffectIdentifier:@"com.apple.MobileSMS.expressivesend.pop" beginAnimationFromTranscriptPresentedState:0];
+  message2 = [itemCopy message];
+  [(CKImpactEffectManager *)self _animateLastMessage:message2 withEffectIdentifier:@"com.apple.MobileSMS.expressivesend.pop" beginAnimationFromTranscriptPresentedState:0];
 }
 
-- (void)_animateLastMessage:(id)a3 withEffectIdentifier:(id)a4 beginAnimationFromTranscriptPresentedState:(BOOL)a5
+- (void)_animateLastMessage:(id)message withEffectIdentifier:(id)identifier beginAnimationFromTranscriptPresentedState:(BOOL)state
 {
-  v21 = a5;
+  stateCopy = state;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v6 fileTransferGUIDs];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+  v9 = [fileTransferGUIDs countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -313,22 +313,22 @@ LABEL_3:
     {
       if (*v24 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(fileTransferGUIDs);
       }
 
       v13 = *(*(&v23 + 1) + 8 * v12);
-      v14 = [MEMORY[0x1E69A5B80] sharedInstance];
-      v15 = [v14 transferForGUID:v13];
+      mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+      v15 = [mEMORY[0x1E69A5B80] transferForGUID:v13];
 
-      LOBYTE(v14) = [CKCommSafetyHelper shouldDisableTranscriptCapabilitiesForFileTransfer:v15];
-      if (v14)
+      LOBYTE(mEMORY[0x1E69A5B80]) = [CKCommSafetyHelper shouldDisableTranscriptCapabilitiesForFileTransfer:v15];
+      if (mEMORY[0x1E69A5B80])
       {
         goto LABEL_19;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [fileTransferGUIDs countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -339,37 +339,37 @@ LABEL_3:
     }
   }
 
-  if (![(CKImpactEffectManager *)self isAnimating]&& ![(CKImpactEffectManager *)self isDisabled]&& [CKImpactEffectManager identifierIsAnimatedImpactEffect:v7])
+  if (![(CKImpactEffectManager *)self isAnimating]&& ![(CKImpactEffectManager *)self isDisabled]&& [CKImpactEffectManager identifierIsAnimatedImpactEffect:identifierCopy])
   {
-    [(CKImpactEffectManager *)self playSoundForEffectIdentifier:v7];
+    [(CKImpactEffectManager *)self playSoundForEffectIdentifier:identifierCopy];
     if (_animateLastMessage_withEffectIdentifier_beginAnimationFromTranscriptPresentedState__onceToken != -1)
     {
       [CKImpactEffectManager _animateLastMessage:withEffectIdentifier:beginAnimationFromTranscriptPresentedState:];
     }
 
     [_animateLastMessage_withEffectIdentifier_beginAnimationFromTranscriptPresentedState__sAnimator setAnimationDelegate:self];
-    if ([CKImpactEffectManager identifierShouldPlayInWindow:v7])
+    if ([CKImpactEffectManager identifierShouldPlayInWindow:identifierCopy])
     {
       [(CKImpactEffectManager *)self _renderEffectInWindow];
     }
 
-    v8 = -[CKImpactEffectManager _sendAnimationContextForIdentifier:message:isSender:beginAnimationFromTranscriptPresentedState:](self, "_sendAnimationContextForIdentifier:message:isSender:beginAnimationFromTranscriptPresentedState:", v7, v6, [v6 isFromMe], v21);
-    v16 = [(CKImpactEffectManager *)self expressiveSendAnimationBackdrop];
-    [v8 setBackdropLayer:v16];
+    fileTransferGUIDs = -[CKImpactEffectManager _sendAnimationContextForIdentifier:message:isSender:beginAnimationFromTranscriptPresentedState:](self, "_sendAnimationContextForIdentifier:message:isSender:beginAnimationFromTranscriptPresentedState:", identifierCopy, messageCopy, [messageCopy isFromMe], stateCopy);
+    expressiveSendAnimationBackdrop = [(CKImpactEffectManager *)self expressiveSendAnimationBackdrop];
+    [fileTransferGUIDs setBackdropLayer:expressiveSendAnimationBackdrop];
 
-    v17 = [(CKImpactEffectManager *)self delegate];
-    [v17 sendAnimationManagerWillStartAnimation:self context:v8];
+    delegate = [(CKImpactEffectManager *)self delegate];
+    [delegate sendAnimationManagerWillStartAnimation:self context:fileTransferGUIDs];
 
-    if ([v7 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
+    if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
     {
-      v18 = [(CKImpactEffectManager *)self delegate];
-      v19 = [v18 collectionViewControllerForImpactEffectManager:self];
+      delegate2 = [(CKImpactEffectManager *)self delegate];
+      v19 = [delegate2 collectionViewControllerForImpactEffectManager:self];
 
-      v20 = [v19 view];
-      [v8 setContainerView:v20];
+      view = [v19 view];
+      [fileTransferGUIDs setContainerView:view];
     }
 
-    [_animateLastMessage_withEffectIdentifier_beginAnimationFromTranscriptPresentedState__sAnimator beginAnimationWithSendAnimationContext:v8];
+    [_animateLastMessage_withEffectIdentifier_beginAnimationFromTranscriptPresentedState__sAnimator beginAnimationWithSendAnimationContext:fileTransferGUIDs];
 LABEL_19:
   }
 }
@@ -383,25 +383,25 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
 
 - (void)_renderEffectInView
 {
-  v3 = [(CKImpactEffectManager *)self delegate];
-  v19 = [v3 collectionViewControllerForImpactEffectManager:self];
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v19 = [delegate collectionViewControllerForImpactEffectManager:self];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DD258]);
   v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   [v5 setClipsToBounds:0];
   [v5 setAutoresizingMask:18];
   [(CKImpactEffectManager *)self setExpressiveSendScrollView:v5];
-  v6 = [v4 view];
-  [v6 addSubview:v5];
+  view = [v4 view];
+  [view addSubview:v5];
 
-  v7 = [v19 delegate];
-  v8 = [v7 transcriptCollectionViewControllerOuterEffectPresentingView:v19];
+  delegate2 = [v19 delegate];
+  v8 = [delegate2 transcriptCollectionViewControllerOuterEffectPresentingView:v19];
 
-  v9 = [v4 view];
-  [v8 addSubview:v9];
+  view2 = [v4 view];
+  [v8 addSubview:view2];
 
-  v10 = [v19 collectionView];
-  [v10 frame];
+  collectionView = [v19 collectionView];
+  [collectionView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -413,32 +413,32 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
 - (void)_renderEffectInWindow
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
-  if (!v3)
+  expressiveSendAnimationWindow = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
+  if (!expressiveSendAnimationWindow)
   {
-    v4 = [(CKImpactEffectManager *)self delegate];
-    v5 = [v4 collectionViewControllerForImpactEffectManager:self];
+    delegate = [(CKImpactEffectManager *)self delegate];
+    v5 = [delegate collectionViewControllerForImpactEffectManager:self];
 
-    v3 = objc_alloc_init(MEMORY[0x1E69DD2E8]);
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v3 setBackgroundColor:v6];
+    expressiveSendAnimationWindow = objc_alloc_init(MEMORY[0x1E69DD2E8]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [expressiveSendAnimationWindow setBackgroundColor:clearColor];
 
-    v7 = [v5 view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    [v3 setWindowScene:v9];
+    view = [v5 view];
+    window = [view window];
+    windowScene = [window windowScene];
+    [expressiveSendAnimationWindow setWindowScene:windowScene];
 
-    [(CKImpactEffectManager *)self _applyTranscriptTraitsAsOverridesFrom:v5 toDestination:v3];
+    [(CKImpactEffectManager *)self _applyTranscriptTraitsAsOverridesFrom:v5 toDestination:expressiveSendAnimationWindow];
     v10 = objc_alloc_init(MEMORY[0x1E69DD258]);
     v11 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     [v11 setClipsToBounds:0];
     [v11 setAutoresizingMask:18];
     [(CKImpactEffectManager *)self setExpressiveSendScrollView:v11];
-    v12 = [v10 view];
-    [v12 addSubview:v11];
+    view2 = [v10 view];
+    [view2 addSubview:v11];
 
-    [v3 setRootViewController:v10];
-    [v3 setUserInteractionEnabled:1];
+    [expressiveSendAnimationWindow setRootViewController:v10];
+    [expressiveSendAnimationWindow setUserInteractionEnabled:1];
     v13 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     [v13 setValue:&unk_1F04E7E30 forKey:@"inputRadius"];
     [v13 setValue:MEMORY[0x1E695E118] forKey:@"inputNormalizeEdges"];
@@ -448,49 +448,49 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     [v14 setFilters:v15];
 
-    v16 = [v3 rootViewController];
-    v17 = [v16 view];
-    v18 = [v17 layer];
-    [v18 insertSublayer:v14 atIndex:0];
+    rootViewController = [expressiveSendAnimationWindow rootViewController];
+    view3 = [rootViewController view];
+    layer = [view3 layer];
+    [layer insertSublayer:v14 atIndex:0];
 
     [(CKImpactEffectManager *)self setExpressiveSendAnimationBackdrop:v14];
   }
 
-  [(CKImpactEffectManager *)self setExpressiveSendAnimationWindow:v3];
+  [(CKImpactEffectManager *)self setExpressiveSendAnimationWindow:expressiveSendAnimationWindow];
   [(CKImpactEffectManager *)self _sizeAnimationWindow];
-  [v3 setHidden:0];
+  [expressiveSendAnimationWindow setHidden:0];
 }
 
-- (void)_applyTranscriptTraitsAsOverridesFrom:(id)a3 toDestination:(id)a4
+- (void)_applyTranscriptTraitsAsOverridesFrom:(id)from toDestination:(id)destination
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 traitOverrides];
-  v8 = [v6 traitCollection];
-  [v7 setNSIntegerValue:objc_msgSend(v8 forTrait:{"userInterfaceStyle"), objc_opt_class()}];
+  destinationCopy = destination;
+  fromCopy = from;
+  traitOverrides = [destinationCopy traitOverrides];
+  traitCollection = [fromCopy traitCollection];
+  [traitOverrides setNSIntegerValue:objc_msgSend(traitCollection forTrait:{"userInterfaceStyle"), objc_opt_class()}];
 
-  v9 = [v5 traitOverrides];
-  v10 = [v6 traitCollection];
-  v11 = [v10 valueForNSIntegerTrait:objc_opt_class()];
-  [v9 setNSIntegerValue:v11 forTrait:objc_opt_class()];
+  traitOverrides2 = [destinationCopy traitOverrides];
+  traitCollection2 = [fromCopy traitCollection];
+  v11 = [traitCollection2 valueForNSIntegerTrait:objc_opt_class()];
+  [traitOverrides2 setNSIntegerValue:v11 forTrait:objc_opt_class()];
 
-  v14 = [v5 traitOverrides];
+  traitOverrides3 = [destinationCopy traitOverrides];
 
-  v12 = [v6 traitCollection];
+  traitCollection3 = [fromCopy traitCollection];
 
-  [v12 valueForCGFloatTrait:objc_opt_class()];
-  [v14 setCGFloatValue:objc_opt_class() forTrait:v13];
+  [traitCollection3 valueForCGFloatTrait:objc_opt_class()];
+  [traitOverrides3 setCGFloatValue:objc_opt_class() forTrait:v13];
 }
 
-- (void)matchScrollViewOffset:(id)a3
+- (void)matchScrollViewOffset:(id)offset
 {
-  v4 = a3;
-  v9 = [(CKImpactEffectManager *)self expressiveSendScrollView];
-  [v4 contentOffset];
+  offsetCopy = offset;
+  expressiveSendScrollView = [(CKImpactEffectManager *)self expressiveSendScrollView];
+  [offsetCopy contentOffset];
   v6 = v5;
   v8 = v7;
 
-  [v9 setContentOffset:{v6, v8}];
+  [expressiveSendScrollView setContentOffset:{v6, v8}];
 }
 
 - (void)stopAllEffects
@@ -502,56 +502,56 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
 
 - (void)_sizeAnimationWindow
 {
-  v3 = [(CKImpactEffectManager *)self delegate];
-  v4 = [v3 collectionViewControllerForImpactEffectManager:self];
-  v31 = [v4 collectionView];
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v4 = [delegate collectionViewControllerForImpactEffectManager:self];
+  collectionView = [v4 collectionView];
 
-  v5 = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
-  v6 = [v31 superview];
-  [v31 frame];
-  [v6 convertRect:0 toView:?];
+  expressiveSendAnimationWindow = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
+  superview = [collectionView superview];
+  [collectionView frame];
+  [superview convertRect:0 toView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v5 setFrame:{v8, v10, v12, v14}];
+  [expressiveSendAnimationWindow setFrame:{v8, v10, v12, v14}];
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 presentationControllerWindowLevel];
-  [v5 setLevel:?];
+  [expressiveSendAnimationWindow setLevel:?];
 
-  v16 = [v31 superview];
-  [v31 frame];
-  [v16 convertRect:0 toView:?];
+  superview2 = [collectionView superview];
+  [collectionView frame];
+  [superview2 convertRect:0 toView:?];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [v5 rootViewController];
-  v26 = [v25 view];
-  [v26 setFrame:{v18, v20, v22, v24}];
+  rootViewController = [expressiveSendAnimationWindow rootViewController];
+  view = [rootViewController view];
+  [view setFrame:{v18, v20, v22, v24}];
 
-  v27 = [(CKImpactEffectManager *)self expressiveSendAnimationBackdrop];
-  v28 = [v5 rootViewController];
-  v29 = [v28 view];
-  v30 = [v29 layer];
-  [v30 bounds];
-  [v27 setFrame:?];
+  expressiveSendAnimationBackdrop = [(CKImpactEffectManager *)self expressiveSendAnimationBackdrop];
+  rootViewController2 = [expressiveSendAnimationWindow rootViewController];
+  view2 = [rootViewController2 view];
+  layer = [view2 layer];
+  [layer bounds];
+  [expressiveSendAnimationBackdrop setFrame:?];
 }
 
-- (id)_sendAnimationContextForIdentifier:(id)a3 message:(id)a4 isSender:(BOOL)a5 beginAnimationFromTranscriptPresentedState:(BOOL)a6
+- (id)_sendAnimationContextForIdentifier:(id)identifier message:(id)message isSender:(BOOL)sender beginAnimationFromTranscriptPresentedState:(BOOL)state
 {
-  v71 = a6;
-  v72 = a5;
+  stateCopy = state;
+  senderCopy = sender;
   v120 = *MEMORY[0x1E69E9840];
-  v73 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  messageCopy = message;
   v75 = objc_alloc_init(CKSendAnimationContext);
-  v76 = self;
-  v9 = [(CKImpactEffectManager *)self delegate];
-  v10 = [v9 collectionViewControllerForImpactEffectManager:v76];
-  v74 = [v10 chatItems];
+  selfCopy = self;
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v10 = [delegate collectionViewControllerForImpactEffectManager:selfCopy];
+  chatItems = [v10 chatItems];
 
   v109 = 0;
   v110 = &v109;
@@ -563,12 +563,12 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
   v106[1] = 3221225472;
   v106[2] = __120__CKImpactEffectManager__sendAnimationContextForIdentifier_message_isSender_beginAnimationFromTranscriptPresentedState___block_invoke;
   v106[3] = &unk_1E72F3860;
-  v70 = v8;
+  v70 = messageCopy;
   v107 = v70;
   v108 = &v109;
-  [v74 enumerateObjectsWithOptions:2 usingBlock:v106];
+  [chatItems enumerateObjectsWithOptions:2 usingBlock:v106];
   v105 = 0;
-  [(CKImpactEffectManager *)v76 _visibleCells:&v105 aboveItem:v110[5]];
+  [(CKImpactEffectManager *)selfCopy _visibleCells:&v105 aboveItem:v110[5]];
   v11 = v105;
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -591,18 +591,18 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
           objc_enumerationMutation(obj);
         }
 
-        v14 = [*(*(&v101 + 1) + 8 * i) contentView];
+        contentView = [*(*(&v101 + 1) + 8 * i) contentView];
         v99 = 0u;
         v100 = 0u;
         v97 = 0u;
         v98 = 0u;
-        v15 = [v14 subviews];
-        v16 = [v15 countByEnumeratingWithState:&v97 objects:v118 count:16];
+        subviews = [contentView subviews];
+        v16 = [subviews countByEnumeratingWithState:&v97 objects:v118 count:16];
         if (v16)
         {
-          v80 = v14;
+          v80 = contentView;
           v17 = 0;
-          v84 = v15;
+          v84 = subviews;
           v86 = *v98;
           do
           {
@@ -624,8 +624,8 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
                 v96 = 0u;
                 v93 = 0u;
                 v94 = 0u;
-                v20 = [v17 subviews];
-                v21 = [v20 countByEnumeratingWithState:&v93 objects:v117 count:16];
+                subviews2 = [v17 subviews];
+                v21 = [subviews2 countByEnumeratingWithState:&v93 objects:v117 count:16];
                 if (v21)
                 {
                   v22 = v13;
@@ -636,7 +636,7 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
                     {
                       if (*v94 != v23)
                       {
-                        objc_enumerationMutation(v20);
+                        objc_enumerationMutation(subviews2);
                       }
 
                       v25 = *(*(&v93 + 1) + 8 * j);
@@ -648,7 +648,7 @@ void __109__CKImpactEffectManager__animateLastMessage_withEffectIdentifier_begin
                       }
                     }
 
-                    v21 = [v20 countByEnumeratingWithState:&v93 objects:v117 count:16];
+                    v21 = [subviews2 countByEnumeratingWithState:&v93 objects:v117 count:16];
                     if (v21)
                     {
                       continue;
@@ -676,8 +676,8 @@ LABEL_23:
 
               else
               {
-                v26 = [MEMORY[0x1E695DFB0] null];
-                [v13 addObject:v26];
+                null = [MEMORY[0x1E695DFB0] null];
+                [v13 addObject:null];
               }
 
               ++v18;
@@ -690,8 +690,8 @@ LABEL_23:
 
           while (v16);
 
-          v14 = v80;
-          v15 = v84;
+          contentView = v80;
+          subviews = v84;
         }
       }
 
@@ -701,27 +701,27 @@ LABEL_23:
     while (v79);
   }
 
-  v27 = v76;
-  if (+[CKImpactEffectManager identifierShouldPlayInWindow:](CKImpactEffectManager, "identifierShouldPlayInWindow:", v73) && [v12 count])
+  v27 = selfCopy;
+  if (+[CKImpactEffectManager identifierShouldPlayInWindow:](CKImpactEffectManager, "identifierShouldPlayInWindow:", identifierCopy) && [v12 count])
   {
-    v28 = [(CKImpactEffectManager *)v76 delegate];
-    v29 = [v28 collectionViewControllerForImpactEffectManager:v76];
+    delegate2 = [(CKImpactEffectManager *)selfCopy delegate];
+    v29 = [delegate2 collectionViewControllerForImpactEffectManager:selfCopy];
 
-    v30 = [v29 collectionView];
+    collectionView = [v29 collectionView];
     v31 = [v29 balloonViewForChatItem:v110[5]];
-    v32 = [obj firstObject];
-    v33 = [v29 chatItemForCell:v32];
+    firstObject = [obj firstObject];
+    v33 = [v29 chatItemForCell:firstObject];
 
-    v34 = [(CKImpactEffectManager *)v76 expressiveSendAnimationBalloon];
+    expressiveSendAnimationBalloon = [(CKImpactEffectManager *)selfCopy expressiveSendAnimationBalloon];
 
-    if (v34)
+    if (expressiveSendAnimationBalloon)
     {
-      v35 = [(CKImpactEffectManager *)v76 expressiveSendAnimationBalloon];
-      CKBalloonViewReuse(v35);
+      expressiveSendAnimationBalloon2 = [(CKImpactEffectManager *)selfCopy expressiveSendAnimationBalloon];
+      CKBalloonViewReuse(expressiveSendAnimationBalloon2);
     }
 
-    v36 = [(CKImpactEffectManager *)v76 cloneBalloonForAnimationWithChatItem:v33];
-    [(CKImpactEffectManager *)v76 setExpressiveSendAnimationBalloon:v36];
+    v36 = [(CKImpactEffectManager *)selfCopy cloneBalloonForAnimationWithChatItem:v33];
+    [(CKImpactEffectManager *)selfCopy setExpressiveSendAnimationBalloon:v36];
     v37 = [v12 indexOfObject:v31];
     if (v37 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -737,23 +737,23 @@ LABEL_23:
     [v87 frame];
     v40 = v39;
     v42 = v41;
-    v43 = [v87 superview];
-    [v43 convertPoint:v30 toView:{v40, v42}];
+    superview = [v87 superview];
+    [superview convertPoint:collectionView toView:{v40, v42}];
     v45 = v44;
     v47 = v46;
 
-    v48 = [v30 layer];
-    v49 = [v48 flipsHorizontalAxis];
+    layer = [collectionView layer];
+    flipsHorizontalAxis = [layer flipsHorizontalAxis];
 
-    if (v49)
+    if (flipsHorizontalAxis)
     {
-      [v30 frame];
+      [collectionView frame];
       v45 = v50 - v45;
     }
 
     [v36 frame];
     [v36 setFrame:{v45, v47}];
-    [(CKImpactEffectManager *)v76 setOriginalBalloonView:v87];
+    [(CKImpactEffectManager *)selfCopy setOriginalBalloonView:v87];
     if (v36)
     {
       [v12 replaceObjectAtIndex:v38 withObject:v36];
@@ -770,14 +770,14 @@ LABEL_23:
     }
 
     v81 = v33;
-    v85 = v30;
+    v85 = collectionView;
     v52 = v29;
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v53 = [v36 subviews];
-    v54 = [v53 countByEnumeratingWithState:&v88 objects:v116 count:16];
+    subviews3 = [v36 subviews];
+    v54 = [subviews3 countByEnumeratingWithState:&v88 objects:v116 count:16];
     if (v54)
     {
       v55 = *v89;
@@ -787,7 +787,7 @@ LABEL_23:
         {
           if (*v89 != v55)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(subviews3);
           }
 
           v57 = *(*(&v88 + 1) + 8 * k);
@@ -807,7 +807,7 @@ LABEL_23:
           }
         }
 
-        v54 = [v53 countByEnumeratingWithState:&v88 objects:v116 count:16];
+        v54 = [subviews3 countByEnumeratingWithState:&v88 objects:v116 count:16];
         if (v54)
         {
           continue;
@@ -822,34 +822,34 @@ LABEL_23:
     v60 = 0;
 LABEL_59:
 
-    v61 = [(CKImpactEffectManager *)v76 expressiveSendScrollView];
-    [v61 addSubview:v36];
+    expressiveSendScrollView = [(CKImpactEffectManager *)selfCopy expressiveSendScrollView];
+    [expressiveSendScrollView addSubview:v36];
 
-    v27 = v76;
+    v27 = selfCopy;
   }
 
-  v62 = [v12 firstObject];
+  firstObject2 = [v12 firstObject];
   [v12 removeFirstObject];
-  while (v62)
+  while (firstObject2)
   {
     v63 = objc_opt_class();
     if ([v63 isSubclassOfClass:objc_opt_class()])
     {
-      v67 = v62;
+      v67 = firstObject2;
       v115 = v67;
       v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v115 count:1];
 
 LABEL_69:
-      v27 = v76;
+      v27 = selfCopy;
       goto LABEL_71;
     }
 
-    v64 = [v12 firstObject];
+    firstObject3 = [v12 firstObject];
 
     [v12 removeFirstObject];
-    v27 = v76;
+    v27 = selfCopy;
     [v13 removeFirstObject];
-    v62 = v64;
+    firstObject2 = firstObject3;
   }
 
   if (IMOSLoggingEnabled())
@@ -869,13 +869,13 @@ LABEL_69:
 LABEL_71:
   [(CKSendAnimationContext *)v75 setAnimatableViews:v12];
   [(CKSendAnimationContext *)v75 setAnimatableTextViews:v13];
-  [(CKSendAnimationContext *)v75 setImpactIdentifier:v73];
+  [(CKSendAnimationContext *)v75 setImpactIdentifier:identifierCopy];
   [(CKSendAnimationContext *)v75 setThrowBalloonViews:v66];
-  [(CKSendAnimationContext *)v75 setIsSender:v72];
-  v68 = [(CKImpactEffectManager *)v27 expressiveSendScrollView];
-  [(CKSendAnimationContext *)v75 setContainerView:v68];
+  [(CKSendAnimationContext *)v75 setIsSender:senderCopy];
+  expressiveSendScrollView2 = [(CKImpactEffectManager *)v27 expressiveSendScrollView];
+  [(CKSendAnimationContext *)v75 setContainerView:expressiveSendScrollView2];
 
-  [(CKSendAnimationContext *)v75 setBeginAnimationFromTranscriptPresentedState:v71];
+  [(CKSendAnimationContext *)v75 setBeginAnimationFromTranscriptPresentedState:stateCopy];
   _Block_object_dispose(&v109, 8);
 
   return v75;
@@ -907,27 +907,27 @@ void __120__CKImpactEffectManager__sendAnimationContextForIdentifier_message_isS
   }
 }
 
-- (id)cloneBalloonForAnimationWithChatItem:(id)a3
+- (id)cloneBalloonForAnimationWithChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = CKBalloonViewForClass([v4 impactBalloonViewClass]);
-    [v5 configureForMessagePart:v4];
+    v5 = CKBalloonViewForClass([itemCopy impactBalloonViewClass]);
+    [v5 configureForMessagePart:itemCopy];
     [v5 setCanUseOpaqueMask:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [(CKImpactEffectManager *)self delegate];
-      v8 = [v7 collectionViewControllerForImpactEffectManager:self];
+      delegate = [(CKImpactEffectManager *)self delegate];
+      v8 = [delegate collectionViewControllerForImpactEffectManager:self];
 
-      v9 = [v8 gradientReferenceView];
-      [v6 setGradientReferenceView:v9];
+      gradientReferenceView = [v8 gradientReferenceView];
+      [v6 setGradientReferenceView:gradientReferenceView];
     }
 
-    [v4 size];
+    [itemCopy size];
     v11 = v10;
     v13 = v12;
     [v5 tailInsetsForPillSize:?];
@@ -946,73 +946,73 @@ void __120__CKImpactEffectManager__sendAnimationContextForIdentifier_message_isS
 
 - (void)popAnimationDidBegin
 {
-  v3 = [(CKImpactEffectManager *)self delegate];
-  v4 = [v3 collectionViewControllerForImpactEffectManager:self];
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v4 = [delegate collectionViewControllerForImpactEffectManager:self];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__CKImpactEffectManager_popAnimationDidBegin__block_invoke;
   v6[3] = &unk_1E72EB8D0;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v16 = a3;
-  v4 = [v16 impactIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"];
+  contextCopy = context;
+  impactIdentifier = [contextCopy impactIdentifier];
+  v5 = [impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"];
 
   if ((v5 & 1) == 0)
   {
     [MEMORY[0x1E6979518] flush];
-    v6 = [(CKImpactEffectManager *)self delegate];
-    v7 = [v6 collectionViewControllerForImpactEffectManager:self];
+    delegate = [(CKImpactEffectManager *)self delegate];
+    v7 = [delegate collectionViewControllerForImpactEffectManager:self];
 
-    v8 = [v7 collectionView];
-    [v8 setNeedsLayout];
+    collectionView = [v7 collectionView];
+    [collectionView setNeedsLayout];
 
-    v9 = [v7 collectionView];
-    [v9 layoutIfNeeded];
+    collectionView2 = [v7 collectionView];
+    [collectionView2 layoutIfNeeded];
 
-    v10 = [v16 impactIdentifier];
-    LODWORD(v9) = [CKImpactEffectManager identifierShouldPlayInWindow:v10];
+    impactIdentifier2 = [contextCopy impactIdentifier];
+    LODWORD(collectionView2) = [CKImpactEffectManager identifierShouldPlayInWindow:impactIdentifier2];
 
-    if (v9)
+    if (collectionView2)
     {
-      v11 = [(CKImpactEffectManager *)self expressiveSendScrollView];
-      v12 = [v7 collectionView];
-      [v12 contentOffset];
-      [v11 setContentOffset:?];
+      expressiveSendScrollView = [(CKImpactEffectManager *)self expressiveSendScrollView];
+      collectionView3 = [v7 collectionView];
+      [collectionView3 contentOffset];
+      [expressiveSendScrollView setContentOffset:?];
 
-      v13 = [(CKImpactEffectManager *)self originalBalloonView];
-      [v13 setHidden:1];
+      originalBalloonView = [(CKImpactEffectManager *)self originalBalloonView];
+      [originalBalloonView setHidden:1];
     }
 
-    v14 = [(CKImpactEffectManager *)self delegate];
-    v15 = [v14 chatForSendAnimationManager:self];
+    delegate2 = [(CKImpactEffectManager *)self delegate];
+    v15 = [delegate2 chatForSendAnimationManager:self];
 
     [v15 beginHoldingChatItemsUpdatesForReason:*MEMORY[0x1E69A57A8]];
     [(CKImpactEffectManager *)self setIsAnimating:1];
   }
 }
 
-- (void)animationDidFinishWithContext:(id)a3
+- (void)animationDidFinishWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 impactIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"];
+  contextCopy = context;
+  impactIdentifier = [contextCopy impactIdentifier];
+  v6 = [impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 impactIdentifier];
+    impactIdentifier2 = [contextCopy impactIdentifier];
     [(CKImpactEffectManager *)self setIsAnimating:0];
-    if ([CKImpactEffectManager identifierShouldPlayInWindow:v7])
+    if ([CKImpactEffectManager identifierShouldPlayInWindow:impactIdentifier2])
     {
-      v8 = [(CKImpactEffectManager *)self originalBalloonView];
-      [v8 setHidden:0];
+      originalBalloonView = [(CKImpactEffectManager *)self originalBalloonView];
+      [originalBalloonView setHidden:0];
 
       [(CKImpactEffectManager *)self setOriginalBalloonView:0];
     }
@@ -1022,8 +1022,8 @@ void __120__CKImpactEffectManager__sendAnimationContextForIdentifier_message_isS
     v10[2] = __55__CKImpactEffectManager_animationDidFinishWithContext___block_invoke;
     v10[3] = &unk_1E72EB8D0;
     v10[4] = self;
-    v11 = v7;
-    v9 = v7;
+    v11 = impactIdentifier2;
+    v9 = impactIdentifier2;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
   }
 }
@@ -1042,29 +1042,29 @@ void __55__CKImpactEffectManager_animationDidFinishWithContext___block_invoke(ui
   [v4 endHoldingChatItemsUpdatesForReason:*MEMORY[0x1E69A57A8]];
 }
 
-- (void)_visibleCells:(id *)a3 aboveItem:(id)a4
+- (void)_visibleCells:(id *)cells aboveItem:(id)item
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  itemCopy = item;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(CKImpactEffectManager *)self delegate];
-  v8 = [v7 collectionViewControllerForImpactEffectManager:self];
+  delegate = [(CKImpactEffectManager *)self delegate];
+  v8 = [delegate collectionViewControllerForImpactEffectManager:self];
 
-  v9 = [v8 collectionView];
-  v10 = [v9 indexPathsForVisibleItems];
-  v11 = [v10 mutableCopy];
+  collectionView = [v8 collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  v11 = [indexPathsForVisibleItems mutableCopy];
 
-  v25 = v5;
-  v22 = [v8 cellForChatItem:v5];
-  v12 = [v9 indexPathForCell:?];
+  v25 = itemCopy;
+  v22 = [v8 cellForChatItem:itemCopy];
+  v12 = [collectionView indexPathForCell:?];
   [v11 sortUsingComparator:&__block_literal_global_287_0];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
   v23 = v11;
-  v13 = [v11 reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1075,14 +1075,14 @@ void __55__CKImpactEffectManager_animationDidFinishWithContext___block_invoke(ui
       {
         if (*v27 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
         v19 = [v18 row];
         if (v19 <= [v12 row])
         {
-          v20 = [v9 cellForItemAtIndexPath:v18];
+          v20 = [collectionView cellForItemAtIndexPath:v18];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -1091,16 +1091,16 @@ void __55__CKImpactEffectManager_animationDidFinishWithContext___block_invoke(ui
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v15);
   }
 
-  if (a3)
+  if (cells)
   {
     v21 = v6;
-    *a3 = v6;
+    *cells = v6;
   }
 }
 
@@ -1133,23 +1133,23 @@ uint64_t __49__CKImpactEffectManager__visibleCells_aboveItem___block_invoke(uint
 
 - (void)_cleanupExpressiveSendComponents
 {
-  v3 = [(CKImpactEffectManager *)self expressiveSendAnimationBalloon];
-  [v3 removeFromSuperview];
+  expressiveSendAnimationBalloon = [(CKImpactEffectManager *)self expressiveSendAnimationBalloon];
+  [expressiveSendAnimationBalloon removeFromSuperview];
 
-  v4 = [(CKImpactEffectManager *)self expressiveSendAnimationBalloon];
-  CKBalloonViewReuse(v4);
+  expressiveSendAnimationBalloon2 = [(CKImpactEffectManager *)self expressiveSendAnimationBalloon];
+  CKBalloonViewReuse(expressiveSendAnimationBalloon2);
 
   [(CKImpactEffectManager *)self setExpressiveSendAnimationBalloon:0];
-  v5 = [(CKImpactEffectManager *)self expressiveSendScrollView];
-  v8 = [v5 superview];
+  expressiveSendScrollView = [(CKImpactEffectManager *)self expressiveSendScrollView];
+  superview = [expressiveSendScrollView superview];
 
-  [v8 setHidden:1];
-  v6 = [(CKImpactEffectManager *)self expressiveSendScrollView];
-  [v6 removeFromSuperview];
+  [superview setHidden:1];
+  expressiveSendScrollView2 = [(CKImpactEffectManager *)self expressiveSendScrollView];
+  [expressiveSendScrollView2 removeFromSuperview];
 
   [(CKImpactEffectManager *)self setExpressiveSendScrollView:0];
-  v7 = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
-  [v7 setHidden:1];
+  expressiveSendAnimationWindow = [(CKImpactEffectManager *)self expressiveSendAnimationWindow];
+  [expressiveSendAnimationWindow setHidden:1];
 
   [(CKImpactEffectManager *)self setExpressiveSendAnimationWindow:0];
   [(CKImpactEffectManager *)self setExpressiveSendAnimationBackdrop:0];
@@ -1157,19 +1157,19 @@ uint64_t __49__CKImpactEffectManager__visibleCells_aboveItem___block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = +[CKAudioSessionController shareInstance];
-  [v3 removeObserver:self name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v4];
+  [defaultCenter removeObserver:self name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v4];
 
   v5.receiver = self;
   v5.super_class = CKImpactEffectManager;
   [(CKImpactEffectManager *)&v5 dealloc];
 }
 
-- (void)_audioSessionOptionsWillChange:(id)a3
+- (void)_audioSessionOptionsWillChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CKAudioSessionControllerSessionNotificationOptionsKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CKAudioSessionControllerSessionNotificationOptionsKey"];
 
   if (v5 && ([v5 unsignedIntegerValue] & 2) == 0)
   {

@@ -1,29 +1,29 @@
 @interface CRKFileSystemNodeDescriptor
-+ (id)dataDescriptorWithFileName:(id)a3 content:(id)a4;
-+ (id)directoryDescriptorWithFileName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRKFileSystemNodeDescriptor)initWithType:(int64_t)a3 fileName:(id)a4 content:(id)a5;
++ (id)dataDescriptorWithFileName:(id)name content:(id)content;
++ (id)directoryDescriptorWithFileName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (CRKFileSystemNodeDescriptor)initWithType:(int64_t)type fileName:(id)name content:(id)content;
 - (unint64_t)hash;
 @end
 
 @implementation CRKFileSystemNodeDescriptor
 
-- (CRKFileSystemNodeDescriptor)initWithType:(int64_t)a3 fileName:(id)a4 content:(id)a5
+- (CRKFileSystemNodeDescriptor)initWithType:(int64_t)type fileName:(id)name content:(id)content
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  contentCopy = content;
   v17.receiver = self;
   v17.super_class = CRKFileSystemNodeDescriptor;
   v10 = [(CRKFileSystemNodeDescriptor *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [nameCopy copy];
     fileName = v11->_fileName;
     v11->_fileName = v12;
 
-    v14 = [v9 copy];
+    v14 = [contentCopy copy];
     content = v11->_content;
     v11->_content = v14;
   }
@@ -31,29 +31,29 @@
   return v11;
 }
 
-+ (id)directoryDescriptorWithFileName:(id)a3
++ (id)directoryDescriptorWithFileName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:0 fileName:v4 content:0];
+  nameCopy = name;
+  v5 = [[self alloc] initWithType:0 fileName:nameCopy content:0];
 
   return v5;
 }
 
-+ (id)dataDescriptorWithFileName:(id)a3 content:(id)a4
++ (id)dataDescriptorWithFileName:(id)name content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithType:1 fileName:v7 content:v6];
+  contentCopy = content;
+  nameCopy = name;
+  v8 = [[self alloc] initWithType:1 fileName:nameCopy content:contentCopy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""type fileName];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  fileName = [CFSTR(""type fileName];
+  v6 = [fileName mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -63,10 +63,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -95,7 +95,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKFileSystemNodeDescriptor *)v8 valueForKey:v16];
+          v18 = [(CRKFileSystemNodeDescriptor *)selfCopy valueForKey:v16];
           v19 = [(CRKFileSystemNodeDescriptor *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -141,8 +141,8 @@ LABEL_16:
 - (unint64_t)hash
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [CFSTR(""type fileName];
-  v4 = [v3 mutableCopy];
+  fileName = [CFSTR(""type fileName];
+  v4 = [fileName mutableCopy];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -152,7 +152,7 @@ LABEL_16:
   v20 = v5;
   [v5 enumerateObjectsUsingBlock:v19];
 
-  v6 = self;
+  selfCopy = self;
   v7 = v5;
   v15 = 0u;
   v16 = 0u;
@@ -173,7 +173,7 @@ LABEL_16:
           objc_enumerationMutation(v7);
         }
 
-        v13 = [(CRKFileSystemNodeDescriptor *)v6 valueForKey:*(*(&v15 + 1) + 8 * i)];
+        v13 = [(CRKFileSystemNodeDescriptor *)selfCopy valueForKey:*(*(&v15 + 1) + 8 * i)];
         v10 ^= [v13 hash];
       }
 

@@ -1,17 +1,17 @@
 @interface TransactionEntity
-- (int64_t)_typeForDownload:(id)a3;
+- (int64_t)_typeForDownload:(id)download;
 @end
 
 @implementation TransactionEntity
 
-- (int64_t)_typeForDownload:(id)a3
+- (int64_t)_typeForDownload:(id)download
 {
-  v3 = a3;
-  v4 = [v3 valueForProperty:@"kind"];
+  downloadCopy = download;
+  v4 = [downloadCopy valueForProperty:@"kind"];
   if ([v4 isEqualToString:SSDownloadKindSoftwareApplication])
   {
-    v5 = [v3 valueForProperty:@"is_automatic"];
-    v6 = [v3 valueForProperty:@"is_restore"];
+    v5 = [downloadCopy valueForProperty:@"is_automatic"];
+    v6 = [downloadCopy valueForProperty:@"is_restore"];
     if ([v5 integerValue] == 2)
     {
       v7 = 2;

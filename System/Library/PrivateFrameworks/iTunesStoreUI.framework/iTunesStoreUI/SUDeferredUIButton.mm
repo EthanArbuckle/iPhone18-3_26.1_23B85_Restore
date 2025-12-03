@@ -1,18 +1,18 @@
 @interface SUDeferredUIButton
 - (BOOL)isEnabled;
 - (CGRect)frame;
-- (id)imageForState:(unint64_t)a3;
-- (id)titleForState:(unint64_t)a3;
+- (id)imageForState:(unint64_t)state;
+- (id)titleForState:(unint64_t)state;
 - (void)_commitDeferredInterfaceUpdates;
 - (void)_saveCurrentStateAsDeferred;
 - (void)_saveImagesAsDeferred;
 - (void)_saveTitlesAsDeferred;
 - (void)dealloc;
-- (void)setDeferringInterfaceUpdates:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setDeferringInterfaceUpdates:(BOOL)updates;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation SUDeferredUIButton
@@ -24,18 +24,18 @@
   [(SUDeferredUIButton *)&v3 dealloc];
 }
 
-- (void)setDeferringInterfaceUpdates:(BOOL)a3
+- (void)setDeferringInterfaceUpdates:(BOOL)updates
 {
   isDeferringInterfaceUpdates = self->_isDeferringInterfaceUpdates;
-  if (isDeferringInterfaceUpdates != a3)
+  if (isDeferringInterfaceUpdates != updates)
   {
     if (!isDeferringInterfaceUpdates)
     {
       [(SUDeferredUIButton *)self _saveCurrentStateAsDeferred];
     }
 
-    self->_isDeferringInterfaceUpdates = a3;
-    if (!a3)
+    self->_isDeferringInterfaceUpdates = updates;
+    if (!updates)
     {
 
       [(SUDeferredUIButton *)self _commitDeferredInterfaceUpdates];
@@ -79,18 +79,18 @@
   return [(SUDeferredUIButton *)&v4 isEnabled];
 }
 
-- (id)imageForState:(unint64_t)a3
+- (id)imageForState:(unint64_t)state
 {
   if ([(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
-    v5 = -[NSMutableDictionary objectForKey:](self->_deferredImages, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+    v5 = -[NSMutableDictionary objectForKey:](self->_deferredImages, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:state]);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SUDeferredUIButton;
-    v5 = [(SUDeferredUIButton *)&v8 imageForState:a3];
+    v5 = [(SUDeferredUIButton *)&v8 imageForState:state];
   }
 
   v6 = v5;
@@ -105,28 +105,28 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredEnabled = v3;
+    self->_deferredEnabled = enabledCopy;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUDeferredUIButton;
-    [(SUDeferredUIButton *)&v5 setEnabled:v3];
+    [(SUDeferredUIButton *)&v5 setEnabled:enabledCopy];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
     self->_deferredFrame.origin.x = x;
@@ -143,13 +143,13 @@
   }
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   if (![(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
     v9.receiver = self;
     v9.super_class = SUDeferredUIButton;
-    [(SUDeferredUIButton *)&v9 setImage:a3 forState:a4];
+    [(SUDeferredUIButton *)&v9 setImage:image forState:state];
     return;
   }
 
@@ -158,34 +158,34 @@
   {
     deferredImages = objc_alloc_init(MEMORY[0x1E695DF90]);
     self->_deferredImages = deferredImages;
-    if (a3)
+    if (image)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    a3 = [MEMORY[0x1E695DFB0] null];
+    image = [MEMORY[0x1E695DFB0] null];
     goto LABEL_4;
   }
 
-  if (!a3)
+  if (!image)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
 
-  [(NSMutableDictionary *)deferredImages setObject:a3 forKey:v8];
+  [(NSMutableDictionary *)deferredImages setObject:image forKey:v8];
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   if (![(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
     v9.receiver = self;
     v9.super_class = SUDeferredUIButton;
-    [(SUDeferredUIButton *)&v9 setTitle:a3 forState:a4];
+    [(SUDeferredUIButton *)&v9 setTitle:title forState:state];
     return;
   }
 
@@ -194,39 +194,39 @@ LABEL_4:
   {
     deferredTitles = objc_alloc_init(MEMORY[0x1E695DF90]);
     self->_deferredTitles = deferredTitles;
-    if (a3)
+    if (title)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    a3 = [MEMORY[0x1E695DFB0] null];
+    title = [MEMORY[0x1E695DFB0] null];
     goto LABEL_4;
   }
 
-  if (!a3)
+  if (!title)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
 
-  [(NSMutableDictionary *)deferredTitles setObject:a3 forKey:v8];
+  [(NSMutableDictionary *)deferredTitles setObject:title forKey:v8];
 }
 
-- (id)titleForState:(unint64_t)a3
+- (id)titleForState:(unint64_t)state
 {
   if ([(SUDeferredUIButton *)self isDeferringInterfaceUpdates])
   {
-    v5 = -[NSMutableDictionary objectForKey:](self->_deferredTitles, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+    v5 = -[NSMutableDictionary objectForKey:](self->_deferredTitles, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:state]);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SUDeferredUIButton;
-    v5 = [(SUDeferredUIButton *)&v8 titleForState:a3];
+    v5 = [(SUDeferredUIButton *)&v8 titleForState:state];
   }
 
   v6 = v5;

@@ -1,7 +1,7 @@
 @interface PXLIFOQueue
-- (PXLIFOQueue)initWithTargetQueue:(id)a3;
+- (PXLIFOQueue)initWithTargetQueue:(id)queue;
 - (void)_executeNextPendingBlock;
-- (void)dispatchAsync:(id)a3;
+- (void)dispatchAsync:(id)async;
 @end
 
 @implementation PXLIFOQueue
@@ -38,17 +38,17 @@ uint64_t __39__PXLIFOQueue__executeNextPendingBlock__block_invoke(uint64_t a1)
   return [v5 removeLastObject];
 }
 
-- (void)dispatchAsync:(id)a3
+- (void)dispatchAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__PXLIFOQueue_dispatchAsync___block_invoke;
   block[3] = &unk_1E774C2F0;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_sync(internalQueue, block);
   targetQueue = self->_targetQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -66,23 +66,23 @@ void __29__PXLIFOQueue_dispatchAsync___block_invoke(uint64_t a1)
   [v1 addObject:v2];
 }
 
-- (PXLIFOQueue)initWithTargetQueue:(id)a3
+- (PXLIFOQueue)initWithTargetQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = PXLIFOQueue;
   v6 = [(PXLIFOQueue *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetQueue, a3);
+    objc_storeStrong(&v6->_targetQueue, queue);
     v8 = dispatch_queue_create("com.apple.photos.lifo-internal-queue", 0);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v8;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     internalQueue_pendingBlocks = v7->_internalQueue_pendingBlocks;
-    v7->_internalQueue_pendingBlocks = v10;
+    v7->_internalQueue_pendingBlocks = array;
   }
 
   return v7;

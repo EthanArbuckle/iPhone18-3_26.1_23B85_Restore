@@ -1,19 +1,19 @@
 @interface PFXStylesheet
-+ (BOOL)isMediaTypeSupportedInAll:(id)a3;
-+ (BOOL)isMediaTypeSupportedInFlow:(id)a3;
-+ (BOOL)isMediaTypeSupportedInPaginated:(id)a3;
-+ (BOOL)readStylesheetFromEntry:(id)a3 readerState:(id)a4;
-+ (BOOL)readStylesheetFromString:(const char *)a3 sourceURL:(id)a4 toDictionary:(id)a5 toFontDictionary:(id)a6 pageCache:(id)a7;
-+ (BOOL)readStylesheetFromStyleAttributeContents:(const char *)a3 sourceURL:(id)a4 toDictionary:(id)a5 toFontDictionary:(id)a6 readerState:(id)a7;
-+ (BOOL)readStylesheetFromStyleNodeContents:(id)a3 sourceURL:(id)a4 readerState:(id)a5;
-+ (void)registerFontsFromDictionary:(id)a3 readerState:(id)a4;
++ (BOOL)isMediaTypeSupportedInAll:(id)all;
++ (BOOL)isMediaTypeSupportedInFlow:(id)flow;
++ (BOOL)isMediaTypeSupportedInPaginated:(id)paginated;
++ (BOOL)readStylesheetFromEntry:(id)entry readerState:(id)state;
++ (BOOL)readStylesheetFromString:(const char *)string sourceURL:(id)l toDictionary:(id)dictionary toFontDictionary:(id)fontDictionary pageCache:(id)cache;
++ (BOOL)readStylesheetFromStyleAttributeContents:(const char *)contents sourceURL:(id)l toDictionary:(id)dictionary toFontDictionary:(id)fontDictionary readerState:(id)state;
++ (BOOL)readStylesheetFromStyleNodeContents:(id)contents sourceURL:(id)l readerState:(id)state;
++ (void)registerFontsFromDictionary:(id)dictionary readerState:(id)state;
 @end
 
 @implementation PFXStylesheet
 
-+ (BOOL)readStylesheetFromString:(const char *)a3 sourceURL:(id)a4 toDictionary:(id)a5 toFontDictionary:(id)a6 pageCache:(id)a7
++ (BOOL)readStylesheetFromString:(const char *)string sourceURL:(id)l toDictionary:(id)dictionary toFontDictionary:(id)fontDictionary pageCache:(id)cache
 {
-  if (a3 && *a3)
+  if (string && *string)
   {
     [PFSStyleParser parseCSSFrom:"parseCSSFrom:intoDict:fontDict:sourceUrl:pageCache:" intoDict:? fontDict:? sourceUrl:? pageCache:?];
   }
@@ -21,16 +21,16 @@
   return 1;
 }
 
-+ (BOOL)readStylesheetFromStyleAttributeContents:(const char *)a3 sourceURL:(id)a4 toDictionary:(id)a5 toFontDictionary:(id)a6 readerState:(id)a7
++ (BOOL)readStylesheetFromStyleAttributeContents:(const char *)contents sourceURL:(id)l toDictionary:(id)dictionary toFontDictionary:(id)fontDictionary readerState:(id)state
 {
-  if (a3 && *a3)
+  if (contents && *contents)
   {
     if ((atomic_load_explicit(&qword_5679B8, memory_order_acquire) & 1) == 0)
     {
       sub_1EE28C();
     }
 
-    v12 = strlen(a3);
+    v12 = strlen(contents);
     v13 = 6;
     if (!byte_5679B0)
     {
@@ -43,8 +43,8 @@
       if (v14)
       {
         v15 = v14;
-        sprintf(v14, "* {%s}", a3);
-        v16 = [a1 readStylesheetFromString:v15 sourceURL:a4 toDictionary:a5 toFontDictionary:a6 pageCache:0];
+        sprintf(v14, "* {%s}", contents);
+        v16 = [self readStylesheetFromString:v15 sourceURL:l toDictionary:dictionary toFontDictionary:fontDictionary pageCache:0];
         free(v15);
         LOBYTE(v14) = v16;
       }
@@ -64,18 +64,18 @@
   return v14;
 }
 
-+ (BOOL)readStylesheetFromEntry:(id)a3 readerState:(id)a4
++ (BOOL)readStylesheetFromEntry:(id)entry readerState:(id)state
 {
-  v7 = [a4 currentHtmlDocMediaState];
-  if (([v7 loadedDocumentSelectorsForEntry:a3] & 1) == 0)
+  currentHtmlDocMediaState = [state currentHtmlDocMediaState];
+  if (([currentHtmlDocMediaState loadedDocumentSelectorsForEntry:entry] & 1) == 0)
   {
-    v9 = [a4 absoluteEntryForRelativeUri:a3];
-    v10 = [a4 propertiesForStylesheetEntry:v9];
+    v9 = [state absoluteEntryForRelativeUri:entry];
+    v10 = [state propertiesForStylesheetEntry:v9];
     if (v10)
     {
       v11 = v10;
       v31 = v9;
-      v32 = v7;
+      v32 = currentHtmlDocMediaState;
       v12 = NSArray_ptr;
       v13 = objc_alloc_init(NSMutableDictionary);
       v35 = 0u;
@@ -128,7 +128,7 @@
 
     else
     {
-      v8 = [objc_msgSend(a4 "archive")];
+      v8 = [objc_msgSend(state "archive")];
       if (!v8)
       {
         return v8;
@@ -140,16 +140,16 @@
         v34 = 0;
         LOBYTE(v8) = 1;
         [v13 appendBytes:&v34 length:1];
-        v27 = [v13 bytes];
-        if (v27)
+        bytes = [v13 bytes];
+        if (bytes)
         {
-          v28 = v27;
+          v28 = bytes;
           v29 = objc_alloc_init(NSMutableDictionary);
           v30 = objc_alloc_init(NSMutableDictionary);
-          LOBYTE(v8) = [a1 readStylesheetFromString:v28 sourceURL:+[NSURL URLWithString:relativeToURL:](NSURL toDictionary:"URLWithString:relativeToURL:" toFontDictionary:v9 pageCache:{+[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", @"/", 1)), v29, v30, objc_msgSend(v7, "pageCache")}];
-          [a4 setStylesheetProperties:v29 forEntry:v9];
-          [v7 addStylesheetProperties:v29 forEntry:v9];
-          [a1 registerFontsFromDictionary:v30 readerState:a4];
+          LOBYTE(v8) = [self readStylesheetFromString:v28 sourceURL:+[NSURL URLWithString:relativeToURL:](NSURL toDictionary:"URLWithString:relativeToURL:" toFontDictionary:v9 pageCache:{+[NSURL fileURLWithPath:isDirectory:](NSURL, "fileURLWithPath:isDirectory:", @"/", 1)), v29, v30, objc_msgSend(currentHtmlDocMediaState, "pageCache")}];
+          [state setStylesheetProperties:v29 forEntry:v9];
+          [currentHtmlDocMediaState addStylesheetProperties:v29 forEntry:v9];
+          [self registerFontsFromDictionary:v30 readerState:state];
         }
 
         goto LABEL_15;
@@ -166,50 +166,50 @@ LABEL_15:
   return v8;
 }
 
-+ (BOOL)readStylesheetFromStyleNodeContents:(id)a3 sourceURL:(id)a4 readerState:(id)a5
++ (BOOL)readStylesheetFromStyleNodeContents:(id)contents sourceURL:(id)l readerState:(id)state
 {
   v9 = objc_alloc_init(NSMutableDictionary);
   v10 = objc_alloc_init(NSMutableDictionary);
-  v11 = [a1 readStylesheetFromString:objc_msgSend(a3 sourceURL:"UTF8String") toDictionary:a4 toFontDictionary:v9 pageCache:{v10, 0}];
+  v11 = [self readStylesheetFromString:objc_msgSend(contents sourceURL:"UTF8String") toDictionary:l toFontDictionary:v9 pageCache:{v10, 0}];
   if (v11)
   {
-    [objc_msgSend(a5 "currentHtmlDocMediaState")];
-    [a1 registerFontsFromDictionary:v10 readerState:a5];
+    [objc_msgSend(state "currentHtmlDocMediaState")];
+    [self registerFontsFromDictionary:v10 readerState:state];
   }
 
   return v11;
 }
 
-+ (BOOL)isMediaTypeSupportedInAll:(id)a3
++ (BOOL)isMediaTypeSupportedInAll:(id)all
 {
-  v4 = [a1 basicMediaTypes];
+  basicMediaTypes = [self basicMediaTypes];
 
-  return [v4 containsObject:a3];
+  return [basicMediaTypes containsObject:all];
 }
 
-+ (BOOL)isMediaTypeSupportedInFlow:(id)a3
++ (BOOL)isMediaTypeSupportedInFlow:(id)flow
 {
-  v4 = [a1 flowMediaTypes];
+  flowMediaTypes = [self flowMediaTypes];
 
-  return [v4 containsObject:a3];
+  return [flowMediaTypes containsObject:flow];
 }
 
-+ (BOOL)isMediaTypeSupportedInPaginated:(id)a3
++ (BOOL)isMediaTypeSupportedInPaginated:(id)paginated
 {
-  v4 = [a1 paginatedMediaTypes];
+  paginatedMediaTypes = [self paginatedMediaTypes];
 
-  return [v4 containsObject:a3];
+  return [paginatedMediaTypes containsObject:paginated];
 }
 
-+ (void)registerFontsFromDictionary:(id)a3 readerState:(id)a4
++ (void)registerFontsFromDictionary:(id)dictionary readerState:(id)state
 {
-  v18 = [objc_msgSend(a4 "archive")];
+  v18 = [objc_msgSend(state "archive")];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [a3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [dictionary allValues];
+  v6 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -221,7 +221,7 @@ LABEL_15:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
@@ -250,10 +250,10 @@ LABEL_15:
                   v17 = [v14 substringWithRange:{4, v16 - 5}];
                   if (([@"otf" isEqualToString:{objc_msgSend(v17, "pathExtension")}] & 1) != 0 || objc_msgSend(@"ttf", "isEqualToString:", objc_msgSend(v17, "pathExtension")))
                   {
-                    v19 = [objc_msgSend(objc_msgSend(a4 "archive")];
+                    v19 = [objc_msgSend(objc_msgSend(state "archive")];
                     objc_opt_class();
                     [objc_msgSend(v10 objectForKey:{@"font-family", "lastObject"}];
-                    -[TSWPLoadableFonts registerFontName:forPath:forGroup:isObfuscated:backgroundLoad:](+[TSWPLoadableFonts sharedInstance](TSWPLoadableFonts, "sharedInstance"), "registerFontName:forPath:forGroup:isObfuscated:backgroundLoad:", [TSUDynamicCast() stringValue], v19, objc_msgSend(objc_msgSend(objc_msgSend(a4, "thDocumentRoot"), "bookDescription"), "uniquifier"), objc_msgSend(v18, "containsObject:", v17), 1);
+                    -[TSWPLoadableFonts registerFontName:forPath:forGroup:isObfuscated:backgroundLoad:](+[TSWPLoadableFonts sharedInstance](TSWPLoadableFonts, "sharedInstance"), "registerFontName:forPath:forGroup:isObfuscated:backgroundLoad:", [TSUDynamicCast() stringValue], v19, objc_msgSend(objc_msgSend(objc_msgSend(state, "thDocumentRoot"), "bookDescription"), "uniquifier"), objc_msgSend(v18, "containsObject:", v17), 1);
                   }
                 }
               }
@@ -265,7 +265,7 @@ LABEL_15:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);

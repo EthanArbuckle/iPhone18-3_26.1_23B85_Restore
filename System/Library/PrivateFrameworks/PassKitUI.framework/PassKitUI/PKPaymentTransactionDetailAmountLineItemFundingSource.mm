@@ -1,29 +1,29 @@
 @interface PKPaymentTransactionDetailAmountLineItemFundingSource
-- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)a3 credentialType:(int64_t)a4 dpanSuffix:(id)a5 cardDescription:(id)a6;
-- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)a3 transactionSourceCollection:(id)a4;
+- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)amount credentialType:(int64_t)type dpanSuffix:(id)suffix cardDescription:(id)description;
+- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)amount transactionSourceCollection:(id)collection;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemFundingSource
 
-- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)a3 transactionSourceCollection:(id)a4
+- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)amount transactionSourceCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = PKPaymentTransactionDetailAmountLineItemFundingSource;
   v8 = [(PKPaymentTransactionDetailAmountLineItemFundingSource *)&v16 init];
   if (v8)
   {
-    v9 = [v6 formattedStringValue];
+    formattedStringValue = [amountCopy formattedStringValue];
     value = v8->_value;
-    v8->_value = v9;
+    v8->_value = formattedStringValue;
 
-    v11 = [v7 paymentPass];
-    v12 = [v11 localizedDescription];
+    paymentPass = [collectionCopy paymentPass];
+    localizedDescription = [paymentPass localizedDescription];
 
-    if ([v12 length])
+    if ([localizedDescription length])
     {
-      PKLocalizedPeerPaymentString(&cfstr_TransactionDet_77.isa, &stru_1F3BD5BF0.isa, v12);
+      PKLocalizedPeerPaymentString(&cfstr_TransactionDet_77.isa, &stru_1F3BD5BF0.isa, localizedDescription);
     }
 
     else
@@ -38,23 +38,23 @@
   return v8;
 }
 
-- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)a3 credentialType:(int64_t)a4 dpanSuffix:(id)a5 cardDescription:(id)a6
+- (PKPaymentTransactionDetailAmountLineItemFundingSource)initWithAmount:(id)amount credentialType:(int64_t)type dpanSuffix:(id)suffix cardDescription:(id)description
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  amountCopy = amount;
+  suffixCopy = suffix;
+  descriptionCopy = description;
   v22.receiver = self;
   v22.super_class = PKPaymentTransactionDetailAmountLineItemFundingSource;
   v12 = [(PKPaymentTransactionDetailAmountLineItemFundingSource *)&v22 init];
   if (v12)
   {
-    v13 = [v9 formattedStringValue];
+    formattedStringValue = [amountCopy formattedStringValue];
     value = v12->_value;
-    v12->_value = v13;
+    v12->_value = formattedStringValue;
 
-    if ([v11 length])
+    if ([descriptionCopy length])
     {
-      v15 = PKLocalizedPeerPaymentString(&cfstr_TransactionDet_77.isa, &stru_1F3BD5BF0.isa, v11);
+      v15 = PKLocalizedPeerPaymentString(&cfstr_TransactionDet_77.isa, &stru_1F3BD5BF0.isa, descriptionCopy);
 LABEL_14:
       label = v12->_label;
       v12->_label = v15;
@@ -63,9 +63,9 @@ LABEL_14:
     }
 
     v16 = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
-    if ([v16 length] && objc_msgSend(v10, "length"))
+    if ([v16 length] && objc_msgSend(suffixCopy, "length"))
     {
-      PKLocalizedPeerPaymentString(&cfstr_TransactionDet_79.isa, &stru_1F3BD6370.isa, v16, v10);
+      PKLocalizedPeerPaymentString(&cfstr_TransactionDet_79.isa, &stru_1F3BD6370.isa, v16, suffixCopy);
     }
 
     else
@@ -78,13 +78,13 @@ LABEL_14:
 
       else
       {
-        if (![v10 length])
+        if (![suffixCopy length])
         {
           v18 = PKLocalizedPeerPaymentString(&cfstr_TransactionDet_82.isa);
           goto LABEL_13;
         }
 
-        v21 = v10;
+        v21 = suffixCopy;
         v17 = @"TRANSACTION_DETAILS_AMOUNT_LINE_ITEM_FUNDING_SOURCE_DPAN_SUFFIX_FORMAT_STRING";
       }
 

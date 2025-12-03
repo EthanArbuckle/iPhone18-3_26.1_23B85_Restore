@@ -1,18 +1,18 @@
 @interface CHFriendDetailCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CHFriendDetailCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHFriendDetailCollectionViewController" hasInstanceVariable:@"_isMe" withType:"B"];
-  [v3 validateClass:@"CHFriendDetailCollectionViewController" hasInstanceMethod:@"_sendMessageButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CHFriendDetailCollectionViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHFriendDetailCollectionViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHFriendDetailCollectionViewController" hasInstanceVariable:@"_isMe" withType:"B"];
+  [validationsCopy validateClass:@"CHFriendDetailCollectionViewController" hasInstanceMethod:@"_sendMessageButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CHFriendDetailCollectionViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHFriendDetailCollectionViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,10 +29,10 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [v3 navigationItem];
-    v5 = [v4 rightBarButtonItems];
+    navigationItem = [v3 navigationItem];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
 
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    v6 = [rightBarButtonItems countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -43,12 +43,12 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(rightBarButtonItems);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 action];
-          if (v11 == NSSelectorFromString(@"_sendMessageButtonTapped:"))
+          action = [v10 action];
+          if (action == NSSelectorFromString(@"_sendMessageButtonTapped:"))
           {
             v12 = accessibilityLocalizedString(@"messages");
             [v10 setAccessibilityLabel:v12];
@@ -60,7 +60,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v7 = [rightBarButtonItems countByEnumeratingWithState:&v14 objects:v20 count:16];
         if (v7)
         {
           continue;

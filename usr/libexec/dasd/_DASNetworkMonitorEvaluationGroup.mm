@@ -1,14 +1,14 @@
 @interface _DASNetworkMonitorEvaluationGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMonitoringActivity:(id)a3;
-- (BOOL)isMonitoringWithParameters:(id)a3 endpoint:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMonitoringActivity:(id)activity;
+- (BOOL)isMonitoringWithParameters:(id)parameters endpoint:(id)endpoint;
 - (BOOL)isNetworkPathAvailable;
-- (BOOL)stopMonitoringForActivity:(id)a3;
-- (_DASNetworkMonitorEvaluationGroup)initWithEndpoint:(id)a3 parameters:(id)a4 activity:(id)a5 callback:(id)a6 onQueue:(id)a7;
+- (BOOL)stopMonitoringForActivity:(id)activity;
+- (_DASNetworkMonitorEvaluationGroup)initWithEndpoint:(id)endpoint parameters:(id)parameters activity:(id)activity callback:(id)callback onQueue:(id)queue;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)startMonitoringForActivity:(id)a3;
+- (void)startMonitoringForActivity:(id)activity;
 @end
 
 @implementation _DASNetworkMonitorEvaluationGroup
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (_DASNetworkMonitorEvaluationGroup)initWithEndpoint:(id)a3 parameters:(id)a4 activity:(id)a5 callback:(id)a6 onQueue:(id)a7
+- (_DASNetworkMonitorEvaluationGroup)initWithEndpoint:(id)endpoint parameters:(id)parameters activity:(id)activity callback:(id)callback onQueue:(id)queue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  activityCopy = activity;
+  callbackCopy = callback;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = _DASNetworkMonitorEvaluationGroup;
   v18 = [(_DASNetworkMonitorEvaluationGroup *)&v34 init];
@@ -38,15 +38,15 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v18->_endpoint, a3);
-  objc_storeStrong(&v19->_parameters, a4);
-  v20 = [v13 copyCEndpoint];
-  v21 = [v14 copyCParameters];
+  objc_storeStrong(&v18->_endpoint, endpoint);
+  objc_storeStrong(&v19->_parameters, parameters);
+  copyCEndpoint = [endpointCopy copyCEndpoint];
+  copyCParameters = [parametersCopy copyCParameters];
   evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint();
   evaluator = v19->_evaluator;
   v19->_evaluator = evaluator_for_endpoint;
 
-  v24 = [NSMutableSet setWithObject:v15];
+  v24 = [NSMutableSet setWithObject:activityCopy];
   activities = v19->_activities;
   v19->_activities = v24;
 
@@ -55,7 +55,7 @@
   v19->_log = v26;
 
   v28 = v19->_evaluator;
-  v33 = v16;
+  v33 = callbackCopy;
   v29 = v19;
   if (nw_path_evaluator_set_update_handler())
   {
@@ -77,21 +77,21 @@ LABEL_8:
   return v30;
 }
 
-- (void)startMonitoringForActivity:(id)a3
+- (void)startMonitoringForActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v4 = self->_activities;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_activities addObject:v5];
+  [(NSMutableSet *)self->_activities addObject:activityCopy];
   objc_sync_exit(v4);
 }
 
-- (BOOL)stopMonitoringForActivity:(id)a3
+- (BOOL)stopMonitoringForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = self->_activities;
   objc_sync_enter(v5);
-  [(NSMutableSet *)self->_activities removeObject:v4];
+  [(NSMutableSet *)self->_activities removeObject:activityCopy];
   v6 = [(NSMutableSet *)self->_activities count];
   if (!v6)
   {
@@ -104,28 +104,28 @@ LABEL_8:
   return v6 == 0;
 }
 
-- (BOOL)isMonitoringActivity:(id)a3
+- (BOOL)isMonitoringActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = self->_activities;
   objc_sync_enter(v5);
-  LOBYTE(self) = [(NSMutableSet *)self->_activities containsObject:v4];
+  LOBYTE(self) = [(NSMutableSet *)self->_activities containsObject:activityCopy];
   objc_sync_exit(v5);
 
   return self;
 }
 
-- (BOOL)isMonitoringWithParameters:(id)a3 endpoint:(id)a4
+- (BOOL)isMonitoringWithParameters:(id)parameters endpoint:(id)endpoint
 {
-  v6 = a4;
+  endpointCopy = endpoint;
   parameters = self->_parameters;
-  v8 = a3;
-  v9 = [(NWParameters *)parameters copyCParameters];
-  v10 = [v8 copyCParameters];
+  parametersCopy = parameters;
+  copyCParameters = [(NWParameters *)parameters copyCParameters];
+  copyCParameters2 = [parametersCopy copyCParameters];
 
   if (nw_parameters_are_equivalent_for_path_evaluation())
   {
-    v11 = [(NWEndpoint *)self->_endpoint isEqual:v6];
+    v11 = [(NWEndpoint *)self->_endpoint isEqual:endpointCopy];
   }
 
   else
@@ -136,10 +136,10 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -148,26 +148,26 @@ LABEL_8:
   {
     v17.receiver = self;
     v17.super_class = _DASNetworkMonitorEvaluationGroup;
-    if ([(_DASNetworkMonitorEvaluationGroup *)&v17 isEqual:v4])
+    if ([(_DASNetworkMonitorEvaluationGroup *)&v17 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_activities;
       objc_sync_enter(v6);
       endpoint = self->_endpoint;
-      v8 = [(_DASNetworkMonitorEvaluationGroup *)v5 endpoint];
-      if ([(NWEndpoint *)endpoint isEqual:v8])
+      endpoint = [(_DASNetworkMonitorEvaluationGroup *)v5 endpoint];
+      if ([(NWEndpoint *)endpoint isEqual:endpoint])
       {
         parameters = self->_parameters;
-        v10 = [(_DASNetworkMonitorEvaluationGroup *)v5 parameters];
-        if ([(NWParameters *)parameters isEqual:v10])
+        parameters = [(_DASNetworkMonitorEvaluationGroup *)v5 parameters];
+        if ([(NWParameters *)parameters isEqual:parameters])
         {
           evaluator = self->_evaluator;
-          v12 = [(_DASNetworkMonitorEvaluationGroup *)v5 evaluator];
-          if ([(OS_nw_path_evaluator *)evaluator isEqual:v12])
+          evaluator = [(_DASNetworkMonitorEvaluationGroup *)v5 evaluator];
+          if ([(OS_nw_path_evaluator *)evaluator isEqual:evaluator])
           {
             activities = self->_activities;
-            v14 = [(_DASNetworkMonitorEvaluationGroup *)v5 activities];
-            v15 = [(NSMutableSet *)activities isEqual:v14];
+            activities = [(_DASNetworkMonitorEvaluationGroup *)v5 activities];
+            v15 = [(NSMutableSet *)activities isEqual:activities];
           }
 
           else

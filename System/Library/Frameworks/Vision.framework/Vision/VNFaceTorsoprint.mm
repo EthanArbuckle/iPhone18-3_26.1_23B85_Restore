@@ -1,27 +1,27 @@
 @interface VNFaceTorsoprint
 + (id)codingTypesToCodingKeys;
-+ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)a3;
++ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)revision;
 - (BOOL)isValidFaceprint;
 - (BOOL)isValidTorsoprint;
-- (VNFaceTorsoprint)initWithCoder:(id)a3;
-- (VNFaceTorsoprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 faceprintConfidence:(float)a7 torsoprintConfidence:(float)a8;
-- (VNFaceTorsoprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 faceprintConfidence:(float)a7 torsoprintConfidence:(float)a8 originatingRequestSpecifier:(id)a9;
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoPrint:(id)a4 originatingRequestSpecifier:(id)a5;
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoPrint:(id)a4 requestRevision:(unint64_t)a5;
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoprint:(id)a4;
-- (VNFaceTorsoprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5;
-- (id)computeDistance:(id)a3 withDistanceFunction:(unint64_t)a4 error:(id *)a5;
-- (id)serializeStateAndReturnError:(id *)a3;
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (VNFaceTorsoprint)initWithCoder:(id)coder;
+- (VNFaceTorsoprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes faceprintConfidence:(float)confidence torsoprintConfidence:(float)torsoprintConfidence;
+- (VNFaceTorsoprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes faceprintConfidence:(float)confidence torsoprintConfidence:(float)torsoprintConfidence originatingRequestSpecifier:(id)specifier;
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoPrint:(id)print originatingRequestSpecifier:(id)specifier;
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoPrint:(id)print requestRevision:(unint64_t)revision;
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoprint:(id)torsoprint;
+- (VNFaceTorsoprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error;
+- (id)computeDistance:(id)distance withDistanceFunction:(unint64_t)function error:(id *)error;
+- (id)serializeStateAndReturnError:(id *)error;
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceTorsoprint
 
-- (id)serializeStateAndReturnError:(id *)a3
+- (id)serializeStateAndReturnError:(id *)error
 {
   v5 = [MEMORY[0x1E695DF88] dataWithLength:{-[VNFaceTorsoprint serializedLength](self, "serializedLength")}];
-  if ([(VNFaceTorsoprint *)self serializeStateIntoData:v5 startingAtByteOffset:0 error:a3])
+  if ([(VNFaceTorsoprint *)self serializeStateIntoData:v5 startingAtByteOffset:0 error:error])
   {
     v6 = v5;
   }
@@ -34,38 +34,38 @@
   return v6;
 }
 
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (!dataCopy)
   {
-    if (a5)
+    if (error)
     {
       [VNError errorWithCode:14 message:@"state cannot be nil"];
-      *a5 = v23 = 0;
+      *error = v23 = 0;
       goto LABEL_17;
     }
 
     goto LABEL_12;
   }
 
-  v10 = [v8 mutableBytes];
+  mutableBytes = [dataCopy mutableBytes];
   *&v27[12] = 0;
   *&v27[20] = 0;
   *v27 = -87158511;
-  v11 = [(VNFaceTorsoprint *)self serializedLength];
+  serializedLength = [(VNFaceTorsoprint *)self serializedLength];
   *&v27[4] = 5;
-  *&v27[8] = v11;
-  v12 = [(VNFaceTorsoprint *)self isValidFaceprint];
-  v13 = (v10 + a4);
-  *(v10 + a4 + 28) = v12;
-  v14 = (v10 + a4 + 28);
-  v15 = a4 + 29;
-  if (v12)
+  *&v27[8] = serializedLength;
+  isValidFaceprint = [(VNFaceTorsoprint *)self isValidFaceprint];
+  v13 = (mutableBytes + offset);
+  *(mutableBytes + offset + 28) = isValidFaceprint;
+  v14 = (mutableBytes + offset + 28);
+  v15 = offset + 29;
+  if (isValidFaceprint)
   {
-    v16 = [(VNFaceprint *)self->_faceprint serializeStateIntoData:v9 startingAtByteOffset:a4 + 29 error:a5];
+    v16 = [(VNFaceprint *)self->_faceprint serializeStateIntoData:v9 startingAtByteOffset:offset + 29 error:error];
     if (!v16)
     {
       goto LABEL_12;
@@ -74,12 +74,12 @@
     v15 += v16;
   }
 
-  v17 = [(VNFaceTorsoprint *)self isValidTorsoprint];
-  *(v10 + v15) = v17;
+  isValidTorsoprint = [(VNFaceTorsoprint *)self isValidTorsoprint];
+  *(mutableBytes + v15) = isValidTorsoprint;
   v18 = v15 + 1;
-  if (v17)
+  if (isValidTorsoprint)
   {
-    v19 = [(VNTorsoprint *)self->_torsoprint serializeStateIntoData:v9 startingAtByteOffset:v15 + 1 error:a5];
+    v19 = [(VNTorsoprint *)self->_torsoprint serializeStateIntoData:v9 startingAtByteOffset:v15 + 1 error:error];
     if (v19)
     {
       v18 += v19;
@@ -92,14 +92,14 @@ LABEL_12:
   }
 
 LABEL_8:
-  v20 = [(VNEspressoModelImageprint *)self originatingRequestSpecifier];
-  v21 = (v10 + v18);
-  *v21 = [v20 requestRevision];
-  v21[1] = [v20 requestClassCode];
+  originatingRequestSpecifier = [(VNEspressoModelImageprint *)self originatingRequestSpecifier];
+  v21 = (mutableBytes + v18);
+  *v21 = [originatingRequestSpecifier requestRevision];
+  v21[1] = [originatingRequestSpecifier requestClassCode];
   v21[2] = [(VNFaceTorsoprint *)self personId];
-  v22 = v18 - a4;
-  v23 = v18 - a4 + 12;
-  if (v23 == v11)
+  v22 = v18 - offset;
+  v23 = v18 - offset + 12;
+  if (v23 == serializedLength)
   {
     calculateChecksumMD5(v14, v22 - 16, &v27[12]);
     v24 = *v27;
@@ -109,10 +109,10 @@ LABEL_8:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of serialized state of the object of type %@", objc_opt_class()];
-      *a5 = [VNError errorWithCode:9 message:v25];
+      *error = [VNError errorWithCode:9 message:v25];
     }
 
     v23 = 0;
@@ -122,43 +122,43 @@ LABEL_17:
   return v23;
 }
 
-- (VNFaceTorsoprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5
+- (VNFaceTorsoprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  stateCopy = state;
+  v9 = stateCopy;
+  if (!stateCopy)
   {
-    if (a5)
+    if (error)
     {
       v14 = [VNError errorWithCode:14 message:@"state cannot be nil"];
       goto LABEL_10;
     }
 
 LABEL_15:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_39;
   }
 
-  v10 = [v8 bytes];
-  v11 = *a4;
-  v12 = (v10 + *a4);
+  bytes = [stateCopy bytes];
+  v11 = *offset;
+  v12 = (bytes + *offset);
   *v33 = *v12;
   *&v33[12] = *(v12 + 12);
-  *a4 = v11 + 28;
-  calculateChecksumMD5((v10 + v11 + 28), [v9 length] - 28, v32);
+  *offset = v11 + 28;
+  calculateChecksumMD5((bytes + v11 + 28), [v9 length] - 28, v32);
   if (*&v33[12] == v32[0] && *&v33[20] == v32[1])
   {
     v16 = *&v33[4];
-    if (*&v33[4] < 4u || (v17 = *(v10 + *a4), v18 = *a4 + 1, *a4 = v18, v17))
+    if (*&v33[4] < 4u || (v17 = *(bytes + *offset), v18 = *offset + 1, *offset = v18, v17))
     {
-      v19 = [[VNFaceprint alloc] initWithState:v9 byteOffset:a4 error:a5];
+      v19 = [[VNFaceprint alloc] initWithState:v9 byteOffset:offset error:error];
       if (!v19)
       {
         goto LABEL_15;
       }
 
-      v18 = *a4;
+      v18 = *offset;
     }
 
     else
@@ -166,21 +166,21 @@ LABEL_15:
       v19 = 0;
     }
 
-    v20 = *(v10 + v18);
+    v20 = *(bytes + v18);
     v21 = v18 + 1;
-    *a4 = v21;
+    *offset = v21;
     if (v20)
     {
-      v31 = [[VNTorsoprint alloc] initWithState:v9 byteOffset:a4 error:a5];
+      v31 = [[VNTorsoprint alloc] initWithState:v9 byteOffset:offset error:error];
       if (!v31)
       {
-        v15 = 0;
+        selfCopy = 0;
 LABEL_38:
 
         goto LABEL_39;
       }
 
-      v21 = *a4;
+      v21 = *offset;
     }
 
     else
@@ -188,11 +188,11 @@ LABEL_38:
       v31 = 0;
     }
 
-    v22 = *(v10 + v21);
-    *a4 = v21 + 4;
+    v22 = *(bytes + v21);
+    *offset = v21 + 4;
     if ([objc_opt_class() shouldAssumeOriginatingRequestClassForHeaderSerializationVersion:v16])
     {
-      v23 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:v22 error:a5];
+      v23 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:v22 error:error];
       if (!v23)
       {
         goto LABEL_36;
@@ -201,17 +201,17 @@ LABEL_38:
 
     else
     {
-      v24 = *(v10 + *a4);
-      *a4 += 4;
-      v25 = [VNClassRegistrar classNameForClassCode:v24 error:a5];
-      if (!v25 || ([VNRequestSpecifier specifierForRequestClassName:v25 revision:v22 error:a5], v23 = objc_claimAutoreleasedReturnValue(), v25, !v23))
+      v24 = *(bytes + *offset);
+      *offset += 4;
+      v25 = [VNClassRegistrar classNameForClassCode:v24 error:error];
+      if (!v25 || ([VNRequestSpecifier specifierForRequestClassName:v25 revision:v22 error:error], v23 = objc_claimAutoreleasedReturnValue(), v25, !v23))
       {
         v23 = 0;
         goto LABEL_36;
       }
     }
 
-    v26 = *a4;
+    v26 = *offset;
     if (v16 < 5)
     {
       v27 = 0;
@@ -219,9 +219,9 @@ LABEL_38:
 
     else
     {
-      v27 = *(v10 + v26);
+      v27 = *(bytes + v26);
       v26 += 4;
-      *a4 = v26;
+      *offset = v26;
     }
 
     if (v26 - v11 == *&v33[8])
@@ -231,93 +231,93 @@ LABEL_38:
       {
         v28->_personId = v27;
         self = v28;
-        v15 = self;
+        selfCopy = self;
 LABEL_37:
 
         goto LABEL_38;
       }
 
-      if (a5)
+      if (error)
       {
         [VNError errorWithCode:9 message:@"Failed to initialize VNFaceTorsoprint object"];
         self = 0;
-        *a5 = v15 = 0;
+        *error = selfCopy = 0;
         goto LABEL_37;
       }
 
       self = 0;
     }
 
-    else if (a5)
+    else if (error)
     {
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of deserialized state of the object of type %@", objc_opt_class()];
-      *a5 = [VNError errorWithCode:9 message:v29];
+      *error = [VNError errorWithCode:9 message:v29];
     }
 
 LABEL_36:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_37;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_15;
   }
 
   v14 = [VNError errorWithCode:9 message:@"Serialized and calculated MD5s don't match"];
 LABEL_10:
-  v15 = 0;
-  *a5 = v14;
+  selfCopy = 0;
+  *error = v14;
 LABEL_39:
 
-  return v15;
+  return selfCopy;
 }
 
 - (BOOL)isValidTorsoprint
 {
-  v2 = [(VNFaceTorsoprint *)self torsoprint];
-  v3 = v2 != 0;
+  torsoprint = [(VNFaceTorsoprint *)self torsoprint];
+  v3 = torsoprint != 0;
 
   return v3;
 }
 
 - (BOOL)isValidFaceprint
 {
-  v2 = [(VNFaceTorsoprint *)self faceprint];
-  v3 = v2 != 0;
+  faceprint = [(VNFaceTorsoprint *)self faceprint];
+  v3 = faceprint != 0;
 
   return v3;
 }
 
-- (id)computeDistance:(id)a3 withDistanceFunction:(unint64_t)a4 error:(id *)a5
+- (id)computeDistance:(id)distance withDistanceFunction:(unint64_t)function error:(id *)error
 {
-  v8 = a3;
+  distanceCopy = distance;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Wrong type of print object"];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_18;
     }
 
     goto LABEL_12;
   }
 
-  v9 = [(VNFaceTorsoprint *)self isValidFaceprint];
-  v10 = [v8 isValidFaceprint];
-  v11 = [(VNFaceTorsoprint *)self isValidTorsoprint];
-  v12 = [v8 isValidTorsoprint];
-  if (v9 != v10 && ((v11 ^ v12) & 1) != 0)
+  isValidFaceprint = [(VNFaceTorsoprint *)self isValidFaceprint];
+  isValidFaceprint2 = [distanceCopy isValidFaceprint];
+  isValidTorsoprint = [(VNFaceTorsoprint *)self isValidTorsoprint];
+  isValidTorsoprint2 = [distanceCopy isValidTorsoprint];
+  if (isValidFaceprint != isValidFaceprint2 && ((isValidTorsoprint ^ isValidTorsoprint2) & 1) != 0)
   {
     v13 = &unk_1F19C21E8;
     goto LABEL_18;
   }
 
-  v14 = v9 & v10;
-  v15 = v11 & v12;
-  if (((v9 & v10 | v11 & v12) & 1) == 0)
+  v14 = isValidFaceprint & isValidFaceprint2;
+  v15 = isValidTorsoprint & isValidTorsoprint2;
+  if (((isValidFaceprint & isValidFaceprint2 | isValidTorsoprint & isValidTorsoprint2) & 1) == 0)
   {
     v13 = &unk_1F19C21F8;
     goto LABEL_18;
@@ -333,9 +333,9 @@ LABEL_39:
     }
 
 LABEL_15:
-    v19 = [(VNFaceTorsoprint *)self torsoprint];
-    v20 = [v8 torsoprint];
-    v13 = [v19 computeDistance:v20 withDistanceFunction:a4 error:a5];
+    torsoprint = [(VNFaceTorsoprint *)self torsoprint];
+    torsoprint2 = [distanceCopy torsoprint];
+    v13 = [torsoprint computeDistance:torsoprint2 withDistanceFunction:function error:error];
 
     if (((v13 != 0) & v14) != 0)
     {
@@ -352,9 +352,9 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v16 = [(VNFaceTorsoprint *)self faceprint];
-  v17 = [v8 faceprint];
-  v18 = [v16 computeDistance:v17 withDistanceFunction:a4 error:a5];
+  faceprint = [(VNFaceTorsoprint *)self faceprint];
+  faceprint2 = [distanceCopy faceprint];
+  v18 = [faceprint computeDistance:faceprint2 withDistanceFunction:function error:error];
 
   if (!v18)
   {
@@ -377,29 +377,29 @@ LABEL_18:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[VNEspressoModelImageprint requestRevision](self forKey:{"requestRevision"), @"FTp_rev"}];
-  [v4 encodeObject:self->_faceprint forKey:@"FTp_fp"];
-  [v4 encodeObject:self->_torsoprint forKey:@"FTp_tp"];
-  [v4 encodeInteger:self->_personId forKey:@"FTp_pid"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[VNEspressoModelImageprint requestRevision](self forKey:{"requestRevision"), @"FTp_rev"}];
+  [coderCopy encodeObject:self->_faceprint forKey:@"FTp_fp"];
+  [coderCopy encodeObject:self->_torsoprint forKey:@"FTp_tp"];
+  [coderCopy encodeInteger:self->_personId forKey:@"FTp_pid"];
 }
 
-- (VNFaceTorsoprint)initWithCoder:(id)a3
+- (VNFaceTorsoprint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FTp_fp"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FTp_tp"];
-  v7 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:objc_msgSend(v4 error:{"decodeIntegerForKey:", @"FTp_rev", 0}];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FTp_fp"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FTp_tp"];
+  v7 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:objc_msgSend(coderCopy error:{"decodeIntegerForKey:", @"FTp_rev", 0}];
   if (v7)
   {
-    v8 = [(VNFaceTorsoprint *)self initWithFaceprint:v5 torsoPrint:v6 originatingRequestSpecifier:v7];
-    if (v8)
+    selfCopy = [(VNFaceTorsoprint *)self initWithFaceprint:v5 torsoPrint:v6 originatingRequestSpecifier:v7];
+    if (selfCopy)
     {
-      if ([v4 containsValueForKey:@"FTp_pid"])
+      if ([coderCopy containsValueForKey:@"FTp_pid"])
       {
-        v9 = [v4 decodeIntegerForKey:@"FTp_pid"];
+        v9 = [coderCopy decodeIntegerForKey:@"FTp_pid"];
       }
 
       else
@@ -407,9 +407,9 @@ LABEL_18:
         v9 = 0;
       }
 
-      v8->_personId = v9;
-      self = v8;
-      v8 = self;
+      selfCopy->_personId = v9;
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -420,101 +420,101 @@ LABEL_18:
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoPrint:(id)a4 originatingRequestSpecifier:(id)a5
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoPrint:(id)print originatingRequestSpecifier:(id)specifier
 {
-  v8 = a3;
-  v9 = a4;
-  v16 = a5;
-  if (v8)
+  faceprintCopy = faceprint;
+  printCopy = print;
+  specifierCopy = specifier;
+  if (faceprintCopy)
   {
-    v17 = [v8 elementType];
-    if (v9)
+    elementType = [faceprintCopy elementType];
+    if (printCopy)
     {
 LABEL_3:
-      v18 = [v9 elementType];
+      elementType2 = [printCopy elementType];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v17 = 1;
-    if (v9)
+    elementType = 1;
+    if (printCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = 1;
+  elementType2 = 1;
 LABEL_6:
-  if (v17 == v18)
+  if (elementType == elementType2)
   {
-    v41 = +[VNFaceprint emptyFaceprintDataForRevision:](VNFaceprint, "emptyFaceprintDataForRevision:", [v8 requestRevision]);
-    if (v8)
+    v41 = +[VNFaceprint emptyFaceprintDataForRevision:](VNFaceprint, "emptyFaceprintDataForRevision:", [faceprintCopy requestRevision]);
+    if (faceprintCopy)
     {
-      v19 = [v8 elementCount];
-      v20 = [v8 lengthInBytes];
+      elementCount = [faceprintCopy elementCount];
+      lengthInBytes = [faceprintCopy lengthInBytes];
     }
 
     else
     {
       v23 = [v41 length];
-      v20 = [v41 length];
-      v19 = v23 >> 2;
+      lengthInBytes = [v41 length];
+      elementCount = v23 >> 2;
     }
 
-    v24 = +[VNTorsoprint emptyTorsoprintDataForRevision:](VNTorsoprint, "emptyTorsoprintDataForRevision:", [v9 requestRevision]);
+    v24 = +[VNTorsoprint emptyTorsoprintDataForRevision:](VNTorsoprint, "emptyTorsoprintDataForRevision:", [printCopy requestRevision]);
     v25 = v24;
-    if (v9)
+    if (printCopy)
     {
-      v26 = [v9 elementCount];
-      v27 = [v9 lengthInBytes];
+      elementCount2 = [printCopy elementCount];
+      lengthInBytes2 = [printCopy lengthInBytes];
     }
 
     else
     {
       v28 = [v24 length];
-      v27 = [v25 length];
-      v26 = v28 >> 2;
+      lengthInBytes2 = [v25 length];
+      elementCount2 = v28 >> 2;
     }
 
-    v29 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v27 + v20];
-    if (v8)
+    v29 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:lengthInBytes2 + lengthInBytes];
+    if (faceprintCopy)
     {
-      v30 = [v8 descriptorData];
-    }
-
-    else
-    {
-      v30 = v41;
-    }
-
-    [v29 appendData:v30];
-    if (v8)
-    {
-    }
-
-    if (v9)
-    {
-      v31 = [v9 descriptorData];
+      descriptorData = [faceprintCopy descriptorData];
     }
 
     else
     {
-      v31 = v25;
+      descriptorData = v41;
     }
 
-    [v29 appendData:v31];
-    if (v9)
+    [v29 appendData:descriptorData];
+    if (faceprintCopy)
+    {
+    }
+
+    if (printCopy)
+    {
+      descriptorData2 = [printCopy descriptorData];
+    }
+
+    else
+    {
+      descriptorData2 = v25;
+    }
+
+    [v29 appendData:descriptorData2];
+    if (printCopy)
     {
 
-      v32 = v8 == 0;
+      v32 = faceprintCopy == 0;
     }
 
     else
@@ -529,91 +529,91 @@ LABEL_6:
 
     else
     {
-      v33 = v17;
+      v33 = elementType;
     }
 
     v42.receiver = self;
     v42.super_class = VNFaceTorsoprint;
-    v22 = [(VNEspressoModelImageprint *)&v42 initWithDescriptorData:v29 elementType:v33 elementCount:v26 + v19 originatingRequestSpecifier:v16];
-    if (v22)
+    selfCopy = [(VNEspressoModelImageprint *)&v42 initWithDescriptorData:v29 elementType:v33 elementCount:elementCount2 + elementCount originatingRequestSpecifier:specifierCopy];
+    if (selfCopy)
     {
-      v34 = [v8 copy];
-      faceprint = v22->_faceprint;
-      v22->_faceprint = v34;
+      v34 = [faceprintCopy copy];
+      faceprint = selfCopy->_faceprint;
+      selfCopy->_faceprint = v34;
 
-      v36 = [v9 copy];
-      torsoprint = v22->_torsoprint;
-      v22->_torsoprint = v36;
+      v36 = [printCopy copy];
+      torsoprint = selfCopy->_torsoprint;
+      selfCopy->_torsoprint = v36;
 
-      v22->_personId = 0;
-      v38 = v22;
+      selfCopy->_personId = 0;
+      v38 = selfCopy;
     }
 
-    v21 = v22;
+    v21 = selfCopy;
   }
 
   else
   {
     VNValidatedLog(4, @"faceprint and torsoprint must have the same element types", v10, v11, v12, v13, v14, v15, v40);
     v21 = 0;
-    v22 = self;
+    selfCopy = self;
   }
 
   return v21;
 }
 
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoPrint:(id)a4 requestRevision:(unint64_t)a5
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoPrint:(id)print requestRevision:(unint64_t)revision
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:a5 error:0];
+  faceprintCopy = faceprint;
+  printCopy = print;
+  v10 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:revision error:0];
   if (v10)
   {
-    self = [(VNFaceTorsoprint *)self initWithFaceprint:v8 torsoPrint:v9 originatingRequestSpecifier:v10];
-    v11 = self;
+    self = [(VNFaceTorsoprint *)self initWithFaceprint:faceprintCopy torsoPrint:printCopy originatingRequestSpecifier:v10];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (VNFaceTorsoprint)initWithFaceprint:(id)a3 torsoprint:(id)a4
+- (VNFaceTorsoprint)initWithFaceprint:(id)faceprint torsoprint:(id)torsoprint
 {
-  v6 = a3;
-  v7 = a4;
+  faceprintCopy = faceprint;
+  torsoprintCopy = torsoprint;
   v8 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:1 error:0];
   if (v8)
   {
-    self = [(VNFaceTorsoprint *)self initWithFaceprint:v6 torsoPrint:v7 originatingRequestSpecifier:v8];
-    v9 = self;
+    self = [(VNFaceTorsoprint *)self initWithFaceprint:faceprintCopy torsoPrint:torsoprintCopy originatingRequestSpecifier:v8];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (VNFaceTorsoprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 faceprintConfidence:(float)a7 torsoprintConfidence:(float)a8 originatingRequestSpecifier:(id)a9
+- (VNFaceTorsoprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes faceprintConfidence:(float)confidence torsoprintConfidence:(float)torsoprintConfidence originatingRequestSpecifier:(id)specifier
 {
-  v16 = a9;
-  v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 length:a6];
+  specifierCopy = specifier;
+  v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:data length:bytes];
   v45 = 0;
-  v18 = [objc_opt_class() validateDescriptorData:v17 elementType:a5 elementCount:a4 error:&v45];
+  v18 = [objc_opt_class() validateDescriptorData:v17 elementType:type elementCount:count error:&v45];
   v19 = v45;
   v20 = v19;
   if ((v18 & 1) == 0)
   {
-    v22 = [v19 localizedDescription];
-    v26 = [v22 UTF8String];
-    VNValidatedLog(4, @"%s", v27, v28, v29, v30, v31, v32, v26);
-    v33 = 0;
+    localizedDescription = [v19 localizedDescription];
+    uTF8String = [localizedDescription UTF8String];
+    VNValidatedLog(4, @"%s", v27, v28, v29, v30, v31, v32, uTF8String);
+    selfCopy = 0;
 LABEL_16:
 
     goto LABEL_17;
@@ -621,15 +621,15 @@ LABEL_16:
 
   v44.receiver = self;
   v44.super_class = VNFaceTorsoprint;
-  v21 = [(VNEspressoModelImageprint *)&v44 initWithDescriptorData:v17 elementType:a5 elementCount:a4 originatingRequestSpecifier:v16];
+  v21 = [(VNEspressoModelImageprint *)&v44 initWithDescriptorData:v17 elementType:type elementCount:count originatingRequestSpecifier:specifierCopy];
   self = v21;
   if (v21)
   {
-    v43 = v16;
-    v22 = [VNFaceprint emptyFaceprintDataForRevision:3737841667];
-    v23 = a6 >> 1;
-    v42 = a6 >> 3;
-    v24 = memcmp([v22 bytes], a3, a6 >> 1);
+    v43 = specifierCopy;
+    localizedDescription = [VNFaceprint emptyFaceprintDataForRevision:3737841667];
+    v23 = bytes >> 1;
+    v42 = bytes >> 3;
+    v24 = memcmp([localizedDescription bytes], data, bytes >> 1);
     if (v24)
     {
       v25 = 0;
@@ -638,8 +638,8 @@ LABEL_16:
     else
     {
       v34 = [VNFaceprint alloc];
-      *&v35 = a7;
-      v25 = [(VNFaceprint *)v34 initWithData:a3 elementCount:v42 elementType:a5 lengthInBytes:a6 >> 1 confidence:v43 originatingRequestSpecifier:v35];
+      *&v35 = confidence;
+      v25 = [(VNFaceprint *)v34 initWithData:data elementCount:v42 elementType:type lengthInBytes:bytes >> 1 confidence:v43 originatingRequestSpecifier:v35];
     }
 
     objc_storeStrong(&v21->_faceprint, v25);
@@ -648,7 +648,7 @@ LABEL_16:
     }
 
     v36 = [VNTorsoprint emptyTorsoprintDataForRevision:1];
-    v37 = memcmp([v36 bytes], a3 + v23, v23);
+    v37 = memcmp([v36 bytes], data + v23, v23);
     if (v37)
     {
       v38 = 0;
@@ -657,12 +657,12 @@ LABEL_16:
     else
     {
       v39 = [VNTorsoprint alloc];
-      *&v40 = a8;
-      v38 = [(VNTorsoprint *)v39 initWithData:a3 + v23 elementCount:v42 elementType:a5 lengthInBytes:v23 confidence:v43 originatingRequestSpecifier:v40];
+      *&v40 = torsoprintConfidence;
+      v38 = [(VNTorsoprint *)v39 initWithData:data + v23 elementCount:v42 elementType:type lengthInBytes:v23 confidence:v43 originatingRequestSpecifier:v40];
     }
 
     objc_storeStrong(&v21->_torsoprint, v38);
-    v16 = v43;
+    specifierCopy = v43;
     if (!v37)
     {
     }
@@ -670,33 +670,33 @@ LABEL_16:
     v21->_personId = 0;
     self = v21;
 
-    v33 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
-  v33 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v33;
+  return selfCopy;
 }
 
-- (VNFaceTorsoprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 faceprintConfidence:(float)a7 torsoprintConfidence:(float)a8
+- (VNFaceTorsoprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes faceprintConfidence:(float)confidence torsoprintConfidence:(float)torsoprintConfidence
 {
   v15 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:1 error:0];
   if (v15)
   {
-    *&v16 = a7;
-    *&v17 = a8;
-    self = [(VNFaceTorsoprint *)self initWithData:a3 elementCount:a4 elementType:a5 lengthInBytes:a6 faceprintConfidence:v15 torsoprintConfidence:v16 originatingRequestSpecifier:v17];
-    v18 = self;
+    *&v16 = confidence;
+    *&v17 = torsoprintConfidence;
+    self = [(VNFaceTorsoprint *)self initWithData:data elementCount:count elementType:type lengthInBytes:bytes faceprintConfidence:v15 torsoprintConfidence:v16 originatingRequestSpecifier:v17];
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 + (id)codingTypesToCodingKeys
@@ -735,9 +735,9 @@ void __43__VNFaceTorsoprint_codingTypesToCodingKeys__block_invoke()
   +[VNFaceTorsoprint codingTypesToCodingKeys]::codingTypesToCodingKeys = v0;
 }
 
-+ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)a3
++ (id)defaultOriginatingRequestClassNameForRequestRevision:(unint64_t)revision
 {
-  if (a3 - 1 >= 2)
+  if (revision - 1 >= 2)
   {
     return @"VNNOPRequest";
   }

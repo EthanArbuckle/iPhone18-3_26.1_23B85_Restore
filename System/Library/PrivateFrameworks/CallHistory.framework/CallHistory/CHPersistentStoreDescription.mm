@@ -1,15 +1,15 @@
 @interface CHPersistentStoreDescription
-+ (id)persistentStoreDescriptionWithURL:(id)a3;
++ (id)persistentStoreDescriptionWithURL:(id)l;
 @end
 
 @implementation CHPersistentStoreDescription
 
-+ (id)persistentStoreDescriptionWithURL:(id)a3
++ (id)persistentStoreDescriptionWithURL:(id)l
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___CHPersistentStoreDescription;
-  v3 = objc_msgSendSuper2(&v16, sel_persistentStoreDescriptionWithURL_, a3);
+  v3 = objc_msgSendSuper2(&v16, sel_persistentStoreDescriptionWithURL_, l);
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v17[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -34,9 +34,9 @@
 
   else
   {
-    v10 = [v6 hasDataStoreReadOnlyEntitlement];
+    hasDataStoreReadOnlyEntitlement = [v6 hasDataStoreReadOnlyEntitlement];
     v8 = *MEMORY[0x1E695D458];
-    if (!v10)
+    if (!hasDataStoreReadOnlyEntitlement)
     {
       goto LABEL_10;
     }
@@ -46,8 +46,8 @@
 
   [v3 setOption:v9 forKey:v8];
 LABEL_10:
-  v11 = [v3 options];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  options = [v3 options];
+  v12 = [options objectForKeyedSubscript:v8];
 
   if (!v12)
   {

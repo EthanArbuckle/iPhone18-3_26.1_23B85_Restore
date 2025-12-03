@@ -2,9 +2,9 @@
 + (id)initialize;
 - (MTLIOMemoryInfo)init;
 - (__CFArray)annotationList;
-- (void)addResourceToList:(id)a3;
+- (void)addResourceToList:(id)list;
 - (void)dealloc;
-- (void)removeResourceFromList:(id)a3;
+- (void)removeResourceFromList:(id)list;
 - (void)shutdown;
 @end
 
@@ -41,11 +41,11 @@ uint64_t __29__MTLIOMemoryInfo_initialize__block_invoke()
       break;
     }
 
-    v5 = [(MTLIOAccelResource *)fResourceListHead copyAnnotations];
-    if (v5)
+    copyAnnotations = [(MTLIOAccelResource *)fResourceListHead copyAnnotations];
+    if (copyAnnotations)
     {
-      v6 = v5;
-      v8.length = CFArrayGetCount(v5);
+      v6 = copyAnnotations;
+      v8.length = CFArrayGetCount(copyAnnotations);
       v8.location = 0;
       CFArrayAppendArray(Mutable, v6, v8);
       CFRelease(v6);
@@ -81,25 +81,25 @@ uint64_t __29__MTLIOMemoryInfo_initialize__block_invoke()
   return v3;
 }
 
-- (void)addResourceToList:(id)a3
+- (void)addResourceToList:(id)list
 {
   os_unfair_lock_lock(&self->_memoryInfoLock);
   fResourceListHead = self->fResourceListHead;
-  *(a3 + 35) = fResourceListHead;
-  *(a3 + 36) = fResourceListHead->prev;
-  self->fResourceListHead->prev->next = a3;
-  self->fResourceListHead->prev = a3;
+  *(list + 35) = fResourceListHead;
+  *(list + 36) = fResourceListHead->prev;
+  self->fResourceListHead->prev->next = list;
+  self->fResourceListHead->prev = list;
 
   os_unfair_lock_unlock(&self->_memoryInfoLock);
 }
 
-- (void)removeResourceFromList:(id)a3
+- (void)removeResourceFromList:(id)list
 {
   os_unfair_lock_lock(&self->_memoryInfoLock);
-  *(*(a3 + 35) + 288) = *(a3 + 36);
-  *(*(a3 + 36) + 280) = *(a3 + 35);
-  *(a3 + 35) = 0;
-  *(a3 + 36) = 0;
+  *(*(list + 35) + 288) = *(list + 36);
+  *(*(list + 36) + 280) = *(list + 35);
+  *(list + 35) = 0;
+  *(list + 36) = 0;
 
   os_unfair_lock_unlock(&self->_memoryInfoLock);
 }

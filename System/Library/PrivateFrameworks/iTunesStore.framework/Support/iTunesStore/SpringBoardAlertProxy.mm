@@ -1,24 +1,24 @@
 @interface SpringBoardAlertProxy
-- (SpringBoardAlertProxy)initWithMessage:(id)a3;
+- (SpringBoardAlertProxy)initWithMessage:(id)message;
 - (SpringBoardAlertProxyDelegate)delegate;
 - (void)_disconnect;
-- (void)_handleMessage:(id)a3 connection:(id)a4;
+- (void)_handleMessage:(id)message connection:(id)connection;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SpringBoardAlertProxy
 
-- (SpringBoardAlertProxy)initWithMessage:(id)a3
+- (SpringBoardAlertProxy)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v29.receiver = self;
   v29.super_class = SpringBoardAlertProxy;
   v5 = [(SpringBoardAlertProxy *)&v29 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_value(v4, "2");
+    v6 = xpc_dictionary_get_value(messageCopy, "2");
     v7 = v6;
     if (v6 && xpc_get_type(v6) == &_xpc_type_endpoint)
     {
@@ -42,9 +42,9 @@
       v17 = *(v5 + 4);
       *(v5 + 4) = v16;
 
-      v18 = [*(v5 + 4) createXPCEndpoint];
+      createXPCEndpoint = [*(v5 + 4) createXPCEndpoint];
       v19 = *(v5 + 5);
-      *(v5 + 5) = v18;
+      *(v5 + 5) = createXPCEndpoint;
 
       objc_initWeak(&location, v5);
       v20 = *(v5 + 6);
@@ -110,31 +110,31 @@
   return v3;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CE970;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CEA14;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -149,21 +149,21 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4
+- (void)_handleMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CEC2C;
   v11[3] = &unk_100327238;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
-  v9 = a4;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  connectionCopy = connection;
   dispatch_async(dispatchQueue, v11);
   reply = xpc_dictionary_create_reply(v8);
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 }
 
 @end

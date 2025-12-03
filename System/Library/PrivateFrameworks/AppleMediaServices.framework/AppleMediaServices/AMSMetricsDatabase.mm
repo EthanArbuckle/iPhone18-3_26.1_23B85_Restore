@@ -1,30 +1,30 @@
 @interface AMSMetricsDatabase
-+ (id)sharedDatabaseWithContainerId:(id)a3;
-- (AMSMetricsDatabase)initWithContainerId:(id)a3;
-- (BOOL)cleanupInvalidIdentifiersWithError:(id *)a3;
-- (BOOL)clearIdentifierSyncStateWithError:(id *)a3;
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5;
-- (BOOL)dropAllEventsWithLockKey:(id)a3 error:(id *)a4;
-- (BOOL)dropEvents:(id)a3 error:(id *)a4;
-- (BOOL)enumerateUnsyncedIdentifierStoresUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)enumerateUnsyncedIdentifiersUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)insertEvents:(id)a3 error:(id *)a4;
-- (BOOL)permanentlyRemoveIdentifierForKey:(id)a3 error:(id *)a4;
-- (BOOL)removeCrossDeviceIdentifiersWithError:(id *)a3;
-- (BOOL)removeIdentifiersForAccount:(id)a3 error:(id *)a4;
-- (BOOL)removeIdentifiersForStore:(id)a3 error:(id *)a4;
-- (BOOL)unlockAllEventsWithKey:(id)a3 error:(id *)a4;
-- (BOOL)unlockEvents:(id)a3 error:(id *)a4;
++ (id)sharedDatabaseWithContainerId:(id)id;
+- (AMSMetricsDatabase)initWithContainerId:(id)id;
+- (BOOL)cleanupInvalidIdentifiersWithError:(id *)error;
+- (BOOL)clearIdentifierSyncStateWithError:(id *)error;
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5;
+- (BOOL)dropAllEventsWithLockKey:(id)key error:(id *)error;
+- (BOOL)dropEvents:(id)events error:(id *)error;
+- (BOOL)enumerateUnsyncedIdentifierStoresUsingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateUnsyncedIdentifiersUsingBlock:(id)block error:(id *)error;
+- (BOOL)insertEvents:(id)events error:(id *)error;
+- (BOOL)permanentlyRemoveIdentifierForKey:(id)key error:(id *)error;
+- (BOOL)removeCrossDeviceIdentifiersWithError:(id *)error;
+- (BOOL)removeIdentifiersForAccount:(id)account error:(id *)error;
+- (BOOL)removeIdentifiersForStore:(id)store error:(id *)error;
+- (BOOL)unlockAllEventsWithKey:(id)key error:(id *)error;
+- (BOOL)unlockEvents:(id)events error:(id *)error;
 - (id)_cachePath;
 - (id)_lockedById;
-- (id)identifierForKey:(id)a3 updateMaybe:(id)a4 error:(id *)a5;
-- (id)identifierStoreForKey:(id)a3 updateMaybe:(id)a4 error:(id *)a5;
-- (id)lockAllEventsWithError:(id *)a3;
-- (int64_t)countAllEventsWithLockKey:(id)a3 error:(id *)a4;
-- (void)_performTransaction:(id)a3;
+- (id)identifierForKey:(id)key updateMaybe:(id)maybe error:(id *)error;
+- (id)identifierStoreForKey:(id)key updateMaybe:(id)maybe error:(id *)error;
+- (id)lockAllEventsWithError:(id *)error;
+- (int64_t)countAllEventsWithLockKey:(id)key error:(id *)error;
+- (void)_performTransaction:(id)transaction;
 - (void)close;
 - (void)dealloc;
-- (void)enumerateEventsWithTopic:(id)a3 lockKey:(id)a4 objectBlock:(id)a5;
+- (void)enumerateEventsWithTopic:(id)topic lockKey:(id)key objectBlock:(id)block;
 @end
 
 @implementation AMSMetricsDatabase
@@ -59,23 +59,23 @@
 
 - (id)_lockedById
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (AMSMetricsDatabase)initWithContainerId:(id)a3
+- (AMSMetricsDatabase)initWithContainerId:(id)id
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  idCopy = id;
   v44.receiver = self;
   v44.super_class = AMSMetricsDatabase;
   v6 = [(AMSMetricsDatabase *)&v44 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerId, a3);
+    objc_storeStrong(&v6->_containerId, id);
     v38 = 0;
     v39 = &v38;
     v40 = 0x3032000000;
@@ -134,8 +134,8 @@
           v18 = +[AMSLogConfig sharedConfig];
         }
 
-        v19 = [v18 OSLogObject];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v18 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v20 = objc_opt_class();
           v21 = AMSLogableError(*(*(&v49 + 1) + 40));
@@ -143,7 +143,7 @@
           v46 = v20;
           v47 = 2114;
           v48 = v21;
-          _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to create the database schema: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to create the database schema: %{public}@", buf, 0x16u);
         }
       }
 
@@ -165,13 +165,13 @@
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v25 = objc_opt_class();
         LODWORD(v49) = 138543362;
         *(&v49 + 4) = v25;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to fetch dbPath", &v49, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to fetch dbPath", &v49, 0xCu);
       }
 
       _Block_object_dispose(&v38, 8);
@@ -207,9 +207,9 @@ void __42__AMSMetricsDatabase_initWithContainerId___block_invoke_9(void *a1)
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-+ (id)sharedDatabaseWithContainerId:(id)a3
++ (id)sharedDatabaseWithContainerId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -239,13 +239,13 @@ void __42__AMSMetricsDatabase_initWithContainerId___block_invoke_9(void *a1)
   block[2] = __52__AMSMetricsDatabase_sharedDatabaseWithContainerId___block_invoke_4;
   block[3] = &unk_1E73B9480;
   v14 = v5;
-  v15 = v3;
+  v15 = idCopy;
   v17 = v4;
   v18 = &v19;
   v16 = v6;
   v7 = v4;
   v8 = v6;
-  v9 = v3;
+  v9 = idCopy;
   v10 = v5;
   dispatch_sync(v7, block);
   v11 = v20[5];
@@ -352,10 +352,10 @@ void __27__AMSMetricsDatabase_close__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)countAllEventsWithLockKey:(id)a3 error:(id *)a4
+- (int64_t)countAllEventsWithLockKey:(id)key error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -370,16 +370,16 @@ void __27__AMSMetricsDatabase_close__block_invoke(uint64_t a1)
   v16 = 3221225472;
   v17 = __54__AMSMetricsDatabase_countAllEventsWithLockKey_error___block_invoke;
   v18 = &unk_1E73B94F8;
-  v7 = v6;
+  v7 = keyCopy;
   v19 = v7;
-  v20 = self;
+  selfCopy = self;
   v21 = &v23;
   v22 = &v29;
   [(AMSMetricsDatabase *)self _performTransaction:&v15];
   v8 = v24[5];
-  if (a4)
+  if (error)
   {
-    *a4 = v8;
+    *error = v8;
   }
 
   else if (v8)
@@ -390,8 +390,8 @@ void __27__AMSMetricsDatabase_close__block_invoke(uint64_t a1)
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogableError(v24[5]);
@@ -399,7 +399,7 @@ void __27__AMSMetricsDatabase_close__block_invoke(uint64_t a1)
       v34 = v11;
       v35 = 2114;
       v36 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to count events. Error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to count events. Error = %{public}@", buf, 0x16u);
     }
   }
 
@@ -481,10 +481,10 @@ void __54__AMSMetricsDatabase_countAllEventsWithLockKey_error___block_invoke_3(u
   }
 }
 
-- (BOOL)dropAllEventsWithLockKey:(id)a3 error:(id *)a4
+- (BOOL)dropAllEventsWithLockKey:(id)key error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -495,9 +495,9 @@ void __54__AMSMetricsDatabase_countAllEventsWithLockKey_error___block_invoke_3(u
   v14[1] = 3221225472;
   v14[2] = __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke;
   v14[3] = &unk_1E73B9548;
-  v7 = v6;
+  v7 = keyCopy;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   [(AMSMetricsDatabase *)self _performTransaction:v14];
   v8 = v19[5];
@@ -509,8 +509,8 @@ void __54__AMSMetricsDatabase_countAllEventsWithLockKey_error___block_invoke_3(u
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogableError(v19[5]);
@@ -518,12 +518,12 @@ void __54__AMSMetricsDatabase_countAllEventsWithLockKey_error___block_invoke_3(u
       v25 = v11;
       v26 = 2114;
       v27 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v19[5];
+      *error = v19[5];
     }
   }
 
@@ -566,10 +566,10 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
   return result;
 }
 
-- (BOOL)dropEvents:(id)a3 error:(id *)a4
+- (BOOL)dropEvents:(id)events error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventsCopy = events;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -581,7 +581,7 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (v8)
   {
@@ -596,8 +596,8 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 databasePID];
-        v13 = v12 == 0;
+        databasePID = [v11 databasePID];
+        v13 = databasePID == 0;
 
         if (!v13)
         {
@@ -606,8 +606,8 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
             [v6 appendString:{@", "}];
           }
 
-          v14 = [v11 databasePID];
-          [v6 appendFormat:@"%@", v14];
+          databasePID2 = [v11 databasePID];
+          [v6 appendFormat:@"%@", databasePID2];
         }
       }
 
@@ -624,7 +624,7 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
     v23[2] = __39__AMSMetricsDatabase_dropEvents_error___block_invoke;
     v23[3] = &unk_1E73B9548;
     v24 = v6;
-    v25 = self;
+    selfCopy = self;
     v26 = &v31;
     [(AMSMetricsDatabase *)self _performTransaction:v23];
     v15 = v32[5];
@@ -637,8 +637,8 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v17 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
         v20 = AMSLogableError(v32[5]);
@@ -646,12 +646,12 @@ uint64_t __53__AMSMetricsDatabase_dropAllEventsWithLockKey_error___block_invoke_
         v38 = v19;
         v39 = 2114;
         v40 = v20;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v32[5];
+        *error = v32[5];
       }
     }
   }
@@ -677,27 +677,27 @@ uint64_t __39__AMSMetricsDatabase_dropEvents_error___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)enumerateEventsWithTopic:(id)a3 lockKey:(id)a4 objectBlock:(id)a5
+- (void)enumerateEventsWithTopic:(id)topic lockKey:(id)key objectBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v12 = [v11 ams_iTunesAccounts];
+  topicCopy = topic;
+  keyCopy = key;
+  blockCopy = block;
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_iTunesAccounts = [ams_sharedAccountStore ams_iTunesAccounts];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __67__AMSMetricsDatabase_enumerateEventsWithTopic_lockKey_objectBlock___block_invoke;
   v17[3] = &unk_1E73B95C0;
-  v18 = v8;
-  v19 = v9;
-  v21 = v12;
-  v22 = v10;
-  v20 = self;
-  v13 = v12;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = topicCopy;
+  v19 = keyCopy;
+  v21 = ams_iTunesAccounts;
+  v22 = blockCopy;
+  selfCopy = self;
+  v13 = ams_iTunesAccounts;
+  v14 = blockCopy;
+  v15 = keyCopy;
+  v16 = topicCopy;
   [(AMSMetricsDatabase *)self _performTransaction:v17];
 }
 
@@ -939,10 +939,10 @@ uint64_t __67__AMSMetricsDatabase_enumerateEventsWithTopic_lockKey_objectBlock__
   return v4;
 }
 
-- (BOOL)insertEvents:(id)a3 error:(id *)a4
+- (BOOL)insertEvents:(id)events error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eventsCopy = events;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -955,7 +955,7 @@ uint64_t __67__AMSMetricsDatabase_enumerateEventsWithTopic_lockKey_objectBlock__
   v14[3] = &unk_1E73B9610;
   v14[4] = self;
   v16 = &v17;
-  v7 = v6;
+  v7 = eventsCopy;
   v15 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v14];
   v8 = v18[5];
@@ -967,8 +967,8 @@ uint64_t __67__AMSMetricsDatabase_enumerateEventsWithTopic_lockKey_objectBlock__
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogableError(v18[5]);
@@ -976,12 +976,12 @@ uint64_t __67__AMSMetricsDatabase_enumerateEventsWithTopic_lockKey_objectBlock__
       v24 = v11;
       v25 = 2114;
       v26 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to insert events. Error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to insert events. Error = %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v18[5];
+      *error = v18[5];
     }
   }
 
@@ -1225,10 +1225,10 @@ void __41__AMSMetricsDatabase_insertEvents_error___block_invoke_86(uint64_t a1, 
   [v8 bindDouble:5 atPosition:?];
 }
 
-- (id)lockAllEventsWithError:(id *)a3
+- (id)lockAllEventsWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSMetricsDatabase *)self _lockedById];
+  _lockedById = [(AMSMetricsDatabase *)self _lockedById];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1241,15 +1241,15 @@ void __41__AMSMetricsDatabase_insertEvents_error___block_invoke_86(uint64_t a1, 
   v14[3] = &unk_1E73B9610;
   v14[4] = self;
   v16 = &v17;
-  v6 = v5;
+  v6 = _lockedById;
   v15 = v6;
   [(AMSMetricsDatabase *)self _performTransaction:v14];
   v7 = v18[5];
   if (v7)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v7;
+      *error = v7;
     }
 
     v8 = +[AMSLogConfig sharedMetricsConfig];
@@ -1258,8 +1258,8 @@ void __41__AMSMetricsDatabase_insertEvents_error___block_invoke_86(uint64_t a1, 
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogableError(v18[5]);
@@ -1267,7 +1267,7 @@ void __41__AMSMetricsDatabase_insertEvents_error___block_invoke_86(uint64_t a1, 
       v24 = v10;
       v25 = 2114;
       v26 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lock events. Error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lock events. Error = %{public}@", buf, 0x16u);
     }
 
     v12 = 0;
@@ -1313,10 +1313,10 @@ void __45__AMSMetricsDatabase_lockAllEventsWithError___block_invoke_2(uint64_t a
   [v6 bindFloat:3 atPosition:v5];
 }
 
-- (BOOL)unlockAllEventsWithKey:(id)a3 error:(id *)a4
+- (BOOL)unlockAllEventsWithKey:(id)key error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1329,16 +1329,16 @@ void __45__AMSMetricsDatabase_lockAllEventsWithError___block_invoke_2(uint64_t a
   v15[3] = &unk_1E73B9610;
   v15[4] = self;
   v17 = &v18;
-  v7 = v6;
+  v7 = keyCopy;
   v16 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v15];
   v8 = v19[5];
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = +[AMSLogConfig sharedMetricsConfig];
@@ -1347,8 +1347,8 @@ void __45__AMSMetricsDatabase_lockAllEventsWithError___block_invoke_2(uint64_t a
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogableError(v19[5]);
@@ -1356,7 +1356,7 @@ void __45__AMSMetricsDatabase_lockAllEventsWithError___block_invoke_2(uint64_t a
       v25 = v12;
       v26 = 2114;
       v27 = v13;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lock events. Error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lock events. Error = %{public}@", buf, 0x16u);
     }
   }
 
@@ -1391,10 +1391,10 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
   [v5 bindFloat:2 atPosition:v4];
 }
 
-- (BOOL)unlockEvents:(id)a3 error:(id *)a4
+- (BOOL)unlockEvents:(id)events error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventsCopy = events;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1406,7 +1406,7 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (v8)
   {
@@ -1421,8 +1421,8 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 databasePID];
-        v13 = v12 == 0;
+        databasePID = [v11 databasePID];
+        v13 = databasePID == 0;
 
         if (!v13)
         {
@@ -1431,8 +1431,8 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
             [v6 appendString:{@", "}];
           }
 
-          v14 = [v11 databasePID];
-          [v6 appendFormat:@"%@", v14];
+          databasePID2 = [v11 databasePID];
+          [v6 appendFormat:@"%@", databasePID2];
         }
       }
 
@@ -1449,16 +1449,16 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
     v23[2] = __41__AMSMetricsDatabase_unlockEvents_error___block_invoke;
     v23[3] = &unk_1E73B9548;
     v24 = v6;
-    v25 = self;
+    selfCopy = self;
     v26 = &v31;
     [(AMSMetricsDatabase *)self _performTransaction:v23];
     v15 = v32[5];
     v16 = v15 == 0;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v15;
+        *error = v15;
       }
 
       v17 = +[AMSLogConfig sharedMetricsConfig];
@@ -1467,8 +1467,8 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v17 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
         v20 = AMSLogableError(v32[5]);
@@ -1476,7 +1476,7 @@ void __51__AMSMetricsDatabase_unlockAllEventsWithKey_error___block_invoke_2(uint
         v38 = v19;
         v39 = 2114;
         v40 = v20;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to drop events. Error = %{public}@", buf, 0x16u);
       }
     }
   }
@@ -1502,7 +1502,7 @@ uint64_t __41__AMSMetricsDatabase_unlockEvents_error___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)cleanupInvalidIdentifiersWithError:(id *)a3
+- (BOOL)cleanupInvalidIdentifiersWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1518,10 +1518,10 @@ uint64_t __41__AMSMetricsDatabase_unlockEvents_error___block_invoke(uint64_t a1)
   v7[5] = &v8;
   [(AMSMetricsDatabase *)self _performTransaction:v7];
   v4 = v9[5];
-  if (a3 && v4)
+  if (error && v4)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   v5 = v4 == 0;
@@ -1620,9 +1620,9 @@ void __57__AMSMetricsDatabase_cleanupInvalidIdentifiersWithError___block_invoke_
   [v4 bindDouble:2 atPosition:*(a1 + 32)];
 }
 
-- (BOOL)removeIdentifiersForAccount:(id)a3 error:(id *)a4
+- (BOOL)removeIdentifiersForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1635,14 +1635,14 @@ void __57__AMSMetricsDatabase_cleanupInvalidIdentifiersWithError___block_invoke_
   v11[3] = &unk_1E73B9610;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = accountCopy;
   v12 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -1789,9 +1789,9 @@ void __56__AMSMetricsDatabase_removeIdentifiersForAccount_error___block_invoke_1
   [v4 bindString:*(a1 + 32) atPosition:2];
 }
 
-- (BOOL)removeIdentifiersForStore:(id)a3 error:(id *)a4
+- (BOOL)removeIdentifiersForStore:(id)store error:(id *)error
 {
-  v6 = a3;
+  storeCopy = store;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1804,14 +1804,14 @@ void __56__AMSMetricsDatabase_removeIdentifiersForAccount_error___block_invoke_1
   v11[3] = &unk_1E73B9610;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = storeCopy;
   v12 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -1958,10 +1958,10 @@ void __54__AMSMetricsDatabase_removeIdentifiersForStore_error___block_invoke_125
   [v4 bindString:*(a1 + 32) atPosition:2];
 }
 
-- (id)identifierStoreForKey:(id)a3 updateMaybe:(id)a4 error:(id *)a5
+- (id)identifierStoreForKey:(id)key updateMaybe:(id)maybe error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  maybeCopy = maybe;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1993,11 +1993,11 @@ void __54__AMSMetricsDatabase_removeIdentifiersForStore_error___block_invoke_125
     v16[3] = &unk_1E73B9700;
     v16[4] = self;
     v19 = &v35;
-    v10 = v7;
+    v10 = keyCopy;
     v17 = v10;
     v20 = &v29;
     v21 = v23;
-    v11 = v8;
+    v11 = maybeCopy;
     v18 = v11;
     v22 = &v25;
     [(AMSMetricsDatabase *)self _performTransaction:v16];
@@ -2008,9 +2008,9 @@ void __54__AMSMetricsDatabase_removeIdentifiersForStore_error___block_invoke_125
   if (v12)
   {
     v13 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -2270,10 +2270,10 @@ void __62__AMSMetricsDatabase_identifierStoreForKey_updateMaybe_error___block_in
   }
 }
 
-- (id)identifierForKey:(id)a3 updateMaybe:(id)a4 error:(id *)a5
+- (id)identifierForKey:(id)key updateMaybe:(id)maybe error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  maybeCopy = maybe;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -2305,11 +2305,11 @@ void __62__AMSMetricsDatabase_identifierStoreForKey_updateMaybe_error___block_in
     v16[3] = &unk_1E73B9700;
     v16[4] = self;
     v19 = &v35;
-    v10 = v7;
+    v10 = keyCopy;
     v17 = v10;
     v20 = &v29;
     v21 = v23;
-    v11 = v8;
+    v11 = maybeCopy;
     v18 = v11;
     v22 = &v25;
     [(AMSMetricsDatabase *)self _performTransaction:v16];
@@ -2320,9 +2320,9 @@ void __62__AMSMetricsDatabase_identifierStoreForKey_updateMaybe_error___block_in
   if (v12)
   {
     v13 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -2638,7 +2638,7 @@ void __57__AMSMetricsDatabase_identifierForKey_updateMaybe_error___block_invoke_
   }
 }
 
-- (BOOL)clearIdentifierSyncStateWithError:(id *)a3
+- (BOOL)clearIdentifierSyncStateWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -2654,10 +2654,10 @@ void __57__AMSMetricsDatabase_identifierForKey_updateMaybe_error___block_invoke_
   v7[5] = &v8;
   [(AMSMetricsDatabase *)self _performTransaction:v7];
   v4 = v9[5];
-  if (a3 && v4)
+  if (error && v4)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   v5 = v4 == 0;
@@ -2735,9 +2735,9 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)enumerateUnsyncedIdentifierStoresUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateUnsyncedIdentifierStoresUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2750,14 +2750,14 @@ LABEL_12:
   v11[3] = &unk_1E73B9778;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = blockCopy;
   v12 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -2907,9 +2907,9 @@ void __72__AMSMetricsDatabase_enumerateUnsyncedIdentifierStoresUsingBlock_error_
   }
 }
 
-- (BOOL)enumerateUnsyncedIdentifiersUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateUnsyncedIdentifiersUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2922,14 +2922,14 @@ void __72__AMSMetricsDatabase_enumerateUnsyncedIdentifierStoresUsingBlock_error_
   v11[3] = &unk_1E73B9778;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = blockCopy;
   v12 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -3106,9 +3106,9 @@ void __67__AMSMetricsDatabase_enumerateUnsyncedIdentifiersUsingBlock_error___blo
   }
 }
 
-- (BOOL)permanentlyRemoveIdentifierForKey:(id)a3 error:(id *)a4
+- (BOOL)permanentlyRemoveIdentifierForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -3121,14 +3121,14 @@ void __67__AMSMetricsDatabase_enumerateUnsyncedIdentifiersUsingBlock_error___blo
   v11[3] = &unk_1E73B9610;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = keyCopy;
   v12 = v7;
   [(AMSMetricsDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -3216,7 +3216,7 @@ BOOL __62__AMSMetricsDatabase_permanentlyRemoveIdentifierForKey_error___block_in
   return v8;
 }
 
-- (BOOL)removeCrossDeviceIdentifiersWithError:(id *)a3
+- (BOOL)removeCrossDeviceIdentifiersWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -3232,10 +3232,10 @@ BOOL __62__AMSMetricsDatabase_permanentlyRemoveIdentifierForKey_error___block_in
   v7[5] = &v8;
   [(AMSMetricsDatabase *)self _performTransaction:v7];
   v4 = v9[5];
-  if (a3 && v4)
+  if (error && v4)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   v5 = v4 == 0;
@@ -3313,10 +3313,10 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -3332,10 +3332,10 @@ LABEL_12:
   v20[2] = __68__AMSMetricsDatabase_connection_needsResetForCorruptionError_error___block_invoke;
   v20[3] = &unk_1E73B97A0;
   v20[4] = self;
-  v11 = v10;
+  v11 = errorCopy;
   v21 = v11;
   v25 = a2;
-  v12 = v9;
+  v12 = connectionCopy;
   v22 = v12;
   v23 = &v26;
   v24 = &v32;
@@ -3548,19 +3548,19 @@ LABEL_35:
   }
 }
 
-- (void)_performTransaction:(id)a3
+- (void)_performTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(AMSMetricsDatabase *)self internalQueue];
+  transactionCopy = transaction;
+  internalQueue = [(AMSMetricsDatabase *)self internalQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__AMSMetricsDatabase__performTransaction___block_invoke;
   v8[3] = &unk_1E73B36D0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = transactionCopy;
+  v6 = transactionCopy;
   v7 = AMSMetricsDatabaseBlockWithKeepAlive(@"AMSMetricsDatabase-transaction", v8);
-  dispatch_sync(v5, v7);
+  dispatch_sync(internalQueue, v7);
 }
 
 void __42__AMSMetricsDatabase__performTransaction___block_invoke(uint64_t a1)

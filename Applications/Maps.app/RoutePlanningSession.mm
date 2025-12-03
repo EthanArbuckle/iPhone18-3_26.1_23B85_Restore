@@ -1,5 +1,5 @@
 @interface RoutePlanningSession
-+ (id)mostAppropriateNameForWaypointWithRequest:(id)a3 composedWaypoint:(id)a4;
++ (id)mostAppropriateNameForWaypointWithRequest:(id)request composedWaypoint:(id)waypoint;
 - (CyclePreferences)cyclePreferences;
 - (DrivePreferences)drivePreferences;
 - (GEOAdvisoriesInfo)advisoriesInfo;
@@ -14,53 +14,53 @@
 - (Result)currentRouteCollectionResult;
 - (Result)resolvedWaypointsResult;
 - (RouteCollection)currentRouteCollection;
-- (RoutePlanningSession)initWithInitiator:(unint64_t)a3 configuration:(id)a4;
+- (RoutePlanningSession)initWithInitiator:(unint64_t)initiator configuration:(id)configuration;
 - (RoutePlanningTiming)timing;
 - (SearchResult)destinationDisplayableMarker;
 - (SearchResult)originDisplayableMarker;
 - (TransitPreferences)transitPreferences;
 - (WalkPreferences)walkPreferences;
 - (WaypointSet)resolvedWaypoints;
-- (id)_favoriteWithIdentifier:(id)a3;
-- (id)_searchResultFromWaypointRequest:(id)a3 resolvedWaypoint:(id)a4;
-- (id)_shortcutWithIdentifier:(id)a3;
-- (id)routeCollectionForTransportType:(int64_t)a3;
-- (id)routeCollectionResultForTransportType:(int64_t)a3;
+- (id)_favoriteWithIdentifier:(id)identifier;
+- (id)_searchResultFromWaypointRequest:(id)request resolvedWaypoint:(id)waypoint;
+- (id)_shortcutWithIdentifier:(id)identifier;
+- (id)routeCollectionForTransportType:(int64_t)type;
+- (id)routeCollectionResultForTransportType:(int64_t)type;
 - (int64_t)navigationTypeForCurrentRoute;
 - (int64_t)requestState;
 - (void)_cancelFetchingCapabilitiesSharingContacts;
 - (void)_handleReceivedWaypointSetResult;
-- (void)_notifyObserversDidUpdateRouteCollectionResult:(id)a3 forTransportType:(int64_t)a4;
+- (void)_notifyObserversDidUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
 - (void)_refreshAutomaticSharingContactsFromShortcut;
 - (void)_scheduleRefreshUserShortcuts;
-- (void)_setAutomaticSharingContacts:(id)a3 forShortcutIdentifier:(id)a4;
-- (void)_setIsInACustomRouteRegion:(BOOL)a3;
-- (void)_updateIsInACustomRouteRegionForRouteCollection:(id)a3;
+- (void)_setAutomaticSharingContacts:(id)contacts forShortcutIdentifier:(id)identifier;
+- (void)_setIsInACustomRouteRegion:(BOOL)region;
+- (void)_updateIsInACustomRouteRegionForRouteCollection:(id)collection;
 - (void)_updateLoadingControllerForRealtimeUpdates;
 - (void)cleanupStateReplay;
 - (void)dealloc;
-- (void)enumerateRequestsOrWaypointsUsingBlock:(id)a3;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)enumerateRequestsOrWaypointsUsingBlock:(id)block;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 - (void)prepareToReplayCurrentState;
-- (void)purgeRouteCollectionForTransportType:(int64_t)a3;
-- (void)registerObserver:(id)a3;
+- (void)purgeRouteCollectionForTransportType:(int64_t)type;
+- (void)registerObserver:(id)observer;
 - (void)replayCurrentState;
-- (void)requestUpdatedRouteWithRefreshedOrigin:(BOOL)a3;
+- (void)requestUpdatedRouteWithRefreshedOrigin:(BOOL)origin;
 - (void)resume;
-- (void)routeLoadingController:(id)a3 didReceiveRoutesResult:(id)a4 forTransportType:(int64_t)a5 advisoryInfo:(id)a6;
-- (void)routeLoadingController:(id)a3 didReceiveUpdates:(id)a4 forRoutesResult:(id)a5;
-- (void)safelySetCurrentTransportType:(int64_t)a3;
-- (void)selectRoute:(id)a3;
-- (void)setAutomaticSharingContacts:(id)a3;
-- (void)setCurrentTransportType:(int64_t)a3 userInitiated:(BOOL)a4;
-- (void)setSelectedRouteIndex:(unint64_t)a3 forTransportType:(int64_t)a4;
-- (void)setShortcutIdentifier:(id)a3;
-- (void)shortcutManagerMeCardDidChange:(id)a3;
+- (void)routeLoadingController:(id)controller didReceiveRoutesResult:(id)result forTransportType:(int64_t)type advisoryInfo:(id)info;
+- (void)routeLoadingController:(id)controller didReceiveUpdates:(id)updates forRoutesResult:(id)result;
+- (void)safelySetCurrentTransportType:(int64_t)type;
+- (void)selectRoute:(id)route;
+- (void)setAutomaticSharingContacts:(id)contacts;
+- (void)setCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)setSelectedRouteIndex:(unint64_t)index forTransportType:(int64_t)type;
+- (void)setShortcutIdentifier:(id)identifier;
+- (void)shortcutManagerMeCardDidChange:(id)change;
 - (void)suspend;
-- (void)unregisterObserver:(id)a3;
-- (void)updateRouteCollectionResult:(id)a3 forTransportType:(int64_t)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)waypointController:(id)a3 didResolveWaypointSet:(id)a4;
+- (void)unregisterObserver:(id)observer;
+- (void)updateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)waypointController:(id)controller didResolveWaypointSet:(id)set;
 @end
 
 @implementation RoutePlanningSession
@@ -74,18 +74,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "RoutePlanningSession asked to refresh autoshare from shortcut but no shortcutIdentifier set, exiting early", buf, 2u);
   }
 
-  v4 = [(RoutePlanningSession *)self shortcutIdentifier];
-  v5 = v4 == 0;
+  shortcutIdentifier = [(RoutePlanningSession *)self shortcutIdentifier];
+  v5 = shortcutIdentifier == 0;
 
   if (!v5)
   {
     objc_initWeak(&location, self);
-    v6 = [(RoutePlanningSession *)self shortcutIdentifier];
+    shortcutIdentifier2 = [(RoutePlanningSession *)self shortcutIdentifier];
     v7 = sub_1000946AC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v15 = v6;
+      v15 = shortcutIdentifier2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "RoutePlanningSession will refresh autoshare from shortcut %{private}@...", buf, 0xCu);
     }
 
@@ -95,8 +95,8 @@
     block[2] = sub_10009475C;
     block[3] = &unk_101661340;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
-    v9 = v6;
+    v11 = shortcutIdentifier2;
+    v9 = shortcutIdentifier2;
     dispatch_async(v8, block);
 
     objc_destroyWeak(&v12);
@@ -106,18 +106,18 @@
 
 - (NSString)shortcutIdentifier
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 shortcutIdentifier];
+  configuration = [(RoutePlanningSession *)self configuration];
+  shortcutIdentifier = [configuration shortcutIdentifier];
 
-  return v3;
+  return shortcutIdentifier;
 }
 
-- (void)selectRoute:(id)a3
+- (void)selectRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(RoutePlanningSession *)self currentRouteCollection];
-  v6 = [v5 routes];
-  v7 = [v6 indexOfObject:v4];
+  routeCopy = route;
+  currentRouteCollection = [(RoutePlanningSession *)self currentRouteCollection];
+  routes = [currentRouteCollection routes];
+  v7 = [routes indexOfObject:routeCopy];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -129,10 +129,10 @@ LABEL_15:
       return;
     }
 
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -140,22 +140,22 @@ LABEL_15:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(RoutePlanningSession *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(RoutePlanningSession *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_9;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_9:
 
 LABEL_14:
     *buf = 138543362;
-    v16 = v14;
+    v16 = selfCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}@] CarRouteSelection: Tried to select a route in routePlanning that wasn't in currentRouteCollection.", buf, 0xCu);
 
     goto LABEL_15;
@@ -166,45 +166,45 @@ LABEL_14:
 
 - (RoutePlanningTiming)timing
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 routeLoadingTaskFactory];
+  configuration = [(RoutePlanningSession *)self configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transportTypeInformation];
-    v5 = [v4 transportTypeInfoProviders];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    transportTypeInfoProviders = [transportTypeInformation transportTypeInfoProviders];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v5 objectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-    if (v7)
+    objectEnumerator = [transportTypeInfoProviders objectEnumerator];
+    timing2 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
+    if (timing2)
     {
       v8 = *v14;
       while (2)
       {
-        for (i = 0; i != v7; i = i + 1)
+        for (i = 0; i != timing2; i = i + 1)
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 timing];
+          timing = [v10 timing];
 
-          if (v11)
+          if (timing)
           {
-            v7 = [v10 timing];
+            timing2 = [v10 timing];
             goto LABEL_13;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-        if (v7)
+        timing2 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
+        if (timing2)
         {
           continue;
         }
@@ -218,22 +218,22 @@ LABEL_13:
 
   else
   {
-    v7 = 0;
+    timing2 = 0;
   }
 
-  return v7;
+  return timing2;
 }
 
 - (CyclePreferences)cyclePreferences
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 routeLoadingTaskFactory];
+  configuration = [(RoutePlanningSession *)self configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transportTypeInformation];
-    v5 = [v4 requestInfoProviderForTransportType:5];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v5 = [transportTypeInformation requestInfoProviderForTransportType:5];
 
     if (v5)
     {
@@ -271,33 +271,33 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 cyclePreferences];
+      cyclePreferences = [v5 cyclePreferences];
     }
 
     else
     {
-      v6 = 0;
+      cyclePreferences = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    cyclePreferences = 0;
   }
 
-  return v6;
+  return cyclePreferences;
 }
 
 - (TransitPreferences)transitPreferences
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 routeLoadingTaskFactory];
+  configuration = [(RoutePlanningSession *)self configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transportTypeInformation];
-    v5 = [v4 requestInfoProviderForTransportType:3];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v5 = [transportTypeInformation requestInfoProviderForTransportType:3];
 
     if (v5)
     {
@@ -335,33 +335,33 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 transitPreferences];
+      transitPreferences = [v5 transitPreferences];
     }
 
     else
     {
-      v6 = 0;
+      transitPreferences = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    transitPreferences = 0;
   }
 
-  return v6;
+  return transitPreferences;
 }
 
 - (WalkPreferences)walkPreferences
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 routeLoadingTaskFactory];
+  configuration = [(RoutePlanningSession *)self configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transportTypeInformation];
-    v5 = [v4 requestInfoProviderForTransportType:2];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v5 = [transportTypeInformation requestInfoProviderForTransportType:2];
 
     if (v5)
     {
@@ -399,33 +399,33 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 walkPreferences];
+      walkPreferences = [v5 walkPreferences];
     }
 
     else
     {
-      v6 = 0;
+      walkPreferences = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    walkPreferences = 0;
   }
 
-  return v6;
+  return walkPreferences;
 }
 
 - (DrivePreferences)drivePreferences
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 routeLoadingTaskFactory];
+  configuration = [(RoutePlanningSession *)self configuration];
+  routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 transportTypeInformation];
-    v5 = [v4 requestInfoProviderForTransportType:1];
+    transportTypeInformation = [routeLoadingTaskFactory transportTypeInformation];
+    v5 = [transportTypeInformation requestInfoProviderForTransportType:1];
 
     if (v5)
     {
@@ -463,21 +463,21 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 drivePreferences];
+      drivePreferences = [v5 drivePreferences];
     }
 
     else
     {
-      v6 = 0;
+      drivePreferences = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    drivePreferences = 0;
   }
 
-  return v6;
+  return drivePreferences;
 }
 
 - (int64_t)requestState
@@ -499,11 +499,11 @@ LABEL_13:
 
   else
   {
-    v6 = [(RoutePlanningSession *)self resolvedWaypointsResult];
-    if (v6)
+    resolvedWaypointsResult = [(RoutePlanningSession *)self resolvedWaypointsResult];
+    if (resolvedWaypointsResult)
     {
-      v7 = [(RoutePlanningSession *)self resolvedWaypointsResult];
-      if ([v7 isSuccess])
+      resolvedWaypointsResult2 = [(RoutePlanningSession *)self resolvedWaypointsResult];
+      if ([resolvedWaypointsResult2 isSuccess])
       {
         v5 = 1;
       }
@@ -523,60 +523,60 @@ LABEL_13:
   return v5;
 }
 
-- (id)_searchResultFromWaypointRequest:(id)a3 resolvedWaypoint:(id)a4
+- (id)_searchResultFromWaypointRequest:(id)request resolvedWaypoint:(id)waypoint
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  waypointCopy = waypoint;
+  if (waypointCopy)
   {
-    v7 = [[SearchResult alloc] initWithComposedWaypoint:v6];
+    displayableMarker2 = [[SearchResult alloc] initWithComposedWaypoint:waypointCopy];
     goto LABEL_8;
   }
 
-  v8 = [v5 waypointPlaceholder];
-  v9 = [v8 displayableMarker];
+  waypointPlaceholder = [requestCopy waypointPlaceholder];
+  displayableMarker = [waypointPlaceholder displayableMarker];
 
-  if (v9)
+  if (displayableMarker)
   {
-    v10 = [v5 waypointPlaceholder];
-    v7 = [v10 displayableMarker];
+    waypointPlaceholder2 = [requestCopy waypointPlaceholder];
+    displayableMarker2 = [waypointPlaceholder2 displayableMarker];
 LABEL_5:
 
     goto LABEL_8;
   }
 
-  v11 = [v5 waypointRequest];
-  v12 = [v11 mapItemForLocationComparison];
+  waypointRequest = [requestCopy waypointRequest];
+  mapItemForLocationComparison = [waypointRequest mapItemForLocationComparison];
 
-  if (!v12)
+  if (!mapItemForLocationComparison)
   {
-    v10 = [v5 waypointRequest];
-    [v10 coordinate];
+    waypointPlaceholder2 = [requestCopy waypointRequest];
+    [waypointPlaceholder2 coordinate];
     v18 = v17;
-    [v10 coordinate];
+    [waypointPlaceholder2 coordinate];
     if (fabs(v18 + 180.0) >= 0.00000000999999994 || fabs(v19 + 180.0) >= 0.00000000999999994)
     {
-      v20 = [[GEOLocation alloc] initWithGEOCoordinate:objc_msgSend(v10 isUserLocation:{"isCurrentLocation"), v18, v19}];
-      v21 = [[GEOComposedWaypoint alloc] initWithLocation:v20 isCurrentLocation:{objc_msgSend(v10, "isCurrentLocation")}];
-      v7 = [[SearchResult alloc] initWithComposedWaypoint:v21];
+      v20 = [[GEOLocation alloc] initWithGEOCoordinate:objc_msgSend(waypointPlaceholder2 isUserLocation:{"isCurrentLocation"), v18, v19}];
+      v21 = [[GEOComposedWaypoint alloc] initWithLocation:v20 isCurrentLocation:{objc_msgSend(waypointPlaceholder2, "isCurrentLocation")}];
+      displayableMarker2 = [[SearchResult alloc] initWithComposedWaypoint:v21];
     }
 
     else
     {
-      v7 = 0;
+      displayableMarker2 = 0;
     }
 
     goto LABEL_5;
   }
 
   v13 = [SearchResult alloc];
-  v14 = [v5 waypointRequest];
-  v15 = [v14 mapItemForLocationComparison];
-  v7 = [(SearchResult *)v13 initWithMapItem:v15];
+  waypointRequest2 = [requestCopy waypointRequest];
+  mapItemForLocationComparison2 = [waypointRequest2 mapItemForLocationComparison];
+  displayableMarker2 = [(SearchResult *)v13 initWithMapItem:mapItemForLocationComparison2];
 
 LABEL_8:
 
-  return v7;
+  return displayableMarker2;
 }
 
 - (NSArray)waypointDisplayableMarkers
@@ -586,7 +586,7 @@ LABEL_8:
   v8 = sub_100E69530;
   v9 = &unk_101656780;
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = self;
+  selfCopy = self;
   v3 = v10;
   [(RoutePlanningSession *)self enumerateRequestsOrWaypointsUsingBlock:&v6];
   v4 = [v3 copy];
@@ -596,22 +596,22 @@ LABEL_8:
 
 - (SearchResult)destinationDisplayableMarker
 {
-  v3 = [(RoutePlanningSession *)self configuration];
-  v4 = [v3 destinationWaypointRequest];
-  v5 = [(RoutePlanningSession *)self resolvedWaypoints];
-  v6 = [v5 destination];
-  v7 = [(RoutePlanningSession *)self _searchResultFromWaypointRequest:v4 resolvedWaypoint:v6];
+  configuration = [(RoutePlanningSession *)self configuration];
+  destinationWaypointRequest = [configuration destinationWaypointRequest];
+  resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+  destination = [resolvedWaypoints destination];
+  v7 = [(RoutePlanningSession *)self _searchResultFromWaypointRequest:destinationWaypointRequest resolvedWaypoint:destination];
 
   return v7;
 }
 
 - (SearchResult)originDisplayableMarker
 {
-  v3 = [(RoutePlanningSession *)self configuration];
-  v4 = [v3 originWaypointRequest];
-  v5 = [(RoutePlanningSession *)self resolvedWaypoints];
-  v6 = [v5 origin];
-  v7 = [(RoutePlanningSession *)self _searchResultFromWaypointRequest:v4 resolvedWaypoint:v6];
+  configuration = [(RoutePlanningSession *)self configuration];
+  originWaypointRequest = [configuration originWaypointRequest];
+  resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+  origin = [resolvedWaypoints origin];
+  v7 = [(RoutePlanningSession *)self _searchResultFromWaypointRequest:originWaypointRequest resolvedWaypoint:origin];
 
   return v7;
 }
@@ -623,34 +623,34 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 745 && a3.var1 == &unk_101644E90)
+  if (key.var0 == 745 && key.var1 == &unk_101644E90)
   {
-    v6 = [(RoutePlanningSession *)self currentRouteCollectionResult];
-    v5 = [v6 value];
-    [(RoutePlanningSession *)self _updateIsInACustomRouteRegionForRouteCollection:v5];
+    currentRouteCollectionResult = [(RoutePlanningSession *)self currentRouteCollectionResult];
+    value = [currentRouteCollectionResult value];
+    [(RoutePlanningSession *)self _updateIsInACustomRouteRegionForRouteCollection:value];
   }
 }
 
-- (void)routeLoadingController:(id)a3 didReceiveUpdates:(id)a4 forRoutesResult:(id)a5
+- (void)routeLoadingController:(id)controller didReceiveUpdates:(id)updates forRoutesResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  updatesCopy = updates;
+  resultCopy = result;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
   v11 = sub_100798A3C();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 allKeys];
+    allKeys = [updatesCopy allKeys];
     *buf = 134349570;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v8;
+    v22 = controllerCopy;
     v23 = 2112;
-    v24 = v12;
+    v24 = allKeys;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}p] %@ received updates for routes %@", buf, 0x20u);
   }
 
@@ -659,20 +659,20 @@ LABEL_8:
   block[2] = sub_100F69B04;
   block[3] = &unk_101661A40;
   block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
+  v16 = updatesCopy;
+  v17 = resultCopy;
+  v13 = resultCopy;
+  v14 = updatesCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)routeLoadingController:(id)a3 didReceiveRoutesResult:(id)a4 forTransportType:(int64_t)a5 advisoryInfo:(id)a6
+- (void)routeLoadingController:(id)controller didReceiveRoutesResult:(id)result forTransportType:(int64_t)type advisoryInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  controllerCopy = controller;
+  resultCopy = result;
+  infoCopy = info;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
@@ -705,25 +705,25 @@ LABEL_8:
       v21[2] = sub_100F69EC8;
       v21[3] = &unk_10165E808;
       v21[4] = &buf;
-      [v11 withValue:v21 orError:&stru_10165E828];
+      [resultCopy withValue:v21 orError:&stru_10165E828];
       v16 = sub_100798A3C();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = *(*(&buf + 1) + 40);
-        if ((a5 - 1) > 4)
+        if ((type - 1) > 4)
         {
           v18 = @"Undefined";
         }
 
         else
         {
-          v18 = off_10165E8C8[a5 - 1];
+          v18 = off_10165E8C8[type - 1];
         }
 
         *v23 = 134349826;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = v10;
+        v26 = controllerCopy;
         v27 = 2112;
         v28 = v17;
         v29 = 2112;
@@ -732,31 +732,31 @@ LABEL_8:
       }
     }
 
-    v19 = [v11 map:&stru_10165E868];
+    v19 = [resultCopy map:&stru_10165E868];
     if ([(RoutePlanningSession *)self currentTransportType]== 1)
     {
-      objc_storeStrong(&self->_advisoryInfo, a6);
+      objc_storeStrong(&self->_advisoryInfo, info);
     }
 
     v20 = sub_100798A3C();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *v23 = 138412290;
-      v24 = v12;
+      selfCopy = infoCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Advisory info receieved : %@", v23, 0xCu);
     }
 
-    [(RoutePlanningSession *)self updateRouteCollectionResult:v19 forTransportType:a5];
+    [(RoutePlanningSession *)self updateRouteCollectionResult:v19 forTransportType:type];
     _Block_object_dispose(&buf, 8);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)waypointController:(id)a3 didResolveWaypointSet:(id)a4
+- (void)waypointController:(id)controller didResolveWaypointSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  setCopy = set;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
@@ -769,7 +769,7 @@ LABEL_8:
     {
       v45 = dispatch_queue_get_label(self->_isolationQueue);
       *buf = 136316162;
-      v57 = "[RoutePlanningSession waypointController:didResolveWaypointSet:]";
+      selfCopy5 = "[RoutePlanningSession waypointController:didResolveWaypointSet:]";
       v58 = 2080;
       v59 = "RoutePlanningSession.m";
       v60 = 1024;
@@ -788,21 +788,21 @@ LABEL_8:
       {
         v47 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v57 = v47;
+        selfCopy5 = v47;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  v10 = [(RoutePlanningSession *)self sessionState];
+  sessionState = [(RoutePlanningSession *)self sessionState];
   v11 = sub_100798A3C();
   v12 = v11;
-  if (v10 == 2)
+  if (sessionState == 2)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v57 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Ignoring waypoint update due to being paused", buf, 0xCu);
     }
   }
@@ -811,19 +811,19 @@ LABEL_8:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(RoutePlanningSession *)self currentTransportType];
-      if ((v13 - 1) > 4)
+      currentTransportType = [(RoutePlanningSession *)self currentTransportType];
+      if ((currentTransportType - 1) > 4)
       {
         v14 = @"Undefined";
       }
 
       else
       {
-        v14 = off_10165E8C8[v13 - 1];
+        v14 = off_10165E8C8[currentTransportType - 1];
       }
 
       *buf = 134349314;
-      v57 = self;
+      selfCopy5 = self;
       v58 = 2112;
       v59 = v14;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}p] Received waypoints with initial transport type: %@", buf, 0x16u);
@@ -835,7 +835,7 @@ LABEL_8:
     v51[2] = sub_100F6A768;
     v51[3] = &unk_10165E778;
     objc_copyWeak(&v53, &location);
-    v52 = v7;
+    v52 = setCopy;
     v15 = objc_retainBlock(v51);
     if ([(RoutePlanningSession *)self currentTransportType])
     {
@@ -843,7 +843,7 @@ LABEL_8:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349056;
-        v57 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}p] RoutePlanningSession was initialized with a valid transport type", buf, 0xCu);
       }
 
@@ -852,13 +852,13 @@ LABEL_8:
 
     else
     {
-      v17 = [(RoutePlanningSession *)self platformController];
-      v18 = [v17 chromeViewController];
+      platformController = [(RoutePlanningSession *)self platformController];
+      chromeViewController = [platformController chromeViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        v19 = chromeViewController;
       }
 
       else
@@ -870,39 +870,39 @@ LABEL_8:
 
       if (v20)
       {
-        v21 = [(RoutePlanningSession *)self resolvedWaypoints];
-        v22 = [v21 origin];
-        v23 = [v22 latLng];
+        resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+        origin = [resolvedWaypoints origin];
+        latLng = [origin latLng];
 
-        v24 = [(RoutePlanningSession *)self resolvedWaypoints];
-        v25 = [v24 destination];
-        v26 = [v25 latLng];
+        resolvedWaypoints2 = [(RoutePlanningSession *)self resolvedWaypoints];
+        destination = [resolvedWaypoints2 destination];
+        latLng2 = [destination latLng];
 
         v27 = sub_100798A3C();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349056;
-          v57 = self;
+          selfCopy5 = self;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%{public}p] RoutePlanningSession was not initialized with a valid transport type; determining a default one now", buf, 0xCu);
         }
 
-        v28 = [v20 defaultTransportTypeFinder];
-        [v23 lat];
+        defaultTransportTypeFinder = [v20 defaultTransportTypeFinder];
+        [latLng lat];
         v30 = v29;
-        [v23 lng];
+        [latLng lng];
         v32 = CLLocationCoordinate2DMake(v30, v31);
-        [v26 lat];
+        [latLng2 lat];
         v34 = v33;
-        [v26 lng];
+        [latLng2 lng];
         v36 = CLLocationCoordinate2DMake(v34, v35);
-        v37 = [(RoutePlanningSession *)self ignoreMapType];
+        ignoreMapType = [(RoutePlanningSession *)self ignoreMapType];
         v48[0] = _NSConcreteStackBlock;
         v48[1] = 3221225472;
         v48[2] = sub_100F6AB58;
         v48[3] = &unk_10165E7A0;
         objc_copyWeak(&v50, &location);
         v49 = v15;
-        [v28 transportTypeForOrigin:v37 destination:v48 ignoreMapType:v32.latitude completion:{v32.longitude, v36.latitude, v36.longitude}];
+        [defaultTransportTypeFinder transportTypeForOrigin:ignoreMapType destination:v48 ignoreMapType:v32.latitude completion:{v32.longitude, v36.latitude, v36.longitude}];
 
         objc_destroyWeak(&v50);
       }
@@ -913,7 +913,7 @@ LABEL_8:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315650;
-          v57 = "[RoutePlanningSession waypointController:didResolveWaypointSet:]";
+          selfCopy5 = "[RoutePlanningSession waypointController:didResolveWaypointSet:]";
           v58 = 2080;
           v59 = "RoutePlanningSession.m";
           v60 = 1024;
@@ -928,7 +928,7 @@ LABEL_8:
           {
             v40 = +[NSThread callStackSymbols];
             *buf = 138412290;
-            v57 = v40;
+            selfCopy5 = v40;
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
         }
@@ -936,12 +936,12 @@ LABEL_8:
         v41 = sub_100798A3C();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
-          v42 = [(RoutePlanningSession *)self platformController];
-          v43 = [v42 chromeViewController];
+          platformController2 = [(RoutePlanningSession *)self platformController];
+          chromeViewController2 = [platformController2 chromeViewController];
           *buf = 134349314;
-          v57 = self;
+          selfCopy5 = self;
           v58 = 2112;
-          v59 = v43;
+          v59 = chromeViewController2;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "[%{public}p] chrome view controller was not an iOS based one: %@; cannot determine default transport type", buf, 0x16u);
         }
 
@@ -963,7 +963,7 @@ LABEL_8:
   v10[1] = 3221225472;
   v11 = sub_100F6B2C0;
   v12 = &unk_101661B18;
-  v13 = self;
+  selfCopy = self;
   v4 = &_dispatch_main_q;
   v5 = v10;
   label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -983,14 +983,14 @@ LABEL_8:
 
 - (void)_cancelFetchingCapabilitiesSharingContacts
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 automaticSharingContacts];
+  configuration = [(RoutePlanningSession *)self configuration];
+  automaticSharingContacts = [configuration automaticSharingContacts];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = automaticSharingContacts;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -1021,15 +1021,15 @@ LABEL_8:
   }
 }
 
-- (void)_setAutomaticSharingContacts:(id)a3 forShortcutIdentifier:(id)a4
+- (void)_setAutomaticSharingContacts:(id)contacts forShortcutIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RoutePlanningSession *)self shortcutIdentifier];
-  v9 = v8;
-  if (v7 | v8)
+  contactsCopy = contacts;
+  identifierCopy = identifier;
+  shortcutIdentifier = [(RoutePlanningSession *)self shortcutIdentifier];
+  v9 = shortcutIdentifier;
+  if (identifierCopy | shortcutIdentifier)
   {
-    v10 = [v8 isEqual:v7];
+    v10 = [shortcutIdentifier isEqual:identifierCopy];
   }
 
   else
@@ -1039,18 +1039,18 @@ LABEL_8:
 
   v11 = MSPSharedTripSharingAvailable();
   v12 = sub_100798A3C();
-  v13 = v12;
+  observers = v12;
   if (!v11)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 134217984;
-      v20 = [v6 count];
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Not setting automatic sharing contacts because sharing is not available (would have had %lu autosharing contacts)", &v19, 0xCu);
+      v20 = [contactsCopy count];
+      _os_log_impl(&_mh_execute_header, observers, OS_LOG_TYPE_INFO, "Not setting automatic sharing contacts because sharing is not available (would have had %lu autosharing contacts)", &v19, 0xCu);
     }
 
-    v15 = [(RoutePlanningSession *)self configuration];
-    [v15 setAutomaticSharingContacts:0];
+    configuration = [(RoutePlanningSession *)self configuration];
+    [configuration setAutomaticSharingContacts:0];
     goto LABEL_12;
   }
 
@@ -1059,44 +1059,44 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v19 = 134218242;
-      v20 = [v6 count];
+      v20 = [contactsCopy count];
       v21 = 2112;
-      v22 = v6;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Setting %lu automatic sharing contacts: %@", &v19, 0x16u);
+      v22 = contactsCopy;
+      _os_log_impl(&_mh_execute_header, observers, OS_LOG_TYPE_INFO, "Setting %lu automatic sharing contacts: %@", &v19, 0x16u);
     }
 
     [(RoutePlanningSession *)self _cancelFetchingCapabilitiesSharingContacts];
-    v14 = [(RoutePlanningSession *)self configuration];
-    [v14 setAutomaticSharingContacts:v6];
+    configuration2 = [(RoutePlanningSession *)self configuration];
+    [configuration2 setAutomaticSharingContacts:contactsCopy];
 
-    v15 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-    [v15 requestCapabilityLevelsForContacts:v6];
+    configuration = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
+    [configuration requestCapabilityLevelsForContacts:contactsCopy];
 LABEL_12:
 
-    v13 = [(RoutePlanningSession *)self observers];
-    v16 = [(RoutePlanningSession *)self configuration];
-    v17 = [v16 automaticSharingContacts];
-    [v13 routePlanningSession:self didUpdateAutomaticSharingContacts:v17];
+    observers = [(RoutePlanningSession *)self observers];
+    configuration3 = [(RoutePlanningSession *)self configuration];
+    automaticSharingContacts = [configuration3 automaticSharingContacts];
+    [observers routePlanningSession:self didUpdateAutomaticSharingContacts:automaticSharingContacts];
 
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v18 = [(RoutePlanningSession *)self shortcutIdentifier];
+    shortcutIdentifier2 = [(RoutePlanningSession *)self shortcutIdentifier];
     v19 = 138478083;
-    v20 = v7;
+    v20 = identifierCopy;
     v21 = 2113;
-    v22 = v18;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Not setting automatic sharing contacts, passed in shortcutIdentifier %{private}@ doesn't match current %{private}@", &v19, 0x16u);
+    v22 = shortcutIdentifier2;
+    _os_log_impl(&_mh_execute_header, observers, OS_LOG_TYPE_ERROR, "Not setting automatic sharing contacts, passed in shortcutIdentifier %{private}@ doesn't match current %{private}@", &v19, 0x16u);
   }
 
 LABEL_13:
 }
 
-- (void)setAutomaticSharingContacts:(id)a3
+- (void)setAutomaticSharingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1104,9 +1104,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Explicitly setting automatic sharing contacts...", buf, 2u);
   }
 
-  v6 = [(RoutePlanningSession *)self shortcutIdentifier];
+  shortcutIdentifier = [(RoutePlanningSession *)self shortcutIdentifier];
 
-  if (v6)
+  if (shortcutIdentifier)
   {
     v7 = sub_1000946AC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1116,19 +1116,19 @@ LABEL_13:
     }
 
     [(RoutePlanningSession *)self _cancelFetchingCapabilitiesSharingContacts];
-    v8 = [(RoutePlanningSession *)self configuration];
-    [v8 setShortcutIdentifier:0];
+    configuration = [(RoutePlanningSession *)self configuration];
+    [configuration setShortcutIdentifier:0];
   }
 
-  [(RoutePlanningSession *)self _setAutomaticSharingContacts:v4];
+  [(RoutePlanningSession *)self _setAutomaticSharingContacts:contactsCopy];
 }
 
 - (NSArray)automaticSharingContacts
 {
-  v2 = [(RoutePlanningSession *)self configuration];
-  v3 = [v2 automaticSharingContacts];
+  configuration = [(RoutePlanningSession *)self configuration];
+  automaticSharingContacts = [configuration automaticSharingContacts];
 
-  return v3;
+  return automaticSharingContacts;
 }
 
 - (void)_scheduleRefreshUserShortcuts
@@ -1169,7 +1169,7 @@ LABEL_13:
   }
 }
 
-- (void)shortcutManagerMeCardDidChange:(id)a3
+- (void)shortcutManagerMeCardDidChange:(id)change
 {
   v4 = sub_1000946AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1185,7 +1185,7 @@ LABEL_13:
   [(RoutePlanningSession *)self _scheduleRefreshUserShortcuts];
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
   v4 = sub_1000946AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1201,20 +1201,20 @@ LABEL_13:
   [(RoutePlanningSession *)self _scheduleRefreshUserShortcuts];
 }
 
-- (id)_shortcutWithIdentifier:(id)a3
+- (id)_shortcutWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = +[ShortcutManager sharedManager];
-    v5 = [v4 meCard];
-    v6 = [v5 shortcutsForAll];
+    meCard = [v4 meCard];
+    shortcutsForAll = [meCard shortcutsForAll];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v6;
+    v7 = shortcutsForAll;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v8)
     {
@@ -1231,7 +1231,7 @@ LABEL_13:
 
           v12 = *(*(&v18 + 1) + 8 * i);
           v13 = MapsSuggestionsShortcutUniqueIdentifier();
-          v14 = [v13 isEqualToString:{v3, v18}];
+          v14 = [v13 isEqualToString:{identifierCopy, v18}];
 
           if (v14)
           {
@@ -1255,7 +1255,7 @@ LABEL_13:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v3;
+      v23 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "RoutePlanningSession could not find shortcut for identifier: %@", buf, 0xCu);
     }
 
@@ -1271,19 +1271,19 @@ LABEL_14:
   return v16;
 }
 
-- (id)_favoriteWithIdentifier:(id)a3
+- (id)_favoriteWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v5 = [v4 shortcuts];
+    shortcuts = [v4 shortcuts];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v5;
+    v6 = shortcuts;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v7)
     {
@@ -1299,8 +1299,8 @@ LABEL_14:
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:v3];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:identifierCopy];
 
           if (v13)
           {
@@ -1324,7 +1324,7 @@ LABEL_14:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v22 = v3;
+      v22 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "RoutePlanningSession could not find favorite item for identifier: %@", buf, 0xCu);
     }
 
@@ -1340,22 +1340,22 @@ LABEL_14:
   return v15;
 }
 
-- (void)setShortcutIdentifier:(id)a3
+- (void)setShortcutIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(RoutePlanningSession *)self configuration];
-  v6 = [v5 shortcutIdentifier];
+  identifierCopy = identifier;
+  configuration = [(RoutePlanningSession *)self configuration];
+  shortcutIdentifier = [configuration shortcutIdentifier];
 
-  v7 = [(RoutePlanningSession *)self configuration];
-  [v7 setShortcutIdentifier:v4];
+  configuration2 = [(RoutePlanningSession *)self configuration];
+  [configuration2 setShortcutIdentifier:identifierCopy];
 
-  if (v4)
+  if (identifierCopy)
   {
     v8 = sub_1000946AC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "RoutePlanningSession will use shortcut for autosharing: %@", &v12, 0xCu);
     }
 
@@ -1374,13 +1374,13 @@ LABEL_14:
     [(RoutePlanningSession *)self _refreshAutomaticSharingContactsFromShortcut];
   }
 
-  else if (v6)
+  else if (shortcutIdentifier)
   {
     v10 = sub_1000946AC();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = shortcutIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "RoutePlanningSession will drop shortcut for autosharing: %@", &v12, 0xCu);
     }
 
@@ -1402,26 +1402,26 @@ LABEL_14:
 
 - (void)cleanupStateReplay
 {
-  v2 = [(RoutePlanningSession *)self observers];
-  [v2 clearSnapshottedObservers];
+  observers = [(RoutePlanningSession *)self observers];
+  [observers clearSnapshottedObservers];
 }
 
 - (void)replayCurrentState
 {
-  v3 = [(RoutePlanningSession *)self observers];
-  [v3 removeSnapshottedObservers];
+  observers = [(RoutePlanningSession *)self observers];
+  [observers removeSnapshottedObservers];
 
-  v4 = [(RoutePlanningSession *)self observers];
-  [v4 mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
+  observers2 = [(RoutePlanningSession *)self observers];
+  [observers2 mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
 
-  v5 = [(RoutePlanningSession *)self observers];
-  [v5 restoreOriginalObservers];
+  observers3 = [(RoutePlanningSession *)self observers];
+  [observers3 restoreOriginalObservers];
 }
 
 - (void)prepareToReplayCurrentState
 {
-  v2 = [(RoutePlanningSession *)self observers];
-  [v2 snapshotCurrentObservers];
+  observers = [(RoutePlanningSession *)self observers];
+  [observers snapshotCurrentObservers];
 }
 
 - (void)suspend
@@ -1432,20 +1432,20 @@ LABEL_14:
   v3 = sub_100798A3C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(RoutePlanningSession *)self sessionState];
+    sessionState = [(RoutePlanningSession *)self sessionState];
     v5 = @"NotStarted";
-    if (v4 == 1)
+    if (sessionState == 1)
     {
       v5 = @"Running";
     }
 
-    if (v4 == 2)
+    if (sessionState == 2)
     {
       v5 = @"Suspended";
     }
 
     *buf = 134349314;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] suspend requested state=%@", buf, 0x16u);
@@ -1461,7 +1461,7 @@ LABEL_14:
       v12 = dispatch_queue_get_label(&_dispatch_main_q);
       v13 = dispatch_queue_get_label(0);
       *buf = 136316418;
-      v22 = "[RoutePlanningSession suspend]";
+      selfCopy = "[RoutePlanningSession suspend]";
       v23 = 2080;
       v24 = "RoutePlanningSession.m";
       v25 = 1024;
@@ -1482,7 +1482,7 @@ LABEL_14:
       {
         v15 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v15;
+        selfCopy = v15;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -1495,7 +1495,7 @@ LABEL_14:
     {
       v17 = [NSString stringWithFormat:@"Session state must be running before calling -suspend"];
       *buf = 136316162;
-      v22 = "[RoutePlanningSession suspend]";
+      selfCopy = "[RoutePlanningSession suspend]";
       v23 = 2080;
       v24 = "RoutePlanningSession.m";
       v25 = 1024;
@@ -1514,7 +1514,7 @@ LABEL_14:
       {
         v19 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v19;
+        selfCopy = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -1523,15 +1523,15 @@ LABEL_14:
   if ([(RoutePlanningSession *)self sessionState]== 1)
   {
     [(RoutePlanningSession *)self setSessionState:2];
-    v8 = [(RoutePlanningSession *)self waypointController];
-    [v8 stop];
+    waypointController = [(RoutePlanningSession *)self waypointController];
+    [waypointController stop];
 
-    v9 = [(RoutePlanningSession *)self routeLoadingController];
-    [v9 cancelLoading];
+    routeLoadingController = [(RoutePlanningSession *)self routeLoadingController];
+    [routeLoadingController cancelLoading];
 
     [(RoutePlanningSession *)self _updateLoadingControllerForRealtimeUpdates];
-    v10 = [(RoutePlanningSession *)self observers];
-    [v10 mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
+    observers = [(RoutePlanningSession *)self observers];
+    [observers mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
   }
 
   os_activity_scope_leave(&v20);
@@ -1545,20 +1545,20 @@ LABEL_14:
   v3 = sub_100798A3C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(RoutePlanningSession *)self sessionState];
+    sessionState = [(RoutePlanningSession *)self sessionState];
     v5 = @"NotStarted";
-    if (v4 == 1)
+    if (sessionState == 1)
     {
       v5 = @"Running";
     }
 
-    if (v4 == 2)
+    if (sessionState == 2)
     {
       v5 = @"Suspended";
     }
 
     *buf = 134349314;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 2112;
     v37 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] resume requested state=%@", buf, 0x16u);
@@ -1574,7 +1574,7 @@ LABEL_14:
       v27 = dispatch_queue_get_label(&_dispatch_main_q);
       v28 = dispatch_queue_get_label(0);
       *buf = 136316418;
-      v35 = "[RoutePlanningSession resume]";
+      selfCopy4 = "[RoutePlanningSession resume]";
       v36 = 2080;
       v37 = "RoutePlanningSession.m";
       v38 = 1024;
@@ -1595,7 +1595,7 @@ LABEL_14:
       {
         v30 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v35 = v30;
+        selfCopy4 = v30;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -1603,51 +1603,51 @@ LABEL_14:
 
   if ([(RoutePlanningSession *)self sessionState]!= 1)
   {
-    v8 = [(RoutePlanningSession *)self sessionState];
+    sessionState2 = [(RoutePlanningSession *)self sessionState];
     [(RoutePlanningSession *)self setSessionState:1];
     v9 = +[NSDate date];
     [(RoutePlanningSession *)self setStartDate:v9];
 
-    v10 = [(RoutePlanningSession *)self observers];
-    [v10 mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
+    observers = [(RoutePlanningSession *)self observers];
+    [observers mapsSession:self didChangeState:{-[RoutePlanningSession sessionState](self, "sessionState")}];
 
     [(RoutePlanningSession *)self _updateLoadingControllerForRealtimeUpdates];
-    v11 = [(RoutePlanningSession *)self configuration];
-    v12 = [v11 locationManager];
-    if ([v12 isLocationServicesDenied])
+    configuration = [(RoutePlanningSession *)self configuration];
+    locationManager = [configuration locationManager];
+    if ([locationManager isLocationServicesDenied])
     {
       v13 = 0;
     }
 
     else
     {
-      v14 = [(RoutePlanningSession *)self configuration];
-      v15 = [v14 locationManager];
-      v16 = [v15 isLocationServicesRestricted];
+      configuration2 = [(RoutePlanningSession *)self configuration];
+      locationManager2 = [configuration2 locationManager];
+      isLocationServicesRestricted = [locationManager2 isLocationServicesRestricted];
 
-      v13 = v16 ^ 1;
+      v13 = isLocationServicesRestricted ^ 1;
     }
 
-    if (!v8)
+    if (!sessionState2)
     {
-      v17 = [(RoutePlanningSession *)self configuration];
-      v18 = [v17 isNavigationTracePlayback];
+      configuration3 = [(RoutePlanningSession *)self configuration];
+      isNavigationTracePlayback = [configuration3 isNavigationTracePlayback];
 
       v19 = sub_100798A3C();
       v20 = v19;
-      if (v18)
+      if (isNavigationTracePlayback)
       {
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349056;
-          v35 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "[%{public}p] Playing navtrace; not waiting for accurate location", buf, 0xCu);
         }
 
 LABEL_29:
 
-        v25 = [(RoutePlanningSession *)self waypointController];
-        [v25 start];
+        waypointController = [(RoutePlanningSession *)self waypointController];
+        [waypointController start];
 
         goto LABEL_30;
       }
@@ -1658,7 +1658,7 @@ LABEL_29:
         if (v21)
         {
           *buf = 134349056;
-          v35 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%{public}p] Location access isn't available; continuing with waypoint resolution", buf, 0xCu);
         }
 
@@ -1668,7 +1668,7 @@ LABEL_29:
       if (v21)
       {
         *buf = 134349056;
-        v35 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%{public}p] Waiting for accurate location before resolving waypoints", buf, 0xCu);
       }
 
@@ -1684,14 +1684,14 @@ LABEL_29:
       }
 
       objc_initWeak(buf, self);
-      v23 = [(RoutePlanningSession *)self configuration];
-      v24 = [v23 locationManager];
+      configuration4 = [(RoutePlanningSession *)self configuration];
+      locationManager3 = [configuration4 locationManager];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_100F6CF88;
       v31[3] = &unk_101661B98;
       objc_copyWeak(&v32, buf);
-      [v24 waitForAccurateLocationWithTimeout:v31 handler:v22];
+      [locationManager3 waitForAccurateLocationWithTimeout:v31 handler:v22];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(buf);
@@ -1702,9 +1702,9 @@ LABEL_30:
   os_activity_scope_leave(&state);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &v7);
@@ -1712,21 +1712,21 @@ LABEL_30:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] remove observer %@", buf, 0x16u);
   }
 
-  v6 = [(RoutePlanningSession *)self observers];
-  [v6 unregisterObserver:v4];
+  observers = [(RoutePlanningSession *)self observers];
+  [observers unregisterObserver:observerCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &v7);
@@ -1734,48 +1734,48 @@ LABEL_30:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] adding observer %@", buf, 0x16u);
   }
 
-  v6 = [(RoutePlanningSession *)self observers];
-  [v6 registerObserver:v4];
+  observers = [(RoutePlanningSession *)self observers];
+  [observers registerObserver:observerCopy];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)_setIsInACustomRouteRegion:(BOOL)a3
+- (void)_setIsInACustomRouteRegion:(BOOL)region
 {
-  if (self->_inACustomRouteRegion != a3)
+  if (self->_inACustomRouteRegion != region)
   {
-    v3 = a3;
+    regionCopy = region;
     v5 = sub_100798A3C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       inACustomRouteRegion = self->_inACustomRouteRegion;
       v8 = 134349568;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
       v11 = inACustomRouteRegion;
       v12 = 1024;
-      v13 = v3;
+      v13 = regionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] changing isInACustomRouteRegion from %d to %d", &v8, 0x18u);
     }
 
-    self->_inACustomRouteRegion = v3;
-    v7 = [(RoutePlanningSession *)self observers];
-    [v7 routePlanningSession:self didChangeRouteCreationRegion:v3];
+    self->_inACustomRouteRegion = regionCopy;
+    observers = [(RoutePlanningSession *)self observers];
+    [observers routePlanningSession:self didChangeRouteCreationRegion:regionCopy];
   }
 }
 
-- (void)_updateIsInACustomRouteRegionForRouteCollection:(id)a3
+- (void)_updateIsInACustomRouteRegionForRouteCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   BOOL = GEOConfigGetBOOL();
-  v5 = [v3 currentRoute];
-  if (v5)
+  currentRoute = [collectionCopy currentRoute];
+  if (currentRoute)
   {
     v6 = BOOL;
   }
@@ -1796,8 +1796,8 @@ LABEL_30:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [v5 waypoints];
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    waypoints = [currentRoute waypoints];
+    v9 = [waypoints countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
       v10 = *v25;
@@ -1807,12 +1807,12 @@ LABEL_30:
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(waypoints);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
           dispatch_group_enter(v7);
-          v13 = [v12 location];
+          location = [v12 location];
           v14 = &_dispatch_main_q;
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
@@ -1820,10 +1820,10 @@ LABEL_30:
           v21[3] = &unk_10165E6D8;
           v23 = v28;
           v22 = v7;
-          [GEODirectionsService customRouteCreationSupportedForLocation:v13 queue:&_dispatch_main_q handler:v21];
+          [GEODirectionsService customRouteCreationSupportedForLocation:location queue:&_dispatch_main_q handler:v21];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v9 = [waypoints countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v9);
@@ -1835,7 +1835,7 @@ LABEL_30:
     block[2] = sub_100F6D77C;
     block[3] = &unk_10165E700;
     objc_copyWeak(&v19, &location);
-    v17 = v3;
+    v17 = collectionCopy;
     v18 = v28;
     dispatch_group_notify(v7, &_dispatch_main_q, block);
 
@@ -1855,31 +1855,31 @@ LABEL_30:
 {
   if ([(RoutePlanningSession *)self sessionState]== 1)
   {
-    v3 = [(RoutePlanningSession *)self currentTransportType];
+    currentTransportType = [(RoutePlanningSession *)self currentTransportType];
   }
 
   else
   {
-    v3 = 0;
+    currentTransportType = 0;
   }
 
-  v4 = [(RoutePlanningSession *)self routeLoadingController];
-  [v4 setTransportTypeForRealtimeUpdates:v3];
+  routeLoadingController = [(RoutePlanningSession *)self routeLoadingController];
+  [routeLoadingController setTransportTypeForRealtimeUpdates:currentTransportType];
 }
 
-- (void)requestUpdatedRouteWithRefreshedOrigin:(BOOL)a3
+- (void)requestUpdatedRouteWithRefreshedOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
-    v14 = [(RoutePlanningSession *)self waypointController];
-    [v14 refreshDynamicOrigin];
+    waypointController = [(RoutePlanningSession *)self waypointController];
+    [waypointController refreshDynamicOrigin];
   }
 
   else
   {
-    v4 = [(RoutePlanningSession *)self resolvedWaypoints];
+    resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
 
-    if (v4)
+    if (resolvedWaypoints)
     {
       label = dispatch_queue_get_label(&_dispatch_main_q);
       v6 = dispatch_queue_get_label(0);
@@ -1916,28 +1916,28 @@ LABEL_30:
         }
       }
 
-      v7 = [(RoutePlanningSession *)self isolationQueue];
+      isolationQueue = [(RoutePlanningSession *)self isolationQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100F6DB80;
       block[3] = &unk_101661B18;
       block[4] = self;
-      dispatch_sync(v7, block);
+      dispatch_sync(isolationQueue, block);
 
       [(RoutePlanningSession *)self _updateIsInACustomRouteRegionForRouteCollection:0];
-      v8 = [(RoutePlanningSession *)self observers];
-      [v8 routePlanningSession:self didUpdateRouteCollectionResult:0 forTransportType:{-[RoutePlanningSession currentTransportType](self, "currentTransportType")}];
+      observers = [(RoutePlanningSession *)self observers];
+      [observers routePlanningSession:self didUpdateRouteCollectionResult:0 forTransportType:{-[RoutePlanningSession currentTransportType](self, "currentTransportType")}];
 
-      v9 = [(RoutePlanningSession *)self routeLoadingController];
-      [v9 cancelLoading];
+      routeLoadingController = [(RoutePlanningSession *)self routeLoadingController];
+      [routeLoadingController cancelLoading];
 
-      v10 = [(RoutePlanningSession *)self waypointController];
-      [v10 rebroadcastWaypoints];
+      waypointController2 = [(RoutePlanningSession *)self waypointController];
+      [waypointController2 rebroadcastWaypoints];
     }
   }
 }
 
-- (void)setSelectedRouteIndex:(unint64_t)a3 forTransportType:(int64_t)a4
+- (void)setSelectedRouteIndex:(unint64_t)index forTransportType:(int64_t)type
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1956,26 +1956,26 @@ LABEL_30:
   v11 = sub_100798A3C();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a4 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v12 = @"Undefined";
     }
 
     else
     {
-      v12 = off_10165E8C8[a4 - 1];
+      v12 = off_10165E8C8[type - 1];
     }
 
     *buf = 134349570;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = index;
     *&buf[22] = 2112;
     v55 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}p] set selected routeIndex=%ld for transport type=%@", buf, 0x20u);
   }
 
-  v13 = [(RoutePlanningSession *)self routeCollectionResultForTransportType:a4];
+  v13 = [(RoutePlanningSession *)self routeCollectionResultForTransportType:type];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2017,7 +2017,7 @@ LABEL_30:
     }
   }
 
-  if ([*(*&buf[8] + 40) count] <= a3)
+  if ([*(*&buf[8] + 40) count] <= index)
   {
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -2047,32 +2047,32 @@ LABEL_30:
   }
 
   v14 = *(*&buf[8] + 40);
-  if (v14 && [v14 count] > a3 && objc_msgSend(*(*&buf[8] + 40), "currentRouteIndex") != a3)
+  if (v14 && [v14 count] > index && objc_msgSend(*(*&buf[8] + 40), "currentRouteIndex") != index)
   {
-    v15 = [*(*&buf[8] + 40) routeCollectionByChangingCurrentRouteIndex:a3];
+    v15 = [*(*&buf[8] + 40) routeCollectionByChangingCurrentRouteIndex:index];
     v16 = [Result resultWithValue:v15];
-    v17 = [(RoutePlanningSession *)self isolationQueue];
+    isolationQueue = [(RoutePlanningSession *)self isolationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100F6E278;
     block[3] = &unk_10165E668;
     block[4] = self;
-    v43 = a4;
+    typeCopy = type;
     v18 = v16;
     v42 = v18;
-    dispatch_sync(v17, block);
+    dispatch_sync(isolationQueue, block);
 
     v19 = &_dispatch_main_q;
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v34 = sub_100F6E2F0;
     v35 = &unk_10165E6B0;
-    v36 = self;
+    selfCopy = self;
     v20 = v15;
     v37 = v20;
     v21 = v18;
     v38 = v21;
-    v39 = a4;
+    typeCopy2 = type;
     v40 = v8;
     v22 = &_dispatch_main_q;
     v23 = v33;
@@ -2096,9 +2096,9 @@ LABEL_30:
   os_activity_scope_leave(&state);
 }
 
-- (void)setCurrentTransportType:(int64_t)a3 userInitiated:(BOOL)a4
+- (void)setCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
@@ -2115,7 +2115,7 @@ LABEL_30:
         v41 = dispatch_queue_get_label(self->_isolationQueue);
         v42 = dispatch_queue_get_label(0);
         *buf = 136316418;
-        v56 = "[RoutePlanningSession setCurrentTransportType:userInitiated:]";
+        selfCopy5 = "[RoutePlanningSession setCurrentTransportType:userInitiated:]";
         v57 = 2080;
         v58 = "RoutePlanningSession.m";
         v59 = 1024;
@@ -2136,7 +2136,7 @@ LABEL_30:
         {
           v44 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v56 = v44;
+          selfCopy5 = v44;
           v45 = v44;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
@@ -2158,29 +2158,29 @@ LABEL_30:
       v12 = off_10165E8C8[v11];
     }
 
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v13 = @"Undefined";
     }
 
     else
     {
-      v13 = off_10165E8C8[a3 - 1];
+      v13 = off_10165E8C8[type - 1];
     }
 
     *buf = 134349826;
-    v56 = self;
+    selfCopy5 = self;
     v57 = 2112;
     v58 = v12;
     v59 = 2112;
     *v60 = v13;
     *&v60[8] = 1024;
-    *&v60[10] = v4;
+    *&v60[10] = initiatedCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}p] changing transport type from %@ to %@, userInitiated:%d", buf, 0x26u);
   }
 
-  v14 = [(RoutePlanningSession *)self configuration];
-  v15 = [v14 hasTransportType:a3];
+  configuration = [(RoutePlanningSession *)self configuration];
+  v15 = [configuration hasTransportType:type];
 
   if ((v15 & 1) == 0)
   {
@@ -2188,7 +2188,7 @@ LABEL_30:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v56 = "[RoutePlanningSession setCurrentTransportType:userInitiated:]";
+      selfCopy5 = "[RoutePlanningSession setCurrentTransportType:userInitiated:]";
       v57 = 2080;
       v58 = "RoutePlanningSession.m";
       v59 = 1024;
@@ -2205,7 +2205,7 @@ LABEL_30:
       {
         v48 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v56 = v48;
+        selfCopy5 = v48;
         v49 = v48;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
@@ -2213,7 +2213,7 @@ LABEL_30:
   }
 
   currentTransportType = self->_currentTransportType;
-  if (currentTransportType != a3)
+  if (currentTransportType != type)
   {
     if (currentTransportType > 4 || ((1 << currentTransportType) & 0x19) == 0)
     {
@@ -2231,29 +2231,29 @@ LABEL_30:
     reportAProblemRecorder = self->_reportAProblemRecorder;
     self->_reportAProblemRecorder = v20;
 
-    if (a3 > 4 || ((1 << a3) & 0x19) == 0)
+    if (type > 4 || ((1 << type) & 0x19) == 0)
     {
       [(RAPGraphDirectionsRecorder *)self->_reportAProblemRecorder startRecording];
     }
 
-    if (v4)
+    if (initiatedCopy)
     {
       v22 = +[GEOCompanionRouteContext context];
-      v23 = [(RoutePlanningSession *)self configuration];
-      [v23 setCompanionContext:v22];
+      configuration2 = [(RoutePlanningSession *)self configuration];
+      [configuration2 setCompanionContext:v22];
     }
 
-    self->_currentTransportType = a3;
+    self->_currentTransportType = type;
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100F6EC00;
     v50[3] = &unk_101661AE0;
     v50[4] = self;
-    v51 = v4;
+    v51 = initiatedCopy;
     dispatch_async(&_dispatch_main_q, v50);
-    v24 = [(RoutePlanningSession *)self transportTypeToRouteCollectionResultsMap];
+    transportTypeToRouteCollectionResultsMap = [(RoutePlanningSession *)self transportTypeToRouteCollectionResultsMap];
     v25 = [NSNumber numberWithInteger:self->_currentTransportType];
-    v26 = [v24 objectForKeyedSubscript:v25];
+    v26 = [transportTypeToRouteCollectionResultsMap objectForKeyedSubscript:v25];
 
     if (v26)
     {
@@ -2269,31 +2269,31 @@ LABEL_40:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349056;
-        v56 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%{public}p] Previous attempt to fetch routes for this transport type failed; trying again", buf, 0xCu);
       }
 
-      v28 = [(RoutePlanningSession *)self transportTypeToRouteCollectionResultsMap];
+      transportTypeToRouteCollectionResultsMap2 = [(RoutePlanningSession *)self transportTypeToRouteCollectionResultsMap];
       v29 = [NSNumber numberWithInteger:self->_currentTransportType];
-      [v28 removeObjectForKey:v29];
+      [transportTypeToRouteCollectionResultsMap2 removeObjectForKey:v29];
 
-      v30 = [(RoutePlanningSession *)self routeLoadingController];
-      [v30 refreshRoutesForTransportType:[(RoutePlanningSession *)self currentTransportType]];
+      routeLoadingController = [(RoutePlanningSession *)self routeLoadingController];
+      [routeLoadingController refreshRoutesForTransportType:[(RoutePlanningSession *)self currentTransportType]];
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    v31 = [(RoutePlanningSession *)self configuration];
-    if ([v31 areInitialRoutesBeingFetchedExternally])
+    configuration3 = [(RoutePlanningSession *)self configuration];
+    if ([configuration3 areInitialRoutesBeingFetchedExternally])
     {
-      v32 = [(RoutePlanningSession *)self resolvedWaypointsResult];
-      v33 = v32 == 0;
+      resolvedWaypointsResult = [(RoutePlanningSession *)self resolvedWaypointsResult];
+      v33 = resolvedWaypointsResult == 0;
 
       if (v33)
       {
-        v30 = [(RoutePlanningSession *)self configuration];
-        [v30 setInitialRoutesBeingFetchedExternally:0];
+        routeLoadingController = [(RoutePlanningSession *)self configuration];
+        [routeLoadingController setInitialRoutesBeingFetchedExternally:0];
         goto LABEL_39;
       }
     }
@@ -2302,42 +2302,42 @@ LABEL_39:
     {
     }
 
-    v34 = [(RoutePlanningSession *)self resolvedWaypoints];
-    v35 = v34 == 0;
+    resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+    v35 = resolvedWaypoints == 0;
 
     if (v35)
     {
-      v36 = [(RoutePlanningSession *)self resolvedWaypointsResult];
-      if (v36 && (-[RoutePlanningSession resolvedWaypointsResult](self, "resolvedWaypointsResult"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 isSuccess], v37, v36, (v38 & 1) == 0))
+      resolvedWaypointsResult2 = [(RoutePlanningSession *)self resolvedWaypointsResult];
+      if (resolvedWaypointsResult2 && (-[RoutePlanningSession resolvedWaypointsResult](self, "resolvedWaypointsResult"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 isSuccess], v37, resolvedWaypointsResult2, (v38 & 1) == 0))
       {
         v39 = sub_100798A3C();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349056;
-          v56 = self;
+          selfCopy5 = self;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "[%{public}p] Previous attempt to fetch waypoints failed; trying again", buf, 0xCu);
         }
 
-        v30 = [(RoutePlanningSession *)self waypointController];
-        [v30 refresh];
+        routeLoadingController = [(RoutePlanningSession *)self waypointController];
+        [routeLoadingController refresh];
       }
 
       else
       {
-        v30 = sub_100798A3C();
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+        routeLoadingController = sub_100798A3C();
+        if (os_log_type_enabled(routeLoadingController, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349056;
-          v56 = self;
-          _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[%{public}p] Previous attempt to fetch waypoints is still in progress; waiting for it to finish", buf, 0xCu);
+          selfCopy5 = self;
+          _os_log_impl(&_mh_execute_header, routeLoadingController, OS_LOG_TYPE_DEFAULT, "[%{public}p] Previous attempt to fetch waypoints is still in progress; waiting for it to finish", buf, 0xCu);
         }
       }
     }
 
     else
     {
-      v30 = [(RoutePlanningSession *)self routeLoadingController];
-      [v30 refreshRoutesForTransportType:[(RoutePlanningSession *)self currentTransportType]];
+      routeLoadingController = [(RoutePlanningSession *)self routeLoadingController];
+      [routeLoadingController refreshRoutesForTransportType:[(RoutePlanningSession *)self currentTransportType]];
     }
 
     goto LABEL_39;
@@ -2347,7 +2347,7 @@ LABEL_39:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v56 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[%{public}p] No difference detected in transport type; ignoring request", buf, 0xCu);
   }
 
@@ -2355,7 +2355,7 @@ LABEL_41:
   os_activity_scope_leave(&state);
 }
 
-- (void)safelySetCurrentTransportType:(int64_t)a3
+- (void)safelySetCurrentTransportType:(int64_t)type
 {
   label = dispatch_queue_get_label(self->_isolationQueue);
   v6 = dispatch_queue_get_label(0);
@@ -2391,39 +2391,39 @@ LABEL_41:
     }
   }
 
-  v8 = [(RoutePlanningSession *)self isolationQueue];
+  isolationQueue = [(RoutePlanningSession *)self isolationQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100F6EE70;
   v13[3] = &unk_101661650;
   v13[4] = self;
-  v13[5] = a3;
-  dispatch_sync(v8, v13);
+  v13[5] = type;
+  dispatch_sync(isolationQueue, v13);
 }
 
-- (void)_notifyObserversDidUpdateRouteCollectionResult:(id)a3 forTransportType:(int64_t)a4
+- (void)_notifyObserversDidUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100F6EF18;
   block[3] = &unk_10165E668;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
+  resultCopy = result;
+  typeCopy = type;
+  v5 = resultCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateRouteCollectionResult:(id)a3 forTransportType:(int64_t)a4
+- (void)updateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v6 = a3;
-  if (!v6)
+  resultCopy = result;
+  if (!resultCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v26 = "[RoutePlanningSession updateRouteCollectionResult:forTransportType:]";
+      selfCopy2 = "[RoutePlanningSession updateRouteCollectionResult:forTransportType:]";
       v27 = 2080;
       v28 = "RoutePlanningSession.m";
       v29 = 1024;
@@ -2440,7 +2440,7 @@ LABEL_41:
       {
         v19 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v26 = v19;
+        selfCopy2 = v19;
         v20 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
@@ -2450,25 +2450,25 @@ LABEL_41:
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
-  v7 = [(RoutePlanningSession *)self sessionInitiator];
+  sessionInitiator = [(RoutePlanningSession *)self sessionInitiator];
   v8 = sub_100798A3C();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 6)
+  if (sessionInitiator == 6)
   {
     if (v9)
     {
-      if ((a4 - 1) > 4)
+      if ((type - 1) > 4)
       {
         v10 = @"Undefined";
       }
 
       else
       {
-        v10 = off_10165E8C8[a4 - 1];
+        v10 = off_10165E8C8[type - 1];
       }
 
       *buf = 134349314;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2112;
       v28 = v10;
       v12 = "[%{public}p] Updating route collection for transport type:(%@)";
@@ -2481,20 +2481,20 @@ LABEL_13:
 
   else if (v9)
   {
-    if ((a4 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v11 = @"Undefined";
     }
 
     else
     {
-      v11 = off_10165E8C8[a4 - 1];
+      v11 = off_10165E8C8[type - 1];
     }
 
     *buf = 134349571;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2113;
-    v28 = v6;
+    v28 = resultCopy;
     v29 = 2112;
     v30[0] = v11;
     v12 = "[%{public}p] Updating route collection result:(%{private}@) for transport type:(%@)";
@@ -2503,25 +2503,25 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v15 = [(RoutePlanningSession *)self isolationQueue];
+  isolationQueue = [(RoutePlanningSession *)self isolationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100F6F2CC;
   block[3] = &unk_10165E668;
-  v22 = v6;
-  v23 = a4;
+  v22 = resultCopy;
+  typeCopy = type;
   block[4] = self;
-  v16 = v6;
-  dispatch_async(v15, block);
+  v16 = resultCopy;
+  dispatch_async(isolationQueue, block);
 
   os_activity_scope_leave(&state);
 }
 
 - (int64_t)navigationTypeForCurrentRoute
 {
-  v2 = [(RoutePlanningSession *)self currentRouteCollection];
-  v3 = [v2 currentRoute];
-  v4 = [v3 suggestedNavigationModeForLocation:0 context:0];
+  currentRouteCollection = [(RoutePlanningSession *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
+  v4 = [currentRoute suggestedNavigationModeForLocation:0 context:0];
 
   v5 = 4;
   if (v4 == 2)
@@ -2548,13 +2548,13 @@ LABEL_13:
   v9 = sub_100F69EB0;
   v10 = sub_100F69EC0;
   v11 = 0;
-  v2 = [(RoutePlanningSession *)self currentRouteCollectionResult];
+  currentRouteCollectionResult = [(RoutePlanningSession *)self currentRouteCollectionResult];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100F6F4F8;
   v5[3] = &unk_10165E5B8;
   v5[4] = &v6;
-  [v2 withValue:v5 orError:&stru_10165E640];
+  [currentRouteCollectionResult withValue:v5 orError:&stru_10165E640];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2564,9 +2564,9 @@ LABEL_13:
 
 - (Result)currentRouteCollectionResult
 {
-  v3 = [(RoutePlanningSession *)self currentTransportType];
+  currentTransportType = [(RoutePlanningSession *)self currentTransportType];
 
-  return [(RoutePlanningSession *)self routeCollectionResultForTransportType:v3];
+  return [(RoutePlanningSession *)self routeCollectionResultForTransportType:currentTransportType];
 }
 
 - (WaypointSet)resolvedWaypoints
@@ -2577,13 +2577,13 @@ LABEL_13:
   v9 = sub_100F69EB0;
   v10 = sub_100F69EC0;
   v11 = 0;
-  v2 = [(RoutePlanningSession *)self resolvedWaypointsResult];
+  resolvedWaypointsResult = [(RoutePlanningSession *)self resolvedWaypointsResult];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100F6F660;
   v5[3] = &unk_10165E600;
   v5[4] = &v6;
-  [v2 withValue:v5 orError:&stru_10165E620];
+  [resolvedWaypointsResult withValue:v5 orError:&stru_10165E620];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2593,24 +2593,24 @@ LABEL_13:
 
 - (Result)resolvedWaypointsResult
 {
-  v2 = [(RoutePlanningSession *)self waypointController];
-  v3 = [v2 resolvedWaypointSetResult];
+  waypointController = [(RoutePlanningSession *)self waypointController];
+  resolvedWaypointSetResult = [waypointController resolvedWaypointSetResult];
 
-  return v3;
+  return resolvedWaypointSetResult;
 }
 
 - (NSDictionary)waypointRequestResults
 {
-  v2 = [(RoutePlanningSession *)self waypointController];
-  v3 = [v2 waypointRequestResults];
+  waypointController = [(RoutePlanningSession *)self waypointController];
+  waypointRequestResults = [waypointController waypointRequestResults];
 
-  return v3;
+  return waypointRequestResults;
 }
 
-- (void)purgeRouteCollectionForTransportType:(int64_t)a3
+- (void)purgeRouteCollectionForTransportType:(int64_t)type
 {
-  v5 = [(RoutePlanningSession *)self isolationQueue];
-  label = dispatch_queue_get_label(v5);
+  isolationQueue = [(RoutePlanningSession *)self isolationQueue];
+  label = dispatch_queue_get_label(isolationQueue);
   v7 = dispatch_queue_get_label(0);
   if (label == v7)
   {
@@ -2619,7 +2619,7 @@ LABEL_7:
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(RoutePlanningSession *)self isolationQueue];
+      isolationQueue2 = [(RoutePlanningSession *)self isolationQueue];
       *buf = 136316162;
       v15 = "[RoutePlanningSession purgeRouteCollectionForTransportType:]";
       v16 = 2080;
@@ -2629,19 +2629,19 @@ LABEL_7:
       v20 = 2080;
       v21 = "self.isolationQueue";
       v22 = 2080;
-      v23 = dispatch_queue_get_label(v10);
+      v23 = dispatch_queue_get_label(isolationQueue2);
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion not on queue failed: %s/%s", buf, 0x30u);
     }
 
     if (sub_100E03634())
     {
-      v5 = sub_10006D178();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      isolationQueue = sub_10006D178();
+      if (os_log_type_enabled(isolationQueue, OS_LOG_TYPE_ERROR))
       {
         v11 = +[NSThread callStackSymbols];
         *buf = 138412290;
         v15 = v11;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, isolationQueue, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       goto LABEL_12;
@@ -2665,17 +2665,17 @@ LABEL_12:
   }
 
 LABEL_13:
-  v12 = [(RoutePlanningSession *)self isolationQueue];
+  isolationQueue3 = [(RoutePlanningSession *)self isolationQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100F6F938;
   v13[3] = &unk_101661650;
   v13[4] = self;
-  v13[5] = a3;
-  dispatch_sync(v12, v13);
+  v13[5] = type;
+  dispatch_sync(isolationQueue3, v13);
 }
 
-- (id)routeCollectionForTransportType:(int64_t)a3
+- (id)routeCollectionForTransportType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -2683,7 +2683,7 @@ LABEL_13:
   v10 = sub_100F69EB0;
   v11 = sub_100F69EC0;
   v12 = 0;
-  v3 = [(RoutePlanningSession *)self routeCollectionResultForTransportType:a3];
+  v3 = [(RoutePlanningSession *)self routeCollectionResultForTransportType:type];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100F6FAC4;
@@ -2697,10 +2697,10 @@ LABEL_13:
   return v4;
 }
 
-- (id)routeCollectionResultForTransportType:(int64_t)a3
+- (id)routeCollectionResultForTransportType:(int64_t)type
 {
-  v5 = [(RoutePlanningSession *)self configuration];
-  v6 = [v5 hasTransportType:a3];
+  configuration = [(RoutePlanningSession *)self configuration];
+  v6 = [configuration hasTransportType:type];
 
   if (v6)
   {
@@ -2710,20 +2710,20 @@ LABEL_13:
     v15 = sub_100F69EB0;
     v16 = sub_100F69EC0;
     v17 = 0;
-    v7 = [(RoutePlanningSession *)self resolvedWaypointsResult];
+    resolvedWaypointsResult = [(RoutePlanningSession *)self resolvedWaypointsResult];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100F6FC6C;
     v11[3] = &unk_10165E568;
     v11[4] = self;
     v11[5] = &v12;
-    v11[6] = a3;
+    v11[6] = type;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100F6FD04;
     v10[3] = &unk_10165E590;
     v10[4] = &v12;
-    [v7 withValue:v11 orError:v10];
+    [resolvedWaypointsResult withValue:v11 orError:v10];
 
     v8 = v13[5];
     _Block_object_dispose(&v12, 8);
@@ -2739,16 +2739,16 @@ LABEL_13:
 
 - (NSString)destinationName
 {
-  v3 = [(RoutePlanningSession *)self configuration];
-  v4 = [v3 waypointRequests];
+  configuration = [(RoutePlanningSession *)self configuration];
+  waypointRequests = [configuration waypointRequests];
 
-  v5 = [(RoutePlanningSession *)self resolvedWaypoints];
-  v6 = [(RoutePlanningSession *)self currentTransportType];
-  if (v6 > 1)
+  resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+  currentTransportType = [(RoutePlanningSession *)self currentTransportType];
+  if (currentTransportType > 1)
   {
-    if (v6 != 2)
+    if (currentTransportType != 2)
     {
-      if (v6 == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
+      if (currentTransportType == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
       {
         goto LABEL_14;
       }
@@ -2759,9 +2759,9 @@ LABEL_13:
 
   else
   {
-    if (v6)
+    if (currentTransportType)
     {
-      if (v6 == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
+      if (currentTransportType == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
       {
         goto LABEL_14;
       }
@@ -2778,23 +2778,23 @@ LABEL_13:
   if (MapsFeature_IsEnabled_Maps182())
   {
 LABEL_14:
-    v7 = [(RoutePlanningSession *)self configuration];
-    v8 = [v7 destinationWaypointRequest];
-    v9 = [v5 destination];
-    v10 = [v8 nameWithResolvedWaypoint:v9 allowCurrentLocation:0];
+    configuration2 = [(RoutePlanningSession *)self configuration];
+    destinationWaypointRequest = [configuration2 destinationWaypointRequest];
+    destination = [resolvedWaypoints destination];
+    v10 = [destinationWaypointRequest nameWithResolvedWaypoint:destination allowCurrentLocation:0];
 
     goto LABEL_16;
   }
 
 LABEL_13:
-  if ([v4 count] <= 2)
+  if ([waypointRequests count] <= 2)
   {
     goto LABEL_14;
   }
 
-  v7 = [v4 objectAtIndexedSubscript:1];
-  v8 = [v5 waypointAtIndex:1];
-  v10 = [v7 nameWithResolvedWaypoint:v8 allowCurrentLocation:0];
+  configuration2 = [waypointRequests objectAtIndexedSubscript:1];
+  destinationWaypointRequest = [resolvedWaypoints waypointAtIndex:1];
+  v10 = [configuration2 nameWithResolvedWaypoint:destinationWaypointRequest allowCurrentLocation:0];
 LABEL_16:
 
   return v10;
@@ -2802,11 +2802,11 @@ LABEL_16:
 
 - (NSString)originName
 {
-  v3 = [(RoutePlanningSession *)self configuration];
-  v4 = [v3 originWaypointRequest];
-  v5 = [(RoutePlanningSession *)self resolvedWaypoints];
-  v6 = [v5 origin];
-  v7 = [v4 nameWithResolvedWaypoint:v6 allowCurrentLocation:1];
+  configuration = [(RoutePlanningSession *)self configuration];
+  originWaypointRequest = [configuration originWaypointRequest];
+  resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+  origin = [resolvedWaypoints origin];
+  v7 = [originWaypointRequest nameWithResolvedWaypoint:origin allowCurrentLocation:1];
 
   return v7;
 }
@@ -2816,15 +2816,15 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = RoutePlanningSession;
   v3 = [(RoutePlanningSession *)&v8 description];
-  v4 = [(RoutePlanningSession *)self sessionInitiator];
-  if (v4 - 1 > 7)
+  sessionInitiator = [(RoutePlanningSession *)self sessionInitiator];
+  if (sessionInitiator - 1 > 7)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_10165E888[v4 - 1];
+    v5 = off_10165E888[sessionInitiator - 1];
   }
 
   v6 = [NSString stringWithFormat:@"%@: initiator: %@", v3, v5];
@@ -2870,7 +2870,7 @@ LABEL_16:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -2880,10 +2880,10 @@ LABEL_16:
   [(RoutePlanningSession *)&v5 dealloc];
 }
 
-- (RoutePlanningSession)initWithInitiator:(unint64_t)a3 configuration:(id)a4
+- (RoutePlanningSession)initWithInitiator:(unint64_t)initiator configuration:(id)configuration
 {
-  v7 = a4;
-  if (!v7)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v47 = sub_10006D178();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -2930,14 +2930,14 @@ LABEL_16:
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = v13;
-      if (a3 - 1 > 7)
+      if (initiator - 1 > 7)
       {
         v15 = @"Unknown";
       }
 
       else
       {
-        v15 = off_10165E888[a3 - 1];
+        v15 = off_10165E888[initiator - 1];
       }
 
       *buf = 134349826;
@@ -2947,36 +2947,36 @@ LABEL_16:
       v61 = 2112;
       *v62 = v15;
       *&v62[8] = 2112;
-      *&v62[10] = v7;
+      *&v62[10] = configurationCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}p] %@ is being initialized: initiator=%@ configuration=%@", buf, 0x2Au);
     }
 
-    *(v8 + 4) = a3;
-    objc_storeStrong(v8 + 7, a4);
-    *(v8 + 26) = [v7 ignoreMapType];
-    if (v7)
+    *(v8 + 4) = initiator;
+    objc_storeStrong(v8 + 7, configuration);
+    *(v8 + 26) = [configurationCopy ignoreMapType];
+    if (configurationCopy)
     {
-      v16 = [v7 initialTransportType];
+      initialTransportType = [configurationCopy initialTransportType];
     }
 
     else
     {
-      v16 = 0;
+      initialTransportType = 0;
     }
 
-    *(v8 + 11) = v16;
+    *(v8 + 11) = initialTransportType;
     v17 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___RoutePlanningSessionObserver queue:0];
     v18 = *(v8 + 13);
     *(v8 + 13) = v17;
 
     v19 = +[NSBundle mainBundle];
-    v20 = [v19 bundleIdentifier];
-    v21 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", v20, objc_opt_class(), v8];
+    bundleIdentifier = [v19 bundleIdentifier];
+    v21 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", bundleIdentifier, objc_opt_class(), v8];
 
     v22 = v21;
-    v23 = [v21 UTF8String];
+    uTF8String = [v21 UTF8String];
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v25 = dispatch_queue_create(v23, v24);
+    v25 = dispatch_queue_create(uTF8String, v24);
     v26 = *(v8 + 16);
     *(v8 + 16) = v25;
 
@@ -2989,8 +2989,8 @@ LABEL_16:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v30 = [v7 waypointRequests];
-    v31 = [v30 countByEnumeratingWithState:&v50 objects:v56 count:16];
+    waypointRequests = [configurationCopy waypointRequests];
+    v31 = [waypointRequests countByEnumeratingWithState:&v50 objects:v56 count:16];
     if (v31)
     {
       v32 = *v51;
@@ -3000,22 +3000,22 @@ LABEL_16:
         {
           if (*v51 != v32)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(waypointRequests);
           }
 
-          v34 = [*(*(&v50 + 1) + 8 * i) waypointRequest];
-          [v29 addObject:v34];
+          waypointRequest = [*(*(&v50 + 1) + 8 * i) waypointRequest];
+          [v29 addObject:waypointRequest];
         }
 
-        v31 = [v30 countByEnumeratingWithState:&v50 objects:v56 count:16];
+        v31 = [waypointRequests countByEnumeratingWithState:&v50 objects:v56 count:16];
       }
 
       while (v31);
     }
 
     v35 = [WaypointControllerConfiguration alloc];
-    v36 = [v7 traits];
-    v37 = [(WaypointControllerConfiguration *)v35 initWithRequests:v29 traits:v36];
+    traits = [configurationCopy traits];
+    v37 = [(WaypointControllerConfiguration *)v35 initWithRequests:v29 traits:traits];
     v38 = *(v8 + 6);
     *(v8 + 6) = v37;
 
@@ -3034,8 +3034,8 @@ LABEL_16:
       [*(v8 + 8) startRecording];
     }
 
-    v44 = [v7 shortcutIdentifier];
-    [v8 setShortcutIdentifier:v44];
+    shortcutIdentifier = [configurationCopy shortcutIdentifier];
+    [v8 setShortcutIdentifier:shortcutIdentifier];
 
     v45 = &_dispatch_main_q;
     _GEOConfigAddDelegateListenerForKey();
@@ -3046,26 +3046,26 @@ LABEL_16:
   return v8;
 }
 
-- (void)enumerateRequestsOrWaypointsUsingBlock:(id)a3
+- (void)enumerateRequestsOrWaypointsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(RoutePlanningSession *)self currentRouteCollection];
-  v6 = [v5 currentRoute];
-  if (v6)
+  blockCopy = block;
+  currentRouteCollection = [(RoutePlanningSession *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
+  if (currentRoute)
   {
-    v7 = [v5 currentRoute];
-    v8 = [v7 waypoints];
+    currentRoute2 = [currentRouteCollection currentRoute];
+    waypoints = [currentRoute2 waypoints];
   }
 
   else
   {
-    v8 = 0;
+    waypoints = 0;
   }
 
-  if ([v8 count])
+  if ([waypoints count])
   {
-    v9 = [(RoutePlanningSession *)self configuration];
-    v10 = [v9 waypointRequests];
+    configuration = [(RoutePlanningSession *)self configuration];
+    waypointRequests = [configuration waypointRequests];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -3076,24 +3076,24 @@ LABEL_16:
     v26[2] = sub_100FC7D54;
     v26[3] = &unk_101660258;
     v29 = buf;
-    v11 = v10;
+    v11 = waypointRequests;
     v27 = v11;
-    v28 = v4;
-    [v8 enumerateObjectsUsingBlock:v26];
+    v28 = blockCopy;
+    [waypoints enumerateObjectsUsingBlock:v26];
 
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    v12 = [(RoutePlanningSession *)self resolvedWaypoints];
-    v13 = v12;
-    if (v12)
+    resolvedWaypoints = [(RoutePlanningSession *)self resolvedWaypoints];
+    v13 = resolvedWaypoints;
+    if (resolvedWaypoints)
     {
-      v14 = [v12 count];
-      v15 = [(RoutePlanningSession *)self configuration];
-      v16 = [v15 waypointRequests];
-      v17 = [v16 count];
+      v14 = [resolvedWaypoints count];
+      configuration2 = [(RoutePlanningSession *)self configuration];
+      waypointRequests2 = [configuration2 waypointRequests];
+      v17 = [waypointRequests2 count];
 
       if (v14 != v17)
       {
@@ -3125,26 +3125,26 @@ LABEL_16:
       }
     }
 
-    v21 = [(RoutePlanningSession *)self configuration];
-    v22 = [v21 waypointRequests];
+    configuration3 = [(RoutePlanningSession *)self configuration];
+    waypointRequests3 = [configuration3 waypointRequests];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100FC7F3C;
     v23[3] = &unk_101660280;
     v24 = v13;
-    v25 = v4;
+    v25 = blockCopy;
     v11 = v13;
-    [v22 enumerateObjectsUsingBlock:v23];
+    [waypointRequests3 enumerateObjectsUsingBlock:v23];
   }
 }
 
-+ (id)mostAppropriateNameForWaypointWithRequest:(id)a3 composedWaypoint:(id)a4
++ (id)mostAppropriateNameForWaypointWithRequest:(id)request composedWaypoint:(id)waypoint
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  requestCopy = request;
+  waypointCopy = waypoint;
+  if (requestCopy | waypointCopy)
   {
-    if (v5 && [v5 preferredNameSource] != 1)
+    if (requestCopy && [requestCopy preferredNameSource] != 1)
     {
       goto LABEL_8;
     }
@@ -3182,31 +3182,31 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v6)
+    if (waypointCopy)
     {
-      v8 = [[SearchResult alloc] initWithComposedWaypoint:v6];
-      v7 = [(SearchResult *)v8 name];
+      v8 = [[SearchResult alloc] initWithComposedWaypoint:waypointCopy];
+      name = [(SearchResult *)v8 name];
 
       goto LABEL_9;
     }
 
 LABEL_8:
-    v7 = 0;
+    name = 0;
     goto LABEL_9;
   }
 
-  v7 = [v6 name];
+  name = [waypointCopy name];
 LABEL_9:
-  v9 = [v7 length];
-  if (v5 && !v9)
+  v9 = [name length];
+  if (requestCopy && !v9)
   {
-    v10 = [v5 waypointPlaceholder];
-    v11 = [v10 name];
+    waypointPlaceholder = [requestCopy waypointPlaceholder];
+    name2 = [waypointPlaceholder name];
 
-    v7 = v11;
+    name = name2;
   }
 
-  return v7;
+  return name;
 }
 
 @end

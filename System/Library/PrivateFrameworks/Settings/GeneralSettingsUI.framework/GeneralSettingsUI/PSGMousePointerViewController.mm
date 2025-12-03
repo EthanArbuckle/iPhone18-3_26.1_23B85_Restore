@@ -1,19 +1,19 @@
 @interface PSGMousePointerViewController
 - (PSGMousePointerViewController)init;
-- (id)naturalScrolling:(id)a3;
-- (id)secondaryClick:(id)a3;
+- (id)naturalScrolling:(id)scrolling;
+- (id)secondaryClick:(id)click;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tapToClick:(id)a3;
-- (id)trackingSpeed:(id)a3;
-- (id)twoFingerSecondaryClick:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tapToClick:(id)click;
+- (id)trackingSpeed:(id)speed;
+- (id)twoFingerSecondaryClick:(id)click;
 - (void)dealloc;
 - (void)pointerDevicesDidChange;
-- (void)setNaturalScrolling:(id)a3 specifier:(id)a4;
-- (void)setSecondaryClick:(id)a3 specifier:(id)a4;
-- (void)setTapToClick:(id)a3 specifier:(id)a4;
-- (void)setTrackingSpeed:(id)a3 specifier:(id)a4;
-- (void)setTwoFingerSecondaryClick:(id)a3 specifier:(id)a4;
+- (void)setNaturalScrolling:(id)scrolling specifier:(id)specifier;
+- (void)setSecondaryClick:(id)click specifier:(id)specifier;
+- (void)setTapToClick:(id)click specifier:(id)specifier;
+- (void)setTrackingSpeed:(id)speed specifier:(id)specifier;
+- (void)setTwoFingerSecondaryClick:(id)click specifier:(id)specifier;
 @end
 
 @implementation PSGMousePointerViewController
@@ -25,8 +25,8 @@
   v2 = [(PSGMousePointerViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_pointerDevicesDidChange name:PSGPointerDevicesDidChangeNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_pointerDevicesDidChange name:PSGPointerDevicesDidChangeNotification object:0];
   }
 
   return v2;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSGMousePointerViewController;
@@ -45,8 +45,8 @@
 - (void)pointerDevicesDidChange
 {
   v3 = +[PSGMousePointerController sharedInstance];
-  v4 = [v3 pointerDevices];
-  v5 = [v4 count];
+  pointerDevices = [v3 pointerDevices];
+  v5 = [pointerDevices count];
 
   if (v5)
   {
@@ -56,8 +56,8 @@
 
   else
   {
-    v7 = [(PSGMousePointerViewController *)self navigationController];
-    v6 = [v7 popViewControllerAnimated:1];
+    navigationController = [(PSGMousePointerViewController *)self navigationController];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -69,9 +69,9 @@
   if (!v4)
   {
     v5 = +[PSGMousePointerController sharedInstance];
-    v6 = [v5 hasMouse];
+    hasMouse = [v5 hasMouse];
 
-    if (v6)
+    if (hasMouse)
     {
       v7 = PSG_LocalizedStringForPointers(@"TRACKPAD_MOUSE");
       [(PSGMousePointerViewController *)self setTitle:v7];
@@ -155,15 +155,15 @@
     }
 
     v35 = +[PSGMousePointerController sharedInstance];
-    v36 = [v35 hasMouse];
+    hasMouse2 = [v35 hasMouse];
 
-    if (v36)
+    if (hasMouse2)
     {
       v37 = +[PSGMousePointerController sharedInstance];
-      v38 = [v37 hasMagicMouse];
+      hasMagicMouse = [v37 hasMagicMouse];
 
       v39 = MEMORY[0x277D3FAD8];
-      if (v38)
+      if (hasMagicMouse)
       {
         v40 = @"MAGIC_MOUSE";
       }
@@ -183,7 +183,7 @@
       v45 = [v43 preferenceSpecifierNamed:v44 target:self set:sel_setSecondaryClick_specifier_ get:sel_secondaryClick_ detail:objc_opt_class() cell:2 edit:0];
 
       [v45 setIdentifier:@"SECONDARY_CLICK"];
-      if (v38)
+      if (hasMagicMouse)
       {
         v46 = PSG_LocalizedStringForPointers(@"SECONDARY_CLICK_OFF");
         v60[0] = v46;
@@ -221,29 +221,29 @@
   return v4;
 }
 
-- (void)setSecondaryClick:(id)a3 specifier:(id)a4
+- (void)setSecondaryClick:(id)click specifier:(id)specifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clickCopy = click;
   v5 = +[PSGMousePointerController sharedInstance];
-  v6 = [v5 globalDevicePreferences];
+  globalDevicePreferences = [v5 globalDevicePreferences];
 
   v7 = +[PSGMousePointerController sharedInstance];
-  v8 = [v7 hasMagicMouse];
+  hasMagicMouse = [v7 hasMagicMouse];
 
-  v9 = [v4 intValue];
-  if (v8)
+  intValue = [clickCopy intValue];
+  if (hasMagicMouse)
   {
-    [v6 setButtonConfigurationForVirtualButtonMice:v9];
+    [globalDevicePreferences setButtonConfigurationForVirtualButtonMice:intValue];
   }
 
   else
   {
-    [v6 setButtonConfigurationForHardwareButtonMice:v9];
+    [globalDevicePreferences setButtonConfigurationForHardwareButtonMice:intValue];
   }
 
   v10 = +[PSGMousePointerController sharedInstance];
-  [v10 setGlobalDevicePreferences:v6];
+  [v10 setGlobalDevicePreferences:globalDevicePreferences];
 
   v11 = _PSGLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -251,36 +251,36 @@
     v13 = 136315650;
     v14 = "[PSGMousePointerViewController setSecondaryClick:specifier:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = clickCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = globalDevicePreferences;
     _os_log_impl(&dword_21CF20000, v11, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)secondaryClick:(id)a3
+- (id)secondaryClick:(id)click
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[PSGMousePointerController sharedInstance];
-  v4 = [v3 hasMagicMouse];
+  hasMagicMouse = [v3 hasMagicMouse];
 
   v5 = MEMORY[0x277CCABB0];
   v6 = +[PSGMousePointerController sharedInstance];
-  v7 = [v6 globalDevicePreferences];
-  v8 = v7;
-  if (v4)
+  globalDevicePreferences = [v6 globalDevicePreferences];
+  v8 = globalDevicePreferences;
+  if (hasMagicMouse)
   {
-    v9 = [v7 buttonConfigurationForVirtualButtonMice];
+    buttonConfigurationForVirtualButtonMice = [globalDevicePreferences buttonConfigurationForVirtualButtonMice];
   }
 
   else
   {
-    v9 = [v7 buttonConfigurationForHardwareButtonMice];
+    buttonConfigurationForVirtualButtonMice = [globalDevicePreferences buttonConfigurationForHardwareButtonMice];
   }
 
-  v10 = [v5 numberWithInteger:v9];
+  v10 = [v5 numberWithInteger:buttonConfigurationForVirtualButtonMice];
 
   v11 = _PSGLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -297,12 +297,12 @@
   return v10;
 }
 
-- (void)setTrackingSpeed:(id)a3 specifier:(id)a4
+- (void)setTrackingSpeed:(id)speed specifier:(id)specifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  speedCopy = speed;
   v5 = +[PSGMousePointerController sharedInstance];
-  [v5 setTrackingSpeedIndex:{objc_msgSend(v4, "intValue")}];
+  [v5 setTrackingSpeedIndex:{objc_msgSend(speedCopy, "intValue")}];
 
   v6 = _PSGLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -310,14 +310,14 @@
     v8 = 136315394;
     v9 = "[PSGMousePointerViewController setTrackingSpeed:specifier:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = speedCopy;
     _os_log_impl(&dword_21CF20000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)trackingSpeed:(id)a3
+- (id)trackingSpeed:(id)speed
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
@@ -339,16 +339,16 @@
   return v5;
 }
 
-- (void)setTapToClick:(id)a3 specifier:(id)a4
+- (void)setTapToClick:(id)click specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clickCopy = click;
   v5 = +[PSGMousePointerController sharedInstance];
-  v6 = [v5 globalDevicePreferences];
+  globalDevicePreferences = [v5 globalDevicePreferences];
 
-  [v6 setEnableTapToClick:{objc_msgSend(v4, "BOOLValue")}];
+  [globalDevicePreferences setEnableTapToClick:{objc_msgSend(clickCopy, "BOOLValue")}];
   v7 = +[PSGMousePointerController sharedInstance];
-  [v7 setGlobalDevicePreferences:v6];
+  [v7 setGlobalDevicePreferences:globalDevicePreferences];
 
   v8 = _PSGLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -356,22 +356,22 @@
     v10 = 136315650;
     v11 = "[PSGMousePointerViewController setTapToClick:specifier:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = clickCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = globalDevicePreferences;
     _os_log_impl(&dword_21CF20000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tapToClick:(id)a3
+- (id)tapToClick:(id)click
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
   v4 = +[PSGMousePointerController sharedInstance];
-  v5 = [v4 globalDevicePreferences];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "enableTapToClick")}];
+  globalDevicePreferences = [v4 globalDevicePreferences];
+  v6 = [v3 numberWithBool:{objc_msgSend(globalDevicePreferences, "enableTapToClick")}];
 
   v7 = _PSGLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -388,16 +388,16 @@
   return v6;
 }
 
-- (void)setTwoFingerSecondaryClick:(id)a3 specifier:(id)a4
+- (void)setTwoFingerSecondaryClick:(id)click specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clickCopy = click;
   v5 = +[PSGMousePointerController sharedInstance];
-  v6 = [v5 globalDevicePreferences];
+  globalDevicePreferences = [v5 globalDevicePreferences];
 
-  [v6 setEnableTwoFingerSecondaryClick:{objc_msgSend(v4, "BOOLValue")}];
+  [globalDevicePreferences setEnableTwoFingerSecondaryClick:{objc_msgSend(clickCopy, "BOOLValue")}];
   v7 = +[PSGMousePointerController sharedInstance];
-  [v7 setGlobalDevicePreferences:v6];
+  [v7 setGlobalDevicePreferences:globalDevicePreferences];
 
   v8 = _PSGLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -405,22 +405,22 @@
     v10 = 136315650;
     v11 = "[PSGMousePointerViewController setTwoFingerSecondaryClick:specifier:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = clickCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = globalDevicePreferences;
     _os_log_impl(&dword_21CF20000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)twoFingerSecondaryClick:(id)a3
+- (id)twoFingerSecondaryClick:(id)click
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
   v4 = +[PSGMousePointerController sharedInstance];
-  v5 = [v4 globalDevicePreferences];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "enableTwoFingerSecondaryClick")}];
+  globalDevicePreferences = [v4 globalDevicePreferences];
+  v6 = [v3 numberWithBool:{objc_msgSend(globalDevicePreferences, "enableTwoFingerSecondaryClick")}];
 
   v7 = _PSGLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -437,16 +437,16 @@
   return v6;
 }
 
-- (void)setNaturalScrolling:(id)a3 specifier:(id)a4
+- (void)setNaturalScrolling:(id)scrolling specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scrollingCopy = scrolling;
   v5 = +[PSGMousePointerController sharedInstance];
-  v6 = [v5 globalDevicePreferences];
+  globalDevicePreferences = [v5 globalDevicePreferences];
 
-  [v6 setEnableNaturalScrolling:{objc_msgSend(v4, "BOOLValue")}];
+  [globalDevicePreferences setEnableNaturalScrolling:{objc_msgSend(scrollingCopy, "BOOLValue")}];
   v7 = +[PSGMousePointerController sharedInstance];
-  [v7 setGlobalDevicePreferences:v6];
+  [v7 setGlobalDevicePreferences:globalDevicePreferences];
 
   v8 = _PSGLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -454,22 +454,22 @@
     v10 = 136315650;
     v11 = "[PSGMousePointerViewController setNaturalScrolling:specifier:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = scrollingCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = globalDevicePreferences;
     _os_log_impl(&dword_21CF20000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)naturalScrolling:(id)a3
+- (id)naturalScrolling:(id)scrolling
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
   v4 = +[PSGMousePointerController sharedInstance];
-  v5 = [v4 globalDevicePreferences];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "enableNaturalScrolling")}];
+  globalDevicePreferences = [v4 globalDevicePreferences];
+  v6 = [v3 numberWithBool:{objc_msgSend(globalDevicePreferences, "enableNaturalScrolling")}];
 
   v7 = _PSGLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -486,28 +486,28 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v20.receiver = self;
   v20.super_class = PSGMousePointerViewController;
-  v6 = a4;
-  v7 = [(PSGMousePointerViewController *)&v20 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(PSGMousePointerViewController *)self indexForIndexPath:v6, v20.receiver, v20.super_class];
+  pathCopy = path;
+  v7 = [(PSGMousePointerViewController *)&v20 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(PSGMousePointerViewController *)self indexForIndexPath:pathCopy, v20.receiver, v20.super_class];
 
   v9 = [(PSGMousePointerViewController *)self specifierAtIndex:v8];
-  v10 = [v9 identifier];
-  LODWORD(v6) = [v10 isEqualToString:@"TRACKING_SPEED"];
+  identifier = [v9 identifier];
+  LODWORD(pathCopy) = [identifier isEqualToString:@"TRACKING_SPEED"];
 
-  if (v6)
+  if (pathCopy)
   {
     v11 = v7;
-    v12 = [v11 control];
-    v13 = [MEMORY[0x277D3FA48] appearance];
-    v14 = [v13 segmentedSliderTrackColor];
+    control = [v11 control];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    segmentedSliderTrackColor = [appearance segmentedSliderTrackColor];
 
-    if (v14)
+    if (segmentedSliderTrackColor)
     {
-      v15 = [v11 _accessibilityHigherContrastTintColorForColor:v14];
+      v15 = [v11 _accessibilityHigherContrastTintColorForColor:segmentedSliderTrackColor];
     }
 
     else
@@ -516,11 +516,11 @@
       v15 = [v11 _accessibilityHigherContrastTintColorForColor:v16];
     }
 
-    v17 = [v12 _minValueView];
-    [v17 setTintColor:v15];
+    _minValueView = [control _minValueView];
+    [_minValueView setTintColor:v15];
 
-    v18 = [v12 _maxValueView];
-    [v18 setTintColor:v15];
+    _maxValueView = [control _maxValueView];
+    [_maxValueView setTintColor:v15];
   }
 
   return v7;

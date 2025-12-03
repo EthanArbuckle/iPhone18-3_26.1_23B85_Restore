@@ -1,13 +1,13 @@
 @interface MPCModelRadioPlaybackContext
 - (MPCContinueListeningRadioQueueProviding)continueListeningQueueProvider;
 - (MPCModelRadioPlaybackContext)init;
-- (MPCModelRadioPlaybackContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPCModelRadioPlaybackContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionComponents;
-- (id)getSharedListeningTracklistWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)a3;
-- (void)setUserIdentity:(id)a3;
+- (id)getSharedListeningTracklistWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)completion;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation MPCModelRadioPlaybackContext
@@ -19,16 +19,16 @@
   return WeakRetained;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v4 = [MEMORY[0x1E69E4680] activeAccount];
+    identityCopy = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  v7 = v4;
-  v5 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:v4];
+  v7 = identityCopy;
+  v5 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:identityCopy];
   playbackRequestEnvironment = self->_playbackRequestEnvironment;
   self->_playbackRequestEnvironment = v5;
 }
@@ -37,11 +37,11 @@
 {
   v14.receiver = self;
   v14.super_class = MPCModelRadioPlaybackContext;
-  v3 = [(MPCModelRadioPlaybackContext *)&v14 descriptionComponents];
-  v4 = [v3 mutableCopy];
+  descriptionComponents = [(MPCModelRadioPlaybackContext *)&v14 descriptionComponents];
+  v4 = [descriptionComponents mutableCopy];
 
-  v5 = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
-  [v4 setObject:v5 forKeyedSubscript:@"playbackRequestEnvironment"];
+  playbackRequestEnvironment = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
+  [v4 setObject:playbackRequestEnvironment forKeyedSubscript:@"playbackRequestEnvironment"];
 
   [v4 removeObjectForKey:@"repeat/shuffle"];
   [v4 removeObjectForKey:@"queueEndAction"];
@@ -58,7 +58,7 @@
     v10 = __53__MPCModelRadioPlaybackContext_descriptionComponents__block_invoke;
     v11 = &unk_1E82392C0;
     v12 = v4;
-    v13 = self;
+    selfCopy = self;
     [v6 performWithoutEnforcement:&v8];
   }
 
@@ -167,80 +167,80 @@ LABEL_22:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = MPCModelRadioPlaybackContext;
-  v4 = [(MPCModelRadioPlaybackContext *)&v13 copyWithZone:a3];
-  v5 = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
-  [v4 setPlaybackRequestEnvironment:v5];
+  v4 = [(MPCModelRadioPlaybackContext *)&v13 copyWithZone:zone];
+  playbackRequestEnvironment = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
+  [v4 setPlaybackRequestEnvironment:playbackRequestEnvironment];
 
-  v6 = [(MPCModelRadioPlaybackContext *)self nowPlayingContentReference];
-  [v4 setNowPlayingContentReference:v6];
+  nowPlayingContentReference = [(MPCModelRadioPlaybackContext *)self nowPlayingContentReference];
+  [v4 setNowPlayingContentReference:nowPlayingContentReference];
 
-  v7 = [(MPCModelRadioPlaybackContext *)self seedContentReference];
-  [v4 setSeedContentReference:v7];
+  seedContentReference = [(MPCModelRadioPlaybackContext *)self seedContentReference];
+  [v4 setSeedContentReference:seedContentReference];
 
-  v8 = [(MPCModelRadioPlaybackContext *)self radioStation];
-  [v4 setRadioStation:v8];
+  radioStation = [(MPCModelRadioPlaybackContext *)self radioStation];
+  [v4 setRadioStation:radioStation];
 
-  v9 = [(MPCModelRadioPlaybackContext *)self stationURL];
-  [v4 setStationURL:v9];
+  stationURL = [(MPCModelRadioPlaybackContext *)self stationURL];
+  [v4 setStationURL:stationURL];
 
   [v4 setContinueListeningStation:{-[MPCModelRadioPlaybackContext continueListeningStation](self, "continueListeningStation")}];
   [v4 setContinueListeningMaxQueueReferences:{-[MPCModelRadioPlaybackContext continueListeningMaxQueueReferences](self, "continueListeningMaxQueueReferences")}];
   [v4 setContinueListeningPrefetchThreshold:{-[MPCModelRadioPlaybackContext continueListeningPrefetchThreshold](self, "continueListeningPrefetchThreshold")}];
-  v10 = [(MPCModelRadioPlaybackContext *)self continueListeningQueueProvider];
-  [v4 setContinueListeningQueueProvider:v10];
+  continueListeningQueueProvider = [(MPCModelRadioPlaybackContext *)self continueListeningQueueProvider];
+  [v4 setContinueListeningQueueProvider:continueListeningQueueProvider];
 
-  v11 = [(MPCModelRadioPlaybackContext *)self delegateTokenB];
-  [v4 setDelegateTokenB:v11];
+  delegateTokenB = [(MPCModelRadioPlaybackContext *)self delegateTokenB];
+  [v4 setDelegateTokenB:delegateTokenB];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPCModelRadioPlaybackContext;
-  v4 = a3;
-  [(MPCModelRadioPlaybackContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_radioStation forKey:{@"Station", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_continueListeningStation forKey:@"ContinueListening"];
-  [v4 encodeObject:self->_stationURL forKey:@"StationURL"];
-  [v4 encodeObject:self->_nowPlayingContentReference forKey:@"NowPlayingContentReference"];
-  [v4 encodeObject:self->_seedContentReference forKey:@"SeedContentReference"];
-  [v4 encodeObject:self->_playbackRequestEnvironment forKey:@"PlaybackRequestEnvironment"];
+  coderCopy = coder;
+  [(MPCModelRadioPlaybackContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_radioStation forKey:{@"Station", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_continueListeningStation forKey:@"ContinueListening"];
+  [coderCopy encodeObject:self->_stationURL forKey:@"StationURL"];
+  [coderCopy encodeObject:self->_nowPlayingContentReference forKey:@"NowPlayingContentReference"];
+  [coderCopy encodeObject:self->_seedContentReference forKey:@"SeedContentReference"];
+  [coderCopy encodeObject:self->_playbackRequestEnvironment forKey:@"PlaybackRequestEnvironment"];
 }
 
-- (MPCModelRadioPlaybackContext)initWithCoder:(id)a3
+- (MPCModelRadioPlaybackContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MPCModelRadioPlaybackContext;
-  v5 = [(MPCModelRadioPlaybackContext *)&v17 initWithCoder:v4];
+  v5 = [(MPCModelRadioPlaybackContext *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Station"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Station"];
     radioStation = v5->_radioStation;
     v5->_radioStation = v6;
 
-    v5->_continueListeningStation = [v4 decodeBoolForKey:@"ContinueListening"];
-    v5->_continueListeningMaxQueueReferences = [v4 decodeIntegerForKey:@"CL_MaxQueueReferences"];
-    v5->_continueListeningPrefetchThreshold = [v4 decodeIntegerForKey:@"CL_PrefetchThreshold"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StationURL"];
+    v5->_continueListeningStation = [coderCopy decodeBoolForKey:@"ContinueListening"];
+    v5->_continueListeningMaxQueueReferences = [coderCopy decodeIntegerForKey:@"CL_MaxQueueReferences"];
+    v5->_continueListeningPrefetchThreshold = [coderCopy decodeIntegerForKey:@"CL_PrefetchThreshold"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StationURL"];
     stationURL = v5->_stationURL;
     v5->_stationURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NowPlayingContentReference"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NowPlayingContentReference"];
     nowPlayingContentReference = v5->_nowPlayingContentReference;
     v5->_nowPlayingContentReference = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SeedContentReference"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SeedContentReference"];
     seedContentReference = v5->_seedContentReference;
     v5->_seedContentReference = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PlaybackRequestEnvironment"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PlaybackRequestEnvironment"];
     playbackRequestEnvironment = v5->_playbackRequestEnvironment;
     v5->_playbackRequestEnvironment = v14;
   }
@@ -263,16 +263,16 @@ LABEL_22:
   return v2;
 }
 
-- (id)getSharedListeningTracklistWithCompletion:(id)a3
+- (id)getSharedListeningTracklistWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPCModelRadioPlaybackContext *)self seedContentReference];
-  v6 = [v5 referenceModelObjectIdentifiers];
-  v7 = [v6 universalStore];
+  completionCopy = completion;
+  seedContentReference = [(MPCModelRadioPlaybackContext *)self seedContentReference];
+  referenceModelObjectIdentifiers = [seedContentReference referenceModelObjectIdentifiers];
+  universalStore = [referenceModelObjectIdentifiers universalStore];
 
-  quot = [v7 purchasedAdamID];
-  if (quot || (quot = [v7 subscriptionAdamID]) != 0 || (quot = objc_msgSend(v7, "adamID")) != 0)
+  quot = [universalStore purchasedAdamID];
+  if (quot || (quot = [universalStore subscriptionAdamID]) != 0 || (quot = objc_msgSend(universalStore, "adamID")) != 0)
   {
     v9 = quot;
     v10 = MEMORY[0x1E69E45B0];
@@ -307,8 +307,8 @@ LABEL_22:
     v16 = [v10 itemWithMediaIdentifier:v15];
 
     v17 = MEMORY[0x1E69E45A8];
-    v18 = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
-    v19 = [v17 radioContainerWithSeedItem:v16 featureName:v18];
+    playActivityFeatureName = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
+    v19 = [v17 radioContainerWithSeedItem:v16 featureName:playActivityFeatureName];
   }
 
   else
@@ -316,16 +316,16 @@ LABEL_22:
     v19 = 0;
   }
 
-  v20 = [(MPCModelRadioPlaybackContext *)self radioStation];
-  v21 = [v20 identifiers];
-  v22 = [v21 radio];
-  v23 = [v22 stationStringID];
+  radioStation = [(MPCModelRadioPlaybackContext *)self radioStation];
+  identifiers = [radioStation identifiers];
+  radio = [identifiers radio];
+  stationStringID = [radio stationStringID];
 
-  if (v23)
+  if (stationStringID)
   {
     v24 = MEMORY[0x1E69E45A8];
-    v25 = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
-    v26 = [v24 radioContainerWithMediaIdentifier:v23 featureName:v25];
+    playActivityFeatureName2 = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
+    v26 = [v24 radioContainerWithMediaIdentifier:stationStringID featureName:playActivityFeatureName2];
 
     v19 = v26;
   }
@@ -335,13 +335,13 @@ LABEL_22:
   {
     v28 = objc_alloc_init(MEMORY[0x1E69B1458]);
     [v28 appendSection:v19];
-    (*(v4 + 2))(v4, v28, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v28, 0, 0);
   }
 
   else
   {
     v28 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCMusicPlaybackContextSharePlayError" code:9 debugDescription:{@"Unsupported content [Radio] %@", self}];
-    (*(v4 + 2))(v4, 0, 0, v28);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v28);
   }
 
   [v27 setCompletedUnitCount:1];
@@ -349,20 +349,20 @@ LABEL_22:
   return v27;
 }
 
-- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)a3
+- (void)getRemotePlaybackQueueRepresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(_MPCProtoRadioCreationProperties);
-  v6 = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
-  if (v6 && v5)
+  playActivityFeatureName = [(MPCModelRadioPlaybackContext *)self playActivityFeatureName];
+  if (playActivityFeatureName && v5)
   {
-    objc_storeStrong(&v5->_playActivityFeatureName, v6);
+    objc_storeStrong(&v5->_playActivityFeatureName, playActivityFeatureName);
   }
 
-  v7 = [(MPCModelRadioPlaybackContext *)self playActivityQueueGroupingID];
-  if (v7 && v5)
+  playActivityQueueGroupingID = [(MPCModelRadioPlaybackContext *)self playActivityQueueGroupingID];
+  if (playActivityQueueGroupingID && v5)
   {
-    objc_storeStrong(&v5->_playActivityQueueGroupingID, v7);
+    objc_storeStrong(&v5->_playActivityQueueGroupingID, playActivityQueueGroupingID);
   }
 
   v65[0] = 0;
@@ -377,34 +377,34 @@ LABEL_22:
   v64 = 1;
   v8 = dispatch_queue_create("com.apple.MediaPlaybackCore.MPCModelRadioPlaybackContext.MPCPlaybackQueue.serialQueue", 0);
   v9 = dispatch_group_create();
-  v10 = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
-  v11 = [v10 userIdentity];
-  v12 = v11;
-  v38 = v7;
-  v39 = v6;
-  v37 = v4;
-  if (v11)
+  playbackRequestEnvironment = [(MPCModelRadioPlaybackContext *)self playbackRequestEnvironment];
+  userIdentity = [playbackRequestEnvironment userIdentity];
+  v12 = userIdentity;
+  v38 = playActivityQueueGroupingID;
+  v39 = playActivityFeatureName;
+  v37 = completionCopy;
+  if (userIdentity)
   {
-    v41 = v11;
+    defaultMediaIdentity = userIdentity;
   }
 
   else
   {
-    v41 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+    defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
   }
 
-  v13 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v62 = 0;
-  v14 = [v13 getPropertiesForUserIdentity:v41 error:&v62];
+  v14 = [defaultIdentityStore getPropertiesForUserIdentity:defaultMediaIdentity error:&v62];
   v40 = v62;
   v36 = v14;
-  v15 = [v14 DSID];
-  v16 = [v15 unsignedLongLongValue];
+  dSID = [v14 DSID];
+  unsignedLongLongValue = [dSID unsignedLongLongValue];
 
-  if (v16)
+  if (unsignedLongLongValue)
   {
     v17 = MEMORY[0x1E69E4680];
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v16];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
     v19 = [v17 specificAccountWithDSID:v18];
     v20 = [v19 identityAllowingDelegation:1];
 
@@ -413,15 +413,15 @@ LABEL_22:
     v52[1] = 3221225472;
     v52[2] = __101__MPCModelRadioPlaybackContext_MPCPlaybackQueue__getRemotePlaybackQueueRepresentationWithCompletion___block_invoke;
     v52[3] = &unk_1E82360E8;
-    v53 = v13;
+    v53 = defaultIdentityStore;
     v21 = v20;
     v54 = v21;
-    v61 = v16;
+    v61 = unsignedLongLongValue;
     v55 = v9;
     v59 = v65;
     v60 = v63;
     v56 = v8;
-    v57 = self;
+    selfCopy = self;
     v58 = v5;
     [v53 getDelegationUUIDsForUserIdentity:v21 completionHandler:v52];
   }
@@ -439,29 +439,29 @@ LABEL_22:
     v21 = v49;
   }
 
-  v22 = [(MPCModelRadioPlaybackContext *)self seedContentReference];
-  v23 = [v22 ICRadioContentReference];
+  seedContentReference = [(MPCModelRadioPlaybackContext *)self seedContentReference];
+  iCRadioContentReference = [seedContentReference ICRadioContentReference];
 
-  if (!v23)
+  if (!iCRadioContentReference)
   {
-    v30 = [(MPCModelRadioPlaybackContext *)self radioStation];
-    v31 = [v30 identifiers];
-    v32 = [v31 radio];
-    v26 = [v32 stationStringID];
+    radioStation = [(MPCModelRadioPlaybackContext *)self radioStation];
+    identifiers = [radioStation identifiers];
+    radio = [identifiers radio];
+    stationStringID = [radio stationStringID];
 
-    if ([v26 length] && v5)
+    if ([stationStringID length] && v5)
     {
-      objc_storeStrong(&v5->_radioStationID, v26);
+      objc_storeStrong(&v5->_radioStationID, stationStringID);
     }
 
-    v33 = [(MPCModelRadioPlaybackContext *)self stationURL];
-    v28 = v33;
-    if (!v33)
+    stationURL = [(MPCModelRadioPlaybackContext *)self stationURL];
+    v28 = stationURL;
+    if (!stationURL)
     {
       goto LABEL_27;
     }
 
-    nowPlayingContentReference = [(_MPCProtoRadioContentReference *)v33 absoluteString];
+    nowPlayingContentReference = [(_MPCProtoRadioContentReference *)stationURL absoluteString];
     if (nowPlayingContentReference && v5)
     {
       objc_storeStrong(&v5->_radioStationURLString, nowPlayingContentReference);
@@ -470,18 +470,18 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  v24 = _MPCProtoRadioContentReferenceFromICRadioContentReference(v23);
+  v24 = _MPCProtoRadioContentReferenceFromICRadioContentReference(iCRadioContentReference);
   if (v5)
   {
     objc_storeStrong(&v5->_seedContentReference, v24);
   }
 
-  v25 = [(MPCModelRadioPlaybackContext *)self nowPlayingContentReference];
-  v26 = [v25 ICRadioContentReference];
+  nowPlayingContentReference = [(MPCModelRadioPlaybackContext *)self nowPlayingContentReference];
+  stationStringID = [nowPlayingContentReference ICRadioContentReference];
 
-  if (v26)
+  if (stationStringID)
   {
-    v27 = _MPCProtoRadioContentReferenceFromICRadioContentReference(v26);
+    v27 = _MPCProtoRadioContentReferenceFromICRadioContentReference(stationStringID);
     v28 = v27;
     if (!v5)
     {
@@ -505,7 +505,7 @@ LABEL_28:
   v42[2] = __101__MPCModelRadioPlaybackContext_MPCPlaybackQueue__getRemotePlaybackQueueRepresentationWithCompletion___block_invoke_5;
   v42[3] = &unk_1E8236138;
   v43 = v5;
-  v44 = self;
+  selfCopy2 = self;
   v45 = v37;
   v46 = v63;
   v47 = v65;

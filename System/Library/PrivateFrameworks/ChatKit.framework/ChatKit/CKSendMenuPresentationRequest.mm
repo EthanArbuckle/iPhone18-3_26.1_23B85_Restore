@@ -1,70 +1,70 @@
 @interface CKSendMenuPresentationRequest
-+ (id)requestWithPresentationContext:(id)a3 appCardContentViewController:(id)a4 resolvedAppCardPresentationStyle:(unint64_t)a5 completion:(id)a6;
-+ (id)requestWithPresentationContext:(id)a3 sendMenuViewController:(id)a4 completion:(id)a5;
-- (CKSendMenuPresentationRequest)initWithPresentationContext:(id)a3 sendMenuViewController:(id)a4 appCardContentViewController:(id)a5 resolvedAppCardPresentationStyle:(unint64_t)a6 completion:(id)a7;
-- (id)newSendMenuPresentationWithPresentingViewController:(id)a3 delegate:(id)a4;
++ (id)requestWithPresentationContext:(id)context appCardContentViewController:(id)controller resolvedAppCardPresentationStyle:(unint64_t)style completion:(id)completion;
++ (id)requestWithPresentationContext:(id)context sendMenuViewController:(id)controller completion:(id)completion;
+- (CKSendMenuPresentationRequest)initWithPresentationContext:(id)context sendMenuViewController:(id)controller appCardContentViewController:(id)viewController resolvedAppCardPresentationStyle:(unint64_t)style completion:(id)completion;
+- (id)newSendMenuPresentationWithPresentingViewController:(id)controller delegate:(id)delegate;
 - (void)didFinishPresentTransition;
 @end
 
 @implementation CKSendMenuPresentationRequest
 
-- (CKSendMenuPresentationRequest)initWithPresentationContext:(id)a3 sendMenuViewController:(id)a4 appCardContentViewController:(id)a5 resolvedAppCardPresentationStyle:(unint64_t)a6 completion:(id)a7
+- (CKSendMenuPresentationRequest)initWithPresentationContext:(id)context sendMenuViewController:(id)controller appCardContentViewController:(id)viewController resolvedAppCardPresentationStyle:(unint64_t)style completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  contextCopy = context;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = CKSendMenuPresentationRequest;
   v17 = [(CKSendMenuPresentationRequest *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_presentationContext, a3);
-    objc_storeStrong(&v18->_sendMenuViewController, a4);
-    objc_storeStrong(&v18->_appCardContentViewController, a5);
-    v18->_resolvedAppCardPresentationStyle = a6;
-    [(CKSendMenuPresentationRequest *)v18 setCompletionHandler:v16];
+    objc_storeStrong(&v17->_presentationContext, context);
+    objc_storeStrong(&v18->_sendMenuViewController, controller);
+    objc_storeStrong(&v18->_appCardContentViewController, viewController);
+    v18->_resolvedAppCardPresentationStyle = style;
+    [(CKSendMenuPresentationRequest *)v18 setCompletionHandler:completionCopy];
   }
 
   return v18;
 }
 
-+ (id)requestWithPresentationContext:(id)a3 sendMenuViewController:(id)a4 completion:(id)a5
++ (id)requestWithPresentationContext:(id)context sendMenuViewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPresentationContext:v10 sendMenuViewController:v9 appCardContentViewController:0 resolvedAppCardPresentationStyle:0 completion:v8];
+  completionCopy = completion;
+  controllerCopy = controller;
+  contextCopy = context;
+  v11 = [[self alloc] initWithPresentationContext:contextCopy sendMenuViewController:controllerCopy appCardContentViewController:0 resolvedAppCardPresentationStyle:0 completion:completionCopy];
 
   return v11;
 }
 
-+ (id)requestWithPresentationContext:(id)a3 appCardContentViewController:(id)a4 resolvedAppCardPresentationStyle:(unint64_t)a5 completion:(id)a6
++ (id)requestWithPresentationContext:(id)context appCardContentViewController:(id)controller resolvedAppCardPresentationStyle:(unint64_t)style completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithPresentationContext:v12 sendMenuViewController:0 appCardContentViewController:v11 resolvedAppCardPresentationStyle:a5 completion:v10];
+  completionCopy = completion;
+  controllerCopy = controller;
+  contextCopy = context;
+  v13 = [[self alloc] initWithPresentationContext:contextCopy sendMenuViewController:0 appCardContentViewController:controllerCopy resolvedAppCardPresentationStyle:style completion:completionCopy];
 
   return v13;
 }
 
-- (id)newSendMenuPresentationWithPresentingViewController:(id)a3 delegate:(id)a4
+- (id)newSendMenuPresentationWithPresentingViewController:(id)controller delegate:(id)delegate
 {
   sendMenuViewController = self->_sendMenuViewController;
-  v7 = a4;
-  v8 = a3;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v9 = [CKSendMenuPresentation alloc];
   presentationContext = self->_presentationContext;
   if (sendMenuViewController)
   {
-    v11 = [(CKSendMenuPresentation *)v9 initWithOverlayPresentationContext:presentationContext presentingViewController:v8 sendMenuViewController:self->_sendMenuViewController delegate:v7];
+    v11 = [(CKSendMenuPresentation *)v9 initWithOverlayPresentationContext:presentationContext presentingViewController:controllerCopy sendMenuViewController:self->_sendMenuViewController delegate:delegateCopy];
   }
 
   else
   {
-    v11 = [(CKSendMenuPresentation *)v9 initWithOverlayPresentationContext:presentationContext presentingViewController:v8 appCardContentViewController:self->_appCardContentViewController appCardPresentationStyle:self->_resolvedAppCardPresentationStyle delegate:v7];
+    v11 = [(CKSendMenuPresentation *)v9 initWithOverlayPresentationContext:presentationContext presentingViewController:controllerCopy appCardContentViewController:self->_appCardContentViewController appCardPresentationStyle:self->_resolvedAppCardPresentationStyle delegate:delegateCopy];
   }
 
   v12 = v11;
@@ -74,8 +74,8 @@
 
 - (void)didFinishPresentTransition
 {
-  v2 = [(CKSendMenuPresentationRequest *)self completionHandler];
-  v2[2]();
+  completionHandler = [(CKSendMenuPresentationRequest *)self completionHandler];
+  completionHandler[2]();
 }
 
 @end

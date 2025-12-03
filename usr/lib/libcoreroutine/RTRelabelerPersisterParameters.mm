@@ -1,14 +1,14 @@
 @interface RTRelabelerPersisterParameters
-- (RTRelabelerPersisterParameters)initWithDefaultsManager:(id)a3;
-- (RTRelabelerPersisterParameters)initWithMaxCollapseIterations:(unint64_t)a3 placeholderCollapseDistanceThreshold:(double)a4 reverseGeocodeLeewayDistance:(double)a5 reverseGeocodePlaceFetchDistanceThreshold:(double)a6 unconcreteLOICollapseDistanceThreshold:(double)a7 visitAdjacencyMergeThreshold:(double)a8;
+- (RTRelabelerPersisterParameters)initWithDefaultsManager:(id)manager;
+- (RTRelabelerPersisterParameters)initWithMaxCollapseIterations:(unint64_t)iterations placeholderCollapseDistanceThreshold:(double)threshold reverseGeocodeLeewayDistance:(double)distance reverseGeocodePlaceFetchDistanceThreshold:(double)distanceThreshold unconcreteLOICollapseDistanceThreshold:(double)collapseDistanceThreshold visitAdjacencyMergeThreshold:(double)mergeThreshold;
 @end
 
 @implementation RTRelabelerPersisterParameters
 
-- (RTRelabelerPersisterParameters)initWithMaxCollapseIterations:(unint64_t)a3 placeholderCollapseDistanceThreshold:(double)a4 reverseGeocodeLeewayDistance:(double)a5 reverseGeocodePlaceFetchDistanceThreshold:(double)a6 unconcreteLOICollapseDistanceThreshold:(double)a7 visitAdjacencyMergeThreshold:(double)a8
+- (RTRelabelerPersisterParameters)initWithMaxCollapseIterations:(unint64_t)iterations placeholderCollapseDistanceThreshold:(double)threshold reverseGeocodeLeewayDistance:(double)distance reverseGeocodePlaceFetchDistanceThreshold:(double)distanceThreshold unconcreteLOICollapseDistanceThreshold:(double)collapseDistanceThreshold visitAdjacencyMergeThreshold:(double)mergeThreshold
 {
-  v8 = self;
-  if (a4 <= 0.0)
+  selfCopy = self;
+  if (threshold <= 0.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -23,7 +23,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a5 <= 0.0)
+  if (distance <= 0.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a6 <= 0.0)
+  if (distanceThreshold <= 0.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a7 <= 0.0)
+  if (collapseDistanceThreshold <= 0.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a8 <= 0.0)
+  if (mergeThreshold <= 0.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -83,37 +83,37 @@ LABEL_20:
   v15 = [(RTRelabelerPersisterParameters *)&v20 init];
   if (v15)
   {
-    v15->_maxCollapseIterations = a3;
-    v15->_placeholderCollapseDistanceThreshold = a4;
-    v15->_reverseGeocodeLeewayDistance = a5;
-    v15->_reverseGeocodePlaceFetchDistanceThreshold = a6;
-    v15->_unconcreteLOICollapseDistanceThreshold = a7;
-    v15->_visitAdjacencyMergeThreshold = a8;
+    v15->_maxCollapseIterations = iterations;
+    v15->_placeholderCollapseDistanceThreshold = threshold;
+    v15->_reverseGeocodeLeewayDistance = distance;
+    v15->_reverseGeocodePlaceFetchDistanceThreshold = distanceThreshold;
+    v15->_unconcreteLOICollapseDistanceThreshold = collapseDistanceThreshold;
+    v15->_visitAdjacencyMergeThreshold = mergeThreshold;
   }
 
-  v8 = v15;
-  v16 = v8;
+  selfCopy = v15;
+  v16 = selfCopy;
 LABEL_21:
 
   return v16;
 }
 
-- (RTRelabelerPersisterParameters)initWithDefaultsManager:(id)a3
+- (RTRelabelerPersisterParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsRelabelerPersisterMaxCollapseIterations"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsRelabelerPersisterMaxCollapseIterations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = 3;
+      unsignedIntegerValue = 3;
     }
 
     v10 = [v5 objectForKey:@"RTDefaultsRelabelerPersisterReverseGeocodeCollapseThreshold"];
@@ -170,9 +170,9 @@ LABEL_21:
       v24 = v25;
     }
 
-    self = [(RTRelabelerPersisterParameters *)self initWithMaxCollapseIterations:v7 placeholderCollapseDistanceThreshold:v12 reverseGeocodeLeewayDistance:v15 reverseGeocodePlaceFetchDistanceThreshold:v18 unconcreteLOICollapseDistanceThreshold:v17 visitAdjacencyMergeThreshold:v24];
+    self = [(RTRelabelerPersisterParameters *)self initWithMaxCollapseIterations:unsignedIntegerValue placeholderCollapseDistanceThreshold:v12 reverseGeocodeLeewayDistance:v15 reverseGeocodePlaceFetchDistanceThreshold:v18 unconcreteLOICollapseDistanceThreshold:v17 visitAdjacencyMergeThreshold:v24];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -184,10 +184,10 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v27, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

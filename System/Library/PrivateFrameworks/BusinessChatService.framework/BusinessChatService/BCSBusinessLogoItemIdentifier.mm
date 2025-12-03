@@ -1,51 +1,51 @@
 @interface BCSBusinessLogoItemIdentifier
-- (BCSBusinessLogoItemIdentifier)initWithCoder:(id)a3;
-- (BOOL)matchesItemIdentifying:(id)a3;
+- (BCSBusinessLogoItemIdentifier)initWithCoder:(id)coder;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSObject)itemIdentifier;
 - (NSString)pirKey;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithBusinessId:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithBusinessId:(void *)id;
 @end
 
 @implementation BCSBusinessLogoItemIdentifier
 
-- (void)initWithBusinessId:(void *)a1
+- (void)initWithBusinessId:(void *)id
 {
   v4 = a2;
-  if (a1)
+  if (id)
   {
-    v7.receiver = a1;
+    v7.receiver = id;
     v7.super_class = BCSBusinessLogoItemIdentifier;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    id = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
-      a1[2] = [a1 _truncatedHashForString:a1[1]];
+      id[2] = [id _truncatedHashForString:id[1]];
     }
   }
 
-  return a1;
+  return id;
 }
 
 - (NSObject)itemIdentifier
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BCSBusinessLogoItemIdentifier *)self truncatedHash];
+  truncatedHash = [(BCSBusinessLogoItemIdentifier *)self truncatedHash];
 
-  return [v2 numberWithLongLong:v3];
+  return [v2 numberWithLongLong:truncatedHash];
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(BCSBusinessLogoItemIdentifier *)self type])
+  identifyingCopy = identifying;
+  type = [identifyingCopy type];
+  if (type == [(BCSBusinessLogoItemIdentifier *)self type])
   {
-    v6 = [v4 itemIdentifier];
-    v7 = [(BCSBusinessLogoItemIdentifier *)self itemIdentifier];
-    v8 = [v6 isEqual:v7];
+    itemIdentifier = [identifyingCopy itemIdentifier];
+    itemIdentifier2 = [(BCSBusinessLogoItemIdentifier *)self itemIdentifier];
+    v8 = [itemIdentifier isEqual:itemIdentifier2];
   }
 
   else
@@ -66,9 +66,9 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     *(v4 + 16) = [(BCSBusinessLogoItemIdentifier *)self truncatedHash];
@@ -88,28 +88,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   truncatedHash = self->_truncatedHash;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithLongLong:truncatedHash];
-  [v7 encodeObject:v6 forKey:@"TruncatedHash"];
+  [coderCopy encodeObject:v6 forKey:@"TruncatedHash"];
 
-  [v7 encodeObject:self->_businessId forKey:@"BusinessId"];
+  [coderCopy encodeObject:self->_businessId forKey:@"BusinessId"];
 }
 
-- (BCSBusinessLogoItemIdentifier)initWithCoder:(id)a3
+- (BCSBusinessLogoItemIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BCSBusinessLogoItemIdentifier;
   v5 = [(BCSBusinessLogoItemIdentifier *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TruncatedHash"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TruncatedHash"];
     v5->_truncatedHash = [v6 longLongValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BusinessId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BusinessId"];
     businessId = v5->_businessId;
     v5->_businessId = v7;
   }

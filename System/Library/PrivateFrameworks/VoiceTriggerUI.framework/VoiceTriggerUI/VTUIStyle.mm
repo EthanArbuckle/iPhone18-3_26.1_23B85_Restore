@@ -52,17 +52,17 @@
 - (id)PRXheaderFont;
 - (id)PRXpageFont;
 - (id)ProxCardKitTitleFontDescriptor;
-- (id)VTUIDeviceSpecificAudioHintFileName:(id)a3;
-- (id)VTUIDeviceSpecificString:(id)a3;
-- (id)dynamicColorWithLightColor:(id)a3 darkColor:(id)a4;
-- (id)educationAssetNameForTraitCollection:(id)a3;
+- (id)VTUIDeviceSpecificAudioHintFileName:(id)name;
+- (id)VTUIDeviceSpecificString:(id)string;
+- (id)dynamicColorWithLightColor:(id)color darkColor:(id)darkColor;
+- (id)educationAssetNameForTraitCollection:(id)collection;
 - (id)educationViewDetailText;
 - (id)educationViewTitleText;
 - (id)footerLabelFont;
-- (id)instructionLabelFontWithWeight:(double)a3;
-- (id)instructionPreAndPostfixFontWithWeight:(double)a3;
+- (id)instructionLabelFontWithWeight:(double)weight;
+- (id)instructionPreAndPostfixFontWithWeight:(double)weight;
 - (id)primaryButtonFont;
-- (id)proxHSDescription:(id)a3;
+- (id)proxHSDescription:(id)description;
 - (id)proxInstructionPreAndPostfixFont;
 - (id)secondaryButtonFont;
 - (id)siriIconImage;
@@ -81,7 +81,7 @@
   block[1] = 3221225472;
   block[2] = __24__VTUIStyle_sharedStyle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStyle_onceToken != -1)
   {
     dispatch_once(&sharedStyle_onceToken, block);
@@ -116,16 +116,16 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
     bodyMetricsForScaling = v2->_bodyMetricsForScaling;
     v2->_bodyMetricsForScaling = v5;
 
-    v7 = [(MGWrapper *)v2->_mgWrapper deviceClass];
+    deviceClass = [(MGWrapper *)v2->_mgWrapper deviceClass];
     deviceClass = v2->_deviceClass;
-    v2->_deviceClass = v7;
+    v2->_deviceClass = deviceClass;
 
-    v9 = [(MGWrapper *)v2->_mgWrapper isDeviceIPad];
-    v2->_isIpad = v9;
-    if (v9)
+    isDeviceIPad = [(MGWrapper *)v2->_mgWrapper isDeviceIPad];
+    v2->_isIpad = isDeviceIPad;
+    if (isDeviceIPad)
     {
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      [v10 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v2->_isLargeIpad = v11 >= 1366.0;
     }
 
@@ -137,8 +137,8 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
     v2->_supportsSideButtonActivation = [(MGWrapper *)v2->_mgWrapper supportsSideButtonActivation];
     v2->_isHeySiriAlwaysOn = [(MGWrapper *)v2->_mgWrapper isHeySiriAlwaysOn];
     v2->_supportSideButtonActivation = [(MGWrapper *)v2->_mgWrapper supportsSideButtonActivation];
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v12 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v13 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
     v2->_needMoreLineSpacing = [v13 isEqual:@"th"];
     [(VTUIStyle *)v2 _createStringSuffixesForDevice];
@@ -158,8 +158,8 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VTUIStyle;
@@ -183,16 +183,16 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
 
 - (id)primaryButtonFont
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4) && (v5 = *MEMORY[0x277D767F0], UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D767F0]) == NSOrderedDescending))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && (v5 = *MEMORY[0x277D767F0], UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D767F0]) == NSOrderedDescending))
   {
     v6 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v5];
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988] compatibleWithTraitCollection:v6];
-    v8 = [v7 fontDescriptor];
-    v9 = [v8 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor = [v7 fontDescriptor];
+    v9 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
     v10 = [MEMORY[0x277D74300] fontWithDescriptor:v9 size:0.0];
   }
@@ -200,8 +200,8 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
   else
   {
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    v11 = [v6 fontDescriptor];
-    v7 = [v11 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor2 = [v6 fontDescriptor];
+    v7 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:0x8000];
 
     v10 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
   }
@@ -211,16 +211,16 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
 
 - (id)secondaryButtonFont
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4) && (v5 = *MEMORY[0x277D76828], UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76828]) == NSOrderedDescending))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && (v5 = *MEMORY[0x277D76828], UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76828]) == NSOrderedDescending))
   {
     v6 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v5];
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v6];
-    v8 = [v7 fontDescriptor];
-    v9 = [v8 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor = [v7 fontDescriptor];
+    v9 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
     v10 = [v9 fontDescriptorWithSymbolicTraits:2];
     v11 = [MEMORY[0x277D74300] fontWithDescriptor:v10 size:0.0];
@@ -229,8 +229,8 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
   else
   {
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v12 = [v6 fontDescriptor];
-    v7 = [v12 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor2 = [v6 fontDescriptor];
+    v7 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:0x8000];
 
     v9 = [v7 fontDescriptorWithSymbolicTraits:2];
     v11 = [MEMORY[0x277D74300] fontWithDescriptor:v9 size:0.0];
@@ -239,7 +239,7 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)instructionLabelFontWithWeight:(double)a3
+- (id)instructionLabelFontWithWeight:(double)weight
 {
   v5 = MEMORY[0x277D74300];
   v6 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A00]];
@@ -253,7 +253,7 @@ uint64_t __24__VTUIStyle_sharedStyle__block_invoke(uint64_t a1)
 LABEL_11:
     v11 = *&v9;
 LABEL_12:
-    v12 = [MEMORY[0x277D74300] systemFontOfSize:v11 weight:a3];
+    v12 = [MEMORY[0x277D74300] systemFontOfSize:v11 weight:weight];
 
     v7 = v12;
     goto LABEL_15;
@@ -278,7 +278,7 @@ LABEL_15:
   return v7;
 }
 
-- (id)instructionPreAndPostfixFontWithWeight:(double)a3
+- (id)instructionPreAndPostfixFontWithWeight:(double)weight
 {
   v5 = MEMORY[0x277D74300];
   v6 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A28]];
@@ -292,7 +292,7 @@ LABEL_15:
 LABEL_11:
     v11 = *&v9;
 LABEL_12:
-    v12 = [MEMORY[0x277D74300] systemFontOfSize:v11 weight:a3];
+    v12 = [MEMORY[0x277D74300] systemFontOfSize:v11 weight:weight];
 
     v7 = v12;
     goto LABEL_15;
@@ -368,8 +368,8 @@ LABEL_15:
 - (id)PRXheaderFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(VTUIStyle *)self ProxCardKitTitleFontDescriptor];
-  v4 = [v2 fontWithDescriptor:v3 size:27.0];
+  proxCardKitTitleFontDescriptor = [(VTUIStyle *)self ProxCardKitTitleFontDescriptor];
+  v4 = [v2 fontWithDescriptor:proxCardKitTitleFontDescriptor size:27.0];
 
   return v4;
 }
@@ -377,8 +377,8 @@ LABEL_15:
 - (id)PRXcancelFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(VTUIStyle *)self ProxCardKitTitleFontDescriptor];
-  v4 = [v2 fontWithDescriptor:v3 size:17.0];
+  proxCardKitTitleFontDescriptor = [(VTUIStyle *)self ProxCardKitTitleFontDescriptor];
+  v4 = [v2 fontWithDescriptor:proxCardKitTitleFontDescriptor size:17.0];
 
   return v4;
 }
@@ -400,9 +400,9 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 traitCollection];
-  [v4 displayCornerRadius];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
   v2 = v5 > 0.0;
 
   return v2;
@@ -496,8 +496,8 @@ LABEL_15:
 
 - (double)titleBaselineOffsetFromTop
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   v6 = 44.0;
@@ -584,8 +584,8 @@ LABEL_15:
 
 - (double)horizontalTextPadding
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
   result = 8.0;
@@ -623,8 +623,8 @@ LABEL_15:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v5 = v4;
 
     result = 24.0;
@@ -743,10 +743,10 @@ LABEL_15:
 
 - (id)educationViewDetailText
 {
-  v2 = [(MGWrapper *)self->_mgWrapper supportsSideButtonActivation];
+  supportsSideButtonActivation = [(MGWrapper *)self->_mgWrapper supportsSideButtonActivation];
   v3 = +[VTUIStringsHelper sharedStringsHelper];
   v4 = v3;
-  if (v2)
+  if (supportsSideButtonActivation)
   {
     v5 = @"SIRI_SIDE_BUTTON_ACTIVATION_INSTRUCTIONS";
   }
@@ -779,9 +779,9 @@ LABEL_15:
   return v3;
 }
 
-- (id)educationAssetNameForTraitCollection:(id)a3
+- (id)educationAssetNameForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(MGWrapper *)self->_mgWrapper supportsSideButtonActivation])
   {
     v5 = @"SiriEducationHomeAffordance";
@@ -797,7 +797,7 @@ LABEL_15:
     v5 = @"SiriEducationHomeButton";
   }
 
-  if ([v4 userInterfaceStyle] == 2)
+  if ([collectionCopy userInterfaceStyle] == 2)
   {
     v6 = @"Dark";
   }
@@ -853,8 +853,8 @@ LABEL_15:
 
 - (CGSize)educationAssetSize
 {
-  v3 = [(MGWrapper *)self->_mgWrapper supportsSideButtonActivation];
-  if (v3)
+  supportsSideButtonActivation = [(MGWrapper *)self->_mgWrapper supportsSideButtonActivation];
+  if (supportsSideButtonActivation)
   {
     v4 = 263.3;
   }
@@ -864,7 +864,7 @@ LABEL_15:
     v4 = 153.0;
   }
 
-  if (v3)
+  if (supportsSideButtonActivation)
   {
     v5 = 332.67;
   }
@@ -967,8 +967,8 @@ LABEL_11:
 
 - (double)footerHorizontalPadding
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   if (v5 <= 320.0)
@@ -982,8 +982,8 @@ LABEL_11:
 
 - (double)footerButtonMaximumWidth
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
   result = 340.0;
@@ -1055,10 +1055,10 @@ LABEL_11:
   else
   {
     v4 = +[MGWrapper sharedMGWrapper];
-    v5 = [v4 supportsSideButtonActivation];
+    supportsSideButtonActivation = [v4 supportsSideButtonActivation];
 
     result = 34.0;
-    if ((v5 & 1) == 0)
+    if ((supportsSideButtonActivation & 1) == 0)
     {
       return 13.0;
     }
@@ -1091,30 +1091,30 @@ LABEL_11:
   return result;
 }
 
-- (id)proxHSDescription:(id)a3
+- (id)proxHSDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(VTUIStyle *)self VTUIDeviceSpecificString:v4];
-  v6 = [(VTUIStyle *)self audioProductID];
-  v7 = v6;
-  if ((v6 - 8202) <= 0x25 && ((1 << (v6 - 10)) & 0x206C2AB71FLL) != 0)
+  descriptionCopy = description;
+  v5 = [(VTUIStyle *)self VTUIDeviceSpecificString:descriptionCopy];
+  audioProductID = [(VTUIStyle *)self audioProductID];
+  v7 = audioProductID;
+  if ((audioProductID - 8202) <= 0x25 && ((1 << (audioProductID - 10)) & 0x206C2AB71FLL) != 0)
   {
     v8 = MEMORY[0x277CCACA8];
     goto LABEL_4;
   }
 
-  if ((v6 - 8212) <= 0x14 && ((1 << (v6 - 20)) & 0x1916A1) != 0)
+  if ((audioProductID - 8212) <= 0x14 && ((1 << (audioProductID - 20)) & 0x1916A1) != 0)
   {
     v12 = _os_feature_enabled_impl();
     v8 = MEMORY[0x277CCACA8];
     if (v12)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"SIRI_AND_%@_PID_%ld", v4, v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"SIRI_AND_%@_PID_%ld", descriptionCopy, v7];
       goto LABEL_5;
     }
 
 LABEL_4:
-    [v8 stringWithFormat:@"%@_PID_%ld", v4, v7];
+    [v8 stringWithFormat:@"%@_PID_%ld", descriptionCopy, v7];
     v9 = LABEL_5:;
     v10 = [(VTUIStyle *)self VTUIDeviceSpecificString:v9];
 
@@ -1126,11 +1126,11 @@ LABEL_4:
 
 - (BOOL)proxAccessorySupportsCompactTrigger
 {
-  v2 = [(VTUIStyle *)self audioProductID];
+  audioProductID = [(VTUIStyle *)self audioProductID];
   if (_os_feature_enabled_impl() && (+[VTUIStyle sharedStyle](VTUIStyle, "sharedStyle"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 currentLocaleSupportsCompactVoiceTrigger], v3, v4))
   {
-    v5 = 0x1916A1u >> (v2 - 20);
-    if ((v2 - 8212) > 0x14)
+    v5 = 0x1916A1u >> (audioProductID - 20);
+    if ((audioProductID - 8212) > 0x14)
     {
       LOBYTE(v5) = 0;
     }
@@ -1146,8 +1146,8 @@ LABEL_4:
 
 - (double)turnOnSiriImageOffsetFromTop
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   if (v5 <= 668.0)
@@ -1183,8 +1183,8 @@ LABEL_4:
 
 - (BOOL)isIpadMini
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 orientation] == 3)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice orientation] == 3)
   {
 
     v3 = 750.0;
@@ -1192,14 +1192,14 @@ LABEL_4:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 orientation] == 4;
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    v5 = [currentDevice2 orientation] == 4;
 
     v3 = dbl_272934620[v5];
   }
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v8 = v7 <= v3;
 
   return v8;
@@ -1207,20 +1207,20 @@ LABEL_4:
 
 - (void)_createStringSuffixesForDevice
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(MEMORY[0x277CEF678]);
-  v9 = [v4 spokenLanguageCode];
+  spokenLanguageCode = [v4 spokenLanguageCode];
 
-  v5 = [v9 hasSuffix:@"US"];
-  v6 = [(VTUIStyle *)self isHeySiriAlwaysOn];
-  if (v6)
+  v5 = [spokenLanguageCode hasSuffix:@"US"];
+  isHeySiriAlwaysOn = [(VTUIStyle *)self isHeySiriAlwaysOn];
+  if (isHeySiriAlwaysOn)
   {
-    [(NSArray *)v3 addObject:@"_AOP"];
+    [(NSArray *)array addObject:@"_AOP"];
   }
 
   if ([(NSString *)self->_deviceClass isEqualToString:@"iPod"])
   {
-    [(NSArray *)v3 addObject:@"_IPOD"];
+    [(NSArray *)array addObject:@"_IPOD"];
     goto LABEL_25;
   }
 
@@ -1228,8 +1228,8 @@ LABEL_4:
   {
     if (v5)
     {
-      [(NSArray *)v3 addObject:@"_IPHONE"];
-      if (!v6)
+      [(NSArray *)array addObject:@"_IPHONE"];
+      if (!isHeySiriAlwaysOn)
       {
         goto LABEL_25;
       }
@@ -1237,17 +1237,17 @@ LABEL_4:
 
     else
     {
-      [(NSArray *)v3 addObject:@"_NONUS_IPHONE"];
-      [(NSArray *)v3 addObject:@"_IPHONE"];
-      if (!v6)
+      [(NSArray *)array addObject:@"_NONUS_IPHONE"];
+      [(NSArray *)array addObject:@"_IPHONE"];
+      if (!isHeySiriAlwaysOn)
       {
         goto LABEL_25;
       }
 
-      [(NSArray *)v3 insertObject:@"_NONUS_AOP_IPHONE" atIndex:0];
+      [(NSArray *)array insertObject:@"_NONUS_AOP_IPHONE" atIndex:0];
     }
 
-    [(NSArray *)v3 insertObject:@"_AOP_IPHONE" atIndex:0];
+    [(NSArray *)array insertObject:@"_AOP_IPHONE" atIndex:0];
     if (!self->_supportSideButtonActivation)
     {
       goto LABEL_25;
@@ -1255,7 +1255,7 @@ LABEL_4:
 
     v7 = @"_AOP_SIDE_BUTTON";
 LABEL_24:
-    [(NSArray *)v3 insertObject:v7 atIndex:0];
+    [(NSArray *)array insertObject:v7 atIndex:0];
     goto LABEL_25;
   }
 
@@ -1272,24 +1272,24 @@ LABEL_24:
 
   if (!v5)
   {
-    [(NSArray *)v3 addObject:@"_NONUS_IPAD"];
-    [(NSArray *)v3 addObject:@"_IPAD"];
-    if (!v6)
+    [(NSArray *)array addObject:@"_NONUS_IPAD"];
+    [(NSArray *)array addObject:@"_IPAD"];
+    if (!isHeySiriAlwaysOn)
     {
       goto LABEL_25;
     }
 
-    [(NSArray *)v3 insertObject:@"_NONUS_AOP_IPAD" atIndex:0];
+    [(NSArray *)array insertObject:@"_NONUS_AOP_IPAD" atIndex:0];
     goto LABEL_21;
   }
 
-  [(NSArray *)v3 addObject:@"_IPAD"];
-  if (v6)
+  [(NSArray *)array addObject:@"_IPAD"];
+  if (isHeySiriAlwaysOn)
   {
 LABEL_21:
     if (self->_supportSideButtonActivation)
     {
-      [(NSArray *)v3 insertObject:@"_AOP_TOP_BUTTON" atIndex:0];
+      [(NSArray *)array insertObject:@"_AOP_TOP_BUTTON" atIndex:0];
     }
 
     v7 = @"_AOP_IPAD";
@@ -1298,16 +1298,16 @@ LABEL_21:
 
 LABEL_25:
   deviceStringSuffixes = self->_deviceStringSuffixes;
-  self->_deviceStringSuffixes = v3;
+  self->_deviceStringSuffixes = array;
 }
 
-- (id)VTUIDeviceSpecificString:(id)a3
+- (id)VTUIDeviceSpecificString:(id)string
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1327,8 +1327,8 @@ LABEL_25:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [v4 stringByAppendingString:*(*(&v27 + 1) + 8 * i)];
-          [v5 addObject:v11];
+          v11 = [stringCopy stringByAppendingString:*(*(&v27 + 1) + 8 * i)];
+          [array addObject:v11];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -1337,12 +1337,12 @@ LABEL_25:
       while (v8);
     }
 
-    [v5 addObject:v4];
+    [array addObject:stringCopy];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v5;
+    v12 = array;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v13)
     {
@@ -1399,10 +1399,10 @@ LABEL_11:
   return v15;
 }
 
-- (id)VTUIDeviceSpecificAudioHintFileName:(id)a3
+- (id)VTUIDeviceSpecificAudioHintFileName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v6 = 0;
     goto LABEL_11;
@@ -1422,14 +1422,14 @@ LABEL_11:
   {
     if (![(NSArray *)self->_deviceStringSuffixes containsObject:@"_IPOD"])
     {
-      v7 = v4;
+      v7 = nameCopy;
       goto LABEL_10;
     }
 
     v5 = @"_IPOD";
   }
 
-  v7 = [v4 stringByAppendingString:v5];
+  v7 = [nameCopy stringByAppendingString:v5];
 LABEL_10:
   v6 = v7;
 LABEL_11:
@@ -1457,8 +1457,8 @@ LABEL_11:
 
 - (BOOL)isSmallestOnboardingDeviceInBuddy
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   return v5 <= 568.0 && self->_isBuddyOrFollowUp;
@@ -1489,21 +1489,21 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
   return result;
 }
 
-- (id)dynamicColorWithLightColor:(id)a3 darkColor:(id)a4
+- (id)dynamicColorWithLightColor:(id)color darkColor:(id)darkColor
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D75C80];
-  v6 = a4;
-  v7 = a3;
+  darkColorCopy = darkColor;
+  colorCopy = color;
   v8 = [v5 traitCollectionWithUserInterfaceStyle:0];
   v15[0] = v8;
-  v16[0] = v7;
+  v16[0] = colorCopy;
   v9 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
   v15[1] = v9;
-  v16[1] = v7;
+  v16[1] = colorCopy;
   v10 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
   v15[2] = v10;
-  v16[2] = v6;
+  v16[2] = darkColorCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v12 = [MEMORY[0x277D75348] _dynamicColorWithColorsByTraitCollection:v11];
@@ -1528,8 +1528,8 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
       v3 = 0;
     }
 
-    v4 = [MEMORY[0x277D7A8D0] sharedPreferences];
-    v5 = [v4 getUserPreferredVoiceTriggerPhraseTypeForDeviceType:0 endpointId:0 error:0];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+    v5 = [mEMORY[0x277D7A8D0] getUserPreferredVoiceTriggerPhraseTypeForDeviceType:0 endpointId:0 error:0];
 
     if (v5 != 1)
     {
@@ -1565,23 +1565,23 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
 - (BOOL)shouldShowVoiceTriggerConfirmationInBuddy
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  voiceTriggerEnabled = [mEMORY[0x277D7A8D0] voiceTriggerEnabled];
 
   v4 = @"not needed";
   v5 = &stru_2881E5778;
-  if (v3)
+  if (voiceTriggerEnabled)
   {
-    v6 = [MEMORY[0x277D653F8] sharedInstance];
-    v7 = [v6 isVoiceTriggerRepromptRequired];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    isVoiceTriggerRepromptRequired = [mEMORY[0x277D653F8] isVoiceTriggerRepromptRequired];
 
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"forceNeedsConfirmation", @"com.apple.VoiceTriggerUI.vtconf", 0);
-    if (v7)
+    if (isVoiceTriggerRepromptRequired)
     {
       v4 = @"needed";
     }
 
-    v9 = (AppBooleanValue != 0) | v7;
+    v9 = (AppBooleanValue != 0) | isVoiceTriggerRepromptRequired;
     if (AppBooleanValue)
     {
       v5 = @"(forced)";
@@ -1618,7 +1618,7 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
     v17 = "[VTUIStyle shouldShowVoiceTriggerConfirmationInBuddy]";
     v18 = 2112;
     v19 = v12;
-    if (v3)
+    if (voiceTriggerEnabled)
     {
       v13 = @"enabled";
     }
@@ -1639,10 +1639,10 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
 
 - (BOOL)supportsSiriConversationsAndBargeIn
 {
-  v2 = [MEMORY[0x277D01508] sharedPreferences];
-  v3 = [v2 isFlexibleFollowupsSupported];
+  mEMORY[0x277D01508] = [MEMORY[0x277D01508] sharedPreferences];
+  isFlexibleFollowupsSupported = [mEMORY[0x277D01508] isFlexibleFollowupsSupported];
 
-  return v3;
+  return isFlexibleFollowupsSupported;
 }
 
 - (BOOL)shouldPresentDisclosureForCompactVoiceTrigger
@@ -1650,22 +1650,22 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
   v22 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl() && [(VTUIStyle *)self currentLocaleSupportsCompactVoiceTrigger])
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v3 assistantIsEnabled];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-    v5 = [MEMORY[0x277D7A8D0] sharedPreferences];
-    v6 = [v5 voiceTriggerEnabled];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+    voiceTriggerEnabled = [mEMORY[0x277D7A8D0] voiceTriggerEnabled];
 
-    v7 = [MEMORY[0x277D653F8] sharedInstance];
-    v8 = [MEMORY[0x277CEF368] sharedPreferences];
-    v9 = [v8 languageCode];
-    v10 = [v7 isSATEnrolledForSiriProfileId:0 forLanguageCode:v9];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368]2 languageCode];
+    v10 = [mEMORY[0x277D653F8] isSATEnrolledForSiriProfileId:0 forLanguageCode:languageCode];
 
-    v11 = [MEMORY[0x277CEF368] sharedPreferences];
-    v12 = [v11 hasPresentedCompactVoiceTriggerDisclosure];
+    mEMORY[0x277CEF368]3 = [MEMORY[0x277CEF368] sharedPreferences];
+    hasPresentedCompactVoiceTriggerDisclosure = [mEMORY[0x277CEF368]3 hasPresentedCompactVoiceTriggerDisclosure];
 
     v13 = 0;
-    if (self->_isBuddyOrFollowUp && v4 && v6 && v10 && (v12 & 1) == 0)
+    if (self->_isBuddyOrFollowUp && assistantIsEnabled && voiceTriggerEnabled && v10 && (hasPresentedCompactVoiceTriggerDisclosure & 1) == 0)
     {
       v13 = AFDeviceSupportsANE();
     }
@@ -1698,17 +1698,17 @@ uint64_t __36__VTUIStyle_isGreenTeaCapableDevice__block_invoke()
 
 - (BOOL)currentLocaleSupportsCompactVoiceTrigger
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (!v3)
+  if (!languageCode)
   {
-    v4 = [MEMORY[0x277CEF368] sharedPreferences];
-    v3 = [v4 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368]2 bestSupportedLanguageCodeForLanguageCode:0];
   }
 
-  v5 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v6 = [v5 isCompactVoiceTriggerAvailableForLanguageCode:v3];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  v6 = [mEMORY[0x277D7A8D0] isCompactVoiceTriggerAvailableForLanguageCode:languageCode];
 
   return v6;
 }

@@ -6,9 +6,9 @@
 + (id)gPTPMask1;
 + (id)gPTPMask2;
 + (id)gPTPMask3;
-- (BOOL)mtieConformsToMask:(id)a3 withErrors:(id *)a4;
-- (TSMTIEMask)initWithDictionary:(id)a3;
-- (id)mtieMaskFromStart:(double)a3 toEnd:(double)a4 withStep:(double)a5;
+- (BOOL)mtieConformsToMask:(id)mask withErrors:(id *)errors;
+- (TSMTIEMask)initWithDictionary:(id)dictionary;
+- (id)mtieMaskFromStart:(double)start toEnd:(double)end withStep:(double)step;
 @end
 
 @implementation TSMTIEMask
@@ -16,17 +16,17 @@
 + (id)UDPHardwareMask
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"UDP End-to-End Ports over peer-to-peer wireless with Hardware Timestamping" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"UDP End-to-End Ports over peer-to-peer wireless with Hardware Timestamping" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:1.0 offset:0.000206 lowerLimit:0.0 upperLimit:0.000006];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.000212 lowerLimit:0.000006 upperLimit:INFINITY];
 
-  [v5 addObject:v7];
-  [v2 setElements:v5];
+  [array addObject:v7];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -34,17 +34,17 @@
 + (id)UDPSoftwareMask
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"UDP End-to-End Ports over wired or wireless infrastructure" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"UDP End-to-End Ports over wired or wireless infrastructure" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:1.0 offset:0.000206 lowerLimit:0.0 upperLimit:0.006];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.006206 lowerLimit:0.006 upperLimit:INFINITY];
 
-  [v5 addObject:v7];
-  [v2 setElements:v5];
+  [array addObject:v7];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -52,20 +52,20 @@
 + (id)gPTPMask1
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"802.1AS MTIE Mask 1" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"802.1AS MTIE Mask 1" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0000069548 offset:0.0 lowerLimit:0.0 upperLimit:0.0637];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.000000443 lowerLimit:0.0637 upperLimit:0.3183];
 
-  [v5 addObject:v7];
+  [array addObject:v7];
   v8 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.00005 offset:0.0 lowerLimit:0.3183 upperLimit:INFINITY];
 
-  [v5 addObject:v8];
-  [v2 setElements:v5];
+  [array addObject:v8];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -73,17 +73,17 @@
 + (id)gPTPMask2
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"802.1AS MTIE Mask 2" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"802.1AS MTIE Mask 2" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.000000407 lowerLimit:0.0 upperLimit:0.4069];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.000001 offset:0.0 lowerLimit:0.4069 upperLimit:INFINITY];
 
-  [v5 addObject:v7];
-  [v2 setElements:v5];
+  [array addObject:v7];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -91,17 +91,17 @@
 + (id)gPTPMask3
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"802.1AS MTIE Mask 3" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"802.1AS MTIE Mask 3" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.00000005 offset:0.0 lowerLimit:0.0 upperLimit:4.0];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.0000002 lowerLimit:4.0 upperLimit:INFINITY];
 
-  [v5 addObject:v7];
-  [v2 setElements:v5];
+  [array addObject:v7];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -109,20 +109,20 @@
 + (id)gPTP7Hop
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"gPTP MTIE Mask for 7 Hops" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"gPTP MTIE Mask for 7 Hops" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.000000407 lowerLimit:0.0 upperLimit:0.4069];
-  [v5 addObject:v6];
+  [array addObject:v6];
   v7 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.000001 offset:0.0 lowerLimit:0.4069 upperLimit:1.0];
 
-  [v5 addObject:v7];
+  [array addObject:v7];
   v8 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.0000001 lowerLimit:1.0 upperLimit:INFINITY];
 
-  [v5 addObject:v8];
-  [v2 setElements:v5];
+  [array addObject:v8];
+  [v2 setElements:array];
 
   return v2;
 }
@@ -130,28 +130,28 @@
 + (id)gPTP1Hop
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"gPTP MTIE Mask for 7 Hops" value:&stru_287F0FAF8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"gPTP MTIE Mask for 7 Hops" value:&stru_287F0FAF8 table:0];
   [v2 setName:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[TSMTIEMaskElement alloc] initWithCoefficient:0.0 offset:0.00000016 lowerLimit:0.0 upperLimit:INFINITY];
-  [v5 addObject:v6];
-  [v2 setElements:v5];
+  [array addObject:v6];
+  [v2 setElements:array];
 
   return v2;
 }
 
-- (TSMTIEMask)initWithDictionary:(id)a3
+- (TSMTIEMask)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = TSMTIEMask;
   v5 = [(TSMTIEMask *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     v7 = [v6 copy];
     name = v5->_name;
     v5->_name = v7;
@@ -161,7 +161,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v4 objectForKeyedSubscript:{@"equation", 0}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"equation", 0}];
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -208,13 +208,13 @@
   return v5;
 }
 
-- (BOOL)mtieConformsToMask:(id)a3 withErrors:(id *)a4
+- (BOOL)mtieConformsToMask:(id)mask withErrors:(id *)errors
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  maskCopy = mask;
+  if ([maskCopy count])
   {
-    if (a4)
+    if (errors)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
@@ -224,13 +224,13 @@
       v6 = 0;
     }
 
-    v38 = a4;
-    v39 = v5;
+    errorsCopy = errors;
+    v39 = maskCopy;
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v5;
+    obj = maskCopy;
     v8 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v8)
     {
@@ -251,8 +251,8 @@
           v44 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v13 = [(TSMTIEMask *)self elements];
-          v14 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
+          elements = [(TSMTIEMask *)self elements];
+          v14 = [elements countByEnumeratingWithState:&v43 objects:v51 count:16];
           if (v14)
           {
             v15 = v14;
@@ -264,7 +264,7 @@
               {
                 if (*v44 != v17)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(elements);
                 }
 
                 v19 = *(*(&v43 + 1) + 8 * j);
@@ -309,7 +309,7 @@
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
+              v15 = [elements countByEnumeratingWithState:&v43 objects:v51 count:16];
               if (v15)
               {
                 continue;
@@ -335,13 +335,13 @@ LABEL_27:
       v41 = 1;
     }
 
-    if (v38)
+    if (errorsCopy)
     {
       v35 = v6;
-      *v38 = v6;
+      *errorsCopy = v6;
     }
 
-    v5 = v39;
+    maskCopy = v39;
     v7 = v41;
   }
 
@@ -354,7 +354,7 @@ LABEL_27:
   return v7 & 1;
 }
 
-- (id)mtieMaskFromStart:(double)a3 toEnd:(double)a4 withStep:(double)a5
+- (id)mtieMaskFromStart:(double)start toEnd:(double)end withStep:(double)step
 {
   v30 = *MEMORY[0x277D85DE8];
   for (i = [MEMORY[0x277CBEB18] array];
@@ -363,8 +363,8 @@ LABEL_27:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [(TSMTIEMask *)self elements];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    elements = [(TSMTIEMask *)self elements];
+    v11 = [elements countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -375,26 +375,26 @@ LABEL_27:
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(elements);
           }
 
           v15 = *(*(&v25 + 1) + 8 * j);
           [v15 lowerLimit];
-          if (a3 >= v16)
+          if (start >= v16)
           {
             [v15 upperLimit];
-            if (a3 < v17)
+            if (start < v17)
             {
               [v15 a];
               v20 = v19;
               [v15 b];
-              v18 = (v21 + v20 * (a3 / 1000000000.0)) * 1000000000.0;
+              v18 = (v21 + v20 * (start / 1000000000.0)) * 1000000000.0;
               goto LABEL_13;
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v12 = [elements countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v12)
         {
           continue;
@@ -407,7 +407,7 @@ LABEL_27:
     v18 = NAN;
 LABEL_13:
 
-    v22 = [[TSMTIEValue alloc] initWithObservationInterval:a3 andMTIE:v18];
+    v22 = [[TSMTIEValue alloc] initWithObservationInterval:start andMTIE:v18];
     [i addObject:v22];
   }
 

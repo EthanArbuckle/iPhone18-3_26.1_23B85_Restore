@@ -1,22 +1,22 @@
 @interface RefreshMicroPaymentDownloadOperation
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4;
-- (BOOL)_updateDownload:(id)a3 withDictionary:(id)a4;
-- (RefreshMicroPaymentDownloadOperation)initWithDownloadIdentifier:(int64_t)a3;
-- (id)_newIdentityForPayment:(id)a3;
-- (id)_newRequestWithIdentity:(id)a3 transactionID:(id)a4;
+- (BOOL)_refreshDownload:(id)download error:(id *)error;
+- (BOOL)_updateDownload:(id)download withDictionary:(id)dictionary;
+- (RefreshMicroPaymentDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier;
+- (id)_newIdentityForPayment:(id)payment;
+- (id)_newRequestWithIdentity:(id)identity transactionID:(id)d;
 - (void)run;
 @end
 
 @implementation RefreshMicroPaymentDownloadOperation
 
-- (RefreshMicroPaymentDownloadOperation)initWithDownloadIdentifier:(int64_t)a3
+- (RefreshMicroPaymentDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = RefreshMicroPaymentDownloadOperation;
   result = [(RefreshMicroPaymentDownloadOperation *)&v5 init];
   if (result)
   {
-    result->_downloadID = a3;
+    result->_downloadID = identifier;
   }
 
   return result;
@@ -38,15 +38,15 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
     if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -91,15 +91,15 @@ LABEL_25:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog2 = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog2 | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog2;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -135,28 +135,28 @@ LABEL_26:
   [(RefreshMicroPaymentDownloadOperation *)self setSuccess:v14];
 }
 
-- (id)_newIdentityForPayment:(id)a3
+- (id)_newIdentityForPayment:(id)payment
 {
-  v4 = [a3 client];
-  if (!v4)
+  client = [payment client];
+  if (!client)
   {
     return 0;
   }
 
-  v5 = v4;
-  if ([objc_msgSend(v4 "usesIdentityAttributes")])
+  v5 = client;
+  if ([objc_msgSend(client "usesIdentityAttributes")])
   {
     v6 = objc_alloc_init(StoreKitClientIdentity);
-    -[StoreKitClientIdentity setAccountIdentifier:](v6, "setAccountIdentifier:", [a3 userDSID]);
+    -[StoreKitClientIdentity setAccountIdentifier:](v6, "setAccountIdentifier:", [payment userDSID]);
     -[StoreKitClientIdentity setBundleIdentifier:](v6, "setBundleIdentifier:", [v5 identifier]);
     -[StoreKitClientIdentity setBundleVersion:](v6, "setBundleVersion:", [v5 bundleVersion]);
-    v7 = [v5 storeIdentifier];
-    v8 = [v5 storeVersion];
-    [(StoreKitClientIdentity *)v6 setStoreIdentifier:v7];
-    [(StoreKitClientIdentity *)v6 setStoreVersion:v8];
-    if (v7)
+    storeIdentifier = [v5 storeIdentifier];
+    storeVersion = [v5 storeVersion];
+    [(StoreKitClientIdentity *)v6 setStoreIdentifier:storeIdentifier];
+    [(StoreKitClientIdentity *)v6 setStoreVersion:storeVersion];
+    if (storeIdentifier)
     {
-      v9 = v8 == 0;
+      v9 = storeVersion == 0;
     }
 
     else
@@ -191,27 +191,27 @@ LABEL_26:
   return v6;
 }
 
-- (id)_newRequestWithIdentity:(id)a3 transactionID:(id)a4
+- (id)_newRequestWithIdentity:(id)identity transactionID:(id)d
 {
   v6 = objc_alloc_init(MicroPaymentQueueRequest);
-  [(MicroPaymentQueueRequest *)v6 setClientIdentity:a3];
-  -[MicroPaymentQueueRequest setUserIdentifier:](v6, "setUserIdentifier:", [a3 accountIdentifier]);
-  v7 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(a4, "longLongValue")}];
+  [(MicroPaymentQueueRequest *)v6 setClientIdentity:identity];
+  -[MicroPaymentQueueRequest setUserIdentifier:](v6, "setUserIdentifier:", [identity accountIdentifier]);
+  v7 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(d, "longLongValue")}];
   [(MicroPaymentQueueRequest *)v6 setRangeEndIdentifier:v7];
   [(MicroPaymentQueueRequest *)v6 setRangeStartIdentifier:v7];
 
   return v6;
 }
 
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4
+- (BOOL)_refreshDownload:(id)download error:(id *)error
 {
   v45 = 0;
-  v7 = [a3 payment];
-  v8 = [v7 transactionIdentifier];
-  if (v8)
+  payment = [download payment];
+  transactionIdentifier = [payment transactionIdentifier];
+  if (transactionIdentifier)
   {
-    v9 = v8;
-    v10 = [(RefreshMicroPaymentDownloadOperation *)self _newIdentityForPayment:v7];
+    v9 = transactionIdentifier;
+    v10 = [(RefreshMicroPaymentDownloadOperation *)self _newIdentityForPayment:payment];
     if (v10)
     {
       v11 = v10;
@@ -222,15 +222,15 @@ LABEL_26:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
+      shouldLog = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog;
       }
 
       if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -266,10 +266,10 @@ LABEL_26:
       [(LoadMicroPaymentQueuePaymentsOperation *)v21 setURLBagKey:@"p2-in-app-pending-transactions"];
       if (([(RefreshMicroPaymentDownloadOperation *)self runSubOperation:v21 returningError:&v45]& 1) != 0)
       {
-        v22 = [(MicroPaymentQueueResponse *)[(LoadMicroPaymentQueuePaymentsOperation *)v21 response] payments];
-        if ([(NSArray *)v22 count]== 1)
+        payments = [(MicroPaymentQueueResponse *)[(LoadMicroPaymentQueuePaymentsOperation *)v21 response] payments];
+        if ([(NSArray *)payments count]== 1)
         {
-          LOBYTE(self) = [(RefreshMicroPaymentDownloadOperation *)self _updateDownload:a3 withDictionary:[(NSArray *)v22 objectAtIndex:0]];
+          LOBYTE(self) = [(RefreshMicroPaymentDownloadOperation *)self _updateDownload:download withDictionary:[(NSArray *)payments objectAtIndex:0]];
           goto LABEL_59;
         }
 
@@ -279,15 +279,15 @@ LABEL_26:
           v36 = +[SSLogConfig sharedConfig];
         }
 
-        v37 = [v36 shouldLog];
+        shouldLog2 = [v36 shouldLog];
         if ([v36 shouldLogToDisk])
         {
-          v38 = v37 | 2;
+          v38 = shouldLog2 | 2;
         }
 
         else
         {
-          v38 = v37;
+          v38 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v36 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -301,7 +301,7 @@ LABEL_26:
         }
 
         v39 = objc_opt_class();
-        v40 = [(NSArray *)v22 count];
+        v40 = [(NSArray *)payments count];
         v41 = self->_downloadID;
         v46 = 138412802;
         v47 = v39;
@@ -320,15 +320,15 @@ LABEL_26:
           v31 = +[SSLogConfig sharedConfig];
         }
 
-        v32 = [v31 shouldLog];
+        shouldLog3 = [v31 shouldLog];
         if ([v31 shouldLogToDisk])
         {
-          v33 = v32 | 2;
+          v33 = shouldLog3 | 2;
         }
 
         else
         {
-          v33 = v32;
+          v33 = shouldLog3;
         }
 
         if (!os_log_type_enabled([v31 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -365,7 +365,7 @@ LABEL_58:
       LOBYTE(self) = 0;
 LABEL_59:
 
-      if (!a4)
+      if (!error)
       {
         return self;
       }
@@ -379,15 +379,15 @@ LABEL_59:
       v26 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v26 shouldLog];
+    shouldLog4 = [v26 shouldLog];
     if ([v26 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog4 | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog4;
     }
 
     if (!os_log_type_enabled([v26 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -409,15 +409,15 @@ LABEL_59:
       v23 = +[SSLogConfig sharedConfig];
     }
 
-    v24 = [v23 shouldLog];
+    shouldLog5 = [v23 shouldLog];
     if ([v23 shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog5 | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog5;
     }
 
     if (!os_log_type_enabled([v23 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -450,7 +450,7 @@ LABEL_59:
 LABEL_35:
   LOBYTE(self) = 0;
 LABEL_36:
-  if (!a4)
+  if (!error)
   {
     return self;
   }
@@ -458,21 +458,21 @@ LABEL_36:
 LABEL_60:
   if ((self & 1) == 0)
   {
-    *a4 = v45;
+    *error = v45;
   }
 
   return self;
 }
 
-- (BOOL)_updateDownload:(id)a3 withDictionary:(id)a4
+- (BOOL)_updateDownload:(id)download withDictionary:(id)dictionary
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [a3 payment];
-  [v7 mergeValuesFromResponse:a4];
-  v8 = -[Download initWithMicroPaymentDownload:clientID:]([Download alloc], "initWithMicroPaymentDownload:clientID:", a3, [objc_msgSend(v7 "client")]);
+  payment = [download payment];
+  [payment mergeValuesFromResponse:dictionary];
+  v8 = -[Download initWithMicroPaymentDownload:clientID:]([Download alloc], "initWithMicroPaymentDownload:clientID:", download, [objc_msgSend(payment "client")]);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100212100;

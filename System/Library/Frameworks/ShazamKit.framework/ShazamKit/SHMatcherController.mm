@@ -2,26 +2,26 @@
 - (NSUUID)taskID;
 - (NSUUID)workerID;
 - (SHMatcherController)associatedMatcherController;
-- (SHMatcherController)initWithMatcher:(id)a3 notificationScheduler:(id)a4;
+- (SHMatcherController)initWithMatcher:(id)matcher notificationScheduler:(id)scheduler;
 - (SHMatcherDelegate)delegate;
 - (SHMatcherDelegate)matcherDelegateForResponse;
 - (SHWorkerDelegate)workerDelegate;
 - (int64_t)executionScope;
-- (void)downstreamMatcher:(id)a3 didProduceResponse:(id)a4;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
+- (void)downstreamMatcher:(id)matcher didProduceResponse:(id)response;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
 - (void)shutdownWorker;
-- (void)shutdownWorkerForRequestID:(id)a3;
-- (void)startRecognitionForRequest:(id)a3;
+- (void)shutdownWorkerForRequestID:(id)d;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
+- (void)stopRecognitionForRequestID:(id)d;
 @end
 
 @implementation SHMatcherController
 
-- (SHMatcherController)initWithMatcher:(id)a3 notificationScheduler:(id)a4
+- (SHMatcherController)initWithMatcher:(id)matcher notificationScheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  matcherCopy = matcher;
+  schedulerCopy = scheduler;
   v13.receiver = self;
   v13.super_class = SHMatcherController;
   v9 = [(SHMatcherController *)&v13 init];
@@ -32,72 +32,72 @@
     v9->_downstreamMatcherDelegate = v10;
 
     [(_SHDownstreamMatcherDelegate *)v9->_downstreamMatcherDelegate setWorker:v9];
-    objc_storeStrong(&v9->_matcher, a3);
+    objc_storeStrong(&v9->_matcher, matcher);
     [(SHMatcher *)v9->_matcher setDelegate:v9->_downstreamMatcherDelegate];
-    objc_storeStrong(&v9->_notificationScheduler, a4);
+    objc_storeStrong(&v9->_notificationScheduler, scheduler);
   }
 
   return v9;
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v4 = a3;
-  [(SHMatcherController *)self setMatcherRequest:v4];
-  v5 = [(SHMatcherController *)self matcher];
-  [v5 startRecognitionForRequest:v4];
+  requestCopy = request;
+  [(SHMatcherController *)self setMatcherRequest:requestCopy];
+  matcher = [(SHMatcherController *)self matcher];
+  [matcher startRecognitionForRequest:requestCopy];
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMatcherController *)self matcherDelegateForResponse];
-  [v8 matcher:v7 didProduceResponse:v6];
+  responseCopy = response;
+  matcherCopy = matcher;
+  matcherDelegateForResponse = [(SHMatcherController *)self matcherDelegateForResponse];
+  [matcherDelegateForResponse matcher:matcherCopy didProduceResponse:responseCopy];
 
   [(SHMatcherController *)self setMatcherDelegateForResponse:0];
 }
 
-- (void)downstreamMatcher:(id)a3 didProduceResponse:(id)a4
+- (void)downstreamMatcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHMatcherController *)self associatedMatcherController];
-  v9 = [v8 matcher];
-  v10 = [v6 isEqual:v9];
+  matcherCopy = matcher;
+  responseCopy = response;
+  associatedMatcherController = [(SHMatcherController *)self associatedMatcherController];
+  matcher = [associatedMatcherController matcher];
+  v10 = [matcherCopy isEqual:matcher];
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___SHMatcherDelegate])
+  if ([matcherCopy conformsToProtocol:&OBJC_PROTOCOL___SHMatcherDelegate])
   {
-    [(SHMatcherController *)self setMatcherDelegateForResponse:v6];
+    [(SHMatcherController *)self setMatcherDelegateForResponse:matcherCopy];
   }
 
-  v11 = [(SHMatcherController *)self delegate];
-  [v11 matcher:v6 didProduceResponse:v7];
+  delegate = [(SHMatcherController *)self delegate];
+  [delegate matcher:matcherCopy didProduceResponse:responseCopy];
 
   if ((v10 & 1) == 0)
   {
-    if (([v7 isStillRunningAssociatedRequest] & 1) == 0)
+    if (([responseCopy isStillRunningAssociatedRequest] & 1) == 0)
     {
-      v12 = [(SHMatcherController *)self associatedMatcherController];
-      [v12 setAssociatedMatcherController:0];
+      associatedMatcherController2 = [(SHMatcherController *)self associatedMatcherController];
+      [associatedMatcherController2 setAssociatedMatcherController:0];
     }
 
-    v13 = [(SHMatcherController *)self associatedMatcherController];
-    v14 = [v13 delegate];
-    v15 = [(SHMatcherController *)self associatedMatcherController];
-    v16 = [v15 matcher];
-    [v14 matcher:v16 didProduceResponse:v7];
+    associatedMatcherController3 = [(SHMatcherController *)self associatedMatcherController];
+    delegate2 = [associatedMatcherController3 delegate];
+    associatedMatcherController4 = [(SHMatcherController *)self associatedMatcherController];
+    matcher2 = [associatedMatcherController4 matcher];
+    [delegate2 matcher:matcher2 didProduceResponse:responseCopy];
   }
 
-  if (([v7 isStillRunningAssociatedRequest] & 1) == 0)
+  if (([responseCopy isStillRunningAssociatedRequest] & 1) == 0)
   {
-    v17 = [v7 error];
-    v18 = [v17 sh_isMatchAttemptCancelledError];
+    error = [responseCopy error];
+    sh_isMatchAttemptCancelledError = [error sh_isMatchAttemptCancelledError];
 
-    v19 = [(SHMatcherController *)self matcherRequest];
-    v20 = [v19 sendNotifications];
+    matcherRequest = [(SHMatcherController *)self matcherRequest];
+    sendNotifications = [matcherRequest sendNotifications];
 
-    if (!v20 || (v18 & 1) != 0)
+    if (!sendNotifications || (sh_isMatchAttemptCancelledError & 1) != 0)
     {
       if (v10)
       {
@@ -110,14 +110,14 @@
     else
     {
       objc_initWeak(&location, self);
-      v21 = [(SHMatcherController *)self notificationScheduler];
+      notificationScheduler = [(SHMatcherController *)self notificationScheduler];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1000495F4;
       v22[3] = &unk_10007E370;
       v24 = v10;
       objc_copyWeak(&v23, &location);
-      [v21 sendNotificationForResponse:v7 completionHandler:v22];
+      [notificationScheduler sendNotificationForResponse:responseCopy completionHandler:v22];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -129,7 +129,7 @@
 {
   if (!self->_workerID)
   {
-    v3 = [(SHMatcherController *)self matcher];
+    matcher = [(SHMatcherController *)self matcher];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -146,15 +146,15 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v7 = [(SHMatcherController *)self matcher];
+    matcher2 = [(SHMatcherController *)self matcher];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [(SHMatcherController *)self matcher];
+      matcher3 = [(SHMatcherController *)self matcher];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [(SHMatcherController *)self matcher];
+        matcher4 = [(SHMatcherController *)self matcher];
         objc_opt_class();
         v14 = objc_opt_isKindOfClass();
 
@@ -182,22 +182,22 @@ LABEL_11:
 
 - (NSUUID)taskID
 {
-  v2 = [(SHMatcherController *)self matcherRequest];
-  v3 = [v2 requestID];
+  matcherRequest = [(SHMatcherController *)self matcherRequest];
+  requestID = [matcherRequest requestID];
 
-  return v3;
+  return requestID;
 }
 
 - (int64_t)executionScope
 {
-  v3 = [(SHMatcherController *)self matcher];
+  matcher = [(SHMatcherController *)self matcher];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_6;
   }
 
-  v4 = [(SHMatcherController *)self matcher];
+  matcher2 = [(SHMatcherController *)self matcher];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -207,7 +207,7 @@ LABEL_6:
     return 1;
   }
 
-  v5 = [(SHMatcherController *)self matcher];
+  matcher3 = [(SHMatcherController *)self matcher];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -215,7 +215,7 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v7 = [(SHMatcherController *)self matcher];
+  matcher4 = [(SHMatcherController *)self matcher];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -224,68 +224,68 @@ LABEL_6:
 
 - (void)shutdownWorker
 {
-  v4 = [(SHMatcherController *)self matcherRequest];
-  v3 = [v4 requestID];
-  [(SHMatcherController *)self shutdownWorkerForRequestID:v3];
+  matcherRequest = [(SHMatcherController *)self matcherRequest];
+  requestID = [matcherRequest requestID];
+  [(SHMatcherController *)self shutdownWorkerForRequestID:requestID];
 }
 
-- (void)shutdownWorkerForRequestID:(id)a3
+- (void)shutdownWorkerForRequestID:(id)d
 {
-  v18 = a3;
-  v4 = [(SHMatcherController *)self matcherRequest];
-  v5 = [v4 requestID];
-  v6 = [v5 isEqual:v18];
+  dCopy = d;
+  matcherRequest = [(SHMatcherController *)self matcherRequest];
+  requestID = [matcherRequest requestID];
+  v6 = [requestID isEqual:dCopy];
 
   if (v6)
   {
     [(SHMatcherController *)self setMatcherRequest:0];
-    v7 = [(SHMatcherController *)self matcher];
-    [v7 stopRecognitionForRequestID:v18];
+    matcher = [(SHMatcherController *)self matcher];
+    [matcher stopRecognitionForRequestID:dCopy];
 
-    v8 = [(SHMatcherController *)self completionHandler];
+    completionHandler = [(SHMatcherController *)self completionHandler];
 
-    if (v8)
+    if (completionHandler)
     {
-      v9 = [(SHMatcherController *)self completionHandler];
-      v9[2]();
+      completionHandler2 = [(SHMatcherController *)self completionHandler];
+      completionHandler2[2]();
 
       [(SHMatcherController *)self setCompletionHandler:0];
     }
 
-    v10 = [(SHMatcherController *)self workerDelegate];
-    [v10 finishedWorker:self];
+    workerDelegate = [(SHMatcherController *)self workerDelegate];
+    [workerDelegate finishedWorker:self];
 
     [(SHMatcherController *)self setWorkerDelegate:0];
-    v11 = [(SHMatcherController *)self associatedMatcherController];
+    associatedMatcherController = [(SHMatcherController *)self associatedMatcherController];
 
-    if (v11)
+    if (associatedMatcherController)
     {
       v12 = [SHError privateErrorWithCode:203 underlyingError:0];
       v13 = objc_opt_new();
       v14 = [SHMatcherResponse errorResponseForSignature:v13 error:v12];
 
-      v15 = [(SHMatcherController *)self associatedMatcherController];
-      v16 = [v15 downstreamMatcherDelegate];
-      v17 = [(SHMatcherController *)self matcher];
-      [v16 matcher:v17 didProduceResponse:v14];
+      associatedMatcherController2 = [(SHMatcherController *)self associatedMatcherController];
+      downstreamMatcherDelegate = [associatedMatcherController2 downstreamMatcherDelegate];
+      matcher2 = [(SHMatcherController *)self matcher];
+      [downstreamMatcherDelegate matcher:matcher2 didProduceResponse:v14];
     }
   }
 }
 
 - (void)stopRecognition
 {
-  v4 = [(SHMatcherController *)self matcherRequest];
-  v3 = [v4 requestID];
-  [(SHMatcherController *)self stopRecognitionForRequestID:v3];
+  matcherRequest = [(SHMatcherController *)self matcherRequest];
+  requestID = [matcherRequest requestID];
+  [(SHMatcherController *)self stopRecognitionForRequestID:requestID];
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v5 = a3;
-  v4 = [(SHMatcherController *)self matcher];
-  [v4 setDelegate:0];
+  dCopy = d;
+  matcher = [(SHMatcherController *)self matcher];
+  [matcher setDelegate:0];
 
-  [(SHMatcherController *)self shutdownWorkerForRequestID:v5];
+  [(SHMatcherController *)self shutdownWorkerForRequestID:dCopy];
 }
 
 - (SHWorkerDelegate)workerDelegate

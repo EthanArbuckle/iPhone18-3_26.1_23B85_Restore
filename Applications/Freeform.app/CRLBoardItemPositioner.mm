@@ -1,27 +1,27 @@
 @interface CRLBoardItemPositioner
-- (BOOL)p_hasAnyCollisionForIndividualInfos:(id)a3 currentTotalFrame:(CGRect)a4 currentTotalDelta:(CGPoint)a5;
-- (BOOL)p_hasCanvasCollisionWithSpecificBoardItemFrame:(CGRect)a3 targetCenter:(CGPoint)a4 previouslyPositionedBoardItems:(id)a5;
-- (BOOL)p_infos:(id)a3 collideWithRect:(CGRect)a4 orTargetCenter:(CGPoint)a5;
-- (CGPoint)pPinnedCenter:(CGPoint)a3 andSize:(CGSize)a4 toBounds:(CGRect)a5;
+- (BOOL)p_hasAnyCollisionForIndividualInfos:(id)infos currentTotalFrame:(CGRect)frame currentTotalDelta:(CGPoint)delta;
+- (BOOL)p_hasCanvasCollisionWithSpecificBoardItemFrame:(CGRect)frame targetCenter:(CGPoint)center previouslyPositionedBoardItems:(id)items;
+- (BOOL)p_infos:(id)p_infos collideWithRect:(CGRect)rect orTargetCenter:(CGPoint)center;
+- (CGPoint)pPinnedCenter:(CGPoint)center andSize:(CGSize)size toBounds:(CGRect)bounds;
 - (CGPoint)positionOffset;
 - (CGPoint)targetCenter;
-- (CGRect)boundsByFittingBoardItem:(id)a3;
-- (CGRect)canvasBoundsOfBoardItem:(id)a3;
-- (CGRect)i_boundsForPositioningBoardItem:(id)a3;
-- (CRLBoardItemPositioner)initWithCanvasEditor:(id)a3;
-- (CRLBoardItemPositioner)initWithCanvasEditor:(id)a3 targetCenter:(CGPoint)a4 validGeometries:(BOOL)a5;
+- (CGRect)boundsByFittingBoardItem:(id)item;
+- (CGRect)canvasBoundsOfBoardItem:(id)item;
+- (CGRect)i_boundsForPositioningBoardItem:(id)item;
+- (CRLBoardItemPositioner)initWithCanvasEditor:(id)editor;
+- (CRLBoardItemPositioner)initWithCanvasEditor:(id)editor targetCenter:(CGPoint)center validGeometries:(BOOL)geometries;
 - (CRLCanvasEditor)canvasEditor;
-- (void)i_positionBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4;
-- (void)pPositionNewBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4;
-- (void)p_CenterBoardItem:(id)a3 withInitialFrame:(CGRect)a4 offsettingFromTargetCenter:(CGPoint)a5 previouslyPositionedBoardItems:(id)a6 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a7;
-- (void)positionBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4;
+- (void)i_positionBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping;
+- (void)pPositionNewBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping;
+- (void)p_CenterBoardItem:(id)item withInitialFrame:(CGRect)frame offsettingFromTargetCenter:(CGPoint)center previouslyPositionedBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping;
+- (void)positionBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping;
 @end
 
 @implementation CRLBoardItemPositioner
 
-- (CRLBoardItemPositioner)initWithCanvasEditor:(id)a3
+- (CRLBoardItemPositioner)initWithCanvasEditor:(id)editor
 {
-  result = [(CRLBoardItemPositioner *)self initWithCanvasEditor:a3 targetCenter:1 validGeometries:CGPointZero.x, CGPointZero.y];
+  result = [(CRLBoardItemPositioner *)self initWithCanvasEditor:editor targetCenter:1 validGeometries:CGPointZero.x, CGPointZero.y];
   if (result)
   {
     result->_useOriginalPositions = 1;
@@ -30,21 +30,21 @@
   return result;
 }
 
-- (CRLBoardItemPositioner)initWithCanvasEditor:(id)a3 targetCenter:(CGPoint)a4 validGeometries:(BOOL)a5
+- (CRLBoardItemPositioner)initWithCanvasEditor:(id)editor targetCenter:(CGPoint)center validGeometries:(BOOL)geometries
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = center.y;
+  x = center.x;
+  editorCopy = editor;
   v15.receiver = self;
   v15.super_class = CRLBoardItemPositioner;
   v10 = [(CRLBoardItemPositioner *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_canvasEditor, v9);
+    objc_storeWeak(&v10->_canvasEditor, editorCopy);
     v11->_targetCenter.x = x;
     v11->_targetCenter.y = y;
-    v11->_validGeometries = a5;
+    v11->_validGeometries = geometries;
     *&v11->_useOriginalPositions = 256;
     v12 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:0];
     boardItemsToCanvasBounds = v11->_boardItemsToCanvasBounds;
@@ -54,34 +54,34 @@
   return v11;
 }
 
-- (void)positionBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4
+- (void)positionBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  snappingCopy = snapping;
+  itemsCopy = items;
+  v7 = itemsCopy;
   if (self->_validGeometries)
   {
-    [(CRLBoardItemPositioner *)self i_positionBoardItems:v6 ignoreCanvasBackgroundAlignmentProvidedSnapping:v4];
+    [(CRLBoardItemPositioner *)self i_positionBoardItems:itemsCopy ignoreCanvasBackgroundAlignmentProvidedSnapping:snappingCopy];
   }
 
   else
   {
-    [(CRLBoardItemPositioner *)self pPositionNewBoardItems:v6 ignoreCanvasBackgroundAlignmentProvidedSnapping:v4];
+    [(CRLBoardItemPositioner *)self pPositionNewBoardItems:itemsCopy ignoreCanvasBackgroundAlignmentProvidedSnapping:snappingCopy];
   }
 }
 
-- (CGRect)i_boundsForPositioningBoardItem:(id)a3
+- (CGRect)i_boundsForPositioningBoardItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_canvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 delegate];
+  delegate = [interactiveCanvasController delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 delegate];
-    [v7 visibleUnscaledCanvasRectWithoutKeyboard];
+    delegate2 = [interactiveCanvasController delegate];
+    [delegate2 visibleUnscaledCanvasRectWithoutKeyboard];
     x = v8;
     y = v10;
     width = v12;
@@ -116,34 +116,34 @@
   return result;
 }
 
-- (CGRect)canvasBoundsOfBoardItem:(id)a3
+- (CGRect)canvasBoundsOfBoardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v45 = 0;
   v46 = &v45;
   v47 = 0x5012000000;
   v48 = sub_1002AB084;
   v49 = nullsub_38;
   v50 = &unk_1016A8115;
-  v5 = [(NSMapTable *)self->_boardItemsToCanvasBounds objectForKey:v4];
+  v5 = [(NSMapTable *)self->_boardItemsToCanvasBounds objectForKey:itemCopy];
   v6 = v5;
   if (!v5)
   {
-    v16 = [(CRLBoardItemPositioner *)self canvasEditor];
-    v17 = [v16 interactiveCanvasController];
+    canvasEditor = [(CRLBoardItemPositioner *)self canvasEditor];
+    interactiveCanvasController = [canvasEditor interactiveCanvasController];
 
     v41 = 0;
     v42 = &v41;
     v43 = 0x2020000000;
     v44 = 0;
-    v18 = [v17 canvas];
-    v19 = [v18 layoutController];
-    v20 = [v19 layoutForInfo:v4];
+    canvas = [interactiveCanvasController canvas];
+    layoutController = [canvas layoutController];
+    v20 = [layoutController layoutForInfo:itemCopy];
 
     if (v20)
     {
-      v21 = [v20 pureGeometryInRoot];
-      [v21 frame];
+      pureGeometryInRoot = [v20 pureGeometryInRoot];
+      [pureGeometryInRoot frame];
       v22 = v46;
       v46[6] = v23;
       v22[7] = v24;
@@ -155,19 +155,19 @@
 
     else if (!*(v42 + 24))
     {
-      v27 = [(CRLBoardItemPositioner *)self canvasEditor];
-      v28 = [v27 selectionPathWithInfo:v4];
+      canvasEditor2 = [(CRLBoardItemPositioner *)self canvasEditor];
+      v28 = [canvasEditor2 selectionPathWithInfo:itemCopy];
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;
       v40[2] = sub_1002AB094;
       v40[3] = &unk_101850F10;
       v40[4] = &v45;
       v40[5] = &v41;
-      [v17 withLayoutForSelectionPath:v28 performBlock:v40];
+      [interactiveCanvasController withLayoutForSelectionPath:v28 performBlock:v40];
 
       if (!*(v42 + 24))
       {
-        [v4 visibleBoundsForPositioning];
+        [itemCopy visibleBoundsForPositioning];
         v35 = v46;
         v46[6] = v36;
         v35[7] = v37;
@@ -179,7 +179,7 @@
 
     boardItemsToCanvasBounds = self->_boardItemsToCanvasBounds;
     v30 = [NSValue valueWithCGRect:*(v46 + 6), *(v46 + 7), *(v46 + 8), *(v46 + 9)];
-    [(NSMapTable *)boardItemsToCanvasBounds setObject:v30 forKey:v4];
+    [(NSMapTable *)boardItemsToCanvasBounds setObject:v30 forKey:itemCopy];
 
 LABEL_8:
     _Block_object_dispose(&v41, 8);
@@ -215,9 +215,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)boundsByFittingBoardItem:(id)a3
+- (CGRect)boundsByFittingBoardItem:(id)item
 {
-  [a3 visibleBoundsForPositioning];
+  [item visibleBoundsForPositioning];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -225,18 +225,18 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)p_infos:(id)a3 collideWithRect:(CGRect)a4 orTargetCenter:(CGPoint)a5
+- (BOOL)p_infos:(id)p_infos collideWithRect:(CGRect)rect orTargetCenter:(CGPoint)center
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  p_infosCopy = p_infos;
+  v9 = [p_infosCopy countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v9)
   {
     v10 = *v45;
@@ -246,7 +246,7 @@ LABEL_9:
       {
         if (*v45 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(p_infosCopy);
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
@@ -264,7 +264,7 @@ LABEL_9:
           v26 = sub_100120414(v16, v18, v20, v22);
           v28 = vabdd_f64(v25, v27);
           v29 = vabdd_f64(v23, v26) < 4.0 && v28 < 4.0;
-          if (v29 || ((v30 = vabdd_f64(a5.y, v27), vabdd_f64(a5.x, v26) < 4.0) ? (v31 = v30 < 4.0) : (v31 = 0), v31))
+          if (v29 || ((v30 = vabdd_f64(center.y, v27), vabdd_f64(center.x, v26) < 4.0) ? (v31 = v30 < 4.0) : (v31 = 0), v31))
           {
             v32 = vabdd_f64(height, v22);
             if (vabdd_f64(width, v20) < 40.0 || v32 < 40.0)
@@ -278,8 +278,8 @@ LABEL_9:
           v36 = v35;
           if (v35)
           {
-            v37 = [v35 allNestedChildrenItemsIncludingContainers];
-            v38 = [(CRLBoardItemPositioner *)self p_infos:v37 collideWithRect:x orTargetCenter:y, width, height, a5.x, a5.y];
+            allNestedChildrenItemsIncludingContainers = [v35 allNestedChildrenItemsIncludingContainers];
+            v38 = [(CRLBoardItemPositioner *)self p_infos:allNestedChildrenItemsIncludingContainers collideWithRect:x orTargetCenter:y, width, height, center.x, center.y];
 
             if (v38)
             {
@@ -292,7 +292,7 @@ LABEL_27:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v9 = [p_infosCopy countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v9)
       {
         continue;
@@ -308,21 +308,21 @@ LABEL_28:
   return v39;
 }
 
-- (BOOL)p_hasCanvasCollisionWithSpecificBoardItemFrame:(CGRect)a3 targetCenter:(CGPoint)a4 previouslyPositionedBoardItems:(id)a5
+- (BOOL)p_hasCanvasCollisionWithSpecificBoardItemFrame:(CGRect)frame targetCenter:(CGPoint)center previouslyPositionedBoardItems:(id)items
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = a5;
+  y = center.y;
+  x = center.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v9 = frame.origin.y;
+  v10 = frame.origin.x;
+  itemsCopy = items;
   if (self->_avoidCollisions)
   {
-    v13 = [(CRLBoardItemPositioner *)self canvasEditor];
-    v14 = [v13 interactiveCanvasController];
+    canvasEditor = [(CRLBoardItemPositioner *)self canvasEditor];
+    interactiveCanvasController = [canvasEditor interactiveCanvasController];
 
-    if (!v14)
+    if (!interactiveCanvasController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -354,22 +354,22 @@ LABEL_28:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_canvasEditor);
-    v19 = [WeakRetained interactiveCanvasController];
-    v20 = [v19 infosToDisplay];
-    v21 = [v20 crl_arrayByTransformingWithBlock:&stru_101850F90];
+    interactiveCanvasController2 = [WeakRetained interactiveCanvasController];
+    infosToDisplay = [interactiveCanvasController2 infosToDisplay];
+    v21 = [infosToDisplay crl_arrayByTransformingWithBlock:&stru_101850F90];
 
-    if ([v12 count])
+    if ([itemsCopy count])
     {
       if (v21)
       {
-        v22 = [v12 arrayByAddingObjectsFromArray:v21];
+        v22 = [itemsCopy arrayByAddingObjectsFromArray:v21];
 
         v21 = v22;
       }
 
       else
       {
-        v21 = v12;
+        v21 = itemsCopy;
       }
     }
 
@@ -384,18 +384,18 @@ LABEL_28:
   return v23;
 }
 
-- (CGPoint)pPinnedCenter:(CGPoint)a3 andSize:(CGSize)a4 toBounds:(CGRect)a5
+- (CGPoint)pPinnedCenter:(CGPoint)center andSize:(CGSize)size toBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  rect = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v49 = a4.width * 0.5;
-  v50 = a3.x;
-  v41 = a3.y;
-  v46 = a4.height;
-  v52.origin.x = sub_10011EC70(a3.x, a3.y, a4.width);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  rect = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v49 = size.width * 0.5;
+  v50 = center.x;
+  v41 = center.y;
+  v46 = size.height;
+  v52.origin.x = sub_10011EC70(center.x, center.y, size.width);
   v10 = v52.origin.x;
   v11 = v52.origin.y;
   v12 = v52.size.width;
@@ -508,10 +508,10 @@ LABEL_11:
     v26 = v47;
   }
 
-  v33 = [(CRLBoardItemPositioner *)self canvasEditor];
-  v34 = [v33 interactiveCanvasController];
-  v35 = [v34 canvas];
-  v36 = [v35 isAnchoredAtRight];
+  canvasEditor = [(CRLBoardItemPositioner *)self canvasEditor];
+  interactiveCanvasController = [canvasEditor interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
   if (v50 >= v49)
   {
@@ -520,7 +520,7 @@ LABEL_11:
 
   else
   {
-    v37 = v36;
+    v37 = isAnchoredAtRight;
   }
 
   if (v37)
@@ -539,7 +539,7 @@ LABEL_11:
     v39 = v50;
   }
 
-  if (v36)
+  if (isAnchoredAtRight)
   {
     v38 = v39;
   }
@@ -559,17 +559,17 @@ LABEL_11:
   return result;
 }
 
-- (void)p_CenterBoardItem:(id)a3 withInitialFrame:(CGRect)a4 offsettingFromTargetCenter:(CGPoint)a5 previouslyPositionedBoardItems:(id)a6 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a7
+- (void)p_CenterBoardItem:(id)item withInitialFrame:(CGRect)frame offsettingFromTargetCenter:(CGPoint)center previouslyPositionedBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v64 = a4.origin.x;
-  v65 = a4.origin.y;
-  v14 = a3;
-  v15 = a6;
-  [(CRLBoardItemPositioner *)self i_boundsForPositioningBoardItem:v14];
+  y = center.y;
+  x = center.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v64 = frame.origin.x;
+  v65 = frame.origin.y;
+  itemCopy = item;
+  itemsCopy = items;
+  [(CRLBoardItemPositioner *)self i_boundsForPositioningBoardItem:itemCopy];
   v66 = v16;
   v67 = v17;
   v19 = v18;
@@ -580,23 +580,23 @@ LABEL_11:
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  if (!a7)
+  if (!snapping)
   {
     WeakRetained = objc_loadWeakRetained(&self->_canvasEditor);
-    v30 = [WeakRetained interactiveCanvasController];
-    v31 = [v30 isCanvasBackgroundAlignmentSnappingEnabled];
+    interactiveCanvasController = [WeakRetained interactiveCanvasController];
+    isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled];
 
-    if (v31)
+    if (isCanvasBackgroundAlignmentSnappingEnabled)
     {
       v32 = objc_loadWeakRetained(&self->_canvasEditor);
-      v33 = [v32 interactiveCanvasController];
-      v34 = [v33 canvasBackground];
+      interactiveCanvasController2 = [v32 interactiveCanvasController];
+      canvasBackground = [interactiveCanvasController2 canvasBackground];
 
-      v35 = [v34 alignmentProvider];
-      v36 = v35;
-      if (v35)
+      alignmentProvider = [canvasBackground alignmentProvider];
+      v36 = alignmentProvider;
+      if (alignmentProvider)
       {
-        [v35 originPointForAlignedInsertingRect:{v22, v24, v26, v28}];
+        [alignmentProvider originPointForAlignedInsertingRect:{v22, v24, v26, v28}];
         v22 = v37;
         v24 = v38;
       }
@@ -616,7 +616,7 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    v44 = v15;
+    v44 = itemsCopy;
   }
 
   if (self->_clampToVisibleBounds && !sub_10011EF14(v19, v21, v66, v67, v22, v24, v26, v28))
@@ -630,11 +630,11 @@ LABEL_13:
   }
 
   v50 = objc_loadWeakRetained(&self->_canvasEditor);
-  v51 = [v50 interactiveCanvasController];
-  v52 = [v51 commandController];
-  v53 = [v52 board];
+  interactiveCanvasController3 = [v50 interactiveCanvasController];
+  commandController = [interactiveCanvasController3 commandController];
+  board = [commandController board];
 
-  if (!v53)
+  if (!board)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -667,23 +667,23 @@ LABEL_13:
 
   if (!self->_useOriginalPositions || (v57 = sub_100120414(v22, v24, v26, v28), v59 = v58, v60 = sub_100120414(v64, v65, v62, v63), !sub_10011ECC8(v57, v59, v60, v61)))
   {
-    [v14 crl_onBoard:v53 moveItemToPosition:v22 size:{v24, v26, v28}];
+    [itemCopy crl_onBoard:board moveItemToPosition:v22 size:{v24, v26, v28}];
   }
 }
 
-- (BOOL)p_hasAnyCollisionForIndividualInfos:(id)a3 currentTotalFrame:(CGRect)a4 currentTotalDelta:(CGPoint)a5
+- (BOOL)p_hasAnyCollisionForIndividualInfos:(id)infos currentTotalFrame:(CGRect)frame currentTotalDelta:(CGPoint)delta
 {
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v8 = a4.origin.x;
+  x = delta.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  v8 = frame.origin.x;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = a3;
-  v11 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  infosCopy = infos;
+  v11 = [infosCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v11)
   {
     v12 = *v32;
@@ -693,7 +693,7 @@ LABEL_13:
       {
         if (*v32 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(infosCopy);
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
@@ -716,7 +716,7 @@ LABEL_13:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v11 = [infosCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v11)
       {
         continue;
@@ -732,14 +732,14 @@ LABEL_12:
   return v28;
 }
 
-- (void)i_positionBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4
+- (void)i_positionBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping
 {
-  v4 = a4;
+  snappingCopy = snapping;
   v94 = 0;
   v95 = 0;
   v96 = 0;
-  v84 = a3;
-  sub_1002ACB84(&v94, [v84 count]);
+  itemsCopy = items;
+  sub_1002ACB84(&v94, [itemsCopy count]);
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   height = CGRectNull.size.height;
@@ -750,7 +750,7 @@ LABEL_12:
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v10 = v84;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v90 objects:v99 count:16];
   if (v11)
   {
@@ -839,10 +839,10 @@ LABEL_12:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_canvasEditor);
-  v31 = [WeakRetained interactiveCanvasController];
-  v32 = [v31 canvasBackground];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  canvasBackground = [interactiveCanvasController canvasBackground];
 
-  v33 = [v32 alignmentProvider];
+  alignmentProvider = [canvasBackground alignmentProvider];
   if (self->_useOriginalPositions)
   {
     v35 = CGPointZero.x;
@@ -858,16 +858,16 @@ LABEL_12:
     v34 = v39;
     v40 = sub_10011F334(v29, y, v35);
     v42 = v41;
-    if (!v4)
+    if (!snappingCopy)
     {
       v43 = objc_loadWeakRetained(&self->_canvasEditor);
-      v44 = [v43 interactiveCanvasController];
-      v45 = [v44 isCanvasBackgroundAlignmentSnappingEnabled];
-      v46 = v33 ? v45 : 0;
+      interactiveCanvasController2 = [v43 interactiveCanvasController];
+      isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController2 isCanvasBackgroundAlignmentSnappingEnabled];
+      v46 = alignmentProvider ? isCanvasBackgroundAlignmentSnappingEnabled : 0;
 
       if (v46)
       {
-        [v33 originPointForAlignedInsertingRect:{v40, v42, width, height}];
+        [alignmentProvider originPointForAlignedInsertingRect:{v40, v42, width, height}];
         v40 = v47;
         v42 = v48;
       }
@@ -879,12 +879,12 @@ LABEL_12:
       {
         [(CRLBoardItemPositioner *)self positionOffset];
         v50 = v49;
-        if (v33)
+        if (alignmentProvider)
         {
           v51 = objc_loadWeakRetained(&self->_canvasEditor);
-          v52 = [v51 interactiveCanvasController];
-          [v52 viewScale];
-          [v33 snapDistanceForViewScale:?];
+          interactiveCanvasController3 = [v51 interactiveCanvasController];
+          [interactiveCanvasController3 viewScale];
+          [alignmentProvider snapDistanceForViewScale:?];
           v54 = v53;
 
           if (v50 <= v54)
@@ -904,11 +904,11 @@ LABEL_12:
   if ([(CRLBoardItemPositioner *)self shouldPreserveRelativePositions])
   {
     v57 = objc_loadWeakRetained(&self->_canvasEditor);
-    v58 = [v57 interactiveCanvasController];
-    v59 = [v58 commandController];
-    v60 = [v59 board];
+    interactiveCanvasController4 = [v57 interactiveCanvasController];
+    commandController = [interactiveCanvasController4 commandController];
+    board = [commandController board];
 
-    if (!v60)
+    if (!board)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -939,14 +939,14 @@ LABEL_12:
       [CRLAssertionHandler handleFailureInFunction:v62 file:v63 lineNumber:409 isFatal:0 description:"invalid nil value for '%{public}s'", "board"];
     }
 
-    if (!v4)
+    if (!snappingCopy)
     {
       v64 = objc_loadWeakRetained(&self->_canvasEditor);
-      v65 = [v64 interactiveCanvasController];
-      v66 = [v65 isCanvasBackgroundAlignmentSnappingEnabled];
-      if (v33)
+      interactiveCanvasController5 = [v64 interactiveCanvasController];
+      isCanvasBackgroundAlignmentSnappingEnabled2 = [interactiveCanvasController5 isCanvasBackgroundAlignmentSnappingEnabled];
+      if (alignmentProvider)
       {
-        v67 = v66;
+        v67 = isCanvasBackgroundAlignmentSnappingEnabled2;
       }
 
       else
@@ -958,7 +958,7 @@ LABEL_12:
       {
         v68 = &v94[5 * v89];
         v69 = v68[1];
-        [v33 originPointForAlignedInsertingRect:{sub_10011F334(v69, v68[2], v35)}];
+        [alignmentProvider originPointForAlignedInsertingRect:{sub_10011F334(v69, v68[2], v35)}];
         v35 = sub_10011F31C(v70, v71, v69);
       }
     }
@@ -968,7 +968,7 @@ LABEL_12:
     while (v72 != v73)
     {
       v74 = *v72;
-      [v74 crl_onBoard:v60 moveItemToPosition:sub_10011F334(v72[1] size:{v72[2], v35)}];
+      [v74 crl_onBoard:board moveItemToPosition:sub_10011F334(v72[1] size:{v72[2], v35)}];
 
       v72 += 5;
     }
@@ -978,12 +978,12 @@ LABEL_12:
   {
     if ([v10 count] < 2)
     {
-      v60 = 0;
+      board = 0;
     }
 
     else
     {
-      v60 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+      board = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
     }
 
     v75 = v94;
@@ -998,8 +998,8 @@ LABEL_12:
         v80 = v75[3];
         v81 = v75[4];
         v82 = sub_100120414(v78, v79, v80, v81);
-        [(CRLBoardItemPositioner *)self p_CenterBoardItem:*v75 withInitialFrame:v60 offsettingFromTargetCenter:v4 previouslyPositionedBoardItems:v78 ignoreCanvasBackgroundAlignmentProvidedSnapping:v79, v80, v81, v77 + v82, v34 + v83];
-        [v60 addObject:*v75];
+        [(CRLBoardItemPositioner *)self p_CenterBoardItem:*v75 withInitialFrame:board offsettingFromTargetCenter:snappingCopy previouslyPositionedBoardItems:v78 ignoreCanvasBackgroundAlignmentProvidedSnapping:v79, v80, v81, v77 + v82, v34 + v83];
+        [board addObject:*v75];
         v75 += 5;
       }
 
@@ -1011,19 +1011,19 @@ LABEL_12:
   sub_1002AD12C(&v97);
 }
 
-- (void)pPositionNewBoardItems:(id)a3 ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)a4
+- (void)pPositionNewBoardItems:(id)items ignoreCanvasBackgroundAlignmentProvidedSnapping:(BOOL)snapping
 {
-  v4 = a4;
-  v6 = a3;
+  snappingCopy = snapping;
+  itemsCopy = items;
   v34 = 0;
   v35 = 0;
   v36 = 0;
-  sub_1002ACB84(&v34, [v6 count]);
+  sub_1002ACB84(&v34, [itemsCopy count]);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v6;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v8)
   {
@@ -1073,7 +1073,7 @@ LABEL_12:
   v24 = v35;
   while (v23 != v24)
   {
-    [(CRLBoardItemPositioner *)self p_CenterBoardItem:*v23 withInitialFrame:v22 offsettingFromTargetCenter:v4 previouslyPositionedBoardItems:v23[1] ignoreCanvasBackgroundAlignmentProvidedSnapping:v23[2], v23[3], v23[4], x, y];
+    [(CRLBoardItemPositioner *)self p_CenterBoardItem:*v23 withInitialFrame:v22 offsettingFromTargetCenter:snappingCopy previouslyPositionedBoardItems:v23[1] ignoreCanvasBackgroundAlignmentProvidedSnapping:v23[2], v23[3], v23[4], x, y];
     [(CRLBoardItemPositioner *)self positionOffset];
     v26 = v25;
     v28 = v27;

@@ -8,83 +8,83 @@
 
 - (id)primaryText
 {
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 title];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  title = [content title];
 
-  if (![v5 length])
+  if (![title length])
   {
-    v6 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-    v7 = [v6 content];
-    v8 = [v7 customHeader];
-    v9 = v8;
-    if (v8)
+    notificationRequest2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+    content2 = [notificationRequest2 content];
+    customHeader = [content2 customHeader];
+    v9 = customHeader;
+    if (customHeader)
     {
-      v10 = v8;
+      defaultHeader = customHeader;
     }
 
     else
     {
-      v11 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-      v12 = [v11 content];
-      v10 = [v12 defaultHeader];
+      notificationRequest3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+      content3 = [notificationRequest3 content];
+      defaultHeader = [content3 defaultHeader];
 
-      v5 = v11;
+      title = notificationRequest3;
     }
 
-    v5 = v10;
+    title = defaultHeader;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)primarySubtitleText
 {
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 subtitle];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  subtitle = [content subtitle];
 
-  if (![v5 length])
+  if (![subtitle length])
   {
-    v6 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-    v7 = [v6 content];
-    v8 = [v7 title];
-    v9 = [v8 length];
+    notificationRequest2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+    content2 = [notificationRequest2 content];
+    title = [content2 title];
+    v9 = [title length];
 
     if (v9)
     {
-      v10 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-      v11 = [v10 content];
-      v12 = [v11 customHeader];
-      v13 = v12;
-      if (v12)
+      notificationRequest3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+      content3 = [notificationRequest3 content];
+      customHeader = [content3 customHeader];
+      v13 = customHeader;
+      if (customHeader)
       {
-        v14 = v12;
+        defaultHeader = customHeader;
       }
 
       else
       {
-        v15 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-        v16 = [v15 content];
-        v14 = [v16 defaultHeader];
+        notificationRequest4 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+        content4 = [notificationRequest4 content];
+        defaultHeader = [content4 defaultHeader];
 
-        v5 = v15;
+        subtitle = notificationRequest4;
       }
 
-      v5 = v14;
+      subtitle = defaultHeader;
     }
   }
 
-  return v5;
+  return subtitle;
 }
 
 - (id)secondaryText
 {
-  v2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 attributedMessage];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  attributedMessage = [content attributedMessage];
 
-  return v4;
+  return attributedMessage;
 }
 
 @end

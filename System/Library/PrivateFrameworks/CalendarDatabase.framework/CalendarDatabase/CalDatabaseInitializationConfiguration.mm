@@ -1,28 +1,28 @@
 @interface CalDatabaseInitializationConfiguration
-- (CalDatabaseInitializationConfiguration)initWithDirectoryURL:(id)a3;
+- (CalDatabaseInitializationConfiguration)initWithDirectoryURL:(id)l;
 - (id)redactedDescription;
 @end
 
 @implementation CalDatabaseInitializationConfiguration
 
-- (CalDatabaseInitializationConfiguration)initWithDirectoryURL:(id)a3
+- (CalDatabaseInitializationConfiguration)initWithDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = CalDatabaseInitializationConfiguration;
   v6 = [(CalDatabaseInitializationConfiguration *)&v16 init];
   v7 = v6;
-  if (v5 && v6)
+  if (lCopy && v6)
   {
-    objc_storeStrong(&v6->_directoryURL, a3);
-    v8 = [v5 URLByAppendingPathComponent:*MEMORY[0x1E6993110] isDirectory:1];
+    objc_storeStrong(&v6->_directoryURL, l);
+    v8 = [lCopy URLByAppendingPathComponent:*MEMORY[0x1E6993110] isDirectory:1];
     v9 = [objc_alloc(MEMORY[0x1E6992FF8]) initWithCalendarDataContainerURL:v8];
     dataContainerProvider = v7->_dataContainerProvider;
     v7->_dataContainerProvider = v9;
     v11 = v9;
 
-    v12 = [v5 path];
-    v13 = [CDBPreferences preferencesForDirectory:v12];
+    path = [lCopy path];
+    v13 = [CDBPreferences preferencesForDirectory:path];
     preferences = v7->_preferences;
     v7->_preferences = v13;
   }

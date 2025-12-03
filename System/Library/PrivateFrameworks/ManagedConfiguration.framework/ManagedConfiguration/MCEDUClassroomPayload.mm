@@ -1,6 +1,6 @@
 @interface MCEDUClassroomPayload
 + (id)typeStrings;
-- (MCEDUClassroomPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCEDUClassroomPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)leaderPayloadCertificateAnchorPersistentID;
 - (NSArray)leaderPayloadCertificateAnchorUUID;
 - (NSArray)memberPayloadCertificateAnchorPersistentID;
@@ -13,17 +13,17 @@
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)title;
-- (id)translatedCRKError:(id)a3;
+- (id)translatedCRKError:(id)error;
 - (id)verboseDescription;
 - (void)payloadDescriptionKeyValueSections;
-- (void)setLeaderPayloadCertificateAnchorPersistentID:(id)a3;
-- (void)setLeaderPayloadCertificateAnchorUUID:(id)a3;
-- (void)setMemberPayloadCertificateAnchorPersistentID:(id)a3;
-- (void)setMemberPayloadCertificateAnchorUUID:(id)a3;
-- (void)setPayloadCertificatePersistentID:(id)a3;
-- (void)setPayloadCertificateUUID:(id)a3;
-- (void)setResourcePayloadCertificatePersistentID:(id)a3;
-- (void)setResourcePayloadCertificateUUID:(id)a3;
+- (void)setLeaderPayloadCertificateAnchorPersistentID:(id)d;
+- (void)setLeaderPayloadCertificateAnchorUUID:(id)d;
+- (void)setMemberPayloadCertificateAnchorPersistentID:(id)d;
+- (void)setMemberPayloadCertificateAnchorUUID:(id)d;
+- (void)setPayloadCertificatePersistentID:(id)d;
+- (void)setPayloadCertificateUUID:(id)d;
+- (void)setResourcePayloadCertificatePersistentID:(id)d;
+- (void)setResourcePayloadCertificateUUID:(id)d;
 @end
 
 @implementation MCEDUClassroomPayload
@@ -38,14 +38,14 @@
   return v2;
 }
 
-- (MCEDUClassroomPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCEDUClassroomPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v41.receiver = self;
   v41.super_class = MCEDUClassroomPayload;
-  v10 = [(MCPayload *)&v41 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v41 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
     v42 = 0;
@@ -69,9 +69,9 @@
     if (v11)
     {
       v20 = [v11 alloc];
-      v21 = [(MCPayload *)v10 profile];
+      profile = [(MCPayload *)v10 profile];
       v40 = 0;
-      v22 = [v20 initWithDictionary:v8 isStub:objc_msgSend(v21 error:{"isStub"), &v40}];
+      v22 = [v20 initWithDictionary:dictionaryCopy isStub:objc_msgSend(profile error:{"isStub"), &v40}];
       v23 = v40;
 
       objc_storeStrong(&v10->_crk_payload, v22);
@@ -80,10 +80,10 @@
         v24 = [(MCEDUClassroomPayload *)v10 translatedCRKError:v23];
         v25 = [(MCPayload *)v10 malformedPayloadErrorWithError:v24];
         v26 = v25;
-        if (a5 && v24)
+        if (error && v24)
         {
           v27 = v25;
-          *a5 = v26;
+          *error = v26;
         }
 
         v28 = _MCLogObjects;
@@ -92,11 +92,11 @@
           v29 = v28;
           v30 = objc_opt_class();
           v39 = v30;
-          v31 = [v26 MCVerboseDescription];
+          mCVerboseDescription = [v26 MCVerboseDescription];
           *buf = 138543618;
           *&buf[4] = v30;
           *&buf[12] = 2114;
-          *&buf[14] = v31;
+          *&buf[14] = mCVerboseDescription;
           _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse the payload: %{public}@", buf, 0x16u);
         }
 
@@ -108,17 +108,17 @@
         v32 = v10;
       }
 
-      if ([v8 count])
+      if ([dictionaryCopy count])
       {
         v34 = _MCLogObjects;
         if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
         {
           v35 = v34;
-          v36 = [(MCPayload *)v32 friendlyName];
+          friendlyName = [(MCPayload *)v32 friendlyName];
           *buf = 138543618;
-          *&buf[4] = v36;
+          *&buf[4] = friendlyName;
           *&buf[12] = 2114;
-          *&buf[14] = v8;
+          *&buf[14] = dictionaryCopy;
           _os_log_impl(&dword_1A795B000, v35, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
         }
       }
@@ -128,7 +128,7 @@
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         v32 = 0;
         goto LABEL_21;
@@ -137,7 +137,7 @@
       v33 = MEMORY[0x1E696ABC0];
       v22 = MCErrorArray(@"EDU_COULD_NOT_INSTALL", v13, v14, v15, v16, v17, v18, v19, 0);
       [v33 MCErrorWithDomain:@"MCPayloadErrorDomain" code:2005 descriptionArray:v22 errorType:@"MCFatalError"];
-      *a5 = v32 = 0;
+      *error = v32 = 0;
     }
 
 LABEL_21:
@@ -153,127 +153,127 @@ LABEL_22:
 
 - (NSDictionary)configuration
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 configuration];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  configuration = [crk_payload configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (id)verboseDescription
 {
   v50.receiver = self;
   v50.super_class = MCEDUClassroomPayload;
-  v3 = [(MCPayload *)&v50 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v50 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  v6 = [v5 organizationUUID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  organizationUUID = [crk_payload organizationUUID];
 
-  if (v6)
+  if (organizationUUID)
   {
-    v7 = [(MCEDUClassroomPayload *)self crk_payload];
-    v8 = [v7 organizationUUID];
-    [v4 appendFormat:@"OrganizationUUID : %@\n", v8];
+    crk_payload2 = [(MCEDUClassroomPayload *)self crk_payload];
+    organizationUUID2 = [crk_payload2 organizationUUID];
+    [v4 appendFormat:@"OrganizationUUID : %@\n", organizationUUID2];
   }
 
-  v9 = [(MCEDUClassroomPayload *)self crk_payload];
-  v10 = [v9 organizationName];
+  crk_payload3 = [(MCEDUClassroomPayload *)self crk_payload];
+  organizationName = [crk_payload3 organizationName];
 
-  if (v10)
+  if (organizationName)
   {
-    v11 = [(MCEDUClassroomPayload *)self crk_payload];
-    v12 = [v11 organizationName];
-    [v4 appendFormat:@"OrganizationName : %@\n", v12];
+    crk_payload4 = [(MCEDUClassroomPayload *)self crk_payload];
+    organizationName2 = [crk_payload4 organizationName];
+    [v4 appendFormat:@"OrganizationName : %@\n", organizationName2];
   }
 
-  v13 = [(MCEDUClassroomPayload *)self crk_payload];
-  v14 = [v13 userIdentifier];
+  crk_payload5 = [(MCEDUClassroomPayload *)self crk_payload];
+  userIdentifier = [crk_payload5 userIdentifier];
 
-  if (v14)
+  if (userIdentifier)
   {
-    v15 = [(MCEDUClassroomPayload *)self crk_payload];
-    v16 = [v15 userIdentifier];
-    [v4 appendFormat:@"UserIdentifier   : %@\n", v16];
+    crk_payload6 = [(MCEDUClassroomPayload *)self crk_payload];
+    userIdentifier2 = [crk_payload6 userIdentifier];
+    [v4 appendFormat:@"UserIdentifier   : %@\n", userIdentifier2];
   }
 
-  v17 = [(MCEDUClassroomPayload *)self crk_payload];
-  v18 = [v17 departments];
+  crk_payload7 = [(MCEDUClassroomPayload *)self crk_payload];
+  departments = [crk_payload7 departments];
 
-  if (v18)
+  if (departments)
   {
-    v19 = [(MCEDUClassroomPayload *)self crk_payload];
-    v20 = [v19 departments];
-    [v4 appendFormat:@"Departments      : %@\n", v20];
+    crk_payload8 = [(MCEDUClassroomPayload *)self crk_payload];
+    departments2 = [crk_payload8 departments];
+    [v4 appendFormat:@"Departments      : %@\n", departments2];
   }
 
-  v21 = [(MCEDUClassroomPayload *)self crk_payload];
-  v22 = [v21 groups];
+  crk_payload9 = [(MCEDUClassroomPayload *)self crk_payload];
+  groups = [crk_payload9 groups];
 
-  if (v22)
+  if (groups)
   {
-    v23 = [(MCEDUClassroomPayload *)self crk_payload];
-    v24 = [v23 groups];
-    [v4 appendFormat:@"Groups           : %@\n", v24];
+    crk_payload10 = [(MCEDUClassroomPayload *)self crk_payload];
+    groups2 = [crk_payload10 groups];
+    [v4 appendFormat:@"Groups           : %@\n", groups2];
   }
 
-  v25 = [(MCEDUClassroomPayload *)self crk_payload];
-  v26 = [v25 users];
+  crk_payload11 = [(MCEDUClassroomPayload *)self crk_payload];
+  users = [crk_payload11 users];
 
-  if (v26)
+  if (users)
   {
-    v27 = [(MCEDUClassroomPayload *)self crk_payload];
-    v28 = [v27 users];
-    [v4 appendFormat:@"Users            : %@\n", v28];
+    crk_payload12 = [(MCEDUClassroomPayload *)self crk_payload];
+    users2 = [crk_payload12 users];
+    [v4 appendFormat:@"Users            : %@\n", users2];
   }
 
-  v29 = [(MCEDUClassroomPayload *)self crk_payload];
-  v30 = [v29 deviceGroups];
+  crk_payload13 = [(MCEDUClassroomPayload *)self crk_payload];
+  deviceGroups = [crk_payload13 deviceGroups];
 
-  if (v30)
+  if (deviceGroups)
   {
-    v31 = [(MCEDUClassroomPayload *)self crk_payload];
-    v32 = [v31 deviceGroups];
-    [v4 appendFormat:@"Device Groups    : %@\n", v32];
+    crk_payload14 = [(MCEDUClassroomPayload *)self crk_payload];
+    deviceGroups2 = [crk_payload14 deviceGroups];
+    [v4 appendFormat:@"Device Groups    : %@\n", deviceGroups2];
   }
 
-  v33 = [(MCEDUClassroomPayload *)self crk_payload];
-  v34 = [v33 payloadCertificateUUID];
+  crk_payload15 = [(MCEDUClassroomPayload *)self crk_payload];
+  payloadCertificateUUID = [crk_payload15 payloadCertificateUUID];
 
-  if (v34)
+  if (payloadCertificateUUID)
   {
-    v35 = [(MCEDUClassroomPayload *)self crk_payload];
-    v36 = [v35 payloadCertificateUUID];
-    [v4 appendFormat:@"Identity          : %@\n", v36];
+    crk_payload16 = [(MCEDUClassroomPayload *)self crk_payload];
+    payloadCertificateUUID2 = [crk_payload16 payloadCertificateUUID];
+    [v4 appendFormat:@"Identity          : %@\n", payloadCertificateUUID2];
   }
 
-  v37 = [(MCEDUClassroomPayload *)self crk_payload];
-  v38 = [v37 leaderPayloadCertificateAnchorUUID];
+  crk_payload17 = [(MCEDUClassroomPayload *)self crk_payload];
+  leaderPayloadCertificateAnchorUUID = [crk_payload17 leaderPayloadCertificateAnchorUUID];
 
-  if (v38)
+  if (leaderPayloadCertificateAnchorUUID)
   {
-    v39 = [(MCEDUClassroomPayload *)self crk_payload];
-    v40 = [v39 leaderPayloadCertificateAnchorUUID];
-    [v4 appendFormat:@"Leader Anchors    : %@\n", v40];
+    crk_payload18 = [(MCEDUClassroomPayload *)self crk_payload];
+    leaderPayloadCertificateAnchorUUID2 = [crk_payload18 leaderPayloadCertificateAnchorUUID];
+    [v4 appendFormat:@"Leader Anchors    : %@\n", leaderPayloadCertificateAnchorUUID2];
   }
 
-  v41 = [(MCEDUClassroomPayload *)self crk_payload];
-  v42 = [v41 memberPayloadCertificateAnchorUUID];
+  crk_payload19 = [(MCEDUClassroomPayload *)self crk_payload];
+  memberPayloadCertificateAnchorUUID = [crk_payload19 memberPayloadCertificateAnchorUUID];
 
-  if (v42)
+  if (memberPayloadCertificateAnchorUUID)
   {
-    v43 = [(MCEDUClassroomPayload *)self crk_payload];
-    v44 = [v43 memberPayloadCertificateAnchorUUID];
-    [v4 appendFormat:@"Member Anchors    : %@\n", v44];
+    crk_payload20 = [(MCEDUClassroomPayload *)self crk_payload];
+    memberPayloadCertificateAnchorUUID2 = [crk_payload20 memberPayloadCertificateAnchorUUID];
+    [v4 appendFormat:@"Member Anchors    : %@\n", memberPayloadCertificateAnchorUUID2];
   }
 
-  v45 = [(MCEDUClassroomPayload *)self crk_payload];
-  v46 = [v45 resourcePayloadCertificateUUID];
+  crk_payload21 = [(MCEDUClassroomPayload *)self crk_payload];
+  resourcePayloadCertificateUUID = [crk_payload21 resourcePayloadCertificateUUID];
 
-  if (v46)
+  if (resourcePayloadCertificateUUID)
   {
-    v47 = [(MCEDUClassroomPayload *)self crk_payload];
-    v48 = [v47 resourcePayloadCertificateUUID];
-    [v4 appendFormat:@"Resource Identity : %@\n", v48];
+    crk_payload22 = [(MCEDUClassroomPayload *)self crk_payload];
+    resourcePayloadCertificateUUID2 = [crk_payload22 resourcePayloadCertificateUUID];
+    [v4 appendFormat:@"Resource Identity : %@\n", resourcePayloadCertificateUUID2];
   }
 
   return v4;
@@ -283,39 +283,39 @@ LABEL_22:
 {
   v6.receiver = self;
   v6.super_class = MCEDUClassroomPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCEDUClassroomPayload *)self configuration];
-  [v3 addEntriesFromDictionary:v4];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  configuration = [(MCEDUClassroomPayload *)self configuration];
+  [stubDictionary addEntriesFromDictionary:configuration];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)title
 {
-  v3 = [(MCEDUClassroomPayload *)self crk_payload];
-  v4 = [v3 organizationName];
-  if (v4)
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  organizationName = [crk_payload organizationName];
+  if (organizationName)
   {
-    v5 = [(MCEDUClassroomPayload *)self crk_payload];
-    v6 = [v5 organizationName];
+    crk_payload2 = [(MCEDUClassroomPayload *)self crk_payload];
+    organizationName2 = [crk_payload2 organizationName];
   }
 
   else
   {
-    v6 = MCLocalizedString(@"EDU_UNKNOWN_ORGANIZATION");
+    organizationName2 = MCLocalizedString(@"EDU_UNKNOWN_ORGANIZATION");
   }
 
-  return v6;
+  return organizationName2;
 }
 
 - (id)payloadDescriptionKeyValueSections
 {
   v103 = *MEMORY[0x1E69E9840];
   v70 = objc_opt_new();
-  v73 = self;
-  v3 = [(MCEDUClassroomPayload *)self crk_payload];
-  v4 = [v3 departments];
-  v5 = [v4 count];
+  selfCopy = self;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  departments = [crk_payload departments];
+  v5 = [departments count];
 
   if (v5)
   {
@@ -324,10 +324,10 @@ LABEL_22:
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v7 = [(MCEDUClassroomPayload *)v73 crk_payload];
-    v8 = [v7 departments];
+    crk_payload2 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+    departments2 = [crk_payload2 departments];
 
-    v9 = [v8 countByEnumeratingWithState:&v86 objects:v102 count:16];
+    v9 = [departments2 countByEnumeratingWithState:&v86 objects:v102 count:16];
     if (v9)
     {
       v10 = *v87;
@@ -337,7 +337,7 @@ LABEL_22:
         {
           if (*v87 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(departments2);
           }
 
           v12 = *(*(&v86 + 1) + 8 * i);
@@ -370,7 +370,7 @@ LABEL_22:
           [v6 addObject:v16];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v86 objects:v102 count:16];
+        v9 = [departments2 countByEnumeratingWithState:&v86 objects:v102 count:16];
       }
 
       while (v9);
@@ -381,9 +381,9 @@ LABEL_22:
     [v70 addObject:v18];
   }
 
-  v19 = [(MCEDUClassroomPayload *)v73 crk_payload];
-  v20 = [v19 groups];
-  v21 = [v20 count];
+  crk_payload3 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+  groups = [crk_payload3 groups];
+  v21 = [groups count];
 
   if (v21)
   {
@@ -392,10 +392,10 @@ LABEL_22:
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v23 = [(MCEDUClassroomPayload *)v73 crk_payload];
-    v24 = [v23 groups];
+    crk_payload4 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+    groups2 = [crk_payload4 groups];
 
-    v25 = [v24 countByEnumeratingWithState:&v82 objects:v101 count:16];
+    v25 = [groups2 countByEnumeratingWithState:&v82 objects:v101 count:16];
     if (v25)
     {
       v26 = *v83;
@@ -405,7 +405,7 @@ LABEL_22:
         {
           if (*v83 != v26)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(groups2);
           }
 
           v28 = *(*(&v82 + 1) + 8 * j);
@@ -414,7 +414,7 @@ LABEL_22:
           [v22 addObject:v30];
         }
 
-        v25 = [v24 countByEnumeratingWithState:&v82 objects:v101 count:16];
+        v25 = [groups2 countByEnumeratingWithState:&v82 objects:v101 count:16];
       }
 
       while (v25);
@@ -425,9 +425,9 @@ LABEL_22:
     [v70 addObject:v32];
   }
 
-  v33 = [(MCEDUClassroomPayload *)v73 crk_payload];
-  v34 = [v33 users];
-  v35 = [v34 count];
+  crk_payload5 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+  users = [crk_payload5 users];
+  v35 = [users count];
 
   if (v35)
   {
@@ -436,8 +436,8 @@ LABEL_22:
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v36 = [(MCEDUClassroomPayload *)v73 crk_payload];
-    obj = [v36 users];
+    crk_payload6 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+    obj = [crk_payload6 users];
 
     v37 = [obj countByEnumeratingWithState:&v78 objects:v100 count:16];
     if (!v37)
@@ -459,13 +459,13 @@ LABEL_22:
         v41 = getkCRKEDUUserIdentifierKey();
         v42 = [v40 objectForKeyedSubscript:v41];
 
-        v43 = [(MCEDUClassroomPayload *)v73 crk_payload];
-        v44 = [v43 userIdentifier];
-        if (v44)
+        crk_payload7 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+        userIdentifier = [crk_payload7 userIdentifier];
+        if (userIdentifier)
         {
-          v45 = [(MCEDUClassroomPayload *)v73 crk_payload];
-          v46 = [v45 userIdentifier];
-          v47 = [v46 isEqualToString:v42];
+          crk_payload8 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+          userIdentifier2 = [crk_payload8 userIdentifier];
+          v47 = [userIdentifier2 isEqualToString:v42];
 
           if (!v47)
           {
@@ -522,9 +522,9 @@ LABEL_38:
     }
   }
 
-  v54 = [(MCEDUClassroomPayload *)v73 crk_payload];
-  v55 = [v54 deviceGroups];
-  v56 = [v55 count];
+  crk_payload9 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+  deviceGroups = [crk_payload9 deviceGroups];
+  v56 = [deviceGroups count];
 
   if (v56)
   {
@@ -533,10 +533,10 @@ LABEL_38:
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v58 = [(MCEDUClassroomPayload *)v73 crk_payload];
-    v59 = [v58 deviceGroups];
+    crk_payload10 = [(MCEDUClassroomPayload *)selfCopy crk_payload];
+    deviceGroups2 = [crk_payload10 deviceGroups];
 
-    v60 = [v59 countByEnumeratingWithState:&v74 objects:v99 count:16];
+    v60 = [deviceGroups2 countByEnumeratingWithState:&v74 objects:v99 count:16];
     if (v60)
     {
       v61 = *v75;
@@ -546,7 +546,7 @@ LABEL_38:
         {
           if (*v75 != v61)
           {
-            objc_enumerationMutation(v59);
+            objc_enumerationMutation(deviceGroups2);
           }
 
           v63 = *(*(&v74 + 1) + 8 * m);
@@ -555,7 +555,7 @@ LABEL_38:
           [v57 addObject:v65];
         }
 
-        v60 = [v59 countByEnumeratingWithState:&v74 objects:v99 count:16];
+        v60 = [deviceGroups2 countByEnumeratingWithState:&v74 objects:v99 count:16];
       }
 
       while (v60);
@@ -577,41 +577,41 @@ LABEL_38:
   return v70;
 }
 
-- (id)translatedCRKError:(id)a3
+- (id)translatedCRKError:(id)error
 {
   v134 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v22 = 0;
     goto LABEL_88;
   }
 
-  v5 = [v3 domain];
+  domain = [errorCopy domain];
   v6 = getCRKEDUProfileErrorDomain();
-  v7 = [v5 isEqualToString:v6];
+  v7 = [domain isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 code];
-    v9 = [v4 userInfo];
+    code = [v4 code];
+    userInfo = [v4 userInfo];
     v10 = @"MCProfileErrorDomain";
     v11 = 0;
-    if (v8 <= 3)
+    if (code <= 3)
     {
-      if (v8 <= 1)
+      if (code <= 1)
       {
-        if (v8)
+        if (code)
         {
-          if (v8 == 1)
+          if (code == 1)
           {
             v12 = @"MCPayloadErrorDomain";
 
-            if (v9)
+            if (userInfo)
             {
               v13 = getCRKEDUProfileErrorFieldKey();
-              v14 = [v9 objectForKeyedSubscript:v13];
+              v14 = [userInfo objectForKeyedSubscript:v13];
 
               if (v14)
               {
@@ -641,13 +641,13 @@ LABEL_87:
           goto LABEL_88;
         }
 
-        if (v9)
+        if (userInfo)
         {
           v72 = getCRKEDUProfileErrorFieldKey();
-          v73 = [v9 objectForKeyedSubscript:v72];
+          v73 = [userInfo objectForKeyedSubscript:v72];
 
           v74 = getCRKEDUProfileErrorValueKey();
-          v75 = [v9 objectForKeyedSubscript:v74];
+          v75 = [userInfo objectForKeyedSubscript:v74];
 
           if (v73)
           {
@@ -672,14 +672,14 @@ LABEL_79:
         goto LABEL_57;
       }
 
-      if (v8 == 2)
+      if (code == 2)
       {
         v12 = @"MCPayloadErrorDomain";
 
-        if (v9)
+        if (userInfo)
         {
           v98 = getCRKEDUProfileErrorFieldKey();
-          v99 = [v9 objectForKeyedSubscript:v98];
+          v99 = [userInfo objectForKeyedSubscript:v98];
 
           if (v99)
           {
@@ -701,7 +701,7 @@ LABEL_79:
         goto LABEL_70;
       }
 
-      if (!v9)
+      if (!userInfo)
       {
         v11 = 0;
 LABEL_86:
@@ -710,10 +710,10 @@ LABEL_86:
       }
 
       v46 = getCRKEDUProfileErrorFieldKey();
-      v47 = [v9 objectForKeyedSubscript:v46];
+      v47 = [userInfo objectForKeyedSubscript:v46];
 
       v48 = getCRKEDUProfileErrorValueKey();
-      v49 = [v9 objectForKeyedSubscript:v48];
+      v49 = [userInfo objectForKeyedSubscript:v48];
 
       v50 = [v49 description];
       v51 = [v50 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -762,17 +762,17 @@ LABEL_85:
       goto LABEL_86;
     }
 
-    if (v8 <= 5)
+    if (code <= 5)
     {
-      if (v8 == 4)
+      if (code == 4)
       {
-        if (v9)
+        if (userInfo)
         {
           v86 = getCRKEDUProfileErrorFieldKey();
-          v73 = [v9 objectForKeyedSubscript:v86];
+          v73 = [userInfo objectForKeyedSubscript:v86];
 
           v87 = getCRKEDUProfileErrorValueKey();
-          v75 = [v9 objectForKeyedSubscript:v87];
+          v75 = [userInfo objectForKeyedSubscript:v87];
 
           v11 = 0;
           if (!v73 || !v75)
@@ -829,7 +829,7 @@ LABEL_81:
 
       v12 = @"MCPayloadErrorDomain";
 
-      if (v9)
+      if (userInfo)
       {
         v127 = 0;
         v128 = &v127;
@@ -856,7 +856,7 @@ LABEL_81:
           [MCEDUClassroomPayload translatedCRKError:];
         }
 
-        v31 = [v9 objectForKeyedSubscript:*v28];
+        v31 = [userInfo objectForKeyedSubscript:*v28];
         v127 = 0;
         v128 = &v127;
         v129 = 0x2020000000;
@@ -882,7 +882,7 @@ LABEL_81:
           [MCEDUClassroomPayload translatedCRKError:];
         }
 
-        v35 = [v9 objectForKeyedSubscript:*v32];
+        v35 = [userInfo objectForKeyedSubscript:*v32];
         v36 = v35;
         v11 = 0;
         if (v31 && v35)
@@ -899,14 +899,14 @@ LABEL_81:
       goto LABEL_55;
     }
 
-    if (v8 == 6)
+    if (code == 6)
     {
       v12 = @"MCPayloadErrorDomain";
 
-      if (v9)
+      if (userInfo)
       {
         v107 = getCRKEDUProfileErrorTopLevelUserIdentifierKey();
-        v63 = [v9 objectForKeyedSubscript:v107];
+        v63 = [userInfo objectForKeyedSubscript:v107];
 
         if (v63)
         {
@@ -922,17 +922,17 @@ LABEL_58:
 
     else
     {
-      if (v8 != 7)
+      if (code != 7)
       {
         goto LABEL_56;
       }
 
       v12 = @"MCPayloadErrorDomain";
 
-      if (v9)
+      if (userInfo)
       {
         v62 = getCRKEDUProfileErrorTopLevelUserIdentifierKey();
-        v63 = [v9 objectForKeyedSubscript:v62];
+        v63 = [userInfo objectForKeyedSubscript:v62];
 
         if (v63)
         {
@@ -962,12 +962,12 @@ LABEL_70:
   {
     v24 = v23;
     v25 = objc_opt_class();
-    v26 = [v4 domain];
+    domain2 = [v4 domain];
     v27 = getCRKEDUProfileErrorDomain();
     *buf = 138543874;
     *&buf[4] = v25;
     *&buf[12] = 2114;
-    *&buf[14] = v26;
+    *&buf[14] = domain2;
     *&buf[22] = 2114;
     v132 = v27;
     _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_DEBUG, "%{public}@ was given error domain to translate: %{public}@, expected: %{public}@, not translating error.", buf, 0x20u);
@@ -983,130 +983,130 @@ LABEL_88:
 
 - (NSString)payloadCertificateUUID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 payloadCertificateUUID];
-  v4 = [v3 copy];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  payloadCertificateUUID = [crk_payload payloadCertificateUUID];
+  v4 = [payloadCertificateUUID copy];
 
   return v4;
 }
 
-- (void)setPayloadCertificateUUID:(id)a3
+- (void)setPayloadCertificateUUID:(id)d
 {
-  v5 = [a3 copy];
-  v4 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v4 setPayloadCertificateUUID:v5];
+  v5 = [d copy];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setPayloadCertificateUUID:v5];
 }
 
 - (NSData)payloadCertificatePersistentID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 payloadCertificatePersistentID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  payloadCertificatePersistentID = [crk_payload payloadCertificatePersistentID];
 
-  return v3;
+  return payloadCertificatePersistentID;
 }
 
-- (void)setPayloadCertificatePersistentID:(id)a3
+- (void)setPayloadCertificatePersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setPayloadCertificatePersistentID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setPayloadCertificatePersistentID:dCopy];
 }
 
 - (NSArray)leaderPayloadCertificateAnchorUUID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 leaderPayloadCertificateAnchorUUID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  leaderPayloadCertificateAnchorUUID = [crk_payload leaderPayloadCertificateAnchorUUID];
 
-  return v3;
+  return leaderPayloadCertificateAnchorUUID;
 }
 
-- (void)setLeaderPayloadCertificateAnchorUUID:(id)a3
+- (void)setLeaderPayloadCertificateAnchorUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setLeaderPayloadCertificateAnchorUUID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setLeaderPayloadCertificateAnchorUUID:dCopy];
 }
 
 - (NSArray)leaderPayloadCertificateAnchorPersistentID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 leaderPayloadCertificateAnchorPersistentID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  leaderPayloadCertificateAnchorPersistentID = [crk_payload leaderPayloadCertificateAnchorPersistentID];
 
-  return v3;
+  return leaderPayloadCertificateAnchorPersistentID;
 }
 
-- (void)setLeaderPayloadCertificateAnchorPersistentID:(id)a3
+- (void)setLeaderPayloadCertificateAnchorPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setLeaderPayloadCertificateAnchorPersistentID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setLeaderPayloadCertificateAnchorPersistentID:dCopy];
 }
 
 - (NSArray)memberPayloadCertificateAnchorUUID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 memberPayloadCertificateAnchorUUID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  memberPayloadCertificateAnchorUUID = [crk_payload memberPayloadCertificateAnchorUUID];
 
-  return v3;
+  return memberPayloadCertificateAnchorUUID;
 }
 
-- (void)setMemberPayloadCertificateAnchorUUID:(id)a3
+- (void)setMemberPayloadCertificateAnchorUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setMemberPayloadCertificateAnchorUUID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setMemberPayloadCertificateAnchorUUID:dCopy];
 }
 
 - (NSArray)memberPayloadCertificateAnchorPersistentID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 memberPayloadCertificateAnchorPersistentID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  memberPayloadCertificateAnchorPersistentID = [crk_payload memberPayloadCertificateAnchorPersistentID];
 
-  return v3;
+  return memberPayloadCertificateAnchorPersistentID;
 }
 
-- (void)setMemberPayloadCertificateAnchorPersistentID:(id)a3
+- (void)setMemberPayloadCertificateAnchorPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setMemberPayloadCertificateAnchorPersistentID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setMemberPayloadCertificateAnchorPersistentID:dCopy];
 }
 
 - (NSString)resourcePayloadCertificateUUID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 resourcePayloadCertificateUUID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  resourcePayloadCertificateUUID = [crk_payload resourcePayloadCertificateUUID];
 
-  return v3;
+  return resourcePayloadCertificateUUID;
 }
 
-- (void)setResourcePayloadCertificateUUID:(id)a3
+- (void)setResourcePayloadCertificateUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setResourcePayloadCertificateUUID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setResourcePayloadCertificateUUID:dCopy];
 }
 
 - (NSData)resourcePayloadCertificatePersistentID
 {
-  v2 = [(MCEDUClassroomPayload *)self crk_payload];
-  v3 = [v2 resourcePayloadCertificatePersistentID];
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  resourcePayloadCertificatePersistentID = [crk_payload resourcePayloadCertificatePersistentID];
 
-  return v3;
+  return resourcePayloadCertificatePersistentID;
 }
 
-- (void)setResourcePayloadCertificatePersistentID:(id)a3
+- (void)setResourcePayloadCertificatePersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCEDUClassroomPayload *)self crk_payload];
-  [v5 setResourcePayloadCertificatePersistentID:v4];
+  dCopy = d;
+  crk_payload = [(MCEDUClassroomPayload *)self crk_payload];
+  [crk_payload setResourcePayloadCertificatePersistentID:dCopy];
 }
 
 - (void)payloadDescriptionKeyValueSections
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkCRKEDUUserNameKey(void)"];
-  [v0 handleFailureInFunction:v1 file:@"MCEDUClassroomPayload.m" lineNumber:24 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"MCEDUClassroomPayload.m" lineNumber:24 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

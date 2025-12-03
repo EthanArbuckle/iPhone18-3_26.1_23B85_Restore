@@ -2,7 +2,7 @@
 - (id)labelText;
 - (id)linkSubtext;
 - (id)specifiers;
-- (void)_openScreenTimeForFamilyMember:(id)a3;
+- (void)_openScreenTimeForFamilyMember:(id)member;
 - (void)_openScreenTimeForTinkerFamilyMember;
 @end
 
@@ -69,9 +69,9 @@
 - (void)_openScreenTimeForTinkerFamilyMember
 {
   v3 = +[BPSTinkerSupport sharedInstance];
-  v4 = [v3 cachedTinkerFamilyMemeber];
+  cachedTinkerFamilyMemeber = [v3 cachedTinkerFamilyMemeber];
 
-  if (v4)
+  if (cachedTinkerFamilyMemeber)
   {
     v5 = pbb_accountsignin_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -79,11 +79,11 @@
       *buf = 136315394;
       v9 = "[COSScreenTimeController _openScreenTimeForTinkerFamilyMember]";
       v10 = 2112;
-      v11 = v4;
+      v11 = cachedTinkerFamilyMemeber;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Member: %@", buf, 0x16u);
     }
 
-    [(COSScreenTimeController *)self _openScreenTimeForFamilyMember:v4];
+    [(COSScreenTimeController *)self _openScreenTimeForFamilyMember:cachedTinkerFamilyMemeber];
   }
 
   else
@@ -98,12 +98,12 @@
   }
 }
 
-- (void)_openScreenTimeForFamilyMember:(id)a3
+- (void)_openScreenTimeForFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = [NSString alloc];
-  v5 = [v3 dsid];
-  v6 = [v4 initWithFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@", v5];
+  dsid = [memberCopy dsid];
+  v6 = [v4 initWithFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@", dsid];
 
   v7 = [NSURL URLWithString:v6];
   v8 = pbb_accountsignin_log();
@@ -114,7 +114,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2112;
-    v14 = v3;
+    v14 = memberCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Opening URL %{public}@ for familyMember %@", buf, 0x20u);
   }
 

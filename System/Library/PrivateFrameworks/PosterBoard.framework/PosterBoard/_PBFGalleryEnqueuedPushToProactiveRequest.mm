@@ -1,31 +1,31 @@
 @interface _PBFGalleryEnqueuedPushToProactiveRequest
-- (_PBFGalleryEnqueuedPushToProactiveRequest)initWithUpdatedDescriptors:(id)a3 reason:(id)a4 sessionId:(id)a5;
-- (void)addCompletionHandler:(id)a3;
-- (void)addCompletionHandlersFromEnqueuedPushToProactive:(id)a3;
-- (void)fireCompletionHandlersWithError:(id)a3 didUpdate:(BOOL)a4;
+- (_PBFGalleryEnqueuedPushToProactiveRequest)initWithUpdatedDescriptors:(id)descriptors reason:(id)reason sessionId:(id)id;
+- (void)addCompletionHandler:(id)handler;
+- (void)addCompletionHandlersFromEnqueuedPushToProactive:(id)proactive;
+- (void)fireCompletionHandlersWithError:(id)error didUpdate:(BOOL)update;
 @end
 
 @implementation _PBFGalleryEnqueuedPushToProactiveRequest
 
-- (_PBFGalleryEnqueuedPushToProactiveRequest)initWithUpdatedDescriptors:(id)a3 reason:(id)a4 sessionId:(id)a5
+- (_PBFGalleryEnqueuedPushToProactiveRequest)initWithUpdatedDescriptors:(id)descriptors reason:(id)reason sessionId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorsCopy = descriptors;
+  reasonCopy = reason;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = _PBFGalleryEnqueuedPushToProactiveRequest;
   v11 = [(_PBFGalleryEnqueuedPushToProactiveRequest *)&v19 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [idCopy copy];
     sessionId = v11->_sessionId;
     v11->_sessionId = v12;
 
-    v14 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v8 copyItems:1];
+    v14 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:descriptorsCopy copyItems:1];
     updatedDescriptors = v11->_updatedDescriptors;
     v11->_updatedDescriptors = v14;
 
-    v16 = [v9 copy];
+    v16 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v16;
   }
@@ -33,19 +33,19 @@
   return v11;
 }
 
-- (void)addCompletionHandlersFromEnqueuedPushToProactive:(id)a3
+- (void)addCompletionHandlersFromEnqueuedPushToProactive:(id)proactive
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  proactiveCopy = proactive;
+  if (!proactiveCopy)
   {
     [_PBFGalleryEnqueuedPushToProactiveRequest addCompletionHandlersFromEnqueuedPushToProactive:a2];
   }
 
-  v6 = v5;
-  if (self != v5)
+  v6 = proactiveCopy;
+  if (self != proactiveCopy)
   {
-    v7 = v5;
+    v7 = proactiveCopy;
     objc_sync_enter(v7);
     v12 = 0u;
     v13 = 0u;
@@ -80,67 +80,67 @@
   }
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5->_finalized)
+    v10 = handlerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_finalized)
     {
-      v10[2](v10, v5->_finalizedResult, v5->_finalizedError);
+      v10[2](v10, selfCopy->_finalizedResult, selfCopy->_finalizedError);
     }
 
     else
     {
-      completionHandlers = v5->_completionHandlers;
+      completionHandlers = selfCopy->_completionHandlers;
       if (!completionHandlers)
       {
         v7 = objc_opt_new();
-        v8 = v5->_completionHandlers;
-        v5->_completionHandlers = v7;
+        v8 = selfCopy->_completionHandlers;
+        selfCopy->_completionHandlers = v7;
 
-        completionHandlers = v5->_completionHandlers;
+        completionHandlers = selfCopy->_completionHandlers;
       }
 
       v9 = [v10 copy];
       [(NSMutableArray *)completionHandlers addObject:v9];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)fireCompletionHandlersWithError:(id)a3 didUpdate:(BOOL)a4
+- (void)fireCompletionHandlersWithError:(id)error didUpdate:(BOOL)update
 {
-  v4 = a4;
-  v11 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v7->_finalized)
+  updateCopy = update;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_finalized)
   {
-    v7->_finalizedResult = v4;
-    objc_storeStrong(&v7->_finalizedError, a3);
-    v8 = [(NSMutableArray *)v7->_completionHandlers mutableCopy];
-    [(NSMutableArray *)v7->_completionHandlers removeAllObjects];
+    selfCopy->_finalizedResult = updateCopy;
+    objc_storeStrong(&selfCopy->_finalizedError, error);
+    v8 = [(NSMutableArray *)selfCopy->_completionHandlers mutableCopy];
+    [(NSMutableArray *)selfCopy->_completionHandlers removeAllObjects];
     while ([v8 count])
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = [v8 firstObject];
-      (v10)[2](v10, v4, v11);
+      firstObject = [v8 firstObject];
+      (firstObject)[2](firstObject, updateCopy, errorCopy);
       [v8 removeObjectAtIndex:0];
 
       objc_autoreleasePoolPop(v9);
     }
 
-    v7->_finalized = 1;
+    selfCopy->_finalized = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)addCompletionHandlersFromEnqueuedPushToProactive:(char *)a1 .cold.1(char *a1)

@@ -1,27 +1,27 @@
 @interface PNRODSchemaPNRODPlanGeneration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODPlanGeneration)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODPlanGeneration)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODPlanGeneration)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODPlanGeneration)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPgOverridesMatched:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPgOverridesMatched:(BOOL)matched;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODPlanGeneration
 
-- (PNRODSchemaPNRODPlanGeneration)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODPlanGeneration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = PNRODSchemaPNRODPlanGeneration;
   v5 = [(PNRODSchemaPNRODPlanGeneration *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"planCycleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"planCycleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
     }
 
     v37 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"pgModelInterface"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pgModelInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
     }
 
     v36 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"pgModelIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"pgModelIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgModelIdentifier:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"pgOverridesAssetVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pgOverridesAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
     }
 
     v34 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"pgOverridesMatched"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"pgOverridesMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
     }
 
     v33 = v13;
-    v14 = [v4 objectForKeyedSubscript:@"pgPlanGenTotalTime"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pgPlanGenTotalTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgPlanGenTotalTime:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"pgFullPlannerHandleTime"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"pgFullPlannerHandleTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgFullPlannerHandleTime:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:{@"pgModelInferenceTime", v14}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"pgModelInferenceTime", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgModelInferenceTime:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"pgOverridesTime"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"pgOverridesTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
     }
 
     v35 = v9;
-    v22 = [v4 objectForKeyedSubscript:@"pgPrescribedPlanTime"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"pgPrescribedPlanTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgPrescribedPlanTime:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgFullPlannerPreInferenceTime:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(PNRODSchemaPNRODPlanGeneration *)v5 setPgFullPlannerPostInferenceTime:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,30 +134,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODPlanGeneration)initWithJSON:(id)a3
+- (PNRODSchemaPNRODPlanGeneration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODPlanGeneration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODPlanGeneration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODPlanGeneration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -170,91 +170,91 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_failureInfo)
   {
-    v4 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    failureInfo = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+    dictionaryRepresentation = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"failureInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"failureInfo"];
     }
   }
 
   if (self->_pgFullPlannerHandleTime)
   {
-    v7 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pgFullPlannerHandleTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+    dictionaryRepresentation2 = [pgFullPlannerHandleTime dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pgFullPlannerHandleTime"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pgFullPlannerHandleTime"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pgFullPlannerHandleTime"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"pgFullPlannerHandleTime"];
     }
   }
 
   if (self->_pgFullPlannerPostInferenceTime)
   {
-    v10 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    pgFullPlannerPostInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+    dictionaryRepresentation3 = [pgFullPlannerPostInferenceTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pgFullPlannerPostInferenceTime"];
     }
   }
 
   if (self->_pgFullPlannerPreInferenceTime)
   {
-    v13 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    pgFullPlannerPreInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+    dictionaryRepresentation4 = [pgFullPlannerPreInferenceTime dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"pgFullPlannerPreInferenceTime"];
     }
   }
 
   if (self->_pgModelIdentifier)
   {
-    v16 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"pgModelIdentifier"];
+    pgModelIdentifier = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
+    v17 = [pgModelIdentifier copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"pgModelIdentifier"];
   }
 
   if (self->_pgModelInferenceTime)
   {
-    v18 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    pgModelInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+    dictionaryRepresentation5 = [pgModelInferenceTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"pgModelInferenceTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"pgModelInferenceTime"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"pgModelInferenceTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"pgModelInferenceTime"];
     }
   }
 
@@ -271,89 +271,89 @@
       v22 = off_1E78E0C78[v21];
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"pgModelInterface"];
+    [dictionary setObject:v22 forKeyedSubscript:@"pgModelInterface"];
   }
 
   if (self->_pgOverridesAssetVersion)
   {
-    v23 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"pgOverridesAssetVersion"];
+    pgOverridesAssetVersion = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
+    v24 = [pgOverridesAssetVersion copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"pgOverridesAssetVersion"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[PNRODSchemaPNRODPlanGeneration pgOverridesMatched](self, "pgOverridesMatched")}];
-    [v3 setObject:v25 forKeyedSubscript:@"pgOverridesMatched"];
+    [dictionary setObject:v25 forKeyedSubscript:@"pgOverridesMatched"];
   }
 
   if (self->_pgOverridesTime)
   {
-    v26 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    pgOverridesTime = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+    dictionaryRepresentation6 = [pgOverridesTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"pgOverridesTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"pgOverridesTime"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"pgOverridesTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"pgOverridesTime"];
     }
   }
 
   if (self->_pgPlanGenTotalTime)
   {
-    v29 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
-    v30 = [v29 dictionaryRepresentation];
-    if (v30)
+    pgPlanGenTotalTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+    dictionaryRepresentation7 = [pgPlanGenTotalTime dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v30 forKeyedSubscript:@"pgPlanGenTotalTime"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"pgPlanGenTotalTime"];
     }
 
     else
     {
-      v31 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v31 forKeyedSubscript:@"pgPlanGenTotalTime"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"pgPlanGenTotalTime"];
     }
   }
 
   if (self->_pgPrescribedPlanTime)
   {
-    v32 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
-    v33 = [v32 dictionaryRepresentation];
-    if (v33)
+    pgPrescribedPlanTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+    dictionaryRepresentation8 = [pgPrescribedPlanTime dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v33 forKeyedSubscript:@"pgPrescribedPlanTime"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pgPrescribedPlanTime"];
     }
 
     else
     {
-      v34 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v34 forKeyedSubscript:@"pgPrescribedPlanTime"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pgPrescribedPlanTime"];
     }
   }
 
   if (self->_planCycleId)
   {
-    v35 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
-    v36 = [v35 dictionaryRepresentation];
-    if (v36)
+    planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+    dictionaryRepresentation9 = [planCycleId dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v36 forKeyedSubscript:@"planCycleId"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"planCycleId"];
     }
 
     else
     {
-      v37 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v37 forKeyedSubscript:@"planCycleId"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"planCycleId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -392,28 +392,28 @@
   return v14 ^ v15 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
-  v6 = [v4 planCycleId];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+  planCycleId2 = [equalCopy planCycleId];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v7 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
-  if (v7)
+  planCycleId3 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+  if (planCycleId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
-    v10 = [v4 planCycleId];
-    v11 = [v9 isEqual:v10];
+    v8 = planCycleId3;
+    planCycleId4 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+    planCycleId5 = [equalCopy planCycleId];
+    v11 = [planCycleId4 isEqual:planCycleId5];
 
     if (!v11)
     {
@@ -425,7 +425,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[112] & 1))
+  if ((*&self->_has & 1) != (equalCopy[112] & 1))
   {
     goto LABEL_63;
   }
@@ -433,26 +433,26 @@
   if (*&self->_has)
   {
     pgModelInterface = self->_pgModelInterface;
-    if (pgModelInterface != [v4 pgModelInterface])
+    if (pgModelInterface != [equalCopy pgModelInterface])
     {
       goto LABEL_63;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
-  v6 = [v4 pgModelIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
+  planCycleId2 = [equalCopy pgModelIdentifier];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v13 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
-  if (v13)
+  pgModelIdentifier = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
+  if (pgModelIdentifier)
   {
-    v14 = v13;
-    v15 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
-    v16 = [v4 pgModelIdentifier];
-    v17 = [v15 isEqual:v16];
+    v14 = pgModelIdentifier;
+    pgModelIdentifier2 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
+    pgModelIdentifier3 = [equalCopy pgModelIdentifier];
+    v17 = [pgModelIdentifier2 isEqual:pgModelIdentifier3];
 
     if (!v17)
     {
@@ -464,20 +464,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
-  v6 = [v4 pgOverridesAssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
+  planCycleId2 = [equalCopy pgOverridesAssetVersion];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v18 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
-  if (v18)
+  pgOverridesAssetVersion = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
+  if (pgOverridesAssetVersion)
   {
-    v19 = v18;
-    v20 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
-    v21 = [v4 pgOverridesAssetVersion];
-    v22 = [v20 isEqual:v21];
+    v19 = pgOverridesAssetVersion;
+    pgOverridesAssetVersion2 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
+    pgOverridesAssetVersion3 = [equalCopy pgOverridesAssetVersion];
+    v22 = [pgOverridesAssetVersion2 isEqual:pgOverridesAssetVersion3];
 
     if (!v22)
     {
@@ -490,7 +490,7 @@
   }
 
   v23 = (*&self->_has >> 1) & 1;
-  if (v23 != ((v4[112] >> 1) & 1))
+  if (v23 != ((equalCopy[112] >> 1) & 1))
   {
     goto LABEL_63;
   }
@@ -498,26 +498,26 @@
   if (v23)
   {
     pgOverridesMatched = self->_pgOverridesMatched;
-    if (pgOverridesMatched != [v4 pgOverridesMatched])
+    if (pgOverridesMatched != [equalCopy pgOverridesMatched])
     {
       goto LABEL_63;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
-  v6 = [v4 pgPlanGenTotalTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+  planCycleId2 = [equalCopy pgPlanGenTotalTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v25 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
-  if (v25)
+  pgPlanGenTotalTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+  if (pgPlanGenTotalTime)
   {
-    v26 = v25;
-    v27 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
-    v28 = [v4 pgPlanGenTotalTime];
-    v29 = [v27 isEqual:v28];
+    v26 = pgPlanGenTotalTime;
+    pgPlanGenTotalTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+    pgPlanGenTotalTime3 = [equalCopy pgPlanGenTotalTime];
+    v29 = [pgPlanGenTotalTime2 isEqual:pgPlanGenTotalTime3];
 
     if (!v29)
     {
@@ -529,20 +529,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
-  v6 = [v4 pgFullPlannerHandleTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+  planCycleId2 = [equalCopy pgFullPlannerHandleTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v30 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
-  if (v30)
+  pgFullPlannerHandleTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+  if (pgFullPlannerHandleTime)
   {
-    v31 = v30;
-    v32 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
-    v33 = [v4 pgFullPlannerHandleTime];
-    v34 = [v32 isEqual:v33];
+    v31 = pgFullPlannerHandleTime;
+    pgFullPlannerHandleTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+    pgFullPlannerHandleTime3 = [equalCopy pgFullPlannerHandleTime];
+    v34 = [pgFullPlannerHandleTime2 isEqual:pgFullPlannerHandleTime3];
 
     if (!v34)
     {
@@ -554,20 +554,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
-  v6 = [v4 pgModelInferenceTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+  planCycleId2 = [equalCopy pgModelInferenceTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v35 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
-  if (v35)
+  pgModelInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+  if (pgModelInferenceTime)
   {
-    v36 = v35;
-    v37 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
-    v38 = [v4 pgModelInferenceTime];
-    v39 = [v37 isEqual:v38];
+    v36 = pgModelInferenceTime;
+    pgModelInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+    pgModelInferenceTime3 = [equalCopy pgModelInferenceTime];
+    v39 = [pgModelInferenceTime2 isEqual:pgModelInferenceTime3];
 
     if (!v39)
     {
@@ -579,20 +579,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
-  v6 = [v4 pgOverridesTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+  planCycleId2 = [equalCopy pgOverridesTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v40 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
-  if (v40)
+  pgOverridesTime = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+  if (pgOverridesTime)
   {
-    v41 = v40;
-    v42 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
-    v43 = [v4 pgOverridesTime];
-    v44 = [v42 isEqual:v43];
+    v41 = pgOverridesTime;
+    pgOverridesTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+    pgOverridesTime3 = [equalCopy pgOverridesTime];
+    v44 = [pgOverridesTime2 isEqual:pgOverridesTime3];
 
     if (!v44)
     {
@@ -604,20 +604,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
-  v6 = [v4 pgPrescribedPlanTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+  planCycleId2 = [equalCopy pgPrescribedPlanTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v45 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
-  if (v45)
+  pgPrescribedPlanTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+  if (pgPrescribedPlanTime)
   {
-    v46 = v45;
-    v47 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
-    v48 = [v4 pgPrescribedPlanTime];
-    v49 = [v47 isEqual:v48];
+    v46 = pgPrescribedPlanTime;
+    pgPrescribedPlanTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+    pgPrescribedPlanTime3 = [equalCopy pgPrescribedPlanTime];
+    v49 = [pgPrescribedPlanTime2 isEqual:pgPrescribedPlanTime3];
 
     if (!v49)
     {
@@ -629,20 +629,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
-  v6 = [v4 pgFullPlannerPreInferenceTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+  planCycleId2 = [equalCopy pgFullPlannerPreInferenceTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v50 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
-  if (v50)
+  pgFullPlannerPreInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+  if (pgFullPlannerPreInferenceTime)
   {
-    v51 = v50;
-    v52 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
-    v53 = [v4 pgFullPlannerPreInferenceTime];
-    v54 = [v52 isEqual:v53];
+    v51 = pgFullPlannerPreInferenceTime;
+    pgFullPlannerPreInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+    pgFullPlannerPreInferenceTime3 = [equalCopy pgFullPlannerPreInferenceTime];
+    v54 = [pgFullPlannerPreInferenceTime2 isEqual:pgFullPlannerPreInferenceTime3];
 
     if (!v54)
     {
@@ -654,20 +654,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
-  v6 = [v4 pgFullPlannerPostInferenceTime];
-  if ((v5 != 0) == (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+  planCycleId2 = [equalCopy pgFullPlannerPostInferenceTime];
+  if ((planCycleId != 0) == (planCycleId2 == 0))
   {
     goto LABEL_62;
   }
 
-  v55 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
-  if (v55)
+  pgFullPlannerPostInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+  if (pgFullPlannerPostInferenceTime)
   {
-    v56 = v55;
-    v57 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
-    v58 = [v4 pgFullPlannerPostInferenceTime];
-    v59 = [v57 isEqual:v58];
+    v56 = pgFullPlannerPostInferenceTime;
+    pgFullPlannerPostInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+    pgFullPlannerPostInferenceTime3 = [equalCopy pgFullPlannerPostInferenceTime];
+    v59 = [pgFullPlannerPostInferenceTime2 isEqual:pgFullPlannerPostInferenceTime3];
 
     if (!v59)
     {
@@ -679,12 +679,12 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) != (v6 == 0))
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+  planCycleId2 = [equalCopy failureInfo];
+  if ((planCycleId != 0) != (planCycleId2 == 0))
   {
-    v60 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
-    if (!v60)
+    failureInfo = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+    if (!failureInfo)
     {
 
 LABEL_66:
@@ -692,10 +692,10 @@ LABEL_66:
       goto LABEL_64;
     }
 
-    v61 = v60;
-    v62 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
-    v63 = [v4 failureInfo];
-    v64 = [v62 isEqual:v63];
+    v61 = failureInfo;
+    failureInfo2 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+    failureInfo3 = [equalCopy failureInfo];
+    v64 = [failureInfo2 isEqual:failureInfo3];
 
     if (v64)
     {
@@ -715,14 +715,14 @@ LABEL_64:
   return v65;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+  toCopy = to;
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
 
-  if (v4)
+  if (planCycleId)
   {
-    v5 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+    planCycleId2 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -731,16 +731,16 @@ LABEL_64:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
+  pgModelIdentifier = [(PNRODSchemaPNRODPlanGeneration *)self pgModelIdentifier];
 
-  if (v6)
+  if (pgModelIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
+  pgOverridesAssetVersion = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesAssetVersion];
 
-  if (v7)
+  if (pgOverridesAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -750,77 +750,77 @@ LABEL_64:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+  pgPlanGenTotalTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
 
-  if (v8)
+  if (pgPlanGenTotalTime)
   {
-    v9 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+    pgPlanGenTotalTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+  pgFullPlannerHandleTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
 
-  if (v10)
+  if (pgFullPlannerHandleTime)
   {
-    v11 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+    pgFullPlannerHandleTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+  pgModelInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
 
-  if (v12)
+  if (pgModelInferenceTime)
   {
-    v13 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+    pgModelInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+  pgOverridesTime = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
 
-  if (v14)
+  if (pgOverridesTime)
   {
-    v15 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+    pgOverridesTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+  pgPrescribedPlanTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
 
-  if (v16)
+  if (pgPrescribedPlanTime)
   {
-    v17 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+    pgPrescribedPlanTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+  pgFullPlannerPreInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
 
-  if (v18)
+  if (pgFullPlannerPreInferenceTime)
   {
-    v19 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+    pgFullPlannerPreInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+  pgFullPlannerPostInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
 
-  if (v20)
+  if (pgFullPlannerPostInferenceTime)
   {
-    v21 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+    pgFullPlannerPostInferenceTime2 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (failureInfo)
   {
-    v24 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
-- (void)setHasPgOverridesMatched:(BOOL)a3
+- (void)setHasPgOverridesMatched:(BOOL)matched
 {
-  if (a3)
+  if (matched)
   {
     v3 = 2;
   }
@@ -833,89 +833,89 @@ LABEL_64:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = PNRODSchemaPNRODPlanGeneration;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  planCycleId = [(PNRODSchemaPNRODPlanGeneration *)self planCycleId];
+  v7 = [planCycleId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePlanCycleId];
   }
 
-  v9 = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pgPlanGenTotalTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPlanGenTotalTime];
+  v10 = [pgPlanGenTotalTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgPlanGenTotalTime];
   }
 
-  v12 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  pgFullPlannerHandleTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerHandleTime];
+  v13 = [pgFullPlannerHandleTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgFullPlannerHandleTime];
   }
 
-  v15 = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  pgModelInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgModelInferenceTime];
+  v16 = [pgModelInferenceTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgModelInferenceTime];
   }
 
-  v18 = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  pgOverridesTime = [(PNRODSchemaPNRODPlanGeneration *)self pgOverridesTime];
+  v19 = [pgOverridesTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgOverridesTime];
   }
 
-  v21 = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  pgPrescribedPlanTime = [(PNRODSchemaPNRODPlanGeneration *)self pgPrescribedPlanTime];
+  v22 = [pgPrescribedPlanTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgPrescribedPlanTime];
   }
 
-  v24 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  pgFullPlannerPreInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPreInferenceTime];
+  v25 = [pgFullPlannerPreInferenceTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgFullPlannerPreInferenceTime];
   }
 
-  v27 = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  pgFullPlannerPostInferenceTime = [(PNRODSchemaPNRODPlanGeneration *)self pgFullPlannerPostInferenceTime];
+  v28 = [pgFullPlannerPostInferenceTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deletePgFullPlannerPostInferenceTime];
   }
 
-  v30 = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODPlanGeneration *)self failureInfo];
+  v31 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODPlanGeneration *)self deleteFailureInfo];
   }

@@ -1,14 +1,14 @@
 @interface PGPeopleQuestionFactoryUtils
-+ (id)personsWithPeopleHomeContextForPhotoLibrary:(id)a3;
++ (id)personsWithPeopleHomeContextForPhotoLibrary:(id)library;
 @end
 
 @implementation PGPeopleQuestionFactoryUtils
 
-+ (id)personsWithPeopleHomeContextForPhotoLibrary:(id)a3
++ (id)personsWithPeopleHomeContextForPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setPersonContext:1];
-  v4 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v3];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v4 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v4;
 }

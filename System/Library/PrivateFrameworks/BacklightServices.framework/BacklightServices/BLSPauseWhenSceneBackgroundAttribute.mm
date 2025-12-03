@@ -1,22 +1,22 @@
 @interface BLSPauseWhenSceneBackgroundAttribute
-+ (id)pauseWhenBackgroundFBSScene:(id)a3;
-+ (id)pauseWhenBackgroundForFBSSceneIdentityToken:(id)a3;
++ (id)pauseWhenBackgroundFBSScene:(id)scene;
++ (id)pauseWhenBackgroundForFBSSceneIdentityToken:(id)token;
 @end
 
 @implementation BLSPauseWhenSceneBackgroundAttribute
 
-+ (id)pauseWhenBackgroundFBSScene:(id)a3
++ (id)pauseWhenBackgroundFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBSScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBSScene:sceneCopy];
 
   return v5;
 }
 
-+ (id)pauseWhenBackgroundForFBSSceneIdentityToken:(id)a3
++ (id)pauseWhenBackgroundForFBSSceneIdentityToken:(id)token
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSceneIdentityToken:v4];
+  tokenCopy = token;
+  v5 = [[self alloc] initWithSceneIdentityToken:tokenCopy];
 
   return v5;
 }

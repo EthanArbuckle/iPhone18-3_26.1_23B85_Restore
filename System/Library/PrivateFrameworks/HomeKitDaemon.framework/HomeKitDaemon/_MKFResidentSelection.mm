@@ -1,6 +1,6 @@
 @interface _MKFResidentSelection
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFResidentSelectionDatabaseID)databaseID;
 @end
 
@@ -18,9 +18,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

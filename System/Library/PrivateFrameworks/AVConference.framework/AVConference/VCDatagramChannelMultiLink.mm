@@ -1,43 +1,43 @@
 @interface VCDatagramChannelMultiLink
-- ($6CEBAC87C3A36A1533CE85C616D8CB68)newListItemWithNWConnection:(id)a3;
-- (VCDatagramChannelMultiLink)initWithNWConnections:(id)a3 token:(unsigned int)a4 options:(id)a5 error:(id *)a6;
-- (int)addConnection:(id)a3 error:(id *)a4;
-- (int)removeConnection:(id)a3 error:(id *)a4;
-- (int)removeConnectionProtected:(id)a3 error:(id *)a4;
+- ($6CEBAC87C3A36A1533CE85C616D8CB68)newListItemWithNWConnection:(id)connection;
+- (VCDatagramChannelMultiLink)initWithNWConnections:(id)connections token:(unsigned int)token options:(id)options error:(id *)error;
+- (int)addConnection:(id)connection error:(id *)error;
+- (int)removeConnection:(id)connection error:(id *)error;
+- (int)removeConnectionProtected:(id)protected error:(id *)error;
 - (int)start;
 - (unint64_t)connectionsCount;
 - (void)dealloc;
 - (void)destroy;
 - (void)invalidate;
-- (void)setEventHandler:(id)a3;
-- (void)setReadHandler:(id)a3;
+- (void)setEventHandler:(id)handler;
+- (void)setReadHandler:(id)handler;
 - (void)start;
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(void *)a6 completionHandler:(id)a7;
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(void *)a7 completionHandler:(id)a8;
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(void *)options completionHandler:(id)handler;
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(void *)options completionHandler:(id)handler;
 @end
 
 @implementation VCDatagramChannelMultiLink
 
-- (VCDatagramChannelMultiLink)initWithNWConnections:(id)a3 token:(unsigned int)a4 options:(id)a5 error:(id *)a6
+- (VCDatagramChannelMultiLink)initWithNWConnections:(id)connections token:(unsigned int)token options:(id)options error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VCDatagramChannelMultiLink;
-  v9 = [(VCObject *)&v12 init:a3];
+  v9 = [(VCObject *)&v12 init:connections];
   if (!v9)
   {
     return v9;
   }
 
-  if (![a3 count])
+  if (![connections count])
   {
     [VCDatagramChannelMultiLink initWithNWConnections:v9 token:? options:? error:?];
     return v13;
   }
 
-  if ([a3 count] >= 8)
+  if ([connections count] >= 8)
   {
-    [VCDatagramChannelMultiLink initWithNWConnections:v9 token:a3 options:? error:?];
+    [VCDatagramChannelMultiLink initWithNWConnections:v9 token:connections options:? error:?];
     return v13;
   }
 
@@ -48,12 +48,12 @@
     return v13;
   }
 
-  if ([a3 count])
+  if ([connections count])
   {
     v10 = 0;
-    while (!-[VCDatagramChannelMultiLink addConnection:error:](v9, "addConnection:error:", [a3 objectAtIndexedSubscript:v10], a6))
+    while (!-[VCDatagramChannelMultiLink addConnection:error:](v9, "addConnection:error:", [connections objectAtIndexedSubscript:v10], error))
     {
-      if (++v10 >= [a3 count])
+      if (++v10 >= [connections count])
       {
         goto LABEL_9;
       }
@@ -64,7 +64,7 @@
   }
 
 LABEL_9:
-  v9->_token = a4;
+  v9->_token = token;
   return v9;
 }
 
@@ -94,13 +94,13 @@ LABEL_9:
   [(VCObject *)&v5 dealloc];
 }
 
-- ($6CEBAC87C3A36A1533CE85C616D8CB68)newListItemWithNWConnection:(id)a3
+- ($6CEBAC87C3A36A1533CE85C616D8CB68)newListItemWithNWConnection:(id)connection
 {
   v4 = malloc_type_calloc(1uLL, 0x10uLL, 0xA0040AFF93C70uLL);
   v5 = v4;
   if (v4)
   {
-    v4->var1 = a3;
+    v4->var1 = connection;
   }
 
   else
@@ -114,12 +114,12 @@ LABEL_9:
 - (unint64_t)connectionsCount
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
+  connectionsCountProtected = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return connectionsCountProtected;
 }
 
-- (int)addConnection:(id)a3 error:(id *)a4
+- (int)addConnection:(id)connection error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -148,7 +148,7 @@ LABEL_9:
     v16[1] = 3221225472;
     v16[2] = __50__VCDatagramChannelMultiLink_addConnection_error___block_invoke;
     v16[3] = &unk_1E85F3F50;
-    v16[4] = a3;
+    v16[4] = connection;
     v16[5] = &v17;
     VCSingleLinkedListEnumerate(&self->_connections, v16);
     if (*(v18 + 24) == 1)
@@ -167,7 +167,7 @@ LABEL_9:
 
     else
     {
-      v6 = [(VCDatagramChannelMultiLink *)self newListItemWithNWConnection:a3];
+      v6 = [(VCDatagramChannelMultiLink *)self newListItemWithNWConnection:connection];
       p_var0 = &v6->var0.var0;
       if (v6)
       {
@@ -176,7 +176,7 @@ LABEL_9:
         {
           if (self->_isStarted)
           {
-            [(VCDatagramChannelMultiLink *)self scheduleReceiveForConnection:a3];
+            [(VCDatagramChannelMultiLink *)self scheduleReceiveForConnection:connection];
           }
 
           if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -185,7 +185,7 @@ LABEL_9:
             v10 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
             {
-              v11 = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
+              connectionsCountProtected = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
               *buf = 136316418;
               v22 = v9;
               v23 = 2080;
@@ -193,11 +193,11 @@ LABEL_9:
               v25 = 1024;
               v26 = 147;
               v27 = 2112;
-              v28 = a3;
+              connectionCopy = connection;
               v29 = 2112;
-              v30 = self;
+              selfCopy = self;
               v31 = 2048;
-              v32 = v11;
+              v32 = connectionsCountProtected;
               _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Added connection=%@ to the VCDatagramChannelMultilink instance=%@. Total number of connection=%lu", buf, 0x3Au);
             }
           }
@@ -252,10 +252,10 @@ uint64_t __50__VCDatagramChannelMultiLink_addConnection_error___block_invoke(uin
   return result;
 }
 
-- (int)removeConnectionProtected:(id)a3 error:(id *)a4
+- (int)removeConnectionProtected:(id)protected error:(id *)error
 {
   *&v28[11] = *MEMORY[0x1E69E9840];
-  if (![(VCDatagramChannelMultiLink *)self connectionsCountProtected:a3])
+  if (![(VCDatagramChannelMultiLink *)self connectionsCountProtected:protected])
   {
     [VCDatagramChannelMultiLink removeConnectionProtected:? error:?];
 LABEL_11:
@@ -263,7 +263,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v6 = [(VCDatagramChannelMultiLink *)self newListItemWithNWConnection:a3];
+  v6 = [(VCDatagramChannelMultiLink *)self newListItemWithNWConnection:protected];
   if (!v6)
   {
     [VCDatagramChannelMultiLink removeConnectionProtected:? error:?];
@@ -291,9 +291,9 @@ LABEL_11:
         v21 = 1024;
         v22 = 180;
         v23 = 2112;
-        v24 = a3;
+        protectedCopy2 = protected;
         v25 = 2112;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
         *v28 = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Removed connection=%@ from VCDatagramChannelMultilink instance=%@. Total number of connection=%lu", &v17, 0x3Au);
@@ -312,7 +312,7 @@ LABEL_13:
     v15 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v16 = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
+      connectionsCountProtected = [(VCDatagramChannelMultiLink *)self connectionsCountProtected];
       v17 = 136316674;
       v18 = v14;
       v19 = 2080;
@@ -320,13 +320,13 @@ LABEL_13:
       v21 = 1024;
       v22 = 182;
       v23 = 2112;
-      v24 = a3;
+      protectedCopy2 = protected;
       v25 = 2112;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 1024;
       *v28 = v12;
       v28[2] = 2048;
-      *&v28[3] = v16;
+      *&v28[3] = connectionsCountProtected;
       _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to remove connection=%@ from VCDatagramChannelMultilink list=%@ with error %008x. Total number of connection=%lu", &v17, 0x40u);
     }
   }
@@ -334,15 +334,15 @@ LABEL_13:
   return v12;
 }
 
-- (int)removeConnection:(id)a3 error:(id *)a4
+- (int)removeConnection:(id)connection error:(id *)error
 {
   os_unfair_lock_lock(&self->_stateLock);
-  LODWORD(a4) = [(VCDatagramChannelMultiLink *)self removeConnectionProtected:a3 error:a4];
+  LODWORD(error) = [(VCDatagramChannelMultiLink *)self removeConnectionProtected:connection error:error];
   os_unfair_lock_unlock(&self->_stateLock);
-  return a4;
+  return error;
 }
 
-- (void)setReadHandler:(id)a3
+- (void)setReadHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_stateLock);
   readHandler = self->_readHandler;
@@ -352,9 +352,9 @@ LABEL_13:
     self->_readHandler = 0;
   }
 
-  if (a3)
+  if (handler)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(handler);
   }
 
   else
@@ -367,7 +367,7 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_stateLock);
   eventHandler = self->_eventHandler;
@@ -377,9 +377,9 @@ LABEL_13:
     self->_eventHandler = 0;
   }
 
-  if (a3)
+  if (handler)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(handler);
   }
 
   else
@@ -392,7 +392,7 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(void *)a6 completionHandler:(id)a7
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(void *)options completionHandler:(id)handler
 {
   v9[6] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -405,7 +405,7 @@ LABEL_13:
       v9[2] = __96__VCDatagramChannelMultiLink_writeDatagram_datagramSize_datagramInfo_options_completionHandler___block_invoke;
       v9[3] = &unk_1E85F3F78;
       v9[4] = self;
-      v9[5] = a7;
+      v9[5] = handler;
       VCSingleLinkedListEnumerate(&self->_connections, v9);
       goto LABEL_4;
     }
@@ -418,9 +418,9 @@ LABEL_13:
     [VCDatagramChannelMultiLink writeDatagram:datagramSize:datagramInfo:options:completionHandler:];
   }
 
-  if (a7)
+  if (handler)
   {
-    (*(a7 + 2))(a7, 0);
+    (*(handler + 2))(handler, 0);
   }
 
 LABEL_4:
@@ -458,7 +458,7 @@ uint64_t __96__VCDatagramChannelMultiLink_writeDatagram_datagramSize_datagramInf
   return result;
 }
 
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(void *)a7 completionHandler:(id)a8
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(void *)options completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -477,9 +477,9 @@ uint64_t __96__VCDatagramChannelMultiLink_writeDatagram_datagramSize_datagramInf
     }
   }
 
-  if (a8)
+  if (handler)
   {
-    (*(a8 + 2))(a8, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
@@ -845,7 +845,7 @@ void __96__VCDatagramChannelMultiLink_writeDatagram_datagramSize_datagramInfo_op
     }
   }
 
-  *a1 = -2142371791;
+  *self = -2142371791;
 }
 
 void __35__VCDatagramChannelMultiLink_start__block_invoke_cold_1()

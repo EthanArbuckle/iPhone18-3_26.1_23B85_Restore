@@ -1,22 +1,22 @@
 @interface SBWallpaperPreviewSnapshotCache
 + (SBWallpaperPreviewSnapshotCache)sharedInstance;
-+ (id)cacheKeyForVariant:(int64_t)a3 options:(unint64_t)a4;
-+ (id)cacheKeyForVariant:(int64_t)a3 options:(unint64_t)a4 scalingWidth:(double)a5;
++ (id)cacheKeyForVariant:(int64_t)variant options:(unint64_t)options;
++ (id)cacheKeyForVariant:(int64_t)variant options:(unint64_t)options scalingWidth:(double)width;
 - (SBWallpaperPreviewSnapshotCache)init;
-- (SBWallpaperPreviewSnapshotCache)initWithImageCache:(id)a3 iconController:(id)a4 wallpaperController:(id)a5;
-- (id)_homeScreenSnapshotProviderWithOptions:(unint64_t)a3 wallpaperImage:(id)a4;
-- (id)_lockScreenSnapshotProviderWithOptions:(unint64_t)a3 wallpaperImage:(id)a4;
-- (id)mappedWallpaperPreviewForScaledSnapshot:(id)a3 variant:(int64_t)a4 cacheKey:(id)a5;
-- (id)snapshotProviderForVariant:(int64_t)a3 options:(unint64_t)a4 wallpaperImage:(id)a5;
-- (int64_t)_orientationForOptions:(unint64_t)a3;
+- (SBWallpaperPreviewSnapshotCache)initWithImageCache:(id)cache iconController:(id)controller wallpaperController:(id)wallpaperController;
+- (id)_homeScreenSnapshotProviderWithOptions:(unint64_t)options wallpaperImage:(id)image;
+- (id)_lockScreenSnapshotProviderWithOptions:(unint64_t)options wallpaperImage:(id)image;
+- (id)mappedWallpaperPreviewForScaledSnapshot:(id)snapshot variant:(int64_t)variant cacheKey:(id)key;
+- (id)snapshotProviderForVariant:(int64_t)variant options:(unint64_t)options wallpaperImage:(id)image;
+- (int64_t)_orientationForOptions:(unint64_t)options;
 - (void)_backlightFadeFinished;
-- (void)_iconControllerDidChangeIconModel:(id)a3;
+- (void)_iconControllerDidChangeIconModel:(id)model;
 - (void)_modelDidLayout;
 - (void)_modelWillLayout;
-- (void)_switchToIconModel:(id)a3;
+- (void)_switchToIconModel:(id)model;
 - (void)dealloc;
-- (void)invalidateSnapshotsForLocations:(int64_t)a3;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
+- (void)invalidateSnapshotsForLocations:(int64_t)locations;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
 @end
 
 @implementation SBWallpaperPreviewSnapshotCache
@@ -47,28 +47,28 @@ void __49__SBWallpaperPreviewSnapshotCache_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_8 = v6;
 }
 
-- (SBWallpaperPreviewSnapshotCache)initWithImageCache:(id)a3 iconController:(id)a4 wallpaperController:(id)a5
+- (SBWallpaperPreviewSnapshotCache)initWithImageCache:(id)cache iconController:(id)controller wallpaperController:(id)wallpaperController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  controllerCopy = controller;
+  wallpaperControllerCopy = wallpaperController;
   v18.receiver = self;
   v18.super_class = SBWallpaperPreviewSnapshotCache;
   v12 = [(SBWallpaperPreviewSnapshotCache *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageCache, a3);
-    objc_storeStrong(&v13->_iconController, a4);
-    objc_storeStrong(&v13->_wallpaperController, a5);
-    [v11 addObserver:v13 forVariant:0];
-    [v11 addObserver:v13 forVariant:1];
-    v14 = [(SBIconController *)v13->_iconController iconModel];
-    [(SBWallpaperPreviewSnapshotCache *)v13 _switchToIconModel:v14];
+    objc_storeStrong(&v12->_imageCache, cache);
+    objc_storeStrong(&v13->_iconController, controller);
+    objc_storeStrong(&v13->_wallpaperController, wallpaperController);
+    [wallpaperControllerCopy addObserver:v13 forVariant:0];
+    [wallpaperControllerCopy addObserver:v13 forVariant:1];
+    iconModel = [(SBIconController *)v13->_iconController iconModel];
+    [(SBWallpaperPreviewSnapshotCache *)v13 _switchToIconModel:iconModel];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v13 selector:sel__backlightFadeFinished name:*MEMORY[0x277D67A18] object:0];
-    [v15 addObserver:v13 selector:sel__iconControllerDidChangeIconModel_ name:SBIconControllerIconModelDidChangeNotification object:v13->_iconController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__backlightFadeFinished name:*MEMORY[0x277D67A18] object:0];
+    [defaultCenter addObserver:v13 selector:sel__iconControllerDidChangeIconModel_ name:SBIconControllerIconModelDidChangeNotification object:v13->_iconController];
     v16 = v13;
   }
 
@@ -83,26 +83,26 @@ void __49__SBWallpaperPreviewSnapshotCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(SBHIconModel *)self->_model rootFolder];
-  [v3 removeFolderObserver:self];
+  rootFolder = [(SBHIconModel *)self->_model rootFolder];
+  [rootFolder removeFolderObserver:self];
 
   v4 = self->_wallpaperController;
   [(SBWallpaperController *)v4 removeObserver:self forVariant:0];
   [(SBWallpaperController *)v4 removeObserver:self forVariant:1];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = SBWallpaperPreviewSnapshotCache;
   [(SBWallpaperPreviewSnapshotCache *)&v6 dealloc];
 }
 
-- (void)invalidateSnapshotsForLocations:(int64_t)a3
+- (void)invalidateSnapshotsForLocations:(int64_t)locations
 {
-  v6 = [(BSUIMappedImageCache *)self->_imageCache allKeys];
-  v5 = v6;
+  allKeys = [(BSUIMappedImageCache *)self->_imageCache allKeys];
+  v5 = allKeys;
   PBUIWallpaperEnumerateVariantsForLocations();
-  self->_invalidatedLocations |= a3;
+  self->_invalidatedLocations |= locations;
 }
 
 void __67__SBWallpaperPreviewSnapshotCache_invalidateSnapshotsForLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -150,9 +150,9 @@ void __67__SBWallpaperPreviewSnapshotCache_invalidateSnapshotsForLocations___blo
   }
 }
 
-+ (id)cacheKeyForVariant:(int64_t)a3 options:(unint64_t)a4 scalingWidth:(double)a5
++ (id)cacheKeyForVariant:(int64_t)variant options:(unint64_t)options scalingWidth:(double)width
 {
-  if (a4)
+  if (options)
   {
     v5 = 0;
   }
@@ -161,15 +161,15 @@ void __67__SBWallpaperPreviewSnapshotCache_invalidateSnapshotsForLocations___blo
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = PBUIStringForWallpaperVariant();
-    v5 = [v7 stringWithFormat:@"WallpaperPreview-%@-%f", v8, *&a5];
+    v5 = [v7 stringWithFormat:@"WallpaperPreview-%@-%f", v8, *&width];
   }
 
   return v5;
 }
 
-+ (id)cacheKeyForVariant:(int64_t)a3 options:(unint64_t)a4
++ (id)cacheKeyForVariant:(int64_t)variant options:(unint64_t)options
 {
-  if (a4)
+  if (options)
   {
     v4 = 0;
   }
@@ -184,23 +184,23 @@ void __67__SBWallpaperPreviewSnapshotCache_invalidateSnapshotsForLocations___blo
   return v4;
 }
 
-- (id)mappedWallpaperPreviewForScaledSnapshot:(id)a3 variant:(int64_t)a4 cacheKey:(id)a5
+- (id)mappedWallpaperPreviewForScaledSnapshot:(id)snapshot variant:(int64_t)variant cacheKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
+  snapshotCopy = snapshot;
+  keyCopy = key;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __92__SBWallpaperPreviewSnapshotCache_mappedWallpaperPreviewForScaledSnapshot_variant_cacheKey___block_invoke;
   v17[3] = &unk_2783BD6B8;
-  v10 = v8;
-  v19 = self;
-  v20 = a4;
+  v10 = snapshotCopy;
+  selfCopy = self;
+  variantCopy = variant;
   v18 = v10;
   v11 = MEMORY[0x223D6F7F0](v17);
   v12 = v11;
-  if (v9)
+  if (keyCopy)
   {
-    v13 = [(BSUIMappedImageCache *)self->_imageCache imageForKey:v9 generatingIfNecessaryWithBlock:v11];
+    v13 = [(BSUIMappedImageCache *)self->_imageCache imageForKey:keyCopy generatingIfNecessaryWithBlock:v11];
   }
 
   else
@@ -273,55 +273,55 @@ void __67__SBWallpaperPreviewSnapshotCache_regenerateSnapshotsForLocations___blo
   [v5 setImage:v7 forKey:v4 withPersistenceOptions:v6];
 }
 
-- (void)_switchToIconModel:(id)a3
+- (void)_switchToIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   p_model = &self->_model;
-  if (self->_model != v5)
+  if (self->_model != modelCopy)
   {
-    v12 = v5;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    v12 = modelCopy;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = MEMORY[0x277D66700];
     v9 = MEMORY[0x277D666F0];
     if (*p_model)
     {
-      v10 = [(SBHIconModel *)*p_model rootFolder];
-      [v10 removeFolderObserver:self];
+      rootFolder = [(SBHIconModel *)*p_model rootFolder];
+      [rootFolder removeFolderObserver:self];
 
-      [v7 removeObserver:self name:*v8 object:self->_model];
-      [v7 removeObserver:self name:*v9 object:self->_model];
+      [defaultCenter removeObserver:self name:*v8 object:self->_model];
+      [defaultCenter removeObserver:self name:*v9 object:self->_model];
     }
 
-    objc_storeStrong(&self->_model, a3);
+    objc_storeStrong(&self->_model, model);
     if (*p_model)
     {
-      v11 = [(SBHIconModel *)*p_model rootFolder];
-      [v11 addFolderObserver:self];
+      rootFolder2 = [(SBHIconModel *)*p_model rootFolder];
+      [rootFolder2 addFolderObserver:self];
 
-      [v7 addObserver:self selector:sel__modelWillLayout name:*v8 object:self->_model];
-      [v7 addObserver:self selector:sel__modelDidLayout name:*v9 object:self->_model];
+      [defaultCenter addObserver:self selector:sel__modelWillLayout name:*v8 object:self->_model];
+      [defaultCenter addObserver:self selector:sel__modelDidLayout name:*v9 object:self->_model];
     }
 
-    v5 = v12;
+    modelCopy = v12;
   }
 }
 
-- (void)_iconControllerDidChangeIconModel:(id)a3
+- (void)_iconControllerDidChangeIconModel:(id)model
 {
-  v4 = [(SBIconController *)self->_iconController iconModel];
-  [(SBWallpaperPreviewSnapshotCache *)self _switchToIconModel:v4];
+  iconModel = [(SBIconController *)self->_iconController iconModel];
+  [(SBWallpaperPreviewSnapshotCache *)self _switchToIconModel:iconModel];
 }
 
 - (void)_modelWillLayout
 {
-  v3 = [(SBHIconModel *)self->_model rootFolder];
-  [v3 removeFolderObserver:self];
+  rootFolder = [(SBHIconModel *)self->_model rootFolder];
+  [rootFolder removeFolderObserver:self];
 }
 
 - (void)_modelDidLayout
 {
-  v3 = [(SBHIconModel *)self->_model rootFolder];
-  [v3 addFolderObserver:self];
+  rootFolder = [(SBHIconModel *)self->_model rootFolder];
+  [rootFolder addFolderObserver:self];
 
   [(SBWallpaperPreviewSnapshotCache *)self invalidateSnapshotsForLocations:2];
 }
@@ -329,62 +329,62 @@ void __67__SBWallpaperPreviewSnapshotCache_regenerateSnapshotsForLocations___blo
 - (void)_backlightFadeFinished
 {
   v3 = +[SBBacklightController sharedInstance];
-  v4 = [v3 screenIsOn];
+  screenIsOn = [v3 screenIsOn];
 
-  if ((v4 & 1) == 0)
+  if ((screenIsOn & 1) == 0)
   {
     [(SBWallpaperPreviewSnapshotCache *)self invalidateSnapshotsForLocations:3];
     self->_invalidatedLocations = 0;
   }
 }
 
-- (id)_homeScreenSnapshotProviderWithOptions:(unint64_t)a3 wallpaperImage:(id)a4
+- (id)_homeScreenSnapshotProviderWithOptions:(unint64_t)options wallpaperImage:(id)image
 {
-  v6 = a4;
-  v7 = [(SBWallpaperPreviewSnapshotCache *)self _orientationForOptions:a3];
+  imageCopy = image;
+  v7 = [(SBWallpaperPreviewSnapshotCache *)self _orientationForOptions:options];
   SBScreenBoundsRotatedRoundCenter(v7);
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v16 = [SBHomeScreenPreviewView alloc];
-  v17 = [(SBIconController *)self->_iconController iconManager];
-  v18 = [(SBHomeScreenPreviewView *)v16 initWithFrame:v17 iconManager:self->_wallpaperController wallpaperController:a3 options:v6 wallpaperImage:0 listView:v9, v11, v13, v15];
+  iconManager = [(SBIconController *)self->_iconController iconManager];
+  v18 = [(SBHomeScreenPreviewView *)v16 initWithFrame:iconManager iconManager:self->_wallpaperController wallpaperController:options options:imageCopy wallpaperImage:0 listView:v9, v11, v13, v15];
 
-  v19 = [(SBWallpaperController *)self->_wallpaperController windowScene];
-  v20 = [[SBViewSnapshotProvider alloc] initWithWindowScene:v19 view:v18 orientation:v7];
-  [(SBViewSnapshotProvider *)v20 setIncludeWindowSceneWallpaper:(a3 & 0x40) == 0];
+  windowScene = [(SBWallpaperController *)self->_wallpaperController windowScene];
+  v20 = [[SBViewSnapshotProvider alloc] initWithWindowScene:windowScene view:v18 orientation:v7];
+  [(SBViewSnapshotProvider *)v20 setIncludeWindowSceneWallpaper:(options & 0x40) == 0];
 
   return v20;
 }
 
-- (id)_lockScreenSnapshotProviderWithOptions:(unint64_t)a3 wallpaperImage:(id)a4
+- (id)_lockScreenSnapshotProviderWithOptions:(unint64_t)options wallpaperImage:(id)image
 {
-  v6 = a4;
-  v7 = [(SBWallpaperPreviewSnapshotCache *)self _orientationForOptions:a3];
+  imageCopy = image;
+  v7 = [(SBWallpaperPreviewSnapshotCache *)self _orientationForOptions:options];
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
   SBScreenBounds(v7);
-  v12 = [[SBLockScreenPreviewView alloc] initWithFrame:self->_wallpaperController wallpaperController:a3 options:v6 wallpaperImage:v8, v9, v10, v11];
+  v12 = [[SBLockScreenPreviewView alloc] initWithFrame:self->_wallpaperController wallpaperController:options options:imageCopy wallpaperImage:v8, v9, v10, v11];
 
-  v13 = [(SBWallpaperController *)self->_wallpaperController windowScene];
-  v14 = [[SBViewSnapshotProvider alloc] initWithWindowScene:v13 view:v12 orientation:v7];
+  windowScene = [(SBWallpaperController *)self->_wallpaperController windowScene];
+  v14 = [[SBViewSnapshotProvider alloc] initWithWindowScene:windowScene view:v12 orientation:v7];
 
   return v14;
 }
 
-- (id)snapshotProviderForVariant:(int64_t)a3 options:(unint64_t)a4 wallpaperImage:(id)a5
+- (id)snapshotProviderForVariant:(int64_t)variant options:(unint64_t)options wallpaperImage:(id)image
 {
-  v8 = a5;
-  if (!a3)
+  imageCopy = image;
+  if (!variant)
   {
-    v9 = [(SBWallpaperPreviewSnapshotCache *)self _lockScreenSnapshotProviderWithOptions:a4 wallpaperImage:v8];
+    v9 = [(SBWallpaperPreviewSnapshotCache *)self _lockScreenSnapshotProviderWithOptions:options wallpaperImage:imageCopy];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (variant == 1)
   {
-    v9 = [(SBWallpaperPreviewSnapshotCache *)self _homeScreenSnapshotProviderWithOptions:a4 wallpaperImage:v8];
+    v9 = [(SBWallpaperPreviewSnapshotCache *)self _homeScreenSnapshotProviderWithOptions:options wallpaperImage:imageCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -396,9 +396,9 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)_orientationForOptions:(unint64_t)a3
+- (int64_t)_orientationForOptions:(unint64_t)options
 {
-  if ((a3 & 0x180) == 0x100)
+  if ((options & 0x180) == 0x100)
   {
     return 3;
   }
@@ -409,7 +409,7 @@ LABEL_7:
   }
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
   v4 = PBUIWallpaperLocationForVariant();
 

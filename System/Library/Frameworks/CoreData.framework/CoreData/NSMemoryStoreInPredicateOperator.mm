@@ -1,7 +1,7 @@
 @interface NSMemoryStoreInPredicateOperator
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
 - (void)dealloc;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation NSMemoryStoreInPredicateOperator
@@ -13,23 +13,23 @@
   [(NSMemoryStoreInPredicateOperator *)&v3 dealloc];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
   context = self->_context;
-  if (context != a3)
+  if (context != context)
   {
 
-    self->_context = a3;
+    self->_context = context;
   }
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
   v37 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())) && (a3 = [a3 objectID]) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())) && (object = [object objectID]) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [a4 count];
+    v7 = [andObject count];
     if (v7 <= 1)
     {
       v8 = 1;
@@ -51,7 +51,7 @@
     }
 
     v10 = &v27 - ((8 * v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-    v30 = a3;
+    objectCopy = object;
     v29 = &v27;
     v28 = v7;
     if (v7 > 0x200)
@@ -68,7 +68,7 @@
     v35 = 0u;
     v33 = 0u;
     v32 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v11 = [andObject countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -81,14 +81,14 @@
           v16 = v13;
           if (*v33 != v14)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(andObject);
           }
 
-          v17 = *(*(&v32 + 1) + 8 * i);
+          objectID = *(*(&v32 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v17 = [v17 objectID];
+            objectID = [objectID objectID];
           }
 
           context = self->_context;
@@ -97,19 +97,19 @@
             v19 = *(context->_additionalPrivateIvars + 1);
             if (v19)
             {
-              v20 = [*v19 objectForKey:v17];
+              v20 = [*v19 objectForKey:objectID];
               if (v20)
               {
-                v17 = v20;
+                objectID = v20;
               }
             }
           }
 
           ++v13;
-          *&v10[8 * v16] = v17;
+          *&v10[8 * v16] = objectID;
         }
 
-        v12 = [a4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v12 = [andObject countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v12);
@@ -120,7 +120,7 @@
     {
       v22 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v10 count:v28];
       v23 = v21 >= 0x201;
-      a3 = v30;
+      object = objectCopy;
       if (v23)
       {
         NSZoneFree(0, v10);
@@ -130,10 +130,10 @@
     else
     {
       v22 = NSArray_EmptyArray;
-      a3 = v30;
+      object = objectCopy;
     }
 
-    a4 = v22;
+    andObject = v22;
   }
 
   else
@@ -143,7 +143,7 @@
 
   v31.receiver = self;
   v31.super_class = NSMemoryStoreInPredicateOperator;
-  v24 = [(NSPredicateOperator *)&v31 performPrimitiveOperationUsingObject:a3 andObject:a4];
+  v24 = [(NSPredicateOperator *)&v31 performPrimitiveOperationUsingObject:object andObject:andObject];
 
   v25 = *MEMORY[0x1E69E9840];
   return v24;

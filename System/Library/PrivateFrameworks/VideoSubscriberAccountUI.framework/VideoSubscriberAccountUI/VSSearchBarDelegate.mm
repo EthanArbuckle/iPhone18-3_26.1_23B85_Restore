@@ -1,7 +1,7 @@
 @interface VSSearchBarDelegate
 - (VSSearchBarDelegate)init;
 - (void)clearText;
-- (void)setSearchBar:(id)a3;
+- (void)setSearchBar:(id)bar;
 @end
 
 @implementation VSSearchBarDelegate
@@ -23,27 +23,27 @@
 
 - (void)clearText
 {
-  v3 = [(VSSearchBarDelegate *)self searchBar];
-  [v3 setText:&stru_2880B8BB0];
+  searchBar = [(VSSearchBarDelegate *)self searchBar];
+  [searchBar setText:&stru_2880B8BB0];
 
   [(VSSearchBarDelegate *)self setText:&stru_2880B8BB0];
 }
 
-- (void)setSearchBar:(id)a3
+- (void)setSearchBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   searchBar = self->_searchBar;
-  if (searchBar != v5)
+  if (searchBar != barCopy)
   {
-    v10 = v5;
+    v10 = barCopy;
     [(UISearchBar *)searchBar setDelegate:0];
-    objc_storeStrong(&self->_searchBar, a3);
+    objc_storeStrong(&self->_searchBar, bar);
     [(UISearchBar *)v10 setDelegate:self];
-    v7 = [(UISearchBar *)v10 text];
-    v8 = v7;
-    if (v7)
+    text = [(UISearchBar *)v10 text];
+    v8 = text;
+    if (text)
     {
-      v9 = v7;
+      v9 = text;
     }
 
     else

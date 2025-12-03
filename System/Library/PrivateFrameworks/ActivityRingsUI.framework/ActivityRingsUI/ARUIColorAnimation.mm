@@ -1,36 +1,36 @@
 @interface ARUIColorAnimation
-+ (id)animationWithDuration:(double)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 timingFunction:(id)a8 applier:(id)a9;
-- (ARUIColorAnimation)initWithDuration:(double)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 timingFunction:(id)a8 applier:(id)a9;
++ (id)animationWithDuration:(double)duration startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor timingFunction:(id)function applier:(id)applier;
+- (ARUIColorAnimation)initWithDuration:(double)duration startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor timingFunction:(id)function applier:(id)applier;
 - (ARUIRingGroupAnimationDelegate)delegate;
 - (BOOL)isAnimating;
 - (void)completeAnimation;
 - (void)dealloc;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation ARUIColorAnimation
 
-+ (id)animationWithDuration:(double)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 timingFunction:(id)a8 applier:(id)a9
++ (id)animationWithDuration:(double)duration startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor timingFunction:(id)function applier:(id)applier
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = [[ARUIColorAnimation alloc] initWithDuration:v20 startTopColor:v19 endTopColor:v18 startBottomColor:v17 endBottomColor:v16 timingFunction:v15 applier:a3];
+  applierCopy = applier;
+  functionCopy = function;
+  endBottomColorCopy = endBottomColor;
+  bottomColorCopy = bottomColor;
+  topColorCopy = topColor;
+  colorCopy = color;
+  v21 = [[ARUIColorAnimation alloc] initWithDuration:colorCopy startTopColor:topColorCopy endTopColor:bottomColorCopy startBottomColor:endBottomColorCopy endBottomColor:functionCopy timingFunction:applierCopy applier:duration];
 
   return v21;
 }
 
-- (ARUIColorAnimation)initWithDuration:(double)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 timingFunction:(id)a8 applier:(id)a9
+- (ARUIColorAnimation)initWithDuration:(double)duration startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor timingFunction:(id)function applier:(id)applier
 {
-  v27 = a4;
-  v26 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  colorCopy = color;
+  topColorCopy = topColor;
+  bottomColorCopy = bottomColor;
+  endBottomColorCopy = endBottomColor;
+  functionCopy = function;
+  applierCopy = applier;
   v28.receiver = self;
   v28.super_class = ARUIColorAnimation;
   v21 = [(ARUIColorAnimation *)&v28 init];
@@ -38,16 +38,16 @@
   if (v21)
   {
     v21->_completed = 0;
-    v21->_duration = a3;
+    v21->_duration = duration;
     v21->_percent = 0.0;
-    objc_storeStrong(&v21->_startTopColor, a4);
-    objc_storeStrong(&v22->_currentTopColor, a4);
-    objc_storeStrong(&v22->_endTopColor, a5);
-    objc_storeStrong(&v22->_startBottomColor, a6);
-    objc_storeStrong(&v22->_currentBottomColor, a6);
-    objc_storeStrong(&v22->_endBottomColor, a7);
-    objc_storeStrong(&v22->_timingFunction, a8);
-    v23 = MEMORY[0x1D3875270](v20);
+    objc_storeStrong(&v21->_startTopColor, color);
+    objc_storeStrong(&v22->_currentTopColor, color);
+    objc_storeStrong(&v22->_endTopColor, topColor);
+    objc_storeStrong(&v22->_startBottomColor, bottomColor);
+    objc_storeStrong(&v22->_currentBottomColor, bottomColor);
+    objc_storeStrong(&v22->_endBottomColor, endBottomColor);
+    objc_storeStrong(&v22->_timingFunction, function);
+    v23 = MEMORY[0x1D3875270](applierCopy);
     applier = v22->_applier;
     v22->_applier = v23;
   }
@@ -67,14 +67,14 @@
   [(ARUIColorAnimation *)&v3 dealloc];
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   if (self->_completed)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Should not call update on a ARUIColorAnimation that has already completed"];
   }
 
-  v5 = self->_percent + a3 / self->_duration;
+  v5 = self->_percent + update / self->_duration;
   self->_percent = ARUISaturate(v5);
   [(CAMediaTimingFunction *)self->_timingFunction _solveForInput:?];
   v7 = v6;
@@ -115,7 +115,7 @@
   self->_currentBottomColor = v38;
 
   v40 = *(self->_applier + 2);
-  v41.n128_f64[0] = a3;
+  v41.n128_f64[0] = update;
 
   v40(v41);
 }

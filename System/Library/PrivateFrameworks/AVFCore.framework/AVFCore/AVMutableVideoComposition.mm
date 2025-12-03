@@ -3,7 +3,7 @@
 + (AVMutableVideoComposition)videoCompositionWithAsset:(AVAsset *)asset applyingCIFiltersWithHandler:(void *)applier;
 + (AVMutableVideoComposition)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset;
 + (AVMutableVideoComposition)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset prototypeInstruction:(AVVideoCompositionInstruction *)prototypeInstruction;
-+ (id)makeSpatialVideoConfigurationsFromVideoTracks:(id)a3;
++ (id)makeSpatialVideoConfigurationsFromVideoTracks:(id)tracks;
 + (void)videoCompositionWithAsset:(AVAsset *)asset applyingCIFiltersWithHandler:(void *)applier completionHandler:(void *)completionHandler;
 + (void)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset completionHandler:(void *)completionHandler;
 + (void)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset prototypeInstruction:(AVVideoCompositionInstruction *)prototypeInstruction completionHandler:(void *)completionHandler;
@@ -25,22 +25,22 @@
 - (id)sourceVideoTrackWindowsForTrackIDs;
 - (id)spatialVideoConfigurations;
 - (void)setAnimationTool:(AVVideoCompositionCoreAnimationTool *)animationTool;
-- (void)setBuiltInCompositorName:(id)a3;
+- (void)setBuiltInCompositorName:(id)name;
 - (void)setColorPrimaries:(NSString *)colorPrimaries;
 - (void)setColorTransferFunction:(NSString *)colorTransferFunction;
 - (void)setColorYCbCrMatrix:(NSString *)colorYCbCrMatrix;
 - (void)setCustomVideoCompositorClass:(id)customVideoCompositorClass;
 - (void)setFrameDuration:(CMTime *)frameDuration;
 - (void)setInstructions:(NSArray *)instructions;
-- (void)setOutputBufferDescription:(id)a3;
+- (void)setOutputBufferDescription:(id)description;
 - (void)setPerFrameHDRDisplayMetadataPolicy:(AVVideoCompositionPerFrameHDRDisplayMetadataPolicy)perFrameHDRDisplayMetadataPolicy;
 - (void)setRenderScale:(float)renderScale;
 - (void)setRenderSize:(CGSize)renderSize;
 - (void)setSourceSampleDataTrackIDs:(NSArray *)sourceSampleDataTrackIDs;
-- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)a3;
+- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)ds;
 - (void)setSourceTrackIDForFrameTiming:(CMPersistentTrackID)sourceTrackIDForFrameTiming;
-- (void)setSourceVideoTrackWindowsForTrackIDs:(id)a3;
-- (void)setSpatialVideoConfigurations:(id)a3;
+- (void)setSourceVideoTrackWindowsForTrackIDs:(id)ds;
+- (void)setSpatialVideoConfigurations:(id)configurations;
 @end
 
 @implementation AVMutableVideoComposition
@@ -78,16 +78,16 @@ uint64_t __85__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_c
   return v6(v4, v5, a3);
 }
 
-+ (id)makeSpatialVideoConfigurationsFromVideoTracks:(id)a3
++ (id)makeSpatialVideoConfigurationsFromVideoTracks:(id)tracks
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = a3;
-  v5 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  obj = tracks;
+  v5 = [tracks countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -102,12 +102,12 @@ uint64_t __85__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_c
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * v8) formatDescriptions];
+        formatDescriptions = [*(*(&v21 + 1) + 8 * v8) formatDescriptions];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v10 = [formatDescriptions countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -119,20 +119,20 @@ uint64_t __85__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_c
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(formatDescriptions);
               }
 
               v14 = [[AVSpatialVideoConfiguration alloc] initWithFormatDescription:*(*(&v17 + 1) + 8 * v13)];
               if (![(AVSpatialVideoConfiguration *)v14 isEmpty])
               {
-                [v4 addObject:v14];
+                [array addObject:v14];
               }
 
               ++v13;
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [formatDescriptions countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
@@ -148,14 +148,14 @@ uint64_t __85__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_c
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 + (AVMutableVideoComposition)videoCompositionWithPropertiesOfAsset:(AVAsset *)asset prototypeInstruction:(AVVideoCompositionInstruction *)prototypeInstruction
 {
   v119 = *MEMORY[0x1E69E9840];
   obj = [MEMORY[0x1E695DF70] array];
-  v69 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v65 = asset;
   v6 = [(AVAsset *)asset tracksWithMediaType:@"vide"];
   x = *MEMORY[0x1E695F058];
@@ -230,8 +230,8 @@ uint64_t __85__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_c
           v105 = 0u;
           v106 = 0u;
           v107 = 0u;
-          v25 = [v19 segments];
-          v26 = [v25 countByEnumeratingWithState:&v104 objects:v117 count:16];
+          segments = [v19 segments];
+          v26 = [segments countByEnumeratingWithState:&v104 objects:v117 count:16];
           if (v26)
           {
             v27 = v26;
@@ -242,7 +242,7 @@ LABEL_14:
             {
               if (*v105 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(segments);
               }
 
               v30 = *(*(&v104 + 1) + 8 * v29);
@@ -272,7 +272,7 @@ LABEL_14:
               CFRelease(v32);
               if (v27 == ++v29)
               {
-                v27 = [v25 countByEnumeratingWithState:&v104 objects:v117 count:16];
+                v27 = [segments countByEnumeratingWithState:&v104 objects:v117 count:16];
                 if (v27)
                 {
                   goto LABEL_14;
@@ -386,7 +386,7 @@ LABEL_14:
           if (flags)
           {
             recta = v45;
-            v47 = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
             if (prototypeInstruction && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v48 = [(AVVideoCompositionInstruction *)prototypeInstruction mutableCopy];
@@ -477,7 +477,7 @@ LABEL_14:
                         *&v79.b = __PAIR64__(flags, timescale);
                         v79.c = v43;
                         [(AVMutableVideoCompositionLayerInstruction *)v56 setTransform:&rhs atTime:&v79];
-                        [v47 addObject:v56];
+                        [array2 addObject:v56];
                       }
                     }
                   }
@@ -489,8 +489,8 @@ LABEL_14:
               while (v51);
             }
 
-            [(AVMutableVideoCompositionInstruction *)v74 setLayerInstructions:v47];
-            [v69 addObject:v74];
+            [(AVMutableVideoCompositionInstruction *)v74 setLayerInstructions:array2];
+            [array addObject:v74];
             v44 = v67;
             prototypeInstruction = v68;
             v41 = v71;
@@ -513,11 +513,11 @@ LABEL_14:
     while (v41);
   }
 
-  v57 = [v69 lastObject];
+  lastObject = [array lastObject];
   memset(&rhs, 0, 24);
-  if (v57)
+  if (lastObject)
   {
-    [v57 timeRange];
+    [lastObject timeRange];
   }
 
   else
@@ -559,7 +559,7 @@ LABEL_14:
     CMTimeRangeMake(&v78, &time2, &lhs.start);
     lhs = v78;
     [(AVMutableVideoCompositionInstruction *)v59 setTimeRange:&lhs];
-    [v69 addObject:v59];
+    [array addObject:v59];
   }
 
   v36 = +[AVMutableVideoComposition videoComposition];
@@ -584,7 +584,7 @@ LABEL_14:
   }
 
   [(AVMutableVideoComposition *)v36 setRenderSize:v37, v38];
-  [(AVMutableVideoComposition *)v36 setInstructions:v69];
+  [(AVMutableVideoComposition *)v36 setInstructions:array];
   [(AVMutableVideoComposition *)v36 setSpatialVideoConfigurations:[AVMutableVideoComposition makeSpatialVideoConfigurationsFromVideoTracks:v66]];
   return v36;
 }
@@ -613,7 +613,7 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   v5[1] = 3221225472;
   v5[2] = __106__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_prototypeInstruction_completionHandler___block_invoke;
   v5[3] = &unk_1E74620C8;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = asset;
   v5[6] = prototypeInstruction;
   v5[7] = completionHandler;
@@ -627,15 +627,15 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   return [(AVVideoComposition *)&v3 builtInCompositorName];
 }
 
-- (void)setBuiltInCompositorName:(id)a3
+- (void)setBuiltInCompositorName:(id)name
 {
   v6.receiver = self;
   v6.super_class = AVMutableVideoComposition;
-  if (([a3 isEqual:{-[AVVideoComposition builtInCompositorName](&v6, sel_builtInCompositorName)}] & 1) == 0)
+  if (([name isEqual:{-[AVVideoComposition builtInCompositorName](&v6, sel_builtInCompositorName)}] & 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = AVMutableVideoComposition;
-    [(AVVideoComposition *)&v5 setBuiltInCompositorName:a3];
+    [(AVVideoComposition *)&v5 setBuiltInCompositorName:name];
     [(AVVideoComposition *)self _bumpChangeSeed];
   }
 }
@@ -804,11 +804,11 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   return [(AVVideoComposition *)&v3 outputBufferDescription];
 }
 
-- (void)setOutputBufferDescription:(id)a3
+- (void)setOutputBufferDescription:(id)description
 {
   v3.receiver = self;
   v3.super_class = AVMutableVideoComposition;
-  [(AVVideoComposition *)&v3 setOutputBufferDescription:a3];
+  [(AVVideoComposition *)&v3 setOutputBufferDescription:description];
 }
 
 - (id)spatialVideoConfigurations
@@ -818,11 +818,11 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   return [(AVVideoComposition *)&v3 spatialVideoConfigurations];
 }
 
-- (void)setSpatialVideoConfigurations:(id)a3
+- (void)setSpatialVideoConfigurations:(id)configurations
 {
   v3.receiver = self;
   v3.super_class = AVMutableVideoComposition;
-  [(AVVideoComposition *)&v3 setSpatialVideoConfigurations:a3];
+  [(AVVideoComposition *)&v3 setSpatialVideoConfigurations:configurations];
 }
 
 - (id)sourceVideoTrackWindowsForTrackIDs
@@ -832,11 +832,11 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   return [(AVVideoComposition *)&v3 sourceVideoTrackWindowsForTrackIDs];
 }
 
-- (void)setSourceVideoTrackWindowsForTrackIDs:(id)a3
+- (void)setSourceVideoTrackWindowsForTrackIDs:(id)ds
 {
   v3.receiver = self;
   v3.super_class = AVMutableVideoComposition;
-  [(AVVideoComposition *)&v3 setSourceVideoTrackWindowsForTrackIDs:a3];
+  [(AVVideoComposition *)&v3 setSourceVideoTrackWindowsForTrackIDs:ds];
 }
 
 - (id)sourceSampleDataTrackWindowsForTrackIDs
@@ -846,11 +846,11 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
   return [(AVVideoComposition *)&v3 sourceSampleDataTrackWindowsForTrackIDs];
 }
 
-- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)a3
+- (void)setSourceSampleDataTrackWindowsForTrackIDs:(id)ds
 {
   v3.receiver = self;
   v3.super_class = AVMutableVideoComposition;
-  [(AVVideoComposition *)&v3 setSourceSampleDataTrackWindowsForTrackIDs:a3];
+  [(AVVideoComposition *)&v3 setSourceSampleDataTrackWindowsForTrackIDs:ds];
 }
 
 - (NSString)colorPrimaries
@@ -949,11 +949,11 @@ uint64_t __88__AVMutableVideoComposition_videoCompositionWithPropertiesOfAsset_p
     v10 = *MEMORY[0x1E695D940];
     v11 = "handler";
 LABEL_6:
-    v12 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", applier, v4, v5, v6, v7, v11), 0}];
+    v12 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", applier, v4, v5, v6, v7, v11), 0}];
     objc_exception_throw(v12);
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___AVMutableVideoComposition;
   return objc_msgSendSuper2(&v13, sel__mutableVideoCompositionWithAsset_applyingCIFiltersWithHandler_);
 }
@@ -982,7 +982,7 @@ LABEL_6:
     v9 = *MEMORY[0x1E695D940];
     v10 = "completionHandler != nil";
 LABEL_8:
-    v11 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", applier, completionHandler, v5, v6, v7, v10), 0}];
+    v11 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", applier, completionHandler, v5, v6, v7, v10), 0}];
     objc_exception_throw(v11);
   }
 
@@ -990,7 +990,7 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __131__AVMutableVideoComposition_AVVideoCompositionFiltering__videoCompositionWithAsset_applyingCIFiltersWithHandler_completionHandler___block_invoke;
   v12[3] = &unk_1E7463928;
-  v12[4] = a1;
+  v12[4] = self;
   v12[5] = asset;
   v12[6] = applier;
   v12[7] = completionHandler;

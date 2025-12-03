@@ -1,25 +1,25 @@
 @interface PRSMutablePosterDescriptor
-+ (id)mutableDescriptorWithIdentifier:(id)a3;
-+ (id)mutableDescriptorWithIdentifier:(id)a3 role:(id)a4;
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4;
++ (id)mutableDescriptorWithIdentifier:(id)identifier;
++ (id)mutableDescriptorWithIdentifier:(id)identifier role:(id)role;
+- (BOOL)storeUserInfo:(id)info error:(id *)error;
 @end
 
 @implementation PRSMutablePosterDescriptor
 
-+ (id)mutableDescriptorWithIdentifier:(id)a3
++ (id)mutableDescriptorWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PFPosterRoleDefaultRoleForCurrentExtensionProcess();
-  v6 = [a1 mutableDescriptorWithIdentifier:v4 role:v5];
+  v6 = [self mutableDescriptorWithIdentifier:identifierCopy role:v5];
 
   return v6;
 }
 
-+ (id)mutableDescriptorWithIdentifier:(id)a3 role:(id)a4
++ (id)mutableDescriptorWithIdentifier:(id)identifier role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifierCopy = identifier;
+  roleCopy = role;
+  v8 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -33,23 +33,23 @@
 
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
-    [PRSMutablePosterDescriptor mutableDescriptorWithIdentifier:v7 role:a2];
+    [PRSMutablePosterDescriptor mutableDescriptorWithIdentifier:roleCopy role:a2];
   }
 
-  v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:v8 role:v7];
+  v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:v8 role:roleCopy];
   v10 = [(PRSPosterDescriptor *)[PRSMutablePosterDescriptor alloc] _initWithPath:v9];
   [v9 invalidate];
 
   return v10;
 }
 
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)storeUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRSPosterDescriptor *)self _path];
-  LOBYTE(a4) = [v7 storeUserInfo:v6 error:a4];
+  infoCopy = info;
+  _path = [(PRSPosterDescriptor *)self _path];
+  LOBYTE(error) = [_path storeUserInfo:infoCopy error:error];
 
-  return a4;
+  return error;
 }
 
 + (void)mutableDescriptorWithIdentifier:(char *)a1 role:.cold.1(char *a1)

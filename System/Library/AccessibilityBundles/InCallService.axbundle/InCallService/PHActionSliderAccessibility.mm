@@ -1,20 +1,20 @@
 @interface PHActionSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
 @end
 
 @implementation PHActionSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHActionSlider" hasInstanceVariable:@"_trackBackgroundView" withType:"UIView"];
-  [v3 validateClass:@"PHActionSlider" hasInstanceMethod:@"trackText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHActionSlider" hasInstanceMethod:@"trackMaskPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHActionSlider" hasInstanceMethod:@"_slideCompleted:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PHActionSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSlidingButton" hasInstanceMethod:@"type" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHActionSlider" hasInstanceVariable:@"_trackBackgroundView" withType:"UIView"];
+  [validationsCopy validateClass:@"PHActionSlider" hasInstanceMethod:@"trackText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHActionSlider" hasInstanceMethod:@"trackMaskPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHActionSlider" hasInstanceMethod:@"_slideCompleted:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PHActionSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSlidingButton" hasInstanceMethod:@"type" withFullSignature:{"i", 0}];
 }
 
 - (id)accessibilityPath

@@ -1,69 +1,69 @@
 @interface PICompositionController
-+ (Class)adjustmentControllerClassForKey:(id)a3;
++ (Class)adjustmentControllerClassForKey:(id)key;
 + (id)_keyToIdentifierMap;
 + (id)photosSchema;
-+ (id)schemaForKey:(id)a3;
-+ (id)settingForAdjustmentKey:(id)a3 settingKey:(id)a4;
++ (id)schemaForKey:(id)key;
++ (id)settingForAdjustmentKey:(id)key settingKey:(id)settingKey;
 - (BOOL)dumpComposition;
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4 comparisonBlock:(id)a5;
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4 visualChangesOnly:(BOOL)a5;
-- (Class)_adjustmentControllerClassForKey:(id)a3;
+- (BOOL)isEqual:(id)equal forKeys:(id)keys comparisonBlock:(id)block;
+- (BOOL)isEqual:(id)equal forKeys:(id)keys visualChangesOnly:(BOOL)only;
+- (Class)_adjustmentControllerClassForKey:(id)key;
 - (NUComposition)composition;
 - (PIAdjustmentConstants)adjustmentConstants;
-- (PICompositionController)initWithComposition:(id)a3;
+- (PICompositionController)initWithComposition:(id)composition;
 - (PICompositionControllerDelegate)changeDelegate;
-- (id)_adjustmentControllerForKey:(id)a3 creatingIfNecessary:(BOOL)a4 expectedClass:(Class)a5;
-- (id)adjustmentControllerForKey:(id)a3;
+- (id)_adjustmentControllerForKey:(id)key creatingIfNecessary:(BOOL)necessary expectedClass:(Class)class;
+- (id)adjustmentControllerForKey:(id)key;
 - (id)adjustmentKeys;
-- (id)autoLoopAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
+- (id)autoLoopAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
 - (id)availableKeys;
-- (id)cinematicAudioAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
+- (id)cinematicAudioAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
 - (id)compositionKeys;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)cropAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)cropAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
 - (id)debugDescription;
-- (id)definitionAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)depthAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)differingAdjustmentsWithComposition:(id)a3;
-- (id)effect3DAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)effectAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)highResFusionAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)inpaintAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)livePhotoKeyFrameAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)noiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)orientationAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)portraitAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)portraitVideoAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)rawAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)rawNoiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)redEyeAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)retouchAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)semanticEnhanceAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)semanticStyleAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)sharpenAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)slomoAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)smartBWAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)smartColorAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)smartToneAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)trimAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)videoCrossfadeLoopAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)videoPosterFrameAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)videoStabilizeAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)vignetteAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
-- (id)whiteBalanceAdjustmentControllerCreatingIfNecessary:(BOOL)a3;
+- (id)definitionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)depthAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)differingAdjustmentsWithComposition:(id)composition;
+- (id)effect3DAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)effectAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)highResFusionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)inpaintAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)livePhotoKeyFrameAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)noiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)orientationAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)portraitAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)portraitVideoAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)rawAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)rawNoiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)redEyeAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)retouchAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)semanticEnhanceAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)semanticStyleAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)sharpenAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)slomoAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)smartBWAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)smartColorAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)smartToneAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)trimAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)videoCrossfadeLoopAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)videoPosterFrameAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)videoStabilizeAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)vignetteAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
+- (id)whiteBalanceAdjustmentControllerCreatingIfNecessary:(BOOL)necessary;
 - (int64_t)userOrientation;
-- (void)_didAddAdjustment:(id)a3;
-- (void)_didRemoveAdjustment:(id)a3;
-- (void)_didUpdateAdjustment:(id)a3;
-- (void)_didUpdateAdjustments:(id)a3;
-- (void)addAdjustmentWithKey:(id)a3;
-- (void)applyChangesFromCompositionController:(id)a3;
-- (void)modifyAdjustmentWithKey:(id)a3 modificationBlock:(id)a4;
-- (void)performChanges:(id)a3;
-- (void)removeAdjustmentWithKey:(id)a3;
-- (void)replaceAdjustment:(id)a3 withKey:(id)a4;
-- (void)setChangeDelegate:(id)a3;
-- (void)setSource:(id)a3 mediaType:(int64_t)a4;
+- (void)_didAddAdjustment:(id)adjustment;
+- (void)_didRemoveAdjustment:(id)adjustment;
+- (void)_didUpdateAdjustment:(id)adjustment;
+- (void)_didUpdateAdjustments:(id)adjustments;
+- (void)addAdjustmentWithKey:(id)key;
+- (void)applyChangesFromCompositionController:(id)controller;
+- (void)modifyAdjustmentWithKey:(id)key modificationBlock:(id)block;
+- (void)performChanges:(id)changes;
+- (void)removeAdjustmentWithKey:(id)key;
+- (void)replaceAdjustment:(id)adjustment withKey:(id)key;
+- (void)setChangeDelegate:(id)delegate;
+- (void)setSource:(id)source mediaType:(int64_t)type;
 @end
 
 @implementation PICompositionController
@@ -84,9 +84,9 @@
 
   v6 = [v5 URLByAppendingPathComponent:@"PhotosComposition.plist"];
   v7 = MEMORY[0x1E69B3A18];
-  v8 = [(PICompositionController *)self composition];
+  composition = [(PICompositionController *)self composition];
   v30 = 0;
-  v9 = [v7 dumpComposition:v8 toURL:v6 error:&v30];
+  v9 = [v7 dumpComposition:composition toURL:v6 error:&v30];
   v10 = v30;
 
   v11 = MEMORY[0x1E69B3D78];
@@ -102,15 +102,15 @@
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       v14 = v13;
-      v15 = [v6 path];
+      path = [v6 path];
       *buf = 138412290;
-      v32 = v15;
+      v32 = path;
       _os_log_impl(&dword_1C7694000, v14, OS_LOG_TYPE_INFO, "Successfully dumped composition to %@", buf, 0xCu);
     }
 
     v16 = [PICompositionSidecarData alloc];
-    v17 = [(PICompositionController *)self composition];
-    v18 = [(PICompositionSidecarData *)v16 initWithComposition:v17];
+    composition2 = [(PICompositionController *)self composition];
+    v18 = [(PICompositionSidecarData *)v16 initWithComposition:composition2];
 
     if ([(PICompositionSidecarData *)v18 isEmpty])
     {
@@ -119,8 +119,8 @@
 
     else
     {
-      v21 = [(PICompositionController *)self brushStrokeHistory];
-      [(PICompositionSidecarData *)v18 setBrushStrokeHistory:v21];
+      brushStrokeHistory = [(PICompositionController *)self brushStrokeHistory];
+      [(PICompositionSidecarData *)v18 setBrushStrokeHistory:brushStrokeHistory];
 
       v22 = [v5 URLByAppendingPathComponent:@"PhotosCompositionSidecar.aar"];
       v29 = 0;
@@ -138,9 +138,9 @@
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_INFO))
         {
           v25 = v24;
-          v26 = [v22 path];
+          path2 = [v22 path];
           *buf = 138412290;
-          v32 = v26;
+          v32 = path2;
           _os_log_impl(&dword_1C7694000, v25, OS_LOG_TYPE_INFO, "Successfully dumped composition sidecar data to %@", buf, 0xCu);
         }
       }
@@ -186,24 +186,24 @@
   return v19;
 }
 
-- (void)setSource:(id)a3 mediaType:(int64_t)a4
+- (void)setSource:(id)source mediaType:(int64_t)type
 {
-  [(NUComposition *)self->_composition setObject:a3 forKeyedSubscript:@"source"];
+  [(NUComposition *)self->_composition setObject:source forKeyedSubscript:@"source"];
   composition = self->_composition;
 
-  [(NUComposition *)composition setMediaType:a4];
+  [(NUComposition *)composition setMediaType:type];
 }
 
-- (Class)_adjustmentControllerClassForKey:(id)a3
+- (Class)_adjustmentControllerClassForKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  keyCopy = key;
+  v5 = [objc_opt_class() adjustmentControllerClassForKey:keyCopy];
   WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
   v7 = WeakRetained;
   if (WeakRetained && self->_delegateFlags.hasClassForController)
   {
-    v8 = [WeakRetained compositionController:self adjustmentControllerClassForKey:v4];
+    v8 = [WeakRetained compositionController:self adjustmentControllerClassForKey:keyCopy];
     if (([(objc_class *)v8 isSubclassOfClass:v5]& 1) != 0)
     {
       v5 = v8;
@@ -241,9 +241,9 @@
   v3 = [(PICompositionController *)self orientationAdjustmentControllerCreatingIfNecessary:0];
   if (v3)
   {
-    v4 = [(PICompositionController *)self imageOrientation];
+    imageOrientation = [(PICompositionController *)self imageOrientation];
     v5 = 1;
-    if ([v3 orientation] && v4)
+    if ([v3 orientation] && imageOrientation)
     {
       NUOrientationInverse();
       [v3 orientation];
@@ -259,17 +259,17 @@
   return v5;
 }
 
-- (id)differingAdjustmentsWithComposition:(id)a3
+- (id)differingAdjustmentsWithComposition:(id)composition
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PICompositionController *)self availableKeys];
+  compositionCopy = composition;
+  availableKeys = [(PICompositionController *)self availableKeys];
   v15 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = availableKeys;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
@@ -287,7 +287,7 @@
         v11 = *(*(&v16 + 1) + 8 * i);
         v20 = v11;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-        v13 = [(PICompositionController *)self isEqual:v4 forKeys:v12 visualChangesOnly:1];
+        v13 = [(PICompositionController *)self isEqual:compositionCopy forKeys:v12 visualChangesOnly:1];
 
         if (!v13)
         {
@@ -313,35 +313,35 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4 comparisonBlock:(id)a5
+- (BOOL)isEqual:(id)equal forKeys:(id)keys comparisonBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v8 = a4;
-  v9 = a5;
+  equalCopy = equal;
+  keysCopy = keys;
+  blockCopy = block;
   v30 = self->_composition;
-  v29 = [objc_opt_class() _keyToIdentifierMap];
-  if (v8)
+  _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
+  if (keysCopy)
   {
-    v10 = v8;
+    availableKeys = keysCopy;
   }
 
   else
   {
-    v10 = [(PICompositionController *)self availableKeys];
+    availableKeys = [(PICompositionController *)self availableKeys];
   }
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v10;
+  obj = availableKeys;
   v11 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v33;
-    v27 = v8;
+    v27 = keysCopy;
     while (2)
     {
       for (i = 0; i != v12; ++i)
@@ -353,13 +353,13 @@
 
         v15 = *(*(&v32 + 1) + 8 * i);
         v16 = [(NUComposition *)v30 objectForKeyedSubscript:v15, v27];
-        v17 = [v31 objectForKeyedSubscript:v15];
+        v17 = [equalCopy objectForKeyedSubscript:v15];
         if (v16)
         {
           v18 = [v16 objectForKeyedSubscript:@"enabled"];
-          v19 = [v18 BOOLValue];
+          bOOLValue = [v18 BOOLValue];
 
-          if ((v19 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
 
             v16 = 0;
@@ -372,9 +372,9 @@
         }
 
         v20 = [v17 objectForKeyedSubscript:@"enabled"];
-        v21 = [v20 BOOLValue];
+        bOOLValue2 = [v20 BOOLValue];
 
-        if ((v21 & 1) == 0)
+        if ((bOOLValue2 & 1) == 0)
         {
 
 LABEL_22:
@@ -382,11 +382,11 @@ LABEL_22:
           v25 = v16 == 0;
 LABEL_23:
 
-          v8 = v27;
+          keysCopy = v27;
           goto LABEL_24;
         }
 
-        if (!v16 || (v22 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{v15)), "initWithAdjustment:", v16}], objc_msgSend(v29, "objectForKeyedSubscript:", v15), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "setIdentifier:", v23), v23, v24 = v9[2](v9, v15, v22, v17), v22, (v24 & 1) == 0))
+        if (!v16 || (v22 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{v15)), "initWithAdjustment:", v16}], objc_msgSend(_keyToIdentifierMap, "objectForKeyedSubscript:", v15), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "setIdentifier:", v23), v23, v24 = blockCopy[2](blockCopy, v15, v22, v17), v22, (v24 & 1) == 0))
         {
           v25 = 0;
           goto LABEL_23;
@@ -395,7 +395,7 @@ LABEL_23:
 
       v12 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
       v25 = 1;
-      v8 = v27;
+      keysCopy = v27;
       if (v12)
       {
         continue;
@@ -415,30 +415,30 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3 forKeys:(id)a4 visualChangesOnly:(BOOL)a5
+- (BOOL)isEqual:(id)equal forKeys:(id)keys visualChangesOnly:(BOOL)only
 {
-  v48 = a5;
+  onlyCopy = only;
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  equalCopy = equal;
+  keysCopy = keys;
   v9 = self->_composition;
-  v49 = [objc_opt_class() _keyToIdentifierMap];
-  if (v8)
+  _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
+  if (keysCopy)
   {
-    v10 = v8;
+    availableKeys = keysCopy;
   }
 
   else
   {
-    v10 = [(PICompositionController *)self availableKeys];
+    availableKeys = [(PICompositionController *)self availableKeys];
   }
 
-  v47 = v8;
+  v47 = keysCopy;
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v11 = v10;
+  v11 = availableKeys;
   v56 = [v11 countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (!v56)
   {
@@ -446,9 +446,9 @@ LABEL_24:
     goto LABEL_61;
   }
 
-  v50 = self;
+  selfCopy = self;
   v51 = 1;
-  v54 = v7;
+  v54 = equalCopy;
   v55 = *v58;
   v52 = v11;
   v53 = v9;
@@ -464,7 +464,7 @@ LABEL_24:
 
       v13 = *(*(&v57 + 1) + 8 * v12);
       v14 = [(NUComposition *)v9 objectForKeyedSubscript:v13, v47];
-      v15 = [v7 objectForKeyedSubscript:v13];
+      v15 = [equalCopy objectForKeyedSubscript:v13];
       if ([v13 isEqualToString:@"source"] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"raw"))
       {
         goto LABEL_11;
@@ -475,17 +475,17 @@ LABEL_24:
         v20 = [v13 isEqualToString:@"mute"];
         v21 = [v13 isEqualToString:@"autoLoop"];
         v22 = [v13 isEqualToString:@"portraitVideo"];
-        v23 = [v14 schema];
-        v24 = [v23 settings];
-        v25 = [v24 allKeys];
-        v26 = [v25 containsObject:@"enabled"] & (v20 ^ 1) & ((v21 | v22) ^ 1);
+        schema = [v14 schema];
+        settings = [schema settings];
+        allKeys = [settings allKeys];
+        v26 = [allKeys containsObject:@"enabled"] & (v20 ^ 1) & ((v21 | v22) ^ 1);
 
         if (v26 == 1 && v14 != 0)
         {
           v28 = [v14 objectForKeyedSubscript:@"enabled"];
-          v29 = [v28 BOOLValue];
+          bOOLValue = [v28 BOOLValue];
 
-          if ((v29 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
 
             v14 = 0;
@@ -493,7 +493,7 @@ LABEL_24:
         }
 
         v9 = v53;
-        v7 = v54;
+        equalCopy = v54;
         v11 = v52;
         if (v15)
         {
@@ -508,9 +508,9 @@ LABEL_24:
         if (v30 == 1)
         {
           v31 = [v15 objectForKeyedSubscript:@"enabled"];
-          v32 = [v31 BOOLValue];
+          bOOLValue2 = [v31 BOOLValue];
 
-          if (v32)
+          if (bOOLValue2)
           {
             if (!v14)
             {
@@ -525,10 +525,10 @@ LABEL_60:
 
 LABEL_41:
               v34 = [v15 objectForKeyedSubscript:@"value"];
-              v35 = [v34 integerValue];
-              v36 = [(PICompositionController *)v50 imageOrientation];
+              integerValue = [v34 integerValue];
+              imageOrientation = [(PICompositionController *)selfCopy imageOrientation];
 
-              if (v35 != v36)
+              if (integerValue != imageOrientation)
               {
                 goto LABEL_60;
               }
@@ -539,11 +539,11 @@ LABEL_11:
             }
 
 LABEL_50:
-            v40 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](v50 _adjustmentControllerClassForKey:{v13)), "initWithAdjustment:", v14}];
-            v41 = [v49 objectForKeyedSubscript:v13];
+            v40 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](selfCopy _adjustmentControllerClassForKey:{v13)), "initWithAdjustment:", v14}];
+            v41 = [_keyToIdentifierMap objectForKeyedSubscript:v13];
             [v40 setIdentifier:v41];
 
-            LOBYTE(v41) = [v40 isEqual:v15 visualChangesOnly:v48];
+            LOBYTE(v41) = [v40 isEqual:v15 visualChangesOnly:onlyCopy];
             if ((v41 & 1) == 0)
             {
               goto LABEL_60;
@@ -567,10 +567,10 @@ LABEL_50:
           v33 = 1;
 LABEL_46:
           v37 = [v14 objectForKeyedSubscript:@"value"];
-          v38 = [v37 integerValue];
-          v39 = [(PICompositionController *)v50 imageOrientation];
+          integerValue2 = [v37 integerValue];
+          imageOrientation2 = [(PICompositionController *)selfCopy imageOrientation];
 
-          if (!v33 || v38 != v39)
+          if (!v33 || integerValue2 != imageOrientation2)
           {
             goto LABEL_60;
           }
@@ -588,11 +588,11 @@ LABEL_46:
 
           if (v15)
           {
-            v42 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](v50 _adjustmentControllerClassForKey:{v13)), "initWithAdjustment:", v15}];
-            v43 = [v49 objectForKeyedSubscript:v13];
+            v42 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](selfCopy _adjustmentControllerClassForKey:{v13)), "initWithAdjustment:", v15}];
+            v43 = [_keyToIdentifierMap objectForKeyedSubscript:v13];
             [v42 setIdentifier:v43];
 
-            v44 = [v42 isEqual:0 visualChangesOnly:v48];
+            v44 = [v42 isEqual:0 visualChangesOnly:onlyCopy];
             v14 = 0;
             if (!v44)
             {
@@ -659,9 +659,9 @@ LABEL_61:
   return v51 & 1;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v10 = a3;
+  changesCopy = changes;
   transaction = self->_transaction;
   if (!transaction)
   {
@@ -673,14 +673,14 @@ LABEL_61:
   }
 
   [(_PICompositionControllerTransaction *)transaction begin];
-  v10[2]();
+  changesCopy[2]();
   if ([(_PICompositionControllerTransaction *)self->_transaction commit])
   {
-    v7 = [(_PICompositionControllerTransaction *)self->_transaction changes];
-    if ([v7 count] && self->_delegateFlags.hasDidUpdateMultiple)
+    changes = [(_PICompositionControllerTransaction *)self->_transaction changes];
+    if ([changes count] && self->_delegateFlags.hasDidUpdateMultiple)
     {
       WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
-      [WeakRetained compositionController:self didUpdateAdjustments:v7];
+      [WeakRetained compositionController:self didUpdateAdjustments:changes];
     }
 
     v9 = self->_transaction;
@@ -688,14 +688,14 @@ LABEL_61:
   }
 }
 
-- (void)_didUpdateAdjustments:(id)a3
+- (void)_didUpdateAdjustments:(id)adjustments
 {
-  v4 = a3;
+  adjustmentsCopy = adjustments;
   transaction = self->_transaction;
   if (transaction)
   {
-    v7 = v4;
-    transaction = [(_PICompositionControllerTransaction *)transaction didUpdateAdjustments:v4];
+    v7 = adjustmentsCopy;
+    transaction = [(_PICompositionControllerTransaction *)transaction didUpdateAdjustments:adjustmentsCopy];
   }
 
   else
@@ -705,25 +705,25 @@ LABEL_61:
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = adjustmentsCopy;
     WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
     [WeakRetained compositionController:self didUpdateAdjustments:v7];
   }
 
-  v4 = v7;
+  adjustmentsCopy = v7;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](transaction, v4);
+  MEMORY[0x1EEE66BB8](transaction, adjustmentsCopy);
 }
 
-- (void)applyChangesFromCompositionController:(id)a3
+- (void)applyChangesFromCompositionController:(id)controller
 {
-  v11 = a3;
-  v4 = [v11 composition];
-  v5 = [(PICompositionController *)self differingAdjustmentsWithComposition:v4];
-  v6 = [v11 source];
-  v7 = [(PICompositionController *)self source];
-  v8 = [v6 isEqual:v7];
+  controllerCopy = controller;
+  composition = [controllerCopy composition];
+  v5 = [(PICompositionController *)self differingAdjustmentsWithComposition:composition];
+  source = [controllerCopy source];
+  source2 = [(PICompositionController *)self source];
+  v8 = [source isEqual:source2];
 
   if ((v8 & 1) == 0)
   {
@@ -733,61 +733,61 @@ LABEL_6:
   }
 
   composition = self->_composition;
-  self->_composition = v4;
+  self->_composition = composition;
 
-  -[PICompositionController setImageOrientation:](self, "setImageOrientation:", [v11 imageOrientation]);
+  -[PICompositionController setImageOrientation:](self, "setImageOrientation:", [controllerCopy imageOrientation]);
   if ([v5 count])
   {
     [(PICompositionController *)self _didUpdateAdjustments:v5];
   }
 }
 
-- (void)modifyAdjustmentWithKey:(id)a3 modificationBlock:(id)a4
+- (void)modifyAdjustmentWithKey:(id)key modificationBlock:(id)block
 {
-  v16 = a3;
-  if (a4)
+  keyCopy = key;
+  if (block)
   {
-    v6 = a4;
-    v7 = [objc_opt_class() _keyToIdentifierMap];
-    v8 = [(NUComposition *)self->_composition objectForKeyedSubscript:v16];
+    blockCopy = block;
+    _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
+    v8 = [(NUComposition *)self->_composition objectForKeyedSubscript:keyCopy];
     v9 = [v8 copy];
 
     if (!v9)
     {
       v10 = objc_alloc(MEMORY[0x1E69B3A98]);
-      v11 = [v7 objectForKeyedSubscript:v16];
+      v11 = [_keyToIdentifierMap objectForKeyedSubscript:keyCopy];
       v9 = [v10 initWithIdentifier:v11];
 
       [v9 reset];
     }
 
-    v12 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{v16)), "initWithAdjustment:", v9}];
-    v13 = [v7 objectForKeyedSubscript:v16];
+    v12 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{keyCopy)), "initWithAdjustment:", v9}];
+    v13 = [_keyToIdentifierMap objectForKeyedSubscript:keyCopy];
     [v12 setIdentifier:v13];
 
     [v12 setContainingComposition:self->_composition];
-    v6[2](v6, v12);
+    blockCopy[2](blockCopy, v12);
 
-    v14 = [v12 adjustment];
-    v15 = [v14 copy];
-    [(NUComposition *)self->_composition setObject:v15 forKeyedSubscript:v16];
+    adjustment = [v12 adjustment];
+    v15 = [adjustment copy];
+    [(NUComposition *)self->_composition setObject:v15 forKeyedSubscript:keyCopy];
 
-    [(PICompositionController *)self _didUpdateAdjustment:v16];
+    [(PICompositionController *)self _didUpdateAdjustment:keyCopy];
   }
 }
 
-- (id)adjustmentControllerForKey:(id)a3
+- (id)adjustmentControllerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _keyToIdentifierMap];
-  v6 = [(NUComposition *)self->_composition objectForKeyedSubscript:v4];
+  keyCopy = key;
+  _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
+  v6 = [(NUComposition *)self->_composition objectForKeyedSubscript:keyCopy];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [(NUComposition *)self->_composition objectForKeyedSubscript:v4];
+    v7 = [(NUComposition *)self->_composition objectForKeyedSubscript:keyCopy];
     v8 = [v7 copy];
 
-    v9 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{v4)), "initWithAdjustment:", v8}];
-    v10 = [v5 objectForKeyedSubscript:v4];
+    v9 = [objc_alloc(-[PICompositionController _adjustmentControllerClassForKey:](self _adjustmentControllerClassForKey:{keyCopy)), "initWithAdjustment:", v8}];
+    v10 = [_keyToIdentifierMap objectForKeyedSubscript:keyCopy];
     [v9 setIdentifier:v10];
 
     v11 = v9;
@@ -801,14 +801,14 @@ LABEL_6:
   return v11;
 }
 
-- (void)_didRemoveAdjustment:(id)a3
+- (void)_didRemoveAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   transaction = self->_transaction;
   if (transaction)
   {
-    v7 = v4;
-    transaction = [(_PICompositionControllerTransaction *)transaction didRemoveAdjustment:v4];
+    v7 = adjustmentCopy;
+    transaction = [(_PICompositionControllerTransaction *)transaction didRemoveAdjustment:adjustmentCopy];
   }
 
   else
@@ -818,40 +818,40 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = adjustmentCopy;
     WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
     [WeakRetained compositionController:self didRemoveAdjustment:v7];
   }
 
-  v4 = v7;
+  adjustmentCopy = v7;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](transaction, v4);
+  MEMORY[0x1EEE66BB8](transaction, adjustmentCopy);
 }
 
-- (void)removeAdjustmentWithKey:(id)a3
+- (void)removeAdjustmentWithKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   v4 = [(NUComposition *)self->_composition objectForKeyedSubscript:?];
   if (v4)
   {
-    [(NUComposition *)self->_composition setObject:0 forKeyedSubscript:v6];
+    [(NUComposition *)self->_composition setObject:0 forKeyedSubscript:keyCopy];
     if (self->_delegateFlags.hasDidRemove)
     {
       WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
-      [WeakRetained compositionController:self didRemoveAdjustment:v6];
+      [WeakRetained compositionController:self didRemoveAdjustment:keyCopy];
     }
   }
 }
 
-- (void)_didUpdateAdjustment:(id)a3
+- (void)_didUpdateAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   transaction = self->_transaction;
   if (transaction)
   {
-    v7 = v4;
-    transaction = [(_PICompositionControllerTransaction *)transaction didUpdateAdjustment:v4];
+    v7 = adjustmentCopy;
+    transaction = [(_PICompositionControllerTransaction *)transaction didUpdateAdjustment:adjustmentCopy];
   }
 
   else
@@ -861,41 +861,41 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = adjustmentCopy;
     WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
     [WeakRetained compositionController:self didUpdateAdjustment:v7];
   }
 
-  v4 = v7;
+  adjustmentCopy = v7;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](transaction, v4);
+  MEMORY[0x1EEE66BB8](transaction, adjustmentCopy);
 }
 
-- (void)replaceAdjustment:(id)a3 withKey:(id)a4
+- (void)replaceAdjustment:(id)adjustment withKey:(id)key
 {
-  v9 = a4;
+  keyCopy = key;
   composition = self->_composition;
-  v7 = a3;
-  v8 = [(NUComposition *)composition objectForKeyedSubscript:v9];
+  adjustmentCopy = adjustment;
+  v8 = [(NUComposition *)composition objectForKeyedSubscript:keyCopy];
 
-  [(NUComposition *)self->_composition setObject:v7 forKeyedSubscript:v9];
+  [(NUComposition *)self->_composition setObject:adjustmentCopy forKeyedSubscript:keyCopy];
   if (!v8)
   {
-    [(PICompositionController *)self _didAddAdjustment:v9];
+    [(PICompositionController *)self _didAddAdjustment:keyCopy];
   }
 
-  [(PICompositionController *)self _didUpdateAdjustment:v9];
+  [(PICompositionController *)self _didUpdateAdjustment:keyCopy];
 }
 
-- (void)_didAddAdjustment:(id)a3
+- (void)_didAddAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   transaction = self->_transaction;
   if (transaction)
   {
-    v7 = v4;
-    transaction = [(_PICompositionControllerTransaction *)transaction didAddAdjustment:v4];
+    v7 = adjustmentCopy;
+    transaction = [(_PICompositionControllerTransaction *)transaction didAddAdjustment:adjustmentCopy];
   }
 
   else
@@ -905,41 +905,41 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = adjustmentCopy;
     WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
     [WeakRetained compositionController:self didAddAdjustment:v7];
   }
 
-  v4 = v7;
+  adjustmentCopy = v7;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](transaction, v4);
+  MEMORY[0x1EEE66BB8](transaction, adjustmentCopy);
 }
 
-- (void)addAdjustmentWithKey:(id)a3
+- (void)addAdjustmentWithKey:(id)key
 {
-  v4 = a3;
-  v10 = [objc_opt_class() _keyToIdentifierMap];
+  keyCopy = key;
+  _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
   v5 = MEMORY[0x1E69B3A98];
   v6 = self->_composition;
   v7 = [v5 alloc];
-  v8 = [v10 objectForKeyedSubscript:v4];
+  v8 = [_keyToIdentifierMap objectForKeyedSubscript:keyCopy];
   v9 = [v7 initWithIdentifier:v8];
 
   [v9 reset];
-  [(NUComposition *)v6 setObject:v9 forKeyedSubscript:v4];
+  [(NUComposition *)v6 setObject:v9 forKeyedSubscript:keyCopy];
 
-  [(PICompositionController *)self _didAddAdjustment:v4];
+  [(PICompositionController *)self _didAddAdjustment:keyCopy];
 }
 
 - (id)availableKeys
 {
   v3 = objc_opt_new();
-  v4 = [(NUComposition *)self->_composition schema];
-  v5 = [v4 contents];
-  v6 = [v5 allKeys];
+  schema = [(NUComposition *)self->_composition schema];
+  contents = [schema contents];
+  allKeys = [contents allKeys];
 
-  [v3 addObjectsFromArray:v6];
+  [v3 addObjectsFromArray:allKeys];
 
   return v3;
 }
@@ -952,8 +952,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PICompositionController *)self compositionKeys];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  compositionKeys = [(PICompositionController *)self compositionKeys];
+  v5 = [compositionKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -964,7 +964,7 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(compositionKeys);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -974,7 +974,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [compositionKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -991,11 +991,11 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(NUComposition *)self->_composition schema];
-  v5 = [v4 contents];
-  v6 = [v5 allKeys];
+  schema = [(NUComposition *)self->_composition schema];
+  contents = [schema contents];
+  allKeys = [contents allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1006,7 +1006,7 @@ LABEL_6:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -1017,7 +1017,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1026,9 +1026,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)setChangeDelegate:(id)a3
+- (void)setChangeDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_changeDelegate);
 
   if (WeakRetained != obj)
@@ -1042,12 +1042,12 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithComposition:self->_composition];
   [v4 setImageOrientation:{-[PICompositionController imageOrientation](self, "imageOrientation")}];
-  v5 = [(PICompositionController *)self brushStrokeHistory];
-  v6 = [v5 copy];
+  brushStrokeHistory = [(PICompositionController *)self brushStrokeHistory];
+  v6 = [brushStrokeHistory copy];
   [v4 setBrushStrokeHistory:v6];
 
   return v4;
@@ -1060,13 +1060,13 @@ LABEL_6:
   return v2;
 }
 
-- (PICompositionController)initWithComposition:(id)a3
+- (PICompositionController)initWithComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = PICompositionController;
-  v3 = a3;
+  compositionCopy = composition;
   v4 = [(PICompositionController *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [compositionCopy copy];
 
   composition = v4->_composition;
   v4->_composition = v5;
@@ -1074,11 +1074,11 @@ LABEL_6:
   return v4;
 }
 
-+ (Class)adjustmentControllerClassForKey:(id)a3
++ (Class)adjustmentControllerClassForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_opt_class();
-  if (([v3 isEqualToString:@"smartTone"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"smartColor") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"smartBlackAndWhite") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"cropStraighten") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"redEye") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"depthEffect") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"livePhotoKeyFrame") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"videoPosterFrame") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"trim") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"slomo") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"effect3D") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"portraitEffect") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"orientation") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"autoLoop") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"highResFusion") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"rawNoiseReduction") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"sharpen") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"whiteBalance") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"noiseReduction") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"definition") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"raw") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"vignette") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"videoStabilize") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"videoCrossfadeLoop") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"semanticEnhance") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"semanticStyle") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"portraitVideo") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"cinematicAudio") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"retouch") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"inpaint"))
+  if (([keyCopy isEqualToString:@"smartTone"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"smartColor") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"smartBlackAndWhite") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"cropStraighten") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"redEye") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"depthEffect") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"livePhotoKeyFrame") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"videoPosterFrame") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"trim") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"slomo") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"effect") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"effect3D") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"portraitEffect") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"orientation") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"autoLoop") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"highResFusion") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"rawNoiseReduction") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"sharpen") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"whiteBalance") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"noiseReduction") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"definition") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"raw") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"vignette") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"videoStabilize") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"videoCrossfadeLoop") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"semanticEnhance") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"semanticStyle") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"portraitVideo") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"cinematicAudio") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"retouch") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"inpaint"))
   {
     v4 = objc_opt_class();
   }
@@ -1094,7 +1094,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __46__PICompositionController__keyToIdentifierMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_keyToIdentifierMap_onceToken != -1)
   {
     dispatch_once(&_keyToIdentifierMap_onceToken, block);
@@ -1173,26 +1173,26 @@ void __39__PICompositionController_photosSchema__block_invoke()
   photosSchema_photosSchema = v1;
 }
 
-+ (id)settingForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)settingForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v6 = a4;
-  v7 = [a1 schemaForKey:a3];
-  v8 = [v7 settings];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  settingKeyCopy = settingKey;
+  v7 = [self schemaForKey:key];
+  settings = [v7 settings];
+  v9 = [settings objectForKeyedSubscript:settingKeyCopy];
 
   return v9;
 }
 
-+ (id)schemaForKey:(id)a3
++ (id)schemaForKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _keyToIdentifierMap];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  keyCopy = key;
+  _keyToIdentifierMap = [objc_opt_class() _keyToIdentifierMap];
+  v5 = [_keyToIdentifierMap objectForKeyedSubscript:keyCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69B3CA8] sharedRegistry];
-    v7 = [v6 schemaWithIdentifier:v5];
+    mEMORY[0x1E69B3CA8] = [MEMORY[0x1E69B3CA8] sharedRegistry];
+    v7 = [mEMORY[0x1E69B3CA8] schemaWithIdentifier:v5];
   }
 
   else
@@ -1203,265 +1203,265 @@ void __39__PICompositionController_photosSchema__block_invoke()
   return v7;
 }
 
-- (id)semanticStyleAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)semanticStyleAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"semanticStyle" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"semanticStyle" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)inpaintAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)inpaintAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v4 = [(PICompositionController *)self _adjustmentControllerForKey:@"inpaint" creatingIfNecessary:a3 expectedClass:objc_opt_class()];
-  v5 = [(PICompositionController *)self _internalComposition];
-  [v4 setContainingComposition:v5];
+  v4 = [(PICompositionController *)self _adjustmentControllerForKey:@"inpaint" creatingIfNecessary:necessary expectedClass:objc_opt_class()];
+  _internalComposition = [(PICompositionController *)self _internalComposition];
+  [v4 setContainingComposition:_internalComposition];
 
   return v4;
 }
 
-- (id)retouchAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)retouchAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"retouch" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"retouch" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)cinematicAudioAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)cinematicAudioAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"cinematicAudio" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"cinematicAudio" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)portraitVideoAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)portraitVideoAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"portraitVideo" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"portraitVideo" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)semanticEnhanceAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)semanticEnhanceAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"semanticEnhance" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"semanticEnhance" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)videoCrossfadeLoopAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)videoCrossfadeLoopAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoCrossfadeLoop" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoCrossfadeLoop" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)videoStabilizeAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)videoStabilizeAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoStabilize" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoStabilize" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)vignetteAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)vignetteAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"vignette" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"vignette" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)definitionAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)definitionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"definition" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"definition" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)noiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)noiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"noiseReduction" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"noiseReduction" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)whiteBalanceAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)whiteBalanceAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"whiteBalance" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"whiteBalance" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)sharpenAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)sharpenAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"sharpen" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"sharpen" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)rawNoiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)rawNoiseReductionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"rawNoiseReduction" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"rawNoiseReduction" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)rawAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)rawAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"raw" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"raw" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)highResFusionAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)highResFusionAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"highResFusion" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"highResFusion" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)autoLoopAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)autoLoopAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"autoLoop" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"autoLoop" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)orientationAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)orientationAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"orientation" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"orientation" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)portraitAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)portraitAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"portraitEffect" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"portraitEffect" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)effect3DAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)effect3DAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"effect3D" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"effect3D" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)effectAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)effectAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"effect" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"effect" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)slomoAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)slomoAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"slomo" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"slomo" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)trimAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)trimAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"trim" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"trim" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)depthAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)depthAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"depthEffect" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"depthEffect" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)videoPosterFrameAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)videoPosterFrameAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoPosterFrame" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"videoPosterFrame" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)livePhotoKeyFrameAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)livePhotoKeyFrameAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"livePhotoKeyFrame" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"livePhotoKeyFrame" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)redEyeAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)redEyeAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"redEye" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"redEye" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)cropAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)cropAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"cropStraighten" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"cropStraighten" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)smartBWAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)smartBWAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartBlackAndWhite" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartBlackAndWhite" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)smartColorAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)smartColorAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartColor" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartColor" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)smartToneAdjustmentControllerCreatingIfNecessary:(BOOL)a3
+- (id)smartToneAdjustmentControllerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
 
-  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartTone" creatingIfNecessary:v3 expectedClass:v5];
+  return [(PICompositionController *)self _adjustmentControllerForKey:@"smartTone" creatingIfNecessary:necessaryCopy expectedClass:v5];
 }
 
-- (id)_adjustmentControllerForKey:(id)a3 creatingIfNecessary:(BOOL)a4 expectedClass:(Class)a5
+- (id)_adjustmentControllerForKey:(id)key creatingIfNecessary:(BOOL)necessary expectedClass:(Class)class
 {
-  v6 = a4;
+  necessaryCopy = necessary;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PICompositionController *)self adjustmentControllerForKey:v8];
-  if (!v9 && v6)
+  keyCopy = key;
+  v9 = [(PICompositionController *)self adjustmentControllerForKey:keyCopy];
+  if (!v9 && necessaryCopy)
   {
-    [(PICompositionController *)self addAdjustmentWithKey:v8];
-    v9 = [(PICompositionController *)self adjustmentControllerForKey:v8];
+    [(PICompositionController *)self addAdjustmentWithKey:keyCopy];
+    v9 = [(PICompositionController *)self adjustmentControllerForKey:keyCopy];
   }
 
   if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -1469,7 +1469,7 @@ void __39__PICompositionController_photosSchema__block_invoke()
     v11 = NUAssertLogger_22043();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Adjustment controller for key %@ is of class: %@, but was expected to be %@", v8, objc_opt_class(), a5];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Adjustment controller for key %@ is of class: %@, but was expected to be %@", keyCopy, objc_opt_class(), class];
       *buf = 138543362;
       v25 = v12;
       _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -1486,8 +1486,8 @@ void __39__PICompositionController_photosSchema__block_invoke()
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v19;
         v26 = 2114;
@@ -1498,8 +1498,8 @@ void __39__PICompositionController_photosSchema__block_invoke()
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

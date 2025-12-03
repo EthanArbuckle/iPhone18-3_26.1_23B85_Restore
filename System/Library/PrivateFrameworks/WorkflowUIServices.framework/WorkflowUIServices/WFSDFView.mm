@@ -7,7 +7,7 @@
 
 - (_TtC18WorkflowUIServices10WFSDFLayer)layer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C8346790();
 
   return v3;

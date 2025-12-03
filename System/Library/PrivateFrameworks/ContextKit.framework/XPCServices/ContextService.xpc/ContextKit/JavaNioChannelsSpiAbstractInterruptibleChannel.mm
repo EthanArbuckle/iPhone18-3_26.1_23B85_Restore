@@ -2,7 +2,7 @@
 - (BOOL)isOpen;
 - (void)begin;
 - (void)dealloc;
-- (void)endWithBoolean:(BOOL)a3;
+- (void)endWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaNioChannelsSpiAbstractInterruptibleChannel
@@ -28,7 +28,7 @@
   [(JavaLangThread *)v3 pushInterruptAction$WithJavaLangRunnable:interruptAndCloseRunnable];
 }
 
-- (void)endWithBoolean:(BOOL)a3
+- (void)endWithBoolean:(BOOL)boolean
 {
   v5 = JavaLangThread_currentThread();
   if (!v5)
@@ -45,7 +45,7 @@
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!boolean)
   {
     v7 = atomic_load(&self->closed_);
     if (v7)

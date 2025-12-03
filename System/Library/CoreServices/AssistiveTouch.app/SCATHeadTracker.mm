@@ -1,57 +1,57 @@
 @interface SCATHeadTracker
-- (id)localizedDescriptionForAvailabilityDetail:(int64_t)a3;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
+- (id)localizedDescriptionForAvailabilityDetail:(int64_t)detail;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
 - (void)startRunning;
 - (void)stopRunning;
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4;
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe;
 @end
 
 @implementation SCATHeadTracker
 
 - (void)startRunning
 {
-  v2 = self;
+  selfCopy = self;
   HeadTracker.startRunning()();
 }
 
 - (void)stopRunning
 {
-  v2 = self;
+  selfCopy = self;
   HeadTracker.stopRunning()();
 }
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  v10 = v9;
-  v12 = v9;
-  v14.super.isa = v8;
-  v14.action = v6;
-  v14.shortcutIdentifier = v5;
+  holdCopy = hold;
+  startCopy = start;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v10 = selfCopy;
+  v12 = selfCopy;
+  v14.super.isa = identifierCopy;
+  v14.action = startCopy;
+  v14.shortcutIdentifier = holdCopy;
   HeadTracker._didReceiveAction(withIdentifier:start:ignoreInputHold:)(v14, v10, v11);
 }
 
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe
 {
-  v5 = a3;
-  if (a3)
+  switchesCopy = switches;
+  if (switches)
   {
     sub_1000FB560(0, &qword_100218300);
     sub_10010F138();
-    v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
+    switchesCopy = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a4;
-  v8 = self;
-  HeadTracker.update(withSwitches:recipe:)(v5, a4);
+  recipeCopy = recipe;
+  selfCopy = self;
+  HeadTracker.update(withSwitches:recipe:)(switchesCopy, recipe);
 }
 
-- (id)localizedDescriptionForAvailabilityDetail:(int64_t)a3
+- (id)localizedDescriptionForAvailabilityDetail:(int64_t)detail
 {
-  HeadTrackerAvailabilityDetail.localizedDescription.getter(a3);
+  HeadTrackerAvailabilityDetail.localizedDescription.getter(detail);
   v3 = String._bridgeToObjectiveC()();
 
   return v3;

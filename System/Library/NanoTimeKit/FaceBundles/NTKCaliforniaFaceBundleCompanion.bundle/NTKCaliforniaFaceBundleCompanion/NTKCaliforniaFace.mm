@@ -1,26 +1,26 @@
 @interface NTKCaliforniaFace
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)complicationConfiguration;
 - (BOOL)isFullscreenConfiguration;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)complicationSlotsHiddenByEditOption:(id)a3;
-- (id)defaultColorForDevice:(id)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4;
-- (void)setIsLibraryFace:(BOOL)a3;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)complicationSlotsHiddenByEditOption:(id)option;
+- (id)defaultColorForDevice:(id)device;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color;
+- (void)setIsLibraryFace:(BOOL)face;
 @end
 
 @implementation NTKCaliforniaFace
 
 - (id)_faceDescriptionKey
 {
-  v2 = [(NTKCaliforniaFace *)self device];
-  v3 = [v2 supportsPDRCapability:360081074];
+  device = [(NTKCaliforniaFace *)self device];
+  v3 = [device supportsPDRCapability:360081074];
 
   v4 = @"FACE_STYLE_CALIFORNIA_DESCRIPTION";
   if (v3)
@@ -33,26 +33,26 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKCaliforniaFace *)self _faceDescriptionKey];
-  v3 = [NTKCaliforniaFaceBundle localizedStringForKey:v2 comment:@"California Face Description"];
+  _faceDescriptionKey = [(NTKCaliforniaFace *)self _faceDescriptionKey];
+  v3 = [NTKCaliforniaFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"California Face Description"];
 
   return v3;
 }
 
-- (void)setIsLibraryFace:(BOOL)a3
+- (void)setIsLibraryFace:(BOOL)face
 {
-  v3 = a3;
+  faceCopy = face;
   v9.receiver = self;
   v9.super_class = NTKCaliforniaFace;
   [(NTKCaliforniaFace *)&v9 setIsLibraryFace:?];
-  if (v3)
+  if (faceCopy)
   {
     v5 = [(NTKCaliforniaFace *)self selectedOptionForCustomEditMode:13 slot:0];
     if ([v5 style] == -1)
     {
       v6 = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
-      v7 = [(NTKCaliforniaFace *)self device];
-      v8 = [NTKCaliforniaStyleEditOption optionWithStyle:v6 forDevice:v7];
+      device = [(NTKCaliforniaFace *)self device];
+      v8 = [NTKCaliforniaStyleEditOption optionWithStyle:v6 forDevice:device];
       [(NTKCaliforniaFace *)self selectOption:v8 forCustomEditMode:13 slot:0];
     }
   }
@@ -70,22 +70,22 @@
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  switch(a3)
+  slotCopy = slot;
+  switch(mode)
   {
     case 15:
-      v7 = [(NTKCaliforniaFace *)self device];
-      v8 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v7];
+      device = [(NTKCaliforniaFace *)self device];
+      v8 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:device];
       goto LABEL_7;
     case 13:
-      v7 = [(NTKCaliforniaFace *)self device];
-      v8 = [NTKCaliforniaStyleEditOption optionWithStyle:2 forDevice:v7];
+      device = [(NTKCaliforniaFace *)self device];
+      v8 = [NTKCaliforniaStyleEditOption optionWithStyle:2 forDevice:device];
       goto LABEL_7;
     case 10:
-      v7 = [(NTKCaliforniaFace *)self device];
-      v8 = [(NTKCaliforniaFace *)self defaultColorForDevice:v7];
+      device = [(NTKCaliforniaFace *)self device];
+      v8 = [(NTKCaliforniaFace *)self defaultColorForDevice:device];
 LABEL_7:
       v9 = v8;
 
@@ -98,21 +98,21 @@ LABEL_9:
   return v9;
 }
 
-- (id)defaultColorForDevice:(id)a3
+- (id)defaultColorForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_22F8;
   v5[3] = &unk_1C628;
   v5[4] = self;
-  v3 = sub_22F8(v5, a3);
+  v3 = sub_22F8(v5, device);
 
   return v3;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 10:
       v4 = NTKCaliforniaColorEditOption_ptr;
@@ -134,62 +134,62 @@ LABEL_7:
   return v6;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 13 && [v8 style] == -1)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 13 && [optionCopy style] == -1)
   {
     v14 = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
-    v15 = [(NTKCaliforniaFace *)self device];
-    v16 = [NTKCaliforniaStyleEditOption optionWithStyle:v14 forDevice:v15];
+    device = [(NTKCaliforniaFace *)self device];
+    v16 = [NTKCaliforniaStyleEditOption optionWithStyle:v14 forDevice:device];
 
-    v12 = [(NTKCaliforniaFace *)self _indexOfOption:v16 forCustomEditMode:13 slot:v9];
-    v8 = v16;
+    v12 = [(NTKCaliforniaFace *)self _indexOfOption:v16 forCustomEditMode:13 slot:slotCopy];
+    optionCopy = v16;
   }
 
   else
   {
-    v10 = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:a4];
-    v11 = [(NTKCaliforniaFace *)self device];
-    v12 = [(objc_class *)v10 indexOfOption:v8 forDevice:v11];
+    v10 = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:mode];
+    device2 = [(NTKCaliforniaFace *)self device];
+    v12 = [(objc_class *)v10 indexOfOption:optionCopy forDevice:device2];
   }
 
   return v12;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKCaliforniaFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKCaliforniaFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a5;
-  if (a3 == -1 && a4 == 13)
+  slotCopy = slot;
+  if (index == -1 && mode == 13)
   {
-    v9 = [(NTKCaliforniaFace *)self _optionAtIndex:+[NTKCaliforniaStyleEditOption forCustomEditMode:"resolvedAutomaticStyleForCurrentLocale"]slot:13, v8];
+    slotCopy = [(NTKCaliforniaFace *)self _optionAtIndex:+[NTKCaliforniaStyleEditOption forCustomEditMode:"resolvedAutomaticStyleForCurrentLocale"]slot:13, slotCopy];
   }
 
   else
   {
-    v10 = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:a4];
-    v11 = [(NTKCaliforniaFace *)self device];
-    v9 = [(objc_class *)v10 optionAtIndex:a3 forDevice:v11];
+    v10 = [(NTKCaliforniaFace *)self _optionClassForCustomEditMode:mode];
+    device = [(NTKCaliforniaFace *)self device];
+    slotCopy = [(objc_class *)v10 optionAtIndex:index forDevice:device];
   }
 
-  return v9;
+  return slotCopy;
 }
 
-- (id)complicationSlotsHiddenByEditOption:(id)a3
+- (id)complicationSlotsHiddenByEditOption:(id)option
 {
-  v3 = a3;
+  optionCopy = option;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 dialShape] == &dword_0 + 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [optionCopy dialShape] == &dword_0 + 1)
   {
     v10 = NTKComplicationSlotTopLeft;
     v11 = NTKComplicationSlotTopRight;
@@ -203,7 +203,7 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || [v3 dialShape])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || [optionCopy dialShape])
     {
       v6 = 0;
       goto LABEL_9;
@@ -230,10 +230,10 @@ LABEL_9:
   return v3;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 == 15)
+  deviceCopy = device;
+  if (mode == 15)
   {
     v7 = @"EDIT_MODE_LABEL_DIAL";
 LABEL_7:
@@ -243,7 +243,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3 == 13)
+  if (mode == 13)
   {
     if (NTKShowIndicScriptNumerals())
     {
@@ -258,32 +258,32 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___NTKCaliforniaFace;
-  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
 LABEL_9:
 
   return v9;
 }
 
-- (void)applyPreviewConfigurationWithFamily:(int64_t)a3 faceColor:(int64_t)a4
+- (void)applyPreviewConfigurationWithFamily:(int64_t)family faceColor:(int64_t)color
 {
-  if (a4 > 7)
+  if (color > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_17578[a4];
+    v5 = qword_17578[color];
   }
 
-  v6 = [(NTKCaliforniaFace *)self device];
-  v10 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:v5 forDevice:v6];
+  device = [(NTKCaliforniaFace *)self device];
+  v10 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:v5 forDevice:device];
 
   [(NTKCaliforniaFace *)self selectOption:v10 forCustomEditMode:10 slot:0];
-  v7 = [(NTKCaliforniaFace *)self device];
-  v8 = [NTKAnalogDialShapeEditOption optionWithShape:0 forDevice:v7];
+  device2 = [(NTKCaliforniaFace *)self device];
+  v8 = [NTKAnalogDialShapeEditOption optionWithShape:0 forDevice:device2];
 
   [(NTKCaliforniaFace *)self selectOption:v8 forCustomEditMode:15 slot:0];
   v9 = [NTKComplication anyComplicationOfType:0];

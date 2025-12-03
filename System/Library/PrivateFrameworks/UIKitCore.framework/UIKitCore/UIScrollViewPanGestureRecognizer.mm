@@ -1,40 +1,40 @@
 @interface UIScrollViewPanGestureRecognizer
 - (BOOL)_beganCaughtDeceleratingScrollViewAndMoved;
 - (BOOL)_canTransferTrackingFromParentPagingScrollView;
-- (BOOL)_isParentScrollView:(id)a3 consideringEvent:(id)a4;
+- (BOOL)_isParentScrollView:(id)view consideringEvent:(id)event;
 - (BOOL)_shouldContinueToWaitToTransferTrackingFromParentScrollView;
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
 - (BOOL)_shouldTransferTrackingFromParentScrollViewForCurrentOffset;
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
 - (BOOL)delaysTouchesBegan;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (CGPoint)_adjustSceneReferenceLocation:(CGPoint)a3;
-- (CGPoint)_convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)_convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4;
-- (CGPoint)_velocityIncludingDiscreteScrollInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
-- (CGPoint)velocityInView:(id)a3;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (CGPoint)_adjustSceneReferenceLocation:(CGPoint)location;
+- (CGPoint)_convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)_convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view;
+- (CGPoint)_velocityIncludingDiscreteScrollInView:(id)view;
+- (CGPoint)translationInView:(id)view;
+- (CGPoint)velocityInView:(id)view;
 - (UIScrollView)scrollView;
 - (UIScrollViewDirectionalPressGestureRecognizer)directionalPressGestureRecognizer;
-- (UIScrollViewPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIScrollViewPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_hysteresis;
-- (id)_asyncDeliveryTargetForScrollEvent:(id)a3;
-- (void)_beginScrollWithEvent:(id)a3;
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 affectingTranslation:(BOOL)a5;
-- (void)_handleCaughtDeceleratingScrollViewWithEvent:(id)a3;
+- (id)_asyncDeliveryTargetForScrollEvent:(id)event;
+- (void)_beginScrollWithEvent:(id)event;
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time affectingTranslation:(BOOL)translation;
+- (void)_handleCaughtDeceleratingScrollViewWithEvent:(id)event;
 - (void)_resetGestureRecognizer;
 - (void)_scrollViewDidEndZooming;
-- (void)_scrollingChangedWithEvent:(id)a3;
-- (void)removeTarget:(id)a3 action:(SEL)a4;
-- (void)setAllowedTouchTypes:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDirectionalLockEnabled:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_scrollingChangedWithEvent:(id)event;
+- (void)removeTarget:(id)target action:(SEL)action;
+- (void)setAllowedTouchTypes:(id)types;
+- (void)setDelegate:(id)delegate;
+- (void)setDirectionalLockEnabled:(BOOL)enabled;
+- (void)setView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIScrollViewPanGestureRecognizer
@@ -93,23 +93,23 @@
 
 - (BOOL)_canTransferTrackingFromParentPagingScrollView
 {
-  v3 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  v4 = [v3 _parentScrollView];
-  if (![v4 isPagingEnabled] || !objc_msgSend(v3, "_transfersScrollToContainer"))
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  _parentScrollView = [scrollView _parentScrollView];
+  if (![_parentScrollView isPagingEnabled] || !objc_msgSend(scrollView, "_transfersScrollToContainer"))
   {
     goto LABEL_21;
   }
 
-  v5 = [(UIGestureRecognizer *)self view];
-  [(UIScrollViewPanGestureRecognizer *)self translationInView:v5];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIScrollViewPanGestureRecognizer *)self translationInView:view];
   v31 = v7;
   v33 = v6;
 
-  v8 = [v3 _canScrollX];
-  v9 = [v3 _canScrollY];
-  if ([v4 _canScrollX])
+  _canScrollX = [scrollView _canScrollX];
+  _canScrollY = [scrollView _canScrollY];
+  if ([_parentScrollView _canScrollX])
   {
-    v10 = [v4 isScrollEnabled] ^ 1;
+    v10 = [_parentScrollView isScrollEnabled] ^ 1;
   }
 
   else
@@ -117,28 +117,28 @@
     LOBYTE(v10) = 1;
   }
 
-  v11 = [v4 _canScrollY] ? objc_msgSend(v4, "isScrollEnabled") : 0;
-  [v3 contentInset];
+  v11 = [_parentScrollView _canScrollY] ? objc_msgSend(_parentScrollView, "isScrollEnabled") : 0;
+  [scrollView contentInset];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v3 bounds];
+  [scrollView bounds];
   v21 = v20;
   v23 = v22;
-  [v3 contentSize];
+  [scrollView contentSize];
   v25 = v24;
   v27 = v26;
-  v28 = [v3 _currentlyAbuttedContentEdges];
-  if (v10 & 1 | ((v8 & 1) == 0) || v19 + v15 + v25 <= v21 || (v28 & 2) == 0 && (v28 & 8) == 0)
+  _currentlyAbuttedContentEdges = [scrollView _currentlyAbuttedContentEdges];
+  if (v10 & 1 | ((_canScrollX & 1) == 0) || v19 + v15 + v25 <= v21 || (_currentlyAbuttedContentEdges & 2) == 0 && (_currentlyAbuttedContentEdges & 8) == 0)
   {
     LOBYTE(v29) = 0;
-    if ((v11 & v9) != 1 || v17 + v13 + v27 <= v23)
+    if ((v11 & _canScrollY) != 1 || v17 + v13 + v27 <= v23)
     {
       goto LABEL_22;
     }
 
-    if ((v28 & 1) == 0 && (v28 & 4) == 0)
+    if ((_currentlyAbuttedContentEdges & 1) == 0 && (_currentlyAbuttedContentEdges & 4) == 0)
     {
 LABEL_21:
       LOBYTE(v29) = 0;
@@ -146,9 +146,9 @@ LABEL_21:
     }
   }
 
-  if ((v33 <= 0.0 || ((v28 >> 1) & 1) == 0) | v10 & 1 && (v33 >= 0.0 || ((v28 >> 3) & 1) == 0) | v10 & 1 && (v28 & v11 & (v32 > 0.0)) == 0)
+  if ((v33 <= 0.0 || ((_currentlyAbuttedContentEdges >> 1) & 1) == 0) | v10 & 1 && (v33 >= 0.0 || ((_currentlyAbuttedContentEdges >> 3) & 1) == 0) | v10 & 1 && (_currentlyAbuttedContentEdges & v11 & (v32 > 0.0)) == 0)
   {
-    v29 = (v32 < 0.0) & (v28 >> 2) & v11;
+    v29 = (v32 < 0.0) & (_currentlyAbuttedContentEdges >> 2) & v11;
   }
 
   else
@@ -176,30 +176,30 @@ LABEL_22:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
-  v3 = [WeakRetained isDecelerating];
+  isDecelerating = [WeakRetained isDecelerating];
 
-  return v3;
+  return isDecelerating;
 }
 
-- (UIScrollViewPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIScrollViewPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = UIScrollViewPanGestureRecognizer;
-  v5 = [(UIPanGestureRecognizer *)&v10 initWithTarget:a3 action:?];
+  v5 = [(UIPanGestureRecognizer *)&v10 initWithTarget:target action:?];
   v6 = v5;
   if (v5)
   {
-    if (a4)
+    if (action)
     {
-      v7 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v7 = 0;
+      actionCopy = 0;
     }
 
-    v5->_scrollViewAction = v7;
+    v5->_scrollViewAction = actionCopy;
     *(v5 + 488) &= ~0x40u;
     *(v5 + 488) &= 0xF3u;
     v5->_indirectScrollingState = 0;
@@ -213,26 +213,26 @@ LABEL_22:
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  v6 = v5;
-  if (v5 && v5 != v4)
+  delegateCopy = delegate;
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  v6 = scrollView;
+  if (scrollView && scrollView != delegateCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"UIScrollView's built-in pan gesture recognizer must have its scroll view as its delegate."];
   }
 
   v7.receiver = self;
   v7.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v7 setDelegate:v4];
+  [(UIPanGestureRecognizer *)&v7 setDelegate:delegateCopy];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4
+- (void)removeTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  if (v7 == v6)
+  targetCopy = target;
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  if (scrollView == targetCopy)
   {
     if (self->_scrollViewAction)
     {
@@ -244,7 +244,7 @@ LABEL_22:
       scrollViewAction = 0;
     }
 
-    if (scrollViewAction == a4)
+    if (scrollViewAction == action)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"You can't remove the scroll view's target/action pair from its built-in pan gesture recognizer."];
     }
@@ -256,15 +256,15 @@ LABEL_22:
 
   v9.receiver = self;
   v9.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIGestureRecognizer *)&v9 removeTarget:v6 action:a4];
+  [(UIGestureRecognizer *)&v9 removeTarget:targetCopy action:action];
 }
 
-- (void)setAllowedTouchTypes:(id)a3
+- (void)setAllowedTouchTypes:(id)types
 {
-  v4 = a3;
-  if (v4)
+  typesCopy = types;
+  if (typesCopy)
   {
-    v5 = v4;
+    v5 = typesCopy;
   }
 
   else
@@ -272,17 +272,17 @@ LABEL_22:
     v5 = MEMORY[0x1E695E0F0];
   }
 
-  v6 = [(UIGestureRecognizer *)self allowedTouchTypes];
-  v7 = [v5 isEqualToArray:v6];
+  allowedTouchTypes = [(UIGestureRecognizer *)self allowedTouchTypes];
+  v7 = [v5 isEqualToArray:allowedTouchTypes];
 
   if ((v7 & 1) == 0)
   {
     v14.receiver = self;
     v14.super_class = UIScrollViewPanGestureRecognizer;
     [(UIGestureRecognizer *)&v14 setAllowedTouchTypes:v5];
-    v8 = [(UIGestureRecognizer *)self allowedTouchTypes];
-    v9 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    [v9 _setAllowedTouchTypesForScrolling:v8];
+    allowedTouchTypes2 = [(UIGestureRecognizer *)self allowedTouchTypes];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    [scrollView _setAllowedTouchTypesForScrolling:allowedTouchTypes2];
   }
 
   v10 = [v5 containsObject:&unk_1EFE33E98];
@@ -293,8 +293,8 @@ LABEL_22:
   {
     self->_indirectScrollingState = 1;
     v12 = objc_loadWeakRetained(&self->_directionalPressGestureRecognizer);
-    v13 = [(UIGestureRecognizer *)self view];
-    [v12 _addToViewIfAllowed:v13];
+    view = [(UIGestureRecognizer *)self view];
+    [v12 _addToViewIfAllowed:view];
   }
 
   else if (self->_indirectScrollingState)
@@ -303,20 +303,20 @@ LABEL_22:
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIGestureRecognizer *)&v8 setView:v4];
+  [(UIGestureRecognizer *)&v8 setView:viewCopy];
   indirectScrollingState = self->_indirectScrollingState;
   if (indirectScrollingState)
   {
     WeakRetained = objc_loadWeakRetained(&self->_directionalPressGestureRecognizer);
     v7 = WeakRetained;
-    if (v4 && indirectScrollingState == 1)
+    if (viewCopy && indirectScrollingState == 1)
     {
-      [WeakRetained _addToViewIfAllowed:v4];
+      [WeakRetained _addToViewIfAllowed:viewCopy];
     }
 
     else
@@ -328,9 +328,9 @@ LABEL_22:
 
 - (BOOL)_shouldContinueToWaitToTransferTrackingFromParentScrollView
 {
-  v3 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  v4 = [v3 _parentScrollView];
-  if (([v4 isDragging] & 1) != 0 || (objc_msgSend(v4, "isDecelerating") & 1) != 0 || ((-[UIScrollViewPanGestureRecognizer translationInView:](self, "translationInView:", v3), v6 = v5, v8 = v7, v9 = objc_msgSend(v3, "_canScrollX"), v10 = objc_msgSend(v3, "_canScrollY"), !objc_msgSend(v4, "_canScrollX")) ? (v11 = 0) : (v11 = objc_msgSend(v4, "isScrollEnabled")), !objc_msgSend(v4, "_canScrollY") ? (v12 = 0) : (v12 = objc_msgSend(v4, "isScrollEnabled")), (v13 = objc_msgSend(v3, "_currentlyAbuttedContentEdges"), (*&v9 & ((v13 & 2) >> 1) & *&v11) == 1) && v6 > 0.0 || (*&v9 & ((v13 & 8) >> 3) & *&v11) == 1 && v6 < 0.0 || (v13 & v10 & v12 & 1) != 0 && v8 < 0.0))
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  _parentScrollView = [scrollView _parentScrollView];
+  if (([_parentScrollView isDragging] & 1) != 0 || (objc_msgSend(_parentScrollView, "isDecelerating") & 1) != 0 || ((-[UIScrollViewPanGestureRecognizer translationInView:](self, "translationInView:", scrollView), v6 = v5, v8 = v7, v9 = objc_msgSend(scrollView, "_canScrollX"), v10 = objc_msgSend(scrollView, "_canScrollY"), !objc_msgSend(_parentScrollView, "_canScrollX")) ? (v11 = 0) : (v11 = objc_msgSend(_parentScrollView, "isScrollEnabled")), !objc_msgSend(_parentScrollView, "_canScrollY") ? (v12 = 0) : (v12 = objc_msgSend(_parentScrollView, "isScrollEnabled")), (v13 = objc_msgSend(scrollView, "_currentlyAbuttedContentEdges"), (*&v9 & ((v13 & 2) >> 1) & *&v11) == 1) && v6 > 0.0 || (*&v9 & ((v13 & 8) >> 3) & *&v11) == 1 && v6 < 0.0 || (v13 & v10 & v12 & 1) != 0 && v8 < 0.0))
   {
     v14 = 1;
   }
@@ -355,32 +355,32 @@ LABEL_22:
 
 - (BOOL)_shouldTransferTrackingFromParentScrollViewForCurrentOffset
 {
-  v2 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  v3 = [v2 _parentScrollView];
-  [v3 _rectForPageContainingView:v2];
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  _parentScrollView = [scrollView _parentScrollView];
+  [_parentScrollView _rectForPageContainingView:scrollView];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 contentOffset];
+  [_parentScrollView contentOffset];
   v13 = v12;
   v15 = v14;
-  v16 = [v2 _currentlyAbuttedContentEdges];
+  _currentlyAbuttedContentEdges = [scrollView _currentlyAbuttedContentEdges];
   v23.origin.x = v5;
   v23.origin.y = v7;
   v23.size.width = v9;
   v23.size.height = v11;
   if (!CGRectIsEmpty(v23))
   {
-    if ((v16 & 2) != 0 && (v24.origin.x = v5, v24.origin.y = v7, v24.size.width = v9, v24.size.height = v11, v13 > CGRectGetMinX(v24)) || (v16 & 8) != 0 && ([v3 bounds], v19 = v13 + v18, v25.origin.x = v5, v25.origin.y = v7, v25.size.width = v9, v25.size.height = v11, v19 < CGRectGetMaxX(v25)) || (v16 & 1) != 0 && (v26.origin.x = v5, v26.origin.y = v7, v26.size.width = v9, v26.size.height = v11, v15 > CGRectGetMinY(v26)))
+    if ((_currentlyAbuttedContentEdges & 2) != 0 && (v24.origin.x = v5, v24.origin.y = v7, v24.size.width = v9, v24.size.height = v11, v13 > CGRectGetMinX(v24)) || (_currentlyAbuttedContentEdges & 8) != 0 && ([_parentScrollView bounds], v19 = v13 + v18, v25.origin.x = v5, v25.origin.y = v7, v25.size.width = v9, v25.size.height = v11, v19 < CGRectGetMaxX(v25)) || (_currentlyAbuttedContentEdges & 1) != 0 && (v26.origin.x = v5, v26.origin.y = v7, v26.size.width = v9, v26.size.height = v11, v15 > CGRectGetMinY(v26)))
     {
       v17 = 1;
       goto LABEL_12;
     }
 
-    if ((v16 & 4) != 0)
+    if ((_currentlyAbuttedContentEdges & 4) != 0)
     {
-      [v3 bounds];
+      [_parentScrollView bounds];
       v21 = v15 + v20;
       v27.origin.x = v5;
       v27.origin.y = v7;
@@ -397,40 +397,40 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if (!self->super._lastTouchCount)
   {
-    v8 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    self->_scrollViewCanScrubWithTouch = [v8 _canScrubWithTouch:v6];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    self->_scrollViewCanScrubWithTouch = [scrollView _canScrubWithTouch:touchCopy];
   }
 
-  if ([v7 _containsHIDPointerEvent])
+  if ([eventCopy _containsHIDPointerEvent])
   {
     if (!self->_scrollViewCanScrubWithTouch)
     {
-      v9 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-      v10 = [v9 _supportsPointerDragScrolling];
+      scrollView2 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+      _supportsPointerDragScrolling = [scrollView2 _supportsPointerDragScrolling];
 
-      if ((v10 & 1) == 0)
+      if ((_supportsPointerDragScrolling & 1) == 0)
       {
-        v13 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-        if ([v13 isDecelerating])
+        scrollView3 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+        if ([scrollView3 isDecelerating])
         {
-          v14 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-          v15 = [v14 _isBouncing];
+          scrollView4 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+          _isBouncing = [scrollView4 _isBouncing];
 
-          if (v15)
+          if (_isBouncing)
           {
 LABEL_12:
             v11 = 0;
             goto LABEL_7;
           }
 
-          v13 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-          [v13 _stopScrollingNotify:1 pin:0];
+          scrollView3 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+          [scrollView3 _stopScrollingNotify:1 pin:0];
         }
 
         goto LABEL_12;
@@ -444,35 +444,35 @@ LABEL_7:
   return v11;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   lastTouchCount = self->super._lastTouchCount;
-  v8 = a3;
-  self->_modifierFlags = [v6 _modifierFlags];
+  beganCopy = began;
+  self->_modifierFlags = [eventCopy _modifierFlags];
   v9.receiver = self;
   v9.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v9 touchesBegan:v8 withEvent:v6];
+  [(UIPanGestureRecognizer *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
 
   if (!lastTouchCount)
   {
-    [(UIScrollViewPanGestureRecognizer *)self _beginScrollWithEvent:v6];
+    [(UIScrollViewPanGestureRecognizer *)self _beginScrollWithEvent:eventCopy];
   }
 
   *(self + 488) &= 0xFCu;
-  if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && [(UIScrollViewPanGestureRecognizer *)self _shouldTryToBeginWithEvent:v6])
+  if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && [(UIScrollViewPanGestureRecognizer *)self _shouldTryToBeginWithEvent:eventCopy])
   {
     [(UIPanGestureRecognizer *)self _removeHysteresisFromTranslation];
     [(UIGestureRecognizer *)self setState:1];
   }
 }
 
-- (void)_beginScrollWithEvent:(id)a3
+- (void)_beginScrollWithEvent:(id)event
 {
-  v6 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  if ([v6 _shouldBeginScroll])
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  if ([scrollView _shouldBeginScroll])
   {
-    if ([v6 _shouldTrackImmediatelyWhileDecelerating])
+    if ([scrollView _shouldTrackImmediatelyWhileDecelerating])
     {
       *(self + 488) |= 0x20u;
       [(UIGestureRecognizer *)self setState:1];
@@ -480,7 +480,7 @@ LABEL_7:
 
     else
     {
-      [v6 _clearParentAdjustment];
+      [scrollView _clearParentAdjustment];
     }
 
     *(self + 488) = *(self + 488) & 0xF3 | (4 * (*(self + 488) & 3));
@@ -491,28 +491,28 @@ LABEL_7:
     *(self + 488) |= 0x80u;
   }
 
-  v4 = [v6 _parentScrollView];
-  if (v4)
+  _parentScrollView = [scrollView _parentScrollView];
+  if (_parentScrollView)
   {
     *(self + 488) |= 0x10u;
   }
 
   else
   {
-    v5 = [v6 _actingParentScrollView];
-    *(self + 488) = *(self + 488) & 0xEF | (16 * (v5 != 0));
+    _actingParentScrollView = [scrollView _actingParentScrollView];
+    *(self + 488) = *(self + 488) & 0xEF | (16 * (_actingParentScrollView != 0));
   }
 
   *(self + 488) &= 0xFCu;
 }
 
-- (CGPoint)_adjustSceneReferenceLocation:(CGPoint)a3
+- (CGPoint)_adjustSceneReferenceLocation:(CGPoint)location
 {
   v5 = (*(self + 488) >> 2) & 3;
   if (v5)
   {
 
-    v6 = [(UIPanGestureRecognizer *)self _shiftPanLocationToNewSceneReferenceLocation:v5 lockingToAxis:a3.x, a3.y];
+    v6 = [(UIPanGestureRecognizer *)self _shiftPanLocationToNewSceneReferenceLocation:v5 lockingToAxis:location.x, location.y];
   }
 
   else
@@ -521,7 +521,7 @@ LABEL_7:
     v10 = v4;
     v8.receiver = self;
     v8.super_class = UIScrollViewPanGestureRecognizer;
-    [(UIPanGestureRecognizer *)&v8 _adjustSceneReferenceLocation:a3.x, a3.y];
+    [(UIPanGestureRecognizer *)&v8 _adjustSceneReferenceLocation:location.x, location.y];
   }
 
   result.y = v7;
@@ -529,37 +529,37 @@ LABEL_7:
   return result;
 }
 
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 affectingTranslation:(BOOL)a5
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time affectingTranslation:(BOOL)translation
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  translationCopy = translation;
+  y = to.y;
+  x = to.x;
   if ((*(self + 488) & 0x40) == 0)
   {
     goto LABEL_30;
   }
 
-  if (!a5)
+  if (!translation)
   {
     goto LABEL_30;
   }
 
   lastTouchTime = self->super._lastTouchTime;
-  if (([(UIGestureRecognizer *)self _state]- 1) <= 2 && self->_reconsideredLockingLocation.x == 9.22337204e18 && a4 - lastTouchTime < 0.6)
+  if (([(UIGestureRecognizer *)self _state]- 1) <= 2 && self->_reconsideredLockingLocation.x == 9.22337204e18 && time - lastTouchTime < 0.6)
   {
     goto LABEL_30;
   }
 
   v11 = [(UIPanGestureRecognizer *)self _offsetInViewFromSceneReferenceLocation:self->super._lastUnadjustedSceneReferenceLocation.y toSceneReferenceLocation:x, y];
   v13 = v12;
-  v14 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
   if (v11 != 0.0 && v13 != 0.0)
   {
     v15 = v13 / v11;
     v16 = atanf(fabsf(v15));
-    if (!-[UIPanGestureRecognizer _canPanHorizontally](self, "_canPanHorizontally") || ![v14 _canScrollX] || v16 > 0.34906585)
+    if (!-[UIPanGestureRecognizer _canPanHorizontally](self, "_canPanHorizontally") || ![scrollView _canScrollX] || v16 > 0.34906585)
     {
-      if (!-[UIPanGestureRecognizer _canPanVertically](self, "_canPanVertically") || ![v14 _canScrollY] || v16 < 1.22173048)
+      if (!-[UIPanGestureRecognizer _canPanVertically](self, "_canPanVertically") || ![scrollView _canScrollY] || v16 < 1.22173048)
       {
         goto LABEL_26;
       }
@@ -574,12 +574,12 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v13 == 0.0 && v11 != 0.0 && -[UIPanGestureRecognizer _canPanHorizontally](self, "_canPanHorizontally") && ([v14 _canScrollX] & 1) != 0)
+  if (v13 == 0.0 && v11 != 0.0 && -[UIPanGestureRecognizer _canPanHorizontally](self, "_canPanHorizontally") && ([scrollView _canScrollX] & 1) != 0)
   {
     goto LABEL_19;
   }
 
-  if (v11 == 0.0 && v13 != 0.0 && -[UIPanGestureRecognizer _canPanVertically](self, "_canPanVertically") && [v14 _canScrollY])
+  if (v11 == 0.0 && v13 != 0.0 && -[UIPanGestureRecognizer _canPanVertically](self, "_canPanVertically") && [scrollView _canScrollY])
   {
 LABEL_24:
     v17 = 8;
@@ -601,29 +601,29 @@ LABEL_26:
 LABEL_30:
   v22.receiver = self;
   v22.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v22 _centroidMovedTo:v5 atTime:x affectingTranslation:y, a4];
+  [(UIPanGestureRecognizer *)&v22 _centroidMovedTo:translationCopy atTime:x affectingTranslation:y, time];
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 toSceneReferenceCoordinatesFromView:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point toSceneReferenceCoordinatesFromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
-  v9 = [WeakRetained _relativePanView];
+  _relativePanView = [WeakRetained _relativePanView];
 
-  v10 = [(UIGestureRecognizer *)self view];
+  view = [(UIGestureRecognizer *)self view];
 
-  if (v10 == v7 && v9)
+  if (view == viewCopy && _relativePanView)
   {
-    v11 = v9;
+    v11 = _relativePanView;
 
-    v7 = v11;
+    viewCopy = v11;
   }
 
   v18.receiver = self;
   v18.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v18 _convertPoint:v7 toSceneReferenceCoordinatesFromView:x, y];
+  [(UIPanGestureRecognizer *)&v18 _convertPoint:viewCopy toSceneReferenceCoordinatesFromView:x, y];
   v13 = v12;
   v15 = v14;
 
@@ -634,26 +634,26 @@ LABEL_30:
   return result;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point fromSceneReferenceCoordinatesToView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
-  v9 = [WeakRetained _relativePanView];
+  _relativePanView = [WeakRetained _relativePanView];
 
-  v10 = [(UIGestureRecognizer *)self view];
+  view = [(UIGestureRecognizer *)self view];
 
-  if (v10 == v7 && v9)
+  if (view == viewCopy && _relativePanView)
   {
-    v11 = v9;
+    v11 = _relativePanView;
 
-    v7 = v11;
+    viewCopy = v11;
   }
 
   v18.receiver = self;
   v18.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v18 _convertPoint:v7 fromSceneReferenceCoordinatesToView:x, y];
+  [(UIPanGestureRecognizer *)&v18 _convertPoint:viewCopy fromSceneReferenceCoordinatesToView:x, y];
   v13 = v12;
   v15 = v14;
 
@@ -664,7 +664,7 @@ LABEL_30:
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   if ((*(self + 488) & 0x20) != 0)
   {
@@ -676,7 +676,7 @@ LABEL_30:
   {
     v9.receiver = self;
     v9.super_class = UIScrollViewPanGestureRecognizer;
-    [(UIPanGestureRecognizer *)&v9 translationInView:a3];
+    [(UIPanGestureRecognizer *)&v9 translationInView:view];
     discreteFastScrollMultiplier = self->_discreteFastScrollMultiplier;
     v6 = v5 * discreteFastScrollMultiplier;
     v8 = v7 * discreteFastScrollMultiplier;
@@ -687,7 +687,7 @@ LABEL_30:
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
   if ((*(self + 488) & 0x20) != 0)
   {
@@ -701,7 +701,7 @@ LABEL_30:
   {
     v8.receiver = self;
     v8.super_class = UIScrollViewPanGestureRecognizer;
-    [(UIPanGestureRecognizer *)&v8 velocityInView:a3];
+    [(UIPanGestureRecognizer *)&v8 velocityInView:view];
     v6 = *MEMORY[0x1E695EFF8];
     v7 = *(MEMORY[0x1E695EFF8] + 8);
   }
@@ -717,7 +717,7 @@ LABEL_30:
   return result;
 }
 
-- (CGPoint)_velocityIncludingDiscreteScrollInView:(id)a3
+- (CGPoint)_velocityIncludingDiscreteScrollInView:(id)view
 {
   if ((*(self + 488) & 0x20) != 0)
   {
@@ -729,7 +729,7 @@ LABEL_30:
   {
     v5.receiver = self;
     v5.super_class = UIScrollViewPanGestureRecognizer;
-    [(UIPanGestureRecognizer *)&v5 velocityInView:a3];
+    [(UIPanGestureRecognizer *)&v5 velocityInView:view];
   }
 
   result.y = v4;
@@ -737,22 +737,22 @@ LABEL_30:
   return result;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIGestureRecognizer *)self state];
-  self->_modifierFlags = [v6 _modifierFlags];
+  eventCopy = event;
+  movedCopy = moved;
+  state = [(UIGestureRecognizer *)self state];
+  self->_modifierFlags = [eventCopy _modifierFlags];
   v12.receiver = self;
   v12.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v12 touchesMoved:v7 withEvent:v6];
+  [(UIPanGestureRecognizer *)&v12 touchesMoved:movedCopy withEvent:eventCopy];
 
-  [(UIScrollViewPanGestureRecognizer *)self _handleCaughtDeceleratingScrollViewWithEvent:v6];
-  if (v8 == UIGestureRecognizerStatePossible && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan)
+  [(UIScrollViewPanGestureRecognizer *)self _handleCaughtDeceleratingScrollViewWithEvent:eventCopy];
+  if (state == UIGestureRecognizerStatePossible && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan)
   {
-    v9 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    v10 = [v6 touchesForGestureRecognizer:self];
-    v11 = [v9 _canCancelContentTouches:v10];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    v10 = [eventCopy touchesForGestureRecognizer:self];
+    v11 = [scrollView _canCancelContentTouches:v10];
 
     if ((v11 & 1) == 0)
     {
@@ -761,20 +761,20 @@ LABEL_30:
   }
 }
 
-- (void)_handleCaughtDeceleratingScrollViewWithEvent:(id)a3
+- (void)_handleCaughtDeceleratingScrollViewWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ((*(self + 488) & 0x20) != 0)
   {
     *(self + 488) &= ~0x20u;
-    v6 = v4;
-    if ([(UIScrollViewPanGestureRecognizer *)self _shouldTryToBeginWithEvent:v4])
+    v6 = eventCopy;
+    if ([(UIScrollViewPanGestureRecognizer *)self _shouldTryToBeginWithEvent:eventCopy])
     {
       if ((*(&self->super.super._gestureFlags + 4) & 0x10) != 0)
       {
         [(UIPanGestureRecognizer *)self _removeHysteresisFromTranslation];
-        v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-        [v5 _adjustStartOffsetForGrabbedBouncingScrollView];
+        scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+        [scrollView _adjustStartOffsetForGrabbedBouncingScrollView];
       }
 
       else
@@ -788,15 +788,15 @@ LABEL_30:
       *(self + 488) |= 0x20u;
     }
 
-    v4 = v6;
+    eventCopy = v6;
   }
 }
 
-- (BOOL)_isParentScrollView:(id)a3 consideringEvent:(id)a4
+- (BOOL)_isParentScrollView:(id)view consideringEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 _panGestureRecognizer];
-  if (!v7)
+  eventCopy = event;
+  _panGestureRecognizer = [view _panGestureRecognizer];
+  if (!_panGestureRecognizer)
   {
     goto LABEL_6;
   }
@@ -807,8 +807,8 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = 1 << [v6 _scrollType];
-      v10 = ([v7 allowedScrollTypesMask] & v11) != 0;
+      v11 = 1 << [eventCopy _scrollType];
+      v10 = ([_panGestureRecognizer allowedScrollTypesMask] & v11) != 0;
       goto LABEL_7;
     }
 
@@ -817,7 +817,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [v6 touchesForGestureRecognizer:v7];
+  v8 = [eventCopy touchesForGestureRecognizer:_panGestureRecognizer];
   v9 = [MEMORY[0x1E695DFD8] setWithArray:self->super._touches];
   v10 = [v8 intersectsSet:v9];
 
@@ -825,42 +825,42 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v55.receiver = self;
   v55.super_class = UIScrollViewPanGestureRecognizer;
-  if ([(UIPanGestureRecognizer *)&v55 _shouldTryToBeginWithEvent:v4])
+  if ([(UIPanGestureRecognizer *)&v55 _shouldTryToBeginWithEvent:eventCopy])
   {
-    v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    if ([v5 _canScrollX])
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    if ([scrollView _canScrollX])
     {
-      v6 = [(UIPanGestureRecognizer *)self _canPanHorizontally];
+      _canPanHorizontally = [(UIPanGestureRecognizer *)self _canPanHorizontally];
     }
 
     else
     {
-      v6 = 0;
+      _canPanHorizontally = 0;
     }
 
-    if ([v5 _canScrollY])
+    if ([scrollView _canScrollY])
     {
-      v8 = [(UIPanGestureRecognizer *)self _canPanVertically];
+      _canPanVertically = [(UIPanGestureRecognizer *)self _canPanVertically];
     }
 
     else
     {
-      v8 = 0;
+      _canPanVertically = 0;
     }
 
-    v9 = [(UIPanGestureRecognizer *)self _willScrollX];
-    v10 = [(UIPanGestureRecognizer *)self _willScrollY];
-    v11 = [(UIGestureRecognizer *)self view];
-    [(UIScrollViewPanGestureRecognizer *)self translationInView:v11];
+    _willScrollX = [(UIPanGestureRecognizer *)self _willScrollX];
+    _willScrollY = [(UIPanGestureRecognizer *)self _willScrollY];
+    view = [(UIGestureRecognizer *)self view];
+    [(UIScrollViewPanGestureRecognizer *)self translationInView:view];
     v13 = v12;
     v15 = v14;
 
-    if (!v6 && !v8 || !v6 && v8 && !v10 || !v8 && v6 && !v9)
+    if (!_canPanHorizontally && !_canPanVertically || !_canPanHorizontally && _canPanVertically && !_willScrollY || !_canPanVertically && _canPanHorizontally && !_willScrollX)
     {
       goto LABEL_47;
     }
@@ -868,34 +868,34 @@ LABEL_7:
     if ((*(self + 488) & 0x10) == 0)
     {
 LABEL_43:
-      v7 = [v5 _delegateShouldPanGestureTryToBegin];
+      _delegateShouldPanGestureTryToBegin = [scrollView _delegateShouldPanGestureTryToBegin];
 LABEL_48:
 
       goto LABEL_49;
     }
 
-    v16 = [v5 _actingParentScrollView];
-    v17 = v16;
-    if (v16)
+    _actingParentScrollView = [scrollView _actingParentScrollView];
+    v17 = _actingParentScrollView;
+    if (_actingParentScrollView)
     {
-      v18 = v16;
+      _parentScrollView = _actingParentScrollView;
     }
 
     else
     {
-      v18 = [v5 _parentScrollView];
+      _parentScrollView = [scrollView _parentScrollView];
     }
 
-    v19 = v18;
+    v19 = _parentScrollView;
 
-    if (![(UIScrollViewPanGestureRecognizer *)self _isParentScrollView:v19 consideringEvent:v4])
+    if (![(UIScrollViewPanGestureRecognizer *)self _isParentScrollView:v19 consideringEvent:eventCopy])
     {
 LABEL_42:
 
       goto LABEL_43;
     }
 
-    v53 = [v5 _currentlyAbuttedContentEdges];
+    _currentlyAbuttedContentEdges = [scrollView _currentlyAbuttedContentEdges];
     if (*(self + 488) < 0)
     {
       if ([(UIScrollViewPanGestureRecognizer *)self _shouldTransferTrackingFromParentScrollViewForCurrentOffset])
@@ -904,20 +904,20 @@ LABEL_42:
         v21 = v20;
         v23 = v22;
         [v19 _pinContentOffsetToClosestPageBoundary];
-        v24 = [v19 panGestureRecognizer];
-        [(UIGestureRecognizer *)v24 _cancelRecognition];
+        panGestureRecognizer = [v19 panGestureRecognizer];
+        [(UIGestureRecognizer *)panGestureRecognizer _cancelRecognition];
 
-        v26 = [v19 pinchGestureRecognizer];
-        [(UIGestureRecognizer *)v26 _cancelRecognition];
+        pinchGestureRecognizer = [v19 pinchGestureRecognizer];
+        [(UIGestureRecognizer *)pinchGestureRecognizer _cancelRecognition];
 
         [v19 contentOffset];
-        if ((v53 & 2) != 0 || (v53 & 8) != 0)
+        if ((_currentlyAbuttedContentEdges & 2) != 0 || (_currentlyAbuttedContentEdges & 8) != 0)
         {
           v30 = v21 - v28;
           v31 = 0.0;
         }
 
-        else if ((v53 & 1) != 0 || (v53 & 4) != 0)
+        else if ((_currentlyAbuttedContentEdges & 1) != 0 || (_currentlyAbuttedContentEdges & 4) != 0)
         {
           v31 = v23 - v29;
           v30 = 0.0;
@@ -929,37 +929,37 @@ LABEL_42:
           v31 = *(MEMORY[0x1E695EFF8] + 8);
         }
 
-        [(UIPanGestureRecognizer *)self setTranslation:v5 inView:v30, v31];
+        [(UIPanGestureRecognizer *)self setTranslation:scrollView inView:v30, v31];
       }
 
-      else if ([(UIScrollViewPanGestureRecognizer *)self _shouldContinueToWaitToTransferTrackingFromParentScrollView]|| (*(self + 488) &= ~0x80u, v54.receiver = self, v54.super_class = UIScrollViewPanGestureRecognizer, ![(UIPanGestureRecognizer *)&v54 _shouldTryToBeginWithEvent:v4]))
+      else if ([(UIScrollViewPanGestureRecognizer *)self _shouldContinueToWaitToTransferTrackingFromParentScrollView]|| (*(self + 488) &= ~0x80u, v54.receiver = self, v54.super_class = UIScrollViewPanGestureRecognizer, ![(UIPanGestureRecognizer *)&v54 _shouldTryToBeginWithEvent:eventCopy]))
       {
 LABEL_46:
 
 LABEL_47:
-        v7 = 0;
+        _delegateShouldPanGestureTryToBegin = 0;
         goto LABEL_48;
       }
     }
 
-    if ([v5 isPagingEnabled])
+    if ([scrollView isPagingEnabled])
     {
-      v32 = [v5 _abuttedPagingEdges];
-      HIDWORD(v46) = (v32 >> 3) & 1;
-      v49 = (v32 >> 1) & 1;
-      v53 = v32;
-      LODWORD(v46) = (v32 >> 2) & 1;
+      _abuttedPagingEdges = [scrollView _abuttedPagingEdges];
+      HIDWORD(v46) = (_abuttedPagingEdges >> 3) & 1;
+      v49 = (_abuttedPagingEdges >> 1) & 1;
+      _currentlyAbuttedContentEdges = _abuttedPagingEdges;
+      LODWORD(v46) = (_abuttedPagingEdges >> 2) & 1;
     }
 
     else
     {
-      LODWORD(v46) = v53 >> 2;
-      HIDWORD(v46) = v53 >> 3;
-      LOBYTE(v49) = v53 >> 1;
+      LODWORD(v46) = _currentlyAbuttedContentEdges >> 2;
+      HIDWORD(v46) = _currentlyAbuttedContentEdges >> 3;
+      LOBYTE(v49) = _currentlyAbuttedContentEdges >> 1;
     }
 
-    v52 = [v5 _canScrollX];
-    v33 = [v5 _canScrollY];
+    _canScrollX = [scrollView _canScrollX];
+    _canScrollY = [scrollView _canScrollY];
     if ([v19 _canScrollX])
     {
       v34 = [v19 isScrollEnabled] ^ 1;
@@ -981,17 +981,17 @@ LABEL_47:
     }
 
     v51 = v35;
-    v36 = [v5 transfersHorizontalScrollingToParent];
-    v50 = [v5 transfersVerticalScrollingToParent];
-    v37 = [(UIGestureRecognizer *)self view];
+    transfersHorizontalScrollingToParent = [scrollView transfersHorizontalScrollingToParent];
+    transfersVerticalScrollingToParent = [scrollView transfersVerticalScrollingToParent];
+    view2 = [(UIGestureRecognizer *)self view];
     [(UIScrollViewPanGestureRecognizer *)self _hysteresis];
     v39 = v38;
     [(UIScrollViewPanGestureRecognizer *)self _hysteresis];
-    [v37 convertSize:0 fromView:{v39, v40}];
+    [view2 convertSize:0 fromView:{v39, v40}];
     v42 = v41;
     v44 = v43;
 
-    if ((((v33 & v10 | v34) & 1) != 0 || !v36 || v52 && ((v13 >= v42) & v49) == 0 && ((v13 <= -v42) & v48) == 0) && (((v52 & v9 | v51) & 1) != 0 || ((v50 ^ 1) & 1) != 0 || v33 && ((v15 >= v44) & v53) == 0 && ((v15 <= -v44) & v47) != 1))
+    if ((((_canScrollY & _willScrollY | v34) & 1) != 0 || !transfersHorizontalScrollingToParent || _canScrollX && ((v13 >= v42) & v49) == 0 && ((v13 <= -v42) & v48) == 0) && (((_canScrollX & _willScrollX | v51) & 1) != 0 || ((transfersVerticalScrollingToParent ^ 1) & 1) != 0 || _canScrollY && ((v15 >= v44) & _currentlyAbuttedContentEdges) == 0 && ((v15 <= -v44) & v47) != 1))
     {
       goto LABEL_42;
     }
@@ -999,37 +999,37 @@ LABEL_47:
     goto LABEL_46;
   }
 
-  v7 = 0;
+  _delegateShouldPanGestureTryToBegin = 0;
 LABEL_49:
 
-  return v7;
+  return _delegateShouldPanGestureTryToBegin;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v6 touchesCancelled:a3 withEvent:a4];
+  [(UIPanGestureRecognizer *)&v6 touchesCancelled:cancelled withEvent:event];
   if (![(UIPanGestureRecognizer *)self numberOfTouches])
   {
-    v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    [v5 cancelTouchTracking];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    [scrollView cancelTouchTracking];
   }
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (*(self + 488) < 0 && (-[UIScrollViewPanGestureRecognizer scrollView](self, "scrollView"), v5 = objc_claimAutoreleasedReturnValue(), [v5 _parentScrollView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "_panGestureRecognizer"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v7 == v4))
+  recognizerCopy = recognizer;
+  if (*(self + 488) < 0 && (-[UIScrollViewPanGestureRecognizer scrollView](self, "scrollView"), v5 = objc_claimAutoreleasedReturnValue(), [v5 _parentScrollView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "_panGestureRecognizer"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v7 == recognizerCopy))
   {
     isKindOfClass = 0;
   }
 
   else if (self->_scrollViewCanScrubWithTouch)
   {
-    v8 = [v4 view];
-    v9 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-    if ([v8 isDescendantOfView:v9])
+    view = [recognizerCopy view];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    if ([view isDescendantOfView:scrollView])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1049,11 +1049,11 @@ LABEL_49:
   return isKindOfClass & 1;
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
   if (self->_scrollViewCanScrubWithTouch)
   {
-    v3 = a3;
+    recognizerCopy = recognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1064,8 +1064,8 @@ LABEL_49:
   {
     v8.receiver = self;
     v8.super_class = UIScrollViewPanGestureRecognizer;
-    v6 = a3;
-    v5 = [(UIGestureRecognizer *)&v8 shouldBeRequiredToFailByGestureRecognizer:v6];
+    recognizerCopy2 = recognizer;
+    v5 = [(UIGestureRecognizer *)&v8 shouldBeRequiredToFailByGestureRecognizer:recognizerCopy2];
   }
 
   return v5 & 1;
@@ -1073,8 +1073,8 @@ LABEL_49:
 
 - (void)_scrollViewDidEndZooming
 {
-  v3 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  [(UIPanGestureRecognizer *)self setTranslation:v3 inView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  [(UIPanGestureRecognizer *)self setTranslation:scrollView inView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
 
   if ((*(self + 488) & 0x40) != 0)
   {
@@ -1090,9 +1090,9 @@ LABEL_49:
   self->super._previousVelocitySample = 0;
 }
 
-- (void)setDirectionalLockEnabled:(BOOL)a3
+- (void)setDirectionalLockEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -1105,18 +1105,18 @@ LABEL_49:
   *(self + 488) = *(self + 488) & 0xBF | v3;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 10)
+  eventCopy = event;
+  if ([eventCopy type] == 10)
   {
-    v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+    scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
     v7.receiver = self;
     v7.super_class = UIScrollViewPanGestureRecognizer;
-    LODWORD(self) = [(UIPanGestureRecognizer *)&v7 shouldReceiveEvent:v4];
-    if (self && ([v5 isTracking] & 1) == 0)
+    LODWORD(self) = [(UIPanGestureRecognizer *)&v7 shouldReceiveEvent:eventCopy];
+    if (self && ([scrollView isTracking] & 1) == 0)
     {
-      [v5 _beginTrackingWithEvent:v4];
+      [scrollView _beginTrackingWithEvent:eventCopy];
     }
   }
 
@@ -1124,18 +1124,18 @@ LABEL_49:
   {
     v8.receiver = self;
     v8.super_class = UIScrollViewPanGestureRecognizer;
-    LOBYTE(self) = [(UIPanGestureRecognizer *)&v8 shouldReceiveEvent:v4];
+    LOBYTE(self) = [(UIPanGestureRecognizer *)&v8 shouldReceiveEvent:eventCopy];
   }
 
   return self;
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 phase];
-  v6 = [(UIGestureRecognizer *)self state];
-  if (v6 == UIGestureRecognizerStateBegan && v5 == 5)
+  eventCopy = event;
+  phase = [eventCopy phase];
+  state = [(UIGestureRecognizer *)self state];
+  if (state == UIGestureRecognizerStateBegan && phase == 5)
   {
     if ((!self || (*(&self->super.super._gestureFlags + 4) & 0x10) == 0) && (*(self + 488) & 0x20) != 0)
     {
@@ -1144,31 +1144,31 @@ LABEL_49:
 
     v8.receiver = self;
     v8.super_class = UIScrollViewPanGestureRecognizer;
-    [(UIPanGestureRecognizer *)&v8 _scrollingChangedWithEvent:v4];
+    [(UIPanGestureRecognizer *)&v8 _scrollingChangedWithEvent:eventCopy];
     goto LABEL_10;
   }
 
   v8.receiver = self;
   v8.super_class = UIScrollViewPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v8 _scrollingChangedWithEvent:v4];
-  if ((v5 - 1) < 2)
+  [(UIPanGestureRecognizer *)&v8 _scrollingChangedWithEvent:eventCopy];
+  if ((phase - 1) < 2)
   {
-    if (v6 == UIGestureRecognizerStatePossible)
+    if (state == UIGestureRecognizerStatePossible)
     {
-      self->_activeEventIsDiscrete = [v4 _scrollType] == 0;
-      [(UIScrollViewPanGestureRecognizer *)self _beginScrollWithEvent:v4];
+      self->_activeEventIsDiscrete = [eventCopy _scrollType] == 0;
+      [(UIScrollViewPanGestureRecognizer *)self _beginScrollWithEvent:eventCopy];
     }
   }
 
   else
   {
-    if ((v5 - 4) < 2)
+    if ((phase - 4) < 2)
     {
 LABEL_10:
-      v7 = [(UIGestureRecognizer *)self state];
-      if ((v7 - 1) > 1)
+      state2 = [(UIGestureRecognizer *)self state];
+      if ((state2 - 1) > 1)
       {
-        if (v7 == UIGestureRecognizerStatePossible)
+        if (state2 == UIGestureRecognizerStatePossible)
         {
           [(UIGestureRecognizer *)self _failWithReason:@"scrollCancelled"];
         }
@@ -1179,7 +1179,7 @@ LABEL_10:
         [(UIGestureRecognizer *)self setState:3];
       }
 
-      if (v5 == 5)
+      if (phase == 5)
       {
         [(UIPanGestureRecognizer *)self numberOfTouches];
       }
@@ -1188,20 +1188,20 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    if (v5 == 3)
+    if (phase == 3)
     {
-      [(UIScrollViewPanGestureRecognizer *)self _handleCaughtDeceleratingScrollViewWithEvent:v4];
+      [(UIScrollViewPanGestureRecognizer *)self _handleCaughtDeceleratingScrollViewWithEvent:eventCopy];
     }
   }
 
 LABEL_17:
 }
 
-- (id)_asyncDeliveryTargetForScrollEvent:(id)a3
+- (id)_asyncDeliveryTargetForScrollEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIScrollViewPanGestureRecognizer *)self scrollView];
-  v6 = [v5 _asyncDeliveryTargetForScrollEvent:v4];
+  eventCopy = event;
+  scrollView = [(UIScrollViewPanGestureRecognizer *)self scrollView];
+  v6 = [scrollView _asyncDeliveryTargetForScrollEvent:eventCopy];
 
   return v6;
 }

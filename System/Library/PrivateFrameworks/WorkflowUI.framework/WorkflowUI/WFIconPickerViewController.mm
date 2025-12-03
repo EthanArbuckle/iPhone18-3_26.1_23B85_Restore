@@ -1,10 +1,10 @@
 @interface WFIconPickerViewController
 - (UIView)iconPreview;
-- (WFIconPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFIconPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (WFPreviewNavigationController)previewNavigationController;
-- (void)setPreviewNavigationController:(id)a3;
+- (void)setPreviewNavigationController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation WFIconPickerViewController
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setPreviewNavigationController:(id)a3
+- (void)setPreviewNavigationController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_27486ADD4(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_27486ADD4(controller);
 }
 
 - (UIView)iconPreview
@@ -32,24 +32,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27486B04C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_27486B2F0(a3);
+  selfCopy = self;
+  sub_27486B2F0(appearing);
 }
 
-- (WFIconPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFIconPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_27486B6C4();
 }
 

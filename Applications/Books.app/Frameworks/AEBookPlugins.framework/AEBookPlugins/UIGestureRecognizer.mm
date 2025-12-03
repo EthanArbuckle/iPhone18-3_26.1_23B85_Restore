@@ -1,13 +1,13 @@
 @interface UIGestureRecognizer
 - (BOOL)bk_isWKSyntheticTapGestureRecognizer;
-- (BOOL)matchesTarget:(Class)a3 andAction:(SEL)a4;
+- (BOOL)matchesTarget:(Class)target andAction:(SEL)action;
 - (id)retrieveAndClearSelectionRectValue;
-- (void)captureSelectionRectValueForTap:(id)a3;
+- (void)captureSelectionRectValueForTap:(id)tap;
 @end
 
 @implementation UIGestureRecognizer
 
-- (BOOL)matchesTarget:(Class)a3 andAction:(SEL)a4
+- (BOOL)matchesTarget:(Class)target andAction:(SEL)action
 {
   [(UIGestureRecognizer *)self valueForKey:@"_targets"];
   v14 = 0u;
@@ -30,7 +30,7 @@
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v10 valueForKey:{@"_target", v14}];
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 action] == a4)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 action] == action)
         {
 
           v12 = 1;
@@ -54,11 +54,11 @@ LABEL_12:
   return v12;
 }
 
-- (void)captureSelectionRectValueForTap:(id)a3
+- (void)captureSelectionRectValueForTap:(id)tap
 {
-  if (a3)
+  if (tap)
   {
-    objc_setAssociatedObject(self, &off_1E4880, a3, &dword_0 + 1);
+    objc_setAssociatedObject(self, &off_1E4880, tap, &dword_0 + 1);
   }
 }
 

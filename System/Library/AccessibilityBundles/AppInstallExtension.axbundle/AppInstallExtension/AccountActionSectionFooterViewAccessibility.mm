@@ -1,15 +1,15 @@
 @interface AccountActionSectionFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation AccountActionSectionFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppInstallExtension.AccountActionSectionFooterView" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppInstallExtension.AccountActionSectionFooterView" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -18,8 +18,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 accessibilityLabel];
-    v5 = [v4 length] != 0;
+    accessibilityLabel = [v2 accessibilityLabel];
+    v5 = [accessibilityLabel length] != 0;
   }
 
   else

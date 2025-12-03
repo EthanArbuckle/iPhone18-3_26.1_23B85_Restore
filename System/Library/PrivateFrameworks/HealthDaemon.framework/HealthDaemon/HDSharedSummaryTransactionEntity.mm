@@ -1,23 +1,23 @@
 @interface HDSharedSummaryTransactionEntity
-+ (BOOL)deleteAllEntriesWithDatabaseTransaction:(id)a3 error:(id *)a4;
-+ (BOOL)enumerateTransactionsWithDatabaseTransaction:(id)a3 includeNonCommitted:(BOOL)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (id)insertWithUUID:(id)a3 sourceDevice:(id)a4 databaseTransaction:(id)a5 error:(id *)a6;
-+ (id)mostRecentTransactionCreationDateWithDatabaseTransaction:(id)a3 error:(id *)a4;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-+ (id)transactionEntityWithUUID:(id)a3 databaseTransaction:(id)a4 error:(id *)a5;
-- (BOOL)committedInDatabaseTransaction:(id)a3 error:(id *)a4;
-- (BOOL)deleteWithDatabaseTransaction:(id)a3 error:(id *)a4;
-- (id)uuidInDatabaseTransaction:(id)a3 error:(id *)a4;
++ (BOOL)deleteAllEntriesWithDatabaseTransaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateTransactionsWithDatabaseTransaction:(id)transaction includeNonCommitted:(BOOL)committed error:(id *)error enumerationHandler:(id)handler;
++ (id)insertWithUUID:(id)d sourceDevice:(id)device databaseTransaction:(id)transaction error:(id *)error;
++ (id)mostRecentTransactionCreationDateWithDatabaseTransaction:(id)transaction error:(id *)error;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
++ (id)transactionEntityWithUUID:(id)d databaseTransaction:(id)transaction error:(id *)error;
+- (BOOL)committedInDatabaseTransaction:(id)transaction error:(id *)error;
+- (BOOL)deleteWithDatabaseTransaction:(id)transaction error:(id *)error;
+- (id)uuidInDatabaseTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDSharedSummaryTransactionEntity
 
-+ (id)insertWithUUID:(id)a3 sourceDevice:(id)a4 databaseTransaction:(id)a5 error:(id *)a6
++ (id)insertWithUUID:(id)d sourceDevice:(id)device databaseTransaction:(id)transaction error:(id *)error
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 databaseForEntityClass:a1];
+  dCopy = d;
+  deviceCopy = device;
+  v12 = [transaction databaseForEntityClass:self];
   v22[0] = @"uuid";
   v22[1] = @"source_device";
   v22[2] = @"committed";
@@ -27,11 +27,11 @@
   v19[1] = 3221225472;
   v19[2] = __90__HDSharedSummaryTransactionEntity_insertWithUUID_sourceDevice_databaseTransaction_error___block_invoke;
   v19[3] = &unk_278613DE8;
-  v20 = v10;
-  v21 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = [a1 insertOrReplaceEntity:0 database:v12 properties:v13 error:a6 bindingHandler:v19];
+  v20 = dCopy;
+  v21 = deviceCopy;
+  v14 = deviceCopy;
+  v15 = dCopy;
+  v16 = [self insertOrReplaceEntity:0 database:v12 properties:v13 error:error bindingHandler:v19];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -47,11 +47,11 @@ void __90__HDSharedSummaryTransactionEntity_insertWithUUID_sourceDevice_database
   MEMORY[0x22AAC6B50](a2, @"creation_date", v4);
 }
 
-+ (BOOL)enumerateTransactionsWithDatabaseTransaction:(id)a3 includeNonCommitted:(BOOL)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateTransactionsWithDatabaseTransaction:(id)transaction includeNonCommitted:(BOOL)committed error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  if (a4)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (committed)
   {
     v12 = 0;
   }
@@ -61,15 +61,15 @@ void __90__HDSharedSummaryTransactionEntity_insertWithUUID_sourceDevice_database
     v12 = [MEMORY[0x277D10B18] predicateWithProperty:@"committed" equalToValue:MEMORY[0x277CBEC38]];
   }
 
-  v13 = [v10 databaseForEntityClass:objc_opt_class()];
-  v14 = [a1 queryWithDatabase:v13 predicate:v12];
+  v13 = [transactionCopy databaseForEntityClass:objc_opt_class()];
+  v14 = [self queryWithDatabase:v13 predicate:v12];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __126__HDSharedSummaryTransactionEntity_enumerateTransactionsWithDatabaseTransaction_includeNonCommitted_error_enumerationHandler___block_invoke;
   v18[3] = &unk_278616A78;
-  v19 = v11;
-  v15 = v11;
-  v16 = [v14 enumeratePersistentIDsAndProperties:MEMORY[0x277CBEBF8] error:a5 enumerationHandler:v18];
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [v14 enumeratePersistentIDsAndProperties:MEMORY[0x277CBEBF8] error:error enumerationHandler:v18];
 
   return v16;
 }
@@ -83,23 +83,23 @@ uint64_t __126__HDSharedSummaryTransactionEntity_enumerateTransactionsWithDataba
   return 1;
 }
 
-+ (id)transactionEntityWithUUID:(id)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)transactionEntityWithUUID:(id)d databaseTransaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:v8];
+  dCopy = d;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:dCopy];
 
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  v11 = [self anyInDatabase:v9 predicate:v10 error:error];
 
   return v11;
 }
 
-+ (id)mostRecentTransactionCreationDateWithDatabaseTransaction:(id)a3 error:(id *)a4
++ (id)mostRecentTransactionCreationDateWithDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
-  v8 = [a1 databaseTable];
-  v9 = [v7 initWithFormat:@"SELECT MAX(%@) FROM %@", @"creation_date", v8];
+  databaseTable = [self databaseTable];
+  v9 = [v7 initWithFormat:@"SELECT MAX(%@) FROM %@", @"creation_date", databaseTable];
 
   v14 = 0;
   v15 = &v14;
@@ -107,15 +107,15 @@ uint64_t __126__HDSharedSummaryTransactionEntity_enumerateTransactionsWithDataba
   v17 = __Block_byref_object_copy__27;
   v18 = __Block_byref_object_dispose__27;
   v19 = 0;
-  v10 = [v6 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __99__HDSharedSummaryTransactionEntity_mostRecentTransactionCreationDateWithDatabaseTransaction_error___block_invoke;
   v13[3] = &unk_278614620;
   v13[4] = &v14;
-  LOBYTE(a4) = [v10 executeSQL:v9 error:a4 bindingHandler:0 enumerationHandler:v13];
+  LOBYTE(error) = [v10 executeSQL:v9 error:error bindingHandler:0 enumerationHandler:v13];
 
-  if (a4)
+  if (error)
   {
     v11 = v15[5];
   }
@@ -140,71 +140,71 @@ uint64_t __99__HDSharedSummaryTransactionEntity_mostRecentTransactionCreationDat
   return 1;
 }
 
-+ (BOOL)deleteAllEntriesWithDatabaseTransaction:(id)a3 error:(id *)a4
++ (BOOL)deleteAllEntriesWithDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v6 = objc_opt_class();
-  v7 = [v5 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v8 = [v6 queryWithDatabase:v7 predicate:0];
+  v8 = [v6 queryWithDatabase:protectedDatabase predicate:0];
 
-  LOBYTE(a4) = [v8 deleteAllEntitiesWithError:a4];
-  return a4;
+  LOBYTE(error) = [v8 deleteAllEntitiesWithError:error];
+  return error;
 }
 
-- (BOOL)deleteWithDatabaseTransaction:(id)a3 error:(id *)a4
+- (BOOL)deleteWithDatabaseTransaction:(id)transaction error:(id *)error
 {
   v6 = MEMORY[0x277D10B18];
   v7 = *MEMORY[0x277D10A40];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
+  transactionCopy = transaction;
   v10 = [v8 numberWithLongLong:{-[HDSQLiteEntity persistentID](self, "persistentID")}];
   v11 = [v6 predicateWithProperty:v7 equalToValue:v10];
 
-  v12 = [v9 databaseForEntityClass:objc_opt_class()];
+  v12 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
-  LOBYTE(a4) = [objc_opt_class() deleteEntitiesInDatabase:v12 predicate:v11 error:a4];
-  return a4;
+  LOBYTE(error) = [objc_opt_class() deleteEntitiesInDatabase:v12 predicate:v11 error:error];
+  return error;
 }
 
-- (id)uuidInDatabaseTransaction:(id)a3 error:(id *)a4
+- (id)uuidInDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  v6 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v7 = [(HDSQLiteEntity *)self UUIDForProperty:@"uuid" database:v6];
 
   return v7;
 }
 
-- (BOOL)committedInDatabaseTransaction:(id)a3 error:(id *)a4
+- (BOOL)committedInDatabaseTransaction:(id)transaction error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self numberForProperty:@"committed" transaction:a3 error:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(HDHealthEntity *)self numberForProperty:@"committed" transaction:transaction error:error];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  profileCopy = profile;
+  dateCopy = date;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v11 = [v9 database];
+  database = [profileCopy database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__HDSharedSummaryTransactionEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v15[3] = &unk_278616AA0;
-  v18 = a1;
-  v12 = v10;
+  selfCopy = self;
+  v12 = dateCopy;
   v16 = v12;
   v17 = &v19;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v11 error:a6 block:v15];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  if (a6)
+  if (error)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInt:*(v20 + 6)];
   }

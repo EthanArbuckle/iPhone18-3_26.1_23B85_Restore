@@ -1,32 +1,32 @@
 @interface MUTextSelectionView
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)didLongPress:(id)a3;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)didLongPress:(id)press;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation MUTextSelectionView
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
   v4 = OBJC_IVAR____TtC6MapsUI19MUTextSelectionView_isSelected;
   swift_beginAccess();
   v5 = *(&self->super.super.super.isa + v4);
   *(&self->super.super.super.isa + v4) = 1;
-  v6 = self;
+  selfCopy = self;
   sub_1C565D83C(v5);
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v10 = sub_1C565E04C();
 
   return v10;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
@@ -37,10 +37,10 @@
   v10[2] = sub_1C56444F8;
   v10[3] = &block_descriptor_8;
   v8 = _Block_copy(v10);
-  v9 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
-  [a5 addAnimations_];
+  [animator addAnimations_];
   swift_unknownObjectRelease();
 
   _Block_release(v8);

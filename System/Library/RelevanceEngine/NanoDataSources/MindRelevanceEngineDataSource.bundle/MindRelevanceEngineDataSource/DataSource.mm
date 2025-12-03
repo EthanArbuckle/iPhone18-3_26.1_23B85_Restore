@@ -1,7 +1,7 @@
 @interface DataSource
 + (NSString)bundleIdentifier;
 - (NSArray)supportedSections;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 - (void)pause;
 - (void)resume;
 @end
@@ -33,19 +33,19 @@
 
 - (void)pause
 {
-  v2 = self;
+  selfCopy = self;
   sub_35F8("Mindfulness pause requested.", &unk_C7B8, sub_7D6C, &unk_C7D0);
 }
 
 - (void)resume
 {
-  v2 = self;
+  selfCopy = self;
   sub_35F8("Mindfulness resume requested.", &unk_C808, sub_7DE4, &unk_C820);
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_99DC();
   v8 = v7;
   if (v5)
@@ -60,7 +60,7 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_3A64(v6, v8, v5, v9);
   sub_1D64(v5);
 }

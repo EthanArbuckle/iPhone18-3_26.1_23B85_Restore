@@ -1,12 +1,12 @@
 @interface PreferencesAssistantGetGuidedAccess
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantGetGuidedAccess
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(SASettingBooleanEntity);
   [v4 setValue:0];
   v5 = objc_alloc_init(SASettingGetBoolResponse);
@@ -19,8 +19,8 @@
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "########## PreferencesAssistantGetGuidedAccess (%@)", &v8, 0xCu);
   }
 
-  v7 = [v5 dictionary];
-  v3[2](v3, v7);
+  dictionary = [v5 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface CLMiLoPlace
-- (CLMiLoPlace)initWithCoder:(id)a3;
-- (CLMiLoPlace)initWithPlaceIdentifier:(id)a3 score:(id)a4 confidence:(unint64_t)a5 placeMetadata:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoPlace)initWithCoder:(id)coder;
+- (CLMiLoPlace)initWithPlaceIdentifier:(id)identifier score:(id)score confidence:(unint64_t)confidence placeMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMiLoPlace
 
-- (CLMiLoPlace)initWithPlaceIdentifier:(id)a3 score:(id)a4 confidence:(unint64_t)a5 placeMetadata:(id)a6
+- (CLMiLoPlace)initWithPlaceIdentifier:(id)identifier score:(id)score confidence:(unint64_t)confidence placeMetadata:(id)metadata
 {
   v12.receiver = self;
   v12.super_class = CLMiLoPlace;
   v10 = [(CLMiLoPlace *)&v12 init];
   if (v10)
   {
-    v10->_identifier = [a3 copy];
-    v10->_score = [a4 copy];
-    v10->_confidence = a5;
-    v10->_metadata = a6;
+    v10->_identifier = [identifier copy];
+    v10->_score = [score copy];
+    v10->_confidence = confidence;
+    v10->_metadata = metadata;
   }
 
   return v10;
@@ -31,9 +31,9 @@
   [(CLMiLoPlace *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   score = self->_score;
   confidence = self->_confidence;
@@ -42,24 +42,24 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithPlaceIdentifier_score_confidence_placeMetadata_);
 }
 
-- (CLMiLoPlace)initWithCoder:(id)a3
+- (CLMiLoPlace)initWithCoder:(id)coder
 {
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyMiLoPlaceIdenfifier"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyPlaceScore"];
-  [a3 decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyPlaceConfidenceEnum"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyPlaceMetadata"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyMiLoPlaceIdenfifier"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyPlaceScore"];
+  [coder decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyPlaceConfidenceEnum"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyPlaceMetadata"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithPlaceIdentifier_score_confidence_placeMetadata_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_identifier forKey:@"kCLMiLoConnectionCodingKeyMiLoPlaceIdenfifier"];
-  [a3 encodeObject:self->_score forKey:@"kCLMiLoConnectionCodingKeyPlaceScore"];
-  [a3 encodeInteger:self->_confidence forKey:@"kCLMiLoConnectionCodingKeyPlaceConfidenceEnum"];
+  [coder encodeObject:self->_identifier forKey:@"kCLMiLoConnectionCodingKeyMiLoPlaceIdenfifier"];
+  [coder encodeObject:self->_score forKey:@"kCLMiLoConnectionCodingKeyPlaceScore"];
+  [coder encodeInteger:self->_confidence forKey:@"kCLMiLoConnectionCodingKeyPlaceConfidenceEnum"];
   metadata = self->_metadata;
 
-  [a3 encodeObject:metadata forKey:@"kCLMiLoConnectionCodingKeyPlaceMetadata"];
+  [coder encodeObject:metadata forKey:@"kCLMiLoConnectionCodingKeyPlaceMetadata"];
 }
 
 @end

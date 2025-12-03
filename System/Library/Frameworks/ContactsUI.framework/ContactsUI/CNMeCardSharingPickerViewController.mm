@@ -1,24 +1,24 @@
 @interface CNMeCardSharingPickerViewController
 + (id)descriptorForRequiredKeys;
-- (CNMeCardSharingPickerViewController)initWithContact:(id)a3;
-- (CNMeCardSharingPickerViewController)initWithContactStore:(id)a3 contact:(id)a4 nameProvider:(id)a5 sharingEnabled:(BOOL)a6 selectedNameFormat:(unint64_t)a7 selectedSharingAudience:(unint64_t)a8 mode:(unint64_t)a9;
+- (CNMeCardSharingPickerViewController)initWithContact:(id)contact;
+- (CNMeCardSharingPickerViewController)initWithContactStore:(id)store contact:(id)contact nameProvider:(id)provider sharingEnabled:(BOOL)enabled selectedNameFormat:(unint64_t)format selectedSharingAudience:(unint64_t)audience mode:(unint64_t)mode;
 - (CNMeCardSharingPickerViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)meCardSharingStatus;
-- (void)avatarViewControllerWasTapped:(id)a3;
-- (void)didTapDoneButton:(id)a3;
-- (void)didTapSetUpLaterButton:(id)a3;
+- (void)avatarViewControllerWasTapped:(id)tapped;
+- (void)didTapDoneButton:(id)button;
+- (void)didTapSetUpLaterButton:(id)button;
 - (void)loadView;
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5;
-- (void)photoPickerDidCancel:(id)a3;
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image;
+- (void)photoPickerDidCancel:(id)cancel;
 - (void)saveDraftContact;
-- (void)setMeCardSharingStatus:(unint64_t)a3;
-- (void)sharingEnabledDataSource:(id)a3 didChangeEnabledState:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setMeCardSharingStatus:(unint64_t)status;
+- (void)sharingEnabledDataSource:(id)source didChangeEnabledState:(BOOL)state;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -32,26 +32,26 @@
   return WeakRetained;
 }
 
-- (void)sharingEnabledDataSource:(id)a3 didChangeEnabledState:(BOOL)a4
+- (void)sharingEnabledDataSource:(id)source didChangeEnabledState:(BOOL)state
 {
-  v4 = a4;
-  v10 = a3;
-  self->_sharingEnabled = v4;
+  stateCopy = state;
+  sourceCopy = source;
+  self->_sharingEnabled = stateCopy;
   if (self->_mode == 1 && self->_shouldSetMeContact)
   {
     [(CNMeCardSharingPickerViewController *)self saveDraftContact];
   }
 
-  v6 = [(CNMeCardSharingPickerViewController *)self delegate];
+  delegate = [(CNMeCardSharingPickerViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNMeCardSharingPickerViewController *)self delegate];
-    [v8 sharingPicker:self didChangeSharingState:self->_sharingEnabled];
+    delegate2 = [(CNMeCardSharingPickerViewController *)self delegate];
+    [delegate2 sharingPicker:self didChangeSharingState:self->_sharingEnabled];
   }
 
-  if (v4)
+  if (stateCopy)
   {
     if ([(CNMeCardSharingAudienceDataSource *)self->_sharingAudienceDataSource selectedSharingAudience])
     {
@@ -72,53 +72,53 @@
   [(CNMeCardSharingPickerViewController *)self setMeCardSharingStatus:v9];
 }
 
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image
 {
-  v16 = a4;
-  v7 = a5;
-  objc_storeStrong(&self->_draftContactImage, a5);
-  if (v16)
+  contactCopy = contact;
+  imageCopy = image;
+  objc_storeStrong(&self->_draftContactImage, image);
+  if (contactCopy)
   {
-    v8 = [v16 imageData];
-    [(CNMutableContact *)self->_draftContact setImageData:v8];
+    imageData = [contactCopy imageData];
+    [(CNMutableContact *)self->_draftContact setImageData:imageData];
 
-    v9 = [v16 imageType];
-    [(CNMutableContact *)self->_draftContact setImageType:v9];
+    imageType = [contactCopy imageType];
+    [(CNMutableContact *)self->_draftContact setImageType:imageType];
 
-    v10 = [v16 imageHash];
-    [(CNMutableContact *)self->_draftContact setImageHash:v10];
+    imageHash = [contactCopy imageHash];
+    [(CNMutableContact *)self->_draftContact setImageHash:imageHash];
 
-    [v16 cropRect];
+    [contactCopy cropRect];
     [(CNMutableContact *)self->_draftContact setCropRect:?];
-    v11 = [v16 thumbnailImageData];
-    [(CNMutableContact *)self->_draftContact setThumbnailImageData:v11];
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    [(CNMutableContact *)self->_draftContact setThumbnailImageData:thumbnailImageData];
 
-    v12 = [v16 fullscreenImageData];
-    [(CNMutableContact *)self->_draftContact setFullscreenImageData:v12];
+    fullscreenImageData = [contactCopy fullscreenImageData];
+    [(CNMutableContact *)self->_draftContact setFullscreenImageData:fullscreenImageData];
 
-    v13 = [v16 preferredLikenessSource];
-    [(CNMutableContact *)self->_draftContact setPreferredLikenessSource:v13];
+    preferredLikenessSource = [contactCopy preferredLikenessSource];
+    [(CNMutableContact *)self->_draftContact setPreferredLikenessSource:preferredLikenessSource];
 
     if (self->_mode == 1)
     {
       [(CNMeCardSharingPickerViewController *)self saveDraftContact];
     }
 
-    v14 = [(CNMeCardSharingPickerViewController *)self avatarViewController];
-    [v14 reload];
+    avatarViewController = [(CNMeCardSharingPickerViewController *)self avatarViewController];
+    [avatarViewController reload];
   }
 
-  v15 = [(CNMeCardSharingPickerViewController *)self presentedViewController];
-  [v15 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNMeCardSharingPickerViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)photoPickerDidCancel:(id)a3
+- (void)photoPickerDidCancel:(id)cancel
 {
-  v3 = [(CNMeCardSharingPickerViewController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNMeCardSharingPickerViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)avatarViewControllerWasTapped:(id)a3
+- (void)avatarViewControllerWasTapped:(id)tapped
 {
   v4 = [CNPhotoPickerViewController alloc];
   draftContact = self->_draftContact;
@@ -133,12 +133,12 @@
   [(CNVisualIdentityPickerViewController *)v15 setAssignActionTitleOverride:v10];
 
   [(CNMeCardSharingPickerViewController *)self setPhotoPicker:v15];
-  v11 = [(CNMeCardSharingPickerViewController *)self view];
-  v12 = [v11 window];
-  [v12 endEditing:1];
+  view = [(CNMeCardSharingPickerViewController *)self view];
+  window = [view window];
+  [window endEditing:1];
 
-  v13 = [(CNMeCardSharingPickerViewController *)self photoPicker];
-  v14 = [CNPhotoPickerViewController navigationControllerForPicker:v13];
+  photoPicker = [(CNMeCardSharingPickerViewController *)self photoPicker];
+  v14 = [CNPhotoPickerViewController navigationControllerForPicker:photoPicker];
 
   [(CNMeCardSharingPickerViewController *)self presentViewController:v14 animated:1 completion:0];
 }
@@ -146,9 +146,9 @@
 - (void)saveDraftContact
 {
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
-  v4 = [(CNMutableContact *)self->_draftContact hasBeenPersisted];
+  hasBeenPersisted = [(CNMutableContact *)self->_draftContact hasBeenPersisted];
   draftContact = self->_draftContact;
-  if (v4)
+  if (hasBeenPersisted)
   {
     [v3 updateContact:draftContact];
   }
@@ -189,61 +189,61 @@
   }
 }
 
-- (void)didTapSetUpLaterButton:(id)a3
+- (void)didTapSetUpLaterButton:(id)button
 {
-  v4 = [(CNMeCardSharingPickerViewController *)self delegate];
+  delegate = [(CNMeCardSharingPickerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNMeCardSharingPickerViewController *)self delegate];
-    [v6 sharingPickerDidFinish:self];
+    delegate2 = [(CNMeCardSharingPickerViewController *)self delegate];
+    [delegate2 sharingPickerDidFinish:self];
   }
 }
 
-- (void)didTapDoneButton:(id)a3
+- (void)didTapDoneButton:(id)button
 {
   [(CNMeCardSharingPickerViewController *)self saveDraftContact];
   if (!self->_sharingEnabled)
   {
     self->_sharingEnabled = 1;
-    v4 = [(CNMeCardSharingPickerViewController *)self delegate];
+    delegate = [(CNMeCardSharingPickerViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CNMeCardSharingPickerViewController *)self delegate];
-      [v6 sharingPicker:self didChangeSharingState:self->_sharingEnabled];
+      delegate2 = [(CNMeCardSharingPickerViewController *)self delegate];
+      [delegate2 sharingPicker:self didChangeSharingState:self->_sharingEnabled];
     }
   }
 
-  v7 = [(CNMeCardSharingPickerViewController *)self delegate];
+  delegate3 = [(CNMeCardSharingPickerViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNMeCardSharingPickerViewController *)self delegate];
-    [v9 sharingPickerDidFinish:self];
+    delegate4 = [(CNMeCardSharingPickerViewController *)self delegate];
+    [delegate4 sharingPickerDidFinish:self];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [v6 section]);
-  v8 = [(CNMeCardSharingAudienceDataSource *)v7 selectedIndex];
-  -[CNMeCardSharingAudienceDataSource didSelectItemAtIndex:](v7, "didSelectItemAtIndex:", [v6 row]);
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:{objc_msgSend(v6, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [pathCopy section]);
+  selectedIndex = [(CNMeCardSharingAudienceDataSource *)v7 selectedIndex];
+  -[CNMeCardSharingAudienceDataSource didSelectItemAtIndex:](v7, "didSelectItemAtIndex:", [pathCopy row]);
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:selectedIndex inSection:{objc_msgSend(pathCopy, "section")}];
   if (v7 == self->_sharingAudienceDataSource)
   {
-    v10 = [(CNMeCardSharingPickerViewController *)self delegate];
+    delegate = [(CNMeCardSharingPickerViewController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CNMeCardSharingPickerViewController *)self delegate];
-      [v12 sharingPicker:self didSelectSharingAudience:{-[CNMeCardSharingAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
+      delegate2 = [(CNMeCardSharingPickerViewController *)self delegate];
+      [delegate2 sharingPicker:self didSelectSharingAudience:{-[CNMeCardSharingAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
     }
 
     if (self->_sharingEnabled)
@@ -265,7 +265,7 @@
     }
 
     [(CNMeCardSharingPickerViewController *)self setMeCardSharingStatus:v13];
-    v14 = [(CNMeCardSharingPickerViewController *)self delegate];
+    delegate3 = [(CNMeCardSharingPickerViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       sharingEnabled = self->_sharingEnabled;
@@ -275,40 +275,40 @@
         goto LABEL_13;
       }
 
-      v14 = [(CNMeCardSharingPickerViewController *)self delegate];
-      [v14 sharingPicker:self didSelectSharingStatus:v13];
+      delegate3 = [(CNMeCardSharingPickerViewController *)self delegate];
+      [delegate3 sharingPicker:self didSelectSharingStatus:v13];
     }
   }
 
 LABEL_13:
-  v16 = [v9 isEqual:v6];
-  [v18 deselectRowAtIndexPath:v6 animated:0];
+  v16 = [v9 isEqual:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
   if ((v16 & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v6, "section")}];
-    [v18 reloadSections:v17 withRowAnimation:0];
+    v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+    [viewCopy reloadSections:v17 withRowAnimation:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [v6 section]);
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [pathCopy section]);
+  v9 = [pathCopy row];
 
   v10 = [v8 itemForIndex:v9];
-  v11 = [v10 label];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  label = [v10 label];
+  textLabel = [v7 textLabel];
+  [textLabel setText:label];
 
   [v7 setSelectionStyle:0];
-  v13 = [v10 accessoryView];
+  accessoryView = [v10 accessoryView];
 
-  if (v13)
+  if (accessoryView)
   {
-    v14 = [v10 accessoryView];
-    [v7 setAccessoryView:v14];
+    accessoryView2 = [v10 accessoryView];
+    [v7 setAccessoryView:accessoryView2];
   }
 
   else
@@ -331,46 +331,46 @@ LABEL_13:
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v6 selectedIndex];
-  if (v7 == [v5 row])
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_sectionDataSources, "objectAtIndexedSubscript:", [pathCopy section]);
+  selectedIndex = [v6 selectedIndex];
+  if (selectedIndex == [pathCopy row])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v5;
+    v8 = pathCopy;
   }
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:a4];
-  v5 = [v4 sectionFooterLabel];
+  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:section];
+  sectionFooterLabel = [v4 sectionFooterLabel];
 
-  return v5;
+  return sectionFooterLabel;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:a4];
-  v5 = [v4 sectionHeaderLabel];
+  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:section];
+  sectionHeaderLabel = [v4 sectionHeaderLabel];
 
-  return v5;
+  return sectionHeaderLabel;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:a4];
-  v5 = [v4 numberOfItems];
+  v4 = [(NSArray *)self->_sectionDataSources objectAtIndexedSubscript:section];
+  numberOfItems = [v4 numberOfItems];
 
-  return v5;
+  return numberOfItems;
 }
 
 - (void)viewWillLayoutSubviews
@@ -378,30 +378,30 @@ LABEL_13:
   v19.receiver = self;
   v19.super_class = CNMeCardSharingPickerViewController;
   [(CNMeCardSharingPickerViewController *)&v19 viewWillLayoutSubviews];
-  v3 = [(CNMeCardSharingPickerViewController *)self view];
+  view = [(CNMeCardSharingPickerViewController *)self view];
   [(OBBoldTrayButton *)self->_confirmButton intrinsicContentSize];
   v5 = v4;
-  [v3 bounds];
+  [view bounds];
   [(OBBoldTrayButton *)self->_confirmButton setFrame:20.0, 10.0, v6 + -40.0, v5];
   [(OBLinkTrayButton *)self->_laterButton intrinsicContentSize];
   v8 = v7;
   [(OBBoldTrayButton *)self->_confirmButton frame];
   v9 = CGRectGetMaxY(v20) + 10.0;
-  [v3 bounds];
+  [view bounds];
   [(OBLinkTrayButton *)self->_laterButton setFrame:20.0, v9, v10 + -40.0, v8];
-  [v3 bounds];
+  [view bounds];
   MaxY = CGRectGetMaxY(v21);
-  v12 = [(CNMeCardSharingPickerViewController *)self view];
-  [v12 safeAreaInsets];
+  view2 = [(CNMeCardSharingPickerViewController *)self view];
+  [view2 safeAreaInsets];
   v14 = MaxY - (v13 + 130.0);
-  [v3 bounds];
+  [view bounds];
   Width = CGRectGetWidth(v22);
-  v16 = [(CNMeCardSharingPickerViewController *)self view];
-  [v16 safeAreaInsets];
+  view3 = [(CNMeCardSharingPickerViewController *)self view];
+  [view3 safeAreaInsets];
   [(UIView *)self->_buttonTray setFrame:0.0, v14, Width, v17 + 130.0];
 
-  v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(UIView *)self->_buttonTray setBackgroundColor:v18];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(UIView *)self->_buttonTray setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)viewDidLoad
@@ -409,32 +409,32 @@ LABEL_13:
   v12.receiver = self;
   v12.super_class = CNMeCardSharingPickerViewController;
   [(CNMeCardSharingPickerViewController *)&v12 viewDidLoad];
-  v3 = [(CNMeCardSharingHeaderViewController *)self->_headerViewController view];
-  v4 = [(CNMeCardSharingPickerViewController *)self view];
-  [v4 bounds];
+  view = [(CNMeCardSharingHeaderViewController *)self->_headerViewController view];
+  view2 = [(CNMeCardSharingPickerViewController *)self view];
+  [view2 bounds];
   v6 = v5;
   [(CNMeCardSharingHeaderViewController *)self->_headerViewController desiredHeight];
-  [v3 setFrame:{0.0, 0.0, v6, v7}];
+  [view setFrame:{0.0, 0.0, v6, v7}];
 
-  [v3 setAutoresizingMask:2];
-  v8 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v8 setTableHeaderView:v3];
+  [view setAutoresizingMask:2];
+  tableView = [(CNMeCardSharingPickerViewController *)self tableView];
+  [tableView setTableHeaderView:view];
 
-  v9 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v9 setDelegate:self];
+  tableView2 = [(CNMeCardSharingPickerViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v10 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v10 setDataSource:self];
+  tableView3 = [(CNMeCardSharingPickerViewController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v11 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  tableView4 = [(CNMeCardSharingPickerViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v34 = [v3 initWithFrame:?];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
@@ -444,16 +444,16 @@ LABEL_13:
 
   if (!self->_mode)
   {
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [v34 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v34 setBackgroundColor:whiteColor];
 
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [(CNMeCardSharingPickerViewController *)self tableView];
-    [v9 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    tableView = [(CNMeCardSharingPickerViewController *)self tableView];
+    [tableView setBackgroundColor:clearColor];
 
-    v10 = [MEMORY[0x1E69B7CF8] boldButton];
+    boldButton = [MEMORY[0x1E69B7CF8] boldButton];
     confirmButton = self->_confirmButton;
-    self->_confirmButton = v10;
+    self->_confirmButton = boldButton;
 
     v12 = self->_confirmButton;
     v13 = CNContactsUIBundle();
@@ -466,9 +466,9 @@ LABEL_13:
     [v34 bounds];
     [(OBBoldTrayButton *)self->_confirmButton setFrame:20.0, 10.0, v17 + -40.0, v16];
     [(OBBoldTrayButton *)self->_confirmButton setAutoresizingMask:2];
-    v18 = [MEMORY[0x1E69B7D30] linkButton];
+    linkButton = [MEMORY[0x1E69B7D30] linkButton];
     laterButton = self->_laterButton;
-    self->_laterButton = v18;
+    self->_laterButton = linkButton;
 
     v20 = self->_laterButton;
     v21 = CNContactsUIBundle();
@@ -491,8 +491,8 @@ LABEL_13:
     buttonTray = self->_buttonTray;
     self->_buttonTray = v29;
 
-    v31 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)self->_buttonTray setBackgroundColor:v31];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)self->_buttonTray setBackgroundColor:systemBackgroundColor];
 
     [(UIView *)self->_buttonTray addSubview:self->_confirmButton];
     [(UIView *)self->_buttonTray addSubview:self->_laterButton];
@@ -500,11 +500,11 @@ LABEL_13:
     [(UIView *)self->_buttonTray setAutoresizingMask:10];
   }
 
-  v32 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v32 setAutoresizingMask:18];
+  tableView2 = [(CNMeCardSharingPickerViewController *)self tableView];
+  [tableView2 setAutoresizingMask:18];
 
-  v33 = [(CNMeCardSharingPickerViewController *)self tableView];
-  [v34 addSubview:v33];
+  tableView3 = [(CNMeCardSharingPickerViewController *)self tableView];
+  [v34 addSubview:tableView3];
 
   if (self->_buttonTray)
   {
@@ -514,23 +514,23 @@ LABEL_13:
   [(CNMeCardSharingPickerViewController *)self setView:v34];
 }
 
-- (CNMeCardSharingPickerViewController)initWithContactStore:(id)a3 contact:(id)a4 nameProvider:(id)a5 sharingEnabled:(BOOL)a6 selectedNameFormat:(unint64_t)a7 selectedSharingAudience:(unint64_t)a8 mode:(unint64_t)a9
+- (CNMeCardSharingPickerViewController)initWithContactStore:(id)store contact:(id)contact nameProvider:(id)provider sharingEnabled:(BOOL)enabled selectedNameFormat:(unint64_t)format selectedSharingAudience:(unint64_t)audience mode:(unint64_t)mode
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  storeCopy = store;
+  contactCopy = contact;
+  providerCopy = provider;
   v43.receiver = self;
   v43.super_class = CNMeCardSharingPickerViewController;
   v18 = [(CNMeCardSharingPickerViewController *)&v43 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_contactStore, a3);
-    v19->_sharingEnabled = a6;
-    v19->_mode = a9;
-    if (v16)
+    objc_storeStrong(&v18->_contactStore, store);
+    v19->_sharingEnabled = enabled;
+    v19->_mode = mode;
+    if (contactCopy)
     {
-      v20 = [v16 mutableCopy];
+      v20 = [contactCopy mutableCopy];
       draftContact = v19->_draftContact;
       v19->_draftContact = v20;
     }
@@ -541,19 +541,19 @@ LABEL_13:
       v23 = v19->_draftContact;
       v19->_draftContact = v22;
 
-      v24 = [v17 givenName];
-      [(CNMutableContact *)v19->_draftContact setGivenName:v24];
+      givenName = [providerCopy givenName];
+      [(CNMutableContact *)v19->_draftContact setGivenName:givenName];
 
-      v25 = [v17 middleName];
-      [(CNMutableContact *)v19->_draftContact setMiddleName:v25];
+      middleName = [providerCopy middleName];
+      [(CNMutableContact *)v19->_draftContact setMiddleName:middleName];
 
-      v26 = [v17 familyName];
-      [(CNMutableContact *)v19->_draftContact setFamilyName:v26];
+      familyName = [providerCopy familyName];
+      [(CNMutableContact *)v19->_draftContact setFamilyName:familyName];
 
       v19->_shouldSetMeContact = 1;
     }
 
-    if (a9)
+    if (mode)
     {
       +[CNMeCardSharingPickerLayoutAttributes layoutAttributesForSettings];
     }
@@ -574,27 +574,27 @@ LABEL_13:
     v19->_avatarViewController = v30;
 
     [(CNMeCardSharingAvatarViewController *)v19->_avatarViewController setDelegate:v19];
-    v32 = [MEMORY[0x1E695DF70] array];
-    if (a9 == 1)
+    array = [MEMORY[0x1E695DF70] array];
+    if (mode == 1)
     {
       v33 = [[CNMeCardSharingEnabledDataSource alloc] initWithSharingEnabled:v19->_sharingEnabled];
       enabledDataSource = v19->_enabledDataSource;
       v19->_enabledDataSource = v33;
 
       [(CNMeCardSharingEnabledDataSource *)v19->_enabledDataSource setDelegate:v19];
-      [v32 addObject:v19->_enabledDataSource];
+      [array addObject:v19->_enabledDataSource];
     }
 
-    v35 = [[CNMeCardSharingAudienceDataSource alloc] initWithSelectedSharingAudience:a8];
+    v35 = [[CNMeCardSharingAudienceDataSource alloc] initWithSelectedSharingAudience:audience];
     sharingAudienceDataSource = v19->_sharingAudienceDataSource;
     v19->_sharingAudienceDataSource = v35;
 
-    [v32 addObject:v19->_sharingAudienceDataSource];
+    [array addObject:v19->_sharingAudienceDataSource];
     v37 = [[CNMeCardSharingHeaderViewController alloc] initWithAvatarViewController:v19->_avatarViewController name:&stru_1F0CE7398 layoutAttributes:v19->_layoutAttributes];
     headerViewController = v19->_headerViewController;
     v19->_headerViewController = v37;
 
-    v39 = [v32 copy];
+    v39 = [array copy];
     sectionDataSources = v19->_sectionDataSources;
     v19->_sectionDataSources = v39;
 
@@ -604,12 +604,12 @@ LABEL_13:
   return v19;
 }
 
-- (CNMeCardSharingPickerViewController)initWithContact:(id)a3
+- (CNMeCardSharingPickerViewController)initWithContact:(id)contact
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v5 = [objc_opt_class() descriptorForRequiredKeys];
-  v11[0] = v5;
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v11[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [v4 _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:0];
 
@@ -673,17 +673,17 @@ void __64__CNMeCardSharingPickerViewController_descriptorForRequiredKeys__block_
   return 2;
 }
 
-- (void)setMeCardSharingStatus:(unint64_t)a3
+- (void)setMeCardSharingStatus:(unint64_t)status
 {
-  if (a3)
+  if (status)
   {
-    if (a3 == 2)
+    if (status == 2)
     {
       v4 = 0;
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
       v4 = 1;
 LABEL_6:

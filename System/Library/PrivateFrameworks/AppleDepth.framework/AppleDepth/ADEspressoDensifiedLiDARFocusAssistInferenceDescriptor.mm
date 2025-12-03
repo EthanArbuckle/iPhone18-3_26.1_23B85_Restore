@@ -1,14 +1,14 @@
 @interface ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor
-- (ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4;
+- (ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine;
 @end
 
 @implementation ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor
 
-- (ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4
+- (ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 - 3 >= 2)
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (engine - 3 >= 2)
   {
     v8 = 1717855600;
   }
@@ -18,7 +18,7 @@
     v8 = 1751410032;
   }
 
-  if (a4 - 3 >= 2)
+  if (engine - 3 >= 2)
   {
     v9 = 1278226534;
   }
@@ -28,11 +28,11 @@
     v9 = 1278226536;
   }
 
-  v10 = [v6 url];
-  v11 = [v7 layoutNamesDict];
+  v10 = [providerCopy url];
+  layoutNamesDict = [v7 layoutNamesDict];
   v22.receiver = self;
   v22.super_class = ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor;
-  v12 = [(ADEspressoInferenceDescriptor *)&v22 initWithUrl:v10 layoutNames:v11];
+  v12 = [(ADEspressoInferenceDescriptor *)&v22 initWithUrl:v10 layoutNames:layoutNamesDict];
 
   if (v12)
   {

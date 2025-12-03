@@ -1,7 +1,7 @@
 @interface MEMessageEncodingResult
-- (MEMessageEncodingResult)initWithCoder:(id)a3;
+- (MEMessageEncodingResult)initWithCoder:(id)coder;
 - (MEMessageEncodingResult)initWithEncodedMessage:(MEEncodedOutgoingMessage *)encodedMessage signingError:(NSError *)signingError encryptionError:(NSError *)encryptionError;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEMessageEncodingResult
@@ -25,28 +25,28 @@
   return v13;
 }
 
-- (MEMessageEncodingResult)initWithCoder:(id)a3
+- (MEMessageEncodingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_encodedMessage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_signingError"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_encryptionError"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_encodedMessage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_signingError"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_encryptionError"];
   v8 = [(MEMessageEncodingResult *)self initWithEncodedMessage:v5 signingError:v6 encryptionError:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MEMessageEncodingResult *)self encodedMessage];
-  [v7 encodeObject:v4 forKey:@"EFPropertyKey_encodedMessage"];
+  coderCopy = coder;
+  encodedMessage = [(MEMessageEncodingResult *)self encodedMessage];
+  [coderCopy encodeObject:encodedMessage forKey:@"EFPropertyKey_encodedMessage"];
 
-  v5 = [(MEMessageEncodingResult *)self signingError];
-  [v7 encodeObject:v5 forKey:@"EFPropertyKey_signingError"];
+  signingError = [(MEMessageEncodingResult *)self signingError];
+  [coderCopy encodeObject:signingError forKey:@"EFPropertyKey_signingError"];
 
-  v6 = [(MEMessageEncodingResult *)self encryptionError];
-  [v7 encodeObject:v6 forKey:@"EFPropertyKey_encryptionError"];
+  encryptionError = [(MEMessageEncodingResult *)self encryptionError];
+  [coderCopy encodeObject:encryptionError forKey:@"EFPropertyKey_encryptionError"];
 }
 
 @end

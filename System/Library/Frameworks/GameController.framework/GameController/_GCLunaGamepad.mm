@@ -1,14 +1,14 @@
 @interface _GCLunaGamepad
-- (_GCLunaGamepad)initWithCoder:(id)a3;
-- (_GCLunaGamepad)initWithController:(id)a3;
+- (_GCLunaGamepad)initWithCoder:(id)coder;
+- (_GCLunaGamepad)initWithController:(id)controller;
 - (void)initializeExtraControllerElements;
 @end
 
 @implementation _GCLunaGamepad
 
-- (_GCLunaGamepad)initWithController:(id)a3
+- (_GCLunaGamepad)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -31,7 +31,7 @@
   v22 = 0;
   v10.receiver = self;
   v10.super_class = _GCLunaGamepad;
-  v6 = [(GCExtendedGamepad *)&v10 initWithController:v4 initInfo:v11];
+  v6 = [(GCExtendedGamepad *)&v10 initWithController:controllerCopy initInfo:v11];
   v7 = v6;
   if (v6)
   {
@@ -46,11 +46,11 @@
   return v7;
 }
 
-- (_GCLunaGamepad)initWithCoder:(id)a3
+- (_GCLunaGamepad)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _GCLunaGamepad;
-  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:a3];
+  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -62,65 +62,65 @@
 
 - (void)initializeExtraControllerElements
 {
-  v3 = [(GCExtendedGamepad *)self leftTrigger];
-  [v3 setUnmappedSfSymbolsName:@"lt.rectangle.roundedtop"];
+  leftTrigger = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger setUnmappedSfSymbolsName:@"lt.rectangle.roundedtop"];
 
-  v4 = [(GCExtendedGamepad *)self rightTrigger];
-  [v4 setUnmappedSfSymbolsName:@"rt.rectangle.roundedtop"];
+  rightTrigger = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger setUnmappedSfSymbolsName:@"rt.rectangle.roundedtop"];
 
-  v5 = [(GCExtendedGamepad *)self leftShoulder];
-  [v5 setUnmappedSfSymbolsName:@"lb.rectangle.roundedbottom"];
+  leftShoulder = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder setUnmappedSfSymbolsName:@"lb.rectangle.roundedbottom"];
 
-  v6 = [(GCExtendedGamepad *)self rightShoulder];
-  [v6 setUnmappedSfSymbolsName:@"rb.rectangle.roundedbottom"];
+  rightShoulder = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder setUnmappedSfSymbolsName:@"rb.rectangle.roundedbottom"];
 
-  v7 = [(GCExtendedGamepad *)self buttonHome];
-  [v7 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_HOME"];
+  buttonHome = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome setUnmappedNameLocalizationKey:@"LUNA_BUTTON_HOME"];
 
-  v8 = [(GCExtendedGamepad *)self buttonOptions];
-  [v8 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_OPTIONS"];
+  buttonOptions = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions setUnmappedNameLocalizationKey:@"LUNA_BUTTON_OPTIONS"];
 
-  v9 = [(GCExtendedGamepad *)self buttonMenu];
-  [v9 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_MENU"];
+  buttonMenu = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu setUnmappedNameLocalizationKey:@"LUNA_BUTTON_MENU"];
 
-  v10 = [(GCExtendedGamepad *)self dpad];
-  [v10 setUnmappedNameLocalizationKey:@"LUNA_DIRECTION_PAD"];
+  dpad = [(GCExtendedGamepad *)self dpad];
+  [dpad setUnmappedNameLocalizationKey:@"LUNA_DIRECTION_PAD"];
 
-  v11 = [(GCExtendedGamepad *)self buttonA];
-  [v11 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_A"];
+  buttonA = [(GCExtendedGamepad *)self buttonA];
+  [buttonA setUnmappedNameLocalizationKey:@"LUNA_BUTTON_A"];
 
-  v12 = [(GCExtendedGamepad *)self buttonB];
-  [v12 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_B"];
+  buttonB = [(GCExtendedGamepad *)self buttonB];
+  [buttonB setUnmappedNameLocalizationKey:@"LUNA_BUTTON_B"];
 
-  v13 = [(GCExtendedGamepad *)self buttonX];
-  [v13 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_X"];
+  buttonX = [(GCExtendedGamepad *)self buttonX];
+  [buttonX setUnmappedNameLocalizationKey:@"LUNA_BUTTON_X"];
 
-  v14 = [(GCExtendedGamepad *)self buttonY];
-  [v14 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_Y"];
+  buttonY = [(GCExtendedGamepad *)self buttonY];
+  [buttonY setUnmappedNameLocalizationKey:@"LUNA_BUTTON_Y"];
 
-  v15 = [(GCExtendedGamepad *)self leftShoulder];
-  [v15 setUnmappedNameLocalizationKey:@"LUNA_LEFT_SHOULDER"];
+  leftShoulder2 = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder2 setUnmappedNameLocalizationKey:@"LUNA_LEFT_SHOULDER"];
 
-  v16 = [(GCExtendedGamepad *)self rightShoulder];
-  [v16 setUnmappedNameLocalizationKey:@"LUNA_RIGHT_SHOULDER"];
+  rightShoulder2 = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder2 setUnmappedNameLocalizationKey:@"LUNA_RIGHT_SHOULDER"];
 
-  v17 = [(GCExtendedGamepad *)self leftTrigger];
-  [v17 setUnmappedNameLocalizationKey:@"LUNA_LEFT_TRIGGER"];
+  leftTrigger2 = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger2 setUnmappedNameLocalizationKey:@"LUNA_LEFT_TRIGGER"];
 
-  v18 = [(GCExtendedGamepad *)self rightTrigger];
-  [v18 setUnmappedNameLocalizationKey:@"LUNA_RIGHT_TRIGGER"];
+  rightTrigger2 = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger2 setUnmappedNameLocalizationKey:@"LUNA_RIGHT_TRIGGER"];
 
-  v19 = [(GCExtendedGamepad *)self leftThumbstick];
-  [v19 setUnmappedNameLocalizationKey:@"LUNA_LEFT_THUMBSTICK"];
+  leftThumbstick = [(GCExtendedGamepad *)self leftThumbstick];
+  [leftThumbstick setUnmappedNameLocalizationKey:@"LUNA_LEFT_THUMBSTICK"];
 
-  v20 = [(GCExtendedGamepad *)self rightThumbstick];
-  [v20 setUnmappedNameLocalizationKey:@"LUNA_RIGHT_THUMBSTICK"];
+  rightThumbstick = [(GCExtendedGamepad *)self rightThumbstick];
+  [rightThumbstick setUnmappedNameLocalizationKey:@"LUNA_RIGHT_THUMBSTICK"];
 
-  v21 = [(GCExtendedGamepad *)self leftThumbstickButton];
-  [v21 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_LEFT_THUMBSTICK"];
+  leftThumbstickButton = [(GCExtendedGamepad *)self leftThumbstickButton];
+  [leftThumbstickButton setUnmappedNameLocalizationKey:@"LUNA_BUTTON_LEFT_THUMBSTICK"];
 
-  v22 = [(GCExtendedGamepad *)self rightThumbstickButton];
-  [v22 setUnmappedNameLocalizationKey:@"LUNA_BUTTON_RIGHT_THUMBSTICK"];
+  rightThumbstickButton = [(GCExtendedGamepad *)self rightThumbstickButton];
+  [rightThumbstickButton setUnmappedNameLocalizationKey:@"LUNA_BUTTON_RIGHT_THUMBSTICK"];
 }
 
 @end

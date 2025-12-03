@@ -1,31 +1,31 @@
 @interface _UICopyEffectViewEntry
 - (id)description;
-- (void)addEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UICopyEffectViewEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     captureGroup = self->_captureGroup;
-    v5 = v6;
+    v5 = viewCopy;
     [v5 setCaptureGroup:captureGroup];
     [v5 setRenderMode:2];
   }
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 removeFromCurrentCaptureGroup];
+    [viewCopy removeFromCurrentCaptureGroup];
   }
 }
 

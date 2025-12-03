@@ -1,69 +1,69 @@
 @interface STStewieStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
-- (STStewieStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
+- (STStewieStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithStewieActiveChangedValue:(void *)a3 stewieConnectedChangedValue:(void *)a4 stewieSignalStrengthBarsChangedValue:(void *)a5 maxStewieSignalStrengthBarsChangedValue:;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithStewieActiveChangedValue:(void *)value stewieConnectedChangedValue:(void *)changedValue stewieSignalStrengthBarsChangedValue:(void *)barsChangedValue maxStewieSignalStrengthBarsChangedValue:;
 @end
 
 @implementation STStewieStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 isStewieActive];
-  if (v7 == [v5 isStewieActive])
+  dataCopy = data;
+  toDataCopy = toData;
+  isStewieActive = [toDataCopy isStewieActive];
+  if (isStewieActive == [dataCopy isStewieActive])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:isStewieActive];
   }
 
-  v9 = [v6 isStewieConnected];
-  if (v9 == [v5 isStewieConnected])
+  isStewieConnected = [toDataCopy isStewieConnected];
+  if (isStewieConnected == [dataCopy isStewieConnected])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:isStewieConnected];
   }
 
-  v11 = [v6 stewieSignalStrengthBars];
-  if ([v5 stewieSignalStrengthBars] == v11)
+  stewieSignalStrengthBars = [toDataCopy stewieSignalStrengthBars];
+  if ([dataCopy stewieSignalStrengthBars] == stewieSignalStrengthBars)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:stewieSignalStrengthBars];
   }
 
-  v13 = [v6 maxStewieSignalStrengthBars];
-  if ([v5 maxStewieSignalStrengthBars] == v13)
+  maxStewieSignalStrengthBars = [toDataCopy maxStewieSignalStrengthBars];
+  if ([dataCopy maxStewieSignalStrengthBars] == maxStewieSignalStrengthBars)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maxStewieSignalStrengthBars];
   }
 
   v15 = [[STStewieStatusDomainDataDiff alloc] initWithStewieActiveChangedValue:v8 stewieConnectedChangedValue:v10 stewieSignalStrengthBarsChangedValue:v12 maxStewieSignalStrengthBarsChangedValue:v14];
@@ -71,79 +71,79 @@
   return v15;
 }
 
-- (void)initWithStewieActiveChangedValue:(void *)a3 stewieConnectedChangedValue:(void *)a4 stewieSignalStrengthBarsChangedValue:(void *)a5 maxStewieSignalStrengthBarsChangedValue:
+- (void)initWithStewieActiveChangedValue:(void *)value stewieConnectedChangedValue:(void *)changedValue stewieSignalStrengthBarsChangedValue:(void *)barsChangedValue maxStewieSignalStrengthBarsChangedValue:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  valueCopy = value;
+  changedValueCopy = changedValue;
+  barsChangedValueCopy = barsChangedValue;
+  if (self)
   {
-    v22.receiver = a1;
+    v22.receiver = self;
     v22.super_class = STStewieStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v22, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v22, sel_init);
+    if (self)
     {
       v13 = [v9 copy];
-      v14 = a1[1];
-      a1[1] = v13;
+      v14 = self[1];
+      self[1] = v13;
 
-      v15 = [v10 copy];
-      v16 = a1[2];
-      a1[2] = v15;
+      v15 = [valueCopy copy];
+      v16 = self[2];
+      self[2] = v15;
 
-      v17 = [v11 copy];
-      v18 = a1[3];
-      a1[3] = v17;
+      v17 = [changedValueCopy copy];
+      v18 = self[3];
+      self[3] = v17;
 
-      v19 = [v12 copy];
-      v20 = a1[4];
-      a1[4] = v19;
+      v19 = [barsChangedValueCopy copy];
+      v20 = self[4];
+      self[4] = v19;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STStewieStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v12 = a3;
+  dataCopy = data;
   if (self)
   {
     v4 = self->_stewieActiveChangedValue;
     v5 = v4;
     if (v4)
     {
-      [v12 setStewieActive:{-[NSNumber BOOLValue](v4, "BOOLValue")}];
+      [dataCopy setStewieActive:{-[NSNumber BOOLValue](v4, "BOOLValue")}];
     }
 
     v6 = self->_stewieConnectedChangedValue;
     v7 = v6;
     if (v6)
     {
-      [v12 setStewieConnected:{-[NSNumber BOOLValue](v6, "BOOLValue")}];
+      [dataCopy setStewieConnected:{-[NSNumber BOOLValue](v6, "BOOLValue")}];
     }
 
     v8 = self->_stewieSignalStrengthBarsChangedValue;
     v9 = v8;
     if (v8)
     {
-      [v12 setStewieSignalStrengthBars:{-[NSNumber unsignedIntegerValue](v8, "unsignedIntegerValue")}];
+      [dataCopy setStewieSignalStrengthBars:{-[NSNumber unsignedIntegerValue](v8, "unsignedIntegerValue")}];
     }
 
     v10 = self->_maxStewieSignalStrengthBarsChangedValue;
     if (v10)
     {
       v11 = v10;
-      [v12 setMaxStewieSignalStrengthBars:{-[NSNumber unsignedIntegerValue](v10, "unsignedIntegerValue")}];
+      [dataCopy setMaxStewieSignalStrengthBars:{-[NSNumber unsignedIntegerValue](v10, "unsignedIntegerValue")}];
     }
   }
 
@@ -199,23 +199,23 @@ LABEL_12:
   return v4;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (((!v4 || (v5 = v4[1]) == 0) && (!self ? (stewieActiveChangedValue = 0) : (stewieActiveChangedValue = self->_stewieActiveChangedValue), v5 = stewieActiveChangedValue, !v4) || (v7 = v4[2]) == 0) && (!self ? (stewieConnectedChangedValue = 0) : (stewieConnectedChangedValue = self->_stewieConnectedChangedValue), v7 = stewieConnectedChangedValue, !v4) || (v9 = v4[3]) == 0)
+    if (((!diffCopy || (v5 = diffCopy[1]) == 0) && (!self ? (stewieActiveChangedValue = 0) : (stewieActiveChangedValue = self->_stewieActiveChangedValue), v5 = stewieActiveChangedValue, !diffCopy) || (v7 = diffCopy[2]) == 0) && (!self ? (stewieConnectedChangedValue = 0) : (stewieConnectedChangedValue = self->_stewieConnectedChangedValue), v7 = stewieConnectedChangedValue, !diffCopy) || (v9 = diffCopy[3]) == 0)
     {
       v10 = self ? self->_stewieSignalStrengthBarsChangedValue : 0;
       v9 = v10;
-      if (!v4)
+      if (!diffCopy)
       {
         goto LABEL_16;
       }
     }
 
-    v11 = v4[4];
+    v11 = diffCopy[4];
     if (!v11)
     {
 LABEL_16:
@@ -243,26 +243,26 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STStewieStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     stewieActiveChangedValue = self->_stewieActiveChangedValue;
@@ -277,7 +277,7 @@ LABEL_16:
   v28[1] = 3221225472;
   v28[2] = __40__STStewieStatusDomainDataDiff_isEqual___block_invoke;
   v28[3] = &unk_1E85DDCD8;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendObject:stewieActiveChangedValue counterpart:v28];
   if (self)
@@ -389,17 +389,17 @@ id __40__STStewieStatusDomainDataDiff_isEqual___block_invoke_4(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_stewieActiveChangedValue];
+    v5 = [builder appendObject:self->_stewieActiveChangedValue];
     stewieConnectedChangedValue = self->_stewieConnectedChangedValue;
   }
 
   else
   {
-    v13 = [v3 appendObject:0];
+    v13 = [builder appendObject:0];
     stewieConnectedChangedValue = 0;
   }
 
@@ -422,35 +422,35 @@ id __40__STStewieStatusDomainDataDiff_isEqual___block_invoke_4(uint64_t a1)
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_stewieActiveChangedValue forKey:@"stewieActiveChangedValue"];
-    [v5 encodeObject:self->_stewieConnectedChangedValue forKey:@"stewieConnectedChangedValue"];
-    [v5 encodeObject:self->_stewieSignalStrengthBarsChangedValue forKey:@"stewieSignalStrengthBarsChangedValue"];
+    [coderCopy encodeObject:self->_stewieActiveChangedValue forKey:@"stewieActiveChangedValue"];
+    [coderCopy encodeObject:self->_stewieConnectedChangedValue forKey:@"stewieConnectedChangedValue"];
+    [coderCopy encodeObject:self->_stewieSignalStrengthBarsChangedValue forKey:@"stewieSignalStrengthBarsChangedValue"];
     maxStewieSignalStrengthBarsChangedValue = self->_maxStewieSignalStrengthBarsChangedValue;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"stewieActiveChangedValue"];
-    [v5 encodeObject:0 forKey:@"stewieConnectedChangedValue"];
-    [v5 encodeObject:0 forKey:@"stewieSignalStrengthBarsChangedValue"];
+    [coderCopy encodeObject:0 forKey:@"stewieActiveChangedValue"];
+    [coderCopy encodeObject:0 forKey:@"stewieConnectedChangedValue"];
+    [coderCopy encodeObject:0 forKey:@"stewieSignalStrengthBarsChangedValue"];
     maxStewieSignalStrengthBarsChangedValue = 0;
   }
 
-  [v5 encodeObject:maxStewieSignalStrengthBarsChangedValue forKey:@"maxStewieSignalStrengthBarsChangedValue"];
+  [coderCopy encodeObject:maxStewieSignalStrengthBarsChangedValue forKey:@"maxStewieSignalStrengthBarsChangedValue"];
 }
 
-- (STStewieStatusDomainDataDiff)initWithCoder:(id)a3
+- (STStewieStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stewieActiveChangedValue"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stewieConnectedChangedValue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stewieSignalStrengthBarsChangedValue"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxStewieSignalStrengthBarsChangedValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stewieActiveChangedValue"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stewieConnectedChangedValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stewieSignalStrengthBarsChangedValue"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxStewieSignalStrengthBarsChangedValue"];
 
   v9 = [(STStewieStatusDomainDataDiff *)self initWithStewieActiveChangedValue:v5 stewieConnectedChangedValue:v6 stewieSignalStrengthBarsChangedValue:v7 maxStewieSignalStrengthBarsChangedValue:v8];
   return v9;
@@ -458,43 +458,43 @@ id __40__STStewieStatusDomainDataDiff_isEqual___block_invoke_4(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STStewieStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStewieStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStewieStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStewieStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStewieStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStewieStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __80__STStewieStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;

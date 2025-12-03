@@ -1,10 +1,10 @@
 @interface CKKnowledgeStoreUtils
-+ (BOOL)isHexaKey:(id)a3;
++ (BOOL)isHexaKey:(id)key;
 @end
 
 @implementation CKKnowledgeStoreUtils
 
-+ (BOOL)isHexaKey:(id)a3
++ (BOOL)isHexaKey:(id)key
 {
   sub_1C86F8EFC();
   v3 = static CKKnowledgeStoreUtils.isHexaKey(_:)();

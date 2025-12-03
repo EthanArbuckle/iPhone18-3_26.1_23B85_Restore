@@ -2,15 +2,15 @@
 - (_NSRange)domib_visibleIndexRange;
 - (id)ik_templateElementCSSSelectorList;
 - (id)ik_templateName;
-- (void)domib_setVisibleIndexRange:(_NSRange)a3;
+- (void)domib_setVisibleIndexRange:(_NSRange)range;
 @end
 
 @implementation IKDOMElement
 
-- (void)domib_setVisibleIndexRange:(_NSRange)a3
+- (void)domib_setVisibleIndexRange:(_NSRange)range
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] value:&v5 withObjCType:"{_NSRange=QQ}"];
+  rangeCopy = range;
+  v4 = [MEMORY[0x277CCAE60] value:&rangeCopy withObjCType:"{_NSRange=QQ}"];
   objc_setAssociatedObject(self, "domib_visibleIndexRange", v4, 0x301);
 }
 
@@ -31,14 +31,14 @@
 - (id)ik_templateName
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(IKDOMElement *)self tagName];
-  if (![v3 isEqualToString:@"document"])
+  tagName = [(IKDOMElement *)self tagName];
+  if (![tagName isEqualToString:@"document"])
   {
-    v21 = 0;
+    tagName2 = 0;
     goto LABEL_24;
   }
 
-  v24 = v3;
+  v24 = tagName;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -113,28 +113,28 @@
   while (v5);
 LABEL_23:
 
-  v21 = [v7 tagName];
+  tagName2 = [v7 tagName];
 
-  v3 = v24;
+  tagName = v24;
 LABEL_24:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return tagName2;
 }
 
 - (id)ik_templateElementCSSSelectorList
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D7B6C0];
-  v4 = [(IKDOMElement *)self elementName];
-  v5 = [v3 safe_initWithText:v4];
+  elementName = [(IKDOMElement *)self elementName];
+  v5 = [v3 safe_initWithText:elementName];
 
   v6 = MEMORY[0x277D7B6C8];
   v12[0] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [(IKDOMElement *)self elementName];
-  v9 = [v6 safe_initWithSelectors:v7 text:v8];
+  elementName2 = [(IKDOMElement *)self elementName];
+  v9 = [v6 safe_initWithSelectors:v7 text:elementName2];
 
   v10 = *MEMORY[0x277D85DE8];
 

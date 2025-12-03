@@ -1,36 +1,36 @@
 @interface WFShortcutFolderWidgetConfigurationIntent
 - (id)parameterOverrides;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
 @end
 
 @implementation WFShortcutFolderWidgetConfigurationIntent
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(WFAppIntentExecutionAction *)self metadata];
-  v7 = [v6 customIntentClassName];
-  v8 = [v5 _className];
-  v9 = [v7 isEqualToString:v8];
+  intentCopy = intent;
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  customIntentClassName = [metadata customIntentClassName];
+  _className = [intentCopy _className];
+  v9 = [customIntentClassName isEqualToString:_className];
 
   if (!v9)
   {
     v10 = getWFWidgetLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v5 _className];
+      _className2 = [intentCopy _className];
       *buf = 136315394;
       v53 = "[WFShortcutFolderWidgetConfigurationIntent serializedParametersForDonatedIntent:allowDroppingUnconfigurableValues:]";
       v54 = 2114;
-      v55 = v15;
+      v55 = _className2;
       _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_ERROR, "%s Attempted to migrate WFShortcutFolderWidgetConfigurationIntent to App Intent but the intent was of the wrong class type: %{public}@", buf, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v10 = [v5 valueForKey:@"folder"];
+  v10 = [intentCopy valueForKey:@"folder"];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -40,7 +40,7 @@
       *buf = 136315394;
       v53 = "[WFShortcutFolderWidgetConfigurationIntent serializedParametersForDonatedIntent:allowDroppingUnconfigurableValues:]";
       v54 = 2112;
-      v55 = v5;
+      v55 = intentCopy;
       _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_ERROR, "%s Did not find folder object on WFShortcutFolderWidgetConfigurationIntent: %@", buf, 0x16u);
     }
 
@@ -49,13 +49,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [v10 identifier];
+  identifier = [v10 identifier];
 
-  if (v11)
+  if (identifier)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v10 identifier];
-    v14 = [v12 stringWithFormat:@"shortcuts://widget/folder/%@", v13];
+    identifier2 = [v10 identifier];
+    v14 = [v12 stringWithFormat:@"shortcuts://widget/folder/%@", identifier2];
   }
 
   else
@@ -63,11 +63,11 @@ LABEL_10:
     v14 = @"shortcuts://widget/folder/all-shortcuts";
   }
 
-  v19 = [v10 displayString];
-  v20 = v19;
-  if (v19)
+  displayString = [v10 displayString];
+  v20 = displayString;
+  if (displayString)
   {
-    v21 = v19;
+    v21 = displayString;
   }
 
   else
@@ -83,14 +83,14 @@ LABEL_10:
   v24 = objc_alloc(MEMORY[0x1E69ACA90]);
   v47 = v14;
   v45 = [MEMORY[0x1E695DFF8] URLWithString:v14];
-  v44 = [MEMORY[0x1E69AC938] URLValueType];
-  v25 = [v24 initWithValue:v45 valueType:v44];
+  uRLValueType = [MEMORY[0x1E69AC938] URLValueType];
+  v25 = [v24 initWithValue:v45 valueType:uRLValueType];
   v26 = [v23 initWithIdentifier:@"identifierURL" value:v25];
   v51[0] = v26;
   v27 = objc_alloc(MEMORY[0x1E69AC950]);
   v28 = objc_alloc(MEMORY[0x1E69ACA90]);
-  v29 = [MEMORY[0x1E69AC938] stringValueType];
-  v30 = [v28 initWithValue:v48 valueType:v29];
+  stringValueType = [MEMORY[0x1E69AC938] stringValueType];
+  v30 = [v28 initWithValue:v48 valueType:stringValueType];
   v31 = [v27 initWithIdentifier:@"name" value:v30];
   v51[1] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
@@ -104,12 +104,12 @@ LABEL_10:
   v39 = [v37 initWithTitle:v38 subtitle:0 image:0];
   v40 = [v35 initWithValue:v34 valueType:v36 displayRepresentation:v39];
 
-  v41 = [v40 wfSerializedRepresentation];
-  v42 = v41;
-  if (v41)
+  wfSerializedRepresentation = [v40 wfSerializedRepresentation];
+  v42 = wfSerializedRepresentation;
+  if (wfSerializedRepresentation)
   {
     v49 = @"folder";
-    v50 = v41;
+    v50 = wfSerializedRepresentation;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
   }
 
@@ -153,8 +153,8 @@ LABEL_11:
 
   v16.receiver = self;
   v16.super_class = WFShortcutFolderWidgetConfigurationIntent;
-  v8 = [(WFOverridableLinkAction *)&v16 parameterOverrides];
-  v9 = [v8 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v16 parameterOverrides];
+  v9 = [parameterOverrides mutableCopy];
 
   v17[0] = @"Class";
   v10 = objc_opt_class();

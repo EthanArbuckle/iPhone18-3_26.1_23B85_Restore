@@ -1,21 +1,21 @@
 @interface BKWelcomeScreenManager
 + (id)sharedManager;
-- (BKWelcomeScreenManager)initWithItems:(id)a3 isRTL:(BOOL)a4;
+- (BKWelcomeScreenManager)initWithItems:(id)items isRTL:(BOOL)l;
 - (BOOL)moreScreensComing;
-- (CGSize)preferredContentSizeForNavigationController:(id)a3;
+- (CGSize)preferredContentSizeForNavigationController:(id)controller;
 - (UINavigationController)navigationController;
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4;
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController;
 - (id)nextItemHavingWelcomeScreenToShow;
-- (id)nextItemHavingWelcomeScreenToShowAfterItem:(id)a3;
-- (id)welcomeScreenViewControllerFromItem:(id)a3;
+- (id)nextItemHavingWelcomeScreenToShowAfterItem:(id)item;
+- (id)welcomeScreenViewControllerFromItem:(id)item;
 - (void)_presentTheNextViewController;
 - (void)_sequenceFinished;
 - (void)_setupViewControllers;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 - (void)dealloc;
 - (void)finishCurrentItem;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation BKWelcomeScreenManager
@@ -27,16 +27,16 @@
   return WeakRetained;
 }
 
-- (BKWelcomeScreenManager)initWithItems:(id)a3 isRTL:(BOOL)a4
+- (BKWelcomeScreenManager)initWithItems:(id)items isRTL:(BOOL)l
 {
-  v4 = a4;
-  v6 = a3;
+  lCopy = l;
+  itemsCopy = items;
   v18.receiver = self;
   v18.super_class = BKWelcomeScreenManager;
   v7 = [(BKWelcomeScreenManager *)&v18 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [itemsCopy copy];
     items = v7->_items;
     v7->_items = v8;
 
@@ -47,7 +47,7 @@
     currentItem = v7->_currentItem;
     v7->_currentItem = 0;
 
-    v13 = [BKSlideTransition transitionWithDirection:!v4];
+    v13 = [BKSlideTransition transitionWithDirection:!lCopy];
     defaultSlideAnimator = v7->_defaultSlideAnimator;
     v7->_defaultSlideAnimator = v13;
 
@@ -84,14 +84,14 @@
     [(BKWelcomeNavigationController *)v5 setBkDelegate:self];
     [(BKWelcomeNavigationController *)v5 setModalPresentationStyle:2];
     [(BKWelcomeNavigationController *)v5 setModalTransitionStyle:2];
-    v6 = [(BKWelcomeNavigationController *)v5 presentationController];
-    [v6 setDelegate:self];
+    presentationController = [(BKWelcomeNavigationController *)v5 presentationController];
+    [presentationController setDelegate:self];
 
     [(BKWelcomeNavigationController *)v5 setNavigationBarHidden:1 animated:0];
     v7 = objc_alloc_init(UINavigationBarAppearance);
     [v7 configureWithTransparentBackground];
-    v8 = [(BKWelcomeNavigationController *)v5 navigationBar];
-    [v8 setStandardAppearance:v7];
+    navigationBar = [(BKWelcomeNavigationController *)v5 navigationBar];
+    [navigationBar setStandardAppearance:v7];
 
     v9 = self->_navigationController;
     self->_navigationController = &v5->super;
@@ -102,9 +102,9 @@
   return navigationController;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BSUIWelcomeScreenLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -112,28 +112,28 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "runWithCompletion: Start", buf, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_100136C50;
     v10 = &unk_100A08130;
-    v11 = self;
-    v12 = v4;
-    v6 = self;
-    [(BKWelcomeScreenManager *)v6 setCompletion:&v7];
-    [(BKWelcomeScreenManager *)v6 _setupViewControllers:v7];
+    selfCopy = self;
+    v12 = completionCopy;
+    selfCopy2 = self;
+    [(BKWelcomeScreenManager *)selfCopy2 setCompletion:&v7];
+    [(BKWelcomeScreenManager *)selfCopy2 _setupViewControllers:v7];
   }
 }
 
-- (id)nextItemHavingWelcomeScreenToShowAfterItem:(id)a3
+- (id)nextItemHavingWelcomeScreenToShowAfterItem:(id)item
 {
-  v4 = a3;
-  v5 = [(BKWelcomeScreenManager *)self items];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  itemCopy = item;
+  items = [(BKWelcomeScreenManager *)self items];
+  v6 = [items indexOfObjectIdenticalTo:itemCopy];
 
-  v7 = [(BKWelcomeScreenManager *)self items];
-  v8 = [v7 count];
+  items2 = [(BKWelcomeScreenManager *)self items];
+  v8 = [items2 count];
 
   if (v8)
   {
@@ -142,19 +142,19 @@
     {
       if (v6 == 0x7FFFFFFFFFFFFFFFLL || v9 > v6)
       {
-        v11 = [(BKWelcomeScreenManager *)self items];
-        v12 = [v11 objectAtIndexedSubscript:v9];
-        v13 = [v12 welcomeScreenShouldShow];
+        items3 = [(BKWelcomeScreenManager *)self items];
+        v12 = [items3 objectAtIndexedSubscript:v9];
+        welcomeScreenShouldShow = [v12 welcomeScreenShouldShow];
 
-        if (v13)
+        if (welcomeScreenShouldShow)
         {
           break;
         }
       }
 
       ++v9;
-      v14 = [(BKWelcomeScreenManager *)self items];
-      v15 = [v14 count];
+      items4 = [(BKWelcomeScreenManager *)self items];
+      v15 = [items4 count];
 
       if (v9 >= v15)
       {
@@ -162,8 +162,8 @@
       }
     }
 
-    v17 = [(BKWelcomeScreenManager *)self items];
-    v16 = [v17 objectAtIndexedSubscript:v9];
+    items5 = [(BKWelcomeScreenManager *)self items];
+    v16 = [items5 objectAtIndexedSubscript:v9];
   }
 
   else
@@ -178,17 +178,17 @@ LABEL_10:
 - (id)nextItemHavingWelcomeScreenToShow
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 launchedToTest];
+  launchedToTest = [v3 launchedToTest];
 
-  if (v4)
+  if (launchedToTest)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(BKWelcomeScreenManager *)self currentItem];
-    v5 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShowAfterItem:v6];
+    currentItem = [(BKWelcomeScreenManager *)self currentItem];
+    v5 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShowAfterItem:currentItem];
   }
 
   return v5;
@@ -196,19 +196,19 @@ LABEL_10:
 
 - (BOOL)moreScreensComing
 {
-  v2 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
-  v3 = v2 != 0;
+  nextItemHavingWelcomeScreenToShow = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
+  v3 = nextItemHavingWelcomeScreenToShow != 0;
 
   return v3;
 }
 
 - (void)_setupViewControllers
 {
-  v3 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
-  if (v3)
+  nextItemHavingWelcomeScreenToShow = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
+  if (nextItemHavingWelcomeScreenToShow)
   {
-    objc_storeStrong(&self->_currentItem, v3);
-    v4 = [(BKWelcomeScreenManager *)self welcomeScreenViewControllerFromItem:v3];
+    objc_storeStrong(&self->_currentItem, nextItemHavingWelcomeScreenToShow);
+    v4 = [(BKWelcomeScreenManager *)self welcomeScreenViewControllerFromItem:nextItemHavingWelcomeScreenToShow];
     v5 = BSUIWelcomeScreenLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -217,16 +217,16 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_setupViewControllers: showing: %{public}@", buf, 0xCu);
     }
 
-    v6 = [(BKWelcomeScreenManager *)self navigationController];
-    [v6 setNavigationBarHidden:objc_msgSend(v3 animated:{"welcomeScreenShouldDisplayNavigationBar") ^ 1, 0}];
+    navigationController = [(BKWelcomeScreenManager *)self navigationController];
+    [navigationController setNavigationBarHidden:objc_msgSend(nextItemHavingWelcomeScreenToShow animated:{"welcomeScreenShouldDisplayNavigationBar") ^ 1, 0}];
 
-    v7 = [(BKWelcomeScreenManager *)self navigationController];
+    navigationController2 = [(BKWelcomeScreenManager *)self navigationController];
     v10 = v4;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
-    [v7 setViewControllers:v8 animated:0];
+    [navigationController2 setViewControllers:v8 animated:0];
 
-    v9 = [(BKWelcomeScreenManager *)self navigationController];
-    [v9 setNeedsUpdateOfSupportedInterfaceOrientations];
+    navigationController3 = [(BKWelcomeScreenManager *)self navigationController];
+    [navigationController3 setNeedsUpdateOfSupportedInterfaceOrientations];
 
     self->_didShowWelcome = 1;
   }
@@ -240,14 +240,14 @@ LABEL_10:
 
 - (void)_presentTheNextViewController
 {
-  v3 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
-  if (v3)
+  nextItemHavingWelcomeScreenToShow = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
+  if (nextItemHavingWelcomeScreenToShow)
   {
-    v4 = [(BKWelcomeScreenManager *)self welcomeScreenViewControllerFromItem:v3];
-    v5 = [(BKWelcomeScreenManager *)self navigationController];
-    v6 = [v5 topViewController];
+    v4 = [(BKWelcomeScreenManager *)self welcomeScreenViewControllerFromItem:nextItemHavingWelcomeScreenToShow];
+    navigationController = [(BKWelcomeScreenManager *)self navigationController];
+    topViewController = [navigationController topViewController];
     lastViewController = self->_lastViewController;
-    self->_lastViewController = v6;
+    self->_lastViewController = topViewController;
 
     v8 = BSUIWelcomeScreenLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -257,16 +257,16 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_presentTheNextViewController: showing: %{public}@", buf, 0xCu);
     }
 
-    v9 = [(BKWelcomeScreenManager *)self navigationController];
-    [v9 setNavigationBarHidden:objc_msgSend(v3 animated:{"welcomeScreenShouldDisplayNavigationBar") ^ 1, 1}];
+    navigationController2 = [(BKWelcomeScreenManager *)self navigationController];
+    [navigationController2 setNavigationBarHidden:objc_msgSend(nextItemHavingWelcomeScreenToShow animated:{"welcomeScreenShouldDisplayNavigationBar") ^ 1, 1}];
 
-    v10 = [(BKWelcomeScreenManager *)self navigationController];
+    navigationController3 = [(BKWelcomeScreenManager *)self navigationController];
     v13 = v4;
     v11 = [NSArray arrayWithObjects:&v13 count:1];
-    [v10 setViewControllers:v11 animated:1];
+    [navigationController3 setViewControllers:v11 animated:1];
 
-    v12 = [(BKWelcomeScreenManager *)self navigationController];
-    [v12 setNeedsUpdateOfSupportedInterfaceOrientations];
+    navigationController4 = [(BKWelcomeScreenManager *)self navigationController];
+    [navigationController4 setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 
   else
@@ -276,11 +276,11 @@ LABEL_10:
   }
 }
 
-- (id)welcomeScreenViewControllerFromItem:(id)a3
+- (id)welcomeScreenViewControllerFromItem:(id)item
 {
-  v4 = a3;
-  v5 = [(BKWelcomeScreenManager *)self viewControllers];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  viewControllers = [(BKWelcomeScreenManager *)self viewControllers];
+  v6 = [viewControllers objectForKey:itemCopy];
 
   if (!v6)
   {
@@ -290,18 +290,18 @@ LABEL_10:
     v13 = sub_100137368;
     v14 = &unk_100A05C58;
     objc_copyWeak(&v15, &location);
-    v6 = [v4 welcomeScreenViewControllerWithCompletion:&v11];
+    v6 = [itemCopy welcomeScreenViewControllerWithCompletion:&v11];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShowAfterItem:v4, v11, v12, v13, v14];
+      v7 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShowAfterItem:itemCopy, v11, v12, v13, v14];
       v8 = v7 == 0;
 
-      [v4 welcomeScreenViewController:v6 configureWithLastScreen:v8];
+      [itemCopy welcomeScreenViewController:v6 configureWithLastScreen:v8];
     }
 
     [v6 setModalPresentationStyle:{2, v11, v12, v13, v14}];
-    v9 = [(BKWelcomeScreenManager *)self viewControllers];
-    [v9 setObject:v6 forKey:v4];
+    viewControllers2 = [(BKWelcomeScreenManager *)self viewControllers];
+    [viewControllers2 setObject:v6 forKey:itemCopy];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -319,21 +319,21 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "_sequenceFinished", v7, 2u);
   }
 
-  v4 = [(BKWelcomeScreenManager *)self completion];
+  completion = [(BKWelcomeScreenManager *)self completion];
 
-  if (v4)
+  if (completion)
   {
-    v5 = [(BKWelcomeScreenManager *)self completion];
-    v6 = [(BKWelcomeScreenManager *)self tabIdentifierToShow];
-    (*(v5 + 16))(v5, v6);
+    completion2 = [(BKWelcomeScreenManager *)self completion];
+    tabIdentifierToShow = [(BKWelcomeScreenManager *)self tabIdentifierToShow];
+    (*(completion2 + 16))(completion2, tabIdentifierToShow);
   }
 
   else
   {
-    v5 = BSUIWelcomeScreenLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    completion2 = BSUIWelcomeScreenLog();
+    if (os_log_type_enabled(completion2, OS_LOG_TYPE_ERROR))
     {
-      sub_100790888(v5);
+      sub_100790888(completion2);
     }
   }
 }
@@ -345,55 +345,55 @@ LABEL_10:
     [(BSUIWelcomeScreenItem *)self->_currentItem welcomeScreenViewControllerDidDismiss];
   }
 
-  v3 = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
+  nextItemHavingWelcomeScreenToShow = [(BKWelcomeScreenManager *)self nextItemHavingWelcomeScreenToShow];
   currentItem = self->_currentItem;
-  self->_currentItem = v3;
+  self->_currentItem = nextItemHavingWelcomeScreenToShow;
 
   lastViewController = self->_lastViewController;
   self->_lastViewController = 0;
 }
 
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
-  v4 = [(BKWelcomeScreenManager *)self lastViewController:a3];
+  v4 = [(BKWelcomeScreenManager *)self lastViewController:controller];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 interactionController];
+    interactionController = [v4 interactionController];
   }
 
   else
   {
-    v5 = 0;
+    interactionController = 0;
   }
 
-  return v5;
+  return interactionController;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v6 = a3;
-  v4 = [v6 viewControllerForKey:UITransitionContextFromViewControllerKey];
+  transitionCopy = transition;
+  v4 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
   if (objc_opt_respondsToSelector())
   {
-    [v4 animateTransition:v6];
+    [v4 animateTransition:transitionCopy];
   }
 
   else
   {
-    v5 = [(BKWelcomeScreenManager *)self defaultSlideAnimator];
-    [v5 animateTransition:v6];
+    defaultSlideAnimator = [(BKWelcomeScreenManager *)self defaultSlideAnimator];
+    [defaultSlideAnimator animateTransition:transitionCopy];
   }
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  if (a3)
+  if (ended)
   {
     [(BKWelcomeScreenManager *)self finishCurrentItem];
   }
 }
 
-- (CGSize)preferredContentSizeForNavigationController:(id)a3
+- (CGSize)preferredContentSizeForNavigationController:(id)controller
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -401,7 +401,7 @@ LABEL_10:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(BKWelcomeScreenManager *)self items:a3];
+  v6 = [(BKWelcomeScreenManager *)self items:controller];
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {

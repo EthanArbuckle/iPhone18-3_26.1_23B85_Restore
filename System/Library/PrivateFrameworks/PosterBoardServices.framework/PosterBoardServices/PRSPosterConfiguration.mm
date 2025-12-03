@@ -1,17 +1,17 @@
 @interface PRSPosterConfiguration
 + (NSUUID)expectedContainerIdentifier;
-+ (id)decodeFromPersistableRepresentation:(id)a3 error:(id *)a4;
-+ (id)decodeFromPersistableRepresentation:(id)a3 expectedContainerIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersistable:(id)a3;
++ (id)decodeFromPersistableRepresentation:(id)representation error:(id *)error;
++ (id)decodeFromPersistableRepresentation:(id)representation expectedContainerIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersistable:(id)persistable;
 - (NSString)description;
 - (NSString)descriptorIdentifier;
 - (PRSPosterConfiguration)init;
-- (PRSPosterConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRSPosterConfiguration)initWithCoder:(id)a3;
-- (PRSPosterConfiguration)initWithConfigurationAttributes:(id)a3;
-- (id)_initWithPath:(id)a3;
-- (id)persistableRepresentationWithError:(id *)a3;
+- (PRSPosterConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRSPosterConfiguration)initWithCoder:(id)coder;
+- (PRSPosterConfiguration)initWithConfigurationAttributes:(id)attributes;
+- (id)_initWithPath:(id)path;
+- (id)persistableRepresentationWithError:(id *)error;
 - (id)providerBundleIdentifier;
 - (id)serverUUID;
 - (unint64_t)hash;
@@ -46,7 +46,7 @@
     v15 = 2114;
     v16 = v11;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"PRSPosterConfiguration.m";
     v21 = 1024;
@@ -62,38 +62,38 @@
   return result;
 }
 
-- (PRSPosterConfiguration)initWithConfigurationAttributes:(id)a3
+- (PRSPosterConfiguration)initWithConfigurationAttributes:(id)attributes
 {
-  v4 = [a3 path];
-  v5 = [(PRSPosterConfiguration *)self _initWithPath:v4];
+  path = [attributes path];
+  v5 = [(PRSPosterConfiguration *)self _initWithPath:path];
 
   return v5;
 }
 
 - (NSString)descriptorIdentifier
 {
-  v2 = [(PFPosterPath *)self->_path serverIdentity];
-  v3 = [v2 descriptorIdentifier];
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  descriptorIdentifier = [serverIdentity descriptorIdentifier];
 
-  return v3;
+  return descriptorIdentifier;
 }
 
-- (id)_initWithPath:(id)a3
+- (id)_initWithPath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [(PRSPosterConfiguration *)a2 _initWithPath:?];
   }
 
-  v7 = v6;
+  v7 = pathCopy;
   v16.receiver = self;
   v16.super_class = PRSPosterConfiguration;
   v8 = [(PRSPosterConfiguration *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
+    objc_storeStrong(&v8->_path, path);
     path = v9->_path;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -107,42 +107,42 @@
 
 - (id)serverUUID
 {
-  v2 = [(PFPosterPath *)self->_path serverIdentity];
-  v3 = [v2 posterUUID];
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  return v3;
+  return posterUUID;
 }
 
 - (id)providerBundleIdentifier
 {
-  v2 = [(PFPosterPath *)self->_path serverIdentity];
-  v3 = [v2 provider];
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  provider = [serverIdentity provider];
 
-  return v3;
+  return provider;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PFPosterPath *)self->_path serverIdentity];
-  v4 = v3;
-  if (v3)
+  serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+  v4 = serverIdentity;
+  if (serverIdentity)
   {
-    v5 = [v3 hash];
+    v5 = [serverIdentity hash];
   }
 
   else
   {
-    v6 = [(PFPosterPath *)self->_path contentsURL];
-    v5 = [v6 hash];
+    contentsURL = [(PFPosterPath *)self->_path contentsURL];
+    v5 = [contentsURL hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -152,16 +152,16 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(PFPosterPath *)self->_path serverIdentity];
-      if (v7)
+      serverIdentity = [(PFPosterPath *)self->_path serverIdentity];
+      if (serverIdentity)
       {
-        v8 = [(PFPosterPath *)v4->_path serverIdentity];
+        serverIdentity2 = [(PFPosterPath *)equalCopy->_path serverIdentity];
         v6 = BSEqualObjects();
       }
 
       else
       {
-        v6 = [(PFPosterPath *)self->_path isEqual:v4->_path];
+        v6 = [(PFPosterPath *)self->_path isEqual:equalCopy->_path];
       }
     }
 
@@ -184,45 +184,45 @@
   return v6;
 }
 
-- (PRSPosterConfiguration)initWithBSXPCCoder:(id)a3
+- (PRSPosterConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
 
   v6 = [(PRSPosterConfiguration *)self _initWithPath:v5];
   return v6;
 }
 
-- (PRSPosterConfiguration)initWithCoder:(id)a3
+- (PRSPosterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
 
   if (v5)
   {
     self = [(PRSPosterConfiguration *)self _initWithPath:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)persistableRepresentationWithError:(id *)a3
+- (id)persistableRepresentationWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if ([(PFPosterPath *)self->_path isServerPosterPath]&& [(PFPosterPath *)self->_path isPersistable])
   {
-    v5 = [(PRSPosterConfiguration *)self bs_secureEncoded];
+    bs_secureEncoded = [(PRSPosterConfiguration *)self bs_secureEncoded];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v7 = objc_opt_class();
@@ -230,52 +230,52 @@
       v12 = *MEMORY[0x1E696A588];
       v13[0] = @"configuration is not persistable";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      *a3 = [v6 errorWithDomain:v8 code:1 userInfo:v9];
+      *error = [v6 errorWithDomain:v8 code:1 userInfo:v9];
     }
 
-    v5 = 0;
+    bs_secureEncoded = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return bs_secureEncoded;
 }
 
-+ (id)decodeFromPersistableRepresentation:(id)a3 expectedContainerIdentifier:(id)a4 error:(id *)a5
++ (id)decodeFromPersistableRepresentation:(id)representation expectedContainerIdentifier:(id)identifier error:(id *)error
 {
   v67[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  identifierCopy = identifier;
   v66[0] = @"PRSPosterPath";
-  v8 = a3;
+  representationCopy = representation;
   v67[0] = objc_opt_class();
   v66[1] = @"PRSServerPosterPath";
   v67[1] = objc_opt_class();
   v66[2] = @"PRSServerPosterIdentity";
   v67[2] = objc_opt_class();
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:3];
-  v10 = [PRSPosterConfiguration pf_secureDecodedFromData:v8 classReplacementMap:v9];
+  v10 = [PRSPosterConfiguration pf_secureDecodedFromData:representationCopy classReplacementMap:v9];
 
   if (v10)
   {
-    v11 = [v10 _path];
-    v12 = [v11 containerURL];
-    v13 = [v12 standardizedURL];
+    _path = [v10 _path];
+    containerURL = [_path containerURL];
+    standardizedURL = [containerURL standardizedURL];
 
     v14 = +[PRSBehaviorAggregator dataStoreContainerDirectoryPath];
     v15 = PRSLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v59 = v13;
+      v59 = standardizedURL;
       v60 = 2112;
       v61 = v14;
       v62 = 2112;
-      v63 = v7;
+      v63 = identifierCopy;
       _os_log_impl(&dword_1C26FF000, v15, OS_LOG_TYPE_DEFAULT, "[decodeFromPersistableRepresentation] Attempting to fix up path for configuration. Persisted configuration container URL: %@ kContainerDirectory: %@, targetContainerIdentifier: %@>", buf, 0x20u);
     }
 
-    v16 = [v13 path];
-    v17 = [v16 rangeOfString:v14];
+    path = [standardizedURL path];
+    v17 = [path rangeOfString:v14];
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = PRSLogCommon();
@@ -285,7 +285,7 @@
         _os_log_impl(&dword_1C26FF000, v19, OS_LOG_TYPE_DEFAULT, "[decodeFromPersistableRepresentation] unable to find container uuid; checking if this is a valid file system location...", buf, 2u);
       }
 
-      if ([v13 checkResourceIsReachableAndReturnError:a5])
+      if ([standardizedURL checkResourceIsReachableAndReturnError:error])
       {
         v20 = v10;
       }
@@ -295,7 +295,7 @@
         v26 = PRSLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          [(PRSPosterConfiguration *)v13 decodeFromPersistableRepresentation:v26 expectedContainerIdentifier:v27 error:v28, v29, v30, v31, v32];
+          [(PRSPosterConfiguration *)standardizedURL decodeFromPersistableRepresentation:v26 expectedContainerIdentifier:v27 error:v28, v29, v30, v31, v32];
         }
 
         v20 = 0;
@@ -306,19 +306,19 @@
     {
       v23 = v17;
       v24 = v18;
-      v25 = [v7 UUIDString];
-      if ([v25 length] == 36)
+      uUIDString = [identifierCopy UUIDString];
+      if ([uUIDString length] == 36)
       {
-        v57 = [v16 substringWithRange:{v23 + v24, 36}];
-        if ([v57 isEqualToString:v25])
+        v57 = [path substringWithRange:{v23 + v24, 36}];
+        if ([v57 isEqualToString:uUIDString])
         {
           v20 = v10;
         }
 
         else
         {
-          v34 = [v16 mutableCopy];
-          [v34 replaceCharactersInRange:v23 + v24 withString:{36, v25}];
+          v34 = [path mutableCopy];
+          [v34 replaceCharactersInRange:v23 + v24 withString:{36, uUIDString}];
           v56 = v34;
           v35 = [MEMORY[0x1E695DFF8] fileURLWithPath:v34 isDirectory:1];
           v36 = PRSLogCommon();
@@ -327,16 +327,16 @@
             *buf = 138412546;
             v59 = v57;
             v60 = 2112;
-            v61 = v25;
+            v61 = uUIDString;
             _os_log_impl(&dword_1C26FF000, v36, OS_LOG_TYPE_DEFAULT, "[decodeFromPersistableRepresentation] Replacing container %@ with %@...", buf, 0x16u);
           }
 
-          if ([v35 checkResourceIsReachableAndReturnError:a5])
+          if ([v35 checkResourceIsReachableAndReturnError:error])
           {
             v37 = MEMORY[0x1E69C51E8];
-            v38 = [v10 _path];
-            v39 = [v38 serverIdentity];
-            v40 = [v37 pathWithContainerURL:v35 identity:v39];
+            _path2 = [v10 _path];
+            serverIdentity = [_path2 serverIdentity];
+            v40 = [v37 pathWithContainerURL:v35 identity:serverIdentity];
 
             v20 = [[PRSPosterConfiguration alloc] _initWithPath:v40];
           }
@@ -363,7 +363,7 @@
           _os_log_impl(&dword_1C26FF000, v33, OS_LOG_TYPE_DEFAULT, "[decodeFromPersistableRepresentation] container UUID was wrong length; checking if this configuration's file system URL is reachable...", buf, 2u);
         }
 
-        if ([v13 checkResourceIsReachableAndReturnError:a5])
+        if ([standardizedURL checkResourceIsReachableAndReturnError:error])
         {
           v20 = v10;
         }
@@ -373,7 +373,7 @@
           v41 = PRSLogCommon();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
           {
-            [(PRSPosterConfiguration *)v13 decodeFromPersistableRepresentation:v41 expectedContainerIdentifier:v42 error:v43, v44, v45, v46, v47];
+            [(PRSPosterConfiguration *)standardizedURL decodeFromPersistableRepresentation:v41 expectedContainerIdentifier:v42 error:v43, v44, v45, v46, v47];
           }
 
           v20 = 0;
@@ -384,7 +384,7 @@
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v20 = 0;
       goto LABEL_37;
@@ -392,12 +392,12 @@
 
     v21 = MEMORY[0x1E696ABC0];
     v22 = objc_opt_class();
-    v13 = NSStringFromClass(v22);
+    standardizedURL = NSStringFromClass(v22);
     v64 = *MEMORY[0x1E696A588];
     v65 = @"failed to decode configuration from data";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-    [v21 errorWithDomain:v13 code:2 userInfo:v14];
-    *a5 = v20 = 0;
+    [v21 errorWithDomain:standardizedURL code:2 userInfo:v14];
+    *error = v20 = 0;
   }
 
 LABEL_37:
@@ -406,24 +406,24 @@ LABEL_37:
   return v20;
 }
 
-+ (id)decodeFromPersistableRepresentation:(id)a3 error:(id *)a4
++ (id)decodeFromPersistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.springboard"];
+  representationCopy = representation;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   if (v9)
   {
-    v10 = [a1 expectedContainerIdentifier];
+    expectedContainerIdentifier = [self expectedContainerIdentifier];
   }
 
   else
   {
-    v10 = 0;
+    expectedContainerIdentifier = 0;
   }
 
-  v11 = [a1 decodeFromPersistableRepresentation:v6 expectedContainerIdentifier:v10 error:a4];
+  v11 = [self decodeFromPersistableRepresentation:representationCopy expectedContainerIdentifier:expectedContainerIdentifier error:error];
 
   return v11;
 }
@@ -443,15 +443,15 @@ LABEL_37:
   }
   v3 = ;
 
-  v4 = [v3 lastPathComponent];
-  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
+  lastPathComponent = [v3 lastPathComponent];
+  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:lastPathComponent];
 
   return v5;
 }
 
-- (BOOL)isEqualToPersistable:(id)a3
+- (BOOL)isEqualToPersistable:(id)persistable
 {
-  v4 = a3;
+  persistableCopy = persistable;
   if (self->_pathValidityExtension)
   {
 LABEL_2:
@@ -459,14 +459,14 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v7 = [(PFPosterPath *)self->_path isServerPosterPath];
+  isServerPosterPath = [(PFPosterPath *)self->_path isServerPosterPath];
   v5 = 0;
-  if (v4 && v7)
+  if (persistableCopy && isServerPosterPath)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && !*(v4 + 1) && [*(v4 + 2) isServerPosterPath])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && !*(persistableCopy + 1) && [*(persistableCopy + 2) isServerPosterPath])
     {
-      v5 = [(PFPosterPath *)self->_path isEqualToPersistable:*(v4 + 2)];
+      v5 = [(PFPosterPath *)self->_path isEqualToPersistable:*(persistableCopy + 2)];
       goto LABEL_3;
     }
 

@@ -1,16 +1,16 @@
 @interface JFXOverlayEffectDebugViewOptions
-+ (JFXOverlayEffectDebugViewOptions)debugViewOptionsWithDictionary:(id)a3;
++ (JFXOverlayEffectDebugViewOptions)debugViewOptionsWithDictionary:(id)dictionary;
 - (JFXOverlayEffectDebugViewOptions)init;
 - (id)description;
 @end
 
 @implementation JFXOverlayEffectDebugViewOptions
 
-+ (JFXOverlayEffectDebugViewOptions)debugViewOptionsWithDictionary:(id)a3
++ (JFXOverlayEffectDebugViewOptions)debugViewOptionsWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowDocumentBoundingBox"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowDocumentBoundingBox"];
   if (v5)
   {
     objc_opt_class();
@@ -20,7 +20,7 @@
     }
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowObjectAlignedBoundingBox"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowObjectAlignedBoundingBox"];
   if (v6)
   {
     objc_opt_class();
@@ -30,7 +30,7 @@
     }
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTextBoundingBoxes"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTextBoundingBoxes"];
   if (v7)
   {
     objc_opt_class();
@@ -40,7 +40,7 @@
     }
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowHitAreaBoundingBox"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowHitAreaBoundingBox"];
   if (v8)
   {
     objc_opt_class();
@@ -50,7 +50,7 @@
     }
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowFaceRect"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowFaceRect"];
   if (v9)
   {
     objc_opt_class();
@@ -60,7 +60,7 @@
     }
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTapPoints"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTapPoints"];
   if (v10)
   {
     objc_opt_class();
@@ -70,7 +70,7 @@
     }
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowCornerPoints"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowCornerPoints"];
   if (v11)
   {
     objc_opt_class();
@@ -80,7 +80,7 @@
     }
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTextCornerPoints"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowTextCornerPoints"];
   if (v12)
   {
     objc_opt_class();
@@ -90,7 +90,7 @@
     }
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowHitAreaPoints"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowHitAreaPoints"];
   if (v13)
   {
     objc_opt_class();
@@ -100,7 +100,7 @@
     }
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowAdditionalRects"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"JFX_DEBUG_DrawOverlayBoundsOptionShowAdditionalRects"];
   if (v14)
   {
     objc_opt_class();
@@ -133,14 +133,14 @@
     [(JFXOverlayEffectDebugViewOptions *)v3 setShowTextCornerPoints:1];
     [(JFXOverlayEffectDebugViewOptions *)v3 setShowHitAreaPoints:1];
     [(JFXOverlayEffectDebugViewOptions *)v3 setShowAdditionalRects:1];
-    v4 = [MEMORY[0x277D75348] magentaColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setDocumentBoundingBoxColor:v4];
+    magentaColor = [MEMORY[0x277D75348] magentaColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setDocumentBoundingBoxColor:magentaColor];
 
-    v5 = [MEMORY[0x277D75348] yellowColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setOutputROIColor:v5];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setOutputROIColor:yellowColor];
 
-    v6 = [MEMORY[0x277D75348] cyanColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setObjectAlignedBoundingBoxColor:v6];
+    cyanColor = [MEMORY[0x277D75348] cyanColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setObjectAlignedBoundingBoxColor:cyanColor];
 
     v7 = [MEMORY[0x277D75348] colorWithHue:0.261799388 saturation:0.7 brightness:0.9 alpha:1.0];
     v38[0] = v7;
@@ -153,52 +153,52 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:4];
     [(JFXOverlayEffectDebugViewOptions *)v3 setTextBoundingBoxColors:v11];
 
-    v12 = [MEMORY[0x277D75348] orangeColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setHitAreaBoundingBoxColor:v12];
+    orangeColor = [MEMORY[0x277D75348] orangeColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setHitAreaBoundingBoxColor:orangeColor];
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setMidpointColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setMidpointColor:whiteColor];
 
-    v14 = [MEMORY[0x277D75348] lightGrayColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setOverlayCenterColor:v14];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setOverlayCenterColor:lightGrayColor];
 
-    v15 = [MEMORY[0x277D75348] blackColor];
-    [(JFXOverlayEffectDebugViewOptions *)v3 setOriginCrosshairColor:v15];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(JFXOverlayEffectDebugViewOptions *)v3 setOriginCrosshairColor:blackColor];
 
-    v16 = [MEMORY[0x277D75348] redColor];
-    v37[0] = v16;
-    v17 = [MEMORY[0x277D75348] greenColor];
-    v37[1] = v17;
-    v18 = [MEMORY[0x277D75348] yellowColor];
-    v37[2] = v18;
-    v19 = [MEMORY[0x277D75348] blueColor];
-    v37[3] = v19;
+    redColor = [MEMORY[0x277D75348] redColor];
+    v37[0] = redColor;
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    v37[1] = greenColor;
+    yellowColor2 = [MEMORY[0x277D75348] yellowColor];
+    v37[2] = yellowColor2;
+    blueColor = [MEMORY[0x277D75348] blueColor];
+    v37[3] = blueColor;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
     [(JFXOverlayEffectDebugViewOptions *)v3 setCornerPointColors:v20];
 
-    v21 = [MEMORY[0x277D75348] redColor];
-    v36[0] = v21;
-    v22 = [MEMORY[0x277D75348] greenColor];
-    v36[1] = v22;
-    v23 = [MEMORY[0x277D75348] yellowColor];
-    v36[2] = v23;
-    v24 = [MEMORY[0x277D75348] blueColor];
-    v36[3] = v24;
-    v25 = [MEMORY[0x277D75348] magentaColor];
-    v36[4] = v25;
+    redColor2 = [MEMORY[0x277D75348] redColor];
+    v36[0] = redColor2;
+    greenColor2 = [MEMORY[0x277D75348] greenColor];
+    v36[1] = greenColor2;
+    yellowColor3 = [MEMORY[0x277D75348] yellowColor];
+    v36[2] = yellowColor3;
+    blueColor2 = [MEMORY[0x277D75348] blueColor];
+    v36[3] = blueColor2;
+    magentaColor2 = [MEMORY[0x277D75348] magentaColor];
+    v36[4] = magentaColor2;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:5];
     [(JFXOverlayEffectDebugViewOptions *)v3 setTextCornerPointColors:v26];
 
-    v27 = [MEMORY[0x277D75348] redColor];
-    v35[0] = v27;
-    v28 = [MEMORY[0x277D75348] greenColor];
-    v35[1] = v28;
-    v29 = [MEMORY[0x277D75348] yellowColor];
-    v35[2] = v29;
-    v30 = [MEMORY[0x277D75348] blueColor];
-    v35[3] = v30;
-    v31 = [MEMORY[0x277D75348] magentaColor];
-    v35[4] = v31;
+    redColor3 = [MEMORY[0x277D75348] redColor];
+    v35[0] = redColor3;
+    greenColor3 = [MEMORY[0x277D75348] greenColor];
+    v35[1] = greenColor3;
+    yellowColor4 = [MEMORY[0x277D75348] yellowColor];
+    v35[2] = yellowColor4;
+    blueColor3 = [MEMORY[0x277D75348] blueColor];
+    v35[3] = blueColor3;
+    magentaColor3 = [MEMORY[0x277D75348] magentaColor];
+    v35[4] = magentaColor3;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:5];
     [(JFXOverlayEffectDebugViewOptions *)v3 setHitAreaPointColors:v32];
   }

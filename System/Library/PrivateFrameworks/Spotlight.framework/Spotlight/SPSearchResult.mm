@@ -1,20 +1,20 @@
 @interface SPSearchResult
-- (SPSearchResult)initWithRankingItem:(id)a3;
+- (SPSearchResult)initWithRankingItem:(id)item;
 - (id)description;
 @end
 
 @implementation SPSearchResult
 
-- (SPSearchResult)initWithRankingItem:(id)a3
+- (SPSearchResult)initWithRankingItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SPSearchResult;
   v6 = [(SPSearchResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rankingItem, a3);
+    objc_storeStrong(&v6->_rankingItem, item);
   }
 
   return v7;

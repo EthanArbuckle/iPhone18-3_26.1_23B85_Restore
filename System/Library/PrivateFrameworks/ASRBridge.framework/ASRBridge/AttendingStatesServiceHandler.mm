@@ -1,40 +1,40 @@
 @interface AttendingStatesServiceHandler
 - (_TtC9ASRBridge29AttendingStatesServiceHandler)init;
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3;
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
-- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)a3;
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error;
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
+- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)s;
 @end
 
 @implementation AttendingStatesServiceHandler
 
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_2232A6AB4(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_2232A6AB4(error);
 }
 
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
-  if (a5)
+  if (id)
   {
     sub_2232AAC04();
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_2232A91D0();
 }
 
-- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)a3
+- (void)speechStartDetectedWithShouldDuckTTS:(BOOL)s
 {
-  v4 = self;
-  sub_2232A76FC(a3);
+  selfCopy = self;
+  sub_2232A76FC(s);
 }
 
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
-  if (a5)
+  if (id)
   {
     v8 = sub_2232AAC04();
     v10 = v9;
@@ -46,8 +46,8 @@
     v10 = 0;
   }
 
-  v11 = self;
-  sub_2232A81B0(a3, a4, v8, v10);
+  selfCopy = self;
+  sub_2232A81B0(time, type, v8, v10);
 }
 
 - (_TtC9ASRBridge29AttendingStatesServiceHandler)init

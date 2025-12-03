@@ -1,8 +1,8 @@
 @interface CACGPathCodingProxy
-- (CACGPathCodingProxy)initWithCoder:(id)a3;
-- (CACGPathCodingProxy)initWithObject:(id)a3;
+- (CACGPathCodingProxy)initWithCoder:(id)coder;
+- (CACGPathCodingProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CACGPathCodingProxy
@@ -16,7 +16,7 @@
   [(CACGPathCodingProxy *)&v3 dealloc];
 }
 
-- (CACGPathCodingProxy)initWithCoder:(id)a3
+- (CACGPathCodingProxy)initWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -24,7 +24,7 @@
   v4 = [(CACGPathCodingProxy *)&v12 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"LKCGPathSegments"}];
+    v5 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"LKCGPathSegments"}];
     if (v5)
     {
       v6 = v5;
@@ -51,14 +51,14 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   CGPathApply(self->_path, v5, encodePathSegment);
-  [a3 encodeObject:v5 forKey:@"LKCGPathSegments"];
+  [coder encodeObject:v5 forKey:@"LKCGPathSegments"];
 }
 
-- (CACGPathCodingProxy)initWithObject:(id)a3
+- (CACGPathCodingProxy)initWithObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -66,7 +66,7 @@
   v4 = [(CACGPathCodingProxy *)&v6 init];
   if (v4)
   {
-    v4->_path = MEMORY[0x1865E8EB0](a3);
+    v4->_path = MEMORY[0x1865E8EB0](object);
   }
 
   return v4;

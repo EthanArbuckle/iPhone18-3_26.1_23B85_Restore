@@ -5,23 +5,23 @@
 - (NSDate)firstVisualLayout;
 - (NSDate)navigationStart;
 - (id).cxx_construct;
-- (id)_initWithTiming:(const void *)a3;
+- (id)_initWithTiming:(const void *)timing;
 @end
 
 @implementation _WKPageLoadTiming
 
-- (id)_initWithTiming:(const void *)a3
+- (id)_initWithTiming:(const void *)timing
 {
   v5.receiver = self;
   v5.super_class = _WKPageLoadTiming;
   result = [(_WKPageLoadTiming *)&v5 init];
   if (result)
   {
-    *(result + 1) = *a3;
-    *(result + 2) = *(a3 + 1);
-    *(result + 3) = *(a3 + 2);
-    *(result + 4) = *(a3 + 3);
-    *(result + 5) = *(a3 + 4);
+    *(result + 1) = *timing;
+    *(result + 2) = *(timing + 1);
+    *(result + 3) = *(timing + 2);
+    *(result + 4) = *(timing + 3);
+    *(result + 5) = *(timing + 4);
   }
 
   return result;

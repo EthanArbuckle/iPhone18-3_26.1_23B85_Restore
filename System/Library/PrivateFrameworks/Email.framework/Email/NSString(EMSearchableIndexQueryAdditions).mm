@@ -6,7 +6,7 @@
 
 - (id)em_stringForQuotingWithCharacter:()EMSearchableIndexQueryAdditions
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v4, "length")}];
   [v4 replaceOccurrencesOfString:@"*" withString:@"\\*" options:0 range:{0, objc_msgSend(v4, "length")}];
   v5 = 0;

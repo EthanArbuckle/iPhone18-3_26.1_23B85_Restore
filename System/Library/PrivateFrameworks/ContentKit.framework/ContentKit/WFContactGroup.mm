@@ -1,24 +1,24 @@
 @interface WFContactGroup
 + (id)allContactGroups;
-+ (id)contactGroupWithName:(id)a3;
++ (id)contactGroupWithName:(id)name;
 @end
 
 @implementation WFContactGroup
 
-+ (id)contactGroupWithName:(id)a3
++ (id)contactGroupWithName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 allContactGroups];
-  v6 = [v5 objectMatchingKey:@"name" value:v4];
+  nameCopy = name;
+  allContactGroups = [self allContactGroups];
+  v6 = [allContactGroups objectMatchingKey:@"name" value:nameCopy];
 
   return v6;
 }
 
 + (id)allContactGroups
 {
-  v2 = [a1 preferredConcreteSubclass];
+  preferredConcreteSubclass = [self preferredConcreteSubclass];
 
-  return [v2 allContactGroups];
+  return [preferredConcreteSubclass allContactGroups];
 }
 
 @end

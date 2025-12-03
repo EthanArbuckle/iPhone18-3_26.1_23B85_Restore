@@ -1,7 +1,7 @@
 @interface MPModelLibraryResponseKeepLocalStatusConfiguration
 - (id).cxx_construct;
 - (shared_ptr<mlcore::EntityQuery>)downloadableItemsQuery;
-- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)a3;
+- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)query;
 @end
 
 @implementation MPModelLibraryResponseKeepLocalStatusConfiguration
@@ -13,10 +13,10 @@
   return self;
 }
 
-- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)a3
+- (void)setDownloadableItemsQuery:(shared_ptr<mlcore::EntityQuery>)query
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *query.__ptr_;
+  v3 = *(query.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

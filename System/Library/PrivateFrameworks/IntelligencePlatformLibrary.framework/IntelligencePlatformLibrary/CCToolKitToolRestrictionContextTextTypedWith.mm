@@ -1,64 +1,64 @@
 @interface CCToolKitToolRestrictionContextTextTypedWith
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextTextTypedWith)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextTextTypedWith)initWithMultilineAllowed:(id)a3 smartQuotesEnabled:(id)a4 smartDashesEnabled:(id)a5 keyboardType:(unsigned int)a6 autocorrectionType:(unsigned int)a7 capitalizationType:(unsigned int)a8 error:(id *)a9;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRestrictionContextTextTypedWith)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRestrictionContextTextTypedWith)initWithMultilineAllowed:(id)allowed smartQuotesEnabled:(id)enabled smartDashesEnabled:(id)dashesEnabled keyboardType:(unsigned int)type autocorrectionType:(unsigned int)autocorrectionType capitalizationType:(unsigned int)capitalizationType error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextTextTypedWith
 
-- (CCToolKitToolRestrictionContextTextTypedWith)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextTextTypedWith)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v22 = [v6 objectForKeyedSubscript:@"multilineAllowed"];
-    v21 = [v6 objectForKeyedSubscript:@"smartQuotesEnabled"];
-    v9 = [v6 objectForKeyedSubscript:@"smartDashesEnabled"];
-    v10 = [v6 objectForKeyedSubscript:@"keyboardType"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"multilineAllowed"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"smartQuotesEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"smartDashesEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"keyboardType"];
     v11 = v10;
     if (v10)
     {
-      v20 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v20 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"autocorrectionType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"autocorrectionType"];
     v14 = v13;
-    v23 = self;
+    selfCopy = self;
     if (v13)
     {
-      v15 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v13 unsignedIntegerValue];
     }
 
     else
     {
-      v15 = 0;
+      unsignedIntegerValue2 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"capitalizationType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"capitalizationType"];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v16 unsignedIntegerValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntegerValue3 = 0;
     }
 
-    v12 = [[CCToolKitToolRestrictionContextTextTypedWith alloc] initWithMultilineAllowed:v22 smartQuotesEnabled:v21 smartDashesEnabled:v9 keyboardType:v20 autocorrectionType:v15 capitalizationType:v18 error:a4];
+    v12 = [[CCToolKitToolRestrictionContextTextTypedWith alloc] initWithMultilineAllowed:v22 smartQuotesEnabled:v21 smartDashesEnabled:v9 keyboardType:unsignedIntegerValue autocorrectionType:unsignedIntegerValue2 capitalizationType:unsignedIntegerValue3 error:error];
 
-    self = v23;
+    self = selfCopy;
   }
 
   else
@@ -105,20 +105,20 @@
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v14 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasMultilineAllowed)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] BOOLValue:self->_multilineAllowed];
-    v14[2](v14, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasSmartQuotesEnabled)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 BOOLValue:self->_smartQuotesEnabled];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_hasSmartDashesEnabled)
@@ -126,7 +126,7 @@
     v8 = objc_alloc(MEMORY[0x1E69939F0]);
     v9 = *v5;
     v10 = [v8 initWithFieldType:v9 BOOLValue:self->_smartDashesEnabled];
-    v14[2](v14, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   else
@@ -135,19 +135,19 @@
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v9 enumValue:self->_keyboardType];
-  v14[2](v14, v11);
+  blockCopy[2](blockCopy, v11);
 
   v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v9 enumValue:self->_autocorrectionType];
-  v14[2](v14, v12);
+  blockCopy[2](blockCopy, v12);
 
   v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v9 enumValue:self->_capitalizationType];
-  v14[2](v14, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -524,15 +524,15 @@ LABEL_56:
           {
             v73 = objc_opt_class();
             NSStringFromClass(v73);
-            v83 = self;
-            v74 = a4;
-            v76 = v75 = v6;
+            selfCopy = self;
+            errorCopy = error;
+            v76 = v75 = dataCopy;
             v77 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v75;
-            a4 = v74;
-            self = v83;
+            dataCopy = v75;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_111:
@@ -579,20 +579,20 @@ LABEL_118:
   return v81;
 }
 
-- (CCToolKitToolRestrictionContextTextTypedWith)initWithMultilineAllowed:(id)a3 smartQuotesEnabled:(id)a4 smartDashesEnabled:(id)a5 keyboardType:(unsigned int)a6 autocorrectionType:(unsigned int)a7 capitalizationType:(unsigned int)a8 error:(id *)a9
+- (CCToolKitToolRestrictionContextTextTypedWith)initWithMultilineAllowed:(id)allowed smartQuotesEnabled:(id)enabled smartDashesEnabled:(id)dashesEnabled keyboardType:(unsigned int)type autocorrectionType:(unsigned int)autocorrectionType capitalizationType:(unsigned int)capitalizationType error:(id *)error
 {
-  LODWORD(v30) = a7;
-  HIDWORD(v30) = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  LODWORD(v30) = autocorrectionType;
+  HIDWORD(v30) = capitalizationType;
+  allowedCopy = allowed;
+  enabledCopy = enabled;
+  dashesEnabledCopy = dashesEnabled;
   v16 = objc_opt_new();
-  if (!v13)
+  if (!allowedCopy)
   {
     v18 = 0;
 LABEL_5:
-    v31 = self;
-    if (v14)
+    selfCopy = self;
+    if (enabledCopy)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -603,13 +603,13 @@ LABEL_5:
         goto LABEL_11;
       }
 
-      [v14 BOOLValue];
+      [enabledCopy BOOLValue];
       CCPBDataWriterWriteBOOLField();
-      if (!v15)
+      if (!dashesEnabledCopy)
       {
 LABEL_8:
         v18 = v20;
-        if (a6)
+        if (type)
         {
           goto LABEL_9;
         }
@@ -621,7 +621,7 @@ LABEL_8:
     else
     {
       v20 = v18;
-      if (!v15)
+      if (!dashesEnabledCopy)
       {
         goto LABEL_8;
       }
@@ -639,9 +639,9 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    [v15 BOOLValue];
+    [dashesEnabledCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
-    if (a6)
+    if (type)
     {
 LABEL_9:
       v21 = CCValidateEnumField();
@@ -657,8 +657,8 @@ LABEL_17:
           if (!HIDWORD(v30))
           {
 LABEL_27:
-            v28 = [v16 immutableData];
-            v29 = [(CCItemMessage *)v31 initWithData:v28 error:a9];
+            immutableData = [v16 immutableData];
+            v29 = [(CCItemMessage *)selfCopy initWithData:immutableData error:error];
 
             self = v29;
             v22 = v29;
@@ -704,7 +704,7 @@ LABEL_11:
       v22 = 0;
       v18 = v20;
 LABEL_22:
-      self = v31;
+      self = selfCopy;
       goto LABEL_23;
     }
 
@@ -718,7 +718,7 @@ LABEL_16:
   v18 = 0;
   if (v17)
   {
-    [v13 BOOLValue];
+    [allowedCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
     goto LABEL_5;
   }

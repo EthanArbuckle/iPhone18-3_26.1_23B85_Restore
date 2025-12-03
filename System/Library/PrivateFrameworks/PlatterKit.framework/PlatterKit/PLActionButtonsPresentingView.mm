@@ -1,21 +1,21 @@
 @interface PLActionButtonsPresentingView
-- (PLActionButtonsPresentingView)initWithActionButtonsView:(id)a3 interfaceEdge:(unint64_t)a4 layoutLocation:(unint64_t)a5;
+- (PLActionButtonsPresentingView)initWithActionButtonsView:(id)view interfaceEdge:(unint64_t)edge layoutLocation:(unint64_t)location;
 @end
 
 @implementation PLActionButtonsPresentingView
 
-- (PLActionButtonsPresentingView)initWithActionButtonsView:(id)a3 interfaceEdge:(unint64_t)a4 layoutLocation:(unint64_t)a5
+- (PLActionButtonsPresentingView)initWithActionButtonsView:(id)view interfaceEdge:(unint64_t)edge layoutLocation:(unint64_t)location
 {
-  v9 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = PLActionButtonsPresentingView;
   v10 = [(PLActionButtonsPresentingView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_actionButtonsView, a3);
-    v11->_interfaceEdge = a4;
-    v11->_layoutLocation = a5;
+    objc_storeStrong(&v10->_actionButtonsView, view);
+    v11->_interfaceEdge = edge;
+    v11->_layoutLocation = location;
     v11->_defaultActionTriggered = 0;
     [(PLActionButtonsPresentingView *)v11 addSubview:v11->_actionButtonsView];
     [(PLActionButtonsPresentingView *)v11 setClipsToBounds:1];

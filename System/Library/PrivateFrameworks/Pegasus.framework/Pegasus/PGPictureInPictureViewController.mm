@@ -1,15 +1,15 @@
 @interface PGPictureInPictureViewController
 + (double)defaultContentCornerRadius;
-+ (void)animateViewWithAnimationType:(int64_t)a3 initialSpringVelocity:(double)a4 animations:(id)a5 completion:(id)a6;
-+ (void)tetherViewController:(id)a3 toViewController:(id)a4 mode:(int64_t)a5;
++ (void)animateViewWithAnimationType:(int64_t)type initialSpringVelocity:(double)velocity animations:(id)animations completion:(id)completion;
++ (void)tetherViewController:(id)controller toViewController:(id)viewController mode:(int64_t)mode;
 - (BOOL)wantsStashTabSuppression;
 - (CGSize)microPIPSize;
 - (CGSize)minimumStashTabSize;
 - (CGSize)preferredContentSize;
 - (PGPictureInPictureApplication)application;
-- (PGPictureInPictureViewController)initWithApplication:(id)a3 sourceSceneSessionPersistentIdentifier:(id)a4 controlsStyle:(int64_t)a5;
-- (PGPictureInPictureViewController)initWithCoder:(id)a3;
-- (PGPictureInPictureViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PGPictureInPictureViewController)initWithApplication:(id)application sourceSceneSessionPersistentIdentifier:(id)identifier controlsStyle:(int64_t)style;
+- (PGPictureInPictureViewController)initWithCoder:(id)coder;
+- (PGPictureInPictureViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PGPictureInPictureViewController)tetheredViewController;
 - (PGPictureInPictureViewController)tetheringViewController;
 - (PGPictureInPictureViewControllerContentContainer)contentContainer;
@@ -17,78 +17,78 @@
 - (UIPointerInteraction)pointerInteraction;
 - (double)currentContentCornerRadius;
 - (id)_newShadowView;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)contentType;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (void)_addMaskViewSubviewIfNeeded;
-- (void)_applyShadowSettingsToView:(id)a3;
-- (void)_handleTapWhileStashedGestureRecognizer:(id)a3;
+- (void)_applyShadowSettingsToView:(id)view;
+- (void)_handleTapWhileStashedGestureRecognizer:(id)recognizer;
 - (void)_insertContentContainerViewIfNeeded;
 - (void)_layoutStashTabViewsIfNeeded;
 - (void)_loadShadowViewIfNeeded;
 - (void)_loadTabShadowViewIfNeeded;
 - (void)_noteTetheringDidUpdate;
-- (void)_performStartAnimationWithCompletionHandler:(id)a3;
-- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5;
+- (void)_performStartAnimationWithCompletionHandler:(id)handler;
+- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler;
 - (void)_resetStashTabViewsIfPossible;
-- (void)_setPortalActive:(BOOL)a3 left:(BOOL)a4;
-- (void)_setStashMaskActive:(BOOL)a3;
-- (void)_setStashedTabHidden:(BOOL)a3 left:(BOOL)a4;
-- (void)_updateContentCornerRadiusForMaskActive:(BOOL)a3;
+- (void)_setPortalActive:(BOOL)active left:(BOOL)left;
+- (void)_setStashMaskActive:(BOOL)active;
+- (void)_setStashedTabHidden:(BOOL)hidden left:(BOOL)left;
+- (void)_updateContentCornerRadiusForMaskActive:(BOOL)active;
 - (void)_updateCornerRadii;
 - (void)_updatePointerEffect;
 - (void)_updatePrefersIdleTimerDisabled;
-- (void)_updateStashTabStateWithBehavior:(id)a3;
+- (void)_updateStashTabStateWithBehavior:(id)behavior;
 - (void)acquireInterfaceOrientationLock;
 - (void)deactivateAnalyticsSessionIfNeeded;
 - (void)dealloc;
-- (void)handleCommand:(id)a3;
+- (void)handleCommand:(id)command;
 - (void)hostedWindowSizeChangeBegan;
 - (void)hostedWindowSizeChangeEnded;
 - (void)loadView;
-- (void)notePictureInPictureWillStopForAppRequest:(BOOL)a3 preferredFullScreenRestore:(BOOL)a4;
-- (void)pagingAccessorySetCurrentPage:(unint64_t)a3 numberOfPages:(unint64_t)a4;
-- (void)performResumeAnimationWithCompletionHandler:(id)a3;
-- (void)performRotateAnimationWithRotation:(int64_t)a3 completionHandler:(id)a4;
-- (void)performStartAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)performStopAnimated:(BOOL)a3 withFinalInterfaceOrientation:(int64_t)a4 finalLayerFrame:(CGRect)a5 completionHandler:(id)a6;
-- (void)performSuspendAnimationWithCompletionHandler:(id)a3;
-- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)a3 initialLayerFrame:(CGRect)a4 completionHandler:(id)a5;
-- (void)prepareStopAnimationWithCompletionHandler:(id)a3;
+- (void)notePictureInPictureWillStopForAppRequest:(BOOL)request preferredFullScreenRestore:(BOOL)restore;
+- (void)pagingAccessorySetCurrentPage:(unint64_t)page numberOfPages:(unint64_t)pages;
+- (void)performResumeAnimationWithCompletionHandler:(id)handler;
+- (void)performRotateAnimationWithRotation:(int64_t)rotation completionHandler:(id)handler;
+- (void)performStartAnimated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)performStopAnimated:(BOOL)animated withFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler;
+- (void)performSuspendAnimationWithCompletionHandler:(id)handler;
+- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler;
+- (void)prepareStopAnimationWithCompletionHandler:(id)handler;
 - (void)relinquishInterfaceOrientationLock;
-- (void)setAnalyticsDelegate:(id)a3 analyticsSourceUUID:(id)a4;
-- (void)setCanStartShowingChrome:(BOOL)a3;
-- (void)setContentContainer:(id)a3;
-- (void)setContentCornerRadius:(double)a3 animated:(BOOL)a4;
-- (void)setContentViewHidden:(BOOL)a3;
-- (void)setHostedWindowHostingHandle:(id)a3;
-- (void)setInteractivelyResizing:(BOOL)a3;
-- (void)setInterrupted:(BOOL)a3;
-- (void)setMenuItems:(id)a3;
-- (void)setMinimumStashTabSize:(CGSize)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setPrefersStashTabSuppressed:(BOOL)a3;
-- (void)setSceneView:(id)a3;
-- (void)setStashProgress:(double)a3;
-- (void)setStashTabHidden:(BOOL)a3 left:(BOOL)a4 withSpringBehavior:(id)a5;
-- (void)setStashed:(BOOL)a3;
-- (void)setTetheredViewController:(id)a3 mode:(int64_t)a4;
-- (void)setTetheringViewController:(id)a3 mode:(int64_t)a4;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
-- (void)showChrome:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateHostedWindowSize:(CGSize)a3;
-- (void)updatePlaybackStateWithDiff:(id)a3;
+- (void)setAnalyticsDelegate:(id)delegate analyticsSourceUUID:(id)d;
+- (void)setCanStartShowingChrome:(BOOL)chrome;
+- (void)setContentContainer:(id)container;
+- (void)setContentCornerRadius:(double)radius animated:(BOOL)animated;
+- (void)setContentViewHidden:(BOOL)hidden;
+- (void)setHostedWindowHostingHandle:(id)handle;
+- (void)setInteractivelyResizing:(BOOL)resizing;
+- (void)setInterrupted:(BOOL)interrupted;
+- (void)setMenuItems:(id)items;
+- (void)setMinimumStashTabSize:(CGSize)size;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setPrefersStashTabSuppressed:(BOOL)suppressed;
+- (void)setSceneView:(id)view;
+- (void)setStashProgress:(double)progress;
+- (void)setStashTabHidden:(BOOL)hidden left:(BOOL)left withSpringBehavior:(id)behavior;
+- (void)setStashed:(BOOL)stashed;
+- (void)setTetheredViewController:(id)controller mode:(int64_t)mode;
+- (void)setTetheringViewController:(id)controller mode:(int64_t)mode;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
+- (void)showChrome:(BOOL)chrome animated:(BOOL)animated;
+- (void)updateHostedWindowSize:(CGSize)size;
+- (void)updatePlaybackStateWithDiff:(id)diff;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PGPictureInPictureViewController
 
-- (PGPictureInPictureViewController)initWithApplication:(id)a3 sourceSceneSessionPersistentIdentifier:(id)a4 controlsStyle:(int64_t)a5
+- (PGPictureInPictureViewController)initWithApplication:(id)application sourceSceneSessionPersistentIdentifier:(id)identifier controlsStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  applicationCopy = application;
+  identifierCopy = identifier;
   v10 = PGLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -103,15 +103,15 @@
   {
     v11->_stashTabHidden = 1;
     v11->_canStartShowingChrome = 1;
-    v11->_controlsStyle = a5;
+    v11->_controlsStyle = style;
     v13 = objc_alloc_init(PGControlsViewModel);
     viewModel = v12->_viewModel;
     v12->_viewModel = v13;
 
-    objc_storeWeak(&v12->_application, v8);
-    objc_storeStrong(&v12->_sourceSceneSessionPersistentIdentifier, a4);
+    objc_storeWeak(&v12->_application, applicationCopy);
+    objc_storeStrong(&v12->_sourceSceneSessionPersistentIdentifier, identifier);
     v12->_shouldDisablePointerInteraction = 0;
-    if ((a5 - 1) <= 3)
+    if ((style - 1) <= 3)
     {
       v15 = [PGControlsContainerView alloc];
       v16 = [(PGControlsContainerView *)v15 initWithFrame:v12->_viewModel viewModel:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -170,7 +170,7 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   }
 }
 
-- (PGPictureInPictureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PGPictureInPictureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D920];
@@ -193,8 +193,8 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   if ([(PGPictureInPictureViewController *)self prefersIdleTimerDisabled])
   {
     self->_prefersIdleTimerDisabled = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"PGPictureInPictureViewControllerPrefersIdleTimerDisabledDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PGPictureInPictureViewControllerPrefersIdleTimerDisabledDidChangeNotification" object:0];
   }
 
   v5.receiver = self;
@@ -202,7 +202,7 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   [(PGPictureInPictureViewController *)&v5 dealloc];
 }
 
-- (PGPictureInPictureViewController)initWithCoder:(id)a3
+- (PGPictureInPictureViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -215,20 +215,20 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
 
 - (int64_t)contentType
 {
-  v2 = [(PGControlsViewModel *)self->_viewModel playbackState];
-  v3 = [v2 contentType];
+  playbackState = [(PGControlsViewModel *)self->_viewModel playbackState];
+  contentType = [playbackState contentType];
 
-  return v3;
+  return contentType;
 }
 
-- (void)setStashed:(BOOL)a3
+- (void)setStashed:(BOOL)stashed
 {
-  if (self->_stashed != a3)
+  if (self->_stashed != stashed)
   {
-    v4 = a3;
-    self->_stashed = a3;
+    stashedCopy = stashed;
+    self->_stashed = stashed;
     v6 = 0.0;
-    if (a3)
+    if (stashed)
     {
       v6 = 1.0;
     }
@@ -236,47 +236,47 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
     [(PGPictureInPictureViewController *)self setStashProgress:v6];
     if ([(PGPictureInPictureViewController *)self isViewLoaded])
     {
-      if (v4)
+      if (stashedCopy)
       {
         v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapWhileStashedGestureRecognizer_];
         stashedTapGestureRecognizer = self->_stashedTapGestureRecognizer;
         self->_stashedTapGestureRecognizer = v7;
 
-        v9 = [(PGPictureInPictureViewController *)self view];
-        [v9 addGestureRecognizer:self->_stashedTapGestureRecognizer];
+        view = [(PGPictureInPictureViewController *)self view];
+        [view addGestureRecognizer:self->_stashedTapGestureRecognizer];
       }
 
       else
       {
-        v9 = [(PGPictureInPictureViewController *)self view];
-        [v9 removeGestureRecognizer:self->_stashedTapGestureRecognizer];
+        view = [(PGPictureInPictureViewController *)self view];
+        [view removeGestureRecognizer:self->_stashedTapGestureRecognizer];
       }
 
       [(PGPictureInPictureViewController *)self _updatePrefersIdleTimerDisabled];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained pictureInPictureViewController:self didTransitionToStashed:v4];
+    [WeakRetained pictureInPictureViewController:self didTransitionToStashed:stashedCopy];
 
     v11 = objc_loadWeakRetained(&self->_analyticsDelegate);
-    [v11 pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:self->_analyticsSessionUUID stashed:v4];
+    [v11 pictureInPictureDidChangeStashStateForAnalyticsSessionWithUUID:self->_analyticsSessionUUID stashed:stashedCopy];
   }
 }
 
-- (void)setHostedWindowHostingHandle:(id)a3
+- (void)setHostedWindowHostingHandle:(id)handle
 {
-  hostedWindowHostingHandle = a3;
+  hostedWindowHostingHandle = handle;
   v9 = hostedWindowHostingHandle;
   if (self->_hostedWindowHostingHandle != hostedWindowHostingHandle)
   {
-    objc_storeStrong(&self->_hostedWindowHostingHandle, a3);
+    objc_storeStrong(&self->_hostedWindowHostingHandle, handle);
     hostedWindowHostingHandle = self->_hostedWindowHostingHandle;
   }
 
-  v6 = [(PGLayerHostView *)self->_contentView hostedWindowHostingHandle];
+  hostedWindowHostingHandle = [(PGLayerHostView *)self->_contentView hostedWindowHostingHandle];
 
   v8 = v9;
-  if (hostedWindowHostingHandle != v6)
+  if (hostedWindowHostingHandle != hostedWindowHostingHandle)
   {
     v7 = [(PGLayerHostView *)self->_contentView setHostedWindowHostingHandle:v9];
     v8 = v9;
@@ -285,24 +285,24 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (void)setSceneView:(id)a3
+- (void)setSceneView:(id)view
 {
-  v5 = a3;
-  if (self->_sceneView != v5)
+  viewCopy = view;
+  if (self->_sceneView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_sceneView, a3);
-    v6 = [(UIView *)v7 layer];
-    [v6 setAllowsHitTesting:0];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_sceneView, view);
+    layer = [(UIView *)v7 layer];
+    [layer setAllowsHitTesting:0];
 
     [(PGLayerHostView *)self->_contentView setSceneView:v7];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setContentContainer:(id)a3
+- (void)setContentContainer:(id)container
 {
-  obj = a3;
+  obj = container;
   WeakRetained = objc_loadWeakRetained(&self->_contentContainer);
 
   if (WeakRetained != obj)
@@ -315,8 +315,8 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
     }
 
     objc_storeWeak(&self->_contentContainer, obj);
-    v6 = [(PGControlsViewModel *)self->_viewModel playbackState];
-    if ([v6 isRoutingVideoToHostedWindow])
+    playbackState = [(PGControlsViewModel *)self->_viewModel playbackState];
+    if ([playbackState isRoutingVideoToHostedWindow])
     {
       v7 = objc_opt_respondsToSelector();
 
@@ -405,11 +405,11 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   }
 }
 
-- (void)setCanStartShowingChrome:(BOOL)a3
+- (void)setCanStartShowingChrome:(BOOL)chrome
 {
-  if (self->_canStartShowingChrome == a3)
+  if (self->_canStartShowingChrome == chrome)
   {
-    if (!a3)
+    if (!chrome)
     {
       return;
     }
@@ -417,15 +417,15 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
 
   else
   {
-    if (!a3)
+    if (!chrome)
     {
       [(PGPictureInPictureViewController *)self setStashed:0];
       [(PGPictureInPictureViewController *)self showChrome:0 animated:0];
-      self->_canStartShowingChrome = a3;
+      self->_canStartShowingChrome = chrome;
       return;
     }
 
-    self->_canStartShowingChrome = a3;
+    self->_canStartShowingChrome = chrome;
     waitForUIFinalizationCompletionBlock = self->_waitForUIFinalizationCompletionBlock;
     if (waitForUIFinalizationCompletionBlock)
     {
@@ -442,39 +442,39 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   }
 }
 
-- (void)setInteractivelyResizing:(BOOL)a3
+- (void)setInteractivelyResizing:(BOOL)resizing
 {
-  if (self->_interactivelyResizing != a3)
+  if (self->_interactivelyResizing != resizing)
   {
-    self->_interactivelyResizing = a3;
+    self->_interactivelyResizing = resizing;
     [(PGControlsContainerView *)self->_controlsContainerView setInteractivelyResizing:?];
     [(PGPictureInPictureViewController *)self _resetStashTabViewsIfPossible];
-    v5 = [(PGPictureInPictureViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(PGPictureInPictureViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(PGPictureInPictureViewController *)self view];
-    [v6 layoutIfNeeded];
+    view2 = [(PGPictureInPictureViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (void)setAnalyticsDelegate:(id)a3 analyticsSourceUUID:(id)a4
+- (void)setAnalyticsDelegate:(id)delegate analyticsSourceUUID:(id)d
 {
-  obj = a3;
-  v6 = [a4 copy];
+  obj = delegate;
+  v6 = [d copy];
   analyticsSourceUUID = self->_analyticsSourceUUID;
   self->_analyticsSourceUUID = v6;
 
   objc_storeWeak(&self->_analyticsDelegate, obj);
 }
 
-- (void)notePictureInPictureWillStopForAppRequest:(BOOL)a3 preferredFullScreenRestore:(BOOL)a4
+- (void)notePictureInPictureWillStopForAppRequest:(BOOL)request preferredFullScreenRestore:(BOOL)restore
 {
   if (self->_analyticsSessionUUID && self->_analyticsSourceUUID)
   {
-    v5 = a4;
-    v6 = a3;
+    restoreCopy = restore;
+    requestCopy = request;
     WeakRetained = objc_loadWeakRetained(&self->_analyticsDelegate);
-    [WeakRetained pictureInPictureDidDeactivateAnalyticsSessionWithUUID:self->_analyticsSessionUUID analyticsSourceUUID:self->_analyticsSourceUUID appStoppedSession:v6 restoredFullScreen:v5];
+    [WeakRetained pictureInPictureDidDeactivateAnalyticsSessionWithUUID:self->_analyticsSessionUUID analyticsSourceUUID:self->_analyticsSourceUUID appStoppedSession:requestCopy restoredFullScreen:restoreCopy];
 
     v8 = objc_loadWeakRetained(&self->_analyticsDelegate);
     [v8 pictureInPictureDidDestroyAnalyticsSessionWithUUID:self->_analyticsSessionUUID];
@@ -494,13 +494,13 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   }
 }
 
-- (void)setMinimumStashTabSize:(CGSize)a3
+- (void)setMinimumStashTabSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_minimumStashTabSize.width != a3.width || self->_minimumStashTabSize.height != a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_minimumStashTabSize.width != size.width || self->_minimumStashTabSize.height != size.height)
   {
-    self->_minimumStashTabSize = a3;
+    self->_minimumStashTabSize = size;
     if ([(PGPictureInPictureViewController *)self isViewLoaded])
     {
       WeakRetained = objc_loadWeakRetained(&self->_stashMaskView);
@@ -513,9 +513,9 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   }
 }
 
-- (void)pagingAccessorySetCurrentPage:(unint64_t)a3 numberOfPages:(unint64_t)a4
+- (void)pagingAccessorySetCurrentPage:(unint64_t)page numberOfPages:(unint64_t)pages
 {
-  if (a4 >= 2 && !self->_pagingAccessoryViewController)
+  if (pages >= 2 && !self->_pagingAccessoryViewController)
   {
     v7 = objc_alloc_init(PGPictureInPicturePagingAccessoryViewController);
     pagingAccessoryViewController = self->_pagingAccessoryViewController;
@@ -524,7 +524,7 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
 
   v9 = self->_pagingAccessoryViewController;
 
-  [(PGPictureInPicturePagingAccessoryViewController *)v9 setCurrentPage:a3 numberOfPages:a4];
+  [(PGPictureInPicturePagingAccessoryViewController *)v9 setCurrentPage:page numberOfPages:pages];
 }
 
 + (double)defaultContentCornerRadius
@@ -539,17 +539,17 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
   return result;
 }
 
-+ (void)tetherViewController:(id)a3 toViewController:(id)a4 mode:(int64_t)a5
++ (void)tetherViewController:(id)controller toViewController:(id)viewController mode:(int64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
-  [v7 setTetheredViewController:v8 mode:a5];
-  [v8 setTetheringViewController:v7 mode:a5];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  [viewControllerCopy setTetheredViewController:controllerCopy mode:mode];
+  [controllerCopy setTetheringViewController:viewControllerCopy mode:mode];
 }
 
-- (void)setTetheredViewController:(id)a3 mode:(int64_t)a4
+- (void)setTetheredViewController:(id)controller mode:(int64_t)mode
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_tetheredViewController);
 
   if (WeakRetained != obj)
@@ -557,17 +557,17 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
     objc_storeWeak(&self->_tetheredViewController, obj);
   }
 
-  if (self->_tetheringMode != a4)
+  if (self->_tetheringMode != mode)
   {
-    self->_tetheringMode = a4;
+    self->_tetheringMode = mode;
   }
 
   [(PGPictureInPictureViewController *)self _noteTetheringDidUpdate];
 }
 
-- (void)setTetheringViewController:(id)a3 mode:(int64_t)a4
+- (void)setTetheringViewController:(id)controller mode:(int64_t)mode
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_tetheringViewController);
 
   if (WeakRetained != obj)
@@ -575,9 +575,9 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
     objc_storeWeak(&self->_tetheringViewController, obj);
   }
 
-  if (self->_tetheringMode != a4)
+  if (self->_tetheringMode != mode)
   {
-    self->_tetheringMode = a4;
+    self->_tetheringMode = mode;
   }
 
   [(PGPictureInPictureViewController *)self _noteTetheringDidUpdate];
@@ -592,8 +592,8 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
 
   if (!WeakRetained)
   {
-    v5 = [(PGPictureInPictureViewController *)self viewIfLoaded];
-    [v5 setAlpha:1.0];
+    viewIfLoaded = [(PGPictureInPictureViewController *)self viewIfLoaded];
+    [viewIfLoaded setAlpha:1.0];
   }
 
   v6 = objc_loadWeakRetained(&self->_contentContainer);
@@ -601,21 +601,21 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
 
   if (v7)
   {
-    v9 = objc_loadWeakRetained(&self->_contentContainer);
-    [v9 notePictureInPictureViewControllerTetheringDidUpdate];
+    currentHandler = objc_loadWeakRetained(&self->_contentContainer);
+    [currentHandler notePictureInPictureViewControllerTetheringDidUpdate];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_loadWeakRetained(&self->_contentContainer);
   }
 }
 
-- (void)showChrome:(BOOL)a3 animated:(BOOL)a4
+- (void)showChrome:(BOOL)chrome animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  chromeCopy = chrome;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v7 = PGLogCommon();
@@ -625,18 +625,18 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
     }
   }
 
-  self->_isShowingChrome = v5;
-  if (!v5 || self->_canStartShowingChrome)
+  self->_isShowingChrome = chromeCopy;
+  if (!chromeCopy || self->_canStartShowingChrome)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__PGPictureInPictureViewController_showChrome_animated___block_invoke;
     v13[3] = &unk_1E7F328F0;
     v13[4] = self;
-    v14 = v5;
+    v14 = chromeCopy;
     v8 = MEMORY[0x1BFB0C680](v13);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       v10 = MEMORY[0x1E69DD250];
       v11[0] = MEMORY[0x1E69E9820];
@@ -652,7 +652,7 @@ void __109__PGPictureInPictureViewController_initWithApplication_sourceSceneSess
       v8[2](v8);
     }
 
-    [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:!v5 animated:v4];
+    [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:!chromeCopy animated:animatedCopy];
   }
 }
 
@@ -701,12 +701,12 @@ uint64_t __56__PGPictureInPictureViewController_showChrome_animated___block_invo
   return result;
 }
 
-- (void)setContentCornerRadius:(double)a3 animated:(BOOL)a4
+- (void)setContentCornerRadius:(double)radius animated:(BOOL)animated
 {
-  if (self->_currentContentCornerRadius != a3)
+  if (self->_currentContentCornerRadius != radius)
   {
-    self->_currentContentCornerRadius = a3;
-    if (a4)
+    self->_currentContentCornerRadius = radius;
+    if (animated)
     {
       v6[5] = v4;
       v6[6] = v5;
@@ -728,16 +728,16 @@ uint64_t __56__PGPictureInPictureViewController_showChrome_animated___block_invo
 
 - (void)_updateCornerRadii
 {
-  v3 = [(PGControlsViewModel *)self->_viewModel values];
-  if ([v3 controlsViewWantsGlassBackground])
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  if ([values controlsViewWantsGlassBackground])
   {
     [(PGPictureInPictureViewController *)self currentContentCornerRadius];
     v5 = v4;
 
     if (v5 == 32.0)
     {
-      v6 = [(PGPictureInPictureViewController *)self view];
-      [v6 bounds];
+      view = [(PGPictureInPictureViewController *)self view];
+      [view bounds];
       [PGControlsViewLayoutMetrics concentricCornerRadiusForViewSize:v7, v8];
       v10 = v9;
 
@@ -764,37 +764,37 @@ LABEL_6:
   [(PGStashView *)stashView _setContinuousCornerRadius:v10];
 }
 
-+ (void)animateViewWithAnimationType:(int64_t)a3 initialSpringVelocity:(double)a4 animations:(id)a5 completion:(id)a6
++ (void)animateViewWithAnimationType:(int64_t)type initialSpringVelocity:(double)velocity animations:(id)animations completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  if (a3 == 1)
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (type == 1)
   {
     v14 = MEMORY[0x1E69DD250];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __109__PGPictureInPictureViewController_animateViewWithAnimationType_initialSpringVelocity_animations_completion___block_invoke_2;
     v15[3] = &unk_1E7F330F0;
-    v16[1] = a1;
-    *&v16[2] = a4;
+    v16[1] = self;
+    *&v16[2] = velocity;
     v13 = v16;
-    v16[0] = v10;
-    [v14 PG_animateUsingDefaultDampedSpringWithInitialSpringVelocity:v15 animations:v11 completion:a4];
+    v16[0] = animationsCopy;
+    [v14 PG_animateUsingDefaultDampedSpringWithInitialSpringVelocity:v15 animations:completionCopy completion:velocity];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     v12 = MEMORY[0x1E69DD250];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __109__PGPictureInPictureViewController_animateViewWithAnimationType_initialSpringVelocity_animations_completion___block_invoke;
     v17[3] = &unk_1E7F330F0;
-    v18[1] = a1;
+    v18[1] = self;
     v18[2] = 0;
     v13 = v18;
-    v18[0] = v10;
-    [v12 PG_animateUsingDefaultTimingWithAnimations:v17 completion:v11];
+    v18[0] = animationsCopy;
+    [v12 PG_animateUsingDefaultTimingWithAnimations:v17 completion:completionCopy];
 LABEL_5:
   }
 }
@@ -823,10 +823,10 @@ void __109__PGPictureInPictureViewController_animateViewWithAnimationType_initia
   objc_setAssociatedObject(v4, "PGPictureInPictureViewController.InitialSpringVelocity", 0, 1);
 }
 
-- (void)updateHostedWindowSize:(CGSize)a3
+- (void)updateHostedWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_opt_class();
   v13 = objc_getAssociatedObject(v6, "PGPictureInPictureViewController.InitialSpringVelocity");
   objc_opt_class();
@@ -846,14 +846,14 @@ void __109__PGPictureInPictureViewController_animateViewWithAnimationType_initia
     v8 = 0.0;
   }
 
-  v12 = [(PGPictureInPictureViewController *)self delegate];
-  [v12 pictureInPictureViewController:self updateHostedWindowSize:v9 animationType:width initialSpringVelocity:{height, v8}];
+  delegate = [(PGPictureInPictureViewController *)self delegate];
+  [delegate pictureInPictureViewController:self updateHostedWindowSize:v9 animationType:width initialSpringVelocity:{height, v8}];
 }
 
 - (void)hostedWindowSizeChangeBegan
 {
-  v3 = [(PGPictureInPictureViewController *)self delegate];
-  [v3 pictureInPictureViewControllerHostedWindowSizeChangeBegan:self];
+  delegate = [(PGPictureInPictureViewController *)self delegate];
+  [delegate pictureInPictureViewControllerHostedWindowSizeChangeBegan:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_pointerInteraction);
   [WeakRetained invalidate];
@@ -861,19 +861,19 @@ void __109__PGPictureInPictureViewController_animateViewWithAnimationType_initia
 
 - (void)hostedWindowSizeChangeEnded
 {
-  v3 = [(PGPictureInPictureViewController *)self delegate];
-  [v3 pictureInPictureViewControllerHostedWindowSizeChangeEnded:self];
+  delegate = [(PGPictureInPictureViewController *)self delegate];
+  [delegate pictureInPictureViewControllerHostedWindowSizeChangeEnded:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_pointerInteraction);
   [WeakRetained invalidate];
 }
 
-- (void)setStashProgress:(double)a3
+- (void)setStashProgress:(double)progress
 {
   v26 = *MEMORY[0x1E69E9840];
   [(PGStashView *)self->_stashView blurProgress];
-  v7 = v6 != 0.0 || a3 >= 0.2;
-  v8 = v6 == a3 || !v7;
+  v7 = v6 != 0.0 || progress >= 0.2;
+  v8 = v6 == progress || !v7;
   if (!v8 && [(PGPictureInPictureViewController *)self isViewLoaded])
   {
     IsZero = BSFloatIsZero();
@@ -903,7 +903,7 @@ void __109__PGPictureInPictureViewController_animateViewWithAnimationType_initia
     v18[3] = &unk_1E7F32A80;
     v18[4] = self;
     v19 = IsZero;
-    *&v18[5] = a3;
+    *&v18[5] = progress;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __53__PGPictureInPictureViewController_setStashProgress___block_invoke_2;
@@ -913,7 +913,7 @@ void __109__PGPictureInPictureViewController_animateViewWithAnimationType_initia
     v16[5] = v12;
     v16[6] = a2;
     [MEMORY[0x1E69DD250] PG_animateUsingDefaultTimingWithOptions:4 animations:v18 completion:v16];
-    v13 = 1.0 - a3;
+    v13 = 1.0 - progress;
     v8 = BSFloatIsZero() == 0;
     v14 = 0.5;
     v15[0] = MEMORY[0x1E69E9820];
@@ -976,39 +976,39 @@ uint64_t __53__PGPictureInPictureViewController_setStashProgress___block_invoke_
   return result;
 }
 
-- (void)setPrefersStashTabSuppressed:(BOOL)a3
+- (void)setPrefersStashTabSuppressed:(BOOL)suppressed
 {
-  if (self->_prefersStashTabSuppressed != a3)
+  if (self->_prefersStashTabSuppressed != suppressed)
   {
-    self->_prefersStashTabSuppressed = a3;
+    self->_prefersStashTabSuppressed = suppressed;
     [(PGPictureInPictureViewController *)self _updateStashTabStateWithBehavior:self->_stashTabSpringBehavior];
   }
 }
 
 - (BOOL)wantsStashTabSuppression
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained pictureInPictureViewControllerWantsStashTabSuppression:v2];
+  LOBYTE(selfCopy) = [WeakRetained pictureInPictureViewControllerWantsStashTabSuppression:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setStashTabHidden:(BOOL)a3 left:(BOOL)a4 withSpringBehavior:(id)a5
+- (void)setStashTabHidden:(BOOL)hidden left:(BOOL)left withSpringBehavior:(id)behavior
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = a5;
-  objc_storeStrong(&self->_stashTabSpringBehavior, a5);
-  if (__PAIR64__(self->_stashTabShownLeft, self->_stashTabHidden) != __PAIR64__(v6, v7))
+  leftCopy = left;
+  hiddenCopy = hidden;
+  behaviorCopy = behavior;
+  objc_storeStrong(&self->_stashTabSpringBehavior, behavior);
+  if (__PAIR64__(self->_stashTabShownLeft, self->_stashTabHidden) != __PAIR64__(leftCopy, hiddenCopy))
   {
-    self->_stashTabHidden = v7;
-    self->_stashTabShownLeft = v6 & ~v7;
-    [(PGPictureInPictureViewController *)self _updateStashTabStateWithBehavior:v9];
+    self->_stashTabHidden = hiddenCopy;
+    self->_stashTabShownLeft = leftCopy & ~hiddenCopy;
+    [(PGPictureInPictureViewController *)self _updateStashTabStateWithBehavior:behaviorCopy];
   }
 }
 
-- (void)_updateStashTabStateWithBehavior:(id)a3
+- (void)_updateStashTabStateWithBehavior:(id)behavior
 {
   stashTabHidden = self->_stashTabHidden;
   if (self->_prefersStashTabSuppressed)
@@ -1032,7 +1032,7 @@ uint64_t __53__PGPictureInPictureViewController_setStashProgress___block_invoke_
   v7[3] = &unk_1E7F33140;
   v7[4] = self;
   v7[5] = v6;
-  [MEMORY[0x1E69DD250] _animateUsingSpringBehavior:a3 tracking:0 animations:v8 completion:v7];
+  [MEMORY[0x1E69DD250] _animateUsingSpringBehavior:behavior tracking:0 animations:v8 completion:v7];
 }
 
 void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___block_invoke_2(uint64_t a1)
@@ -1071,8 +1071,8 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
   self->_containerView = v8;
   v10 = v8;
 
-  v11 = [(PGPictureInPictureViewController *)self view];
-  [v11 addSubview:self->_containerView];
+  view = [(PGPictureInPictureViewController *)self view];
+  [view addSubview:self->_containerView];
 
   v12 = [[PGPictureInPictureViewControllerBackgroundView alloc] initWithFrame:v4, v5, v6, v7];
   backgroundView = self->_backgroundView;
@@ -1136,13 +1136,13 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
   v27 = PGLogCommon();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(PGPictureInPictureViewController *)self delegate];
+    delegate = [(PGPictureInPictureViewController *)self delegate];
     LODWORD(v34.a) = 136315650;
     *(&v34.a + 4) = "[PGPictureInPictureViewController viewDidLoad]";
     WORD2(v34.b) = 2048;
     *(&v34.b + 6) = self;
     HIWORD(v34.c) = 2114;
-    *&v34.d = v28;
+    *&v34.d = delegate;
     _os_log_impl(&dword_1BB282000, v27, OS_LOG_TYPE_DEFAULT, "%s %p %{public}@", &v34, 0x20u);
   }
 }
@@ -1152,8 +1152,8 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
   v38.receiver = self;
   v38.super_class = PGPictureInPictureViewController;
   [(PGPictureInPictureViewController *)&v38 viewWillLayoutSubviews];
-  v3 = [(PGPictureInPictureViewController *)self view];
-  [v3 bounds];
+  view = [(PGPictureInPictureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1287,38 +1287,38 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
   }
 }
 
-- (void)_setStashedTabHidden:(BOOL)a3 left:(BOOL)a4
+- (void)_setStashedTabHidden:(BOOL)hidden left:(BOOL)left
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  leftCopy = left;
+  hiddenCopy = hidden;
+  if (!hidden)
   {
     [(UIView *)self->_tabShadowView setAlpha:0.0];
     [(UIView *)self->_tabShadowView setHidden:0];
-    [(PGPictureInPictureViewController *)self _setPortalActive:1 left:v4];
+    [(PGPictureInPictureViewController *)self _setPortalActive:1 left:leftCopy];
     [(PGPictureInPictureViewController *)self _setStashMaskActive:1];
   }
 
   [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:!self->_isShowingChrome animated:1];
   WeakRetained = objc_loadWeakRetained(&self->_stashMaskView);
-  [WeakRetained setTabHidden:v5 left:v4];
+  [WeakRetained setTabHidden:hiddenCopy left:leftCopy];
 
   stashView = self->_stashView;
 
-  [(PGStashView *)stashView setChevronHidden:v5 left:v4];
+  [(PGStashView *)stashView setChevronHidden:hiddenCopy left:leftCopy];
 }
 
-- (void)_setPortalActive:(BOOL)a3 left:(BOOL)a4
+- (void)_setPortalActive:(BOOL)active left:(BOOL)left
 {
-  v4 = a4;
-  if (self->_portalsWereActive != a3 || self->_portalsWereActiveLeft != a4)
+  leftCopy = left;
+  if (self->_portalsWereActive != active || self->_portalsWereActiveLeft != left)
   {
-    self->_portalsWereActive = a3;
-    self->_portalsWereActiveLeft = a4;
+    self->_portalsWereActive = active;
+    self->_portalsWereActiveLeft = left;
     leftSideContentPortalView = self->_leftSideContentPortalView;
-    v7 = !a3;
-    v8 = a3 && a4;
-    if (a3 && a4)
+    v7 = !active;
+    v8 = active && left;
+    if (active && left)
     {
       contentView = self->_contentView;
     }
@@ -1329,7 +1329,7 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
     }
 
     [(PGPortalView *)leftSideContentPortalView setSourceView:contentView];
-    v10 = v7 | v4;
+    v10 = v7 | leftCopy;
     if (v10)
     {
       v11 = 0;
@@ -1348,14 +1348,14 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
   }
 }
 
-- (void)_setStashMaskActive:(BOOL)a3
+- (void)_setStashMaskActive:(BOOL)active
 {
-  v3 = a3;
-  if (a3)
+  activeCopy = active;
+  if (active)
   {
-    v5 = [(UIView *)self->_containerView maskView];
+    maskView = [(UIView *)self->_containerView maskView];
 
-    if (v5)
+    if (maskView)
     {
       goto LABEL_6;
     }
@@ -1367,9 +1367,9 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
     v8 = objc_loadWeakRetained(&self->_stashMaskView);
     [(UIView *)containerView setMaskView:v8];
 
-    v9 = [(PGPictureInPictureViewController *)self view];
+    view = [(PGPictureInPictureViewController *)self view];
     v10 = objc_loadWeakRetained(&self->_stashMaskView);
-    [v9 setHitTestExtenderView:v10];
+    [view setHitTestExtenderView:v10];
   }
 
   else
@@ -1377,22 +1377,22 @@ void *__69__PGPictureInPictureViewController__updateStashTabStateWithBehavior___
     objc_storeWeak(&self->_stashMaskView, 0);
     [(UIView *)self->_containerView setMaskView:0];
     [(PGPictureInPictureViewController *)self _addMaskViewSubviewIfNeeded];
-    v9 = [(PGPictureInPictureViewController *)self view];
-    [v9 setHitTestExtenderView:0];
+    view = [(PGPictureInPictureViewController *)self view];
+    [view setHitTestExtenderView:0];
   }
 
 LABEL_6:
 
-  [(PGPictureInPictureViewController *)self _updateContentCornerRadiusForMaskActive:v3];
+  [(PGPictureInPictureViewController *)self _updateContentCornerRadiusForMaskActive:activeCopy];
 }
 
-- (void)_updateContentCornerRadiusForMaskActive:(BOOL)a3
+- (void)_updateContentCornerRadiusForMaskActive:(BOOL)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __76__PGPictureInPictureViewController__updateContentCornerRadiusForMaskActive___block_invoke;
   v3[3] = &unk_1E7F328F0;
-  v4 = a3;
+  activeCopy = active;
   v3[4] = self;
   [MEMORY[0x1E69DD250] PG_performWithoutRetargetingAnimation:v3];
 }
@@ -1415,9 +1415,9 @@ uint64_t __76__PGPictureInPictureViewController__updateContentCornerRadiusForMas
 {
   if (self->_stashTabHidden)
   {
-    v3 = [(UIView *)self->_containerView maskView];
+    maskView = [(UIView *)self->_containerView maskView];
 
-    if (v3)
+    if (maskView)
     {
       if (self->_interactivelyResizing || ![(PGStashView *)self->_stashView isHidden])
       {
@@ -1467,11 +1467,11 @@ uint64_t __65__PGPictureInPictureViewController__resetStashTabViewsIfPossible__b
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  if (self->_preferredContentSize.width != a3.width || self->_preferredContentSize.height != a3.height)
+  if (self->_preferredContentSize.width != size.width || self->_preferredContentSize.height != size.height)
   {
-    self->_preferredContentSize = a3;
+    self->_preferredContentSize = size;
     WeakRetained = objc_loadWeakRetained(&self->_contentContainer);
     [WeakRetained preferredContentSizeDidChangeForPictureInPictureViewController];
   }
@@ -1489,14 +1489,14 @@ uint64_t __65__PGPictureInPictureViewController__resetStashTabViewsIfPossible__b
   return [(PGPictureInPictureViewController *)&v4 interfaceOrientation];
 }
 
-- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)a3 initialLayerFrame:(CGRect)a4 completionHandler:(id)a5
+- (void)prepareStartAnimationWithInitialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v23 = *MEMORY[0x1E69E9840];
-  v11 = a5;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v12 = PGLogCommon();
@@ -1536,27 +1536,27 @@ uint64_t __65__PGPictureInPictureViewController__resetStashTabViewsIfPossible__b
 
     if ((v19 & 1) == 0)
     {
-      v20 = [(PGPictureInPictureViewController *)self view];
-      [v20 setAlpha:0.0];
+      view = [(PGPictureInPictureViewController *)self view];
+      [view setAlpha:0.0];
 
-      v21 = [(PGPictureInPictureViewController *)self view];
+      view2 = [(PGPictureInPictureViewController *)self view];
       CGAffineTransformMakeScale(&v22, 0.100000001, 0.100000001);
-      [v21 setTransform:&v22];
+      [view2 setTransform:&v22];
     }
 
-    v11[2](v11);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    [WeakRetained prepareStartAnimationWithInitialInterfaceOrientation:a3 initialLayerFrame:v11 completionHandler:{x, y, width, height}];
+    [WeakRetained prepareStartAnimationWithInitialInterfaceOrientation:orientation initialLayerFrame:handlerCopy completionHandler:{x, y, width, height}];
   }
 }
 
-- (void)performStartAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)performStartAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v7 = PGLogCommon();
@@ -1571,12 +1571,12 @@ uint64_t __65__PGPictureInPictureViewController__resetStashTabViewsIfPossible__b
   v28[2] = __79__PGPictureInPictureViewController_performStartAnimated_withCompletionHandler___block_invoke;
   v28[3] = &unk_1E7F32D98;
   v28[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   v29 = v8;
   v9 = MEMORY[0x1BFB0C680](v28);
   [(PGPictureInPictureViewController *)self acquireInterfaceOrientationLock];
   [(PGPictureInPictureViewController *)self showChrome:0 animated:0];
-  if (v4)
+  if (animatedCopy)
   {
     [(PGPictureInPictureViewController *)self _performStartAnimationWithCompletionHandler:v9];
   }
@@ -1607,24 +1607,24 @@ uint64_t __65__PGPictureInPictureViewController__resetStashTabViewsIfPossible__b
     }
   }
 
-  v14 = [(PGPictureInPictureViewController *)self contentType];
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  contentType = [(PGPictureInPictureViewController *)self contentType];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   analyticsSessionUUID = self->_analyticsSessionUUID;
-  self->_analyticsSessionUUID = v15;
+  self->_analyticsSessionUUID = uUID;
 
   v17 = objc_loadWeakRetained(&self->_application);
-  v18 = [v17 bundleIdentifier];
-  v19 = v18;
+  bundleIdentifier = [v17 bundleIdentifier];
+  v19 = bundleIdentifier;
   v20 = @"com.apple.MissingBundleIdentifier";
-  if (v18)
+  if (bundleIdentifier)
   {
-    v20 = v18;
+    v20 = bundleIdentifier;
   }
 
   v21 = v20;
 
   v22 = objc_loadWeakRetained(&self->_analyticsDelegate);
-  [v22 pictureInPictureDidCreateAnalyticsSessionWithUUID:self->_analyticsSessionUUID bundleIdentifier:v21 contentType:v14];
+  [v22 pictureInPictureDidCreateAnalyticsSessionWithUUID:self->_analyticsSessionUUID bundleIdentifier:v21 contentType:contentType];
 
   v23 = objc_loadWeakRetained(&self->_analyticsDelegate);
   [v23 pictureInPictureDidActivateAnalyticsSessionWithUUID:self->_analyticsSessionUUID analyticsSourceUUID:self->_analyticsSourceUUID automatically:self->_startedAutomatically];
@@ -1716,19 +1716,19 @@ void __79__PGPictureInPictureViewController_performStartAnimated_withCompletionH
   }
 }
 
-- (void)_performStartAnimationWithCompletionHandler:(id)a3
+- (void)_performStartAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__PGPictureInPictureViewController__performStartAnimationWithCompletionHandler___block_invoke;
   v17[3] = &unk_1E7F32D98;
   v17[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v18 = v5;
   v6 = MEMORY[0x1BFB0C680](v17);
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v7 beginIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
   [(PGPictureInPictureViewController *)self showChrome:1 animated:1];
   initialLayerFrameIsNull = self->_initialLayerFrameIsNull;
@@ -1797,14 +1797,14 @@ void __80__PGPictureInPictureViewController__performStartAnimationWithCompletion
   [v3 setTransform:v5];
 }
 
-- (void)performStopAnimated:(BOOL)a3 withFinalInterfaceOrientation:(int64_t)a4 finalLayerFrame:(CGRect)a5 completionHandler:(id)a6
+- (void)performStopAnimated:(BOOL)animated withFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v13 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  animatedCopy = animated;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v14 = PGLogCommon();
@@ -1814,25 +1814,25 @@ void __80__PGPictureInPictureViewController__performStartAnimationWithCompletion
     }
   }
 
-  if (v11)
+  if (animatedCopy)
   {
-    [(PGPictureInPictureViewController *)self _performStopAnimationWithFinalInterfaceOrientation:a4 finalLayerFrame:v13 completionHandler:x, y, width, height];
+    [(PGPictureInPictureViewController *)self _performStopAnimationWithFinalInterfaceOrientation:orientation finalLayerFrame:handlerCopy completionHandler:x, y, width, height];
   }
 
   else
   {
     [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:1 animated:0];
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)a3 finalLayerFrame:(CGRect)a4 completionHandler:(id)a5
+- (void)_performStopAnimationWithFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __121__PGPictureInPictureViewController__performStopAnimationWithFinalInterfaceOrientation_finalLayerFrame_completionHandler___block_invoke;
@@ -1844,7 +1844,7 @@ void __80__PGPictureInPictureViewController__performStartAnimationWithCompletion
   v22[2] = __121__PGPictureInPictureViewController__performStopAnimationWithFinalInterfaceOrientation_finalLayerFrame_completionHandler___block_invoke_2;
   v22[3] = &unk_1E7F32D98;
   v22[4] = self;
-  v13 = v11;
+  v13 = handlerCopy;
   v23 = v13;
   v14 = MEMORY[0x1BFB0C680](v22);
   v12[2](v12);
@@ -1883,7 +1883,7 @@ void __80__PGPictureInPictureViewController__performStartAnimationWithCompletion
   {
     [(PGPictureInPictureViewController *)self showChrome:0 animated:1];
     v17 = objc_loadWeakRetained(&self->_contentContainer);
-    [v17 performStopAnimationWithFinalInterfaceOrientation:a3 finalLayerFrame:v14 completionHandler:{x, y, width, height}];
+    [v17 performStopAnimationWithFinalInterfaceOrientation:orientation finalLayerFrame:v14 completionHandler:{x, y, width, height}];
   }
 
 LABEL_7:
@@ -1920,9 +1920,9 @@ void __121__PGPictureInPictureViewController__performStopAnimationWithFinalInter
   [v3 setTransform:&v4];
 }
 
-- (void)performSuspendAnimationWithCompletionHandler:(id)a3
+- (void)performSuspendAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v5 = PGLogCommon();
@@ -1933,8 +1933,8 @@ void __121__PGPictureInPictureViewController__performStopAnimationWithFinalInter
   }
 
   self->_isSuspended = 1;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v6 beginIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
   [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:1 animated:1];
   v7 = MEMORY[0x1E69DD250];
@@ -1948,8 +1948,8 @@ void __121__PGPictureInPictureViewController__performStopAnimationWithFinalInter
   v9[2] = __81__PGPictureInPictureViewController_performSuspendAnimationWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_1E7F32EB0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 PG_animateUsingDefaultTimingWithAnimations:v11 completion:v9];
 }
 
@@ -1974,9 +1974,9 @@ uint64_t __81__PGPictureInPictureViewController_performSuspendAnimationWithCompl
   return [v3 _updatePrefersIdleTimerDisabled];
 }
 
-- (void)performResumeAnimationWithCompletionHandler:(id)a3
+- (void)performResumeAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v5 = PGLogCommon();
@@ -1987,8 +1987,8 @@ uint64_t __81__PGPictureInPictureViewController_performSuspendAnimationWithCompl
   }
 
   self->_isSuspended = 0;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v6 beginIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
   v7 = MEMORY[0x1E69DD250];
   v11[0] = MEMORY[0x1E69E9820];
@@ -2001,8 +2001,8 @@ uint64_t __81__PGPictureInPictureViewController_performSuspendAnimationWithCompl
   v9[2] = __80__PGPictureInPictureViewController_performResumeAnimationWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_1E7F331E0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 PG_animateUsingDefaultTimingWithAnimations:v11 completion:v9];
 }
 
@@ -2036,9 +2036,9 @@ uint64_t __80__PGPictureInPictureViewController_performResumeAnimationWithComple
   return [v4 _updatePrefersIdleTimerDisabled];
 }
 
-- (void)performRotateAnimationWithRotation:(int64_t)a3 completionHandler:(id)a4
+- (void)performRotateAnimationWithRotation:(int64_t)rotation completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v7 = PGLogCommon();
@@ -2048,8 +2048,8 @@ uint64_t __80__PGPictureInPictureViewController_performResumeAnimationWithComple
     }
   }
 
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v8 beginIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
   [(PGControlsContainerView *)self->_controlsContainerView setControlsContainerHidden:1 animated:0];
   if ((*&self->_contentContainerRespondsTo & 0x20) != 0)
@@ -2060,13 +2060,13 @@ uint64_t __80__PGPictureInPictureViewController_performResumeAnimationWithComple
     v10[2] = __89__PGPictureInPictureViewController_performRotateAnimationWithRotation_completionHandler___block_invoke;
     v10[3] = &unk_1E7F32D98;
     v10[4] = self;
-    v11 = v6;
-    [WeakRetained performRotateAnimationWithRotation:a3 completionHandler:v10];
+    v11 = handlerCopy;
+    [WeakRetained performRotateAnimationWithRotation:rotation completionHandler:v10];
   }
 
   else
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -2081,9 +2081,9 @@ uint64_t __89__PGPictureInPictureViewController_performRotateAnimationWithRotati
   return v3();
 }
 
-- (void)prepareStopAnimationWithCompletionHandler:(id)a3
+- (void)prepareStopAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (([(PGPictureInPictureViewController *)self isViewLoaded]& 1) == 0)
   {
     v5 = PGLogCommon();
@@ -2097,12 +2097,12 @@ uint64_t __89__PGPictureInPictureViewController_performRotateAnimationWithRotati
   if (*&self->_contentContainerRespondsTo)
   {
     WeakRetained = objc_loadWeakRetained(&self->_contentContainer);
-    [WeakRetained prepareStopAnimationWithCompletionHandler:v4];
+    [WeakRetained prepareStopAnimationWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -2142,23 +2142,23 @@ uint64_t __89__PGPictureInPictureViewController_performRotateAnimationWithRotati
   }
 }
 
-- (void)setInterrupted:(BOOL)a3
+- (void)setInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
-  v5 = [(PGPictureInPictureViewController *)self isInterrupted];
-  [(PGControlsViewModel *)self->_viewModel setInterrupted:v3];
+  interruptedCopy = interrupted;
+  isInterrupted = [(PGPictureInPictureViewController *)self isInterrupted];
+  [(PGControlsViewModel *)self->_viewModel setInterrupted:interruptedCopy];
   [(PGPictureInPictureViewController *)self _updatePrefersIdleTimerDisabled];
-  if (v5 != v3)
+  if (isInterrupted != interruptedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_tetheringViewController);
     [WeakRetained flashControls];
 
-    if (!v3)
+    if (!interruptedCopy)
     {
       if ([(PGPictureInPictureViewController *)self isViewLoaded])
       {
-        v7 = [(PGPictureInPictureViewController *)self view];
-        [v7 alpha];
+        view = [(PGPictureInPictureViewController *)self view];
+        [view alpha];
         v9 = v8;
 
         if (v9 == 0.0)
@@ -2181,11 +2181,11 @@ void __51__PGPictureInPictureViewController_setInterrupted___block_invoke(uint64
   [v1 setAlpha:1.0];
 }
 
-- (void)setContentViewHidden:(BOOL)a3
+- (void)setContentViewHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v11 = *MEMORY[0x1E69E9840];
-  if ([(PGLayerHostView *)self->_contentView isHidden]!= a3)
+  if ([(PGLayerHostView *)self->_contentView isHidden]!= hidden)
   {
     v5 = PGLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2194,42 +2194,42 @@ void __51__PGPictureInPictureViewController_setInterrupted___block_invoke(uint64
       v7 = 138412546;
       v8 = v6;
       v9 = 1024;
-      v10 = v3;
+      v10 = hiddenCopy;
       _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%@ %{BOOL}u", &v7, 0x12u);
     }
 
-    [(PGLayerHostView *)self->_contentView setHidden:v3];
+    [(PGLayerHostView *)self->_contentView setHidden:hiddenCopy];
   }
 }
 
-- (void)setMenuItems:(id)a3
+- (void)setMenuItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   menuItems = self->_menuItems;
-  v12 = v4;
-  if (menuItems != v4 || (v6 = [(NSArray *)menuItems isEqualToArray:v4], v4 = v12, (v6 & 1) == 0))
+  v12 = itemsCopy;
+  if (menuItems != itemsCopy || (v6 = [(NSArray *)menuItems isEqualToArray:itemsCopy], itemsCopy = v12, (v6 & 1) == 0))
   {
-    v7 = [(NSArray *)v4 copy];
+    v7 = [(NSArray *)itemsCopy copy];
     v8 = self->_menuItems;
     self->_menuItems = v7;
 
     WeakRetained = objc_loadWeakRetained(&self->_contentContainer);
     v10 = objc_opt_respondsToSelector();
 
-    v4 = v12;
+    itemsCopy = v12;
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_contentContainer);
       [v11 updateMenuItems];
 
-      v4 = v12;
+      itemsCopy = v12;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v4);
+  MEMORY[0x1EEE66BB8](v6, itemsCopy);
 }
 
-- (void)_handleTapWhileStashedGestureRecognizer:(id)a3
+- (void)_handleTapWhileStashedGestureRecognizer:(id)recognizer
 {
   if ((*&self->_contentContainerRespondsTo & 8) != 0)
   {
@@ -2238,7 +2238,7 @@ void __51__PGPictureInPictureViewController_setInterrupted___block_invoke(uint64
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   if (self->_shouldDisablePointerInteraction)
   {
@@ -2247,24 +2247,24 @@ void __51__PGPictureInPictureViewController_setInterrupted___block_invoke(uint64
 
   else
   {
-    return a5;
+    return region;
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(PGPictureInPictureViewController *)self view:a3];
-  v6 = [v5 _isInAWindow];
+  v5 = [(PGPictureInPictureViewController *)self view:interaction];
+  _isInAWindow = [v5 _isInAWindow];
 
-  if (v6)
+  if (_isInAWindow)
   {
     v7 = objc_alloc(MEMORY[0x1E69DD070]);
-    v8 = [(PGPictureInPictureViewController *)self view];
-    v9 = [v7 initWithView:v8];
+    view = [(PGPictureInPictureViewController *)self view];
+    v9 = [v7 initWithView:view];
 
-    v10 = [(PGPictureInPictureViewController *)self tetheringViewController];
+    tetheringViewController = [(PGPictureInPictureViewController *)self tetheringViewController];
 
-    if (v10)
+    if (tetheringViewController)
     {
       v11 = [MEMORY[0x1E69DCDB8] effectWithPreview:v9];
     }
@@ -2293,27 +2293,27 @@ void __51__PGPictureInPictureViewController_setInterrupted___block_invoke(uint64
   return v13;
 }
 
-- (void)handleCommand:(id)a3
+- (void)handleCommand:(id)command
 {
-  v9 = a3;
-  v5 = [v9 systemAction];
-  if (v5 <= 2)
+  commandCopy = command;
+  systemAction = [commandCopy systemAction];
+  if (systemAction <= 2)
   {
-    if (v5 >= 3)
+    if (systemAction >= 3)
     {
       goto LABEL_12;
     }
 
     WeakRetained = [(PGPictureInPictureViewController *)self delegate];
-    [WeakRetained pictureInPictureViewController:self didReceiveCommand:v9];
+    [WeakRetained pictureInPictureViewController:self didReceiveCommand:commandCopy];
     goto LABEL_4;
   }
 
-  switch(v5)
+  switch(systemAction)
   {
     case 3:
-      v8 = [(PGPictureInPictureViewController *)self delegate];
-      [v8 pictureInPictureViewController:self didReceiveCommand:v9];
+      delegate = [(PGPictureInPictureViewController *)self delegate];
+      [delegate pictureInPictureViewController:self didReceiveCommand:commandCopy];
 
       if ([(PGPictureInPictureViewController *)self isInterrupted])
       {
@@ -2331,8 +2331,8 @@ LABEL_4:
 
       break;
     case 4:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PGPictureInPictureViewController.m" lineNumber:1256 description:@"Toggle visibility action should not be sent to PictureInPictureViewController."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PGPictureInPictureViewController.m" lineNumber:1256 description:@"Toggle visibility action should not be sent to PictureInPictureViewController."];
 
       break;
   }
@@ -2341,32 +2341,32 @@ LABEL_12:
   [(PGPictureInPictureViewController *)self _updatePrefersIdleTimerDisabled];
 }
 
-- (void)updatePlaybackStateWithDiff:(id)a3
+- (void)updatePlaybackStateWithDiff:(id)diff
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PGControlsViewModel *)self->_viewModel playbackState];
+    playbackState = [(PGControlsViewModel *)self->_viewModel playbackState];
     v21 = 136315650;
     v22 = "[PGPictureInPictureViewController updatePlaybackStateWithDiff:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v6;
+    v26 = playbackState;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p REMOTE: %{public}@", &v21, 0x20u);
   }
 
-  v7 = [(PGControlsViewModel *)self->_viewModel playbackState];
-  v8 = [v7 isRoutingVideoToHostedWindow];
+  playbackState2 = [(PGControlsViewModel *)self->_viewModel playbackState];
+  isRoutingVideoToHostedWindow = [playbackState2 isRoutingVideoToHostedWindow];
 
-  [(PGControlsViewModel *)self->_viewModel updatePlaybackStateWithDiff:v4];
+  [(PGControlsViewModel *)self->_viewModel updatePlaybackStateWithDiff:diffCopy];
   [(PGPictureInPictureViewController *)self _updatePrefersIdleTimerDisabled];
-  v9 = [(PGControlsViewModel *)self->_viewModel playbackState];
-  v10 = [v9 isRoutingVideoToHostedWindow];
+  playbackState3 = [(PGControlsViewModel *)self->_viewModel playbackState];
+  isRoutingVideoToHostedWindow2 = [playbackState3 isRoutingVideoToHostedWindow];
 
-  if (v8 != v10)
+  if (isRoutingVideoToHostedWindow != isRoutingVideoToHostedWindow2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_contentContainer);
     v12 = objc_opt_respondsToSelector();
@@ -2374,19 +2374,19 @@ LABEL_12:
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_contentContainer);
-      [v13 playbackSourceDidUpdateIsRoutingVideoToHostedWindow:v10];
+      [v13 playbackSourceDidUpdateIsRoutingVideoToHostedWindow:isRoutingVideoToHostedWindow2];
     }
   }
 
   [(PGPictureInPictureViewController *)self _updatePointerEffect];
   prefersHiddenFromClonedDisplay = self->_prefersHiddenFromClonedDisplay;
-  v15 = [(PGControlsViewModel *)self->_viewModel playbackState];
-  v16 = [v15 disablesLayerCloning];
+  playbackState4 = [(PGControlsViewModel *)self->_viewModel playbackState];
+  disablesLayerCloning = [playbackState4 disablesLayerCloning];
 
-  if (prefersHiddenFromClonedDisplay != v16)
+  if (prefersHiddenFromClonedDisplay != disablesLayerCloning)
   {
-    v17 = [(PGControlsViewModel *)self->_viewModel playbackState];
-    self->_prefersHiddenFromClonedDisplay = [v17 disablesLayerCloning];
+    playbackState5 = [(PGControlsViewModel *)self->_viewModel playbackState];
+    self->_prefersHiddenFromClonedDisplay = [playbackState5 disablesLayerCloning];
 
     v18 = objc_loadWeakRetained(&self->_contentContainer);
     v19 = objc_opt_respondsToSelector();
@@ -2403,15 +2403,15 @@ LABEL_12:
 {
   if ([(PGPictureInPictureViewController *)self isViewLoaded]&& !self->_shadowView)
   {
-    v6 = [(PGPictureInPictureViewController *)self view];
-    v3 = [(PGPictureInPictureViewController *)self _newShadowView];
+    view = [(PGPictureInPictureViewController *)self view];
+    _newShadowView = [(PGPictureInPictureViewController *)self _newShadowView];
     shadowView = self->_shadowView;
-    self->_shadowView = v3;
+    self->_shadowView = _newShadowView;
 
     v5 = self->_shadowView;
-    [v6 bounds];
+    [view bounds];
     [(UIView *)v5 setFrame:?];
-    [v6 insertSubview:self->_shadowView atIndex:0];
+    [view insertSubview:self->_shadowView atIndex:0];
   }
 }
 
@@ -2420,51 +2420,51 @@ LABEL_12:
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v4 setUserInteractionEnabled:0];
-  v5 = [v4 layer];
-  [v5 setAllowsEdgeAntialiasing:1];
+  layer = [v4 layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  v6 = [v4 layer];
-  [v6 setShadowPathIsBounds:1];
+  layer2 = [v4 layer];
+  [layer2 setShadowPathIsBounds:1];
 
   [(PGPictureInPictureViewController *)self _applyShadowSettingsToView:v4];
   return v4;
 }
 
-- (void)_applyShadowSettingsToView:(id)a3
+- (void)_applyShadowSettingsToView:(id)view
 {
-  v11 = a3;
-  v4 = [v11 layer];
+  viewCopy = view;
+  layer = [viewCopy layer];
   [(PGMobilePIPSettings *)self->_settings shadowOffsetX];
   v6 = v5;
   [(PGMobilePIPSettings *)self->_settings shadowOffsetY];
-  [v4 setShadowOffset:{v6, v7}];
+  [layer setShadowOffset:{v6, v7}];
 
-  v8 = [v11 layer];
+  layer2 = [viewCopy layer];
   [(PGMobilePIPSettings *)self->_settings shadowOpacity];
   *&v9 = v9;
-  [v8 setShadowOpacity:v9];
+  [layer2 setShadowOpacity:v9];
 
-  v10 = [v11 layer];
+  layer3 = [viewCopy layer];
   [(PGMobilePIPSettings *)self->_settings shadowRadius];
-  [v10 setShadowRadius:?];
+  [layer3 setShadowRadius:?];
 
   [(PGMobilePIPSettings *)self->_settings shadowContinuousCornerRadius];
-  [v11 _setContinuousCornerRadius:?];
+  [viewCopy _setContinuousCornerRadius:?];
 }
 
 - (void)_updatePointerEffect
 {
-  v3 = [(PGControlsViewModel *)self->_viewModel values];
-  v4 = [v3 includesRestoreButton];
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  includesRestoreButton = [values includesRestoreButton];
 
   WeakRetained = objc_loadWeakRetained(&self->_pointerInteraction);
-  if (v4)
+  if (includesRestoreButton)
   {
     if (WeakRetained)
     {
       v8 = WeakRetained;
-      v6 = [(PGPictureInPictureViewController *)self view];
-      [v6 removeInteraction:v8];
+      view = [(PGPictureInPictureViewController *)self view];
+      [view removeInteraction:v8];
 
       objc_storeWeak(&self->_pointerInteraction, 0);
 LABEL_7:
@@ -2481,16 +2481,16 @@ LABEL_7:
 
     v8 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:self];
     objc_storeWeak(&self->_pointerInteraction, v8);
-    v7 = [(PGPictureInPictureViewController *)self view];
-    [v7 addInteraction:v8];
+    view2 = [(PGPictureInPictureViewController *)self view];
+    [view2 addInteraction:v8];
 
     goto LABEL_7;
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  [(PGPictureInPictureViewController *)self _applyShadowSettingsToView:self->_shadowView, a4];
+  [(PGPictureInPictureViewController *)self _applyShadowSettingsToView:self->_shadowView, path];
   tabShadowView = self->_tabShadowView;
 
   [(PGPictureInPictureViewController *)self _applyShadowSettingsToView:tabShadowView];
@@ -2500,13 +2500,13 @@ LABEL_7:
 {
   if ([(PGPictureInPictureViewController *)self isViewLoaded]&& !self->_tabShadowView)
   {
-    v3 = [(PGPictureInPictureViewController *)self _newShadowView];
+    _newShadowView = [(PGPictureInPictureViewController *)self _newShadowView];
     tabShadowView = self->_tabShadowView;
-    self->_tabShadowView = v3;
+    self->_tabShadowView = _newShadowView;
 
     [(UIView *)self->_tabShadowView setHidden:1];
-    v5 = [(PGPictureInPictureViewController *)self view];
-    [v5 insertSubview:self->_tabShadowView atIndex:0];
+    view = [(PGPictureInPictureViewController *)self view];
+    [view insertSubview:self->_tabShadowView atIndex:0];
   }
 }
 
@@ -2540,21 +2540,21 @@ LABEL_7:
 
   else
   {
-    v5 = [(PGControlsViewModel *)self->_viewModel playbackState];
-    v6 = [v5 contentType];
-    if (v6 > 5)
+    playbackState = [(PGControlsViewModel *)self->_viewModel playbackState];
+    contentType = [playbackState contentType];
+    if (contentType > 5)
     {
       v4 = 0;
     }
 
-    else if (((1 << v6) & 0x31) != 0 || ((1 << v6) & 6) == 0)
+    else if (((1 << contentType) & 0x31) != 0 || ((1 << contentType) & 6) == 0)
     {
       v4 = 1;
     }
 
     else
     {
-      [v5 playbackRate];
+      [playbackState playbackRate];
       v4 = v7 != 0.0;
     }
   }
@@ -2562,8 +2562,8 @@ LABEL_7:
   if (prefersIdleTimerDisabled != v4)
   {
     self->_prefersIdleTimerDisabled = v4;
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"PGPictureInPictureViewControllerPrefersIdleTimerDisabledDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PGPictureInPictureViewControllerPrefersIdleTimerDisabledDidChangeNotification" object:self];
   }
 }
 
@@ -2574,10 +2574,10 @@ LABEL_7:
   {
     if ([(PGPictureInPictureViewController *)self isViewLoaded])
     {
-      v3 = [(UIView *)self->_containerView superview];
-      v4 = [(PGPictureInPictureViewController *)self view];
+      superview = [(UIView *)self->_containerView superview];
+      view = [(PGPictureInPictureViewController *)self view];
 
-      if (v3 != v4)
+      if (superview != view)
       {
         v5 = PGLogCommon();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2585,7 +2585,7 @@ LABEL_7:
           v12 = 136315394;
           v13 = "[PGPictureInPictureViewController _insertContentContainerViewIfNeeded]";
           v14 = 2048;
-          v15 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p ", &v12, 0x16u);
         }
 
@@ -2608,8 +2608,8 @@ LABEL_7:
           v10 = v8;
         }
 
-        v11 = [(PGPictureInPictureViewController *)self view];
-        [v11 insertSubview:self->_containerView atIndex:v10];
+        view2 = [(PGPictureInPictureViewController *)self view];
+        [view2 insertSubview:self->_containerView atIndex:v10];
       }
     }
   }

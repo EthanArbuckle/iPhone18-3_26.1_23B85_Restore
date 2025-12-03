@@ -10,22 +10,22 @@
 - (NSString)title;
 - (NSURL)artworkURL;
 - (NSURL)shazamURL;
-- (SHShazamResponseItem)initWithShazamItemDictionary:(id)a3;
-- (id)extractIDsFromRelation:(id)a3;
+- (SHShazamResponseItem)initWithShazamItemDictionary:(id)dictionary;
+- (id)extractIDsFromRelation:(id)relation;
 @end
 
 @implementation SHShazamResponseItem
 
-- (SHShazamResponseItem)initWithShazamItemDictionary:(id)a3
+- (SHShazamResponseItem)initWithShazamItemDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SHShazamResponseItem;
   v6 = [(SHShazamResponseItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shazamItemDictionary, a3);
+    objc_storeStrong(&v6->_shazamItemDictionary, dictionary);
   }
 
   return v7;
@@ -33,16 +33,16 @@
 
 - (NSString)shazamID
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"id"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"id"];
 
   return v3;
 }
 
 - (NSURL)shazamURL
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"shazamUrl"];
 
   if (v4)
@@ -60,8 +60,8 @@
 
 - (NSString)title
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"name"];
 
   return v4;
@@ -69,8 +69,8 @@
 
 - (NSString)artistName
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"artistName"];
 
   return v4;
@@ -78,8 +78,8 @@
 
 - (NSNumber)shazamCount
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"shazamCount"];
 
   return v4;
@@ -87,8 +87,8 @@
 
 - (NSURL)artworkURL
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"artwork"];
 
   v5 = [v4 objectForKeyedSubscript:@"url"];
@@ -110,8 +110,8 @@
 
 - (NSNumber)matchOffset
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"meta"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"meta"];
   v4 = [v3 objectForKeyedSubscript:@"matchOffset"];
 
   return v4;
@@ -119,8 +119,8 @@
 
 - (NSNumber)confidence
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"meta"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"meta"];
   v4 = [v3 objectForKeyedSubscript:@"confidence"];
 
   return v4;
@@ -128,8 +128,8 @@
 
 - (NSNumber)speedSkew
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"meta"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"meta"];
   v4 = [v3 objectForKeyedSubscript:@"speedSkew"];
 
   return v4;
@@ -137,8 +137,8 @@
 
 - (NSNumber)frequencySkew
 {
-  v2 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"meta"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v3 = [shazamItemDictionary objectForKeyedSubscript:@"meta"];
   v4 = [v3 objectForKeyedSubscript:@"frequencySkew"];
 
   return v4;
@@ -146,8 +146,8 @@
 
 - (NSArray)songRelationIDs
 {
-  v3 = [(SHShazamResponseItem *)self shazamItemDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"relationships"];
+  shazamItemDictionary = [(SHShazamResponseItem *)self shazamItemDictionary];
+  v4 = [shazamItemDictionary objectForKeyedSubscript:@"relationships"];
   v5 = [v4 objectForKeyedSubscript:@"songs"];
 
   v6 = [(SHShazamResponseItem *)self extractIDsFromRelation:v5];
@@ -155,9 +155,9 @@
   return v6;
 }
 
-- (id)extractIDsFromRelation:(id)a3
+- (id)extractIDsFromRelation:(id)relation
 {
-  v3 = [a3 objectForKeyedSubscript:@"data"];
+  v3 = [relation objectForKeyedSubscript:@"data"];
   v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
   v15 = 0u;
   v16 = 0u;

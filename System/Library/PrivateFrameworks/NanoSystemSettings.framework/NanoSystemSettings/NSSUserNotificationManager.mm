@@ -1,8 +1,8 @@
 @interface NSSUserNotificationManager
 + (id)sharedInstance;
 - (NSSUserNotificationManager)init;
-- (void)postBatteryNotificationForWatch:(id)a3 withValue:(id)a4;
-- (void)postLowPowerModeAutoDisabledNotification:(unint64_t)a3;
+- (void)postBatteryNotificationForWatch:(id)watch withValue:(id)value;
+- (void)postLowPowerModeAutoDisabledNotification:(unint64_t)notification;
 - (void)removeLastPostedBatteryNotification;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000141CC;
   block[3] = &unk_100034E60;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003DD18 != -1)
   {
     dispatch_once(&qword_10003DD18, block);
@@ -44,10 +44,10 @@
   return v3;
 }
 
-- (void)postBatteryNotificationForWatch:(id)a3 withValue:(id)a4
+- (void)postBatteryNotificationForWatch:(id)watch withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  watchCopy = watch;
+  valueCopy = value;
   v8 = objc_alloc_init(UNMutableNotificationContent);
   [v8 setCategoryIdentifier:@"BatteryCharge"];
   v9 = [NSString localizedUserNotificationStringForKey:@"BATTERY" arguments:0];
@@ -69,14 +69,14 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = [v7 unsignedLongValue];
+    unsignedLongValue = [valueCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Posting Battery Notification for level: %lu ", buf, 0xCu);
   }
 
-  if (v7)
+  if (valueCopy)
   {
-    v14 = [v7 stringValue];
-    v15 = [NSString stringWithFormat:@"%@%%", v14];
+    stringValue = [valueCopy stringValue];
+    v15 = [NSString stringWithFormat:@"%@%%", stringValue];
   }
 
   else
@@ -85,18 +85,18 @@
   }
 
   v16 = [NSNumber numberWithInt:100];
-  v17 = [v7 isEqualToNumber:v16];
+  v17 = [valueCopy isEqualToNumber:v16];
 
   if (v17)
   {
-    v25 = v6;
+    v25 = watchCopy;
     v18 = [NSArray arrayWithObjects:&v25 count:1];
     v19 = @"BATTERY_LEVEL_BODY_FULL_%@";
   }
 
   else
   {
-    v24[0] = v6;
+    v24[0] = watchCopy;
     v24[1] = v15;
     v18 = [NSArray arrayWithObjects:v24 count:2];
     v19 = @"BATTERY_LEVEL_BODY_%@_%@";
@@ -131,7 +131,7 @@
   [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v5];
 }
 
-- (void)postLowPowerModeAutoDisabledNotification:(unint64_t)a3
+- (void)postLowPowerModeAutoDisabledNotification:(unint64_t)notification
 {
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -157,9 +157,9 @@
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v10];
 
-  if (a3 <= 3)
+  if (notification <= 3)
   {
-    v11 = [NSString localizedUserNotificationStringForKey:off_100035018[a3] arguments:0];
+    v11 = [NSString localizedUserNotificationStringForKey:off_100035018[notification] arguments:0];
     [v6 setBody:v11];
   }
 

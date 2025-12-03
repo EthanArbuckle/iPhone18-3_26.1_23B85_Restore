@@ -1,16 +1,16 @@
 @interface NSCache
-- (BOOL)rd_writeObject:(id)a3 forKey:(id)a4 toURL:(id)a5 error:(id *)a6;
-- (id)rd_objectsForSensor:(id)a3 fallbackURL:(id)a4;
+- (BOOL)rd_writeObject:(id)object forKey:(id)key toURL:(id)l error:(id *)error;
+- (id)rd_objectsForSensor:(id)sensor fallbackURL:(id)l;
 @end
 
 @implementation NSCache
 
-- (id)rd_objectsForSensor:(id)a3 fallbackURL:(id)a4
+- (id)rd_objectsForSensor:(id)sensor fallbackURL:(id)l
 {
   v7 = [(NSCache *)self objectForKey:?];
   if (!v7)
   {
-    v10 = [NSData dataWithContentsOfURL:a4];
+    v10 = [NSData dataWithContentsOfURL:l];
     if (v10)
     {
       v19 = 0;
@@ -35,7 +35,7 @@
           if (os_log_type_enabled(qword_100071980, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543362;
-            v21 = v13;
+            sensorCopy2 = v13;
             _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Found plist data: %{public}@", buf, 0xCu);
           }
 
@@ -48,7 +48,7 @@
       if (os_log_type_enabled(qword_100071980, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v21 = a3;
+        sensorCopy2 = sensor;
         v22 = 2114;
         v23 = v19;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to load client interest for sensor %{public}@, error %{public}@", buf, 0x16u);
@@ -61,7 +61,7 @@
       if (os_log_type_enabled(qword_100071980, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = a4;
+        sensorCopy2 = l;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "No data found from URL %{public}@", buf, 0xCu);
       }
     }
@@ -69,7 +69,7 @@
     v15 = +[NSSet set];
 LABEL_19:
     v8 = v15;
-    [(NSCache *)self setObject:v15 forKey:a3];
+    [(NSCache *)self setObject:v15 forKey:sensor];
     return v8;
   }
 
@@ -78,7 +78,7 @@ LABEL_19:
   if (os_log_type_enabled(qword_100071980, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v21 = a3;
+    sensorCopy2 = sensor;
     v22 = 2114;
     v23 = v8;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Found objects in cache for sensor: %{public}@, %{public}@", buf, 0x16u);
@@ -87,10 +87,10 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)rd_writeObject:(id)a3 forKey:(id)a4 toURL:(id)a5 error:(id *)a6
+- (BOOL)rd_writeObject:(id)object forKey:(id)key toURL:(id)l error:(id *)error
 {
   v17 = 0;
-  v8 = +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", [a3 allObjects], 200, 0, &v17);
+  v8 = +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", [object allObjects], 200, 0, &v17);
   v9 = v17;
   if (v8)
   {
@@ -104,22 +104,22 @@ LABEL_19:
 
   if (v10)
   {
-    result = [(NSData *)v8 writeToURL:a5 options:1 error:&v17];
+    result = [(NSData *)v8 writeToURL:l options:1 error:&v17];
     if (!result && (v14 = qword_100071980, v15 = result, v16 = os_log_type_enabled(qword_100071980, OS_LOG_TYPE_FAULT), result = v15, v16))
     {
       *buf = 138543618;
-      v19 = a5;
+      lCopy2 = l;
       v20 = 2114;
       v21 = v17;
       _os_log_fault_impl(&_mh_execute_header, v14, OS_LOG_TYPE_FAULT, "Failed to write %{public}@ because %{public}@", buf, 0x16u);
       result = v15;
-      if (!a6)
+      if (!error)
       {
         return result;
       }
     }
 
-    else if (!a6)
+    else if (!error)
     {
       return result;
     }
@@ -137,7 +137,7 @@ LABEL_19:
     if (!os_log_type_enabled(qword_100071980, OS_LOG_TYPE_ERROR))
     {
       result = 0;
-      if (!a6)
+      if (!error)
       {
         return result;
       }
@@ -146,17 +146,17 @@ LABEL_19:
     }
 
     *buf = 138543618;
-    v19 = a5;
+    lCopy2 = l;
     v20 = 2114;
     v21 = v9;
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to serialize %{public}@ because %{public}@", buf, 0x16u);
     result = 0;
-    if (a6)
+    if (error)
     {
 LABEL_7:
       v13 = v17;
 LABEL_12:
-      *a6 = v13;
+      *error = v13;
     }
   }
 

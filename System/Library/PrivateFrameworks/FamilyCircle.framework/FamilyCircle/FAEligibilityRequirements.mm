@@ -1,21 +1,21 @@
 @interface FAEligibilityRequirements
-- (FAEligibilityRequirements)initWithCoder:(id)a3;
-- (FAEligibilityRequirements)initWithDictionaryRepresentation:(id)a3;
-- (FAEligibilityRequirements)initWithPropertyRequirements:(id)a3;
+- (FAEligibilityRequirements)initWithCoder:(id)coder;
+- (FAEligibilityRequirements)initWithDictionaryRepresentation:(id)representation;
+- (FAEligibilityRequirements)initWithPropertyRequirements:(id)requirements;
 @end
 
 @implementation FAEligibilityRequirements
 
-- (FAEligibilityRequirements)initWithDictionaryRepresentation:(id)a3
+- (FAEligibilityRequirements)initWithDictionaryRepresentation:(id)representation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = representationCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -54,15 +54,15 @@
   return v16;
 }
 
-- (FAEligibilityRequirements)initWithPropertyRequirements:(id)a3
+- (FAEligibilityRequirements)initWithPropertyRequirements:(id)requirements
 {
-  v4 = a3;
+  requirementsCopy = requirements;
   v9.receiver = self;
   v9.super_class = FAEligibilityRequirements;
   v5 = [(FAEligibilityRequirements *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requirementsCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
   }
@@ -70,9 +70,9 @@
   return v5;
 }
 
-- (FAEligibilityRequirements)initWithCoder:(id)a3
+- (FAEligibilityRequirements)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAEligibilityRequirements *)self init];
   if (v5)
   {
@@ -80,7 +80,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"properties"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"properties"];
     properties = v5->_properties;
     v5->_properties = v10;
   }

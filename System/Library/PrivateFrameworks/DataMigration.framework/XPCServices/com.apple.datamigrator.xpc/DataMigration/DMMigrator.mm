@@ -1,30 +1,30 @@
 @interface DMMigrator
-+ (id)_dispositionDictFromContext:(id)a3 buildVersion:(id)a4 lastBuildVersion:(id)a5 environment:(id)a6;
-+ (id)_userDataDispositionDictionaryWithBuildVersion:(id)a3 lastBuildVersion:(id)a4;
++ (id)_dispositionDictFromContext:(id)context buildVersion:(id)version lastBuildVersion:(id)buildVersion environment:(id)environment;
++ (id)_userDataDispositionDictionaryWithBuildVersion:(id)version lastBuildVersion:(id)buildVersion;
 - (BOOL)_canDisplayStatus_progressLocked;
-- (BOOL)_performMigrationWithPreliminaryTasks:(id)a3 pluginsProvider:(id)a4 pluginCategories:(unsigned int)a5 userCategory:(unsigned int)a6 buildVersion:(id)a7 lastBuildVersion:(id)a8;
+- (BOOL)_performMigrationWithPreliminaryTasks:(id)tasks pluginsProvider:(id)provider pluginCategories:(unsigned int)categories userCategory:(unsigned int)category buildVersion:(id)version lastBuildVersion:(id)buildVersion;
 - (DMMigrator)init;
 - (NSDictionary)migrationPluginResults;
 - (NSString)migrationPhaseDescription;
 - (__MKBAssertion)_unlockKeyBagUseOfForceIsAuthorized;
-- (double)_artificialHangTimeIntervalForPlugin:(id)a3;
+- (double)_artificialHangTimeIntervalForPlugin:(id)plugin;
 - (id)_createProgressWindow;
 - (id)_pluginAllowedList;
 - (id)_userDataDispositionDictionary;
 - (id)orderedPluginIdentifiers;
 - (id)previousBuildVersion;
-- (unsigned)_pluginCategoriesWithEnvironment:(id)a3 lastBuildVersion:(id)a4;
-- (unsigned)_userCategoryWithEnvironment:(id)a3;
+- (unsigned)_pluginCategoriesWithEnvironment:(id)environment lastBuildVersion:(id)version;
+- (unsigned)_userCategoryWithEnvironment:(id)environment;
 - (unsigned)userDataDisposition;
-- (void)_didReceiveHIDEvent:(id)a3;
-- (void)_logReasonWithContext:(id)a3;
-- (void)_migrateWithTestMigrationInfrastructureOnly:(BOOL)a3 buildVersion:(id)a4 lastBuildVersion:(id)a5;
+- (void)_didReceiveHIDEvent:(id)event;
+- (void)_logReasonWithContext:(id)context;
+- (void)_migrateWithTestMigrationInfrastructureOnly:(BOOL)only buildVersion:(id)version lastBuildVersion:(id)buildVersion;
 - (void)_waitForExecutePluginsSignal_engineerCurrentlyDebuggingMigrationPlugins;
-- (void)currentProgressInfo:(id)a3;
-- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)a3 context:(id)a4;
+- (void)currentProgressInfo:(id)info;
+- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)disposition context:(id)context;
 - (void)progressHostIsReady;
 - (void)reportMigrationFailure;
-- (void)testMigrationUIWithProgress:(BOOL)a3 forceInvert:(BOOL)a4 completion:(id)a5;
+- (void)testMigrationUIWithProgress:(BOOL)progress forceInvert:(BOOL)invert completion:(id)completion;
 @end
 
 @implementation DMMigrator
@@ -49,22 +49,22 @@
 - (NSString)migrationPhaseDescription
 {
   v2 = +[DMMigrationState sharedInstance];
-  v3 = [v2 migrationPhaseDescription];
+  migrationPhaseDescription = [v2 migrationPhaseDescription];
 
-  return v3;
+  return migrationPhaseDescription;
 }
 
 - (NSDictionary)migrationPluginResults
 {
   v2 = +[DMMigrationState sharedInstance];
-  v3 = [v2 pluginResults];
+  pluginResults = [v2 pluginResults];
 
-  return v3;
+  return pluginResults;
 }
 
-- (unsigned)_userCategoryWithEnvironment:(id)a3
+- (unsigned)_userCategoryWithEnvironment:(id)environment
 {
-  if ([a3 userSessionIsLoginWindow])
+  if ([environment userSessionIsLoginWindow])
   {
     return 2;
   }
@@ -75,11 +75,11 @@
   }
 }
 
-- (unsigned)_pluginCategoriesWithEnvironment:(id)a3 lastBuildVersion:(id)a4
+- (unsigned)_pluginCategoriesWithEnvironment:(id)environment lastBuildVersion:(id)version
 {
-  v5 = a3;
-  v6 = ![v5 deviceModeIsSharediPad] || objc_msgSend(v5, "userSessionIsLoginWindow");
-  if (((a4 == 0) & [v5 deviceModeIsSharediPad]) != 0)
+  environmentCopy = environment;
+  v6 = ![environmentCopy deviceModeIsSharediPad] || objc_msgSend(environmentCopy, "userSessionIsLoginWindow");
+  if (((version == 0) & [environmentCopy deviceModeIsSharediPad]) != 0)
   {
     v7 = 4;
   }
@@ -99,9 +99,9 @@
   return v2;
 }
 
-- (void)currentProgressInfo:(id)a3
+- (void)currentProgressInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(NSLock *)self->_progressLock lock];
   if (!self->_firstWorkItemStartTimestamp)
   {
@@ -151,17 +151,17 @@
       [(NSDateComponentsFormatter *)self->_statusTimeFormatter setAllowedUnits:224];
     }
 
-    v30 = v4;
+    v30 = infoCopy;
     v14 = +[DMEnvironment sharedInstance];
-    v15 = [v14 buildVersion];
+    buildVersion = [v14 buildVersion];
     v16 = [(NSDateComponentsFormatter *)self->_statusTimeFormatter stringFromTimeInterval:v6];
-    v17 = [NSString stringWithFormat:@"Internal Only %@\nTotal Migration Time: %@", v15, v16];
+    v17 = [NSString stringWithFormat:@"Internal Only %@\nTotal Migration Time: %@", buildVersion, v16];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v31 = self;
+    selfCopy = self;
     v18 = self->_currentProgressWorkItems;
     v19 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v19)
@@ -178,8 +178,8 @@
           }
 
           v23 = *(*(&v32 + 1) + 8 * i);
-          v24 = [v23 name];
-          v25 = [NSString stringWithFormat:@"%@\n%@", v17, v24];
+          name = [v23 name];
+          v25 = [NSString stringWithFormat:@"%@\n%@", v17, name];
 
           +[DMTimeManager intervalSinceTimestamp:](DMTimeManager, "intervalSinceTimestamp:", [v23 startTimestamp]);
           if (v26 <= 1.0)
@@ -189,7 +189,7 @@
 
           else
           {
-            v27 = [(NSDateComponentsFormatter *)v31->_statusTimeFormatter stringFromTimeInterval:?];
+            v27 = [(NSDateComponentsFormatter *)selfCopy->_statusTimeFormatter stringFromTimeInterval:?];
             v17 = [NSString stringWithFormat:@"%@: %@", v25, v27];
           }
         }
@@ -200,8 +200,8 @@
       while (v20);
     }
 
-    v4 = v30;
-    self = v31;
+    infoCopy = v30;
+    self = selfCopy;
   }
 
   else
@@ -219,7 +219,7 @@ LABEL_23:
   }
 
   [(NSLock *)self->_progressLock unlock];
-  v4[2](v4, v17, progressFraction);
+  infoCopy[2](infoCopy, v17, progressFraction);
 }
 
 - (BOOL)_canDisplayStatus_progressLocked
@@ -242,9 +242,9 @@ LABEL_23:
   return has_internal_content;
 }
 
-- (void)_logReasonWithContext:(id)a3
+- (void)_logReasonWithContext:(id)context
 {
-  v3 = [a3 objectForKey:@"Reason"];
+  v3 = [context objectForKey:@"Reason"];
   if (!v3)
   {
     v4 = _CFCopySystemVersionDictionary();
@@ -270,21 +270,21 @@ LABEL_23:
   dispatch_semaphore_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (BOOL)_performMigrationWithPreliminaryTasks:(id)a3 pluginsProvider:(id)a4 pluginCategories:(unsigned int)a5 userCategory:(unsigned int)a6 buildVersion:(id)a7 lastBuildVersion:(id)a8
+- (BOOL)_performMigrationWithPreliminaryTasks:(id)tasks pluginsProvider:(id)provider pluginCategories:(unsigned int)categories userCategory:(unsigned int)category buildVersion:(id)version lastBuildVersion:(id)buildVersion
 {
-  v11 = a3;
-  v100 = a4;
-  v98 = a7;
-  v99 = a8;
+  tasksCopy = tasks;
+  providerCopy = provider;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
   v150 = 0;
   v151 = &v150;
   v152 = 0x2020000000;
   v153 = 1;
   v12 = +[DMMigrationState sharedInstance];
-  v13 = [v100 allPlugins];
-  [v12 willRunPlugins:v13];
+  allPlugins = [providerCopy allPlugins];
+  [v12 willRunPlugins:allPlugins];
 
-  v111 = [DMMigrator _userDataDispositionDictionaryWithBuildVersion:v98 lastBuildVersion:v99];
+  v111 = [DMMigrator _userDataDispositionDictionaryWithBuildVersion:versionCopy lastBuildVersion:buildVersionCopy];
   [(DMMigrator *)self _logReasonWithContext:?];
   v97 = [DMPluginParameters backupDeviceUUIDFromDispositionSupersetOfContext:v111];
   v103 = [[DMPluginParameters alloc] initWithDispositionSupersetOfContext:v111 backupDeviceUUID:v97];
@@ -293,8 +293,8 @@ LABEL_23:
   v149 = 0u;
   v146 = 0u;
   v147 = 0u;
-  v14 = [v100 allPluginsInRunOrder];
-  v15 = [v14 countByEnumeratingWithState:&v146 objects:v163 count:16];
+  allPluginsInRunOrder = [providerCopy allPluginsInRunOrder];
+  v15 = [allPluginsInRunOrder countByEnumeratingWithState:&v146 objects:v163 count:16];
   if (v15)
   {
     v16 = *v147;
@@ -304,7 +304,7 @@ LABEL_23:
       {
         if (*v147 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allPluginsInRunOrder);
         }
 
         v18 = *(*(&v146 + 1) + 8 * i);
@@ -315,16 +315,16 @@ LABEL_23:
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v146 objects:v163 count:16];
+      v15 = [allPluginsInRunOrder countByEnumeratingWithState:&v146 objects:v163 count:16];
     }
 
     while (v15);
   }
 
   v19 = +[DMEnvironment sharedInstance];
-  v20 = [v19 waitForExecutePluginsSignalMarkerPref];
+  waitForExecutePluginsSignalMarkerPref = [v19 waitForExecutePluginsSignalMarkerPref];
 
-  if (v20)
+  if (waitForExecutePluginsSignalMarkerPref)
   {
     [(DMMigrator *)self _waitForExecutePluginsSignal_engineerCurrentlyDebuggingMigrationPlugins];
   }
@@ -333,7 +333,7 @@ LABEL_23:
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v21 = v11;
+  v21 = tasksCopy;
   v22 = [v21 countByEnumeratingWithState:&v142 objects:v162 count:16];
   if (v22)
   {
@@ -348,7 +348,7 @@ LABEL_23:
         }
 
         v25 = *(*(&v142 + 1) + 8 * j);
-        v26 = [v25 name];
+        name = [v25 name];
         [v25 estimatedDurationTimeInterval];
         v91 = [NSNumber numberWithDouble:?];
         _DMLogFunc();
@@ -368,8 +368,8 @@ LABEL_23:
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v28 = [v100 allPluginsInRunOrder];
-  v29 = [v28 countByEnumeratingWithState:&v138 objects:v161 count:16];
+  allPluginsInRunOrder2 = [providerCopy allPluginsInRunOrder];
+  v29 = [allPluginsInRunOrder2 countByEnumeratingWithState:&v138 objects:v161 count:16];
   if (v29)
   {
     v30 = *v139;
@@ -379,7 +379,7 @@ LABEL_23:
       {
         if (*v139 != v30)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allPluginsInRunOrder2);
         }
 
         v32 = *(*(&v138 + 1) + 8 * k);
@@ -393,7 +393,7 @@ LABEL_23:
         }
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v138 objects:v161 count:16];
+      v29 = [allPluginsInRunOrder2 countByEnumeratingWithState:&v138 objects:v161 count:16];
     }
 
     while (v29);
@@ -415,8 +415,8 @@ LABEL_23:
   *&self->_progressFraction = 0;
   [(NSLock *)self->_progressLock unlock];
   v38 = objc_alloc_init(DMWrapperProcessWatchdogCoordinator);
-  v39 = [v100 concurrentPlugins];
-  v110 = [v39 mutableCopy];
+  concurrentPlugins = [providerCopy concurrentPlugins];
+  v110 = [concurrentPlugins mutableCopy];
 
   v40 = dispatch_queue_attr_make_with_qos_class(&_dispatch_queue_attr_concurrent, QOS_CLASS_USER_INITIATED, 0);
   queue = dispatch_queue_create("com.apple.datamigrator.concurrentPluginQueue", v40);
@@ -445,13 +445,13 @@ LABEL_23:
 
         v44 = *(*(&v130 + 1) + 8 * m);
         v45 = +[DMMigrationState sharedInstance];
-        v46 = [v44 name];
-        [v45 setMigrationPhaseDescription:v46];
+        name2 = [v44 name];
+        [v45 setMigrationPhaseDescription:name2];
 
         [(NSLock *)self->_progressLock lock];
         v47 = [DMProgressWorkItem alloc];
-        v48 = [v44 name];
-        v49 = [(DMProgressWorkItem *)v47 initWithName:v48 startTimestamp:+[DMTimeManager currentTimestamp]];
+        name3 = [v44 name];
+        v49 = [(DMProgressWorkItem *)v47 initWithName:name3 startTimestamp:+[DMTimeManager currentTimestamp]];
 
         [(NSMutableArray *)self->_currentProgressWorkItems addObject:v49];
         if ((v135[3] & 1) == 0)
@@ -464,21 +464,21 @@ LABEL_23:
         v51 = _DMCoreLog();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
-          v52 = [v44 name];
+          name4 = [v44 name];
           [v44 estimatedDurationTimeInterval];
           *buf = 138543618;
-          v157 = v52;
+          v157 = name4;
           v158 = 2048;
           v159 = v53;
           _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Beginning task '%{public}@'; estimate is %g seconds", buf, 0x16u);
         }
 
-        v54 = [v44 workBlock];
+        workBlock = [v44 workBlock];
 
-        if (v54)
+        if (workBlock)
         {
-          v55 = [v44 workBlock];
-          (v55)[2](v55, v111);
+          workBlock2 = [v44 workBlock];
+          (workBlock2)[2](workBlock2, v111);
         }
 
         [DMTimeManager intervalSinceTimestamp:v50];
@@ -486,9 +486,9 @@ LABEL_23:
         v58 = _DMCoreLog();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
-          v59 = [v44 name];
+          name5 = [v44 name];
           *buf = 138543618;
-          v157 = v59;
+          v157 = name5;
           v158 = 2048;
           v159 = v57;
           _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "... completed task '%{public}@' (%g s)", buf, 0x16u);
@@ -502,8 +502,8 @@ LABEL_23:
         *(v135 + 24) = 1;
         [(NSLock *)self->_progressLock unlock];
         v61 = +[DMMigrationState sharedInstance];
-        v62 = [v44 telemetryIdentifier];
-        [v61 reportTelemetryForPluginIdentifier:v62 duration:0 incident:1 countOfAttempts:v111 userDataDisposition:a6 userCategory:v57];
+        telemetryIdentifier = [v44 telemetryIdentifier];
+        [v61 reportTelemetryForPluginIdentifier:telemetryIdentifier duration:0 incident:1 countOfAttempts:v111 userDataDisposition:category userCategory:v57];
       }
 
       v41 = [obj countByEnumeratingWithState:&v130 objects:v160 count:16];
@@ -525,14 +525,14 @@ LABEL_23:
   v94 = v38;
   v126 = v94;
   v128 = &v150;
-  v129 = a6;
+  categoryCopy = category;
   v112 = objc_retainBlock(v123);
   v121 = 0u;
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v101 = [v100 serialPluginsInRunOrder];
-  v104 = [v101 countByEnumeratingWithState:&v119 objects:v155 count:16];
+  serialPluginsInRunOrder = [providerCopy serialPluginsInRunOrder];
+  v104 = [serialPluginsInRunOrder countByEnumeratingWithState:&v119 objects:v155 count:16];
   if (v104)
   {
     v102 = *v120;
@@ -542,7 +542,7 @@ LABEL_23:
       {
         if (*v120 != v102)
         {
-          objc_enumerationMutation(v101);
+          objc_enumerationMutation(serialPluginsInRunOrder);
         }
 
         v63 = *(*(&v119 + 1) + 8 * n);
@@ -566,9 +566,9 @@ LABEL_23:
               }
 
               v68 = *(*(&v115 + 1) + 8 * ii);
-              v69 = [v68 identifierOfDependency];
-              v70 = [v63 identifier];
-              v71 = [v69 isEqualToString:v70];
+              identifierOfDependency = [v68 identifierOfDependency];
+              identifier = [v63 identifier];
+              v71 = [identifierOfDependency isEqualToString:identifier];
 
               if (v71)
               {
@@ -592,7 +592,7 @@ LABEL_23:
         }
       }
 
-      v104 = [v101 countByEnumeratingWithState:&v119 objects:v155 count:16];
+      v104 = [serialPluginsInRunOrder countByEnumeratingWithState:&v119 objects:v155 count:16];
     }
 
     while (v104);
@@ -607,15 +607,15 @@ LABEL_23:
   [DMTimeManager intervalSinceTimestamp:self->_firstWorkItemStartTimestamp];
   v76 = v75;
   v77 = +[DMEnvironment sharedInstance];
-  v78 = [v77 inAppleStore];
+  inAppleStore = [v77 inAppleStore];
   v79 = +[DMEnvironment sharedInstance];
-  v80 = [v79 isFromFactory];
+  isFromFactory = [v79 isFromFactory];
   [DMTimeManager intervalFromStart:0 toEnd:self->_migrationStartTimestamp];
   v82 = v81;
   [DMTimeManager intervalFromStart:0 toEnd:self->_firstWorkItemStartTimestamp];
   v84 = v83;
   [DMTimeManager intervalFromStart:0 toEnd:v73];
-  [v74 reportTelemetryWithMigrationDuration:v96 userDataDisposition:a5 pluginCategories:a6 userCategory:v78 inAppleStore:v80 isFromFactory:v76 startInterval:v82 firstPluginStartInterval:v84 endInterval:v85];
+  [v74 reportTelemetryWithMigrationDuration:v96 userDataDisposition:categories pluginCategories:category userCategory:inAppleStore inAppleStore:isFromFactory isFromFactory:v76 startInterval:v82 firstPluginStartInterval:v84 endInterval:v85];
 
   v86 = +[DMMigrationState sharedInstance];
   [v86 persistIfNecessary];
@@ -627,23 +627,23 @@ LABEL_23:
   return v87 & 1;
 }
 
-- (double)_artificialHangTimeIntervalForPlugin:(id)a3
+- (double)_artificialHangTimeIntervalForPlugin:(id)plugin
 {
-  v3 = a3;
+  pluginCopy = plugin;
   v4 = 0.0;
   if (os_variant_has_internal_content())
   {
     v5 = +[DMEnvironment sharedInstance];
     if ([v5 shouldImposePluginArtificialHang])
     {
-      v6 = [v3 identifier];
-      v7 = [v6 isEqualToString:@"com.apple.MobileInstallation.SystemAppMigrator"];
+      identifier = [pluginCopy identifier];
+      v7 = [identifier isEqualToString:@"com.apple.MobileInstallation.SystemAppMigrator"];
 
       if (v7)
       {
-        [v3 setTimeIntervalBeforeWatchdog:0.0];
-        [v3 setTimeIntervalBeforeReboot:60.0];
-        [v3 timeIntervalBeforeReboot];
+        [pluginCopy setTimeIntervalBeforeWatchdog:0.0];
+        [pluginCopy setTimeIntervalBeforeReboot:60.0];
+        [pluginCopy timeIntervalBeforeReboot];
         v4 = v8 + 60.0;
       }
     }
@@ -693,43 +693,43 @@ LABEL_23:
   return v2;
 }
 
-+ (id)_dispositionDictFromContext:(id)a3 buildVersion:(id)a4 lastBuildVersion:(id)a5 environment:(id)a6
++ (id)_dispositionDictFromContext:(id)context buildVersion:(id)version lastBuildVersion:(id)buildVersion environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  environmentCopy = environment;
   v13 = 0;
-  if (v10 && v11)
+  if (versionCopy && buildVersionCopy)
   {
-    v13 = [DMEnvironment isBuildVersion:v10 equalToBuildVersion:v11]^ 1;
+    v13 = [DMEnvironment isBuildVersion:versionCopy equalToBuildVersion:buildVersionCopy]^ 1;
   }
 
-  if (!v9 || v13)
+  if (!contextCopy || v13)
   {
     v14 = objc_alloc_init(NSMutableDictionary);
-    v16 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v14 = [v9 mutableCopy];
-    v15 = [v9 objectForKeyedSubscript:@"DidRestoreFromBackup"];
-    v16 = [v15 BOOLValue];
+    v14 = [contextCopy mutableCopy];
+    v15 = [contextCopy objectForKeyedSubscript:@"DidRestoreFromBackup"];
+    bOOLValue = [v15 BOOLValue];
   }
 
   v17 = [NSNumber numberWithBool:v13];
   [v14 setValue:v17 forKey:@"SyntheticDidUpgrade"];
 
-  [v14 setValue:v10 forKey:@"buildVersion"];
-  if (v11)
+  [v14 setValue:versionCopy forKey:@"buildVersion"];
+  if (buildVersionCopy)
   {
-    [v14 setValue:v11 forKey:@"previousBuildVersion"];
+    [v14 setValue:buildVersionCopy forKey:@"previousBuildVersion"];
   }
 
-  if (((v13 | v16) & 1) == 0)
+  if (((v13 | bOOLValue) & 1) == 0)
   {
-    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isRapidReturnToService]);
+    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [environmentCopy isRapidReturnToService]);
     [v14 setValue:v18 forKey:@"EraseIsRapidReturnToService"];
   }
 
@@ -738,10 +738,10 @@ LABEL_23:
   return v19;
 }
 
-+ (id)_userDataDispositionDictionaryWithBuildVersion:(id)a3 lastBuildVersion:(id)a4
++ (id)_userDataDispositionDictionaryWithBuildVersion:(id)version lastBuildVersion:(id)buildVersion
 {
-  v5 = a3;
-  v6 = a4;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
   if (qword_100030A70 != -1)
   {
     sub_100012C98();
@@ -753,7 +753,7 @@ LABEL_23:
   v18 = sub_10000E514;
   v19 = sub_10000E524;
   v20 = 0;
-  if (v5)
+  if (versionCopy)
   {
     v7 = qword_100030A68;
     block[0] = _NSConcreteStackBlock;
@@ -761,8 +761,8 @@ LABEL_23:
     block[2] = sub_10000E52C;
     block[3] = &unk_100024C08;
     v14 = &v15;
-    v12 = v5;
-    v13 = v6;
+    v12 = versionCopy;
+    v13 = buildVersionCopy;
     dispatch_sync(v7, block);
 
     v8 = v16[5];
@@ -782,28 +782,28 @@ LABEL_23:
 - (id)_userDataDispositionDictionary
 {
   v2 = +[DMEnvironment sharedInstance];
-  v3 = [v2 buildVersion];
+  buildVersion = [v2 buildVersion];
 
   v4 = +[DMEnvironment sharedInstance];
-  v5 = [v4 lastBuildVersionPref];
+  lastBuildVersionPref = [v4 lastBuildVersionPref];
 
-  v6 = [DMMigrator _userDataDispositionDictionaryWithBuildVersion:v3 lastBuildVersion:v5];
+  v6 = [DMMigrator _userDataDispositionDictionaryWithBuildVersion:buildVersion lastBuildVersion:lastBuildVersionPref];
 
   return v6;
 }
 
 - (unsigned)userDataDisposition
 {
-  v2 = [(DMMigrator *)self _userDataDispositionDictionary];
-  v3 = [DMUserDataDispositionManager dispositionFlagsFromDispositionDict:v2];
+  _userDataDispositionDictionary = [(DMMigrator *)self _userDataDispositionDictionary];
+  v3 = [DMUserDataDispositionManager dispositionFlagsFromDispositionDict:_userDataDispositionDictionary];
 
   return v3;
 }
 
 - (id)previousBuildVersion
 {
-  v2 = [(DMMigrator *)self _userDataDispositionDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"previousBuildVersion"];
+  _userDataDispositionDictionary = [(DMMigrator *)self _userDataDispositionDictionary];
+  v3 = [_userDataDispositionDictionary objectForKeyedSubscript:@"previousBuildVersion"];
 
   return v3;
 }
@@ -811,9 +811,9 @@ LABEL_23:
 - (void)reportMigrationFailure
 {
   v2 = +[DMEnvironment sharedInstance];
-  v4 = [v2 continuousIntegrationMarkerPref];
+  continuousIntegrationMarkerPref = [v2 continuousIntegrationMarkerPref];
 
-  if (v4)
+  if (continuousIntegrationMarkerPref)
   {
     _DMLogFunc();
   }
@@ -825,11 +825,11 @@ LABEL_23:
   }
 }
 
-- (void)_migrateWithTestMigrationInfrastructureOnly:(BOOL)a3 buildVersion:(id)a4 lastBuildVersion:(id)a5
+- (void)_migrateWithTestMigrationInfrastructureOnly:(BOOL)only buildVersion:(id)version lastBuildVersion:(id)buildVersion
 {
-  v58 = a3;
-  v61 = a4;
-  v63 = a5;
+  onlyCopy = only;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
   v7 = +[DMEnvironment sharedInstance];
   v55 = [(DMMigrator *)self _userCategoryWithEnvironment:v7];
 
@@ -854,11 +854,11 @@ LABEL_23:
 
   v57 = +[DMPluginFileSystemRep allReps];
   v13 = +[DMEnvironment sharedInstance];
-  v14 = [(DMMigrator *)self _pluginCategoriesWithEnvironment:v13 lastBuildVersion:v63];
+  v14 = [(DMMigrator *)self _pluginCategoriesWithEnvironment:v13 lastBuildVersion:buildVersionCopy];
 
   v15 = [DMPluginsProvider alloc];
-  v16 = [(DMMigrator *)self _pluginAllowedList];
-  v56 = [(DMPluginsProvider *)v15 initWithReps:v57 categories:v14 pluginAllowedList:v16];
+  _pluginAllowedList = [(DMMigrator *)self _pluginAllowedList];
+  v56 = [(DMPluginsProvider *)v15 initWithReps:v57 categories:v14 pluginAllowedList:_pluginAllowedList];
 
   v54 = [v57 count];
   if (v54)
@@ -970,7 +970,7 @@ LABEL_23:
     _DMLogFunc();
   }
 
-  if (v58)
+  if (onlyCopy)
   {
     v29 = +[DMEnvironment sharedInstance];
     [v29 setTestMigrationInfrastructureOnly:1];
@@ -990,7 +990,7 @@ LABEL_23:
   }
 
   v33 = +[DMEnvironment sharedInstance];
-  v34 = [DMLoggingTask createTaskIfAppropriateWithEnvironment:v33 lastBuildVersion:v63];
+  v34 = [DMLoggingTask createTaskIfAppropriateWithEnvironment:v33 lastBuildVersion:buildVersionCopy];
 
   if (v34)
   {
@@ -1010,7 +1010,7 @@ LABEL_23:
   }
 
   [(DMMigrator *)self setPreliminaryTasksCacheForUnitTesting:v32];
-  v39 = [(DMMigrator *)self _performMigrationWithPreliminaryTasks:v32 pluginsProvider:v56 pluginCategories:v14 userCategory:v55 buildVersion:v61 lastBuildVersion:v63];
+  v39 = [(DMMigrator *)self _performMigrationWithPreliminaryTasks:v32 pluginsProvider:v56 pluginCategories:v14 userCategory:v55 buildVersion:versionCopy lastBuildVersion:buildVersionCopy];
   if (v60)
   {
     _DMLogFunc();
@@ -1022,7 +1022,7 @@ LABEL_23:
     v40 = v39;
   }
 
-  if (v58)
+  if (onlyCopy)
   {
     v41 = +[DMEnvironment sharedInstance];
     [v41 setTestMigrationInfrastructureOnly:0];
@@ -1053,7 +1053,7 @@ LABEL_23:
   [v44 setMigrationPhaseDescription:@"Notifying clients of completion"];
 
   v45 = +[DMMigrationState sharedInstance];
-  [v45 sendMigrationResultsToClientInvocationsWithSuccess:v40 buildVersion:v61];
+  [v45 sendMigrationResultsToClientInvocationsWithSuccess:v40 buildVersion:versionCopy];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.datamigrator.migrationDidFinish", 0, 0, 0);
@@ -1061,8 +1061,8 @@ LABEL_23:
   [v47 migrationDidEnd];
 
   _DMLogFunc();
-  v48 = [(DMMigrator *)self progressWindow];
-  [v48 setVisible:0];
+  progressWindow = [(DMMigrator *)self progressWindow];
+  [progressWindow setVisible:0];
 
   [(DMMigrator *)self setProgressWindow:0];
   v49 = +[DMMigrationState sharedInstance];
@@ -1076,9 +1076,9 @@ LABEL_23:
   }
 
   v50 = +[DMEnvironment sharedInstance];
-  v51 = [v50 deviceModeIsSharediPad];
+  deviceModeIsSharediPad = [v50 deviceModeIsSharediPad];
 
-  if ((v51 & 1) == 0)
+  if ((deviceModeIsSharediPad & 1) == 0)
   {
     v81 = @"LockDeviceNow";
     v82 = kCFBooleanTrue;
@@ -1099,9 +1099,9 @@ LABEL_23:
   return v4;
 }
 
-- (void)_didReceiveHIDEvent:(id)a3
+- (void)_didReceiveHIDEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (IOHIDEventGetType() == 3 && IOHIDEventGetIntegerValue())
   {
     IntegerValue = IOHIDEventGetIntegerValue();
@@ -1139,25 +1139,25 @@ LABEL_10:
   v3 = +[DMPluginFileSystemRep allReps];
   v4 = +[DMEnvironment sharedInstance];
   v5 = +[DMEnvironment sharedInstance];
-  v6 = [v5 lastBuildVersionPref];
-  v7 = [(DMMigrator *)self _pluginCategoriesWithEnvironment:v4 lastBuildVersion:v6];
+  lastBuildVersionPref = [v5 lastBuildVersionPref];
+  v7 = [(DMMigrator *)self _pluginCategoriesWithEnvironment:v4 lastBuildVersion:lastBuildVersionPref];
 
   v8 = [DMPluginsProvider alloc];
-  v9 = [(DMMigrator *)self _pluginAllowedList];
-  v10 = [(DMPluginsProvider *)v8 initWithReps:v3 categories:v7 pluginAllowedList:v9];
+  _pluginAllowedList = [(DMMigrator *)self _pluginAllowedList];
+  v10 = [(DMPluginsProvider *)v8 initWithReps:v3 categories:v7 pluginAllowedList:_pluginAllowedList];
 
-  v11 = [(DMPluginsProvider *)v10 allPluginsInRunOrder];
-  v12 = [v11 indexesOfObjectsPassingTest:&stru_100024CE8];
-  v13 = [v11 objectsAtIndexes:v12];
+  allPluginsInRunOrder = [(DMPluginsProvider *)v10 allPluginsInRunOrder];
+  v12 = [allPluginsInRunOrder indexesOfObjectsPassingTest:&stru_100024CE8];
+  v13 = [allPluginsInRunOrder objectsAtIndexes:v12];
 
   v14 = [v13 valueForKey:@"description"];
 
   return v14;
 }
 
-- (void)testMigrationUIWithProgress:(BOOL)a3 forceInvert:(BOOL)a4 completion:(id)a5
+- (void)testMigrationUIWithProgress:(BOOL)progress forceInvert:(BOOL)invert completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   _DMLogFunc();
   v23 = 0;
   v24 = &v23;
@@ -1173,8 +1173,8 @@ LABEL_10:
     block[2] = sub_10000FE14;
     block[3] = &unk_100024D10;
     block[4] = &v23;
-    v21 = a3;
-    v22 = a4;
+    progressCopy = progress;
+    invertCopy = invert;
     dispatch_sync(v8, block);
   }
 
@@ -1213,15 +1213,15 @@ LABEL_10:
   dispatch_sync(v16, v17);
 
   [v24[5] setVisible:0];
-  v7[2](v7);
+  completionCopy[2](completionCopy);
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)a3 context:(id)a4
+- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)disposition context:(id)context
 {
-  v4 = a3;
-  v10 = a4;
-  if ((v4 & 2) != 0)
+  dispositionCopy = disposition;
+  contextCopy = context;
+  if ((dispositionCopy & 2) != 0)
   {
     _DMLogFunc();
     v6 = +[DMEnvironment sharedInstance];
@@ -1236,14 +1236,14 @@ LABEL_10:
     _DMLogFunc();
     v5 = +[DMEnvironment sharedInstance];
     [v5 setLastBuildVersionPref:0];
-    if ((v4 & 4) != 0)
+    if ((dispositionCopy & 4) != 0)
     {
 
       v7 = +[DMEnvironment sharedInstance];
       [v7 setUserDataDispositionPref:0];
 
       v5 = +[DMEnvironment sharedInstance];
-      [v5 setContext:v10];
+      [v5 setContext:contextCopy];
     }
   }
 

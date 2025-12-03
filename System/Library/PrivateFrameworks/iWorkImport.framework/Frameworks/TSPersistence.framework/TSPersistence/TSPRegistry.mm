@@ -1,20 +1,20 @@
 @interface TSPRegistry
 + (id)sharedRegistry;
-+ (void)setInitializationHandler:(id)a3;
-- (Class)unarchiveClassForMessageType:(unsigned int)a3;
++ (void)setInitializationHandler:(id)handler;
+- (Class)unarchiveClassForMessageType:(unsigned int)type;
 - (TSPRegistry)init;
-- (const)messagePrototypeForMessageType:(unsigned int)a3;
+- (const)messagePrototypeForMessageType:(unsigned int)type;
 - (id).cxx_construct;
 - (id)description;
-- (unsigned)messageTypeForDescriptor:(const void *)a3;
-- (unsigned)messageTypeForUnarchiveClassname:(const char *)a3;
+- (unsigned)messageTypeForDescriptor:(const void *)descriptor;
+- (unsigned)messageTypeForUnarchiveClassname:(const char *)classname;
 - (void)dealloc;
 - (void)registerPersistenceMessages;
-- (void)resetForMessageType:(unsigned int)a3 descriptor:(const void *)a4;
-- (void)setMessageType:(unsigned int)a3 forUnarchiveClassname:(const char *)a4;
-- (void)setOverrideMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 descriptor:(const void *)a5;
-- (void)setUpgradeMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 unarchiveClass:(Class)a5 unarchiveClassname:(const char *)a6;
-- (void)setUpgradeMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 unarchiveClassname:(const char *)a5;
+- (void)resetForMessageType:(unsigned int)type descriptor:(const void *)descriptor;
+- (void)setMessageType:(unsigned int)type forUnarchiveClassname:(const char *)classname;
+- (void)setOverrideMessageType:(unsigned int)type messagePrototype:(const Message *)prototype descriptor:(const void *)descriptor;
+- (void)setUpgradeMessageType:(unsigned int)type messagePrototype:(const Message *)prototype unarchiveClass:(Class)class unarchiveClassname:(const char *)classname;
+- (void)setUpgradeMessageType:(unsigned int)type messagePrototype:(const Message *)prototype unarchiveClassname:(const char *)classname;
 @end
 
 @implementation TSPRegistry
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_276A1DA18;
   block[3] = &unk_27A6E4768;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A526B0 != -1)
   {
     dispatch_once(&qword_280A526B0, block);
@@ -36,12 +36,12 @@
   return v2;
 }
 
-+ (void)setInitializationHandler:(id)a3
++ (void)setInitializationHandler:(id)handler
 {
   __dmb(0xBu);
-  v3 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&unk_280A526C0);
-  v4 = _Block_copy(v3);
+  v4 = _Block_copy(handlerCopy);
 
   v5 = qword_280A526A8;
   qword_280A526A8 = v4;
@@ -151,10 +151,10 @@
   objc_msgSend_setUpgradeMessageType_messagePrototype_unarchiveClass_unarchiveClassname_(self, v61, 11199, 0, v62, "TSPUnknownObject");
 }
 
-- (const)messagePrototypeForMessageType:(unsigned int)a3
+- (const)messagePrototypeForMessageType:(unsigned int)type
 {
-  v4 = a3;
-  result = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &v4);
+  typeCopy = type;
+  result = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (result)
   {
     return result[1].var1.ptr_;
@@ -163,13 +163,13 @@
   return result;
 }
 
-- (unsigned)messageTypeForDescriptor:(const void *)a3
+- (unsigned)messageTypeForDescriptor:(const void *)descriptor
 {
-  v14 = a3;
-  v3 = sub_276A1F188(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &v14);
+  descriptorCopy = descriptor;
+  v3 = sub_276A1F188(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &descriptorCopy);
   if (!v3)
   {
-    v5 = v14[1];
+    v5 = descriptorCopy[1];
     if (*(v5 + 23) < 0)
     {
       v5 = *v5;
@@ -180,7 +180,7 @@
     v6 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPRegistry messageTypeForDescriptor:]", "[TSPRegistry messageTypeForDescriptor:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 206, v13);
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm");
-    v12 = v14[1];
+    v12 = descriptorCopy[1];
     if (*(v12 + 23) < 0)
     {
       v12 = *v12;
@@ -195,17 +195,17 @@
   return *(v3 + 6);
 }
 
-- (Class)unarchiveClassForMessageType:(unsigned int)a3
+- (Class)unarchiveClassForMessageType:(unsigned int)type
 {
-  v24 = a3;
-  Class = sub_276A1F0D4(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &v24);
+  typeCopy = type;
+  Class = sub_276A1F0D4(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (Class)
   {
     v5 = Class;
     Class = Class[3];
     if (!Class)
     {
-      v6 = sub_276A1F0D4(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &v24);
+      v6 = sub_276A1F0D4(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &typeCopy);
       if (v6)
       {
         v8 = v6[3];
@@ -231,7 +231,7 @@
         v9 = MEMORY[0x277D81150];
         v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPRegistry unarchiveClassForMessageType:]");
         v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 230, 0, "Message type %u isn't registered", v24);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 230, 0, "Message type %u isn't registered", typeCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
         Class = 0;
@@ -242,12 +242,12 @@
   return Class;
 }
 
-- (unsigned)messageTypeForUnarchiveClassname:(const char *)a3
+- (unsigned)messageTypeForUnarchiveClassname:(const char *)classname
 {
-  v5 = a3;
-  if (a3)
+  classnameCopy = classname;
+  if (classname)
   {
-    v3 = sub_276A1F240(&self->_classnameToMessageTypeMap.__table_.__bucket_list_.__ptr_, &v5);
+    v3 = sub_276A1F240(&self->_classnameToMessageTypeMap.__table_.__bucket_list_.__ptr_, &classnameCopy);
     if (v3)
     {
       LODWORD(v3) = *(v3 + 6);
@@ -262,10 +262,10 @@
   return v3;
 }
 
-- (void)setMessageType:(unsigned int)a3 forUnarchiveClassname:(const char *)a4
+- (void)setMessageType:(unsigned int)type forUnarchiveClassname:(const char *)classname
 {
-  v7 = a3;
-  __s = a4;
+  typeCopy = type;
+  __s = classname;
   if (!sub_276A1F240(&self->_classnameToMessageTypeMap.__table_.__bucket_list_.__ptr_, &__s))
   {
     v4 = strlen(__s);
@@ -275,64 +275,64 @@
   }
 }
 
-- (void)resetForMessageType:(unsigned int)a3 descriptor:(const void *)a4
+- (void)resetForMessageType:(unsigned int)type descriptor:(const void *)descriptor
 {
-  v10 = a3;
-  v9 = a4;
-  v5 = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &v10);
+  typeCopy = type;
+  descriptorCopy = descriptor;
+  v5 = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (v5)
   {
     sub_276A1F638(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, v5);
   }
 
-  v6 = sub_276A1F188(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &v9);
+  v6 = sub_276A1F188(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &descriptorCopy);
   if (v6)
   {
     sub_276A1F638(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, v6);
   }
 
-  v7 = sub_276A1F0D4(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &v10);
+  v7 = sub_276A1F0D4(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (v7)
   {
     sub_276A1F638(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, v7);
   }
 
-  v8 = sub_276A1F0D4(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &v10);
+  v8 = sub_276A1F0D4(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (v8)
   {
     sub_276A1F638(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, v8);
   }
 }
 
-- (void)setUpgradeMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 unarchiveClassname:(const char *)a5
+- (void)setUpgradeMessageType:(unsigned int)type messagePrototype:(const Message *)prototype unarchiveClassname:(const char *)classname
 {
-  v8 = a3;
-  sub_276A1F67C(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &v8);
-  sub_276A1FB00(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &v8);
-  sub_276A1FD44(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &v8);
-  objc_msgSend_setMessageType_forUnarchiveClassname_(self, v6, v8, a5, 0);
+  typeCopy = type;
+  sub_276A1F67C(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
+  sub_276A1FB00(&self->_messageTypeToClassnameMap.__table_.__bucket_list_.__ptr_, &typeCopy);
+  sub_276A1FD44(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &typeCopy);
+  objc_msgSend_setMessageType_forUnarchiveClassname_(self, v6, typeCopy, classname, 0);
 }
 
-- (void)setUpgradeMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 unarchiveClass:(Class)a5 unarchiveClassname:(const char *)a6
+- (void)setUpgradeMessageType:(unsigned int)type messagePrototype:(const Message *)prototype unarchiveClass:(Class)class unarchiveClassname:(const char *)classname
 {
-  v24 = a3;
-  if (!a3)
+  typeCopy = type;
+  if (!type)
   {
-    if (a6)
+    if (classname)
     {
-      v12 = a6;
+      classnameCopy = classname;
     }
 
     else
     {
-      v12 = "Nil";
+      classnameCopy = "Nil";
     }
 
     TSUSetCrashReporterInfo();
     v13 = MEMORY[0x277D81150];
-    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 374, v12);
+    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 374, classnameCopy);
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v18, v15, v17, 374, 1, "Don't use a message type of 0 for class %{public}s", v12);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v18, v15, v17, 374, 1, "Don't use a message type of 0 for class %{public}s", classnameCopy);
 LABEL_12:
 
     TSUCrashBreakpoint();
@@ -340,51 +340,51 @@ LABEL_12:
   }
 
   v9 = objc_opt_class();
-  if ((objc_msgSend_isSubclassOfClass_(a5, v10, v9) & 1) == 0)
+  if ((objc_msgSend_isSubclassOfClass_(class, v10, v9) & 1) == 0)
   {
-    if (a6)
+    if (classname)
     {
-      v19 = a6;
+      classnameCopy2 = classname;
     }
 
     else
     {
-      v19 = "Nil";
+      classnameCopy2 = "Nil";
     }
 
     TSUSetCrashReporterInfo();
     v20 = MEMORY[0x277D81150];
-    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 375, v19);
+    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "[TSPRegistry setUpgradeMessageType:messagePrototype:unarchiveClass:unarchiveClassname:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 375, classnameCopy2);
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v23, v15, v17, 375, 1, "Putting a non-TSPObject class in TSPRegistry: %{public}s", v19);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v23, v15, v17, 375, 1, "Putting a non-TSPObject class in TSPRegistry: %{public}s", classnameCopy2);
     goto LABEL_12;
   }
 
-  sub_276A1F67C(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &v24);
-  sub_276A1FF78(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &v24);
-  objc_msgSend_setMessageType_forUnarchiveClassname_(self, v11, v24, a6);
+  sub_276A1F67C(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
+  sub_276A1FF78(&self->_messageTypeToClassMap.__table_.__bucket_list_.__ptr_, &typeCopy);
+  objc_msgSend_setMessageType_forUnarchiveClassname_(self, v11, typeCopy, classname);
 }
 
-- (void)setOverrideMessageType:(unsigned int)a3 messagePrototype:(const Message *)a4 descriptor:(const void *)a5
+- (void)setOverrideMessageType:(unsigned int)type messagePrototype:(const Message *)prototype descriptor:(const void *)descriptor
 {
-  v16 = a3;
-  v15 = a5;
-  v7 = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &v16);
+  typeCopy = type;
+  descriptorCopy = descriptor;
+  v7 = sub_276A1F0D4(&self->_messageTypeToPrototypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (!v7)
   {
-    v14 = v16;
+    v14 = typeCopy;
     TSUSetCrashReporterInfo();
     v8 = MEMORY[0x277D81150];
-    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSPRegistry setOverrideMessageType:messagePrototype:descriptor:]", "[TSPRegistry setOverrideMessageType:messagePrototype:descriptor:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 392, v14, v15);
+    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSPRegistry setOverrideMessageType:messagePrototype:descriptor:]", "[TSPRegistry setOverrideMessageType:messagePrototype:descriptor:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm", 392, v14, descriptorCopy);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRegistry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v13, v10, v12, 392, 1, "No class to override for message type %u", v16);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v13, v10, v12, 392, 1, "No class to override for message type %u", typeCopy);
 
     TSUCrashBreakpoint();
     abort();
   }
 
-  v7[3] = a4;
-  sub_276A1F8C0(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &v15);
+  v7[3] = prototype;
+  sub_276A1F8C0(&self->_descriptorToMessageTypeMap.__table_.__bucket_list_.__ptr_, &descriptorCopy);
 }
 
 - (id)description

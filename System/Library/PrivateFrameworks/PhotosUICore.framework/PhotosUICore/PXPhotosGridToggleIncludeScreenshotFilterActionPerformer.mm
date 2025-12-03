@@ -1,21 +1,21 @@
 @interface PXPhotosGridToggleIncludeScreenshotFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleIncludeScreenshotFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  v5 = [v4 dataSourceManager];
-  if ([v5 supportsFiltering])
+  modelCopy = model;
+  dataSourceManager = [modelCopy dataSourceManager];
+  if ([dataSourceManager supportsFiltering])
   {
-    v6 = [v4 currentDataSource];
-    v7 = [v6 firstAssetCollection];
-    v8 = [v7 px_isMediaTypeSmartAlbum] ^ 1;
+    currentDataSource = [modelCopy currentDataSource];
+    firstAssetCollection = [currentDataSource firstAssetCollection];
+    v8 = [firstAssetCollection px_isMediaTypeSmartAlbum] ^ 1;
   }
 
   else
@@ -28,34 +28,34 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setIncludeScreenshots:{objc_msgSend(v3, "isContentFilterActive:", 2) ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setIncludeScreenshots:{objc_msgSend(currentContentFilterState, "isContentFilterActive:", 2) ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v5 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v6 = [v5 contentFilterState];
+    viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+    contentFilterState = [viewModel contentFilterState];
 
-    if (v6)
+    if (contentFilterState)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [v6 px_descriptionForAssertionMessage];
-        [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleIncludeScreenshotFilterActionPerformer.m" lineNumber:43 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.contentFilterState", v13, v14}];
+        px_descriptionForAssertionMessage = [contentFilterState px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleIncludeScreenshotFilterActionPerformer.m" lineNumber:43 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.contentFilterState", v13, px_descriptionForAssertionMessage}];
       }
     }
 
-    v7 = [v6 shouldExcludeScreenshots];
+    shouldExcludeScreenshots = [contentFilterState shouldExcludeScreenshots];
 
-    if (v7)
+    if (shouldExcludeScreenshots)
     {
       v8 = @"ENABLE_INCLUDE_SCREENSHOTS_FILTER_SHORTCUT";
     }
@@ -78,8 +78,8 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:2];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:2];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface _MPCURLAssetDownloadCompletionObserver
 - (AVURLAsset)asset;
-- (_MPCURLAssetDownloadCompletionObserver)initWithAsset:(id)a3;
-- (void)_downloadCompleteFailedNotification:(id)a3;
-- (void)_notifyCompletionHandlerWithSuccess:(BOOL)a3 error:(id)a4;
+- (_MPCURLAssetDownloadCompletionObserver)initWithAsset:(id)asset;
+- (void)_downloadCompleteFailedNotification:(id)notification;
+- (void)_notifyCompletionHandlerWithSuccess:(BOOL)success error:(id)error;
 - (void)dealloc;
 @end
 
@@ -15,31 +15,31 @@
   return WeakRetained;
 }
 
-- (void)_notifyCompletionHandlerWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_notifyCompletionHandlerWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(_MPCURLAssetDownloadCompletionObserver *)self completionHandler];
+  successCopy = success;
+  errorCopy = error;
+  completionHandler = [(_MPCURLAssetDownloadCompletionObserver *)self completionHandler];
   [(_MPCURLAssetDownloadCompletionObserver *)self setCompletionHandler:0];
-  if (v6)
+  if (completionHandler)
   {
-    (v6)[2](v6, v4, v7);
+    (completionHandler)[2](completionHandler, successCopy, errorCopy);
   }
 }
 
-- (void)_downloadCompleteFailedNotification:(id)a3
+- (void)_downloadCompleteFailedNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKey:*MEMORY[0x1E6987B60]];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E6987B60]];
   [(_MPCURLAssetDownloadCompletionObserver *)self _notifyCompletionHandlerWithSuccess:0 error:v4];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_asset);
-  [v3 removeObserver:self name:*MEMORY[0x1E6987B68] object:WeakRetained];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987B58] object:WeakRetained];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987B68] object:WeakRetained];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987B58] object:WeakRetained];
   [(_MPCURLAssetDownloadCompletionObserver *)self _notifyCompletionHandlerWithSuccess:0 error:0];
 
   v5.receiver = self;
@@ -47,19 +47,19 @@
   [(_MPCURLAssetDownloadCompletionObserver *)&v5 dealloc];
 }
 
-- (_MPCURLAssetDownloadCompletionObserver)initWithAsset:(id)a3
+- (_MPCURLAssetDownloadCompletionObserver)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [(_MPCURLAssetDownloadCompletionObserver *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_asset, v4);
-    if (v4)
+    objc_storeWeak(&v5->_asset, assetCopy);
+    if (assetCopy)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v6 selector:sel__downloadCompleteSuccessNotification_ name:*MEMORY[0x1E6987B68] object:v4];
-      [v7 addObserver:v6 selector:sel__downloadCompleteFailedNotification_ name:*MEMORY[0x1E6987B58] object:v4];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__downloadCompleteSuccessNotification_ name:*MEMORY[0x1E6987B68] object:assetCopy];
+      [defaultCenter addObserver:v6 selector:sel__downloadCompleteFailedNotification_ name:*MEMORY[0x1E6987B58] object:assetCopy];
     }
   }
 

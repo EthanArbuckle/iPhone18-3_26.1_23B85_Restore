@@ -1,47 +1,47 @@
 @interface AVTAvatarActionButton
-+ (id)defaultButtonWithAction:(id)a3;
-+ (id)destructiveButtonWithAction:(id)a3;
-- (AVTAvatarActionButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsDestructive:(BOOL)a3;
++ (id)defaultButtonWithAction:(id)action;
++ (id)destructiveButtonWithAction:(id)action;
+- (AVTAvatarActionButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsDestructive:(BOOL)destructive;
 @end
 
 @implementation AVTAvatarActionButton
 
-+ (id)defaultButtonWithAction:(id)a3
++ (id)defaultButtonWithAction:(id)action
 {
-  v3 = [AVTAvatarActionButton buttonWithAction:a3];
+  v3 = [AVTAvatarActionButton buttonWithAction:action];
   v4 = +[AVTUIFontRepository avatarActionButtonTitleFont];
-  v5 = [v3 titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:v4];
 
   return v3;
 }
 
-+ (id)destructiveButtonWithAction:(id)a3
++ (id)destructiveButtonWithAction:(id)action
 {
-  v3 = [AVTAvatarActionButton buttonWithAction:a3];
+  v3 = [AVTAvatarActionButton buttonWithAction:action];
   v4 = +[AVTUIFontRepository avatarActionButtonTitleFont];
-  v5 = [v3 titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:v4];
 
   [v3 setIsDestructive:1];
 
   return v3;
 }
 
-- (AVTAvatarActionButton)initWithFrame:(CGRect)a3
+- (AVTAvatarActionButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AVTAvatarActionButton;
-  v3 = [(AVTAvatarActionButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAvatarActionButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (_UISolariumEnabled())
     {
-      v4 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-      [v4 setCornerStyle:4];
-      [(AVTAvatarActionButton *)v3 setConfiguration:v4];
+      grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+      [grayButtonConfiguration setCornerStyle:4];
+      [(AVTAvatarActionButton *)v3 setConfiguration:grayButtonConfiguration];
     }
 
     else
@@ -59,17 +59,17 @@
   return v3;
 }
 
-- (void)setIsDestructive:(BOOL)a3
+- (void)setIsDestructive:(BOOL)destructive
 {
-  if (self->_isDestructive != a3)
+  if (self->_isDestructive != destructive)
   {
-    self->_isDestructive = a3;
+    self->_isDestructive = destructive;
     if (_UISolariumEnabled())
     {
-      v6 = [(AVTAvatarActionButton *)self configuration];
-      v8 = [v6 copy];
+      configuration = [(AVTAvatarActionButton *)self configuration];
+      v8 = [configuration copy];
 
-      if (a3)
+      if (destructive)
       {
         +[AVTUIColorRepository actionButtonDestructiveTextColor];
       }
@@ -85,7 +85,7 @@
 
     else
     {
-      if (a3)
+      if (destructive)
       {
         +[AVTUIColorRepository actionButtonDestructiveTextColor];
       }
@@ -100,13 +100,13 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = AVTAvatarActionButton;
   [(AVTAvatarActionButton *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.2;
   }
@@ -116,8 +116,8 @@
     v5 = 1.0;
   }
 
-  v6 = [(AVTAvatarActionButton *)self titleLabel];
-  [v6 setAlpha:v5];
+  titleLabel = [(AVTAvatarActionButton *)self titleLabel];
+  [titleLabel setAlpha:v5];
 }
 
 @end

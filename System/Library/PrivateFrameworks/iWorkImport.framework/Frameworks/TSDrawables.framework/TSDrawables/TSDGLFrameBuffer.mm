@@ -1,50 +1,50 @@
 @interface TSDGLFrameBuffer
-+ (int)currentGLFramebufferWithBindingOption:(int64_t)a3;
-- (BOOL)p_isCurrentDrawBuffersEqualToDrawbuffers:(unsigned int *)a3 count:(int64_t)a4;
++ (int)currentGLFramebufferWithBindingOption:(int64_t)option;
+- (BOOL)p_isCurrentDrawBuffersEqualToDrawbuffers:(unsigned int *)drawbuffers count:(int64_t)count;
 - (CGSize)size;
-- (CGSize)sizeOfGLTextureNamed:(id)a3;
+- (CGSize)sizeOfGLTextureNamed:(id)named;
 - (NSString)currentGLTextureName;
-- (TSDGLFrameBuffer)initWithSize:(CGSize)a3 textureConfigs:(id)a4;
-- (TSDGLFrameBuffer)initWithSize:(CGSize)a3 textureCount:(unint64_t)a4;
+- (TSDGLFrameBuffer)initWithSize:(CGSize)size textureConfigs:(id)configs;
+- (TSDGLFrameBuffer)initWithSize:(CGSize)size textureCount:(unint64_t)count;
 - (id)description;
-- (id)p_currentTextureLookupInfoAtAttachment:(unsigned int)a3;
-- (int64_t)currentTextureIndexAtAttachment:(unsigned int)a3;
-- (unsigned)GLTextureAtIndex:(unint64_t)a3 attachment:(unsigned int)a4;
-- (unsigned)GLTextureNamed:(id)a3;
+- (id)p_currentTextureLookupInfoAtAttachment:(unsigned int)attachment;
+- (int64_t)currentTextureIndexAtAttachment:(unsigned int)attachment;
+- (unsigned)GLTextureAtIndex:(unint64_t)index attachment:(unsigned int)attachment;
+- (unsigned)GLTextureNamed:(id)named;
 - (unsigned)currentGLTexture;
-- (unsigned)currentGLTextureAtAttachment:(unsigned int)a3;
-- (void)bindFramebufferWithBindingOption:(int64_t)a3;
+- (unsigned)currentGLTextureAtAttachment:(unsigned int)attachment;
+- (void)bindFramebufferWithBindingOption:(int64_t)option;
 - (void)dealloc;
 - (void)p_setDrawBuffersAndReadBuffer;
-- (void)p_setFramebufferTextureAtAttachmentIndex:(int64_t)a3 bindingOption:(int64_t)a4;
-- (void)setCurrentTextureIndex:(unint64_t)a3 atAttachment:(unsigned int)a4;
-- (void)setCurrentTextureNamed:(id)a3;
-- (void)setCurrentTextureNamed:(id)a3 atAttachment:(unsigned int)a4;
-- (void)setCurrentTextureToNextAtAttachment:(unsigned int)a3;
+- (void)p_setFramebufferTextureAtAttachmentIndex:(int64_t)index bindingOption:(int64_t)option;
+- (void)setCurrentTextureIndex:(unint64_t)index atAttachment:(unsigned int)attachment;
+- (void)setCurrentTextureNamed:(id)named;
+- (void)setCurrentTextureNamed:(id)named atAttachment:(unsigned int)attachment;
+- (void)setCurrentTextureToNextAtAttachment:(unsigned int)attachment;
 - (void)setupFramebufferIfNecessary;
 - (void)teardown;
-- (void)unbindFramebufferAndBindGLFramebuffer:(int)a3 withBindingOption:(int64_t)a4;
+- (void)unbindFramebufferAndBindGLFramebuffer:(int)framebuffer withBindingOption:(int64_t)option;
 @end
 
 @implementation TSDGLFrameBuffer
 
-+ (int)currentGLFramebufferWithBindingOption:(int64_t)a3
++ (int)currentGLFramebufferWithBindingOption:(int64_t)option
 {
   params = 0;
   glGetIntegerv(0x8CA6u, &params);
   return params;
 }
 
-- (TSDGLFrameBuffer)initWithSize:(CGSize)a3 textureConfigs:(id)a4
+- (TSDGLFrameBuffer)initWithSize:(CGSize)size textureConfigs:(id)configs
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = TSDGLFrameBuffer;
   v7 = [(TSDGLFrameBuffer *)&v9 init];
   if (v7)
   {
-    v7->_textureConfigs = a4;
+    v7->_textureConfigs = configs;
     v7->_frameBufferSize.width = width;
     v7->_frameBufferSize.height = height;
     v7->_shouldDeleteTexturesOnTeardown = 1;
@@ -53,12 +53,12 @@
   return v7;
 }
 
-- (TSDGLFrameBuffer)initWithSize:(CGSize)a3 textureCount:(unint64_t)a4
+- (TSDGLFrameBuffer)initWithSize:(CGSize)size textureCount:(unint64_t)count
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  for (i = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, a4); v4; --v4)
+  countCopy = count;
+  height = size.height;
+  width = size.width;
+  for (i = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, count); countCopy; --countCopy)
   {
     v10 = objc_msgSend_textureConfigWithSize_name_(TSDGLFrameBufferTextureConfig, v8, 0, width, height);
     objc_msgSend_addObject_(i, v11, v10);
@@ -118,7 +118,7 @@
     v182 = 0u;
     v179 = 0u;
     v180 = 0u;
-    v166 = self;
+    selfCopy = self;
     textureConfigs = self->_textureConfigs;
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(textureConfigs, v19, &v179, v185, 16);
     if (v20)
@@ -253,16 +253,16 @@
       while (v35 < objc_msgSend_count(v167, v107, v108));
     }
 
-    v166->_namesToTextureDict = v169;
-    v166->_textureConfigsByAttachment = v9;
+    selfCopy->_namesToTextureDict = v169;
+    selfCopy->_textureConfigsByAttachment = v9;
 
-    v166->_textureLookupInfosByAttachment = v168;
+    selfCopy->_textureLookupInfosByAttachment = v168;
     glClearColor(0.0, 0.0, 0.0, 0.0);
     v172 = 0u;
     v173 = 0u;
     v170 = 0u;
     v171 = 0u;
-    v132 = objc_msgSend_objectAtIndexedSubscript_(v166->_textureLookupInfosByAttachment, v131, 0);
+    v132 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_textureLookupInfosByAttachment, v131, 0);
     v135 = objc_msgSend_reverseObjectEnumerator(v132, v133, v134);
     v137 = objc_msgSend_countByEnumeratingWithState_objects_count_(v135, v136, &v170, v183, 16);
     if (v137)
@@ -302,13 +302,13 @@
 
     glBindTexture(v152, 0);
     glBindFramebuffer(0x8D40u, v142);
-    v166->_currentTextureLookupInfoByAttachment = objc_opt_new();
-    v166->_desiredTextureLookupInfoByAttachment = objc_opt_new();
-    currentTextureLookupInfoByAttachment = v166->_currentTextureLookupInfoByAttachment;
+    selfCopy->_currentTextureLookupInfoByAttachment = objc_opt_new();
+    selfCopy->_desiredTextureLookupInfoByAttachment = objc_opt_new();
+    currentTextureLookupInfoByAttachment = selfCopy->_currentTextureLookupInfoByAttachment;
     v156 = objc_msgSend_invalidTextureLookupInfo(TSDGLFrameBufferTextureLookupInfo, v154, v155);
     objc_msgSend_addObject_(currentTextureLookupInfoByAttachment, v157, v156);
-    desiredTextureLookupInfoByAttachment = v166->_desiredTextureLookupInfoByAttachment;
-    v160 = objc_msgSend_objectAtIndexedSubscript_(v166->_textureLookupInfosByAttachment, v159, 0);
+    desiredTextureLookupInfoByAttachment = selfCopy->_desiredTextureLookupInfoByAttachment;
+    v160 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_textureLookupInfosByAttachment, v159, 0);
     Object = objc_msgSend_firstObject(v160, v161, v162);
     if (!Object)
     {
@@ -319,15 +319,15 @@
   }
 }
 
-- (BOOL)p_isCurrentDrawBuffersEqualToDrawbuffers:(unsigned int *)a3 count:(int64_t)a4
+- (BOOL)p_isCurrentDrawBuffersEqualToDrawbuffers:(unsigned int *)drawbuffers count:(int64_t)count
 {
-  if (self->_currentDrawBufferCount != a4)
+  if (self->_currentDrawBufferCount != count)
   {
     return 0;
   }
 
-  v4 = a4 - 1;
-  if (a4 < 1)
+  v4 = count - 1;
+  if (count < 1)
   {
     return 1;
   }
@@ -337,7 +337,7 @@
   {
     v7 = *currentDrawBuffers++;
     v6 = v7;
-    v9 = *a3++;
+    v9 = *drawbuffers++;
     v8 = v9;
     v11 = v4-- != 0;
     result = v6 == v8;
@@ -401,16 +401,16 @@ LABEL_14:
   self->_currentReadBuffer = v11;
 }
 
-- (void)p_setFramebufferTextureAtAttachmentIndex:(int64_t)a3 bindingOption:(int64_t)a4
+- (void)p_setFramebufferTextureAtAttachmentIndex:(int64_t)index bindingOption:(int64_t)option
 {
-  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, a2, a3);
-  if (v7 != objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v8, a3) && ((v10 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v9, a3), (objc_msgSend_isValid(v10, v11, v12) & 1) != 0) || (v13 = objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v9, a3), (objc_msgSend_isValid(v13, v14, v15) & 1) != 0)) || self->_currentBindingOption != a4)
+  v7 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, a2, index);
+  if (v7 != objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v8, index) && ((v10 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v9, index), (objc_msgSend_isValid(v10, v11, v12) & 1) != 0) || (v13 = objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v9, index), (objc_msgSend_isValid(v13, v14, v15) & 1) != 0)) || self->_currentBindingOption != option)
   {
-    v16 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v9, a3);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v9, index);
     isValid = objc_msgSend_isValid(v16, v17, v18);
-    v21 = objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v20, a3);
-    objc_msgSend_setObject_atIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v22, v21, a3);
-    v24 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v23, a3);
+    v21 = objc_msgSend_objectAtIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v20, index);
+    objc_msgSend_setObject_atIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v22, v21, index);
+    v24 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v23, index);
     if (objc_msgSend_isValid(v24, v25, v26))
     {
       v29 = objc_msgSend_textureName(v24, v27, v28);
@@ -422,7 +422,7 @@ LABEL_14:
     }
 
     v30 = objc_msgSend_targetOfPossiblyInvalidInfo(v24, v27, v28);
-    glFramebufferTexture2D(0x8D40u, a3 + 36064, v30, v29, 0);
+    glFramebufferTexture2D(0x8D40u, index + 36064, v30, v29, 0);
     if (!(isValid & 1 | !self->_isBound))
     {
 
@@ -431,22 +431,22 @@ LABEL_14:
   }
 }
 
-- (void)bindFramebufferWithBindingOption:(int64_t)a3
+- (void)bindFramebufferWithBindingOption:(int64_t)option
 {
-  objc_msgSend_setupFramebufferIfNecessary(self, a2, a3);
-  self->_currentBindingOption = a3;
+  objc_msgSend_setupFramebufferIfNecessary(self, a2, option);
+  self->_currentBindingOption = option;
   glBindFramebuffer(0x8D40u, self->_framebuffer);
-  objc_msgSend_p_setFramebufferTextureAtAttachmentIndex_bindingOption_(self, v5, 0, a3);
+  objc_msgSend_p_setFramebufferTextureAtAttachmentIndex_bindingOption_(self, v5, 0, option);
   objc_msgSend_p_setDrawBuffersAndReadBuffer(self, v6, v7);
   self->_isBound = 1;
 }
 
-- (void)unbindFramebufferAndBindGLFramebuffer:(int)a3 withBindingOption:(int64_t)a4
+- (void)unbindFramebufferAndBindGLFramebuffer:(int)framebuffer withBindingOption:(int64_t)option
 {
-  if (a3 != -1)
+  if (framebuffer != -1)
   {
-    glBindFramebuffer(0x8D40u, a3);
-    self->_currentBindingOption = a4;
+    glBindFramebuffer(0x8D40u, framebuffer);
+    self->_currentBindingOption = option;
   }
 
   if (self->_currentDrawBufferCount != 1)
@@ -457,9 +457,9 @@ LABEL_14:
   self->_isBound = 0;
 }
 
-- (int64_t)currentTextureIndexAtAttachment:(unsigned int)a3
+- (int64_t)currentTextureIndexAtAttachment:(unsigned int)attachment
 {
-  v4 = a3 - 36064;
+  v4 = attachment - 36064;
   v5 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, a2, v4);
   v7 = objc_msgSend_objectAtIndexedSubscript_(self->_currentTextureLookupInfoByAttachment, v6, v4);
   if (!objc_msgSend_isValid(v7, v8, v9))
@@ -470,22 +470,22 @@ LABEL_14:
   return objc_msgSend_indexOfObject_(v5, v10, v7);
 }
 
-- (void)setCurrentTextureIndex:(unint64_t)a3 atAttachment:(unsigned int)a4
+- (void)setCurrentTextureIndex:(unint64_t)index atAttachment:(unsigned int)attachment
 {
-  objc_msgSend_setupFramebufferIfNecessary(self, a2, a3);
-  v7 = a4 - 36064;
+  objc_msgSend_setupFramebufferIfNecessary(self, a2, index);
+  v7 = attachment - 36064;
   v9 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, v8, v7);
-  if (objc_msgSend_count(v9, v10, v11) <= a3)
+  if (objc_msgSend_count(v9, v10, v11) <= index)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSDGLFrameBuffer setCurrentTextureIndex:atAttachment:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDGLFrameBuffer.m");
     v19 = objc_msgSend_count(v9, v17, v18);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v14, v16, 835, 0, "Invalid textureIndex (%d) when only %d textures at attachment %d!", a3, v19, v7);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v14, v16, 835, 0, "Invalid textureIndex (%d) when only %d textures at attachment %d!", index, v19, v7);
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
-  v23 = objc_msgSend_objectAtIndexedSubscript_(v9, v12, a3);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(v9, v12, index);
   objc_msgSend_setObject_atIndexedSubscript_(self->_desiredTextureLookupInfoByAttachment, v24, v23, v7);
   if (self->_isBound)
   {
@@ -495,7 +495,7 @@ LABEL_14:
   }
 }
 
-- (void)setCurrentTextureNamed:(id)a3
+- (void)setCurrentTextureNamed:(id)named
 {
   namesToTextureDict = self->_namesToTextureDict;
   if (!namesToTextureDict)
@@ -508,13 +508,13 @@ LABEL_14:
     namesToTextureDict = self->_namesToTextureDict;
   }
 
-  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, a3);
+  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, named);
   if (!v15)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSDGLFrameBuffer setCurrentTextureNamed:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDGLFrameBuffer.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 853, 0, "Could not find texture named %@!", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 853, 0, "Could not find texture named %@!", named);
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
@@ -524,9 +524,9 @@ LABEL_14:
   MEMORY[0x2821F9670](self, sel_setCurrentTextureIndex_atAttachment_, v23);
 }
 
-- (void)setCurrentTextureNamed:(id)a3 atAttachment:(unsigned int)a4
+- (void)setCurrentTextureNamed:(id)named atAttachment:(unsigned int)attachment
 {
-  v4 = *&a4;
+  v4 = *&attachment;
   v57 = *MEMORY[0x277D85DE8];
   if (!self->_namesToTextureDict)
   {
@@ -538,19 +538,19 @@ LABEL_14:
   }
 
   v14 = (v4 - 36064);
-  if (a3)
+  if (named)
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(self->_namesToTextureDict, a2, a3);
+    v15 = objc_msgSend_objectForKeyedSubscript_(self->_namesToTextureDict, a2, named);
     if (!v15)
     {
-      sub_276808CF4(a3);
+      sub_276808CF4(named);
     }
 
     v18 = v15;
     if (objc_msgSend_attachment(v15, v16, v17) == v4)
     {
 
-      MEMORY[0x2821F9670](self, sel_setCurrentTextureNamed_, a3);
+      MEMORY[0x2821F9670](self, sel_setCurrentTextureNamed_, named);
     }
 
     else
@@ -616,10 +616,10 @@ LABEL_14:
   }
 }
 
-- (void)setCurrentTextureToNextAtAttachment:(unsigned int)a3
+- (void)setCurrentTextureToNextAtAttachment:(unsigned int)attachment
 {
-  v3 = *&a3;
-  v5 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, a2, a3 - 36064);
+  v3 = *&attachment;
+  v5 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, a2, attachment - 36064);
   v8 = objc_msgSend_count(v5, v6, v7);
   if (v8)
   {
@@ -629,10 +629,10 @@ LABEL_14:
   }
 }
 
-- (unsigned)GLTextureAtIndex:(unint64_t)a3 attachment:(unsigned int)a4
+- (unsigned)GLTextureAtIndex:(unint64_t)index attachment:(unsigned int)attachment
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, a2, a4 - 36064);
-  if (objc_msgSend_count(v6, v7, v8) <= a3)
+  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_textureLookupInfosByAttachment, a2, attachment - 36064);
+  if (objc_msgSend_count(v6, v7, v8) <= index)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSDGLFrameBuffer GLTextureAtIndex:attachment:]");
@@ -650,12 +650,12 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   }
 
-  v24 = objc_msgSend_objectAtIndexedSubscript_(v6, v9, a3);
+  v24 = objc_msgSend_objectAtIndexedSubscript_(v6, v9, index);
 
   return objc_msgSend_textureName(v24, v25, v26);
 }
 
-- (unsigned)GLTextureNamed:(id)a3
+- (unsigned)GLTextureNamed:(id)named
 {
   namesToTextureDict = self->_namesToTextureDict;
   if (!namesToTextureDict)
@@ -668,20 +668,20 @@ LABEL_14:
     namesToTextureDict = self->_namesToTextureDict;
   }
 
-  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, a3);
+  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, named);
   if (!v15)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSDGLFrameBuffer GLTextureNamed:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDGLFrameBuffer.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 938, 0, "Could not find texture named %@!", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 938, 0, "Could not find texture named %@!", named);
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
   return objc_msgSend_textureName(v15, v13, v14);
 }
 
-- (CGSize)sizeOfGLTextureNamed:(id)a3
+- (CGSize)sizeOfGLTextureNamed:(id)named
 {
   namesToTextureDict = self->_namesToTextureDict;
   if (!namesToTextureDict)
@@ -694,13 +694,13 @@ LABEL_14:
     namesToTextureDict = self->_namesToTextureDict;
   }
 
-  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, a3);
+  v15 = objc_msgSend_objectForKeyedSubscript_(namesToTextureDict, a2, named);
   if (!v15)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSDGLFrameBuffer sizeOfGLTextureNamed:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDGLFrameBuffer.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 947, 0, "Could not find texture named %@!", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 947, 0, "Could not find texture named %@!", named);
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
@@ -794,7 +794,7 @@ LABEL_14:
   }
 }
 
-- (id)p_currentTextureLookupInfoAtAttachment:(unsigned int)a3
+- (id)p_currentTextureLookupInfoAtAttachment:(unsigned int)attachment
 {
   currentTextureLookupInfoByAttachment = self->_currentTextureLookupInfoByAttachment;
   if (!currentTextureLookupInfoByAttachment)
@@ -807,7 +807,7 @@ LABEL_14:
     currentTextureLookupInfoByAttachment = self->_currentTextureLookupInfoByAttachment;
   }
 
-  v13 = a3 - 36064;
+  v13 = attachment - 36064;
   v14 = objc_msgSend_objectAtIndexedSubscript_(currentTextureLookupInfoByAttachment, a2, v13);
   if ((objc_msgSend_isValid(v14, v15, v16) & 1) == 0)
   {
@@ -826,9 +826,9 @@ LABEL_14:
   return v14;
 }
 
-- (unsigned)currentGLTextureAtAttachment:(unsigned int)a3
+- (unsigned)currentGLTextureAtAttachment:(unsigned int)attachment
 {
-  v3 = objc_msgSend_p_currentTextureLookupInfoAtAttachment_(self, a2, *&a3);
+  v3 = objc_msgSend_p_currentTextureLookupInfoAtAttachment_(self, a2, *&attachment);
 
   return objc_msgSend_textureName(v3, v4, v5);
 }

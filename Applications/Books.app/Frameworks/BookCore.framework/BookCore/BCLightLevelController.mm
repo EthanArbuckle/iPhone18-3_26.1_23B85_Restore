@@ -5,17 +5,17 @@
 - (BOOL)_sensorAvailable;
 - (BOOL)_sensorShouldBeAvailable;
 - (BOOL)shouldMonitorLightLevel;
-- (int64_t)_luxToLightLevel:(float)a3;
+- (int64_t)_luxToLightLevel:(float)level;
 - (int64_t)currentLightLevel;
 - (void)_notifyLightLevelChange;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
-- (void)_updateCurrentLightLevel:(int64_t)a3 force:(BOOL)a4;
+- (void)_updateCurrentLightLevel:(int64_t)level force:(BOOL)force;
 - (void)_updateStatsAndLightLevelNow;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 - (void)dealloc;
-- (void)emulateCurrentLightLevelChange:(int64_t)a3;
-- (void)removeObserver:(id)a3;
+- (void)emulateCurrentLightLevelChange:(int64_t)change;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BCLightLevelController
@@ -91,20 +91,20 @@
 
 - (BOOL)shouldMonitorLightLevel
 {
-  v3 = [(BCLightLevelController *)self _sensorAvailable];
-  if (v3)
+  _sensorAvailable = [(BCLightLevelController *)self _sensorAvailable];
+  if (_sensorAvailable)
   {
 
-    LOBYTE(v3) = [(BCLightLevelController *)self _sensorShouldBeAvailable];
+    LOBYTE(_sensorAvailable) = [(BCLightLevelController *)self _sensorShouldBeAvailable];
   }
 
-  return v3;
+  return _sensorAvailable;
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -115,15 +115,15 @@
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 
   [(BCLightLevelController *)self _startMonitoring];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(NSMapTable *)self->_observers removeObjectForKey:?];
   if (![(NSMapTable *)self->_observers count])
   {
@@ -142,31 +142,31 @@
   return result;
 }
 
-- (void)emulateCurrentLightLevelChange:(int64_t)a3
+- (void)emulateCurrentLightLevelChange:(int64_t)change
 {
-  v5 = [(BCLightLevelController *)self currentLightLevel];
-  self->_emulatedLightLevel = a3;
-  if (v5 != [(BCLightLevelController *)self currentLightLevel])
+  currentLightLevel = [(BCLightLevelController *)self currentLightLevel];
+  self->_emulatedLightLevel = change;
+  if (currentLightLevel != [(BCLightLevelController *)self currentLightLevel])
   {
 
     [(BCLightLevelController *)self _notifyLightLevelChange];
   }
 }
 
-- (void)_updateCurrentLightLevel:(int64_t)a3 force:(BOOL)a4
+- (void)_updateCurrentLightLevel:(int64_t)level force:(BOOL)force
 {
-  v7 = [(BCLightLevelController *)self currentLightLevel];
-  if (a4 || a3 && self->_currentLightLevel != a3)
+  currentLightLevel = [(BCLightLevelController *)self currentLightLevel];
+  if (force || level && self->_currentLightLevel != level)
   {
-    self->_currentLightLevel = a3;
+    self->_currentLightLevel = level;
   }
 
-  if (v7 != [(BCLightLevelController *)self currentLightLevel])
+  if (currentLightLevel != [(BCLightLevelController *)self currentLightLevel])
   {
     v8 = _BCLightLevelLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7 == &dword_0 + 1)
+      if (currentLightLevel == &dword_0 + 1)
       {
         v9 = @"regular";
       }
@@ -176,13 +176,13 @@
         v9 = @"unknown";
       }
 
-      if (v7 == &dword_0 + 2)
+      if (currentLightLevel == &dword_0 + 2)
       {
         v9 = @"low";
       }
 
       v10 = v9;
-      if (a3 == 1)
+      if (level == 1)
       {
         v11 = @"regular";
       }
@@ -192,7 +192,7 @@
         v11 = @"unknown";
       }
 
-      if (a3 == 2)
+      if (level == 2)
       {
         v11 = @"low";
       }
@@ -218,8 +218,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMapTable *)self->_observers keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -229,7 +229,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -237,26 +237,26 @@
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (int64_t)_luxToLightLevel:(float)a3
+- (int64_t)_luxToLightLevel:(float)level
 {
-  if (a3 < 0.0)
+  if (level < 0.0)
   {
     return 0;
   }
 
-  if (a3 <= 2.5)
+  if (level <= 2.5)
   {
     return 2;
   }
 
-  return a3 >= 20.0;
+  return level >= 20.0;
 }
 
 - (void)_updateStatsAndLightLevelNow

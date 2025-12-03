@@ -1,21 +1,21 @@
 @interface TRISignatureKey
-+ (__SecKey)_keyFromCertificateChain:(id)a3;
-+ (id)keyFromData:(id)a3;
-- (BOOL)_validateBase64Signature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5;
-- (BOOL)_validateSignature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5;
-- (BOOL)validateBase64Signature:(id)a3 forFile:(id)a4;
-- (TRISignatureKey)initWithKey:(__SecKey *)a3;
++ (__SecKey)_keyFromCertificateChain:(id)chain;
++ (id)keyFromData:(id)data;
+- (BOOL)_validateBase64Signature:(id)signature data:(id)data algorithm:(__CFString *)algorithm;
+- (BOOL)_validateSignature:(id)signature data:(id)data algorithm:(__CFString *)algorithm;
+- (BOOL)validateBase64Signature:(id)signature forFile:(id)file;
+- (TRISignatureKey)initWithKey:(__SecKey *)key;
 - (void)dealloc;
 @end
 
 @implementation TRISignatureKey
 
-+ (id)keyFromData:(id)a3
++ (id)keyFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v4 = [TRISignatureKey _keyFromCertificateChain:v3];
+    v4 = [TRISignatureKey _keyFromCertificateChain:dataCopy];
     if (v4)
     {
       v4 = [[TRISignatureKey alloc] initWithKey:v4];
@@ -37,24 +37,24 @@
   return v4;
 }
 
-+ (__SecKey)_keyFromCertificateChain:(id)a3
++ (__SecKey)_keyFromCertificateChain:(id)chain
 {
   v46[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  chainCopy = chain;
   if (os_variant_allows_internal_security_policies() && os_variant_has_internal_diagnostics())
   {
     if ([MEMORY[0x277D737A8] hostingProcessIsTriald])
     {
-      v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     }
 
     else
     {
-      v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
+      standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
     }
 
-    v5 = v4;
-    v6 = [v4 valueForKey:*MEMORY[0x277D739E8]];
+    v5 = standardUserDefaults;
+    v6 = [standardUserDefaults valueForKey:*MEMORY[0x277D739E8]];
     if ([v6 unsignedIntValue] == 4 || objc_msgSend(v6, "unsignedIntValue") == 5)
     {
       v7 = *MEMORY[0x277CDC040];
@@ -67,7 +67,7 @@
       v45[2] = *MEMORY[0x277CDC018];
       v46[2] = &unk_287FC45B8;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:3];
-      v11 = SecKeyCreateWithData(v3, v10, 0);
+      v11 = SecKeyCreateWithData(chainCopy, v10, 0);
 
       if (v11)
       {
@@ -76,8 +76,8 @@
     }
   }
 
-  v38 = v3;
-  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
+  v38 = chainCopy;
+  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:chainCopy encoding:4];
   v6 = objc_opt_new();
   if ([v12 length])
   {
@@ -112,8 +112,8 @@
       [v6 addObject:v19];
 
       [v14 scanString:@"-----END CERTIFICATE-----" intoString:0];
-      v21 = [v14 string];
-      v5 = [v21 substringFromIndex:{objc_msgSend(v14, "scanLocation")}];
+      string = [v14 string];
+      v5 = [string substringFromIndex:{objc_msgSend(v14, "scanLocation")}];
 
       objc_autoreleasePoolPop(v13);
       v12 = v5;
@@ -159,7 +159,7 @@ LABEL_21:
 LABEL_22:
 
 LABEL_29:
-      v3 = v38;
+      chainCopy = v38;
       goto LABEL_30;
     }
 
@@ -249,7 +249,7 @@ LABEL_46:
   }
 
   v25 = TRILogCategory_Server();
-  v3 = v38;
+  chainCopy = v38;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
@@ -263,14 +263,14 @@ LABEL_30:
   return v11;
 }
 
-- (TRISignatureKey)initWithKey:(__SecKey *)a3
+- (TRISignatureKey)initWithKey:(__SecKey *)key
 {
   v5.receiver = self;
   v5.super_class = TRISignatureKey;
   result = [(TRISignatureKey *)&v5 init];
   if (result)
   {
-    result->_key = a3;
+    result->_key = key;
   }
 
   return result;
@@ -289,52 +289,52 @@ LABEL_30:
   [(TRISignatureKey *)&v4 dealloc];
 }
 
-- (BOOL)validateBase64Signature:(id)a3 forFile:(id)a4
+- (BOOL)validateBase64Signature:(id)signature forFile:(id)file
 {
-  v6 = a3;
-  v7 = [TRIMemoryEfficientFileDigest sha256DigestForFile:a4];
-  LOBYTE(self) = [(TRISignatureKey *)self validateBase64Signature:v6 forDigest:v7];
+  signatureCopy = signature;
+  v7 = [TRIMemoryEfficientFileDigest sha256DigestForFile:file];
+  LOBYTE(self) = [(TRISignatureKey *)self validateBase64Signature:signatureCopy forDigest:v7];
 
   return self;
 }
 
-- (BOOL)_validateBase64Signature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5
+- (BOOL)_validateBase64Signature:(id)signature data:(id)data algorithm:(__CFString *)algorithm
 {
-  v8 = a4;
-  if (a3)
+  dataCopy = data;
+  if (signature)
   {
     v9 = MEMORY[0x277CBEA90];
-    v10 = a3;
-    a3 = [[v9 alloc] initWithBase64EncodedString:v10 options:1];
+    signatureCopy = signature;
+    signature = [[v9 alloc] initWithBase64EncodedString:signatureCopy options:1];
   }
 
-  v11 = [(TRISignatureKey *)self _validateSignature:a3 data:v8 algorithm:a5];
+  v11 = [(TRISignatureKey *)self _validateSignature:signature data:dataCopy algorithm:algorithm];
 
   return v11;
 }
 
-- (BOOL)_validateSignature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5
+- (BOOL)_validateSignature:(id)signature data:(id)data algorithm:(__CFString *)algorithm
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  signatureCopy = signature;
+  dataCopy = data;
+  v11 = dataCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (signatureCopy && dataCopy)
   {
     key = self->_key;
     if (!key)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"TRISignatureKey.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"_key"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRISignatureKey.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"_key"}];
 
       key = self->_key;
     }
 
-    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeVerify, a5))
+    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeVerify, algorithm))
     {
       error = 0;
-      v14 = SecKeyVerifySignature(self->_key, a5, v11, v9, &error);
+      v14 = SecKeyVerifySignature(self->_key, algorithm, v11, signatureCopy, &error);
       v12 = v14 != 0;
       if (!v14)
       {

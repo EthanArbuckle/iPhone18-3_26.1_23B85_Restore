@@ -1,12 +1,12 @@
 @interface AppPromotionPageOpenAnimation
 - (_TtC18ASMessagesProvider29AppPromotionPageOpenAnimation)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AppPromotionPageOpenAnimation
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (UIAccessibilityIsReduceMotionEnabled())
   {
@@ -22,11 +22,11 @@
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_7247A8(a3);
+  selfCopy = self;
+  sub_7247A8(transition);
   swift_unknownObjectRelease();
 }
 

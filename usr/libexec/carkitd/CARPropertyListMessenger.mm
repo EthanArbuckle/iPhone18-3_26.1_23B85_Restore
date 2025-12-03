@@ -1,8 +1,8 @@
 @interface CARPropertyListMessenger
 - (CARPropertyListMessageReceiving)messageReceiver;
 - (CARPropertyListMessenger)init;
-- (id)dataForMessageWithIdentifier:(unsigned __int16)a3 contents:(id)a4 error:(id *)a5;
-- (void)handleReceivedData:(id)a3;
+- (id)dataForMessageWithIdentifier:(unsigned __int16)identifier contents:(id)contents error:(id *)error;
+- (void)handleReceivedData:(id)data;
 @end
 
 @implementation CARPropertyListMessenger
@@ -27,10 +27,10 @@
   return v2;
 }
 
-- (id)dataForMessageWithIdentifier:(unsigned __int16)a3 contents:(id)a4 error:(id *)a5
+- (id)dataForMessageWithIdentifier:(unsigned __int16)identifier contents:(id)contents error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contentsCopy = contents;
   v19 = 0;
   Data = OPACKEncoderCreateData();
   v9 = Data;
@@ -40,7 +40,7 @@
     {
       v15 = [v9 length];
       v14 = +[NSMutableData data];
-      v18 = __rev16(v6);
+      v18 = __rev16(identifierCopy);
       [v14 appendBytes:&v18 length:2];
       v17 = bswap32(v15);
       [v14 appendBytes:&v17 length:4];
@@ -54,13 +54,13 @@
       sub_100089DE8();
     }
 
-    if (a5)
+    if (error)
     {
       v11 = @"com.apple.carkit";
       v12 = 4;
 LABEL_11:
       [NSError errorWithDomain:v11 code:v12 userInfo:0];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_14;
     }
   }
@@ -70,7 +70,7 @@ LABEL_11:
     v13 = sub_100002A68(2uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_100089E1C(&v19, v7, v13);
+      sub_100089E1C(&v19, contentsCopy, v13);
     }
 
     v12 = v19;
@@ -87,19 +87,19 @@ LABEL_14:
   return v14;
 }
 
-- (void)handleReceivedData:(id)a3
+- (void)handleReceivedData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [(CARPropertyListMessenger *)self receiveQueue];
+    receiveQueue = [(CARPropertyListMessenger *)self receiveQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100075C74;
     v6[3] = &unk_1000DD580;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = dataCopy;
+    dispatch_async(receiveQueue, v6);
   }
 }
 

@@ -27,7 +27,7 @@
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
   [v11 setPhrases:v12];
 
-  [a1 setRecognition:v11];
+  [self setRecognition:v11];
   v13 = *MEMORY[0x277D85DE8];
 }
 

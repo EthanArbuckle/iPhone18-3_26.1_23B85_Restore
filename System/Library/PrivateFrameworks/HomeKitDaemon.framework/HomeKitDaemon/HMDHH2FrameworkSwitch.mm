@@ -1,26 +1,26 @@
 @interface HMDHH2FrameworkSwitch
-+ (id)errorFromHMDCKAccountStatus:(int64_t)a3;
++ (id)errorFromHMDCKAccountStatus:(int64_t)status;
 + (id)logCategory;
 + (void)removeHH2EnablementPreferenceKey;
-+ (void)setHH2EnablementPreferenceKey:(BOOL)a3;
++ (void)setHH2EnablementPreferenceKey:(BOOL)key;
 + (void)switchBackToHH1AndDoNotLaunchDueToPrimaryAccountRemoval;
-- (BOOL)_areWeRunningInRightEnvironment:(BOOL)a3;
+- (BOOL)_areWeRunningInRightEnvironment:(BOOL)environment;
 - (BOOL)checkExistenceOfHH2SentinelZone;
-- (BOOL)switchToSetupMode:(unint64_t)a3;
-- (BOOL)waitForHH2SentinelZoneToBeCreated:(double)a3 error:(id *)a4;
+- (BOOL)switchToSetupMode:(unint64_t)mode;
+- (BOOL)waitForHH2SentinelZoneToBeCreated:(double)created error:(id *)error;
 - (BOOL)waitForHH2SentinelZoneToBeFetchedFromCloud;
-- (HMDHH2FrameworkSwitch)initWithAutoSwitch:(BOOL)a3 homeManager:(id)a4 dataSource:(id)a5 callBeforeFrameworkSwitch:(id)a6;
+- (HMDHH2FrameworkSwitch)initWithAutoSwitch:(BOOL)switch homeManager:(id)manager dataSource:(id)source callBeforeFrameworkSwitch:(id)frameworkSwitch;
 - (HMDHomeManager)homeManager;
 - (void)_clearSetupModeIfNeeded;
-- (void)cloudDatabase:(id)a3 didCreateZoneWithID:(id)a4;
+- (void)cloudDatabase:(id)database didCreateZoneWithID:(id)d;
 - (void)createHH2CloudDatabaseAndStartSyncing;
-- (void)createHH2SentinelZoneWithCompletionHandler:(id)a3;
+- (void)createHH2SentinelZoneWithCompletionHandler:(id)handler;
 - (void)forceFetchSentinelZone;
-- (void)handleTapToSetupFinished:(id)a3;
-- (void)makeSureWeAreRunningInRightEnvironment:(BOOL)a3;
-- (void)performInitialSync:(id)a3;
+- (void)handleTapToSetupFinished:(id)finished;
+- (void)makeSureWeAreRunningInRightEnvironment:(BOOL)environment;
+- (void)performInitialSync:(id)sync;
 - (void)performInitialSyncAndSwitchFrameworkIfRequired;
-- (void)removeHH2SentinelZoneWithCompletion:(id)a3;
+- (void)removeHH2SentinelZoneWithCompletion:(id)completion;
 - (void)switchBackToHH1AndRelaunch;
 - (void)switchBackToHH1AndRelaunchDueToHH2MigrationFailed;
 - (void)switchToHH2AfterPerformingHH2PreRebootTask;
@@ -39,18 +39,18 @@
   return WeakRetained;
 }
 
-- (void)handleTapToSetupFinished:(id)a3
+- (void)handleTapToSetupFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(HMDHH2FrameworkSwitch *)self workQueue];
+  finishedCopy = finished;
+  workQueue = [(HMDHH2FrameworkSwitch *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HMDHH2FrameworkSwitch_handleTapToSetupFinished___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = finishedCopy;
+  selfCopy = self;
+  v6 = finishedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __50__HMDHH2FrameworkSwitch_handleTapToSetupFinished___block_invoke(uint64_t a1)
@@ -92,13 +92,13 @@ void __50__HMDHH2FrameworkSwitch_handleTapToSetupFinished___block_invoke(uint64_
 
 - (void)waitForCloudKitAccountToBeAvailable
 {
-  v3 = [(HMDHH2FrameworkSwitch *)self workQueue];
+  workQueue = [(HMDHH2FrameworkSwitch *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invoke(uint64_t a1)
@@ -191,14 +191,14 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)switchToSetupMode:(unint64_t)a3
+- (BOOL)switchToSetupMode:(unint64_t)mode
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDHH2FrameworkSwitch *)self dataSource];
-  v6 = [v5 setupMode];
+  dataSource = [(HMDHH2FrameworkSwitch *)self dataSource];
+  setupMode = [dataSource setupMode];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -206,17 +206,17 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
     v21 = 138543874;
     v22 = v10;
     v23 = 2048;
-    v24 = a3;
+    modeCopy = mode;
     v25 = 2048;
-    v26 = v6;
+    v26 = setupMode;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Switching to setup mode: %lu, current mode: %lu", &v21, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  if (v6 == a3 || a3 == 2 && !v6)
+  if (setupMode == mode || mode == 2 && !setupMode)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v8;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -245,13 +245,13 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
     }
 
     v18 = v17;
-    if (a3 != 2 || (v18 & 1) == 0)
+    if (mode != 2 || (v18 & 1) == 0)
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
       CFPreferencesSetAppValue(@"HHTTSUMode", v19, @"com.apple.homed");
     }
 
-    [(HMDHH2FrameworkSwitch *)v8 relaunchHomedAfterSettingEnvironmentTo:a3 == 1 blockToExecuteBeforeReLaunch:0];
+    [(HMDHH2FrameworkSwitch *)selfCopy relaunchHomedAfterSettingEnvironmentTo:mode == 1 blockToExecuteBeforeReLaunch:0];
     result = 0;
   }
 
@@ -261,15 +261,15 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
 
 - (void)switchToHH2AfterPerformingHH2PreRebootTask
 {
-  v3 = [(HMDHH2FrameworkSwitch *)self blockToBeCalledBeforeSwitchingFramework];
-  [(HMDHH2FrameworkSwitch *)self relaunchHomedAfterSettingEnvironmentTo:1 blockToExecuteBeforeReLaunch:v3];
+  blockToBeCalledBeforeSwitchingFramework = [(HMDHH2FrameworkSwitch *)self blockToBeCalledBeforeSwitchingFramework];
+  [(HMDHH2FrameworkSwitch *)self relaunchHomedAfterSettingEnvironmentTo:1 blockToExecuteBeforeReLaunch:blockToBeCalledBeforeSwitchingFramework];
 }
 
 - (void)switchToHH2AndRelaunchHomedToPerformHH2Migration
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -280,7 +280,7 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHH2FrameworkSwitch *)v4 switchToHH2AfterPerformingHH2PreRebootTask];
+  [(HMDHH2FrameworkSwitch *)selfCopy switchToHH2AfterPerformingHH2PreRebootTask];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -288,7 +288,7 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -299,7 +299,7 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHH2FrameworkSwitch *)v4 relaunchHomedAfterSettingEnvironmentTo:1 blockToExecuteBeforeReLaunch:0];
+  [(HMDHH2FrameworkSwitch *)selfCopy relaunchHomedAfterSettingEnvironmentTo:1 blockToExecuteBeforeReLaunch:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -314,7 +314,7 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -325,7 +325,7 @@ void __60__HMDHH2FrameworkSwitch_waitForCloudKitAccountToBeAvailable__block_invo
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHH2FrameworkSwitch *)v4 switchBackToHH1AndRelaunch];
+  [(HMDHH2FrameworkSwitch *)selfCopy switchBackToHH1AndRelaunch];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -347,16 +347,16 @@ uint64_t __93__HMDHH2FrameworkSwitch_relaunchHomedAfterSettingEnvironmentTo_bloc
 
 - (void)_clearSetupModeIfNeeded
 {
-  v2 = [(HMDHH2FrameworkSwitch *)self workQueue];
-  dispatch_assert_queue_V2(v2);
+  workQueue = [(HMDHH2FrameworkSwitch *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 }
 
-- (void)removeHH2SentinelZoneWithCompletion:(id)a3
+- (void)removeHH2SentinelZoneWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -367,13 +367,13 @@ uint64_t __93__HMDHH2FrameworkSwitch_relaunchHomedAfterSettingEnvironmentTo_bloc
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDHH2FrameworkSwitch *)v6 cloudDatabaseToDetectHH2Zone];
-  v10 = v9 == 0;
+  cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+  v10 = cloudDatabaseToDetectHH2Zone == 0;
 
   if (v10)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v6;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -385,30 +385,30 @@ uint64_t __93__HMDHH2FrameworkSwitch_relaunchHomedAfterSettingEnvironmentTo_bloc
 
     objc_autoreleasePoolPop(v19);
     v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v13);
+      completionCopy[2](completionCopy, v13);
     }
   }
 
   else
   {
-    v11 = [(HMDHH2FrameworkSwitch *)v6 cloudDatabaseToDetectHH2Zone];
-    v12 = [v11 privateZoneIDs];
-    v13 = [v12 na_firstObjectPassingTest:&__block_literal_global_189939];
+    cloudDatabaseToDetectHH2Zone2 = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+    privateZoneIDs = [cloudDatabaseToDetectHH2Zone2 privateZoneIDs];
+    v13 = [privateZoneIDs na_firstObjectPassingTest:&__block_literal_global_189939];
 
     if (v13)
     {
-      v14 = [(HMDHH2FrameworkSwitch *)v6 cloudDatabaseToDetectHH2Zone];
-      v15 = [v14 removePrivateZoneWithID:v13];
+      cloudDatabaseToDetectHH2Zone3 = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+      v15 = [cloudDatabaseToDetectHH2Zone3 removePrivateZoneWithID:v13];
 
-      objc_initWeak(buf, v6);
+      objc_initWeak(buf, selfCopy);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __61__HMDHH2FrameworkSwitch_removeHH2SentinelZoneWithCompletion___block_invoke_115;
       v31[3] = &unk_27867E0F0;
       objc_copyWeak(&v33, buf);
-      v16 = v4;
+      v16 = completionCopy;
       v32 = v16;
       v17 = [v15 addSuccessBlock:v31];
       v28[0] = MEMORY[0x277D85DD0];
@@ -427,7 +427,7 @@ uint64_t __93__HMDHH2FrameworkSwitch_relaunchHomedAfterSettingEnvironmentTo_bloc
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v6;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -439,9 +439,9 @@ uint64_t __93__HMDHH2FrameworkSwitch_relaunchHomedAfterSettingEnvironmentTo_bloc
 
       objc_autoreleasePoolPop(v23);
       v15 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, v15);
+        completionCopy[2](completionCopy, v15);
       }
     }
   }
@@ -562,20 +562,20 @@ void __58__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeRemoved__block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_areWeRunningInRightEnvironment:(BOOL)a3
+- (BOOL)_areWeRunningInRightEnvironment:(BOOL)environment
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDHH2FrameworkSwitch *)self dataSource];
-  if (!v5)
+  dataSource = [(HMDHH2FrameworkSwitch *)self dataSource];
+  if (!dataSource)
   {
     goto LABEL_13;
   }
 
-  v6 = a3 || [(HMDHH2FrameworkSwitch *)self checkExistenceOfHH2SentinelZone];
-  v7 = [v5 isHH2Enabled];
-  v8 = [v5 setupMode];
+  v6 = environment || [(HMDHH2FrameworkSwitch *)self checkExistenceOfHH2SentinelZone];
+  isHH2Enabled = [dataSource isHH2Enabled];
+  setupMode = [dataSource setupMode];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -583,14 +583,14 @@ void __58__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeRemoved__block_invoke
     v13 = HMFBooleanToString();
     v14 = HMFBooleanToString();
     v24 = v6;
-    if (v8 > 2)
+    if (setupMode > 2)
     {
       v15 = @"Unexpected mode read";
     }
 
     else
     {
-      v15 = off_278676960[v8];
+      v15 = off_278676960[setupMode];
     }
 
     v16 = v15;
@@ -608,10 +608,10 @@ void __58__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeRemoved__block_invoke
   }
 
   objc_autoreleasePoolPop(v9);
-  if (((v8 == 1) & v7) == 0 && (((v8 != 1) & ~v6) != 0 || v6 != v7))
+  if (((setupMode == 1) & isHH2Enabled) == 0 && (((setupMode != 1) & ~v6) != 0 || v6 != isHH2Enabled))
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v10;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -635,31 +635,31 @@ LABEL_13:
   return v17;
 }
 
-- (void)makeSureWeAreRunningInRightEnvironment:(BOOL)a3
+- (void)makeSureWeAreRunningInRightEnvironment:(BOOL)environment
 {
-  v5 = [(HMDHH2FrameworkSwitch *)self workQueue];
+  workQueue = [(HMDHH2FrameworkSwitch *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__HMDHH2FrameworkSwitch_makeSureWeAreRunningInRightEnvironment___block_invoke;
   v6[3] = &unk_278688650;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  environmentCopy = environment;
+  dispatch_async(workQueue, v6);
 }
 
-- (void)cloudDatabase:(id)a3 didCreateZoneWithID:(id)a4
+- (void)cloudDatabase:(id)database didCreateZoneWithID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 zoneID];
-  v9 = [v8 zoneName];
-  v10 = [v9 isEqualToString:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71"];
+  databaseCopy = database;
+  dCopy = d;
+  zoneID = [dCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v10 = [zoneName isEqualToString:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71"];
 
   if (v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -670,13 +670,13 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMDHH2FrameworkSwitch *)v12 workQueue];
+    workQueue = [(HMDHH2FrameworkSwitch *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__HMDHH2FrameworkSwitch_cloudDatabase_didCreateZoneWithID___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v12;
-    dispatch_async(v15, block);
+    block[4] = selfCopy;
+    dispatch_async(workQueue, block);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -699,10 +699,10 @@ void __59__HMDHH2FrameworkSwitch_cloudDatabase_didCreateZoneWithID___block_invok
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
-  v5 = [v4 privateZoneIDs];
+  cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+  privateZoneIDs = [cloudDatabaseToDetectHH2Zone privateZoneIDs];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [privateZoneIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -713,12 +713,12 @@ void __59__HMDHH2FrameworkSwitch_cloudDatabase_didCreateZoneWithID___block_invok
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(privateZoneIDs);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) zoneID];
-        v11 = [v10 zoneName];
-        v12 = [v11 isEqualToString:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71"];
+        zoneID = [*(*(&v16 + 1) + 8 * i) zoneID];
+        zoneName = [zoneID zoneName];
+        v12 = [zoneName isEqualToString:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71"];
 
         if (v12)
         {
@@ -727,7 +727,7 @@ void __59__HMDHH2FrameworkSwitch_cloudDatabase_didCreateZoneWithID___block_invok
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [privateZoneIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -745,11 +745,11 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)waitForHH2SentinelZoneToBeCreated:(double)a3 error:(id *)a4
+- (BOOL)waitForHH2SentinelZoneToBeCreated:(double)created error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -775,12 +775,12 @@ LABEL_11:
   v12 = v11;
   v34 = v12;
   p_buf = &buf;
-  [(HMDHH2FrameworkSwitch *)v8 createHH2SentinelZoneWithCompletionHandler:&v30];
-  v13 = dispatch_time(0, a3);
+  [(HMDHH2FrameworkSwitch *)selfCopy createHH2SentinelZoneWithCompletionHandler:&v30];
+  v13 = dispatch_time(0, created);
   if (dispatch_group_wait(v12, v13))
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v8;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -791,12 +791,12 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v14);
-    if (a4)
+    if (error)
     {
       v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:{8, v30, v31, v32, v33}];
 LABEL_13:
       v25 = 0;
-      *a4 = v18;
+      *error = v18;
       goto LABEL_18;
     }
 
@@ -805,7 +805,7 @@ LABEL_13:
 
   v19 = *(*(&buf + 1) + 40) == 0;
   v20 = objc_autoreleasePoolPush();
-  v21 = v8;
+  v21 = selfCopy;
   if (!v19)
   {
     v22 = HMFGetOSLogHandle();
@@ -821,7 +821,7 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v20);
-    if (a4)
+    if (error)
     {
       v18 = *(*(&buf + 1) + 40);
       goto LABEL_13;
@@ -859,29 +859,29 @@ void __65__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeCreated_error___block
   *(v4 + 40) = v3;
 }
 
-- (void)createHH2SentinelZoneWithCompletionHandler:(id)a3
+- (void)createHH2SentinelZoneWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+  handlerCopy = handler;
+  cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
 
-  if (v5)
+  if (cloudDatabaseToDetectHH2Zone)
   {
     v6 = objc_alloc(MEMORY[0x277CBC5F8]);
     v7 = [v6 initWithZoneName:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71" ownerName:*MEMORY[0x277CBBF28]];
     v8 = objc_alloc(MEMORY[0x277D17070]);
-    v9 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
-    v10 = [v9 containerID];
-    v11 = [v8 initWithContainerID:v10 scope:2 zoneID:v7];
+    cloudDatabaseToDetectHH2Zone2 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+    containerID = [cloudDatabaseToDetectHH2Zone2 containerID];
+    v11 = [v8 initWithContainerID:containerID scope:2 zoneID:v7];
 
-    v12 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
-    v13 = [v12 createPrivateZoneWithID:v11];
+    cloudDatabaseToDetectHH2Zone3 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+    v13 = [cloudDatabaseToDetectHH2Zone3 createPrivateZoneWithID:v11];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __68__HMDHH2FrameworkSwitch_createHH2SentinelZoneWithCompletionHandler___block_invoke;
     v24[3] = &unk_27867E118;
-    v14 = v4;
+    v14 = handlerCopy;
     v25 = v14;
     v15 = [v13 addSuccessBlock:v24];
     v22[0] = MEMORY[0x277D85DD0];
@@ -895,7 +895,7 @@ void __65__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeCreated_error___block
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -907,9 +907,9 @@ void __65__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeCreated_error___block
 
     objc_autoreleasePoolPop(v17);
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, v7);
+      (*(handlerCopy + 2))(handlerCopy, v7);
     }
   }
 
@@ -938,16 +938,16 @@ uint64_t __68__HMDHH2FrameworkSwitch_createHH2SentinelZoneWithCompletionHandler_
   return result;
 }
 
-- (void)performInitialSync:(id)a3
+- (void)performInitialSync:(id)sync
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+  syncCopy = sync;
+  cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
 
-  if (v5)
+  if (cloudDatabaseToDetectHH2Zone)
   {
-    v6 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
-    v7 = [v6 performInitialCloudSync];
+    cloudDatabaseToDetectHH2Zone2 = [(HMDHH2FrameworkSwitch *)self cloudDatabaseToDetectHH2Zone];
+    performInitialCloudSync = [cloudDatabaseToDetectHH2Zone2 performInitialCloudSync];
 
     objc_initWeak(location, self);
     v19[0] = MEMORY[0x277D85DD0];
@@ -955,16 +955,16 @@ uint64_t __68__HMDHH2FrameworkSwitch_createHH2SentinelZoneWithCompletionHandler_
     v19[2] = __44__HMDHH2FrameworkSwitch_performInitialSync___block_invoke;
     v19[3] = &unk_27867E0F0;
     objc_copyWeak(&v21, location);
-    v8 = v4;
+    v8 = syncCopy;
     v20 = v8;
-    v9 = [v7 addSuccessBlock:v19];
+    v9 = [performInitialCloudSync addSuccessBlock:v19];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __44__HMDHH2FrameworkSwitch_performInitialSync___block_invoke_113;
     v16[3] = &unk_278686D60;
     objc_copyWeak(&v18, location);
     v17 = v8;
-    v10 = [v7 addFailureBlock:v16];
+    v10 = [performInitialCloudSync addFailureBlock:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v21);
@@ -974,7 +974,7 @@ uint64_t __68__HMDHH2FrameworkSwitch_createHH2SentinelZoneWithCompletionHandler_
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -985,10 +985,10 @@ uint64_t __68__HMDHH2FrameworkSwitch_createHH2SentinelZoneWithCompletionHandler_
     }
 
     objc_autoreleasePoolPop(v11);
-    v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    if (v4)
+    performInitialCloudSync = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+    if (syncCopy)
     {
-      (*(v4 + 2))(v4, v7);
+      (*(syncCopy + 2))(syncCopy, performInitialCloudSync);
     }
   }
 
@@ -1052,7 +1052,7 @@ void __44__HMDHH2FrameworkSwitch_performInitialSync___block_invoke_113(uint64_t 
   v25 = *MEMORY[0x277D85DE8];
   v3 = dispatch_group_create();
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1068,14 +1068,14 @@ void __44__HMDHH2FrameworkSwitch_performInitialSync___block_invoke_113(uint64_t 
   v21[1] = 3221225472;
   v21[2] = __67__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeFetchedFromCloud__block_invoke;
   v21[3] = &unk_27868A1D8;
-  v21[4] = v5;
+  v21[4] = selfCopy;
   v8 = v3;
   v22 = v8;
-  [(HMDHH2FrameworkSwitch *)v5 performInitialSync:v21];
+  [(HMDHH2FrameworkSwitch *)selfCopy performInitialSync:v21];
   v9 = dispatch_time(0, 60000000000);
   v10 = dispatch_group_wait(v8, v9);
   v11 = objc_autoreleasePoolPush();
-  v12 = v5;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   v14 = v13;
   if (v10)
@@ -1136,7 +1136,7 @@ void __67__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeFetchedFromCloud__blo
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1150,19 +1150,19 @@ void __67__HMDHH2FrameworkSwitch_waitForHH2SentinelZoneToBeFetchedFromCloud__blo
   v7 = objc_alloc(MEMORY[0x277CBC5F8]);
   v8 = [v7 initWithZoneName:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71" ownerName:*MEMORY[0x277CBBF28]];
   v9 = objc_alloc(MEMORY[0x277D17070]);
-  v10 = [(HMDHH2FrameworkSwitch *)v4 cloudDatabaseToDetectHH2Zone];
-  v11 = [v10 containerID];
-  v12 = [v9 initWithContainerID:v11 scope:2 zoneID:v8];
+  cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+  containerID = [cloudDatabaseToDetectHH2Zone containerID];
+  v12 = [v9 initWithContainerID:containerID scope:2 zoneID:v8];
 
-  v13 = [(HMDHH2FrameworkSwitch *)v4 cloudDatabaseToDetectHH2Zone];
+  cloudDatabaseToDetectHH2Zone2 = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
   v14 = [MEMORY[0x277CBEB98] setWithObject:v12];
-  v15 = [v13 synchronizeZoneStateForZoneIDs:v14];
+  v15 = [cloudDatabaseToDetectHH2Zone2 synchronizeZoneStateForZoneIDs:v14];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __47__HMDHH2FrameworkSwitch_forceFetchSentinelZone__block_invoke;
   v18[3] = &unk_278687CC0;
-  v18[4] = v4;
+  v18[4] = selfCopy;
   v16 = [v15 addCompletionBlock:v18];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1311,12 +1311,12 @@ LABEL_18:
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    [(HMDHH2FrameworkSwitch *)v4 autoFrameworkSwitch];
+    [(HMDHH2FrameworkSwitch *)selfCopy autoFrameworkSwitch];
     v7 = HMFBooleanToString();
     v23 = 138543618;
     v24 = v6;
@@ -1328,25 +1328,25 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
   v8 = objc_alloc(MEMORY[0x277CBC220]);
   v9 = [v8 initWithContainerIdentifier:@"com.apple.willow.config" environment:cloudKitContainerEnvironment];
-  v10 = [(HMDHH2FrameworkSwitch *)v4 dataSource];
-  v11 = [v10 controller:v4 cloudDatabaseWithContainerID:v9];
+  dataSource = [(HMDHH2FrameworkSwitch *)selfCopy dataSource];
+  v11 = [dataSource controller:selfCopy cloudDatabaseWithContainerID:v9];
 
   if (v11)
   {
-    [(HMDHH2FrameworkSwitch *)v4 setCloudDatabaseToDetectHH2Zone:v11];
-    v12 = [(HMDHH2FrameworkSwitch *)v4 cloudDatabaseToDetectHH2Zone];
-    [v12 setDelegate:v4];
+    [(HMDHH2FrameworkSwitch *)selfCopy setCloudDatabaseToDetectHH2Zone:v11];
+    cloudDatabaseToDetectHH2Zone = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+    [cloudDatabaseToDetectHH2Zone setDelegate:selfCopy];
 
-    v13 = [(HMDHH2FrameworkSwitch *)v4 cloudDatabaseToDetectHH2Zone];
-    v14 = [v13 registerPrivateSubscriptionForExternalRecordType:0];
+    cloudDatabaseToDetectHH2Zone2 = [(HMDHH2FrameworkSwitch *)selfCopy cloudDatabaseToDetectHH2Zone];
+    v14 = [cloudDatabaseToDetectHH2Zone2 registerPrivateSubscriptionForExternalRecordType:0];
 
-    [(HMDHH2FrameworkSwitch *)v4 performInitialSyncAndSwitchFrameworkIfRequired];
+    [(HMDHH2FrameworkSwitch *)selfCopy performInitialSyncAndSwitchFrameworkIfRequired];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v4;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -1360,19 +1360,19 @@ LABEL_18:
 
     objc_autoreleasePoolPop(v15);
     v19 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2 reason:@"Failed to create cloud database"];
-    v20 = [(HMDHH2FrameworkSwitch *)v16 homeManager];
-    v21 = [v20 currentAccessorySetupMetricDispatcher];
-    [v21 markSetupEndStage:9 error:v19];
+    homeManager = [(HMDHH2FrameworkSwitch *)v16 homeManager];
+    currentAccessorySetupMetricDispatcher = [homeManager currentAccessorySetupMetricDispatcher];
+    [currentAccessorySetupMetricDispatcher markSetupEndStage:9 error:v19];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHH2FrameworkSwitch)initWithAutoSwitch:(BOOL)a3 homeManager:(id)a4 dataSource:(id)a5 callBeforeFrameworkSwitch:(id)a6
+- (HMDHH2FrameworkSwitch)initWithAutoSwitch:(BOOL)switch homeManager:(id)manager dataSource:(id)source callBeforeFrameworkSwitch:(id)frameworkSwitch
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  managerCopy = manager;
+  sourceCopy = source;
+  frameworkSwitchCopy = frameworkSwitch;
   v28.receiver = self;
   v28.super_class = HMDHH2FrameworkSwitch;
   v13 = [(HMDHH2FrameworkSwitch *)&v28 init];
@@ -1382,27 +1382,27 @@ LABEL_18:
     logger = v13->_logger;
     v13->_logger = v14;
 
-    v13->_autoFrameworkSwitch = a3;
-    objc_storeWeak(&v13->_homeManager, v10);
-    v16 = v11;
-    if (!v11)
+    v13->_autoFrameworkSwitch = switch;
+    objc_storeWeak(&v13->_homeManager, managerCopy);
+    v16 = sourceCopy;
+    if (!sourceCopy)
     {
       v16 = objc_alloc_init(HMDHH2FrameworkSwitchDefaultDataSource);
     }
 
     objc_storeStrong(&v13->_dataSource, v16);
-    if (!v11)
+    if (!sourceCopy)
     {
     }
 
-    v17 = _Block_copy(v12);
+    v17 = _Block_copy(frameworkSwitchCopy);
     blockToBeCalledBeforeSwitchingFramework = v13->_blockToBeCalledBeforeSwitchingFramework;
     v13->_blockToBeCalledBeforeSwitchingFramework = v17;
 
     v19 = HMDispatchQueueNameString();
-    v20 = [v19 UTF8String];
+    uTF8String = [v19 UTF8String];
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v22 = dispatch_queue_create(v20, v21);
+    v22 = dispatch_queue_create(uTF8String, v21);
     workQueue = v13->_workQueue;
     v13->_workQueue = v22;
 
@@ -1410,10 +1410,10 @@ LABEL_18:
     fetchSentinelZoneDidFinishFuture = v13->_fetchSentinelZoneDidFinishFuture;
     v13->_fetchSentinelZoneDidFinishFuture = v24;
 
-    if (v10)
+    if (managerCopy)
     {
-      v26 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v26 addObserver:v13 selector:sel_handleTapToSetupFinished_ name:@"TTSU.Finished.NotificationKey" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v13 selector:sel_handleTapToSetupFinished_ name:@"TTSU.Finished.NotificationKey" object:0];
     }
 
     [(HMDHH2FrameworkSwitch *)v13 createHH2CloudDatabaseAndStartSyncing];
@@ -1442,16 +1442,16 @@ void __36__HMDHH2FrameworkSwitch_logCategory__block_invoke()
   logCategory__hmf_once_v49 = v1;
 }
 
-+ (id)errorFromHMDCKAccountStatus:(int64_t)a3
++ (id)errorFromHMDCKAccountStatus:(int64_t)status
 {
-  if ((a3 - 2) > 4)
+  if ((status - 2) > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:{qword_22A587B10[a3 - 2], v3}];
+    v5 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:{qword_22A587B10[status - 2], v3}];
   }
 
   return v5;
@@ -1461,7 +1461,7 @@ void __36__HMDHH2FrameworkSwitch_logCategory__block_invoke()
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = a1;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1481,7 +1481,7 @@ void __36__HMDHH2FrameworkSwitch_logCategory__block_invoke()
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = a1;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1496,12 +1496,12 @@ void __36__HMDHH2FrameworkSwitch_logCategory__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setHH2EnablementPreferenceKey:(BOOL)a3
++ (void)setHH2EnablementPreferenceKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1516,7 +1516,7 @@ void __36__HMDHH2FrameworkSwitch_logCategory__block_invoke()
 
   objc_autoreleasePoolPop(v5);
   v10 = MEMORY[0x277CBED28];
-  if (!v3)
+  if (!keyCopy)
   {
     v10 = MEMORY[0x277CBED10];
   }

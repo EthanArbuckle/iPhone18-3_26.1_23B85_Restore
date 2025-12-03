@@ -1,104 +1,104 @@
 @interface WOHealthBridgeProtoPersistence
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKeyedDatas:(id)a3;
-- (void)addKeyedDates:(id)a3;
-- (void)addKeyedNumbers:(id)a3;
-- (void)addKeyedStrings:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeyedDatas:(id)datas;
+- (void)addKeyedDates:(id)dates;
+- (void)addKeyedNumbers:(id)numbers;
+- (void)addKeyedStrings:(id)strings;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WOHealthBridgeProtoPersistence
 
-- (void)addKeyedNumbers:(id)a3
+- (void)addKeyedNumbers:(id)numbers
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_keyedNumbers)
+  objc_storeStrong(location, numbers);
+  if (!selfCopy->_keyedNumbers)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    keyedNumbers = v6->_keyedNumbers;
-    v6->_keyedNumbers = v3;
+    keyedNumbers = selfCopy->_keyedNumbers;
+    selfCopy->_keyedNumbers = v3;
     MEMORY[0x277D82BD8](keyedNumbers);
   }
 
-  [(NSMutableArray *)v6->_keyedNumbers addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_keyedNumbers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addKeyedStrings:(id)a3
+- (void)addKeyedStrings:(id)strings
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_keyedStrings)
+  objc_storeStrong(location, strings);
+  if (!selfCopy->_keyedStrings)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    keyedStrings = v6->_keyedStrings;
-    v6->_keyedStrings = v3;
+    keyedStrings = selfCopy->_keyedStrings;
+    selfCopy->_keyedStrings = v3;
     MEMORY[0x277D82BD8](keyedStrings);
   }
 
-  [(NSMutableArray *)v6->_keyedStrings addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_keyedStrings addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addKeyedDates:(id)a3
+- (void)addKeyedDates:(id)dates
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_keyedDates)
+  objc_storeStrong(location, dates);
+  if (!selfCopy->_keyedDates)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    keyedDates = v6->_keyedDates;
-    v6->_keyedDates = v3;
+    keyedDates = selfCopy->_keyedDates;
+    selfCopy->_keyedDates = v3;
     MEMORY[0x277D82BD8](keyedDates);
   }
 
-  [(NSMutableArray *)v6->_keyedDates addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_keyedDates addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)addKeyedDatas:(id)a3
+- (void)addKeyedDatas:(id)datas
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_keyedDatas)
+  objc_storeStrong(location, datas);
+  if (!selfCopy->_keyedDatas)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    keyedDatas = v6->_keyedDatas;
-    v6->_keyedDatas = v3;
+    keyedDatas = selfCopy->_keyedDatas;
+    selfCopy->_keyedDatas = v3;
     MEMORY[0x277D82BD8](keyedDatas);
   }
 
-  [(NSMutableArray *)v6->_keyedDatas addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_keyedDatas addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (id)description
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = WOHealthBridgeProtoPersistence;
   v5 = [(WOHealthBridgeProtoPersistence *)&v7 description];
-  v4 = [(WOHealthBridgeProtoPersistence *)v9 dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v5, v4];
-  MEMORY[0x277D82BD8](v4);
+  dictionaryRepresentation = [(WOHealthBridgeProtoPersistence *)selfCopy dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v5, dictionaryRepresentation];
+  MEMORY[0x277D82BD8](dictionaryRepresentation);
   MEMORY[0x277D82BD8](v5);
 
   return v6;
@@ -107,25 +107,25 @@
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x277D85DE8];
-  v60 = self;
+  selfCopy = self;
   v59[1] = a2;
   v59[0] = [MEMORY[0x277CBEB38] dictionary];
-  v45 = [MEMORY[0x277CCABB0] numberWithInt:v60->_version];
+  v45 = [MEMORY[0x277CCABB0] numberWithInt:selfCopy->_version];
   [v59[0] setObject:? forKey:?];
   MEMORY[0x277D82BD8](v45);
-  v46 = [MEMORY[0x277CCABB0] numberWithInt:v60->_type];
+  v46 = [MEMORY[0x277CCABB0] numberWithInt:selfCopy->_type];
   [v59[0] setObject:? forKey:?];
   MEMORY[0x277D82BD8](v46);
-  if (v60->_uuid)
+  if (selfCopy->_uuid)
   {
-    [v59[0] setObject:v60->_uuid forKey:@"uuid"];
+    [v59[0] setObject:selfCopy->_uuid forKey:@"uuid"];
   }
 
-  if ([(NSMutableArray *)v60->_keyedNumbers count])
+  if ([(NSMutableArray *)selfCopy->_keyedNumbers count])
   {
-    v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](v60->_keyedNumbers, "count")}];
+    v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](selfCopy->_keyedNumbers, "count")}];
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x277D82BE0](v60->_keyedNumbers);
+    obj = MEMORY[0x277D82BE0](selfCopy->_keyedNumbers);
     v44 = [obj countByEnumeratingWithState:__b objects:v64 count:16];
     if (v44)
     {
@@ -142,9 +142,9 @@
 
         v57 = *(__b[1] + 8 * v41);
         v37 = v58;
-        v38 = [v57 dictionaryRepresentation];
+        dictionaryRepresentation = [v57 dictionaryRepresentation];
         [v37 addObject:?];
-        MEMORY[0x277D82BD8](v38);
+        MEMORY[0x277D82BD8](dictionaryRepresentation);
         ++v41;
         if (v39 + 1 >= v42)
         {
@@ -163,12 +163,12 @@
     objc_storeStrong(&v58, 0);
   }
 
-  if ([(NSMutableArray *)v60->_keyedStrings count])
+  if ([(NSMutableArray *)selfCopy->_keyedStrings count])
   {
     v34 = objc_alloc(MEMORY[0x277CBEB18]);
-    v55 = [v34 initWithCapacity:{-[NSMutableArray count](v60->_keyedStrings, "count")}];
+    v55 = [v34 initWithCapacity:{-[NSMutableArray count](selfCopy->_keyedStrings, "count")}];
     memset(v53, 0, sizeof(v53));
-    v35 = MEMORY[0x277D82BE0](v60->_keyedStrings);
+    v35 = MEMORY[0x277D82BE0](selfCopy->_keyedStrings);
     v36 = [v35 countByEnumeratingWithState:v53 objects:v63 count:16];
     if (v36)
     {
@@ -185,9 +185,9 @@
 
         v54 = *(v53[1] + 8 * v32);
         v28 = v55;
-        v29 = [v54 dictionaryRepresentation];
+        dictionaryRepresentation2 = [v54 dictionaryRepresentation];
         [v28 addObject:?];
-        MEMORY[0x277D82BD8](v29);
+        MEMORY[0x277D82BD8](dictionaryRepresentation2);
         ++v32;
         if (v30 + 1 >= v33)
         {
@@ -206,12 +206,12 @@
     objc_storeStrong(&v55, 0);
   }
 
-  if ([(NSMutableArray *)v60->_keyedDates count])
+  if ([(NSMutableArray *)selfCopy->_keyedDates count])
   {
     v25 = objc_alloc(MEMORY[0x277CBEB18]);
-    v52 = [v25 initWithCapacity:{-[NSMutableArray count](v60->_keyedDates, "count")}];
+    v52 = [v25 initWithCapacity:{-[NSMutableArray count](selfCopy->_keyedDates, "count")}];
     memset(v50, 0, sizeof(v50));
-    v26 = MEMORY[0x277D82BE0](v60->_keyedDates);
+    v26 = MEMORY[0x277D82BE0](selfCopy->_keyedDates);
     v27 = [v26 countByEnumeratingWithState:v50 objects:v62 count:16];
     if (v27)
     {
@@ -228,9 +228,9 @@
 
         v51 = *(v50[1] + 8 * v23);
         v19 = v52;
-        v20 = [v51 dictionaryRepresentation];
+        dictionaryRepresentation3 = [v51 dictionaryRepresentation];
         [v19 addObject:?];
-        MEMORY[0x277D82BD8](v20);
+        MEMORY[0x277D82BD8](dictionaryRepresentation3);
         ++v23;
         if (v21 + 1 >= v24)
         {
@@ -249,12 +249,12 @@
     objc_storeStrong(&v52, 0);
   }
 
-  if ([(NSMutableArray *)v60->_keyedDatas count])
+  if ([(NSMutableArray *)selfCopy->_keyedDatas count])
   {
     v16 = objc_alloc(MEMORY[0x277CBEB18]);
-    v49 = [v16 initWithCapacity:{-[NSMutableArray count](v60->_keyedDatas, "count")}];
+    v49 = [v16 initWithCapacity:{-[NSMutableArray count](selfCopy->_keyedDatas, "count")}];
     memset(v47, 0, sizeof(v47));
-    v17 = MEMORY[0x277D82BE0](v60->_keyedDatas);
+    v17 = MEMORY[0x277D82BE0](selfCopy->_keyedDatas);
     v18 = [v17 countByEnumeratingWithState:v47 objects:v61 count:16];
     if (v18)
     {
@@ -271,9 +271,9 @@
 
         v48 = *(v47[1] + 8 * v14);
         v10 = v49;
-        v11 = [v48 dictionaryRepresentation];
+        dictionaryRepresentation4 = [v48 dictionaryRepresentation];
         [v10 addObject:?];
-        MEMORY[0x277D82BD8](v11);
+        MEMORY[0x277D82BD8](dictionaryRepresentation4);
         ++v14;
         if (v12 + 1 >= v15)
         {
@@ -292,30 +292,30 @@
     objc_storeStrong(&v49, 0);
   }
 
-  if (v60->_persistedData)
+  if (selfCopy->_persistedData)
   {
-    [v59[0] setObject:v60->_persistedData forKey:@"persistedData"];
+    [v59[0] setObject:selfCopy->_persistedData forKey:@"persistedData"];
   }
 
-  if (v60->_persistedProtoData)
+  if (selfCopy->_persistedProtoData)
   {
-    [v59[0] setObject:v60->_persistedProtoData forKey:@"persistedProtoData"];
+    [v59[0] setObject:selfCopy->_persistedProtoData forKey:@"persistedProtoData"];
   }
 
   v6 = v59[0];
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:v60->_objectState];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:selfCopy->_objectState];
   [v6 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v7);
   v8 = v59[0];
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:v60->_objectModificationTimeSinceReferenceDate];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:selfCopy->_objectModificationTimeSinceReferenceDate];
   [v8 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v9);
-  if (v60->_syncIdentity)
+  if (selfCopy->_syncIdentity)
   {
     v4 = v59[0];
-    v5 = [(WOHealthBridgeSyncIdentity *)v60->_syncIdentity dictionaryRepresentation];
+    dictionaryRepresentation5 = [(WOHealthBridgeSyncIdentity *)selfCopy->_syncIdentity dictionaryRepresentation];
     [v4 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](dictionaryRepresentation5);
   }
 
   v3 = MEMORY[0x277D82BE0](v59[0]);
@@ -325,37 +325,37 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = WOHealthBridgeProtoPersistenceReadFrom(v6, location[0]);
+  objc_storeStrong(location, from);
+  v4 = WOHealthBridgeProtoPersistenceReadFrom(selfCopy, location[0]);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x277D85DE8];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  version = v40->_version;
+  objc_storeStrong(location, to);
+  version = selfCopy->_version;
   PBDataWriterWriteInt32Field();
-  type = v40->_type;
+  type = selfCopy->_type;
   PBDataWriterWriteInt32Field();
-  if (!v40->_uuid)
+  if (!selfCopy->_uuid)
   {
     __assert_rtn("[WOHealthBridgeProtoPersistence writeTo:]", "WOHealthBridgeProtoPersistence.m", 375, "nil != self->_uuid");
   }
 
-  uuid = v40->_uuid;
+  uuid = selfCopy->_uuid;
   PBDataWriterWriteDataField();
   memset(__b, 0, 0x40uLL);
-  obj = MEMORY[0x277D82BE0](v40->_keyedNumbers);
+  obj = MEMORY[0x277D82BE0](selfCopy->_keyedNumbers);
   v34 = [obj countByEnumeratingWithState:__b objects:v44 count:16];
   if (v34)
   {
@@ -387,7 +387,7 @@
 
   MEMORY[0x277D82BD8](obj);
   memset(v37, 0, 0x40uLL);
-  v27 = MEMORY[0x277D82BE0](v40->_keyedStrings);
+  v27 = MEMORY[0x277D82BE0](selfCopy->_keyedStrings);
   v28 = [v27 countByEnumeratingWithState:v37 objects:v43 count:16];
   if (v28)
   {
@@ -419,7 +419,7 @@
 
   MEMORY[0x277D82BD8](v27);
   memset(v36, 0, 0x40uLL);
-  v21 = MEMORY[0x277D82BE0](v40->_keyedDates);
+  v21 = MEMORY[0x277D82BE0](selfCopy->_keyedDates);
   v22 = [v21 countByEnumeratingWithState:v36 objects:v42 count:16];
   if (v22)
   {
@@ -451,7 +451,7 @@
 
   MEMORY[0x277D82BD8](v21);
   memset(v35, 0, 0x40uLL);
-  v15 = MEMORY[0x277D82BE0](v40->_keyedDatas);
+  v15 = MEMORY[0x277D82BE0](selfCopy->_keyedDatas);
   v16 = [v15 countByEnumeratingWithState:v35 objects:v41 count:16];
   if (v16)
   {
@@ -482,26 +482,26 @@
   }
 
   MEMORY[0x277D82BD8](v15);
-  if (!v40->_persistedData)
+  if (!selfCopy->_persistedData)
   {
     __assert_rtn("[WOHealthBridgeProtoPersistence writeTo:]", "WOHealthBridgeProtoPersistence.m", 408, "nil != self->_persistedData");
   }
 
-  persistedData = v40->_persistedData;
+  persistedData = selfCopy->_persistedData;
   PBDataWriterWriteDataField();
-  if (v40->_persistedProtoData)
+  if (selfCopy->_persistedProtoData)
   {
-    persistedProtoData = v40->_persistedProtoData;
+    persistedProtoData = selfCopy->_persistedProtoData;
     PBDataWriterWriteDataField();
   }
 
-  objectState = v40->_objectState;
+  objectState = selfCopy->_objectState;
   PBDataWriterWriteInt32Field();
-  objectModificationTimeSinceReferenceDate = v40->_objectModificationTimeSinceReferenceDate;
+  objectModificationTimeSinceReferenceDate = selfCopy->_objectModificationTimeSinceReferenceDate;
   PBDataWriterWriteDoubleField();
-  if (v40->_syncIdentity)
+  if (selfCopy->_syncIdentity)
   {
-    syncIdentity = v40->_syncIdentity;
+    syncIdentity = selfCopy->_syncIdentity;
     PBDataWriterWriteSubmessage();
   }
 
@@ -509,98 +509,98 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  *(location[0] + 24) = v20->_version;
-  *(location[0] + 20) = v20->_type;
-  [location[0] setUuid:v20->_uuid];
-  if ([(WOHealthBridgeProtoPersistence *)v20 keyedNumbersCount])
+  objc_storeStrong(location, to);
+  *(location[0] + 24) = selfCopy->_version;
+  *(location[0] + 20) = selfCopy->_type;
+  [location[0] setUuid:selfCopy->_uuid];
+  if ([(WOHealthBridgeProtoPersistence *)selfCopy keyedNumbersCount])
   {
     [location[0] clearKeyedNumbers];
-    v18 = [(WOHealthBridgeProtoPersistence *)v20 keyedNumbersCount];
-    for (i = 0; i < v18; ++i)
+    keyedNumbersCount = [(WOHealthBridgeProtoPersistence *)selfCopy keyedNumbersCount];
+    for (i = 0; i < keyedNumbersCount; ++i)
     {
       v9 = location[0];
-      v10 = [(WOHealthBridgeProtoPersistence *)v20 keyedNumbersAtIndex:i];
+      v10 = [(WOHealthBridgeProtoPersistence *)selfCopy keyedNumbersAtIndex:i];
       [v9 addKeyedNumbers:?];
       MEMORY[0x277D82BD8](v10);
     }
   }
 
-  if ([(WOHealthBridgeProtoPersistence *)v20 keyedStringsCount])
+  if ([(WOHealthBridgeProtoPersistence *)selfCopy keyedStringsCount])
   {
     [location[0] clearKeyedStrings];
-    v16 = [(WOHealthBridgeProtoPersistence *)v20 keyedStringsCount];
-    for (j = 0; j < v16; ++j)
+    keyedStringsCount = [(WOHealthBridgeProtoPersistence *)selfCopy keyedStringsCount];
+    for (j = 0; j < keyedStringsCount; ++j)
     {
       v7 = location[0];
-      v8 = [(WOHealthBridgeProtoPersistence *)v20 keyedStringsAtIndex:j];
+      v8 = [(WOHealthBridgeProtoPersistence *)selfCopy keyedStringsAtIndex:j];
       [v7 addKeyedStrings:?];
       MEMORY[0x277D82BD8](v8);
     }
   }
 
-  if ([(WOHealthBridgeProtoPersistence *)v20 keyedDatesCount])
+  if ([(WOHealthBridgeProtoPersistence *)selfCopy keyedDatesCount])
   {
     [location[0] clearKeyedDates];
-    v14 = [(WOHealthBridgeProtoPersistence *)v20 keyedDatesCount];
-    for (k = 0; k < v14; ++k)
+    keyedDatesCount = [(WOHealthBridgeProtoPersistence *)selfCopy keyedDatesCount];
+    for (k = 0; k < keyedDatesCount; ++k)
     {
       v5 = location[0];
-      v6 = [(WOHealthBridgeProtoPersistence *)v20 keyedDatesAtIndex:k];
+      v6 = [(WOHealthBridgeProtoPersistence *)selfCopy keyedDatesAtIndex:k];
       [v5 addKeyedDates:?];
       MEMORY[0x277D82BD8](v6);
     }
   }
 
-  if ([(WOHealthBridgeProtoPersistence *)v20 keyedDatasCount])
+  if ([(WOHealthBridgeProtoPersistence *)selfCopy keyedDatasCount])
   {
     [location[0] clearKeyedDatas];
-    v12 = [(WOHealthBridgeProtoPersistence *)v20 keyedDatasCount];
-    for (m = 0; m < v12; ++m)
+    keyedDatasCount = [(WOHealthBridgeProtoPersistence *)selfCopy keyedDatasCount];
+    for (m = 0; m < keyedDatasCount; ++m)
     {
       v3 = location[0];
-      v4 = [(WOHealthBridgeProtoPersistence *)v20 keyedDatasAtIndex:m];
+      v4 = [(WOHealthBridgeProtoPersistence *)selfCopy keyedDatasAtIndex:m];
       [v3 addKeyedDatas:?];
       MEMORY[0x277D82BD8](v4);
     }
   }
 
-  [location[0] setPersistedData:v20->_persistedData];
-  if (v20->_persistedProtoData)
+  [location[0] setPersistedData:selfCopy->_persistedData];
+  if (selfCopy->_persistedProtoData)
   {
-    [location[0] setPersistedProtoData:v20->_persistedProtoData];
+    [location[0] setPersistedProtoData:selfCopy->_persistedProtoData];
   }
 
-  *(location[0] + 12) = v20->_objectState;
-  *(location[0] + 1) = *&v20->_objectModificationTimeSinceReferenceDate;
-  if (v20->_syncIdentity)
+  *(location[0] + 12) = selfCopy->_objectState;
+  *(location[0] + 1) = *&selfCopy->_objectModificationTimeSinceReferenceDate;
+  if (selfCopy->_syncIdentity)
   {
-    [location[0] setSyncIdentity:v20->_syncIdentity];
+    [location[0] setSyncIdentity:selfCopy->_syncIdentity];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v57 = *MEMORY[0x277D85DE8];
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v50 = a3;
-  v49 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v49[24] = v52->_version;
-  v49[20] = v52->_type;
-  v3 = [(NSData *)v52->_uuid copyWithZone:v50];
+  zoneCopy = zone;
+  v49 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v49[24] = selfCopy->_version;
+  v49[20] = selfCopy->_type;
+  v3 = [(NSData *)selfCopy->_uuid copyWithZone:zoneCopy];
   v4 = *(v49 + 11);
   *(v49 + 11) = v3;
   MEMORY[0x277D82BD8](v4);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v52->_keyedNumbers);
+  obj = MEMORY[0x277D82BE0](selfCopy->_keyedNumbers);
   v36 = [obj countByEnumeratingWithState:__b objects:v56 count:16];
   if (v36)
   {
@@ -616,7 +616,7 @@
       }
 
       v48 = *(__b[1] + 8 * v33);
-      v46 = [v48 copyWithZone:v50];
+      v46 = [v48 copyWithZone:zoneCopy];
       [v49 addKeyedNumbers:v46];
       objc_storeStrong(&v46, 0);
       ++v33;
@@ -634,7 +634,7 @@
 
   MEMORY[0x277D82BD8](obj);
   memset(v44, 0, sizeof(v44));
-  v29 = MEMORY[0x277D82BE0](v52->_keyedStrings);
+  v29 = MEMORY[0x277D82BE0](selfCopy->_keyedStrings);
   v30 = [v29 countByEnumeratingWithState:v44 objects:v55 count:16];
   if (v30)
   {
@@ -650,7 +650,7 @@
       }
 
       v45 = *(v44[1] + 8 * v27);
-      v43 = [v45 copyWithZone:v50];
+      v43 = [v45 copyWithZone:zoneCopy];
       [v49 addKeyedStrings:v43];
       objc_storeStrong(&v43, 0);
       ++v27;
@@ -668,7 +668,7 @@
 
   MEMORY[0x277D82BD8](v29);
   memset(v41, 0, sizeof(v41));
-  v23 = MEMORY[0x277D82BE0](v52->_keyedDates);
+  v23 = MEMORY[0x277D82BE0](selfCopy->_keyedDates);
   v24 = [v23 countByEnumeratingWithState:v41 objects:v54 count:16];
   if (v24)
   {
@@ -684,7 +684,7 @@
       }
 
       v42 = *(v41[1] + 8 * v21);
-      v40 = [v42 copyWithZone:v50];
+      v40 = [v42 copyWithZone:zoneCopy];
       [v49 addKeyedDates:v40];
       objc_storeStrong(&v40, 0);
       ++v21;
@@ -702,7 +702,7 @@
 
   MEMORY[0x277D82BD8](v23);
   memset(v38, 0, sizeof(v38));
-  v17 = MEMORY[0x277D82BE0](v52->_keyedDatas);
+  v17 = MEMORY[0x277D82BE0](selfCopy->_keyedDatas);
   v18 = [v17 countByEnumeratingWithState:v38 objects:v53 count:16];
   if (v18)
   {
@@ -718,7 +718,7 @@
       }
 
       v39 = *(v38[1] + 8 * v15);
-      v37 = [v39 copyWithZone:v50];
+      v37 = [v39 copyWithZone:zoneCopy];
       [v49 addKeyedDatas:v37];
       objc_storeStrong(&v37, 0);
       ++v15;
@@ -735,17 +735,17 @@
   }
 
   MEMORY[0x277D82BD8](v17);
-  v5 = [(NSData *)v52->_persistedData copyWithZone:v50];
+  v5 = [(NSData *)selfCopy->_persistedData copyWithZone:zoneCopy];
   v6 = *(v49 + 7);
   *(v49 + 7) = v5;
   MEMORY[0x277D82BD8](v6);
-  v7 = [(NSData *)v52->_persistedProtoData copyWithZone:v50];
+  v7 = [(NSData *)selfCopy->_persistedProtoData copyWithZone:zoneCopy];
   v8 = *(v49 + 8);
   *(v49 + 8) = v7;
   MEMORY[0x277D82BD8](v8);
-  v49[12] = v52->_objectState;
-  *(v49 + 1) = *&v52->_objectModificationTimeSinceReferenceDate;
-  v9 = [(WOHealthBridgeSyncIdentity *)v52->_syncIdentity copyWithZone:v50];
+  v49[12] = selfCopy->_objectState;
+  *(v49 + 1) = *&selfCopy->_objectModificationTimeSinceReferenceDate;
+  v9 = [(WOHealthBridgeSyncIdentity *)selfCopy->_syncIdentity copyWithZone:zoneCopy];
   v10 = *(v49 + 9);
   *(v49 + 9) = v9;
   MEMORY[0x277D82BD8](v10);
@@ -755,45 +755,45 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   v6 = MEMORY[0x277D82BE0](location[0]);
   v5 = 0;
   if ([v6 isMemberOfClass:objc_opt_class()])
   {
     v5 = 0;
-    if (v8->_version == *(v6 + 24))
+    if (selfCopy->_version == *(v6 + 24))
     {
       v5 = 0;
-      if (v8->_type == *(v6 + 20))
+      if (selfCopy->_type == *(v6 + 20))
       {
-        if (!v8->_uuid && !*(v6 + 11) || (v5 = 0, ([(NSData *)v8->_uuid isEqual:*(v6 + 11)]& 1) != 0))
+        if (!selfCopy->_uuid && !*(v6 + 11) || (v5 = 0, ([(NSData *)selfCopy->_uuid isEqual:*(v6 + 11)]& 1) != 0))
         {
-          if (!v8->_keyedNumbers && !*(v6 + 4) || (v5 = 0, ([(NSMutableArray *)v8->_keyedNumbers isEqual:*(v6 + 4)]& 1) != 0))
+          if (!selfCopy->_keyedNumbers && !*(v6 + 4) || (v5 = 0, ([(NSMutableArray *)selfCopy->_keyedNumbers isEqual:*(v6 + 4)]& 1) != 0))
           {
-            if (!v8->_keyedStrings && !*(v6 + 5) || (v5 = 0, ([(NSMutableArray *)v8->_keyedStrings isEqual:*(v6 + 5)]& 1) != 0))
+            if (!selfCopy->_keyedStrings && !*(v6 + 5) || (v5 = 0, ([(NSMutableArray *)selfCopy->_keyedStrings isEqual:*(v6 + 5)]& 1) != 0))
             {
-              if (!v8->_keyedDates && !*(v6 + 3) || (v5 = 0, ([(NSMutableArray *)v8->_keyedDates isEqual:*(v6 + 3)]& 1) != 0))
+              if (!selfCopy->_keyedDates && !*(v6 + 3) || (v5 = 0, ([(NSMutableArray *)selfCopy->_keyedDates isEqual:*(v6 + 3)]& 1) != 0))
               {
-                if (!v8->_keyedDatas && !*(v6 + 2) || (v5 = 0, ([(NSMutableArray *)v8->_keyedDatas isEqual:*(v6 + 2)]& 1) != 0))
+                if (!selfCopy->_keyedDatas && !*(v6 + 2) || (v5 = 0, ([(NSMutableArray *)selfCopy->_keyedDatas isEqual:*(v6 + 2)]& 1) != 0))
                 {
-                  if (!v8->_persistedData && !*(v6 + 7) || (v5 = 0, ([(NSData *)v8->_persistedData isEqual:*(v6 + 7)]& 1) != 0))
+                  if (!selfCopy->_persistedData && !*(v6 + 7) || (v5 = 0, ([(NSData *)selfCopy->_persistedData isEqual:*(v6 + 7)]& 1) != 0))
                   {
-                    if (!v8->_persistedProtoData && !*(v6 + 8) || (v5 = 0, ([(NSData *)v8->_persistedProtoData isEqual:*(v6 + 8)]& 1) != 0))
+                    if (!selfCopy->_persistedProtoData && !*(v6 + 8) || (v5 = 0, ([(NSData *)selfCopy->_persistedProtoData isEqual:*(v6 + 8)]& 1) != 0))
                     {
                       v5 = 0;
-                      if (v8->_objectState == *(v6 + 12))
+                      if (selfCopy->_objectState == *(v6 + 12))
                       {
                         v5 = 0;
-                        if (v8->_objectModificationTimeSinceReferenceDate == *(v6 + 1))
+                        if (selfCopy->_objectModificationTimeSinceReferenceDate == *(v6 + 1))
                         {
-                          if (v8->_syncIdentity || (v4 = 1, *(v6 + 9)))
+                          if (selfCopy->_syncIdentity || (v4 = 1, *(v6 + 9)))
                           {
-                            v4 = [(WOHealthBridgeSyncIdentity *)v8->_syncIdentity isEqual:*(v6 + 9)];
+                            v4 = [(WOHealthBridgeSyncIdentity *)selfCopy->_syncIdentity isEqual:*(v6 + 9)];
                           }
 
                           v5 = v4;
@@ -883,18 +883,18 @@
   return v11 ^ (2654435761 * objectState) ^ v15 ^ [(WOHealthBridgeSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v36->_version = *(location[0] + 24);
-  v36->_type = *(location[0] + 20);
+  objc_storeStrong(location, from);
+  selfCopy->_version = *(location[0] + 24);
+  selfCopy->_type = *(location[0] + 20);
   if (*(location[0] + 11))
   {
-    [(WOHealthBridgeProtoPersistence *)v36 setUuid:*(location[0] + 11)];
+    [(WOHealthBridgeProtoPersistence *)selfCopy setUuid:*(location[0] + 11)];
   }
 
   memset(__b, 0, sizeof(__b));
@@ -914,7 +914,7 @@
       }
 
       v34 = *(__b[1] + 8 * v23);
-      [(WOHealthBridgeProtoPersistence *)v36 addKeyedNumbers:v34];
+      [(WOHealthBridgeProtoPersistence *)selfCopy addKeyedNumbers:v34];
       ++v23;
       if (v21 + 1 >= v24)
       {
@@ -946,7 +946,7 @@
       }
 
       v32 = *(v31[1] + 8 * v17);
-      [(WOHealthBridgeProtoPersistence *)v36 addKeyedStrings:v32];
+      [(WOHealthBridgeProtoPersistence *)selfCopy addKeyedStrings:v32];
       ++v17;
       if (v15 + 1 >= v18)
       {
@@ -978,7 +978,7 @@
       }
 
       v30 = *(v29[1] + 8 * v11);
-      [(WOHealthBridgeProtoPersistence *)v36 addKeyedDates:v30];
+      [(WOHealthBridgeProtoPersistence *)selfCopy addKeyedDates:v30];
       ++v11;
       if (v9 + 1 >= v12)
       {
@@ -1010,7 +1010,7 @@
       }
 
       v28 = *(v27[1] + 8 * v5);
-      [(WOHealthBridgeProtoPersistence *)v36 addKeyedDatas:v28];
+      [(WOHealthBridgeProtoPersistence *)selfCopy addKeyedDatas:v28];
       ++v5;
       if (v3 + 1 >= v6)
       {
@@ -1027,24 +1027,24 @@
   MEMORY[0x277D82BD8](v7);
   if (*(location[0] + 7))
   {
-    [(WOHealthBridgeProtoPersistence *)v36 setPersistedData:*(location[0] + 7)];
+    [(WOHealthBridgeProtoPersistence *)selfCopy setPersistedData:*(location[0] + 7)];
   }
 
   if (*(location[0] + 8))
   {
-    [(WOHealthBridgeProtoPersistence *)v36 setPersistedProtoData:*(location[0] + 8)];
+    [(WOHealthBridgeProtoPersistence *)selfCopy setPersistedProtoData:*(location[0] + 8)];
   }
 
-  v36->_objectState = *(location[0] + 12);
-  v36->_objectModificationTimeSinceReferenceDate = *(location[0] + 1);
-  if (v36->_syncIdentity && *(location[0] + 9))
+  selfCopy->_objectState = *(location[0] + 12);
+  selfCopy->_objectModificationTimeSinceReferenceDate = *(location[0] + 1);
+  if (selfCopy->_syncIdentity && *(location[0] + 9))
   {
-    [(WOHealthBridgeSyncIdentity *)v36->_syncIdentity mergeFrom:*(location[0] + 9)];
+    [(WOHealthBridgeSyncIdentity *)selfCopy->_syncIdentity mergeFrom:*(location[0] + 9)];
   }
 
-  else if (!v36->_syncIdentity && *(location[0] + 9))
+  else if (!selfCopy->_syncIdentity && *(location[0] + 9))
   {
-    [(WOHealthBridgeProtoPersistence *)v36 setSyncIdentity:*(location[0] + 9)];
+    [(WOHealthBridgeProtoPersistence *)selfCopy setSyncIdentity:*(location[0] + 9)];
   }
 
   objc_storeStrong(location, 0);

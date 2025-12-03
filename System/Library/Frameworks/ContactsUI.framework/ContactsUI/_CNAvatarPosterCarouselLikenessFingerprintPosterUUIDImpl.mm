@@ -1,30 +1,30 @@
 @interface _CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl
-+ (id)fingerprintForPosterConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fingerprintForPosterConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithCoder:(id)a3;
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithPosterUUID:(id)a3;
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithCoder:(id)coder;
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithPosterUUID:(id)d;
 @end
 
 @implementation _CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl
 
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithCoder:(id)a3
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterUUID"];
 
   v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)self initWithPosterUUID:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (UUID = self->_UUID, v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)v4 UUID], UUID | v6) && ![(NSUUID *)UUID isEqual:v6])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (UUID = self->_UUID, v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)equalCopy UUID], UUID | v6) && ![(NSUUID *)UUID isEqual:v6])
     {
       v7 = 0;
     }
@@ -37,34 +37,34 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"UUID" object:self->_UUID];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithPosterUUID:(id)a3
+- (_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl)initWithPosterUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = _CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl;
   v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_UUID, a3);
+    objc_storeStrong(&v6->_UUID, d);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)fingerprintForPosterConfiguration:(id)a3
++ (id)fingerprintForPosterConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = [_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl alloc];
-  v5 = [v3 serverUUID];
+  serverUUID = [configurationCopy serverUUID];
 
-  v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)v4 initWithPosterUUID:v5];
+  v6 = [(_CNAvatarPosterCarouselLikenessFingerprintPosterUUIDImpl *)v4 initWithPosterUUID:serverUUID];
 
   return v6;
 }

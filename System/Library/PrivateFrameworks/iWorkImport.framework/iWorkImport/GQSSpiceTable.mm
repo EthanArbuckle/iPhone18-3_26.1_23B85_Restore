@@ -1,9 +1,9 @@
 @interface GQSSpiceTable
 - (GQSSpiceTable)init;
-- (float)alongValueForVectorUid:(const char *)a3;
+- (float)alongValueForVectorUid:(const char *)uid;
 - (void)aboutToReadCells;
 - (void)dealloc;
-- (void)setAlongValue:(float)a3 forOwnedVectorUid:(char *)a4;
+- (void)setAlongValue:(float)value forOwnedVectorUid:(char *)uid;
 @end
 
 @implementation GQSSpiceTable
@@ -73,10 +73,10 @@
   std::__sort<std::__less<float,float> &,float *>();
 }
 
-- (float)alongValueForVectorUid:(const char *)a3
+- (float)alongValueForVectorUid:(const char *)uid
 {
   valuePtr = 0.0;
-  Value = CFDictionaryGetValue(self->mVectorUidToAlongMap, a3);
+  Value = CFDictionaryGetValue(self->mVectorUidToAlongMap, uid);
   if (!Value)
   {
     return 0.0;
@@ -86,11 +86,11 @@
   return valuePtr;
 }
 
-- (void)setAlongValue:(float)a3 forOwnedVectorUid:(char *)a4
+- (void)setAlongValue:(float)value forOwnedVectorUid:(char *)uid
 {
-  valuePtr = a3;
+  valuePtr = value;
   v6 = CFNumberCreate(0, kCFNumberFloatType, &valuePtr);
-  CFDictionarySetValue(self->mVectorUidToAlongMap, a4, v6);
+  CFDictionarySetValue(self->mVectorUidToAlongMap, uid, v6);
   CFRelease(v6);
   if (self->mReadingRowVectors)
   {

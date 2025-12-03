@@ -1,20 +1,20 @@
 @interface REHTMLContainerElement
-- (REHTMLContainerElement)initWithElements:(id)a3;
+- (REHTMLContainerElement)initWithElements:(id)elements;
 - (id)_encodedData;
-- (id)append:(id)a3;
+- (id)append:(id)append;
 - (id)attributes;
 - (id)classes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementBySettingAtttibutes:(id)a3;
-- (id)elementBySettingClasses:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementBySettingAtttibutes:(id)atttibutes;
+- (id)elementBySettingClasses:(id)classes;
 @end
 
 @implementation REHTMLContainerElement
 
-- (REHTMLContainerElement)initWithElements:(id)a3
+- (REHTMLContainerElement)initWithElements:(id)elements
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementsCopy = elements;
   v32.receiver = self;
   v32.super_class = REHTMLContainerElement;
   v5 = [(REHTMLElement *)&v32 init];
@@ -24,7 +24,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = v4;
+    v6 = elementsCopy;
     v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v7)
     {
@@ -45,7 +45,7 @@
           if (objc_opt_isKindOfClass())
           {
 
-            v13 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v24 = 0u;
             v25 = 0u;
             v26 = 0u;
@@ -70,12 +70,12 @@
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v13 addObjectsFromArray:*(v19 + 16)];
+                    [array addObjectsFromArray:*(v19 + 16)];
                   }
 
                   else
                   {
-                    [v13 addObject:{v19, v24}];
+                    [array addObject:{v19, v24}];
                   }
 
                   ++v18;
@@ -88,7 +88,7 @@
               while (v16);
             }
 
-            v20 = [v13 copy];
+            v20 = [array copy];
             elements = v5->_elements;
             v5->_elements = v20;
 
@@ -110,7 +110,7 @@
     }
 
     v12 = [v6 copy];
-    v13 = v5->_elements;
+    array = v5->_elements;
     v5->_elements = v12;
 LABEL_22:
   }
@@ -122,7 +122,7 @@ LABEL_22:
 - (id)_encodedData
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -144,12 +144,12 @@ LABEL_22:
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = objc_alloc(MEMORY[0x277CCACA8]);
-        v11 = [v9 encodedData];
-        v12 = [v10 initWithData:v11 encoding:4];
+        encodedData = [v9 encodedData];
+        v12 = [v10 initWithData:encodedData encoding:4];
 
         [v12 length];
-        v13 = [v9 encodedData];
-        [v3 appendData:v13];
+        encodedData2 = [v9 encodedData];
+        [data appendData:encodedData2];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -158,9 +158,9 @@ LABEL_22:
     while (v6);
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:data encoding:4];
   [v14 length];
-  v15 = [v3 copy];
+  v15 = [data copy];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -169,12 +169,12 @@ LABEL_22:
 
 - (id)classes
 {
-  v2 = [(NSArray *)self->_elements firstObject];
-  v3 = [v2 classes];
-  v4 = v3;
-  if (v3)
+  firstObject = [(NSArray *)self->_elements firstObject];
+  classes = [firstObject classes];
+  v4 = classes;
+  if (classes)
   {
-    v5 = v3;
+    v5 = classes;
   }
 
   else
@@ -187,41 +187,41 @@ LABEL_22:
   return v5;
 }
 
-- (id)elementBySettingClasses:(id)a3
+- (id)elementBySettingClasses:(id)classes
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  classesCopy = classes;
   if ([(NSArray *)self->_elements count])
   {
-    v5 = [(NSArray *)self->_elements firstObject];
-    v6 = [v5 elementBySettingClasses:v4];
+    firstObject = [(NSArray *)self->_elements firstObject];
+    v6 = [firstObject elementBySettingClasses:classesCopy];
 
     v13[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v8 = [(NSArray *)self->_elements subarrayWithRange:1, [(NSArray *)self->_elements count]- 1];
     v9 = [v7 arrayByAddingObjectsFromArray:v8];
 
-    v10 = [objc_alloc(objc_opt_class()) initWithElements:v9];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithElements:v9];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)attributes
 {
-  v2 = [(NSArray *)self->_elements firstObject];
-  v3 = [v2 attributes];
-  v4 = v3;
-  if (v3)
+  firstObject = [(NSArray *)self->_elements firstObject];
+  attributes = [firstObject attributes];
+  v4 = attributes;
+  if (attributes)
   {
-    v5 = v3;
+    v5 = attributes;
   }
 
   else
@@ -234,49 +234,49 @@ LABEL_22:
   return v5;
 }
 
-- (id)elementBySettingAtttibutes:(id)a3
+- (id)elementBySettingAtttibutes:(id)atttibutes
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  atttibutesCopy = atttibutes;
   if ([(NSArray *)self->_elements count])
   {
-    v5 = [(NSArray *)self->_elements firstObject];
-    v6 = [v5 elementBySettingAtttibutes:v4];
+    firstObject = [(NSArray *)self->_elements firstObject];
+    v6 = [firstObject elementBySettingAtttibutes:atttibutesCopy];
 
     v13[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v8 = [(NSArray *)self->_elements subarrayWithRange:1, [(NSArray *)self->_elements count]- 1];
     v9 = [v7 arrayByAddingObjectsFromArray:v8];
 
-    v10 = [objc_alloc(objc_opt_class()) initWithElements:v9];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithElements:v9];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)append:(id)a3
+- (id)append:(id)append
 {
-  v4 = a3;
+  appendCopy = append;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(NSArray *)self->_elements arrayByAddingObject:v4];
+  v6 = [(NSArray *)self->_elements arrayByAddingObject:appendCopy];
 
   v7 = [v5 initWithElements:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REHTMLContainerElement;
-  v4 = [(REHTMLElement *)&v6 copyWithZone:a3];
+  v4 = [(REHTMLElement *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_elements);
   return v4;
 }

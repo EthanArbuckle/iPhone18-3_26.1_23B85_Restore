@@ -1,49 +1,49 @@
 @interface PKAccountBillPaymentMessageContentView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountBillPaymentMessageContentView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountBillPaymentMessageContentView)initWithFrame:(CGRect)frame;
 - (id)imageView;
 - (id)messageTextView;
 - (void)layoutSubviews;
-- (void)setAttributedMessage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setSystemImage:(id)a3;
+- (void)setAttributedMessage:(id)message;
+- (void)setMessage:(id)message;
+- (void)setSystemImage:(id)image;
 @end
 
 @implementation PKAccountBillPaymentMessageContentView
 
-- (PKAccountBillPaymentMessageContentView)initWithFrame:(CGRect)a3
+- (PKAccountBillPaymentMessageContentView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKAccountBillPaymentMessageContentView;
-  v3 = [(PKAccountBillPaymentMessageContentView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAccountBillPaymentMessageContentView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(PKAccountBillPaymentMessageContentView *)v3 setBackgroundColor:v4];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(PKAccountBillPaymentMessageContentView *)v3 setBackgroundColor:secondarySystemBackgroundColor];
 
     [(PKAccountBillPaymentMessageContentView *)v3 setUserInteractionEnabled:1];
-    v5 = [(PKAccountBillPaymentMessageContentView *)v3 layer];
-    [v5 setCornerRadius:14.0];
-    [v5 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(PKAccountBillPaymentMessageContentView *)v3 layer];
+    [layer setCornerRadius:14.0];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
   }
 
   return v3;
 }
 
-- (void)setSystemImage:(id)a3
+- (void)setSystemImage:(id)image
 {
-  v9 = a3;
+  imageCopy = image;
   if (![(NSString *)self->_systemImage isEqualToString:?])
   {
-    objc_storeStrong(&self->_systemImage, a3);
+    objc_storeStrong(&self->_systemImage, image);
     if (self->_systemImage)
     {
       imageView = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC30], 2, 0);
       v6 = [MEMORY[0x1E69DCAD8] configurationWithFont:imageView scale:-1];
-      v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v9 withConfiguration:v6];
-      v8 = [(PKAccountBillPaymentMessageContentView *)self imageView];
-      [v8 setImage:v7];
+      v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:imageCopy withConfiguration:v6];
+      imageView = [(PKAccountBillPaymentMessageContentView *)self imageView];
+      [imageView setImage:v7];
     }
 
     else
@@ -57,19 +57,19 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v7 = a3;
+  messageCopy = message;
   if (![(NSString *)self->_message isEqualToString:?])
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
     attributedMessage = self->_attributedMessage;
     self->_attributedMessage = 0;
 
     if ([(NSString *)self->_message length])
     {
       messageTextView = [(PKAccountBillPaymentMessageContentView *)self messageTextView];
-      [messageTextView setText:v7];
+      [messageTextView setText:messageCopy];
     }
 
     else
@@ -83,29 +83,29 @@
   }
 }
 
-- (void)setAttributedMessage:(id)a3
+- (void)setAttributedMessage:(id)message
 {
-  v13 = a3;
+  messageCopy = message;
   if (![(NSAttributedString *)self->_attributedMessage isEqualToAttributedString:?])
   {
-    objc_storeStrong(&self->_attributedMessage, a3);
+    objc_storeStrong(&self->_attributedMessage, message);
     message = self->_message;
     self->_message = 0;
 
     if ([(NSAttributedString *)self->_attributedMessage length])
     {
-      messageTextView = [v13 mutableCopy];
-      v7 = [v13 length];
+      messageTextView = [messageCopy mutableCopy];
+      v7 = [messageCopy length];
       v8 = *MEMORY[0x1E69DB648];
-      v9 = [(PKAccountBillPaymentMessageContentView *)self _messageFont];
-      [(UITextView *)messageTextView addAttribute:v8 value:v9 range:0, v7];
+      _messageFont = [(PKAccountBillPaymentMessageContentView *)self _messageFont];
+      [(UITextView *)messageTextView addAttribute:v8 value:_messageFont range:0, v7];
 
       v10 = *MEMORY[0x1E69DB650];
-      v11 = [MEMORY[0x1E69DC888] labelColor];
-      [(UITextView *)messageTextView addAttribute:v10 value:v11 range:0, v7];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UITextView *)messageTextView addAttribute:v10 value:labelColor range:0, v7];
 
-      v12 = [(PKAccountBillPaymentMessageContentView *)self messageTextView];
-      [v12 setAttributedText:messageTextView];
+      messageTextView = [(PKAccountBillPaymentMessageContentView *)self messageTextView];
+      [messageTextView setAttributedText:messageTextView];
     }
 
     else
@@ -135,12 +135,12 @@
     [(UITextView *)self->_messageTextView _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)self->_messageTextView setUserInteractionEnabled:1];
     v6 = self->_messageTextView;
-    v7 = [(PKAccountBillPaymentMessageContentView *)self _messageFont];
-    [(UITextView *)v6 setFont:v7];
+    _messageFont = [(PKAccountBillPaymentMessageContentView *)self _messageFont];
+    [(UITextView *)v6 setFont:_messageFont];
 
     v8 = self->_messageTextView;
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UITextView *)v8 setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UITextView *)v8 setTextColor:labelColor];
 
     [(PKAccountBillPaymentMessageContentView *)self addSubview:self->_messageTextView];
     messageTextView = self->_messageTextView;
@@ -159,8 +159,8 @@
     self->_imageView = v4;
 
     v6 = self->_imageView;
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v6 setTintColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v6 setTintColor:labelColor];
 
     [(PKAccountBillPaymentMessageContentView *)self addSubview:self->_imageView];
     imageView = self->_imageView;
@@ -178,25 +178,25 @@
   [(PKAccountBillPaymentMessageContentView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKAccountBillPaymentMessageContentView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKAccountBillPaymentMessageContentView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   memset(&v22, 0, sizeof(v22));
-  v7 = a3.origin.x + 16.0;
-  v8 = a3.origin.y + 10.0;
-  remainder.origin.x = a3.origin.x + 16.0;
-  remainder.origin.y = a3.origin.y + 10.0;
-  v9 = a3.size.height + -20.0;
-  remainder.size.width = a3.size.width + -32.0;
-  remainder.size.height = a3.size.height + -20.0;
+  v7 = bounds.origin.x + 16.0;
+  v8 = bounds.origin.y + 10.0;
+  remainder.origin.x = bounds.origin.x + 16.0;
+  remainder.origin.y = bounds.origin.y + 10.0;
+  v9 = bounds.size.height + -20.0;
+  remainder.size.width = bounds.size.width + -32.0;
+  remainder.size.height = bounds.size.height + -20.0;
   if ([(PKAccountBillPaymentMessageContentView *)self _shouldReverseLayoutDirection])
   {
     v10 = CGRectMaxXEdge;
@@ -221,7 +221,7 @@
     v25.size.height = v9;
     CGRectDivide(v25, &v22, &remainder, v15, v10);
     PKSizeAlignedInRect();
-    if (!a4)
+    if (!layout)
     {
       [(UIImageView *)self->_imageView setFrame:?];
     }
@@ -235,7 +235,7 @@
     [(UITextView *)messageTextView sizeThatFits:remainder.size.width, remainder.size.height];
     v12 = v18;
     CGRectDivide(remainder, &v22, &remainder, v19, v10);
-    if (!a4)
+    if (!layout)
     {
       [(UITextView *)self->_messageTextView setFrame:*&v22.origin, *&v22.size];
     }

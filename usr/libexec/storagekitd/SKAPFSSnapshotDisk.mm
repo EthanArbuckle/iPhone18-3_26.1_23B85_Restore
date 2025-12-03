@@ -1,15 +1,15 @@
 @interface SKAPFSSnapshotDisk
-+ (BOOL)diskIsSnapshot:(id)a3;
-+ (BOOL)isiOSRootSnapshotWithDiskDescription:(id)a3;
++ (BOOL)diskIsSnapshot:(id)snapshot;
++ (BOOL)isiOSRootSnapshotWithDiskDescription:(id)description;
 - (BOOL)_cacheInfo;
 @end
 
 @implementation SKAPFSSnapshotDisk
 
-+ (BOOL)diskIsSnapshot:(id)a3
++ (BOOL)diskIsSnapshot:(id)snapshot
 {
-  v3 = a3;
-  v4 = [[SKIOMedia alloc] initWithDADisk:v3];
+  snapshotCopy = snapshot;
+  v4 = [[SKIOMedia alloc] initWithDADisk:snapshotCopy];
 
   if (v4)
   {
@@ -26,13 +26,13 @@
 
 - (BOOL)_cacheInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SKAPFSSnapshotDisk *)v2 daDisk];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  daDisk = [(SKAPFSSnapshotDisk *)selfCopy daDisk];
   v4 = +[SKDaemonManager sharedManager];
-  v5 = [v4 diskArbSession];
+  diskArbSession = [v4 diskArbSession];
 
-  v6 = DADiskCopyDescription(v3);
+  v6 = DADiskCopyDescription(daDisk);
   v7 = v6;
   if (v6)
   {
@@ -41,7 +41,7 @@
     v10 = v9;
     if (v9)
     {
-      [(SKAPFSSnapshotDisk *)v2 setSealStatus:0];
+      [(SKAPFSSnapshotDisk *)selfCopy setSealStatus:0];
       if (!v8)
       {
         v31 = +[SKBaseManager sharedManager];
@@ -103,20 +103,20 @@ LABEL_47:
       }
 
       v15 = [v12 objectAtIndexedSubscript:0];
-      [(SKAPFSSnapshotDisk *)v2 setSnapshotName:v15];
+      [(SKAPFSSnapshotDisk *)selfCopy setSnapshotName:v15];
 
       v16 = [v12 objectAtIndexedSubscript:1];
       v17 = [v16 stringByAppendingString:@":root_snapshot"];
-      [(SKAPFSSnapshotDisk *)v2 setDiskIdentifier:v17];
+      [(SKAPFSSnapshotDisk *)selfCopy setDiskIdentifier:v17];
 
       v18 = +[SKDaemonManager sharedManager];
-      v19 = [v18 diskArbSession];
+      diskArbSession2 = [v18 diskArbSession];
       v20 = v16;
-      v21 = DADiskCreateFromBSDName(0, v19, [v16 UTF8String]);
+      v21 = DADiskCreateFromBSDName(0, diskArbSession2, [v16 UTF8String]);
 
 LABEL_18:
-      v28 = [(SKAPFSSnapshotDisk *)v2 diskIdentifier];
-      v29 = v28 == 0;
+      diskIdentifier = [(SKAPFSSnapshotDisk *)selfCopy diskIdentifier];
+      v29 = diskIdentifier == 0;
 
       if (v29)
       {
@@ -133,7 +133,7 @@ LABEL_18:
 
       if (v21)
       {
-        v57.receiver = v2;
+        v57.receiver = selfCopy;
         v57.super_class = SKAPFSSnapshotDisk;
         if (([(SKAPFSSnapshotDisk *)&v57 _cacheInfoForDADisk:v21]& 1) == 0)
         {
@@ -155,8 +155,8 @@ LABEL_18:
 
         else
         {
-          v44 = [(SKAPFSSnapshotDisk *)v2 mediaUUID];
-          [(SKAPFSSnapshotDisk *)v2 setApfsUUID:v44];
+          mediaUUID = [(SKAPFSSnapshotDisk *)selfCopy mediaUUID];
+          [(SKAPFSSnapshotDisk *)selfCopy setApfsUUID:mediaUUID];
 
           v30 = [(__CFDictionary *)v7 objectForKeyedSubscript:kDADiskDescriptionMediaUUIDKey];
 
@@ -170,24 +170,24 @@ LABEL_18:
             v45 = 0;
           }
 
-          [(SKAPFSSnapshotDisk *)v2 setMediaUUID:v45];
+          [(SKAPFSSnapshotDisk *)selfCopy setMediaUUID:v45];
           if (v30)
           {
           }
 
-          v46 = [(SKAPFSSnapshotDisk *)v2 mediaUUID];
-          v47 = v46 == 0;
+          mediaUUID2 = [(SKAPFSSnapshotDisk *)selfCopy mediaUUID];
+          v47 = mediaUUID2 == 0;
 
           if (v47)
           {
             v43 = sub_10000BFD0();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
-              v55 = [(SKAPFSSnapshotDisk *)v2 diskIdentifier];
+              diskIdentifier2 = [(SKAPFSSnapshotDisk *)selfCopy diskIdentifier];
               v64.f_bsize = 136315650;
               *&v64.f_iosize = "[SKAPFSSnapshotDisk(Daemon) _cacheInfo]";
               WORD2(v64.f_blocks) = 2114;
-              *(&v64.f_blocks + 6) = v55;
+              *(&v64.f_blocks + 6) = diskIdentifier2;
               HIWORD(v64.f_bfree) = 2080;
               v64.f_bavail = "AppleAPFSSnapshot";
               _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%s: IOMedia for %{public}@ doesn't conform to %s. It's missing a UUID.", &v64, 0x20u);
@@ -199,10 +199,10 @@ LABEL_18:
 
         if (v8)
         {
-          v48 = [v8 path];
-          [(SKAPFSSnapshotDisk *)v2 setMountPoint:v48];
+          path = [v8 path];
+          [(SKAPFSSnapshotDisk *)selfCopy setMountPoint:path];
 
-          if (([(SKAPFSSnapshotDisk *)v2 isIOSRootSnapshot]& 1) == 0)
+          if (([(SKAPFSSnapshotDisk *)selfCopy isIOSRootSnapshot]& 1) == 0)
           {
             memset(&v64.f_bavail, 0, 264);
             *&v64.f_bsize = 2;
@@ -213,15 +213,15 @@ LABEL_18:
               v43 = sub_10000BFD0();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                v50 = [(SKAPFSSnapshotDisk *)v2 mountPoint];
-                v51 = v50;
-                v52 = [v50 fileSystemRepresentation];
+                mountPoint = [(SKAPFSSnapshotDisk *)selfCopy mountPoint];
+                v51 = mountPoint;
+                fileSystemRepresentation = [mountPoint fileSystemRepresentation];
                 v53 = __error();
                 v54 = strerror(*v53);
                 *buf = 136315650;
                 v59 = "[SKAPFSSnapshotDisk(Daemon) _cacheInfo]";
                 v60 = 2080;
-                v61 = v52;
+                v61 = fileSystemRepresentation;
                 v62 = 2080;
                 v63 = v54;
                 _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%s: Failed to fsctl(%s). %s", buf, 0x20u);
@@ -233,20 +233,20 @@ LABEL_70:
             }
 
             v56 = [[NSString alloc] initWithBytes:&v64.f_files length:strnlen(&v64.f_files encoding:{0xFFuLL), 4}];
-            [(SKAPFSSnapshotDisk *)v2 setSnapshotName:v56];
+            [(SKAPFSSnapshotDisk *)selfCopy setSnapshotName:v56];
           }
         }
 
         else
         {
-          [(SKAPFSSnapshotDisk *)v2 setMountPoint:0];
-          [(SKAPFSSnapshotDisk *)v2 setUsedSpace:0];
+          [(SKAPFSSnapshotDisk *)selfCopy setMountPoint:0];
+          [(SKAPFSSnapshotDisk *)selfCopy setUsedSpace:0];
         }
 
-        [(SKAPFSSnapshotDisk *)v2 setReserveSpace:0];
-        [(SKAPFSSnapshotDisk *)v2 setQuotaSpace:0];
-        [(SKAPFSSnapshotDisk *)v2 _cacheSpacesWithPurgeable:1];
-        [(SKAPFSSnapshotDisk *)v2 setRole:kSKDiskRoleSnapshot];
+        [(SKAPFSSnapshotDisk *)selfCopy setReserveSpace:0];
+        [(SKAPFSSnapshotDisk *)selfCopy setQuotaSpace:0];
+        [(SKAPFSSnapshotDisk *)selfCopy _cacheSpacesWithPurgeable:1];
+        [(SKAPFSSnapshotDisk *)selfCopy setRole:kSKDiskRoleSnapshot];
         v22 = 1;
         goto LABEL_47;
       }
@@ -262,26 +262,26 @@ LABEL_70:
       goto LABEL_25;
     }
 
-    v23 = [[SKIOMedia alloc] initWithDADisk:v3];
+    v23 = [[SKIOMedia alloc] initWithDADisk:daDisk];
     v24 = v23;
     if (v23)
     {
       if (IOObjectConformsTo([(SKIOObject *)v23 ioObj], "AppleAPFSSnapshot"))
       {
-        [(SKAPFSSnapshotDisk *)v2 setSealStatus:sub_100001598(v24)];
-        if (([(SKAPFSSnapshotDisk *)v2 isValid]& 1) == 0)
+        [(SKAPFSSnapshotDisk *)selfCopy setSealStatus:sub_100001598(v24)];
+        if (([(SKAPFSSnapshotDisk *)selfCopy isValid]& 1) == 0)
         {
           v25 = [(__CFDictionary *)v7 objectForKeyedSubscript:kDADiskDescriptionMediaBSDNameKey];
-          [(SKAPFSSnapshotDisk *)v2 setDiskIdentifier:v25];
+          [(SKAPFSSnapshotDisk *)selfCopy setDiskIdentifier:v25];
         }
 
-        v26 = [(SKIOObject *)v24 copyParent];
-        v27 = v26;
-        if (v26)
+        copyParent = [(SKIOObject *)v24 copyParent];
+        v27 = copyParent;
+        if (copyParent)
         {
-          if (IOObjectConformsTo([v26 ioObj], "AppleAPFSVolume"))
+          if (IOObjectConformsTo([copyParent ioObj], "AppleAPFSVolume"))
           {
-            v21 = DADiskCreateFromIOMedia(kCFAllocatorDefault, v5, [v27 ioObj]);
+            v21 = DADiskCreateFromIOMedia(kCFAllocatorDefault, diskArbSession, [v27 ioObj]);
 
             goto LABEL_18;
           }
@@ -341,14 +341,14 @@ LABEL_36:
   v22 = 0;
 LABEL_48:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v22;
 }
 
-+ (BOOL)isiOSRootSnapshotWithDiskDescription:(id)a3
++ (BOOL)isiOSRootSnapshotWithDiskDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kDADiskDescriptionMediaKindKey];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionMediaKindKey];
 
   if (v4)
   {
@@ -357,12 +357,12 @@ LABEL_48:
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
+    v6 = [descriptionCopy objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 absoluteString];
-      v5 = [v8 isEqualToString:@"file:///"];
+      absoluteString = [v6 absoluteString];
+      v5 = [absoluteString isEqualToString:@"file:///"];
     }
 
     else

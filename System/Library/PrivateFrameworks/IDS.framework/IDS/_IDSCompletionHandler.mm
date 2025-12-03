@@ -1,23 +1,23 @@
 @interface _IDSCompletionHandler
-- (_IDSCompletionHandler)initWithHandler:(id)a3 queue:(id)a4;
+- (_IDSCompletionHandler)initWithHandler:(id)handler queue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation _IDSCompletionHandler
 
-- (_IDSCompletionHandler)initWithHandler:(id)a3 queue:(id)a4
+- (_IDSCompletionHandler)initWithHandler:(id)handler queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   if (_IDSRunningInDaemon())
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_ERROR))
     {
-      sub_195B2AD08(self, v8);
+      sub_195B2AD08(self, registration);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -27,18 +27,18 @@
     v10 = [(_IDSCompletionHandler *)&v14 init];
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [handlerCopy copy];
       handler = v10->_handler;
       v10->_handler = v11;
 
-      [(IDSDelegateInfo *)v10 setQueue:v7];
+      [(IDSDelegateInfo *)v10 setQueue:queueCopy];
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc

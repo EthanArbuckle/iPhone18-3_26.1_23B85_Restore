@@ -1,19 +1,19 @@
 @interface GAXRectangleShapeRecognizer
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4;
-+ (void)_copyRectanglePointsContextsFromPath:(id)a3;
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match;
++ (void)_copyRectanglePointsContextsFromPath:(id)path;
 @end
 
 @implementation GAXRectangleShapeRecognizer
 
-+ (void)_copyRectanglePointsContextsFromPath:(id)a3
++ (void)_copyRectanglePointsContextsFromPath:(id)path
 {
-  v3 = a3;
-  [v3 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 boundsCenter];
+  [pathCopy boundsCenter];
   v13 = v12;
   v62 = v14;
   v75.origin.x = v5;
@@ -109,7 +109,7 @@
   v66 = &v65;
   v67 = 0x2020000000;
   v68 = 1;
-  v60 = v3;
+  v60 = pathCopy;
   if (!v24 && v30)
   {
     v64[0] = _NSConcreteStackBlock;
@@ -123,7 +123,7 @@
     v64[4] = &v65;
     v64[9] = &v69;
     v64[10] = v30;
-    [v3 enumerateElementsUsingBlock:v64];
+    [pathCopy enumerateElementsUsingBlock:v64];
     v32 = *(&v69 + v66[3]);
     Count = AXCArrayGetCount();
     if (Count)
@@ -280,14 +280,14 @@ LABEL_41:
   return v31;
 }
 
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match
 {
-  v6 = a3;
-  v7 = [a1 _copyRectanglePointsContextsFromPath:v6];
+  pathCopy = path;
+  v7 = [self _copyRectanglePointsContextsFromPath:pathCopy];
   if (v7)
   {
     v8 = v7;
-    v54 = a4;
+    matchCopy = match;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -486,7 +486,7 @@ LABEL_17:
             }
           }
 
-          [a1 _maximumMarginOfErrorForPath:{v6, Height, v48, v49, v50}];
+          [self _maximumMarginOfErrorForPath:{pathCopy, Height, v48, v49, v50}];
           v25 = 0;
           if (v45 <= 0.0)
           {
@@ -508,8 +508,8 @@ LABEL_17:
     }
 
     CFRelease(v8);
-    a4 = v54;
-    if (v54)
+    match = matchCopy;
+    if (matchCopy)
     {
       goto LABEL_50;
     }
@@ -519,10 +519,10 @@ LABEL_17:
   {
     v25 = 0;
     v10 = 0.0;
-    if (a4)
+    if (match)
     {
 LABEL_50:
-      *a4 = v10;
+      *match = v10;
     }
   }
 

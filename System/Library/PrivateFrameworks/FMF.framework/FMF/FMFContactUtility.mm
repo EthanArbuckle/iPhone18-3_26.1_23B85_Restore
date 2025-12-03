@@ -1,11 +1,11 @@
 @interface FMFContactUtility
 + (id)sharedInstance;
 - (id)contactKeys;
-- (id)displayNameForContact:(id)a3 andHandle:(id)a4;
-- (id)findOptimalContactInContacts:(id)a3;
-- (id)getContactForHandle:(id)a3;
-- (id)getContactForHandle:(id)a3 keysToFetch:(id)a4;
-- (id)shortDisplayNameForContact:(id)a3 andHandle:(id)a4;
+- (id)displayNameForContact:(id)contact andHandle:(id)handle;
+- (id)findOptimalContactInContacts:(id)contacts;
+- (id)getContactForHandle:(id)handle;
+- (id)getContactForHandle:(id)handle keysToFetch:(id)fetch;
+- (id)shortDisplayNameForContact:(id)contact andHandle:(id)handle;
 @end
 
 @implementation FMFContactUtility
@@ -58,27 +58,27 @@ void __35__FMFContactUtility_sharedInstance__block_invoke_3(uint64_t a1, char a2
   }
 }
 
-- (id)shortDisplayNameForContact:(id)a3 andHandle:(id)a4
+- (id)shortDisplayNameForContact:(id)contact andHandle:(id)handle
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  contactCopy = contact;
+  handleCopy = handle;
+  if (!contactCopy)
   {
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
 
-  if (!v8 || ([v5 nickname], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, !v10))
+  if (!v8 || ([contactCopy nickname], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, !v10))
   {
-    v12 = [v5 givenName];
-    v13 = [v12 length];
+    givenName = [contactCopy givenName];
+    v13 = [givenName length];
 
     if (v13)
     {
-      v11 = [v5 givenName];
+      givenName2 = [contactCopy givenName];
       goto LABEL_7;
     }
 
@@ -87,15 +87,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [v5 nickname];
+  givenName2 = [contactCopy nickname];
 LABEL_7:
-  v14 = v11;
+  v14 = givenName2;
 LABEL_9:
   if (([(__CFString *)v14 isEqualToString:&stru_285D7AA10]& 1) != 0 || !v14)
   {
-    v16 = [v6 isPhoneNumber];
-    String = [v6 identifier];
-    if (v16)
+    isPhoneNumber = [handleCopy isPhoneNumber];
+    String = [handleCopy identifier];
+    if (isPhoneNumber)
     {
       v17 = CFPhoneNumberCreate();
 
@@ -119,11 +119,11 @@ LABEL_9:
   v18 = LogCategory_Daemon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v6 identifier];
+    identifier = [handleCopy identifier];
     v22 = 138412546;
     v23 = String;
     v24 = 2112;
-    v25 = v19;
+    v25 = identifier;
     _os_log_impl(&dword_24A33F000, v18, OS_LOG_TYPE_DEFAULT, "Short display name %@ found for handle %@", &v22, 0x16u);
   }
 
@@ -132,38 +132,38 @@ LABEL_9:
   return String;
 }
 
-- (id)displayNameForContact:(id)a3 andHandle:(id)a4
+- (id)displayNameForContact:(id)contact andHandle:(id)handle
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contactCopy = contact;
+  handleCopy = handle;
+  if (contactCopy)
   {
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
 
-    if (v9 && ([v6 nickname], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
+    if (v9 && ([contactCopy nickname], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
     {
-      v12 = [v6 nickname];
+      nickname = [contactCopy nickname];
     }
 
     else
     {
-      v13 = [(FMFContactUtility *)self contactFormatter];
-      v12 = [v13 stringFromPotentiallySuggestedContact:v6 relatedToProperty:0];
+      contactFormatter = [(FMFContactUtility *)self contactFormatter];
+      nickname = [contactFormatter stringFromPotentiallySuggestedContact:contactCopy relatedToProperty:0];
     }
   }
 
   else
   {
-    v12 = &stru_285D7AA10;
+    nickname = &stru_285D7AA10;
   }
 
-  if (([(__CFString *)v12 isEqualToString:&stru_285D7AA10]& 1) != 0 || !v12)
+  if (([(__CFString *)nickname isEqualToString:&stru_285D7AA10]& 1) != 0 || !nickname)
   {
-    v15 = [v7 isPhoneNumber];
-    String = [v7 identifier];
-    if (v15)
+    isPhoneNumber = [handleCopy isPhoneNumber];
+    String = [handleCopy identifier];
+    if (isPhoneNumber)
     {
       v16 = CFPhoneNumberCreate();
 
@@ -181,17 +181,17 @@ LABEL_9:
 
   else
   {
-    String = v12;
+    String = nickname;
   }
 
   v17 = LogCategory_Daemon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v7 identifier];
+    identifier = [handleCopy identifier];
     v21 = 138412546;
     v22 = String;
     v23 = 2112;
-    v24 = v18;
+    v24 = identifier;
     _os_log_impl(&dword_24A33F000, v17, OS_LOG_TYPE_DEFAULT, "Display name %@ found for handle %@", &v21, 0x16u);
   }
 
@@ -200,21 +200,21 @@ LABEL_9:
   return String;
 }
 
-- (id)getContactForHandle:(id)a3
+- (id)getContactForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFContactUtility *)self contactKeys];
-  v6 = [(FMFContactUtility *)self getContactForHandle:v4 keysToFetch:v5];
+  handleCopy = handle;
+  contactKeys = [(FMFContactUtility *)self contactKeys];
+  v6 = [(FMFContactUtility *)self getContactForHandle:handleCopy keysToFetch:contactKeys];
 
   return v6;
 }
 
-- (id)getContactForHandle:(id)a3 keysToFetch:(id)a4
+- (id)getContactForHandle:(id)handle keysToFetch:(id)fetch
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  handleCopy = handle;
+  fetchCopy = fetch;
+  if (!handleCopy)
   {
     v13 = 0;
     v14 = 0;
@@ -225,21 +225,21 @@ LABEL_15:
   }
 
   v8 = objc_autoreleasePoolPush();
-  if (![v6 isPhoneNumber])
+  if (![handleCopy isPhoneNumber])
   {
     v16 = MEMORY[0x277CBDA58];
-    v11 = [v6 identifier];
-    v12 = [v16 predicateForContactsMatchingEmailAddress:v11];
+    identifier = [handleCopy identifier];
+    v12 = [v16 predicateForContactsMatchingEmailAddress:identifier];
     goto LABEL_7;
   }
 
   v9 = objc_alloc(MEMORY[0x277CBDB70]);
-  v10 = [v6 identifier];
-  v11 = [v9 initWithStringValue:v10];
+  identifier2 = [handleCopy identifier];
+  identifier = [v9 initWithStringValue:identifier2];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v11];
+    v12 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:identifier];
 LABEL_7:
     v13 = v12;
     goto LABEL_8;
@@ -250,9 +250,9 @@ LABEL_8:
 
   v17 = [MEMORY[0x277CBEBF8] arrayByAddingObject:*MEMORY[0x277CBD028]];
   v18 = v17;
-  if (v7)
+  if (fetchCopy)
   {
-    v19 = [v17 arrayByAddingObjectsFromArray:v7];
+    v19 = [v17 arrayByAddingObjectsFromArray:fetchCopy];
 
     v18 = v19;
   }
@@ -264,9 +264,9 @@ LABEL_8:
     _os_log_impl(&dword_24A33F000, v20, OS_LOG_TYPE_DEFAULT, "Get contacts...", buf, 2u);
   }
 
-  v21 = [(FMFContactUtility *)self contactStore];
+  contactStore = [(FMFContactUtility *)self contactStore];
   v26 = 0;
-  v14 = [v21 unifiedContactsMatchingPredicate:v13 keysToFetch:v18 error:&v26];
+  v14 = [contactStore unifiedContactsMatchingPredicate:v13 keysToFetch:v18 error:&v26];
   v15 = v26;
 
   v22 = LogCategory_Daemon();
@@ -291,18 +291,18 @@ LABEL_17:
   return v23;
 }
 
-- (id)findOptimalContactInContacts:(id)a3
+- (id)findOptimalContactInContacts:(id)contacts
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  if ([v3 count] >= 2)
+  contactsCopy = contacts;
+  firstObject = [contactsCopy firstObject];
+  if ([contactsCopy count] >= 2)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = contactsCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -318,17 +318,17 @@ LABEL_17:
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 imageData];
+          imageData = [v10 imageData];
 
-          if (v11)
+          if (imageData)
           {
             v14 = v10;
 
-            v4 = v14;
+            firstObject = v14;
             goto LABEL_17;
           }
 
-          if ([v4 isSuggested] && (objc_msgSend(v10, "isSuggested") & 1) == 0)
+          if ([firstObject isSuggested] && (objc_msgSend(v10, "isSuggested") & 1) == 0)
           {
             v12 = LogCategory_Daemon();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -337,7 +337,7 @@ LABEL_17:
             }
 
             v13 = v10;
-            v4 = v13;
+            firstObject = v13;
           }
         }
 
@@ -356,7 +356,7 @@ LABEL_17:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)contactKeys

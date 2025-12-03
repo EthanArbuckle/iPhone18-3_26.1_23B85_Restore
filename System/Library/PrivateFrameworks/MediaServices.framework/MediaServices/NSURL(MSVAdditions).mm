@@ -9,15 +9,15 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0;
-  v2 = [a1 scheme];
-  if (([v2 isEqualToString:@"ipod-library"] & 1) == 0)
+  scheme = [self scheme];
+  if (([scheme isEqualToString:@"ipod-library"] & 1) == 0)
   {
 
     goto LABEL_16;
   }
 
-  v3 = [a1 host];
-  v4 = [v3 isEqualToString:@"item"];
+  host = [self host];
+  v4 = [host isEqualToString:@"item"];
 
   if (!v4)
   {
@@ -26,8 +26,8 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v5 = [a1 query];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  query = [self query];
+  v6 = [query componentsSeparatedByString:@"&"];
 
   v21 = 0u;
   v22 = 0u;

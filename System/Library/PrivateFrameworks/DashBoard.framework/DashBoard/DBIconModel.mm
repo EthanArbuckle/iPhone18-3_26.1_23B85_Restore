@@ -1,15 +1,15 @@
 @interface DBIconModel
-- (BOOL)isIconVisible:(id)a3;
+- (BOOL)isIconVisible:(id)visible;
 - (CGSize)iconImageSize;
 - (DBEnvironment)environment;
-- (_TtC9DashBoard11DBIconModel)initWithStore:(id)a3 carApplicationDataSource:(id)a4;
-- (_TtC9DashBoard11DBIconModel)initWithStore:(id)a3 iconRepository:(id)a4;
+- (_TtC9DashBoard11DBIconModel)initWithStore:(id)store carApplicationDataSource:(id)source;
+- (_TtC9DashBoard11DBIconModel)initWithStore:(id)store iconRepository:(id)repository;
 - (id)exportIconLayoutState;
 - (void)loadAllIcons;
 - (void)resetCurrentIconState;
-- (void)setAutomaticallyAddsWebClips:(BOOL)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setIconImageSize:(CGSize)a3;
+- (void)setAutomaticallyAddsWebClips:(BOOL)clips;
+- (void)setEnvironment:(id)environment;
+- (void)setIconImageSize:(CGSize)size;
 @end
 
 @implementation DBIconModel
@@ -25,10 +25,10 @@
   return result;
 }
 
-- (void)setIconImageSize:(CGSize)a3
+- (void)setIconImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = &self->SBHIconModel_opaque[OBJC_IVAR____TtC9DashBoard11DBIconModel_iconImageSize];
   swift_beginAccess();
   *v5 = width;
@@ -42,25 +42,25 @@
   return Strong;
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   DBIconModel.environment.setter();
 }
 
-- (_TtC9DashBoard11DBIconModel)initWithStore:(id)a3 carApplicationDataSource:(id)a4
+- (_TtC9DashBoard11DBIconModel)initWithStore:(id)store carApplicationDataSource:(id)source
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v5 = sub_2483618F8(a3);
+  v5 = sub_2483618F8(store);
   swift_unknownObjectRelease();
   return v5;
 }
 
 - (id)exportIconLayoutState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DBIconModel.exportIconLayoutState()();
 
   return v3;
@@ -68,34 +68,34 @@
 
 - (void)resetCurrentIconState
 {
-  v2 = self;
+  selfCopy = self;
   DBIconModel.resetCurrentIconState()();
 }
 
 - (void)loadAllIcons
 {
-  v2 = self;
+  selfCopy = self;
   DBIconModel.loadAllIcons()();
 }
 
-- (BOOL)isIconVisible:(id)a3
+- (BOOL)isIconVisible:(id)visible
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = DBIconModel.isIconVisible(_:)(v4);
+  visibleCopy = visible;
+  selfCopy = self;
+  LOBYTE(self) = DBIconModel.isIconVisible(_:)(visibleCopy);
 
   return self & 1;
 }
 
-- (void)setAutomaticallyAddsWebClips:(BOOL)a3
+- (void)setAutomaticallyAddsWebClips:(BOOL)clips
 {
-  v3 = a3;
+  clipsCopy = clips;
   v4.receiver = self;
   v4.super_class = type metadata accessor for DBIconModel();
-  [(SBHIconModel *)&v4 setAutomaticallyAddsWebClips:v3];
+  [(SBHIconModel *)&v4 setAutomaticallyAddsWebClips:clipsCopy];
 }
 
-- (_TtC9DashBoard11DBIconModel)initWithStore:(id)a3 iconRepository:(id)a4
+- (_TtC9DashBoard11DBIconModel)initWithStore:(id)store iconRepository:(id)repository
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

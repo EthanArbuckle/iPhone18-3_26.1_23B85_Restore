@@ -2,16 +2,16 @@
 - (NSString)description;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (_PXWrappingDisplayAssetFetchResult)initWithFetchResult:(id)a3 range:(_NSRange)a4;
-- (id)objectsAtIndexes:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
+- (_PXWrappingDisplayAssetFetchResult)initWithFetchResult:(id)result range:(_NSRange)range;
+- (id)objectsAtIndexes:(id)indexes;
+- (unint64_t)indexOfObject:(id)object;
 @end
 
 @implementation _PXWrappingDisplayAssetFetchResult
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = [(PXDisplayAssetFetchResult *)self->_displayFetchResult indexOfObject:a3];
+  v4 = [(PXDisplayAssetFetchResult *)self->_displayFetchResult indexOfObject:object];
   result = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [indexes mutableCopy];
   [v4 shiftIndexesStartingAtIndex:0 by:self->_range.location];
   v5 = [(PXDisplayAssetFetchResult *)self->_displayFetchResult objectsAtIndexes:v4];
 
@@ -77,29 +77,29 @@
   return v8;
 }
 
-- (_PXWrappingDisplayAssetFetchResult)initWithFetchResult:(id)a3 range:(_NSRange)a4
+- (_PXWrappingDisplayAssetFetchResult)initWithFetchResult:(id)result range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = _PXWrappingDisplayAssetFetchResult;
   v10 = [(_PXWrappingDisplayAssetFetchResult *)&v14 init];
   if (v10)
   {
-    if (location >= [v9 count])
+    if (location >= [resultCopy count])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v10 file:@"PXDisplayAssetFetchResult.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"range.location < fetchResult.count"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXDisplayAssetFetchResult.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"range.location < fetchResult.count"}];
     }
 
-    if (location + length > [v9 count])
+    if (location + length > [resultCopy count])
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v10 file:@"PXDisplayAssetFetchResult.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= fetchResult.count"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"PXDisplayAssetFetchResult.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= fetchResult.count"}];
     }
 
-    objc_storeStrong(&v10->_displayFetchResult, a3);
+    objc_storeStrong(&v10->_displayFetchResult, result);
     v10->_range.location = location;
     v10->_range.length = length;
   }

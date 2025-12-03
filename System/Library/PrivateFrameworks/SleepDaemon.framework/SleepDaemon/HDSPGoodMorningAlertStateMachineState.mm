@@ -7,11 +7,11 @@
 - (void)updateState
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  if ([v3 goodMorningAlertEnabled])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  if ([infoProvider goodMorningAlertEnabled])
   {
-    v4 = [v2 waitingState];
+    waitingState = [stateMachine waitingState];
   }
 
   else
@@ -25,11 +25,11 @@
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] good morning alerts disabled", v9, 0xCu);
     }
 
-    v4 = [v2 disabledState];
+    waitingState = [stateMachine disabledState];
   }
 
-  v7 = v4;
-  [v2 enterState:{v4, *v9}];
+  v7 = waitingState;
+  [stateMachine enterState:{waitingState, *v9}];
 
   v8 = *MEMORY[0x277D85DE8];
 }

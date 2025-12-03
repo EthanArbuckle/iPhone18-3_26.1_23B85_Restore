@@ -9,12 +9,12 @@
   v5.receiver = self;
   v5.super_class = RoutePlanningWaypointTableView;
   [(RoutePlanningWaypointTableView *)&v5 layoutSubviews];
-  v3 = [(RoutePlanningWaypointTableView *)self postLayoutHandler];
+  postLayoutHandler = [(RoutePlanningWaypointTableView *)self postLayoutHandler];
 
-  if (v3)
+  if (postLayoutHandler)
   {
-    v4 = [(RoutePlanningWaypointTableView *)self postLayoutHandler];
-    v4[2]();
+    postLayoutHandler2 = [(RoutePlanningWaypointTableView *)self postLayoutHandler];
+    postLayoutHandler2[2]();
   }
 }
 

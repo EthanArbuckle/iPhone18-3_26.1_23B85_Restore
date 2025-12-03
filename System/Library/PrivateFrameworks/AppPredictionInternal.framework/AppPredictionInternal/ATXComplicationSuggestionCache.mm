@@ -1,10 +1,10 @@
 @interface ATXComplicationSuggestionCache
 - (ATXComplicationSuggestionCache)init;
-- (BOOL)_writeComplicationsCache:(id)a3 path:(id)a4 withError:(id *)a5;
-- (BOOL)writeComplicationsInlineSetCache:(id)a3;
-- (BOOL)writeComplicationsLandscapeModularSetCache:(id)a3;
-- (BOOL)writeComplicationsModularSetCache:(id)a3;
-- (id)_fetchCachedRankedComplicationDescriptorsWithPath:(id)a3 error:(id *)a4;
+- (BOOL)_writeComplicationsCache:(id)cache path:(id)path withError:(id *)error;
+- (BOOL)writeComplicationsInlineSetCache:(id)cache;
+- (BOOL)writeComplicationsLandscapeModularSetCache:(id)cache;
+- (BOOL)writeComplicationsModularSetCache:(id)cache;
+- (id)_fetchCachedRankedComplicationDescriptorsWithPath:(id)path error:(id *)error;
 - (id)fetchInlineSetComplicationDescriptors;
 - (id)fetchLandscapeModularSetComplicationDescriptors;
 - (id)fetchModularSetComplicationDescriptors;
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (BOOL)writeComplicationsModularSetCache:(id)a3
+- (BOOL)writeComplicationsModularSetCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -45,7 +45,7 @@
   v8[2] = __68__ATXComplicationSuggestionCache_writeComplicationsModularSetCache___block_invoke;
   v8[3] = &unk_27859B5A0;
   v8[4] = self;
-  v6 = v4;
+  v6 = cacheCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
@@ -94,9 +94,9 @@ void __68__ATXComplicationSuggestionCache_writeComplicationsModularSetCache___bl
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeComplicationsLandscapeModularSetCache:(id)a3
+- (BOOL)writeComplicationsLandscapeModularSetCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -107,7 +107,7 @@ void __68__ATXComplicationSuggestionCache_writeComplicationsModularSetCache___bl
   v8[2] = __77__ATXComplicationSuggestionCache_writeComplicationsLandscapeModularSetCache___block_invoke;
   v8[3] = &unk_27859B5A0;
   v8[4] = self;
-  v6 = v4;
+  v6 = cacheCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
@@ -156,9 +156,9 @@ void __77__ATXComplicationSuggestionCache_writeComplicationsLandscapeModularSetC
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeComplicationsInlineSetCache:(id)a3
+- (BOOL)writeComplicationsInlineSetCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -169,7 +169,7 @@ void __77__ATXComplicationSuggestionCache_writeComplicationsLandscapeModularSetC
   v8[2] = __67__ATXComplicationSuggestionCache_writeComplicationsInlineSetCache___block_invoke;
   v8[3] = &unk_27859B5A0;
   v8[4] = self;
-  v6 = v4;
+  v6 = cacheCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASQueueLock *)lock runWithLockAcquired:v8];
@@ -431,32 +431,32 @@ void __81__ATXComplicationSuggestionCache_fetchLandscapeModularSetComplicationDe
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_writeComplicationsCache:(id)a3 path:(id)a4 withError:(id *)a5
+- (BOOL)_writeComplicationsCache:(id)cache path:(id)path withError:(id *)error
 {
   v7 = MEMORY[0x277CEBC68];
-  v8 = a4;
-  v9 = a3;
+  pathCopy = path;
+  cacheCopy = cache;
   v10 = [v7 alloc];
   v11 = __atxlog_handle_lock_screen();
-  v12 = [v10 initWithCacheFilePath:v8 loggingHandle:v11 debugName:@"complications"];
+  v12 = [v10 initWithCacheFilePath:pathCopy loggingHandle:v11 debugName:@"complications"];
 
-  LOBYTE(a5) = [v12 storeSecureCodedObject:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [v12 storeSecureCodedObject:cacheCopy error:error];
+  return error;
 }
 
-- (id)_fetchCachedRankedComplicationDescriptorsWithPath:(id)a3 error:(id *)a4
+- (id)_fetchCachedRankedComplicationDescriptorsWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc(MEMORY[0x277CEBC68]);
   v7 = __atxlog_handle_lock_screen();
-  v8 = [v6 initWithCacheFilePath:v5 loggingHandle:v7 debugName:@"complications"];
+  v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"complications"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
   v11 = objc_opt_class();
   v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v13 = [v8 readSecureCodedObjectWithMaxValidAge:v12 allowableClasses:a4 error:-1.0];
+  v13 = [v8 readSecureCodedObjectWithMaxValidAge:v12 allowableClasses:error error:-1.0];
   v14 = v13;
   if (v13)
   {

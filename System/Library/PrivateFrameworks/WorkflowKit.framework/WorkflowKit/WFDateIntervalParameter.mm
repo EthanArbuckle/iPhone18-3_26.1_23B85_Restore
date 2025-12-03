@@ -1,14 +1,14 @@
 @interface WFDateIntervalParameter
-- (WFDateIntervalParameter)initWithDefinition:(id)a3;
+- (WFDateIntervalParameter)initWithDefinition:(id)definition;
 @end
 
 @implementation WFDateIntervalParameter
 
-- (WFDateIntervalParameter)initWithDefinition:(id)a3
+- (WFDateIntervalParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFDateIntervalParameter;
-  v3 = [(WFParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

@@ -1,41 +1,41 @@
 @interface PGLocationTitleUtility
-+ (BOOL)_titleComponentsAreInSameSupersetCity:(id)a3 graph:(id)a4 locationHelper:(id)a5;
-+ (BOOL)containsAmusementParkPOIFromMomentNodes:(id)a3;
-+ (double)_weightForAreaNode:(id)a3 withAddressNodes:(id)a4;
-+ (id)_aoiSubsetsFromAOI:(id)a3 idx:(unint64_t)a4 currentSubset:(id)a5 subsetSize:(unint64_t)a6;
-+ (id)_aoiSubsetsFromAOI:(id)a3 maxSubsetSize:(unint64_t)a4;
-+ (id)_beautifiedLocationStringWithTitleComponents:(id)a3 momentNodes:(id)a4 lineBreakBehavior:(unint64_t)a5 keyAssetAddressNode:(id)a6 curationAddressNodes:(id)a7 isMatchingKeyAsset:(BOOL *)a8 useDistrict:(BOOL)a9 allowFamilyHome:(BOOL)a10 showAllCities:(BOOL)a11 locationHelper:(id)a12 serviceManager:(id)a13;
-+ (id)_commonCityTitleComponentsFromMomentNodes:(id)a3 remainingAddressNodes:(id)a4 ignoredAddressNodes:(id)a5 incompleteLocationResolver:(id)a6 locationHelper:(id)a7;
-+ (id)_filteredAOINodeCombinationsForCombinations:(id)a3 minSize:(unint64_t)a4 maxSize:(unint64_t)a5 maxTitleLength:(unint64_t)a6 minNumberOfAssets:(unint64_t)a7 aoiNodesToAddressNodesMapTable:(id)a8 assetCountByAddressNodeIdentifier:(id)a9 locationHelper:(id)a10;
-+ (id)_filteredAOINodesForAddressNodes:(id)a3 aoiTitleMaximumLength:(unint64_t)a4 locationHelper:(id)a5;
-+ (id)_filteredAddressNodesWithAddressNodes:(id)a3 momentNodes:(id)a4 incompleteLocationResolver:(id)a5 filterSignificantLocationsOption:(unint64_t)a6 locationHelper:(id)a7;
-+ (id)_firstComponentInTimeFromComponents:(id)a3 momentNodes:(id)a4 curationAddressNodes:(id)a5 allowFamilyHome:(BOOL)a6 serviceManager:(id)a7;
-+ (id)_localizedStringForMultipleLocationsWithFirstComponentForTitle:(id)a3 secondComponentForTitle:(id)a4 firstLocation:(id)a5 otherLocation:(id)a6;
-+ (id)_localizedStringForTwoLocationsWithFirstComponentForTitle:(id)a3 secondComponentForTitle:(id)a4 firstLocation:(id)a5 otherLocation:(id)a6;
-+ (id)_locationStringWithDistrictsFromTitleComponents:(id)a3 momentNodes:(id)a4 lineBreakBehavior:(unint64_t)a5 allowFamilyHome:(BOOL)a6 locationHelper:(id)a7 serviceManager:(id)a8;
-+ (id)_peopleLocationFromAddressNode:(id)a3 serviceManager:(id)a4;
-+ (id)_sortedAOINodeCombinationsForCombinations:(id)a3 aoiNodesToAddressNodesMapTable:(id)a4 assetCountByAddressNodeIdentifier:(id)a5 locationHelper:(id)a6;
-+ (id)_sortedComponentsFromComponents:(id)a3;
-+ (id)_titleWithLineBreakBehavior:(unint64_t)a3 forTitle:(id)a4 titleComponents:(id)a5;
-+ (id)_twoPartLocationTitleWithFirstPartTitle:(id)a3 withDimension:(unint64_t)a4 usedFirstPartLocationNode:(id)a5 addressNode:(id)a6 locationHelper:(id)a7;
-+ (id)beautifiedLocationNodeStringWithPlaceNode:(id)a3 locationHelper:(id)a4;
-+ (id)businessNodeForTitlingFromMomentNodes:(id)a3 businessNodesByMomentNode:(id)a4;
-+ (id)commonAOIComponentsForMomentNodes:(id)a3 addressNodes:(id)a4 aoiDisplayType:(unint64_t)a5 containsAmusementParkPOI:(BOOL)a6 locationHelper:(id)a7;
-+ (id)commonCityTitleComponentsFromMomentNodes:(id)a3 addressNodes:(id)a4 incompleteLocationResolver:(id)a5 locationHelper:(id)a6;
-+ (id)peopleLocationTitleComponentsFromAddressNodes:(id)a3 peopleDisplayType:(unint64_t)a4 serviceManager:(id)a5;
-+ (id)peopleLocationTitleComponentsFromAddressNodesSet:(id)a3 peopleDisplayType:(unint64_t)a4 serviceManager:(id)a5;
-+ (void)generateBusinessItemLocationWithOptions:(id)a3 result:(id)a4;
-+ (void)generateHighlightLocationTitleForTripWithMomentNodes:(id)a3 lineBreakBehavior:(unint64_t)a4 locationHelper:(id)a5 result:(id)a6;
-+ (void)generateLocationTitleForTripWithMomentNodes:(id)a3 locationHelper:(id)a4 result:(id)a5;
-+ (void)generateLocationTitleWithOptions:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5 result:(id)a6;
++ (BOOL)_titleComponentsAreInSameSupersetCity:(id)city graph:(id)graph locationHelper:(id)helper;
++ (BOOL)containsAmusementParkPOIFromMomentNodes:(id)nodes;
++ (double)_weightForAreaNode:(id)node withAddressNodes:(id)nodes;
++ (id)_aoiSubsetsFromAOI:(id)i idx:(unint64_t)idx currentSubset:(id)subset subsetSize:(unint64_t)size;
++ (id)_aoiSubsetsFromAOI:(id)i maxSubsetSize:(unint64_t)size;
++ (id)_beautifiedLocationStringWithTitleComponents:(id)components momentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior keyAssetAddressNode:(id)node curationAddressNodes:(id)addressNodes isMatchingKeyAsset:(BOOL *)asset useDistrict:(BOOL)district allowFamilyHome:(BOOL)self0 showAllCities:(BOOL)self1 locationHelper:(id)self2 serviceManager:(id)self3;
++ (id)_commonCityTitleComponentsFromMomentNodes:(id)nodes remainingAddressNodes:(id)addressNodes ignoredAddressNodes:(id)ignoredAddressNodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper;
++ (id)_filteredAOINodeCombinationsForCombinations:(id)combinations minSize:(unint64_t)size maxSize:(unint64_t)maxSize maxTitleLength:(unint64_t)length minNumberOfAssets:(unint64_t)assets aoiNodesToAddressNodesMapTable:(id)table assetCountByAddressNodeIdentifier:(id)identifier locationHelper:(id)self0;
++ (id)_filteredAOINodesForAddressNodes:(id)nodes aoiTitleMaximumLength:(unint64_t)length locationHelper:(id)helper;
++ (id)_filteredAddressNodesWithAddressNodes:(id)nodes momentNodes:(id)momentNodes incompleteLocationResolver:(id)resolver filterSignificantLocationsOption:(unint64_t)option locationHelper:(id)helper;
++ (id)_firstComponentInTimeFromComponents:(id)components momentNodes:(id)nodes curationAddressNodes:(id)addressNodes allowFamilyHome:(BOOL)home serviceManager:(id)manager;
++ (id)_localizedStringForMultipleLocationsWithFirstComponentForTitle:(id)title secondComponentForTitle:(id)forTitle firstLocation:(id)location otherLocation:(id)otherLocation;
++ (id)_localizedStringForTwoLocationsWithFirstComponentForTitle:(id)title secondComponentForTitle:(id)forTitle firstLocation:(id)location otherLocation:(id)otherLocation;
++ (id)_locationStringWithDistrictsFromTitleComponents:(id)components momentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior allowFamilyHome:(BOOL)home locationHelper:(id)helper serviceManager:(id)manager;
++ (id)_peopleLocationFromAddressNode:(id)node serviceManager:(id)manager;
++ (id)_sortedAOINodeCombinationsForCombinations:(id)combinations aoiNodesToAddressNodesMapTable:(id)table assetCountByAddressNodeIdentifier:(id)identifier locationHelper:(id)helper;
++ (id)_sortedComponentsFromComponents:(id)components;
++ (id)_titleWithLineBreakBehavior:(unint64_t)behavior forTitle:(id)title titleComponents:(id)components;
++ (id)_twoPartLocationTitleWithFirstPartTitle:(id)title withDimension:(unint64_t)dimension usedFirstPartLocationNode:(id)node addressNode:(id)addressNode locationHelper:(id)helper;
++ (id)beautifiedLocationNodeStringWithPlaceNode:(id)node locationHelper:(id)helper;
++ (id)businessNodeForTitlingFromMomentNodes:(id)nodes businessNodesByMomentNode:(id)node;
++ (id)commonAOIComponentsForMomentNodes:(id)nodes addressNodes:(id)addressNodes aoiDisplayType:(unint64_t)type containsAmusementParkPOI:(BOOL)i locationHelper:(id)helper;
++ (id)commonCityTitleComponentsFromMomentNodes:(id)nodes addressNodes:(id)addressNodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper;
++ (id)peopleLocationTitleComponentsFromAddressNodes:(id)nodes peopleDisplayType:(unint64_t)type serviceManager:(id)manager;
++ (id)peopleLocationTitleComponentsFromAddressNodesSet:(id)set peopleDisplayType:(unint64_t)type serviceManager:(id)manager;
++ (void)generateBusinessItemLocationWithOptions:(id)options result:(id)result;
++ (void)generateHighlightLocationTitleForTripWithMomentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior locationHelper:(id)helper result:(id)result;
++ (void)generateLocationTitleForTripWithMomentNodes:(id)nodes locationHelper:(id)helper result:(id)result;
++ (void)generateLocationTitleWithOptions:(id)options locationHelper:(id)helper serviceManager:(id)manager result:(id)result;
 @end
 
 @implementation PGLocationTitleUtility
 
-+ (id)_peopleLocationFromAddressNode:(id)a3 serviceManager:(id)a4
++ (id)_peopleLocationFromAddressNode:(id)node serviceManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  managerCopy = manager;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -56,18 +56,18 @@
   v11 = 3221225472;
   v12 = __72__PGLocationTitleUtility__peopleLocationFromAddressNode_serviceManager___block_invoke;
   v13 = &unk_2788897B8;
-  v7 = v6;
+  v7 = managerCopy;
   v14 = v7;
   v15 = &v26;
   v16 = &v20;
   v17 = v18;
-  [v5 enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:@"IS_HOME_WORK" domain:202 usingBlock:&v10];
+  [nodeCopy enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:@"IS_HOME_WORK" domain:202 usingBlock:&v10];
   if (v21[5] && v27[5])
   {
     v8 = objc_alloc_init(PGLocationTitleComponent);
     [(PGLocationTitleComponent *)v8 setNode:v21[5], v10, v11, v12, v13];
     [(PGLocationTitleComponent *)v8 setEdge:v27[5]];
-    [(PGLocationTitleComponent *)v8 addAddressNode:v5];
+    [(PGLocationTitleComponent *)v8 addAddressNode:nodeCopy];
   }
 
   else
@@ -145,18 +145,18 @@ void __72__PGLocationTitleUtility__peopleLocationFromAddressNode_serviceManager_
   }
 }
 
-+ (id)peopleLocationTitleComponentsFromAddressNodesSet:(id)a3 peopleDisplayType:(unint64_t)a4 serviceManager:(id)a5
++ (id)peopleLocationTitleComponentsFromAddressNodesSet:(id)set peopleDisplayType:(unint64_t)type serviceManager:(id)manager
 {
-  v22 = a4;
+  typeCopy = type;
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v25 = a5;
+  setCopy = set;
+  managerCopy = manager;
   v24 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v7;
+  v8 = setCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -173,7 +173,7 @@ void __72__PGLocationTitleUtility__peopleLocationFromAddressNode_serviceManager_
           objc_enumerationMutation(obj);
         }
 
-        v14 = [a1 _peopleLocationFromAddressNode:*(*(&v30 + 1) + 8 * i) serviceManager:{v25, v22}];
+        v14 = [self _peopleLocationFromAddressNode:*(*(&v30 + 1) + 8 * i) serviceManager:{managerCopy, typeCopy}];
         if (v14)
         {
           ++v11;
@@ -231,7 +231,7 @@ LABEL_17:
     v11 = 0;
   }
 
-  if (v22 == 2 && [v8 count] && v11 != objc_msgSend(v8, "count"))
+  if (typeCopy == 2 && [v8 count] && v11 != objc_msgSend(v8, "count"))
   {
     [v24 removeAllObjects];
   }
@@ -241,32 +241,32 @@ LABEL_17:
   return v24;
 }
 
-+ (id)peopleLocationTitleComponentsFromAddressNodes:(id)a3 peopleDisplayType:(unint64_t)a4 serviceManager:(id)a5
++ (id)peopleLocationTitleComponentsFromAddressNodes:(id)nodes peopleDisplayType:(unint64_t)type serviceManager:(id)manager
 {
-  v7 = a5;
-  v8 = [a3 set];
-  v9 = [PGLocationTitleUtility peopleLocationTitleComponentsFromAddressNodesSet:v8 peopleDisplayType:a4 serviceManager:v7];
+  managerCopy = manager;
+  v8 = [nodes set];
+  v9 = [PGLocationTitleUtility peopleLocationTitleComponentsFromAddressNodesSet:v8 peopleDisplayType:type serviceManager:managerCopy];
 
   return v9;
 }
 
-+ (id)beautifiedLocationNodeStringWithPlaceNode:(id)a3 locationHelper:(id)a4
++ (id)beautifiedLocationNodeStringWithPlaceNode:(id)node locationHelper:(id)helper
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = v7;
-  if (v7)
+  nodeCopy = node;
+  helperCopy = helper;
+  name = [nodeCopy name];
+  v8 = name;
+  if (name)
   {
-    if ([v7 length])
+    if ([name length])
     {
-      v9 = [v5 label];
-      v10 = [v9 isEqualToString:@"Country"];
+      label = [nodeCopy label];
+      v10 = [label isEqualToString:@"Country"];
 
       if (!v10)
       {
-        if (([v5 supportsNameShortening] & 1) == 0 || (+[PGAOINameShortener shortenedAOIForLocationOrAreaNode:locationHelper:](PGAOINameShortener, "shortenedAOIForLocationOrAreaNode:locationHelper:", v5, v6), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (([nodeCopy supportsNameShortening] & 1) == 0 || (+[PGAOINameShortener shortenedAOIForLocationOrAreaNode:locationHelper:](PGAOINameShortener, "shortenedAOIForLocationOrAreaNode:locationHelper:", nodeCopy, helperCopy), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v16 = v8;
         }
@@ -276,8 +276,8 @@ LABEL_17:
 
       v11 = v8;
       v12 = shouldLocationRemoveParenthesesForCountryCode(v11);
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
-      v14 = [v13 localizedStringForCountryCode:v11];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v14 = [currentLocale localizedStringForCountryCode:v11];
       v15 = v14;
       if (v14 && [v14 length])
       {
@@ -299,7 +299,7 @@ LABEL_17:
       if (!v16)
       {
         v16 = v11;
-        v17 = v16;
+        pg_stringByRemovingParentheses = v16;
         if ((v12 & 1) == 0)
         {
           goto LABEL_18;
@@ -308,19 +308,19 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v17 = v16;
+      pg_stringByRemovingParentheses = v16;
       if (v12)
       {
 LABEL_17:
-        v17 = [v16 pg_stringByRemovingParentheses];
+        pg_stringByRemovingParentheses = [v16 pg_stringByRemovingParentheses];
 
-        v16 = v17;
+        v16 = pg_stringByRemovingParentheses;
       }
     }
 
     else
     {
-      v17 = 0;
+      pg_stringByRemovingParentheses = 0;
       v16 = v8;
     }
   }
@@ -328,7 +328,7 @@ LABEL_17:
   else
   {
     v16 = 0;
-    v17 = 0;
+    pg_stringByRemovingParentheses = 0;
   }
 
 LABEL_18:
@@ -338,15 +338,15 @@ LABEL_18:
   return v16;
 }
 
-+ (id)_twoPartLocationTitleWithFirstPartTitle:(id)a3 withDimension:(unint64_t)a4 usedFirstPartLocationNode:(id)a5 addressNode:(id)a6 locationHelper:(id)a7
++ (id)_twoPartLocationTitleWithFirstPartTitle:(id)title withDimension:(unint64_t)dimension usedFirstPartLocationNode:(id)node addressNode:(id)addressNode locationHelper:(id)helper
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4 - 10 < 0xFFFFFFFFFFFFFFF7)
+  titleCopy = title;
+  nodeCopy = node;
+  addressNodeCopy = addressNode;
+  helperCopy = helper;
+  if (dimension - 10 < 0xFFFFFFFFFFFFFFF7)
   {
-    v16 = v12;
+    v16 = titleCopy;
     goto LABEL_15;
   }
 
@@ -355,14 +355,14 @@ LABEL_18:
   do
   {
     v19 = v18;
-    v18 = [v15 closestLocationNodeFromLocationNode:v14 withDimension:a4 remapMatchingDimensionBlock:&__block_literal_global_433];
+    v18 = [helperCopy closestLocationNodeFromLocationNode:addressNodeCopy withDimension:dimension remapMatchingDimensionBlock:&__block_literal_global_433];
 
     if (v18)
     {
-      v20 = [a1 beautifiedLocationNodeStringWithPlaceNode:v18 locationHelper:v15];
+      v20 = [self beautifiedLocationNodeStringWithPlaceNode:v18 locationHelper:helperCopy];
 
-      v21 = [v13 name];
-      v22 = [v20 isEqualToString:v21];
+      name = [nodeCopy name];
+      v22 = [v20 isEqualToString:name];
 
       v17 = v20;
       if (!v22)
@@ -371,25 +371,25 @@ LABEL_18:
       }
     }
 
-    ++a4;
+    ++dimension;
   }
 
-  while (a4 != 10);
+  while (dimension != 10);
   if (![v17 length])
   {
-    v25 = v12;
+    v25 = titleCopy;
     goto LABEL_13;
   }
 
   v16 = 0;
-  if ([v12 rangeOfString:v17 options:0] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([titleCopy rangeOfString:v17 options:0] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v12 length])
+    if ([titleCopy length])
     {
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"PGLocationTitleFormatTwoPartWithFirstLocation %@ secondLocation %@ invisibleSeparator %@" value:@"PGLocationTitleFormatTwoPartWithFirstLocation %@ secondLocation %@ invisibleSeparator %@" table:@"Localizable"];
 
-      v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v24, v12, v17, @"\n"];
+      v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v24, titleCopy, v17, @"\n"];
 
       goto LABEL_14;
     }
@@ -418,39 +418,39 @@ uint64_t __133__PGLocationTitleUtility__twoPartLocationTitleWithFirstPartTitle_w
   return result;
 }
 
-+ (id)_titleWithLineBreakBehavior:(unint64_t)a3 forTitle:(id)a4 titleComponents:(id)a5
++ (id)_titleWithLineBreakBehavior:(unint64_t)behavior forTitle:(id)title titleComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ((v6 & 2) != 0)
+  behaviorCopy = behavior;
+  titleCopy = title;
+  componentsCopy = components;
+  if ((behaviorCopy & 2) != 0)
   {
-    v10 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
+    v10 = [titleCopy stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
 
-    v9 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v10 andUsedNames:v8];
-    v7 = v10;
+    v9 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v10 andUsedNames:componentsCopy];
+    titleCopy = v10;
   }
 
   else
   {
-    if ((v6 & 1) == 0)
+    if ((behaviorCopy & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v9 = [PGCommonTitleUtility titleWithLineBreakForTitle:v7 andUsedNames:v8];
+    v9 = [PGCommonTitleUtility titleWithLineBreakForTitle:titleCopy andUsedNames:componentsCopy];
   }
 
-  v7 = v9;
+  titleCopy = v9;
 LABEL_6:
 
-  return v7;
+  return titleCopy;
 }
 
-+ (id)_sortedComponentsFromComponents:(id)a3
++ (id)_sortedComponentsFromComponents:(id)components
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_67521];
+  allObjects = [components allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_67521];
 
   return v4;
 }
@@ -587,14 +587,14 @@ LABEL_39:
   return v9;
 }
 
-+ (id)_firstComponentInTimeFromComponents:(id)a3 momentNodes:(id)a4 curationAddressNodes:(id)a5 allowFamilyHome:(BOOL)a6 serviceManager:(id)a7
++ (id)_firstComponentInTimeFromComponents:(id)components momentNodes:(id)nodes curationAddressNodes:(id)addressNodes allowFamilyHome:(BOOL)home serviceManager:(id)manager
 {
-  v52 = a6;
+  homeCopy = home;
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v59 = a4;
-  v11 = a5;
-  v55 = a7;
+  componentsCopy = components;
+  nodesCopy = nodes;
+  addressNodesCopy = addressNodes;
+  managerCopy = manager;
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
@@ -613,7 +613,7 @@ LABEL_39:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v10;
+  obj = componentsCopy;
   v12 = [obj countByEnumeratingWithState:&v62 objects:v80 count:16];
   if (v12)
   {
@@ -629,11 +629,11 @@ LABEL_39:
         }
 
         v14 = *(*(&v62 + 1) + 8 * i);
-        [v14 updateWithMomentNodes:v59];
-        if ([v11 count])
+        [v14 updateWithMomentNodes:nodesCopy];
+        if ([addressNodesCopy count])
         {
-          v15 = [v14 addressNodes];
-          v16 = [v15 intersectsSet:v11];
+          addressNodes = [v14 addressNodes];
+          v16 = [addressNodes intersectsSet:addressNodesCopy];
 
           if ((v16 & 1) == 0)
           {
@@ -645,10 +645,10 @@ LABEL_39:
         v18 = v17;
         [v14 weight];
         v20 = v19;
-        v21 = [v14 node];
-        v22 = [v21 name];
+        node = [v14 node];
+        name = [node name];
 
-        if (![v22 length])
+        if (![name length])
         {
           goto LABEL_14;
         }
@@ -697,55 +697,55 @@ LABEL_39:
           goto LABEL_39;
         }
 
-        v28 = [v27 node];
-        v29 = [v28 domain];
+        node2 = [v27 node];
+        domain = [node2 domain];
 
-        v30 = [v14 node];
-        v31 = [v30 domain];
+        node3 = [v14 node];
+        domain2 = [node3 domain];
 
-        if (v29 != 300 && v31 == 300)
+        if (domain != 300 && domain2 == 300)
         {
           v26[2](v26);
           goto LABEL_39;
         }
 
-        if (v29 == 300 && v31 == 300)
+        if (domain == 300 && domain2 == 300)
         {
-          v32 = [v14 node];
-          v33 = [v32 graph];
-          v34 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v33];
+          node4 = [v14 node];
+          graph = [node4 graph];
+          name2 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
 
-          v35 = [v14 node];
-          v36 = [v34 containsNode:v35];
+          node5 = [v14 node];
+          v36 = [name2 containsNode:node5];
 
           if (v36)
           {
             goto LABEL_24;
           }
 
-          v38 = [v75[5] edge];
-          v39 = [v38 targetNode];
+          edge = [v75[5] edge];
+          targetNode = [edge targetNode];
 
-          v40 = [v14 edge];
-          v56 = [v40 targetNode];
+          edge2 = [v14 edge];
+          targetNode2 = [edge2 targetNode];
 
-          v41 = [v39 label];
-          v42 = [v41 isEqualToString:@"Home"];
+          label = [targetNode label];
+          v42 = [label isEqualToString:@"Home"];
 
-          v43 = [v56 label];
-          v44 = [v43 isEqualToString:@"Home"];
+          label2 = [targetNode2 label];
+          v44 = [label2 isEqualToString:@"Home"];
 
           if (v42 & 1 | ((v44 & 1) == 0))
           {
             if (v42 == v44)
             {
-              v53 = [v75[5] node];
-              v45 = [v75[5] edge];
-              v46 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:v53 peopleAddressEdge:v45 titleComponent:v75[5] insertLineBreak:0 allowFamilyHome:v52 serviceManager:v55];
+              node6 = [v75[5] node];
+              edge3 = [v75[5] edge];
+              v46 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:node6 peopleAddressEdge:edge3 titleComponent:v75[5] insertLineBreak:0 allowFamilyHome:homeCopy serviceManager:managerCopy];
 
-              v54 = [v14 node];
-              v47 = [v14 edge];
-              v48 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:v54 peopleAddressEdge:v47 titleComponent:v14 insertLineBreak:0 allowFamilyHome:v52 serviceManager:v55];
+              node7 = [v14 node];
+              edge4 = [v14 edge];
+              v48 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:node7 peopleAddressEdge:edge4 titleComponent:v14 insertLineBreak:0 allowFamilyHome:homeCopy serviceManager:managerCopy];
 
               if ([v48 length] && (!objc_msgSend(v46, "length") || objc_msgSend(v46, "localizedCompare:", v48) == 1))
               {
@@ -762,15 +762,15 @@ LABEL_39:
 
         else
         {
-          if (v29 == 300)
+          if (domain == 300)
           {
             goto LABEL_39;
           }
 
-          v37 = [v75[5] node];
-          v34 = [v37 name];
+          node8 = [v75[5] node];
+          name2 = [node8 name];
 
-          if ([v34 localizedCompare:v22] == 1)
+          if ([name2 localizedCompare:name] == 1)
           {
 LABEL_24:
             v26[2](v26);
@@ -803,28 +803,28 @@ void __126__PGLocationTitleUtility__firstComponentInTimeFromComponents_momentNod
   objc_storeStrong((*(*(a1 + 56) + 8) + 40), *(a1 + 32));
 }
 
-+ (BOOL)_titleComponentsAreInSameSupersetCity:(id)a3 graph:(id)a4 locationHelper:(id)a5
++ (BOOL)_titleComponentsAreInSameSupersetCity:(id)city graph:(id)graph locationHelper:(id)helper
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v30 = a5;
-  if ([v7 count])
+  cityCopy = city;
+  graphCopy = graph;
+  helperCopy = helper;
+  if ([cityCopy count])
   {
     v9 = [MEMORY[0x277CBEB58] set];
-    v10 = [v8 supersetCityNodes];
+    supersetCityNodes = [graphCopy supersetCityNodes];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = v7;
+    v11 = cityCopy;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v32;
-      v28 = v8;
-      v29 = v7;
+      v28 = graphCopy;
+      v29 = cityCopy;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -835,42 +835,42 @@ void __126__PGLocationTitleUtility__firstComponentInTimeFromComponents_momentNod
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [v16 node];
-          v18 = [v17 label];
-          v19 = [v18 isEqualToString:@"City"];
+          node = [v16 node];
+          label = [node label];
+          v19 = [label isEqualToString:@"City"];
 
           if (v19)
           {
-            v20 = v17;
+            anyNode = node;
           }
 
           else
           {
-            if ([v17 domain] != 300)
+            if ([node domain] != 300)
             {
               goto LABEL_16;
             }
 
-            v21 = [v16 edge];
-            v22 = [v21 sourceNode];
+            edge = [v16 edge];
+            sourceNode = [edge sourceNode];
 
-            v23 = [v30 cityNodeFromAddressNode:v22];
-            v20 = [v23 anyNode];
+            v23 = [helperCopy cityNodeFromAddressNode:sourceNode];
+            anyNode = [v23 anyNode];
 
-            if (!v20)
+            if (!anyNode)
             {
 LABEL_16:
 
 LABEL_17:
               v25 = 0;
-              v8 = v28;
-              v7 = v29;
+              graphCopy = v28;
+              cityCopy = v29;
               goto LABEL_18;
             }
           }
 
-          [v9 addObject:v20];
-          v24 = [v10 containsNode:v20];
+          [v9 addObject:anyNode];
+          v24 = [supersetCityNodes containsNode:anyNode];
 
           if (!v24)
           {
@@ -879,8 +879,8 @@ LABEL_17:
         }
 
         v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
-        v8 = v28;
-        v7 = v29;
+        graphCopy = v28;
+        cityCopy = v29;
         if (v13)
         {
           continue;
@@ -903,14 +903,14 @@ LABEL_18:
   return v25;
 }
 
-+ (id)_locationStringWithDistrictsFromTitleComponents:(id)a3 momentNodes:(id)a4 lineBreakBehavior:(unint64_t)a5 allowFamilyHome:(BOOL)a6 locationHelper:(id)a7 serviceManager:(id)a8
++ (id)_locationStringWithDistrictsFromTitleComponents:(id)components momentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior allowFamilyHome:(BOOL)home locationHelper:(id)helper serviceManager:(id)manager
 {
-  v91 = a6;
+  homeCopy = home;
   v145 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v103 = a4;
-  v105 = a7;
-  v93 = a8;
+  componentsCopy = components;
+  nodesCopy = nodes;
+  helperCopy = helper;
+  managerCopy = manager;
   v135 = 0;
   v136 = &v135;
   v137 = 0x2020000000;
@@ -927,12 +927,12 @@ LABEL_18:
   aBlock[5] = &v131;
   v102 = _Block_copy(aBlock);
   v94 = [MEMORY[0x277CBEB58] set];
-  v104 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v128 = 0u;
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  obj = v11;
+  obj = componentsCopy;
   v12 = [obj countByEnumeratingWithState:&v126 objects:v144 count:16];
   v13 = 0;
   if (v12)
@@ -954,26 +954,26 @@ LABEL_3:
       }
 
       v15 = *(*(&v126 + 1) + 8 * v14);
-      v100 = [v15 node];
-      v16 = [v100 label];
-      v17 = [v16 isEqualToString:@"City"];
+      node = [v15 node];
+      label = [node label];
+      v17 = [label isEqualToString:@"City"];
 
       if (v17)
       {
-        v18 = [v100 collection];
-        v102[2](v102, v18);
+        collection = [node collection];
+        v102[2](v102, collection);
 
         if (v136[3])
         {
           goto LABEL_36;
         }
 
-        v19 = [v15 addressNodes];
+        addressNodes = [v15 addressNodes];
         v124 = 0u;
         v125 = 0u;
         v122 = 0u;
         v123 = 0u;
-        v20 = v19;
+        v20 = addressNodes;
         v21 = [v20 countByEnumeratingWithState:&v122 objects:v143 count:16];
         if (v21)
         {
@@ -988,21 +988,21 @@ LABEL_3:
               }
 
               v24 = *(*(&v122 + 1) + 8 * i);
-              v25 = [v105 districtNodeFromAddressNode:v24];
-              v26 = [v25 anyNode];
+              v25 = [helperCopy districtNodeFromAddressNode:v24];
+              anyNode = [v25 anyNode];
 
-              if (!v26)
+              if (!anyNode)
               {
                 *(v136 + 24) = 1;
                 goto LABEL_31;
               }
 
-              v27 = [v104 objectForKeyedSubscript:v26];
+              v27 = [dictionary objectForKeyedSubscript:anyNode];
               if (!v27)
               {
                 v27 = objc_alloc_init(PGLocationTitleComponent);
-                [(PGLocationTitleComponent *)v27 setNode:v26];
-                [v104 setObject:v27 forKeyedSubscript:v26];
+                [(PGLocationTitleComponent *)v27 setNode:anyNode];
+                [dictionary setObject:v27 forKeyedSubscript:anyNode];
               }
 
               [(PGLocationTitleComponent *)v27 addAddressNode:v24];
@@ -1025,12 +1025,12 @@ LABEL_31:
 
       else
       {
-        v28 = [v15 addressNodes];
+        addressNodes2 = [v15 addressNodes];
         v120 = 0u;
         v121 = 0u;
         v118 = 0u;
         v119 = 0u;
-        v20 = v28;
+        v20 = addressNodes2;
         v29 = [v20 countByEnumeratingWithState:&v118 objects:v142 count:16];
         if (v29)
         {
@@ -1044,7 +1044,7 @@ LABEL_22:
               objc_enumerationMutation(v20);
             }
 
-            v32 = [v105 cityNodeFromAddressNode:*(*(&v118 + 1) + 8 * v31)];
+            v32 = [helperCopy cityNodeFromAddressNode:*(*(&v118 + 1) + 8 * v31)];
             v102[2](v102, v32);
             v33 = *(v136 + 24);
 
@@ -1107,19 +1107,19 @@ LABEL_36:
     goto LABEL_106;
   }
 
-  v38 = [v103 anyObject];
-  v39 = [v38 graph];
-  v87 = [v39 nodeForIdentifier:v132[3]];
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
+  v87 = [graph nodeForIdentifier:v132[3]];
 
-  v88 = [a1 beautifiedLocationNodeStringWithPlaceNode:v87 locationHelper:v105];
+  v88 = [self beautifiedLocationNodeStringWithPlaceNode:v87 locationHelper:helperCopy];
   if (![v88 length])
   {
     v36 = 0;
     goto LABEL_105;
   }
 
-  v40 = [v104 allValues];
-  [v94 addObjectsFromArray:v40];
+  allValues = [dictionary allValues];
+  [v94 addObjectsFromArray:allValues];
 
   v116 = 0u;
   v117 = 0u;
@@ -1139,7 +1139,7 @@ LABEL_36:
           objc_enumerationMutation(v41);
         }
 
-        [*(*(&v114 + 1) + 8 * j) updateWithMomentNodes:v103];
+        [*(*(&v114 + 1) + 8 * j) updateWithMomentNodes:nodesCopy];
       }
 
       v42 = [v41 countByEnumeratingWithState:&v114 objects:v141 count:16];
@@ -1148,7 +1148,7 @@ LABEL_36:
     while (v42);
   }
 
-  v45 = [a1 _firstComponentInTimeFromComponents:v41 momentNodes:v103 curationAddressNodes:0 allowFamilyHome:v91 serviceManager:v93];
+  v45 = [self _firstComponentInTimeFromComponents:v41 momentNodes:nodesCopy curationAddressNodes:0 allowFamilyHome:homeCopy serviceManager:managerCopy];
   v86 = v45;
   if (!v45)
   {
@@ -1161,12 +1161,12 @@ LABEL_36:
   {
     v47 = [v41 mutableCopy];
     [v47 removeObject:v86];
-    v48 = [a1 _sortedComponentsFromComponents:v47];
+    v48 = [self _sortedComponentsFromComponents:v47];
     [v46 addObjectsFromArray:v48];
   }
 
-  v101 = [MEMORY[0x277CBEB18] array];
-  v97 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v112 = 0u;
   v113 = 0u;
   v110 = 0u;
@@ -1189,32 +1189,32 @@ LABEL_36:
       }
 
       v52 = *(*(&v110 + 1) + 8 * k);
-      v53 = [v52 node];
-      if ([v53 domain] == 300)
+      node2 = [v52 node];
+      if ([node2 domain] == 300)
       {
-        v54 = [v52 edge];
-        v55 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:v53 peopleAddressEdge:v54 titleComponent:v52 insertLineBreak:a5 & 1 allowFamilyHome:v91 serviceManager:v93];
+        edge = [v52 edge];
+        v55 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:node2 peopleAddressEdge:edge titleComponent:v52 insertLineBreak:behavior & 1 allowFamilyHome:homeCopy serviceManager:managerCopy];
 
-        if (!v55 || ([v101 containsObject:v55] & 1) != 0)
+        if (!v55 || ([array containsObject:v55] & 1) != 0)
         {
           goto LABEL_66;
         }
 
 LABEL_65:
-        [v101 addObject:v55];
-        [v97 addObject:v52];
+        [array addObject:v55];
+        [array2 addObject:v52];
         goto LABEL_66;
       }
 
-      v56 = [v53 label];
-      v57 = [v56 isEqualToString:@"District"];
+      label2 = [node2 label];
+      v57 = [label2 isEqualToString:@"District"];
 
       if (!v57)
       {
         goto LABEL_67;
       }
 
-      v55 = [a1 beautifiedLocationNodeStringWithPlaceNode:v53 locationHelper:v105];
+      v55 = [self beautifiedLocationNodeStringWithPlaceNode:node2 locationHelper:helperCopy];
       if (![v55 length])
       {
         *(v136 + 24) = 1;
@@ -1222,7 +1222,7 @@ LABEL_65:
         goto LABEL_73;
       }
 
-      if (([v101 containsObject:v55] & 1) == 0)
+      if (([array containsObject:v55] & 1) == 0)
       {
         goto LABEL_65;
       }
@@ -1254,7 +1254,7 @@ LABEL_73:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v92 = v101;
+  v92 = array;
   v59 = [v92 countByEnumeratingWithState:&v106 objects:v139 count:16];
   if (v59)
   {
@@ -1316,48 +1316,48 @@ LABEL_84:
     if (v70 == 1)
     {
       v71 = MEMORY[0x277CCACA8];
-      v72 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v73 = [v72 localizedStringForKey:@"PGLocationTitleFormatOneDistrict %@ city %@" value:@"PGLocationTitleFormatOneDistrict %@ city %@" table:@"Localizable"];
-      v74 = [v92 firstObject];
-      v75 = [v71 localizedStringWithFormat:v73, v74, v88];
+      firstObject2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      lastObject = [firstObject2 localizedStringForKey:@"PGLocationTitleFormatOneDistrict %@ city %@" value:@"PGLocationTitleFormatOneDistrict %@ city %@" table:@"Localizable"];
+      firstObject = [v92 firstObject];
+      v75 = [v71 localizedStringWithFormat:lastObject, firstObject, v88];
       goto LABEL_98;
     }
 
     goto LABEL_101;
   }
 
-  v72 = [v92 firstObject];
-  v73 = [v92 lastObject];
-  v76 = [v97 firstObject];
-  v77 = [v76 type];
+  firstObject2 = [v92 firstObject];
+  lastObject = [v92 lastObject];
+  firstObject3 = [array2 firstObject];
+  type = [firstObject3 type];
 
-  v78 = [v97 lastObject];
-  v79 = [v78 type];
+  lastObject2 = [array2 lastObject];
+  type2 = [lastObject2 type];
 
-  if (v77 || v79 != 1)
+  if (type || type2 != 1)
   {
     v83 = MEMORY[0x277CCACA8];
-    if (v77 != 1 || v79)
+    if (type != 1 || type2)
     {
-      v74 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v81 = [v74 localizedStringForKey:@"PGLocationTitleFormatDistrict %@ otherDistrict %@ inCity %@" value:@"PGLocationTitleFormatDistrict %@ otherDistrict %@ inCity %@" table:@"Localizable"];
-      v82 = [v83 localizedStringWithFormat:v81, v72, v73, v88];
+      firstObject = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v81 = [firstObject localizedStringForKey:@"PGLocationTitleFormatDistrict %@ otherDistrict %@ inCity %@" value:@"PGLocationTitleFormatDistrict %@ otherDistrict %@ inCity %@" table:@"Localizable"];
+      v82 = [v83 localizedStringWithFormat:v81, firstObject2, lastObject, v88];
     }
 
     else
     {
-      v74 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v81 = [v74 localizedStringForKey:@"PGLocationTitleFormatHomeAndDistrict %@ inCity %@" value:@"PGLocationTitleFormatHomeAndDistrict %@ inCity %@" table:@"Localizable"];
-      v82 = [v83 localizedStringWithFormat:v81, v73, v88];
+      firstObject = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v81 = [firstObject localizedStringForKey:@"PGLocationTitleFormatHomeAndDistrict %@ inCity %@" value:@"PGLocationTitleFormatHomeAndDistrict %@ inCity %@" table:@"Localizable"];
+      v82 = [v83 localizedStringWithFormat:v81, lastObject, v88];
     }
   }
 
   else
   {
     v80 = MEMORY[0x277CCACA8];
-    v74 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v81 = [v74 localizedStringForKey:@"PGLocationTitleFormatDistrict %@ andHomeInCity %@" value:@"PGLocationTitleFormatDistrict %@ andHomeInCity %@" table:@"Localizable"];
-    v82 = [v80 localizedStringWithFormat:v81, v72, v88];
+    firstObject = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v81 = [firstObject localizedStringForKey:@"PGLocationTitleFormatDistrict %@ andHomeInCity %@" value:@"PGLocationTitleFormatDistrict %@ andHomeInCity %@" table:@"Localizable"];
+    v82 = [v80 localizedStringWithFormat:v81, firstObject2, v88];
   }
 
   v75 = v82;
@@ -1366,7 +1366,7 @@ LABEL_98:
   if (v75)
   {
     [v92 addObject:v88];
-    v36 = [a1 _titleWithLineBreakBehavior:a5 forTitle:v75 titleComponents:v92];
+    v36 = [self _titleWithLineBreakBehavior:behavior forTitle:v75 titleComponents:v92];
 LABEL_100:
   }
 
@@ -1422,36 +1422,36 @@ void __150__PGLocationTitleUtility__locationStringWithDistrictsFromTitleComponen
   }
 }
 
-+ (id)_localizedStringForMultipleLocationsWithFirstComponentForTitle:(id)a3 secondComponentForTitle:(id)a4 firstLocation:(id)a5 otherLocation:(id)a6
++ (id)_localizedStringForMultipleLocationsWithFirstComponentForTitle:(id)title secondComponentForTitle:(id)forTitle firstLocation:(id)location otherLocation:(id)otherLocation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 type];
-  v14 = [v10 type];
-  if (v13 > 1)
+  titleCopy = title;
+  forTitleCopy = forTitle;
+  locationCopy = location;
+  otherLocationCopy = otherLocation;
+  type = [titleCopy type];
+  type2 = [forTitleCopy type];
+  if (type > 1)
   {
-    if (v13 != 2)
+    if (type != 2)
     {
-      if (v13 == 3)
+      if (type == 3)
       {
-        if (v14 <= 1)
+        if (type2 <= 1)
         {
-          if (!v14)
+          if (!type2)
           {
             v22 = MEMORY[0x277CCACA8];
             v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsWithSomeonesHome %@ andLocation %@" value:@"PGLocationTitleFormatMultipleLocationsWithSomeonesHome %@ andLocation %@" table:@"Localizable"];
-            v42 = [v9 personName];
-            v35 = v42;
-            v47 = v12;
+            personName = [titleCopy personName];
+            personName2 = personName;
+            v47 = otherLocationCopy;
 LABEL_69:
-            [v22 localizedStringWithFormat:v32, v42, v47];
+            [v22 localizedStringWithFormat:v32, personName, v47];
             goto LABEL_70;
           }
 
-          if (v14 != 1)
+          if (type2 != 1)
           {
             goto LABEL_78;
           }
@@ -1464,7 +1464,7 @@ LABEL_69:
 
         else
         {
-          switch(v14)
+          switch(type2)
           {
             case 2:
               v22 = MEMORY[0x277CCACA8];
@@ -1476,15 +1476,15 @@ LABEL_69:
               v34 = MEMORY[0x277CCACA8];
               v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsWithSomeonesHome %@ andAnothersHome %@" value:@"PGLocationTitleFormatMultipleLocationsWithSomeonesHome %@ andAnothersHome %@" table:@"Localizable"];
-              v35 = [v9 personName];
-              v36 = [v10 personName];
-              v37 = [v34 localizedStringWithFormat:v32, v35, v36];
+              personName2 = [titleCopy personName];
+              personName3 = [forTitleCopy personName];
+              otherLocationCopy = [v34 localizedStringWithFormat:v32, personName2, personName3];
 
 LABEL_71:
 LABEL_76:
 
 LABEL_77:
-              if (v37)
+              if (otherLocationCopy)
               {
                 goto LABEL_79;
               }
@@ -1502,36 +1502,36 @@ LABEL_77:
         }
 
         v32 = [v23 localizedStringForKey:v24 value:v24 table:@"Localizable"];
-        v33 = v9;
+        v33 = titleCopy;
 LABEL_68:
-        v42 = [v33 personName];
-        v35 = v42;
+        personName = [v33 personName];
+        personName2 = personName;
         goto LABEL_69;
       }
 
-      if (v13 != 4)
+      if (type != 4)
       {
         goto LABEL_78;
       }
 
-      if (v14 > 1)
+      if (type2 > 1)
       {
-        if (v14 != 2)
+        if (type2 != 2)
         {
-          if (v14 != 3)
+          if (type2 != 3)
           {
-            if (v14 == 4)
+            if (type2 == 4)
             {
               v15 = +[PGLogging sharedLogging];
-              v16 = [v15 loggingConnection];
+              loggingConnection = [v15 loggingConnection];
 
-              if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 v48 = 0;
                 v17 = "Attempted to create location string with Multiple title components both of type Family Home";
                 v18 = &v48;
 LABEL_83:
-                _os_log_error_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_ERROR, v17, v18, 2u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, v17, v18, 2u);
                 goto LABEL_50;
               }
 
@@ -1552,13 +1552,13 @@ LABEL_83:
         v20 = v19;
         v21 = @"PGLocationTitleFormatMultipleLocationsWithFamilyHomeAndWork";
 LABEL_63:
-        v37 = [v19 localizedStringForKey:v21 value:v21 table:@"Localizable"];
+        otherLocationCopy = [v19 localizedStringForKey:v21 value:v21 table:@"Localizable"];
         goto LABEL_77;
       }
 
-      if (v14)
+      if (type2)
       {
-        if (v14 != 1)
+        if (type2 != 1)
         {
           goto LABEL_78;
         }
@@ -1576,14 +1576,14 @@ LABEL_63:
       goto LABEL_74;
     }
 
-    if (v14 > 1)
+    if (type2 > 1)
     {
-      if (v14 == 2)
+      if (type2 == 2)
       {
         v29 = +[PGLogging sharedLogging];
-        v16 = [v29 loggingConnection];
+        loggingConnection = [v29 loggingConnection];
 
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
           v17 = "Attempted to create location string with two title components both of type Work";
@@ -1594,9 +1594,9 @@ LABEL_63:
         goto LABEL_50;
       }
 
-      if (v14 != 3)
+      if (type2 != 3)
       {
-        if (v14 != 4)
+        if (type2 != 4)
         {
           goto LABEL_78;
         }
@@ -1614,9 +1614,9 @@ LABEL_63:
       goto LABEL_67;
     }
 
-    if (v14)
+    if (type2)
     {
-      if (v14 != 1)
+      if (type2 != 1)
       {
         goto LABEL_78;
       }
@@ -1633,24 +1633,24 @@ LABEL_63:
     v40 = @"PGLocationTitleFormatMultipleLocationsWithWorkAndLocation %@";
 LABEL_74:
     v32 = [v39 localizedStringForKey:v40 value:v40 table:@"Localizable"];
-    [v38 localizedStringWithFormat:v32, v12, v47];
+    [v38 localizedStringWithFormat:v32, otherLocationCopy, v47];
     goto LABEL_75;
   }
 
-  if (!v13)
+  if (!type)
   {
-    if (v14 <= 1)
+    if (type2 <= 1)
     {
-      if (!v14)
+      if (!type2)
       {
         v25 = MEMORY[0x277CCACA8];
         v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ otherLocation %@" value:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ otherLocation %@" table:@"Localizable"];
-        v47 = v12;
+        v47 = otherLocationCopy;
         goto LABEL_65;
       }
 
-      if (v14 != 1)
+      if (type2 != 1)
       {
         goto LABEL_78;
       }
@@ -1663,7 +1663,7 @@ LABEL_74:
 
     else
     {
-      switch(v14)
+      switch(type2)
       {
         case 2:
           v25 = MEMORY[0x277CCACA8];
@@ -1675,9 +1675,9 @@ LABEL_74:
           v41 = MEMORY[0x277CCACA8];
           v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ andSomeonesHome %@" value:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ andSomeonesHome %@" table:@"Localizable"];
-          v35 = [v10 personName];
-          [v41 localizedStringWithFormat:v32, v11, v35];
-          v37 = LABEL_70:;
+          personName2 = [forTitleCopy personName];
+          [v41 localizedStringWithFormat:v32, locationCopy, personName2];
+          otherLocationCopy = LABEL_70:;
           goto LABEL_71;
         case 4:
           v25 = MEMORY[0x277CCACA8];
@@ -1692,19 +1692,19 @@ LABEL_74:
 
     v32 = [v26 localizedStringForKey:v27 value:v27 table:@"Localizable"];
 LABEL_65:
-    [v25 localizedStringWithFormat:v32, v11, v47];
-    v37 = LABEL_75:;
+    [v25 localizedStringWithFormat:v32, locationCopy, v47];
+    otherLocationCopy = LABEL_75:;
     goto LABEL_76;
   }
 
-  if (v13 != 1)
+  if (type != 1)
   {
     goto LABEL_78;
   }
 
-  if (v14 > 1)
+  if (type2 > 1)
   {
-    if (v14 == 2)
+    if (type2 == 2)
     {
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = v19;
@@ -1712,9 +1712,9 @@ LABEL_65:
       goto LABEL_63;
     }
 
-    if (v14 != 3)
+    if (type2 != 3)
     {
-      if (v14 != 4)
+      if (type2 != 4)
       {
         goto LABEL_78;
       }
@@ -1731,11 +1731,11 @@ LABEL_65:
     v31 = @"PGLocationTitleFormatMultipleLocationsWithHomeAndSomeonesHome %@";
 LABEL_67:
     v32 = [v30 localizedStringForKey:v31 value:v31 table:@"Localizable"];
-    v33 = v10;
+    v33 = forTitleCopy;
     goto LABEL_68;
   }
 
-  if (!v14)
+  if (!type2)
   {
     v38 = MEMORY[0x277CCACA8];
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1744,12 +1744,12 @@ LABEL_67:
     goto LABEL_74;
   }
 
-  if (v14 == 1)
+  if (type2 == 1)
   {
     v28 = +[PGLogging sharedLogging];
-    v16 = [v28 loggingConnection];
+    loggingConnection = [v28 loggingConnection];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v50 = 0;
       v17 = "Attempted to create location string with two title components both of type Home";
@@ -1764,43 +1764,43 @@ LABEL_78:
   v43 = MEMORY[0x277CCACA8];
   v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v45 = [v44 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ otherLocation %@" value:@"PGLocationTitleFormatMultipleLocationsWithLocation %@ otherLocation %@" table:@"Localizable"];
-  v37 = [v43 localizedStringWithFormat:v45, v11, v12];
+  otherLocationCopy = [v43 localizedStringWithFormat:v45, locationCopy, otherLocationCopy];
 
 LABEL_79:
 
-  return v37;
+  return otherLocationCopy;
 }
 
-+ (id)_localizedStringForTwoLocationsWithFirstComponentForTitle:(id)a3 secondComponentForTitle:(id)a4 firstLocation:(id)a5 otherLocation:(id)a6
++ (id)_localizedStringForTwoLocationsWithFirstComponentForTitle:(id)title secondComponentForTitle:(id)forTitle firstLocation:(id)location otherLocation:(id)otherLocation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 type];
-  v14 = [v10 type];
-  if (v13 > 1)
+  titleCopy = title;
+  forTitleCopy = forTitle;
+  locationCopy = location;
+  otherLocationCopy = otherLocation;
+  type = [titleCopy type];
+  type2 = [forTitleCopy type];
+  if (type > 1)
   {
-    if (v13 != 2)
+    if (type != 2)
     {
-      if (v13 == 3)
+      if (type == 3)
       {
-        if (v14 <= 1)
+        if (type2 <= 1)
         {
-          if (!v14)
+          if (!type2)
           {
             v22 = MEMORY[0x277CCACA8];
             v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatTwoLocationsWithSomeonesHome %@ andLocation %@" value:@"PGLocationTitleFormatTwoLocationsWithSomeonesHome %@ andLocation %@" table:@"Localizable"];
-            v42 = [v9 personName];
-            v35 = v42;
-            v47 = v12;
+            personName = [titleCopy personName];
+            personName2 = personName;
+            v47 = otherLocationCopy;
 LABEL_69:
-            [v22 localizedStringWithFormat:v32, v42, v47];
+            [v22 localizedStringWithFormat:v32, personName, v47];
             goto LABEL_70;
           }
 
-          if (v14 != 1)
+          if (type2 != 1)
           {
             goto LABEL_78;
           }
@@ -1813,7 +1813,7 @@ LABEL_69:
 
         else
         {
-          switch(v14)
+          switch(type2)
           {
             case 2:
               v22 = MEMORY[0x277CCACA8];
@@ -1825,15 +1825,15 @@ LABEL_69:
               v34 = MEMORY[0x277CCACA8];
               v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatTwoLocationsWithSomeonesHome %@ andAnothersHome %@" value:@"PGLocationTitleFormatTwoLocationsWithSomeonesHome %@ andAnothersHome %@" table:@"Localizable"];
-              v35 = [v9 personName];
-              v36 = [v10 personName];
-              v37 = [v34 localizedStringWithFormat:v32, v35, v36];
+              personName2 = [titleCopy personName];
+              personName3 = [forTitleCopy personName];
+              otherLocationCopy = [v34 localizedStringWithFormat:v32, personName2, personName3];
 
 LABEL_71:
 LABEL_76:
 
 LABEL_77:
-              if (v37)
+              if (otherLocationCopy)
               {
                 goto LABEL_79;
               }
@@ -1851,36 +1851,36 @@ LABEL_77:
         }
 
         v32 = [v23 localizedStringForKey:v24 value:v24 table:@"Localizable"];
-        v33 = v9;
+        v33 = titleCopy;
 LABEL_68:
-        v42 = [v33 personName];
-        v35 = v42;
+        personName = [v33 personName];
+        personName2 = personName;
         goto LABEL_69;
       }
 
-      if (v13 != 4)
+      if (type != 4)
       {
         goto LABEL_78;
       }
 
-      if (v14 > 1)
+      if (type2 > 1)
       {
-        if (v14 != 2)
+        if (type2 != 2)
         {
-          if (v14 != 3)
+          if (type2 != 3)
           {
-            if (v14 == 4)
+            if (type2 == 4)
             {
               v15 = +[PGLogging sharedLogging];
-              v16 = [v15 loggingConnection];
+              loggingConnection = [v15 loggingConnection];
 
-              if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 v48 = 0;
                 v17 = "Attempted to create location string with two title components both of type Family Home";
                 v18 = &v48;
 LABEL_83:
-                _os_log_error_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_ERROR, v17, v18, 2u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, v17, v18, 2u);
                 goto LABEL_50;
               }
 
@@ -1901,13 +1901,13 @@ LABEL_83:
         v20 = v19;
         v21 = @"PGLocationTitleFormatTwoLocationsWithFamilyHomeAndWork";
 LABEL_63:
-        v37 = [v19 localizedStringForKey:v21 value:v21 table:@"Localizable"];
+        otherLocationCopy = [v19 localizedStringForKey:v21 value:v21 table:@"Localizable"];
         goto LABEL_77;
       }
 
-      if (v14)
+      if (type2)
       {
-        if (v14 != 1)
+        if (type2 != 1)
         {
           goto LABEL_78;
         }
@@ -1925,14 +1925,14 @@ LABEL_63:
       goto LABEL_74;
     }
 
-    if (v14 > 1)
+    if (type2 > 1)
     {
-      if (v14 == 2)
+      if (type2 == 2)
       {
         v29 = +[PGLogging sharedLogging];
-        v16 = [v29 loggingConnection];
+        loggingConnection = [v29 loggingConnection];
 
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
           v17 = "Attempted to create location string with two title components both of type Work";
@@ -1943,9 +1943,9 @@ LABEL_63:
         goto LABEL_50;
       }
 
-      if (v14 != 3)
+      if (type2 != 3)
       {
-        if (v14 != 4)
+        if (type2 != 4)
         {
           goto LABEL_78;
         }
@@ -1963,9 +1963,9 @@ LABEL_63:
       goto LABEL_67;
     }
 
-    if (v14)
+    if (type2)
     {
-      if (v14 != 1)
+      if (type2 != 1)
       {
         goto LABEL_78;
       }
@@ -1982,24 +1982,24 @@ LABEL_63:
     v40 = @"PGLocationTitleFormatTwoLocationsWithWorkAndLocation %@";
 LABEL_74:
     v32 = [v39 localizedStringForKey:v40 value:v40 table:@"Localizable"];
-    [v38 localizedStringWithFormat:v32, v12, v47];
+    [v38 localizedStringWithFormat:v32, otherLocationCopy, v47];
     goto LABEL_75;
   }
 
-  if (!v13)
+  if (!type)
   {
-    if (v14 <= 1)
+    if (type2 <= 1)
     {
-      if (!v14)
+      if (!type2)
       {
         v25 = MEMORY[0x277CCACA8];
         v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatTwoLocationsWithLocation %@ otherLocation %@" value:@"PGLocationTitleFormatTwoLocationsWithLocation %@ otherLocation %@" table:@"Localizable"];
-        v47 = v12;
+        v47 = otherLocationCopy;
         goto LABEL_65;
       }
 
-      if (v14 != 1)
+      if (type2 != 1)
       {
         goto LABEL_78;
       }
@@ -2012,7 +2012,7 @@ LABEL_74:
 
     else
     {
-      switch(v14)
+      switch(type2)
       {
         case 2:
           v25 = MEMORY[0x277CCACA8];
@@ -2024,9 +2024,9 @@ LABEL_74:
           v41 = MEMORY[0x277CCACA8];
           v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v32 = [v20 localizedStringForKey:@"PGLocationTitleFormatTwoLocationsWithLocation %@ andSomeonesHome %@" value:@"PGLocationTitleFormatTwoLocationsWithLocation %@ andSomeonesHome %@" table:@"Localizable"];
-          v35 = [v10 personName];
-          [v41 localizedStringWithFormat:v32, v11, v35];
-          v37 = LABEL_70:;
+          personName2 = [forTitleCopy personName];
+          [v41 localizedStringWithFormat:v32, locationCopy, personName2];
+          otherLocationCopy = LABEL_70:;
           goto LABEL_71;
         case 4:
           v25 = MEMORY[0x277CCACA8];
@@ -2041,19 +2041,19 @@ LABEL_74:
 
     v32 = [v26 localizedStringForKey:v27 value:v27 table:@"Localizable"];
 LABEL_65:
-    [v25 localizedStringWithFormat:v32, v11, v47];
-    v37 = LABEL_75:;
+    [v25 localizedStringWithFormat:v32, locationCopy, v47];
+    otherLocationCopy = LABEL_75:;
     goto LABEL_76;
   }
 
-  if (v13 != 1)
+  if (type != 1)
   {
     goto LABEL_78;
   }
 
-  if (v14 > 1)
+  if (type2 > 1)
   {
-    if (v14 == 2)
+    if (type2 == 2)
     {
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = v19;
@@ -2061,9 +2061,9 @@ LABEL_65:
       goto LABEL_63;
     }
 
-    if (v14 != 3)
+    if (type2 != 3)
     {
-      if (v14 != 4)
+      if (type2 != 4)
       {
         goto LABEL_78;
       }
@@ -2080,11 +2080,11 @@ LABEL_65:
     v31 = @"PGLocationTitleFormatTwoLocationsWithHomeAndSomeonesHome %@";
 LABEL_67:
     v32 = [v30 localizedStringForKey:v31 value:v31 table:@"Localizable"];
-    v33 = v10;
+    v33 = forTitleCopy;
     goto LABEL_68;
   }
 
-  if (!v14)
+  if (!type2)
   {
     v38 = MEMORY[0x277CCACA8];
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2093,12 +2093,12 @@ LABEL_67:
     goto LABEL_74;
   }
 
-  if (v14 == 1)
+  if (type2 == 1)
   {
     v28 = +[PGLogging sharedLogging];
-    v16 = [v28 loggingConnection];
+    loggingConnection = [v28 loggingConnection];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v50 = 0;
       v17 = "Attempted to create location string with two title components both of type Home";
@@ -2113,48 +2113,48 @@ LABEL_78:
   v43 = MEMORY[0x277CCACA8];
   v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v45 = [v44 localizedStringForKey:@"PGLocationTitleFormatTwoLocationsWithLocation %@ otherLocation %@" value:@"PGLocationTitleFormatTwoLocationsWithLocation %@ otherLocation %@" table:@"Localizable"];
-  v37 = [v43 localizedStringWithFormat:v45, v11, v12];
+  otherLocationCopy = [v43 localizedStringWithFormat:v45, locationCopy, otherLocationCopy];
 
 LABEL_79:
 
-  return v37;
+  return otherLocationCopy;
 }
 
-+ (id)_beautifiedLocationStringWithTitleComponents:(id)a3 momentNodes:(id)a4 lineBreakBehavior:(unint64_t)a5 keyAssetAddressNode:(id)a6 curationAddressNodes:(id)a7 isMatchingKeyAsset:(BOOL *)a8 useDistrict:(BOOL)a9 allowFamilyHome:(BOOL)a10 showAllCities:(BOOL)a11 locationHelper:(id)a12 serviceManager:(id)a13
++ (id)_beautifiedLocationStringWithTitleComponents:(id)components momentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior keyAssetAddressNode:(id)node curationAddressNodes:(id)addressNodes isMatchingKeyAsset:(BOOL *)asset useDistrict:(BOOL)district allowFamilyHome:(BOOL)self0 showAllCities:(BOOL)self1 locationHelper:(id)self2 serviceManager:(id)self3
 {
-  v18 = a10;
+  homeCopy3 = home;
   v150 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v23 = v20;
-  v24 = a12;
-  v25 = a13;
+  componentsCopy = components;
+  nodesCopy = nodes;
+  nodeCopy = node;
+  addressNodesCopy = addressNodes;
+  v23 = nodesCopy;
+  helperCopy = helper;
+  managerCopy = manager;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_momentNodes_lineBreakBehavior_keyAssetAddressNode_curationAddressNodes_isMatchingKeyAsset_useDistrict_allowFamilyHome_showAllCities_locationHelper_serviceManager___block_invoke;
   aBlock[3] = &unk_278889688;
-  v113 = a5;
-  v111 = a5 & 1;
-  v146 = a5 & 1;
-  v147 = a10;
-  v115 = v25;
-  v116 = a1;
+  behaviorCopy = behavior;
+  v111 = behavior & 1;
+  v146 = behavior & 1;
+  homeCopy2 = home;
+  v115 = managerCopy;
+  selfCopy = self;
   v143 = v115;
-  v145 = a1;
-  v26 = v19;
-  v114 = v24;
+  selfCopy2 = self;
+  v26 = componentsCopy;
+  v114 = helperCopy;
   v144 = v114;
   v129 = _Block_copy(aBlock);
-  v122 = v21;
-  if (a9)
+  v122 = nodeCopy;
+  if (district)
   {
-    v117 = [v20 anyObject];
-    v127 = [v117 graph];
-    if ([v116 _titleComponentsAreInSameSupersetCity:v19 graph:? locationHelper:?])
+    anyObject = [nodesCopy anyObject];
+    graph = [anyObject graph];
+    if ([selfCopy _titleComponentsAreInSameSupersetCity:componentsCopy graph:? locationHelper:?])
     {
-      v27 = [v116 _locationStringWithDistrictsFromTitleComponents:v19 momentNodes:v20 lineBreakBehavior:a5 allowFamilyHome:a10 locationHelper:v114 serviceManager:v115];
+      v27 = [selfCopy _locationStringWithDistrictsFromTitleComponents:componentsCopy momentNodes:nodesCopy lineBreakBehavior:behavior allowFamilyHome:home locationHelper:v114 serviceManager:v115];
       if (v27)
       {
         v28 = v27;
@@ -2164,32 +2164,32 @@ LABEL_79:
     }
   }
 
-  if (a11)
+  if (cities)
   {
-    v30 = [v116 _firstComponentInTimeFromComponents:v19 momentNodes:v20 curationAddressNodes:0 allowFamilyHome:a10 serviceManager:v115];
+    v30 = [selfCopy _firstComponentInTimeFromComponents:componentsCopy momentNodes:nodesCopy curationAddressNodes:0 allowFamilyHome:home serviceManager:v115];
     if (v30)
     {
-      v123 = v22;
-      v105 = v20;
-      v117 = v30;
+      v123 = addressNodesCopy;
+      v105 = nodesCopy;
+      anyObject = v30;
       v31 = [MEMORY[0x277CBEB18] arrayWithObject:?];
-      if ([v19 count] >= 2)
+      if ([componentsCopy count] >= 2)
       {
-        v32 = [v19 mutableCopy];
-        [v32 removeObject:v117];
-        v33 = [v116 _sortedComponentsFromComponents:v32];
+        v32 = [componentsCopy mutableCopy];
+        [v32 removeObject:anyObject];
+        v33 = [selfCopy _sortedComponentsFromComponents:v32];
         [v31 addObjectsFromArray:v33];
       }
 
-      v108 = v19;
-      v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
+      v108 = componentsCopy;
+      v34 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
       v138 = 0u;
       v139 = 0u;
       v140 = 0u;
       v141 = 0u;
       v35 = v31;
       v36 = [v35 countByEnumeratingWithState:&v138 objects:v149 count:16];
-      v127 = v35;
+      graph = v35;
       if (v36)
       {
         v37 = v36;
@@ -2204,20 +2204,20 @@ LABEL_79:
             }
 
             v40 = *(*(&v138 + 1) + 8 * i);
-            v41 = [v40 node];
-            if ([v41 domain] == 200)
+            node = [v40 node];
+            if ([node domain] == 200)
             {
-              v42 = [v41 label];
-              if ([v42 isEqualToString:@"City"])
+              label = [node label];
+              if ([label isEqualToString:@"City"])
               {
               }
 
               else
               {
-                v43 = [v41 domain];
+                domain = [node domain];
 
-                v44 = v43 == 300;
-                v35 = v127;
+                v44 = domain == 300;
+                v35 = graph;
                 if (!v44)
                 {
                   goto LABEL_26;
@@ -2225,7 +2225,7 @@ LABEL_79:
               }
             }
 
-            else if ([v41 domain] != 300)
+            else if ([node domain] != 300)
             {
               goto LABEL_26;
             }
@@ -2247,7 +2247,7 @@ LABEL_26:
 
       if ([v34 count] > 2)
       {
-        v81 = [v34 lastObject];
+        lastObject = [v34 lastObject];
         v82 = [v34 subarrayWithRange:{0, objc_msgSend(v34, "count") - 1}];
         v83 = MEMORY[0x277CCACA8];
         v84 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2255,33 +2255,33 @@ LABEL_26:
         v86 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v87 = [v86 localizedStringForKey:@"PGLocationTitleFormatMultipleLocationsConcatenator" value:@"PGLocationTitleFormatMultipleLocationsConcatenator" table:@"Localizable"];
         v88 = [v82 componentsJoinedByString:v87];
-        v28 = [v83 localizedStringWithFormat:v85, v88, v81];
+        v28 = [v83 localizedStringWithFormat:v85, v88, lastObject];
 
-        v29 = [v116 _titleWithLineBreakBehavior:v113 forTitle:v28 titleComponents:v34];
+        v29 = [selfCopy _titleWithLineBreakBehavior:behaviorCopy forTitle:v28 titleComponents:v34];
 
         v23 = v105;
         v26 = v108;
-        v22 = v123;
+        addressNodesCopy = v123;
         goto LABEL_101;
       }
 
       v23 = v105;
       v26 = v108;
-      v21 = v122;
-      v30 = v117;
-      v18 = a10;
+      nodeCopy = v122;
+      v30 = anyObject;
+      homeCopy3 = home;
     }
   }
 
-  v46 = [v116 _firstComponentInTimeFromComponents:v26 momentNodes:v23 curationAddressNodes:v22 allowFamilyHome:v18 serviceManager:v115];
+  v46 = [selfCopy _firstComponentInTimeFromComponents:v26 momentNodes:v23 curationAddressNodes:addressNodesCopy allowFamilyHome:homeCopy3 serviceManager:v115];
   v128 = v129[2](v129, v46);
-  v117 = v46;
-  if (v21)
+  anyObject = v46;
+  if (nodeCopy)
   {
-    v47 = [v46 addressNodes];
-    v120 = [v47 containsObject:v21];
+    addressNodes = [v46 addressNodes];
+    v120 = [addressNodes containsObject:nodeCopy];
 
-    v46 = v117;
+    v46 = anyObject;
   }
 
   else
@@ -2293,7 +2293,7 @@ LABEL_26:
   v49 = [v26 count];
   v50 = [v26 count];
   v51 = 0;
-  v52 = v116;
+  v52 = selfCopy;
   if (!v46 || v50 < 2)
   {
     v71 = 0;
@@ -2305,10 +2305,10 @@ LABEL_26:
   v53 = [v26 mutableCopy];
   [v53 removeObject:v46];
   v104 = v53;
-  v54 = [v116 _sortedComponentsFromComponents:v53];
+  v54 = [selfCopy _sortedComponentsFromComponents:v53];
   v55 = v46;
   v56 = v54;
-  v57 = [v55 node];
+  node2 = [v55 node];
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
@@ -2338,11 +2338,11 @@ LABEL_26:
       }
 
       v62 = *(*(&v134 + 1) + 8 * v61);
-      v63 = [v62 node];
-      if ([v22 count])
+      node3 = [v62 node];
+      if ([addressNodesCopy count])
       {
-        v64 = [v62 addressNodes];
-        v65 = [v64 intersectsSet:v22];
+        addressNodes2 = [v62 addressNodes];
+        v65 = [addressNodes2 intersectsSet:addressNodesCopy];
 
         if (!v65)
         {
@@ -2350,11 +2350,11 @@ LABEL_26:
         }
       }
 
-      if ([v57 domain] == 200 && objc_msgSend(v63, "domain") == 200)
+      if ([node2 domain] == 200 && objc_msgSend(node3, "domain") == 200)
       {
-        v66 = [v57 label];
-        v67 = [v63 label];
-        v68 = [v66 isEqualToString:v67];
+        label2 = [node2 label];
+        label3 = [node3 label];
+        v68 = [label2 isEqualToString:label3];
 
         if (!v68)
         {
@@ -2364,8 +2364,8 @@ LABEL_26:
 
       if (v122)
       {
-        v69 = [v62 addressNodes];
-        v70 = [v69 containsObject:v122];
+        addressNodes3 = [v62 addressNodes];
+        v70 = [addressNodes3 containsObject:v122];
 
         v124 = v70;
         if (((v120 | v70) & 1) == 0)
@@ -2420,14 +2420,14 @@ LABEL_62:
   v26 = v109;
 LABEL_65:
 
-  v52 = v116;
-  v46 = v117;
+  v52 = selfCopy;
+  v46 = anyObject;
   v48 = v124;
   v49 = v119;
 LABEL_66:
-  if (a8)
+  if (asset)
   {
-    *a8 = (v46 != 0) & (v120 | v48);
+    *asset = (v46 != 0) & (v120 | v48);
   }
 
   if (!v51 || ![v71 length])
@@ -2449,8 +2449,8 @@ LABEL_66:
   v130[2] = __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_momentNodes_lineBreakBehavior_keyAssetAddressNode_curationAddressNodes_isMatchingKeyAsset_useDistrict_allowFamilyHome_showAllCities_locationHelper_serviceManager___block_invoke_2;
   v130[3] = &unk_2788896B0;
   v133 = v52;
-  v117 = v46;
-  v131 = v117;
+  anyObject = v46;
+  v131 = anyObject;
   v51 = v51;
   v132 = v51;
   v74 = _Block_copy(v130);
@@ -2460,7 +2460,7 @@ LABEL_66:
     goto LABEL_86;
   }
 
-  v125 = v22;
+  v125 = addressNodesCopy;
   v107 = v23;
   v110 = v26;
   if (!v122)
@@ -2468,7 +2468,7 @@ LABEL_66:
 LABEL_83:
     v78 = v51;
     v79 = 0;
-    v76 = v117;
+    v76 = anyObject;
     goto LABEL_84;
   }
 
@@ -2476,9 +2476,9 @@ LABEL_83:
   {
     if (v48)
     {
-      v77 = v51;
+      firstObject = v51;
       v80 = v71;
-      v76 = v117;
+      v76 = anyObject;
       v78 = v51;
       goto LABEL_85;
     }
@@ -2486,56 +2486,56 @@ LABEL_83:
     goto LABEL_83;
   }
 
-  v76 = v117;
-  v77 = v117;
+  v76 = anyObject;
+  firstObject = anyObject;
   v78 = v51;
   v79 = v128;
   v80 = v79;
-  if (!v77)
+  if (!firstObject)
   {
 LABEL_84:
     v89 = [MEMORY[0x277CBEB98] setWithObjects:{v76, v78, 0}];
-    v90 = [v116 _sortedComponentsFromComponents:v89];
-    v77 = [v90 firstObject];
-    v80 = v129[2](v129, v77);
+    v90 = [selfCopy _sortedComponentsFromComponents:v89];
+    firstObject = [v90 firstObject];
+    v80 = v129[2](v129, firstObject);
   }
 
 LABEL_85:
-  v91 = v77;
+  v91 = firstObject;
 
   v92 = v80;
   v51 = 0;
   v71 = 0;
   v128 = v92;
-  v117 = v91;
+  anyObject = v91;
   v75 = v92;
   v23 = v107;
   v26 = v110;
-  v22 = v125;
+  addressNodesCopy = v125;
 LABEL_86:
 
   v73 = v128;
 LABEL_87:
-  v127 = v73;
+  graph = v73;
   if (v73)
   {
     v93 = v71 ? v111 : 0;
-    if ((v113 & 2) != 0 || v93)
+    if ((behaviorCopy & 2) != 0 || v93)
     {
       v126 = v51;
       v94 = [v75 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
-      v95 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v96 = [v73 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
-      [v95 addObject:v96];
+      [array addObject:v96];
       if (v71)
       {
         v97 = v23;
         v98 = v26;
         v99 = [v71 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_2843F5C58];
-        [v95 addObject:v99];
+        [array addObject:v99];
         if (v111)
         {
-          v100 = [PGCommonTitleUtility titleWithLineBreakForTitle:v94 andUsedNames:v95];
+          v100 = [PGCommonTitleUtility titleWithLineBreakForTitle:v94 andUsedNames:array];
 
           v94 = v100;
         }
@@ -2544,9 +2544,9 @@ LABEL_87:
         v23 = v97;
       }
 
-      if ((v113 & 2) != 0)
+      if ((behaviorCopy & 2) != 0)
       {
-        v101 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v94 andUsedNames:v95];
+        v101 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v94 andUsedNames:array];
 
         v94 = v101;
       }
@@ -2624,32 +2624,32 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
   return v13;
 }
 
-+ (id)_commonCityTitleComponentsFromMomentNodes:(id)a3 remainingAddressNodes:(id)a4 ignoredAddressNodes:(id)a5 incompleteLocationResolver:(id)a6 locationHelper:(id)a7
++ (id)_commonCityTitleComponentsFromMomentNodes:(id)nodes remainingAddressNodes:(id)addressNodes ignoredAddressNodes:(id)ignoredAddressNodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper
 {
   v112 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v77 = v11;
-  v74 = v14;
-  v16 = [[PGLocationsResolver alloc] initWithMomentNodes:v11 incompleteLocationResolver:v14 locationHelper:v15];
+  nodesCopy = nodes;
+  addressNodesCopy = addressNodes;
+  ignoredAddressNodesCopy = ignoredAddressNodes;
+  resolverCopy = resolver;
+  helperCopy = helper;
+  v77 = nodesCopy;
+  v74 = resolverCopy;
+  v16 = [[PGLocationsResolver alloc] initWithMomentNodes:nodesCopy incompleteLocationResolver:resolverCopy locationHelper:helperCopy];
   [(PGLocationsResolver *)v16 setShouldCreateLocationToAddressMapTable:1];
-  v75 = v13;
-  [(PGLocationsResolver *)v16 setIgnoredAddressNodes:v13];
+  v75 = ignoredAddressNodesCopy;
+  [(PGLocationsResolver *)v16 setIgnoredAddressNodes:ignoredAddressNodesCopy];
   LODWORD(v17) = 1051931443;
   [(PGLocationsResolver *)v16 setMaximumMissingLocationsThreshold:v17];
   v73 = v16;
-  v18 = [(PGLocationsResolver *)v16 resolvedLocationNodesToAddressNodesMapTable];
+  resolvedLocationNodesToAddressNodesMapTable = [(PGLocationsResolver *)v16 resolvedLocationNodesToAddressNodesMapTable];
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v19 = [v18 keyEnumerator];
-  v20 = [v19 allObjects];
+  keyEnumerator = [resolvedLocationNodesToAddressNodesMapTable keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v21 = [v20 countByEnumeratingWithState:&v103 objects:v111 count:16];
+  v21 = [allObjects countByEnumeratingWithState:&v103 objects:v111 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2660,39 +2660,39 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
       {
         if (*v104 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allObjects);
         }
 
         v25 = *(*(&v103 + 1) + 8 * i);
-        v26 = [v18 objectForKey:v25];
-        if (([v26 intersectsSet:v12] & 1) == 0)
+        v26 = [resolvedLocationNodesToAddressNodesMapTable objectForKey:v25];
+        if (([v26 intersectsSet:addressNodesCopy] & 1) == 0)
         {
-          [v18 removeObjectForKey:v25];
+          [resolvedLocationNodesToAddressNodesMapTable removeObjectForKey:v25];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v103 objects:v111 count:16];
+      v22 = [allObjects countByEnumeratingWithState:&v103 objects:v111 count:16];
     }
 
     while (v22);
   }
 
-  v76 = v12;
+  v76 = addressNodesCopy;
 
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v27 = [v18 keyEnumerator];
-  v28 = [v27 allObjects];
+  keyEnumerator2 = [resolvedLocationNodesToAddressNodesMapTable keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
 
-  v29 = [v28 countByEnumeratingWithState:&v99 objects:v110 count:16];
+  v29 = [allObjects2 countByEnumeratingWithState:&v99 objects:v110 count:16];
   if (v29)
   {
     v30 = v29;
     v31 = *v100;
-    v79 = v28;
-    v80 = v15;
+    v79 = allObjects2;
+    v80 = helperCopy;
     v78 = *v100;
     do
     {
@@ -2702,23 +2702,23 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
       {
         if (*v100 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allObjects2);
         }
 
         v33 = *(*(&v99 + 1) + 8 * v32);
-        v34 = [v33 name];
-        v35 = [v34 lowercaseString];
+        name = [v33 name];
+        lowercaseString = [name lowercaseString];
 
-        if (v35)
+        if (lowercaseString)
         {
-          v83 = v35;
-          if ([v35 length])
+          v83 = lowercaseString;
+          if ([lowercaseString length])
           {
             v82 = v32;
-            v36 = [v33 label];
-            if ([v36 isEqualToString:@"City"])
+            label = [v33 label];
+            if ([label isEqualToString:@"City"])
             {
-              v37 = [v18 objectForKey:v33];
+              v37 = [resolvedLocationNodesToAddressNodesMapTable objectForKey:v33];
 
               v32 = v82;
               if (!v37)
@@ -2726,30 +2726,30 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
                 goto LABEL_45;
               }
 
-              v36 = v33;
-              v38 = [v15 countyNodeFromCityNode:v36];
-              v39 = [v38 anyNode];
+              label = v33;
+              v38 = [helperCopy countyNodeFromCityNode:label];
+              anyNode = [v38 anyNode];
 
-              if (v39)
+              if (anyNode)
               {
-                v40 = [v39 name];
-                [v40 lowercaseString];
-                v41 = v86 = v39;
-                v42 = [v41 containsString:v35];
+                name2 = [anyNode name];
+                [name2 lowercaseString];
+                v41 = v86 = anyNode;
+                v42 = [v41 containsString:lowercaseString];
 
-                v39 = v86;
+                anyNode = v86;
                 if (v42)
                 {
-                  v85 = [v18 objectForKey:v36];
+                  v85 = [resolvedLocationNodesToAddressNodesMapTable objectForKey:label];
                   v84 = [MEMORY[0x277CBEB58] set];
                   v95 = 0u;
                   v96 = 0u;
                   v97 = 0u;
                   v98 = 0u;
-                  v43 = [v18 keyEnumerator];
-                  v44 = [v43 allObjects];
+                  keyEnumerator3 = [resolvedLocationNodesToAddressNodesMapTable keyEnumerator];
+                  allObjects3 = [keyEnumerator3 allObjects];
 
-                  v45 = [v44 countByEnumeratingWithState:&v95 objects:v109 count:16];
+                  v45 = [allObjects3 countByEnumeratingWithState:&v95 objects:v109 count:16];
                   if (v45)
                   {
                     v46 = v45;
@@ -2760,25 +2760,25 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
                       {
                         if (*v96 != v47)
                         {
-                          objc_enumerationMutation(v44);
+                          objc_enumerationMutation(allObjects3);
                         }
 
                         v49 = *(*(&v95 + 1) + 8 * j);
-                        if (([v36 isSameNodeAsNode:v49] & 1) == 0)
+                        if (([label isSameNodeAsNode:v49] & 1) == 0)
                         {
-                          v50 = [v49 label];
-                          v51 = [v50 isEqualToString:@"City"];
+                          label2 = [v49 label];
+                          v51 = [label2 isEqualToString:@"City"];
 
                           if (v51)
                           {
                             v52 = v49;
-                            v53 = [v52 collection];
-                            v54 = [v53 countyNodes];
-                            v55 = [v54 anyNode];
+                            collection = [v52 collection];
+                            countyNodes = [collection countyNodes];
+                            anyNode2 = [countyNodes anyNode];
 
-                            if ([v86 isSameNodeAsNode:v55])
+                            if ([v86 isSameNodeAsNode:anyNode2])
                             {
-                              v56 = [v18 objectForKey:v52];
+                              v56 = [resolvedLocationNodesToAddressNodesMapTable objectForKey:v52];
                               [v85 unionSet:v56];
                               [v84 addObject:v52];
                             }
@@ -2786,17 +2786,17 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
                         }
                       }
 
-                      v46 = [v44 countByEnumeratingWithState:&v95 objects:v109 count:16];
+                      v46 = [allObjects3 countByEnumeratingWithState:&v95 objects:v109 count:16];
                     }
 
                     while (v46);
                   }
 
-                  v15 = v80;
+                  helperCopy = v80;
                   v31 = v78;
                   if ([v84 count])
                   {
-                    [v18 setObject:v85 forKey:v86];
+                    [resolvedLocationNodesToAddressNodesMapTable setObject:v85 forKey:v86];
                     v93 = 0u;
                     v94 = 0u;
                     v91 = 0u;
@@ -2816,7 +2816,7 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
                             objc_enumerationMutation(v57);
                           }
 
-                          [v18 removeObjectForKey:*(*(&v91 + 1) + 8 * k)];
+                          [resolvedLocationNodesToAddressNodesMapTable removeObjectForKey:*(*(&v91 + 1) + 8 * k)];
                         }
 
                         v59 = [v57 countByEnumeratingWithState:&v91 objects:v108 count:16];
@@ -2825,18 +2825,18 @@ id __233__PGLocationTitleUtility__beautifiedLocationStringWithTitleComponents_mo
                       while (v59);
                     }
 
-                    [v18 removeObjectForKey:v36];
+                    [resolvedLocationNodesToAddressNodesMapTable removeObjectForKey:label];
                   }
 
-                  v28 = v79;
+                  allObjects2 = v79;
                   v30 = v81;
-                  v39 = v86;
+                  anyNode = v86;
                 }
               }
             }
 
             v32 = v82;
-            v35 = v83;
+            lowercaseString = v83;
           }
         }
 
@@ -2846,7 +2846,7 @@ LABEL_45:
       }
 
       while (v32 != v30);
-      v30 = [v28 countByEnumeratingWithState:&v99 objects:v110 count:16];
+      v30 = [allObjects2 countByEnumeratingWithState:&v99 objects:v110 count:16];
     }
 
     while (v30);
@@ -2857,8 +2857,8 @@ LABEL_45:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v63 = [v18 keyEnumerator];
-  v64 = [v63 countByEnumeratingWithState:&v87 objects:v107 count:16];
+  keyEnumerator4 = [resolvedLocationNodesToAddressNodesMapTable keyEnumerator];
+  v64 = [keyEnumerator4 countByEnumeratingWithState:&v87 objects:v107 count:16];
   if (v64)
   {
     v65 = v64;
@@ -2869,19 +2869,19 @@ LABEL_45:
       {
         if (*v88 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(keyEnumerator4);
         }
 
         v68 = *(*(&v87 + 1) + 8 * m);
         v69 = objc_alloc_init(PGLocationTitleComponent);
         [(PGLocationTitleComponent *)v69 setNode:v68];
-        v70 = [v18 objectForKey:v68];
+        v70 = [resolvedLocationNodesToAddressNodesMapTable objectForKey:v68];
         [(PGLocationTitleComponent *)v69 setAddressNodes:v70];
 
         [v62 addObject:v69];
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v87 objects:v107 count:16];
+      v65 = [keyEnumerator4 countByEnumeratingWithState:&v87 objects:v107 count:16];
     }
 
     while (v65);
@@ -2892,39 +2892,39 @@ LABEL_45:
   return v62;
 }
 
-+ (id)commonCityTitleComponentsFromMomentNodes:(id)a3 addressNodes:(id)a4 incompleteLocationResolver:(id)a5 locationHelper:(id)a6
++ (id)commonCityTitleComponentsFromMomentNodes:(id)nodes addressNodes:(id)addressNodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper
 {
   v10 = MEMORY[0x277CBEB98];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  helperCopy = helper;
+  resolverCopy = resolver;
+  addressNodesCopy = addressNodes;
+  nodesCopy = nodes;
   v15 = objc_alloc_init(v10);
-  v16 = [a1 _commonCityTitleComponentsFromMomentNodes:v14 remainingAddressNodes:v13 ignoredAddressNodes:v15 incompleteLocationResolver:v12 locationHelper:v11];
+  v16 = [self _commonCityTitleComponentsFromMomentNodes:nodesCopy remainingAddressNodes:addressNodesCopy ignoredAddressNodes:v15 incompleteLocationResolver:resolverCopy locationHelper:helperCopy];
 
   return v16;
 }
 
-+ (id)_filteredAOINodeCombinationsForCombinations:(id)a3 minSize:(unint64_t)a4 maxSize:(unint64_t)a5 maxTitleLength:(unint64_t)a6 minNumberOfAssets:(unint64_t)a7 aoiNodesToAddressNodesMapTable:(id)a8 assetCountByAddressNodeIdentifier:(id)a9 locationHelper:(id)a10
++ (id)_filteredAOINodeCombinationsForCombinations:(id)combinations minSize:(unint64_t)size maxSize:(unint64_t)maxSize maxTitleLength:(unint64_t)length minNumberOfAssets:(unint64_t)assets aoiNodesToAddressNodesMapTable:(id)table assetCountByAddressNodeIdentifier:(id)identifier locationHelper:(id)self0
 {
   v71 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v55 = a8;
-  v54 = a9;
-  v15 = a10;
+  combinationsCopy = combinations;
+  tableCopy = table;
+  identifierCopy = identifier;
+  helperCopy = helper;
   v44 = [MEMORY[0x277CBEB58] set];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v14;
+  obj = combinationsCopy;
   v16 = [obj countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v16)
   {
     v17 = v16;
     v18 = *v65;
-    v48 = a4;
-    v49 = a5;
+    sizeCopy = size;
+    maxSizeCopy = maxSize;
     v47 = *v65;
     do
     {
@@ -2939,7 +2939,7 @@ LABEL_45:
 
         v20 = *(*(&v64 + 1) + 8 * v19);
         v21 = [v20 count];
-        if (v21 >= a4 && v21 <= a5)
+        if (v21 >= size && v21 <= maxSize)
         {
           v52 = v19;
           v23 = [MEMORY[0x277CBEB58] set];
@@ -2965,11 +2965,11 @@ LABEL_45:
                 }
 
                 v30 = *(*(&v60 + 1) + 8 * i);
-                v31 = [a1 beautifiedLocationNodeStringWithPlaceNode:v30 locationHelper:v15];
+                v31 = [self beautifiedLocationNodeStringWithPlaceNode:v30 locationHelper:helperCopy];
                 v27 += [v31 length];
-                v32 = [v55 objectForKey:v30];
-                v33 = [v32 allObjects];
-                [v23 addObjectsFromArray:v33];
+                v32 = [tableCopy objectForKey:v30];
+                allObjects = [v32 allObjects];
+                [v23 addObjectsFromArray:allObjects];
               }
 
               v26 = [v53 countByEnumeratingWithState:&v60 objects:v69 count:16];
@@ -2977,7 +2977,7 @@ LABEL_45:
 
             while (v26);
 
-            if (v27 > a6)
+            if (v27 > length)
             {
               goto LABEL_31;
             }
@@ -3008,7 +3008,7 @@ LABEL_45:
                 }
 
                 v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(*(&v56 + 1) + 8 * j), "identifier")}];
-                v41 = [v54 objectForKeyedSubscript:v40];
+                v41 = [identifierCopy objectForKeyedSubscript:v40];
                 v37 += [v41 unsignedIntegerValue];
               }
 
@@ -3023,15 +3023,15 @@ LABEL_45:
             v37 = 0;
           }
 
-          if (v37 >= a7)
+          if (v37 >= assets)
           {
             [v44 addObject:v53];
           }
 
 LABEL_31:
 
-          a4 = v48;
-          a5 = v49;
+          size = sizeCopy;
+          maxSize = maxSizeCopy;
           v18 = v47;
           v17 = v50;
           v19 = v52;
@@ -3052,24 +3052,24 @@ LABEL_31:
   return v44;
 }
 
-+ (id)_sortedAOINodeCombinationsForCombinations:(id)a3 aoiNodesToAddressNodesMapTable:(id)a4 assetCountByAddressNodeIdentifier:(id)a5 locationHelper:(id)a6
++ (id)_sortedAOINodeCombinationsForCombinations:(id)combinations aoiNodesToAddressNodesMapTable:(id)table assetCountByAddressNodeIdentifier:(id)identifier locationHelper:(id)helper
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 allObjects];
+  tableCopy = table;
+  identifierCopy = identifier;
+  helperCopy = helper;
+  allObjects = [combinations allObjects];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_aoiNodesToAddressNodesMapTable_assetCountByAddressNodeIdentifier_locationHelper___block_invoke;
   v19[3] = &unk_278889660;
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = a1;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  v17 = [v13 sortedArrayUsingComparator:v19];
+  v20 = helperCopy;
+  v21 = tableCopy;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v14 = identifierCopy;
+  v15 = tableCopy;
+  v16 = helperCopy;
+  v17 = [allObjects sortedArrayUsingComparator:v19];
 
   return v17;
 }
@@ -3489,16 +3489,16 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
   return v7;
 }
 
-+ (double)_weightForAreaNode:(id)a3 withAddressNodes:(id)a4
++ (double)_weightForAreaNode:(id)node withAddressNodes:(id)nodes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  nodesCopy = nodes;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [nodesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3510,17 +3510,17 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nodesCopy);
         }
 
-        v12 = [v5 anyEdgeFromNode:*(*(&v17 + 1) + 8 * i)];
+        v12 = [nodeCopy anyEdgeFromNode:*(*(&v17 + 1) + 8 * i)];
         [v12 relevance];
         v14 = 1.0 - v13;
 
         v10 = v10 + v14;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [nodesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -3535,50 +3535,50 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
   return v10;
 }
 
-+ (id)_aoiSubsetsFromAOI:(id)a3 maxSubsetSize:(unint64_t)a4
++ (id)_aoiSubsetsFromAOI:(id)i maxSubsetSize:(unint64_t)size
 {
-  v6 = a3;
+  iCopy = i;
   v7 = [MEMORY[0x277CBEB58] set];
-  if (a4)
+  if (size)
   {
     v8 = 1;
     do
     {
       v9 = [MEMORY[0x277CBEB98] set];
-      v10 = [a1 _aoiSubsetsFromAOI:v6 idx:0 currentSubset:v9 subsetSize:v8];
+      v10 = [self _aoiSubsetsFromAOI:iCopy idx:0 currentSubset:v9 subsetSize:v8];
       [v7 unionSet:v10];
 
       ++v8;
     }
 
-    while (v8 <= a4);
+    while (v8 <= size);
   }
 
   return v7;
 }
 
-+ (id)_aoiSubsetsFromAOI:(id)a3 idx:(unint64_t)a4 currentSubset:(id)a5 subsetSize:(unint64_t)a6
++ (id)_aoiSubsetsFromAOI:(id)i idx:(unint64_t)idx currentSubset:(id)subset subsetSize:(unint64_t)size
 {
-  v10 = a3;
-  v11 = a5;
+  iCopy = i;
+  subsetCopy = subset;
   v12 = [MEMORY[0x277CBEB58] set];
-  if ([v10 count] != a4 || objc_msgSend(v11, "count") >= a6)
+  if ([iCopy count] != idx || objc_msgSend(subsetCopy, "count") >= size)
   {
-    if ([v11 count] == a6)
+    if ([subsetCopy count] == size)
     {
-      [v12 addObject:v11];
+      [v12 addObject:subsetCopy];
     }
 
     else
     {
-      v13 = [a1 _aoiSubsetsFromAOI:v10 idx:a4 + 1 currentSubset:v11 subsetSize:a6];
+      v13 = [self _aoiSubsetsFromAOI:iCopy idx:idx + 1 currentSubset:subsetCopy subsetSize:size];
       [v12 unionSet:v13];
 
-      v14 = [v11 mutableCopy];
-      v15 = [v10 objectAtIndexedSubscript:a4];
+      v14 = [subsetCopy mutableCopy];
+      v15 = [iCopy objectAtIndexedSubscript:idx];
       [v14 addObject:v15];
 
-      v16 = [a1 _aoiSubsetsFromAOI:v10 idx:a4 + 1 currentSubset:v14 subsetSize:a6];
+      v16 = [self _aoiSubsetsFromAOI:iCopy idx:idx + 1 currentSubset:v14 subsetSize:size];
       [v12 unionSet:v16];
     }
   }
@@ -3586,32 +3586,32 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
   return v12;
 }
 
-+ (id)commonAOIComponentsForMomentNodes:(id)a3 addressNodes:(id)a4 aoiDisplayType:(unint64_t)a5 containsAmusementParkPOI:(BOOL)a6 locationHelper:(id)a7
++ (id)commonAOIComponentsForMomentNodes:(id)nodes addressNodes:(id)addressNodes aoiDisplayType:(unint64_t)type containsAmusementParkPOI:(BOOL)i locationHelper:(id)helper
 {
-  v8 = a6;
+  iCopy = i;
   v107 = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v11 = a4;
-  v65 = a7;
-  v73 = v11;
-  if (![v11 count] || a5 - 1 >= 4)
+  nodesCopy = nodes;
+  addressNodesCopy = addressNodes;
+  helperCopy = helper;
+  v73 = addressNodesCopy;
+  if (![addressNodesCopy count] || type - 1 >= 4)
   {
     v43 = objc_alloc_init(MEMORY[0x277CBEB98]);
     goto LABEL_40;
   }
 
-  v12 = dbl_22F78CE30[a5 - 1];
-  if (v8)
+  v12 = dbl_22F78CE30[type - 1];
+  if (iCopy)
   {
     v13 = 0.55;
   }
 
   else
   {
-    v13 = dbl_22F78CE30[a5 - 1];
+    v13 = dbl_22F78CE30[type - 1];
   }
 
-  v14 = a5 == 2 || a5 == 4;
+  v14 = type == 2 || type == 4;
   v15 = 24;
   if (v14)
   {
@@ -3619,12 +3619,12 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
   }
 
   v62 = v15;
-  v74 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v58;
+  obj = nodesCopy;
   v16 = 0;
   v17 = [obj countByEnumeratingWithState:&v99 objects:v106 count:16];
   if (v17)
@@ -3641,7 +3641,7 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
 
         v20 = *(*(&v99 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 numberOfAssets];
+        numberOfAssets = [v20 numberOfAssets];
         v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v98[0] = 0;
         v98[1] = v98;
@@ -3661,13 +3661,13 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
         v90[2] = __128__PGLocationTitleUtility_commonAOIComponentsForMomentNodes_addressNodes_aoiDisplayType_containsAmusementParkPOI_locationHelper___block_invoke_2;
         v90[3] = &unk_278889610;
         v92 = v98;
-        v91 = v74;
-        v93 = v22;
+        v91 = dictionary;
+        v93 = numberOfAssets;
         [v24 enumerateKeysAndObjectsUsingBlock:v90];
 
         _Block_object_dispose(v98, 8);
         objc_autoreleasePoolPop(v21);
-        v16 += v22;
+        v16 += numberOfAssets;
       }
 
       v17 = [obj countByEnumeratingWithState:&v99 objects:v106 count:16];
@@ -3691,19 +3691,19 @@ double __148__PGLocationTitleUtility__sortedAOINodeCombinationsForCombinations_a
   {
 
 LABEL_44:
-    v46 = [v75 keyEnumerator];
-    v72 = [v46 allObjects];
+    keyEnumerator = [v75 keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
 
-    contexta = [a1 _aoiSubsetsFromAOI:v72 maxSubsetSize:2];
-    v68 = [a1 _filteredAOINodeCombinationsForCombinations:contexta minSize:1 maxSize:2 maxTitleLength:v62 minNumberOfAssets:v57 aoiNodesToAddressNodesMapTable:v75 assetCountByAddressNodeIdentifier:v74 locationHelper:v65];
-    v47 = [a1 _sortedAOINodeCombinationsForCombinations:v68 aoiNodesToAddressNodesMapTable:v75 assetCountByAddressNodeIdentifier:v74 locationHelper:v65];
-    v48 = [v47 firstObject];
-    v43 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v48, "count")}];
+    contexta = [self _aoiSubsetsFromAOI:allObjects maxSubsetSize:2];
+    v68 = [self _filteredAOINodeCombinationsForCombinations:contexta minSize:1 maxSize:2 maxTitleLength:v62 minNumberOfAssets:v57 aoiNodesToAddressNodesMapTable:v75 assetCountByAddressNodeIdentifier:dictionary locationHelper:helperCopy];
+    v47 = [self _sortedAOINodeCombinationsForCombinations:v68 aoiNodesToAddressNodesMapTable:v75 assetCountByAddressNodeIdentifier:dictionary locationHelper:helperCopy];
+    firstObject = [v47 firstObject];
+    v43 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(firstObject, "count")}];
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v49 = v48;
+    v49 = firstObject;
     v50 = [v49 countByEnumeratingWithState:&v78 objects:v103 count:16];
     if (v50)
     {
@@ -3753,12 +3753,12 @@ LABEL_44:
       v28 = *(*(&v86 + 1) + 8 * v26);
       context = objc_autoreleasePoolPush();
       v29 = [MEMORY[0x277CBEB98] setWithObject:v28];
-      v71 = [a1 _filteredAOINodesForAddressNodes:v29 aoiTitleMaximumLength:v62 locationHelper:v65];
+      v71 = [self _filteredAOINodesForAddressNodes:v29 aoiTitleMaximumLength:v62 locationHelper:helperCopy];
 
       [v63 setObject:v71 forKey:v28];
       v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v28, "identifier")}];
-      v31 = [v74 objectForKeyedSubscript:v30];
-      v32 = [v31 unsignedIntegerValue];
+      v31 = [dictionary objectForKeyedSubscript:v30];
+      unsignedIntegerValue = [v31 unsignedIntegerValue];
 
       if ([v71 count])
       {
@@ -3783,9 +3783,9 @@ LABEL_44:
               v37 = *(*(&v82 + 1) + 8 * k);
               v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v37, "identifier")}];
               v39 = [obja objectForKeyedSubscript:v38];
-              v40 = [v39 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v39 unsignedIntegerValue];
 
-              v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v40 + v32];
+              v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2 + unsignedIntegerValue];
               [obja setObject:v41 forKeyedSubscript:v38];
 
               v42 = [v75 objectForKey:v37];
@@ -3807,7 +3807,7 @@ LABEL_44:
 
       else
       {
-        v60 += v32;
+        v60 += unsignedIntegerValue;
       }
 
       objc_autoreleasePoolPop(context);
@@ -3863,17 +3863,17 @@ void __128__PGLocationTitleUtility_commonAOIComponentsForMomentNodes_addressNode
   [*(a1 + 32) setObject:v10 forKeyedSubscript:v5];
 }
 
-+ (id)_filteredAOINodesForAddressNodes:(id)a3 aoiTitleMaximumLength:(unint64_t)a4 locationHelper:(id)a5
++ (id)_filteredAOINodesForAddressNodes:(id)nodes aoiTitleMaximumLength:(unint64_t)length locationHelper:(id)helper
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  nodesCopy = nodes;
+  helperCopy = helper;
   v8 = [MEMORY[0x277CBEB58] set];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = nodesCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -3890,18 +3890,18 @@ void __128__PGLocationTitleUtility_commonAOIComponentsForMomentNodes_addressNode
 
         v13 = *(*(&v28 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 collection];
-        v16 = [v7 areaNodesFromAddressNodes:v15];
-        v17 = [v16 temporarySet];
+        collection = [v13 collection];
+        v16 = [helperCopy areaNodesFromAddressNodes:collection];
+        temporarySet = [v16 temporarySet];
 
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __96__PGLocationTitleUtility__filteredAOINodesForAddressNodes_aoiTitleMaximumLength_locationHelper___block_invoke;
         v24[3] = &unk_2788895C0;
-        v26 = a1;
-        v25 = v7;
-        v27 = a4;
-        v18 = [v17 objectsPassingTest:v24];
+        selfCopy = self;
+        v25 = helperCopy;
+        lengthCopy = length;
+        v18 = [temporarySet objectsPassingTest:v24];
         [v8 unionSet:v18];
 
         objc_autoreleasePoolPop(v14);
@@ -3944,14 +3944,14 @@ BOOL __96__PGLocationTitleUtility__filteredAOINodesForAddressNodes_aoiTitleMaxim
   return v6;
 }
 
-+ (id)_filteredAddressNodesWithAddressNodes:(id)a3 momentNodes:(id)a4 incompleteLocationResolver:(id)a5 filterSignificantLocationsOption:(unint64_t)a6 locationHelper:(id)a7
++ (id)_filteredAddressNodesWithAddressNodes:(id)nodes momentNodes:(id)momentNodes incompleteLocationResolver:(id)resolver filterSignificantLocationsOption:(unint64_t)option locationHelper:(id)helper
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = [[PGLocationsResolver alloc] initWithMomentNodes:v14 incompleteLocationResolver:v13 locationHelper:v12];
+  nodesCopy = nodes;
+  helperCopy = helper;
+  resolverCopy = resolver;
+  momentNodesCopy = momentNodes;
+  v15 = [[PGLocationsResolver alloc] initWithMomentNodes:momentNodesCopy incompleteLocationResolver:resolverCopy locationHelper:helperCopy];
 
   LODWORD(v16) = 1051931443;
   [(PGLocationsResolver *)v15 setMaximumMissingLocationsThreshold:v16];
@@ -3963,60 +3963,60 @@ BOOL __96__PGLocationTitleUtility__filteredAOINodesForAddressNodes_aoiTitleMaxim
   v37[2] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
 
-  v21 = [v14 sortedArrayUsingDescriptors:v20];
+  v21 = [momentNodesCopy sortedArrayUsingDescriptors:v20];
 
-  v22 = [(PGLocationsResolver *)v15 resolvedLocationNodes];
-  v23 = [[PGLocationsFilterer alloc] initWithSortedMomentNodes:v21 locationNodes:v22 incompleteLocationResolver:v13];
+  resolvedLocationNodes = [(PGLocationsResolver *)v15 resolvedLocationNodes];
+  v23 = [[PGLocationsFilterer alloc] initWithSortedMomentNodes:v21 locationNodes:resolvedLocationNodes incompleteLocationResolver:resolverCopy];
 
-  if (a6 == 3)
+  if (option == 3)
   {
     v24 = 2;
   }
 
   else
   {
-    v24 = a6 == 2;
+    v24 = option == 2;
   }
 
   [(PGLocationsFilterer *)v23 setFilteringType:v24];
-  v25 = [(PGLocationsFilterer *)v23 filteredLocationNodes];
-  v26 = [v25 count];
-  if (v26 < [v22 count] && objc_msgSend(v11, "count"))
+  filteredLocationNodes = [(PGLocationsFilterer *)v23 filteredLocationNodes];
+  v26 = [filteredLocationNodes count];
+  if (v26 < [resolvedLocationNodes count] && objc_msgSend(nodesCopy, "count"))
   {
-    v27 = [v11 anyObject];
-    v28 = [v27 graph];
+    anyObject = [nodesCopy anyObject];
+    graph = [anyObject graph];
 
-    v36 = [(MAElementCollection *)[PGGraphAddressNodeCollection alloc] initWithSet:v11 graph:v28];
-    v29 = [(MAElementCollection *)[PGGraphLocationNodeCollection alloc] initWithArray:v25 graph:v28];
+    v36 = [(MAElementCollection *)[PGGraphAddressNodeCollection alloc] initWithSet:nodesCopy graph:graph];
+    v29 = [(MAElementCollection *)[PGGraphLocationNodeCollection alloc] initWithArray:filteredLocationNodes graph:graph];
     [(PGGraphLocationNodeCollection *)v29 addressNodes];
-    v31 = v30 = v11;
+    v31 = v30 = nodesCopy;
     v32 = [(MAElementCollection *)v36 collectionByIntersecting:v31];
-    v35 = [v32 temporarySet];
+    temporarySet = [v32 temporarySet];
 
-    v11 = v35;
+    nodesCopy = temporarySet;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return nodesCopy;
 }
 
-+ (void)generateHighlightLocationTitleForTripWithMomentNodes:(id)a3 lineBreakBehavior:(unint64_t)a4 locationHelper:(id)a5 result:(id)a6
++ (void)generateHighlightLocationTitleForTripWithMomentNodes:(id)nodes lineBreakBehavior:(unint64_t)behavior locationHelper:(id)helper result:(id)result
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:v12 filterMomentsAndCities:1 allowLongAOI:0 locationHelper:v11];
+  resultCopy = result;
+  helperCopy = helper;
+  nodesCopy = nodes;
+  v13 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:nodesCopy filterMomentsAndCities:1 allowLongAOI:0 locationHelper:helperCopy];
 
-  v14 = [(PGLocationTripTitleUtility *)v13 usedTitleComponents];
-  v15 = [(PGLocationTripTitleUtility *)v13 tripTitleType];
+  usedTitleComponents = [(PGLocationTripTitleUtility *)v13 usedTitleComponents];
+  tripTitleType = [(PGLocationTripTitleUtility *)v13 tripTitleType];
   v16 = 0;
-  if (v15 > 2)
+  if (tripTitleType > 2)
   {
-    if (v15 == 3)
+    if (tripTitleType == 3)
     {
-      v17 = [v14 firstObject];
-      v19 = [v14 lastObject];
+      firstObject = [usedTitleComponents firstObject];
+      lastObject = [usedTitleComponents lastObject];
       v22 = MEMORY[0x277CCACA8];
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = v23;
@@ -4025,13 +4025,13 @@ BOOL __96__PGLocationTitleUtility__filteredAOINodesForAddressNodes_aoiTitleMaxim
 
     else
     {
-      if (v15 != 4)
+      if (tripTitleType != 4)
       {
         goto LABEL_15;
       }
 
-      v17 = [v14 firstObject];
-      v19 = [v14 lastObject];
+      firstObject = [usedTitleComponents firstObject];
+      lastObject = [usedTitleComponents lastObject];
       v22 = MEMORY[0x277CCACA8];
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = v23;
@@ -4039,30 +4039,30 @@ BOOL __96__PGLocationTitleUtility__filteredAOINodesForAddressNodes_aoiTitleMaxim
     }
 
     v27 = [v23 localizedStringForKey:v24 value:v24 table:@"Localizable"];
-    v21 = [v22 localizedStringWithFormat:v27, v17, v19];
+    v21 = [v22 localizedStringWithFormat:v27, firstObject, lastObject];
   }
 
   else
   {
-    if ((v15 - 1) >= 2)
+    if ((tripTitleType - 1) >= 2)
     {
-      if (v15)
+      if (tripTitleType)
       {
         goto LABEL_15;
       }
 
       v25 = +[PGLogging sharedLogging];
-      v26 = [v25 loggingConnection];
+      loggingConnection = [v25 loggingConnection];
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_ERROR, "Trip title type was not set properly, found to be PGTripTitleTypeOther", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Trip title type was not set properly, found to be PGTripTitleTypeOther", buf, 2u);
       }
 
 LABEL_18:
       v16 = 0;
-      if (!v10)
+      if (!resultCopy)
       {
         goto LABEL_17;
       }
@@ -4070,11 +4070,11 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v17 = [v14 firstObject];
+    firstObject = [usedTitleComponents firstObject];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v20 = [v19 localizedStringForKey:@"PGTripHighlightTitleFormatOneLocation %@" value:@"PGTripHighlightTitleFormatOneLocation %@" table:@"Localizable"];
-    v21 = [v18 localizedStringWithFormat:v20, v17];
+    lastObject = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v20 = [lastObject localizedStringForKey:@"PGTripHighlightTitleFormatOneLocation %@" value:@"PGTripHighlightTitleFormatOneLocation %@" table:@"Localizable"];
+    v21 = [v18 localizedStringWithFormat:v20, firstObject];
   }
 
   if (!v21)
@@ -4082,35 +4082,35 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v16 = [a1 _titleWithLineBreakBehavior:a4 forTitle:v21 titleComponents:v14];
+  v16 = [self _titleWithLineBreakBehavior:behavior forTitle:v21 titleComponents:usedTitleComponents];
 
 LABEL_15:
-  if (v10)
+  if (resultCopy)
   {
 LABEL_16:
-    v28 = [(PGLocationTripTitleUtility *)v13 usedLocationNodes];
-    v10[2](v10, v16, v28);
+    usedLocationNodes = [(PGLocationTripTitleUtility *)v13 usedLocationNodes];
+    resultCopy[2](resultCopy, v16, usedLocationNodes);
   }
 
 LABEL_17:
 }
 
-+ (void)generateLocationTitleForTripWithMomentNodes:(id)a3 locationHelper:(id)a4 result:(id)a5
++ (void)generateLocationTitleForTripWithMomentNodes:(id)nodes locationHelper:(id)helper result:(id)result
 {
-  v12 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:v8 filterMomentsAndCities:1 locationHelper:v7];
+  resultCopy = result;
+  helperCopy = helper;
+  nodesCopy = nodes;
+  v9 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:nodesCopy filterMomentsAndCities:1 locationHelper:helperCopy];
 
-  if (v12)
+  if (resultCopy)
   {
-    v10 = [(PGLocationTripTitleUtility *)v9 title];
-    v11 = [(PGLocationTripTitleUtility *)v9 usedLocationNodes];
-    v12[2](v12, v10, v11);
+    title = [(PGLocationTripTitleUtility *)v9 title];
+    usedLocationNodes = [(PGLocationTripTitleUtility *)v9 usedLocationNodes];
+    resultCopy[2](resultCopy, title, usedLocationNodes);
   }
 }
 
-+ (BOOL)containsAmusementParkPOIFromMomentNodes:(id)a3
++ (BOOL)containsAmusementParkPOIFromMomentNodes:(id)nodes
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0;
@@ -4121,8 +4121,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  nodesCopy = nodes;
+  v4 = [nodesCopy countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -4132,7 +4132,7 @@ LABEL_3:
     {
       if (*v13 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(nodesCopy);
       }
 
       v7 = *(*(&v12 + 1) + 8 * v6);
@@ -4149,7 +4149,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v4 = [nodesCopy countByEnumeratingWithState:&v12 objects:v20 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -4175,19 +4175,19 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
   *a3 = *(*(*(a1 + 32) + 8) + 24);
 }
 
-+ (void)generateLocationTitleWithOptions:(id)a3 locationHelper:(id)a4 serviceManager:(id)a5 result:(id)a6
++ (void)generateLocationTitleWithOptions:(id)options locationHelper:(id)helper serviceManager:(id)manager result:(id)result
 {
   v103 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v71 = a4;
-  v67 = a5;
-  v69 = a6;
-  v70 = v10;
-  v68 = [v10 momentNodes];
-  if ([v68 count])
+  optionsCopy = options;
+  helperCopy = helper;
+  managerCopy = manager;
+  resultCopy = result;
+  v70 = optionsCopy;
+  momentNodes = [optionsCopy momentNodes];
+  if ([momentNodes count])
   {
-    v11 = v10;
-    if ([v10 useBusinessItems])
+    v11 = optionsCopy;
+    if ([optionsCopy useBusinessItems])
     {
       v94 = 0;
       v95 = &v94;
@@ -4207,10 +4207,10 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
       v87[3] = &unk_278889568;
       v87[4] = &v94;
       v87[5] = &v88;
-      [PGLocationTitleUtility generateBusinessItemLocationWithOptions:v10 result:v87];
+      [PGLocationTitleUtility generateBusinessItemLocationWithOptions:optionsCopy result:v87];
       if (v95[5])
       {
-        if (v69)
+        if (resultCopy)
         {
           if (v89[5])
           {
@@ -4222,7 +4222,7 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
             [MEMORY[0x277CBEB98] set];
           }
           v56 = ;
-          v69[2](v69, v95[5], v56);
+          resultCopy[2](resultCopy, v95[5], v56);
         }
 
         _Block_object_dispose(&v88, 8);
@@ -4234,18 +4234,18 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
       _Block_object_dispose(&v88, 8);
 
       _Block_object_dispose(&v94, 8);
-      v11 = v10;
+      v11 = optionsCopy;
     }
 
-    v64 = [v11 keyAssetAddressNode];
-    v63 = [v10 curationAddressNodes];
-    v72 = [v10 lineBreakBehavior];
+    keyAssetAddressNode = [v11 keyAssetAddressNode];
+    curationAddressNodes = [optionsCopy curationAddressNodes];
+    lineBreakBehavior = [optionsCopy lineBreakBehavior];
     v12 = [MEMORY[0x277CBEB58] set];
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v13 = v68;
+    v13 = momentNodes;
     v14 = [v13 countByEnumeratingWithState:&v83 objects:v102 count:16];
     if (v14)
     {
@@ -4275,10 +4275,10 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
             v17 = v22;
           }
 
-          v23 = [v19 addressNodes];
-          if (v23)
+          addressNodes = [v19 addressNodes];
+          if (addressNodes)
           {
-            [v12 unionSet:v23];
+            [v12 unionSet:addressNodes];
           }
         }
 
@@ -4295,25 +4295,25 @@ void __66__PGLocationTitleUtility_containsAmusementParkPOIFromMomentNodes___bloc
     }
 
     v24 = [v12 count];
-    if (v69 && !v24)
+    if (resultCopy && !v24)
     {
-      v69[2](v69, 0, 0);
+      resultCopy[2](resultCopy, 0, 0);
     }
 
-    v25 = [v70 filterSignificantLocationsType];
+    filterSignificantLocationsType = [v70 filterSignificantLocationsType];
     if (((v17 - v16 > 172800.0) & [v70 useTripTitleForLongDuration]) == 1)
     {
-      v26 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:v13 filterMomentsAndCities:v25 != 0 locationHelper:v71];
-      v66 = [(PGLocationTripTitleUtility *)v26 title];
-      v61 = [(PGLocationTripTitleUtility *)v26 usedLocationNodes];
+      v26 = [[PGLocationTripTitleUtility alloc] initWithMomentNodes:v13 filterMomentsAndCities:filterSignificantLocationsType != 0 locationHelper:helperCopy];
+      title = [(PGLocationTripTitleUtility *)v26 title];
+      usedLocationNodes = [(PGLocationTripTitleUtility *)v26 usedLocationNodes];
 
-      if (v66)
+      if (title)
       {
-        v73 = v61;
+        v73 = usedLocationNodes;
 LABEL_79:
-        if (v69)
+        if (resultCopy)
         {
-          (v69)[2](v69, v66, v73);
+          (resultCopy)[2](resultCopy, title, v73);
         }
 
         goto LABEL_85;
@@ -4322,13 +4322,13 @@ LABEL_79:
 
     else
     {
-      v61 = 0;
+      usedLocationNodes = 0;
     }
 
-    v62 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:v12 locationHelper:v71];
-    if (v25)
+    v62 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:v12 locationHelper:helperCopy];
+    if (filterSignificantLocationsType)
     {
-      v27 = [a1 _filteredAddressNodesWithAddressNodes:v12 momentNodes:v13 incompleteLocationResolver:v62 filterSignificantLocationsOption:objc_msgSend(v70 locationHelper:{"filterSignificantLocationsType"), v71}];
+      v27 = [self _filteredAddressNodesWithAddressNodes:v12 momentNodes:v13 incompleteLocationResolver:v62 filterSignificantLocationsOption:objc_msgSend(v70 locationHelper:{"filterSignificantLocationsType"), helperCopy}];
       v28 = v27;
       if (v27 != v12 || (v29 = [v27 count], v29 != objc_msgSend(v12, "count")))
       {
@@ -4341,7 +4341,7 @@ LABEL_79:
     v31 = [MEMORY[0x277CBEB58] set];
     if ([v70 peopleDisplayType])
     {
-      v32 = [objc_opt_class() peopleLocationTitleComponentsFromAddressNodesSet:v12 peopleDisplayType:objc_msgSend(v70 serviceManager:{"peopleDisplayType"), v67}];
+      v32 = [objc_opt_class() peopleLocationTitleComponentsFromAddressNodesSet:v12 peopleDisplayType:objc_msgSend(v70 serviceManager:{"peopleDisplayType"), managerCopy}];
       [v31 unionSet:v32];
     }
 
@@ -4364,9 +4364,9 @@ LABEL_79:
             objc_enumerationMutation(v33);
           }
 
-          v37 = [*(*(&v79 + 1) + 8 * j) addressNodes];
-          [v74 unionSet:v37];
-          [v12 minusSet:v37];
+          addressNodes2 = [*(*(&v79 + 1) + 8 * j) addressNodes];
+          [v74 unionSet:addressNodes2];
+          [v12 minusSet:addressNodes2];
         }
 
         v34 = [v33 countByEnumeratingWithState:&v79 objects:v101 count:16];
@@ -4375,20 +4375,20 @@ LABEL_79:
       while (v34);
     }
 
-    v38 = [v70 aoiDisplayType];
-    if ((v38 - 1) > 3)
+    aoiDisplayType = [v70 aoiDisplayType];
+    if ((aoiDisplayType - 1) > 3)
     {
       v65 = 0;
     }
 
     else
     {
-      v65 = [a1 commonAOIComponentsForMomentNodes:v13 addressNodes:v12 aoiDisplayType:v38 containsAmusementParkPOI:objc_msgSend(a1 locationHelper:{"containsAmusementParkPOIFromMomentNodes:", v13), v71}];
+      v65 = [self commonAOIComponentsForMomentNodes:v13 addressNodes:v12 aoiDisplayType:aoiDisplayType containsAmusementParkPOI:objc_msgSend(self locationHelper:{"containsAmusementParkPOIFromMomentNodes:", v13), helperCopy}];
     }
 
     if ([v70 useCities])
     {
-      v60 = [a1 _commonCityTitleComponentsFromMomentNodes:v13 remainingAddressNodes:v12 ignoredAddressNodes:v74 incompleteLocationResolver:v62 locationHelper:v71];
+      v60 = [self _commonCityTitleComponentsFromMomentNodes:v13 remainingAddressNodes:v12 ignoredAddressNodes:v74 incompleteLocationResolver:v62 locationHelper:helperCopy];
       if (![v65 count])
       {
         if (v60)
@@ -4416,14 +4416,14 @@ LABEL_79:
 
     [v33 unionSet:v65];
 LABEL_55:
-    v39 = [v70 showAllCities];
-    v40 = [v70 useDistrict];
-    v41 = [v70 allowFamilyHome];
+    showAllCities = [v70 showAllCities];
+    useDistrict = [v70 useDistrict];
+    allowFamilyHome = [v70 allowFamilyHome];
     LOBYTE(v94) = 0;
-    BYTE2(v58) = v39;
-    BYTE1(v58) = v41;
-    LOBYTE(v58) = v40;
-    v66 = [a1 _beautifiedLocationStringWithTitleComponents:v33 momentNodes:v13 lineBreakBehavior:v72 keyAssetAddressNode:v64 curationAddressNodes:v63 isMatchingKeyAsset:&v94 useDistrict:v58 allowFamilyHome:v71 showAllCities:v67 locationHelper:? serviceManager:?];
+    BYTE2(v58) = showAllCities;
+    BYTE1(v58) = allowFamilyHome;
+    LOBYTE(v58) = useDistrict;
+    title = [self _beautifiedLocationStringWithTitleComponents:v33 momentNodes:v13 lineBreakBehavior:lineBreakBehavior keyAssetAddressNode:keyAssetAddressNode curationAddressNodes:curationAddressNodes isMatchingKeyAsset:&v94 useDistrict:v58 allowFamilyHome:helperCopy showAllCities:managerCopy locationHelper:? serviceManager:?];
     if ((v94 & 1) == 0 && [v65 count])
     {
       [v33 minusSet:v65];
@@ -4432,12 +4432,12 @@ LABEL_55:
         [v33 unionSet:v60];
       }
 
-      BYTE2(v59) = v39;
-      BYTE1(v59) = v41;
-      LOBYTE(v59) = v40;
-      v42 = [a1 _beautifiedLocationStringWithTitleComponents:v33 momentNodes:v13 lineBreakBehavior:v72 keyAssetAddressNode:v64 curationAddressNodes:v63 isMatchingKeyAsset:&v94 useDistrict:v59 allowFamilyHome:v71 showAllCities:v67 locationHelper:? serviceManager:?];
+      BYTE2(v59) = showAllCities;
+      BYTE1(v59) = allowFamilyHome;
+      LOBYTE(v59) = useDistrict;
+      v42 = [self _beautifiedLocationStringWithTitleComponents:v33 momentNodes:v13 lineBreakBehavior:lineBreakBehavior keyAssetAddressNode:keyAssetAddressNode curationAddressNodes:curationAddressNodes isMatchingKeyAsset:&v94 useDistrict:v59 allowFamilyHome:helperCopy showAllCities:managerCopy locationHelper:? serviceManager:?];
 
-      v66 = v42;
+      title = v42;
     }
 
     v73 = [MEMORY[0x277CBEB58] set];
@@ -4461,28 +4461,28 @@ LABEL_55:
           }
 
           v47 = *(*(&v75 + 1) + 8 * v46);
-          v48 = [v47 node];
-          v49 = v48;
-          if (v48)
+          node = [v47 node];
+          v49 = node;
+          if (node)
           {
-            if ([v48 domain] == 200 || objc_msgSend(v49, "domain") == 201)
+            if ([node domain] == 200 || objc_msgSend(v49, "domain") == 201)
             {
               [v73 addObject:v49];
             }
 
             else if ([v49 domain] == 300)
             {
-              v50 = [v47 edge];
-              v51 = v50;
-              if (v50)
+              edge = [v47 edge];
+              v51 = edge;
+              if (edge)
               {
-                v52 = [v50 sourceNode];
-                v53 = [v71 cityNodeFromAddressNode:v52];
-                v54 = [v53 anyNode];
+                sourceNode = [edge sourceNode];
+                v53 = [helperCopy cityNodeFromAddressNode:sourceNode];
+                anyNode = [v53 anyNode];
 
-                if (v54)
+                if (anyNode)
                 {
-                  [v73 addObject:v54];
+                  [v73 addObject:anyNode];
                 }
               }
             }
@@ -4502,9 +4502,9 @@ LABEL_55:
     goto LABEL_79;
   }
 
-  if (v69)
+  if (resultCopy)
   {
-    v69[2](v69, 0, 0);
+    resultCopy[2](resultCopy, 0, 0);
   }
 
 LABEL_85:
@@ -4526,12 +4526,12 @@ void __96__PGLocationTitleUtility_generateLocationTitleWithOptions_locationHelpe
   *(v9 + 40) = v6;
 }
 
-+ (id)businessNodeForTitlingFromMomentNodes:(id)a3 businessNodesByMomentNode:(id)a4
++ (id)businessNodeForTitlingFromMomentNodes:(id)nodes businessNodesByMomentNode:(id)node
 {
-  v5 = a3;
-  v6 = [a4 intersectingSourcesWith:v5];
-  v7 = [v6 targets];
-  v8 = [v7 count];
+  nodesCopy = nodes;
+  v6 = [node intersectingSourcesWith:nodesCopy];
+  targets = [v6 targets];
+  v8 = [targets count];
 
   if (v8 == 1)
   {
@@ -4546,14 +4546,14 @@ void __96__PGLocationTitleUtility_generateLocationTitleWithOptions_locationHelpe
     v9 = v6;
     v19 = v9;
     v20 = v21;
-    [v5 enumerateIdentifiersAsCollectionsWithBlock:&v15];
-    v10 = [v9 targets];
-    v11 = [v10 anyNode];
+    [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:&v15];
+    targets2 = [v9 targets];
+    anyNode = [targets2 anyNode];
 
-    v12 = [v11 name];
-    if ([v12 length] <= 0x1E && objc_msgSend(v12, "length"))
+    name = [anyNode name];
+    if ([name length] <= 0x1E && objc_msgSend(name, "length"))
     {
-      v13 = v11;
+      v13 = anyNode;
     }
 
     else
@@ -4584,48 +4584,48 @@ void __90__PGLocationTitleUtility_businessNodeForTitlingFromMomentNodes_business
   }
 }
 
-+ (void)generateBusinessItemLocationWithOptions:(id)a3 result:(id)a4
++ (void)generateBusinessItemLocationWithOptions:(id)options result:(id)result
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  resultCopy = result;
+  if (resultCopy)
   {
-    v8 = [v6 momentNodes];
-    v9 = [v8 anyObject];
-    v10 = [v9 graph];
+    momentNodes = [optionsCopy momentNodes];
+    anyObject = [momentNodes anyObject];
+    graph = [anyObject graph];
 
-    if ([v8 count] && v10)
+    if ([momentNodes count] && graph)
     {
-      v11 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v8 graph:v10];
+      v11 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:momentNodes graph:graph];
       v12 = MEMORY[0x277D22BF8];
       v13 = +[PGGraphMomentNode businessOfMoment];
       v14 = [v12 adjacencyWithSources:v11 relation:v13 targetsClass:objc_opt_class()];
 
-      v15 = [a1 businessNodeForTitlingFromMomentNodes:v11 businessNodesByMomentNode:v14];
+      v15 = [self businessNodeForTitlingFromMomentNodes:v11 businessNodesByMomentNode:v14];
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 name];
-        v22 = [v6 lineBreakBehavior];
-        v23[0] = v17;
+        name = [v15 name];
+        lineBreakBehavior = [optionsCopy lineBreakBehavior];
+        v23[0] = name;
         [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
         v19 = v18 = v14;
-        v20 = [a1 _titleWithLineBreakBehavior:v22 forTitle:v17 titleComponents:v19];
+        v20 = [self _titleWithLineBreakBehavior:lineBreakBehavior forTitle:name titleComponents:v19];
 
         v14 = v18;
-        v7[2](v7, v20, v16);
+        resultCopy[2](resultCopy, v20, v16);
       }
 
       else
       {
-        v7[2](v7, 0, 0);
+        resultCopy[2](resultCopy, 0, 0);
       }
     }
 
     else
     {
-      v7[2](v7, 0, 0);
+      resultCopy[2](resultCopy, 0, 0);
     }
   }
 

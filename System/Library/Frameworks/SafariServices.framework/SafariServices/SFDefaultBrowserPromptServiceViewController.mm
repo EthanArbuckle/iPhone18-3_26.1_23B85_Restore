@@ -2,40 +2,40 @@
 - (BOOL)_isDefaultBrowserSafari;
 - (id)_defaultBrowserRecord;
 - (void)_defaultBrowserRecord;
-- (void)determineIfBrowserIconSwapAlertNeedsDisplayWithCompletionHandler:(id)a3;
-- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)a3;
+- (void)determineIfBrowserIconSwapAlertNeedsDisplayWithCompletionHandler:(id)handler;
+- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFDefaultBrowserPromptServiceViewController
 
-- (void)determineIfBrowserIconSwapAlertNeedsDisplayWithCompletionHandler:(id)a3
+- (void)determineIfBrowserIconSwapAlertNeedsDisplayWithCompletionHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   if ([(SFDefaultBrowserPromptServiceViewController *)self _isDefaultBrowserSafari])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    v4 = [(SFDefaultBrowserPromptServiceViewController *)self _defaultBrowserRecord];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v4 localizedName];
-    (*(v7 + 2))(v7, v5, v6);
+    _defaultBrowserRecord = [(SFDefaultBrowserPromptServiceViewController *)self _defaultBrowserRecord];
+    bundleIdentifier = [_defaultBrowserRecord bundleIdentifier];
+    localizedName = [_defaultBrowserRecord localizedName];
+    (*(handlerCopy + 2))(handlerCopy, bundleIdentifier, localizedName);
   }
 }
 
-- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)a3
+- (void)determineIfBrowserSheetNeedsDisplayWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(SFDefaultBrowserPromptServiceViewController *)self _isDefaultBrowserSafari]);
+  handlerCopy = handler;
+  (*(handler + 2))(handlerCopy, [(SFDefaultBrowserPromptServiceViewController *)self _isDefaultBrowserSafari]);
 }
 
 - (id)_defaultBrowserRecord
 {
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v7 = 0;
-  v3 = [v2 defaultApplicationForCategory:1 error:&v7];
+  v3 = [defaultWorkspace defaultApplicationForCategory:1 error:&v7];
   v4 = v7;
 
   if (v4)
@@ -52,8 +52,8 @@
 
 - (BOOL)_isDefaultBrowserSafari
 {
-  v2 = [(SFDefaultBrowserPromptServiceViewController *)self _defaultBrowserRecord];
-  v3 = [v2 bundleIdentifier];
+  _defaultBrowserRecord = [(SFDefaultBrowserPromptServiceViewController *)self _defaultBrowserRecord];
+  bundleIdentifier = [_defaultBrowserRecord bundleIdentifier];
   v4 = WBSIsEqual();
 
   return v4;
@@ -62,11 +62,11 @@
 - (void)_defaultBrowserRecord
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_1D4644000, v3, OS_LOG_TYPE_ERROR, "Failed to get default browser: %{public}@", &v5, 0xCu);
+  v6 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_1D4644000, selfCopy, OS_LOG_TYPE_ERROR, "Failed to get default browser: %{public}@", &v5, 0xCu);
 }
 
 @end

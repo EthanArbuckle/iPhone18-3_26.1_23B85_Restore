@@ -1,10 +1,10 @@
 @interface INGetAvailableRestaurantReservationBookingDefaultsIntent
 + (id)intentDescription;
-- (BOOL)isEqual:(id)a3;
-- (INGetAvailableRestaurantReservationBookingDefaultsIntent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INGetAvailableRestaurantReservationBookingDefaultsIntent)initWithCoder:(id)coder;
 - (INGetAvailableRestaurantReservationBookingDefaultsIntent)initWithRestaurant:(INRestaurant *)restaurant;
 - (id)_dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INGetAvailableRestaurantReservationBookingDefaultsIntent
@@ -14,13 +14,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"restaurant";
   restaurant = self->_restaurant;
-  v3 = restaurant;
+  null = restaurant;
   if (!restaurant)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!restaurant)
   {
@@ -31,31 +31,31 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)v7 restaurant];
-        if (v8 || ([(INGetAvailableRestaurantReservationBookingDefaultsIntent *)self restaurant], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        restaurant = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)v7 restaurant];
+        if (restaurant || ([(INGetAvailableRestaurantReservationBookingDefaultsIntent *)self restaurant], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)v7 restaurant];
-          v10 = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)self restaurant];
-          v11 = [v9 isEqual:v10];
+          restaurant2 = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)v7 restaurant];
+          restaurant3 = [(INGetAvailableRestaurantReservationBookingDefaultsIntent *)self restaurant];
+          v11 = [restaurant2 isEqual:restaurant3];
 
-          if (v8)
+          if (restaurant)
           {
 LABEL_12:
 
@@ -80,24 +80,24 @@ LABEL_13:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INGetAvailableRestaurantReservationBookingDefaultsIntent;
-  v4 = a3;
-  [(INIntent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_restaurant forKey:{@"restaurant", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INIntent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_restaurant forKey:{@"restaurant", v5.receiver, v5.super_class}];
 }
 
-- (INGetAvailableRestaurantReservationBookingDefaultsIntent)initWithCoder:(id)a3
+- (INGetAvailableRestaurantReservationBookingDefaultsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INGetAvailableRestaurantReservationBookingDefaultsIntent;
-  v5 = [(INIntent *)&v9 initWithCoder:v4];
+  v5 = [(INIntent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restaurant"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restaurant"];
     restaurant = v5->_restaurant;
     v5->_restaurant = v6;
   }
@@ -126,7 +126,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __77__INGetAvailableRestaurantReservationBookingDefaultsIntent_intentDescription__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (intentDescription_onceToken != -1)
   {
     dispatch_once(&intentDescription_onceToken, block);

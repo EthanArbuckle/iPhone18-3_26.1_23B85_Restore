@@ -1,11 +1,11 @@
 @interface MPModelResponse
 - (BOOL)isEmpty;
 - (MPModelResponse)init;
-- (MPModelResponse)initWithRequest:(id)a3;
+- (MPModelResponse)initWithRequest:(id)request;
 - (id)debugDescription;
 - (id)description;
 - (void)_invalidate;
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4;
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion;
 @end
 
 @implementation MPModelResponse
@@ -15,25 +15,25 @@
   if (self->_valid)
   {
     self->_valid = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"MPModelResponseDidInvalidateNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPModelResponseDidInvalidateNotification" object:self];
   }
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(MPModelResponse *)self results];
-  v3 = [v2 totalItemCount] == 0;
+  results = [(MPModelResponse *)self results];
+  v3 = [results totalItemCount] == 0;
 
   return v3;
 }
 
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -42,7 +42,7 @@
     block[1] = 3221225472;
     block[2] = __67__MPModelResponse_getChangeDetailsFromPreviousResponse_completion___block_invoke;
     block[3] = &unk_1E7682370;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -95,13 +95,13 @@
   return v6;
 }
 
-- (MPModelResponse)initWithRequest:(id)a3
+- (MPModelResponse)initWithRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPModelResponse.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"request != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelResponse.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"request != nil"}];
   }
 
   v11.receiver = self;
@@ -109,7 +109,7 @@
   v6 = [(MPModelResponse *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [requestCopy copy];
     request = v6->_request;
     v6->_request = v7;
 
@@ -121,8 +121,8 @@
 
 - (MPModelResponse)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPModelResponse.m" lineNumber:23 description:@"-initWithRequest: must be used."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelResponse.m" lineNumber:23 description:@"-initWithRequest: must be used."];
 
   v5 = objc_alloc_init(MPModelRequest);
   v6 = [(MPModelResponse *)self initWithRequest:v5];

@@ -1,41 +1,41 @@
 @interface NCSpringAnimationSettings
-+ (id)moduleWithSectionTitle:(id)a3;
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
++ (id)moduleWithSectionTitle:(id)title;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
 - (CAFrameRateRange)frameRateRange;
-- (void)animateTracking:(BOOL)a3 animations:(id)a4 completion:(id)a5;
+- (void)animateTracking:(BOOL)tracking animations:(id)animations completion:(id)completion;
 - (void)setDefaultCriticallyDampedValues;
 - (void)setDefaultValues;
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation NCSpringAnimationSettings
 
-+ (id)moduleWithSectionTitle:(id)a3
++ (id)moduleWithSectionTitle:(id)title
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  titleCopy = title;
+  array = [v3 array];
   v6 = [MEMORY[0x277D431F0] rowWithTitle:@"Damping Ratio" valueKeyPath:@"dampingRatio"];
   v7 = [v6 between:0.001 and:10.0];
   v8 = [v7 precision:3];
-  [v5 addObject:v8];
+  [array addObject:v8];
 
   v9 = [MEMORY[0x277D431F0] rowWithTitle:@"Response" valueKeyPath:@"response"];
   v10 = [v9 between:0.0 and:1000.0];
   v11 = [v10 precision:3];
-  [v5 addObject:v11];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277D431F0] rowWithTitle:@"Retarget Impulse" valueKeyPath:@"retargetImpulse"];
   v13 = [v12 between:0.0 and:1.0];
   v14 = [v13 precision:3];
-  [v5 addObject:v14];
+  [array addObject:v14];
 
   v15 = [MEMORY[0x277D431E0] rowWithTitle:@"Frame Rate Range" childSettingsKeyPath:@"preferredFrameRateRange"];
-  [v5 addObject:v15];
+  [array addObject:v15];
 
   v16 = MEMORY[0x277D43218];
-  v17 = [MEMORY[0x277D43218] sectionWithRows:v5 title:v4];
+  v17 = [MEMORY[0x277D43218] sectionWithRows:array title:titleCopy];
 
   v21[0] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
@@ -44,23 +44,23 @@
   return v19;
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  v11 = [(NCSpringAnimationSettings *)self preferredFrameRateRange];
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  preferredFrameRateRange = [(NCSpringAnimationSettings *)self preferredFrameRateRange];
   *&v8 = minimum;
   *&v9 = maximum;
   *&v10 = preferred;
-  [v11 setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
+  [preferredFrameRateRange setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
 }
 
 - (CAFrameRateRange)frameRateRange
 {
-  v2 = [(NCSpringAnimationSettings *)self preferredFrameRateRange];
-  [v2 frameRateRange];
+  preferredFrameRateRange = [(NCSpringAnimationSettings *)self preferredFrameRateRange];
+  [preferredFrameRateRange frameRateRange];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -74,13 +74,13 @@
   return result;
 }
 
-- (void)animateTracking:(BOOL)a3 animations:(id)a4 completion:(id)a5
+- (void)animateTracking:(BOOL)tracking animations:(id)animations completion:(id)completion
 {
-  v6 = a3;
+  trackingCopy = tracking;
   v8 = MEMORY[0x277D75D18];
-  v9 = a5;
-  v10 = NCModifyFrameRateForAnimationBlockFromSettings(a4, self);
-  [v8 _animateUsingSpringBehavior:self tracking:v6 animations:v10 completion:v9];
+  completionCopy = completion;
+  v10 = NCModifyFrameRateForAnimationBlockFromSettings(animations, self);
+  [v8 _animateUsingSpringBehavior:self tracking:trackingCopy animations:v10 completion:completionCopy];
 }
 
 - (void)setDefaultValues
@@ -99,7 +99,7 @@
   [(NCSpringAnimationSettings *)self setResponse:0.336];
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   retstr->var9 = 0.0;
   *&retstr->var5 = 0u;

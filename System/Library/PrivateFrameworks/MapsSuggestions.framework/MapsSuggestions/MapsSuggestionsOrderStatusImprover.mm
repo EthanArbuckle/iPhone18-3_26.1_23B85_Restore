@@ -1,16 +1,16 @@
 @interface MapsSuggestionsOrderStatusImprover
-- (BOOL)improveEntry:(id)a3;
-- (id)_subtitleBegining:(void *)a1;
+- (BOOL)improveEntry:(id)entry;
+- (id)_subtitleBegining:(void *)begining;
 @end
 
 @implementation MapsSuggestionsOrderStatusImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -29,15 +29,15 @@
     goto LABEL_18;
   }
 
-  if ([v4 type] != 23)
+  if ([entryCopy type] != 23)
   {
 LABEL_18:
     v16 = 0;
     goto LABEL_19;
   }
 
-  v6 = [v5 title];
-  v7 = [v5 subtitle];
+  title = [v5 title];
+  subtitle = [v5 subtitle];
   v8 = MapsSuggestionsLocalizedOrderPickupTitle();
   if ([v5 containsKey:@"MapsSuggestionsOrderPickupMerchant"])
   {
@@ -60,7 +60,7 @@ LABEL_18:
   [v5 setString:v14 forKey:@"MapsSuggestionsRemovalBehaviorStringForForget"];
 
   [v5 setUndecoratedTitle:v8];
-  v15 = v8 == v6 && v12 == v7;
+  v15 = v8 == title && v12 == subtitle;
   v16 = !v15;
   if (!v15)
   {
@@ -72,41 +72,41 @@ LABEL_19:
   return v16;
 }
 
-- (id)_subtitleBegining:(void *)a1
+- (id)_subtitleBegining:(void *)begining
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (begining)
   {
     if ([v3 containsKey:@"MapsSuggestionsOrderPickupStartDate"])
     {
       v5 = [v4 dateForKey:@"MapsSuggestionsOrderPickupStartDate"];
-      v6 = v5;
+      expires2 = v5;
       if (v5 && MapsSuggestionsIsInTheFuture(v5))
       {
-        v7 = MapsSuggestionsLocalizedOrderPickupReadyAt(v6);
+        v7 = MapsSuggestionsLocalizedOrderPickupReadyAt(expires2);
 LABEL_11:
-        a1 = v7;
+        begining = v7;
 
         goto LABEL_12;
       }
     }
 
-    v8 = [v4 expires];
-    if (!v8 || (v9 = v8, [v4 expires], v10 = objc_claimAutoreleasedReturnValue(), v11 = MapsSuggestionsSecondsTo(v10), GEOConfigGetDouble(), v13 = v12, v10, v9, v11 > v13))
+    expires = [v4 expires];
+    if (!expires || (v9 = expires, [v4 expires], v10 = objc_claimAutoreleasedReturnValue(), v11 = MapsSuggestionsSecondsTo(v10), GEOConfigGetDouble(), v13 = v12, v10, v9, v11 > v13))
     {
-      a1 = MapsSuggestionsLocalizedOrderPickupReady();
+      begining = MapsSuggestionsLocalizedOrderPickupReady();
       goto LABEL_12;
     }
 
-    v6 = [v4 expires];
-    v7 = MapsSuggestionsLocalizedOrderPickupReadyUntil(v6);
+    expires2 = [v4 expires];
+    v7 = MapsSuggestionsLocalizedOrderPickupReadyUntil(expires2);
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  return a1;
+  return begining;
 }
 
 @end

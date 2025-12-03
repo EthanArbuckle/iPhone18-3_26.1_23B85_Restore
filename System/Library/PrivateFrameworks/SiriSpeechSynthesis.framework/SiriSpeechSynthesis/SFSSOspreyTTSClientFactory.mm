@@ -1,14 +1,14 @@
 @interface SFSSOspreyTTSClientFactory
 + (id)sharedInstance;
 - (SFSSOspreyTTSClientFactory)init;
-- (id)getOspreyClientByUrl:(id)a3;
+- (id)getOspreyClientByUrl:(id)url;
 @end
 
 @implementation SFSSOspreyTTSClientFactory
 
-- (id)getOspreyClientByUrl:(id)a3
+- (id)getOspreyClientByUrl:(id)url
 {
-  v3 = [(SFSSOspreyTTSClientFactory *)self getOspreyClientByUrl:a3 useBlazar:1 enableAuthentication:1];
+  v3 = [(SFSSOspreyTTSClientFactory *)self getOspreyClientByUrl:url useBlazar:1 enableAuthentication:1];
 
   return v3;
 }

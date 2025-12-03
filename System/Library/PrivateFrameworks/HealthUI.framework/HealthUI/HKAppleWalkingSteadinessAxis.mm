@@ -1,24 +1,24 @@
 @interface HKAppleWalkingSteadinessAxis
-+ (id)standardAxisWithDisplayType:(id)a3;
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9;
-- (HKAppleWalkingSteadinessAxis)initWithDisplayType:(id)a3;
-- (id)_axisLabelsForClassificationsWithDisplayType:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
++ (id)standardAxisWithDisplayType:(id)type;
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset;
+- (HKAppleWalkingSteadinessAxis)initWithDisplayType:(id)type;
+- (id)_axisLabelsForClassificationsWithDisplayType:(id)type;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation HKAppleWalkingSteadinessAxis
 
-+ (id)standardAxisWithDisplayType:(id)a3
++ (id)standardAxisWithDisplayType:(id)type
 {
-  v3 = a3;
-  v4 = [[HKAppleWalkingSteadinessAxis alloc] initWithDisplayType:v3];
+  typeCopy = type;
+  v4 = [[HKAppleWalkingSteadinessAxis alloc] initWithDisplayType:typeCopy];
 
   return v4;
 }
 
-- (HKAppleWalkingSteadinessAxis)initWithDisplayType:(id)a3
+- (HKAppleWalkingSteadinessAxis)initWithDisplayType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_alloc_init(HKNumericAxisConfiguration);
   v7 = +[HKNumericAxis preferredAxisStyle];
   [(HKAxisConfiguration *)v6 setPreferredStyle:v7];
@@ -31,7 +31,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_displayType, a3);
+    objc_storeStrong(&v8->_displayType, type);
     v10 = [(HKAppleWalkingSteadinessAxis *)v9 _axisLabelsForClassificationsWithDisplayType:v9->_displayType];
     cachedAxisLabels = v9->_cachedAxisLabels;
     v9->_cachedAxisLabels = v10;
@@ -40,17 +40,17 @@
   return v9;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = a3;
-  v6 = [v5 minValue];
-  [v6 doubleValue];
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  [minValue doubleValue];
   v8 = v7;
   v9 = v7;
 
-  v10 = [v5 maxValue];
+  maxValue = [rangeCopy maxValue];
 
-  [v10 doubleValue];
+  [maxValue doubleValue];
   v12 = v11;
   v13 = v11;
 
@@ -87,19 +87,19 @@
   return v14;
 }
 
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset
 {
   v11.receiver = self;
   v11.super_class = HKAppleWalkingSteadinessAxis;
-  [(HKAxis *)&v11 renderPositionForLabelLocation:a3 rect:a8 zoomScale:*&a9.x contentOffset:*&a9.y constantOffset:a4.origin.x isHorizontal:a4.origin.y optionalOffset:a4.size.width, a4.size.height, a5, a6.x, a6.y, a7, v12, v13];
+  [(HKAxis *)&v11 renderPositionForLabelLocation:location rect:horizontal zoomScale:*&optionalOffset.x contentOffset:*&optionalOffset.y constantOffset:rect.origin.x isHorizontal:rect.origin.y optionalOffset:rect.size.width, rect.size.height, scale, offset.x, offset.y, constantOffset, v12, v13];
   result.y = v10;
   result.x = v9;
   return result;
 }
 
-- (id)_axisLabelsForClassificationsWithDisplayType:(id)a3
+- (id)_axisLabelsForClassificationsWithDisplayType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -110,7 +110,7 @@
   v8[1] = 3221225472;
   v8[2] = __77__HKAppleWalkingSteadinessAxis__axisLabelsForClassificationsWithDisplayType___block_invoke;
   v8[3] = &unk_1E81BA7F8;
-  v4 = v3;
+  v4 = typeCopy;
   v9 = v4;
   v10 = &v11;
   v5 = _Block_copy(v8);

@@ -1,7 +1,7 @@
 @interface OKWidgetContentZoomAndRotateEffect
 + (id)supportedSettings;
 - (OKWidgetContentZoomAndRotateEffect)init;
-- (OKWidgetContentZoomAndRotateEffect)initWithSettings:(id)a3;
+- (OKWidgetContentZoomAndRotateEffect)initWithSettings:(id)settings;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   return [(OKWidgetContentEffect *)&v3 init];
 }
 
-- (OKWidgetContentZoomAndRotateEffect)initWithSettings:(id)a3
+- (OKWidgetContentZoomAndRotateEffect)initWithSettings:(id)settings
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -22,7 +22,7 @@
   v4 = [(OKWidgetContentEffect *)&v20 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"duration"];
+    v5 = [settings objectForKey:@"duration"];
     if (v5)
     {
       [v5 doubleValue];
@@ -34,7 +34,7 @@
       v7 = 60.0;
     }
 
-    v8 = [a3 objectForKey:@"maximumZoom"];
+    v8 = [settings objectForKey:@"maximumZoom"];
     if (v8)
     {
       [v8 doubleValue];
@@ -46,7 +46,7 @@
       v10 = 1.29999995;
     }
 
-    v11 = [a3 objectForKey:@"maximumRotation"];
+    v11 = [settings objectForKey:@"maximumRotation"];
     if (v11)
     {
       [v11 doubleValue];
@@ -75,16 +75,16 @@
     }
 
     [v15 setToValue:{objc_msgSend(v16, "numberWithDouble:", v13 * v17)}];
-    v18 = [MEMORY[0x277CD9E00] animation];
+    animation = [MEMORY[0x277CD9E00] animation];
     v21[0] = v14;
     v21[1] = v15;
-    [v18 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v21, 2)}];
-    [v18 setDuration:v7];
-    [v18 setRemovedOnCompletion:0];
-    [v18 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C8])}];
-    [v18 setFillMode:*MEMORY[0x277CDA230]];
-    [v18 setAutoreverses:1];
-    [(OKWidgetContentEffect *)v4 setAnimation:v18];
+    [animation setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v21, 2)}];
+    [animation setDuration:v7];
+    [animation setRemovedOnCompletion:0];
+    [animation setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C8])}];
+    [animation setFillMode:*MEMORY[0x277CDA230]];
+    [animation setAutoreverses:1];
+    [(OKWidgetContentEffect *)v4 setAnimation:animation];
   }
 
   return v4;
@@ -100,7 +100,7 @@
 + (id)supportedSettings
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentZoomAndRotateEffect;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v11[0] = @"duration";

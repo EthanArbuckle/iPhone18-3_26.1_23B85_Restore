@@ -1,13 +1,13 @@
 @interface _SYInputDataItem
-- (_SYInputDataItem)initWithLength:(unint64_t)a3 callback:(id)a4;
+- (_SYInputDataItem)initWithLength:(unint64_t)length callback:(id)callback;
 - (unint64_t)lengthRemaining;
 @end
 
 @implementation _SYInputDataItem
 
-- (_SYInputDataItem)initWithLength:(unint64_t)a3 callback:(id)a4
+- (_SYInputDataItem)initWithLength:(unint64_t)length callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v14.receiver = self;
   v14.super_class = _SYInputDataItem;
   v7 = [(_SYInputDataItem *)&v14 init];
@@ -20,8 +20,8 @@
     data = v8->_data;
     v8->_data = v9;
 
-    v8->_length = a3;
-    v11 = MEMORY[0x1E12E11B0](v6);
+    v8->_length = length;
+    v11 = MEMORY[0x1E12E11B0](callbackCopy);
     callback = v8->_callback;
     v8->_callback = v11;
 

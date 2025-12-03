@@ -1,12 +1,12 @@
 @interface MFDVIPServices
 + (id)_sharedInstance;
 - (id)_allVIPDictionaries;
-- (id)_dictionaryFromVIP:(id)a3;
-- (id)_vipFromDictionary:(id)a3;
-- (void)allVIPSendersWithCompletion:(id)a3;
-- (void)deleteVIPSenderWithIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)orderedVIPAddressesAndUnreadCountsWithCompletion:(id)a3;
-- (void)saveVIPSender:(id)a3 withCompletion:(id)a4;
+- (id)_dictionaryFromVIP:(id)p;
+- (id)_vipFromDictionary:(id)dictionary;
+- (void)allVIPSendersWithCompletion:(id)completion;
+- (void)deleteVIPSenderWithIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)orderedVIPAddressesAndUnreadCountsWithCompletion:(id)completion;
+- (void)saveVIPSender:(id)sender withCompletion:(id)completion;
 @end
 
 @implementation MFDVIPServices
@@ -23,57 +23,57 @@
   return v3;
 }
 
-- (id)_dictionaryFromVIP:(id)a3
+- (id)_dictionaryFromVIP:(id)p
 {
-  v3 = a3;
+  pCopy = p;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 name];
+  name = [pCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 setObject:v6 forKeyedSubscript:kVIPDisplayNameKey];
+    name2 = [pCopy name];
+    [v4 setObject:name2 forKeyedSubscript:kVIPDisplayNameKey];
   }
 
-  v7 = [v3 emailAddresses];
-  v8 = [v7 count];
+  emailAddresses = [pCopy emailAddresses];
+  v8 = [emailAddresses count];
 
   if (v8)
   {
-    v9 = [v3 emailAddresses];
-    v10 = [v9 allObjects];
-    [v4 setObject:v10 forKeyedSubscript:kVIPEmailAddressesKey];
+    emailAddresses2 = [pCopy emailAddresses];
+    allObjects = [emailAddresses2 allObjects];
+    [v4 setObject:allObjects forKeyedSubscript:kVIPEmailAddressesKey];
   }
 
-  v11 = [v3 identifier];
+  identifier = [pCopy identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [v3 identifier];
-    v13 = [NSString stringWithFormat:@"%@://%@", EMAppleMailShowVIPMessagesURLScheme, v12];
+    identifier2 = [pCopy identifier];
+    v13 = [NSString stringWithFormat:@"%@://%@", EMAppleMailShowVIPMessagesURLScheme, identifier2];
     [v4 setObject:v13 forKeyedSubscript:kVIPURLKey];
 
-    v14 = [v3 identifier];
-    [v4 setObject:v14 forKeyedSubscript:kVIPUniqueIdentifierKey];
+    identifier3 = [pCopy identifier];
+    [v4 setObject:identifier3 forKeyedSubscript:kVIPUniqueIdentifierKey];
   }
 
   return v4;
 }
 
-- (id)_vipFromDictionary:(id)a3
+- (id)_vipFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = kVIPEmailAddressesKey;
-  v5 = [v3 objectForKeyedSubscript:kVIPEmailAddressesKey];
+  v5 = [dictionaryCopy objectForKeyedSubscript:kVIPEmailAddressesKey];
 
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:v4];
+    v6 = [dictionaryCopy objectForKeyedSubscript:v4];
     v7 = [EAEmailAddressSet setWithArray:v6];
 
     v8 = [EMVIP alloc];
-    v9 = [v3 objectForKeyedSubscript:kVIPUniqueIdentifierKey];
-    v10 = [v3 objectForKeyedSubscript:kVIPDisplayNameKey];
+    v9 = [dictionaryCopy objectForKeyedSubscript:kVIPUniqueIdentifierKey];
+    v10 = [dictionaryCopy objectForKeyedSubscript:kVIPDisplayNameKey];
     v11 = [v8 initWithIdentifier:v9 name:v10 emailAddresses:v7];
   }
 
@@ -93,9 +93,9 @@
   v11 = 0u;
   v12 = 0u;
   v4 = +[VIPManager defaultInstance];
-  v5 = [v4 sortedVIPs];
+  sortedVIPs = [v4 sortedVIPs];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [sortedVIPs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -105,14 +105,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sortedVIPs);
         }
 
         v9 = [(MFDVIPServices *)self _dictionaryFromVIP:*(*(&v11 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sortedVIPs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -121,9 +121,9 @@
   return v3;
 }
 
-- (void)orderedVIPAddressesAndUnreadCountsWithCompletion:(id)a3
+- (void)orderedVIPAddressesAndUnreadCountsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MFDVIPServices *)self _allVIPDictionaries];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
@@ -139,7 +139,7 @@
     v6 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v7 = [NSError errorWithDomain:@"MFVIPServicesError" code:1 userInfo:v6];
 
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -161,10 +161,10 @@
   v28 = 0u;
   v29 = 0u;
   v10 = sub_100027C70();
-  v11 = [v10 accountsProvider];
-  v12 = [v11 displayedAccounts];
+  accountsProvider = [v10 accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
 
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  v13 = [displayedAccounts countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v13)
   {
     v14 = *v29;
@@ -175,18 +175,18 @@
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(displayedAccounts);
         }
 
         v16 = [*(*(&v28 + 1) + 8 * v15) mailboxUidOfType:7 createIfNeeded:0];
-        v17 = [v16 criterion];
-        [v9 addObject:v17];
+        criterion = [v16 criterion];
+        [v9 addObject:criterion];
 
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v28 objects:v38 count:16];
+      v13 = [displayedAccounts countByEnumeratingWithState:&v28 objects:v38 count:16];
     }
 
     while (v13);
@@ -212,41 +212,41 @@
   [v5 sortUsingComparator:&stru_100158960];
   _Block_object_dispose(v32, 8);
   v7 = 0;
-  if (v4)
+  if (completionCopy)
   {
 LABEL_12:
-    v4[2](v4, v5, v7);
+    completionCopy[2](completionCopy, v5, v7);
   }
 
 LABEL_13:
 }
 
-- (void)allVIPSendersWithCompletion:(id)a3
+- (void)allVIPSendersWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(MFDVIPServices *)self _allVIPDictionaries];
-  v5[2](v5, v4, 0);
+  completionCopy = completion;
+  _allVIPDictionaries = [(MFDVIPServices *)self _allVIPDictionaries];
+  completionCopy[2](completionCopy, _allVIPDictionaries, 0);
 }
 
-- (void)saveVIPSender:(id)a3 withCompletion:(id)a4
+- (void)saveVIPSender:(id)sender withCompletion:(id)completion
 {
-  v9 = a4;
-  v6 = [(MFDVIPServices *)self _vipFromDictionary:a3];
+  completionCopy = completion;
+  v6 = [(MFDVIPServices *)self _vipFromDictionary:sender];
   v7 = +[VIPManager defaultInstance];
   [v7 saveVIP:v6];
 
   v8 = [(MFDVIPServices *)self _dictionaryFromVIP:v6];
-  v9[2](v9, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 }
 
-- (void)deleteVIPSenderWithIdentifier:(id)a3 withCompletion:(id)a4
+- (void)deleteVIPSenderWithIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v6 = +[VIPManager defaultInstance];
-  [v6 deleteVIPWithIdentifier:v7];
+  [v6 deleteVIPWithIdentifier:identifierCopy];
 
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

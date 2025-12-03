@@ -1,23 +1,23 @@
 @interface CSRawAudioInjectionProvider
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5;
-- (BOOL)isRecordingWithRecordDeviceIndicator:(id)a3;
-- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)a3 withAlertOverride:(int64_t)a4;
-- (BOOL)prepareAudioStreamRecord:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5;
-- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setCurrentContext:(id)a3 streamHandleId:(unint64_t)a4 error:(id *)a5;
-- (BOOL)startAudioStreamWithOption:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5;
-- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)a3 error:(id *)a4;
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason streamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)isRecordingWithRecordDeviceIndicator:(id)indicator;
+- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)stream withAlertOverride:(int64_t)override;
+- (BOOL)prepareAudioStreamRecord:(id)record recordDeviceIndicator:(id)indicator error:(id *)error;
+- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)setCurrentContext:(id)context streamHandleId:(unint64_t)id error:(id *)error;
+- (BOOL)startAudioStreamWithOption:(id)option recordDeviceIndicator:(id)indicator error:(id *)error;
+- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)indicator error:(id *)error;
 - (CSRawAudioInjectionProvider)init;
 - (void)_readAudioBufferAndFeed;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)setContext:(id)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setContext:(id)context completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSRawAudioInjectionProvider
 
-- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)a3 withAlertOverride:(int64_t)a4
+- (BOOL)playRecordStartingAlertAndResetEndpointerFromStream:(unint64_t)stream withAlertOverride:(int64_t)override
 {
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -25,14 +25,14 @@
     v7 = 136315394;
     v8 = "[CSRawAudioInjectionProvider playRecordStartingAlertAndResetEndpointerFromStream:withAlertOverride:]";
     v9 = 2048;
-    v10 = a4;
+    overrideCopy = override;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s playing start recording alert with override: %lu", &v7, 0x16u);
   }
 
   return 1;
 }
 
-- (BOOL)activateAudioSessionWithReason:(unint64_t)a3 streamHandleId:(unint64_t)a4 error:(id *)a5
+- (BOOL)activateAudioSessionWithReason:(unint64_t)reason streamHandleId:(unint64_t)id error:(id *)error
 {
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -45,7 +45,7 @@
   return 1;
 }
 
-- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)a3 error:(id *)a4
+- (BOOL)prewarmAudioSessionWithStreamHandleId:(unint64_t)id error:(id *)error
 {
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -58,7 +58,7 @@
   return 1;
 }
 
-- (BOOL)isRecordingWithRecordDeviceIndicator:(id)a3
+- (BOOL)isRecordingWithRecordDeviceIndicator:(id)indicator
 {
   v3 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -71,7 +71,7 @@
   return 0;
 }
 
-- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)a3 error:(id *)a4
+- (BOOL)stopAudioStreamWithRecordDeviceIndicator:(id)indicator error:(id *)error
 {
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -137,16 +137,16 @@
   }
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5
+- (BOOL)startAudioStreamWithOption:(id)option recordDeviceIndicator:(id)indicator error:(id *)error
 {
-  v6 = a3;
+  optionCopy = option;
   v7 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[CSRawAudioInjectionProvider startAudioStreamWithOption:recordDeviceIndicator:error:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = optionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Calling start audio stream : %@", buf, 0x16u);
   }
 
@@ -161,7 +161,7 @@
   return 1;
 }
 
-- (BOOL)prepareAudioStreamRecord:(id)a3 recordDeviceIndicator:(id)a4 error:(id *)a5
+- (BOOL)prepareAudioStreamRecord:(id)record recordDeviceIndicator:(id)indicator error:(id *)error
 {
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
@@ -174,67 +174,67 @@
   return 1;
 }
 
-- (BOOL)setCurrentContext:(id)a3 streamHandleId:(unint64_t)a4 error:(id *)a5
+- (BOOL)setCurrentContext:(id)context streamHandleId:(unint64_t)id error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CSRawAudioInjectionProvider setCurrentContext:streamHandleId:error:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = contextCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Calling StreamId for : %@", &v8, 0x16u);
   }
 
   return 1;
 }
 
-- (void)setContext:(id)a3 completion:(id)a4
+- (void)setContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CSRawAudioInjectionProvider setContext:completion:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = contextCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Calling StreamId for : %@", &v8, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 2, 0);
+    completionCopy[2](completionCopy, 1, 2, 0);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E61A4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E6258;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 

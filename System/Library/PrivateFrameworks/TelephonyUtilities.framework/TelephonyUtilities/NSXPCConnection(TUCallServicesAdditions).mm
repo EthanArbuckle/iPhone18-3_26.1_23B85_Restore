@@ -11,7 +11,7 @@
 - (id)processName
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (proc_name([a1 processIdentifier], &v4, 0x100u) < 1)
+  if (proc_name([self processIdentifier], &v4, 0x100u) < 1)
   {
     v1 = 0;
   }
@@ -29,7 +29,7 @@
 - (__CFString)processBundleIdentifier
 {
   memset(&v5[1], 0, sizeof(audit_token_t));
-  [a1 auditToken];
+  [self auditToken];
   v5[0] = v5[1];
   v1 = SecTaskCreateWithAuditToken(0, v5);
   if (v1)
@@ -74,8 +74,8 @@
 - (void)performBlockOnQueue:()TUCallServicesAdditions
 {
   v4 = a3;
-  v5 = [a1 _queue];
-  dispatch_async(v5, v4);
+  _queue = [self _queue];
+  dispatch_async(_queue, v4);
 }
 
 @end

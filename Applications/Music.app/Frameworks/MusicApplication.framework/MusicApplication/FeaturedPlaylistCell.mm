@@ -1,11 +1,11 @@
 @interface FeaturedPlaylistCell
 + (UIEdgeInsets)visualContentInsets;
-- (_TtC16MusicApplication20FeaturedPlaylistCell)initWithCoder:(id)a3;
+- (_TtC16MusicApplication20FeaturedPlaylistCell)initWithCoder:(id)coder;
 @end
 
 @implementation FeaturedPlaylistCell
 
-- (_TtC16MusicApplication20FeaturedPlaylistCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication20FeaturedPlaylistCell)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC16MusicApplication20FeaturedPlaylistCell_name);
   *v3 = 0;

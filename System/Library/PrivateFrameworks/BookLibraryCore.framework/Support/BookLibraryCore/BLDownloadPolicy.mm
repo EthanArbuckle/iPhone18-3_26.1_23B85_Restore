@@ -1,19 +1,19 @@
 @interface BLDownloadPolicy
-+ (id)policyInfoWithCellularResult:(int64_t)a3;
++ (id)policyInfoWithCellularResult:(int64_t)result;
 - (BOOL)hasCellularResult;
 - (NSDictionary)info;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)cellularResult;
 - (void)_loadCachedPropertiesIfNeeded;
-- (void)setPolicyData:(id)a3;
+- (void)setPolicyData:(id)data;
 @end
 
 @implementation BLDownloadPolicy
 
-+ (id)policyInfoWithCellularResult:(int64_t)a3
++ (id)policyInfoWithCellularResult:(int64_t)result
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:result];
   [v4 setObject:v5 forKeyedSubscript:@"CellularResult"];
 
   v6 = [v4 copy];
@@ -25,10 +25,10 @@
 {
   if (![(BLDownloadPolicy *)self cacheLoaded])
   {
-    v3 = [(BLDownloadPolicy *)self policyData];
+    policyData = [(BLDownloadPolicy *)self policyData];
     [(BLDownloadPolicy *)self setCachedInfo:0];
     v12 = 0;
-    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v3 error:&v12];
+    v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:policyData error:&v12];
     v5 = v12;
     if (v5)
     {
@@ -66,8 +66,8 @@
 
 - (BOOL)hasCellularResult
 {
-  v2 = [(BLDownloadPolicy *)self info];
-  v3 = [v2 objectForKey:@"CellularResult"];
+  info = [(BLDownloadPolicy *)self info];
+  v3 = [info objectForKey:@"CellularResult"];
   v4 = v3 != 0;
 
   return v4;
@@ -75,11 +75,11 @@
 
 - (int64_t)cellularResult
 {
-  v2 = [(BLDownloadPolicy *)self info];
-  v3 = [v2 objectForKeyedSubscript:@"CellularResult"];
-  v4 = [v3 integerValue];
+  info = [(BLDownloadPolicy *)self info];
+  v3 = [info objectForKeyedSubscript:@"CellularResult"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSDictionary)info
@@ -89,9 +89,9 @@
   return [(BLDownloadPolicy *)self cachedInfo];
 }
 
-- (void)setPolicyData:(id)a3
+- (void)setPolicyData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   policyData = self->_policyData;
   self->_policyData = v4;
 
@@ -100,16 +100,16 @@
   [(BLDownloadPolicy *)self setCachedInfo:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(BLDownloadPolicy *)self policyID];
-    [v4 setPolicyID:v5];
+    policyID = [(BLDownloadPolicy *)self policyID];
+    [v4 setPolicyID:policyID];
 
-    v6 = [(BLDownloadPolicy *)self policyData];
-    [v4 setPolicyData:v6];
+    policyData = [(BLDownloadPolicy *)self policyData];
+    [v4 setPolicyData:policyData];
   }
 
   return v4;

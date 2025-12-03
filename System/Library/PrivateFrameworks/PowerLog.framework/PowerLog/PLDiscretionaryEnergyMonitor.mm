@@ -1,33 +1,33 @@
 @interface PLDiscretionaryEnergyMonitor
-- (PLDiscretionaryEnergyMonitor)initWithCompletionBlock:(id)a3;
-- (PLDiscretionaryEnergyMonitor)initWithDebugMode:(BOOL)a3 andMockData:(id)a4 andCompletionBlock:(id)a5;
-- (double)getPowerlogEnergySum:(id)a3;
+- (PLDiscretionaryEnergyMonitor)initWithCompletionBlock:(id)block;
+- (PLDiscretionaryEnergyMonitor)initWithDebugMode:(BOOL)mode andMockData:(id)data andCompletionBlock:(id)block;
+- (double)getPowerlogEnergySum:(id)sum;
 - (id)createPowerlogQueryTimer;
 - (id)createQuickEnergyAccumulatorTimer;
 - (void)accumulateQuickEnergy;
 - (void)createQuickEnergyAccumulatorTimer;
 - (void)generateEnergyReport;
-- (void)incrementCPUEnergy:(double)a3;
-- (void)incrementNetworkEnergy:(double)a3;
-- (void)logEnergyReport:(id)a3;
-- (void)logPowerlogResponse:(id)a3;
+- (void)incrementCPUEnergy:(double)energy;
+- (void)incrementNetworkEnergy:(double)energy;
+- (void)logEnergyReport:(id)report;
+- (void)logPowerlogResponse:(id)response;
 - (void)logQuickEnergySnapshots;
 - (void)queryPowerlogForDiscretionaryEnergy;
-- (void)reportChargingStatus:(BOOL)a3;
-- (void)reportStartEvent:(id)a3 withInfo:(id)a4;
-- (void)reportStopEvent:(id)a3 withInfo:(id)a4;
-- (void)runCompletionBlockWithEnergyResponse:(id)a3;
-- (void)setStateForNotification:(id)a3 withState:(id)a4;
+- (void)reportChargingStatus:(BOOL)status;
+- (void)reportStartEvent:(id)event withInfo:(id)info;
+- (void)reportStopEvent:(id)event withInfo:(id)info;
+- (void)runCompletionBlockWithEnergyResponse:(id)response;
+- (void)setStateForNotification:(id)notification withState:(id)state;
 - (void)setupNotificationListeners;
-- (void)testHighVolumeStartStopReporting:(id)a3 withInfo:(id)a4 withNumIterations:(double)a5;
-- (void)updateMockData:(id)a3;
+- (void)testHighVolumeStartStopReporting:(id)reporting withInfo:(id)info withNumIterations:(double)iterations;
+- (void)updateMockData:(id)data;
 @end
 
 @implementation PLDiscretionaryEnergyMonitor
 
-- (PLDiscretionaryEnergyMonitor)initWithCompletionBlock:(id)a3
+- (PLDiscretionaryEnergyMonitor)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = PLDiscretionaryEnergyMonitor;
   v5 = [(PLDiscretionaryEnergyMonitor *)&v10 init];
@@ -40,7 +40,7 @@
       _os_log_impl(&dword_1BACB7000, v6, OS_LOG_TYPE_DEFAULT, "Initializing PLDiscretionaryEnergyMonitor...", v9, 2u);
     }
 
-    v5 = [(PLDiscretionaryEnergyMonitor *)v5 initWithDebugMode:0 andMockData:0 andCompletionBlock:v4];
+    v5 = [(PLDiscretionaryEnergyMonitor *)v5 initWithDebugMode:0 andMockData:0 andCompletionBlock:blockCopy];
     v7 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -52,24 +52,24 @@
   return v5;
 }
 
-- (PLDiscretionaryEnergyMonitor)initWithDebugMode:(BOOL)a3 andMockData:(id)a4 andCompletionBlock:(id)a5
+- (PLDiscretionaryEnergyMonitor)initWithDebugMode:(BOOL)mode andMockData:(id)data andCompletionBlock:(id)block
 {
-  v6 = a3;
+  modeCopy = mode;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = PLDiscretionaryEnergyMonitor;
   v10 = [(PLDiscretionaryEnergyMonitor *)&v26 init];
   v11 = v10;
   if (v10)
   {
-    [(PLDiscretionaryEnergyMonitor *)v10 setCompletionBlock:v9];
+    [(PLDiscretionaryEnergyMonitor *)v10 setCompletionBlock:blockCopy];
     v12 = discretionaryEnergyMonitorQueue();
     [(PLDiscretionaryEnergyMonitor *)v11 setWorkQueue:v12];
 
     [(PLDiscretionaryEnergyMonitor *)v11 setMockData:0];
-    v13 = v6 && +[PLModelingUtilities internalBuild];
+    v13 = modeCopy && +[PLModelingUtilities internalBuild];
     [(PLDiscretionaryEnergyMonitor *)v11 setDebugMode:v13];
     if ([(PLDiscretionaryEnergyMonitor *)v11 debugMode])
     {
@@ -77,17 +77,17 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v28 = v8;
+        v28 = dataCopy;
         _os_log_impl(&dword_1BACB7000, v14, OS_LOG_TYPE_INFO, "Initializing in debug mode with mockData=%@", buf, 0xCu);
       }
 
-      if (v8)
+      if (dataCopy)
       {
-        v15 = [v8 mutableCopy];
+        v15 = [dataCopy mutableCopy];
         [(PLDiscretionaryEnergyMonitor *)v11 setMockData:v15];
 
-        v16 = [(PLDiscretionaryEnergyMonitor *)v11 mockData];
-        v17 = [v16 objectForKeyedSubscript:@"LastPowerlogResponseMock"];
+        mockData = [(PLDiscretionaryEnergyMonitor *)v11 mockData];
+        v17 = [mockData objectForKeyedSubscript:@"LastPowerlogResponseMock"];
         [(PLDiscretionaryEnergyMonitor *)v11 setLastPowerlogResponse:v17];
       }
     }
@@ -102,11 +102,11 @@
     [(PLDiscretionaryEnergyMonitor *)v11 setLastReportedTotalEnergy:0.0];
     [(PLDiscretionaryEnergyMonitor *)v11 setPowerlogEnergyLast:0.0];
     [(PLDiscretionaryEnergyMonitor *)v11 setPowerlogEnergyPrevious:0.0];
-    v18 = [(PLDiscretionaryEnergyMonitor *)v11 createPowerlogQueryTimer];
-    [(PLDiscretionaryEnergyMonitor *)v11 setPowerlogQueryTimer:v18];
+    createPowerlogQueryTimer = [(PLDiscretionaryEnergyMonitor *)v11 createPowerlogQueryTimer];
+    [(PLDiscretionaryEnergyMonitor *)v11 setPowerlogQueryTimer:createPowerlogQueryTimer];
 
-    v19 = [(PLDiscretionaryEnergyMonitor *)v11 createQuickEnergyAccumulatorTimer];
-    [(PLDiscretionaryEnergyMonitor *)v11 setQuickEnergyAccumulatorTimer:v19];
+    createQuickEnergyAccumulatorTimer = [(PLDiscretionaryEnergyMonitor *)v11 createQuickEnergyAccumulatorTimer];
+    [(PLDiscretionaryEnergyMonitor *)v11 setQuickEnergyAccumulatorTimer:createQuickEnergyAccumulatorTimer];
 
     v20 = objc_opt_new();
     [(PLDiscretionaryEnergyMonitor *)v11 setQuickEnergySnapshots:v20];
@@ -115,8 +115,8 @@
     [(PLDiscretionaryEnergyMonitor *)v11 accumulateQuickEnergy];
     [(PLDiscretionaryEnergyMonitor *)v11 setIsCharging:0];
     v21 = [PLDiscretionaryIntervalManager alloc];
-    v22 = [(PLDiscretionaryEnergyMonitor *)v11 mockData];
-    v23 = [(PLDiscretionaryIntervalManager *)v21 initWithEnergyMonitor:v11 andMockData:v22];
+    mockData2 = [(PLDiscretionaryEnergyMonitor *)v11 mockData];
+    v23 = [(PLDiscretionaryIntervalManager *)v21 initWithEnergyMonitor:v11 andMockData:mockData2];
     [(PLDiscretionaryEnergyMonitor *)v11 setIntervalManager:v23];
   }
 
@@ -124,10 +124,10 @@
   return v11;
 }
 
-- (void)reportStartEvent:(id)a3 withInfo:(id)a4
+- (void)reportStartEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  infoCopy = info;
   v8 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -140,10 +140,10 @@
   block[2] = __58__PLDiscretionaryEnergyMonitor_reportStartEvent_withInfo___block_invoke;
   block[3] = &unk_1E7F18808;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = eventCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = eventCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -153,10 +153,10 @@ void __58__PLDiscretionaryEnergyMonitor_reportStartEvent_withInfo___block_invoke
   [v2 handleStartEvent:*(a1 + 40) withInfo:*(a1 + 48)];
 }
 
-- (void)reportStopEvent:(id)a3 withInfo:(id)a4
+- (void)reportStopEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  infoCopy = info;
   v8 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -170,10 +170,10 @@ void __58__PLDiscretionaryEnergyMonitor_reportStartEvent_withInfo___block_invoke
   block[2] = __57__PLDiscretionaryEnergyMonitor_reportStopEvent_withInfo___block_invoke;
   block[3] = &unk_1E7F18808;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = eventCopy;
+  v15 = infoCopy;
+  v11 = infoCopy;
+  v12 = eventCopy;
   dispatch_after(v9, workQueue, block);
 }
 
@@ -186,7 +186,7 @@ void __57__PLDiscretionaryEnergyMonitor_reportStopEvent_withInfo___block_invoke(
 - (void)generateEnergyReport
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 lastPowerlogResponse];
+  lastPowerlogResponse = [self lastPowerlogResponse];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_8();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -379,15 +379,15 @@ LABEL_32:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runCompletionBlockWithEnergyResponse:(id)a3
+- (void)runCompletionBlockWithEnergyResponse:(id)response
 {
-  v6 = a3;
-  v4 = [(PLDiscretionaryEnergyMonitor *)self completionBlock];
+  responseCopy = response;
+  completionBlock = [(PLDiscretionaryEnergyMonitor *)self completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
-    v5 = [(PLDiscretionaryEnergyMonitor *)self completionBlock];
-    (v5)[2](v5, v6);
+    completionBlock2 = [(PLDiscretionaryEnergyMonitor *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, responseCopy);
   }
 }
 
@@ -530,10 +530,10 @@ void __53__PLDiscretionaryEnergyMonitor_accumulateQuickEnergy__block_invoke(uint
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (double)getPowerlogEnergySum:(id)a3
+- (double)getPowerlogEnergySum:(id)sum
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BLMEnergyForDuet"];
+  sumCopy = sum;
+  v4 = [sumCopy objectForKeyedSubscript:@"BLMEnergyForDuet"];
   v5 = [v4 count];
 
   if (v5)
@@ -542,7 +542,7 @@ void __53__PLDiscretionaryEnergyMonitor_accumulateQuickEnergy__block_invoke(uint
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v6 = [v3 objectForKeyedSubscript:@"BLMEnergyForDuet"];
+    v6 = [sumCopy objectForKeyedSubscript:@"BLMEnergyForDuet"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53__PLDiscretionaryEnergyMonitor_getPowerlogEnergySum___block_invoke;
@@ -569,7 +569,7 @@ void __53__PLDiscretionaryEnergyMonitor_getPowerlogEnergySum___block_invoke(uint
   *(*(*(a1 + 32) + 8) + 24) = v3 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (void)reportChargingStatus:(BOOL)a3
+- (void)reportChargingStatus:(BOOL)status
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -577,7 +577,7 @@ void __53__PLDiscretionaryEnergyMonitor_getPowerlogEnergySum___block_invoke(uint
   v4[2] = __53__PLDiscretionaryEnergyMonitor_reportChargingStatus___block_invoke;
   v4[3] = &unk_1E7F18880;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(workQueue, v4);
 }
 
@@ -631,7 +631,7 @@ uint64_t __53__PLDiscretionaryEnergyMonitor_reportChargingStatus___block_invoke(
   return result;
 }
 
-- (void)incrementCPUEnergy:(double)a3
+- (void)incrementCPUEnergy:(double)energy
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -639,7 +639,7 @@ uint64_t __53__PLDiscretionaryEnergyMonitor_reportChargingStatus___block_invoke(
   v4[2] = __51__PLDiscretionaryEnergyMonitor_incrementCPUEnergy___block_invoke;
   v4[3] = &unk_1E7F188A8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = energy;
   dispatch_async(workQueue, v4);
 }
 
@@ -669,7 +669,7 @@ void __51__PLDiscretionaryEnergyMonitor_incrementCPUEnergy___block_invoke(uint64
   }
 }
 
-- (void)incrementNetworkEnergy:(double)a3
+- (void)incrementNetworkEnergy:(double)energy
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -677,7 +677,7 @@ void __51__PLDiscretionaryEnergyMonitor_incrementCPUEnergy___block_invoke(uint64
   v4[2] = __55__PLDiscretionaryEnergyMonitor_incrementNetworkEnergy___block_invoke;
   v4[3] = &unk_1E7F188A8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = energy;
   dispatch_async(workQueue, v4);
 }
 
@@ -707,34 +707,34 @@ void __55__PLDiscretionaryEnergyMonitor_incrementNetworkEnergy___block_invoke(ui
   }
 }
 
-- (void)testHighVolumeStartStopReporting:(id)a3 withInfo:(id)a4 withNumIterations:(double)a5
+- (void)testHighVolumeStartStopReporting:(id)reporting withInfo:(id)info withNumIterations:(double)iterations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reportingCopy = reporting;
+  infoCopy = info;
   v10 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412802;
-    v15 = v8;
+    v15 = reportingCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = infoCopy;
     v18 = 2048;
-    v19 = a5;
+    iterationsCopy = iterations;
     _os_log_impl(&dword_1BACB7000, v10, OS_LOG_TYPE_DEFAULT, "Testing high volume start/stops for activityName=%@, withInfo=%@ for %f iterations", &v14, 0x20u);
   }
 
-  if (a5 > 0.0)
+  if (iterations > 0.0)
   {
     v11 = 1;
     do
     {
-      [(PLDiscretionaryEnergyMonitor *)self reportStartEvent:v8 withInfo:v9];
-      [(PLDiscretionaryEnergyMonitor *)self reportStopEvent:v8 withInfo:v9];
+      [(PLDiscretionaryEnergyMonitor *)self reportStartEvent:reportingCopy withInfo:infoCopy];
+      [(PLDiscretionaryEnergyMonitor *)self reportStopEvent:reportingCopy withInfo:infoCopy];
       v12 = v11++;
     }
 
-    while (v12 < a5);
+    while (v12 < iterations);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -775,23 +775,23 @@ void __55__PLDiscretionaryEnergyMonitor_incrementNetworkEnergy___block_invoke(ui
   CFNotificationCenterAddObserver(v15, self, didReceiveNotification, @"com.apple.energybudgetingdebug.accumulatedNetworkEnergy", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)setStateForNotification:(id)a3 withState:(id)a4
+- (void)setStateForNotification:(id)notification withState:(id)state
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  stateCopy = state;
   v7 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = stateCopy;
     v12 = 2112;
-    v13 = v5;
+    v13 = notificationCopy;
     _os_log_impl(&dword_1BACB7000, v7, OS_LOG_TYPE_INFO, "Setting state=%@ for notificationName=%@", &v10, 0x16u);
   }
 
   v10 = 0;
-  if (notify_register_check([v5 UTF8String], &v10))
+  if (notify_register_check([notificationCopy UTF8String], &v10))
   {
     v8 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -804,7 +804,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (notify_set_state(v10, [v6 unsignedLongLongValue]))
+  if (notify_set_state(v10, [stateCopy unsignedLongLongValue]))
   {
     v8 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -820,34 +820,34 @@ LABEL_10:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMockData:(id)a3
+- (void)updateMockData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLDiscretionaryEnergyMonitor *)self debugMode];
+  dataCopy = data;
+  debugMode = [(PLDiscretionaryEnergyMonitor *)self debugMode];
   v6 = PLLogDiscretionaryEnergyMonitor();
   v7 = v6;
-  if (v5)
+  if (debugMode)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dataCopy;
       _os_log_impl(&dword_1BACB7000, v7, OS_LOG_TYPE_INFO, "Updating to mockData=%@", &v15, 0xCu);
     }
 
-    v7 = [v4 mutableCopy];
+    v7 = [dataCopy mutableCopy];
     v8 = [v7 objectForKeyedSubscript:@"LastPowerlogResponseMock"];
-    v9 = [(PLDiscretionaryEnergyMonitor *)self mockData];
-    [v9 setObject:v8 forKeyedSubscript:@"LastPowerlogResponseMock"];
+    mockData = [(PLDiscretionaryEnergyMonitor *)self mockData];
+    [mockData setObject:v8 forKeyedSubscript:@"LastPowerlogResponseMock"];
 
-    v10 = [(PLDiscretionaryEnergyMonitor *)self mockData];
-    v11 = [v10 objectForKeyedSubscript:@"LastPowerlogResponseMock"];
+    mockData2 = [(PLDiscretionaryEnergyMonitor *)self mockData];
+    v11 = [mockData2 objectForKeyedSubscript:@"LastPowerlogResponseMock"];
     [(PLDiscretionaryEnergyMonitor *)self setLastPowerlogResponse:v11];
 
     v12 = [v7 objectForKeyedSubscript:@"CPUCoalitionsMock"];
-    v13 = [(PLDiscretionaryEnergyMonitor *)self mockData];
-    [v13 setObject:v12 forKeyedSubscript:@"CPUCoalitionsMock"];
+    mockData3 = [(PLDiscretionaryEnergyMonitor *)self mockData];
+    [mockData3 setObject:v12 forKeyedSubscript:@"CPUCoalitionsMock"];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -858,17 +858,17 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logPowerlogResponse:(id)a3
+- (void)logPowerlogResponse:(id)response
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BLMEnergyForDuet"];
+  responseCopy = response;
+  v4 = [responseCopy objectForKeyedSubscript:@"BLMEnergyForDuet"];
   [v4 enumerateObjectsUsingBlock:&__block_literal_global_525];
 
   v5 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v3 objectForKeyedSubscript:@"BLMEnergyResponseTimestamp"];
+    v6 = [responseCopy objectForKeyedSubscript:@"BLMEnergyResponseTimestamp"];
     v10 = 138412290;
     v11 = v6;
     _os_log_impl(&dword_1BACB7000, v5, OS_LOG_TYPE_INFO, "EnergyResponseTimestamp: %@", &v10, 0xCu);
@@ -877,7 +877,7 @@ LABEL_10:
   v7 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v3 objectForKeyedSubscript:@"BLMUUIDForDuet"];
+    v8 = [responseCopy objectForKeyedSubscript:@"BLMUUIDForDuet"];
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1BACB7000, v7, OS_LOG_TYPE_INFO, "UUIDForDuet: %@", &v10, 0xCu);
@@ -903,8 +903,8 @@ void __52__PLDiscretionaryEnergyMonitor_logPowerlogResponse___block_invoke(uint6
 
 - (void)logQuickEnergySnapshots
 {
-  v2 = [(PLDiscretionaryEnergyMonitor *)self quickEnergySnapshots];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_530];
+  quickEnergySnapshots = [(PLDiscretionaryEnergyMonitor *)self quickEnergySnapshots];
+  [quickEnergySnapshots enumerateObjectsUsingBlock:&__block_literal_global_530];
 }
 
 void __55__PLDiscretionaryEnergyMonitor_logQuickEnergySnapshots__block_invoke(uint64_t a1, void *a2)
@@ -922,16 +922,16 @@ void __55__PLDiscretionaryEnergyMonitor_logQuickEnergySnapshots__block_invoke(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logEnergyReport:(id)a3
+- (void)logEnergyReport:(id)report
 {
-  v3 = a3;
+  reportCopy = report;
   v4 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PLDiscretionaryEnergyMonitor logEnergyReport:];
   }
 
-  PLLogRegisteredEvent(70, @"DASEnergyReport", v3);
+  PLLogRegisteredEvent(70, @"DASEnergyReport", reportCopy);
 }
 
 - (void)reportStartEvent:withInfo:.cold.1()

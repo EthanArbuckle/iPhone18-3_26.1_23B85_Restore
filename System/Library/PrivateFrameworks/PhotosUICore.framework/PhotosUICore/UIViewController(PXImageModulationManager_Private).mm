@@ -11,10 +11,10 @@
 - (double)_px_imageModulationMixFactorWithPresentedViewController:()PXImageModulationManager_Private
 {
   v4 = a3;
-  v5 = [v4 _appearState];
-  if (v5 == 3)
+  _appearState = [v4 _appearState];
+  if (_appearState == 3)
   {
-    v7 = [a1 px_isImageModulationEnabled] == 0;
+    v7 = [self px_isImageModulationEnabled] == 0;
     v8 = 1.0;
     v9 = 0.0;
 LABEL_7:
@@ -31,14 +31,14 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (v5 == 2)
+  if (_appearState == 2)
   {
     v6 = 1.0;
     goto LABEL_10;
   }
 
   v6 = 0.0;
-  if (v5 == 1)
+  if (_appearState == 1)
   {
     v7 = [v4 px_isImageModulationEnabled] == 0;
     v8 = 0.0;
@@ -53,27 +53,27 @@ LABEL_10:
 
 - (double)px_effectiveImageModulationIntensity
 {
-  v2 = [a1 px_topmostPresentedViewController];
-  if (v2)
+  px_topmostPresentedViewController = [self px_topmostPresentedViewController];
+  if (px_topmostPresentedViewController)
   {
-    [a1 _px_imageModulationMixFactorWithPresentedViewController:v2];
+    [self _px_imageModulationMixFactorWithPresentedViewController:px_topmostPresentedViewController];
     v4 = v3;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __90__UIViewController_PXImageModulationManager_Private__px_effectiveImageModulationIntensity__block_invoke;
     v11[3] = &unk_1E773AF88;
-    v11[4] = a1;
+    v11[4] = self;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __90__UIViewController_PXImageModulationManager_Private__px_effectiveImageModulationIntensity__block_invoke_2;
     v9[3] = &unk_1E773AF88;
-    v10 = v2;
+    v10 = px_topmostPresentedViewController;
     v5 = PXImageModulationFloatByLinearlyInterpolatingFloats(v11, v9, v4);
   }
 
   else
   {
-    [a1 px_imageModulationIntensity];
+    [self px_imageModulationIntensity];
     v5 = v6;
   }
 
@@ -84,7 +84,7 @@ LABEL_10:
 
   if (px_effectiveImageModulationIntensity_hookExists == 1)
   {
-    [a1 px_effectiveImageModulationIntensityWithProposedValue:v5];
+    [self px_effectiveImageModulationIntensityWithProposedValue:v5];
     v5 = v7;
   }
 
@@ -94,27 +94,27 @@ LABEL_10:
 - (double)px_effectiveHDRFocus
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 px_topmostPresentedViewController];
-  if (v2)
+  px_topmostPresentedViewController = [self px_topmostPresentedViewController];
+  if (px_topmostPresentedViewController)
   {
-    [a1 _px_imageModulationMixFactorWithPresentedViewController:v2];
+    [self _px_imageModulationMixFactorWithPresentedViewController:px_topmostPresentedViewController];
     v4 = v3;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __74__UIViewController_PXImageModulationManager_Private__px_effectiveHDRFocus__block_invoke;
     v11[3] = &unk_1E773AF88;
-    v11[4] = a1;
+    v11[4] = self;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__UIViewController_PXImageModulationManager_Private__px_effectiveHDRFocus__block_invoke_2;
     v9[3] = &unk_1E773AF88;
-    v10 = v2;
+    v10 = px_topmostPresentedViewController;
     v5 = PXImageModulationFloatByLinearlyInterpolatingFloats(v11, v9, v4);
   }
 
   else
   {
-    [a1 px_HDRFocus];
+    [self px_HDRFocus];
     v5 = v6;
   }
 
@@ -122,9 +122,9 @@ LABEL_10:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v2;
+    v15 = px_topmostPresentedViewController;
     v16 = 2048;
     v17 = v5;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "[ImageModulation] Asked %@ for its presentedVC: %@ to determine effectiveHDRFocus: %f", buf, 0x20u);
@@ -137,15 +137,15 @@ LABEL_10:
 {
   v2 = PXImageModulationEnabledAssociationKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 - (uint64_t)px_isImageModulationEnabled
 {
-  v1 = objc_getAssociatedObject(a1, PXImageModulationEnabledAssociationKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, PXImageModulationEnabledAssociationKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

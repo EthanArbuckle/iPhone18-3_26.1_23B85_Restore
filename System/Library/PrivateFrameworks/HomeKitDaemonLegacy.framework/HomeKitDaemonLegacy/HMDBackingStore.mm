@@ -6,29 +6,29 @@
 + (id)flushBackingStore;
 + (id)logCategory;
 + (id)resetBackingStore;
-+ (void)saveToPersistentStoreWithReason:(id)a3 homeManager:(id)a4 shouldIncrementGenerationCounter:(BOOL)a5 backingStore:(id)a6 completionHandler:(id)a7;
-- (HMDBackingStore)initWithUUID:(id)a3;
-- (HMDBackingStore)initWithUUID:(id)a3 home:(id)a4;
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4;
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4 home:(id)a5 dataSource:(id)a6;
++ (void)saveToPersistentStoreWithReason:(id)reason homeManager:(id)manager shouldIncrementGenerationCounter:(BOOL)counter backingStore:(id)store completionHandler:(id)handler;
+- (HMDBackingStore)initWithUUID:(id)d;
+- (HMDBackingStore)initWithUUID:(id)d home:(id)home;
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager;
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager home:(id)home dataSource:(id)source;
 - (HMDBackingStoreObjectProtocol)delegate;
 - (HMDHome)home;
 - (HMDHomeManager)homeManager;
 - (NSString)activeControllerKeyUsername;
-- (id)__fetchWithGroup:(id)a3 uuids:(id)a4 error:(id *)a5;
-- (id)_saveHomeDataInOperationWithControllerUserName:(uint64_t)a3 incrementGeneration:(void *)a4 reason:;
+- (id)__fetchWithGroup:(id)group uuids:(id)uuids error:(id *)error;
+- (id)_saveHomeDataInOperationWithControllerUserName:(uint64_t)name incrementGeneration:(void *)generation reason:;
 - (id)backingStoreOperationQueue;
-- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)a3;
+- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)transaction;
 - (id)createBackingStoreOperation;
-- (id)createHomeObjectLookupWithHome:(id)a3;
+- (id)createHomeObjectLookupWithHome:(id)home;
 - (id)dataSource;
 - (id)localBackingStore;
 - (id)logIdentifier;
-- (id)transaction:(id)a3 options:(id)a4;
-- (void)commit:(id)a3 run:(BOOL)a4 save:(BOOL)a5 archiveInline:(BOOL)a6 completionHandler:(id)a7;
-- (void)saveToPersistentStoreWithReason:(id)a3 incrementGeneration:(BOOL)a4;
-- (void)submit:(id)a3;
-- (void)submitBlock:(id)a3;
+- (id)transaction:(id)transaction options:(id)options;
+- (void)commit:(id)commit run:(BOOL)run save:(BOOL)save archiveInline:(BOOL)inline completionHandler:(id)handler;
+- (void)saveToPersistentStoreWithReason:(id)reason incrementGeneration:(BOOL)generation;
+- (void)submit:(id)submit;
+- (void)submitBlock:(id)block;
 @end
 
 @implementation HMDBackingStore
@@ -56,17 +56,17 @@
 
 - (NSString)activeControllerKeyUsername
 {
-  v2 = [MEMORY[0x277CFEC78] systemStore];
-  v3 = [v2 activeControllerPairingIdentifier];
-  v4 = [v3 copy];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  activeControllerPairingIdentifier = [systemStore activeControllerPairingIdentifier];
+  v4 = [activeControllerPairingIdentifier copy];
 
   return v4;
 }
 
-- (id)createHomeObjectLookupWithHome:(id)a3
+- (id)createHomeObjectLookupWithHome:(id)home
 {
-  v3 = a3;
-  v4 = [[HMDHomeObjectLookup alloc] initWithHome:v3];
+  homeCopy = home;
+  v4 = [[HMDHomeObjectLookup alloc] initWithHome:homeCopy];
 
   return v4;
 }
@@ -74,17 +74,17 @@
 - (id)backingStoreOperationQueue
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 queue];
+  queue = [v2 queue];
 
-  return v3;
+  return queue;
 }
 
 - (id)localBackingStore
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 local];
+  local = [v2 local];
 
-  return v3;
+  return local;
 }
 
 - (id)createBackingStoreOperation
@@ -94,19 +94,19 @@
   return v2;
 }
 
-- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)a3
+- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [[HMDBackingStoreLogAddTransactionOperation alloc] initWithTransaction:v3];
+  transactionCopy = transaction;
+  v4 = [[HMDBackingStoreLogAddTransactionOperation alloc] initWithTransaction:transactionCopy];
 
   return v4;
 }
 
-- (id)__fetchWithGroup:(id)a3 uuids:(id)a4 error:(id *)a5
+- (id)__fetchWithGroup:(id)group uuids:(id)uuids error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
+  groupCopy = group;
+  uuidsCopy = uuids;
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -118,20 +118,20 @@
   aBlock[2] = __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke;
   aBlock[3] = &unk_279730F18;
   v21 = &v22;
-  v11 = v10;
+  v11 = array;
   v19 = v11;
-  v12 = v8;
+  v12 = groupCopy;
   v20 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(HMDBackingStore *)self local];
-  [v14 _fetchRecordsWithGroupID:objc_msgSend(v12 uuids:"groupID") callback:{v9, v13}];
+  local = [(HMDBackingStore *)self local];
+  [local _fetchRecordsWithGroupID:objc_msgSend(v12 uuids:"groupID") callback:{uuidsCopy, v13}];
 
   v15 = v23[5];
   if (v15)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v15;
+      *error = v15;
     }
 
     v11 = 0;
@@ -174,28 +174,28 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
   return v15 == 0;
 }
 
-- (void)submitBlock:(id)a3
+- (void)submitBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[HMDBackingStoreOperation alloc] initWithResultBlock:v4];
+  blockCopy = block;
+  v5 = [[HMDBackingStoreOperation alloc] initWithResultBlock:blockCopy];
 
   [(HMDBackingStore *)self submit:v5];
 }
 
-- (void)saveToPersistentStoreWithReason:(id)a3 incrementGeneration:(BOOL)a4
+- (void)saveToPersistentStoreWithReason:(id)reason incrementGeneration:(BOOL)generation
 {
-  v26 = a4;
+  generationCopy = generation;
   v40 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v5 = [(HMDBackingStore *)&self->super.super.isa dataSource];
-  v6 = [v5 backingStoreOperationQueue];
+  reasonCopy = reason;
+  dataSource = [(HMDBackingStore *)&self->super.super.isa dataSource];
+  backingStoreOperationQueue = [dataSource backingStoreOperationQueue];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [v6 operations];
-  v8 = [(HMDBackingStoreSaveToPersistentStore *)v7 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  operations = [backingStoreOperationQueue operations];
+  v8 = [(HMDBackingStoreSaveToPersistentStore *)operations countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v8)
   {
     v9 = v8;
@@ -206,7 +206,7 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(operations);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -223,12 +223,12 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
 
         v14 = v13;
 
-        if (v14 && ([v14 isExecuting] & 1) == 0 && (objc_msgSend(v14, "isFinished") & 1) == 0 && (objc_msgSend(v14, "incrementGeneration") | !v26) == 1)
+        if (v14 && ([v14 isExecuting] & 1) == 0 && (objc_msgSend(v14, "isFinished") & 1) == 0 && (objc_msgSend(v14, "incrementGeneration") | !generationCopy) == 1)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = self;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
-          v17 = v25;
+          v17 = reasonCopy;
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
             v21 = HMFGetLogIdentifier();
@@ -238,7 +238,7 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
             *buf = 138544130;
             v32 = v21;
             v33 = 2112;
-            v34 = v25;
+            v34 = reasonCopy;
             v35 = 2112;
             v36 = v22;
             v37 = 2112;
@@ -251,7 +251,7 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
         }
       }
 
-      v9 = [(HMDBackingStoreSaveToPersistentStore *)v7 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v9 = [(HMDBackingStoreSaveToPersistentStore *)operations countByEnumeratingWithState:&v27 objects:v39 count:16];
       if (v9)
       {
         continue;
@@ -262,13 +262,13 @@ BOOL __48__HMDBackingStore___fetchWithGroup_uuids_error___block_invoke(void *a1,
   }
 
   v15 = [HMDBackingStoreSaveToPersistentStore alloc];
-  v16 = [(HMDBackingStore *)self homeManager];
-  v17 = v25;
-  v7 = [(HMDBackingStoreSaveToPersistentStore *)v15 initWithHomeManager:v16 reason:v25 incrementGeneration:v26];
+  homeManager = [(HMDBackingStore *)self homeManager];
+  v17 = reasonCopy;
+  operations = [(HMDBackingStoreSaveToPersistentStore *)v15 initWithHomeManager:homeManager reason:reasonCopy incrementGeneration:generationCopy];
 
-  [(HMDBackingStoreOperation *)v7 setStore:self];
-  [(HMDBackingStoreSaveToPersistentStore *)v7 setQueuePriority:-4];
-  [v6 addOperation:v7];
+  [(HMDBackingStoreOperation *)operations setStore:self];
+  [(HMDBackingStoreSaveToPersistentStore *)operations setQueuePriority:-4];
+  [backingStoreOperationQueue addOperation:operations];
 LABEL_19:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -287,40 +287,40 @@ LABEL_19:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStore *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDBackingStore *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
-  [v4 setStore:self];
-  v6 = [(HMDBackingStore *)&self->super.super.isa dataSource];
-  v5 = [v6 backingStoreOperationQueue];
-  [v5 addOperation:v4];
+  submitCopy = submit;
+  [submitCopy setStore:self];
+  dataSource = [(HMDBackingStore *)&self->super.super.isa dataSource];
+  backingStoreOperationQueue = [dataSource backingStoreOperationQueue];
+  [backingStoreOperationQueue addOperation:submitCopy];
 }
 
-- (void)commit:(id)a3 run:(BOOL)a4 save:(BOOL)a5 archiveInline:(BOOL)a6 completionHandler:(id)a7
+- (void)commit:(id)commit run:(BOOL)run save:(BOOL)save archiveInline:(BOOL)inline completionHandler:(id)handler
 {
-  v9 = a5;
+  saveCopy = save;
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  aBlock = a7;
-  if ([v12 committed])
+  commitCopy = commit;
+  aBlock = handler;
+  if ([commitCopy committed])
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v12 options];
+      options = [commitCopy options];
       *buf = 138543618;
       v50 = v16;
       v51 = 2112;
-      v52 = v17;
+      v52 = options;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@double-committing a transaction probably indicates a bad state (ignoring this commit) for %@.", buf, 0x16u);
     }
 
@@ -329,23 +329,23 @@ LABEL_19:
 
   else
   {
-    [v12 setCommitted:1];
-    v18 = [v12 objects];
-    v19 = [v18 hmf_isEmpty];
+    [commitCopy setCommitted:1];
+    objects = [commitCopy objects];
+    hmf_isEmpty = [objects hmf_isEmpty];
 
-    if (v19)
+    if (hmf_isEmpty)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v12 options];
+        options2 = [commitCopy options];
         *buf = 138543618;
         v50 = v23;
         v51 = 2112;
-        v52 = v24;
+        v52 = options2;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@Rejecting empty transaction: %@", buf, 0x16u);
       }
 
@@ -360,39 +360,39 @@ LABEL_19:
 
     else
     {
-      v27 = [(HMDBackingStore *)&self->super.super.isa dataSource];
-      v37 = v27;
-      if (v9)
+      dataSource = [(HMDBackingStore *)&self->super.super.isa dataSource];
+      v37 = dataSource;
+      if (saveCopy)
       {
-        [v27 createBackingStoreLogAddTransactionOperationWithTransaction:v12];
+        [dataSource createBackingStoreLogAddTransactionOperationWithTransaction:commitCopy];
       }
 
       else
       {
-        [v27 createBackingStoreOperation];
+        [dataSource createBackingStoreOperation];
       }
       v28 = ;
-      v29 = [v12 objects];
-      [HMDBackingStoreTransactionBlock sort:v29];
+      objects2 = [commitCopy objects];
+      [HMDBackingStoreTransactionBlock sort:objects2];
 
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy3 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         v33 = HMFGetLogIdentifier();
-        v34 = [v12 options];
+        options3 = [commitCopy options];
         *buf = 138543874;
         v50 = v33;
         v51 = 2114;
         v52 = v28;
         v53 = 2114;
-        v54 = v34;
+        v54 = options3;
         _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_INFO, "%{public}@Submitting operation: %{public}@ (%{public}@)", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v30);
-      objc_initWeak(buf, v31);
+      objc_initWeak(buf, selfCopy3);
       objc_initWeak(&location, v28);
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
@@ -400,15 +400,15 @@ LABEL_19:
       v40[3] = &unk_279730EF0;
       objc_copyWeak(&v43, &location);
       objc_copyWeak(&v44, buf);
-      v41 = v12;
-      v45 = v9;
-      v46 = a4;
+      v41 = commitCopy;
+      v45 = saveCopy;
+      runCopy = run;
       v42 = aBlock;
-      v47 = a6;
+      inlineCopy = inline;
       [v28 setResultBlock:v40];
-      [v28 setStore:v31];
-      v35 = [v38 backingStoreOperationQueue];
-      [v35 addOperation:v28];
+      [v28 setStore:selfCopy3];
+      backingStoreOperationQueue = [v38 backingStoreOperationQueue];
+      [backingStoreOperationQueue addOperation:v28];
 
       objc_destroyWeak(&v44);
       objc_destroyWeak(&v43);
@@ -1162,24 +1162,24 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_saveHomeDataInOperationWithControllerUserName:(uint64_t)a3 incrementGeneration:(void *)a4 reason:
+- (id)_saveHomeDataInOperationWithControllerUserName:(uint64_t)name incrementGeneration:(void *)generation reason:
 {
   v49 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  WeakRetained = objc_loadWeakRetained(a1 + 9);
-  v10 = [a1 homeManager];
-  v11 = [v10 hasValidControllerKeyToSave];
+  generationCopy = generation;
+  WeakRetained = objc_loadWeakRetained(self + 9);
+  homeManager = [self homeManager];
+  hasValidControllerKeyToSave = [homeManager hasValidControllerKeyToSave];
 
   v12 = objc_autoreleasePoolPush();
-  if (v11)
+  if (hasValidControllerKeyToSave)
   {
-    v13 = [WeakRetained dataForPersistentStoreIncrementingGeneration:a3 reason:v8];
+    v13 = [WeakRetained dataForPersistentStoreIncrementingGeneration:name reason:generationCopy];
     v14 = v13;
     if (!v13 || ![v13 length])
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = a1;
+      selfCopy = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -1195,7 +1195,7 @@ LABEL_6:
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -1211,18 +1211,18 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v15);
-    v20 = [v16 local];
+    local = [selfCopy2 local];
     v41 = 0;
-    [v20 _insertArchive:v14 identifier:@"homedata" controllerUserName:v7 error:&v41];
+    [local _insertArchive:v14 identifier:@"homedata" controllerUserName:v7 error:&v41];
     v21 = v41;
 
     objc_autoreleasePoolPop(v12);
     if (!v21)
     {
-      if ((v16[1] & 1) == 0)
+      if ((selfCopy2[1] & 1) == 0)
       {
         v22 = objc_autoreleasePoolPush();
-        v23 = v16;
+        v23 = selfCopy2;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
@@ -1233,9 +1233,9 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v22);
-        v26 = [v23 homeManager];
+        homeManager2 = [v23 homeManager];
         v42 = 0;
-        v27 = [v26 _removeLegacyHomeArchive:&v42];
+        v27 = [homeManager2 _removeLegacyHomeArchive:&v42];
         v28 = v42;
 
         if (v27)
@@ -1268,7 +1268,7 @@ LABEL_18:
 
   else
   {
-    v29 = a1;
+    selfCopy3 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -1287,88 +1287,88 @@ LABEL_18:
   return v21;
 }
 
-- (id)transaction:(id)a3 options:(id)a4
+- (id)transaction:(id)transaction options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HMDBackingStoreTransactionBlock alloc] initWithBackingStore:self options:v6 label:v7];
+  optionsCopy = options;
+  transactionCopy = transaction;
+  v8 = [[HMDBackingStoreTransactionBlock alloc] initWithBackingStore:self options:optionsCopy label:transactionCopy];
 
   return v8;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3
+- (HMDBackingStore)initWithUUID:(id)d
 {
   if (self)
   {
-    return [(HMDBackingStore *)self initWithUUID:a3 homeManager:0 home:0 dataSource:self];
+    return [(HMDBackingStore *)self initWithUUID:d homeManager:0 home:0 dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 home:(id)a4
+- (HMDBackingStore)initWithUUID:(id)d home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 homeManager];
+  dCopy = d;
+  homeCopy = home;
+  homeManager = [homeCopy homeManager];
   if (self)
   {
-    self = [(HMDBackingStore *)self initWithUUID:v6 homeManager:v8 home:v7 dataSource:self];
+    self = [(HMDBackingStore *)self initWithUUID:dCopy homeManager:homeManager home:homeCopy dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager
 {
   if (self)
   {
-    return [(HMDBackingStore *)self initWithUUID:a3 homeManager:a4 home:0 dataSource:self];
+    return [(HMDBackingStore *)self initWithUUID:d homeManager:manager home:0 dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4 home:(id)a5 dataSource:(id)a6
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager home:(id)home dataSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  managerCopy = manager;
+  homeCopy = home;
+  sourceCopy = source;
   v26.receiver = self;
   v26.super_class = HMDBackingStore;
   v15 = [(HMDBackingStore *)&v26 init];
   if (v15)
   {
-    v16 = [v14 localBackingStore];
+    localBackingStore = [sourceCopy localBackingStore];
     local = v15->_local;
-    v15->_local = v16;
+    v15->_local = localBackingStore;
 
-    objc_storeStrong(&v15->_uuid, a3);
+    objc_storeStrong(&v15->_uuid, d);
     v18 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v19 = [v11 UUIDString];
-    v20 = [v18 initWithRecordName:v19];
+    uUIDString = [dCopy UUIDString];
+    v20 = [v18 initWithRecordName:uUIDString];
     root = v15->_root;
     v15->_root = v20;
 
-    objc_storeWeak(&v15->_home, v13);
-    objc_storeWeak(&v15->_homeManager, v12);
-    objc_storeWeak(&v15->_dataSource, v14);
-    if (v13)
+    objc_storeWeak(&v15->_home, homeCopy);
+    objc_storeWeak(&v15->_homeManager, managerCopy);
+    objc_storeWeak(&v15->_dataSource, sourceCopy);
+    if (homeCopy)
     {
-      v22 = [v14 createHomeObjectLookupWithHome:v13];
+      v22 = [sourceCopy createHomeObjectLookupWithHome:homeCopy];
     }
 
     else
     {
-      if (!v12)
+      if (!managerCopy)
       {
 LABEL_7:
         v24 = v15;
         goto LABEL_8;
       }
 
-      v22 = [[HMDHomeManagerObjectLookup alloc] initWithHomeManager:v12];
+      v22 = [[HMDHomeManagerObjectLookup alloc] initWithHomeManager:managerCopy];
     }
 
     lookup = v15->_lookup;
@@ -1382,26 +1382,26 @@ LABEL_8:
   return v15;
 }
 
-+ (void)saveToPersistentStoreWithReason:(id)a3 homeManager:(id)a4 shouldIncrementGenerationCounter:(BOOL)a5 backingStore:(id)a6 completionHandler:(id)a7
++ (void)saveToPersistentStoreWithReason:(id)reason homeManager:(id)manager shouldIncrementGenerationCounter:(BOOL)counter backingStore:(id)store completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  managerCopy = manager;
+  storeCopy = store;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __127__HMDBackingStore_saveToPersistentStoreWithReason_homeManager_shouldIncrementGenerationCounter_backingStore_completionHandler___block_invoke;
   v20[3] = &unk_279730F40;
-  v24 = v15;
-  v25 = a1;
-  v21 = v12;
-  v22 = v13;
-  v26 = a5;
-  v23 = v14;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v24 = handlerCopy;
+  selfCopy = self;
+  v21 = reasonCopy;
+  v22 = managerCopy;
+  counterCopy = counter;
+  v23 = storeCopy;
+  v16 = handlerCopy;
+  v17 = storeCopy;
+  v18 = managerCopy;
+  v19 = reasonCopy;
   [v17 submitBlock:v20];
 }
 
@@ -1423,9 +1423,9 @@ uint64_t __127__HMDBackingStore_saveToPersistentStoreWithReason_homeManager_shou
 + (id)currentDevice
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 device];
+  device = [v2 device];
 
-  return v3;
+  return device;
 }
 
 + (id)logCategory
@@ -1453,17 +1453,17 @@ uint64_t __30__HMDBackingStore_logCategory__block_invoke()
 + (id)resetBackingStore
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 resetBackingStore];
+  resetBackingStore = [v2 resetBackingStore];
 
-  return v3;
+  return resetBackingStore;
 }
 
 + (id)flushBackingStore
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 flushBackingStore];
+  flushBackingStore = [v2 flushBackingStore];
 
-  return v3;
+  return flushBackingStore;
 }
 
 + (NSSet)internalAllowedTypes

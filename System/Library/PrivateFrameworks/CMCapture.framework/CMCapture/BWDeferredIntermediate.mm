@@ -1,10 +1,10 @@
 @interface BWDeferredIntermediate
 + (void)initialize;
 - (BWDeferredIntermediate)init;
-- (BWDeferredIntermediate)initWithCoder:(id)a3;
-- (BWDeferredIntermediate)initWithTag:(id)a3 URL:(id)a4;
-- (id)archive:(int *)a3;
-- (id)fetchAndRetain:(int *)a3;
+- (BWDeferredIntermediate)initWithCoder:(id)coder;
+- (BWDeferredIntermediate)initWithTag:(id)tag URL:(id)l;
+- (id)archive:(int *)archive;
+- (id)fetchAndRetain:(int *)retain;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (BWDeferredIntermediate)initWithTag:(id)a3 URL:(id)a4
+- (BWDeferredIntermediate)initWithTag:(id)tag URL:(id)l
 {
-  if (!a3)
+  if (!tag)
   {
     [BWDeferredIntermediate initWithTag:URL:];
 LABEL_8:
@@ -46,7 +46,7 @@ LABEL_8:
     return 0;
   }
 
-  if (!a4)
+  if (!l)
   {
     [BWDeferredIntermediate initWithTag:URL:];
     goto LABEL_8;
@@ -55,22 +55,22 @@ LABEL_8:
   v7 = [(BWDeferredIntermediate *)self init];
   if (v7)
   {
-    v7->_tag = a3;
-    v7->_URL = a4;
+    v7->_tag = tag;
+    v7->_URL = l;
     v7->_dirty = 1;
   }
 
   return v7;
 }
 
-- (BWDeferredIntermediate)initWithCoder:(id)a3
+- (BWDeferredIntermediate)initWithCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     v4 = [(BWDeferredIntermediate *)self init];
     if (v4)
     {
-      v4->_tag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+      v4->_tag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     }
   }
 
@@ -93,21 +93,21 @@ LABEL_8:
   [(BWDeferredIntermediate *)&v3 dealloc];
 }
 
-- (id)fetchAndRetain:(int *)a3
+- (id)fetchAndRetain:(int *)retain
 {
-  if (a3)
+  if (retain)
   {
-    *a3 = -16136;
+    *retain = -16136;
   }
 
   return 0;
 }
 
-- (id)archive:(int *)a3
+- (id)archive:(int *)archive
 {
-  if (a3)
+  if (archive)
   {
-    *a3 = -16136;
+    *archive = -16136;
   }
 
   return 0;

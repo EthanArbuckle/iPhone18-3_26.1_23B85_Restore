@@ -1,43 +1,43 @@
 @interface _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice
-- (BOOL)isEqual:(id)a3;
-- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithCoder:(id)a3;
-- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithFeatureIdentifier:(id)a3 isSupportedIfCountryListMissing:(BOOL)a4;
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithCoder:(id)coder;
+- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithFeatureIdentifier:(id)identifier isSupportedIfCountryListMissing:(BOOL)missing;
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice
 
-- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithFeatureIdentifier:(id)a3 isSupportedIfCountryListMissing:(BOOL)a4
+- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithFeatureIdentifier:(id)identifier isSupportedIfCountryListMissing:(BOOL)missing
 {
   v6.receiver = self;
   v6.super_class = _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice;
-  result = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v6 initWithFeatureIdentifier:a3];
+  result = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v6 initWithFeatureIdentifier:identifier];
   if (result)
   {
-    result->_isSupportedIfCountryListMissing = a4;
+    result->_isSupportedIfCountryListMissing = missing;
   }
 
   return result;
 }
 
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 ineligibilityReasons];
-  v7 = [v5 ineligibilityReasons];
-  v8 = [v5 ineligibilityReasons];
+  eligibilityCopy = eligibility;
+  ineligibilityReasons = [eligibilityCopy ineligibilityReasons];
+  ineligibilityReasons2 = [eligibilityCopy ineligibilityReasons];
+  ineligibilityReasons3 = [eligibilityCopy ineligibilityReasons];
 
-  if ((v6 & 2) != 0)
+  if ((ineligibilityReasons & 2) != 0)
   {
     v10 = MEMORY[0x1E695E110];
   }
 
   else
   {
-    isSupportedIfCountryListMissing = (v8 & 0x20) == 0;
-    if ((v7 & 0x10) != 0)
+    isSupportedIfCountryListMissing = (ineligibilityReasons3 & 0x20) == 0;
+    if ((ineligibilityReasons2 & 0x10) != 0)
     {
       isSupportedIfCountryListMissing = self->_isSupportedIfCountryListMissing;
     }
@@ -48,12 +48,12 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice;
-  v5 = -[HKFeatureAvailabilityOnboardingEligibilityRequirement isEqual:](&v7, sel_isEqual_, v4) && [v4 isMemberOfClass:objc_opt_class()] && self->_isSupportedIfCountryListMissing == v4[16];
+  v5 = -[HKFeatureAvailabilityOnboardingEligibilityRequirement isEqual:](&v7, sel_isEqual_, equalCopy) && [equalCopy isMemberOfClass:objc_opt_class()] && self->_isSupportedIfCountryListMissing == equalCopy[16];
 
   return v5;
 }
@@ -65,24 +65,24 @@
   return [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v3 hash]^ self->_isSupportedIfCountryListMissing;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice;
-  v4 = a3;
-  [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isSupportedIfCountryListMissing forKey:{@"isSupportedIfCountryListMissing", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isSupportedIfCountryListMissing forKey:{@"isSupportedIfCountryListMissing", v5.receiver, v5.super_class}];
 }
 
-- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithCoder:(id)a3
+- (_HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _HKFeatureAvailabilityRequirementCountryIsSupportedOnActiveRemoteDevice;
-  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 initWithCoder:v4];
+  v5 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_isSupportedIfCountryListMissing = [v4 decodeBoolForKey:@"isSupportedIfCountryListMissing"];
+    v5->_isSupportedIfCountryListMissing = [coderCopy decodeBoolForKey:@"isSupportedIfCountryListMissing"];
   }
 
   return v5;

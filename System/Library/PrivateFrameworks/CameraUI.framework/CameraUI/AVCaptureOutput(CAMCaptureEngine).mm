@@ -8,11 +8,11 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 userInfo];
-    v3 = v2;
-    if (v2)
+    userInfo = [self userInfo];
+    v3 = userInfo;
+    if (userInfo)
     {
-      v4 = [v2 objectForKeyedSubscript:@"CAMCaptureEngineCurrentRequestKey"];
+      v4 = [userInfo objectForKeyedSubscript:@"CAMCaptureEngineCurrentRequestKey"];
       goto LABEL_6;
     }
   }

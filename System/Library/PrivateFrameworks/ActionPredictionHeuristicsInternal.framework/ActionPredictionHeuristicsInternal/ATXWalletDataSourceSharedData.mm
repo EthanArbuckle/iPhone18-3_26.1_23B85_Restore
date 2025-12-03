@@ -3,7 +3,7 @@
 - (ATXWalletDataSourceSharedData)init;
 - (BOOL)hasEmptyWalletPasses;
 - (void)_passesDidChange;
-- (void)setHasEmptyWalletPasses:(BOOL)a3;
+- (void)setHasEmptyWalletPasses:(BOOL)passes;
 @end
 
 @implementation ATXWalletDataSourceSharedData
@@ -37,10 +37,10 @@ void __47__ATXWalletDataSourceSharedData_sharedInstance__block_invoke()
   v2 = [(ATXWalletDataSourceSharedData *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v3 addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386D0] object:0];
-    [v3 addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386F0] object:0];
-    [v3 addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386E8] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386D0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386F0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__passesDidChange name:*MEMORY[0x277D386E8] object:0];
   }
 
   return v2;
@@ -59,28 +59,28 @@ void __47__ATXWalletDataSourceSharedData_sharedInstance__block_invoke()
 
 - (BOOL)hasEmptyWalletPasses
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = 0;
-  if (v2->_hasEmptyWalletPasses)
+  if (selfCopy->_hasEmptyWalletPasses)
   {
-    [(NSDate *)v2->_lastWalletPassCheckDate timeIntervalSinceNow];
+    [(NSDate *)selfCopy->_lastWalletPassCheckDate timeIntervalSinceNow];
     if (fabs(v3) < 7200.0)
     {
       v4 = 1;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setHasEmptyWalletPasses:(BOOL)a3
+- (void)setHasEmptyWalletPasses:(BOOL)passes
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_hasEmptyWalletPasses = a3;
+  obj->_hasEmptyWalletPasses = passes;
   v4 = objc_opt_new();
   lastWalletPassCheckDate = obj->_lastWalletPassCheckDate;
   obj->_lastWalletPassCheckDate = v4;

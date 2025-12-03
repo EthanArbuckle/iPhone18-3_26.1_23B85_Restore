@@ -1,7 +1,7 @@
 @interface EFProtectedFile
 - (BOOL)backgroundProcessingIsAllowed;
-- (EFProtectedFile)initWithFilePath:(id)a3 isSensitive:(BOOL)a4 protectionType:(id)a5;
-- (id)requestBackgroundProcessingForDuration:(double)a3 error:(id *)a4;
+- (EFProtectedFile)initWithFilePath:(id)path isSensitive:(BOOL)sensitive protectionType:(id)type;
+- (id)requestBackgroundProcessingForDuration:(double)duration error:(id *)error;
 @end
 
 @implementation EFProtectedFile
@@ -13,17 +13,17 @@ void ___ef_log_EFProtectedFile_block_invoke()
   _ef_log_EFProtectedFile_log = v0;
 }
 
-- (EFProtectedFile)initWithFilePath:(id)a3 isSensitive:(BOOL)a4 protectionType:(id)a5
+- (EFProtectedFile)initWithFilePath:(id)path isSensitive:(BOOL)sensitive protectionType:(id)type
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = EFProtectedFile;
   v10 = [(EFProtectedFile *)&v19 init];
   if (v10)
   {
-    v11 = [[_EFProtectedFile alloc] initWithFilePath:v8 isSensitive:a4 protectionType:v9];
+    v11 = [[_EFProtectedFile alloc] initWithFilePath:pathCopy isSensitive:sensitive protectionType:typeCopy];
     file = v10->_file;
     v10->_file = v11;
 
@@ -41,19 +41,19 @@ void ___ef_log_EFProtectedFile_block_invoke()
 
 - (BOOL)backgroundProcessingIsAllowed
 {
-  v2 = [(EFProtectedFile *)self assertion];
-  v3 = [(_EFBackgroundProcessingAssertion *)v2 isActive];
+  assertion = [(EFProtectedFile *)self assertion];
+  isActive = [(_EFBackgroundProcessingAssertion *)assertion isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (id)requestBackgroundProcessingForDuration:(double)a3 error:(id *)a4
+- (id)requestBackgroundProcessingForDuration:(double)duration error:(id *)error
 {
   v11 = 0;
-  v7 = [(EFProtectedFile *)self assertion];
-  LODWORD(a4) = [(_EFBackgroundProcessingAssertion *)v7 incrementAssertionForDuration:a4 outResetCount:a3 error:?];
+  assertion = [(EFProtectedFile *)self assertion];
+  LODWORD(error) = [(_EFBackgroundProcessingAssertion *)assertion incrementAssertionForDuration:error outResetCount:duration error:?];
 
-  if (a4)
+  if (error)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;

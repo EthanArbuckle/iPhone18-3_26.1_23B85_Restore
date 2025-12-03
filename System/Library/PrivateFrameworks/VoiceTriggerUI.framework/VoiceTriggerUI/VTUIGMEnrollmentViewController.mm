@@ -1,50 +1,50 @@
 @interface VTUIGMEnrollmentViewController
-- (VTUIGMEnrollmentViewController)initWithCSFAvailability:(id)a3 delegate:(id)a4;
-- (VTUIGMEnrollmentViewController)initWithDelegate:(id)a3;
-- (VTUIGMEnrollmentViewController)initWithEnrollmentType:(unint64_t)a3 delegate:(id)a4;
+- (VTUIGMEnrollmentViewController)initWithCSFAvailability:(id)availability delegate:(id)delegate;
+- (VTUIGMEnrollmentViewController)initWithDelegate:(id)delegate;
+- (VTUIGMEnrollmentViewController)initWithEnrollmentType:(unint64_t)type delegate:(id)delegate;
 - (void)_continueFromGMEnrollment;
 - (void)_enrollUserIntoWaitlist;
-- (void)_presentEnrollmentErrorWithCompletion:(id)a3;
+- (void)_presentEnrollmentErrorWithCompletion:(id)completion;
 - (void)_pushVisualIntelligenceIntro;
 - (void)_setupContent;
 - (void)_userDidTapContinueButton;
 - (void)_userDidTapSetupLaterButton;
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4;
-- (void)onboardingControllerDidFinish:(id)a3;
-- (void)onboardingControllerRequestsCancellation:(id)a3;
-- (void)onboardingControllerRequestsGoingBack:(id)a3;
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to;
+- (void)onboardingControllerDidFinish:(id)finish;
+- (void)onboardingControllerRequestsCancellation:(id)cancellation;
+- (void)onboardingControllerRequestsGoingBack:(id)back;
 - (void)viewDidLoad;
 @end
 
 @implementation VTUIGMEnrollmentViewController
 
-- (VTUIGMEnrollmentViewController)initWithCSFAvailability:(id)a3 delegate:(id)a4
+- (VTUIGMEnrollmentViewController)initWithCSFAvailability:(id)availability delegate:(id)delegate
 {
-  objc_storeStrong(&self->_availability, a3);
-  v6 = a4;
-  v7 = [(VTUIGMEnrollmentViewController *)self initWithDelegate:v6];
+  objc_storeStrong(&self->_availability, availability);
+  delegateCopy = delegate;
+  v7 = [(VTUIGMEnrollmentViewController *)self initWithDelegate:delegateCopy];
 
   return v7;
 }
 
-- (VTUIGMEnrollmentViewController)initWithDelegate:(id)a3
+- (VTUIGMEnrollmentViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(_TtC14VoiceTriggerUI23GMAvailabilityViewModel);
   viewModel = self->_viewModel;
   self->_viewModel = v5;
 
-  v7 = [(VTUIGMEnrollmentViewController *)self initWithEnrollmentType:[(GMAvailabilityViewModel *)self->_viewModel enrollmentType] delegate:v4];
+  v7 = [(VTUIGMEnrollmentViewController *)self initWithEnrollmentType:[(GMAvailabilityViewModel *)self->_viewModel enrollmentType] delegate:delegateCopy];
   return v7;
 }
 
-- (VTUIGMEnrollmentViewController)initWithEnrollmentType:(unint64_t)a3 delegate:(id)a4
+- (VTUIGMEnrollmentViewController)initWithEnrollmentType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = +[VTUIStyle sharedStyle];
-  self->_enrollmentType = a3;
-  v8 = [(GMAvailabilityViewModel *)self->_viewModel titleKeyWithEnrollmentType:a3];
-  v9 = [(GMAvailabilityViewModel *)self->_viewModel subtitleKeyWithEnrollmentType:a3];
+  self->_enrollmentType = type;
+  v8 = [(GMAvailabilityViewModel *)self->_viewModel titleKeyWithEnrollmentType:type];
+  v9 = [(GMAvailabilityViewModel *)self->_viewModel subtitleKeyWithEnrollmentType:type];
   v10 = +[VTUIStyle sharedStyle];
   v11 = [v10 VTUIDeviceSpecificString:v8];
 
@@ -72,7 +72,7 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v6);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
   }
 
   return v18;
@@ -122,9 +122,9 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentEnrollmentErrorWithCompletion:(id)a3
+- (void)_presentEnrollmentErrorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = +[VTUIStyle sharedStyle];
   v5 = [v12 VTUIDeviceSpecificString:@"GM_JOIN_WAITLIST_ERROR_MESSAGE"];
   v6 = MEMORY[0x277D75110];
@@ -136,7 +136,7 @@
   v11 = [v9 actionWithTitle:v10 style:1 handler:0];
 
   [v8 addAction:v11];
-  [(VTUIGMEnrollmentViewController *)self presentViewController:v8 animated:1 completion:v4];
+  [(VTUIGMEnrollmentViewController *)self presentViewController:v8 animated:1 completion:completionCopy];
 }
 
 - (void)_enrollUserIntoWaitlist
@@ -297,8 +297,8 @@ void __57__VTUIGMEnrollmentViewController__enrollUserIntoWaitlist__block_invoke_
     self->_summarizationOnboardingController = v11;
 
     [(UNNotificationOnboardingController *)self->_summarizationOnboardingController setDelegate:self];
-    v13 = [(VTUIGMEnrollmentViewController *)self navigationController];
-    [v13 pushViewController:self->_summarizationOnboardingController animated:1];
+    navigationController = [(VTUIGMEnrollmentViewController *)self navigationController];
+    [navigationController pushViewController:self->_summarizationOnboardingController animated:1];
   }
 
   if (!self->_isSkippingIntroduction)
@@ -316,11 +316,11 @@ void __57__VTUIGMEnrollmentViewController__enrollUserIntoWaitlist__block_invoke_
   [(OBBaseWelcomeController *)&v10 viewDidLoad];
   if (self->_isSkippingIntroduction)
   {
-    v3 = [(VTUIGMEnrollmentViewController *)self headerView];
-    [v3 setHidden:1];
+    headerView = [(VTUIGMEnrollmentViewController *)self headerView];
+    [headerView setHidden:1];
 
-    v4 = [(VTUIGMEnrollmentViewController *)self buttonTray];
-    [v4 setHidden:1];
+    buttonTray = [(VTUIGMEnrollmentViewController *)self buttonTray];
+    [buttonTray setHidden:1];
   }
 
   else
@@ -339,9 +339,9 @@ LABEL_10:
 
   if (self->_enrollmentType == 1)
   {
-    v6 = [(GMAvailabilityViewModel *)self->_viewModel hasCameraButton];
+    hasCameraButton = [(GMAvailabilityViewModel *)self->_viewModel hasCameraButton];
 
-    if (!v6)
+    if (!hasCameraButton)
     {
       goto LABEL_12;
     }
@@ -380,7 +380,7 @@ LABEL_12:
   }
 }
 
-- (void)onboardingControllerRequestsCancellation:(id)a3
+- (void)onboardingControllerRequestsCancellation:(id)cancellation
 {
   if ((AFVisualIntelligenceCameraRestricted() & 1) != 0 || ![(GMAvailabilityViewModel *)self->_viewModel shouldShowVisualIntelligenceIntro])
   {
@@ -395,18 +395,18 @@ LABEL_12:
   }
 }
 
-- (void)onboardingControllerRequestsGoingBack:(id)a3
+- (void)onboardingControllerRequestsGoingBack:(id)back
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  v5 = [v4 hidesBackButton];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  hidesBackButton = [navigationItem hidesBackButton];
 
-  v6 = [(VTUIGMEnrollmentViewController *)self navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 count];
+  navigationController = [(VTUIGMEnrollmentViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers count];
 
   v9 = v8 - 3;
-  if (v5)
+  if (hidesBackButton)
   {
     v9 = v8 - 2;
   }
@@ -438,11 +438,11 @@ LABEL_12:
 
   else
   {
-    if (v5)
+    if (hidesBackButton)
     {
-      v11 = [(VTUIGMEnrollmentViewController *)self navigationController];
-      v12 = [v11 viewControllers];
-      v13 = [v12 indexOfObject:self];
+      navigationController2 = [(VTUIGMEnrollmentViewController *)self navigationController];
+      viewControllers2 = [navigationController2 viewControllers];
+      v13 = [viewControllers2 indexOfObject:self];
 
       if (v10 <= v13)
       {
@@ -450,19 +450,19 @@ LABEL_12:
       }
     }
 
-    v14 = [(VTUIGMEnrollmentViewController *)self navigationController];
-    v15 = [v14 viewControllers];
-    v24 = [v15 objectAtIndex:v10];
+    navigationController3 = [(VTUIGMEnrollmentViewController *)self navigationController];
+    viewControllers3 = [navigationController3 viewControllers];
+    v24 = [viewControllers3 objectAtIndex:v10];
 
-    v16 = [(VTUIGMEnrollmentViewController *)self navigationController];
-    v17 = [v16 popToViewController:v24 animated:1];
+    navigationController4 = [(VTUIGMEnrollmentViewController *)self navigationController];
+    v17 = [navigationController4 popToViewController:v24 animated:1];
 
-    v18 = [(VTUIGMEnrollmentViewController *)self navigationController];
-    v19 = [v18 topViewController];
+    navigationController5 = [(VTUIGMEnrollmentViewController *)self navigationController];
+    topViewController = [navigationController5 topViewController];
 
-    if ([v19 conformsToProtocol:&unk_288214D88])
+    if ([topViewController conformsToProtocol:&unk_288214D88])
     {
-      objc_storeStrong(&self->_summarizationOnboardingController, v19);
+      objc_storeStrong(&self->_summarizationOnboardingController, topViewController);
       [(UNNotificationOnboardingController *)self->_summarizationOnboardingController setDelegate:self];
     }
 
@@ -476,20 +476,20 @@ LABEL_12:
   }
 }
 
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to
 {
-  v5 = a4;
+  toCopy = to;
   [(UNNotificationOnboardingController *)self->_summarizationOnboardingController setDelegate:0];
-  [v5 setDelegate:self];
+  [toCopy setDelegate:self];
   summarizationOnboardingController = self->_summarizationOnboardingController;
-  self->_summarizationOnboardingController = v5;
-  v7 = v5;
+  self->_summarizationOnboardingController = toCopy;
+  v7 = toCopy;
 
-  v8 = [(VTUIGMEnrollmentViewController *)self navigationController];
-  [v8 pushViewController:v7 animated:1];
+  navigationController = [(VTUIGMEnrollmentViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (void)onboardingControllerDidFinish:(id)a3
+- (void)onboardingControllerDidFinish:(id)finish
 {
   if ((AFVisualIntelligenceCameraRestricted() & 1) != 0 || ![(GMAvailabilityViewModel *)self->_viewModel shouldShowVisualIntelligenceIntro])
   {
@@ -509,12 +509,12 @@ LABEL_12:
   v5 = [[_TtC14VoiceTriggerUI37VisualIntelligenceIntroViewController alloc] initWithDelegate:self];
   if (self->_isSkippingIntroduction)
   {
-    v3 = [(OBBaseWelcomeController *)v5 navigationItem];
-    [v3 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)v5 navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
-  v4 = [(VTUIGMEnrollmentViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(VTUIGMEnrollmentViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 @end

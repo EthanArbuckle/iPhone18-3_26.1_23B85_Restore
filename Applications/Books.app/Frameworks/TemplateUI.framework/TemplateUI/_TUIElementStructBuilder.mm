@@ -1,17 +1,17 @@
 @interface _TUIElementStructBuilder
-- (_TUIElementStructBuilder)initWithName:(id)a3 closure:(id)a4 basedOn:(id)a5 context:(id)a6;
+- (_TUIElementStructBuilder)initWithName:(id)name closure:(id)closure basedOn:(id)on context:(id)context;
 @end
 
 @implementation _TUIElementStructBuilder
 
-- (_TUIElementStructBuilder)initWithName:(id)a3 closure:(id)a4 basedOn:(id)a5 context:(id)a6
+- (_TUIElementStructBuilder)initWithName:(id)name closure:(id)closure basedOn:(id)on context:(id)context
 {
   v8.receiver = self;
   v8.super_class = _TUIElementStructBuilder;
-  result = [(TUIStructBuilder *)&v8 initWithClosure:a4.var0 basedOn:a5 context:a6];
+  result = [(TUIStructBuilder *)&v8 initWithClosure:closure.var0 basedOn:on context:context];
   if (result)
   {
-    result->_name = a3;
+    result->_name = name;
   }
 
   return result;

@@ -1,14 +1,14 @@
 @interface BRCPQLInjectionServerItemRowIDWhereClause
-+ (id)_createInjectionWithServerZoneID:(id)a3;
-- (BRCPQLInjectionServerItemRowIDWhereClause)initWithServerZoneID:(id)a3;
++ (id)_createInjectionWithServerZoneID:(id)d;
+- (BRCPQLInjectionServerItemRowIDWhereClause)initWithServerZoneID:(id)d;
 @end
 
 @implementation BRCPQLInjectionServerItemRowIDWhereClause
 
-- (BRCPQLInjectionServerItemRowIDWhereClause)initWithServerZoneID:(id)a3
+- (BRCPQLInjectionServerItemRowIDWhereClause)initWithServerZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _createInjectionWithServerZoneID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() _createInjectionWithServerZoneID:dCopy];
 
   v8.receiver = self;
   v8.super_class = BRCPQLInjectionServerItemRowIDWhereClause;
@@ -17,11 +17,11 @@
   return v6;
 }
 
-+ (id)_createInjectionWithServerZoneID:(id)a3
++ (id)_createInjectionWithServerZoneID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [MEMORY[0x277D82C08] formatInjection:{@" AND +si.zone_rowid = %@", a3}];
+    [MEMORY[0x277D82C08] formatInjection:{@" AND +si.zone_rowid = %@", d}];
   }
 
   else

@@ -2,48 +2,48 @@
 - (BOOL)hasEditableSettingDescriptions;
 - (SUUIClientContext)clientContext;
 - (SUUISettingsGroupController)controller;
-- (SUUISettingsGroupDescription)initWithParent:(id)a3 settingsContext:(id)a4;
+- (SUUISettingsGroupDescription)initWithParent:(id)parent settingsContext:(id)context;
 - (SUUISettingsGroupsDescription)parent;
 - (id)description;
 - (id)editableSettingDescriptions;
-- (id)indexPathForSettingDescription:(id)a3;
-- (id)newSiblingWithClass:(Class)a3;
-- (id)viewElementForSettingAtIndex:(unint64_t)a3;
+- (id)indexPathForSettingDescription:(id)description;
+- (id)newSiblingWithClass:(Class)class;
+- (id)viewElementForSettingAtIndex:(unint64_t)index;
 - (unint64_t)index;
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_dispatchUpdateForSettingDescription:(id)a3 updateType:(int64_t)a4;
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_dispatchUpdateForSettingDescription:(id)description updateType:(int64_t)type;
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)_updatedEditsValid;
-- (void)addSettingDescription:(id)a3;
-- (void)addSettingViewElement:(id)a3;
-- (void)addSibling:(id)a3;
-- (void)deleteSettingDescription:(id)a3;
+- (void)addSettingDescription:(id)description;
+- (void)addSettingViewElement:(id)element;
+- (void)addSibling:(id)sibling;
+- (void)deleteSettingDescription:(id)description;
 - (void)deleteSettingsGroup;
-- (void)dispatchUpdate:(id)a3;
-- (void)hideSettingDescription:(id)a3;
+- (void)dispatchUpdate:(id)update;
+- (void)hideSettingDescription:(id)description;
 - (void)hideSettingsGroup;
 - (void)recycle;
-- (void)requestLayoutForWidth:(double)a3 context:(id)a4;
-- (void)revealSettingDescription:(id)a3;
+- (void)requestLayoutForWidth:(double)width context:(id)context;
+- (void)revealSettingDescription:(id)description;
 - (void)revealSettingsGroup;
-- (void)setFooterViewElement:(id)a3;
-- (void)setHeaderViewElement:(id)a3;
+- (void)setFooterViewElement:(id)element;
+- (void)setHeaderViewElement:(id)element;
 @end
 
 @implementation SUUISettingsGroupDescription
 
-- (SUUISettingsGroupDescription)initWithParent:(id)a3 settingsContext:(id)a4
+- (SUUISettingsGroupDescription)initWithParent:(id)parent settingsContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SUUISettingsGroupDescription;
   v8 = [(SUUISettingsGroupDescription *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_parent, v6);
-    objc_storeWeak(&v9->_settingsContext, v7);
+    objc_storeWeak(&v8->_parent, parentCopy);
+    objc_storeWeak(&v9->_settingsContext, contextCopy);
     footerDescription = v9->_footerDescription;
     v9->_footerDescription = 0;
 
@@ -58,16 +58,16 @@
   return v9;
 }
 
-- (void)addSettingDescription:(id)a3
+- (void)addSettingDescription:(id)description
 {
-  v9 = a3;
-  -[SUUISettingsObjectStore addObject:hidden:](self->_settingDescriptions, "addObject:hidden:", v9, [v9 _initiallyHidden]);
+  descriptionCopy = description;
+  -[SUUISettingsObjectStore addObject:hidden:](self->_settingDescriptions, "addObject:hidden:", descriptionCopy, [descriptionCopy _initiallyHidden]);
   WeakRetained = objc_loadWeakRetained(&self->_controller);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_controller);
-    [v5 attachSettingDescription:v9];
+    [v5 attachSettingDescription:descriptionCopy];
   }
 
   if ([objc_opt_class() allowsEdit])
@@ -82,29 +82,29 @@
       editableSettings = self->_editableSettings;
     }
 
-    [(NSMutableSet *)editableSettings addObject:v9];
+    [(NSMutableSet *)editableSettings addObject:descriptionCopy];
   }
 }
 
-- (void)addSettingViewElement:(id)a3
+- (void)addSettingViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_settingsContext);
-  v6 = [WeakRetained dequeueReusableSettingDescriptionForViewElement:v4 parent:self];
+  v6 = [WeakRetained dequeueReusableSettingDescriptionForViewElement:elementCopy parent:self];
 
   [(SUUISettingsGroupDescription *)self addSettingDescription:v6];
 }
 
-- (void)addSibling:(id)a3
+- (void)addSibling:(id)sibling
 {
-  v4 = a3;
-  [(SUUISettingsGroupDescription *)self addSettingDescription:v4];
-  v7 = [v4 indexPath];
+  siblingCopy = sibling;
+  [(SUUISettingsGroupDescription *)self addSettingDescription:siblingCopy];
+  indexPath = [siblingCopy indexPath];
 
-  if (v7)
+  if (indexPath)
   {
     v5 = [[SUUISettingsDescriptionUpdate alloc] initWithUpdateType:4];
-    v6 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
+    v6 = [MEMORY[0x277CBEA60] arrayWithObject:indexPath];
     [(SUUISettingsDescriptionUpdate *)v5 setIndexPaths:v6];
 
     [(SUUISettingsGroupDescription *)self dispatchUpdate:v5];
@@ -114,9 +114,9 @@
 - (SUUIClientContext)clientContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  v3 = [WeakRetained clientContext];
+  clientContext = [WeakRetained clientContext];
 
-  return v3;
+  return clientContext;
 }
 
 - (void)deleteSettingsGroup
@@ -125,12 +125,12 @@
   [WeakRetained deleteSettingsGroupDescription:self];
 }
 
-- (void)deleteSettingDescription:(id)a3
+- (void)deleteSettingDescription:(id)description
 {
-  v4 = a3;
-  v8 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:v4];
-  [(SUUISettingsObjectStore *)self->_settingDescriptions removeObject:v4];
-  [(NSMutableSet *)self->_editableSettings removeObject:v4];
+  descriptionCopy = description;
+  v8 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:descriptionCopy];
+  [(SUUISettingsObjectStore *)self->_settingDescriptions removeObject:descriptionCopy];
+  [(NSMutableSet *)self->_editableSettings removeObject:descriptionCopy];
 
   if ([(SUUISettingsObjectStore *)self->_settingDescriptions numberOfObjects])
   {
@@ -164,11 +164,11 @@
 LABEL_8:
 }
 
-- (void)dispatchUpdate:(id)a3
+- (void)dispatchUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained dispatchUpdate:v4];
+  [WeakRetained dispatchUpdate:updateCopy];
 }
 
 - (id)editableSettingDescriptions
@@ -195,11 +195,11 @@ LABEL_8:
   [WeakRetained hideSettingsGroupDescription:self];
 }
 
-- (void)hideSettingDescription:(id)a3
+- (void)hideSettingDescription:(id)description
 {
-  v4 = a3;
-  v8 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:v4];
-  [(SUUISettingsObjectStore *)self->_settingDescriptions hideObject:v4];
+  descriptionCopy = description;
+  v8 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:descriptionCopy];
+  [(SUUISettingsObjectStore *)self->_settingDescriptions hideObject:descriptionCopy];
 
   if ([(SUUISettingsObjectStore *)self->_settingDescriptions numberOfVisibleObjects])
   {
@@ -233,10 +233,10 @@ LABEL_6:
   return v4;
 }
 
-- (id)indexPathForSettingDescription:(id)a3
+- (id)indexPathForSettingDescription:(id)description
 {
-  v4 = [(SUUISettingsObjectStore *)self->_settingDescriptions indexOfVisibleObject:a3];
-  v5 = [(SUUISettingsGroupDescription *)self index];
+  v4 = [(SUUISettingsObjectStore *)self->_settingDescriptions indexOfVisibleObject:description];
+  index = [(SUUISettingsGroupDescription *)self index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -244,15 +244,15 @@ LABEL_6:
 
   else
   {
-    v6 = [MEMORY[0x277CCAA70] indexPathForRow:v4 inSection:v5];
+    v6 = [MEMORY[0x277CCAA70] indexPathForRow:v4 inSection:index];
   }
 
   return v6;
 }
 
-- (id)newSiblingWithClass:(Class)a3
+- (id)newSiblingWithClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
 
   return [v4 initWithViewElement:0 parent:self];
 }
@@ -260,25 +260,25 @@ LABEL_6:
 - (void)recycle
 {
   WeakRetained = objc_loadWeakRetained(&self->_settingsContext);
-  v3 = [(SUUISettingsObjectStore *)self->_settingDescriptions allObjects];
-  [WeakRetained recycleSettingDescriptions:v3];
+  allObjects = [(SUUISettingsObjectStore *)self->_settingDescriptions allObjects];
+  [WeakRetained recycleSettingDescriptions:allObjects];
 }
 
-- (void)requestLayoutForWidth:(double)a3 context:(id)a4
+- (void)requestLayoutForWidth:(double)width context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if ([(SUUISettingsGroupDescription *)self hasFooter])
   {
     v7 = [SUUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:self->_footerDescription];
-    [(objc_class *)v7 prefetchResourcesForSettingsHeaderFooterDescription:self->_footerDescription reason:0 context:v6];
-    [(objc_class *)v7 requestLayoutForSettingsHeaderFooterDescription:self->_footerDescription width:v6 context:a3];
+    [(objc_class *)v7 prefetchResourcesForSettingsHeaderFooterDescription:self->_footerDescription reason:0 context:contextCopy];
+    [(objc_class *)v7 requestLayoutForSettingsHeaderFooterDescription:self->_footerDescription width:contextCopy context:width];
   }
 
   if ([(SUUISettingsGroupDescription *)self hasHeader])
   {
     v8 = [SUUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:self->_headerDescription];
-    [(objc_class *)v8 prefetchResourcesForSettingsHeaderFooterDescription:self->_headerDescription reason:0 context:v6];
-    [(objc_class *)v8 requestLayoutForSettingsHeaderFooterDescription:self->_headerDescription width:v6 context:a3];
+    [(objc_class *)v8 prefetchResourcesForSettingsHeaderFooterDescription:self->_headerDescription reason:0 context:contextCopy];
+    [(objc_class *)v8 requestLayoutForSettingsHeaderFooterDescription:self->_headerDescription width:contextCopy context:width];
   }
 
   settingDescriptions = self->_settingDescriptions;
@@ -286,9 +286,9 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = __62__SUUISettingsGroupDescription_requestLayoutForWidth_context___block_invoke;
   v11[3] = &unk_2798FD488;
-  v12 = v6;
-  v13 = a3;
-  v10 = v6;
+  v12 = contextCopy;
+  widthCopy = width;
+  v10 = contextCopy;
   [(SUUISettingsObjectStore *)settingDescriptions enumerateObjects:v11];
 }
 
@@ -300,14 +300,14 @@ void __62__SUUISettingsGroupDescription_requestLayoutForWidth_context___block_in
   [(objc_class *)v3 requestLayoutForSettingDescription:v4 width:*(a1 + 32) context:*(a1 + 40)];
 }
 
-- (void)revealSettingDescription:(id)a3
+- (void)revealSettingDescription:(id)description
 {
-  v5 = a3;
-  v4 = [(SUUISettingsObjectStore *)self->_settingDescriptions numberOfVisibleObjects];
-  [(SUUISettingsObjectStore *)self->_settingDescriptions revealObject:v5];
-  if (v4)
+  descriptionCopy = description;
+  numberOfVisibleObjects = [(SUUISettingsObjectStore *)self->_settingDescriptions numberOfVisibleObjects];
+  [(SUUISettingsObjectStore *)self->_settingDescriptions revealObject:descriptionCopy];
+  if (numberOfVisibleObjects)
   {
-    [(SUUISettingsGroupDescription *)self _dispatchUpdateForSettingDescription:v5 updateType:4];
+    [(SUUISettingsGroupDescription *)self _dispatchUpdateForSettingDescription:descriptionCopy updateType:4];
   }
 
   else
@@ -322,30 +322,30 @@ void __62__SUUISettingsGroupDescription_requestLayoutForWidth_context___block_in
   [WeakRetained revealSettingsGroupDescription:self];
 }
 
-- (void)setFooterViewElement:(id)a3
+- (void)setFooterViewElement:(id)element
 {
-  v4 = [SUUISettingsHeaderFooterDescription settingsHeaderFooterDescriptionWithViewElement:a3];
+  v4 = [SUUISettingsHeaderFooterDescription settingsHeaderFooterDescriptionWithViewElement:element];
   footerDescription = self->_footerDescription;
   self->_footerDescription = v4;
 
   MEMORY[0x2821F96F8](v4, footerDescription);
 }
 
-- (void)setHeaderViewElement:(id)a3
+- (void)setHeaderViewElement:(id)element
 {
-  v4 = [SUUISettingsHeaderFooterDescription settingsHeaderFooterDescriptionWithViewElement:a3];
+  v4 = [SUUISettingsHeaderFooterDescription settingsHeaderFooterDescriptionWithViewElement:element];
   headerDescription = self->_headerDescription;
   self->_headerDescription = v4;
 
   MEMORY[0x2821F96F8](v4, headerDescription);
 }
 
-- (id)viewElementForSettingAtIndex:(unint64_t)a3
+- (id)viewElementForSettingAtIndex:(unint64_t)index
 {
-  v3 = [(SUUISettingsGroupDescription *)self settingDescriptionAtIndex:a3];
-  v4 = [v3 viewElement];
+  v3 = [(SUUISettingsGroupDescription *)self settingDescriptionAtIndex:index];
+  viewElement = [v3 viewElement];
 
-  return v4;
+  return viewElement;
 }
 
 - (id)description
@@ -376,13 +376,13 @@ void __43__SUUISettingsGroupDescription_description__block_invoke(uint64_t a1, v
   [v2 appendFormat:@"\n %@", v3];
 }
 
-- (void)_dispatchUpdateForSettingDescription:(id)a3 updateType:(int64_t)a4
+- (void)_dispatchUpdateForSettingDescription:(id)description updateType:(int64_t)type
 {
-  v6 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:a3];
+  v6 = [(SUUISettingsGroupDescription *)self indexPathForSettingDescription:description];
   if (v6)
   {
     v9 = v6;
-    v7 = [[SUUISettingsDescriptionUpdate alloc] initWithUpdateType:a4];
+    v7 = [[SUUISettingsDescriptionUpdate alloc] initWithUpdateType:type];
     v8 = [MEMORY[0x277CBEA60] arrayWithObject:v9];
     [(SUUISettingsDescriptionUpdate *)v7 setIndexPaths:v8];
 
@@ -391,22 +391,22 @@ void __43__SUUISettingsGroupDescription_description__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained _dismissViewController:v9 animated:v5 completion:v8];
+  [WeakRetained _dismissViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained _presentViewController:v9 animated:v5 completion:v8];
+  [WeakRetained _presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (void)_updatedEditsValid

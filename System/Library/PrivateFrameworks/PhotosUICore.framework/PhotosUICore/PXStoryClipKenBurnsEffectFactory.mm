@@ -1,65 +1,65 @@
 @interface PXStoryClipKenBurnsEffectFactory
 + (id)reusableInstances;
-+ (void)factoryForSpec:(id)a3 clipComposition:(id)a4 displayAssets:(id)a5 croppingContext:(id)a6 croppingOptions:(unint64_t)a7 assetContentInfos:(id *)a8 playbackStyles:(const int64_t *)a9 separatorEffectParameters:(id *)a10 handler:(id)a11;
-+ (void)genericFactoryForSpec:(id)a3 assetContentSize:(CGSize)a4 handler:(id)a5;
++ (void)factoryForSpec:(id)spec clipComposition:(id)composition displayAssets:(id)assets croppingContext:(id)context croppingOptions:(unint64_t)options assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)self0 handler:(id)self1;
++ (void)genericFactoryForSpec:(id)spec assetContentSize:(CGSize)size handler:(id)handler;
 + (void)releaseCachedResources;
-- (CGRect)assetRectForClipIndex:(int64_t)a3;
-- (CGRect)clipFrameForClipIndex:(int64_t)a3;
+- (CGRect)assetRectForClipIndex:(int64_t)index;
+- (CGRect)clipFrameForClipIndex:(int64_t)index;
 - (PXStoryClipKenBurnsEffectFactory)init;
 - (id)_init;
-- (void)_configureClipAtIndex:(int64_t)a3 forPanWithCameraMovingTowardsEdge:(unsigned int)a4 distance:(double)a5;
-- (void)_configureWithSpec:(id)a3 clipComposition:(id)a4 displayAssets:(id)a5 croppingContext:(id)a6 croppingOptions:(unint64_t)a7 assetContentInfos:(id *)a8 playbackStyles:(const int64_t *)a9 separatorEffectParameters:(id *)a10;
-- (void)_getParameters:(id *)a3 forConfiguration:(id)a4;
+- (void)_configureClipAtIndex:(int64_t)index forPanWithCameraMovingTowardsEdge:(unsigned int)edge distance:(double)distance;
+- (void)_configureWithSpec:(id)spec clipComposition:(id)composition displayAssets:(id)assets croppingContext:(id)context croppingOptions:(unint64_t)options assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)self0;
+- (void)_getParameters:(id *)parameters forConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)getParameters:(id *)a3 forOppositePansWithDistance:(double)a4;
-- (void)getParameters:(id *)a3 forPanWithCameraMovingTowardsEdge:(unsigned int)a4 distance:(double)a5;
-- (void)getParameters:(id *)a3 forParallelPansWithDistance:(double)a4;
-- (void)getParameters:(id *)a3 forRotationWithAngle:(double)a4 scale:(double)a5 relativeTransformOrigin:(CGPoint)a6;
-- (void)getParameters:(id *)a3 forSplitAssetOppositePansWithDistance:(double)a4;
-- (void)getParameters:(id *)a3 forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:(unsigned int)a4;
-- (void)getParameters:(id *)a3 forZoomWithScale:(double)a4 relativeTransformOrigin:(CGPoint)a5;
-- (void)getParametersForNoEffect:(id *)a3;
+- (void)getParameters:(id *)parameters forOppositePansWithDistance:(double)distance;
+- (void)getParameters:(id *)parameters forPanWithCameraMovingTowardsEdge:(unsigned int)edge distance:(double)distance;
+- (void)getParameters:(id *)parameters forParallelPansWithDistance:(double)distance;
+- (void)getParameters:(id *)parameters forRotationWithAngle:(double)angle scale:(double)scale relativeTransformOrigin:(CGPoint)origin;
+- (void)getParameters:(id *)parameters forSplitAssetOppositePansWithDistance:(double)distance;
+- (void)getParameters:(id *)parameters forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:(unsigned int)edge;
+- (void)getParameters:(id *)parameters forZoomWithScale:(double)scale relativeTransformOrigin:(CGPoint)origin;
+- (void)getParametersForNoEffect:(id *)effect;
 @end
 
 @implementation PXStoryClipKenBurnsEffectFactory
 
-- (void)getParameters:(id *)a3 forRotationWithAngle:(double)a4 scale:(double)a5 relativeTransformOrigin:(CGPoint)a6
+- (void)getParameters:(id *)parameters forRotationWithAngle:(double)angle scale:(double)scale relativeTransformOrigin:(CGPoint)origin
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __101__PXStoryClipKenBurnsEffectFactory_getParameters_forRotationWithAngle_scale_relativeTransformOrigin___block_invoke;
   v6[3] = &unk_1E7747168;
-  v7 = a6;
+  originCopy = origin;
   v6[4] = self;
-  v8 = a5;
-  v9 = a4;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v6];
+  scaleCopy = scale;
+  angleCopy = angle;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v6];
 }
 
-- (void)getParameters:(id *)a3 forSplitAssetOppositePansWithDistance:(double)a4
+- (void)getParameters:(id *)parameters forSplitAssetOppositePansWithDistance:(double)distance
 {
   if (self->_clipCount != 2)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:438 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 2"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:438 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 2"}];
   }
 
-  v5 = [(PXStoryClipKenBurnsEffectFactory *)self displayAssets];
-  [v5 objectAtIndexedSubscript:0];
+  displayAssets = [(PXStoryClipKenBurnsEffectFactory *)self displayAssets];
+  [displayAssets objectAtIndexedSubscript:0];
   objc_claimAutoreleasedReturnValue();
 
-  v6 = [(PXStoryClipKenBurnsEffectFactory *)self clipComposition];
-  [v6 mainDividerAxis];
+  clipComposition = [(PXStoryClipKenBurnsEffectFactory *)self clipComposition];
+  [clipComposition mainDividerAxis];
 
   PXRectWithOriginAndSize();
 }
 
-- (void)_configureClipAtIndex:(int64_t)a3 forPanWithCameraMovingTowardsEdge:(unsigned int)a4 distance:(double)a5
+- (void)_configureClipAtIndex:(int64_t)index forPanWithCameraMovingTowardsEdge:(unsigned int)edge distance:(double)distance
 {
-  v6 = a5 * -0.5;
-  if (a4 == 3)
+  v6 = distance * -0.5;
+  if (edge == 3)
   {
-    v7 = a5 * -0.5;
+    v7 = distance * -0.5;
   }
 
   else
@@ -67,7 +67,7 @@
     v7 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a4 == 2)
+  if (edge == 2)
   {
     v7 = *(MEMORY[0x1E695EFF8] + 8);
   }
@@ -77,8 +77,8 @@
     v6 = *MEMORY[0x1E695EFF8];
   }
 
-  v8 = a5 * 0.5;
-  if (a4 == 1)
+  v8 = distance * 0.5;
+  if (edge == 1)
   {
     v9 = v8;
   }
@@ -88,7 +88,7 @@
     v9 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a4)
+  if (edge)
   {
     v8 = *MEMORY[0x1E695EFF8];
     v10 = v9;
@@ -99,7 +99,7 @@
     v10 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a4 <= 1)
+  if (edge <= 1)
   {
     v11 = v8;
   }
@@ -109,7 +109,7 @@
     v11 = v6;
   }
 
-  if (a4 <= 1)
+  if (edge <= 1)
   {
     v12 = v10;
   }
@@ -119,15 +119,15 @@
     v12 = v7;
   }
 
-  v13 = a3;
-  v14 = &self->_clipSourceTransforms[a3];
+  indexCopy = index;
+  v14 = &self->_clipSourceTransforms[index];
   CGAffineTransformMakeTranslation(&v20, -v11, -v12);
   v15 = *&v20.a;
   v16 = *&v20.tx;
   *&v14->c = *&v20.c;
   *&v14->tx = v16;
   *&v14->a = v15;
-  v17 = &self->_clipTargetTransforms[v13];
+  v17 = &self->_clipTargetTransforms[indexCopy];
   CGAffineTransformMakeTranslation(&v20, v11, v12);
   v18 = *&v20.a;
   v19 = *&v20.tx;
@@ -136,12 +136,12 @@
   *&v17->a = v18;
 }
 
-- (void)getParameters:(id *)a3 forParallelPansWithDistance:(double)a4
+- (void)getParameters:(id *)parameters forParallelPansWithDistance:(double)distance
 {
   if (self->_clipCount <= 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 2"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 2"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -149,8 +149,8 @@
   v9[2] = __78__PXStoryClipKenBurnsEffectFactory_getParameters_forParallelPansWithDistance___block_invoke;
   v9[3] = &unk_1E77498A0;
   v9[4] = self;
-  *&v9[5] = a4;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v9];
+  *&v9[5] = distance;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v9];
 }
 
 __n128 __78__PXStoryClipKenBurnsEffectFactory_getParameters_forParallelPansWithDistance___block_invoke(uint64_t a1)
@@ -205,12 +205,12 @@ LABEL_7:
   return result;
 }
 
-- (void)getParameters:(id *)a3 forOppositePansWithDistance:(double)a4
+- (void)getParameters:(id *)parameters forOppositePansWithDistance:(double)distance
 {
   if (self->_clipCount <= 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 2"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 2"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -218,8 +218,8 @@ LABEL_7:
   v9[2] = __78__PXStoryClipKenBurnsEffectFactory_getParameters_forOppositePansWithDistance___block_invoke;
   v9[3] = &unk_1E77498A0;
   v9[4] = self;
-  *&v9[5] = a4;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v9];
+  *&v9[5] = distance;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v9];
 }
 
 __n128 __78__PXStoryClipKenBurnsEffectFactory_getParameters_forOppositePansWithDistance___block_invoke(uint64_t a1)
@@ -277,18 +277,18 @@ LABEL_7:
   return result;
 }
 
-- (void)getParameters:(id *)a3 forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:(unsigned int)a4
+- (void)getParameters:(id *)parameters forVerticallyPanningPreferredRectMovingTowardsVerticalEdge:(unsigned int)edge
 {
   if (self->_clipCount != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 1"}];
   }
 
-  if ((a4 & 0xFFFFFFFD) != 1)
+  if ((edge & 0xFFFFFFFD) != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"edge == CGRectMinYEdge || edge == CGRectMaxYEdge"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"edge == CGRectMinYEdge || edge == CGRectMaxYEdge"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -297,16 +297,16 @@ LABEL_7:
   v10[3] = &unk_1E7738AA8;
   v10[4] = self;
   v10[5] = a2;
-  v11 = a4;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v10];
+  edgeCopy = edge;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v10];
 }
 
-- (void)getParameters:(id *)a3 forPanWithCameraMovingTowardsEdge:(unsigned int)a4 distance:(double)a5
+- (void)getParameters:(id *)parameters forPanWithCameraMovingTowardsEdge:(unsigned int)edge distance:(double)distance
 {
   if (self->_clipCount != 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"_clipCount == 1"}];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -314,9 +314,9 @@ LABEL_7:
   v11[2] = __93__PXStoryClipKenBurnsEffectFactory_getParameters_forPanWithCameraMovingTowardsEdge_distance___block_invoke;
   v11[3] = &unk_1E7738AA8;
   v11[4] = self;
-  v12 = a4;
-  *&v11[5] = a5;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v11];
+  edgeCopy = edge;
+  *&v11[5] = distance;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v11];
 }
 
 __n128 __93__PXStoryClipKenBurnsEffectFactory_getParameters_forPanWithCameraMovingTowardsEdge_distance___block_invoke(uint64_t a1)
@@ -351,26 +351,26 @@ __n128 __93__PXStoryClipKenBurnsEffectFactory_getParameters_forPanWithCameraMovi
   return result;
 }
 
-- (void)getParameters:(id *)a3 forZoomWithScale:(double)a4 relativeTransformOrigin:(CGPoint)a5
+- (void)getParameters:(id *)parameters forZoomWithScale:(double)scale relativeTransformOrigin:(CGPoint)origin
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __91__PXStoryClipKenBurnsEffectFactory_getParameters_forZoomWithScale_relativeTransformOrigin___block_invoke;
   v5[3] = &unk_1E7749770;
-  v6 = a5;
+  originCopy = origin;
   v5[4] = self;
-  v7 = a4;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v5];
+  scaleCopy = scale;
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:parameters forConfiguration:v5];
 }
 
-- (void)getParametersForNoEffect:(id *)a3
+- (void)getParametersForNoEffect:(id *)effect
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61__PXStoryClipKenBurnsEffectFactory_getParametersForNoEffect___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:a3 forConfiguration:v3];
+  [(PXStoryClipKenBurnsEffectFactory *)self _getParameters:effect forConfiguration:v3];
 }
 
 uint64_t __61__PXStoryClipKenBurnsEffectFactory_getParametersForNoEffect___block_invoke(uint64_t result)
@@ -404,20 +404,20 @@ uint64_t __61__PXStoryClipKenBurnsEffectFactory_getParametersForNoEffect___block
   return result;
 }
 
-- (void)_getParameters:(id *)a3 forConfiguration:(id)a4
+- (void)_getParameters:(id *)parameters forConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, 0.0, 0.0);
-  v5 = [(PXStoryClipComposition *)self->_clipComposition clipAssetIndexes];
+  clipAssetIndexes = [(PXStoryClipComposition *)self->_clipComposition clipAssetIndexes];
   if (self->_clipCount >= 1)
   {
-    [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:*v5];
+    [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:*clipAssetIndexes];
     objc_claimAutoreleasedReturnValue();
     PXRectWithOriginAndSize();
   }
 
-  v6[2]();
+  configurationCopy[2]();
   if (self->_clipCount >= 1)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -466,16 +466,16 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
   return result;
 }
 
-- (CGRect)clipFrameForClipIndex:(int64_t)a3
+- (CGRect)clipFrameForClipIndex:(int64_t)index
 {
-  if (self->_clipCount <= a3)
+  if (self->_clipCount <= index)
   {
     v3 = MEMORY[0x1E695F050];
   }
 
   else
   {
-    v3 = &self->_clipFrames[a3];
+    v3 = &self->_clipFrames[index];
   }
 
   width = v3->size.width;
@@ -489,9 +489,9 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
   return result;
 }
 
-- (CGRect)assetRectForClipIndex:(int64_t)a3
+- (CGRect)assetRectForClipIndex:(int64_t)index
 {
-  if (self->_clipCount > a3)
+  if (self->_clipCount > index)
   {
     PXRectWithOriginAndSize();
   }
@@ -507,23 +507,23 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
   return result;
 }
 
-- (void)_configureWithSpec:(id)a3 clipComposition:(id)a4 displayAssets:(id)a5 croppingContext:(id)a6 croppingOptions:(unint64_t)a7 assetContentInfos:(id *)a8 playbackStyles:(const int64_t *)a9 separatorEffectParameters:(id *)a10
+- (void)_configureWithSpec:(id)spec clipComposition:(id)composition displayAssets:(id)assets croppingContext:(id)context croppingOptions:(unint64_t)options assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)self0
 {
-  v22 = a3;
-  v21 = a4;
-  v17 = a5;
-  v18 = a6;
-  objc_storeStrong(&self->_spec, a3);
-  objc_storeStrong(&self->_clipComposition, a4);
-  objc_storeStrong(&self->_displayAssets, a5);
-  objc_storeStrong(&self->_croppingContext, a6);
-  self->_croppingOptions = a7;
-  v19 = [(PXStoryClipComposition *)self->_clipComposition numberOfClips];
-  self->_clipCount = v19;
-  if (v19 <= 0)
+  specCopy = spec;
+  compositionCopy = composition;
+  assetsCopy = assets;
+  contextCopy = context;
+  objc_storeStrong(&self->_spec, spec);
+  objc_storeStrong(&self->_clipComposition, composition);
+  objc_storeStrong(&self->_displayAssets, assets);
+  objc_storeStrong(&self->_croppingContext, context);
+  self->_croppingOptions = options;
+  numberOfClips = [(PXStoryClipComposition *)self->_clipComposition numberOfClips];
+  self->_clipCount = numberOfClips;
+  if (numberOfClips <= 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 1", v21, v22}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_clipCount >= 1", compositionCopy, specCopy}];
   }
 
   _PXGArrayCapacityResizeToCount();
@@ -554,19 +554,19 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
 
 - (PXStoryClipKenBurnsEffectFactory)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:121 description:{@"%s is not available as initializer", "-[PXStoryClipKenBurnsEffectFactory init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipKenBurnsEffect.m" lineNumber:121 description:{@"%s is not available as initializer", "-[PXStoryClipKenBurnsEffectFactory init]"}];
 
   abort();
 }
 
-+ (void)genericFactoryForSpec:(id)a3 assetContentSize:(CGSize)a4 handler:(id)a5
++ (void)genericFactoryForSpec:(id)spec assetContentSize:(CGSize)size handler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  specCopy = spec;
   +[PXStoryClipCompositionFactory oneUpComposition];
   objc_claimAutoreleasedReturnValue();
   v10 = [off_1E77218F8 alloc];
@@ -582,33 +582,33 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
   PXDisplayAssetFetchResultFromArray();
 }
 
-+ (void)factoryForSpec:(id)a3 clipComposition:(id)a4 displayAssets:(id)a5 croppingContext:(id)a6 croppingOptions:(unint64_t)a7 assetContentInfos:(id *)a8 playbackStyles:(const int64_t *)a9 separatorEffectParameters:(id *)a10 handler:(id)a11
++ (void)factoryForSpec:(id)spec clipComposition:(id)composition displayAssets:(id)assets croppingContext:(id)context croppingOptions:(unint64_t)options assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)self0 handler:(id)self1
 {
-  v27 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a11;
-  v20 = [a1 reusableInstances];
-  objc_sync_enter(v20);
-  v21 = [v20 px_popLast];
-  v22 = v21;
-  if (v21)
+  specCopy = spec;
+  compositionCopy = composition;
+  assetsCopy = assets;
+  contextCopy = context;
+  handlerCopy = handler;
+  reusableInstances = [self reusableInstances];
+  objc_sync_enter(reusableInstances);
+  px_popLast = [reusableInstances px_popLast];
+  v22 = px_popLast;
+  if (px_popLast)
   {
-    v23 = v21;
+    _init = px_popLast;
   }
 
   else
   {
-    v23 = [[PXStoryClipKenBurnsEffectFactory alloc] _init];
+    _init = [[PXStoryClipKenBurnsEffectFactory alloc] _init];
   }
 
-  v24 = v23;
+  v24 = _init;
 
-  objc_sync_exit(v20);
-  [v24 _configureWithSpec:v27 clipComposition:v16 displayAssets:v17 croppingContext:v18 croppingOptions:a7 assetContentInfos:a8 playbackStyles:a9 separatorEffectParameters:a10];
-  v19[2](v19, v24);
-  v25 = v20;
+  objc_sync_exit(reusableInstances);
+  [v24 _configureWithSpec:specCopy clipComposition:compositionCopy displayAssets:assetsCopy croppingContext:contextCopy croppingOptions:options assetContentInfos:infos playbackStyles:styles separatorEffectParameters:parameters];
+  handlerCopy[2](handlerCopy, v24);
+  v25 = reusableInstances;
   objc_sync_enter(v25);
   [v25 addObject:v24];
   objc_sync_exit(v25);
@@ -616,7 +616,7 @@ BOOL __68__PXStoryClipKenBurnsEffectFactory__getParameters_forConfiguration___bl
 
 + (void)releaseCachedResources
 {
-  obj = [a1 reusableInstances];
+  obj = [self reusableInstances];
   objc_sync_enter(obj);
   [obj removeAllObjects];
   objc_sync_exit(obj);

@@ -1,50 +1,50 @@
 @interface PurchaseController
 + (id)sharedController;
-+ (void)addPurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)cancelPurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)connectClientWithMessage:(id)a3 connection:(id)a4;
-+ (void)finishPurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)getPurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)insertPurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)movePurchasesWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-- (BOOL)_cancelPurchasesWithBatchIdentifier:(int64_t)a3 client:(id)a4 response:(id)a5;
++ (void)addPurchasesWithMessage:(id)message connection:(id)connection;
++ (void)cancelPurchasesWithMessage:(id)message connection:(id)connection;
++ (void)connectClientWithMessage:(id)message connection:(id)connection;
++ (void)finishPurchasesWithMessage:(id)message connection:(id)connection;
++ (void)getPurchasesWithMessage:(id)message connection:(id)connection;
++ (void)insertPurchasesWithMessage:(id)message connection:(id)connection;
++ (void)movePurchasesWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
+- (BOOL)_cancelPurchasesWithBatchIdentifier:(int64_t)identifier client:(id)client response:(id)response;
 - (PurchaseController)init;
 - (id)_authenticationOperationQueue;
-- (id)_clientForMessage:(id)a3 connection:(id)a4;
-- (id)_clientForUniqueIdentifier:(int64_t)a3;
-- (id)_newEncodedPurchaseEntityPropertiesWithResponse:(id)a3;
-- (id)_newPurchaseIdentifiersFromEncodedArray:(id)a3;
-- (id)_newPurchasesFromEncodedArray:(id)a3 client:(id)a4;
-- (id)_newResponsesToPurchasesForClient:(id)a3 inDatabase:(id)a4;
-- (id)_placeholderAppPathForBundleIdentifier:(id)a3;
+- (id)_clientForMessage:(id)message connection:(id)connection;
+- (id)_clientForUniqueIdentifier:(int64_t)identifier;
+- (id)_newEncodedPurchaseEntityPropertiesWithResponse:(id)response;
+- (id)_newPurchaseIdentifiersFromEncodedArray:(id)array;
+- (id)_newPurchasesFromEncodedArray:(id)array client:(id)client;
+- (id)_newResponsesToPurchasesForClient:(id)client inDatabase:(id)database;
+- (id)_placeholderAppPathForBundleIdentifier:(id)identifier;
 - (id)_purchaseOperationQueue;
-- (void)_addEncodedPurchases:(id)a3 forClient:(id)a4;
-- (void)_addPurchases:(id)a3 forClient:(id)a4;
-- (void)_authenticateForPurchases:(id)a3 client:(id)a4;
-- (void)_beginPurchaseBatch:(id)a3 forClient:(id)a4;
-- (void)_cancelEncodedPurchases:(id)a3 forClient:(id)a4;
-- (void)_cancelPurchasesForLackOfDiskSpace:(id)a3 client:(id)a4;
-- (void)_checkStoreDownloadQueuesForPurchase:(id)a3 response:(id)a4;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_connectClient:(id)a3 withOutputConnection:(id)a4;
-- (void)_dispatchAsync:(id)a3;
+- (void)_addEncodedPurchases:(id)purchases forClient:(id)client;
+- (void)_addPurchases:(id)purchases forClient:(id)client;
+- (void)_authenticateForPurchases:(id)purchases client:(id)client;
+- (void)_beginPurchaseBatch:(id)batch forClient:(id)client;
+- (void)_cancelEncodedPurchases:(id)purchases forClient:(id)client;
+- (void)_cancelPurchasesForLackOfDiskSpace:(id)space client:(id)client;
+- (void)_checkStoreDownloadQueuesForPurchase:(id)purchase response:(id)response;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_connectClient:(id)client withOutputConnection:(id)connection;
+- (void)_dispatchAsync:(id)async;
 - (void)_enqueueNextPurchase;
-- (void)_filterPurchases:(id)a3 withTransaction:(id)a4 block:(id)a5;
-- (void)_finishAuthenticationRequestForBatchIdentifier:(int64_t)a3 client:(id)a4 withAccountID:(id)a5 error:(id)a6;
-- (void)_finishEncodedPurchaseIdentifiers:(id)a3 forClient:(id)a4;
-- (void)_finishPurchaseRequestForClientUniqueID:(int64_t)a3 withResponse:(id)a4;
+- (void)_filterPurchases:(id)purchases withTransaction:(id)transaction block:(id)block;
+- (void)_finishAuthenticationRequestForBatchIdentifier:(int64_t)identifier client:(id)client withAccountID:(id)d error:(id)error;
+- (void)_finishEncodedPurchaseIdentifiers:(id)identifiers forClient:(id)client;
+- (void)_finishPurchaseRequestForClientUniqueID:(int64_t)d withResponse:(id)response;
 - (void)_garbageCollectInflightPurchases;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5;
-- (void)_insertEncodedPurchases:(id)a3 afterPurchaseID:(int64_t)a4 forClient:(id)a5;
-- (void)_markInFlightCanceledPurchaseIdentifier:(id)a3;
-- (void)_moveEncodedPurchaseIDs:(id)a3 afterPurchaseID:(int64_t)a4 forClient:(id)a5;
-- (void)_sendAuthenticateRequestForClientUniqueID:(int64_t)a3 withContext:(id)a4 responseHandler:(id)a5;
-- (void)_showNotEnoughDiskSpaceDialogForPurchases:(id)a3;
-- (void)_showPurchasesFailedDialogWithFirstTitle:(id)a3 count:(int64_t)a4;
-- (void)addPurchases:(id)a3;
-- (void)beginPurchaseBatch:(id)a3;
-- (void)cancelPurchasesForDownloadsWithIdentifiers:(id)a3;
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block;
+- (void)_insertEncodedPurchases:(id)purchases afterPurchaseID:(int64_t)d forClient:(id)client;
+- (void)_markInFlightCanceledPurchaseIdentifier:(id)identifier;
+- (void)_moveEncodedPurchaseIDs:(id)ds afterPurchaseID:(int64_t)d forClient:(id)client;
+- (void)_sendAuthenticateRequestForClientUniqueID:(int64_t)d withContext:(id)context responseHandler:(id)handler;
+- (void)_showNotEnoughDiskSpaceDialogForPurchases:(id)purchases;
+- (void)_showPurchasesFailedDialogWithFirstTitle:(id)title count:(int64_t)count;
+- (void)addPurchases:(id)purchases;
+- (void)beginPurchaseBatch:(id)batch;
+- (void)cancelPurchasesForDownloadsWithIdentifiers:(id)identifiers;
 - (void)dealloc;
 - (void)start;
 @end
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = sub_100214C60;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384170 != -1)
   {
     dispatch_once(&qword_100384170, block);
@@ -106,36 +106,36 @@
   [(PurchaseController *)&v6 dealloc];
 }
 
-- (void)addPurchases:(id)a3
+- (void)addPurchases:(id)purchases
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100214CF4;
   v3[3] = &unk_100327350;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = purchases;
   [(PurchaseController *)self _dispatchAsync:v3];
 }
 
-- (void)beginPurchaseBatch:(id)a3
+- (void)beginPurchaseBatch:(id)batch
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100214D70;
   v3[3] = &unk_100327350;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = batch;
   [(PurchaseController *)self _dispatchAsync:v3];
 }
 
-- (void)cancelPurchasesForDownloadsWithIdentifiers:(id)a3
+- (void)cancelPurchasesForDownloadsWithIdentifiers:(id)identifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100214DEC;
   v3[3] = &unk_100327350;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = identifiers;
   [(PurchaseController *)self _dispatchAsync:v3];
 }
 
@@ -149,94 +149,94 @@
   [(PurchaseController *)self _dispatchAsync:v2];
 }
 
-+ (void)addPurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)addPurchasesWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100215604;
   v4[3] = &unk_10032C660;
-  v4[4] = a3;
+  v4[4] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)cancelPurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)cancelPurchasesWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100215754;
   v4[3] = &unk_10032C660;
-  v4[5] = a3;
+  v4[5] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)connectClientWithMessage:(id)a3 connection:(id)a4
++ (void)connectClientWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1002158A0;
   v4[3] = &unk_10032C660;
-  v4[4] = a3;
+  v4[4] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)getPurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)getPurchasesWithMessage:(id)message connection:(id)connection
 {
   v6 = +[PurchaseController sharedController];
 
-  [v6 _handleMessage:a3 connection:a4 usingReplyBlock:&stru_10032C6A0];
+  [v6 _handleMessage:message connection:connection usingReplyBlock:&stru_10032C6A0];
 }
 
-+ (void)finishPurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)finishPurchasesWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100215D04;
   v4[3] = &unk_10032C660;
-  v4[4] = a3;
+  v4[4] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)insertPurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)insertPurchasesWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100215E54;
   v4[3] = &unk_10032C660;
-  v4[4] = a3;
+  v4[4] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)movePurchasesWithMessage:(id)a3 connection:(id)a4
++ (void)movePurchasesWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100215FBC;
   v4[3] = &unk_10032C660;
-  v4[4] = a3;
+  v4[4] = message;
   [+[PurchaseController sharedController](PurchaseController "sharedController")];
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:a1 selector:"addPurchasesWithMessage:connection:" forMessage:98];
-  [a3 addObserver:a1 selector:"cancelPurchasesWithMessage:connection:" forMessage:99];
-  [a3 addObserver:a1 selector:"connectClientWithMessage:connection:" forMessage:104];
-  [a3 addObserver:a1 selector:"getPurchasesWithMessage:connection:" forMessage:100];
-  [a3 addObserver:a1 selector:"finishPurchasesWithMessage:connection:" forMessage:101];
-  [a3 addObserver:a1 selector:"insertPurchasesWithMessage:connection:" forMessage:102];
+  [server addObserver:self selector:"addPurchasesWithMessage:connection:" forMessage:98];
+  [server addObserver:self selector:"cancelPurchasesWithMessage:connection:" forMessage:99];
+  [server addObserver:self selector:"connectClientWithMessage:connection:" forMessage:104];
+  [server addObserver:self selector:"getPurchasesWithMessage:connection:" forMessage:100];
+  [server addObserver:self selector:"finishPurchasesWithMessage:connection:" forMessage:101];
+  [server addObserver:self selector:"insertPurchasesWithMessage:connection:" forMessage:102];
 
-  [a3 addObserver:a1 selector:"movePurchasesWithMessage:connection:" forMessage:103];
+  [server addObserver:self selector:"movePurchasesWithMessage:connection:" forMessage:103];
 }
 
-- (void)_addEncodedPurchases:(id)a3 forClient:(id)a4
+- (void)_addEncodedPurchases:(id)purchases forClient:(id)client
 {
-  v6 = [(PurchaseController *)self _newPurchasesFromEncodedArray:a3 client:?];
-  [(PurchaseController *)self _addPurchases:v6 forClient:a4];
+  v6 = [(PurchaseController *)self _newPurchasesFromEncodedArray:purchases client:?];
+  [(PurchaseController *)self _addPurchases:v6 forClient:client];
 }
 
-- (void)_cancelEncodedPurchases:(id)a3 forClient:(id)a4
+- (void)_cancelEncodedPurchases:(id)purchases forClient:(id)client
 {
-  if (a3 && xpc_get_type(a3) == &_xpc_type_array)
+  if (purchases && xpc_get_type(purchases) == &_xpc_type_array)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
     if (!v7)
@@ -244,15 +244,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -265,9 +265,9 @@
       v16 = 138412802;
       v17 = objc_opt_class();
       v18 = 2048;
-      count = xpc_array_get_count(a3);
+      count = xpc_array_get_count(purchases);
       v20 = 2112;
-      v21 = a4;
+      clientCopy = client;
       LODWORD(v14) = 32;
       v13 = &v16;
       v10 = _os_log_send_and_compose_impl();
@@ -285,13 +285,13 @@
     v15[1] = 3221225472;
     v15[2] = sub_1002163C8;
     v15[3] = &unk_10032C718;
-    v15[4] = a3;
+    v15[4] = purchases;
     v15[5] = self;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase downloadsDatabase];
   }
 }
 
-- (void)_connectClient:(id)a3 withOutputConnection:(id)a4
+- (void)_connectClient:(id)client withOutputConnection:(id)connection
 {
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
@@ -299,15 +299,15 @@
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -320,7 +320,7 @@
     *v17 = 138412546;
     *&v17[4] = objc_opt_class();
     *&v17[12] = 2112;
-    *&v17[14] = a3;
+    *&v17[14] = client;
     LODWORD(v15) = 22;
     v14 = v17;
     v10 = _os_log_send_and_compose_impl();
@@ -334,10 +334,10 @@
     }
   }
 
-  v13 = [a3 outputConnection] == 0;
-  [a3 setOutputConnectionWithConnection:a4];
-  [a3 ackConnection];
-  if (v13 && [a3 finishesPurchases])
+  v13 = [client outputConnection] == 0;
+  [client setOutputConnectionWithConnection:connection];
+  [client ackConnection];
+  if (v13 && [client finishesPurchases])
   {
     *v17 = 0;
     *&v17[8] = v17;
@@ -349,22 +349,22 @@
     v16[1] = 3221225472;
     v16[2] = sub_1002167A0;
     v16[3] = &unk_10032C638;
-    v16[5] = a3;
+    v16[5] = client;
     v16[6] = v17;
     v16[4] = self;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
     if ([*(*&v17[8] + 40) count])
     {
-      [a3 sendResponses:*(*&v17[8] + 40)];
+      [client sendResponses:*(*&v17[8] + 40)];
     }
 
     _Block_object_dispose(v17, 8);
   }
 }
 
-- (void)_finishEncodedPurchaseIdentifiers:(id)a3 forClient:(id)a4
+- (void)_finishEncodedPurchaseIdentifiers:(id)identifiers forClient:(id)client
 {
-  if (a3 && xpc_get_type(a3) == &_xpc_type_array)
+  if (identifiers && xpc_get_type(identifiers) == &_xpc_type_array)
   {
     v6 = +[SSLogConfig sharedDaemonConfig];
     if (!v6)
@@ -372,15 +372,15 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -393,9 +393,9 @@
       v15 = 138412802;
       v16 = objc_opt_class();
       v17 = 2048;
-      count = xpc_array_get_count(a3);
+      count = xpc_array_get_count(identifiers);
       v19 = 2112;
-      v20 = a4;
+      clientCopy = client;
       LODWORD(v13) = 32;
       v12 = &v15;
       v9 = _os_log_send_and_compose_impl();
@@ -413,14 +413,14 @@
     v14[1] = 3221225472;
     v14[2] = sub_1002169EC;
     v14[3] = &unk_10032C740;
-    v14[4] = a3;
+    v14[4] = identifiers;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase downloadsDatabase];
   }
 }
 
-- (void)_insertEncodedPurchases:(id)a3 afterPurchaseID:(int64_t)a4 forClient:(id)a5
+- (void)_insertEncodedPurchases:(id)purchases afterPurchaseID:(int64_t)d forClient:(id)client
 {
-  v8 = [(PurchaseController *)self _newPurchasesFromEncodedArray:a3 client:a5];
+  v8 = [(PurchaseController *)self _newPurchasesFromEncodedArray:purchases client:client];
   if ([v8 count])
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
@@ -429,15 +429,15 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -452,7 +452,7 @@
       *&v42[12] = 2048;
       *&v42[14] = [v8 count];
       *&v42[22] = 2112;
-      v43 = a5;
+      clientCopy = client;
       LODWORD(v27) = 32;
       v25 = v42;
       v12 = _os_log_send_and_compose_impl();
@@ -469,7 +469,7 @@
     *v42 = 0;
     *&v42[8] = v42;
     *&v42[16] = 0x3052000000;
-    v43 = sub_100215494;
+    clientCopy = sub_100215494;
     v44 = sub_1002154A4;
     v45 = 0;
     v30 = 0;
@@ -485,8 +485,8 @@
     v29[4] = self;
     v29[5] = v8;
     v29[8] = &v30;
-    v29[9] = a4;
-    v29[6] = a5;
+    v29[9] = d;
+    v29[6] = client;
     v29[7] = v42;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase downloadsDatabase];
     if ([*(*&v42[8] + 40) count])
@@ -497,20 +497,20 @@
         v15 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v15 shouldLog];
-      v17 = [v15 shouldLogToDisk];
-      v18 = [v15 OSLogObject];
-      if (v17)
+      shouldLog2 = [v15 shouldLog];
+      shouldLogToDisk = [v15 shouldLogToDisk];
+      oSLogObject = [v15 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v16 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v16 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v16)
+      if (shouldLog2)
       {
         v19 = objc_opt_class();
         v20 = [*(*&v42[8] + 40) count];
@@ -519,7 +519,7 @@
         v38 = 2048;
         v39 = v20;
         v40 = 2112;
-        v41 = a5;
+        clientCopy2 = client;
         LODWORD(v27) = 32;
         v26 = &v36;
         v21 = _os_log_send_and_compose_impl();
@@ -538,11 +538,11 @@
       v28[1] = 3221225472;
       v28[2] = sub_10021723C;
       v28[3] = &unk_10032C7B8;
-      v28[4] = a5;
+      v28[4] = client;
       [v24 enumerateKeysAndObjectsUsingBlock:{v28, v26}];
     }
 
-    [(PurchaseController *)self _authenticateForPurchases:v31[5] client:a5];
+    [(PurchaseController *)self _authenticateForPurchases:v31[5] client:client];
     [(PurchaseController *)self _enqueueNextPurchase];
 
     _Block_object_dispose(&v30, 8);
@@ -550,7 +550,7 @@
   }
 }
 
-- (void)_markInFlightCanceledPurchaseIdentifier:(id)a3
+- (void)_markInFlightCanceledPurchaseIdentifier:(id)identifier
 {
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
@@ -558,15 +558,15 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -579,7 +579,7 @@
     v14 = 138412546;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = a3;
+    identifierCopy = identifier;
     LODWORD(v13) = 22;
     v12 = &v14;
     v8 = _os_log_send_and_compose_impl();
@@ -600,26 +600,26 @@
     self->_inflightCanceledIdentifiers = inflightCanceledIdentifiers;
   }
 
-  [(NSMutableSet *)inflightCanceledIdentifiers addObject:a3, v12];
+  [(NSMutableSet *)inflightCanceledIdentifiers addObject:identifier, v12];
 }
 
-- (void)_moveEncodedPurchaseIDs:(id)a3 afterPurchaseID:(int64_t)a4 forClient:(id)a5
+- (void)_moveEncodedPurchaseIDs:(id)ds afterPurchaseID:(int64_t)d forClient:(id)client
 {
-  v7 = [(PurchaseController *)self _newPurchaseIdentifiersFromEncodedArray:a3, a4, a5];
+  client = [(PurchaseController *)self _newPurchaseIdentifiersFromEncodedArray:ds, d, client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100217514;
   v8[3] = &unk_10032C7E0;
-  v8[4] = v7;
-  v8[5] = a4;
+  v8[4] = client;
+  v8[5] = d;
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
   [(PurchaseController *)self _enqueueNextPurchase];
 }
 
-- (id)_newResponsesToPurchasesForClient:(id)a3 inDatabase:(id)a4
+- (id)_newResponsesToPurchasesForClient:(id)client inDatabase:(id)database
 {
   v6 = objc_alloc_init(NSMutableArray);
-  v11[0] = +[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"client_id", [a3 uniqueIdentifier]);
+  v11[0] = +[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"client_id", [client uniqueIdentifier]);
   v11[1] = [SSSQLiteComparisonPredicate predicateWithProperty:@"state" equalToLongLong:2];
   v10 = @"order_id";
   v9[0] = @"encoded_data";
@@ -630,17 +630,17 @@
   v8[2] = sub_1002176CC;
   v8[3] = &unk_100327288;
   v8[4] = v6;
-  [+[PurchaseEntity queryWithDatabase:predicate:orderingProperties:](PurchaseEntity queryWithDatabase:a4 predicate:+[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate orderingProperties:{"predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v11, 2)), +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v10, 1)), "enumeratePersistentIDsAndProperties:count:usingBlock:", v9, 3, v8}];
+  [+[PurchaseEntity queryWithDatabase:predicate:orderingProperties:](PurchaseEntity queryWithDatabase:database predicate:+[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate orderingProperties:{"predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v11, 2)), +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v10, 1)), "enumeratePersistentIDsAndProperties:count:usingBlock:", v9, 3, v8}];
   return v6;
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 finishesPurchases])
+    if ([object finishesPurchases])
     {
       dispatchQueue = self->_dispatchQueue;
       v6[0] = _NSConcreteStackBlock;
@@ -648,15 +648,15 @@
       v6[2] = sub_10021788C;
       v6[3] = &unk_100327350;
       v6[4] = self;
-      v6[5] = v4;
+      v6[5] = object;
       dispatch_async(dispatchQueue, v6);
     }
   }
 }
 
-- (void)_addPurchases:(id)a3 forClient:(id)a4
+- (void)_addPurchases:(id)purchases forClient:(id)client
 {
-  if ([a3 count])
+  if ([purchases count])
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
     if (!v7)
@@ -664,15 +664,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -685,9 +685,9 @@
       *v40 = 138412802;
       *&v40[4] = objc_opt_class();
       *&v40[12] = 2048;
-      *&v40[14] = [a3 count];
+      *&v40[14] = [purchases count];
       *&v40[22] = 2112;
-      v41 = a4;
+      clientCopy = client;
       LODWORD(v25) = 32;
       v23 = v40;
       v10 = _os_log_send_and_compose_impl();
@@ -704,7 +704,7 @@
     *v40 = 0;
     *&v40[8] = v40;
     *&v40[16] = 0x3052000000;
-    v41 = sub_100215494;
+    clientCopy = sub_100215494;
     v42 = sub_1002154A4;
     v43 = 0;
     v28 = 0;
@@ -718,10 +718,10 @@
     v27[2] = sub_100217D24;
     v27[3] = &unk_10032C808;
     v27[4] = self;
-    v27[5] = a3;
+    v27[5] = purchases;
     v27[7] = v40;
     v27[8] = &v28;
-    v27[6] = a4;
+    v27[6] = client;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase downloadsDatabase];
     if ([*(*&v40[8] + 40) count])
     {
@@ -731,20 +731,20 @@
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
-      v15 = [v13 shouldLogToDisk];
-      v16 = [v13 OSLogObject];
-      if (v15)
+      shouldLog2 = [v13 shouldLog];
+      shouldLogToDisk = [v13 shouldLogToDisk];
+      oSLogObject = [v13 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v14 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v14 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v14)
+      if (shouldLog2)
       {
         v17 = objc_opt_class();
         v18 = [*(*&v40[8] + 40) count];
@@ -753,7 +753,7 @@
         v36 = 2048;
         v37 = v18;
         v38 = 2112;
-        v39 = a4;
+        clientCopy2 = client;
         LODWORD(v25) = 32;
         v24 = &v34;
         v19 = _os_log_send_and_compose_impl();
@@ -772,13 +772,13 @@
       v26[1] = 3221225472;
       v26[2] = sub_100217FB4;
       v26[3] = &unk_10032C7B8;
-      v26[4] = a4;
+      v26[4] = client;
       [v22 enumerateKeysAndObjectsUsingBlock:{v26, v24}];
     }
 
     if ([v29[5] count])
     {
-      [(PurchaseController *)self _beginPurchaseBatch:v29[5] forClient:a4];
+      [(PurchaseController *)self _beginPurchaseBatch:v29[5] forClient:client];
     }
 
     _Block_object_dispose(&v28, 8);
@@ -786,15 +786,15 @@
   }
 }
 
-- (void)_authenticateForPurchases:(id)a3 client:(id)a4
+- (void)_authenticateForPurchases:(id)purchases client:(id)client
 {
-  if (SSRestrictionsShouldRequirePasswordImmediately() && [a3 count] >= 2)
+  if (SSRestrictionsShouldRequirePasswordImmediately() && [purchases count] >= 2)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [purchases countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -805,7 +805,7 @@ LABEL_5:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         if ([*(*(&v15 + 1) + 8 * v10) ignoresForcedPasswordRestriction])
@@ -815,7 +815,7 @@ LABEL_5:
 
         if (v8 == ++v10)
         {
-          v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v8 = [purchases countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v8)
           {
             goto LABEL_5;
@@ -829,7 +829,7 @@ LABEL_5:
     else
     {
 LABEL_11:
-      v11 = [objc_msgSend(a3 objectAtIndex:{0), "batchIdentifier"}];
+      v11 = [objc_msgSend(purchases objectAtIndex:{0), "batchIdentifier"}];
       authenticatingBatchIdentifiers = self->_authenticatingBatchIdentifiers;
       if (!authenticatingBatchIdentifiers)
       {
@@ -838,13 +838,13 @@ LABEL_11:
       }
 
       [(NSMutableIndexSet *)authenticatingBatchIdentifiers addIndex:v11];
-      v13 = [[PurchaseAuthenticateOperation alloc] initWithPurchases:a3];
-      -[PurchaseAuthenticateOperation setClientIdentifierHeader:](v13, "setClientIdentifierHeader:", [a4 clientIdentifierHeader]);
+      v13 = [[PurchaseAuthenticateOperation alloc] initWithPurchases:purchases];
+      -[PurchaseAuthenticateOperation setClientIdentifierHeader:](v13, "setClientIdentifierHeader:", [client clientIdentifierHeader]);
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10021824C;
       v14[3] = &unk_10032C830;
-      v14[5] = a4;
+      v14[5] = client;
       v14[6] = v11;
       v14[4] = [SSWeakReference weakReferenceWithObject:self];
       [(PurchaseAuthenticateOperation *)v13 setAuthenticationBlock:v14];
@@ -869,13 +869,13 @@ LABEL_11:
   return result;
 }
 
-- (void)_beginPurchaseBatch:(id)a3 forClient:(id)a4
+- (void)_beginPurchaseBatch:(id)batch forClient:(id)client
 {
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  v7 = [batch countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (!v7)
   {
     goto LABEL_22;
@@ -890,7 +890,7 @@ LABEL_11:
     {
       if (*v29 != v10)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(batch);
       }
 
       v12 = *(*(&v28 + 1) + 8 * i);
@@ -900,7 +900,7 @@ LABEL_11:
       }
     }
 
-    v8 = [a3 countByEnumeratingWithState:&v28 objects:v38 count:16];
+    v8 = [batch countByEnumeratingWithState:&v28 objects:v38 count:16];
   }
 
   while (v8);
@@ -916,15 +916,15 @@ LABEL_11:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
     if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -935,7 +935,7 @@ LABEL_11:
     if (v19)
     {
       v20 = objc_opt_class();
-      v21 = [a3 count];
+      v21 = [batch count];
       v32 = 138412802;
       v33 = v20;
       v34 = 2048;
@@ -960,42 +960,42 @@ LABEL_11:
     v27[2] = sub_10021861C;
     v27[3] = &unk_10032C858;
     v27[4] = self;
-    v27[5] = a3;
-    v27[6] = a4;
+    v27[5] = batch;
+    v27[6] = client;
     [+[ISDevice requestFreeSpace:v25]atPath:"requestFreeSpace:atPath:withOptions:completionBlock:" withOptions:v9 completionBlock:v16, v15, v27];
   }
 
   else
   {
 LABEL_22:
-    [(PurchaseController *)self _authenticateForPurchases:a3 client:a4];
+    [(PurchaseController *)self _authenticateForPurchases:batch client:client];
     [(PurchaseController *)self _enqueueNextPurchase];
   }
 }
 
-- (void)_cancelPurchasesForLackOfDiskSpace:(id)a3 client:(id)a4
+- (void)_cancelPurchasesForLackOfDiskSpace:(id)space client:(id)client
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100218D6C;
   v7[3] = &unk_10032C740;
-  v7[4] = a3;
+  v7[4] = space;
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
-  [a4 sendError:SSError() forPurchases:a3];
-  [(PurchaseController *)self _showNotEnoughDiskSpaceDialogForPurchases:a3];
+  [client sendError:SSError() forPurchases:space];
+  [(PurchaseController *)self _showNotEnoughDiskSpaceDialogForPurchases:space];
 }
 
-- (BOOL)_cancelPurchasesWithBatchIdentifier:(int64_t)a3 client:(id)a4 response:(id)a5
+- (BOOL)_cancelPurchasesWithBatchIdentifier:(int64_t)identifier client:(id)client response:(id)response
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [(PurchaseController *)self _newEncodedPurchaseEntityPropertiesWithResponse:a5];
-  if (a4)
+  v10 = [(PurchaseController *)self _newEncodedPurchaseEntityPropertiesWithResponse:response];
+  if (client)
   {
-    v11 = [a4 finishesPurchases] ^ 1;
+    v11 = [client finishesPurchases] ^ 1;
   }
 
   else
@@ -1009,13 +1009,13 @@ LABEL_22:
   v14[3] = &unk_10032C8A8;
   v15 = v11;
   v14[6] = &v16;
-  v14[7] = a3;
+  v14[7] = identifier;
   v14[4] = v9;
   v14[5] = v10;
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
   if (*(v17 + 24) == 1 && [v9 count])
   {
-    [a4 sendResponse:a5 forPurchases:v9];
+    [client sendResponse:response forPurchases:v9];
   }
 
   v12 = *(v17 + 24);
@@ -1023,25 +1023,25 @@ LABEL_22:
   return v12;
 }
 
-- (void)_checkStoreDownloadQueuesForPurchase:(id)a3 response:(id)a4
+- (void)_checkStoreDownloadQueuesForPurchase:(id)purchase response:(id)response
 {
-  v6 = [a3 valueForDownloadProperty:SSDownloadPropertyKind];
-  v7 = [a4 userIdentifier];
+  v6 = [purchase valueForDownloadProperty:SSDownloadPropertyKind];
+  userIdentifier = [response userIdentifier];
   v8 = +[SSLogConfig sharedDaemonConfig];
   if (!v8)
   {
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
   if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1068,12 +1068,12 @@ LABEL_22:
 
   if (v6)
   {
-    if (v7)
+    if (userIdentifier)
     {
       v13 = objc_alloc_init(StoreDownloadQueueRequest);
-      [(StoreDownloadQueueRequest *)v13 setAccountIdentifier:v7];
-      -[StoreDownloadQueueRequest setCancelsDuplicateDownloads:](v13, "setCancelsDuplicateDownloads:", [objc_msgSend(a3 valueForDownloadProperty:{SSDownloadPropertyShouldCancelIfDuplicate), "BOOLValue"}]);
-      -[StoreDownloadQueueRequest setPurchaseIdentifier:](v13, "setPurchaseIdentifier:", [a3 uniqueIdentifier]);
+      [(StoreDownloadQueueRequest *)v13 setAccountIdentifier:userIdentifier];
+      -[StoreDownloadQueueRequest setCancelsDuplicateDownloads:](v13, "setCancelsDuplicateDownloads:", [objc_msgSend(purchase valueForDownloadProperty:{SSDownloadPropertyShouldCancelIfDuplicate), "BOOLValue"}]);
+      -[StoreDownloadQueueRequest setPurchaseIdentifier:](v13, "setPurchaseIdentifier:", [purchase uniqueIdentifier]);
       [(StoreDownloadQueueRequest *)v13 setQueueIdentifier:sub_10012E754(v6)];
       [(StoreDownloadQueueRequest *)v13 setReason:@"trigger-download"];
       [+[StoreDownloadQueue sharedDownloadQueue](StoreDownloadQueue "sharedDownloadQueue")];
@@ -1086,7 +1086,7 @@ LABEL_22:
   }
 }
 
-- (id)_clientForMessage:(id)a3 connection:(id)a4
+- (id)_clientForMessage:(id)message connection:(id)connection
 {
   v23 = 0u;
   v24 = 0u;
@@ -1102,7 +1102,7 @@ LABEL_13:
       return 0;
     }
 
-    v12 = [[PurchaseManagerClient alloc] initWithInputConnection:a4];
+    v12 = [[PurchaseManagerClient alloc] initWithInputConnection:connection];
     v15 = self->_clients;
     if (!v15)
     {
@@ -1113,14 +1113,14 @@ LABEL_13:
     [(NSMutableArray *)v15 addObject:v12];
     objc_opt_class();
     v16 = SSXPCDictionaryCopyCFObjectWithClass();
-    v17 = [(XPCClient *)v12 clientIdentifier];
-    if (v16 && v17)
+    clientIdentifier = [(XPCClient *)v12 clientIdentifier];
+    if (v16 && clientIdentifier)
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1002196FC;
       v22[3] = &unk_10032C8D0;
-      v22[4] = v17;
+      v22[4] = clientIdentifier;
       v22[5] = v16;
       v22[6] = v12;
       [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
@@ -1129,9 +1129,9 @@ LABEL_13:
     else if (!v16)
     {
 LABEL_22:
-      [(PurchaseManagerClient *)v12 setUseRemoteAuthentication:xpc_dictionary_get_BOOL(a3, "3")];
+      [(PurchaseManagerClient *)v12 setUseRemoteAuthentication:xpc_dictionary_get_BOOL(message, "3")];
       v18 = v12;
-      v19 = [[DownloadManagerClient alloc] initWithInputConnection:a4];
+      v19 = [[DownloadManagerClient alloc] initWithInputConnection:connection];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_1002198D4;
@@ -1157,9 +1157,9 @@ LABEL_3:
     }
 
     v12 = *(*(&v23 + 1) + 8 * v11);
-    v13 = [(XPCClient *)v12 copyInputConnection];
-    xpc_release(v13);
-    if (v13 == a4 && v12 != 0)
+    copyInputConnection = [(XPCClient *)v12 copyInputConnection];
+    xpc_release(copyInputConnection);
+    if (copyInputConnection == connection && v12 != 0)
     {
       return v12;
     }
@@ -1177,7 +1177,7 @@ LABEL_3:
   }
 }
 
-- (id)_clientForUniqueIdentifier:(int64_t)a3
+- (id)_clientForUniqueIdentifier:(int64_t)identifier
 {
   v11 = 0u;
   v12 = 0u;
@@ -1202,7 +1202,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 uniqueIdentifier] == a3)
+    if ([v9 uniqueIdentifier] == identifier)
     {
       return v9;
     }
@@ -1220,7 +1220,7 @@ LABEL_3:
   }
 }
 
-- (void)_dispatchAsync:(id)a3
+- (void)_dispatchAsync:(id)async
 {
   [+[Daemon daemon](Daemon "daemon")];
   dispatchQueue = self->_dispatchQueue;
@@ -1229,7 +1229,7 @@ LABEL_3:
   v6[2] = sub_100219AA8;
   v6[3] = &unk_10032C8F8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = async;
   dispatch_async(dispatchQueue, v6);
 }
 
@@ -1278,8 +1278,8 @@ LABEL_3:
       v10[4] = v3;
       v10[5] = v19;
       [v5 setPurchaseBlock:v10];
-      v6 = [v14[5] purchase];
-      v7 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(v6, "uniqueIdentifier")}];
+      purchase = [v14[5] purchase];
+      v7 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(purchase, "uniqueIdentifier")}];
       purchasingIdentifiers = self->_purchasingIdentifiers;
       if (!purchasingIdentifiers)
       {
@@ -1289,13 +1289,13 @@ LABEL_3:
 
       [(NSMutableSet *)purchasingIdentifiers addObject:v7];
 
-      if ([v6 displaysOnLockScreen])
+      if ([purchase displaysOnLockScreen])
       {
         GSEventResetIdleTimer();
       }
 
-      v9 = [(PurchaseController *)self _purchaseOperationQueue];
-      [v9 addOperation:v14[5]];
+      _purchaseOperationQueue = [(PurchaseController *)self _purchaseOperationQueue];
+      [_purchaseOperationQueue addOperation:v14[5]];
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1303,16 +1303,16 @@ LABEL_3:
   }
 }
 
-- (void)_filterPurchases:(id)a3 withTransaction:(id)a4 block:(id)a5
+- (void)_filterPurchases:(id)purchases withTransaction:(id)transaction block:(id)block
 {
   v6 = objc_alloc_init(NSMutableDictionary);
-  obj = a3;
+  obj = purchases;
   v29 = objc_alloc_init(NSMutableArray);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v7 = [purchases countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1328,7 +1328,7 @@ LABEL_3:
 
         v11 = *(*(&v32 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [a4 existingDownloadForPurchase:v11];
+        v13 = [transaction existingDownloadForPurchase:v11];
         [v13 valueForProperty:@"kind"];
         if (SSDebugShouldUseAppstored())
         {
@@ -1348,20 +1348,20 @@ LABEL_3:
             v15 = +[SSLogConfig sharedConfig];
           }
 
-          v16 = [v15 shouldLog];
+          shouldLog = [v15 shouldLog];
           if ([v15 shouldLogToDisk])
           {
-            v16 |= 2u;
+            shouldLog |= 2u;
           }
 
           if (os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_INFO))
           {
-            v17 = v16;
+            v17 = shouldLog;
           }
 
           else
           {
-            v17 = v16 & 2;
+            v17 = shouldLog & 2;
           }
 
           if (v17)
@@ -1419,45 +1419,45 @@ LABEL_28:
     while (v8);
   }
 
-  (*(a5 + 2))(a5, v29, v6);
+  (*(block + 2))(block, v29, v6);
 }
 
-- (void)_finishAuthenticationRequestForBatchIdentifier:(int64_t)a3 client:(id)a4 withAccountID:(id)a5 error:(id)a6
+- (void)_finishAuthenticationRequestForBatchIdentifier:(int64_t)identifier client:(id)client withAccountID:(id)d error:(id)error
 {
   [NSNumber numberWithBool:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10021A650;
   v10[3] = &unk_100327F60;
-  v10[4] = a5;
+  v10[4] = d;
   v10[5] = self;
-  v10[7] = a4;
-  v10[8] = a3;
+  v10[7] = client;
+  v10[8] = identifier;
   v10[6] = SSErrorBySettingUserInfoValue();
   [(PurchaseController *)self _dispatchAsync:v10];
 }
 
-- (void)_sendAuthenticateRequestForClientUniqueID:(int64_t)a3 withContext:(id)a4 responseHandler:(id)a5
+- (void)_sendAuthenticateRequestForClientUniqueID:(int64_t)d withContext:(id)context responseHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10021AAAC;
   v5[3] = &unk_10032C9E0;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a5;
-  v5[7] = a3;
+  v5[5] = context;
+  v5[6] = handler;
+  v5[7] = d;
   [(PurchaseController *)self _dispatchAsync:v5];
 }
 
-- (void)_finishPurchaseRequestForClientUniqueID:(int64_t)a3 withResponse:(id)a4
+- (void)_finishPurchaseRequestForClientUniqueID:(int64_t)d withResponse:(id)response
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10021AB5C;
   v4[3] = &unk_10032A398;
-  v4[5] = a4;
-  v4[6] = a3;
+  v4[5] = response;
+  v4[6] = d;
   v4[4] = self;
   [(PurchaseController *)self _dispatchAsync:v4];
 }
@@ -1472,27 +1472,27 @@ LABEL_28:
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block
 {
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10021B78C;
   v9[3] = &unk_10032AFB8;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
-  v9[7] = a5;
+  v9[5] = message;
+  v9[6] = connection;
+  v9[7] = block;
   [(PurchaseController *)self _dispatchAsync:v9];
 }
 
-- (id)_newEncodedPurchaseEntityPropertiesWithResponse:(id)a3
+- (id)_newEncodedPurchaseEntityPropertiesWithResponse:(id)response
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  if ([a3 error])
+  if ([response error])
   {
-    [a3 error];
+    [response error];
     ArchivableData = SSCodingCreateArchivableData();
     if (ArchivableData)
     {
@@ -1501,7 +1501,7 @@ LABEL_28:
     }
   }
 
-  v7 = [objc_msgSend(a3 "URLResponse")];
+  v7 = [objc_msgSend(response "URLResponse")];
   if (v7)
   {
     [v4 setObject:v7 forKey:@"encoded_response"];
@@ -1510,44 +1510,44 @@ LABEL_28:
   return v4;
 }
 
-- (id)_newPurchaseIdentifiersFromEncodedArray:(id)a3
+- (id)_newPurchaseIdentifiersFromEncodedArray:(id)array
 {
   v4 = objc_alloc_init(NSMutableOrderedSet);
-  if (a3 && xpc_get_type(a3) == &_xpc_type_array)
+  if (array && xpc_get_type(array) == &_xpc_type_array)
   {
     applier[0] = _NSConcreteStackBlock;
     applier[1] = 3221225472;
     applier[2] = sub_10021B964;
     applier[3] = &unk_100327FB0;
     applier[4] = v4;
-    xpc_array_apply(a3, applier);
+    xpc_array_apply(array, applier);
   }
 
   return v4;
 }
 
-- (id)_newPurchasesFromEncodedArray:(id)a3 client:(id)a4
+- (id)_newPurchasesFromEncodedArray:(id)array client:(id)client
 {
-  if (!a3 || xpc_get_type(a3) != &_xpc_type_array)
+  if (!array || xpc_get_type(array) != &_xpc_type_array)
   {
     return 0;
   }
 
-  v7 = [a4 userAgent];
+  userAgent = [client userAgent];
   v6 = objc_alloc_init(NSMutableArray);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10021BAB0;
   v9[3] = &unk_10032C6F0;
-  v9[4] = v7;
+  v9[4] = userAgent;
   v9[5] = v6;
-  xpc_array_apply(a3, v9);
+  xpc_array_apply(array, v9);
   return v6;
 }
 
-- (id)_placeholderAppPathForBundleIdentifier:(id)a3
+- (id)_placeholderAppPathForBundleIdentifier:(id)identifier
 {
-  v3 = [[NSArray alloc] initWithObjects:{-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1), "lastObject"), @"com.apple.iTunesStore", a3, 0}];
+  v3 = [[NSArray alloc] initWithObjects:{-[NSArray lastObject](NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1), "lastObject"), @"com.apple.iTunesStore", identifier, 0}];
   v4 = [[NSString pathWithComponents:?], "stringByAppendingPathExtension:", @"app"];
 
   return v4;
@@ -1569,7 +1569,7 @@ LABEL_28:
   return result;
 }
 
-- (void)_showNotEnoughDiskSpaceDialogForPurchases:(id)a3
+- (void)_showNotEnoughDiskSpaceDialogForPurchases:(id)purchases
 {
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v5 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"NOT_ENOUGH_SPACE_TITLE", &stru_10033CC30, 0];
@@ -1583,7 +1583,7 @@ LABEL_28:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v8 = [purchases countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1595,7 +1595,7 @@ LABEL_28:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v13 = [*(*(&v25 + 1) + 8 * i) valueForDownloadProperty:v11];
@@ -1606,7 +1606,7 @@ LABEL_28:
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [purchases countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v9)
       {
         continue;
@@ -1618,7 +1618,7 @@ LABEL_28:
 
   v14 = 0;
 LABEL_11:
-  v15 = [a3 count];
+  v15 = [purchases count];
   if ([v14 length])
   {
     v16 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1666,10 +1666,10 @@ LABEL_23:
   CFRelease(Mutable);
 }
 
-- (void)_showPurchasesFailedDialogWithFirstTitle:(id)a3 count:(int64_t)a4
+- (void)_showPurchasesFailedDialogWithFirstTitle:(id)title count:(int64_t)count
 {
   v13 = objc_alloc_init(ISDialog);
-  v6 = [a3 length];
+  v6 = [title length];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   if (!v6)
   {
@@ -1679,14 +1679,14 @@ LABEL_23:
 
   [v13 setTitle:{-[NSBundle localizedStringForKey:value:table:](v7, "localizedStringForKey:value:table:", @"SPECIFIC_PURCHASE_ERROR_TITLE", &stru_10033CC30, 0)}];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  if (a4 == 2)
+  if (count == 2)
   {
     v10 = @"SPECIFIC_PURCHASE_ERROR_BODY_PLUS_ONE_%@";
   }
 
   else
   {
-    v9 = a4 - 1;
+    v9 = count - 1;
     if (v9)
     {
       v11 = [(NSBundle *)v8 localizedStringForKey:@"SPECIFIC_PURCHASE_ERROR_BODY_PLURAL_%@_%ld" value:&stru_10033CC30 table:0];
@@ -1699,7 +1699,7 @@ LABEL_23:
 
   v11 = [(NSBundle *)v8 localizedStringForKey:v10 value:&stru_10033CC30 table:0];
 LABEL_9:
-  [v13 setMessage:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", v11, a3, v12)}];
+  [v13 setMessage:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", v11, title, v12)}];
 LABEL_10:
   [v13 setButtons:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", +[ISDialogButton buttonWithTitle:](ISDialogButton, "buttonWithTitle:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"OK", &stru_10033CC30, 0)))}];
   [+[UserNotificationCenter defaultCenter](UserNotificationCenter "defaultCenter")];

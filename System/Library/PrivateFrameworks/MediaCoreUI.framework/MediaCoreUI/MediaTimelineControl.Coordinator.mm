@@ -1,15 +1,15 @@
 @interface MediaTimelineControl.Coordinator
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4;
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame;
 - (NSArray)timeRangeMarks;
 - (_TtCV11MediaCoreUI20MediaTimelineControl11Coordinator)init;
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4;
-- (void)mediaTimelineControl:(id)a3 didChangeScrubbingRate:(unint64_t)a4;
-- (void)mediaTimelineControl:(id)a3 didChangeValue:(float)a4;
-- (void)mediaTimelineControl:(id)a3 didExtendWithInsets:(UIEdgeInsets)a4;
-- (void)mediaTimelineControlDidEndChanging:(id)a3;
-- (void)mediaTimelineControlDidEndDecelerating:(id)a3;
-- (void)mediaTimelineControlWillBeginChanging:(id)a3;
-- (void)setTimeRangeMarks:(id)a3;
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source;
+- (void)mediaTimelineControl:(id)control didChangeScrubbingRate:(unint64_t)rate;
+- (void)mediaTimelineControl:(id)control didChangeValue:(float)value;
+- (void)mediaTimelineControl:(id)control didExtendWithInsets:(UIEdgeInsets)insets;
+- (void)mediaTimelineControlDidEndChanging:(id)changing;
+- (void)mediaTimelineControlDidEndDecelerating:(id)decelerating;
+- (void)mediaTimelineControlWillBeginChanging:(id)changing;
+- (void)setTimeRangeMarks:(id)marks;
 @end
 
 @implementation MediaTimelineControl.Coordinator
@@ -23,59 +23,59 @@
   return v2;
 }
 
-- (void)setTimeRangeMarks:(id)a3
+- (void)setTimeRangeMarks:(id)marks
 {
   sub_1C592535C(0, &qword_1EC1961A8);
   *(self + OBJC_IVAR____TtCV11MediaCoreUI20MediaTimelineControl11Coordinator_timeRangeMarks) = sub_1C5BCB054();
 }
 
-- (void)mediaTimelineControl:(id)a3 didChangeScrubbingRate:(unint64_t)a4
+- (void)mediaTimelineControl:(id)control didChangeScrubbingRate:(unint64_t)rate
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C5AA2350(a4);
+  controlCopy = control;
+  selfCopy = self;
+  sub_1C5AA2350(rate);
 }
 
-- (void)mediaTimelineControlWillBeginChanging:(id)a3
+- (void)mediaTimelineControlWillBeginChanging:(id)changing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5A8B264(v4);
+  changingCopy = changing;
+  selfCopy = self;
+  sub_1C5A8B264(changingCopy);
 }
 
-- (void)mediaTimelineControl:(id)a3 didChangeValue:(float)a4
+- (void)mediaTimelineControl:(id)control didChangeValue:(float)value
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C5AA25D0(a4);
+  controlCopy = control;
+  selfCopy = self;
+  sub_1C5AA25D0(value);
 }
 
-- (void)mediaTimelineControlDidEndChanging:(id)a3
+- (void)mediaTimelineControlDidEndChanging:(id)changing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5A8B594(v4);
+  changingCopy = changing;
+  selfCopy = self;
+  sub_1C5A8B594(changingCopy);
 }
 
-- (void)mediaTimelineControlDidEndDecelerating:(id)a3
+- (void)mediaTimelineControlDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_1C5AA27F8();
 }
 
-- (void)mediaTimelineControl:(id)a3 didExtendWithInsets:(UIEdgeInsets)a4
+- (void)mediaTimelineControl:(id)control didExtendWithInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v10 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  controlCopy = control;
+  selfCopy = self;
   sub_1C5AA2A04(top, left, bottom, right);
 }
 
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -84,10 +84,10 @@
   return result;
 }
 
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source
 {
-  v4 = [objc_opt_self() clearColor];
-  v5 = [objc_opt_self() timeRangeMarkUIProxyWithBackgroundColor:v4 cornerRadius:0.0];
+  clearColor = [objc_opt_self() clearColor];
+  v5 = [objc_opt_self() timeRangeMarkUIProxyWithBackgroundColor:clearColor cornerRadius:0.0];
 
   return v5;
 }

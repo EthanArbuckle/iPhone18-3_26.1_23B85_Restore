@@ -8,18 +8,18 @@
 {
   if (self)
   {
-    v2 = [(FBSSceneComponent *)self scene];
-    v3 = [v2 clientSettings];
+    scene = [(FBSSceneComponent *)self scene];
+    clientSettings = [scene clientSettings];
   }
 
   else
   {
-    v3 = 0;
+    clientSettings = 0;
   }
 
-  v4 = [v3 preferredWindowingControlStyleType];
+  preferredWindowingControlStyleType = [clientSettings preferredWindowingControlStyleType];
 
-  return v4;
+  return preferredWindowingControlStyleType;
 }
 
 @end

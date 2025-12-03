@@ -6,11 +6,11 @@
 
 - (uint64_t)currentOrientation
 {
-  v2 = [a1 coordinateSpace];
-  v3 = [a1 fixedCoordinateSpace];
+  coordinateSpace = [self coordinateSpace];
+  fixedCoordinateSpace = [self fixedCoordinateSpace];
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
-  [v2 convertPoint:v3 toCoordinateSpace:{*MEMORY[0x277CBF348], v5}];
+  [coordinateSpace convertPoint:fixedCoordinateSpace toCoordinateSpace:{*MEMORY[0x277CBF348], v5}];
   v7 = v6;
   v9 = v8;
 

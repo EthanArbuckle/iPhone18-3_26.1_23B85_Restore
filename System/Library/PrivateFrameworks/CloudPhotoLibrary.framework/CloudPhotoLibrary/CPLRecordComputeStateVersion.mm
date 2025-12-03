@@ -1,9 +1,9 @@
 @interface CPLRecordComputeStateVersion
-- (BOOL)isEqual:(id)a3;
-- (CPLRecordComputeStateVersion)initWithMajorVersion:(unint64_t)a3 stage:(unint64_t)a4;
-- (CPLRecordComputeStateVersion)initWithString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CPLRecordComputeStateVersion)initWithMajorVersion:(unint64_t)version stage:(unint64_t)stage;
+- (CPLRecordComputeStateVersion)initWithString:(id)string;
 - (id)asString;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CPLRecordComputeStateVersion
@@ -18,17 +18,17 @@
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   majorVersion = self->_majorVersion;
-  v6 = v4[1];
+  v6 = compareCopy[1];
   if (majorVersion <= v6)
   {
     if (majorVersion == v6)
     {
       stage = self->_stage;
-      v9 = v4[2];
+      v9 = compareCopy[2];
       v10 = stage > v9;
       if (stage == v9)
       {
@@ -65,10 +65,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -76,44 +76,44 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_majorVersion == v4->_majorVersion && self->_stage == v4->_stage;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_majorVersion == equalCopy->_majorVersion && self->_stage == equalCopy->_stage;
   }
 
   return v5;
 }
 
-- (CPLRecordComputeStateVersion)initWithMajorVersion:(unint64_t)a3 stage:(unint64_t)a4
+- (CPLRecordComputeStateVersion)initWithMajorVersion:(unint64_t)version stage:(unint64_t)stage
 {
   v7.receiver = self;
   v7.super_class = CPLRecordComputeStateVersion;
   result = [(CPLRecordComputeStateVersion *)&v7 init];
   if (result)
   {
-    result->_majorVersion = a3;
-    result->_stage = a4;
+    result->_majorVersion = version;
+    result->_stage = stage;
   }
 
   return result;
 }
 
-- (CPLRecordComputeStateVersion)initWithString:(id)a3
+- (CPLRecordComputeStateVersion)initWithString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [v4 firstObject];
-  v6 = [v5 integerValue];
+  v4 = [string componentsSeparatedByString:@"."];
+  firstObject = [v4 firstObject];
+  integerValue = [firstObject integerValue];
 
   if ([v4 count] == 1)
   {
-    v7 = 0;
+    integerValue2 = 0;
   }
 
   else
   {
     v8 = [v4 objectAtIndexedSubscript:1];
-    v7 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
   }
 
-  v9 = [(CPLRecordComputeStateVersion *)self initWithMajorVersion:v6 stage:v7];
+  v9 = [(CPLRecordComputeStateVersion *)self initWithMajorVersion:integerValue stage:integerValue2];
 
   return v9;
 }

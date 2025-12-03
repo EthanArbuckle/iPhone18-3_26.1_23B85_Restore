@@ -1,18 +1,18 @@
 @interface SUUIReviewConfiguration
-- (SUUIReviewConfiguration)initWithConfigurationDictionary:(id)a3;
+- (SUUIReviewConfiguration)initWithConfigurationDictionary:(id)dictionary;
 @end
 
 @implementation SUUIReviewConfiguration
 
-- (SUUIReviewConfiguration)initWithConfigurationDictionary:(id)a3
+- (SUUIReviewConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = SUUIReviewConfiguration;
   v5 = [(SUUIReviewConfiguration *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"allVersionsUrl"];
+    v6 = [dictionaryCopy objectForKey:@"allVersionsUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -21,7 +21,7 @@
       v5->_allVersionsURLString = v7;
     }
 
-    v9 = [v4 objectForKey:@"currentVersionUrl"];
+    v9 = [dictionaryCopy objectForKey:@"currentVersionUrl"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -31,7 +31,7 @@
       v5->_currentVersionURLString = v10;
     }
 
-    v12 = [v4 objectForKey:@"inlineRatingUrl"];
+    v12 = [dictionaryCopy objectForKey:@"inlineRatingUrl"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -41,7 +41,7 @@
       v5->_ratingURLString = v13;
     }
 
-    v15 = [v4 objectForKey:@"pageNumberQueryParam"];
+    v15 = [dictionaryCopy objectForKey:@"pageNumberQueryParam"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

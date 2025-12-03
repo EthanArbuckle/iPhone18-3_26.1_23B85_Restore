@@ -1,7 +1,7 @@
 @interface GlobalSettingsViewController
-- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithCoder:(id)a3;
-- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithCoder:(id)coder;
+- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -27,12 +27,12 @@
   sub_17D5C(v4, 0);
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
-    a3 = sub_17BFC();
+    l = sub_17BFC();
   }
 
   if (v6)
@@ -46,42 +46,42 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_B110(a3, v7);
+  selfCopy = self;
+  sub_B110(l, v7);
   sub_B578(v7);
 }
 
-- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_17C5C();
     *&self->PSViewController_opaque[OBJC_IVAR____TtC22PodcastsSettingsPlugin28GlobalSettingsViewController____lazy_storage___hostingController] = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_17C3C();
   }
 
   else
   {
     *&self->PSViewController_opaque[OBJC_IVAR____TtC22PodcastsSettingsPlugin28GlobalSettingsViewController____lazy_storage___hostingController] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for GlobalSettingsViewController();
-  v9 = [(GlobalSettingsViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(GlobalSettingsViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithCoder:(id)a3
+- (_TtC22PodcastsSettingsPlugin28GlobalSettingsViewController)initWithCoder:(id)coder
 {
   *&self->PSViewController_opaque[OBJC_IVAR____TtC22PodcastsSettingsPlugin28GlobalSettingsViewController____lazy_storage___hostingController] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for GlobalSettingsViewController();
-  v4 = a3;
-  v5 = [(GlobalSettingsViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GlobalSettingsViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

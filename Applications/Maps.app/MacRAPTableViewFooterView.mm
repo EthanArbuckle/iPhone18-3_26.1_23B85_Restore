@@ -1,5 +1,5 @@
 @interface MacRAPTableViewFooterView
-- (MacRAPTableViewFooterView)initWithReuseIdentifier:(id)a3;
+- (MacRAPTableViewFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -13,11 +13,11 @@
   [(UILabel *)self->_footerLabel setText:0];
 }
 
-- (MacRAPTableViewFooterView)initWithReuseIdentifier:(id)a3
+- (MacRAPTableViewFooterView)initWithReuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = MacRAPTableViewFooterView;
-  v3 = [(MacRAPTableViewFooterView *)&v29 initWithReuseIdentifier:a3];
+  v3 = [(MacRAPTableViewFooterView *)&v29 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -32,35 +32,35 @@
     v7 = +[UIColor systemGrayColor];
     [(UILabel *)v3->_footerLabel setTextColor:v7];
 
-    v8 = [(MacRAPTableViewFooterView *)v3 contentView];
-    [v8 addSubview:v3->_footerLabel];
+    contentView = [(MacRAPTableViewFooterView *)v3 contentView];
+    [contentView addSubview:v3->_footerLabel];
 
-    v27 = [(UILabel *)v3->_footerLabel leadingAnchor];
-    v28 = [(MacRAPTableViewFooterView *)v3 contentView];
-    v26 = [v28 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:30.0];
+    leadingAnchor = [(UILabel *)v3->_footerLabel leadingAnchor];
+    contentView2 = [(MacRAPTableViewFooterView *)v3 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
     v30[0] = v25;
-    v23 = [(UILabel *)v3->_footerLabel trailingAnchor];
-    v24 = [(MacRAPTableViewFooterView *)v3 contentView];
-    v22 = [v24 trailingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22 constant:-30.0];
+    trailingAnchor = [(UILabel *)v3->_footerLabel trailingAnchor];
+    contentView3 = [(MacRAPTableViewFooterView *)v3 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
     v30[1] = v21;
-    v9 = [(UILabel *)v3->_footerLabel topAnchor];
-    v10 = [(MacRAPTableViewFooterView *)v3 contentView];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11 constant:18.0];
+    topAnchor = [(UILabel *)v3->_footerLabel topAnchor];
+    contentView4 = [(MacRAPTableViewFooterView *)v3 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
     v30[2] = v12;
-    v13 = [(UILabel *)v3->_footerLabel bottomAnchor];
-    v14 = [(MacRAPTableViewFooterView *)v3 contentView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:-18.0];
+    bottomAnchor = [(UILabel *)v3->_footerLabel bottomAnchor];
+    contentView5 = [(MacRAPTableViewFooterView *)v3 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-18.0];
     v30[3] = v16;
     v17 = [NSArray arrayWithObjects:v30 count:4];
     [NSLayoutConstraint activateConstraints:v17];
 
     v18 = +[UIColor systemBackgroundColor];
-    v19 = [(MacRAPTableViewFooterView *)v3 contentView];
-    [v19 setBackgroundColor:v18];
+    contentView6 = [(MacRAPTableViewFooterView *)v3 contentView];
+    [contentView6 setBackgroundColor:v18];
   }
 
   return v3;

@@ -1,26 +1,26 @@
 @interface FMFRefreshBarButtonItem
 - (BOOL)anyLocationIsUpdating;
 - (BOOL)isAnimating;
-- (FMFRefreshBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4;
+- (FMFRefreshBarButtonItem)initWithTarget:(id)target action:(SEL)action;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (void)_updateLocateInProgress;
-- (void)addLocation:(id)a3;
+- (void)addLocation:(id)location;
 - (void)dealloc;
 - (void)localTapped;
-- (void)locatingInProgressChanged:(id)a3;
-- (void)removeLocationForHandle:(id)a3;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setLocations:(id)a3;
+- (void)locatingInProgressChanged:(id)changed;
+- (void)removeLocationForHandle:(id)handle;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setLocations:(id)locations;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation FMFRefreshBarButtonItem
 
-- (FMFRefreshBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4
+- (FMFRefreshBarButtonItem)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v7 = objc_alloc_init(MEMORY[0x277D75D18]);
   v43.receiver = self;
   v43.super_class = FMFRefreshBarButtonItem;
@@ -39,57 +39,57 @@
     [(FMFRefreshBarButtonItem *)v8 setImageView:v13];
 
     v14 = [FMFRefreshWrapperButton alloc];
-    v15 = [(FMFRefreshBarButtonItem *)v8 imageView];
-    [v15 bounds];
+    imageView = [(FMFRefreshBarButtonItem *)v8 imageView];
+    [imageView bounds];
     v16 = [(FMFRefreshWrapperButton *)v14 initWithFrame:?];
     [(FMFRefreshBarButtonItem *)v8 setWrapperButton:v16];
 
-    v17 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    wrapperButton = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    [wrapperButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    [v18 addTarget:v6 action:a4 forControlEvents:64];
+    wrapperButton2 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    [wrapperButton2 addTarget:targetCopy action:action forControlEvents:64];
 
-    v19 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    [v19 addTarget:v8 action:sel_localTapped forControlEvents:64];
+    wrapperButton3 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    [wrapperButton3 addTarget:v8 action:sel_localTapped forControlEvents:64];
 
-    v20 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    [(FMFRefreshBarButtonItem *)v8 setCustomView:v20];
+    wrapperButton4 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    [(FMFRefreshBarButtonItem *)v8 setCustomView:wrapperButton4];
 
-    v21 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    wrapperButton5 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
     v22 = [(FMFRefreshBarButtonItem *)v8 aiv];
-    [v21 addSubview:v22];
+    [wrapperButton5 addSubview:v22];
 
     v23 = [(FMFRefreshBarButtonItem *)v8 aiv];
     v24 = [(FMFRefreshBarButtonItem *)v8 aiv];
-    v25 = [v24 superview];
-    [v23 centerHorizontalInView:v25];
+    superview = [v24 superview];
+    [v23 centerHorizontalInView:superview];
 
     v26 = [(FMFRefreshBarButtonItem *)v8 aiv];
     v27 = [(FMFRefreshBarButtonItem *)v8 aiv];
-    v28 = [v27 superview];
-    [v26 centerVerticalInView:v28];
+    superview2 = [v27 superview];
+    [v26 centerVerticalInView:superview2];
 
-    v29 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    v30 = [(FMFRefreshBarButtonItem *)v8 imageView];
-    [v29 addSubview:v30];
+    wrapperButton6 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    imageView2 = [(FMFRefreshBarButtonItem *)v8 imageView];
+    [wrapperButton6 addSubview:imageView2];
 
-    v31 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    v32 = [v31 widthAnchor];
-    v33 = [(FMFRefreshBarButtonItem *)v8 imageView];
-    [v33 bounds];
-    v35 = [v32 constraintEqualToConstant:v34];
+    wrapperButton7 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    widthAnchor = [wrapperButton7 widthAnchor];
+    imageView3 = [(FMFRefreshBarButtonItem *)v8 imageView];
+    [imageView3 bounds];
+    v35 = [widthAnchor constraintEqualToConstant:v34];
     [v35 setActive:1];
 
-    v36 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
-    v37 = [v36 heightAnchor];
-    v38 = [(FMFRefreshBarButtonItem *)v8 imageView];
-    [v38 bounds];
-    v40 = [v37 constraintEqualToConstant:v39];
+    wrapperButton8 = [(FMFRefreshBarButtonItem *)v8 wrapperButton];
+    heightAnchor = [wrapperButton8 heightAnchor];
+    imageView4 = [(FMFRefreshBarButtonItem *)v8 imageView];
+    [imageView4 bounds];
+    v40 = [heightAnchor constraintEqualToConstant:v39];
     [v40 setActive:1];
 
-    v41 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v41 addObserver:v8 selector:sel_locatingInProgressChanged_ name:@"locatingInProgressChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_locatingInProgressChanged_ name:@"locatingInProgressChanged" object:0];
   }
 
   return v8;
@@ -97,33 +97,33 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"locatingInProgressChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"locatingInProgressChanged" object:0];
 
   v4.receiver = self;
   v4.super_class = FMFRefreshBarButtonItem;
   [(FMFRefreshBarButtonItem *)&v4 dealloc];
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v9.receiver = self;
   v9.super_class = FMFRefreshBarButtonItem;
   [(FMFRefreshBarButtonItem *)&v9 setImageInsets:?];
-  v8 = [(FMFRefreshBarButtonItem *)self wrapperButton];
-  [v8 setWrapperInsets:{-top, -left, -bottom, -right}];
+  wrapperButton = [(FMFRefreshBarButtonItem *)self wrapperButton];
+  [wrapperButton setWrapperInsets:{-top, -left, -bottom, -right}];
 }
 
 - (void)startAnimating
 {
   if (![(FMFRefreshBarButtonItem *)self isAnimating])
   {
-    v3 = [(FMFRefreshBarButtonItem *)self imageView];
-    [v3 setHidden:1];
+    imageView = [(FMFRefreshBarButtonItem *)self imageView];
+    [imageView setHidden:1];
 
     v4 = [(FMFRefreshBarButtonItem *)self aiv];
     [v4 startAnimating];
@@ -138,8 +138,8 @@
 {
   if ([(FMFRefreshBarButtonItem *)self isAnimating])
   {
-    v3 = [(FMFRefreshBarButtonItem *)self imageView];
-    [v3 setHidden:0];
+    imageView = [(FMFRefreshBarButtonItem *)self imageView];
+    [imageView setHidden:0];
 
     v4 = [(FMFRefreshBarButtonItem *)self aiv];
     [v4 stopAnimating];
@@ -153,24 +153,24 @@
 - (BOOL)isAnimating
 {
   v2 = [(FMFRefreshBarButtonItem *)self aiv];
-  v3 = [v2 isAnimating];
+  isAnimating = [v2 isAnimating];
 
-  return v3;
+  return isAnimating;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  objc_storeStrong(&self->_locations, a3);
+  objc_storeStrong(&self->_locations, locations);
 
   [(FMFRefreshBarButtonItem *)self _updateLocateInProgress];
 }
 
-- (void)addLocation:(id)a3
+- (void)addLocation:(id)location
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMFRefreshBarButtonItem *)self locations];
-  v6 = [v5 mutableCopy];
+  locationCopy = location;
+  locations = [(FMFRefreshBarButtonItem *)self locations];
+  v6 = [locations mutableCopy];
 
   if (!v6)
   {
@@ -181,9 +181,9 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v17 = self;
-  v7 = [(FMFRefreshBarButtonItem *)self locations];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  locations2 = [(FMFRefreshBarButtonItem *)self locations];
+  v8 = [locations2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -194,13 +194,13 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locations2);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 handle];
-        v14 = [v4 handle];
-        v15 = [v13 isEqual:v14];
+        handle = [v12 handle];
+        handle2 = [locationCopy handle];
+        v15 = [handle isEqual:handle2];
 
         if (v15)
         {
@@ -209,7 +209,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [locations2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;
@@ -221,23 +221,23 @@
 
 LABEL_13:
 
-  [v6 addObject:v4];
-  [(FMFRefreshBarButtonItem *)v17 setLocations:v6];
-  [(FMFRefreshBarButtonItem *)v17 _updateLocateInProgress];
+  [v6 addObject:locationCopy];
+  [(FMFRefreshBarButtonItem *)selfCopy setLocations:v6];
+  [(FMFRefreshBarButtonItem *)selfCopy _updateLocateInProgress];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeLocationForHandle:(id)a3
+- (void)removeLocationForHandle:(id)handle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handleCopy = handle;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(FMFRefreshBarButtonItem *)self locations];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  locations = [(FMFRefreshBarButtonItem *)self locations];
+  v6 = [locations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -248,12 +248,12 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(locations);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [v10 handle];
-      v12 = [v11 isEqual:v4];
+      handle = [v10 handle];
+      v12 = [handle isEqual:handleCopy];
 
       if (v12)
       {
@@ -262,7 +262,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [locations countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -279,13 +279,13 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v14 = [(FMFRefreshBarButtonItem *)self locations];
-    v15 = [v14 mutableCopy];
+    locations2 = [(FMFRefreshBarButtonItem *)self locations];
+    v15 = [locations2 mutableCopy];
 
     [v15 removeObject:v13];
     [(FMFRefreshBarButtonItem *)self setLocations:v15];
 
-    v5 = v13;
+    locations = v13;
   }
 
 LABEL_12:
@@ -307,7 +307,7 @@ LABEL_13:
   dispatch_after(v3, MEMORY[0x277D85CD0], block);
 }
 
-- (void)locatingInProgressChanged:(id)a3
+- (void)locatingInProgressChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -331,9 +331,9 @@ uint64_t __53__FMFRefreshBarButtonItem_locatingInProgressChanged___block_invoke(
 
 - (void)_updateLocateInProgress
 {
-  v3 = [(FMFRefreshBarButtonItem *)self locations];
+  locations = [(FMFRefreshBarButtonItem *)self locations];
 
-  if (v3 && [(FMFRefreshBarButtonItem *)self anyLocationIsUpdating])
+  if (locations && [(FMFRefreshBarButtonItem *)self anyLocationIsUpdating])
   {
 
     [(FMFRefreshBarButtonItem *)self startAnimating];
@@ -353,8 +353,8 @@ uint64_t __53__FMFRefreshBarButtonItem_locatingInProgressChanged___block_invoke(
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(FMFRefreshBarButtonItem *)self locations];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  locations = [(FMFRefreshBarButtonItem *)self locations];
+  v3 = [locations countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -364,7 +364,7 @@ uint64_t __53__FMFRefreshBarButtonItem_locatingInProgressChanged___block_invoke(
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(locations);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isLocatingInProgress])
@@ -374,7 +374,7 @@ uint64_t __53__FMFRefreshBarButtonItem_locatingInProgressChanged___block_invoke(
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [locations countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;

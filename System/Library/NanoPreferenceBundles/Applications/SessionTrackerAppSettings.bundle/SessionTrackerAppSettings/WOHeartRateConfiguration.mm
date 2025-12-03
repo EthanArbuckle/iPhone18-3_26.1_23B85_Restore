@@ -1,8 +1,8 @@
 @interface WOHeartRateConfiguration
-+ (void)setConfiguredZones:(id)a3;
++ (void)setConfiguredZones:(id)zones;
 - (NSArray)zones;
 - (WOHeartRateConfiguration)init;
-- (void)setZones:(id)a3;
+- (void)setZones:(id)zones;
 @end
 
 @implementation WOHeartRateConfiguration
@@ -19,7 +19,7 @@
   return v5.super.isa;
 }
 
-- (void)setZones:(id)a3
+- (void)setZones:(id)zones
 {
   type metadata accessor for HeartRateZoneBridge();
   v4 = sub_228D4();
@@ -29,16 +29,16 @@
   *(self + v5) = v4;
 }
 
-+ (void)setConfiguredZones:(id)a3
++ (void)setConfiguredZones:(id)zones
 {
-  v3 = a3;
-  if (a3)
+  zonesCopy = zones;
+  if (zones)
   {
     type metadata accessor for HeartRateZoneBridge();
-    v3 = sub_228D4();
+    zonesCopy = sub_228D4();
   }
 
-  _s25SessionTrackerAppSettings28HeartRateConfigurationBridgeC13setConfigured5zonesySayAA0ef4ZoneH0CGSg_tFZ_0(v3);
+  _s25SessionTrackerAppSettings28HeartRateConfigurationBridgeC13setConfigured5zonesySayAA0ef4ZoneH0CGSg_tFZ_0(zonesCopy);
 }
 
 - (WOHeartRateConfiguration)init

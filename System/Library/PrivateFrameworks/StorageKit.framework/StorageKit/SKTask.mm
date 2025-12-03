@@ -1,15 +1,15 @@
 @interface SKTask
 - (BOOL)endedSuccessfully;
-- (BOOL)waitWithError:(id *)a3;
-- (SKTask)initWithExecutable:(id)a3 arguments:(id)a4;
+- (BOOL)waitWithError:(id *)error;
+- (SKTask)initWithExecutable:(id)executable arguments:(id)arguments;
 @end
 
 @implementation SKTask
 
-- (SKTask)initWithExecutable:(id)a3 arguments:(id)a4
+- (SKTask)initWithExecutable:(id)executable arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  executableCopy = executable;
+  argumentsCopy = arguments;
   v26.receiver = self;
   v26.super_class = SKTask;
   v8 = [(SKTask *)&v26 init];
@@ -19,25 +19,25 @@
     task = v8->_task;
     v8->_task = v9;
 
-    [(NSTask *)v8->_task setExecutableURL:v6];
-    [(NSTask *)v8->_task setArguments:v7];
+    [(NSTask *)v8->_task setExecutableURL:executableCopy];
+    [(NSTask *)v8->_task setArguments:argumentsCopy];
     v11 = v8->_task;
-    v12 = [MEMORY[0x277CCAC10] pipe];
-    [(NSTask *)v11 setStandardOutput:v12];
+    pipe = [MEMORY[0x277CCAC10] pipe];
+    [(NSTask *)v11 setStandardOutput:pipe];
 
     v13 = v8->_task;
-    v14 = [MEMORY[0x277CCAC10] pipe];
-    [(NSTask *)v13 setStandardError:v14];
+    pipe2 = [MEMORY[0x277CCAC10] pipe];
+    [(NSTask *)v13 setStandardError:pipe2];
 
-    v15 = [(NSTask *)v8->_task standardOutput];
-    v16 = [v15 fileHandleForReading];
+    standardOutput = [(NSTask *)v8->_task standardOutput];
+    fileHandleForReading = [standardOutput fileHandleForReading];
     stdoutHandle = v8->_stdoutHandle;
-    v8->_stdoutHandle = v16;
+    v8->_stdoutHandle = fileHandleForReading;
 
-    v18 = [(NSTask *)v8->_task standardError];
-    v19 = [v18 fileHandleForReading];
+    standardError = [(NSTask *)v8->_task standardError];
+    fileHandleForReading2 = [standardError fileHandleForReading];
     stderrHandle = v8->_stderrHandle;
-    v8->_stderrHandle = v19;
+    v8->_stderrHandle = fileHandleForReading2;
 
     v21 = objc_opt_new();
     [(SKTask *)v8 setStderrParser:v21];
@@ -55,39 +55,39 @@
 
 - (BOOL)endedSuccessfully
 {
-  v3 = [(SKTask *)self task];
-  if ([v3 isRunning])
+  task = [(SKTask *)self task];
+  if ([task isRunning])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SKTask *)self task];
-    v4 = [v5 terminationStatus] == 0;
+    task2 = [(SKTask *)self task];
+    v4 = [task2 terminationStatus] == 0;
   }
 
   return v4;
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
-  v5 = [(SKTask *)self task];
-  [v5 waitUntilExit];
+  task = [(SKTask *)self task];
+  [task waitUntilExit];
 
-  v6 = [(SKTask *)self task];
-  v7 = [v6 terminationStatus];
+  task2 = [(SKTask *)self task];
+  terminationStatus = [task2 terminationStatus];
 
-  if (a3 && v7)
+  if (error && terminationStatus)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277CCA5B8];
-    v10 = [(SKTask *)self task];
-    *a3 = [v8 errorWithDomain:v9 code:objc_msgSend(v10 userInfo:{"terminationStatus"), 0}];
+    task3 = [(SKTask *)self task];
+    *error = [v8 errorWithDomain:v9 code:objc_msgSend(task3 userInfo:{"terminationStatus"), 0}];
   }
 
-  v11 = [(SKTask *)self task];
-  v12 = [v11 terminationStatus] == 0;
+  task4 = [(SKTask *)self task];
+  v12 = [task4 terminationStatus] == 0;
 
   return v12;
 }

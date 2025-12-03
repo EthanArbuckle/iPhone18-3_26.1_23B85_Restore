@@ -1,19 +1,19 @@
 @interface VFXCameraEffectVignetting
 + (id)vignetting;
-- (VFXCameraEffectVignetting)initWithCoder:(id)a3;
+- (VFXCameraEffectVignetting)initWithCoder:(id)coder;
 - (double)createCFXObject;
 - (float)anamorphic;
 - (float)intensity;
 - (float)radius;
 - (float)softness;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAnamorphic:(float)a3;
-- (void)setIntensity:(float)a3;
-- (void)setRadius:(float)a3;
-- (void)setSoftness:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAnamorphic:(float)anamorphic;
+- (void)setIntensity:(float)intensity;
+- (void)setRadius:(float)radius;
+- (void)setSoftness:(float)softness;
 @end
 
 @implementation VFXCameraEffectVignetting
@@ -56,19 +56,19 @@
   return v11;
 }
 
-- (void)setIntensity:(float)a3
+- (void)setIntensity:(float)intensity
 {
-  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != a3)
+  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != intensity)
   {
     v7 = v3;
     v8 = v4;
-    *(&self->super._enabled + 1) = a3;
+    *(&self->super._enabled + 1) = intensity;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B10BC;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    intensityCopy = intensity;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"intensity", v5);
   }
 }
@@ -97,19 +97,19 @@
   return v11;
 }
 
-- (void)setAnamorphic:(float)a3
+- (void)setAnamorphic:(float)anamorphic
 {
-  if (self->super._isPresentationObject || self->_intensity != a3)
+  if (self->super._isPresentationObject || self->_intensity != anamorphic)
   {
     v7 = v3;
     v8 = v4;
-    self->_intensity = a3;
+    self->_intensity = anamorphic;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B121C;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    anamorphicCopy = anamorphic;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"anamorphic", v5);
   }
 }
@@ -138,19 +138,19 @@
   return v11;
 }
 
-- (void)setSoftness:(float)a3
+- (void)setSoftness:(float)softness
 {
-  if (self->super._isPresentationObject || self->_anamorphic != a3)
+  if (self->super._isPresentationObject || self->_anamorphic != softness)
   {
     v7 = v3;
     v8 = v4;
-    self->_anamorphic = a3;
+    self->_anamorphic = softness;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B137C;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    softnessCopy = softness;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"softness", v5);
   }
 }
@@ -179,19 +179,19 @@
   return v11;
 }
 
-- (void)setRadius:(float)a3
+- (void)setRadius:(float)radius
 {
-  if (self->super._isPresentationObject || self->_softness != a3)
+  if (self->super._isPresentationObject || self->_softness != radius)
   {
     v7 = v3;
     v8 = v4;
-    self->_softness = a3;
+    self->_softness = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B14DC;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"radius", v5);
   }
 }
@@ -203,11 +203,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = VFXCameraEffectVignetting;
-  v4 = [(VFXCameraEffect *)&v22 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v22 copyWithZone:zone];
   LODWORD(v5) = *(&self->super._enabled + 1);
   objc_msgSend_setIntensity_(v4, v6, v7, v8, v5);
   *&v9 = self->_intensity;
@@ -240,22 +240,22 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = VFXCameraEffectVignetting;
   [(VFXCameraEffect *)&v17 encodeWithCoder:?];
   LODWORD(v5) = *(&self->super._enabled + 1);
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"intensity", v7, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"intensity", v7, v5);
   *&v8 = self->_intensity;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"anamorphic", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"anamorphic", v10, v8);
   *&v11 = self->_anamorphic;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"softness", v13, v11);
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"softness", v13, v11);
   *&v14 = self->_softness;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"radius", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"radius", v16, v14);
 }
 
-- (VFXCameraEffectVignetting)initWithCoder:(id)a3
+- (VFXCameraEffectVignetting)initWithCoder:(id)coder
 {
   v34.receiver = self;
   v34.super_class = VFXCameraEffectVignetting;
@@ -264,13 +264,13 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"intensity", v12);
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"intensity", v12);
     objc_msgSend_setIntensity_(v7, v13, v14, v15);
-    objc_msgSend_decodeFloatForKey_(a3, v16, @"anamorphic", v17);
+    objc_msgSend_decodeFloatForKey_(coder, v16, @"anamorphic", v17);
     objc_msgSend_setAnamorphic_(v7, v18, v19, v20);
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"softness", v22);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"softness", v22);
     objc_msgSend_setSoftness_(v7, v23, v24, v25);
-    objc_msgSend_decodeFloatForKey_(a3, v26, @"radius", v27);
+    objc_msgSend_decodeFloatForKey_(coder, v26, @"radius", v27);
     objc_msgSend_setRadius_(v7, v28, v29, v30);
     objc_msgSend_setImmediateMode_(VFXTransaction, v31, v8, v32);
   }

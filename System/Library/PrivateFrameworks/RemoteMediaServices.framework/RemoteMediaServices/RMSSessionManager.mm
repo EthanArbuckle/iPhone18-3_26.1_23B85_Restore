@@ -2,14 +2,14 @@
 - (RMSSessionManager)init;
 - (RMSSessionManagerDelegate)delegate;
 - (id)persistedSessionIdentifiers;
-- (id)sessionWithIdentifier:(int)a3;
+- (id)sessionWithIdentifier:(int)identifier;
 - (int)_uniqueSessionIdentifier;
-- (int)identifierForSession:(id)a3;
-- (void)_scheduleSessionExpirationWithIdentifier:(int)a3 timeout:(int)a4;
+- (int)identifierForSession:(id)session;
+- (void)_scheduleSessionExpirationWithIdentifier:(int)identifier timeout:(int)timeout;
 - (void)_updatePersistedSessionIdentifiers;
-- (void)beginSession:(id)a3 timeout:(int)a4 shouldTakePowerAssertion:(BOOL)a5 completionHandler:(id)a6;
-- (void)endSessionWithIdentifier:(int)a3 completionHandler:(id)a4;
-- (void)refreshSessionWithIdentifier:(int)a3;
+- (void)beginSession:(id)session timeout:(int)timeout shouldTakePowerAssertion:(BOOL)assertion completionHandler:(id)handler;
+- (void)endSessionWithIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)refreshSessionWithIdentifier:(int)identifier;
 @end
 
 @implementation RMSSessionManager
@@ -33,19 +33,19 @@
   return v2;
 }
 
-- (id)sessionWithIdentifier:(int)a3
+- (id)sessionWithIdentifier:(int)identifier
 {
   sessions = self->_sessions;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&identifier];
   v5 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v4];
-  v6 = [v5 session];
+  session = [v5 session];
 
-  return v6;
+  return session;
 }
 
-- (int)identifierForSession:(id)a3
+- (int)identifierForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -55,7 +55,7 @@
   v8[1] = 3221225472;
   v8[2] = __42__RMSSessionManager_identifierForSession___block_invoke;
   v8[3] = &unk_279B09448;
-  v6 = v4;
+  v6 = sessionCopy;
   v9 = v6;
   v10 = &v11;
   [(NSMutableDictionary *)sessions enumerateKeysAndObjectsUsingBlock:v8];
@@ -77,22 +77,22 @@ void __42__RMSSessionManager_identifierForSession___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)beginSession:(id)a3 timeout:(int)a4 shouldTakePowerAssertion:(BOOL)a5 completionHandler:(id)a6
+- (void)beginSession:(id)session timeout:(int)timeout shouldTakePowerAssertion:(BOOL)assertion completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  sessionCopy = session;
+  handlerCopy = handler;
   sessionManagerQueue = self->_sessionManagerQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__RMSSessionManager_beginSession_timeout_shouldTakePowerAssertion_completionHandler___block_invoke;
   v15[3] = &unk_279B09470;
-  v18 = a4;
+  timeoutCopy = timeout;
   v15[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = sessionCopy;
+  assertionCopy = assertion;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = sessionCopy;
   dispatch_async(sessionManagerQueue, v15);
 }
 
@@ -127,18 +127,18 @@ void __85__RMSSessionManager_beginSession_timeout_shouldTakePowerAssertion_compl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)endSessionWithIdentifier:(int)a3 completionHandler:(id)a4
+- (void)endSessionWithIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   sessionManagerQueue = self->_sessionManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__RMSSessionManager_endSessionWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_279B09498;
-  v11 = a3;
+  identifierCopy = identifier;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(sessionManagerQueue, block);
 }
 
@@ -176,7 +176,7 @@ void __64__RMSSessionManager_endSessionWithIdentifier_completionHandler___block_
   }
 }
 
-- (void)refreshSessionWithIdentifier:(int)a3
+- (void)refreshSessionWithIdentifier:(int)identifier
 {
   sessionManagerQueue = self->_sessionManagerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -184,7 +184,7 @@ void __64__RMSSessionManager_endSessionWithIdentifier_completionHandler___block_
   v4[2] = __50__RMSSessionManager_refreshSessionWithIdentifier___block_invoke;
   v4[3] = &unk_279B091F0;
   v4[4] = self;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_async(sessionManagerQueue, v4);
 }
 
@@ -220,17 +220,17 @@ void __50__RMSSessionManager_refreshSessionWithIdentifier___block_invoke(uint64_
   return v2;
 }
 
-- (void)_scheduleSessionExpirationWithIdentifier:(int)a3 timeout:(int)a4
+- (void)_scheduleSessionExpirationWithIdentifier:(int)identifier timeout:(int)timeout
 {
   objc_initWeak(&location, self);
-  v7 = dispatch_time(0, 1000000000 * a4);
+  v7 = dispatch_time(0, 1000000000 * timeout);
   sessionManagerQueue = self->_sessionManagerQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__RMSSessionManager__scheduleSessionExpirationWithIdentifier_timeout___block_invoke;
   v9[3] = &unk_279B094E8;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
+  identifierCopy = identifier;
   v9[4] = self;
   dispatch_after(v7, sessionManagerQueue, v9);
   objc_destroyWeak(&v10);
@@ -317,8 +317,8 @@ void __70__RMSSessionManager__scheduleSessionExpirationWithIdentifier_timeout___
 
 - (void)_updatePersistedSessionIdentifiers
 {
-  v2 = [(NSMutableDictionary *)self->_sessions allKeys];
-  CFPreferencesSetAppValue(@"SessionIdentifiers", v2, @"com.apple.RemoteMediaServices");
+  allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+  CFPreferencesSetAppValue(@"SessionIdentifiers", allKeys, @"com.apple.RemoteMediaServices");
   CFPreferencesAppSynchronize(@"com.apple.RemoteMediaServices");
 }
 

@@ -1,119 +1,119 @@
 @interface TypistPathUtilities
-+ (BOOL)_validatePoints:(CGPoint)a3 To:(CGPoint)a4;
-+ (CGAffineTransform)_determineShiftBasedOnDirection:(SEL)a3;
-+ (CGAffineTransform)_makeTranslationWithOffset:(SEL)a3;
-+ (CGPoint)_addPoint:(CGPoint)a3 andPoint:(CGPoint)a4;
-+ (CGPoint)_reflectPoint:(CGPoint)a3 origin:(CGPoint)a4;
-+ (CGPoint)_scalarMultiplyPoint:(CGPoint)a3 by:(double)a4;
-+ (CGPoint)_subtractPoint:(CGPoint)a3 byPoint:(CGPoint)a4;
-+ (CGPoint)pointOnCurve:(id)a3 atTime:(double)a4;
-+ (CGPoint)pointOnSineCurve:(double)a3 withHeight:(double)a4 withStartPoint:(CGPoint)a5 withEndPoint:(CGPoint)a6 atTime:(double)a7;
-+ (CGSize)_getWidthAndHeight:(id)a3 forCharacters:(id)a4;
-+ (double)getWidthOfFirstCharacterInString:(id)a3;
-+ (id)_connectPath:(id)a3 forCharacters:(id)a4 withRegion:(id)a5;
-+ (id)_decomposeCharactersWhereNeeded:(id)a3;
-+ (id)_decomposeGraphemeIntoSeparateCharactersIfNeeded:(id)a3;
-+ (id)_determineWritingStyle:(id)a3 forCharacters:(id)a4;
-+ (id)_processArabicCharacter:(id)a3 withPathMap:(id)a4 forLocale:(unint64_t)a5;
-+ (id)_processThaiCharacter:(id)a3 withPathMap:(id)a4 forLocale:(unint64_t)a5;
-+ (id)_queryHandwritingSourceForCharactersInString:(id)a3 withRegion:(id)a4;
-+ (id)_separateFinalFormCharacters:(id)a3;
-+ (id)_separateIsolatedCharacters:(id)a3;
-+ (id)_separateUniqueCharacters:(id)a3;
-+ (id)_shiftPath:(id)a3 forCharacters:(id)a4 withRule:(int)a5;
-+ (id)_shiftThaiStrokes:(id)a3 withRatio:(double)a4 ofHeight:(int64_t)a5;
-+ (id)convertCurveDeleteTouchPoints:(CGPoint)a3 endPoint:(CGPoint)a4 curveHeight:(double)a5 curveDensity:(int64_t)a6 tilt:(double)a7;
-+ (id)convertSVGPaths:(id)a3 withTransformation:(CGAffineTransform *)a4;
-+ (id)convertSVGStringPathToUIBezierPath:(id)a3;
-+ (id)convertSingleSVGPaths:(id)a3 withTransformation:(CGAffineTransform *)a4;
-+ (id)convertUIBezierPathToTouchPoints:(id)a3;
-+ (id)generatePathArgumentStringWithParameters:(id)a3 fromPoints:(id)a4;
-+ (id)generatePathWithParameters:(id)a3 fromPoints:(id)a4;
-+ (id)getPathDataForCharacters:(id)a3 withRegion:(id)a4 isCursive:(BOOL)a5;
-+ (id)getStrokesForJamo:(id)a3 forVariant:(BOOL)a4 ofType:(int)a5 fromPath:(id)a6 forLocale:(unint64_t)a7;
-+ (id)getTextClustersFrom:(id)a3 forCharacters:(id)a4;
-+ (id)getTextClustersFrom:(id)a3 withRegion:(id)a4;
-+ (id)shiftJamosInSyllable:(id)a3 withPath:(id)a4 forLocale:(unint64_t)a5;
-+ (int)_getScribbleRuleFromRegion:(id)a3;
-+ (int)_mappingRegionToVariantID:(id)a3;
-+ (sqlite3)_openDatabaseFromFile:(id)a3;
-+ (unint64_t)_queryDatabase:(sqlite3 *)a3 withSql:(id)a4 forRegion:(id)a5;
-+ (unint64_t)getTotalWidthForText:(id)a3 isCursive:(BOOL)a4 withRegion:(id)a5 fromPathMap:(id)a6;
++ (BOOL)_validatePoints:(CGPoint)points To:(CGPoint)to;
++ (CGAffineTransform)_determineShiftBasedOnDirection:(SEL)direction;
++ (CGAffineTransform)_makeTranslationWithOffset:(SEL)offset;
++ (CGPoint)_addPoint:(CGPoint)point andPoint:(CGPoint)andPoint;
++ (CGPoint)_reflectPoint:(CGPoint)point origin:(CGPoint)origin;
++ (CGPoint)_scalarMultiplyPoint:(CGPoint)point by:(double)by;
++ (CGPoint)_subtractPoint:(CGPoint)point byPoint:(CGPoint)byPoint;
++ (CGPoint)pointOnCurve:(id)curve atTime:(double)time;
++ (CGPoint)pointOnSineCurve:(double)curve withHeight:(double)height withStartPoint:(CGPoint)point withEndPoint:(CGPoint)endPoint atTime:(double)time;
++ (CGSize)_getWidthAndHeight:(id)height forCharacters:(id)characters;
++ (double)getWidthOfFirstCharacterInString:(id)string;
++ (id)_connectPath:(id)path forCharacters:(id)characters withRegion:(id)region;
++ (id)_decomposeCharactersWhereNeeded:(id)needed;
++ (id)_decomposeGraphemeIntoSeparateCharactersIfNeeded:(id)needed;
++ (id)_determineWritingStyle:(id)style forCharacters:(id)characters;
++ (id)_processArabicCharacter:(id)character withPathMap:(id)map forLocale:(unint64_t)locale;
++ (id)_processThaiCharacter:(id)character withPathMap:(id)map forLocale:(unint64_t)locale;
++ (id)_queryHandwritingSourceForCharactersInString:(id)string withRegion:(id)region;
++ (id)_separateFinalFormCharacters:(id)characters;
++ (id)_separateIsolatedCharacters:(id)characters;
++ (id)_separateUniqueCharacters:(id)characters;
++ (id)_shiftPath:(id)path forCharacters:(id)characters withRule:(int)rule;
++ (id)_shiftThaiStrokes:(id)strokes withRatio:(double)ratio ofHeight:(int64_t)height;
++ (id)convertCurveDeleteTouchPoints:(CGPoint)points endPoint:(CGPoint)point curveHeight:(double)height curveDensity:(int64_t)density tilt:(double)tilt;
++ (id)convertSVGPaths:(id)paths withTransformation:(CGAffineTransform *)transformation;
++ (id)convertSVGStringPathToUIBezierPath:(id)path;
++ (id)convertSingleSVGPaths:(id)paths withTransformation:(CGAffineTransform *)transformation;
++ (id)convertUIBezierPathToTouchPoints:(id)points;
++ (id)generatePathArgumentStringWithParameters:(id)parameters fromPoints:(id)points;
++ (id)generatePathWithParameters:(id)parameters fromPoints:(id)points;
++ (id)getPathDataForCharacters:(id)characters withRegion:(id)region isCursive:(BOOL)cursive;
++ (id)getStrokesForJamo:(id)jamo forVariant:(BOOL)variant ofType:(int)type fromPath:(id)path forLocale:(unint64_t)locale;
++ (id)getTextClustersFrom:(id)from forCharacters:(id)characters;
++ (id)getTextClustersFrom:(id)from withRegion:(id)region;
++ (id)shiftJamosInSyllable:(id)syllable withPath:(id)path forLocale:(unint64_t)locale;
++ (int)_getScribbleRuleFromRegion:(id)region;
++ (int)_mappingRegionToVariantID:(id)d;
++ (sqlite3)_openDatabaseFromFile:(id)file;
++ (unint64_t)_queryDatabase:(sqlite3 *)database withSql:(id)sql forRegion:(id)region;
++ (unint64_t)getTotalWidthForText:(id)text isCursive:(BOOL)cursive withRegion:(id)region fromPathMap:(id)map;
 @end
 
 @implementation TypistPathUtilities
 
-+ (CGPoint)_subtractPoint:(CGPoint)a3 byPoint:(CGPoint)a4
++ (CGPoint)_subtractPoint:(CGPoint)point byPoint:(CGPoint)byPoint
 {
-  v4 = a3.x - a4.x;
-  v5 = a3.y - a4.y;
+  v4 = point.x - byPoint.x;
+  v5 = point.y - byPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)_addPoint:(CGPoint)a3 andPoint:(CGPoint)a4
++ (CGPoint)_addPoint:(CGPoint)point andPoint:(CGPoint)andPoint
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = point.x + andPoint.x;
+  v5 = point.y + andPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)_scalarMultiplyPoint:(CGPoint)a3 by:(double)a4
++ (CGPoint)_scalarMultiplyPoint:(CGPoint)point by:(double)by
 {
-  v4 = a3.x * a4;
-  v5 = a3.y * a4;
+  v4 = point.x * by;
+  v5 = point.y * by;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)_reflectPoint:(CGPoint)a3 origin:(CGPoint)a4
++ (CGPoint)_reflectPoint:(CGPoint)point origin:(CGPoint)origin
 {
-  v4 = a4.x + a4.x - a3.x;
-  v5 = a4.y + a4.y - a3.y;
+  v4 = origin.x + origin.x - point.x;
+  v5 = origin.y + origin.y - point.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)pointOnCurve:(id)a3 atTime:(double)a4
++ (CGPoint)pointOnCurve:(id)curve atTime:(double)time
 {
-  v5 = a3;
-  v6 = [v5 count];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  curveCopy = curve;
+  v6 = [curveCopy count];
+  v7 = [curveCopy objectAtIndexedSubscript:0];
   [v7 CGPointValue];
   v10 = v9;
   if (v6 == 3)
   {
 
-    v19 = [v5 objectAtIndexedSubscript:1];
+    v19 = [curveCopy objectAtIndexedSubscript:1];
     [v19 CGPointValue];
     v21 = v20;
 
-    v22 = [v5 objectAtIndexedSubscript:2];
+    v22 = [curveCopy objectAtIndexedSubscript:2];
     [v22 CGPointValue];
     v24 = v23;
 
-    v25 = [v5 objectAtIndexedSubscript:0];
+    v25 = [curveCopy objectAtIndexedSubscript:0];
     [v25 CGPointValue];
     v27 = v26;
 
-    v28 = [v5 objectAtIndexedSubscript:1];
+    v28 = [curveCopy objectAtIndexedSubscript:1];
     [v28 CGPointValue];
     v30 = v29;
 
-    v31 = [v5 objectAtIndexedSubscript:2];
+    v31 = [curveCopy objectAtIndexedSubscript:2];
     [v31 CGPointValue];
     v33 = v32;
 
-    v34 = 1.0 - a4;
+    v34 = 1.0 - time;
     v35 = (v34 * v34);
-    v36 = (1.0 - a4 + 1.0 - a4) * a4;
-    v10 = v36 * v21 + v35 * v10 + a4 * a4 * v24;
-    v11 = v36 * v30 + v35 * v27 + a4 * a4 * v33;
+    v36 = (1.0 - time + 1.0 - time) * time;
+    v10 = v36 * v21 + v35 * v10 + time * time * v24;
+    v11 = v36 * v30 + v35 * v27 + time * time * v33;
     goto LABEL_9;
   }
 
@@ -121,14 +121,14 @@
   if (v6 == 2)
   {
 
-    v12 = [v5 objectAtIndexedSubscript:1];
+    v12 = [curveCopy objectAtIndexedSubscript:1];
     [v12 CGPointValue];
     v14 = v13;
     v16 = v15;
 
-    v17 = 1.0 - a4;
-    v10 = v14 * a4 + (1.0 - a4) * v10;
-    v18 = v16 * a4;
+    v17 = 1.0 - time;
+    v10 = v14 * time + (1.0 - time) * v10;
+    v18 = v16 * time;
 LABEL_8:
     v11 = v18 + v17 * v11;
     goto LABEL_9;
@@ -137,40 +137,40 @@ LABEL_8:
   if (v6 != 1)
   {
 
-    v37 = [v5 objectAtIndexedSubscript:1];
+    v37 = [curveCopy objectAtIndexedSubscript:1];
     [v37 CGPointValue];
     v63 = v38;
 
-    v39 = [v5 objectAtIndexedSubscript:2];
+    v39 = [curveCopy objectAtIndexedSubscript:2];
     [v39 CGPointValue];
     v62 = v40;
 
-    v41 = [v5 objectAtIndexedSubscript:3];
+    v41 = [curveCopy objectAtIndexedSubscript:3];
     [v41 CGPointValue];
     v61 = v42;
 
-    v43 = [v5 objectAtIndexedSubscript:0];
+    v43 = [curveCopy objectAtIndexedSubscript:0];
     [v43 CGPointValue];
     v60 = v44;
 
-    v45 = [v5 objectAtIndexedSubscript:1];
+    v45 = [curveCopy objectAtIndexedSubscript:1];
     [v45 CGPointValue];
     v59 = v46;
 
-    v47 = [v5 objectAtIndexedSubscript:2];
+    v47 = [curveCopy objectAtIndexedSubscript:2];
     [v47 CGPointValue];
     v49 = v48;
 
-    v50 = [v5 objectAtIndexedSubscript:3];
+    v50 = [curveCopy objectAtIndexedSubscript:3];
     [v50 CGPointValue];
     v11 = v51;
 
-    v52 = 1.0 - a4;
+    v52 = 1.0 - time;
     v53 = powf(v52, 3.0);
-    v54 = a4 * 3.0 * (v52 * v52);
-    v55 = a4;
-    v56 = (1.0 - a4) * ((v55 * v55) * 3.0);
-    v17 = powf(v55, 3.0);
+    v54 = time * 3.0 * (v52 * v52);
+    timeCopy = time;
+    v56 = (1.0 - time) * ((timeCopy * timeCopy) * 3.0);
+    v17 = powf(timeCopy, 3.0);
     v10 = v54 * v63 + v53 * v10 + v56 * v62 + v17 * v61;
     v18 = v54 * v59 + v53 * v60 + v56 * v49;
     goto LABEL_8;
@@ -184,22 +184,22 @@ LABEL_9:
   return result;
 }
 
-+ (CGPoint)pointOnSineCurve:(double)a3 withHeight:(double)a4 withStartPoint:(CGPoint)a5 withEndPoint:(CGPoint)a6 atTime:(double)a7
++ (CGPoint)pointOnSineCurve:(double)curve withHeight:(double)height withStartPoint:(CGPoint)point withEndPoint:(CGPoint)endPoint atTime:(double)time
 {
-  v7 = a5.x + a7 * (a6.x - a5.x);
-  v8 = 6.28318531 / a3 * v7 - 6.28318531 / a3 * a5.x;
-  v9 = a5.y + a4 * 0.5 * sinf(v8);
+  v7 = point.x + time * (endPoint.x - point.x);
+  v8 = 6.28318531 / curve * v7 - 6.28318531 / curve * point.x;
+  v9 = point.y + height * 0.5 * sinf(v8);
   v10 = v7;
   result.y = v9;
   result.x = v10;
   return result;
 }
 
-+ (id)convertCurveDeleteTouchPoints:(CGPoint)a3 endPoint:(CGPoint)a4 curveHeight:(double)a5 curveDensity:(int64_t)a6 tilt:(double)a7
++ (id)convertCurveDeleteTouchPoints:(CGPoint)points endPoint:(CGPoint)point curveHeight:(double)height curveDensity:(int64_t)density tilt:(double)tilt
 {
-  x = a4.x;
-  y = a3.y;
-  v23 = a3.x;
+  x = point.x;
+  y = points.y;
+  v23 = points.x;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __92__TypistPathUtilities_convertCurveDeleteTouchPoints_endPoint_curveHeight_curveDensity_tilt___block_invoke;
@@ -207,15 +207,15 @@ LABEL_9:
   v24[4] = 0x3FC5555555555555;
   v12 = MEMORY[0x274398FD0](v24, a2);
   v13 = objc_opt_new();
-  if (a6 >= 1)
+  if (density >= 1)
   {
-    v14 = (x - v23) / a6;
-    v22 = (2 * a6);
-    v15 = -a7;
+    v14 = (x - v23) / density;
+    v22 = (2 * density);
+    v15 = -tilt;
     v16 = 0.166666667;
     do
     {
-      [TypistPathUtilities pointOnSineCurve:v14 withHeight:a5 withStartPoint:v23 withEndPoint:y atTime:v23 + v14 * 0.5, y, v16];
+      [TypistPathUtilities pointOnSineCurve:v14 withHeight:height withStartPoint:v23 withEndPoint:y atTime:v23 + v14 * 0.5, y, v16];
       v18 = v17;
       *&v17 = 6.28318531 / v14 * v17 - 6.28318531 / v14 * v23;
       v20 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v18 + v15 * sinf(*&v17), v19}];
@@ -230,16 +230,16 @@ LABEL_9:
   return v13;
 }
 
-+ (id)generatePathArgumentStringWithParameters:(id)a3 fromPoints:(id)a4
++ (id)generatePathArgumentStringWithParameters:(id)parameters fromPoints:(id)points
 {
-  v5 = a3;
-  v6 = a4;
+  parametersCopy = parameters;
+  pointsCopy = points;
   v31 = objc_opt_new();
   v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v7 setPositiveFormat:@"0.##"];
   [v7 setGroupingSeparator:&stru_288014100];
   [v7 setDecimalSeparator:@"."];
-  v8 = [v5 objectForKeyedSubscript:@"CPPATHGEN_TIME_INTERVAL"];
+  v8 = [parametersCopy objectForKeyedSubscript:@"CPPATHGEN_TIME_INTERVAL"];
   v9 = v8;
   v10 = @"0.0";
   if (v8)
@@ -249,17 +249,17 @@ LABEL_9:
 
   v30 = v10;
 
-  v29 = v5;
-  v27 = [objc_alloc(MEMORY[0x277D6FF60]) initWithParams:v5];
-  v28 = v6;
-  v26 = [v27 generatePathFromInflectionPoints:v6 segmentTiming:0 keys:0 string:0 layout:0];
-  v11 = [v26 samples];
-  if ([v11 count])
+  v29 = parametersCopy;
+  v27 = [objc_alloc(MEMORY[0x277D6FF60]) initWithParams:parametersCopy];
+  v28 = pointsCopy;
+  v26 = [v27 generatePathFromInflectionPoints:pointsCopy segmentTiming:0 keys:0 string:0 layout:0];
+  samples = [v26 samples];
+  if ([samples count])
   {
     v12 = 0;
     do
     {
-      v13 = [v11 objectAtIndexedSubscript:v12];
+      v13 = [samples objectAtIndexedSubscript:v12];
       [v13 point];
       v15 = v14;
       v17 = v16;
@@ -269,53 +269,53 @@ LABEL_9:
       v20 = [v7 stringFromNumber:v19];
       v21 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
       v22 = [v7 stringFromNumber:v21];
-      v23 = [&unk_288029500 stringValue];
-      v24 = [v18 stringWithFormat:@"[%@ %@ %@ %@] %@ ", v20, v22, &unk_2880294F0, v23, v30];
+      stringValue = [&unk_288029500 stringValue];
+      v24 = [v18 stringWithFormat:@"[%@ %@ %@ %@] %@ ", v20, v22, &unk_2880294F0, stringValue, v30];
       [v31 appendString:v24];
 
       ++v12;
     }
 
-    while (v12 < [v11 count]);
+    while (v12 < [samples count]);
   }
 
   return v31;
 }
 
-+ (id)generatePathWithParameters:(id)a3 fromPoints:(id)a4
++ (id)generatePathWithParameters:(id)parameters fromPoints:(id)points
 {
   v5 = MEMORY[0x277D6FF60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithParams:v7];
+  pointsCopy = points;
+  parametersCopy = parameters;
+  v8 = [[v5 alloc] initWithParams:parametersCopy];
 
-  v9 = [v8 generatePathFromInflectionPoints:v6 segmentTiming:0 keys:0 string:0 layout:0];
+  v9 = [v8 generatePathFromInflectionPoints:pointsCopy segmentTiming:0 keys:0 string:0 layout:0];
 
   return v9;
 }
 
-+ (id)convertUIBezierPathToTouchPoints:(id)a3
++ (id)convertUIBezierPathToTouchPoints:(id)points
 {
-  v3 = a3;
+  pointsCopy = points;
   v4 = objc_opt_new();
-  v5 = [v3 CGPath];
+  cGPath = [pointsCopy CGPath];
 
-  CGPathApply(v5, v4, getTouchPoints);
+  CGPathApply(cGPath, v4, getTouchPoints);
 
   return v4;
 }
 
-+ (id)convertSVGStringPathToUIBezierPath:(id)a3
++ (id)convertSVGStringPathToUIBezierPath:(id)path
 {
   v168 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v151 = objc_opt_new();
   v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"MmLlHhVvCcSsQqTtAaZ"];
   v163 = 0u;
   v164 = 0u;
   v165 = 0u;
   v166 = 0u;
-  obj = v3;
+  obj = pathCopy;
   v152 = [obj countByEnumeratingWithState:&v163 objects:v167 count:16];
   if (v152)
   {
@@ -366,17 +366,17 @@ LABEL_9:
             v17 = v162;
             if (v17)
             {
-              v18 = v17;
+              lastObject = v17;
               [v12 addObject:v17];
             }
 
             else
             {
-              v18 = [v12 lastObject];
-              TYLogl(OS_LOG_TYPE_DEBUG, @"Command letter misssing, use the preceded one %@", v19, v20, v21, v22, v23, v24, v18);
+              lastObject = [v12 lastObject];
+              TYLogl(OS_LOG_TYPE_DEBUG, @"Command letter misssing, use the preceded one %@", v19, v20, v21, v22, v23, v24, lastObject);
             }
 
-            v25 = [v18 characterAtIndex:0];
+            v25 = [lastObject characterAtIndex:0];
             v26 = v25;
             if (v25 <= 89)
             {
@@ -698,16 +698,16 @@ LABEL_10:
   return v151;
 }
 
-+ (id)convertSVGPaths:(id)a3 withTransformation:(CGAffineTransform *)a4
++ (id)convertSVGPaths:(id)paths withTransformation:(CGAffineTransform *)transformation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathsCopy = paths;
   v7 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = pathsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -723,11 +723,11 @@ LABEL_10:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = *&a4->c;
-        v18[0] = *&a4->a;
+        v14 = *&transformation->c;
+        v18[0] = *&transformation->a;
         v18[1] = v14;
-        v18[2] = *&a4->tx;
-        v15 = [a1 convertSingleSVGPaths:v13 withTransformation:v18];
+        v18[2] = *&transformation->tx;
+        v15 = [self convertSingleSVGPaths:v13 withTransformation:v18];
         [v7 addObject:v15];
       }
 
@@ -742,25 +742,25 @@ LABEL_10:
   return v7;
 }
 
-+ (id)convertSingleSVGPaths:(id)a3 withTransformation:(CGAffineTransform *)a4
++ (id)convertSingleSVGPaths:(id)paths withTransformation:(CGAffineTransform *)transformation
 {
-  v6 = [a3 copy];
-  v7 = *&a4->c;
-  v10[0] = *&a4->a;
+  v6 = [paths copy];
+  v7 = *&transformation->c;
+  v10[0] = *&transformation->a;
   v10[1] = v7;
-  v10[2] = *&a4->tx;
+  v10[2] = *&transformation->tx;
   [v6 applyTransform:v10];
-  v8 = [a1 convertUIBezierPathToTouchPoints:v6];
+  v8 = [self convertUIBezierPathToTouchPoints:v6];
 
   return v8;
 }
 
-+ (BOOL)_validatePoints:(CGPoint)a3 To:(CGPoint)a4
++ (BOOL)_validatePoints:(CGPoint)points To:(CGPoint)to
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3.y;
-  v11 = a3.x;
+  y = to.y;
+  x = to.x;
+  v13 = points.y;
+  v11 = points.x;
   GSMainScreenPointSize();
   v5.f64[0] = v11;
   v4.f64[0] = x;
@@ -773,19 +773,19 @@ LABEL_10:
   return vminv_u8(vmovn_s16(vuzp1q_s16(vuzp1q_s32(vcgeq_f64(vdupq_lane_s64(v8, 0), v6), vcgeq_f64(vdupq_lane_s64(v9, 0), v7)), vuzp1q_s32(vcgeq_f64(v4, 0), vcgeq_f64(v5, 0))))) & 1;
 }
 
-+ (id)_decomposeCharactersWhereNeeded:(id)a3
++ (id)_decomposeCharactersWhereNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = objc_opt_new();
-  v13 = [v3 graphemeCount];
-  if (!v13)
+  graphemeCount = [neededCopy graphemeCount];
+  if (!graphemeCount)
   {
     goto LABEL_19;
   }
 
-  for (i = 0; i != v13; ++i)
+  for (i = 0; i != graphemeCount; ++i)
   {
-    v6 = [v3 graphemeAtIndex:i];
+    v6 = [neededCopy graphemeAtIndex:i];
     if (![v6 length])
     {
       goto LABEL_17;
@@ -845,24 +845,24 @@ LABEL_19:
   return v4;
 }
 
-+ (id)_decomposeGraphemeIntoSeparateCharactersIfNeeded:(id)a3
++ (id)_decomposeGraphemeIntoSeparateCharactersIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  neededCopy = needed;
+  v4 = neededCopy;
+  if (neededCopy)
   {
-    v5 = [v3 characterAtIndex:0];
+    v5 = [neededCopy characterAtIndex:0];
     if ([TypistThaiSyllable isThaiCharacter:v5]|| [TypistArabicSyllable isArabicPresentationFormBCharacter:v5])
     {
-      v6 = [v4 splitGraphemeIntoCharacterArray];
+      splitGraphemeIntoCharacterArray = [v4 splitGraphemeIntoCharacterArray];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
+      splitGraphemeIntoCharacterArray = [MEMORY[0x277CBEA60] arrayWithObject:v4];
     }
 
-    v7 = v6;
+    v7 = splitGraphemeIntoCharacterArray;
   }
 
   else
@@ -873,24 +873,24 @@ LABEL_19:
   return v7;
 }
 
-+ (id)_processArabicCharacter:(id)a3 withPathMap:(id)a4 forLocale:(unint64_t)a5
++ (id)_processArabicCharacter:(id)character withPathMap:(id)map forLocale:(unint64_t)locale
 {
-  v7 = a3;
-  v8 = a4;
+  characterCopy = character;
+  mapCopy = map;
   v9 = objc_opt_new();
-  if ([v7 length])
+  if ([characterCopy length])
   {
-    v25 = 0;
-    v26 = 0;
+    height = 0;
+    width = 0;
     v10 = 0;
     v11 = 0x277CCA000uLL;
     do
     {
-      v12 = [v7 characterAtIndex:v10];
+      v12 = [characterCopy characterAtIndex:v10];
       v13 = [*(v11 + 3240) stringWithFormat:@"%C", v12];
-      v14 = [v13 stringByAppendingFormat:@"_%lu", a5];
+      locale = [v13 stringByAppendingFormat:@"_%lu", locale];
 
-      v15 = [v8 objectForKeyedSubscript:v14];
+      v15 = [mapCopy objectForKeyedSubscript:locale];
       v16 = v15;
       if (v15)
       {
@@ -900,38 +900,38 @@ LABEL_19:
       else
       {
         v18 = [*(v11 + 3240) stringWithFormat:@"%C", v12];
-        v17 = [v8 objectForKeyedSubscript:v18];
+        v17 = [mapCopy objectForKeyedSubscript:v18];
       }
 
       if (!v10)
       {
-        v26 = [v17 width];
-        v25 = [v17 height];
+        width = [v17 width];
+        height = [v17 height];
       }
 
-      v19 = [v17 isCursive];
-      v20 = [v17 strokeArray];
-      [v9 addObjectsFromArray:v20];
+      isCursive = [v17 isCursive];
+      strokeArray = [v17 strokeArray];
+      [v9 addObjectsFromArray:strokeArray];
 
       ++v10;
       v11 = 0x277CCA000;
     }
 
-    while (v10 < [v7 length]);
-    v22 = v25;
-    v21 = v26;
+    while (v10 < [characterCopy length]);
+    v22 = height;
+    v21 = width;
   }
 
   else
   {
-    v19 = 0;
+    isCursive = 0;
     v22 = 0;
     v21 = 0;
   }
 
   if ([v9 count])
   {
-    v23 = [[TYPathData alloc] initWithArray:v9 width:v21 height:v22 isCursive:v19];
+    v23 = [[TYPathData alloc] initWithArray:v9 width:v21 height:v22 isCursive:isCursive];
   }
 
   else
@@ -942,26 +942,26 @@ LABEL_19:
   return v23;
 }
 
-+ (id)_processThaiCharacter:(id)a3 withPathMap:(id)a4 forLocale:(unint64_t)a5
++ (id)_processThaiCharacter:(id)character withPathMap:(id)map forLocale:(unint64_t)locale
 {
-  v6 = a3;
-  v7 = a4;
+  characterCopy = character;
+  mapCopy = map;
   v8 = objc_opt_new();
-  v32 = v7;
-  if ([v6 length])
+  v32 = mapCopy;
+  if ([characterCopy length])
   {
-    v28 = 0;
-    v29 = 0;
+    width = 0;
+    height = 0;
     v9 = 0;
     v10 = 0.0;
     v30 = v8;
     do
     {
-      v11 = [v6 characterAtIndex:v9];
+      v11 = [characterCopy characterAtIndex:v9];
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", v11];
-      v13 = [v12 stringByAppendingFormat:@"_%lu", a5];
+      locale = [v12 stringByAppendingFormat:@"_%lu", locale];
 
-      v14 = [v7 objectForKeyedSubscript:v13];
+      v14 = [mapCopy objectForKeyedSubscript:locale];
       v15 = v14;
       if (v14)
       {
@@ -971,16 +971,16 @@ LABEL_19:
       else
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", v11];
-        v16 = [v7 objectForKeyedSubscript:v17];
+        v16 = [mapCopy objectForKeyedSubscript:v17];
       }
 
       if (!v9)
       {
-        v28 = [v16 width];
-        v29 = [v16 height];
+        width = [v16 width];
+        height = [v16 height];
       }
 
-      v18 = [v16 strokeArray];
+      strokeArray = [v16 strokeArray];
       v19 = +[TypistThaiSyllable smallCharacers];
       v20 = [v19 characterIsMember:v11];
 
@@ -1006,33 +1006,33 @@ LABEL_19:
 
           if (v24)
           {
-            v25 = [TypistPathUtilities _shiftThaiStrokes:v18 withRatio:v29 ofHeight:v10];
+            v25 = [TypistPathUtilities _shiftThaiStrokes:strokeArray withRatio:height ofHeight:v10];
 
             v10 = v10 + 0.141;
-            v18 = v25;
+            strokeArray = v25;
           }
         }
       }
 
       v8 = v30;
-      [v30 addObjectsFromArray:v18];
+      [v30 addObjectsFromArray:strokeArray];
 
       ++v9;
-      v7 = v32;
+      mapCopy = v32;
     }
 
-    while (v9 < [v6 length]);
+    while (v9 < [characterCopy length]);
   }
 
   else
   {
-    v28 = 0;
-    v29 = 0;
+    width = 0;
+    height = 0;
   }
 
   if ([v8 count])
   {
-    v26 = [[TYPathData alloc] initWithArray:v8 width:v28 height:v29 isCursive:0];
+    v26 = [[TYPathData alloc] initWithArray:v8 width:width height:height isCursive:0];
   }
 
   else
@@ -1043,21 +1043,21 @@ LABEL_19:
   return v26;
 }
 
-+ (id)_shiftThaiStrokes:(id)a3 withRatio:(double)a4 ofHeight:(int64_t)a5
++ (id)_shiftThaiStrokes:(id)strokes withRatio:(double)ratio ofHeight:(int64_t)height
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  strokesCopy = strokes;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v7 copyItems:1];
+  v8 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:strokesCopy copyItems:1];
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v22;
-    v12 = a5 * a4;
+    v12 = height * ratio;
     do
     {
       for (i = 0; i != v10; ++i)
@@ -1089,7 +1089,7 @@ LABEL_19:
   return v8;
 }
 
-+ (CGAffineTransform)_makeTranslationWithOffset:(SEL)a3
++ (CGAffineTransform)_makeTranslationWithOffset:(SEL)offset
 {
   memset(&v9, 0, sizeof(v9));
   CGAffineTransformMakeTranslation(&v9, 0.0, -a4);
@@ -1103,16 +1103,16 @@ LABEL_19:
   return CGAffineTransformConcat(retstr, &t1, &v6);
 }
 
-+ (int)_mappingRegionToVariantID:(id)a3
++ (int)_mappingRegionToVariantID:(id)d
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"hans"])
+  dCopy = d;
+  if ([dCopy caseInsensitiveCompare:@"hans"])
   {
-    if ([v3 caseInsensitiveCompare:@"hant"])
+    if ([dCopy caseInsensitiveCompare:@"hant"])
     {
-      if ([v3 caseInsensitiveCompare:@"kr"])
+      if ([dCopy caseInsensitiveCompare:@"kr"])
       {
-        if ([v3 caseInsensitiveCompare:@"jp"])
+        if ([dCopy caseInsensitiveCompare:@"jp"])
         {
           v4 = 1;
         }
@@ -1143,41 +1143,41 @@ LABEL_19:
   return v4;
 }
 
-+ (double)getWidthOfFirstCharacterInString:(id)a3
++ (double)getWidthOfFirstCharacterInString:(id)string
 {
-  v4 = [a1 _decomposeCharactersWhereNeeded:a3];
+  v4 = [self _decomposeCharactersWhereNeeded:string];
   if ([v4 length])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", objc_msgSend(v4, "characterAtIndex:", 0)];
-    v6 = [a1 _queryHandwritingSourceForCharactersInString:v5 withRegion:0];
+    v6 = [self _queryHandwritingSourceForCharactersInString:v5 withRegion:0];
     v7 = [v6 objectForKeyedSubscript:v5];
-    v8 = [v7 width];
+    width = [v7 width];
   }
 
   else
   {
-    v8 = 0.0;
+    width = 0.0;
   }
 
-  return v8;
+  return width;
 }
 
-+ (id)getPathDataForCharacters:(id)a3 withRegion:(id)a4 isCursive:(BOOL)a5
++ (id)getPathDataForCharacters:(id)characters withRegion:(id)region isCursive:(BOOL)cursive
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _decomposeCharactersWhereNeeded:v8];
-  v11 = [a1 _mappingRegionToVariantID:v9];
-  v12 = [a1 _queryHandwritingSourceForCharactersInString:v10 withRegion:v9];
+  cursiveCopy = cursive;
+  charactersCopy = characters;
+  regionCopy = region;
+  v10 = [self _decomposeCharactersWhereNeeded:charactersCopy];
+  v11 = [self _mappingRegionToVariantID:regionCopy];
+  v12 = [self _queryHandwritingSourceForCharactersInString:v10 withRegion:regionCopy];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEAC0] dictionary];
-    v14 = [a1 _processCharacters:v8 withPathMap:v12 forLocale:v11];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    v14 = [self _processCharacters:charactersCopy withPathMap:v12 forLocale:v11];
 
-    if (v5)
+    if (cursiveCopy)
     {
-      v15 = [a1 _connectPath:v14 forCharacters:v8 withRegion:v9];
+      v15 = [self _connectPath:v14 forCharacters:charactersCopy withRegion:regionCopy];
     }
 
     else
@@ -1196,21 +1196,21 @@ LABEL_19:
   return v16;
 }
 
-+ (unint64_t)getTotalWidthForText:(id)a3 isCursive:(BOOL)a4 withRegion:(id)a5 fromPathMap:(id)a6
++ (unint64_t)getTotalWidthForText:(id)text isCursive:(BOOL)cursive withRegion:(id)region fromPathMap:(id)map
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v32 = v10;
-  if (a4)
+  textCopy = text;
+  regionCopy = region;
+  mapCopy = map;
+  v32 = regionCopy;
+  if (cursive)
   {
-    [TypistPathUtilities getTextClustersFrom:v9 withRegion:v10];
+    [TypistPathUtilities getTextClustersFrom:textCopy withRegion:regionCopy];
   }
 
   else
   {
-    [v9 graphemeArray];
+    [textCopy graphemeArray];
   }
 
   v35 = 0u;
@@ -1233,7 +1233,7 @@ LABEL_19:
         }
 
         v18 = *(*(&v33 + 1) + 8 * i);
-        v19 = [v11 objectForKeyedSubscript:v18];
+        v19 = [mapCopy objectForKeyedSubscript:v18];
         v26 = v19;
         if (v19)
         {
@@ -1242,9 +1242,9 @@ LABEL_19:
             [v26 perCharacterScale];
             if (v27 > 0.0)
             {
-              v28 = [v26 width];
+              width = [v26 width];
               [v26 perCharacterScale];
-              v15 += llround(v29 * v28);
+              v15 += llround(v29 * width);
             }
           }
         }
@@ -1270,41 +1270,41 @@ LABEL_19:
   return v15;
 }
 
-+ (id)getTextClustersFrom:(id)a3 withRegion:(id)a4
++ (id)getTextClustersFrom:(id)from withRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _decomposeCharactersWhereNeeded:v7];
-  v9 = [a1 _queryHandwritingSourceForCharactersInString:v8 withRegion:v6];
+  regionCopy = region;
+  fromCopy = from;
+  v8 = [self _decomposeCharactersWhereNeeded:fromCopy];
+  v9 = [self _queryHandwritingSourceForCharactersInString:v8 withRegion:regionCopy];
 
-  v10 = [a1 getTextClustersFrom:v9 forCharacters:v7];
+  v10 = [self getTextClustersFrom:v9 forCharacters:fromCopy];
 
   return v10;
 }
 
-+ (id)getTextClustersFrom:(id)a3 forCharacters:(id)a4
++ (id)getTextClustersFrom:(id)from forCharacters:(id)characters
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  fromCopy = from;
+  charactersCopy = characters;
+  v8 = charactersCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (fromCopy && charactersCopy)
   {
-    v10 = [MEMORY[0x277CCA900] arabicGenericCharacters];
-    v11 = [v8 rangeOfCharacterFromSet:v10];
+    arabicGenericCharacters = [MEMORY[0x277CCA900] arabicGenericCharacters];
+    v11 = [v8 rangeOfCharacterFromSet:arabicGenericCharacters];
 
-    v12 = [MEMORY[0x277CCA900] arabicPresentationFormCharacters];
-    v13 = [v8 rangeOfCharacterFromSet:v12];
+    arabicPresentationFormCharacters = [MEMORY[0x277CCA900] arabicPresentationFormCharacters];
+    v13 = [v8 rangeOfCharacterFromSet:arabicPresentationFormCharacters];
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL || v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [a1 _processCharacters:v8 withPathMap:v6 forLocale:3];
+      v15 = [self _processCharacters:v8 withPathMap:fromCopy forLocale:3];
 
-      v6 = v15;
+      fromCopy = v15;
     }
 
-    v16 = [a1 _determineWritingStyle:v6 forCharacters:v8];
+    v16 = [self _determineWritingStyle:fromCopy forCharacters:v8];
     v9 = objc_opt_new();
     v25 = 0u;
     v26 = 0u;
@@ -1325,8 +1325,8 @@ LABEL_19:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * i) characterCluster];
-          [v9 addObject:v22];
+          characterCluster = [*(*(&v25 + 1) + 8 * i) characterCluster];
+          [v9 addObject:characterCluster];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1341,29 +1341,29 @@ LABEL_19:
   return v9;
 }
 
-+ (id)_determineWritingStyle:(id)a3 forCharacters:(id)a4
++ (id)_determineWritingStyle:(id)style forCharacters:(id)characters
 {
-  v24 = a3;
-  v5 = a4;
-  v6 = [v5 graphemeCount];
+  styleCopy = style;
+  charactersCopy = characters;
+  graphemeCount = [charactersCopy graphemeCount];
   v25 = objc_opt_new();
-  if (v6)
+  if (graphemeCount)
   {
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v22 = v6 - 1;
+    v22 = graphemeCount - 1;
     v23 = 0;
     v10 = 0x279DF4000uLL;
-    v21 = v6;
+    v21 = graphemeCount;
     while (1)
     {
       v11 = v10;
-      v12 = [v5 graphemeAtIndex:v9];
-      v13 = [v24 objectForKeyedSubscript:v12];
-      v14 = [v13 isCursive];
+      v12 = [charactersCopy graphemeAtIndex:v9];
+      v13 = [styleCopy objectForKeyedSubscript:v12];
+      isCursive = [v13 isCursive];
       v8 += [v12 length];
-      if ((v14 & 1) == 0)
+      if ((isCursive & 1) == 0)
       {
         break;
       }
@@ -1377,17 +1377,17 @@ LABEL_19:
       v10 = v11;
       if (v9 >= v7)
       {
-        if (v15 == v6)
+        if (v15 == graphemeCount)
         {
-          v16 = [objc_alloc(*(v11 + 248)) initWithCharacters:v5 isCursive:1];
+          v16 = [objc_alloc(*(v11 + 248)) initWithCharacters:charactersCopy isCursive:1];
         }
 
         else
         {
-          v19 = [v5 substringWithRange:{v7, v8 - v7}];
+          v19 = [charactersCopy substringWithRange:{v7, v8 - v7}];
           v16 = [objc_alloc(*(v11 + 248)) initWithCharacters:v19 isCursive:1];
 
-          v6 = v21;
+          graphemeCount = v21;
         }
 
         [v25 addObject:v16];
@@ -1397,13 +1397,13 @@ LABEL_14:
         v10 = v11;
       }
 
-      if (v6 == ++v9)
+      if (graphemeCount == ++v9)
       {
         goto LABEL_16;
       }
     }
 
-    v16 = [v5 substringWithRange:{v7, v8 + ~v7}];
+    v16 = [charactersCopy substringWithRange:{v7, v8 + ~v7}];
     if ([v16 length])
     {
       v17 = [objc_alloc(*(v11 + 248)) initWithCharacters:v16 isCursive:1];
@@ -1422,12 +1422,12 @@ LABEL_16:
   return v25;
 }
 
-+ (int)_getScribbleRuleFromRegion:(id)a3
++ (int)_getScribbleRuleFromRegion:(id)region
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"RU"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"UA"))
+  regionCopy = region;
+  if ([regionCopy caseInsensitiveCompare:@"RU"] && objc_msgSend(regionCopy, "caseInsensitiveCompare:", @"UA"))
   {
-    if ([v3 caseInsensitiveCompare:@"ar"])
+    if ([regionCopy caseInsensitiveCompare:@"ar"])
     {
       v4 = 1;
     }
@@ -1446,16 +1446,16 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_separateFinalFormCharacters:(id)a3
++ (id)_separateFinalFormCharacters:(id)characters
 {
-  v3 = a3;
+  charactersCopy = characters;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v15 = v3;
-  v6 = [v3 graphemeCount];
-  v7 = [MEMORY[0x277CCACA8] arabicFinalFormsCharacterSet];
-  v14 = v6;
-  if (v6)
+  v15 = charactersCopy;
+  graphemeCount = [charactersCopy graphemeCount];
+  arabicFinalFormsCharacterSet = [MEMORY[0x277CCACA8] arabicFinalFormsCharacterSet];
+  v14 = graphemeCount;
+  if (graphemeCount)
   {
     v8 = 0;
     do
@@ -1467,7 +1467,7 @@ LABEL_16:
         do
         {
           v11 = [v9 characterAtIndex:v10];
-          if ([v7 characterIsMember:v11])
+          if ([arabicFinalFormsCharacterSet characterIsMember:v11])
           {
             if ([v9 length] < 2)
             {
@@ -1510,19 +1510,19 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_separateIsolatedCharacters:(id)a3
++ (id)_separateIsolatedCharacters:(id)characters
 {
-  v3 = a3;
+  charactersCopy = characters;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v3 graphemeCount];
-  if (v7)
+  graphemeCount = [charactersCopy graphemeCount];
+  if (graphemeCount)
   {
-    v8 = v7;
+    v8 = graphemeCount;
     for (i = 0; i != v8; ++i)
     {
-      v10 = [v3 graphemeAtIndex:i];
+      v10 = [charactersCopy graphemeAtIndex:i];
       [v4 addObject:v10];
     }
   }
@@ -1532,9 +1532,9 @@ LABEL_16:
     v11 = 0;
     do
     {
-      v12 = [MEMORY[0x277CCA900] arabicIsolatedCharacters];
+      arabicIsolatedCharacters = [MEMORY[0x277CCA900] arabicIsolatedCharacters];
       v13 = [v4 objectAtIndexedSubscript:v11];
-      v14 = [v12 characterIsMember:{objc_msgSend(v13, "characterAtIndex:", 0)}];
+      v14 = [arabicIsolatedCharacters characterIsMember:{objc_msgSend(v13, "characterAtIndex:", 0)}];
 
       if (v14)
       {
@@ -1569,29 +1569,29 @@ LABEL_16:
   return v5;
 }
 
-+ (id)_separateUniqueCharacters:(id)a3
++ (id)_separateUniqueCharacters:(id)characters
 {
-  v3 = a3;
+  charactersCopy = characters;
   v4 = objc_opt_new();
-  v5 = [v3 graphemeCount];
-  if (v5)
+  graphemeCount = [charactersCopy graphemeCount];
+  if (graphemeCount)
   {
-    v6 = v5;
+    v6 = graphemeCount;
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v10 = v5 - 1;
+    v10 = graphemeCount - 1;
     do
     {
-      v11 = [v3 graphemeAtIndex:v9];
-      v12 = [MEMORY[0x277CCA900] cyrillicCharactersWithUniqueWritingRule];
-      v13 = [v12 characterIsMember:{objc_msgSend(v11, "characterAtIndex:", 0)}];
+      v11 = [charactersCopy graphemeAtIndex:v9];
+      cyrillicCharactersWithUniqueWritingRule = [MEMORY[0x277CCA900] cyrillicCharactersWithUniqueWritingRule];
+      v13 = [cyrillicCharactersWithUniqueWritingRule characterIsMember:{objc_msgSend(v11, "characterAtIndex:", 0)}];
 
       if (v13)
       {
         ++v8;
         v14 = objc_opt_new();
-        v15 = [v3 substringWithRange:{v7, v9 + 1 - v7}];
+        v15 = [charactersCopy substringWithRange:{v7, v9 + 1 - v7}];
 
         [v4 addObject:v15];
         v7 = v9 + 1;
@@ -1601,13 +1601,13 @@ LABEL_16:
       {
         if (v8 == v6)
         {
-          [v4 addObject:v3];
+          [v4 addObject:charactersCopy];
           v8 = v6;
         }
 
         else
         {
-          v16 = [v3 substringWithRange:{v7, v6 - v7}];
+          v16 = [charactersCopy substringWithRange:{v7, v6 - v7}];
           if ([v16 length])
           {
             [v4 addObject:v16];
@@ -1624,38 +1624,38 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_shiftPath:(id)a3 forCharacters:(id)a4 withRule:(int)a5
++ (id)_shiftPath:(id)path forCharacters:(id)characters withRule:(int)rule
 {
   v121 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEA60] array];
-  v83 = a5;
-  if (a5 == 2)
+  pathCopy = path;
+  charactersCopy = characters;
+  array = [MEMORY[0x277CBEA60] array];
+  ruleCopy = rule;
+  if (rule == 2)
   {
-    v10 = [a1 _separateIsolatedCharacters:v8];
+    v10 = [self _separateIsolatedCharacters:charactersCopy];
   }
 
   else
   {
-    if (a5)
+    if (rule)
     {
-      [MEMORY[0x277CBEA60] arrayWithObject:v8];
+      [MEMORY[0x277CBEA60] arrayWithObject:charactersCopy];
     }
 
     else
     {
-      [a1 _separateUniqueCharacters:v8];
+      [self _separateUniqueCharacters:charactersCopy];
     }
     v10 = ;
   }
 
   v11 = v10;
 
-  v74 = v8;
-  v73 = [v8 textDirectionAnnotations];
-  v12 = [v73 objectAtIndexedSubscript:0];
-  v82 = [v12 textDirection];
+  v74 = charactersCopy;
+  textDirectionAnnotations = [charactersCopy textDirectionAnnotations];
+  v12 = [textDirectionAnnotations objectAtIndexedSubscript:0];
+  textDirection = [v12 textDirection];
 
   v13 = objc_opt_new();
   v14 = objc_opt_new();
@@ -1678,7 +1678,7 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v19 = [a1 _separateFinalFormCharacters:*(*(&v111 + 1) + 8 * i)];
+        v19 = [self _separateFinalFormCharacters:*(*(&v111 + 1) + 8 * i)];
         [v14 addObjectsFromArray:v19];
       }
 
@@ -1700,7 +1700,7 @@ LABEL_16:
     v20 = 0.0;
     v21 = 0x277CCA000uLL;
     v22 = 0.0;
-    v81 = v7;
+    v81 = pathCopy;
     do
     {
       v23 = 0;
@@ -1716,57 +1716,57 @@ LABEL_16:
         v25 = objc_opt_new();
         v26 = objc_opt_new();
         v85 = v24;
-        v84 = [v24 graphemeCount];
-        if (v84)
+        graphemeCount = [v24 graphemeCount];
+        if (graphemeCount)
         {
           v27 = 0;
           v28 = 0.0;
           do
           {
             v29 = [v85 graphemeAtIndex:v27];
-            v30 = [v7 objectForKeyedSubscript:v29];
-            v31 = [v30 strokeArray];
+            v30 = [pathCopy objectForKeyedSubscript:v29];
+            strokeArray = [v30 strokeArray];
 
             if (v27 || ([v80 firstObject], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v85, "isEqual:", v32), v32, v34 = 0.0, (v33 & 1) == 0))
             {
-              v35 = [v7 objectForKeyedSubscript:v29];
+              v35 = [pathCopy objectForKeyedSubscript:v29];
               v34 = v28 - [v35 width];
             }
 
             v28 = v34;
             memset(&v106, 0, sizeof(v106));
             v36 = v20 + v34;
-            if (v82 != 2)
+            if (textDirection != 2)
             {
               v36 = v22;
             }
 
             CGAffineTransformMakeTranslation(&v106, v36, 0.0);
-            v37 = [*(v21 + 2304) cyrillicCharactersWithUniqueWritingRule];
-            if ([v37 characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}])
+            cyrillicCharactersWithUniqueWritingRule = [*(v21 + 2304) cyrillicCharactersWithUniqueWritingRule];
+            if ([cyrillicCharactersWithUniqueWritingRule characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}])
             {
               v38 = 1;
             }
 
             else
             {
-              v39 = [*(v21 + 2304) arabicCharactersWithUniqueWritingRule];
-              v38 = [v39 characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}];
+              arabicCharactersWithUniqueWritingRule = [*(v21 + 2304) arabicCharactersWithUniqueWritingRule];
+              v38 = [arabicCharactersWithUniqueWritingRule characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}];
             }
 
-            v40 = [*(v21 + 2304) arabicIsolatedCharacters];
-            v41 = [v40 characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}];
+            arabicIsolatedCharacters = [*(v21 + 2304) arabicIsolatedCharacters];
+            v41 = [arabicIsolatedCharacters characterIsMember:{objc_msgSend(v29, "characterAtIndex:", 0)}];
 
             v87 = v29;
             v88 = v27;
-            v86 = v31;
-            if (v83 == 1 || (v38 & 1) != 0 || [v29 length] >= 2)
+            v86 = strokeArray;
+            if (ruleCopy == 1 || (v38 & 1) != 0 || [v29 length] >= 2)
             {
               v104 = 0u;
               v105 = 0u;
               v102 = 0u;
               v103 = 0u;
-              v42 = v31;
+              v42 = strokeArray;
               v43 = [v42 countByEnumeratingWithState:&v102 objects:v118 count:16];
               if (v43)
               {
@@ -1785,8 +1785,8 @@ LABEL_16:
                     v48 = [v47 copy];
                     v101 = v106;
                     [v48 applyTransform:&v101];
-                    v49 = [v42 firstObject];
-                    LODWORD(v47) = [v47 isEqual:v49];
+                    firstObject = [v42 firstObject];
+                    LODWORD(v47) = [v47 isEqual:firstObject];
 
                     if (v47)
                     {
@@ -1812,7 +1812,7 @@ LABEL_16:
               v100 = 0uLL;
               v97 = 0uLL;
               v98 = 0uLL;
-              v51 = v31;
+              v51 = strokeArray;
               v52 = [v51 countByEnumeratingWithState:&v97 objects:v117 count:16];
               if (v52)
               {
@@ -1846,7 +1846,7 @@ LABEL_16:
               v96 = 0uLL;
               v93 = 0uLL;
               v94 = 0uLL;
-              v57 = v31;
+              v57 = strokeArray;
               v58 = [v57 countByEnumeratingWithState:&v93 objects:v116 count:16];
               if (v58)
               {
@@ -1874,7 +1874,7 @@ LABEL_16:
               }
             }
 
-            v7 = v81;
+            pathCopy = v81;
             v50 = [v81 objectForKeyedSubscript:v87];
             v22 = v22 + [v50 width];
 
@@ -1882,7 +1882,7 @@ LABEL_16:
             v21 = 0x277CCA000;
           }
 
-          while (v88 + 1 != v84);
+          while (v88 + 1 != graphemeCount);
         }
 
         else
@@ -1935,7 +1935,7 @@ LABEL_16:
     while (v78);
   }
 
-  [a1 _getWidthAndHeight:v7 forCharacters:v74];
+  [self _getWidthAndHeight:pathCopy forCharacters:v74];
   v70 = [[TYPathData alloc] initWithArray:v13 width:v68 height:v69 isCursive:0];
 
   v71 = *MEMORY[0x277D85DE8];
@@ -1943,29 +1943,29 @@ LABEL_16:
   return v70;
 }
 
-+ (CGSize)_getWidthAndHeight:(id)a3 forCharacters:(id)a4
++ (CGSize)_getWidthAndHeight:(id)height forCharacters:(id)characters
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 graphemeCount];
-  if (v7)
+  heightCopy = height;
+  charactersCopy = characters;
+  graphemeCount = [charactersCopy graphemeCount];
+  if (graphemeCount)
   {
     v8 = 0;
     v9 = 0.0;
     v10 = 0.0;
     do
     {
-      v11 = [v6 graphemeAtIndex:v8];
-      v12 = [v5 objectForKeyedSubscript:v11];
+      v11 = [charactersCopy graphemeAtIndex:v8];
+      v12 = [heightCopy objectForKeyedSubscript:v11];
       v10 = v10 + [v12 width];
 
-      v13 = [v5 objectForKeyedSubscript:v11];
+      v13 = [heightCopy objectForKeyedSubscript:v11];
       v9 = v9 + [v13 height];
 
       ++v8;
     }
 
-    while (v7 != v8);
+    while (graphemeCount != v8);
   }
 
   else
@@ -1975,22 +1975,22 @@ LABEL_16:
   }
 
   v14 = v10;
-  v15 = v9 / v7;
+  v15 = v9 / graphemeCount;
   result.height = v15;
   result.width = v14;
   return result;
 }
 
-+ (id)_connectPath:(id)a3 forCharacters:(id)a4 withRegion:(id)a5
++ (id)_connectPath:(id)path forCharacters:(id)characters withRegion:(id)region
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _determineWritingStyle:v8 forCharacters:a4];
+  pathCopy = path;
+  regionCopy = region;
+  v10 = [self _determineWritingStyle:pathCopy forCharacters:characters];
   v11 = objc_opt_new();
-  v32 = [a1 _mappingRegionToVariantID:v9];
-  v27 = v9;
-  v31 = [a1 _getScribbleRuleFromRegion:v9];
+  v32 = [self _mappingRegionToVariantID:regionCopy];
+  v27 = regionCopy;
+  v31 = [self _getScribbleRuleFromRegion:regionCopy];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -2002,7 +2002,7 @@ LABEL_16:
     v13 = v12;
     v14 = *v39;
     v28 = *v39;
-    v29 = a1;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -2015,16 +2015,16 @@ LABEL_16:
         }
 
         v16 = *(*(&v38 + 1) + 8 * v15);
-        v17 = [v16 characterCluster];
+        characterCluster = [v16 characterCluster];
         if ([v16 isCursive])
         {
-          v18 = [a1 _shiftPath:v8 forCharacters:v17 withRule:v31];
-          [v11 setObject:v18 forKeyedSubscript:v17];
+          v18 = [self _shiftPath:pathCopy forCharacters:characterCluster withRule:v31];
+          [v11 setObject:v18 forKeyedSubscript:characterCluster];
         }
 
         else
         {
-          v18 = [a1 _processCharacters:v17 withPathMap:v8 forLocale:v32];
+          v18 = [self _processCharacters:characterCluster withPathMap:pathCopy forLocale:v32];
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
@@ -2053,7 +2053,7 @@ LABEL_16:
 
             while (v20);
             v14 = v28;
-            a1 = v29;
+            self = selfCopy;
             v13 = v30;
           }
         }
@@ -2073,31 +2073,31 @@ LABEL_16:
   return v11;
 }
 
-+ (sqlite3)_openDatabaseFromFile:(id)a3
++ (sqlite3)_openDatabaseFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   ppDb = 0;
   v5 = 0;
-  if ([v4 fileExistsAtPath:v3])
+  if ([defaultManager fileExistsAtPath:fileCopy])
   {
-    sqlite3_open([v3 UTF8String], &ppDb);
+    sqlite3_open([fileCopy UTF8String], &ppDb);
     v5 = ppDb;
   }
 
   return v5;
 }
 
-+ (unint64_t)_queryDatabase:(sqlite3 *)a3 withSql:(id)a4 forRegion:(id)a5
++ (unint64_t)_queryDatabase:(sqlite3 *)database withSql:(id)sql forRegion:(id)region
 {
   ppStmt = 0;
-  v8 = a4;
-  v9 = a5;
-  sqlite3_prepare_v2(a3, [a4 UTF8String], -1, &ppStmt, 0);
+  sqlCopy = sql;
+  regionCopy = region;
+  sqlite3_prepare_v2(database, [sql UTF8String], -1, &ppStmt, 0);
   v10 = ppStmt;
-  v11 = [v9 UTF8String];
+  uTF8String = [regionCopy UTF8String];
 
-  sqlite3_bind_text(v10, 1, v11, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(v10, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
   v12 = 0;
   if (sqlite3_step(ppStmt) == 100)
   {
@@ -2108,14 +2108,14 @@ LABEL_16:
   return v12;
 }
 
-+ (id)_queryHandwritingSourceForCharactersInString:(id)a3 withRegion:(id)a4
++ (id)_queryHandwritingSourceForCharactersInString:(id)string withRegion:(id)region
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 pathForResource:@"Handwriting/strokes" ofType:@"db"];
 
-  v8 = [a1 _openDatabaseFromFile:v7];
+  v8 = [self _openDatabaseFromFile:v7];
   if (v8)
   {
     v9 = v8;
@@ -2126,7 +2126,7 @@ LABEL_16:
   {
 
     v10 = @"/AppleInternal/Library/Frameworks/TypistFramework.framework/Handwriting/strokes.db";
-    v9 = [a1 _openDatabaseFromFile:@"/AppleInternal/Library/Frameworks/TypistFramework.framework/Handwriting/strokes.db"];
+    v9 = [self _openDatabaseFromFile:@"/AppleInternal/Library/Frameworks/TypistFramework.framework/Handwriting/strokes.db"];
     if (!v9)
     {
       goto LABEL_41;
@@ -2135,14 +2135,14 @@ LABEL_16:
     v61 = @"/AppleInternal/Library/Frameworks/TypistFramework.framework/Handwriting/strokes.db";
   }
 
-  v11 = [v5 graphemeCount];
+  graphemeCount = [stringCopy graphemeCount];
   v12 = objc_opt_new();
-  if (v11)
+  if (graphemeCount)
   {
-    for (i = 0; i != v11; ++i)
+    for (i = 0; i != graphemeCount; ++i)
     {
-      v14 = [v5 graphemeAtIndex:i];
-      v15 = [a1 _decomposeGraphemeIntoSeparateCharactersIfNeeded:v14];
+      v14 = [stringCopy graphemeAtIndex:i];
+      v15 = [self _decomposeGraphemeIntoSeparateCharactersIfNeeded:v14];
       [v12 addObjectsFromArray:v15];
     }
   }
@@ -2299,48 +2299,48 @@ LABEL_41:
   return v9;
 }
 
-+ (id)getStrokesForJamo:(id)a3 forVariant:(BOOL)a4 ofType:(int)a5 fromPath:(id)a6 forLocale:(unint64_t)a7
++ (id)getStrokesForJamo:(id)jamo forVariant:(BOOL)variant ofType:(int)type fromPath:(id)path forLocale:(unint64_t)locale
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a6;
+  variantCopy = variant;
+  jamoCopy = jamo;
+  pathCopy = path;
   v13 = 0;
-  if ([v11 count])
+  if ([jamoCopy count])
   {
     v14 = 0;
     while (1)
     {
-      v15 = [v11 objectAtIndexedSubscript:v14];
-      v16 = [v15 hangulJamoPosition];
+      v15 = [jamoCopy objectAtIndexedSubscript:v14];
+      hangulJamoPosition = [v15 hangulJamoPosition];
 
-      if (v16 == a5)
+      if (hangulJamoPosition == type)
       {
         break;
       }
 
 LABEL_10:
-      if (++v14 >= [v11 count])
+      if (++v14 >= [jamoCopy count])
       {
         goto LABEL_11;
       }
     }
 
-    if (v10 && ([v11 objectAtIndexedSubscript:v14], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "isConsonantVariant")))
+    if (variantCopy && ([jamoCopy objectAtIndexedSubscript:v14], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "isConsonantVariant")))
     {
-      v17 = [v11 objectAtIndexedSubscript:v14];
+      v17 = [jamoCopy objectAtIndexedSubscript:v14];
       v18 = [v17 description];
-      v19 = [v18 stringByAppendingFormat:@"_%lu", a7];
+      locale = [v18 stringByAppendingFormat:@"_%lu", locale];
     }
 
     else
     {
-      v20 = [v11 objectAtIndexedSubscript:v14];
-      v19 = [v20 description];
+      v20 = [jamoCopy objectAtIndexedSubscript:v14];
+      locale = [v20 description];
 
-      if (!v10)
+      if (!variantCopy)
       {
 LABEL_9:
-        v21 = [v12 valueForKey:v19];
+        v21 = [pathCopy valueForKey:locale];
 
         v13 = v21;
         goto LABEL_10;
@@ -2351,20 +2351,20 @@ LABEL_9:
   }
 
 LABEL_11:
-  v22 = [v13 strokeArray];
+  strokeArray = [v13 strokeArray];
 
-  return v22;
+  return strokeArray;
 }
 
-+ (id)shiftJamosInSyllable:(id)a3 withPath:(id)a4 forLocale:(unint64_t)a5
++ (id)shiftJamosInSyllable:(id)syllable withPath:(id)path forLocale:(unint64_t)locale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 syllableStructure];
-  [v7 jamos];
-  v26 = v25 = v7;
-  v10 = [v7 hasConsonantVariants];
-  v11 = [TypistPathUtilities _jamoShiftsForStructure:v9];
+  syllableCopy = syllable;
+  pathCopy = path;
+  syllableStructure = [syllableCopy syllableStructure];
+  [syllableCopy jamos];
+  v26 = v25 = syllableCopy;
+  hasConsonantVariants = [syllableCopy hasConsonantVariants];
+  v11 = [TypistPathUtilities _jamoShiftsForStructure:syllableStructure];
   v12 = objc_opt_new();
   if ([v11 count])
   {
@@ -2372,13 +2372,13 @@ LABEL_11:
     do
     {
       v14 = [v11 objectAtIndexedSubscript:v13];
-      v15 = v8;
-      v16 = [v14 hangulJamoTransformationDataValue];
-      v17 = HIDWORD(v16);
+      v15 = pathCopy;
+      hangulJamoTransformationDataValue = [v14 hangulJamoTransformationDataValue];
+      v17 = HIDWORD(hangulJamoTransformationDataValue);
 
-      v18 = v16;
-      v8 = v15;
-      v19 = [TypistPathUtilities getStrokesForJamo:v26 forVariant:v10 ofType:v18 fromPath:v15 forLocale:a5];
+      v18 = hangulJamoTransformationDataValue;
+      pathCopy = v15;
+      v19 = [TypistPathUtilities getStrokesForJamo:v26 forVariant:hasConsonantVariants ofType:v18 fromPath:v15 forLocale:locale];
       v20 = [TypistPathUtilities shiftStrokesForJamo:v19 withDirection:v17];
       [v12 addObject:v20];
 
@@ -2406,7 +2406,7 @@ LABEL_11:
   return v21;
 }
 
-+ (CGAffineTransform)_determineShiftBasedOnDirection:(SEL)a3
++ (CGAffineTransform)_determineShiftBasedOnDirection:(SEL)direction
 {
   v5 = *(MEMORY[0x277CBF2C0] + 16);
   *&v14.a = *MEMORY[0x277CBF2C0];

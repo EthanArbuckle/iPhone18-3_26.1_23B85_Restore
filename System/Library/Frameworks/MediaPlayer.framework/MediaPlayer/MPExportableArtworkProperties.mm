@@ -1,8 +1,8 @@
 @interface MPExportableArtworkProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICStoreArtworkInfo)artworkInfo;
-- (MPExportableArtworkProperties)initWithJSONRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPExportableArtworkProperties)initWithJSONRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonRepresentation;
 @end
@@ -14,7 +14,7 @@
   v7[1] = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_artworkTemplateItems count])
   {
-    v3 = [(NSArray *)self->_artworkTemplateItems firstObject];
+    firstObject = [(NSArray *)self->_artworkTemplateItems firstObject];
   }
 
   else if ([(NSString *)self->_resolvedURLString length])
@@ -22,57 +22,57 @@
     resolvedURLString = self->_resolvedURLString;
     v6 = @"url";
     v7[0] = resolvedURLString;
-    v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
+    firstObject = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    firstObject = MEMORY[0x1E695E0F8];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (ICStoreArtworkInfo)artworkInfo
 {
-  v3 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
-  v4 = [v3 count];
+  artworkTemplateItems = [(MPExportableArtworkProperties *)self artworkTemplateItems];
+  v4 = [artworkTemplateItems count];
 
   if (v4 >= 2)
   {
     v5 = objc_alloc(MEMORY[0x1E69E45C0]);
-    v6 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
-    v7 = [v5 initWithArtworkResponseArray:v6];
+    artworkTemplateItems2 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
+    v7 = [v5 initWithArtworkResponseArray:artworkTemplateItems2];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v8 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
-  v9 = [v8 count];
+  artworkTemplateItems3 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
+  v9 = [artworkTemplateItems3 count];
 
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E69E45C0]);
-    v6 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
-    v11 = [v6 firstObject];
-    v12 = [v10 initWithArtworkResponseDictionary:v11];
+    artworkTemplateItems2 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
+    firstObject = [artworkTemplateItems2 firstObject];
+    v12 = [v10 initWithArtworkResponseDictionary:firstObject];
 LABEL_7:
     v7 = v12;
 
     goto LABEL_8;
   }
 
-  v13 = [(MPExportableArtworkProperties *)self resolvedURLString];
-  v14 = [v13 length];
+  resolvedURLString = [(MPExportableArtworkProperties *)self resolvedURLString];
+  v14 = [resolvedURLString length];
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x1E69E45C0]);
     v16 = MEMORY[0x1E695DFF8];
-    v6 = [(MPExportableArtworkProperties *)self resolvedURLString];
-    v11 = [v16 URLWithString:v6];
-    v12 = [v15 initWithArtworkURL:v11];
+    artworkTemplateItems2 = [(MPExportableArtworkProperties *)self resolvedURLString];
+    firstObject = [v16 URLWithString:artworkTemplateItems2];
+    v12 = [v15 initWithArtworkURL:firstObject];
     goto LABEL_7;
   }
 
@@ -92,10 +92,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -105,7 +105,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(NSString *)self->_resolvedURLString isEqualToString:v5->_resolvedURLString]&& [(NSArray *)self->_artworkTemplateItems isEqual:v5->_artworkTemplateItems]&& self->_mediaType == v5->_mediaType && self->_mediaLibraryArtworkType == v5->_mediaLibraryArtworkType;
     }
 
@@ -118,24 +118,24 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPExportableArtworkProperties);
-  v5 = [(MPExportableArtworkProperties *)self resolvedURLString];
-  [(MPExportableArtworkProperties *)v4 setResolvedURLString:v5];
+  resolvedURLString = [(MPExportableArtworkProperties *)self resolvedURLString];
+  [(MPExportableArtworkProperties *)v4 setResolvedURLString:resolvedURLString];
 
-  v6 = [(MPExportableArtworkProperties *)self artworkTemplateItems];
-  [(MPExportableArtworkProperties *)v4 setArtworkTemplateItems:v6];
+  artworkTemplateItems = [(MPExportableArtworkProperties *)self artworkTemplateItems];
+  [(MPExportableArtworkProperties *)v4 setArtworkTemplateItems:artworkTemplateItems];
 
   [(MPExportableArtworkProperties *)v4 setMediaType:[(MPExportableArtworkProperties *)self mediaType]];
   [(MPExportableArtworkProperties *)v4 setMediaLibraryArtworkType:[(MPExportableArtworkProperties *)self mediaLibraryArtworkType]];
   return v4;
 }
 
-- (MPExportableArtworkProperties)initWithJSONRepresentation:(id)a3
+- (MPExportableArtworkProperties)initWithJSONRepresentation:(id)representation
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = MPExportableArtworkProperties;
   v5 = [(MPExportableArtworkProperties *)&v13 init];
@@ -143,7 +143,7 @@ LABEL_9:
   {
     if (_NSIsNSDictionary())
     {
-      v6 = v4;
+      v6 = representationCopy;
       v7 = [v6 objectForKeyedSubscript:@"url"];
       if ([v7 length])
       {

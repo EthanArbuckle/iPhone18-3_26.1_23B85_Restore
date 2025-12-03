@@ -1,23 +1,23 @@
 @interface NMBUISyncInfoController
 - (BOOL)_musicCellularDownloadingAllowedOnWatch;
-- (NMBUISyncInfoController)initWithSyncInfoTarget:(unint64_t)a3;
+- (NMBUISyncInfoController)initWithSyncInfoTarget:(unint64_t)target;
 - (NMBUISyncInfoControllerDataSource)dataSource;
-- (float)progressForModelObject:(id)a3;
+- (float)progressForModelObject:(id)object;
 - (id)_bundleIdentifierForTarget;
-- (id)_musicSyncInfoMessageWithStatus:(unint64_t)a3 downloadPauseReason:(unint64_t)a4;
+- (id)_musicSyncInfoMessageWithStatus:(unint64_t)status downloadPauseReason:(unint64_t)reason;
 - (id)syncStatusDetailText;
-- (unint64_t)downloadStateForModelObject:(id)a3;
-- (void)_handleMediaSyncInfoDidUpdateNotification:(id)a3;
-- (void)_handleMusicCellularDownloadsAllowedDidChangeNotification:(id)a3;
+- (unint64_t)downloadStateForModelObject:(id)object;
+- (void)_handleMediaSyncInfoDidUpdateNotification:(id)notification;
+- (void)_handleMusicCellularDownloadsAllowedDidChangeNotification:(id)notification;
 - (void)beginObservingSyncInfo;
 - (void)endObservingSyncInfo;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)powerSourceInfoHasExternalPowerSourceConnectedDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)powerSourceInfoHasExternalPowerSourceConnectedDidChange:(id)change;
 @end
 
 @implementation NMBUISyncInfoController
 
-- (NMBUISyncInfoController)initWithSyncInfoTarget:(unint64_t)a3
+- (NMBUISyncInfoController)initWithSyncInfoTarget:(unint64_t)target
 {
   v25.receiver = self;
   v25.super_class = NMBUISyncInfoController;
@@ -28,26 +28,26 @@
     return v5;
   }
 
-  v4->_target = a3;
+  v4->_target = target;
   v6 = objc_alloc(MEMORY[0x277D2B9F8]);
-  v7 = [(NMBUISyncInfoController *)v5 _bundleIdentifierForTarget];
-  v8 = [v6 initWithBundleIdentifier:v7];
+  _bundleIdentifierForTarget = [(NMBUISyncInfoController *)v5 _bundleIdentifierForTarget];
+  v8 = [v6 initWithBundleIdentifier:_bundleIdentifierForTarget];
   syncInfoUpdaterHeartbeat = v5->_syncInfoUpdaterHeartbeat;
   v5->_syncInfoUpdaterHeartbeat = v8;
 
-  v10 = [objc_alloc(MEMORY[0x277D2B9F0]) initWithTarget:a3];
+  v10 = [objc_alloc(MEMORY[0x277D2B9F0]) initWithTarget:target];
   syncInfo = v5->_syncInfo;
   v5->_syncInfo = v10;
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:v5 selector:sel__handleMediaSyncInfoDidUpdateNotification_ name:*MEMORY[0x277D2B9E0] object:v5->_syncInfo];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v5 selector:sel__handleMediaSyncInfoDidUpdateNotification_ name:*MEMORY[0x277D2B9E0] object:v5->_syncInfo];
 
-  v13 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v14 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v15 = [v13 getAllDevicesWithArchivedAltAccountDevicesMatching:v14];
-  v16 = [v15 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v15 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v15 firstObject];
   v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  if (![v16 supportsCapability:v17])
+  if (![firstObject supportsCapability:v17])
   {
 
     goto LABEL_7;
@@ -77,16 +77,16 @@ LABEL_7:
   return v5;
 }
 
-- (unint64_t)downloadStateForModelObject:(id)a3
+- (unint64_t)downloadStateForModelObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return 5;
   }
 
-  v4 = a3;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained syncInfoController:self containerIdentifierForModelObject:v4];
+  v6 = [WeakRetained syncInfoController:self containerIdentifierForModelObject:objectCopy];
 
   v7 = [(NMSMediaSyncInfo *)self->_syncInfo statusForContainer:v6];
   v8 = 5;
@@ -113,12 +113,12 @@ LABEL_7:
       goto LABEL_26;
     }
 
-    v19 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v20 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-    v21 = [v19 getAllDevicesWithArchivedAltAccountDevicesMatching:v20];
-    v22 = [v21 firstObject];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+    v21 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+    firstObject = [v21 firstObject];
     v23 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    if (![v22 supportsCapability:v23] || self->_target || !-[NMSMediaSyncInfo downloadPauseReasonForContainer:](self->_syncInfo, "downloadPauseReasonForContainer:", v6))
+    if (![firstObject supportsCapability:v23] || self->_target || !-[NMSMediaSyncInfo downloadPauseReasonForContainer:](self->_syncInfo, "downloadPauseReasonForContainer:", v6))
     {
 
       v8 = 3;
@@ -139,19 +139,19 @@ LABEL_7:
 
   if (v7 == 1)
   {
-    v11 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v12 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-    v13 = [v11 getAllDevicesWithArchivedAltAccountDevicesMatching:v12];
-    v14 = [v13 firstObject];
+    mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+    activePairedDeviceSelectorBlock2 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+    v13 = [mEMORY[0x277D2BCF8]2 getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock2];
+    firstObject2 = [v13 firstObject];
     v15 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-    if ([v14 supportsCapability:v15])
+    if ([firstObject2 supportsCapability:v15])
     {
       target = self->_target;
 
       if (!target)
       {
-        v17 = [(NMSMediaSyncInfo *)self->_syncInfo containers];
-        v18 = [v17 containsObject:v6];
+        containers = [(NMSMediaSyncInfo *)self->_syncInfo containers];
+        v18 = [containers containsObject:v6];
 
         if (v18)
         {
@@ -198,16 +198,16 @@ LABEL_26:
   return v10;
 }
 
-- (float)progressForModelObject:(id)a3
+- (float)progressForModelObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return 1.0;
   }
 
-  v4 = a3;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained syncInfoController:self containerIdentifierForModelObject:v4];
+  v6 = [WeakRetained syncInfoController:self containerIdentifierForModelObject:objectCopy];
 
   if (v6)
   {
@@ -225,17 +225,17 @@ LABEL_26:
 
 - (id)syncStatusDetailText
 {
-  v3 = [(NMSMediaSyncInfo *)self->_syncInfo status];
-  if (v3 <= 5)
+  status = [(NMSMediaSyncInfo *)self->_syncInfo status];
+  if (status <= 5)
   {
-    if (((1 << v3) & 0x26) != 0)
+    if (((1 << status) & 0x26) != 0)
     {
-      v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-      v5 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-      v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-      v7 = [v6 firstObject];
+      mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+      activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+      v6 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+      firstObject = [v6 firstObject];
       v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-      if ([v7 supportsCapability:v8])
+      if ([firstObject supportsCapability:v8])
       {
         target = self->_target;
 
@@ -243,15 +243,15 @@ LABEL_26:
         {
           if (([(NMSMediaSyncInfo *)self->_syncInfo hasItemsWaitingWithoutPauseReason]& 1) != 0)
           {
-            v10 = 0;
+            downloadPauseReason = 0;
           }
 
           else
           {
-            v10 = [(NMSMediaSyncInfo *)self->_syncInfo downloadPauseReason];
+            downloadPauseReason = [(NMSMediaSyncInfo *)self->_syncInfo downloadPauseReason];
           }
 
-          v15 = [(NMBUISyncInfoController *)self _musicSyncInfoMessageWithStatus:[(NMSMediaSyncInfo *)self->_syncInfo status] downloadPauseReason:v10];
+          v15 = [(NMBUISyncInfoController *)self _musicSyncInfoMessageWithStatus:[(NMSMediaSyncInfo *)self->_syncInfo status] downloadPauseReason:downloadPauseReason];
           goto LABEL_26;
         }
       }
@@ -262,8 +262,8 @@ LABEL_26:
 
       if ([(NMBUIPowerSourceInfo *)self->_powerSourceInfo hasExternalPowerSourceConnected])
       {
-        v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-        v12 = v11;
+        nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        v12 = nanoMediaBridgeUIBundle;
         v13 = @"SYNC_STATUS_WAITING_TITLE";
         v14 = @"Waiting…";
         goto LABEL_12;
@@ -273,20 +273,20 @@ LABEL_26:
       switch(v16)
       {
         case 2uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_WAITING_TITLE_POWER_AUDIOBOOKS";
           v14 = @"Audiobooks download when Apple Watch is charging";
           goto LABEL_12;
         case 1uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_WAITING_TITLE_POWER_PODCASTS";
           v14 = @"Podcasts download when Apple Watch is charging";
           goto LABEL_12;
         case 0uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_WAITING_TITLE_POWER_MUSIC";
           v14 = @"Music downloads when Apple Watch is charging";
           goto LABEL_12;
@@ -295,14 +295,14 @@ LABEL_26:
 
     else
     {
-      if (((1 << v3) & 0x11) != 0)
+      if (((1 << status) & 0x11) != 0)
       {
-        v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-        v12 = v11;
+        nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        v12 = nanoMediaBridgeUIBundle;
         v13 = @"SYNC_STATUS_UPDATED_TITLE";
         v14 = @"Updated Just Now";
 LABEL_12:
-        v15 = [v11 localizedStringForKey:v13 value:v14 table:0];
+        v15 = [nanoMediaBridgeUIBundle localizedStringForKey:v13 value:v14 table:0];
 
         goto LABEL_26;
       }
@@ -311,20 +311,20 @@ LABEL_12:
       switch(v17)
       {
         case 2uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_SYNCING_TITLE_AUDIOBOOKS";
           v14 = @"Updating Audiobooks on Apple Watch…";
           goto LABEL_12;
         case 1uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_SYNCING_TITLE_PODCASTS";
           v14 = @"Updating Podcasts on Apple Watch…";
           goto LABEL_12;
         case 0uLL:
-          v11 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v12 = v11;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          v12 = nanoMediaBridgeUIBundle;
           v13 = @"SYNC_STATUS_PROGRESS_TITLE_MUSIC";
           v14 = @"Updating Music on Apple Watch…";
           goto LABEL_12;
@@ -347,19 +347,19 @@ LABEL_26:
 
   self->_isObservingSyncInfo = 1;
   [(NMSMediaSyncInfoUpdaterHeartbeat *)self->_syncInfoUpdaterHeartbeat start];
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v5 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v5 firstObject];
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  if ([v6 supportsCapability:v7])
+  if ([firstObject supportsCapability:v7])
   {
     target = self->_target;
 
     if (!target)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel__handleMusicCellularDownloadsAllowedDidChangeNotification_ name:*MEMORY[0x277CD5C50] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__handleMusicCellularDownloadsAllowedDidChangeNotification_ name:*MEMORY[0x277CD5C50] object:0];
 
       if (isPairedDeviceGreenTeaCapable())
       {
@@ -393,19 +393,19 @@ LABEL_26:
 
   self->_isObservingSyncInfo = 0;
   [(NMSMediaSyncInfoUpdaterHeartbeat *)self->_syncInfoUpdaterHeartbeat stop];
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v5 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v5 firstObject];
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  if ([v6 supportsCapability:v7])
+  if ([firstObject supportsCapability:v7])
   {
     target = self->_target;
 
     if (!target)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 removeObserver:self name:*MEMORY[0x277CD5C50] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CD5C50] object:0];
 
       if (isPairedDeviceGreenTeaCapable())
       {
@@ -430,25 +430,25 @@ LABEL_26:
   [(NMBUIPowerSourceInfo *)powerSourceInfo setDelegate:0];
 }
 
-- (void)powerSourceInfoHasExternalPowerSourceConnectedDidChange:(id)a3
+- (void)powerSourceInfoHasExternalPowerSourceConnectedDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = NMLogForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = [v4 hasExternalPowerSourceConnected];
+    v7[1] = [changeCopy hasExternalPowerSourceConnected];
     _os_log_impl(&dword_25B260000, v5, OS_LOG_TYPE_DEFAULT, "Watch power state did change hasPower=%x", v7, 8u);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
 }
 
-- (void)_handleMediaSyncInfoDidUpdateNotification:(id)a3
+- (void)_handleMediaSyncInfoDidUpdateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = NMLogForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -456,17 +456,17 @@ LABEL_26:
     _os_log_impl(&dword_25B260000, v5, OS_LOG_TYPE_DEFAULT, "Received media sync info did update notification.", v9, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
   syncInfo = self->_syncInfo;
-  if (v6 == syncInfo)
+  if (object == syncInfo)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
   }
 }
 
-- (void)_handleMusicCellularDownloadsAllowedDidChangeNotification:(id)a3
+- (void)_handleMusicCellularDownloadsAllowedDidChangeNotification:(id)notification
 {
   v4 = NMLogForCategory(13);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -475,13 +475,13 @@ LABEL_26:
     _os_log_impl(&dword_25B260000, v4, OS_LOG_TYPE_DEFAULT, "Received MusicCellularDownloadsAllowedDidChange notification.", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (*MEMORY[0x277D2B9C0] == a6 || *MEMORY[0x277D2B9B8] == a6)
+  if (*MEMORY[0x277D2B9C0] == context || *MEMORY[0x277D2B9B8] == context)
   {
     v13 = v6;
     v14 = v7;
@@ -492,15 +492,15 @@ LABEL_26:
       _os_log_impl(&dword_25B260000, v10, OS_LOG_TYPE_DEFAULT, "Received GreenTeaSettingsChanged notification.", v12, 2u);
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NMBUIMediaSyncInfoDidUpdateNotification" object:self];
   }
 }
 
 - (id)_bundleIdentifierForTarget
 {
-  v3 = [(NMBUISyncInfoController *)self target];
-  if (v3 >= 3)
+  target = [(NMBUISyncInfoController *)self target];
+  if (target >= 3)
   {
     v5 = MEMORY[0x277CBEAD8];
     v6 = *MEMORY[0x277CBE658];
@@ -511,12 +511,12 @@ LABEL_26:
     objc_exception_throw(v8);
   }
 
-  return off_27993BE30[v3];
+  return off_27993BE30[target];
 }
 
-- (id)_musicSyncInfoMessageWithStatus:(unint64_t)a3 downloadPauseReason:(unint64_t)a4
+- (id)_musicSyncInfoMessageWithStatus:(unint64_t)status downloadPauseReason:(unint64_t)reason
 {
-  v4 = NMUResolvedDownloadWaitingReason(a3, a4);
+  v4 = NMUResolvedDownloadWaitingReason(status, reason);
   if (v4 > 4)
   {
     if (v4 <= 7)
@@ -525,15 +525,15 @@ LABEL_26:
       {
         if (v4 != 6)
         {
-          v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-          v6 = v5;
+          nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+          nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
           v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_WAITING_FOR_POWER";
           v8 = @"Your music will continue to download the next time your Apple Watch is charging.";
           goto LABEL_30;
         }
 
         v10 = MGGetBoolAnswer();
-        v6 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        nanoMediaBridgeUIBundle2 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
         if (v10)
         {
           v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_WAITING_FOR_WLAN";
@@ -556,7 +556,7 @@ LABEL_26:
     {
       case 8:
         v11 = MGGetBoolAnswer();
-        v6 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        nanoMediaBridgeUIBundle2 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
         if (v11)
         {
           v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_WAITING_FOR_WLAN_AND_POWER";
@@ -571,14 +571,14 @@ LABEL_26:
 
         goto LABEL_29;
       case 9:
-        v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-        v6 = v5;
+        nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
         v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_THERMAL";
         v8 = @"Your music will continue to download once your Apple Watch cools down.";
         goto LABEL_30;
       case 10:
-        v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-        v6 = v5;
+        nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+        nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
         v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_FAILED";
         v8 = @"Your music will resume downloading the next time your Apple Watch is charging and connected to the internet.";
         goto LABEL_30;
@@ -593,8 +593,8 @@ LABEL_33:
   {
     if (!v4)
     {
-      v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-      v6 = v5;
+      nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+      nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
       v7 = @"WAITING_TO_DOWNLOAD_ALERT_GENERIC_MESSAGE";
       v8 = @"Your music will download soon.";
       goto LABEL_30;
@@ -602,8 +602,8 @@ LABEL_33:
 
     if (v4 == 1)
     {
-      v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-      v6 = v5;
+      nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+      nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
       v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_STORAGE";
       v8 = @"Your music will continue to download once additional storage space is available on your Apple Watch.";
       goto LABEL_30;
@@ -614,8 +614,8 @@ LABEL_33:
 
   if (v4 == 2)
   {
-    v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-    v6 = v5;
+    nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+    nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
     v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_WAITING_FOR_HQ_NETWORK";
     v8 = @"Your music will continue to download once your Apple Watch has a better internet connection.";
     goto LABEL_30;
@@ -623,8 +623,8 @@ LABEL_33:
 
   if (v4 == 3)
   {
-    v5 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
-    v6 = v5;
+    nanoMediaBridgeUIBundle = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+    nanoMediaBridgeUIBundle2 = nanoMediaBridgeUIBundle;
     v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_CONSTRAINED_NETWORK";
     v8 = @"Your music will continue to download once your Apple Watch is no longer in Low Data Mode.";
     goto LABEL_30;
@@ -632,7 +632,7 @@ LABEL_33:
 
 LABEL_9:
   v9 = MGGetBoolAnswer();
-  v6 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
+  nanoMediaBridgeUIBundle2 = [MEMORY[0x277CCA8D8] nanoMediaBridgeUIBundle];
   if (v9)
   {
     v7 = @"WAITING_TO_DOWNLOAD_ALERT_MESSAGE_CELLULAR_DOWNLOADS_NOT_ALLOWED_WLAN";
@@ -646,9 +646,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  v5 = v6;
+  nanoMediaBridgeUIBundle = nanoMediaBridgeUIBundle2;
 LABEL_30:
-  v12 = [v5 localizedStringForKey:v7 value:v8 table:0];
+  v12 = [nanoMediaBridgeUIBundle localizedStringForKey:v7 value:v8 table:0];
 
   return v12;
 }
@@ -665,10 +665,10 @@ LABEL_30:
 
   else
   {
-    v3 = [MEMORY[0x277CD5FD8] sharedNetworkObserver];
-    v4 = [v3 isMusicCellularDownloadingAllowed];
+    mEMORY[0x277CD5FD8] = [MEMORY[0x277CD5FD8] sharedNetworkObserver];
+    isMusicCellularDownloadingAllowed = [mEMORY[0x277CD5FD8] isMusicCellularDownloadingAllowed];
 
-    return v4;
+    return isMusicCellularDownloadingAllowed;
   }
 }
 

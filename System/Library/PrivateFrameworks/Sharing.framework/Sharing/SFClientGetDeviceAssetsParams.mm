@@ -1,13 +1,13 @@
 @interface SFClientGetDeviceAssetsParams
-- (SFClientGetDeviceAssetsParams)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFClientGetDeviceAssetsParams)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFClientGetDeviceAssetsParams
 
-- (SFClientGetDeviceAssetsParams)initWithCoder:(id)a3
+- (SFClientGetDeviceAssetsParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFClientGetDeviceAssetsParams;
   v5 = [(SFClientGetDeviceAssetsParams *)&v9 init];
@@ -25,7 +25,7 @@
       v5->_colorCode = v10;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -35,28 +35,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = v4;
+  coderCopy = coder;
+  v7 = coderCopy;
   if (self->_bluetoothProductID)
   {
-    [v4 encodeInteger:? forKey:?];
-    v4 = v7;
+    [coderCopy encodeInteger:? forKey:?];
+    coderCopy = v7;
   }
 
   colorCode = self->_colorCode;
   if (colorCode)
   {
     [v7 encodeInt64:colorCode forKey:@"cc"];
-    v4 = v7;
+    coderCopy = v7;
   }
 
   model = self->_model;
   if (model)
   {
     [v7 encodeObject:model forKey:@"model"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 

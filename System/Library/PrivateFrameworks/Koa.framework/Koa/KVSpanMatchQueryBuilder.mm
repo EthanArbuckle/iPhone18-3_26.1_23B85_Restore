@@ -1,5 +1,5 @@
 @interface KVSpanMatchQueryBuilder
-- (KVSpanMatchQueryBuilder)initWithLocale:(id)a3;
+- (KVSpanMatchQueryBuilder)initWithLocale:(id)locale;
 - (id)build;
 @end
 
@@ -14,9 +14,9 @@
   return v12;
 }
 
-- (KVSpanMatchQueryBuilder)initWithLocale:(id)a3
+- (KVSpanMatchQueryBuilder)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = KVSpanMatchQueryBuilder;
   v5 = [(KVSpanMatchQueryBuilder *)&v16 init];
@@ -41,7 +41,7 @@
     v7 = v6;
     _Block_object_dispose(&v18, 8);
     v8 = [v6 alloc];
-    v13 = objc_msgSend_initWithLocale_(v8, v9, v4, v10, v11, v12);
+    v13 = objc_msgSend_initWithLocale_(v8, v9, localeCopy, v10, v11, v12);
     builder = v5->_builder;
     v5->_builder = v13;
   }

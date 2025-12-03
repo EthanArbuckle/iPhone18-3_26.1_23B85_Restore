@@ -3,7 +3,7 @@
 - (NSString)typeIdentifier;
 - (UTType)contentType;
 - (_TtC26DocumentManagerExecutables14FISentinelNode)init;
-- (_TtC26DocumentManagerExecutables14FISentinelNode)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables14FISentinelNode)initWithCoder:(id)coder;
 - (id)identifier;
 @end
 
@@ -44,8 +44,8 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3, v5);
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(FISentinelNode *)v8 contentType];
+  selfCopy = self;
+  contentType = [(FISentinelNode *)selfCopy contentType];
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   v10 = UTType.identifier.getter();
@@ -64,12 +64,12 @@
   return v2;
 }
 
-- (_TtC26DocumentManagerExecutables14FISentinelNode)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables14FISentinelNode)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FISentinelNode();
-  v4 = a3;
-  v5 = [(FISentinelNode *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FISentinelNode *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

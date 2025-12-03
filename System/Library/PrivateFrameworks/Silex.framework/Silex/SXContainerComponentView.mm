@@ -2,79 +2,79 @@
 - (BOOL)allowHierarchyRemoval;
 - (BOOL)isTransitionable;
 - (BOOL)userInteractable;
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3;
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier;
 - (CGRect)transitionContentFrame;
 - (NSString)description;
-- (SXContainerComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 mediaSharingPolicyProvider:(id)a7;
-- (id)componentViewsForRole:(int)a3 recursive:(BOOL)a4;
-- (id)contentViewForBehavior:(id)a3;
-- (id)dragManager:(id)a3 dragableAtLocation:(CGPoint)a4;
-- (void)addComponentView:(id)a3;
-- (void)animationDidFinish:(id)a3;
-- (void)animationDidStart:(id)a3;
-- (void)didApplyBehavior:(id)a3;
-- (void)prepareForTransitionType:(unint64_t)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (SXContainerComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory mediaSharingPolicyProvider:(id)policyProvider;
+- (id)componentViewsForRole:(int)role recursive:(BOOL)recursive;
+- (id)contentViewForBehavior:(id)behavior;
+- (id)dragManager:(id)manager dragableAtLocation:(CGPoint)location;
+- (void)addComponentView:(id)view;
+- (void)animationDidFinish:(id)finish;
+- (void)animationDidStart:(id)start;
+- (void)didApplyBehavior:(id)behavior;
+- (void)prepareForTransitionType:(unint64_t)type;
+- (void)presentComponentWithChanges:(id)changes;
 @end
 
 @implementation SXContainerComponentView
 
-- (SXContainerComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 mediaSharingPolicyProvider:(id)a7
+- (SXContainerComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory mediaSharingPolicyProvider:(id)policyProvider
 {
-  v13 = a7;
+  policyProviderCopy = policyProvider;
   v17.receiver = self;
   v17.super_class = SXContainerComponentView;
-  v14 = [(SXComponentView *)&v17 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v14 = [(SXComponentView *)&v17 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_mediaSharingPolicyProvider, a7);
+    objc_storeStrong(&v14->_mediaSharingPolicyProvider, policyProvider);
   }
 
   return v15;
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v12.receiver = self;
   v12.super_class = SXContainerComponentView;
-  [(SXComponentView *)&v12 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
-  v4 = [(SXContainerComponentView *)self dragManager];
-  if (!v4)
+  [(SXComponentView *)&v12 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
+  dragManager = [(SXContainerComponentView *)self dragManager];
+  if (!dragManager)
   {
-    v4 = [(SXContainerComponentView *)self componentViews];
-    if (![v4 count])
+    dragManager = [(SXContainerComponentView *)self componentViews];
+    if (![dragManager count])
     {
-      v5 = [(SXComponentView *)self fillView];
-      v6 = [v5 dragable];
+      fillView = [(SXComponentView *)self fillView];
+      dragable = [fillView dragable];
 
-      if (!v6)
+      if (!dragable)
       {
         return;
       }
 
       v7 = [SXDragManager alloc];
-      v8 = [(SXContainerComponentView *)self mediaSharingPolicyProvider];
-      v9 = -[SXDragManager initWithSharingPolicy:dataSource:](v7, "initWithSharingPolicy:dataSource:", [v8 mediaSharingPolicy], self);
+      mediaSharingPolicyProvider = [(SXContainerComponentView *)self mediaSharingPolicyProvider];
+      v9 = -[SXDragManager initWithSharingPolicy:dataSource:](v7, "initWithSharingPolicy:dataSource:", [mediaSharingPolicyProvider mediaSharingPolicy], self);
       [(SXContainerComponentView *)self setDragManager:v9];
 
-      v4 = [(SXContainerComponentView *)self dragManager];
-      v10 = [(SXComponentView *)self fillView];
-      v11 = [v10 dragable];
-      [v4 updateAccessibilityDragSourceDescriptorsForDraggableElement:v11];
+      dragManager = [(SXContainerComponentView *)self dragManager];
+      fillView2 = [(SXComponentView *)self fillView];
+      dragable2 = [fillView2 dragable];
+      [dragManager updateAccessibilityDragSourceDescriptorsForDraggableElement:dragable2];
     }
   }
 }
 
-- (id)contentViewForBehavior:(id)a3
+- (id)contentViewForBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = self;
+  behaviorCopy = behavior;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(SXComponentView *)v5 fillView];
-    v5 = v6 = v5;
+    [(SXComponentView *)selfCopy fillView];
+    selfCopy = fillView = selfCopy;
 LABEL_4:
 
     goto LABEL_5;
@@ -83,12 +83,12 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(SXComponentView *)v5 fillView];
-    if (v6)
+    fillView = [(SXComponentView *)selfCopy fillView];
+    if (fillView)
     {
-      v8 = [(SXComponentView *)v5 fillView];
+      fillView2 = [(SXComponentView *)selfCopy fillView];
 
-      v5 = v8;
+      selfCopy = fillView2;
     }
 
     goto LABEL_4;
@@ -96,21 +96,21 @@ LABEL_4:
 
 LABEL_5:
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)componentViewsForRole:(int)a3 recursive:(BOOL)a4
+- (id)componentViewsForRole:(int)role recursive:(BOOL)recursive
 {
-  v4 = a4;
-  v5 = *&a3;
+  recursiveCopy = recursive;
+  v5 = *&role;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(SXContainerComponentView *)self componentViews];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v9 = [componentViews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -121,68 +121,68 @@ LABEL_5:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(componentViews);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 component];
-        if ([v14 role] == v5)
+        component = [v13 component];
+        if ([component role] == v5)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
-        if (v4)
+        if (recursiveCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v15 = [v13 componentViewsForRole:v5 recursive:1];
-            [v7 addObjectsFromArray:v15];
+            [array addObjectsFromArray:v15];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [componentViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (void)addComponentView:(id)a3
+- (void)addComponentView:(id)view
 {
-  v16 = a3;
+  viewCopy = view;
   [(SXComponentView *)self fillView];
 
-  v4 = [(SXComponentView *)self contentView];
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  contentView = [(SXComponentView *)self contentView];
+  subviews = [contentView subviews];
+  v6 = [subviews count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(SXComponentView *)self contentView];
-      v9 = [v8 subviews];
-      v10 = [v9 objectAtIndex:v7];
+      contentView2 = [(SXComponentView *)self contentView];
+      subviews2 = [contentView2 subviews];
+      v10 = [subviews2 objectAtIndex:v7];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 componentIndex];
-        if (v11 > [v16 componentIndex])
+        componentIndex = [v10 componentIndex];
+        if (componentIndex > [viewCopy componentIndex])
         {
           break;
         }
       }
 
       ++v7;
-      v12 = [(SXComponentView *)self contentView];
-      v13 = [v12 subviews];
-      v14 = [v13 count];
+      contentView3 = [(SXComponentView *)self contentView];
+      subviews3 = [contentView3 subviews];
+      v14 = [subviews3 count];
 
       if (v7 >= v14)
       {
@@ -190,15 +190,15 @@ LABEL_5:
       }
     }
 
-    v15 = [(SXComponentView *)self contentView];
-    [v15 insertSubview:v16 atIndex:v7];
+    contentView4 = [(SXComponentView *)self contentView];
+    [contentView4 insertSubview:viewCopy atIndex:v7];
   }
 
   else
   {
 LABEL_6:
-    v15 = [(SXComponentView *)self contentView];
-    [v15 addSubview:v16];
+    contentView4 = [(SXComponentView *)self contentView];
+    [contentView4 addSubview:viewCopy];
   }
 }
 
@@ -209,20 +209,20 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXComponentView *)self fillView];
+  fillView = [(SXComponentView *)self fillView];
 
-  if (v11)
+  if (fillView)
   {
-    v12 = [(SXComponentView *)self fillView];
-    v13 = [(SXComponentView *)self fillView];
-    [v13 contentFrame];
+    fillView2 = [(SXComponentView *)self fillView];
+    fillView3 = [(SXComponentView *)self fillView];
+    [fillView3 contentFrame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(SXComponentView *)self fillView];
-    v23 = [v22 superview];
-    [v12 convertRect:v23 toView:{v15, v17, v19, v21}];
+    fillView4 = [(SXComponentView *)self fillView];
+    superview = [fillView4 superview];
+    [fillView2 convertRect:superview toView:{v15, v17, v19, v21}];
     v4 = v24;
     v6 = v25;
     v8 = v26;
@@ -240,25 +240,25 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self fillView];
-  v6 = [v5 fill];
-  if (v6)
+  identifierCopy = identifier;
+  fillView = [(SXComponentView *)self fillView];
+  fill = [fillView fill];
+  if (fill)
   {
-    v7 = v6;
-    v8 = [(SXComponentView *)self fillView];
-    v9 = [v8 fill];
+    v7 = fill;
+    fillView2 = [(SXComponentView *)self fillView];
+    fill2 = [fillView2 fill];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(SXComponentView *)self fillView];
-      v12 = [v11 fill];
+      fillView3 = [(SXComponentView *)self fillView];
+      fill3 = [fillView3 fill];
 
-      v13 = [v12 imageIdentifier];
+      imageIdentifier = [fill3 imageIdentifier];
       goto LABEL_8;
     }
   }
@@ -267,17 +267,17 @@ LABEL_6:
   {
   }
 
-  v12 = [(SXComponentView *)self fillView];
-  v14 = [v12 fill];
-  if (!v14)
+  fill3 = [(SXComponentView *)self fillView];
+  v12Fill = [fill3 fill];
+  if (!v12Fill)
   {
     v20 = 0;
     goto LABEL_10;
   }
 
-  v15 = v14;
-  v16 = [(SXComponentView *)self fillView];
-  v17 = [v16 fill];
+  v15 = v12Fill;
+  fillView4 = [(SXComponentView *)self fillView];
+  fill4 = [fillView4 fill];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
@@ -287,30 +287,30 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v19 = [(SXComponentView *)self fillView];
-  v12 = [v19 fill];
+  fillView5 = [(SXComponentView *)self fillView];
+  fill3 = [fillView5 fill];
 
-  v13 = [v12 stillImageIdentifier];
+  imageIdentifier = [fill3 stillImageIdentifier];
 LABEL_8:
-  v20 = v13;
+  v20 = imageIdentifier;
 LABEL_10:
 
 LABEL_12:
-  v21 = [v4 isEqualToString:v20];
+  v21 = [identifierCopy isEqualToString:v20];
 
   return v21;
 }
 
 - (BOOL)isTransitionable
 {
-  v2 = [(SXComponentView *)self fillView];
-  v3 = [v2 fill];
-  v4 = [v3 fillMode] != 0;
+  fillView = [(SXComponentView *)self fillView];
+  fill = [fillView fill];
+  v4 = [fill fillMode] != 0;
 
   return v4;
 }
 
-- (void)prepareForTransitionType:(unint64_t)a3
+- (void)prepareForTransitionType:(unint64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -320,8 +320,8 @@ LABEL_12:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SXContainerComponentView *)self componentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v6 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -333,33 +333,33 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(componentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) prepareForTransitionType:a3];
+        [*(*(&v10 + 1) + 8 * v9++) prepareForTransitionType:type];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startCopy = start;
   v14.receiver = self;
   v14.super_class = SXContainerComponentView;
-  [(SXComponentView *)&v14 animationDidStart:v4];
+  [(SXComponentView *)&v14 animationDidStart:startCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SXContainerComponentView *)self componentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v6 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -371,33 +371,33 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(componentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) animationDidStart:v4];
+        [*(*(&v10 + 1) + 8 * v9++) animationDidStart:startCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)animationDidFinish:(id)a3
+- (void)animationDidFinish:(id)finish
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   v14.receiver = self;
   v14.super_class = SXContainerComponentView;
-  [(SXComponentView *)&v14 animationDidFinish:v4];
+  [(SXComponentView *)&v14 animationDidFinish:finishCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SXContainerComponentView *)self componentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v6 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -409,33 +409,33 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(componentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) animationDidFinish:v4];
+        [*(*(&v10 + 1) + 8 * v9++) animationDidFinish:finishCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)didApplyBehavior:(id)a3
+- (void)didApplyBehavior:(id)behavior
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  behaviorCopy = behavior;
   v14.receiver = self;
   v14.super_class = SXContainerComponentView;
-  [(SXComponentView *)&v14 didApplyBehavior:v4];
+  [(SXComponentView *)&v14 didApplyBehavior:behaviorCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SXContainerComponentView *)self componentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v6 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -447,32 +447,32 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(componentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) didApplyBehavior:v4];
+        [*(*(&v10 + 1) + 8 * v9++) didApplyBehavior:behaviorCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)dragManager:(id)a3 dragableAtLocation:(CGPoint)a4
+- (id)dragManager:(id)manager dragableAtLocation:(CGPoint)location
 {
-  v4 = [(SXComponentView *)self fillView:a3];
-  v5 = [v4 dragable];
+  v4 = [(SXComponentView *)self fillView:manager];
+  dragable = [v4 dragable];
 
-  return v5;
+  return dragable;
 }
 
 - (BOOL)userInteractable
 {
-  v2 = [(SXContainerComponentView *)self dragManager];
-  v3 = v2 != 0;
+  dragManager = [(SXContainerComponentView *)self dragManager];
+  v3 = dragManager != 0;
 
   return v3;
 }
@@ -491,8 +491,8 @@ LABEL_12:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SXContainerComponentView *)self componentViews];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  componentViews = [(SXContainerComponentView *)self componentViews];
+  v4 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -503,7 +503,7 @@ LABEL_12:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(componentViews);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) allowHierarchyRemoval])
@@ -513,7 +513,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [componentViews countByEnumeratingWithState:&v10 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -533,11 +533,11 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 identifier];
-  v7 = [(SXComponentView *)self component];
-  v8 = [v7 components];
-  v9 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; numberOfChilds: %lu>", v4, self, v6, objc_msgSend(v8, "count")];;
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
+  component2 = [(SXComponentView *)self component];
+  components = [component2 components];
+  v9 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; numberOfChilds: %lu>", v4, self, identifier, objc_msgSend(components, "count")];;
 
   return v9;
 }

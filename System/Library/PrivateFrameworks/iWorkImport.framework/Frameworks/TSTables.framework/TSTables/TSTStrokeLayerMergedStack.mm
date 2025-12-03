@@ -1,10 +1,10 @@
 @interface TSTStrokeLayerMergedStack
-+ (id)mergeLeftStrokes:(id)a3 withRightStrokes:(id)a4;
-+ (id)mergeTopStrokes:(id)a3 withBottomStrokes:(id)a4;
-+ (void)enumerateWidthsInLayers:(void *)a3 usingBlock:(id)a4;
-- (TSTStrokeLayerMergedStack)initWithCopyOfMajorStrokes:(id)a3 andMinorStrokes:(id)a4;
-- (double)maxWidthOfStrokesInRange:(TSTSimpleRange)a3 cachedMax:(double)a4;
-- (double)p_widthOfStrokesAtIndex:(int64_t)a3;
++ (id)mergeLeftStrokes:(id)strokes withRightStrokes:(id)rightStrokes;
++ (id)mergeTopStrokes:(id)strokes withBottomStrokes:(id)bottomStrokes;
++ (void)enumerateWidthsInLayers:(void *)layers usingBlock:(id)block;
+- (TSTStrokeLayerMergedStack)initWithCopyOfMajorStrokes:(id)strokes andMinorStrokes:(id)minorStrokes;
+- (double)maxWidthOfStrokesInRange:(TSTSimpleRange)range cachedMax:(double)max;
+- (double)p_widthOfStrokesAtIndex:(int64_t)index;
 - (id)portalledStrokeLayer;
 - (unint64_t)count;
 - (vector<TSTStrokeLayer)p_strokeLayerVector;
@@ -14,51 +14,51 @@
 
 @implementation TSTStrokeLayerMergedStack
 
-- (TSTStrokeLayerMergedStack)initWithCopyOfMajorStrokes:(id)a3 andMinorStrokes:(id)a4
+- (TSTStrokeLayerMergedStack)initWithCopyOfMajorStrokes:(id)strokes andMinorStrokes:(id)minorStrokes
 {
-  v6 = a3;
-  v7 = a4;
+  strokesCopy = strokes;
+  minorStrokesCopy = minorStrokes;
   v197.receiver = self;
   v197.super_class = TSTStrokeLayerMergedStack;
   v12 = [(TSTStrokeLayerAbstractStack *)&v197 init];
   if (v12)
   {
-    v13 = objc_msgSend_defaultStrokeLayer(v7, v8, v9, v10, v11);
+    v13 = objc_msgSend_defaultStrokeLayer(minorStrokesCopy, v8, v9, v10, v11);
     v18 = objc_msgSend_startingStrokeOrder(v13, v14, v15, v16, v17);
-    v23 = objc_msgSend_defaultStrokeLayer(v6, v19, v20, v21, v22);
+    v23 = objc_msgSend_defaultStrokeLayer(strokesCopy, v19, v20, v21, v22);
     v28 = objc_msgSend_startingStrokeOrder(v23, v24, v25, v26, v27);
 
     if (v18 <= v28)
     {
-      v50 = objc_msgSend_defaultStrokeLayer(v7, v29, v30, v31, v32);
+      v50 = objc_msgSend_defaultStrokeLayer(minorStrokesCopy, v29, v30, v31, v32);
       v55 = objc_msgSend_copy(v50, v51, v52, v53, v54);
       defaultMinorStrokeLayer = v12->_defaultMinorStrokeLayer;
       v12->_defaultMinorStrokeLayer = v55;
 
-      objc_msgSend_defaultStrokeLayer(v6, v57, v58, v59, v60);
+      objc_msgSend_defaultStrokeLayer(strokesCopy, v57, v58, v59, v60);
     }
 
     else
     {
-      v33 = objc_msgSend_defaultStrokeLayer(v6, v29, v30, v31, v32);
+      v33 = objc_msgSend_defaultStrokeLayer(strokesCopy, v29, v30, v31, v32);
       v38 = objc_msgSend_copy(v33, v34, v35, v36, v37);
       v39 = v12->_defaultMinorStrokeLayer;
       v12->_defaultMinorStrokeLayer = v38;
 
-      objc_msgSend_defaultStrokeLayer(v7, v40, v41, v42, v43);
+      objc_msgSend_defaultStrokeLayer(minorStrokesCopy, v40, v41, v42, v43);
     }
     v44 = ;
     v49 = objc_msgSend_copy(v44, v45, v46, v47, v48);
     defaultMajorStrokeLayer = v12->_defaultMajorStrokeLayer;
     v12->_defaultMajorStrokeLayer = v49;
 
-    v70 = objc_msgSend_customStrokeLayer(v6, v62, v63, v64, v65);
-    if (v70 && (objc_msgSend_customStrokeLayer(v7, v66, v67, v68, v69), v71 = objc_claimAutoreleasedReturnValue(), v71, v70, v71))
+    v70 = objc_msgSend_customStrokeLayer(strokesCopy, v62, v63, v64, v65);
+    if (v70 && (objc_msgSend_customStrokeLayer(minorStrokesCopy, v66, v67, v68, v69), v71 = objc_claimAutoreleasedReturnValue(), v71, v70, v71))
     {
-      v72 = objc_msgSend_customStrokeLayer(v6, v66, v67, v68, v69);
+      v72 = objc_msgSend_customStrokeLayer(strokesCopy, v66, v67, v68, v69);
       v77 = objc_msgSend_copy(v72, v73, v74, v75, v76);
 
-      v82 = objc_msgSend_customStrokeLayer(v7, v78, v79, v80, v81);
+      v82 = objc_msgSend_customStrokeLayer(minorStrokesCopy, v78, v79, v80, v81);
       customUnorderedStrokeLayer = objc_msgSend_copy(v82, v83, v84, v85, v86);
 
       v88 = [TSTStrokeOrderedLayer alloc];
@@ -69,38 +69,38 @@
 
     else
     {
-      v92 = objc_msgSend_customStrokeLayer(v6, v66, v67, v68, v69);
+      v92 = objc_msgSend_customStrokeLayer(strokesCopy, v66, v67, v68, v69);
 
       if (v92)
       {
-        v77 = objc_msgSend_customStrokeLayer(v6, v93, v94, v95, v96);
+        v77 = objc_msgSend_customStrokeLayer(strokesCopy, v93, v94, v95, v96);
         v101 = objc_msgSend_copy(v77, v97, v98, v99, v100);
       }
 
       else
       {
-        v102 = objc_msgSend_customStrokeLayer(v7, v93, v94, v95, v96);
+        v102 = objc_msgSend_customStrokeLayer(minorStrokesCopy, v93, v94, v95, v96);
 
         if (!v102)
         {
 LABEL_14:
-          v111 = objc_msgSend_clearedStrokeLayer(v7, v103, v104, v105, v106);
+          v111 = objc_msgSend_clearedStrokeLayer(minorStrokesCopy, v103, v104, v105, v106);
           v116 = objc_msgSend_copy(v111, v112, v113, v114, v115);
           clearedMinorStrokeLayer = v12->_clearedMinorStrokeLayer;
           v12->_clearedMinorStrokeLayer = v116;
 
-          v122 = objc_msgSend_clearedStrokeLayer(v6, v118, v119, v120, v121);
+          v122 = objc_msgSend_clearedStrokeLayer(strokesCopy, v118, v119, v120, v121);
           v127 = objc_msgSend_copy(v122, v123, v124, v125, v126);
           clearedMajorStrokeLayer = v12->_clearedMajorStrokeLayer;
           v12->_clearedMajorStrokeLayer = v127;
 
-          v137 = objc_msgSend_dynamicStrokeLayer(v6, v129, v130, v131, v132);
-          if (v137 && (objc_msgSend_dynamicStrokeLayer(v7, v133, v134, v135, v136), v138 = objc_claimAutoreleasedReturnValue(), v138, v137, v138))
+          v137 = objc_msgSend_dynamicStrokeLayer(strokesCopy, v129, v130, v131, v132);
+          if (v137 && (objc_msgSend_dynamicStrokeLayer(minorStrokesCopy, v133, v134, v135, v136), v138 = objc_claimAutoreleasedReturnValue(), v138, v137, v138))
           {
-            v139 = objc_msgSend_dynamicStrokeLayer(v6, v133, v134, v135, v136);
+            v139 = objc_msgSend_dynamicStrokeLayer(strokesCopy, v133, v134, v135, v136);
             v144 = objc_msgSend_copy(v139, v140, v141, v142, v143);
 
-            v149 = objc_msgSend_dynamicStrokeLayer(v7, v145, v146, v147, v148);
+            v149 = objc_msgSend_dynamicStrokeLayer(minorStrokesCopy, v145, v146, v147, v148);
             dynamicUnorderedStrokeLayer = objc_msgSend_copy(v149, v150, v151, v152, v153);
 
             v155 = [TSTStrokeOrderedLayer alloc];
@@ -111,27 +111,27 @@ LABEL_14:
 
           else
           {
-            v159 = objc_msgSend_dynamicStrokeLayer(v6, v133, v134, v135, v136);
+            v159 = objc_msgSend_dynamicStrokeLayer(strokesCopy, v133, v134, v135, v136);
 
             if (v159)
             {
-              v144 = objc_msgSend_dynamicStrokeLayer(v6, v160, v161, v162, v163);
+              v144 = objc_msgSend_dynamicStrokeLayer(strokesCopy, v160, v161, v162, v163);
               v168 = objc_msgSend_copy(v144, v164, v165, v166, v167);
             }
 
             else
             {
-              v169 = objc_msgSend_dynamicStrokeLayer(v7, v160, v161, v162, v163);
+              v169 = objc_msgSend_dynamicStrokeLayer(minorStrokesCopy, v160, v161, v162, v163);
 
               if (!v169)
               {
 LABEL_23:
-                v178 = objc_msgSend_spillStrokeLayer(v7, v170, v171, v172, v173);
+                v178 = objc_msgSend_spillStrokeLayer(minorStrokesCopy, v170, v171, v172, v173);
                 v183 = objc_msgSend_copy(v178, v179, v180, v181, v182);
                 spillMinorStrokeLayer = v12->_spillMinorStrokeLayer;
                 v12->_spillMinorStrokeLayer = v183;
 
-                v189 = objc_msgSend_spillStrokeLayer(v6, v185, v186, v187, v188);
+                v189 = objc_msgSend_spillStrokeLayer(strokesCopy, v185, v186, v187, v188);
                 v194 = objc_msgSend_copy(v189, v190, v191, v192, v193);
                 spillMajorStrokeLayer = v12->_spillMajorStrokeLayer;
                 v12->_spillMajorStrokeLayer = v194;
@@ -139,7 +139,7 @@ LABEL_23:
                 goto LABEL_24;
               }
 
-              v144 = objc_msgSend_dynamicStrokeLayer(v7, v170, v171, v172, v173);
+              v144 = objc_msgSend_dynamicStrokeLayer(minorStrokesCopy, v170, v171, v172, v173);
               v168 = objc_msgSend_copy(v144, v174, v175, v176, v177);
             }
 
@@ -150,7 +150,7 @@ LABEL_23:
           goto LABEL_23;
         }
 
-        v77 = objc_msgSend_customStrokeLayer(v7, v103, v104, v105, v106);
+        v77 = objc_msgSend_customStrokeLayer(minorStrokesCopy, v103, v104, v105, v106);
         v101 = objc_msgSend_copy(v77, v107, v108, v109, v110);
       }
 
@@ -168,7 +168,7 @@ LABEL_24:
 
 - (vector<TSTStrokeLayer)p_strokeLayerVector
 {
-  v3 = self;
+  selfCopy = self;
   var1 = self[9].var1;
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -210,55 +210,55 @@ LABEL_8:
     sub_221281314(retstr, &self[8].var2);
   }
 
-  if (v3[9].var0)
+  if (selfCopy[9].var0)
   {
-    sub_221281314(retstr, &v3[9].var0);
+    sub_221281314(retstr, &selfCopy[9].var0);
   }
 
-  if (v3[9].var1)
+  if (selfCopy[9].var1)
   {
-    sub_221281314(retstr, &v3[9].var1);
+    sub_221281314(retstr, &selfCopy[9].var1);
   }
 
-  if (v3[9].var2)
+  if (selfCopy[9].var2)
   {
-    v9 = v3[9].var2;
+    v9 = selfCopy[9].var2;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[10].var0)
+  if (selfCopy[10].var0)
   {
-    v9 = v3[10].var0;
+    v9 = selfCopy[10].var0;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[10].var1)
+  if (selfCopy[10].var1)
   {
-    v9 = v3[10].var1;
+    v9 = selfCopy[10].var1;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[10].var2)
+  if (selfCopy[10].var2)
   {
-    v9 = v3[10].var2;
+    v9 = selfCopy[10].var2;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[11].var0)
+  if (selfCopy[11].var0)
   {
-    v9 = v3[11].var0;
+    v9 = selfCopy[11].var0;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[11].var1)
+  if (selfCopy[11].var1)
   {
-    v9 = v3[11].var1;
+    v9 = selfCopy[11].var1;
     sub_221281314(retstr, &v9);
   }
 
-  if (v3[11].var2)
+  if (selfCopy[11].var2)
   {
-    v9 = v3[11].var2;
+    v9 = selfCopy[11].var2;
     sub_221281314(retstr, &v9);
   }
 
@@ -356,29 +356,29 @@ LABEL_8:
   MEMORY[0x2821F9670](self, sel_setSpillMajorStrokeLayer_, 0, v5, v6);
 }
 
-+ (id)mergeTopStrokes:(id)a3 withBottomStrokes:(id)a4
++ (id)mergeTopStrokes:(id)strokes withBottomStrokes:(id)bottomStrokes
 {
-  v5 = a3;
-  v6 = a4;
+  strokesCopy = strokes;
+  bottomStrokesCopy = bottomStrokes;
   v7 = [TSTStrokeLayerMergedStack alloc];
-  v10 = objc_msgSend_initWithCopyOfMajorStrokes_andMinorStrokes_(v7, v8, v5, v6, v9);
+  v10 = objc_msgSend_initWithCopyOfMajorStrokes_andMinorStrokes_(v7, v8, strokesCopy, bottomStrokesCopy, v9);
   objc_msgSend_lockForRead(v10, v11, v12, v13, v14);
 
   return v10;
 }
 
-+ (id)mergeLeftStrokes:(id)a3 withRightStrokes:(id)a4
++ (id)mergeLeftStrokes:(id)strokes withRightStrokes:(id)rightStrokes
 {
-  v5 = a3;
-  v6 = a4;
+  strokesCopy = strokes;
+  rightStrokesCopy = rightStrokes;
   v7 = [TSTStrokeLayerMergedStack alloc];
-  v10 = objc_msgSend_initWithCopyOfMajorStrokes_andMinorStrokes_(v7, v8, v5, v6, v9);
+  v10 = objc_msgSend_initWithCopyOfMajorStrokes_andMinorStrokes_(v7, v8, strokesCopy, rightStrokesCopy, v9);
   objc_msgSend_lockForRead(v10, v11, v12, v13, v14);
 
   return v10;
 }
 
-- (double)maxWidthOfStrokesInRange:(TSTSimpleRange)a3 cachedMax:(double)a4
+- (double)maxWidthOfStrokesInRange:(TSTSimpleRange)range cachedMax:(double)max
 {
   v7 = 0;
   v8 = &v7;
@@ -389,28 +389,28 @@ LABEL_8:
   v6[2] = sub_2213847C4;
   v6[3] = &unk_2784638E8;
   v6[4] = &v7;
-  *&v6[5] = a4;
-  objc_msgSend_enumerateStrokesInRange_usingBlock_(self, a2, a3.origin, a3.length, v6);
+  *&v6[5] = max;
+  objc_msgSend_enumerateStrokesInRange_usingBlock_(self, a2, range.origin, range.length, v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (double)p_widthOfStrokesAtIndex:(int64_t)a3
+- (double)p_widthOfStrokesAtIndex:(int64_t)index
 {
-  v3 = a3 != 0x7FFFFFFFFFFFFFFELL;
+  v3 = index != 0x7FFFFFFFFFFFFFFELL;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if (a3 == 0x7FFFFFFFFFFFFFFELL)
+  if (index == 0x7FFFFFFFFFFFFFFELL)
   {
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v4 = a3 - 1;
+    v4 = index - 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -424,15 +424,15 @@ LABEL_8:
   return v5;
 }
 
-+ (void)enumerateWidthsInLayers:(void *)a3 usingBlock:(id)a4
++ (void)enumerateWidthsInLayers:(void *)layers usingBlock:(id)block
 {
-  v56 = a4;
+  blockCopy = block;
   v64[0] = 0;
-  v10 = *a3;
-  v9 = *(a3 + 1);
+  v10 = *layers;
+  v9 = *(layers + 1);
   v11 = 0x7FFFFFFFFFFFFFFFLL;
-  v12 = v9 - *a3;
-  if (v9 != *a3)
+  v12 = v9 - *layers;
+  if (v9 != *layers)
   {
     do
     {
@@ -456,14 +456,14 @@ LABEL_8:
   if ((v64[0] & 1) == 0 && v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = v11 & ~(v11 >> 63);
-    v16 = (*(a3 + 1) - *a3) >> 3;
+    v16 = (*(layers + 1) - *layers) >> 3;
     while (1)
     {
       v17 = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
         v18 = v16 - 1;
-        v19 = *(*a3 + 8 * (v16 - 1));
+        v19 = *(*layers + 8 * (v16 - 1));
         if (!v19)
         {
           goto LABEL_24;
@@ -530,7 +530,7 @@ LABEL_8:
         i = v44;
         if (!sub_2213FC604(&v59))
         {
-          *(*a3 + 8 * v18) = 0;
+          *(*layers + 8 * v18) = 0;
           *(__p[0] + v18) = 0x7FFFFFFFFFFFFFFFLL;
           goto LABEL_24;
         }
@@ -610,12 +610,12 @@ LABEL_24:
 
       if (v42[24] == 1)
       {
-        objc_msgSend_enumerateWidthsInRange_usingBlock_(**a3, v45, v53, v54, v56);
+        objc_msgSend_enumerateWidthsInRange_usingBlock_(**layers, v45, v53, v54, blockCopy);
       }
 
       else
       {
-        v56[2](v56, v53, v54, v64, *v42);
+        blockCopy[2](blockCopy, v53, v54, v64, *v42);
       }
 
       if ((v64[0] & 1) == 0)

@@ -9,20 +9,20 @@
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)axSafelyAddObject:()AXExtensions
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

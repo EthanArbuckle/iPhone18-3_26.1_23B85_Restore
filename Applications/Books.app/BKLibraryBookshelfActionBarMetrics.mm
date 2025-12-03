@@ -1,16 +1,16 @@
 @interface BKLibraryBookshelfActionBarMetrics
-- (void)configureWithSection:(id)a3;
+- (void)configureWithSection:(id)section;
 @end
 
 @implementation BKLibraryBookshelfActionBarMetrics
 
-- (void)configureWithSection:(id)a3
+- (void)configureWithSection:(id)section
 {
-  v4 = a3;
-  v5 = [v4 colorForKey:@"bar-tint-color"];
+  sectionCopy = section;
+  v5 = [sectionCopy colorForKey:@"bar-tint-color"];
   [(BKLibraryBookshelfActionBarMetrics *)self setBarTintColor:v5];
 
-  v6 = [v4 colorForKey:@"tint-color"];
+  v6 = [sectionCopy colorForKey:@"tint-color"];
 
   [(BKLibraryBookshelfActionBarMetrics *)self setTintColor:v6];
 }

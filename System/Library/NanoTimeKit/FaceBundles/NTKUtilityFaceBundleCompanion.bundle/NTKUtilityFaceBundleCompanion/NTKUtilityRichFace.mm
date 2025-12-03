@@ -1,6 +1,6 @@
 @interface NTKUtilityRichFace
 + (id)_complicationSlotDescriptors;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKUtilityRichFace
@@ -30,7 +30,7 @@
   return v11;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotTopRight;

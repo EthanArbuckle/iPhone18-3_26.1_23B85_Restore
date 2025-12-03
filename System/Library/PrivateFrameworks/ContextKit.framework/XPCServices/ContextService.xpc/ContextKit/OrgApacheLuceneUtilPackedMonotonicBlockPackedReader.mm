@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilPackedMonotonicBlockPackedReader
-+ (int64_t)expectedWithLong:(int64_t)a3 withFloat:(float)a4 withInt:(int)a5;
++ (int64_t)expectedWithLong:(int64_t)long withFloat:(float)float withInt:(int)int;
 - (NSString)description;
-- (int64_t)getWithLong:(int64_t)a3;
+- (int64_t)getWithLong:(int64_t)long;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedMonotonicBlockPackedReader
 
-+ (int64_t)expectedWithLong:(int64_t)a3 withFloat:(float)a4 withInt:(int)a5
++ (int64_t)expectedWithLong:(int64_t)long withFloat:(float)float withInt:(int)int
 {
-  v5 = a5 * a4;
+  v5 = int * float;
   v6 = v5;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 < 0.0)
@@ -23,10 +23,10 @@
     v6 = v7;
   }
 
-  return v6 + a3;
+  return v6 + long;
 }
 
-- (int64_t)getWithLong:(int64_t)a3
+- (int64_t)getWithLong:(int64_t)long
 {
   minValues = self->minValues_;
   if (!minValues)
@@ -35,7 +35,7 @@
   }
 
   blockMask = self->blockMask_;
-  v6 = a3 >> self->blockShift_;
+  v6 = long >> self->blockShift_;
   size = minValues->super.size_;
   if ((v6 & 0x80000000) != 0 || size <= v6)
   {
@@ -74,7 +74,7 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v14 = *(&averages->super.size_ + v6 + 1) * (blockMask & a3);
+  v14 = *(&averages->super.size_ + v6 + 1) * (blockMask & long);
   v15 = 0x7FFFFFFFFFFFFFFFLL;
   if (v14 < 0.0)
   {

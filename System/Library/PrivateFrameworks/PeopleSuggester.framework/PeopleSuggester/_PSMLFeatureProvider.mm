@@ -1,10 +1,10 @@
 @interface _PSMLFeatureProvider
 - (_PSMLFeatureProvider)init;
-- (_PSMLFeatureProvider)initWithFeatureValues:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setNumber:(id)a3 forFeature:(id)a4;
-- (void)setString:(id)a3 forFeature:(id)a4;
-- (void)setValue:(id)a3 forFeature:(id)a4;
+- (_PSMLFeatureProvider)initWithFeatureValues:(id)values;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setNumber:(id)number forFeature:(id)feature;
+- (void)setString:(id)string forFeature:(id)feature;
+- (void)setValue:(id)value forFeature:(id)feature;
 @end
 
 @implementation _PSMLFeatureProvider
@@ -28,21 +28,21 @@
   return v2;
 }
 
-- (_PSMLFeatureProvider)initWithFeatureValues:(id)a3
+- (_PSMLFeatureProvider)initWithFeatureValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v13.receiver = self;
   v13.super_class = _PSMLFeatureProvider;
   v5 = [(_PSMLFeatureProvider *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valuesCopy copy];
     featureValues = v5->_featureValues;
     v5->_featureValues = v6;
 
     v8 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v9 = [v4 allKeys];
-    v10 = [v8 initWithArray:v9];
+    allKeys = [valuesCopy allKeys];
+    v10 = [v8 initWithArray:allKeys];
     featureNames = v5->_featureNames;
     v5->_featureNames = v10;
   }
@@ -50,82 +50,82 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSMutableDictionary *)self->_featureValues copy];
   v6 = [v4 initWithFeatureValues:v5];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forFeature:(id)a4
+- (void)setValue:(id)value forFeature:(id)feature
 {
   featureValues = self->_featureValues;
-  v7 = a4;
-  [(NSMutableDictionary *)featureValues setObject:a3 forKeyedSubscript:v7];
-  [(NSMutableSet *)self->_featureNames addObject:v7];
+  featureCopy = feature;
+  [(NSMutableDictionary *)featureValues setObject:value forKeyedSubscript:featureCopy];
+  [(NSMutableSet *)self->_featureNames addObject:featureCopy];
 }
 
-- (void)setNumber:(id)a3 forFeature:(id)a4
+- (void)setNumber:(id)number forFeature:(id)feature
 {
-  v17 = a3;
-  v6 = v17;
-  v7 = a4;
-  v8 = [v17 objCType];
-  if (*v8 == 105 && !v8[1])
+  numberCopy = number;
+  v6 = numberCopy;
+  featureCopy = feature;
+  objCType = [numberCopy objCType];
+  if (*objCType == 105 && !objCType[1])
   {
     v13 = MEMORY[0x1E695FE60];
-    v14 = [v17 intValue];
+    intValue = [numberCopy intValue];
 LABEL_14:
-    v16 = [v13 featureValueWithInt64:v14];
+    v16 = [v13 featureValueWithInt64:intValue];
     goto LABEL_15;
   }
 
-  v9 = [v17 objCType];
-  if (*v9 != 100 || v9[1])
+  objCType2 = [numberCopy objCType];
+  if (*objCType2 != 100 || objCType2[1])
   {
-    v10 = [v17 objCType];
-    if (*v10 == 99 && !v10[1])
+    objCType3 = [numberCopy objCType];
+    if (*objCType3 == 99 && !objCType3[1])
     {
       v13 = MEMORY[0x1E695FE60];
-      v14 = [v17 BOOLValue];
+      intValue = [numberCopy BOOLValue];
     }
 
     else
     {
-      v11 = [v17 objCType];
-      if (*v11 != 113 || v11[1])
+      objCType4 = [numberCopy objCType];
+      if (*objCType4 != 113 || objCType4[1])
       {
         v12 = 0;
         goto LABEL_16;
       }
 
       v13 = MEMORY[0x1E695FE60];
-      v14 = [v17 longValue];
+      intValue = [numberCopy longValue];
     }
 
     goto LABEL_14;
   }
 
   v15 = MEMORY[0x1E695FE60];
-  [v17 doubleValue];
+  [numberCopy doubleValue];
   v16 = [v15 featureValueWithDouble:?];
 LABEL_15:
   v12 = v16;
 LABEL_16:
-  [(NSMutableDictionary *)self->_featureValues setObject:v12 forKeyedSubscript:v7];
-  [(NSMutableSet *)self->_featureNames addObject:v7];
+  [(NSMutableDictionary *)self->_featureValues setObject:v12 forKeyedSubscript:featureCopy];
+  [(NSMutableSet *)self->_featureNames addObject:featureCopy];
 }
 
-- (void)setString:(id)a3 forFeature:(id)a4
+- (void)setString:(id)string forFeature:(id)feature
 {
   v6 = MEMORY[0x1E695FE60];
-  v8 = a4;
-  v7 = [v6 featureValueWithString:a3];
-  [(NSMutableDictionary *)self->_featureValues setObject:v7 forKeyedSubscript:v8];
+  featureCopy = feature;
+  v7 = [v6 featureValueWithString:string];
+  [(NSMutableDictionary *)self->_featureValues setObject:v7 forKeyedSubscript:featureCopy];
 
-  [(NSMutableSet *)self->_featureNames addObject:v8];
+  [(NSMutableSet *)self->_featureNames addObject:featureCopy];
 }
 
 @end

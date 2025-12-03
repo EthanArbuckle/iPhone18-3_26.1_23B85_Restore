@@ -1,63 +1,63 @@
 @interface _SBRootFolderPageTransitionHandle
 - (NSString)transitionDescription;
-- (_SBRootFolderPageTransitionHandle)initWithFolderController:(id)a3 sourcePageState:(int64_t)a4 sourcePageIndex:(int64_t)a5 destinationPageState:(int64_t)a6 destinationPageIndex:(int64_t)a7 reason:(id)a8;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBRootFolderPageTransitionHandle)initWithFolderController:(id)controller sourcePageState:(int64_t)state sourcePageIndex:(int64_t)index destinationPageState:(int64_t)pageState destinationPageIndex:(int64_t)pageIndex reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (int64_t)matchesTransitionSnapshot:(SBRootFolderPageStateTransitionSnapshot *)a3;
-- (void)endTransitionSuccessfully:(BOOL)a3;
-- (void)setTransitionProgress:(double)a3;
+- (int64_t)matchesTransitionSnapshot:(SBRootFolderPageStateTransitionSnapshot *)snapshot;
+- (void)endTransitionSuccessfully:(BOOL)successfully;
+- (void)setTransitionProgress:(double)progress;
 @end
 
 @implementation _SBRootFolderPageTransitionHandle
 
-- (_SBRootFolderPageTransitionHandle)initWithFolderController:(id)a3 sourcePageState:(int64_t)a4 sourcePageIndex:(int64_t)a5 destinationPageState:(int64_t)a6 destinationPageIndex:(int64_t)a7 reason:(id)a8
+- (_SBRootFolderPageTransitionHandle)initWithFolderController:(id)controller sourcePageState:(int64_t)state sourcePageIndex:(int64_t)index destinationPageState:(int64_t)pageState destinationPageIndex:(int64_t)pageIndex reason:(id)reason
 {
-  v15 = a3;
-  v16 = a8;
+  controllerCopy = controller;
+  reasonCopy = reason;
   v22.receiver = self;
   v22.super_class = _SBRootFolderPageTransitionHandle;
   v17 = [(_SBRootFolderPageTransitionHandle *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_folderController, a3);
-    v19 = [v16 copy];
+    objc_storeStrong(&v17->_folderController, controller);
+    v19 = [reasonCopy copy];
     reason = v18->_reason;
     v18->_reason = v19;
 
-    v18->_sourcePageState = a4;
-    v18->_destinationPageState = a6;
-    v18->_sourcePageIndex = a5;
-    v18->_destinationPageIndex = a7;
+    v18->_sourcePageState = state;
+    v18->_destinationPageState = pageState;
+    v18->_sourcePageIndex = index;
+    v18->_destinationPageIndex = pageIndex;
     v18->_valid = 1;
   }
 
   return v18;
 }
 
-- (int64_t)matchesTransitionSnapshot:(SBRootFolderPageStateTransitionSnapshot *)a3
+- (int64_t)matchesTransitionSnapshot:(SBRootFolderPageStateTransitionSnapshot *)snapshot
 {
-  v5 = [(_SBRootFolderPageTransitionHandle *)self sourcePageState];
-  v6 = [(_SBRootFolderPageTransitionHandle *)self destinationPageState];
-  v7 = [(_SBRootFolderPageTransitionHandle *)self folderController];
-  v8 = [v7 minimumPageIndex];
+  sourcePageState = [(_SBRootFolderPageTransitionHandle *)self sourcePageState];
+  destinationPageState = [(_SBRootFolderPageTransitionHandle *)self destinationPageState];
+  folderController = [(_SBRootFolderPageTransitionHandle *)self folderController];
+  minimumPageIndex = [folderController minimumPageIndex];
 
-  v9 = [(_SBRootFolderPageTransitionHandle *)self sourcePageIndex]- v8;
-  v10 = [(_SBRootFolderPageTransitionHandle *)self destinationPageIndex]- v8;
-  if (*&a3->var0 == __PAIR128__(v6, v5) && a3->var2 == v9 && a3->var3 == v10)
+  v9 = [(_SBRootFolderPageTransitionHandle *)self sourcePageIndex]- minimumPageIndex;
+  v10 = [(_SBRootFolderPageTransitionHandle *)self destinationPageIndex]- minimumPageIndex;
+  if (*&snapshot->var0 == __PAIR128__(destinationPageState, sourcePageState) && snapshot->var2 == v9 && snapshot->var3 == v10)
   {
     return 1;
   }
 
-  if (a3->var0 != v6)
+  if (snapshot->var0 != destinationPageState)
   {
     return 0;
   }
 
-  if (a3->var1 == v5)
+  if (snapshot->var1 == sourcePageState)
   {
-    if (a3->var2 == v10 && a3->var3 == v9)
+    if (snapshot->var2 == v10 && snapshot->var3 == v9)
     {
       return 2;
     }
@@ -70,30 +70,30 @@
 
 - (NSString)transitionDescription
 {
-  v3 = [(_SBRootFolderPageTransitionHandle *)self sourcePageState];
-  v4 = [(_SBRootFolderPageTransitionHandle *)self destinationPageState];
-  v5 = [(_SBRootFolderPageTransitionHandle *)self folderController];
-  v6 = [v5 minimumPageIndex];
+  sourcePageState = [(_SBRootFolderPageTransitionHandle *)self sourcePageState];
+  destinationPageState = [(_SBRootFolderPageTransitionHandle *)self destinationPageState];
+  folderController = [(_SBRootFolderPageTransitionHandle *)self folderController];
+  minimumPageIndex = [folderController minimumPageIndex];
 
-  v7 = [(_SBRootFolderPageTransitionHandle *)self sourcePageIndex]- v6;
-  v8 = [(_SBRootFolderPageTransitionHandle *)self destinationPageIndex]- v6;
+  v7 = [(_SBRootFolderPageTransitionHandle *)self sourcePageIndex]- minimumPageIndex;
+  v8 = [(_SBRootFolderPageTransitionHandle *)self destinationPageIndex]- minimumPageIndex;
   [(_SBRootFolderPageTransitionHandle *)self pageTransitionProgress];
   v10 = v9;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = SBStringForRootFolderPageState(v3);
-  v13 = SBStringForRootFolderPageState(v4);
+  v12 = SBStringForRootFolderPageState(sourcePageState);
+  v13 = SBStringForRootFolderPageState(destinationPageState);
   v14 = [v11 stringWithFormat:@"%@(%lu) -> %@(%lu): %f", v12, v7, v13, v8, v10];
 
   return v14;
 }
 
-- (void)setTransitionProgress:(double)a3
+- (void)setTransitionProgress:(double)progress
 {
   if ([(_SBRootFolderPageTransitionHandle *)self isValid])
   {
-    [(_SBRootFolderPageTransitionHandle *)self setPageTransitionProgress:a3];
-    v6 = [(_SBRootFolderPageTransitionHandle *)self folderController];
-    [v6 pageTransitionHandle:self updateCurrentPageStateTransitionToProgress:a3];
+    [(_SBRootFolderPageTransitionHandle *)self setPageTransitionProgress:progress];
+    folderController = [(_SBRootFolderPageTransitionHandle *)self folderController];
+    [folderController pageTransitionHandle:self updateCurrentPageStateTransitionToProgress:progress];
   }
 
   else
@@ -101,25 +101,25 @@
     v5 = SBLogRootController();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(_SBRootFolderPageTransitionHandle *)self setTransitionProgress:v5, a3];
+      [(_SBRootFolderPageTransitionHandle *)self setTransitionProgress:v5, progress];
     }
   }
 }
 
-- (void)endTransitionSuccessfully:(BOOL)a3
+- (void)endTransitionSuccessfully:(BOOL)successfully
 {
-  v3 = a3;
+  successfullyCopy = successfully;
   if ([(_SBRootFolderPageTransitionHandle *)self isValid])
   {
     v5 = 0.0;
-    if (v3)
+    if (successfullyCopy)
     {
       v5 = 1.0;
     }
 
     [(_SBRootFolderPageTransitionHandle *)self setPageTransitionProgress:v5];
-    v7 = [(_SBRootFolderPageTransitionHandle *)self folderController];
-    [v7 pageTransitionHandle:self endPageStateTransitionSuccessfully:v3];
+    folderController = [(_SBRootFolderPageTransitionHandle *)self folderController];
+    [folderController pageTransitionHandle:self endPageStateTransitionSuccessfully:successfullyCopy];
   }
 
   else
@@ -127,51 +127,51 @@
     v6 = SBLogRootController();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(_SBRootFolderPageTransitionHandle *)self endTransitionSuccessfully:v3, v6];
+      [(_SBRootFolderPageTransitionHandle *)self endTransitionSuccessfully:successfullyCopy, v6];
     }
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBRootFolderPageTransitionHandle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBRootFolderPageTransitionHandle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBRootFolderPageTransitionHandle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBRootFolderPageTransitionHandle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBRootFolderPageTransitionHandle *)self succinctDescriptionBuilder];
-  v5 = [(_SBRootFolderPageTransitionHandle *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(_SBRootFolderPageTransitionHandle *)self succinctDescriptionBuilder];
+  reason = [(_SBRootFolderPageTransitionHandle *)self reason];
+  v6 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
   v7 = SBStringForRootFolderPageState([(_SBRootFolderPageTransitionHandle *)self sourcePageState]);
-  v8 = [v4 appendObject:v7 withName:@"sourcePageState"];
+  v8 = [succinctDescriptionBuilder appendObject:v7 withName:@"sourcePageState"];
 
   v9 = SBStringForRootFolderPageState([(_SBRootFolderPageTransitionHandle *)self destinationPageState]);
-  v10 = [v4 appendObject:v9 withName:@"destinationPageState"];
+  v10 = [succinctDescriptionBuilder appendObject:v9 withName:@"destinationPageState"];
 
   [(_SBRootFolderPageTransitionHandle *)self pageTransitionProgress];
-  v11 = [v4 appendFloat:@"pageTransitionProgress" withName:?];
-  v12 = [v4 appendInteger:-[_SBRootFolderPageTransitionHandle sourcePageIndex](self withName:{"sourcePageIndex"), @"sourcePageIndex"}];
-  v13 = [v4 appendInteger:-[_SBRootFolderPageTransitionHandle destinationPageIndex](self withName:{"destinationPageIndex"), @"destinationPageIndex"}];
-  v14 = [(_SBRootFolderPageTransitionHandle *)self folderController];
-  v15 = [v4 appendPointer:v14 withName:@"folderController"];
+  v11 = [succinctDescriptionBuilder appendFloat:@"pageTransitionProgress" withName:?];
+  v12 = [succinctDescriptionBuilder appendInteger:-[_SBRootFolderPageTransitionHandle sourcePageIndex](self withName:{"sourcePageIndex"), @"sourcePageIndex"}];
+  v13 = [succinctDescriptionBuilder appendInteger:-[_SBRootFolderPageTransitionHandle destinationPageIndex](self withName:{"destinationPageIndex"), @"destinationPageIndex"}];
+  folderController = [(_SBRootFolderPageTransitionHandle *)self folderController];
+  v15 = [succinctDescriptionBuilder appendPointer:folderController withName:@"folderController"];
 
-  v16 = [v4 appendBool:-[_SBRootFolderPageTransitionHandle isValid](self withName:{"isValid"), @"valid"}];
-  v17 = [(_SBRootFolderPageTransitionHandle *)self customIconImageViewControllerCancelTouchesAssertion];
-  v18 = [v4 appendObject:v17 withName:@"customIconImageViewControllerCancelTouchesAssertion" skipIfNil:1];
+  v16 = [succinctDescriptionBuilder appendBool:-[_SBRootFolderPageTransitionHandle isValid](self withName:{"isValid"), @"valid"}];
+  customIconImageViewControllerCancelTouchesAssertion = [(_SBRootFolderPageTransitionHandle *)self customIconImageViewControllerCancelTouchesAssertion];
+  v18 = [succinctDescriptionBuilder appendObject:customIconImageViewControllerCancelTouchesAssertion withName:@"customIconImageViewControllerCancelTouchesAssertion" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)setTransitionProgress:(double)a3 .cold.1(void *a1, NSObject *a2, double a3)

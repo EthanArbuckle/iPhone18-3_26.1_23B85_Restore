@@ -1,26 +1,26 @@
 @interface CSCoreSpeechDaemonStateMonitor
 + (id)sharedInstance;
 - (CSCoreSpeechDaemonStateMonitor)init;
-- (void)_didReceiveDaemonStateChanged:(unint64_t)a3;
-- (void)_notifyObserver:(id)a3 withDaemonState:(unint64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveDaemonStateChanged:(unint64_t)changed;
+- (void)_notifyObserver:(id)observer withDaemonState:(unint64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)notifyDaemonStateChanged:(unint64_t)a3;
+- (void)notifyDaemonStateChanged:(unint64_t)changed;
 @end
 
 @implementation CSCoreSpeechDaemonStateMonitor
 
-- (void)_notifyObserver:(id)a3 withDaemonState:(unint64_t)a4
+- (void)_notifyObserver:(id)observer withDaemonState:(unint64_t)state
 {
-  v6 = a3;
-  [(CSCoreSpeechDaemonStateMonitor *)self notifyObserver:v6];
+  observerCopy = observer;
+  [(CSCoreSpeechDaemonStateMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 coreSpeechDaemonStateMonitor:self didReceiveStateChanged:a4];
+    [observerCopy coreSpeechDaemonStateMonitor:self didReceiveStateChanged:state];
   }
 }
 
-- (void)_didReceiveDaemonStateChanged:(unint64_t)a3
+- (void)_didReceiveDaemonStateChanged:(unint64_t)changed
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -28,7 +28,7 @@
     *buf = 136315394;
     v8 = "[CSCoreSpeechDaemonStateMonitor _didReceiveDaemonStateChanged:]";
     v9 = 1026;
-    v10 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s CoreSpeechDaemon state changed to %{public}u", buf, 0x12u);
   }
 
@@ -37,7 +37,7 @@
   v6[2] = sub_100143608;
   v6[3] = &unk_1002539B8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = changed;
   [(CSCoreSpeechDaemonStateMonitor *)self enumerateObservers:v6];
 }
 
@@ -58,9 +58,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = _NSConcreteStackBlock;
@@ -68,7 +68,7 @@
     handler[2] = sub_100143858;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.corespeech.corespeechd.launch", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.corespeech.corespeechd.launch", &self->_notifyToken, queueCopy, handler);
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -93,9 +93,9 @@ LABEL_6:
   }
 }
 
-- (void)notifyDaemonStateChanged:(unint64_t)a3
+- (void)notifyDaemonStateChanged:(unint64_t)changed
 {
-  if (a3 == 1)
+  if (changed == 1)
   {
     v3 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

@@ -1,5 +1,5 @@
 @interface _UITileLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)setNeedsDisplay;
 @end
 
@@ -13,11 +13,11 @@
   [(_UITileLayer *)&v2 setNeedsDisplay];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v7 = [(_UITileLayer *)self superlayer];
+  superlayer = [(_UITileLayer *)self superlayer];
   [(_UITileLayer *)self frame];
-  [v7 _drawInContext:a3 offset:-[UIBezierPath CGPath](self->maskPath clip:{"CGPath"), v5, v6}];
+  [superlayer _drawInContext:context offset:-[UIBezierPath CGPath](self->maskPath clip:{"CGPath"), v5, v6}];
 }
 
 @end

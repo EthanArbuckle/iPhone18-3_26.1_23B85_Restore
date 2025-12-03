@@ -1,40 +1,40 @@
 @interface PHAudioCallViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_accessibilityAnnounceIncomingCallUsingCurrentCallInfo:(BOOL)a3;
-- (void)_accessibilityBottomBarStoppedAnimating:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_accessibilityAnnounceIncomingCallUsingCurrentCallInfo:(BOOL)info;
+- (void)_accessibilityBottomBarStoppedAnimating:(id)animating;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySubscribeForBottomBarNotificationsIfNecessary;
-- (void)_axSetPhoneToMiddleState:(unsigned __int16)a3 totalTimeTried:(double)a4;
+- (void)_axSetPhoneToMiddleState:(unsigned __int16)state totalTimeTried:(double)tried;
 - (void)dealloc;
 @end
 
 @implementation PHAudioCallViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHAudioCallViewController" isKindOfClass:@"PHCallViewController"];
-  [v3 validateClass:@"PHCallViewController" hasInstanceMethod:@"bottomBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setMiddleViewState:" withFullSignature:{"v", "S", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setCurrentState: animated:" withFullSignature:{"v", "S", "B", 0}];
-  [v3 validateClass:@"PHCallViewController" hasInstanceMethod:@"currentState" withFullSignature:{"S", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"middleViewState" withFullSignature:{"S", 0}];
-  [v3 validateClass:@"PHBottomBar" hasInstanceMethod:@"slidingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHBottomBar" hasInstanceMethod:@"mainRightButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHBottomBar" hasInstanceMethod:@"animating" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"callForBackgroundImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TUCall" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setMiddleViewState: animated: completion:" withFullSignature:{"v", "S", "B", "@?", 0}];
-  [v3 validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"callParticipantsViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHAudioCallViewController" isKindOfClass:@"PHCallViewController"];
+  [validationsCopy validateClass:@"PHCallViewController" hasInstanceMethod:@"bottomBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setMiddleViewState:" withFullSignature:{"v", "S", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setCurrentState: animated:" withFullSignature:{"v", "S", "B", 0}];
+  [validationsCopy validateClass:@"PHCallViewController" hasInstanceMethod:@"currentState" withFullSignature:{"S", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"middleViewState" withFullSignature:{"S", 0}];
+  [validationsCopy validateClass:@"PHBottomBar" hasInstanceMethod:@"slidingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHBottomBar" hasInstanceMethod:@"mainRightButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHBottomBar" hasInstanceMethod:@"animating" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"callForBackgroundImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TUCall" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"setMiddleViewState: animated: completion:" withFullSignature:{"v", "S", "B", "@?", 0}];
+  [validationsCopy validateClass:@"PHAudioCallViewController" hasInstanceMethod:@"callParticipantsViewController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilitySubscribeForBottomBarNotificationsIfNecessary
 {
   if (![(PHAudioCallViewControllerAccessibility *)self _accessibilityHasSubscribedForBottomBarNotifications])
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__accessibilityBottomBarStoppedAnimating_ name:@"AXPHBottomBarStoppedAnimatingNotification" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__accessibilityBottomBarStoppedAnimating_ name:@"AXPHBottomBarStoppedAnimatingNotification" object:0];
 
     [(PHAudioCallViewControllerAccessibility *)self _accessibilitySetHasSubscribedToBottomBarNotifications:1];
   }
@@ -42,8 +42,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:@"AXPHBottomBarStoppedAnimatingNotification" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AXPHBottomBarStoppedAnimatingNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = PHAudioCallViewControllerAccessibility;
@@ -62,7 +62,7 @@
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_accessibilityAnnounceIncomingCallUsingCurrentCallInfo:(BOOL)a3
+- (void)_accessibilityAnnounceIncomingCallUsingCurrentCallInfo:(BOOL)info
 {
   v45[2] = *MEMORY[0x29EDCA608];
   if (![(PHAudioCallViewControllerAccessibility *)self _accessibilityDidAnnounceIncomingCall])
@@ -91,46 +91,46 @@
 
       v42 = v13;
       v14 = axStringForCallParticipantsView(v13);
-      v15 = [MEMORY[0x29EDC6F78] sharedInstance];
-      v16 = [v15 incomingCall];
+      mEMORY[0x29EDC6F78] = [MEMORY[0x29EDC6F78] sharedInstance];
+      incomingCall = [mEMORY[0x29EDC6F78] incomingCall];
 
-      v17 = [v16 handle];
-      if (!a3)
+      handle = [incomingCall handle];
+      if (!info)
       {
         v37 = v5;
         v38 = v11;
         v39 = v10;
         v40 = v8;
-        v18 = [v16 isoCountryCode];
-        v19 = [v17 canonicalHandleForISOCountryCode:v18];
+        isoCountryCode = [incomingCall isoCountryCode];
+        v19 = [handle canonicalHandleForISOCountryCode:isoCountryCode];
 
-        v20 = [MEMORY[0x29EDC6F78] sharedInstance];
-        v21 = [v20 providerManager];
-        v22 = [v21 telephonyProvider];
-        [v22 senderIdentityForHandle:v19];
-        v24 = v23 = v17;
-        v25 = [v24 localizedName];
+        mEMORY[0x29EDC6F78]2 = [MEMORY[0x29EDC6F78] sharedInstance];
+        providerManager = [mEMORY[0x29EDC6F78]2 providerManager];
+        telephonyProvider = [providerManager telephonyProvider];
+        [telephonyProvider senderIdentityForHandle:v19];
+        v24 = v23 = handle;
+        localizedName = [v24 localizedName];
 
-        v17 = v23;
-        if (!v25)
+        handle = v23;
+        if (!localizedName)
         {
-          v25 = [v23 value];
+          localizedName = [v23 value];
         }
 
-        v14 = v25;
+        v14 = localizedName;
         v10 = v39;
         v8 = v40;
         v5 = v37;
         v11 = v38;
       }
 
-      if (v16 && v14)
+      if (incomingCall && v14)
       {
         v26 = MEMORY[0x29EDBA0F8];
         accessibilityLocalizedString(@"incoming.call");
         v41 = v6;
         v27 = v5;
-        v28 = v17;
+        v28 = handle;
         v30 = v29 = v11;
         v31 = [v26 stringWithFormat:v30, v14];
 
@@ -144,7 +144,7 @@
         v35 = [v32 initWithString:v31 attributes:v34];
 
         v11 = v29;
-        v17 = v28;
+        handle = v28;
         v5 = v27;
         v6 = v41;
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v35);
@@ -169,15 +169,15 @@ uint64_t __97__PHAudioCallViewControllerAccessibility__accessibilityAnnounceInco
   return MEMORY[0x2A1C5EA58](v1);
 }
 
-- (void)_axSetPhoneToMiddleState:(unsigned __int16)a3 totalTimeTried:(double)a4
+- (void)_axSetPhoneToMiddleState:(unsigned __int16)state totalTimeTried:(double)tried
 {
-  v5 = a3;
+  stateCopy = state;
   [(PHAudioCallViewControllerAccessibility *)self _accessibilitySetWantsToShowKeypad:0];
-  v6 = [MEMORY[0x29EDC6F78] sharedInstance];
-  v7 = [v6 currentCalls];
-  v8 = [v7 firstObject];
+  mEMORY[0x29EDC6F78] = [MEMORY[0x29EDC6F78] sharedInstance];
+  currentCalls = [mEMORY[0x29EDC6F78] currentCalls];
+  firstObject = [currentCalls firstObject];
 
-  if (v5 == 4 && a4 <= 4.0 && UIAccessibilityIsVoiceOverRunning() && [v8 service] == 1 && (objc_msgSend(v8, "isTTY") & 1) == 0 && (objc_msgSend(v8, "isRTT") & 1) == 0)
+  if (stateCopy == 4 && tried <= 4.0 && UIAccessibilityIsVoiceOverRunning() && [firstObject service] == 1 && (objc_msgSend(firstObject, "isTTY") & 1) == 0 && (objc_msgSend(firstObject, "isRTT") & 1) == 0)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -233,7 +233,7 @@ uint64_t __67__PHAudioCallViewControllerAccessibility_setCurrentState_animated__
   return [v2 _accessibilityAnnounceIncomingCallUsingCurrentCallInfo:0];
 }
 
-- (void)_accessibilityBottomBarStoppedAnimating:(id)a3
+- (void)_accessibilityBottomBarStoppedAnimating:(id)animating
 {
   if ([(PHAudioCallViewControllerAccessibility *)self _accessibilityWantsToShowKeypad])
   {

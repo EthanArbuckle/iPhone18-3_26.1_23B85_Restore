@@ -1,9 +1,9 @@
 @interface PLAccountingNodeManager
 + (id)sharedInstance;
 - (PLAccountingNodeManager)init;
-- (id)childNodeIDsFromChildNodeNames:(id)a3;
-- (id)nodeNameForNodeID:(id)a3;
-- (void)removeNodeReferenceFromCache:(id)a3;
+- (id)childNodeIDsFromChildNodeNames:(id)names;
+- (id)nodeNameForNodeID:(id)d;
+- (void)removeNodeReferenceFromCache:(id)cache;
 - (void)setupNodes;
 @end
 
@@ -11,11 +11,11 @@
 
 + (id)sharedInstance
 {
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  storageLocked = [storage storageLocked];
 
-  if (v5)
+  if (storageLocked)
   {
     v6 = 0;
   }
@@ -26,7 +26,7 @@
     block[1] = 3221225472;
     block[2] = __41__PLAccountingNodeManager_sharedInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstance_onceToken_2 != -1)
     {
       dispatch_once(&sharedInstance_onceToken_2, block);
@@ -89,33 +89,33 @@ uint64_t __57__PLAccountingNodeManager_nodeIDForNodeName_isPermanent___block_inv
   return result;
 }
 
-- (id)nodeNameForNodeID:(id)a3
+- (id)nodeNameForNodeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_nodeMappingLock);
-  v5 = [(PLAccountingNodeManager *)self nodeIDToNodeName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nodeIDToNodeName = [(PLAccountingNodeManager *)self nodeIDToNodeName];
+  v6 = [nodeIDToNodeName objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_nodeMappingLock);
 
   return v6;
 }
 
-- (void)removeNodeReferenceFromCache:(id)a3
+- (void)removeNodeReferenceFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [PLAccountingNodeManager removeNodeReferenceFromCache:v5];
   }
 
-  v6 = [v4 userInfo];
-  if (v6)
+  userInfo = [cacheCopy userInfo];
+  if (userInfo)
   {
-    v7 = v6;
-    v8 = [v4 userInfo];
-    v9 = [v8 count];
+    v7 = userInfo;
+    userInfo2 = [cacheCopy userInfo];
+    v9 = [userInfo2 count];
 
     if (v9)
     {
@@ -125,28 +125,28 @@ uint64_t __57__PLAccountingNodeManager_nodeIDForNodeName_isPermanent___block_inv
         [PLAccountingNodeManager removeNodeReferenceFromCache:v10];
       }
 
-      v11 = [v4 userInfo];
-      v12 = [v11 allKeys];
+      userInfo3 = [cacheCopy userInfo];
+      allKeys = [userInfo3 allKeys];
 
       os_unfair_lock_lock(&self->_nodeMappingLock);
-      v13 = [(PLAccountingNodeManager *)self nodeIDToNodeName];
+      nodeIDToNodeName = [(PLAccountingNodeManager *)self nodeIDToNodeName];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke;
       v19[3] = &unk_279A560B8;
-      v20 = v12;
-      v14 = v12;
-      v15 = [v13 keysOfEntriesPassingTest:v19];
+      v20 = allKeys;
+      v14 = allKeys;
+      v15 = [nodeIDToNodeName keysOfEntriesPassingTest:v19];
 
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2;
       v17[3] = &unk_279A560E0;
       v17[4] = self;
-      v18 = v4;
+      v18 = cacheCopy;
       [v15 enumerateObjectsUsingBlock:v17];
-      v16 = [(PLAccountingNodeManager *)self nodeNameToNodeID];
-      [v16 removeObjectsForKeys:v14];
+      nodeNameToNodeID = [(PLAccountingNodeManager *)self nodeNameToNodeID];
+      [nodeNameToNodeID removeObjectsForKeys:v14];
 
       os_unfair_lock_unlock(&self->_nodeMappingLock);
     }
@@ -172,10 +172,10 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
   [v10 setObject:v9 forKeyedSubscript:v3];
 }
 
-- (id)childNodeIDsFromChildNodeNames:(id)a3
+- (id)childNodeIDsFromChildNodeNames:(id)names
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -191,12 +191,12 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
 
     if (childNodeIDsFromChildNodeNames__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeNames=%@", v4];
+      namesCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeNames=%@", namesCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingNodeManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingNodeManager childNodeIDsFromChildNodeNames:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:142];
+      [v7 logMessage:namesCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:142];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -206,12 +206,12 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
     }
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = v4;
+  v13 = namesCopy;
   v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v14)
   {
@@ -227,7 +227,7 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
         }
 
         v18 = [(PLAccountingNodeManager *)self nodeIDForNodeName:*(*(&v33 + 1) + 8 * i) isPermanent:0];
-        [v12 addObject:v18];
+        [array addObject:v18];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -251,12 +251,12 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
 
     if (childNodeIDsFromChildNodeNames__classDebugEnabled_46 == 1)
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeIDs=%@", v12, v28, v29, v30, v31, v32, v33];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeIDs=%@", array, v28, v29, v30, v31, v32, v33];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingNodeManager.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingNodeManager childNodeIDsFromChildNodeNames:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:152];
+      [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:152];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -268,7 +268,7 @@ void __56__PLAccountingNodeManager_removeNodeReferenceFromCache___block_invoke_2
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
 uint64_t __58__PLAccountingNodeManager_childNodeIDsFromChildNodeNames___block_invoke(uint64_t a1)

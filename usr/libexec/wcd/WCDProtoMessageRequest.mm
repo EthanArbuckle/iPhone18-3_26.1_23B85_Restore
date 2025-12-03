@@ -1,22 +1,22 @@
 @interface WCDProtoMessageRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDictionaryMessage:(BOOL)a3;
-- (void)setHasExpectsResponse:(BOOL)a3;
-- (void)setHasIsInUse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDictionaryMessage:(BOOL)message;
+- (void)setHasExpectsResponse:(BOOL)response;
+- (void)setHasIsInUse:(BOOL)use;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WCDProtoMessageRequest
 
-- (void)setHasExpectsResponse:(BOOL)a3
+- (void)setHasExpectsResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDictionaryMessage:(BOOL)a3
+- (void)setHasDictionaryMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsInUse:(BOOL)a3
+- (void)setHasIsInUse:(BOOL)use
 {
-  if (a3)
+  if (use)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = WCDProtoMessageRequest;
   v3 = [(WCDProtoMessageRequest *)&v7 description];
-  v4 = [(WCDProtoMessageRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(WCDProtoMessageRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -129,21 +129,21 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_clientData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_9:
   {
     expectsResponse = self->_expectsResponse;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -172,44 +172,44 @@ LABEL_7:
 
   dictionaryMessage = self->_dictionaryMessage;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     isInUse = self->_isInUse;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_9:
   if (self->_coreLocationData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_version;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_version;
+    *(toCopy + 32) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_clientData)
   {
-    [v4 setClientData:?];
-    v4 = v6;
+    [toCopy setClientData:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 29) = self->_expectsResponse;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 29) = self->_expectsResponse;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -228,26 +228,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 28) = self->_dictionaryMessage;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 28) = self->_dictionaryMessage;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 30) = self->_isInUse;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 30) = self->_isInUse;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_9:
   if (self->_coreLocationData)
   {
     [v6 setCoreLocationData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -255,7 +255,7 @@ LABEL_9:
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSData *)self->_clientData copyWithZone:a3];
+  v7 = [(NSData *)self->_clientData copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -295,38 +295,38 @@ LABEL_6:
   }
 
 LABEL_7:
-  v10 = [(NSData *)self->_coreLocationData copyWithZone:a3];
+  v10 = [(NSData *)self->_coreLocationData copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_36;
   }
 
   clientData = self->_clientData;
-  if (clientData | *(v4 + 1))
+  if (clientData | *(equalCopy + 1))
   {
     if (![(NSData *)clientData isEqual:?])
     {
@@ -336,64 +336,64 @@ LABEL_7:
     has = self->_has;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_36;
     }
 
-    v11 = *(v4 + 29);
+    v11 = *(equalCopy + 29);
     if (self->_expectsResponse)
     {
-      if ((*(v4 + 29) & 1) == 0)
+      if ((*(equalCopy + 29) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 29))
+    else if (*(equalCopy + 29))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_36;
     }
 
-    v12 = *(v4 + 28);
+    v12 = *(equalCopy + 28);
     if (self->_dictionaryMessage)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_36;
   }
 
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 32) & 8) == 0)
+    if ((*(equalCopy + 32) & 8) == 0)
     {
       goto LABEL_16;
     }
@@ -403,28 +403,28 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 32) & 8) == 0)
+  if ((*(equalCopy + 32) & 8) == 0)
   {
     goto LABEL_36;
   }
 
-  v13 = *(v4 + 30);
+  v13 = *(equalCopy + 30);
   if (self->_isInUse)
   {
-    if ((*(v4 + 30) & 1) == 0)
+    if ((*(equalCopy + 30) & 1) == 0)
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 30))
+  else if (*(equalCopy + 30))
   {
     goto LABEL_36;
   }
 
 LABEL_16:
   coreLocationData = self->_coreLocationData;
-  if (coreLocationData | *(v4 + 2))
+  if (coreLocationData | *(equalCopy + 2))
   {
     v10 = [(NSData *)coreLocationData isEqual:?];
   }
@@ -490,28 +490,28 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSData *)self->_coreLocationData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 32))
+  fromCopy = from;
+  if (*(fromCopy + 32))
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(WCDProtoMessageRequest *)self setClientData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_expectsResponse = *(v4 + 29);
+    self->_expectsResponse = *(fromCopy + 29);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -524,25 +524,25 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_dictionaryMessage = *(v4 + 28);
+  self->_dictionaryMessage = *(fromCopy + 28);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_8:
-    self->_isInUse = *(v4 + 30);
+    self->_isInUse = *(fromCopy + 30);
     *&self->_has |= 8u;
   }
 
 LABEL_9:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WCDProtoMessageRequest *)self setCoreLocationData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

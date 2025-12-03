@@ -1,10 +1,10 @@
 @interface _UITextFieldPaddedMetricsProvider
-- (CGRect)contentFrameForBounds:(CGRect)a3;
-- (CGSize)intrinsicSizeForContentSize:(CGSize)a3;
+- (CGRect)contentFrameForBounds:(CGRect)bounds;
+- (CGSize)intrinsicSizeForContentSize:(CGSize)size;
 - (UIEdgeInsets)padding;
 - (_UITextFieldPaddedMetricsProvider)init;
-- (_UITextFieldPaddedMetricsProvider)initWithPerEdgePadding:(UIEdgeInsets)a3;
-- (_UITextFieldPaddedMetricsProvider)initWithSymmetricalPadding:(CGSize)a3;
+- (_UITextFieldPaddedMetricsProvider)initWithPerEdgePadding:(UIEdgeInsets)padding;
+- (_UITextFieldPaddedMetricsProvider)initWithSymmetricalPadding:(CGSize)padding;
 @end
 
 @implementation _UITextFieldPaddedMetricsProvider
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (_UITextFieldPaddedMetricsProvider)initWithSymmetricalPadding:(CGSize)a3
+- (_UITextFieldPaddedMetricsProvider)initWithSymmetricalPadding:(CGSize)padding
 {
-  height = a3.height;
-  width = a3.width;
+  height = padding.height;
+  width = padding.width;
   v6.receiver = self;
   v6.super_class = _UITextFieldPaddedMetricsProvider;
   result = [(_UITextFieldPaddedMetricsProvider *)&v6 init];
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (_UITextFieldPaddedMetricsProvider)initWithPerEdgePadding:(UIEdgeInsets)a3
+- (_UITextFieldPaddedMetricsProvider)initWithPerEdgePadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   v8.receiver = self;
   v8.super_class = _UITextFieldPaddedMetricsProvider;
   result = [(_UITextFieldPaddedMetricsProvider *)&v8 init];
@@ -61,13 +61,13 @@
   return result;
 }
 
-- (CGRect)contentFrameForBounds:(CGRect)a3
+- (CGRect)contentFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectIsEmpty(bounds))
   {
     top = self->_padding.top;
     left = self->_padding.left;
@@ -106,10 +106,10 @@
   return result;
 }
 
-- (CGSize)intrinsicSizeForContentSize:(CGSize)a3
+- (CGSize)intrinsicSizeForContentSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
+  width = size.width;
+  height = size.height;
   [(_UITextFieldPaddedMetricsProvider *)self minimumIntrinsicHeight];
   if (v4 > 0.0)
   {

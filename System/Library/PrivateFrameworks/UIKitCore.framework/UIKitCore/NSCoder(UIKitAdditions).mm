@@ -9,9 +9,9 @@
 - (uint64_t)_ui_decodeBoolForKey:()UIKitAdditions defaultValue:
 {
   v6 = a3;
-  if ([a1 containsValueForKey:v6])
+  if ([self containsValueForKey:v6])
   {
-    a4 = [a1 decodeBoolForKey:v6];
+    a4 = [self decodeBoolForKey:v6];
   }
 
   return a4;
@@ -26,14 +26,14 @@
     v8 = a3;
     v9 = [[v6 alloc] initWithString:@" " attributes:v8];
 
-    [a1 encodeObject:v9 forKey:v7];
+    [self encodeObject:v9 forKey:v7];
   }
 }
 
 - (id)_ui_decodeTextAttributesForKey:()UIKitAdditions
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   v6 = [v5 attributesAtIndex:0 effectiveRange:0];
 

@@ -3,20 +3,20 @@
 - (id)_mainViewController;
 - (id)_recorderAppDelegate;
 - (id)window;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setBackgroundTintColorForScene:(id)a3;
-- (void)setResolvedMetricsForScene:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setBackgroundTintColorForScene:(id)scene;
+- (void)setResolvedMetricsForScene:(id)scene;
 @end
 
 @implementation RCPlatterSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = sceneCopy;
     v8 = objc_alloc_init(RCPlatterViewControllerCoordinator);
     platterViewControllerCoordinator = self->_platterViewControllerCoordinator;
     self->_platterViewControllerCoordinator = v8;
@@ -25,9 +25,9 @@
     audioService = self->_audioService;
     self->_audioService = v10;
 
-    v12 = [(VMAudioService *)self->_audioService recordingController];
+    recordingController = [(VMAudioService *)self->_audioService recordingController];
 
-    if (!v12)
+    if (!recordingController)
     {
       v15 = OSLogForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -38,11 +38,11 @@
       goto LABEL_11;
     }
 
-    v13 = [v7 SBUI_isHostedBySystemAperture];
-    v14 = v13;
+    sBUI_isHostedBySystemAperture = [v7 SBUI_isHostedBySystemAperture];
+    v14 = sBUI_isHostedBySystemAperture;
     if (self->_platterViewController)
     {
-      if (v13)
+      if (sBUI_isHostedBySystemAperture)
       {
 LABEL_5:
         [v7 setSystemApertureElementViewControllerProvider:self->_platterViewController];
@@ -54,8 +54,8 @@ LABEL_11:
 
     else
     {
-      v16 = [(RCPlatterSceneDelegate *)self _mainViewController];
-      v17 = [v16 platterViewControllerForPresentationStyle:v14 ^ 1];
+      _mainViewController = [(RCPlatterSceneDelegate *)self _mainViewController];
+      v17 = [_mainViewController platterViewControllerForPresentationStyle:v14 ^ 1];
       platterViewController = self->_platterViewController;
       self->_platterViewController = v17;
 
@@ -84,70 +84,70 @@ LABEL_12:
 {
   if ([(RCPlatterViewController *)self->_platterViewController presentationStyle])
   {
-    v3 = self->_window;
+    window = self->_window;
   }
 
   else
   {
-    v4 = [(RCPlatterViewController *)self->_platterViewController viewIfLoaded];
-    v3 = [v4 window];
+    viewIfLoaded = [(RCPlatterViewController *)self->_platterViewController viewIfLoaded];
+    window = [viewIfLoaded window];
   }
 
-  return v3;
+  return window;
 }
 
 - (BOOL)isInAndromeda
 {
-  v2 = [(RCPlatterSceneDelegate *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 traitCollection];
-  v5 = [v4 isInAndromeda];
+  window = [(RCPlatterSceneDelegate *)self window];
+  windowScene = [window windowScene];
+  traitCollection = [windowScene traitCollection];
+  isInAndromeda = [traitCollection isInAndromeda];
 
-  return v5;
+  return isInAndromeda;
 }
 
 - (id)_recorderAppDelegate
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (id)_mainViewController
 {
-  v2 = [(RCPlatterSceneDelegate *)self _recorderAppDelegate];
-  v3 = [v2 defaultSceneDelegate];
-  v4 = [v3 mainViewController];
+  _recorderAppDelegate = [(RCPlatterSceneDelegate *)self _recorderAppDelegate];
+  defaultSceneDelegate = [_recorderAppDelegate defaultSceneDelegate];
+  mainViewController = [defaultSceneDelegate mainViewController];
 
-  return v4;
+  return mainViewController;
 }
 
-- (void)setResolvedMetricsForScene:(id)a3
+- (void)setResolvedMetricsForScene:(id)scene
 {
   type metadata accessor for ActivityScene();
   if (swift_dynamicCastClass())
   {
     v4 = objc_opt_self();
-    v5 = a3;
-    v7 = [v4 sharedStyleProvider];
-    [v7 bannerSize];
-    [v7 bannerCornerRadius];
+    sceneCopy = scene;
+    sharedStyleProvider = [v4 sharedStyleProvider];
+    [sharedStyleProvider bannerSize];
+    [sharedStyleProvider bannerCornerRadius];
     v6 = objc_allocWithZone(type metadata accessor for ActivitySceneMetrics());
     ActivitySceneMetrics.init(size:cornerRadius:)();
     dispatch thunk of ActivityScene.resolvedMetrics.setter();
   }
 }
 
-- (void)setBackgroundTintColorForScene:(id)a3
+- (void)setBackgroundTintColorForScene:(id)scene
 {
   type metadata accessor for ActivityScene();
   if (swift_dynamicCastClass())
   {
     v4 = objc_opt_self();
-    v5 = a3;
-    v7 = [v4 sharedStyleProvider];
-    v6 = [v7 bannerBackgroundColor];
+    sceneCopy = scene;
+    sharedStyleProvider = [v4 sharedStyleProvider];
+    bannerBackgroundColor = [sharedStyleProvider bannerBackgroundColor];
     dispatch thunk of ActivityScene.backgroundTintColor.setter();
   }
 }

@@ -21,26 +21,26 @@
     dispatch_once(&qword_280AFC6B0, &__block_literal_global_40);
   }
 
-  v2 = [MEMORY[0x277CBEBB0] localTimeZone];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   os_unfair_lock_lock_with_options();
-  v3 = [qword_280AFC6A8 timeZone];
-  v4 = HMFEqualObjects(v3, v2);
+  timeZone = [qword_280AFC6A8 timeZone];
+  v4 = HMFEqualObjects(timeZone, localTimeZone);
 
   if ((v4 & 1) == 0)
   {
-    [qword_280AFC6A8 setTimeZone:v2];
+    [qword_280AFC6A8 setTimeZone:localTimeZone];
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_72);
-  v5 = [qword_280AFC6A8 stringFromDate:a1];
+  v5 = [qword_280AFC6A8 stringFromDate:self];
 
   return v5;
 }
 
 - (id)hmf_dateComponents
 {
-  v2 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v3 = [a1 hmf_dateComponentsUsingTimeZone:v2];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v3 = [self hmf_dateComponentsUsingTimeZone:localTimeZone];
 
   return v3;
 }
@@ -49,10 +49,10 @@
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  [v6 setTimeZone:v5];
+  currentCalendar = [v4 currentCalendar];
+  [currentCalendar setTimeZone:v5];
 
-  v7 = [v6 components:124 fromDate:a1];
+  v7 = [currentCalendar components:124 fromDate:self];
 
   return v7;
 }

@@ -1,17 +1,17 @@
 @interface RemoteNotificationSettingCell
-- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithCoder:(id)a3;
-- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithCoder:(id)coder;
+- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)switchTappedWithCellSwitch:(id)a3;
+- (void)switchTappedWithCellSwitch:(id)switch;
 @end
 
 @implementation RemoteNotificationSettingCell
 
-- (void)switchTappedWithCellSwitch:(id)a3
+- (void)switchTappedWithCellSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BC58610(v4);
+  switchCopy = switch;
+  selfCopy = self;
+  sub_20BC58610(switchCopy);
 }
 
 - (void)prepareForReuse
@@ -25,9 +25,9 @@
   v3[8] = 1;
 }
 
-- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_20C13C954();
     *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI29RemoteNotificationSettingCell_delegate) = 0;
@@ -50,12 +50,12 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RemoteNotificationSettingCell();
-  v9 = [(RemoteNotificationSettingCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(RemoteNotificationSettingCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithCoder:(id)a3
+- (_TtC9SeymourUI29RemoteNotificationSettingCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI29RemoteNotificationSettingCell_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -64,8 +64,8 @@
   v5[8] = 1;
   v9.receiver = self;
   v9.super_class = type metadata accessor for RemoteNotificationSettingCell();
-  v6 = a3;
-  v7 = [(RemoteNotificationSettingCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(RemoteNotificationSettingCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

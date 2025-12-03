@@ -1,18 +1,18 @@
 @interface ATXMailSenderImportanceModel
-- (id)calculateSenderImportanceForMailWithContextRequest:(id)a3 contactStore:(id)a4 contactRelationships:(id)a5;
+- (id)calculateSenderImportanceForMailWithContextRequest:(id)request contactStore:(id)store contactRelationships:(id)relationships;
 @end
 
 @implementation ATXMailSenderImportanceModel
 
-- (id)calculateSenderImportanceForMailWithContextRequest:(id)a3 contactStore:(id)a4 contactRelationships:(id)a5
+- (id)calculateSenderImportanceForMailWithContextRequest:(id)request contactStore:(id)store contactRelationships:(id)relationships
 {
   v82 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  relationshipsCopy = relationships;
   v10 = objc_opt_new();
-  v11 = [v7 mailMessage];
-  v74 = [v11 sender];
+  mailMessage = [requestCopy mailMessage];
+  sender = [mailMessage sender];
   v12 = [ATXSenderImportanceUtils contactFromHandle:"contactFromHandle:contactStore:" contactStore:?];
   v13 = 0.0;
   v14 = 0.0;
@@ -20,13 +20,13 @@
   v16 = 0.0;
   v17 = 0.0;
   v75 = v12;
-  v76 = v7;
+  v76 = requestCopy;
   if (v12)
   {
     v18 = v12;
-    v19 = [v9 cnContactIdsOfFavoriteContacts];
-    v20 = [v18 identifier];
-    v21 = [v19 containsObject:v20];
+    cnContactIdsOfFavoriteContacts = [relationshipsCopy cnContactIdsOfFavoriteContacts];
+    identifier = [v18 identifier];
+    v21 = [cnContactIdsOfFavoriteContacts containsObject:identifier];
 
     v15 = 1.0;
     if (v21)
@@ -39,9 +39,9 @@
       v17 = 0.0;
     }
 
-    v22 = [v9 cnContactIdsOfEmergencyContacts];
-    v23 = [v18 identifier];
-    v24 = [v22 containsObject:v23];
+    cnContactIdsOfEmergencyContacts = [relationshipsCopy cnContactIdsOfEmergencyContacts];
+    identifier2 = [v18 identifier];
+    v24 = [cnContactIdsOfEmergencyContacts containsObject:identifier2];
 
     if (v24)
     {
@@ -53,9 +53,9 @@
       v16 = 0.0;
     }
 
-    v25 = [v9 cnContactIdsOfICloudFamilyMembers];
-    v26 = [v18 identifier];
-    v27 = [v25 containsObject:v26];
+    cnContactIdsOfICloudFamilyMembers = [relationshipsCopy cnContactIdsOfICloudFamilyMembers];
+    identifier3 = [v18 identifier];
+    v27 = [cnContactIdsOfICloudFamilyMembers containsObject:identifier3];
 
     if (!v27)
     {
@@ -66,13 +66,13 @@
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v28 = [v18 emailAddresses];
-    v29 = [v28 countByEnumeratingWithState:&v77 objects:v81 count:16];
+    emailAddresses = [v18 emailAddresses];
+    v29 = [emailAddresses countByEnumeratingWithState:&v77 objects:v81 count:16];
     if (v29)
     {
       v30 = v29;
-      v71 = v11;
-      v72 = v8;
+      v71 = mailMessage;
+      v72 = storeCopy;
       v31 = 0;
       v32 = *v78;
       do
@@ -81,41 +81,41 @@
         {
           if (*v78 != v32)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v34 = *(*(&v77 + 1) + 8 * i);
-          v35 = [v9 vipContactEmailAddresses];
-          v36 = [v34 value];
-          v37 = [v35 containsObject:v36];
+          vipContactEmailAddresses = [relationshipsCopy vipContactEmailAddresses];
+          value = [v34 value];
+          v37 = [vipContactEmailAddresses containsObject:value];
 
           v31 |= v37;
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v77 objects:v81 count:16];
+        v30 = [emailAddresses countByEnumeratingWithState:&v77 objects:v81 count:16];
       }
 
       while (v30);
       v14 = (v31 & 1);
-      v7 = v76;
-      v11 = v71;
-      v8 = v72;
+      requestCopy = v76;
+      mailMessage = v71;
+      storeCopy = v72;
     }
   }
 
-  v38 = [v7 contextRequestSignals];
-  v39 = [v38 entityID];
-  v40 = v11;
-  v41 = [v11 mailID];
-  v42 = [v39 isEqualToString:v41];
+  contextRequestSignals = [requestCopy contextRequestSignals];
+  entityID = [contextRequestSignals entityID];
+  v40 = mailMessage;
+  mailID = [mailMessage mailID];
+  bOOLValue = [entityID isEqualToString:mailID];
 
-  if (v42)
+  if (bOOLValue)
   {
-    v43 = [v38 isFromMailingList];
-    v42 = [v43 BOOLValue];
+    isFromMailingList = [contextRequestSignals isFromMailingList];
+    bOOLValue = [isFromMailingList BOOLValue];
 
-    v44 = [v38 isFromPinnedMessage];
-    if ([v44 BOOLValue])
+    isFromPinnedMessage = [contextRequestSignals isFromPinnedMessage];
+    if ([isFromPinnedMessage BOOLValue])
     {
 
 LABEL_24:
@@ -123,13 +123,13 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    v45 = [v75 identifier];
-    if (v45)
+    identifier4 = [v75 identifier];
+    if (identifier4)
     {
-      v46 = v45;
-      v47 = [v9 cnContactIdsOfPinnedChatsInMessage];
-      v48 = [v75 identifier];
-      v73 = [v47 containsObject:v48];
+      v46 = identifier4;
+      cnContactIdsOfPinnedChatsInMessage = [relationshipsCopy cnContactIdsOfPinnedChatsInMessage];
+      identifier5 = [v75 identifier];
+      v73 = [cnContactIdsOfPinnedChatsInMessage containsObject:identifier5];
 
       if (!v73)
       {
@@ -150,7 +150,7 @@ LABEL_26:
   [v10 isVIP];
   v56 = v14 * v55;
   [v10 isFromMailingList];
-  v58 = v57 * v42;
+  v58 = v57 * bOOLValue;
   [v10 isContactChatPinnedInMessage];
   v60 = v13 * v59;
   v61 = objc_alloc_init(MEMORY[0x277CBEB38]);

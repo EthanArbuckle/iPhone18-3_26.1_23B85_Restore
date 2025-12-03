@@ -1,10 +1,10 @@
 @interface GPMessagesAppHelper
-+ (BOOL)getHostAuditToken:(id *)a3;
++ (BOOL)getHostAuditToken:(id *)token;
 @end
 
 @implementation GPMessagesAppHelper
 
-+ (BOOL)getHostAuditToken:(id *)a3
++ (BOOL)getHostAuditToken:(id *)token
 {
   v4 = +[_MSMessageAppContext activeExtensionContext];
   v5 = objc_opt_respondsToSelector();
@@ -15,8 +15,8 @@
       [v4 balloonHostAuditToken];
     }
 
-    *a3->var0 = 0u;
-    *&a3->var0[4] = 0u;
+    *token->var0 = 0u;
+    *&token->var0[4] = 0u;
   }
 
   return v5 & 1;

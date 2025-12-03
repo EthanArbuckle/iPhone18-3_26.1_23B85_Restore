@@ -1,29 +1,29 @@
 @interface RUISwiftUIContainerElement
-+ (BOOL)supportsElementNamed:(id)a3;
++ (BOOL)supportsElementNamed:(id)named;
 - (_TtC8RemoteUI26RUISwiftUIContainerElement)init;
-- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithAttributes:(id)a3 parent:(id)a4;
-- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithElement:(id)a3 parent:(id)a4;
-- (id)subElementWithID:(id)a3;
+- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithAttributes:(id)attributes parent:(id)parent;
+- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithElement:(id)element parent:(id)parent;
+- (id)subElementWithID:(id)d;
 - (id)view;
 - (void)loadElement;
 - (void)loadElementIfNeeded;
 - (void)prepareToPreload;
-- (void)setDidLayoutSubviewsHandler:(id)a3;
-- (void)setObjectModel:(id)a3;
-- (void)setWillLayoutSubviewsHandler:(id)a3;
+- (void)setDidLayoutSubviewsHandler:(id)handler;
+- (void)setObjectModel:(id)model;
+- (void)setWillLayoutSubviewsHandler:(id)handler;
 @end
 
 @implementation RUISwiftUIContainerElement
 
-- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithElement:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithElement:(id)element parent:(id)parent
 {
-  v5 = a3;
-  v6 = a4;
-  RUISwiftUIContainerElement.init(element:parent:)(v5, a4);
+  elementCopy = element;
+  parentCopy = parent;
+  RUISwiftUIContainerElement.init(element:parent:)(elementCopy, parent);
   return result;
 }
 
-+ (BOOL)supportsElementNamed:(id)a3
++ (BOOL)supportsElementNamed:(id)named
 {
   v3 = sub_21BA87CBC();
   v5 = v4;
@@ -35,9 +35,9 @@
   return v3 & 1;
 }
 
-- (void)setWillLayoutSubviewsHandler:(id)a3
+- (void)setWillLayoutSubviewsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -55,10 +55,10 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_21B946DA8(v4);
   sub_21B946D98(v7);
-  v9 = *(v8 + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container);
+  v9 = *(selfCopy + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container);
   v10 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v11 = *((*MEMORY[0x277D85000] & *v9) + qword_27CDB2188 + 96);
@@ -68,9 +68,9 @@
   sub_21B946D98(v4);
 }
 
-- (void)setDidLayoutSubviewsHandler:(id)a3
+- (void)setDidLayoutSubviewsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -88,10 +88,10 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_21B946DA8(v4);
   sub_21B946D98(v7);
-  v9 = *(v8 + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container);
+  v9 = *(selfCopy + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container);
   v10 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v11 = *((*MEMORY[0x277D85000] & *v9) + qword_27CDB2188 + 120);
@@ -101,14 +101,14 @@
   sub_21B946D98(v4);
 }
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_21BA87CBC();
     v6 = v5;
     v7 = *(**(self + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_childElementDirectory) + 120);
-    v8 = self;
+    selfCopy = self;
     v9 = v7(v4, v6);
   }
 
@@ -122,25 +122,25 @@
 
 - (void)prepareToPreload
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B9FED18();
 }
 
 - (void)loadElement
 {
   v2 = *((*MEMORY[0x277D85000] & **(self + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container)) + qword_27CDB2188 + 192);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
 - (void)loadElementIfNeeded
 {
   v2 = *((*MEMORY[0x277D85000] & **(self + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container)) + qword_27CDB2188 + 184);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI26RUISwiftUIContainerElement)initWithAttributes:(id)attributes parent:(id)parent
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -156,17 +156,17 @@
 
 - (id)view
 {
-  v2 = [*(self + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container) view];
+  view = [*(self + OBJC_IVAR____TtC8RemoteUI26RUISwiftUIContainerElement_container) view];
 
-  return v2;
+  return view;
 }
 
-- (void)setObjectModel:(id)a3
+- (void)setObjectModel:(id)model
 {
   v5 = *((*MEMORY[0x277D85000] & *self) + 0x80);
-  v6 = a3;
-  v7 = self;
-  v5(a3);
+  modelCopy = model;
+  selfCopy = self;
+  v5(model);
 }
 
 @end

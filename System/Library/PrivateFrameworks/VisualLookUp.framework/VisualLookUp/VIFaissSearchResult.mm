@@ -1,30 +1,30 @@
 @interface VIFaissSearchResult
 - (NSArray)embedding;
 - (NSArray)residual;
-- (VIFaissSearchResult)initWithIdentifier:(int64_t)a3 distance:(float)a4 embedding:(id)a5 residual:(id)a6;
+- (VIFaissSearchResult)initWithIdentifier:(int64_t)identifier distance:(float)distance embedding:(id)embedding residual:(id)residual;
 - (float)distance;
 - (id)description;
 @end
 
 @implementation VIFaissSearchResult
 
-- (VIFaissSearchResult)initWithIdentifier:(int64_t)a3 distance:(float)a4 embedding:(id)a5 residual:(id)a6
+- (VIFaissSearchResult)initWithIdentifier:(int64_t)identifier distance:(float)distance embedding:(id)embedding residual:(id)residual
 {
-  v10 = a5;
-  v11 = a6;
+  embeddingCopy = embedding;
+  residualCopy = residual;
   v20.receiver = self;
   v20.super_class = VIFaissSearchResult;
   v12 = [(VIFaissSearchResult *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_identifier = a3;
-    v12->_distance = a4;
-    v14 = [v10 copy];
+    v12->_identifier = identifier;
+    v12->_distance = distance;
+    v14 = [embeddingCopy copy];
     embedding = v13->_embedding;
     v13->_embedding = v14;
 
-    v16 = [v11 copy];
+    v16 = [residualCopy copy];
     residual = v13->_residual;
     v13->_residual = v16;
 

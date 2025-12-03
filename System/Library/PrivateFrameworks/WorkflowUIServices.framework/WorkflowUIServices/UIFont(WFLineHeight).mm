@@ -6,9 +6,9 @@
 
 - (double)wf_lineHeight
 {
-  Ascent = CTFontGetAscent(a1);
-  v3 = Ascent + CTFontGetDescent(a1);
-  return v3 + CTFontGetLeading(a1);
+  Ascent = CTFontGetAscent(self);
+  v3 = Ascent + CTFontGetDescent(self);
+  return v3 + CTFontGetLeading(self);
 }
 
 @end

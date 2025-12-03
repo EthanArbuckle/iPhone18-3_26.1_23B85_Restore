@@ -1,8 +1,8 @@
 @interface BLSAssertion
-+ (id)acquireWithExplanation:(id)a3 observer:(id)a4 attributes:(id)a5;
++ (id)acquireWithExplanation:(id)explanation observer:(id)observer attributes:(id)attributes;
 + (id)defaultService;
-+ (void)setDefaultService:(id)a3;
-- (BLSAssertion)initWithExplanation:(id)a3 attributes:(id)a4;
++ (void)setDefaultService:(id)service;
+- (BLSAssertion)initWithExplanation:(id)explanation attributes:(id)attributes;
 - (BLSAssertionIdentifier)identifier;
 - (BOOL)isAcquired;
 - (BOOL)isActive;
@@ -11,25 +11,25 @@
 - (double)_lock_activeDuration;
 - (double)activeDuration;
 - (id)lock_description;
-- (uint64_t)setLocalState:(uint64_t)a1;
+- (uint64_t)setLocalState:(uint64_t)state;
 - (unint64_t)acquisitionState;
-- (void)acquireWithCompletion:(id)a3;
-- (void)acquireWithObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)acquireWithCompletion:(id)completion;
+- (void)acquireWithObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)cancel;
 - (void)dealloc;
 - (void)invalidate;
-- (void)notifyObserversWithBlock:(uint64_t)a1;
-- (void)removeObserver:(id)a3;
+- (void)notifyObserversWithBlock:(uint64_t)block;
+- (void)removeObserver:(id)observer;
 - (void)restartTimeoutTimer;
 - (void)serviceDidAcquire;
-- (void)serviceDidCancelWithError:(id)a3;
+- (void)serviceDidCancelWithError:(id)error;
 - (void)serviceDidPause;
 - (void)serviceDidResume;
-- (void)serviceFailedToAcquireWithError:(id)a3;
+- (void)serviceFailedToAcquireWithError:(id)error;
 - (void)serviceWillCancel;
-- (void)setIdentifier:(id)a3;
-- (void)setPaused:(os_unfair_lock_s *)a1;
+- (void)setIdentifier:(id)identifier;
+- (void)setPaused:(os_unfair_lock_s *)paused;
 @end
 
 @implementation BLSAssertion
@@ -72,16 +72,16 @@
 - (NSString)description
 {
   OUTLINED_FUNCTION_10_0(self);
-  v3 = [(BLSAssertion *)v2 lock_description];
+  lock_description = [(BLSAssertion *)v2 lock_description];
   os_unfair_lock_unlock(v2 + 8);
 
-  return v3;
+  return lock_description;
 }
 
 - (id)lock_description
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     objc_opt_new();
     OUTLINED_FUNCTION_1();
@@ -89,13 +89,13 @@
     v5[2] = __32__BLSAssertion_lock_description__block_invoke;
     v5[3] = &unk_278428688;
     v6 = v2;
-    v7 = v1;
+    v7 = selfCopy;
     v3 = v2;
-    [v3 appendProem:v1 block:v5];
-    v1 = [v3 description];
+    [v3 appendProem:selfCopy block:v5];
+    selfCopy = [v3 description];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 id __32__BLSAssertion_lock_description__block_invoke(uint64_t a1)
@@ -195,9 +195,9 @@ LABEL_14:
       }
 
       *buf = 134218498;
-      v34 = self;
+      selfCopy = self;
       v35 = 2114;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
       v38 = v20;
       v14 = &dword_21FE25000;
@@ -246,14 +246,14 @@ LABEL_5:
 - (void)cancel
 {
   [(BLSAssertion *)self setLocalState:?];
-  v3 = [(BLSAssertion *)self service];
-  [v3 cancelAssertion:self withError:0];
+  service = [(BLSAssertion *)self service];
+  [service cancelAssertion:self withError:0];
 }
 
 - (void)dealloc
 {
   v3 = MEMORY[0x277CCACA8];
-  v13 = [(BLSAssertion *)a1 lock_description];
+  lock_description = [(BLSAssertion *)self lock_description];
   v4 = [v3 stringWithFormat:@"BLSAssertion must be invalidated before dealloc:%@"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -262,7 +262,7 @@ LABEL_5:
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     OUTLINED_FUNCTION_8_1();
-    OUTLINED_FUNCTION_9(&dword_21FE25000, MEMORY[0x277D86220], v8, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v9, v10, v11, v12, v13, v14, v15);
+    OUTLINED_FUNCTION_9(&dword_21FE25000, MEMORY[0x277D86220], v8, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v9, v10, v11, v12, lock_description, v14, v15);
   }
 
   [v4 UTF8String];
@@ -273,22 +273,22 @@ LABEL_5:
 - (double)activeDuration
 {
   OUTLINED_FUNCTION_10_0(self);
-  v3 = [(BLSAssertion *)v2 _lock_activeDuration];
+  _lock_activeDuration = [(BLSAssertion *)v2 _lock_activeDuration];
   os_unfair_lock_unlock(v2 + 8);
-  return v3;
+  return _lock_activeDuration;
 }
 
 - (double)_lock_activeDuration
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 48);
-  if (*(a1 + 36) == 1 && (*(a1 + 37) & 1) == 0)
+  v1 = *(self + 48);
+  if (*(self + 36) == 1 && (*(self + 37) & 1) == 0)
   {
-    v2 = *(a1 + 72);
+    v2 = *(self + 72);
     mach_continuous_time();
     BSTimeDifferenceFromMachTimeToMachTime();
     return v1 + v3;
@@ -297,23 +297,23 @@ LABEL_5:
   return v1;
 }
 
-+ (id)acquireWithExplanation:(id)a3 observer:(id)a4 attributes:(id)a5
++ (id)acquireWithExplanation:(id)explanation observer:(id)observer attributes:(id)attributes
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[BLSAssertion alloc] initWithExplanation:v9 attributes:v7];
+  attributesCopy = attributes;
+  observerCopy = observer;
+  explanationCopy = explanation;
+  v10 = [[BLSAssertion alloc] initWithExplanation:explanationCopy attributes:attributesCopy];
 
-  [(BLSAssertion *)v10 acquireWithObserver:v8];
+  [(BLSAssertion *)v10 acquireWithObserver:observerCopy];
 
   return v10;
 }
 
-- (BLSAssertion)initWithExplanation:(id)a3 attributes:(id)a4
+- (BLSAssertion)initWithExplanation:(id)explanation attributes:(id)attributes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  explanationCopy = explanation;
+  attributesCopy = attributes;
   v22.receiver = self;
   v22.super_class = BLSAssertion;
   v8 = [(BLSAssertion *)&v22 init];
@@ -322,13 +322,13 @@ LABEL_5:
   {
     v8->_lock._os_unfair_lock_opaque = 0;
     v8->_lock_localState = 0;
-    v10 = v7;
+    v10 = attributesCopy;
     v11 = [v10 count];
     v12 = [MEMORY[0x277CBEB98] setWithArray:v10];
 
-    v7 = [v12 allObjects];
+    attributesCopy = [v12 allObjects];
 
-    if ([v7 count] != v11)
+    if ([attributesCopy count] != v11)
     {
       v13 = bls_assertions_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -336,14 +336,14 @@ LABEL_5:
         *buf = 134218498;
         v24 = v9;
         v25 = 2114;
-        v26 = v6;
+        v26 = explanationCopy;
         v27 = 2114;
         v28 = v10;
         _os_log_fault_impl(&dword_21FE25000, v13, OS_LOG_TYPE_FAULT, "%p for assertion with explanation:%{public}@ cannot repeat the same exact attribute:%{public}@", buf, 0x20u);
       }
     }
 
-    v14 = [[BLSAssertionDescriptor alloc] initWithExplanation:v6 attributes:v7];
+    v14 = [[BLSAssertionDescriptor alloc] initWithExplanation:explanationCopy attributes:attributesCopy];
     descriptor = v9->_descriptor;
     v9->_descriptor = v14;
 
@@ -376,37 +376,37 @@ LABEL_5:
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   identifier = self->_identifier;
-  self->_identifier = v4;
+  self->_identifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)acquireWithObserver:(id)a3
+- (void)acquireWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
     [(BLSAssertion *)self acquireWithObserver:a2];
   }
 
-  [(BLSAssertion *)&self->_lock acquireWithObserver:v5, self];
+  [(BLSAssertion *)&self->_lock acquireWithObserver:observerCopy, self];
 }
 
-- (void)acquireWithCompletion:(id)a3
+- (void)acquireWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [BLSAssertion acquireWithCompletion:a2];
   }
 
-  v8 = v5;
+  v8 = completionCopy;
   os_unfair_lock_lock(&self->_lock);
   v6 = [BLSAssertionAcquisitionObserver observerWithCompletion:v8];
   acquisitionObserver = self->_acquisitionObserver;
@@ -418,36 +418,36 @@ LABEL_5:
 
 - (void)restartTimeoutTimer
 {
-  v3 = [(BLSAssertion *)self service];
-  [v3 restartAssertionTimeoutTimer:self];
+  service = [(BLSAssertion *)self service];
+  [service restartAssertionTimeoutTimer:self];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (void)setDefaultService:(id)a3
++ (void)setDefaultService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&_classLock);
   v4 = _defaultService;
   v5 = _defaultService;
-  _defaultService = v3;
-  v6 = v3;
+  _defaultService = serviceCopy;
+  v6 = serviceCopy;
 
   os_unfair_lock_unlock(&_classLock);
   if (v6)
@@ -561,34 +561,34 @@ void __41__BLSAssertion_notifyObserversWithBlock___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)setLocalState:(uint64_t)a1
+- (uint64_t)setLocalState:(uint64_t)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 32));
-  v4 = *(a1 + 40);
-  *(a1 + 40) = a2;
+  os_unfair_lock_lock((state + 32));
+  v4 = *(state + 40);
+  *(state + 40) = a2;
   switch(a2)
   {
     case 1:
       v5 = 56;
       goto LABEL_6;
     case 2:
-      *(a1 + 36) = 1;
-      *(a1 + 38) = 0;
-      *(a1 + 48) = 0;
+      *(state + 36) = 1;
+      *(state + 38) = 0;
+      *(state + 48) = 0;
       v8 = mach_continuous_time();
       v6 = 0;
-      *(a1 + 64) = v8;
-      *(a1 + 72) = v8;
+      *(state + 64) = v8;
+      *(state + 72) = v8;
       v5 = 80;
       goto LABEL_7;
     case 3:
     case 5:
-      *(a1 + 36) = 0;
+      *(state + 36) = 0;
       goto LABEL_4;
     case 4:
 LABEL_4:
@@ -596,13 +596,13 @@ LABEL_4:
 LABEL_6:
       v6 = mach_continuous_time();
 LABEL_7:
-      *(a1 + v5) = v6;
+      *(state + v5) = v6;
       break;
     default:
       break;
   }
 
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_unlock((state + 32));
   return v4;
 }
 
@@ -632,12 +632,12 @@ LABEL_7:
   return v4;
 }
 
-- (void)setPaused:(os_unfair_lock_s *)a1
+- (void)setPaused:(os_unfair_lock_s *)paused
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (paused)
   {
-    OUTLINED_FUNCTION_10_0(a1);
+    OUTLINED_FUNCTION_10_0(paused);
     v4 = *(v2 + 37);
     *(v2 + 37) = a2;
     if (*(v2 + 36) == 1)
@@ -647,13 +647,13 @@ LABEL_7:
         v5 = bls_assertions_log();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
-          v9 = [(BLSAssertion *)v2 lock_description];
+          lock_description = [(BLSAssertion *)v2 lock_description];
           v10 = 134218498;
           v11 = v2;
           v12 = 1024;
           v13 = a2;
           v14 = 2114;
-          v15 = v9;
+          v15 = lock_description;
           _os_log_error_impl(&dword_21FE25000, v5, OS_LOG_TYPE_ERROR, "%p assertion setPaused:%{BOOL}u when not acquired %{public}@", &v10, 0x1Cu);
         }
       }
@@ -679,31 +679,31 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversWithBlock:(uint64_t)a1
+- (void)notifyObserversWithBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
     OUTLINED_FUNCTION_1();
     OUTLINED_FUNCTION_7_1();
     v4[2] = __41__BLSAssertion_notifyObserversWithBlock___block_invoke;
     v4[3] = &unk_278428978;
-    v4[4] = a1;
+    v4[4] = block;
     v5 = v3;
     dispatch_async(MEMORY[0x277D85CD0], v4);
   }
 }
 
-- (void)serviceFailedToAcquireWithError:(id)a3
+- (void)serviceFailedToAcquireWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 domain];
-  if (v5 == @"com.apple.BacklightServices" && [v4 code] == 2)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (domain == @"com.apple.BacklightServices" && [errorCopy code] == 2)
   {
-    v6 = [(BLSAssertion *)self isAcquired];
+    isAcquired = [(BLSAssertion *)self isAcquired];
 
-    if (v6)
+    if (isAcquired)
     {
       os_unfair_lock_lock(&self->_lock);
       self->_lock_localState = 2;
@@ -711,7 +711,7 @@ LABEL_7:
       v7 = bls_assertions_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v4 bls_loggingString];
+        bls_loggingString = [errorCopy bls_loggingString];
         OUTLINED_FUNCTION_0_3();
         v19 = v9;
         v20 = v10;
@@ -734,7 +734,7 @@ LABEL_9:
   v7 = bls_assertions_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v4 bls_loggingString];
+    bls_loggingString = [errorCopy bls_loggingString];
     OUTLINED_FUNCTION_0_3();
     v19 = v12;
     v20 = v13;
@@ -749,8 +749,8 @@ LABEL_10:
   v16[2] = __48__BLSAssertion_serviceFailedToAcquireWithError___block_invoke;
   v16[3] = &unk_278428D38;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
+  v17 = errorCopy;
+  v14 = errorCopy;
   [(BLSAssertion *)self notifyObserversWithBlock:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -809,15 +809,15 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceDidCancelWithError:(id)a3
+- (void)serviceDidCancelWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   [(BLSAssertion *)self setLocalState:?];
   v5 = bls_assertions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 bls_loggingString];
+    bls_loggingString = [errorCopy bls_loggingString];
     OUTLINED_FUNCTION_0_3();
     v14 = v7;
     v15 = v8;
@@ -829,8 +829,8 @@ LABEL_10:
   v11[2] = __42__BLSAssertion_serviceDidCancelWithError___block_invoke;
   v11[3] = &unk_278428D38;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = errorCopy;
+  v9 = errorCopy;
   [(BLSAssertion *)self notifyObserversWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];

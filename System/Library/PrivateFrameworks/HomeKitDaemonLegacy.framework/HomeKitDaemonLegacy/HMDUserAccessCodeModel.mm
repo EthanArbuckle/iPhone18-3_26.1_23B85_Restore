@@ -1,20 +1,20 @@
 @interface HMDUserAccessCodeModel
-+ (id)modelUUIDWithUUID:(id)a3;
++ (id)modelUUIDWithUUID:(id)d;
 + (id)properties;
-- (HMDUserAccessCodeModel)initWithUserUUID:(id)a3;
+- (HMDUserAccessCodeModel)initWithUserUUID:(id)d;
 @end
 
 @implementation HMDUserAccessCodeModel
 
-+ (id)modelUUIDWithUUID:(id)a3
++ (id)modelUUIDWithUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"9DB6E60C-3E4F-44A3-94F6-14DB51D3E800"];
   v6 = MEMORY[0x277CCAD78];
-  v7 = [v4 hm_convertToData];
+  hm_convertToData = [dCopy hm_convertToData];
 
-  v8 = [v6 hmf_UUIDWithNamespace:v5 data:v7];
+  v8 = [v6 hmf_UUIDWithNamespace:v5 data:hm_convertToData];
 
   return v8;
 }
@@ -47,11 +47,11 @@ void __36__HMDUserAccessCodeModel_properties__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserAccessCodeModel)initWithUserUUID:(id)a3
+- (HMDUserAccessCodeModel)initWithUserUUID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() modelUUIDWithUUID:v4];
-  v6 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() modelUUIDWithUUID:dCopy];
+  v6 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:dCopy];
 
   return v6;
 }

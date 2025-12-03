@@ -1,35 +1,35 @@
 @interface RemoteMobileDocumentProviderUIConnectionManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (uint64_t)remoteAlertHandleDidActivate:;
-- (void)didAuthorizeRequestWithResponse:(_TtC13CoreIDVShared44XPCMobileDocumentProviderPresentmentResponse *)a3 completionHandler:(id)a4;
-- (void)didSelectEnableBluetoothWithCompletionHandler:(id)a3;
-- (void)didSelectScannableCodeWithCompletionHandler:(id)a3;
-- (void)releaseRequestWithCompletionHandler:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)remoteViewDidAppearWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)a3 completionHandler:(id)a4;
-- (void)remoteViewDidCancelWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)a3 completionHandler:(id)a4;
-- (void)selectionViewDidSelect:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)a3 completionHandler:(id)a4;
-- (void)selectionViewUserDidTapSelection:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)a3 completionHandler:(id)a4;
-- (void)viewServiceDidBecomeActive:(id)a3;
-- (void)viewServiceWillTerminateWithCompletionHandler:(id)a3;
+- (void)didAuthorizeRequestWithResponse:(_TtC13CoreIDVShared44XPCMobileDocumentProviderPresentmentResponse *)response completionHandler:(id)handler;
+- (void)didSelectEnableBluetoothWithCompletionHandler:(id)handler;
+- (void)didSelectScannableCodeWithCompletionHandler:(id)handler;
+- (void)releaseRequestWithCompletionHandler:(id)handler;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)remoteViewDidAppearWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)identifier completionHandler:(id)handler;
+- (void)remoteViewDidCancelWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)identifier completionHandler:(id)handler;
+- (void)selectionViewDidSelect:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)select completionHandler:(id)handler;
+- (void)selectionViewUserDidTapSelection:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)selection completionHandler:(id)handler;
+- (void)viewServiceDidBecomeActive:(id)active;
+- (void)viewServiceWillTerminateWithCompletionHandler:(id)handler;
 @end
 
 @implementation RemoteMobileDocumentProviderUIConnectionManager
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
 
-  v7 = sub_1003FBC50(v6);
+  v7 = sub_1003FBC50(connectionCopy);
 
   return v7 & 1;
 }
 
-- (void)viewServiceDidBecomeActive:(id)a3
+- (void)viewServiceDidBecomeActive:(id)active
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(active);
   _Block_copy(v3);
 
   sub_1003FBF14(v4, v3);
@@ -37,15 +37,15 @@
   _Block_release(v3);
 }
 
-- (void)selectionViewUserDidTapSelection:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)a3 completionHandler:(id)a4
+- (void)selectionViewUserDidTapSelection:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)selection completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = selection;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -60,20 +60,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E14C8;
   v15[5] = v14;
-  v16 = a3;
+  selectionCopy = selection;
 
   sub_100500D54(0, 0, v10, &unk_1006E14D0, v15);
 }
 
-- (void)selectionViewDidSelect:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)a3 completionHandler:(id)a4
+- (void)selectionViewDidSelect:(_TtC13CoreIDVShared38XPCMobileDocumentProviderUserSelection *)select completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = select;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -88,20 +88,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E14A8;
   v15[5] = v14;
-  v16 = a3;
+  selectCopy = select;
 
   sub_100500D54(0, 0, v10, &unk_1006E14B0, v15);
 }
 
-- (void)didAuthorizeRequestWithResponse:(_TtC13CoreIDVShared44XPCMobileDocumentProviderPresentmentResponse *)a3 completionHandler:(id)a4
+- (void)didAuthorizeRequestWithResponse:(_TtC13CoreIDVShared44XPCMobileDocumentProviderPresentmentResponse *)response completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = response;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -116,18 +116,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E1488;
   v15[5] = v14;
-  v16 = a3;
+  responseCopy = response;
 
   sub_100500D54(0, 0, v10, &unk_1006E1490, v15);
 }
 
-- (void)viewServiceWillTerminateWithCompletionHandler:(id)a3
+- (void)viewServiceWillTerminateWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -147,13 +147,13 @@
   sub_100500D54(0, 0, v8, &unk_1006E1470, v13);
 }
 
-- (void)didSelectScannableCodeWithCompletionHandler:(id)a3
+- (void)didSelectScannableCodeWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -173,13 +173,13 @@
   sub_100500D54(0, 0, v8, &unk_1006E1450, v13);
 }
 
-- (void)didSelectEnableBluetoothWithCompletionHandler:(id)a3
+- (void)didSelectEnableBluetoothWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -199,15 +199,15 @@
   sub_100500D54(0, 0, v8, &unk_1006E1430, v13);
 }
 
-- (void)remoteViewDidAppearWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)a3 completionHandler:(id)a4
+- (void)remoteViewDidAppearWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)identifier completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -222,20 +222,20 @@
   v15[3] = 0;
   v15[4] = &unk_1006E1408;
   v15[5] = v14;
-  v16 = a3;
+  identifierCopy = identifier;
 
   sub_100500D54(0, 0, v10, &unk_1006E1410, v15);
 }
 
-- (void)remoteViewDidCancelWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)a3 completionHandler:(id)a4
+- (void)remoteViewDidCancelWithViewIdentifier:(_TtC13CoreIDVShared46XPCMobileDocumentProviderViewServiceIdentifier *)identifier completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -250,18 +250,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E13E8;
   v15[5] = v14;
-  v16 = a3;
+  identifierCopy = identifier;
 
   sub_100500D54(0, 0, v10, &unk_1006E13F0, v15);
 }
 
-- (void)releaseRequestWithCompletionHandler:(id)a3
+- (void)releaseRequestWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -281,19 +281,19 @@
   sub_100500D54(0, 0, v8, &unk_1006E13D0, v13);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v3 = a3;
+  deactivateCopy = deactivate;
 
   sub_1003FC4F4();
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a3;
+  handleCopy = handle;
 
-  v6 = a4;
-  sub_1003FC778(a4);
+  errorCopy = error;
+  sub_1003FC778(error);
 }
 
 - (uint64_t)remoteAlertHandleDidActivate:

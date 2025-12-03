@@ -1,23 +1,23 @@
 @interface AWDWiFiUSBEventNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsVendorApple:(BOOL)a3;
-- (void)setHasSmartCCADesenseSupported:(BOOL)a3;
-- (void)setHasUsbAction:(BOOL)a3;
-- (void)setHasUsbTotal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsVendorApple:(BOOL)apple;
+- (void)setHasSmartCCADesenseSupported:(BOOL)supported;
+- (void)setHasUsbAction:(BOOL)action;
+- (void)setHasUsbTotal:(BOOL)total;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiUSBEventNotification
 
-- (void)setHasUsbAction:(BOOL)a3
+- (void)setHasUsbAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUsbTotal:(BOOL)a3
+- (void)setHasUsbTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsVendorApple:(BOOL)a3
+- (void)setHasIsVendorApple:(BOOL)apple
 {
-  if (a3)
+  if (apple)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSmartCCADesenseSupported:(BOOL)a3
+- (void)setHasSmartCCADesenseSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 16;
   }
@@ -84,11 +84,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usbAction), @"usbAction"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usbAction), @"usbAction"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -107,7 +107,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usbTotal), @"usbTotal"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_usbTotal), @"usbTotal"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -118,17 +118,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isVendorApple), @"isVendorApple"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isVendorApple), @"isVendorApple"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_durationSinceUSBEventInSeconds), @"durationSinceUSBEventInSeconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_durationSinceUSBEventInSeconds), @"durationSinceUSBEventInSeconds"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -139,13 +139,13 @@ LABEL_5:
   if ((has & 0x10) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_smartCCADesenseSupported), @"smartCCADesenseSupported"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_smartCCADesenseSupported), @"smartCCADesenseSupported"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -213,13 +213,13 @@ LABEL_11:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_usbAction;
-    *(a3 + 28) |= 2u;
+    *(to + 4) = self->_usbAction;
+    *(to + 28) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -238,8 +238,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_usbTotal;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_usbTotal;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -253,8 +253,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 1) = self->_durationSinceUSBEventInSeconds;
-  *(a3 + 28) |= 1u;
+  *(to + 1) = self->_durationSinceUSBEventInSeconds;
+  *(to + 28) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -265,23 +265,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 25) = self->_smartCCADesenseSupported;
-    *(a3 + 28) |= 0x10u;
+    *(to + 25) = self->_smartCCADesenseSupported;
+    *(to + 28) |= 0x10u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 24) = self->_isVendorApple;
-  *(a3 + 28) |= 8u;
+  *(to + 24) = self->_isVendorApple;
+  *(to + 28) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -348,94 +348,94 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_usbAction != *(a3 + 4))
+      if ((*(equal + 28) & 2) == 0 || self->_usbAction != *(equal + 4))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_25;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_usbTotal != *(a3 + 5))
+      if ((*(equal + 28) & 4) == 0 || self->_usbTotal != *(equal + 5))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 4) != 0)
+    else if ((*(equal + 28) & 4) != 0)
     {
       goto LABEL_25;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_durationSinceUSBEventInSeconds != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_durationSinceUSBEventInSeconds != *(equal + 1))
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_25;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 28) & 8) == 0)
+      if ((*(equal + 28) & 8) == 0)
       {
         goto LABEL_25;
       }
 
-      v6 = *(a3 + 24);
+      v6 = *(equal + 24);
       if (self->_isVendorApple)
       {
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(equal + 24) & 1) == 0)
         {
           goto LABEL_25;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 8) != 0)
+    else if ((*(equal + 28) & 8) != 0)
     {
       goto LABEL_25;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 0x10) == 0;
     if ((*&self->_has & 0x10) == 0)
     {
       return v5;
     }
 
-    if ((*(a3 + 28) & 0x10) != 0)
+    if ((*(equal + 28) & 0x10) != 0)
     {
       if (self->_smartCCADesenseSupported)
       {
-        if (*(a3 + 25))
+        if (*(equal + 25))
         {
           goto LABEL_33;
         }
       }
 
-      else if (!*(a3 + 25))
+      else if (!*(equal + 25))
       {
 LABEL_33:
         LOBYTE(v5) = 1;
@@ -518,14 +518,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 2) != 0)
   {
-    self->_usbAction = *(a3 + 4);
+    self->_usbAction = *(from + 4);
     *&self->_has |= 2u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -538,14 +538,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 4) == 0)
+  else if ((*(from + 28) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_usbTotal = *(a3 + 5);
+  self->_usbTotal = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -558,9 +558,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_durationSinceUSBEventInSeconds = *(a3 + 1);
+  self->_durationSinceUSBEventInSeconds = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_5:
@@ -570,15 +570,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_smartCCADesenseSupported = *(a3 + 25);
+    self->_smartCCADesenseSupported = *(from + 25);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_10:
-  self->_isVendorApple = *(a3 + 24);
+  self->_isVendorApple = *(from + 24);
   *&self->_has |= 8u;
-  if ((*(a3 + 28) & 0x10) != 0)
+  if ((*(from + 28) & 0x10) != 0)
   {
     goto LABEL_11;
   }

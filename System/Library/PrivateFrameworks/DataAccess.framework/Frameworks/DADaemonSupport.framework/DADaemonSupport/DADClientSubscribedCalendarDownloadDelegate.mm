@@ -1,30 +1,30 @@
 @interface DADClientSubscribedCalendarDownloadDelegate
-- (BOOL)shouldTrustChallenge:(id)a3;
-- (DADClientSubscribedCalendarDownloadDelegate)initWithURL:(id)a3 client:(id)a4;
-- (unsigned)evaluateTrust:(__SecTrust *)a3;
+- (BOOL)shouldTrustChallenge:(id)challenge;
+- (DADClientSubscribedCalendarDownloadDelegate)initWithURL:(id)l client:(id)client;
+- (unsigned)evaluateTrust:(__SecTrust *)trust;
 - (void)beginDownload;
 - (void)createAndSubmitValidationTask;
 - (void)dealloc;
-- (void)finishWithError:(id)a3 summary:(id)a4;
-- (void)handleTrustChallenge:(id)a3 forTask:(id)a4 completionHandler:(id)a5;
-- (void)subCalTask:(id)a3 needsUsernameAndPasswordForHost:(id)a4 continuation:(id)a5;
-- (void)subCalValidationTask:(id)a3 downloadProgressedTo:(int64_t)a4 outOf:(int64_t)a5;
-- (void)subCalValidationTask:(id)a3 finishedWithError:(id)a4 calendarName:(id)a5 document:(id)a6 calendarData:(id)a7;
-- (void)tryUsername:(id)a3 password:(id)a4;
+- (void)finishWithError:(id)error summary:(id)summary;
+- (void)handleTrustChallenge:(id)challenge forTask:(id)task completionHandler:(id)handler;
+- (void)subCalTask:(id)task needsUsernameAndPasswordForHost:(id)host continuation:(id)continuation;
+- (void)subCalValidationTask:(id)task downloadProgressedTo:(int64_t)to outOf:(int64_t)of;
+- (void)subCalValidationTask:(id)task finishedWithError:(id)error calendarName:(id)name document:(id)document calendarData:(id)data;
+- (void)tryUsername:(id)username password:(id)password;
 @end
 
 @implementation DADClientSubscribedCalendarDownloadDelegate
 
-- (DADClientSubscribedCalendarDownloadDelegate)initWithURL:(id)a3 client:(id)a4
+- (DADClientSubscribedCalendarDownloadDelegate)initWithURL:(id)l client:(id)client
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = DADClientSubscribedCalendarDownloadDelegate;
-  v8 = [(DADClientDelegate *)&v11 initWithAccountID:0 client:a4];
+  v8 = [(DADClientDelegate *)&v11 initWithAccountID:0 client:client];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_subscribedCalendarURL, a3);
+    objc_storeStrong(&v8->_subscribedCalendarURL, l);
   }
 
   return v9;
@@ -55,8 +55,8 @@
   v3 = sharedDAAccountStore();
   v4 = [v3 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8D10]];
 
-  v5 = [MEMORY[0x277D03738] sharedInstance];
-  [v5 loadDaemonBundleForACAccountType:v4];
+  mEMORY[0x277D03738] = [MEMORY[0x277D03738] sharedInstance];
+  [mEMORY[0x277D03738] loadDaemonBundleForACAccountType:v4];
 
   v6 = NSClassFromString(&cfstr_Subcalvalidati.isa);
   v7 = objc_alloc_init(v6);
@@ -67,16 +67,16 @@
   [(DATaskManager *)self->_taskManager submitQueuedTask:v7];
 }
 
-- (void)subCalValidationTask:(id)a3 finishedWithError:(id)a4 calendarName:(id)a5 document:(id)a6 calendarData:(id)a7
+- (void)subCalValidationTask:(id)task finishedWithError:(id)error calendarName:(id)name document:(id)document calendarData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  taskCopy = task;
+  errorCopy = error;
+  nameCopy = name;
+  documentCopy = document;
+  dataCopy = data;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
-    if (v13)
+    if (errorCopy)
     {
       v17 = 0;
     }
@@ -84,38 +84,38 @@
     else
     {
       v17 = objc_alloc_init(MEMORY[0x277D03950]);
-      [v17 setTitle:v14];
-      v18 = [v12 subscriptionURL];
-      [v17 setSubscriptionURL:v18];
+      [v17 setTitle:nameCopy];
+      subscriptionURL = [taskCopy subscriptionURL];
+      [v17 setSubscriptionURL:subscriptionURL];
 
-      v19 = [v15 calendar];
-      v20 = v19;
-      if (v19)
+      calendar = [documentCopy calendar];
+      v20 = calendar;
+      if (calendar)
       {
-        v21 = [v19 x_wr_caldesc];
-        [v17 setNotes:v21];
+        x_wr_caldesc = [calendar x_wr_caldesc];
+        [v17 setNotes:x_wr_caldesc];
 
-        v22 = [v20 x_apple_calendar_color];
-        v23 = v22;
-        if (v22)
+        x_apple_calendar_color = [v20 x_apple_calendar_color];
+        v23 = x_apple_calendar_color;
+        if (x_apple_calendar_color)
         {
-          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%02X%02X%02X", objc_msgSend(v22, "red"), objc_msgSend(v22, "green"), objc_msgSend(v22, "blue")];
+          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%02X%02X%02X", objc_msgSend(x_apple_calendar_color, "red"), objc_msgSend(x_apple_calendar_color, "green"), objc_msgSend(x_apple_calendar_color, "blue")];
           [v17 setColor:v24];
         }
 
         v30 = v23;
-        v25 = [v20 x_apple_auto_refresh];
-        v26 = v25;
-        if (v25)
+        x_apple_auto_refresh = [v20 x_apple_auto_refresh];
+        v26 = x_apple_auto_refresh;
+        if (x_apple_auto_refresh)
         {
-          [v25 timeInterval];
+          [x_apple_auto_refresh timeInterval];
           [v17 setRefreshInterval:?];
         }
 
-        v27 = [v20 x_wr_relcalid];
-        [v17 setSubscriptionID:v27];
+        x_wr_relcalid = [v20 x_wr_relcalid];
+        [v17 setSubscriptionID:x_wr_relcalid];
 
-        [v17 setData:v16];
+        [v17 setData:dataCopy];
       }
 
       else
@@ -130,64 +130,64 @@
       }
     }
 
-    [(DADClientSubscribedCalendarDownloadDelegate *)self finishWithError:v13 summary:v17];
+    [(DADClientSubscribedCalendarDownloadDelegate *)self finishWithError:errorCopy summary:v17];
   }
 }
 
-- (void)subCalValidationTask:(id)a3 downloadProgressedTo:(int64_t)a4 outOf:(int64_t)a5
+- (void)subCalValidationTask:(id)task downloadProgressedTo:(int64_t)to outOf:(int64_t)of
 {
   v19[4] = *MEMORY[0x277D85DE8];
   if (![(DADisableableObject *)self isDisabled])
   {
-    v8 = [(DADClientDelegate *)self client];
-    v9 = [v8 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v9)
+    if (rawConnection)
     {
       v10 = *MEMORY[0x277D03C88];
       v19[0] = *MEMORY[0x277D03B28];
       v11 = *MEMORY[0x277D03E58];
       v18[0] = v10;
       v18[1] = v11;
-      v12 = [(DADClientDelegate *)self delegateID];
-      v19[1] = v12;
+      delegateID = [(DADClientDelegate *)self delegateID];
+      v19[1] = delegateID;
       v18[2] = *MEMORY[0x277D03B30];
-      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:to];
       v19[2] = v13;
       v18[3] = *MEMORY[0x277D03E90];
-      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:of];
       v19[3] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
       v16 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v9, v16);
+      xpc_connection_send_message(rawConnection, v16);
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldTrustChallenge:(id)a3
+- (BOOL)shouldTrustChallenge:(id)challenge
 {
-  v4 = [a3 protectionSpace];
-  v5 = [v4 serverTrust];
+  protectionSpace = [challenge protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  v6 = [(DADClientSubscribedCalendarDownloadDelegate *)self evaluateTrust:v5];
+  v6 = [(DADClientSubscribedCalendarDownloadDelegate *)self evaluateTrust:serverTrust];
   return (v6 < 6) & (0x12u >> v6);
 }
 
-- (unsigned)evaluateTrust:(__SecTrust *)a3
+- (unsigned)evaluateTrust:(__SecTrust *)trust
 {
-  if (!a3)
+  if (!trust)
   {
     return 3;
   }
 
   v4 = 3;
-  if (SecTrustGetCertificateCount(a3) >= 1)
+  if (SecTrustGetCertificateCount(trust) >= 1)
   {
     v6 = 3;
-    if (MEMORY[0x24C1D12A0](a3, &v6))
+    if (MEMORY[0x24C1D12A0](trust, &v6))
     {
       return 3;
     }
@@ -201,53 +201,53 @@
   return v4;
 }
 
-- (void)handleTrustChallenge:(id)a3 forTask:(id)a4 completionHandler:(id)a5
+- (void)handleTrustChallenge:(id)challenge forTask:(id)task completionHandler:(id)handler
 {
-  v12 = a3;
-  v7 = a5;
-  if ([(DADClientSubscribedCalendarDownloadDelegate *)self shouldTrustChallenge:v12])
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if ([(DADClientSubscribedCalendarDownloadDelegate *)self shouldTrustChallenge:challengeCopy])
   {
     v8 = objc_alloc(MEMORY[0x277CCACF0]);
-    v9 = [v12 protectionSpace];
-    v10 = [v8 initWithTrust:{objc_msgSend(v9, "serverTrust")}];
+    protectionSpace = [challengeCopy protectionSpace];
+    sender2 = [v8 initWithTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0, v10);
+      handlerCopy[2](handlerCopy, 0, sender2);
     }
 
     else
     {
-      v11 = [v12 sender];
-      [v11 useCredential:v10 forAuthenticationChallenge:v12];
+      sender = [challengeCopy sender];
+      [sender useCredential:sender2 forAuthenticationChallenge:challengeCopy];
     }
   }
 
   else
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_9;
     }
 
-    v10 = [v12 sender];
-    [v10 continueWithoutCredentialForAuthenticationChallenge:v12];
+    sender2 = [challengeCopy sender];
+    [sender2 continueWithoutCredentialForAuthenticationChallenge:challengeCopy];
   }
 
 LABEL_9:
 }
 
-- (void)subCalTask:(id)a3 needsUsernameAndPasswordForHost:(id)a4 continuation:(id)a5
+- (void)subCalTask:(id)task needsUsernameAndPasswordForHost:(id)host continuation:(id)continuation
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [(DADClientDelegate *)self client];
-  v8 = [v7 rawConnection];
+  continuationCopy = continuation;
+  client = [(DADClientDelegate *)self client];
+  rawConnection = [client rawConnection];
 
-  if (v8)
+  if (rawConnection)
   {
-    v9 = MEMORY[0x24C1D1770](v6);
+    v9 = MEMORY[0x24C1D1770](continuationCopy);
     passwordContinuation = self->_passwordContinuation;
     self->_passwordContinuation = v9;
 
@@ -256,26 +256,26 @@ LABEL_9:
     v12 = *MEMORY[0x277D03E58];
     v18[0] = v11;
     v18[1] = v12;
-    v13 = [(DADClientDelegate *)self delegateID];
+    delegateID = [(DADClientDelegate *)self delegateID];
     v18[2] = *MEMORY[0x277D03E68];
     subscribedCalendarURL = self->_subscribedCalendarURL;
-    v19[1] = v13;
+    v19[1] = delegateID;
     v19[2] = subscribedCalendarURL;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
     v16 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_connection_send_message(v8, v16);
+    xpc_connection_send_message(rawConnection, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tryUsername:(id)a3 password:(id)a4
+- (void)tryUsername:(id)username password:(id)password
 {
   passwordContinuation = self->_passwordContinuation;
   if (passwordContinuation)
   {
-    passwordContinuation[2](passwordContinuation, a3, a4);
+    passwordContinuation[2](passwordContinuation, username, password);
     v6 = self->_passwordContinuation;
     self->_passwordContinuation = 0;
   }
@@ -292,11 +292,11 @@ LABEL_9:
   }
 }
 
-- (void)finishWithError:(id)a3 summary:(id)a4
+- (void)finishWithError:(id)error summary:(id)summary
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  summaryCopy = summary;
   if (![(DADisableableObject *)self isDisabled])
   {
     v8 = MEMORY[0x277D03988];
@@ -307,9 +307,9 @@ LABEL_9:
       if (os_log_type_enabled(v9, v10))
       {
         *buf = 138412546;
-        v35 = v6;
+        v35 = errorCopy;
         v36 = 2112;
-        v37 = v7;
+        v37 = summaryCopy;
         _os_log_impl(&dword_248524000, v9, v10, "[DADClientSubscribedCalendarDownloadDelegate finishWithError:summary:] called while we were waiting for a password. (error = %@, summary = %@)", buf, 0x16u);
       }
 
@@ -325,14 +325,14 @@ LABEL_9:
       if (os_log_type_enabled(v12, v13))
       {
         *buf = 138412290;
-        v35 = v6;
+        v35 = errorCopy;
         _os_log_impl(&dword_248524000, v12, v13, "DADClientSubscribedCalendarDownloadDelegate finished with error %@", buf, 0xCu);
       }
 
-      if (v7)
+      if (summaryCopy)
       {
         v31 = 0;
-        v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v31];
+        v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:summaryCopy requiringSecureCoding:1 error:&v31];
         v15 = v31;
         if (!v14)
         {
@@ -341,7 +341,7 @@ LABEL_9:
           if (os_log_type_enabled(v16, v17))
           {
             *buf = 138412546;
-            v35 = v7;
+            v35 = summaryCopy;
             v36 = 2112;
             v37 = v15;
             _os_log_impl(&dword_248524000, v16, v17, "Couldn't archive summary %@: %@", buf, 0x16u);
@@ -354,15 +354,15 @@ LABEL_9:
         v14 = 0;
       }
 
-      if (!(v6 | v14))
+      if (!(errorCopy | v14))
       {
-        v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
+        errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
       }
 
-      v18 = [(DADClientDelegate *)self client];
-      v19 = [v18 rawConnection];
+      client = [(DADClientDelegate *)self client];
+      rawConnection = [client rawConnection];
 
-      if (v19)
+      if (rawConnection)
       {
         if (v14)
         {
@@ -373,10 +373,10 @@ LABEL_9:
         else
         {
           v20 = *MEMORY[0x277D03B40];
-          v22 = [v6 cal_serializableError];
+          cal_serializableError = [errorCopy cal_serializableError];
 
-          v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v22];
-          v6 = v22;
+          v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:cal_serializableError];
+          errorCopy = cal_serializableError;
         }
 
         v23 = *MEMORY[0x277D03C88];
@@ -384,19 +384,19 @@ LABEL_9:
         v24 = *MEMORY[0x277D03E58];
         v32[0] = v23;
         v32[1] = v24;
-        v25 = [(DADClientDelegate *)self delegateID];
+        delegateID = [(DADClientDelegate *)self delegateID];
         v32[2] = v20;
-        v33[1] = v25;
+        v33[1] = delegateID;
         v33[2] = v21;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
 
         v27 = _CFXPCCreateXPCObjectFromCFObject();
-        xpc_connection_send_message(v19, v27);
+        xpc_connection_send_message(rawConnection, v27);
       }
 
-      v28 = [(DADClientDelegate *)self client];
-      v29 = [(DADClientDelegate *)self delegateID];
-      [v28 delegateWithIDIsGoingAway:v29];
+      client2 = [(DADClientDelegate *)self client];
+      delegateID2 = [(DADClientDelegate *)self delegateID];
+      [client2 delegateWithIDIsGoingAway:delegateID2];
 
       [(DATaskManager *)self->_taskManager shutdown];
     }

@@ -1,7 +1,7 @@
 @interface LocationConfigurationCell
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation LocationConfigurationCell
@@ -27,14 +27,14 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  _objc_retain(a3);
+  _objc_retain(label);
   _objc_retain(self);
-  if (a3)
+  if (label)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    _objc_release(a3);
+    _objc_release(label);
   }
 
   sub_1002C760C();

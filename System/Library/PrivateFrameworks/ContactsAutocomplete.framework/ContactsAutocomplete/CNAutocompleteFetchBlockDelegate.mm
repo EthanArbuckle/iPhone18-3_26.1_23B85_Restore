@@ -1,120 +1,120 @@
 @interface CNAutocompleteFetchBlockDelegate
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)autocompleteFetch:(id)a3 willAdjustResults:(id)a4;
-- (id)resultComparatorForAutocompleteFetch:(id)a3;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetch:(id)a3 willSortResults:(id)a4;
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)autocompleteFetch:(id)fetch willAdjustResults:(id)results;
+- (id)resultComparatorForAutocompleteFetch:(id)fetch;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetch:(id)fetch willSortResults:(id)results;
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidFinish:(id)finish;
 @end
 
 @implementation CNAutocompleteFetchBlockDelegate
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
+  fetchCopy = fetch;
+  resultsCopy = results;
+  resultHandler = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
 
-  if (v7)
+  if (resultHandler)
   {
-    v8 = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
-    (v8)[2](v8, v9, v6);
+    resultHandler2 = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
+    (resultHandler2)[2](resultHandler2, fetchCopy, resultsCopy);
   }
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
-  v6 = a3;
-  v4 = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
+  finishCopy = finish;
+  finishHandler = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
 
-  if (v4)
+  if (finishHandler)
   {
-    v5 = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
-    (v5)[2](v5, v6);
+    finishHandler2 = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
+    (finishHandler2)[2](finishHandler2, finishCopy);
   }
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
+  fetchCopy = fetch;
+  errorCopy = error;
+  errorHandler = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
 
-  if (v7)
+  if (errorHandler)
   {
-    v8 = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
-    (v8)[2](v8, v9, v6);
+    errorHandler2 = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
+    (errorHandler2)[2](errorHandler2, fetchCopy, errorCopy);
   }
 }
 
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity
 {
-  v6 = a3;
-  v4 = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
+  activityCopy = activity;
+  beganNetworkActivityHandler = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
 
-  if (v4)
+  if (beganNetworkActivityHandler)
   {
-    v5 = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
-    (v5)[2](v5, v6);
+    beganNetworkActivityHandler2 = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
+    (beganNetworkActivityHandler2)[2](beganNetworkActivityHandler2, activityCopy);
   }
 }
 
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity
 {
-  v6 = a3;
-  v4 = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
+  activityCopy = activity;
+  endedNetworkActivityHandler = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
 
-  if (v4)
+  if (endedNetworkActivityHandler)
   {
-    v5 = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
-    (v5)[2](v5, v6);
+    endedNetworkActivityHandler2 = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
+    (endedNetworkActivityHandler2)[2](endedNetworkActivityHandler2, activityCopy);
   }
 }
 
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNAutocompleteFetchBlockDelegate *)self supplementalResultHandler];
-  v12 = (v11)[2](v11, v10, v9, v8);
+  handlerCopy = handler;
+  requestCopy = request;
+  fetchCopy = fetch;
+  supplementalResultHandler = [(CNAutocompleteFetchBlockDelegate *)self supplementalResultHandler];
+  v12 = (supplementalResultHandler)[2](supplementalResultHandler, fetchCopy, requestCopy, handlerCopy);
 
   return v12;
 }
 
-- (id)autocompleteFetch:(id)a3 willAdjustResults:(id)a4
+- (id)autocompleteFetch:(id)fetch willAdjustResults:(id)results
 {
-  v5 = a4;
-  v6 = [(CNAutocompleteFetchBlockDelegate *)self adjustmentHandler];
-  v7 = (v6)[2](v6, v5);
+  resultsCopy = results;
+  adjustmentHandler = [(CNAutocompleteFetchBlockDelegate *)self adjustmentHandler];
+  v7 = (adjustmentHandler)[2](adjustmentHandler, resultsCopy);
 
   return v7;
 }
 
-- (void)autocompleteFetch:(id)a3 willSortResults:(id)a4
+- (void)autocompleteFetch:(id)fetch willSortResults:(id)results
 {
-  v7 = a4;
-  v5 = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
+  resultsCopy = results;
+  willSortHandler = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
 
-  if (v5)
+  if (willSortHandler)
   {
-    v6 = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
-    (v6)[2](v6, v7);
+    willSortHandler2 = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
+    (willSortHandler2)[2](willSortHandler2, resultsCopy);
   }
 }
 
-- (id)resultComparatorForAutocompleteFetch:(id)a3
+- (id)resultComparatorForAutocompleteFetch:(id)fetch
 {
-  v4 = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
+  comparatorHandler = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
 
-  if (v4)
+  if (comparatorHandler)
   {
-    v5 = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
-    v6 = v5[2]();
+    comparatorHandler2 = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
+    v6 = comparatorHandler2[2]();
   }
 
   else
@@ -125,62 +125,62 @@
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_autocompleteFetch_didReceiveResults_ == a3)
+  if (sel_autocompleteFetch_didReceiveResults_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self resultHandler];
 LABEL_20:
-    v3 = v4 != 0;
+    v3 = resultHandler != 0;
 
     return v3;
   }
 
-  if (sel_autocompleteFetchDidFinish_ == a3)
+  if (sel_autocompleteFetchDidFinish_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self finishHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetch_didFailWithError_ == a3)
+  if (sel_autocompleteFetch_didFailWithError_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self errorHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetchDidBeginNetworkActivity_ == a3)
+  if (sel_autocompleteFetchDidBeginNetworkActivity_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self beganNetworkActivityHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetchDidEndNetworkActivity_ == a3)
+  if (sel_autocompleteFetchDidEndNetworkActivity_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self endedNetworkActivityHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetch_shouldExpectSupplementalResultsForRequest_completionHandler_ == a3)
+  if (sel_autocompleteFetch_shouldExpectSupplementalResultsForRequest_completionHandler_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self supplementalResultHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self supplementalResultHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetch_willAdjustResults_ == a3)
+  if (sel_autocompleteFetch_willAdjustResults_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self adjustmentHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self adjustmentHandler];
     goto LABEL_20;
   }
 
-  if (sel_autocompleteFetch_willSortResults_ == a3)
+  if (sel_autocompleteFetch_willSortResults_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self willSortHandler];
     goto LABEL_20;
   }
 
-  if (sel_resultComparatorForAutocompleteFetch_ == a3)
+  if (sel_resultComparatorForAutocompleteFetch_ == selector)
   {
-    v4 = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
+    resultHandler = [(CNAutocompleteFetchBlockDelegate *)self comparatorHandler];
     goto LABEL_20;
   }
 

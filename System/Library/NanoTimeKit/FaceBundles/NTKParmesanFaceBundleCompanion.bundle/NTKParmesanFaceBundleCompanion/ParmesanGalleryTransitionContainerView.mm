@@ -1,16 +1,16 @@
 @interface ParmesanGalleryTransitionContainerView
-- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithCoder:(id)a3;
-- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithFrame:(CGRect)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithCoder:(id)coder;
+- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ParmesanGalleryTransitionContainerView
 
-- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithFrame:(CGRect)a3
+- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView_currentView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView_transitionView) = 0;
   v8.receiver = self;
@@ -18,7 +18,7 @@
   return [(ParmesanColorAdjustView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView_currentView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion38ParmesanGalleryTransitionContainerView_transitionView) = 0;

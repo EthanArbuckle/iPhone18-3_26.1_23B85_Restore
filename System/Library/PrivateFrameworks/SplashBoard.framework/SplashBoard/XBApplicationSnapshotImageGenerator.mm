@@ -1,28 +1,28 @@
 @interface XBApplicationSnapshotImageGenerator
-- (BOOL)_generate_lock_shouldGenerateForSnapshot:(id)a3 reason:(id *)a4;
-- (BOOL)_shouldGenerateForSnapshot:(id)a3 reason:(id *)a4;
-- (XBApplicationSnapshotImageGenerator)initWithScheduler:(id)a3 snapshot:(id)a4 dataProvider:(id)a5 imageDataRequest:(int64_t)a6 loggingPrefix:(id)a7 imageGenerationHandler:(id)a8 imageDataGenerationHandler:(id)a9;
-- (id)_generate_imageFromLegacyDataProvider:(id)a3 forSnapshot:(id)a4 imageDataHandler:(id)a5;
-- (id)_generate_imageFromNewDataProvider:(id)a3 forSnapshot:(id)a4 imageDataHandler:(id)a5;
+- (BOOL)_generate_lock_shouldGenerateForSnapshot:(id)snapshot reason:(id *)reason;
+- (BOOL)_shouldGenerateForSnapshot:(id)snapshot reason:(id *)reason;
+- (XBApplicationSnapshotImageGenerator)initWithScheduler:(id)scheduler snapshot:(id)snapshot dataProvider:(id)provider imageDataRequest:(int64_t)request loggingPrefix:(id)prefix imageGenerationHandler:(id)handler imageDataGenerationHandler:(id)generationHandler;
+- (id)_generate_imageFromLegacyDataProvider:(id)provider forSnapshot:(id)snapshot imageDataHandler:(id)handler;
+- (id)_generate_imageFromNewDataProvider:(id)provider forSnapshot:(id)snapshot imageDataHandler:(id)handler;
 - (void)_generate;
-- (void)_performImageDataGeneration:(id)a3 withHandler:(id)a4;
+- (void)_performImageDataGeneration:(id)generation withHandler:(id)handler;
 - (void)generate;
 - (void)scheduleGeneration;
 @end
 
 @implementation XBApplicationSnapshotImageGenerator
 
-- (XBApplicationSnapshotImageGenerator)initWithScheduler:(id)a3 snapshot:(id)a4 dataProvider:(id)a5 imageDataRequest:(int64_t)a6 loggingPrefix:(id)a7 imageGenerationHandler:(id)a8 imageDataGenerationHandler:(id)a9
+- (XBApplicationSnapshotImageGenerator)initWithScheduler:(id)scheduler snapshot:(id)snapshot dataProvider:(id)provider imageDataRequest:(int64_t)request loggingPrefix:(id)prefix imageGenerationHandler:(id)handler imageDataGenerationHandler:(id)generationHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (v15)
+  schedulerCopy = scheduler;
+  snapshotCopy = snapshot;
+  providerCopy = provider;
+  prefixCopy = prefix;
+  handlerCopy = handler;
+  generationHandlerCopy = generationHandler;
+  if (schedulerCopy)
   {
-    if (v16)
+    if (snapshotCopy)
     {
       goto LABEL_3;
     }
@@ -31,7 +31,7 @@
   else
   {
     [XBApplicationSnapshotImageGenerator initWithScheduler:snapshot:dataProvider:imageDataRequest:loggingPrefix:imageGenerationHandler:imageDataGenerationHandler:];
-    if (v16)
+    if (snapshotCopy)
     {
       goto LABEL_3;
     }
@@ -39,11 +39,11 @@
 
   [XBApplicationSnapshotImageGenerator initWithScheduler:snapshot:dataProvider:imageDataRequest:loggingPrefix:imageGenerationHandler:imageDataGenerationHandler:];
 LABEL_3:
-  v21 = [v16 groupID];
+  groupID = [snapshotCopy groupID];
 
-  if (v21)
+  if (groupID)
   {
-    if (v17)
+    if (providerCopy)
     {
       goto LABEL_5;
     }
@@ -52,7 +52,7 @@ LABEL_3:
   else
   {
     [XBApplicationSnapshotImageGenerator initWithScheduler:snapshot:dataProvider:imageDataRequest:loggingPrefix:imageGenerationHandler:imageDataGenerationHandler:];
-    if (v17)
+    if (providerCopy)
     {
       goto LABEL_5;
     }
@@ -60,9 +60,9 @@ LABEL_3:
 
   [XBApplicationSnapshotImageGenerator initWithScheduler:snapshot:dataProvider:imageDataRequest:loggingPrefix:imageGenerationHandler:imageDataGenerationHandler:];
 LABEL_5:
-  v22 = [v17 context];
+  context = [providerCopy context];
 
-  if (!v22)
+  if (!context)
   {
     [XBApplicationSnapshotImageGenerator initWithScheduler:snapshot:dataProvider:imageDataRequest:loggingPrefix:imageGenerationHandler:imageDataGenerationHandler:];
   }
@@ -75,9 +75,9 @@ LABEL_5:
   {
     v23->_generate_handled_request = 0;
     v23->_generate_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v23->_weak_snapshot, v16);
-    objc_storeStrong(&v24->_scheduler, a3);
-    objc_storeStrong(&v24->_dataProvider, a5);
+    objc_storeWeak(&v23->_weak_snapshot, snapshotCopy);
+    objc_storeStrong(&v24->_scheduler, scheduler);
+    objc_storeStrong(&v24->_dataProvider, provider);
     if (objc_opt_respondsToSelector())
     {
       v24->_dataProviderFetchType = 0;
@@ -100,20 +100,20 @@ LABEL_5:
 
     else
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:v24 file:@"XBApplicationSnapshotImageGenerator.m" lineNumber:93 description:{@"%@ XBSnapshotDataProvider %@ doesn't implement fetch* method", v24->_loggingPrefix, v17}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v24 file:@"XBApplicationSnapshotImageGenerator.m" lineNumber:93 description:{@"%@ XBSnapshotDataProvider %@ doesn't implement fetch* method", v24->_loggingPrefix, providerCopy}];
     }
 
-    v24->_imageDataRequest = a6;
-    v27 = [v19 copy];
+    v24->_imageDataRequest = request;
+    v27 = [handlerCopy copy];
     didGenerateImageHandler = v24->_didGenerateImageHandler;
     v24->_didGenerateImageHandler = v27;
 
-    v29 = [v20 copy];
+    v29 = [generationHandlerCopy copy];
     didGenerateImageDataHandler = v24->_didGenerateImageDataHandler;
     v24->_didGenerateImageDataHandler = v29;
 
-    v31 = [v18 copy];
+    v31 = [prefixCopy copy];
     loggingPrefix = v24->_loggingPrefix;
     v24->_loggingPrefix = v31;
   }
@@ -211,11 +211,11 @@ LABEL_5:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       loggingPrefix = self->_loggingPrefix;
-      v13 = [WeakRetained logIdentifier];
+      logIdentifier = [WeakRetained logIdentifier];
       *buf = 138543874;
       v20 = loggingPrefix;
       v21 = 2114;
-      v22 = v13;
+      v22 = logIdentifier;
       v23 = 2114;
       v24 = v6;
       _os_log_error_impl(&dword_26B5EF000, v7, OS_LOG_TYPE_ERROR, "[%{public}@] CALLED IMAGE GENERATOR FOR %{public}@. This should be considered a last resort, and will likely result in significant blocking of the calling thread! reason: %{public}@", buf, 0x20u);
@@ -279,53 +279,53 @@ uint64_t __47__XBApplicationSnapshotImageGenerator_generate__block_invoke(uint64
   return result;
 }
 
-- (void)_performImageDataGeneration:(id)a3 withHandler:(id)a4
+- (void)_performImageDataGeneration:(id)generation withHandler:(id)handler
 {
   imageDataRequest = self->_imageDataRequest;
   scheduler = self->_scheduler;
   if (imageDataRequest == 2)
   {
-    [(XBApplicationSnapshotImageGenerationScheduling *)scheduler performImageDataGenerationAsync:a3 withHandler:a4];
+    [(XBApplicationSnapshotImageGenerationScheduling *)scheduler performImageDataGenerationAsync:generation withHandler:handler];
   }
 
   else
   {
-    [(XBApplicationSnapshotImageGenerationScheduling *)scheduler performImageDataGenerationAsyncAndWait:a3 withHandler:a4];
+    [(XBApplicationSnapshotImageGenerationScheduling *)scheduler performImageDataGenerationAsyncAndWait:generation withHandler:handler];
   }
 }
 
-- (BOOL)_shouldGenerateForSnapshot:(id)a3 reason:(id *)a4
+- (BOOL)_shouldGenerateForSnapshot:(id)snapshot reason:(id *)reason
 {
-  v6 = a3;
+  snapshotCopy = snapshot;
   os_unfair_lock_assert_not_owner(&self->_generate_lock);
   os_unfair_lock_lock(&self->_generate_lock);
-  LOBYTE(a4) = [(XBApplicationSnapshotImageGenerator *)self _generate_lock_shouldGenerateForSnapshot:v6 reason:a4];
+  LOBYTE(reason) = [(XBApplicationSnapshotImageGenerator *)self _generate_lock_shouldGenerateForSnapshot:snapshotCopy reason:reason];
 
   os_unfair_lock_unlock(&self->_generate_lock);
-  return a4;
+  return reason;
 }
 
-- (BOOL)_generate_lock_shouldGenerateForSnapshot:(id)a3 reason:(id *)a4
+- (BOOL)_generate_lock_shouldGenerateForSnapshot:(id)snapshot reason:(id *)reason
 {
-  v6 = a3;
-  v7 = v6;
+  snapshotCopy = snapshot;
+  v7 = snapshotCopy;
   if (self->_generate_handled_request)
   {
     v8 = 0;
-    if (a4)
+    if (reason)
     {
       v9 = @"already complete";
 LABEL_16:
-      *a4 = v9;
+      *reason = v9;
     }
   }
 
-  else if (v6)
+  else if (snapshotCopy)
   {
-    if ([v6 _isInvalidated])
+    if ([snapshotCopy _isInvalidated])
     {
       v8 = 0;
-      if (a4)
+      if (reason)
       {
         v9 = @"snapshot is invalidated";
         goto LABEL_16;
@@ -335,7 +335,7 @@ LABEL_16:
     else if (self->_imageDataRequest)
     {
       v8 = 1;
-      if (a4)
+      if (reason)
       {
         v9 = @"image data requested";
         goto LABEL_16;
@@ -344,15 +344,15 @@ LABEL_16:
 
     else
     {
-      v10 = [v7 hasCachedImage];
-      v8 = v10 ^ 1;
+      hasCachedImage = [v7 hasCachedImage];
+      v8 = hasCachedImage ^ 1;
       v9 = @"no cached image";
-      if (v10)
+      if (hasCachedImage)
       {
         v9 = @"have a cached image and no requests to regenerate";
       }
 
-      if (a4)
+      if (reason)
       {
         goto LABEL_16;
       }
@@ -362,7 +362,7 @@ LABEL_16:
   else
   {
     v8 = 0;
-    if (a4)
+    if (reason)
     {
       v9 = @"snapshot is nil";
       goto LABEL_16;
@@ -372,34 +372,34 @@ LABEL_16:
   return v8;
 }
 
-- (id)_generate_imageFromNewDataProvider:(id)a3 forSnapshot:(id)a4 imageDataHandler:(id)a5
+- (id)_generate_imageFromNewDataProvider:(id)provider forSnapshot:(id)snapshot imageDataHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v9 hasProtectedContent];
+    hasProtectedContent = [providerCopy hasProtectedContent];
   }
 
   else
   {
-    v12 = 0;
+    hasProtectedContent = 0;
   }
 
-  [v10 _setHasProtectedContent:v12];
-  v13 = [XBApplicationSnapshotManifestImpl _outputFormatForSnapshot:v10];
+  [snapshotCopy _setHasProtectedContent:hasProtectedContent];
+  v13 = [XBApplicationSnapshotManifestImpl _outputFormatForSnapshot:snapshotCopy];
   dataProviderFetchType = self->_dataProviderFetchType;
   if (dataProviderFetchType)
   {
     if (dataProviderFetchType != 1)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotImageGenerator.m" lineNumber:240 description:{@"%@ somehow we got into this method with the wrong data provider %@", self->_loggingPrefix, v9}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotImageGenerator.m" lineNumber:240 description:{@"%@ somehow we got into this method with the wrong data provider %@", self->_loggingPrefix, providerCopy}];
 
       v16 = 0;
-      if (v11)
+      if (handlerCopy)
       {
         goto LABEL_9;
       }
@@ -407,16 +407,16 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    v15 = [v9 fetchImage];
+    fetchImage = [providerCopy fetchImage];
   }
 
   else
   {
-    v15 = [v9 fetchImageForFormat:v13];
+    fetchImage = [providerCopy fetchImageForFormat:v13];
   }
 
-  v16 = v15;
-  if (v11)
+  v16 = fetchImage;
+  if (handlerCopy)
   {
 LABEL_9:
     *&buf = 0;
@@ -434,9 +434,9 @@ LABEL_9:
     v26[2] = __103__XBApplicationSnapshotImageGenerator__generate_imageFromNewDataProvider_forSnapshot_imageDataHandler___block_invoke;
     v26[3] = &unk_279CF9580;
     v30 = v34;
-    v27 = v9;
-    v28 = self;
-    v33 = v12;
+    v27 = providerCopy;
+    selfCopy = self;
+    v33 = hasProtectedContent;
     v29 = v16;
     p_buf = &buf;
     v32 = v13;
@@ -444,7 +444,7 @@ LABEL_9:
     v21[1] = 3221225472;
     v21[2] = __103__XBApplicationSnapshotImageGenerator__generate_imageFromNewDataProvider_forSnapshot_imageDataHandler___block_invoke_56;
     v21[3] = &unk_279CF95A8;
-    v23 = v11;
+    v23 = handlerCopy;
     v24 = &buf;
     v22 = v29;
     v25 = v34;
@@ -604,13 +604,13 @@ void __103__XBApplicationSnapshotImageGenerator__generate_imageFromNewDataProvid
   }
 }
 
-- (id)_generate_imageFromLegacyDataProvider:(id)a3 forSnapshot:(id)a4 imageDataHandler:(id)a5
+- (id)_generate_imageFromLegacyDataProvider:(id)provider forSnapshot:(id)snapshot imageDataHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  providerCopy = provider;
+  handlerCopy = handler;
   v9 = XBLogCapture();
-  v10 = os_signpost_id_make_with_pointer(v9, v7);
+  v10 = os_signpost_id_make_with_pointer(v9, providerCopy);
 
   v11 = XBLogCapture();
   v12 = v11;
@@ -627,12 +627,12 @@ void __103__XBApplicationSnapshotImageGenerator__generate_imageFromNewDataProvid
   *buf = *MEMORY[0x277CBF2C0];
   v29 = v15;
   v30 = *(MEMORY[0x277CBF2C0] + 32);
-  v16 = [v7 fetchImageData:buf];
+  v16 = [providerCopy fetchImageData:buf];
   if ([v16 length])
   {
     v17 = objc_alloc(MEMORY[0x277D755B8]);
-    v18 = [v7 context];
-    [v18 scale];
+    context = [providerCopy context];
+    [context scale];
     v19 = [v17 initWithData:v16 scale:?];
 
     if (v19)
@@ -661,13 +661,13 @@ void __103__XBApplicationSnapshotImageGenerator__generate_imageFromNewDataProvid
 
   v19 = 0;
 LABEL_12:
-  if (v8)
+  if (handlerCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __106__XBApplicationSnapshotImageGenerator__generate_imageFromLegacyDataProvider_forSnapshot_imageDataHandler___block_invoke;
     v23[3] = &unk_279CF95D0;
-    v26 = v8;
+    v26 = handlerCopy;
     v23[4] = self;
     v24 = v16;
     v25 = v19;
@@ -735,7 +735,7 @@ void __106__XBApplicationSnapshotImageGenerator__generate_imageFromLegacyDataPro
     BSContinuousMachTimeNow();
     v15 = v14;
     v16 = os_transaction_create();
-    v17 = [WeakRetained logIdentifier];
+    logIdentifier = [WeakRetained logIdentifier];
     v18 = [XBApplicationSnapshotManifestImpl _outputFormatForSnapshot:WeakRetained];
     if (self->_didGenerateImageDataHandler)
     {
@@ -745,7 +745,7 @@ void __106__XBApplicationSnapshotImageGenerator__generate_imageFromLegacyDataPro
       v33[3] = &unk_279CF95F8;
       v33[4] = self;
       v35 = v18;
-      v34 = v17;
+      v34 = logIdentifier;
       v36 = v15;
       v19 = MEMORY[0x26D67C6A0](v33);
     }
@@ -796,13 +796,13 @@ void __106__XBApplicationSnapshotImageGenerator__generate_imageFromLegacyDataPro
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       loggingPrefix = self->_loggingPrefix;
-      v28 = [WeakRetained logIdentifier];
+      logIdentifier2 = [WeakRetained logIdentifier];
       *buf = 138543874;
       v40 = loggingPrefix;
       v41 = 2114;
       v42 = v5;
       v43 = 2114;
-      v44 = v28;
+      v44 = logIdentifier2;
       _os_log_error_impl(&dword_26B5EF000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] we needlessly scheduled _generate even though we have nothing to do because: %{public}@; Snapshot: %{public}@", buf, 0x20u);
     }
 

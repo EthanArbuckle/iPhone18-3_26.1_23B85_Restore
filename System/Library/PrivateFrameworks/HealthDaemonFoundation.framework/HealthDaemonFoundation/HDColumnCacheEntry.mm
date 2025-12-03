@@ -1,34 +1,34 @@
 @interface HDColumnCacheEntry
-- (HDColumnCacheEntry)initWithDefinitions:(id)a3;
+- (HDColumnCacheEntry)initWithDefinitions:(id)definitions;
 - (id)description;
 @end
 
 @implementation HDColumnCacheEntry
 
-- (HDColumnCacheEntry)initWithDefinitions:(id)a3
+- (HDColumnCacheEntry)initWithDefinitions:(id)definitions
 {
-  v5 = a3;
+  definitionsCopy = definitions;
   v15.receiver = self;
   v15.super_class = HDColumnCacheEntry;
   v6 = [(HDColumnCacheEntry *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_swiftColumnDefinitions, a3);
-    v8 = [v5 count];
+    objc_storeStrong(&v6->_swiftColumnDefinitions, definitions);
+    v8 = [definitionsCopy count];
     v7->_count = v8;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:24 * v8];
     carrayStorage = v7->_carrayStorage;
     v7->_carrayStorage = v9;
 
-    v11 = [(NSData *)v7->_carrayStorage bytes];
-    v7->_columnDefinitions = v11;
+    bytes = [(NSData *)v7->_carrayStorage bytes];
+    v7->_columnDefinitions = bytes;
     swiftColumnDefinitions = v7->_swiftColumnDefinitions;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __42__HDColumnCacheEntry_initWithDefinitions___block_invoke;
     v14[3] = &__block_descriptor_40_e53_v32__0__HDSQLiteEntityColumnDefinitionObject_8Q16_B24l;
-    v14[4] = v11;
+    v14[4] = bytes;
     [(NSArray *)swiftColumnDefinitions enumerateObjectsUsingBlock:v14];
   }
 

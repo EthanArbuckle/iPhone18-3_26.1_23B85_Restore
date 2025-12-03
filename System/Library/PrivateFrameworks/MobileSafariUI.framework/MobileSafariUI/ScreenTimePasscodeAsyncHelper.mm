@@ -1,17 +1,17 @@
 @interface ScreenTimePasscodeAsyncHelper
 - (_TtC14MobileSafariUI29ScreenTimePasscodeAsyncHelper)init;
-- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)a3;
-- (void)requestPinEntryWithCompletionHandler:(id)a3;
+- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)notification;
+- (void)requestPinEntryWithCompletionHandler:(id)handler;
 @end
 
 @implementation ScreenTimePasscodeAsyncHelper
 
-- (void)requestPinEntryWithCompletionHandler:(id)a3
+- (void)requestPinEntryWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA7E060);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,15 +27,15 @@
   v12[3] = 0;
   v12[4] = &unk_215A96E10;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_215A1987C(0, 0, v7, &unk_215A96E20, v12);
 }
 
-- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)a3
+- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_215A18A80(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_215A18A80(notificationCopy);
 }
 
 - (_TtC14MobileSafariUI29ScreenTimePasscodeAsyncHelper)init

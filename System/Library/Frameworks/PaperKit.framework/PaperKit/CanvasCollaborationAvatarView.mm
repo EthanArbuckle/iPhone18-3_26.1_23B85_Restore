@@ -1,7 +1,7 @@
 @interface CanvasCollaborationAvatarView
 - (void)didMoveToWindow;
-- (void)handleHoverWithRecognizer:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)handleHoverWithRecognizer:(id)recognizer;
+- (void)handleTap:(id)tap;
 - (void)update;
 @end
 
@@ -9,28 +9,28 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CanvasCollaborationAvatarView.didMoveToWindow()();
 }
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   CanvasCollaborationAvatarView.update(animated:)(0);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   specialized CanvasCollaborationAvatarView.handleTap(_:)();
 }
 
-- (void)handleHoverWithRecognizer:(id)a3
+- (void)handleHoverWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  CanvasCollaborationAvatarView.handleHover(recognizer:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  CanvasCollaborationAvatarView.handleHover(recognizer:)(recognizerCopy);
 }
 
 @end

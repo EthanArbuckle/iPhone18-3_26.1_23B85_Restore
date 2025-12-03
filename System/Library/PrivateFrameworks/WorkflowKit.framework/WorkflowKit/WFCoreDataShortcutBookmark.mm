@@ -7,10 +7,10 @@
 - (id)descriptor
 {
   v3 = [WFShortcutBookmarksDescriptor alloc];
-  v4 = [(WFCoreDataShortcutBookmark *)self identifier];
-  v5 = [(WFCoreDataShortcutBookmark *)self path];
-  v6 = [(WFCoreDataShortcutBookmark *)self bookmarkData];
-  v7 = [(WFShortcutBookmarksDescriptor *)v3 initWithWorkflowID:v4 path:v5 bookmarkData:v6];
+  identifier = [(WFCoreDataShortcutBookmark *)self identifier];
+  path = [(WFCoreDataShortcutBookmark *)self path];
+  bookmarkData = [(WFCoreDataShortcutBookmark *)self bookmarkData];
+  v7 = [(WFShortcutBookmarksDescriptor *)v3 initWithWorkflowID:identifier path:path bookmarkData:bookmarkData];
 
   return v7;
 }

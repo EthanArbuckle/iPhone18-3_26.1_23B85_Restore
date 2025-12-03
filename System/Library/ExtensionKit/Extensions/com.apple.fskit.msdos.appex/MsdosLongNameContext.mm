@@ -1,6 +1,6 @@
 @interface MsdosLongNameContext
 - (MsdosLongNameContext)init;
-- (void)fillWithFirstLongNameEntry:(winentry *)a3;
+- (void)fillWithFirstLongNameEntry:(winentry *)entry;
 - (void)invalidate;
 @end
 
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (void)fillWithFirstLongNameEntry:(winentry *)a3
+- (void)fillWithFirstLongNameEntry:(winentry *)entry
 {
-  [(MsdosLongNameContext *)self setNumLongNameEntries:a3->var0 & 0x3F];
+  [(MsdosLongNameContext *)self setNumLongNameEntries:entry->var0 & 0x3F];
   [(MsdosLongNameContext *)self setNumLongNameEntriesLeft:[(MsdosLongNameContext *)self numLongNameEntries]];
-  [(MsdosLongNameContext *)self setCheckSum:a3->var4];
+  [(MsdosLongNameContext *)self setCheckSum:entry->var4];
 
   [(MsdosLongNameContext *)self setIsValid:1];
 }

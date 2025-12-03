@@ -9,7 +9,7 @@
   v2 = *(self->super.isa + 11);
 
   v4 = v2(v3);
-  v5 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [v4 remoteObjectProxy];
 
   sub_23833ECE0();
 

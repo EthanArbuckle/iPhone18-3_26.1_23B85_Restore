@@ -1,16 +1,16 @@
 @interface IMFamilySenderMessageProcessingPipelineComponent
-- (IMFamilySenderMessageProcessingPipelineComponent)initWithAccount:(id)a3 idsTrustedData:(id)a4;
-- (id)_fromFamilyMember:(id)a3;
-- (id)_generateError:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMFamilySenderMessageProcessingPipelineComponent)initWithAccount:(id)account idsTrustedData:(id)data;
+- (id)_fromFamilyMember:(id)member;
+- (id)_generateError:(id)error;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMFamilySenderMessageProcessingPipelineComponent
 
-- (id)_fromFamilyMember:(id)a3
+- (id)_fromFamilyMember:(id)member
 {
   v109 = *MEMORY[0x277D85DE8];
-  v71 = a3;
+  memberCopy = member;
   v75 = objc_alloc_init(MEMORY[0x277D18E08]);
   v97 = 0;
   v98 = &v97;
@@ -48,8 +48,8 @@
         sub_22B7D3F50(v9);
       }
 
-      v76 = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"Unknown FamilyCircle fetch error"];
-      [v75 failWithError:v76];
+      _stripFZIDPrefix = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"Unknown FamilyCircle fetch error"];
+      [v75 failWithError:_stripFZIDPrefix];
     }
 
     else
@@ -59,8 +59,8 @@
         sub_22B7D3EDC();
       }
 
-      v76 = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"FamilyCircle fetch failed with specific error"];
-      [v75 failWithError:v76];
+      _stripFZIDPrefix = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"FamilyCircle fetch failed with specific error"];
+      [v75 failWithError:_stripFZIDPrefix];
     }
 
 LABEL_108:
@@ -69,8 +69,8 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  v6 = [v71 fromIdentifier];
-  v76 = [v6 _stripFZIDPrefix];
+  fromIdentifier = [memberCopy fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
 
   if (!IMGetDomainBoolForKey())
   {
@@ -96,19 +96,19 @@ LABEL_17:
           }
 
           v17 = *(*(&v92 + 1) + 8 * i);
-          v18 = [v17 appleID];
-          v19 = v18 == 0;
+          appleID = [v17 appleID];
+          v19 = appleID == 0;
 
           if (!v19)
           {
             if (([v17 isMe] & 1) == 0)
             {
-              v20 = [v17 appleID];
-              [v68 addObject:v20];
+              appleID2 = [v17 appleID];
+              [v68 addObject:appleID2];
             }
 
-            v21 = [v17 appleID];
-            v22 = [v76 isEqualToString:v21];
+            appleID3 = [v17 appleID];
+            v22 = [_stripFZIDPrefix isEqualToString:appleID3];
 
             if (v22)
             {
@@ -117,9 +117,9 @@ LABEL_17:
                 v64 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
                 {
-                  v65 = [v17 appleID];
+                  appleID4 = [v17 appleID];
                   LODWORD(buf) = 138412290;
-                  *(&buf + 4) = v65;
+                  *(&buf + 4) = appleID4;
                   _os_log_impl(&dword_22B4CC000, v64, OS_LOG_TYPE_INFO, "Apple ID matches Family member %@", &buf, 0xCu);
                 }
               }
@@ -131,20 +131,20 @@ LABEL_95:
                 v55 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
                 {
-                  v56 = [v71 fromIdentifier];
+                  fromIdentifier2 = [memberCopy fromIdentifier];
                   LODWORD(buf) = 138412290;
-                  *(&buf + 4) = v56;
+                  *(&buf + 4) = fromIdentifier2;
                   _os_log_impl(&dword_22B4CC000, v55, OS_LOG_TYPE_INFO, "Found family member relation using raw handles! %@", &buf, 0xCu);
                 }
               }
 
-              [v75 fullfillWithValue:v71];
+              [v75 fullfillWithValue:memberCopy];
               goto LABEL_107;
             }
           }
 
-          v23 = [v17 dictionary];
-          v24 = [v23 objectForKey:@"member-appleID-aliases"];
+          dictionary = [v17 dictionary];
+          v24 = [dictionary objectForKey:@"member-appleID-aliases"];
           if (v24)
           {
             if (([v17 isMe] & 1) == 0)
@@ -171,7 +171,7 @@ LABEL_95:
                   }
 
                   v29 = *(*(&v88 + 1) + 8 * j);
-                  if ([v76 isEqualToString:v29])
+                  if ([_stripFZIDPrefix isEqualToString:v29])
                   {
                     if (IMOSLoggingEnabled())
                     {
@@ -199,11 +199,11 @@ LABEL_95:
             }
           }
 
-          v30 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v76];
+          v30 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:_stripFZIDPrefix];
           if (v30)
           {
-            v31 = [v17 memberPhoneNumbers];
-            v32 = [v31 componentsSeparatedByString:{@", "}];
+            memberPhoneNumbers = [v17 memberPhoneNumbers];
+            v32 = [memberPhoneNumbers componentsSeparatedByString:{@", "}];
 
             if (([v17 isMe] & 1) == 0)
             {
@@ -271,16 +271,16 @@ LABEL_95:
       }
     }
 
-    v38 = [(IMFamilySenderMessageProcessingPipelineComponent *)self idsTrustedData];
-    v39 = [v38 senderCorrelationIdentifier];
-    v40 = v39 == 0;
+    idsTrustedData = [(IMFamilySenderMessageProcessingPipelineComponent *)self idsTrustedData];
+    senderCorrelationIdentifier = [idsTrustedData senderCorrelationIdentifier];
+    v40 = senderCorrelationIdentifier == 0;
 
     if (v40)
     {
       v57 = IMLogHandleForCategory();
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
-        sub_22B7D3E54(v71);
+        sub_22B7D3E54(memberCopy);
       }
 
       v58 = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"IDS data had no sender correlation identifier"];
@@ -376,7 +376,7 @@ LABEL_95:
         v77[3] = &unk_278705348;
         v77[4] = self;
         v78 = v75;
-        v79 = v71;
+        v79 = memberCopy;
         [v52 currentRemoteDevicesForDestinations:v42 service:@"com.apple.madrid" listenerID:@"IMFamilySenderMessageProcessingPipelineComponent" queue:MEMORY[0x277D85CD0] completionBlock:v77];
       }
 
@@ -385,7 +385,7 @@ LABEL_95:
         v59 = IMLogHandleForCategory();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
         {
-          sub_22B7D3DCC(v71);
+          sub_22B7D3DCC(memberCopy);
         }
 
         v60 = [(IMFamilySenderMessageProcessingPipelineComponent *)self _generateError:@"Family IDS handles were empty"];
@@ -398,11 +398,11 @@ LABEL_107:
     goto LABEL_108;
   }
 
-  v7 = [v73 childBotAllowlistedParents];
-  if (![v7 containsObject:v76])
+  childBotAllowlistedParents = [v73 childBotAllowlistedParents];
+  if (![childBotAllowlistedParents containsObject:_stripFZIDPrefix])
   {
-    v11 = [v73 parentAllowlistedChildBots];
-    v12 = [v11 containsObject:v76];
+    parentAllowlistedChildBots = [v73 parentAllowlistedChildBots];
+    v12 = [parentAllowlistedChildBots containsObject:_stripFZIDPrefix];
 
     if (v12)
     {
@@ -423,7 +423,7 @@ LABEL_12:
     }
   }
 
-  [v75 fullfillWithValue:v71];
+  [v75 fullfillWithValue:memberCopy];
   v14 = v75;
 
 LABEL_109:
@@ -432,12 +432,12 @@ LABEL_109:
   return v75;
 }
 
-- (id)_generateError:(id)a3
+- (id)_generateError:(id)error
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 alloc];
-  v6 = [v5 initWithObjectsAndKeys:{v4, *MEMORY[0x277CCA068], 0}];
+  v6 = [v5 initWithObjectsAndKeys:{errorCopy, *MEMORY[0x277CCA068], 0}];
 
   v7 = objc_alloc(MEMORY[0x277CCA9B8]);
   v8 = [v7 initWithDomain:*MEMORY[0x277D18DF8] code:21 userInfo:v6];
@@ -445,27 +445,27 @@ LABEL_109:
   return v8;
 }
 
-- (IMFamilySenderMessageProcessingPipelineComponent)initWithAccount:(id)a3 idsTrustedData:(id)a4
+- (IMFamilySenderMessageProcessingPipelineComponent)initWithAccount:(id)account idsTrustedData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = IMFamilySenderMessageProcessingPipelineComponent;
   v9 = [(IMFamilySenderMessageProcessingPipelineComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_idsTrustedData, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_idsTrustedData, data);
   }
 
   return v10;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputCopy = input;
   v4 = *MEMORY[0x277D19700];
   v31[0] = *MEMORY[0x277D196F8];
   v31[1] = v4;
@@ -481,28 +481,28 @@ LABEL_109:
     }
   }
 
-  if ([v3 isFromMe])
+  if ([inputCopy isFromMe])
   {
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v3 fromIdentifier];
+        fromIdentifier = [inputCopy fromIdentifier];
         *buf = 138412290;
-        v30 = v8;
+        v30 = fromIdentifier;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Message is a message from me: %@", buf, 0xCu);
       }
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    if ([v3 conformsToProtocol:&unk_283F6EB70])
+    if ([inputCopy conformsToProtocol:&unk_283F6EB70])
     {
-      v10 = v3;
+      v10 = inputCopy;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -530,9 +530,9 @@ LABEL_109:
             else
             {
               v16 = *(*(&v24 + 1) + 8 * i);
-              v17 = [v10 balloonPluginBundleID];
+              balloonPluginBundleID = [v10 balloonPluginBundleID];
               v18 = IMBalloonExtensionIDWithSuffix();
-              v13 = [v17 isEqualToString:v18];
+              v13 = [balloonPluginBundleID isEqualToString:v18];
             }
           }
 
@@ -563,7 +563,7 @@ LABEL_109:
       }
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+    v9 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
 LABEL_30:

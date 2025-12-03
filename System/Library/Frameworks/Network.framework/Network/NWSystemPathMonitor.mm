@@ -7,7 +7,7 @@
 - (void)registerForSymptomsFallbackNotification;
 - (void)registerForVPNNotifications;
 - (void)startWatchingApplicationStates;
-- (void)stateUpdated:(id)a3 forProcess:(id)a4;
+- (void)stateUpdated:(id)updated forProcess:(id)process;
 - (void)stopWatchingApplicationStates;
 - (void)updateFlags;
 - (void)updateVPNMonitor;
@@ -285,8 +285,8 @@ void __62__NWSystemPathMonitor_registerForSymptomsFallbackNotification__block_in
 - (void)updateVPNMonitor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v3 = gLogObj;
@@ -297,14 +297,14 @@ void __62__NWSystemPathMonitor_registerForSymptomsFallbackNotification__block_in
     _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_INFO, "%{public}s Update VPN monitor due to configuration change", buf, 0xCu);
   }
 
-  v4 = [(NWSystemPathMonitor *)v2 vpnMonitor];
+  vpnMonitor = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
 
-  if (v4)
+  if (vpnMonitor)
   {
-    v5 = [(NWSystemPathMonitor *)v2 vpnMonitor];
-    [v5 removeObserver:v2 forKeyPath:@"status"];
+    vpnMonitor2 = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
+    [vpnMonitor2 removeObserver:selfCopy forKeyPath:@"status"];
 
-    [(NWSystemPathMonitor *)v2 setVpnMonitor:0];
+    [(NWSystemPathMonitor *)selfCopy setVpnMonitor:0];
   }
 
   v6 = objc_alloc_init(NWParameters);
@@ -340,15 +340,15 @@ void __62__NWSystemPathMonitor_registerForSymptomsFallbackNotification__block_in
   [(NWParameters *)v6 requireNetworkAgentWithDomain:@"NetworkExtension" type:v10];
   v11 = objc_alloc_init(NWNetworkDescription);
   v12 = [NWMonitor monitorWithNetworkDescription:v11 endpoint:0 parameters:v6];
-  [(NWSystemPathMonitor *)v2 setVpnMonitor:v12];
+  [(NWSystemPathMonitor *)selfCopy setVpnMonitor:v12];
 
-  v13 = [(NWSystemPathMonitor *)v2 vpnMonitor];
-  LODWORD(v11) = v13 == 0;
+  vpnMonitor3 = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
+  LODWORD(v11) = vpnMonitor3 == 0;
 
   if (!v11)
   {
-    v14 = [(NWSystemPathMonitor *)v2 vpnMonitor];
-    [v14 addObserver:v2 forKeyPath:@"status" options:5 context:0];
+    vpnMonitor4 = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
+    [vpnMonitor4 addObserver:selfCopy forKeyPath:@"status" options:5 context:0];
 
     if (ne_session_app_vpn_configs_present())
     {
@@ -362,12 +362,12 @@ void __62__NWSystemPathMonitor_registerForSymptomsFallbackNotification__block_in
         _os_log_impl(&dword_181A37000, v15, OS_LOG_TYPE_INFO, "%{public}s Monitoring Per-App VPN", buf, 0xCu);
       }
 
-      [(NWSystemPathMonitor *)v2 startWatchingApplicationStates];
+      [(NWSystemPathMonitor *)selfCopy startWatchingApplicationStates];
     }
 
     else
     {
-      [(NWSystemPathMonitor *)v2 stopWatchingApplicationStates];
+      [(NWSystemPathMonitor *)selfCopy stopWatchingApplicationStates];
     }
 
     goto LABEL_37;
@@ -464,7 +464,7 @@ LABEL_36:
 
 LABEL_37:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)registerForVPNNotifications
@@ -612,18 +612,18 @@ void __50__NWSystemPathMonitor_registerForVPNNotifications__block_invoke(uint64_
 - (void)stopWatchingApplicationStates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWSystemPathMonitor *)v2 processMonitor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processMonitor = [(NWSystemPathMonitor *)selfCopy processMonitor];
 
-  if (v3)
+  if (processMonitor)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NWSystemPathMonitor *)v2 perAppVPNEvaluators];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    perAppVPNEvaluators = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+    v5 = [perAppVPNEvaluators countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -634,47 +634,47 @@ void __50__NWSystemPathMonitor_registerForVPNNotifications__block_invoke(uint64_
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(perAppVPNEvaluators);
           }
 
           v8 = *(*(&v12 + 1) + 8 * v7);
-          v9 = [(NWSystemPathMonitor *)v2 perAppVPNEvaluators];
-          v10 = [v9 objectForKeyedSubscript:v8];
+          perAppVPNEvaluators2 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+          v10 = [perAppVPNEvaluators2 objectForKeyedSubscript:v8];
 
-          [v10 removeObserver:v2 forKeyPath:@"path"];
+          [v10 removeObserver:selfCopy forKeyPath:@"path"];
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [perAppVPNEvaluators countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v5);
     }
 
-    v11 = [(NWSystemPathMonitor *)v2 processMonitor];
-    [v11 invalidate];
+    processMonitor2 = [(NWSystemPathMonitor *)selfCopy processMonitor];
+    [processMonitor2 invalidate];
 
-    [(NWSystemPathMonitor *)v2 setProcessMonitor:0];
+    [(NWSystemPathMonitor *)selfCopy setProcessMonitor:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)startWatchingApplicationStates
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NWSystemPathMonitor *)v3 processMonitor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processMonitor = [(NWSystemPathMonitor *)selfCopy processMonitor];
 
-  if (!v4)
+  if (!processMonitor)
   {
     gotLoadHelper_x21__OBJC_CLASS___RBSProcessMonitor(v5);
     if (objc_opt_class())
     {
-      objc_initWeak(&location, v3);
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      [(NWSystemPathMonitor *)v3 setPerAppVPNEvaluators:v6];
+      objc_initWeak(&location, selfCopy);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NWSystemPathMonitor *)selfCopy setPerAppVPNEvaluators:dictionary];
 
       v7 = *(v2 + 1536);
       v9 = MEMORY[0x1E69E9820];
@@ -683,14 +683,14 @@ void __50__NWSystemPathMonitor_registerForVPNNotifications__block_invoke(uint64_
       v12 = &unk_1E6A2B170;
       objc_copyWeak(&v13, &location);
       v8 = [v7 monitorWithConfiguration:&v9];
-      [(NWSystemPathMonitor *)v3 setProcessMonitor:v8, v9, v10, v11, v12];
+      [(NWSystemPathMonitor *)selfCopy setProcessMonitor:v8, v9, v10, v11, v12];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 void __53__NWSystemPathMonitor_startWatchingApplicationStates__block_invoke(uint64_t a1, void *a2)
@@ -726,22 +726,22 @@ void __53__NWSystemPathMonitor_startWatchingApplicationStates__block_invoke_2(ui
   [WeakRetained stateUpdated:v6 forProcess:v7];
 }
 
-- (void)stateUpdated:(id)a3 forProcess:(id)a4
+- (void)stateUpdated:(id)updated forProcess:(id)process
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v7 identity];
-  v10 = [v9 embeddedApplicationIdentifier];
+  updatedCopy = updated;
+  processCopy = process;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
 
-  if (!v10)
+  if (!embeddedApplicationIdentifier)
   {
-    v11 = [v7 bundle];
-    v10 = [v11 identifier];
+    bundle = [processCopy bundle];
+    embeddedApplicationIdentifier = [bundle identifier];
 
-    if (!v10)
+    if (!embeddedApplicationIdentifier)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -751,32 +751,32 @@ void __53__NWSystemPathMonitor_startWatchingApplicationStates__block_invoke_2(ui
         v31 = 136446722;
         v32 = "[NWSystemPathMonitor stateUpdated:forProcess:]";
         v33 = 2114;
-        v34 = v7;
+        v34 = processCopy;
         v35 = 2112;
-        v36 = v6;
+        v36 = updatedCopy;
         _os_log_impl(&dword_181A37000, &v17->super, OS_LOG_TYPE_ERROR, "%{public}s Cannot find bundle ID for process %{public}@ state update %@", &v31, 0x20u);
       }
 
-      v10 = 0;
+      embeddedApplicationIdentifier = 0;
       goto LABEL_18;
     }
   }
 
-  v12 = [v6 state];
-  v13 = [v12 endowmentNamespaces];
-  v14 = [v13 containsObject:@"com.apple.frontboard.visibility"];
+  state = [updatedCopy state];
+  endowmentNamespaces = [state endowmentNamespaces];
+  v14 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
   if (v14)
   {
-    v15 = [(NWSystemPathMonitor *)v8 perAppVPNEvaluators];
-    v16 = [v15 objectForKeyedSubscript:v10];
+    perAppVPNEvaluators = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+    v16 = [perAppVPNEvaluators objectForKeyedSubscript:embeddedApplicationIdentifier];
 
     if (!v16)
     {
       v17 = objc_alloc_init(NWParameters);
-      -[NWParameters setPid:](v17, "setPid:", [v7 pid]);
-      [(NWParameters *)v17 setSourceApplicationWithBundleID:v10];
-      [v10 UTF8String];
+      -[NWParameters setPid:](v17, "setPid:", [processCopy pid]);
+      [(NWParameters *)v17 setSourceApplicationWithBundleID:embeddedApplicationIdentifier];
+      [embeddedApplicationIdentifier UTF8String];
       v18 = NEHelperCopyPerAppDomains();
       v19 = v18;
       if (v18 && object_getClass(v18) == MEMORY[0x1E69E9E50] && xpc_array_get_count(v19) && (string = xpc_array_get_string(v19, 0)) != 0)
@@ -798,14 +798,14 @@ void __53__NWSystemPathMonitor_startWatchingApplicationStates__block_invoke_2(ui
         v31 = 136446466;
         v32 = "[NWSystemPathMonitor stateUpdated:forProcess:]";
         v33 = 2114;
-        v34 = v10;
+        v34 = embeddedApplicationIdentifier;
         _os_log_impl(&dword_181A37000, v21, OS_LOG_TYPE_INFO, "%{public}s Start watching path for foreground app %{public}@", &v31, 0x16u);
       }
 
       v22 = [[NWPathEvaluator alloc] initWithEndpoint:v20 parameters:v17];
-      [(NWPathEvaluator *)v22 addObserver:v8 forKeyPath:@"path" options:5 context:0];
-      v23 = [(NWSystemPathMonitor *)v8 perAppVPNEvaluators];
-      [v23 setObject:v22 forKeyedSubscript:v10];
+      [(NWPathEvaluator *)v22 addObserver:selfCopy forKeyPath:@"path" options:5 context:0];
+      perAppVPNEvaluators2 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+      [perAppVPNEvaluators2 setObject:v22 forKeyedSubscript:embeddedApplicationIdentifier];
 
 LABEL_18:
     }
@@ -813,8 +813,8 @@ LABEL_18:
 
   else
   {
-    v24 = [(NWSystemPathMonitor *)v8 perAppVPNEvaluators];
-    v25 = [v24 objectForKeyedSubscript:v10];
+    perAppVPNEvaluators3 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+    v25 = [perAppVPNEvaluators3 objectForKeyedSubscript:embeddedApplicationIdentifier];
 
     if (v25)
     {
@@ -826,32 +826,32 @@ LABEL_18:
         v31 = 136446466;
         v32 = "[NWSystemPathMonitor stateUpdated:forProcess:]";
         v33 = 2114;
-        v34 = v10;
+        v34 = embeddedApplicationIdentifier;
         _os_log_impl(&dword_181A37000, v26, OS_LOG_TYPE_INFO, "%{public}s Stop watching path for background app %{public}@", &v31, 0x16u);
       }
 
-      v27 = [(NWSystemPathMonitor *)v8 perAppVPNEvaluators];
-      v17 = [v27 objectForKeyedSubscript:v10];
+      perAppVPNEvaluators4 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+      v17 = [perAppVPNEvaluators4 objectForKeyedSubscript:embeddedApplicationIdentifier];
 
-      [(NWParameters *)v17 removeObserver:v8 forKeyPath:@"path"];
-      v28 = [(NWSystemPathMonitor *)v8 perAppVPNEvaluators];
-      [v28 setObject:0 forKeyedSubscript:v10];
+      [(NWParameters *)v17 removeObserver:selfCopy forKeyPath:@"path"];
+      perAppVPNEvaluators5 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+      [perAppVPNEvaluators5 setObject:0 forKeyedSubscript:embeddedApplicationIdentifier];
 
-      [(NWSystemPathMonitor *)v8 eventFired];
+      [(NWSystemPathMonitor *)selfCopy eventFired];
       goto LABEL_18;
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)eventFired
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWSystemPathMonitor *)v2 smoothingTimer];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  smoothingTimer = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
 
-  if (!v3)
+  if (!smoothingTimer)
   {
     if (NWCopyInternalQueue_init_once != -1)
     {
@@ -860,25 +860,25 @@ LABEL_18:
 
     v4 = NWCopyInternalQueue_nwQueue;
     v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v4);
-    [(NWSystemPathMonitor *)v2 setSmoothingTimer:v5];
+    [(NWSystemPathMonitor *)selfCopy setSmoothingTimer:v5];
 
-    v6 = [(NWSystemPathMonitor *)v2 smoothingTimer];
+    smoothingTimer2 = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __33__NWSystemPathMonitor_eventFired__block_invoke;
     handler[3] = &unk_1E6A3D868;
-    handler[4] = v2;
-    dispatch_source_set_event_handler(v6, handler);
+    handler[4] = selfCopy;
+    dispatch_source_set_event_handler(smoothingTimer2, handler);
 
-    v7 = [(NWSystemPathMonitor *)v2 smoothingTimer];
+    smoothingTimer3 = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
     v8 = dispatch_time(0, 200000000);
-    dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
+    dispatch_source_set_timer(smoothingTimer3, v8, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
 
-    v9 = [(NWSystemPathMonitor *)v2 smoothingTimer];
-    dispatch_resume(v9);
+    smoothingTimer4 = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
+    dispatch_resume(smoothingTimer4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __33__NWSystemPathMonitor_eventFired__block_invoke(uint64_t a1)
@@ -895,12 +895,12 @@ uint64_t __33__NWSystemPathMonitor_eventFired__block_invoke(uint64_t a1)
 - (void)updateFlags
 {
   v55 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NWSystemPathMonitor *)v2 vpnMonitor];
-  v4 = [v3 status];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  vpnMonitor = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
+  status = [vpnMonitor status];
 
-  if (v4 == 1)
+  if (status == 1)
   {
     v5 = 1;
   }
@@ -911,8 +911,8 @@ uint64_t __33__NWSystemPathMonitor_eventFired__block_invoke(uint64_t a1)
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = [(NWSystemPathMonitor *)v2 perAppVPNEvaluators];
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v54 count:16];
+    perAppVPNEvaluators = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+    v7 = [perAppVPNEvaluators countByEnumeratingWithState:&v32 objects:v54 count:16];
     if (v7)
     {
       v8 = 0;
@@ -924,24 +924,24 @@ uint64_t __33__NWSystemPathMonitor_eventFired__block_invoke(uint64_t a1)
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(perAppVPNEvaluators);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [(NWSystemPathMonitor *)v2 perAppVPNEvaluators];
-          v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 path];
+          perAppVPNEvaluators2 = [(NWSystemPathMonitor *)selfCopy perAppVPNEvaluators];
+          v13 = [perAppVPNEvaluators2 objectForKeyedSubscript:v11];
+          path = [v13 path];
 
-          if ([v14 status] == 1)
+          if ([path status] == 1)
           {
-            v15 = [v14 genericNetworkAgentsWithDomain:@"NetworkExtension" type:@"AppVPN"];
+            v15 = [path genericNetworkAgentsWithDomain:@"NetworkExtension" type:@"AppVPN"];
 
             v5 |= v15 != 0;
-            v8 |= [v14 usesInterfaceType:1];
+            v8 |= [path usesInterfaceType:1];
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v32 objects:v54 count:16];
+        v7 = [perAppVPNEvaluators countByEnumeratingWithState:&v32 objects:v54 count:16];
       }
 
       while (v7);
@@ -960,18 +960,18 @@ uint64_t __33__NWSystemPathMonitor_eventFired__block_invoke(uint64_t a1)
     }
   }
 
-  v17 = [(NWSystemPathMonitor *)v2 primaryEvaluator];
-  v18 = [v17 path];
-  v16 = [v18 usesInterfaceType:1];
+  primaryEvaluator = [(NWSystemPathMonitor *)selfCopy primaryEvaluator];
+  path2 = [primaryEvaluator path];
+  v16 = [path2 usesInterfaceType:1];
 
 LABEL_16:
-  v19 = [(NWSystemPathMonitor *)v2 primaryEvaluator];
-  v20 = [v19 path];
-  v21 = [v20 usesInterfaceType:3];
+  primaryEvaluator2 = [(NWSystemPathMonitor *)selfCopy primaryEvaluator];
+  path3 = [primaryEvaluator2 path];
+  v21 = [path3 usesInterfaceType:3];
 
-  v22 = [(NWSystemPathMonitor *)v2 primaryEvaluator];
-  v23 = [v22 path];
-  v24 = [v23 genericNetworkAgentsWithDomain:@"AVConference" type:@"CellularFallback"];
+  primaryEvaluator3 = [(NWSystemPathMonitor *)selfCopy primaryEvaluator];
+  path4 = [primaryEvaluator3 path];
+  v24 = [path4 genericNetworkAgentsWithDomain:@"AVConference" type:@"CellularFallback"];
 
   if (!v16)
   {
@@ -979,7 +979,7 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  if (tcp_fallback_watcher_fallback_inuse([(NWSystemPathMonitor *)v2 fallbackWatcher]))
+  if (tcp_fallback_watcher_fallback_inuse([(NWSystemPathMonitor *)selfCopy fallbackWatcher]))
   {
     v16 = 0;
     v25 = " (due to cellular fallback)";
@@ -988,7 +988,7 @@ LABEL_16:
   }
 
   v16 = 0;
-  if ([(NWSystemPathMonitor *)v2 getSymptomsFallback])
+  if ([(NWSystemPathMonitor *)selfCopy getSymptomsFallback])
   {
     v25 = " (due to reverse cellular fallback)";
     v26 = 1;
@@ -1008,7 +1008,7 @@ LABEL_16:
   v26 = 1;
   if ((sMptcpUsesCell & 1) == 0 && !v24)
   {
-    if ([(NWSystemPathMonitor *)v2 interfaceInUse])
+    if ([(NWSystemPathMonitor *)selfCopy interfaceInUse])
     {
       v16 = 0;
       v25 = " (due to AirDrop using cellular)";
@@ -1037,124 +1037,124 @@ LABEL_21:
       v28 = "primary: ";
     }
 
-    v29 = [(NWSystemPathMonitor *)v2 isWiFiPrimary];
-    v30 = [(NWSystemPathMonitor *)v2 isEthernetPrimary];
-    v31 = [(NWSystemPathMonitor *)v2 isVPNActive];
+    isWiFiPrimary = [(NWSystemPathMonitor *)selfCopy isWiFiPrimary];
+    isEthernetPrimary = [(NWSystemPathMonitor *)selfCopy isEthernetPrimary];
+    isVPNActive = [(NWSystemPathMonitor *)selfCopy isVPNActive];
     *buf = 136448258;
     v37 = "[NWSystemPathMonitor updateFlags]";
     v38 = 2082;
     v39 = v28;
     v40 = 1024;
-    v41 = v29;
+    v41 = isWiFiPrimary;
     v42 = 1024;
     v43 = v16;
     v44 = 2082;
     v45 = v25;
     v46 = 1024;
-    v47 = v30;
+    v47 = isEthernetPrimary;
     v48 = 1024;
     v49 = v21;
     v50 = 1024;
-    v51 = v31;
+    v51 = isVPNActive;
     v52 = 1024;
     v53 = v5 & 1;
     _os_log_impl(&dword_181A37000, v27, OS_LOG_TYPE_DEFAULT, "%{public}s Wi-Fi %{public}s%{BOOL}d->%{BOOL}d%{public}s, Ethernet primary: %{BOOL}d->%{BOOL}d, VPN active: %{BOOL}d->%{BOOL}d", buf, 0x44u);
   }
 
-  if (v16 != [(NWSystemPathMonitor *)v2 isWiFiPrimary])
+  if (v16 != [(NWSystemPathMonitor *)selfCopy isWiFiPrimary])
   {
-    [(NWSystemPathMonitor *)v2 setWifiPrimary:v16];
+    [(NWSystemPathMonitor *)selfCopy setWifiPrimary:v16];
   }
 
-  if (v21 != [(NWSystemPathMonitor *)v2 isEthernetPrimary])
+  if (v21 != [(NWSystemPathMonitor *)selfCopy isEthernetPrimary])
   {
-    [(NWSystemPathMonitor *)v2 setEthernetPrimary:v21];
+    [(NWSystemPathMonitor *)selfCopy setEthernetPrimary:v21];
   }
 
-  if ((v5 & 1) != [(NWSystemPathMonitor *)v2 isVPNActive])
+  if ((v5 & 1) != [(NWSystemPathMonitor *)selfCopy isVPNActive])
   {
-    [(NWSystemPathMonitor *)v2 setVpnActive:?];
+    [(NWSystemPathMonitor *)selfCopy setVpnActive:?];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NWSystemPathMonitor *)v2 vpnNotifyToken]!= -1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NWSystemPathMonitor *)selfCopy vpnNotifyToken]!= -1)
   {
-    notify_cancel([(NWSystemPathMonitor *)v2 vpnNotifyToken]);
-    [(NWSystemPathMonitor *)v2 setVpnNotifyToken:0xFFFFFFFFLL];
+    notify_cancel([(NWSystemPathMonitor *)selfCopy vpnNotifyToken]);
+    [(NWSystemPathMonitor *)selfCopy setVpnNotifyToken:0xFFFFFFFFLL];
   }
 
-  v3 = [(NWSystemPathMonitor *)v2 vpnMonitor];
+  vpnMonitor = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
 
-  if (v3)
+  if (vpnMonitor)
   {
-    v4 = [(NWSystemPathMonitor *)v2 vpnMonitor];
-    [v4 removeObserver:v2 forKeyPath:@"status"];
+    vpnMonitor2 = [(NWSystemPathMonitor *)selfCopy vpnMonitor];
+    [vpnMonitor2 removeObserver:selfCopy forKeyPath:@"status"];
 
-    [(NWSystemPathMonitor *)v2 setVpnMonitor:0];
+    [(NWSystemPathMonitor *)selfCopy setVpnMonitor:0];
   }
 
-  if ([(NWSystemPathMonitor *)v2 symptomsNotifyToken]!= -1)
+  if ([(NWSystemPathMonitor *)selfCopy symptomsNotifyToken]!= -1)
   {
-    notify_cancel([(NWSystemPathMonitor *)v2 symptomsNotifyToken]);
-    [(NWSystemPathMonitor *)v2 setSymptomsNotifyToken:0xFFFFFFFFLL];
+    notify_cancel([(NWSystemPathMonitor *)selfCopy symptomsNotifyToken]);
+    [(NWSystemPathMonitor *)selfCopy setSymptomsNotifyToken:0xFFFFFFFFLL];
   }
 
-  v5 = [(NWSystemPathMonitor *)v2 primaryEvaluator];
+  primaryEvaluator = [(NWSystemPathMonitor *)selfCopy primaryEvaluator];
 
-  if (v5)
+  if (primaryEvaluator)
   {
-    v6 = [(NWSystemPathMonitor *)v2 primaryEvaluator];
-    [v6 removeObserver:v2 forKeyPath:@"path"];
+    primaryEvaluator2 = [(NWSystemPathMonitor *)selfCopy primaryEvaluator];
+    [primaryEvaluator2 removeObserver:selfCopy forKeyPath:@"path"];
 
-    [(NWSystemPathMonitor *)v2 setPrimaryEvaluator:0];
+    [(NWSystemPathMonitor *)selfCopy setPrimaryEvaluator:0];
   }
 
-  v7 = [(NWSystemPathMonitor *)v2 smoothingTimer];
+  smoothingTimer = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
 
-  if (v7)
+  if (smoothingTimer)
   {
-    v8 = [(NWSystemPathMonitor *)v2 smoothingTimer];
-    dispatch_source_cancel(v8);
+    smoothingTimer2 = [(NWSystemPathMonitor *)selfCopy smoothingTimer];
+    dispatch_source_cancel(smoothingTimer2);
 
-    [(NWSystemPathMonitor *)v2 setSmoothingTimer:0];
+    [(NWSystemPathMonitor *)selfCopy setSmoothingTimer:0];
   }
 
-  if ([(NWSystemPathMonitor *)v2 fallbackWatcher])
+  if ([(NWSystemPathMonitor *)selfCopy fallbackWatcher])
   {
-    tcp_connection_fallback_watcher_destroy([(NWSystemPathMonitor *)v2 fallbackWatcher]);
-    [(NWSystemPathMonitor *)v2 setFallbackWatcher:0];
+    tcp_connection_fallback_watcher_destroy([(NWSystemPathMonitor *)selfCopy fallbackWatcher]);
+    [(NWSystemPathMonitor *)selfCopy setFallbackWatcher:0];
   }
 
-  v9 = [(NWSystemPathMonitor *)v2 mptcpWatcher];
+  mptcpWatcher = [(NWSystemPathMonitor *)selfCopy mptcpWatcher];
 
-  if (v9)
+  if (mptcpWatcher)
   {
-    v10 = [(NWSystemPathMonitor *)v2 mptcpWatcher];
-    dispatch_source_cancel(v10);
+    mptcpWatcher2 = [(NWSystemPathMonitor *)selfCopy mptcpWatcher];
+    dispatch_source_cancel(mptcpWatcher2);
 
-    [(NWSystemPathMonitor *)v2 setMptcpWatcher:0];
+    [(NWSystemPathMonitor *)selfCopy setMptcpWatcher:0];
   }
 
-  v11 = [(NWSystemPathMonitor *)v2 interfaceUseObserver];
+  interfaceUseObserver = [(NWSystemPathMonitor *)selfCopy interfaceUseObserver];
 
-  if (v11)
+  if (interfaceUseObserver)
   {
-    v12 = [(NWSystemPathMonitor *)v2 interfaceUseObserver];
-    nw_interface_use_observer_cancel(v12);
+    interfaceUseObserver2 = [(NWSystemPathMonitor *)selfCopy interfaceUseObserver];
+    nw_interface_use_observer_cancel(interfaceUseObserver2);
 
-    [(NWSystemPathMonitor *)v2 setInterfaceUseObserver:0];
+    [(NWSystemPathMonitor *)selfCopy setInterfaceUseObserver:0];
   }
 
-  [(NWSystemPathMonitor *)v2 stopWatchingApplicationStates];
-  objc_sync_exit(v2);
+  [(NWSystemPathMonitor *)selfCopy stopWatchingApplicationStates];
+  objc_sync_exit(selfCopy);
 
-  v13.receiver = v2;
+  v13.receiver = selfCopy;
   v13.super_class = NWSystemPathMonitor;
   [(NWSystemPathMonitor *)&v13 dealloc];
 }
@@ -1368,8 +1368,8 @@ LABEL_18:
   v4 = +[NWPathEvaluator sharedDefaultEvaluator];
   [(NWSystemPathMonitor *)v3 setPrimaryEvaluator:v4];
 
-  v5 = [(NWSystemPathMonitor *)v3 primaryEvaluator];
-  [v5 addObserver:v3 forKeyPath:@"path" options:5 context:0];
+  primaryEvaluator = [(NWSystemPathMonitor *)v3 primaryEvaluator];
+  [primaryEvaluator addObserver:v3 forKeyPath:@"path" options:5 context:0];
 
   objc_initWeak(location, v3);
   if (NWCopyInternalQueue_init_once != -1)

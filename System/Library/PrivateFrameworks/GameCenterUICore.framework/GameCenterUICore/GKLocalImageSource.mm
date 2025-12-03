@@ -1,17 +1,17 @@
 @interface GKLocalImageSource
-- (id)imageForImageSize:(CGSize)a3;
-- (id)keyForImageSize:(CGSize)a3;
-- (void)cacheImageUsingGamed:(id)a3 cacheSubdirectory:(id)a4 withHandler:(id)a5;
-- (void)cachedImageFromGamedWithSubdirectory:(id)a3 handler:(id)a4;
-- (void)deleteImageUsingGamedWithSubdirectory:(id)a3 withHandler:(id)a4;
+- (id)imageForImageSize:(CGSize)size;
+- (id)keyForImageSize:(CGSize)size;
+- (void)cacheImageUsingGamed:(id)gamed cacheSubdirectory:(id)subdirectory withHandler:(id)handler;
+- (void)cachedImageFromGamedWithSubdirectory:(id)subdirectory handler:(id)handler;
+- (void)deleteImageUsingGamedWithSubdirectory:(id)subdirectory withHandler:(id)handler;
 @end
 
 @implementation GKLocalImageSource
 
-- (id)keyForImageSize:(CGSize)a3
+- (id)keyForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!self->_keysForSizes)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:256 valueOptions:0 capacity:4];
@@ -34,9 +34,9 @@
   return v9;
 }
 
-- (id)imageForImageSize:(CGSize)a3
+- (id)imageForImageSize:(CGSize)size
 {
-  v4 = [(GKLocalImageSource *)self keyForImageSize:a3.width, a3.height];
+  v4 = [(GKLocalImageSource *)self keyForImageSize:size.width, size.height];
   v5 = [(GKImageSource *)self cachedImageForKey:v4];
   if (!v5)
   {
@@ -46,10 +46,10 @@
   return v5;
 }
 
-- (void)cachedImageFromGamedWithSubdirectory:(id)a3 handler:(id)a4
+- (void)cachedImageFromGamedWithSubdirectory:(id)subdirectory handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  subdirectoryCopy = subdirectory;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D0C020];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKImageSource.m", 921, "-[GKLocalImageSource cachedImageFromGamedWithSubdirectory:handler:]"];
   v10 = [v8 dispatchGroupWithName:v9];
@@ -59,18 +59,18 @@
   v16[2] = __67__GKLocalImageSource_cachedImageFromGamedWithSubdirectory_handler___block_invoke;
   v16[3] = &unk_27967ED48;
   v16[4] = self;
-  v11 = v6;
+  v11 = subdirectoryCopy;
   v17 = v11;
   v12 = v10;
   v18 = v12;
   [v12 perform:v16];
-  if (v7)
+  if (handlerCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __67__GKLocalImageSource_cachedImageFromGamedWithSubdirectory_handler___block_invoke_281;
     v13[3] = &unk_27967F1D8;
-    v15 = v7;
+    v15 = handlerCopy;
     v14 = v12;
     [v14 notifyOnMainQueueWithBlock:v13];
   }
@@ -187,11 +187,11 @@ void __67__GKLocalImageSource_cachedImageFromGamedWithSubdirectory_handler___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)cacheImageUsingGamed:(id)a3 cacheSubdirectory:(id)a4 withHandler:(id)a5
+- (void)cacheImageUsingGamed:(id)gamed cacheSubdirectory:(id)subdirectory withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gamedCopy = gamed;
+  subdirectoryCopy = subdirectory;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D0C020];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKImageSource.m", 966, "-[GKLocalImageSource cacheImageUsingGamed:cacheSubdirectory:withHandler:]"];
   v13 = [v11 dispatchGroupWithName:v12];
@@ -201,18 +201,18 @@ void __67__GKLocalImageSource_cachedImageFromGamedWithSubdirectory_handler___blo
   v18[2] = __73__GKLocalImageSource_cacheImageUsingGamed_cacheSubdirectory_withHandler___block_invoke;
   v18[3] = &unk_27967ED48;
   v18[4] = self;
-  v14 = v9;
+  v14 = subdirectoryCopy;
   v19 = v14;
-  v15 = v8;
+  v15 = gamedCopy;
   v20 = v15;
   [v13 perform:v18];
-  if (v10)
+  if (handlerCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __73__GKLocalImageSource_cacheImageUsingGamed_cacheSubdirectory_withHandler___block_invoke_3;
     v16[3] = &unk_27967EEC0;
-    v17 = v10;
+    v17 = handlerCopy;
     [v13 notifyOnMainQueueWithBlock:v16];
   }
 }
@@ -239,10 +239,10 @@ void __73__GKLocalImageSource_cacheImageUsingGamed_cacheSubdirectory_withHandler
   [v9 cacheImageData:v8 inSubdirectory:v10 withFileName:v11 handler:v13];
 }
 
-- (void)deleteImageUsingGamedWithSubdirectory:(id)a3 withHandler:(id)a4
+- (void)deleteImageUsingGamedWithSubdirectory:(id)subdirectory withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  subdirectoryCopy = subdirectory;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D0C020];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKImageSource.m", 987, "-[GKLocalImageSource deleteImageUsingGamedWithSubdirectory:withHandler:]"];
   v10 = [v8 dispatchGroupWithName:v9];
@@ -252,16 +252,16 @@ void __73__GKLocalImageSource_cacheImageUsingGamed_cacheSubdirectory_withHandler
   v14[2] = __72__GKLocalImageSource_deleteImageUsingGamedWithSubdirectory_withHandler___block_invoke;
   v14[3] = &unk_27967EFB0;
   v14[4] = self;
-  v11 = v6;
+  v11 = subdirectoryCopy;
   v15 = v11;
   [v10 perform:v14];
-  if (v7)
+  if (handlerCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__GKLocalImageSource_deleteImageUsingGamedWithSubdirectory_withHandler___block_invoke_3;
     v12[3] = &unk_27967EEC0;
-    v13 = v7;
+    v13 = handlerCopy;
     [v10 notifyOnMainQueueWithBlock:v12];
   }
 }

@@ -1,13 +1,13 @@
 @interface NTKPaletteColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesRestrictedByDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)colorNameForColorValue:(unint64_t)a3;
-+ (id)optionByValidatingValueOfInvalidOption:(id)a3;
-+ (unint64_t)colorValueForColorName:(id)a3;
-+ (void)colorName:(id *)a3 collectionName:(id *)a4 forColorValue:(unint64_t)a5;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_orderedValuesRestrictedByDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)colorNameForColorValue:(unint64_t)value;
++ (id)optionByValidatingValueOfInvalidOption:(id)option;
++ (unint64_t)colorValueForColorName:(id)name;
++ (void)colorName:(id *)name collectionName:(id *)collectionName forColorValue:(unint64_t)value;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -15,22 +15,22 @@
 
 @implementation NTKPaletteColorEditOption
 
-+ (id)optionByValidatingValueOfInvalidOption:(id)a3
++ (id)optionByValidatingValueOfInvalidOption:(id)option
 {
-  v3 = a3;
-  v4 = [v3 device];
+  optionCopy = option;
+  device = [optionCopy device];
   if (!NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues())
   {
     goto LABEL_11;
   }
 
-  v5 = [v3 _value];
-  v6 = [v4 collectionType];
-  [v4 materialType];
+  _value = [optionCopy _value];
+  collectionType = [device collectionType];
+  [device materialType];
   v7 = objc_opt_class();
-  if (v5 == &dword_8 + 1)
+  if (_value == &dword_8 + 1)
   {
-    if (v6 == &dword_4 + 2)
+    if (collectionType == &dword_4 + 2)
     {
       goto LABEL_11;
     }
@@ -40,11 +40,11 @@
 
   else
   {
-    if (v5 != &dword_4 + 3)
+    if (_value != &dword_4 + 3)
     {
-      if (!v5)
+      if (!_value)
       {
-        if (v6 == &dword_0 + 3)
+        if (collectionType == &dword_0 + 3)
         {
           v8 = 19;
         }
@@ -62,7 +62,7 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    if (v6 == &dword_4 + 1)
+    if (collectionType == &dword_4 + 1)
     {
       goto LABEL_11;
     }
@@ -71,26 +71,26 @@ LABEL_11:
   }
 
 LABEL_13:
-  v9 = [v7 optionWithPaletteColor:v8 forDevice:v4];
+  v9 = [v7 optionWithPaletteColor:v8 forDevice:device];
 LABEL_14:
 
   return v9;
 }
 
-+ (id)_orderedValuesRestrictedByDevice:(id)a3
++ (id)_orderedValuesRestrictedByDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_new();
-  v5 = [v3 collectionType];
+  collectionType = [deviceCopy collectionType];
 
-  if (v5 == &dword_4 + 1)
+  if (collectionType == &dword_4 + 1)
   {
     v6 = &off_1D5C0;
   }
 
   else
   {
-    if (v5 != &dword_4 + 2)
+    if (collectionType != &dword_4 + 2)
     {
       goto LABEL_6;
     }
@@ -104,21 +104,21 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1258;
   v5[3] = &unk_1C558;
-  v5[4] = a1;
-  v3 = sub_1258(v5, a3);
+  v5[4] = self;
+  v3 = sub_1258(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [&off_1DDF8 mutableCopy];
   if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues())
   {
@@ -131,15 +131,15 @@ LABEL_6:
     [v5 insertObject:&off_1D788 atIndex:0];
   }
 
-  v6 = [a1 _orderedValuesRestrictedByDevice:v4];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  v6 = [self _orderedValuesRestrictedByDevice:deviceCopy];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -166,25 +166,25 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 0x13)
+  if (value > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1C598 + a3);
+    return *(&off_1C598 + value);
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKPaletteColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKPaletteColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_valueToFaceBundleStringDict
@@ -199,12 +199,12 @@ LABEL_6:
   return v3;
 }
 
-+ (void)colorName:(id *)a3 collectionName:(id *)a4 forColorValue:(unint64_t)a5
++ (void)colorName:(id *)name collectionName:(id *)collectionName forColorValue:(unint64_t)value
 {
   v9 = NTKColorPaletteDomainChronograph;
   v10 = v9;
   v11 = @"black";
-  switch(a5)
+  switch(value)
   {
     case 0uLL:
       goto LABEL_23;
@@ -302,7 +302,7 @@ LABEL_6:
     case 0x12uLL:
       v18 = v9;
       v19 = 0;
-      [a1 colorName:&v19 collectionName:&v18 forColorValue:0];
+      [self colorName:&v19 collectionName:&v18 forColorValue:0];
       v11 = v19;
       v12 = v18;
       goto LABEL_22;
@@ -322,78 +322,78 @@ LABEL_22:
 
       v10 = v13;
 LABEL_23:
-      if (a3)
+      if (name)
       {
         v14 = v11;
-        *a3 = v11;
+        *name = v11;
       }
 
-      if (a4)
+      if (collectionName)
       {
         v15 = v10;
-        *a4 = v10;
+        *collectionName = v10;
       }
 
       return;
   }
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3
++ (id)colorNameForColorValue:(unint64_t)value
 {
   v5 = 0;
-  [a1 colorName:&v5 collectionName:0 forColorValue:a3];
+  [self colorName:&v5 collectionName:0 forColorValue:value];
   v3 = v5;
 
   return v3;
 }
 
-+ (unint64_t)colorValueForColorName:(id)a3
++ (unint64_t)colorValueForColorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = 18;
-  v6 = [a1 colorNameForColorValue:18];
-  v7 = [v4 isEqualToString:v6];
+  v6 = [self colorNameForColorValue:18];
+  v7 = [nameCopy isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
     v5 = 1;
-    v8 = [a1 colorNameForColorValue:1];
-    v9 = [v4 isEqualToString:v8];
+    v8 = [self colorNameForColorValue:1];
+    v9 = [nameCopy isEqualToString:v8];
 
     if ((v9 & 1) == 0)
     {
       v5 = 2;
-      v10 = [a1 colorNameForColorValue:2];
-      v11 = [v4 isEqualToString:v10];
+      v10 = [self colorNameForColorValue:2];
+      v11 = [nameCopy isEqualToString:v10];
 
       if ((v11 & 1) == 0)
       {
         v5 = 3;
-        v12 = [a1 colorNameForColorValue:3];
-        v13 = [v4 isEqualToString:v12];
+        v12 = [self colorNameForColorValue:3];
+        v13 = [nameCopy isEqualToString:v12];
 
         if ((v13 & 1) == 0)
         {
           v5 = 4;
-          v14 = [a1 colorNameForColorValue:4];
-          v15 = [v4 isEqualToString:v14];
+          v14 = [self colorNameForColorValue:4];
+          v15 = [nameCopy isEqualToString:v14];
 
           if ((v15 & 1) == 0)
           {
             v5 = 5;
-            v16 = [a1 colorNameForColorValue:5];
-            v17 = [v4 isEqualToString:v16];
+            v16 = [self colorNameForColorValue:5];
+            v17 = [nameCopy isEqualToString:v16];
 
             if ((v17 & 1) == 0)
             {
               v5 = 6;
-              v18 = [a1 colorNameForColorValue:6];
-              v19 = [v4 isEqualToString:v18];
+              v18 = [self colorNameForColorValue:6];
+              v19 = [nameCopy isEqualToString:v18];
 
               if ((v19 & 1) == 0)
               {
-                v20 = [a1 colorNameForColorValue:8];
-                v21 = [v4 isEqualToString:v20];
+                v20 = [self colorNameForColorValue:8];
+                v21 = [nameCopy isEqualToString:v20];
 
                 if (v21)
                 {
@@ -427,7 +427,7 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
   if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues())
   {

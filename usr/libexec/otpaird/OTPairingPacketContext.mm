@@ -2,7 +2,7 @@
 - (NSData)packetData;
 - (NSError)error;
 - (NSString)sessionIdentifier;
-- (OTPairingPacketContext)initWithMessage:(id)a3 fromID:(id)a4 context:(id)a5;
+- (OTPairingPacketContext)initWithMessage:(id)message fromID:(id)d context:(id)context;
 - (int)messageType;
 @end
 
@@ -15,8 +15,8 @@
     error = self->_error;
     if (!error)
     {
-      v4 = [(OTPairingPacketContext *)self message];
-      v5 = [v4 objectForKeyedSubscript:@"error"];
+      message = [(OTPairingPacketContext *)self message];
+      v5 = [message objectForKeyedSubscript:@"error"];
 
       v6 = [NSError errorWithDomain:@"com.apple.security.otpaird" code:4 description:v5];
       v7 = self->_error;
@@ -38,66 +38,66 @@
 
 - (NSData)packetData
 {
-  v2 = [(OTPairingPacketContext *)self message];
-  v3 = [v2 objectForKeyedSubscript:@"packet"];
+  message = [(OTPairingPacketContext *)self message];
+  v3 = [message objectForKeyedSubscript:@"packet"];
 
   return v3;
 }
 
 - (NSString)sessionIdentifier
 {
-  v2 = [(OTPairingPacketContext *)self message];
-  v3 = [v2 objectForKeyedSubscript:@"session"];
+  message = [(OTPairingPacketContext *)self message];
+  v3 = [message objectForKeyedSubscript:@"session"];
 
   return v3;
 }
 
 - (int)messageType
 {
-  v3 = [(OTPairingPacketContext *)self message];
-  v4 = [v3 objectForKeyedSubscript:@"m"];
+  message = [(OTPairingPacketContext *)self message];
+  v4 = [message objectForKeyedSubscript:@"m"];
 
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = [(OTPairingPacketContext *)self packetData];
+    packetData = [(OTPairingPacketContext *)self packetData];
 
-    if (v6)
+    if (packetData)
     {
-      v5 = 1;
+      intValue = 1;
     }
 
     else
     {
-      v5 = 2;
+      intValue = 2;
     }
   }
 
-  return v5;
+  return intValue;
 }
 
-- (OTPairingPacketContext)initWithMessage:(id)a3 fromID:(id)a4 context:(id)a5
+- (OTPairingPacketContext)initWithMessage:(id)message fromID:(id)d context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = OTPairingPacketContext;
   v11 = [(OTPairingPacketContext *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(OTPairingPacketContext *)v11 setMessage:v8];
-    [(OTPairingPacketContext *)v12 setFromID:v9];
-    v13 = [v10 incomingResponseIdentifier];
-    [(OTPairingPacketContext *)v12 setIncomingResponseIdentifier:v13];
+    [(OTPairingPacketContext *)v11 setMessage:messageCopy];
+    [(OTPairingPacketContext *)v12 setFromID:dCopy];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+    [(OTPairingPacketContext *)v12 setIncomingResponseIdentifier:incomingResponseIdentifier];
 
-    v14 = [v10 outgoingResponseIdentifier];
-    [(OTPairingPacketContext *)v12 setOutgoingResponseIdentifier:v14];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    [(OTPairingPacketContext *)v12 setOutgoingResponseIdentifier:outgoingResponseIdentifier];
   }
 
   return v12;

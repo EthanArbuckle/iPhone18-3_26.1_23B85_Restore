@@ -1,10 +1,10 @@
 @interface SPXPCServer
-- (id)_handlerForMessageName:(id)a3;
+- (id)_handlerForMessageName:(id)name;
 - (id)_highAvailabilityQueue;
-- (id)initListenerWithServiceName:(id)a3;
-- (id)initListenerWithServiceName:(id)a3 onQueue:(id)a4 qos:(unsigned int)a5;
+- (id)initListenerWithServiceName:(id)name;
+- (id)initListenerWithServiceName:(id)name onQueue:(id)queue qos:(unsigned int)qos;
 - (void)dealloc;
-- (void)setHandlerForMessageName:(id)a3 handler:(id)a4;
+- (void)setHandlerForMessageName:(id)name handler:(id)handler;
 @end
 
 @implementation SPXPCServer
@@ -35,10 +35,10 @@ void __37__SPXPCServer__highAvailabilityQueue__block_invoke()
   dispatch_activate(v5);
 }
 
-- (id)_handlerForMessageName:(id)a3
+- (id)_handlerForMessageName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_handlerMap objectForKey:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_handlerMap objectForKey:nameCopy];
   v6 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
   if (v5)
   {
@@ -122,16 +122,16 @@ void __40__SPXPCServer__handleNewConnection_qos___block_invoke_152(uint64_t a1)
   }
 }
 
-- (id)initListenerWithServiceName:(id)a3 onQueue:(id)a4 qos:(unsigned int)a5
+- (id)initListenerWithServiceName:(id)name onQueue:(id)queue qos:(unsigned int)qos
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = SPXPCServer;
   v10 = [(SPXPCServer *)&v27 init];
   if (v10)
   {
-    mach_service = xpc_connection_create_mach_service([v8 UTF8String], v9, 1uLL);
+    mach_service = xpc_connection_create_mach_service([nameCopy UTF8String], queueCopy, 1uLL);
     conn = v10->_conn;
     v10->_conn = mach_service;
 
@@ -140,7 +140,7 @@ void __40__SPXPCServer__handleNewConnection_qos___block_invoke_152(uint64_t a1)
     timerQueue = v10->_timerQueue;
     v10->_timerQueue = v14;
 
-    objc_storeStrong(&v10->_eventQueue, a4);
+    objc_storeStrong(&v10->_eventQueue, queue);
     v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     connections = v10->_connections;
     v10->_connections = v16;
@@ -151,7 +151,7 @@ void __40__SPXPCServer__handleNewConnection_qos___block_invoke_152(uint64_t a1)
     connectionsQueue = v10->_connectionsQueue;
     v10->_connectionsQueue = v20;
 
-    v10->_qos = a5;
+    v10->_qos = qos;
     objc_initWeak(&location, v10);
     v22 = v10->_conn;
     v24[0] = MEMORY[0x1E69E9820];
@@ -191,11 +191,11 @@ void __55__SPXPCServer_initListenerWithServiceName_onQueue_qos___block_invoke(ui
   }
 }
 
-- (id)initListenerWithServiceName:(id)a3
+- (id)initListenerWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(SPXPCServer *)self _highAvailabilityQueue];
-  v6 = [(SPXPCServer *)self initListenerWithServiceName:v4 onQueue:v5 qos:33];
+  nameCopy = name;
+  _highAvailabilityQueue = [(SPXPCServer *)self _highAvailabilityQueue];
+  v6 = [(SPXPCServer *)self initListenerWithServiceName:nameCopy onQueue:_highAvailabilityQueue qos:33];
 
   return v6;
 }
@@ -207,7 +207,7 @@ void __55__SPXPCServer_initListenerWithServiceName_onQueue_qos___block_invoke(ui
   v6 = 3221225472;
   v7 = __22__SPXPCServer_dealloc__block_invoke;
   v8 = &unk_1E82F8F28;
-  v9 = self;
+  selfCopy = self;
   tracing_dispatch_sync();
   v4.receiver = self;
   v4.super_class = SPXPCServer;
@@ -254,11 +254,11 @@ void __22__SPXPCServer_dealloc__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHandlerForMessageName:(id)a3 handler:(id)a4
+- (void)setHandlerForMessageName:(id)name handler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  nameCopy = name;
+  handlerCopy = handler;
+  if (nameCopy)
   {
     handlerMap = self->_handlerMap;
     if (!handlerMap)
@@ -270,13 +270,13 @@ void __22__SPXPCServer_dealloc__block_invoke(uint64_t a1)
       handlerMap = self->_handlerMap;
     }
 
-    v10 = [v6 copy];
-    [(NSMutableDictionary *)handlerMap setObject:v10 forKey:v11];
+    v10 = [handlerCopy copy];
+    [(NSMutableDictionary *)handlerMap setObject:v10 forKey:nameCopy];
   }
 
   else
   {
-    [(SPXPCServer *)self setDefaultMessageHandler:v6];
+    [(SPXPCServer *)self setDefaultMessageHandler:handlerCopy];
   }
 }
 

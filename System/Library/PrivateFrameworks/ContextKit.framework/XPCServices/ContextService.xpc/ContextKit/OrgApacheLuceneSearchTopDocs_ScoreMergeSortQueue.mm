@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneSearchTopDocs_ScoreMergeSortQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopDocs_ScoreMergeSortQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
   shardHits = self->shardHits_;
-  if (!shardHits || !a3)
+  if (!shardHits || !id)
   {
     goto LABEL_23;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(id + 2);
   size = shardHits->super.size_;
   if (v6 < 0 || v6 >= size)
   {
@@ -26,7 +26,7 @@
     goto LABEL_23;
   }
 
-  v9 = *(a3 + 3);
+  v9 = *(id + 3);
   isa_low = LODWORD(v8[1].super.isa);
   if (v9 < 0 || v9 >= isa_low)
   {
@@ -34,14 +34,14 @@
   }
 
   isa = v8[v9 + 3].super.isa;
-  if (!isa || !a4)
+  if (!isa || !withId)
   {
     goto LABEL_23;
   }
 
   v12 = *(isa + 2);
   v13 = self->shardHits_;
-  v14 = *(a4 + 2);
+  v14 = *(withId + 2);
   v15 = v13->super.size_;
   if (v14 < 0 || v14 >= v15)
   {
@@ -54,7 +54,7 @@
     goto LABEL_23;
   }
 
-  v17 = *(a4 + 3);
+  v17 = *(withId + 3);
   v18 = LODWORD(v16[1].super.isa);
   if (v17 < 0 || v17 >= v18)
   {
@@ -79,8 +79,8 @@ LABEL_23:
     return 1;
   }
 
-  v22 = *(a3 + 2);
-  v23 = *(a4 + 2);
+  v22 = *(id + 2);
+  v23 = *(withId + 2);
   if (v22 < v23)
   {
     return 1;
@@ -91,7 +91,7 @@ LABEL_23:
     return 0;
   }
 
-  return *(a3 + 3) < *(a4 + 3);
+  return *(id + 3) < *(withId + 3);
 }
 
 - (void)dealloc

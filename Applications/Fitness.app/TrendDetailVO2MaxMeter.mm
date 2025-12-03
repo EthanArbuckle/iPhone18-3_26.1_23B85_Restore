@@ -1,6 +1,6 @@
 @interface TrendDetailVO2MaxMeter
 - (CGSize)intrinsicContentSize;
-- (_TtC10FitnessApp22TrendDetailVO2MaxMeter)initWithCoder:(id)a3;
+- (_TtC10FitnessApp22TrendDetailVO2MaxMeter)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
   return result;
 }
 
-- (_TtC10FitnessApp22TrendDetailVO2MaxMeter)initWithCoder:(id)a3
+- (_TtC10FitnessApp22TrendDetailVO2MaxMeter)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC10FitnessApp22TrendDetailVO2MaxMeter_gradientLayer;
   v6 = objc_allocWithZone(CAGradientLayer);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 init];
   v8 = OBJC_IVAR____TtC10FitnessApp22TrendDetailVO2MaxMeter_shapeLayer;
   v9 = [objc_allocWithZone(CAShapeLayer) init];

@@ -1,7 +1,7 @@
 @interface _SFWebAppMediaCaptureStatusBarManager
 + (_SFWebAppMediaCaptureStatusBarManager)sharedManager;
 - (id)statusString;
-- (unint64_t)overrideStyleForAudioOnly:(BOOL)a3;
+- (unint64_t)overrideStyleForAudioOnly:(BOOL)only;
 @end
 
 @implementation _SFWebAppMediaCaptureStatusBarManager
@@ -22,15 +22,15 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = _WBSLocalizedString();
-  v5 = [(SFMediaCaptureStatusBarManager *)self simplifiedURLString];
-  v6 = [v3 stringWithFormat:v4, v5];
+  simplifiedURLString = [(SFMediaCaptureStatusBarManager *)self simplifiedURLString];
+  v6 = [v3 stringWithFormat:v4, simplifiedURLString];
 
   return v6;
 }
 
-- (unint64_t)overrideStyleForAudioOnly:(BOOL)a3
+- (unint64_t)overrideStyleForAudioOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     return 0x4000000;
   }

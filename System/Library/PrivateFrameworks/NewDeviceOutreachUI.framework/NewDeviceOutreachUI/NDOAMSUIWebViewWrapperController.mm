@@ -1,23 +1,23 @@
 @interface NDOAMSUIWebViewWrapperController
-- (NDOAMSUIWebViewWrapperController)initWithViewController:(id)a3;
+- (NDOAMSUIWebViewWrapperController)initWithViewController:(id)controller;
 - (void)dealloc;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NDOAMSUIWebViewWrapperController
 
-- (NDOAMSUIWebViewWrapperController)initWithViewController:(id)a3
+- (NDOAMSUIWebViewWrapperController)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = NDOAMSUIWebViewWrapperController;
   v6 = [(NDOAMSUIWebViewWrapperController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
@@ -25,9 +25,9 @@
 
 - (void)dealloc
 {
-  v3 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
+  dismissBlock = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
 
-  if (v3)
+  if (dismissBlock)
   {
     v4 = _NDOLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -35,8 +35,8 @@
       [(NDOAMSUIWebViewWrapperController *)v4 dealloc:v5];
     }
 
-    v12 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
-    v12[2]();
+    dismissBlock2 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
+    dismissBlock2[2]();
 
     [(NDOAMSUIWebViewWrapperController *)self setDismissBlock:0];
   }
@@ -51,10 +51,10 @@
   v5.receiver = self;
   v5.super_class = NDOAMSUIWebViewWrapperController;
   [(AMSUICommonViewController *)&v5 loadView];
-  v3 = [(NDOAMSUIWebViewWrapperController *)self viewController];
+  viewController = [(NDOAMSUIWebViewWrapperController *)self viewController];
   v4.receiver = self;
   v4.super_class = NDOAMSUIWebViewWrapperController;
-  [(AMSUICommonViewController *)&v4 setChildViewController:v3];
+  [(AMSUICommonViewController *)&v4 setChildViewController:viewController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -62,22 +62,22 @@
   v14.receiver = self;
   v14.super_class = NDOAMSUIWebViewWrapperController;
   [(NDOAMSUIWebViewWrapperController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NDOAMSUIWebViewWrapperController *)self viewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  viewController = [(NDOAMSUIWebViewWrapperController *)self viewController];
+  view2 = [viewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
+  dismissBlock = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
 
-  if (v4)
+  if (dismissBlock)
   {
     v5 = _NDOLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -85,8 +85,8 @@
       [(NDOAMSUIWebViewWrapperController *)v5 presentationControllerDidDismiss:v6, v7, v8, v9, v10, v11, v12];
     }
 
-    v13 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
-    v13[2]();
+    dismissBlock2 = [(NDOAMSUIWebViewWrapperController *)self dismissBlock];
+    dismissBlock2[2]();
 
     [(NDOAMSUIWebViewWrapperController *)self setDismissBlock:0];
   }

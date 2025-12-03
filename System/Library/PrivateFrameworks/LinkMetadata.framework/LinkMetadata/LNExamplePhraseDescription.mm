@@ -1,67 +1,67 @@
 @interface LNExamplePhraseDescription
-- (BOOL)isEqual:(id)a3;
-- (LNExamplePhraseDescription)initWithCoder:(id)a3;
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrase:(id)a5 expected:(id)a6 phraseTemplate:(id)a7;
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 expected:(id)a6;
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 expected:(id)a6 parameter:(id)a7;
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 phrase:(id)a6 expected:(id)a7 parameter:(id)a8 phraseTemplate:(id)a9;
-- (LNExamplePhraseDescription)initWithNegativePhrases:(id)a3 parentIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNExamplePhraseDescription)initWithCoder:(id)coder;
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrase:(id)phrase expected:(id)expected phraseTemplate:(id)template;
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases expected:(id)expected;
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases expected:(id)expected parameter:(id)parameter;
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases phrase:(id)phrase expected:(id)expected parameter:(id)parameter phraseTemplate:(id)template;
+- (LNExamplePhraseDescription)initWithNegativePhrases:(id)phrases parentIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNExamplePhraseDescription
 
 - (id)description
 {
-  v4 = [(LNExamplePhraseDescription *)self kind];
-  if (v4 <= 1)
+  kind = [(LNExamplePhraseDescription *)self kind];
+  if (kind <= 1)
   {
-    if (v4)
+    if (kind)
     {
-      if (v4 != 1)
+      if (kind != 1)
       {
         goto LABEL_13;
       }
 
       v9 = MEMORY[0x1E696AEC0];
-      v6 = [(LNExamplePhraseDescription *)self parameter];
-      v7 = [(LNExamplePhraseDescription *)self phrases];
-      v2 = [v9 stringWithFormat:@"Parameter:%@ Phrases:%@", v6, v7];
+      parameter = [(LNExamplePhraseDescription *)self parameter];
+      phrases = [(LNExamplePhraseDescription *)self phrases];
+      v2 = [v9 stringWithFormat:@"Parameter:%@ Phrases:%@", parameter, phrases];
     }
 
     else
     {
       v11 = MEMORY[0x1E696AEC0];
-      v6 = [(LNExamplePhraseDescription *)self parentIdentifier];
-      v7 = [(LNExamplePhraseDescription *)self phrases];
-      v12 = [(LNExamplePhraseDescription *)self phrase];
-      v13 = [(LNExamplePhraseDescription *)self expected];
-      v14 = [(LNExamplePhraseDescription *)self phraseTemplate];
-      v2 = [v11 stringWithFormat:@"Intent parentIdentifier:%@ phrases:%@ phrase:%@ expected invocation:%@ phraseTemplate:%@", v6, v7, v12, v13, v14];
+      parameter = [(LNExamplePhraseDescription *)self parentIdentifier];
+      phrases = [(LNExamplePhraseDescription *)self phrases];
+      phrase = [(LNExamplePhraseDescription *)self phrase];
+      expected = [(LNExamplePhraseDescription *)self expected];
+      phraseTemplate = [(LNExamplePhraseDescription *)self phraseTemplate];
+      v2 = [v11 stringWithFormat:@"Intent parentIdentifier:%@ phrases:%@ phrase:%@ expected invocation:%@ phraseTemplate:%@", parameter, phrases, phrase, expected, phraseTemplate];
     }
 
     goto LABEL_12;
   }
 
-  if (v4 == 2)
+  if (kind == 2)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v6 = [(LNExamplePhraseDescription *)self phrases];
-    v7 = [(LNExamplePhraseDescription *)self phrase];
-    v8 = [(LNExamplePhraseDescription *)self expected];
-    [v10 stringWithFormat:@"Entity phrases:%@ phrase:%@ expected entity:%@", v6, v7, v8];
+    parameter = [(LNExamplePhraseDescription *)self phrases];
+    phrases = [(LNExamplePhraseDescription *)self phrase];
+    expected2 = [(LNExamplePhraseDescription *)self expected];
+    [v10 stringWithFormat:@"Entity phrases:%@ phrase:%@ expected entity:%@", parameter, phrases, expected2];
     goto LABEL_10;
   }
 
-  if (v4 == 3 || v4 == 4)
+  if (kind == 3 || kind == 4)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(LNExamplePhraseDescription *)self phrases];
-    v7 = [(LNExamplePhraseDescription *)self phrase];
-    v8 = [(LNExamplePhraseDescription *)self expected];
-    [v5 stringWithFormat:@"Query phrases:%@ phrase:%@ expected query:%@", v6, v7, v8];
+    parameter = [(LNExamplePhraseDescription *)self phrases];
+    phrases = [(LNExamplePhraseDescription *)self phrase];
+    expected2 = [(LNExamplePhraseDescription *)self expected];
+    [v5 stringWithFormat:@"Query phrases:%@ phrase:%@ expected query:%@", parameter, phrases, expected2];
     v2 = LABEL_10:;
 
 LABEL_12:
@@ -72,43 +72,43 @@ LABEL_13:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNExamplePhraseDescription *)self kind];
-        if (v7 == [(LNExamplePhraseDescription *)v6 kind])
+        kind = [(LNExamplePhraseDescription *)self kind];
+        if (kind == [(LNExamplePhraseDescription *)v6 kind])
         {
-          v8 = [(LNExamplePhraseDescription *)self phrases];
-          v9 = [(LNExamplePhraseDescription *)v6 phrases];
+          phrases = [(LNExamplePhraseDescription *)self phrases];
+          phrases2 = [(LNExamplePhraseDescription *)v6 phrases];
 
-          if (v8 == v9)
+          if (phrases == phrases2)
           {
             goto LABEL_9;
           }
 
-          v10 = [(LNExamplePhraseDescription *)self phrases];
-          if (v10)
+          phrases3 = [(LNExamplePhraseDescription *)self phrases];
+          if (phrases3)
           {
-            v11 = v10;
-            v12 = [(LNExamplePhraseDescription *)v6 phrases];
+            v11 = phrases3;
+            phrases4 = [(LNExamplePhraseDescription *)v6 phrases];
 
-            if (v12)
+            if (phrases4)
             {
               v13 = MEMORY[0x1E695DFD8];
-              v14 = [(LNExamplePhraseDescription *)self phrases];
-              v15 = [v13 setWithArray:v14];
+              phrases5 = [(LNExamplePhraseDescription *)self phrases];
+              v15 = [v13 setWithArray:phrases5];
               v16 = MEMORY[0x1E695DFD8];
-              v17 = [(LNExamplePhraseDescription *)v6 phrases];
-              v18 = [v16 setWithArray:v17];
+              phrases6 = [(LNExamplePhraseDescription *)v6 phrases];
+              v18 = [v16 setWithArray:phrases6];
               v19 = [v15 isEqualToSet:v18];
 
               if (!v19)
@@ -119,10 +119,10 @@ LABEL_19:
               }
 
 LABEL_9:
-              v20 = [(LNExamplePhraseDescription *)self expected];
-              v21 = [(LNExamplePhraseDescription *)v6 expected];
-              v22 = v20;
-              v23 = v21;
+              expected = [(LNExamplePhraseDescription *)self expected];
+              expected2 = [(LNExamplePhraseDescription *)v6 expected];
+              v22 = expected;
+              v23 = expected2;
               v24 = v23;
               if (v22 == v23)
               {
@@ -149,10 +149,10 @@ LABEL_45:
                 }
               }
 
-              v29 = [(LNExamplePhraseDescription *)self parameter];
-              v30 = [(LNExamplePhraseDescription *)v6 parameter];
-              v26 = v29;
-              v31 = v30;
+              parameter = [(LNExamplePhraseDescription *)self parameter];
+              parameter2 = [(LNExamplePhraseDescription *)v6 parameter];
+              v26 = parameter;
+              v31 = parameter2;
               v25 = v31;
               if (v26 == v31)
               {
@@ -176,10 +176,10 @@ LABEL_45:
                 }
               }
 
-              v34 = [(LNExamplePhraseDescription *)self phrase];
-              v35 = [(LNExamplePhraseDescription *)v6 phrase];
-              v36 = v34;
-              v37 = v35;
+              phrase = [(LNExamplePhraseDescription *)self phrase];
+              phrase2 = [(LNExamplePhraseDescription *)v6 phrase];
+              v36 = phrase;
+              v37 = phrase2;
               v43 = v36;
               v44 = v37;
               if (v36 != v37)
@@ -220,10 +220,10 @@ LABEL_44:
               }
 
 LABEL_34:
-              v40 = [(LNExamplePhraseDescription *)self phraseTemplate];
-              v41 = [(LNExamplePhraseDescription *)v6 phraseTemplate];
-              v38 = v40;
-              v42 = v41;
+              phraseTemplate = [(LNExamplePhraseDescription *)self phraseTemplate];
+              phraseTemplate2 = [(LNExamplePhraseDescription *)v6 phraseTemplate];
+              v38 = phraseTemplate;
+              v42 = phraseTemplate2;
               v39 = v42;
               if (v38 == v42)
               {
@@ -272,43 +272,43 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(LNExamplePhraseDescription *)self kind];
-  v4 = [(LNExamplePhraseDescription *)self phrases];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(LNExamplePhraseDescription *)self expected];
-  v7 = [v6 hash];
-  v8 = [(LNExamplePhraseDescription *)self parameter];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(LNExamplePhraseDescription *)self phrase];
-  v11 = [v10 hash];
-  v12 = [(LNExamplePhraseDescription *)self phraseTemplate];
-  v13 = v11 ^ [v12 hash];
+  kind = [(LNExamplePhraseDescription *)self kind];
+  phrases = [(LNExamplePhraseDescription *)self phrases];
+  v5 = [phrases hash] ^ kind;
+  expected = [(LNExamplePhraseDescription *)self expected];
+  v7 = [expected hash];
+  parameter = [(LNExamplePhraseDescription *)self parameter];
+  v9 = v5 ^ v7 ^ [parameter hash];
+  phrase = [(LNExamplePhraseDescription *)self phrase];
+  v11 = [phrase hash];
+  phraseTemplate = [(LNExamplePhraseDescription *)self phraseTemplate];
+  v13 = v11 ^ [phraseTemplate hash];
 
   return v9 ^ v13;
 }
 
-- (LNExamplePhraseDescription)initWithCoder:(id)a3
+- (LNExamplePhraseDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"kind"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentIdentifier"];
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeIntegerForKey:@"kind"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentIdentifier"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"phrases"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"phrases"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expected"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameter"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phraseTemplate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expected"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameter"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phraseTemplate"];
 
-  if (v5)
+  if (selfCopy)
   {
-    if (v5 == 1)
+    if (selfCopy == 1)
     {
       if (!v13)
       {
-        v5 = 0;
+        selfCopy = 0;
         goto LABEL_7;
       }
 
@@ -317,49 +317,49 @@ LABEL_20:
 
     else
     {
-      v15 = [(LNExamplePhraseDescription *)self initWithKind:v5 parentIdentifier:v6 phrases:v10 phrase:v11 expected:v12 parameter:v13 phraseTemplate:v14];
+      v15 = [(LNExamplePhraseDescription *)self initWithKind:selfCopy parentIdentifier:v6 phrases:v10 phrase:v11 expected:v12 parameter:v13 phraseTemplate:v14];
     }
 
     self = v15;
-    v5 = self;
+    selfCopy = self;
   }
 
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNExamplePhraseDescription kind](self forKey:{"kind"), @"kind"}];
-  v5 = [(LNExamplePhraseDescription *)self parentIdentifier];
-  [v4 encodeObject:v5 forKey:@"parentIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNExamplePhraseDescription kind](self forKey:{"kind"), @"kind"}];
+  parentIdentifier = [(LNExamplePhraseDescription *)self parentIdentifier];
+  [coderCopy encodeObject:parentIdentifier forKey:@"parentIdentifier"];
 
-  v6 = [(LNExamplePhraseDescription *)self phrases];
-  [v4 encodeObject:v6 forKey:@"phrases"];
+  phrases = [(LNExamplePhraseDescription *)self phrases];
+  [coderCopy encodeObject:phrases forKey:@"phrases"];
 
-  v7 = [(LNExamplePhraseDescription *)self phrase];
-  [v4 encodeObject:v7 forKey:@"phrase"];
+  phrase = [(LNExamplePhraseDescription *)self phrase];
+  [coderCopy encodeObject:phrase forKey:@"phrase"];
 
-  v8 = [(LNExamplePhraseDescription *)self expected];
-  [v4 encodeObject:v8 forKey:@"expected"];
+  expected = [(LNExamplePhraseDescription *)self expected];
+  [coderCopy encodeObject:expected forKey:@"expected"];
 
-  v9 = [(LNExamplePhraseDescription *)self parameter];
-  [v4 encodeObject:v9 forKey:@"parameter"];
+  parameter = [(LNExamplePhraseDescription *)self parameter];
+  [coderCopy encodeObject:parameter forKey:@"parameter"];
 
-  v10 = [(LNExamplePhraseDescription *)self phraseTemplate];
-  [v4 encodeObject:v10 forKey:@"phraseTemplate"];
+  phraseTemplate = [(LNExamplePhraseDescription *)self phraseTemplate];
+  [coderCopy encodeObject:phraseTemplate forKey:@"phraseTemplate"];
 }
 
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 expected:(id)a6 parameter:(id)a7
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases expected:(id)expected parameter:(id)parameter
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v12 count])
+  identifierCopy = identifier;
+  phrasesCopy = phrases;
+  expectedCopy = expected;
+  if ([phrasesCopy count])
   {
-    v14 = [v12 objectAtIndexedSubscript:0];
+    v14 = [phrasesCopy objectAtIndexedSubscript:0];
   }
 
   else
@@ -367,18 +367,18 @@ LABEL_7:
     v14 = &stru_1F02ED148;
   }
 
-  v15 = [(LNExamplePhraseDescription *)self initWithKind:a3 parentIdentifier:v11 phrase:v14 expected:v13 phraseTemplate:0];
+  v15 = [(LNExamplePhraseDescription *)self initWithKind:kind parentIdentifier:identifierCopy phrase:v14 expected:expectedCopy phraseTemplate:0];
 
   return v15;
 }
 
-- (LNExamplePhraseDescription)initWithNegativePhrases:(id)a3 parentIdentifier:(id)a4
+- (LNExamplePhraseDescription)initWithNegativePhrases:(id)phrases parentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  phrasesCopy = phrases;
+  identifierCopy = identifier;
+  if ([phrasesCopy count])
   {
-    v8 = [v6 objectAtIndexedSubscript:0];
+    v8 = [phrasesCopy objectAtIndexedSubscript:0];
   }
 
   else
@@ -386,19 +386,19 @@ LABEL_7:
     v8 = &stru_1F02ED148;
   }
 
-  v9 = [(LNExamplePhraseDescription *)self initWithKind:4 parentIdentifier:v7 phrase:v8 expected:0 phraseTemplate:0];
+  v9 = [(LNExamplePhraseDescription *)self initWithKind:4 parentIdentifier:identifierCopy phrase:v8 expected:0 phraseTemplate:0];
 
   return v9;
 }
 
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 expected:(id)a6
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases expected:(id)expected
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 count])
+  identifierCopy = identifier;
+  phrasesCopy = phrases;
+  expectedCopy = expected;
+  if ([phrasesCopy count])
   {
-    v13 = [v11 objectAtIndexedSubscript:0];
+    v13 = [phrasesCopy objectAtIndexedSubscript:0];
   }
 
   else
@@ -406,47 +406,47 @@ LABEL_7:
     v13 = &stru_1F02ED148;
   }
 
-  v14 = [(LNExamplePhraseDescription *)self initWithKind:a3 parentIdentifier:v10 phrase:v13 expected:v12 phraseTemplate:0];
+  v14 = [(LNExamplePhraseDescription *)self initWithKind:kind parentIdentifier:identifierCopy phrase:v13 expected:expectedCopy phraseTemplate:0];
 
   return v14;
 }
 
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrases:(id)a5 phrase:(id)a6 expected:(id)a7 parameter:(id)a8 phraseTemplate:(id)a9
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrases:(id)phrases phrase:(id)phrase expected:(id)expected parameter:(id)parameter phraseTemplate:(id)template
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  identifierCopy = identifier;
+  phrasesCopy = phrases;
+  phraseCopy = phrase;
+  expectedCopy = expected;
+  parameterCopy = parameter;
+  templateCopy = template;
   v37.receiver = self;
   v37.super_class = LNExamplePhraseDescription;
   v21 = [(LNExamplePhraseDescription *)&v37 init];
   v22 = v21;
   if (v21)
   {
-    v21->_kind = a3;
-    v23 = [v15 copy];
+    v21->_kind = kind;
+    v23 = [identifierCopy copy];
     parentIdentifier = v22->_parentIdentifier;
     v22->_parentIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [phrasesCopy copy];
     phrases = v22->_phrases;
     v22->_phrases = v25;
 
-    v27 = [v17 copy];
+    v27 = [phraseCopy copy];
     phrase = v22->_phrase;
     v22->_phrase = v27;
 
-    v29 = [v18 copy];
+    v29 = [expectedCopy copy];
     expected = v22->_expected;
     v22->_expected = v29;
 
-    v31 = [v19 copy];
+    v31 = [parameterCopy copy];
     parameter = v22->_parameter;
     v22->_parameter = v31;
 
-    v33 = [v20 copy];
+    v33 = [templateCopy copy];
     phraseTemplate = v22->_phraseTemplate;
     v22->_phraseTemplate = v33;
 
@@ -456,16 +456,16 @@ LABEL_7:
   return v22;
 }
 
-- (LNExamplePhraseDescription)initWithKind:(int64_t)a3 parentIdentifier:(id)a4 phrase:(id)a5 expected:(id)a6 phraseTemplate:(id)a7
+- (LNExamplePhraseDescription)initWithKind:(int64_t)kind parentIdentifier:(id)identifier phrase:(id)phrase expected:(id)expected phraseTemplate:(id)template
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  identifierCopy = identifier;
+  phraseCopy = phrase;
+  expectedCopy = expected;
+  templateCopy = template;
+  if (identifierCopy)
   {
-    if (v14)
+    if (phraseCopy)
     {
       goto LABEL_3;
     }
@@ -473,17 +473,17 @@ LABEL_7:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"LNExamplePhraseDescription.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"parentIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNExamplePhraseDescription.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"parentIdentifier"}];
 
-    if (v14)
+    if (phraseCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"LNExamplePhraseDescription.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNExamplePhraseDescription.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
 
 LABEL_3:
   v35.receiver = self;
@@ -492,26 +492,26 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    v17->_kind = a3;
-    v19 = [v13 copy];
+    v17->_kind = kind;
+    v19 = [identifierCopy copy];
     parentIdentifier = v18->_parentIdentifier;
     v18->_parentIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [phraseCopy copy];
     v36[0] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
     phrases = v18->_phrases;
     v18->_phrases = v22;
 
-    v24 = [v14 copy];
+    v24 = [phraseCopy copy];
     phrase = v18->_phrase;
     v18->_phrase = v24;
 
-    v26 = [v15 copy];
+    v26 = [expectedCopy copy];
     expected = v18->_expected;
     v18->_expected = v26;
 
-    v28 = [v16 copy];
+    v28 = [templateCopy copy];
     phraseTemplate = v18->_phraseTemplate;
     v18->_phraseTemplate = v28;
 

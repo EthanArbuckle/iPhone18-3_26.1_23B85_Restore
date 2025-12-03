@@ -1,13 +1,13 @@
 @interface MKPlaceAttributionCell
 + (id)fontForLabel;
-- (MKPlaceAttributionCell)initWithFrame:(CGRect)a3;
+- (MKPlaceAttributionCell)initWithFrame:(CGRect)frame;
 - (MKPlaceAttributionCellDelegate)cellDelegate;
 - (double)currentHeight;
 - (void)_contentSizeDidChange;
-- (void)attributionCellButton:(id)a3 isHighighted:(BOOL)a4 executeAction:(BOOL)a5;
+- (void)attributionCellButton:(id)button isHighighted:(BOOL)highighted executeAction:(BOOL)action;
 - (void)attributionClicked;
 - (void)createConstraints;
-- (void)setAttributionString:(id)a3;
+- (void)setAttributionString:(id)string;
 - (void)updateConstraints;
 @end
 
@@ -20,21 +20,21 @@
   return WeakRetained;
 }
 
-- (void)attributionCellButton:(id)a3 isHighighted:(BOOL)a4 executeAction:(BOOL)a5
+- (void)attributionCellButton:(id)button isHighighted:(BOOL)highighted executeAction:(BOOL)action
 {
-  v5 = a4;
-  v7 = a3;
-  if (self->_label == v7)
+  highightedCopy = highighted;
+  buttonCopy = button;
+  if (self->_label == buttonCopy)
   {
-    v9 = v7;
+    v9 = buttonCopy;
     v8 = 1.0;
-    if (v5)
+    if (highightedCopy)
     {
       v8 = 0.25;
     }
 
     [*&self->_highlighted setAlpha:v8];
-    v7 = v9;
+    buttonCopy = v9;
   }
 }
 
@@ -49,24 +49,24 @@
   return v6;
 }
 
-- (void)setAttributionString:(id)a3
+- (void)setAttributionString:(id)string
 {
   v4 = *&self->_highlighted;
-  v5 = a3;
-  [v4 setAttributedText:v5];
-  v6 = [v5 string];
+  stringCopy = string;
+  [v4 setAttributedText:stringCopy];
+  string = [stringCopy string];
 
-  [(_MKUILabel *)self->_label setAccessibilityLabel:v6];
-  v7 = [(_MKUILabel *)self->_label accessibilityLabel];
-  [(MKPlaceAttributionCell *)self setAccessibilityLabel:v7];
+  [(_MKUILabel *)self->_label setAccessibilityLabel:string];
+  accessibilityLabel = [(_MKUILabel *)self->_label accessibilityLabel];
+  [(MKPlaceAttributionCell *)self setAccessibilityLabel:accessibilityLabel];
 
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
 
 - (void)attributionClicked
 {
-  v2 = [(MKPlaceAttributionCell *)self cellDelegate];
-  [v2 openURL];
+  cellDelegate = [(MKPlaceAttributionCell *)self cellDelegate];
+  [cellDelegate openURL];
 }
 
 - (void)_contentSizeDidChange
@@ -81,12 +81,12 @@
 
 - (void)updateConstraints
 {
-  v3 = [*&self->_highlighted attributedText];
-  if ([v3 length])
+  attributedText = [*&self->_highlighted attributedText];
+  if ([attributedText length])
   {
-    v4 = [(NSArray *)self->_visibleConstraints isActive];
+    isActive = [(NSArray *)self->_visibleConstraints isActive];
 
-    if (v4)
+    if (isActive)
     {
       [(NSArray *)self->_visibleConstraints setActive:0];
       [MEMORY[0x1E696ACD8] activateConstraints:*&self->super._selected];
@@ -98,16 +98,16 @@
   {
   }
 
-  v5 = [*&self->_highlighted attributedText];
-  if ([v5 length])
+  attributedText2 = [*&self->_highlighted attributedText];
+  if ([attributedText2 length])
   {
   }
 
   else
   {
-    v6 = [(NSArray *)self->_visibleConstraints isActive];
+    isActive2 = [(NSArray *)self->_visibleConstraints isActive];
 
-    if ((v6 & 1) == 0)
+    if ((isActive2 & 1) == 0)
     {
       [MEMORY[0x1E696ACD8] deactivateConstraints:*&self->super._selected];
       [(NSArray *)self->_visibleConstraints setActive:1];
@@ -123,20 +123,20 @@ LABEL_9:
 - (void)createConstraints
 {
   v43[8] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[MKPlaceAttributionCell fontForLabel];
-  v5 = [*&self->_highlighted firstBaselineAnchor];
-  v6 = [(MKPlaceAttributionCell *)self topAnchor];
+  firstBaselineAnchor = [*&self->_highlighted firstBaselineAnchor];
+  topAnchor = [(MKPlaceAttributionCell *)self topAnchor];
   v42 = v4;
   [v4 _mapkit_scaledValueForValue:27.0];
-  v7 = [v5 constraintEqualToAnchor:v6 constant:?];
+  v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   labelButton = self->_labelButton;
   self->_labelButton = v7;
 
-  v9 = [*&self->_highlighted lastBaselineAnchor];
-  v10 = [(MKPlaceAttributionCell *)self bottomAnchor];
+  lastBaselineAnchor = [*&self->_highlighted lastBaselineAnchor];
+  bottomAnchor = [(MKPlaceAttributionCell *)self bottomAnchor];
   [v4 _mapkit_scaledValueForValue:18.0];
-  v12 = [v9 constraintEqualToAnchor:v10 constant:-v11];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-v11];
   labelBaselineToTop = self->_labelBaselineToTop;
   self->_labelBaselineToTop = v12;
 
@@ -145,41 +145,41 @@ LABEL_9:
   v15 = self->_labelButton;
   v43[0] = self->_labelBaselineToTop;
   v43[1] = v15;
-  v40 = [*&self->_highlighted leadingAnchor];
-  v41 = [(MKPlaceAttributionCell *)self layoutMarginsGuide];
-  v39 = [v41 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor = [*&self->_highlighted leadingAnchor];
+  layoutMarginsGuide = [(MKPlaceAttributionCell *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v43[2] = v38;
-  v36 = [*&self->_highlighted trailingAnchor];
-  v37 = [(MKPlaceAttributionCell *)self layoutMarginsGuide];
-  v35 = [v37 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  trailingAnchor = [*&self->_highlighted trailingAnchor];
+  layoutMarginsGuide2 = [(MKPlaceAttributionCell *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v43[3] = v34;
-  v33 = [*&self->_highlighted topAnchor];
-  v32 = [(_MKUILabel *)self->_label topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor2 = [*&self->_highlighted topAnchor];
+  topAnchor3 = [(_MKUILabel *)self->_label topAnchor];
+  v31 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v43[4] = v31;
-  v30 = [*&self->_highlighted bottomAnchor];
-  v29 = [(_MKUILabel *)self->_label bottomAnchor];
-  v16 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor2 = [*&self->_highlighted bottomAnchor];
+  bottomAnchor3 = [(_MKUILabel *)self->_label bottomAnchor];
+  v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v43[5] = v16;
-  v17 = [*&self->_highlighted leadingAnchor];
-  v18 = [(_MKUILabel *)self->_label leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  leadingAnchor3 = [*&self->_highlighted leadingAnchor];
+  leadingAnchor4 = [(_MKUILabel *)self->_label leadingAnchor];
+  v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v43[6] = v19;
-  v20 = [*&self->_highlighted trailingAnchor];
-  v21 = [(_MKUILabel *)self->_label trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [*&self->_highlighted trailingAnchor];
+  trailingAnchor4 = [(_MKUILabel *)self->_label trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v43[7] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:8];
-  [v3 addObjectsFromArray:v23];
+  [array addObjectsFromArray:v23];
 
-  v24 = [v3 copy];
+  v24 = [array copy];
   v25 = *&self->super._selected;
   *&self->super._selected = v24;
 
-  v26 = [(MKPlaceAttributionCell *)self heightAnchor];
-  v27 = [v26 constraintEqualToConstant:0.0];
+  heightAnchor = [(MKPlaceAttributionCell *)self heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:0.0];
   visibleConstraints = self->_visibleConstraints;
   self->_visibleConstraints = v27;
 
@@ -187,11 +187,11 @@ LABEL_9:
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
 
-- (MKPlaceAttributionCell)initWithFrame:(CGRect)a3
+- (MKPlaceAttributionCell)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = MKPlaceAttributionCell;
-  v3 = [(MKPlaceSectionItemView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceSectionItemView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -206,8 +206,8 @@ LABEL_9:
     *&v4->_highlighted = v10;
 
     v12 = *&v4->_highlighted;
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v12 setBackgroundColor:clearColor];
 
     [*&v4->_highlighted setTranslatesAutoresizingMaskIntoConstraints:0];
     v14 = +[MKPlaceAttributionCell fontForLabel];
@@ -225,8 +225,8 @@ LABEL_9:
     [(_MKUILabel *)v4->_label setButtonDelegate:v4];
     [(_MKUILabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     v18 = v4->_label;
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v18 _mapkit_setBackgroundColor:v19];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v18 _mapkit_setBackgroundColor:clearColor2];
 
     [(_MKUILabel *)v4->_label addTarget:v4 action:sel_attributionClicked forControlEvents:64];
     [(MKPlaceAttributionCell *)v4 addSubview:v4->_label];
@@ -239,8 +239,8 @@ LABEL_9:
     [(MKPlaceAttributionCell *)v4 addGestureRecognizer:v4->_cellDelegate];
     [(MKPlaceAttributionCellDelegate *)v4->_cellDelegate addTarget:v4 action:sel_attributionClicked];
     [(MKPlaceAttributionCell *)v4 createConstraints];
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;
@@ -249,9 +249,9 @@ LABEL_9:
 + (id)fontForLabel
 {
   v2 = +[MKFontManager sharedManager];
-  v3 = [v2 subtitleFont];
+  subtitleFont = [v2 subtitleFont];
 
-  return v3;
+  return subtitleFont;
 }
 
 @end

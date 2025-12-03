@@ -1,9 +1,9 @@
 @interface _TUIElementTextPlainBuilder
 - (NSString)text;
-- (_NSRange)appendWithBlock:(id)a3;
+- (_NSRange)appendWithBlock:(id)block;
 - (_TUIElementTextPlainBuilder)init;
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4;
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6;
+- (void)appendHyperlinkWithURL:(id)l block:(id)block;
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block;
 @end
 
 @implementation _TUIElementTextPlainBuilder
@@ -30,29 +30,29 @@
   return v2;
 }
 
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4
+- (void)appendHyperlinkWithURL:(id)l block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block
 {
-  if (a6)
+  if (block)
   {
-    (*(a6 + 2))(a6);
+    (*(block + 2))(block);
   }
 }
 
-- (_NSRange)appendWithBlock:(id)a3
+- (_NSRange)appendWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableString *)self->_string length];
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v6 = ([(NSMutableString *)self->_string length]- v5);

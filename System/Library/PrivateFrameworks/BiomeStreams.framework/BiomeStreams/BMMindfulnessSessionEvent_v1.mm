@@ -1,21 +1,21 @@
 @interface BMMindfulnessSessionEvent_v1
-- (BMMindfulnessSessionEvent_v1)initWithProto:(id)a3;
+- (BMMindfulnessSessionEvent_v1)initWithProto:(id)proto;
 @end
 
 @implementation BMMindfulnessSessionEvent_v1
 
-- (BMMindfulnessSessionEvent_v1)initWithProto:(id)a3
+- (BMMindfulnessSessionEvent_v1)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 sessionType];
-      v7 = v6;
-      if (v6 >= 4)
+      v5 = protoCopy;
+      sessionType = [v5 sessionType];
+      v7 = sessionType;
+      if (sessionType >= 4)
       {
         v10 = __biome_log_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -28,11 +28,11 @@
 
       else
       {
-        v8 = qword_184D279F8[v6];
+        v8 = qword_184D279F8[sessionType];
       }
 
       self = [(BMMindfulnessSessionEvent *)self initWithSessionType:v8 stateType:typeWithBMPBMindfulnessSessionStateType([v5 stateType])];
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -43,16 +43,16 @@
         [BMMindfulnessSessionEvent initWithProto:];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,66 +1,66 @@
 @interface MNNavigationServer
 + (id)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MNNavigationServer)init;
 - (id)_peerDescriptions;
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3;
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints;
 - (unint64_t)_peersCount;
 - (void)_defaultsDidChange;
-- (void)_enumerateRemoteObjectsWithHandler:(id)a3;
-- (void)_peerDidDisconnect:(id)a3;
+- (void)_enumerateRemoteObjectsWithHandler:(id)handler;
+- (void)_peerDidDisconnect:(id)disconnect;
 - (void)_resetDetails;
-- (void)_sendNavigationDetailsToPeer:(id)a3;
+- (void)_sendNavigationDetailsToPeer:(id)peer;
 - (void)dealloc;
-- (void)navigationServiceProxy:(id)a3 didActivateAudioSession:(BOOL)a4;
-- (void)navigationServiceProxy:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didFailRerouteWithError:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didFailWithError:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didProcessSpeechEvent:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didReceiveRealtimeUpdates:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4;
-- (void)navigationServiceProxy:(id)a3 didReceiveTransitAlert:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didRerouteWithRoute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7;
-- (void)navigationServiceProxy:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationServiceProxy:(id)a3 didSendNavigationServiceCallback:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didStartSpeakingPrompt:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5;
-- (void)navigationServiceProxy:(id)a3 didUpdateAlternateRoutes:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationServiceProxy:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationServiceProxy:(id)a3 didUpdateETAResponseForRoute:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5;
-- (void)navigationServiceProxy:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didUpdateNavigationDetails:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didUpdatePreviewRoutes:(id)a4 withSelectedRouteIndex:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6;
-- (void)navigationServiceProxy:(id)a3 didUpdateRouteWithNewRideSelection:(id)a4;
-- (void)navigationServiceProxy:(id)a3 didUpdateTracePlaybackDetails:(id)a4;
-- (void)navigationServiceProxy:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4;
-- (void)navigationServiceProxy:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10;
-- (void)navigationServiceProxy:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8;
-- (void)navigationServiceProxy:(id)a3 hideJunctionViewForId:(id)a4;
-- (void)navigationServiceProxy:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationServiceProxy:(id)a3 isApproachingEndOfLeg:(unint64_t)a4;
-- (void)navigationServiceProxy:(id)a3 newGuidanceEventFeedback:(id)a4;
-- (void)navigationServiceProxy:(id)a3 showJunctionView:(id)a4;
-- (void)navigationServiceProxy:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationServiceProxy:(id)a3 triggerHaptics:(int)a4;
-- (void)navigationServiceProxy:(id)a3 updateSignsWithARInfo:(id)a4;
-- (void)navigationServiceProxy:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationServiceProxy:(id)a3 updatedGuidanceEventFeedback:(id)a4;
-- (void)navigationServiceProxy:(id)a3 usePersistentDisplay:(BOOL)a4;
-- (void)navigationServiceProxy:(id)a3 willAnnounce:(unint64_t)a4 inSeconds:(double)a5;
-- (void)navigationServiceProxy:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationServiceProxy:(id)a3 willProcessSpeechEvent:(id)a4;
-- (void)navigationServiceProxy:(id)a3 willRequestRealtimeUpdatesForRouteIDs:(id)a4;
+- (void)navigationServiceProxy:(id)proxy didActivateAudioSession:(BOOL)session;
+- (void)navigationServiceProxy:(id)proxy didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationServiceProxy:(id)proxy didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didFailRerouteWithError:(id)error;
+- (void)navigationServiceProxy:(id)proxy didFailWithError:(id)error;
+- (void)navigationServiceProxy:(id)proxy didProcessSpeechEvent:(id)event;
+- (void)navigationServiceProxy:(id)proxy didReceiveRealtimeUpdates:(id)updates;
+- (void)navigationServiceProxy:(id)proxy didReceiveRouteSignalStrength:(unint64_t)strength;
+- (void)navigationServiceProxy:(id)proxy didReceiveTransitAlert:(id)alert;
+- (void)navigationServiceProxy:(id)proxy didRerouteWithRoute:(id)route withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason;
+- (void)navigationServiceProxy:(id)proxy didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationServiceProxy:(id)proxy didSendNavigationServiceCallback:(id)callback;
+- (void)navigationServiceProxy:(id)proxy didStartSpeakingPrompt:(id)prompt;
+- (void)navigationServiceProxy:(id)proxy didSwitchToNewTransportType:(int)type newRoute:(id)route;
+- (void)navigationServiceProxy:(id)proxy didUpdateAlternateRoutes:(id)routes;
+- (void)navigationServiceProxy:(id)proxy didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationServiceProxy:(id)proxy didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didUpdateETAResponseForRoute:(id)route;
+- (void)navigationServiceProxy:(id)proxy didUpdateHeading:(double)heading accuracy:(double)accuracy;
+- (void)navigationServiceProxy:(id)proxy didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence;
+- (void)navigationServiceProxy:(id)proxy didUpdateNavigationDetails:(id)details;
+- (void)navigationServiceProxy:(id)proxy didUpdatePreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index;
+- (void)navigationServiceProxy:(id)proxy didUpdateRouteWithNewRideSelection:(id)selection;
+- (void)navigationServiceProxy:(id)proxy didUpdateTracePlaybackDetails:(id)details;
+- (void)navigationServiceProxy:(id)proxy displayManeuverAlertForAnnouncementStage:(unint64_t)stage;
+- (void)navigationServiceProxy:(id)proxy displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0;
+- (void)navigationServiceProxy:(id)proxy displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side;
+- (void)navigationServiceProxy:(id)proxy hideJunctionViewForId:(id)id;
+- (void)navigationServiceProxy:(id)proxy hideLaneDirectionsForId:(id)id;
+- (void)navigationServiceProxy:(id)proxy isApproachingEndOfLeg:(unint64_t)leg;
+- (void)navigationServiceProxy:(id)proxy newGuidanceEventFeedback:(id)feedback;
+- (void)navigationServiceProxy:(id)proxy showJunctionView:(id)view;
+- (void)navigationServiceProxy:(id)proxy showLaneDirections:(id)directions;
+- (void)navigationServiceProxy:(id)proxy triggerHaptics:(int)haptics;
+- (void)navigationServiceProxy:(id)proxy updateSignsWithARInfo:(id)info;
+- (void)navigationServiceProxy:(id)proxy updateSignsWithInfo:(id)info;
+- (void)navigationServiceProxy:(id)proxy updatedGuidanceEventFeedback:(id)feedback;
+- (void)navigationServiceProxy:(id)proxy usePersistentDisplay:(BOOL)display;
+- (void)navigationServiceProxy:(id)proxy willAnnounce:(unint64_t)announce inSeconds:(double)seconds;
+- (void)navigationServiceProxy:(id)proxy willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationServiceProxy:(id)proxy willProcessSpeechEvent:(id)event;
+- (void)navigationServiceProxy:(id)proxy willRequestRealtimeUpdatesForRouteIDs:(id)ds;
 @end
 
 @implementation MNNavigationServer
 
-- (id)captureStatePlistWithHints:(os_state_hints_s *)a3
+- (id)captureStatePlistWithHints:(os_state_hints_s *)hints
 {
   v68 = *MEMORY[0x1E69E9840];
   v54 = 0;
@@ -80,11 +80,11 @@
   v42 = 3221225472;
   v43 = __49__MNNavigationServer_captureStatePlistWithHints___block_invoke;
   v44 = &unk_1E842A548;
-  v45 = self;
+  selfCopy = self;
   v46 = &v54;
   v47 = &v48;
   geo_isolate_sync_data();
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -105,12 +105,12 @@
 
         v8 = *(*(&v37 + 1) + 8 * i);
         v65[0] = @"name";
-        v9 = [v8 peerIdentifier];
-        v10 = v9;
+        peerIdentifier = [v8 peerIdentifier];
+        v10 = peerIdentifier;
         v11 = &stru_1F4EB6B70;
-        if (v9)
+        if (peerIdentifier)
         {
-          v11 = v9;
+          v11 = peerIdentifier;
         }
 
         v65[1] = @"processID";
@@ -118,7 +118,7 @@
         v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "processIdentifier")}];
         v66[1] = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
-        [v32 addObject:v13];
+        [array addObject:v13];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v37 objects:v67 count:16];
@@ -127,7 +127,7 @@
     while (v5);
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -148,12 +148,12 @@
 
         v19 = *(*(&v33 + 1) + 8 * j);
         v62[0] = @"name";
-        v20 = [v19 peerIdentifier];
-        v21 = v20;
+        peerIdentifier2 = [v19 peerIdentifier];
+        v21 = peerIdentifier2;
         v22 = &stru_1F4EB6B70;
-        if (v20)
+        if (peerIdentifier2)
         {
-          v22 = v20;
+          v22 = peerIdentifier2;
         }
 
         v62[1] = @"processID";
@@ -161,7 +161,7 @@
         v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v19, "processIdentifier")}];
         v63[1] = v23;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
-        [v14 addObject:v24];
+        [array2 addObject:v24];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v33 objects:v64 count:16];
@@ -170,32 +170,32 @@
     while (v16);
   }
 
-  v25 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
-    v27 = [MEMORY[0x1E696ADC8] mainQueue];
-    v28 = [v27 __graphDescription];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
+    __graphDescription = [mainQueue2 __graphDescription];
 
-    if (![(__CFString *)v28 length])
+    if (![(__CFString *)__graphDescription length])
     {
 
-      v28 = @"<empty>";
+      __graphDescription = @"<empty>";
     }
   }
 
   else
   {
-    v28 = @"<null>";
+    __graphDescription = @"<null>";
   }
 
   v60[0] = @"peers";
   v60[1] = @"unEntitledPeers";
-  v61[0] = v32;
-  v61[1] = v14;
+  v61[0] = array;
+  v61[1] = array2;
   v60[2] = @"mainOperationQueue";
-  v61[2] = v28;
+  v61[2] = __graphDescription;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:3];
 
   _Block_object_dispose(&v48, 8);
@@ -219,127 +219,127 @@ void __49__MNNavigationServer_captureStatePlistWithHints___block_invoke(void *a1
   *(v6 + 40) = v5;
 }
 
-- (void)navigationServiceProxy:(id)a3 didSendNavigationServiceCallback:(id)a4
+- (void)navigationServiceProxy:(id)proxy didSendNavigationServiceCallback:(id)callback
 {
-  v5 = a4;
-  [(MNNavigationDetails *)self->_details updateWithNavigationServiceCallbackParameters:v5];
+  callbackCopy = callback;
+  [(MNNavigationDetails *)self->_details updateWithNavigationServiceCallbackParameters:callbackCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__MNNavigationServer_navigationServiceProxy_didSendNavigationServiceCallback___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didReceiveTransitAlert:(id)a4
+- (void)navigationServiceProxy:(id)proxy didReceiveTransitAlert:(id)alert
 {
-  v5 = a4;
+  alertCopy = alert;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MNNavigationServer_navigationServiceProxy_didReceiveTransitAlert___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = alertCopy;
+  v6 = alertCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didReceiveRealtimeUpdates:(id)a4
+- (void)navigationServiceProxy:(id)proxy didReceiveRealtimeUpdates:(id)updates
 {
-  v5 = a4;
+  updatesCopy = updates;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__MNNavigationServer_navigationServiceProxy_didReceiveRealtimeUpdates___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = updatesCopy;
+  v6 = updatesCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 willRequestRealtimeUpdatesForRouteIDs:(id)a4
+- (void)navigationServiceProxy:(id)proxy willRequestRealtimeUpdatesForRouteIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__MNNavigationServer_navigationServiceProxy_willRequestRealtimeUpdatesForRouteIDs___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = dsCopy;
+  v6 = dsCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 triggerHaptics:(int)a4
+- (void)navigationServiceProxy:(id)proxy triggerHaptics:(int)haptics
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__MNNavigationServer_navigationServiceProxy_triggerHaptics___block_invoke;
   v4[3] = &__block_descriptor_36_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v5 = a4;
+  hapticsCopy = haptics;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 didProcessSpeechEvent:(id)a4
+- (void)navigationServiceProxy:(id)proxy didProcessSpeechEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MNNavigationServer_navigationServiceProxy_didProcessSpeechEvent___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = eventCopy;
+  v6 = eventCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 willProcessSpeechEvent:(id)a4
+- (void)navigationServiceProxy:(id)proxy willProcessSpeechEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MNNavigationServer_navigationServiceProxy_willProcessSpeechEvent___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = eventCopy;
+  v6 = eventCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didStartSpeakingPrompt:(id)a4
+- (void)navigationServiceProxy:(id)proxy didStartSpeakingPrompt:(id)prompt
 {
-  v5 = a4;
+  promptCopy = prompt;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MNNavigationServer_navigationServiceProxy_didStartSpeakingPrompt___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = promptCopy;
+  v6 = promptCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didActivateAudioSession:(BOOL)a4
+- (void)navigationServiceProxy:(id)proxy didActivateAudioSession:(BOOL)session
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__MNNavigationServer_navigationServiceProxy_didActivateAudioSession___block_invoke;
   v4[3] = &__block_descriptor_33_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v5 = a4;
+  sessionCopy = session;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateTracePlaybackDetails:(id)a4
+- (void)navigationServiceProxy:(id)proxy didUpdateTracePlaybackDetails:(id)details
 {
-  v5 = a4;
-  v6 = [v5 eventType];
-  if (v6 <= 3)
+  detailsCopy = details;
+  eventType = [detailsCopy eventType];
+  if (eventType <= 3)
   {
-    switch(v6)
+    switch(eventType)
     {
       case 1:
-        v10 = [v5 tracePath];
-        [(MNNavigationDetails *)self->_details setTracePath:v10];
+        tracePath = [detailsCopy tracePath];
+        [(MNNavigationDetails *)self->_details setTracePath:tracePath];
 
-        [v5 traceDuration];
+        [detailsCopy traceDuration];
         [(MNNavigationDetails *)self->_details setTraceDuration:?];
-        v11 = [v5 bookmarks];
-        [(MNNavigationDetails *)self->_details setTraceBookmarks:v11];
+        bookmarks = [detailsCopy bookmarks];
+        [(MNNavigationDetails *)self->_details setTraceBookmarks:bookmarks];
 
         break;
       case 2:
@@ -359,460 +359,460 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v6 > 5)
+  if (eventType > 5)
   {
-    if (v6 == 6)
+    if (eventType == 6)
     {
-      v9 = [v5 bookmarks];
-      [(MNNavigationDetails *)self->_details setTraceBookmarks:v9];
+      bookmarks2 = [detailsCopy bookmarks];
+      [(MNNavigationDetails *)self->_details setTraceBookmarks:bookmarks2];
     }
 
     else
     {
-      if (v6 != 7)
+      if (eventType != 7)
       {
         goto LABEL_16;
       }
 
-      v9 = [v5 tracePath];
-      [(MNNavigationDetails *)self->_details setTracePath:v9];
+      bookmarks2 = [detailsCopy tracePath];
+      [(MNNavigationDetails *)self->_details setTracePath:bookmarks2];
     }
 
     goto LABEL_16;
   }
 
-  [v5 currentPosition];
+  [detailsCopy currentPosition];
   [(MNNavigationDetails *)self->_details setTracePosition:?];
 LABEL_16:
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__MNNavigationServer_navigationServiceProxy_didUpdateTracePlaybackDetails___block_invoke;
   v13[3] = &unk_1E842A308;
-  v14 = v5;
-  v12 = v5;
+  v14 = detailsCopy;
+  v12 = detailsCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v13];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateAlternateRoutes:(id)a4
+- (void)navigationServiceProxy:(id)proxy didUpdateAlternateRoutes:(id)routes
 {
-  v5 = a4;
-  [(MNNavigationDetails *)self->_details setAlternateRoutes:v5];
+  routesCopy = routes;
+  [(MNNavigationDetails *)self->_details setAlternateRoutes:routesCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MNNavigationServer_navigationServiceProxy_didUpdateAlternateRoutes___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = routesCopy;
+  v6 = routesCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didFailRerouteWithError:(id)a4
+- (void)navigationServiceProxy:(id)proxy didFailRerouteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MNNavigationServer_navigationServiceProxy_didFailRerouteWithError___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5
+- (void)navigationServiceProxy:(id)proxy didSwitchToNewTransportType:(int)type newRoute:(id)route
 {
-  v7 = a5;
-  [(MNNavigationDetails *)self->_details setCurrentRoute:v7 withAlternateRoutes:0];
+  routeCopy = route;
+  [(MNNavigationDetails *)self->_details setCurrentRoute:routeCopy withAlternateRoutes:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__MNNavigationServer_navigationServiceProxy_didSwitchToNewTransportType_newRoute___block_invoke;
   v9[3] = &unk_1E842A450;
-  v11 = a4;
-  v10 = v7;
-  v8 = v7;
+  typeCopy = type;
+  v10 = routeCopy;
+  v8 = routeCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v9];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateRouteWithNewRideSelection:(id)a4
+- (void)navigationServiceProxy:(id)proxy didUpdateRouteWithNewRideSelection:(id)selection
 {
-  v5 = a4;
+  selectionCopy = selection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__MNNavigationServer_navigationServiceProxy_didUpdateRouteWithNewRideSelection___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = selectionCopy;
+  v6 = selectionCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didRerouteWithRoute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7
+- (void)navigationServiceProxy:(id)proxy didRerouteWithRoute:(id)route withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [(MNNavigationDetails *)self->_details setCurrentRoute:v11 withAlternateRoutes:v13];
-  [(MNNavigationDetails *)self->_details setLocation:v12];
+  routeCopy = route;
+  locationCopy = location;
+  routesCopy = routes;
+  [(MNNavigationDetails *)self->_details setCurrentRoute:routeCopy withAlternateRoutes:routesCopy];
+  [(MNNavigationDetails *)self->_details setLocation:locationCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __112__MNNavigationServer_navigationServiceProxy_didRerouteWithRoute_withLocation_withAlternateRoutes_rerouteReason___block_invoke;
   v17[3] = &unk_1E842A408;
-  v18 = v11;
-  v19 = v12;
-  v20 = v13;
-  v21 = a7;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  v18 = routeCopy;
+  v19 = locationCopy;
+  v20 = routesCopy;
+  reasonCopy = reason;
+  v14 = routesCopy;
+  v15 = locationCopy;
+  v16 = routeCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v17];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdatePreviewRoutes:(id)a4 withSelectedRouteIndex:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didUpdatePreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index
 {
-  v7 = a4;
-  [(MNNavigationDetails *)self->_details setPreviewRoutes:v7 withSelectedRouteIndex:a5];
+  routesCopy = routes;
+  [(MNNavigationDetails *)self->_details setPreviewRoutes:routesCopy withSelectedRouteIndex:index];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __91__MNNavigationServer_navigationServiceProxy_didUpdatePreviewRoutes_withSelectedRouteIndex___block_invoke;
   v9[3] = &unk_1E842A390;
-  v10 = v7;
-  v11 = a5;
-  v8 = v7;
+  v10 = routesCopy;
+  indexCopy = index;
+  v8 = routesCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v9];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateMotionType:(unint64_t)a4 confidence:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didUpdateMotionType:(unint64_t)type confidence:(unint64_t)confidence
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__MNNavigationServer_navigationServiceProxy_didUpdateMotionType_confidence___block_invoke;
   v5[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v5[4] = a4;
-  v5[5] = a5;
+  v5[4] = type;
+  v5[5] = confidence;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v5];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5
+- (void)navigationServiceProxy:(id)proxy didUpdateHeading:(double)heading accuracy:(double)accuracy
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__MNNavigationServer_navigationServiceProxy_didUpdateHeading_accuracy___block_invoke;
   v5[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  *&v5[4] = a4;
-  *&v5[5] = a5;
+  *&v5[4] = heading;
+  *&v5[5] = accuracy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v5];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateETAResponseForRoute:(id)a4
+- (void)navigationServiceProxy:(id)proxy didUpdateETAResponseForRoute:(id)route
 {
-  v5 = a4;
-  [(MNNavigationDetails *)self->_details updateETATrafficForRoute:v5];
+  routeCopy = route;
+  [(MNNavigationDetails *)self->_details updateETATrafficForRoute:routeCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__MNNavigationServer_navigationServiceProxy_didUpdateETAResponseForRoute___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = routeCopy;
+  v6 = routeCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didReceiveRouteSignalStrength:(unint64_t)a4
+- (void)navigationServiceProxy:(id)proxy didReceiveRouteSignalStrength:(unint64_t)strength
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__MNNavigationServer_navigationServiceProxy_didReceiveRouteSignalStrength___block_invoke;
   v4[3] = &__block_descriptor_40_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v4[4] = a4;
+  v4[4] = strength;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 updatedGuidanceEventFeedback:(id)a4
+- (void)navigationServiceProxy:(id)proxy updatedGuidanceEventFeedback:(id)feedback
 {
-  v5 = a4;
+  feedbackCopy = feedback;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__MNNavigationServer_navigationServiceProxy_updatedGuidanceEventFeedback___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = feedbackCopy;
+  v6 = feedbackCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 newGuidanceEventFeedback:(id)a4
+- (void)navigationServiceProxy:(id)proxy newGuidanceEventFeedback:(id)feedback
 {
-  v5 = a4;
+  feedbackCopy = feedback;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MNNavigationServer_navigationServiceProxy_newGuidanceEventFeedback___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = feedbackCopy;
+  v6 = feedbackCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 hideJunctionViewForId:(id)a4
+- (void)navigationServiceProxy:(id)proxy hideJunctionViewForId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MNNavigationServer_navigationServiceProxy_hideJunctionViewForId___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = idCopy;
+  v6 = idCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 showJunctionView:(id)a4
+- (void)navigationServiceProxy:(id)proxy showJunctionView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__MNNavigationServer_navigationServiceProxy_showJunctionView___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = viewCopy;
+  v6 = viewCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationServiceProxy:(id)proxy hideLaneDirectionsForId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MNNavigationServer_navigationServiceProxy_hideLaneDirectionsForId___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = idCopy;
+  v6 = idCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 showLaneDirections:(id)a4
+- (void)navigationServiceProxy:(id)proxy showLaneDirections:(id)directions
 {
-  v5 = a4;
+  directionsCopy = directions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__MNNavigationServer_navigationServiceProxy_showLaneDirections___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = directionsCopy;
+  v6 = directionsCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 usePersistentDisplay:(BOOL)a4
+- (void)navigationServiceProxy:(id)proxy usePersistentDisplay:(BOOL)display
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__MNNavigationServer_navigationServiceProxy_usePersistentDisplay___block_invoke;
   v4[3] = &__block_descriptor_33_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v5 = a4;
+  displayCopy = display;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 updateSignsWithARInfo:(id)a4
+- (void)navigationServiceProxy:(id)proxy updateSignsWithARInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MNNavigationServer_navigationServiceProxy_updateSignsWithARInfo___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationServiceProxy:(id)proxy updateSignsWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MNNavigationServer_navigationServiceProxy_updateSignsWithInfo___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8
+- (void)navigationServiceProxy:(id)proxy displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  stepCopy = step;
+  instructionsCopy = instructions;
+  textCopy = text;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __113__MNNavigationServer_navigationServiceProxy_displaySecondaryStep_instructions_shieldType_shieldText_drivingSide___block_invoke;
   v19[3] = &unk_1E842A408;
-  v20 = v13;
-  v21 = v14;
-  v22 = v15;
-  v23 = a6;
-  v24 = a8;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
+  v20 = stepCopy;
+  v21 = instructionsCopy;
+  v22 = textCopy;
+  typeCopy = type;
+  sideCopy = side;
+  v16 = textCopy;
+  v17 = instructionsCopy;
+  v18 = stepCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v19];
 }
 
-- (void)navigationServiceProxy:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4
+- (void)navigationServiceProxy:(id)proxy displayManeuverAlertForAnnouncementStage:(unint64_t)stage
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __86__MNNavigationServer_navigationServiceProxy_displayManeuverAlertForAnnouncementStage___block_invoke;
   v4[3] = &__block_descriptor_40_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v4[4] = a4;
+  v4[4] = stage;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10
+- (void)navigationServiceProxy:(id)proxy displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  stepCopy = step;
+  instructionsCopy = instructions;
+  textCopy = text;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __141__MNNavigationServer_navigationServiceProxy_displayPrimaryStep_instructions_shieldType_shieldText_drivingSide_maneuverStepIndex_isSynthetic___block_invoke;
   v21[3] = &unk_1E842A3E0;
-  v22 = v15;
-  v23 = v16;
-  v26 = a6;
-  v27 = a8;
-  v24 = v17;
-  v25 = a9;
-  v28 = a10;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
+  v22 = stepCopy;
+  v23 = instructionsCopy;
+  typeCopy = type;
+  sideCopy = side;
+  v24 = textCopy;
+  indexCopy = index;
+  syntheticCopy = synthetic;
+  v18 = textCopy;
+  v19 = instructionsCopy;
+  v20 = stepCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v21];
 }
 
-- (void)navigationServiceProxy:(id)a3 willAnnounce:(unint64_t)a4 inSeconds:(double)a5
+- (void)navigationServiceProxy:(id)proxy willAnnounce:(unint64_t)announce inSeconds:(double)seconds
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__MNNavigationServer_navigationServiceProxy_willAnnounce_inSeconds___block_invoke;
   v5[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v5[4] = a4;
-  *&v5[5] = a5;
+  v5[4] = announce;
+  *&v5[5] = seconds;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v5];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationServiceProxy:(id)proxy didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index
 {
-  [(MNNavigationDetails *)self->_details setDistanceUntilSign:a3];
-  [(MNNavigationDetails *)self->_details setTimeUntilSign:a5];
+  [(MNNavigationDetails *)self->_details setDistanceUntilSign:proxy];
+  [(MNNavigationDetails *)self->_details setTimeUntilSign:untilSign];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__MNNavigationServer_navigationServiceProxy_didUpdateDistanceUntilSign_timeUntilSign_forStepIndex___block_invoke;
   v10[3] = &__block_descriptor_56_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  *&v10[4] = a4;
-  *&v10[5] = a5;
-  v10[6] = a6;
+  *&v10[4] = sign;
+  *&v10[5] = untilSign;
+  v10[6] = index;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v10];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6
+- (void)navigationServiceProxy:(id)proxy didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index
 {
-  v9 = a5;
-  [(MNNavigationDetails *)self->_details setProceedToRouteDistance:a4];
-  [(MNNavigationDetails *)self->_details setDisplayString:v9];
-  [(MNNavigationDetails *)self->_details setClosestStepIndex:a6];
+  stringCopy = string;
+  [(MNNavigationDetails *)self->_details setProceedToRouteDistance:distance];
+  [(MNNavigationDetails *)self->_details setDisplayString:stringCopy];
+  [(MNNavigationDetails *)self->_details setClosestStepIndex:index];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __108__MNNavigationServer_navigationServiceProxy_didUpdateProceedToRouteDistance_displayString_closestStepIndex___block_invoke;
   v11[3] = &unk_1E842A3B8;
-  v13 = a4;
-  v12 = v9;
-  v14 = a6;
-  v10 = v9;
+  distanceCopy = distance;
+  v12 = stringCopy;
+  indexCopy = index;
+  v10 = stringCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v11];
 }
 
-- (void)navigationServiceProxy:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationServiceProxy:(id)proxy didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  v9 = a4;
+  waypointCopy = waypoint;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __98__MNNavigationServer_navigationServiceProxy_didResumeNavigatingFromWaypoint_endOfLegIndex_reason___block_invoke;
   v11[3] = &unk_1E842A3B8;
-  v12 = v9;
-  v13 = a5;
-  v14 = a6;
-  v10 = v9;
+  v12 = waypointCopy;
+  indexCopy = index;
+  reasonCopy = reason;
+  v10 = waypointCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v11];
 }
 
-- (void)navigationServiceProxy:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a4;
+  waypointCopy = waypoint;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__MNNavigationServer_navigationServiceProxy_didArriveAtWaypoint_endOfLegIndex___block_invoke;
   v9[3] = &unk_1E842A390;
-  v10 = v7;
-  v11 = a5;
-  v8 = v7;
+  v10 = waypointCopy;
+  indexCopy = index;
+  v8 = waypointCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v9];
 }
 
-- (void)navigationServiceProxy:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a4;
+  waypointCopy = waypoint;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__MNNavigationServer_navigationServiceProxy_didEnterPreArrivalStateForWaypoint_endOfLegIndex___block_invoke;
   v9[3] = &unk_1E842A390;
-  v10 = v7;
-  v11 = a5;
-  v8 = v7;
+  v10 = waypointCopy;
+  indexCopy = index;
+  v8 = waypointCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v9];
 }
 
-- (void)navigationServiceProxy:(id)a3 isApproachingEndOfLeg:(unint64_t)a4
+- (void)navigationServiceProxy:(id)proxy isApproachingEndOfLeg:(unint64_t)leg
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __67__MNNavigationServer_navigationServiceProxy_isApproachingEndOfLeg___block_invoke;
   v4[3] = &__block_descriptor_40_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v4[4] = a4;
+  v4[4] = leg;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v4];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationServiceProxy:(id)proxy didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index
 {
-  [(MNNavigationDetails *)self->_details setDistanceUntilManeuver:a3];
-  [(MNNavigationDetails *)self->_details setTimeUntilManeuver:a5];
+  [(MNNavigationDetails *)self->_details setDistanceUntilManeuver:proxy];
+  [(MNNavigationDetails *)self->_details setTimeUntilManeuver:untilManeuver];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __107__MNNavigationServer_navigationServiceProxy_didUpdateDistanceUntilManeuver_timeUntilManeuver_forStepIndex___block_invoke;
   v10[3] = &__block_descriptor_56_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  *&v10[4] = a4;
-  *&v10[5] = a5;
-  v10[6] = a6;
+  *&v10[4] = maneuver;
+  *&v10[5] = untilManeuver;
+  v10[6] = index;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v10];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  [(MNNavigationDetails *)self->_details setDisplayedStepIndex:a4];
+  [(MNNavigationDetails *)self->_details setDisplayedStepIndex:index];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__MNNavigationServer_navigationServiceProxy_didUpdateDisplayedStepIndex_segmentIndex___block_invoke;
   v8[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v8[4] = a4;
-  v8[5] = a5;
+  v8[4] = index;
+  v8[5] = segmentIndex;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v8];
 }
 
-- (void)navigationServiceProxy:(id)a3 didFailWithError:(id)a4
+- (void)navigationServiceProxy:(id)proxy didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__MNNavigationServer_navigationServiceProxy_didFailWithError___block_invoke;
   v7[3] = &unk_1E842A308;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v7];
 }
 
-- (void)navigationServiceProxy:(id)a3 didUpdateNavigationDetails:(id)a4
+- (void)navigationServiceProxy:(id)proxy didUpdateNavigationDetails:(id)details
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();
@@ -830,44 +830,44 @@ LABEL_16:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationServiceProxy:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v26 = *MEMORY[0x1E69E9840];
-  [(MNNavigationDetails *)self->_details setState:a5];
+  [(MNNavigationDetails *)self->_details setState:toState];
   v8 = MNGetMNNavigationXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 - 1 > 5)
+    if (state - 1 > 5)
     {
       v9 = @"Stopped";
     }
 
     else
     {
-      v9 = off_1E842AC68[a4 - 1];
+      v9 = off_1E842AC68[state - 1];
     }
 
     v10 = v9;
-    if (a5 - 1 > 5)
+    if (toState - 1 > 5)
     {
       v11 = @"Stopped";
     }
 
     else
     {
-      v11 = off_1E842AC68[a5 - 1];
+      v11 = off_1E842AC68[toState - 1];
     }
 
     v12 = v11;
-    v13 = [(MNNavigationServer *)self _peersCount];
-    v14 = [(MNNavigationServer *)self _peerDescriptions];
-    v15 = [v14 componentsJoinedByString:@"\n\t"];
+    _peersCount = [(MNNavigationServer *)self _peersCount];
+    _peerDescriptions = [(MNNavigationServer *)self _peerDescriptions];
+    v15 = [_peerDescriptions componentsJoinedByString:@"\n\t"];
     *buf = 138413058;
     v19 = v10;
     v20 = 2112;
     v21 = v12;
     v22 = 1024;
-    v23 = v13;
+    v23 = _peersCount;
     v24 = 2112;
     v25 = v15;
     _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "MNNavigationServer sending didChangeFromState: '%@' toState: '%@' to %d peers:\n\t%@", buf, 0x26u);
@@ -877,10 +877,10 @@ LABEL_16:
   v17[1] = 3221225472;
   v17[2] = __72__MNNavigationServer_navigationServiceProxy_didChangeFromState_toState___block_invoke;
   v17[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v17[4] = a4;
-  v17[5] = a5;
+  v17[4] = state;
+  v17[5] = toState;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v17];
-  if (!a5)
+  if (!toState)
   {
     [(MNNavigationServer *)self _resetDetails];
   }
@@ -888,31 +888,31 @@ LABEL_16:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationServiceProxy:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationServiceProxy:(id)proxy willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v21 = *MEMORY[0x1E69E9840];
   v8 = MNGetMNNavigationXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 - 1 > 5)
+    if (state - 1 > 5)
     {
       v9 = @"Stopped";
     }
 
     else
     {
-      v9 = off_1E842AC68[a4 - 1];
+      v9 = off_1E842AC68[state - 1];
     }
 
     v10 = v9;
-    if (a5 - 1 > 5)
+    if (toState - 1 > 5)
     {
       v11 = @"Stopped";
     }
 
     else
     {
-      v11 = off_1E842AC68[a5 - 1];
+      v11 = off_1E842AC68[toState - 1];
     }
 
     v12 = v11;
@@ -921,7 +921,7 @@ LABEL_16:
     v17 = 2112;
     v18 = v12;
     v19 = 1024;
-    v20 = [(MNNavigationServer *)self _peersCount];
+    _peersCount = [(MNNavigationServer *)self _peersCount];
     _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "MNNavigationServer sending willChangeFromState: '%@' toState: '%@' to %d peers.", buf, 0x1Cu);
   }
 
@@ -929,18 +929,18 @@ LABEL_16:
   v14[1] = 3221225472;
   v14[2] = __73__MNNavigationServer_navigationServiceProxy_willChangeFromState_toState___block_invoke;
   v14[3] = &__block_descriptor_48_e46_v16__0___MNNavigationServiceClientInterface__8l;
-  v14[4] = a4;
-  v14[5] = a5;
+  v14[4] = state;
+  v14[5] = toState;
   [(MNNavigationServer *)self _enumerateRemoteObjectsWithHandler:v14];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v51 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v6 = a4;
-  v7 = [[MNNavigationServicePeer alloc] initWithConnection:v6];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = [[MNNavigationServicePeer alloc] initWithConnection:connectionCopy];
   v8 = [(GEONavdPeer *)v7 hasEntitlement:@"com.apple.navigation.spi"];
   v9 = GEOFindOrCreateLog();
   v10 = v9;
@@ -949,15 +949,15 @@ LABEL_16:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = +[MNNavigationStateManager sharedManager];
-      v12 = [v11 currentStateType];
-      if (v12 > 6)
+      currentStateType = [v11 currentStateType];
+      if (currentStateType > 6)
       {
         v13 = @"MNNavigationStateTypeInvalid";
       }
 
       else
       {
-        v13 = *(&off_1E842A470 + v12);
+        v13 = *(&off_1E842A470 + currentStateType);
       }
 
       *buf = 138412546;
@@ -985,19 +985,19 @@ LABEL_16:
   v38 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
 
   [v14 setClasses:v38 forSelector:sel_rerouteWithWaypoints_ argumentIndex:0 ofReply:0];
-  [v6 setExportedInterface:v14];
+  [connectionCopy setExportedInterface:v14];
   v20 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4EEA548];
-  [v6 setRemoteObjectInterface:v20];
+  [connectionCopy setRemoteObjectInterface:v20];
 
   if ([(MNNavigationServicePeer *)v7 isEntitled])
   {
-    [v6 setExportedObject:self->_localProxy];
+    [connectionCopy setExportedObject:self->_localProxy];
   }
 
   else
   {
     v21 = [[MNNavigationServiceEmptyProxy alloc] initWithPeer:v7];
-    [v6 setExportedObject:v21];
+    [connectionCopy setExportedObject:v21];
   }
 
   objc_initWeak(buf, self);
@@ -1008,7 +1008,7 @@ LABEL_16:
   v22 = v7;
   v45 = v22;
   objc_copyWeak(&v46, buf);
-  [v6 setInvalidationHandler:v44];
+  [connectionCopy setInvalidationHandler:v44];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __57__MNNavigationServer_listener_shouldAcceptNewConnection___block_invoke_268;
@@ -1016,11 +1016,11 @@ LABEL_16:
   v23 = v22;
   v42 = v23;
   objc_copyWeak(&v43, buf);
-  [v6 setInterruptionHandler:v41];
-  [v6 resume];
-  v24 = [(MNNavigationServicePeer *)v23 isEntitled];
+  [connectionCopy setInterruptionHandler:v41];
+  [connectionCopy resume];
+  isEntitled = [(MNNavigationServicePeer *)v23 isEntitled];
   peersIsolater = self->_peersIsolater;
-  if (v24)
+  if (isEntitled)
   {
     v26 = v40;
     v40[0] = MEMORY[0x1E69E9820];
@@ -1046,13 +1046,13 @@ LABEL_16:
     v39[5] = v28;
     geo_isolate_sync_data();
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [(MNNavigationServicePeer *)v28 peerIdentifier];
-    v31 = [v29 stringWithFormat:@"%@ is missing the navigation service entitlement.", v30];
+    peerIdentifier = [(MNNavigationServicePeer *)v28 peerIdentifier];
+    v31 = [v29 stringWithFormat:@"%@ is missing the navigation service entitlement.", peerIdentifier];
 
     v32 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:1 debugDescription:v31 underlyingError:0];
-    v33 = [(GEONavdPeer *)v28 connection];
-    v34 = [v33 remoteObjectProxy];
-    [v34 navigationServiceProxy:0 didFailWithError:v32];
+    connection = [(GEONavdPeer *)v28 connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy navigationServiceProxy:0 didFailWithError:v32];
   }
 
   objc_destroyWeak(&v43);
@@ -1135,9 +1135,9 @@ uint64_t __57__MNNavigationServer_listener_shouldAcceptNewConnection___block_inv
   return [v2 addObject:v6];
 }
 
-- (void)_peerDidDisconnect:(id)a3
+- (void)_peerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1147,8 +1147,8 @@ uint64_t __57__MNNavigationServer_listener_shouldAcceptNewConnection___block_inv
   v15 = 3221225472;
   v16 = __41__MNNavigationServer__peerDidDisconnect___block_invoke;
   v17 = &unk_1E842FD80;
-  v18 = self;
-  v19 = v4;
+  selfCopy = self;
+  v19 = disconnectCopy;
   v20 = &v21;
   geo_isolate_sync_data();
   [v19 clearConnection];
@@ -1255,11 +1255,11 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)_enumerateRemoteObjectsWithHandler:(id)a3
+- (void)_enumerateRemoteObjectsWithHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v21 = self->_peersIsolater;
     _geo_isolate_lock_data();
@@ -1284,10 +1284,10 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * v9) connection];
-          v11 = [v10 remoteObjectProxy];
+          connection = [*(*(&v17 + 1) + 8 * v9) connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
 
-          if (!v11)
+          if (!remoteObjectProxy)
           {
             v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No remote object found on connection"];
             v13 = GEOFindOrCreateLog();
@@ -1307,7 +1307,7 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
             }
           }
 
-          v4[2](v4, v11);
+          handlerCopy[2](handlerCopy, remoteObjectProxy);
 
           ++v9;
         }
@@ -1338,14 +1338,14 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
   exit(0);
 }
 
-- (void)_sendNavigationDetailsToPeer:(id)a3
+- (void)_sendNavigationDetailsToPeer:(id)peer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 connection];
-  v6 = [v5 remoteObjectProxy];
+  peerCopy = peer;
+  connection = [peerCopy connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  if (!v6)
+  if (!remoteObjectProxy)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No remote object found on connection"];
     v9 = GEOFindOrCreateLog();
@@ -1367,7 +1367,7 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
 
   *v10 = self->_sendNavigationDetailsIsolater;
   _geo_isolate_lock_data();
-  [v6 navigationServiceProxy:0 didUpdateNavigationDetails:self->_details];
+  [remoteObjectProxy navigationServiceProxy:0 didUpdateNavigationDetails:self->_details];
   _geo_isolate_unlock();
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1388,7 +1388,7 @@ void __41__MNNavigationServer__peerDidDisconnect___block_invoke_2(uint64_t a1)
   v16 = 3221225472;
   v17 = __35__MNNavigationServer__resetDetails__block_invoke;
   v18 = &unk_1E8430ED8;
-  v19 = self;
+  selfCopy = self;
   geo_isolate_sync_data();
   *buf = self->_peersIsolater;
   _geo_isolate_lock_data();
@@ -1436,8 +1436,8 @@ void __35__MNNavigationServer__resetDetails__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   GEOUnregisterStateCaptureLegacy();
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
   [(MNNavigationServiceLocalProxy *)self->_localProxy stopNavigationWithReason:0];
   [(NSXPCListener *)self->_listener invalidate];
@@ -1478,8 +1478,8 @@ void __35__MNNavigationServer__resetDetails__block_invoke(uint64_t a1)
     v2->_localProxy = v8;
 
     [(MNNavigationServiceLocalProxy *)v2->_localProxy setDelegate:v2];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__defaultsDidChange name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__defaultsDidChange name:*MEMORY[0x1E695D8F0] object:0];
 
     v11 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:@"com.apple.navigationService"];
     listener = v2->_listener;
@@ -1487,9 +1487,9 @@ void __35__MNNavigationServer__resetDetails__block_invoke(uint64_t a1)
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
-    v13 = [MEMORY[0x1E69A2610] modernLoader];
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
     v14 = objc_alloc_init(MEMORY[0x1E69A2730]);
-    [v13 registerTileDecoder:v14];
+    [modernLoader registerTileDecoder:v14];
     v15 = dispatch_get_global_queue(21, 0);
     GEORegisterPListStateCaptureLegacy();
   }

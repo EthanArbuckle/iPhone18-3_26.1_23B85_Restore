@@ -1,13 +1,13 @@
 @interface _PXVideoPlaybackCPAnalyticsEndpoint
-- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)a3;
+- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)payload;
 @end
 
 @implementation _PXVideoPlaybackCPAnalyticsEndpoint
 
-- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)a3
+- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)payload
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3->var3 == 1)
+  if (payload->var3 == 1)
   {
     signpost = self->_signpost;
     if (signpost)

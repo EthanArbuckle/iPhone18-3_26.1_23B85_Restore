@@ -1,24 +1,24 @@
 @interface SSCrossPlatformTransferSourceSelectionViewController
-- (SSCrossPlatformTransferSourceSelectionViewController)initWithPlans:(id)a3 planItems:(id)a4 fromDataTransferSession:(BOOL)a5;
+- (SSCrossPlatformTransferSourceSelectionViewController)initWithPlans:(id)plans planItems:(id)items fromDataTransferSession:(BOOL)session;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cancelButtonTapped;
-- (void)_continueButtonTapped:(id)a3;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)_laterButtonTapped;
 - (void)_preselectPlanIfNeeded;
 - (void)_skipButtonTapped;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SSCrossPlatformTransferSourceSelectionViewController
 
-- (SSCrossPlatformTransferSourceSelectionViewController)initWithPlans:(id)a3 planItems:(id)a4 fromDataTransferSession:(BOOL)a5
+- (SSCrossPlatformTransferSourceSelectionViewController)initWithPlans:(id)plans planItems:(id)items fromDataTransferSession:(BOOL)session
 {
-  v23 = a3;
-  v8 = a4;
+  plansCopy = plans;
+  itemsCopy = items;
   v9 = MEMORY[0x277CCACA8];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CROSSPLATFORM_TRANSFER_SELECTION_DETAIL_SOURCE" value:&stru_28753DF48 table:@"Localizable"];
@@ -32,8 +32,8 @@
 
   if (v15)
   {
-    objc_storeStrong(&v15->_plans, a3);
-    objc_storeStrong(&v15->_planItems, a4);
+    objc_storeStrong(&v15->_plans, plans);
+    objc_storeStrong(&v15->_planItems, items);
     v16 = objc_alloc(MEMORY[0x277CC37B0]);
     v17 = [v16 initWithQueue:MEMORY[0x277D85CD0]];
     client = v15->_client;
@@ -44,7 +44,7 @@
     selectedPlans = v15->_selectedPlans;
     v15->_selectedPlans = v19;
 
-    v15->_fromDataTransferSession = a5;
+    v15->_fromDataTransferSession = session;
   }
 
   return v15;
@@ -66,14 +66,14 @@
   v7 = [v6 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-  v8 = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   if (self->_fromDataTransferSession)
   {
-    v9 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     laterButton = self->_laterButton;
-    self->_laterButton = v9;
+    self->_laterButton = linkButton;
 
     v11 = self->_laterButton;
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -81,105 +81,105 @@
     [(OBLinkTrayButton *)v11 setTitle:v13 forState:0];
 
     [(OBLinkTrayButton *)self->_laterButton addTarget:self action:sel__laterButtonTapped forControlEvents:64];
-    v14 = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
-    [v14 addButton:self->_laterButton];
+    buttonTray2 = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_laterButton];
 
     [(OBLinkTrayButton *)self->_laterButton setEnabled:1];
-    v15 = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
-    [v15 addButton:self->_laterButton];
+    buttonTray3 = [(SSCrossPlatformTransferSourceSelectionViewController *)self buttonTray];
+    [buttonTray3 addButton:self->_laterButton];
   }
 
   v16 = objc_alloc(MEMORY[0x277D75B40]);
   v17 = [v16 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v17];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 setEstimatedRowHeight:1.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:1.0];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v22 = [(OBTableWelcomeController *)self tableView];
-  [v22 setScrollEnabled:1];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setScrollEnabled:1];
 
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 setShowsVerticalScrollIndicator:0];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setShowsVerticalScrollIndicator:0];
 
-  v24 = [(OBTableWelcomeController *)self tableView];
-  v25 = [MEMORY[0x277D75348] clearColor];
-  [v24 setBackgroundColor:v25];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView7 setBackgroundColor:clearColor];
 
-  v26 = [(OBTableWelcomeController *)self tableView];
-  [v26 setDataSource:self];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setDataSource:self];
 
-  v27 = [(OBTableWelcomeController *)self tableView];
-  [v27 setDelegate:self];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setDelegate:self];
 
-  v28 = [(OBTableWelcomeController *)self tableView];
-  [v28 reloadData];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 reloadData];
 
-  v29 = [(SSCrossPlatformTransferSourceSelectionViewController *)self navigationController];
-  v30 = [v29 navigationItem];
-  [v30 setHidesBackButton:1];
+  navigationController = [(SSCrossPlatformTransferSourceSelectionViewController *)self navigationController];
+  navigationItem = [navigationController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v31 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
   if (+[TSUtilities isPad])
   {
-    v32 = [(OBBaseWelcomeController *)self navigationItem];
-    [v32 setRightBarButtonItem:v31];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v31];
   }
 
   else
   {
     fromDataTransferSession = self->_fromDataTransferSession;
-    v34 = [(OBBaseWelcomeController *)self navigationItem];
-    v32 = v34;
+    navigationItem3 = [(OBBaseWelcomeController *)self navigationItem];
+    navigationItem2 = navigationItem3;
     if (fromDataTransferSession)
     {
-      [v34 setHidesBackButton:1 animated:0];
+      [navigationItem3 setHidesBackButton:1 animated:0];
     }
 
     else
     {
-      [v34 setLeftBarButtonItem:v31];
+      [navigationItem3 setLeftBarButtonItem:v31];
     }
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SSCrossPlatformTransferSourceSelectionViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(SSCrossPlatformTransferSourceSelectionViewController *)self view];
+  [view layoutIfNeeded];
 
   v4.receiver = self;
   v4.super_class = SSCrossPlatformTransferSourceSelectionViewController;
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   v6 = [[TSCellularPlanItemCell alloc] initWithStyle:0 reuseIdentifier:@"device"];
   [(TSCellularPlanItemCell *)v6 setSelectedBackgroundView:0];
   [(TSCellularPlanItemCell *)v6 setSelectionStyle:0];
-  v7 = [(OBTableWelcomeController *)self tableView];
-  v8 = [v7 indexPathsForSelectedRows];
-  v9 = [v8 containsObject:v5];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v9 = [indexPathsForSelectedRows containsObject:pathCopy];
 
   if (v9)
   {
     [(TSCellularPlanItemCell *)v6 setAccessoryType:3];
   }
 
-  v10 = v5;
-  v11 = -[NSArray objectAtIndex:](self->_plans, "objectAtIndex:", [v5 row]);
+  v10 = pathCopy;
+  v11 = -[NSArray objectAtIndex:](self->_plans, "objectAtIndex:", [pathCopy row]);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -200,8 +200,8 @@ LABEL_5:
       }
 
       v17 = *(*(&v52 + 1) + 8 * v16);
-      v18 = [v17 iccid];
-      v19 = [v11 isPlanWithIccid:v18];
+      iccid = [v17 iccid];
+      v19 = [v11 isPlanWithIccid:iccid];
 
       if (v19)
       {
@@ -220,12 +220,12 @@ LABEL_5:
       }
     }
 
-    v20 = [v17 isSelected];
-    v22 = [v17 supportedTransferOption];
+    isSelected = [v17 isSelected];
+    supportedTransferOption = [v17 supportedTransferOption];
 
-    if (v20)
+    if (isSelected)
     {
-      v23 = (v22 & 4) == 0;
+      v23 = (supportedTransferOption & 4) == 0;
     }
 
     else
@@ -240,75 +240,75 @@ LABEL_5:
       goto LABEL_19;
     }
 
-    v21 = (v22 >> 2) & 1;
+    v21 = (supportedTransferOption >> 2) & 1;
   }
 
   else
   {
 LABEL_11:
 
-    v20 = 0;
+    isSelected = 0;
     LODWORD(v21) = 0;
   }
 
   [(TSCellularPlanItemCell *)v6 setDisable];
-  v24 = v20 ^ 1;
+  v24 = isSelected ^ 1;
   v25 = v21 ^ 1;
 LABEL_19:
-  v26 = [v11 phoneNumber];
-  v27 = [v26 formattedPhoneNumber];
+  phoneNumber = [v11 phoneNumber];
+  formattedPhoneNumber = [phoneNumber formattedPhoneNumber];
 
   -[TSCellularPlanItemCell setIcon:](v6, "setIcon:", [v11 isPhysical]);
   v28 = v10;
-  if ([v27 length] && !+[TSUtilities isPad](TSUtilities, "isPad"))
+  if ([formattedPhoneNumber length] && !+[TSUtilities isPad](TSUtilities, "isPad"))
   {
-    v29 = [(TSCellularPlanItemCell *)v6 title];
-    [v29 setText:v27];
+    title = [(TSCellularPlanItemCell *)v6 title];
+    [title setText:formattedPhoneNumber];
   }
 
   else
   {
-    v29 = [v11 carrierName];
-    if ([v29 length])
+    title = [v11 carrierName];
+    if ([title length])
     {
-      v30 = [(TSCellularPlanItemCell *)v6 title];
-      [v30 setText:v29];
+      title2 = [(TSCellularPlanItemCell *)v6 title];
+      [title2 setText:title];
     }
 
     else
     {
-      v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      [v30 localizedStringForKey:@"TRANSFER_PLAN_ITEM_TITLE_NO_PHONENUMBER" value:&stru_28753DF48 table:@"Localizable"];
+      title2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      [title2 localizedStringForKey:@"TRANSFER_PLAN_ITEM_TITLE_NO_PHONENUMBER" value:&stru_28753DF48 table:@"Localizable"];
       v32 = v31 = v25;
-      v33 = [(TSCellularPlanItemCell *)v6 title];
-      [v33 setText:v32];
+      title3 = [(TSCellularPlanItemCell *)v6 title];
+      [title3 setText:v32];
 
       v25 = v31;
     }
   }
 
-  v34 = [v11 label];
-  v35 = [v11 transferCapability];
-  if (v35 <= 7)
+  label = [v11 label];
+  transferCapability = [v11 transferCapability];
+  if (transferCapability <= 7)
   {
-    if (v35 > 2)
+    if (transferCapability > 2)
     {
-      if ((v35 - 5) < 3 || v35 == 3)
+      if ((transferCapability - 5) < 3 || transferCapability == 3)
       {
         v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         [v42 localizedStringForKey:@"TRANSFER_PLAN_ITEM_DETAIL_ALREADY_TRANSFERRED" value:&stru_28753DF48 table:@"Localizable"];
         v44 = v43 = v25;
-        v45 = [(TSCellularPlanItemCell *)v6 planInfo];
-        [v45 setText:v44];
+        planInfo = [(TSCellularPlanItemCell *)v6 planInfo];
+        [planInfo setText:v44];
 
         v25 = v43;
         [(TSCellularPlanItemCell *)v6 setAccessoryType:3];
-        v37 = [MEMORY[0x277D75348] grayColor];
-        [(TSCellularPlanItemCell *)v6 setTintColor:v37];
+        grayColor = [MEMORY[0x277D75348] grayColor];
+        [(TSCellularPlanItemCell *)v6 setTintColor:grayColor];
         goto LABEL_44;
       }
 
-      if (v35 == 4)
+      if (transferCapability == 4)
       {
         goto LABEL_41;
       }
@@ -316,20 +316,20 @@ LABEL_19:
 
     else
     {
-      switch(v35)
+      switch(transferCapability)
       {
         case 0:
           goto LABEL_41;
         case 1:
 LABEL_29:
           v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v37 = v36;
+          grayColor = v36;
           v38 = @"TRANSFER_PLAN_ITEM_DETAIL_NOT_SUPPORTED";
 LABEL_30:
           [v36 localizedStringForKey:v38 value:&stru_28753DF48 table:@"Localizable"];
           v40 = v39 = v25;
-          v41 = [(TSCellularPlanItemCell *)v6 planInfo];
-          [v41 setText:v40];
+          planInfo2 = [(TSCellularPlanItemCell *)v6 planInfo];
+          [planInfo2 setText:v40];
 
           v25 = v39;
 LABEL_44:
@@ -337,13 +337,13 @@ LABEL_44:
           break;
         case 2:
 LABEL_41:
-          if (![v34 length])
+          if (![label length])
           {
             break;
           }
 
-          v37 = [(TSCellularPlanItemCell *)v6 planInfo];
-          [v37 setText:v34];
+          grayColor = [(TSCellularPlanItemCell *)v6 planInfo];
+          [grayColor setText:label];
           goto LABEL_44;
       }
     }
@@ -351,25 +351,25 @@ LABEL_41:
 
   else
   {
-    if (v35 > 0x14)
+    if (transferCapability > 0x14)
     {
       goto LABEL_45;
     }
 
-    if (((1 << v35) & 0x1FF200) != 0)
+    if (((1 << transferCapability) & 0x1FF200) != 0)
     {
       goto LABEL_29;
     }
 
-    if (((1 << v35) & 0x900) != 0)
+    if (((1 << transferCapability) & 0x900) != 0)
     {
       goto LABEL_41;
     }
 
-    if (v35 == 10)
+    if (transferCapability == 10)
     {
       v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v37 = v36;
+      grayColor = v36;
       v38 = @"TRANSFER_PLAN_ITEM_DETAIL_UNAVAILABLE";
       goto LABEL_30;
     }
@@ -390,8 +390,8 @@ LABEL_45:
 
     v47 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v48 = [v47 localizedStringForKey:v46 value:&stru_28753DF48 table:@"Localizable"];
-    v49 = [(TSCellularPlanItemCell *)v6 planInfo];
-    [v49 setText:v48];
+    planInfo3 = [(TSCellularPlanItemCell *)v6 planInfo];
+    [planInfo3 setText:v48];
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -399,24 +399,24 @@ LABEL_45:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   continueButton = self->_continueButton;
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(OBBoldTrayButton *)continueButton setEnabled:1];
   [(SSOBBoldTrayButton *)self->_continueButton setUserInteractionEnabled:1];
-  v9 = [v8 cellForRowAtIndexPath:v7];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 indexPathsForSelectedRows];
-  v8 = [v7 count];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+  v8 = [indexPathsForSelectedRows count];
 
   if (!v8)
   {
@@ -424,11 +424,11 @@ LABEL_45:
     [(SSOBBoldTrayButton *)self->_continueButton setUserInteractionEnabled:0];
   }
 
-  v9 = [v10 cellForRowAtIndexPath:v6];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v9 setAccessoryType:0];
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -436,10 +436,10 @@ LABEL_45:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(OBTableWelcomeController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -451,35 +451,35 @@ LABEL_45:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v11 = -[NSArray objectAtIndexedSubscript:](self->_plans, "objectAtIndexedSubscript:", [*(*(&v16 + 1) + 8 * v10) row]);
-        v12 = [v11 plan];
-        [v4 addObject:v12];
+        plan = [v11 plan];
+        [v4 addObject:plan];
 
         [(NSArray *)self->_selectedPlans addObject:v11];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [indexPathsForSelectedRows countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
   [(CoreTelephonyClient *)self->_client selectTransferPlans:v4 completion:&__block_literal_global_19];
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setUserInteractionEnabled:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setUserInteractionEnabled:0];
 
   [(OBBoldTrayButton *)self->_continueButton setEnabled:0];
   [(SSOBBoldTrayButton *)self->_continueButton setUserInteractionEnabled:0];
   [(OBWelcomeController *)self _showButtonTraySpinnerWithBusyText:&stru_28753DF48];
   if ([v4 count] <= 1)
   {
-    v14 = [(SSCrossPlatformTransferSourceSelectionViewController *)self delegate];
-    [v14 viewControllerDidComplete:self];
+    delegate = [(SSCrossPlatformTransferSourceSelectionViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -540,8 +540,8 @@ void __73__SSCrossPlatformTransferSourceSelectionViewController__skipButtonTappe
 
   v4 = objc_opt_new();
   [(CoreTelephonyClient *)self->_client selectTransferPlans:v4 completion:&__block_literal_global_87];
-  v5 = [(SSCrossPlatformTransferSourceSelectionViewController *)self delegate];
-  [v5 viewControllerDidComplete:self];
+  delegate = [(SSCrossPlatformTransferSourceSelectionViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -573,11 +573,11 @@ void __75__SSCrossPlatformTransferSourceSelectionViewController__cancelButtonTap
   if ([v6 count])
   {
     v3 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-    v4 = [(OBTableWelcomeController *)self tableView];
-    [v4 selectRowAtIndexPath:v3 animated:0 scrollPosition:0];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView selectRowAtIndexPath:v3 animated:0 scrollPosition:0];
 
-    v5 = [(OBTableWelcomeController *)self tableView];
-    [(SSCrossPlatformTransferSourceSelectionViewController *)self tableView:v5 didSelectRowAtIndexPath:v3];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [(SSCrossPlatformTransferSourceSelectionViewController *)self tableView:tableView2 didSelectRowAtIndexPath:v3];
   }
 }
 

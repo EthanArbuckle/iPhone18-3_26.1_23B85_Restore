@@ -1,81 +1,81 @@
 @interface STSCHBluetoothAlternativeCarrier
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3;
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle;
 - (NSData)humanReadableAdvertiseUUID;
 - (NSData)humanReadableLEAddress;
-- (STSCHBluetoothAlternativeCarrier)initWithAddress:(id)a3 advertiseUUID:(id)a4 role:(unint64_t)a5 powerState:(unint64_t)a6 auxiliaryRecords:(id)a7;
-- (STSCHBluetoothAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHBluetoothAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
+- (STSCHBluetoothAlternativeCarrier)initWithAddress:(id)address advertiseUUID:(id)d role:(unint64_t)role powerState:(unint64_t)state auxiliaryRecords:(id)records;
+- (STSCHBluetoothAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHBluetoothAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
 - (id)_createCarrierConfigurationRecord;
 - (id)description;
 - (id)roleString;
-- (unint64_t)roleFromSpec:(unsigned __int8)a3;
+- (unint64_t)roleFromSpec:(unsigned __int8)spec;
 - (unsigned)specRole;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHBluetoothAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = STSCHBluetoothAlternativeCarrier;
-  v4 = a3;
-  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_leAddr, @"leAddr", v7.receiver, v7.super_class);
-  objc_msgSend_encodeInteger_forKey_(v4, v6, self->_leRole, @"leRole");
+  coderCopy = coder;
+  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_leAddr, @"leAddr", v7.receiver, v7.super_class);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_leRole, @"leRole");
 }
 
-- (STSCHBluetoothAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHBluetoothAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = STSCHBluetoothAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v12 initWithCoder:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"leAddr");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"leAddr");
     leAddr = v5->_leAddr;
     v5->_leAddr = v8;
 
-    v5->_leRole = objc_msgSend_decodeIntegerForKey_(v4, v10, @"leRole");
+    v5->_leRole = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"leRole");
   }
 
   return v5;
 }
 
-- (STSCHBluetoothAlternativeCarrier)initWithAddress:(id)a3 advertiseUUID:(id)a4 role:(unint64_t)a5 powerState:(unint64_t)a6 auxiliaryRecords:(id)a7
+- (STSCHBluetoothAlternativeCarrier)initWithAddress:(id)address advertiseUUID:(id)d role:(unint64_t)role powerState:(unint64_t)state auxiliaryRecords:(id)records
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  addressCopy = address;
+  dCopy = d;
+  recordsCopy = records;
   v32.receiver = self;
   v32.super_class = STSCHBluetoothAlternativeCarrier;
   v18 = [(STSCHBluetoothAlternativeCarrier *)&v32 init];
   if (v18)
   {
-    if (v13 && objc_msgSend_length(v13, v16, v17) != 7)
+    if (addressCopy && objc_msgSend_length(addressCopy, v16, v17) != 7)
     {
-      sub_2645010D8(OS_LOG_TYPE_ERROR, 0, "[STSCHBluetoothAlternativeCarrier initWithAddress:advertiseUUID:role:powerState:auxiliaryRecords:]", 47, v18, @"Invalid leAddr: %@", v19, v20, v13);
+      sub_2645010D8(OS_LOG_TYPE_ERROR, 0, "[STSCHBluetoothAlternativeCarrier initWithAddress:advertiseUUID:role:powerState:auxiliaryRecords:]", 47, v18, @"Invalid leAddr: %@", v19, v20, addressCopy);
     }
 
     else
     {
-      if (!v14 || objc_msgSend_length(v14, v16, v17) == 16)
+      if (!dCopy || objc_msgSend_length(dCopy, v16, v17) == 16)
       {
-        objc_storeStrong(&v18->_leAddr, a3);
-        objc_storeStrong(&v18->_advertiseUUID, a4);
-        v18->_leRole = a5;
-        objc_msgSend_setAuxiliaryRecords_(v18, v23, v15);
+        objc_storeStrong(&v18->_leAddr, address);
+        objc_storeStrong(&v18->_advertiseUUID, d);
+        v18->_leRole = role;
+        objc_msgSend_setAuxiliaryRecords_(v18, v23, recordsCopy);
         objc_msgSend_setType_(v18, v24, 2);
-        if (a6 >= 3)
+        if (state >= 3)
         {
           objc_msgSend_setPowerState_(v18, v25, 3);
         }
 
         else
         {
-          objc_msgSend_setPowerState_(v18, v25, a6);
+          objc_msgSend_setPowerState_(v18, v25, state);
         }
 
         v28 = objc_msgSend__createCarrierConfigurationRecord(v18, v26, v27);
@@ -84,7 +84,7 @@
         goto LABEL_10;
       }
 
-      sub_2645010D8(OS_LOG_TYPE_ERROR, 0, "[STSCHBluetoothAlternativeCarrier initWithAddress:advertiseUUID:role:powerState:auxiliaryRecords:]", 52, v18, @"Invalid advertiseUUID: %@", v21, v22, v14);
+      sub_2645010D8(OS_LOG_TYPE_ERROR, 0, "[STSCHBluetoothAlternativeCarrier initWithAddress:advertiseUUID:role:powerState:auxiliaryRecords:]", 52, v18, @"Invalid advertiseUUID: %@", v21, v22, dCopy);
     }
 
     v30 = 0;
@@ -98,20 +98,20 @@ LABEL_14:
   return v30;
 }
 
-- (STSCHBluetoothAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHBluetoothAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v38.receiver = self;
   v38.super_class = STSCHBluetoothAlternativeCarrier;
-  v7 = [(STSCHAlternativeCarrier *)&v38 initWithNdefRecordBundle:v4];
+  v7 = [(STSCHAlternativeCarrier *)&v38 initWithNdefRecordBundle:bundleCopy];
   if (v7)
   {
-    v8 = objc_msgSend_configurationRecord(v4, v5, v6);
+    v8 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
     v11 = objc_msgSend_payload(v8, v9, v10);
     v12 = v11;
     v15 = objc_msgSend_bytes(v12, v13, v14);
 
-    v18 = objc_msgSend_configurationRecord(v4, v16, v17);
+    v18 = objc_msgSend_configurationRecord(bundleCopy, v16, v17);
     v21 = objc_msgSend_payload(v18, v19, v20);
     v24 = objc_msgSend_length(v21, v22, v23);
 
@@ -192,16 +192,16 @@ LABEL_20:
   return v7;
 }
 
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle
 {
-  v4 = a3;
-  v7 = objc_msgSend_configurationRecord(v4, v5, v6);
+  bundleCopy = bundle;
+  v7 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
   isBluetoothLEConfigurationRecord = objc_msgSend_isBluetoothLEConfigurationRecord(v7, v8, v9);
 
   if (isBluetoothLEConfigurationRecord)
   {
-    v11 = [a1 alloc];
-    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, v4);
+    v11 = [self alloc];
+    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, bundleCopy);
   }
 
   else
@@ -247,16 +247,16 @@ LABEL_20:
   return leRole;
 }
 
-- (unint64_t)roleFromSpec:(unsigned __int8)a3
+- (unint64_t)roleFromSpec:(unsigned __int8)spec
 {
-  if (a3 >= 4u)
+  if (spec >= 4u)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return spec;
   }
 }
 

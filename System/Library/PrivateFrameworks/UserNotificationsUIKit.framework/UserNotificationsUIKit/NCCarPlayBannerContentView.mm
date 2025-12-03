@@ -9,32 +9,32 @@
 - (id)_defaultRelevanceDateFont;
 - (id)_primaryFont;
 - (id)_subtitleFont;
-- (void)_layoutForButton:(id)a3 contentFrame:(CGRect)a4;
+- (void)_layoutForButton:(id)button contentFrame:(CGRect)frame;
 - (void)_reloadDisplayPropertiesIfNecessary;
-- (void)_setRelevanceDate:(id)a3 allDay:(BOOL)a4 timeZone:(id)a5 style:(int64_t)a6;
+- (void)_setRelevanceDate:(id)date allDay:(BOOL)day timeZone:(id)zone style:(int64_t)style;
 - (void)_updateButtonStates;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setPrimaryText:(id)text;
+- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setTimeZone:(id)zone;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCCarPlayBannerContentView
 
 - (void)_updateButtonStates
 {
-  v4 = [(NCCarPlayBannerContentView *)self traitCollection];
-  v3 = ([v4 interactionModel] & 2) != 0 || objc_msgSend(v4, "primaryInteractionModel") == 8;
+  traitCollection = [(NCCarPlayBannerContentView *)self traitCollection];
+  v3 = ([traitCollection interactionModel] & 2) != 0 || objc_msgSend(traitCollection, "primaryInteractionModel") == 8;
   [(CPUIBannerViewButton *)self->_okButton setSelected:v3];
   [(CPUIBannerViewButton *)self->_actionButton setSelected:v3];
 }
@@ -47,9 +47,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NCCarPlayBannerContentView *)self _shouldShowOKButton];
+  _shouldShowOKButton = [(NCCarPlayBannerContentView *)self _shouldShowOKButton];
   actionButton = self->_actionButton;
-  if (v11)
+  if (_shouldShowOKButton)
   {
     [(CPUIBannerViewButton *)actionButton setHidden:1];
     [(CPUIBannerViewButton *)self->_okButton setHidden:0];
@@ -88,12 +88,12 @@
   if (self->_badgedIconView)
   {
     v20 = v6 + v17;
-    v21 = [(NCCarPlayBannerContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCCarPlayBannerContentView *)self _shouldReverseLayoutDirection];
     v22 = v4;
     v23 = v6;
     v24 = v16;
     v25 = v10;
-    if (v21)
+    if (_shouldReverseLayoutDirection)
     {
       v26 = CGRectGetMaxX(*&v22) - v19 + -40.0;
     }
@@ -118,8 +118,8 @@
   }
 
   v31 = v16 - v19;
-  v32 = [(BSUIDateLabel *)self->_relevanceDateLabel attributedText];
-  [v32 size];
+  attributedText = [(BSUIDateLabel *)self->_relevanceDateLabel attributedText];
+  [attributedText size];
   v34 = v33;
   v64 = v35;
 
@@ -257,10 +257,10 @@
   if (!self->_displayPropertiesValid)
   {
     self->_displayPropertiesValid = 1;
-    v6 = [(NCCarPlayBannerContentView *)self date];
-    v4 = [(NCCarPlayBannerContentView *)self isDateAllDay];
-    v5 = [(NCCarPlayBannerContentView *)self timeZone];
-    [(NCCarPlayBannerContentView *)self _setRelevanceDate:v6 allDay:v4 timeZone:v5 style:[(NCCarPlayBannerContentView *)self dateFormatStyle]];
+    date = [(NCCarPlayBannerContentView *)self date];
+    isDateAllDay = [(NCCarPlayBannerContentView *)self isDateAllDay];
+    timeZone = [(NCCarPlayBannerContentView *)self timeZone];
+    [(NCCarPlayBannerContentView *)self _setRelevanceDate:date allDay:isDateAllDay timeZone:timeZone style:[(NCCarPlayBannerContentView *)self dateFormatStyle]];
   }
 }
 
@@ -283,8 +283,8 @@
 - (UIEdgeInsets)_iconImageInsets
 {
   [(NCCarPlayBannerContentView *)self bounds];
-  v3 = [(NCCarPlayBannerContentView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(NCCarPlayBannerContentView *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v5 = v4;
 
@@ -301,8 +301,8 @@
 
 - (BOOL)_hasSubtitle
 {
-  v2 = [(UILabel *)self->_primarySubtitleTextLabel text];
-  v3 = [v2 length] != 0;
+  text = [(UILabel *)self->_primarySubtitleTextLabel text];
+  v3 = [text length] != 0;
 
   return v3;
 }
@@ -322,37 +322,37 @@
   v2 = [(NCCarPlayBannerContentView *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(NCCarPlayBannerContentView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NCCarPlayBannerContentView *)v2 setBackgroundColor:clearColor];
 
-    v4 = [(NCCarPlayBannerContentView *)v2 _primaryFont];
+    _primaryFont = [(NCCarPlayBannerContentView *)v2 _primaryFont];
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
     primaryTextLabel = v2->_primaryTextLabel;
     v2->_primaryTextLabel = v5;
 
-    [(UILabel *)v2->_primaryTextLabel setFont:v4];
+    [(UILabel *)v2->_primaryTextLabel setFont:_primaryFont];
     v7 = v2->_primaryTextLabel;
-    v8 = [objc_opt_class() _textColor];
-    [(UILabel *)v7 setTextColor:v8];
+    _textColor = [objc_opt_class() _textColor];
+    [(UILabel *)v7 setTextColor:_textColor];
 
-    v9 = [(NCCarPlayBannerContentView *)v2 _subtitleFont];
+    _subtitleFont = [(NCCarPlayBannerContentView *)v2 _subtitleFont];
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     primarySubtitleTextLabel = v2->_primarySubtitleTextLabel;
     v2->_primarySubtitleTextLabel = v10;
 
-    [(UILabel *)v2->_primarySubtitleTextLabel setFont:v9];
+    [(UILabel *)v2->_primarySubtitleTextLabel setFont:_subtitleFont];
     v12 = v2->_primarySubtitleTextLabel;
-    v13 = [objc_opt_class() _textColor];
-    [(UILabel *)v12 setTextColor:v13];
+    _textColor2 = [objc_opt_class() _textColor];
+    [(UILabel *)v12 setTextColor:_textColor2];
 
-    v14 = [MEMORY[0x277CF90D0] buttonWithOK];
+    buttonWithOK = [MEMORY[0x277CF90D0] buttonWithOK];
     okButton = v2->_okButton;
-    v2->_okButton = v14;
+    v2->_okButton = buttonWithOK;
 
-    v16 = [MEMORY[0x277CF90D0] buttonWithChevronImage];
+    buttonWithChevronImage = [MEMORY[0x277CF90D0] buttonWithChevronImage];
     actionButton = v2->_actionButton;
-    v2->_actionButton = v16;
+    v2->_actionButton = buttonWithChevronImage;
 
     [(NCCarPlayBannerContentView *)v2 _updateButtonStates];
     [(NCCarPlayBannerContentView *)v2 addSubview:v2->_primaryTextLabel];
@@ -371,48 +371,48 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = NCCarPlayBannerContentView;
-  v4 = a3;
-  [(NCCarPlayBannerContentView *)&v14 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NCCarPlayBannerContentView *)&v14 traitCollectionDidChange:changeCopy];
   [(NCCarPlayBannerContentView *)self invalidateDisplayProperties:v14.receiver];
   [(NCCarPlayBannerContentView *)self _updateButtonStates];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(NCCarPlayBannerContentView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(NCCarPlayBannerContentView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     primaryTextLabel = self->_primaryTextLabel;
-    v9 = [(NCCarPlayBannerContentView *)self _primaryFont];
-    [(UILabel *)primaryTextLabel setFont:v9];
+    _primaryFont = [(NCCarPlayBannerContentView *)self _primaryFont];
+    [(UILabel *)primaryTextLabel setFont:_primaryFont];
 
     primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-    v11 = [(NCCarPlayBannerContentView *)self _subtitleFont];
-    [(UILabel *)primarySubtitleTextLabel setFont:v11];
+    _subtitleFont = [(NCCarPlayBannerContentView *)self _subtitleFont];
+    [(UILabel *)primarySubtitleTextLabel setFont:_subtitleFont];
 
     relevanceDateLabel = self->_relevanceDateLabel;
-    v13 = [(NCCarPlayBannerContentView *)self _defaultRelevanceDateFont];
-    [(BSUIDateLabel *)relevanceDateLabel setFont:v13];
+    _defaultRelevanceDateFont = [(NCCarPlayBannerContentView *)self _defaultRelevanceDateFont];
+    [(BSUIDateLabel *)relevanceDateLabel setFont:_defaultRelevanceDateFont];
 
     [(NCCarPlayBannerContentView *)self setNeedsLayout];
   }
 }
 
-- (void)_layoutForButton:(id)a3 contentFrame:(CGRect)a4
+- (void)_layoutForButton:(id)button contentFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v16 = a3;
-  [v16 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  buttonCopy = button;
+  [buttonCopy bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(NCCarPlayBannerContentView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCCarPlayBannerContentView *)self _shouldReverseLayoutDirection];
   v12 = width - v8 + -12.0;
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = 12.0;
   }
@@ -421,8 +421,8 @@
   v14 = v8;
   v15 = v10;
   v18 = CGRectIntegral(*&v12);
-  [v16 setFrame:{v18.origin.x, v18.origin.y, v18.size.width, v18.size.height}];
-  [v16 setHidden:0];
+  [buttonCopy setFrame:{v18.origin.x, v18.origin.y, v18.size.width, v18.size.height}];
+  [buttonCopy setHidden:0];
 }
 
 - (id)_primaryFont
@@ -430,8 +430,8 @@
   v17[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D74310];
   v4 = *MEMORY[0x277D769D0];
-  v5 = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
-  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:v5];
+  _boundedTraitCollectionForLabelFont = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
+  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:_boundedTraitCollectionForLabelFont];
 
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
@@ -453,8 +453,8 @@
 {
   v3 = MEMORY[0x277D74310];
   v4 = *MEMORY[0x277D769D0];
-  v5 = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
-  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:v5];
+  _boundedTraitCollectionForLabelFont = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
+  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:_boundedTraitCollectionForLabelFont];
 
   v7 = [MEMORY[0x277D74300] fontWithDescriptor:v6 size:0.0];
   [v7 ascender];
@@ -467,8 +467,8 @@
 {
   v2 = MEMORY[0x277D74310];
   v3 = *MEMORY[0x277D76938];
-  v4 = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
-  v5 = [v2 preferredFontDescriptorWithTextStyle:v3 compatibleWithTraitCollection:v4];
+  _boundedTraitCollectionForLabelFont = [(NCCarPlayBannerContentView *)self _boundedTraitCollectionForLabelFont];
+  v5 = [v2 preferredFontDescriptorWithTextStyle:v3 compatibleWithTraitCollection:_boundedTraitCollectionForLabelFont];
 
   v6 = [MEMORY[0x277D74300] fontWithDescriptor:v5 size:0.0];
 
@@ -478,10 +478,10 @@
 - (id)_boundedTraitCollectionForLabelFont
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  v2 = [(NCCarPlayBannerContentView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(NCCarPlayBannerContentView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = v3;
+  v4 = preferredContentSizeCategory;
   v5 = *MEMORY[0x277D76818];
   v18[0] = *MEMORY[0x277D76820];
   v18[1] = v5;
@@ -525,44 +525,44 @@ LABEL_6:
   return v15;
 }
 
-- (void)_setRelevanceDate:(id)a3 allDay:(BOOL)a4 timeZone:(id)a5 style:(int64_t)a6
+- (void)_setRelevanceDate:(id)date allDay:(BOOL)day timeZone:(id)zone style:(int64_t)style
 {
-  v8 = a4;
-  v25 = a3;
-  v10 = a5;
-  v11 = v25;
-  v12 = v10;
-  if (v25)
+  dayCopy = day;
+  dateCopy = date;
+  zoneCopy = zone;
+  v11 = dateCopy;
+  v12 = zoneCopy;
+  if (dateCopy)
   {
-    if (!v10)
+    if (!zoneCopy)
     {
-      v13 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-      v11 = v25;
-      v12 = v13;
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      v11 = dateCopy;
+      v12 = defaultTimeZone;
     }
 
     relevanceDateLabel = self->_relevanceDateLabel;
     if (relevanceDateLabel)
     {
       [(BSUIDateLabel *)relevanceDateLabel setStartDate:v11 withTimeZone:v12];
-      [(BSUIDateLabel *)self->_relevanceDateLabel setEndDate:v25 withTimeZone:v12];
+      [(BSUIDateLabel *)self->_relevanceDateLabel setEndDate:dateCopy withTimeZone:v12];
       [(BSUIDateLabel *)self->_relevanceDateLabel setDelegate:self];
     }
 
     else
     {
-      v18 = [MEMORY[0x277CF0D50] sharedInstance];
-      v19 = [v18 startLabelWithStartDate:v25 endDate:0 timeZone:v12 allDay:v8 forStyle:a6];
+      mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+      v19 = [mEMORY[0x277CF0D50] startLabelWithStartDate:dateCopy endDate:0 timeZone:v12 allDay:dayCopy forStyle:style];
       v20 = self->_relevanceDateLabel;
       self->_relevanceDateLabel = v19;
 
       v21 = self->_relevanceDateLabel;
-      v22 = [(NCCarPlayBannerContentView *)self _defaultRelevanceDateFont];
-      [(BSUIDateLabel *)v21 setFont:v22];
+      _defaultRelevanceDateFont = [(NCCarPlayBannerContentView *)self _defaultRelevanceDateFont];
+      [(BSUIDateLabel *)v21 setFont:_defaultRelevanceDateFont];
 
       v23 = self->_relevanceDateLabel;
-      v24 = [objc_opt_class() _textColor];
-      [(BSUIDateLabel *)v23 setTextColor:v24];
+      _textColor = [objc_opt_class() _textColor];
+      [(BSUIDateLabel *)v23 setTextColor:_textColor];
 
       [(BSUIDateLabel *)self->_relevanceDateLabel setDelegate:self];
       [(NCCarPlayBannerContentView *)self addSubview:self->_relevanceDateLabel];
@@ -576,8 +576,8 @@ LABEL_6:
     if (v15)
     {
       [(BSUIDateLabel *)v15 setDelegate:0];
-      v16 = [MEMORY[0x277CF0D50] sharedInstance];
-      [v16 recycleLabel:self->_relevanceDateLabel];
+      mEMORY[0x277CF0D50]2 = [MEMORY[0x277CF0D50] sharedInstance];
+      [mEMORY[0x277CF0D50]2 recycleLabel:self->_relevanceDateLabel];
 
       v17 = self->_relevanceDateLabel;
       self->_relevanceDateLabel = 0;
@@ -585,38 +585,38 @@ LABEL_6:
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCCarPlayBannerContentView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCCarPlayBannerContentView *)self primaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_primaryTextLabel setText:v6];
+    [(UILabel *)self->_primaryTextLabel setText:textCopy];
     [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
   }
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCCarPlayBannerContentView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCCarPlayBannerContentView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_primarySubtitleTextLabel setText:v6];
+    [(UILabel *)self->_primarySubtitleTextLabel setText:textCopy];
     [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -624,21 +624,21 @@ LABEL_6:
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  if (self->_dateAllDay != a3)
+  if (self->_dateAllDay != day)
   {
-    self->_dateAllDay = a3;
+    self->_dateAllDay = day;
     [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -646,97 +646,97 @@ LABEL_6:
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3)
+  if (self->_dateFormatStyle != style)
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
   }
 }
 
-- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setPrimaryTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if ([(NCCarPlayBannerContentView *)self primaryTextMaximumNumberOfLines]!= a3)
+  if ([(NCCarPlayBannerContentView *)self primaryTextMaximumNumberOfLines]!= lines)
   {
-    [(UILabel *)self->_primaryTextLabel setNumberOfLines:a3];
-
-    [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
-  }
-}
-
-- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)a3
-{
-  if ([(NCCarPlayBannerContentView *)self primarySubtitleTextMaximumNumberOfLines]!= a3)
-  {
-    [(UILabel *)self->_primarySubtitleTextLabel setNumberOfLines:a3];
+    [(UILabel *)self->_primaryTextLabel setNumberOfLines:lines];
 
     [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setPrimarySubtitleTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_screenCaptureProhibited != a3)
+  if ([(NCCarPlayBannerContentView *)self primarySubtitleTextMaximumNumberOfLines]!= lines)
   {
-    self->_screenCaptureProhibited = a3;
+    [(UILabel *)self->_primarySubtitleTextLabel setNumberOfLines:lines];
+
+    [(NCCarPlayBannerContentView *)self invalidateDisplayProperties];
+  }
+}
+
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
+{
+  if (self->_screenCaptureProhibited != prohibited)
+  {
+    self->_screenCaptureProhibited = prohibited;
     [(NCCarPlayBannerContentView *)self nc_setScreenCaptureProhibited:?];
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  if (strokeVisualStylingProvider != v6)
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v9 = v6;
+    v9 = providerCopy;
     v8 = strokeVisualStylingProvider;
-    objc_storeStrong(&self->_strokeVisualStylingProvider, a3);
+    objc_storeStrong(&self->_strokeVisualStylingProvider, provider);
     if (self->_badgedIconView)
     {
       [(MTVisualStylingProvider *)v8 stopAutomaticallyUpdatingView:?];
       [(MTVisualStylingProvider *)v9 automaticallyUpdateView:self->_badgedIconView withStyle:0];
     }
 
-    v6 = v9;
+    providerCopy = v9;
   }
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v13 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_badgedIconDescription, a3);
+    objc_storeStrong(&self->_badgedIconDescription, description);
     [(NCBadgedIconView *)self->_badgedIconView removeFromSuperview];
     badgedIconView = self->_badgedIconView;
     self->_badgedIconView = 0;
 
     if (self->_badgedIconDescription)
     {
-      v6 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:v13 pointSize:40.0];
+      v6 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:descriptionCopy pointSize:40.0];
       v7 = self->_badgedIconView;
       self->_badgedIconView = v6;
 
       [(NCCarPlayBannerContentView *)self addSubview:self->_badgedIconView];
       [(NCBadgedIconView *)self->_badgedIconView setOverrideUserInterfaceStyle:1];
-      v8 = [(NCCarPlayBannerContentView *)self traitCollection];
-      v9 = [v8 objectForTrait:objc_opt_class()];
+      traitCollection = [(NCCarPlayBannerContentView *)self traitCollection];
+      v9 = [traitCollection objectForTrait:objc_opt_class()];
 
       if (v9)
       {
-        v10 = [v9 sbh_iconImageStyleConfiguration];
-        v11 = [(NCBadgedIconView *)self->_badgedIconView traitOverrides];
+        sbh_iconImageStyleConfiguration = [v9 sbh_iconImageStyleConfiguration];
+        traitOverrides = [(NCBadgedIconView *)self->_badgedIconView traitOverrides];
         v12 = objc_opt_self();
-        [v11 setObject:v10 forTrait:v12];
+        [traitOverrides setObject:sbh_iconImageStyleConfiguration forTrait:v12];
       }
 
       else
       {
-        v10 = [(NCBadgedIconView *)self->_badgedIconView traitOverrides];
-        v11 = objc_opt_self();
-        [v10 removeTrait:v11];
+        sbh_iconImageStyleConfiguration = [(NCBadgedIconView *)self->_badgedIconView traitOverrides];
+        traitOverrides = objc_opt_self();
+        [sbh_iconImageStyleConfiguration removeTrait:traitOverrides];
       }
     }
 

@@ -7,8 +7,8 @@
 
 - (uint64_t)memoryMusicQualityFeedbackType
 {
-  v1 = [a1 additionalInfo];
-  v2 = [v1 objectForKeyedSubscript:@"feedbackDescription"];
+  additionalInfo = [self additionalInfo];
+  v2 = [additionalInfo objectForKeyedSubscript:@"feedbackDescription"];
   v3 = PXMemoryMusicQualityFeedbackTypeForString(v2);
 
   return v3;
@@ -18,16 +18,16 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [a4 identifier];
-  v7 = [v5 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  identifier = [a4 identifier];
+  photoLibrary = [v5 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [v5 uuid];
-  v11 = [v9 predicateWithFormat:@"type == %d AND entityIdentifier == %@", 15, v10];
-  [v8 setPredicate:v11];
+  uuid = [v5 uuid];
+  v11 = [v9 predicateWithFormat:@"type == %d AND entityIdentifier == %@", 15, uuid];
+  [librarySpecificFetchOptions setPredicate:v11];
 
-  [MEMORY[0x1E6978A10] fetchQuestionsWithOptions:v8 validQuestionsOnly:0];
+  [MEMORY[0x1E6978A10] fetchQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -48,12 +48,12 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 additionalInfo];
-        v19 = [v18 objectForKeyedSubscript:@"songIdentifier"];
+        additionalInfo = [v17 additionalInfo];
+        v19 = [additionalInfo objectForKeyedSubscript:@"songIdentifier"];
 
         if (v19)
         {
-          v20 = v6 == 0;
+          v20 = identifier == 0;
         }
 
         else
@@ -61,7 +61,7 @@
           v20 = 1;
         }
 
-        if (!v20 && ([v19 isEqualToString:v6] & 1) != 0)
+        if (!v20 && ([v19 isEqualToString:identifier] & 1) != 0)
         {
           v21 = v17;
 

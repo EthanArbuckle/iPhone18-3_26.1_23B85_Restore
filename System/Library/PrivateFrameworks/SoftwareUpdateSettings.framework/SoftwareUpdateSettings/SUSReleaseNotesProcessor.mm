@@ -1,7 +1,7 @@
 @interface SUSReleaseNotesProcessor
 + (id)sharedInstance;
-- (id)normalizeHtmlReleaseNotes:(id)a3;
-- (id)normalizeHtmlReleaseNotes:(id)a3 withAdditionalCSS:(id)a4;
+- (id)normalizeHtmlReleaseNotes:(id)notes;
+- (id)normalizeHtmlReleaseNotes:(id)notes withAdditionalCSS:(id)s;
 @end
 
 @implementation SUSReleaseNotesProcessor
@@ -31,26 +31,26 @@ double __42__SUSReleaseNotesProcessor_sharedInstance__block_invoke()
   return result;
 }
 
-- (id)normalizeHtmlReleaseNotes:(id)a3
+- (id)normalizeHtmlReleaseNotes:(id)notes
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(SUSReleaseNotesProcessor *)v6 normalizeHtmlReleaseNotes:location[0] withAdditionalCSS:@":root {   color-scheme: light dark;}p {   -webkit-text-size-adjust: 100% !important;   font-family: -apple-system, system-ui, HelveticaNeue, LucidaGrande !important;   color: -apple-system-label !important;}"];
+  objc_storeStrong(location, notes);
+  v4 = [(SUSReleaseNotesProcessor *)selfCopy normalizeHtmlReleaseNotes:location[0] withAdditionalCSS:@":root {   color-scheme: light dark;}p {   -webkit-text-size-adjust: 100% !important;   font-family: -apple-system, system-ui, HelveticaNeue, LucidaGrande !important;   color: -apple-system-label !important;}"];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)normalizeHtmlReleaseNotes:(id)a3 withAdditionalCSS:(id)a4
+- (id)normalizeHtmlReleaseNotes:(id)notes withAdditionalCSS:(id)s
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notes);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, s);
   v41 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"<style[^>]*>" options:1 error:0];
   v19 = location[0];
   v4 = [location[0] length];
@@ -63,18 +63,18 @@ double __42__SUSReleaseNotesProcessor_sharedInstance__block_invoke()
   v40 = [v41 firstMatchInString:v19 options:0 range:{0, v4}];
   if (v40)
   {
-    v34 = [v40 range];
+    range = [v40 range];
     v35 = v5;
-    v32 = [v40 range];
+    range2 = [v40 range];
     v33 = v6;
-    v17 = v34 + v6;
+    v17 = range + v6;
     v16 = [location[0] length];
-    v30 = [v40 range];
+    range3 = [v40 range];
     v31 = v7;
     v29[1] = [v40 range];
     v29[2] = v8;
     v58 = v17;
-    v57 = v16 - v30 - v8;
+    v57 = v16 - range3 - v8;
     v59 = v17;
     v60 = v57;
     v36 = v17;
@@ -121,13 +121,13 @@ double __42__SUSReleaseNotesProcessor_sharedInstance__block_invoke()
     v21 = [v22 firstMatchInString:v15 options:0 range:{0, v11}];
     if (v21)
     {
-      v20 = [v21 range];
+      range4 = [v21 range];
       [v21 range];
-      v46 = v20 + v12;
+      v46 = range4 + v12;
       v45 = 0;
       v48 = 0;
-      v47 = v20 + v12;
-      v44 = [location[0] stringByReplacingCharactersInRange:v20 + v12 withString:{0, v23}];
+      v47 = range4 + v12;
+      v44 = [location[0] stringByReplacingCharactersInRange:range4 + v12 withString:{0, v23}];
     }
 
     else

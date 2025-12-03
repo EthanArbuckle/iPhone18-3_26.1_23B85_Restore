@@ -68,7 +68,7 @@
 - (id)portraitArtworkCatalog;
 - (id)staticTallEditorialArtworkCatalog;
 - (id)superHeroTallEditorialArtworkCatalog;
-- (id)tracksTiledArtworkCatalogWithRows:(unint64_t)a3 columns:(unint64_t)a4;
+- (id)tracksTiledArtworkCatalogWithRows:(unint64_t)rows columns:(unint64_t)columns;
 - (int64_t)libraryRemovalSupportedOptions;
 @end
 
@@ -114,11 +114,11 @@
 
 - (id)portraitArtworkCatalog
 {
-  v3 = [(MPModelPlaylist *)self portraitArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  portraitArtworkCatalogBlock = [(MPModelPlaylist *)self portraitArtworkCatalogBlock];
+  v4 = portraitArtworkCatalogBlock;
+  if (portraitArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(portraitArtworkCatalogBlock + 16))(portraitArtworkCatalogBlock, self);
   }
 
   else
@@ -129,13 +129,13 @@
   return v5;
 }
 
-- (id)tracksTiledArtworkCatalogWithRows:(unint64_t)a3 columns:(unint64_t)a4
+- (id)tracksTiledArtworkCatalogWithRows:(unint64_t)rows columns:(unint64_t)columns
 {
-  v7 = [(MPModelPlaylist *)self tiledArtworkCatalogBlock];
-  v8 = v7;
-  if (v7)
+  tiledArtworkCatalogBlock = [(MPModelPlaylist *)self tiledArtworkCatalogBlock];
+  v8 = tiledArtworkCatalogBlock;
+  if (tiledArtworkCatalogBlock)
   {
-    v9 = (*(v7 + 16))(v7, self, a3, a4);
+    v9 = (*(tiledArtworkCatalogBlock + 16))(tiledArtworkCatalogBlock, self, rows, columns);
   }
 
   else
@@ -148,11 +148,11 @@
 
 - (id)editorialArtworkCatalog
 {
-  v3 = [(MPModelPlaylist *)self editorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  editorialArtworkCatalogBlock = [(MPModelPlaylist *)self editorialArtworkCatalogBlock];
+  v4 = editorialArtworkCatalogBlock;
+  if (editorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(editorialArtworkCatalogBlock + 16))(editorialArtworkCatalogBlock, self);
   }
 
   else
@@ -165,11 +165,11 @@
 
 - (id)superHeroTallEditorialArtworkCatalog
 {
-  v3 = [(MPModelPlaylist *)self superHeroTallEditorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  superHeroTallEditorialArtworkCatalogBlock = [(MPModelPlaylist *)self superHeroTallEditorialArtworkCatalogBlock];
+  v4 = superHeroTallEditorialArtworkCatalogBlock;
+  if (superHeroTallEditorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(superHeroTallEditorialArtworkCatalogBlock + 16))(superHeroTallEditorialArtworkCatalogBlock, self);
   }
 
   else
@@ -182,11 +182,11 @@
 
 - (id)staticTallEditorialArtworkCatalog
 {
-  v3 = [(MPModelPlaylist *)self staticTallEditorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  staticTallEditorialArtworkCatalogBlock = [(MPModelPlaylist *)self staticTallEditorialArtworkCatalogBlock];
+  v4 = staticTallEditorialArtworkCatalogBlock;
+  if (staticTallEditorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(staticTallEditorialArtworkCatalogBlock + 16))(staticTallEditorialArtworkCatalogBlock, self);
   }
 
   else
@@ -199,11 +199,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelPlaylist *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelPlaylist *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -217,15 +217,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"playlist %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"playlist %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyPlaylistName"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelPlaylist *)self name];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    name = [(MPModelPlaylist *)self name];
+    v9 = [v7 stringWithFormat:@"“%@” ", name];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -235,359 +235,359 @@
 
 + (void)__MPModelPropertyPlaylistHasAnyCleanDownloadedTracks__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:205 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasAnyCleanDownloadedTracks"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:205 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasAnyCleanDownloadedTracks"];
 }
 
 + (void)__MPModelPropertyPlaylistHasAnyCleanTracks__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:204 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasAnyCleanTracks"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:204 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasAnyCleanTracks"];
 }
 
 + (void)__MPModelPropertyPlaylistIsPinned__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:203 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsPinned"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:203 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsPinned"];
 }
 
 + (void)__MPModelPropertyPlaylistDownloadedTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:202 description:@"Translator was missing mapping for MPModelPropertyPlaylistDownloadedTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:202 description:@"Translator was missing mapping for MPModelPropertyPlaylistDownloadedTrackCount"];
 }
 
 + (void)__MPModelPropertyPlaylistIsStoreRedownloadable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:201 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsStoreRedownloadable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:201 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsStoreRedownloadable"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaboratorStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:200 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaboratorStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:200 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaboratorStatus"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaborationJoinRequestIsPending__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:199 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationJoinRequestIsPending"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:199 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationJoinRequestIsPending"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaborationInvitationURLExpirationDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:198 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationInvitationURLExpirationDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:198 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationInvitationURLExpirationDate"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaborationInvitationURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:197 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationInvitationURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:197 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationInvitationURL"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaboratorPermissions__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:196 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaboratorPermissions"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:196 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaboratorPermissions"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaborationMode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:195 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationMode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:195 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationMode"];
 }
 
 + (void)__MPModelPropertyPlaylistCollaborationSharingMode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:194 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationSharingMode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:194 description:@"Translator was missing mapping for MPModelPropertyPlaylistCollaborationSharingMode"];
 }
 
 + (void)__MPModelPropertyPlaylistIsCollaborative__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:193 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsCollaborative"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:193 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsCollaborative"];
 }
 
 + (void)__MPModelPropertyPlaylistEditSessionID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:192 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditSessionID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:192 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditSessionID"];
 }
 
 + (void)__MPModelPropertyPlaylistCoverArtworkRecipe__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:191 description:@"Translator was missing mapping for MPModelPropertyPlaylistCoverArtworkRecipe"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:191 description:@"Translator was missing mapping for MPModelPropertyPlaylistCoverArtworkRecipe"];
 }
 
 + (void)__MPModelPropertyPlaylistIsFavoriteSongsPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:190 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsFavoriteSongsPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:190 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsFavoriteSongsPlaylist"];
 }
 
 + (void)__MPModelPropertyPlaylistDateFavorited__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:189 description:@"Translator was missing mapping for MPModelPropertyPlaylistDateFavorited"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:189 description:@"Translator was missing mapping for MPModelPropertyPlaylistDateFavorited"];
 }
 
 + (void)__MPModelPropertyPlaylistIsDisliked__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:188 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsDisliked"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:188 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsDisliked"];
 }
 
 + (void)__MPModelPropertyPlaylistIsFavorite__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:187 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsFavorite"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:187 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsFavorite"];
 }
 
 + (void)__MPModelPropertyPlaylistTraits__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:186 description:@"Translator was missing mapping for MPModelPropertyPlaylistTraits"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:186 description:@"Translator was missing mapping for MPModelPropertyPlaylistTraits"];
 }
 
 + (void)__MPModelPropertyPlaylistDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:185 description:@"Translator was missing mapping for MPModelPropertyPlaylistDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:185 description:@"Translator was missing mapping for MPModelPropertyPlaylistDownloadedDate"];
 }
 
 + (void)__MPModelPropertyPlaylistVersionHash__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:184 description:@"Translator was missing mapping for MPModelPropertyPlaylistVersionHash"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:184 description:@"Translator was missing mapping for MPModelPropertyPlaylistVersionHash"];
 }
 
 + (void)__MPModelPropertyPlaylistCloudVersionHash__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:183 description:@"Translator was missing mapping for MPModelPropertyPlaylistCloudVersionHash"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:183 description:@"Translator was missing mapping for MPModelPropertyPlaylistCloudVersionHash"];
 }
 
 + (void)__MPModelPropertyPlaylistLastDevicePlaybackDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:182 description:@"Translator was missing mapping for MPModelPropertyPlaylistLastDevicePlaybackDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:182 description:@"Translator was missing mapping for MPModelPropertyPlaylistLastDevicePlaybackDate"];
 }
 
 + (void)__MPModelPropertyPlaylistKeepLocalConstraints__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:181 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalConstraints"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:181 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalConstraints"];
 }
 
 + (void)__MPModelPropertyPlaylistKeepLocalManagedStatusReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:180 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalManagedStatusReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:180 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalManagedStatusReason"];
 }
 
 + (void)__MPModelPropertyPlaylistKeepLocalManagedStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalManagedStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalManagedStatus"];
 }
 
 + (void)__MPModelPropertyPlaylistKeepLocalEnableState__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalEnableState"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertyPlaylistKeepLocalEnableState"];
 }
 
 + (void)__MPModelPropertyPlaylistTracksTiledArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertyPlaylistTracksTiledArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertyPlaylistTracksTiledArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertyPlaylistLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertyPlaylistLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyPlaylistLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertyPlaylistLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertyPlaylistLibraryAdded"];
 }
 
 + (void)__MPModelPropertyPlaylistEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistPortraitArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertyPlaylistPortraitArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertyPlaylistPortraitArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistSuperHeroTallEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:172 description:@"Translator was missing mapping for MPModelPropertyPlaylistSuperHeroTallEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:172 description:@"Translator was missing mapping for MPModelPropertyPlaylistSuperHeroTallEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistStaticTallEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertyPlaylistStaticTallEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertyPlaylistStaticTallEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertyPlaylistArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertyPlaylistArtwork"];
 }
 
 + (void)__MPModelPropertyPlaylistLastModifiedDateComponents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertyPlaylistLastModifiedDateComponents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertyPlaylistLastModifiedDateComponents"];
 }
 
 + (void)__MPModelPropertyPlaylistReleaseDateComponents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertyPlaylistReleaseDateComponents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertyPlaylistReleaseDateComponents"];
 }
 
 + (void)__MPModelPropertyPlaylistShareShortURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:167 description:@"Translator was missing mapping for MPModelPropertyPlaylistShareShortURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:167 description:@"Translator was missing mapping for MPModelPropertyPlaylistShareShortURL"];
 }
 
 + (void)__MPModelPropertyPlaylistShareURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:166 description:@"Translator was missing mapping for MPModelPropertyPlaylistShareURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:166 description:@"Translator was missing mapping for MPModelPropertyPlaylistShareURL"];
 }
 
 + (void)__MPModelPropertyPlaylistShortEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:165 description:@"Translator was missing mapping for MPModelPropertyPlaylistShortEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:165 description:@"Translator was missing mapping for MPModelPropertyPlaylistShortEditorNotes"];
 }
 
 + (void)__MPModelPropertyPlaylistEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertyPlaylistEditorNotes"];
 }
 
 + (void)__MPModelPropertyPlaylistTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertyPlaylistTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertyPlaylistTrackCount"];
 }
 
 + (void)__MPModelPropertyPlaylistType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyPlaylistType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyPlaylistType"];
 }
 
 + (void)__MPModelPropertyPlaylistUserEditableComponents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyPlaylistUserEditableComponents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyPlaylistUserEditableComponents"];
 }
 
 + (void)__MPModelPropertyPlaylistSubscribed__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyPlaylistSubscribed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyPlaylistSubscribed"];
 }
 
 + (void)__MPModelPropertyPlaylistVisiblePlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyPlaylistVisiblePlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyPlaylistVisiblePlaylist"];
 }
 
 + (void)__MPModelPropertyPlaylistPublicPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyPlaylistPublicPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyPlaylistPublicPlaylist"];
 }
 
 + (void)__MPModelPropertyPlaylistIsOwner__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsOwner"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyPlaylistIsOwner"];
 }
 
 + (void)__MPModelPropertyPlaylistCuratorPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyPlaylistCuratorPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyPlaylistCuratorPlaylist"];
 }
 
 + (void)__MPModelPropertyPlaylistHasExplicitContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasExplicitContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasExplicitContent"];
 }
 
 + (void)__MPModelPropertyPlaylistHasCleanContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasCleanContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyPlaylistHasCleanContent"];
 }
 
 + (void)__MPModelPropertyPlaylistParentPersistentID__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyPlaylistParentPersistentID"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyPlaylistParentPersistentID"];
 }
 
 + (void)__MPModelRelationshipPlaylistCurator__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:152 description:@"Translator was missing mapping for MPModelRelationshipPlaylistCurator"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:152 description:@"Translator was missing mapping for MPModelRelationshipPlaylistCurator"];
 }
 
 + (void)__MPModelPropertyPlaylistDescriptionText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyPlaylistDescriptionText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyPlaylistDescriptionText"];
 }
 
 + (void)__MPModelPropertyPlaylistName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylist.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyPlaylistName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylist.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyPlaylistName"];
 }
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
-  v3 = [(MPModelPlaylist *)self isLibraryAdded];
-  v4 = [(MPModelPlaylist *)self hasCleanContent];
-  v5 = [(MPModelPlaylist *)self hasExplicitContent];
+  isLibraryAdded = [(MPModelPlaylist *)self isLibraryAdded];
+  hasCleanContent = [(MPModelPlaylist *)self hasCleanContent];
+  hasExplicitContent = [(MPModelPlaylist *)self hasExplicitContent];
   v6 = 0x100000000;
-  if (v5)
+  if (hasExplicitContent)
   {
     v6 = 0x101000000;
   }
 
   v7 = 0x10000;
-  if (!v4)
+  if (!hasCleanContent)
   {
     v7 = 0;
   }
 
   v8 = 257;
-  if (!v3)
+  if (!isLibraryAdded)
   {
     v8 = 1;
   }

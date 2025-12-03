@@ -1,10 +1,10 @@
 @interface IntentRouter
 - (IntentRouter)init;
-- (id)existingHandlerForIntentIdentifier:(id)a3;
-- (id)handlerForIntent:(id)a3;
+- (id)existingHandlerForIntentIdentifier:(id)identifier;
+- (id)handlerForIntent:(id)intent;
 - (void)registerForProvider;
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3;
-- (void)updateRecentlyUsedHandlersWithHandler:(id)a3;
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier;
+- (void)updateRecentlyUsedHandlersWithHandler:(id)handler;
 @end
 
 @implementation IntentRouter
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(IntentRouter *)self existingHandlerForIntentIdentifier:v5];
+  intentCopy = intent;
+  identifier = [intentCopy identifier];
+  v6 = [(IntentRouter *)self existingHandlerForIntentIdentifier:identifier];
 
   if (v6)
   {
@@ -160,8 +160,8 @@ LABEL_38:
   }
 
   v20 = [IntentHandlerAndIdentifier alloc];
-  v21 = [v4 identifier];
-  v6 = [(IntentHandlerAndIdentifier *)v20 initWithHandler:v19 intentIdentifier:v21];
+  identifier2 = [intentCopy identifier];
+  v6 = [(IntentHandlerAndIdentifier *)v20 initWithHandler:v19 intentIdentifier:identifier2];
 
   if (v6)
   {
@@ -170,26 +170,26 @@ LABEL_2:
   }
 
 LABEL_3:
-  v7 = [(IntentHandlerAndIdentifier *)v6 handler];
+  handler = [(IntentHandlerAndIdentifier *)v6 handler];
 
-  return v7;
+  return handler;
 }
 
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier
 {
-  v4 = [(IntentRouter *)self existingHandlerForIntentIdentifier:a3];
-  v3 = [v4 handler];
+  v4 = [(IntentRouter *)self existingHandlerForIntentIdentifier:identifier];
+  handler = [v4 handler];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 endPlayback];
+    [handler endPlayback];
   }
 }
 
-- (id)existingHandlerForIntentIdentifier:(id)a3
+- (id)existingHandlerForIntentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v14 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -202,14 +202,14 @@ LABEL_3:
     goto LABEL_20;
   }
 
-  v5 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
-  objc_sync_enter(v5);
+  recentIntentHandlersAndIdentifiers = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+  objc_sync_enter(recentIntentHandlersAndIdentifiers);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  recentIntentHandlersAndIdentifiers2 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+  v7 = [recentIntentHandlersAndIdentifiers2 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -219,12 +219,12 @@ LABEL_3:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recentIntentHandlersAndIdentifiers2);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 intentIdentifier];
-        v12 = [v4 isEqualToString:v11];
+        intentIdentifier = [v10 intentIdentifier];
+        v12 = [identifierCopy isEqualToString:intentIdentifier];
 
         if (v12)
         {
@@ -239,7 +239,7 @@ LABEL_3:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v7 = [recentIntentHandlersAndIdentifiers2 countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -251,7 +251,7 @@ LABEL_3:
 
 LABEL_14:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(recentIntentHandlersAndIdentifiers);
   if (!v7)
   {
     v14 = IntentHandlerDefaultLog();
@@ -266,29 +266,29 @@ LABEL_20:
   return v7;
 }
 
-- (void)updateRecentlyUsedHandlersWithHandler:(id)a3
+- (void)updateRecentlyUsedHandlersWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 intentIdentifier];
-  v6 = [v5 length];
+  handlerCopy = handler;
+  intentIdentifier = [handlerCopy intentIdentifier];
+  v6 = [intentIdentifier length];
 
   if (v6)
   {
-    v7 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
-    objc_sync_enter(v7);
+    recentIntentHandlersAndIdentifiers = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+    objc_sync_enter(recentIntentHandlersAndIdentifiers);
     *buf = 0;
     v23 = buf;
     v24 = 0x2020000000;
     v25 = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+    recentIntentHandlersAndIdentifiers2 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_10000D3EC;
     v19 = &unk_10004CED8;
-    v9 = v4;
+    v9 = handlerCopy;
     v20 = v9;
     v21 = buf;
-    [v8 enumerateObjectsUsingBlock:&v16];
+    [recentIntentHandlersAndIdentifiers2 enumerateObjectsUsingBlock:&v16];
 
     v10 = *(v23 + 3);
     if (v10)
@@ -302,27 +302,27 @@ LABEL_20:
       v12 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers:v16];
       [v12 insertObject:v9 atIndex:0];
 
-      v13 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
-      v14 = [v13 count];
+      recentIntentHandlersAndIdentifiers3 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+      v14 = [recentIntentHandlersAndIdentifiers3 count];
 
       if (v14 >= 6)
       {
-        v15 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
-        [v15 removeLastObject];
+        recentIntentHandlersAndIdentifiers4 = [(IntentRouter *)self recentIntentHandlersAndIdentifiers];
+        [recentIntentHandlersAndIdentifiers4 removeLastObject];
       }
     }
 
     _Block_object_dispose(buf, 8);
-    objc_sync_exit(v7);
+    objc_sync_exit(recentIntentHandlersAndIdentifiers);
   }
 
   else
   {
-    v7 = IntentHandlerDefaultLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    recentIntentHandlersAndIdentifiers = IntentHandlerDefaultLog();
+    if (os_log_type_enabled(recentIntentHandlersAndIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARN] Attempting to update recently used intent handler cache for an intent with no intentIdentifier. Ignoring.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, recentIntentHandlersAndIdentifiers, OS_LOG_TYPE_DEFAULT, "[WARN] Attempting to update recently used intent handler cache for an intent with no intentIdentifier. Ignoring.", buf, 2u);
     }
   }
 }

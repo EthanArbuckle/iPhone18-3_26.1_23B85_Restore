@@ -1,13 +1,13 @@
 @interface MPPPersistentIDsPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)persistentIDsAtIndex:(unint64_t)a3;
+- (int64_t)persistentIDsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPPersistentIDsPredicate
@@ -27,23 +27,23 @@
   return PBRepeatedInt64Hash() ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   if (*&self->_has)
   {
-    if ((v4[36] & 1) == 0 || self->_shouldContain != v4[32])
+    if ((equalCopy[36] & 1) == 0 || self->_shouldContain != equalCopy[32])
     {
       goto LABEL_8;
     }
   }
 
-  else if (v4[36])
+  else if (equalCopy[36])
   {
 LABEL_8:
     IsEqual = 0;
@@ -56,9 +56,9 @@ LABEL_9:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -70,37 +70,37 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(MPPPersistentIDsPredicate *)self hasShouldContain])
   {
-    [v7 setShouldContain:{-[MPPPersistentIDsPredicate shouldContain](self, "shouldContain")}];
+    [toCopy setShouldContain:{-[MPPPersistentIDsPredicate shouldContain](self, "shouldContain")}];
   }
 
   if ([(MPPPersistentIDsPredicate *)self persistentIDsCount])
   {
-    [v7 clearPersistentIDs];
-    v4 = [(MPPPersistentIDsPredicate *)self persistentIDsCount];
-    if (v4)
+    [toCopy clearPersistentIDs];
+    persistentIDsCount = [(MPPPersistentIDsPredicate *)self persistentIDsCount];
+    if (persistentIDsCount)
     {
-      v5 = v4;
+      v5 = persistentIDsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addPersistentIDs:{-[MPPPersistentIDsPredicate persistentIDsAtIndex:](self, "persistentIDsAtIndex:", i)}];
+        [toCopy addPersistentIDs:{-[MPPPersistentIDsPredicate persistentIDsAtIndex:](self, "persistentIDsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
-    [v4 writeBOOL:self->_shouldContain forTag:1];
-    v4 = v7;
+    [toCopy writeBOOL:self->_shouldContain forTag:1];
+    toCopy = v7;
   }
 
   p_persistentIDs = &self->_persistentIDs;
@@ -110,7 +110,7 @@ LABEL_9:
     do
     {
       [v7 writeInt64:p_persistentIDs->list[v6] forTag:2];
-      v4 = v7;
+      toCopy = v7;
       ++v6;
     }
 
@@ -120,17 +120,17 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldContain];
-    [v3 setObject:v4 forKey:@"shouldContain"];
+    [dictionary setObject:v4 forKey:@"shouldContain"];
   }
 
   v5 = PBRepeatedInt64NSArray();
-  [v3 setObject:v5 forKey:@"persistentIDs"];
+  [dictionary setObject:v5 forKey:@"persistentIDs"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -139,26 +139,26 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = MPPPersistentIDsPredicate;
   v4 = [(MPPPersistentIDsPredicate *)&v8 description];
-  v5 = [(MPPPersistentIDsPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPPersistentIDsPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int64_t)persistentIDsAtIndex:(unint64_t)a3
+- (int64_t)persistentIDsAtIndex:(unint64_t)index
 {
   p_persistentIDs = &self->_persistentIDs;
   count = self->_persistentIDs.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%ld) is out of range (%ld)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%ld) is out of range (%ld)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_persistentIDs->list[a3];
+  return p_persistentIDs->list[index];
 }
 
 - (void)dealloc

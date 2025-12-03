@@ -1,16 +1,16 @@
 @interface SPUIAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation SPUIAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v7 = spuiLogHandles[4];
   if (!v7)
   {
@@ -53,28 +53,28 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 configuration];
-  v7 = [v5 persistentIdentifier];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
+  persistentIdentifier = [sessionCopy persistentIdentifier];
 
-  LODWORD(v5) = [v7 hasPrefix:@"searchBar"];
+  LODWORD(sessionCopy) = [persistentIdentifier hasPrefix:@"searchBar"];
   v8 = off_10000C2A8;
-  if (!v5)
+  if (!sessionCopy)
   {
     v8 = &off_10000C2B0;
   }
 
   v9 = *v8;
-  [v6 setDelegateClass:objc_opt_class()];
+  [configuration setDelegateClass:objc_opt_class()];
 
-  return v6;
+  return configuration;
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = a3;
+  terminateCopy = terminate;
   v4 = spuiLogHandles[0];
   if (!spuiLogHandles[0])
   {
@@ -94,17 +94,17 @@
   [SPUIFeedbackManager flushFeedbackWithCompletion:&stru_10000C438];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v8.receiver = self;
   v8.super_class = SPUIAppDelegate;
-  v3 = a3;
-  [(SPUIAppDelegate *)&v8 buildMenuWithBuilder:v3];
+  builderCopy = builder;
+  [(SPUIAppDelegate *)&v8 buildMenuWithBuilder:builderCopy];
   v4 = [SPUISearchViewControllerHolder sharedInstance:v8.receiver];
-  v5 = [v4 searchViewController];
-  v6 = [UIFocusSystem focusSystemForEnvironment:v5];
-  v7 = [v6 focusedItem];
-  [SPUIHomeScreenIconUtility addMenusToBuilder:v3 forFocusEnvironment:v7];
+  searchViewController = [v4 searchViewController];
+  v6 = [UIFocusSystem focusSystemForEnvironment:searchViewController];
+  focusedItem = [v6 focusedItem];
+  [SPUIHomeScreenIconUtility addMenusToBuilder:builderCopy forFocusEnvironment:focusedItem];
 }
 
 @end

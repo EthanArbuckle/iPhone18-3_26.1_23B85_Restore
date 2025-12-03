@@ -1,22 +1,22 @@
 @interface ACMExternalAppleConnectPreferences
 - (NSData)secret;
-- (void)setSecret:(id)a3;
+- (void)setSecret:(id)secret;
 @end
 
 @implementation ACMExternalAppleConnectPreferences
 
 - (NSData)secret
 {
-  v2 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v2 preferencesValueForKey:@"com.apple.ist.appleconnect.tgt" withOptions:2];
+  return [(ACMPreferencesStore *)preferencesStore preferencesValueForKey:@"com.apple.ist.appleconnect.tgt" withOptions:2];
 }
 
-- (void)setSecret:(id)a3
+- (void)setSecret:(id)secret
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v4 setPreferencesValue:a3 forKey:@"com.apple.ist.appleconnect.tgt" withOptions:2];
+  [(ACMPreferencesStore *)preferencesStore setPreferencesValue:secret forKey:@"com.apple.ist.appleconnect.tgt" withOptions:2];
 }
 
 @end

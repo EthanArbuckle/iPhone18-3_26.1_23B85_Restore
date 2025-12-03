@@ -1,43 +1,43 @@
 @interface BMAccessAllowList
-- (BMAccessAllowList)initWithList:(id)a3;
-- (BOOL)includesIdentifier:(id)a3 useCase:(id)a4;
-- (BOOL)includesProcess:(id)a3 useCase:(id)a4;
+- (BMAccessAllowList)initWithList:(id)list;
+- (BOOL)includesIdentifier:(id)identifier useCase:(id)case;
+- (BOOL)includesProcess:(id)process useCase:(id)case;
 @end
 
 @implementation BMAccessAllowList
 
-- (BMAccessAllowList)initWithList:(id)a3
+- (BMAccessAllowList)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = BMAccessAllowList;
   v6 = [(BMAccessAllowList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_allowed, a3);
+    objc_storeStrong(&v6->_allowed, list);
   }
 
   return v7;
 }
 
-- (BOOL)includesIdentifier:(id)a3 useCase:(id)a4
+- (BOOL)includesIdentifier:(id)identifier useCase:(id)case
 {
   allowed = self->_allowed;
-  v6 = a4;
-  v7 = [(NSDictionary *)allowed objectForKeyedSubscript:a3];
-  LOBYTE(allowed) = [v7 containsObject:v6];
+  caseCopy = case;
+  v7 = [(NSDictionary *)allowed objectForKeyedSubscript:identifier];
+  LOBYTE(allowed) = [v7 containsObject:caseCopy];
 
   return allowed;
 }
 
-- (BOOL)includesProcess:(id)a3 useCase:(id)a4
+- (BOOL)includesProcess:(id)process useCase:(id)case
 {
   allowed = self->_allowed;
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [(NSDictionary *)allowed objectForKeyedSubscript:v7];
-  v9 = [v8 containsObject:v6];
+  caseCopy = case;
+  identifier = [process identifier];
+  v8 = [(NSDictionary *)allowed objectForKeyedSubscript:identifier];
+  v9 = [v8 containsObject:caseCopy];
 
   return v9;
 }

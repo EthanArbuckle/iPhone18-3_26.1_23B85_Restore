@@ -1,29 +1,29 @@
 @interface BKNamespaceNode
 - (BKNamespaceNode)init;
-- (BOOL)isEqual:(id)a3;
-- (id)_enumerateKeyPathNodesByComponent:(id)a3 options:(int64_t)a4 ifFound:(id)a5 ifMissing:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)enumerateKeyPathNodes:(id)a3 options:(int64_t)a4 ifFound:(id)a5 ifMissing:(id)a6;
-- (id)objectAtKeyPath:(id)a3;
-- (id)setObject:(id)a3 atKeyPath:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_enumerateKeyPathNodesByComponent:(id)component options:(int64_t)options ifFound:(id)found ifMissing:(id)missing;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)enumerateKeyPathNodes:(id)nodes options:(int64_t)options ifFound:(id)found ifMissing:(id)missing;
+- (id)objectAtKeyPath:(id)path;
+- (id)setObject:(id)object atKeyPath:(id)path;
 - (id)succinctDescription;
-- (void)_dumpNodeTree:(id)a3 level:(int64_t)a4;
-- (void)_enumerateNodesWithOptions:(int64_t)a3 usingBlock:(id)a4;
-- (void)removeNodeAtKeyPath:(id)a3;
+- (void)_dumpNodeTree:(id)tree level:(int64_t)level;
+- (void)_enumerateNodesWithOptions:(int64_t)options usingBlock:(id)block;
+- (void)removeNodeAtKeyPath:(id)path;
 @end
 
 @implementation BKNamespaceNode
 
-- (void)_dumpNodeTree:(id)a3 level:(int64_t)a4
+- (void)_dumpNodeTree:(id)tree level:(int64_t)level
 {
-  v6 = a3;
+  treeCopy = tree;
   v7 = sub_1000525A0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 <= 16)
+    if (level <= 16)
     {
-      v8 = 2 * a4;
+      v8 = 2 * level;
     }
 
     else
@@ -31,18 +31,18 @@
       v8 = 32;
     }
 
-    v9 = [(BKNamespaceNode *)self name];
-    v10 = [(BKNamespaceNode *)self object];
+    name = [(BKNamespaceNode *)self name];
+    object = [(BKNamespaceNode *)self object];
     *buf = 68158722;
     v24 = v8;
     v25 = 2080;
     v26 = "                                ";
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v9;
+    v30 = name;
     v31 = 2114;
-    v32 = v10;
+    v32 = object;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%.*s%p %{public}@ %{public}@", buf, 0x30u);
   }
 
@@ -50,7 +50,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v6;
+  v11 = treeCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -66,8 +66,8 @@
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        v17 = [v16 subnodes];
-        [v16 _dumpNodeTree:v17 level:a4 + 1];
+        subnodes = [v16 subnodes];
+        [v16 _dumpNodeTree:subnodes level:level + 1];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -77,34 +77,34 @@
   }
 }
 
-- (id)_enumerateKeyPathNodesByComponent:(id)a3 options:(int64_t)a4 ifFound:(id)a5 ifMissing:(id)a6
+- (id)_enumerateKeyPathNodesByComponent:(id)component options:(int64_t)options ifFound:(id)found ifMissing:(id)missing
 {
-  v33 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = self->_subnodes;
-  v13 = self;
+  optionsCopy = options;
+  componentCopy = component;
+  foundCopy = found;
+  missingCopy = missing;
+  subnodes2 = self->_subnodes;
+  selfCopy = self;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v9;
+  obj = componentCopy;
   v14 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
-  v34 = v11;
+  v34 = missingCopy;
   if (v14)
   {
     v15 = v14;
     v16 = 0;
     v17 = *v37;
-    v18 = v10;
-    v32 = v10;
+    v18 = foundCopy;
+    v32 = foundCopy;
     while (2)
     {
       v19 = 0;
-      v20 = v13;
-      v13 = v16;
-      v21 = v12;
+      v20 = selfCopy;
+      selfCopy = v16;
+      v21 = subnodes2;
       do
       {
         if (*v37 != v17)
@@ -121,7 +121,7 @@
         {
           if (v18)
           {
-            if ((v33 & 1) == 0 || ([v24 object], v26 = objc_claimAutoreleasedReturnValue(), v26, v26))
+            if ((optionsCopy & 1) == 0 || ([v24 object], v26 = objc_claimAutoreleasedReturnValue(), v26, v26))
             {
               (v18)[2](v18, v25, v20);
             }
@@ -136,31 +136,31 @@
           {
 
             v30 = 0;
-            v13 = v20;
-            v12 = v21;
+            selfCopy = v20;
+            subnodes2 = v21;
             v18 = v32;
             goto LABEL_20;
           }
 
-          v29 = [(BKNamespaceNode *)v20 subnodes];
-          [v29 addObject:v27];
+          subnodes = [(BKNamespaceNode *)v20 subnodes];
+          [subnodes addObject:v27];
 
           v18 = v32;
         }
 
-        v13 = v27;
+        selfCopy = v27;
 
-        v12 = [(BKNamespaceNode *)v13 subnodes];
+        subnodes2 = [(BKNamespaceNode *)selfCopy subnodes];
 
         v19 = v19 + 1;
-        v20 = v13;
-        v21 = v12;
+        v20 = selfCopy;
+        v21 = subnodes2;
       }
 
       while (v15 != v19);
       v15 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
-      v16 = v13;
-      v30 = v13;
+      v16 = selfCopy;
+      v30 = selfCopy;
       if (v15)
       {
         continue;
@@ -173,7 +173,7 @@
   else
   {
     v30 = 0;
-    v18 = v10;
+    v18 = foundCopy;
   }
 
 LABEL_20:
@@ -181,13 +181,13 @@ LABEL_20:
   return v30;
 }
 
-- (void)_enumerateNodesWithOptions:(int64_t)a3 usingBlock:(id)a4
+- (void)_enumerateNodesWithOptions:(int64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if ((a3 & 2) != 0)
+  blockCopy = block;
+  v7 = blockCopy;
+  if ((options & 2) != 0)
   {
-    if (((a3 & 1) == 0 || self->_object) && (*(v6 + 2))(v6, self))
+    if (((options & 1) == 0 || self->_object) && (*(blockCopy + 2))(blockCopy, self))
     {
       goto LABEL_14;
     }
@@ -195,7 +195,7 @@ LABEL_20:
 
   else
   {
-    a3 |= 2uLL;
+    options |= 2uLL;
   }
 
   v15 = 0u;
@@ -218,7 +218,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) _enumerateNodesWithOptions:a3 usingBlock:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12) _enumerateNodesWithOptions:options usingBlock:{v7, v13}];
         v12 = v12 + 1;
       }
 
@@ -232,36 +232,36 @@ LABEL_20:
 LABEL_14:
 }
 
-- (id)enumerateKeyPathNodes:(id)a3 options:(int64_t)a4 ifFound:(id)a5 ifMissing:(id)a6
+- (id)enumerateKeyPathNodes:(id)nodes options:(int64_t)options ifFound:(id)found ifMissing:(id)missing
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a3 componentsSeparatedByString:@"."];
-  v13 = [(BKNamespaceNode *)self _enumerateKeyPathNodesByComponent:v12 options:a4 ifFound:v11 ifMissing:v10];
+  missingCopy = missing;
+  foundCopy = found;
+  v12 = [nodes componentsSeparatedByString:@"."];
+  v13 = [(BKNamespaceNode *)self _enumerateKeyPathNodesByComponent:v12 options:options ifFound:foundCopy ifMissing:missingCopy];
 
   return v13;
 }
 
-- (id)setObject:(id)a3 atKeyPath:(id)a4
+- (id)setObject:(id)object atKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = [(BKNamespaceNode *)self enumerateKeyPathNodes:a4 options:0 ifFound:0 ifMissing:&stru_1000FD3B8];
-  [v7 setObject:v6];
+  objectCopy = object;
+  v7 = [(BKNamespaceNode *)self enumerateKeyPathNodes:path options:0 ifFound:0 ifMissing:&stru_1000FD3B8];
+  [v7 setObject:objectCopy];
 
   return v7;
 }
 
-- (id)objectAtKeyPath:(id)a3
+- (id)objectAtKeyPath:(id)path
 {
-  v3 = [(BKNamespaceNode *)self nodeAtKeyPath:a3];
-  v4 = [v3 object];
+  v3 = [(BKNamespaceNode *)self nodeAtKeyPath:path];
+  object = [v3 object];
 
-  return v4;
+  return object;
 }
 
-- (void)removeNodeAtKeyPath:(id)a3
+- (void)removeNodeAtKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -273,25 +273,25 @@ LABEL_14:
   v8[2] = sub_10009FA7C;
   v8[3] = &unk_1000FD378;
   v8[4] = &v9;
-  v5 = [(BKNamespaceNode *)self enumerateKeyPathNodes:v4 options:0 ifFound:v8 ifMissing:0];
+  v5 = [(BKNamespaceNode *)self enumerateKeyPathNodes:pathCopy options:0 ifFound:v8 ifMissing:0];
   if (v5)
   {
     v6 = v10[5];
     if (v6)
     {
-      v7 = [v6 subnodes];
-      [v7 removeObject:v5];
+      subnodes = [v6 subnodes];
+      [subnodes removeObject:v5];
     }
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSString *)self->_name isEqual:v4]& 1) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSString *)self->_name isEqual:equalCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -299,11 +299,11 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (name = self->_name, [v4 name], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(name) = -[NSString isEqual:](name, "isEqual:", v7), v7, name))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (name = self->_name, [equalCopy name], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(name) = -[NSString isEqual:](name, "isEqual:", v7), v7, name))
     {
       object = self->_object;
-      v9 = [v4 object];
-      v5 = [object isEqual:v9];
+      object = [equalCopy object];
+      v5 = [object isEqual:object];
     }
 
     else
@@ -315,10 +315,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKNamespaceNode *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_name withName:@"name"];
+  succinctDescriptionBuilder = [(BKNamespaceNode *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_name withName:@"name"];
   if (self->_object)
   {
     v6 = objc_opt_respondsToSelector();
@@ -333,30 +333,30 @@ LABEL_14:
       [object description];
     }
     v8 = ;
-    v9 = [v4 appendObject:v8 withName:@"object"];
+    v9 = [succinctDescriptionBuilder appendObject:v8 withName:@"object"];
   }
 
-  v10 = [(NSMutableOrderedSet *)self->_subnodes array];
-  v11 = [v4 activeMultilinePrefix];
-  [v4 appendArraySection:v10 withName:@"subnodes" multilinePrefix:v11 skipIfEmpty:1 objectTransformer:&stru_1000FD350];
+  array = [(NSMutableOrderedSet *)self->_subnodes array];
+  activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
+  [succinctDescriptionBuilder appendArraySection:array withName:@"subnodes" multilinePrefix:activeMultilinePrefix skipIfEmpty:1 objectTransformer:&stru_1000FD350];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKNamespaceNode *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKNamespaceNode *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKNamespaceNode *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKNamespaceNode *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (BKNamespaceNode)init

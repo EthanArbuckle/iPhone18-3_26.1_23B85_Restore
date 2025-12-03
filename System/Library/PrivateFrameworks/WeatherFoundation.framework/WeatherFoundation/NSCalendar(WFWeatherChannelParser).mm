@@ -23,7 +23,7 @@
   }
 
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(a3, "unsignedIntegerValue")}];
-  v8 = [a1 components:v6 fromDate:v7];
+  v8 = [self components:v6 fromDate:v7];
 
   return v8;
 }

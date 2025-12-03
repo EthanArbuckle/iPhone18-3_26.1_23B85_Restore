@@ -1,49 +1,49 @@
 @interface HDWorkoutBuilderPersistedConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDWorkoutBuilderPersistedConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![(NSUUID *)self->_builderIdentifier isEqual:*(v4 + 2)])
+  equalCopy = equal;
+  if (![(NSUUID *)self->_builderIdentifier isEqual:*(equalCopy + 2)])
   {
     goto LABEL_12;
   }
 
-  if (![(HKWorkoutConfiguration *)self->_workoutConfiguration isEqual:*(v4 + 3)])
+  if (![(HKWorkoutConfiguration *)self->_workoutConfiguration isEqual:*(equalCopy + 3)])
   {
     goto LABEL_12;
   }
 
-  v5 = [(HDSQLiteEntity *)self->_sourceEntity persistentID];
-  if (v5 != [*(v4 + 4) persistentID])
+  persistentID = [(HDSQLiteEntity *)self->_sourceEntity persistentID];
+  if (persistentID != [*(equalCopy + 4) persistentID])
   {
     goto LABEL_12;
   }
 
-  v6 = [(HDSQLiteEntity *)self->_deviceEntity persistentID];
-  if (v6 != [*(v4 + 6) persistentID])
+  persistentID2 = [(HDSQLiteEntity *)self->_deviceEntity persistentID];
+  if (persistentID2 != [*(equalCopy + 6) persistentID])
   {
     goto LABEL_12;
   }
 
   sourceVersion = self->_sourceVersion;
-  v8 = *(v4 + 5);
+  v8 = *(equalCopy + 5);
   if (sourceVersion != v8 && (!v8 || ![(NSString *)sourceVersion isEqual:?]))
   {
     goto LABEL_12;
   }
 
-  if (self->_goalType != *(v4 + 7))
+  if (self->_goalType != *(equalCopy + 7))
   {
     goto LABEL_12;
   }
 
   goal = self->_goal;
-  v10 = *(v4 + 8);
+  v10 = *(equalCopy + 8);
   if (goal == v10)
   {
     v11 = 1;
@@ -66,7 +66,7 @@ LABEL_13:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HDWorkoutBuilderPersistedConfiguration);
   [(HDWorkoutBuilderPersistedConfiguration *)v4 setBuilderIdentifier:self->_builderIdentifier];

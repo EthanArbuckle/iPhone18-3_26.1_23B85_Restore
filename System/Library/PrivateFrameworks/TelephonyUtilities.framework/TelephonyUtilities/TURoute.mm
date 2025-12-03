@@ -1,19 +1,19 @@
 @interface TURoute
 - (BOOL)isAuxiliary;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoute:(id)a3;
-- (BOOL)isEqualToRouteIgnoringIsRecommended:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoute:(id)route;
+- (BOOL)isEqualToRouteIgnoringIsRecommended:(id)recommended;
 - (BOOL)isInEarDetected;
 - (BOOL)isTipiParticipant;
 - (BOOL)isTriangleParticipant;
-- (TURoute)initWithCoder:(id)a3;
-- (TURoute)initWithRoute:(id)a3;
-- (TURoute)initWithUniqueIdentifier:(id)a3 name:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TURoute)initWithCoder:(id)coder;
+- (TURoute)initWithRoute:(id)route;
+- (TURoute)initWithUniqueIdentifier:(id)identifier name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TURoute
@@ -21,11 +21,11 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TURoute *)self uniqueIdentifier];
-  [v3 appendFormat:@" uniqueIdentifier=%@", v4];
+  uniqueIdentifier = [(TURoute *)self uniqueIdentifier];
+  [v3 appendFormat:@" uniqueIdentifier=%@", uniqueIdentifier];
 
-  v5 = [(TURoute *)self name];
-  [v3 appendFormat:@" name=%@", v5];
+  name = [(TURoute *)self name];
+  [v3 appendFormat:@" name=%@", name];
 
   if ([(TURoute *)self deviceType])
   {
@@ -127,13 +127,13 @@
     [v3 appendFormat:@" isPreferredAndActive=%d", -[TURoute isPreferredAndActive](self, "isPreferredAndActive")];
   }
 
-  v6 = [(TURoute *)self identifiersOfOtherConnectedDevices];
-  v7 = [v6 count];
+  identifiersOfOtherConnectedDevices = [(TURoute *)self identifiersOfOtherConnectedDevices];
+  v7 = [identifiersOfOtherConnectedDevices count];
 
   if (v7)
   {
-    v8 = [(TURoute *)self identifiersOfOtherConnectedDevices];
-    v9 = [v8 componentsJoinedByString:{@", "}];
+    identifiersOfOtherConnectedDevices2 = [(TURoute *)self identifiersOfOtherConnectedDevices];
+    v9 = [identifiersOfOtherConnectedDevices2 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" identifiersOfOtherConnectedDevices=%@", v9];
   }
 
@@ -187,8 +187,8 @@
     [v3 appendFormat:@" isRecommended=%d", -[TURoute isRecommended](self, "isRecommended")];
   }
 
-  v10 = [(TURoute *)self customDescription];
-  [v3 appendString:v10];
+  customDescription = [(TURoute *)self customDescription];
+  [v3 appendString:customDescription];
 
   [v3 appendString:@">"];
 
@@ -197,14 +197,14 @@
 
 - (BOOL)isTipiParticipant
 {
-  v3 = [(TURoute *)self isBluetoothManaged];
-  if (v3)
+  isBluetoothManaged = [(TURoute *)self isBluetoothManaged];
+  if (isBluetoothManaged)
   {
 
-    LOBYTE(v3) = [(TURoute *)self isPreferred];
+    LOBYTE(isBluetoothManaged) = [(TURoute *)self isPreferred];
   }
 
-  return v3;
+  return isBluetoothManaged;
 }
 
 - (BOOL)isTriangleParticipant
@@ -214,8 +214,8 @@
     return 0;
   }
 
-  v3 = [(TURoute *)self identifiersOfOtherConnectedDevices];
-  v4 = [v3 count] != 0;
+  identifiersOfOtherConnectedDevices = [(TURoute *)self identifiersOfOtherConnectedDevices];
+  v4 = [identifiersOfOtherConnectedDevices count] != 0;
 
   return v4;
 }
@@ -244,30 +244,30 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
 
 - (BOOL)isInEarDetected
 {
-  v3 = [(TURoute *)self isInEarDetectionEnabled];
-  if (v3)
+  isInEarDetectionEnabled = [(TURoute *)self isInEarDetectionEnabled];
+  if (isInEarDetectionEnabled)
   {
 
-    LOBYTE(v3) = [(TURoute *)self isPreferredAndActive];
+    LOBYTE(isInEarDetectionEnabled) = [(TURoute *)self isPreferredAndActive];
   }
 
-  return v3;
+  return isInEarDetectionEnabled;
 }
 
-- (TURoute)initWithUniqueIdentifier:(id)a3 name:(id)a4
+- (TURoute)initWithUniqueIdentifier:(id)identifier name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = TURoute;
   v8 = [(TURoute *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     uniqueIdentifier = v8->_uniqueIdentifier;
     v8->_uniqueIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v11;
 
@@ -281,190 +281,190 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   return v8;
 }
 
-- (TURoute)initWithRoute:(id)a3
+- (TURoute)initWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v15.receiver = self;
   v15.super_class = TURoute;
   v5 = [(TURoute *)&v15 init];
   if (v5)
   {
-    -[TURoute setA2DPRoute:](v5, "setA2DPRoute:", [v4 isA2DPRoute]);
-    -[TURoute setAirTunes:](v5, "setAirTunes:", [v4 isAirTunes]);
-    -[TURoute setBluetooth:](v5, "setBluetooth:", [v4 isBluetooth]);
-    -[TURoute setBluetoothEndpointType:](v5, "setBluetoothEndpointType:", [v4 bluetoothEndpointType]);
-    -[TURoute setBluetoothLE:](v5, "setBluetoothLE:", [v4 isBluetoothLE]);
-    -[TURoute setBluetoothManaged:](v5, "setBluetoothManaged:", [v4 isBluetoothManaged]);
-    -[TURoute setCarAudio:](v5, "setCarAudio:", [v4 isCarAudio]);
-    -[TURoute setCurrentlyPicked:](v5, "setCurrentlyPicked:", [v4 isCurrentlyPicked]);
-    -[TURoute setDefaultRoute:](v5, "setDefaultRoute:", [v4 isDefaultRoute]);
-    -[TURoute setDeviceType:](v5, "setDeviceType:", [v4 deviceType]);
-    -[TURoute setGuest:](v5, "setGuest:", [v4 isGuest]);
-    v6 = [v4 identifiersOfOtherConnectedDevices];
-    v7 = [v6 copy];
+    -[TURoute setA2DPRoute:](v5, "setA2DPRoute:", [routeCopy isA2DPRoute]);
+    -[TURoute setAirTunes:](v5, "setAirTunes:", [routeCopy isAirTunes]);
+    -[TURoute setBluetooth:](v5, "setBluetooth:", [routeCopy isBluetooth]);
+    -[TURoute setBluetoothEndpointType:](v5, "setBluetoothEndpointType:", [routeCopy bluetoothEndpointType]);
+    -[TURoute setBluetoothLE:](v5, "setBluetoothLE:", [routeCopy isBluetoothLE]);
+    -[TURoute setBluetoothManaged:](v5, "setBluetoothManaged:", [routeCopy isBluetoothManaged]);
+    -[TURoute setCarAudio:](v5, "setCarAudio:", [routeCopy isCarAudio]);
+    -[TURoute setCurrentlyPicked:](v5, "setCurrentlyPicked:", [routeCopy isCurrentlyPicked]);
+    -[TURoute setDefaultRoute:](v5, "setDefaultRoute:", [routeCopy isDefaultRoute]);
+    -[TURoute setDeviceType:](v5, "setDeviceType:", [routeCopy deviceType]);
+    -[TURoute setGuest:](v5, "setGuest:", [routeCopy isGuest]);
+    identifiersOfOtherConnectedDevices = [routeCopy identifiersOfOtherConnectedDevices];
+    v7 = [identifiersOfOtherConnectedDevices copy];
     [(TURoute *)v5 setIdentifiersOfOtherConnectedDevices:v7];
 
-    -[TURoute setInTipiWithCompanion:](v5, "setInTipiWithCompanion:", [v4 isInTipiWithCompanion]);
-    -[TURoute setSmartRoutedTo:](v5, "setSmartRoutedTo:", [v4 isSmartRoutedTo]);
-    -[TURoute setInEarDetectionEnabled:](v5, "setInEarDetectionEnabled:", [v4 isInEarDetectionEnabled]);
-    -[TURoute setInEarDetectionSupported:](v5, "setInEarDetectionSupported:", [v4 isInEarDetectionSupported]);
-    v8 = [v4 name];
-    v9 = [v8 copy];
+    -[TURoute setInTipiWithCompanion:](v5, "setInTipiWithCompanion:", [routeCopy isInTipiWithCompanion]);
+    -[TURoute setSmartRoutedTo:](v5, "setSmartRoutedTo:", [routeCopy isSmartRoutedTo]);
+    -[TURoute setInEarDetectionEnabled:](v5, "setInEarDetectionEnabled:", [routeCopy isInEarDetectionEnabled]);
+    -[TURoute setInEarDetectionSupported:](v5, "setInEarDetectionSupported:", [routeCopy isInEarDetectionSupported]);
+    name = [routeCopy name];
+    v9 = [name copy];
     [(TURoute *)v5 setName:v9];
 
-    -[TURoute setPreferred:](v5, "setPreferred:", [v4 isPreferred]);
-    -[TURoute setPreferredAndActive:](v5, "setPreferredAndActive:", [v4 isPreferredAndActive]);
-    -[TURoute setReceiver:](v5, "setReceiver:", [v4 isReceiver]);
-    -[TURoute setSpeaker:](v5, "setSpeaker:", [v4 isSpeaker]);
-    -[TURoute setSupportsRelay:](v5, "setSupportsRelay:", [v4 supportsRelay]);
-    v10 = [v4 uniqueIdentifier];
-    v11 = [v10 copy];
+    -[TURoute setPreferred:](v5, "setPreferred:", [routeCopy isPreferred]);
+    -[TURoute setPreferredAndActive:](v5, "setPreferredAndActive:", [routeCopy isPreferredAndActive]);
+    -[TURoute setReceiver:](v5, "setReceiver:", [routeCopy isReceiver]);
+    -[TURoute setSpeaker:](v5, "setSpeaker:", [routeCopy isSpeaker]);
+    -[TURoute setSupportsRelay:](v5, "setSupportsRelay:", [routeCopy supportsRelay]);
+    uniqueIdentifier = [routeCopy uniqueIdentifier];
+    v11 = [uniqueIdentifier copy];
     [(TURoute *)v5 setUniqueIdentifier:v11];
 
-    -[TURoute setWiredHeadphones:](v5, "setWiredHeadphones:", [v4 isWiredHeadphones]);
-    -[TURoute setWiredHeadset:](v5, "setWiredHeadset:", [v4 isWiredHeadset]);
-    -[TURoute setWirelessHeadset:](v5, "setWirelessHeadset:", [v4 isWirelessHeadset]);
-    -[TURoute setPartnerRouteRoutable:](v5, "setPartnerRouteRoutable:", [v4 isPartnerRouteRoutable]);
-    -[TURoute setSiblingRoutePresent:](v5, "setSiblingRoutePresent:", [v4 isSiblingRoutePresent]);
-    -[TURoute setSupportsSharePlay:](v5, "setSupportsSharePlay:", [v4 supportsSharePlay]);
-    -[TURoute setRecommended:](v5, "setRecommended:", [v4 isRecommended]);
-    v12 = [v4 modelIdentifier];
-    v13 = [v12 copy];
+    -[TURoute setWiredHeadphones:](v5, "setWiredHeadphones:", [routeCopy isWiredHeadphones]);
+    -[TURoute setWiredHeadset:](v5, "setWiredHeadset:", [routeCopy isWiredHeadset]);
+    -[TURoute setWirelessHeadset:](v5, "setWirelessHeadset:", [routeCopy isWirelessHeadset]);
+    -[TURoute setPartnerRouteRoutable:](v5, "setPartnerRouteRoutable:", [routeCopy isPartnerRouteRoutable]);
+    -[TURoute setSiblingRoutePresent:](v5, "setSiblingRoutePresent:", [routeCopy isSiblingRoutePresent]);
+    -[TURoute setSupportsSharePlay:](v5, "setSupportsSharePlay:", [routeCopy supportsSharePlay]);
+    -[TURoute setRecommended:](v5, "setRecommended:", [routeCopy isRecommended]);
+    modelIdentifier = [routeCopy modelIdentifier];
+    v13 = [modelIdentifier copy];
     [(TURoute *)v5 setModelIdentifier:v13];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TURoute allocWithZone:a3];
+  v4 = [TURoute allocWithZone:zone];
 
   return [(TURoute *)v4 initWithRoute:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUMutableRoute allocWithZone:a3];
+  v4 = [TUMutableRoute allocWithZone:zone];
 
   return [(TURoute *)v4 initWithRoute:self];
 }
 
-- (TURoute)initWithCoder:(id)a3
+- (TURoute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = TURoute;
   v5 = [(TURoute *)&v53 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isA2DPRoute);
-    v5->_A2DPRoute = [v4 decodeBoolForKey:v6];
+    v5->_A2DPRoute = [coderCopy decodeBoolForKey:v6];
 
     v7 = NSStringFromSelector(sel_isAirTunes);
-    v5->_airTunes = [v4 decodeBoolForKey:v7];
+    v5->_airTunes = [coderCopy decodeBoolForKey:v7];
 
     v8 = NSStringFromSelector(sel_isBluetooth);
-    v5->_bluetooth = [v4 decodeBoolForKey:v8];
+    v5->_bluetooth = [coderCopy decodeBoolForKey:v8];
 
     v9 = NSStringFromSelector(sel_bluetoothEndpointType);
-    v5->_bluetoothEndpointType = [v4 decodeIntegerForKey:v9];
+    v5->_bluetoothEndpointType = [coderCopy decodeIntegerForKey:v9];
 
     v10 = NSStringFromSelector(sel_isBluetoothLE);
-    v5->_bluetoothLE = [v4 decodeBoolForKey:v10];
+    v5->_bluetoothLE = [coderCopy decodeBoolForKey:v10];
 
     v11 = NSStringFromSelector(sel_isBluetoothManaged);
-    v5->_bluetoothManaged = [v4 decodeBoolForKey:v11];
+    v5->_bluetoothManaged = [coderCopy decodeBoolForKey:v11];
 
     v12 = NSStringFromSelector(sel_isCarAudio);
-    v5->_carAudio = [v4 decodeBoolForKey:v12];
+    v5->_carAudio = [coderCopy decodeBoolForKey:v12];
 
     v13 = NSStringFromSelector(sel_isCurrentlyPicked);
-    v5->_currentlyPicked = [v4 decodeBoolForKey:v13];
+    v5->_currentlyPicked = [coderCopy decodeBoolForKey:v13];
 
     v14 = NSStringFromSelector(sel_isDefaultRoute);
-    v5->_defaultRoute = [v4 decodeBoolForKey:v14];
+    v5->_defaultRoute = [coderCopy decodeBoolForKey:v14];
 
     v15 = NSStringFromSelector(sel_deviceType);
-    v5->_deviceType = [v4 decodeIntegerForKey:v15];
+    v5->_deviceType = [coderCopy decodeIntegerForKey:v15];
 
     v16 = NSStringFromSelector(sel_isGuest);
-    v5->_guest = [v4 decodeBoolForKey:v16];
+    v5->_guest = [coderCopy decodeBoolForKey:v16];
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
     v20 = NSStringFromSelector(sel_identifiersOfOtherConnectedDevices);
-    v21 = [v4 decodeObjectOfClasses:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClasses:v19 forKey:v20];
     identifiersOfOtherConnectedDevices = v5->_identifiersOfOtherConnectedDevices;
     v5->_identifiersOfOtherConnectedDevices = v21;
 
     v23 = NSStringFromSelector(sel_isInTipiWithCompanion);
-    v5->_inTipiWithCompanion = [v4 decodeBoolForKey:v23];
+    v5->_inTipiWithCompanion = [coderCopy decodeBoolForKey:v23];
 
     v24 = NSStringFromSelector(sel_isSmartRoutedTo);
-    v5->_smartRoutedTo = [v4 decodeBoolForKey:v24];
+    v5->_smartRoutedTo = [coderCopy decodeBoolForKey:v24];
 
     v25 = NSStringFromSelector(sel_isInEarDetectionEnabled);
-    v5->_inEarDetectionEnabled = [v4 decodeBoolForKey:v25];
+    v5->_inEarDetectionEnabled = [coderCopy decodeBoolForKey:v25];
 
     v26 = NSStringFromSelector(sel_isInEarDetectionSupported);
-    v5->_inEarDetectionSupported = [v4 decodeBoolForKey:v26];
+    v5->_inEarDetectionSupported = [coderCopy decodeBoolForKey:v26];
 
     v27 = objc_opt_class();
     v28 = NSStringFromSelector(sel_name);
-    v29 = [v4 decodeObjectOfClass:v27 forKey:v28];
+    v29 = [coderCopy decodeObjectOfClass:v27 forKey:v28];
     name = v5->_name;
     v5->_name = v29;
 
     v31 = NSStringFromSelector(sel_isPreferred);
-    v5->_preferred = [v4 decodeBoolForKey:v31];
+    v5->_preferred = [coderCopy decodeBoolForKey:v31];
 
     v32 = NSStringFromSelector(sel_isPreferredAndActive);
-    v5->_preferredAndActive = [v4 decodeBoolForKey:v32];
+    v5->_preferredAndActive = [coderCopy decodeBoolForKey:v32];
 
     v33 = NSStringFromSelector(sel_isReceiver);
-    v5->_receiver = [v4 decodeBoolForKey:v33];
+    v5->_receiver = [coderCopy decodeBoolForKey:v33];
 
     v34 = NSStringFromSelector(sel_isSpeaker);
-    v5->_speaker = [v4 decodeBoolForKey:v34];
+    v5->_speaker = [coderCopy decodeBoolForKey:v34];
 
     v35 = NSStringFromSelector(sel_supportsHighQualityVoiceWithMedia);
-    v5->_supportsHighQualityVoiceWithMedia = [v4 decodeBoolForKey:v35];
+    v5->_supportsHighQualityVoiceWithMedia = [coderCopy decodeBoolForKey:v35];
 
     v36 = NSStringFromSelector(sel_supportsRelay);
-    v5->_supportsRelay = [v4 decodeBoolForKey:v36];
+    v5->_supportsRelay = [coderCopy decodeBoolForKey:v36];
 
     v37 = objc_opt_class();
     v38 = NSStringFromSelector(sel_uniqueIdentifier);
-    v39 = [v4 decodeObjectOfClass:v37 forKey:v38];
+    v39 = [coderCopy decodeObjectOfClass:v37 forKey:v38];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v39;
 
     v41 = NSStringFromSelector(sel_isWiredHeadphones);
-    v5->_wiredHeadphones = [v4 decodeBoolForKey:v41];
+    v5->_wiredHeadphones = [coderCopy decodeBoolForKey:v41];
 
     v42 = NSStringFromSelector(sel_isWiredHeadset);
-    v5->_wiredHeadset = [v4 decodeBoolForKey:v42];
+    v5->_wiredHeadset = [coderCopy decodeBoolForKey:v42];
 
     v43 = NSStringFromSelector(sel_isWirelessHeadset);
-    v5->_wirelessHeadset = [v4 decodeBoolForKey:v43];
+    v5->_wirelessHeadset = [coderCopy decodeBoolForKey:v43];
 
     v44 = NSStringFromSelector(sel_isPartnerRouteRoutable);
-    v5->_partnerRouteRoutable = [v4 decodeBoolForKey:v44];
+    v5->_partnerRouteRoutable = [coderCopy decodeBoolForKey:v44];
 
     v45 = NSStringFromSelector(sel_isSiblingRoutePresent);
-    v5->_siblingRoutePresent = [v4 decodeBoolForKey:v45];
+    v5->_siblingRoutePresent = [coderCopy decodeBoolForKey:v45];
 
     v46 = NSStringFromSelector(sel_supportsSharePlay);
-    v5->_supportsSharePlay = [v4 decodeBoolForKey:v46];
+    v5->_supportsSharePlay = [coderCopy decodeBoolForKey:v46];
 
     v47 = NSStringFromSelector(sel_isRecommended);
-    v5->_recommended = [v4 decodeBoolForKey:v47];
+    v5->_recommended = [coderCopy decodeBoolForKey:v47];
 
     v48 = objc_opt_class();
     v49 = NSStringFromSelector(sel_modelIdentifier);
-    v50 = [v4 decodeObjectOfClass:v48 forKey:v49];
+    v50 = [coderCopy decodeObjectOfClass:v48 forKey:v49];
     modelIdentifier = v5->_modelIdentifier;
     v5->_modelIdentifier = v50;
   }
@@ -472,142 +472,142 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TURoute *)self isA2DPRoute];
+  coderCopy = coder;
+  isA2DPRoute = [(TURoute *)self isA2DPRoute];
   v6 = NSStringFromSelector(sel_isA2DPRoute);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:isA2DPRoute forKey:v6];
 
-  v7 = [(TURoute *)self isAirTunes];
+  isAirTunes = [(TURoute *)self isAirTunes];
   v8 = NSStringFromSelector(sel_isAirTunes);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isAirTunes forKey:v8];
 
-  v9 = [(TURoute *)self isCarAudio];
+  isCarAudio = [(TURoute *)self isCarAudio];
   v10 = NSStringFromSelector(sel_isCarAudio);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:isCarAudio forKey:v10];
 
-  v11 = [(TURoute *)self isCurrentlyPicked];
+  isCurrentlyPicked = [(TURoute *)self isCurrentlyPicked];
   v12 = NSStringFromSelector(sel_isCurrentlyPicked);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isCurrentlyPicked forKey:v12];
 
-  v13 = [(TURoute *)self isBluetooth];
+  isBluetooth = [(TURoute *)self isBluetooth];
   v14 = NSStringFromSelector(sel_isBluetooth);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isBluetooth forKey:v14];
 
-  v15 = [(TURoute *)self bluetoothEndpointType];
+  bluetoothEndpointType = [(TURoute *)self bluetoothEndpointType];
   v16 = NSStringFromSelector(sel_bluetoothEndpointType);
-  [v4 encodeInteger:v15 forKey:v16];
+  [coderCopy encodeInteger:bluetoothEndpointType forKey:v16];
 
-  v17 = [(TURoute *)self isBluetoothLE];
+  isBluetoothLE = [(TURoute *)self isBluetoothLE];
   v18 = NSStringFromSelector(sel_isBluetoothLE);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:isBluetoothLE forKey:v18];
 
-  v19 = [(TURoute *)self isBluetoothManaged];
+  isBluetoothManaged = [(TURoute *)self isBluetoothManaged];
   v20 = NSStringFromSelector(sel_isBluetoothManaged);
-  [v4 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:isBluetoothManaged forKey:v20];
 
-  v21 = [(TURoute *)self isDefaultRoute];
+  isDefaultRoute = [(TURoute *)self isDefaultRoute];
   v22 = NSStringFromSelector(sel_isDefaultRoute);
-  [v4 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:isDefaultRoute forKey:v22];
 
-  v23 = [(TURoute *)self deviceType];
+  deviceType = [(TURoute *)self deviceType];
   v24 = NSStringFromSelector(sel_deviceType);
-  [v4 encodeInteger:v23 forKey:v24];
+  [coderCopy encodeInteger:deviceType forKey:v24];
 
-  v25 = [(TURoute *)self isGuest];
+  isGuest = [(TURoute *)self isGuest];
   v26 = NSStringFromSelector(sel_isGuest);
-  [v4 encodeBool:v25 forKey:v26];
+  [coderCopy encodeBool:isGuest forKey:v26];
 
-  v27 = [(TURoute *)self identifiersOfOtherConnectedDevices];
+  identifiersOfOtherConnectedDevices = [(TURoute *)self identifiersOfOtherConnectedDevices];
   v28 = NSStringFromSelector(sel_identifiersOfOtherConnectedDevices);
-  [v4 encodeObject:v27 forKey:v28];
+  [coderCopy encodeObject:identifiersOfOtherConnectedDevices forKey:v28];
 
-  v29 = [(TURoute *)self isInTipiWithCompanion];
+  isInTipiWithCompanion = [(TURoute *)self isInTipiWithCompanion];
   v30 = NSStringFromSelector(sel_isInTipiWithCompanion);
-  [v4 encodeBool:v29 forKey:v30];
+  [coderCopy encodeBool:isInTipiWithCompanion forKey:v30];
 
-  v31 = [(TURoute *)self isSmartRoutedTo];
+  isSmartRoutedTo = [(TURoute *)self isSmartRoutedTo];
   v32 = NSStringFromSelector(sel_isSmartRoutedTo);
-  [v4 encodeBool:v31 forKey:v32];
+  [coderCopy encodeBool:isSmartRoutedTo forKey:v32];
 
-  v33 = [(TURoute *)self isInEarDetectionEnabled];
+  isInEarDetectionEnabled = [(TURoute *)self isInEarDetectionEnabled];
   v34 = NSStringFromSelector(sel_isInEarDetectionEnabled);
-  [v4 encodeBool:v33 forKey:v34];
+  [coderCopy encodeBool:isInEarDetectionEnabled forKey:v34];
 
-  v35 = [(TURoute *)self isInEarDetectionSupported];
+  isInEarDetectionSupported = [(TURoute *)self isInEarDetectionSupported];
   v36 = NSStringFromSelector(sel_isInEarDetectionSupported);
-  [v4 encodeBool:v35 forKey:v36];
+  [coderCopy encodeBool:isInEarDetectionSupported forKey:v36];
 
-  v37 = [(TURoute *)self isPreferred];
+  isPreferred = [(TURoute *)self isPreferred];
   v38 = NSStringFromSelector(sel_isPreferred);
-  [v4 encodeBool:v37 forKey:v38];
+  [coderCopy encodeBool:isPreferred forKey:v38];
 
-  v39 = [(TURoute *)self isPreferredAndActive];
+  isPreferredAndActive = [(TURoute *)self isPreferredAndActive];
   v40 = NSStringFromSelector(sel_isPreferredAndActive);
-  [v4 encodeBool:v39 forKey:v40];
+  [coderCopy encodeBool:isPreferredAndActive forKey:v40];
 
-  v41 = [(TURoute *)self name];
+  name = [(TURoute *)self name];
   v42 = NSStringFromSelector(sel_name);
-  [v4 encodeObject:v41 forKey:v42];
+  [coderCopy encodeObject:name forKey:v42];
 
-  v43 = [(TURoute *)self isReceiver];
+  isReceiver = [(TURoute *)self isReceiver];
   v44 = NSStringFromSelector(sel_isReceiver);
-  [v4 encodeBool:v43 forKey:v44];
+  [coderCopy encodeBool:isReceiver forKey:v44];
 
-  v45 = [(TURoute *)self isSpeaker];
+  isSpeaker = [(TURoute *)self isSpeaker];
   v46 = NSStringFromSelector(sel_isSpeaker);
-  [v4 encodeBool:v45 forKey:v46];
+  [coderCopy encodeBool:isSpeaker forKey:v46];
 
-  v47 = [(TURoute *)self supportsHighQualityVoiceWithMedia];
+  supportsHighQualityVoiceWithMedia = [(TURoute *)self supportsHighQualityVoiceWithMedia];
   v48 = NSStringFromSelector(sel_supportsHighQualityVoiceWithMedia);
-  [v4 encodeBool:v47 forKey:v48];
+  [coderCopy encodeBool:supportsHighQualityVoiceWithMedia forKey:v48];
 
-  v49 = [(TURoute *)self supportsRelay];
+  supportsRelay = [(TURoute *)self supportsRelay];
   v50 = NSStringFromSelector(sel_supportsRelay);
-  [v4 encodeBool:v49 forKey:v50];
+  [coderCopy encodeBool:supportsRelay forKey:v50];
 
-  v51 = [(TURoute *)self uniqueIdentifier];
+  uniqueIdentifier = [(TURoute *)self uniqueIdentifier];
   v52 = NSStringFromSelector(sel_uniqueIdentifier);
-  [v4 encodeObject:v51 forKey:v52];
+  [coderCopy encodeObject:uniqueIdentifier forKey:v52];
 
-  v53 = [(TURoute *)self isWiredHeadphones];
+  isWiredHeadphones = [(TURoute *)self isWiredHeadphones];
   v54 = NSStringFromSelector(sel_isWiredHeadphones);
-  [v4 encodeBool:v53 forKey:v54];
+  [coderCopy encodeBool:isWiredHeadphones forKey:v54];
 
-  v55 = [(TURoute *)self isWiredHeadset];
+  isWiredHeadset = [(TURoute *)self isWiredHeadset];
   v56 = NSStringFromSelector(sel_isWiredHeadset);
-  [v4 encodeBool:v55 forKey:v56];
+  [coderCopy encodeBool:isWiredHeadset forKey:v56];
 
-  v57 = [(TURoute *)self isWirelessHeadset];
+  isWirelessHeadset = [(TURoute *)self isWirelessHeadset];
   v58 = NSStringFromSelector(sel_isWirelessHeadset);
-  [v4 encodeBool:v57 forKey:v58];
+  [coderCopy encodeBool:isWirelessHeadset forKey:v58];
 
-  v59 = [(TURoute *)self isPartnerRouteRoutable];
+  isPartnerRouteRoutable = [(TURoute *)self isPartnerRouteRoutable];
   v60 = NSStringFromSelector(sel_isPartnerRouteRoutable);
-  [v4 encodeBool:v59 forKey:v60];
+  [coderCopy encodeBool:isPartnerRouteRoutable forKey:v60];
 
-  v61 = [(TURoute *)self isSiblingRoutePresent];
+  isSiblingRoutePresent = [(TURoute *)self isSiblingRoutePresent];
   v62 = NSStringFromSelector(sel_isSiblingRoutePresent);
-  [v4 encodeBool:v61 forKey:v62];
+  [coderCopy encodeBool:isSiblingRoutePresent forKey:v62];
 
-  v63 = [(TURoute *)self supportsSharePlay];
+  supportsSharePlay = [(TURoute *)self supportsSharePlay];
   v64 = NSStringFromSelector(sel_supportsSharePlay);
-  [v4 encodeBool:v63 forKey:v64];
+  [coderCopy encodeBool:supportsSharePlay forKey:v64];
 
-  v65 = [(TURoute *)self isRecommended];
+  isRecommended = [(TURoute *)self isRecommended];
   v66 = NSStringFromSelector(sel_isRecommended);
-  [v4 encodeBool:v65 forKey:v66];
+  [coderCopy encodeBool:isRecommended forKey:v66];
 
-  v68 = [(TURoute *)self modelIdentifier];
+  modelIdentifier = [(TURoute *)self modelIdentifier];
   v67 = NSStringFromSelector(sel_modelIdentifier);
-  [v4 encodeObject:v68 forKey:v67];
+  [coderCopy encodeObject:modelIdentifier forKey:v67];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -615,7 +615,7 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TURoute *)self isEqualToRoute:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TURoute *)self isEqualToRoute:equalCopy];
   }
 
   return v5;
@@ -719,8 +719,8 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   }
 
   v17 = v12 ^ v15 ^ v16;
-  v18 = [(TURoute *)self identifiersOfOtherConnectedDevices];
-  v19 = [v18 hash];
+  identifiersOfOtherConnectedDevices = [(TURoute *)self identifiersOfOtherConnectedDevices];
+  v19 = [identifiersOfOtherConnectedDevices hash];
   if ([(TURoute *)self isInTipiWithCompanion])
   {
     v20 = 1231;
@@ -765,8 +765,8 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   }
 
   v27 = v17 ^ v25 ^ v26;
-  v28 = [(TURoute *)self name];
-  v29 = [v28 hash];
+  name = [(TURoute *)self name];
+  v29 = [name hash];
   if ([(TURoute *)self isPreferred])
   {
     v30 = 1231;
@@ -822,8 +822,8 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   }
 
   v39 = v27 ^ v37 ^ v38;
-  v40 = [(TURoute *)self uniqueIdentifier];
-  v41 = [v40 hash];
+  uniqueIdentifier = [(TURoute *)self uniqueIdentifier];
+  v41 = [uniqueIdentifier hash];
   if ([(TURoute *)self isWiredHeadphones])
   {
     v42 = 1231;
@@ -903,13 +903,13 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   return v53 ^ v54;
 }
 
-- (BOOL)isEqualToRoute:(id)a3
+- (BOOL)isEqualToRoute:(id)route
 {
-  v4 = a3;
-  if ([(TURoute *)self isEqualToRouteIgnoringIsRecommended:v4])
+  routeCopy = route;
+  if ([(TURoute *)self isEqualToRouteIgnoringIsRecommended:routeCopy])
   {
-    v5 = [(TURoute *)self isRecommended];
-    v6 = v5 ^ [v4 isRecommended] ^ 1;
+    isRecommended = [(TURoute *)self isRecommended];
+    v6 = isRecommended ^ [routeCopy isRecommended] ^ 1;
   }
 
   else
@@ -920,50 +920,50 @@ uint64_t __68__TURoute_Predicate__predicateForInEarRouteInTipiWithCompanionWatch
   return v6;
 }
 
-- (BOOL)isEqualToRouteIgnoringIsRecommended:(id)a3
+- (BOOL)isEqualToRouteIgnoringIsRecommended:(id)recommended
 {
-  v4 = a3;
-  v5 = [(TURoute *)self isA2DPRoute];
-  if (v5 != [v4 isA2DPRoute])
+  recommendedCopy = recommended;
+  isA2DPRoute = [(TURoute *)self isA2DPRoute];
+  if (isA2DPRoute != [recommendedCopy isA2DPRoute])
   {
     goto LABEL_12;
   }
 
-  v6 = [(TURoute *)self isAirTunes];
-  if (v6 != [v4 isAirTunes])
+  isAirTunes = [(TURoute *)self isAirTunes];
+  if (isAirTunes != [recommendedCopy isAirTunes])
   {
     goto LABEL_12;
   }
 
-  v7 = [(TURoute *)self isCarAudio];
-  if (v7 != [v4 isCarAudio])
+  isCarAudio = [(TURoute *)self isCarAudio];
+  if (isCarAudio != [recommendedCopy isCarAudio])
   {
     goto LABEL_12;
   }
 
-  v8 = [(TURoute *)self isCurrentlyPicked];
-  if (v8 != [v4 isCurrentlyPicked])
+  isCurrentlyPicked = [(TURoute *)self isCurrentlyPicked];
+  if (isCurrentlyPicked != [recommendedCopy isCurrentlyPicked])
   {
     goto LABEL_12;
   }
 
-  v9 = [(TURoute *)self isBluetooth];
-  if (v9 == [v4 isBluetooth] && (v10 = -[TURoute bluetoothEndpointType](self, "bluetoothEndpointType"), v10 == objc_msgSend(v4, "bluetoothEndpointType")) && (v11 = -[TURoute isBluetoothLE](self, "isBluetoothLE"), v11 == objc_msgSend(v4, "isBluetoothLE")) && (v12 = -[TURoute isBluetoothManaged](self, "isBluetoothManaged"), v12 == objc_msgSend(v4, "isBluetoothManaged")) && (v13 = -[TURoute isDefaultRoute](self, "isDefaultRoute"), v13 == objc_msgSend(v4, "isDefaultRoute")) && (v14 = -[TURoute deviceType](self, "deviceType"), v14 == objc_msgSend(v4, "deviceType")) && (v15 = -[TURoute isGuest](self, "isGuest"), v15 == objc_msgSend(v4, "isGuest")))
+  isBluetooth = [(TURoute *)self isBluetooth];
+  if (isBluetooth == [recommendedCopy isBluetooth] && (v10 = -[TURoute bluetoothEndpointType](self, "bluetoothEndpointType"), v10 == objc_msgSend(recommendedCopy, "bluetoothEndpointType")) && (v11 = -[TURoute isBluetoothLE](self, "isBluetoothLE"), v11 == objc_msgSend(recommendedCopy, "isBluetoothLE")) && (v12 = -[TURoute isBluetoothManaged](self, "isBluetoothManaged"), v12 == objc_msgSend(recommendedCopy, "isBluetoothManaged")) && (v13 = -[TURoute isDefaultRoute](self, "isDefaultRoute"), v13 == objc_msgSend(recommendedCopy, "isDefaultRoute")) && (v14 = -[TURoute deviceType](self, "deviceType"), v14 == objc_msgSend(recommendedCopy, "deviceType")) && (v15 = -[TURoute isGuest](self, "isGuest"), v15 == objc_msgSend(recommendedCopy, "isGuest")))
   {
-    v18 = [(TURoute *)self identifiersOfOtherConnectedDevices];
-    v19 = [v4 identifiersOfOtherConnectedDevices];
-    if ([v18 isEqualToArray:v19] && (v20 = -[TURoute isInTipiWithCompanion](self, "isInTipiWithCompanion"), v20 == objc_msgSend(v4, "isInTipiWithCompanion")) && (v21 = -[TURoute isSmartRoutedTo](self, "isSmartRoutedTo"), v21 == objc_msgSend(v4, "isSmartRoutedTo")) && (v22 = -[TURoute isInEarDetectionEnabled](self, "isInEarDetectionEnabled"), v22 == objc_msgSend(v4, "isInEarDetectionEnabled")) && (v23 = -[TURoute isInEarDetectionSupported](self, "isInEarDetectionSupported"), v23 == objc_msgSend(v4, "isInEarDetectionSupported")))
+    identifiersOfOtherConnectedDevices = [(TURoute *)self identifiersOfOtherConnectedDevices];
+    identifiersOfOtherConnectedDevices2 = [recommendedCopy identifiersOfOtherConnectedDevices];
+    if ([identifiersOfOtherConnectedDevices isEqualToArray:identifiersOfOtherConnectedDevices2] && (v20 = -[TURoute isInTipiWithCompanion](self, "isInTipiWithCompanion"), v20 == objc_msgSend(recommendedCopy, "isInTipiWithCompanion")) && (v21 = -[TURoute isSmartRoutedTo](self, "isSmartRoutedTo"), v21 == objc_msgSend(recommendedCopy, "isSmartRoutedTo")) && (v22 = -[TURoute isInEarDetectionEnabled](self, "isInEarDetectionEnabled"), v22 == objc_msgSend(recommendedCopy, "isInEarDetectionEnabled")) && (v23 = -[TURoute isInEarDetectionSupported](self, "isInEarDetectionSupported"), v23 == objc_msgSend(recommendedCopy, "isInEarDetectionSupported")))
     {
-      v24 = [(TURoute *)self name];
-      v25 = [v4 name];
-      if ([v24 isEqualToString:v25] && (v26 = -[TURoute isPreferred](self, "isPreferred"), v26 == objc_msgSend(v4, "isPreferred")) && (v27 = -[TURoute isPreferredAndActive](self, "isPreferredAndActive"), v27 == objc_msgSend(v4, "isPreferredAndActive")) && (v28 = -[TURoute isReceiver](self, "isReceiver"), v28 == objc_msgSend(v4, "isReceiver")) && (v29 = -[TURoute isSpeaker](self, "isSpeaker"), v29 == objc_msgSend(v4, "isSpeaker")) && (v30 = -[TURoute supportsRelay](self, "supportsRelay"), v30 == objc_msgSend(v4, "supportsRelay")))
+      name = [(TURoute *)self name];
+      name2 = [recommendedCopy name];
+      if ([name isEqualToString:name2] && (v26 = -[TURoute isPreferred](self, "isPreferred"), v26 == objc_msgSend(recommendedCopy, "isPreferred")) && (v27 = -[TURoute isPreferredAndActive](self, "isPreferredAndActive"), v27 == objc_msgSend(recommendedCopy, "isPreferredAndActive")) && (v28 = -[TURoute isReceiver](self, "isReceiver"), v28 == objc_msgSend(recommendedCopy, "isReceiver")) && (v29 = -[TURoute isSpeaker](self, "isSpeaker"), v29 == objc_msgSend(recommendedCopy, "isSpeaker")) && (v30 = -[TURoute supportsRelay](self, "supportsRelay"), v30 == objc_msgSend(recommendedCopy, "supportsRelay")))
       {
-        v31 = [(TURoute *)self uniqueIdentifier];
-        v32 = [v4 uniqueIdentifier];
-        if ([v31 isEqualToString:v32] && (v33 = -[TURoute isWiredHeadphones](self, "isWiredHeadphones"), v33 == objc_msgSend(v4, "isWiredHeadphones")) && (v34 = -[TURoute isWiredHeadset](self, "isWiredHeadset"), v34 == objc_msgSend(v4, "isWiredHeadset")) && (v35 = -[TURoute isWirelessHeadset](self, "isWirelessHeadset"), v35 == objc_msgSend(v4, "isWirelessHeadset")) && (v36 = -[TURoute isPartnerRouteRoutable](self, "isPartnerRouteRoutable"), v36 == objc_msgSend(v4, "isPartnerRouteRoutable")) && (v37 = -[TURoute isSiblingRoutePresent](self, "isSiblingRoutePresent"), v37 == objc_msgSend(v4, "isSiblingRoutePresent")))
+        uniqueIdentifier = [(TURoute *)self uniqueIdentifier];
+        uniqueIdentifier2 = [recommendedCopy uniqueIdentifier];
+        if ([uniqueIdentifier isEqualToString:uniqueIdentifier2] && (v33 = -[TURoute isWiredHeadphones](self, "isWiredHeadphones"), v33 == objc_msgSend(recommendedCopy, "isWiredHeadphones")) && (v34 = -[TURoute isWiredHeadset](self, "isWiredHeadset"), v34 == objc_msgSend(recommendedCopy, "isWiredHeadset")) && (v35 = -[TURoute isWirelessHeadset](self, "isWirelessHeadset"), v35 == objc_msgSend(recommendedCopy, "isWirelessHeadset")) && (v36 = -[TURoute isPartnerRouteRoutable](self, "isPartnerRouteRoutable"), v36 == objc_msgSend(recommendedCopy, "isPartnerRouteRoutable")) && (v37 = -[TURoute isSiblingRoutePresent](self, "isSiblingRoutePresent"), v37 == objc_msgSend(recommendedCopy, "isSiblingRoutePresent")))
         {
-          v38 = [(TURoute *)self supportsSharePlay];
-          v16 = v38 ^ [v4 supportsSharePlay] ^ 1;
+          supportsSharePlay = [(TURoute *)self supportsSharePlay];
+          v16 = supportsSharePlay ^ [recommendedCopy supportsSharePlay] ^ 1;
         }
 
         else

@@ -2,17 +2,17 @@
 - (EMActivityObserver)observer;
 - (EMActivityRegistry)registry;
 - (NSArray)activities;
-- (_EMActivityRegistryObserverWrapper)initWithConnection:(id)a3 registry:(id)a4 observer:(id)a5;
-- (id)activityWithObjectID:(id)a3;
-- (void)_resetWithCancelable:(id)a3;
+- (_EMActivityRegistryObserverWrapper)initWithConnection:(id)connection registry:(id)registry observer:(id)observer;
+- (id)activityWithObjectID:(id)d;
+- (void)_resetWithCancelable:(id)cancelable;
 - (void)_startObservingIfNecessary;
-- (void)activityWithID:(id)a3 finishedWithError:(id)a4;
-- (void)activityWithID:(id)a3 setCompletedCount:(id)a4 totalCount:(id)a5;
-- (void)activityWithID:(id)a3 setUserInfoObject:(id)a4 forKey:(id)a5;
+- (void)activityWithID:(id)d finishedWithError:(id)error;
+- (void)activityWithID:(id)d setCompletedCount:(id)count totalCount:(id)totalCount;
+- (void)activityWithID:(id)d setUserInfoObject:(id)object forKey:(id)key;
 - (void)dealloc;
-- (void)removedActivityWithID:(id)a3;
-- (void)setActivities:(id)a3;
-- (void)startedActivity:(id)a3;
+- (void)removedActivityWithID:(id)d;
+- (void)setActivities:(id)activities;
+- (void)startedActivity:(id)activity;
 @end
 
 @implementation _EMActivityRegistryObserverWrapper
@@ -24,15 +24,15 @@
   {
     v3 = objc_alloc_init(MEMORY[0x1E699B7F8]);
     objc_storeStrong(&self->_observerCancelable, v3);
-    v4 = [(EMRemoteConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(EMRemoteConnection *)self->_connection remoteObjectProxy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __64___EMActivityRegistryObserverWrapper__startObservingIfNecessary__block_invoke;
     v6[3] = &unk_1E826C208;
     v5 = v3;
     v7 = v5;
-    v8 = self;
-    [v4 registerActivityObserver:self completion:v6];
+    selfCopy = self;
+    [remoteObjectProxy registerActivityObserver:self completion:v6];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -60,20 +60,20 @@
   [(_EMActivityRegistryObserverWrapper *)&v3 dealloc];
 }
 
-- (_EMActivityRegistryObserverWrapper)initWithConnection:(id)a3 registry:(id)a4 observer:(id)a5
+- (_EMActivityRegistryObserverWrapper)initWithConnection:(id)connection registry:(id)registry observer:(id)observer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  registryCopy = registry;
+  observerCopy = observer;
   v24.receiver = self;
   v24.super_class = _EMActivityRegistryObserverWrapper;
   v12 = [(_EMActivityRegistryObserverWrapper *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeWeak(&v13->_registry, v10);
-    objc_storeWeak(&v13->_observer, v11);
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeWeak(&v13->_registry, registryCopy);
+    objc_storeWeak(&v13->_observer, observerCopy);
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     trackedActivities = v13->_trackedActivities;
     v13->_trackedActivities = v14;
@@ -102,12 +102,12 @@
   return v13;
 }
 
-- (void)_resetWithCancelable:(id)a3
+- (void)_resetWithCancelable:(id)cancelable
 {
-  v6 = a3;
+  cancelableCopy = cancelable;
   os_unfair_lock_lock(&self->_lock);
   observerCancelable = self->_observerCancelable;
-  if (!v6 || observerCancelable == v6)
+  if (!cancelableCopy || observerCancelable == cancelableCopy)
   {
     [(EFCancelable *)observerCancelable cancel];
     v5 = self->_observerCancelable;
@@ -117,13 +117,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setActivities:(id)a3
+- (void)setActivities:(id)activities
 {
   v51 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v35 = [(_EMActivityRegistryObserverWrapper *)self registry];
-  v34 = [(_EMActivityRegistryObserverWrapper *)self observer];
-  if (v35 && v34)
+  activitiesCopy = activities;
+  registry = [(_EMActivityRegistryObserverWrapper *)self registry];
+  observer = [(_EMActivityRegistryObserverWrapper *)self observer];
+  if (registry && observer)
   {
     os_unfair_lock_lock(&self->_lock);
     v4 = self->_trackedActivities;
@@ -135,7 +135,7 @@
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v7 = v33;
+    v7 = activitiesCopy;
     v8 = [v7 countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v8)
     {
@@ -151,15 +151,15 @@
 
           v11 = *(*(&v44 + 1) + 8 * i);
           v12 = self->_trackedActivities;
-          v13 = [v11 objectID];
-          v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
+          objectID = [v11 objectID];
+          v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:objectID];
           LODWORD(v12) = v14 == 0;
 
           if (v12)
           {
             v15 = self->_trackedActivities;
-            v16 = [v11 objectID];
-            [(NSMutableDictionary *)v15 setObject:v11 forKeyedSubscript:v16];
+            objectID2 = [v11 objectID];
+            [(NSMutableDictionary *)v15 setObject:v11 forKeyedSubscript:objectID2];
           }
         }
 
@@ -189,32 +189,32 @@
           }
 
           v21 = *(*(&v40 + 1) + 8 * j);
-          v22 = [v21 objectID];
-          v23 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:v22];
+          objectID3 = [v21 objectID];
+          v23 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:objectID3];
 
           if (v23)
           {
-            v24 = [v21 progress];
-            v25 = [v21 error];
-            if (v24)
+            progress = [v21 progress];
+            error = [v21 error];
+            if (progress)
             {
-              [v23 setCompletedCount:objc_msgSend(v24 totalCount:{"completedUnitCount"), objc_msgSend(v24, "totalUnitCount")}];
+              [v23 setCompletedCount:objc_msgSend(progress totalCount:{"completedUnitCount"), objc_msgSend(progress, "totalUnitCount")}];
             }
 
-            v26 = [v21 finished];
+            finished = [v21 finished];
 
-            if (v26)
+            if (finished)
             {
-              [v23 finishWithError:v25];
+              [v23 finishWithError:error];
             }
 
-            v27 = [v21 objectID];
-            [(NSMutableDictionary *)v4 setObject:0 forKeyedSubscript:v27];
+            objectID4 = [v21 objectID];
+            [(NSMutableDictionary *)v4 setObject:0 forKeyedSubscript:objectID4];
           }
 
           else
           {
-            [v34 activityRegistry:v35 startedActivity:v21];
+            [observer activityRegistry:registry startedActivity:v21];
           }
         }
 
@@ -228,8 +228,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v28 = [(NSMutableDictionary *)v4 allValues];
-    v29 = [v28 countByEnumeratingWithState:&v36 objects:v48 count:16];
+    allValues = [(NSMutableDictionary *)v4 allValues];
+    v29 = [allValues countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v29)
     {
       v30 = *v37;
@@ -239,13 +239,13 @@
         {
           if (*v37 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v36 + 1) + 8 * k) finishWithError:0];
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v36 objects:v48 count:16];
+        v29 = [allValues countByEnumeratingWithState:&v36 objects:v48 count:16];
       }
 
       while (v29);
@@ -258,11 +258,11 @@
 - (NSArray)activities
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_trackedActivities allValues];
+  allValues = [(NSMutableDictionary *)self->_trackedActivities allValues];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (allValues)
   {
-    v4 = v3;
+    v4 = allValues;
   }
 
   else
@@ -275,61 +275,61 @@
   return v4;
 }
 
-- (id)activityWithObjectID:(id)a3
+- (id)activityWithObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_trackedActivities objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_trackedActivities objectForKeyedSubscript:dCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)startedActivity:(id)a3
+- (void)startedActivity:(id)activity
 {
-  v8 = a3;
-  v4 = [(_EMActivityRegistryObserverWrapper *)self registry];
-  if (v4)
+  activityCopy = activity;
+  registry = [(_EMActivityRegistryObserverWrapper *)self registry];
+  if (registry)
   {
     os_unfair_lock_lock(&self->_lock);
     trackedActivities = self->_trackedActivities;
-    v6 = [v8 objectID];
-    [(NSMutableDictionary *)trackedActivities setObject:v8 forKeyedSubscript:v6];
+    objectID = [activityCopy objectID];
+    [(NSMutableDictionary *)trackedActivities setObject:activityCopy forKeyedSubscript:objectID];
 
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [(_EMActivityRegistryObserverWrapper *)self observer];
-    [v7 activityRegistry:v4 startedActivity:v8];
+    observer = [(_EMActivityRegistryObserverWrapper *)self observer];
+    [observer activityRegistry:registry startedActivity:activityCopy];
   }
 }
 
-- (void)activityWithID:(id)a3 setUserInfoObject:(id)a4 forKey:(id)a5
+- (void)activityWithID:(id)d setUserInfoObject:(id)object forKey:(id)key
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:a3];
-  [v9 setUserInfoObject:v10 forKey:v8];
+  objectCopy = object;
+  keyCopy = key;
+  v9 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:d];
+  [v9 setUserInfoObject:objectCopy forKey:keyCopy];
 }
 
-- (void)activityWithID:(id)a3 setCompletedCount:(id)a4 totalCount:(id)a5
+- (void)activityWithID:(id)d setCompletedCount:(id)count totalCount:(id)totalCount
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:a3];
-  [v9 setCompletedCount:objc_msgSend(v10 totalCount:{"integerValue"), objc_msgSend(v8, "integerValue")}];
+  countCopy = count;
+  totalCountCopy = totalCount;
+  v9 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:d];
+  [v9 setCompletedCount:objc_msgSend(countCopy totalCount:{"integerValue"), objc_msgSend(totalCountCopy, "integerValue")}];
 }
 
-- (void)activityWithID:(id)a3 finishedWithError:(id)a4
+- (void)activityWithID:(id)d finishedWithError:(id)error
 {
-  v7 = a4;
-  v6 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:a3];
-  [v6 finishWithError:v7];
+  errorCopy = error;
+  v6 = [(_EMActivityRegistryObserverWrapper *)self activityWithObjectID:d];
+  [v6 finishWithError:errorCopy];
 }
 
-- (void)removedActivityWithID:(id)a3
+- (void)removedActivityWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_trackedActivities setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_trackedActivities setObject:0 forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

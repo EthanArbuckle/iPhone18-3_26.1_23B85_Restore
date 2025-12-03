@@ -1,34 +1,34 @@
 @interface YearMonthTransitionView
 - (CGRect)_calculateMonthFrameForYearViewZoom;
 - (CGRect)_calculateYearFrameForYearViewZoom;
-- (CGRect)_monthFrameForMonthAfter:(id)a3 anchorMonth:(id)a4;
-- (CGRect)_monthFrameForMonthBefore:(id)a3 anchorMonth:(id)a4;
-- (YearMonthTransitionView)initWithFrame:(CGRect)a3;
+- (CGRect)_monthFrameForMonthAfter:(id)after anchorMonth:(id)month;
+- (CGRect)_monthFrameForMonthBefore:(id)before anchorMonth:(id)month;
+- (YearMonthTransitionView)initWithFrame:(CGRect)frame;
 - (id)_captureImageOfMonthInYearView;
-- (id)_createLabelWithFont:(id)a3;
-- (id)_getMonthViewMonthContainingDate:(id)a3 hideMonthLabel:(BOOL)a4;
-- (id)_getWeekContainingDate:(id)a3 prevDate:(id)a4;
+- (id)_createLabelWithFont:(id)font;
+- (id)_getMonthViewMonthContainingDate:(id)date hideMonthLabel:(BOOL)label;
+- (id)_getWeekContainingDate:(id)date prevDate:(id)prevDate;
 - (id)_setUpMonthViewInMonthViewFrame;
 - (void)_animateZoomToMonthState;
 - (void)_animateZoomToYearState;
 - (void)_animationComplete;
-- (void)_basicAnimateView:(id)a3 toAlpha:(double)a4 duration:(double)a5;
-- (void)_captureImagesForSlidingPiecesFromMonthViewController:(id)a3 selectedDate:(id)a4 calendar:(id)a5;
+- (void)_basicAnimateView:(id)view toAlpha:(double)alpha duration:(double)duration;
+- (void)_captureImagesForSlidingPiecesFromMonthViewController:(id)controller selectedDate:(id)date calendar:(id)calendar;
 - (void)_haltAnimations;
 - (void)_setToMonthState;
 - (void)_setToYearState;
-- (void)animateToMonthViewWithCompletion:(id)a3;
-- (void)animateToYearViewWithCompletion:(id)a3;
-- (void)prepareWithYearViewController:(id)a3 monthViewController:(id)a4 selectedDate:(id)a5 calendar:(id)a6 yearToMonth:(BOOL)a7 paletteView:(id)a8;
+- (void)animateToMonthViewWithCompletion:(id)completion;
+- (void)animateToYearViewWithCompletion:(id)completion;
+- (void)prepareWithYearViewController:(id)controller monthViewController:(id)viewController selectedDate:(id)date calendar:(id)calendar yearToMonth:(BOOL)month paletteView:(id)view;
 @end
 
 @implementation YearMonthTransitionView
 
-- (YearMonthTransitionView)initWithFrame:(CGRect)a3
+- (YearMonthTransitionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = YearMonthTransitionView;
-  v3 = [(YearMonthTransitionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(YearMonthTransitionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -38,50 +38,50 @@
   return v3;
 }
 
-- (id)_createLabelWithFont:(id)a3
+- (id)_createLabelWithFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = objc_alloc_init(UILabel);
-  [v4 setFont:v3];
+  [v4 setFont:fontCopy];
 
   return v4;
 }
 
-- (void)prepareWithYearViewController:(id)a3 monthViewController:(id)a4 selectedDate:(id)a5 calendar:(id)a6 yearToMonth:(BOOL)a7 paletteView:(id)a8
+- (void)prepareWithYearViewController:(id)controller monthViewController:(id)viewController selectedDate:(id)date calendar:(id)calendar yearToMonth:(BOOL)month paletteView:(id)view
 {
-  v15 = a3;
-  v16 = a4;
-  v142 = a5;
-  v140 = a8;
-  objc_storeStrong(&self->_yearViewController, a3);
-  v139 = a6;
-  objc_storeStrong(&self->_monthViewController, a4);
-  self->_yearToMonth = a7;
-  objc_storeStrong(&self->_paletteView, a8);
-  if (!a7)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  dateCopy = date;
+  viewCopy = view;
+  objc_storeStrong(&self->_yearViewController, controller);
+  calendarCopy = calendar;
+  objc_storeStrong(&self->_monthViewController, viewController);
+  self->_yearToMonth = month;
+  objc_storeStrong(&self->_paletteView, view);
+  if (!month)
   {
-    [v16 setSuspendEventLoading:1];
+    [viewControllerCopy setSuspendEventLoading:1];
   }
 
   v17 = +[CUIKPreferences sharedPreferences];
-  v18 = [v17 showWeekNumbers];
+  showWeekNumbers = [v17 showWeekNumbers];
   v19 = 0.0;
-  if (v18)
+  if (showWeekNumbers)
   {
     v19 = 4.0;
   }
 
   self->_monthWeekViewExtent = v19;
 
-  objc_storeStrong(&self->_monthViewController, a4);
-  v20 = [(YearMonthTransitionView *)self _getMonthViewMonthContainingDate:v142 hideMonthLabel:1];
+  objc_storeStrong(&self->_monthViewController, viewController);
+  v20 = [(YearMonthTransitionView *)self _getMonthViewMonthContainingDate:dateCopy hideMonthLabel:1];
   objc_storeStrong(&self->_monthViewInMonthView, v20);
-  v21 = [v15 monthViewForCalendarDate:v142];
+  v21 = [controllerCopy monthViewForCalendarDate:dateCopy];
   objc_storeStrong(&self->_monthViewInYearView, v21);
   [objc_opt_class() _monthHeaderHeight];
   self->_monthHeaderHeight = v22;
-  v141 = v15;
-  if ([v16 dividedListMode])
+  v141 = controllerCopy;
+  if ([viewControllerCopy dividedListMode])
   {
     v23 = objc_alloc_init(UIView);
     backgroundView = self->_backgroundView;
@@ -92,12 +92,12 @@
     [(UIView *)self->_backgroundView setAlpha:0.0];
     *buf = 0;
     v143 = 0;
-    v25 = [v16 scrollView];
-    v26 = [v25 backgroundColor];
+    scrollView = [viewControllerCopy scrollView];
+    backgroundColor = [scrollView backgroundColor];
 
-    if (([v16 dividedListMode] & 1) != 0 || !objc_msgSend(v26, "getWhite:alpha:", buf, &v143))
+    if (([viewControllerCopy dividedListMode] & 1) != 0 || !objc_msgSend(backgroundColor, "getWhite:alpha:", buf, &v143))
     {
-      [(UIView *)self->_backgroundView setBackgroundColor:v26];
+      [(UIView *)self->_backgroundView setBackgroundColor:backgroundColor];
     }
 
     else
@@ -110,7 +110,7 @@
     [(YearMonthTransitionView *)self addSubview:self->_backgroundView];
   }
 
-  if ([v16 dividedListMode])
+  if ([viewControllerCopy dividedListMode])
   {
     v28 = 0.0;
     if (self->_yearToMonth && ([(PaletteView *)self->_paletteView frame], v30 = v29, paletteView = self->_paletteView, [(PaletteView *)paletteView frame], [(PaletteView *)paletteView sizeThatFits:v32, v33], v34 > v30))
@@ -118,8 +118,8 @@
       v28 = v30 - v34;
       [(PaletteView *)self->_paletteView layoutSubviews];
       [(InfiniteScrollViewController *)self->_monthViewController viewWillLayoutSubviews];
-      v35 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-      [v35 layoutSubviews];
+      view = [(CompactWidthMonthViewController *)self->_monthViewController view];
+      [view layoutSubviews];
 
       [(CompactMonthViewController *)self->_monthViewController viewDidLayoutSubviews];
       v36 = 1;
@@ -130,20 +130,20 @@
       v36 = 0;
     }
 
-    [v16 frameOfListView];
+    [viewControllerCopy frameOfListView];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    v45 = [v16 view];
-    [(YearMonthTransitionView *)self convertRect:v45 fromView:v38, v40, v42, v44];
+    view2 = [viewControllerCopy view];
+    [(YearMonthTransitionView *)self convertRect:view2 fromView:v38, v40, v42, v44];
     v47 = v46;
     v49 = v48;
     v51 = v50;
     v53 = v52;
 
-    v54 = [v16 view];
-    [v16 frameOfListView];
+    view3 = [viewControllerCopy view];
+    [viewControllerCopy frameOfListView];
     v55 = createImageViewFromView();
     monthListView = self->_monthListView;
     self->_monthListView = v55;
@@ -157,13 +157,13 @@
     }
   }
 
-  [v15 monthFrameForCalendarDate:v142 adjustHeightUp:0];
+  [controllerCopy monthFrameForCalendarDate:dateCopy adjustHeightUp:0];
   v58 = v57;
   v60 = v59;
   v62 = v61;
   v64 = v63;
-  v65 = [v15 view];
-  [(YearMonthTransitionView *)self convertRect:v65 fromView:v58, v60, v62, v64];
+  view4 = [controllerCopy view];
+  [(YearMonthTransitionView *)self convertRect:view4 fromView:v58, v60, v62, v64];
   self->_monthInYearViewFrame.origin.x = v66;
   self->_monthInYearViewFrame.origin.y = v67;
   self->_monthInYearViewFrame.size.width = v68;
@@ -174,11 +174,11 @@
   self->_monthInMonthViewFrame.origin.y = v71;
   self->_monthInMonthViewFrame.size.width = v72;
   self->_monthInMonthViewFrame.size.height = v73;
-  [v15 monthHeaderLocationForCalendarDate:v142];
+  [controllerCopy monthHeaderLocationForCalendarDate:dateCopy];
   v75 = v74;
   v77 = v76;
-  v78 = [v15 view];
-  [(YearMonthTransitionView *)self convertPoint:v78 fromView:v75, v77];
+  view5 = [controllerCopy view];
+  [(YearMonthTransitionView *)self convertPoint:view5 fromView:v75, v77];
   v80 = v79;
   v82 = v81;
 
@@ -188,26 +188,26 @@
   v84 = v83;
   v86 = v85;
   [v20 removeFromSuperview];
-  v87 = [v21 headerFont];
-  v88 = [(YearMonthTransitionView *)self _createLabelWithFont:v87];
+  headerFont = [v21 headerFont];
+  v88 = [(YearMonthTransitionView *)self _createLabelWithFont:headerFont];
 
   v89 = +[CompactMonthViewController monthNameFont];
   v90 = [(YearMonthTransitionView *)self _createLabelWithFont:v89];
 
-  v91 = [v21 headerFont];
-  v92 = [v21 monthString];
-  v138 = v91;
-  if (v91)
+  headerFont2 = [v21 headerFont];
+  monthString = [v21 monthString];
+  v138 = headerFont2;
+  if (headerFont2)
   {
     v93 = [NSAttributedString alloc];
     v144[0] = NSFontAttributeName;
     v144[1] = NSKernAttributeName;
-    v145[0] = v91;
+    v145[0] = headerFont2;
     [v21 headerFontKerning];
     v94 = [NSNumber numberWithDouble:?];
     v145[1] = v94;
     v95 = [NSDictionary dictionaryWithObjects:v145 forKeys:v144 count:2];
-    v96 = [v93 initWithString:v92 attributes:v95];
+    v96 = [v93 initWithString:monthString attributes:v95];
 
     [v88 setAttributedText:v96];
   }
@@ -222,13 +222,13 @@
       _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "yearMonthViewHeaderFont is nil. yearMonthView = %@", buf, 0xCu);
     }
 
-    [v88 setText:v92];
+    [v88 setText:monthString];
   }
 
-  v98 = [v20 monthLabelText];
-  [v90 setText:v98];
+  monthLabelText = [v20 monthLabelText];
+  [v90 setText:monthLabelText];
 
-  v136 = v92;
+  v136 = monthString;
   if ([v21 isCurrentMonth])
   {
     CalendarAppTintColor();
@@ -236,7 +236,7 @@
 
   else
   {
-    [UIColor labelColor:v92];
+    [UIColor labelColor:monthString];
   }
   v99 = ;
   [v88 setTextColor:{v99, v136}];
@@ -245,7 +245,7 @@
   [v88 sizeToFit];
   *buf = 0;
   v143 = 0;
-  v100 = [v88 font];
+  font = [v88 font];
   CTFontGetLanguageAwareOutsets();
 
   [v88 frame];
@@ -255,8 +255,8 @@
   CalInterfaceIsLeftToRight();
   CalCeilToScreenScale();
   [v88 setFrame:{v102, v104, v107, ceil(v106 + 0.0 + 0.0)}];
-  v108 = [v20 monthLabel];
-  [v108 frame];
+  monthLabel = [v20 monthLabel];
+  [monthLabel frame];
   [v90 setFrame:?];
   [v20 monthLabelFrame];
   v110 = v109;
@@ -293,22 +293,22 @@
   self->_monthLabel = v125;
 
   [(YearMonthTransitionView *)self addSubview:self->_monthLabel];
-  v127 = [(CompactYearViewController *)self->_yearViewController view];
-  [v127 frame];
+  view6 = [(CompactYearViewController *)self->_yearViewController view];
+  [view6 frame];
   self->_yearViewOriginalFrame.origin.x = v128;
   self->_yearViewOriginalFrame.origin.y = v129;
   self->_yearViewOriginalFrame.size.width = v130;
   self->_yearViewOriginalFrame.size.height = v131;
 
-  [v16 setSuspendEventLoading:1];
-  v132 = [(YearMonthTransitionView *)self _captureImageOfMonthInYearView];
+  [viewControllerCopy setSuspendEventLoading:1];
+  _captureImageOfMonthInYearView = [(YearMonthTransitionView *)self _captureImageOfMonthInYearView];
   monthTransitionViewInYearState = self->_monthTransitionViewInYearState;
-  self->_monthTransitionViewInYearState = v132;
+  self->_monthTransitionViewInYearState = _captureImageOfMonthInYearView;
 
-  [(YearMonthTransitionView *)self _captureImagesForSlidingPiecesFromMonthViewController:v16 selectedDate:v142 calendar:v139];
-  v134 = [(YearMonthTransitionView *)self _setUpMonthViewInMonthViewFrame];
+  [(YearMonthTransitionView *)self _captureImagesForSlidingPiecesFromMonthViewController:viewControllerCopy selectedDate:dateCopy calendar:calendarCopy];
+  _setUpMonthViewInMonthViewFrame = [(YearMonthTransitionView *)self _setUpMonthViewInMonthViewFrame];
   monthTransitionViewInMonthState = self->_monthTransitionViewInMonthState;
-  self->_monthTransitionViewInMonthState = v134;
+  self->_monthTransitionViewInMonthState = _setUpMonthViewInMonthViewFrame;
 
   [(YearMonthTransitionView *)self addSubview:self->_monthTransitionViewInYearState];
   [(YearMonthTransitionView *)self addSubview:self->_monthTransitionViewInMonthState];
@@ -322,17 +322,17 @@
     [(YearMonthTransitionView *)self bringSubviewToFront:?];
   }
 
-  [v16 setSuspendEventLoading:0];
+  [viewControllerCopy setSuspendEventLoading:0];
   [(YearMonthTransitionView *)self bringSubviewToFront:self->_monthLabel];
   [(YearMonthTransitionView *)self addSubview:self->_monthListView];
 }
 
-- (void)animateToMonthViewWithCompletion:(id)a3
+- (void)animateToMonthViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(YearMonthTransitionView *)self _setToYearState];
-  v5 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-  [v5 setAlpha:0.0];
+  view = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  [view setAlpha:0.0];
 
   [(YearMonthTransitionView *)self _animateZoomToMonthState];
   UIAnimationDragCoefficient();
@@ -353,17 +353,17 @@
   v11[2] = sub_10012F8B8;
   v11[3] = &unk_10020F5D0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_after(v9, &_dispatch_main_q, v11);
 }
 
-- (void)animateToYearViewWithCompletion:(id)a3
+- (void)animateToYearViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(YearMonthTransitionView *)self _setToMonthState];
-  v5 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-  [v5 setAlpha:0.0];
+  view = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  [view setAlpha:0.0];
 
   [(YearMonthTransitionView *)self _animateZoomToYearState];
   UIAnimationDragCoefficient();
@@ -384,8 +384,8 @@
   v11[2] = sub_10012FA24;
   v11[3] = &unk_10020F5D0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_after(v9, &_dispatch_main_q, v11);
 }
 
@@ -393,33 +393,33 @@
 {
   [(YearMonthTransitionView *)self _haltAnimations];
   [(CrossFadeView *)self->_monthLabel setAlpha:1.0];
-  v3 = [(CompactYearViewController *)self->_yearViewController view];
-  [v3 setAlpha:1.0];
+  view = [(CompactYearViewController *)self->_yearViewController view];
+  [view setAlpha:1.0];
 
-  v4 = [(CompactWidthMonthViewController *)self->_monthViewController view];
-  [v4 setAlpha:1.0];
+  view2 = [(CompactWidthMonthViewController *)self->_monthViewController view];
+  [view2 setAlpha:1.0];
 
   [(UIView *)self->_monthViewInYearView setHidden:0];
-  v5 = [(CompactYearViewController *)self->_yearViewController view];
+  view3 = [(CompactYearViewController *)self->_yearViewController view];
   v6 = *&CGAffineTransformIdentity.c;
   v14[0] = *&CGAffineTransformIdentity.a;
   v14[1] = v6;
   v14[2] = *&CGAffineTransformIdentity.tx;
-  [v5 setTransform:v14];
+  [view3 setTransform:v14];
 
   x = self->_yearViewOriginalFrame.origin.x;
   y = self->_yearViewOriginalFrame.origin.y;
   width = self->_yearViewOriginalFrame.size.width;
   height = self->_yearViewOriginalFrame.size.height;
-  v11 = [(CompactYearViewController *)self->_yearViewController view];
-  [v11 setFrame:{x, y, width, height}];
+  view4 = [(CompactYearViewController *)self->_yearViewController view];
+  [view4 setFrame:{x, y, width, height}];
 
   [(PaletteView *)self->_paletteView setAlpha:1.0];
-  v12 = [(PaletteView *)self->_paletteView dateLabel];
-  [v12 setAlpha:1.0];
+  dateLabel = [(PaletteView *)self->_paletteView dateLabel];
+  [dateLabel setAlpha:1.0];
 
-  v13 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v13 setAlpha:1.0];
+  dayInitialsHeaderView = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView setAlpha:1.0];
 }
 
 - (void)_setToYearState
@@ -427,15 +427,15 @@
   [(CrossFadeView *)self->_monthLabel setAlpha:1.0];
   [(CrossFadeView *)self->_monthLabel setToEndState];
   [(UIView *)self->_monthViewInYearView setHidden:1];
-  v3 = [(CompactYearViewController *)self->_yearViewController view];
+  view = [(CompactYearViewController *)self->_yearViewController view];
   [(YearMonthTransitionView *)self _calculateYearFrameForYearViewZoom];
   scaleViewToFrame();
 
   p_monthInYearViewFrame = &self->_monthInYearViewFrame;
   scaleViewToFrame();
   scaleViewToFrame();
-  v5 = [(CompactYearViewController *)self->_yearViewController view];
-  [v5 setAlpha:1.0];
+  view2 = [(CompactYearViewController *)self->_yearViewController view];
+  [view2 setAlpha:1.0];
 
   [(UIView *)self->_monthTransitionViewInYearState setAlpha:1.0];
   [(UIView *)self->_monthTransitionViewInMonthState setAlpha:0.0];
@@ -472,30 +472,30 @@
   [(CompactYearViewController *)self->_yearViewController updatePalette:self->_paletteView];
   [(PaletteView *)self->_paletteView sizeToFit];
   [(PaletteView *)self->_paletteView layoutSubviews];
-  v11 = [(PaletteView *)self->_paletteView containingPalette];
-  [v11 frame];
+  containingPalette = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette frame];
   v13 = v12;
-  v14 = [(PaletteView *)self->_paletteView containingPalette];
-  [v14 frame];
+  containingPalette2 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette2 frame];
   v16 = v15;
   [(PaletteView *)self->_paletteView frame];
   v18 = v17;
   [(PaletteView *)self->_paletteView frame];
   v20 = v19;
-  v21 = [(PaletteView *)self->_paletteView containingPalette];
-  [v21 setFrame:{v13, v16, v18, v20}];
+  containingPalette3 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette3 setFrame:{v13, v16, v18, v20}];
 
   [(PaletteView *)self->_paletteView frame];
   v23 = v22;
-  v24 = [(PaletteView *)self->_paletteView containingPalette];
-  [v24 setPreferredHeight:v23];
+  containingPalette4 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette4 setPreferredHeight:v23];
 
   [(PaletteView *)self->_paletteView setAlpha:0.0];
-  v25 = [(PaletteView *)self->_paletteView dateLabel];
-  [v25 setAlpha:0.0];
+  dateLabel = [(PaletteView *)self->_paletteView dateLabel];
+  [dateLabel setAlpha:0.0];
 
-  v26 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v26 setAlpha:0.0];
+  dayInitialsHeaderView = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView setAlpha:0.0];
 }
 
 - (void)_setToMonthState
@@ -503,14 +503,14 @@
   [(CrossFadeView *)self->_monthLabel setAlpha:0.0];
   [(CrossFadeView *)self->_monthLabel setToStartState];
   [(UIView *)self->_monthViewInYearView setHidden:1];
-  v3 = [(CompactYearViewController *)self->_yearViewController view];
+  view = [(CompactYearViewController *)self->_yearViewController view];
   [(YearMonthTransitionView *)self _calculateMonthFrameForYearViewZoom];
   scaleViewToFrame();
 
   scaleViewToFrame();
   scaleViewToFrame();
-  v4 = [(CompactYearViewController *)self->_yearViewController view];
-  [v4 setAlpha:0.0];
+  view2 = [(CompactYearViewController *)self->_yearViewController view];
+  [view2 setAlpha:0.0];
 
   [(UIView *)self->_monthTransitionViewInYearState setAlpha:0.0];
   [(UIView *)self->_monthTransitionViewInMonthState setAlpha:1.0];
@@ -528,30 +528,30 @@
   [(CompactWidthMonthViewController *)self->_monthViewController updatePalette:self->_paletteView];
   [(PaletteView *)self->_paletteView sizeToFit];
   [(PaletteView *)self->_paletteView layoutSubviews];
-  v5 = [(PaletteView *)self->_paletteView containingPalette];
-  [v5 frame];
+  containingPalette = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette frame];
   v7 = v6;
-  v8 = [(PaletteView *)self->_paletteView containingPalette];
-  [v8 frame];
+  containingPalette2 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette2 frame];
   v10 = v9;
   [(PaletteView *)self->_paletteView frame];
   v12 = v11;
   [(PaletteView *)self->_paletteView frame];
   v14 = v13;
-  v15 = [(PaletteView *)self->_paletteView containingPalette];
-  [v15 setFrame:{v7, v10, v12, v14}];
+  containingPalette3 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette3 setFrame:{v7, v10, v12, v14}];
 
   [(PaletteView *)self->_paletteView frame];
   v17 = v16;
-  v18 = [(PaletteView *)self->_paletteView containingPalette];
-  [v18 setPreferredHeight:v17];
+  containingPalette4 = [(PaletteView *)self->_paletteView containingPalette];
+  [containingPalette4 setPreferredHeight:v17];
 
   [(PaletteView *)self->_paletteView setAlpha:1.0];
-  v19 = [(PaletteView *)self->_paletteView dateLabel];
-  [v19 setAlpha:1.0];
+  dateLabel = [(PaletteView *)self->_paletteView dateLabel];
+  [dateLabel setAlpha:1.0];
 
-  v20 = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
-  [v20 setAlpha:1.0];
+  dayInitialsHeaderView = [(PaletteView *)self->_paletteView dayInitialsHeaderView];
+  [dayInitialsHeaderView setAlpha:1.0];
 }
 
 - (void)_animateZoomToYearState
@@ -591,17 +591,17 @@
   springAnimationDuration();
   v4 = v3;
   v5 = +[SpringFactory sharedFactory];
-  v35 = self;
+  selfCopy = self;
   v6 = navigationAnimationsPreferringFRR();
   v7 = 0;
   [UIView _animateWithDuration:393216 delay:v5 options:v6 factory:0 animations:v4 completion:0.0];
 
-  v34 = self;
+  selfCopy2 = self;
   animateNavigationPreferringFRR();
   springAnimationDuration();
   v9 = v8;
   v10 = +[SpringFactory sharedFactory];
-  v33 = self;
+  selfCopy3 = self;
   v11 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v10 options:v11 factory:0 animations:v9 completion:0.0];
 
@@ -623,18 +623,18 @@
   springAnimationDuration();
   v24 = v23;
   v25 = +[SpringFactory sharedFactory];
-  v32 = self;
+  selfCopy4 = self;
   v26 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v25 options:v26 factory:0 animations:v24 completion:0.0];
 
   v27 = +[SpringFactory sharedFactory];
-  v31 = self;
+  selfCopy5 = self;
   v28 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v27 options:v28 factory:0 animations:0.75 completion:0.0];
 
-  v30 = self;
+  selfCopy6 = self;
   v29 = navigationAnimationsPreferringFRR();
-  [UIView animateWithDuration:327680 delay:v29 options:0 animations:0.25 completion:0.0, _NSConcreteStackBlock, 3221225472, sub_1001310C8, &unk_10020EB00, v30, _NSConcreteStackBlock, 3221225472, sub_100131068, &unk_10020EDD8, v31, v13, v7, _NSConcreteStackBlock, 3221225472, sub_100130ED8, &unk_10020EB00, v32, _NSConcreteStackBlock, 3221225472, sub_100130EC0, &unk_10020EB00, v33, _NSConcreteStackBlock, 3221225472, sub_100130EA8, &unk_10020EB00, v34, _NSConcreteStackBlock, 3221225472, sub_100130D0C, &unk_10020EB00, v35];
+  [UIView animateWithDuration:327680 delay:v29 options:0 animations:0.25 completion:0.0, _NSConcreteStackBlock, 3221225472, sub_1001310C8, &unk_10020EB00, selfCopy6, _NSConcreteStackBlock, 3221225472, sub_100131068, &unk_10020EDD8, selfCopy5, v13, v7, _NSConcreteStackBlock, 3221225472, sub_100130ED8, &unk_10020EB00, selfCopy4, _NSConcreteStackBlock, 3221225472, sub_100130EC0, &unk_10020EB00, selfCopy3, _NSConcreteStackBlock, 3221225472, sub_100130EA8, &unk_10020EB00, selfCopy2, _NSConcreteStackBlock, 3221225472, sub_100130D0C, &unk_10020EB00, selfCopy];
 }
 
 - (CGRect)_calculateMonthFrameForYearViewZoom
@@ -697,22 +697,22 @@
   return createImageViewFromView();
 }
 
-- (void)_captureImagesForSlidingPiecesFromMonthViewController:(id)a3 selectedDate:(id)a4 calendar:(id)a5
+- (void)_captureImagesForSlidingPiecesFromMonthViewController:(id)controller selectedDate:(id)date calendar:(id)calendar
 {
-  v36 = a5;
-  v7 = a4;
+  calendarCopy = calendar;
+  dateCopy = date;
   v8 = objc_alloc_init(NSDateComponents);
-  v9 = [v7 date];
+  date = [dateCopy date];
 
   [v8 setMonth:1];
-  v10 = [v36 dateByAddingComponents:v8 toDate:v9 options:0];
+  v10 = [calendarCopy dateByAddingComponents:v8 toDate:date options:0];
   [v8 setMonth:-1];
-  v11 = [v36 dateByAddingComponents:v8 toDate:v9 options:0];
-  v12 = [v36 timeZone];
-  v13 = [EKCalendarDate calendarDateWithDate:v10 timeZone:v12];
+  v11 = [calendarCopy dateByAddingComponents:v8 toDate:date options:0];
+  timeZone = [calendarCopy timeZone];
+  v13 = [EKCalendarDate calendarDateWithDate:v10 timeZone:timeZone];
 
-  v14 = [v36 timeZone];
-  v15 = [EKCalendarDate calendarDateWithDate:v11 timeZone:v14];
+  timeZone2 = [calendarCopy timeZone];
+  v15 = [EKCalendarDate calendarDateWithDate:v11 timeZone:timeZone2];
 
   v34 = v15;
   v16 = [(YearMonthTransitionView *)self _getMonthViewMonthContainingDate:v15 hideMonthLabel:0];
@@ -746,9 +746,9 @@
   }
 
   [v8 setMonth:2];
-  v26 = [v36 dateByAddingComponents:v8 toDate:v9 options:0];
-  v27 = [v36 timeZone];
-  v28 = [EKCalendarDate calendarDateWithDate:v26 timeZone:v27];
+  v26 = [calendarCopy dateByAddingComponents:v8 toDate:date options:0];
+  timeZone3 = [calendarCopy timeZone];
+  v28 = [EKCalendarDate calendarDateWithDate:v26 timeZone:timeZone3];
 
   v29 = [(YearMonthTransitionView *)self _getMonthViewMonthContainingDate:v28 hideMonthLabel:0];
   if (v29)
@@ -770,13 +770,13 @@
 {
   [(CrossFadeView *)self->_monthLabel haltAnimation];
   v3 = CalSystemSolariumEnabled();
-  v4 = [(YearMonthTransitionView *)self window];
-  v5 = [v4 layer];
+  window = [(YearMonthTransitionView *)self window];
+  layer = [window layer];
   if (v3)
   {
-    v6 = [(CompactYearViewController *)self->_yearViewController navigationController];
-    v7 = [v6 navigationBar];
-    v8 = [v7 layer];
+    navigationController = [(CompactYearViewController *)self->_yearViewController navigationController];
+    navigationBar = [navigationController navigationBar];
+    layer2 = [navigationBar layer];
     recursiveAnimationRemoveWithExclusion();
   }
 
@@ -785,57 +785,57 @@
     recursiveAnimationRemove();
   }
 
-  v9 = [(CompactYearViewController *)self->_yearViewController view];
-  v10 = [v9 layer];
-  [v10 removeAllAnimations];
+  view = [(CompactYearViewController *)self->_yearViewController view];
+  layer3 = [view layer];
+  [layer3 removeAllAnimations];
 
-  v11 = [(UIView *)self->_monthTransitionViewInYearState layer];
-  [v11 removeAllAnimations];
+  layer4 = [(UIView *)self->_monthTransitionViewInYearState layer];
+  [layer4 removeAllAnimations];
 
-  v12 = [(UIView *)self->_monthTransitionViewInMonthState layer];
-  [v12 removeAllAnimations];
+  layer5 = [(UIView *)self->_monthTransitionViewInMonthState layer];
+  [layer5 removeAllAnimations];
 
-  v13 = [(UIView *)self->_monthTopSlidingPiece layer];
-  [v13 removeAllAnimations];
+  layer6 = [(UIView *)self->_monthTopSlidingPiece layer];
+  [layer6 removeAllAnimations];
 
-  v14 = [(UIView *)self->_monthBottomSlidingPiece layer];
-  [v14 removeAllAnimations];
+  layer7 = [(UIView *)self->_monthBottomSlidingPiece layer];
+  [layer7 removeAllAnimations];
 
-  v15 = [(UIView *)self->_monthBottomSlidingPiece2 layer];
-  [v15 removeAllAnimations];
+  layer8 = [(UIView *)self->_monthBottomSlidingPiece2 layer];
+  [layer8 removeAllAnimations];
 }
 
-- (void)_basicAnimateView:(id)a3 toAlpha:(double)a4 duration:(double)a5
+- (void)_basicAnimateView:(id)view toAlpha:(double)alpha duration:(double)duration
 {
-  v7 = a3;
+  viewCopy = view;
   v12 = objc_alloc_init(CABasicAnimation);
   [v12 setKeyPath:@"opacity"];
-  [v7 alpha];
+  [viewCopy alpha];
   v8 = [NSNumber numberWithDouble:?];
   [v12 setFromValue:v8];
 
-  v9 = [NSNumber numberWithDouble:a4];
+  v9 = [NSNumber numberWithDouble:alpha];
   [v12 setToValue:v9];
 
   UIAnimationDragCoefficient();
-  [v12 setDuration:v10 * a5];
-  v11 = [v7 layer];
-  [v11 addAnimation:v12 forKey:@"opacity"];
+  [v12 setDuration:v10 * duration];
+  layer = [viewCopy layer];
+  [layer addAnimation:v12 forKey:@"opacity"];
 
-  [v7 setAlpha:a4];
+  [viewCopy setAlpha:alpha];
 }
 
-- (CGRect)_monthFrameForMonthBefore:(id)a3 anchorMonth:(id)a4
+- (CGRect)_monthFrameForMonthBefore:(id)before anchorMonth:(id)month
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 frame];
+  monthCopy = month;
+  beforeCopy = before;
+  [beforeCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v5 frame];
+  [monthCopy frame];
   v14 = v13;
-  [v6 bounds];
+  [beforeCopy bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -846,7 +846,7 @@
   v30.size.width = v20;
   v30.size.height = v22;
   v23 = v14 - CGRectGetHeight(v30);
-  [v5 topInset];
+  [monthCopy topInset];
   v25 = v24;
 
   v26 = v23 + v25;
@@ -860,15 +860,15 @@
   return result;
 }
 
-- (CGRect)_monthFrameForMonthAfter:(id)a3 anchorMonth:(id)a4
+- (CGRect)_monthFrameForMonthAfter:(id)after anchorMonth:(id)month
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 frame];
+  monthCopy = month;
+  afterCopy = after;
+  [monthCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v5 frame];
+  [monthCopy frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -879,7 +879,7 @@
   v28.size.width = v18;
   v28.size.height = v20;
   MaxY = CGRectGetMaxY(v28);
-  [v6 topInset];
+  [afterCopy topInset];
   v23 = v22;
 
   v24 = MaxY - v23;
@@ -893,50 +893,50 @@
   return result;
 }
 
-- (id)_getMonthViewMonthContainingDate:(id)a3 hideMonthLabel:(BOOL)a4
+- (id)_getMonthViewMonthContainingDate:(id)date hideMonthLabel:(BOOL)label
 {
-  v4 = a4;
-  v5 = a3;
+  labelCopy = label;
+  dateCopy = date;
   v6 = objc_opt_new();
   [v6 setClipsToBounds:1];
   v90 = objc_opt_new();
   v7 = objc_opt_new();
-  v89 = v5;
-  v8 = [v5 calendarDateForMonth];
-  v9 = [v8 copy];
+  v89 = dateCopy;
+  calendarDateForMonth = [dateCopy calendarDateForMonth];
+  v9 = [calendarDateForMonth copy];
 
   v10 = v9;
   y = CGRectNull.origin.y;
-  v12 = [v10 month];
+  month = [v10 month];
   v92 = v10;
-  if (v12 == [v10 month])
+  if (month == [v10 month])
   {
     v13 = 0;
     v14 = 0;
     v98 = 0;
-    v91 = !v4;
+    v91 = !labelCopy;
     v15 = -1;
     v16 = 0.0;
     v17 = v10;
-    v18 = self;
+    selfCopy3 = self;
     while (1)
     {
       v96 = v13;
-      v19 = [(InfiniteScrollViewController *)v18->_monthViewController subviewForDate:v10];
+      v19 = [(InfiniteScrollViewController *)selfCopy3->_monthViewController subviewForDate:v10];
       v20 = v19;
       if (v19)
       {
         break;
       }
 
-      v47 = v98;
+      monthNameLabel4 = v98;
       if (!v98)
       {
         goto LABEL_18;
       }
 
 LABEL_21:
-      v98 = v47;
+      v98 = monthNameLabel4;
       if (!v14)
       {
         [v20 topInset];
@@ -945,13 +945,13 @@ LABEL_21:
 
       v56 = v10;
 
-      v10 = [(MonthViewController *)v18->_monthViewController calendarDateForSubviewBelowSubviewWithCalendarDate:v56];
+      v10 = [(MonthViewController *)selfCopy3->_monthViewController calendarDateForSubviewBelowSubviewWithCalendarDate:v56];
 
       ++v14;
-      v57 = [v10 month];
-      v58 = [v17 month];
+      month2 = [v10 month];
+      month3 = [v17 month];
       v13 = v56;
-      if (v57 != v58)
+      if (month2 != month3)
       {
         goto LABEL_26;
       }
@@ -965,14 +965,14 @@ LABEL_21:
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      v29 = [v20 superview];
-      [(YearMonthTransitionView *)self convertRect:v29 fromView:v22, v24, v26, v28];
+      superview = [v20 superview];
+      [(YearMonthTransitionView *)self convertRect:superview fromView:v22, v24, v26, v28];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
 
-      v18 = self;
+      selfCopy3 = self;
       v110.origin.x = v31;
       v110.origin.y = v33;
       v110.size.width = v35;
@@ -989,7 +989,7 @@ LABEL_21:
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    [v20 setBounds:{v38, v40 - v18->_monthWeekViewExtent}];
+    [v20 setBounds:{v38, v40 - selfCopy3->_monthWeekViewExtent}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1001,23 +1001,23 @@ LABEL_21:
       v46 = 0;
     }
 
-    v48 = [v46 monthNameLabel];
-    v49 = [v48 isHidden];
+    monthNameLabel = [v46 monthNameLabel];
+    isHidden = [monthNameLabel isHidden];
 
-    if ((v91 | v49))
+    if ((v91 | isHidden))
     {
       v50 = [v20 snapshotViewAfterScreenUpdates:self->_yearToMonth];
     }
 
     else
     {
-      v51 = [v46 monthNameLabel];
-      [v51 setHidden:1];
+      monthNameLabel2 = [v46 monthNameLabel];
+      [monthNameLabel2 setHidden:1];
 
       [v20 bounds];
       v50 = createSnapshotFromView();
-      v52 = [v46 monthNameLabel];
-      [v52 setHidden:0];
+      monthNameLabel3 = [v46 monthNameLabel];
+      [monthNameLabel3 setHidden:0];
     }
 
     [v20 setBounds:{v39, v41, v43, v45}];
@@ -1033,8 +1033,8 @@ LABEL_21:
     }
 
     v17 = v92;
-    v47 = v98;
-    v18 = self;
+    monthNameLabel4 = v98;
+    selfCopy3 = self;
     if (v98)
     {
       goto LABEL_21;
@@ -1044,12 +1044,12 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v47 = [v20 monthNameLabel];
+      monthNameLabel4 = [v20 monthNameLabel];
     }
 
     else
     {
-      v47 = 0;
+      monthNameLabel4 = 0;
     }
 
     goto LABEL_21;
@@ -1065,11 +1065,11 @@ LABEL_26:
   v59 = v90;
   if ([v90 count])
   {
-    v60 = [v90 firstObject];
-    v61 = v60;
-    if (v60)
+    firstObject = [v90 firstObject];
+    v61 = firstObject;
+    if (firstObject)
     {
-      [v60 frame];
+      [firstObject frame];
       CGRectGetMinY(v111);
     }
 
@@ -1155,9 +1155,9 @@ LABEL_26:
       MaxY = MaxY + v80;
     }
 
-    v81 = [(InfiniteScrollViewController *)self->_monthViewController scrollView];
-    v82 = [v81 backgroundColor];
-    [v6 setBackgroundColor:v82];
+    scrollView = [(InfiniteScrollViewController *)self->_monthViewController scrollView];
+    backgroundColor = [scrollView backgroundColor];
+    [v6 setBackgroundColor:backgroundColor];
 
     [v6 setTopInset:v16];
     [v6 setFrame:{x, v78, width, MaxY}];
@@ -1203,19 +1203,19 @@ LABEL_26:
   return v76;
 }
 
-- (id)_getWeekContainingDate:(id)a3 prevDate:(id)a4
+- (id)_getWeekContainingDate:(id)date prevDate:(id)prevDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  prevDateCopy = prevDate;
   monthViewController = self->_monthViewController;
-  if (v7)
+  if (prevDateCopy)
   {
-    v9 = [(CompactWidthMonthViewController *)monthViewController newBottomViewBelowViewWithCalendarDate:v7];
+    v9 = [(CompactWidthMonthViewController *)monthViewController newBottomViewBelowViewWithCalendarDate:prevDateCopy];
   }
 
   else
   {
-    v9 = [(CompactWidthMonthViewController *)monthViewController createInitialViewForDate:v6];
+    v9 = [(CompactWidthMonthViewController *)monthViewController createInitialViewForDate:dateCopy];
   }
 
   v10 = v9;

@@ -1,60 +1,60 @@
 @interface HRAtrialFibrillationNotificationManager
-- (BOOL)_allowAtrialFibrillationDisableOrReEnableRemotelyAlertWithFeatureStatus:(id)a3;
+- (BOOL)_allowAtrialFibrillationDisableOrReEnableRemotelyAlertWithFeatureStatus:(id)status;
 - (BOOL)_queue_isCompanionSoftwareVersionTooOld;
 - (BOOL)_queue_isWatchSoftwareVersionTooOld;
 - (BOOL)isCompanionSoftwareVersionTooOld;
 - (BOOL)isWatchSoftwareVersionTooOld;
-- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)a3 availabilityManager:(id)a4;
-- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)a3 featureStatusManager:(id)a4;
-- (id)_getProductVersionWithError:(id *)a3;
-- (id)_queue_fakeHeartbeatSeriesSampleFromDate:(id)a3;
-- (int64_t)_atrialFibrillationDetectionRescindedStatusForFeatureStatus:(id)a3;
+- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)profile availabilityManager:(id)manager;
+- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)profile featureStatusManager:(id)manager;
+- (id)_getProductVersionWithError:(id *)error;
+- (id)_queue_fakeHeartbeatSeriesSampleFromDate:(id)date;
+- (int64_t)_atrialFibrillationDetectionRescindedStatusForFeatureStatus:(id)status;
 - (void)_addNotificationRequestForCompanionSoftwareVersionIsTooOld;
 - (void)_addNotificationRequestForWatchSoftwareVersionIsTooOld;
-- (void)_presentAtrialFibrillationDetectionAlertWithRescindedStatus:(int64_t)a3;
+- (void)_presentAtrialFibrillationDetectionAlertWithRescindedStatus:(int64_t)status;
 - (void)_presentAtrialFibrillationDetectionReEnabledAlert;
-- (void)_presentNotificationWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 defaultButtonTitle:(id)a6 otherButtonTitle:(id)a7 alertLevel:(int64_t)a8 responseHandler:(id)a9;
-- (void)_queue_addNotificationRequestForAtrialFibrillationEvent:(id)a3;
-- (void)_queue_fakeHeartbeatSeriesSamplesForEvent:(id)a3;
+- (void)_presentNotificationWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle defaultButtonTitle:(id)defaultButtonTitle otherButtonTitle:(id)otherButtonTitle alertLevel:(int64_t)level responseHandler:(id)handler;
+- (void)_queue_addNotificationRequestForAtrialFibrillationEvent:(id)event;
+- (void)_queue_fakeHeartbeatSeriesSamplesForEvent:(id)event;
 - (void)_queue_isCompanionSoftwareVersionTooOld;
 - (void)_queue_isWatchSoftwareVersionTooOld;
-- (void)_queue_setAtrialFibrillationDetectionDisabledNotificationShownDate:(id)a3;
+- (void)_queue_setAtrialFibrillationDetectionDisabledNotificationShownDate:(id)date;
 - (void)_subscribeToFakingNotifications;
 - (void)_unsubscribeToFakingNotifications;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
 - (void)notifyUserThatAntimonyIsUnavailableForWatchOSVersionIfNeeded;
 - (void)notifyUserThatAntimonyIsUnavailableForiOSVersionIfNeeded;
 - (void)presentAtrialFibrillationDetectionReEnabledAlertIfNeeded;
 - (void)presentAtrialFibrillationDetectionRescindedAlertIfNeeded;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HRAtrialFibrillationNotificationManager
 
-- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)a3 availabilityManager:(id)a4
+- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)profile availabilityManager:(id)manager
 {
   v6 = MEMORY[0x277CCD460];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFeatureAvailabilityProviding:v7 healthDataSource:v8];
+  managerCopy = manager;
+  profileCopy = profile;
+  v9 = [[v6 alloc] initWithFeatureAvailabilityProviding:managerCopy healthDataSource:profileCopy];
 
-  v10 = [(HRAtrialFibrillationNotificationManager *)self initWithProfile:v8 featureStatusManager:v9];
+  v10 = [(HRAtrialFibrillationNotificationManager *)self initWithProfile:profileCopy featureStatusManager:v9];
   return v10;
 }
 
-- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)a3 featureStatusManager:(id)a4
+- (HRAtrialFibrillationNotificationManager)initWithProfile:(id)profile featureStatusManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v36.receiver = self;
   v36.super_class = HRAtrialFibrillationNotificationManager;
   v8 = [(HRAtrialFibrillationNotificationManager *)&v36 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_statusManager, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_statusManager, manager);
     v10 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
     v9->_queue = v10;
@@ -64,9 +64,9 @@
     userNotificationCenter = v9->_userNotificationCenter;
     v9->_userNotificationCenter = v13;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     fakingNotificationTokens = v9->_fakingNotificationTokens;
-    v9->_fakingNotificationTokens = v15;
+    v9->_fakingNotificationTokens = array;
 
     v17 = MEMORY[0x277D10718];
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
@@ -96,8 +96,8 @@
 
     [(HRAtrialFibrillationNotificationManager *)v26 _subscribeToFakingNotifications];
     v31 = objc_loadWeakRetained(&v9->_profile);
-    v32 = [v31 daemon];
-    [v32 registerForDaemonReady:v26];
+    daemon = [v31 daemon];
+    [daemon registerForDaemonReady:v26];
   }
 
   return v9;
@@ -120,9 +120,9 @@ void __80__HRAtrialFibrillationNotificationManager_initWithProfile_featureStatus
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-  [v4 removeObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  [dataManager removeObserver:self forDataType:atrialFibrillationEventType];
 
   [(HRAtrialFibrillationNotificationManager *)self _unsubscribeToFakingNotifications];
   v6.receiver = self;
@@ -130,22 +130,22 @@ void __80__HRAtrialFibrillationNotificationManager_initWithProfile_featureStatus
   [(HRAtrialFibrillationNotificationManager *)&v6 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
-  [v4 addObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  atrialFibrillationEventType = [MEMORY[0x277CCD0C0] atrialFibrillationEventType];
+  [dataManager addObserver:self forDataType:atrialFibrillationEventType];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 healthAppHiddenOrNotInstalled];
+  addedCopy = added;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  healthAppHiddenOrNotInstalled = [mEMORY[0x277CCDD30] healthAppHiddenOrNotInstalled];
 
-  if (v7)
+  if (healthAppHiddenOrNotInstalled)
   {
     _HKInitializeLogging();
     v8 = *MEMORY[0x277CCC2D8];
@@ -166,8 +166,8 @@ void __80__HRAtrialFibrillationNotificationManager_initWithProfile_featureStatus
     v13[1] = 3221225472;
     v13[2] = __63__HRAtrialFibrillationNotificationManager_samplesAdded_anchor___block_invoke;
     v13[3] = &unk_27865FE98;
-    v14 = v5;
-    v15 = self;
+    v14 = addedCopy;
+    selfCopy = self;
     dispatch_async(queue, v13);
   }
 
@@ -242,9 +242,9 @@ void __63__HRAtrialFibrillationNotificationManager_samplesAdded_anchor___block_i
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_addNotificationRequestForAtrialFibrillationEvent:(id)a3
+- (void)_queue_addNotificationRequestForAtrialFibrillationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v6 = HRLocalizedStringWithKey(@"ATRIAL_FIBRILLATION_NOTIFICATION_TITLE");
   [v5 setTitle:v6];
@@ -258,22 +258,22 @@ void __63__HRAtrialFibrillationNotificationManager_samplesAdded_anchor___block_i
   [v8 setAlertTopic:*MEMORY[0x277D71FC8]];
   [v5 setSound:v8];
   v9 = MEMORY[0x277CE1FC0];
-  v10 = [v4 UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 requestWithIdentifier:v11 content:v5 trigger:0];
+  uUID = [eventCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v9 requestWithIdentifier:uUIDString content:v5 trigger:0];
 
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained notificationManager];
+  notificationManager = [WeakRetained notificationManager];
 
-  if (v14)
+  if (notificationManager)
   {
-    v15 = [v14 areHealthNotificationsAuthorized];
+    areHealthNotificationsAuthorized = [notificationManager areHealthNotificationsAuthorized];
   }
 
   else
   {
-    v15 = 0;
+    areHealthNotificationsAuthorized = 0;
   }
 
   userNotificationCenter = self->_userNotificationCenter;
@@ -286,9 +286,9 @@ void __63__HRAtrialFibrillationNotificationManager_samplesAdded_anchor___block_i
   v21 = v17;
   v18 = v5;
   v22 = v18;
-  v19 = v4;
+  v19 = eventCopy;
   v23 = v19;
-  v25 = v15;
+  v25 = areHealthNotificationsAuthorized;
   [(UNUserNotificationCenter *)userNotificationCenter addNotificationRequest:v17 withCompletionHandler:v20];
 
   objc_destroyWeak(&v24);
@@ -427,12 +427,12 @@ void __97__HRAtrialFibrillationNotificationManager__addNotificationRequestForWat
   v5 = v12;
   if (v4)
   {
-    v6 = [v4 isOnboardingRecordPresent];
+    isOnboardingRecordPresent = [v4 isOnboardingRecordPresent];
     v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCBF00]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = v6 & (v9 ^ 1);
+    v10 = isOnboardingRecordPresent & (bOOLValue ^ 1);
   }
 
   else
@@ -484,12 +484,12 @@ uint64_t __75__HRAtrialFibrillationNotificationManager_isCompanionSoftwareVersio
   v5 = v12;
   if (v4)
   {
-    v6 = [v4 isOnboardingRecordPresent];
+    isOnboardingRecordPresent = [v4 isOnboardingRecordPresent];
     v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCBF08]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = v6 & (v9 ^ 1);
+    v10 = isOnboardingRecordPresent & (bOOLValue ^ 1);
   }
 
   else
@@ -534,67 +534,67 @@ uint64_t __71__HRAtrialFibrillationNotificationManager_isWatchSoftwareVersionToo
 
 - (void)notifyUserThatAntimonyIsUnavailableForiOSVersionIfNeeded
 {
-  v5 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
-  v3 = [v5 objectForKey:@"OldCompanionVersionNotificationDate"];
+  hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+  v3 = [hk_heartRhythmDefaults objectForKey:@"OldCompanionVersionNotificationDate"];
 
   if (!v3)
   {
     [(HRAtrialFibrillationNotificationManager *)self _addNotificationRequestForCompanionSoftwareVersionIsTooOld];
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v5 setObject:v4 forKey:@"OldCompanionVersionNotificationDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [hk_heartRhythmDefaults setObject:date forKey:@"OldCompanionVersionNotificationDate"];
   }
 }
 
 - (void)notifyUserThatAntimonyIsUnavailableForWatchOSVersionIfNeeded
 {
-  v5 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
-  v3 = [v5 objectForKey:@"OldWatchVersionNotificationDate"];
+  hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+  v3 = [hk_heartRhythmDefaults objectForKey:@"OldWatchVersionNotificationDate"];
 
   if (!v3)
   {
     [(HRAtrialFibrillationNotificationManager *)self _addNotificationRequestForWatchSoftwareVersionIsTooOld];
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v5 setObject:v4 forKey:@"OldWatchVersionNotificationDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [hk_heartRhythmDefaults setObject:date forKey:@"OldWatchVersionNotificationDate"];
   }
 }
 
-- (void)_presentNotificationWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 defaultButtonTitle:(id)a6 otherButtonTitle:(id)a7 alertLevel:(int64_t)a8 responseHandler:(id)a9
+- (void)_presentNotificationWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle defaultButtonTitle:(id)defaultButtonTitle otherButtonTitle:(id)otherButtonTitle alertLevel:(int64_t)level responseHandler:(id)handler
 {
   v15 = MEMORY[0x277D10BC0];
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  handlerCopy = handler;
+  otherButtonTitleCopy = otherButtonTitle;
+  defaultButtonTitleCopy = defaultButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
   v22 = objc_alloc_init(v15);
-  [v22 setTitle:v21];
+  [v22 setTitle:titleCopy];
 
-  [v22 setMessage:v20];
-  [v22 setCancelButton:v19];
+  [v22 setMessage:messageCopy];
+  [v22 setCancelButton:buttonTitleCopy];
 
-  [v22 setDefaultButton:v18];
-  [v22 setOtherButton:v17];
+  [v22 setDefaultButton:defaultButtonTitleCopy];
+  [v22 setOtherButton:otherButtonTitleCopy];
 
-  [v22 setAlertLevel:a8];
-  [v22 presentWithResponseHandler:v16];
+  [v22 setAlertLevel:level];
+  [v22 presentWithResponseHandler:handlerCopy];
 }
 
-- (int64_t)_atrialFibrillationDetectionRescindedStatusForFeatureStatus:(id)a3
+- (int64_t)_atrialFibrillationDetectionRescindedStatusForFeatureStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isOnboardingRecordPresent])
+  statusCopy = status;
+  if ([statusCopy isOnboardingRecordPresent])
   {
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    v4 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBFD0]];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBF30]];
-    v8 = [v7 BOOLValue];
+    bOOLValue2 = [v7 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
-      v9 = v8 ^ 1u;
+      v9 = bOOLValue2 ^ 1u;
     }
 
     else
@@ -611,10 +611,10 @@ uint64_t __71__HRAtrialFibrillationNotificationManager_isWatchSoftwareVersionToo
   return v9;
 }
 
-- (BOOL)_allowAtrialFibrillationDisableOrReEnableRemotelyAlertWithFeatureStatus:(id)a3
+- (BOOL)_allowAtrialFibrillationDisableOrReEnableRemotelyAlertWithFeatureStatus:(id)status
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  statusCopy = status;
   if ([(HRAtrialFibrillationNotificationManager *)self _isPairedSyncCompleted])
   {
     v6 = MEMORY[0x277CBEB98];
@@ -624,10 +624,10 @@ uint64_t __71__HRAtrialFibrillationNotificationManager_isWatchSoftwareVersionToo
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     v9 = [v6 setWithArray:v8];
 
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-    v11 = [v10 unsatisfiedRequirementIdentifiers];
+    v10 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    unsatisfiedRequirementIdentifiers = [v10 unsatisfiedRequirementIdentifiers];
 
-    v12 = [MEMORY[0x277CBEB98] setWithArray:v11];
+    v12 = [MEMORY[0x277CBEB98] setWithArray:unsatisfiedRequirementIdentifiers];
     v13 = [v12 isSubsetOfSet:v9];
 
     _HKInitializeLogging();
@@ -642,7 +642,7 @@ uint64_t __71__HRAtrialFibrillationNotificationManager_isWatchSoftwareVersionToo
       v26 = 2114;
       v27 = v17;
       v28 = 2114;
-      v29 = v11;
+      v29 = unsatisfiedRequirementIdentifiers;
       _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Can present rescinded or re-enabled alert: %{public}@; unsatisfied requirements: %{public}@", &v24, 0x20u);
     }
   }
@@ -798,11 +798,11 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentAtrialFibrillationDetectionAlertWithRescindedStatus:(int64_t)a3
+- (void)_presentAtrialFibrillationDetectionAlertWithRescindedStatus:(int64_t)status
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = &stru_283CC4740;
-  switch(a3)
+  switch(status)
   {
     case 0:
       goto LABEL_10;
@@ -987,31 +987,31 @@ void __92__HRAtrialFibrillationNotificationManager__presentAtrialFibrillationDet
   }
 }
 
-- (void)_queue_setAtrialFibrillationDetectionDisabledNotificationShownDate:(id)a3
+- (void)_queue_setAtrialFibrillationDetectionDisabledNotificationShownDate:(id)date
 {
   queue = self->_queue;
-  v5 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
   localKeyValueDomain = self->_localKeyValueDomain;
   v7 = *MEMORY[0x277CCE280];
   v8 = 0;
-  [(HDKeyValueDomain *)localKeyValueDomain setDate:v5 forKey:v7 error:&v8];
+  [(HDKeyValueDomain *)localKeyValueDomain setDate:dateCopy forKey:v7 error:&v8];
 }
 
-- (id)_getProductVersionWithError:(id *)a3
+- (id)_getProductVersionWithError:(id *)error
 {
-  v4 = [(HKFeatureStatusManager *)self->_statusManager featureAvailabilityProviding];
-  v5 = [v4 pairedFeatureAttributesWithError:a3];
-  v6 = [v5 watchAttributes];
-  v7 = [v6 updateVersion];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_statusManager featureAvailabilityProviding];
+  v5 = [featureAvailabilityProviding pairedFeatureAttributesWithError:error];
+  watchAttributes = [v5 watchAttributes];
+  updateVersion = [watchAttributes updateVersion];
 
-  return v7;
+  return updateVersion;
 }
 
-- (void)_queue_fakeHeartbeatSeriesSamplesForEvent:(id)a3
+- (void)_queue_fakeHeartbeatSeriesSamplesForEvent:(id)event
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  eventCopy = event;
   v3 = 0;
   v4 = 0;
   v5 = -21600;
@@ -1020,23 +1020,23 @@ void __92__HRAtrialFibrillationNotificationManager__presentAtrialFibrillationDet
   do
   {
     v7 = v4;
-    v8 = [v40 startDate];
-    v9 = [v8 dateByAddingTimeInterval:v5];
+    startDate = [eventCopy startDate];
+    v9 = [startDate dateByAddingTimeInterval:v5];
 
     v43 = v9;
     v10 = [(HRAtrialFibrillationNotificationManager *)self _queue_fakeHeartbeatSeriesSampleFromDate:v9];
-    v44 = [v10 endDate];
+    endDate = [v10 endDate];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [WeakRetained dataManager];
+    dataManager = [WeakRetained dataManager];
     v53[0] = v10;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
     v14 = objc_loadWeakRetained(&self->_profile);
-    v15 = [v14 dataProvenanceManager];
-    v16 = [v15 defaultLocalDataProvenance];
+    dataProvenanceManager = [v14 dataProvenanceManager];
+    defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
     Current = CFAbsoluteTimeGetCurrent();
     v47 = v3;
-    v18 = [v12 insertDataObjects:v13 withProvenance:v16 creationDate:&v47 error:Current];
+    v18 = [dataManager insertDataObjects:v13 withProvenance:defaultLocalDataProvenance creationDate:&v47 error:Current];
     v42 = v47;
 
     _HKInitializeLogging();
@@ -1062,7 +1062,7 @@ void __92__HRAtrialFibrillationNotificationManager__presentAtrialFibrillationDet
       }
 
 LABEL_10:
-      v4 = v44;
+      v4 = endDate;
       goto LABEL_11;
     }
 
@@ -1078,13 +1078,13 @@ LABEL_10:
     }
 
     v23 = objc_loadWeakRetained(&self->_profile);
-    v24 = [v23 associationManager];
-    v25 = [v10 UUID];
-    v48 = v25;
+    associationManager = [v23 associationManager];
+    uUID = [v10 UUID];
+    v48 = uUID;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-    v27 = [v40 UUID];
+    uUID2 = [eventCopy UUID];
     v46 = v42;
-    v28 = [v24 associateObjectUUIDs:v26 objectUUID:v27 error:&v46];
+    v28 = [associationManager associateObjectUUIDs:v26 objectUUID:uUID2 error:&v46];
     v3 = v46;
 
     if (v28)
@@ -1094,7 +1094,7 @@ LABEL_10:
 
     _HKInitializeLogging();
     v29 = *MEMORY[0x277CCC2D8];
-    v4 = v44;
+    v4 = endDate;
     if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_ERROR))
     {
       v30 = v29;
@@ -1130,9 +1130,9 @@ LABEL_11:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_fakeHeartbeatSeriesSampleFromDate:(id)a3
+- (id)_queue_fakeHeartbeatSeriesSampleFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [MEMORY[0x277CBEB28] dataWithCapacity:960];
   v5 = 0;
   v6 = 0.0;
@@ -1146,8 +1146,8 @@ LABEL_11:
   }
 
   while (v5 != 960);
-  v7 = [v3 dateByAddingTimeInterval:v6];
-  v8 = [MEMORY[0x277CCD540] heartbeatSequenceSampleWithData:v4 startDate:v3 endDate:v7 metadata:0];
+  v7 = [dateCopy dateByAddingTimeInterval:v6];
+  v8 = [MEMORY[0x277CCD540] heartbeatSequenceSampleWithData:v4 startDate:dateCopy endDate:v7 metadata:0];
 
   return v8;
 }
@@ -1156,27 +1156,27 @@ LABEL_11:
 {
   objc_initWeak(&location, self);
   out_token = 0;
-  v3 = [@"com.apple.HeartRhythm.AtrialFibrillation" UTF8String];
+  uTF8String = [@"com.apple.HeartRhythm.AtrialFibrillation" UTF8String];
   queue = self->_queue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __74__HRAtrialFibrillationNotificationManager__subscribeToFakingNotifications__block_invoke;
   handler[3] = &unk_278660570;
   objc_copyWeak(&v15, &location);
-  notify_register_dispatch(v3, &out_token, queue, handler);
+  notify_register_dispatch(uTF8String, &out_token, queue, handler);
   fakingNotificationTokens = self->_fakingNotificationTokens;
   v6 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
   [(NSMutableArray *)fakingNotificationTokens addObject:v6];
 
   v13 = 0;
-  v7 = [@"com.apple.HeartRhythm.AtrialFibrillationWithData" UTF8String];
+  uTF8String2 = [@"com.apple.HeartRhythm.AtrialFibrillationWithData" UTF8String];
   v8 = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__HRAtrialFibrillationNotificationManager__subscribeToFakingNotifications__block_invoke_2;
   v11[3] = &unk_278660570;
   objc_copyWeak(&v12, &location);
-  notify_register_dispatch(v7, &v13, v8, v11);
+  notify_register_dispatch(uTF8String2, &v13, v8, v11);
   v9 = self->_fakingNotificationTokens;
   v10 = [MEMORY[0x277CCABB0] numberWithInt:v13];
   [(NSMutableArray *)v9 addObject:v10];
@@ -1231,10 +1231,10 @@ void __74__HRAtrialFibrillationNotificationManager__subscribeToFakingNotificatio
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * v6) intValue];
-        if (notify_is_valid_token(v7))
+        intValue = [*(*(&v9 + 1) + 8 * v6) intValue];
+        if (notify_is_valid_token(intValue))
         {
-          notify_cancel(v7);
+          notify_cancel(intValue);
         }
 
         ++v6;

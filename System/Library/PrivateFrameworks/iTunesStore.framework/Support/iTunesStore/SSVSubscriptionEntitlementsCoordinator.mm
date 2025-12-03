@@ -1,21 +1,21 @@
 @interface SSVSubscriptionEntitlementsCoordinator
 + (id)_cachedSubscriptionEntitlementsDictionary;
 + (id)_cachedSubscriptionEntitlementsPath;
-+ (id)cachedSubscriptionEntitlementsExpired:(BOOL *)a3;
++ (id)cachedSubscriptionEntitlementsExpired:(BOOL *)expired;
 + (void)_notifyClientsOfChangedSubscriptionEntitlements;
-+ (void)_setCachedSubscriptionEntitlementsDictionary:(id)a3;
++ (void)_setCachedSubscriptionEntitlementsDictionary:(id)dictionary;
 + (void)markCachedSubscriptionEntitlementsAsExpired;
-+ (void)setCachedSubscriptionEntitlements:(id)a3;
++ (void)setCachedSubscriptionEntitlements:(id)entitlements;
 @end
 
 @implementation SSVSubscriptionEntitlementsCoordinator
 
-+ (id)cachedSubscriptionEntitlementsExpired:(BOOL *)a3
++ (id)cachedSubscriptionEntitlementsExpired:(BOOL *)expired
 {
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v4 _cachedSubscriptionEntitlementsDictionary];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _cachedSubscriptionEntitlementsDictionary = [selfCopy _cachedSubscriptionEntitlementsDictionary];
+  objc_sync_exit(selfCopy);
 
   v6 = [SSURLBagContext contextWithBagType:0];
   v7 = +[ISURLBagCache sharedCache];
@@ -25,7 +25,7 @@
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v5 objectForKeyedSubscript:kCacheTimestampKey];
+  v12 = [_cachedSubscriptionEntitlementsDictionary objectForKeyedSubscript:kCacheTimestampKey];
   v13 = [v12 dateByAddingTimeInterval:v11];
 
   v14 = &CFDictionaryGetValue_ptr;
@@ -37,19 +37,19 @@
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -58,7 +58,7 @@
     {
       LODWORD(v39) = 138412290;
       *(&v39 + 4) = objc_opt_class();
-      v21 = a3;
+      expiredCopy = expired;
       v22 = v8;
       v23 = v6;
       v24 = *(&v39 + 4);
@@ -68,7 +68,7 @@
 
       v6 = v23;
       v8 = v22;
-      a3 = v21;
+      expired = expiredCopy;
       v14 = &CFDictionaryGetValue_ptr;
 
       if (v25)
@@ -84,31 +84,31 @@
     {
     }
 
-    if (a3)
+    if (expired)
     {
-      *a3 = 1;
+      *expired = 1;
     }
   }
 
-  v27 = [v14[412] sharedDaemonConfig];
-  if (!v27)
+  sharedDaemonConfig = [v14[412] sharedDaemonConfig];
+  if (!sharedDaemonConfig)
   {
-    v27 = [v14[412] sharedConfig];
+    sharedDaemonConfig = [v14[412] sharedConfig];
   }
 
-  v28 = [v27 shouldLog];
-  if ([v27 shouldLogToDisk])
+  shouldLog2 = [sharedDaemonConfig shouldLog];
+  if ([sharedDaemonConfig shouldLogToDisk])
   {
-    v29 = v28 | 2;
+    v29 = shouldLog2 | 2;
   }
 
   else
   {
-    v29 = v28;
+    v29 = shouldLog2;
   }
 
-  v30 = [v27 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [sharedDaemonConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v31 = v29;
   }
@@ -132,13 +132,13 @@
       goto LABEL_28;
     }
 
-    v30 = [NSString stringWithCString:v34 encoding:4, &v39, v38];
+    oSLogObject2 = [NSString stringWithCString:v34 encoding:4, &v39, v38];
     free(v34);
     SSFileLog();
   }
 
 LABEL_28:
-  v35 = [SSVSubscriptionEntitlements _parseJSONDictionary:v5];
+  v35 = [SSVSubscriptionEntitlements _parseJSONDictionary:_cachedSubscriptionEntitlementsDictionary];
 
   return v35;
 }
@@ -151,19 +151,19 @@ LABEL_28:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -188,25 +188,25 @@ LABEL_28:
   {
   }
 
-  v10 = a1;
-  objc_sync_enter(v10);
-  v11 = [v10 _cachedSubscriptionEntitlementsDictionary];
-  v12 = [v11 mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _cachedSubscriptionEntitlementsDictionary = [selfCopy _cachedSubscriptionEntitlementsDictionary];
+  v12 = [_cachedSubscriptionEntitlementsDictionary mutableCopy];
 
   if (v12)
   {
     [v12 removeObjectForKey:kCacheTimestampKey];
-    [v10 _setCachedSubscriptionEntitlementsDictionary:v12];
+    [selfCopy _setCachedSubscriptionEntitlementsDictionary:v12];
   }
 
-  objc_sync_exit(v10);
-  [v10 _notifyClientsOfChangedSubscriptionEntitlements];
+  objc_sync_exit(selfCopy);
+  [selfCopy _notifyClientsOfChangedSubscriptionEntitlements];
 }
 
-+ (void)setCachedSubscriptionEntitlements:(id)a3
++ (void)setCachedSubscriptionEntitlements:(id)entitlements
 {
-  v4 = a3;
-  if (v4)
+  entitlementsCopy = entitlements;
+  if (entitlementsCopy)
   {
     v5 = +[SSLogConfig sharedDaemonConfig];
     if (!v5)
@@ -214,19 +214,19 @@ LABEL_28:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -251,37 +251,37 @@ LABEL_28:
     {
     }
 
-    v12 = [v4 mutableCopy];
+    _cachedSubscriptionEntitlementsPath = [entitlementsCopy mutableCopy];
     v20 = +[NSDate date];
-    [v12 setObject:v20 forKeyedSubscript:kCacheTimestampKey];
+    [_cachedSubscriptionEntitlementsPath setObject:v20 forKeyedSubscript:kCacheTimestampKey];
 
-    v21 = a1;
-    objc_sync_enter(v21);
-    [v21 _setCachedSubscriptionEntitlementsDictionary:v12];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [selfCopy _setCachedSubscriptionEntitlementsDictionary:_cachedSubscriptionEntitlementsPath];
   }
 
   else
   {
-    v12 = [a1 _cachedSubscriptionEntitlementsPath];
+    _cachedSubscriptionEntitlementsPath = [self _cachedSubscriptionEntitlementsPath];
     v13 = +[SSLogConfig sharedDaemonConfig];
     if (!v13)
     {
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog2 = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog2 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog2;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -306,20 +306,20 @@ LABEL_28:
     {
     }
 
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     v22 = +[NSFileManager defaultManager];
-    [v22 removeItemAtPath:v12 error:0];
+    [v22 removeItemAtPath:_cachedSubscriptionEntitlementsPath error:0];
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 
-  [a1 _notifyClientsOfChangedSubscriptionEntitlements];
+  [self _notifyClientsOfChangedSubscriptionEntitlements];
 }
 
 + (id)_cachedSubscriptionEntitlementsDictionary
 {
-  v2 = [a1 _cachedSubscriptionEntitlementsPath];
-  v3 = [NSData dataWithContentsOfFile:v2];
+  _cachedSubscriptionEntitlementsPath = [self _cachedSubscriptionEntitlementsPath];
+  v3 = [NSData dataWithContentsOfFile:_cachedSubscriptionEntitlementsPath];
   if (!v3)
   {
     v13 = 0;
@@ -337,19 +337,19 @@ LABEL_28:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 &= 2u;
     }
@@ -372,7 +372,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [NSString stringWithCString:v12 encoding:4, &v17, v15];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, &v17, v15];
       free(v12);
       SSFileLog();
     }
@@ -400,9 +400,9 @@ LABEL_21:
 + (id)_cachedSubscriptionEntitlementsPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v15[0] = v3;
+  v15[0] = lastObject;
   v15[1] = @"com.apple.itunesstored";
   v15[2] = @"SubscriptionEntitlements_v2.plist";
   v4 = [NSArray arrayWithObjects:v15 count:3];
@@ -415,19 +415,19 @@ LABEL_21:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 &= 2u;
     }
@@ -447,7 +447,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, &v14, v13, v14];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, &v14, v13, v14];
       free(v11);
       SSFileLog();
     }
@@ -462,24 +462,24 @@ LABEL_14:
 
 + (void)_notifyClientsOfChangedSubscriptionEntitlements
 {
-  v2 = [kSSVNotificationSubscriptionEntitlementsChanged UTF8String];
+  uTF8String = [kSSVNotificationSubscriptionEntitlementsChanged UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
-+ (void)_setCachedSubscriptionEntitlementsDictionary:(id)a3
++ (void)_setCachedSubscriptionEntitlementsDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 _cachedSubscriptionEntitlementsPath];
-  if ([v5 length])
+  dictionaryCopy = dictionary;
+  _cachedSubscriptionEntitlementsPath = [self _cachedSubscriptionEntitlementsPath];
+  if ([_cachedSubscriptionEntitlementsPath length])
   {
     v17 = 0;
-    v6 = [NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:&v17];
+    v6 = [NSPropertyListSerialization dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v17];
     v7 = v17;
     if (!v7)
     {
 LABEL_15:
-      [v6 writeToFile:v5 atomically:{1, v15}];
+      [v6 writeToFile:_cachedSubscriptionEntitlementsPath atomically:{1, v15}];
 
       goto LABEL_16;
     }
@@ -490,19 +490,19 @@ LABEL_15:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -526,9 +526,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v11 = [NSString stringWithCString:v14 encoding:4, &v18, v16];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, &v18, v16];
       free(v14);
-      v15 = v11;
+      v15 = oSLogObject;
       SSFileLog();
     }
 

@@ -1,20 +1,20 @@
 @interface Message
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Message
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_1BC869894();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BC86D344();
 
   v3 = sub_1BC8F7BE4();

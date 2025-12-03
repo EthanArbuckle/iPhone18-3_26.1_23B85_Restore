@@ -1,23 +1,23 @@
 @interface MediaStreamMonitor
 - (MSIOSAlbumSharingDaemon)albumSharingDaemon;
 - (MediaStreamMonitor)init;
-- (id)_dormantTimerWithSelector:(SEL)a3;
-- (id)_scheduleNextBTAJobNextActivityDate:(id)a3 serviceName:(id)a4;
-- (id)scheduleWakeupTaskAfter:(id)a3;
-- (void)MSAlbumSharingDaemonDidIdle:(id)a3;
-- (void)MSAlbumSharingDaemonDidUnidle:(id)a3;
+- (id)_dormantTimerWithSelector:(SEL)selector;
+- (id)_scheduleNextBTAJobNextActivityDate:(id)date serviceName:(id)name;
+- (id)scheduleWakeupTaskAfter:(id)after;
+- (void)MSAlbumSharingDaemonDidIdle:(id)idle;
+- (void)MSAlbumSharingDaemonDidUnidle:(id)unidle;
 - (void)_didIdle;
 - (void)_didUnidle;
 - (void)_resetIdleTimer;
-- (void)_startIdleTimerWithInterval:(double)a3;
+- (void)_startIdleTimerWithInterval:(double)interval;
 - (void)_stopIdleTimer;
-- (void)albumSharingDaemonPokeTimerDidFire:(id)a3;
+- (void)albumSharingDaemonPokeTimerDidFire:(id)fire;
 - (void)dealloc;
 - (void)deregisterPluggedInTask;
 - (void)deregisterWakeupTask;
-- (void)handlePluggedInTask:(id)a3;
-- (void)handleWakeupTask:(id)a3;
-- (void)mstreamdIdleTimerDidFire:(id)a3;
+- (void)handlePluggedInTask:(id)task;
+- (void)handleWakeupTask:(id)task;
+- (void)mstreamdIdleTimerDidFire:(id)fire;
 - (void)schedulePluggedInTask;
 @end
 
@@ -30,9 +30,9 @@
   return WeakRetained;
 }
 
-- (void)handlePluggedInTask:(id)a3
+- (void)handlePluggedInTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *v6 = 0;
@@ -42,7 +42,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_albumSharingDaemon);
   [WeakRetained retryOutstandingActivities];
 
-  [v4 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 }
 
 - (void)deregisterPluggedInTask
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)mstreamdIdleTimerDidFire:(id)a3
+- (void)mstreamdIdleTimerDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   v5 = +[NSThread currentThread];
   v6 = +[NSThread mainThread];
 
@@ -115,11 +115,11 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_albumSharingDaemon);
-    v8 = [WeakRetained nextActivityDate];
+    nextActivityDate = [WeakRetained nextActivityDate];
 
-    v9 = [(MediaStreamMonitor *)self _scheduleNextBTAJobNextActivityDate:v8 serviceName:@"Shared Stream"];
+    v9 = [(MediaStreamMonitor *)self _scheduleNextBTAJobNextActivityDate:nextActivityDate serviceName:@"Shared Stream"];
     v10 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (nextActivityDate)
     {
       if (v10)
       {
@@ -146,7 +146,7 @@
       if (v9)
       {
 LABEL_9:
-        if (!v8)
+        if (!nextActivityDate)
         {
 LABEL_26:
           if (byte_10001DD28 != 1)
@@ -159,9 +159,9 @@ LABEL_26:
 
 LABEL_15:
         v11 = objc_loadWeakRetained(&self->_albumSharingDaemon);
-        v12 = [v11 isWaitingForAuth];
+        isWaitingForAuth = [v11 isWaitingForAuth];
 
-        if (v12)
+        if (isWaitingForAuth)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
@@ -181,9 +181,9 @@ LABEL_25:
           if (v14 > 0.0 && v14 < 1800.0)
           {
             v15 = objc_loadWeakRetained(&self->_albumSharingDaemon);
-            v16 = [v15 isInRetryState];
+            isInRetryState = [v15 isInRetryState];
 
-            if (v16)
+            if (isInRetryState)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
@@ -208,7 +208,7 @@ LABEL_31:
     }
 
     byte_10001DD28 = 1;
-    if (!v8)
+    if (!nextActivityDate)
     {
       goto LABEL_26;
     }
@@ -216,13 +216,13 @@ LABEL_31:
     goto LABEL_15;
   }
 
-  [(MediaStreamMonitor *)self performSelectorOnMainThread:"mstreamdIdleTimerDidFire:" withObject:v4 waitUntilDone:1];
+  [(MediaStreamMonitor *)self performSelectorOnMainThread:"mstreamdIdleTimerDidFire:" withObject:fireCopy waitUntilDone:1];
 LABEL_32:
 }
 
-- (void)handleWakeupTask:(id)a3
+- (void)handleWakeupTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *v6 = 0;
@@ -232,7 +232,7 @@ LABEL_32:
   WeakRetained = objc_loadWeakRetained(&self->_albumSharingDaemon);
   [WeakRetained retryOutstandingActivities];
 
-  [v4 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 }
 
 - (void)deregisterWakeupTask
@@ -249,9 +249,9 @@ LABEL_32:
   [v2 deregisterTaskWithIdentifier:v3];
 }
 
-- (id)scheduleWakeupTaskAfter:(id)a3
+- (id)scheduleWakeupTaskAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   v5 = +[BGSystemTaskScheduler sharedScheduler];
   v6 = [NSString stringWithUTF8String:"com.apple.mediastream.mstreamd.as.wakeup"];
   v20[0] = _NSConcreteStackBlock;
@@ -275,7 +275,7 @@ LABEL_32:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v22 = v4;
+      v22 = afterCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Scheduling Photo Stream job for %{public}@", buf, 0xCu);
     }
 
@@ -287,12 +287,12 @@ LABEL_32:
     [v9 setRequiresNetworkConnectivity:1];
     [v9 setRequiresInexpensiveNetworkConnectivity:0];
     [v9 setRequiresUnconstrainedNetworkConnectivity:0];
-    [v4 timeIntervalSinceNow];
+    [afterCopy timeIntervalSinceNow];
     if (v13 <= 0.0)
     {
       v14 = +[NSDate now];
 
-      v4 = v14;
+      afterCopy = v14;
     }
 
     else
@@ -308,7 +308,7 @@ LABEL_32:
 
     if (v16)
     {
-      v10 = v4;
+      v10 = afterCopy;
     }
 
     else
@@ -327,20 +327,20 @@ LABEL_32:
   return v10;
 }
 
-- (id)_scheduleNextBTAJobNextActivityDate:(id)a3 serviceName:(id)a4
+- (id)_scheduleNextBTAJobNextActivityDate:(id)date serviceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  nameCopy = name;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = nameCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Checking on job state for %{public}@", &v10, 0xCu);
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    v8 = [(MediaStreamMonitor *)self scheduleWakeupTaskAfter:v6];
+    v8 = [(MediaStreamMonitor *)self scheduleWakeupTaskAfter:dateCopy];
   }
 
   else
@@ -348,7 +348,7 @@ LABEL_32:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       v10 = 138543362;
-      v11 = v7;
+      v11 = nameCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "No jobs scheduled for %{public}@.", &v10, 0xCu);
     }
 
@@ -359,17 +359,17 @@ LABEL_32:
   return v8;
 }
 
-- (void)albumSharingDaemonPokeTimerDidFire:(id)a3
+- (void)albumSharingDaemonPokeTimerDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   v5 = +[NSDate distantFuture];
-  [v4 setFireDate:v5];
+  [fireCopy setFireDate:v5];
 
   WeakRetained = objc_loadWeakRetained(&self->_albumSharingDaemon);
   [WeakRetained retryOutstandingActivities];
 }
 
-- (void)MSAlbumSharingDaemonDidUnidle:(id)a3
+- (void)MSAlbumSharingDaemonDidUnidle:(id)unidle
 {
   albumSharingDaemonPokeTimer = self->_albumSharingDaemonPokeTimer;
   v5 = +[NSDate distantFuture];
@@ -378,17 +378,17 @@ LABEL_32:
   [(MediaStreamMonitor *)self _didUnidle];
 }
 
-- (void)MSAlbumSharingDaemonDidIdle:(id)a3
+- (void)MSAlbumSharingDaemonDidIdle:(id)idle
 {
-  v9 = [a3 nextActivityDate];
-  if (v9)
+  nextActivityDate = [idle nextActivityDate];
+  if (nextActivityDate)
   {
     v4 = +[NSDate distantPast];
-    v5 = [v9 isEqualToDate:v4];
+    v5 = [nextActivityDate isEqualToDate:v4];
 
     if ((v5 & 1) == 0)
     {
-      v6 = v9;
+      v6 = nextActivityDate;
       [v6 timeIntervalSinceNow];
       if (v7 < 300.0)
       {
@@ -427,9 +427,9 @@ LABEL_32:
 
 - (void)_resetIdleTimer
 {
-  v3 = [(NSTimer *)self->_idleTimer fireDate];
+  fireDate = [(NSTimer *)self->_idleTimer fireDate];
   v4 = +[NSDate date];
-  [v3 timeIntervalSinceDate:v4];
+  [fireDate timeIntervalSinceDate:v4];
   v6 = v5;
 
   if (v6 < 40.0)
@@ -464,9 +464,9 @@ LABEL_32:
     if (v6 == v7)
     {
       v8 = +[MSPauseManager sharedManager];
-      v9 = [v8 isPaused];
+      isPaused = [v8 isPaused];
 
-      if (v9)
+      if (isPaused)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
@@ -505,17 +505,17 @@ LABEL_32:
   [(NSTimer *)idleTimer setFireDate:v4];
 }
 
-- (void)_startIdleTimerWithInterval:(double)a3
+- (void)_startIdleTimerWithInterval:(double)interval
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134217984;
-    v8 = a3;
+    intervalCopy = interval;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Starting idle check timer with an interval of %.1f seconds.", &v7, 0xCu);
   }
 
   idleTimer = self->_idleTimer;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v6 = [NSDate dateWithTimeIntervalSinceNow:interval];
   [(NSTimer *)idleTimer setFireDate:v6];
 }
 
@@ -555,11 +555,11 @@ LABEL_32:
   return v3;
 }
 
-- (id)_dormantTimerWithSelector:(SEL)a3
+- (id)_dormantTimerWithSelector:(SEL)selector
 {
   v5 = [NSTimer alloc];
   v6 = +[NSDate distantFuture];
-  v7 = [v5 initWithFireDate:v6 interval:self target:a3 selector:0 userInfo:1 repeats:1000000000.0];
+  v7 = [v5 initWithFireDate:v6 interval:self target:selector selector:0 userInfo:1 repeats:1000000000.0];
 
   return v7;
 }

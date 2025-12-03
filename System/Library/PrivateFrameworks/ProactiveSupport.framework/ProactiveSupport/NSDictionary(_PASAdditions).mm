@@ -9,26 +9,26 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _pas_overrideUnlazyDictionary];
+    _pas_overrideUnlazyDictionary = [self _pas_overrideUnlazyDictionary];
   }
 
   else
   {
-    v2 = [a1 copy];
+    _pas_overrideUnlazyDictionary = [self copy];
   }
 
-  return v2;
+  return _pas_overrideUnlazyDictionary;
 }
 
 + (id)_pas_dictionaryNoCopyLeavesWithPropertyListData:()_PASAdditions error:
 {
   v5 = a3;
   v6 = [_PASLazyPlistWithBPlistSupport dictionaryWithData:v5 error:a4];
-  v7 = [v6 _pas_unlazyDictionary];
+  _pas_unlazyDictionary = [v6 _pas_unlazyDictionary];
 
-  if (v7)
+  if (_pas_unlazyDictionary)
   {
-    v8 = v7;
+    v8 = _pas_unlazyDictionary;
   }
 
   else

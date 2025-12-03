@@ -1,27 +1,27 @@
 @interface PPLabeledValue
-+ (PPLabeledValue)labeledValueWithLabel:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLabeledValue:(id)a3;
-- (PPLabeledValue)initWithCoder:(id)a3;
-- (PPLabeledValue)initWithLabel:(id)a3 value:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PPLabeledValue)labeledValueWithLabel:(id)label value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLabeledValue:(id)value;
+- (PPLabeledValue)initWithCoder:(id)coder;
+- (PPLabeledValue)initWithLabel:(id)label value:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPLabeledValue
 
-- (BOOL)isEqualToLabeledValue:(id)a3
+- (BOOL)isEqualToLabeledValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_label;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == valueCopy[1])
   {
   }
 
@@ -39,7 +39,7 @@ LABEL_4:
 
   v9 = self->_value;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == valueCopy[2])
   {
     v8 = 1;
   }
@@ -53,64 +53,64 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLabeledValue *)self isEqualToLabeledValue:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLabeledValue *)self isEqualToLabeledValue:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v6 = [(NSString *)self->_label copyWithZone:a3];
-  v7 = [(NSCopying *)self->_value copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
+  v7 = [(NSCopying *)self->_value copyWithZone:zone];
   v8 = [v5 labeledValueWithLabel:v6 value:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   label = self->_label;
-  v5 = a3;
-  [v5 encodeObject:label forKey:@"lab"];
-  [v5 encodeObject:self->_value forKey:@"val"];
+  coderCopy = coder;
+  [coderCopy encodeObject:label forKey:@"lab"];
+  [coderCopy encodeObject:self->_value forKey:@"val"];
 }
 
-- (PPLabeledValue)initWithCoder:(id)a3
+- (PPLabeledValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lab"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lab"];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
   v8 = objc_opt_class();
   v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"val"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"val"];
 
   if (v10)
   {
     self = [(PPLabeledValue *)self initWithLabel:v5 value:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -120,14 +120,14 @@ LABEL_10:
   return v2;
 }
 
-- (PPLabeledValue)initWithLabel:(id)a3 value:(id)a4
+- (PPLabeledValue)initWithLabel:(id)label value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  labelCopy = label;
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PPLabeledValue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPLabeledValue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"value"}];
   }
 
   v14.receiver = self;
@@ -136,18 +136,18 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_label, a3);
-    objc_storeStrong(&v11->_value, a4);
+    objc_storeStrong(&v10->_label, label);
+    objc_storeStrong(&v11->_value, value);
   }
 
   return v11;
 }
 
-+ (PPLabeledValue)labeledValueWithLabel:(id)a3 value:(id)a4
++ (PPLabeledValue)labeledValueWithLabel:(id)label value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PPLabeledValue alloc] initWithLabel:v6 value:v5];
+  valueCopy = value;
+  labelCopy = label;
+  v7 = [[PPLabeledValue alloc] initWithLabel:labelCopy value:valueCopy];
 
   return v7;
 }

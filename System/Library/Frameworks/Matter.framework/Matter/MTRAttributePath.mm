@@ -1,27 +1,27 @@
 @interface MTRAttributePath
 + (MTRAttributePath)attributePathWithEndpointID:(NSNumber *)endpointID clusterID:(NSNumber *)clusterID attributeID:(NSNumber *)attributeID;
 + (MTRAttributePath)attributePathWithEndpointId:(NSNumber *)endpointId clusterId:(NSNumber *)clusterId attributeId:(NSNumber *)attributeId;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttributePath:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttributePath:(id)path;
 - (ConcreteAttributePath)_asConcretePath;
-- (MTRAttributePath)initWithCoder:(id)a3;
-- (MTRAttributePath)initWithPath:(const ConcreteAttributePath *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRAttributePath)initWithCoder:(id)coder;
+- (MTRAttributePath)initWithPath:(const ConcreteAttributePath *)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRAttributePath
 
-- (MTRAttributePath)initWithPath:(const ConcreteAttributePath *)a3
+- (MTRAttributePath)initWithPath:(const ConcreteAttributePath *)path
 {
   v8.receiver = self;
   v8.super_class = MTRAttributePath;
   v4 = [(MTRClusterPath *)&v8 initWithPath:?];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->var3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:path->var3];
     attribute = v4->_attribute;
     v4->_attribute = v5;
   }
@@ -32,20 +32,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v18 = [(MTRClusterPath *)self endpoint];
-  v4 = [v18 unsignedShortValue];
-  v17 = [(MTRClusterPath *)self cluster];
-  v5 = [v17 unsignedLongLongValue];
-  v16 = [(MTRClusterPath *)self cluster];
-  v6 = [v16 unsignedLongLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongLongValue = [cluster unsignedLongLongValue];
+  cluster2 = [(MTRClusterPath *)self cluster];
+  unsignedLongLongValue2 = [cluster2 unsignedLongLongValue];
   [(MTRClusterPath *)self cluster];
-  v15 = v14 = v4;
+  v15 = v14 = unsignedShortValue;
   v7 = MTRClusterNameForID([v15 unsignedLongLongValue]);
-  v8 = [(NSNumber *)self->_attribute unsignedLongLongValue];
-  v9 = [(NSNumber *)self->_attribute unsignedLongLongValue];
-  v10 = [(MTRClusterPath *)self cluster];
-  v11 = MTRAttributeNameForID([v10 unsignedLongLongValue], -[NSNumber unsignedLongLongValue](self->_attribute, "unsignedLongLongValue"));
-  v12 = [v3 stringWithFormat:@"<MTRAttributePath endpoint %u cluster 0x%llx (%llu, %@) attribute 0x%llx (%llu, %@)>", v14, v5, v6, v7, v8, v9, v11];
+  unsignedLongLongValue3 = [(NSNumber *)self->_attribute unsignedLongLongValue];
+  unsignedLongLongValue4 = [(NSNumber *)self->_attribute unsignedLongLongValue];
+  cluster3 = [(MTRClusterPath *)self cluster];
+  v11 = MTRAttributeNameForID([cluster3 unsignedLongLongValue], -[NSNumber unsignedLongLongValue](self->_attribute, "unsignedLongLongValue"));
+  v12 = [v3 stringWithFormat:@"<MTRAttributePath endpoint %u cluster 0x%llx (%llu, %@) attribute 0x%llx (%llu, %@)>", v14, unsignedLongLongValue, unsignedLongLongValue2, v7, unsignedLongLongValue3, unsignedLongLongValue4, v11];
 
   return v12;
 }
@@ -55,26 +55,26 @@
   v7 = endpointID;
   v8 = clusterID;
   v9 = attributeID;
-  v12 = [(NSNumber *)v7 unsignedShortValue];
-  v14 = [(NSNumber *)v8 unsignedLongValue];
-  v15 = [(NSNumber *)v9 unsignedLongValue];
+  unsignedShortValue = [(NSNumber *)v7 unsignedShortValue];
+  unsignedLongValue = [(NSNumber *)v8 unsignedLongValue];
+  unsignedLongValue2 = [(NSNumber *)v9 unsignedLongValue];
   v13 = 0;
   v16 = 0;
   v17 = 0;
   v18 = 0;
-  v10 = [[MTRAttributePath alloc] initWithPath:&v12];
+  v10 = [[MTRAttributePath alloc] initWithPath:&unsignedShortValue];
 
   return v10;
 }
 
-- (BOOL)isEqualToAttributePath:(id)a3
+- (BOOL)isEqualToAttributePath:(id)path
 {
-  v4 = a3;
-  if ([(MTRClusterPath *)self isEqualToClusterPath:v4])
+  pathCopy = path;
+  if ([(MTRClusterPath *)self isEqualToClusterPath:pathCopy])
   {
     attribute = self->_attribute;
-    v6 = [v4 attribute];
-    v7 = sub_238DB32F8(attribute, v6);
+    attribute = [pathCopy attribute];
+    v7 = sub_238DB32F8(attribute, attribute);
   }
 
   else
@@ -85,46 +85,46 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTRAttributePath *)self isEqualToAttributePath:v4];
+  v6 = v5 == objc_opt_class() && [(MTRAttributePath *)self isEqualToAttributePath:equalCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MTRClusterPath *)self endpoint];
-  v4 = [v3 unsignedShortValue];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [v5 unsignedLongValue];
-  v7 = [(NSNumber *)self->_attribute unsignedLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongValue = [cluster unsignedLongValue];
+  unsignedLongValue2 = [(NSNumber *)self->_attribute unsignedLongValue];
 
-  return v6 ^ v4 ^ v7;
+  return unsignedLongValue ^ unsignedShortValue ^ unsignedLongValue2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(MTRClusterPath *)self endpoint];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [MTRAttributePath attributePathWithEndpointID:v4 clusterID:v5 attributeID:self->_attribute];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  cluster = [(MTRClusterPath *)self cluster];
+  v6 = [MTRAttributePath attributePathWithEndpointID:endpoint clusterID:cluster attributeID:self->_attribute];
 
   return v6;
 }
 
 - (ConcreteAttributePath)_asConcretePath
 {
-  v3 = [(MTRClusterPath *)self endpoint];
-  v4 = [v3 unsignedShortValue];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [v5 unsignedLongValue];
-  v7 = [(MTRAttributePath *)self attribute];
-  v8 = [v7 unsignedLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongValue = [cluster unsignedLongValue];
+  attribute = [(MTRAttributePath *)self attribute];
+  unsignedLongValue2 = [attribute unsignedLongValue];
 
-  v9 = v4 | (v6 << 32);
-  v10 = v8;
+  v9 = unsignedShortValue | (unsignedLongValue << 32);
+  v10 = unsignedLongValue2;
   result.var0 = v9;
   result.var1 = BYTE2(v9);
   result.var2 = HIDWORD(v9);
@@ -132,17 +132,17 @@
   return result;
 }
 
-- (MTRAttributePath)initWithCoder:(id)a3
+- (MTRAttributePath)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MTRAttributePath;
-  v5 = [(MTRClusterPath *)&v14 initWithCoder:v4];
+  v5 = [(MTRClusterPath *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributeKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributeKey"];
     attribute = v5->_attribute;
     v5->_attribute = v7;
 
@@ -176,18 +176,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MTRAttributePath;
-  [(MTRClusterPath *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_attribute forKey:@"attributeKey"];
+  [(MTRClusterPath *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_attribute forKey:@"attributeKey"];
 }
 
 + (MTRAttributePath)attributePathWithEndpointId:(NSNumber *)endpointId clusterId:(NSNumber *)clusterId attributeId:(NSNumber *)attributeId
 {
-  v5 = [a1 attributePathWithEndpointID:endpointId clusterID:clusterId attributeID:attributeId];
+  v5 = [self attributePathWithEndpointID:endpointId clusterID:clusterId attributeID:attributeId];
 
   return v5;
 }

@@ -1,20 +1,20 @@
 @interface SUUIRedeemTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (SUUIRedeemTextField)initWithFrame:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (SUUIRedeemTextField)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackdropBackground:(BOOL)a3;
-- (void)setSuppressBorder:(BOOL)a3;
+- (void)setBackdropBackground:(BOOL)background;
+- (void)setSuppressBorder:(BOOL)border;
 @end
 
 @implementation SUUIRedeemTextField
 
-- (SUUIRedeemTextField)initWithFrame:(CGRect)a3
+- (SUUIRedeemTextField)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SUUIRedeemTextField;
-  v3 = [(SUUIRedeemTextField *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIRedeemTextField *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:10060];
@@ -42,8 +42,8 @@
 
     [(SUUIRedeemTextField *)v3 addSubview:v3->_topBorderView];
     v3->_backdropBackground = 0;
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(SUUIRedeemTextField *)v3 setBackgroundColor:v14];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SUUIRedeemTextField *)v3 setBackgroundColor:whiteColor];
 
     [(SUUIRedeemTextField *)v3 setOpaque:1];
   }
@@ -51,17 +51,17 @@
   return v3;
 }
 
-- (void)setBackdropBackground:(BOOL)a3
+- (void)setBackdropBackground:(BOOL)background
 {
-  if (self->_backdropBackground != a3)
+  if (self->_backdropBackground != background)
   {
     v13 = v5;
     v14 = v4;
     v15 = v3;
-    v9 = a3;
-    self->_backdropBackground = a3;
+    backgroundCopy = background;
+    self->_backdropBackground = background;
     backdropView = self->_backdropView;
-    if (a3)
+    if (background)
     {
       [(UIView *)backdropView setHidden:0];
       [MEMORY[0x277D75348] clearColor];
@@ -75,26 +75,26 @@
     v12 = ;
     [(SUUIRedeemTextField *)self setBackgroundColor:v12, v6, v13, v14, v15, v7];
 
-    [(SUUIRedeemTextField *)self setOpaque:!v9];
+    [(SUUIRedeemTextField *)self setOpaque:!backgroundCopy];
   }
 }
 
-- (void)setSuppressBorder:(BOOL)a3
+- (void)setSuppressBorder:(BOOL)border
 {
-  v3 = a3;
-  self->_suppressBorder = a3;
+  borderCopy = border;
+  self->_suppressBorder = border;
   [(UIView *)self->_bottomBorderView setHidden:?];
   topBorderView = self->_topBorderView;
 
-  [(UIView *)topBorderView setHidden:v3];
+  [(UIView *)topBorderView setHidden:borderCopy];
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v8.receiver = self;
   v8.super_class = SUUIRedeemTextField;
-  [(SUUIRedeemTextField *)&v8 editingRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIRedeemTextField *)&v8 editingRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = width + -30.0;
   v7 = 15.0;
   result.size.height = v5;
@@ -104,12 +104,12 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v8.receiver = self;
   v8.super_class = SUUIRedeemTextField;
-  [(SUUIRedeemTextField *)&v8 placeholderRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIRedeemTextField *)&v8 placeholderRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = width + -30.0;
   v7 = 15.0;
   result.size.height = v5;
@@ -119,12 +119,12 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v8.receiver = self;
   v8.super_class = SUUIRedeemTextField;
-  [(SUUIRedeemTextField *)&v8 textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIRedeemTextField *)&v8 textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = width + -30.0;
   v7 = 15.0;
   result.size.height = v5;
@@ -139,8 +139,8 @@
   [(SUUIRedeemTextField *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = 1.0 / v8;
 
   [(UIView *)self->_bottomBorderView setFrame:0.0, v6 - v9, v4, v9];

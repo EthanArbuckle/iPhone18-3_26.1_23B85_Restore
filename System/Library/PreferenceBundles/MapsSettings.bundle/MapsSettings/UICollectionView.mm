@@ -6,7 +6,7 @@
 
 - (void)_maps_reloadDataWithoutFocus
 {
-  v3 = [(UICollectionView *)self remembersLastFocusedIndexPath];
+  remembersLastFocusedIndexPath = [(UICollectionView *)self remembersLastFocusedIndexPath];
   [(UICollectionView *)self setRemembersLastFocusedIndexPath:0];
   [(UICollectionView *)self reloadData];
   v4[0] = _NSConcreteStackBlock;
@@ -14,7 +14,7 @@
   v4[2] = sub_18378;
   v4[3] = &unk_7FCC0;
   v4[4] = self;
-  v5 = v3;
+  v5 = remembersLastFocusedIndexPath;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

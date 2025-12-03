@@ -1,40 +1,40 @@
 @interface JTImage
-+ (JTImage)jtImageWithUIImage:(id)a3;
++ (JTImage)jtImageWithUIImage:(id)image;
 - (BOOL)hasPVImageBufferAndCanCreateCVPixelBufferWithoutCopy;
-- (JTImage)initWithPVImage:(id)a3;
-- (JTImage)initWithUIImage:(id)a3;
+- (JTImage)initWithPVImage:(id)image;
+- (JTImage)initWithUIImage:(id)image;
 - (UIImage)image;
-- (id)bluredImageWithFlippedXAxis:(BOOL)a3;
+- (id)bluredImageWithFlippedXAxis:(BOOL)axis;
 @end
 
 @implementation JTImage
 
-- (JTImage)initWithPVImage:(id)a3
+- (JTImage)initWithPVImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = JTImage;
   v6 = [(JTImage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pvImageBuffer, a3);
+    objc_storeStrong(&v6->_pvImageBuffer, image);
   }
 
   return v7;
 }
 
-- (JTImage)initWithUIImage:(id)a3
+- (JTImage)initWithUIImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = JTImage;
   v6 = [(JTImage *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
-    v8 = [MEMORY[0x277D41618] imageWithUIImage:v5];
+    objc_storeStrong(&v6->_image, image);
+    v8 = [MEMORY[0x277D41618] imageWithUIImage:imageCopy];
     pvImageBuffer = v7->_pvImageBuffer;
     v7->_pvImageBuffer = v8;
   }
@@ -42,10 +42,10 @@
   return v7;
 }
 
-+ (JTImage)jtImageWithUIImage:(id)a3
++ (JTImage)jtImageWithUIImage:(id)image
 {
-  v3 = a3;
-  v4 = [[JTImage alloc] initWithUIImage:v3];
+  imageCopy = image;
+  v4 = [[JTImage alloc] initWithUIImage:imageCopy];
 
   return v4;
 }
@@ -55,9 +55,9 @@
   image = self->_image;
   if (!image)
   {
-    v4 = [(PVImageBuffer *)self->_pvImageBuffer uiImage];
+    uiImage = [(PVImageBuffer *)self->_pvImageBuffer uiImage];
     v5 = self->_image;
-    self->_image = v4;
+    self->_image = uiImage;
 
     image = self->_image;
   }
@@ -67,21 +67,21 @@
   return v6;
 }
 
-- (id)bluredImageWithFlippedXAxis:(BOOL)a3
+- (id)bluredImageWithFlippedXAxis:(BOOL)axis
 {
-  v3 = a3;
+  axisCopy = axis;
   image = self->_image;
   if (image)
   {
-    v6 = [(UIImage *)image bluredImageWithFlippedXAxis:a3];
+    v6 = [(UIImage *)image bluredImageWithFlippedXAxis:axis];
   }
 
   else
   {
-    v7 = [(JTImage *)self pvImageBuffer];
-    v8 = [v7 canCreateCVPixelBuffer];
+    pvImageBuffer = [(JTImage *)self pvImageBuffer];
+    canCreateCVPixelBuffer = [pvImageBuffer canCreateCVPixelBuffer];
 
-    if (v8)
+    if (canCreateCVPixelBuffer)
     {
       [MEMORY[0x277CBF758] imageWithCVPixelBuffer:{-[PVImageBuffer cvPixelBuffer](self->_pvImageBuffer, "cvPixelBuffer")}];
     }
@@ -91,7 +91,7 @@
       [(JTImage *)self image];
     }
     v9 = ;
-    v6 = [v9 bluredImageWithFlippedXAxis:v3];
+    v6 = [v9 bluredImageWithFlippedXAxis:axisCopy];
   }
 
   return v6;
@@ -99,14 +99,14 @@
 
 - (BOOL)hasPVImageBufferAndCanCreateCVPixelBufferWithoutCopy
 {
-  v3 = [(JTImage *)self pvImageBuffer];
-  if (v3)
+  pvImageBuffer = [(JTImage *)self pvImageBuffer];
+  if (pvImageBuffer)
   {
-    v4 = [(JTImage *)self pvImageBuffer];
-    if ([v4 canCreateCVPixelBuffer])
+    pvImageBuffer2 = [(JTImage *)self pvImageBuffer];
+    if ([pvImageBuffer2 canCreateCVPixelBuffer])
     {
-      v5 = [(JTImage *)self pvImageBuffer];
-      v6 = [v5 cvPixelBufferRequiresCopy] ^ 1;
+      pvImageBuffer3 = [(JTImage *)self pvImageBuffer];
+      v6 = [pvImageBuffer3 cvPixelBufferRequiresCopy] ^ 1;
     }
 
     else

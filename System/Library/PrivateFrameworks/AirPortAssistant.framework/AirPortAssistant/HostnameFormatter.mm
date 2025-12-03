@@ -1,36 +1,36 @@
 @interface HostnameFormatter
-+ (id)hostnameFormatter:(unint64_t)a3;
++ (id)hostnameFormatter:(unint64_t)formatter;
 + (id)hostnameSet;
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5;
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description;
 @end
 
 @implementation HostnameFormatter
 
-+ (id)hostnameFormatter:(unint64_t)a3
++ (id)hostnameFormatter:(unint64_t)formatter
 {
   v5 = [HostnameFormatter alloc];
-  v8 = objc_msgSend_hostnameSet(a1, v6, v7);
-  v10 = objc_msgSend_initWithCharacterSet_withMaxLength_(v5, v9, v8, a3);
+  v8 = objc_msgSend_hostnameSet(self, v6, v7);
+  v10 = objc_msgSend_initWithCharacterSet_withMaxLength_(v5, v9, v8, formatter);
 
   return v10;
 }
 
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description
 {
-  v10 = objc_msgSend_rangeOfString_options_(a3, a2, @".local", 4);
+  v10 = objc_msgSend_rangeOfString_options_(valid, a2, @".local", 4);
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = objc_msgSend_length(a3, v9, 0x7FFFFFFFFFFFFFFFLL);
+    v10 = objc_msgSend_length(valid, v9, 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  v11 = objc_msgSend_substringToIndex_(a3, v9, v10);
+  v11 = objc_msgSend_substringToIndex_(valid, v9, v10);
   v16.receiver = self;
   v16.super_class = HostnameFormatter;
-  v12 = [(APFormatter *)&v16 isPartialStringValid:v11 newEditingString:a4 errorDescription:a5];
+  v12 = [(APFormatter *)&v16 isPartialStringValid:v11 newEditingString:string errorDescription:description];
   v14 = v12;
-  if (a4 && (v12 & 1) == 0)
+  if (string && (v12 & 1) == 0)
   {
-    *a4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, @"%@.local", *a4);
+    *string = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, @"%@.local", *string);
   }
 
   return v14;

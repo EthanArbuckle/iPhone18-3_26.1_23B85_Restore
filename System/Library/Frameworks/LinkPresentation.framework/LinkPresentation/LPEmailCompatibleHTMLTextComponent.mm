@@ -1,104 +1,104 @@
 @interface LPEmailCompatibleHTMLTextComponent
 + (id)baseRules;
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLTextComponent)initWithCaption:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLTextComponent)initWithCaption:(id)caption style:(id)style themePath:(id)path generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLTextComponent
 
-- (LPEmailCompatibleHTMLTextComponent)initWithCaption:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6
+- (LPEmailCompatibleHTMLTextComponent)initWithCaption:(id)caption style:(id)style themePath:(id)path generator:(id)generator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  captionCopy = caption;
+  styleCopy = style;
+  pathCopy = path;
+  generatorCopy = generator;
   v71.receiver = self;
   v71.super_class = LPEmailCompatibleHTMLTextComponent;
-  v14 = [(LPHTMLComponent *)&v71 initWithTagName:@"div" themePath:v12 generator:v13];
+  v14 = [(LPHTMLComponent *)&v71 initWithTagName:@"div" themePath:pathCopy generator:generatorCopy];
   v16 = v14;
   if (v14)
   {
     LPWebLock(v14, v15);
-    v17 = [v10 attributedText];
-    v65 = v10;
-    v61 = v13;
-    v62 = v12;
-    v18 = [v11 adjustedForString:v17];
+    attributedText = [captionCopy attributedText];
+    v65 = captionCopy;
+    v61 = generatorCopy;
+    v62 = pathCopy;
+    v18 = [styleCopy adjustedForString:attributedText];
 
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
     v66[2] = __80__LPEmailCompatibleHTMLTextComponent_initWithCaption_style_themePath_generator___block_invoke;
     v66[3] = &unk_1E7A371A8;
-    v19 = v13;
+    v19 = generatorCopy;
     v67 = v19;
-    v20 = v12;
+    v20 = pathCopy;
     v68 = v20;
-    v21 = v10;
+    v21 = captionCopy;
     v69 = v21;
-    v11 = v18;
-    v70 = v11;
+    styleCopy = v18;
+    v70 = styleCopy;
     v64 = __80__LPEmailCompatibleHTMLTextComponent_initWithCaption_style_themePath_generator___block_invoke(v66);
-    v63 = [v64 _lp_CSSText];
+    _lp_CSSText = [v64 _lp_CSSText];
     [v21 textScale];
     v23 = v22;
-    v24 = [v11 font];
+    font = [styleCopy font];
     v25 = MEMORY[0x1E696AEC0];
-    [v24 pointSize];
+    [font pointSize];
     v27 = [v25 stringWithFormat:@"%gpx", v23 * v26];
 
-    v28 = [v19 cssResolver];
-    v29 = [v28 localVariables];
+    cssResolver = [v19 cssResolver];
+    localVariables = [cssResolver localVariables];
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-font-size", v20];
-    [v29 setObject:v27 forKeyedSubscript:v30];
+    [localVariables setObject:v27 forKeyedSubscript:v30];
 
-    v31 = CSSAlignmentFromLPTextAlignment([v11 textAlignment]);
-    v32 = [v19 cssResolver];
-    v33 = [v32 localVariables];
+    v31 = CSSAlignmentFromLPTextAlignment([styleCopy textAlignment]);
+    cssResolver2 = [v19 cssResolver];
+    localVariables2 = [cssResolver2 localVariables];
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-text-alignment", v20];
-    [v33 setObject:v31 forKeyedSubscript:v34];
+    [localVariables2 setObject:v31 forKeyedSubscript:v34];
 
-    v35 = [v19 cssResolver];
+    cssResolver3 = [v19 cssResolver];
     v36 = [@"lp-rich-link-" stringByAppendingString:v20];
-    v37 = [(LPHTMLComponent *)v16 element];
-    [v35 addStyle:v36 toElement:v37 inComponent:v16];
+    element = [(LPHTMLComponent *)v16 element];
+    [cssResolver3 addStyle:v36 toElement:element inComponent:v16];
 
-    v38 = [(LPHTMLComponent *)v16 generator];
-    v39 = [v38 parentDocument];
-    v40 = [v39 createElement:@"a"];
+    generator = [(LPHTMLComponent *)v16 generator];
+    parentDocument = [generator parentDocument];
+    v40 = [parentDocument createElement:@"a"];
 
     [v40 setAttribute:@"rel" value:@"nofollow"];
-    v41 = [(LPHTMLComponent *)v16 generator];
-    v42 = [v41 URL];
-    v43 = [v42 absoluteString];
-    [v40 setAttribute:@"href" value:v43];
+    generator2 = [(LPHTMLComponent *)v16 generator];
+    v42 = [generator2 URL];
+    absoluteString = [v42 absoluteString];
+    [v40 setAttribute:@"href" value:absoluteString];
 
     [v40 setAttribute:@"style" value:@"text-decoration: none"];
     [v40 setAttribute:@"draggable" value:@"false"];
-    v44 = [(LPHTMLComponent *)v16 generator];
-    v45 = [v44 parentDocument];
-    v46 = [v45 createElement:@"font"];
+    generator3 = [(LPHTMLComponent *)v16 generator];
+    parentDocument2 = [generator3 parentDocument];
+    v46 = [parentDocument2 createElement:@"font"];
 
-    [v46 setAttribute:@"color" value:v63];
+    [v46 setAttribute:@"color" value:_lp_CSSText];
     v47 = MEMORY[0x1E696AEC0];
     v48 = [v64 _lp_CSSTextForcingUserInterfaceStyle:0];
     v49 = [v47 stringWithFormat:@"color: %@", v48];;
     [v46 setAttribute:@"style" value:v49];
 
     v50 = [v40 appendChild:v46];
-    v51 = [(LPHTMLComponent *)v16 generator];
-    v52 = [v51 parentDocument];
-    v53 = [v21 text];
-    v54 = truncatedStringAtMaximumMetadataLength(v53);
-    v55 = [v52 createTextNode:v54];
+    generator4 = [(LPHTMLComponent *)v16 generator];
+    parentDocument3 = [generator4 parentDocument];
+    text = [v21 text];
+    v54 = truncatedStringAtMaximumMetadataLength(text);
+    v55 = [parentDocument3 createTextNode:v54];
     v56 = [v46 appendChild:v55];
 
-    v57 = [(LPHTMLComponent *)v16 element];
-    v58 = [v57 appendChild:v40];
+    element2 = [(LPHTMLComponent *)v16 element];
+    v58 = [element2 appendChild:v40];
 
     v59 = v16;
-    v10 = v65;
-    v13 = v61;
-    v12 = v62;
+    captionCopy = v65;
+    generatorCopy = v61;
+    pathCopy = v62;
   }
 
   return v16;
@@ -183,11 +183,11 @@ id __80__LPEmailCompatibleHTMLTextComponent_initWithCaption_style_themePath_gene
   return v5;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
-  v3 = [a1 baseRules];
+  baseRules = [self baseRules];
 
-  return v3;
+  return baseRules;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface VCPPhotosFacePair
-+ (id)pairWithFace:(id)a3 andFace:(id)a4 distance:(double)a5;
-- (VCPPhotosFacePair)initWithFace:(id)a3 andFace:(id)a4 distance:(double)a5;
++ (id)pairWithFace:(id)face andFace:(id)andFace distance:(double)distance;
+- (VCPPhotosFacePair)initWithFace:(id)face andFace:(id)andFace distance:(double)distance;
 @end
 
 @implementation VCPPhotosFacePair
 
-- (VCPPhotosFacePair)initWithFace:(id)a3 andFace:(id)a4 distance:(double)a5
+- (VCPPhotosFacePair)initWithFace:(id)face andFace:(id)andFace distance:(double)distance
 {
-  v9 = a3;
-  v10 = a4;
+  faceCopy = face;
+  andFaceCopy = andFace;
   v14.receiver = self;
   v14.super_class = VCPPhotosFacePair;
   v11 = [(VCPPhotosFacePair *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_face1, a3);
-    objc_storeStrong(&v12->_face2, a4);
-    v12->_distance = a5;
+    objc_storeStrong(&v11->_face1, face);
+    objc_storeStrong(&v12->_face2, andFace);
+    v12->_distance = distance;
   }
 
   return v12;
 }
 
-+ (id)pairWithFace:(id)a3 andFace:(id)a4 distance:(double)a5
++ (id)pairWithFace:(id)face andFace:(id)andFace distance:(double)distance
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithFace:v8 andFace:v7 distance:a5];
+  andFaceCopy = andFace;
+  faceCopy = face;
+  v9 = [objc_alloc(objc_opt_class()) initWithFace:faceCopy andFace:andFaceCopy distance:distance];
 
   return v9;
 }

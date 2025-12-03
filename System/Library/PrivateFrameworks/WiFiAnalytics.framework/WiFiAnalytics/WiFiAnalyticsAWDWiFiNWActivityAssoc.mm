@@ -1,56 +1,56 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityAssoc
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssocDoneSuccess:(BOOL)a3;
-- (void)setHasAssocFailed:(BOOL)a3;
-- (void)setHasAssocReady:(BOOL)a3;
-- (void)setHasAssocSuccess:(BOOL)a3;
-- (void)setHasAuthFailed:(BOOL)a3;
-- (void)setHasAuthSuccess:(BOOL)a3;
-- (void)setHasBssDisallowEvent:(BOOL)a3;
-- (void)setHasBssidChanged:(BOOL)a3;
-- (void)setHasChanSwitchEvent:(BOOL)a3;
-- (void)setHasCrashTracerTrig:(BOOL)a3;
-- (void)setHasDeauthReceived:(BOOL)a3;
-- (void)setHasDecryptError:(BOOL)a3;
-- (void)setHasDisassocReceived:(BOOL)a3;
-- (void)setHasDpsSymptom:(BOOL)a3;
-- (void)setHasEscoTrafficInd:(BOOL)a3;
-- (void)setHasHomeChanQualChanged:(BOOL)a3;
-- (void)setHasLinkChanged:(BOOL)a3;
-- (void)setHasMacAddrChanged:(BOOL)a3;
-- (void)setHasPruned:(BOOL)a3;
-- (void)setHasRc1Stats:(BOOL)a3;
-- (void)setHasRc2Stats:(BOOL)a3;
-- (void)setHasReassocFailed:(BOOL)a3;
-- (void)setHasReassocSuccess:(BOOL)a3;
-- (void)setHasRoamFailed:(BOOL)a3;
-- (void)setHasRoamPrep:(BOOL)a3;
-- (void)setHasRoamScanEnd:(BOOL)a3;
-- (void)setHasRoamScanStart:(BOOL)a3;
-- (void)setHasRoamSuccess:(BOOL)a3;
-- (void)setHasRssiChanged:(BOOL)a3;
-- (void)setHasScanDone:(BOOL)a3;
-- (void)setHasScanInternalDone:(BOOL)a3;
-- (void)setHasScanResults:(BOOL)a3;
-- (void)setHasScanSummary:(BOOL)a3;
-- (void)setHasSlowWiFiSymptom:(BOOL)a3;
-- (void)setHasSsidChanged:(BOOL)a3;
-- (void)setHasSupplicant:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssocDoneSuccess:(BOOL)success;
+- (void)setHasAssocFailed:(BOOL)failed;
+- (void)setHasAssocReady:(BOOL)ready;
+- (void)setHasAssocSuccess:(BOOL)success;
+- (void)setHasAuthFailed:(BOOL)failed;
+- (void)setHasAuthSuccess:(BOOL)success;
+- (void)setHasBssDisallowEvent:(BOOL)event;
+- (void)setHasBssidChanged:(BOOL)changed;
+- (void)setHasChanSwitchEvent:(BOOL)event;
+- (void)setHasCrashTracerTrig:(BOOL)trig;
+- (void)setHasDeauthReceived:(BOOL)received;
+- (void)setHasDecryptError:(BOOL)error;
+- (void)setHasDisassocReceived:(BOOL)received;
+- (void)setHasDpsSymptom:(BOOL)symptom;
+- (void)setHasEscoTrafficInd:(BOOL)ind;
+- (void)setHasHomeChanQualChanged:(BOOL)changed;
+- (void)setHasLinkChanged:(BOOL)changed;
+- (void)setHasMacAddrChanged:(BOOL)changed;
+- (void)setHasPruned:(BOOL)pruned;
+- (void)setHasRc1Stats:(BOOL)stats;
+- (void)setHasRc2Stats:(BOOL)stats;
+- (void)setHasReassocFailed:(BOOL)failed;
+- (void)setHasReassocSuccess:(BOOL)success;
+- (void)setHasRoamFailed:(BOOL)failed;
+- (void)setHasRoamPrep:(BOOL)prep;
+- (void)setHasRoamScanEnd:(BOOL)end;
+- (void)setHasRoamScanStart:(BOOL)start;
+- (void)setHasRoamSuccess:(BOOL)success;
+- (void)setHasRssiChanged:(BOOL)changed;
+- (void)setHasScanDone:(BOOL)done;
+- (void)setHasScanInternalDone:(BOOL)done;
+- (void)setHasScanResults:(BOOL)results;
+- (void)setHasScanSummary:(BOOL)summary;
+- (void)setHasSlowWiFiSymptom:(BOOL)symptom;
+- (void)setHasSsidChanged:(BOOL)changed;
+- (void)setHasSupplicant:(BOOL)supplicant;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityAssoc
 
-- (void)setHasAuthSuccess:(BOOL)a3
+- (void)setHasAuthSuccess:(BOOL)success
 {
   v3 = 64;
-  if (!a3)
+  if (!success)
   {
     v3 = 0;
   }
@@ -58,10 +58,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasAuthFailed:(BOOL)a3
+- (void)setHasAuthFailed:(BOOL)failed
 {
   v3 = 32;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -69,10 +69,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasAssocSuccess:(BOOL)a3
+- (void)setHasAssocSuccess:(BOOL)success
 {
   v3 = 16;
-  if (!a3)
+  if (!success)
   {
     v3 = 0;
   }
@@ -80,10 +80,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasAssocFailed:(BOOL)a3
+- (void)setHasAssocFailed:(BOOL)failed
 {
   v3 = 4;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -91,10 +91,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasReassocSuccess:(BOOL)a3
+- (void)setHasReassocSuccess:(BOOL)success
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!success)
   {
     v3 = 0;
   }
@@ -102,10 +102,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasReassocFailed:(BOOL)a3
+- (void)setHasReassocFailed:(BOOL)failed
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -113,10 +113,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasLinkChanged:(BOOL)a3
+- (void)setHasLinkChanged:(BOOL)changed
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -124,10 +124,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasRoamSuccess:(BOOL)a3
+- (void)setHasRoamSuccess:(BOOL)success
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!success)
   {
     v3 = 0;
   }
@@ -135,10 +135,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasRoamFailed:(BOOL)a3
+- (void)setHasRoamFailed:(BOOL)failed
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -146,10 +146,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasAssocDoneSuccess:(BOOL)a3
+- (void)setHasAssocDoneSuccess:(BOOL)success
 {
   v3 = 2;
-  if (!a3)
+  if (!success)
   {
     v3 = 0;
   }
@@ -157,10 +157,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasAssocReady:(BOOL)a3
+- (void)setHasAssocReady:(BOOL)ready
 {
   v3 = 8;
-  if (!a3)
+  if (!ready)
   {
     v3 = 0;
   }
@@ -168,10 +168,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasSsidChanged:(BOOL)a3
+- (void)setHasSsidChanged:(BOOL)changed
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -179,10 +179,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasBssidChanged:(BOOL)a3
+- (void)setHasBssidChanged:(BOOL)changed
 {
   v3 = 256;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -190,10 +190,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasDeauthReceived:(BOOL)a3
+- (void)setHasDeauthReceived:(BOOL)received
 {
   v3 = 2048;
-  if (!a3)
+  if (!received)
   {
     v3 = 0;
   }
@@ -201,10 +201,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasDisassocReceived:(BOOL)a3
+- (void)setHasDisassocReceived:(BOOL)received
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!received)
   {
     v3 = 0;
   }
@@ -212,10 +212,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasDecryptError:(BOOL)a3
+- (void)setHasDecryptError:(BOOL)error
 {
   v3 = 4096;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
@@ -223,10 +223,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasPruned:(BOOL)a3
+- (void)setHasPruned:(BOOL)pruned
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!pruned)
   {
     v3 = 0;
   }
@@ -234,10 +234,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSupplicant:(BOOL)a3
+- (void)setHasSupplicant:(BOOL)supplicant
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!supplicant)
   {
     v3 = 0;
   }
@@ -245,10 +245,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasMacAddrChanged:(BOOL)a3
+- (void)setHasMacAddrChanged:(BOOL)changed
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -256,10 +256,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasRssiChanged:(BOOL)a3
+- (void)setHasRssiChanged:(BOOL)changed
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -267,10 +267,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasHomeChanQualChanged:(BOOL)a3
+- (void)setHasHomeChanQualChanged:(BOOL)changed
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -278,10 +278,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasChanSwitchEvent:(BOOL)a3
+- (void)setHasChanSwitchEvent:(BOOL)event
 {
   v3 = 512;
-  if (!a3)
+  if (!event)
   {
     v3 = 0;
   }
@@ -289,10 +289,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasRoamPrep:(BOOL)a3
+- (void)setHasRoamPrep:(BOOL)prep
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!prep)
   {
     v3 = 0;
   }
@@ -300,10 +300,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasRoamScanStart:(BOOL)a3
+- (void)setHasRoamScanStart:(BOOL)start
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!start)
   {
     v3 = 0;
   }
@@ -311,10 +311,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasRoamScanEnd:(BOOL)a3
+- (void)setHasRoamScanEnd:(BOOL)end
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!end)
   {
     v3 = 0;
   }
@@ -322,10 +322,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasScanResults:(BOOL)a3
+- (void)setHasScanResults:(BOOL)results
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!results)
   {
     v3 = 0;
   }
@@ -333,10 +333,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasScanSummary:(BOOL)a3
+- (void)setHasScanSummary:(BOOL)summary
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!summary)
   {
     v3 = 0;
   }
@@ -344,10 +344,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasScanDone:(BOOL)a3
+- (void)setHasScanDone:(BOOL)done
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!done)
   {
     v3 = 0;
   }
@@ -355,10 +355,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasScanInternalDone:(BOOL)a3
+- (void)setHasScanInternalDone:(BOOL)done
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!done)
   {
     v3 = 0;
   }
@@ -366,10 +366,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasBssDisallowEvent:(BOOL)a3
+- (void)setHasBssDisallowEvent:(BOOL)event
 {
   v3 = 128;
-  if (!a3)
+  if (!event)
   {
     v3 = 0;
   }
@@ -377,10 +377,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasSlowWiFiSymptom:(BOOL)a3
+- (void)setHasSlowWiFiSymptom:(BOOL)symptom
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!symptom)
   {
     v3 = 0;
   }
@@ -388,10 +388,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasDpsSymptom:(BOOL)a3
+- (void)setHasDpsSymptom:(BOOL)symptom
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!symptom)
   {
     v3 = 0;
   }
@@ -399,10 +399,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasCrashTracerTrig:(BOOL)a3
+- (void)setHasCrashTracerTrig:(BOOL)trig
 {
   v3 = 1024;
-  if (!a3)
+  if (!trig)
   {
     v3 = 0;
   }
@@ -410,10 +410,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasRc1Stats:(BOOL)a3
+- (void)setHasRc1Stats:(BOOL)stats
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!stats)
   {
     v3 = 0;
   }
@@ -421,10 +421,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasRc2Stats:(BOOL)a3
+- (void)setHasRc2Stats:(BOOL)stats
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!stats)
   {
     v3 = 0;
   }
@@ -432,10 +432,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasEscoTrafficInd:(BOOL)a3
+- (void)setHasEscoTrafficInd:(BOOL)ind
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!ind)
   {
     v3 = 0;
   }
@@ -449,20 +449,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityAssoc;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityAssoc *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x40) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_authSuccess];
-    [v3 setObject:v8 forKey:@"authSuccess"];
+    [dictionary setObject:v8 forKey:@"authSuccess"];
 
     has = self->_has;
     if ((*&has & 0x20) == 0)
@@ -483,7 +483,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_authFailed];
-  [v3 setObject:v9 forKey:@"authFailed"];
+  [dictionary setObject:v9 forKey:@"authFailed"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -499,7 +499,7 @@ LABEL_4:
 
 LABEL_42:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocSuccess];
-  [v3 setObject:v10 forKey:@"assocSuccess"];
+  [dictionary setObject:v10 forKey:@"assocSuccess"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -515,7 +515,7 @@ LABEL_5:
 
 LABEL_43:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocFailed];
-  [v3 setObject:v11 forKey:@"assocFailed"];
+  [dictionary setObject:v11 forKey:@"assocFailed"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -531,7 +531,7 @@ LABEL_6:
 
 LABEL_44:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_reassocSuccess];
-  [v3 setObject:v12 forKey:@"reassocSuccess"];
+  [dictionary setObject:v12 forKey:@"reassocSuccess"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -547,7 +547,7 @@ LABEL_7:
 
 LABEL_45:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_reassocFailed];
-  [v3 setObject:v13 forKey:@"reassocFailed"];
+  [dictionary setObject:v13 forKey:@"reassocFailed"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -563,7 +563,7 @@ LABEL_8:
 
 LABEL_46:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_linkChanged];
-  [v3 setObject:v14 forKey:@"linkChanged"];
+  [dictionary setObject:v14 forKey:@"linkChanged"];
 
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
@@ -579,7 +579,7 @@ LABEL_9:
 
 LABEL_47:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamSuccess];
-  [v3 setObject:v15 forKey:@"roamSuccess"];
+  [dictionary setObject:v15 forKey:@"roamSuccess"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -595,7 +595,7 @@ LABEL_10:
 
 LABEL_48:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamFailed];
-  [v3 setObject:v16 forKey:@"roamFailed"];
+  [dictionary setObject:v16 forKey:@"roamFailed"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -611,7 +611,7 @@ LABEL_11:
 
 LABEL_49:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocDoneSuccess];
-  [v3 setObject:v17 forKey:@"assocDoneSuccess"];
+  [dictionary setObject:v17 forKey:@"assocDoneSuccess"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -627,7 +627,7 @@ LABEL_12:
 
 LABEL_50:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocDoneFailed];
-  [v3 setObject:v18 forKey:@"assocDoneFailed"];
+  [dictionary setObject:v18 forKey:@"assocDoneFailed"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -643,7 +643,7 @@ LABEL_13:
 
 LABEL_51:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_assocReady];
-  [v3 setObject:v19 forKey:@"assocReady"];
+  [dictionary setObject:v19 forKey:@"assocReady"];
 
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
@@ -659,7 +659,7 @@ LABEL_14:
 
 LABEL_52:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ssidChanged];
-  [v3 setObject:v20 forKey:@"ssidChanged"];
+  [dictionary setObject:v20 forKey:@"ssidChanged"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -675,7 +675,7 @@ LABEL_15:
 
 LABEL_53:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_bssidChanged];
-  [v3 setObject:v21 forKey:@"bssidChanged"];
+  [dictionary setObject:v21 forKey:@"bssidChanged"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -691,7 +691,7 @@ LABEL_16:
 
 LABEL_54:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_deauthReceived];
-  [v3 setObject:v22 forKey:@"deauthReceived"];
+  [dictionary setObject:v22 forKey:@"deauthReceived"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -707,7 +707,7 @@ LABEL_17:
 
 LABEL_55:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_disassocReceived];
-  [v3 setObject:v23 forKey:@"disassocReceived"];
+  [dictionary setObject:v23 forKey:@"disassocReceived"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -723,7 +723,7 @@ LABEL_18:
 
 LABEL_56:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_decryptError];
-  [v3 setObject:v24 forKey:@"decryptError"];
+  [dictionary setObject:v24 forKey:@"decryptError"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -739,7 +739,7 @@ LABEL_19:
 
 LABEL_57:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pruned];
-  [v3 setObject:v25 forKey:@"pruned"];
+  [dictionary setObject:v25 forKey:@"pruned"];
 
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
@@ -755,7 +755,7 @@ LABEL_20:
 
 LABEL_58:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_supplicant];
-  [v3 setObject:v26 forKey:@"supplicant"];
+  [dictionary setObject:v26 forKey:@"supplicant"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -771,7 +771,7 @@ LABEL_21:
 
 LABEL_59:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_macAddrChanged];
-  [v3 setObject:v27 forKey:@"macAddrChanged"];
+  [dictionary setObject:v27 forKey:@"macAddrChanged"];
 
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
@@ -787,7 +787,7 @@ LABEL_22:
 
 LABEL_60:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rssiChanged];
-  [v3 setObject:v28 forKey:@"rssiChanged"];
+  [dictionary setObject:v28 forKey:@"rssiChanged"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -803,7 +803,7 @@ LABEL_23:
 
 LABEL_61:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_homeChanQualChanged];
-  [v3 setObject:v29 forKey:@"homeChanQualChanged"];
+  [dictionary setObject:v29 forKey:@"homeChanQualChanged"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -819,7 +819,7 @@ LABEL_24:
 
 LABEL_62:
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_chanSwitchEvent];
-  [v3 setObject:v30 forKey:@"chanSwitchEvent"];
+  [dictionary setObject:v30 forKey:@"chanSwitchEvent"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -835,7 +835,7 @@ LABEL_25:
 
 LABEL_63:
   v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamPrep];
-  [v3 setObject:v31 forKey:@"roamPrep"];
+  [dictionary setObject:v31 forKey:@"roamPrep"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -851,7 +851,7 @@ LABEL_26:
 
 LABEL_64:
   v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamScanStart];
-  [v3 setObject:v32 forKey:@"roamScanStart"];
+  [dictionary setObject:v32 forKey:@"roamScanStart"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -867,7 +867,7 @@ LABEL_27:
 
 LABEL_65:
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roamScanEnd];
-  [v3 setObject:v33 forKey:@"roamScanEnd"];
+  [dictionary setObject:v33 forKey:@"roamScanEnd"];
 
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
@@ -883,7 +883,7 @@ LABEL_28:
 
 LABEL_66:
   v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_scanResults];
-  [v3 setObject:v34 forKey:@"scanResults"];
+  [dictionary setObject:v34 forKey:@"scanResults"];
 
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
@@ -899,7 +899,7 @@ LABEL_29:
 
 LABEL_67:
   v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_scanSummary];
-  [v3 setObject:v35 forKey:@"scanSummary"];
+  [dictionary setObject:v35 forKey:@"scanSummary"];
 
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
@@ -915,7 +915,7 @@ LABEL_30:
 
 LABEL_68:
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_scanDone];
-  [v3 setObject:v36 forKey:@"scanDone"];
+  [dictionary setObject:v36 forKey:@"scanDone"];
 
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -931,7 +931,7 @@ LABEL_31:
 
 LABEL_69:
   v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_scanInternalDone];
-  [v3 setObject:v37 forKey:@"scanInternalDone"];
+  [dictionary setObject:v37 forKey:@"scanInternalDone"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -947,7 +947,7 @@ LABEL_32:
 
 LABEL_70:
   v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_bssDisallowEvent];
-  [v3 setObject:v38 forKey:@"bssDisallowEvent"];
+  [dictionary setObject:v38 forKey:@"bssDisallowEvent"];
 
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
@@ -963,7 +963,7 @@ LABEL_33:
 
 LABEL_71:
   v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_slowWiFiSymptom];
-  [v3 setObject:v39 forKey:@"slowWiFiSymptom"];
+  [dictionary setObject:v39 forKey:@"slowWiFiSymptom"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -979,7 +979,7 @@ LABEL_34:
 
 LABEL_72:
   v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_dpsSymptom];
-  [v3 setObject:v40 forKey:@"dpsSymptom"];
+  [dictionary setObject:v40 forKey:@"dpsSymptom"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -995,7 +995,7 @@ LABEL_35:
 
 LABEL_73:
   v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_crashTracerTrig];
-  [v3 setObject:v41 forKey:@"crashTracerTrig"];
+  [dictionary setObject:v41 forKey:@"crashTracerTrig"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -1008,7 +1008,7 @@ LABEL_36:
 
 LABEL_75:
     v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rc2Stats];
-    [v3 setObject:v43 forKey:@"rc2Stats"];
+    [dictionary setObject:v43 forKey:@"rc2Stats"];
 
     if ((*&self->_has & 0x8000) == 0)
     {
@@ -1020,7 +1020,7 @@ LABEL_75:
 
 LABEL_74:
   v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rc1Stats];
-  [v3 setObject:v42 forKey:@"rc1Stats"];
+  [dictionary setObject:v42 forKey:@"rc1Stats"];
 
   has = self->_has;
   if ((*&has & 0x200000) != 0)
@@ -1033,18 +1033,18 @@ LABEL_37:
   {
 LABEL_38:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_escoTrafficInd];
-    [v3 setObject:v5 forKey:@"escoTrafficInd"];
+    [dictionary setObject:v5 forKey:@"escoTrafficInd"];
   }
 
 LABEL_39:
-  v6 = v3;
+  v6 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v42 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40) != 0)
   {
@@ -1590,14 +1590,14 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40) != 0)
   {
-    *(v4 + 8) = self->_authSuccess;
-    *(v4 + 156) |= 0x40uLL;
+    *(toCopy + 8) = self->_authSuccess;
+    *(toCopy + 156) |= 0x40uLL;
     has = self->_has;
     if ((*&has & 0x20) == 0)
     {
@@ -1616,8 +1616,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 7) = self->_authFailed;
-  *(v4 + 156) |= 0x20uLL;
+  *(toCopy + 7) = self->_authFailed;
+  *(toCopy + 156) |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1631,8 +1631,8 @@ LABEL_4:
   }
 
 LABEL_44:
-  *(v4 + 6) = self->_assocSuccess;
-  *(v4 + 156) |= 0x10uLL;
+  *(toCopy + 6) = self->_assocSuccess;
+  *(toCopy + 156) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1646,8 +1646,8 @@ LABEL_5:
   }
 
 LABEL_45:
-  *(v4 + 4) = self->_assocFailed;
-  *(v4 + 156) |= 4uLL;
+  *(toCopy + 4) = self->_assocFailed;
+  *(toCopy + 156) |= 4uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1661,8 +1661,8 @@ LABEL_6:
   }
 
 LABEL_46:
-  *(v4 + 25) = self->_reassocSuccess;
-  *(v4 + 156) |= 0x800000uLL;
+  *(toCopy + 25) = self->_reassocSuccess;
+  *(toCopy + 156) |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1676,8 +1676,8 @@ LABEL_7:
   }
 
 LABEL_47:
-  *(v4 + 24) = self->_reassocFailed;
-  *(v4 + 156) |= 0x400000uLL;
+  *(toCopy + 24) = self->_reassocFailed;
+  *(toCopy + 156) |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1691,8 +1691,8 @@ LABEL_8:
   }
 
 LABEL_48:
-  *(v4 + 19) = self->_linkChanged;
-  *(v4 + 156) |= 0x20000uLL;
+  *(toCopy + 19) = self->_linkChanged;
+  *(toCopy + 156) |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1706,8 +1706,8 @@ LABEL_9:
   }
 
 LABEL_49:
-  *(v4 + 30) = self->_roamSuccess;
-  *(v4 + 156) |= 0x10000000uLL;
+  *(toCopy + 30) = self->_roamSuccess;
+  *(toCopy + 156) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1721,8 +1721,8 @@ LABEL_10:
   }
 
 LABEL_50:
-  *(v4 + 26) = self->_roamFailed;
-  *(v4 + 156) |= 0x1000000uLL;
+  *(toCopy + 26) = self->_roamFailed;
+  *(toCopy + 156) |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1736,8 +1736,8 @@ LABEL_11:
   }
 
 LABEL_51:
-  *(v4 + 3) = self->_assocDoneSuccess;
-  *(v4 + 156) |= 2uLL;
+  *(toCopy + 3) = self->_assocDoneSuccess;
+  *(toCopy + 156) |= 2uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1751,8 +1751,8 @@ LABEL_12:
   }
 
 LABEL_52:
-  *(v4 + 2) = self->_assocDoneFailed;
-  *(v4 + 156) |= 1uLL;
+  *(toCopy + 2) = self->_assocDoneFailed;
+  *(toCopy + 156) |= 1uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1766,8 +1766,8 @@ LABEL_13:
   }
 
 LABEL_53:
-  *(v4 + 5) = self->_assocReady;
-  *(v4 + 156) |= 8uLL;
+  *(toCopy + 5) = self->_assocReady;
+  *(toCopy + 156) |= 8uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -1781,8 +1781,8 @@ LABEL_14:
   }
 
 LABEL_54:
-  *(v4 + 37) = self->_ssidChanged;
-  *(v4 + 156) |= 0x800000000uLL;
+  *(toCopy + 37) = self->_ssidChanged;
+  *(toCopy + 156) |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1796,8 +1796,8 @@ LABEL_15:
   }
 
 LABEL_55:
-  *(v4 + 10) = self->_bssidChanged;
-  *(v4 + 156) |= 0x100uLL;
+  *(toCopy + 10) = self->_bssidChanged;
+  *(toCopy + 156) |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1811,8 +1811,8 @@ LABEL_16:
   }
 
 LABEL_56:
-  *(v4 + 13) = self->_deauthReceived;
-  *(v4 + 156) |= 0x800uLL;
+  *(toCopy + 13) = self->_deauthReceived;
+  *(toCopy + 156) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1826,8 +1826,8 @@ LABEL_17:
   }
 
 LABEL_57:
-  *(v4 + 15) = self->_disassocReceived;
-  *(v4 + 156) |= 0x2000uLL;
+  *(toCopy + 15) = self->_disassocReceived;
+  *(toCopy + 156) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1841,8 +1841,8 @@ LABEL_18:
   }
 
 LABEL_58:
-  *(v4 + 14) = self->_decryptError;
-  *(v4 + 156) |= 0x1000uLL;
+  *(toCopy + 14) = self->_decryptError;
+  *(toCopy + 156) |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1856,8 +1856,8 @@ LABEL_19:
   }
 
 LABEL_59:
-  *(v4 + 21) = self->_pruned;
-  *(v4 + 156) |= 0x80000uLL;
+  *(toCopy + 21) = self->_pruned;
+  *(toCopy + 156) |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -1871,8 +1871,8 @@ LABEL_20:
   }
 
 LABEL_60:
-  *(v4 + 38) = self->_supplicant;
-  *(v4 + 156) |= 0x1000000000uLL;
+  *(toCopy + 38) = self->_supplicant;
+  *(toCopy + 156) |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1886,8 +1886,8 @@ LABEL_21:
   }
 
 LABEL_61:
-  *(v4 + 20) = self->_macAddrChanged;
-  *(v4 + 156) |= 0x40000uLL;
+  *(toCopy + 20) = self->_macAddrChanged;
+  *(toCopy + 156) |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -1901,8 +1901,8 @@ LABEL_22:
   }
 
 LABEL_62:
-  *(v4 + 31) = self->_rssiChanged;
-  *(v4 + 156) |= 0x20000000uLL;
+  *(toCopy + 31) = self->_rssiChanged;
+  *(toCopy + 156) |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1916,8 +1916,8 @@ LABEL_23:
   }
 
 LABEL_63:
-  *(v4 + 18) = self->_homeChanQualChanged;
-  *(v4 + 156) |= 0x10000uLL;
+  *(toCopy + 18) = self->_homeChanQualChanged;
+  *(toCopy + 156) |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1931,8 +1931,8 @@ LABEL_24:
   }
 
 LABEL_64:
-  *(v4 + 11) = self->_chanSwitchEvent;
-  *(v4 + 156) |= 0x200uLL;
+  *(toCopy + 11) = self->_chanSwitchEvent;
+  *(toCopy + 156) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1946,8 +1946,8 @@ LABEL_25:
   }
 
 LABEL_65:
-  *(v4 + 27) = self->_roamPrep;
-  *(v4 + 156) |= 0x2000000uLL;
+  *(toCopy + 27) = self->_roamPrep;
+  *(toCopy + 156) |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1961,8 +1961,8 @@ LABEL_26:
   }
 
 LABEL_66:
-  *(v4 + 29) = self->_roamScanStart;
-  *(v4 + 156) |= 0x8000000uLL;
+  *(toCopy + 29) = self->_roamScanStart;
+  *(toCopy + 156) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1976,8 +1976,8 @@ LABEL_27:
   }
 
 LABEL_67:
-  *(v4 + 28) = self->_roamScanEnd;
-  *(v4 + 156) |= 0x4000000uLL;
+  *(toCopy + 28) = self->_roamScanEnd;
+  *(toCopy + 156) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -1991,8 +1991,8 @@ LABEL_28:
   }
 
 LABEL_68:
-  *(v4 + 34) = self->_scanResults;
-  *(v4 + 156) |= 0x100000000uLL;
+  *(toCopy + 34) = self->_scanResults;
+  *(toCopy + 156) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -2006,8 +2006,8 @@ LABEL_29:
   }
 
 LABEL_69:
-  *(v4 + 35) = self->_scanSummary;
-  *(v4 + 156) |= 0x200000000uLL;
+  *(toCopy + 35) = self->_scanSummary;
+  *(toCopy + 156) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2021,8 +2021,8 @@ LABEL_30:
   }
 
 LABEL_70:
-  *(v4 + 32) = self->_scanDone;
-  *(v4 + 156) |= 0x40000000uLL;
+  *(toCopy + 32) = self->_scanDone;
+  *(toCopy + 156) |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -2036,8 +2036,8 @@ LABEL_31:
   }
 
 LABEL_71:
-  *(v4 + 33) = self->_scanInternalDone;
-  *(v4 + 156) |= 0x80000000uLL;
+  *(toCopy + 33) = self->_scanInternalDone;
+  *(toCopy + 156) |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2051,8 +2051,8 @@ LABEL_32:
   }
 
 LABEL_72:
-  *(v4 + 9) = self->_bssDisallowEvent;
-  *(v4 + 156) |= 0x80uLL;
+  *(toCopy + 9) = self->_bssDisallowEvent;
+  *(toCopy + 156) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2066,8 +2066,8 @@ LABEL_33:
   }
 
 LABEL_73:
-  *(v4 + 36) = self->_slowWiFiSymptom;
-  *(v4 + 156) |= 0x400000000uLL;
+  *(toCopy + 36) = self->_slowWiFiSymptom;
+  *(toCopy + 156) |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2081,8 +2081,8 @@ LABEL_34:
   }
 
 LABEL_74:
-  *(v4 + 16) = self->_dpsSymptom;
-  *(v4 + 156) |= 0x4000uLL;
+  *(toCopy + 16) = self->_dpsSymptom;
+  *(toCopy + 156) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2096,8 +2096,8 @@ LABEL_35:
   }
 
 LABEL_75:
-  *(v4 + 12) = self->_crashTracerTrig;
-  *(v4 + 156) |= 0x400uLL;
+  *(toCopy + 12) = self->_crashTracerTrig;
+  *(toCopy + 156) |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2111,8 +2111,8 @@ LABEL_36:
   }
 
 LABEL_76:
-  *(v4 + 22) = self->_rc1Stats;
-  *(v4 + 156) |= 0x100000uLL;
+  *(toCopy + 22) = self->_rc1Stats;
+  *(toCopy + 156) |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2126,21 +2126,21 @@ LABEL_37:
   }
 
 LABEL_77:
-  *(v4 + 23) = self->_rc2Stats;
-  *(v4 + 156) |= 0x200000uLL;
+  *(toCopy + 23) = self->_rc2Stats;
+  *(toCopy + 156) |= 0x200000uLL;
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_38:
-    *(v4 + 17) = self->_escoTrafficInd;
-    *(v4 + 156) |= 0x8000uLL;
+    *(toCopy + 17) = self->_escoTrafficInd;
+    *(toCopy + 156) |= 0x8000uLL;
   }
 
 LABEL_39:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x40) != 0)
   {
@@ -2689,19 +2689,19 @@ LABEL_39:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_187;
   }
 
   has = self->_has;
-  v6 = *(v4 + 156);
+  v6 = *(equalCopy + 156);
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_authSuccess != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_authSuccess != *(equalCopy + 8))
     {
       goto LABEL_187;
     }
@@ -2716,7 +2716,7 @@ LABEL_187:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_authFailed != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_authFailed != *(equalCopy + 7))
     {
       goto LABEL_187;
     }
@@ -2729,7 +2729,7 @@ LABEL_187:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_assocSuccess != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_assocSuccess != *(equalCopy + 6))
     {
       goto LABEL_187;
     }
@@ -2742,7 +2742,7 @@ LABEL_187:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_assocFailed != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_assocFailed != *(equalCopy + 4))
     {
       goto LABEL_187;
     }
@@ -2755,7 +2755,7 @@ LABEL_187:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_reassocSuccess != *(v4 + 25))
+    if ((v6 & 0x800000) == 0 || self->_reassocSuccess != *(equalCopy + 25))
     {
       goto LABEL_187;
     }
@@ -2768,7 +2768,7 @@ LABEL_187:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_reassocFailed != *(v4 + 24))
+    if ((v6 & 0x400000) == 0 || self->_reassocFailed != *(equalCopy + 24))
     {
       goto LABEL_187;
     }
@@ -2781,7 +2781,7 @@ LABEL_187:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_linkChanged != *(v4 + 19))
+    if ((v6 & 0x20000) == 0 || self->_linkChanged != *(equalCopy + 19))
     {
       goto LABEL_187;
     }
@@ -2794,7 +2794,7 @@ LABEL_187:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_roamSuccess != *(v4 + 30))
+    if ((v6 & 0x10000000) == 0 || self->_roamSuccess != *(equalCopy + 30))
     {
       goto LABEL_187;
     }
@@ -2807,7 +2807,7 @@ LABEL_187:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_roamFailed != *(v4 + 26))
+    if ((v6 & 0x1000000) == 0 || self->_roamFailed != *(equalCopy + 26))
     {
       goto LABEL_187;
     }
@@ -2820,7 +2820,7 @@ LABEL_187:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_assocDoneSuccess != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_assocDoneSuccess != *(equalCopy + 3))
     {
       goto LABEL_187;
     }
@@ -2833,7 +2833,7 @@ LABEL_187:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_assocDoneFailed != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_assocDoneFailed != *(equalCopy + 2))
     {
       goto LABEL_187;
     }
@@ -2846,7 +2846,7 @@ LABEL_187:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_assocReady != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_assocReady != *(equalCopy + 5))
     {
       goto LABEL_187;
     }
@@ -2859,7 +2859,7 @@ LABEL_187:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v6 & 0x800000000) == 0 || self->_ssidChanged != *(v4 + 37))
+    if ((v6 & 0x800000000) == 0 || self->_ssidChanged != *(equalCopy + 37))
     {
       goto LABEL_187;
     }
@@ -2872,7 +2872,7 @@ LABEL_187:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_bssidChanged != *(v4 + 10))
+    if ((v6 & 0x100) == 0 || self->_bssidChanged != *(equalCopy + 10))
     {
       goto LABEL_187;
     }
@@ -2885,7 +2885,7 @@ LABEL_187:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_deauthReceived != *(v4 + 13))
+    if ((v6 & 0x800) == 0 || self->_deauthReceived != *(equalCopy + 13))
     {
       goto LABEL_187;
     }
@@ -2898,7 +2898,7 @@ LABEL_187:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_disassocReceived != *(v4 + 15))
+    if ((v6 & 0x2000) == 0 || self->_disassocReceived != *(equalCopy + 15))
     {
       goto LABEL_187;
     }
@@ -2911,7 +2911,7 @@ LABEL_187:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_decryptError != *(v4 + 14))
+    if ((v6 & 0x1000) == 0 || self->_decryptError != *(equalCopy + 14))
     {
       goto LABEL_187;
     }
@@ -2924,7 +2924,7 @@ LABEL_187:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_pruned != *(v4 + 21))
+    if ((v6 & 0x80000) == 0 || self->_pruned != *(equalCopy + 21))
     {
       goto LABEL_187;
     }
@@ -2937,7 +2937,7 @@ LABEL_187:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v6 & 0x1000000000) == 0 || self->_supplicant != *(v4 + 38))
+    if ((v6 & 0x1000000000) == 0 || self->_supplicant != *(equalCopy + 38))
     {
       goto LABEL_187;
     }
@@ -2950,7 +2950,7 @@ LABEL_187:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_macAddrChanged != *(v4 + 20))
+    if ((v6 & 0x40000) == 0 || self->_macAddrChanged != *(equalCopy + 20))
     {
       goto LABEL_187;
     }
@@ -2963,7 +2963,7 @@ LABEL_187:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_rssiChanged != *(v4 + 31))
+    if ((v6 & 0x20000000) == 0 || self->_rssiChanged != *(equalCopy + 31))
     {
       goto LABEL_187;
     }
@@ -2976,7 +2976,7 @@ LABEL_187:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_homeChanQualChanged != *(v4 + 18))
+    if ((v6 & 0x10000) == 0 || self->_homeChanQualChanged != *(equalCopy + 18))
     {
       goto LABEL_187;
     }
@@ -2989,7 +2989,7 @@ LABEL_187:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_chanSwitchEvent != *(v4 + 11))
+    if ((v6 & 0x200) == 0 || self->_chanSwitchEvent != *(equalCopy + 11))
     {
       goto LABEL_187;
     }
@@ -3002,7 +3002,7 @@ LABEL_187:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_roamPrep != *(v4 + 27))
+    if ((v6 & 0x2000000) == 0 || self->_roamPrep != *(equalCopy + 27))
     {
       goto LABEL_187;
     }
@@ -3015,7 +3015,7 @@ LABEL_187:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_roamScanStart != *(v4 + 29))
+    if ((v6 & 0x8000000) == 0 || self->_roamScanStart != *(equalCopy + 29))
     {
       goto LABEL_187;
     }
@@ -3028,7 +3028,7 @@ LABEL_187:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_roamScanEnd != *(v4 + 28))
+    if ((v6 & 0x4000000) == 0 || self->_roamScanEnd != *(equalCopy + 28))
     {
       goto LABEL_187;
     }
@@ -3041,7 +3041,7 @@ LABEL_187:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v6 & 0x100000000) == 0 || self->_scanResults != *(v4 + 34))
+    if ((v6 & 0x100000000) == 0 || self->_scanResults != *(equalCopy + 34))
     {
       goto LABEL_187;
     }
@@ -3054,7 +3054,7 @@ LABEL_187:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v6 & 0x200000000) == 0 || self->_scanSummary != *(v4 + 35))
+    if ((v6 & 0x200000000) == 0 || self->_scanSummary != *(equalCopy + 35))
     {
       goto LABEL_187;
     }
@@ -3067,7 +3067,7 @@ LABEL_187:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v6 & 0x40000000) == 0 || self->_scanDone != *(v4 + 32))
+    if ((v6 & 0x40000000) == 0 || self->_scanDone != *(equalCopy + 32))
     {
       goto LABEL_187;
     }
@@ -3080,7 +3080,7 @@ LABEL_187:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v6 & 0x80000000) == 0 || self->_scanInternalDone != *(v4 + 33))
+    if ((v6 & 0x80000000) == 0 || self->_scanInternalDone != *(equalCopy + 33))
     {
       goto LABEL_187;
     }
@@ -3093,7 +3093,7 @@ LABEL_187:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_bssDisallowEvent != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_bssDisallowEvent != *(equalCopy + 9))
     {
       goto LABEL_187;
     }
@@ -3106,7 +3106,7 @@ LABEL_187:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v6 & 0x400000000) == 0 || self->_slowWiFiSymptom != *(v4 + 36))
+    if ((v6 & 0x400000000) == 0 || self->_slowWiFiSymptom != *(equalCopy + 36))
     {
       goto LABEL_187;
     }
@@ -3119,7 +3119,7 @@ LABEL_187:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_dpsSymptom != *(v4 + 16))
+    if ((v6 & 0x4000) == 0 || self->_dpsSymptom != *(equalCopy + 16))
     {
       goto LABEL_187;
     }
@@ -3132,7 +3132,7 @@ LABEL_187:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_crashTracerTrig != *(v4 + 12))
+    if ((v6 & 0x400) == 0 || self->_crashTracerTrig != *(equalCopy + 12))
     {
       goto LABEL_187;
     }
@@ -3145,7 +3145,7 @@ LABEL_187:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_rc1Stats != *(v4 + 22))
+    if ((v6 & 0x100000) == 0 || self->_rc1Stats != *(equalCopy + 22))
     {
       goto LABEL_187;
     }
@@ -3158,7 +3158,7 @@ LABEL_187:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_rc2Stats != *(v4 + 23))
+    if ((v6 & 0x200000) == 0 || self->_rc2Stats != *(equalCopy + 23))
     {
       goto LABEL_187;
     }
@@ -3171,7 +3171,7 @@ LABEL_187:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_escoTrafficInd != *(v4 + 17))
+    if ((v6 & 0x8000) == 0 || self->_escoTrafficInd != *(equalCopy + 17))
     {
       goto LABEL_187;
     }
@@ -3181,7 +3181,7 @@ LABEL_187:
 
   else
   {
-    v7 = (*(v4 + 156) & 0x8000) == 0;
+    v7 = (*(equalCopy + 156) & 0x8000) == 0;
   }
 
 LABEL_188:
@@ -3706,15 +3706,15 @@ LABEL_38:
   return v39 ^ v40 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 156);
+  fromCopy = from;
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x40) != 0)
   {
-    self->_authSuccess = *(v4 + 8);
+    self->_authSuccess = *(fromCopy + 8);
     *&self->_has |= 0x40uLL;
-    v5 = *(v4 + 156);
+    v5 = *(fromCopy + 156);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -3732,9 +3732,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_authFailed = *(v4 + 7);
+  self->_authFailed = *(fromCopy + 7);
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -3747,9 +3747,9 @@ LABEL_4:
   }
 
 LABEL_44:
-  self->_assocSuccess = *(v4 + 6);
+  self->_assocSuccess = *(fromCopy + 6);
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -3762,9 +3762,9 @@ LABEL_5:
   }
 
 LABEL_45:
-  self->_assocFailed = *(v4 + 4);
+  self->_assocFailed = *(fromCopy + 4);
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_6:
@@ -3777,9 +3777,9 @@ LABEL_6:
   }
 
 LABEL_46:
-  self->_reassocSuccess = *(v4 + 25);
+  self->_reassocSuccess = *(fromCopy + 25);
   *&self->_has |= 0x800000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_7:
@@ -3792,9 +3792,9 @@ LABEL_7:
   }
 
 LABEL_47:
-  self->_reassocFailed = *(v4 + 24);
+  self->_reassocFailed = *(fromCopy + 24);
   *&self->_has |= 0x400000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_8:
@@ -3807,9 +3807,9 @@ LABEL_8:
   }
 
 LABEL_48:
-  self->_linkChanged = *(v4 + 19);
+  self->_linkChanged = *(fromCopy + 19);
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_9:
@@ -3822,9 +3822,9 @@ LABEL_9:
   }
 
 LABEL_49:
-  self->_roamSuccess = *(v4 + 30);
+  self->_roamSuccess = *(fromCopy + 30);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_10:
@@ -3837,9 +3837,9 @@ LABEL_10:
   }
 
 LABEL_50:
-  self->_roamFailed = *(v4 + 26);
+  self->_roamFailed = *(fromCopy + 26);
   *&self->_has |= 0x1000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 2) == 0)
   {
 LABEL_11:
@@ -3852,9 +3852,9 @@ LABEL_11:
   }
 
 LABEL_51:
-  self->_assocDoneSuccess = *(v4 + 3);
+  self->_assocDoneSuccess = *(fromCopy + 3);
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 1) == 0)
   {
 LABEL_12:
@@ -3867,9 +3867,9 @@ LABEL_12:
   }
 
 LABEL_52:
-  self->_assocDoneFailed = *(v4 + 2);
+  self->_assocDoneFailed = *(fromCopy + 2);
   *&self->_has |= 1uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 8) == 0)
   {
 LABEL_13:
@@ -3882,9 +3882,9 @@ LABEL_13:
   }
 
 LABEL_53:
-  self->_assocReady = *(v4 + 5);
+  self->_assocReady = *(fromCopy + 5);
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_14:
@@ -3897,9 +3897,9 @@ LABEL_14:
   }
 
 LABEL_54:
-  self->_ssidChanged = *(v4 + 37);
+  self->_ssidChanged = *(fromCopy + 37);
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x100) == 0)
   {
 LABEL_15:
@@ -3912,9 +3912,9 @@ LABEL_15:
   }
 
 LABEL_55:
-  self->_bssidChanged = *(v4 + 10);
+  self->_bssidChanged = *(fromCopy + 10);
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x800) == 0)
   {
 LABEL_16:
@@ -3927,9 +3927,9 @@ LABEL_16:
   }
 
 LABEL_56:
-  self->_deauthReceived = *(v4 + 13);
+  self->_deauthReceived = *(fromCopy + 13);
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_17:
@@ -3942,9 +3942,9 @@ LABEL_17:
   }
 
 LABEL_57:
-  self->_disassocReceived = *(v4 + 15);
+  self->_disassocReceived = *(fromCopy + 15);
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_18:
@@ -3957,9 +3957,9 @@ LABEL_18:
   }
 
 LABEL_58:
-  self->_decryptError = *(v4 + 14);
+  self->_decryptError = *(fromCopy + 14);
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_19:
@@ -3972,9 +3972,9 @@ LABEL_19:
   }
 
 LABEL_59:
-  self->_pruned = *(v4 + 21);
+  self->_pruned = *(fromCopy + 21);
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x1000000000) == 0)
   {
 LABEL_20:
@@ -3987,9 +3987,9 @@ LABEL_20:
   }
 
 LABEL_60:
-  self->_supplicant = *(v4 + 38);
+  self->_supplicant = *(fromCopy + 38);
   *&self->_has |= 0x1000000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_21:
@@ -4002,9 +4002,9 @@ LABEL_21:
   }
 
 LABEL_61:
-  self->_macAddrChanged = *(v4 + 20);
+  self->_macAddrChanged = *(fromCopy + 20);
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_22:
@@ -4017,9 +4017,9 @@ LABEL_22:
   }
 
 LABEL_62:
-  self->_rssiChanged = *(v4 + 31);
+  self->_rssiChanged = *(fromCopy + 31);
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_23:
@@ -4032,9 +4032,9 @@ LABEL_23:
   }
 
 LABEL_63:
-  self->_homeChanQualChanged = *(v4 + 18);
+  self->_homeChanQualChanged = *(fromCopy + 18);
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x200) == 0)
   {
 LABEL_24:
@@ -4047,9 +4047,9 @@ LABEL_24:
   }
 
 LABEL_64:
-  self->_chanSwitchEvent = *(v4 + 11);
+  self->_chanSwitchEvent = *(fromCopy + 11);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_25:
@@ -4062,9 +4062,9 @@ LABEL_25:
   }
 
 LABEL_65:
-  self->_roamPrep = *(v4 + 27);
+  self->_roamPrep = *(fromCopy + 27);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_26:
@@ -4077,9 +4077,9 @@ LABEL_26:
   }
 
 LABEL_66:
-  self->_roamScanStart = *(v4 + 29);
+  self->_roamScanStart = *(fromCopy + 29);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_27:
@@ -4092,9 +4092,9 @@ LABEL_27:
   }
 
 LABEL_67:
-  self->_roamScanEnd = *(v4 + 28);
+  self->_roamScanEnd = *(fromCopy + 28);
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_28:
@@ -4107,9 +4107,9 @@ LABEL_28:
   }
 
 LABEL_68:
-  self->_scanResults = *(v4 + 34);
+  self->_scanResults = *(fromCopy + 34);
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_29:
@@ -4122,9 +4122,9 @@ LABEL_29:
   }
 
 LABEL_69:
-  self->_scanSummary = *(v4 + 35);
+  self->_scanSummary = *(fromCopy + 35);
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_30:
@@ -4137,9 +4137,9 @@ LABEL_30:
   }
 
 LABEL_70:
-  self->_scanDone = *(v4 + 32);
+  self->_scanDone = *(fromCopy + 32);
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_31:
@@ -4152,9 +4152,9 @@ LABEL_31:
   }
 
 LABEL_71:
-  self->_scanInternalDone = *(v4 + 33);
+  self->_scanInternalDone = *(fromCopy + 33);
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x80) == 0)
   {
 LABEL_32:
@@ -4167,9 +4167,9 @@ LABEL_32:
   }
 
 LABEL_72:
-  self->_bssDisallowEvent = *(v4 + 9);
+  self->_bssDisallowEvent = *(fromCopy + 9);
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_33:
@@ -4182,9 +4182,9 @@ LABEL_33:
   }
 
 LABEL_73:
-  self->_slowWiFiSymptom = *(v4 + 36);
+  self->_slowWiFiSymptom = *(fromCopy + 36);
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_34:
@@ -4197,9 +4197,9 @@ LABEL_34:
   }
 
 LABEL_74:
-  self->_dpsSymptom = *(v4 + 16);
+  self->_dpsSymptom = *(fromCopy + 16);
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x400) == 0)
   {
 LABEL_35:
@@ -4212,9 +4212,9 @@ LABEL_35:
   }
 
 LABEL_75:
-  self->_crashTracerTrig = *(v4 + 12);
+  self->_crashTracerTrig = *(fromCopy + 12);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_36:
@@ -4227,9 +4227,9 @@ LABEL_36:
   }
 
 LABEL_76:
-  self->_rc1Stats = *(v4 + 22);
+  self->_rc1Stats = *(fromCopy + 22);
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 156);
+  v5 = *(fromCopy + 156);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_37:
@@ -4242,12 +4242,12 @@ LABEL_37:
   }
 
 LABEL_77:
-  self->_rc2Stats = *(v4 + 23);
+  self->_rc2Stats = *(fromCopy + 23);
   *&self->_has |= 0x200000uLL;
-  if ((*(v4 + 156) & 0x8000) != 0)
+  if ((*(fromCopy + 156) & 0x8000) != 0)
   {
 LABEL_38:
-    self->_escoTrafficInd = *(v4 + 17);
+    self->_escoTrafficInd = *(fromCopy + 17);
     *&self->_has |= 0x8000uLL;
   }
 

@@ -1,5 +1,5 @@
 @interface NCNotificationRequestContentProvider
-+ (id)primaryTextForRequest:(id)a3 isThreadSummary:(BOOL)a4 summarizedNotificationsAllHaveMatchingPrimaryText:(BOOL)a5;
++ (id)primaryTextForRequest:(id)request isThreadSummary:(BOOL)summary summarizedNotificationsAllHaveMatchingPrimaryText:(BOOL)text;
 - (BOOL)isDateAllDay;
 - (BOOL)isHighlighted;
 - (BOOL)isNumberOfLinesInfinite;
@@ -10,7 +10,7 @@
 - (NCBadgedIconDescription)badgedIconDescription;
 - (NCNotificationAction)inlineAction;
 - (NCNotificationRequestContentProvider)init;
-- (NCNotificationRequestContentProvider)initWithNotificationRequest:(id)a3;
+- (NCNotificationRequestContentProvider)initWithNotificationRequest:(id)request;
 - (NCNotificationStaticContentProvidingDelegate)delegate;
 - (NSArray)currentActions;
 - (NSArray)interfaceActions;
@@ -24,46 +24,46 @@
 - (NSString)title;
 - (NSTimeZone)timeZone;
 - (UIImage)thumbnail;
-- (id)_actionForNotificationAction:(id)a3;
-- (id)_criticalAlertIconAttributedStringWithImageConfiguration:(id)a3;
-- (id)_iconImageForNotificationAction:(id)a3;
-- (id)_intelligentManagementIconAttributedStringWithImageConfiguration:(id)a3;
+- (id)_actionForNotificationAction:(id)action;
+- (id)_criticalAlertIconAttributedStringWithImageConfiguration:(id)configuration;
+- (id)_iconImageForNotificationAction:(id)action;
+- (id)_intelligentManagementIconAttributedStringWithImageConfiguration:(id)configuration;
 - (id)_rawContentIndividualSummaryText;
 - (id)badgeText;
 - (id)cancelAction;
 - (id)clearAction;
 - (id)closeAction;
-- (id)copyWithContentHidingEnforcement:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithContentHidingEnforcement:(int64_t)enforcement;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultAction;
 - (id)footerAttributedText;
-- (id)importantAttributedTextWithImageConfiguration:(id)a3 importantAdornmentEligibleOptions:(unint64_t)a4;
+- (id)importantAttributedTextWithImageConfiguration:(id)configuration importantAdornmentEligibleOptions:(unint64_t)options;
 - (void)defaultAction;
-- (void)setIsThreadSummary:(BOOL)a3;
-- (void)setNotificationRequest:(id)a3;
+- (void)setIsThreadSummary:(BOOL)summary;
+- (void)setNotificationRequest:(id)request;
 @end
 
 @implementation NCNotificationRequestContentProvider
 
 - (NCBadgedIconDescription)badgedIconDescription
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 topLevelSectionIdentifier];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  topLevelSectionIdentifier = [notificationRequest topLevelSectionIdentifier];
 
-  v5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v6 = [v5 iconRecipe];
+  notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  iconRecipe = [notificationRequest2 iconRecipe];
 
-  v7 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v8 = [v7 subordinateIconRecipe];
+  notificationRequest3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  subordinateIconRecipe = [notificationRequest3 subordinateIconRecipe];
 
-  if (!(v6 | v8))
+  if (!(iconRecipe | subordinateIconRecipe))
   {
-    v9 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v10 = [v9 content];
-    v11 = [v10 icons];
-    v12 = [v11 firstObject];
+    notificationRequest4 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content = [notificationRequest4 content];
+    icons = [content icons];
+    firstObject = [icons firstObject];
     v13 = objc_opt_class();
-    v14 = v12;
+    v14 = firstObject;
     if (v13)
     {
       if (objc_opt_isKindOfClass())
@@ -84,12 +84,12 @@
 
     v16 = v15;
 
-    v17 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v18 = [v17 content];
-    v19 = [v18 icons];
-    v20 = [v19 lastObject];
+    notificationRequest5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content2 = [notificationRequest5 content];
+    icons2 = [content2 icons];
+    lastObject = [icons2 lastObject];
     v21 = objc_opt_class();
-    v22 = v20;
+    v22 = lastObject;
     if (v21)
     {
       if (objc_opt_isKindOfClass())
@@ -122,57 +122,57 @@
 
     if (v25)
     {
-      v6 = [NCNotificationIconRecipe iconRecipeForImage:?];
+      iconRecipe = [NCNotificationIconRecipe iconRecipeForImage:?];
     }
 
     else
     {
-      v6 = 0;
+      iconRecipe = 0;
     }
   }
 
-  v26 = [(NCNotificationRequestContentProvider *)self badgeText];
+  badgeText = [(NCNotificationRequestContentProvider *)self badgeText];
   if (![(NCNotificationRequestContentProvider *)self isThreadSummary])
   {
     goto LABEL_23;
   }
 
-  v27 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v28 = [v27 content];
-  if ([v28 isCommunicationType])
+  notificationRequest6 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content3 = [notificationRequest6 content];
+  if ([content3 isCommunicationType])
   {
 
 LABEL_23:
-    v30 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v31 = [v30 content];
-    v32 = [v31 communicationContext];
+    notificationRequest7 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content4 = [notificationRequest7 content];
+    communicationContext = [content4 communicationContext];
 
-    v33 = [v32 isAvatarImagePossibleForBundleIdentifier:v4];
+    v33 = [communicationContext isAvatarImagePossibleForBundleIdentifier:topLevelSectionIdentifier];
     if (v33)
     {
-      v34 = v32;
+      v34 = communicationContext;
     }
 
     else
     {
-      v34 = v6;
+      v34 = iconRecipe;
     }
 
     if (v34)
     {
       if (v33)
       {
-        v35 = v6;
+        v35 = iconRecipe;
       }
 
       else
       {
-        v35 = v8;
+        v35 = subordinateIconRecipe;
       }
 
       v36 = v35;
       v37 = v34;
-      v38 = [[NCBadgedIconDescription alloc] initWithBundleIdentifier:v4 prominentIconDescription:v37 subordinateIconRecipe:v36 badgeText:v26];
+      v38 = [[NCBadgedIconDescription alloc] initWithBundleIdentifier:topLevelSectionIdentifier prominentIconDescription:v37 subordinateIconRecipe:v36 badgeText:badgeText];
     }
 
     else
@@ -183,27 +183,27 @@ LABEL_23:
     goto LABEL_32;
   }
 
-  v29 = [(NCNotificationRequestContentProvider *)self summarizedNotificationsAllHaveMatchingIcons];
+  summarizedNotificationsAllHaveMatchingIcons = [(NCNotificationRequestContentProvider *)self summarizedNotificationsAllHaveMatchingIcons];
 
-  if (v29)
+  if (summarizedNotificationsAllHaveMatchingIcons)
   {
     goto LABEL_23;
   }
 
-  if (v8)
+  if (subordinateIconRecipe)
   {
-    v40 = v8;
+    v40 = subordinateIconRecipe;
   }
 
   else
   {
-    v40 = v6;
+    v40 = iconRecipe;
   }
 
   if (v40)
   {
-    v32 = v40;
-    v38 = [[NCBadgedIconDescription alloc] initWithBundleIdentifier:v4 prominentIconDescription:v32 subordinateIconRecipe:0 badgeText:v26];
+    communicationContext = v40;
+    v38 = [[NCBadgedIconDescription alloc] initWithBundleIdentifier:topLevelSectionIdentifier prominentIconDescription:communicationContext subordinateIconRecipe:0 badgeText:badgeText];
 LABEL_32:
 
     goto LABEL_33;
@@ -217,18 +217,18 @@ LABEL_33:
 
 - (id)badgeText
 {
-  v2 = [(NCNotificationRequestContentProvider *)self stackedNotificationsCount];
-  if (v2 < 2)
+  stackedNotificationsCount = [(NCNotificationRequestContentProvider *)self stackedNotificationsCount];
+  if (stackedNotificationsCount < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v3 = v2;
-    v4 = [MEMORY[0x277CCABB8] sbf_cachedDecimalNumberFormatter];
+    v3 = stackedNotificationsCount;
+    sbf_cachedDecimalNumberFormatter = [MEMORY[0x277CCABB8] sbf_cachedDecimalNumberFormatter];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
-    v6 = [v4 stringFromNumber:v5];
+    v6 = [sbf_cachedDecimalNumberFormatter stringFromNumber:v5];
   }
 
   return v6;
@@ -236,66 +236,66 @@ LABEL_33:
 
 - (NSDate)date
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 date];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  date = [content date];
 
-  return v4;
+  return date;
 }
 
 - (NSTimeZone)timeZone
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 timeZone];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  timeZone = [content timeZone];
 
-  return v4;
+  return timeZone;
 }
 
 - (NSString)primaryText
 {
   v3 = objc_opt_class();
-  v4 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v5 = [v3 primaryTextForRequest:v4 isThreadSummary:-[NCNotificationRequestContentProvider isThreadSummary](self summarizedNotificationsAllHaveMatchingPrimaryText:{"isThreadSummary"), -[NCNotificationRequestContentProvider summarizedNotificationsAllHaveMatchingPrimaryText](self, "summarizedNotificationsAllHaveMatchingPrimaryText")}];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  v5 = [v3 primaryTextForRequest:notificationRequest isThreadSummary:-[NCNotificationRequestContentProvider isThreadSummary](self summarizedNotificationsAllHaveMatchingPrimaryText:{"isThreadSummary"), -[NCNotificationRequestContentProvider summarizedNotificationsAllHaveMatchingPrimaryText](self, "summarizedNotificationsAllHaveMatchingPrimaryText")}];
 
   return v5;
 }
 
 - (NSString)primarySubtitleText
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 communicationContext];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  communicationContext = [content communicationContext];
 
   if ([(NCNotificationRequestContentProvider *)self isThreadSummary])
   {
-    v6 = 0;
+    preferredRecipientsSummary = 0;
   }
 
   else if ([(NCNotificationRequestContentProvider *)self isPrimarySubtitleTextDisplayingRecipientsSummary])
   {
-    v6 = [v5 preferredRecipientsSummary];
+    preferredRecipientsSummary = [communicationContext preferredRecipientsSummary];
   }
 
   else
   {
-    v7 = [(NCNotificationRequestContentProvider *)self isPrimarySubtitleTextDisplayingRequestTitle];
-    v8 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v9 = [v8 content];
-    v10 = v9;
-    if (v7)
+    isPrimarySubtitleTextDisplayingRequestTitle = [(NCNotificationRequestContentProvider *)self isPrimarySubtitleTextDisplayingRequestTitle];
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content2 = [notificationRequest2 content];
+    v10 = content2;
+    if (isPrimarySubtitleTextDisplayingRequestTitle)
     {
-      [v9 title];
+      [content2 title];
     }
 
     else
     {
-      [v9 subtitle];
+      [content2 subtitle];
     }
-    v6 = ;
+    preferredRecipientsSummary = ;
   }
 
-  return v6;
+  return preferredRecipientsSummary;
 }
 
 - (BOOL)isPrimarySubtitleTextDisplayingRecipientsSummary
@@ -305,25 +305,25 @@ LABEL_33:
     return 0;
   }
 
-  v4 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v5 = [v4 content];
-  v6 = [v5 communicationContext];
-  v3 = v6 != 0;
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  communicationContext = [content communicationContext];
+  v3 = communicationContext != 0;
 
   return v3;
 }
 
 - (BOOL)isPrimarySubtitleTextDisplayingRequestTitle
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 customHeader];
-  if (v5)
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  customHeader = [content customHeader];
+  if (customHeader)
   {
-    v6 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v7 = [v6 content];
-    v8 = [v7 title];
-    v9 = v8 != 0;
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content2 = [notificationRequest2 content];
+    title = [content2 title];
+    v9 = title != 0;
   }
 
   else
@@ -336,75 +336,75 @@ LABEL_33:
 
 - (NSAttributedString)secondaryText
 {
-  v3 = [(NCNotificationRequestContentProvider *)self _rawContentIndividualSummaryText];
-  v4 = [v3 length];
-  v5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v6 = [v5 isCollapsedNotification];
+  _rawContentIndividualSummaryText = [(NCNotificationRequestContentProvider *)self _rawContentIndividualSummaryText];
+  v4 = [_rawContentIndividualSummaryText length];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  isCollapsedNotification = [notificationRequest isCollapsedNotification];
 
-  if (v6)
+  if (isCollapsedNotification)
   {
-    v7 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v8 = [v7 content];
-    v9 = [v8 customHeader];
-    v10 = v9;
-    if (v9)
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content = [notificationRequest2 content];
+    customHeader = [content customHeader];
+    v10 = customHeader;
+    if (customHeader)
     {
-      v11 = v9;
+      defaultHeader = customHeader;
     }
 
     else
     {
-      v14 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-      v15 = [v14 content];
-      v11 = [v15 defaultHeader];
+      notificationRequest3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+      content2 = [notificationRequest3 content];
+      defaultHeader = [content2 defaultHeader];
     }
 
     v16 = MEMORY[0x277CCACA8];
     v17 = NCUserNotificationsUIKitFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"COLLAPSED_NOTIFICATION_MESSAGE" value:&stru_282FE84F8 table:0];
-    v19 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v20 = [v16 stringWithFormat:v18, objc_msgSend(v19, "collapsedNotificationsCount"), v11];
+    notificationRequest4 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    v20 = [v16 stringWithFormat:v18, objc_msgSend(notificationRequest4, "collapsedNotificationsCount"), defaultHeader];
 
-    v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v20];
+    attributedMessage = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v20];
     v13 = 4;
   }
 
   else if (v4)
   {
-    v12 = v3;
+    attributedMessage = _rawContentIndividualSummaryText;
     v13 = 1;
   }
 
   else
   {
-    v21 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v22 = [v21 content];
-    v12 = [v22 attributedMessage];
+    notificationRequest5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content3 = [notificationRequest5 content];
+    attributedMessage = [content3 attributedMessage];
 
     v13 = 3;
   }
 
   v23 = objc_alloc(MEMORY[0x277CCA898]);
-  v24 = [v23 nc_initWithAttributedString:v12 contentType:v13];
+  v24 = [v23 nc_initWithAttributedString:attributedMessage contentType:v13];
 
   return v24;
 }
 
 - (BOOL)isDateAllDay
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 isDateAllDay];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  isDateAllDay = [content isDateAllDay];
 
-  return v4;
+  return isDateAllDay;
 }
 
 - (MTVisualStylingProvider)importantTextVisualStylingProvider
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 interruptionLevel];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  interruptionLevel = [notificationRequest interruptionLevel];
 
-  if (v3 == 3)
+  if (interruptionLevel == 3)
   {
     v4 = MEMORY[0x277D26740];
     v5 = NCUserNotificationsUIKitFrameworkBundle();
@@ -422,104 +422,104 @@ LABEL_33:
 - (id)footerAttributedText
 {
   v2 = MEMORY[0x277CCA898];
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 footer];
-  v6 = [v2 nc_safeAttributedStringWithString:v5];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  footer = [content footer];
+  v6 = [v2 nc_safeAttributedStringWithString:footer];
 
   return v6;
 }
 
 - (NSString)importantText
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  if ([v2 interruptionLevel] == 2)
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  if ([notificationRequest interruptionLevel] == 2)
   {
     v3 = NCUserNotificationsUIKitFrameworkBundle();
     v4 = [v3 localizedStringForKey:@"TIME_SENSITIVE_TEXT" value:&stru_282FE84F8 table:0];
-    v5 = [v4 localizedUppercaseString];
+    localizedUppercaseString = [v4 localizedUppercaseString];
   }
 
   else
   {
-    v5 = 0;
+    localizedUppercaseString = 0;
   }
 
-  return v5;
+  return localizedUppercaseString;
 }
 
 - (NSString)footerText
 {
-  v2 = [(NCNotificationRequestContentProvider *)self footerAttributedText];
-  v3 = [v2 string];
+  footerAttributedText = [(NCNotificationRequestContentProvider *)self footerAttributedText];
+  string = [footerAttributedText string];
 
-  return v3;
+  return string;
 }
 
 - (NSString)title
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 content];
-  v5 = [v4 customHeader];
-  v6 = v5;
-  if (v5)
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  customHeader = [content customHeader];
+  v6 = customHeader;
+  if (customHeader)
   {
-    v7 = v5;
+    defaultHeader = customHeader;
   }
 
   else
   {
-    v8 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v9 = [v8 content];
-    v7 = [v9 defaultHeader];
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content2 = [notificationRequest2 content];
+    defaultHeader = [content2 defaultHeader];
   }
 
-  if (v7)
+  if (defaultHeader)
   {
-    v10 = [v7 localizedUppercaseString];
+    localizedUppercaseString = [defaultHeader localizedUppercaseString];
   }
 
   else
   {
-    v11 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v12 = [v11 content];
-    v13 = [v12 title];
-    v10 = [v13 localizedUppercaseString];
+    notificationRequest3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content3 = [notificationRequest3 content];
+    title = [content3 title];
+    localizedUppercaseString = [title localizedUppercaseString];
   }
 
-  return v10;
+  return localizedUppercaseString;
 }
 
 - (NCNotificationAction)inlineAction
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 inlineAction];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  inlineAction = [notificationRequest inlineAction];
 
-  return v3;
+  return inlineAction;
 }
 
 - (UIImage)thumbnail
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 attachmentImage];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  attachmentImage = [content attachmentImage];
 
-  return v4;
+  return attachmentImage;
 }
 
 - (BOOL)isNumberOfLinesInfinite
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 options];
-  v4 = [v3 isNumberOfLinesInfinite];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  options = [notificationRequest options];
+  isNumberOfLinesInfinite = [options isNumberOfLinesInfinite];
 
-  return v4;
+  return isNumberOfLinesInfinite;
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  if ([v2 isHighlight])
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  if ([notificationRequest isHighlight])
   {
     v3 = _NCIsNotificationHighlightsAllowed();
   }
@@ -532,16 +532,16 @@ LABEL_33:
   return v3;
 }
 
-- (NCNotificationRequestContentProvider)initWithNotificationRequest:(id)a3
+- (NCNotificationRequestContentProvider)initWithNotificationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = NCNotificationRequestContentProvider;
   v6 = [(NCNotificationRequestContentProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationRequest, a3);
+    objc_storeStrong(&v6->_notificationRequest, request);
   }
 
   return v7;
@@ -554,7 +554,7 @@ LABEL_33:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithNotificationRequest:self->_notificationRequest];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -565,101 +565,101 @@ LABEL_33:
   return v4;
 }
 
-- (void)setNotificationRequest:(id)a3
+- (void)setNotificationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   notificationRequest = self->_notificationRequest;
   p_notificationRequest = &self->_notificationRequest;
-  if (notificationRequest != v5)
+  if (notificationRequest != requestCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_notificationRequest, a3);
-    v5 = v8;
+    v8 = requestCopy;
+    objc_storeStrong(p_notificationRequest, request);
+    requestCopy = v8;
   }
 }
 
-+ (id)primaryTextForRequest:(id)a3 isThreadSummary:(BOOL)a4 summarizedNotificationsAllHaveMatchingPrimaryText:(BOOL)a5
++ (id)primaryTextForRequest:(id)request isThreadSummary:(BOOL)summary summarizedNotificationsAllHaveMatchingPrimaryText:(BOOL)text
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 content];
-  v9 = [v8 customHeader];
+  textCopy = text;
+  summaryCopy = summary;
+  requestCopy = request;
+  content = [requestCopy content];
+  customHeader = [content customHeader];
 
-  v10 = [v7 content];
-  v11 = [v10 communicationContext];
+  content2 = [requestCopy content];
+  communicationContext = [content2 communicationContext];
 
-  if (v9)
+  if (customHeader)
   {
-    v12 = v9;
+    preferredRecipientsSummary = customHeader;
   }
 
   else
   {
-    if (!v11)
+    if (!communicationContext)
     {
-      if (!v6 || v5)
+      if (!summaryCopy || textCopy)
       {
-        v18 = [v7 content];
-        v13 = [v18 title];
+        content3 = [requestCopy content];
+        title = [content3 title];
       }
 
       else
       {
-        v13 = 0;
+        title = 0;
       }
 
       goto LABEL_9;
     }
 
-    if (v6 && ([v11 isGroup] & 1) != 0)
+    if (summaryCopy && ([communicationContext isGroup] & 1) != 0)
     {
-      v12 = [v11 preferredRecipientsSummary];
+      preferredRecipientsSummary = [communicationContext preferredRecipientsSummary];
     }
 
     else
     {
-      v12 = [v11 preferredSenderSummary];
+      preferredRecipientsSummary = [communicationContext preferredSenderSummary];
     }
   }
 
-  v13 = v12;
+  title = preferredRecipientsSummary;
 LABEL_9:
-  if (![v13 length])
+  if (![title length])
   {
-    v14 = [v7 content];
-    v15 = [v14 defaultHeader];
+    content4 = [requestCopy content];
+    defaultHeader = [content4 defaultHeader];
 
-    v13 = v15;
+    title = defaultHeader;
   }
 
-  v16 = v13;
+  v16 = title;
 
-  return v13;
+  return title;
 }
 
-- (void)setIsThreadSummary:(BOOL)a3
+- (void)setIsThreadSummary:(BOOL)summary
 {
-  if (self->_isThreadSummary != a3)
+  if (self->_isThreadSummary != summary)
   {
-    self->_isThreadSummary = a3;
+    self->_isThreadSummary = summary;
   }
 }
 
-- (id)importantAttributedTextWithImageConfiguration:(id)a3 importantAdornmentEligibleOptions:(unint64_t)a4
+- (id)importantAttributedTextWithImageConfiguration:(id)configuration importantAdornmentEligibleOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v8 = [v7 interruptionLevel];
+  optionsCopy = options;
+  configurationCopy = configuration;
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  interruptionLevel = [notificationRequest interruptionLevel];
 
-  v9 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v10 = [v9 alertOptions];
-  v11 = [v10 intelligentBehavior];
+  notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  alertOptions = [notificationRequest2 alertOptions];
+  intelligentBehavior = [alertOptions intelligentBehavior];
 
-  if ((v4 & 1) != 0 && v8 == 3)
+  if ((optionsCopy & 1) != 0 && interruptionLevel == 3)
   {
-    v12 = [(NCNotificationRequestContentProvider *)self _criticalAlertIconAttributedStringWithImageConfiguration:v6];
+    v12 = [(NCNotificationRequestContentProvider *)self _criticalAlertIconAttributedStringWithImageConfiguration:configurationCopy];
     v13 = @"CRITICAL_TEXT";
 LABEL_7:
     v14 = [v12 mutableCopy];
@@ -668,8 +668,8 @@ LABEL_7:
     v16 = MEMORY[0x277CCACA8];
     v17 = NCUserNotificationsUIKitFrameworkBundle();
     v18 = [v17 localizedStringForKey:v13 value:&stru_282FE84F8 table:0];
-    v19 = [v18 localizedUppercaseString];
-    v20 = [v16 stringWithFormat:@" %@", v19];
+    localizedUppercaseString = [v18 localizedUppercaseString];
+    v20 = [v16 stringWithFormat:@" %@", localizedUppercaseString];
     v21 = [v15 initWithString:v20];
     [v14 appendAttributedString:v21];
 
@@ -677,9 +677,9 @@ LABEL_7:
   }
 
   v14 = 0;
-  if ((v4 & 2) != 0 && v11 == 2)
+  if ((optionsCopy & 2) != 0 && intelligentBehavior == 2)
   {
-    v12 = [(NCNotificationRequestContentProvider *)self _intelligentManagementIconAttributedStringWithImageConfiguration:v6];
+    v12 = [(NCNotificationRequestContentProvider *)self _intelligentManagementIconAttributedStringWithImageConfiguration:configurationCopy];
     v13 = @"INTELLIGENCE_PRIORITY";
     goto LABEL_7;
   }
@@ -694,11 +694,11 @@ LABEL_8:
   v26 = *MEMORY[0x277D85DE8];
   v17 = objc_opt_new();
   objc_initWeak(&location, self);
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  if ([v3 showsTextInputOnAppearance])
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  if ([notificationRequest showsTextInputOnAppearance])
   {
-    v4 = [(NCNotificationRequestContentProvider *)self overriddenActions];
-    v5 = v4 == 0;
+    overriddenActions = [(NCNotificationRequestContentProvider *)self overriddenActions];
+    v5 = overriddenActions == 0;
 
     if (v5)
     {
@@ -729,8 +729,8 @@ LABEL_8:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 title];
-        if (v11)
+        title = [v10 title];
+        if (title)
         {
           if ([v10 isDestructiveAction])
           {
@@ -749,7 +749,7 @@ LABEL_8:
           v18[3] = &unk_278371AF0;
           objc_copyWeak(&v19, &location);
           v18[4] = v10;
-          v14 = [v13 actionWithTitle:v11 type:v12 handler:v18];
+          v14 = [v13 actionWithTitle:title type:v12 handler:v18];
           [v17 addObject:v14];
 
           objc_destroyWeak(&v19);
@@ -780,12 +780,12 @@ void __56__NCNotificationRequestContentProvider_interfaceActions__block_invoke(u
 {
   v30 = *MEMORY[0x277D85DE8];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  if ([v3 showsTextInputOnAppearance])
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  if ([notificationRequest showsTextInputOnAppearance])
   {
-    v4 = [(NCNotificationRequestContentProvider *)self overriddenActions];
+    overriddenActions = [(NCNotificationRequestContentProvider *)self overriddenActions];
 
-    if (!v4)
+    if (!overriddenActions)
     {
       goto LABEL_18;
     }
@@ -795,13 +795,13 @@ void __56__NCNotificationRequestContentProvider_interfaceActions__block_invoke(u
   {
   }
 
-  v5 = [(NCNotificationRequestContentProvider *)self currentActions];
+  currentActions = [(NCNotificationRequestContentProvider *)self currentActions];
   objc_initWeak(&location, self);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = currentActions;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -816,13 +816,13 @@ void __56__NCNotificationRequestContentProvider_interfaceActions__block_invoke(u
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 title];
-        if (v10)
+        title = [v9 title];
+        if (title)
         {
-          v11 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-          v12 = [v11 notificationIdentifier];
-          v13 = [v12 un_logDigest];
-          v14 = [v13 stringByAppendingPathExtension:v10];
+          notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+          notificationIdentifier = [notificationRequest2 notificationIdentifier];
+          un_logDigest = [notificationIdentifier un_logDigest];
+          v14 = [un_logDigest stringByAppendingPathExtension:title];
 
           v15 = MEMORY[0x277D750C8];
           v16 = [(NCNotificationRequestContentProvider *)self _iconImageForNotificationAction:v9];
@@ -832,7 +832,7 @@ void __56__NCNotificationRequestContentProvider_interfaceActions__block_invoke(u
           v22[3] = &unk_278371940;
           objc_copyWeak(&v23, &location);
           v22[4] = v9;
-          v17 = [v15 actionWithTitle:v10 image:v16 identifier:v14 handler:v22];
+          v17 = [v15 actionWithTitle:title image:v16 identifier:v14 handler:v22];
 
           if ([v9 isDestructiveAction])
           {
@@ -870,22 +870,22 @@ void __51__NCNotificationRequestContentProvider_menuActions__block_invoke(uint64
   [v2 contentProvider:WeakRetained performAction:*(a1 + 32) animated:1];
 }
 
-- (id)_actionForNotificationAction:(id)a3
+- (id)_actionForNotificationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
-  v5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v6 = [v5 notificationIdentifier];
-  v7 = [v6 un_logDigest];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __69__NCNotificationRequestContentProvider__actionForNotificationAction___block_invoke;
   v16 = &unk_278371AC8;
   objc_copyWeak(&v19, &location);
-  v8 = v7;
+  v8 = un_logDigest;
   v17 = v8;
-  v9 = v4;
+  v9 = actionCopy;
   v18 = v9;
   v10 = _Block_copy(&v13);
   v11 = [v10 copy];
@@ -914,12 +914,12 @@ void __69__NCNotificationRequestContentProvider__actionForNotificationAction___b
 
 - (id)defaultAction
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 defaultAction];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  defaultAction = [notificationRequest defaultAction];
 
-  if (v4)
+  if (defaultAction)
   {
-    v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:v4];
+    v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:defaultAction];
   }
 
   else
@@ -940,119 +940,119 @@ void __69__NCNotificationRequestContentProvider__actionForNotificationAction___b
 
 - (id)cancelAction
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 cancelAction];
-  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:v4];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  cancelAction = [notificationRequest cancelAction];
+  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:cancelAction];
 
   return v5;
 }
 
 - (id)clearAction
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 clearAction];
-  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:v4];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  clearAction = [notificationRequest clearAction];
+  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:clearAction];
 
   return v5;
 }
 
 - (id)closeAction
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 closeAction];
-  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:v4];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  closeAction = [notificationRequest closeAction];
+  v5 = [(NCNotificationRequestContentProvider *)self _actionForNotificationAction:closeAction];
 
   return v5;
 }
 
 - (BOOL)showsTextInputOnAppearance
 {
-  v2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v3 = [v2 showsTextInputOnAppearance];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  showsTextInputOnAppearance = [notificationRequest showsTextInputOnAppearance];
 
-  return v3;
+  return showsTextInputOnAppearance;
 }
 
 - (NSArray)currentActions
 {
-  v3 = [(NCNotificationRequestContentProvider *)self overriddenActions];
-  if (v3)
+  overriddenActions = [(NCNotificationRequestContentProvider *)self overriddenActions];
+  if (overriddenActions)
   {
-    v4 = [(NCNotificationRequestContentProvider *)self overriddenActions];
+    overriddenActions2 = [(NCNotificationRequestContentProvider *)self overriddenActions];
   }
 
   else
   {
-    v5 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v4 = [v5 defaultEnvironmentActions];
+    notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    overriddenActions2 = [notificationRequest defaultEnvironmentActions];
   }
 
-  v6 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v7 = [v6 inlineAction];
+  notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  inlineAction = [notificationRequest2 inlineAction];
 
-  if (v7)
+  if (inlineAction)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-    [v8 addObjectsFromArray:v4];
+    v8 = [MEMORY[0x277CBEB18] arrayWithObject:inlineAction];
+    [v8 addObjectsFromArray:overriddenActions2];
   }
 
   else
   {
-    v8 = v4;
+    v8 = overriddenActions2;
   }
 
   return v8;
 }
 
-- (id)copyWithContentHidingEnforcement:(int64_t)a3
+- (id)copyWithContentHidingEnforcement:(int64_t)enforcement
 {
   result = [(NCNotificationRequestContentProvider *)self copy];
-  *(result + 4) = a3;
+  *(result + 4) = enforcement;
   return result;
 }
 
-- (id)_iconImageForNotificationAction:(id)a3
+- (id)_iconImageForNotificationAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 iconImageName];
-  if (![v5 length])
+  actionCopy = action;
+  iconImageName = [actionCopy iconImageName];
+  if (![iconImageName length])
   {
     v9 = 0;
     goto LABEL_19;
   }
 
-  v6 = [v4 iconImageBundlePath];
-  if (![v6 length])
+  iconImageBundlePath = [actionCopy iconImageBundlePath];
+  if (![iconImageBundlePath length])
   {
-    v10 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v11 = [v10 sectionIdentifier];
-    v12 = [v11 un_isFirstPartyIdentifier];
+    notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    sectionIdentifier = [notificationRequest sectionIdentifier];
+    un_isFirstPartyIdentifier = [sectionIdentifier un_isFirstPartyIdentifier];
 
-    if (v12)
+    if (un_isFirstPartyIdentifier)
     {
-      [MEMORY[0x277D755B8] _systemImageNamed:v5];
+      [MEMORY[0x277D755B8] _systemImageNamed:iconImageName];
     }
 
     else
     {
-      [MEMORY[0x277D755B8] systemImageNamed:v5];
+      [MEMORY[0x277D755B8] systemImageNamed:iconImageName];
     }
     v9 = ;
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x277CCA8D8] bundleWithPath:v6];
+  v7 = [MEMORY[0x277CCA8D8] bundleWithPath:iconImageBundlePath];
   if (!v7)
   {
-    v13 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v14 = [v13 topLevelSectionIdentifier];
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    topLevelSectionIdentifier = [notificationRequest2 topLevelSectionIdentifier];
 
-    if (v14)
+    if (topLevelSectionIdentifier)
     {
       v15 = MEMORY[0x277CC1E70];
-      v16 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-      v17 = [v16 topLevelSectionIdentifier];
-      v18 = [v15 unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:v17];
+      notificationRequest3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+      topLevelSectionIdentifier2 = [notificationRequest3 topLevelSectionIdentifier];
+      v18 = [v15 unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:topLevelSectionIdentifier2];
 
       if (v18)
       {
@@ -1082,7 +1082,7 @@ void __69__NCNotificationRequestContentProvider__actionForNotificationAction___b
 
   v8 = v7;
 LABEL_5:
-  v9 = [MEMORY[0x277D755B8] imageNamed:v5 inBundle:v8 withConfiguration:0];
+  v9 = [MEMORY[0x277D755B8] imageNamed:iconImageName inBundle:v8 withConfiguration:0];
 
 LABEL_18:
 LABEL_19:
@@ -1097,9 +1097,9 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (id)_criticalAlertIconAttributedStringWithImageConfiguration:(id)a3
+- (id)_criticalAlertIconAttributedStringWithImageConfiguration:(id)configuration
 {
-  v3 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill" withConfiguration:a3];
+  v3 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill" withConfiguration:configuration];
   v4 = [objc_alloc(MEMORY[0x277D74270]) initWithData:0 ofType:0];
   [v4 setImage:v3];
   v5 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v4];
@@ -1107,9 +1107,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)_intelligentManagementIconAttributedStringWithImageConfiguration:(id)a3
+- (id)_intelligentManagementIconAttributedStringWithImageConfiguration:(id)configuration
 {
-  v3 = [MEMORY[0x277D755B8] _systemImageNamed:@"_gm" withConfiguration:a3];
+  v3 = [MEMORY[0x277D755B8] _systemImageNamed:@"_gm" withConfiguration:configuration];
   v4 = [objc_alloc(MEMORY[0x277D74270]) initWithData:0 ofType:0];
   [v4 setImage:v3];
   v5 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v4];
@@ -1119,23 +1119,23 @@ LABEL_19:
 
 - (id)_rawContentIndividualSummaryText
 {
-  v3 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-  v4 = [v3 options];
-  v5 = [v4 canShowSummary];
+  notificationRequest = [(NCNotificationRequestContentProvider *)self notificationRequest];
+  options = [notificationRequest options];
+  canShowSummary = [options canShowSummary];
 
-  if (v5)
+  if (canShowSummary)
   {
-    v6 = [(NCNotificationRequestContentProvider *)self notificationRequest];
-    v7 = [v6 content];
-    v8 = [v7 summary];
+    notificationRequest2 = [(NCNotificationRequestContentProvider *)self notificationRequest];
+    content = [notificationRequest2 content];
+    summary = [content summary];
   }
 
   else
   {
-    v8 = 0;
+    summary = 0;
   }
 
-  return v8;
+  return summary;
 }
 
 void __69__NCNotificationRequestContentProvider__actionForNotificationAction___block_invoke_cold_1(uint64_t a1, NSObject *a2)
@@ -1149,10 +1149,10 @@ void __69__NCNotificationRequestContentProvider__actionForNotificationAction___b
 
 - (void)defaultAction
 {
-  v3 = a1;
-  v4 = [a2 notificationRequest];
-  v5 = [v4 notificationIdentifier];
-  v6 = [v5 un_logDigest];
+  selfCopy = self;
+  notificationRequest = [a2 notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
   OUTLINED_FUNCTION_0_6(&dword_21E77E000, v7, v8, "ContentProvider: no defaultAction for %{public}@", v9, v10, v11, v12, 2u);
 }
 

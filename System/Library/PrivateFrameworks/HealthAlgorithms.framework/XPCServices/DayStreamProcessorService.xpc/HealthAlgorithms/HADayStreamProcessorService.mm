@@ -1,7 +1,7 @@
 @interface HADayStreamProcessorService
 - (BOOL)shouldSendCoreAnalytics;
-- (void)appendDays:(id)a3;
-- (void)beginSessionWithConfig:(id)a3;
+- (void)appendDays:(id)days;
+- (void)beginSessionWithConfig:(id)config;
 @end
 
 @implementation HADayStreamProcessorService
@@ -9,9 +9,9 @@
 - (BOOL)shouldSendCoreAnalytics
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  isHealthDataSubmissionAllowed = [v2 isHealthDataSubmissionAllowed];
 
-  if (v3)
+  if (isHealthDataSubmissionAllowed)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 valueForKeyPath:@"HADateOfLastDayStreamProcessorCAEvent"];
@@ -19,21 +19,21 @@
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [v5 timeIntervalSinceNow];
-      LOBYTE(v3) = v6 < -84600.0;
+      LOBYTE(isHealthDataSubmissionAllowed) = v6 < -84600.0;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isHealthDataSubmissionAllowed) = 1;
     }
   }
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
-- (void)beginSessionWithConfig:(id)a3
+- (void)beginSessionWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = sub_100001A74();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -42,9 +42,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &v12, 0xCu);
   }
 
-  v6 = [(HADayStreamProcessorService *)self processor];
+  processor = [(HADayStreamProcessorService *)self processor];
 
-  if (v6)
+  if (processor)
   {
     v7 = sub_100001A74();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -53,14 +53,14 @@
     }
   }
 
-  v8 = [[MAIDayStreamProcessor alloc] initWithConfig:v4];
+  v8 = [[MAIDayStreamProcessor alloc] initWithConfig:configCopy];
   [(HADayStreamProcessorService *)self setProcessor:v8];
 
-  v9 = [(HADayStreamProcessorService *)self processor];
+  processor2 = [(HADayStreamProcessorService *)self processor];
 
-  if (v9)
+  if (processor2)
   {
-    v10 = [[MAIDayStreamDiagnosticLogger alloc] initWithConfig:v4];
+    v10 = [[MAIDayStreamDiagnosticLogger alloc] initWithConfig:configCopy];
     [(HADayStreamProcessorService *)self setDiagnosticLogger:v10];
 
     v11 = sub_100001A74();
@@ -77,18 +77,18 @@
   }
 }
 
-- (void)appendDays:(id)a3
+- (void)appendDays:(id)days
 {
-  v4 = a3;
-  v5 = [(HADayStreamProcessorService *)self processor];
+  daysCopy = days;
+  processor = [(HADayStreamProcessorService *)self processor];
 
-  if (v5)
+  if (processor)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = daysCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -104,11 +104,11 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [(HADayStreamProcessorService *)self processor];
-          [v12 appendDay:v11];
+          processor2 = [(HADayStreamProcessorService *)self processor];
+          [processor2 appendDay:v11];
 
-          v13 = [(HADayStreamProcessorService *)self diagnosticLogger];
-          [v13 appendDay:v11];
+          diagnosticLogger = [(HADayStreamProcessorService *)self diagnosticLogger];
+          [diagnosticLogger appendDay:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];

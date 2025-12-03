@@ -1,18 +1,18 @@
 @interface ExpandableMacPopoverPresentationController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (UIPanGestureRecognizer)scrollExpandGestureRecognizer;
-- (void)handlePanGesture:(id)a3;
-- (void)setMinimizedMode:(BOOL)a3;
+- (void)handlePanGesture:(id)gesture;
+- (void)setMinimizedMode:(BOOL)mode;
 @end
 
 @implementation ExpandableMacPopoverPresentationController
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(MacPopoverPresentationController *)self containeeViewController];
-  v6 = [v5 view];
-  [v4 translationInView:v6];
+  gestureCopy = gesture;
+  containeeViewController = [(MacPopoverPresentationController *)self containeeViewController];
+  view = [containeeViewController view];
+  [gestureCopy translationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -25,12 +25,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
+  recognizerCopy = recognizer;
+  scrollExpandGestureRecognizer = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
 
-  return v6 == v5;
+  return scrollExpandGestureRecognizer == recognizerCopy;
 }
 
 - (UIPanGestureRecognizer)scrollExpandGestureRecognizer
@@ -50,47 +50,47 @@
   return scrollExpandGestureRecognizer;
 }
 
-- (void)setMinimizedMode:(BOOL)a3
+- (void)setMinimizedMode:(BOOL)mode
 {
-  if (self->_minimizedMode != a3)
+  if (self->_minimizedMode != mode)
   {
     v28 = v6;
     v29 = v5;
     v30 = v4;
     v31 = v3;
-    self->_minimizedMode = a3;
-    if (a3)
+    self->_minimizedMode = mode;
+    if (mode)
     {
       v12 = +[NSUserDefaults standardUserDefaults];
       v13 = [v12 BOOLForKey:@"SCROLLING_OPENS_PLACECARD_KEY_ROTATED"];
 
       if (v13)
       {
-        v14 = [(MacPopoverPresentationController *)self containeeViewController];
-        v15 = [v14 view];
-        v16 = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
-        [v15 addGestureRecognizer:v16];
+        containeeViewController = [(MacPopoverPresentationController *)self containeeViewController];
+        view = [containeeViewController view];
+        scrollExpandGestureRecognizer = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
+        [view addGestureRecognizer:scrollExpandGestureRecognizer];
       }
 
-      v17 = [(MacPopoverPresentationController *)self containeeViewController:v10];
-      [v17 macContaineeWidth];
+      containeeViewController4 = [(MacPopoverPresentationController *)self containeeViewController:v10];
+      [containeeViewController4 macContaineeWidth];
       v19 = v18;
       v20 = 374.0;
     }
 
     else
     {
-      v21 = [(MacPopoverPresentationController *)self containeeViewController];
-      v22 = [v21 view];
-      v23 = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
-      [v22 removeGestureRecognizer:v23];
+      containeeViewController2 = [(MacPopoverPresentationController *)self containeeViewController];
+      view2 = [containeeViewController2 view];
+      scrollExpandGestureRecognizer2 = [(ExpandableMacPopoverPresentationController *)self scrollExpandGestureRecognizer];
+      [view2 removeGestureRecognizer:scrollExpandGestureRecognizer2];
 
-      v24 = [(MacPopoverPresentationController *)self containeeViewController];
-      [v24 heightForLayout:3];
+      containeeViewController3 = [(MacPopoverPresentationController *)self containeeViewController];
+      [containeeViewController3 heightForLayout:3];
       v26 = v25;
 
-      v17 = [(MacPopoverPresentationController *)self containeeViewController];
-      [v17 macContaineeWidth];
+      containeeViewController4 = [(MacPopoverPresentationController *)self containeeViewController];
+      [containeeViewController4 macContaineeWidth];
       v19 = v27;
       v20 = fmin(v26, 610.0);
     }

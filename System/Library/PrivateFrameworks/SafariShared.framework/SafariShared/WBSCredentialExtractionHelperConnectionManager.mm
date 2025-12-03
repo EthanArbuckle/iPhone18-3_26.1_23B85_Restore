@@ -1,8 +1,8 @@
 @interface WBSCredentialExtractionHelperConnectionManager
 + (id)sharedManager;
 - (WBSCredentialExtractionHelperConnectionManager)init;
-- (id)credentialExtractionHelperConnectionRequestedByClient:(id)a3;
-- (void)removeClient:(id)a3;
+- (id)credentialExtractionHelperConnectionRequestedByClient:(id)client;
+- (void)removeClient:(id)client;
 @end
 
 @implementation WBSCredentialExtractionHelperConnectionManager
@@ -43,11 +43,11 @@ void __63__WBSCredentialExtractionHelperConnectionManager_sharedManager__block_i
   return v2;
 }
 
-- (id)credentialExtractionHelperConnectionRequestedByClient:(id)a3
+- (id)credentialExtractionHelperConnectionRequestedByClient:(id)client
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableSet *)self->_clients addObject:v4];
+  clientCopy = client;
+  [(NSMutableSet *)self->_clients addObject:clientCopy];
   credentialExtractionHelperConnection = self->_credentialExtractionHelperConnection;
   if (credentialExtractionHelperConnection)
   {
@@ -114,9 +114,9 @@ void __104__WBSCredentialExtractionHelperConnectionManager_credentialExtractionH
   [WeakRetained setCredentialExtractionHelperConnection:0];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  [(NSMutableSet *)self->_clients removeObject:a3];
+  [(NSMutableSet *)self->_clients removeObject:client];
   if (![(NSMutableSet *)self->_clients count])
   {
     credentialExtractionHelperConnection = self->_credentialExtractionHelperConnection;

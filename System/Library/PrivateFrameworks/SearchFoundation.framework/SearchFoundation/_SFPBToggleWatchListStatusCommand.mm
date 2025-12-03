@@ -1,35 +1,35 @@
 @interface _SFPBToggleWatchListStatusCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBToggleWatchListStatusCommand)initWithDictionary:(id)a3;
-- (_SFPBToggleWatchListStatusCommand)initWithFacade:(id)a3;
-- (_SFPBToggleWatchListStatusCommand)initWithJSON:(id)a3;
+- (_SFPBToggleWatchListStatusCommand)initWithDictionary:(id)dictionary;
+- (_SFPBToggleWatchListStatusCommand)initWithFacade:(id)facade;
+- (_SFPBToggleWatchListStatusCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBToggleWatchListStatusCommand
 
-- (_SFPBToggleWatchListStatusCommand)initWithFacade:(id)a3
+- (_SFPBToggleWatchListStatusCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBToggleWatchListStatusCommand *)self init];
   if (v5)
   {
-    v6 = [v4 watchListItem];
+    watchListItem = [facadeCopy watchListItem];
 
-    if (v6)
+    if (watchListItem)
     {
       v7 = [_SFPBWatchListItem alloc];
-      v8 = [v4 watchListItem];
-      v9 = [(_SFPBWatchListItem *)v7 initWithFacade:v8];
+      watchListItem2 = [facadeCopy watchListItem];
+      v9 = [(_SFPBWatchListItem *)v7 initWithFacade:watchListItem2];
       [(_SFPBToggleWatchListStatusCommand *)v5 setWatchListItem:v9];
     }
 
-    if ([v4 hasShouldAddToWatchList])
+    if ([facadeCopy hasShouldAddToWatchList])
     {
-      -[_SFPBToggleWatchListStatusCommand setShouldAddToWatchList:](v5, "setShouldAddToWatchList:", [v4 shouldAddToWatchList]);
+      -[_SFPBToggleWatchListStatusCommand setShouldAddToWatchList:](v5, "setShouldAddToWatchList:", [facadeCopy shouldAddToWatchList]);
     }
 
     v10 = v5;
@@ -38,15 +38,15 @@
   return v5;
 }
 
-- (_SFPBToggleWatchListStatusCommand)initWithDictionary:(id)a3
+- (_SFPBToggleWatchListStatusCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBToggleWatchListStatusCommand;
   v5 = [(_SFPBToggleWatchListStatusCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"watchListItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"watchListItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(_SFPBToggleWatchListStatusCommand *)v5 setWatchListItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"shouldAddToWatchList"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"shouldAddToWatchList"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (_SFPBToggleWatchListStatusCommand)initWithJSON:(id)a3
+- (_SFPBToggleWatchListStatusCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBToggleWatchListStatusCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBToggleWatchListStatusCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBToggleWatchListStatusCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -103,30 +103,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_shouldAddToWatchList)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBToggleWatchListStatusCommand shouldAddToWatchList](self, "shouldAddToWatchList")}];
-    [v3 setObject:v4 forKeyedSubscript:@"shouldAddToWatchList"];
+    [dictionary setObject:v4 forKeyedSubscript:@"shouldAddToWatchList"];
   }
 
   if (self->_watchListItem)
   {
-    v5 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    watchListItem = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
+    dictionaryRepresentation = [watchListItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"watchListItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"watchListItem"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"watchListItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"watchListItem"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -141,30 +141,30 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
-    v6 = [v4 watchListItem];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    watchListItem = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
+    watchListItem2 = [equalCopy watchListItem];
+    v7 = watchListItem2;
+    if ((watchListItem != 0) != (watchListItem2 == 0))
     {
-      v8 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
-      if (!v8)
+      watchListItem3 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
+      if (!watchListItem3)
       {
 
 LABEL_10:
         shouldAddToWatchList = self->_shouldAddToWatchList;
-        v13 = shouldAddToWatchList == [v4 shouldAddToWatchList];
+        v13 = shouldAddToWatchList == [equalCopy shouldAddToWatchList];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
-      v11 = [v4 watchListItem];
-      v12 = [v10 isEqual:v11];
+      v9 = watchListItem3;
+      watchListItem4 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
+      watchListItem5 = [equalCopy watchListItem];
+      v12 = [watchListItem4 isEqual:watchListItem5];
 
       if (v12)
       {
@@ -183,11 +183,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
-  if (v4)
+  toCopy = to;
+  watchListItem = [(_SFPBToggleWatchListStatusCommand *)self watchListItem];
+  if (watchListItem)
   {
     PBDataWriterWriteSubmessage();
   }

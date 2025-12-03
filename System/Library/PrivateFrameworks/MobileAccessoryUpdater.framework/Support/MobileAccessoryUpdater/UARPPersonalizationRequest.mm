@@ -1,8 +1,8 @@
 @interface UARPPersonalizationRequest
-- (BOOL)executeWithResponse:(id)a3;
+- (BOOL)executeWithResponse:(id)response;
 - (NSNumber)ecid;
 - (id)description;
-- (id)keyForFieldName:(id)a3 default:(__CFString *)a4;
+- (id)keyForFieldName:(id)name default:(__CFString *)default;
 - (id)personalizationParameterDict;
 - (id)personalizationRequestDict;
 - (id)requestTicketName;
@@ -25,16 +25,16 @@
   [(UARPPersonalizationRequest *)&v4 dealloc];
 }
 
-- (id)keyForFieldName:(id)a3 default:(__CFString *)a4
+- (id)keyForFieldName:(id)name default:(__CFString *)default
 {
   if (([(NSString *)self->_chipName isEqual:@"Ap"]& 1) != 0)
   {
-    return a4;
+    return default;
   }
 
   else
   {
-    return [NSString stringWithFormat:@"%@, %@", self->_chipName, a3];
+    return [NSString stringWithFormat:@"%@, %@", self->_chipName, name];
   }
 }
 
@@ -43,9 +43,9 @@
   result = self->_ecid;
   if (result)
   {
-    v3 = [(NSNumber *)result value];
+    value = [(NSNumber *)result value];
 
-    return [NSNumber numberWithUnsignedLongLong:v3];
+    return [NSNumber numberWithUnsignedLongLong:value];
   }
 
   return result;
@@ -71,8 +71,8 @@
     [v3 setObject:v10 forKeyedSubscript:kAMAuthInstallApParameterECID];
   }
 
-  v11 = [(UARPPersonalizationDataTuple *)self->_nonce value];
-  [v3 setObject:v11 forKeyedSubscript:kAMAuthInstallApParameterApNonce];
+  value = [(UARPPersonalizationDataTuple *)self->_nonce value];
+  [v3 setObject:value forKeyedSubscript:kAMAuthInstallApParameterApNonce];
   v12 = [NSNumber numberWithBool:self->_effectiveProductionMode];
   [v3 setObject:v12 forKeyedSubscript:kAMAuthInstallApParameterEffectiveProductionMode];
   v13 = [NSNumber numberWithBool:self->_effectiveSecurityMode];
@@ -195,7 +195,7 @@
   return [NSString stringWithString:v3];
 }
 
-- (BOOL)executeWithResponse:(id)a3
+- (BOOL)executeWithResponse:(id)response
 {
   authInstallRef = self->_authInstallRef;
   serverURL = self->_serverURL;
@@ -231,7 +231,7 @@
   v11[2] = sub_10002CF8C;
   v11[3] = &unk_100081C58;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = response;
   dispatch_async(global_queue, v11);
   return 1;
 }

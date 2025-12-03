@@ -1,11 +1,11 @@
 @interface SearchUISeparatorView
-+ (id)separatorColorForAppearance:(id)a3;
-+ (unint64_t)separatorProminenceForAppearance:(id)a3;
++ (id)separatorColorForAppearance:(id)appearance;
++ (unint64_t)separatorProminenceForAppearance:(id)appearance;
 - (CGSize)intrinsicContentSize;
 - (SearchUISeparatorView)init;
 - (void)didMoveToWindow;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchUISeparatorView
@@ -34,14 +34,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUISeparatorView;
-  [(TLKProminenceView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUISeparatorView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKProminenceView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUISeparatorView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -49,11 +49,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUISeparatorView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUISeparatorView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -69,20 +69,20 @@ LABEL_5:
   [(SearchUISeparatorView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = SearchUISeparatorView;
-  v4 = a3;
-  [(TLKProminenceView *)&v6 tlk_updateForAppearance:v4];
-  v5 = [objc_opt_class() separatorProminenceForAppearance:{v4, v6.receiver, v6.super_class}];
+  appearanceCopy = appearance;
+  [(TLKProminenceView *)&v6 tlk_updateForAppearance:appearanceCopy];
+  v5 = [objc_opt_class() separatorProminenceForAppearance:{appearanceCopy, v6.receiver, v6.super_class}];
 
   [(TLKProminenceView *)self setProminence:v5];
 }
 
-+ (unint64_t)separatorProminenceForAppearance:(id)a3
++ (unint64_t)separatorProminenceForAppearance:(id)appearance
 {
-  if ([a3 isVibrant])
+  if ([appearance isVibrant])
   {
     return 2;
   }
@@ -93,13 +93,13 @@ LABEL_5:
   }
 }
 
-+ (id)separatorColorForAppearance:(id)a3
++ (id)separatorColorForAppearance:(id)appearance
 {
-  v3 = a3;
-  v4 = [v3 colorForProminence:{objc_msgSend(objc_opt_class(), "separatorProminenceForAppearance:", v3)}];
-  v5 = [v3 isVibrant];
+  appearanceCopy = appearance;
+  v4 = [appearanceCopy colorForProminence:{objc_msgSend(objc_opt_class(), "separatorProminenceForAppearance:", appearanceCopy)}];
+  isVibrant = [appearanceCopy isVibrant];
 
-  if (v5)
+  if (isVibrant)
   {
     v9 = 0.0;
     [v4 getWhite:0 alpha:&v9];

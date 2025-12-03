@@ -1,24 +1,24 @@
 @interface HFAccessorySettingsItemProvider
-+ (id)buildItemTuplesForHomeKitSettings:(id)a3 usageOptions:(id)a4 settingGroup:(id)a5 underNode:(id)a6 cache:(id)a7;
-- (HFAccessorySettingsItemProvider)initWithHomeKitSettingsVendor:(id)a3 settingGroup:(id)a4 usageOptions:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildItemTuplesForHomeKitSettings:(id)settings usageOptions:(id)options settingGroup:(id)group underNode:(id)node cache:(id)cache;
+- (HFAccessorySettingsItemProvider)initWithHomeKitSettingsVendor:(id)vendor settingGroup:(id)group usageOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
-- (void)setSettingGroup:(id)a3;
+- (void)setSettingGroup:(id)group;
 @end
 
 @implementation HFAccessorySettingsItemProvider
 
-- (HFAccessorySettingsItemProvider)initWithHomeKitSettingsVendor:(id)a3 settingGroup:(id)a4 usageOptions:(id)a5
+- (HFAccessorySettingsItemProvider)initWithHomeKitSettingsVendor:(id)vendor settingGroup:(id)group usageOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  vendorCopy = vendor;
+  groupCopy = group;
+  optionsCopy = options;
+  if (!vendorCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingsItemProvider.m" lineNumber:429 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingsItemProvider.m" lineNumber:429 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
   }
 
   v21.receiver = self;
@@ -27,7 +27,7 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_homeKitSettingsVendor, a3);
+    objc_storeStrong(&v13->_homeKitSettingsVendor, vendor);
     v15 = objc_opt_new();
     settingItems = v14->_settingItems;
     v14->_settingItems = v15;
@@ -36,16 +36,16 @@
     settingToItemCache = v14->_settingToItemCache;
     v14->_settingToItemCache = v17;
 
-    objc_storeStrong(&v14->_usageOptions, a5);
-    [(HFAccessorySettingsItemProvider *)v14 setSettingGroup:v11];
+    objc_storeStrong(&v14->_usageOptions, options);
+    [(HFAccessorySettingsItemProvider *)v14 setSettingGroup:groupCopy];
   }
 
   return v14;
 }
 
-- (void)setSettingGroup:(id)a3
+- (void)setSettingGroup:(id)group
 {
-  obj = a3;
+  obj = group;
   if ([obj isEqual:self->_settingGroup])
   {
     goto LABEL_11;
@@ -53,22 +53,22 @@
 
   if (!obj)
   {
-    v8 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
-    v14 = [v8 settings];
-    obj = [v14 rootGroup];
+    homeKitSettingsVendor = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
+    settings = [homeKitSettingsVendor settings];
+    obj = [settings rootGroup];
     goto LABEL_7;
   }
 
-  v5 = [obj keyPath];
-  v6 = [v5 isEqualToString:@"root"];
+  keyPath = [obj keyPath];
+  v6 = [keyPath isEqualToString:@"root"];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
-    v8 = [v7 settings];
+    homeKitSettingsVendor2 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
+    homeKitSettingsVendor = [homeKitSettingsVendor2 settings];
 
-    v9 = [obj keyPath];
-    v10 = [v8 hf_accessorySettingGroupAtKeyPath:v9];
+    keyPath2 = [obj keyPath];
+    v10 = [homeKitSettingsVendor hf_accessorySettingGroupAtKeyPath:keyPath2];
     v11 = [obj isEqual:v10];
 
     if (v11)
@@ -78,18 +78,18 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = a2;
-    v14 = v12;
-    [v12 handleFailureInMethod:v13 object:self file:@"HFAccessorySettingsItemProvider.m" lineNumber:453 description:@"HMAccessorySettingGroup must belong to parent HMMediaProfile!"];
+    settings = currentHandler;
+    [currentHandler handleFailureInMethod:v13 object:self file:@"HFAccessorySettingsItemProvider.m" lineNumber:453 description:@"HMAccessorySettingGroup must belong to parent HMMediaProfile!"];
 LABEL_7:
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  v15 = [(HFAccessorySettingsItemProvider *)self settingToItemCache];
-  [v15 removeAllObjects];
+  settingToItemCache = [(HFAccessorySettingsItemProvider *)self settingToItemCache];
+  [settingToItemCache removeAllObjects];
 
   objc_storeStrong(&self->_settingGroup, obj);
   v16 = obj;
@@ -98,11 +98,11 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v17 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
-  v18 = [v17 settings];
-  v19 = [v18 hf_codex];
-  v20 = [obj keyPath];
-  v21 = [v19 hf_nodeWithKeyPath:v20];
+  homeKitSettingsVendor3 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
+  settings2 = [homeKitSettingsVendor3 settings];
+  hf_codex = [settings2 hf_codex];
+  keyPath3 = [obj keyPath];
+  v21 = [hf_codex hf_nodeWithKeyPath:keyPath3];
   parentNode = self->_parentNode;
   self->_parentNode = v21;
 
@@ -111,13 +111,13 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
-  v6 = [(HFAccessorySettingsItemProvider *)self settingGroup];
-  v7 = [(HFAccessorySettingsItemProvider *)self usageOptions];
-  v8 = [v4 initWithHomeKitSettingsVendor:v5 settingGroup:v6 usageOptions:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  homeKitSettingsVendor = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
+  settingGroup = [(HFAccessorySettingsItemProvider *)self settingGroup];
+  usageOptions = [(HFAccessorySettingsItemProvider *)self usageOptions];
+  v8 = [v4 initWithHomeKitSettingsVendor:homeKitSettingsVendor settingGroup:settingGroup usageOptions:usageOptions];
 
   return v8;
 }
@@ -126,23 +126,23 @@ LABEL_12:
 {
   objc_initWeak(&location, self);
   v3 = objc_opt_class();
-  v4 = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
-  v5 = [(HFAccessorySettingsItemProvider *)self usageOptions];
-  v6 = [(HFAccessorySettingsItemProvider *)self settingGroup];
-  v7 = [(HFAccessorySettingsItemProvider *)self parentNode];
-  v8 = [(HFAccessorySettingsItemProvider *)self settingToItemCache];
-  v9 = [v3 buildItemTuplesForHomeKitSettings:v4 usageOptions:v5 settingGroup:v6 underNode:v7 cache:v8];
+  homeKitSettingsVendor = [(HFAccessorySettingsItemProvider *)self homeKitSettingsVendor];
+  usageOptions = [(HFAccessorySettingsItemProvider *)self usageOptions];
+  settingGroup = [(HFAccessorySettingsItemProvider *)self settingGroup];
+  parentNode = [(HFAccessorySettingsItemProvider *)self parentNode];
+  settingToItemCache = [(HFAccessorySettingsItemProvider *)self settingToItemCache];
+  v9 = [v3 buildItemTuplesForHomeKitSettings:homeKitSettingsVendor usageOptions:usageOptions settingGroup:settingGroup underNode:parentNode cache:settingToItemCache];
 
-  v10 = [v9 allObjects];
-  v11 = [(HFAccessorySettingsItemProvider *)self filter];
-  if (v11)
+  allObjects = [v9 allObjects];
+  filter = [(HFAccessorySettingsItemProvider *)self filter];
+  if (filter)
   {
     v12 = v18;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_4;
     v18[3] = &unk_277DFB258;
-    v5 = &v19;
+    usageOptions = &v19;
     objc_copyWeak(&v19, &location);
   }
 
@@ -151,7 +151,7 @@ LABEL_12:
     v12 = 0;
   }
 
-  v13 = [(HFItemProvider *)self reloadItemsWithObjects:v10 keyAdaptor:&__block_literal_global_401_0 itemAdaptor:&__block_literal_global_404 filter:v12 itemMap:&__block_literal_global_398_0];
+  v13 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_401_0 itemAdaptor:&__block_literal_global_404 filter:v12 itemMap:&__block_literal_global_398_0];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -161,9 +161,9 @@ LABEL_12:
   v14 = [v13 flatMap:v16];
   objc_destroyWeak(&v17);
 
-  if (v11)
+  if (filter)
   {
-    objc_destroyWeak(v5);
+    objc_destroyWeak(usageOptions);
   }
 
   objc_destroyWeak(&location);
@@ -201,8 +201,8 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
 
 - (id)items
 {
-  v2 = [(HFAccessorySettingsItemProvider *)self settingItems];
-  v3 = [v2 copy];
+  settingItems = [(HFAccessorySettingsItemProvider *)self settingItems];
+  v3 = [settingItems copy];
 
   return v3;
 }
@@ -211,29 +211,29 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
 {
   v5.receiver = self;
   v5.super_class = HFAccessorySettingsItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"accessory"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"accessory"];
 
   return v3;
 }
 
-+ (id)buildItemTuplesForHomeKitSettings:(id)a3 usageOptions:(id)a4 settingGroup:(id)a5 underNode:(id)a6 cache:(id)a7
++ (id)buildItemTuplesForHomeKitSettings:(id)settings usageOptions:(id)options settingGroup:(id)group underNode:(id)node cache:(id)cache
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v54 = a6;
-  v14 = a7;
-  if (!v14)
+  settingsCopy = settings;
+  optionsCopy = options;
+  groupCopy = group;
+  nodeCopy = node;
+  cacheCopy = cache;
+  if (!cacheCopy)
   {
-    v14 = objc_opt_new();
+    cacheCopy = objc_opt_new();
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__HFAccessorySettingsItemProvider_buildItemTuplesForHomeKitSettings_usageOptions_settingGroup_underNode_cache___block_invoke;
   aBlock[3] = &unk_277DFB280;
-  v15 = v14;
+  v15 = cacheCopy;
   v89 = v15;
   v16 = _Block_copy(aBlock);
   v86[0] = MEMORY[0x277D85DD0];
@@ -249,9 +249,9 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v81[3] = &unk_277DFB2D0;
   v18 = v16;
   v84 = v18;
-  v19 = v11;
+  v19 = settingsCopy;
   v82 = v19;
-  v20 = v12;
+  v20 = optionsCopy;
   v83 = v20;
   v21 = v17;
   v85 = v21;
@@ -298,7 +298,7 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v34 = v28;
   v35 = _Block_copy(v65);
   v36 = objc_opt_new();
-  v37 = [v13 settings];
+  settings = [groupCopy settings];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __111__HFAccessorySettingsItemProvider_buildItemTuplesForHomeKitSettings_usageOptions_settingGroup_underNode_cache___block_invoke_7;
@@ -307,9 +307,9 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v64 = v38;
   v39 = v36;
   v63 = v39;
-  [v37 na_each:v62];
+  [settings na_each:v62];
 
-  v40 = [v13 groups];
+  groups = [groupCopy groups];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __111__HFAccessorySettingsItemProvider_buildItemTuplesForHomeKitSettings_usageOptions_settingGroup_underNode_cache___block_invoke_8;
@@ -320,9 +320,9 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v61 = v38;
   v42 = v38;
   v43 = v27;
-  [v40 na_each:v58];
+  [groups na_each:v58];
 
-  v44 = [v54 childNodes];
+  childNodes = [nodeCopy childNodes];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __111__HFAccessorySettingsItemProvider_buildItemTuplesForHomeKitSettings_usageOptions_settingGroup_underNode_cache___block_invoke_11;
@@ -331,7 +331,7 @@ id __46__HFAccessorySettingsItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v45 = v41;
   v56 = v45;
   v46 = v32;
-  [v44 na_each:v55];
+  [childNodes na_each:v55];
 
   v47 = v56;
   v48 = v45;

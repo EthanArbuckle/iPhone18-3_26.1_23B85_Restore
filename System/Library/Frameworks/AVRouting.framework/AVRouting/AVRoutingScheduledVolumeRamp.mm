@@ -1,12 +1,12 @@
 @interface AVRoutingScheduledVolumeRamp
 + (id)_defaultAdditionalFigRepresentationObjects;
-+ (id)volumeRampWithStartVolume:(float)a3 endVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6;
-- (AVRoutingScheduledVolumeRamp)initWithPropertyList:(id)a3;
-- (AVRoutingScheduledVolumeRamp)initWithStartVolume:(float)a3 endVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6;
++ (id)volumeRampWithStartVolume:(float)volume endVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode;
+- (AVRoutingScheduledVolumeRamp)initWithPropertyList:(id)list;
+- (AVRoutingScheduledVolumeRamp)initWithStartVolume:(float)volume endVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode;
 - (float)endVolume;
 - (float)startVolume;
 - (id)_additionalFigRepresentationObjects;
-- (id)_makeRampWithTruncatedTimeRange:(id *)a3 endValue:(float)a4;
+- (id)_makeRampWithTruncatedTimeRange:(id *)range endValue:(float)value;
 - (id)propertyList;
 @end
 
@@ -21,28 +21,28 @@
   return result;
 }
 
-+ (id)volumeRampWithStartVolume:(float)a3 endVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6
++ (id)volumeRampWithStartVolume:(float)volume endVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode
 {
   v10 = objc_alloc(objc_opt_class());
-  v11 = *&a5->var0.var3;
-  v13[0] = *&a5->var0.var0;
+  v11 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v11;
-  *&v11 = a4;
-  return [v10 initWithStartVolume:v13 endVolume:a6 timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&a5->var1.var1) rampMode:{LODWORD(a3))), *&v11}];
+  *&v11 = endVolume;
+  return [v10 initWithStartVolume:v13 endVolume:mode timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&range->var1.var1) rampMode:{LODWORD(volume))), *&v11}];
 }
 
-- (AVRoutingScheduledVolumeRamp)initWithStartVolume:(float)a3 endVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6
+- (AVRoutingScheduledVolumeRamp)initWithStartVolume:(float)volume endVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = AVRoutingScheduledVolumeRamp;
-  v7 = *&a5->var0.var3;
-  v9[0] = *&a5->var0.var0;
+  v7 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v7;
-  v9[2] = *&a5->var1.var1;
+  v9[2] = *&range->var1.var1;
   result = [AVRoutingScheduledFloatValueRamp initWithStartValue:sel_initWithStartValue_endValue_timeRange_ endValue:v9 timeRange:?];
   if (result)
   {
-    result->_rampMode = a6;
+    result->_rampMode = mode;
   }
 
   return result;
@@ -67,9 +67,9 @@
 - (id)_additionalFigRepresentationObjects
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(AVRoutingScheduledVolumeRamp *)self rampMode];
+  rampMode = [(AVRoutingScheduledVolumeRamp *)self rampMode];
   v3 = MEMORY[0x1E6972410];
-  if (v2 != 1)
+  if (rampMode != 1)
   {
     v3 = MEMORY[0x1E6972418];
   }
@@ -80,27 +80,27 @@
   return result;
 }
 
-- (id)_makeRampWithTruncatedTimeRange:(id *)a3 endValue:(float)a4
+- (id)_makeRampWithTruncatedTimeRange:(id *)range endValue:(float)value
 {
   v7 = objc_opt_class();
   [(AVRoutingScheduledVolumeRamp *)self startVolume];
   v9 = v8;
-  v10 = [(AVRoutingScheduledVolumeRamp *)self rampMode];
-  v11 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  rampMode = [(AVRoutingScheduledVolumeRamp *)self rampMode];
+  v11 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v11;
-  *&v11 = a4;
-  return [v7 volumeRampWithStartVolume:v13 endVolume:v10 timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&a3->var1.var1) rampMode:{v9)), *&v11}];
+  *&v11 = value;
+  return [v7 volumeRampWithStartVolume:v13 endVolume:rampMode timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&range->var1.var1) rampMode:{v9)), *&v11}];
 }
 
-- (AVRoutingScheduledVolumeRamp)initWithPropertyList:(id)a3
+- (AVRoutingScheduledVolumeRamp)initWithPropertyList:(id)list
 {
   v6.receiver = self;
   v6.super_class = AVRoutingScheduledVolumeRamp;
   v4 = [(AVRoutingScheduledFloatValueRamp *)&v6 initWithPropertyList:?];
   if (v4)
   {
-    v4->_rampMode = [objc_msgSend(a3 objectForKey:{@"rampMode", "integerValue"}];
+    v4->_rampMode = [objc_msgSend(list objectForKey:{@"rampMode", "integerValue"}];
   }
 
   return v4;
@@ -110,9 +110,9 @@
 {
   v5.receiver = self;
   v5.super_class = AVRoutingScheduledVolumeRamp;
-  v3 = [(AVRoutingScheduledFloatValueRamp *)&v5 propertyList];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[AVRoutingScheduledVolumeRamp rampMode](self, "rampMode")), @"rampMode"}];
-  return v3;
+  propertyList = [(AVRoutingScheduledFloatValueRamp *)&v5 propertyList];
+  [propertyList setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[AVRoutingScheduledVolumeRamp rampMode](self, "rampMode")), @"rampMode"}];
+  return propertyList;
 }
 
 @end

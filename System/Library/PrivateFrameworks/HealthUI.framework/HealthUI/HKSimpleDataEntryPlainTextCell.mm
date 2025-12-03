@@ -1,25 +1,25 @@
 @interface HKSimpleDataEntryPlainTextCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (HKSimpleDataEntryCellDelegate)delegate;
-- (HKSimpleDataEntryPlainTextCell)initWithIntention:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKSimpleDataEntryPlainTextCell)initWithIntention:(int64_t)intention reuseIdentifier:(id)identifier;
 - (void)_informDelegateForContentChange;
-- (void)_setupInputTextFieldWithIntention:(int64_t)a3;
+- (void)_setupInputTextFieldWithIntention:(int64_t)intention;
 - (void)_setupLabels;
 - (void)_setupLayoutConstraints;
 - (void)_updateForCurrentSizeCategory;
 - (void)layoutMarginsDidChange;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKSimpleDataEntryPlainTextCell
 
-- (HKSimpleDataEntryPlainTextCell)initWithIntention:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKSimpleDataEntryPlainTextCell)initWithIntention:(int64_t)intention reuseIdentifier:(id)identifier
 {
   v22.receiver = self;
   v22.super_class = HKSimpleDataEntryPlainTextCell;
-  v5 = [(HKSimpleDataEntryPlainTextCell *)&v22 initWithStyle:0 reuseIdentifier:a4];
+  v5 = [(HKSimpleDataEntryPlainTextCell *)&v22 initWithStyle:0 reuseIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -30,17 +30,17 @@
     [(UILabel *)v5->_titleLabel setMinimumScaleFactor:0.7];
     [(UILabel *)v5->_titleLabel setAllowsDefaultTighteningForTruncation:1];
     v8 = v5->_titleLabel;
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v8 setTextColor:labelColor];
 
     v10 = objc_alloc_init(HKCaretOptionalTextField);
     inputTextField = v5->_inputTextField;
     v5->_inputTextField = v10;
 
-    [(HKSimpleDataEntryPlainTextCell *)v5 _setupInputTextFieldWithIntention:a3];
+    [(HKSimpleDataEntryPlainTextCell *)v5 _setupInputTextFieldWithIntention:intention];
     v12 = v5->_inputTextField;
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(HKCaretOptionalTextField *)v12 setTextColor:v13];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(HKCaretOptionalTextField *)v12 setTextColor:labelColor2];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
     horizontalSeparator = v5->_horizontalSeparator;
@@ -49,20 +49,20 @@
     [(UILabel *)v5->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HKCaretOptionalTextField *)v5->_inputTextField setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v5->_horizontalSeparator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
-    [v16 addSubview:v5->_titleLabel];
+    contentView = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
+    [contentView addSubview:v5->_titleLabel];
 
-    v17 = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
-    [v17 addSubview:v5->_inputTextField];
+    contentView2 = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
+    [contentView2 addSubview:v5->_inputTextField];
 
-    v18 = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
-    [v18 addSubview:v5->_horizontalSeparator];
+    contentView3 = [(HKSimpleDataEntryPlainTextCell *)v5 contentView];
+    [contentView3 addSubview:v5->_horizontalSeparator];
 
     [(HKCaretOptionalTextField *)v5->_inputTextField setDelegate:v5];
     [(HKCaretOptionalTextField *)v5->_inputTextField addTarget:v5 action:sel_textFieldDidChangeValue_ forControlEvents:0x20000];
     v19 = v5->_horizontalSeparator;
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v19 setBackgroundColor:clearColor];
 
     [(HKSimpleDataEntryPlainTextCell *)v5 _setupLabels];
     [(HKSimpleDataEntryPlainTextCell *)v5 _setupLayoutConstraints];
@@ -73,15 +73,15 @@
   return v5;
 }
 
-- (void)_setupInputTextFieldWithIntention:(int64_t)a3
+- (void)_setupInputTextFieldWithIntention:(int64_t)intention
 {
-  if (a3 <= 4)
+  if (intention <= 4)
   {
-    if (a3 <= 1)
+    if (intention <= 1)
     {
-      if (a3)
+      if (intention)
       {
-        if (a3 != 1)
+        if (intention != 1)
         {
           goto LABEL_26;
         }
@@ -99,9 +99,9 @@
 
     else
     {
-      if (a3 != 2)
+      if (intention != 2)
       {
-        if (a3 == 3)
+        if (intention == 3)
         {
           [(HKCaretOptionalTextField *)self->_inputTextField setTextContentType:*MEMORY[0x1E69DE4A0]];
           [(HKCaretOptionalTextField *)self->_inputTextField setKeyboardType:7];
@@ -123,10 +123,10 @@
     goto LABEL_23;
   }
 
-  if (a3 <= 6)
+  if (intention <= 6)
   {
     v4 = self->_inputTextField;
-    if (a3 == 5)
+    if (intention == 5)
     {
       v5 = MEMORY[0x1E69DE548];
     }
@@ -144,7 +144,7 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  switch(a3)
+  switch(intention)
   {
     case 7:
       characterCountLimit = self->_characterCountLimit;
@@ -254,14 +254,14 @@ LABEL_26:
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:6];
 
   v13 = MEMORY[0x1E695DF70];
-  v34 = [(UILabel *)self->_titleLabel centerYAnchor];
-  v14 = [(HKSimpleDataEntryPlainTextCell *)self contentView];
-  v15 = [v14 centerYAnchor];
-  v16 = [v34 constraintEqualToAnchor:v15];
+  centerYAnchor = [(UILabel *)self->_titleLabel centerYAnchor];
+  contentView = [(HKSimpleDataEntryPlainTextCell *)self contentView];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v36[0] = v16;
-  v17 = [(UILabel *)self->_titleLabel centerYAnchor];
-  v18 = [(HKCaretOptionalTextField *)self->_inputTextField centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerYAnchor3 = [(UILabel *)self->_titleLabel centerYAnchor];
+  centerYAnchor4 = [(HKCaretOptionalTextField *)self->_inputTextField centerYAnchor];
+  v19 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v36[1] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
   v21 = [v13 arrayWithArray:v20];
@@ -330,18 +330,18 @@ LABEL_26:
   [v6 activateConstraints:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKSimpleDataEntryPlainTextCell;
-  [(HKSimpleDataEntryPlainTextCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKSimpleDataEntryPlainTextCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKSimpleDataEntryPlainTextCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -350,10 +350,10 @@ LABEL_26:
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  v5 = [v4 isEqualToString:self->_lastChangedText];
+  text = [editing text];
+  v5 = [text isEqualToString:self->_lastChangedText];
 
   if ((v5 & 1) == 0)
   {
@@ -362,19 +362,19 @@ LABEL_26:
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   characterCountLimit = self->_characterCountLimit;
   if (characterCountLimit)
   {
     if ([(NSNumber *)characterCountLimit integerValue])
     {
-      v12 = [v9 text];
-      v13 = [v12 stringByReplacingCharactersInRange:location withString:{length, v10}];
+      text = [fieldCopy text];
+      v13 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
       v14 = [v13 length];
       v15 = v14 <= [(NSNumber *)self->_characterCountLimit integerValue];
@@ -394,24 +394,24 @@ LABEL_26:
   return v15;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [a3 _nextKeyResponder];
-  [v3 becomeFirstResponder];
+  _nextKeyResponder = [return _nextKeyResponder];
+  [_nextKeyResponder becomeFirstResponder];
 
   return 1;
 }
 
 - (void)_informDelegateForContentChange
 {
-  v3 = [(HKSimpleDataEntryPlainTextCell *)self delegate];
-  [v3 textFieldDidChangeValue:self->_inputTextField forCell:self];
+  delegate = [(HKSimpleDataEntryPlainTextCell *)self delegate];
+  [delegate textFieldDidChangeValue:self->_inputTextField forCell:self];
 
-  v4 = [(HKCaretOptionalTextField *)self->_inputTextField text];
+  text = [(HKCaretOptionalTextField *)self->_inputTextField text];
   lastChangedText = self->_lastChangedText;
-  self->_lastChangedText = v4;
+  self->_lastChangedText = text;
 
-  MEMORY[0x1EEE66BB8](v4, lastChangedText);
+  MEMORY[0x1EEE66BB8](text, lastChangedText);
 }
 
 - (HKSimpleDataEntryCellDelegate)delegate

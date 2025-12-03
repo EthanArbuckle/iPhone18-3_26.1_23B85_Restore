@@ -1,37 +1,37 @@
 @interface NTKBatteryUtilities
-+ (id)chargingStringForState:(int64_t)a3 longText:(BOOL)a4;
-+ (id)colorForLevel:(float)a3 andState:(int64_t)a4;
-+ (id)modularRingColorForLevel:(float)a3;
++ (id)chargingStringForState:(int64_t)state longText:(BOOL)text;
++ (id)colorForLevel:(float)level andState:(int64_t)state;
++ (id)modularRingColorForLevel:(float)level;
 @end
 
 @implementation NTKBatteryUtilities
 
-+ (id)chargingStringForState:(int64_t)a3 longText:(BOOL)a4
++ (id)chargingStringForState:(int64_t)state longText:(BOOL)text
 {
   v4 = @"BATTERY_CHARGING";
-  if (a4)
+  if (text)
   {
     v4 = @"BATTERY_CHARGING_LONG";
   }
 
   v5 = @"BATTERY_REMAINING_LONG";
-  if (!a4)
+  if (!text)
   {
     v5 = @"BATTERY_BATTERY";
   }
 
   v6 = @"BATTERY_CHARGED";
-  if (a4)
+  if (text)
   {
     v6 = @"BATTERY_CHARGED_LONG";
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = v6;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v7 = v4;
   }
@@ -44,7 +44,7 @@
   return NTKClockFaceLocalizedString(v7, @"charging");
 }
 
-+ (id)colorForLevel:(float)a3 andState:(int64_t)a4
++ (id)colorForLevel:(float)level andState:(int64_t)state
 {
   v21 = *MEMORY[0x277D85DE8];
   v7 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
@@ -52,9 +52,9 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    *&v10 = a3;
+    *&v10 = level;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     v15 = 138412802;
     v16 = v9;
     v17 = 2112;
@@ -64,44 +64,44 @@
     _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "%@ invoking colorForLevel with level:%@ and state:%@", &v15, 0x20u);
   }
 
-  if ([a1 chargingForState:a4])
+  if ([self chargingForState:state])
   {
-    v13 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
   else
   {
-    v13 = 0;
-    if (a3 >= 0.0 && a3 <= 0.2)
+    systemGreenColor = 0;
+    if (level >= 0.0 && level <= 0.2)
     {
-      v13 = [MEMORY[0x277D75348] systemRedColor];
+      systemGreenColor = [MEMORY[0x277D75348] systemRedColor];
     }
   }
 
-  return v13;
+  return systemGreenColor;
 }
 
-+ (id)modularRingColorForLevel:(float)a3
++ (id)modularRingColorForLevel:(float)level
 {
-  if (a3 <= 0.2)
+  if (level <= 0.2)
   {
-    if (a3 >= 0.0)
+    if (level >= 0.0)
     {
-      v3 = [MEMORY[0x277D75348] systemRedColor];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     }
 
     else
     {
-      v3 = 0;
+      systemRedColor = 0;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] systemGreenColor];
+    systemRedColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
-  return v3;
+  return systemRedColor;
 }
 
 @end

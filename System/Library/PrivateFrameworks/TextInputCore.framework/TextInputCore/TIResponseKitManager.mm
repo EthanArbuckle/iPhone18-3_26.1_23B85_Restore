@@ -1,47 +1,47 @@
 @interface TIResponseKitManager
-+ (id)rewriteMoneyAttributes:(id)a3;
++ (id)rewriteMoneyAttributes:(id)attributes;
 + (id)singletonInstance;
 - (TIResponseKitManager)init;
-- (id)cannedResponsesForString:(id)a3 withLanguageID:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 withAdditionalPredictions:(id)a7 desiredCandidateCount:(unint64_t)a8 shouldDisableAutoCaps:(BOOL)a9 isBlocklisted:(BOOL)a10;
-- (id)indexesOfDuplicatesInCandidates:(id)a3;
-- (id)responseKitResponseCandidatesForString:(id)a3 withLanguageID:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 shouldDisableAutoCaps:(BOOL)a7;
-- (void)addNewConversationTurnToHistory:(id)a3;
-- (void)generateResponseKitSuggestionsForString:(id)a3 withLanguage:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 withAdditionalPredictions:(id)a7 desiredCandidateCount:(unint64_t)a8 shouldDisableAutoCaps:(BOOL)a9 stringIsBlocklisted:(BOOL)a10 async:(BOOL)a11 completionHandler:(id)a12;
-- (void)registerResponseKitResponse:(id)a3 forMessage:(id)a4 withLanguage:(id)a5 withClientID:(id)a6 withSenderID:(id)a7 withRecipientID:(id)a8 withTimestamp:(id)a9 shouldUpdateConversationHistory:(BOOL)a10;
-- (void)updateResponseKitConversationHistoryWithMessage:(id)a3 withSenderID:(id)a4 withTimestamp:(id)a5;
+- (id)cannedResponsesForString:(id)string withLanguageID:(id)d withClientID:(id)iD withRecipientID:(id)recipientID withAdditionalPredictions:(id)predictions desiredCandidateCount:(unint64_t)count shouldDisableAutoCaps:(BOOL)caps isBlocklisted:(BOOL)self0;
+- (id)indexesOfDuplicatesInCandidates:(id)candidates;
+- (id)responseKitResponseCandidatesForString:(id)string withLanguageID:(id)d withClientID:(id)iD withRecipientID:(id)recipientID shouldDisableAutoCaps:(BOOL)caps;
+- (void)addNewConversationTurnToHistory:(id)history;
+- (void)generateResponseKitSuggestionsForString:(id)string withLanguage:(id)language withClientID:(id)d withRecipientID:(id)iD withAdditionalPredictions:(id)predictions desiredCandidateCount:(unint64_t)count shouldDisableAutoCaps:(BOOL)caps stringIsBlocklisted:(BOOL)self0 async:(BOOL)self1 completionHandler:(id)self2;
+- (void)registerResponseKitResponse:(id)response forMessage:(id)message withLanguage:(id)language withClientID:(id)d withSenderID:(id)iD withRecipientID:(id)recipientID withTimestamp:(id)timestamp shouldUpdateConversationHistory:(BOOL)self0;
+- (void)updateResponseKitConversationHistoryWithMessage:(id)message withSenderID:(id)d withTimestamp:(id)timestamp;
 @end
 
 @implementation TIResponseKitManager
 
-- (id)cannedResponsesForString:(id)a3 withLanguageID:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 withAdditionalPredictions:(id)a7 desiredCandidateCount:(unint64_t)a8 shouldDisableAutoCaps:(BOOL)a9 isBlocklisted:(BOOL)a10
+- (id)cannedResponsesForString:(id)string withLanguageID:(id)d withClientID:(id)iD withRecipientID:(id)recipientID withAdditionalPredictions:(id)predictions desiredCandidateCount:(unint64_t)count shouldDisableAutoCaps:(BOOL)caps isBlocklisted:(BOOL)self0
 {
   v66 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  if (![v16 length])
+  stringCopy = string;
+  dCopy = d;
+  iDCopy = iD;
+  recipientIDCopy = recipientID;
+  predictionsCopy = predictions;
+  if (![stringCopy length])
   {
-    v46 = v20;
+    v46 = predictionsCopy;
     goto LABEL_33;
   }
 
-  v21 = [(TIResponseKitManager *)self responseKitResponseCandidatesForString:v16 withLanguageID:v17 withClientID:v18 withRecipientID:v19 shouldDisableAutoCaps:a9];
+  v21 = [(TIResponseKitManager *)self responseKitResponseCandidatesForString:stringCopy withLanguageID:dCopy withClientID:iDCopy withRecipientID:recipientIDCopy shouldDisableAutoCaps:caps];
   if (!v21)
   {
-    v46 = v20;
+    v46 = predictionsCopy;
     goto LABEL_32;
   }
 
-  v49 = self;
-  v50 = a8;
-  v52 = v20;
-  v53 = v19;
-  v54 = v18;
-  v55 = v16;
-  v56 = [MEMORY[0x277CBEB18] array];
-  v58 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  countCopy = count;
+  v52 = predictionsCopy;
+  v53 = recipientIDCopy;
+  v54 = iDCopy;
+  v55 = stringCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -68,9 +68,9 @@
       }
 
       v27 = *(*(&v59 + 1) + 8 * v26);
-      v28 = [v27 attributes];
+      attributes = [v27 attributes];
 
-      if (v28)
+      if (attributes)
       {
         if (TICanLogMessageAtLevel_onceToken != -1)
         {
@@ -89,18 +89,18 @@
           }
         }
 
-        v30 = [v27 category];
-        v31 = [v30 isEqualToString:@"QueryPhotoSharing"];
+        category = [v27 category];
+        v31 = [category isEqualToString:@"QueryPhotoSharing"];
 
-        if (!v31 || !a10)
+        if (!v31 || !blocklisted)
         {
-          v32 = [v27 attributes];
-          v33 = [v32 objectForKey:*MEMORY[0x277D23050]];
+          attributes2 = [v27 attributes];
+          category2 = [attributes2 objectForKey:*MEMORY[0x277D23050]];
 
-          if ([v33 isEqualToString:v57])
+          if ([category2 isEqualToString:v57])
           {
-            v34 = [v27 attributes];
-            v35 = [TIResponseKitManager rewriteMoneyAttributes:v34];
+            attributes3 = [v27 attributes];
+            attributes4 = [TIResponseKitManager rewriteMoneyAttributes:attributes3];
 
             v36 = [TIProactiveTrigger alloc];
           }
@@ -108,28 +108,28 @@
           else
           {
             v41 = [TIProactiveTrigger alloc];
-            v35 = [v27 attributes];
+            attributes4 = [v27 attributes];
             v36 = v41;
           }
 
-          v39 = [(TIProactiveTrigger *)v36 initWithSourceType:1 attributes:v35];
+          string2 = [(TIProactiveTrigger *)v36 initWithSourceType:1 attributes:attributes4];
 
-          [v58 addObject:v39];
+          [array2 addObject:string2];
           goto LABEL_24;
         }
       }
 
       else
       {
-        v37 = [v27 string];
+        string = [v27 string];
 
-        if (v37 && !a10)
+        if (string && !blocklisted)
         {
           v38 = objc_alloc(MEMORY[0x277D6F568]);
-          v39 = [v27 string];
-          v33 = [v27 category];
-          v40 = [v38 initWithCandidate:v39 responseKitCategory:v33];
-          [v56 addObject:v40];
+          string2 = [v27 string];
+          category2 = [v27 category];
+          v40 = [v38 initWithCandidate:string2 responseKitCategory:category2];
+          [array addObject:v40];
 
 LABEL_24:
         }
@@ -145,24 +145,24 @@ LABEL_24:
   while (v24);
 LABEL_27:
 
-  v20 = v52;
-  if ([v56 count] < v50)
+  predictionsCopy = v52;
+  if ([array count] < countCopy)
   {
-    v43 = [v52 predictions];
-    [v56 addObjectsFromArray:v43];
+    predictions = [v52 predictions];
+    [array addObjectsFromArray:predictions];
 
-    v44 = [(TIResponseKitManager *)v49 indexesOfDuplicatesInCandidates:v56];
-    [v56 removeObjectsAtIndexes:v44];
+    v44 = [(TIResponseKitManager *)selfCopy indexesOfDuplicatesInCandidates:array];
+    [array removeObjectsAtIndexes:v44];
 
-    v45 = [v52 proactiveTriggers];
-    [v58 addObjectsFromArray:v45];
+    proactiveTriggers = [v52 proactiveTriggers];
+    [array2 addObjectsFromArray:proactiveTriggers];
   }
 
-  v46 = [MEMORY[0x277D6F328] listWithPredictions:v56 proactiveTriggers:v58];
+  v46 = [MEMORY[0x277D6F328] listWithPredictions:array proactiveTriggers:array2];
 
-  v16 = v55;
-  v19 = v53;
-  v18 = v54;
+  stringCopy = v55;
+  recipientIDCopy = v53;
+  iDCopy = v54;
   v21 = v51;
 LABEL_32:
 
@@ -172,18 +172,18 @@ LABEL_33:
   return v46;
 }
 
-- (id)indexesOfDuplicatesInCandidates:(id)a3
+- (id)indexesOfDuplicatesInCandidates:(id)candidates
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  candidatesCopy = candidates;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__TIResponseKitManager_indexesOfDuplicatesInCandidates___block_invoke;
   v9[3] = &unk_278732EF8;
   v10 = v5;
   v6 = v5;
-  v7 = [v4 indexesOfObjectsPassingTest:v9];
+  v7 = [candidatesCopy indexesOfObjectsPassingTest:v9];
 
   return v7;
 }
@@ -201,12 +201,12 @@ BOOL __56__TIResponseKitManager_indexesOfDuplicatesInCandidates___block_invoke(u
   return v4 != 0;
 }
 
-- (id)responseKitResponseCandidatesForString:(id)a3 withLanguageID:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 shouldDisableAutoCaps:(BOOL)a7
+- (id)responseKitResponseCandidatesForString:(id)string withLanguageID:(id)d withClientID:(id)iD withRecipientID:(id)recipientID shouldDisableAutoCaps:(BOOL)caps
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a6;
-  if (v7)
+  capsCopy = caps;
+  iDCopy = iD;
+  recipientIDCopy = recipientID;
+  if (capsCopy)
   {
     v14 = 704;
   }
@@ -217,44 +217,44 @@ BOOL __56__TIResponseKitManager_indexesOfDuplicatesInCandidates___block_invoke(u
   }
 
   conversationTurns = self->_conversationTurns;
-  v16 = a4;
-  v17 = a3;
+  dCopy = d;
+  stringCopy = string;
   if ([(NSMutableArray *)conversationTurns count])
   {
-    v18 = [MEMORY[0x277D46BD8] sharedManager];
-    v19 = [(TILanguageModelAdaptationContext *)v18 responsesForMessage:v17 maximumResponses:10 forConversationHistory:self->_conversationTurns withLanguage:v16 options:v14];
+    mEMORY[0x277D46BD8] = [MEMORY[0x277D46BD8] sharedManager];
+    v19 = [(TILanguageModelAdaptationContext *)mEMORY[0x277D46BD8] responsesForMessage:stringCopy maximumResponses:10 forConversationHistory:self->_conversationTurns withLanguage:dCopy options:v14];
   }
 
   else
   {
-    v18 = [[TILanguageModelAdaptationContext alloc] initWithClientIdentifier:v12 andRecipientContactInfo:v13];
-    v20 = [MEMORY[0x277D46BD8] sharedManager];
-    v21 = [(TILanguageModelAdaptationContext *)v18 identifierForResponseKit];
-    v19 = [v20 responsesForMessage:v17 maximumResponses:10 forContext:v21 withLanguage:v16 options:v14];
+    mEMORY[0x277D46BD8] = [[TILanguageModelAdaptationContext alloc] initWithClientIdentifier:iDCopy andRecipientContactInfo:recipientIDCopy];
+    mEMORY[0x277D46BD8]2 = [MEMORY[0x277D46BD8] sharedManager];
+    identifierForResponseKit = [(TILanguageModelAdaptationContext *)mEMORY[0x277D46BD8] identifierForResponseKit];
+    v19 = [mEMORY[0x277D46BD8]2 responsesForMessage:stringCopy maximumResponses:10 forContext:identifierForResponseKit withLanguage:dCopy options:v14];
 
-    v16 = v21;
-    v17 = v20;
+    dCopy = identifierForResponseKit;
+    stringCopy = mEMORY[0x277D46BD8]2;
   }
 
   return v19;
 }
 
-- (void)addNewConversationTurnToHistory:(id)a3
+- (void)addNewConversationTurnToHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   conversationTurns = self->_conversationTurns;
-  v9 = v4;
+  v9 = historyCopy;
   if (!conversationTurns)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_conversationTurns;
     self->_conversationTurns = v6;
 
-    v4 = v9;
+    historyCopy = v9;
     conversationTurns = self->_conversationTurns;
   }
 
-  [(NSMutableArray *)conversationTurns addObject:v4];
+  [(NSMutableArray *)conversationTurns addObject:historyCopy];
   v8 = *MEMORY[0x277D46C18];
   if ([(NSMutableArray *)self->_conversationTurns count]> v8)
   {
@@ -274,18 +274,18 @@ void __40__TIResponseKitManager_resetResponseKit__block_invoke()
   [v0 resetRegisteredResponses];
 }
 
-- (void)updateResponseKitConversationHistoryWithMessage:(id)a3 withSenderID:(id)a4 withTimestamp:(id)a5
+- (void)updateResponseKitConversationHistoryWithMessage:(id)message withSenderID:(id)d withTimestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  timestampCopy = timestamp;
   queue = self->_queue;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v15 = messageCopy;
+  v16 = dCopy;
+  v17 = timestampCopy;
+  v12 = timestampCopy;
+  v13 = dCopy;
+  v14 = messageCopy;
   TIDispatchAsync();
 }
 
@@ -298,29 +298,29 @@ void __99__TIResponseKitManager_updateResponseKitConversationHistoryWithMessage_
   }
 }
 
-- (void)registerResponseKitResponse:(id)a3 forMessage:(id)a4 withLanguage:(id)a5 withClientID:(id)a6 withSenderID:(id)a7 withRecipientID:(id)a8 withTimestamp:(id)a9 shouldUpdateConversationHistory:(BOOL)a10
+- (void)registerResponseKitResponse:(id)response forMessage:(id)message withLanguage:(id)language withClientID:(id)d withSenderID:(id)iD withRecipientID:(id)recipientID withTimestamp:(id)timestamp shouldUpdateConversationHistory:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  responseCopy = response;
+  messageCopy = message;
+  languageCopy = language;
+  dCopy = d;
+  iDCopy = iD;
+  recipientIDCopy = recipientID;
+  timestampCopy = timestamp;
   queue = self->_queue;
-  v31 = v19;
-  v32 = v21;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v22;
-  v24 = v22;
-  v25 = v20;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v21;
-  v30 = v19;
+  v31 = dCopy;
+  v32 = recipientIDCopy;
+  v33 = responseCopy;
+  v34 = messageCopy;
+  v35 = languageCopy;
+  v36 = timestampCopy;
+  v24 = timestampCopy;
+  v25 = iDCopy;
+  v26 = languageCopy;
+  v27 = messageCopy;
+  v28 = responseCopy;
+  v29 = recipientIDCopy;
+  v30 = dCopy;
   TIDispatchAsync();
 }
 
@@ -340,31 +340,31 @@ void __164__TIResponseKitManager_registerResponseKitResponse_forMessage_withLang
   }
 }
 
-- (void)generateResponseKitSuggestionsForString:(id)a3 withLanguage:(id)a4 withClientID:(id)a5 withRecipientID:(id)a6 withAdditionalPredictions:(id)a7 desiredCandidateCount:(unint64_t)a8 shouldDisableAutoCaps:(BOOL)a9 stringIsBlocklisted:(BOOL)a10 async:(BOOL)a11 completionHandler:(id)a12
+- (void)generateResponseKitSuggestionsForString:(id)string withLanguage:(id)language withClientID:(id)d withRecipientID:(id)iD withAdditionalPredictions:(id)predictions desiredCandidateCount:(unint64_t)count shouldDisableAutoCaps:(BOOL)caps stringIsBlocklisted:(BOOL)self0 async:(BOOL)self1 completionHandler:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a12;
-  if (a11)
+  stringCopy = string;
+  languageCopy = language;
+  dCopy = d;
+  iDCopy = iD;
+  predictionsCopy = predictions;
+  handlerCopy = handler;
+  if (async)
   {
     queue = self->_queue;
     v38 = MEMORY[0x277D85DD0];
     v39 = 3221225472;
     v40 = __220__TIResponseKitManager_generateResponseKitSuggestionsForString_withLanguage_withClientID_withRecipientID_withAdditionalPredictions_desiredCandidateCount_shouldDisableAutoCaps_stringIsBlocklisted_async_completionHandler___block_invoke;
     v41 = &unk_278732E58;
-    v42 = self;
-    v43 = v17;
-    v44 = v18;
-    v45 = v19;
-    v46 = v20;
-    v47 = v21;
-    v49 = a8;
-    v50 = a9;
-    v51 = a10;
-    v48 = v22;
+    selfCopy = self;
+    v43 = stringCopy;
+    v44 = languageCopy;
+    v45 = dCopy;
+    v46 = iDCopy;
+    v47 = predictionsCopy;
+    countCopy = count;
+    capsCopy = caps;
+    blocklistedCopy = blocklisted;
+    v48 = handlerCopy;
     TIDispatchAsync();
 
     v24 = v43;
@@ -379,13 +379,13 @@ void __164__TIResponseKitManager_registerResponseKitResponse_forMessage_withLang
     v36 = __Block_byref_object_dispose__19502;
     v37 = 0;
     v25 = self->_queue;
-    v27 = v17;
-    v28 = v18;
-    v29 = v19;
-    v30 = v20;
-    v31 = v21;
+    v27 = stringCopy;
+    v28 = languageCopy;
+    v29 = dCopy;
+    v30 = iDCopy;
+    v31 = predictionsCopy;
     TIDispatchSync();
-    (*(v22 + 2))(v22, v33[5]);
+    (*(handlerCopy + 2))(handlerCopy, v33[5]);
 
     _Block_object_dispose(&v32, 8);
     v24 = v37;
@@ -412,10 +412,6 @@ uint64_t __220__TIResponseKitManager_generateResponseKitSuggestionsForString_wit
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-{
-  return (*(*(a1 + 40) + 16))(*(a1 + 40), *(a1 + 32));
-}
-
 - (TIResponseKitManager)init
 {
   v7.receiver = self;
@@ -432,20 +428,20 @@ uint64_t __220__TIResponseKitManager_generateResponseKitSuggestionsForString_wit
   return v2;
 }
 
-+ (id)rewriteMoneyAttributes:(id)a3
++ (id)rewriteMoneyAttributes:(id)attributes
 {
   v32 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D22FF8];
-  v26 = [a3 objectForKey:*MEMORY[0x277D22FF8]];
+  v26 = [attributes objectForKey:*MEMORY[0x277D22FF8]];
   v4 = [v26 objectForKey:*MEMORY[0x277D46C08]];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setValue:*MEMORY[0x277D46C00] forKey:*MEMORY[0x277D23050]];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CBEB18] array];
-  [v6 setValue:v7 forKey:@"Currency"];
-  v24 = v5;
-  v25 = v6;
-  [v5 setValue:v6 forKey:*v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setValue:*MEMORY[0x277D46C00] forKey:*MEMORY[0x277D23050]];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  [dictionary2 setValue:array forKey:@"Currency"];
+  v24 = dictionary;
+  v25 = dictionary2;
+  [dictionary setValue:dictionary2 forKey:*v3];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -471,18 +467,18 @@ uint64_t __220__TIResponseKitManager_generateResponseKitSuggestionsForString_wit
         {
           v14 = MEMORY[0x277CBEB38];
           v15 = v13;
-          v16 = [v14 dictionary];
-          v17 = [v15 currency];
-          [v16 setObject:v17 forKey:@"CurrencyType"];
+          dictionary3 = [v14 dictionary];
+          currency = [v15 currency];
+          [dictionary3 setObject:currency forKey:@"CurrencyType"];
 
           v18 = MEMORY[0x277CCACA8];
           [v15 value];
           v20 = v19;
 
           v21 = [v18 stringWithFormat:@"%.2f", v20];
-          [v16 setObject:v21 forKey:@"CurrencyValue"];
+          [dictionary3 setObject:v21 forKey:@"CurrencyValue"];
 
-          [v7 addObject:v16];
+          [array addObject:dictionary3];
         }
       }
 

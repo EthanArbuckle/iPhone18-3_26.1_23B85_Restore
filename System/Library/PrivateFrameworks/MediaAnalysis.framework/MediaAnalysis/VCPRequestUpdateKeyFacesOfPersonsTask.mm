@@ -1,28 +1,28 @@
 @interface VCPRequestUpdateKeyFacesOfPersonsTask
-+ (id)taskWithLocalIdentifiers:(id)a3 andForceUpdate:(BOOL)a4 andPhotoLibraryURL:(id)a5 andProgressHandler:(id)a6 andReply:(id)a7;
++ (id)taskWithLocalIdentifiers:(id)identifiers andForceUpdate:(BOOL)update andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestUpdateKeyFacesOfPersonsTask)initWithLocalIdentifiers:(id)a3 andForceUpdate:(BOOL)a4 andPhotoLibraryURL:(id)a5 andProgressHandler:(id)a6 andReply:(id)a7;
+- (VCPRequestUpdateKeyFacesOfPersonsTask)initWithLocalIdentifiers:(id)identifiers andForceUpdate:(BOOL)update andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestUpdateKeyFacesOfPersonsTask
 
-- (VCPRequestUpdateKeyFacesOfPersonsTask)initWithLocalIdentifiers:(id)a3 andForceUpdate:(BOOL)a4 andPhotoLibraryURL:(id)a5 andProgressHandler:(id)a6 andReply:(id)a7
+- (VCPRequestUpdateKeyFacesOfPersonsTask)initWithLocalIdentifiers:(id)identifiers andForceUpdate:(BOOL)update andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  replyCopy = reply;
   v20.receiver = self;
   v20.super_class = VCPRequestUpdateKeyFacesOfPersonsTask;
   v15 = [(VCPRequestUpdateKeyFacesOfPersonsTask *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_personLocalIdentifiers, a3);
-    v16->_forceUpdate = a4;
-    objc_storeStrong(&v16->_photoLibraryURL, a5);
-    v17 = objc_retainBlock(v14);
+    objc_storeStrong(&v15->_personLocalIdentifiers, identifiers);
+    v16->_forceUpdate = update;
+    objc_storeStrong(&v16->_photoLibraryURL, l);
+    v17 = objc_retainBlock(replyCopy);
     reply = v16->_reply;
     v16->_reply = v17;
   }
@@ -30,14 +30,14 @@
   return v16;
 }
 
-+ (id)taskWithLocalIdentifiers:(id)a3 andForceUpdate:(BOOL)a4 andPhotoLibraryURL:(id)a5 andProgressHandler:(id)a6 andReply:(id)a7
++ (id)taskWithLocalIdentifiers:(id)identifiers andForceUpdate:(BOOL)update andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [objc_alloc(objc_opt_class()) initWithLocalIdentifiers:v11 andForceUpdate:v10 andPhotoLibraryURL:v12 andProgressHandler:v13 andReply:v14];
+  updateCopy = update;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v15 = [objc_alloc(objc_opt_class()) initWithLocalIdentifiers:identifiersCopy andForceUpdate:updateCopy andPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v15;
 }

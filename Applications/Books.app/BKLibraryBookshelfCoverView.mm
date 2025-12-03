@@ -1,21 +1,21 @@
 @interface BKLibraryBookshelfCoverView
-- (BKLibraryBookshelfCoverView)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfCoverView)initWithFrame:(CGRect)frame;
 - (id)_ancestorCell;
 @end
 
 @implementation BKLibraryBookshelfCoverView
 
-- (BKLibraryBookshelfCoverView)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfCoverView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BKLibraryBookshelfCoverView;
-  return [(BKLibraryBookshelfCoverView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(BKLibraryBookshelfCoverView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (id)_ancestorCell
 {
-  v2 = [(BKLibraryBookshelfCoverView *)self superview];
-  if (v2)
+  superview = [(BKLibraryBookshelfCoverView *)self superview];
+  if (superview)
   {
     do
     {
@@ -25,15 +25,15 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 @end

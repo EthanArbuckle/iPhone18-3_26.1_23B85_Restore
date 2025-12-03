@@ -1,11 +1,11 @@
 @interface LSMarketplacesPreferences
-+ (id)currentPreferencesWithError:(id *)a3;
++ (id)currentPreferencesWithError:(id *)error;
 + (id)modifyPreferencesWithBlock:;
-+ (id)modifyPreferencesWithBlock:(id)a3;
++ (id)modifyPreferencesWithBlock:(id)block;
 + (uint64_t)modifyPreferencesWithBlock:;
 + (void)modifyPreferencesWithBlock:;
 - (LSMarketplacesPreferences)init;
-- (LSMarketplacesPreferences)initWithValidatedPlist:(id)a3;
+- (LSMarketplacesPreferences)initWithValidatedPlist:(id)plist;
 - (id)toPlist;
 @end
 
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (LSMarketplacesPreferences)initWithValidatedPlist:(id)a3
+- (LSMarketplacesPreferences)initWithValidatedPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"preferredMarketplaces"];
+  plistCopy = plist;
+  v5 = [plistCopy objectForKey:@"preferredMarketplaces"];
   v10.receiver = self;
   v10.super_class = LSMarketplacesPreferences;
   v6 = [(LSMarketplacesPreferences *)&v10 init];
@@ -57,7 +57,7 @@
   return v3;
 }
 
-+ (id)currentPreferencesWithError:(id *)a3
++ (id)currentPreferencesWithError:(id *)error
 {
   if (marketplacesPreferencesStatePlist(void)::onceToken != -1)
   {
@@ -70,7 +70,7 @@
   v7 = v6;
   if (v5)
   {
-    v8 = [[a1 alloc] initWithValidatedPlist:v5];
+    v8 = [[self alloc] initWithValidatedPlist:v5];
 LABEL_7:
     v9 = v8;
     goto LABEL_8;
@@ -78,15 +78,15 @@ LABEL_7:
 
   if (_LSNSErrorIsFNFError(v6))
   {
-    v8 = objc_alloc_init(a1);
+    v8 = objc_alloc_init(self);
     goto LABEL_7;
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v7;
     v9 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -99,21 +99,21 @@ LABEL_8:
   return v9;
 }
 
-+ (id)modifyPreferencesWithBlock:(id)a3
++ (id)modifyPreferencesWithBlock:(id)block
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v4 = marketplacesPreferencesStatePlist(void)::onceToken;
-  v5 = a3;
+  blockCopy = block;
   if (v4 != -1)
   {
     +[LSMarketplacesPreferences currentPreferencesWithError:];
   }
 
   v6 = marketplacesPreferencesStatePlist(void)::sharedPlist;
-  v7 = MEMORY[0x1865D71B0](v5);
+  v7 = MEMORY[0x1865D71B0](blockCopy);
 
   v11[0] = &unk_1EEF637E8;
-  v11[1] = a1;
+  v11[1] = self;
   v11[2] = v7;
   v11[3] = v11;
   v8 = LaunchServices::LSStatePlist::modify(v6, v11);
@@ -126,13 +126,13 @@ LABEL_8:
 + (void)modifyPreferencesWithBlock:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 + (uint64_t)modifyPreferencesWithBlock:
 {
-  v4 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v4 = *(self + 8);
+  v3 = *(self + 16);
   *a2 = &unk_1EEF637E8;
   a2[1] = v4;
   result = MEMORY[0x1865D71B0](v3);
@@ -145,7 +145,7 @@ LABEL_8:
   v4 = *a3;
   v5 = *a2;
   v6 = v4;
-  v7 = *(a1 + 8);
+  v7 = *(self + 8);
   if (v5)
   {
     v8 = [[v7 alloc] initWithValidatedPlist:v5];
@@ -157,10 +157,10 @@ LABEL_8:
   }
 
   v9 = v8;
-  (*(*(a1 + 16) + 16))();
-  v10 = [v9 toPlist];
+  (*(*(self + 16) + 16))();
+  toPlist = [v9 toPlist];
 
-  return v10;
+  return toPlist;
 }
 
 @end

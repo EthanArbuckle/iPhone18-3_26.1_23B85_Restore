@@ -8,9 +8,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Books27LightLevelControllerWrapper_lightLevelController);
-  v3 = self;
-  [v2 removeObserver:v3];
-  v4.receiver = v3;
+  selfCopy = self;
+  [v2 removeObserver:selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for LightLevelControllerWrapper();
   [(LightLevelControllerWrapper *)&v4 dealloc];
 }

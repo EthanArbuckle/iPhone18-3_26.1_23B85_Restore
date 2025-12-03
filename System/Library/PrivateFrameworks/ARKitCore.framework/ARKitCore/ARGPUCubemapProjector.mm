@@ -1,18 +1,18 @@
 @interface ARGPUCubemapProjector
-+ (id)createCubemap:(unint64_t)a3;
++ (id)createCubemap:(unint64_t)cubemap;
 - (ARGPUCubemapProjector)init;
-- (void)projectToCube:(float32x4_t)a3 transformWorldFromCube:(float32x4_t)a4 meshes:(float32x4_t)a5 blend:(uint64_t)a6;
+- (void)projectToCube:(float32x4_t)cube transformWorldFromCube:(float32x4_t)fromCube meshes:(float32x4_t)meshes blend:(uint64_t)blend;
 @end
 
 @implementation ARGPUCubemapProjector
 
-+ (id)createCubemap:(unint64_t)a3
++ (id)createCubemap:(unint64_t)cubemap
 {
-  v3 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:71 size:a3 mipmapped:0];
+  v3 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:71 size:cubemap mipmapped:0];
   [v3 setUsage:5];
   v4 = +[ARSharedGPUDevice sharedInstance];
-  v5 = [v4 device];
-  v6 = [v5 newTextureWithDescriptor:v3];
+  device = [v4 device];
+  v6 = [device newTextureWithDescriptor:v3];
 
   return v6;
 }
@@ -24,13 +24,13 @@
   v67.super_class = ARGPUCubemapProjector;
   v2 = [(ARGPUCubemapProjector *)&v67 init];
   v3 = +[ARSharedGPUDevice sharedInstance];
-  v4 = [v3 device];
+  device = [v3 device];
   device = v2->_device;
-  v2->_device = v4;
+  v2->_device = device;
 
-  v6 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v6;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.cubemapprojector.queue"];
   v8 = ARKitCoreBundle();
@@ -49,8 +49,8 @@
   [v14 setLabel:@"com.apple.arkit.cubemapprojector.srgbpipeline"];
   [v14 setVertexFunction:v12];
   [v14 setFragmentFunction:v13];
-  v15 = [v14 colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments = [v14 colorAttachments];
+  v16 = [colorAttachments objectAtIndexedSubscript:0];
   [v16 setPixelFormat:81];
 
   [v14 setDepthAttachmentPixelFormat:252];
@@ -120,8 +120,8 @@ LABEL_11:
     }
   }
 
-  v30 = [v14 colorAttachments];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v14 colorAttachments];
+  v31 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v31 setPixelFormat:71];
 
   v32 = v2->_device;
@@ -183,8 +183,8 @@ LABEL_20:
 
 LABEL_22:
   [v14 setLabel:@"com.apple.arkit.cubemapprojector.hdrpipeline"];
-  v45 = [v14 colorAttachments];
-  v46 = [v45 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v14 colorAttachments];
+  v46 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v46 setPixelFormat:115];
 
   v47 = v2->_device;
@@ -267,7 +267,7 @@ LABEL_32:
   return v2;
 }
 
-- (void)projectToCube:(float32x4_t)a3 transformWorldFromCube:(float32x4_t)a4 meshes:(float32x4_t)a5 blend:(uint64_t)a6
+- (void)projectToCube:(float32x4_t)cube transformWorldFromCube:(float32x4_t)fromCube meshes:(float32x4_t)meshes blend:(uint64_t)blend
 {
   v109 = *MEMORY[0x1E69E9840];
   v11 = a7;
@@ -281,7 +281,7 @@ LABEL_32:
   memset(v108, 0, 64);
   do
   {
-    v108[0].columns[v12] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&v106.columns[v12])), a3, *v106.columns[v12].f32, 1), a4, v106.columns[v12], 2), a5, v106.columns[v12], 3);
+    v108[0].columns[v12] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&v106.columns[v12])), cube, *v106.columns[v12].f32, 1), fromCube, v106.columns[v12], 2), meshes, v106.columns[v12], 3);
     ++v12;
   }
 
@@ -296,7 +296,7 @@ LABEL_32:
   memset(&v106, 0, sizeof(v106));
   do
   {
-    v106.columns[v13 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v13))), a3, *(&v102 + v13), 1), a4, *(&v102 + v13), 2), a5, *(&v102 + v13), 3);
+    v106.columns[v13 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v13))), cube, *(&v102 + v13), 1), fromCube, *(&v102 + v13), 2), meshes, *(&v102 + v13), 3);
     v13 += 16;
   }
 
@@ -311,7 +311,7 @@ LABEL_32:
   memset(&v106, 0, sizeof(v106));
   do
   {
-    v106.columns[v14 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v14))), a3, *(&v102 + v14), 1), a4, *(&v102 + v14), 2), a5, *(&v102 + v14), 3);
+    v106.columns[v14 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v14))), cube, *(&v102 + v14), 1), fromCube, *(&v102 + v14), 2), meshes, *(&v102 + v14), 3);
     v14 += 16;
   }
 
@@ -326,7 +326,7 @@ LABEL_32:
   memset(&v106, 0, sizeof(v106));
   do
   {
-    v106.columns[v15 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v15))), a3, *(&v102 + v15), 1), a4, *(&v102 + v15), 2), a5, *(&v102 + v15), 3);
+    v106.columns[v15 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v15))), cube, *(&v102 + v15), 1), fromCube, *(&v102 + v15), 2), meshes, *(&v102 + v15), 3);
     v15 += 16;
   }
 
@@ -341,7 +341,7 @@ LABEL_32:
   memset(&v106, 0, sizeof(v106));
   do
   {
-    v106.columns[v16 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v16))), a3, *(&v102 + v16), 1), a4, *(&v102 + v16), 2), a5, *(&v102 + v16), 3);
+    v106.columns[v16 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v16))), cube, *(&v102 + v16), 1), fromCube, *(&v102 + v16), 2), meshes, *(&v102 + v16), 3);
     v16 += 16;
   }
 
@@ -356,34 +356,34 @@ LABEL_32:
   memset(&v106, 0, sizeof(v106));
   do
   {
-    v106.columns[v17 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v17))), a3, *(&v102 + v17), 1), a4, *(&v102 + v17), 2), a5, *(&v102 + v17), 3);
+    v106.columns[v17 / 0x10] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v102 + v17))), cube, *(&v102 + v17), 1), fromCube, *(&v102 + v17), 2), meshes, *(&v102 + v17), 3);
     v17 += 16;
   }
 
   while (v17 != 64);
   v108[5] = __invert_f4(v106);
-  v18 = [v11 width];
-  v78 = [v11 pixelFormat];
-  v19 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:252 size:v18 mipmapped:0];
+  width = [v11 width];
+  pixelFormat = [v11 pixelFormat];
+  v19 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:252 size:width mipmapped:0];
   [v19 setUsage:4];
   v76 = v19;
-  v81 = [*(a1 + 8) newTextureWithDescriptor:v19];
+  v81 = [*(self + 8) newTextureWithDescriptor:v19];
   [v81 setLabel:@"com.apple.arkit.cubemapprojector.depthtexture"];
-  v82 = [*(a1 + 16) commandBuffer];
-  [v82 setLabel:@"com.apple.arkit.cubemapprojector.commandbuffer"];
+  commandBuffer = [*(self + 16) commandBuffer];
+  [commandBuffer setLabel:@"com.apple.arkit.cubemapprojector.commandbuffer"];
   v20 = 0;
-  v21 = a4;
-  v22 = a3;
-  v23 = vextq_s8(v22, v22, 4uLL);
-  v24 = vextq_s8(v21, v21, 8uLL);
-  v25 = a5;
-  v26 = vextq_s8(v25, v25, 0xCuLL);
-  v27 = vextq_s8(v21, v21, 0xCuLL);
-  v28 = vextq_s8(v25, v25, 8uLL);
-  v29 = vextq_s8(v22, v22, 8uLL);
-  v30 = vextq_s8(a5, a5, 4uLL);
-  v31 = vextq_s8(a4, a4, 4uLL);
-  v32 = vmulq_f32(a2, vmlaq_f32(vmlaq_f32(vmulq_f32(v29, vmlaq_f32(vmulq_f32(v26, vnegq_f32(v31)), v30, v27)), vmlaq_f32(vmulq_f32(v28, vnegq_f32(v27)), v26, v24), v23), vmlaq_f32(vmulq_f32(v30, vnegq_f32(v24)), v28, v31), vextq_s8(a3, a3, 0xCuLL)));
+  fromCubeCopy = fromCube;
+  cubeCopy = cube;
+  v23 = vextq_s8(cubeCopy, cubeCopy, 4uLL);
+  v24 = vextq_s8(fromCubeCopy, fromCubeCopy, 8uLL);
+  meshesCopy = meshes;
+  v26 = vextq_s8(meshesCopy, meshesCopy, 0xCuLL);
+  v27 = vextq_s8(fromCubeCopy, fromCubeCopy, 0xCuLL);
+  v28 = vextq_s8(meshesCopy, meshesCopy, 8uLL);
+  v29 = vextq_s8(cubeCopy, cubeCopy, 8uLL);
+  v30 = vextq_s8(meshes, meshes, 4uLL);
+  v31 = vextq_s8(fromCube, fromCube, 4uLL);
+  v32 = vmulq_f32(a2, vmlaq_f32(vmlaq_f32(vmulq_f32(v29, vmlaq_f32(vmulq_f32(v26, vnegq_f32(v31)), v30, v27)), vmlaq_f32(vmulq_f32(v28, vnegq_f32(v27)), v26, v24), v23), vmlaq_f32(vmulq_f32(v30, vnegq_f32(v24)), v28, v31), vextq_s8(cube, cube, 0xCuLL)));
   v24.i64[0] = vextq_s8(v32, v32, 8uLL).u64[0];
   if (vaddv_f32(vsub_f32(vzip1_s32(*v32.i8, *v24.f32), vzip2_s32(*v32.i8, *v24.f32))) <= 0.0)
   {
@@ -399,12 +399,12 @@ LABEL_32:
   v80 = v11;
   do
   {
-    v34 = [v11 newTextureViewWithPixelFormat:v78 textureType:2 levels:0 slices:1, v20, 1];
+    v34 = [v11 newTextureViewWithPixelFormat:pixelFormat textureType:2 levels:0 slices:1, v20, 1];
     v87 = v20;
     v35 = [v81 newTextureViewWithPixelFormat:252 textureType:2 levels:0 slices:1, v20, 1];
-    v36 = [MEMORY[0x1E6974128] renderPassDescriptor];
-    v37 = [v36 colorAttachments];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
+    colorAttachments = [renderPassDescriptor colorAttachments];
+    v38 = [colorAttachments objectAtIndexedSubscript:0];
     v86 = v34;
     [v38 setTexture:v34];
 
@@ -418,48 +418,48 @@ LABEL_32:
       v39 = 2;
     }
 
-    v40 = [v36 colorAttachments];
-    v41 = [v40 objectAtIndexedSubscript:0];
+    colorAttachments2 = [renderPassDescriptor colorAttachments];
+    v41 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v41 setLoadAction:v39];
 
-    v42 = [v36 colorAttachments];
-    v43 = [v42 objectAtIndexedSubscript:0];
+    colorAttachments3 = [renderPassDescriptor colorAttachments];
+    v43 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v43 setStoreAction:1];
 
-    v44 = [v36 colorAttachments];
-    v45 = [v44 objectAtIndexedSubscript:0];
+    colorAttachments4 = [renderPassDescriptor colorAttachments];
+    v45 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v45 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v46 = [v36 depthAttachment];
+    depthAttachment = [renderPassDescriptor depthAttachment];
     v85 = v35;
-    [v46 setTexture:v35];
+    [depthAttachment setTexture:v35];
 
-    v47 = [v36 depthAttachment];
-    [v47 setLoadAction:2];
+    depthAttachment2 = [renderPassDescriptor depthAttachment];
+    [depthAttachment2 setLoadAction:2];
 
-    v48 = [v36 depthAttachment];
-    [v48 setStoreAction:0];
+    depthAttachment3 = [renderPassDescriptor depthAttachment];
+    [depthAttachment3 setStoreAction:0];
 
-    v84 = v36;
-    v49 = [v82 renderCommandEncoderWithDescriptor:v36];
+    v84 = renderPassDescriptor;
+    v49 = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     [v49 setLabel:@"com.apple.arkit.cubemapprojector.renderencoder"];
     [v49 setCullMode:v77];
-    v50 = [v11 pixelFormat];
-    v51 = (a1 + 24);
-    if (v50 != 81)
+    pixelFormat2 = [v11 pixelFormat];
+    v51 = (self + 24);
+    if (pixelFormat2 != 81)
     {
-      v52 = [v11 pixelFormat];
+      pixelFormat3 = [v11 pixelFormat];
       v53 = 40;
-      if (v52 == 71)
+      if (pixelFormat3 == 71)
       {
         v53 = 32;
       }
 
-      v51 = (a1 + v53);
+      v51 = (self + v53);
     }
 
     [v49 setRenderPipelineState:*v51];
-    [v49 setDepthStencilState:*(a1 + 48)];
+    [v49 setDepthStencilState:*(self + 48)];
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
@@ -481,11 +481,11 @@ LABEL_32:
           }
 
           v60 = *(*(&v97 + 1) + 8 * i);
-          v61 = [v60 vertexBuffer];
-          [v49 setVertexBuffer:v61 offset:0 atIndex:0];
+          vertexBuffer = [v60 vertexBuffer];
+          [v49 setVertexBuffer:vertexBuffer offset:0 atIndex:0];
 
-          v62 = [v60 uvBuffer];
-          [v49 setVertexBuffer:v62 offset:0 atIndex:1];
+          uvBuffer = [v60 uvBuffer];
+          [v49 setVertexBuffer:uvBuffer offset:0 atIndex:1];
 
           v63 = 0;
           memset(&v96, 0, sizeof(v96));
@@ -525,12 +525,12 @@ LABEL_32:
           v96 = v106;
           [v49 setVertexBytes:&v96 length:64 atIndex:2];
           [v49 setFragmentBytes:&v101 length:1 atIndex:0];
-          v72 = [v60 texture];
-          [v49 setFragmentTexture:v72 atIndex:0];
+          texture = [v60 texture];
+          [v49 setFragmentTexture:texture atIndex:0];
 
-          v73 = [v60 nIndices];
-          v74 = [v60 indexBuffer];
-          [v49 drawIndexedPrimitives:3 indexCount:v73 indexType:1 indexBuffer:v74 indexBufferOffset:0];
+          nIndices = [v60 nIndices];
+          indexBuffer = [v60 indexBuffer];
+          [v49 drawIndexedPrimitives:3 indexCount:nIndices indexType:1 indexBuffer:indexBuffer indexBufferOffset:0];
         }
 
         v56 = [v54 countByEnumeratingWithState:&v97 objects:v107 count:16];
@@ -547,13 +547,13 @@ LABEL_32:
   while (v87 != 5);
   if ([v80 mipmapLevelCount] > 1)
   {
-    v75 = [v82 blitCommandEncoder];
-    [v75 generateMipmapsForTexture:v80];
-    [v75 endEncoding];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    [blitCommandEncoder generateMipmapsForTexture:v80];
+    [blitCommandEncoder endEncoding];
   }
 
-  [v82 commit];
-  [v82 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
 @end

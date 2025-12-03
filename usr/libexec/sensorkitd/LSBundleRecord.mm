@@ -1,5 +1,5 @@
 @interface LSBundleRecord
-+ (id)sr_bundleRecordWithIdentifier:(id)a3 error:(id *)a4;
++ (id)sr_bundleRecordWithIdentifier:(id)identifier error:(id *)error;
 - (BOOL)sr_isSocialNetworking;
 - (BOOL)sr_supportsDataGeneration;
 - (BOOL)sr_supportsMessagingIntents;
@@ -8,9 +8,9 @@
 
 @implementation LSBundleRecord
 
-+ (id)sr_bundleRecordWithIdentifier:(id)a3 error:(id *)a4
++ (id)sr_bundleRecordWithIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:a3 allowPlaceholder:0 error:a4];
+  v4 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifier allowPlaceholder:0 error:error];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -37,9 +37,9 @@
     return 1;
   }
 
-  v4 = [(LSBundleRecord *)self appTags];
+  appTags = [(LSBundleRecord *)self appTags];
 
-  return [v4 containsObject:@"any-telephony"];
+  return [appTags containsObject:@"any-telephony"];
 }
 
 - (BOOL)sr_supportsMessagingIntents
@@ -49,12 +49,12 @@
   {
     if (([-[LSBundleRecord supportedIntents](self "supportedIntents")] & 1) == 0)
     {
-      v5 = [(LSBundleRecord *)self applicationExtensionRecords];
+      applicationExtensionRecords = [(LSBundleRecord *)self applicationExtensionRecords];
       v10 = 0u;
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v3 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [applicationExtensionRecords countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (!v3)
       {
         return v3;
@@ -68,7 +68,7 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applicationExtensionRecords);
         }
 
         if ([objc_msgSend(*(*(&v10 + 1) + 8 * v8) "supportedIntents")])
@@ -78,7 +78,7 @@ LABEL_10:
 
         if (v6 == ++v8)
         {
-          v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [applicationExtensionRecords countByEnumeratingWithState:&v10 objects:v14 count:16];
           LOBYTE(v3) = 0;
           if (v6)
           {
@@ -98,9 +98,9 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(LSBundleRecord *)self supportedIntents];
+      supportedIntents = [(LSBundleRecord *)self supportedIntents];
 
-      LOBYTE(v3) = [v4 containsObject:@"INSendMessageIntent"];
+      LOBYTE(v3) = [supportedIntents containsObject:@"INSendMessageIntent"];
     }
 
     else
@@ -127,36 +127,36 @@ LABEL_10:
 - (BOOL)sr_isSocialNetworking
 {
   objc_opt_class();
-  v3 = self;
+  selfCopy = self;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(LSBundleRecord *)self containingBundleRecord];
+      containingBundleRecord = [(LSBundleRecord *)self containingBundleRecord];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = v4;
+        selfCopy = containingBundleRecord;
       }
 
       else
       {
-        v3 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  v5 = [-[LSBundleRecord iTunesMetadata](v3 "iTunesMetadata")];
-  v6 = [-[LSBundleRecord iTunesMetadata](v3 "iTunesMetadata")];
-  v7 = [(LSBundleRecord *)v3 infoDictionary];
+  v5 = [-[LSBundleRecord iTunesMetadata](selfCopy "iTunesMetadata")];
+  v6 = [-[LSBundleRecord iTunesMetadata](selfCopy "iTunesMetadata")];
+  infoDictionary = [(LSBundleRecord *)selfCopy infoDictionary];
   v8 = objc_opt_class();
-  v9 = [v7 objectForKey:@"SBMatchingApplicationGenres" ofClass:v8 valuesOfClass:objc_opt_class()];
+  v9 = [infoDictionary objectForKey:@"SBMatchingApplicationGenres" ofClass:v8 valuesOfClass:objc_opt_class()];
   if (qword_100071A50 != -1)
   {
     dispatch_once(&qword_100071A50, &stru_100060FA0);
@@ -174,7 +174,7 @@ LABEL_10:
   {
 LABEL_9:
     v12 = 138478595;
-    v13 = [(LSBundleRecord *)self bundleIdentifier];
+    bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
     v14 = 2050;
     v15 = v5;
     v16 = 2113;

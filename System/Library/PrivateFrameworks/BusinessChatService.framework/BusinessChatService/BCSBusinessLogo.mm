@@ -1,26 +1,26 @@
 @interface BCSBusinessLogo
-+ (id)itemFromStatement:(sqlite3_stmt *)a3;
-- (BCSBusinessLogo)initWithBusinessId:(id)a3 logo:(id)a4;
-- (BCSBusinessLogo)initWithBusinessId:(id)a3 logoURL:(id)a4 logoFormat:(id)a5;
-- (BCSBusinessLogo)initWithCoder:(id)a3;
-- (BCSBusinessLogo)initWithMessage:(id)a3 logoURL:(id)a4;
-- (BOOL)matchesItemIdentifying:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)itemFromStatement:(sqlite3_stmt *)statement;
+- (BCSBusinessLogo)initWithBusinessId:(id)id logo:(id)logo;
+- (BCSBusinessLogo)initWithBusinessId:(id)id logoURL:(id)l logoFormat:(id)format;
+- (BCSBusinessLogo)initWithCoder:(id)coder;
+- (BCSBusinessLogo)initWithMessage:(id)message logoURL:(id)l;
+- (BOOL)matchesItemIdentifying:(id)identifying;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)itemIdentifier;
 - (int64_t)truncatedHash;
 - (int64_t)type;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSBusinessLogo
 
-+ (id)itemFromStatement:(sqlite3_stmt *)a3
++ (id)itemFromStatement:(sqlite3_stmt *)statement
 {
-  sqlite3_column_int64(a3, 0);
-  v4 = BCSWebPresentmentStoreDataFromStatement(a3);
-  v5 = sqlite3_column_int64(a3, 2);
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(a3, 3)}];
+  sqlite3_column_int64(statement, 0);
+  v4 = BCSWebPresentmentStoreDataFromStatement(statement);
+  v5 = sqlite3_column_int64(statement, 2);
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(statement, 3)}];
   v7 = 0;
   if (v4 && v5 == 2)
   {
@@ -45,24 +45,24 @@
   return v7;
 }
 
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier
 {
-  sqlite3_bind_int64(a3, 1, [a4 truncatedHash]);
-  v6 = [(BCSBusinessLogo *)self message];
-  v10 = [v6 data];
+  sqlite3_bind_int64(values, 1, [identifier truncatedHash]);
+  message = [(BCSBusinessLogo *)self message];
+  data = [message data];
 
-  v7 = v10;
-  sqlite3_bind_blob(a3, 2, [v10 bytes], objc_msgSend(v10, "length"), 0);
-  sqlite3_bind_int64(a3, 3, 2);
-  v8 = [(BCSItem *)self expirationDate];
-  [v8 timeIntervalSince1970];
-  sqlite3_bind_double(a3, 4, v9);
+  v7 = data;
+  sqlite3_bind_blob(values, 2, [data bytes], objc_msgSend(data, "length"), 0);
+  sqlite3_bind_int64(values, 3, 2);
+  expirationDate = [(BCSItem *)self expirationDate];
+  [expirationDate timeIntervalSince1970];
+  sqlite3_bind_double(values, 4, v9);
 }
 
-- (BCSBusinessLogo)initWithBusinessId:(id)a3 logo:(id)a4
+- (BCSBusinessLogo)initWithBusinessId:(id)id logo:(id)logo
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  logoCopy = logo;
   v16.receiver = self;
   v16.super_class = BCSBusinessLogo;
   v8 = [(BCSItem *)&v16 init];
@@ -72,11 +72,11 @@
     message = v8->_message;
     v8->_message = v9;
 
-    [(BCSEmailLogoParquetMessage *)v8->_message setBusinessId:v6];
-    [(BCSEmailLogoParquetMessage *)v8->_message setLogo:v7];
+    [(BCSEmailLogoParquetMessage *)v8->_message setBusinessId:idCopy];
+    [(BCSEmailLogoParquetMessage *)v8->_message setLogo:logoCopy];
     v11 = [BCSBusinessLogoItemIdentifier alloc];
-    v12 = [(BCSEmailLogoParquetMessage *)v8->_message businessId];
-    v13 = [(BCSBusinessLogoItemIdentifier *)v11 initWithBusinessId:v12];
+    businessId = [(BCSEmailLogoParquetMessage *)v8->_message businessId];
+    v13 = [(BCSBusinessLogoItemIdentifier *)v11 initWithBusinessId:businessId];
     identifier = v8->_identifier;
     v8->_identifier = v13;
   }
@@ -84,11 +84,11 @@
   return v8;
 }
 
-- (BCSBusinessLogo)initWithBusinessId:(id)a3 logoURL:(id)a4 logoFormat:(id)a5
+- (BCSBusinessLogo)initWithBusinessId:(id)id logoURL:(id)l logoFormat:(id)format
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  lCopy = l;
+  formatCopy = format;
   v19.receiver = self;
   v19.super_class = BCSBusinessLogo;
   v11 = [(BCSItem *)&v19 init];
@@ -98,12 +98,12 @@
     message = v11->_message;
     v11->_message = v12;
 
-    [(BCSEmailLogoParquetMessage *)v11->_message setBusinessId:v8];
-    [(BCSEmailLogoParquetMessage *)v11->_message setLogoFormat:v10];
-    objc_storeStrong(&v11->_logoURL, a4);
+    [(BCSEmailLogoParquetMessage *)v11->_message setBusinessId:idCopy];
+    [(BCSEmailLogoParquetMessage *)v11->_message setLogoFormat:formatCopy];
+    objc_storeStrong(&v11->_logoURL, l);
     v14 = [BCSBusinessLogoItemIdentifier alloc];
-    v15 = [(BCSEmailLogoParquetMessage *)v11->_message businessId];
-    v16 = [(BCSBusinessLogoItemIdentifier *)v14 initWithBusinessId:v15];
+    businessId = [(BCSEmailLogoParquetMessage *)v11->_message businessId];
+    v16 = [(BCSBusinessLogoItemIdentifier *)v14 initWithBusinessId:businessId];
     identifier = v11->_identifier;
     v11->_identifier = v16;
   }
@@ -111,26 +111,26 @@
   return v11;
 }
 
-- (BCSBusinessLogo)initWithMessage:(id)a3 logoURL:(id)a4
+- (BCSBusinessLogo)initWithMessage:(id)message logoURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = BCSBusinessLogo;
   v8 = [(BCSItem *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [messageCopy copy];
     message = v8->_message;
     v8->_message = v9;
 
-    v11 = [v7 copy];
+    v11 = [lCopy copy];
     logoURL = v8->_logoURL;
     v8->_logoURL = v11;
 
     v13 = [BCSBusinessLogoItemIdentifier alloc];
-    v14 = [(BCSEmailLogoParquetMessage *)v8->_message businessId];
-    v15 = [(BCSBusinessLogoItemIdentifier *)v13 initWithBusinessId:v14];
+    businessId = [(BCSEmailLogoParquetMessage *)v8->_message businessId];
+    v15 = [(BCSBusinessLogoItemIdentifier *)v13 initWithBusinessId:businessId];
     identifier = v8->_identifier;
     v8->_identifier = v15;
   }
@@ -140,54 +140,54 @@
 
 - (id)itemIdentifier
 {
-  v2 = [(BCSBusinessLogo *)self identifier];
-  v3 = [v2 itemIdentifier];
+  identifier = [(BCSBusinessLogo *)self identifier];
+  itemIdentifier = [identifier itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
 - (int64_t)truncatedHash
 {
-  v2 = [(BCSBusinessLogo *)self identifier];
-  v3 = [v2 truncatedHash];
+  identifier = [(BCSBusinessLogo *)self identifier];
+  truncatedHash = [identifier truncatedHash];
 
-  return v3;
+  return truncatedHash;
 }
 
 - (int64_t)type
 {
-  v2 = [(BCSBusinessLogo *)self identifier];
-  v3 = [v2 type];
+  identifier = [(BCSBusinessLogo *)self identifier];
+  type = [identifier type];
 
-  return v3;
+  return type;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSBusinessLogo *)self identifier];
-  v6 = [v5 matchesItemIdentifying:v4];
+  identifyingCopy = identifying;
+  identifier = [(BCSBusinessLogo *)self identifier];
+  v6 = [identifier matchesItemIdentifying:identifyingCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSBusinessLogo *)self message];
-    v7 = [v6 copyWithZone:a3];
+    message = [(BCSBusinessLogo *)self message];
+    v7 = [message copyWithZone:zone];
     v8 = v5[6];
     v5[6] = v7;
 
-    v9 = [(BCSBusinessLogo *)self logoURL];
-    v10 = [v9 copyWithZone:a3];
+    logoURL = [(BCSBusinessLogo *)self logoURL];
+    v10 = [logoURL copyWithZone:zone];
     v11 = v5[4];
     v5[4] = v10;
 
-    v12 = [(BCSBusinessLogo *)self identifier];
-    v13 = [v12 copyWithZone:a3];
+    identifier = [(BCSBusinessLogo *)self identifier];
+    v13 = [identifier copyWithZone:zone];
     v14 = v5[5];
     v5[5] = v13;
   }
@@ -195,36 +195,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BCSBusinessLogo *)self message];
-  v6 = [v5 data];
-  [v4 encodeObject:v6 forKey:@"Message"];
+  coderCopy = coder;
+  message = [(BCSBusinessLogo *)self message];
+  data = [message data];
+  [coderCopy encodeObject:data forKey:@"Message"];
 
-  v7 = [(BCSBusinessLogo *)self logoURL];
-  [v4 encodeObject:v7 forKey:@"LogoURL"];
+  logoURL = [(BCSBusinessLogo *)self logoURL];
+  [coderCopy encodeObject:logoURL forKey:@"LogoURL"];
 }
 
-- (BCSBusinessLogo)initWithCoder:(id)a3
+- (BCSBusinessLogo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
   v6 = [[BCSEmailLogoParquetMessage alloc] initWithData:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LogoURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LogoURL"];
     self = [(BCSBusinessLogo *)self initWithMessage:v6 logoURL:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

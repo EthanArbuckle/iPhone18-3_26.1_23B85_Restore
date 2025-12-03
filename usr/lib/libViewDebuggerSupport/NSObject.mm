@@ -1,6 +1,6 @@
 @interface NSObject
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation NSObject
@@ -18,12 +18,12 @@
   return v3;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v7 = a4;
-  if ([a3 isEqualToString:@"inspectedDebugDescription"])
+  objectCopy = object;
+  if ([name isEqualToString:@"inspectedDebugDescription"])
   {
-    v8 = [v7 debugDescription];
+    v8 = [objectCopy debugDescription];
   }
 
   else

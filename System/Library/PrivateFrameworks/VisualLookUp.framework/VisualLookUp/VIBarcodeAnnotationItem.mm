@@ -1,31 +1,31 @@
 @interface VIBarcodeAnnotationItem
-+ (id)annotationItemFromObservation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)annotationItemFromObservation:(id)observation;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedBoundingBox;
-- (VIBarcodeAnnotationItem)initWithSymbology:(id)a3 payloadStringValue:(id)a4 normalizedBoundingBox:(CGRect)a5 confidence:(float)a6;
+- (VIBarcodeAnnotationItem)initWithSymbology:(id)symbology payloadStringValue:(id)value normalizedBoundingBox:(CGRect)box confidence:(float)confidence;
 - (unint64_t)hash;
 @end
 
 @implementation VIBarcodeAnnotationItem
 
-- (VIBarcodeAnnotationItem)initWithSymbology:(id)a3 payloadStringValue:(id)a4 normalizedBoundingBox:(CGRect)a5 confidence:(float)a6
+- (VIBarcodeAnnotationItem)initWithSymbology:(id)symbology payloadStringValue:(id)value normalizedBoundingBox:(CGRect)box confidence:(float)confidence
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  symbologyCopy = symbology;
+  valueCopy = value;
   v21.receiver = self;
   v21.super_class = VIBarcodeAnnotationItem;
   v15 = [(VIBarcodeAnnotationItem *)&v21 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [symbologyCopy copy];
     symbology = v15->_symbology;
     v15->_symbology = v16;
 
-    v18 = [v14 copy];
+    v18 = [valueCopy copy];
     payloadStringValue = v15->_payloadStringValue;
     v15->_payloadStringValue = v18;
 
@@ -33,16 +33,16 @@
     v15->_normalizedBoundingBox.origin.y = y;
     v15->_normalizedBoundingBox.size.width = width;
     v15->_normalizedBoundingBox.size.height = height;
-    v15->_confidence = a6;
+    v15->_confidence = confidence;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -52,7 +52,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -62,12 +62,12 @@
 
     v6 = v5;
     symbology = self->_symbology;
-    v8 = [(VIBarcodeAnnotationItem *)v6 symbology];
-    if (VIObjectIsEqual(symbology, v8))
+    symbology = [(VIBarcodeAnnotationItem *)v6 symbology];
+    if (VIObjectIsEqual(symbology, symbology))
     {
       payloadStringValue = self->_payloadStringValue;
-      v10 = [(VIBarcodeAnnotationItem *)v6 payloadStringValue];
-      if (VIObjectIsEqual(payloadStringValue, v10) && ([(VIBarcodeAnnotationItem *)v6 normalizedBoundingBox], v19.origin.x = v11, v19.origin.y = v12, v19.size.width = v13, v19.size.height = v14, CGRectEqualToRect(self->_normalizedBoundingBox, v19)))
+      payloadStringValue = [(VIBarcodeAnnotationItem *)v6 payloadStringValue];
+      if (VIObjectIsEqual(payloadStringValue, payloadStringValue) && ([(VIBarcodeAnnotationItem *)v6 normalizedBoundingBox], v19.origin.x = v11, v19.origin.y = v12, v19.size.width = v13, v19.size.height = v14, CGRectEqualToRect(self->_normalizedBoundingBox, v19)))
       {
         confidence = self->_confidence;
         [(VIBarcodeAnnotationItem *)v6 confidence];
@@ -219,22 +219,22 @@
   return v4 ^ v3 ^ v20 ^ v25 ^ v30 ^ v34 ^ v40;
 }
 
-+ (id)annotationItemFromObservation:(id)a3
++ (id)annotationItemFromObservation:(id)observation
 {
-  v3 = a3;
+  observationCopy = observation;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v3 symbology];
-  v6 = [v3 payloadStringValue];
-  [v3 boundingBox];
+  symbology = [observationCopy symbology];
+  payloadStringValue = [observationCopy payloadStringValue];
+  [observationCopy boundingBox];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v3 confidence];
+  [observationCopy confidence];
   v16 = v15;
 
   LODWORD(v17) = v16;
-  v18 = [v4 initWithSymbology:v5 payloadStringValue:v6 normalizedBoundingBox:v8 confidence:{v10, v12, v14, v17}];
+  v18 = [v4 initWithSymbology:symbology payloadStringValue:payloadStringValue normalizedBoundingBox:v8 confidence:{v10, v12, v14, v17}];
 
   return v18;
 }

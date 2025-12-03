@@ -1,26 +1,26 @@
 @interface GKEditAction
-+ (id)actionWithName:(id)a3 selector:(SEL)a4;
-+ (id)deleteActionWithName:(id)a3;
++ (id)actionWithName:(id)name selector:(SEL)selector;
++ (id)deleteActionWithName:(id)name;
 - (SEL)selector;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation GKEditAction
 
-+ (id)actionWithName:(id)a3 selector:(SEL)a4
++ (id)actionWithName:(id)name selector:(SEL)selector
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(GKEditAction);
-  [(GKEditAction *)v6 setName:v5];
+  [(GKEditAction *)v6 setName:nameCopy];
 
-  [(GKEditAction *)v6 setSelector:a4];
+  [(GKEditAction *)v6 setSelector:selector];
 
   return v6;
 }
 
-+ (id)deleteActionWithName:(id)a3
++ (id)deleteActionWithName:(id)name
 {
-  v3 = [GKEditAction actionWithName:a3 selector:sel_swipeToDeleteCell_];
+  v3 = [GKEditAction actionWithName:name selector:sel_swipeToDeleteCell_];
   [v3 setDestructive:1];
 
   return v3;
@@ -39,19 +39,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

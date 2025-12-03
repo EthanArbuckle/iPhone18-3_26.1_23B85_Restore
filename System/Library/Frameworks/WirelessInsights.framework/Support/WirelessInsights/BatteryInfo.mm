@@ -1,22 +1,22 @@
 @interface BatteryInfo
-- (BatteryInfo)initWithManufactureDate:(id)a3 andFirstUseDate:(id)a4;
+- (BatteryInfo)initWithManufactureDate:(id)date andFirstUseDate:(id)useDate;
 @end
 
 @implementation BatteryInfo
 
-- (BatteryInfo)initWithManufactureDate:(id)a3 andFirstUseDate:(id)a4
+- (BatteryInfo)initWithManufactureDate:(id)date andFirstUseDate:(id)useDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  useDateCopy = useDate;
   v13.receiver = self;
   v13.super_class = BatteryInfo;
   v8 = [(BatteryInfo *)&v13 init];
   manufactureDate = v8->_manufactureDate;
-  v8->_manufactureDate = v6;
-  v10 = v6;
+  v8->_manufactureDate = dateCopy;
+  v10 = dateCopy;
 
   firstUseDate = v8->_firstUseDate;
-  v8->_firstUseDate = v7;
+  v8->_firstUseDate = useDateCopy;
 
   return v8;
 }

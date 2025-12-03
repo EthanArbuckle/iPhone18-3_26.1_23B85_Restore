@@ -1,38 +1,38 @@
 @interface MUFeatureDiscoveryAnnotationView
-- (MUFeatureDiscoveryAnnotationView)initWithFrame:(CGRect)a3;
-- (double)_upAndDownStartingXLocationForBounds:(CGRect)a3;
+- (MUFeatureDiscoveryAnnotationView)initWithFrame:(CGRect)frame;
+- (double)_upAndDownStartingXLocationForBounds:(CGRect)bounds;
 - (double)arrowOffset;
-- (void)_addArrowCurveToPath:(id)a3 direction:(unint64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7;
-- (void)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 leadingEdge:(BOOL)a6 isVertical:(BOOL)a7;
+- (void)_addArrowCurveToPath:(id)path direction:(unint64_t)direction startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint;
+- (void)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)path startPoint:(CGPoint)point endPoint:(CGPoint)endPoint leadingEdge:(BOOL)edge isVertical:(BOOL)vertical;
 - (void)_setupSubviews;
 - (void)_updateBackground;
 - (void)_updateShapeLayerPath;
 - (void)_updateUI;
 - (void)layoutSubviews;
-- (void)setBubblePosition:(unint64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDrawsBackground:(BOOL)a3;
-- (void)setFloatingIndicator:(BOOL)a3;
-- (void)setShowBubbleIndicator:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBubblePosition:(unint64_t)position;
+- (void)setCornerRadius:(double)radius;
+- (void)setDrawsBackground:(BOOL)background;
+- (void)setFloatingIndicator:(BOOL)indicator;
+- (void)setShowBubbleIndicator:(BOOL)indicator;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MUFeatureDiscoveryAnnotationView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = MUFeatureDiscoveryAnnotationView;
-  [(MUFeatureDiscoveryAnnotationView *)&v11 traitCollectionDidChange:v4];
-  v5 = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  if (v6 == [v4 userInterfaceStyle])
+  [(MUFeatureDiscoveryAnnotationView *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  if (userInterfaceStyle == [changeCopy userInterfaceStyle])
   {
-    v7 = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
-    v8 = [v7 preferredContentSizeCategory];
-    v9 = [v4 preferredContentSizeCategory];
-    v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+    traitCollection2 = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
     if (v10 == NSOrderedSame)
     {
@@ -48,38 +48,38 @@
 LABEL_6:
 }
 
-- (void)_addArrowCurveToPath:(id)a3 direction:(unint64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7
+- (void)_addArrowCurveToPath:(id)path direction:(unint64_t)direction startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v14 = a7.x + 2.0;
-  v15 = a7.y + 1.0;
-  v16 = a3;
-  [(MUFeatureDiscoveryAnnotationView *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v16 startPoint:1 endPoint:0 leadingEdge:v10 isVertical:v9, v14, v15];
-  [v16 addCurveToPoint:x + -2.0 controlPoint1:v15 controlPoint2:{x, y, x, y}];
-  [(MUFeatureDiscoveryAnnotationView *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v16 startPoint:0 endPoint:0 leadingEdge:x + -2.0 isVertical:v15, v12, v11];
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v9 = endPoint.y;
+  v10 = endPoint.x;
+  v11 = point.y;
+  v12 = point.x;
+  v14 = peakPoint.x + 2.0;
+  v15 = peakPoint.y + 1.0;
+  pathCopy = path;
+  [(MUFeatureDiscoveryAnnotationView *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:1 endPoint:0 leadingEdge:v10 isVertical:v9, v14, v15];
+  [pathCopy addCurveToPoint:x + -2.0 controlPoint1:v15 controlPoint2:{x, y, x, y}];
+  [(MUFeatureDiscoveryAnnotationView *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:0 endPoint:0 leadingEdge:x + -2.0 isVertical:v15, v12, v11];
 }
 
-- (void)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 leadingEdge:(BOOL)a6 isVertical:(BOOL)a7
+- (void)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)path startPoint:(CGPoint)point endPoint:(CGPoint)endPoint leadingEdge:(BOOL)edge isVertical:(BOOL)vertical
 {
-  v7 = a7;
-  v8 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a4.y;
-  v12 = a4.x;
-  v13 = (a5.x - a4.x) * 0.5;
-  v14 = (a5.y - a4.y) * 0.5;
-  v19 = a3;
-  if (v8)
+  verticalCopy = vertical;
+  edgeCopy = edge;
+  y = endPoint.y;
+  x = endPoint.x;
+  v11 = point.y;
+  v12 = point.x;
+  v13 = (endPoint.x - point.x) * 0.5;
+  v14 = (endPoint.y - point.y) * 0.5;
+  pathCopy = path;
+  if (edgeCopy)
   {
     v15 = v11 - v14;
     v16 = v12 - v13;
-    if (v7)
+    if (verticalCopy)
     {
       v16 = v12;
     }
@@ -89,14 +89,14 @@ LABEL_6:
       v15 = v11;
     }
 
-    [v19 moveToPoint:{v16, v15}];
-    [v19 addCurveToPoint:v13 + v12 controlPoint1:v14 + v11 controlPoint2:{v12, v11, v12, v11}];
-    [v19 addLineToPoint:{x, y}];
+    [pathCopy moveToPoint:{v16, v15}];
+    [pathCopy addCurveToPoint:v13 + v12 controlPoint1:v14 + v11 controlPoint2:{v12, v11, v12, v11}];
+    [pathCopy addLineToPoint:{x, y}];
   }
 
   else
   {
-    if (v7)
+    if (verticalCopy)
     {
       v17 = x;
     }
@@ -106,7 +106,7 @@ LABEL_6:
       v17 = v13 + x;
     }
 
-    if (v7)
+    if (verticalCopy)
     {
       v18 = v14 + y;
     }
@@ -116,16 +116,16 @@ LABEL_6:
       v18 = y;
     }
 
-    [v19 addLineToPoint:{x - v13, y - v14, v14 + y}];
-    [v19 addCurveToPoint:v17 controlPoint1:v18 controlPoint2:{x, y, x, y}];
+    [pathCopy addLineToPoint:{x - v13, y - v14, v14 + y}];
+    [pathCopy addCurveToPoint:v17 controlPoint1:v18 controlPoint2:{x, y, x, y}];
   }
 }
 
-- (double)_upAndDownStartingXLocationForBounds:(CGRect)a3
+- (double)_upAndDownStartingXLocationForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  [(MUFeatureDiscoveryAnnotationView *)self arrowBase:a3.origin.x];
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  [(MUFeatureDiscoveryAnnotationView *)self arrowBase:bounds.origin.x];
   v7 = v6;
   [(MUFeatureDiscoveryAnnotationView *)self arrowOffset];
   return fmin(fmax(x, v8 + x + (width - v7) * 0.5), x + width - v7);
@@ -133,14 +133,14 @@ LABEL_6:
 
 - (void)_updateShapeLayerPath
 {
-  v3 = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
-  [v3 bounds];
+  backgroundView = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
+  [backgroundView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   if ([(MUFeatureDiscoveryAnnotationView *)self showBubbleIndicator])
   {
     [(MUFeatureDiscoveryAnnotationView *)self arrowHeight];
@@ -187,18 +187,18 @@ LABEL_6:
     v31 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:-1 byRoundingCorners:v5 cornerRadii:{v7, v9, v11, v27, v27}];
   }
 
-  v28 = [(MUFeatureDiscoveryAnnotationView *)self tipMaskView];
-  v29 = [v28 layer];
+  tipMaskView = [(MUFeatureDiscoveryAnnotationView *)self tipMaskView];
+  layer = [tipMaskView layer];
 
   v30 = v31;
-  [v29 setPath:{objc_msgSend(v31, "CGPath")}];
+  [layer setPath:{objc_msgSend(v31, "CGPath")}];
 }
 
-- (void)setBubblePosition:(unint64_t)a3
+- (void)setBubblePosition:(unint64_t)position
 {
-  if (self->_bubblePosition != a3)
+  if (self->_bubblePosition != position)
   {
-    self->_bubblePosition = a3;
+    self->_bubblePosition = position;
     [(MUFeatureDiscoveryAnnotationView *)self _updateShapeLayerPath];
   }
 }
@@ -215,17 +215,17 @@ LABEL_6:
     [MEMORY[0x1E69DC888] clearColor];
   }
   v4 = ;
-  v3 = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
-  [v3 setBackgroundColor:v4];
+  backgroundView = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
+  [backgroundView setBackgroundColor:v4];
 }
 
 - (void)_updateUI
 {
-  v3 = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
-  [v3 userInterfaceStyle];
+  traitCollection = [(MUFeatureDiscoveryAnnotationView *)self traitCollection];
+  [traitCollection userInterfaceStyle];
 
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(MUFeatureDiscoveryAnnotationView *)self setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(MUFeatureDiscoveryAnnotationView *)self setBackgroundColor:clearColor];
 
   [(MUFeatureDiscoveryAnnotationView *)self _updateBackground];
   v5 = 0.0;
@@ -241,38 +241,38 @@ LABEL_6:
   [(NSLayoutConstraint *)topLayoutConstraint setConstant:v5];
 }
 
-- (void)setFloatingIndicator:(BOOL)a3
+- (void)setFloatingIndicator:(BOOL)indicator
 {
-  if (self->_floatingIndicator != a3)
+  if (self->_floatingIndicator != indicator)
   {
-    self->_floatingIndicator = a3;
+    self->_floatingIndicator = indicator;
     [(MUFeatureDiscoveryAnnotationView *)self _updateUI];
   }
 }
 
-- (void)setShowBubbleIndicator:(BOOL)a3
+- (void)setShowBubbleIndicator:(BOOL)indicator
 {
-  if (self->_showBubbleIndicator != a3)
+  if (self->_showBubbleIndicator != indicator)
   {
-    self->_showBubbleIndicator = a3;
+    self->_showBubbleIndicator = indicator;
     [(MUFeatureDiscoveryAnnotationView *)self _updateUI];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(MUFeatureDiscoveryAnnotationView *)self setNeedsLayout];
   }
 }
 
-- (void)setDrawsBackground:(BOOL)a3
+- (void)setDrawsBackground:(BOOL)background
 {
-  if (self->_drawsBackground != a3)
+  if (self->_drawsBackground != background)
   {
-    self->_drawsBackground = a3;
+    self->_drawsBackground = background;
     [(MUFeatureDiscoveryAnnotationView *)self _updateBackground];
   }
 }
@@ -290,25 +290,25 @@ LABEL_6:
 
   [(UIView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUFeatureDiscoveryAnnotationView *)self addSubview:self->_backgroundView];
-  v7 = [(UIView *)self->_backgroundView topAnchor];
-  v8 = [(MUFeatureDiscoveryAnnotationView *)self topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(UIView *)self->_backgroundView topAnchor];
+  topAnchor2 = [(MUFeatureDiscoveryAnnotationView *)self topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   topLayoutConstraint = self->_topLayoutConstraint;
   self->_topLayoutConstraint = v9;
 
   v22 = MEMORY[0x1E696ACD8];
   v23[0] = self->_topLayoutConstraint;
-  v11 = [(UIView *)self->_backgroundView bottomAnchor];
-  v12 = [(MUFeatureDiscoveryAnnotationView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+  bottomAnchor2 = [(MUFeatureDiscoveryAnnotationView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[1] = v13;
-  v14 = [(UIView *)self->_backgroundView leadingAnchor];
-  v15 = [(MUFeatureDiscoveryAnnotationView *)self leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+  leadingAnchor2 = [(MUFeatureDiscoveryAnnotationView *)self leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[2] = v16;
-  v17 = [(UIView *)self->_backgroundView trailingAnchor];
-  v18 = [(MUFeatureDiscoveryAnnotationView *)self trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor2 = [(MUFeatureDiscoveryAnnotationView *)self trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   [v22 activateConstraints:v20];
@@ -321,9 +321,9 @@ LABEL_6:
   v5.receiver = self;
   v5.super_class = MUFeatureDiscoveryAnnotationView;
   [(MUFeatureDiscoveryAnnotationView *)&v5 layoutSubviews];
-  v3 = [(MUFeatureDiscoveryAnnotationView *)self tipMaskView];
-  v4 = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
-  [v4 setMaskView:v3];
+  tipMaskView = [(MUFeatureDiscoveryAnnotationView *)self tipMaskView];
+  backgroundView = [(MUFeatureDiscoveryAnnotationView *)self backgroundView];
+  [backgroundView setMaskView:tipMaskView];
 
   [(MUFeatureDiscoveryAnnotationView *)self _updateShapeLayerPath];
 }
@@ -346,11 +346,11 @@ LABEL_6:
   return v5 - v9 + (v7 - v10) * 0.5;
 }
 
-- (MUFeatureDiscoveryAnnotationView)initWithFrame:(CGRect)a3
+- (MUFeatureDiscoveryAnnotationView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUFeatureDiscoveryAnnotationView;
-  v3 = [(MUFeatureDiscoveryAnnotationView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUFeatureDiscoveryAnnotationView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

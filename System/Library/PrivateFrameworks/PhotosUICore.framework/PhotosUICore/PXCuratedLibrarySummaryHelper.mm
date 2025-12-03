@@ -1,13 +1,13 @@
 @interface PXCuratedLibrarySummaryHelper
-- (BOOL)browserSummaryControllerShouldUpdateImmediately:(id)a3;
+- (BOOL)browserSummaryControllerShouldUpdateImmediately:(id)immediately;
 - (PXCuratedLibrarySummaryHelper)init;
 - (PXLibrarySummaryDataSource)dataSource;
 - (PXLibrarySummaryOutputPresenter)outputPresenter;
-- (id)visibleContentSnapshotForBrowserSummaryController:(id)a3;
-- (void)_performChanges:(id)a3;
+- (id)visibleContentSnapshotForBrowserSummaryController:(id)controller;
+- (void)_performChanges:(id)changes;
 - (void)_setNeedsUpdate;
-- (void)_setOutputSubtitle:(id)a3;
-- (void)_setTopMostAssetCollection:(id)a3;
+- (void)_setOutputSubtitle:(id)subtitle;
+- (void)_setTopMostAssetCollection:(id)collection;
 - (void)_updateHeadlineOutput;
 - (void)_updateIfNeeded;
 - (void)_updatePrimaryTitleOutput;
@@ -15,12 +15,12 @@
 - (void)_updateSecondaryTitleOutput;
 - (void)_updateSecondaryTitleOutputFromSummaryController;
 - (void)_updateTopMostAssetCollection;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDataSource:(id)a3;
-- (void)setHeadline:(id)a3;
-- (void)setOutputPresenter:(id)a3;
-- (void)setSelectionTitle:(id)a3;
-- (void)setShouldUseAbbreviatedDates:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDataSource:(id)source;
+- (void)setHeadline:(id)headline;
+- (void)setOutputPresenter:(id)presenter;
+- (void)setSelectionTitle:(id)title;
+- (void)setShouldUseAbbreviatedDates:(BOOL)dates;
 - (void)visibleContentDidChange;
 @end
 
@@ -48,8 +48,8 @@
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySummaryHelper.m" lineNumber:185 description:@"not inside -performChanges: or _updateIfNeeded"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySummaryHelper.m" lineNumber:185 description:@"not inside -performChanges: or _updateIfNeeded"];
   }
 }
 
@@ -74,9 +74,9 @@
     self->_needsUpdateFlags.topMostAssetCollection = 0;
     if (self->_dataSourceRespondsTo.topMostAssetCollection)
     {
-      v4 = [(PXCuratedLibrarySummaryHelper *)self dataSource];
-      v3 = [v4 topMostAssetCollection];
-      [(PXCuratedLibrarySummaryHelper *)self _setTopMostAssetCollection:v3];
+      dataSource = [(PXCuratedLibrarySummaryHelper *)self dataSource];
+      topMostAssetCollection = [dataSource topMostAssetCollection];
+      [(PXCuratedLibrarySummaryHelper *)self _setTopMostAssetCollection:topMostAssetCollection];
     }
   }
 }
@@ -97,9 +97,9 @@
 
 - (void)visibleContentDidChange
 {
-  v3 = [(PXCuratedLibrarySummaryHelper *)self dataSource];
+  dataSource = [(PXCuratedLibrarySummaryHelper *)self dataSource];
 
-  if (v3)
+  if (dataSource)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -107,59 +107,59 @@
     v5[3] = &unk_1E774C648;
     v5[4] = self;
     [(PXCuratedLibrarySummaryHelper *)self _performChanges:v5];
-    v4 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-    [v4 performChanges:&__block_literal_global_208];
+    summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+    [summaryController performChanges:&__block_literal_global_208];
   }
 }
 
-- (BOOL)browserSummaryControllerShouldUpdateImmediately:(id)a3
+- (BOOL)browserSummaryControllerShouldUpdateImmediately:(id)immediately
 {
   if (!self->_dataSourceRespondsTo.shouldUpdateImmediately)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = [(PXCuratedLibrarySummaryHelper *)self dataSource];
-  LOBYTE(v3) = [v4 curatedLibrarySummaryHelperShouldUpdateImmediately:v3];
+  selfCopy = self;
+  dataSource = [(PXCuratedLibrarySummaryHelper *)self dataSource];
+  LOBYTE(selfCopy) = [dataSource curatedLibrarySummaryHelperShouldUpdateImmediately:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)visibleContentSnapshotForBrowserSummaryController:(id)a3
+- (id)visibleContentSnapshotForBrowserSummaryController:(id)controller
 {
   if (self->_dataSourceRespondsTo.visibleContentSnapshot)
   {
-    v3 = [(PXCuratedLibrarySummaryHelper *)self dataSource];
-    v4 = [v3 visibleContentSnapshot];
+    dataSource = [(PXCuratedLibrarySummaryHelper *)self dataSource];
+    visibleContentSnapshot = [dataSource visibleContentSnapshot];
   }
 
   else
   {
-    v4 = 0;
+    visibleContentSnapshot = 0;
   }
 
-  return v4;
+  return visibleContentSnapshot;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXSummaryControllerObservationContext != a5)
+  observableCopy = observable;
+  if (PXSummaryControllerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySummaryHelper.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySummaryHelper.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
+  v10 = observableCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PXCuratedLibrarySummaryHelper_observable_didChange_context___block_invoke;
   v12[3] = &unk_1E77498A0;
   v12[4] = self;
-  v12[5] = a4;
+  v12[5] = change;
   [(PXCuratedLibrarySummaryHelper *)self _performChanges:v12];
 }
 
@@ -183,12 +183,12 @@ uint64_t __62__PXCuratedLibrarySummaryHelper_observable_didChange_context___bloc
   return result;
 }
 
-- (void)_setOutputSubtitle:(id)a3
+- (void)_setOutputSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   if (self->_outputPresenterRespondsTo.setSubtitle)
   {
-    v6 = v4;
+    v6 = subtitleCopy;
     [(PXCuratedLibrarySummaryHelper *)self selectionTitle];
     if (objc_claimAutoreleasedReturnValue())
     {
@@ -197,19 +197,19 @@ uint64_t __62__PXCuratedLibrarySummaryHelper_observable_didChange_context___bloc
       PXStringWithValidatedFormat();
     }
 
-    v5 = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
-    [v5 setSubtitle:v6];
+    outputPresenter = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
+    [outputPresenter setSubtitle:v6];
 
-    v4 = v6;
+    subtitleCopy = v6;
   }
 }
 
-- (void)_setTopMostAssetCollection:(id)a3
+- (void)_setTopMostAssetCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_topMostAssetCollection != v5)
+  collectionCopy = collection;
+  if (self->_topMostAssetCollection != collectionCopy)
   {
-    objc_storeStrong(&self->_topMostAssetCollection, a3);
+    objc_storeStrong(&self->_topMostAssetCollection, collection);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_invoke;
@@ -229,9 +229,9 @@ uint64_t __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_
 
 - (void)_updateSecondaryTitleOutputFromSummaryController
 {
-  v4 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-  v3 = [v4 secondaryTitle];
-  [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:v3];
+  summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+  secondaryTitle = [summaryController secondaryTitle];
+  [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:secondaryTitle];
 }
 
 - (void)_updateSecondaryTitleOutput
@@ -239,18 +239,18 @@ uint64_t __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_
   if (self->_needsUpdateFlags.secondaryTitleOutput)
   {
     self->_needsUpdateFlags.secondaryTitleOutput = 0;
-    v3 = [(PXCuratedLibrarySummaryHelper *)self headline];
+    headline = [(PXCuratedLibrarySummaryHelper *)self headline];
 
-    if (!v3)
+    if (!headline)
     {
       if (self->_dataSourceRespondsTo.topMostAssetCollection)
       {
-        v4 = [(PXCuratedLibrarySummaryHelper *)self topMostAssetCollection];
-        v6 = v4;
-        if (v4)
+        topMostAssetCollection = [(PXCuratedLibrarySummaryHelper *)self topMostAssetCollection];
+        v6 = topMostAssetCollection;
+        if (topMostAssetCollection)
         {
-          v5 = [v4 localizedSubtitle];
-          [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:v5];
+          localizedSubtitle = [topMostAssetCollection localizedSubtitle];
+          [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:localizedSubtitle];
         }
 
         else
@@ -270,22 +270,22 @@ uint64_t __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_
 
 - (void)_updatePrimaryTitleOutputFromSummaryController
 {
-  v3 = [(PXCuratedLibrarySummaryHelper *)self headline];
+  headline = [(PXCuratedLibrarySummaryHelper *)self headline];
 
-  if (v3)
+  if (headline)
   {
-    v7 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-    v4 = [v7 attributedPrimaryTitle];
-    v5 = [v4 string];
-    [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:v5];
+    summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+    attributedPrimaryTitle = [summaryController attributedPrimaryTitle];
+    string = [attributedPrimaryTitle string];
+    [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:string];
   }
 
   else if (self->_outputPresenterRespondsTo.setAttributedTitle)
   {
-    v7 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-    v4 = [v7 attributedPrimaryTitle];
-    v5 = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
-    [v5 setAttributedTitle:v4];
+    summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+    attributedPrimaryTitle = [summaryController attributedPrimaryTitle];
+    string = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
+    [string setAttributedTitle:attributedPrimaryTitle];
   }
 
   else
@@ -295,11 +295,11 @@ uint64_t __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_
       return;
     }
 
-    v7 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-    v4 = [v7 attributedPrimaryTitle];
-    v5 = [v4 string];
-    v6 = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
-    [v6 setTitle:v5];
+    summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+    attributedPrimaryTitle = [summaryController attributedPrimaryTitle];
+    string = [attributedPrimaryTitle string];
+    outputPresenter = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
+    [outputPresenter setTitle:string];
   }
 }
 
@@ -313,20 +313,20 @@ uint64_t __60__PXCuratedLibrarySummaryHelper__setTopMostAssetCollection___block_
   self->_needsUpdateFlags.primaryTitleOutput = 0;
   if (self->_dataSourceRespondsTo.topMostAssetCollection)
   {
-    v7 = [(PXCuratedLibrarySummaryHelper *)self topMostAssetCollection];
-    if (v7)
+    topMostAssetCollection = [(PXCuratedLibrarySummaryHelper *)self topMostAssetCollection];
+    if (topMostAssetCollection)
     {
-      v3 = [(PXCuratedLibrarySummaryHelper *)self headline];
+      headline = [(PXCuratedLibrarySummaryHelper *)self headline];
 
-      if (v3)
+      if (headline)
       {
-        v4 = [v7 localizedTitle];
-        [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:v4];
+        localizedTitle = [topMostAssetCollection localizedTitle];
+        [(PXCuratedLibrarySummaryHelper *)self _setOutputSubtitle:localizedTitle];
       }
 
       else
       {
-        v5 = v7;
+        v5 = topMostAssetCollection;
         if (!self->_outputPresenterRespondsTo.setTitle)
         {
 LABEL_15:
@@ -334,9 +334,9 @@ LABEL_15:
           return;
         }
 
-        v4 = [v7 localizedTitle];
-        v6 = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
-        [v6 setTitle:v4];
+        localizedTitle = [topMostAssetCollection localizedTitle];
+        outputPresenter = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
+        [outputPresenter setTitle:localizedTitle];
       }
     }
 
@@ -345,7 +345,7 @@ LABEL_15:
       [(PXCuratedLibrarySummaryHelper *)self _updatePrimaryTitleOutputFromSummaryController];
     }
 
-    v5 = v7;
+    v5 = topMostAssetCollection;
     goto LABEL_15;
   }
 
@@ -357,23 +357,23 @@ LABEL_15:
   if (self->_needsUpdateFlags.headlineOutput)
   {
     self->_needsUpdateFlags.headlineOutput = 0;
-    v4 = [(PXCuratedLibrarySummaryHelper *)self headline];
-    if (v4 && self->_outputPresenterRespondsTo.setTitle)
+    headline = [(PXCuratedLibrarySummaryHelper *)self headline];
+    if (headline && self->_outputPresenterRespondsTo.setTitle)
     {
-      v6 = v4;
-      v5 = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
-      [v5 setTitle:v6];
+      v6 = headline;
+      outputPresenter = [(PXCuratedLibrarySummaryHelper *)self outputPresenter];
+      [outputPresenter setTitle:v6];
 
-      v4 = v6;
+      headline = v6;
     }
   }
 }
 
-- (void)_performChanges:(id)a3
+- (void)_performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges && !self->_isPerformingUpdates)
   {
@@ -382,30 +382,30 @@ LABEL_15:
   }
 }
 
-- (void)setShouldUseAbbreviatedDates:(BOOL)a3
+- (void)setShouldUseAbbreviatedDates:(BOOL)dates
 {
-  if (self->_shouldUseAbbreviatedDates != a3)
+  if (self->_shouldUseAbbreviatedDates != dates)
   {
     v8 = v3;
     v9 = v4;
-    self->_shouldUseAbbreviatedDates = a3;
+    self->_shouldUseAbbreviatedDates = dates;
     summaryController = self->_summaryController;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__PXCuratedLibrarySummaryHelper_setShouldUseAbbreviatedDates___block_invoke;
     v6[3] = &__block_descriptor_33_e45_v16__0___PXMutableBrowserSummaryController__8l;
-    v7 = a3;
+    datesCopy = dates;
     [(PXBrowserSummaryController *)summaryController performChanges:v6];
   }
 }
 
-- (void)setSelectionTitle:(id)a3
+- (void)setSelectionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   selectionTitle = self->_selectionTitle;
-  if (selectionTitle != v4 && ([(NSString *)selectionTitle isEqual:v4]& 1) == 0)
+  if (selectionTitle != titleCopy && ([(NSString *)selectionTitle isEqual:titleCopy]& 1) == 0)
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)titleCopy copy];
     v7 = self->_selectionTitle;
     self->_selectionTitle = v6;
 
@@ -418,13 +418,13 @@ LABEL_15:
   }
 }
 
-- (void)setHeadline:(id)a3
+- (void)setHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   headline = self->_headline;
-  if (headline != v4 && ([(NSString *)headline isEqual:v4]& 1) == 0)
+  if (headline != headlineCopy && ([(NSString *)headline isEqual:headlineCopy]& 1) == 0)
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)headlineCopy copy];
     v7 = self->_headline;
     self->_headline = v6;
 
@@ -446,22 +446,22 @@ uint64_t __45__PXCuratedLibrarySummaryHelper_setHeadline___block_invoke(uint64_t
   return [v2 _invalidateSecondaryTitleOutput];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
-  if (WeakRetained == v4)
+  if (WeakRetained == sourceCopy)
   {
   }
 
   else
   {
-    v7 = [WeakRetained isEqual:v4];
+    v7 = [WeakRetained isEqual:sourceCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeWeak(&self->_dataSource, v4);
+      objc_storeWeak(&self->_dataSource, sourceCopy);
       self->_dataSourceRespondsTo.visibleContentSnapshot = objc_opt_respondsToSelector() & 1;
       self->_dataSourceRespondsTo.topMostAssetCollection = objc_opt_respondsToSelector() & 1;
       self->_dataSourceRespondsTo.shouldUpdateImmediately = objc_opt_respondsToSelector() & 1;
@@ -471,8 +471,8 @@ uint64_t __45__PXCuratedLibrarySummaryHelper_setHeadline___block_invoke(uint64_t
       v9[3] = &unk_1E774C648;
       v9[4] = self;
       [(PXCuratedLibrarySummaryHelper *)self _performChanges:v9];
-      v8 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
-      [v8 performChanges:&__block_literal_global_105458];
+      summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+      [summaryController performChanges:&__block_literal_global_105458];
     }
   }
 }
@@ -486,22 +486,22 @@ uint64_t __47__PXCuratedLibrarySummaryHelper_setDataSource___block_invoke(uint64
   return [v2 _invalidateSecondaryTitleOutput];
 }
 
-- (void)setOutputPresenter:(id)a3
+- (void)setOutputPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   WeakRetained = objc_loadWeakRetained(&self->_outputPresenter);
   v6 = WeakRetained;
-  if (WeakRetained == v4)
+  if (WeakRetained == presenterCopy)
   {
   }
 
   else
   {
-    v7 = [WeakRetained isEqual:v4];
+    v7 = [WeakRetained isEqual:presenterCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeWeak(&self->_outputPresenter, v4);
+      objc_storeWeak(&self->_outputPresenter, presenterCopy);
       self->_outputPresenterRespondsTo.setTitle = objc_opt_respondsToSelector() & 1;
       self->_outputPresenterRespondsTo.setSubtitle = objc_opt_respondsToSelector() & 1;
       self->_outputPresenterRespondsTo.setAttributedTitle = objc_opt_respondsToSelector() & 1;
@@ -509,23 +509,23 @@ uint64_t __47__PXCuratedLibrarySummaryHelper_setDataSource___block_invoke(uint64
       self->_outputPresenterRespondsTo.emphasizedAttributes = objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v4 wantsLocationNames];
+        wantsLocationNames = [presenterCopy wantsLocationNames];
       }
 
       else
       {
-        v8 = 1;
+        wantsLocationNames = 1;
       }
 
-      v9 = [(PXCuratedLibrarySummaryHelper *)self summaryController];
+      summaryController = [(PXCuratedLibrarySummaryHelper *)self summaryController];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __52__PXCuratedLibrarySummaryHelper_setOutputPresenter___block_invoke;
       v11[3] = &unk_1E7738CC8;
       v11[4] = self;
-      v12 = v4;
-      v13 = v8;
-      [v9 performChanges:v11];
+      v12 = presenterCopy;
+      v13 = wantsLocationNames;
+      [summaryController performChanges:v11];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;

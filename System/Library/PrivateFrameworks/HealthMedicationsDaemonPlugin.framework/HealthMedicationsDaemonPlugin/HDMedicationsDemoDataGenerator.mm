@@ -1,31 +1,31 @@
 @interface HDMedicationsDemoDataGenerator
-- (BOOL)_saveStateWithError:(id *)a3;
-- (BOOL)loadDemoDataObjectsFrom:(id)a3 medications:(id)a4 schedules:(id)a5 logHistory:(id)a6;
-- (BOOL)saveMedicationDoseEvents:(id)a3 error:(id *)a4;
-- (BOOL)saveMedications:(id)a3 schedules:(id)a4 logHistory:(id)a5;
+- (BOOL)_saveStateWithError:(id *)error;
+- (BOOL)loadDemoDataObjectsFrom:(id)from medications:(id)medications schedules:(id)schedules logHistory:(id)history;
+- (BOOL)saveMedicationDoseEvents:(id)events error:(id *)error;
+- (BOOL)saveMedications:(id)medications schedules:(id)schedules logHistory:(id)history;
 - (BOOL)setupOntologyContentIfRequired;
 - (HDMedicationsDemoDataGenerator)init;
-- (HDMedicationsDemoDataGenerator)initWithCoder:(id)a3;
+- (HDMedicationsDemoDataGenerator)initWithCoder:(id)coder;
 - (HDProfile)profile;
 - (id)_keyValueDomain;
-- (id)_scheduleItemsForDate:(id)a3;
-- (id)asNeededDoseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 doseUnitString:(id)a6;
-- (id)dailyScheduleForMedicationIdentifier:(id)a3 isAMSchedule:(BOOL)a4;
-- (id)dayBeforeDate:(id)a3 withHour:(int64_t)a4;
-- (id)doseEventWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 medicationIdentifier:(id)a5 scheduledDoseQuantity:(id)a6 doseQuantity:(id)a7 scheduledDate:(id)a8 startDate:(id)a9 status:(int64_t)a10 doseUnitString:(id)a11;
-- (id)doseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 logOrigin:(int64_t)a6 doseUnitString:(id)a7;
-- (id)doseEventsForScheduleItems:(id)a3 withStatus:(int64_t)a4;
-- (id)medicationWithDetail:(id)a3;
-- (id)scheduledDoseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 doseUnitString:(id)a6;
-- (id)scheduledDoseEventsWithCurrentDate:(id)a3;
-- (int64_t)dayDifferenceFrom:(id)a3 to:(id)a4;
-- (void)generateDemoDataForCurrentDate:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
+- (id)_scheduleItemsForDate:(id)date;
+- (id)asNeededDoseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count doseUnitString:(id)string;
+- (id)dailyScheduleForMedicationIdentifier:(id)identifier isAMSchedule:(BOOL)schedule;
+- (id)dayBeforeDate:(id)date withHour:(int64_t)hour;
+- (id)doseEventWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)startDate status:(int64_t)self0 doseUnitString:(id)self1;
+- (id)doseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count logOrigin:(int64_t)origin doseUnitString:(id)string;
+- (id)doseEventsForScheduleItems:(id)items withStatus:(int64_t)status;
+- (id)medicationWithDetail:(id)detail;
+- (id)scheduledDoseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count doseUnitString:(id)string;
+- (id)scheduledDoseEventsWithCurrentDate:(id)date;
+- (int64_t)dayDifferenceFrom:(id)from to:(id)to;
+- (void)generateDemoDataForCurrentDate:(id)date;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
 - (void)generateIntitialDemoDataIfRequired;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
 - (void)overrideMedicationShardCheck;
 - (void)restoreState;
-- (void)setDemoDataGenerationContextWithProfile:(id)a3 generatorState:(id)a4;
+- (void)setDemoDataGenerationContextWithProfile:(id)profile generatorState:(id)state;
 - (void)setupOntologyContentIfRequired;
 - (void)updateDemoDataFileName;
 @end
@@ -42,9 +42,9 @@
   {
     v2->isGeneratingDataOnWatch = 0;
     v4 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-    v5 = [v4 currentCalendar];
+    currentCalendar = [v4 currentCalendar];
     currentCalendar = v3->_currentCalendar;
-    v3->_currentCalendar = v5;
+    v3->_currentCalendar = currentCalendar;
 
     v7 = objc_alloc_init(HDMedicationsDemoDataGeneratorState);
     state = v3->_state;
@@ -65,27 +65,27 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = [MEMORY[0x277CBEAF8] hk_isUSLocale];
+    hk_isUSLocale = [MEMORY[0x277CBEAF8] hk_isUSLocale];
     _os_log_impl(&dword_25181C000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] updateDemoDataFileName  [NSLocale hk_isUSLocale] %d .", &v9, 0x12u);
   }
 
   if (([MEMORY[0x277CCDD30] isRunningStoreDemoMode] & 1) != 0 || objc_msgSend(MEMORY[0x277CCDD30], "runningInStoreDemoModeF201"))
   {
-    v4 = [MEMORY[0x277CBEAF8] hk_isUSLocale];
+    hk_isUSLocale2 = [MEMORY[0x277CBEAF8] hk_isUSLocale];
     v5 = @"medications_store_demo_data_NonUS";
     v6 = @"medications_store_demo_data_US";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAF8] hk_isUSLocale];
+    hk_isUSLocale2 = [MEMORY[0x277CBEAF8] hk_isUSLocale];
     v5 = @"medications_demo_data_NonUS";
     v6 = @"medications_demo_data_US";
   }
 
-  if (v4)
+  if (hk_isUSLocale2)
   {
     v7 = v6;
   }
@@ -101,11 +101,11 @@
 
 - (void)overrideMedicationShardCheck
 {
-  v2 = [(HDMedicationsDemoDataGenerator *)self profile];
-  v3 = [v2 healthMedicationsProfileExtension];
-  v4 = [v3 medicationUserDefaults];
+  profile = [(HDMedicationsDemoDataGenerator *)self profile];
+  healthMedicationsProfileExtension = [profile healthMedicationsProfileExtension];
+  medicationUserDefaults = [healthMedicationsProfileExtension medicationUserDefaults];
 
-  [v4 setBool:1 forKey:*MEMORY[0x277D11490]];
+  [medicationUserDefaults setBool:1 forKey:*MEMORY[0x277D11490]];
 }
 
 - (id)_keyValueDomain
@@ -117,21 +117,21 @@
   return v5;
 }
 
-- (BOOL)_saveStateWithError:(id *)a3
+- (BOOL)_saveStateWithError:(id *)error
 {
-  v5 = [(HDMedicationsDemoDataGenerator *)self _keyValueDomain];
-  v6 = [(HDMedicationsDemoDataGeneratorState *)self->_state dictionary];
-  LOBYTE(a3) = [v5 setValuesWithDictionary:v6 error:a3];
+  _keyValueDomain = [(HDMedicationsDemoDataGenerator *)self _keyValueDomain];
+  dictionary = [(HDMedicationsDemoDataGeneratorState *)self->_state dictionary];
+  LOBYTE(error) = [_keyValueDomain setValuesWithDictionary:dictionary error:error];
 
-  return a3;
+  return error;
 }
 
 - (void)restoreState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HDMedicationsDemoDataGenerator *)self _keyValueDomain];
+  _keyValueDomain = [(HDMedicationsDemoDataGenerator *)self _keyValueDomain];
   v10 = 0;
-  v4 = [v3 allValuesWithError:&v10];
+  v4 = [_keyValueDomain allValuesWithError:&v10];
   v5 = v10;
   if (v4)
   {
@@ -145,9 +145,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v3;
+      v14 = _keyValueDomain;
       v15 = 2114;
       v16 = v5;
       _os_log_error_impl(&dword_25181C000, v7, OS_LOG_TYPE_ERROR, "[%{public}@]: Could not load HDMedicationsDemoDataGeneratorState from KeyValueDomain %{public}@  Error: %{public}@", buf, 0x20u);
@@ -162,7 +162,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HDMedicationsDemoDataGenerator)initWithCoder:(id)a3
+- (HDMedicationsDemoDataGenerator)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = HDMedicationsDemoDataGenerator;
@@ -172,9 +172,9 @@
   {
     v3->isGeneratingDataOnWatch = 0;
     v5 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-    v6 = [v5 currentCalendar];
+    currentCalendar = [v5 currentCalendar];
     currentCalendar = v4->_currentCalendar;
-    v4->_currentCalendar = v6;
+    v4->_currentCalendar = currentCalendar;
 
     [(HDMedicationsDemoDataGenerator *)v4 restoreState];
     [(HDMedicationsDemoDataGenerator *)v4 updateDemoDataFileName];
@@ -184,18 +184,18 @@
   return v4;
 }
 
-- (id)doseEventWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 medicationIdentifier:(id)a5 scheduledDoseQuantity:(id)a6 doseQuantity:(id)a7 scheduledDate:(id)a8 startDate:(id)a9 status:(int64_t)a10 doseUnitString:(id)a11
+- (id)doseEventWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)startDate status:(int64_t)self0 doseUnitString:(id)self1
 {
   v33[2] = *MEMORY[0x277D85DE8];
   v16 = MEMORY[0x277CCD650];
-  v30 = a11;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v29 = [v16 syncIdentifierForScheduleItemIdentifier:0 medicationIdentifier:v21];
+  stringCopy = string;
+  startDateCopy = startDate;
+  dateCopy = date;
+  doseQuantityCopy = doseQuantity;
+  quantityCopy = quantity;
+  medicationIdentifierCopy = medicationIdentifier;
+  identifierCopy = identifier;
+  v29 = [v16 syncIdentifierForScheduleItemIdentifier:0 medicationIdentifier:medicationIdentifierCopy];
   v23 = [MEMORY[0x277CCD650] syncVersionForStatus:4];
   v24 = *MEMORY[0x277CCC528];
   v32[0] = *MEMORY[0x277CCC520];
@@ -203,24 +203,24 @@
   v33[0] = v29;
   v33[1] = v23;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-  v26 = [MEMORY[0x277CCD650] medicationDoseEventWithLogOrigin:a3 scheduleItemIdentifier:v22 medicationIdentifier:v21 scheduledDoseQuantity:v20 doseQuantity:v19 scheduledDate:v18 startDate:v17 logStatus:a10 doseUnitString:v30 metadata:v25];
+  v26 = [MEMORY[0x277CCD650] medicationDoseEventWithLogOrigin:origin scheduleItemIdentifier:identifierCopy medicationIdentifier:medicationIdentifierCopy scheduledDoseQuantity:quantityCopy doseQuantity:doseQuantityCopy scheduledDate:dateCopy startDate:startDateCopy logStatus:status doseUnitString:stringCopy metadata:v25];
 
   v27 = *MEMORY[0x277D85DE8];
 
   return v26;
 }
 
-- (BOOL)saveMedicationDoseEvents:(id)a3 error:(id *)a4
+- (BOOL)saveMedicationDoseEvents:(id)events error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMedicationsDemoDataGenerator *)self profile];
-  v8 = [HDMedicationsAppSourceSupport medicationsAppSourceEntityForProfile:v7 error:a4];
+  eventsCopy = events;
+  profile = [(HDMedicationsDemoDataGenerator *)self profile];
+  v8 = [HDMedicationsAppSourceSupport medicationsAppSourceEntityForProfile:profile error:error];
 
   if (v8)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v10 = [WeakRetained dataManager];
-    v11 = [v10 insertDataObjects:v6 sourceEntity:v8 deviceEntity:0 sourceVersion:0 creationDate:a4 error:CFAbsoluteTimeGetCurrent()];
+    dataManager = [WeakRetained dataManager];
+    v11 = [dataManager insertDataObjects:eventsCopy sourceEntity:v8 deviceEntity:0 sourceVersion:0 creationDate:error error:CFAbsoluteTimeGetCurrent()];
   }
 
   else
@@ -231,26 +231,26 @@
   return v11;
 }
 
-- (id)asNeededDoseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 doseUnitString:(id)a6
+- (id)asNeededDoseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count doseUnitString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  medicationCopy = medication;
+  timeCopy = time;
+  stringCopy = string;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = v11;
+  v14 = timeCopy;
   v20 = v14;
-  if (a5)
+  if (count)
   {
     v15 = 0x800000000;
     v16 = v14;
     do
     {
-      v17 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:1 scheduleItemIdentifier:0 medicationIdentifier:v10 scheduledDoseQuantity:0 doseQuantity:&unk_2863C2738 scheduledDate:0 startDate:v16 status:4 doseUnitString:v12];
+      v17 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:1 scheduleItemIdentifier:0 medicationIdentifier:medicationCopy scheduledDoseQuantity:0 doseQuantity:&unk_2863C2738 scheduledDate:0 startDate:v16 status:4 doseUnitString:stringCopy];
       [v13 addObject:v17];
 
       v14 = [v16 dateByAddingTimeInterval:-691200.0];
 
-      v18 = a5 > v15 >> 32;
+      v18 = count > v15 >> 32;
       v15 += 0x800000000;
       v16 = v14;
     }
@@ -261,15 +261,15 @@
   return v13;
 }
 
-- (id)scheduledDoseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 doseUnitString:(id)a6
+- (id)scheduledDoseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count doseUnitString:(id)string
 {
-  v23 = a3;
-  v10 = a4;
-  v11 = a6;
+  medicationCopy = medication;
+  timeCopy = time;
+  stringCopy = string;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = v10;
+  v13 = timeCopy;
   v22 = v13;
-  if (a5)
+  if (count)
   {
     v14 = 0;
     v15 = v13;
@@ -297,7 +297,7 @@
       }
 
       v19 = [v15 dateByAddingTimeInterval:v18];
-      v20 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:2 scheduleItemIdentifier:v16 medicationIdentifier:v23 scheduledDoseQuantity:&unk_2863C2738 doseQuantity:&unk_2863C2738 scheduledDate:v15 startDate:v19 status:v17 doseUnitString:v11];
+      v20 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:2 scheduleItemIdentifier:v16 medicationIdentifier:medicationCopy scheduledDoseQuantity:&unk_2863C2738 doseQuantity:&unk_2863C2738 scheduledDate:v15 startDate:v19 status:v17 doseUnitString:stringCopy];
       [v12 addObject:v20];
 
       ++v14;
@@ -306,41 +306,41 @@
       v15 = v13;
     }
 
-    while (a5 != v14);
+    while (count != v14);
   }
 
   return v12;
 }
 
-- (id)doseEventsForMedication:(id)a3 startDateTime:(id)a4 historyDayCount:(unint64_t)a5 logOrigin:(int64_t)a6 doseUnitString:(id)a7
+- (id)doseEventsForMedication:(id)medication startDateTime:(id)time historyDayCount:(unint64_t)count logOrigin:(int64_t)origin doseUnitString:(id)string
 {
-  if (a6 == 2)
+  if (origin == 2)
   {
-    [(HDMedicationsDemoDataGenerator *)self scheduledDoseEventsForMedication:a3 startDateTime:a4 historyDayCount:a5 doseUnitString:a7];
+    [(HDMedicationsDemoDataGenerator *)self scheduledDoseEventsForMedication:medication startDateTime:time historyDayCount:count doseUnitString:string];
   }
 
   else
   {
-    [(HDMedicationsDemoDataGenerator *)self asNeededDoseEventsForMedication:a3 startDateTime:a4 historyDayCount:a5 doseUnitString:a7];
+    [(HDMedicationsDemoDataGenerator *)self asNeededDoseEventsForMedication:medication startDateTime:time historyDayCount:count doseUnitString:string];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)dailyScheduleForMedicationIdentifier:(id)a3 isAMSchedule:(BOOL)a4
+- (id)dailyScheduleForMedicationIdentifier:(id)identifier isAMSchedule:(BOOL)schedule
 {
-  v4 = a4;
+  scheduleCopy = schedule;
   v22[1] = *MEMORY[0x277D85DE8];
   currentCalendar = self->_currentCalendar;
   v7 = MEMORY[0x277CBEAA8];
-  v8 = a3;
-  v9 = [v7 date];
-  v10 = [(NSCalendar *)currentCalendar startOfDayForDate:v9];
+  identifierCopy = identifier;
+  date = [v7 date];
+  v10 = [(NSCalendar *)currentCalendar startOfDayForDate:date];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   v12 = v11;
-  if (v4)
+  if (scheduleCopy)
   {
     v13 = 8;
   }
@@ -353,26 +353,26 @@
   [v11 setHour:v13];
   v14 = [objc_alloc(MEMORY[0x277D11580]) initWithStartTimeComponent:v12 daysOfWeek:0 cycleIndex:0 cycleIntervalDays:0 dose:&unk_2863C2738];
   v15 = objc_alloc(MEMORY[0x277D11570]);
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [(NSCalendar *)self->_currentCalendar timeZone];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  timeZone = [(NSCalendar *)self->_currentCalendar timeZone];
   v22[0] = v14;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v19 = [v15 initWithUUID:v16 medicationIdentifier:v8 createdUTCOffset:v17 startDateTime:v10 endDateTime:0 timeIntervals:v18 scheduleType:2 cycleStartDateComponents:0 note:0];
+  v19 = [v15 initWithUUID:uUID medicationIdentifier:identifierCopy createdUTCOffset:timeZone startDateTime:v10 endDateTime:0 timeIntervals:v18 scheduleType:2 cycleStartDateComponents:0 note:0];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)medicationWithDetail:(id)a3
+- (id)medicationWithDetail:(id)detail
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"VisualConfigFileName"];
+  detailCopy = detail;
+  v5 = [detailCopy objectForKey:@"VisualConfigFileName"];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [v5 stringByDeletingPathExtension];
-  v8 = [v5 pathExtension];
-  v9 = [v6 pathForResource:v7 ofType:v8];
+  stringByDeletingPathExtension = [v5 stringByDeletingPathExtension];
+  pathExtension = [v5 pathExtension];
+  v9 = [v6 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
   v45 = v9;
   v10 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v9 encoding:4 error:0];
@@ -381,32 +381,32 @@
     goto LABEL_7;
   }
 
-  v11 = [v4 objectForKey:@"OntologyCoding"];
+  v11 = [detailCopy objectForKey:@"OntologyCoding"];
   if (!v11)
   {
     goto LABEL_7;
   }
 
   v12 = v11;
-  v13 = [v4 objectForKey:@"OntologyCoding"];
+  v13 = [detailCopy objectForKey:@"OntologyCoding"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [v4 objectForKey:@"OntologyCoding"];
+    v15 = [detailCopy objectForKey:@"OntologyCoding"];
     v16 = MEMORY[0x277CCDB28];
-    v17 = [v4 objectForKey:@"NickName"];
+    v17 = [detailCopy objectForKey:@"NickName"];
     v44 = v10;
     v18 = [v16 propertyCollectionWithUserSpecifiedName:v17 userSpecifiedNotes:0 medicationVisualizationConfig:v10 freeTextProperties:0];
-    v19 = [v18 properties];
+    properties = [v18 properties];
 
     v20 = MEMORY[0x277D10920];
     v21 = [MEMORY[0x277CCD1D0] identifierWithNumber:v15];
-    v22 = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
-    v23 = [(HDMedicationsDemoDataGenerator *)self profile];
+    medicationUserDomainConceptTypeIdentifier = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
+    profile = [(HDMedicationsDemoDataGenerator *)self profile];
     v46 = 0;
-    v24 = [v20 createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:v21 additionalProperties:v19 userDomainConceptTypeIdentifier:v22 profile:v23 error:&v46];
+    v24 = [v20 createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:v21 additionalProperties:properties userDomainConceptTypeIdentifier:medicationUserDomainConceptTypeIdentifier profile:profile error:&v46];
     v25 = v46;
 
     _HKInitializeLogging();
@@ -414,7 +414,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2114;
       v50 = v24;
       _os_log_impl(&dword_25181C000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Medication generated from ontology code %{public}@ .", buf, 0x16u);
@@ -427,17 +427,17 @@
   {
 LABEL_7:
     v28 = v10;
-    v15 = [v4 objectForKey:@"Strength"];
+    v15 = [detailCopy objectForKey:@"Strength"];
     if (v15)
     {
-      v29 = [v4 objectForKey:@"Strength"];
+      v29 = [detailCopy objectForKey:@"Strength"];
       objc_opt_class();
       v30 = objc_opt_isKindOfClass();
 
       if (v30)
       {
-        v31 = [v4 objectForKey:@"Strength"];
-        v32 = [v4 objectForKey:@"isStrengthInMCG"];
+        v31 = [detailCopy objectForKey:@"Strength"];
+        v32 = [detailCopy objectForKey:@"isStrengthInMCG"];
         if ([v32 BOOLValue])
         {
           v33 = 3;
@@ -461,22 +461,22 @@ LABEL_7:
     }
 
     v36 = MEMORY[0x277CCDB28];
-    v37 = [v4 objectForKey:@"Name"];
-    v38 = [v4 objectForKey:@"DoseFormCode"];
-    v19 = [v36 userDomainConceptPropertyListWithFreeTextMedicationName:v37 freeTextFormCode:objc_msgSend(v38 freeTextStrengthQuantity:{"intValue"), v15}];
+    v37 = [detailCopy objectForKey:@"Name"];
+    v38 = [detailCopy objectForKey:@"DoseFormCode"];
+    properties = [v36 userDomainConceptPropertyListWithFreeTextMedicationName:v37 freeTextFormCode:objc_msgSend(v38 freeTextStrengthQuantity:{"intValue"), v15}];
 
     v39 = objc_alloc(MEMORY[0x277D115B8]);
-    v40 = [v4 objectForKey:@"NickName"];
+    v40 = [detailCopy objectForKey:@"NickName"];
     v41 = v39;
     v27 = v28;
-    v24 = [v41 initWithOntologyCoding:0 userSpecifiedName:v40 userSpecifiedNotes:0 medicationVisualizationConfig:v28 freeTextProperties:v19];
+    v24 = [v41 initWithOntologyCoding:0 userSpecifiedName:v40 userSpecifiedNotes:0 medicationVisualizationConfig:v28 freeTextProperties:properties];
 
     _HKInitializeLogging();
     v26 = HKLogMedication();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2114;
       v50 = v24;
       _os_log_impl(&dword_25181C000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Medication generated as free text med %{public}@ .", buf, 0x16u);
@@ -490,27 +490,27 @@ LABEL_7:
   return v24;
 }
 
-- (BOOL)saveMedications:(id)a3 schedules:(id)a4 logHistory:(id)a5
+- (BOOL)saveMedications:(id)medications schedules:(id)schedules logHistory:(id)history
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  medicationsCopy = medications;
+  schedulesCopy = schedules;
+  historyCopy = history;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
-  v13 = [MEMORY[0x277D106B8] contextForWritingProtectedData];
+  database = [WeakRetained database];
+  contextForWritingProtectedData = [MEMORY[0x277D106B8] contextForWritingProtectedData];
   v25 = 0;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHistory___block_invoke;
   v21[3] = &unk_2796CD5F0;
   v21[4] = self;
-  v14 = v8;
+  v14 = medicationsCopy;
   v22 = v14;
-  v15 = v9;
+  v15 = schedulesCopy;
   v23 = v15;
-  v16 = v10;
+  v16 = historyCopy;
   v24 = v16;
-  v17 = [v12 performTransactionWithContext:v13 error:&v25 block:v21 inaccessibilityHandler:0];
+  v17 = [database performTransactionWithContext:contextForWritingProtectedData error:&v25 block:v21 inaccessibilityHandler:0];
   v18 = v25;
 
   if ((v17 & 1) == 0)
@@ -555,22 +555,22 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
   return v11;
 }
 
-- (BOOL)loadDemoDataObjectsFrom:(id)a3 medications:(id)a4 schedules:(id)a5 logHistory:(id)a6
+- (BOOL)loadDemoDataObjectsFrom:(id)from medications:(id)medications schedules:(id)schedules logHistory:(id)history
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v39 = a5;
-  v38 = a6;
+  fromCopy = from;
+  medicationsCopy = medications;
+  schedulesCopy = schedules;
+  historyCopy = history;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = v10;
+  v12 = fromCopy;
   v43 = [v12 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v43)
   {
-    v41 = v11;
+    v41 = medicationsCopy;
     v42 = *v45;
     obj = v12;
     while (2)
@@ -583,8 +583,8 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
         }
 
         v14 = *(*(&v44 + 1) + 8 * i);
-        v15 = [(HDMedicationsDemoDataGenerator *)self medicationWithDetail:v14, v38];
-        if (!v15)
+        historyCopy = [(HDMedicationsDemoDataGenerator *)self medicationWithDetail:v14, historyCopy];
+        if (!historyCopy)
         {
           _HKInitializeLogging();
           v35 = HKLogMedication();
@@ -599,21 +599,21 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
           goto LABEL_27;
         }
 
-        v16 = v15;
-        [v11 addObject:v15];
-        v17 = [v16 semanticIdentifier];
-        v18 = [v17 stringValue];
+        v16 = historyCopy;
+        [medicationsCopy addObject:historyCopy];
+        semanticIdentifier = [v16 semanticIdentifier];
+        stringValue = [semanticIdentifier stringValue];
 
-        v19 = [v16 canonicalDoseUnitString];
+        canonicalDoseUnitString = [v16 canonicalDoseUnitString];
         v20 = [v14 objectForKey:@"hasSchedule"];
-        v21 = [v20 BOOLValue];
+        bOOLValue = [v20 BOOLValue];
 
-        if (v21)
+        if (bOOLValue)
         {
           v22 = [v14 objectForKey:@"isAMSchedule"];
-          v23 = -[HDMedicationsDemoDataGenerator dailyScheduleForMedicationIdentifier:isAMSchedule:](self, "dailyScheduleForMedicationIdentifier:isAMSchedule:", v18, [v22 BOOLValue]);
+          v23 = -[HDMedicationsDemoDataGenerator dailyScheduleForMedicationIdentifier:isAMSchedule:](self, "dailyScheduleForMedicationIdentifier:isAMSchedule:", stringValue, [v22 BOOLValue]);
 
-          [v39 addObject:v23];
+          [schedulesCopy addObject:v23];
           [(HDMedicationsDemoDataGeneratorState *)self->_state setHasScheduledMedications:1];
 
           v24 = 2;
@@ -627,11 +627,11 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
         if (!self->isGeneratingDataOnWatch)
         {
           v25 = [v14 objectForKey:@"shouldGenerateLogHistory"];
-          v26 = [v25 BOOLValue];
+          bOOLValue2 = [v25 BOOLValue];
 
-          if (v26)
+          if (bOOLValue2)
           {
-            if (v21)
+            if (bOOLValue)
             {
               v27 = [v14 objectForKey:@"isAMSchedule"];
               if ([v27 BOOLValue])
@@ -650,22 +650,22 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
               v28 = 15;
             }
 
-            v29 = [MEMORY[0x277CBEAA8] date];
-            v30 = [(HDMedicationsDemoDataGenerator *)self dayBeforeDate:v29 withHour:v28];
+            date = [MEMORY[0x277CBEAA8] date];
+            v30 = [(HDMedicationsDemoDataGenerator *)self dayBeforeDate:date withHour:v28];
 
             [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestLogDate:v30];
-            v31 = [(HDMedicationsDemoDataGenerator *)self doseEventsForMedication:v18 startDateTime:v30 historyDayCount:30 logOrigin:v24 doseUnitString:v19];
+            v31 = [(HDMedicationsDemoDataGenerator *)self doseEventsForMedication:stringValue startDateTime:v30 historyDayCount:30 logOrigin:v24 doseUnitString:canonicalDoseUnitString];
             if ([v31 count])
             {
               [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestLogDate:v30];
               [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestTakenLogDate:v30];
             }
 
-            [v38 addObjectsFromArray:v31];
+            [historyCopy addObjectsFromArray:v31];
           }
         }
 
-        v11 = v41;
+        medicationsCopy = v41;
       }
 
       v12 = obj;
@@ -680,9 +680,9 @@ uint64_t __71__HDMedicationsDemoDataGenerator_saveMedications_schedules_logHisto
   }
 
   v32 = [objc_alloc(MEMORY[0x277CCD580]) initWithListType:2 listName:@"Active Medications"];
-  v33 = [v32 listByAddingUserDomainConcepts:v11];
+  v33 = [v32 listByAddingUserDomainConcepts:medicationsCopy];
 
-  [v11 addObject:v33];
+  [medicationsCopy addObject:v33];
   v34 = 1;
 LABEL_27:
 
@@ -703,7 +703,7 @@ LABEL_27:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543618;
-      v22 = self;
+      selfCopy6 = self;
       v23 = 2114;
       v24 = v3;
       _os_log_impl(&dword_25181C000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] generateDemoData JSON path %{public}@", &v21, 0x16u);
@@ -719,7 +719,7 @@ LABEL_27:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543618;
-        v22 = self;
+        selfCopy6 = self;
         v23 = 2114;
         v24 = v3;
         _os_log_impl(&dword_25181C000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Could not decode JSON file %{public}@", &v21, 0x16u);
@@ -733,7 +733,7 @@ LABEL_27:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543618;
-      v22 = self;
+      selfCopy6 = self;
       v23 = 2114;
       v24 = v8;
       _os_log_impl(&dword_25181C000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] generateDemoData medicationDetails from JSON %{public}@", &v21, 0x16u);
@@ -760,7 +760,7 @@ LABEL_21:
         v15 = [v11 count];
         v16 = [v12 count];
         v21 = 138544130;
-        v22 = self;
+        selfCopy6 = self;
         v23 = 2048;
         v24 = v14;
         v25 = 2048;
@@ -782,7 +782,7 @@ LABEL_18:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543618;
-        v22 = self;
+        selfCopy6 = self;
         v23 = 2114;
         v24 = v8;
         v17 = "[%{public}@] Could not create objects from Medication details %{public}@";
@@ -800,7 +800,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138543362;
-    v22 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_25181C000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Initial Medications Demo Data is already setup.", &v21, 0xCu);
   }
 
@@ -818,12 +818,12 @@ LABEL_22:
     v7 = [v6 URLForResource:@"MedsDemoData-MercuryZipTSV-002-27000024" withExtension:@"zip"];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained daemon];
-    v10 = [v9 ontologyUpdateCoordinator];
+    daemon = [WeakRetained daemon];
+    ontologyUpdateCoordinator = [daemon ontologyUpdateCoordinator];
     v11 = *MEMORY[0x277CCC5F0];
     v12 = *MEMORY[0x277CCC630];
     v19 = 0;
-    v3 = [v10 updateOntologyWithShardIdentifier:v11 schemaType:v12 schemaVersion:HKCurrentSchemaVersionForShardIdentifier() localShardURL:v7 shardVersion:27000024 error:&v19];
+    v3 = [ontologyUpdateCoordinator updateOntologyWithShardIdentifier:v11 schemaType:v12 schemaVersion:HKCurrentSchemaVersionForShardIdentifier() localShardURL:v7 shardVersion:27000024 error:&v19];
     v13 = v19;
 
     _HKInitializeLogging();
@@ -834,7 +834,7 @@ LABEL_22:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25181C000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully updated ontology shard.", buf, 0xCu);
       }
 
@@ -875,14 +875,14 @@ LABEL_5:
   return v3;
 }
 
-- (id)_scheduleItemsForDate:(id)a3
+- (id)_scheduleItemsForDate:(id)date
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HDMedicationScheduleItemPredicateForScheduledDateTime(1);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v21 = 0;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -892,7 +892,7 @@ LABEL_5:
   v19 = v9;
   v10 = v6;
   v20 = v10;
-  v11 = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:v8 error:&v21 block:v18];
+  v11 = [(HDHealthEntity *)HDMedicationScheduleItemEntity performReadTransactionWithHealthDatabase:database error:&v21 block:v18];
   v12 = v21;
 
   if (v12)
@@ -902,9 +902,9 @@ LABEL_5:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
-      v25 = v4;
+      v25 = dateCopy;
       v26 = 2114;
       v27 = v12;
       _os_log_error_impl(&dword_25181C000, v13, OS_LOG_TYPE_ERROR, "[%{public}@] Could not read schedule items for %{public}@ Error: %{public}@", buf, 0x20u);
@@ -940,16 +940,16 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
   return v6;
 }
 
-- (id)doseEventsForScheduleItems:(id)a3 withStatus:(int64_t)a4
+- (id)doseEventsForScheduleItems:(id)items withStatus:(int64_t)status
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v24 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v24)
   {
@@ -965,13 +965,13 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
         }
 
         v6 = *(*(&v35 + 1) + 8 * v5);
-        v30 = [v6 identifier];
-        v7 = [v6 scheduledDateTime];
-        v8 = v7;
+        identifier = [v6 identifier];
+        scheduledDateTime = [v6 scheduledDateTime];
+        v8 = scheduledDateTime;
         v25 = v5;
-        if (a4 == 4)
+        if (status == 4)
         {
-          v9 = [v7 dateByAddingTimeInterval:300.0];
+          v9 = [scheduledDateTime dateByAddingTimeInterval:300.0];
 
           v8 = v9;
         }
@@ -980,8 +980,8 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v26 = [v6 doses];
-        v10 = [v26 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        doses = [v6 doses];
+        v10 = [doses countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v10)
         {
           v11 = v10;
@@ -992,19 +992,19 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
             {
               if (*v32 != v12)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(doses);
               }
 
               v14 = *(*(&v31 + 1) + 8 * i);
-              v15 = [v14 medicationIdentifier];
-              v16 = [v14 dose];
-              v17 = [v14 dose];
-              v18 = [v6 scheduledDateTime];
-              v19 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:2 scheduleItemIdentifier:v30 medicationIdentifier:v15 scheduledDoseQuantity:v16 doseQuantity:v17 scheduledDate:v18 startDate:v8 status:a4 doseUnitString:0];
+              medicationIdentifier = [v14 medicationIdentifier];
+              dose = [v14 dose];
+              dose2 = [v14 dose];
+              scheduledDateTime2 = [v6 scheduledDateTime];
+              v19 = [(HDMedicationsDemoDataGenerator *)self doseEventWithLogOrigin:2 scheduleItemIdentifier:identifier medicationIdentifier:medicationIdentifier scheduledDoseQuantity:dose doseQuantity:dose2 scheduledDate:scheduledDateTime2 startDate:v8 status:status doseUnitString:0];
               [v28 addObject:v19];
             }
 
-            v11 = [v26 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v11 = [doses countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v11);
@@ -1025,9 +1025,9 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
   return v28;
 }
 
-- (id)scheduledDoseEventsWithCurrentDate:(id)a3
+- (id)scheduledDoseEventsWithCurrentDate:(id)date
 {
-  v4 = [(HDMedicationsDemoDataGenerator *)self dayBeforeDate:a3 withHour:0];
+  v4 = [(HDMedicationsDemoDataGenerator *)self dayBeforeDate:date withHour:0];
   if (![(HDMedicationsDemoDataGeneratorState *)self->_state hasScheduledMedications]|| ([(HDMedicationsDemoDataGeneratorState *)self->_state latestLogDate], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, [(HDMedicationsDemoDataGeneratorState *)self->_state latestLogDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 >= v4))
   {
     v11 = 0;
@@ -1035,11 +1035,11 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
 
   else
   {
-    v8 = [(HDMedicationsDemoDataGeneratorState *)self->_state latestTakenLogDate];
-    if (v8)
+    latestTakenLogDate = [(HDMedicationsDemoDataGeneratorState *)self->_state latestTakenLogDate];
+    if (latestTakenLogDate)
     {
-      v9 = [(HDMedicationsDemoDataGeneratorState *)self->_state latestTakenLogDate];
-      if ([(HDMedicationsDemoDataGenerator *)self dayDifferenceFrom:v9 to:v4]<= 7)
+      latestTakenLogDate2 = [(HDMedicationsDemoDataGeneratorState *)self->_state latestTakenLogDate];
+      if ([(HDMedicationsDemoDataGenerator *)self dayDifferenceFrom:latestTakenLogDate2 to:v4]<= 7)
       {
         v10 = 4;
       }
@@ -1060,14 +1060,14 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
     if ([v11 count])
     {
       v13 = [v11 objectAtIndexedSubscript:0];
-      v14 = [v13 startDate];
-      [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestLogDate:v14];
+      startDate = [v13 startDate];
+      [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestLogDate:startDate];
 
       if (v10 == 4)
       {
         v15 = [v11 objectAtIndexedSubscript:0];
-        v16 = [v15 startDate];
-        [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestTakenLogDate:v16];
+        startDate2 = [v15 startDate];
+        [(HDMedicationsDemoDataGeneratorState *)self->_state setLatestTakenLogDate:startDate2];
       }
     }
   }
@@ -1075,19 +1075,19 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
   return v11;
 }
 
-- (void)generateDemoDataForCurrentDate:(id)a3
+- (void)generateDemoDataForCurrentDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (!self->isGeneratingDataOnWatch)
   {
-    v5 = [(HDMedicationsDemoDataGenerator *)self scheduledDoseEventsWithCurrentDate:v4];
+    v5 = [(HDMedicationsDemoDataGenerator *)self scheduledDoseEventsWithCurrentDate:dateCopy];
     v6 = v5;
     if (v5 && [v5 count])
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v8 = [WeakRetained database];
-      v9 = [MEMORY[0x277D106B8] contextForWritingProtectedData];
+      database = [WeakRetained database];
+      contextForWritingProtectedData = [MEMORY[0x277D106B8] contextForWritingProtectedData];
       v17 = 0;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -1095,7 +1095,7 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
       v15[3] = &unk_2796CD5C8;
       v15[4] = self;
       v16 = v6;
-      v10 = [v8 performTransactionWithContext:v9 error:&v17 block:v15 inaccessibilityHandler:0];
+      v10 = [database performTransactionWithContext:contextForWritingProtectedData error:&v17 block:v15 inaccessibilityHandler:0];
       v11 = v17;
 
       _HKInitializeLogging();
@@ -1106,9 +1106,9 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v19 = self;
+          selfCopy2 = self;
           v20 = 2114;
-          v21 = v4;
+          v21 = dateCopy;
           _os_log_impl(&dword_25181C000, v13, OS_LOG_TYPE_DEFAULT, " [%{public}@] Completed dose events generation for current date %{public}@", buf, 0x16u);
         }
       }
@@ -1116,9 +1116,9 @@ BOOL __56__HDMedicationsDemoDataGenerator__scheduleItemsForDate___block_invoke(u
       else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2114;
-        v21 = v4;
+        v21 = dateCopy;
         v22 = 2114;
         v23 = v11;
         _os_log_error_impl(&dword_25181C000, v13, OS_LOG_TYPE_ERROR, "[%{public}@]: Could not Demodata for Date  %{public}@ Error: %{public}@", buf, 0x20u);
@@ -1142,24 +1142,24 @@ uint64_t __65__HDMedicationsDemoDataGenerator_generateDemoDataForCurrentDate___b
   return result;
 }
 
-- (void)setDemoDataGenerationContextWithProfile:(id)a3 generatorState:(id)a4
+- (void)setDemoDataGenerationContextWithProfile:(id)profile generatorState:(id)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  profileCopy = profile;
   _HKInitializeLogging();
   v6 = HKLogMedication();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v6, OS_LOG_TYPE_DEFAULT, " [%{public}@] setDemoDataGenerationContext", &v8, 0xCu);
   }
 
-  objc_storeWeak(&self->_profile, v5);
+  objc_storeWeak(&self->_profile, profileCopy);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v27 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -1168,7 +1168,7 @@ uint64_t __65__HDMedicationsDemoDataGenerator_generateDemoDataForCurrentDate___b
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v23 = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = WeakRetained;
     _os_log_impl(&dword_25181C000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] generateFirstRunObjectsForDemoPerson _profile %{public}@", &v23, 0x16u);
@@ -1207,13 +1207,13 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
-  v8 = a6;
+  dateCopy = date;
   [(HDMedicationsDemoDataGenerator *)self restoreState];
   if ([(HDMedicationsDemoDataGeneratorState *)self->_state didSaveIntialData])
   {
-    [(HDMedicationsDemoDataGenerator *)self generateDemoDataForCurrentDate:v8];
+    [(HDMedicationsDemoDataGenerator *)self generateDemoDataForCurrentDate:dateCopy];
   }
 
   else
@@ -1227,12 +1227,12 @@ LABEL_11:
   }
 }
 
-- (int64_t)dayDifferenceFrom:(id)a3 to:(id)a4
+- (int64_t)dayDifferenceFrom:(id)from to:(id)to
 {
   currentCalendar = self->_currentCalendar;
-  v7 = a3;
-  v8 = [(NSCalendar *)currentCalendar components:16 fromDate:a4];
-  v9 = [(NSCalendar *)self->_currentCalendar components:16 fromDate:v7];
+  fromCopy = from;
+  v8 = [(NSCalendar *)currentCalendar components:16 fromDate:to];
+  v9 = [(NSCalendar *)self->_currentCalendar components:16 fromDate:fromCopy];
 
   v10 = [v8 day];
   v11 = v10 - [v9 day];
@@ -1240,11 +1240,11 @@ LABEL_11:
   return v11;
 }
 
-- (id)dayBeforeDate:(id)a3 withHour:(int64_t)a4
+- (id)dayBeforeDate:(id)date withHour:(int64_t)hour
 {
-  v6 = [(NSCalendar *)self->_currentCalendar components:28 fromDate:a3];
+  v6 = [(NSCalendar *)self->_currentCalendar components:28 fromDate:date];
   [v6 setDay:{objc_msgSend(v6, "day") - 1}];
-  [v6 setHour:a4];
+  [v6 setHour:hour];
   v7 = [(NSCalendar *)self->_currentCalendar dateFromComponents:v6];
 
   return v7;

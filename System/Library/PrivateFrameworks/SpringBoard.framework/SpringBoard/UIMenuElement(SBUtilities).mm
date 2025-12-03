@@ -15,7 +15,7 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if (v4[2](v4, a1))
+  if (v4[2](v4, self))
   {
     v5 = 1;
   }
@@ -26,8 +26,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [a1 sb_children];
-    v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    sb_children = [self sb_children];
+    v5 = [sb_children countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v7 = *v11;
@@ -37,7 +37,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sb_children);
           }
 
           if ([*(*(&v10 + 1) + 8 * i) sb_containsElementPassingTest:v4])
@@ -47,7 +47,7 @@
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [sb_children countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -65,7 +65,7 @@ LABEL_13:
 
 - (id)sb_descendantsPassingTest:()SBUtilities
 {
-  v3 = [a1 sb_descendantsPassingTest:a3 passedSoFar:0];
+  v3 = [self sb_descendantsPassingTest:a3 passedSoFar:0];
   v4 = [v3 copy];
 
   return v4;
@@ -75,23 +75,23 @@ LABEL_13:
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = a4;
-  if (!v7)
+  array = a4;
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  if (v6[2](v6, a1))
+  if (v6[2](v6, self))
   {
-    [v7 addObject:a1];
+    [array addObject:self];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [a1 sb_children];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sb_children = [self sb_children];
+  v9 = [sb_children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -102,24 +102,24 @@ LABEL_13:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sb_children);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) sb_descendantsPassingTest:v6 passedSoFar:v7];
+        v13 = [*(*(&v15 + 1) + 8 * i) sb_descendantsPassingTest:v6 passedSoFar:array];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [sb_children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
 - (id)sb_searchResultsExcludingClasses:()SBUtilities passingTest:
 {
-  v4 = [a1 sb_searchResultsExcludingClasses:a3 passingTest:a4 breadcrumbs:0 passedSoFar:0];
+  v4 = [self sb_searchResultsExcludingClasses:a3 passingTest:a4 breadcrumbs:0 passedSoFar:0];
   v5 = [v4 copy];
 
   return v5;
@@ -133,7 +133,7 @@ LABEL_13:
   v12 = a6;
   if (v12)
   {
-    v13 = v12;
+    array = v12;
     v14 = a5;
   }
 
@@ -141,7 +141,7 @@ LABEL_13:
   {
     v15 = MEMORY[0x277CBEB18];
     v16 = a5;
-    v13 = [v15 array];
+    array = [v15 array];
   }
 
   v17 = MEMORY[0x277CBEBF8];
@@ -156,31 +156,31 @@ LABEL_13:
   v41[1] = 3221225472;
   v41[2] = __99__UIMenuElement_SBUtilities__sb_searchResultsExcludingClasses_passingTest_breadcrumbs_passedSoFar___block_invoke;
   v41[3] = &unk_2783B2670;
-  v41[4] = a1;
+  v41[4] = self;
   if (([v10 bs_containsObjectPassingTest:v41] & 1) == 0)
   {
-    v19 = [a1 sb_titleString];
-    v20 = v11[2](v11, v19);
+    sb_titleString = [self sb_titleString];
+    v20 = v11[2](v11, sb_titleString);
 
     if (v20)
     {
-      v21 = [a1 copy];
-      v22 = [a1 sb_titleString];
-      v23 = [v18 arrayByAddingObject:v22];
+      v21 = [self copy];
+      sb_titleString2 = [self sb_titleString];
+      v23 = [v18 arrayByAddingObject:sb_titleString2];
 
       v24 = objc_alloc(MEMORY[0x277CCA898]);
       v25 = [v23 componentsJoinedByString:@" ⏵ "];
       v26 = [v24 initWithString:v25];
       [v21 setAttributedTitle:v26];
 
-      [v13 addObject:v21];
+      [array addObject:v21];
     }
   }
 
-  v27 = [a1 sb_titleString];
-  if ([v27 length])
+  sb_titleString3 = [self sb_titleString];
+  if ([sb_titleString3 length])
   {
-    if ([a1 sb_isInlineMenu])
+    if ([self sb_isInlineMenu])
     {
       v28 = [v18 count];
 
@@ -194,8 +194,8 @@ LABEL_13:
     {
     }
 
-    v27 = [a1 sb_titleString];
-    v29 = [v18 arrayByAddingObject:v27];
+    sb_titleString3 = [self sb_titleString];
+    v29 = [v18 arrayByAddingObject:sb_titleString3];
 
     v18 = v29;
   }
@@ -205,8 +205,8 @@ LABEL_16:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v30 = [a1 sb_children];
-  v31 = [v30 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  sb_children = [self sb_children];
+  v31 = [sb_children countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v31)
   {
     v32 = v31;
@@ -217,19 +217,19 @@ LABEL_16:
       {
         if (*v38 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(sb_children);
         }
 
-        v35 = [*(*(&v37 + 1) + 8 * i) sb_searchResultsExcludingClasses:v10 passingTest:v11 breadcrumbs:v18 passedSoFar:v13];
+        v35 = [*(*(&v37 + 1) + 8 * i) sb_searchResultsExcludingClasses:v10 passingTest:v11 breadcrumbs:v18 passedSoFar:array];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v32 = [sb_children countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v32);
   }
 
-  return v13;
+  return array;
 }
 
 - (uint64_t)sb_isInlineMenu
@@ -237,7 +237,7 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return [a1 options] & 1;
+    return [self options] & 1;
   }
 
   else
@@ -248,20 +248,20 @@ LABEL_16:
 
 - (id)sb_titleString
 {
-  v2 = [a1 attributedTitle];
-  v3 = [v2 string];
-  if ([v3 length])
+  attributedTitle = [self attributedTitle];
+  string = [attributedTitle string];
+  if ([string length])
   {
-    v4 = [a1 attributedTitle];
-    v5 = [v4 string];
+    attributedTitle2 = [self attributedTitle];
+    string2 = [attributedTitle2 string];
   }
 
   else
   {
-    v5 = [a1 title];
+    string2 = [self title];
   }
 
-  return v5;
+  return string2;
 }
 
 - (id)sb_children
@@ -269,15 +269,15 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 children];
+    children = [self children];
   }
 
   else
   {
-    v2 = MEMORY[0x277CBEBF8];
+    children = MEMORY[0x277CBEBF8];
   }
 
-  return v2;
+  return children;
 }
 
 @end

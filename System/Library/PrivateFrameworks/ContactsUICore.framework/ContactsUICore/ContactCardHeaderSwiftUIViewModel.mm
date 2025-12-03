@@ -14,7 +14,7 @@
 
 - (void)actionsUpdated
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3393DCC();
 }
 

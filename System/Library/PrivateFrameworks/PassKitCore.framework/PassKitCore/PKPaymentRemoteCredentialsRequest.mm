@@ -1,30 +1,30 @@
 @interface PKPaymentRemoteCredentialsRequest
-- (void)_deviceScoreUsingWebService:(id)a3 withCompletion:(id)a4;
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5;
+- (void)_deviceScoreUsingWebService:(id)service withCompletion:(id)completion;
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion;
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion;
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion;
 @end
 
 @implementation PKPaymentRemoteCredentialsRequest
 
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  builderCopy = builder;
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (self->_fetchExtendedAuthorizationActions)
     {
-      v11 = [v8 brokerURL];
+      brokerURL = [builderCopy brokerURL];
       v32[0] = @"devices";
-      v12 = [v8 deviceID];
-      v32[1] = v12;
+      deviceID = [builderCopy deviceID];
+      v32[1] = deviceID;
       v32[2] = @"availableCards";
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
-      v14 = [v8 appleAccountInformation];
-      v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 version:@"4" endpointComponents:v13 queryParameters:0 appleAccountInformation:v14];
+      appleAccountInformation = [builderCopy appleAccountInformation];
+      v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL version:@"4" endpointComponents:v13 queryParameters:0 appleAccountInformation:appleAccountInformation];
 
       [v15 setHTTPMethod:@"POST"];
       [v15 setValue:@"application/binary" forHTTPHeaderField:@"Content-Type"];
@@ -34,11 +34,11 @@
       v27[2] = __82__PKPaymentRemoteCredentialsRequest__urlRequestWithBuilder_webService_completion___block_invoke;
       v27[3] = &unk_1E79DAF78;
       v27[4] = self;
-      v28 = v8;
+      v28 = builderCopy;
       v17 = v15;
       v29 = v17;
-      v30 = v9;
-      v31 = v10;
+      v30 = serviceCopy;
+      v31 = completionCopy;
       [(PKPaymentRemoteCredentialsRequest *)self _deviceScoreUsingWebService:v30 withCompletion:v27];
 
       objc_autoreleasePoolPop(v16);
@@ -70,18 +70,18 @@
         [v17 setObject:v20 forKey:@"cardType"];
       }
 
-      v21 = [v8 brokerURL];
+      brokerURL2 = [builderCopy brokerURL];
       v33[0] = @"devices";
-      v22 = [v8 deviceID];
-      v33[1] = v22;
+      deviceID2 = [builderCopy deviceID];
+      v33[1] = deviceID2;
       v33[2] = @"cards";
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
-      v24 = [v8 appleAccountInformation];
-      v25 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v21 endpointComponents:v23 queryParameters:v17 appleAccountInformation:v24];
+      appleAccountInformation2 = [builderCopy appleAccountInformation];
+      v25 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL2 endpointComponents:v23 queryParameters:v17 appleAccountInformation:appleAccountInformation2];
 
       [v25 setHTTPMethod:@"GET"];
       v26 = [v25 copy];
-      (*(v10 + 2))(v10, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
     }
   }
 }
@@ -141,11 +141,11 @@ void __82__PKPaymentRemoteCredentialsRequest__urlRequestWithBuilder_webService_c
   [v13 _signRequest:v14 webService:v15 completion:v16];
 }
 
-- (void)_deviceScoreUsingWebService:(id)a3 withCompletion:(id)a4
+- (void)_deviceScoreUsingWebService:(id)service withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (+[PKDeviceScorer deviceScoringSupported]&& self->_deviceProvisioningDataExpected)
     {
@@ -160,34 +160,34 @@ void __82__PKPaymentRemoteCredentialsRequest__urlRequestWithBuilder_webService_c
       v12[1] = 3221225472;
       v12[2] = __80__PKPaymentRemoteCredentialsRequest__deviceScoreUsingWebService_withCompletion___block_invoke;
       v12[3] = &unk_1E79DAFA0;
-      v13 = v7;
+      v13 = completionCopy;
       [(PKODIAssessment *)v11 waitForAssessmentWithTimeout:3 startTimeoutFromAssessmentStart:0 continueBlock:v12];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
+  retryCopy = retry;
   v12 = objc_opt_class();
-  v13 = [(PKOverlayableWebServiceRequest *)self overlayParameters];
-  v14 = [v12 _HTTPBodyWithDictionary:v13];
-  [v11 setHTTPBody:v14];
+  overlayParameters = [(PKOverlayableWebServiceRequest *)self overlayParameters];
+  v14 = [v12 _HTTPBodyWithDictionary:overlayParameters];
+  [retryCopy setHTTPBody:v14];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __98__PKPaymentRemoteCredentialsRequest__updateRequestForRetry_retryFields_webService_withCompletion___block_invoke;
   v16[3] = &unk_1E79DAF50;
-  v17 = v9;
-  v15 = v9;
-  [(PKPaymentWebServiceRequest *)self _signRequest:v11 webService:v10 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(PKPaymentWebServiceRequest *)self _signRequest:retryCopy webService:serviceCopy completion:v16];
 }
 
 uint64_t __98__PKPaymentRemoteCredentialsRequest__updateRequestForRetry_retryFields_webService_withCompletion___block_invoke(uint64_t a1)
@@ -201,22 +201,22 @@ uint64_t __98__PKPaymentRemoteCredentialsRequest__updateRequestForRetry_retryFie
   return result;
 }
 
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  serviceCopy = service;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __99__PKPaymentRemoteCredentialsRequest__updateRequestForRedirect_overrides_webService_withCompletion___block_invoke;
   v15[3] = &unk_1E79DAFC8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
+  v16 = serviceCopy;
+  v17 = completionCopy;
   v14.receiver = self;
   v14.super_class = PKPaymentRemoteCredentialsRequest;
-  v12 = v11;
-  v13 = v10;
-  [(PKOverlayableWebServiceRequest *)&v14 _updateRequestForRedirect:a3 overrides:a4 webService:v13 withCompletion:v15];
+  v12 = completionCopy;
+  v13 = serviceCopy;
+  [(PKOverlayableWebServiceRequest *)&v14 _updateRequestForRedirect:redirect overrides:overrides webService:v13 withCompletion:v15];
 }
 
 void __99__PKPaymentRemoteCredentialsRequest__updateRequestForRedirect_overrides_webService_withCompletion___block_invoke(uint64_t a1, uint64_t a2)

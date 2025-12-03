@@ -1,38 +1,38 @@
 @interface SKUIRedeemViewControllerLegacy
-+ (BOOL)redeemRequiresNationalId:(id)a3;
++ (BOOL)redeemRequiresNationalId:(id)id;
 - (CGSize)preferredContentSize;
 - (NSOperationQueue)operationQueue;
 - (SKUIRedeemViewCameraOverrideDelegate)cameraDelegate;
-- (SKUIRedeemViewControllerLegacy)initWithRedeemCategory:(int64_t)a3;
+- (SKUIRedeemViewControllerLegacy)initWithRedeemCategory:(int64_t)category;
 - (UIBarButtonItem)cancelButtonItem;
 - (id)_newInputViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_attemptAutomaticRedeemWithMetadata:(id)a3;
-- (void)_cancelButtonAction:(id)a3;
-- (void)_executeIdValidationOperationWithFields:(id)a3;
-- (void)_executePreflightOperationForcesAuthentication:(BOOL)a3;
+- (void)_attemptAutomaticRedeemWithMetadata:(id)metadata;
+- (void)_cancelButtonAction:(id)action;
+- (void)_executeIdValidationOperationWithFields:(id)fields;
+- (void)_executePreflightOperationForcesAuthentication:(BOOL)authentication;
 - (void)_executeRequiresIdValidationOperation;
-- (void)_finishPreflightWithResult:(id)a3;
+- (void)_finishPreflightWithResult:(id)result;
 - (void)_loadInputViewController;
 - (void)_performInitialRedeemOperation;
 - (void)_showInputViewController;
 - (void)_showNationalIdLoadingPage;
 - (void)_showNationalIdVerificationPage;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)redeemAgainAnimated:(BOOL)a3;
-- (void)redeemIdViewController:(id)a3 submittedWithFields:(id)a4;
-- (void)redeemStepViewControllerShouldValidateNationalID:(id)a3;
-- (void)setCameraRedeemVisible:(BOOL)a3;
-- (void)setClientContext:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)redeemAgainAnimated:(BOOL)animated;
+- (void)redeemIdViewController:(id)controller submittedWithFields:(id)fields;
+- (void)redeemStepViewControllerShouldValidateNationalID:(id)d;
+- (void)setCameraRedeemVisible:(BOOL)visible;
+- (void)setClientContext:(id)context;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIRedeemViewControllerLegacy
 
-- (SKUIRedeemViewControllerLegacy)initWithRedeemCategory:(int64_t)a3
+- (SKUIRedeemViewControllerLegacy)initWithRedeemCategory:(int64_t)category
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -43,15 +43,15 @@
   v6 = objc_alloc_init(SKUILoadingView);
   [(SKUILoadingView *)v6 setAutoresizingMask:45];
   [(SKUILoadingView *)v6 sizeToFit];
-  v7 = [v5 view];
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [v7 setBackgroundColor:v8];
+  view = [v5 view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   [(SKUILoadingView *)v6 bounds];
-  [v7 setFrame:?];
-  [v7 bounds];
+  [view setFrame:?];
+  [view bounds];
   [(SKUILoadingView *)v6 setFrame:?];
-  [v7 addSubview:v6];
+  [view addSubview:v6];
   v12.receiver = self;
   v12.super_class = SKUIRedeemViewControllerLegacy;
   v9 = [(SKUIRedeemViewControllerLegacy *)&v12 initWithRootViewController:v5];
@@ -59,7 +59,7 @@
   if (v9)
   {
     v9->_cameraRedeemEnabled = -1;
-    v9->_category = a3;
+    v9->_category = category;
     [(SKUIRedeemViewControllerLegacy *)v9 setModalPresentationStyle:2];
   }
 
@@ -68,24 +68,24 @@
   return v10;
 }
 
-- (void)setCameraRedeemVisible:(BOOL)a3
+- (void)setCameraRedeemVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     self->_cameraRedeemEnabled = 1;
     self->_cameraRedeemVisible = 1;
   }
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     [(SKUIRedeemStepViewController *)self->_inputViewController setClientContext:self->_clientContext];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
@@ -107,10 +107,10 @@
 
 - (CGSize)preferredContentSize
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1 || (([MEMORY[0x277D75DA0] keyWindow], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "bounds"), v7 = v6, v9 = v8, v11 = v10, v13 = v12, v5, v30.origin.x = v7, v30.origin.y = v9, v30.size.width = v11, v30.size.height = v13, Width = CGRectGetWidth(v30), v31.origin.x = v7, v31.origin.y = v9, v31.size.width = v11, v31.size.height = v13, v15 = CGRectGetHeight(v31), Width >= 1024.0) ? (v16 = v15 < 1024.0) : (v16 = 1), v16))
+  if (userInterfaceIdiom != 1 || (([MEMORY[0x277D75DA0] keyWindow], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "bounds"), v7 = v6, v9 = v8, v11 = v10, v13 = v12, v5, v30.origin.x = v7, v30.origin.y = v9, v30.size.width = v11, v30.size.height = v13, Width = CGRectGetWidth(v30), v31.origin.x = v7, v31.origin.y = v9, v31.size.width = v11, v31.size.height = v13, v15 = CGRectGetHeight(v31), Width >= 1024.0) ? (v16 = v15 < 1024.0) : (v16 = 1), v16))
   {
     v28.receiver = self;
     v28.super_class = SKUIRedeemViewControllerLegacy;
@@ -121,11 +121,11 @@
 
   else
   {
-    v21 = [(SKUIRedeemViewControllerLegacy *)self navigationBar];
-    v22 = v21;
-    if (v21)
+    navigationBar = [(SKUIRedeemViewControllerLegacy *)self navigationBar];
+    v22 = navigationBar;
+    if (navigationBar)
     {
-      [v21 frame];
+      [navigationBar frame];
       Height = CGRectGetHeight(v32);
     }
 
@@ -171,31 +171,31 @@
   return 2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = SKUIRedeemViewControllerLegacy;
-  [(SKUIRedeemViewControllerLegacy *)&v8 viewDidAppear:a3];
-  v4 = [(SKUIRedeemViewControllerLegacy *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(SKUIRedeemViewControllerLegacy *)&v8 viewDidAppear:appear];
+  traitCollection = [(SKUIRedeemViewControllerLegacy *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    self->_initialBarStyle = [v6 statusBarStyle];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    self->_initialBarStyle = [mEMORY[0x277D75128] statusBarStyle];
 
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 setStatusBarStyle:0];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128]2 setStatusBarStyle:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIRedeemViewControllerLegacy *)self topViewController];
-  v6 = [v5 navigationItem];
-  v7 = [(SKUIRedeemViewControllerLegacy *)self cancelButtonItem];
-  [v6 setLeftBarButtonItem:v7];
+  appearCopy = appear;
+  topViewController = [(SKUIRedeemViewControllerLegacy *)self topViewController];
+  navigationItem = [topViewController navigationItem];
+  cancelButtonItem = [(SKUIRedeemViewControllerLegacy *)self cancelButtonItem];
+  [navigationItem setLeftBarButtonItem:cancelButtonItem];
 
   if ([(SKUIRedeemViewControllerLegacy *)self shouldPerformInitialOperationOnAppear])
   {
@@ -210,64 +210,64 @@
 
   v8.receiver = self;
   v8.super_class = SKUIRedeemViewControllerLegacy;
-  [(SKUIRedeemViewControllerLegacy *)&v8 viewWillAppear:v3];
+  [(SKUIRedeemViewControllerLegacy *)&v8 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SKUIRedeemViewControllerLegacy;
-  [(SKUIRedeemViewControllerLegacy *)&v7 viewWillDisappear:a3];
-  v4 = [(SKUIRedeemViewControllerLegacy *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(SKUIRedeemViewControllerLegacy *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(SKUIRedeemViewControllerLegacy *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v6 setStatusBarStyle:self->_initialBarStyle];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setStatusBarStyle:self->_initialBarStyle];
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
+  animatedCopy = animated;
+  parentViewController = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
-    v6 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
-    [v6 dismissAnimated:v3];
+    parentViewController2 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
+    [parentViewController2 dismissAnimated:animatedCopy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SKUIRedeemViewControllerLegacy;
-    [(SKUIRedeemViewControllerLegacy *)&v7 dismissAnimated:v3];
+    [(SKUIRedeemViewControllerLegacy *)&v7 dismissAnimated:animatedCopy];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  parentViewController = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
 
-  if (v7)
+  if (parentViewController)
   {
-    v8 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
-    [v8 dismissViewControllerAnimated:v4 completion:v6];
+    parentViewController2 = [(SKUIRedeemViewControllerLegacy *)self parentViewController];
+    [parentViewController2 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SKUIRedeemViewControllerLegacy;
-    [(SKUIRedeemViewControllerLegacy *)&v9 dismissViewControllerAnimated:v4 completion:v6];
+    [(SKUIRedeemViewControllerLegacy *)&v9 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)redeemStepViewControllerShouldValidateNationalID:(id)a3
+- (void)redeemStepViewControllerShouldValidateNationalID:(id)d
 {
   inputViewController = self->_inputViewController;
   self->_inputViewController = 0;
@@ -275,24 +275,24 @@
   [(SKUIRedeemViewControllerLegacy *)self _showNationalIdVerificationPage];
 }
 
-- (void)redeemIdViewController:(id)a3 submittedWithFields:(id)a4
+- (void)redeemIdViewController:(id)controller submittedWithFields:(id)fields
 {
-  v5 = a4;
+  fieldsCopy = fields;
   [(SKUIRedeemViewControllerLegacy *)self _showNationalIdLoadingPage];
-  [(SKUIRedeemViewControllerLegacy *)self _executeIdValidationOperationWithFields:v5];
+  [(SKUIRedeemViewControllerLegacy *)self _executeIdValidationOperationWithFields:fieldsCopy];
 }
 
-- (void)redeemAgainAnimated:(BOOL)a3
+- (void)redeemAgainAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SKUIRedeemViewControllerLegacy *)self _newInputViewController];
-  v7[0] = v5;
+  _newInputViewController = [(SKUIRedeemViewControllerLegacy *)self _newInputViewController];
+  v7[0] = _newInputViewController;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [(SKUIRedeemViewControllerLegacy *)self setViewControllers:v6 animated:v3];
+  [(SKUIRedeemViewControllerLegacy *)self setViewControllers:v6 animated:animatedCopy];
 }
 
-- (void)_cancelButtonAction:(id)a3
+- (void)_cancelButtonAction:(id)action
 {
   [(SKUIRedeemViewControllerLegacy *)self dismissViewControllerAnimated:1 completion:0];
   [(SKUIRedeemPreflightOperation *)self->_preflightOperation setOutputBlock:0];
@@ -303,8 +303,8 @@
 - (void)_performInitialRedeemOperation
 {
   v3 = objc_opt_class();
-  v4 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  LODWORD(v3) = [v3 redeemRequiresNationalId:v4];
+  clientContext = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  LODWORD(v3) = [v3 redeemRequiresNationalId:clientContext];
 
   if (v3)
   {
@@ -319,19 +319,19 @@
   }
 }
 
-- (void)_executePreflightOperationForcesAuthentication:(BOOL)a3
+- (void)_executePreflightOperationForcesAuthentication:(BOOL)authentication
 {
   if (!self->_preflightOperation)
   {
-    v4 = [[SKUIRedeemPreflightOperation alloc] initWithClientContext:self->_clientContext redeemCode:self->_initialCode forcesAuthentication:a3];
+    v4 = [[SKUIRedeemPreflightOperation alloc] initWithClientContext:self->_clientContext redeemCode:self->_initialCode forcesAuthentication:authentication];
     preflightOperation = self->_preflightOperation;
     self->_preflightOperation = v4;
 
     [(SKUIRedeemPreflightOperation *)self->_preflightOperation setRedeemViewController:self];
     [(SKUIRedeemPreflightOperation *)self->_preflightOperation setLoadsRedeemCodeMetadata:[(SKUIRedeemViewControllerLegacy *)self attempsAutomaticRedeem]];
     v6 = [SKUIRedeemConfiguration alloc];
-    v7 = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
-    v8 = [(SKUIRedeemConfiguration *)v6 initWithOperationQueue:v7 category:self->_category clientContext:self->_clientContext];
+    operationQueue = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
+    v8 = [(SKUIRedeemConfiguration *)v6 initWithOperationQueue:operationQueue category:self->_category clientContext:self->_clientContext];
 
     [(SKUIRedeemPreflightOperation *)self->_preflightOperation setRedeemConfiguration:v8];
     objc_initWeak(&location, self);
@@ -371,24 +371,24 @@ void __81__SKUIRedeemViewControllerLegacy__executePreflightOperationForcesAuthen
   [WeakRetained _finishPreflightWithResult:*(a1 + 32)];
 }
 
-- (void)_attemptAutomaticRedeemWithMetadata:(id)a3
+- (void)_attemptAutomaticRedeemWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [SKUIRedeemOperation alloc];
-  v6 = [v4 code];
-  if (v6)
+  code = [metadataCopy code];
+  if (code)
   {
-    v7 = [(SKUIRedeemOperation *)v5 initWithCode:v6];
+    v7 = [(SKUIRedeemOperation *)v5 initWithCode:code];
   }
 
   else
   {
-    v8 = [v4 inputCode];
-    v7 = [(SKUIRedeemOperation *)v5 initWithCode:v8];
+    inputCode = [metadataCopy inputCode];
+    v7 = [(SKUIRedeemOperation *)v5 initWithCode:inputCode];
   }
 
-  v9 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  [(SKUIRedeemOperation *)v7 setClientContext:v9];
+  clientContext = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  [(SKUIRedeemOperation *)v7 setClientContext:clientContext];
 
   objc_initWeak(&location, self);
   v11 = MEMORY[0x277D85DD0];
@@ -455,41 +455,41 @@ void __70__SKUIRedeemViewControllerLegacy__attemptAutomaticRedeemWithMetadata___
 LABEL_6:
 }
 
-- (void)_finishPreflightWithResult:(id)a3
+- (void)_finishPreflightWithResult:(id)result
 {
-  v13 = a3;
-  if ([v13 resultType] || (objc_msgSend(v13, "account"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isManagedAppleID"), v4, v5))
+  resultCopy = result;
+  if ([resultCopy resultType] || (objc_msgSend(resultCopy, "account"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isManagedAppleID"), v4, v5))
   {
     [(SKUIRedeemViewControllerLegacy *)self dismissViewControllerAnimated:1 completion:0];
     goto LABEL_4;
   }
 
-  v7 = [v13 redeemConfiguration];
+  redeemConfiguration = [resultCopy redeemConfiguration];
   redeemConfiguration = self->_redeemConfiguration;
-  self->_redeemConfiguration = v7;
+  self->_redeemConfiguration = redeemConfiguration;
 
-  v9 = [v13 clientContext];
-  [(SKUIRedeemViewControllerLegacy *)self setClientContext:v9];
+  clientContext = [resultCopy clientContext];
+  [(SKUIRedeemViewControllerLegacy *)self setClientContext:clientContext];
 
-  v10 = [v13 codeMetadata];
+  codeMetadata = [resultCopy codeMetadata];
   if (![(SKUIRedeemViewControllerLegacy *)self attempsAutomaticRedeem])
   {
     goto LABEL_10;
   }
 
-  v11 = [v10 items];
-  if (![v11 count])
+  items = [codeMetadata items];
+  if (![items count])
   {
 
     goto LABEL_12;
   }
 
-  v12 = [v10 allowsAutoSubmission];
+  allowsAutoSubmission = [codeMetadata allowsAutoSubmission];
 
-  if (v12)
+  if (allowsAutoSubmission)
   {
 LABEL_12:
-    [(SKUIRedeemViewControllerLegacy *)self _attemptAutomaticRedeemWithMetadata:v10];
+    [(SKUIRedeemViewControllerLegacy *)self _attemptAutomaticRedeemWithMetadata:codeMetadata];
     goto LABEL_13;
   }
 
@@ -508,13 +508,13 @@ LABEL_4:
   if (self->_cameraRedeemEnabled == 255)
   {
     objc_initWeak(&location, self);
-    v3 = [(SKUIClientContext *)self->_clientContext URLBag];
+    uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke;
     v4[3] = &unk_2781FBA80;
     objc_copyWeak(&v5, &location);
-    [v3 loadValueForKey:@"cameraGiftingEnabled" completionBlock:v4];
+    [uRLBag loadValueForKey:@"cameraGiftingEnabled" completionBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -558,10 +558,10 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
 {
   if (self->_cameraRedeemEnabled && [MEMORY[0x277D00F70] isCRCodeRedeemerAvailable])
   {
-    v3 = [(SKUIRedeemViewControllerLegacy *)self cameraRedeemVisible];
+    cameraRedeemVisible = [(SKUIRedeemViewControllerLegacy *)self cameraRedeemVisible];
     v4 = [SKUIRedeemCameraViewController alloc];
     category = self->_category;
-    if (v3)
+    if (cameraRedeemVisible)
     {
       v6 = [(SKUIRedeemCameraViewController *)v4 initWithRedeemCategoryFullscreen:category];
     }
@@ -572,11 +572,11 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
     }
 
     v7 = v6;
-    v8 = [(SKUIRedeemViewControllerLegacy *)self cameraDelegate];
-    [(SKUIRedeemInputViewController *)v7 setCameraOverrideDelegate:v8];
+    cameraDelegate = [(SKUIRedeemViewControllerLegacy *)self cameraDelegate];
+    [(SKUIRedeemInputViewController *)v7 setCameraOverrideDelegate:cameraDelegate];
 
-    v9 = [(SKUIRedeemViewControllerLegacy *)self cameraDelegate];
-    [(SKUIRedeemInputViewController *)v7 setDelegate:v9];
+    cameraDelegate2 = [(SKUIRedeemViewControllerLegacy *)self cameraDelegate];
+    [(SKUIRedeemInputViewController *)v7 setDelegate:cameraDelegate2];
   }
 
   else
@@ -586,8 +586,8 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
 
   [(SKUIRedeemStepViewController *)v7 setClientContext:self->_clientContext];
   [(SKUIRedeemStepViewController *)v7 setConfiguration:self->_redeemConfiguration];
-  v10 = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
-  [(SKUIRedeemStepViewController *)v7 setOperationQueue:v10];
+  operationQueue = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
+  [(SKUIRedeemStepViewController *)v7 setOperationQueue:operationQueue];
 
   [(SKUIRedeemStepViewController *)v7 setRedeemStepDelegate:self];
   return v7;
@@ -598,9 +598,9 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
   v6[1] = *MEMORY[0x277D85DE8];
   if (!self->_inputViewController)
   {
-    v3 = [(SKUIRedeemViewControllerLegacy *)self _newInputViewController];
+    _newInputViewController = [(SKUIRedeemViewControllerLegacy *)self _newInputViewController];
     inputViewController = self->_inputViewController;
-    self->_inputViewController = v3;
+    self->_inputViewController = _newInputViewController;
 
     [(SKUIRedeemStepViewController *)self->_inputViewController setInitialCode:self->_initialCode];
     v6[0] = self->_inputViewController;
@@ -631,22 +631,22 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
   return cancelButtonItem;
 }
 
-+ (BOOL)redeemRequiresNationalId:(id)a3
++ (BOOL)redeemRequiresNationalId:(id)id
 {
-  v3 = [a3 URLBag];
-  v4 = [v3 valueForKey:@"redeemRequiresNationalId" error:0];
+  uRLBag = [id URLBag];
+  v4 = [uRLBag valueForKey:@"redeemRequiresNationalId" error:0];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)_executeRequiresIdValidationOperation
@@ -659,8 +659,8 @@ void __58__SKUIRedeemViewControllerLegacy__loadInputViewController__block_invoke
   v5[3] = &unk_2781FAF50;
   v5[4] = self;
   [(SKUIRedeemIdRequiresValidationOperation *)v3 setResultBlock:v5];
-  v4 = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
-  [v4 addOperation:v3];
+  operationQueue = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
+  [operationQueue addOperation:v3];
 }
 
 uint64_t __71__SKUIRedeemViewControllerLegacy__executeRequiresIdValidationOperation__block_invoke(uint64_t a1, char a2, int a3)
@@ -679,10 +679,10 @@ uint64_t __71__SKUIRedeemViewControllerLegacy__executeRequiresIdValidationOperat
   return [v3 _executePreflightOperationForcesAuthentication:?];
 }
 
-- (void)_executeIdValidationOperationWithFields:(id)a3
+- (void)_executeIdValidationOperationWithFields:(id)fields
 {
-  v4 = a3;
-  v5 = [[SKUIRedeemIdValidateOperation alloc] initWithDictionary:v4];
+  fieldsCopy = fields;
+  v5 = [[SKUIRedeemIdValidateOperation alloc] initWithDictionary:fieldsCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -690,8 +690,8 @@ uint64_t __71__SKUIRedeemViewControllerLegacy__executeRequiresIdValidationOperat
   v7[3] = &unk_2781F84A0;
   v7[4] = self;
   [(SKUIRedeemIdValidateOperation *)v5 setResultBlock:v7];
-  v6 = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
-  [v6 addOperation:v5];
+  operationQueue = [(SKUIRedeemViewControllerLegacy *)self operationQueue];
+  [operationQueue addOperation:v5];
 }
 
 uint64_t __74__SKUIRedeemViewControllerLegacy__executeIdValidationOperationWithFields___block_invoke(uint64_t a1, int a2)
@@ -712,8 +712,8 @@ uint64_t __74__SKUIRedeemViewControllerLegacy__executeIdValidationOperationWithF
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v3 = [SKUIRedeemIdViewController alloc];
-  v4 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  v5 = [(SKUIRedeemIdViewController *)v3 initWithClientContext:v4];
+  clientContext = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  v5 = [(SKUIRedeemIdViewController *)v3 initWithClientContext:clientContext];
 
   [(SKUIRedeemIdViewController *)v5 setDelegate:self];
   v7[0] = v5;
@@ -725,14 +725,14 @@ uint64_t __74__SKUIRedeemViewControllerLegacy__executeIdValidationOperationWithF
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = [SKUILoadingViewController alloc];
-  v4 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  v5 = [(SKUILoadingViewController *)v3 initWithClientContext:v4];
+  clientContext = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  v5 = [(SKUILoadingViewController *)v3 initWithClientContext:clientContext];
 
-  v6 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  v7 = v6;
-  if (v6)
+  clientContext2 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  v7 = clientContext2;
+  if (clientContext2)
   {
-    [v6 localizedStringForKey:@"REDEEM_NATIONAL_ID_VIEW_TITLE" inTable:@"Redeem"];
+    [clientContext2 localizedStringForKey:@"REDEEM_NATIONAL_ID_VIEW_TITLE" inTable:@"Redeem"];
   }
 
   else
@@ -742,11 +742,11 @@ uint64_t __74__SKUIRedeemViewControllerLegacy__executeIdValidationOperationWithF
   v8 = ;
   [(SKUILoadingViewController *)v5 setTitle:v8];
 
-  v9 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
-  v10 = v9;
-  if (v9)
+  clientContext3 = [(SKUIRedeemViewControllerLegacy *)self clientContext];
+  v10 = clientContext3;
+  if (clientContext3)
   {
-    [v9 localizedStringForKey:@"REDEEM_NATIONAL_ID_VERIFYING" inTable:@"Redeem"];
+    [clientContext3 localizedStringForKey:@"REDEEM_NATIONAL_ID_VERIFYING" inTable:@"Redeem"];
   }
 
   else
@@ -759,9 +759,9 @@ uint64_t __74__SKUIRedeemViewControllerLegacy__executeIdValidationOperationWithF
   v12 = SKUITableViewGroupedBackgroundColor();
   [(SKUILoadingViewController *)v5 setBackgroundColor:v12];
 
-  v13 = [(SKUILoadingViewController *)v5 navigationItem];
-  v14 = [(SKUIRedeemViewControllerLegacy *)self cancelButtonItem];
-  [v13 setLeftBarButtonItem:v14];
+  navigationItem = [(SKUILoadingViewController *)v5 navigationItem];
+  cancelButtonItem = [(SKUIRedeemViewControllerLegacy *)self cancelButtonItem];
+  [navigationItem setLeftBarButtonItem:cancelButtonItem];
 
   v16[0] = v5;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];

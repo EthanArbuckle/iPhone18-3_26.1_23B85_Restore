@@ -7,18 +7,18 @@
 
 - (id)cls_sha1HashString
 {
-  v1 = [a1 cls_sha1HashData];
-  v2 = [v1 cls_hexString];
+  cls_sha1HashData = [self cls_sha1HashData];
+  cls_hexString = [cls_sha1HashData cls_hexString];
 
-  return v2;
+  return cls_hexString;
 }
 
 - (id)cls_sha1HashData
 {
-  v1 = [a1 dataUsingEncoding:4 allowLossyConversion:0];
-  v2 = [v1 cls_sha1Hash];
+  v1 = [self dataUsingEncoding:4 allowLossyConversion:0];
+  cls_sha1Hash = [v1 cls_sha1Hash];
 
-  return v2;
+  return cls_sha1Hash;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface CKDPShareAccessRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShareAccessRequest
@@ -62,83 +62,83 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_routingKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shortTokenHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userInformationRequestAccess)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   routingKey = self->_routingKey;
-  v9 = v4;
+  v9 = toCopy;
   if (routingKey)
   {
-    objc_msgSend_setRoutingKey_(v4, v5, routingKey);
-    v4 = v9;
+    objc_msgSend_setRoutingKey_(toCopy, v5, routingKey);
+    toCopy = v9;
   }
 
   shortTokenHash = self->_shortTokenHash;
   if (shortTokenHash)
   {
     objc_msgSend_setShortTokenHash_(v9, v5, shortTokenHash);
-    v4 = v9;
+    toCopy = v9;
   }
 
   userInformationRequestAccess = self->_userInformationRequestAccess;
   if (userInformationRequestAccess)
   {
     objc_msgSend_setUserInformationRequestAccess_(v9, v5, userInformationRequestAccess);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_userInformationRequestAccess, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_userInformationRequestAccess, v17, zone);
   v19 = v10[3];
   v10[3] = v18;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((routingKey = self->_routingKey, v9 = v4[1], !(routingKey | v9)) || objc_msgSend_isEqual_(routingKey, v7, v9)) && ((shortTokenHash = self->_shortTokenHash, v11 = v4[2], !(shortTokenHash | v11)) || objc_msgSend_isEqual_(shortTokenHash, v7, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((routingKey = self->_routingKey, v9 = equalCopy[1], !(routingKey | v9)) || objc_msgSend_isEqual_(routingKey, v7, v9)) && ((shortTokenHash = self->_shortTokenHash, v11 = equalCopy[2], !(shortTokenHash | v11)) || objc_msgSend_isEqual_(shortTokenHash, v7, v11)))
   {
     userInformationRequestAccess = self->_userInformationRequestAccess;
-    v13 = v4[3];
+    v13 = equalCopy[3];
     if (userInformationRequestAccess | v13)
     {
       isEqual = objc_msgSend_isEqual_(userInformationRequestAccess, v7, v13);
@@ -165,37 +165,37 @@
   return v7 ^ objc_msgSend_hash(self->_userInformationRequestAccess, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[1];
-  v9 = v4;
+  fromCopy = from;
+  v5 = fromCopy[1];
+  v9 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setRoutingKey_(self, v4, v5);
-    v4 = v9;
+    objc_msgSend_setRoutingKey_(self, fromCopy, v5);
+    fromCopy = v9;
   }
 
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (v6)
   {
-    objc_msgSend_setShortTokenHash_(self, v4, v6);
-    v4 = v9;
+    objc_msgSend_setShortTokenHash_(self, fromCopy, v6);
+    fromCopy = v9;
   }
 
   userInformationRequestAccess = self->_userInformationRequestAccess;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (userInformationRequestAccess)
   {
     if (v8)
     {
-      objc_msgSend_mergeFrom_(userInformationRequestAccess, v4, v8);
+      objc_msgSend_mergeFrom_(userInformationRequestAccess, fromCopy, v8);
     }
   }
 
   else if (v8)
   {
-    objc_msgSend_setUserInformationRequestAccess_(self, v4, v8);
+    objc_msgSend_setUserInformationRequestAccess_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

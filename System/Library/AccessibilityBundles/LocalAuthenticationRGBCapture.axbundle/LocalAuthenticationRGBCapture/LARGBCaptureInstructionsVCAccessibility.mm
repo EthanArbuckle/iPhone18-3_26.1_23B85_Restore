@@ -1,17 +1,17 @@
 @interface LARGBCaptureInstructionsVCAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation LARGBCaptureInstructionsVCAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LARGBCaptureInstructionsVC" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"LARGBCaptureInstructionsVC" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"LARGBCaptureInstructionsVC" hasInstanceVariable:@"_footerText" withType:"UITextView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LARGBCaptureInstructionsVC" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"LARGBCaptureInstructionsVC" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"LARGBCaptureInstructionsVC" hasInstanceVariable:@"_footerText" withType:"UITextView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,59 +1,59 @@
 @interface _DASLatencyProjector
 + (_DASLatencyProjector)sharedInstance;
 - ($B199670FBE0645B9BFB90758A78A0F55)initializeCheckpointCounters;
-- (BOOL)isDASTaskCheckpoint:(id)a3;
-- (BOOL)isDASTaskCheckpoint:(id)a3 checkpointState:(unint64_t)a4;
-- (BOOL)isTerminalEvent:(id)a3;
+- (BOOL)isDASTaskCheckpoint:(id)checkpoint;
+- (BOOL)isDASTaskCheckpoint:(id)checkpoint checkpointState:(unint64_t)state;
+- (BOOL)isTerminalEvent:(id)event;
 - (_DASLatencyProjector)init;
-- (double)computeEligibleSchedulingDelay:(id)a3 eligibilityTimeline:(id)a4;
-- (id)computeActivityBlockingReasons:(id)a3;
-- (id)computeActivityTimelines:(id)a3 installationEvents:(id)a4;
-- (id)computeBlockedDurations:(id)a3;
-- (id)computeConditionsPenalties:(id)a3;
-- (id)computeConditionsPenalty:(id)a3;
-- (id)computeContentionPenalties:(id)a3;
-- (id)computeContentionPenalty:(id)a3;
-- (id)computeDeviceConditionsStatus:(id)a3 gatherMetrics:(id)a4;
-- (id)computeDeviceConditionsStatus:(id)a3 metric:(id)a4;
-- (id)computeElapsedRunTimeFromPairings:(id)a3 endDate:(id)a4;
-- (id)computeElapsedRunTimeTotals:(id)a3;
-- (id)computeElapsedRunTimes:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)computeElapsedRunTimesFromCheckpoints:(id)a3 endDate:(id)a4;
-- (id)computeEstimatedMADCompletionTime:(id)a3 checkpointTimeSeries:(id)a4 progressTimeSeries:(id)a5 blockingReasonsTimeSeries:(id)a6 activity:(id)a7 osUpgradeTimestamp:(id)a8 endDate:(id)a9;
-- (id)computeEstimatedMADCompletionTimes:(id)a3 endDate:(id)a4 filepath:(id)a5;
-- (id)computeEstimatedRunTime:(id)a3 elapsedRunTimes:(id)a4 progressEvents:(id)a5 activity:(id)a6 endDate:(id)a7;
-- (id)computeEstimatedRunTimes:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)computeFeatureDependencyGraphs:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)computeFeatureTimeline:(id)a3 installationEvents:(id)a4;
-- (id)computeIntensiveEligibleSessions:(id)a3;
-- (id)computeOnBatteryRunTimes:(id)a3 plugInCheckpoints:(id)a4;
-- (id)computeProgressTimelines:(id)a3;
-- (id)computeThroughputTimelines:(id)a3;
-- (id)constructGroupSizes:(id)a3;
-- (id)convertCountersToNSDictionary:(id *)a3;
-- (id)exactCheckpointState:(unint64_t)a3;
-- (id)findActivitiesByName:(id)a3;
-- (id)getActivityTimelines:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)getBuddyData:(id)a3 filepath:(id)a4;
-- (id)getDeviceConditionTimelines:(id)a3 filepath:(id)a4;
-- (id)getEligibilityTimelinesForTasks:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)getEligibleRuntimeForTask:(id)a3 deviceConditionTimelines:(id)a4;
-- (id)getFeatureTimelines:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)getInstallTimeline:(id)a3 filepath:(id)a4;
-- (id)getLastOSUpgradeTimestamp:(id)a3 endDate:(id)a4 eraseInstallOnly:(BOOL)a5;
-- (id)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)a3 filepath:(id)a4;
-- (id)getRecentUniqueInstallationEvents:(id)a3 timeFilter:(id)a4;
-- (id)getRecentUniqueProgressEvents:(id)a3;
-- (id)getSchedulerEfficiencyMetrics:(id)a3 filepath:(id)a4;
-- (id)getTaskCheckpointPairings:(id)a3;
-- (id)getTasksForFeatures:(id)a3 timeFilter:(id)a4 filepath:(id)a5;
-- (id)stringifyDASTaskCheckpoint:(unint64_t)a3;
-- (int64_t)checkCapacityForActivity:(id)a3 groupSizes:(id)a4;
-- (unint64_t)computeOverallProgressPercentage:(id)a3;
-- (unint64_t)getBlockingCriteriaBitmask:(id)a3;
-- (void)decrementCounterForCheckpoint:(unint64_t)a3 counters:(id *)a4;
+- (double)computeEligibleSchedulingDelay:(id)delay eligibilityTimeline:(id)timeline;
+- (id)computeActivityBlockingReasons:(id)reasons;
+- (id)computeActivityTimelines:(id)timelines installationEvents:(id)events;
+- (id)computeBlockedDurations:(id)durations;
+- (id)computeConditionsPenalties:(id)penalties;
+- (id)computeConditionsPenalty:(id)penalty;
+- (id)computeContentionPenalties:(id)penalties;
+- (id)computeContentionPenalty:(id)penalty;
+- (id)computeDeviceConditionsStatus:(id)status gatherMetrics:(id)metrics;
+- (id)computeDeviceConditionsStatus:(id)status metric:(id)metric;
+- (id)computeElapsedRunTimeFromPairings:(id)pairings endDate:(id)date;
+- (id)computeElapsedRunTimeTotals:(id)totals;
+- (id)computeElapsedRunTimes:(id)times timeFilter:(id)filter filepath:(id)filepath;
+- (id)computeElapsedRunTimesFromCheckpoints:(id)checkpoints endDate:(id)date;
+- (id)computeEstimatedMADCompletionTime:(id)time checkpointTimeSeries:(id)series progressTimeSeries:(id)timeSeries blockingReasonsTimeSeries:(id)reasonsTimeSeries activity:(id)activity osUpgradeTimestamp:(id)timestamp endDate:(id)date;
+- (id)computeEstimatedMADCompletionTimes:(id)times endDate:(id)date filepath:(id)filepath;
+- (id)computeEstimatedRunTime:(id)time elapsedRunTimes:(id)times progressEvents:(id)events activity:(id)activity endDate:(id)date;
+- (id)computeEstimatedRunTimes:(id)times timeFilter:(id)filter filepath:(id)filepath;
+- (id)computeFeatureDependencyGraphs:(id)graphs timeFilter:(id)filter filepath:(id)filepath;
+- (id)computeFeatureTimeline:(id)timeline installationEvents:(id)events;
+- (id)computeIntensiveEligibleSessions:(id)sessions;
+- (id)computeOnBatteryRunTimes:(id)times plugInCheckpoints:(id)checkpoints;
+- (id)computeProgressTimelines:(id)timelines;
+- (id)computeThroughputTimelines:(id)timelines;
+- (id)constructGroupSizes:(id)sizes;
+- (id)convertCountersToNSDictionary:(id *)dictionary;
+- (id)exactCheckpointState:(unint64_t)state;
+- (id)findActivitiesByName:(id)name;
+- (id)getActivityTimelines:(id)timelines timeFilter:(id)filter filepath:(id)filepath;
+- (id)getBuddyData:(id)data filepath:(id)filepath;
+- (id)getDeviceConditionTimelines:(id)timelines filepath:(id)filepath;
+- (id)getEligibilityTimelinesForTasks:(id)tasks timeFilter:(id)filter filepath:(id)filepath;
+- (id)getEligibleRuntimeForTask:(id)task deviceConditionTimelines:(id)timelines;
+- (id)getFeatureTimelines:(id)timelines timeFilter:(id)filter filepath:(id)filepath;
+- (id)getInstallTimeline:(id)timeline filepath:(id)filepath;
+- (id)getLastOSUpgradeTimestamp:(id)timestamp endDate:(id)date eraseInstallOnly:(BOOL)only;
+- (id)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)metrics filepath:(id)filepath;
+- (id)getRecentUniqueInstallationEvents:(id)events timeFilter:(id)filter;
+- (id)getRecentUniqueProgressEvents:(id)events;
+- (id)getSchedulerEfficiencyMetrics:(id)metrics filepath:(id)filepath;
+- (id)getTaskCheckpointPairings:(id)pairings;
+- (id)getTasksForFeatures:(id)features timeFilter:(id)filter filepath:(id)filepath;
+- (id)stringifyDASTaskCheckpoint:(unint64_t)checkpoint;
+- (int64_t)checkCapacityForActivity:(id)activity groupSizes:(id)sizes;
+- (unint64_t)computeOverallProgressPercentage:(id)percentage;
+- (unint64_t)getBlockingCriteriaBitmask:(id)bitmask;
+- (void)decrementCounterForCheckpoint:(unint64_t)checkpoint counters:(id *)counters;
 - (void)flushPPSCaches;
-- (void)incrementCounterForCheckpoint:(unint64_t)a3 counters:(id *)a4;
+- (void)incrementCounterForCheckpoint:(unint64_t)checkpoint counters:(id *)counters;
 - (void)initializeDASTaskCheckpointNamesDict;
 @end
 
@@ -61,26 +61,26 @@
 
 - (void)flushPPSCaches
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(_DASLatencyProjector *)v2 lastPPSFlush];
-  [v3 timeIntervalSinceNow];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastPPSFlush = [(_DASLatencyProjector *)selfCopy lastPPSFlush];
+  [lastPPSFlush timeIntervalSinceNow];
   v5 = v4;
 
   if (v5 < -3.0)
   {
-    log = v2->_log;
+    log = selfCopy->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
       sub_10012CF20(log);
     }
 
-    dispatch_async(v2->_flushQueue, &stru_1001B8CB8);
+    dispatch_async(selfCopy->_flushQueue, &stru_1001B8CB8);
     v7 = +[NSDate date];
-    [(_DASLatencyProjector *)v2 setLastPPSFlush:v7];
+    [(_DASLatencyProjector *)selfCopy setLastPPSFlush:v7];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (_DASLatencyProjector)init
@@ -115,7 +115,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001024DC;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B8E8 != -1)
   {
     dispatch_once(&qword_10020B8E8, block);
@@ -126,33 +126,33 @@
   return v2;
 }
 
-- (id)exactCheckpointState:(unint64_t)a3
+- (id)exactCheckpointState:(unint64_t)state
 {
-  v3 = [NSNumber numberWithUnsignedLong:a3];
+  v3 = [NSNumber numberWithUnsignedLong:state];
   v4 = [NSPredicate predicateWithFormat:@"SELF.CheckpointState == %@", v3];
 
   return v4;
 }
 
-- (BOOL)isDASTaskCheckpoint:(id)a3
+- (BOOL)isDASTaskCheckpoint:(id)checkpoint
 {
-  v3 = [a3 metricKeysAndValues];
-  v4 = [v3 objectForKeyedSubscript:@"CheckpointState"];
-  v5 = [v4 unsignedLongValue];
+  metricKeysAndValues = [checkpoint metricKeysAndValues];
+  v4 = [metricKeysAndValues objectForKeyedSubscript:@"CheckpointState"];
+  unsignedLongValue = [v4 unsignedLongValue];
 
-  return (v5 < 0x33) & (0x43F0040138C00uLL >> v5);
+  return (unsignedLongValue < 0x33) & (0x43F0040138C00uLL >> unsignedLongValue);
 }
 
-- (BOOL)isDASTaskCheckpoint:(id)a3 checkpointState:(unint64_t)a4
+- (BOOL)isDASTaskCheckpoint:(id)checkpoint checkpointState:(unint64_t)state
 {
-  v6 = a3;
-  if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v6])
+  checkpointCopy = checkpoint;
+  if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:checkpointCopy])
   {
-    v7 = [v6 metricKeysAndValues];
-    v8 = [v7 objectForKeyedSubscript:@"CheckpointState"];
-    v9 = [v8 unsignedLongValue];
+    metricKeysAndValues = [checkpointCopy metricKeysAndValues];
+    v8 = [metricKeysAndValues objectForKeyedSubscript:@"CheckpointState"];
+    unsignedLongValue = [v8 unsignedLongValue];
 
-    v10 = v9 == a4;
+    v10 = unsignedLongValue == state;
   }
 
   else
@@ -171,7 +171,7 @@
   }
 }
 
-- (id)stringifyDASTaskCheckpoint:(unint64_t)a3
+- (id)stringifyDASTaskCheckpoint:(unint64_t)checkpoint
 {
   v4 = qword_10020B8D8;
   v5 = [NSNumber numberWithInt:?];
@@ -179,24 +179,24 @@
 
   if (!v6)
   {
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
+    v7 = [NSNumber numberWithUnsignedInteger:checkpoint];
     v6 = [NSString stringWithFormat:@"Unknown State %@", v7];
 
     v8 = qword_10020B8D8;
-    v9 = [NSNumber numberWithInt:a3];
+    v9 = [NSNumber numberWithInt:checkpoint];
     [v8 setObject:v6 forKeyedSubscript:v9];
   }
 
   return v6;
 }
 
-- (BOOL)isTerminalEvent:(id)a3
+- (BOOL)isTerminalEvent:(id)event
 {
-  v3 = [a3 metricKeysAndValues];
-  v4 = [v3 objectForKeyedSubscript:@"CheckpointState"];
-  v5 = [v4 unsignedLongValue];
+  metricKeysAndValues = [event metricKeysAndValues];
+  v4 = [metricKeysAndValues objectForKeyedSubscript:@"CheckpointState"];
+  unsignedLongValue = [v4 unsignedLongValue];
 
-  return (v5 < 0x33) & (0x40B0040000800uLL >> v5);
+  return (unsignedLongValue < 0x33) & (0x40B0040000800uLL >> unsignedLongValue);
 }
 
 - ($B199670FBE0645B9BFB90758A78A0F55)initializeCheckpointCounters
@@ -211,294 +211,294 @@
   return self;
 }
 
-- (void)incrementCounterForCheckpoint:(unint64_t)a3 counters:(id *)a4
+- (void)incrementCounterForCheckpoint:(unint64_t)checkpoint counters:(id *)counters
 {
-  if (a3 > 39)
+  if (checkpoint > 39)
   {
-    if (a3 <= 42)
+    if (checkpoint <= 42)
     {
-      if (a3 == 40)
+      if (checkpoint == 40)
       {
-        a4 = (a4 + 56);
+        counters = (counters + 56);
       }
 
-      else if (a3 == 41)
+      else if (checkpoint == 41)
       {
-        a4 = (a4 + 64);
+        counters = (counters + 64);
       }
 
       else
       {
-        a4 = (a4 + 72);
+        counters = (counters + 72);
       }
     }
 
-    else if (a3 > 44)
+    else if (checkpoint > 44)
     {
-      if (a3 == 45)
+      if (checkpoint == 45)
       {
-        a4 = (a4 + 96);
+        counters = (counters + 96);
       }
 
       else
       {
-        if (a3 != 50)
+        if (checkpoint != 50)
         {
           return;
         }
 
-        a4 = (a4 + 104);
+        counters = (counters + 104);
       }
     }
 
-    else if (a3 == 43)
+    else if (checkpoint == 43)
     {
-      a4 = (a4 + 80);
+      counters = (counters + 80);
     }
 
     else
     {
-      a4 = (a4 + 88);
+      counters = (counters + 88);
     }
   }
 
-  else if (a3 <= 15)
+  else if (checkpoint <= 15)
   {
-    if (a3 != 10)
+    if (checkpoint != 10)
     {
-      if (a3 == 11)
+      if (checkpoint == 11)
       {
-        a4 = (a4 + 8);
+        counters = (counters + 8);
       }
 
       else
       {
-        if (a3 != 15)
+        if (checkpoint != 15)
         {
           return;
         }
 
-        a4 = (a4 + 16);
+        counters = (counters + 16);
       }
     }
   }
 
-  else if (a3 > 19)
+  else if (checkpoint > 19)
   {
-    if (a3 == 20)
+    if (checkpoint == 20)
     {
-      a4 = (a4 + 40);
+      counters = (counters + 40);
     }
 
     else
     {
-      if (a3 != 30)
+      if (checkpoint != 30)
       {
         return;
       }
 
-      a4 = (a4 + 48);
+      counters = (counters + 48);
     }
   }
 
-  else if (a3 == 16)
+  else if (checkpoint == 16)
   {
-    a4 = (a4 + 24);
+    counters = (counters + 24);
   }
 
   else
   {
-    if (a3 != 17)
+    if (checkpoint != 17)
     {
       return;
     }
 
-    a4 = (a4 + 32);
+    counters = (counters + 32);
   }
 
-  ++a4->var0;
+  ++counters->var0;
 }
 
-- (void)decrementCounterForCheckpoint:(unint64_t)a3 counters:(id *)a4
+- (void)decrementCounterForCheckpoint:(unint64_t)checkpoint counters:(id *)counters
 {
-  if (a3 > 39)
+  if (checkpoint > 39)
   {
-    if (a3 <= 42)
+    if (checkpoint <= 42)
     {
-      if (a3 == 40)
+      if (checkpoint == 40)
       {
-        a4 = (a4 + 56);
+        counters = (counters + 56);
       }
 
-      else if (a3 == 41)
+      else if (checkpoint == 41)
       {
-        a4 = (a4 + 64);
+        counters = (counters + 64);
       }
 
       else
       {
-        a4 = (a4 + 72);
+        counters = (counters + 72);
       }
     }
 
-    else if (a3 > 44)
+    else if (checkpoint > 44)
     {
-      if (a3 == 45)
+      if (checkpoint == 45)
       {
-        a4 = (a4 + 96);
+        counters = (counters + 96);
       }
 
       else
       {
-        if (a3 != 50)
+        if (checkpoint != 50)
         {
           return;
         }
 
-        a4 = (a4 + 104);
+        counters = (counters + 104);
       }
     }
 
-    else if (a3 == 43)
+    else if (checkpoint == 43)
     {
-      a4 = (a4 + 80);
+      counters = (counters + 80);
     }
 
     else
     {
-      a4 = (a4 + 88);
+      counters = (counters + 88);
     }
   }
 
-  else if (a3 <= 15)
+  else if (checkpoint <= 15)
   {
-    if (a3 != 10)
+    if (checkpoint != 10)
     {
-      if (a3 == 11)
+      if (checkpoint == 11)
       {
-        a4 = (a4 + 8);
+        counters = (counters + 8);
       }
 
       else
       {
-        if (a3 != 15)
+        if (checkpoint != 15)
         {
           return;
         }
 
-        a4 = (a4 + 16);
+        counters = (counters + 16);
       }
     }
   }
 
-  else if (a3 > 19)
+  else if (checkpoint > 19)
   {
-    if (a3 == 20)
+    if (checkpoint == 20)
     {
-      a4 = (a4 + 40);
+      counters = (counters + 40);
     }
 
     else
     {
-      if (a3 != 30)
+      if (checkpoint != 30)
       {
         return;
       }
 
-      a4 = (a4 + 48);
+      counters = (counters + 48);
     }
   }
 
-  else if (a3 == 16)
+  else if (checkpoint == 16)
   {
-    a4 = (a4 + 24);
+    counters = (counters + 24);
   }
 
   else
   {
-    if (a3 != 17)
+    if (checkpoint != 17)
     {
       return;
     }
 
-    a4 = (a4 + 32);
+    counters = (counters + 32);
   }
 
-  --a4->var0;
+  --counters->var0;
 }
 
-- (id)convertCountersToNSDictionary:(id *)a3
+- (id)convertCountersToNSDictionary:(id *)dictionary
 {
   v34 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:10];
   v35[0] = v34;
-  v33 = [NSNumber numberWithUnsignedInteger:a3->var0];
+  v33 = [NSNumber numberWithUnsignedInteger:dictionary->var0];
   v36[0] = v33;
   v32 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:11];
   v35[1] = v32;
-  v31 = [NSNumber numberWithUnsignedInteger:a3->var1];
+  v31 = [NSNumber numberWithUnsignedInteger:dictionary->var1];
   v36[1] = v31;
   v30 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:15];
   v35[2] = v30;
-  v29 = [NSNumber numberWithUnsignedInteger:a3->var2];
+  v29 = [NSNumber numberWithUnsignedInteger:dictionary->var2];
   v36[2] = v29;
   v28 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:16];
   v35[3] = v28;
-  v27 = [NSNumber numberWithUnsignedInteger:a3->var3];
+  v27 = [NSNumber numberWithUnsignedInteger:dictionary->var3];
   v36[3] = v27;
   v26 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:17];
   v35[4] = v26;
-  v25 = [NSNumber numberWithUnsignedInteger:a3->var4];
+  v25 = [NSNumber numberWithUnsignedInteger:dictionary->var4];
   v36[4] = v25;
   v24 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:20];
   v35[5] = v24;
-  v23 = [NSNumber numberWithUnsignedInteger:a3->var5];
+  v23 = [NSNumber numberWithUnsignedInteger:dictionary->var5];
   v36[5] = v23;
   v22 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:30];
   v35[6] = v22;
-  v21 = [NSNumber numberWithUnsignedInteger:a3->var6];
+  v21 = [NSNumber numberWithUnsignedInteger:dictionary->var6];
   v36[6] = v21;
   v20 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:40];
   v35[7] = v20;
-  v19 = [NSNumber numberWithUnsignedInteger:a3->var7];
+  v19 = [NSNumber numberWithUnsignedInteger:dictionary->var7];
   v36[7] = v19;
   v18 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:41];
   v35[8] = v18;
-  v17 = [NSNumber numberWithUnsignedInteger:a3->var8];
+  v17 = [NSNumber numberWithUnsignedInteger:dictionary->var8];
   v36[8] = v17;
   v16 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:42];
   v35[9] = v16;
-  v5 = [NSNumber numberWithUnsignedInteger:a3->var9];
+  v5 = [NSNumber numberWithUnsignedInteger:dictionary->var9];
   v36[9] = v5;
   v6 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:43];
   v35[10] = v6;
-  v7 = [NSNumber numberWithUnsignedInteger:a3->var10];
+  v7 = [NSNumber numberWithUnsignedInteger:dictionary->var10];
   v36[10] = v7;
   v8 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:44];
   v35[11] = v8;
-  v9 = [NSNumber numberWithUnsignedInteger:a3->var11];
+  v9 = [NSNumber numberWithUnsignedInteger:dictionary->var11];
   v36[11] = v9;
   v10 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:45];
   v35[12] = v10;
-  v11 = [NSNumber numberWithUnsignedInteger:a3->var12];
+  v11 = [NSNumber numberWithUnsignedInteger:dictionary->var12];
   v36[12] = v11;
   v12 = [(_DASLatencyProjector *)self stringifyDASTaskCheckpoint:50];
   v35[13] = v12;
-  v13 = [NSNumber numberWithUnsignedInteger:a3->var13];
+  v13 = [NSNumber numberWithUnsignedInteger:dictionary->var13];
   v36[13] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:14];
 
   return v14;
 }
 
-- (id)getTaskCheckpointPairings:(id)a3
+- (id)getTaskCheckpointPairings:(id)pairings
 {
-  v3 = a3;
+  pairingsCopy = pairings;
   v18 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = v3;
+  v4 = pairingsCopy;
   v5 = [(_DASTaskCheckpointPair *)v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -515,11 +515,11 @@
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 metricKeysAndValues];
-        v12 = [v11 objectForKeyedSubscript:@"CheckpointState"];
-        v13 = [v12 unsignedLongValue];
+        metricKeysAndValues = [v10 metricKeysAndValues];
+        v12 = [metricKeysAndValues objectForKeyedSubscript:@"CheckpointState"];
+        unsignedLongValue = [v12 unsignedLongValue];
 
-        if (v13 == 20)
+        if (unsignedLongValue == 20)
         {
           v14 = v10;
 LABEL_11:
@@ -563,9 +563,9 @@ LABEL_18:
   return v18;
 }
 
-- (id)getRecentUniqueProgressEvents:(id)a3
+- (id)getRecentUniqueProgressEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -579,8 +579,8 @@ LABEL_18:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = v4;
-  obj = [v4 reverseObjectEnumerator];
+  v21 = eventsCopy;
+  obj = [eventsCopy reverseObjectEnumerator];
   v24 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v24)
   {
@@ -596,8 +596,8 @@ LABEL_18:
 
         v9 = *(*(&v25 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 metricKeysAndValues];
-        v12 = [v11 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v9 metricKeysAndValues];
+        v12 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
         v13 = [v6 objectForKeyedSubscript:v12];
 
@@ -612,8 +612,8 @@ LABEL_18:
 
         v16 = [v6 objectForKeyedSubscript:v12];
         v17 = [v7 objectForKeyedSubscript:v12];
-        v18 = [v9 metricKeysAndValues];
-        v19 = [v18 objectForKeyedSubscript:@"WorkloadCategory"];
+        metricKeysAndValues2 = [v9 metricKeysAndValues];
+        v19 = [metricKeysAndValues2 objectForKeyedSubscript:@"WorkloadCategory"];
 
         if (([v17 containsObject:v19] & 1) == 0)
         {
@@ -633,12 +633,12 @@ LABEL_18:
   return v6;
 }
 
-- (unint64_t)computeOverallProgressPercentage:(id)a3
+- (unint64_t)computeOverallProgressPercentage:(id)percentage
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 metricKeysAndValues];
-  v7 = [v6 objectForKeyedSubscript:@"TaskName"];
+  percentageCopy = percentage;
+  firstObject = [percentageCopy firstObject];
+  metricKeysAndValues = [firstObject metricKeysAndValues];
+  v7 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -652,7 +652,7 @@ LABEL_18:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v4;
+  v9 = percentageCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -667,8 +667,8 @@ LABEL_18:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) metricKeysAndValues];
-        v15 = [v14 objectForKeyedSubscript:@"CompletedPercentage"];
+        metricKeysAndValues2 = [*(*(&v17 + 1) + 8 * i) metricKeysAndValues];
+        v15 = [metricKeysAndValues2 objectForKeyedSubscript:@"CompletedPercentage"];
 
         v11 += [v15 unsignedIntegerValue];
       }
@@ -696,10 +696,10 @@ LABEL_18:
   return v10;
 }
 
-- (id)getRecentUniqueInstallationEvents:(id)a3 timeFilter:(id)a4
+- (id)getRecentUniqueInstallationEvents:(id)events timeFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  filterCopy = filter;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -713,8 +713,8 @@ LABEL_18:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = v6;
-  obj = [v6 reverseObjectEnumerator];
+  v22 = eventsCopy;
+  obj = [eventsCopy reverseObjectEnumerator];
   v10 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v10)
   {
@@ -731,14 +731,14 @@ LABEL_18:
 
         v14 = *(*(&v25 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 metricKeysAndValues];
-        v17 = [v16 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v17 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
-        if (v7)
+        if (filterCopy)
         {
           [v17 doubleValue];
           v18 = [NSDate dateWithTimeIntervalSince1970:?];
-          v19 = [v7 containsDate:v18];
+          v19 = [filterCopy containsDate:v18];
 
           v20 = v19 ^ 1;
           if (!v17)
@@ -776,9 +776,9 @@ LABEL_15:
   return v23;
 }
 
-- (id)findActivitiesByName:(id)a3
+- (id)findActivitiesByName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10012CEAC();
@@ -786,13 +786,13 @@ LABEL_15:
 
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[_DASDaemon sharedInstance];
-  v7 = [v6 allTasks];
+  allTasks = [v6 allTasks];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v7;
+  v8 = allTasks;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -808,13 +808,13 @@ LABEL_15:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v4 containsObject:v14];
+        name = [v13 name];
+        v15 = [nameCopy containsObject:name];
 
         if (v15)
         {
-          v16 = [v13 name];
-          [v5 setObject:v13 forKeyedSubscript:v16];
+          name2 = [v13 name];
+          [v5 setObject:v13 forKeyedSubscript:name2];
         }
       }
 
@@ -827,15 +827,15 @@ LABEL_15:
   return v5;
 }
 
-- (id)getTasksForFeatures:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)getTasksForFeatures:(id)features timeFilter:(id)filter filepath:(id)filepath
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  featuresCopy = features;
+  filterCopy = filter;
+  filepathCopy = filepath;
   v10 = +[_DASPPSDataManager sharedInstance];
-  v35 = v9;
-  v36 = v8;
-  v11 = [v10 loadTasksForFeatures:v7 metrics:0 timeFilter:v8 filepath:v9];
+  v35 = filepathCopy;
+  v36 = filterCopy;
+  v11 = [v10 loadTasksForFeatures:featuresCopy metrics:0 timeFilter:filterCopy filepath:filepathCopy];
 
   v12 = +[NSMutableDictionary dictionary];
   v46 = 0u;
@@ -859,11 +859,11 @@ LABEL_15:
 
         v40 = v13;
         v14 = *(*(&v46 + 1) + 8 * v13);
-        v15 = [v14 metricKeysAndValues];
-        v16 = [v15 objectForKeyedSubscript:@"FeatureCodes"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v16 = [metricKeysAndValues objectForKeyedSubscript:@"FeatureCodes"];
 
-        v17 = [v14 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v18 = [metricKeysAndValues2 objectForKeyedSubscript:@"TaskName"];
 
         v44 = 0u;
         v45 = 0u;
@@ -885,28 +885,28 @@ LABEL_15:
               }
 
               v23 = *(*(&v42 + 1) + 8 * i);
-              if ([v7 containsObject:v23])
+              if ([featuresCopy containsObject:v23])
               {
-                v24 = v7;
-                v25 = [v23 stringValue];
-                v26 = [v12 objectForKeyedSubscript:v25];
+                v24 = featuresCopy;
+                stringValue = [v23 stringValue];
+                v26 = [v12 objectForKeyedSubscript:stringValue];
 
                 if (!v26)
                 {
                   v27 = +[NSMutableArray array];
-                  v28 = [v23 stringValue];
-                  [v12 setObject:v27 forKeyedSubscript:v28];
+                  stringValue2 = [v23 stringValue];
+                  [v12 setObject:v27 forKeyedSubscript:stringValue2];
                 }
 
-                v29 = [v23 stringValue];
-                v30 = [v12 objectForKeyedSubscript:v29];
+                stringValue3 = [v23 stringValue];
+                v30 = [v12 objectForKeyedSubscript:stringValue3];
                 v31 = [v30 containsObject:v18];
 
-                v7 = v24;
+                featuresCopy = v24;
                 if ((v31 & 1) == 0)
                 {
-                  v32 = [v23 stringValue];
-                  v33 = [v12 objectForKeyedSubscript:v32];
+                  stringValue4 = [v23 stringValue];
+                  v33 = [v12 objectForKeyedSubscript:stringValue4];
                   [v33 addObject:v18];
                 }
               }
@@ -931,21 +931,21 @@ LABEL_15:
   return v12;
 }
 
-- (id)getLastOSUpgradeTimestamp:(id)a3 endDate:(id)a4 eraseInstallOnly:(BOOL)a5
+- (id)getLastOSUpgradeTimestamp:(id)timestamp endDate:(id)date eraseInstallOnly:(BOOL)only
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(_DASLatencyProjector *)self getRecentUniqueInstallationEvents:a3 timeFilter:0];
-  if (v8)
+  onlyCopy = only;
+  dateCopy = date;
+  v9 = [(_DASLatencyProjector *)self getRecentUniqueInstallationEvents:timestamp timeFilter:0];
+  if (dateCopy)
   {
-    [v8 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v11 = [NSPredicate predicateWithFormat:@"LastUpgradeSystemTimestamp <= %lf", v10];
     v12 = [v9 filteredArrayUsingPredicate:v11];
 
     v9 = v12;
   }
 
-  if (v5)
+  if (onlyCopy)
   {
     v13 = [NSPredicate predicateWithFormat:@"InstallType = 0"];
     v14 = [v9 filteredArrayUsingPredicate:v13];
@@ -953,59 +953,59 @@ LABEL_15:
     v9 = v14;
   }
 
-  v15 = [v9 reverseObjectEnumerator];
-  v16 = [v15 nextObject];
+  reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+  nextObject = [reverseObjectEnumerator nextObject];
 
-  v17 = [v16 metricKeysAndValues];
-  v18 = [v17 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+  metricKeysAndValues = [nextObject metricKeysAndValues];
+  v18 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
   [v18 doubleValue];
   v19 = [NSDate dateWithTimeIntervalSince1970:?];
 
   return v19;
 }
 
-- (id)computeBlockedDurations:(id)a3
+- (id)computeBlockedDurations:(id)durations
 {
-  obj = a3;
+  obj = durations;
   v48 = +[NSMutableDictionary dictionary];
   v3 = +[_DASRequiresPluggedInPolicy policyInstance];
-  v4 = [v3 policyName];
-  v45 = [_DASPolicyManager bitmaskForPolicy:v4];
+  policyName = [v3 policyName];
+  v45 = [_DASPolicyManager bitmaskForPolicy:policyName];
   v5 = +[_DASDeviceActivityPolicy policyInstance];
-  v6 = [v5 policyName];
-  v44 = [_DASPolicyManager bitmaskForPolicy:v6];
+  policyName2 = [v5 policyName];
+  v44 = [_DASPolicyManager bitmaskForPolicy:policyName2];
 
   v50 = [_DASPolicyManager bitmaskForPolicy:@"Incompatibility"];
   v7 = +[_DASPolicyManager allPoliciesForPlatform];
   v8 = [NSMutableSet setWithArray:v7];
 
   v47 = v8;
-  v9 = [v8 objectEnumerator];
+  objectEnumerator = [v8 objectEnumerator];
   v10 = +[NSMutableSet set];
-  v11 = [v9 nextObject];
-  if (v11)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v12 = v11;
+    v12 = nextObject;
     do
     {
-      v13 = [v12 policyName];
-      [v10 addObject:v13];
+      policyName3 = [v12 policyName];
+      [v10 addObject:policyName3];
 
-      v14 = [v9 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v12 = v14;
+      v12 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
-  v46 = v9;
+  v46 = objectEnumerator;
   v15 = +[_DASRequiresPluggedInPolicy policyInstance];
-  v16 = [v15 policyName];
-  v63[0] = v16;
+  policyName4 = [v15 policyName];
+  v63[0] = policyName4;
   v17 = +[_DASDeviceActivityPolicy policyInstance];
-  v18 = [v17 policyName];
-  v63[1] = v18;
+  policyName5 = [v17 policyName];
+  v63[1] = policyName5;
   v63[2] = @"Incompatibility";
   v19 = [NSArray arrayWithObjects:v63 count:3];
   v20 = [NSSet setWithArray:v19];
@@ -1067,8 +1067,8 @@ LABEL_15:
           objc_enumerationMutation(obja);
         }
 
-        v33 = [*(*(&v53 + 1) + 8 * j) metricKeysAndValues];
-        v34 = [v33 objectForKeyedSubscript:@"Maintenance"];
+        metricKeysAndValues = [*(*(&v53 + 1) + 8 * j) metricKeysAndValues];
+        v34 = [metricKeysAndValues objectForKeyedSubscript:@"Maintenance"];
 
         if (([v34 unsignedLongValue] & (v44 | v45)) != 0)
         {
@@ -1082,9 +1082,9 @@ LABEL_15:
 
         else
         {
-          v35 = [v34 unsignedLongValue];
+          unsignedLongValue = [v34 unsignedLongValue];
           v36 = v49;
-          if ((v35 & v24) != 0)
+          if ((unsignedLongValue & v24) != 0)
           {
             v36 = v49 + 1;
           }
@@ -1121,17 +1121,17 @@ LABEL_15:
   return v48;
 }
 
-- (id)computeElapsedRunTimeFromPairings:(id)a3 endDate:(id)a4
+- (id)computeElapsedRunTimeFromPairings:(id)pairings endDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  pairingsCopy = pairings;
+  dateCopy = date;
   v7 = +[NSMutableDictionary dictionary];
   v8 = +[NSMutableArray array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v5;
+  v9 = pairingsCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -1153,36 +1153,36 @@ LABEL_15:
 
         v12 = *(*(&v32 + 1) + 8 * v15);
 
-        v17 = [v12 terminalEvent];
-        v18 = [v12 startEvent];
+        terminalEvent = [v12 terminalEvent];
+        startEvent = [v12 startEvent];
 
-        if (v17 == v18)
+        if (terminalEvent == startEvent)
         {
-          if (!v6)
+          if (!dateCopy)
           {
-            v6 = +[NSDate date];
+            dateCopy = +[NSDate date];
           }
 
-          [v6 timeIntervalSince1970];
+          [dateCopy timeIntervalSince1970];
           v26 = v25;
-          v19 = [v12 startEvent];
-          [v19 epochTimestamp];
+          startEvent2 = [v12 startEvent];
+          [startEvent2 epochTimestamp];
           v24 = v26 - v27;
         }
 
         else
         {
-          v19 = [v12 terminalEvent];
-          [v19 epochTimestamp];
+          startEvent2 = [v12 terminalEvent];
+          [startEvent2 epochTimestamp];
           v21 = v20;
-          v22 = [v12 startEvent];
-          [v22 epochTimestamp];
+          startEvent3 = [v12 startEvent];
+          [startEvent3 epochTimestamp];
           v24 = v21 - v23;
         }
 
         v14 = v14 + v24;
-        v28 = [v12 dictionaryRepresentation];
-        [v8 addObject:v28];
+        dictionaryRepresentation = [v12 dictionaryRepresentation];
+        [v8 addObject:dictionaryRepresentation];
 
         v15 = v15 + 1;
         v16 = v12;
@@ -1210,15 +1210,15 @@ LABEL_15:
   return v7;
 }
 
-- (id)computeElapsedRunTimeTotals:(id)a3
+- (id)computeElapsedRunTimeTotals:(id)totals
 {
-  v3 = a3;
+  totalsCopy = totals;
   v4 = +[NSMutableDictionary dictionary];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = totalsCopy;
   v26 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
@@ -1261,9 +1261,9 @@ LABEL_15:
 
               v16 = *(*(&v28 + 1) + 8 * i);
               v17 = [v4 objectForKeyedSubscript:v16];
-              v18 = [v17 unsignedLongValue];
+              unsignedLongValue = [v17 unsignedLongValue];
               v19 = [v11 objectForKeyedSubscript:v16];
-              v20 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", &v18[[v19 unsignedLongValue]]);
+              v20 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", &unsignedLongValue[[v19 unsignedLongValue]]);
               [v4 setObject:v20 forKeyedSubscript:v16];
             }
 
@@ -1299,10 +1299,10 @@ LABEL_15:
   return v4;
 }
 
-- (id)computeElapsedRunTimesFromCheckpoints:(id)a3 endDate:(id)a4
+- (id)computeElapsedRunTimesFromCheckpoints:(id)checkpoints endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  checkpointsCopy = checkpoints;
+  dateCopy = date;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -1318,9 +1318,9 @@ LABEL_15:
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v64 = v6;
-  obj = [v6 reverseObjectEnumerator];
-  v65 = v7;
+  v64 = checkpointsCopy;
+  obj = [checkpointsCopy reverseObjectEnumerator];
+  v65 = dateCopy;
   v72 = [obj countByEnumeratingWithState:&v101 objects:v106 count:16];
   if (v72)
   {
@@ -1336,8 +1336,8 @@ LABEL_15:
 
         v10 = *(*(&v101 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v11 = [v10 metricKeysAndValues];
-        v12 = [v11 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v10 metricKeysAndValues];
+        v12 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
         v13 = [v79 objectForKeyedSubscript:v12];
 
@@ -1373,28 +1373,28 @@ LABEL_15:
         }
 
         v18 = [v74 objectForKeyedSubscript:v12];
-        v19 = [v18 objectEnumerator];
-        v20 = [v19 nextObject];
-        v76 = v19;
-        v21 = [v19 nextObject];
-        v22 = [v10 metricKeysAndValues];
-        v23 = [v22 objectForKeyedSubscript:@"CheckpointState"];
-        v75 = [v23 unsignedLongValue];
+        objectEnumerator = [v18 objectEnumerator];
+        nextObject = [objectEnumerator nextObject];
+        v76 = objectEnumerator;
+        nextObject2 = [objectEnumerator nextObject];
+        metricKeysAndValues2 = [v10 metricKeysAndValues];
+        v23 = [metricKeysAndValues2 objectForKeyedSubscript:@"CheckpointState"];
+        unsignedLongValue = [v23 unsignedLongValue];
 
-        v80 = v21;
-        v24 = [v21 metricKeysAndValues];
-        v25 = [v24 objectForKeyedSubscript:@"CheckpointState"];
-        v26 = [v25 unsignedLongValue];
+        v80 = nextObject2;
+        metricKeysAndValues3 = [nextObject2 metricKeysAndValues];
+        v25 = [metricKeysAndValues3 objectForKeyedSubscript:@"CheckpointState"];
+        unsignedLongValue2 = [v25 unsignedLongValue];
 
-        v27 = [v20 metricKeysAndValues];
-        v28 = [v27 objectForKeyedSubscript:@"CheckpointState"];
-        v29 = [v28 unsignedLongValue];
+        metricKeysAndValues4 = [nextObject metricKeysAndValues];
+        v28 = [metricKeysAndValues4 objectForKeyedSubscript:@"CheckpointState"];
+        unsignedLongValue3 = [v28 unsignedLongValue];
 
-        if (![(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:10]|| ![(_DASLatencyProjector *)self isDASTaskCheckpoint:v20 checkpointState:10])
+        if (![(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:10]|| ![(_DASLatencyProjector *)self isDASTaskCheckpoint:nextObject checkpointState:10])
         {
-          if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:45]&& [(_DASLatencyProjector *)self isDASTaskCheckpoint:v20 checkpointState:42]&& [(_DASLatencyProjector *)self isDASTaskCheckpoint:v80 checkpointState:40])
+          if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:45]&& [(_DASLatencyProjector *)self isDASTaskCheckpoint:nextObject checkpointState:42]&& [(_DASLatencyProjector *)self isDASTaskCheckpoint:v80 checkpointState:40])
           {
-            [v18 removeObject:v20];
+            [v18 removeObject:nextObject];
             [v18 removeObject:v80];
             v99 = 0u;
             v100 = 0u;
@@ -1406,14 +1406,14 @@ LABEL_15:
             v30 = [v82 objectForKeyedSubscript:v12];
             [v30 getValue:buf];
 
-            [(_DASLatencyProjector *)self decrementCounterForCheckpoint:v26 counters:buf];
-            [(_DASLatencyProjector *)self decrementCounterForCheckpoint:v29 counters:buf];
+            [(_DASLatencyProjector *)self decrementCounterForCheckpoint:unsignedLongValue2 counters:buf];
+            [(_DASLatencyProjector *)self decrementCounterForCheckpoint:unsignedLongValue3 counters:buf];
             v67 = 1;
           }
 
           else
           {
-            if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:40]|| ![(_DASLatencyProjector *)self isDASTaskCheckpoint:v20 checkpointState:10])
+            if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v10 checkpointState:40]|| ![(_DASLatencyProjector *)self isDASTaskCheckpoint:nextObject checkpointState:10])
             {
               [v18 insertObject:v10 atIndex:0];
               goto LABEL_27;
@@ -1422,23 +1422,23 @@ LABEL_15:
             v67 = 0;
           }
 
-          v66 = v29;
+          v66 = unsignedLongValue3;
           v31 = [(_DASLatencyProjector *)self getTaskCheckpointPairings:v18];
           v32 = [v73 objectForKeyedSubscript:v12];
           v69 = v31;
           v33 = [(_DASLatencyProjector *)self computeElapsedRunTimeFromPairings:v31 endDate:v32];
 
-          v34 = [v18 firstObject];
-          if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:v34 checkpointState:10])
+          firstObject = [v18 firstObject];
+          if ([(_DASLatencyProjector *)self isDASTaskCheckpoint:firstObject checkpointState:10])
           {
-            v35 = [v34 dictionaryRepresentation];
-            [v33 setObject:v35 forKeyedSubscript:@"Submission Event"];
+            dictionaryRepresentation = [firstObject dictionaryRepresentation];
+            [v33 setObject:dictionaryRepresentation forKeyedSubscript:@"Submission Event"];
           }
 
-          v68 = v34;
-          v36 = [v18 lastObject];
-          v37 = [v36 dictionaryRepresentation];
-          [v33 setObject:v37 forKeyedSubscript:@"Last DAS Checkpoint Event"];
+          v68 = firstObject;
+          lastObject = [v18 lastObject];
+          dictionaryRepresentation2 = [lastObject dictionaryRepresentation];
+          [v33 setObject:dictionaryRepresentation2 forKeyedSubscript:@"Last DAS Checkpoint Event"];
 
           v99 = 0u;
           v100 = 0u;
@@ -1463,8 +1463,8 @@ LABEL_15:
           v40 = [v79 objectForKeyedSubscript:v12];
           [v40 insertObject:v33 atIndex:0];
 
-          v41 = [v18 firstObject];
-          [v41 epochTimestamp];
+          firstObject2 = [v18 firstObject];
+          [firstObject2 epochTimestamp];
           v42 = [NSDate dateWithTimeIntervalSince1970:?];
           [v73 setObject:v42 forKeyedSubscript:v12];
 
@@ -1485,9 +1485,9 @@ LABEL_15:
             [v44 insertObject:v80 atIndex:0];
 
             v45 = [v74 objectForKeyedSubscript:v12];
-            [v45 insertObject:v20 atIndex:0];
+            [v45 insertObject:nextObject atIndex:0];
 
-            [(_DASLatencyProjector *)self incrementCounterForCheckpoint:v26 counters:&v87];
+            [(_DASLatencyProjector *)self incrementCounterForCheckpoint:unsignedLongValue2 counters:&v87];
             [(_DASLatencyProjector *)self incrementCounterForCheckpoint:v66 counters:&v87];
           }
 
@@ -1509,7 +1509,7 @@ LABEL_27:
         v48 = [v82 objectForKeyedSubscript:v12];
         [v48 getValue:buf];
 
-        [(_DASLatencyProjector *)self incrementCounterForCheckpoint:v75 counters:buf];
+        [(_DASLatencyProjector *)self incrementCounterForCheckpoint:unsignedLongValue counters:buf];
         v49 = [NSValue valueWithBytes:buf objCType:"{?=QQQQQQQQQQQQQQ}"];
         [v82 setObject:v49 forKeyedSubscript:v12];
 
@@ -1549,9 +1549,9 @@ LABEL_27:
           v56 = [v73 objectForKeyedSubscript:v52];
           v57 = [(_DASLatencyProjector *)self computeElapsedRunTimeFromPairings:v55 endDate:v56];
 
-          v58 = [v54 lastObject];
-          v59 = [v58 dictionaryRepresentation];
-          [v57 setObject:v59 forKeyedSubscript:@"Last DAS Checkpoint Event"];
+          lastObject2 = [v54 lastObject];
+          dictionaryRepresentation3 = [lastObject2 dictionaryRepresentation];
+          [v57 setObject:dictionaryRepresentation3 forKeyedSubscript:@"Last DAS Checkpoint Event"];
 
           v99 = 0u;
           v100 = 0u;
@@ -1589,23 +1589,23 @@ LABEL_27:
   return v79;
 }
 
-- (id)computeElapsedRunTimes:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)computeElapsedRunTimes:(id)times timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  timesCopy = times;
+  filterCopy = filter;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
   v11 = +[_DASPPSDataManager sharedInstance];
-  v12 = [v11 loadTaskCheckpoints:v8 metrics:0 timeFilter:v9 filepath:v10];
+  v12 = [v11 loadTaskCheckpoints:timesCopy metrics:0 timeFilter:filterCopy filepath:filepathCopy];
 
-  v13 = [v9 endDate];
-  if (v13)
+  endDate = [filterCopy endDate];
+  if (endDate)
   {
-    [v9 endDate];
+    [filterCopy endDate];
   }
 
   else
@@ -1619,37 +1619,37 @@ LABEL_27:
   return v15;
 }
 
-- (id)computeEstimatedRunTime:(id)a3 elapsedRunTimes:(id)a4 progressEvents:(id)a5 activity:(id)a6 endDate:(id)a7
+- (id)computeEstimatedRunTime:(id)time elapsedRunTimes:(id)times progressEvents:(id)events activity:(id)activity endDate:(id)date
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  timesCopy = times;
+  activityCopy = activity;
+  eventsCopy = events;
   v13 = +[NSMutableDictionary dictionary];
-  v70 = v10;
-  v14 = [v10 lastObject];
-  v68 = [v14 objectForKeyedSubscript:@"Submission Event"];
+  v70 = timesCopy;
+  lastObject = [timesCopy lastObject];
+  v68 = [lastObject objectForKeyedSubscript:@"Submission Event"];
   v15 = [v68 objectForKeyedSubscript:@"epoch"];
   [v15 doubleValue];
   v17 = v16;
 
   v67 = [NSPredicate predicateWithFormat:@"epochTimestamp >= %lf", v17];
-  v18 = [v12 filteredArrayUsingPredicate:?];
+  v18 = [eventsCopy filteredArrayUsingPredicate:?];
 
   v19 = [(_DASLatencyProjector *)self computeOverallProgressPercentage:v18];
-  v20 = [v14 objectForKeyedSubscript:@"Elapsed Runtime"];
+  v20 = [lastObject objectForKeyedSubscript:@"Elapsed Runtime"];
   [v20 doubleValue];
   v22 = v21;
 
-  v66 = [v14 objectForKeyedSubscript:@"Last DAS Checkpoint Event"];
+  v66 = [lastObject objectForKeyedSubscript:@"Last DAS Checkpoint Event"];
   v23 = [v66 objectForKeyedSubscript:@"CheckpointState"];
-  v24 = [v23 unsignedIntegerValue];
+  unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-  v69 = v14;
-  [v13 addEntriesFromDictionary:v14];
-  v71 = v11;
-  v25 = [v11 fastPass];
-  v26 = v25 != 0;
-  v64 = v25;
+  v69 = lastObject;
+  [v13 addEntriesFromDictionary:lastObject];
+  v71 = activityCopy;
+  fastPass = [activityCopy fastPass];
+  v26 = fastPass != 0;
+  v64 = fastPass;
 
   v65 = v19;
   v27 = [NSNumber numberWithUnsignedInteger:v19];
@@ -1690,8 +1690,8 @@ LABEL_27:
         }
 
         v38 = [v13 objectForKeyedSubscript:@"Recent Progress Events"];
-        v39 = [v35 dictionaryRepresentation];
-        [v38 addObject:v39];
+        dictionaryRepresentation = [v35 dictionaryRepresentation];
+        [v38 addObject:dictionaryRepresentation];
       }
 
       v32 = [v30 countByEnumeratingWithState:&v76 objects:v81 count:16];
@@ -1700,19 +1700,19 @@ LABEL_27:
     while (v32);
   }
 
-  if (v24 > 0x32)
+  if (unsignedIntegerValue > 0x32)
   {
     goto LABEL_14;
   }
 
-  if (((1 << v24) & 0x42A0040020000) != 0)
+  if (((1 << unsignedIntegerValue) & 0x42A0040020000) != 0)
   {
     goto LABEL_34;
   }
 
-  if (((1 << v24) & 0x8400) == 0)
+  if (((1 << unsignedIntegerValue) & 0x8400) == 0)
   {
-    if (((1 << v24) & 0x10000100000) == 0)
+    if (((1 << unsignedIntegerValue) & 0x10000100000) == 0)
     {
 LABEL_14:
       v22 = -1.0;
@@ -1745,13 +1745,13 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  v40 = [v70 reverseObjectEnumerator];
-  v41 = [v40 nextObject];
+  reverseObjectEnumerator = [v70 reverseObjectEnumerator];
+  nextObject = [reverseObjectEnumerator nextObject];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v42 = v40;
+  v42 = reverseObjectEnumerator;
   v43 = [v42 countByEnumeratingWithState:&v72 objects:v80 count:16];
   if (!v43)
   {
@@ -1779,9 +1779,9 @@ LABEL_18:
 
     v50 = [v45 objectForKeyedSubscript:@"Last DAS Checkpoint Event"];
     v51 = [v50 objectForKeyedSubscript:@"CheckpointState"];
-    v52 = [v51 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v51 unsignedIntegerValue];
 
-    if (v52 == 30)
+    if (unsignedIntegerValue2 == 30)
     {
       break;
     }
@@ -1827,12 +1827,12 @@ LABEL_34:
   return v13;
 }
 
-- (id)computeEstimatedRunTimes:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)computeEstimatedRunTimes:(id)times timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  timesCopy = times;
+  filterCopy = filter;
+  filepathCopy = filepath;
+  if (filepathCopy)
   {
     v37 = 0;
   }
@@ -1840,19 +1840,19 @@ LABEL_34:
   else
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
-    v37 = [(_DASLatencyProjector *)self findActivitiesByName:v8];
+    v37 = [(_DASLatencyProjector *)self findActivitiesByName:timesCopy];
   }
 
   v11 = +[_DASPPSDataManager sharedInstance];
-  v12 = [v11 loadTaskCheckpoints:v8 metrics:0 timeFilter:v9 filepath:v10];
+  v12 = [v11 loadTaskCheckpoints:timesCopy metrics:0 timeFilter:filterCopy filepath:filepathCopy];
   v30 = v11;
-  v13 = [v11 loadTaskProgress:v8 metrics:0 timeFilter:v9 filepath:v10];
-  v14 = [v9 endDate];
-  v31 = v10;
-  v32 = v9;
-  if (v14)
+  v13 = [v11 loadTaskProgress:timesCopy metrics:0 timeFilter:filterCopy filepath:filepathCopy];
+  endDate = [filterCopy endDate];
+  v31 = filepathCopy;
+  v32 = filterCopy;
+  if (endDate)
   {
-    [v9 endDate];
+    [filterCopy endDate];
   }
 
   else
@@ -1871,7 +1871,7 @@ LABEL_34:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = timesCopy;
   v17 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v17)
   {
@@ -1906,29 +1906,29 @@ LABEL_34:
   return v36;
 }
 
-- (unint64_t)getBlockingCriteriaBitmask:(id)a3
+- (unint64_t)getBlockingCriteriaBitmask:(id)bitmask
 {
-  v3 = a3;
-  v4 = [v3 requiresSignificantUserInactivity];
-  if ([v3 requiresPlugin])
+  bitmaskCopy = bitmask;
+  requiresSignificantUserInactivity = [bitmaskCopy requiresSignificantUserInactivity];
+  if ([bitmaskCopy requiresPlugin])
   {
-    v4 |= 2uLL;
+    requiresSignificantUserInactivity |= 2uLL;
   }
 
-  if ([v3 requiresNetwork])
+  if ([bitmaskCopy requiresNetwork])
   {
-    v5 = v4 | 4;
+    v5 = requiresSignificantUserInactivity | 4;
   }
 
   else
   {
-    v5 = v4;
+    v5 = requiresSignificantUserInactivity;
   }
 
-  v6 = [v3 fileProtection];
+  fileProtection = [bitmaskCopy fileProtection];
   v7 = +[_DASFileProtection none];
 
-  if (v6 == v7)
+  if (fileProtection == v7)
   {
     v8 = v5;
   }
@@ -1938,9 +1938,9 @@ LABEL_34:
     v8 = v5 | 8;
   }
 
-  v9 = [v3 requiresDeviceInactivity];
+  requiresDeviceInactivity = [bitmaskCopy requiresDeviceInactivity];
 
-  if (v9)
+  if (requiresDeviceInactivity)
   {
     return v8 | 0x10;
   }
@@ -1951,11 +1951,11 @@ LABEL_34:
   }
 }
 
-- (id)computeConditionsPenalty:(id)a3
+- (id)computeConditionsPenalty:(id)penalty
 {
-  v4 = a3;
+  penaltyCopy = penalty;
   v5 = +[NSMutableDictionary dictionary];
-  if (v4)
+  if (penaltyCopy)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -1963,7 +1963,7 @@ LABEL_34:
       sub_10012CF64(log);
     }
 
-    v7 = [(_DASLatencyProjector *)self getBlockingCriteriaBitmask:v4];
+    v7 = [(_DASLatencyProjector *)self getBlockingCriteriaBitmask:penaltyCopy];
     v8 = [NSNumber numberWithUnsignedInteger:v7];
     [v5 setObject:v8 forKeyedSubscript:@"Blocking Criteria Bitmask"];
 
@@ -1983,16 +1983,16 @@ LABEL_34:
   return v5;
 }
 
-- (id)computeConditionsPenalties:(id)a3
+- (id)computeConditionsPenalties:(id)penalties
 {
-  v4 = a3;
+  penaltiesCopy = penalties;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(_DASLatencyProjector *)self findActivitiesByName:v4];
+  v6 = [(_DASLatencyProjector *)self findActivitiesByName:penaltiesCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = penaltiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -2023,15 +2023,15 @@ LABEL_34:
   return v5;
 }
 
-- (id)constructGroupSizes:(id)a3
+- (id)constructGroupSizes:(id)sizes
 {
-  v3 = a3;
+  sizesCopy = sizes;
   v4 = +[NSMutableDictionary dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = sizesCopy;
   v25 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v25)
   {
@@ -2054,8 +2054,8 @@ LABEL_34:
           v26 = 0u;
           v27 = 0u;
           v24 = v7;
-          v8 = [v7 internalGroupNames];
-          v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          internalGroupNames = [v7 internalGroupNames];
+          v9 = [internalGroupNames countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v9)
           {
             v10 = v9;
@@ -2066,7 +2066,7 @@ LABEL_34:
               {
                 if (*v27 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(internalGroupNames);
                 }
 
                 v13 = *(*(&v26 + 1) + 8 * j);
@@ -2075,7 +2075,7 @@ LABEL_34:
                 [v4 setObject:v15 forKeyedSubscript:v13];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v10 = [internalGroupNames countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v10);
@@ -2085,15 +2085,15 @@ LABEL_34:
           v7 = v24;
         }
 
-        v16 = [v7 groupName];
+        groupName = [v7 groupName];
 
-        if (v16)
+        if (groupName)
         {
-          v17 = [v7 groupName];
-          v18 = [v4 objectForKeyedSubscript:v17];
+          groupName2 = [v7 groupName];
+          v18 = [v4 objectForKeyedSubscript:groupName2];
           v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v18 integerValue] + 1);
-          v20 = [v7 groupName];
-          [v4 setObject:v19 forKeyedSubscript:v20];
+          groupName3 = [v7 groupName];
+          [v4 setObject:v19 forKeyedSubscript:groupName3];
         }
       }
 
@@ -2106,18 +2106,18 @@ LABEL_34:
   return v4;
 }
 
-- (int64_t)checkCapacityForActivity:(id)a3 groupSizes:(id)a4
+- (int64_t)checkCapacityForActivity:(id)activity groupSizes:(id)sizes
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  sizesCopy = sizes;
   if (_os_feature_enabled_impl())
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v27 = v5;
-    obj = [v5 internalGroupNames];
+    v27 = activityCopy;
+    obj = [activityCopy internalGroupNames];
     v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v7)
     {
@@ -2135,11 +2135,11 @@ LABEL_34:
 
           v12 = *(*(&v29 + 1) + 8 * i);
           v13 = +[_DASDaemon sharedInstance];
-          v14 = [v13 allActivityGroups];
-          v15 = [v14 objectForKeyedSubscript:v12];
-          v16 = [v15 maxConcurrent];
-          v17 = [v6 objectForKeyedSubscript:v12];
-          v18 = v16 - [v17 integerValue];
+          allActivityGroups = [v13 allActivityGroups];
+          v15 = [allActivityGroups objectForKeyedSubscript:v12];
+          maxConcurrent = [v15 maxConcurrent];
+          v17 = [sizesCopy objectForKeyedSubscript:v12];
+          v18 = maxConcurrent - [v17 integerValue];
 
           if (v10 >= v18)
           {
@@ -2158,32 +2158,32 @@ LABEL_34:
       v10 = 0x7FFFFFFFLL;
     }
 
-    v5 = v27;
+    activityCopy = v27;
   }
 
   else
   {
     v19 = +[_DASDaemon sharedInstance];
-    v20 = [v19 allActivityGroups];
-    v21 = [v5 groupName];
-    v22 = [v20 objectForKeyedSubscript:v21];
-    v23 = [v22 maxConcurrent];
-    v24 = [v5 groupName];
-    v25 = [v6 objectForKeyedSubscript:v24];
-    v10 = v23 - [v25 integerValue];
+    allActivityGroups2 = [v19 allActivityGroups];
+    groupName = [activityCopy groupName];
+    v22 = [allActivityGroups2 objectForKeyedSubscript:groupName];
+    maxConcurrent2 = [v22 maxConcurrent];
+    groupName2 = [activityCopy groupName];
+    v25 = [sizesCopy objectForKeyedSubscript:groupName2];
+    v10 = maxConcurrent2 - [v25 integerValue];
   }
 
   return v10;
 }
 
-- (id)computeContentionPenalty:(id)a3
+- (id)computeContentionPenalty:(id)penalty
 {
-  v4 = a3;
+  penaltyCopy = penalty;
   log = self->_log;
-  v203 = v4;
-  if (v4)
+  v203 = penaltyCopy;
+  if (penaltyCopy)
   {
-    v194 = self;
+    selfCopy = self;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
       sub_10012CFF4(log);
@@ -2192,28 +2192,28 @@ LABEL_34:
     v186 = +[NSMutableDictionary dictionary];
     v6 = [NSMutableSet alloc];
     v7 = +[_DASDaemon sharedInstance];
-    v8 = [v7 allPendingTasks];
-    v9 = [v6 initWithSet:v8];
+    allPendingTasks = [v7 allPendingTasks];
+    v9 = [v6 initWithSet:allPendingTasks];
 
     v10 = [NSMutableSet alloc];
     v11 = +[_DASDaemon sharedInstance];
-    v12 = [v11 startedTasks];
-    v188 = [v10 initWithSet:v12];
+    startedTasks = [v11 startedTasks];
+    v188 = [v10 initWithSet:startedTasks];
 
     v185 = [(_DASLatencyProjector *)self computeConditionsPenalty:v203];
     v13 = [(_DASLatencyProjector *)self getBlockingCriteriaBitmask:v203];
     v14 = [NSMutableDictionary alloc];
-    v15 = [v203 name];
-    v16 = [NSSet setWithObject:v15];
+    name = [v203 name];
+    v16 = [NSSet setWithObject:name];
     v17 = [(_DASLatencyProjector *)self computeEstimatedRunTimes:v16 timeFilter:0 filepath:0];
     v184 = [v14 initWithDictionary:v17];
 
     v18 = +[NSDate date];
-    v19 = [v203 startAfter];
-    v20 = [v19 dateByAddingTimeInterval:?];
+    startAfter = [v203 startAfter];
+    v20 = [startAfter dateByAddingTimeInterval:?];
     v21 = [v18 laterDate:v20];
 
-    v22 = v194;
+    v22 = selfCopy;
     v23 = v21;
 
     [v21 timeIntervalSince1970];
@@ -2241,7 +2241,7 @@ LABEL_34:
           }
 
           v30 = *(*(&v230 + 1) + 8 * i);
-          if (v13 != [(_DASLatencyProjector *)v194 getBlockingCriteriaBitmask:v30])
+          if (v13 != [(_DASLatencyProjector *)selfCopy getBlockingCriteriaBitmask:v30])
           {
             [v25 addObject:v30];
           }
@@ -2255,8 +2255,8 @@ LABEL_34:
 
     v183 = v25;
     [obj minusSet:v25];
-    v31 = [v203 name];
-    v32 = [v184 objectForKeyedSubscript:v31];
+    name2 = [v203 name];
+    v32 = [v184 objectForKeyedSubscript:name2];
     v33 = [v32 objectForKeyedSubscript:@"Estimated Runtime"];
     [v33 doubleValue];
     v35 = v34;
@@ -2336,8 +2336,8 @@ LABEL_99:
         }
 
         v178 = [NSNumber numberWithUnsignedInteger:?];
-        v179 = [v178 stringValue];
-        [v186 setObject:v42 forKeyedSubscript:v179];
+        stringValue = [v178 stringValue];
+        [v186 setObject:v42 forKeyedSubscript:stringValue];
 
         ++v187;
         if (v35 <= 0.0)
@@ -2397,17 +2397,17 @@ LABEL_99:
               if (v58)
               {
                 [v49 addObject:v56];
-                v59 = [v203 name];
-                v60 = [v56 name];
-                v61 = [v59 isEqualToString:v60];
+                name3 = [v203 name];
+                name4 = [v56 name];
+                v61 = [name3 isEqualToString:name4];
 
                 v53 += v61 ^ 1;
               }
 
               else
               {
-                v62 = [v56 startAfter];
-                v63 = [v200 earlierDate:v62];
+                startAfter2 = [v56 startAfter];
+                v63 = [v200 earlierDate:startAfter2];
 
                 v200 = v63;
               }
@@ -2431,7 +2431,7 @@ LABEL_99:
         v66 = [v65 sortCandidateActivities:v49];
         v67 = [NSMutableSet setWithArray:v66];
 
-        v68 = [(_DASLatencyProjector *)v194 constructGroupSizes:v188];
+        v68 = [(_DASLatencyProjector *)selfCopy constructGroupSizes:v188];
         v220 = 0u;
         v221 = 0u;
         v222 = 0u;
@@ -2452,10 +2452,10 @@ LABEL_99:
               }
 
               v74 = *(*(&v220 + 1) + 8 * m);
-              if ([(_DASLatencyProjector *)v194 checkCapacityForActivity:v74 groupSizes:v68]>= 1)
+              if ([(_DASLatencyProjector *)selfCopy checkCapacityForActivity:v74 groupSizes:v68]>= 1)
               {
                 [v188 addObject:v74];
-                v75 = [(_DASLatencyProjector *)v194 constructGroupSizes:v188];
+                v75 = [(_DASLatencyProjector *)selfCopy constructGroupSizes:v188];
 
                 v68 = v75;
               }
@@ -2495,8 +2495,8 @@ LABEL_99:
               }
 
               v82 = *(*(&v216 + 1) + 8 * n);
-              v83 = [v82 name];
-              v84 = [v36 objectForKeyedSubscript:v83];
+              name5 = [v82 name];
+              v84 = [v36 objectForKeyedSubscript:name5];
               [v84 doubleValue];
               v86 = v85;
 
@@ -2517,12 +2517,12 @@ LABEL_99:
                 }
 
                 v91 = [NSNumber numberWithDouble:v90];
-                v92 = [v82 name];
-                [v36 setObject:v91 forKeyedSubscript:v92];
+                name6 = [v82 name];
+                [v36 setObject:v91 forKeyedSubscript:name6];
               }
 
-              v93 = [v82 name];
-              v94 = [v36 objectForKeyedSubscript:v93];
+              name7 = [v82 name];
+              v94 = [v36 objectForKeyedSubscript:name7];
               [v94 doubleValue];
               v96 = v95;
 
@@ -2532,8 +2532,8 @@ LABEL_99:
               }
 
               v97 = [v201 objectForKeyedSubscript:@"Running Tasks"];
-              v98 = [v82 name];
-              [v97 addObject:v98];
+              name8 = [v82 name];
+              [v97 addObject:name8];
             }
 
             v79 = [v76 countByEnumeratingWithState:&v216 objects:v237 count:16];
@@ -2581,17 +2581,17 @@ LABEL_99:
               }
 
               v111 = *(*(&v212 + 1) + 8 * ii);
-              v112 = [v111 name];
-              v113 = [v203 name];
-              v114 = [v112 isEqualToString:v113];
+              name9 = [v111 name];
+              name10 = [v203 name];
+              v114 = [name9 isEqualToString:name10];
 
               v109 &= v114 ^ 1;
-              v115 = [v111 name];
-              v116 = [v36 objectForKeyedSubscript:v115];
+              name11 = [v111 name];
+              v116 = [v36 objectForKeyedSubscript:name11];
               [v116 doubleValue];
               v118 = [NSNumber numberWithDouble:v117 - v78];
-              v119 = [v111 name];
-              [v36 setObject:v118 forKeyedSubscript:v119];
+              name12 = [v111 name];
+              [v36 setObject:v118 forKeyedSubscript:name12];
             }
 
             v107 = [v105 countByEnumeratingWithState:&v212 objects:v236 count:16];
@@ -2648,14 +2648,14 @@ LABEL_95:
 
         if (v41 <= 0.0)
         {
-          v22 = v194;
+          v22 = selfCopy;
           v23 = v120;
           goto LABEL_99;
         }
 
         v23 = v120;
         v45 = v120;
-        v22 = v194;
+        v22 = selfCopy;
         if (v35 <= 0.0)
         {
           goto LABEL_99;
@@ -2676,20 +2676,20 @@ LABEL_77:
         v128 = *(*(&v208 + 1) + 8 * v127);
         [v128 interval];
         v130 = v129;
-        v131 = [v128 name];
-        v132 = [v203 name];
-        v133 = [v131 isEqualToString:v132];
+        name13 = [v128 name];
+        name14 = [v203 name];
+        v133 = [name13 isEqualToString:name14];
 
-        v134 = [v128 name];
-        v135 = [v36 objectForKeyedSubscript:v134];
+        name15 = [v128 name];
+        v135 = [v36 objectForKeyedSubscript:name15];
         [v135 doubleValue];
         v137 = v136;
 
         if (v137 == 0.0)
         {
           [v123 addObject:v128];
-          v138 = [v128 name];
-          [v36 removeObjectForKey:v138];
+          name16 = [v128 name];
+          [v36 removeObjectForKey:name16];
         }
 
         if (v35 == 0.0)
@@ -2715,35 +2715,35 @@ LABEL_77:
           goto LABEL_93;
         }
 
-        v141 = [v128 clientName];
-        v142 = [v141 isEqualToString:v197];
+        clientName = [v128 clientName];
+        v142 = [clientName isEqualToString:v197];
 
         if (v142)
         {
           break;
         }
 
-        v156 = [v128 clientName];
-        v157 = [v156 isEqualToString:v196];
+        clientName2 = [v128 clientName];
+        v157 = [clientName2 isEqualToString:v196];
 
         if (v157)
         {
           [v120 timeIntervalSince1970];
           v159 = v158;
-          v160 = [v128 submitDate];
-          [v160 timeIntervalSince1970];
+          submitDate = [v128 submitDate];
+          [submitDate timeIntervalSince1970];
           v162 = v159 - v161;
 
-          v163 = [v128 submitDate];
-          v164 = [v163 dateByAddingTimeInterval:v162];
+          submitDate2 = [v128 submitDate];
+          v164 = [submitDate2 dateByAddingTimeInterval:v162];
           [v128 setSubmitDate:v164];
 
-          v165 = [v128 startAfter];
+          startAfter3 = [v128 startAfter];
           [v128 interval];
-          v167 = [v165 dateByAddingTimeInterval:v162 + v166];
-          [v128 setStartAfter:v167];
+          v166 = [startAfter3 dateByAddingTimeInterval:v162 + v166];
+          [v128 setStartAfter:v166];
 
-          v154 = [v128 startBefore];
+          startBefore = [v128 startBefore];
           [v128 interval];
           v155 = v162 + v168;
           goto LABEL_92;
@@ -2764,24 +2764,24 @@ LABEL_93:
 
       [v128 interval];
       v144 = v143;
-      v145 = [v128 startBefore];
-      [v145 timeIntervalSince1970];
+      startBefore2 = [v128 startBefore];
+      [startBefore2 timeIntervalSince1970];
       v147 = v146;
-      v148 = [v128 startAfter];
-      [v148 timeIntervalSince1970];
+      startAfter4 = [v128 startAfter];
+      [startAfter4 timeIntervalSince1970];
       v150 = v144 - (v147 - v149);
 
       v151 = [v120 dateByAddingTimeInterval:0.0];
       [v128 setSubmitDate:v151];
 
-      v152 = [v128 submitDate];
-      v153 = [v152 dateByAddingTimeInterval:v150];
+      submitDate3 = [v128 submitDate];
+      v153 = [submitDate3 dateByAddingTimeInterval:v150];
       [v128 setStartAfter:v153];
 
-      v154 = [v128 submitDate];
+      startBefore = [v128 submitDate];
       [v128 interval];
 LABEL_92:
-      v169 = [v154 dateByAddingTimeInterval:v155];
+      v169 = [startBefore dateByAddingTimeInterval:v155];
       [v128 setStartBefore:v169];
 
       [v202 addObject:v128];
@@ -2805,16 +2805,16 @@ LABEL_109:
   return v180;
 }
 
-- (id)computeContentionPenalties:(id)a3
+- (id)computeContentionPenalties:(id)penalties
 {
-  v4 = a3;
+  penaltiesCopy = penalties;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(_DASLatencyProjector *)self findActivitiesByName:v4];
+  v6 = [(_DASLatencyProjector *)self findActivitiesByName:penaltiesCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = penaltiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -2845,17 +2845,17 @@ LABEL_109:
   return v5;
 }
 
-- (id)computeFeatureTimeline:(id)a3 installationEvents:(id)a4
+- (id)computeFeatureTimeline:(id)timeline installationEvents:(id)events
 {
-  v5 = a3;
-  v6 = a4;
+  timelineCopy = timeline;
+  eventsCopy = events;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [v6 count];
+  v8 = [eventsCopy count];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = timelineCopy;
   v39 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v39)
   {
@@ -2873,25 +2873,25 @@ LABEL_109:
 
         v11 = *(*(&v42 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v12 = [v11 metricKeysAndValues];
-        v13 = [v12 objectForKeyedSubscript:@"FeatureCode"];
+        metricKeysAndValues = [v11 metricKeysAndValues];
+        v13 = [metricKeysAndValues objectForKeyedSubscript:@"FeatureCode"];
 
-        v14 = [v13 stringValue];
-        v15 = [v7 objectForKeyedSubscript:v14];
+        stringValue = [v13 stringValue];
+        v15 = [v7 objectForKeyedSubscript:stringValue];
 
         if (!v15)
         {
           v16 = +[NSMutableArray array];
-          v17 = [v13 stringValue];
-          [v7 setObject:v16 forKeyedSubscript:v17];
+          stringValue2 = [v13 stringValue];
+          [v7 setObject:v16 forKeyedSubscript:stringValue2];
         }
 
-        v18 = [v13 stringValue];
-        v40 = [v7 objectForKeyedSubscript:v18];
+        stringValue3 = [v13 stringValue];
+        v40 = [v7 objectForKeyedSubscript:stringValue3];
 
         v19 = +[NSMutableDictionary dictionary];
-        v20 = [v11 metricKeysAndValues];
-        v21 = [v20 objectForKeyedSubscript:@"FeatureState"];
+        metricKeysAndValues2 = [v11 metricKeysAndValues];
+        v21 = [metricKeysAndValues2 objectForKeyedSubscript:@"FeatureState"];
         [v19 setObject:v21 forKeyedSubscript:@"FeatureState"];
 
         [v11 epochTimestamp];
@@ -2905,11 +2905,11 @@ LABEL_109:
 
         else
         {
-          v23 = [v6 objectAtIndex:v9];
+          v23 = [eventsCopy objectAtIndex:v9];
         }
 
-        v24 = [v23 metricKeysAndValues];
-        v25 = [v24 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues3 = [v23 metricKeysAndValues];
+        v25 = [metricKeysAndValues3 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v25 doubleValue];
         v27 = v26;
 
@@ -2926,7 +2926,7 @@ LABEL_109:
             v29 = v9 - 1;
             if (v9)
             {
-              v30 = [v6 objectAtIndex:v9 - 1];
+              v30 = [eventsCopy objectAtIndex:v9 - 1];
             }
 
             else
@@ -2934,8 +2934,8 @@ LABEL_109:
               v30 = 0;
             }
 
-            v31 = [v30 metricKeysAndValues];
-            v32 = [v31 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+            metricKeysAndValues4 = [v30 metricKeysAndValues];
+            v32 = [metricKeysAndValues4 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
             [v32 doubleValue];
             v27 = v33;
 
@@ -2969,10 +2969,10 @@ LABEL_20:
   return v7;
 }
 
-- (id)computeActivityTimelines:(id)a3 installationEvents:(id)a4
+- (id)computeActivityTimelines:(id)timelines installationEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
+  timelinesCopy = timelines;
+  eventsCopy = events;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -2981,12 +2981,12 @@ LABEL_20:
   }
 
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [v7 count];
+  v10 = [eventsCopy count];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = timelinesCopy;
   v38 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v38)
   {
@@ -3004,8 +3004,8 @@ LABEL_20:
 
         v13 = *(*(&v41 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v14 = [v13 metricKeysAndValues];
-        v15 = [v14 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v13 metricKeysAndValues];
+        v15 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
         v16 = [v9 objectForKeyedSubscript:v15];
 
@@ -3017,8 +3017,8 @@ LABEL_20:
 
         v39 = [v9 objectForKeyedSubscript:v15];
         v18 = +[NSMutableDictionary dictionary];
-        v19 = [v13 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"CheckpointState"];
+        metricKeysAndValues2 = [v13 metricKeysAndValues];
+        v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"CheckpointState"];
         [v18 setObject:v20 forKeyedSubscript:@"CheckpointState"];
 
         [v13 epochTimestamp];
@@ -3032,11 +3032,11 @@ LABEL_20:
 
         else
         {
-          v22 = [v7 objectAtIndex:v11];
+          v22 = [eventsCopy objectAtIndex:v11];
         }
 
-        v23 = [v22 metricKeysAndValues];
-        v24 = [v23 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues3 = [v22 metricKeysAndValues];
+        v24 = [metricKeysAndValues3 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v24 doubleValue];
         v26 = v25;
 
@@ -3053,7 +3053,7 @@ LABEL_20:
             v28 = v11 - 1;
             if (v11)
             {
-              v29 = [v7 objectAtIndex:v11 - 1];
+              v29 = [eventsCopy objectAtIndex:v11 - 1];
             }
 
             else
@@ -3061,8 +3061,8 @@ LABEL_20:
               v29 = 0;
             }
 
-            v30 = [v29 metricKeysAndValues];
-            v31 = [v30 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+            metricKeysAndValues4 = [v29 metricKeysAndValues];
+            v31 = [metricKeysAndValues4 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
             [v31 doubleValue];
             v26 = v32;
 
@@ -3096,16 +3096,16 @@ LABEL_22:
   return v9;
 }
 
-- (id)computeDeviceConditionsStatus:(id)a3 metric:(id)a4
+- (id)computeDeviceConditionsStatus:(id)status metric:(id)metric
 {
-  v5 = a3;
-  v6 = a4;
+  statusCopy = status;
+  metricCopy = metric;
   v22 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = statusCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -3121,13 +3121,13 @@ LABEL_22:
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 metricKeysAndValues];
-        v13 = [v12 objectForKeyedSubscript:v6];
+        metricKeysAndValues = [v11 metricKeysAndValues];
+        v13 = [metricKeysAndValues objectForKeyedSubscript:metricCopy];
         if (v13)
         {
           v14 = v13;
-          v15 = [v11 metricKeysAndValues];
-          v16 = [v15 objectForKeyedSubscript:v6];
+          metricKeysAndValues2 = [v11 metricKeysAndValues];
+          v16 = [metricKeysAndValues2 objectForKeyedSubscript:metricCopy];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3136,16 +3136,16 @@ LABEL_22:
             continue;
           }
 
-          v12 = +[NSMutableDictionary dictionary];
-          v18 = [v11 metricKeysAndValues];
-          v19 = [v18 objectForKeyedSubscript:v6];
-          [v12 setObject:v19 forKeyedSubscript:v6];
+          metricKeysAndValues = +[NSMutableDictionary dictionary];
+          metricKeysAndValues3 = [v11 metricKeysAndValues];
+          v19 = [metricKeysAndValues3 objectForKeyedSubscript:metricCopy];
+          [metricKeysAndValues setObject:v19 forKeyedSubscript:metricCopy];
 
           [v11 epochTimestamp];
           v20 = [NSNumber numberWithDouble:?];
-          [v12 setObject:v20 forKeyedSubscript:@"epoch"];
+          [metricKeysAndValues setObject:v20 forKeyedSubscript:@"epoch"];
 
-          [v22 addObject:v12];
+          [v22 addObject:metricKeysAndValues];
         }
       }
 
@@ -3158,16 +3158,16 @@ LABEL_22:
   return v22;
 }
 
-- (id)computeDeviceConditionsStatus:(id)a3 gatherMetrics:(id)a4
+- (id)computeDeviceConditionsStatus:(id)status gatherMetrics:(id)metrics
 {
-  v5 = a3;
-  v25 = a4;
+  statusCopy = status;
+  metricsCopy = metrics;
   v23 = +[NSMutableArray array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = statusCopy;
   v26 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v26)
   {
@@ -3189,7 +3189,7 @@ LABEL_22:
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v29 = v25;
+        v29 = metricsCopy;
         v8 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v8)
         {
@@ -3205,13 +3205,13 @@ LABEL_22:
               }
 
               v12 = *(*(&v30 + 1) + 8 * i);
-              v13 = [v7 metricKeysAndValues];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              metricKeysAndValues = [v7 metricKeysAndValues];
+              v14 = [metricKeysAndValues objectForKeyedSubscript:v12];
               if (v14)
               {
                 v15 = v14;
-                v16 = [v7 metricKeysAndValues];
-                v17 = [v16 objectForKeyedSubscript:v12];
+                metricKeysAndValues2 = [v7 metricKeysAndValues];
+                v17 = [metricKeysAndValues2 objectForKeyedSubscript:v12];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3220,8 +3220,8 @@ LABEL_22:
                   continue;
                 }
 
-                v13 = [v7 metricKeysAndValues];
-                v19 = [v13 objectForKeyedSubscript:v12];
+                metricKeysAndValues = [v7 metricKeysAndValues];
+                v19 = [metricKeysAndValues objectForKeyedSubscript:v12];
                 [v28 setObject:v19 forKeyedSubscript:v12];
               }
             }
@@ -3254,9 +3254,9 @@ LABEL_22:
   return v23;
 }
 
-- (id)computeProgressTimelines:(id)a3
+- (id)computeProgressTimelines:(id)timelines
 {
-  v4 = a3;
+  timelinesCopy = timelines;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -3269,7 +3269,7 @@ LABEL_22:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = timelinesCopy;
   v25 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v25)
   {
@@ -3285,8 +3285,8 @@ LABEL_22:
 
         v8 = *(*(&v27 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v9 = [v8 metricKeysAndValues];
-        v10 = [v9 objectForKeyedSubscript:@"Identifier"];
+        metricKeysAndValues = [v8 metricKeysAndValues];
+        v10 = [metricKeysAndValues objectForKeyedSubscript:@"Identifier"];
 
         v11 = [v6 objectForKeyedSubscript:v10];
 
@@ -3298,16 +3298,16 @@ LABEL_22:
 
         v13 = [v6 objectForKeyedSubscript:v10];
         v14 = +[NSMutableDictionary dictionary];
-        v15 = [v8 metricKeysAndValues];
-        v16 = [v15 objectForKeyedSubscript:@"Identifier"];
+        metricKeysAndValues2 = [v8 metricKeysAndValues];
+        v16 = [metricKeysAndValues2 objectForKeyedSubscript:@"Identifier"];
         [v14 setObject:v16 forKeyedSubscript:@"Identifier"];
 
-        v17 = [v8 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"ItemsCompleted"];
+        metricKeysAndValues3 = [v8 metricKeysAndValues];
+        v18 = [metricKeysAndValues3 objectForKeyedSubscript:@"ItemsCompleted"];
         [v14 setObject:v18 forKeyedSubscript:@"ItemsCompleted"];
 
-        v19 = [v8 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"TotalItemCount"];
+        metricKeysAndValues4 = [v8 metricKeysAndValues];
+        v20 = [metricKeysAndValues4 objectForKeyedSubscript:@"TotalItemCount"];
         [v14 setObject:v20 forKeyedSubscript:@"TotalItemCount"];
 
         [v8 epochTimestamp];
@@ -3327,9 +3327,9 @@ LABEL_22:
   return v6;
 }
 
-- (id)computeThroughputTimelines:(id)a3
+- (id)computeThroughputTimelines:(id)timelines
 {
-  v4 = a3;
+  timelinesCopy = timelines;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -3342,7 +3342,7 @@ LABEL_22:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v4;
+  obj = timelinesCopy;
   v37 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v37)
   {
@@ -3358,8 +3358,8 @@ LABEL_22:
 
         v8 = *(*(&v39 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v9 = [v8 metricKeysAndValues];
-        v10 = [v9 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v8 metricKeysAndValues];
+        v10 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
         v11 = [v6 objectForKeyedSubscript:v10];
 
@@ -3371,20 +3371,20 @@ LABEL_22:
 
         v13 = [v6 objectForKeyedSubscript:v10];
         v14 = +[NSMutableDictionary dictionary];
-        v15 = [v8 metricKeysAndValues];
-        v16 = [v15 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues2 = [v8 metricKeysAndValues];
+        v16 = [metricKeysAndValues2 objectForKeyedSubscript:@"TaskName"];
         [v14 setObject:v16 forKeyedSubscript:@"TaskName"];
 
-        v17 = [v8 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"Identifier"];
+        metricKeysAndValues3 = [v8 metricKeysAndValues];
+        v18 = [metricKeysAndValues3 objectForKeyedSubscript:@"Identifier"];
         [v14 setObject:v18 forKeyedSubscript:@"Identifier"];
 
-        v19 = [v8 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"ItemCount"];
+        metricKeysAndValues4 = [v8 metricKeysAndValues];
+        v20 = [metricKeysAndValues4 objectForKeyedSubscript:@"ItemCount"];
         [v14 setObject:v20 forKeyedSubscript:@"ItemCount"];
 
-        v21 = [v8 metricKeysAndValues];
-        v22 = [v21 objectForKeyedSubscript:@"Duration"];
+        metricKeysAndValues5 = [v8 metricKeysAndValues];
+        v22 = [metricKeysAndValues5 objectForKeyedSubscript:@"Duration"];
         [v14 setObject:v22 forKeyedSubscript:@"Duration"];
 
         [v8 epochTimestamp];
@@ -3422,9 +3422,9 @@ LABEL_22:
   return v6;
 }
 
-- (id)computeActivityBlockingReasons:(id)a3
+- (id)computeActivityBlockingReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -3437,7 +3437,7 @@ LABEL_22:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = reasonsCopy;
   v22 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v22)
   {
@@ -3453,8 +3453,8 @@ LABEL_22:
 
         v8 = *(*(&v23 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 metricKeysAndValues];
-        v11 = [v10 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues = [v8 metricKeysAndValues];
+        v11 = [metricKeysAndValues objectForKeyedSubscript:@"TaskName"];
 
         v12 = [v6 objectForKeyedSubscript:v11];
 
@@ -3466,8 +3466,8 @@ LABEL_22:
 
         v14 = [v6 objectForKeyedSubscript:v11];
         v15 = +[NSMutableDictionary dictionary];
-        v16 = [v8 metricKeysAndValues];
-        v17 = [v16 objectForKeyedSubscript:@"BlockingPolicies"];
+        metricKeysAndValues2 = [v8 metricKeysAndValues];
+        v17 = [metricKeysAndValues2 objectForKeyedSubscript:@"BlockingPolicies"];
         [v15 setObject:v17 forKeyedSubscript:@"BlockingPolicies"];
 
         [v8 epochTimestamp];
@@ -3487,15 +3487,15 @@ LABEL_22:
   return v6;
 }
 
-- (id)computeIntensiveEligibleSessions:(id)a3
+- (id)computeIntensiveEligibleSessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   v29 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
-  v6 = [v4 objectForKeyedSubscript:@"IsPluggedIn"];
+  v6 = [sessionsCopy objectForKeyedSubscript:@"IsPluggedIn"];
   [v5 addObjectsFromArray:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"UserActivityStatus"];
+  v7 = [sessionsCopy objectForKeyedSubscript:@"UserActivityStatus"];
   [v5 addObjectsFromArray:v7];
 
   v8 = [NSSortDescriptor sortDescriptorWithKey:@"epoch" ascending:1];
@@ -3505,7 +3505,7 @@ LABEL_22:
 
   if ([v5 count])
   {
-    v28 = v4;
+    v28 = sessionsCopy;
     v10 = [v5 objectAtIndexedSubscript:0];
     v11 = [v10 objectForKeyedSubscript:@"epoch"];
 
@@ -3519,7 +3519,7 @@ LABEL_22:
     {
       v13 = v12;
       v14 = 0;
-      v15 = 0;
+      bOOLValue = 0;
       v16 = 0;
       v31 = *v33;
       do
@@ -3537,7 +3537,7 @@ LABEL_22:
           if (v19)
           {
             v20 = [v18 objectForKeyedSubscript:@"IsPluggedIn"];
-            v15 = [v20 BOOLValue];
+            bOOLValue = [v20 BOOLValue];
           }
 
           v21 = [v18 objectForKey:@"UserActivityStatus"];
@@ -3548,7 +3548,7 @@ LABEL_22:
             v14 = [v22 BOOLValue] ^ 1;
           }
 
-          if ((v16 & 1) != (v15 & v14 & 1))
+          if ((v16 & 1) != (bOOLValue & v14 & 1))
           {
             v23 = [v18 objectForKeyedSubscript:@"epoch"];
             v24 = v23;
@@ -3563,7 +3563,7 @@ LABEL_22:
             }
 
             v11 = v24;
-            v16 = v15 & v14;
+            v16 = bOOLValue & v14;
           }
         }
 
@@ -3573,7 +3573,7 @@ LABEL_22:
       while (v13);
     }
 
-    v4 = v28;
+    sessionsCopy = v28;
   }
 
   else
@@ -3588,10 +3588,10 @@ LABEL_22:
   return v29;
 }
 
-- (id)computeOnBatteryRunTimes:(id)a3 plugInCheckpoints:(id)a4
+- (id)computeOnBatteryRunTimes:(id)times plugInCheckpoints:(id)checkpoints
 {
-  v47 = a3;
-  v48 = a4;
+  timesCopy = times;
+  checkpointsCopy = checkpoints;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -3600,7 +3600,7 @@ LABEL_22:
   }
 
   v51 = +[NSMutableDictionary dictionary];
-  if ([v48 count])
+  if ([checkpointsCopy count])
   {
     v63 = 0;
     v64 = &v63;
@@ -3621,8 +3621,8 @@ LABEL_22:
     v8 = v7;
     _Block_object_dispose(&v63, 8);
     v9 = objc_alloc_init(v7);
-    [v9 mergeWithTimeSeries:v47];
-    [v9 mergeWithTimeSeries:v48];
+    [v9 mergeWithTimeSeries:timesCopy];
+    [v9 mergeWithTimeSeries:checkpointsCopy];
     v10 = +[NSMutableDictionary dictionary];
     v56 = 0u;
     v57 = 0u;
@@ -3646,8 +3646,8 @@ LABEL_22:
           v12 = *(*(&v54 + 1) + 8 * i);
           v13 = objc_autoreleasePoolPush();
           v14 = [(_DASLatencyProjector *)self isDASTaskCheckpoint:v12];
-          v15 = [v12 metricKeysAndValues];
-          v16 = [v15 objectForKeyedSubscript:@"IsPluggedIn"];
+          metricKeysAndValues = [v12 metricKeysAndValues];
+          v16 = [metricKeysAndValues objectForKeyedSubscript:@"IsPluggedIn"];
 
           if (!v14)
           {
@@ -3656,40 +3656,40 @@ LABEL_22:
               goto LABEL_34;
             }
 
-            v18 = [v12 metricKeysAndValues];
-            v45 = [v18 objectForKeyedSubscript:@"IsPluggedIn"];
+            metricKeysAndValues2 = [v12 metricKeysAndValues];
+            v45 = [metricKeysAndValues2 objectForKeyedSubscript:@"IsPluggedIn"];
             v50 = [v45 BOOLValue] ^ 1;
             goto LABEL_32;
           }
 
-          v17 = [v12 metricKeysAndValues];
-          v18 = [v17 objectForKeyedSubscript:@"TaskName"];
+          metricKeysAndValues3 = [v12 metricKeysAndValues];
+          metricKeysAndValues2 = [metricKeysAndValues3 objectForKeyedSubscript:@"TaskName"];
 
-          v19 = [v51 objectForKeyedSubscript:v18];
-          LODWORD(v17) = v19 == 0;
+          v19 = [v51 objectForKeyedSubscript:metricKeysAndValues2];
+          LODWORD(metricKeysAndValues3) = v19 == 0;
 
-          if (v17)
+          if (metricKeysAndValues3)
           {
-            [v51 setObject:&off_1001CA6C0 forKeyedSubscript:v18];
+            [v51 setObject:&off_1001CA6C0 forKeyedSubscript:metricKeysAndValues2];
           }
 
-          v20 = [v10 objectForKeyedSubscript:v18];
+          v20 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
           v21 = v20 == 0;
 
           if (v21)
           {
             v22 = +[NSMutableDictionary dictionary];
-            [v10 setObject:v22 forKeyedSubscript:v18];
+            [v10 setObject:v22 forKeyedSubscript:metricKeysAndValues2];
 
-            v23 = [v10 objectForKeyedSubscript:v18];
+            v23 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v23 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isRunning"];
 
-            v24 = [v10 objectForKeyedSubscript:v18];
+            v24 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v24 setObject:&__kCFBooleanFalse forKeyedSubscript:@"startedRunningOnBattery"];
 
             [v12 epochTimestamp];
             v25 = [NSNumber numberWithDouble:?];
-            v26 = [v10 objectForKeyedSubscript:v18];
+            v26 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v26 setObject:v25 forKeyedSubscript:@"onBatteryProcessingStartTime"];
           }
 
@@ -3703,45 +3703,45 @@ LABEL_22:
           {
             v27 = &__kCFBooleanFalse;
 LABEL_24:
-            v28 = [v10 objectForKeyedSubscript:v18];
+            v28 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v28 setObject:v27 forKeyedSubscript:@"isRunning"];
           }
 
-          v29 = [v10 objectForKeyedSubscript:v18];
+          v29 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
           v30 = [v29 objectForKeyedSubscript:@"isRunning"];
-          v31 = [v30 BOOLValue];
+          bOOLValue = [v30 BOOLValue];
 
-          v32 = [v10 objectForKeyedSubscript:v18];
+          v32 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
           v33 = [v32 objectForKeyedSubscript:@"startedRunningOnBattery"];
-          v34 = [v33 BOOLValue];
+          bOOLValue2 = [v33 BOOLValue];
 
-          if (!(v34 & 1 | ((v31 & v50 & 1) == 0)))
+          if (!(bOOLValue2 & 1 | ((bOOLValue & v50 & 1) == 0)))
           {
             [v12 epochTimestamp];
             v41 = [NSNumber numberWithDouble:?];
-            v43 = [v10 objectForKeyedSubscript:v18];
+            v43 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v43 setObject:v41 forKeyedSubscript:@"onBatteryProcessingStartTime"];
             v44 = &__kCFBooleanTrue;
             goto LABEL_31;
           }
 
-          if (!(v31 & v50 & 1 | ((v34 & 1) == 0)))
+          if (!(bOOLValue & v50 & 1 | ((bOOLValue2 & 1) == 0)))
           {
             [v12 epochTimestamp];
             v36 = v35;
-            v37 = [v10 objectForKeyedSubscript:v18];
+            v37 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             v38 = [v37 objectForKeyedSubscript:@"onBatteryProcessingStartTime"];
             [v38 doubleValue];
             v40 = v39;
 
-            v41 = [v51 objectForKeyedSubscript:v18];
+            v41 = [v51 objectForKeyedSubscript:metricKeysAndValues2];
             [v41 doubleValue];
             v43 = [NSNumber numberWithDouble:v36 - v40 + v42];
-            [v51 setObject:v43 forKeyedSubscript:v18];
+            [v51 setObject:v43 forKeyedSubscript:metricKeysAndValues2];
             v44 = &__kCFBooleanFalse;
 LABEL_31:
 
-            v45 = [v10 objectForKeyedSubscript:v18];
+            v45 = [v10 objectForKeyedSubscript:metricKeysAndValues2];
             [v45 setObject:v44 forKeyedSubscript:@"startedRunningOnBattery"];
 LABEL_32:
           }
@@ -3760,15 +3760,15 @@ LABEL_34:
   return v51;
 }
 
-- (double)computeEligibleSchedulingDelay:(id)a3 eligibilityTimeline:(id)a4
+- (double)computeEligibleSchedulingDelay:(id)delay eligibilityTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"ScheduleAfterDate"];
+  delayCopy = delay;
+  timelineCopy = timeline;
+  v7 = [delayCopy objectForKeyedSubscript:@"ScheduleAfterDate"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v5 objectForKeyedSubscript:@"StartDate"];
+  v10 = [delayCopy objectForKeyedSubscript:@"StartDate"];
   [v10 doubleValue];
   v12 = v11;
 
@@ -3783,7 +3783,7 @@ LABEL_34:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = v6;
+    v13 = timelineCopy;
     v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v14)
     {
@@ -3851,21 +3851,21 @@ LABEL_4:
   return v28;
 }
 
-- (id)getFeatureTimelines:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)getFeatureTimelines:(id)timelines timeFilter:(id)filter filepath:(id)filepath
 {
-  v86 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  timelinesCopy = timelines;
+  filterCopy = filter;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
   v85 = +[NSMutableDictionary dictionary];
   v89 = +[_DASPPSDataManager sharedInstance];
-  v87 = v9;
-  v84 = [v89 loadConfig:0 timeFilter:v8 filepath:v9];
-  v88 = v8;
+  v87 = filepathCopy;
+  v84 = [v89 loadConfig:0 timeFilter:filterCopy filepath:filepathCopy];
+  v88 = filterCopy;
   v10 = [_DASLatencyProjector getRecentUniqueInstallationEvents:"getRecentUniqueInstallationEvents:timeFilter:" timeFilter:?];
   v95 = +[NSMutableArray array];
   v120 = 0u;
@@ -3890,16 +3890,16 @@ LABEL_4:
         v14 = *(*(&v120 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
         v16 = +[NSMutableDictionary dictionary];
-        v17 = [v14 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v18 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v16 setObject:v18 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
-        v19 = [v14 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"Build"];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"Build"];
         [v16 setObject:v20 forKeyedSubscript:@"Build"];
 
-        v21 = [v14 metricKeysAndValues];
-        v22 = [v21 objectForKeyedSubscript:@"InstallType"];
+        metricKeysAndValues3 = [v14 metricKeysAndValues];
+        v22 = [metricKeysAndValues3 objectForKeyedSubscript:@"InstallType"];
         [v16 setObject:v22 forKeyedSubscript:@"InstallType"];
 
         [v95 addObject:v16];
@@ -3916,9 +3916,9 @@ LABEL_4:
   v23 = [(_DASLatencyProjector *)self getBuddyData:v88 filepath:v87];
   [v85 setObject:v23 forKeyedSubscript:@"Buddy Setup Events"];
 
-  v83 = [v89 loadFeatureCheckpoints:v86 metrics:0 timeFilter:v88 filepath:v87];
+  v83 = [v89 loadFeatureCheckpoints:timelinesCopy metrics:0 timeFilter:v88 filepath:v87];
   v82 = [_DASLatencyProjector computeFeatureTimeline:"computeFeatureTimeline:installationEvents:" installationEvents:?];
-  v24 = [(_DASLatencyProjector *)self getTasksForFeatures:v86 timeFilter:0 filepath:v87];
+  v24 = [(_DASLatencyProjector *)self getTasksForFeatures:timelinesCopy timeFilter:0 filepath:v87];
   v25 = +[NSMutableSet set];
   v116 = 0u;
   v117 = 0u;
@@ -3981,16 +3981,16 @@ LABEL_4:
         v40 = *(*(&v112 + 1) + 8 * k);
         v41 = objc_autoreleasePoolPush();
         v42 = +[NSMutableDictionary dictionary];
-        v43 = [v40 metricKeysAndValues];
-        v44 = [v43 objectForKeyedSubscript:@"CheckpointState"];
+        metricKeysAndValues4 = [v40 metricKeysAndValues];
+        v44 = [metricKeysAndValues4 objectForKeyedSubscript:@"CheckpointState"];
         [v42 setObject:v44 forKeyedSubscript:@"CheckpointState"];
 
         [v40 epochTimestamp];
         v45 = [NSNumber numberWithDouble:?];
         [v42 setObject:v45 forKeyedSubscript:@"epoch"];
 
-        v46 = [v40 metricKeysAndValues];
-        v47 = [v46 objectForKeyedSubscript:@"TaskName"];
+        metricKeysAndValues5 = [v40 metricKeysAndValues];
+        v47 = [metricKeysAndValues5 objectForKeyedSubscript:@"TaskName"];
         [v42 setObject:v47 forKeyedSubscript:@"TaskName"];
 
         if (v38 < 0)
@@ -4003,8 +4003,8 @@ LABEL_4:
           v48 = [obj objectAtIndex:v38];
         }
 
-        v49 = [v48 metricKeysAndValues];
-        v50 = [v49 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues6 = [v48 metricKeysAndValues];
+        v50 = [metricKeysAndValues6 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v50 doubleValue];
         v52 = v51;
 
@@ -4029,8 +4029,8 @@ LABEL_4:
               v55 = 0;
             }
 
-            v56 = [v55 metricKeysAndValues];
-            v57 = [v56 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+            metricKeysAndValues7 = [v55 metricKeysAndValues];
+            v57 = [metricKeysAndValues7 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
             [v57 doubleValue];
             v52 = v58;
 
@@ -4104,8 +4104,8 @@ LABEL_34:
               }
 
               v68 = *(*(&v104 + 1) + 8 * m);
-              v69 = [v63 metricKeysAndValues];
-              v70 = [v69 objectForKeyedSubscript:@"Identifier"];
+              metricKeysAndValues8 = [v63 metricKeysAndValues];
+              v70 = [metricKeysAndValues8 objectForKeyedSubscript:@"Identifier"];
               v71 = [v70 containsString:v68];
 
               if (v71)
@@ -4117,16 +4117,16 @@ LABEL_34:
                 v74 = [NSNumber numberWithDouble:?];
                 [v73 setObject:v74 forKeyedSubscript:@"epoch"];
 
-                v75 = [v63 metricKeysAndValues];
-                v76 = [v75 objectForKeyedSubscript:@"Identifier"];
+                metricKeysAndValues9 = [v63 metricKeysAndValues];
+                v76 = [metricKeysAndValues9 objectForKeyedSubscript:@"Identifier"];
                 [v73 setObject:v76 forKeyedSubscript:@"Identifier"];
 
-                v77 = [v63 metricKeysAndValues];
-                v78 = [v77 objectForKeyedSubscript:@"ItemsCompleted"];
+                metricKeysAndValues10 = [v63 metricKeysAndValues];
+                v78 = [metricKeysAndValues10 objectForKeyedSubscript:@"ItemsCompleted"];
                 [v73 setObject:v78 forKeyedSubscript:@"ItemsCompleted"];
 
-                v79 = [v63 metricKeysAndValues];
-                v80 = [v79 objectForKeyedSubscript:@"TotalItemCount"];
+                metricKeysAndValues11 = [v63 metricKeysAndValues];
+                v80 = [metricKeysAndValues11 objectForKeyedSubscript:@"TotalItemCount"];
                 [v73 setObject:v80 forKeyedSubscript:@"TotalItemCount"];
 
                 [v100 addObject:v73];
@@ -4159,21 +4159,21 @@ LABEL_34:
   return v85;
 }
 
-- (id)getEligibilityTimelinesForTasks:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)getEligibilityTimelinesForTasks:(id)tasks timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tasksCopy = tasks;
+  filterCopy = filter;
+  filepathCopy = filepath;
   v25 = +[NSMutableDictionary dictionary];
-  v11 = [(_DASLatencyProjector *)self findActivitiesByName:v8];
-  v23 = v10;
-  v24 = v9;
-  v12 = [(_DASLatencyProjector *)self getDeviceConditionTimelines:v9 filepath:v10];
+  v11 = [(_DASLatencyProjector *)self findActivitiesByName:tasksCopy];
+  v23 = filepathCopy;
+  v24 = filterCopy;
+  v12 = [(_DASLatencyProjector *)self getDeviceConditionTimelines:filterCopy filepath:filepathCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v8;
+  v13 = tasksCopy;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -4208,16 +4208,16 @@ LABEL_34:
   return v25;
 }
 
-- (id)getEligibleRuntimeForTask:(id)a3 deviceConditionTimelines:(id)a4
+- (id)getEligibleRuntimeForTask:(id)task deviceConditionTimelines:(id)timelines
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  timelinesCopy = timelines;
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
-  v10 = [v6 requiresPlugin];
-  if (v10)
+  requiresPlugin = [taskCopy requiresPlugin];
+  if (requiresPlugin)
   {
-    v11 = [v7 objectForKeyedSubscript:@"IsPluggedIn"];
+    v11 = [timelinesCopy objectForKeyedSubscript:@"IsPluggedIn"];
     if (![v11 count])
     {
       log = self->_log;
@@ -4232,13 +4232,13 @@ LABEL_34:
     [v9 addObjectsFromArray:v11];
   }
 
-  v12 = [v6 requiresDeviceInactivity];
-  if (!v12)
+  requiresDeviceInactivity = [taskCopy requiresDeviceInactivity];
+  if (!requiresDeviceInactivity)
   {
     goto LABEL_7;
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"UserActivityStatus"];
+  v11 = [timelinesCopy objectForKeyedSubscript:@"UserActivityStatus"];
   if (![v11 count])
   {
     v24 = self->_log;
@@ -4256,13 +4256,13 @@ LABEL_22:
   [v9 addObjectsFromArray:v11];
 
 LABEL_7:
-  LODWORD(v13) = [v6 requiresNetwork];
-  v79 = v6;
+  LODWORD(v13) = [taskCopy requiresNetwork];
+  v79 = taskCopy;
   v80 = v8;
-  v78 = v7;
+  v78 = timelinesCopy;
   if (v13)
   {
-    v14 = [v7 objectForKeyedSubscript:@"NetworkQuality"];
+    v14 = [timelinesCopy objectForKeyedSubscript:@"NetworkQuality"];
     if (![v14 count])
     {
       v26 = self->_log;
@@ -4275,11 +4275,11 @@ LABEL_7:
     }
 
     v81 = v13;
-    v86 = v12;
-    v89 = v10;
+    v86 = requiresDeviceInactivity;
+    v89 = requiresPlugin;
     v13 = v9;
     v76 = v14;
-    if ([v6 requiresInexpensiveNetworking])
+    if ([taskCopy requiresInexpensiveNetworking])
     {
       v106 = 0uLL;
       v107 = 0uLL;
@@ -4341,23 +4341,23 @@ LABEL_7:
 
             v31 = *(*(&v108 + 1) + 8 * j);
             v32 = [v31 objectForKeyedSubscript:@"WifiQuality"];
-            v33 = [v32 unsignedIntegerValue];
+            unsignedIntegerValue = [v32 unsignedIntegerValue];
 
             v34 = [v31 objectForKeyedSubscript:@"CellQuality"];
-            v35 = [v34 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v34 unsignedIntegerValue];
 
             v122[0] = @"epoch";
             v36 = [v31 objectForKeyedSubscript:@"epoch"];
             v122[1] = @"NetworkQuality";
             v123[0] = v36;
-            if (v33 <= v35)
+            if (unsignedIntegerValue <= unsignedIntegerValue2)
             {
-              v37 = v35;
+              v37 = unsignedIntegerValue2;
             }
 
             else
             {
-              v37 = v33;
+              v37 = unsignedIntegerValue;
             }
 
             v38 = [NSNumber numberWithUnsignedInteger:v37];
@@ -4373,25 +4373,25 @@ LABEL_7:
       }
     }
 
-    v6 = v79;
+    taskCopy = v79;
     v8 = v80;
-    v7 = v78;
+    timelinesCopy = v78;
     v9 = v13;
-    LOBYTE(v10) = v89;
-    LOBYTE(v12) = v86;
+    LOBYTE(requiresPlugin) = v89;
+    LOBYTE(requiresDeviceInactivity) = v86;
     LOBYTE(v13) = v81;
   }
 
-  v40 = [v6 dataBudgeted];
-  if (v40)
+  dataBudgeted = [taskCopy dataBudgeted];
+  if (dataBudgeted)
   {
-    v14 = [v7 objectForKeyedSubscript:@"NetworkQuality"];
+    v14 = [timelinesCopy objectForKeyedSubscript:@"NetworkQuality"];
     if ([v14 count])
     {
       v82 = v13;
-      v84 = self;
-      v87 = v12;
-      v90 = v10;
+      selfCopy = self;
+      v87 = requiresDeviceInactivity;
+      v90 = requiresPlugin;
       v41 = v9;
       v102 = 0u;
       v103 = 0u;
@@ -4429,13 +4429,13 @@ LABEL_7:
         while (v43);
       }
 
-      v6 = v79;
+      taskCopy = v79;
       v8 = v80;
-      v7 = v78;
+      timelinesCopy = v78;
       v9 = v41;
-      LOBYTE(v10) = v90;
-      LOBYTE(v12) = v87;
-      self = v84;
+      LOBYTE(requiresPlugin) = v90;
+      LOBYTE(requiresDeviceInactivity) = v87;
+      self = selfCopy;
       LOBYTE(v13) = v82;
       goto LABEL_46;
     }
@@ -4473,10 +4473,10 @@ LABEL_46:
     if (v88)
     {
       v53 = 0;
-      v54 = v10 ^ 1;
-      LOBYTE(objc) = v12 ^ 1;
+      bOOLValue = requiresPlugin ^ 1;
+      LOBYTE(objc) = requiresDeviceInactivity ^ 1;
       v55 = v13 ^ 1;
-      v56 = v40 ^ 1;
+      v56 = dataBudgeted ^ 1;
       v85 = *v97;
       do
       {
@@ -4493,7 +4493,7 @@ LABEL_46:
           if (v59)
           {
             v60 = [v58 objectForKeyedSubscript:@"IsPluggedIn"];
-            v54 = [v60 BOOLValue];
+            bOOLValue = [v60 BOOLValue];
           }
 
           v61 = [v58 objectForKey:@"UserActivityStatus"];
@@ -4520,7 +4520,7 @@ LABEL_46:
             v56 = [v66 integerValue] > 0;
           }
 
-          if ((v53 & 1) != (v54 & objc & (v55 & v56) & 1))
+          if ((v53 & 1) != (bOOLValue & objc & (v55 & v56) & 1))
           {
             v67 = [v58 objectForKeyedSubscript:@"epoch"];
             v68 = v67;
@@ -4534,7 +4534,7 @@ LABEL_46:
               [v80 addObject:v69];
             }
 
-            v53 = v54 & objc & v55 & v56;
+            v53 = bOOLValue & objc & v55 & v56;
             v91 = v68;
           }
         }
@@ -4548,8 +4548,8 @@ LABEL_46:
     v8 = v80;
     v70 = v80;
 
-    v7 = v78;
-    v6 = v79;
+    timelinesCopy = v78;
+    taskCopy = v79;
     v9 = v77;
   }
 
@@ -4569,11 +4569,11 @@ LABEL_73:
   return v8;
 }
 
-- (id)getDeviceConditionTimelines:(id)a3 filepath:(id)a4
+- (id)getDeviceConditionTimelines:(id)timelines filepath:(id)filepath
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  timelinesCopy = timelines;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
@@ -4589,14 +4589,14 @@ LABEL_73:
   v23 = [_DASLatencyProjector computeDeviceConditionsStatus:"computeDeviceConditionsStatus:metric:" metric:?];
   [v8 setObject:? forKeyedSubscript:?];
   v10 = [NSSet setWithObjects:@"WifiQuality", @"CellQuality", @"DataBudget", 0];
-  v22 = [v9 getPPSTimeSeries:@"BackgroundProcessing" category:@"SystemConditionsNetwork" valueFilter:0 metrics:v10 timeFilter:v6 filepath:v7 error:0];
+  v22 = [v9 getPPSTimeSeries:@"BackgroundProcessing" category:@"SystemConditionsNetwork" valueFilter:0 metrics:v10 timeFilter:timelinesCopy filepath:filepathCopy error:0];
   v21 = [_DASLatencyProjector computeDeviceConditionsStatus:"computeDeviceConditionsStatus:gatherMetrics:" gatherMetrics:?];
   [v8 setObject:? forKeyedSubscript:?];
   v11 = [NSSet setWithObjects:@"UserActivityStatus", @"CPUPressure", @"ThermalPressure", 0];
   v29 = v9;
-  v30 = v7;
-  v31 = v6;
-  v12 = [v9 getPPSTimeSeries:@"BackgroundProcessing" category:@"SystemConditionsPowerManagement" valueFilter:0 metrics:v11 timeFilter:v6 filepath:v7 error:0];
+  v30 = filepathCopy;
+  v31 = timelinesCopy;
+  v12 = [v9 getPPSTimeSeries:@"BackgroundProcessing" category:@"SystemConditionsPowerManagement" valueFilter:0 metrics:v11 timeFilter:timelinesCopy filepath:filepathCopy error:0];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -4630,22 +4630,22 @@ LABEL_73:
   return v8;
 }
 
-- (id)getSchedulerEfficiencyMetrics:(id)a3 filepath:(id)a4
+- (id)getSchedulerEfficiencyMetrics:(id)metrics filepath:(id)filepath
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  metricsCopy = metrics;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
-  v135 = self;
+  selfCopy = self;
   v116 = +[NSMutableDictionary dictionary];
   +[_DASPPSDataManager sharedInstance];
   v117 = v161 = 0;
-  v118 = v7;
-  v119 = v6;
-  v8 = [v117 getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskMetadata" valueFilter:0 metrics:0 timeFilter:v6 filepath:v7 error:&v161];
+  v118 = filepathCopy;
+  v119 = metricsCopy;
+  v8 = [v117 getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskMetadata" valueFilter:0 metrics:0 timeFilter:metricsCopy filepath:filepathCopy error:&v161];
   v9 = v161;
   v145 = +[NSMutableDictionary dictionary];
   v157 = 0u;
@@ -4668,10 +4668,10 @@ LABEL_73:
         }
 
         v14 = *(*(&v157 + 1) + 8 * i);
-        v15 = [v14 metricKeysAndValues];
-        v16 = [v14 metricKeysAndValues];
-        v17 = [v16 objectForKeyedSubscript:@"TaskID"];
-        [v145 setObject:v15 forKeyedSubscript:v17];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v17 = [metricKeysAndValues2 objectForKeyedSubscript:@"TaskID"];
+        [v145 setObject:metricKeysAndValues forKeyedSubscript:v17];
       }
 
       v11 = [obj countByEnumeratingWithState:&v157 objects:v170 count:16];
@@ -4709,11 +4709,11 @@ LABEL_73:
         }
 
         v26 = *(*(&v151 + 1) + 8 * j);
-        v27 = [v26 metricKeysAndValues];
-        v28 = [v27 objectForKeyedSubscript:@"TaskInstanceID"];
+        metricKeysAndValues3 = [v26 metricKeysAndValues];
+        v28 = [metricKeysAndValues3 objectForKeyedSubscript:@"TaskInstanceID"];
 
-        v29 = [v26 metricKeysAndValues];
-        v30 = [v29 objectForKeyedSubscript:@"TaskID"];
+        metricKeysAndValues4 = [v26 metricKeysAndValues];
+        v30 = [metricKeysAndValues4 objectForKeyedSubscript:@"TaskID"];
 
         v31 = [v145 objectForKeyedSubscript:v30];
         [v21 setObject:v31 forKeyedSubscript:v28];
@@ -4755,7 +4755,7 @@ LABEL_73:
   v124 = 0.0;
   v38 = 0.0;
   v39 = 0.0;
-  v40 = v135;
+  v40 = selfCopy;
   do
   {
     v41 = 0;
@@ -4768,17 +4768,17 @@ LABEL_73:
       }
 
       v42 = *(*(&v147 + 1) + 8 * v41);
-      v43 = [v42 metricKeysAndValues];
-      v146 = [v43 objectForKeyedSubscript:@"TaskInstanceID"];
+      metricKeysAndValues5 = [v42 metricKeysAndValues];
+      v146 = [metricKeysAndValues5 objectForKeyedSubscript:@"TaskInstanceID"];
 
-      v44 = [v42 metricKeysAndValues];
-      v45 = [v44 objectForKeyedSubscript:@"StartDate"];
+      metricKeysAndValues6 = [v42 metricKeysAndValues];
+      v45 = [metricKeysAndValues6 objectForKeyedSubscript:@"StartDate"];
 
-      v46 = [v42 metricKeysAndValues];
-      v47 = [v46 objectForKeyedSubscript:@"EndDate"];
+      metricKeysAndValues7 = [v42 metricKeysAndValues];
+      v47 = [metricKeysAndValues7 objectForKeyedSubscript:@"EndDate"];
 
-      v48 = [(NSErrorUserInfoKey *)v35[124] null];
-      if ([v45 isEqual:v48])
+      null = [(NSErrorUserInfoKey *)v35[124] null];
+      if ([v45 isEqual:null])
       {
 
 LABEL_25:
@@ -4786,8 +4786,8 @@ LABEL_25:
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
           v52 = log;
-          v53 = [v42 metricKeysAndValues];
-          v54 = [v53 objectForKeyedSubscript:@"TaskInstanceID"];
+          metricKeysAndValues8 = [v42 metricKeysAndValues];
+          v54 = [metricKeysAndValues8 objectForKeyedSubscript:@"TaskInstanceID"];
           *buf = 138412802;
           v163 = v54;
           v164 = 2112;
@@ -4800,8 +4800,8 @@ LABEL_25:
         goto LABEL_70;
       }
 
-      v49 = [(NSErrorUserInfoKey *)v35[124] null];
-      v50 = [v47 isEqual:v49];
+      null2 = [(NSErrorUserInfoKey *)v35[124] null];
+      v50 = [v47 isEqual:null2];
 
       if (v50)
       {
@@ -4812,8 +4812,8 @@ LABEL_25:
       v56 = v55;
       [v45 doubleValue];
       v58 = v57;
-      v59 = [v42 metricKeysAndValues];
-      v60 = [v59 objectForKeyedSubscript:@"IndeedIntensive"];
+      metricKeysAndValues9 = [v42 metricKeysAndValues];
+      v60 = [metricKeysAndValues9 objectForKeyedSubscript:@"IndeedIntensive"];
       v61 = +[NSNull null];
       if ([v60 isEqual:v61])
       {
@@ -4821,11 +4821,11 @@ LABEL_25:
 
       else
       {
-        v62 = [v42 metricKeysAndValues];
-        v63 = [v62 objectForKeyedSubscript:@"IndeedIntensive"];
-        v64 = [v63 BOOLValue];
+        metricKeysAndValues10 = [v42 metricKeysAndValues];
+        v63 = [metricKeysAndValues10 objectForKeyedSubscript:@"IndeedIntensive"];
+        bOOLValue = [v63 BOOLValue];
 
-        if (v64)
+        if (bOOLValue)
         {
           [v47 doubleValue];
           v66 = v65;
@@ -4852,7 +4852,7 @@ LABEL_25:
           {
 
             v74 = v73;
-            v40 = v135;
+            v40 = selfCopy;
             goto LABEL_63;
           }
 
@@ -4871,7 +4871,7 @@ LABEL_25:
           {
             v77 = 1;
             v74 = v138;
-            v40 = v135;
+            v40 = selfCopy;
             goto LABEL_58;
           }
         }
@@ -4888,7 +4888,7 @@ LABEL_25:
           {
             v77 = 1;
             v74 = v138;
-            v40 = v135;
+            v40 = selfCopy;
             goto LABEL_56;
           }
         }
@@ -4906,7 +4906,7 @@ LABEL_25:
           {
             v77 = 1;
             v74 = v138;
-            v40 = v135;
+            v40 = selfCopy;
             goto LABEL_54;
           }
         }
@@ -4921,12 +4921,12 @@ LABEL_25:
           v74 = v138;
           if (v81)
           {
-            v40 = v135;
+            v40 = selfCopy;
             v70 = v122;
             goto LABEL_55;
           }
 
-          v40 = v135;
+          v40 = selfCopy;
           v70 = v122;
 LABEL_54:
         }
@@ -4934,20 +4934,20 @@ LABEL_54:
         else
         {
           v84 = [v69 objectForKeyedSubscript:@"IsDiskIntensive"];
-          v120 = [v84 BOOLValue];
+          bOOLValue2 = [v84 BOOLValue];
 
           v74 = v138;
           if ((v81 & 1) == 0)
           {
-            v40 = v135;
+            v40 = selfCopy;
             v70 = v122;
-            v77 = v120;
+            v77 = bOOLValue2;
             goto LABEL_54;
           }
 
-          v40 = v135;
+          v40 = selfCopy;
           v70 = v122;
-          v77 = v120;
+          v77 = bOOLValue2;
         }
 
 LABEL_55:
@@ -4994,11 +4994,11 @@ LABEL_64:
         goto LABEL_65;
       }
 
-      v40 = v135;
+      v40 = selfCopy;
 LABEL_65:
       v39 = v39 + v56 - v58;
-      v88 = [v42 metricKeysAndValues];
-      v89 = [v88 objectForKeyedSubscript:@"ScheduleBeforeDate"];
+      metricKeysAndValues11 = [v42 metricKeysAndValues];
+      v89 = [metricKeysAndValues11 objectForKeyedSubscript:@"ScheduleBeforeDate"];
 
       [v45 doubleValue];
       v91 = v90;
@@ -5011,8 +5011,8 @@ LABEL_65:
 
       [v45 doubleValue];
       v95 = v94;
-      v96 = [v42 metricKeysAndValues];
-      v97 = [v96 objectForKeyedSubscript:@"ScheduleAfterDate"];
+      metricKeysAndValues12 = [v42 metricKeysAndValues];
+      v97 = [metricKeysAndValues12 objectForKeyedSubscript:@"ScheduleAfterDate"];
       [v97 doubleValue];
       v99 = v95 - v98;
 
@@ -5022,8 +5022,8 @@ LABEL_65:
         v34 = v99;
       }
 
-      v100 = [v42 metricKeysAndValues];
-      v101 = [v100 objectForKeyedSubscript:@"SuspensionReason"];
+      metricKeysAndValues13 = [v42 metricKeysAndValues];
+      v101 = [metricKeysAndValues13 objectForKeyedSubscript:@"SuspensionReason"];
 
       v102 = +[NSNull null];
       v103 = [v101 isEqual:v102];
@@ -5073,11 +5073,11 @@ LABEL_74:
   return v116;
 }
 
-- (id)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)a3 filepath:(id)a4
+- (id)getOvernightIntensiveSchedulerEfficiencyMetrics:(id)metrics filepath:(id)filepath
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  metricsCopy = metrics;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
@@ -5085,13 +5085,13 @@ LABEL_74:
   v165 = +[NSMutableDictionary dictionary];
   v174 = +[NSMutableArray array];
   v8 = +[_DASPPSDataManager sharedInstance];
-  v193 = self;
-  v9 = [(_DASLatencyProjector *)self taskIsOvernightIntensivePredicate];
+  selfCopy = self;
+  taskIsOvernightIntensivePredicate = [(_DASLatencyProjector *)self taskIsOvernightIntensivePredicate];
   v257 = 0;
   v166 = v8;
-  v167 = v7;
-  v168 = v6;
-  v10 = [v8 getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskMetadata" valueFilter:v9 metrics:0 timeFilter:v6 filepath:v7 error:&v257];
+  v167 = filepathCopy;
+  v168 = metricsCopy;
+  v10 = [v8 getPPSTimeSeries:@"BackgroundProcessing" category:@"TaskMetadata" valueFilter:taskIsOvernightIntensivePredicate metrics:0 timeFilter:metricsCopy filepath:filepathCopy error:&v257];
   v11 = v257;
 
   v181 = +[NSMutableDictionary dictionary];
@@ -5115,10 +5115,10 @@ LABEL_74:
         }
 
         v16 = *(*(&v253 + 1) + 8 * i);
-        v17 = [v16 metricKeysAndValues];
-        v18 = [v16 metricKeysAndValues];
-        v19 = [v18 objectForKeyedSubscript:@"TaskID"];
-        [v181 setObject:v17 forKeyedSubscript:v19];
+        metricKeysAndValues = [v16 metricKeysAndValues];
+        metricKeysAndValues2 = [v16 metricKeysAndValues];
+        v19 = [metricKeysAndValues2 objectForKeyedSubscript:@"TaskID"];
+        [v181 setObject:metricKeysAndValues forKeyedSubscript:v19];
       }
 
       v13 = [obj countByEnumeratingWithState:&v253 objects:v275 count:16];
@@ -5156,11 +5156,11 @@ LABEL_74:
         }
 
         v26 = *(*(&v247 + 1) + 8 * j);
-        v27 = [v26 metricKeysAndValues];
-        v28 = [v27 objectForKeyedSubscript:@"TaskInstanceID"];
+        metricKeysAndValues3 = [v26 metricKeysAndValues];
+        v28 = [metricKeysAndValues3 objectForKeyedSubscript:@"TaskInstanceID"];
 
-        v29 = [v26 metricKeysAndValues];
-        v30 = [v29 objectForKeyedSubscript:@"TaskID"];
+        metricKeysAndValues4 = [v26 metricKeysAndValues];
+        v30 = [metricKeysAndValues4 objectForKeyedSubscript:@"TaskID"];
 
         v31 = [v181 objectForKeyedSubscript:v30];
 
@@ -5180,8 +5180,8 @@ LABEL_74:
   v197 = +[NSCountedSet set];
   v188 = +[NSCountedSet set];
   v187 = +[NSCountedSet set];
-  v163 = [(_DASLatencyProjector *)v193 getDeviceConditionTimelines:v168 filepath:v167];
-  [(_DASLatencyProjector *)v193 computeIntensiveEligibleSessions:?];
+  v163 = [(_DASLatencyProjector *)selfCopy getDeviceConditionTimelines:v168 filepath:v167];
+  [(_DASLatencyProjector *)selfCopy computeIntensiveEligibleSessions:?];
   v243 = 0u;
   v244 = 0u;
   v245 = 0u;
@@ -5232,8 +5232,8 @@ LABEL_74:
               }
 
               v44 = *(*(&v239 + 1) + 8 * k);
-              v45 = [v44 metricKeysAndValues];
-              v46 = [v45 objectForKeyedSubscript:@"TaskInstanceID"];
+              metricKeysAndValues5 = [v44 metricKeysAndValues];
+              v46 = [metricKeysAndValues5 objectForKeyedSubscript:@"TaskInstanceID"];
               v47 = [v39 objectForKeyedSubscript:v46];
 
               if (v47)
@@ -5243,23 +5243,23 @@ LABEL_74:
                 {
                   [v199 addObject:v48];
                   [v197 addObject:v48];
-                  v49 = [v44 metricKeysAndValues];
-                  v50 = [v49 objectForKeyedSubscript:@"StartDate"];
-                  v51 = [v50 unsignedIntegerValue];
+                  metricKeysAndValues6 = [v44 metricKeysAndValues];
+                  v50 = [metricKeysAndValues6 objectForKeyedSubscript:@"StartDate"];
+                  unsignedIntegerValue = [v50 unsignedIntegerValue];
 
-                  if (v51)
+                  if (unsignedIntegerValue)
                   {
-                    v52 = v51;
-                    if (v51 <= [v195 unsignedIntegerValue])
+                    v52 = unsignedIntegerValue;
+                    if (unsignedIntegerValue <= [v195 unsignedIntegerValue])
                     {
                       [v190 addObject:v48];
                       [v188 addObject:v48];
-                      v53 = [v44 metricKeysAndValues];
-                      v54 = [v53 objectForKeyedSubscript:@"EndDate"];
+                      metricKeysAndValues7 = [v44 metricKeysAndValues];
+                      v54 = [metricKeysAndValues7 objectForKeyedSubscript:@"EndDate"];
                       v42 = v42 + [v54 unsignedIntegerValue] - v52;
 
-                      v55 = [v44 metricKeysAndValues];
-                      v56 = [v55 objectForKeyedSubscript:@"SuspensionReason"];
+                      metricKeysAndValues8 = [v44 metricKeysAndValues];
+                      v56 = [metricKeysAndValues8 objectForKeyedSubscript:@"SuspensionReason"];
                       v57 = +[NSNull null];
                       v58 = [v56 isEqual:v57];
 
@@ -5276,7 +5276,7 @@ LABEL_74:
 
                 else
                 {
-                  log = v193->_log;
+                  log = selfCopy->_log;
                   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 138412290;
@@ -5617,22 +5617,22 @@ LABEL_74:
         }
 
         v126 = *(*(&v207 + 1) + 8 * i1);
-        v127 = [v126 metricKeysAndValues];
-        v128 = [v127 objectForKeyedSubscript:@"TaskInstanceID"];
+        metricKeysAndValues9 = [v126 metricKeysAndValues];
+        v128 = [metricKeysAndValues9 objectForKeyedSubscript:@"TaskInstanceID"];
         v129 = [v124 objectForKeyedSubscript:v128];
 
         if (v129)
         {
-          v130 = [v126 metricKeysAndValues];
-          v131 = [v130 objectForKeyedSubscript:@"StartDate"];
+          metricKeysAndValues10 = [v126 metricKeysAndValues];
+          v131 = [metricKeysAndValues10 objectForKeyedSubscript:@"StartDate"];
 
           v132 = +[NSNull null];
           v133 = [v131 isEqual:v132];
 
           if ((v133 & 1) == 0)
           {
-            v134 = [v126 metricKeysAndValues];
-            [(_DASLatencyProjector *)v193 computeEligibleSchedulingDelay:v134 eligibilityTimeline:v171];
+            metricKeysAndValues11 = [v126 metricKeysAndValues];
+            [(_DASLatencyProjector *)selfCopy computeEligibleSchedulingDelay:metricKeysAndValues11 eligibilityTimeline:v171];
             v136 = v135;
 
             v123 = v123 + v136;
@@ -5646,8 +5646,8 @@ LABEL_74:
               v119 = v136;
             }
 
-            v137 = [v126 metricKeysAndValues];
-            v138 = [v137 objectForKeyedSubscript:@"ScheduleBeforeDate"];
+            metricKeysAndValues12 = [v126 metricKeysAndValues];
+            v138 = [metricKeysAndValues12 objectForKeyedSubscript:@"ScheduleBeforeDate"];
 
             [v131 doubleValue];
             v140 = v139;
@@ -5660,8 +5660,8 @@ LABEL_74:
 
             [v131 doubleValue];
             v144 = v143;
-            v145 = [v126 metricKeysAndValues];
-            v146 = [v145 objectForKeyedSubscript:@"ScheduleAfterDate"];
+            metricKeysAndValues13 = [v126 metricKeysAndValues];
+            v146 = [metricKeysAndValues13 objectForKeyedSubscript:@"ScheduleAfterDate"];
             [v146 doubleValue];
             v148 = v144 - v147;
 
@@ -5745,22 +5745,22 @@ LABEL_74:
   return v165;
 }
 
-- (id)getInstallTimeline:(id)a3 filepath:(id)a4
+- (id)getInstallTimeline:(id)timeline filepath:(id)filepath
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  timelineCopy = timeline;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
   v8 = +[_DASPPSDataManager sharedInstance];
-  v25 = v7;
-  v9 = [v8 loadConfig:0 timeFilter:v6 filepath:v7];
+  v25 = filepathCopy;
+  v9 = [v8 loadConfig:0 timeFilter:timelineCopy filepath:filepathCopy];
 
   v24 = v9;
-  v26 = v6;
-  v10 = [(_DASLatencyProjector *)self getRecentUniqueInstallationEvents:v9 timeFilter:v6];
+  v26 = timelineCopy;
+  v10 = [(_DASLatencyProjector *)self getRecentUniqueInstallationEvents:v9 timeFilter:timelineCopy];
   v29 = +[NSMutableArray array];
   v30 = 0u;
   v31 = 0u;
@@ -5784,16 +5784,16 @@ LABEL_74:
         v14 = *(*(&v30 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
         v16 = +[NSMutableDictionary dictionary];
-        v17 = [v14 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v18 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v16 setObject:v18 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
-        v19 = [v14 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"Build"];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"Build"];
         [v16 setObject:v20 forKeyedSubscript:@"Build"];
 
-        v21 = [v14 metricKeysAndValues];
-        v22 = [v21 objectForKeyedSubscript:@"InstallType"];
+        metricKeysAndValues3 = [v14 metricKeysAndValues];
+        v22 = [metricKeysAndValues3 objectForKeyedSubscript:@"InstallType"];
         [v16 setObject:v22 forKeyedSubscript:@"InstallType"];
 
         [v29 addObject:v16];
@@ -5809,19 +5809,19 @@ LABEL_74:
   return v29;
 }
 
-- (id)getBuddyData:(id)a3 filepath:(id)a4
+- (id)getBuddyData:(id)data filepath:(id)filepath
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
   v8 = +[_DASPPSDataManager sharedInstance];
-  v22 = v7;
-  v23 = v6;
-  v9 = [v8 loadBuddyData:0 timeFilter:v6 filepath:v7];
+  v22 = filepathCopy;
+  v23 = dataCopy;
+  v9 = [v8 loadBuddyData:0 timeFilter:dataCopy filepath:filepathCopy];
 
   v25 = +[NSMutableArray array];
   v26 = 0u;
@@ -5846,12 +5846,12 @@ LABEL_74:
         v14 = *(*(&v26 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
         v16 = +[NSMutableDictionary dictionary];
-        v17 = [v14 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"SetupDate"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v18 = [metricKeysAndValues objectForKeyedSubscript:@"SetupDate"];
         [v16 setObject:v18 forKeyedSubscript:@"SetupDate"];
 
-        v19 = [v14 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"TransferMethod"];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"TransferMethod"];
         [v16 setObject:v20 forKeyedSubscript:@"TransferMethod"];
 
         [v25 addObject:v16];
@@ -5867,22 +5867,22 @@ LABEL_74:
   return v25;
 }
 
-- (id)getActivityTimelines:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)getActivityTimelines:(id)timelines timeFilter:(id)filter filepath:(id)filepath
 {
-  v62 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  timelinesCopy = timelines;
+  filterCopy = filter;
+  filepathCopy = filepath;
+  if (!filepathCopy)
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
   }
 
   v59 = +[NSMutableDictionary dictionary];
   v58 = +[_DASPPSDataManager sharedInstance];
-  v60 = v9;
-  v55 = [v58 loadConfig:0 timeFilter:v8 filepath:v9];
-  v57 = self;
-  v61 = v8;
+  v60 = filepathCopy;
+  v55 = [v58 loadConfig:0 timeFilter:filterCopy filepath:filepathCopy];
+  selfCopy = self;
+  v61 = filterCopy;
   v10 = [_DASLatencyProjector getRecentUniqueInstallationEvents:"getRecentUniqueInstallationEvents:timeFilter:" timeFilter:?];
   v67 = +[NSMutableArray array];
   v76 = 0u;
@@ -5907,16 +5907,16 @@ LABEL_74:
         v14 = *(*(&v76 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
         v16 = +[NSMutableDictionary dictionary];
-        v17 = [v14 metricKeysAndValues];
-        v18 = [v17 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+        metricKeysAndValues = [v14 metricKeysAndValues];
+        v18 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
         [v16 setObject:v18 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
-        v19 = [v14 metricKeysAndValues];
-        v20 = [v19 objectForKeyedSubscript:@"Build"];
+        metricKeysAndValues2 = [v14 metricKeysAndValues];
+        v20 = [metricKeysAndValues2 objectForKeyedSubscript:@"Build"];
         [v16 setObject:v20 forKeyedSubscript:@"Build"];
 
-        v21 = [v14 metricKeysAndValues];
-        v22 = [v21 objectForKeyedSubscript:@"InstallType"];
+        metricKeysAndValues3 = [v14 metricKeysAndValues];
+        v22 = [metricKeysAndValues3 objectForKeyedSubscript:@"InstallType"];
         [v16 setObject:v22 forKeyedSubscript:@"InstallType"];
 
         [v67 addObject:v16];
@@ -5930,31 +5930,31 @@ LABEL_74:
   }
 
   [v59 setObject:v67 forKeyedSubscript:@"Installation Events"];
-  v23 = [(_DASLatencyProjector *)v57 getBuddyData:v61 filepath:v60];
+  v23 = [(_DASLatencyProjector *)selfCopy getBuddyData:v61 filepath:v60];
   [v59 setObject:v23 forKeyedSubscript:@"Buddy Setup Events"];
 
-  v24 = [v58 loadTaskCheckpoints:v62 metrics:0 timeFilter:v61 filepath:v60];
-  v25 = [v58 loadCustomCheckpoints:v62 metrics:0 timeFilter:v61 filepath:v60];
+  v24 = [v58 loadTaskCheckpoints:timelinesCopy metrics:0 timeFilter:v61 filepath:v60];
+  v25 = [v58 loadCustomCheckpoints:timelinesCopy metrics:0 timeFilter:v61 filepath:v60];
   [v24 mergeWithTimeSeries:v25];
-  v26 = [v61 endDate];
-  v53 = [(_DASLatencyProjector *)v57 computeElapsedRunTimesFromCheckpoints:v24 endDate:v26];
+  endDate = [v61 endDate];
+  v53 = [(_DASLatencyProjector *)selfCopy computeElapsedRunTimesFromCheckpoints:v24 endDate:endDate];
 
-  v66 = [(_DASLatencyProjector *)v57 computeActivityTimelines:v24 installationEvents:obj];
+  v66 = [(_DASLatencyProjector *)selfCopy computeActivityTimelines:v24 installationEvents:obj];
 
   v27 = [NSSet setWithObject:@"IsPluggedIn"];
   v28 = [v58 getPPSTimeSeries:@"BackgroundProcessing" category:@"SystemConditionsBattery" valueFilter:0 metrics:v27 timeFilter:v61 filepath:v60 error:0];
 
-  v29 = [(_DASLatencyProjector *)v57 computeOnBatteryRunTimes:v24 plugInCheckpoints:v28];
+  v29 = [(_DASLatencyProjector *)selfCopy computeOnBatteryRunTimes:v24 plugInCheckpoints:v28];
 
-  v30 = [v58 loadTaskBlockingReasons:v62 metrics:0 timeFilter:v61 filepath:v60];
-  obja = [(_DASLatencyProjector *)v57 computeActivityBlockingReasons:v30];
+  v30 = [v58 loadTaskBlockingReasons:timelinesCopy metrics:0 timeFilter:v61 filepath:v60];
+  obja = [(_DASLatencyProjector *)selfCopy computeActivityBlockingReasons:v30];
 
-  v31 = [v58 loadTaskProgress:v62 metrics:0 timeFilter:v61 filepath:v60];
-  v56 = [(_DASLatencyProjector *)v57 computeProgressTimelines:v31];
+  v31 = [v58 loadTaskProgress:timelinesCopy metrics:0 timeFilter:v61 filepath:v60];
+  v56 = [(_DASLatencyProjector *)selfCopy computeProgressTimelines:v31];
 
-  v32 = v57;
-  v33 = [v58 loadTaskThroughput:v62 metrics:0 timeFilter:v61 filepath:v60];
-  v54 = [(_DASLatencyProjector *)v57 computeThroughputTimelines:v33];
+  v32 = selfCopy;
+  v33 = [v58 loadTaskThroughput:timelinesCopy metrics:0 timeFilter:v61 filepath:v60];
+  v54 = [(_DASLatencyProjector *)selfCopy computeThroughputTimelines:v33];
 
   v34 = +[NSMutableDictionary dictionary];
   v72 = 0u;
@@ -5978,7 +5978,7 @@ LABEL_74:
 
         v40 = *(*(&v72 + 1) + 8 * j);
         v41 = [v35 objectForKeyedSubscript:v40];
-        v42 = [(_DASLatencyProjector *)v57 computeElapsedRunTimeTotals:v41];
+        v42 = [(_DASLatencyProjector *)selfCopy computeElapsedRunTimeTotals:v41];
         [v34 setObject:v42 forKeyedSubscript:v40];
       }
 
@@ -6043,42 +6043,42 @@ LABEL_74:
   return v59;
 }
 
-- (id)computeEstimatedMADCompletionTime:(id)a3 checkpointTimeSeries:(id)a4 progressTimeSeries:(id)a5 blockingReasonsTimeSeries:(id)a6 activity:(id)a7 osUpgradeTimestamp:(id)a8 endDate:(id)a9
+- (id)computeEstimatedMADCompletionTime:(id)time checkpointTimeSeries:(id)series progressTimeSeries:(id)timeSeries blockingReasonsTimeSeries:(id)reasonsTimeSeries activity:(id)activity osUpgradeTimestamp:(id)timestamp endDate:(id)date
 {
-  v60 = a6;
-  v59 = a8;
-  v15 = a9;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  reasonsTimeSeriesCopy = reasonsTimeSeries;
+  timestampCopy = timestamp;
+  dateCopy = date;
+  activityCopy = activity;
+  timeSeriesCopy = timeSeries;
+  seriesCopy = series;
+  timeCopy = time;
   v20 = +[NSMutableDictionary dictionary];
-  v21 = [(_DASLatencyProjector *)self computeElapsedRunTimesFromCheckpoints:v18 endDate:v15];
+  v21 = [(_DASLatencyProjector *)self computeElapsedRunTimesFromCheckpoints:seriesCopy endDate:dateCopy];
 
-  v22 = [(_DASLatencyProjector *)self getRecentUniqueProgressEvents:v17];
+  v22 = [(_DASLatencyProjector *)self getRecentUniqueProgressEvents:timeSeriesCopy];
 
-  v23 = [v21 objectForKeyedSubscript:v19];
-  v24 = [v22 objectForKeyedSubscript:v19];
-  v25 = [(_DASLatencyProjector *)self computeEstimatedRunTime:v19 elapsedRunTimes:v23 progressEvents:v24 activity:v16 endDate:v15];
+  v23 = [v21 objectForKeyedSubscript:timeCopy];
+  v24 = [v22 objectForKeyedSubscript:timeCopy];
+  v25 = [(_DASLatencyProjector *)self computeEstimatedRunTime:timeCopy elapsedRunTimes:v23 progressEvents:v24 activity:activityCopy endDate:dateCopy];
 
   if (v25 && ([v25 objectForKeyedSubscript:@"Estimated Runtime"], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "doubleValue"), v28 = v27, v26, v29 = -1.0, v28 != -1.0))
   {
     v31 = [v25 objectForKeyedSubscript:@"Overall Progress"];
-    v58 = [v31 unsignedIntValue];
+    unsignedIntValue = [v31 unsignedIntValue];
 
-    [v15 timeIntervalSinceDate:v59];
+    [dateCopy timeIntervalSinceDate:timestampCopy];
     v33 = v32;
     v34 = [v25 objectForKeyedSubscript:@"Estimated Runtime"];
     v35 = [v25 objectForKeyedSubscript:@"Elapsed Runtime"];
-    v36 = [(_DASLatencyProjector *)self computeBlockedDurations:v60];
+    v36 = [(_DASLatencyProjector *)self computeBlockedDurations:reasonsTimeSeriesCopy];
     v37 = [v36 objectForKeyedSubscript:@"UnpluggedOrDeviceActive"];
-    v57 = [v37 unsignedLongValue];
+    unsignedLongValue = [v37 unsignedLongValue];
 
     v38 = [v36 objectForKeyedSubscript:@"Incompatibility"];
-    v56 = [v38 unsignedLongValue];
+    unsignedLongValue2 = [v38 unsignedLongValue];
 
     v39 = [v36 objectForKeyedSubscript:@"SystemConditions"];
-    v55 = [v39 unsignedLongValue];
+    unsignedLongValue3 = [v39 unsignedLongValue];
 
     [v34 doubleValue];
     v41 = v40;
@@ -6089,19 +6089,19 @@ LABEL_74:
     v44 = [NSNumber numberWithUnsignedInteger:v33];
     [v20 setObject:v44 forKeyedSubscript:@"Time Since Upgrade"];
 
-    v45 = [NSNumber numberWithUnsignedInteger:v58];
+    v45 = [NSNumber numberWithUnsignedInteger:unsignedIntValue];
     [v20 setObject:v45 forKeyedSubscript:@"Overall Progress"];
 
     v46 = -1.0;
     v47 = -1.0;
     v48 = -1.0;
-    if (v58)
+    if (unsignedIntValue)
     {
-      v49 = v58 / (100 - v58);
+      v49 = unsignedIntValue / (100 - unsignedIntValue);
       v29 = (v33 / v49);
-      v46 = ((v33 - v57) / v49);
-      v47 = ((v33 - v56) / v49);
-      v48 = ((v33 - v55) / v49);
+      v46 = ((v33 - unsignedLongValue) / v49);
+      v47 = ((v33 - unsignedLongValue2) / v49);
+      v48 = ((v33 - unsignedLongValue3) / v49);
     }
 
     v50 = [NSNumber numberWithDouble:v29];
@@ -6127,12 +6127,12 @@ LABEL_74:
   return v30;
 }
 
-- (id)computeEstimatedMADCompletionTimes:(id)a3 endDate:(id)a4 filepath:(id)a5
+- (id)computeEstimatedMADCompletionTimes:(id)times endDate:(id)date filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  timesCopy = times;
+  dateCopy = date;
+  filepathCopy = filepath;
+  if (filepathCopy)
   {
     v39 = 0;
   }
@@ -6140,35 +6140,35 @@ LABEL_74:
   else
   {
     [(_DASLatencyProjector *)self flushPPSCaches];
-    v39 = [(_DASLatencyProjector *)self findActivitiesByName:v8];
+    v39 = [(_DASLatencyProjector *)self findActivitiesByName:timesCopy];
   }
 
   v40 = +[NSMutableDictionary dictionary];
   v11 = +[_DASPPSDataManager sharedInstance];
-  if (!v9)
+  if (!dateCopy)
   {
-    v9 = +[NSDate date];
+    dateCopy = +[NSDate date];
   }
 
   v12 = [NSDateInterval alloc];
   v13 = [NSDate dateWithTimeIntervalSince1970:0.0];
-  v14 = [v12 initWithStartDate:v13 endDate:v9];
+  v14 = [v12 initWithStartDate:v13 endDate:dateCopy];
 
   v31 = v14;
-  v30 = [v11 loadConfig:0 timeFilter:v14 filepath:v10];
+  v30 = [v11 loadConfig:0 timeFilter:v14 filepath:filepathCopy];
   v38 = [_DASLatencyProjector getLastOSUpgradeTimestamp:"getLastOSUpgradeTimestamp:endDate:eraseInstallOnly:" endDate:? eraseInstallOnly:?];
-  v15 = [[NSDateInterval alloc] initWithStartDate:v38 endDate:v9];
-  v37 = [v11 loadTaskCheckpoints:v8 metrics:0 timeFilter:v15 filepath:v10];
-  v36 = [v11 loadTaskProgress:v8 metrics:0 timeFilter:v15 filepath:v10];
+  v15 = [[NSDateInterval alloc] initWithStartDate:v38 endDate:dateCopy];
+  v37 = [v11 loadTaskCheckpoints:timesCopy metrics:0 timeFilter:v15 filepath:filepathCopy];
+  v36 = [v11 loadTaskProgress:timesCopy metrics:0 timeFilter:v15 filepath:filepathCopy];
   v32 = v11;
-  v33 = v10;
+  v33 = filepathCopy;
   v29 = v15;
-  v35 = [v11 loadIntensiveTaskBlockingReasons:v15 metrics:0 filepath:v10];
+  v35 = [v11 loadIntensiveTaskBlockingReasons:v15 metrics:0 filepath:filepathCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v8;
+  obj = timesCopy;
   v16 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v16)
   {
@@ -6191,11 +6191,11 @@ LABEL_74:
         v24 = [v36 filteredTimeSeriesUsingPredicate:v23];
 
         v25 = [v39 objectForKeyedSubscript:v20];
-        [(_DASLatencyProjector *)self computeEstimatedMADCompletionTime:v20 checkpointTimeSeries:v22 progressTimeSeries:v24 blockingReasonsTimeSeries:v35 activity:v25 osUpgradeTimestamp:v38 endDate:v9];
-        v27 = v26 = v9;
+        [(_DASLatencyProjector *)self computeEstimatedMADCompletionTime:v20 checkpointTimeSeries:v22 progressTimeSeries:v24 blockingReasonsTimeSeries:v35 activity:v25 osUpgradeTimestamp:v38 endDate:dateCopy];
+        v27 = v26 = dateCopy;
         [v40 setObject:v27 forKeyedSubscript:v20];
 
-        v9 = v26;
+        dateCopy = v26;
       }
 
       v17 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -6207,27 +6207,27 @@ LABEL_74:
   return v40;
 }
 
-- (id)computeFeatureDependencyGraphs:(id)a3 timeFilter:(id)a4 filepath:(id)a5
+- (id)computeFeatureDependencyGraphs:(id)graphs timeFilter:(id)filter filepath:(id)filepath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v47 = v10;
-  v42 = [(_DASLatencyProjector *)self getTasksForFeatures:v8 timeFilter:v9 filepath:?];
+  graphsCopy = graphs;
+  filterCopy = filter;
+  filepathCopy = filepath;
+  v11 = filterCopy;
+  v47 = filepathCopy;
+  v42 = [(_DASLatencyProjector *)self getTasksForFeatures:graphsCopy timeFilter:filterCopy filepath:?];
   v43 = +[NSMutableDictionary dictionary];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v8;
+  obj = graphsCopy;
   v44 = [obj countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (v44)
   {
     v40 = *v61;
     *&v12 = 138412546;
     v38 = v12;
-    v41 = v9;
+    v41 = filterCopy;
     do
     {
       v13 = 0;
@@ -6269,8 +6269,8 @@ LABEL_74:
                 v24 = +[_DASPPSDataManager sharedInstance];
                 v25 = [v24 loadTaskDependencyGraph:v23 timeFilter:v11 filepath:v47];
 
-                v26 = [v25 allTasks];
-                [v16 unionSet:v26];
+                allTasks = [v25 allTasks];
+                [v16 unionSet:allTasks];
 
                 if (v20)
                 {
@@ -6327,7 +6327,7 @@ LABEL_74:
                 v48[2] = sub_10010F5A0;
                 v48[3] = &unk_1001B8CE0;
                 v49 = v28;
-                v50 = self;
+                selfCopy = self;
                 v51 = v29;
                 [v20 traverseGraphForTask:v35 updatingNodesWith:v48];
               }

@@ -1,11 +1,11 @@
 @interface PDFCollectionViewLayout
 - (_TtC18HealthExperienceUI23PDFCollectionViewLayout)init;
-- (_TtC18HealthExperienceUI23PDFCollectionViewLayout)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI23PDFCollectionViewLayout)initWithCoder:(id)coder;
 @end
 
 @implementation PDFCollectionViewLayout
 
-- (_TtC18HealthExperienceUI23PDFCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23PDFCollectionViewLayout)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);

@@ -1,11 +1,11 @@
 @interface NSSimpleAttributeDictionary
 + (id)emptyAttributeDictionary;
-+ (id)newWithDictionary:(id)a3;
++ (id)newWithDictionary:(id)dictionary;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)newWithKey:(id)a3 object:(id)a4;
-- (id)objectForKey:(id)a3;
-- (unint64_t)slotForKey:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)newWithKey:(id)key object:(id)object;
+- (id)objectForKey:(id)key;
+- (unint64_t)slotForKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -30,34 +30,34 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
   return result;
 }
 
-+ (id)newWithDictionary:(id)a3
++ (id)newWithDictionary:(id)dictionary
 {
-  v18 = a3;
-  if (a3 && (objc_opt_self(), isKindOfClass = objc_opt_isKindOfClass(), a3 = v18, (isKindOfClass & 1) != 0))
+  dictionaryCopy = dictionary;
+  if (dictionary && (objc_opt_self(), isKindOfClass = objc_opt_isKindOfClass(), dictionary = dictionaryCopy, (isKindOfClass & 1) != 0))
   {
 
-    return v18;
+    return dictionaryCopy;
   }
 
   else
   {
-    v6 = [a3 count];
+    v6 = [dictionary count];
     if (v6)
     {
       v7 = v6;
-      v8 = [v18 keyEnumerator];
+      keyEnumerator = [dictionaryCopy keyEnumerator];
       v9 = objc_opt_self();
       v10 = NSAllocateObject(v9, 24 * v7 - 24, 0);
       v10[2] = v7;
-      v11 = [v8 nextObject];
-      if (v11)
+      nextObject = [keyEnumerator nextObject];
+      if (nextObject)
       {
-        v12 = v11;
+        nextObject2 = nextObject;
         do
         {
-          v13 = [v12 hash];
+          v13 = [nextObject2 hash];
           v14 = v13 % v7;
-          v15 = [v18 objectForKey:v12];
+          v15 = [dictionaryCopy objectForKey:nextObject2];
           while (1)
           {
             v16 = &v10[6 * v14 + 4];
@@ -78,12 +78,12 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
           }
 
           *v16 = v13;
-          *&v10[6 * v14 + 6] = [v12 copyWithZone:0];
+          *&v10[6 * v14 + 6] = [nextObject2 copyWithZone:0];
           *&v10[6 * v14 + 8] = v15;
-          v12 = [v8 nextObject];
+          nextObject2 = [keyEnumerator nextObject];
         }
 
-        while (v12);
+        while (nextObject2);
       }
 
       return v10;
@@ -91,17 +91,17 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
 
     else
     {
-      v17 = [a1 emptyAttributeDictionary];
+      emptyAttributeDictionary = [self emptyAttributeDictionary];
 
-      return v17;
+      return emptyAttributeDictionary;
     }
   }
 }
 
-- (id)newWithKey:(id)a3 object:(id)a4
+- (id)newWithKey:(id)key object:(id)object
 {
   v6 = [(NSSimpleAttributeDictionary *)self slotForKey:?];
-  v7 = self;
+  selfCopy = self;
   v8 = v6;
   numElements = self->numElements;
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -114,10 +114,10 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
     v10 = numElements;
   }
 
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL && ((v11 = self->elements[v6].var0, v11 == a4) || (v12 = [v11 isEqual:a4], v7 = self, v12)))
+  if (v6 != 0x7FFFFFFFFFFFFFFFLL && ((v11 = self->elements[v6].var0, v11 == object) || (v12 = [v11 isEqual:object], selfCopy = self, v12)))
   {
 
-    return v7;
+    return selfCopy;
   }
 
   else
@@ -133,9 +133,9 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
         {
           if (i == self->numElements)
           {
-            hash = [a3 hash];
-            key = a3;
-            var0 = a4;
+            hash = [key hash];
+            key = key;
+            var0 = object;
           }
 
           else
@@ -175,26 +175,26 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
 
     else
     {
-      v29 = a4;
+      objectCopy = object;
       v23 = self->numElements;
       if (v23)
       {
         v24 = 0;
         v25 = v15;
-        v26 = self;
+        selfCopy2 = self;
         do
         {
           if (v8 != v24)
           {
-            v27 = v26->elements[0].key;
-            v25[2] = v26->elements[0].hash;
-            v25[3] = [(value *)v27 copyWithZone:0, v29];
-            v25[4] = v26->elements[0].var0;
+            v27 = selfCopy2->elements[0].key;
+            v25[2] = selfCopy2->elements[0].hash;
+            v25[3] = [(value *)v27 copyWithZone:0, objectCopy];
+            v25[4] = selfCopy2->elements[0].var0;
             v23 = self->numElements;
           }
 
           ++v24;
-          v26 = (v26 + 24);
+          selfCopy2 = (selfCopy2 + 24);
           v25 += 3;
         }
 
@@ -202,8 +202,8 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
       }
 
       v28 = &v15[6 * v8 + 4];
-      *v28 = [a3 hash];
-      v28[1] = [a3 copyWithZone:0];
+      *v28 = [key hash];
+      v28[1] = [key copyWithZone:0];
       v28[2] = v30;
     }
 
@@ -211,7 +211,7 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
   }
 }
 
-- (unint64_t)slotForKey:(id)a3
+- (unint64_t)slotForKey:(id)key
 {
   numElements = self->numElements;
   if (!numElements)
@@ -221,11 +221,11 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
 
   v6 = 0;
   elements = self->elements;
-  for (i = &self->elements[0].key; *i != a3; i += 3)
+  for (i = &self->elements[0].key; *i != key; i += 3)
   {
     if (numElements == ++v6)
     {
-      v9 = [a3 hash];
+      v9 = [key hash];
       v10 = self->numElements;
       v11 = v9 % v10;
       v6 = v9 % v10;
@@ -234,7 +234,7 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
         v12 = &elements[v6];
         if (v12->hash == v9)
         {
-          if (([(value *)v12->key isEqual:a3]& 1) != 0)
+          if (([(value *)v12->key isEqual:key]& 1) != 0)
           {
             return v6;
           }
@@ -261,9 +261,9 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(NSSimpleAttributeDictionary *)self slotForKey:a3];
+  v4 = [(NSSimpleAttributeDictionary *)self slotForKey:key];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -306,7 +306,7 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
   [(NSSimpleAttributeDictionary *)&v6 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v12 = *MEMORY[0x1E69E9840];
   numElements = self->numElements;
@@ -329,14 +329,14 @@ _DWORD *__55__NSSimpleAttributeDictionary_emptyAttributeDictionary__block_invoke
       while (numElements);
     }
 
-    return [objc_msgSend(MEMORY[0x1E695DF90] allocWithZone:{a3), "initWithObjects:forKeys:count:", v10, v11, self->numElements}];
+    return [objc_msgSend(MEMORY[0x1E695DF90] allocWithZone:{zone), "initWithObjects:forKeys:count:", v10, v11, self->numElements}];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NSSimpleAttributeDictionary;
-    return [(NSSimpleAttributeDictionary *)&v9 mutableCopyWithZone:a3];
+    return [(NSSimpleAttributeDictionary *)&v9 mutableCopyWithZone:zone];
   }
 }
 

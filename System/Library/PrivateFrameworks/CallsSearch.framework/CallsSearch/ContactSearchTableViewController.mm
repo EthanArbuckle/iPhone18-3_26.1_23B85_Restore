@@ -1,32 +1,32 @@
 @interface ContactSearchTableViewController
-- (_TtC11CallsSearch32ContactSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC11CallsSearch32ContactSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)callButtonTapped;
 - (void)handleTUIDSLookupManagerStatusChanged;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ContactSearchTableViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB7BE40();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1CFB7BF6C(a3);
+  selfCopy = self;
+  sub_1CFB7BF6C(appear);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1CFB7B9BC();
   if (v5 >> 62)
   {
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1CFB8F780();
   v7 = *(v6 - 8);
@@ -49,16 +49,16 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1CFB7C12C(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_1CFB7C12C(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1CFB8F780();
   v7 = *(v6 - 8);
@@ -66,20 +66,20 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v11 = a3;
-  v12 = self;
-  sub_1CFB7C780(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1CFB7C780(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
 - (void)handleTUIDSLookupManagerStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB7D624();
 }
 
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index
 {
   v6 = sub_1CFB8F780();
   v7 = *(v6 - 8);
@@ -87,9 +87,9 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1CFB7D75C(v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  v13 = sub_1CFB7D75C(controllerCopy);
 
   (*(v7 + 8))(v10, v6);
   return v13;
@@ -97,11 +97,11 @@
 
 - (void)callButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB7D9C0();
 }
 
-- (_TtC11CallsSearch32ContactSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11CallsSearch32ContactSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

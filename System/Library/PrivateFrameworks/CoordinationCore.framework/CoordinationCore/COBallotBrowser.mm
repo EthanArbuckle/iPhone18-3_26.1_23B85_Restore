@@ -1,28 +1,28 @@
 @interface COBallotBrowser
-- (COBallotBrowser)initWithDiscoveryDelay:(double)a3;
+- (COBallotBrowser)initWithDiscoveryDelay:(double)delay;
 - (CORapportBrowser)rapportBrowser;
 - (CORapportTransport)sourceTransport;
-- (id)addObserverUsingBlock:(id)a3;
+- (id)addObserverUsingBlock:(id)block;
 - (id)registeredObservers;
-- (void)_addToQueuedRecords:(id)a3;
+- (void)_addToQueuedRecords:(id)records;
 - (void)_configureTimer;
 - (void)_disableTimer_unsafe;
 - (void)_enableTimer_unsafe;
-- (void)_informObserversOfDiscoveredRecord:(id)a3;
+- (void)_informObserversOfDiscoveredRecord:(id)record;
 - (void)_timerFired;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)clearRecords;
 - (void)dealloc;
-- (void)discoveryUsingBallot:(id)a3;
-- (void)discoveryUsingOnDemandNodeCreationRequest:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)discoveryUsingBallot:(id)ballot;
+- (void)discoveryUsingOnDemandNodeCreationRequest:(id)request;
+- (void)removeObserver:(id)observer;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation COBallotBrowser
 
-- (COBallotBrowser)initWithDiscoveryDelay:(double)a3
+- (COBallotBrowser)initWithDiscoveryDelay:(double)delay
 {
   v18.receiver = self;
   v18.super_class = COBallotBrowser;
@@ -30,7 +30,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_discoveryDelay = fabs(a3);
+    v4->_discoveryDelay = fabs(delay);
     v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, 0);
     timer = v5->_timer;
     v5->_timer = v6;
@@ -39,14 +39,14 @@
     observerSet = v5->_observerSet;
     v5->_observerSet = v8;
 
-    v10 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     envelopes = v5->_envelopes;
-    v5->_envelopes = v10;
+    v5->_envelopes = dictionary;
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.coordination.ballotbrowser.%p", v5];
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     workQueue = v5->_workQueue;
     v5->_workQueue = v15;
 
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [(COBallotBrowser *)self timer];
-  dispatch_source_cancel(v3);
+  timer = [(COBallotBrowser *)self timer];
+  dispatch_source_cancel(timer);
 
   [(COBallotBrowser *)self setTimerEnabled:0];
   v4.receiver = self;
@@ -98,30 +98,30 @@ uint64_t __31__COBallotBrowser_clearRecords__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)addObserverUsingBlock:(id)a3
+- (id)addObserverUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[COBrowserObserver alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[COBrowserObserver alloc] initWithBlock:blockCopy];
 
-  v6 = [(COBallotBrowser *)self observerSet];
-  [v6 addObserver:v5];
+  observerSet = [(COBallotBrowser *)self observerSet];
+  [observerSet addObserver:v5];
 
   return v5;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(COBallotBrowser *)self observerSet];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observerSet = [(COBallotBrowser *)self observerSet];
+  [observerSet removeObserver:observerCopy];
 }
 
 - (id)registeredObservers
 {
-  v2 = [(COBallotBrowser *)self observerSet];
-  v3 = [v2 observers];
+  observerSet = [(COBallotBrowser *)self observerSet];
+  observers = [observerSet observers];
 
-  return v3;
+  return observers;
 }
 
 - (CORapportTransport)sourceTransport
@@ -168,19 +168,19 @@ uint64_t __34__COBallotBrowser_sourceTransport__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = COCoreLogForCategory(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p Ballot browser started", &v7, 0xCu);
   }
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -205,19 +205,19 @@ uint64_t __23__COBallotBrowser_stop__block_invoke(uint64_t a1)
   return [v4 _disableTimer_unsafe];
 }
 
-- (void)discoveryUsingBallot:(id)a3
+- (void)discoveryUsingBallot:(id)ballot
 {
-  v4 = [a3 discovery];
-  v5 = [(COBallotBrowser *)self sourceTransport];
-  if (v5)
+  discovery = [ballot discovery];
+  sourceTransport = [(COBallotBrowser *)self sourceTransport];
+  if (sourceTransport)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__COBallotBrowser_discoveryUsingBallot___block_invoke;
     v7[3] = &unk_278E15728;
-    v8 = v4;
-    v9 = v5;
-    v10 = self;
+    v8 = discovery;
+    v9 = sourceTransport;
+    selfCopy = self;
     [(COBallotBrowser *)self _withLock:v7];
 
     v6 = v8;
@@ -274,40 +274,40 @@ void __40__COBallotBrowser_discoveryUsingBallot___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discoveryUsingOnDemandNodeCreationRequest:(id)a3
+- (void)discoveryUsingOnDemandNodeCreationRequest:(id)request
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COBallotBrowser *)self sourceTransport];
-  if (v5)
+  requestCopy = request;
+  sourceTransport = [(COBallotBrowser *)self sourceTransport];
+  if (sourceTransport)
   {
-    v6 = [v4 request];
-    if ([v6 conformsToProtocol:&unk_2857D4880])
+    request = [requestCopy request];
+    if ([request conformsToProtocol:&unk_2857D4880])
     {
-      v7 = [v6 listeningPort];
+      listeningPort = [request listeningPort];
     }
 
     else
     {
-      v7 = 0;
+      listeningPort = 0;
     }
 
-    v8 = [v6 _sendingConstituent];
-    v9 = [v6 rapportOptions];
-    v10 = [v9 objectForKey:*MEMORY[0x277D442C8]];
-    v11 = [v9 objectForKey:*MEMORY[0x277D442D0]];
-    v12 = [v9 objectForKey:*MEMORY[0x277D44298]];
-    if (v8 && [v10 length] && objc_msgSend(v11, "length") && objc_msgSend(v12, "length"))
+    _sendingConstituent = [request _sendingConstituent];
+    rapportOptions = [request rapportOptions];
+    v10 = [rapportOptions objectForKey:*MEMORY[0x277D442C8]];
+    v11 = [rapportOptions objectForKey:*MEMORY[0x277D442D0]];
+    v12 = [rapportOptions objectForKey:*MEMORY[0x277D44298]];
+    if (_sendingConstituent && [v10 length] && objc_msgSend(v11, "length") && objc_msgSend(v12, "length"))
     {
-      v13 = [CODiscoveryRecord discoveryRecordWithConstituent:v8 rapportIdentifier:v10 IDSIdentifier:v11 peerAddress:v12 port:v7];
-      [v13 setSourceTransport:v5];
+      v13 = [CODiscoveryRecord discoveryRecordWithConstituent:_sendingConstituent rapportIdentifier:v10 IDSIdentifier:v11 peerAddress:v12 port:listeningPort];
+      [v13 setSourceTransport:sourceTransport];
       v17 = v13;
-      [v13 setUnhandledRequest:v4];
+      [v13 setUnhandledRequest:requestCopy];
       v14 = COCoreLogForCategory(14);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v21 = self;
+        selfCopy = self;
         v22 = 2112;
         v23 = v17;
         _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p created discovery record %@ using election request", buf, 0x16u);
@@ -326,10 +326,10 @@ void __40__COBallotBrowser_discoveryUsingBallot___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = COCoreLogForCategory(14);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    request = COCoreLogForCategory(14);
+    if (os_log_type_enabled(request, OS_LOG_TYPE_ERROR))
     {
-      [(COBallotBrowser *)self discoveryUsingOnDemandNodeCreationRequest:v6];
+      [(COBallotBrowser *)self discoveryUsingOnDemandNodeCreationRequest:request];
     }
   }
 
@@ -338,18 +338,18 @@ void __40__COBallotBrowser_discoveryUsingBallot___block_invoke(uint64_t a1)
 
 - (void)_configureTimer
 {
-  v3 = [(COBallotBrowser *)self timer];
-  dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  timer = [(COBallotBrowser *)self timer];
+  dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   [(COBallotBrowser *)self setTimerEnabled:0];
   objc_initWeak(&location, self);
-  v4 = [(COBallotBrowser *)self timer];
+  timer2 = [(COBallotBrowser *)self timer];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __34__COBallotBrowser__configureTimer__block_invoke;
   v9 = &unk_278E15B10;
   objc_copyWeak(&v10, &location);
-  dispatch_source_set_event_handler(v4, &v6);
+  dispatch_source_set_event_handler(timer2, &v6);
 
   v5 = [(COBallotBrowser *)self timer:v6];
   dispatch_activate(v5);
@@ -381,7 +381,7 @@ void __34__COBallotBrowser__configureTimer__block_invoke(uint64_t a1)
     {
       discoveryDelay = self->_discoveryDelay;
       v10 = 134218240;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = discoveryDelay;
       _os_log_impl(&dword_244378000, v3, OS_LOG_TYPE_DEFAULT, "%p enabling timer with discovery delay %f", &v10, 0x16u);
@@ -389,9 +389,9 @@ void __34__COBallotBrowser__configureTimer__block_invoke(uint64_t a1)
 
     [(COBallotBrowser *)self discoveryDelay];
     v6 = (v5 * 1000000000.0);
-    v7 = [(COBallotBrowser *)self timer];
+    timer = [(COBallotBrowser *)self timer];
     v8 = dispatch_time(0, v6);
-    dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    dispatch_source_set_timer(timer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -403,8 +403,8 @@ void __34__COBallotBrowser__configureTimer__block_invoke(uint64_t a1)
   if ([(COBallotBrowser *)self isTimerEnabled])
   {
     [(COBallotBrowser *)self setTimerEnabled:0];
-    v3 = [(COBallotBrowser *)self timer];
-    dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    timer = [(COBallotBrowser *)self timer];
+    dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 }
 
@@ -496,91 +496,91 @@ void __30__COBallotBrowser__timerFired__block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToQueuedRecords:(id)a3
+- (void)_addToQueuedRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [CODiscoveryEnvelope envelopeWithRecord:v4];
-  v6 = [v4 IDSIdentifier];
-  v7 = [(COBallotBrowser *)self envelopes];
-  v8 = [v7 objectForKey:v6];
+  v5 = [CODiscoveryEnvelope envelopeWithRecord:recordsCopy];
+  iDSIdentifier = [recordsCopy IDSIdentifier];
+  envelopes = [(COBallotBrowser *)self envelopes];
+  v8 = [envelopes objectForKey:iDSIdentifier];
 
-  v9 = [(COBallotBrowser *)self envelopes];
-  v10 = [v9 mutableCopy];
+  envelopes2 = [(COBallotBrowser *)self envelopes];
+  v10 = [envelopes2 mutableCopy];
 
   if (!v8)
   {
 LABEL_7:
-    [v10 setObject:v5 forKey:v6];
+    [v10 setObject:v5 forKey:iDSIdentifier];
     [(COBallotBrowser *)self setEnvelopes:v10];
     goto LABEL_8;
   }
 
-  v11 = [v8 record];
-  v12 = [v11 constituent];
+  record = [v8 record];
+  constituent = [record constituent];
 
-  v13 = [v4 constituent];
-  if (([v12 isEqual:v13] & 1) == 0)
+  constituent2 = [recordsCopy constituent];
+  if (([constituent isEqual:constituent2] & 1) == 0)
   {
     v14 = COCoreLogForCategory(14);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [(COBallotBrowser *)self _addToQueuedRecords:v4, v14];
+      [(COBallotBrowser *)self _addToQueuedRecords:recordsCopy, v14];
     }
 
-    [v10 removeObjectForKey:v6];
+    [v10 removeObjectForKey:iDSIdentifier];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_informObserversOfDiscoveredRecord:(id)a3
+- (void)_informObserversOfDiscoveredRecord:(id)record
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = COCoreLogForCategory(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v4;
+    v30 = recordCopy;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p Ballot Browser informing observers about record %@", buf, 0x16u);
   }
 
-  v6 = [(COBallotBrowser *)self rapportBrowser];
-  v7 = [v6 companionLinkClientFactory];
+  rapportBrowser = [(COBallotBrowser *)self rapportBrowser];
+  companionLinkClientFactory = [rapportBrowser companionLinkClientFactory];
 
-  v8 = [(COBallotBrowser *)self rapportBrowser];
-  v9 = [v8 sourceTransport];
+  rapportBrowser2 = [(COBallotBrowser *)self rapportBrowser];
+  sourceTransport = [rapportBrowser2 sourceTransport];
 
-  v10 = [v4 companionLinkDevice];
-  v11 = [v4 IDSIdentifier];
+  companionLinkDevice = [recordCopy companionLinkDevice];
+  iDSIdentifier = [recordCopy IDSIdentifier];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __54__COBallotBrowser__informObserversOfDiscoveredRecord___block_invoke;
   v22[3] = &unk_278E162E8;
-  v23 = v7;
-  v24 = v10;
-  v25 = v11;
-  v26 = v9;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
-  v15 = v7;
-  [v4 setCompanionLinkProvider:v22];
-  v16 = [(COBallotBrowser *)self observerSet];
-  v17 = [v16 observers];
+  v23 = companionLinkClientFactory;
+  v24 = companionLinkDevice;
+  v25 = iDSIdentifier;
+  v26 = sourceTransport;
+  v12 = sourceTransport;
+  v13 = iDSIdentifier;
+  v14 = companionLinkDevice;
+  v15 = companionLinkClientFactory;
+  [recordCopy setCompanionLinkProvider:v22];
+  observerSet = [(COBallotBrowser *)self observerSet];
+  observers = [observerSet observers];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __54__COBallotBrowser__informObserversOfDiscoveredRecord___block_invoke_2;
   v20[3] = &unk_278E16310;
-  v21 = v4;
-  v18 = v4;
-  [v17 enumerateObjectsUsingBlock:v20];
+  v21 = recordCopy;
+  v18 = recordCopy;
+  [observers enumerateObjectsUsingBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -601,11 +601,11 @@ void __54__COBallotBrowser__informObserversOfDiscoveredRecord___block_invoke_2(u
   v3[2](v3, 1, *(a1 + 32));
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

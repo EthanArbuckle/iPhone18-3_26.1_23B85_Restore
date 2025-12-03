@@ -1,30 +1,30 @@
 @interface GPBDescriptor
-+ (id)allocDescriptorForClass:(Class)a3 rootClass:(Class)a4 file:(id)a5 fields:(void *)a6 fieldCount:(unsigned int)a7 storageSize:(unsigned int)a8 flags:(unsigned int)a9;
++ (id)allocDescriptorForClass:(Class)class rootClass:(Class)rootClass file:(id)file fields:(void *)fields fieldCount:(unsigned int)count storageSize:(unsigned int)size flags:(unsigned int)flags;
 - (GPBDescriptor)containingType;
-- (GPBDescriptor)initWithClass:(Class)a3 file:(id)a4 fields:(id)a5 storageSize:(unsigned int)a6 wireFormat:(BOOL)a7;
+- (GPBDescriptor)initWithClass:(Class)class file:(id)file fields:(id)fields storageSize:(unsigned int)size wireFormat:(BOOL)format;
 - (NSString)fullName;
-- (id)fieldWithName:(id)a3;
-- (id)fieldWithNumber:(unsigned int)a3;
-- (id)oneofWithName:(id)a3;
+- (id)fieldWithName:(id)name;
+- (id)fieldWithNumber:(unsigned int)number;
+- (id)oneofWithName:(id)name;
 - (void)dealloc;
-- (void)setupContainingMessageClassName:(const char *)a3;
-- (void)setupExtraTextInfo:(const char *)a3;
-- (void)setupMessageClassNameSuffix:(id)a3;
+- (void)setupContainingMessageClassName:(const char *)name;
+- (void)setupExtraTextInfo:(const char *)info;
+- (void)setupMessageClassNameSuffix:(id)suffix;
 @end
 
 @implementation GPBDescriptor
 
-+ (id)allocDescriptorForClass:(Class)a3 rootClass:(Class)a4 file:(id)a5 fields:(void *)a6 fieldCount:(unsigned int)a7 storageSize:(unsigned int)a8 flags:(unsigned int)a9
++ (id)allocDescriptorForClass:(Class)class rootClass:(Class)rootClass file:(id)file fields:(void *)fields fieldCount:(unsigned int)count storageSize:(unsigned int)size flags:(unsigned int)flags
 {
-  LODWORD(v9) = a7;
-  v11 = [a5 syntax];
+  LODWORD(v9) = count;
+  syntax = [file syntax];
   if (v9)
   {
-    v12 = v11;
+    v12 = syntax;
     v13 = 0;
     v9 = v9;
     v23 = v9;
-    v14 = a6;
+    fieldsCopy = fields;
     do
     {
       if (!v13)
@@ -32,21 +32,21 @@
         v13 = [[NSMutableArray alloc] initWithCapacity:v23];
       }
 
-      if (a9)
+      if (flags)
       {
-        v15 = v14;
+        fieldsCopy2 = fieldsCopy;
       }
 
       else
       {
-        v15 = a6;
+        fieldsCopy2 = fields;
       }
 
-      v16 = [[GPBFieldDescriptor alloc] initWithFieldDescription:v15 includesDefault:a9 & 1 usesClassRefs:(a9 >> 2) & 1 proto3OptionalKnown:(a9 >> 3) & 1 syntax:v12];
+      v16 = [[GPBFieldDescriptor alloc] initWithFieldDescription:fieldsCopy2 includesDefault:flags & 1 usesClassRefs:(flags >> 2) & 1 proto3OptionalKnown:(flags >> 3) & 1 syntax:v12];
       [v13 addObject:v16];
 
-      v14 += 40;
-      a6 = a6 + 32;
+      fieldsCopy += 40;
+      fields = fields + 32;
       --v9;
     }
 
@@ -58,12 +58,12 @@
     v13 = 0;
   }
 
-  v17 = [[a1 alloc] initWithClass:a3 file:a5 fields:v13 storageSize:a8 wireFormat:(a9 >> 1) & 1];
+  v17 = [[self alloc] initWithClass:class file:file fields:v13 storageSize:size wireFormat:(flags >> 1) & 1];
 
   return v17;
 }
 
-- (GPBDescriptor)initWithClass:(Class)a3 file:(id)a4 fields:(id)a5 storageSize:(unsigned int)a6 wireFormat:(BOOL)a7
+- (GPBDescriptor)initWithClass:(Class)class file:(id)file fields:(id)fields storageSize:(unsigned int)size wireFormat:(BOOL)format
 {
   v15.receiver = self;
   v15.super_class = GPBDescriptor;
@@ -71,11 +71,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->messageClass_ = a3;
-    v12->file_ = a4;
-    v12->fields_ = a5;
-    v13->storageSize_ = a6;
-    v13->wireFormat_ = a7;
+    v12->messageClass_ = class;
+    v12->file_ = file;
+    v12->fields_ = fields;
+    v13->storageSize_ = size;
+    v13->wireFormat_ = format;
   }
 
   return v13;
@@ -88,9 +88,9 @@
   [(GPBDescriptor *)&v3 dealloc];
 }
 
-- (void)setupExtraTextInfo:(const char *)a3
+- (void)setupExtraTextInfo:(const char *)info
 {
-  if (a3)
+  if (info)
   {
     v4 = [NSValue valueWithPointer:?];
     v11 = 0u;
@@ -131,9 +131,9 @@
   }
 }
 
-- (void)setupContainingMessageClassName:(const char *)a3
+- (void)setupContainingMessageClassName:(const char *)name
 {
-  Class = objc_getClass(a3);
+  Class = objc_getClass(name);
   if (!Class)
   {
     sub_10030DDBC();
@@ -142,12 +142,12 @@
   [(GPBDescriptor *)self setupContainingMessageClass:Class];
 }
 
-- (void)setupMessageClassNameSuffix:(id)a3
+- (void)setupMessageClassNameSuffix:(id)suffix
 {
-  if ([a3 length])
+  if ([suffix length])
   {
 
-    objc_setAssociatedObject(self, &unk_1003BFFA7, a3, 1);
+    objc_setAssociatedObject(self, &unk_1003BFFA7, suffix, 1);
   }
 }
 
@@ -161,22 +161,22 @@
 - (NSString)fullName
 {
   v4 = NSStringFromClass([(GPBDescriptor *)self messageClass]);
-  v5 = [(GPBDescriptor *)self file];
-  v6 = [(GPBFileDescriptor *)v5 objcPrefix];
-  if (v6 && ![(NSString *)v4 hasPrefix:v6])
+  file = [(GPBDescriptor *)self file];
+  objcPrefix = [(GPBFileDescriptor *)file objcPrefix];
+  if (objcPrefix && ![(NSString *)v4 hasPrefix:objcPrefix])
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"GPBDescriptor.m" description:265, @"Class didn't have correct prefix? (%@ - %@)", v4, v6];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"GPBDescriptor.m" description:265, @"Class didn't have correct prefix? (%@ - %@)", v4, objcPrefix];
     return 0;
   }
 
-  v7 = [(GPBDescriptor *)self containingType];
-  v8 = v7;
-  if (!v7)
+  containingType = [(GPBDescriptor *)self containingType];
+  v8 = containingType;
+  if (!containingType)
   {
     goto LABEL_8;
   }
 
-  v9 = NSStringFromClass([(GPBDescriptor *)v7 messageClass]);
+  v9 = NSStringFromClass([(GPBDescriptor *)containingType messageClass]);
   AssociatedObject = objc_getAssociatedObject(v8, &unk_1003BFFA7);
   if (AssociatedObject)
   {
@@ -190,15 +190,15 @@
     v9 = -[NSString substringToIndex:](v9, "substringToIndex:", -[NSString length](v9, "length") - [v11 length]);
   }
 
-  v6 = [(NSString *)v9 stringByAppendingString:@"_"];
-  if (![(NSString *)v4 hasPrefix:v6])
+  objcPrefix = [(NSString *)v9 stringByAppendingString:@"_"];
+  if (![(NSString *)v4 hasPrefix:objcPrefix])
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"GPBDescriptor.m" description:289, @"Class didn't have the correct parent name prefix? (%@ - %@)", v6, v4];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"GPBDescriptor.m" description:289, @"Class didn't have the correct parent name prefix? (%@ - %@)", objcPrefix, v4];
     return 0;
   }
 
 LABEL_8:
-  v12 = [(NSString *)v4 substringFromIndex:[(NSString *)v6 length]];
+  v12 = [(NSString *)v4 substringFromIndex:[(NSString *)objcPrefix length]];
   v13 = objc_getAssociatedObject(self, &unk_1003BFFA7);
   if (!v13)
   {
@@ -216,16 +216,16 @@ LABEL_8:
 LABEL_11:
   if (v8)
   {
-    v15 = [(GPBDescriptor *)v8 fullName];
+    fullName = [(GPBDescriptor *)v8 fullName];
   }
 
   else
   {
-    v15 = [(GPBFileDescriptor *)v5 package];
+    fullName = [(GPBFileDescriptor *)file package];
   }
 
-  v17 = v15;
-  if (![(NSString *)v15 length])
+  v17 = fullName;
+  if (![(NSString *)fullName length])
   {
     return v12;
   }
@@ -233,7 +233,7 @@ LABEL_11:
   return [NSString stringWithFormat:@"%@.%@", v17, v12];
 }
 
-- (id)fieldWithNumber:(unsigned int)a3
+- (id)fieldWithNumber:(unsigned int)number
 {
   v9 = 0u;
   v10 = 0u;
@@ -255,7 +255,7 @@ LABEL_3:
       }
 
       result = *(*(&v9 + 1) + 8 * v8);
-      if (*(*(result + 1) + 16) == a3)
+      if (*(*(result + 1) + 16) == number)
       {
         break;
       }
@@ -277,7 +277,7 @@ LABEL_3:
   return result;
 }
 
-- (id)fieldWithName:(id)a3
+- (id)fieldWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;
@@ -320,7 +320,7 @@ LABEL_3:
   }
 }
 
-- (id)oneofWithName:(id)a3
+- (id)oneofWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;

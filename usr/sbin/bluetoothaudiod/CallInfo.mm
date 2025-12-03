@@ -1,7 +1,7 @@
 @interface CallInfo
 - (CallInfo)init;
 - (id)callDescription;
-- (id)callFlagsDescriptionForFlags:(unsigned __int8)a3;
+- (id)callFlagsDescriptionForFlags:(unsigned __int8)flags;
 @end
 
 @implementation CallInfo
@@ -29,20 +29,20 @@
 
 - (id)callDescription
 {
-  v3 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   sharedCallIdx = self->_sharedCallIdx;
   v5 = [(CallInfo *)self tbsCallStateToString:self->_callState];
   v6 = [(CallInfo *)self callFlagsDescriptionForFlags:self->_callFlags];
-  v7 = [NSString stringWithFormat:@"CallInfo - identifier : %@, sharedCallIdx : %d, state : %@, callFlags : [%@], callURI : %@", v3, sharedCallIdx, v5, v6, self->_callURI];
+  v7 = [NSString stringWithFormat:@"CallInfo - identifier : %@, sharedCallIdx : %d, state : %@, callFlags : [%@], callURI : %@", uUIDString, sharedCallIdx, v5, v6, self->_callURI];
 
   return v7;
 }
 
-- (id)callFlagsDescriptionForFlags:(unsigned __int8)a3
+- (id)callFlagsDescriptionForFlags:(unsigned __int8)flags
 {
   v4 = +[NSMutableString string];
   v5 = v4;
-  if (a3)
+  if (flags)
   {
     v6 = @"OUTGOING";
   }
@@ -53,7 +53,7 @@
   }
 
   [v4 appendString:v6];
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     v7 = @", WITHHELD by SERVER";
   }
@@ -64,7 +64,7 @@
   }
 
   [v5 appendString:v7];
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v8 = @", WITHHELD by NETWORK";
   }

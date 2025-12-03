@@ -3,7 +3,7 @@
 - (NSURL)url;
 - (id)copiedURL;
 - (void)dealloc;
-- (void)setURL:(id)a3;
+- (void)setURL:(id)l;
 @end
 
 @implementation NSExtensionURLResult
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_url == a3)
+  if (self->_url == l)
   {
     url = 0;
   }
@@ -31,7 +31,7 @@
   else
   {
     url = self->_url;
-    self->_url = [a3 copy];
+    self->_url = [l copy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -47,9 +47,9 @@
 
 - (NSURL)url
 {
-  v2 = [(NSExtensionURLResult *)self copiedURL];
+  copiedURL = [(NSExtensionURLResult *)self copiedURL];
 
-  return v2;
+  return copiedURL;
 }
 
 - (void)dealloc

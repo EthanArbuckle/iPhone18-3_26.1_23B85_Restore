@@ -1,38 +1,38 @@
 @interface FMMessageTextView
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC6FindMy17FMMessageTextView)initWithFrame:(CGRect)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC6FindMy17FMMessageTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMMessageTextView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100155084();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMMessageTextView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(FMMessageTextView *)&v6 traitCollectionDidChange:v4];
+  [(FMMessageTextView *)&v6 traitCollectionDidChange:changeCopy];
   sub_10015604C();
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100155AF8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100155AF8(changeCopy);
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -40,17 +40,17 @@
     v5 = Strong;
     if ([Strong respondsToSelector:"textViewDidChange:"])
     {
-      [v5 textViewDidChange:a3];
+      [v5 textViewDidChange:editing];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
   {
@@ -60,7 +60,7 @@
   v10 = Strong;
   if ([Strong respondsToSelector:"textView:shouldChangeTextInRange:replacementText:"])
   {
-    v11 = [v10 textView:a3 shouldChangeTextInRange:location replacementText:{length, a5}];
+    v11 = [v10 textView:view shouldChangeTextInRange:location replacementText:{length, text}];
   }
 
   else
@@ -72,7 +72,7 @@
   return v11;
 }
 
-- (_TtC6FindMy17FMMessageTextView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy17FMMessageTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

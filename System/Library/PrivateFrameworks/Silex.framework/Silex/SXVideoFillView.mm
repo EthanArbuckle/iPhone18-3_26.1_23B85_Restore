@@ -1,39 +1,39 @@
 @interface SXVideoFillView
 - (CGRect)contentFrame;
-- (CGRect)fillFrameWithBoundingSize:(CGSize)a3;
-- (SXVideoFillView)initWithVideoFill:(id)a3 DOMObjectProvider:(id)a4 imageViewFactory:(id)a5;
+- (CGRect)fillFrameWithBoundingSize:(CGSize)size;
+- (SXVideoFillView)initWithVideoFill:(id)fill DOMObjectProvider:(id)provider imageViewFactory:(id)factory;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)load;
 - (void)pause;
 - (void)play;
 - (void)reset;
-- (void)setContentFrame:(CGRect)a3;
+- (void)setContentFrame:(CGRect)frame;
 @end
 
 @implementation SXVideoFillView
 
-- (SXVideoFillView)initWithVideoFill:(id)a3 DOMObjectProvider:(id)a4 imageViewFactory:(id)a5
+- (SXVideoFillView)initWithVideoFill:(id)fill DOMObjectProvider:(id)provider imageViewFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fillCopy = fill;
+  providerCopy = provider;
+  factoryCopy = factory;
   v26.receiver = self;
   v26.super_class = SXVideoFillView;
-  v12 = [(SXFillView *)&v26 initWithFill:v9];
+  v12 = [(SXFillView *)&v26 initWithFill:fillCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_videoFill, a3);
-    v14 = [v9 resourceIdentifier];
-    v15 = [v10 resourceForIdentifier:v14];
+    objc_storeStrong(&v12->_videoFill, fill);
+    resourceIdentifier = [fillCopy resourceIdentifier];
+    v15 = [providerCopy resourceForIdentifier:resourceIdentifier];
 
-    v16 = [v9 stillImageIdentifier];
-    v17 = [v10 imageResourceForIdentifier:v16];
+    stillImageIdentifier = [fillCopy stillImageIdentifier];
+    v17 = [providerCopy imageResourceForIdentifier:stillImageIdentifier];
     imageResource = v13->_imageResource;
     v13->_imageResource = v17;
 
-    v19 = [v11 imageViewForResource:v13->_imageResource];
+    v19 = [factoryCopy imageViewForResource:v13->_imageResource];
     imageView = v13->_imageView;
     v13->_imageView = v19;
 
@@ -42,8 +42,8 @@
     playerView = v13->_playerView;
     v13->_playerView = v21;
 
-    -[SXVideoFillPlayerView setFillMode:](v13->_playerView, "setFillMode:", [v9 fillMode]);
-    -[SXVideoFillPlayerView setShouldLoop:](v13->_playerView, "setShouldLoop:", [v9 loop]);
+    -[SXVideoFillPlayerView setFillMode:](v13->_playerView, "setFillMode:", [fillCopy fillMode]);
+    -[SXVideoFillPlayerView setShouldLoop:](v13->_playerView, "setShouldLoop:", [fillCopy loop]);
     v23 = [[SXClippingView alloc] initWithContentView:v13->_playerView];
     clippingView = v13->_clippingView;
     v13->_clippingView = v23;
@@ -84,30 +84,30 @@
   v4.receiver = self;
   v4.super_class = SXVideoFillView;
   [(SXVideoFillView *)&v4 layoutSubviews];
-  v3 = [(SXVideoFillView *)self clippingView];
+  clippingView = [(SXVideoFillView *)self clippingView];
   [(SXVideoFillView *)self bounds];
-  [v3 setFrame:?];
+  [clippingView setFrame:?];
 }
 
-- (CGRect)fillFrameWithBoundingSize:(CGSize)a3
+- (CGRect)fillFrameWithBoundingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SXVideoFillView *)self imageResource];
-  [v6 dimensions];
+  height = size.height;
+  width = size.width;
+  imageResource = [(SXVideoFillView *)self imageResource];
+  [imageResource dimensions];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SXFillView *)self fill];
-  v12 = [v11 fillMode];
+  fill = [(SXFillView *)self fill];
+  fillMode = [fill fillMode];
 
-  v13 = [(SXFillView *)self fill];
-  v14 = [v13 horizontalAlignment];
+  fill2 = [(SXFillView *)self fill];
+  horizontalAlignment = [fill2 horizontalAlignment];
 
-  v15 = [(SXFillView *)self fill];
-  v16 = [v15 verticalAlignment];
+  fill3 = [(SXFillView *)self fill];
+  verticalAlignment = [fill3 verticalAlignment];
 
-  [SXFillPositioning frameForFillWithDimensions:v12 withinBounds:v14 fillMode:v16 horizontalAlignment:v8 verticalAlignment:v10, width, height];
+  [SXFillPositioning frameForFillWithDimensions:fillMode withinBounds:horizontalAlignment fillMode:verticalAlignment horizontalAlignment:v8 verticalAlignment:v10, width, height];
   result.size.height = v20;
   result.size.width = v19;
   result.origin.y = v18;
@@ -117,26 +117,26 @@
 
 - (void)play
 {
-  v2 = [(SXVideoFillView *)self playerView];
-  [v2 play];
+  playerView = [(SXVideoFillView *)self playerView];
+  [playerView play];
 }
 
 - (void)pause
 {
-  v2 = [(SXVideoFillView *)self playerView];
-  [v2 pause];
+  playerView = [(SXVideoFillView *)self playerView];
+  [playerView pause];
 }
 
 - (void)reset
 {
-  v2 = [(SXVideoFillView *)self playerView];
-  [v2 reset];
+  playerView = [(SXVideoFillView *)self playerView];
+  [playerView reset];
 }
 
 - (CGRect)contentFrame
 {
-  v2 = [(SXVideoFillView *)self clippingView];
-  [v2 contentFrame];
+  clippingView = [(SXVideoFillView *)self clippingView];
+  [clippingView contentFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -153,14 +153,14 @@
   return result;
 }
 
-- (void)setContentFrame:(CGRect)a3
+- (void)setContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SXVideoFillView *)self clippingView];
-  [v7 setContentFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  clippingView = [(SXVideoFillView *)self clippingView];
+  [clippingView setContentFrame:{x, y, width, height}];
 }
 
 @end

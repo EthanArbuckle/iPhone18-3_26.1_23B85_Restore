@@ -10,7 +10,7 @@
 {
   v13 = a3;
   v6 = a4;
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7)
   {
     v8 = v7;
@@ -18,7 +18,7 @@
     while (1)
     {
       v10 = (v9 + v8) >> 1;
-      v11 = [a1 objectAtIndex:v10];
+      v11 = [self objectAtIndex:v10];
       v12 = v6[2](v6, v11, v13);
 
       switch(v12)
@@ -43,22 +43,22 @@
 
   v9 = 0;
 LABEL_12:
-  [a1 insertObject:v13 atIndex:v9];
+  [self insertObject:v13 atIndex:v9];
 }
 
 - (BOOL)safari_isSortedInAscendingOrDescendingOrderUsingComparator:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= 3)
   {
     v7 = v5;
-    v8 = [a1 objectAtIndex:1];
-    v9 = [a1 objectAtIndex:0];
+    v8 = [self objectAtIndex:1];
+    v9 = [self objectAtIndex:0];
     v10 = v4[2](v4, v9, v8);
     v11 = v8;
 
-    v12 = [a1 objectAtIndex:2];
+    v12 = [self objectAtIndex:2];
 
     if (v4[2](v4, v11, v12) == v10)
     {
@@ -73,7 +73,7 @@ LABEL_12:
 
         v15 = v12;
 
-        v12 = [a1 objectAtIndex:v14];
+        v12 = [self objectAtIndex:v14];
 
         v16 = v4[2](v4, v15, v12);
         v13 = v14 + 1;
@@ -113,7 +113,7 @@ LABEL_10:
   v8[3] = &unk_1E7CF24F0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
+  v6 = [self indexOfObjectPassingTest:v8] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v6;
 }

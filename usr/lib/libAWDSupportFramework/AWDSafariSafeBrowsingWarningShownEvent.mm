@@ -1,15 +1,15 @@
 @interface AWDSafariSafeBrowsingWarningShownEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsProvider:(id)a3;
+- (int)StringAsProvider:(id)provider;
 - (int)provider;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProvider:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProvider:(BOOL)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariSafeBrowsingWarningShownEvent
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasProvider:(BOOL)a3
+- (void)setHasProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 2;
   }
@@ -42,29 +42,29 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsProvider:(id)a3
+- (int)StringAsProvider:(id)provider
 {
-  if ([a3 isEqualToString:@"GOOGLE"])
+  if ([provider isEqualToString:@"GOOGLE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"OTHER"])
+  if ([provider isEqualToString:@"OTHER"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"SAFARI"])
+  if ([provider isEqualToString:@"SAFARI"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"MULTIPLE"])
+  if ([provider isEqualToString:@"MULTIPLE"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"SAFARI_EXTENSION"])
+  if ([provider isEqualToString:@"SAFARI_EXTENSION"])
   {
     return 4;
   }
@@ -81,11 +81,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
@@ -102,13 +102,13 @@
       v6 = off_29EE32D98[provider];
     }
 
-    [v3 setObject:v6 forKey:@"provider"];
+    [dictionary setObject:v6 forKey:@"provider"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -126,7 +126,7 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 1) == 0)
   {
@@ -136,22 +136,22 @@
     }
 
 LABEL_5:
-    *(a3 + 4) = self->_provider;
-    *(a3 + 20) |= 2u;
+    *(to + 4) = self->_provider;
+    *(to + 20) |= 2u;
     return;
   }
 
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 20) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -169,30 +169,30 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 20) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_provider != *(a3 + 4))
+      if ((*(equal + 20) & 2) == 0 || self->_provider != *(equal + 4))
       {
         goto LABEL_11;
       }
@@ -230,24 +230,24 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 20) & 1) == 0)
+  if ((*(from + 20) & 1) == 0)
   {
-    if ((*(a3 + 20) & 2) == 0)
+    if ((*(from + 20) & 2) == 0)
     {
       return;
     }
 
 LABEL_5:
-    self->_provider = *(a3 + 4);
+    self->_provider = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
-  self->_timestamp = *(a3 + 1);
+  self->_timestamp = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 20) & 2) != 0)
+  if ((*(from + 20) & 2) != 0)
   {
     goto LABEL_5;
   }

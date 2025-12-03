@@ -1,18 +1,18 @@
 @interface CTXPCGetTokenRequest
 + (id)allowedClassesForArguments;
-- (CTXPCGetTokenRequest)initWithBundleID:(id)a3;
+- (CTXPCGetTokenRequest)initWithBundleID:(id)d;
 - (id)bundleID;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCGetTokenRequest
 
-- (CTXPCGetTokenRequest)initWithBundleID:(id)a3
+- (CTXPCGetTokenRequest)initWithBundleID:(id)d
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v10 = @"bundleID";
-  v11[0] = v4;
+  v11[0] = dCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetTokenRequest;
@@ -22,18 +22,18 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCGetTokenRequest *)self bundleID];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  bundleID = [(CTXPCGetTokenRequest *)self bundleID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__CTXPCGetTokenRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A45F28;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 getTokenForBundleID:v8 completion:v10];
+  [handlerCopy getTokenForBundleID:bundleID completion:v10];
 }
 
 void __68__CTXPCGetTokenRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -46,7 +46,7 @@ void __68__CTXPCGetTokenRequest_performRequestWithHandler_completionHandler___bl
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetTokenRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -56,8 +56,8 @@ void __68__CTXPCGetTokenRequest_performRequestWithHandler_completionHandler___bl
 
 - (id)bundleID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"bundleID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"bundleID"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

@@ -1,15 +1,15 @@
 @interface NUTiledProcessorCache
-- (NUTiledProcessorCache)initWithImage:(id)a3;
-- (void)_render:(id)a3;
+- (NUTiledProcessorCache)initWithImage:(id)image;
+- (void)_render:(id)_render;
 @end
 
 @implementation NUTiledProcessorCache
 
-- (void)_render:(id)a3
+- (void)_render:(id)_render
 {
-  v4 = a3;
-  v5 = [(NUProcessorCache *)self inputImage];
-  [v5 extent];
+  _renderCopy = _render;
+  inputImage = [(NUProcessorCache *)self inputImage];
+  [inputImage extent];
   v52.origin.x = v6;
   v52.origin.y = v7;
   v52.size.width = v8;
@@ -18,12 +18,12 @@
   size = v56.size;
   origin = v56.origin;
 
-  v10 = [v4 metalCommandBuffer];
-  v11 = [v10 device];
+  metalCommandBuffer = [_renderCopy metalCommandBuffer];
+  device = [metalCommandBuffer device];
   v12 = +[NUPlatform currentPlatform];
-  v13 = [v12 deviceForMetalDevice:v11];
+  v13 = [v12 deviceForMetalDevice:device];
 
-  [v4 region];
+  [_renderCopy region];
   v52.origin.x = v14;
   v52.origin.y = v15;
   v52.size.width = v16;
@@ -57,11 +57,11 @@
   block[4] = self;
   v46 = origin;
   v47 = size;
-  v21 = v11;
+  v21 = device;
   v39 = v21;
   v22 = v19;
   v40 = v22;
-  v23 = v4;
+  v23 = _renderCopy;
   v41 = v23;
   v48 = v28;
   v49 = v27;
@@ -69,7 +69,7 @@
   v51 = v29;
   v24 = v13;
   v42 = v24;
-  v25 = v10;
+  v25 = metalCommandBuffer;
   v43 = v25;
   v44 = &v52;
   v45 = &v56;
@@ -264,11 +264,11 @@ void __33__NUTiledProcessorCache__render___block_invoke_69(uint64_t a1, void *a2
   [NUCopyKernel copyFromTexture:v10 region:&v15 toTexture:v11 atPoint:&v22 withCommandBuffer:*(a1 + 40)];
 }
 
-- (NUTiledProcessorCache)initWithImage:(id)a3
+- (NUTiledProcessorCache)initWithImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = NUTiledProcessorCache;
-  v3 = [(NUProcessorCache *)&v7 initWithImage:a3];
+  v3 = [(NUProcessorCache *)&v7 initWithImage:image];
   *(v3 + 72) = vdupq_n_s64(0x400uLL);
   v4 = +[NUColorSpace workingColorSpace];
   v5 = *(v3 + 11);

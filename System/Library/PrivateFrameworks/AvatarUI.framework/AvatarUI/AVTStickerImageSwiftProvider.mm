@@ -1,9 +1,9 @@
 @interface AVTStickerImageSwiftProvider
-+ (id)imageStoreWithEnvironment:(id)a3;
-+ (id)stickerCacheWithEnvironment:(id)a3;
++ (id)imageStoreWithEnvironment:(id)environment;
++ (id)stickerCacheWithEnvironment:(id)environment;
 - (AVTStickerImageSwiftProvider)init;
 - (void)dealloc;
-- (void)imageForAvatarRecord:(id)a3 poseName:(id)a4 completionHandler:(id)a5;
+- (void)imageForAvatarRecord:(id)record poseName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation AVTStickerImageSwiftProvider
@@ -34,23 +34,23 @@
     [(AVTAvatarStore *)v8 setStickerBackendDelegate:v2];
     objc_storeStrong(&v2->_avatarStore, v7);
     v9 = [AVTUIStickerGeneratorPool alloc];
-    v10 = [(AVTUIEnvironment *)v2->_environment logger];
-    v11 = [(AVTUIStickerGeneratorPool *)v9 initWithMaxStickerGeneratorCount:2 logger:v10];
+    logger = [(AVTUIEnvironment *)v2->_environment logger];
+    v11 = [(AVTUIStickerGeneratorPool *)v9 initWithMaxStickerGeneratorCount:2 logger:logger];
     generatorPool = v2->_generatorPool;
     v2->_generatorPool = v11;
 
-    v13 = [(AVTUIEnvironment *)v2->_environment serialQueueProvider];
-    v14 = (v13)[2](v13, "com.apple.AvatarUI.StickerImageWorkQueue");
+    serialQueueProvider = [(AVTUIEnvironment *)v2->_environment serialQueueProvider];
+    v14 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.StickerImageWorkQueue");
     recentsWorkQueue = v2->_recentsWorkQueue;
     v2->_recentsWorkQueue = v14;
 
-    v16 = [(AVTUIEnvironment *)v2->_environment backgroundRenderingQueue];
+    backgroundRenderingQueue = [(AVTUIEnvironment *)v2->_environment backgroundRenderingQueue];
     renderingQueue = v2->_renderingQueue;
-    v2->_renderingQueue = v16;
+    v2->_renderingQueue = backgroundRenderingQueue;
 
-    v18 = [(AVTUIEnvironment *)v2->_environment backgroundEncodingQueue];
+    backgroundEncodingQueue = [(AVTUIEnvironment *)v2->_environment backgroundEncodingQueue];
     encodingQueue = v2->_encodingQueue;
-    v2->_encodingQueue = v18;
+    v2->_encodingQueue = backgroundEncodingQueue;
 
     v20 = [objc_opt_class() stickerCacheWithEnvironment:v2->_environment];
     cache = v2->_cache;
@@ -79,8 +79,8 @@
     configurationProvider = v2->_configurationProvider;
     v2->_configurationProvider = v27;
 
-    v29 = [(AVTUIEnvironment *)v2->_environment coreEnvironment];
-    v30 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:v29];
+    coreEnvironment = [(AVTUIEnvironment *)v2->_environment coreEnvironment];
+    v30 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:coreEnvironment];
     taskScheduler = v2->_taskScheduler;
     v2->_taskScheduler = v30;
   }
@@ -90,8 +90,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -101,14 +101,14 @@
   [(AVTStickerImageSwiftProvider *)&v5 dealloc];
 }
 
-+ (id)stickerCacheWithEnvironment:(id)a3
++ (id)stickerCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
@@ -118,35 +118,35 @@
   return v6;
 }
 
-+ (id)imageStoreWithEnvironment:(id)a3
++ (id)imageStoreWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
 
   v6 = +[AVTUIStickerRenderer imageEncoder];
   v7 = [AVTClippableImageStore alloc];
-  v8 = [v3 coreEnvironment];
-  v9 = [v3 stickerImageStoreLocation];
-  v10 = [(AVTImageStore *)v7 initWithEnvironment:v8 validateImages:1 location:v9 encoder:v6];
+  coreEnvironment = [environmentCopy coreEnvironment];
+  stickerImageStoreLocation2 = [environmentCopy stickerImageStoreLocation];
+  v10 = [(AVTImageStore *)v7 initWithEnvironment:coreEnvironment validateImages:1 location:stickerImageStoreLocation2 encoder:v6];
 
   return v10;
 }
 
-- (void)imageForAvatarRecord:(id)a3 poseName:(id)a4 completionHandler:(id)a5
+- (void)imageForAvatarRecord:(id)record poseName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AVTStickerConfigurationProvider *)self->_configurationProvider stickerConfigurationForAvatarRecord:v8 stickerName:v9];
+  recordCopy = record;
+  nameCopy = name;
+  handlerCopy = handler;
+  v11 = [(AVTStickerConfigurationProvider *)self->_configurationProvider stickerConfigurationForAvatarRecord:recordCopy stickerName:nameCopy];
   v12 = [AVTUIStickerRenderer alloc];
-  v13 = [(AVTUIStickerRenderer *)v12 initWithAvatarRecord:v8 cache:self->_cache imageStore:self->_imageStore stickerGeneratorPool:self->_generatorPool environment:self->_environment renderingScheduler:self->_taskScheduler renderingQueue:self->_renderingQueue encodingQueue:self->_encodingQueue callbackQueue:MEMORY[0x1E69E96A0]];
+  v13 = [(AVTUIStickerRenderer *)v12 initWithAvatarRecord:recordCopy cache:self->_cache imageStore:self->_imageStore stickerGeneratorPool:self->_generatorPool environment:self->_environment renderingScheduler:self->_taskScheduler renderingQueue:self->_renderingQueue encodingQueue:self->_encodingQueue callbackQueue:MEMORY[0x1E69E96A0]];
   v14 = [(AVTUIStickerRenderer *)v13 scheduledStickerResourceProviderForStickerConfiguration:v11];
   v22[0] = 0;
   v22[1] = v22;
@@ -159,7 +159,7 @@
   v17[3] = &unk_1E7F3CDE0;
   objc_copyWeak(&v20, &location);
   v19 = v22;
-  v15 = v10;
+  v15 = handlerCopy;
   v18 = v15;
   v16 = (v14)[2](v14, v17, 0);
 

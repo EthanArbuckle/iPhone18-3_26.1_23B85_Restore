@@ -1,10 +1,10 @@
 @interface SWLogger
 - (SWLogger)init;
-- (id)constructLogWithMessage:(id)a3;
-- (void)bindValue:(id)a3 forKey:(id)a4;
-- (void)log:(id)a3;
-- (void)logError:(id)a3;
-- (void)logSensitive:(id)a3;
+- (id)constructLogWithMessage:(id)message;
+- (void)bindValue:(id)value forKey:(id)key;
+- (void)log:(id)log;
+- (void)logError:(id)error;
+- (void)logSensitive:(id)sensitive;
 @end
 
 @implementation SWLogger
@@ -16,33 +16,33 @@
   v2 = [(SWLogger *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     values = v2->_values;
-    v2->_values = v3;
+    v2->_values = dictionary;
   }
 
   return v2;
 }
 
-- (void)bindValue:(id)a3 forKey:(id)a4
+- (void)bindValue:(id)value forKey:(id)key
 {
-  if (a3 && a4)
+  if (value && key)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(SWLogger *)self values];
-    [v8 setObject:v7 forKey:v6];
+    keyCopy = key;
+    valueCopy = value;
+    values = [(SWLogger *)self values];
+    [values setObject:valueCopy forKey:keyCopy];
   }
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = SWDefaultLog;
   if (os_log_type_enabled(SWDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SWLogger *)self constructLogWithMessage:a3];
+    v7 = [(SWLogger *)self constructLogWithMessage:log];
     v9 = 138543362;
     v10 = v7;
     _os_log_impl(&dword_1D7635000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", &v9, 0xCu);
@@ -51,23 +51,23 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logError:(id)a3
+- (void)logError:(id)error
 {
   v5 = SWDefaultLog;
   if (os_log_type_enabled(SWDefaultLog, OS_LOG_TYPE_ERROR))
   {
-    [(SWLogger *)v5 logError:a3];
+    [(SWLogger *)v5 logError:error];
   }
 }
 
-- (void)logSensitive:(id)a3
+- (void)logSensitive:(id)sensitive
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = SWDefaultLog;
   if (os_log_type_enabled(SWDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SWLogger *)self constructLogWithMessage:a3];
+    v7 = [(SWLogger *)self constructLogWithMessage:sensitive];
     v9 = 138412290;
     v10 = v7;
     _os_log_impl(&dword_1D7635000, v6, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
@@ -76,17 +76,17 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)constructLogWithMessage:(id)a3
+- (id)constructLogWithMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  messageCopy = message;
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"["];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SWLogger *)self values];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  values = [(SWLogger *)self values];
+  v6 = [values countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -97,23 +97,23 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(values);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(SWLogger *)self values];
-        v12 = [v11 objectForKey:v10];
+        values2 = [(SWLogger *)self values];
+        v12 = [values2 objectForKey:v10];
         [v4 appendFormat:@"%@=%@", v10, v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [values countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
   [v4 appendString:@"] "];
-  [v4 appendString:v15];
+  [v4 appendString:messageCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 

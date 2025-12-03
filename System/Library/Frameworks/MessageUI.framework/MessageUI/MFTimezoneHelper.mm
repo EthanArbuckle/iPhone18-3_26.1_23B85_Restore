@@ -1,6 +1,6 @@
 @interface MFTimezoneHelper
-+ (id)citiesMatchingName:(id)a3;
-+ (id)cityForTimeZone:(id)a3;
++ (id)citiesMatchingName:(id)name;
++ (id)cityForTimeZone:(id)zone;
 + (id)log;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __23__MFTimezoneHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_13 != -1)
   {
     dispatch_once(&log_onceToken_13, block);
@@ -31,18 +31,18 @@ void __23__MFTimezoneHelper_log__block_invoke(uint64_t a1)
   log_log_13 = v1;
 }
 
-+ (id)cityForTimeZone:(id)a3
++ (id)cityForTimeZone:(id)zone
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E698B670] sharedManager];
-  v5 = [v4 defaultCityForTimeZone:v3];
+  zoneCopy = zone;
+  mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+  v5 = [mEMORY[0x1E698B670] defaultCityForTimeZone:zoneCopy];
 
   if (v5)
   {
     v6 = [MFCity alloc];
     v7 = [v5 displayNameIncludingCountry:0];
     v8 = [v5 displayNameIncludingCountry:1];
-    v9 = [(MFCity *)v6 initWithCityName:v7 displayName:v8 timeZone:v3];
+    v9 = [(MFCity *)v6 initWithCityName:v7 displayName:v8 timeZone:zoneCopy];
   }
 
   else
@@ -50,7 +50,7 @@ void __23__MFTimezoneHelper_log__block_invoke(uint64_t a1)
     v10 = +[MFTimezoneHelper log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MFTimezoneHelper *)v3 cityForTimeZone:v10];
+      [(MFTimezoneHelper *)zoneCopy cityForTimeZone:v10];
     }
 
     v9 = 0;
@@ -59,16 +59,16 @@ void __23__MFTimezoneHelper_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)citiesMatchingName:(id)a3
++ (id)citiesMatchingName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E698B670] sharedManager];
-  v5 = [v4 citiesMatchingName:v3];
+  nameCopy = name;
+  mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+  v5 = [mEMORY[0x1E698B670] citiesMatchingName:nameCopy];
   v6 = [v5 ef_map:&__block_literal_global_36];
 
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v6];
-  v8 = [v7 allObjects];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_9];
+  allObjects = [v7 allObjects];
+  v9 = [allObjects sortedArrayUsingComparator:&__block_literal_global_9];
 
   return v9;
 }

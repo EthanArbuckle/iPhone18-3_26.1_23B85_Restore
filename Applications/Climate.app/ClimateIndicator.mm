@@ -28,9 +28,9 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v4 layer];
+    layer = [v4 layer];
     [v4 bounds];
-    [v5 setCornerRadius:CGRectGetWidth(v7) * 0.5];
+    [layer setCornerRadius:CGRectGetWidth(v7) * 0.5];
   }
 }
 

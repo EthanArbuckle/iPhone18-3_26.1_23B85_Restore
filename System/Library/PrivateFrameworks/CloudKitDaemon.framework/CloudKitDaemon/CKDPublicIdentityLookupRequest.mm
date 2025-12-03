@@ -1,28 +1,28 @@
 @interface CKDPublicIdentityLookupRequest
 - (BOOL)_tryComplete;
-- (CKDPublicIdentityLookupRequest)initWithOperation:(id)a3 lookupInfos:(id)a4;
+- (CKDPublicIdentityLookupRequest)initWithOperation:(id)operation lookupInfos:(id)infos;
 - (id)ckShortDescription;
 - (id)spawnURLRequests;
-- (void)_receivedUserIdentity:(id)a3 forLookupInfo:(id)a4 error:(id)a5;
-- (void)_saveUserIdentity:(id)a3 forLookupInfo:(id)a4;
-- (void)finishWithError:(id)a3;
+- (void)_receivedUserIdentity:(id)identity forLookupInfo:(id)info error:(id)error;
+- (void)_saveUserIdentity:(id)identity forLookupInfo:(id)info;
+- (void)finishWithError:(id)error;
 - (void)performRequest;
 @end
 
 @implementation CKDPublicIdentityLookupRequest
 
-- (CKDPublicIdentityLookupRequest)initWithOperation:(id)a3 lookupInfos:(id)a4
+- (CKDPublicIdentityLookupRequest)initWithOperation:(id)operation lookupInfos:(id)infos
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  infosCopy = infos;
   v15.receiver = self;
   v15.super_class = CKDPublicIdentityLookupRequest;
   v8 = [(CKDPublicIdentityLookupRequest *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_operation, v6);
-    v12 = objc_msgSend_copy(v7, v10, v11);
+    objc_storeWeak(&v8->_operation, operationCopy);
+    v12 = objc_msgSend_copy(infosCopy, v10, v11);
     lookupInfosToFetch = v9->_lookupInfosToFetch;
     v9->_lookupInfosToFetch = v12;
   }
@@ -30,12 +30,12 @@
   return v9;
 }
 
-- (void)_saveUserIdentity:(id)a3 forLookupInfo:(id)a4
+- (void)_saveUserIdentity:(id)identity forLookupInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_publicSharingKey(v6, v8, v9);
+  identityCopy = identity;
+  infoCopy = info;
+  v10 = objc_msgSend_publicSharingKey(identityCopy, v8, v9);
 
   if (v10)
   {
@@ -54,7 +54,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         v23 = v18;
-        v26 = objc_msgSend_ckShortDescription(v7, v24, v25);
+        v26 = objc_msgSend_ckShortDescription(infoCopy, v24, v25);
         v27 = 138412546;
         v28 = v26;
         v29 = 2112;
@@ -62,7 +62,7 @@
         _os_log_debug_impl(&dword_22506F000, v23, OS_LOG_TYPE_DEBUG, "Caching PILS entry for %@ in %@", &v27, 0x16u);
       }
 
-      objc_msgSend_cacheUserIdentity_forLookupInfo_container_(v17, v19, v6, v7, v14);
+      objc_msgSend_cacheUserIdentity_forLookupInfo_container_(v17, v19, identityCopy, infoCopy, v14);
     }
   }
 
@@ -77,22 +77,22 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v27 = 138412290;
-      v28 = v6;
+      v28 = identityCopy;
       _os_log_debug_impl(&dword_22506F000, v21, OS_LOG_TYPE_DEBUG, "Not caching user identity without a public sharing key: %@", &v27, 0xCu);
     }
   }
 
-  objc_msgSend__receivedUserIdentity_forLookupInfo_error_(self, v20, v6, v7, 0);
+  objc_msgSend__receivedUserIdentity_forLookupInfo_error_(self, v20, identityCopy, infoCopy, 0);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedUserIdentity:(id)a3 forLookupInfo:(id)a4 error:(id)a5
+- (void)_receivedUserIdentity:(id)identity forLookupInfo:(id)info error:(id)error
 {
   perLookupInfoProgressBlock = self->_perLookupInfoProgressBlock;
   if (perLookupInfoProgressBlock)
   {
-    perLookupInfoProgressBlock[2](perLookupInfoProgressBlock, a4, a3, a5);
+    perLookupInfoProgressBlock[2](perLookupInfoProgressBlock, info, identity, error);
   }
 }
 
@@ -257,7 +257,7 @@
     v83 = &v86;
     v58 = v10;
     v79 = v58;
-    v80 = self;
+    selfCopy = self;
     v59 = _Block_copy(aBlock);
     v60 = v87[5];
     v87[5] = v59;
@@ -348,7 +348,7 @@
       v38[3] = &unk_27854D090;
       v24 = WeakRetained;
       v39 = v24;
-      v40 = self;
+      selfCopy = self;
       objc_copyWeak(&v41, from);
       objc_msgSend_setProgressBlock_(v22, v25, v38);
       objc_msgSend_configureRequest_(v24, v26, v22);
@@ -398,10 +398,10 @@
   return v9;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (self->_perLookupInfoProgressBlock)
   {
     v20 = 0u;
@@ -437,7 +437,7 @@
   lookupCompletionBlock = self->_lookupCompletionBlock;
   if (lookupCompletionBlock)
   {
-    lookupCompletionBlock[2](lookupCompletionBlock, v4);
+    lookupCompletionBlock[2](lookupCompletionBlock, errorCopy);
     v14 = self->_lookupCompletionBlock;
   }
 
@@ -460,7 +460,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v23 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v16, OS_LOG_TYPE_DEBUG, "Completed request: %@", buf, 0xCu);
   }
 

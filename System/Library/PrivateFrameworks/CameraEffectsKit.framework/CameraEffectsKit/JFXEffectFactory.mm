@@ -1,18 +1,18 @@
 @interface JFXEffectFactory
 + (id)sharedInstance;
-- (id)createEffectContentDataSourceForEffectID:(id)a3 ofType:(int)a4;
-- (id)createEffectForType:(int)a3 fromID:(id)a4 withProperties:(id)a5;
-- (id)effectsForType:(int)a3 fromCategory:(id)a4;
-- (id)noneEffectIDForType:(int)a3;
-- (void)defaultPickerItemForType:(int)a3 completion:(id)a4;
-- (void)effectCategoriesForPickerItem:(id)a3 completion:(id)a4;
-- (void)effectCategoriesForType:(int)a3 completion:(id)a4;
-- (void)effectIDsForPickerItem:(id)a3 completion:(id)a4;
-- (void)effectIDsForType:(int)a3 completion:(id)a4;
-- (void)effectsForType:(int)a3 completion:(id)a4;
-- (void)effectsForType:(int)a3 pickerItem:(id)a4 completion:(id)a5;
-- (void)fetchPickerItems:(id)a3;
-- (void)pickerItemForCategory:(id)a3 completion:(id)a4;
+- (id)createEffectContentDataSourceForEffectID:(id)d ofType:(int)type;
+- (id)createEffectForType:(int)type fromID:(id)d withProperties:(id)properties;
+- (id)effectsForType:(int)type fromCategory:(id)category;
+- (id)noneEffectIDForType:(int)type;
+- (void)defaultPickerItemForType:(int)type completion:(id)completion;
+- (void)effectCategoriesForPickerItem:(id)item completion:(id)completion;
+- (void)effectCategoriesForType:(int)type completion:(id)completion;
+- (void)effectIDsForPickerItem:(id)item completion:(id)completion;
+- (void)effectIDsForType:(int)type completion:(id)completion;
+- (void)effectsForType:(int)type completion:(id)completion;
+- (void)effectsForType:(int)type pickerItem:(id)item completion:(id)completion;
+- (void)fetchPickerItems:(id)items;
+- (void)pickerItemForCategory:(id)category completion:(id)completion;
 @end
 
 @implementation JFXEffectFactory
@@ -36,37 +36,37 @@ uint64_t __34__JFXEffectFactory_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)effectCategoriesForPickerItem:(id)a3 completion:(id)a4
+- (void)effectCategoriesForPickerItem:(id)item completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() delegate];
+  itemCopy = item;
+  completionCopy = completion;
+  delegate = [objc_opt_class() delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [objc_opt_class() delegate];
-    v10 = [v11 uuid];
-    [v9 effectFactory:self effectCategoriesForGroupID:v10 completion:v6];
+    delegate2 = [objc_opt_class() delegate];
+    uuid = [itemCopy uuid];
+    [delegate2 effectFactory:self effectCategoriesForGroupID:uuid completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
-- (void)effectCategoriesForType:(int)a3 completion:(id)a4
+- (void)effectCategoriesForType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [objc_opt_class() delegate];
+  v4 = *&type;
+  completionCopy = completion;
+  delegate = [objc_opt_class() delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v12 = [objc_opt_class() delegate];
-    [v12 effectFactory:self effectCategoriesAvailableForType:v4 completion:v6];
+    delegate2 = [objc_opt_class() delegate];
+    [delegate2 effectFactory:self effectCategoriesAvailableForType:v4 completion:completionCopy];
     goto LABEL_14;
   }
 
@@ -93,11 +93,11 @@ uint64_t __34__JFXEffectFactory_sharedInstance__block_invoke()
 
   v10 = *v9;
 LABEL_13:
-  v12 = v10;
+  delegate2 = v10;
   v11 = [effectCategoriesForType_completion__sAllEffectCategories objectForKeyedSubscript:v10];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 
-  v6 = v11;
+  completionCopy = v11;
 LABEL_14:
 }
 
@@ -241,36 +241,36 @@ LABEL_7:
   [effectCategoriesForType_completion__sAllEffectCategories setObject:v27 forKeyedSubscript:v25];
 }
 
-- (void)effectIDsForType:(int)a3 completion:(id)a4
+- (void)effectIDsForType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [objc_opt_class() delegate];
-  [v7 effectFactory:self effectIDsAvailableForType:v4 completion:v6];
+  v4 = *&type;
+  completionCopy = completion;
+  delegate = [objc_opt_class() delegate];
+  [delegate effectFactory:self effectIDsAvailableForType:v4 completion:completionCopy];
 }
 
-- (void)effectIDsForPickerItem:(id)a3 completion:(id)a4
+- (void)effectIDsForPickerItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() delegate];
+  itemCopy = item;
+  completionCopy = completion;
+  delegate = [objc_opt_class() delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [objc_opt_class() delegate];
-    v11 = [v6 uuid];
+    delegate2 = [objc_opt_class() delegate];
+    uuid = [itemCopy uuid];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __54__JFXEffectFactory_effectIDsForPickerItem_completion___block_invoke;
     v12[3] = &unk_278D7ACD8;
-    v13 = v7;
-    [v10 effectFactory:self effectCategoriesForGroupID:v11 completion:v12];
+    v13 = completionCopy;
+    [delegate2 effectFactory:self effectCategoriesForGroupID:uuid completion:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -323,17 +323,17 @@ void __54__JFXEffectFactory_effectIDsForPickerItem_completion___block_invoke(uin
   dispatch_async(MEMORY[0x277D85CD0], v13);
 }
 
-- (void)effectsForType:(int)a3 completion:(id)a4
+- (void)effectsForType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__JFXEffectFactory_effectsForType_completion___block_invoke;
   v8[3] = &unk_278D7AD00;
   v10 = v4;
-  v9 = v6;
-  v7 = v6;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(JFXEffectFactory *)self effectIDsForType:v4 completion:v8];
 }
 
@@ -384,17 +384,17 @@ void __46__JFXEffectFactory_effectsForType_completion___block_invoke(uint64_t a1
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)effectsForType:(int)a3 pickerItem:(id)a4 completion:(id)a5
+- (void)effectsForType:(int)type pickerItem:(id)item completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke;
   v10[3] = &unk_278D7AD00;
-  v12 = a3;
-  v11 = v8;
-  v9 = v8;
-  [(JFXEffectFactory *)self effectIDsForPickerItem:a4 completion:v10];
+  typeCopy = type;
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(JFXEffectFactory *)self effectIDsForPickerItem:item completion:v10];
 }
 
 void __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke(uint64_t a1, void *a2)
@@ -444,18 +444,18 @@ void __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)effectsForType:(int)a3 fromCategory:(id)a4
+- (id)effectsForType:(int)type fromCategory:(id)category
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = JFXEffectClassForType(a3);
+  categoryCopy = category;
+  v6 = JFXEffectClassForType(type);
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v5 effectIDs];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  effectIDs = [categoryCopy effectIDs];
+  v9 = [effectIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -466,7 +466,7 @@ void __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke(
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(effectIDs);
         }
 
         v13 = [[v6 alloc] initWithEffectID:*(*(&v15 + 1) + 8 * i)];
@@ -476,7 +476,7 @@ void __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke(
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [effectIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -485,17 +485,17 @@ void __57__JFXEffectFactory_effectsForType_pickerItem_completion___block_invoke(
   return v7;
 }
 
-- (void)fetchPickerItems:(id)a3
+- (void)fetchPickerItems:(id)items
 {
-  v4 = a3;
-  v5 = [objc_opt_class() delegate];
+  itemsCopy = items;
+  delegate = [objc_opt_class() delegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__JFXEffectFactory_fetchPickerItems___block_invoke;
   v7[3] = &unk_278D7ACD8;
-  v8 = v4;
-  v6 = v4;
-  [v5 effectFactory:self fetchPickerItemsWithCompletion:v7];
+  v8 = itemsCopy;
+  v6 = itemsCopy;
+  [delegate effectFactory:self fetchPickerItemsWithCompletion:v7];
 }
 
 void __37__JFXEffectFactory_fetchPickerItems___block_invoke(uint64_t a1, void *a2)
@@ -512,16 +512,16 @@ void __37__JFXEffectFactory_fetchPickerItems___block_invoke(uint64_t a1, void *a
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)defaultPickerItemForType:(int)a3 completion:(id)a4
+- (void)defaultPickerItemForType:(int)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__JFXEffectFactory_defaultPickerItemForType_completion___block_invoke;
   v8[3] = &unk_278D7AD00;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  typeCopy = type;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(JFXEffectFactory *)self fetchPickerItems:v8];
 }
 
@@ -540,18 +540,18 @@ void __56__JFXEffectFactory_defaultPickerItemForType_completion___block_invoke(u
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)pickerItemForCategory:(id)a3 completion:(id)a4
+- (void)pickerItemForCategory:(id)category completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__JFXEffectFactory_pickerItemForCategory_completion___block_invoke;
   v10[3] = &unk_278D7AD70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = categoryCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = categoryCopy;
   [(JFXEffectFactory *)self fetchPickerItems:v10];
 }
 
@@ -623,18 +623,18 @@ uint64_t __53__JFXEffectFactory_pickerItemForCategory_completion___block_invoke_
   return v5;
 }
 
-- (id)createEffectForType:(int)a3 fromID:(id)a4 withProperties:(id)a5
+- (id)createEffectForType:(int)type fromID:(id)d withProperties:(id)properties
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = JFXEffectClassForType(a3);
+  dCopy = d;
+  propertiesCopy = properties;
+  v9 = JFXEffectClassForType(type);
   if (v9)
   {
-    v10 = [[v9 alloc] initWithEffectID:v7];
+    v10 = [[v9 alloc] initWithEffectID:dCopy];
     v11 = v10;
-    if (v8)
+    if (propertiesCopy)
     {
-      [v10 addEffectParameters:v8];
+      [v10 addEffectParameters:propertiesCopy];
     }
   }
 
@@ -646,10 +646,10 @@ uint64_t __53__JFXEffectFactory_pickerItemForCategory_completion___block_invoke_
   return v11;
 }
 
-- (id)noneEffectIDForType:(int)a3
+- (id)noneEffectIDForType:(int)type
 {
   v4 = 0;
-  if (a3 <= 8 && ((1 << a3) & 0x162) != 0)
+  if (type <= 8 && ((1 << type) & 0x162) != 0)
   {
     v4 = *MEMORY[0x277D41718];
   }
@@ -657,19 +657,19 @@ uint64_t __53__JFXEffectFactory_pickerItemForCategory_completion___block_invoke_
   return v4;
 }
 
-- (id)createEffectContentDataSourceForEffectID:(id)a3 ofType:(int)a4
+- (id)createEffectContentDataSourceForEffectID:(id)d ofType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (+[JFXEffect effectIDIsNone:](JFXEffect, "effectIDIsNone:", v6) || ([objc_opt_class() delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) == 0))
+  v4 = *&type;
+  dCopy = d;
+  if (+[JFXEffect effectIDIsNone:](JFXEffect, "effectIDIsNone:", dCopy) || ([objc_opt_class() delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) == 0))
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [objc_opt_class() delegate];
-    v10 = [v9 effectFactory:self createEffectContentDataSourceForEffectID:v6 ofType:v4];
+    delegate = [objc_opt_class() delegate];
+    v10 = [delegate effectFactory:self createEffectContentDataSourceForEffectID:dCopy ofType:v4];
   }
 
   return v10;

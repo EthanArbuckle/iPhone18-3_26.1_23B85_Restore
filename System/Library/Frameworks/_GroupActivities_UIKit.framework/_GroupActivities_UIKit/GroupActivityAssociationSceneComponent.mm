@@ -1,16 +1,16 @@
 @interface GroupActivityAssociationSceneComponent
 - (UIScene)_scene;
 - (_TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent)init;
-- (_TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent)initWithScene:(id)a3;
-- (void)_sceneWillInvalidate:(id)a3;
+- (_TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent)initWithScene:(id)scene;
+- (void)_sceneWillInvalidate:(id)invalidate;
 @end
 
 @implementation GroupActivityAssociationSceneComponent
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   v3 = *((*MEMORY[0x277D85000] & *self) + 0x90);
-  v4 = self;
+  selfCopy = self;
   v3(0);
 }
 
@@ -22,7 +22,7 @@
   return Strong;
 }
 
-- (_TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent)initWithScene:(id)a3
+- (_TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent)initWithScene:(id)scene
 {
   *(self + OBJC_IVAR____TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent_groupActivityAssociationInteractions) = MEMORY[0x277D84F98];
   *(self + OBJC_IVAR____TtC22_GroupActivities_UIKit38GroupActivityAssociationSceneComponent_activeGroupActivityAssociation) = 0;

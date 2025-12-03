@@ -1,5 +1,5 @@
 @interface SKSoundSource
-+ (SKSoundSource)sourceWithBuffer:(id)a3;
++ (SKSoundSource)sourceWithBuffer:(id)buffer;
 + (id)source;
 - (BOOL)isPlaying;
 - (BOOL)play;
@@ -13,10 +13,10 @@
 - (void)dealloc;
 - (void)pause;
 - (void)purgeCompletedBuffers;
-- (void)queueBuffer:(id)a3;
-- (void)setGain:(double)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setShouldLoop:(BOOL)a3;
+- (void)queueBuffer:(id)buffer;
+- (void)setGain:(double)gain;
+- (void)setPosition:(CGPoint)position;
+- (void)setShouldLoop:(BOOL)loop;
 - (void)stop;
 @end
 
@@ -31,9 +31,9 @@
   if (v2)
   {
     v2->_sourceId = 0;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     buffers = v3->_buffers;
-    v3->_buffers = v4;
+    v3->_buffers = array;
   }
 
   return v3;
@@ -49,13 +49,13 @@
   return v2;
 }
 
-+ (SKSoundSource)sourceWithBuffer:(id)a3
++ (SKSoundSource)sourceWithBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    v3 = a3;
+    bufferCopy = buffer;
     v4 = +[SKSoundSource source];
-    [v4 queueBuffer:v3];
+    [v4 queueBuffer:bufferCopy];
   }
 
   else
@@ -66,13 +66,13 @@
   return v4;
 }
 
-- (void)queueBuffer:(id)a3
+- (void)queueBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_sourceId)
+  bufferCopy = buffer;
+  v5 = bufferCopy;
+  if (bufferCopy && self->_sourceId)
   {
-    bids = [v4 bufferId];
+    bids = [bufferCopy bufferId];
     alSourceQueueBuffers(self->_sourceId, 1, &bids);
     [(NSMutableArray *)self->_buffers addObject:v5];
   }
@@ -125,12 +125,12 @@
   return sourceId;
 }
 
-- (void)setShouldLoop:(BOOL)a3
+- (void)setShouldLoop:(BOOL)loop
 {
   sourceId = self->_sourceId;
   if (sourceId)
   {
-    alSourcei(sourceId, 4103, a3);
+    alSourcei(sourceId, 4103, loop);
   }
 }
 
@@ -147,13 +147,13 @@
   return value;
 }
 
-- (void)setGain:(double)a3
+- (void)setGain:(double)gain
 {
   sourceId = self->_sourceId;
   if (sourceId)
   {
-    v4 = a3;
-    alSourcef(sourceId, 4106, v4);
+    gainCopy = gain;
+    alSourcef(sourceId, 4106, gainCopy);
   }
 }
 
@@ -181,13 +181,13 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
   sourceId = self->_sourceId;
   if (sourceId)
   {
-    x = a3.x;
-    y = a3.y;
+    x = position.x;
+    y = position.y;
     alSource3f(sourceId, 4100, x, y, 0.0);
   }
 }
@@ -237,10 +237,10 @@
   v7[1] = *MEMORY[0x277D85DE8];
   if (self->_sourceId)
   {
-    v3 = [(SKSoundSource *)self completedBufferCount];
-    if (v3 >= 1)
+    completedBufferCount = [(SKSoundSource *)self completedBufferCount];
+    if (completedBufferCount >= 1)
     {
-      v4 = v3;
+      v4 = completedBufferCount;
       MEMORY[0x28223BE20]();
       alSourceUnqueueBuffers(self->_sourceId, v6, (v7 - v5));
       [(NSMutableArray *)self->_buffers removeObjectsInRange:0, v4];
@@ -292,17 +292,17 @@
     v7 = &stru_282E190D8;
   }
 
-  v11 = [(SKSoundSource *)self queuedBufferCount];
-  v12 = [(SKSoundSource *)self completedBufferCount];
+  queuedBufferCount = [(SKSoundSource *)self queuedBufferCount];
+  completedBufferCount = [(SKSoundSource *)self completedBufferCount];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(SKSoundSource *)self isPlaying];
+  isPlaying = [(SKSoundSource *)self isPlaying];
   v15 = @"NO";
-  if (v14)
+  if (isPlaying)
   {
     v15 = @"YES";
   }
 
-  v16 = [v13 stringWithFormat:@"paused:%@ totalBuffers:%d completed:%d queued:%d buffers = {%@\n}", v15, (v12 + v11), v12, v11, v7];
+  v16 = [v13 stringWithFormat:@"paused:%@ totalBuffers:%d completed:%d queued:%d buffers = {%@\n}", v15, (completedBufferCount + queuedBufferCount), completedBufferCount, queuedBufferCount, v7];
 
   return v16;
 }

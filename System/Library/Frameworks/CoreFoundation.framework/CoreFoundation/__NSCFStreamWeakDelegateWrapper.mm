@@ -1,5 +1,5 @@
 @interface __NSCFStreamWeakDelegateWrapper
-- (__NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)a3;
+- (__NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)a3
+- (__NSCFStreamWeakDelegateWrapper)initWithDelegate:(id)delegate
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    _NSObjectStoreWeak(&v4->_object, a3, &v4->_useFallback);
+    _NSObjectStoreWeak(&v4->_object, delegate, &v4->_useFallback);
   }
 
   v6 = *MEMORY[0x1E69E9840];

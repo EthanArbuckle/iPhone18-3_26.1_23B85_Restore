@@ -3,19 +3,19 @@
 - (PassbookSettingsContainerController)init;
 - (void)_applicationDidBecomeActive;
 - (void)_applicationDidEnterBackground;
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3;
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification;
 - (void)_applicationDidResignActive;
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3;
-- (void)_fadeView:(id)a3 visible:(BOOL)a4 completion:(id)a5;
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification;
+- (void)_fadeView:(id)view visible:(BOOL)visible completion:(id)completion;
 - (void)_handleDeepLinkResourceDictionaryIfNecessary;
 - (void)_loadCurrentScreen;
 - (void)_restrictToShield;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCurrentScreen:(unint64_t)a3;
-- (void)setSpecifier:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCurrentScreen:(unint64_t)screen;
+- (void)setSpecifier:(id)specifier;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -70,9 +70,9 @@
   v5.receiver = self;
   v5.super_class = PassbookSettingsContainerController;
   [(PassbookSettingsContainerController *)&v5 loadView];
-  v3 = [(PassbookSettingsContainerController *)self view];
+  view = [(PassbookSettingsContainerController *)self view];
   v4 = +[UIColor systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   [(PassbookSettingsContainerController *)self _loadCurrentScreen];
 }
@@ -93,26 +93,26 @@
 
   else
   {
-    v4 = [(UIViewController *)self->_shieldViewController view];
-    v5 = [(PassbookSettingsContainerController *)self view];
-    [v5 bounds];
-    [v4 setFrame:?];
+    view = [(UIViewController *)self->_shieldViewController view];
+    view2 = [(PassbookSettingsContainerController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
   }
 
-  v6 = [(PassbookSettingsListController *)self->_listSettingsController view];
-  v7 = [(PassbookSettingsContainerController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  view3 = [(PassbookSettingsListController *)self->_listSettingsController view];
+  view4 = [(PassbookSettingsContainerController *)self view];
+  [view4 bounds];
+  [view3 setFrame:?];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PassbookSettingsContainerController *)self navigationItem];
-  v6 = [v4 name];
-  [v5 setTitle:v6];
+  specifierCopy = specifier;
+  navigationItem = [(PassbookSettingsContainerController *)self navigationItem];
+  name = [specifierCopy name];
+  [navigationItem setTitle:name];
 
-  v7 = [v4 objectForKeyedSubscript:@"PassbookSettingsDeferredURLStateKey"];
+  v7 = [specifierCopy objectForKeyedSubscript:@"PassbookSettingsDeferredURLStateKey"];
   deferredURLState = self->_deferredURLState;
   self->_deferredURLState = v7;
 
@@ -122,15 +122,15 @@
 
   v11.receiver = self;
   v11.super_class = PassbookSettingsContainerController;
-  [(PassbookSettingsContainerController *)&v11 setSpecifier:v4];
+  [(PassbookSettingsContainerController *)&v11 setSpecifier:specifierCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &unk_197B0)
+  if (context == &unk_197B0)
   {
 
-    [(PassbookSettingsContainerController *)self _handleDeepLinkResourceDictionaryIfNecessary:a3];
+    [(PassbookSettingsContainerController *)self _handleDeepLinkResourceDictionaryIfNecessary:path];
   }
 
   else
@@ -139,7 +139,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = PassbookSettingsContainerController;
-    [(PassbookSettingsContainerController *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PassbookSettingsContainerController *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -186,14 +186,14 @@
   }
 }
 
-- (void)setCurrentScreen:(unint64_t)a3
+- (void)setCurrentScreen:(unint64_t)screen
 {
-  if (self->_currentScreen != a3)
+  if (self->_currentScreen != screen)
   {
     v5 = 0;
-    if (a3 > 1)
+    if (screen > 1)
     {
-      if (a3 == 2)
+      if (screen == 2)
       {
         [(PKAppProtectionCoordinator *)self->_appProtectionCoordinator requestAccess];
       }
@@ -201,30 +201,30 @@
       else
       {
         v6 = 0;
-        if (a3 != 3)
+        if (screen != 3)
         {
 LABEL_21:
-          v11 = [(PassbookSettingsListController *)self->_listSettingsController parentViewController];
+          parentViewController = [(PassbookSettingsListController *)self->_listSettingsController parentViewController];
 
           if (v6 | v5)
           {
-            if (v11)
+            if (parentViewController)
             {
               goto LABEL_27;
             }
 
-            v12 = [(PassbookSettingsListController *)self->_listSettingsController view];
+            view = [(PassbookSettingsListController *)self->_listSettingsController view];
             [(PassbookSettingsContainerController *)self addChildViewController:self->_listSettingsController];
-            v13 = [(PassbookSettingsContainerController *)self view];
-            [v13 addSubview:v12];
+            view2 = [(PassbookSettingsContainerController *)self view];
+            [view2 addSubview:view];
 
             [(PassbookSettingsListController *)self->_listSettingsController didMoveToParentViewController:self];
-            [(PassbookSettingsContainerController *)self _fadeView:v12 visible:1 completion:0];
+            [(PassbookSettingsContainerController *)self _fadeView:view visible:1 completion:0];
           }
 
           else
           {
-            if (!v11)
+            if (!parentViewController)
             {
               goto LABEL_27;
             }
@@ -234,39 +234,39 @@ LABEL_21:
             v26[1] = 3221225472;
             v26[2] = sub_2A70;
             v27 = v26[3] = &unk_14778;
-            v28 = self;
-            v12 = v27;
-            [(PassbookSettingsContainerController *)self _fadeView:v12 visible:0 completion:v26];
+            selfCopy = self;
+            view = v27;
+            [(PassbookSettingsContainerController *)self _fadeView:view visible:0 completion:v26];
           }
 
 LABEL_27:
-          v14 = [(PassbookSettingsListController *)self->_listSettingsController view];
-          [v14 setAccessibilityElementsHidden:v5];
+          view3 = [(PassbookSettingsListController *)self->_listSettingsController view];
+          [view3 setAccessibilityElementsHidden:v5];
 
           if (v5)
           {
             [(PassbookSettingsContainerController *)self _resetToRootAnimated:self->_isInAppSwitcher];
-            v15 = [(UIViewController *)self->_shieldViewController parentViewController];
+            parentViewController2 = [(UIViewController *)self->_shieldViewController parentViewController];
 
-            if (v15)
+            if (parentViewController2)
             {
               goto LABEL_33;
             }
 
-            v16 = [(UIViewController *)self->_shieldViewController view];
+            view4 = [(UIViewController *)self->_shieldViewController view];
             [(PassbookSettingsContainerController *)self addChildViewController:self->_shieldViewController];
-            v17 = [(PassbookSettingsContainerController *)self view];
-            [v17 addSubview:v16];
+            view5 = [(PassbookSettingsContainerController *)self view];
+            [view5 addSubview:view4];
 
             [(UIViewController *)self->_shieldViewController didMoveToParentViewController:self];
-            [(PassbookSettingsContainerController *)self _fadeView:v16 visible:1 completion:0];
+            [(PassbookSettingsContainerController *)self _fadeView:view4 visible:1 completion:0];
           }
 
           else
           {
-            v18 = [(UIViewController *)self->_shieldViewController parentViewController];
+            parentViewController3 = [(UIViewController *)self->_shieldViewController parentViewController];
 
-            if (!v18)
+            if (!parentViewController3)
             {
               goto LABEL_33;
             }
@@ -276,17 +276,17 @@ LABEL_27:
             v21 = 3221225472;
             v22 = sub_2AC8;
             v24 = v23 = &unk_14778;
-            v25 = self;
-            v16 = v24;
-            [(PassbookSettingsContainerController *)self _fadeView:v16 visible:0 completion:&v20];
+            selfCopy2 = self;
+            view4 = v24;
+            [(PassbookSettingsContainerController *)self _fadeView:view4 visible:0 completion:&v20];
           }
 
 LABEL_33:
-          self->_currentScreen = a3;
+          self->_currentScreen = screen;
           v19 = [(PassbookSettingsContainerController *)self view:v20];
           [v19 setNeedsLayout];
 
-          if (a3 == 1)
+          if (screen == 1)
           {
             [(PassbookSettingsContainerController *)self _handleDeepLinkResourceDictionaryIfNecessary];
           }
@@ -319,10 +319,10 @@ LABEL_33:
       v5 = 1;
     }
 
-    else if (a3)
+    else if (screen)
     {
       v6 = 0;
-      if (a3 != 1)
+      if (screen != 1)
       {
         goto LABEL_21;
       }
@@ -357,31 +357,31 @@ LABEL_33:
 
 - (BOOL)_shouldResetToRoot
 {
-  v2 = [(PassbookSettingsContainerController *)self navigationController];
-  v3 = [v2 pkui_frontMostViewController];
+  navigationController = [(PassbookSettingsContainerController *)self navigationController];
+  pkui_frontMostViewController = [navigationController pkui_frontMostViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 presentingViewController];
+    presentingViewController = [pkui_frontMostViewController presentingViewController];
 
-    v3 = v4;
+    pkui_frontMostViewController = presentingViewController;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [v3 pkui_disablesAutomaticDismissalUponEnteringBackground];
-    v5 = 0;
+    pkui_disablesAutomaticDismissalUponEnteringBackground = [pkui_frontMostViewController pkui_disablesAutomaticDismissalUponEnteringBackground];
+    viewControllers = 0;
     goto LABEL_10;
   }
 
-  v5 = [v3 viewControllers];
-  v6 = [v3 pkui_disablesAutomaticDismissalUponEnteringBackground];
-  if ((v6 & 1) != 0 || !v5)
+  viewControllers = [pkui_frontMostViewController viewControllers];
+  pkui_disablesAutomaticDismissalUponEnteringBackground = [pkui_frontMostViewController pkui_disablesAutomaticDismissalUponEnteringBackground];
+  if ((pkui_disablesAutomaticDismissalUponEnteringBackground & 1) != 0 || !viewControllers)
   {
 LABEL_10:
-    if ((v6 & 1) == 0)
+    if ((pkui_disablesAutomaticDismissalUponEnteringBackground & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -389,8 +389,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [v5 firstObject];
-  if ([v7 pkui_disablesAutomaticDismissalUponEnteringBackground])
+  firstObject = [viewControllers firstObject];
+  if ([firstObject pkui_disablesAutomaticDismissalUponEnteringBackground])
   {
 LABEL_16:
     LOBYTE(v10) = 0;
@@ -399,56 +399,56 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v8 = [v5 lastObject];
-  v9 = [v8 pkui_disablesAutomaticDismissalUponEnteringBackground];
+  lastObject = [viewControllers lastObject];
+  pkui_disablesAutomaticDismissalUponEnteringBackground2 = [lastObject pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-  if ((v9 & 1) == 0)
+  if ((pkui_disablesAutomaticDismissalUponEnteringBackground2 & 1) == 0)
   {
 LABEL_12:
-    v11 = v5;
-    v12 = [v3 childViewControllers];
-    v7 = [v12 lastObject];
+    v11 = viewControllers;
+    childViewControllers = [pkui_frontMostViewController childViewControllers];
+    firstObject = [childViewControllers lastObject];
 
-    if (v7)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v7 viewControllers];
+        viewControllers = [firstObject viewControllers];
 
-        v13 = [v5 firstObject];
-        if ([v13 pkui_disablesAutomaticDismissalUponEnteringBackground])
+        firstObject2 = [viewControllers firstObject];
+        if ([firstObject2 pkui_disablesAutomaticDismissalUponEnteringBackground])
         {
 
           goto LABEL_16;
         }
 
-        v15 = [v5 lastObject];
-        v16 = [v15 pkui_disablesAutomaticDismissalUponEnteringBackground];
+        lastObject2 = [viewControllers lastObject];
+        pkui_disablesAutomaticDismissalUponEnteringBackground3 = [lastObject2 pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-        if ((v16 & 1) == 0)
+        if ((pkui_disablesAutomaticDismissalUponEnteringBackground3 & 1) == 0)
         {
-          v11 = v5;
+          v11 = viewControllers;
           goto LABEL_21;
         }
 
         goto LABEL_11;
       }
 
-      v14 = [v7 pkui_disablesAutomaticDismissalUponEnteringBackground];
+      pkui_disablesAutomaticDismissalUponEnteringBackground4 = [firstObject pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-      if (v14)
+      if (pkui_disablesAutomaticDismissalUponEnteringBackground4)
       {
         LOBYTE(v10) = 0;
-        v5 = v11;
+        viewControllers = v11;
         goto LABEL_23;
       }
     }
 
 LABEL_21:
-    v7 = +[PKDismissalPreventionAssertionManager sharedInstance];
-    v10 = [v7 shouldPreventAutomaticDismissal] ^ 1;
-    v5 = v11;
+    firstObject = +[PKDismissalPreventionAssertionManager sharedInstance];
+    v10 = [firstObject shouldPreventAutomaticDismissal] ^ 1;
+    viewControllers = v11;
     goto LABEL_22;
   }
 
@@ -459,12 +459,12 @@ LABEL_23:
   return v10;
 }
 
-- (void)_fadeView:(id)a3 visible:(BOOL)a4 completion:(id)a5
+- (void)_fadeView:(id)view visible:(BOOL)visible completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v6)
+  visibleCopy = visible;
+  viewCopy = view;
+  completionCopy = completion;
+  if (visibleCopy)
   {
     v9 = 1.0;
   }
@@ -474,18 +474,18 @@ LABEL_23:
     v9 = 0.0;
   }
 
-  [v7 alpha];
+  [viewCopy alpha];
   if (v10 == v9)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    if (v6)
+    if (visibleCopy)
     {
       v11 = 0.0;
     }
@@ -495,18 +495,18 @@ LABEL_23:
       v11 = 1.0;
     }
 
-    [v7 setAlpha:v11];
+    [viewCopy setAlpha:v11];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_2F98;
     v14[3] = &unk_147A0;
-    v15 = v7;
+    v15 = viewCopy;
     v16 = v9;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_2FA8;
     v12[3] = &unk_147F0;
-    v13 = v8;
+    v13 = completionCopy;
     [UIView animateWithDuration:v14 animations:v12 completion:0.15];
   }
 }
@@ -543,13 +543,13 @@ LABEL_23:
   }
 }
 
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3)
+  if (longLongValue == 3)
   {
     self->_isInAppSwitcher = 1;
     if (!self->_isActive)
@@ -560,13 +560,13 @@ LABEL_23:
   }
 }
 
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3)
+  if (longLongValue == 3)
   {
     self->_isInAppSwitcher = 0;
     if (self->_isActive)
@@ -585,25 +585,25 @@ LABEL_23:
     v15 = v3;
     if (self->_currentScreen == 1)
     {
-      v5 = [(PassbookSettingsDeferredURLState *)self->_deferredURLState resourceDictionary];
-      v6 = v5;
-      if (v5)
+      resourceDictionary = [(PassbookSettingsDeferredURLState *)self->_deferredURLState resourceDictionary];
+      v6 = resourceDictionary;
+      if (resourceDictionary)
       {
         v8 = _NSConcreteStackBlock;
         v9 = 3221225472;
         v10 = sub_33AC;
         v11 = &unk_14778;
-        v12 = self;
-        v13 = v5;
+        selfCopy = self;
+        v13 = resourceDictionary;
         dispatch_async(&_dispatch_main_q, &v8);
-        [(PassbookSettingsDeferredURLState *)self->_deferredURLState setResourceDictionary:0, v8, v9, v10, v11, v12];
+        [(PassbookSettingsDeferredURLState *)self->_deferredURLState setResourceDictionary:0, v8, v9, v10, v11, selfCopy];
       }
 
       else
       {
-        v7 = [(PassbookSettingsListController *)self->_listSettingsController pendingURLResourceDictionary];
+        pendingURLResourceDictionary = [(PassbookSettingsListController *)self->_listSettingsController pendingURLResourceDictionary];
 
-        if (v7)
+        if (pendingURLResourceDictionary)
         {
           [(PassbookSettingsListController *)self->_listSettingsController handlePendingURL];
         }
@@ -612,20 +612,20 @@ LABEL_23:
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   currentScreen = self->_currentScreen;
   if (currentScreen - 2 < 2 || currentScreen == 0)
   {
-    [(PassbookSettingsListController *)self->_listSettingsController setPendingURLResourceDictionary:v9];
-    [(PassbookSettingsListController *)self->_listSettingsController setUrlHandlingCompletion:v6];
+    [(PassbookSettingsListController *)self->_listSettingsController setPendingURLResourceDictionary:lCopy];
+    [(PassbookSettingsListController *)self->_listSettingsController setUrlHandlingCompletion:completionCopy];
   }
 
   else if (currentScreen == 1)
   {
-    [(PassbookSettingsListController *)self->_listSettingsController handleURL:v9 withCompletion:v6];
+    [(PassbookSettingsListController *)self->_listSettingsController handleURL:lCopy withCompletion:completionCopy];
   }
 }
 

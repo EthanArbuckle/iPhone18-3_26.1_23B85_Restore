@@ -1,17 +1,17 @@
 @interface MTManifestResultsController
-- (MTManifestResultsController)initWithPlayerController:(id)a3;
+- (MTManifestResultsController)initWithPlayerController:(id)controller;
 - (unint64_t)startingIndexForDisplay;
 - (void)_manifestDidChange;
 - (void)dealloc;
 - (void)reloadData;
-- (void)setManifest:(id)a3;
+- (void)setManifest:(id)manifest;
 @end
 
 @implementation MTManifestResultsController
 
-- (MTManifestResultsController)initWithPlayerController:(id)a3
+- (MTManifestResultsController)initWithPlayerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MTManifestResultsController;
   v5 = [(MTListResultsController *)&v10 init];
@@ -19,8 +19,8 @@
   {
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = IMAVPlayerNotification_MediaItemDidChange;
-    v8 = [v4 player];
-    [v6 addObserver:v5 selector:"_manifestDidChange" name:v7 object:v8];
+    player = [controllerCopy player];
+    [v6 addObserver:v5 selector:"_manifestDidChange" name:v7 object:player];
   }
 
   return v5;
@@ -36,50 +36,50 @@
   [(MTManifestResultsController *)&v4 dealloc];
 }
 
-- (void)setManifest:(id)a3
+- (void)setManifest:(id)manifest
 {
-  objc_storeStrong(&self->_manifest, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_manifest, manifest);
+  manifestCopy = manifest;
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 addObserver:self selector:"_manifestDidChange" name:IMPlayerManifestDidChange object:v5];
+  [v6 addObserver:self selector:"_manifestDidChange" name:IMPlayerManifestDidChange object:manifestCopy];
 
   [(MTManifestResultsController *)self reloadData];
 }
 
 - (unint64_t)startingIndexForDisplay
 {
-  v2 = [(MTManifestResultsController *)self manifest];
-  v3 = [v2 currentIndex];
+  manifest = [(MTManifestResultsController *)self manifest];
+  currentIndex = [manifest currentIndex];
 
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (currentIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return currentIndex;
   }
 }
 
 - (void)reloadData
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(MTManifestResultsController *)self manifest];
-  v10 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  manifest = [(MTManifestResultsController *)self manifest];
+  v10 = [v3 initWithCapacity:{objc_msgSend(manifest, "count")}];
 
   for (i = [(MTManifestResultsController *)self startingIndexForDisplay]; ; ++i)
   {
-    v6 = [(MTManifestResultsController *)self manifest];
-    v7 = [v6 count];
+    manifest2 = [(MTManifestResultsController *)self manifest];
+    v7 = [manifest2 count];
 
     if (i >= v7)
     {
       break;
     }
 
-    v8 = [(MTManifestResultsController *)self manifest];
-    v9 = [v8 objectAtIndex:i];
+    manifest3 = [(MTManifestResultsController *)self manifest];
+    v9 = [manifest3 objectAtIndex:i];
 
     if (v9)
     {

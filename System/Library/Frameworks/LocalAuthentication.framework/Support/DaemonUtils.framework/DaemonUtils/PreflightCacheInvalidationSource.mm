@@ -1,24 +1,24 @@
 @interface PreflightCacheInvalidationSource
 + (id)voidInvalidationSource;
 - (PreflightCache)cache;
-- (PreflightCacheInvalidationSource)initWithPreflightCache:(id)a3;
+- (PreflightCacheInvalidationSource)initWithPreflightCache:(id)cache;
 - (void)handleNotificationInServerQueue;
-- (void)handleNotificationWithCompletion:(id)a3;
+- (void)handleNotificationWithCompletion:(id)completion;
 - (void)updateStatus;
 @end
 
 @implementation PreflightCacheInvalidationSource
 
-- (PreflightCacheInvalidationSource)initWithPreflightCache:(id)a3
+- (PreflightCacheInvalidationSource)initWithPreflightCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v8.receiver = self;
   v8.super_class = PreflightCacheInvalidationSource;
   v5 = [(PreflightCacheInvalidationSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cache, v4);
+    objc_storeWeak(&v5->_cache, cacheCopy);
     [(PreflightCacheInvalidationSource *)v6 updateStatus];
   }
 
@@ -51,16 +51,16 @@ uint64_t __58__PreflightCacheInvalidationSource_voidInvalidationSource__block_in
   [(PreflightCacheInvalidationSource *)self setStatus:v3];
 }
 
-- (void)handleNotificationWithCompletion:(id)a3
+- (void)handleNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__PreflightCacheInvalidationSource_handleNotificationWithCompletion___block_invoke;
   v6[3] = &unk_278A615D8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [DaemonUtils dispatchOnServer:v6];
 
@@ -86,13 +86,13 @@ uint64_t __69__PreflightCacheInvalidationSource_handleNotificationWithCompletion
 
 - (void)handleNotificationInServerQueue
 {
-  v3 = [(PreflightCacheInvalidationSource *)self status];
+  status = [(PreflightCacheInvalidationSource *)self status];
   [(PreflightCacheInvalidationSource *)self updateStatus];
-  if (v3 != [(PreflightCacheInvalidationSource *)self status])
+  if (status != [(PreflightCacheInvalidationSource *)self status])
   {
-    v5 = [(PreflightCacheInvalidationSource *)self cache];
-    v4 = [(PreflightCacheInvalidationSource *)self invalidationReason];
-    [v5 invalidateWithReason:v4];
+    cache = [(PreflightCacheInvalidationSource *)self cache];
+    invalidationReason = [(PreflightCacheInvalidationSource *)self invalidationReason];
+    [cache invalidateWithReason:invalidationReason];
   }
 }
 

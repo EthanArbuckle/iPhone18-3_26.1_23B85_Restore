@@ -5,11 +5,11 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-- (ASAttachment)initWithCoder:(id)a3;
+- (ASAttachment)initWithCoder:(id)coder;
 - (id)description;
-- (void)appendActiveSyncDataForTask:(id)a3 toData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPercentEscapedName:(id)a3;
+- (void)appendActiveSyncDataForTask:(id)task toData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPercentEscapedName:(id)name;
 @end
 
 @implementation ASAttachment
@@ -23,7 +23,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_17 = v2;
     acceptsTopLevelLeaves___haveChecked_17 = 1;
   }
@@ -40,7 +40,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_17 = v2;
     parsingLeafNode___haveChecked_17 = 1;
   }
@@ -57,7 +57,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_17 = v2;
     parsingWithSubItems___haveChecked_17 = 1;
   }
@@ -74,7 +74,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_17 = v2;
     frontingBasicTypes___haveChecked_17 = 1;
   }
@@ -91,7 +91,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_17 = v2;
     notifyOfUnknownTokens___haveChecked_17 = 1;
   }
@@ -99,16 +99,16 @@
   return v2 & 1;
 }
 
-- (void)setPercentEscapedName:(id)a3
+- (void)setPercentEscapedName:(id)name
 {
-  v4 = [a3 stringByReplacingPercentEscapesUsingEncoding:4];
+  v4 = [name stringByReplacingPercentEscapesUsingEncoding:4];
   [(ASAttachment *)self setName:v4];
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -118,7 +118,7 @@
     v39 = [MEMORY[0x277CCABB0] numberWithInt:519];
     v38 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1 codePage:2 token:8 objectClass:objc_opt_class() setterMethod:sel_setSize_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v37 = [MEMORY[0x277CCABB0] numberWithInt:520];
-    v23 = a1;
+    selfCopy = self;
     v35 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1 codePage:2 token:10 objectClass:objc_opt_class() setterMethod:sel_setMethod_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v36 = [MEMORY[0x277CCABB0] numberWithInt:522];
     v34 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1 codePage:2 token:16 objectClass:objc_opt_class() setterMethod:sel_setDisplayName_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
@@ -148,7 +148,7 @@
     v5 = [v22 dictionaryWithObjectsAndKeys:{v40, v39, v38, v37, v35, v36, v34, v33, v32, v31, v30, v27, v29, v28, v26, v21, v20, v19, v25, v24, v18, v17, v16, v15, v14, v6, v13, v7, v8, v9, 0}];
 
     v10 = +[ASItem parseRuleCache];
-    v11 = NSStringFromClass(v23);
+    v11 = NSStringFromClass(selfCopy);
     [v10 setObject:v5 forKey:v11];
   }
 
@@ -160,19 +160,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASAttachment *)self name];
+  name = [(ASAttachment *)self name];
   v7 = [(ASAttachment *)self size];
-  v8 = [(ASAttachment *)self method];
-  v9 = [(ASAttachment *)self displayName];
-  v10 = [v3 stringWithFormat:@"<%@: Name %@, Size %@, Method %@, DisplayName %@", v5, v6, v7, v8, v9];
+  method = [(ASAttachment *)self method];
+  displayName = [(ASAttachment *)self displayName];
+  v10 = [v3 stringWithFormat:@"<%@: Name %@, Size %@, Method %@, DisplayName %@", v5, name, v7, method, displayName];
 
   return v10;
 }
 
-- (ASAttachment)initWithCoder:(id)a3
+- (ASAttachment)initWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASAttachment *)a2 initWithCoder:?];
   }
@@ -182,86 +182,86 @@
   v6 = [(ASItem *)&v16 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttName"];
     [(ASAttachment *)v6 setName:v7];
 
-    v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttSize"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttSize"];
     [(ASAttachment *)v6 setSize:v8];
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttMethod"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttMethod"];
     [(ASAttachment *)v6 setMethod:v9];
 
-    v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttDisplayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttDisplayName"];
     [(ASAttachment *)v6 setDisplayName:v10];
 
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttContentId"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttContentId"];
     [(ASAttachment *)v6 setContentId:v11];
 
-    v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttContentLocation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttContentLocation"];
     [(ASAttachment *)v6 setContentLocation:v12];
 
-    v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttIsInline"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAAttIsInline"];
     [(ASAttachment *)v6 setIsInline:v13];
 
-    v14 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"ASAttHasBase64Transfer"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASAttHasBase64Transfer"];
     [(ASAttachment *)v6 setHasBase64Transfer:v14];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASAttachment *)a2 encodeWithCoder:?];
   }
 
-  v6 = [(ASAttachment *)self name];
-  [v5 encodeObject:v6 forKey:@"ASAAttName"];
+  name = [(ASAttachment *)self name];
+  [coderCopy encodeObject:name forKey:@"ASAAttName"];
 
   v7 = [(ASAttachment *)self size];
-  [v5 encodeObject:v7 forKey:@"ASAAttSize"];
+  [coderCopy encodeObject:v7 forKey:@"ASAAttSize"];
 
-  v8 = [(ASAttachment *)self method];
-  [v5 encodeObject:v8 forKey:@"ASAAttMethod"];
+  method = [(ASAttachment *)self method];
+  [coderCopy encodeObject:method forKey:@"ASAAttMethod"];
 
-  v9 = [(ASAttachment *)self displayName];
-  [v5 encodeObject:v9 forKey:@"ASAAttDisplayName"];
+  displayName = [(ASAttachment *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"ASAAttDisplayName"];
 
-  v10 = [(ASAttachment *)self contentId];
-  [v5 encodeObject:v10 forKey:@"ASAAttContentId"];
+  contentId = [(ASAttachment *)self contentId];
+  [coderCopy encodeObject:contentId forKey:@"ASAAttContentId"];
 
-  v11 = [(ASAttachment *)self contentLocation];
-  [v5 encodeObject:v11 forKey:@"ASAAttContentLocation"];
+  contentLocation = [(ASAttachment *)self contentLocation];
+  [coderCopy encodeObject:contentLocation forKey:@"ASAAttContentLocation"];
 
-  v12 = [(ASAttachment *)self isInline];
-  [v5 encodeObject:v12 forKey:@"ASAAttIsInline"];
+  isInline = [(ASAttachment *)self isInline];
+  [coderCopy encodeObject:isInline forKey:@"ASAAttIsInline"];
 
-  v13 = [(ASAttachment *)self hasBase64Transfer];
-  [v5 encodeObject:v13 forKey:@"ASAttHasBase64Transfer"];
+  hasBase64Transfer = [(ASAttachment *)self hasBase64Transfer];
+  [coderCopy encodeObject:hasBase64Transfer forKey:@"ASAttHasBase64Transfer"];
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(ASAttachment *)self clientId];
-  [v5 appendTag:30 withStringContent:v6];
+  dataCopy = data;
+  clientId = [(ASAttachment *)self clientId];
+  [dataCopy appendTag:30 withStringContent:clientId];
 
-  [v5 appendTag:18 withIntContent:1];
-  v7 = [(ASAttachment *)self localPath];
+  [dataCopy appendTag:18 withIntContent:1];
+  localPath = [(ASAttachment *)self localPath];
 
-  if (!v7)
+  if (!localPath)
   {
     v10 = DALoggingwithCategory();
     v16 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v10, v16))
     {
-      v17 = [(ASAttachment *)self clientId];
+      clientId2 = [(ASAttachment *)self clientId];
       *buf = 138412290;
-      v22 = v17;
+      v22 = clientId2;
       _os_log_impl(&dword_24A0AC000, v10, v16, "Local URL not found for attachment client Id %@", buf, 0xCu);
     }
 
@@ -270,26 +270,26 @@
   }
 
   v8 = MEMORY[0x277CBEA90];
-  v9 = [(ASAttachment *)self localPath];
+  localPath2 = [(ASAttachment *)self localPath];
   v20 = 0;
-  v10 = [v8 dataWithContentsOfURL:v9 options:0 error:&v20];
+  v10 = [v8 dataWithContentsOfURL:localPath2 options:0 error:&v20];
   v11 = v20;
 
   if (v10)
   {
-    v12 = [(ASAttachment *)self localPath];
-    v13 = [v12 pathExtension];
+    localPath3 = [(ASAttachment *)self localPath];
+    pathExtension = [localPath3 pathExtension];
 
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v13, 0);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], pathExtension, 0);
     v15 = UTTypeCopyPreferredTagWithClass(PreferredIdentifierForTag, *MEMORY[0x277CC1F60]);
-    [v5 appendTag:23 withStringContent:v15];
-    [v5 appendTag:31 withByteArrayDataContent:v10];
+    [dataCopy appendTag:23 withStringContent:v15];
+    [dataCopy appendTag:31 withByteArrayDataContent:v10];
 
 LABEL_7:
   }
 
-  v18 = [(ASAttachment *)self displayName];
-  [v5 appendTag:16 withStringContent:v18];
+  displayName = [(ASAttachment *)self displayName];
+  [dataCopy appendTag:16 withStringContent:displayName];
 
   v19 = *MEMORY[0x277D85DE8];
 }

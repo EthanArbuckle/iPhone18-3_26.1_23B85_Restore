@@ -1,13 +1,13 @@
 @interface RecipeBannerAdViewController
-- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation RecipeBannerAdViewController
 
-- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles28RecipeBannerAdViewController_bannerAdSize);
   sub_1D7BA4498();
@@ -23,17 +23,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BA5320();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BA66F0();
 }
 
-- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles28RecipeBannerAdViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

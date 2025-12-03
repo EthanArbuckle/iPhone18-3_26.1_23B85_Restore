@@ -1,11 +1,11 @@
 @interface UIEventSessionTouchEvent
-- (BOOL)containsTouchID:(id)a3;
-- (UIEventSessionTouchEvent)initWithTouchType:(int64_t)a3 withTrackpadFingerDownCount:(int64_t)a4;
+- (BOOL)containsTouchID:(id)d;
+- (UIEventSessionTouchEvent)initWithTouchType:(int64_t)type withTrackpadFingerDownCount:(int64_t)count;
 @end
 
 @implementation UIEventSessionTouchEvent
 
-- (UIEventSessionTouchEvent)initWithTouchType:(int64_t)a3 withTrackpadFingerDownCount:(int64_t)a4
+- (UIEventSessionTouchEvent)initWithTouchType:(int64_t)type withTrackpadFingerDownCount:(int64_t)count
 {
   v10.receiver = self;
   v10.super_class = UIEventSessionTouchEvent;
@@ -16,16 +16,16 @@
     touchStatus = v6->_touchStatus;
     v6->_touchStatus = v7;
 
-    v6->_touchType = a3;
-    v6->_trackpadFingerDownCount = a4;
+    v6->_touchType = type;
+    v6->_trackpadFingerDownCount = count;
   }
 
   return v6;
 }
 
-- (BOOL)containsTouchID:(id)a3
+- (BOOL)containsTouchID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_touchStatus objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_touchStatus objectForKeyedSubscript:d];
   v4 = v3 != 0;
 
   return v4;

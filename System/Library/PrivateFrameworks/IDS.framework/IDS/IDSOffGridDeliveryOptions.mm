@@ -1,9 +1,9 @@
 @interface IDSOffGridDeliveryOptions
 - (IDSOffGridDeliveryOptions)init;
-- (IDSOffGridDeliveryOptions)initWithCoder:(id)a3;
+- (IDSOffGridDeliveryOptions)initWithCoder:(id)coder;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefaultOptionsForTransportType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefaultOptionsForTransportType:(int64_t)type;
 @end
 
 @implementation IDSOffGridDeliveryOptions
@@ -68,60 +68,60 @@
   return v13;
 }
 
-- (void)setDefaultOptionsForTransportType:(int64_t)a3
+- (void)setDefaultOptionsForTransportType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     self->_sendMode = 0;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   command = self->_command;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:command];
-  [v6 encodeObject:v7 forKey:@"command"];
+  [coderCopy encodeObject:v7 forKey:@"command"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_transportType];
-  [v6 encodeObject:v8 forKey:@"transport-type"];
+  [coderCopy encodeObject:v8 forKey:@"transport-type"];
 
-  [v6 encodeObject:self->_originalUUID forKey:@"originalUUID"];
+  [coderCopy encodeObject:self->_originalUUID forKey:@"originalUUID"];
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_serviceType];
-  [v6 encodeObject:v9 forKey:@"service-type"];
+  [coderCopy encodeObject:v9 forKey:@"service-type"];
 
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:self->_sendMode];
-  [v6 encodeObject:v10 forKey:@"send-mode"];
+  [coderCopy encodeObject:v10 forKey:@"send-mode"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_encryptPayload];
-  [v6 encodeObject:v11 forKey:@"encrypt-payload"];
+  [coderCopy encodeObject:v11 forKey:@"encrypt-payload"];
 }
 
-- (IDSOffGridDeliveryOptions)initWithCoder:(id)a3
+- (IDSOffGridDeliveryOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(IDSOffGridDeliveryOptions);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"command"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"command"];
   -[IDSOffGridDeliveryOptions setCommand:](v5, "setCommand:", [v6 intValue]);
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transport-type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transport-type"];
   -[IDSOffGridDeliveryOptions setTransportType:](v5, "setTransportType:", [v7 intValue]);
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalUUID"];
   [(IDSOffGridDeliveryOptions *)v5 setOriginalUUID:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service-type"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service-type"];
   -[IDSOffGridDeliveryOptions setServiceType:](v5, "setServiceType:", [v9 intValue]);
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   [(IDSOffGridDeliveryOptions *)v5 setIdentifier:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"send-mode"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"send-mode"];
   -[IDSOffGridDeliveryOptions setSendMode:](v5, "setSendMode:", [v11 intValue]);
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encrypt-payload"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encrypt-payload"];
 
   -[IDSOffGridDeliveryOptions setEncryptPayload:](v5, "setEncryptPayload:", [v12 BOOLValue]);
   return v5;

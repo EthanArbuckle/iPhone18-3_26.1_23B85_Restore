@@ -17,12 +17,12 @@
     if (([(TouchIDDriverPresenceTestController *)self isCancelled]& 1) == 0)
     {
       v4 = [v8 objectForKeyedSubscript:@"data"];
-      v5 = [(TouchIDDriverPresenceTestController *)self result];
-      [v5 setData:v4];
+      result = [(TouchIDDriverPresenceTestController *)self result];
+      [result setData:v4];
 
       v6 = [v8 objectForKeyedSubscript:@"testStatus"];
-      v7 = [(TouchIDDriverPresenceTestController *)self result];
-      [v7 setStatusCode:v6];
+      result2 = [(TouchIDDriverPresenceTestController *)self result];
+      [result2 setStatusCode:v6];
     }
   }
 

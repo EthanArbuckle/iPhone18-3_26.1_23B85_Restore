@@ -1,6 +1,6 @@
 @interface CSWhitePointComponent
 - (CSWhitePointComponent)init;
-- (void)setLighterReduction:(int64_t)a3;
+- (void)setLighterReduction:(int64_t)reduction;
 @end
 
 @implementation CSWhitePointComponent
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)setLighterReduction:(int64_t)a3
+- (void)setLighterReduction:(int64_t)reduction
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= reduction)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:reduction];
   }
 }
 

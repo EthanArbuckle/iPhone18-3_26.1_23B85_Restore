@@ -6,17 +6,17 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_SFCompressedBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(_SFCompressedBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 0;
   }
 
-  v4 = [(_SFCompressedBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(_SFCompressedBarButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

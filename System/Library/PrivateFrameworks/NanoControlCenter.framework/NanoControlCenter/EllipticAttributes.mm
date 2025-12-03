@@ -3,9 +3,9 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (_TtC17NanoControlCenter18EllipticAttributes)init;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation EllipticAttributes
@@ -36,12 +36,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   sub_25B005B34();
   sub_25B005B24();
   sub_25B005AE4();
@@ -77,10 +77,10 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   sub_25B005B34();
   sub_25B005B24();
   sub_25B005AE4();
@@ -116,12 +116,12 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v7 = *&a3->c;
-  v8 = *&a3->a;
-  tx = a3->tx;
-  ty = a3->ty;
+  v7 = *&transform->c;
+  v8 = *&transform->a;
+  tx = transform->tx;
+  ty = transform->ty;
   sub_25B005B34();
   sub_25B005B24();
   sub_25B005AE4();

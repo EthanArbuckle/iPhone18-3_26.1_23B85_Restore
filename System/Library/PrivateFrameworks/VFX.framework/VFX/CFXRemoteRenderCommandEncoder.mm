@@ -1,146 +1,146 @@
 @interface CFXRemoteRenderCommandEncoder
 - (BOOL)isCullModeLocked;
 - (BOOL)isFillModeLocked;
-- (CFXRemoteRenderCommandEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)a3;
+- (CFXRemoteRenderCommandEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)builder;
 - (MTLDevice)device;
 - (NSString)label;
-- (id)fragmentBufferBoundAt:(unint64_t)a3;
-- (id)vertexBufferBoundAt:(unint64_t)a3;
-- (unint64_t)_resourceIDForBuffer:(id)a3;
+- (id)fragmentBufferBoundAt:(unint64_t)at;
+- (id)vertexBufferBoundAt:(unint64_t)at;
+- (unint64_t)_resourceIDForBuffer:(id)buffer;
 - (unint64_t)tileHeight;
 - (unint64_t)tileWidth;
 - (void)dealloc;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)insertDebugSignpost:(id)a3;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6;
-- (void)memoryBarrierWithScope:(unint64_t)a3 afterStages:(unint64_t)a4 beforeStages:(unint64_t)a5;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)insertDebugSignpost:(id)signpost;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)memoryBarrierWithScope:(unint64_t)scope afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)sampleCountersInBuffer:(id)a3 atSampleIndex:(unint64_t)a4 withBarrier:(BOOL)a5;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setDeferredBindingEnabled:(BOOL)a3;
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5;
-- (void)setDepthStencilState:(id)a3;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setDepthStoreActionOptions:(unint64_t)a3;
-- (void)setEncoder:(id)a3;
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setLabel:(id)a3;
-- (void)setLockCullMode:(BOOL)a3;
-- (void)setLockFillMode:(BOOL)a3;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
-- (void)setStencilReferenceValue:(unsigned int)a3;
-- (void)setStencilStoreAction:(unint64_t)a3;
-- (void)setStencilStoreActionOptions:(unint64_t)a3;
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5;
-- (void)setTessellationFactorScale:(float)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4;
+- (void)pushDebugGroup:(id)group;
+- (void)sampleCountersInBuffer:(id)buffer atSampleIndex:(unint64_t)index withBarrier:(BOOL)barrier;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index;
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index;
+- (void)setDeferredBindingEnabled:(BOOL)enabled;
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp;
+- (void)setDepthStencilState:(id)state;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setDepthStoreActionOptions:(unint64_t)options;
+- (void)setEncoder:(id)encoder;
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setLabel:(id)label;
+- (void)setLockCullMode:(BOOL)mode;
+- (void)setLockFillMode:(BOOL)mode;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
+- (void)setStencilReferenceValue:(unsigned int)value;
+- (void)setStencilStoreAction:(unint64_t)action;
+- (void)setStencilStoreActionOptions:(unint64_t)options;
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride;
+- (void)setTessellationFactorScale:(float)scale;
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset;
 - (void)textureBarrier;
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4;
-- (void)useHeap:(id)a3;
-- (void)useHeap:(id)a3 stages:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6;
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4;
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages;
+- (void)useHeap:(id)heap;
+- (void)useHeap:(id)heap stages:(unint64_t)stages;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages;
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages;
 @end
 
 @implementation CFXRemoteRenderCommandEncoder
 
-- (CFXRemoteRenderCommandEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)a3
+- (CFXRemoteRenderCommandEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)builder
 {
   v8.receiver = self;
   v8.super_class = CFXRemoteRenderCommandEncoder;
@@ -149,7 +149,7 @@
   if (v4)
   {
     builder = v4->_builder;
-    if (builder != a3)
+    if (builder != builder)
     {
       if (builder)
       {
@@ -157,9 +157,9 @@
         v5->_builder = 0;
       }
 
-      if (a3)
+      if (builder)
       {
-        builder = CFRetain(a3);
+        builder = CFRetain(builder);
       }
 
       else
@@ -191,11 +191,11 @@
   [(CFXRemoteRenderCommandEncoder *)&v4 dealloc];
 }
 
-- (unint64_t)_resourceIDForBuffer:(id)a3
+- (unint64_t)_resourceIDForBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    return objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, a2, a3, v3);
+    return objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, a2, buffer, v3);
   }
 
   else
@@ -204,7 +204,7 @@
   }
 }
 
-- (void)setDeferredBindingEnabled:(BOOL)a3
+- (void)setDeferredBindingEnabled:(BOOL)enabled
 {
   if ((byte_1EB658740 & 1) == 0)
   {
@@ -217,7 +217,7 @@
   }
 }
 
-- (void)setEncoder:(id)a3
+- (void)setEncoder:(id)encoder
 {
   if ((byte_1EB658741 & 1) == 0)
   {
@@ -230,7 +230,7 @@
   }
 }
 
-- (id)vertexBufferBoundAt:(unint64_t)a3
+- (id)vertexBufferBoundAt:(unint64_t)at
 {
   if ((byte_1EB658742 & 1) == 0)
   {
@@ -245,7 +245,7 @@
   return 0;
 }
 
-- (id)fragmentBufferBoundAt:(unint64_t)a3
+- (id)fragmentBufferBoundAt:(unint64_t)at
 {
   if ((byte_1EB658743 & 1) == 0)
   {
@@ -275,7 +275,7 @@
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if ((byte_1EB658745 & 1) == 0)
   {
@@ -318,7 +318,7 @@
   return 1;
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
   if ((byte_1EB658748 & 1) == 0)
   {
@@ -344,7 +344,7 @@
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if ((byte_1EB65874A & 1) == 0)
   {
@@ -357,64 +357,64 @@
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
-  v7 = a7;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = objc_msgSend__resourceIDForBuffer_(self, a2, a6, a4);
-  sub_1AF22DE78(self->_builder, v10, v9, v8, v12, v7, 0, 1, 0);
+  offsetCopy = offset;
+  typeCopy = type;
+  countCopy = count;
+  primitivesCopy = primitives;
+  v12 = objc_msgSend__resourceIDForBuffer_(self, a2, buffer, count);
+  sub_1AF22DE78(self->_builder, primitivesCopy, countCopy, typeCopy, v12, offsetCopy, 0, 1, 0);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = objc_msgSend__resourceIDForBuffer_(self, a2, a6, a4);
-  sub_1AF22DE78(self->_builder, v12, v11, v10, v14, v9, 0, v8, 0);
+  instanceCountCopy = instanceCount;
+  offsetCopy = offset;
+  typeCopy = type;
+  countCopy = count;
+  primitivesCopy = primitives;
+  v14 = objc_msgSend__resourceIDForBuffer_(self, a2, buffer, count);
+  sub_1AF22DE78(self->_builder, primitivesCopy, countCopy, typeCopy, v14, offsetCopy, 0, instanceCountCopy, 0);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v16 = objc_msgSend__resourceIDForBuffer_(self, a2, a6, a4);
+  instanceCountCopy = instanceCount;
+  offsetCopy = offset;
+  typeCopy = type;
+  countCopy = count;
+  primitivesCopy = primitives;
+  v16 = objc_msgSend__resourceIDForBuffer_(self, a2, buffer, count);
   builder = self->_builder;
 
-  sub_1AF22DE78(builder, v14, v13, v12, v16, v11, a9, v10, a10);
+  sub_1AF22DE78(builder, primitivesCopy, countCopy, typeCopy, v16, offsetCopy, vertex, instanceCountCopy, instance);
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
-  v8 = a8;
-  v9 = a6;
-  v11 = a4;
-  v12 = a3;
-  v14 = objc_msgSend__resourceIDForBuffer_(self, a2, a7, a4);
-  v17 = objc_msgSend__resourceIDForBuffer_(self, v15, a5, v16);
+  bufferOffsetCopy = bufferOffset;
+  offsetCopy = offset;
+  typeCopy = type;
+  primitivesCopy = primitives;
+  v14 = objc_msgSend__resourceIDForBuffer_(self, a2, indirectBuffer, type);
+  v17 = objc_msgSend__resourceIDForBuffer_(self, v15, buffer, v16);
   builder = self->_builder;
 
-  sub_1AF22DF18(builder, v12, v11, v17, v9, v14, v8);
+  sub_1AF22DF18(builder, primitivesCopy, typeCopy, v17, offsetCopy, v14, bufferOffsetCopy);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = objc_msgSend__resourceIDForBuffer_(self, a2, a4, a4);
+  offsetCopy = offset;
+  primitivesCopy = primitives;
+  v8 = objc_msgSend__resourceIDForBuffer_(self, a2, buffer, buffer);
   builder = self->_builder;
 
-  sub_1AF22DED4(builder, v6, v8, v5);
+  sub_1AF22DED4(builder, primitivesCopy, v8, offsetCopy);
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
   if ((byte_1EB65874B & 1) == 0)
   {
@@ -427,7 +427,7 @@
   }
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset
 {
   if ((byte_1EB65874C & 1) == 0)
   {
@@ -440,7 +440,7 @@
   }
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1
 {
   if ((byte_1EB65874D & 1) == 0)
   {
@@ -453,7 +453,7 @@
   }
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   if ((byte_1EB65874E & 1) == 0)
   {
@@ -466,7 +466,7 @@
   }
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   if ((byte_1EB65874F & 1) == 0)
   {
@@ -479,7 +479,7 @@
   }
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   if ((byte_1EB658750 & 1) == 0)
   {
@@ -492,7 +492,7 @@
   }
 }
 
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   if ((byte_1EB658751 & 1) == 0)
   {
@@ -505,7 +505,7 @@
   }
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   if ((byte_1EB658752 & 1) == 0)
   {
@@ -518,7 +518,7 @@
   }
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
   if ((byte_1EB658753 & 1) == 0)
   {
@@ -531,7 +531,7 @@
   }
 }
 
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index
 {
   if ((byte_1EB658754 & 1) == 0)
   {
@@ -544,7 +544,7 @@
   }
 }
 
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index
 {
   if ((byte_1EB658755 & 1) == 0)
   {
@@ -557,7 +557,7 @@
   }
 }
 
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp
 {
   if ((byte_1EB658756 & 1) == 0)
   {
@@ -570,15 +570,15 @@
   }
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  v6 = objc_msgSend_descForDepthStencilState_(self->_resourceProvider, a2, a3, v3);
+  v6 = objc_msgSend_descForDepthStencilState_(self->_resourceProvider, a2, state, v3);
   builder = self->_builder;
 
   sub_1AF22D9BC(builder, v6, v5);
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
   if ((byte_1EB658757 & 1) == 0)
   {
@@ -591,7 +591,7 @@
   }
 }
 
-- (void)setDepthStoreActionOptions:(unint64_t)a3
+- (void)setDepthStoreActionOptions:(unint64_t)options
 {
   if ((byte_1EB658758 & 1) == 0)
   {
@@ -604,15 +604,15 @@
   }
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  v5 = objc_msgSend_resourceIDForRenderPipelineState_(self->_resourceProvider, a2, a3, v3);
+  v5 = objc_msgSend_resourceIDForRenderPipelineState_(self->_resourceProvider, a2, state, v3);
   builder = self->_builder;
 
   sub_1AF22DE04(builder, v5);
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   if ((byte_1EB658759 & 1) == 0)
   {
@@ -625,7 +625,7 @@
   }
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
   if ((byte_1EB65875A & 1) == 0)
   {
@@ -638,7 +638,7 @@
   }
 }
 
-- (void)setStencilReferenceValue:(unsigned int)a3
+- (void)setStencilReferenceValue:(unsigned int)value
 {
   if ((byte_1EB65875B & 1) == 0)
   {
@@ -651,7 +651,7 @@
   }
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
   if ((byte_1EB65875C & 1) == 0)
   {
@@ -664,7 +664,7 @@
   }
 }
 
-- (void)setStencilStoreActionOptions:(unint64_t)a3
+- (void)setStencilStoreActionOptions:(unint64_t)options
 {
   if ((byte_1EB65875D & 1) == 0)
   {
@@ -677,10 +677,10 @@
   }
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = a5;
-  v6 = a4;
+  indexCopy = index;
+  offsetCopy = offset;
   resourceProvider = self->_resourceProvider;
   CFXBufferSliceMake();
   v12 = objc_msgSend_builtinForBufferSlice_(resourceProvider, v11, v10, v11);
@@ -689,19 +689,19 @@
     v15 = v12;
     builder = self->_builder;
 
-    sub_1AF22DB5C(builder, 2u, v5, v15);
+    sub_1AF22DB5C(builder, 2u, indexCopy, v15);
   }
 
   else
   {
-    v17 = objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, v13, a3, v14);
+    v17 = objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, v13, buffer, v14);
     v18 = self->_builder;
 
-    sub_1AF22DB14(v18, 2u, v5, v17, v6);
+    sub_1AF22DB14(v18, 2u, indexCopy, v17, offsetCopy);
   }
 }
 
-- (void)setFragmentBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setFragmentBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB65875E & 1) == 0)
   {
@@ -714,17 +714,17 @@
   }
 }
 
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       objc_msgSend_setFragmentBuffer_offset_atIndex_(self, a2, v10, v12, location++);
       --length;
     }
@@ -733,16 +733,16 @@
   }
 }
 
-- (void)setFragmentSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v6 = objc_msgSend_descForSamplerState_(self->_resourceProvider, a2, a3, a4);
+  indexCopy = index;
+  v6 = objc_msgSend_descForSamplerState_(self->_resourceProvider, a2, state, index);
   builder = self->_builder;
 
-  sub_1AF22DAD4(builder, 2u, v4, v6);
+  sub_1AF22DAD4(builder, 2u, indexCopy, v6);
 }
 
-- (void)setFragmentSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setFragmentSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ((byte_1EB65875F & 1) == 0)
   {
@@ -755,7 +755,7 @@
   }
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setFragmentSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   if ((byte_1EB658760 & 1) == 0)
   {
@@ -768,7 +768,7 @@
   }
 }
 
-- (void)setFragmentSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   if ((byte_1EB658761 & 1) == 0)
   {
@@ -781,36 +781,36 @@
   }
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = objc_msgSend_builtinForTexture_(self->_resourceProvider, a2, a3, a4);
+  indexCopy = index;
+  v7 = objc_msgSend_builtinForTexture_(self->_resourceProvider, a2, texture, index);
   if (v7)
   {
     v10 = v7;
     builder = self->_builder;
 
-    sub_1AF22DA94(builder, 2u, v4, v10);
+    sub_1AF22DA94(builder, 2u, indexCopy, v10);
   }
 
   else
   {
-    v12 = objc_msgSend_resourceIDForTexture_(self->_resourceProvider, v8, a3, v9);
+    v12 = objc_msgSend_resourceIDForTexture_(self->_resourceProvider, v8, texture, v9);
     v13 = self->_builder;
 
-    sub_1AF22DA54(v13, 2, v4, v12);
+    sub_1AF22DA54(v13, 2, indexCopy, v12);
   }
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *textures++;
       objc_msgSend_setFragmentTexture_atIndex_(self, a2, v8, location++);
       --length;
     }
@@ -819,7 +819,7 @@
   }
 }
 
-- (void)setFragmentTexture:(id)a3 atTextureIndex:(unint64_t)a4 samplerState:(id)a5 atSamplerIndex:(unint64_t)a6
+- (void)setFragmentTexture:(id)texture atTextureIndex:(unint64_t)index samplerState:(id)state atSamplerIndex:(unint64_t)samplerIndex
 {
   if ((byte_1EB658762 & 1) == 0)
   {
@@ -832,7 +832,7 @@
   }
 }
 
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings
 {
   if ((byte_1EB658763 & 1) == 0)
   {
@@ -845,10 +845,10 @@
   }
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v5 = a5;
-  v6 = a4;
+  indexCopy = index;
+  offsetCopy = offset;
   resourceProvider = self->_resourceProvider;
   CFXBufferSliceMake();
   v12 = objc_msgSend_builtinForBufferSlice_(resourceProvider, v11, v10, v11);
@@ -857,19 +857,19 @@
     v15 = v12;
     builder = self->_builder;
 
-    sub_1AF22DB5C(builder, 1u, v5, v15);
+    sub_1AF22DB5C(builder, 1u, indexCopy, v15);
   }
 
   else
   {
-    v17 = objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, v13, a3, v14);
+    v17 = objc_msgSend_resourceIDForBuffer_(self->_resourceProvider, v13, buffer, v14);
     v18 = self->_builder;
 
-    sub_1AF22DB14(v18, 1u, v5, v17, v6);
+    sub_1AF22DB14(v18, 1u, indexCopy, v17, offsetCopy);
   }
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setVertexBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658764 & 1) == 0)
   {
@@ -882,17 +882,17 @@
   }
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       objc_msgSend_setVertexBuffer_offset_atIndex_(self, a2, v10, v12, location++);
       --length;
     }
@@ -901,7 +901,7 @@
   }
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   if ((byte_1EB658765 & 1) == 0)
   {
@@ -914,7 +914,7 @@
   }
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range
 {
   if ((byte_1EB658766 & 1) == 0)
   {
@@ -927,7 +927,7 @@
   }
 }
 
-- (void)setVertexBufferOffset:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBufferOffset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   if ((byte_1EB658767 & 1) == 0)
   {
@@ -940,7 +940,7 @@
   }
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   if ((byte_1EB658768 & 1) == 0)
   {
@@ -953,16 +953,16 @@
   }
 }
 
-- (void)setVertexSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v6 = objc_msgSend_descForSamplerState_(self->_resourceProvider, a2, a3, a4);
+  indexCopy = index;
+  v6 = objc_msgSend_descForSamplerState_(self->_resourceProvider, a2, state, index);
   builder = self->_builder;
 
-  sub_1AF22DAD4(builder, 1u, v4, v6);
+  sub_1AF22DAD4(builder, 1u, indexCopy, v6);
 }
 
-- (void)setVertexSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setVertexSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ((byte_1EB658769 & 1) == 0)
   {
@@ -975,7 +975,7 @@
   }
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setVertexSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   if ((byte_1EB65876A & 1) == 0)
   {
@@ -988,7 +988,7 @@
   }
 }
 
-- (void)setVertexSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   if ((byte_1EB65876B & 1) == 0)
   {
@@ -1001,36 +1001,36 @@
   }
 }
 
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v7 = objc_msgSend_builtinForTexture_(self->_resourceProvider, a2, a3, a4);
+  indexCopy = index;
+  v7 = objc_msgSend_builtinForTexture_(self->_resourceProvider, a2, texture, index);
   if (v7)
   {
     v10 = v7;
     builder = self->_builder;
 
-    sub_1AF22DA94(builder, 1u, v4, v10);
+    sub_1AF22DA94(builder, 1u, indexCopy, v10);
   }
 
   else
   {
-    v12 = objc_msgSend_resourceIDForTexture_(self->_resourceProvider, v8, a3, v9);
+    v12 = objc_msgSend_resourceIDForTexture_(self->_resourceProvider, v8, texture, v9);
     v13 = self->_builder;
 
-    sub_1AF22DA54(v13, 1, v4, v12);
+    sub_1AF22DA54(v13, 1, indexCopy, v12);
   }
 }
 
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *textures++;
       objc_msgSend_setVertexTexture_atIndex_(self, a2, v8, location++);
       --length;
     }
@@ -1039,7 +1039,7 @@
   }
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   if ((byte_1EB65876C & 1) == 0)
   {
@@ -1052,7 +1052,7 @@
   }
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
   if ((byte_1EB65876D & 1) == 0)
   {
@@ -1065,7 +1065,7 @@
   }
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
   if ((byte_1EB65876E & 1) == 0)
   {
@@ -1078,7 +1078,7 @@
   }
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
   if ((byte_1EB65876F & 1) == 0)
   {
@@ -1091,25 +1091,25 @@
   }
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  if (a4)
+  if (count)
   {
-    v6 = a6;
-    v7 = a5;
-    v8 = a4;
+    stagesCopy = stages;
+    usageCopy = usage;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
-      sub_1AF22DDC4(self->_builder, v11, v6, v7);
-      --v8;
+      v11 = *resources++;
+      sub_1AF22DDC4(self->_builder, v11, stagesCopy, usageCopy);
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   if ((byte_1EB658770 & 1) == 0)
   {
@@ -1122,7 +1122,7 @@
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
   if ((byte_1EB658771 & 1) == 0)
   {
@@ -1135,7 +1135,7 @@
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
   if ((byte_1EB658772 & 1) == 0)
   {
@@ -1148,7 +1148,7 @@
   }
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4 afterStages:(unint64_t)a5 beforeStages:(unint64_t)a6
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   if ((byte_1EB658773 & 1) == 0)
   {
@@ -1161,7 +1161,7 @@
   }
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3 afterStages:(unint64_t)a4 beforeStages:(unint64_t)a5
+- (void)memoryBarrierWithScope:(unint64_t)scope afterStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   if ((byte_1EB658774 & 1) == 0)
   {
@@ -1174,7 +1174,7 @@
   }
 }
 
-- (void)sampleCountersInBuffer:(id)a3 atSampleIndex:(unint64_t)a4 withBarrier:(BOOL)a5
+- (void)sampleCountersInBuffer:(id)buffer atSampleIndex:(unint64_t)index withBarrier:(BOOL)barrier
 {
   if ((byte_1EB658775 & 1) == 0)
   {
@@ -1187,7 +1187,7 @@
   }
 }
 
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB658776 & 1) == 0)
   {
@@ -1200,7 +1200,7 @@
   }
 }
 
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB658777 & 1) == 0)
   {
@@ -1213,7 +1213,7 @@
   }
 }
 
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB658778 & 1) == 0)
   {
@@ -1226,7 +1226,7 @@
   }
 }
 
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB658779 & 1) == 0)
   {
@@ -1239,7 +1239,7 @@
   }
 }
 
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB65877A & 1) == 0)
   {
@@ -1252,7 +1252,7 @@
   }
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB65877B & 1) == 0)
   {
@@ -1265,7 +1265,7 @@
   }
 }
 
-- (void)setMeshBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setMeshBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB65877C & 1) == 0)
   {
@@ -1278,7 +1278,7 @@
   }
 }
 
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
   if ((byte_1EB65877D & 1) == 0)
   {
@@ -1291,7 +1291,7 @@
   }
 }
 
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   if ((byte_1EB65877E & 1) == 0)
   {
@@ -1304,7 +1304,7 @@
   }
 }
 
-- (void)setMeshSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshSamplerState:(id)state atIndex:(unint64_t)index
 {
   if ((byte_1EB65877F & 1) == 0)
   {
@@ -1317,7 +1317,7 @@
   }
 }
 
-- (void)setMeshSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setMeshSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ((byte_1EB658780 & 1) == 0)
   {
@@ -1330,7 +1330,7 @@
   }
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setMeshSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   if ((byte_1EB658781 & 1) == 0)
   {
@@ -1343,7 +1343,7 @@
   }
 }
 
-- (void)setMeshSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   if ((byte_1EB658782 & 1) == 0)
   {
@@ -1356,7 +1356,7 @@
   }
 }
 
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index
 {
   if ((byte_1EB658783 & 1) == 0)
   {
@@ -1369,7 +1369,7 @@
   }
 }
 
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range
 {
   if ((byte_1EB658784 & 1) == 0)
   {
@@ -1382,7 +1382,7 @@
   }
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658785 & 1) == 0)
   {
@@ -1395,7 +1395,7 @@
   }
 }
 
-- (void)setObjectBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658786 & 1) == 0)
   {
@@ -1408,7 +1408,7 @@
   }
 }
 
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
   if ((byte_1EB658787 & 1) == 0)
   {
@@ -1421,7 +1421,7 @@
   }
 }
 
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   if ((byte_1EB658788 & 1) == 0)
   {
@@ -1434,7 +1434,7 @@
   }
 }
 
-- (void)setObjectSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectSamplerState:(id)state atIndex:(unint64_t)index
 {
   if ((byte_1EB658789 & 1) == 0)
   {
@@ -1447,7 +1447,7 @@
   }
 }
 
-- (void)setObjectSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setObjectSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ((byte_1EB65878A & 1) == 0)
   {
@@ -1460,7 +1460,7 @@
   }
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setObjectSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   if ((byte_1EB65878B & 1) == 0)
   {
@@ -1473,7 +1473,7 @@
   }
 }
 
-- (void)setObjectSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   if ((byte_1EB65878C & 1) == 0)
   {
@@ -1486,7 +1486,7 @@
   }
 }
 
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index
 {
   if ((byte_1EB65878D & 1) == 0)
   {
@@ -1499,7 +1499,7 @@
   }
 }
 
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range
 {
   if ((byte_1EB65878E & 1) == 0)
   {
@@ -1512,7 +1512,7 @@
   }
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   if ((byte_1EB65878F & 1) == 0)
   {
@@ -1525,7 +1525,7 @@
   }
 }
 
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride
 {
   if ((byte_1EB658790 & 1) == 0)
   {
@@ -1538,7 +1538,7 @@
   }
 }
 
-- (void)setTessellationFactorScale:(float)a3
+- (void)setTessellationFactorScale:(float)scale
 {
   if ((byte_1EB658791 & 1) == 0)
   {
@@ -1551,7 +1551,7 @@
   }
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658792 & 1) == 0)
   {
@@ -1564,7 +1564,7 @@
   }
 }
 
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB658793 & 1) == 0)
   {
@@ -1577,7 +1577,7 @@
   }
 }
 
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658794 & 1) == 0)
   {
@@ -1590,7 +1590,7 @@
   }
 }
 
-- (void)setTileBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setTileBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if ((byte_1EB658795 & 1) == 0)
   {
@@ -1603,7 +1603,7 @@
   }
 }
 
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
   if ((byte_1EB658796 & 1) == 0)
   {
@@ -1616,7 +1616,7 @@
   }
 }
 
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   if ((byte_1EB658797 & 1) == 0)
   {
@@ -1629,7 +1629,7 @@
   }
 }
 
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB658798 & 1) == 0)
   {
@@ -1642,7 +1642,7 @@
   }
 }
 
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB658799 & 1) == 0)
   {
@@ -1655,7 +1655,7 @@
   }
 }
 
-- (void)setTileSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileSamplerState:(id)state atIndex:(unint64_t)index
 {
   if ((byte_1EB65879A & 1) == 0)
   {
@@ -1668,7 +1668,7 @@
   }
 }
 
-- (void)setTileSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setTileSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if ((byte_1EB65879B & 1) == 0)
   {
@@ -1681,7 +1681,7 @@
   }
 }
 
-- (void)setTileSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setTileSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
   if ((byte_1EB65879C & 1) == 0)
   {
@@ -1694,7 +1694,7 @@
   }
 }
 
-- (void)setTileSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileSamplerStates:(const void *)states withRange:(_NSRange)range
 {
   if ((byte_1EB65879D & 1) == 0)
   {
@@ -1707,7 +1707,7 @@
   }
 }
 
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index
 {
   if ((byte_1EB65879E & 1) == 0)
   {
@@ -1720,7 +1720,7 @@
   }
 }
 
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range
 {
   if ((byte_1EB65879F & 1) == 0)
   {
@@ -1733,7 +1733,7 @@
   }
 }
 
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB6587A0 & 1) == 0)
   {
@@ -1746,7 +1746,7 @@
   }
 }
 
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB6587A1 & 1) == 0)
   {
@@ -1759,7 +1759,7 @@
   }
 }
 
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB6587A2 & 1) == 0)
   {
@@ -1772,7 +1772,7 @@
   }
 }
 
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB6587A3 & 1) == 0)
   {
@@ -1785,7 +1785,7 @@
   }
 }
 
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB6587A4 & 1) == 0)
   {
@@ -1798,7 +1798,7 @@
   }
 }
 
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if ((byte_1EB6587A5 & 1) == 0)
   {
@@ -1811,7 +1811,7 @@
   }
 }
 
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
   if ((byte_1EB6587A6 & 1) == 0)
   {
@@ -1824,7 +1824,7 @@
   }
 }
 
-- (void)setVisibilityResultMode:(unint64_t)a3 offset:(unint64_t)a4
+- (void)setVisibilityResultMode:(unint64_t)mode offset:(unint64_t)offset
 {
   if ((byte_1EB6587A7 & 1) == 0)
   {
@@ -1850,7 +1850,7 @@
   }
 }
 
-- (void)updateFence:(id)a3 afterStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterStages:(unint64_t)stages
 {
   if ((byte_1EB6587A9 & 1) == 0)
   {
@@ -1863,7 +1863,7 @@
   }
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   if ((byte_1EB6587AA & 1) == 0)
   {
@@ -1876,7 +1876,7 @@
   }
 }
 
-- (void)useHeap:(id)a3 stages:(unint64_t)a4
+- (void)useHeap:(id)heap stages:(unint64_t)stages
 {
   if ((byte_1EB6587AB & 1) == 0)
   {
@@ -1889,7 +1889,7 @@
   }
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
   if ((byte_1EB6587AC & 1) == 0)
   {
@@ -1902,7 +1902,7 @@
   }
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages
 {
   if ((byte_1EB6587AD & 1) == 0)
   {
@@ -1915,7 +1915,7 @@
   }
 }
 
-- (void)waitForFence:(id)a3 beforeStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeStages:(unint64_t)stages
 {
   if ((byte_1EB6587AE & 1) == 0)
   {
@@ -1928,7 +1928,7 @@
   }
 }
 
-- (void)setLockCullMode:(BOOL)a3
+- (void)setLockCullMode:(BOOL)mode
 {
   if ((byte_1EB6587AF & 1) == 0)
   {
@@ -1956,7 +1956,7 @@
   return 0;
 }
 
-- (void)setLockFillMode:(BOOL)a3
+- (void)setLockFillMode:(BOOL)mode
 {
   if ((byte_1EB6587B1 & 1) == 0)
   {

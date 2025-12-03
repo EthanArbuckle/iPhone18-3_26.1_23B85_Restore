@@ -1,42 +1,42 @@
 @interface VCPPhotosAutoCounterWorker
-+ (id)workerWithPhotoLibrary:(id)a3;
-- (BOOL)optInStatus:(id)a3 error:(id *)a4;
-- (BOOL)optInUserPickedPerson:(id)a3 error:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6;
-- (VCPPhotosAutoCounterWorker)initWithPhotoLibrary:(id)a3;
-- (double)_overlapRatioOf:(CGRect)a3 with:(CGRect)a4;
-- (id)_anonymizedName:(id)a3;
++ (id)workerWithPhotoLibrary:(id)library;
+- (BOOL)optInStatus:(id)status error:(id *)error;
+- (BOOL)optInUserPickedPerson:(id)person error:(id *)error extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (VCPPhotosAutoCounterWorker)initWithPhotoLibrary:(id)library;
+- (double)_overlapRatioOf:(CGRect)of with:(CGRect)with;
+- (id)_anonymizedName:(id)name;
 - (id)_fetchPeopleHomePersons;
 - (id)_groundTruthURL;
-- (int)_loadGroundTruth:(id *)a3 error:(id *)a4;
-- (int)_loadGroundTruthURL:(id)a3 toGroundTruth:(id *)a4 error:(id *)a5;
-- (int)_measureClusterWithClusterStateURL:(id)a3 groundTruthFaceCountPerPerson:(id)a4 groundTruthPersonInformation:(id)a5 groundTruthFaceToPerson:(id)a6 groundTruthAssetToFaces:(id)a7 measures:(id *)a8 extendTimeoutBlock:(id)a9 cancelBlock:(id)a10;
-- (int)_measurePNPersonClusters:(id)a3 groundTruthFaceCountPerPerson:(id)a4 groundTruthPersonInformation:(id)a5 groundTruthFaceToPerson:(id)a6 groundTruthAssetToFaces:(id)a7 measures:(id *)a8 extendTimeoutBlock:(id)a9 cancelBlock:(id)a10;
-- (int)_parseGroundTruthWithURL:(id)a3 faceCountPerPerson:(id *)a4 personInformation:(id *)a5 faceToPerson:(id *)a6 assetToFaces:(id *)a7 extendTimeoutBlock:(id)a8 cancelBlock:(id)a9;
-- (int)_parseSIMLGroundTruthWithURL:(id)a3 faceCountPerPerson:(id *)a4 personInformation:(id *)a5 faceToPerson:(id *)a6 assetToFaces:(id *)a7 extendTimeoutBlock:(id)a8 cancelBlock:(id)a9;
-- (int)_processFetchedVURawCluster:(id)a3 forPersonLocalIdentifier:(id)a4 facesPerAsset:(id)a5 assetInformation:(id)a6 extendTimeoutBlock:(id)a7 cancelBlock:(id)a8;
-- (int)_reportCoreAnalyticsWithVisionClusterMeasure:(id)a3 personClusterMeasure:(id)a4 personClusters:(id)a5 andGroundTruthInformation:(id)a6;
-- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)a3 andPersonClusters:(id)a4 results:(id *)a5 extendTimeoutBlock:(id)a6 cancelBlock:(id)a7;
-- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)a3 andPersonClusters:(id)a4 withGroundtruth:(id)a5 results:(id *)a6 extendTimeoutBlock:(id)a7 cancelBlock:(id)a8;
-- (int)exportVUGalleryClusterStates:(id *)a3 error:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6;
-- (int)validateClusterAccuracyWithSIMLGroundtruth:(id)a3 results:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6;
+- (int)_loadGroundTruth:(id *)truth error:(id *)error;
+- (int)_loadGroundTruthURL:(id)l toGroundTruth:(id *)truth error:(id *)error;
+- (int)_measureClusterWithClusterStateURL:(id)l groundTruthFaceCountPerPerson:(id)person groundTruthPersonInformation:(id)information groundTruthFaceToPerson:(id)toPerson groundTruthAssetToFaces:(id)faces measures:(id *)measures extendTimeoutBlock:(id)block cancelBlock:(id)self0;
+- (int)_measurePNPersonClusters:(id)clusters groundTruthFaceCountPerPerson:(id)person groundTruthPersonInformation:(id)information groundTruthFaceToPerson:(id)toPerson groundTruthAssetToFaces:(id)faces measures:(id *)measures extendTimeoutBlock:(id)block cancelBlock:(id)self0;
+- (int)_parseGroundTruthWithURL:(id)l faceCountPerPerson:(id *)person personInformation:(id *)information faceToPerson:(id *)toPerson assetToFaces:(id *)faces extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)_parseSIMLGroundTruthWithURL:(id)l faceCountPerPerson:(id *)person personInformation:(id *)information faceToPerson:(id *)toPerson assetToFaces:(id *)faces extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)_processFetchedVURawCluster:(id)cluster forPersonLocalIdentifier:(id)identifier facesPerAsset:(id)asset assetInformation:(id)information extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)_reportCoreAnalyticsWithVisionClusterMeasure:(id)measure personClusterMeasure:(id)clusterMeasure personClusters:(id)clusters andGroundTruthInformation:(id)information;
+- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)l andPersonClusters:(id)clusters results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)l andPersonClusters:(id)clusters withGroundtruth:(id)groundtruth results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)exportVUGalleryClusterStates:(id *)states error:(id *)error extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
+- (int)validateClusterAccuracyWithSIMLGroundtruth:(id)groundtruth results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
 - (unint64_t)optInPersonCount;
-- (void)_exportAssetsToFacesDetails:(id)a3;
-- (void)_fetchPersonWithIdentifier:(id)a3 facesPerAsset:(id)a4 assetInformation:(id)a5 extendTimeoutBlock:(id)a6 cancelBlock:(id)a7;
+- (void)_exportAssetsToFacesDetails:(id)details;
+- (void)_fetchPersonWithIdentifier:(id)identifier facesPerAsset:(id)asset assetInformation:(id)information extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock;
 @end
 
 @implementation VCPPhotosAutoCounterWorker
 
-- (VCPPhotosAutoCounterWorker)initWithPhotoLibrary:(id)a3
+- (VCPPhotosAutoCounterWorker)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = VCPPhotosAutoCounterWorker;
   v6 = [(VCPPhotosAutoCounterWorker *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:v5];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    v8 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:libraryCopy];
     v7->_processingVersion = [v8 currentProcessingVersion];
 
     v7->_personClusterVersion = *MEMORY[0x1E69C15E8];
@@ -46,9 +46,9 @@
     v7->_recognitionVersion = VCPMAGetRevisionForVisionModel(v10, v7->_processingVersion);
     v7->_madVersion = 1;
     v7->_clusterDumpFaceFetched = 0;
-    v11 = [(PHPhotoLibrary *)v7->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)v7->_photoLibrary vcp_visionCacheStorageDirectoryURL];
     v16 = 0;
-    v12 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:v11 error:&v16];
+    v12 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v16];
     v13 = v16;
     gallery = v7->_gallery;
     v7->_gallery = v12;
@@ -59,12 +59,12 @@
   return v7;
 }
 
-+ (id)workerWithPhotoLibrary:(id)a3
++ (id)workerWithPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   if (VCPMAIsAppleInternal())
   {
-    v4 = [[VCPPhotosAutoCounterWorker alloc] initWithPhotoLibrary:v3];
+    v4 = [[VCPPhotosAutoCounterWorker alloc] initWithPhotoLibrary:libraryCopy];
   }
 
   else
@@ -105,63 +105,63 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
   [VCPPhotosAutoCounterWorker _groundTruthURL]::groundTruthURL = v3;
 }
 
-- (int)_loadGroundTruthURL:(id)a3 toGroundTruth:(id *)a4 error:(id *)a5
+- (int)_loadGroundTruthURL:(id)l toGroundTruth:(id *)truth error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
-      LODWORD(a5) = 0;
-      *a4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:v8];
+      LODWORD(error) = 0;
+      *truth = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:lCopy];
     }
 
     else
     {
-      *a4 = MEMORY[0x1E695E0F8];
-      v15 = self;
-      objc_sync_enter(v15);
-      v16 = [*a4 writeToURL:v8 error:a5];
-      objc_sync_exit(v15);
+      *truth = MEMORY[0x1E695E0F8];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v16 = [*truth writeToURL:lCopy error:error];
+      objc_sync_exit(selfCopy);
 
       if (v16)
       {
-        LODWORD(a5) = 0;
+        LODWORD(error) = 0;
       }
 
       else
       {
-        LODWORD(a5) = -20;
+        LODWORD(error) = -20;
       }
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A578];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[AutoCounter] Cannot load ground truth file URL"];
     v19[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a5 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
+    *error = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
 
-    LODWORD(a5) = 0;
+    LODWORD(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (int)_loadGroundTruth:(id *)a3 error:(id *)a4
+- (int)_loadGroundTruth:(id *)truth error:(id *)error
 {
-  v7 = [(VCPPhotosAutoCounterWorker *)self _groundTruthURL];
-  LODWORD(a4) = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruthURL:v7 toGroundTruth:a3 error:a4];
+  _groundTruthURL = [(VCPPhotosAutoCounterWorker *)self _groundTruthURL];
+  LODWORD(error) = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruthURL:_groundTruthURL toGroundTruth:truth error:error];
 
-  return a4;
+  return error;
 }
 
 - (unint64_t)optInPersonCount
@@ -186,27 +186,27 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
 - (id)_fetchPeopleHomePersons
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v2 setPersonContext:1];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
   v3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"faceCount" ascending:0];
   v8[0] = v3;
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-  [v2 setSortDescriptors:v5];
+  [librarySpecificFetchOptions setSortDescriptors:v5];
 
-  v6 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:v2];
+  v6 = [MEMORY[0x1E6978978] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v6;
 }
 
-- (id)_anonymizedName:(id)a3
+- (id)_anonymizedName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [v3 dataUsingEncoding:1 allowLossyConversion:1];
+    v4 = [nameCopy dataUsingEncoding:1 allowLossyConversion:1];
     CC_SHA1([v4 bytes], objc_msgSend(v4, "length"), md);
     v5 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
     v6 = [v5 base64EncodedStringWithOptions:0];
@@ -220,42 +220,42 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_fetchPersonWithIdentifier:(id)a3 facesPerAsset:(id)a4 assetInformation:(id)a5 extendTimeoutBlock:(id)a6 cancelBlock:(id)a7
+- (void)_fetchPersonWithIdentifier:(id)identifier facesPerAsset:(id)asset assetInformation:(id)information extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifierCopy = identifier;
+  assetCopy = asset;
+  informationCopy = information;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v18 = MEMORY[0x1E6978978];
-  v24[0] = v12;
+  v24[0] = identifierCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:v17];
+  v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:librarySpecificFetchOptions];
 
   if ([v20 count])
   {
     v21 = [(VUWGallery *)self->_gallery clustersFor:1];
-    [(VCPPhotosAutoCounterWorker *)self _processFetchedVURawCluster:v21 forPersonLocalIdentifier:v12 facesPerAsset:v13 assetInformation:v14 extendTimeoutBlock:v15 cancelBlock:v16];
+    [(VCPPhotosAutoCounterWorker *)self _processFetchedVURawCluster:v21 forPersonLocalIdentifier:identifierCopy facesPerAsset:assetCopy assetInformation:informationCopy extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
   }
 
   else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = v12;
+    v23 = identifierCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[AutoCounter] Failed to fetch person %@", &v22, 0xCu);
   }
 }
 
-- (BOOL)optInStatus:(id)a3 error:(id *)a4
+- (BOOL)optInStatus:(id)status error:(id *)error
 {
-  v6 = a3;
+  statusCopy = status;
   v13 = 0;
-  LODWORD(a4) = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruth:&v13 error:a4];
+  LODWORD(error) = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruth:&v13 error:error];
   v7 = v13;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -268,22 +268,22 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [v7 objectForKeyedSubscript:v6];
+    v10 = [v7 objectForKeyedSubscript:statusCopy];
     v9 = v10 != 0;
   }
 
   return v9;
 }
 
-- (BOOL)optInUserPickedPerson:(id)a3 error:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6
+- (BOOL)optInUserPickedPerson:(id)person error:(id *)error extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  personCopy = person;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v13 = [v10 objectForKeyedSubscript:@"PersonIdentifier"];
+    v13 = [personCopy objectForKeyedSubscript:@"PersonIdentifier"];
     *buf = 138412546;
     v59 = @"[AutoCounter][OptIn]";
     v60 = 2112;
@@ -296,9 +296,9 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
   v56[2] = __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutBlock_cancelBlock___block_invoke;
   v56[3] = &unk_1E8351040;
   v57 = @"[AutoCounter][OptIn]";
-  [v10 enumerateKeysAndObjectsUsingBlock:v56];
+  [personCopy enumerateKeysAndObjectsUsingBlock:v56];
   v55 = 0;
-  v14 = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruth:&v55 error:a4];
+  v14 = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruth:&v55 error:error];
   v15 = v55;
   if (v14)
   {
@@ -314,17 +314,17 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
 
   else
   {
-    v54 = [v10 objectForKeyedSubscript:@"PersonIdentifier"];
+    v54 = [personCopy objectForKeyedSubscript:@"PersonIdentifier"];
     v17 = [v15 objectForKeyedSubscript:v54];
     v18 = v17 == 0;
 
     if (v18)
     {
-      v52 = [MEMORY[0x1E695DF90] dictionary];
-      v50 = [MEMORY[0x1E695DF90] dictionary];
-      [VCPPhotosAutoCounterWorker _fetchPersonWithIdentifier:"_fetchPersonWithIdentifier:facesPerAsset:assetInformation:extendTimeoutBlock:cancelBlock:" facesPerAsset:v54 assetInformation:v52 extendTimeoutBlock:? cancelBlock:?];
-      v20 = [v52 allKeys];
-      v21 = [v20 count] == 0;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [VCPPhotosAutoCounterWorker _fetchPersonWithIdentifier:"_fetchPersonWithIdentifier:facesPerAsset:assetInformation:extendTimeoutBlock:cancelBlock:" facesPerAsset:v54 assetInformation:dictionary extendTimeoutBlock:? cancelBlock:?];
+      allKeys = [dictionary allKeys];
+      v21 = [allKeys count] == 0;
 
       if (v21)
       {
@@ -343,11 +343,11 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
-        if (a4)
+        if (error)
         {
           v45 = v40;
           v16 = 0;
-          *a4 = v40;
+          *error = v40;
         }
 
         else
@@ -358,9 +358,9 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
 
       else
       {
-        v51 = [MEMORY[0x1E695DF90] dictionary];
-        [v51 setObject:v52 forKeyedSubscript:@"FacesPerAsset"];
-        v22 = [v10 objectForKeyedSubscript:@"PersonInformation"];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary3 setObject:dictionary forKeyedSubscript:@"FacesPerAsset"];
+        v22 = [personCopy objectForKeyedSubscript:@"PersonInformation"];
         v53 = [v22 mutableCopy];
 
         v49 = [MEMORY[0x1E695DF00] now];
@@ -380,9 +380,9 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
         v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_recognitionVersion];
         [v53 setObject:v27 forKeyedSubscript:@"OptInRecognitionModelVersion"];
 
-        v28 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+        librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
         v29 = MEMORY[0x1E696AD98];
-        v48 = v28;
+        v48 = librarySpecificFetchOptions;
         v30 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:?];
         v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
         [v53 setObject:v31 forKeyedSubscript:@"FaceCount"];
@@ -392,29 +392,29 @@ void __45__VCPPhotosAutoCounterWorker__groundTruthURL__block_invoke(uint64_t a1)
         v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "count")}];
         [v53 setObject:v34 forKeyedSubscript:@"AssetCount"];
 
-        [v51 setObject:v53 forKeyedSubscript:@"AdditionalInformation"];
+        [dictionary3 setObject:v53 forKeyedSubscript:@"AdditionalInformation"];
         v35 = [v15 mutableCopy];
-        [v35 setObject:v51 forKeyedSubscript:v54];
-        v36 = self;
-        objc_sync_enter(v36);
-        v37 = [(VCPPhotosAutoCounterWorker *)v36 _groundTruthURL];
-        v16 = [v35 writeToURL:v37 error:a4];
+        [v35 setObject:dictionary3 forKeyedSubscript:v54];
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        _groundTruthURL = [(VCPPhotosAutoCounterWorker *)selfCopy _groundTruthURL];
+        v16 = [v35 writeToURL:_groundTruthURL error:error];
 
-        objc_sync_exit(v36);
+        objc_sync_exit(selfCopy);
         if ((v16 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v38 = [(VCPPhotosAutoCounterWorker *)v36 _groundTruthURL];
-          v39 = *a4;
+          _groundTruthURL2 = [(VCPPhotosAutoCounterWorker *)selfCopy _groundTruthURL];
+          v39 = *error;
           *buf = 138412802;
           v59 = @"[AutoCounter][OptIn]";
           v60 = 2112;
-          v61 = v38;
+          v61 = _groundTruthURL2;
           v62 = 2112;
           v63 = v39;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Cannot write opt-in groundtruth to %@ : %@", buf, 0x20u);
         }
 
-        v40 = v51;
+        v40 = dictionary3;
       }
 
       v19 = v54;
@@ -457,23 +457,23 @@ void __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutB
   }
 }
 
-- (int)_processFetchedVURawCluster:(id)a3 forPersonLocalIdentifier:(id)a4 facesPerAsset:(id)a5 assetInformation:(id)a6 extendTimeoutBlock:(id)a7 cancelBlock:(id)a8
+- (int)_processFetchedVURawCluster:(id)cluster forPersonLocalIdentifier:(id)identifier facesPerAsset:(id)asset assetInformation:(id)information extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v142[2] = *MEMORY[0x1E69E9840];
-  v89 = a3;
-  v103 = a4;
-  v102 = a5;
-  v101 = a6;
-  v109 = a7;
-  v111 = a8;
-  v99 = self;
-  v88 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v88 setIncludeNonvisibleFaces:0];
+  clusterCopy = cluster;
+  identifierCopy = identifier;
+  assetCopy = asset;
+  informationCopy = information;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  selfCopy = self;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:0];
   v14 = *MEMORY[0x1E6978D70];
   v142[0] = *MEMORY[0x1E6978D68];
   v142[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v142 count:2];
-  [v88 setFetchPropertySets:v15];
+  [librarySpecificFetchOptions setFetchPropertySets:v15];
 
   v85 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:self->_photoLibrary forTaskID:3];
   v87 = *MEMORY[0x1E6978C28];
@@ -481,8 +481,8 @@ void __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutB
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v141 count:1];
   [v85 addFetchPropertySets:v16];
 
-  v104 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v89 allKeys];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [clusterCopy allKeys];
   v121 = 0u;
   v122 = 0u;
   v119 = 0u;
@@ -508,24 +508,24 @@ void __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutB
 
       v100 = *(*(&v119 + 1) + 8 * v97);
       context = objc_autoreleasePoolPush();
-      if (!v111 || (v111[2]() & 1) == 0)
+      if (!cancelBlockCopy || (cancelBlockCopy[2]() & 1) == 0)
       {
-        if (v109)
+        if (blockCopy)
         {
-          v109[2]();
+          blockCopy[2]();
         }
 
-        v94 = [MEMORY[0x1E695DF70] array];
-        v19 = [v89 objectForKeyedSubscript:v100];
+        array = [MEMORY[0x1E695DF70] array];
+        v19 = [clusterCopy objectForKeyedSubscript:v100];
         v117[0] = MEMORY[0x1E69E9820];
         v117[1] = 3221225472;
         v117[2] = __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLocalIdentifier_facesPerAsset_assetInformation_extendTimeoutBlock_cancelBlock___block_invoke;
         v117[3] = &unk_1E8351128;
-        v96 = v94;
+        v96 = array;
         v118 = v96;
         [v19 enumerateObjectsUsingBlock:v117];
 
-        v98 = [MEMORY[0x1E69787D0] fetchFacesWithVuObservationIDs:v96 options:v88];
+        v98 = [MEMORY[0x1E69787D0] fetchFacesWithVuObservationIDs:v96 options:librarySpecificFetchOptions];
         v20 = MediaAnalysisLogLevel();
         v21 = MEMORY[0x1E69E9C10];
         if (v20 >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -550,7 +550,7 @@ void __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutB
 
         if ([v98 count])
         {
-          v99->_clusterDumpFaceFetched += [v98 count];
+          selfCopy->_clusterDumpFaceFetched += [v98 count];
           v25 = MEMORY[0x1E6978628];
           v127 = v87;
           v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v127 count:1];
@@ -579,141 +579,141 @@ void __89__VCPPhotosAutoCounterWorker_optInUserPickedPerson_error_extendTimeoutB
 
                 v30 = *(*(&v113 + 1) + 8 * v29);
                 v31 = objc_autoreleasePoolPush();
-                if (!v111 || (v111[2]() & 1) == 0)
+                if (!cancelBlockCopy || (cancelBlockCopy[2]() & 1) == 0)
                 {
-                  if (v109)
+                  if (blockCopy)
                   {
-                    v109[2]();
+                    blockCopy[2]();
                   }
 
-                  v32 = [v30 uuid];
-                  v33 = [v105 objectForKeyedSubscript:v32];
+                  uuid = [v30 uuid];
+                  v33 = [v105 objectForKeyedSubscript:uuid];
 
                   if (v33)
                   {
-                    v34 = [v33 cloudIdentifier];
-                    if (!v34)
+                    cloudIdentifier = [v33 cloudIdentifier];
+                    if (!cloudIdentifier)
                     {
                       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
                       {
-                        v35 = [v33 localIdentifier];
+                        localIdentifier = [v33 localIdentifier];
                         *buf = 138412546;
                         v129 = @"[AutoCounter][VURawCluster]";
                         v130 = 2112;
-                        v131 = v35;
+                        v131 = localIdentifier;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Asset without cloudIdentifier (use localIdentifier %@)", buf, 0x16u);
                       }
 
-                      v34 = [v33 localIdentifier];
+                      cloudIdentifier = [v33 localIdentifier];
                     }
 
-                    [v102 objectForKeyedSubscript:v34];
-                    v110 = v107 = v34;
-                    if (!v110)
+                    [assetCopy objectForKeyedSubscript:cloudIdentifier];
+                    array2 = v107 = cloudIdentifier;
+                    if (!array2)
                     {
-                      v110 = [MEMORY[0x1E695DF70] array];
-                      [v102 setObject:v110 forKeyedSubscript:v34];
+                      array2 = [MEMORY[0x1E695DF70] array];
+                      [assetCopy setObject:array2 forKeyedSubscript:cloudIdentifier];
                     }
 
-                    v36 = [v101 objectForKeyedSubscript:v34];
+                    v36 = [informationCopy objectForKeyedSubscript:cloudIdentifier];
                     v37 = v36 == 0;
 
                     if (v37)
                     {
                       v124 = @"AddedDate";
                       v38 = MEMORY[0x1E696AD98];
-                      v39 = [v33 curationProperties];
-                      v40 = [v39 addedDate];
-                      [v40 timeIntervalSinceReferenceDate];
+                      curationProperties = [v33 curationProperties];
+                      addedDate = [curationProperties addedDate];
+                      [addedDate timeIntervalSinceReferenceDate];
                       v41 = [v38 numberWithDouble:?];
                       v125 = v41;
                       v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
-                      [v101 setObject:v42 forKeyedSubscript:v107];
+                      [informationCopy setObject:v42 forKeyedSubscript:v107];
                     }
 
-                    v43 = [MEMORY[0x1E695DF90] dictionary];
-                    v44 = [MEMORY[0x1E6978978] fetchPersonWithFace:v30 options:v104];
-                    v112 = [v44 firstObject];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
+                    v44 = [MEMORY[0x1E6978978] fetchPersonWithFace:v30 options:librarySpecificFetchOptions2];
+                    firstObject = [v44 firstObject];
 
-                    v45 = [v112 localIdentifier];
-                    if (v45)
+                    localIdentifier2 = [firstObject localIdentifier];
+                    if (localIdentifier2)
                     {
                       goto LABEL_40;
                     }
 
                     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                     {
-                      v46 = [v30 personLocalIdentifier];
+                      personLocalIdentifier = [v30 personLocalIdentifier];
                       *buf = 138412546;
                       v129 = @"[AutoCounter][VURawCluster]";
                       v130 = 2112;
-                      v131 = v46;
+                      v131 = personLocalIdentifier;
                       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Person without localIdentifier (use face.personLocalIdentifier %@)", buf, 0x16u);
                     }
 
-                    v45 = [v30 personLocalIdentifier];
-                    if (v45)
+                    localIdentifier2 = [v30 personLocalIdentifier];
+                    if (localIdentifier2)
                     {
 LABEL_40:
-                      [v43 setObject:v45 forKeyedSubscript:@"personID"];
-                      if (!v103 || ([v103 isEqualToString:v45] & 1) != 0)
+                      [dictionary setObject:localIdentifier2 forKeyedSubscript:@"personID"];
+                      if (!identifierCopy || ([identifierCopy isEqualToString:localIdentifier2] & 1) != 0)
                       {
-                        v47 = [v112 verifiedType];
+                        verifiedType = [firstObject verifiedType];
                         v48 = @"unknown";
-                        if (v47 < 3)
+                        if (verifiedType < 3)
                         {
-                          v48 = off_1E8351440[v47];
+                          v48 = off_1E8351440[verifiedType];
                         }
 
-                        [v43 setObject:v48 forKeyedSubscript:@"verifiedType"];
-                        if (v112)
+                        [dictionary setObject:v48 forKeyedSubscript:@"verifiedType"];
+                        if (firstObject)
                         {
-                          v49 = [v112 name];
-                          v50 = v49 == 0;
+                          name = [firstObject name];
+                          v50 = name == 0;
 
                           if (!v50)
                           {
-                            v51 = [v112 name];
-                            [v43 setObject:v51 forKeyedSubscript:@"personName"];
+                            name2 = [firstObject name];
+                            [dictionary setObject:name2 forKeyedSubscript:@"personName"];
                           }
                         }
 
-                        v52 = [v33 pixelWidth];
-                        v53 = [v33 pixelHeight];
-                        if (v52 <= v53)
+                        pixelWidth = [v33 pixelWidth];
+                        pixelHeight = [v33 pixelHeight];
+                        if (pixelWidth <= pixelHeight)
                         {
-                          v54 = v53;
+                          v54 = pixelHeight;
                         }
 
                         else
                         {
-                          v54 = v52;
+                          v54 = pixelWidth;
                         }
 
                         [v30 centerX];
                         v56 = v55;
-                        v57 = [v33 pixelWidth];
+                        pixelWidth2 = [v33 pixelWidth];
                         [v30 centerY];
                         v59 = v58;
-                        v60 = [v33 pixelHeight];
+                        pixelHeight2 = [v33 pixelHeight];
                         [v30 size];
                         v62 = v61;
                         [v30 size];
-                        v143.origin.y = v59 * v60;
+                        v143.origin.y = v59 * pixelHeight2;
                         v143.size.width = v62 * v54;
                         v143.size.height = v63 * v54;
-                        v143.origin.x = v56 * v57;
+                        v143.origin.x = v56 * pixelWidth2;
                         v64 = NSStringFromRect(v143);
-                        [v43 setObject:v64 forKeyedSubscript:@"faceRect"];
+                        [dictionary setObject:v64 forKeyedSubscript:@"faceRect"];
 
-                        [v43 setObject:v100 forKeyedSubscript:@"faceGroupID"];
+                        [dictionary setObject:v100 forKeyedSubscript:@"faceGroupID"];
                         if ([objc_opt_class() _dumpFaceprint])
                         {
-                          v65 = [v30 faceClusteringProperties];
-                          v66 = [v65 faceprint];
-                          v67 = [v66 faceprintData];
+                          faceClusteringProperties = [v30 faceClusteringProperties];
+                          faceprint = [faceClusteringProperties faceprint];
+                          faceprintData = [faceprint faceprintData];
 
-                          v68 = [v67 base64EncodedStringWithOptions:0];
+                          v68 = [faceprintData base64EncodedStringWithOptions:0];
                           if (!v68)
                           {
                             if (MediaAnalysisLogLevel() >= 4)
@@ -730,24 +730,24 @@ LABEL_40:
                             v68 = @"unknown";
                           }
 
-                          [v43 setObject:v68 forKeyedSubscript:@"faceprint"];
+                          [dictionary setObject:v68 forKeyedSubscript:@"faceprint"];
                         }
 
                         v70 = MEMORY[0x1E6978750];
-                        v71 = [v33 localIdentifier];
-                        v123 = v71;
+                        localIdentifier3 = [v33 localIdentifier];
+                        v123 = localIdentifier3;
                         v72 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:1];
-                        v73 = [v70 fetchMomentsForAssetsWithLocalIdentifiers:v72 options:v104];
+                        v73 = [v70 fetchMomentsForAssetsWithLocalIdentifiers:v72 options:librarySpecificFetchOptions2];
 
-                        v74 = [v73 firstObject];
-                        v75 = [v74 localIdentifier];
+                        firstObject2 = [v73 firstObject];
+                        localIdentifier4 = [firstObject2 localIdentifier];
 
-                        v76 = v110;
-                        if (!v75)
+                        v76 = array2;
+                        if (!localIdentifier4)
                         {
                           if (MediaAnalysisLogLevel() < 4)
                           {
-                            v75 = @"unknown";
+                            localIdentifier4 = @"unknown";
                           }
 
                           else
@@ -760,17 +760,17 @@ LABEL_40:
                               _os_log_impl(&dword_1C9B70000, v77, OS_LOG_TYPE_DEFAULT, "%@ No valid momentLocalIdentifier; leave as 'unknown'", buf, 0xCu);
                             }
 
-                            v75 = @"unknown";
-                            v76 = v110;
+                            localIdentifier4 = @"unknown";
+                            v76 = array2;
                           }
                         }
 
-                        [v43 setObject:v75 forKeyedSubscript:@"momentIdentifier"];
-                        v81 = [v30 localIdentifier];
-                        if (v81)
+                        [dictionary setObject:localIdentifier4 forKeyedSubscript:@"momentIdentifier"];
+                        localIdentifier5 = [v30 localIdentifier];
+                        if (localIdentifier5)
                         {
-                          [v43 setObject:v81 forKeyedSubscript:@"faceID"];
-                          [v76 addObject:v43];
+                          [dictionary setObject:localIdentifier5 forKeyedSubscript:@"faceID"];
+                          [v76 addObject:dictionary];
                           v18 = 0;
                         }
 
@@ -807,9 +807,9 @@ LABEL_84:
                           *buf = 138412802;
                           v129 = @"[AutoCounter][VURawCluster]";
                           v130 = 2112;
-                          v131 = v45;
+                          v131 = localIdentifier2;
                           v132 = 2112;
-                          v133 = v103;
+                          v133 = identifierCopy;
                           _os_log_impl(&dword_1C9B70000, v79, OS_LOG_TYPE_DEBUG, "%@  Fetched face/person %@ not matching required person %@; skip", buf, 0x20u);
                         }
                       }
@@ -828,7 +828,7 @@ LABEL_84:
                         }
                       }
 
-                      v45 = 0;
+                      localIdentifier2 = 0;
                     }
 
                     v18 = 9;
@@ -837,11 +837,11 @@ LABEL_84:
 
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
-                    v78 = [v30 localIdentifier];
+                    localIdentifier6 = [v30 localIdentifier];
                     *buf = 138412546;
                     v129 = @"[AutoCounter][VURawCluster]";
                     v130 = 2112;
-                    v131 = v78;
+                    v131 = localIdentifier6;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Failed to find asset for face %@; skip", buf, 0x16u);
                   }
 
@@ -919,11 +919,11 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
   [v4 addObject:v5];
 }
 
-- (int)exportVUGalleryClusterStates:(id *)a3 error:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6
+- (int)exportVUGalleryClusterStates:(id *)states error:(id *)error extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v35 = a5;
-  v36 = a6;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v38 = [(VUWGallery *)self->_gallery clustersFor:1];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
@@ -941,8 +941,8 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
   v40 = @"[AutoCounter][ExportVUGallery]";
   [v38 enumerateKeysAndObjectsUsingBlock:v39];
   v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AutoCounterClustersVU_Ver%d_Detector%lu_Printer%lu_MAD%lu_VU%lu_PhotosPerson%lu.plist", -[PHPhotoLibrary mad_faceProcessingInternalVersion](self->_photoLibrary, "mad_faceProcessingInternalVersion"), self->_detectionVersion, self->_recognitionVersion, self->_madVersion, self->_vuVersion, self->_personClusterVersion];
-  v9 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
-  v10 = [v9 URLByAppendingPathComponent:v37];
+  vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+  v10 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:v37];
 
   if (v10)
   {
@@ -955,14 +955,14 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Export to file-URL %@", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [v11 setObject:v12 forKeyedSubscript:@"faces"];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [v11 setObject:v13 forKeyedSubscript:@"assetInformation"];
-    [(VCPPhotosAutoCounterWorker *)self _processFetchedVURawCluster:v38 forPersonLocalIdentifier:0 facesPerAsset:v12 assetInformation:v13 extendTimeoutBlock:v35 cancelBlock:v36];
-    v14 = [v12 allKeys];
-    v15 = [v14 count] == 0;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKeyedSubscript:@"faces"];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary3 forKeyedSubscript:@"assetInformation"];
+    [(VCPPhotosAutoCounterWorker *)self _processFetchedVURawCluster:v38 forPersonLocalIdentifier:0 facesPerAsset:dictionary2 assetInformation:dictionary3 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
+    allKeys = [dictionary2 allKeys];
+    v15 = [allKeys count] == 0;
 
     if (v15)
     {
@@ -981,10 +981,10 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v31 = v29;
-        *a4 = v29;
+        *error = v29;
       }
     }
 
@@ -1000,16 +1000,16 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Retrieved and dumpped %lu faces", buf, 0x16u);
       }
 
-      v17 = self;
-      objc_sync_enter(v17);
-      v18 = [v11 writeToURL:v10 error:a4];
-      objc_sync_exit(v17);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v18 = [dictionary writeToURL:v10 error:error];
+      objc_sync_exit(selfCopy);
 
       if (!v18)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v32 = *a4;
+          v32 = *error;
           *buf = 138412802;
           v42 = @"[AutoCounter][ExportVUGallery]";
           v43 = 2112;
@@ -1023,10 +1023,10 @@ void __145__VCPPhotosAutoCounterWorker__processFetchedVURawCluster_forPersonLoca
         goto LABEL_34;
       }
 
-      if (a3)
+      if (states)
       {
         v19 = v10;
-        *a3 = v10;
+        *states = v10;
       }
 
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1050,21 +1050,21 @@ LABEL_34:
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Failed to retrive export file-URL", @"[AutoCounter][ExportVUGallery]"];
   v50[0] = v21;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-  v11 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
+  dictionary = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v23 = [v11 description];
+    v23 = [dictionary description];
     *buf = 138412290;
     v42 = v23;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    v24 = v11;
+    v24 = dictionary;
     v25 = 0;
-    *a4 = v11;
+    *error = dictionary;
   }
 
   else
@@ -1095,39 +1095,39 @@ void __96__VCPPhotosAutoCounterWorker_exportVUGalleryClusterStates_error_extendT
   }
 }
 
-- (double)_overlapRatioOf:(CGRect)a3 with:(CGRect)a4
+- (double)_overlapRatioOf:(CGRect)of with:(CGRect)with
 {
-  v4 = a3.size.width * a3.size.height;
-  v5 = a4.size.width * a4.size.height;
-  v7 = CGRectIntersection(a3, a4);
+  v4 = of.size.width * of.size.height;
+  v5 = with.size.width * with.size.height;
+  v7 = CGRectIntersection(of, with);
   return v7.size.width * v7.size.height / (v4 + v5 - v7.size.width * v7.size.height);
 }
 
-- (int)_parseGroundTruthWithURL:(id)a3 faceCountPerPerson:(id *)a4 personInformation:(id *)a5 faceToPerson:(id *)a6 assetToFaces:(id *)a7 extendTimeoutBlock:(id)a8 cancelBlock:(id)a9
+- (int)_parseGroundTruthWithURL:(id)l faceCountPerPerson:(id *)person personInformation:(id *)information faceToPerson:(id *)toPerson assetToFaces:(id *)faces extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v53 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a8;
-  v17 = a9;
-  v31 = a4;
-  *a4 = 0;
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
+  lCopy = l;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  personCopy = person;
+  *person = 0;
+  *information = 0;
+  *toPerson = 0;
+  *faces = 0;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
   v33 = [MEMORY[0x1E696AB50] set];
-  v32 = [MEMORY[0x1E695DF90] dictionary];
-  v29 = a6;
-  v30 = a5;
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v19 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  toPersonCopy = toPerson;
+  informationCopy = information;
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v20 = objc_autoreleasePoolPush();
   v43 = 0;
   v44 = 0;
-  v21 = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruthURL:v15 toGroundTruth:&v44 error:&v43];
+  v21 = [(VCPPhotosAutoCounterWorker *)self _loadGroundTruthURL:lCopy toGroundTruth:&v44 error:&v43];
   v22 = v44;
   v23 = v43;
   if (v21)
@@ -1148,13 +1148,13 @@ void __96__VCPPhotosAutoCounterWorker_exportVUGalleryClusterStates_error_extendT
     v34[1] = 3221225472;
     v34[2] = __149__VCPPhotosAutoCounterWorker__parseGroundTruthWithURL_faceCountPerPerson_personInformation_faceToPerson_assetToFaces_extendTimeoutBlock_cancelBlock___block_invoke;
     v34[3] = &unk_1E83511C8;
-    v35 = v32;
+    v35 = dictionary;
     v36 = @"[AutoCounter][ParseGT]";
-    v40 = v17;
+    v40 = cancelBlockCopy;
     v42 = &v45;
-    v41 = v16;
-    v37 = v19;
-    v38 = v18;
+    v41 = blockCopy;
+    v37 = dictionary3;
+    v38 = dictionary2;
     v39 = v33;
     [v22 enumerateKeysAndObjectsUsingBlock:v34];
   }
@@ -1163,13 +1163,13 @@ void __96__VCPPhotosAutoCounterWorker_exportVUGalleryClusterStates_error_extendT
   if (!v21)
   {
     v24 = v33;
-    *v31 = v33;
-    v25 = v32;
-    *v30 = v32;
-    v26 = v18;
-    *v29 = v18;
-    v27 = v19;
-    *a7 = v19;
+    *personCopy = v33;
+    v25 = dictionary;
+    *informationCopy = dictionary;
+    v26 = dictionary2;
+    *toPersonCopy = dictionary2;
+    v27 = dictionary3;
+    *faces = dictionary3;
     v21 = *(v46 + 6);
   }
 
@@ -1341,20 +1341,20 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_exportAssetsToFacesDetails:(id)a3
+- (void)_exportAssetsToFacesDetails:(id)details
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  detailsCopy = details;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AutoCounterClusterAssetsToFaces_Ver%d_Detector%lu_Printer%lu_MAD%lu_VU%lu_PhotosPerson%lu.plist", -[PHPhotoLibrary mad_faceProcessingInternalVersion](self->_photoLibrary, "mad_faceProcessingInternalVersion"), self->_detectionVersion, self->_recognitionVersion, self->_madVersion, self->_vuVersion, self->_personClusterVersion];
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+  v7 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:v5];
 
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0;
-  v9 = [v4 writeToURL:v7 error:&v14];
+  v9 = [detailsCopy writeToURL:v7 error:&v14];
   v10 = v14;
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   if (v9)
   {
@@ -1383,27 +1383,27 @@ LABEL_8:
   }
 }
 
-- (int)_measureClusterWithClusterStateURL:(id)a3 groundTruthFaceCountPerPerson:(id)a4 groundTruthPersonInformation:(id)a5 groundTruthFaceToPerson:(id)a6 groundTruthAssetToFaces:(id)a7 measures:(id *)a8 extendTimeoutBlock:(id)a9 cancelBlock:(id)a10
+- (int)_measureClusterWithClusterStateURL:(id)l groundTruthFaceCountPerPerson:(id)person groundTruthPersonInformation:(id)information groundTruthFaceToPerson:(id)toPerson groundTruthAssetToFaces:(id)faces measures:(id *)measures extendTimeoutBlock:(id)block cancelBlock:(id)self0
 {
   v216 = *MEMORY[0x1E69E9840];
-  v155 = a3;
-  v151 = a4;
-  v166 = a5;
-  v167 = a6;
-  v145 = a7;
-  v152 = a9;
-  v156 = a10;
-  v140 = a8;
-  *a8 = 0;
-  v148 = [MEMORY[0x1E695DF90] dictionary];
-  v146 = [MEMORY[0x1E695DF90] dictionary];
-  v147 = [MEMORY[0x1E695DF90] dictionary];
-  v165 = [MEMORY[0x1E695DF90] dictionary];
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v155 path];
-  LODWORD(a4) = [v16 fileExistsAtPath:v17];
+  lCopy = l;
+  personCopy = person;
+  informationCopy = information;
+  toPersonCopy = toPerson;
+  facesCopy = faces;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  measuresCopy = measures;
+  *measures = 0;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  LODWORD(person) = [defaultManager fileExistsAtPath:path];
 
-  if (a4 && (v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:v155], (v19 = v18) != 0))
+  if (person && (v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:lCopy], (v19 = v18) != 0))
   {
     v137 = [v18 objectForKeyedSubscript:@"assetInformation"];
     v138 = v19;
@@ -1418,23 +1418,23 @@ LABEL_8:
       v22 = [v21 count];
       if (v22)
       {
-        v23 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary5 = [MEMORY[0x1E695DF90] dictionary];
         v190[0] = MEMORY[0x1E69E9820];
         v190[1] = 3221225472;
         v190[2] = __212__VCPPhotosAutoCounterWorker__measureClusterWithClusterStateURL_groundTruthFaceCountPerPerson_groundTruthPersonInformation_groundTruthFaceToPerson_groundTruthAssetToFaces_measures_extendTimeoutBlock_cancelBlock___block_invoke;
         v190[3] = &unk_1E8351240;
         v191 = v137;
         v192 = @"[AutoCounter][P/R]";
-        v193 = v145;
-        v200 = v156;
+        v193 = facesCopy;
+        v200 = cancelBlockCopy;
         v202 = &v203;
-        v201 = v152;
-        v194 = self;
-        v195 = v148;
-        v196 = v147;
-        v197 = v146;
-        v198 = v165;
-        v24 = v23;
+        v201 = blockCopy;
+        selfCopy = self;
+        v195 = dictionary;
+        v196 = dictionary3;
+        v197 = dictionary2;
+        v198 = dictionary4;
+        v24 = dictionary5;
         v199 = v24;
         [v21 enumerateKeysAndObjectsUsingBlock:v190];
         if ([objc_opt_class() _dumpAssetsToFaces])
@@ -1472,9 +1472,9 @@ LABEL_8:
       {
         v130 = v27;
         v135 = objc_alloc_init(VCPClusteringAccuracyMeasures);
-        v139 = [MEMORY[0x1E695DF90] dictionary];
-        v144 = [v148 allValues];
-        v136 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+        allValues = [dictionary allValues];
+        dictionary7 = [MEMORY[0x1E695DF90] dictionary];
         v153 = 0;
         v131 = 0;
         v132 = 0;
@@ -1484,7 +1484,7 @@ LABEL_8:
         v29 = 0.0;
         while (1)
         {
-          if (v153 >= [v144 count])
+          if (v153 >= [allValues count])
           {
 LABEL_107:
             v25 = *(v204 + 6);
@@ -1510,17 +1510,17 @@ LABEL_107:
               v172[2] = __212__VCPPhotosAutoCounterWorker__measureClusterWithClusterStateURL_groundTruthFaceCountPerPerson_groundTruthPersonInformation_groundTruthFaceToPerson_groundTruthAssetToFaces_measures_extendTimeoutBlock_cancelBlock___block_invoke_635;
               v172[3] = &unk_1E834DF68;
               v173 = @"[AutoCounter][P/R]";
-              [v136 enumerateKeysAndObjectsUsingBlock:v172];
-              v158 = [v151 allObjects];
+              [dictionary7 enumerateKeysAndObjectsUsingBlock:v172];
+              allObjects = [personCopy allObjects];
               v164 = 0;
               v97 = 0.0;
               v98 = 0.0;
               v99 = 0.0;
               v100 = 0.0;
-              while (v164 < [v158 count])
+              while (v164 < [allObjects count])
               {
                 v160 = objc_autoreleasePoolPush();
-                if (v156 && (v156[2]() & 1) != 0)
+                if (cancelBlockCopy && (cancelBlockCopy[2]() & 1) != 0)
                 {
                   v101 = 0;
                   v130 = -128;
@@ -1528,25 +1528,25 @@ LABEL_107:
 
                 else
                 {
-                  if (v152)
+                  if (blockCopy)
                   {
-                    v152[2]();
+                    blockCopy[2]();
                   }
 
-                  v102 = [v158 objectAtIndexedSubscript:v164];
-                  v154 = [v151 countForObject:v102];
-                  v103 = [v136 objectForKeyedSubscript:v102];
+                  v102 = [allObjects objectAtIndexedSubscript:v164];
+                  v154 = [personCopy countForObject:v102];
+                  v103 = [dictionary7 objectForKeyedSubscript:v102];
                   obja = [v103 unsignedIntValue];
 
-                  v104 = [v139 objectForKeyedSubscript:v102];
+                  v104 = [dictionary6 objectForKeyedSubscript:v102];
                   v170 = 0u;
                   v171 = 0u;
                   v168 = 0u;
                   v169 = 0u;
                   v150 = v104;
-                  v105 = [v104 allObjects];
+                  allObjects2 = [v104 allObjects];
                   v106 = 0;
-                  v107 = [v105 countByEnumeratingWithState:&v168 objects:v207 count:16];
+                  v107 = [allObjects2 countByEnumeratingWithState:&v168 objects:v207 count:16];
                   if (v107)
                   {
                     v108 = *v169;
@@ -1556,21 +1556,21 @@ LABEL_107:
                       {
                         if (*v169 != v108)
                         {
-                          objc_enumerationMutation(v105);
+                          objc_enumerationMutation(allObjects2);
                         }
 
                         v110 = *(*(&v168 + 1) + 8 * i);
-                        v111 = [v167 objectForKeyedSubscript:v110];
+                        v111 = [toPersonCopy objectForKeyedSubscript:v110];
                         v112 = v111 == v102;
 
                         if (v112)
                         {
-                          v113 = [v166 objectForKeyedSubscript:v102];
+                          v113 = [informationCopy objectForKeyedSubscript:v102];
                           v114 = [v113 objectForKeyedSubscript:@"OptInDateSinceReferenceDate"];
                           [v114 doubleValue];
                           v116 = v115;
 
-                          v117 = [v165 objectForKeyedSubscript:v110];
+                          v117 = [dictionary4 objectForKeyedSubscript:v110];
                           v118 = v117;
                           if (v117)
                           {
@@ -1583,7 +1583,7 @@ LABEL_107:
                         }
                       }
 
-                      v107 = [v105 countByEnumeratingWithState:&v168 objects:v207 count:16];
+                      v107 = [allObjects2 countByEnumeratingWithState:&v168 objects:v207 count:16];
                     }
 
                     while (v107);
@@ -1691,7 +1691,7 @@ LABEL_107:
               [(VCPClusteringAccuracyMeasures *)v135 setWeightedAveragePrecision:v126];
               v127 = v135;
               v130 = 0;
-              *v140 = v135;
+              *measuresCopy = v135;
 LABEL_154:
 
               v25 = v130;
@@ -1701,8 +1701,8 @@ LABEL_154:
           }
 
           context = objc_autoreleasePoolPush();
-          v149 = [v144 objectAtIndexedSubscript:v153];
-          if (!v156 || !v156[2]())
+          v149 = [allValues objectAtIndexedSubscript:v153];
+          if (!cancelBlockCopy || !cancelBlockCopy[2]())
           {
             break;
           }
@@ -1720,9 +1720,9 @@ LABEL_103:
           ++v153;
         }
 
-        if (v152)
+        if (blockCopy)
         {
-          v152[2]();
+          blockCopy[2]();
         }
 
         v31 = [MEMORY[0x1E696AB50] set];
@@ -1745,15 +1745,15 @@ LABEL_103:
               }
 
               v36 = *(*(&v186 + 1) + 8 * j);
-              v37 = [v167 objectForKeyedSubscript:v36];
+              v37 = [toPersonCopy objectForKeyedSubscript:v36];
               if (v37)
               {
-                v38 = [v166 objectForKeyedSubscript:v37];
+                v38 = [informationCopy objectForKeyedSubscript:v37];
                 v39 = [v38 objectForKeyedSubscript:@"OptInDateSinceReferenceDate"];
                 [v39 doubleValue];
                 v41 = v40;
 
-                v42 = [v165 objectForKeyedSubscript:v36];
+                v42 = [dictionary4 objectForKeyedSubscript:v36];
                 v43 = v42;
                 if (v42)
                 {
@@ -1781,9 +1781,9 @@ LABEL_103:
         v185 = 0u;
         v182 = 0u;
         v183 = 0u;
-        v45 = [v31 allObjects];
+        allObjects3 = [v31 allObjects];
         v46 = 0;
-        v47 = [v45 countByEnumeratingWithState:&v182 objects:v214 count:16];
+        v47 = [allObjects3 countByEnumeratingWithState:&v182 objects:v214 count:16];
         if (v47)
         {
           v163 = 0;
@@ -1794,7 +1794,7 @@ LABEL_103:
             {
               if (*v183 != v48)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(allObjects3);
               }
 
               v50 = *(*(&v182 + 1) + 8 * k);
@@ -1811,7 +1811,7 @@ LABEL_103:
               }
             }
 
-            v47 = [v45 countByEnumeratingWithState:&v182 objects:v214 count:16];
+            v47 = [allObjects3 countByEnumeratingWithState:&v182 objects:v214 count:16];
           }
 
           while (v47);
@@ -1822,7 +1822,7 @@ LABEL_103:
           v163 = 0;
         }
 
-        v141 = [v166 objectForKeyedSubscript:v163];
+        v141 = [informationCopy objectForKeyedSubscript:v163];
         v142 = [v141 objectForKeyedSubscript:@"OptInDateSinceReferenceDate"];
         v30 = 18;
         if (v163)
@@ -1857,17 +1857,17 @@ LABEL_102:
                 }
 
                 v59 = *(*(&v178 + 1) + 8 * m);
-                v60 = [v167 objectForKeyedSubscript:v59];
+                v60 = [toPersonCopy objectForKeyedSubscript:v59];
                 if (v60)
                 {
-                  v61 = [v166 objectForKeyedSubscript:v60];
+                  v61 = [informationCopy objectForKeyedSubscript:v60];
                   v62 = [v61 objectForKeyedSubscript:@"OptInDateSinceReferenceDate"];
                   [v62 doubleValue];
                   v64 = v63;
 
                   if (v64 <= v54 + 21600.0)
                   {
-                    v65 = [v165 objectForKeyedSubscript:v59];
+                    v65 = [dictionary4 objectForKeyedSubscript:v59];
                     v66 = v65;
                     if (v65)
                     {
@@ -1892,20 +1892,20 @@ LABEL_102:
             while (v56);
           }
 
-          v68 = [v139 allKeys];
-          v69 = [v68 containsObject:v163];
+          allKeys = [dictionary6 allKeys];
+          v69 = [allKeys containsObject:v163];
 
           if (v69)
           {
-            v70 = [v139 objectForKeyedSubscript:v163];
+            v70 = [dictionary6 objectForKeyedSubscript:v163];
             v176 = 0u;
             v177 = 0u;
             v174 = 0u;
             v175 = 0u;
             v133 = v70;
-            v71 = [v70 allObjects];
-            v159 = v71;
-            v72 = [v71 countByEnumeratingWithState:&v174 objects:v212 count:16];
+            allObjects4 = [v70 allObjects];
+            v159 = allObjects4;
+            v72 = [allObjects4 countByEnumeratingWithState:&v174 objects:v212 count:16];
             if (v72)
             {
               v157 = 0;
@@ -1920,15 +1920,15 @@ LABEL_102:
                   }
 
                   v75 = *(*(&v174 + 1) + 8 * n);
-                  v76 = [v167 objectForKeyedSubscript:v75];
+                  v76 = [toPersonCopy objectForKeyedSubscript:v75];
                   if ([v76 isEqualToString:v163])
                   {
-                    v77 = [v166 objectForKeyedSubscript:v76];
+                    v77 = [informationCopy objectForKeyedSubscript:v76];
                     v78 = [v77 objectForKeyedSubscript:@"OptInDateSinceReferenceDate"];
                     [v78 doubleValue];
                     v80 = v79;
 
-                    v81 = [v165 objectForKeyedSubscript:v75];
+                    v81 = [dictionary4 objectForKeyedSubscript:v75];
                     v82 = v81;
                     if (v81)
                     {
@@ -1941,7 +1941,7 @@ LABEL_102:
                   }
                 }
 
-                v71 = v159;
+                allObjects4 = v159;
                 v72 = [v159 countByEnumeratingWithState:&v174 objects:v212 count:16];
               }
 
@@ -1955,17 +1955,17 @@ LABEL_102:
 
             if (v46 > v157)
             {
-              [v139 setObject:obj forKeyedSubscript:v163];
+              [dictionary6 setObject:obj forKeyedSubscript:v163];
             }
           }
 
           else
           {
-            [v139 setObject:obj forKeyedSubscript:v163];
+            [dictionary6 setObject:obj forKeyedSubscript:v163];
           }
 
-          v85 = [obj allObjects];
-          v86 = [v85 count];
+          allObjects5 = [obj allObjects];
+          v86 = [allObjects5 count];
           v87 = [v31 countForObject:@"Unknown"];
 
           v88 = (v86 - v55 - v87);
@@ -1978,16 +1978,16 @@ LABEL_102:
           else
           {
             v89 = MEMORY[0x1E696AD98];
-            v90 = [v136 objectForKeyedSubscript:v163];
+            v90 = [dictionary7 objectForKeyedSubscript:v163];
             v91 = [v89 numberWithUnsignedInteger:{v46 + objc_msgSend(v90, "intValue")}];
-            [v136 setObject:v91 forKeyedSubscript:v163];
+            [dictionary7 setObject:v91 forKeyedSubscript:v163];
 
             v29 = v29 + v46;
             v134 = v134 + v88;
             if (v88 != 1)
             {
               v84 = v142;
-              v92 = [v151 countForObject:v163];
+              v92 = [personCopy countForObject:v163];
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
               {
                 *buf = v129;
@@ -2003,7 +2003,7 @@ LABEL_102:
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Precision for FaceGroup (of size %d) for personID %@ (of size %lu) is %f", buf, 0x30u);
               }
 
-              v93 = [v151 countForObject:v163];
+              v93 = [personCopy countForObject:v163];
               *&v94 = v46 / v88;
               [(VCPClusteringAccuracyMeasures *)v135 addClusterPrecision:v163 forPersonID:v46 personFaceCount:v88 validFaceCount:v93 identitySize:v94];
               v30 = 0;
@@ -2045,7 +2045,7 @@ LABEL_156:
       *buf = 138412546;
       v209 = @"[AutoCounter][P/R]";
       v210 = 2112;
-      *v211 = v155;
+      *v211 = lCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Fail to load cluster state file: %@", buf, 0x16u);
     }
 
@@ -2418,43 +2418,43 @@ void __212__VCPPhotosAutoCounterWorker__measureClusterWithClusterStateURL_ground
   }
 }
 
-- (int)_measurePNPersonClusters:(id)a3 groundTruthFaceCountPerPerson:(id)a4 groundTruthPersonInformation:(id)a5 groundTruthFaceToPerson:(id)a6 groundTruthAssetToFaces:(id)a7 measures:(id *)a8 extendTimeoutBlock:(id)a9 cancelBlock:(id)a10
+- (int)_measurePNPersonClusters:(id)clusters groundTruthFaceCountPerPerson:(id)person groundTruthPersonInformation:(id)information groundTruthFaceToPerson:(id)toPerson groundTruthAssetToFaces:(id)faces measures:(id *)measures extendTimeoutBlock:(id)block cancelBlock:(id)self0
 {
   v197[1] = *MEMORY[0x1E69E9840];
-  v118 = a3;
-  v116 = a4;
-  v117 = a5;
-  v15 = a6;
-  v122 = a7;
-  v134 = a9;
-  v137 = a10;
-  v114 = a8;
-  v115 = v15;
-  *a8 = 0;
-  v127 = [MEMORY[0x1E695DF90] dictionary];
-  v126 = [MEMORY[0x1E695DF90] dictionary];
-  v124 = [MEMORY[0x1E695DF90] dictionary];
+  clustersCopy = clusters;
+  personCopy = person;
+  informationCopy = information;
+  toPersonCopy = toPerson;
+  facesCopy = faces;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  measuresCopy = measures;
+  v115 = toPersonCopy;
+  *measures = 0;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v128 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:self->_photoLibrary forTaskID:3];
   v197[0] = *MEMORY[0x1E6978C28];
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v197 count:1];
   [v128 addFetchPropertySets:v16];
 
-  v120 = [v118 allObjects];
-  for (i = 0; i < [v120 count]; ++i)
+  allObjects = [clustersCopy allObjects];
+  for (i = 0; i < [allObjects count]; ++i)
   {
     context = objc_autoreleasePoolPush();
-    v129 = [v120 objectAtIndexedSubscript:i];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = [v129 localIdentifier];
-    [v127 setObject:v17 forKeyedSubscript:v18];
+    v129 = [allObjects objectAtIndexedSubscript:i];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    localIdentifier = [v129 localIdentifier];
+    [dictionary setObject:dictionary4 forKeyedSubscript:localIdentifier];
 
     v19 = [MEMORY[0x1E695DFA8] set];
-    v20 = [v129 fetchFaces];
+    fetchFaces = [v129 fetchFaces];
     v180 = 0u;
     v181 = 0u;
     v178 = 0u;
     v179 = 0u;
-    v21 = v20;
+    v21 = fetchFaces;
     v22 = [v21 countByEnumeratingWithState:&v178 objects:v196 count:16];
     if (v22)
     {
@@ -2470,13 +2470,13 @@ void __212__VCPPhotosAutoCounterWorker__measureClusterWithClusterStateURL_ground
 
           v25 = *(*(&v178 + 1) + 8 * j);
           v26 = objc_autoreleasePoolPush();
-          v27 = [v25 personLocalIdentifier];
-          v28 = v27 == 0;
+          personLocalIdentifier = [v25 personLocalIdentifier];
+          v28 = personLocalIdentifier == 0;
 
           if (!v28)
           {
-            v29 = [v25 personLocalIdentifier];
-            [v19 addObject:v29];
+            personLocalIdentifier2 = [v25 personLocalIdentifier];
+            [v19 addObject:personLocalIdentifier2];
           }
 
           objc_autoreleasePoolPop(v26);
@@ -2490,10 +2490,10 @@ void __212__VCPPhotosAutoCounterWorker__measureClusterWithClusterStateURL_ground
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v30 = [v129 localIdentifier];
+      localIdentifier2 = [v129 localIdentifier];
       v31 = [v21 count];
       *buf = 138412546;
-      *&buf[4] = v30;
+      *&buf[4] = localIdentifier2;
       *&buf[12] = 2048;
       *&buf[14] = v31;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[AutoCounter][P/R][PV] Processing person cluster %@ with %lu faces", buf, 0x16u);
@@ -2520,16 +2520,16 @@ LABEL_17:
 
         v34 = *(*(&v174 + 1) + 8 * v33);
         v35 = objc_autoreleasePoolPush();
-        if (v137 && (v137[2]() & 1) != 0)
+        if (cancelBlockCopy && (cancelBlockCopy[2]() & 1) != 0)
         {
           v36 = 1;
         }
 
         else
         {
-          if (v134)
+          if (blockCopy)
           {
-            v134[2]();
+            blockCopy[2]();
           }
 
           *buf = 0;
@@ -2537,13 +2537,13 @@ LABEL_17:
           *&buf[16] = 0x3032000000;
           v192 = __Block_byref_object_copy__61;
           v193 = __Block_byref_object_dispose__61;
-          v194 = [v34 personLocalIdentifier];
+          personLocalIdentifier3 = [v34 personLocalIdentifier];
           v168 = 0;
           v169 = &v168;
           v170 = 0x3032000000;
           v171 = __Block_byref_object_copy__61;
           v172 = __Block_byref_object_dispose__61;
-          v173 = [v34 localIdentifier];
+          localIdentifier3 = [v34 localIdentifier];
           if (*(v169 + 5))
           {
             v37 = MEMORY[0x1E6978628];
@@ -2553,35 +2553,35 @@ LABEL_17:
 
             if ([v135 count])
             {
-              v39 = [v135 firstObject];
-              v40 = [v39 cloudIdentifier];
-              if (!v40)
+              firstObject = [v135 firstObject];
+              cloudIdentifier = [firstObject cloudIdentifier];
+              if (!cloudIdentifier)
               {
                 if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
                 {
-                  v41 = [v39 localIdentifier];
+                  localIdentifier4 = [firstObject localIdentifier];
                   *v188 = 138412290;
-                  *&v188[4] = v41;
+                  *&v188[4] = localIdentifier4;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[AutoCounter][P/R][PV] Asset without cloudIdentifier, use localIdentifier: %@", v188, 0xCu);
                 }
 
-                v40 = [v39 localIdentifier];
+                cloudIdentifier = [firstObject localIdentifier];
               }
 
-              v42 = [v39 pixelWidth];
-              v43 = [v39 pixelHeight];
-              v44 = v42 <= v43 ? v43 : v42;
+              pixelWidth = [firstObject pixelWidth];
+              pixelHeight = [firstObject pixelHeight];
+              v44 = pixelWidth <= pixelHeight ? pixelHeight : pixelWidth;
               [v34 centerX];
               v46 = v45;
-              v47 = [v39 pixelWidth];
+              pixelWidth2 = [firstObject pixelWidth];
               [v34 centerY];
               v49 = v48;
-              v50 = [v39 pixelHeight];
+              pixelHeight2 = [firstObject pixelHeight];
               [v34 size];
               v52 = v51;
               [v34 size];
-              v53 = v46 * v47;
-              v54 = v49 * v50;
+              v53 = v46 * pixelWidth2;
+              v54 = v49 * pixelHeight2;
               v55 = v52 * v44;
               v57 = v56 * v44;
               v198.origin.x = v53;
@@ -2610,18 +2610,18 @@ LABEL_17:
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
                   v63 = *(v169 + 5);
-                  v64 = [v34 personLocalIdentifier];
-                  v65 = [v129 localIdentifier];
+                  personLocalIdentifier4 = [v34 personLocalIdentifier];
+                  localIdentifier5 = [v129 localIdentifier];
                   *v188 = 138412802;
                   *&v188[4] = v63;
                   *&v188[12] = 2112;
-                  *&v188[14] = v64;
+                  *&v188[14] = personLocalIdentifier4;
                   *&v188[22] = 2112;
-                  v189 = v65;
+                  v189 = localIdentifier5;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[AutoCounter][P/R][PV] processing person cluster faceID: %@ for PersonID: %@ and clusterID: %@", v188, 0x20u);
                 }
 
-                v66 = [v122 objectForKeyedSubscript:v40];
+                v66 = [facesCopy objectForKeyedSubscript:cloudIdentifier];
                 v159[0] = MEMORY[0x1E69E9820];
                 v159[1] = 3221225472;
                 v159[2] = __202__VCPPhotosAutoCounterWorker__measurePNPersonClusters_groundTruthFaceCountPerPerson_groundTruthPersonInformation_groundTruthFaceToPerson_groundTruthAssetToFaces_measures_extendTimeoutBlock_cancelBlock___block_invoke;
@@ -2630,49 +2630,49 @@ LABEL_17:
                 v67 = v19;
                 v163 = buf;
                 v160 = v67;
-                v161 = self;
+                selfCopy = self;
                 v164 = v53;
                 v165 = v54;
                 v166 = v55;
                 v167 = v57;
                 v125 = v66;
                 [v66 enumerateObjectsUsingBlock:v159];
-                v68 = [v129 localIdentifier];
-                v69 = [v127 objectForKeyedSubscript:v68];
-                v70 = [v69 allKeys];
-                v71 = [v70 containsObject:*(*&buf[8] + 40)];
+                localIdentifier6 = [v129 localIdentifier];
+                v69 = [dictionary objectForKeyedSubscript:localIdentifier6];
+                allKeys = [v69 allKeys];
+                v71 = [allKeys containsObject:*(*&buf[8] + 40)];
 
                 if ((v71 & 1) == 0)
                 {
                   v72 = [MEMORY[0x1E695DFA8] set];
-                  v73 = [v129 localIdentifier];
-                  v74 = [v127 objectForKeyedSubscript:v73];
+                  localIdentifier7 = [v129 localIdentifier];
+                  v74 = [dictionary objectForKeyedSubscript:localIdentifier7];
                   [v74 setObject:v72 forKeyedSubscript:*(*&buf[8] + 40)];
                 }
 
-                v75 = [v129 localIdentifier];
-                v76 = [v127 objectForKeyedSubscript:v75];
+                localIdentifier8 = [v129 localIdentifier];
+                v76 = [dictionary objectForKeyedSubscript:localIdentifier8];
                 v77 = [v76 objectForKeyedSubscript:*(*&buf[8] + 40)];
                 [v77 addObject:*(v169 + 5)];
 
-                v78 = [v126 allKeys];
-                LOBYTE(v76) = [v78 containsObject:*(*&buf[8] + 40)];
+                allKeys2 = [dictionary2 allKeys];
+                LOBYTE(v76) = [allKeys2 containsObject:*(*&buf[8] + 40)];
 
                 if ((v76 & 1) == 0)
                 {
                   v79 = [MEMORY[0x1E695DFA8] set];
-                  [v126 setObject:v79 forKeyedSubscript:*(*&buf[8] + 40)];
+                  [dictionary2 setObject:v79 forKeyedSubscript:*(*&buf[8] + 40)];
                 }
 
-                v80 = [v126 objectForKeyedSubscript:*(*&buf[8] + 40)];
-                [v80 addObject:v40];
+                v80 = [dictionary2 objectForKeyedSubscript:*(*&buf[8] + 40)];
+                [v80 addObject:cloudIdentifier];
 
                 v81 = MEMORY[0x1E696AD98];
-                v82 = [v39 curationProperties];
-                v83 = [v82 addedDate];
-                [v83 timeIntervalSinceReferenceDate];
+                curationProperties = [firstObject curationProperties];
+                addedDate = [curationProperties addedDate];
+                [addedDate timeIntervalSinceReferenceDate];
                 v84 = [v81 numberWithDouble:?];
-                [v124 setObject:v84 forKeyedSubscript:*(v169 + 5)];
+                [dictionary3 setObject:v84 forKeyedSubscript:*(v169 + 5)];
 
                 v36 = 0;
               }
@@ -2774,29 +2774,29 @@ LABEL_63:
   v152 = &v151;
   v153 = 0x2020000000;
   v154 = 0;
-  v86 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
   v138[0] = MEMORY[0x1E69E9820];
   v138[1] = 3221225472;
   v138[2] = __202__VCPPhotosAutoCounterWorker__measurePNPersonClusters_groundTruthFaceCountPerPerson_groundTruthPersonInformation_groundTruthFaceToPerson_groundTruthAssetToFaces_measures_extendTimeoutBlock_cancelBlock___block_invoke_637;
   v138[3] = &unk_1E8351308;
-  v87 = v137;
+  v87 = cancelBlockCopy;
   v144 = v87;
   v146 = &v151;
-  v133 = v134;
+  v133 = blockCopy;
   v145 = v133;
-  v139 = v117;
-  v140 = v124;
-  v136 = v86;
+  v139 = informationCopy;
+  v140 = dictionary3;
+  v136 = dictionary5;
   v141 = v136;
   v147 = buf;
   v148 = &v168;
-  v88 = v116;
+  v88 = personCopy;
   v142 = v88;
   v89 = v85;
   v143 = v89;
   v149 = v188;
   v150 = &v155;
-  [v127 enumerateKeysAndObjectsUsingBlock:v138];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v138];
   v105 = *(v152 + 6);
   if (!v105)
   {
@@ -2815,30 +2815,30 @@ LABEL_63:
     [(VCPClusteringAccuracyMeasures *)v89 setNumSingletons:v90];
     *&v93 = *(v156 + 3);
     [(VCPClusteringAccuracyMeasures *)v89 setNumValidSingletons:v93];
-    v94 = [v88 allObjects];
+    allObjects2 = [v88 allObjects];
     v95 = 0;
     v96 = 0.0;
     v97 = 0.0;
-    while (v95 < [v94 count])
+    while (v95 < [allObjects2 count])
     {
       v98 = objc_autoreleasePoolPush();
-      if (v137 && ((v137[2])(v87) & 1) != 0)
+      if (cancelBlockCopy && ((cancelBlockCopy[2])(v87) & 1) != 0)
       {
         v99 = 0;
       }
 
       else
       {
-        if (v134)
+        if (blockCopy)
         {
-          (v134[2])(v133);
+          (blockCopy[2])(v133);
         }
 
-        [v94 objectAtIndexedSubscript:v95];
+        [allObjects2 objectAtIndexedSubscript:v95];
         v100 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         v101 = COERCE_DOUBLE([v88 countForObject:*&v100]);
         v102 = [v136 objectForKeyedSubscript:*&v100];
-        v103 = [v102 unsignedIntValue];
+        unsignedIntValue = [v102 unsignedIntValue];
 
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
@@ -2847,14 +2847,14 @@ LABEL_63:
           v184 = 2048;
           v185 = v101;
           v186 = 2048;
-          v187 = (v103 / *&v101);
+          v187 = (unsignedIntValue / *&v101);
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[AutoCounter][P/R][PV] Recall for personID %@ (of size %lu) is %f", v182, 0x20u);
         }
 
-        *&v104 = v103 / *&v101;
-        [(VCPClusteringAccuracyMeasures *)v89 addIdentityRecallToGroundTruth:*&v100 forPersonID:v103 personFaceCount:*&v101 identitySize:v104];
+        *&v104 = unsignedIntValue / *&v101;
+        [(VCPClusteringAccuracyMeasures *)v89 addIdentityRecallToGroundTruth:*&v100 forPersonID:unsignedIntValue personFaceCount:*&v101 identitySize:v104];
 
-        v97 = v97 + v103;
+        v97 = v97 + unsignedIntValue;
         v96 = v96 + *&v101;
         v99 = 1;
       }
@@ -2902,7 +2902,7 @@ LABEL_63:
     [(VCPClusteringAccuracyMeasures *)v89 setWeightedAveragePrecision:v111];
     v112 = v89;
     v105 = 0;
-    *v114 = v89;
+    *measuresCopy = v89;
 LABEL_93:
   }
 
@@ -3290,14 +3290,14 @@ void __202__VCPPhotosAutoCounterWorker__measurePNPersonClusters_groundTruthFaceC
   }
 }
 
-- (int)_reportCoreAnalyticsWithVisionClusterMeasure:(id)a3 personClusterMeasure:(id)a4 personClusters:(id)a5 andGroundTruthInformation:(id)a6
+- (int)_reportCoreAnalyticsWithVisionClusterMeasure:(id)measure personClusterMeasure:(id)clusterMeasure personClusters:(id)clusters andGroundTruthInformation:(id)information
 {
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v33 = v13;
+  measureCopy = measure;
+  clusterMeasureCopy = clusterMeasure;
+  clustersCopy = clusters;
+  informationCopy = information;
+  v33 = informationCopy;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
@@ -3305,28 +3305,28 @@ void __202__VCPPhotosAutoCounterWorker__measurePNPersonClusters_groundTruthFaceC
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%@ Collecting data ...", buf, 0xCu);
   }
 
-  v34 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:self->_photoLibrary forTaskID:3];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeasure_personClusterMeasure_personClusters_andGroundTruthInformation___block_invoke;
   v39[3] = &unk_1E83513A8;
-  v15 = v10;
+  v15 = measureCopy;
   v40 = v15;
-  v16 = v11;
+  v16 = clusterMeasureCopy;
   v41 = v16;
-  v42 = self;
-  v17 = v12;
+  selfCopy = self;
+  v17 = clustersCopy;
   v43 = v17;
   v32 = v14;
   v44 = v32;
-  v18 = v34;
+  v18 = array;
   v45 = v18;
   v46 = @"[AutoCounter][CA]";
-  [v13 enumerateKeysAndObjectsUsingBlock:v39];
+  [informationCopy enumerateKeysAndObjectsUsingBlock:v39];
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Ver%d_Detector%lu_Printer%lu_MAD%lu_VU%lu_PhotosPerson%lu.plist", @"AutoCounterCoreAnalytics", -[PHPhotoLibrary mad_faceProcessingInternalVersion](self->_photoLibrary, "mad_faceProcessingInternalVersion"), self->_detectionVersion, self->_recognitionVersion, self->_madVersion, self->_vuVersion, self->_personClusterVersion];
-  v20 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
-  v21 = [v20 URLByAppendingPathComponent:v19];
+  vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+  v21 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:v19];
 
   if (v21)
   {
@@ -3344,10 +3344,10 @@ void __202__VCPPhotosAutoCounterWorker__measurePNPersonClusters_groundTruthFaceC
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%@ Saved CoreAnalytics to %@", buf, 0x16u);
       }
 
-      v29 = [MEMORY[0x1E696AC08] defaultManager];
-      v24 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      vcp_visionCacheStorageDirectoryURL2 = [(PHPhotoLibrary *)self->_photoLibrary vcp_visionCacheStorageDirectoryURL];
       v37 = v23;
-      v30 = [v29 contentsOfDirectoryAtURL:v24 includingPropertiesForKeys:0 options:1 error:&v37];
+      v30 = [defaultManager contentsOfDirectoryAtURL:vcp_visionCacheStorageDirectoryURL2 includingPropertiesForKeys:0 options:1 error:&v37];
       v31 = v37;
 
       if (v31)
@@ -3844,18 +3844,18 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
   [v5 sendEvent:@"com.apple.photos.autocounter" withAnalytics:v3];
 }
 
-- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)a3 andPersonClusters:(id)a4 withGroundtruth:(id)a5 results:(id *)a6 extendTimeoutBlock:(id)a7 cancelBlock:(id)a8
+- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)l andPersonClusters:(id)clusters withGroundtruth:(id)groundtruth results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v51 = a4;
-  v15 = a7;
-  v16 = a8;
+  lCopy = l;
+  clustersCopy = clusters;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v57 = 0;
   v58 = 0;
   v55 = 0;
   v56 = 0;
-  v17 = [(VCPPhotosAutoCounterWorker *)self _parseGroundTruthWithURL:a5 faceCountPerPerson:&v58 personInformation:&v57 faceToPerson:&v56 assetToFaces:&v55 extendTimeoutBlock:v15 cancelBlock:v16];
+  v17 = [(VCPPhotosAutoCounterWorker *)self _parseGroundTruthWithURL:groundtruth faceCountPerPerson:&v58 personInformation:&v57 faceToPerson:&v56 assetToFaces:&v55 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
   v18 = v58;
   v19 = v57;
   v20 = v56;
@@ -3863,7 +3863,7 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
   if (!v17)
   {
     v54 = 0;
-    v17 = [(VCPPhotosAutoCounterWorker *)self _measureClusterWithClusterStateURL:v14 groundTruthFaceCountPerPerson:v18 groundTruthPersonInformation:v19 groundTruthFaceToPerson:v20 groundTruthAssetToFaces:v21 measures:&v54 extendTimeoutBlock:v15 cancelBlock:v16];
+    v17 = [(VCPPhotosAutoCounterWorker *)self _measureClusterWithClusterStateURL:lCopy groundTruthFaceCountPerPerson:v18 groundTruthPersonInformation:v19 groundTruthFaceToPerson:v20 groundTruthAssetToFaces:v21 measures:&v54 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
     v50 = v54;
     if (v17)
     {
@@ -3877,7 +3877,7 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
     }
 
     v52 = 0;
-    v17 = [(VCPPhotosAutoCounterWorker *)self _measurePNPersonClusters:v51 groundTruthFaceCountPerPerson:v18 groundTruthPersonInformation:v19 groundTruthFaceToPerson:v20 groundTruthAssetToFaces:v21 measures:&v52 extendTimeoutBlock:v15 cancelBlock:v16];
+    v17 = [(VCPPhotosAutoCounterWorker *)self _measurePNPersonClusters:clustersCopy groundTruthFaceCountPerPerson:v18 groundTruthPersonInformation:v19 groundTruthFaceToPerson:v20 groundTruthAssetToFaces:v21 measures:&v52 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
     v22 = v52;
     v49 = v22;
     if (v17)
@@ -3894,10 +3894,10 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
 
     else
     {
-      v17 = [(VCPPhotosAutoCounterWorker *)self _reportCoreAnalyticsWithVisionClusterMeasure:v50 personClusterMeasure:v22 personClusters:v51 andGroundTruthInformation:v19];
+      v17 = [(VCPPhotosAutoCounterWorker *)self _reportCoreAnalyticsWithVisionClusterMeasure:v50 personClusterMeasure:v22 personClusters:clustersCopy andGroundTruthInformation:v19];
       if (!v17)
       {
-        if (a6)
+        if (results)
         {
           v66[0] = @"visionCluster";
           v64[0] = @"weightedAveragePrecision";
@@ -3921,14 +3921,14 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
           v41 = [v28 numberWithFloat:?];
           v65[3] = v41;
           v64[4] = @"precisionPerCluster";
-          v40 = [v50 precisionPerCluster];
-          v65[4] = v40;
+          precisionPerCluster = [v50 precisionPerCluster];
+          v65[4] = precisionPerCluster;
           v64[5] = @"recallPerPersonToGroundTruth";
-          v42 = [v50 recallPerPersonToGroundTruth];
-          v65[5] = v42;
+          recallPerPersonToGroundTruth = [v50 recallPerPersonToGroundTruth];
+          v65[5] = recallPerPersonToGroundTruth;
           v64[6] = @"recallPerPersonExcludeMissDetection";
-          v44 = [v50 recallPerPersonExcludeMissDetection];
-          v65[6] = v44;
+          recallPerPersonExcludeMissDetection = [v50 recallPerPersonExcludeMissDetection];
+          v65[6] = recallPerPersonExcludeMissDetection;
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:7];
           v66[1] = @"personCluster";
           v67[0] = v45;
@@ -3953,14 +3953,14 @@ void __137__VCPPhotosAutoCounterWorker__reportCoreAnalyticsWithVisionClusterMeas
           v61 = [v32 numberWithFloat:?];
           v59[4] = @"precisionPerCluster";
           v39 = v61;
-          v36 = [v49 precisionPerCluster];
-          v62 = v36;
+          precisionPerCluster2 = [v49 precisionPerCluster];
+          v62 = precisionPerCluster2;
           v59[5] = @"recallPerPersonToGroundTruth";
-          v35 = [v49 recallPerPersonToGroundTruth];
-          v63 = v35;
+          recallPerPersonToGroundTruth2 = [v49 recallPerPersonToGroundTruth];
+          v63 = recallPerPersonToGroundTruth2;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:v59 count:6];
           v67[1] = v33;
-          *a6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:2];
+          *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:2];
         }
 
         v17 = 0;
@@ -3989,35 +3989,35 @@ LABEL_20:
   return v17;
 }
 
-- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)a3 andPersonClusters:(id)a4 results:(id *)a5 extendTimeoutBlock:(id)a6 cancelBlock:(id)a7
+- (int)calculateAndReportClusterAccuracyWithVisionClusterURL:(id)l andPersonClusters:(id)clusters results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(VCPPhotosAutoCounterWorker *)self _groundTruthURL];
-  LODWORD(a5) = [(VCPPhotosAutoCounterWorker *)self calculateAndReportClusterAccuracyWithVisionClusterURL:v12 andPersonClusters:v13 withGroundtruth:v16 results:a5 extendTimeoutBlock:v14 cancelBlock:v15];
+  lCopy = l;
+  clustersCopy = clusters;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  _groundTruthURL = [(VCPPhotosAutoCounterWorker *)self _groundTruthURL];
+  LODWORD(results) = [(VCPPhotosAutoCounterWorker *)self calculateAndReportClusterAccuracyWithVisionClusterURL:lCopy andPersonClusters:clustersCopy withGroundtruth:_groundTruthURL results:results extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
 
-  return a5;
+  return results;
 }
 
-- (int)_parseSIMLGroundTruthWithURL:(id)a3 faceCountPerPerson:(id *)a4 personInformation:(id *)a5 faceToPerson:(id *)a6 assetToFaces:(id *)a7 extendTimeoutBlock:(id)a8 cancelBlock:(id)a9
+- (int)_parseSIMLGroundTruthWithURL:(id)l faceCountPerPerson:(id *)person personInformation:(id *)information faceToPerson:(id *)toPerson assetToFaces:(id *)faces extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v73 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v58 = a8;
-  v15 = a9;
-  v47 = a4;
-  *a4 = 0;
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
+  lCopy = l;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  personCopy = person;
+  *person = 0;
+  *information = 0;
+  *toPerson = 0;
+  *faces = 0;
   v57 = [MEMORY[0x1E696AB50] set];
-  v56 = [MEMORY[0x1E695DF90] dictionary];
-  v55 = [MEMORY[0x1E695DF90] dictionary];
-  v54 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v68 = 0;
-  v16 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v52 options:0 error:&v68];
+  v16 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:0 error:&v68];
   v17 = v68;
   v50 = v16;
   if (!v16 || v17)
@@ -4054,12 +4054,12 @@ LABEL_20:
 
     else
     {
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
       v65[0] = MEMORY[0x1E69E9820];
       v65[1] = 3221225472;
       v65[2] = __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPerPerson_personInformation_faceToPerson_assetToFaces_extendTimeoutBlock_cancelBlock___block_invoke;
       v65[3] = &unk_1E83513D0;
-      v53 = v20;
+      v53 = dictionary4;
       v66 = v53;
       [v18 enumerateObjectsUsingBlock:v65];
       v69 = @"OptInDateSinceReferenceDate";
@@ -4067,9 +4067,9 @@ LABEL_20:
       v22 = [MEMORY[0x1E695DF00] now];
       [v22 timeIntervalSinceReferenceDate];
       v23 = [v21 numberWithDouble:?];
-      v44 = a6;
-      v45 = a5;
-      v43 = a7;
+      toPersonCopy = toPerson;
+      informationCopy = information;
+      facesCopy = faces;
       v70 = v23;
       v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
 
@@ -4080,54 +4080,54 @@ LABEL_20:
         if (i >= [v24 count])
         {
           v38 = v57;
-          *v47 = v57;
-          v39 = v56;
-          *v45 = v56;
-          v40 = v55;
-          *v44 = v55;
-          v41 = v54;
+          *personCopy = v57;
+          v39 = dictionary;
+          *informationCopy = dictionary;
+          v40 = dictionary2;
+          *toPersonCopy = dictionary2;
+          v41 = dictionary3;
           v37 = 0;
-          *v43 = v54;
+          *facesCopy = dictionary3;
           goto LABEL_29;
         }
 
         v26 = objc_autoreleasePoolPush();
-        if (v15 && (v15[2](v15) & 1) != 0)
+        if (cancelBlockCopy && (cancelBlockCopy[2](cancelBlockCopy) & 1) != 0)
         {
           v27 = 1;
         }
 
         else
         {
-          if (v58)
+          if (blockCopy)
           {
-            v58[2]();
+            blockCopy[2]();
           }
 
           v28 = [v24 objectAtIndexedSubscript:i];
-          v29 = [v28 originalFilename];
-          v30 = [v29 stringByDeletingPathExtension];
+          originalFilename = [v28 originalFilename];
+          stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
 
-          v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v30, "integerValue")}];
+          v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(stringByDeletingPathExtension, "integerValue")}];
           v32 = [v53 objectForKeyedSubscript:v31];
 
           if (v32)
           {
             v33 = [v32 objectForKeyedSubscript:@"faces"];
-            v34 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v59[0] = MEMORY[0x1E69E9820];
             v59[1] = 3221225472;
             v59[2] = __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPerPerson_personInformation_faceToPerson_assetToFaces_extendTimeoutBlock_cancelBlock___block_invoke_2;
             v59[3] = &unk_1E8351420;
-            v35 = v34;
+            v35 = array;
             v60 = v35;
-            v61 = v55;
+            v61 = dictionary2;
             v62 = v57;
-            v63 = v56;
+            v63 = dictionary;
             v64 = v51;
             [v33 enumerateObjectsUsingBlock:v59];
-            v36 = [v28 localIdentifier];
-            [v54 setObject:v35 forKeyedSubscript:v36];
+            localIdentifier = [v28 localIdentifier];
+            [dictionary3 setObject:v35 forKeyedSubscript:localIdentifier];
 
             v27 = 0;
           }
@@ -4220,17 +4220,17 @@ void __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPer
   }
 }
 
-- (int)validateClusterAccuracyWithSIMLGroundtruth:(id)a3 results:(id *)a4 extendTimeoutBlock:(id)a5 cancelBlock:(id)a6
+- (int)validateClusterAccuracyWithSIMLGroundtruth:(id)groundtruth results:(id *)results extendTimeoutBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  groundtruthCopy = groundtruth;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v43 = 0;
   v44 = 0;
   v41 = 0;
   v42 = 0;
-  v13 = [(VCPPhotosAutoCounterWorker *)self _parseSIMLGroundTruthWithURL:v10 faceCountPerPerson:&v44 personInformation:&v43 faceToPerson:&v42 assetToFaces:&v41 extendTimeoutBlock:v11 cancelBlock:v12];
+  v13 = [(VCPPhotosAutoCounterWorker *)self _parseSIMLGroundTruthWithURL:groundtruthCopy faceCountPerPerson:&v44 personInformation:&v43 faceToPerson:&v42 assetToFaces:&v41 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
   v14 = v44;
   v15 = v43;
   v16 = v42;
@@ -4239,7 +4239,7 @@ void __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPer
   {
     v39 = 0;
     v40 = 0;
-    v18 = [(VCPPhotosAutoCounterWorker *)self exportVUGalleryClusterStates:&v40 error:&v39 extendTimeoutBlock:v11 cancelBlock:v12];
+    v18 = [(VCPPhotosAutoCounterWorker *)self exportVUGalleryClusterStates:&v40 error:&v39 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
     v37 = v40;
     v19 = v39;
     v35 = v19;
@@ -4261,12 +4261,12 @@ void __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPer
         *buf = 138412546;
         v48 = v37;
         v49 = 2112;
-        v50 = v10;
+        v50 = groundtruthCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[AutoCounter][P/R][SIML] Validate cluster state  %@ against ground truth %@", buf, 0x16u);
       }
 
       v38 = 0;
-      v13 = [(VCPPhotosAutoCounterWorker *)self _measureClusterWithClusterStateURL:v37 groundTruthFaceCountPerPerson:v14 groundTruthPersonInformation:v15 groundTruthFaceToPerson:v16 groundTruthAssetToFaces:v17 measures:&v38 extendTimeoutBlock:v11 cancelBlock:v12];
+      v13 = [(VCPPhotosAutoCounterWorker *)self _measureClusterWithClusterStateURL:v37 groundTruthFaceCountPerPerson:v14 groundTruthPersonInformation:v15 groundTruthFaceToPerson:v16 groundTruthAssetToFaces:v17 measures:&v38 extendTimeoutBlock:blockCopy cancelBlock:cancelBlockCopy];
       v36 = v38;
       if (v13)
       {
@@ -4277,7 +4277,7 @@ void __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPer
         }
       }
 
-      else if (a4)
+      else if (results)
       {
         v45[0] = @"weightedAveragePrecision";
         v20 = MEMORY[0x1E696AD98];
@@ -4300,18 +4300,18 @@ void __153__VCPPhotosAutoCounterWorker__parseSIMLGroundTruthWithURL_faceCountPer
         v31 = [v23 numberWithFloat:?];
         v46[3] = v31;
         v45[4] = @"precisionPerCluster";
-        v30 = [v36 precisionPerCluster];
-        v29 = [v30 sortedArrayUsingComparator:&__block_literal_global_79];
+        precisionPerCluster = [v36 precisionPerCluster];
+        v29 = [precisionPerCluster sortedArrayUsingComparator:&__block_literal_global_79];
         v46[4] = v29;
         v45[5] = @"recallPerPersonToGroundTruth";
-        v28 = [v36 recallPerPersonToGroundTruth];
-        v27 = [v28 sortedArrayUsingComparator:&__block_literal_global_79];
+        recallPerPersonToGroundTruth = [v36 recallPerPersonToGroundTruth];
+        v27 = [recallPerPersonToGroundTruth sortedArrayUsingComparator:&__block_literal_global_79];
         v46[5] = v27;
         v45[6] = @"recallPerPersonExcludeMissDetection";
-        v26 = [v36 recallPerPersonExcludeMissDetection];
-        v24 = [v26 sortedArrayUsingComparator:&__block_literal_global_79];
+        recallPerPersonExcludeMissDetection = [v36 recallPerPersonExcludeMissDetection];
+        v24 = [recallPerPersonExcludeMissDetection sortedArrayUsingComparator:&__block_literal_global_79];
         v46[6] = v24;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:7];
+        *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:7];
       }
     }
   }

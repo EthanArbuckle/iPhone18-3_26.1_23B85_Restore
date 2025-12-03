@@ -29,8 +29,8 @@
       v11 = [NSNumber numberWithUnsignedChar:(v6[4] >> 3) & 0xF];
       [(NSMutableDictionary *)self->super._analyticsDict setObject:v11 forKeyedSubscript:@"Img4DecodeError"];
 
-      v12 = [NSNumber numberWithUnsignedChar:v6[5] & 0x1F];
-      [(NSMutableDictionary *)self->super._analyticsDict setObject:v12 forKeyedSubscript:@"Img4PropertyErrorCode"];
+      0x1F = [NSNumber numberWithUnsignedChar:v6[5] & 0x1F];
+      [(NSMutableDictionary *)self->super._analyticsDict setObject:0x1F forKeyedSubscript:@"Img4PropertyErrorCode"];
 
       v13 = [NSNumber numberWithBool:(v6[7] >> 1) & 1];
       [(NSMutableDictionary *)self->super._analyticsDict setObject:v13 forKeyedSubscript:@"PatchPresent"];

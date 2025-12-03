@@ -1,11 +1,11 @@
 @interface CoreDAVHrefItem
 - (CoreDAVHrefItem)init;
-- (CoreDAVHrefItem)initWithURL:(id)a3;
-- (CoreDAVHrefItem)initWithURL:(id)a3 baseURL:(id)a4;
+- (CoreDAVHrefItem)initWithURL:(id)l;
+- (CoreDAVHrefItem)initWithURL:(id)l baseURL:(id)rL;
 - (id)description;
 - (id)payloadAsFullURL;
 - (id)payloadAsOriginalURL;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVHrefItem
@@ -21,27 +21,27 @@
   return result;
 }
 
-- (CoreDAVHrefItem)initWithURL:(id)a3
+- (CoreDAVHrefItem)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(CoreDAVHrefItem *)self init];
   if (v5)
   {
-    v6 = [v4 absoluteString];
-    [(CoreDAVItem *)v5 setPayloadAsString:v6];
+    absoluteString = [lCopy absoluteString];
+    [(CoreDAVItem *)v5 setPayloadAsString:absoluteString];
   }
 
   return v5;
 }
 
-- (CoreDAVHrefItem)initWithURL:(id)a3 baseURL:(id)a4
+- (CoreDAVHrefItem)initWithURL:(id)l baseURL:(id)rL
 {
-  v7 = a4;
-  v8 = [(CoreDAVHrefItem *)self initWithURL:a3];
+  rLCopy = rL;
+  v8 = [(CoreDAVHrefItem *)self initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseURL, a4);
+    objc_storeStrong(&v8->_baseURL, rL);
   }
 
   return v9;
@@ -55,98 +55,98 @@
   v4 = [(CoreDAVItem *)&v9 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVHrefItem *)self payloadAsOriginalURL];
-  [v3 appendFormat:@"\n  Payload as original URL: [%@]", v5];
+  payloadAsOriginalURL = [(CoreDAVHrefItem *)self payloadAsOriginalURL];
+  [v3 appendFormat:@"\n  Payload as original URL: [%@]", payloadAsOriginalURL];
 
-  v6 = [(CoreDAVHrefItem *)self payloadAsFullURL];
-  [v3 appendFormat:@"\n  Payload as full URL: [%@]", v6];
+  payloadAsFullURL = [(CoreDAVHrefItem *)self payloadAsFullURL];
+  [v3 appendFormat:@"\n  Payload as full URL: [%@]", payloadAsFullURL];
 
-  v7 = [(CoreDAVHrefItem *)self baseURL];
-  [v3 appendFormat:@"\n  Base URL: [%@]", v7];
+  baseURL = [(CoreDAVHrefItem *)self baseURL];
+  [v3 appendFormat:@"\n  Base URL: [%@]", baseURL];
 
   return v3;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   writeStyle = self->_writeStyle;
-  v11 = v4;
+  v11 = writeCopy;
   if (writeStyle == 1)
   {
-    v6 = [(CoreDAVHrefItem *)self payloadAsFullURL];
-    v7 = [v6 CDVURLWithUser:0];
-    v8 = [(CoreDAVItem *)self name];
-    v9 = [(CoreDAVItem *)self nameSpace];
-    v10 = [v7 absoluteString];
-    [v11 appendElement:v8 inNamespace:v9 withStringContent:v10 withAttributeNamesAndValues:0];
+    payloadAsFullURL = [(CoreDAVHrefItem *)self payloadAsFullURL];
+    nameSpace2 = [payloadAsFullURL CDVURLWithUser:0];
+    name = [(CoreDAVItem *)self name];
+    nameSpace = [(CoreDAVItem *)self nameSpace];
+    absoluteString = [nameSpace2 absoluteString];
+    [v11 appendElement:name inNamespace:nameSpace withStringContent:absoluteString withAttributeNamesAndValues:0];
 
     goto LABEL_5;
   }
 
   if (writeStyle == 2)
   {
-    v6 = [(CoreDAVItem *)self name];
-    v7 = [(CoreDAVItem *)self nameSpace];
-    v8 = [(CoreDAVHrefItem *)self payloadAsFullURL];
-    v9 = [v8 CDVRawPath];
-    [v11 appendElement:v6 inNamespace:v7 withStringContent:v9 withAttributeNamesAndValues:0];
+    payloadAsFullURL = [(CoreDAVItem *)self name];
+    nameSpace2 = [(CoreDAVItem *)self nameSpace];
+    name = [(CoreDAVHrefItem *)self payloadAsFullURL];
+    nameSpace = [name CDVRawPath];
+    [v11 appendElement:payloadAsFullURL inNamespace:nameSpace2 withStringContent:nameSpace withAttributeNamesAndValues:0];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v6 = [(CoreDAVItem *)self name];
-  v7 = [(CoreDAVItem *)self nameSpace];
-  v8 = [(CoreDAVItem *)self payloadAsString];
-  [v11 appendElement:v6 inNamespace:v7 withStringContent:v8 withAttributeNamesAndValues:0];
+  payloadAsFullURL = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  name = [(CoreDAVItem *)self payloadAsString];
+  [v11 appendElement:payloadAsFullURL inNamespace:nameSpace2 withStringContent:name withAttributeNamesAndValues:0];
 LABEL_7:
 }
 
 - (id)payloadAsFullURL
 {
-  v3 = [(CoreDAVItem *)self payloadAsString];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  payloadAsString = [(CoreDAVItem *)self payloadAsString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [payloadAsString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (!v5 || ![v5 length])
   {
-    v9 = 0;
+    absoluteURL = 0;
     goto LABEL_10;
   }
 
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [(CoreDAVHrefItem *)self baseURL];
-  v8 = [v6 URLWithString:v5 relativeToURL:v7];
-  v9 = [v8 absoluteURL];
+  baseURL = [(CoreDAVHrefItem *)self baseURL];
+  v8 = [v6 URLWithString:v5 relativeToURL:baseURL];
+  absoluteURL = [v8 absoluteURL];
 
-  if (!v9)
+  if (!absoluteURL)
   {
     goto LABEL_10;
   }
 
-  v10 = [v9 scheme];
-  if ([v10 hasPrefix:@"http"])
+  scheme = [absoluteURL scheme];
+  if ([scheme hasPrefix:@"http"])
   {
-    v11 = [v9 user];
-    if (![v11 length])
+    user = [absoluteURL user];
+    if (![user length])
     {
-      v12 = [(CoreDAVHrefItem *)self baseURL];
-      v13 = [v12 user];
-      if ([v13 length])
+      baseURL2 = [(CoreDAVHrefItem *)self baseURL];
+      user2 = [baseURL2 user];
+      if ([user2 length])
       {
-        v14 = [v9 host];
-        v15 = [v14 length];
+        host = [absoluteURL host];
+        v15 = [host length];
 
         if (!v15)
         {
           goto LABEL_17;
         }
 
-        v10 = [(CoreDAVHrefItem *)self baseURL];
-        v11 = [v10 user];
-        [v9 CDVURLWithUser:v11];
-        v9 = v12 = v9;
+        scheme = [(CoreDAVHrefItem *)self baseURL];
+        user = [scheme user];
+        [absoluteURL CDVURLWithUser:user];
+        absoluteURL = baseURL2 = absoluteURL;
       }
 
       else
@@ -156,27 +156,27 @@ LABEL_7:
   }
 
 LABEL_17:
-  v17 = [v9 scheme];
-  v18 = [v17 hasPrefix:@"http"];
+  scheme2 = [absoluteURL scheme];
+  v18 = [scheme2 hasPrefix:@"http"];
 
   if (v18)
   {
-    v19 = [v9 CDVRawPath];
-    if ([v19 rangeOfString:@"@"] != 0x7FFFFFFFFFFFFFFFLL)
+    cDVRawPath = [absoluteURL CDVRawPath];
+    if ([cDVRawPath rangeOfString:@"@"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [v9 host];
-      if (v20)
+      host2 = [absoluteURL host];
+      if (host2)
       {
-        v21 = v20;
-        v22 = [v9 host];
-        v23 = [v22 length];
+        v21 = host2;
+        host3 = [absoluteURL host];
+        v23 = [host3 length];
 
         if (v23)
         {
-          v24 = [v19 CDVStringByAddingPercentEscapesForHREF];
-          v25 = [v9 CDVURLWithPath:v24];
+          cDVStringByAddingPercentEscapesForHREF = [cDVRawPath CDVStringByAddingPercentEscapesForHREF];
+          v25 = [absoluteURL CDVURLWithPath:cDVStringByAddingPercentEscapesForHREF];
 
-          v9 = v25;
+          absoluteURL = v25;
         }
       }
     }
@@ -184,17 +184,17 @@ LABEL_17:
 
 LABEL_10:
 
-  return v9;
+  return absoluteURL;
 }
 
 - (id)payloadAsOriginalURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(CoreDAVItem *)self payloadAsString];
-  v4 = [v2 URLWithString:v3];
-  v5 = [v4 absoluteURL];
+  payloadAsString = [(CoreDAVItem *)self payloadAsString];
+  v4 = [v2 URLWithString:payloadAsString];
+  absoluteURL = [v4 absoluteURL];
 
-  return v5;
+  return absoluteURL;
 }
 
 @end

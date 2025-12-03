@@ -2,40 +2,40 @@
 + (id)supportedCommands;
 + (id)zoneMergeHandler;
 + (id)zoneSchema;
-- (SCWWatchlistManager)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaults:(id)a5;
-- (SCWWatchlistManager)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaultsProvider:(id)a5;
-- (id)_sortedStocks:(id)a3 withSymbolOrder:(id)a4;
+- (SCWWatchlistManager)initWithDatabase:(id)database metadataProvider:(id)provider defaults:(id)defaults;
+- (SCWWatchlistManager)initWithDatabase:(id)database metadataProvider:(id)provider defaultsProvider:(id)defaultsProvider;
+- (id)_sortedStocks:(id)stocks withSymbolOrder:(id)order;
 - (void)_enqueueStartupSequence;
-- (void)addObserver:(id)a3;
-- (void)addStock:(id)a3 completion:(id)a4;
-- (void)addStock:(id)a3 watchlist:(id)a4 completion:(id)a5;
-- (void)addWatchlist:(id)a3 identifier:(id)a4 sortState:(id)a5 sortOrderState:(id)a6 displayState:(id)a7 completion:(id)a8;
-- (void)addWatchlistToWatchlistOrder:(id)a3 completion:(id)a4;
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6;
-- (void)fetchAllWatchlistsWithCompletion:(id)a3;
-- (void)fetchStocksFromWatchlist:(id)a3 completion:(id)a4;
-- (void)fetchStocksWithCompletion:(id)a3;
-- (void)fetchWatchlistOrderWithCompletion:(id)a3;
-- (void)legacyWatchlistSortState:(id)a3;
-- (void)migrateToDefaultWatchlist:(id)a3 sortState:(id)a4 sortOrderState:(id)a5 displayState:(id)a6 completion:(id)a7;
-- (void)removeObserver:(id)a3;
-- (void)removeStock:(id)a3 completion:(id)a4;
-- (void)removeSymbol:(id)a3 completion:(id)a4;
-- (void)removeSymbol:(id)a3 watchlist:(id)a4 completion:(id)a5;
-- (void)removeWatchlist:(id)a3 completion:(id)a4;
-- (void)removeWatchlistFromWatchlistOrder:(id)a3 completion:(id)a4;
-- (void)renameWatchlist:(id)a3 newName:(id)a4 completion:(id)a5;
-- (void)reorderStock:(id)a3 toIndex:(unint64_t)a4 completion:(id)a5;
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 completion:(id)a5;
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 watchlist:(id)a5 completion:(id)a6;
-- (void)reorderSymbols:(id)a3 watchlist:(id)a4 completion:(id)a5;
-- (void)reorderWatchlist:(id)a3 afterWatchlist:(id)a4 completion:(id)a5;
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 completion:(id)a5;
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 watchlist:(id)a5 completion:(id)a6;
+- (void)addObserver:(id)observer;
+- (void)addStock:(id)stock completion:(id)completion;
+- (void)addStock:(id)stock watchlist:(id)watchlist completion:(id)completion;
+- (void)addWatchlist:(id)watchlist identifier:(id)identifier sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState completion:(id)completion;
+- (void)addWatchlistToWatchlistOrder:(id)order completion:(id)completion;
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to;
+- (void)fetchAllWatchlistsWithCompletion:(id)completion;
+- (void)fetchStocksFromWatchlist:(id)watchlist completion:(id)completion;
+- (void)fetchStocksWithCompletion:(id)completion;
+- (void)fetchWatchlistOrderWithCompletion:(id)completion;
+- (void)legacyWatchlistSortState:(id)state;
+- (void)migrateToDefaultWatchlist:(id)watchlist sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeStock:(id)stock completion:(id)completion;
+- (void)removeSymbol:(id)symbol completion:(id)completion;
+- (void)removeSymbol:(id)symbol watchlist:(id)watchlist completion:(id)completion;
+- (void)removeWatchlist:(id)watchlist completion:(id)completion;
+- (void)removeWatchlistFromWatchlistOrder:(id)order completion:(id)completion;
+- (void)renameWatchlist:(id)watchlist newName:(id)name completion:(id)completion;
+- (void)reorderStock:(id)stock toIndex:(unint64_t)index completion:(id)completion;
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol completion:(id)completion;
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol watchlist:(id)watchlist completion:(id)completion;
+- (void)reorderSymbols:(id)symbols watchlist:(id)watchlist completion:(id)completion;
+- (void)reorderWatchlist:(id)watchlist afterWatchlist:(id)afterWatchlist completion:(id)completion;
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol completion:(id)completion;
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol watchlist:(id)watchlist completion:(id)completion;
 - (void)sc_synchronize;
 - (void)synchronize;
-- (void)updateDisplayState:(id)a3 watchlist:(id)a4 completion:(id)a5;
-- (void)updateSortState:(id)a3 newSortOrderState:(id)a4 newDisplayState:(id)a5 watchlist:(id)a6 completion:(id)a7;
+- (void)updateDisplayState:(id)state watchlist:(id)watchlist completion:(id)completion;
+- (void)updateSortState:(id)state newSortOrderState:(id)orderState newDisplayState:(id)displayState watchlist:(id)watchlist completion:(id)completion;
 @end
 
 @implementation SCWWatchlistManager
@@ -106,20 +106,20 @@
   return v2;
 }
 
-- (SCWWatchlistManager)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaultsProvider:(id)a5
+- (SCWWatchlistManager)initWithDatabase:(id)database metadataProvider:(id)provider defaultsProvider:(id)defaultsProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  providerCopy = provider;
+  defaultsProviderCopy = defaultsProvider;
   v22.receiver = self;
   v22.super_class = SCWWatchlistManager;
   v12 = [(SCWWatchlistManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    objc_storeStrong(&v13->_metadataProvider, a4);
-    objc_storeStrong(&v13->_defaultsProvider, a5);
+    objc_storeStrong(&v12->_database, database);
+    objc_storeStrong(&v13->_metadataProvider, provider);
+    objc_storeStrong(&v13->_defaultsProvider, defaultsProvider);
     v14 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:0];
     observers = v13->_observers;
     v13->_observers = v14;
@@ -133,36 +133,36 @@
     callbackQueue = v13->_callbackQueue;
     v13->_callbackQueue = v19;
 
-    [v9 addObserver:v13 forZone:@"Watchlist"];
+    [databaseCopy addObserver:v13 forZone:@"Watchlist"];
     [(SCWWatchlistManager *)v13 _enqueueStartupSequence];
   }
 
   return v13;
 }
 
-- (SCWWatchlistManager)initWithDatabase:(id)a3 metadataProvider:(id)a4 defaults:(id)a5
+- (SCWWatchlistManager)initWithDatabase:(id)database metadataProvider:(id)provider defaults:(id)defaults
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SCWWatchlistInlineDefaultsProvider alloc] initWithDefaults:v8];
+  defaultsCopy = defaults;
+  providerCopy = provider;
+  databaseCopy = database;
+  v11 = [[SCWWatchlistInlineDefaultsProvider alloc] initWithDefaults:defaultsCopy];
 
-  v12 = [(SCWWatchlistManager *)self initWithDatabase:v10 metadataProvider:v9 defaultsProvider:v11];
+  v12 = [(SCWWatchlistManager *)self initWithDatabase:databaseCopy metadataProvider:providerCopy defaultsProvider:v11];
   return v12;
 }
 
-- (void)fetchStocksWithCompletion:(id)a3
+- (void)fetchStocksWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SCWWatchlistManager_fetchStocksWithCompletion___block_invoke;
   v7[3] = &unk_1E85E35A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __49__SCWWatchlistManager_fetchStocksWithCompletion___block_invoke(uint64_t a1)
@@ -294,29 +294,29 @@ void __49__SCWWatchlistManager_fetchStocksWithCompletion___block_invoke_33(uint6
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addStock:(id)a3 completion:(id)a4
+- (void)addStock:(id)stock completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  stockCopy = stock;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __43__SCWWatchlistManager_addStock_completion___block_invoke;
   v13[3] = &unk_1E85E3448;
-  v9 = v6;
+  v9 = stockCopy;
   v14 = v9;
-  v15 = self;
-  [v8 executeAfterStartup:v13];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v13];
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__SCWWatchlistManager_addStock_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -330,29 +330,29 @@ void __43__SCWWatchlistManager_addStock_completion___block_invoke(uint64_t a1)
   [v4 modifyContentsOfZone:@"Watchlist" withCommand:v5];
 }
 
-- (void)removeSymbol:(id)a3 completion:(id)a4
+- (void)removeSymbol:(id)symbol completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  symbolCopy = symbol;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__SCWWatchlistManager_removeSymbol_completion___block_invoke;
   v13[3] = &unk_1E85E3448;
-  v9 = v6;
+  v9 = symbolCopy;
   v14 = v9;
-  v15 = self;
-  [v8 executeAfterStartup:v13];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v13];
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__SCWWatchlistManager_removeSymbol_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -363,32 +363,32 @@ void __47__SCWWatchlistManager_removeSymbol_completion___block_invoke(uint64_t a
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 completion:(id)a5
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  symbolCopy = symbol;
+  afterSymbolCopy = afterSymbol;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__SCWWatchlistManager_reorderSymbol_afterSymbol_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = symbolCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = afterSymbolCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__SCWWatchlistManager_reorderSymbol_afterSymbol_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -399,32 +399,32 @@ void __60__SCWWatchlistManager_reorderSymbol_afterSymbol_completion___block_invo
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 completion:(id)a5
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  symbolCopy = symbol;
+  withSymbolCopy = withSymbol;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__SCWWatchlistManager_replaceSymbol_withSymbol_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = symbolCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = withSymbolCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __59__SCWWatchlistManager_replaceSymbol_withSymbol_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -435,18 +435,18 @@ void __59__SCWWatchlistManager_replaceSymbol_withSymbol_completion___block_invok
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)fetchAllWatchlistsWithCompletion:(id)a3
+- (void)fetchAllWatchlistsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SCWWatchlistManager_fetchAllWatchlistsWithCompletion___block_invoke;
   v7[3] = &unk_1E85E35A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __56__SCWWatchlistManager_fetchAllWatchlistsWithCompletion___block_invoke(uint64_t a1)
@@ -567,21 +567,21 @@ void __56__SCWWatchlistManager_fetchAllWatchlistsWithCompletion___block_invoke_2
   [*(a1 + 32) addObject:v13];
 }
 
-- (void)fetchStocksFromWatchlist:(id)a3 completion:(id)a4
+- (void)fetchStocksFromWatchlist:(id)watchlist completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__SCWWatchlistManager_fetchStocksFromWatchlist_completion___block_invoke;
   v11[3] = &unk_1E85E3EB8;
-  v12 = v6;
-  v13 = v7;
+  v12 = watchlistCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 executeAfterStartup:v11];
+  v9 = watchlistCopy;
+  v10 = completionCopy;
+  [startupQueue executeAfterStartup:v11];
 }
 
 void __59__SCWWatchlistManager_fetchStocksFromWatchlist_completion___block_invoke(uint64_t a1)
@@ -757,18 +757,18 @@ void __59__SCWWatchlistManager_fetchStocksFromWatchlist_completion___block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)legacyWatchlistSortState:(id)a3
+- (void)legacyWatchlistSortState:(id)state
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self startupQueue];
+  stateCopy = state;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__SCWWatchlistManager_legacyWatchlistSortState___block_invoke;
   v7[3] = &unk_1E85E35A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = stateCopy;
+  v6 = stateCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __48__SCWWatchlistManager_legacyWatchlistSortState___block_invoke(uint64_t a1)
@@ -863,13 +863,13 @@ void __48__SCWWatchlistManager_legacyWatchlistSortState___block_invoke_3(id *a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)migrateToDefaultWatchlist:(id)a3 sortState:(id)a4 sortOrderState:(id)a5 displayState:(id)a6 completion:(id)a7
+- (void)migrateToDefaultWatchlist:(id)watchlist sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  watchlistCopy = watchlist;
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
+  completionCopy = completion;
   v17 = StocksLogForCategory(4);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -877,23 +877,23 @@ void __48__SCWWatchlistManager_legacyWatchlistSortState___block_invoke_3(id *a1)
     _os_log_impl(&dword_1DAA3F000, v17, OS_LOG_TYPE_DEFAULT, "Start migrateToDefaultWatchlist", buf, 2u);
   }
 
-  v18 = [(SCWWatchlistManager *)self startupQueue];
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __98__SCWWatchlistManager_migrateToDefaultWatchlist_sortState_sortOrderState_displayState_completion___block_invoke;
   v24[3] = &unk_1E85E3FA8;
   v24[4] = self;
-  v25 = v12;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  v23 = v16;
-  [v18 executeAfterStartup:v24];
+  v25 = watchlistCopy;
+  v26 = stateCopy;
+  v27 = orderStateCopy;
+  v28 = displayStateCopy;
+  v29 = completionCopy;
+  v19 = displayStateCopy;
+  v20 = orderStateCopy;
+  v21 = stateCopy;
+  v22 = watchlistCopy;
+  v23 = completionCopy;
+  [startupQueue executeAfterStartup:v24];
 }
 
 void __98__SCWWatchlistManager_migrateToDefaultWatchlist_sortState_sortOrderState_displayState_completion___block_invoke(id *a1)
@@ -1019,41 +1019,41 @@ void __98__SCWWatchlistManager_migrateToDefaultWatchlist_sortState_sortOrderStat
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addWatchlist:(id)a3 identifier:(id)a4 sortState:(id)a5 sortOrderState:(id)a6 displayState:(id)a7 completion:(id)a8
+- (void)addWatchlist:(id)watchlist identifier:(id)identifier sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(SCWWatchlistManager *)self startupQueue];
+  watchlistCopy = watchlist;
+  identifierCopy = identifier;
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __96__SCWWatchlistManager_addWatchlist_identifier_sortState_sortOrderState_displayState_completion___block_invoke;
   v29[3] = &unk_1E85E3FD0;
-  v21 = v14;
+  v21 = watchlistCopy;
   v30 = v21;
-  v22 = v15;
+  v22 = identifierCopy;
   v31 = v22;
-  v23 = v16;
+  v23 = stateCopy;
   v32 = v23;
-  v24 = v17;
+  v24 = orderStateCopy;
   v33 = v24;
-  v25 = v18;
+  v25 = displayStateCopy;
   v34 = v25;
-  v35 = self;
-  [v20 executeAfterStartup:v29];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v29];
 
-  if (v19)
+  if (completionCopy)
   {
-    v26 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __96__SCWWatchlistManager_addWatchlist_identifier_sortState_sortOrderState_displayState_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v28 = v19;
-    dispatch_async(v26, block);
+    v28 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1064,29 +1064,29 @@ void __96__SCWWatchlistManager_addWatchlist_identifier_sortState_sortOrderState_
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)removeWatchlist:(id)a3 completion:(id)a4
+- (void)removeWatchlist:(id)watchlist completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__SCWWatchlistManager_removeWatchlist_completion___block_invoke;
   v13[3] = &unk_1E85E3448;
-  v9 = v6;
+  v9 = watchlistCopy;
   v14 = v9;
-  v15 = self;
-  [v8 executeAfterStartup:v13];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v13];
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__SCWWatchlistManager_removeWatchlist_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1097,32 +1097,32 @@ void __50__SCWWatchlistManager_removeWatchlist_completion___block_invoke(uint64_
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)renameWatchlist:(id)a3 newName:(id)a4 completion:(id)a5
+- (void)renameWatchlist:(id)watchlist newName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  watchlistCopy = watchlist;
+  nameCopy = name;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__SCWWatchlistManager_renameWatchlist_newName_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = watchlistCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = nameCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58__SCWWatchlistManager_renameWatchlist_newName_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -1133,32 +1133,32 @@ void __58__SCWWatchlistManager_renameWatchlist_newName_completion___block_invoke
   [v2 modifyContentsOfZone:@"Watchlist" withCommand:v3];
 }
 
-- (void)addStock:(id)a3 watchlist:(id)a4 completion:(id)a5
+- (void)addStock:(id)stock watchlist:(id)watchlist completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  stockCopy = stock;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __53__SCWWatchlistManager_addStock_watchlist_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = stockCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = watchlistCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__SCWWatchlistManager_addStock_watchlist_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -1173,58 +1173,58 @@ void __53__SCWWatchlistManager_addStock_watchlist_completion___block_invoke(id *
   [v5 modifyContentsOfZone:@"Watchlist" withCommand:v6];
 }
 
-- (void)removeSymbol:(id)a3 watchlist:(id)a4 completion:(id)a5
+- (void)removeSymbol:(id)symbol watchlist:(id)watchlist completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 name];
-  if (v11 != @"watchlist")
+  symbolCopy = symbol;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  name = [watchlistCopy name];
+  if (name != @"watchlist")
   {
 
     goto LABEL_8;
   }
 
-  v12 = [v9 symbols];
-  if (([v12 containsObject:v8]& 1) != 0)
+  symbols = [watchlistCopy symbols];
+  if (([symbols containsObject:symbolCopy]& 1) != 0)
   {
-    v13 = [v9 symbols];
-    v14 = [v13 count];
+    symbols2 = [watchlistCopy symbols];
+    v14 = [symbols2 count];
 
     if (v14 != 1)
     {
       goto LABEL_8;
     }
 
-    v12 = StocksLogForCategory(4);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    symbols = StocksLogForCategory(4);
+    if (os_log_type_enabled(symbols, OS_LOG_TYPE_FAULT))
     {
-      [SCWWatchlistManager removeSymbol:v12 watchlist:? completion:?];
+      [SCWWatchlistManager removeSymbol:symbols watchlist:? completion:?];
     }
   }
 
 LABEL_8:
-  v15 = [(SCWWatchlistManager *)self startupQueue];
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __57__SCWWatchlistManager_removeSymbol_watchlist_completion___block_invoke;
   v21[3] = &unk_1E85E36E0;
-  v16 = v8;
+  v16 = symbolCopy;
   v22 = v16;
-  v17 = v9;
+  v17 = watchlistCopy;
   v23 = v17;
-  v24 = self;
-  [v15 executeAfterStartup:v21];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v21];
 
-  if (v10)
+  if (completionCopy)
   {
-    v18 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __57__SCWWatchlistManager_removeSymbol_watchlist_completion___block_invoke_2;
     v19[3] = &unk_1E85E3578;
-    v20 = v10;
-    dispatch_async(v18, v19);
+    v20 = completionCopy;
+    dispatch_async(callbackQueue, v19);
   }
 }
 
@@ -1239,35 +1239,35 @@ void __57__SCWWatchlistManager_removeSymbol_watchlist_completion___block_invoke(
   [v5 modifyContentsOfZone:@"Watchlist" withCommand:v6];
 }
 
-- (void)reorderSymbol:(id)a3 afterSymbol:(id)a4 watchlist:(id)a5 completion:(id)a6
+- (void)reorderSymbol:(id)symbol afterSymbol:(id)afterSymbol watchlist:(id)watchlist completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SCWWatchlistManager *)self startupQueue];
+  symbolCopy = symbol;
+  afterSymbolCopy = afterSymbol;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __70__SCWWatchlistManager_reorderSymbol_afterSymbol_watchlist_completion___block_invoke;
   v21[3] = &unk_1E85E3FF8;
-  v15 = v10;
+  v15 = symbolCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = afterSymbolCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = watchlistCopy;
   v24 = v17;
-  v25 = self;
-  [v14 executeAfterStartup:v21];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v21];
 
-  if (v13)
+  if (completionCopy)
   {
-    v18 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__SCWWatchlistManager_reorderSymbol_afterSymbol_watchlist_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v20 = v13;
-    dispatch_async(v18, block);
+    v20 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1283,32 +1283,32 @@ void __70__SCWWatchlistManager_reorderSymbol_afterSymbol_watchlist_completion___
   [v6 modifyContentsOfZone:@"Watchlist" withCommand:v7];
 }
 
-- (void)reorderSymbols:(id)a3 watchlist:(id)a4 completion:(id)a5
+- (void)reorderSymbols:(id)symbols watchlist:(id)watchlist completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  symbolsCopy = symbols;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__SCWWatchlistManager_reorderSymbols_watchlist_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = symbolsCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = watchlistCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __59__SCWWatchlistManager_reorderSymbols_watchlist_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -1323,35 +1323,35 @@ void __59__SCWWatchlistManager_reorderSymbols_watchlist_completion___block_invok
   [v5 modifyContentsOfZone:@"Watchlist" withCommand:v6];
 }
 
-- (void)replaceSymbol:(id)a3 withSymbol:(id)a4 watchlist:(id)a5 completion:(id)a6
+- (void)replaceSymbol:(id)symbol withSymbol:(id)withSymbol watchlist:(id)watchlist completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SCWWatchlistManager *)self startupQueue];
+  symbolCopy = symbol;
+  withSymbolCopy = withSymbol;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __69__SCWWatchlistManager_replaceSymbol_withSymbol_watchlist_completion___block_invoke;
   v21[3] = &unk_1E85E3FF8;
-  v15 = v10;
+  v15 = symbolCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = withSymbolCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = watchlistCopy;
   v24 = v17;
-  v25 = self;
-  [v14 executeAfterStartup:v21];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v21];
 
-  if (v13)
+  if (completionCopy)
   {
-    v18 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__SCWWatchlistManager_replaceSymbol_withSymbol_watchlist_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v20 = v13;
-    dispatch_async(v18, block);
+    v20 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1367,38 +1367,38 @@ void __69__SCWWatchlistManager_replaceSymbol_withSymbol_watchlist_completion___b
   [v6 modifyContentsOfZone:@"Watchlist" withCommand:v7];
 }
 
-- (void)updateSortState:(id)a3 newSortOrderState:(id)a4 newDisplayState:(id)a5 watchlist:(id)a6 completion:(id)a7
+- (void)updateSortState:(id)state newSortOrderState:(id)orderState newDisplayState:(id)displayState watchlist:(id)watchlist completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(SCWWatchlistManager *)self startupQueue];
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __94__SCWWatchlistManager_updateSortState_newSortOrderState_newDisplayState_watchlist_completion___block_invoke;
   v25[3] = &unk_1E85E3DC0;
-  v18 = v15;
+  v18 = watchlistCopy;
   v26 = v18;
-  v19 = v12;
+  v19 = stateCopy;
   v27 = v19;
-  v20 = v13;
+  v20 = orderStateCopy;
   v28 = v20;
-  v21 = v14;
+  v21 = displayStateCopy;
   v29 = v21;
-  v30 = self;
-  [v17 executeAfterStartup:v25];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v25];
 
-  if (v16)
+  if (completionCopy)
   {
-    v22 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __94__SCWWatchlistManager_updateSortState_newSortOrderState_newDisplayState_watchlist_completion___block_invoke_2;
     v23[3] = &unk_1E85E3578;
-    v24 = v16;
-    dispatch_async(v22, v23);
+    v24 = completionCopy;
+    dispatch_async(callbackQueue, v23);
   }
 }
 
@@ -1412,32 +1412,32 @@ void __94__SCWWatchlistManager_updateSortState_newSortOrderState_newDisplayState
   [v4 modifyContentsOfZone:@"Watchlist" withCommand:v5];
 }
 
-- (void)updateDisplayState:(id)a3 watchlist:(id)a4 completion:(id)a5
+- (void)updateDisplayState:(id)state watchlist:(id)watchlist completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  stateCopy = state;
+  watchlistCopy = watchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __63__SCWWatchlistManager_updateDisplayState_watchlist_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v9;
+  v12 = watchlistCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = stateCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__SCWWatchlistManager_updateDisplayState_watchlist_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -1451,18 +1451,18 @@ void __63__SCWWatchlistManager_updateDisplayState_watchlist_completion___block_i
   [v4 modifyContentsOfZone:@"Watchlist" withCommand:v5];
 }
 
-- (void)fetchWatchlistOrderWithCompletion:(id)a3
+- (void)fetchWatchlistOrderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SCWWatchlistManager_fetchWatchlistOrderWithCompletion___block_invoke;
   v7[3] = &unk_1E85E35A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __57__SCWWatchlistManager_fetchWatchlistOrderWithCompletion___block_invoke(uint64_t a1)
@@ -1569,29 +1569,29 @@ void __57__SCWWatchlistManager_fetchWatchlistOrderWithCompletion___block_invoke_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addWatchlistToWatchlistOrder:(id)a3 completion:(id)a4
+- (void)addWatchlistToWatchlistOrder:(id)order completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  orderCopy = order;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__SCWWatchlistManager_addWatchlistToWatchlistOrder_completion___block_invoke;
   v13[3] = &unk_1E85E3448;
-  v9 = v6;
+  v9 = orderCopy;
   v14 = v9;
-  v15 = self;
-  [v8 executeAfterStartup:v13];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v13];
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__SCWWatchlistManager_addWatchlistToWatchlistOrder_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1610,29 +1610,29 @@ void __63__SCWWatchlistManager_addWatchlistToWatchlistOrder_completion___block_i
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeWatchlistFromWatchlistOrder:(id)a3 completion:(id)a4
+- (void)removeWatchlistFromWatchlistOrder:(id)order completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWWatchlistManager *)self startupQueue];
+  orderCopy = order;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__SCWWatchlistManager_removeWatchlistFromWatchlistOrder_completion___block_invoke;
   v13[3] = &unk_1E85E3448;
-  v9 = v6;
+  v9 = orderCopy;
   v14 = v9;
-  v15 = self;
-  [v8 executeAfterStartup:v13];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v13];
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__SCWWatchlistManager_removeWatchlistFromWatchlistOrder_completion___block_invoke_2;
     block[3] = &unk_1E85E3578;
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -1646,32 +1646,32 @@ void __68__SCWWatchlistManager_removeWatchlistFromWatchlistOrder_completion___bl
   [v4 modifyContentsOfZone:@"Watchlist" withCommand:v5];
 }
 
-- (void)reorderWatchlist:(id)a3 afterWatchlist:(id)a4 completion:(id)a5
+- (void)reorderWatchlist:(id)watchlist afterWatchlist:(id)afterWatchlist completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SCWWatchlistManager *)self startupQueue];
+  watchlistCopy = watchlist;
+  afterWatchlistCopy = afterWatchlist;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__SCWWatchlistManager_reorderWatchlist_afterWatchlist_completion___block_invoke;
   v17[3] = &unk_1E85E36E0;
-  v12 = v8;
+  v12 = watchlistCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = afterWatchlistCopy;
   v19 = v13;
-  v20 = self;
-  [v11 executeAfterStartup:v17];
+  selfCopy = self;
+  [startupQueue executeAfterStartup:v17];
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __66__SCWWatchlistManager_reorderWatchlist_afterWatchlist_completion___block_invoke_2;
     v15[3] = &unk_1E85E3578;
-    v16 = v10;
-    dispatch_async(v14, v15);
+    v16 = completionCopy;
+    dispatch_async(callbackQueue, v15);
   }
 }
 
@@ -1686,57 +1686,57 @@ void __66__SCWWatchlistManager_reorderWatchlist_afterWatchlist_completion___bloc
   [v5 modifyContentsOfZone:@"Watchlist" withCommand:v6];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SCWWatchlistManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SCWWatchlistManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)synchronize
 {
-  v2 = [(SCWWatchlistManager *)self database];
-  [v2 synchronize];
+  database = [(SCWWatchlistManager *)self database];
+  [database synchronize];
 }
 
-- (void)removeStock:(id)a3 completion:(id)a4
+- (void)removeStock:(id)stock completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 symbol];
-  [(SCWWatchlistManager *)self removeSymbol:v7 completion:v6];
+  completionCopy = completion;
+  symbol = [stock symbol];
+  [(SCWWatchlistManager *)self removeSymbol:symbol completion:completionCopy];
 }
 
-- (void)reorderStock:(id)a3 toIndex:(unint64_t)a4 completion:(id)a5
+- (void)reorderStock:(id)stock toIndex:(unint64_t)index completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SCWWatchlistManager *)self startupQueue];
+  stockCopy = stock;
+  completionCopy = completion;
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke;
   v15[3] = &unk_1E85E4020;
-  v11 = v8;
-  v17 = self;
-  v18 = a4;
+  v11 = stockCopy;
+  selfCopy = self;
+  indexCopy = index;
   v16 = v11;
-  [v10 executeAfterStartup:v15];
+  [startupQueue executeAfterStartup:v15];
 
-  if (v9)
+  if (completionCopy)
   {
-    v12 = [(SCWWatchlistManager *)self callbackQueue];
+    callbackQueue = [(SCWWatchlistManager *)self callbackQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke_2;
     v13[3] = &unk_1E85E3578;
-    v14 = v9;
-    dispatch_async(v12, v13);
+    v14 = completionCopy;
+    dispatch_async(callbackQueue, v13);
   }
 }
 
@@ -1750,27 +1750,27 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
   [v4 modifyContentsOfZone:@"Watchlist" withCommand:v5];
 }
 
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to
 {
   v169 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v97 = a5;
-  v96 = a6;
+  zoneCopy = zone;
+  fromCopy = from;
+  toCopy = to;
   v10 = StocksLogForCategory(4);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v147 = v9;
+    v147 = zoneCopy;
     _os_log_impl(&dword_1DAA3F000, v10, OS_LOG_TYPE_DEFAULT, "SCWWatchlistManager received change in database for zone: %@", buf, 0xCu);
   }
 
-  v99 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = [MEMORY[0x1E695DFA8] set];
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v12 = [v97 recordsOfType:@"Watchlist"];
+  v12 = [fromCopy recordsOfType:@"Watchlist"];
   v13 = [v12 countByEnumeratingWithState:&v140 objects:v168 count:16];
   if (v13)
   {
@@ -1785,9 +1785,9 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v140 + 1) + 8 * i) recordID];
-        v18 = [v17 recordName];
-        [v11 addObject:v18];
+        recordID = [*(*(&v140 + 1) + 8 * i) recordID];
+        recordName = [recordID recordName];
+        [v11 addObject:recordName];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v140 objects:v168 count:16];
@@ -1800,7 +1800,7 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v19 = [v96 recordsOfType:@"Watchlist"];
+  v19 = [toCopy recordsOfType:@"Watchlist"];
   v20 = [v19 countByEnumeratingWithState:&v136 objects:v167 count:16];
   if (v20)
   {
@@ -1815,9 +1815,9 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v136 + 1) + 8 * j) recordID];
-        v25 = [v24 recordName];
-        [v11 addObject:v25];
+        recordID2 = [*(*(&v136 + 1) + 8 * j) recordID];
+        recordName2 = [recordID2 recordName];
+        [v11 addObject:recordName2];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v136 objects:v167 count:16];
@@ -1826,8 +1826,8 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
     while (v21);
   }
 
-  v93 = self;
-  v92 = v9;
+  selfCopy = self;
+  v92 = zoneCopy;
 
   v134 = 0u;
   v135 = 0u;
@@ -1851,14 +1851,14 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
 
         v101 = v26;
         v27 = *(*(&v132 + 1) + 8 * v26);
-        v28 = [v97 recordWithName:v27];
+        v28 = [fromCopy recordWithName:v27];
         v100 = v27;
-        v29 = [v96 recordWithName:v27];
-        v30 = [v28 encryptedValues];
-        v31 = [v30 objectForKeyedSubscript:@"name"];
+        v29 = [toCopy recordWithName:v27];
+        encryptedValues = [v28 encryptedValues];
+        v31 = [encryptedValues objectForKeyedSubscript:@"name"];
 
-        v32 = [v29 encryptedValues];
-        v33 = [v32 objectForKeyedSubscript:@"name"];
+        encryptedValues2 = [v29 encryptedValues];
+        v33 = [encryptedValues2 objectForKeyedSubscript:@"name"];
 
         v107 = v31;
         v112 = v33;
@@ -1873,18 +1873,18 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         }
 
         v35 = v34;
-        v36 = [v28 encryptedValues];
-        v37 = [v36 objectForKeyedSubscript:@"symbols"];
+        encryptedValues3 = [v28 encryptedValues];
+        v37 = [encryptedValues3 objectForKeyedSubscript:@"symbols"];
 
-        v38 = [v29 encryptedValues];
-        v39 = [v38 objectForKeyedSubscript:@"symbols"];
+        encryptedValues4 = [v29 encryptedValues];
+        v39 = [encryptedValues4 objectForKeyedSubscript:@"symbols"];
 
         v40 = [v28 objectForKeyedSubscript:@"sortState"];
         v41 = [v29 objectForKeyedSubscript:@"sortState"];
         v108 = v40;
-        LODWORD(v38) = [v40 intValue];
+        LODWORD(encryptedValues4) = [v40 intValue];
         v114 = v41;
-        if (v38 == [v41 intValue])
+        if (encryptedValues4 == [v41 intValue])
         {
           v42 = 0;
         }
@@ -1898,8 +1898,8 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         v44 = [v28 objectForKeyedSubscript:@"sortOrderState"];
         v45 = [v29 objectForKeyedSubscript:@"sortOrderState"];
         v103 = v44;
-        v46 = [v44 intValue];
-        if (v46 == [v45 intValue])
+        intValue = [v44 intValue];
+        if (intValue == [v45 intValue])
         {
           v47 = 0;
         }
@@ -1913,8 +1913,8 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         v104 = v28;
         v49 = [v28 objectForKeyedSubscript:@"displayState"];
         v50 = [v29 objectForKeyedSubscript:@"displayState"];
-        v51 = [v49 intValue];
-        if (v51 == [v50 intValue])
+        intValue2 = [v49 intValue];
+        if (intValue2 == [v50 intValue])
         {
           v52 = 0;
         }
@@ -1931,10 +1931,10 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         v106 = v35;
         v102 = v48;
         v54 = [[SCWWatchlistDiff alloc] initWithOldSymbols:v37 newSymbols:v39 updatedName:v35 updatedSortState:v43 updatedSortOrderState:v48 updatedDisplayState:v53];
-        v55 = [(SCWWatchlistDiff *)v54 isEmpty];
+        isEmpty = [(SCWWatchlistDiff *)v54 isEmpty];
         v56 = StocksLogForCategory(4);
         v57 = os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT);
-        if (v55)
+        if (isEmpty)
         {
           v58 = v107;
           if (v57)
@@ -1991,7 +1991,7 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
             v59 = v112;
           }
 
-          [v99 setObject:v54 forKey:v100];
+          [dictionary setObject:v54 forKey:v100];
         }
 
         v26 = v101 + 1;
@@ -2004,14 +2004,14 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
     while (v98);
   }
 
-  if ([v99 count])
+  if ([dictionary count])
   {
     v128 = 0u;
     v129 = 0u;
     v126 = 0u;
     v127 = 0u;
-    v63 = [(SCWWatchlistManager *)v93 observers];
-    v64 = [v63 copy];
+    observers = [(SCWWatchlistManager *)selfCopy observers];
+    v64 = [observers copy];
 
     v65 = [v64 countByEnumeratingWithState:&v126 objects:v145 count:16];
     if (v65)
@@ -2028,15 +2028,15 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
           }
 
           v69 = *(*(&v126 + 1) + 8 * k);
-          v70 = [(SCWWatchlistManager *)v93 callbackQueue];
+          callbackQueue = [(SCWWatchlistManager *)selfCopy callbackQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __54__SCWWatchlistManager_database_didChangeZone_from_to___block_invoke;
           block[3] = &unk_1E85E36E0;
           block[4] = v69;
-          block[5] = v93;
-          v125 = v99;
-          dispatch_async(v70, block);
+          block[5] = selfCopy;
+          v125 = dictionary;
+          dispatch_async(callbackQueue, block);
         }
 
         v66 = [v64 countByEnumeratingWithState:&v126 objects:v145 count:16];
@@ -2046,19 +2046,19 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
     }
   }
 
-  v71 = [v97 recordWithName:@"watchlistorder"];
-  v72 = [v96 recordWithName:@"watchlistorder"];
-  v73 = [v71 encryptedValues];
-  v74 = [v73 objectForKeyedSubscript:@"watchlistIDs"];
+  v71 = [fromCopy recordWithName:@"watchlistorder"];
+  v72 = [toCopy recordWithName:@"watchlistorder"];
+  encryptedValues5 = [v71 encryptedValues];
+  v74 = [encryptedValues5 objectForKeyedSubscript:@"watchlistIDs"];
 
-  v75 = [v72 encryptedValues];
-  v76 = [v75 objectForKeyedSubscript:@"watchlistIDs"];
+  encryptedValues6 = [v72 encryptedValues];
+  v76 = [encryptedValues6 objectForKeyedSubscript:@"watchlistIDs"];
 
   v77 = [[SCWWatchlistOrderDiff alloc] initWithOldWatchlistIDs:v74 newWatchlistIDs:v76];
-  v78 = [(SCWWatchlistOrderDiff *)v77 isEmpty];
+  isEmpty2 = [(SCWWatchlistOrderDiff *)v77 isEmpty];
   loga = StocksLogForCategory(4);
   v79 = os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT);
-  if (v78)
+  if (isEmpty2)
   {
     v80 = v91;
     if (v79)
@@ -2086,8 +2086,8 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v82 = [(SCWWatchlistManager *)v93 observers];
-    v83 = [v82 copy];
+    observers2 = [(SCWWatchlistManager *)selfCopy observers];
+    v83 = [observers2 copy];
 
     loga = v83;
     v84 = [v83 countByEnumeratingWithState:&v120 objects:v144 count:16];
@@ -2109,15 +2109,15 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
           }
 
           v88 = *(*(&v120 + 1) + 8 * m);
-          v89 = [(SCWWatchlistManager *)v93 callbackQueue];
+          callbackQueue2 = [(SCWWatchlistManager *)selfCopy callbackQueue];
           v118[0] = MEMORY[0x1E69E9820];
           v118[1] = 3221225472;
           v118[2] = __54__SCWWatchlistManager_database_didChangeZone_from_to___block_invoke_85;
           v118[3] = &unk_1E85E36E0;
           v118[4] = v88;
-          v118[5] = v93;
+          v118[5] = selfCopy;
           v119 = v77;
-          dispatch_async(v89, v118);
+          dispatch_async(callbackQueue2, v118);
         }
 
         v85 = [v83 countByEnumeratingWithState:&v120 objects:v144 count:16];
@@ -2142,17 +2142,17 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
   v90 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sortedStocks:(id)a3 withSymbolOrder:(id)a4
+- (id)_sortedStocks:(id)stocks withSymbolOrder:(id)order
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  stocksCopy = stocks;
+  orderCopy = order;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v5;
+  v8 = stocksCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v9)
   {
@@ -2168,8 +2168,8 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 symbol];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        symbol = [v13 symbol];
+        [dictionary setObject:v13 forKeyedSubscript:symbol];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -2178,12 +2178,12 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
     while (v10);
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = v6;
+  v16 = orderCopy;
   v17 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v17)
   {
@@ -2199,11 +2199,11 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
         }
 
         v21 = *(*(&v25 + 1) + 8 * j);
-        v22 = [v7 objectForKeyedSubscript:{v21, v25}];
+        v22 = [dictionary objectForKeyedSubscript:{v21, v25}];
         if (v22)
         {
-          [v15 addObject:v22];
-          [v7 removeObjectForKey:v21];
+          [array addObject:v22];
+          [dictionary removeObjectForKey:v21];
         }
       }
 
@@ -2215,7 +2215,7 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return array;
 }
 
 - (void)_enqueueStartupSequence
@@ -2224,32 +2224,32 @@ void __55__SCWWatchlistManager_reorderStock_toIndex_completion___block_invoke(ui
   v9[1] = v9;
   v9[2] = 0x2020000000;
   v10 = 1;
-  v3 = [(SCWWatchlistManager *)self startupQueue];
+  startupQueue = [(SCWWatchlistManager *)self startupQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__SCWWatchlistManager__enqueueStartupSequence__block_invoke;
   v8[3] = &unk_1E85E4070;
   v8[4] = self;
   v8[5] = v9;
-  [v3 enqueueStartupBlock:v8];
+  [startupQueue enqueueStartupBlock:v8];
 
-  v4 = [(SCWWatchlistManager *)self startupQueue];
+  startupQueue2 = [(SCWWatchlistManager *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SCWWatchlistManager__enqueueStartupSequence__block_invoke_87;
   v7[3] = &unk_1E85E40E8;
   v7[4] = self;
   v7[5] = v9;
-  [v4 enqueueStartupBlock:v7];
+  [startupQueue2 enqueueStartupBlock:v7];
 
-  v5 = [(SCWWatchlistManager *)self startupQueue];
+  startupQueue3 = [(SCWWatchlistManager *)self startupQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__SCWWatchlistManager__enqueueStartupSequence__block_invoke_102;
   v6[3] = &unk_1E85E40E8;
   v6[4] = self;
   v6[5] = v9;
-  [v5 enqueueStartupBlock:v6];
+  [startupQueue3 enqueueStartupBlock:v6];
 
   _Block_object_dispose(v9, 8);
 }

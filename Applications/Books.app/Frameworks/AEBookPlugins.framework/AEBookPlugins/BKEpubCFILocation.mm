@@ -1,29 +1,29 @@
 @interface BKEpubCFILocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-+ (id)locationForCFI:(id)a3 error:(id *)a4;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
++ (id)locationForCFI:(id)i error:(id *)error;
 + (id)unknownLocation;
-- (BKEpubCFILocation)initWithCFI:(id)a3;
-- (BKEpubCFILocation)initWithCFI:(id)a3 error:(id *)a4;
-- (BKEpubCFILocation)initWithCoder:(id)a3;
-- (BKEpubCFILocation)initWithLocationDictionary:(id)a3;
-- (BKEpubCFILocation)locationWithAdjustedSpineIndex:(int64_t)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BKEpubCFILocation)initWithCFI:(id)i;
+- (BKEpubCFILocation)initWithCFI:(id)i error:(id *)error;
+- (BKEpubCFILocation)initWithCoder:(id)coder;
+- (BKEpubCFILocation)initWithLocationDictionary:(id)dictionary;
+- (BKEpubCFILocation)locationWithAdjustedSpineIndex:(int64_t)index error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)cfiString;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)ensureRange;
 - (id)head;
-- (id)intersectWithRangeFromHeadOf:(id)a3 toTailOf:(id)a4;
-- (id)rebaseCFIWithHead:(id)a3;
+- (id)intersectWithRangeFromHeadOf:(id)of toTailOf:(id)tailOf;
+- (id)rebaseCFIWithHead:(id)head;
 - (id)serializeLocationToDictionary;
-- (id)unionWithCFI:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)unionWithCFI:(id)i;
+- (int64_t)compare:(id)compare;
 - (int64_t)ordinal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOrdinal:(int64_t)a3;
-- (void)updateOrdinalForBookInfo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOrdinal:(int64_t)ordinal;
+- (void)updateOrdinalForBookInfo:(id)info;
 @end
 
 @implementation BKEpubCFILocation
@@ -43,26 +43,26 @@
 - (NSString)cfiString
 {
   v2 = [(BKEpubCFILocation *)self cfi];
-  v3 = [v2 string];
+  string = [v2 string];
 
-  return v3;
+  return string;
 }
 
-+ (id)locationForCFI:(id)a3 error:(id *)a4
++ (id)locationForCFI:(id)i error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCFI:v6 error:a4];
+  iCopy = i;
+  v7 = [[self alloc] initWithCFI:iCopy error:error];
 
   return v7;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKEpubCFILocation"])
   {
-    v5 = [[BKEpubCFILocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKEpubCFILocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else
@@ -73,34 +73,34 @@
   return v5;
 }
 
-- (BKEpubCFILocation)initWithCFI:(id)a3
+- (BKEpubCFILocation)initWithCFI:(id)i
 {
-  v5 = a3;
+  iCopy = i;
   v9.receiver = self;
   v9.super_class = BKEpubCFILocation;
   v6 = [(BKEpubCFILocation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cfi, a3);
+    objc_storeStrong(&v6->_cfi, i);
     v7->_pageOffset = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v7;
 }
 
-- (BKEpubCFILocation)initWithCFI:(id)a3 error:(id *)a4
+- (BKEpubCFILocation)initWithCFI:(id)i error:(id *)error
 {
-  v6 = a3;
+  iCopy = i;
   v20.receiver = self;
   v20.super_class = BKEpubCFILocation;
   v7 = [(BKEpubCFILocation *)&v20 init];
   if (v7)
   {
-    if ([BCCFI isFragmentEpubCFIFunction:v6])
+    if ([BCCFI isFragmentEpubCFIFunction:iCopy])
     {
       v19 = 0;
-      v8 = [BCCFI cfiWithString:v6 error:&v19];
+      v8 = [BCCFI cfiWithString:iCopy error:&v19];
       v9 = v19;
       cfi = v7->_cfi;
       v7->_cfi = v8;
@@ -108,7 +108,7 @@
 
     else
     {
-      v11 = [v6 rangeOfString:@"epubcfi"];
+      v11 = [iCopy rangeOfString:@"epubcfi"];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = [NSError errorWithDomain:@"BKEpubCFIErrorDomain" code:1 userInfo:0];
@@ -116,7 +116,7 @@
 
       else
       {
-        v12 = [v6 substringFromIndex:v11];
+        v12 = [iCopy substringFromIndex:v11];
         v18 = 0;
         v13 = [BCCFI cfiWithString:v12 error:&v18];
         v9 = v18;
@@ -134,14 +134,14 @@
         *buf = 138412546;
         v22 = v9;
         v23 = 2112;
-        v24 = v6;
+        v24 = iCopy;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Error %@ forming BCCFI from string %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
         v16 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       v7 = 0;
@@ -151,17 +151,17 @@
   return v7;
 }
 
-- (BKEpubCFILocation)initWithLocationDictionary:(id)a3
+- (BKEpubCFILocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v14.receiver = self;
   v14.super_class = BKEpubCFILocation;
   v6 = [(BKLocation *)&v14 initWithLocationDictionary:v5];
 
   if (v6)
   {
-    v7 = [v4 objectForKey:@"cfi"];
+    v7 = [dictionaryCopy objectForKey:@"cfi"];
     v13 = 0;
     v8 = [[BCCFI alloc] initWithCFI:v7 error:&v13];
     v9 = v13;
@@ -187,15 +187,15 @@
   return v6;
 }
 
-- (BKEpubCFILocation)initWithCoder:(id)a3
+- (BKEpubCFILocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BKEpubCFILocation;
-  v5 = [(BKLocation *)&v13 initWithCoder:v4];
+  v5 = [(BKLocation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cfi"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cfi"];
     v12 = 0;
     v7 = [[BCCFI alloc] initWithCFI:v6 error:&v12];
     v8 = v12;
@@ -225,60 +225,60 @@
 {
   v7.receiver = self;
   v7.super_class = BKEpubCFILocation;
-  v3 = [(BKLocation *)&v7 serializeLocationToDictionary];
-  v4 = [(BKEpubCFILocation *)self cfiString];
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:v3, @"super", @"BKEpubCFILocation", @"class", v4, @"cfi", 0];
+  serializeLocationToDictionary = [(BKLocation *)&v7 serializeLocationToDictionary];
+  cfiString = [(BKEpubCFILocation *)self cfiString];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:serializeLocationToDictionary, @"super", @"BKEpubCFILocation", @"class", cfiString, @"cfi", 0];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKEpubCFILocation;
-  v4 = a3;
-  [(BKLocation *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BKLocation *)&v6 encodeWithCoder:coderCopy];
   v5 = [(BKEpubCFILocation *)self cfiString:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"cfi"];
+  [coderCopy encodeObject:v5 forKey:@"cfi"];
 }
 
-- (void)setOrdinal:(int64_t)a3
+- (void)setOrdinal:(int64_t)ordinal
 {
   v6 = [(BKEpubCFILocation *)self cfi];
-  v5 = [v6 cfiWithAdjustedSpineIndex:a3 error:0];
+  v5 = [v6 cfiWithAdjustedSpineIndex:ordinal error:0];
   [(BKEpubCFILocation *)self setCfi:v5];
 }
 
 - (int64_t)ordinal
 {
   v2 = [(BKEpubCFILocation *)self cfi];
-  v3 = [v2 spineIndex];
+  spineIndex = [v2 spineIndex];
 
-  return v3;
+  return spineIndex;
 }
 
-- (void)updateOrdinalForBookInfo:(id)a3
+- (void)updateOrdinalForBookInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(BKEpubCFILocation *)self cfi];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_C89B4;
   v8[3] = &unk_1E5358;
-  v9 = v4;
-  v6 = v4;
+  v9 = infoCopy;
+  v6 = infoCopy;
   v7 = [v5 cfiWithSpineIndexAdjustedUsingAssertionBlock:v8];
   [(BKEpubCFILocation *)self setCfi:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKEpubCFILocation, [(BKLocation *)&v9 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKEpubCFILocation, [(BKLocation *)&v9 isEqual:equalCopy]))
   {
     v5 = [(BKEpubCFILocation *)self cfi];
-    v6 = [v4 cfi];
+    v6 = [equalCopy cfi];
     v7 = [v5 compare:v6] == 0;
   }
 
@@ -298,19 +298,19 @@
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [(BKEpubCFILocation *)self cfi];
-  v6 = [v4 cfi];
+  v6 = [compareCopy cfi];
 
   v7 = [v5 compare:v6];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(BKEpubCFILocation *)self cfi];
   v6 = [v5 copy];
   [v4 setCfi:v6];
@@ -323,8 +323,8 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [(BKEpubCFILocation *)self cfi];
-  v6 = [v5 redactedString];
-  v7 = [NSString stringWithFormat:@"<%@: %p %@ pageOffset:%lu>", v4, self, v6, [(BKEpubCFILocation *)self pageOffset]];
+  redactedString = [v5 redactedString];
+  v7 = [NSString stringWithFormat:@"<%@: %p %@ pageOffset:%lu>", v4, self, redactedString, [(BKEpubCFILocation *)self pageOffset]];
 
   return v7;
 }
@@ -340,14 +340,14 @@
   return v7;
 }
 
-- (id)intersectWithRangeFromHeadOf:(id)a3 toTailOf:(id)a4
+- (id)intersectWithRangeFromHeadOf:(id)of toTailOf:(id)tailOf
 {
-  v6 = a4;
-  v7 = a3;
+  tailOfCopy = tailOf;
+  ofCopy = of;
   v8 = [(BKEpubCFILocation *)self cfi];
-  v9 = [v7 cfi];
+  v9 = [ofCopy cfi];
 
-  v10 = [v6 cfi];
+  v10 = [tailOfCopy cfi];
 
   v11 = [v8 intersectWithRangeFromHeadOf:v9 toTailOf:v10];
 
@@ -364,10 +364,10 @@
   return v12;
 }
 
-- (id)rebaseCFIWithHead:(id)a3
+- (id)rebaseCFIWithHead:(id)head
 {
   cfi = self->_cfi;
-  v4 = [a3 cfi];
+  v4 = [head cfi];
   v5 = [(BCCFI *)cfi rebaseCFIWithHead:v4];
 
   if (v5)
@@ -383,11 +383,11 @@
   return v6;
 }
 
-- (id)unionWithCFI:(id)a3
+- (id)unionWithCFI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = [(BKEpubCFILocation *)self cfi];
-  v6 = [v4 cfi];
+  v6 = [iCopy cfi];
 
   v7 = [v5 unionWithCFI:v6];
 
@@ -406,10 +406,10 @@
 
 - (id)ensureRange
 {
-  v2 = [(BCCFI *)self->_cfi ensureRange];
-  if (v2)
+  ensureRange = [(BCCFI *)self->_cfi ensureRange];
+  if (ensureRange)
   {
-    v3 = [[BKEpubCFILocation alloc] initWithCFI:v2];
+    v3 = [[BKEpubCFILocation alloc] initWithCFI:ensureRange];
   }
 
   else
@@ -425,21 +425,21 @@
   if (([(BCCFI *)self->_cfi isRange]& 1) != 0)
   {
     v3 = [BKEpubCFILocation alloc];
-    v4 = [(BCCFI *)self->_cfi headCFI];
-    v5 = [(BKEpubCFILocation *)v3 initWithCFI:v4];
+    headCFI = [(BCCFI *)self->_cfi headCFI];
+    selfCopy = [(BKEpubCFILocation *)v3 initWithCFI:headCFI];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BKEpubCFILocation)locationWithAdjustedSpineIndex:(int64_t)a3 error:(id *)a4
+- (BKEpubCFILocation)locationWithAdjustedSpineIndex:(int64_t)index error:(id *)error
 {
-  v4 = [(BCCFI *)self->_cfi cfiWithAdjustedSpineIndex:a3 error:a4];
+  v4 = [(BCCFI *)self->_cfi cfiWithAdjustedSpineIndex:index error:error];
   if (v4)
   {
     v5 = [[BKEpubCFILocation alloc] initWithCFI:v4];

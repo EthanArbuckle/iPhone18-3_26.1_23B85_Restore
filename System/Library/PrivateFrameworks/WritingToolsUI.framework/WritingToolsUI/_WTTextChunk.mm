@@ -1,21 +1,21 @@
 @interface _WTTextChunk
 - (_WTTextChunk)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initChunkWithIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initChunkWithIdentifier:(id)identifier;
 @end
 
 @implementation _WTTextChunk
 
-- (id)initChunkWithIdentifier:(id)a3
+- (id)initChunkWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = _WTTextChunk;
   v6 = [(_WTTextChunk *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = v7;
   }
 
@@ -24,18 +24,18 @@
 
 - (_WTTextChunk)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(_WTTextChunk *)self initChunkWithIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(_WTTextChunk *)self initChunkWithIdentifier:uUIDString];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_WTTextChunk alloc];
-  v5 = [(_WTTextChunk *)self identifier];
-  v6 = [(_WTTextChunk *)v4 initChunkWithIdentifier:v5];
+  identifier = [(_WTTextChunk *)self identifier];
+  v6 = [(_WTTextChunk *)v4 initChunkWithIdentifier:identifier];
 
   return v6;
 }

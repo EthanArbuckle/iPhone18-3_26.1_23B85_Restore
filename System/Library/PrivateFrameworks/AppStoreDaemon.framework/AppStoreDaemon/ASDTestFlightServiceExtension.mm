@@ -1,25 +1,25 @@
 @interface ASDTestFlightServiceExtension
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation ASDTestFlightServiceExtension
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v7 && (isKindOfClass & 1) != 0)
+  if (contextCopy && (isKindOfClass & 1) != 0)
   {
-    v5 = v7;
-    [v5 setExtensionInstance:self];
+    contextCopy = contextCopy;
+    [contextCopy setExtensionInstance:self];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"context is not an instance of ASDTestFlightServiceExtensionRemoteContext: context='%@'", v7];
-    v6 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDTestFlightServiceErrorDomain", 901, v5);
-    [v7 cancelRequestWithError:v6];
+    contextCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"context is not an instance of ASDTestFlightServiceExtensionRemoteContext: context='%@'", contextCopy];
+    v6 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDTestFlightServiceErrorDomain", 901, contextCopy);
+    [contextCopy cancelRequestWithError:v6];
   }
 }
 

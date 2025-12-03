@@ -1,18 +1,18 @@
 @interface PGPhotoChangeToGraphChangeConverter
 + (id)managedEntityNamesToTranslate;
-- (PGPhotoChangeToGraphChangeConverter)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-- (id)graphChangesWithPhotoChange:(id)a3 progressBlock:(id)a4;
-- (void)_registerTranslatorsWithPhotoLibrary:(id)a3;
+- (PGPhotoChangeToGraphChangeConverter)initWithPhotoLibrary:(id)library loggingConnection:(id)connection;
+- (id)graphChangesWithPhotoChange:(id)change progressBlock:(id)block;
+- (void)_registerTranslatorsWithPhotoLibrary:(id)library;
 @end
 
 @implementation PGPhotoChangeToGraphChangeConverter
 
-- (id)graphChangesWithPhotoChange:(id)a3 progressBlock:(id)a4
+- (id)graphChangesWithPhotoChange:(id)change progressBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  changeCopy = change;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -41,20 +41,20 @@
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *v39 = v6;
+      *v39 = changeCopy;
       _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "PGPhotoChangeToGraphChangeConverter: handling change %@", buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     entityTranslatorByEntityClassName = self->_entityTranslatorByEntityClassName;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __81__PGPhotoChangeToGraphChangeConverter_graphChangesWithPhotoChange_progressBlock___block_invoke;
     v21[3] = &unk_278884218;
     v21[4] = self;
-    v22 = v6;
-    v24 = v7;
-    v15 = v13;
+    v22 = changeCopy;
+    v24 = blockCopy;
+    v15 = array;
     v23 = v15;
     v16 = v8;
     v25 = v16;
@@ -513,57 +513,57 @@ void __81__PGPhotoChangeToGraphChangeConverter_graphChangesWithPhotoChange_progr
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_registerTranslatorsWithPhotoLibrary:(id)a3
+- (void)_registerTranslatorsWithPhotoLibrary:(id)library
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  libraryCopy = library;
+  dictionary = [v4 dictionary];
   entityTranslatorByEntityClassName = self->_entityTranslatorByEntityClassName;
-  self->_entityTranslatorByEntityClassName = v6;
+  self->_entityTranslatorByEntityClassName = dictionary;
 
-  v8 = [(PGGraphEntityTranslator *)[PGGraphAssetTranslator alloc] initWithPhotoLibrary:v5];
+  v8 = [(PGGraphEntityTranslator *)[PGGraphAssetTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v9 = self->_entityTranslatorByEntityClassName;
   v10 = +[(PGGraphEntityTranslator *)PGGraphAssetTranslator];
   [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
 
-  v11 = [(PGGraphEntityTranslator *)[PGGraphMomentTranslator alloc] initWithPhotoLibrary:v5];
+  v11 = [(PGGraphEntityTranslator *)[PGGraphMomentTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v12 = self->_entityTranslatorByEntityClassName;
   v13 = +[(PGGraphEntityTranslator *)PGGraphMomentTranslator];
   [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
 
-  v14 = [(PGGraphEntityTranslator *)[PGGraphHighlightTranslator alloc] initWithPhotoLibrary:v5];
+  v14 = [(PGGraphEntityTranslator *)[PGGraphHighlightTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v15 = self->_entityTranslatorByEntityClassName;
   v16 = +[(PGGraphEntityTranslator *)PGGraphHighlightTranslator];
   [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
 
-  v17 = [(PGGraphEntityTranslator *)[PGGraphFaceTranslator alloc] initWithPhotoLibrary:v5];
+  v17 = [(PGGraphEntityTranslator *)[PGGraphFaceTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v18 = self->_entityTranslatorByEntityClassName;
   v19 = +[(PGGraphEntityTranslator *)PGGraphFaceTranslator];
   [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v19];
 
-  v20 = [(PGGraphEntityTranslator *)[PGGraphPersonTranslator alloc] initWithPhotoLibrary:v5];
+  v20 = [(PGGraphEntityTranslator *)[PGGraphPersonTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v21 = self->_entityTranslatorByEntityClassName;
   v22 = +[(PGGraphEntityTranslator *)PGGraphPersonTranslator];
   [(NSMutableDictionary *)v21 setObject:v20 forKeyedSubscript:v22];
 
-  v25 = [(PGGraphEntityTranslator *)[PGGraphSocialGroupTranslator alloc] initWithPhotoLibrary:v5];
+  v25 = [(PGGraphEntityTranslator *)[PGGraphSocialGroupTranslator alloc] initWithPhotoLibrary:libraryCopy];
   v23 = self->_entityTranslatorByEntityClassName;
   v24 = +[(PGGraphEntityTranslator *)PGGraphSocialGroupTranslator];
   [(NSMutableDictionary *)v23 setObject:v25 forKeyedSubscript:v24];
 }
 
-- (PGPhotoChangeToGraphChangeConverter)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (PGPhotoChangeToGraphChangeConverter)initWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = PGPhotoChangeToGraphChangeConverter;
   v8 = [(PGPhotoChangeToGraphChangeConverter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PGPhotoChangeToGraphChangeConverter *)v8 _registerTranslatorsWithPhotoLibrary:v6];
-    objc_storeStrong(&v9->_loggingConnection, a4);
+    [(PGPhotoChangeToGraphChangeConverter *)v8 _registerTranslatorsWithPhotoLibrary:libraryCopy];
+    objc_storeStrong(&v9->_loggingConnection, connection);
   }
 
   return v9;

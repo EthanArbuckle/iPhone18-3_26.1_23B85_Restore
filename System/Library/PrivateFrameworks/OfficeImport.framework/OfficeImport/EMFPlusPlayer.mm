@@ -1,92 +1,92 @@
 @interface EMFPlusPlayer
-+ (float)firstTabPosPastPos:(float)a3 stringFormat:(id)a4 isExplicit:(BOOL *)a5;
-+ (int)serializableObjectTypeForGUID:(id)a3;
-- (EMFPlusPlayer)initWithOwner:(id)a3 canvas:(CGRect)a4;
++ (float)firstTabPosPastPos:(float)pos stringFormat:(id)format isExplicit:(BOOL *)explicit;
++ (int)serializableObjectTypeForGUID:(id)d;
+- (EMFPlusPlayer)initWithOwner:(id)owner canvas:(CGRect)canvas;
 - (id)canvasInWorldCoordinates;
-- (int)play:(const char *)a3 in_size:(unsigned int)a4;
-- (int)playBeginContainer:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playBlurEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playBrightnessContrastEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playBrush:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playClear:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playColorBalanceEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playColorCurveEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playColorLUTEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playColorMatrixEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playDrawArc:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawBeziers:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawClosedCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawDriverString:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawEllipse:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawImage:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawImagePoints:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawLines:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawPie:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawRects:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playDrawString:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillClosedCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillEllipse:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillPath:(id)a3 in_pData:(const char *)a4 in_size:(unsigned int)a5 in_flags:(unsigned __int16)a6;
-- (int)playFillPie:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillPolygon:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFillRects:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playFont:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playHeader:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playHueSaturationLightnessEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playImage:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playLevelsEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playMultiplyWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playObject:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playPath:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playPen:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playRecord:(int)a3 pData:(const char *)a4 dataSize:(unsigned int)a5 flags:(unsigned __int16)a6;
-- (int)playRedEyeCorrectionEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playResetWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playRotateWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playScaleWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSerializableObject:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetAntiAliasMode:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetClipPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetClipRect:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetInterpolationMode:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetPageTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetRenderingOrigin:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSetWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)playSharpenEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playStringFormat:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5;
-- (int)playStrokePath:(id)a3 in_pData:(const char *)a4 in_size:(unsigned int)a5 in_flags:(unsigned __int16)a6;
-- (int)playTintEffectWithData:(const char *)a3 size:(unsigned int)a4;
-- (int)playTranslateWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5;
-- (int)readBrush:(const char *)a3 in_size:(unsigned int)a4 returnBrush:(id *)a5;
-- (int)readGradientBrush:(id)a3 from:(const char *)a4 brushFlags:(unsigned int)a5 in_size:(unsigned int)a6;
-- (int)readImage:(const char *)a3 in_size:(unsigned int)a4 pImage:(id *)a5;
-- (int)readPath:(const char *)a3 in_size:(unsigned int)a4 returnPath:(id *)a5;
-- (int)setClipPath:(id)a3 flags:(unsigned __int16)a4;
+- (int)play:(const char *)play in_size:(unsigned int)in_size;
+- (int)playBeginContainer:(const char *)container in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playBlurEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playBrightnessContrastEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playBrush:(const char *)brush in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playClear:(const char *)clear in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playColorBalanceEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playColorCurveEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playColorLUTEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playColorMatrixEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playDrawArc:(const char *)arc in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawBeziers:(const char *)beziers in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawClosedCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawDriverString:(const char *)string in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawEllipse:(const char *)ellipse in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawImage:(const char *)image in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawImagePoints:(const char *)points in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawLines:(const char *)lines in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawPie:(const char *)pie in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawRects:(const char *)rects in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playDrawString:(const char *)string in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillClosedCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillEllipse:(const char *)ellipse in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillPath:(id)path in_pData:(const char *)data in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillPie:(const char *)pie in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillPolygon:(const char *)polygon in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFillRects:(const char *)rects in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playFont:(const char *)font in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playHeader:(const char *)header in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playHueSaturationLightnessEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playImage:(const char *)image in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playLevelsEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playMultiplyWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playObject:(const char *)object in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playPath:(const char *)path in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playPen:(const char *)pen in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playRecord:(int)record pData:(const char *)data dataSize:(unsigned int)size flags:(unsigned __int16)flags;
+- (int)playRedEyeCorrectionEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playResetWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playRotateWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playScaleWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSerializableObject:(const char *)object in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetAntiAliasMode:(const char *)mode in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetClipPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetClipRect:(const char *)rect in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetInterpolationMode:(const char *)mode in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetPageTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetRenderingOrigin:(const char *)origin in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSetWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playSharpenEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playStringFormat:(const char *)format in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index;
+- (int)playStrokePath:(id)path in_pData:(const char *)data in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)playTintEffectWithData:(const char *)data size:(unsigned int)size;
+- (int)playTranslateWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags;
+- (int)readBrush:(const char *)brush in_size:(unsigned int)in_size returnBrush:(id *)returnBrush;
+- (int)readGradientBrush:(id)brush from:(const char *)from brushFlags:(unsigned int)flags in_size:(unsigned int)in_size;
+- (int)readImage:(const char *)image in_size:(unsigned int)in_size pImage:(id *)pImage;
+- (int)readPath:(const char *)path in_size:(unsigned int)in_size returnPath:(id *)returnPath;
+- (int)setClipPath:(id)path flags:(unsigned __int16)flags;
 - (void)resetLargeRecord;
 @end
 
 @implementation EMFPlusPlayer
 
-- (EMFPlusPlayer)initWithOwner:(id)a3 canvas:(CGRect)a4
+- (EMFPlusPlayer)initWithOwner:(id)owner canvas:(CGRect)canvas
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  ownerCopy = owner;
   v18.receiver = self;
   v18.super_class = EMFPlusPlayer;
   v11 = [(EMFPlusPlayer *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->mOwner, a3);
-    v13 = [[MFPGraphics alloc] initWithCanvas:x, y, width, height];
+    objc_storeStrong(&v11->mOwner, owner);
+    height = [[MFPGraphics alloc] initWithCanvas:x, y, width, height];
     mGraphics = v12->mGraphics;
-    v12->mGraphics = v13;
+    v12->mGraphics = height;
 
     v12->mLargeType = 0x4000;
     v15 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -97,9 +97,9 @@
   return v12;
 }
 
-+ (int)serializableObjectTypeForGUID:(id)a3
++ (int)serializableObjectTypeForGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[EMFPlusPlayer serializableObjectTypeForGUID:]::serializableObjectGUIDToTypeMap;
   if (!+[EMFPlusPlayer serializableObjectTypeForGUID:]::serializableObjectGUIDToTypeMap)
   {
@@ -134,49 +134,49 @@
     v4 = +[EMFPlusPlayer serializableObjectTypeForGUID:]::serializableObjectGUIDToTypeMap;
   }
 
-  v12 = [v4 objectForKey:v3];
+  v12 = [v4 objectForKey:dCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v14 = 0;
+    intValue = 0;
   }
 
-  return v14;
+  return intValue;
 }
 
-- (int)playHeader:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playHeader:(const char *)header in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v7 = (a5 & 1) == 0;
-  [(EMFPlayer *)self->mOwner setIgnoreEMFPlusRecords:a5 & 1, *&a4];
+  v7 = (in_flags & 1) == 0;
+  [(EMFPlayer *)self->mOwner setIgnoreEMFPlusRecords:in_flags & 1, *&in_size];
   [(EMFPlayer *)self->mOwner setIgnoreEMFRecords:v7];
-  [(MFPGraphics *)self->mGraphics setHorizontalDpi:*(a3 + 2) verticalDpi:*(a3 + 3)];
+  [(MFPGraphics *)self->mGraphics setHorizontalDpi:*(header + 2) verticalDpi:*(header + 3)];
   return 0;
 }
 
-- (int)readImage:(const char *)a3 in_size:(unsigned int)a4 pImage:(id *)a5
+- (int)readImage:(const char *)image in_size:(unsigned int)in_size pImage:(id *)pImage
 {
-  *a5 = 0;
-  v5 = a4 - 8;
-  if (a4 < 8)
+  *pImage = 0;
+  v5 = in_size - 8;
+  if (in_size < 8)
   {
     return -7;
   }
 
-  v7 = *(a3 + 1);
+  v7 = *(image + 1);
   if (v7 == 2)
   {
     if (v5 >= 8)
     {
-      v10 = a4 - 16;
-      if (*(a3 + 3) == v10)
+      v10 = in_size - 16;
+      if (*(image + 3) == v10)
       {
-        v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 16 length:v10];
-        *a5 = [[MFPMetafileImage alloc] initWithMetafileData:v11];
+        v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:image + 16 length:v10];
+        *pImage = [[MFPMetafileImage alloc] initWithMetafileData:v11];
 
         return 0;
       }
@@ -190,7 +190,7 @@
     return -7;
   }
 
-  v8 = *(a3 + 6);
+  v8 = *(image + 6);
   if (!v8)
   {
     return v8;
@@ -201,7 +201,7 @@
     return -7;
   }
 
-  if (*(a3 + 2) | *(a3 + 3) | *(a3 + 4) | *(a3 + 5))
+  if (*(image + 2) | *(image + 3) | *(image + 4) | *(image + 5))
   {
     v8 = -7;
   }
@@ -211,15 +211,15 @@
     v8 = 0;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 + 28 length:a4 - 28];
-  *a5 = [[MFPBitmapImage alloc] initWithBitmapData:v9];
+  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:image + 28 length:in_size - 28];
+  *pImage = [[MFPBitmapImage alloc] initWithBitmapData:v9];
 
   return v8;
 }
 
-- (int)readPath:(const char *)a3 in_size:(unsigned int)a4 returnPath:(id *)a5
+- (int)readPath:(const char *)path in_size:(unsigned int)in_size returnPath:(id *)returnPath
 {
-  if (a4 < 0xC)
+  if (in_size < 0xC)
   {
     return -7;
   }
@@ -240,8 +240,8 @@
   v55 = v5;
   v56 = v15;
   v57 = v16;
-  v23 = *(a3 + 1);
-  v24 = *(a3 + 9);
+  v23 = *(path + 1);
+  v24 = *(path + 9);
   if ((v24 & 0x40) != 0)
   {
     v25 = 2;
@@ -252,24 +252,24 @@
     v25 = 3;
   }
 
-  if (v23 > a4)
+  if (v23 > in_size)
   {
     return -7;
   }
 
   v26 = v23 << v25;
-  if (v23 + (v23 << v25) + 12 > a4)
+  if (v23 + (v23 << v25) + 12 > in_size)
   {
     return -7;
   }
 
-  v28 = *(a3 + 8);
-  *a5 = objc_alloc_init(OITSUBezierPath);
+  v28 = *(path + 8);
+  *returnPath = objc_alloc_init(OITSUBezierPath);
   if (v23)
   {
     v29 = 0;
     v30 = v28 | (v24 << 8);
-    v31 = (a3 + 12);
+    v31 = (path + 12);
     if ((v24 & 0x40) != 0)
     {
       v32 = 4;
@@ -315,7 +315,7 @@
           }
 
           v31 = &v39[v32];
-          [*a5 curveToPoint:v40 controlPoint1:? controlPoint2:?];
+          [*returnPath curveToPoint:v40 controlPoint1:? controlPoint2:?];
           v38 = 3;
           if ((v41 & 0x80) != 0)
           {
@@ -324,7 +324,7 @@
 
           break;
         case 1:
-          [*a5 lineToPoint:{Point, v37}];
+          [*returnPath lineToPoint:{Point, v37}];
           v38 = 1;
           if ((v35 & 0x80) != 0)
           {
@@ -338,7 +338,7 @@
             return -7;
           }
 
-          [*a5 moveToPoint:{Point, v37}];
+          [*returnPath moveToPoint:{Point, v37}];
           v38 = 1;
           break;
         default:
@@ -346,7 +346,7 @@
           if (((v35 >> 7) & 1) == 1)
           {
 LABEL_20:
-            [*a5 closePath];
+            [*returnPath closePath];
           }
 
           break;
@@ -361,14 +361,14 @@ LABEL_20:
   return 0;
 }
 
-- (int)readGradientBrush:(id)a3 from:(const char *)a4 brushFlags:(unsigned int)a5 in_size:(unsigned int)a6
+- (int)readGradientBrush:(id)brush from:(const char *)from brushFlags:(unsigned int)flags in_size:(unsigned int)in_size
 {
-  v7 = a5;
-  v9 = a3;
-  if ((v7 & 2) != 0)
+  flagsCopy = flags;
+  brushCopy = brush;
+  if ((flagsCopy & 2) != 0)
   {
-    v10 = a6 >= 0x18;
-    a6 -= 24;
+    v10 = in_size >= 0x18;
+    in_size -= 24;
     if (!v10)
     {
 LABEL_16:
@@ -379,24 +379,24 @@ LABEL_16:
     v44 = 0u;
     v45 = 0u;
     v43 = 0u;
-    readAffineTransform(*a4, &v43);
+    readAffineTransform(*from, &v43);
     v42[0] = v43;
     v42[1] = v44;
     v42[2] = v45;
-    [v9 setTransform:v42];
-    *a4 += 24;
+    [brushCopy setTransform:v42];
+    *from += 24;
   }
 
-  if ((v7 & 8) != 0)
+  if ((flagsCopy & 8) != 0)
   {
-    v12 = a6 - 4;
-    if (a6 < 4)
+    v12 = in_size - 4;
+    if (in_size < 4)
     {
       goto LABEL_16;
     }
 
-    v13 = **a4;
-    *a4 += 4;
+    v13 = **from;
+    *from += 4;
     if (v12 < 8 * v13)
     {
       goto LABEL_16;
@@ -411,9 +411,9 @@ LABEL_16:
       v17 = v13;
       do
       {
-        [MFByteUtils readFloat32FromByteArray:*a4 in_offset:v15, v38];
+        [MFByteUtils readFloat32FromByteArray:*from in_offset:v15, v38];
         v19 = v18;
-        [MFByteUtils readFloat32FromByteArray:*a4 in_offset:v16];
+        [MFByteUtils readFloat32FromByteArray:*from in_offset:v16];
         v21 = v20;
         v22 = [MFPBlendStop alloc];
         LODWORD(v23) = v21;
@@ -429,30 +429,30 @@ LABEL_16:
       while (v17);
     }
 
-    [v9 setBlend:{v14, v38}];
+    [brushCopy setBlend:{v14, v38}];
     v26 = 8 * v13;
-    a6 = v39 - 8 * v13;
-    *a4 += v26;
+    in_size = v39 - 8 * v13;
+    *from += v26;
 
-    if ((v7 & 4) == 0)
+    if ((flagsCopy & 4) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  else if ((v7 & 4) == 0)
+  else if ((flagsCopy & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  if (a6 < 4)
+  if (in_size < 4)
   {
     goto LABEL_16;
   }
 
-  v27 = **a4;
-  *a4 += 4;
-  if (a6 - 4 < 8 * v27)
+  v27 = **from;
+  *from += 4;
+  if (in_size - 4 < 8 * v27)
   {
     goto LABEL_16;
   }
@@ -465,9 +465,9 @@ LABEL_16:
     v31 = 4 * v27;
     do
     {
-      [MFByteUtils readFloat32FromByteArray:*a4 in_offset:v30, v40];
+      [MFByteUtils readFloat32FromByteArray:*from in_offset:v30, v40];
       v33 = v32;
-      v34 = [OITSUColor colorWithBinaryRed:(*a4)[v31 + 2] green:(*a4)[v31 + 1] blue:(*a4)[v31] alpha:(*a4)[v31 + 3]];
+      v34 = [OITSUColor colorWithBinaryRed:(*from)[v31 + 2] green:(*from)[v31 + 1] blue:(*from)[v31] alpha:(*from)[v31 + 3]];
       v35 = [MFPGradientStop alloc];
       LODWORD(v36) = v33;
       v37 = [(MFPGradientStop *)v35 initWithColor:v34 position:v36];
@@ -480,8 +480,8 @@ LABEL_16:
     while (4 * v27 != v30);
   }
 
-  [v9 setColorBlend:{v29, v40}];
-  *a4 += (8 * v41);
+  [brushCopy setColorBlend:{v29, v40}];
+  *from += (8 * v41);
 
 LABEL_7:
   v11 = 0;
@@ -490,17 +490,17 @@ LABEL_17:
   return v11;
 }
 
-- (int)readBrush:(const char *)a3 in_size:(unsigned int)a4 returnBrush:(id *)a5
+- (int)readBrush:(const char *)brush in_size:(unsigned int)in_size returnBrush:(id *)returnBrush
 {
-  v63 = a3;
-  v5 = a4 - 8;
-  if (a4 < 8)
+  brushCopy = brush;
+  v5 = in_size - 8;
+  if (in_size < 8)
   {
     return -7;
   }
 
   v6 = 0;
-  v10 = *(a3 + 1);
+  v10 = *(brush + 1);
   if (v10 <= 1)
   {
     if (v10)
@@ -515,10 +515,10 @@ LABEL_17:
         return -7;
       }
 
-      v18 = *(a3 + 2);
-      v19 = [OITSUColor colorWithBinaryRed:*(a3 + 14) green:*(a3 + 13) blue:*(a3 + 12) alpha:*(a3 + 15)];
-      v20 = [OITSUColor colorWithBinaryRed:*(a3 + 18) green:*(a3 + 17) blue:*(a3 + 16) alpha:*(a3 + 19)];
-      *a5 = [[MFPHatchBrush alloc] initWithHatchStyle:v18 foreColor:v19 backColor:v20];
+      v18 = *(brush + 2);
+      v19 = [OITSUColor colorWithBinaryRed:*(brush + 14) green:*(brush + 13) blue:*(brush + 12) alpha:*(brush + 15)];
+      v20 = [OITSUColor colorWithBinaryRed:*(brush + 18) green:*(brush + 17) blue:*(brush + 16) alpha:*(brush + 19)];
+      *returnBrush = [[MFPHatchBrush alloc] initWithHatchStyle:v18 foreColor:v19 backColor:v20];
     }
 
     else
@@ -528,8 +528,8 @@ LABEL_17:
         return -7;
       }
 
-      v19 = [OITSUColor colorWithBinaryRed:*(a3 + 10) green:*(a3 + 9) blue:*(a3 + 8) alpha:*(a3 + 11)];
-      *a5 = [[MFPSolidBrush alloc] initWithColor:v19];
+      v19 = [OITSUColor colorWithBinaryRed:*(brush + 10) green:*(brush + 9) blue:*(brush + 8) alpha:*(brush + 11)];
+      *returnBrush = [[MFPSolidBrush alloc] initWithColor:v19];
     }
 
     return 0;
@@ -550,18 +550,18 @@ LABEL_17:
       }
 
       v13 = objc_alloc_init(MFPLinearGradientBrush);
-      v14 = *(a3 + 2);
-      [(MFPGradientBrush *)v13 setWrapMode:*(a3 + 3)];
-      [(MFPLinearGradientBrush *)v13 setBounds:readFloat32Rect(a3 + 16)];
-      v15 = [OITSUColor colorWithBinaryRed:*(a3 + 34) green:*(a3 + 33) blue:*(a3 + 32) alpha:*(a3 + 35)];
+      v14 = *(brush + 2);
+      [(MFPGradientBrush *)v13 setWrapMode:*(brush + 3)];
+      [(MFPLinearGradientBrush *)v13 setBounds:readFloat32Rect(brush + 16)];
+      v15 = [OITSUColor colorWithBinaryRed:*(brush + 34) green:*(brush + 33) blue:*(brush + 32) alpha:*(brush + 35)];
       [(MFPLinearGradientBrush *)v13 setStartColor:v15];
-      v16 = [OITSUColor colorWithBinaryRed:*(a3 + 38) green:*(a3 + 37) blue:*(a3 + 36) alpha:*(a3 + 39)];
+      v16 = [OITSUColor colorWithBinaryRed:*(brush + 38) green:*(brush + 37) blue:*(brush + 36) alpha:*(brush + 39)];
       [(MFPLinearGradientBrush *)v13 setEndColor:v16];
-      *&v60 = a3 + 48;
-      v6 = [(EMFPlusPlayer *)self readGradientBrush:v13 from:&v60 brushFlags:v14 in_size:a4 - 48];
+      *&v60 = brush + 48;
+      v6 = [(EMFPlusPlayer *)self readGradientBrush:v13 from:&v60 brushFlags:v14 in_size:in_size - 48];
       [(MFPGradientBrush *)v13 createPhoneBrush];
       v17 = v13;
-      *a5 = v13;
+      *returnBrush = v13;
 
 LABEL_10:
       return v6;
@@ -570,23 +570,23 @@ LABEL_10:
     if (v5 >= 0x18)
     {
       v13 = objc_alloc_init(MFPPathGradientBrush);
-      v26 = *(a3 + 8);
-      v27 = *(a3 + 9);
-      v54 = *(a3 + 10);
-      v28 = *(a3 + 11);
-      [(MFPGradientBrush *)v13 setWrapMode:*(a3 + 3)];
-      [OITSUColor colorWithBinaryRed:*(a3 + 18) green:*(a3 + 17) blue:*(a3 + 16) alpha:*(a3 + 19)];
+      v26 = *(brush + 8);
+      v27 = *(brush + 9);
+      v54 = *(brush + 10);
+      v28 = *(brush + 11);
+      [(MFPGradientBrush *)v13 setWrapMode:*(brush + 3)];
+      [OITSUColor colorWithBinaryRed:*(brush + 18) green:*(brush + 17) blue:*(brush + 16) alpha:*(brush + 19)];
       v56 = v53 = v27;
       [(MFPLinearGradientBrush *)v13 setCenterColor:v56];
       v55 = v26;
-      [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:0];
+      [MFByteUtils readFloat32FromByteArray:brush + 20 in_offset:0];
       v30 = v29;
-      [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:4];
+      [MFByteUtils readFloat32FromByteArray:brush + 20 in_offset:4];
       [(MFPLinearGradientBrush *)v13 setCenterPoint:v30, v31];
-      v32 = a4 - 32;
-      v33 = *(a3 + 7);
-      v34 = (a3 + 32);
-      v63 = v34;
+      v32 = in_size - 32;
+      v33 = *(brush + 7);
+      v34 = (brush + 32);
+      brushCopy = v34;
       if (v33)
       {
         if (v32 < 4 * v33)
@@ -601,7 +601,7 @@ LABEL_10:
           v36 = [OITSUColor colorWithBinaryRed:v34[2] green:v34[1] blue:*v34 alpha:v34[3]];
           [v35 addObject:v36];
           v34 += 4;
-          v63 = v34;
+          brushCopy = v34;
 
           LODWORD(v33) = v33 - 1;
         }
@@ -619,7 +619,7 @@ LABEL_10:
       v40 = *v34;
       v38 = (v34 + 4);
       v39 = v40;
-      v63 = v38;
+      brushCopy = v38;
       if (v37 < v40)
       {
         goto LABEL_26;
@@ -631,14 +631,14 @@ LABEL_10:
         v57 = 0;
         [(EMFPlusPlayer *)self readPath:v38 in_size:v39 returnPath:&v57];
         v44 = v57;
-        v38 = v63;
+        v38 = brushCopy;
 LABEL_45:
-        v63 = &v38[v39];
+        brushCopy = &v38[v39];
         [(MFPLinearGradientBrush *)v13 setPath:v44];
-        v6 = [(EMFPlusPlayer *)self readGradientBrush:v13 from:&v63 brushFlags:(v54 << 16) | (v53 << 8) | (v28 << 24) | v43 in_size:v37];
+        v6 = [(EMFPlusPlayer *)self readGradientBrush:v13 from:&brushCopy brushFlags:(v54 << 16) | (v53 << 8) | (v28 << 24) | v43 in_size:v37];
         [(MFPGradientBrush *)v13 createPhoneBrush];
         v52 = v13;
-        *a5 = v13;
+        *returnBrush = v13;
 
         goto LABEL_10;
       }
@@ -691,9 +691,9 @@ LABEL_26:
     return -7;
   }
 
-  v21 = a4 - 16;
-  v22 = a3[8];
-  v23 = *(a3 + 3);
+  v21 = in_size - 16;
+  v22 = brush[8];
+  v23 = *(brush + 3);
   v24 = *(MEMORY[0x277CBF2C0] + 16);
   v60 = *MEMORY[0x277CBF2C0];
   v61 = v24;
@@ -705,8 +705,8 @@ LABEL_26:
       return -7;
     }
 
-    v21 = a4 - 40;
-    readAffineTransform(a3 + 16, &v60);
+    v21 = in_size - 40;
+    readAffineTransform(brush + 16, &v60);
     v25 = 40;
   }
 
@@ -716,7 +716,7 @@ LABEL_26:
   }
 
   v59 = 0;
-  v6 = [(EMFPlusPlayer *)self readImage:&a3[v25] in_size:v21 pImage:&v59];
+  v6 = [(EMFPlusPlayer *)self readImage:&brush[v25] in_size:v21 pImage:&v59];
   v41 = v59;
   if (v41)
   {
@@ -724,42 +724,42 @@ LABEL_26:
     v58[0] = v60;
     v58[1] = v61;
     v58[2] = v62;
-    *a5 = [(MFPTextureBrush *)v42 initWithImage:v41 wrapMode:v23 transform:v58];
+    *returnBrush = [(MFPTextureBrush *)v42 initWithImage:v41 wrapMode:v23 transform:v58];
   }
 
   return v6;
 }
 
-- (int)playBrush:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playBrush:(const char *)brush in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  v5 = a5;
+  indexCopy = index;
   v11 = 0;
-  v7 = [(EMFPlusPlayer *)self readBrush:a3 in_size:*&a4 returnBrush:&v11];
+  v7 = [(EMFPlusPlayer *)self readBrush:brush in_size:*&in_size returnBrush:&v11];
   v8 = v11;
   if (v8)
   {
-    v9 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v9 setObject:v8 atIndex:v5];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v8 atIndex:indexCopy];
   }
 
   return v7;
 }
 
-- (int)playPen:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playPen:(const char *)pen in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  v5 = a5;
+  indexCopy = index;
   v9 = objc_alloc_init(MFPPen);
-  v10 = a4 - 20;
-  if (a4 < 0x14)
+  v10 = in_size - 20;
+  if (in_size < 0x14)
   {
     goto LABEL_2;
   }
 
-  v13 = a3[8];
-  v14 = a3[9];
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:16];
+  v13 = pen[8];
+  v14 = pen[9];
+  [MFByteUtils readFloat32FromByteArray:pen in_offset:16];
   [(MFPPen *)v9 setWidth:?];
-  v15 = (a3 + 20);
+  v15 = (pen + 20);
   if ((v13 & 1) == 0)
   {
 LABEL_7:
@@ -930,25 +930,25 @@ LABEL_47:
     v11 = [(EMFPlusPlayer *)self readBrush:v15 in_size:v10 returnBrush:&v32];
     v28 = v32;
     [(MFPPen *)v9 setBrush:v28];
-    v29 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v29 setObject:v9 atIndex:v5];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v9 atIndex:indexCopy];
 
     goto LABEL_3;
   }
 
   if (v10 >= 0x18)
   {
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:0];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:0];
     v17 = v16;
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:4];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:4];
     v19 = v18;
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:8];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:8];
     v21 = v20;
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:12];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:12];
     v23 = v22;
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:16];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:16];
     v25 = v24;
-    [MFByteUtils readFloat32FromByteArray:a3 + 20 in_offset:20];
+    [MFByteUtils readFloat32FromByteArray:pen + 20 in_offset:20];
     v33[0] = v17;
     v33[1] = v19;
     v33[2] = v21;
@@ -956,8 +956,8 @@ LABEL_47:
     v33[4] = v25;
     v33[5] = v26;
     [(MFPPen *)v9 setTransform:v33];
-    v10 = a4 - 44;
-    v15 = (a3 + 44);
+    v10 = in_size - 44;
+    v15 = (pen + 44);
     goto LABEL_7;
   }
 
@@ -968,65 +968,65 @@ LABEL_3:
   return v11;
 }
 
-- (int)playPath:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playPath:(const char *)path in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  v5 = a5;
+  indexCopy = index;
   v12 = 0;
-  v7 = [(EMFPlusPlayer *)self readPath:a3 in_size:*&a4 returnPath:&v12];
+  v7 = [(EMFPlusPlayer *)self readPath:path in_size:*&in_size returnPath:&v12];
   v8 = v12;
   if (v8)
   {
     v9 = [[MFPPath alloc] initWithPath:v8];
-    v10 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v10 setObject:v9 atIndex:v5];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v9 atIndex:indexCopy];
   }
 
   return v7;
 }
 
-- (int)playImage:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playImage:(const char *)image in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  v5 = a5;
+  indexCopy = index;
   v11 = 0;
-  v7 = [(EMFPlusPlayer *)self readImage:a3 in_size:*&a4 pImage:&v11];
+  v7 = [(EMFPlusPlayer *)self readImage:image in_size:*&in_size pImage:&v11];
   v8 = v11;
   if (v8)
   {
-    v9 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v9 setObject:v8 atIndex:v5];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v8 atIndex:indexCopy];
   }
 
   return v7;
 }
 
-- (int)playFont:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playFont:(const char *)font in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  v5 = a4 - 24;
-  if (a4 < 0x18)
+  v5 = in_size - 24;
+  if (in_size < 0x18)
   {
     return -7;
   }
 
-  v7 = a5;
+  indexCopy = index;
   v10 = objc_alloc_init(MFPFont);
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:font in_offset:4];
   v12 = v11;
-  v13.i32[0] = *(a3 + 5);
+  v13.i32[0] = *(font + 5);
   v14 = vshlq_u32(vmovl_u16(*&vmovl_u8(v13)), xmmword_25D6FD710);
   v15 = vorr_s8(*v14.i8, *&vextq_s8(v14, v14, 8uLL));
   v16 = (v15.i32[0] | v15.i32[1]);
   if (v5 >= v16)
   {
-    v18 = *(a3 + 2);
-    v17 = *(a3 + 3);
-    v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 24 length:v16 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
+    v18 = *(font + 2);
+    v17 = *(font + 3);
+    v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:font + 24 length:v16 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
     LODWORD(v20) = v12;
     [(MFPFont *)v10 setSize:v20];
     [(MFPFont *)v10 setUnit:v18];
     [(MFPFont *)v10 setFlags:v17];
     [(MFPFont *)v10 setName:v19];
-    v21 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v21 setObject:v10 atIndex:v7];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v10 atIndex:indexCopy];
 
     v6 = 0;
   }
@@ -1039,29 +1039,29 @@ LABEL_3:
   return v6;
 }
 
-- (int)playStringFormat:(const char *)a3 in_size:(unsigned int)a4 objectIndex:(unsigned __int8)a5
+- (int)playStringFormat:(const char *)format in_size:(unsigned int)in_size objectIndex:(unsigned __int8)index
 {
-  if (a4 < 0x38)
+  if (in_size < 0x38)
   {
     return -7;
   }
 
-  v6 = *&a4;
-  v26 = a5;
+  v6 = *&in_size;
+  indexCopy = index;
   v8 = objc_alloc_init(MFPStringFormat);
-  v9 = *(a3 + 4);
-  v10 = *(a3 + 5);
-  v11 = *(a3 + 6);
-  v12 = *(a3 + 7);
-  v14 = *(a3 + 3);
-  v13 = *(a3 + 4);
-  v28 = *(a3 + 24);
-  v29 = *(a3 + 10);
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:28];
+  v9 = *(format + 4);
+  v10 = *(format + 5);
+  v11 = *(format + 6);
+  v12 = *(format + 7);
+  v14 = *(format + 3);
+  v13 = *(format + 4);
+  v28 = *(format + 24);
+  v29 = *(format + 10);
+  [MFByteUtils readFloat32FromByteArray:format in_offset:28];
   v16 = v15;
   v17 = v9 | (v10 << 8) | (v11 << 16) | (v12 << 24);
-  v18 = *(a3 + 8);
-  v19 = *(a3 + 12);
+  v18 = *(format + 8);
+  v19 = *(format + 12);
   [(MFPStringFormat *)v8 setFormatFlags:v17];
   [(MFPStringFormat *)v8 setAlignment:v14];
   [(MFPStringFormat *)v8 setLineAlignment:v13];
@@ -1071,11 +1071,11 @@ LABEL_3:
   [(MFPStringFormat *)v8 setFirstTabOffset:v20];
   [(MFPStringFormat *)v8 setHotkeyPrefix:v18];
   [(MFPStringFormat *)v8 setTrimming:v19];
-  v21 = *(a3 + 13);
+  v21 = *(format + 13);
   if (v21 < 1)
   {
-    v24 = [(MFPGraphics *)self->mGraphics objectTable];
-    [v24 setObject:v8 atIndex:v26];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    [objectTable setObject:v8 atIndex:indexCopy];
 
     v5 = 0;
   }
@@ -1083,9 +1083,9 @@ LABEL_3:
   else
   {
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
-    v23 = [v22 integerValue];
+    integerValue = [v22 integerValue];
 
-    if (v23 >= (4 * v21) + 60)
+    if (integerValue >= (4 * v21) + 60)
     {
       operator new[]();
     }
@@ -1096,21 +1096,21 @@ LABEL_3:
   return v5;
 }
 
-- (int)playObject:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playObject:(const char *)object in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = HIBYTE(a5) & 0x3F;
+  v5 = HIBYTE(in_flags) & 0x3F;
   if (v5 > 5)
   {
-    if ((HIBYTE(a5) & 0x3Fu) <= 7)
+    if ((HIBYTE(in_flags) & 0x3Fu) <= 7)
     {
       if (v5 == 6)
       {
-        return [(EMFPlusPlayer *)self playFont:a3 in_size:*&a4 objectIndex:a5];
+        return [(EMFPlusPlayer *)self playFont:object in_size:*&in_size objectIndex:in_flags];
       }
 
       if (v5 == 7)
       {
-        return [(EMFPlusPlayer *)self playStringFormat:a3 in_size:*&a4 objectIndex:a5];
+        return [(EMFPlusPlayer *)self playStringFormat:object in_size:*&in_size objectIndex:in_flags];
       }
     }
 
@@ -1119,25 +1119,25 @@ LABEL_3:
       switch(v5)
       {
         case 8u:
-          return [(EMFPlusPlayer *)self playImageAttributes:a3 in_size:*&a4 objectIndex:a5];
+          return [(EMFPlusPlayer *)self playImageAttributes:object in_size:*&in_size objectIndex:in_flags];
         case 9u:
-          return [(EMFPlusPlayer *)self playCustomLineCap:a3 in_size:*&a4 objectIndex:a5];
+          return [(EMFPlusPlayer *)self playCustomLineCap:object in_size:*&in_size objectIndex:in_flags];
         case 0xAu:
-          return [(EMFPlusPlayer *)self playGraphics:a3 in_size:*&a4 objectIndex:a5];
+          return [(EMFPlusPlayer *)self playGraphics:object in_size:*&in_size objectIndex:in_flags];
       }
     }
   }
 
-  else if ((HIBYTE(a5) & 0x3Fu) <= 2)
+  else if ((HIBYTE(in_flags) & 0x3Fu) <= 2)
   {
     if (v5 == 1)
     {
-      return [(EMFPlusPlayer *)self playBrush:a3 in_size:*&a4 objectIndex:a5];
+      return [(EMFPlusPlayer *)self playBrush:object in_size:*&in_size objectIndex:in_flags];
     }
 
     if (v5 == 2)
     {
-      return [(EMFPlusPlayer *)self playPen:a3 in_size:*&a4 objectIndex:a5];
+      return [(EMFPlusPlayer *)self playPen:object in_size:*&in_size objectIndex:in_flags];
     }
   }
 
@@ -1146,11 +1146,11 @@ LABEL_3:
     switch(v5)
     {
       case 3u:
-        return [(EMFPlusPlayer *)self playPath:a3 in_size:*&a4 objectIndex:a5];
+        return [(EMFPlusPlayer *)self playPath:object in_size:*&in_size objectIndex:in_flags];
       case 4u:
-        return [(EMFPlusPlayer *)self playRegion:a3 in_size:*&a4 objectIndex:a5];
+        return [(EMFPlusPlayer *)self playRegion:object in_size:*&in_size objectIndex:in_flags];
       case 5u:
-        return [(EMFPlusPlayer *)self playImage:a3 in_size:*&a4 objectIndex:a5];
+        return [(EMFPlusPlayer *)self playImage:object in_size:*&in_size objectIndex:in_flags];
     }
   }
 
@@ -1177,35 +1177,35 @@ LABEL_3:
   return v11;
 }
 
-- (int)playFillPath:(id)a3 in_pData:(const char *)a4 in_size:(unsigned int)a5 in_flags:(unsigned __int16)a6
+- (int)playFillPath:(id)path in_pData:(const char *)data in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v9 = a3;
-  v10 = *a4;
-  if ((a6 & 0x8000) != 0)
+  pathCopy = path;
+  v10 = *data;
+  if ((in_flags & 0x8000) != 0)
   {
-    v12 = [OITSUColor colorWithBinaryRed:*(a4 + 2) green:*(a4 + 1) blue:*a4 alpha:*(a4 + 3)];
-    v14 = [[MFPSolidBrush alloc] initWithColor:v12];
+    v12 = [OITSUColor colorWithBinaryRed:*(data + 2) green:*(data + 1) blue:*data alpha:*(data + 3)];
+    brush = [[MFPSolidBrush alloc] initWithColor:v12];
   }
 
   else
   {
-    v11 = [(MFPGraphics *)self->mGraphics objectTable];
-    v12 = [v11 objectAtIndex:v10];
+    objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+    v12 = [objectTable objectAtIndex:v10];
 
     v13 = objc_opt_class();
-    v14 = TSUDynamicCast(v13, v12);
-    if (!v14)
+    brush = TSUDynamicCast(v13, v12);
+    if (!brush)
     {
       v15 = objc_opt_class();
       v16 = TSUDynamicCast(v15, v12);
-      v14 = [v16 brush];
+      brush = [v16 brush];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MFPGraphics *)self->mGraphics fillPath:v9 brush:v14];
+    [(MFPGraphics *)self->mGraphics fillPath:pathCopy brush:brush];
     v17 = 0;
   }
 
@@ -1217,17 +1217,17 @@ LABEL_3:
   return v17;
 }
 
-- (int)playStrokePath:(id)a3 in_pData:(const char *)a4 in_size:(unsigned int)a5 in_flags:(unsigned __int16)a6
+- (int)playStrokePath:(id)path in_pData:(const char *)data in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v6 = a6;
-  v8 = a3;
-  v9 = [(MFPGraphics *)self->mGraphics objectTable];
-  v10 = [v9 objectAtIndex:v6];
+  in_flagsCopy = in_flags;
+  pathCopy = path;
+  objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+  v10 = [objectTable objectAtIndex:in_flagsCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MFPGraphics *)self->mGraphics strokePath:v8 pen:v10];
+    [(MFPGraphics *)self->mGraphics strokePath:pathCopy pen:v10];
     v11 = 0;
   }
 
@@ -1239,46 +1239,46 @@ LABEL_3:
   return v11;
 }
 
-- (int)playClear:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playClear:(const char *)clear in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v7 = [(EMFPlusPlayer *)self canvasInWorldCoordinates:a3];
-  v8 = [OITSUColor colorWithBinaryRed:*(a3 + 2) green:*(a3 + 1) blue:*a3 alpha:*(a3 + 3)];
+  v7 = [(EMFPlusPlayer *)self canvasInWorldCoordinates:clear];
+  v8 = [OITSUColor colorWithBinaryRed:*(clear + 2) green:*(clear + 1) blue:*clear alpha:*(clear + 3)];
   v9 = [[MFPSolidBrush alloc] initWithColor:v8];
   [(MFPGraphics *)self->mGraphics fillPath:v7 brush:v9];
 
   return 0;
 }
 
-- (int)playFillEllipse:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillEllipse:(const char *)ellipse in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = [OITSUBezierPath bezierPathWithOvalInRect:readRect(a3 + 4, a5)];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:a3 in_size:v6 in_flags:v5];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  v9 = [OITSUBezierPath bezierPathWithOvalInRect:readRect(ellipse + 4, in_flags)];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:ellipse in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playDrawEllipse:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawEllipse:(const char *)ellipse in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = [OITSUBezierPath bezierPathWithOvalInRect:readRect(a3, a5)];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playStrokePath:v9 in_pData:a3 in_size:v6 in_flags:v5];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  v9 = [OITSUBezierPath bezierPathWithOvalInRect:readRect(ellipse, in_flags)];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playStrokePath:v9 in_pData:ellipse in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playFillRects:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillRects:(const char *)rects in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
   v9 = objc_alloc_init(OITSUBezierPath);
   if (v6 >= 8)
   {
-    v11 = *(a3 + 7);
-    v12 = *(a3 + 4) | (*(a3 + 5) << 8) | (*(a3 + 6) << 16) & 0xFFFFFF | (v11 << 24);
-    if ((v5 & 0x4000) != 0)
+    v11 = *(rects + 7);
+    v12 = *(rects + 4) | (*(rects + 5) << 8) | (*(rects + 6) << 16) & 0xFFFFFF | (v11 << 24);
+    if ((in_flagsCopy & 0x4000) != 0)
     {
       v13 = 8;
     }
@@ -1294,11 +1294,11 @@ LABEL_3:
     {
       if (v12)
       {
-        v15 = (a3 + 8);
-        v16 = (v11 << 24) + (*(a3 + 6) << 16) + (*(a3 + 5) << 8) + *(a3 + 4);
+        v15 = (rects + 8);
+        v16 = (v11 << 24) + (*(rects + 6) << 16) + (*(rects + 5) << 8) + *(rects + 4);
         do
         {
-          [(OITSUBezierPath *)v9 appendBezierPathWithRect:readRect(v15, v5)];
+          [(OITSUBezierPath *)v9 appendBezierPathWithRect:readRect(v15, in_flagsCopy)];
           v15 += v13;
           --v16;
         }
@@ -1306,7 +1306,7 @@ LABEL_3:
         while (v16);
       }
 
-      v10 = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:a3 in_size:v6 in_flags:v5];
+      v10 = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:rects in_size:v6 in_flags:in_flagsCopy];
     }
   }
 
@@ -1318,27 +1318,27 @@ LABEL_3:
   return v10;
 }
 
-- (int)playDrawRects:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawRects:(const char *)rects in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 < 4)
+  if (in_size < 4)
   {
     return -7;
   }
 
-  v5 = a5;
-  v6 = *&a4;
-  v8 = *a3;
-  v9 = *(a3 + 1);
-  v10 = *(a3 + 2);
-  v11 = *(a3 + 3);
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a4];
-  v13 = [v12 integerValue];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  v8 = *rects;
+  v9 = *(rects + 1);
+  v10 = *(rects + 2);
+  v11 = *(rects + 3);
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&in_size];
+  integerValue = [v12 integerValue];
   v24 = v8;
   v14 = v8 | (v9 << 8) | (v10 << 16) & 0xFFFFFF | (v11 << 24);
-  v15 = (v5 & 0x4000) != 0 ? 3 : 4;
+  v15 = (in_flagsCopy & 0x4000) != 0 ? 3 : 4;
   v16 = ((v14 << v15) + 4);
 
-  if (v13 < v16)
+  if (integerValue < v16)
   {
     return -7;
   }
@@ -1347,8 +1347,8 @@ LABEL_3:
   if (v14)
   {
     v19 = v10 << 16;
-    v20 = (a3 + 4);
-    if ((v5 & 0x4000) != 0)
+    v20 = (rects + 4);
+    if ((in_flagsCopy & 0x4000) != 0)
     {
       v21 = 8;
     }
@@ -1361,7 +1361,7 @@ LABEL_3:
     v22 = (v11 << 24) + v19 + (v9 << 8) + v24;
     do
     {
-      [(OITSUBezierPath *)v18 appendBezierPathWithRect:readRect(v20, v5)];
+      [(OITSUBezierPath *)v18 appendBezierPathWithRect:readRect(v20, in_flagsCopy)];
       v20 += v21;
       --v22;
     }
@@ -1369,23 +1369,23 @@ LABEL_3:
     while (v22);
   }
 
-  v17 = [(EMFPlusPlayer *)self playStrokePath:v18 in_pData:a3 in_size:v6 in_flags:v5];
+  v17 = [(EMFPlusPlayer *)self playStrokePath:v18 in_pData:rects in_size:v6 in_flags:in_flagsCopy];
 
   return v17;
 }
 
-- (int)playFillPolygon:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillPolygon:(const char *)polygon in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a4 - 8;
-  if (a4 < 8)
+  v5 = in_size - 8;
+  if (in_size < 8)
   {
     return -7;
   }
 
-  v7 = a5;
+  in_flagsCopy = in_flags;
   v9 = objc_alloc_init(OITSUBezierPath);
-  v10 = *(a3 + 1);
-  if ((v7 & 0x4000) != 0)
+  v10 = *(polygon + 1);
+  if ((in_flagsCopy & 0x4000) != 0)
   {
     v11 = 4;
   }
@@ -1407,11 +1407,11 @@ LABEL_3:
 
   if (v12)
   {
-    v14 = (a3 + 8);
+    v14 = (polygon + 8);
     v15 = 1;
     do
     {
-      Point = readPoint(v14, v7);
+      Point = readPoint(v14, in_flagsCopy);
       if (v15 == 1)
       {
         [(OITSUBezierPath *)v9 moveToPoint:Point];
@@ -1442,21 +1442,21 @@ LABEL_3:
   }
 
   [(OITSUBezierPath *)v9 closePath];
-  v6 = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:a3 in_size:v13 in_flags:v7];
+  v6 = [(EMFPlusPlayer *)self playFillPath:v9 in_pData:polygon in_size:v13 in_flags:in_flagsCopy];
 
   return v6;
 }
 
-- (int)playDrawLines:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawLines:(const char *)lines in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
+  in_flagsCopy = in_flags;
   v9 = objc_alloc_init(OITSUBezierPath);
-  v10 = a4 >= 4;
-  v11 = a4 - 4;
+  v10 = in_size >= 4;
+  v11 = in_size - 4;
   if (v10)
   {
-    v13 = *a3;
-    if ((v5 & 0x4000) != 0)
+    v13 = *lines;
+    if ((in_flagsCopy & 0x4000) != 0)
     {
       v14 = 4;
     }
@@ -1469,12 +1469,12 @@ LABEL_3:
     if (!v13)
     {
 LABEL_14:
-      v12 = [(EMFPlusPlayer *)self playStrokePath:v9 in_pData:a3 in_size:v11 in_flags:v5];
+      v12 = [(EMFPlusPlayer *)self playStrokePath:v9 in_pData:lines in_size:v11 in_flags:in_flagsCopy];
       goto LABEL_15;
     }
 
     v15 = 0;
-    v16 = (a3 + 4);
+    v16 = (lines + 4);
     while (1)
     {
       v10 = v11 >= v14;
@@ -1484,7 +1484,7 @@ LABEL_14:
         break;
       }
 
-      Point = readPoint(v16, v5);
+      Point = readPoint(v16, in_flagsCopy);
       if (v15)
       {
         [(OITSUBezierPath *)v9 lineToPoint:Point];
@@ -1509,34 +1509,34 @@ LABEL_15:
   return v12;
 }
 
-- (int)playDrawArc:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawArc:(const char *)arc in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  [MFByteUtils readFloat32FromByteArray:arc in_offset:0];
   v10 = v9;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:arc in_offset:4];
   v12 = v11;
-  Rect = readRect(a3 + 8, v5);
+  Rect = readRect(arc + 8, in_flagsCopy);
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v20 = objc_alloc_init(OITSUBezierPath);
   [(OITSUBezierPath *)v20 appendBezierPathWithArcWithEllipseBounds:1 startAngle:1 swingAngle:Rect angleType:v15 startNewPath:v17, v19, v10, v12];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playStrokePath:v20 in_pData:a3 in_size:v6 in_flags:v5];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playStrokePath:v20 in_pData:arc in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playFillPie:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillPie:(const char *)pie in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  [MFByteUtils readFloat32FromByteArray:pie in_offset:4];
   v10 = v9;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:8];
+  [MFByteUtils readFloat32FromByteArray:pie in_offset:8];
   v12 = v11;
-  Rect = readRect(a3 + 12, v5);
+  Rect = readRect(pie + 12, in_flagsCopy);
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1544,20 +1544,20 @@ LABEL_15:
   [(OITSUBezierPath *)v20 moveToPoint:TSUCenterOfRect(Rect, v15, v17, v19)];
   [(OITSUBezierPath *)v20 appendBezierPathWithArcWithEllipseBounds:1 startAngle:0 swingAngle:Rect angleType:v15 startNewPath:v17, v19, v10, v12];
   [(OITSUBezierPath *)v20 closePath];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playFillPath:v20 in_pData:a3 in_size:v6 in_flags:v5];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playFillPath:v20 in_pData:pie in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playDrawPie:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawPie:(const char *)pie in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  [MFByteUtils readFloat32FromByteArray:pie in_offset:0];
   v10 = v9;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:pie in_offset:4];
   v12 = v11;
-  Rect = readRect(a3 + 8, v5);
+  Rect = readRect(pie + 8, in_flagsCopy);
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1565,20 +1565,20 @@ LABEL_15:
   [(OITSUBezierPath *)v20 moveToPoint:TSUCenterOfRect(Rect, v15, v17, v19)];
   [(OITSUBezierPath *)v20 appendBezierPathWithArcWithEllipseBounds:1 startAngle:0 swingAngle:Rect angleType:v15 startNewPath:v17, v19, v10, v12];
   [(OITSUBezierPath *)v20 closePath];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playStrokePath:v20 in_pData:a3 in_size:v6 in_flags:v5];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playStrokePath:v20 in_pData:pie in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playDrawBeziers:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawBeziers:(const char *)beziers in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4 - 4;
-  if (a4 >= 4)
+  v5 = in_size - 4;
+  if (in_size >= 4)
   {
-    v7 = a5;
+    in_flagsCopy = in_flags;
     v10 = objc_alloc_init(OITSUBezierPath);
-    if ((v7 & 0x4000) != 0)
+    if ((in_flagsCopy & 0x4000) != 0)
     {
       v11 = 4;
     }
@@ -1591,20 +1591,20 @@ LABEL_15:
     v12 = v5 - v11;
     if (v5 >= v11)
     {
-      v13 = *a3;
-      [(OITSUBezierPath *)v10 moveToPoint:readPoint(a3 + 4, v7)];
-      v24 = self;
-      v25 = a3;
+      v13 = *beziers;
+      [(OITSUBezierPath *)v10 moveToPoint:readPoint(beziers + 4, in_flagsCopy)];
+      selfCopy = self;
+      beziersCopy = beziers;
       if ((v13 - 1) < 3)
       {
 LABEL_20:
-        v6 = [(EMFPlusPlayer *)v24 playStrokePath:v10 in_pData:v25 in_size:v12 in_flags:v7, v24, v25];
+        beziersCopy = [(EMFPlusPlayer *)selfCopy playStrokePath:v10 in_pData:beziersCopy in_size:v12 in_flags:in_flagsCopy, selfCopy, beziersCopy];
         goto LABEL_21;
       }
 
       v14 = 0;
-      v15 = &a3[v11 + 4];
-      if ((v7 & 0x4000) != 0)
+      v15 = &beziers[v11 + 4];
+      if ((in_flagsCopy & 0x4000) != 0)
       {
         v16 = 12;
       }
@@ -1639,7 +1639,7 @@ LABEL_20:
         v28 = v26;
         do
         {
-          Point = readPoint(v15, v7);
+          Point = readPoint(v15, in_flagsCopy);
           v21 = &v26 + v19;
           *v21 = Point;
           *(v21 + 1) = v22;
@@ -1656,22 +1656,22 @@ LABEL_20:
       }
     }
 
-    v6 = -7;
+    beziersCopy = -7;
 LABEL_21:
 
-    return v6;
+    return beziersCopy;
   }
 
   return -7;
 }
 
-- (int)playFillClosedCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillClosedCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
   v8 = objc_alloc_init(OITSUBezierPath);
-  if (a4 >= 0xC)
+  if (in_size >= 0xC)
   {
-    [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
-    if ((a5 & 0x4000) != 0)
+    [MFByteUtils readFloat32FromByteArray:curve in_offset:4];
+    if ((in_flags & 0x4000) != 0)
     {
       v9 = 2;
     }
@@ -1681,7 +1681,7 @@ LABEL_21:
       v9 = 3;
     }
 
-    if (a4 - 12 >= (*(a3 + 8) | (*(a3 + 9) << 8) | (*(a3 + 10) << 16) & 0xFFFFFF | (*(a3 + 11) << 24)) << v9)
+    if (in_size - 12 >= (*(curve + 8) | (*(curve + 9) << 8) | (*(curve + 10) << 16) & 0xFFFFFF | (*(curve + 11) << 24)) << v9)
     {
       operator new[]();
     }
@@ -1690,16 +1690,16 @@ LABEL_21:
   return -7;
 }
 
-- (int)playDrawClosedCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawClosedCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 < 8)
+  if (in_size < 8)
   {
     return -7;
   }
 
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
-  v8 = *(a3 + 4) | (*(a3 + 5) << 8) | (*(a3 + 6) << 16) & 0xFFFFFF | (*(a3 + 7) << 24);
-  if ((a5 & 0x4000) != 0)
+  [MFByteUtils readFloat32FromByteArray:curve in_offset:0];
+  v8 = *(curve + 4) | (*(curve + 5) << 8) | (*(curve + 6) << 16) & 0xFFFFFF | (*(curve + 7) << 24);
+  if ((in_flags & 0x4000) != 0)
   {
     v9 = 4;
   }
@@ -1718,7 +1718,7 @@ LABEL_21:
     v11 = 1;
   }
 
-  if (!v11 || v13 > a4)
+  if (!v11 || v13 > in_size)
   {
     return -7;
   }
@@ -1732,11 +1732,11 @@ LABEL_21:
   return 0;
 }
 
-- (int)playDrawCurve:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawCurve:(const char *)curve in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 >= 0x10)
+  if (in_size >= 0x10)
   {
-    if ((a5 & 0x4000) != 0)
+    if ((in_flags & 0x4000) != 0)
     {
       v6 = 2;
     }
@@ -1746,13 +1746,13 @@ LABEL_21:
       v6 = 3;
     }
 
-    v7 = (a4 - 16) >> v6;
-    [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
-    v8 = *(a3 + 3);
+    v7 = (in_size - 16) >> v6;
+    [MFByteUtils readFloat32FromByteArray:curve in_offset:0];
+    v8 = *(curve + 3);
     if (v8 - 1 < v7)
     {
-      v9 = *(a3 + 4) | (*(a3 + 5) << 8) | (*(a3 + 6) << 16) & 0xFFFFFF | (*(a3 + 7) << 24);
-      v10 = *(a3 + 8) | (*(a3 + 9) << 8) | (*(a3 + 10) << 16) & 0xFFFFFF | (*(a3 + 11) << 24);
+      v9 = *(curve + 4) | (*(curve + 5) << 8) | (*(curve + 6) << 16) & 0xFFFFFF | (*(curve + 7) << 24);
+      v10 = *(curve + 8) | (*(curve + 9) << 8) | (*(curve + 10) << 16) & 0xFFFFFF | (*(curve + 11) << 24);
       if (!__CFADD__(v10, v9) && v10 + v9 <= v8)
       {
         objc_alloc_init(OITSUBezierPath);
@@ -1764,65 +1764,65 @@ LABEL_21:
   return -7;
 }
 
-- (int)playDrawPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v8 = [(MFPGraphics *)self->mGraphics objectTable:a3];
-  v9 = [v8 objectAtIndex:v5];
+  in_flagsCopy = in_flags;
+  v8 = [(MFPGraphics *)self->mGraphics objectTable:path];
+  v9 = [v8 objectAtIndex:in_flagsCopy];
 
-  v10 = *a3;
-  v11 = [(MFPGraphics *)self->mGraphics objectTable];
-  v12 = [v11 objectAtIndex:v10];
+  v10 = *path;
+  objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+  v12 = [objectTable objectAtIndex:v10];
 
   mGraphics = self->mGraphics;
-  v14 = [v9 path];
-  [(MFPGraphics *)mGraphics strokePath:v14 pen:v12];
+  path = [v9 path];
+  [(MFPGraphics *)mGraphics strokePath:path pen:v12];
 
   return 0;
 }
 
-- (int)playFillPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playFillPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = [(MFPGraphics *)self->mGraphics objectTable];
-  v10 = [v9 objectAtIndex:v5];
+  in_flagsCopy = in_flags;
+  v6 = *&in_size;
+  objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+  v10 = [objectTable objectAtIndex:in_flagsCopy];
 
-  v11 = [v10 path];
-  LODWORD(v5) = [(EMFPlusPlayer *)self playFillPath:v11 in_pData:a3 in_size:v6 in_flags:v5];
+  path = [v10 path];
+  LODWORD(in_flagsCopy) = [(EMFPlusPlayer *)self playFillPath:path in_pData:path in_size:v6 in_flags:in_flagsCopy];
 
-  return v5;
+  return in_flagsCopy;
 }
 
-- (int)playDrawImage:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawImage:(const char *)image in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v8 = [(MFPGraphics *)self->mGraphics objectTable:a3];
-  v9 = [v8 objectAtIndex:a5];
+  v8 = [(MFPGraphics *)self->mGraphics objectTable:image];
+  v9 = [v8 objectAtIndex:in_flags];
 
-  v10 = *(a3 + 2);
-  readFloat32Rect(a3 + 8);
-  [v9 drawInRect:v10 fromRect:self->mEffect unit:readRect(a3 + 24 effect:a5)];
+  v10 = *(image + 2);
+  readFloat32Rect(image + 8);
+  [v9 drawInRect:v10 fromRect:self->mEffect unit:readRect(image + 24 effect:in_flags)];
 
   return 0;
 }
 
-- (int)playDrawImagePoints:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawImagePoints:(const char *)points in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = [(MFPGraphics *)self->mGraphics objectTable:a3];
-  v9 = [v8 objectAtIndex:a5];
+  v8 = [(MFPGraphics *)self->mGraphics objectTable:points];
+  v9 = [v8 objectAtIndex:in_flags];
 
-  v10 = *(a3 + 2);
-  Float32Rect = readFloat32Rect(a3 + 8);
-  if (*(a3 + 12) == 3)
+  v10 = *(points + 2);
+  Float32Rect = readFloat32Rect(points + 8);
+  if (*(points + 12) == 3)
   {
     v15 = Float32Rect;
     v16 = v12;
     v17 = v13;
     v18 = v14;
     v19 = 0;
-    v20 = a3 + 28;
-    if ((a5 & 0x4000) != 0)
+    v20 = points + 28;
+    if ((in_flags & 0x4000) != 0)
     {
       v21 = 2;
     }
@@ -1835,7 +1835,7 @@ LABEL_21:
     v22 = &v35[0].f64[1];
     do
     {
-      *(v22 - 1) = readPoint(&v20[v19 << v21], a5);
+      *(v22 - 1) = readPoint(&v20[v19 << v21], in_flags);
       *v22 = v23;
       ++v19;
       v22 += 2;
@@ -1878,46 +1878,46 @@ LABEL_21:
   return v30;
 }
 
-+ (float)firstTabPosPastPos:(float)a3 stringFormat:(id)a4 isExplicit:(BOOL *)a5
++ (float)firstTabPosPastPos:(float)pos stringFormat:(id)format isExplicit:(BOOL *)explicit
 {
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  formatCopy = format;
+  v8 = formatCopy;
+  if (explicit)
   {
-    *a5 = 0;
+    *explicit = 0;
   }
 
-  if (!v7)
+  if (!formatCopy)
   {
     goto LABEL_16;
   }
 
-  v9 = [v7 tabStopCount];
+  tabStopCount = [formatCopy tabStopCount];
   [v8 firstTabOffset];
-  if (v9 < 1 || (v11 = v10, v10 < 0.0))
+  if (tabStopCount < 1 || (posCopy = v10, v10 < 0.0))
   {
-    if (a5)
+    if (explicit)
     {
-      *a5 = 0;
+      *explicit = 0;
     }
 
 LABEL_16:
-    v11 = a3;
+    posCopy = pos;
     goto LABEL_17;
   }
 
   v12 = 0;
   do
   {
-    if (a5)
+    if (explicit)
     {
-      *a5 = v12 < v9;
+      *explicit = v12 < tabStopCount;
     }
 
-    v13 = [v8 tabStops];
-    if (v12 >= v9 - 1)
+    tabStops = [v8 tabStops];
+    if (v12 >= tabStopCount - 1)
     {
-      v14 = v9 - 1;
+      v14 = tabStopCount - 1;
     }
 
     else
@@ -1925,48 +1925,48 @@ LABEL_16:
       v14 = v12;
     }
 
-    v11 = v11 + *(v13 + 4 * v14);
+    posCopy = posCopy + *(tabStops + 4 * v14);
     ++v12;
   }
 
-  while (v11 <= a3);
+  while (posCopy <= pos);
 LABEL_17:
 
-  return v11;
+  return posCopy;
 }
 
-- (int)playDrawString:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawString:(const char *)string in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 >= 0x1C)
+  if (in_size >= 0x1C)
   {
-    v6 = 2 * *(a3 + 4);
-    if (v6 + 28 <= a4)
+    v6 = 2 * *(string + 4);
+    if (v6 + 28 <= in_size)
     {
-      v130 = *(a3 + 4);
-      v10 = [(MFPGraphics *)self->mGraphics objectTable];
-      v11 = [v10 objectAtIndex:a5];
+      v130 = *(string + 4);
+      objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+      v11 = [objectTable objectAtIndex:in_flags];
 
       v123 = v11;
-      v12 = [v11 flags];
+      flags = [v11 flags];
       v13 = [v11 createCTFontWithGraphics:self->mGraphics];
       Size = CTFontGetSize(v13);
       Ascent = CTFontGetAscent(v13);
-      v14 = *a3;
-      if ((a5 & 0x8000) != 0)
+      v14 = *string;
+      if ((in_flags & 0x8000) != 0)
       {
-        v17 = [OITSUColor colorWithBinaryRed:*(a3 + 2) green:*(a3 + 1) blue:v14 alpha:*(a3 + 3)];
+        color = [OITSUColor colorWithBinaryRed:*(string + 2) green:*(string + 1) blue:v14 alpha:*(string + 3)];
       }
 
       else
       {
-        v15 = [(MFPGraphics *)self->mGraphics objectTable];
-        v16 = [v15 objectAtIndex:v14];
+        objectTable2 = [(MFPGraphics *)self->mGraphics objectTable];
+        v16 = [objectTable2 objectAtIndex:v14];
 
-        v17 = [v16 color];
+        color = [v16 color];
       }
 
-      v124 = v17;
-      if (!v17)
+      v124 = color;
+      if (!color)
       {
         v7 = 0;
 LABEL_82:
@@ -1976,37 +1976,37 @@ LABEL_82:
 
       v18 = TCCurrentGraphicsContext();
       CGContextSaveGState(v18);
-      [v17 set];
-      v19 = *(a3 + 4);
-      v20 = *(a3 + 5);
-      v21 = [(MFPGraphics *)self->mGraphics objectTable];
-      v22 = [v21 objectAtIndex:v19 | (v20 << 8)];
+      [color set];
+      v19 = *(string + 4);
+      v20 = *(string + 5);
+      objectTable3 = [(MFPGraphics *)self->mGraphics objectTable];
+      v22 = [objectTable3 objectAtIndex:v19 | (v20 << 8)];
 
-      v23 = [v22 formatFlags];
-      Float32Rect = readFloat32Rect(a3 + 12);
+      formatFlags = [v22 formatFlags];
+      Float32Rect = readFloat32Rect(string + 12);
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 28 length:v6 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
+      v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:string + 28 length:v6 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
       v128 = v22;
       if (v22)
       {
         rect = [v22 alignment];
-        v114 = [v22 lineAlignment];
-        v32 = [v22 trimming];
+        lineAlignment = [v22 lineAlignment];
+        trimming = [v22 trimming];
       }
 
       else
       {
-        v114 = 0;
+        lineAlignment = 0;
         rect = 0;
-        v32 = 1;
+        trimming = 1;
       }
 
       v33 = CTFontGetAscent(v13);
       Descent = CTFontGetDescent(v13);
       Leading = CTFontGetLeading(v13);
-      if ((v23 & 0x1000) == 0)
+      if ((formatFlags & 0x1000) == 0)
       {
         v144.origin.x = Float32Rect;
         v144.origin.y = v26;
@@ -2059,7 +2059,7 @@ LABEL_82:
       v42 = v33 + v112 + Leading;
       v127 = v42;
       v43 = (v42 * (v41 >> 3));
-      v44 = MinY + Height * v114 * 0.5 - vcvtd_n_f64_u32(v114 * v43, 1uLL);
+      v44 = MinY + Height * lineAlignment * 0.5 - vcvtd_n_f64_u32(lineAlignment * v43, 1uLL);
       v131 = v44;
       v45 = (v41 >> 3) - 1;
       if (v40 <= 0.0 || (v149.origin.x = Float32Rect, v149.origin.y = v26, v149.size.width = v28, v149.size.height = v30, CGRectGetHeight(v149) >= v43))
@@ -2082,7 +2082,7 @@ LABEL_82:
         v48 = (v46 - v131) / v127;
         v49 = floorf(v48);
         v50 = ceilf(v48);
-        if ((v23 & 0x2000) == 0)
+        if ((formatFlags & 0x2000) == 0)
         {
           v50 = v49;
         }
@@ -2090,7 +2090,7 @@ LABEL_82:
         v51 = (MaxY - v131) / v127;
         v52 = ceilf(v51);
         v53 = floorf(v51);
-        if ((v23 & 0x2000) == 0)
+        if ((formatFlags & 0x2000) == 0)
         {
           v53 = v52;
         }
@@ -2259,7 +2259,7 @@ LABEL_79:
       v113 = v45;
       while (1)
       {
-        v78 = v12;
+        v78 = flags;
         v79 = *&v139[8 * v54];
         v80 = v79[6];
         v81 = v79[7];
@@ -2284,7 +2284,7 @@ LABEL_79:
 
 LABEL_72:
         v102 = v129 + v115;
-        v12 = v78;
+        flags = v78;
         if ((v78 & 4) != 0)
         {
           v103 = v79[6];
@@ -2356,7 +2356,7 @@ LABEL_71:
         v164.size.width = v28;
         v164.size.height = v30;
         v93 = AdvancesForGlyphs;
-        if (CGRectGetWidth(v164) <= 0.0 || (v23 & 0x1000) == 0 || v32 == 0)
+        if (CGRectGetWidth(v164) <= 0.0 || (formatFlags & 0x1000) == 0 || trimming == 0)
         {
           v96 = v91;
         }
@@ -2402,19 +2402,19 @@ LABEL_70:
   return -7;
 }
 
-- (int)playDrawDriverString:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playDrawDriverString:(const char *)string in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 < 4)
+  if (in_size < 4)
   {
     return 0;
   }
 
-  v5 = a5;
-  v9 = *a3;
-  if ((a5 & 0x8000) != 0)
+  in_flagsCopy = in_flags;
+  v9 = *string;
+  if ((in_flags & 0x8000) != 0)
   {
-    v17 = [OITSUColor colorWithBinaryRed:*(a3 + 2) green:*(a3 + 1) blue:v9 alpha:*(a3 + 3)];
-    if (v17)
+    color = [OITSUColor colorWithBinaryRed:*(string + 2) green:*(string + 1) blue:v9 alpha:*(string + 3)];
+    if (color)
     {
       goto LABEL_7;
     }
@@ -2422,22 +2422,22 @@ LABEL_70:
     return 0;
   }
 
-  v10 = [(MFPGraphics *)self->mGraphics objectTable];
-  v11 = [v10 objectAtIndex:v9];
+  objectTable = [(MFPGraphics *)self->mGraphics objectTable];
+  v11 = [objectTable objectAtIndex:v9];
 
   v12 = objc_opt_class();
-  v13 = TSUDynamicCast(v12, v11);
+  brush = TSUDynamicCast(v12, v11);
   v14 = objc_opt_class();
   v15 = TSUDynamicCast(v14, v11);
   v16 = v15;
-  if (!v13 && v15)
+  if (!brush && v15)
   {
-    v13 = [v15 brush];
+    brush = [v15 brush];
   }
 
-  v17 = [v13 color];
+  color = [brush color];
 
-  if (!v17)
+  if (!color)
   {
     return 0;
   }
@@ -2449,8 +2449,8 @@ LABEL_7:
   v21 = *(MEMORY[0x277CBF2C0] + 24);
   tx = *(MEMORY[0x277CBF2C0] + 32);
   ty = *(MEMORY[0x277CBF2C0] + 40);
-  v67 = v17;
-  if (a4 < 0xA)
+  v67 = color;
+  if (in_size < 0xA)
   {
     v25 = 0;
     v27 = 0;
@@ -2461,8 +2461,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v24 = (a3[8] & 1) == 0;
-  if (a4 < 0xE)
+  v24 = (string[8] & 1) == 0;
+  if (in_size < 0xE)
   {
     v25 = 0;
     v27 = 0;
@@ -2470,11 +2470,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v25 = *(a3 + 6);
+  v25 = *(string + 6);
   v26 = 2 * v25 + 16;
-  if (v26 <= a4)
+  if (v26 <= in_size)
   {
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 + 16 length:2 * v25 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
+    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:string + 16 length:2 * v25 encoding:CFStringConvertEncodingToNSStringEncoding(0x14000100u)];
     v28 = 1;
   }
 
@@ -2500,10 +2500,10 @@ LABEL_16:
     }
   }
 
-  else if (v26 + 16 * v25 <= a4)
+  else if (v26 + 16 * v25 <= in_size)
   {
     v31 = 0;
-    v32 = &a3[v26];
+    v32 = &string[v26];
     v33 = v32;
     do
     {
@@ -2558,8 +2558,8 @@ LABEL_26:
       v40 = TCCurrentGraphicsContext();
       CGContextSaveGState(v40);
       [v36 set];
-      v41 = [(MFPGraphics *)self->mGraphics objectTable];
-      v42 = [v41 objectAtIndex:v5];
+      objectTable2 = [(MFPGraphics *)self->mGraphics objectTable];
+      v42 = [objectTable2 objectAtIndex:in_flagsCopy];
 
       v43 = [v42 createCTFontWithGraphics:self->mGraphics];
       v44 = CTFontCopyGraphicsFont(v43, 0);
@@ -2644,24 +2644,24 @@ LABEL_37:
   return v29;
 }
 
-- (int)playBeginContainer:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playBeginContainer:(const char *)container in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  Float32Rect = readFloat32Rect(a3);
+  in_flagsCopy = in_flags;
+  Float32Rect = readFloat32Rect(container);
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = readFloat32Rect(a3 + 16);
-  [(MFPGraphics *)self->mGraphics beginContainerWithId:*(a3 + 8) boundsInParent:v5 bounds:Float32Rect boundsUnit:v10, v12, v14, v15, v16, v17, v18];
+  v15 = readFloat32Rect(container + 16);
+  [(MFPGraphics *)self->mGraphics beginContainerWithId:*(container + 8) boundsInParent:in_flagsCopy bounds:Float32Rect boundsUnit:v10, v12, v14, v15, v16, v17, v18];
   return 0;
 }
 
-- (int)playSetWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
   v9 = 0u;
   v10 = 0u;
   v8 = 0u;
-  v5 = [(MFPGraphics *)self->mGraphics currentState:readAffineTransform(a3];
+  v5 = [(MFPGraphics *)self->mGraphics currentState:readAffineTransform(transform];
   v7[0] = v8;
   v7[1] = v9;
   v7[2] = v10;
@@ -2670,9 +2670,9 @@ LABEL_37:
   return 0;
 }
 
-- (int)playResetWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playResetWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = [(MFPGraphics *)self->mGraphics currentState:a3];
+  v5 = [(MFPGraphics *)self->mGraphics currentState:transform];
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   v8[0] = *MEMORY[0x277CBF2C0];
   v8[1] = v6;
@@ -2682,13 +2682,13 @@ LABEL_37:
   return 0;
 }
 
-- (int)playMultiplyWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playMultiplyWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  v5 = (a5 >> 13) & 1;
-  v6 = [(MFPGraphics *)self->mGraphics currentState:readAffineTransform(a3];
+  v5 = (in_flags >> 13) & 1;
+  v6 = [(MFPGraphics *)self->mGraphics currentState:readAffineTransform(transform];
   v8[0] = v9;
   v8[1] = v10;
   v8[2] = v11;
@@ -2697,88 +2697,88 @@ LABEL_37:
   return 0;
 }
 
-- (int)playTranslateWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playTranslateWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:0];
   v9 = v8;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:4];
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeTranslation(&v15, v9, v10);
-  v11 = (v5 >> 13) & 1;
-  v12 = [(MFPGraphics *)self->mGraphics currentState];
+  v11 = (in_flagsCopy >> 13) & 1;
+  currentState = [(MFPGraphics *)self->mGraphics currentState];
   v14 = v15;
-  [v12 multiplyWorldTransformBy:&v14 order:v11];
+  [currentState multiplyWorldTransformBy:&v14 order:v11];
 
   return 0;
 }
 
-- (int)playScaleWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playScaleWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:0];
   v9 = v8;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:4];
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeScale(&v15, v9, v10);
-  v11 = (v5 >> 13) & 1;
-  v12 = [(MFPGraphics *)self->mGraphics currentState];
+  v11 = (in_flagsCopy >> 13) & 1;
+  currentState = [(MFPGraphics *)self->mGraphics currentState];
   v14 = v15;
-  [v12 multiplyWorldTransformBy:&v14 order:v11];
+  [currentState multiplyWorldTransformBy:&v14 order:v11];
 
   return 0;
 }
 
-- (int)playRotateWorldTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playRotateWorldTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:0];
   memset(&v12, 0, sizeof(v12));
   CGAffineTransformMakeRotation(&v12, v7 * 3.14159265 / 180.0);
-  v8 = (v5 >> 13) & 1;
-  v9 = [(MFPGraphics *)self->mGraphics currentState];
+  v8 = (in_flagsCopy >> 13) & 1;
+  currentState = [(MFPGraphics *)self->mGraphics currentState];
   v11 = v12;
-  [v9 multiplyWorldTransformBy:&v11 order:v8];
+  [currentState multiplyWorldTransformBy:&v11 order:v8];
 
   return 0;
 }
 
-- (int)playSetPageTransform:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetPageTransform:(const char *)transform in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  in_flagsCopy = in_flags;
+  [MFByteUtils readFloat32FromByteArray:transform in_offset:0];
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
   mGraphics = self->mGraphics;
   if (mGraphics)
   {
-    [(MFPGraphics *)mGraphics pageTransformWithScale:v5 unit:?];
+    [(MFPGraphics *)mGraphics pageTransformWithScale:in_flagsCopy unit:?];
     mGraphics = self->mGraphics;
   }
 
-  v8 = [(MFPGraphics *)mGraphics currentState];
+  currentState = [(MFPGraphics *)mGraphics currentState];
   v10[0] = v11;
   v10[1] = v12;
   v10[2] = v13;
-  [v8 setPageTransform:v10];
+  [currentState setPageTransform:v10];
 
   return 0;
 }
 
-- (int)setClipPath:(id)a3 flags:(unsigned __int16)a4
+- (int)setClipPath:(id)path flags:(unsigned __int16)flags
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 <= 0xFF)
+  flagsCopy = flags;
+  pathCopy = path;
+  if (flagsCopy <= 0xFF)
   {
     [(MFPGraphics *)self->mGraphics areThereOpenContainers];
 LABEL_4:
-    [v6 addClip];
+    [pathCopy addClip];
     goto LABEL_5;
   }
 
-  if ((v4 & 0xFF00) == 0x100)
+  if ((flagsCopy & 0xFF00) == 0x100)
   {
     goto LABEL_4;
   }
@@ -2788,35 +2788,35 @@ LABEL_5:
   return 0;
 }
 
-- (int)playSetClipRect:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetClipRect:(const char *)rect in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v7 = [OITSUBezierPath bezierPathWithRect:readRect(a3, a5)];
-  [(EMFPlusPlayer *)self setClipPath:v7 flags:v5];
+  in_flagsCopy = in_flags;
+  v7 = [OITSUBezierPath bezierPathWithRect:readRect(rect, in_flags)];
+  [(EMFPlusPlayer *)self setClipPath:v7 flags:in_flagsCopy];
 
   return 0;
 }
 
-- (int)playSetClipPath:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetClipPath:(const char *)path in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
-  v7 = [(MFPGraphics *)self->mGraphics objectTable:a3];
-  v8 = [v7 objectAtIndex:v5];
+  in_flagsCopy = in_flags;
+  v7 = [(MFPGraphics *)self->mGraphics objectTable:path];
+  v8 = [v7 objectAtIndex:in_flagsCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 path];
-    [(EMFPlusPlayer *)self setClipPath:v9 flags:v5];
+    path = [v8 path];
+    [(EMFPlusPlayer *)self setClipPath:path flags:in_flagsCopy];
   }
 
   return 0;
 }
 
-- (int)playSetRenderingOrigin:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetRenderingOrigin:(const char *)origin in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
+  v5 = *origin;
+  v6 = *(origin + 1);
   v7 = TCCurrentGraphicsContext();
   v9.width = v5;
   v9.height = v6;
@@ -2824,24 +2824,24 @@ LABEL_5:
   return 0;
 }
 
-- (int)playSetAntiAliasMode:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetAntiAliasMode:(const char *)mode in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  v5 = a5;
+  in_flagsCopy = in_flags;
   v6 = TCCurrentGraphicsContext();
-  CGContextSetShouldAntialias(v6, v5 != 0);
+  CGContextSetShouldAntialias(v6, in_flagsCopy != 0);
   return 0;
 }
 
-- (int)playSetInterpolationMode:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSetInterpolationMode:(const char *)mode in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if ((a5 - 1) > 6)
+  if ((in_flags - 1) > 6)
   {
     v5 = kCGInterpolationDefault;
   }
 
   else
   {
-    v5 = dword_25D6FD730[(a5 - 1)];
+    v5 = dword_25D6FD730[(in_flags - 1)];
   }
 
   v6 = TCCurrentGraphicsContext();
@@ -2849,11 +2849,11 @@ LABEL_5:
   return 0;
 }
 
-- (int)playBlurEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playBlurEffectWithData:(const char *)data size:(unsigned int)size
 {
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  [MFByteUtils readFloat32FromByteArray:data in_offset:0];
   v7 = v6;
-  v8 = *(a3 + 1) != 0;
+  v8 = *(data + 1) != 0;
   v9 = [MFPBlurEffect alloc];
   LODWORD(v10) = v7;
   v11 = [(MFPBlurEffect *)v9 initWithRadius:v8 expandEdge:v10];
@@ -2863,11 +2863,11 @@ LABEL_5:
   return 0;
 }
 
-- (int)playSharpenEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playSharpenEffectWithData:(const char *)data size:(unsigned int)size
 {
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:0];
+  [MFByteUtils readFloat32FromByteArray:data in_offset:0];
   v7 = v6;
-  [MFByteUtils readFloat32FromByteArray:a3 in_offset:4];
+  [MFByteUtils readFloat32FromByteArray:data in_offset:4];
   v9 = v8;
   v10 = [MFPSharpenEffect alloc];
   LODWORD(v11) = v9;
@@ -2879,7 +2879,7 @@ LABEL_5:
   return 0;
 }
 
-- (int)playColorMatrixEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playColorMatrixEffectWithData:(const char *)data size:(unsigned int)size
 {
   v6 = 0;
   v7 = 0;
@@ -2890,7 +2890,7 @@ LABEL_5:
     v9 = v6;
     do
     {
-      [MFByteUtils readFloat32FromByteArray:a3 in_offset:v9];
+      [MFByteUtils readFloat32FromByteArray:data in_offset:v9];
       *&v14[v9] = v10;
       v9 += 4;
       --v8;
@@ -2909,63 +2909,63 @@ LABEL_5:
   return 0;
 }
 
-- (int)playColorLUTEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playColorLUTEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPColorLUTEffect alloc] initWithLUTA:a3 LUTR:a3 + 256 LUTG:a3 + 512 LUTB:a3 + 768];
+  v5 = [[MFPColorLUTEffect alloc] initWithLUTA:data LUTR:data + 256 LUTG:data + 512 LUTB:data + 768];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playBrightnessContrastEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playBrightnessContrastEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPBrightnessContrastEffect alloc] initWithBrightness:*a3 contrast:*(a3 + 1)];
+  v5 = [[MFPBrightnessContrastEffect alloc] initWithBrightness:*data contrast:*(data + 1)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playHueSaturationLightnessEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playHueSaturationLightnessEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPHueSaturationLightnessEffect alloc] initWithHueChange:*a3 saturationChange:*(a3 + 1) lightnessChange:*(a3 + 2)];
+  v5 = [[MFPHueSaturationLightnessEffect alloc] initWithHueChange:*data saturationChange:*(data + 1) lightnessChange:*(data + 2)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playLevelsEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playLevelsEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPLevelsEffect alloc] initWithHighlight:*a3 midtone:*(a3 + 1) shadow:*(a3 + 2)];
+  v5 = [[MFPLevelsEffect alloc] initWithHighlight:*data midtone:*(data + 1) shadow:*(data + 2)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playTintEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playTintEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPTintEffect alloc] initWithHue:*a3 amount:*(a3 + 1)];
+  v5 = [[MFPTintEffect alloc] initWithHue:*data amount:*(data + 1)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playColorBalanceEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playColorBalanceEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPColorBalanceEffect alloc] initWithCyanRed:*a3 magentaGreen:*(a3 + 1) yellowBlue:*(a3 + 2)];
+  v5 = [[MFPColorBalanceEffect alloc] initWithCyanRed:*data magentaGreen:*(data + 1) yellowBlue:*(data + 2)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playRedEyeCorrectionEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playRedEyeCorrectionEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v6 = *a3;
+  v6 = *data;
   std::vector<CGRect>::vector[abi:ne200100](__p, v6);
   if (v6)
   {
@@ -2973,7 +2973,7 @@ LABEL_5:
     v8 = (__p[0] + 16);
     do
     {
-      v9 = &a3[(v7 & 0xFFFFFFF0) + 8];
+      v9 = &data[(v7 & 0xFFFFFFF0) + 8];
       v10 = *v9;
       v11 = v9[2];
       v12 = (v9[4] - v10);
@@ -3002,26 +3002,26 @@ LABEL_5:
   return 0;
 }
 
-- (int)playColorCurveEffectWithData:(const char *)a3 size:(unsigned int)a4
+- (int)playColorCurveEffectWithData:(const char *)data size:(unsigned int)size
 {
-  v5 = [[MFPColorCurveEffect alloc] initWithAdjustment:*a3 channel:*(a3 + 1) adjustValue:*(a3 + 2)];
+  v5 = [[MFPColorCurveEffect alloc] initWithAdjustment:*data channel:*(data + 1) adjustValue:*(data + 2)];
   mEffect = self->mEffect;
   self->mEffect = &v5->super;
 
   return 0;
 }
 
-- (int)playSerializableObject:(const char *)a3 in_size:(unsigned int)a4 in_flags:(unsigned __int16)a5
+- (int)playSerializableObject:(const char *)object in_size:(unsigned int)in_size in_flags:(unsigned __int16)in_flags
 {
-  if (a4 < 0x14)
+  if (in_size < 0x14)
   {
     return -7;
   }
 
-  v8 = vmovl_u8(*(a3 + 8));
-  v9 = +[EMFPlusPlayer serializableObjectTypeForGUID:](EMFPlusPlayer, "serializableObjectTypeForGUID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%08X-%04hX-%04hX-%02hX%02hX-%02hX%02hX%02hX%02hX%02hX%02hX", *a3, *(a3 + 2), *(a3 + 3), v8.u16[0], v8.u16[1], v8.u16[2], v8.u16[3], v8.u16[4], v8.u16[5], v8.u16[6], v8.u16[7]]);
+  v8 = vmovl_u8(*(object + 8));
+  v9 = +[EMFPlusPlayer serializableObjectTypeForGUID:](EMFPlusPlayer, "serializableObjectTypeForGUID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%08X-%04hX-%04hX-%02hX%02hX-%02hX%02hX%02hX%02hX%02hX%02hX", *object, *(object + 2), *(object + 3), v8.u16[0], v8.u16[1], v8.u16[2], v8.u16[3], v8.u16[4], v8.u16[5], v8.u16[6], v8.u16[7]]);
   result = 0;
-  v10 = *(a3 + 8);
+  v10 = *(object + 8);
   if (v9 <= 5)
   {
     if (v9 <= 2)
@@ -3029,32 +3029,32 @@ LABEL_5:
       if (v9 == 1)
       {
 
-        return [(EMFPlusPlayer *)self playBlurEffectWithData:a3 + 20 size:v10];
+        return [(EMFPlusPlayer *)self playBlurEffectWithData:object + 20 size:v10];
       }
 
       else if (v9 == 2)
       {
 
-        return [(EMFPlusPlayer *)self playSharpenEffectWithData:a3 + 20 size:v10];
+        return [(EMFPlusPlayer *)self playSharpenEffectWithData:object + 20 size:v10];
       }
     }
 
     else if (v9 == 3)
     {
 
-      return [(EMFPlusPlayer *)self playColorMatrixEffectWithData:a3 + 20 size:v10];
+      return [(EMFPlusPlayer *)self playColorMatrixEffectWithData:object + 20 size:v10];
     }
 
     else if (v9 == 4)
     {
 
-      return [(EMFPlusPlayer *)self playColorLUTEffectWithData:a3 + 20 size:v10];
+      return [(EMFPlusPlayer *)self playColorLUTEffectWithData:object + 20 size:v10];
     }
 
     else
     {
 
-      return [(EMFPlusPlayer *)self playBrightnessContrastEffectWithData:a3 + 20 size:v10];
+      return [(EMFPlusPlayer *)self playBrightnessContrastEffectWithData:object + 20 size:v10];
     }
   }
 
@@ -3064,194 +3064,194 @@ LABEL_5:
     {
       case 9:
 
-        return [(EMFPlusPlayer *)self playColorBalanceEffectWithData:a3 + 20 size:v10];
+        return [(EMFPlusPlayer *)self playColorBalanceEffectWithData:object + 20 size:v10];
       case 10:
 
-        return [(EMFPlusPlayer *)self playRedEyeCorrectionEffectWithData:a3 + 20 size:v10];
+        return [(EMFPlusPlayer *)self playRedEyeCorrectionEffectWithData:object + 20 size:v10];
       case 11:
 
-        return [(EMFPlusPlayer *)self playColorCurveEffectWithData:a3 + 20 size:v10];
+        return [(EMFPlusPlayer *)self playColorCurveEffectWithData:object + 20 size:v10];
     }
   }
 
   else if (v9 == 6)
   {
 
-    return [(EMFPlusPlayer *)self playHueSaturationLightnessEffectWithData:a3 + 20 size:v10];
+    return [(EMFPlusPlayer *)self playHueSaturationLightnessEffectWithData:object + 20 size:v10];
   }
 
   else if (v9 == 7)
   {
 
-    return [(EMFPlusPlayer *)self playLevelsEffectWithData:a3 + 20 size:v10];
+    return [(EMFPlusPlayer *)self playLevelsEffectWithData:object + 20 size:v10];
   }
 
   else
   {
 
-    return [(EMFPlusPlayer *)self playTintEffectWithData:a3 + 20 size:v10];
+    return [(EMFPlusPlayer *)self playTintEffectWithData:object + 20 size:v10];
   }
 
   return result;
 }
 
-- (int)playRecord:(int)a3 pData:(const char *)a4 dataSize:(unsigned int)a5 flags:(unsigned __int16)a6
+- (int)playRecord:(int)record pData:(const char *)data dataSize:(unsigned int)size flags:(unsigned __int16)flags
 {
-  v6 = a6;
-  v7 = *&a5;
-  v9 = *&a3;
+  flagsCopy = flags;
+  v7 = *&size;
+  v9 = *&record;
   v11 = self->mEffect;
   switch(v9)
   {
     case 16385:
-      v12 = [(EMFPlusPlayer *)self playHeader:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playHeader:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16388:
-      v12 = [(EMFPlusPlayer *)self playGetDC:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playGetDC:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16392:
-      v12 = [(EMFPlusPlayer *)self playObject:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playObject:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16393:
-      v12 = [(EMFPlusPlayer *)self playClear:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playClear:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16394:
-      v12 = [(EMFPlusPlayer *)self playFillRects:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillRects:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16395:
-      v12 = [(EMFPlusPlayer *)self playDrawRects:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawRects:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16396:
-      v12 = [(EMFPlusPlayer *)self playFillPolygon:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillPolygon:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16397:
-      v12 = [(EMFPlusPlayer *)self playDrawLines:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawLines:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16398:
-      v12 = [(EMFPlusPlayer *)self playFillEllipse:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillEllipse:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16399:
-      v12 = [(EMFPlusPlayer *)self playDrawEllipse:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawEllipse:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16400:
-      v12 = [(EMFPlusPlayer *)self playFillPie:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillPie:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16401:
-      v12 = [(EMFPlusPlayer *)self playDrawPie:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawPie:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16402:
-      v12 = [(EMFPlusPlayer *)self playDrawArc:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawArc:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16404:
-      v12 = [(EMFPlusPlayer *)self playFillPath:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillPath:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16405:
-      v12 = [(EMFPlusPlayer *)self playDrawPath:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawPath:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16406:
-      v12 = [(EMFPlusPlayer *)self playFillClosedCurve:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playFillClosedCurve:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16407:
-      v12 = [(EMFPlusPlayer *)self playDrawClosedCurve:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawClosedCurve:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16408:
-      v12 = [(EMFPlusPlayer *)self playDrawCurve:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawCurve:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16409:
-      v12 = [(EMFPlusPlayer *)self playDrawBeziers:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawBeziers:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16410:
-      v12 = [(EMFPlusPlayer *)self playDrawImage:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawImage:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16411:
-      v12 = [(EMFPlusPlayer *)self playDrawImagePoints:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawImagePoints:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16412:
-      v12 = [(EMFPlusPlayer *)self playDrawString:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawString:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16413:
-      v12 = [(EMFPlusPlayer *)self playSetRenderingOrigin:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetRenderingOrigin:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16414:
-      v12 = [(EMFPlusPlayer *)self playSetAntiAliasMode:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetAntiAliasMode:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16415:
-      v12 = [(EMFPlusPlayer *)self playSetTextRenderingHint:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetTextRenderingHint:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16416:
-      v12 = [(EMFPlusPlayer *)self playSetTextContrast:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetTextContrast:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16417:
-      v12 = [(EMFPlusPlayer *)self playSetInterpolationMode:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetInterpolationMode:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16418:
-      v12 = [(EMFPlusPlayer *)self playSetPixelOffsetMode:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetPixelOffsetMode:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16419:
-      v12 = [(EMFPlusPlayer *)self playSetCompositingMode:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetCompositingMode:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16420:
-      v12 = [(EMFPlusPlayer *)self playSetCompositingQuality:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetCompositingQuality:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16421:
-      v12 = [(EMFPlusPlayer *)self playSave:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSave:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16422:
-      v12 = [(EMFPlusPlayer *)self playRestore:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playRestore:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16423:
-      v12 = [(EMFPlusPlayer *)self playBeginContainer:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playBeginContainer:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16424:
-      v12 = [(EMFPlusPlayer *)self playBeginContainerNoParams:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playBeginContainerNoParams:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16425:
-      v12 = [(EMFPlusPlayer *)self playEndContainer:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playEndContainer:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16426:
-      v12 = [(EMFPlusPlayer *)self playSetWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16427:
-      v12 = [(EMFPlusPlayer *)self playResetWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playResetWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16428:
-      v12 = [(EMFPlusPlayer *)self playMultiplyWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playMultiplyWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16429:
-      v12 = [(EMFPlusPlayer *)self playTranslateWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playTranslateWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16430:
-      v12 = [(EMFPlusPlayer *)self playScaleWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playScaleWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16431:
-      v12 = [(EMFPlusPlayer *)self playRotateWorldTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playRotateWorldTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16432:
-      v12 = [(EMFPlusPlayer *)self playSetPageTransform:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetPageTransform:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16433:
-      v12 = [(EMFPlusPlayer *)self playResetClip:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playResetClip:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16434:
-      v12 = [(EMFPlusPlayer *)self playSetClipRect:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetClipRect:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16435:
-      v12 = [(EMFPlusPlayer *)self playSetClipPath:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetClipPath:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16436:
-      v12 = [(EMFPlusPlayer *)self playSetClipRegion:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSetClipRegion:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16437:
-      v12 = [(EMFPlusPlayer *)self playOffsetClip:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playOffsetClip:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16438:
-      v12 = [(EMFPlusPlayer *)self playDrawDriverString:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playDrawDriverString:data in_size:v7 in_flags:flagsCopy];
       break;
     case 16440:
-      v12 = [(EMFPlusPlayer *)self playSerializableObject:a4 in_size:v7 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playSerializableObject:data in_size:v7 in_flags:flagsCopy];
       break;
     default:
-      v12 = [(EMFPlusPlayer *)self playUnknown:a4 in_size:v7 in_type:v9 in_flags:v6];
+      v12 = [(EMFPlusPlayer *)self playUnknown:data in_size:v7 in_type:v9 in_flags:flagsCopy];
       break;
   }
 
@@ -3283,39 +3283,39 @@ LABEL_5:
   [(NSMutableData *)self->mLargeData setLength:0];
 }
 
-- (int)play:(const char *)a3 in_size:(unsigned int)a4
+- (int)play:(const char *)play in_size:(unsigned int)in_size
 {
-  v4 = a4;
-  if (a4 >= 0xC)
+  in_sizeCopy = in_size;
+  if (in_size >= 0xC)
   {
     v7 = 0;
     while (1)
     {
-      v8 = *(a3 + 1);
+      v8 = *(play + 1);
       if (v8 < 0xC)
       {
         return -7;
       }
 
-      v9 = *(a3 + 2);
+      v9 = *(play + 2);
       if (v8 != v9 + 12)
       {
         return -7;
       }
 
-      if (v8 >= v4)
+      if (v8 >= in_sizeCopy)
       {
-        v10 = v4;
+        v10 = in_sizeCopy;
       }
 
       else
       {
-        v10 = *(a3 + 1);
+        v10 = *(play + 1);
       }
 
-      if (v8 >= v4)
+      if (v8 >= in_sizeCopy)
       {
-        v11 = v8 - v4;
+        v11 = v8 - in_sizeCopy;
       }
 
       else
@@ -3330,9 +3330,9 @@ LABEL_5:
         goto LABEL_20;
       }
 
-      v14 = *a3;
-      v15 = *(a3 + 3);
-      v16 = *(a3 + 2) | (v15 << 8);
+      v14 = *play;
+      v15 = *(play + 3);
+      v16 = *(play + 2) | (v15 << 8);
       if ((v14 - 16394) < 0xD || v14 == 16412 || v14 == 16438 || ((v15 << 8) & 0x80000000) == 0)
       {
         if (self->mLargeType != 0x4000)
@@ -3341,11 +3341,11 @@ LABEL_5:
           v7 = 1;
         }
 
-        v17 = [(EMFPlusPlayer *)self playRecord:v14 pData:a3 + 12 dataSize:v12 flags:v16];
+        v17 = [(EMFPlusPlayer *)self playRecord:v14 pData:play + 12 dataSize:v12 flags:v16];
         goto LABEL_17;
       }
 
-      v19 = *(a3 + 3);
+      v19 = *(play + 3);
       v20 = (v12 - 4);
       mLargeType = self->mLargeType;
       if (mLargeType == 0x4000)
@@ -3359,7 +3359,7 @@ LABEL_5:
         self->mLargeFlags = v16;
         self->mLargeSize = v19;
         [(NSMutableData *)self->mLargeData setLength:0];
-        [(NSMutableData *)self->mLargeData appendBytes:a3 + 16 length:v20];
+        [(NSMutableData *)self->mLargeData appendBytes:play + 16 length:v20];
       }
 
       else
@@ -3371,7 +3371,7 @@ LABEL_44:
           return -7;
         }
 
-        [(NSMutableData *)self->mLargeData appendBytes:a3 + 16 length:v20];
+        [(NSMutableData *)self->mLargeData appendBytes:play + 16 length:v20];
         v22 = [(NSMutableData *)self->mLargeData length];
         mLargeSize = self->mLargeSize;
         if (mLargeSize == v22)
@@ -3401,9 +3401,9 @@ LABEL_17:
       }
 
 LABEL_20:
-      v4 -= v10;
-      a3 += v10;
-      if (v4 < 0xC || v13 != 0)
+      in_sizeCopy -= v10;
+      play += v10;
+      if (in_sizeCopy < 0xC || v13 != 0)
       {
         goto LABEL_39;
       }
@@ -3418,7 +3418,7 @@ LABEL_39:
     v13 = -7;
   }
 
-  if (v4)
+  if (in_sizeCopy)
   {
     return -7;
   }

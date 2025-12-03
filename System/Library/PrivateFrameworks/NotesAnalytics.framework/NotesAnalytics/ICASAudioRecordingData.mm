@@ -1,26 +1,26 @@
 @interface ICASAudioRecordingData
-- (ICASAudioRecordingData)initWithTotalRecordingTime:(id)a3 recordingActionType:(id)a4 didAppBackgroundOccur:(id)a5 didNoteMultitaskingOccur:(id)a6;
+- (ICASAudioRecordingData)initWithTotalRecordingTime:(id)time recordingActionType:(id)type didAppBackgroundOccur:(id)occur didNoteMultitaskingOccur:(id)multitaskingOccur;
 - (id)toDict;
 @end
 
 @implementation ICASAudioRecordingData
 
-- (ICASAudioRecordingData)initWithTotalRecordingTime:(id)a3 recordingActionType:(id)a4 didAppBackgroundOccur:(id)a5 didNoteMultitaskingOccur:(id)a6
+- (ICASAudioRecordingData)initWithTotalRecordingTime:(id)time recordingActionType:(id)type didAppBackgroundOccur:(id)occur didNoteMultitaskingOccur:(id)multitaskingOccur
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  timeCopy = time;
+  typeCopy = type;
+  occurCopy = occur;
+  multitaskingOccurCopy = multitaskingOccur;
   v18.receiver = self;
   v18.super_class = ICASAudioRecordingData;
   v15 = [(ICASAudioRecordingData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_totalRecordingTime, a3);
-    objc_storeStrong(&v16->_recordingActionType, a4);
-    objc_storeStrong(&v16->_didAppBackgroundOccur, a5);
-    objc_storeStrong(&v16->_didNoteMultitaskingOccur, a6);
+    objc_storeStrong(&v15->_totalRecordingTime, time);
+    objc_storeStrong(&v16->_recordingActionType, type);
+    objc_storeStrong(&v16->_didAppBackgroundOccur, occur);
+    objc_storeStrong(&v16->_didNoteMultitaskingOccur, multitaskingOccur);
   }
 
   return v16;
@@ -30,61 +30,61 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"totalRecordingTime";
-  v3 = [(ICASAudioRecordingData *)self totalRecordingTime];
-  if (v3)
+  totalRecordingTime = [(ICASAudioRecordingData *)self totalRecordingTime];
+  if (totalRecordingTime)
   {
-    v4 = [(ICASAudioRecordingData *)self totalRecordingTime];
+    totalRecordingTime2 = [(ICASAudioRecordingData *)self totalRecordingTime];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    totalRecordingTime2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = totalRecordingTime2;
+  v19[0] = totalRecordingTime2;
   v18[1] = @"recordingActionType";
-  v6 = [(ICASAudioRecordingData *)self recordingActionType];
-  if (v6)
+  recordingActionType = [(ICASAudioRecordingData *)self recordingActionType];
+  if (recordingActionType)
   {
-    v7 = [(ICASAudioRecordingData *)self recordingActionType];
+    recordingActionType2 = [(ICASAudioRecordingData *)self recordingActionType];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    recordingActionType2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = recordingActionType2;
+  v19[1] = recordingActionType2;
   v18[2] = @"didAppBackgroundOccur";
-  v9 = [(ICASAudioRecordingData *)self didAppBackgroundOccur];
-  if (v9)
+  didAppBackgroundOccur = [(ICASAudioRecordingData *)self didAppBackgroundOccur];
+  if (didAppBackgroundOccur)
   {
-    v10 = [(ICASAudioRecordingData *)self didAppBackgroundOccur];
+    didAppBackgroundOccur2 = [(ICASAudioRecordingData *)self didAppBackgroundOccur];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    didAppBackgroundOccur2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v19[2] = v10;
+  v11 = didAppBackgroundOccur2;
+  v19[2] = didAppBackgroundOccur2;
   v18[3] = @"didNoteMultitaskingOccur";
-  v12 = [(ICASAudioRecordingData *)self didNoteMultitaskingOccur];
-  if (v12)
+  didNoteMultitaskingOccur = [(ICASAudioRecordingData *)self didNoteMultitaskingOccur];
+  if (didNoteMultitaskingOccur)
   {
-    v13 = [(ICASAudioRecordingData *)self didNoteMultitaskingOccur];
+    didNoteMultitaskingOccur2 = [(ICASAudioRecordingData *)self didNoteMultitaskingOccur];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    didNoteMultitaskingOccur2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = didNoteMultitaskingOccur2;
+  v19[3] = didNoteMultitaskingOccur2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

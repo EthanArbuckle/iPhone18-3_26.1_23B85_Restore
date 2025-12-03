@@ -1,14 +1,14 @@
 @interface SKUICompletion
 - (NSMutableDictionary)cacheRepresentation;
-- (SKUICompletion)initWithCacheRepresentation:(id)a3;
-- (SKUICompletion)initWithCompletionDictionary:(id)a3;
+- (SKUICompletion)initWithCacheRepresentation:(id)representation;
+- (SKUICompletion)initWithCompletionDictionary:(id)dictionary;
 @end
 
 @implementation SKUICompletion
 
-- (SKUICompletion)initWithCompletionDictionary:(id)a3
+- (SKUICompletion)initWithCompletionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -26,7 +26,7 @@
   v13 = [(SKUICompletion *)&v24 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"term"];
+    v14 = [dictionaryCopy objectForKey:@"term"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       v13->_title = v15;
     }
 
-    v17 = [v4 objectForKey:@"search-field-term"];
+    v17 = [dictionaryCopy objectForKey:@"search-field-term"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -45,7 +45,7 @@
       v13->_alternateTitle = v18;
     }
 
-    v20 = [v4 objectForKey:@"url"];
+    v20 = [dictionaryCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -59,9 +59,9 @@
   return v13;
 }
 
-- (SKUICompletion)initWithCacheRepresentation:(id)a3
+- (SKUICompletion)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -88,7 +88,7 @@ LABEL_14:
   v13 = [(SKUICompletion *)&v23 init];
   if (v13)
   {
-    v14 = [v4 objectForKey:@"title"];
+    v14 = [representationCopy objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@ LABEL_14:
       v13->_title = v15;
     }
 
-    v17 = [v4 objectForKey:@"alttitle"];
+    v17 = [representationCopy objectForKey:@"alttitle"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -107,7 +107,7 @@ LABEL_14:
       v13->_alternateTitle = v18;
     }
 
-    self = [v4 objectForKey:@"url"];
+    self = [representationCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -127,12 +127,12 @@ LABEL_15:
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   alternateTitle = self->_alternateTitle;

@@ -1,14 +1,14 @@
 @interface BLSTimeoutDurationAttribute
-- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)a3 error:(id *)a4;
+- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)entitlements error:(id *)error;
 @end
 
 @implementation BLSTimeoutDurationAttribute
 
-- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)a3 error:(id *)a4
+- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)entitlements error:(id *)error
 {
-  v6 = a3;
+  entitlementsCopy = entitlements;
   [(BLSDurationAttribute *)self duration];
-  v8 = v7 <= 600.0 || [(BLSAttribute *)self checkEntitlementSource:v6 forSingleEntitlement:0x28339CE90 error:a4];
+  v8 = v7 <= 600.0 || [(BLSAttribute *)self checkEntitlementSource:entitlementsCopy forSingleEntitlement:0x28339CE90 error:error];
 
   return v8;
 }

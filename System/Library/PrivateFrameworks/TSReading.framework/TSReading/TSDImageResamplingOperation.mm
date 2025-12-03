@@ -1,23 +1,23 @@
 @interface TSDImageResamplingOperation
 - (CGSize)desiredSize;
 - (TSDImageResamplingOperation)init;
-- (TSDImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4;
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4;
+- (TSDImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size;
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions;
 - (void)dealloc;
-- (void)setMaskingPath:(CGPath *)a3;
+- (void)setMaskingPath:(CGPath *)path;
 @end
 
 @implementation TSDImageResamplingOperation
 
-- (TSDImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4
+- (TSDImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (!a3)
+  height = size.height;
+  width = size.width;
+  if (!provider)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageResamplingOperation initWithImageProvider:desiredSize:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 47, @"Invalid parameter not satisfying: %s", "imageProvider != nil"}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 47, @"Invalid parameter not satisfying: %s", "imageProvider != nil"}];
   }
 
   v12.receiver = self;
@@ -25,7 +25,7 @@
   v10 = [(TSDImageResamplingOperation *)&v12 init];
   if (v10)
   {
-    v10->mImageProvider = a3;
+    v10->mImageProvider = provider;
     v10->mDesiredSize.width = width;
     v10->mDesiredSize.height = height;
   }
@@ -35,9 +35,9 @@
 
 - (TSDImageResamplingOperation)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageResamplingOperation init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 58, @"Do not call method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 58, @"Do not call method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Do not call method", "-[TSDImageResamplingOperation init]"), 0}]);
 }
 
@@ -54,11 +54,11 @@
   [(TSDImageResamplingOperation *)&v4 dealloc];
 }
 
-- (void)setMaskingPath:(CGPath *)a3
+- (void)setMaskingPath:(CGPath *)path
 {
-  if (a3)
+  if (path)
   {
-    CFRetain(a3);
+    CFRetain(path);
   }
 
   mMaskingPath = self->mMaskingPath;
@@ -67,13 +67,13 @@
     CFRelease(mMaskingPath);
   }
 
-  self->mMaskingPath = a3;
+  self->mMaskingPath = path;
 }
 
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions
 {
-  v4 = a4;
-  v5 = a3;
+  contextOptionsCopy = contextOptions;
+  optionsCopy = options;
   [(TSDImageProvider *)[(TSDImageResamplingOperation *)self imageProvider] naturalSize];
   v8 = v7;
   v10 = v9;
@@ -98,14 +98,14 @@
     v18 = v8;
   }
 
-  v19 = v5 & 1;
+  v19 = optionsCopy & 1;
   [(TSDImageResamplingOperation *)self desiredSize];
   v22 = v20;
   v23 = v21;
   v122 = v17;
   v123 = v10;
   v121 = v18;
-  if ((v5 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     v22 = TSDFitOrFillSizeInSize(0, v18, v17, v20, v21);
     v23 = v24;
@@ -113,7 +113,7 @@
 
   v25 = TSDCeilSize(v22);
   v27 = v26;
-  if (v5)
+  if (optionsCopy)
   {
     v28 = 0.5;
   }
@@ -126,18 +126,18 @@
   objc_opt_class();
   [(TSDImageResamplingOperation *)self imageProvider];
   v29 = TSUDynamicCast();
-  if (v29 || (v37 = [(TSDImageResamplingOperation *)self maskingPath], (v5 & 2) != 0) || v37)
+  if (v29 || (v37 = [(TSDImageResamplingOperation *)self maskingPath], (optionsCopy & 2) != 0) || v37)
   {
-    v124 = v4;
-    v30 = [v29 CGImageSource];
-    isrc = v30;
-    if (v30)
+    v124 = contextOptionsCopy;
+    cGImageSource = [v29 CGImageSource];
+    isrc = cGImageSource;
+    if (cGImageSource)
     {
-      v31 = v30;
-      Status = CGImageSourceGetStatus(v30);
+      v31 = cGImageSource;
+      Status = CGImageSourceGetStatus(cGImageSource);
       v33 = Status == kCGImageStatusComplete;
-      v34 = [(TSDImageResamplingOperation *)self maskingPath];
-      if (!v34 && Status == kCGImageStatusComplete)
+      maskingPath = [(TSDImageResamplingOperation *)self maskingPath];
+      if (!maskingPath && Status == kCGImageStatusComplete)
       {
         v35 = CGImageSourceCopyPropertiesAtIndex(v31, 0, 0);
         if (v35)
@@ -155,11 +155,11 @@
 
     else
     {
-      v34 = [(TSDImageResamplingOperation *)self maskingPath];
+      maskingPath = [(TSDImageResamplingOperation *)self maskingPath];
       v33 = 0;
     }
 
-    if (v34)
+    if (maskingPath)
     {
       cf = 0;
       v36 = 1;
@@ -170,8 +170,8 @@ LABEL_24:
     cf = 0;
     v36 = [v29 isOpaque] ^ 1;
 LABEL_25:
-    v40 = [(NSString *)[(TSDImageResamplingOperation *)self displayName] stringByDeletingPathExtension];
-    if (!v40 || (v41 = v40, ![(NSString *)v40 length]))
+    stringByDeletingPathExtension = [(NSString *)[(TSDImageResamplingOperation *)self displayName] stringByDeletingPathExtension];
+    if (!stringByDeletingPathExtension || (v41 = stringByDeletingPathExtension, ![(NSString *)stringByDeletingPathExtension length]))
     {
       v42 = [objc_msgSend(-[TSDImageProvider imageData](-[TSDImageResamplingOperation imageProvider](self "imageProvider")];
       if (!v42 || (v41 = v42, ![(__CFString *)v42 length]))
@@ -180,14 +180,14 @@ LABEL_25:
       }
     }
 
-    v43 = [(NSString *)[(TSDImageResamplingOperation *)self displayName] pathExtension];
-    if (!v43 || (v44 = v43, ![(NSString *)v43 length]))
+    pathExtension = [(NSString *)[(TSDImageResamplingOperation *)self displayName] pathExtension];
+    if (!pathExtension || (v44 = pathExtension, ![(NSString *)pathExtension length]))
     {
       v44 = [objc_msgSend(-[TSDImageProvider imageData](-[TSDImageResamplingOperation imageProvider](self "imageProvider")];
     }
 
     PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v44, 0);
-    v46 = *MEMORY[0x277CC20C8];
+    identifier = *MEMORY[0x277CC20C8];
     v47 = UTTypeConformsTo(PreferredIdentifierForTag, *MEMORY[0x277CC20C8]);
     CFRelease(PreferredIdentifierForTag);
     if (v47)
@@ -217,13 +217,13 @@ LABEL_25:
       goto LABEL_49;
     }
 
-    v51 = [(TSDImageResamplingOperation *)self maskingPath];
-    if ((v5 & 0x18) != 0)
+    maskingPath2 = [(TSDImageResamplingOperation *)self maskingPath];
+    if ((optionsCopy & 0x18) != 0)
     {
       goto LABEL_49;
     }
 
-    if (v51)
+    if (maskingPath2)
     {
       goto LABEL_49;
     }
@@ -334,9 +334,9 @@ LABEL_49:
 
         *&transform.a = 0uLL;
         CGAffineTransformMakeScale(&transform, v76, v77);
-        v78 = [(TSDImageResamplingOperation *)self maskingPath];
+        maskingPath3 = [(TSDImageResamplingOperation *)self maskingPath];
         v131 = transform;
-        v79 = TSDCreateTransformedPath(v78, &v131);
+        v79 = TSDCreateTransformedPath(maskingPath3, &v131);
         CGContextTranslateCTM(v74, -(v120 * v76), -(v119 * v77));
         CGContextAddPath(v74, v79);
         CGContextClip(v74);
@@ -345,7 +345,7 @@ LABEL_49:
         v27 = v123 * v77;
       }
 
-      if (isrc && ((Type = CGImageSourceGetType(isrc), v121 / v25 <= v122 / v27) ? (v81 = v122 / v27) : (v81 = v121 / v25), [v29 isValid] && ((v82 = CFEqual(Type, v46), v81 >= 2.0) ? (v83 = v82 == 0) : (v83 = 1), !v83)))
+      if (isrc && ((Type = CGImageSourceGetType(isrc), v121 / v25 <= v122 / v27) ? (v81 = v122 / v27) : (v81 = v121 / v25), [v29 isValid] && ((v82 = CFEqual(Type, identifier), v81 >= 2.0) ? (v83 = v82 == 0) : (v83 = 1), !v83)))
       {
         if (v81 >= 8.0)
         {
@@ -400,9 +400,9 @@ LABEL_49:
       if (!Image)
       {
 LABEL_94:
-        v98 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageResamplingOperation performResampleOperationWithResampleOptions:bitmapContextOptions:]"];
-        [v98 handleFailureInFunction:v99 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 276, @"invalid nil value for '%s'", "resampledImage"}];
+        [currentHandler handleFailureInFunction:v99 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 276, @"invalid nil value for '%s'", "resampledImage"}];
         v100 = 0;
 LABEL_99:
         if (cf)
@@ -423,10 +423,10 @@ LABEL_99:
     v84 = objc_alloc_init(MEMORY[0x277CBEB28]);
     if (v48)
     {
-      v46 = [*MEMORY[0x277CE1E10] identifier];
+      identifier = [*MEMORY[0x277CE1E10] identifier];
     }
 
-    v85 = CGImageDestinationCreateWithData(v84, v46, 1uLL, 0);
+    v85 = CGImageDestinationCreateWithData(v84, identifier, 1uLL, 0);
     if (v85)
     {
       v86 = v85;
@@ -496,18 +496,18 @@ LABEL_99:
 
     else
     {
-      v101 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v102 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageResamplingOperation performResampleOperationWithResampleOptions:bitmapContextOptions:]"];
-      [v101 handleFailureInFunction:v102 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 282, @"invalid nil value for '%s'", "destination"}];
+      [currentHandler2 handleFailureInFunction:v102 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageResamplingOperation.m"), 282, @"invalid nil value for '%s'", "destination"}];
       v100 = 0;
     }
 
     goto LABEL_99;
   }
 
-  v38 = [(TSDImageResamplingOperation *)self imageProvider];
+  imageProvider = [(TSDImageResamplingOperation *)self imageProvider];
 
-  return [(TSDImageProvider *)v38 imageData];
+  return [(TSDImageProvider *)imageProvider imageData];
 }
 
 CFMutableDictionaryRef __96__TSDImageResamplingOperation_performResampleOperationWithResampleOptions_bitmapContextOptions___block_invoke(CFMutableDictionaryRef result)

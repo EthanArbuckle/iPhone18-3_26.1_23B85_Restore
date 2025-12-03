@@ -1,36 +1,36 @@
 @interface CardManager
-- (id)indexPathForElementWithModelIdentifier:(id)a3 inView:(id)a4;
-- (id)modelIdentifierForElementAtIndexPath:(id)a3 inView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)indexPathForElementWithModelIdentifier:(id)identifier inView:(id)view;
+- (id)modelIdentifierForElementAtIndexPath:(id)path inView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation CardManager
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10015518C(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10015518C(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)modelIdentifierForElementAtIndexPath:(id)a3 inView:(id)a4
+- (id)modelIdentifierForElementAtIndexPath:(id)path inView:(id)view
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10015706C();
   v13 = v12;
 
@@ -48,15 +48,15 @@
   return v14;
 }
 
-- (id)indexPathForElementWithModelIdentifier:(id)a3 inView:(id)a4
+- (id)indexPathForElementWithModelIdentifier:(id)identifier inView:(id)view
 {
   v6 = sub_10003C49C(&unk_1001FFEC0);
   __chkstk_darwin(v6 - 8);
   v8 = &v20 - v7;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a4;
-  v13 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10015569C(v9, v11, v8);
 
   v14 = type metadata accessor for IndexPath();

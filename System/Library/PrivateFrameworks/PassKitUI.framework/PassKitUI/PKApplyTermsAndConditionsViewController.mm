@@ -1,34 +1,34 @@
 @interface PKApplyTermsAndConditionsViewController
-- (PKApplyTermsAndConditionsViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 termsIdentifier:(id)a6;
+- (PKApplyTermsAndConditionsViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context termsIdentifier:(id)identifier;
 - (id)displayTitle;
 - (void)_terminateSetupFlow;
 - (void)dealloc;
-- (void)htmlTermsDataWithCompletion:(id)a3;
-- (void)initalTermsDataWithCompletion:(id)a3;
-- (void)pdfTermsDataWithIdentifier:(id)a3 completion:(id)a4;
+- (void)htmlTermsDataWithCompletion:(id)completion;
+- (void)initalTermsDataWithCompletion:(id)completion;
+- (void)pdfTermsDataWithIdentifier:(id)identifier completion:(id)completion;
 - (void)presentErrorAlert;
-- (void)reportAnalyticsForTermsLink:(id)a3;
-- (void)termsAccepted:(BOOL)a3 completion:(id)a4;
+- (void)reportAnalyticsForTermsLink:(id)link;
+- (void)termsAccepted:(BOOL)accepted completion:(id)completion;
 - (void)termsShown;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKApplyTermsAndConditionsViewController
 
-- (PKApplyTermsAndConditionsViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 termsIdentifier:(id)a6
+- (PKApplyTermsAndConditionsViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context termsIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a6;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = PKApplyTermsAndConditionsViewController;
-  v12 = [(PKFeatureTermsAndConditionsViewController *)&v17 initWithSetupDelegate:a4 context:a5];
+  v12 = [(PKFeatureTermsAndConditionsViewController *)&v17 initWithSetupDelegate:delegate context:context];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_applyController, v10);
-    v14 = [v11 copy];
+    objc_storeWeak(&v12->_applyController, controllerCopy);
+    v14 = [identifierCopy copy];
     termsIdentifier = v13->_termsIdentifier;
     v13->_termsIdentifier = v14;
 
@@ -53,19 +53,19 @@
   [(PKApplyTermsAndConditionsViewController *)&v5 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKApplyTermsAndConditionsViewController;
-  [(PKApplyTermsAndConditionsViewController *)&v12 viewDidAppear:a3];
+  [(PKApplyTermsAndConditionsViewController *)&v12 viewDidAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
   [WeakRetained applyFlowDidAppear];
 
   v5 = objc_loadWeakRetained(&self->_applyController);
-  v6 = [v5 featureIdentifier];
+  featureIdentifier = [v5 featureIdentifier];
 
-  if (v6 == 2)
+  if (featureIdentifier == 2)
   {
     if (self->_termsIdentifier)
     {
@@ -87,16 +87,16 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = PKApplyTermsAndConditionsViewController;
-  [(PKApplyTermsAndConditionsViewController *)&v11 viewDidDisappear:a3];
+  [(PKApplyTermsAndConditionsViewController *)&v11 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
-  v5 = [WeakRetained featureIdentifier];
+  featureIdentifier = [WeakRetained featureIdentifier];
 
-  if (v5 == 2)
+  if (featureIdentifier == 2)
   {
     if (self->_termsIdentifier)
     {
@@ -118,11 +118,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKApplyTermsAndConditionsViewController;
-  [(PKApplyTermsAndConditionsViewController *)&v6 viewWillDisappear:a3];
+  [(PKApplyTermsAndConditionsViewController *)&v6 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -135,9 +135,9 @@
 - (id)displayTitle
 {
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
-  v4 = [WeakRetained featureIdentifier];
+  featureIdentifier = [WeakRetained featureIdentifier];
 
-  if (v4 == 5)
+  if (featureIdentifier == 5)
   {
     v5 = 0;
   }
@@ -145,7 +145,7 @@
   else
   {
     v6 = objc_loadWeakRetained(&self->_applyController);
-    v7 = [v6 preferredLanguage];
+    preferredLanguage = [v6 preferredLanguage];
 
     v5 = PKLocalizedApplyFeatureString();
   }
@@ -153,59 +153,59 @@
   return v5;
 }
 
-- (void)initalTermsDataWithCompletion:(id)a3
+- (void)initalTermsDataWithCompletion:(id)completion
 {
   if (self->_preflightPDFTerms)
   {
-    [(PKApplyTermsAndConditionsViewController *)self pdfTermsDataWithIdentifier:self->_termsIdentifier completion:a3];
+    [(PKApplyTermsAndConditionsViewController *)self pdfTermsDataWithIdentifier:self->_termsIdentifier completion:completion];
   }
 
   else
   {
-    [(PKApplyTermsAndConditionsViewController *)self htmlTermsDataWithCompletion:a3];
+    [(PKApplyTermsAndConditionsViewController *)self htmlTermsDataWithCompletion:completion];
   }
 }
 
-- (void)htmlTermsDataWithCompletion:(id)a3
+- (void)htmlTermsDataWithCompletion:(id)completion
 {
   termsIdentifier = self->_termsIdentifier;
-  v5 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
   v7 = WeakRetained;
   if (termsIdentifier)
   {
-    [WeakRetained termsDataForIdentifier:self->_termsIdentifier format:*MEMORY[0x1E69BC548] completion:v5];
+    [WeakRetained termsDataForIdentifier:self->_termsIdentifier format:*MEMORY[0x1E69BC548] completion:completionCopy];
   }
 
   else
   {
-    [WeakRetained termsDataForFeatureWithIdentifier:0 format:*MEMORY[0x1E69BC548] completion:v5];
+    [WeakRetained termsDataForFeatureWithIdentifier:0 format:*MEMORY[0x1E69BC548] completion:completionCopy];
   }
 }
 
-- (void)pdfTermsDataWithIdentifier:(id)a3 completion:(id)a4
+- (void)pdfTermsDataWithIdentifier:(id)identifier completion:(id)completion
 {
   termsIdentifier = self->_termsIdentifier;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
   v10 = *MEMORY[0x1E69BC550];
   v11 = WeakRetained;
   if (termsIdentifier)
   {
-    [WeakRetained termsDataForIdentifier:v8 format:v10 completion:v7];
+    [WeakRetained termsDataForIdentifier:identifierCopy format:v10 completion:completionCopy];
   }
 
   else
   {
-    [WeakRetained termsDataForFeatureWithIdentifier:v8 format:v10 completion:v7];
+    [WeakRetained termsDataForFeatureWithIdentifier:identifierCopy format:v10 completion:completionCopy];
   }
 }
 
-- (void)reportAnalyticsForTermsLink:(id)a3
+- (void)reportAnalyticsForTermsLink:(id)link
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = [a3 PKStringForKey:@"termsFileName"];
+  v4 = [link PKStringForKey:@"termsFileName"];
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
   v6 = *MEMORY[0x1E69BA7C8];
   v7 = *MEMORY[0x1E69BB170];
@@ -240,13 +240,13 @@
   }
 }
 
-- (void)termsAccepted:(BOOL)a3 completion:(id)a4
+- (void)termsAccepted:(BOOL)accepted completion:(id)completion
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   v38[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69BA2E8];
-  if (!v4)
+  if (!acceptedCopy)
   {
     v7 = MEMORY[0x1E69BA618];
   }
@@ -263,15 +263,15 @@
   [WeakRetained reportAnalyticsDictionaryForPage:0 pageTag:*MEMORY[0x1E69BA210] additionalValues:v12];
 
   v13 = objc_loadWeakRetained(&self->_applyController);
-  v14 = [v13 featureIdentifier];
+  featureIdentifier = [v13 featureIdentifier];
 
-  if (v14 == 5 || !v4)
+  if (featureIdentifier == 5 || !acceptedCopy)
   {
     if (!self->_inUseAssertion)
     {
       v24 = MEMORY[0x1E695FBE0];
       v25 = PKPassKitCoreBundle();
-      if (v4)
+      if (acceptedCopy)
       {
         v26 = @"Accepting application terms";
       }
@@ -295,8 +295,8 @@
     v31[3] = &unk_1E801C4F0;
     objc_copyWeak(&v33, &location);
     v31[4] = self;
-    v32 = v6;
-    [v29 termsAccepted:v4 termsIdentifier:termsIdentifier secondaryIdentifier:0 actionIdentifier:0 completion:v31];
+    v32 = completionCopy;
+    [v29 termsAccepted:acceptedCopy termsIdentifier:termsIdentifier secondaryIdentifier:0 actionIdentifier:0 completion:v31];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -306,37 +306,37 @@
   {
     v15 = [PKApplyTermsVerifyingViewController alloc];
     v16 = objc_loadWeakRetained(&self->_applyController);
-    v17 = [(PKFeatureTermsAndConditionsViewController *)self setupDelegate];
-    v18 = [(PKFeatureTermsAndConditionsViewController *)self context];
+    setupDelegate = [(PKFeatureTermsAndConditionsViewController *)self setupDelegate];
+    context = [(PKFeatureTermsAndConditionsViewController *)self context];
     v19 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{self->_termsIdentifier, 0}];
-    v20 = [(PKApplyTermsVerifyingViewController *)v15 initWithController:v16 setupDelegate:v17 context:v18 termsIdentifiers:v19 applyPage:0];
+    v20 = [(PKApplyTermsVerifyingViewController *)v15 initWithController:v16 setupDelegate:setupDelegate context:context termsIdentifiers:v19 applyPage:0];
 
-    v21 = [(PKFeatureTermsAndConditionsViewController *)self containerNavigationController];
-    v22 = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
+    containerNavigationController = [(PKFeatureTermsAndConditionsViewController *)self containerNavigationController];
+    presentingViewController = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
     objc_opt_class();
-    LOBYTE(v18) = objc_opt_isKindOfClass();
+    LOBYTE(context) = objc_opt_isKindOfClass();
 
-    if (v18)
+    if (context)
     {
-      v23 = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
+      presentingViewController2 = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
 
-      v21 = v23;
+      containerNavigationController = presentingViewController2;
     }
 
-    if (v21)
+    if (containerNavigationController)
     {
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __68__PKApplyTermsAndConditionsViewController_termsAccepted_completion___block_invoke;
       v35[3] = &unk_1E80109C0;
       v35[4] = self;
-      v36 = v6;
-      [v21 pk_presentPaymentSetupViewController:v20 animated:0 completion:v35];
+      v36 = completionCopy;
+      [containerNavigationController pk_presentPaymentSetupViewController:v20 animated:0 completion:v35];
     }
 
-    else if (v6)
+    else if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -472,7 +472,7 @@ uint64_t __68__PKApplyTermsAndConditionsViewController_termsAccepted_completion_
   [WeakRetained featureIdentifier];
 
   v4 = objc_loadWeakRetained(&self->_applyController);
-  v11 = [v4 preferredLanguage];
+  preferredLanguage = [v4 preferredLanguage];
 
   v5 = PKLocalizedApplyFeatureString();
   v6 = PKLocalizedApplyFeatureString();
@@ -494,17 +494,17 @@ uint64_t __68__PKApplyTermsAndConditionsViewController_termsAccepted_completion_
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Terminating setup flow", v7, 2u);
   }
 
-  v4 = [(PKFeatureTermsAndConditionsViewController *)self setupDelegate];
-  v5 = v4;
-  if (v4)
+  setupDelegate = [(PKFeatureTermsAndConditionsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v4 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v6 = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyTermsAndConditionsViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

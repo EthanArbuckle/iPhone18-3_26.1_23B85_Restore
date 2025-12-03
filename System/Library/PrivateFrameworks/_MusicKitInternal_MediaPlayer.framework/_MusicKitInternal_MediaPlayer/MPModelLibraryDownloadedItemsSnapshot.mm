@@ -1,6 +1,6 @@
 @interface MPModelLibraryDownloadedItemsSnapshot
 - (NSArray)downloadedSongCatalogIDs;
-- (void)setDownloadedSongCatalogIDs:(id)a3;
+- (void)setDownloadedSongCatalogIDs:(id)ds;
 @end
 
 @implementation MPModelLibraryDownloadedItemsSnapshot
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)setDownloadedSongCatalogIDs:(id)a3
+- (void)setDownloadedSongCatalogIDs:(id)ds
 {
   sub_2752C3CD8(0, &qword_2809BFFF0, 0x277CCABB0);
   v4 = sub_2752DE2C8();
-  v5 = self;
+  selfCopy = self;
   MPModelLibraryDownloadedItemsSnapshot.downloadedSongCatalogIDs.setter(v4);
 }
 

@@ -1,7 +1,7 @@
 @interface MTPAFBaseEventDataProvider
-- (id)isOffline:(id)a3;
+- (id)isOffline:(id)offline;
 - (id)knownFields;
-- (id)osLanguages:(id)a3;
+- (id)osLanguages:(id)languages;
 @end
 
 @implementation MTPAFBaseEventDataProvider
@@ -10,11 +10,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTPAFBaseEventDataProvider;
-  v2 = [(MTBaseEventDataProvider *)&v7 knownFields];
-  v3 = v2;
-  if (v2)
+  knownFields = [(MTBaseEventDataProvider *)&v7 knownFields];
+  v3 = knownFields;
+  if (knownFields)
   {
-    v4 = v2;
+    v4 = knownFields;
   }
 
   else
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (id)isOffline:(id)a3
+- (id)isOffline:(id)offline
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  offlineCopy = offline;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 isOffline:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 isOffline:offlineCopy];
   }
 
   else
@@ -47,38 +47,38 @@
   return v8;
 }
 
-- (id)osLanguages:(id)a3
+- (id)osLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  languagesCopy = languages;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 osLanguages:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 osLanguages:languagesCopy];
 LABEL_5:
-    v10 = v8;
+    osLanguages = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"osLanguages"];
-  v7 = v9;
+  v9 = [languagesCopy objectForKeyedSubscript:@"osLanguages"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 osLanguages];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  osLanguages = [environment osLanguages];
 
 LABEL_6:
 
-  return v10;
+  return osLanguages;
 }
 
 @end

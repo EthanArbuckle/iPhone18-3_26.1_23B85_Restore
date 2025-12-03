@@ -6,9 +6,9 @@
 - (void)_notifyButtonsChanged;
 - (void)_notifyButtonsChangedAction;
 - (void)postNotificationFavoriteTeamsDidChange;
-- (void)register:(int64_t)a3 newTeamsAdded:(BOOL)a4 teamsRemoved:(BOOL)a5;
-- (void)registerDownloadButton:(id)a3;
-- (void)unRegisterDownloadButton:(id)a3;
+- (void)register:(int64_t)register newTeamsAdded:(BOOL)added teamsRemoved:(BOOL)removed;
+- (void)registerDownloadButton:(id)button;
+- (void)unRegisterDownloadButton:(id)button;
 @end
 
 @implementation VUIUnifiedMessagingRegistry
@@ -39,9 +39,9 @@ void __45__VUIUnifiedMessagingRegistry_sharedInstance__block_invoke()
   v2 = [(VUIUnifiedMessagingRegistry *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     buttonViews = v2->_buttonViews;
-    v2->_buttonViews = v3;
+    v2->_buttonViews = weakObjectsPointerArray;
   }
 
   return v2;
@@ -49,67 +49,67 @@ void __45__VUIUnifiedMessagingRegistry_sharedInstance__block_invoke()
 
 - (BOOL)hasActiveButtons
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VUIUnifiedMessagingRegistry *)v2 _hasActiveButtonsNoLock];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _hasActiveButtonsNoLock = [(VUIUnifiedMessagingRegistry *)selfCopy _hasActiveButtonsNoLock];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _hasActiveButtonsNoLock;
 }
 
 - (BOOL)_hasActiveButtonsNoLock
 {
-  v3 = [(VUIUnifiedMessagingRegistry *)self buttonViews];
-  [v3 compact];
+  buttonViews = [(VUIUnifiedMessagingRegistry *)self buttonViews];
+  [buttonViews compact];
 
-  v4 = [(VUIUnifiedMessagingRegistry *)self buttonViews];
-  LOBYTE(v3) = [v4 count] != 0;
+  buttonViews2 = [(VUIUnifiedMessagingRegistry *)self buttonViews];
+  LOBYTE(buttonViews) = [buttonViews2 count] != 0;
 
-  return v3;
+  return buttonViews;
 }
 
-- (void)registerDownloadButton:(id)a3
+- (void)registerDownloadButton:(id)button
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VUIUnifiedMessagingRegistry *)v4 _hasActiveButtonsNoLock];
-  v6 = [(VUIUnifiedMessagingRegistry *)v4 buttonViews];
-  [v6 addPointer:v7];
+  buttonCopy = button;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _hasActiveButtonsNoLock = [(VUIUnifiedMessagingRegistry *)selfCopy _hasActiveButtonsNoLock];
+  buttonViews = [(VUIUnifiedMessagingRegistry *)selfCopy buttonViews];
+  [buttonViews addPointer:buttonCopy];
 
-  objc_sync_exit(v4);
-  if (!v5)
+  objc_sync_exit(selfCopy);
+  if (!_hasActiveButtonsNoLock)
   {
-    [(VUIUnifiedMessagingRegistry *)v4 _notifyButtonsChanged];
+    [(VUIUnifiedMessagingRegistry *)selfCopy _notifyButtonsChanged];
   }
 }
 
-- (void)unRegisterDownloadButton:(id)a3
+- (void)unRegisterDownloadButton:(id)button
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  for (i = 0; i < [(NSPointerArray *)v4->_buttonViews count]; ++i)
+  buttonCopy = button;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  for (i = 0; i < [(NSPointerArray *)selfCopy->_buttonViews count]; ++i)
   {
-    v6 = [(NSPointerArray *)v4->_buttonViews pointerAtIndex:i];
+    v6 = [(NSPointerArray *)selfCopy->_buttonViews pointerAtIndex:i];
 
-    if (v6 == v8)
+    if (v6 == buttonCopy)
     {
       if (i != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [(NSPointerArray *)v4->_buttonViews removePointerAtIndex:i];
+        [(NSPointerArray *)selfCopy->_buttonViews removePointerAtIndex:i];
       }
 
       break;
     }
   }
 
-  v7 = [(VUIUnifiedMessagingRegistry *)v4 _hasActiveButtonsNoLock];
-  objc_sync_exit(v4);
+  _hasActiveButtonsNoLock = [(VUIUnifiedMessagingRegistry *)selfCopy _hasActiveButtonsNoLock];
+  objc_sync_exit(selfCopy);
 
-  if (!v7)
+  if (!_hasActiveButtonsNoLock)
   {
-    [(VUIUnifiedMessagingRegistry *)v4 _notifyButtonsChanged];
+    [(VUIUnifiedMessagingRegistry *)selfCopy _notifyButtonsChanged];
   }
 }
 
@@ -122,26 +122,26 @@ void __45__VUIUnifiedMessagingRegistry_sharedInstance__block_invoke()
 
 - (void)_notifyButtonsChangedAction
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"VUIUnifiedMessagingRegistryActiveButtonsDidChange" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIUnifiedMessagingRegistryActiveButtonsDidChange" object:self];
 }
 
-- (void)register:(int64_t)a3 newTeamsAdded:(BOOL)a4 teamsRemoved:(BOOL)a5
+- (void)register:(int64_t)register newTeamsAdded:(BOOL)added teamsRemoved:(BOOL)removed
 {
-  v5 = a5;
-  v6 = a4;
+  removedCopy = removed;
+  addedCopy = added;
   obj = self;
   objc_sync_enter(obj);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:register];
   hasFavoriteTeams = obj->_hasFavoriteTeams;
   obj->_hasFavoriteTeams = v8;
 
-  if (v6)
+  if (addedCopy)
   {
     obj->_newTeamsAdded = 1;
   }
 
-  if (v5)
+  if (removedCopy)
   {
     obj->_teamsRemoved = 1;
   }
@@ -152,21 +152,21 @@ void __45__VUIUnifiedMessagingRegistry_sharedInstance__block_invoke()
 - (void)postNotificationFavoriteTeamsDidChange
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7[0] = @"VUIUnifiedMessagingRegistryFavoriteTeamsAdded";
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:v2->_newTeamsAdded];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_newTeamsAdded];
   v7[1] = @"VUIUnifiedMessagingRegistryFavoriteTeamsRemoved";
   v8[0] = v3;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v2->_teamsRemoved];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_teamsRemoved];
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"VUIUnifiedMessagingRegistryHasFavoriteTeamsDidChange" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIUnifiedMessagingRegistryHasFavoriteTeamsDidChange" object:v5];
 
-  *&v2->_newTeamsAdded = 0;
-  objc_sync_exit(v2);
+  *&selfCopy->_newTeamsAdded = 0;
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface HUScheduleRecurrenceEditorViewController
-- (HUScheduleRecurrenceEditorViewController)initWithRecurrences:(id)a3 delegate:(id)a4;
+- (HUScheduleRecurrenceEditorViewController)initWithRecurrences:(id)recurrences delegate:(id)delegate;
 - (HUScheduleRecurrenceEditorViewControllerDelegate)delegate;
 - (id)_editorItemModule;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (void)_saveChanges;
-- (void)doneButtonPressed:(id)a3;
+- (void)doneButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HUScheduleRecurrenceEditorViewController
 
-- (HUScheduleRecurrenceEditorViewController)initWithRecurrences:(id)a3 delegate:(id)a4
+- (HUScheduleRecurrenceEditorViewController)initWithRecurrences:(id)recurrences delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  recurrencesCopy = recurrences;
+  delegateCopy = delegate;
+  if (!recurrencesCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUScheduleRecurrenceEditorViewController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"recurrences"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleRecurrenceEditorViewController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"recurrences"}];
   }
 
   v9 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -25,7 +25,7 @@
   v16[1] = 3221225472;
   v16[2] = __73__HUScheduleRecurrenceEditorViewController_initWithRecurrences_delegate___block_invoke;
   v16[3] = &unk_277DB9F78;
-  v10 = v7;
+  v10 = recurrencesCopy;
   v17 = v10;
   [v9 setItemModuleCreator:v16];
   v15.receiver = self;
@@ -34,7 +34,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v12;
@@ -61,29 +61,29 @@ id __73__HUScheduleRecurrenceEditorViewController_initWithRecurrences_delegate__
   [(HUScheduleRecurrenceEditorViewController *)self setTitle:v3];
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-  v5 = [(HUScheduleRecurrenceEditorViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(HUScheduleRecurrenceEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
-  v6 = [(HUScheduleRecurrenceEditorViewController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setAccessibilityIdentifier:@"Home.Schedule.Recurrence.DoneButton"];
+  navigationItem2 = [(HUScheduleRecurrenceEditorViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Schedule.Recurrence.DoneButton"];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v3 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v3);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v4 = [(HUItemModuleController *)[HUScheduleRecurrenceEditorItemModuleController alloc] initWithModule:v3];
+  v4 = [(HUItemModuleController *)[HUScheduleRecurrenceEditorItemModuleController alloc] initWithModule:moduleCopy];
 
   return v4;
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -91,47 +91,47 @@ id __73__HUScheduleRecurrenceEditorViewController_initWithRecurrences_delegate__
   {
     v6 = NSStringFromSelector(a2);
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Done button pressed", &v9, 0x16u);
   }
 
   [(HUScheduleRecurrenceEditorViewController *)self _saveChanges];
-  v7 = [(HUScheduleRecurrenceEditorViewController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  navigationController = [(HUScheduleRecurrenceEditorViewController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_saveChanges
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(HUScheduleRecurrenceEditorViewController *)self _editorItemModule];
-  v5 = [v4 editedRecurrences];
+  _editorItemModule = [(HUScheduleRecurrenceEditorViewController *)self _editorItemModule];
+  editedRecurrences = [_editorItemModule editedRecurrences];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HUScheduleRecurrenceEditorViewController *)self delegate];
+    delegate = [(HUScheduleRecurrenceEditorViewController *)self delegate];
     v10 = 138413058;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     v14 = 2112;
-    v15 = v8;
+    v15 = delegate;
     v16 = 2112;
-    v17 = v5;
+    v17 = editedRecurrences;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Notifying delegate [%@] of updated recurrences [%@]", &v10, 0x2Au);
   }
 
-  v9 = [(HUScheduleRecurrenceEditorViewController *)self delegate];
-  [v9 didUpdateRecurrences:self recurrences:v5];
+  delegate2 = [(HUScheduleRecurrenceEditorViewController *)self delegate];
+  [delegate2 didUpdateRecurrences:self recurrences:editedRecurrences];
 }
 
 - (id)_editorItemModule
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 itemModules];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_267];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  itemModules = [itemManager itemModules];
+  v4 = [itemModules na_firstObjectPassingTest:&__block_literal_global_267];
 
   return v4;
 }

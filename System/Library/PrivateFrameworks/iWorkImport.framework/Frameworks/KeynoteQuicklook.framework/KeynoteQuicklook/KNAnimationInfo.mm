@@ -1,24 +1,24 @@
 @interface KNAnimationInfo
-+ (id)localizedEffectNamesForAnimationInfos:(id)a3 animationType:(int64_t)a4;
++ (id)localizedEffectNamesForAnimationInfos:(id)infos animationType:(int64_t)type;
 - (BOOL)isDrift;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)supportsAnimationType:(int64_t)a3;
-- (BOOL)supportsCustomAttributeKey:(id)a3;
-- (KNAnimationInfo)initWithAnimationClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)supportsAnimationType:(int64_t)type;
+- (BOOL)supportsCustomAttributeKey:(id)key;
+- (KNAnimationInfo)initWithAnimationClass:(Class)class;
 - (NSArray)customAttributes;
 - (NSSet)supportedCustomAttributeKeys;
-- (id)customAttributesForAttributeKey:(id)a3;
-- (id)customEffectTimingCurveDisplayParametersForAttributes:(id)a3 layoutStyleOnly:(BOOL)a4;
+- (id)customAttributesForAttributeKey:(id)key;
+- (id)customEffectTimingCurveDisplayParametersForAttributes:(id)attributes layoutStyleOnly:(BOOL)only;
 - (id)description;
-- (id)localizedNameForType:(int64_t)a3;
+- (id)localizedNameForType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation KNAnimationInfo
 
-- (KNAnimationInfo)initWithAnimationClass:(Class)a3
+- (KNAnimationInfo)initWithAnimationClass:(Class)class
 {
-  if (a3 && (objc_msgSend_conformsToProtocol_(a3, a2, &unk_2884F5FE0) & 1) == 0)
+  if (class && (objc_msgSend_conformsToProtocol_(class, a2, &unk_2884F5FE0) & 1) == 0)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAnimationInfo initWithAnimationClass:]");
@@ -34,7 +34,7 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_animationClass, a3);
+    objc_storeStrong(&v13->_animationClass, class);
     v15 = MEMORY[0x277CBEB98];
     v18 = objc_msgSend_supportedTypes(v14->_animationClass, v16, v17);
     v20 = objc_msgSend_setWithArray_(v15, v19, v18);
@@ -45,14 +45,14 @@
   return v14;
 }
 
-+ (id)localizedEffectNamesForAnimationInfos:(id)a3 animationType:(int64_t)a4
++ (id)localizedEffectNamesForAnimationInfos:(id)infos animationType:(int64_t)type
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_275D43768;
   v6[3] = &unk_27A697830;
-  v6[4] = a4;
-  v4 = objc_msgSend_tsu_setByMappingObjectsUsingBlock_(a3, a2, v6);
+  v6[4] = type;
+  v4 = objc_msgSend_tsu_setByMappingObjectsUsingBlock_(infos, a2, v6);
 
   return v4;
 }
@@ -70,10 +70,10 @@
   return v5;
 }
 
-- (id)customAttributesForAttributeKey:(id)a3
+- (id)customAttributesForAttributeKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -95,7 +95,7 @@
 
         v14 = *(*(&v20 + 1) + 8 * i);
         v15 = objc_msgSend_objectForKeyedSubscript_(v14, v10, &unk_2884F35E8);
-        isEqual = objc_msgSend_isEqual_(v15, v16, v4);
+        isEqual = objc_msgSend_isEqual_(v15, v16, keyCopy);
 
         if (isEqual)
         {
@@ -161,22 +161,22 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)supportsCustomAttributeKey:(id)a3
+- (BOOL)supportsCustomAttributeKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_supportedCustomAttributeKeys(self, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  v9 = objc_msgSend_containsObject_(v7, v8, keyCopy);
 
   return v9;
 }
 
-- (id)customEffectTimingCurveDisplayParametersForAttributes:(id)a3 layoutStyleOnly:(BOOL)a4
+- (id)customEffectTimingCurveDisplayParametersForAttributes:(id)attributes layoutStyleOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
+  onlyCopy = only;
+  attributesCopy = attributes;
   if (objc_opt_respondsToSelector())
   {
-    v8 = objc_msgSend_customEffectTimingCurveDisplayParametersForAttributes_layoutStyleOnly_(self->_animationClass, v7, v6, v4);
+    v8 = objc_msgSend_customEffectTimingCurveDisplayParametersForAttributes_layoutStyleOnly_(self->_animationClass, v7, attributesCopy, onlyCopy);
   }
 
   else
@@ -187,9 +187,9 @@ LABEL_11:
   return v8;
 }
 
-- (id)localizedNameForType:(int64_t)a3
+- (id)localizedNameForType:(int64_t)type
 {
-  if ((objc_msgSend_supportsAnimationType_(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_supportsAnimationType_(self, a2, type) & 1) == 0)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAnimationInfo localizedNameForType:]");
@@ -204,10 +204,10 @@ LABEL_11:
 
   animationClass = self->_animationClass;
 
-  return objc_msgSend_localizedMenuString_(animationClass, v5, a3);
+  return objc_msgSend_localizedMenuString_(animationClass, v5, type);
 }
 
-- (BOOL)supportsAnimationType:(int64_t)a3
+- (BOOL)supportsAnimationType:(int64_t)type
 {
   validAnimationTypes = self->_validAnimationTypes;
   v4 = KNAnimationTypeAsNumber();
@@ -216,13 +216,13 @@ LABEL_11:
   return validAnimationTypes;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_animationClass(v4, v5, v6);
+    v7 = objc_msgSend_animationClass(equalCopy, v5, v6);
     v10 = v7 == objc_msgSend_animationClass(self, v8, v9);
   }
 

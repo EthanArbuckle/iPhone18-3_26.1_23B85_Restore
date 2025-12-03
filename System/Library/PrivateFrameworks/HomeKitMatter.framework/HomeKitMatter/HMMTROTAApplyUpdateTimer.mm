@@ -1,12 +1,12 @@
 @interface HMMTROTAApplyUpdateTimer
 + (id)logCategory;
 - (HMMTRAccessoryServer)server;
-- (HMMTROTAApplyUpdateTimer)initWithServer:(id)a3 otaProvider:(id)a4 newVersion:(id)a5 delay:(id)a6 queue:(id)a7;
+- (HMMTROTAApplyUpdateTimer)initWithServer:(id)server otaProvider:(id)provider newVersion:(id)version delay:(id)delay queue:(id)queue;
 - (HMMTROTAProviderDelegate)otaProvider;
 - (id)logIdentifier;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMMTROTAApplyUpdateTimer
@@ -29,39 +29,39 @@
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_server);
-  v5 = [WeakRetained nodeID];
+  nodeID = [WeakRetained nodeID];
   v6 = objc_loadWeakRetained(&self->_server);
-  v7 = [v6 fabricID];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  fabricID = [v6 fabricID];
+  v8 = [v3 stringWithFormat:@"%@/%@", nodeID, fabricID];
 
   return v8;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMMTROTAApplyUpdateTimer *)v6 server];
+    server = [(HMMTROTAApplyUpdateTimer *)selfCopy server];
     *buf = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v9;
+    v16 = server;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@OTA apply timed out for accessory server [%@]", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  WeakRetained = objc_loadWeakRetained(&v6->_server);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_server);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__HMMTROTAApplyUpdateTimer_timerDidFire___block_invoke;
   v12[3] = &unk_2786F0A58;
-  v12[4] = v6;
+  v12[4] = selfCopy;
   [WeakRetained fetchSoftwareVersion:1 completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -223,22 +223,22 @@ LABEL_14:
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMMTROTAApplyUpdateTimer *)v4 server];
+    server = [(HMMTROTAApplyUpdateTimer *)selfCopy server];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v7;
+    v13 = server;
     _os_log_impl(&dword_22AEAE000, v5, OS_LOG_TYPE_INFO, "%{public}@Stop OTA apply timeout for accessory server [%@]", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMMTROTAApplyUpdateTimer *)v4 updateTimer];
-  [v8 suspend];
+  updateTimer = [(HMMTROTAApplyUpdateTimer *)selfCopy updateTimer];
+  [updateTimer suspend];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -247,48 +247,48 @@ LABEL_14:
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMMTROTAApplyUpdateTimer *)v4 server];
+    server = [(HMMTROTAApplyUpdateTimer *)selfCopy server];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v7;
+    v13 = server;
     _os_log_impl(&dword_22AEAE000, v5, OS_LOG_TYPE_INFO, "%{public}@Starting OTA apply timeout for accessory server [%@]", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMMTROTAApplyUpdateTimer *)v4 updateTimer];
-  [v8 resume];
+  updateTimer = [(HMMTROTAApplyUpdateTimer *)selfCopy updateTimer];
+  [updateTimer resume];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTROTAApplyUpdateTimer)initWithServer:(id)a3 otaProvider:(id)a4 newVersion:(id)a5 delay:(id)a6 queue:(id)a7
+- (HMMTROTAApplyUpdateTimer)initWithServer:(id)server otaProvider:(id)provider newVersion:(id)version delay:(id)delay queue:(id)queue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serverCopy = server;
+  providerCopy = provider;
+  versionCopy = version;
+  delayCopy = delay;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = HMMTROTAApplyUpdateTimer;
   v17 = [(HMMTROTAApplyUpdateTimer *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_server, v12);
-    objc_storeStrong(&v18->_expectedVersion, a5);
+    objc_storeWeak(&v17->_server, serverCopy);
+    objc_storeStrong(&v18->_expectedVersion, version);
     v18->_retryCount = 0;
-    objc_storeWeak(&v18->_otaProvider, v13);
-    v19 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:{(objc_msgSend(v15, "integerValue") + 300)}];
+    objc_storeWeak(&v18->_otaProvider, providerCopy);
+    v19 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:{(objc_msgSend(delayCopy, "integerValue") + 300)}];
     updateTimer = v18->_updateTimer;
     v18->_updateTimer = v19;
 
-    [(HMFTimer *)v18->_updateTimer setDelegateQueue:v16];
+    [(HMFTimer *)v18->_updateTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v18->_updateTimer setDelegate:v18];
   }
 

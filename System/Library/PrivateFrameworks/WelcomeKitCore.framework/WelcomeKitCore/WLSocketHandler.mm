@@ -1,16 +1,16 @@
 @interface WLSocketHandler
-+ (id)_commandStringWithData:(id)a3;
-+ (int)connectToHost:(id)a3 address:(hostent *)a4 port:(unsigned __int16)a5;
-+ (void)lookupAndConnectToHost:(id)a3 port:(unsigned __int16)a4 completion:(id)a5;
-+ (void)performDNSLookupForHost:(id)a3 completion:(id)a4;
-- (BOOL)waitForCommand:(id)a3 fromReadCacheReturningError:(id *)a4;
++ (id)_commandStringWithData:(id)data;
++ (int)connectToHost:(id)host address:(hostent *)address port:(unsigned __int16)port;
++ (void)lookupAndConnectToHost:(id)host port:(unsigned __int16)port completion:(id)completion;
++ (void)performDNSLookupForHost:(id)host completion:(id)completion;
+- (BOOL)waitForCommand:(id)command fromReadCacheReturningError:(id *)error;
 - (WLSocketHandler)init;
-- (char)readBytesFromSocket:(int)a3 maximumSize:(unint64_t)a4 bytesRead:(int64_t *)a5;
-- (id)observeSocket:(int)a3 forSourceEventType:(dispatch_source_type_s *)a4 handler:(id)a5;
-- (id)waitForBlobDataFromReadCacheReturningError:(id *)a3;
-- (id)waitForDataFromReadCacheReturningError:(id *)a3;
-- (id)waitForMessageFromReadCacheReturningError:(id *)a3;
-- (void)_writeBytes:(const void *)a3 offset:(unint64_t)a4 length:(unint64_t)a5 toSocket:(int)a6 completion:(id)a7;
+- (char)readBytesFromSocket:(int)socket maximumSize:(unint64_t)size bytesRead:(int64_t *)read;
+- (id)observeSocket:(int)socket forSourceEventType:(dispatch_source_type_s *)type handler:(id)handler;
+- (id)waitForBlobDataFromReadCacheReturningError:(id *)error;
+- (id)waitForDataFromReadCacheReturningError:(id *)error;
+- (id)waitForMessageFromReadCacheReturningError:(id *)error;
+- (void)_writeBytes:(const void *)bytes offset:(unint64_t)offset length:(unint64_t)length toSocket:(int)socket completion:(id)completion;
 - (void)cancel;
 - (void)dealloc;
 - (void)endReadingIntoCache;
@@ -50,17 +50,17 @@
   [(WLSocketHandler *)&v4 dealloc];
 }
 
-- (id)observeSocket:(int)a3 forSourceEventType:(dispatch_source_type_s *)a4 handler:(id)a5
+- (id)observeSocket:(int)socket forSourceEventType:(dispatch_source_type_s *)type handler:(id)handler
 {
-  v7 = a5;
-  v8 = dispatch_source_create(a4, a3, 0, MEMORY[0x277D85CD0]);
+  handlerCopy = handler;
+  v8 = dispatch_source_create(type, socket, 0, MEMORY[0x277D85CD0]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__WLSocketHandler_observeSocket_forSourceEventType_handler___block_invoke;
   v11[3] = &unk_279EB5450;
-  v12 = v7;
-  v13 = a3;
-  v9 = v7;
+  v12 = handlerCopy;
+  socketCopy = socket;
+  v9 = handlerCopy;
   dispatch_source_set_event_handler(v8, v11);
   dispatch_resume(v8);
 
@@ -78,34 +78,34 @@ uint64_t __60__WLSocketHandler_observeSocket_forSourceEventType_handler___block_
   return result;
 }
 
-+ (void)performDNSLookupForHost:(id)a3 completion:(id)a4
++ (void)performDNSLookupForHost:(id)host completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v8;
-  v7 = gethostbyname([v8 UTF8String]);
+  hostCopy = host;
+  completionCopy = completion;
+  v6 = hostCopy;
+  v7 = gethostbyname([hostCopy UTF8String]);
   if (!v7)
   {
     _WLLog();
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, v7 != 0, v7);
+    completionCopy[2](completionCopy, v7 != 0, v7);
   }
 }
 
-+ (int)connectToHost:(id)a3 address:(hostent *)a4 port:(unsigned __int16)a5
++ (int)connectToHost:(id)host address:(hostent *)address port:(unsigned __int16)port
 {
-  v5 = a5;
+  portCopy = port;
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  hostCopy = host;
   *&v16.sa_len = 512;
   *&v16.sa_data[6] = 0;
-  v8 = *a4->h_addr_list;
-  h_length = a4->h_length;
+  v8 = *address->h_addr_list;
+  h_length = address->h_length;
   __memmove_chk();
-  *v16.sa_data = __rev16(v5);
+  *v16.sa_data = __rev16(portCopy);
   v10 = socket(2, 1, 0);
   v11 = v10;
   if (v10 == -1)
@@ -130,20 +130,20 @@ uint64_t __60__WLSocketHandler_observeSocket_forSourceEventType_handler___block_
   return v11;
 }
 
-+ (void)lookupAndConnectToHost:(id)a3 port:(unsigned __int16)a4 completion:(id)a5
++ (void)lookupAndConnectToHost:(id)host port:(unsigned __int16)port completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  hostCopy = host;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__WLSocketHandler_lookupAndConnectToHost_port_completion___block_invoke;
   v12[3] = &unk_279EB5F68;
-  v14 = v9;
-  v15 = a1;
-  v16 = a4;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = completionCopy;
+  selfCopy = self;
+  portCopy = port;
+  v13 = hostCopy;
+  v10 = completionCopy;
+  v11 = hostCopy;
   [WLSocketHandler performDNSLookupForHost:v11 completion:v12];
 }
 
@@ -225,7 +225,7 @@ LABEL_12:
   v12();
 }
 
-- (char)readBytesFromSocket:(int)a3 maximumSize:(unint64_t)a4 bytesRead:(int64_t *)a5
+- (char)readBytesFromSocket:(int)socket maximumSize:(unint64_t)size bytesRead:(int64_t *)read
 {
   v15 = 0;
   v16 = &v15;
@@ -241,13 +241,13 @@ LABEL_12:
   v9[2] = __61__WLSocketHandler_readBytesFromSocket_maximumSize_bytesRead___block_invoke;
   v9[3] = &unk_279EB5F90;
   v9[5] = &v11;
-  v9[6] = a4;
-  v10 = a3;
+  v9[6] = size;
+  socketCopy = socket;
   v9[4] = &v15;
   dispatch_sync(readQueue, v9);
-  if (a5)
+  if (read)
   {
-    *a5 = v16[3];
+    *read = v16[3];
   }
 
   v7 = v12[3];
@@ -289,39 +289,39 @@ int64_t __61__WLSocketHandler_readBytesFromSocket_maximumSize_bytesRead___block_
   objc_sync_exit(obj);
 }
 
-- (id)waitForDataFromReadCacheReturningError:(id *)a3
+- (id)waitForDataFromReadCacheReturningError:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
   dispatch_semaphore_wait(self->_dataCacheSema, 0xFFFFFFFFFFFFFFFFLL);
   v5 = self->_dataCache;
   objc_sync_enter(v5);
-  v6 = [(NSMutableArray *)self->_dataCache firstObject];
-  if (v6)
+  firstObject = [(NSMutableArray *)self->_dataCache firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_dataCache removeObjectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = firstObject;
       goto LABEL_9;
     }
 
-    if (a3)
+    if (error)
     {
-      v10 = v6;
+      v10 = firstObject;
       v7 = 0;
-      *a3 = v6;
+      *error = firstObject;
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
     v14[0] = @"read queue empty";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a3 = [v8 errorWithDomain:*MEMORY[0x277D7B8F8] code:1 userInfo:v9];
+    *error = [v8 errorWithDomain:*MEMORY[0x277D7B8F8] code:1 userInfo:v9];
   }
 
   v7 = 0;
@@ -333,7 +333,7 @@ LABEL_9:
   return v7;
 }
 
-- (id)waitForBlobDataFromReadCacheReturningError:(id *)a3
+- (id)waitForBlobDataFromReadCacheReturningError:(id *)error
 {
   v4 = 0;
   while (1)
@@ -385,10 +385,10 @@ LABEL_7:
   }
 
 LABEL_9:
-  if (a3)
+  if (error)
   {
     v12 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v4 = 0;
@@ -397,15 +397,15 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)waitForCommand:(id)a3 fromReadCacheReturningError:(id *)a4
+- (BOOL)waitForCommand:(id)command fromReadCacheReturningError:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WLSocketHandler *)self waitForMessageFromReadCacheReturningError:a4];
+  commandCopy = command;
+  v7 = [(WLSocketHandler *)self waitForMessageFromReadCacheReturningError:error];
   v8 = v7;
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v19 = *a4;
+    v19 = *error;
 LABEL_10:
     _WLLog();
 LABEL_11:
@@ -424,21 +424,21 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v9 = [v8 command];
-  v10 = [v9 isEqualToString:v6];
+  command = [v8 command];
+  v10 = [command isEqualToString:commandCopy];
 
   if ((v10 & 1) == 0)
   {
-    v14 = [v8 command];
-    if (a4)
+    command2 = [v8 command];
+    if (error)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"expected '%@' but got '%@' instead", v6, v14];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"expected '%@' but got '%@' instead", commandCopy, command2];
       v16 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277D7B8F8];
       v20 = *MEMORY[0x277CCA450];
       v21[0] = v15;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a4 = [v16 errorWithDomain:v17 code:1 userInfo:v18];
+      *error = [v16 errorWithDomain:v17 code:1 userInfo:v18];
     }
 
     _WLLog();
@@ -454,18 +454,18 @@ LABEL_12:
   return v11;
 }
 
-- (id)waitForMessageFromReadCacheReturningError:(id *)a3
+- (id)waitForMessageFromReadCacheReturningError:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = [(WLSocketHandler *)self waitForDataFromReadCacheReturningError:?];
   if ([v4 length])
   {
-    v5 = [WLSocketMessage messageWithData:v4 error:a3];
+    v5 = [WLSocketMessage messageWithData:v4 error:error];
   }
 
   else
   {
-    if (a3 && !*a3)
+    if (error && !*error)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"expected data but got no data instead"];
       v7 = MEMORY[0x277CCA9B8];
@@ -473,7 +473,7 @@ LABEL_12:
       v12 = *MEMORY[0x277CCA450];
       v13[0] = v6;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      *a3 = [v7 errorWithDomain:v8 code:1 userInfo:v9];
+      *error = [v7 errorWithDomain:v8 code:1 userInfo:v9];
     }
 
     _WLLog();
@@ -485,19 +485,19 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_commandStringWithData:(id)a3
++ (id)_commandStringWithData:(id)data
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 alloc];
-  v6 = [v4 bytes];
-  v7 = [v4 length];
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  v8 = [v5 initWithBytesNoCopy:v6 length:v7 encoding:4 freeWhenDone:0];
+  v8 = [v5 initWithBytesNoCopy:bytes length:v7 encoding:4 freeWhenDone:0];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"\r\n"];
-  LODWORD(v6) = [v8 hasSuffix:v9];
+  LODWORD(bytes) = [v8 hasSuffix:v9];
 
-  if (v6)
+  if (bytes)
   {
     v10 = [v8 stringByReplacingCharactersInRange:objc_msgSend(v8 withString:{"length") - 2, 2, &stru_2882CBB40}];
 
@@ -507,22 +507,22 @@ LABEL_12:
   return v8;
 }
 
-- (void)_writeBytes:(const void *)a3 offset:(unint64_t)a4 length:(unint64_t)a5 toSocket:(int)a6 completion:(id)a7
+- (void)_writeBytes:(const void *)bytes offset:(unint64_t)offset length:(unint64_t)length toSocket:(int)socket completion:(id)completion
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  v13 = write(a6, a3, a5);
-  if (v13 == a5)
+  completionCopy = completion;
+  v13 = write(socket, bytes, length);
+  if (v13 == length)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else if (v13 < 0)
   {
-    if (v12)
+    if (completionCopy)
     {
       v17 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277D7B8F8];
@@ -530,25 +530,25 @@ LABEL_12:
       v31[0] = @"Socket write failed";
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v20 = [v17 errorWithDomain:v18 code:1 userInfo:v19];
-      (v12)[2](v12, 0, v20);
+      (completionCopy)[2](completionCopy, 0, v20);
     }
   }
 
   else
   {
-    v14 = v13 + a4;
-    v15 = dispatch_source_create(MEMORY[0x277D85D50], a6, 0, MEMORY[0x277D85CD0]);
+    v14 = v13 + offset;
+    v15 = dispatch_source_create(MEMORY[0x277D85D50], socket, 0, MEMORY[0x277D85CD0]);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __65__WLSocketHandler__writeBytes_offset_length_toSocket_completion___block_invoke;
     v22[3] = &unk_279EB5FE0;
     v23 = v15;
-    v24 = self;
-    v26 = a3;
+    selfCopy = self;
+    bytesCopy = bytes;
     v27 = v14;
-    v28 = a5;
-    v29 = a6;
-    v25 = v12;
+    lengthCopy = length;
+    socketCopy = socket;
+    v25 = completionCopy;
     v16 = v15;
     dispatch_source_set_event_handler(v16, v22);
     dispatch_resume(v16);

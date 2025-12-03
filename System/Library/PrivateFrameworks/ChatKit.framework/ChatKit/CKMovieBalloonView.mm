@@ -1,34 +1,34 @@
 @interface CKMovieBalloonView
-- (BOOL)isCodecTypeAllowed:(unsigned int)a3;
+- (BOOL)isCodecTypeAllowed:(unsigned int)allowed;
 - (id)createAVAssetAndValidateCodec;
 - (id)description;
 - (void)cleanupPlayerIfNeeded;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)tapGestureRecognized:(id)a3;
-- (void)videoDidReachEnd:(id)a3;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)videoDidReachEnd:(id)end;
 @end
 
 @implementation CKMovieBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
+  effectCopy = effect;
+  orientationCopy = orientation;
   v11.receiver = self;
   v11.super_class = CKMovieBalloonView;
-  v10 = a3;
-  [(CKImageBalloonView *)&v11 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
-  [(CKMovieBalloonView *)self setMediaObject:v10, v11.receiver, v11.super_class];
+  objectCopy = object;
+  [(CKImageBalloonView *)&v11 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
+  [(CKMovieBalloonView *)self setMediaObject:objectCopy, v11.receiver, v11.super_class];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKMovieBalloonView;
@@ -41,8 +41,8 @@
   v8.receiver = self;
   v8.super_class = CKMovieBalloonView;
   v4 = [(CKImageBalloonView *)&v8 description];
-  v5 = [(CKMovieBalloonView *)self mediaObject];
-  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, v5];
+  mediaObject = [(CKMovieBalloonView *)self mediaObject];
+  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, mediaObject];
 
   return v6;
 }
@@ -52,13 +52,13 @@
   v28.receiver = self;
   v28.super_class = CKMovieBalloonView;
   [(CKImageBalloonView *)&v28 layoutSubviews];
-  v3 = [(CKMovieBalloonView *)self avPlayerLayer];
+  avPlayerLayer = [(CKMovieBalloonView *)self avPlayerLayer];
   [(CKMovieBalloonView *)self bounds];
-  [v3 setFrame:?];
+  [avPlayerLayer setFrame:?];
 
-  v4 = [(CKMovieBalloonView *)self avPlayerLayer];
+  avPlayerLayer2 = [(CKMovieBalloonView *)self avPlayerLayer];
 
-  if (v4)
+  if (avPlayerLayer2)
   {
     v26 = 0u;
     v27 = 0u;
@@ -98,11 +98,11 @@
     v15 = v23;
     [(CKBalloonMaskLayer *)videoPlayerMaskLayer updateDescriptor:&v12];
     v9 = self->_videoPlayerMaskLayer;
-    v10 = [(CKMovieBalloonView *)self avPlayerLayer];
-    [v10 setMask:v9];
+    avPlayerLayer3 = [(CKMovieBalloonView *)self avPlayerLayer];
+    [avPlayerLayer3 setMask:v9];
 
-    v11 = [(CKMovieBalloonView *)self avPlayerLayer];
-    [v11 bounds];
+    avPlayerLayer4 = [(CKMovieBalloonView *)self avPlayerLayer];
+    [avPlayerLayer4 bounds];
     [(CKBalloonMaskLayer *)self->_videoPlayerMaskLayer setFrame:?];
   }
 }
@@ -120,30 +120,30 @@
   v5.receiver = self;
   v5.super_class = CKMovieBalloonView;
   [(CKImageBalloonView *)&v5 prepareForDisplay];
-  v3 = [(CKMovieBalloonView *)self avPlayerLayer];
-  if (v3)
+  avPlayerLayer = [(CKMovieBalloonView *)self avPlayerLayer];
+  if (avPlayerLayer)
   {
-    v4 = [(CKMovieBalloonView *)self layer];
-    [v4 addSublayer:v3];
+    layer = [(CKMovieBalloonView *)self layer];
+    [layer addSublayer:avPlayerLayer];
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(CKMovieBalloonView *)self avPlayerLayer];
-  if (v5)
+  recognizedCopy = recognized;
+  avPlayerLayer = [(CKMovieBalloonView *)self avPlayerLayer];
+  if (avPlayerLayer)
   {
     [(CKMovieBalloonView *)self cleanupPlayerIfNeeded];
-    v6 = [(CKBalloonView *)self delegate];
-    v7 = [(CKMovieBalloonView *)self mediaObject];
-    [v6 balloonView:self mediaObjectDidFinishPlaying:v7];
+    delegate = [(CKBalloonView *)self delegate];
+    mediaObject = [(CKMovieBalloonView *)self mediaObject];
+    [delegate balloonView:self mediaObjectDidFinishPlaying:mediaObject];
   }
 
   else
   {
     v8 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v8 playButtonImage];
+    delegate = [v8 playButtonImage];
 
     [(CKMovieBalloonView *)self bounds];
     [(CKMovieBalloonView *)self alignmentRectForFrame:?];
@@ -151,7 +151,7 @@
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v6 size];
+    [delegate size];
     v18 = v17;
     v20 = v19;
     if (CKMainScreenScale_once_50 != -1)
@@ -169,8 +169,8 @@
       v21 = *&CKMainScreenScale_sMainScreenScale_50;
     }
 
-    v7 = [(CKMovieBalloonView *)self createAVAssetAndValidateCodec];
-    if (!v7 && IMOSLoggingEnabled())
+    mediaObject = [(CKMovieBalloonView *)self createAVAssetAndValidateCodec];
+    if (!mediaObject && IMOSLoggingEnabled())
     {
       v22 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -180,19 +180,19 @@
       }
     }
 
-    v23 = [(CKObscurableBalloonView *)self isObscured];
+    isObscured = [(CKObscurableBalloonView *)self isObscured];
     v24 = +[CKUIBehavior sharedBehaviors];
-    v25 = [v24 playsInlineVideo];
+    playsInlineVideo = [v24 playsInlineVideo];
 
-    if (v7 && !v23 && v25 && ([v4 locationInView:self], v41.x = v26, v41.y = v27, v42.origin.x = floor((v10 + (v14 - v18) * 0.5) * v21) / v21, v42.origin.y = floor((v12 + (v16 - v20) * 0.5) * v21) / v21, v42.size.width = v18, v42.size.height = v20, CGRectContainsPoint(v42, v41)))
+    if (mediaObject && !isObscured && playsInlineVideo && ([recognizedCopy locationInView:self], v41.x = v26, v41.y = v27, v42.origin.x = floor((v10 + (v14 - v18) * 0.5) * v21) / v21, v42.origin.y = floor((v12 + (v16 - v20) * 0.5) * v21) / v21, v42.size.width = v18, v42.size.height = v20, CGRectContainsPoint(v42, v41)))
     {
-      v28 = [MEMORY[0x1E69880B0] playerItemWithAsset:v7];
+      v28 = [MEMORY[0x1E69880B0] playerItemWithAsset:mediaObject];
       [(CKMovieBalloonView *)self setAVPlayerItem:v28];
-      v29 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v29 addObserver:self selector:sel_videoDidReachEnd_ name:*MEMORY[0x1E6987A10] object:v28];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_videoDidReachEnd_ name:*MEMORY[0x1E6987A10] object:v28];
 
-      v30 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v30 addObserver:self selector:sel_videoDidReachEnd_ name:*MEMORY[0x1E6987A20] object:v28];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_videoDidReachEnd_ name:*MEMORY[0x1E6987A20] object:v28];
 
       v31 = [MEMORY[0x1E6988098] playerWithPlayerItem:v28];
       [(CKMovieBalloonView *)self setAVPlayer:v31];
@@ -202,11 +202,11 @@
       [(CKMovieBalloonView *)self bounds];
       [v32 setFrame:?];
       [(CKMovieBalloonView *)self setAVPlayerLayer:v32];
-      v33 = [(CKMovieBalloonView *)self layer];
-      [v33 addSublayer:v32];
+      layer = [(CKMovieBalloonView *)self layer];
+      [layer addSublayer:v32];
 
-      v34 = [(CKBalloonView *)self invisibleInkEffectController];
-      [v34 setSuspended:1];
+      invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+      [invisibleInkEffectController setSuspended:1];
 
       v35 = +[CKAudioSessionController shareInstance];
       v38[0] = MEMORY[0x1E69E9820];
@@ -222,12 +222,12 @@
     {
       v37.receiver = self;
       v37.super_class = CKMovieBalloonView;
-      [(CKImageBalloonView *)&v37 tapGestureRecognized:v4];
+      [(CKImageBalloonView *)&v37 tapGestureRecognized:recognizedCopy];
     }
   }
 }
 
-- (BOOL)isCodecTypeAllowed:(unsigned int)a3
+- (BOOL)isCodecTypeAllowed:(unsigned int)allowed
 {
   v20 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -236,18 +236,18 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v12 = 67109888;
-      v13 = HIBYTE(a3);
+      v13 = HIBYTE(allowed);
       v14 = 1024;
-      v15 = BYTE2(a3);
+      v15 = BYTE2(allowed);
       v16 = 1024;
-      v17 = BYTE1(a3);
+      v17 = BYTE1(allowed);
       v18 = 1024;
-      v19 = a3;
+      allowedCopy3 = allowed;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Validating Video CodecType: '%c%c%c%c'", &v12, 0x1Au);
     }
   }
 
-  if (a3 == 1748121139)
+  if (allowed == 1748121139)
   {
     v5 = 1;
 LABEL_11:
@@ -257,13 +257,13 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v12 = 67109888;
-        v13 = HIBYTE(a3);
+        v13 = HIBYTE(allowed);
         v14 = 1024;
-        v15 = BYTE2(a3);
+        v15 = BYTE2(allowed);
         v16 = 1024;
-        v17 = BYTE1(a3);
+        v17 = BYTE1(allowed);
         v18 = 1024;
-        v19 = a3;
+        allowedCopy3 = allowed;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Video CodecType '%c%c%c%c' is allowed", &v12, 0x1Au);
       }
     }
@@ -277,7 +277,7 @@ LABEL_11:
     {
       v8 = *v7++;
       ++v6;
-      if (v8 == a3)
+      if (v8 == allowed)
       {
         v5 = v6 < 5;
         goto LABEL_11;
@@ -290,13 +290,13 @@ LABEL_11:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 67109888;
-        v13 = HIBYTE(a3);
+        v13 = HIBYTE(allowed);
         v14 = 1024;
-        v15 = BYTE2(a3);
+        v15 = BYTE2(allowed);
         v16 = 1024;
-        v17 = BYTE1(a3);
+        v17 = BYTE1(allowed);
         v18 = 1024;
-        v19 = a3;
+        allowedCopy3 = allowed;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "CKMovieBalloonView: Video CodecType '%c%c%c%c' is not allowed", &v12, 0x1Au);
       }
     }
@@ -322,24 +322,24 @@ LABEL_11:
 
   v39[0] = *MEMORY[0x1E69874C0];
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-  v4 = [(CKMovieBalloonView *)self mediaObject];
-  v31 = [v4 fileURL];
+  mediaObject = [(CKMovieBalloonView *)self mediaObject];
+  fileURL = [mediaObject fileURL];
 
-  v5 = CKAVURLAssetForURLWithAllowableTypeCategories(v31, v29);
-  v28 = [v31 pathExtension];
-  v30 = [v5 tracks];
+  v5 = CKAVURLAssetForURLWithAllowableTypeCategories(fileURL, v29);
+  pathExtension = [fileURL pathExtension];
+  tracks = [v5 tracks];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v28;
+      v38 = pathExtension;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Validating FileType: %@", buf, 0xCu);
     }
   }
 
-  v7 = [v30 count] == 0;
+  v7 = [tracks count] == 0;
   v8 = IMOSLoggingEnabled();
   if (v7)
   {
@@ -349,7 +349,7 @@ LABEL_11:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v38 = v28;
+        v38 = pathExtension;
         _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "CKMovieBalloonView: Unsupported FileType: %@", buf, 0xCu);
       }
     }
@@ -363,7 +363,7 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v38 = v28;
+        v38 = pathExtension;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Supported FileType: %@", buf, 0xCu);
       }
     }
@@ -372,7 +372,7 @@ LABEL_11:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v10 = v30;
+    v10 = tracks;
     v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v11)
     {
@@ -390,19 +390,19 @@ LABEL_11:
           v15 = *(*(&v32 + 1) + 8 * i);
           if ([v15 isEnabled])
           {
-            v16 = [v15 mediaType];
-            v17 = [v16 isEqual:v13];
+            mediaType = [v15 mediaType];
+            v17 = [mediaType isEqual:v13];
 
             if (v17)
             {
-              v19 = [v15 formatDescriptions];
-              v20 = [v19 count];
+              formatDescriptions = [v15 formatDescriptions];
+              v20 = [formatDescriptions count];
               if (v20)
               {
                 v21 = 0;
                 while (1)
                 {
-                  v22 = [v19 objectAtIndexedSubscript:v21];
+                  v22 = [formatDescriptions objectAtIndexedSubscript:v21];
 
                   if (![(CKMovieBalloonView *)self isCodecTypeAllowed:CMFormatDescriptionGetMediaSubType(v22)])
                   {
@@ -415,8 +415,8 @@ LABEL_11:
                   }
                 }
 
-                v23 = [MEMORY[0x1E696AE30] processInfo];
-                v24 = [v23 processName];
+                processInfo = [MEMORY[0x1E696AE30] processInfo];
+                processName = [processInfo processName];
                 IMLogSimulateCrashForProcess();
 
                 v5 = 0;
@@ -478,38 +478,38 @@ LABEL_45:
   return v5;
 }
 
-- (void)videoDidReachEnd:(id)a3
+- (void)videoDidReachEnd:(id)end
 {
   [(CKMovieBalloonView *)self cleanupPlayerIfNeeded];
-  v5 = [(CKBalloonView *)self delegate];
-  v4 = [(CKMovieBalloonView *)self mediaObject];
-  [v5 balloonView:self mediaObjectDidFinishPlaying:v4];
+  delegate = [(CKBalloonView *)self delegate];
+  mediaObject = [(CKMovieBalloonView *)self mediaObject];
+  [delegate balloonView:self mediaObjectDidFinishPlaying:mediaObject];
 }
 
 - (void)cleanupPlayerIfNeeded
 {
-  v3 = [(CKMovieBalloonView *)self avPlayerItem];
-  if (v3)
+  avPlayerItem = [(CKMovieBalloonView *)self avPlayerItem];
+  if (avPlayerItem)
   {
-    v9 = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E6987A10] object:v9];
+    v9 = avPlayerItem;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A10] object:v9];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E6987A20] object:v9];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E6987A20] object:v9];
 
-    v6 = [(CKMovieBalloonView *)self avPlayerLayer];
-    [v6 removeFromSuperlayer];
+    avPlayerLayer = [(CKMovieBalloonView *)self avPlayerLayer];
+    [avPlayerLayer removeFromSuperlayer];
     [(CKMovieBalloonView *)self setAVPlayerItem:0];
     [(CKMovieBalloonView *)self setAVPlayer:0];
     [(CKMovieBalloonView *)self setAVPlayerLayer:0];
-    v7 = [(CKBalloonView *)self invisibleInkEffectController];
-    [v7 setSuspended:0];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    [invisibleInkEffectController setSuspended:0];
 
     v8 = +[CKAudioSessionController shareInstance];
     [v8 deactivate];
 
-    v3 = v9;
+    avPlayerItem = v9;
   }
 }
 

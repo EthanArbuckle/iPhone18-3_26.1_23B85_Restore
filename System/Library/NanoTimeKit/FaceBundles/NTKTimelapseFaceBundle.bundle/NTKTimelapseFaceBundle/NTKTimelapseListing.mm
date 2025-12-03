@@ -1,46 +1,46 @@
 @interface NTKTimelapseListing
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSimilarTo:(id)a3;
-- (BOOL)snapshotDiffers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSimilarTo:(id)to;
+- (BOOL)snapshotDiffers:(id)differs;
 - (CLKVideo)video;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForDevice:(id)a3 withTheme:(unint64_t)a4 videoIndex:(int64_t)a5 photoAnalysis:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForDevice:(id)device withTheme:(unint64_t)theme videoIndex:(int64_t)index photoAnalysis:(id)analysis;
 - (void)_setHasAssets;
 - (void)discardAssets;
 @end
 
 @implementation NTKTimelapseListing
 
-- (id)initForDevice:(id)a3 withTheme:(unint64_t)a4 videoIndex:(int64_t)a5 photoAnalysis:(id)a6
+- (id)initForDevice:(id)device withTheme:(unint64_t)theme videoIndex:(int64_t)index photoAnalysis:(id)analysis
 {
-  v11 = a3;
-  v12 = a6;
+  deviceCopy = device;
+  analysisCopy = analysis;
   v22.receiver = self;
   v22.super_class = NTKTimelapseListing;
   v13 = [(NTKTimelapseListing *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_device, a3);
-    v15 = [NTKTimelapseThemeEditOption optionWithTimelapseTheme:a4 forDevice:v14->_device];
-    v16 = [v15 resourceNameWithVideoIndex:a5];
+    objc_storeStrong(&v13->_device, device);
+    v15 = [NTKTimelapseThemeEditOption optionWithTimelapseTheme:theme forDevice:v14->_device];
+    v16 = [v15 resourceNameWithVideoIndex:index];
     videoName = v14->_videoName;
     v14->_videoName = v16;
 
-    v18 = [v15 resourceBaseName];
+    resourceBaseName = [v15 resourceBaseName];
     imageName = v14->_imageName;
-    v14->_imageName = v18;
+    v14->_imageName = resourceBaseName;
 
-    v14->_theme = a4;
-    v14->_videoIndex = a5;
-    objc_storeStrong(&v14->_photoAnalysis, a6);
+    v14->_theme = theme;
+    v14->_videoIndex = index;
+    objc_storeStrong(&v14->_photoAnalysis, analysis);
     v20 = v14;
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   device = self->_device;
@@ -51,14 +51,14 @@
   return [v4 initForDevice:device withTheme:theme videoIndex:videoIndex photoAnalysis:photoAnalysis];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_device == v4[1] && (v5 = -[NTKTimelapseListing theme](self, "theme"), v5 == [v4 theme]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_device == equalCopy[1] && (v5 = -[NTKTimelapseListing theme](self, "theme"), v5 == [equalCopy theme]))
   {
-    v6 = [(NTKTimelapseListing *)self videoIndex];
-    v7 = v6 == [v4 videoIndex];
+    videoIndex = [(NTKTimelapseListing *)self videoIndex];
+    v7 = videoIndex == [equalCopy videoIndex];
   }
 
   else
@@ -69,19 +69,19 @@
   return v7;
 }
 
-- (BOOL)isSimilarTo:(id)a3
+- (BOOL)isSimilarTo:(id)to
 {
-  v4 = a3;
-  v5 = [(NTKTimelapseListing *)self theme];
-  if (v5 == [v4 theme])
+  toCopy = to;
+  theme = [(NTKTimelapseListing *)self theme];
+  if (theme == [toCopy theme])
   {
     v6 = NTKNumberOfTimelapseSlots();
-    v7 = [(NTKTimelapseListing *)self videoIndex];
-    v8 = [v4 videoIndex];
-    v9 = v7 - v8;
-    if (v7 - v8 < 0)
+    videoIndex = [(NTKTimelapseListing *)self videoIndex];
+    videoIndex2 = [toCopy videoIndex];
+    v9 = videoIndex - videoIndex2;
+    if (videoIndex - videoIndex2 < 0)
     {
-      v9 = v8 - v7;
+      v9 = videoIndex2 - videoIndex;
     }
 
     if (v9 >= v6 - v9)
@@ -125,18 +125,18 @@
   return video;
 }
 
-- (BOOL)snapshotDiffers:(id)a3
+- (BOOL)snapshotDiffers:(id)differs
 {
-  v4 = a3;
+  differsCopy = differs;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 theme];
-    if (v6 == [(NTKTimelapseListing *)self theme])
+    v5 = differsCopy;
+    theme = [v5 theme];
+    if (theme == [(NTKTimelapseListing *)self theme])
     {
-      v7 = [v5 videoIndex];
-      v8 = v7 != [(NTKTimelapseListing *)self videoIndex];
+      videoIndex = [v5 videoIndex];
+      v8 = videoIndex != [(NTKTimelapseListing *)self videoIndex];
     }
 
     else

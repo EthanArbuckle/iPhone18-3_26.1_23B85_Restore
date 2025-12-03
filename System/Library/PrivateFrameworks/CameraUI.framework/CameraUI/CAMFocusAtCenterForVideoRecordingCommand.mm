@@ -1,14 +1,14 @@
 @interface CAMFocusAtCenterForVideoRecordingCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMFocusAtCenterForVideoRecordingCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v7 = [a3 currentVideoDevice];
-  v4 = [v7 activeFormat];
-  if ([v4 autoFocusSystem] == 2)
+  currentVideoDevice = [context currentVideoDevice];
+  activeFormat = [currentVideoDevice activeFormat];
+  if ([activeFormat autoFocusSystem] == 2)
   {
     v5 = 3;
   }

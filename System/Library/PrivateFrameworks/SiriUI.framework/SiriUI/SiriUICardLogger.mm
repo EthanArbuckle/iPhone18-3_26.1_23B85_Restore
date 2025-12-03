@@ -1,9 +1,9 @@
 @interface SiriUICardLogger
 + (id)_sharedInstance;
-+ (id)logCard:(id)a3 format:(unint64_t)a4;
-+ (id)logCardData:(id)a3 format:(unint64_t)a4;
++ (id)logCard:(id)card format:(unint64_t)format;
++ (id)logCardData:(id)data format:(unint64_t)format;
 - (SiriUICardLogger)init;
-- (id)_currentFilenameForFormat:(unint64_t)a3;
+- (id)_currentFilenameForFormat:(unint64_t)format;
 - (id)_dateFormatter;
 - (id)_nowString;
 @end
@@ -31,66 +31,66 @@ uint64_t __35__SiriUICardLogger__sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)logCardData:(id)a3 format:(unint64_t)a4
++ (id)logCardData:(id)data format:(unint64_t)format
 {
   v6 = MEMORY[0x277D4C230];
-  v7 = a3;
+  dataCopy = data;
   v8 = [v6 alloc];
-  v9 = [objc_alloc(MEMORY[0x277D4C728]) initWithData:v7];
+  v9 = [objc_alloc(MEMORY[0x277D4C728]) initWithData:dataCopy];
 
   v10 = [v8 initWithProtobuf:v9];
-  v11 = [a1 logCard:v10 format:a4];
+  v11 = [self logCard:v10 format:format];
 
   return v11;
 }
 
-+ (id)logCard:(id)a3 format:(unint64_t)a4
++ (id)logCard:(id)card format:(unint64_t)format
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 backingCard];
-  if (!v6)
+  cardCopy = card;
+  backingCard = [cardCopy backingCard];
+  if (!backingCard)
   {
     v14 = 0;
     goto LABEL_21;
   }
 
   v7 = +[SiriUICardLogger _sharedInstance];
-  v8 = [v7 _currentFilenameForFormat:a4];
+  v8 = [v7 _currentFilenameForFormat:format];
 
-  v9 = [objc_alloc(MEMORY[0x277D4C728]) initWithFacade:v6];
-  v10 = [v9 data];
-  v11 = v10;
-  if (a4 > 1)
+  v9 = [objc_alloc(MEMORY[0x277D4C728]) initWithFacade:backingCard];
+  data = [v9 data];
+  v11 = data;
+  if (format > 1)
   {
-    if (a4 == 2)
+    if (format == 2)
     {
-      v15 = [v9 jsonData];
+      jsonData = [v9 jsonData];
     }
 
     else
     {
-      if (a4 != 3)
+      if (format != 3)
       {
         goto LABEL_11;
       }
 
-      v15 = [v9 dictionaryRepresentation];
+      jsonData = [v9 dictionaryRepresentation];
     }
 
-    v12 = v15;
-    v13 = [v15 writeToFile:v8 atomically:0];
+    v12 = jsonData;
+    v13 = [jsonData writeToFile:v8 atomically:0];
     goto LABEL_16;
   }
 
-  if (a4)
+  if (format)
   {
-    if (a4 != 1)
+    if (format != 1)
     {
       goto LABEL_11;
     }
 
-    v12 = [v10 base64EncodedStringWithOptions:32];
+    v12 = [data base64EncodedStringWithOptions:32];
     v13 = [v12 writeToFile:v8 atomically:0 encoding:4 error:0];
 LABEL_16:
     v16 = v13;
@@ -110,7 +110,7 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  if (![v10 writeToFile:v8 atomically:0])
+  if (![data writeToFile:v8 atomically:0])
   {
     goto LABEL_11;
   }
@@ -124,7 +124,7 @@ LABEL_17:
     v21 = 2112;
     v22 = v8;
     v23 = 2112;
-    v24 = v5;
+    v24 = cardCopy;
     _os_log_impl(&dword_26948D000, v17, OS_LOG_TYPE_DEFAULT, "%s #cards Logged card to file\n    Filename: %@\n    Card: %@", &v19, 0x20u);
   }
 
@@ -151,9 +151,9 @@ LABEL_21:
   return v3;
 }
 
-- (id)_currentFilenameForFormat:(unint64_t)a3
+- (id)_currentFilenameForFormat:(unint64_t)format
 {
-  if (a3 > 3)
+  if (format > 3)
   {
     v4 = 0;
     v5 = 0;
@@ -161,17 +161,17 @@ LABEL_21:
 
   else
   {
-    v4 = off_279C59E30[a3];
-    v5 = off_279C59E50[a3];
+    v4 = off_279C59E30[format];
+    v5 = off_279C59E50[format];
   }
 
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
   v7 = AFLogDirectory();
   v8 = [v7 stringByAppendingPathComponent:@"CardLogs"];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v10 = [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
+  v10 = [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
   v11 = v15;
 
   if ((v10 & 1) == 0 && os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -179,8 +179,8 @@ LABEL_21:
     [SiriUICardLogger _currentFilenameForFormat:];
   }
 
-  v12 = [(SiriUICardLogger *)self _nowString];
-  v13 = [v6 initWithFormat:@"%@/siri-card-%@-%@.%@", v8, v12, v5, v4];
+  _nowString = [(SiriUICardLogger *)self _nowString];
+  v13 = [v6 initWithFormat:@"%@/siri-card-%@-%@.%@", v8, _nowString, v5, v4];
 
   return v13;
 }
@@ -207,9 +207,9 @@ LABEL_21:
 
 - (id)_nowString
 {
-  v2 = [(SiriUICardLogger *)self _dateFormatter];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 stringFromDate:v3];
+  _dateFormatter = [(SiriUICardLogger *)self _dateFormatter];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [_dateFormatter stringFromDate:date];
 
   return v4;
 }

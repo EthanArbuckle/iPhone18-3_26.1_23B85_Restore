@@ -8,39 +8,39 @@
 {
   v20.receiver = self;
   v20.super_class = UIKeyboardCandidateViewConfigurationHandwriting;
-  v3 = [(UIKeyboardCandidateViewConfiguration *)&v20 initialState];
-  v4 = [v3 style];
-  [v4 setBackgroundColor:0];
+  initialState = [(UIKeyboardCandidateViewConfiguration *)&v20 initialState];
+  style = [initialState style];
+  [style setBackgroundColor:0];
 
-  v5 = [v3 style];
-  [v5 setCellBackgroundColor:0];
+  style2 = [initialState style];
+  [style2 setCellBackgroundColor:0];
 
-  v6 = [v3 style];
-  [v6 setGridBackgroundColor:0];
+  style3 = [initialState style];
+  [style3 setGridBackgroundColor:0];
 
-  v7 = [v3 style];
-  [v7 setSingleSlottedCellMargin:0.0];
+  style4 = [initialState style];
+  [style4 setSingleSlottedCellMargin:0.0];
 
   v8 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
   v9 = [v8 pocketShadowImageForDarkKeyboard:-[UIKeyboardCandidateViewConfiguration darkKeyboard](self fadesToBottom:"darkKeyboard") drawShadow:0 topPadding:0 bottomPadding:4.0 height:{4.0, 42.0}];
-  v10 = [v3 style];
-  [v10 setRightEdgeSeparatorImage:v9];
+  style5 = [initialState style];
+  [style5 setRightEdgeSeparatorImage:v9];
 
-  v11 = [v3 style];
-  [v11 setArrowButtonSeparatorImage:0];
+  style6 = [initialState style];
+  [style6 setArrowButtonSeparatorImage:0];
 
   v12 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
   v13 = [v12 pocketShadowImageForDarkKeyboard:-[UIKeyboardCandidateViewConfiguration darkKeyboard](self fadesToBottom:"darkKeyboard") drawShadow:0 topPadding:0 bottomPadding:6.0 height:{4.0, 42.0}];
-  v14 = [v3 style];
-  [v14 setSlottedCellSeparatorImage:v13];
+  style7 = [initialState style];
+  [style7 setSlottedCellSeparatorImage:v13];
 
   v15 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
-  v16 = [(UIKeyboardCandidateViewConfiguration *)self highlightedBackgroundColor];
-  v17 = [v15 highlightedBarCellBackgroundImageWithColor:v16 insets:{2.0, 2.0, 2.0, 2.0}];
-  v18 = [v3 style];
-  [v18 setHighlightedCellBackgroundImage:v17];
+  highlightedBackgroundColor = [(UIKeyboardCandidateViewConfiguration *)self highlightedBackgroundColor];
+  v17 = [v15 highlightedBarCellBackgroundImageWithColor:highlightedBackgroundColor insets:{2.0, 2.0, 2.0, 2.0}];
+  style8 = [initialState style];
+  [style8 setHighlightedCellBackgroundImage:v17];
 
-  return v3;
+  return initialState;
 }
 
 @end

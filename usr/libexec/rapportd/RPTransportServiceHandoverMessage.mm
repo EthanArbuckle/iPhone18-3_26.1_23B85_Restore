@@ -1,8 +1,8 @@
 @interface RPTransportServiceHandoverMessage
-+ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverRequest:(id)a3;
-+ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverSelect:(id)a3;
-+ (RPTransportServiceHandoverMessage)messageWithMetadata:(id)a3 applicationLabel:(id)a4 payload:(id)a5 version:(id)a6;
-- (RPTransportServiceHandoverMessage)initWithMetadata:(id)a3 applicationLabel:(id)a4 payload:(id)a5 version:(id)a6;
++ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverRequest:(id)request;
++ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverSelect:(id)select;
++ (RPTransportServiceHandoverMessage)messageWithMetadata:(id)metadata applicationLabel:(id)label payload:(id)payload version:(id)version;
+- (RPTransportServiceHandoverMessage)initWithMetadata:(id)metadata applicationLabel:(id)label payload:(id)payload version:(id)version;
 - (id)connectionHandoverRequest;
 - (id)connectionHandoverSelect;
 - (id)transportServicesMetadataDictionaryRepresentation;
@@ -10,27 +10,27 @@
 
 @implementation RPTransportServiceHandoverMessage
 
-- (RPTransportServiceHandoverMessage)initWithMetadata:(id)a3 applicationLabel:(id)a4 payload:(id)a5 version:(id)a6
+- (RPTransportServiceHandoverMessage)initWithMetadata:(id)metadata applicationLabel:(id)label payload:(id)payload version:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  labelCopy = label;
+  payloadCopy = payload;
+  versionCopy = version;
   v22.receiver = self;
   v22.super_class = RPTransportServiceHandoverMessage;
   v14 = [(RPTransportServiceHandoverMessage *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [metadataCopy copy];
     transportServicesMetadata = v14->_transportServicesMetadata;
     v14->_transportServicesMetadata = v15;
 
-    v17 = [v11 copy];
+    v17 = [labelCopy copy];
     applicationLabel = v14->_applicationLabel;
     v14->_applicationLabel = v17;
 
-    objc_storeStrong(&v14->_payload, a5);
-    v19 = [v13 copy];
+    objc_storeStrong(&v14->_payload, payload);
+    v19 = [versionCopy copy];
     version = v14->_version;
     v14->_version = v19;
   }
@@ -38,13 +38,13 @@
   return v14;
 }
 
-+ (RPTransportServiceHandoverMessage)messageWithMetadata:(id)a3 applicationLabel:(id)a4 payload:(id)a5 version:(id)a6
++ (RPTransportServiceHandoverMessage)messageWithMetadata:(id)metadata applicationLabel:(id)label payload:(id)payload version:(id)version
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithMetadata:v12 applicationLabel:v11 payload:v10 version:v9];
+  versionCopy = version;
+  payloadCopy = payload;
+  labelCopy = label;
+  metadataCopy = metadata;
+  v13 = [objc_alloc(objc_opt_class()) initWithMetadata:metadataCopy applicationLabel:labelCopy payload:payloadCopy version:versionCopy];
 
   return v13;
 }
@@ -71,8 +71,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -84,20 +84,20 @@
   return v3;
 }
 
-+ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverSelect:(id)a3
++ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverSelect:(id)select
 {
-  v3 = a3;
-  v4 = [v3 transportServiceList];
-  v5 = sub_1000734EC(v4);
+  selectCopy = select;
+  transportServiceList = [selectCopy transportServiceList];
+  v5 = sub_1000734EC(transportServiceList);
 
-  v6 = [v3 userInfo];
-  if (v6)
+  userInfo = [selectCopy userInfo];
+  if (userInfo)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v8 = v6;
+      v8 = userInfo;
     }
 
     else
@@ -106,13 +106,13 @@
     }
 
     v9 = v8;
-    if ((isKindOfClass & 1) != 0 && ((v10 = [[RPNearFieldAuthenticationPayload alloc] initWithDictionary:v6]) != 0 || (v10 = [[RPNearFieldValidationPayload alloc] initWithDictionary:v6]) != 0))
+    if ((isKindOfClass & 1) != 0 && ((v10 = [[RPNearFieldAuthenticationPayload alloc] initWithDictionary:userInfo]) != 0 || (v10 = [[RPNearFieldValidationPayload alloc] initWithDictionary:userInfo]) != 0))
     {
       v11 = v10;
       v12 = objc_opt_class();
-      v13 = [v3 applicationLabel];
-      v14 = [v3 version];
-      v15 = [v12 messageWithMetadata:v5 applicationLabel:v13 payload:v11 version:v14];
+      applicationLabel = [selectCopy applicationLabel];
+      version = [selectCopy version];
+      v15 = [v12 messageWithMetadata:v5 applicationLabel:applicationLabel payload:v11 version:version];
     }
 
     else
@@ -129,14 +129,14 @@
   return v15;
 }
 
-+ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverRequest:(id)a3
++ (RPTransportServiceHandoverMessage)messageWithConnectionHandoverRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 transportServiceList];
-  v5 = sub_1000734EC(v4);
+  requestCopy = request;
+  transportServiceList = [requestCopy transportServiceList];
+  v5 = sub_1000734EC(transportServiceList);
 
-  v6 = [v3 userInfo];
-  if (!v6)
+  userInfo = [requestCopy userInfo];
+  if (!userInfo)
   {
     v10 = 0;
     goto LABEL_17;
@@ -146,7 +146,7 @@
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v8 = v6;
+    v8 = userInfo;
   }
 
   else
@@ -175,14 +175,14 @@
       v14 = off_1001A9AB0;
     }
 
-    v15 = [objc_alloc(*v14) initWithDictionary:v6];
+    v15 = [objc_alloc(*v14) initWithDictionary:userInfo];
     if (v15)
     {
       v16 = v15;
       v17 = objc_opt_class();
-      v18 = [v3 applicationLabel];
-      v19 = [v3 version];
-      v10 = [v17 messageWithMetadata:v5 applicationLabel:v18 payload:v16 version:v19];
+      applicationLabel = [requestCopy applicationLabel];
+      version = [requestCopy version];
+      v10 = [v17 messageWithMetadata:v5 applicationLabel:applicationLabel payload:v16 version:version];
 
 LABEL_15:
       goto LABEL_16;
@@ -202,28 +202,28 @@ LABEL_17:
 
 - (id)connectionHandoverSelect
 {
-  v3 = [(RPTransportServiceHandoverMessage *)self payload];
-  v4 = [v3 dictionaryRepresentation];
+  payload = [(RPTransportServiceHandoverMessage *)self payload];
+  dictionaryRepresentation = [payload dictionaryRepresentation];
 
-  v5 = [(RPTransportServiceHandoverMessage *)self transportServicesMetadataDictionaryRepresentation];
+  transportServicesMetadataDictionaryRepresentation = [(RPTransportServiceHandoverMessage *)self transportServicesMetadataDictionaryRepresentation];
   v6 = objc_alloc(off_1001D3FE0[0]());
-  v7 = [(RPTransportServiceHandoverMessage *)self version];
-  v8 = [(RPTransportServiceHandoverMessage *)self applicationLabel];
-  v9 = [v6 initWithVersion:v7 applicationLabel:v8 serivceList:v5 userInfo:v4];
+  version = [(RPTransportServiceHandoverMessage *)self version];
+  applicationLabel = [(RPTransportServiceHandoverMessage *)self applicationLabel];
+  v9 = [v6 initWithVersion:version applicationLabel:applicationLabel serivceList:transportServicesMetadataDictionaryRepresentation userInfo:dictionaryRepresentation];
 
   return v9;
 }
 
 - (id)connectionHandoverRequest
 {
-  v3 = [(RPTransportServiceHandoverMessage *)self payload];
-  v4 = [v3 dictionaryRepresentation];
+  payload = [(RPTransportServiceHandoverMessage *)self payload];
+  dictionaryRepresentation = [payload dictionaryRepresentation];
 
-  v5 = [(RPTransportServiceHandoverMessage *)self transportServicesMetadataDictionaryRepresentation];
+  transportServicesMetadataDictionaryRepresentation = [(RPTransportServiceHandoverMessage *)self transportServicesMetadataDictionaryRepresentation];
   v6 = objc_alloc(off_1001D3FE8());
-  v7 = [(RPTransportServiceHandoverMessage *)self version];
-  v8 = [(RPTransportServiceHandoverMessage *)self applicationLabel];
-  v9 = [v6 initWithVersion:v7 applicationLabel:v8 serivceList:v5 userInfo:v4];
+  version = [(RPTransportServiceHandoverMessage *)self version];
+  applicationLabel = [(RPTransportServiceHandoverMessage *)self applicationLabel];
+  v9 = [v6 initWithVersion:version applicationLabel:applicationLabel serivceList:transportServicesMetadataDictionaryRepresentation userInfo:dictionaryRepresentation];
 
   return v9;
 }

@@ -1,12 +1,12 @@
 @interface ANSTVMTrackerEspresso
 + (ANSTVMTrackerEspresso)new;
 - (ANSTVMTrackerEspresso)init;
-- (ANSTVMTrackerEspresso)initWithConfiguration:(id)a3;
-- (BOOL)_setInitialMaskWithValue:(float)a3;
+- (ANSTVMTrackerEspresso)initWithConfiguration:(id)configuration;
+- (BOOL)_setInitialMaskWithValue:(float)value;
 - (BOOL)initNetwork;
-- (BOOL)runInferenceModel:(__CVBuffer *)a3;
-- (BOOL)runInitializerModel:(__CVBuffer *)a3;
-- (BOOL)runUpdateModel:(__CVBuffer *)a3;
+- (BOOL)runInferenceModel:(__CVBuffer *)model;
+- (BOOL)runInitializerModel:(__CVBuffer *)model;
+- (BOOL)runUpdateModel:(__CVBuffer *)model;
 - (id)_expectedMaskNetworkFileName;
 - (id)_expectedMemoryNetworkFileName;
 - (id)_expectedUpdateNetworkFileName;
@@ -17,7 +17,7 @@
 
 + (ANSTVMTrackerEspresso)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (ANSTVMTrackerEspresso)initWithConfiguration:(id)a3
+- (ANSTVMTrackerEspresso)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = ANSTVMTrackerEspresso;
   v6 = [(ANSTVMTrackerEspresso *)&v12 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_configuration, a3), v7->_firstFrame = 1, !objc_msgSend_initNetwork(v7, v8, v9)))
+  if (v6 && (objc_storeStrong(&v6->_configuration, configuration), v7->_firstFrame = 1, !objc_msgSend_initNetwork(v7, v8, v9)))
   {
     v10 = 0;
   }
@@ -237,9 +237,9 @@
   return 0;
 }
 
-- (BOOL)runInitializerModel:(__CVBuffer *)a3
+- (BOOL)runInitializerModel:(__CVBuffer *)model
 {
-  v4 = objc_msgSend_setInput_fromCVPixelBuffer_(self->_memoryNetwork, a2, kANSTVMTrackerNetworkInputTensorName, a3);
+  v4 = objc_msgSend_setInput_fromCVPixelBuffer_(self->_memoryNetwork, a2, kANSTVMTrackerNetworkInputTensorName, model);
   if (v4)
   {
     v4 = objc_msgSend_setInput_fromCVPixelBuffer_(self->_memoryNetwork, v5, kANSTVMTrackerNetworkInputMaskTensorName, self->_initialMask);
@@ -273,7 +273,7 @@
   return v4;
 }
 
-- (BOOL)runInferenceModel:(__CVBuffer *)a3
+- (BOOL)runInferenceModel:(__CVBuffer *)model
 {
   if (!self->_firstFrame)
   {
@@ -286,7 +286,7 @@
       _os_signpost_emit_with_name_impl(&dword_22E5D5000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ANSTVMTrackerEspresso_runInferenceModel", &unk_22E663F87, buf, 2u);
     }
 
-    if (objc_msgSend_setInput_fromCVPixelBuffer_(self->_maskNetwork, v8, kANSTVMTrackerNetworkInputTensorName, a3) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v9, self->_outputMaskBuffer, kANSTVMTrackerNetworkInputMattingTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v10, self->_probTensor, kANSTVMTrackerNetworkInputProbTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v11, self->_keyTensor, kANSTVMTrackerNetworkInputKeyTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v12, self->_valueTensor, kANSTVMTrackerNetworkInputValueTensorName) && (objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v13, self->_hiddenStateTensor, kANSTVMTrackerNetworkInputHiddenStateTensorName) & 1) != 0)
+    if (objc_msgSend_setInput_fromCVPixelBuffer_(self->_maskNetwork, v8, kANSTVMTrackerNetworkInputTensorName, model) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v9, self->_outputMaskBuffer, kANSTVMTrackerNetworkInputMattingTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v10, self->_probTensor, kANSTVMTrackerNetworkInputProbTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v11, self->_keyTensor, kANSTVMTrackerNetworkInputKeyTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v12, self->_valueTensor, kANSTVMTrackerNetworkInputValueTensorName) && (objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_maskNetwork, v13, self->_hiddenStateTensor, kANSTVMTrackerNetworkInputHiddenStateTensorName) & 1) != 0)
     {
       if (objc_msgSend_runNetwork(self->_maskNetwork, v14, v15))
       {
@@ -347,7 +347,7 @@ LABEL_22:
   return 0;
 }
 
-- (BOOL)runUpdateModel:(__CVBuffer *)a3
+- (BOOL)runUpdateModel:(__CVBuffer *)model
 {
   if (!self->_firstFrame)
   {
@@ -360,7 +360,7 @@ LABEL_22:
       _os_signpost_emit_with_name_impl(&dword_22E5D5000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ANSTVMTrackerEspresso_runUpdateModel", &unk_22E663F87, buf, 2u);
     }
 
-    if (objc_msgSend_setInput_fromCVPixelBuffer_(self->_updateNetwork, v8, kANSTVMTrackerNetworkInputTensorName, a3) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v9, self->_outputMaskBuffer, kANSTVMTrackerNetworkInputMattingTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v10, self->_probTensor, kANSTVMTrackerNetworkInputProbTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v11, self->_keyTensor, kANSTVMTrackerNetworkInputKeyTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v12, self->_valueTensor, kANSTVMTrackerNetworkInputValueTensorName) && (objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v13, self->_hiddenStateTensor, kANSTVMTrackerNetworkInputHiddenStateTensorName) & 1) != 0)
+    if (objc_msgSend_setInput_fromCVPixelBuffer_(self->_updateNetwork, v8, kANSTVMTrackerNetworkInputTensorName, model) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v9, self->_outputMaskBuffer, kANSTVMTrackerNetworkInputMattingTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v10, self->_probTensor, kANSTVMTrackerNetworkInputProbTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v11, self->_keyTensor, kANSTVMTrackerNetworkInputKeyTensorName) && objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v12, self->_valueTensor, kANSTVMTrackerNetworkInputValueTensorName) && (objc_msgSend_bindNetworkInputWithEspressoBuffer_withInputName_(self->_updateNetwork, v13, self->_hiddenStateTensor, kANSTVMTrackerNetworkInputHiddenStateTensorName) & 1) != 0)
     {
       if (objc_msgSend_runNetwork(self->_updateNetwork, v14, v15))
       {
@@ -513,7 +513,7 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)_setInitialMaskWithValue:(float)a3
+- (BOOL)_setInitialMaskWithValue:(float)value
 {
   PixelFormatType = CVPixelBufferGetPixelFormatType(self->_initialMask);
   if (PixelFormatType == 1278226534)
@@ -540,18 +540,18 @@ LABEL_41:
             v16 = vmovn_s64(vcgeq_u64(v11, vorrq_s8(v15, xmmword_22E661C90)));
             if (vuzp1_s16(v16, *v11.i8).u8[0])
             {
-              *(v14 - 2) = a3;
+              *(v14 - 2) = value;
             }
 
             if (vuzp1_s16(v16, *&v11).i8[2])
             {
-              *(v14 - 1) = a3;
+              *(v14 - 1) = value;
             }
 
             if (vuzp1_s16(*&v11, vmovn_s64(vcgeq_u64(v11, vorrq_s8(v15, xmmword_22E661C80)))).i32[1])
             {
-              *v14 = a3;
-              v14[1] = a3;
+              *v14 = value;
+              v14[1] = value;
             }
 
             v13 += 4;

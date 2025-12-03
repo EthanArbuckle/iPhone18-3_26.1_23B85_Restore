@@ -1,35 +1,35 @@
 @interface ML3MediaLibraryWriter
-+ (id)writerErrorWithCode:(int64_t)a3 description:(id)a4 userInfo:(id)a5;
-- (BOOL)_shouldWatchdogTransaction:(id)a3;
-- (BOOL)endTransaction:(id)a3 shouldCommit:(BOOL)a4 error:(id *)a5;
-- (BOOL)executeUntrustedUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6;
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6;
++ (id)writerErrorWithCode:(int64_t)code description:(id)description userInfo:(id)info;
+- (BOOL)_shouldWatchdogTransaction:(id)transaction;
+- (BOOL)endTransaction:(id)transaction shouldCommit:(BOOL)commit error:(id *)error;
+- (BOOL)executeUntrustedUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error;
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error;
 - (ML3MediaLibraryWriter)init;
 - (ML3MediaLibraryWriterDelegate)delegate;
-- (id)_activeTransactionForClient:(id)a3;
+- (id)_activeTransactionForClient:(id)client;
 - (id)_allDatabaseOperations;
-- (id)_createNewTransactionForLibrary:(id)a3 fromClient:(id)a4 readOnly:(BOOL)a5;
-- (id)_transactionForIdentifier:(id)a3;
-- (id)beginTransactionForLibrary:(id)a3 withClient:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (id)_createNewTransactionForLibrary:(id)library fromClient:(id)client readOnly:(BOOL)only;
+- (id)_transactionForIdentifier:(id)identifier;
+- (id)beginTransactionForLibrary:(id)library withClient:(id)client options:(unint64_t)options error:(id *)error;
 - (id)description;
-- (id)executeQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 error:(id *)a7;
-- (id)executeUntrustedQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 error:(id *)a7;
-- (void)_destroyTransaction:(id)a3 forceRelinquishConnection:(BOOL)a4;
-- (void)_destroyTransactionForIdentifier:(id)a3 forceRelinquishConnection:(BOOL)a4;
-- (void)_registerTransaction:(id)a3;
+- (id)executeQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction error:(id *)error;
+- (id)executeUntrustedQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction error:(id *)error;
+- (void)_destroyTransaction:(id)transaction forceRelinquishConnection:(BOOL)connection;
+- (void)_destroyTransactionForIdentifier:(id)identifier forceRelinquishConnection:(BOOL)connection;
+- (void)_registerTransaction:(id)transaction;
 - (void)_setupWatchdogTimer;
 - (void)_tearDownWatchdogTimer;
-- (void)_unregisterTransaction:(id)a3;
-- (void)_watchdogTimerFired:(id)a3;
-- (void)cancelActiveTransactionForClient:(id)a3;
-- (void)cancelAllActiveDatabaseOperationsAndWaitUntilFinished:(BOOL)a3;
+- (void)_unregisterTransaction:(id)transaction;
+- (void)_watchdogTimerFired:(id)fired;
+- (void)cancelActiveTransactionForClient:(id)client;
+- (void)cancelAllActiveDatabaseOperationsAndWaitUntilFinished:(BOOL)finished;
 - (void)cancelAllActiveTransactions;
-- (void)cancelDatabaseOperationsForClient:(id)a3 completion:(id)a4;
+- (void)cancelDatabaseOperationsForClient:(id)client completion:(id)completion;
 - (void)dealloc;
-- (void)performDatabaseOperation:(unint64_t)a3 onLibrary:(id)a4 withAttributes:(id)a5 options:(id)a6 fromClient:(id)a7 completionHandler:(id)a8;
+- (void)performDatabaseOperation:(unint64_t)operation onLibrary:(id)library withAttributes:(id)attributes options:(id)options fromClient:(id)client completionHandler:(id)handler;
 - (void)reset;
-- (void)setSuspended:(BOOL)a3;
-- (void)setTransactionTimeout:(double)a3;
+- (void)setSuspended:(BOOL)suspended;
+- (void)setTransactionTimeout:(double)timeout;
 @end
 
 @implementation ML3MediaLibraryWriter
@@ -41,19 +41,19 @@
   return WeakRetained;
 }
 
-- (void)_watchdogTimerFired:(id)a3
+- (void)_watchdogTimerFired:(id)fired
 {
   v22 = *MEMORY[0x277D85DE8];
   if (self->_transactionTimeout != 0.0)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke;
     block[3] = &unk_2787660F0;
     block[4] = self;
-    v6 = v4;
+    v6 = array;
     v20 = v6;
     dispatch_sync(serialQueue, block);
     v7 = [ML3MediaLibraryWriter writerErrorWithCode:900 description:@"Media library database transaction was terminated due to inactivity."];
@@ -140,21 +140,21 @@ void __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke_2(uint64_t a
   }
 }
 
-- (BOOL)_shouldWatchdogTransaction:(id)a3
+- (BOOL)_shouldWatchdogTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = v5;
-  [v4 lastUsedTime];
+  [transactionCopy lastUsedTime];
   v8 = v6 - v7;
   transactionTimeout = self->_transactionTimeout;
-  v10 = [v4 inUseByOperation];
+  inUseByOperation = [transactionCopy inUseByOperation];
   v11 = 0;
-  if (v8 > transactionTimeout && (v10 & 1) == 0)
+  if (v8 > transactionTimeout && (inUseByOperation & 1) == 0)
   {
     CFPreferencesAppSynchronize(@"com.apple.medialibraryd");
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MediaLibraryWatchdogDisabled", @"com.apple.medialibraryd", 0);
-    v13 = [v4 terminable];
+    terminable = [transactionCopy terminable];
     if (AppBooleanValue)
     {
       v11 = 0;
@@ -162,7 +162,7 @@ void __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke_2(uint64_t a
 
     else
     {
-      v11 = v13;
+      v11 = terminable;
     }
   }
 
@@ -193,70 +193,70 @@ void __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke_2(uint64_t a
   watchdogTimer = self->_watchdogTimer;
   self->_watchdogTimer = v5;
 
-  v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v7 addTimer:self->_watchdogTimer forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:self->_watchdogTimer forMode:*MEMORY[0x277CBE640]];
 }
 
-- (void)_destroyTransactionForIdentifier:(id)a3 forceRelinquishConnection:(BOOL)a4
+- (void)_destroyTransactionForIdentifier:(id)identifier forceRelinquishConnection:(BOOL)connection
 {
-  v4 = a4;
-  v6 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:a3];
-  [(ML3MediaLibraryWriter *)self _destroyTransaction:v6 forceRelinquishConnection:v4];
+  connectionCopy = connection;
+  v6 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:identifier];
+  [(ML3MediaLibraryWriter *)self _destroyTransaction:v6 forceRelinquishConnection:connectionCopy];
 }
 
-- (void)_destroyTransaction:(id)a3 forceRelinquishConnection:(BOOL)a4
+- (void)_destroyTransaction:(id)transaction forceRelinquishConnection:(BOOL)connection
 {
-  v5 = a3;
-  if (v5)
+  transactionCopy = transaction;
+  if (transactionCopy)
   {
-    [(ML3MediaLibraryWriter *)self _unregisterTransaction:v5];
-    v6 = [v5 _relinquishConnection];
-    v7 = [v5 library];
-    [v7 checkInDatabaseConnection:v6];
+    [(ML3MediaLibraryWriter *)self _unregisterTransaction:transactionCopy];
+    _relinquishConnection = [transactionCopy _relinquishConnection];
+    library = [transactionCopy library];
+    [library checkInDatabaseConnection:_relinquishConnection];
   }
 
   else
   {
-    v6 = os_log_create("com.apple.amp.medialibrary", "Writer");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    _relinquishConnection = os_log_create("com.apple.amp.medialibrary", "Writer");
+    if (os_log_type_enabled(_relinquishConnection, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_ERROR, "Warning: Attempted to destroy non-existent transaction. Possible deadlock.", v9, 2u);
+      _os_log_impl(&dword_22D2FA000, _relinquishConnection, OS_LOG_TYPE_ERROR, "Warning: Attempted to destroy non-existent transaction. Possible deadlock.", v9, 2u);
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained mediaLibraryWriter:self didDestroyTransaction:v5];
+    [WeakRetained mediaLibraryWriter:self didDestroyTransaction:transactionCopy];
   }
 }
 
-- (id)_createNewTransactionForLibrary:(id)a3 fromClient:(id)a4 readOnly:(BOOL)a5
+- (id)_createNewTransactionForLibrary:(id)library fromClient:(id)client readOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  libraryCopy = library;
+  clientCopy = client;
+  if (!libraryCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v11 = [v10 connection];
-  if (([v11 ml_isValid] & 1) != 0 || objc_msgSend(v10, "isDaemonClient"))
+  connection = [clientCopy connection];
+  if (([connection ml_isValid] & 1) != 0 || objc_msgSend(clientCopy, "isDaemonClient"))
   {
-    v12 = [v10 isDaemonClient];
-    v13 = [v9 connectionPool];
-    v14 = [v13 _connectionForWriting:v5 ^ 1 useThreadConnection:0 storeThreadLocalConnection:v12];
+    isDaemonClient = [clientCopy isDaemonClient];
+    connectionPool = [libraryCopy connectionPool];
+    v14 = [connectionPool _connectionForWriting:onlyCopy ^ 1 useThreadConnection:0 storeThreadLocalConnection:isDaemonClient];
 
-    if (([v11 ml_isValid] & 1) != 0 || objc_msgSend(v10, "isDaemonClient"))
+    if (([connection ml_isValid] & 1) != 0 || objc_msgSend(clientCopy, "isDaemonClient"))
     {
-      v15 = [[ML3ActiveTransaction alloc] initWithLibrary:v9 connection:v14 client:v10];
-      [(ML3ActiveTransaction *)v15 setReadOnly:v5];
-      v16 = [(ML3ActiveTransaction *)v15 identifier];
-      [v14 setCurrentTransactionID:v16];
+      v15 = [[ML3ActiveTransaction alloc] initWithLibrary:libraryCopy connection:v14 client:clientCopy];
+      [(ML3ActiveTransaction *)v15 setReadOnly:onlyCopy];
+      identifier = [(ML3ActiveTransaction *)v15 identifier];
+      [v14 setCurrentTransactionID:identifier];
 
       [(ML3MediaLibraryWriter *)self _registerTransaction:v15];
       goto LABEL_14;
@@ -266,11 +266,11 @@ void __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke_2(uint64_t a
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v21 = [v11 processIdentifier];
+      processIdentifier = [connection processIdentifier];
       _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEFAULT, "Zombie process with ID %d tried to start a transaction. It already got a connection, but it's being returned.", buf, 8u);
     }
 
-    [v9 checkInDatabaseConnection:v14];
+    [libraryCopy checkInDatabaseConnection:v14];
   }
 
   else
@@ -279,7 +279,7 @@ void __45__ML3MediaLibraryWriter__watchdogTimerFired___block_invoke_2(uint64_t a
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v21 = [v11 processIdentifier];
+      processIdentifier = [connection processIdentifier];
       _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Zombie process with ID %d tried to start a transaction.", buf, 8u);
     }
   }
@@ -293,32 +293,32 @@ LABEL_14:
 - (id)_allDatabaseOperations
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NSOperationQueue *)self->_databaseOperationQueue operations];
-  [v3 addObjectsFromArray:v4];
+  operations = [(NSOperationQueue *)self->_databaseOperationQueue operations];
+  [v3 addObjectsFromArray:operations];
 
-  v5 = [(NSOperationQueue *)self->_databaseOperationSerialQueue operations];
-  [v3 addObjectsFromArray:v5];
+  operations2 = [(NSOperationQueue *)self->_databaseOperationSerialQueue operations];
+  [v3 addObjectsFromArray:operations2];
 
-  v6 = [(NSOperationQueue *)self->_databaseOperationLimitedQueue operations];
-  [v3 addObjectsFromArray:v6];
+  operations3 = [(NSOperationQueue *)self->_databaseOperationLimitedQueue operations];
+  [v3 addObjectsFromArray:operations3];
 
-  v7 = [(NSOperationQueue *)self->_lowPriorityDatabaseOperationQueue operations];
-  [v3 addObjectsFromArray:v7];
+  operations4 = [(NSOperationQueue *)self->_lowPriorityDatabaseOperationQueue operations];
+  [v3 addObjectsFromArray:operations4];
 
   return v3;
 }
 
-- (void)_unregisterTransaction:(id)a3
+- (void)_unregisterTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ML3MediaLibraryWriter__unregisterTransaction___block_invoke;
   v7[3] = &unk_2787660F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -328,17 +328,17 @@ void __48__ML3MediaLibraryWriter__unregisterTransaction___block_invoke(uint64_t 
   [*(*(a1 + 40) + 56) removeObjectForKey:v2];
 }
 
-- (void)_registerTransaction:(id)a3
+- (void)_registerTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ML3MediaLibraryWriter__registerTransaction___block_invoke;
   v7[3] = &unk_2787660F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = transactionCopy;
+  selfCopy = self;
+  v6 = transactionCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -348,9 +348,9 @@ void __46__ML3MediaLibraryWriter__registerTransaction___block_invoke(uint64_t a1
   [*(*(a1 + 40) + 56) setObject:*(a1 + 32) forKey:v2];
 }
 
-- (id)_activeTransactionForClient:(id)a3
+- (id)_activeTransactionForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -363,9 +363,9 @@ void __46__ML3MediaLibraryWriter__registerTransaction___block_invoke(uint64_t a1
   block[2] = __53__ML3MediaLibraryWriter__activeTransactionForClient___block_invoke;
   block[3] = &unk_278765F28;
   block[4] = self;
-  v10 = v4;
+  v10 = clientCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = clientCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -406,9 +406,9 @@ void __53__ML3MediaLibraryWriter__activeTransactionForClient___block_invoke_2(ui
   }
 }
 
-- (id)_transactionForIdentifier:(id)a3
+- (id)_transactionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -420,10 +420,10 @@ void __53__ML3MediaLibraryWriter__activeTransactionForClient___block_invoke_2(ui
   block[1] = 3221225472;
   block[2] = __51__ML3MediaLibraryWriter__transactionForIdentifier___block_invoke;
   block[3] = &unk_278765F28;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -455,37 +455,37 @@ uint64_t __51__ML3MediaLibraryWriter__transactionForIdentifier___block_invoke(vo
   dispatch_sync(serialQueue, block);
 }
 
-- (void)cancelDatabaseOperationsForClient:(id)a3 completion:(id)a4
+- (void)cancelDatabaseOperationsForClient:(id)client completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ML3MediaLibraryWriter *)self _activeTransactionForClient:v6];
-  v9 = [v8 identifier];
+  clientCopy = client;
+  completionCopy = completion;
+  v8 = [(ML3MediaLibraryWriter *)self _activeTransactionForClient:clientCopy];
+  identifier = [v8 identifier];
   v10 = os_log_create("com.apple.amp.medialibrary", "Writer");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = v6;
+    v23 = clientCopy;
     v24 = 2114;
-    v25 = v9;
+    v25 = identifier;
     _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "Cancelling database transaction and operations for client %{public}@, transactionID=%{public}@", buf, 0x16u);
   }
 
-  v11 = [(ML3MediaLibraryWriter *)self _allDatabaseOperations];
+  _allDatabaseOperations = [(ML3MediaLibraryWriter *)self _allDatabaseOperations];
   v12 = dispatch_get_global_queue(21, 0);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__ML3MediaLibraryWriter_cancelDatabaseOperationsForClient_completion___block_invoke;
   v17[3] = &unk_278763FD8;
-  v18 = v11;
-  v19 = v6;
-  v20 = v9;
-  v21 = v7;
-  v13 = v7;
-  v14 = v9;
-  v15 = v6;
-  v16 = v11;
+  v18 = _allDatabaseOperations;
+  v19 = clientCopy;
+  v20 = identifier;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifier;
+  v15 = clientCopy;
+  v16 = _allDatabaseOperations;
   dispatch_async(v12, v17);
 }
 
@@ -582,9 +582,9 @@ uint64_t __70__ML3MediaLibraryWriter_cancelDatabaseOperationsForClient_completio
   return result;
 }
 
-- (void)cancelAllActiveDatabaseOperationsAndWaitUntilFinished:(BOOL)a3
+- (void)cancelAllActiveDatabaseOperationsAndWaitUntilFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v5 = os_log_create("com.apple.amp.medialibrary", "Writer");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -596,7 +596,7 @@ uint64_t __70__ML3MediaLibraryWriter_cancelDatabaseOperationsForClient_completio
   [(NSOperationQueue *)self->_databaseOperationSerialQueue cancelAllOperations];
   [(NSOperationQueue *)self->_databaseOperationLimitedQueue cancelAllOperations];
   [(NSOperationQueue *)self->_lowPriorityDatabaseOperationQueue cancelAllOperations];
-  if (v3)
+  if (finishedCopy)
   {
     [(NSOperationQueue *)self->_databaseOperationQueue waitUntilAllOperationsAreFinished];
     [(NSOperationQueue *)self->_databaseOperationSerialQueue waitUntilAllOperationsAreFinished];
@@ -615,15 +615,15 @@ uint64_t __70__ML3MediaLibraryWriter_cancelDatabaseOperationsForClient_completio
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling all active transactions.", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ML3MediaLibraryWriter_cancelAllActiveTransactions__block_invoke;
   block[3] = &unk_2787660F0;
-  v6 = v4;
+  v6 = array;
   v21 = v6;
-  v22 = self;
+  selfCopy = self;
   dispatch_sync(serialQueue, block);
   v7 = [ML3MediaLibraryWriter writerErrorWithCode:900 description:@"The media library service cancelled all active database transactions."];
   v16 = 0u;
@@ -646,8 +646,8 @@ uint64_t __70__ML3MediaLibraryWriter_cancelDatabaseOperationsForClient_completio
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:v14 forceRelinquishConnection:1];
+        identifier = [v13 identifier];
+        [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:identifier forceRelinquishConnection:1];
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         if (objc_opt_respondsToSelector())
@@ -670,18 +670,18 @@ void __52__ML3MediaLibraryWriter_cancelAllActiveTransactions__block_invoke(uint6
   [v1 addObjectsFromArray:v2];
 }
 
-- (void)cancelActiveTransactionForClient:(id)a3
+- (void)cancelActiveTransactionForClient:(id)client
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = os_log_create("com.apple.amp.medialibrary", "Writer");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
+    bundleID = [clientCopy bundleID];
     *buf = 138543618;
-    *&buf[4] = v6;
+    *&buf[4] = bundleID;
     *&buf[12] = 1024;
-    *&buf[14] = [v4 processID];
+    *&buf[14] = [clientCopy processID];
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up any remaining transactions for ended process %{public}@ (process ID = %d)", buf, 0x12u);
   }
 
@@ -697,7 +697,7 @@ void __52__ML3MediaLibraryWriter_cancelAllActiveTransactions__block_invoke(uint6
   block[2] = __58__ML3MediaLibraryWriter_cancelActiveTransactionForClient___block_invoke;
   block[3] = &unk_278765F28;
   block[4] = self;
-  v8 = v4;
+  v8 = clientCopy;
   v11 = v8;
   v12 = buf;
   dispatch_sync(serialQueue, block);
@@ -759,17 +759,17 @@ void __58__ML3MediaLibraryWriter_cancelActiveTransactionForClient___block_invoke
   }
 }
 
-- (void)performDatabaseOperation:(unint64_t)a3 onLibrary:(id)a4 withAttributes:(id)a5 options:(id)a6 fromClient:(id)a7 completionHandler:(id)a8
+- (void)performDatabaseOperation:(unint64_t)operation onLibrary:(id)library withAttributes:(id)attributes options:(id)options fromClient:(id)client completionHandler:(id)handler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v39 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  libraryCopy = library;
+  attributesCopy = attributes;
+  optionsCopy = options;
+  clientCopy = client;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
   os_unfair_lock_lock(&self->_lock);
-  if (a3 == 4)
+  if (operation == 4)
   {
     p_activeSpotlightIndexOperation = &self->_activeSpotlightIndexOperation;
     if (self->_activeSpotlightIndexOperation)
@@ -787,9 +787,9 @@ LABEL_9:
 LABEL_10:
 
       os_unfair_lock_unlock(&self->_lock);
-      if (v17)
+      if (handlerCopy)
       {
-        v17[2](v17, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
       }
 
       goto LABEL_35;
@@ -798,7 +798,7 @@ LABEL_10:
 
   else
   {
-    if (a3 != 8)
+    if (operation != 8)
     {
       v20 = 0;
       goto LABEL_14;
@@ -823,13 +823,13 @@ LABEL_10:
   *p_activeSpotlightIndexOperation = 1;
 LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
-  v21 = [ML3DatabaseOperation databaseOperationForType:a3 withLibrary:v14 writer:self];
+  v21 = [ML3DatabaseOperation databaseOperationForType:operation withLibrary:libraryCopy writer:self];
   v22 = v21;
   if (v21)
   {
-    [v21 setOriginatingClient:v16];
-    [v22 setOptions:v15];
-    [v22 setAttributes:v39];
+    [v21 setOriginatingClient:clientCopy];
+    [v22 setOptions:optionsCopy];
+    [v22 setAttributes:attributesCopy];
     objc_initWeak(&location, v22);
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
@@ -837,13 +837,13 @@ LABEL_14:
     v40[3] = &unk_278763F88;
     objc_copyWeak(&v42, &location);
     v40[4] = self;
-    v41 = v17;
+    v41 = handlerCopy;
     [v22 setCompletionBlock:v40];
-    v23 = [v15 objectForKey:@"MLDatabaseOperationOptionEnqueueSerially"];
-    v24 = [v23 BOOLValue];
+    v23 = [optionsCopy objectForKey:@"MLDatabaseOperationOptionEnqueueSerially"];
+    bOOLValue = [v23 BOOLValue];
 
-    v25 = [v15 objectForKey:@"MLDatabaseOperationOptionUseLimitedQueue"];
-    v26 = [v25 BOOLValue];
+    v25 = [optionsCopy objectForKey:@"MLDatabaseOperationOptionUseLimitedQueue"];
+    bOOLValue2 = [v25 BOOLValue];
 
     v27 = os_log_create("com.apple.amp.medialibrary", "Writer");
     v28 = v27;
@@ -851,45 +851,45 @@ LABEL_14:
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v16 bundleID];
-        v30 = [(NSOperationQueue *)self->_lowPriorityDatabaseOperationQueue operationCount];
+        bundleID = [clientCopy bundleID];
+        operationCount = [(NSOperationQueue *)self->_lowPriorityDatabaseOperationQueue operationCount];
         *buf = 138543874;
-        v45 = v29;
+        v45 = bundleID;
         v46 = 2114;
         v47 = v22;
         v48 = 1024;
-        v49 = v30;
+        v49 = operationCount;
         _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_DEFAULT, "Enqueueing %{public}@'s database operation to the service's low priority serial queue: %{public}@. current operation count = %d", buf, 0x1Cu);
       }
 
       v31 = 80;
     }
 
-    else if (v24)
+    else if (bOOLValue)
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v16 bundleID];
-        v35 = [(NSOperationQueue *)self->_databaseOperationQueue operationCount];
+        bundleID2 = [clientCopy bundleID];
+        operationCount2 = [(NSOperationQueue *)self->_databaseOperationQueue operationCount];
         *buf = 138543874;
-        v45 = v34;
+        v45 = bundleID2;
         v46 = 2114;
         v47 = v22;
         v48 = 1024;
-        v49 = v35;
+        v49 = operationCount2;
         _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_DEFAULT, "Enqueueing %{public}@'s database operation to the service's serial queue: %{public}@. current operation count = %d", buf, 0x1Cu);
       }
 
       v31 = 72;
     }
 
-    else if (v26)
+    else if (bOOLValue2)
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v16 bundleID];
+        bundleID3 = [clientCopy bundleID];
         *buf = 138543618;
-        v45 = v36;
+        v45 = bundleID3;
         v46 = 2114;
         v47 = v22;
         _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_DEFAULT, "Enqueueing %{public}@'s database operation to the service's limited size queue: %{public}@", buf, 0x16u);
@@ -902,9 +902,9 @@ LABEL_14:
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v37 = [v16 bundleID];
+        bundleID4 = [clientCopy bundleID];
         *buf = 138543618;
-        v45 = v37;
+        v45 = bundleID4;
         v46 = 2114;
         v47 = v22;
         _os_log_impl(&dword_22D2FA000, v28, OS_LOG_TYPE_DEBUG, "Enqueueing %{public}@'s database operation to the service's concurrent queue: %{public}@", buf, 0x16u);
@@ -920,11 +920,11 @@ LABEL_14:
 
   else
   {
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"No operation exists for operation type: %lu", a3];
-    v33 = [ML3MediaLibraryWriter writerErrorWithCode:600 description:v32];
-    if (v17)
+    operation = [MEMORY[0x277CCACA8] stringWithFormat:@"No operation exists for operation type: %lu", operation];
+    v33 = [ML3MediaLibraryWriter writerErrorWithCode:600 description:operation];
+    if (handlerCopy)
     {
-      (v17)[2](v17, 0, v33);
+      (handlerCopy)[2](handlerCopy, 0, v33);
     }
   }
 
@@ -1012,15 +1012,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)endTransaction:(id)a3 shouldCommit:(BOOL)a4 error:(id *)a5
+- (BOOL)endTransaction:(id)transaction shouldCommit:(BOOL)commit error:(id *)error
 {
-  v6 = a4;
+  commitCopy = commit;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:v8];
+  transactionCopy = transaction;
+  v9 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:transactionCopy];
   v10 = os_log_create("com.apple.amp.medialibrary", "Writer");
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (commitCopy)
   {
     if (!v11)
     {
@@ -1053,14 +1053,14 @@ LABEL_7:
 
   if (!v9)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"A connection with the transaction ID %@ could not be found.", v8];
-    v14 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:v13];
+    transactionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"A connection with the transaction ID %@ could not be found.", transactionCopy];
+    v14 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:transactionCopy];
     goto LABEL_22;
   }
 
   [v9 lock];
-  v13 = [v9 connection];
-  if (![v13 isInTransaction])
+  transactionCopy = [v9 connection];
+  if (![transactionCopy isInTransaction])
   {
     v15 = os_log_create("com.apple.amp.medialibrary", "Writer");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1073,14 +1073,14 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  if (([v13 popToRootTransactionAndCommit:v6] & 1) == 0)
+  if (([transactionCopy popToRootTransactionAndCommit:commitCopy] & 1) == 0)
   {
-    v16 = [v13 sqliteError];
-    v17 = [MEMORY[0x277CCAB68] stringWithFormat:@"Unable to end transaction with ID %@.", v8];
-    v15 = v17;
-    if (v16)
+    sqliteError = [transactionCopy sqliteError];
+    transactionCopy2 = [MEMORY[0x277CCAB68] stringWithFormat:@"Unable to end transaction with ID %@.", transactionCopy];
+    v15 = transactionCopy2;
+    if (sqliteError)
     {
-      [v17 appendFormat:@" %@", v16];
+      [transactionCopy2 appendFormat:@" %@", sqliteError];
     }
 
     v14 = [ML3MediaLibraryWriter writerErrorWithCode:300 description:v15];
@@ -1101,33 +1101,33 @@ LABEL_20:
 
   v14 = 0;
 LABEL_21:
-  [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:v8 forceRelinquishConnection:0];
+  [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:transactionCopy forceRelinquishConnection:0];
   [v9 unlock];
 LABEL_22:
 
-  if (a5)
+  if (error)
   {
     v19 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v14 == 0;
 }
 
-- (id)executeUntrustedQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 error:(id *)a7
+- (id)executeUntrustedQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v32 = a4;
-  v14 = a5;
-  v15 = a6;
+  queryCopy = query;
+  parametersCopy = parameters;
+  optionsCopy = options;
+  transactionCopy = transaction;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__19317;
   v44 = __Block_byref_object_dispose__19318;
   v45 = MEMORY[0x277CBEBF8];
-  v16 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:v15];
+  v16 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:transactionCopy];
   v17 = v16;
   if (v16 && ([v16 connection], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -1144,23 +1144,23 @@ LABEL_22:
     v33[3] = &unk_278763F60;
     v38 = &v40;
     v33[4] = self;
-    v19 = v13;
+    v19 = queryCopy;
     v34 = v19;
-    v35 = v32;
-    v36 = v14;
-    v37 = v15;
+    v35 = parametersCopy;
+    v36 = optionsCopy;
+    v37 = transactionCopy;
     v39 = v50;
     v20 = [v18 _distrustQueriesDuringBlock:v33];
     if (v20)
     {
       v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute illegal query: %@ (%d)", v19, v20];
-      if (a7)
+      if (error)
       {
         v48 = @"action";
         v21 = [MEMORY[0x277CCABB0] numberWithInt:v20];
         v49 = v21;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-        *a7 = [ML3MediaLibraryWriter writerErrorWithCode:301 description:v31 userInfo:v22];
+        *error = [ML3MediaLibraryWriter writerErrorWithCode:301 description:v31 userInfo:v22];
       }
 
       v23 = os_log_create("com.apple.amp.medialibrary", "Writer");
@@ -1173,17 +1173,17 @@ LABEL_22:
 
       if (v41[5])
       {
-        v29 = [MEMORY[0x277CCA890] currentHandler];
-        [v29 handleFailureInMethod:v30 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:376 description:@"Authorizer failure should have caused executeUpdate: to return NO"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v30 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:376 description:@"Authorizer failure should have caused executeUpdate: to return NO"];
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       v26 = *(*&v50[8] + 40);
       if (v26)
       {
-        *a7 = v26;
+        *error = v26;
       }
     }
 
@@ -1192,19 +1192,19 @@ LABEL_22:
 
   else
   {
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute query without a valid transaction (transaction ID = %@). You must be within an existing transaction first before executing a query.", v15];
-    if (a7)
+    transactionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute query without a valid transaction (transaction ID = %@). You must be within an existing transaction first before executing a query.", transactionCopy];
+    if (error)
     {
-      *a7 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:v24];
+      *error = [ML3MediaLibraryWriter writerErrorWithCode:200 description:transactionCopy];
     }
 
     v25 = os_log_create("com.apple.amp.medialibrary", "Writer");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *v50 = 138543618;
-      *&v50[4] = v13;
+      *&v50[4] = queryCopy;
       *&v50[12] = 2114;
-      *&v50[14] = v24;
+      *&v50[14] = transactionCopy;
       _os_log_impl(&dword_22D2FA000, v25, OS_LOG_TYPE_ERROR, "Error executing query: %{public}@. %{public}@", v50, 0x16u);
     }
 
@@ -1234,62 +1234,62 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
   *(v9 + 40) = v8;
 }
 
-- (id)executeQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 error:(id *)a7
+- (id)executeQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v38 = a4;
-  v11 = a5;
-  v12 = a6;
+  queryCopy = query;
+  parametersCopy = parameters;
+  optionsCopy = options;
+  transactionCopy = transaction;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__19317;
   v51 = __Block_byref_object_dispose__19318;
   v52 = 0;
-  v37 = [MEMORY[0x277CBEB18] array];
-  v13 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:v12];
+  array = [MEMORY[0x277CBEB18] array];
+  v13 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:transactionCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 connection];
-    v16 = [v11 objectForKey:@"MLDatabaseQueryOptionLimitPropertyKey"];
-    v36 = [v11 objectForKey:@"MLDatabaseQueryOptionLimitValueKey"];
+    connection = [v13 connection];
+    v16 = [optionsCopy objectForKey:@"MLDatabaseQueryOptionLimitPropertyKey"];
+    v36 = [optionsCopy objectForKey:@"MLDatabaseQueryOptionLimitValueKey"];
     if (v16 && v36)
     {
-      v17 = [v15 executeQuery:v39 withParameters:v38 limitProperty:v16 limitValue:{objc_msgSend(v36, "longLongValue")}];
+      v17 = [connection executeQuery:queryCopy withParameters:parametersCopy limitProperty:v16 limitValue:{objc_msgSend(v36, "longLongValue")}];
     }
 
     else
     {
-      v17 = [v15 executeQuery:v39 withParameters:v38];
+      v17 = [connection executeQuery:queryCopy withParameters:parametersCopy];
     }
 
     v19 = v17;
     if (v17)
     {
-      v20 = [v11 objectForKey:@"MLDatabaseQueryOptionRangeBeginKey"];
+      v20 = [optionsCopy objectForKey:@"MLDatabaseQueryOptionRangeBeginKey"];
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 integerValue];
+        integerValue = [v20 integerValue];
       }
 
       else
       {
-        v22 = 0;
+        integerValue = 0;
       }
 
-      v23 = [v11 objectForKey:@"MLDatabaseQueryOptionCountKey"];
+      v23 = [optionsCopy objectForKey:@"MLDatabaseQueryOptionCountKey"];
       v24 = v23;
       if (v23)
       {
-        v25 = [v23 integerValue];
+        integerValue2 = [v23 integerValue];
       }
 
       else
       {
-        v25 = 0x7FFFFFFFLL;
+        integerValue2 = 0x7FFFFFFFLL;
       }
 
       *buf = 0;
@@ -1301,11 +1301,11 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
       v40[2] = __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransaction_error___block_invoke;
       v40[3] = &unk_278763F38;
       v43 = buf;
-      v45 = v22;
-      v41 = v37;
-      v42 = v15;
+      v45 = integerValue;
+      v41 = array;
+      v42 = connection;
       v44 = &v47;
-      v46 = v25;
+      v46 = integerValue2;
       [v19 enumerateRowsWithBlock:v40];
 
       _Block_object_dispose(buf, 8);
@@ -1314,8 +1314,8 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
     else
     {
       v26 = MEMORY[0x277CCACA8];
-      v27 = [v15 sqliteError];
-      v19 = [v26 stringWithFormat:@"Database Error: %@", v27];
+      sqliteError = [connection sqliteError];
+      v19 = [v26 stringWithFormat:@"Database Error: %@", sqliteError];
 
       v28 = [ML3MediaLibraryWriter writerErrorWithCode:300 description:v19];
       v21 = v48[5];
@@ -1325,8 +1325,8 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute query without a valid transaction (transaction ID = %@). You must be within an existing transaction first before executing a query.", v12];
-    v18 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:v15];
+    connection = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute query without a valid transaction (transaction ID = %@). You must be within an existing transaction first before executing a query.", transactionCopy];
+    v18 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:connection];
     v16 = v48[5];
     v48[5] = v18;
   }
@@ -1340,15 +1340,15 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
     {
       v32 = v48[5];
       *buf = 138543618;
-      *&buf[4] = v39;
+      *&buf[4] = queryCopy;
       *&buf[12] = 2114;
       *&buf[14] = v32;
       _os_log_impl(&dword_22D2FA000, v31, OS_LOG_TYPE_ERROR, "Error executing query: %{public}@. %{public}@", buf, 0x16u);
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v48[5];
+      *error = v48[5];
     }
   }
 
@@ -1356,9 +1356,9 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
   {
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [v37 count];
+      v33 = [array count];
       *buf = 138543618;
-      *&buf[4] = v39;
+      *&buf[4] = queryCopy;
       *&buf[12] = 2048;
       *&buf[14] = v33;
       _os_log_impl(&dword_22D2FA000, v31, OS_LOG_TYPE_DEBUG, "Successfully executed query %{public}@ with %lu rows returned.", buf, 0x16u);
@@ -1367,7 +1367,7 @@ void __90__ML3MediaLibraryWriter_executeUntrustedQuery_withParameters_options_on
 
   _Block_object_dispose(&v47, 8);
 
-  return v37;
+  return array;
 }
 
 void __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransaction_error___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -1410,17 +1410,17 @@ void __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransacti
   }
 }
 
-- (BOOL)executeUntrustedUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6
+- (BOOL)executeUntrustedUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  updateCopy = update;
+  parametersCopy = parameters;
+  transactionCopy = transaction;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v14 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:v13];
+  v14 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:transactionCopy];
   v15 = v14;
   if (v14 && ([v14 connection], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -1437,22 +1437,22 @@ void __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransacti
     v30[3] = &unk_278763F10;
     v34 = &v36;
     v30[4] = self;
-    v17 = v11;
+    v17 = updateCopy;
     v31 = v17;
-    v32 = v12;
-    v33 = v13;
+    v32 = parametersCopy;
+    v33 = transactionCopy;
     v35 = v44;
     v18 = [v16 _distrustQueriesDuringBlock:v30];
     if (v18)
     {
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute illegal update: %@ (%d)", v17, v18];
-      if (a6)
+      if (error)
       {
         v42 = @"action";
         v19 = [MEMORY[0x277CCABB0] numberWithInt:v18];
         v43 = v19;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-        *a6 = [ML3MediaLibraryWriter writerErrorWithCode:301 description:v29 userInfo:v20];
+        *error = [ML3MediaLibraryWriter writerErrorWithCode:301 description:v29 userInfo:v20];
       }
 
       v21 = os_log_create("com.apple.amp.medialibrary", "Writer");
@@ -1465,17 +1465,17 @@ void __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransacti
 
       if (*(v37 + 24))
       {
-        v27 = [MEMORY[0x277CCA890] currentHandler];
-        [v27 handleFailureInMethod:v28 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:264 description:@"Authorizer failure should have caused executeUpdate: to return NO"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v28 object:self file:@"ML3MediaLibraryWriter.m" lineNumber:264 description:@"Authorizer failure should have caused executeUpdate: to return NO"];
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v24 = *(*&v44[8] + 40);
       if (v24)
       {
-        *a6 = v24;
+        *error = v24;
       }
     }
 
@@ -1484,19 +1484,19 @@ void __81__ML3MediaLibraryWriter_executeQuery_withParameters_options_onTransacti
 
   else
   {
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute update without a valid transaction (transaction ID = %@). You must start a transaction first before executing an update.", v13];
-    if (a6)
+    transactionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute update without a valid transaction (transaction ID = %@). You must start a transaction first before executing an update.", transactionCopy];
+    if (error)
     {
-      *a6 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:v22];
+      *error = [ML3MediaLibraryWriter writerErrorWithCode:200 description:transactionCopy];
     }
 
     v23 = os_log_create("com.apple.amp.medialibrary", "Writer");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *v44 = 138543618;
-      *&v44[4] = v11;
+      *&v44[4] = updateCopy;
       *&v44[12] = 2114;
-      *&v44[14] = v22;
+      *&v44[14] = transactionCopy;
       _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_ERROR, "Failed to execute update %{public}@. %{public}@", v44, 0x16u);
     }
 
@@ -1522,19 +1522,19 @@ void __83__ML3MediaLibraryWriter_executeUntrustedUpdate_withParameters_onTransac
   *(*(a1[8] + 8) + 24) = v7;
 }
 
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:v12];
+  updateCopy = update;
+  parametersCopy = parameters;
+  transactionCopy = transaction;
+  v13 = [(ML3MediaLibraryWriter *)self _transactionForIdentifier:transactionCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 connection];
+    connection = [v13 connection];
     v30 = 0;
-    v16 = [v15 executeUpdate:v10 withParameters:v11 error:&v30];
+    v16 = [connection executeUpdate:updateCopy withParameters:parametersCopy error:&v30];
     v17 = v30;
     if (v17)
     {
@@ -1560,8 +1560,8 @@ void __83__ML3MediaLibraryWriter_executeUntrustedUpdate_withParameters_onTransac
 
   else
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute update without a valid transaction (transaction ID = %@). You must start a transaction first before executing an update.", v12];
-    v19 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:v20];
+    transactionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Attempted to execute update without a valid transaction (transaction ID = %@). You must start a transaction first before executing an update.", transactionCopy];
+    v19 = [ML3MediaLibraryWriter writerErrorWithCode:200 description:transactionCopy];
   }
 
   v22 = os_log_create("com.apple.amp.medialibrary", "Writer");
@@ -1574,7 +1574,7 @@ void __83__ML3MediaLibraryWriter_executeUntrustedUpdate_withParameters_onTransac
     }
 
     *buf = 138543618;
-    v32 = v10;
+    v32 = updateCopy;
     v33 = 2114;
     v34 = v19;
     v24 = "Failed to execute update %{public}@. %{public}@";
@@ -1591,7 +1591,7 @@ void __83__ML3MediaLibraryWriter_executeUntrustedUpdate_withParameters_onTransac
     }
 
     *buf = 138543362;
-    v32 = v10;
+    v32 = updateCopy;
     v24 = "Successfully executed update %{public}@.";
     v25 = v23;
     v26 = OS_LOG_TYPE_DEBUG;
@@ -1601,21 +1601,21 @@ void __83__ML3MediaLibraryWriter_executeUntrustedUpdate_withParameters_onTransac
   _os_log_impl(&dword_22D2FA000, v25, v26, v24, buf, v27);
 LABEL_16:
 
-  if (a6)
+  if (error)
   {
     v28 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
   return v19 == 0;
 }
 
-- (id)beginTransactionForLibrary:(id)a3 withClient:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)beginTransactionForLibrary:(id)library withClient:(id)client options:(unint64_t)options error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(ML3MediaLibraryWriter *)self _createNewTransactionForLibrary:v10 fromClient:v11 readOnly:(a5 >> 1) & 1];
+  libraryCopy = library;
+  clientCopy = client;
+  v12 = [(ML3MediaLibraryWriter *)self _createNewTransactionForLibrary:libraryCopy fromClient:clientCopy readOnly:(options >> 1) & 1];
   v13 = v12;
   if (!v12)
   {
@@ -1624,7 +1624,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (a5)
+  if (options)
   {
     [v12 setTerminable:0];
   }
@@ -1644,9 +1644,9 @@ LABEL_16:
   dispatch_sync(serialQueue, block);
   if (*(*&v42[8] + 24) == 1)
   {
-    v33 = a6;
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Transaction %@ is pending close", v15];
-    v17 = [ML3MediaLibraryWriter writerErrorWithCode:300 description:v16];
+    errorCopy = error;
+    connection = [MEMORY[0x277CCACA8] stringWithFormat:@"Transaction %@ is pending close", v15];
+    v17 = [ML3MediaLibraryWriter writerErrorWithCode:300 description:connection];
     v18 = os_log_create("com.apple.amp.medialibrary", "Writer");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -1659,26 +1659,26 @@ LABEL_16:
     v37[0] = @"transaction";
     v37[1] = @"client";
     v38[0] = v15;
-    if (v11)
+    if (clientCopy)
     {
-      v20 = [v11 description];
+      sqliteError = [clientCopy description];
     }
 
     else
     {
-      v20 = @"nil";
+      sqliteError = @"nil";
     }
 
-    v38[1] = v20;
+    v38[1] = sqliteError;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
     v39 = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
     [v19 snapshotWithDomain:*MEMORY[0x277D27EC0] type:@"Bug" subType:@"TransactionIsPendingClose" context:@"Transaction is pending close" triggerThresholdValues:0 events:v25 completion:0];
 
-    a6 = v33;
+    error = errorCopy;
     v23 = 0;
     v22 = v15;
-    if (!v11)
+    if (!clientCopy)
     {
       goto LABEL_16;
     }
@@ -1686,14 +1686,14 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v16 = [v15 connection];
-  if (([v16 pushTransaction] & 1) == 0)
+  connection = [v15 connection];
+  if (([connection pushTransaction] & 1) == 0)
   {
-    v20 = [v16 sqliteError];
-    v21 = [v15 identifier];
-    [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:v21 forceRelinquishConnection:0];
+    sqliteError = [connection sqliteError];
+    identifier = [v15 identifier];
+    [(ML3MediaLibraryWriter *)self _destroyTransactionForIdentifier:identifier forceRelinquishConnection:0];
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not begin transaction. %@", v20];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not begin transaction. %@", sqliteError];
     v17 = [ML3MediaLibraryWriter writerErrorWithCode:300 description:v22];
     v23 = v15;
 LABEL_15:
@@ -1720,7 +1720,7 @@ LABEL_18:
     }
 
     *v42 = 138543618;
-    *&v42[4] = v11;
+    *&v42[4] = clientCopy;
     *&v42[12] = 2114;
     *&v42[14] = v17;
     v28 = "Failed to begin transaction for client %{public}@. %{public}@";
@@ -1738,7 +1738,7 @@ LABEL_18:
     *v42 = 138543618;
     *&v42[4] = v15;
     *&v42[12] = 2114;
-    *&v42[14] = v11;
+    *&v42[14] = clientCopy;
     v28 = "Successfully began transaction=%{public}@ for client %{public}@.";
     v29 = v27;
     v30 = OS_LOG_TYPE_DEFAULT;
@@ -1747,10 +1747,10 @@ LABEL_18:
   _os_log_impl(&dword_22D2FA000, v29, v30, v28, v42, 0x16u);
 LABEL_24:
 
-  if (a6)
+  if (error)
   {
     v31 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   return v15;
@@ -1763,22 +1763,22 @@ uint64_t __77__ML3MediaLibraryWriter_beginTransactionForLibrary_withClient_optio
   return result;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  self->_suspended = a3;
+  suspendedCopy = suspended;
+  self->_suspended = suspended;
   [(NSOperationQueue *)self->_databaseOperationQueue setSuspended:?];
-  [(NSOperationQueue *)self->_databaseOperationSerialQueue setSuspended:v3];
-  [(NSOperationQueue *)self->_databaseOperationLimitedQueue setSuspended:v3];
+  [(NSOperationQueue *)self->_databaseOperationSerialQueue setSuspended:suspendedCopy];
+  [(NSOperationQueue *)self->_databaseOperationLimitedQueue setSuspended:suspendedCopy];
   lowPriorityDatabaseOperationQueue = self->_lowPriorityDatabaseOperationQueue;
 
-  [(NSOperationQueue *)lowPriorityDatabaseOperationQueue setSuspended:v3];
+  [(NSOperationQueue *)lowPriorityDatabaseOperationQueue setSuspended:suspendedCopy];
 }
 
-- (void)setTransactionTimeout:(double)a3
+- (void)setTransactionTimeout:(double)timeout
 {
-  self->_transactionTimeout = a3;
-  if (a3 > 0.0)
+  self->_transactionTimeout = timeout;
+  if (timeout > 0.0)
   {
     [(ML3MediaLibraryWriter *)self _setupWatchdogTimer];
   }
@@ -1788,8 +1788,8 @@ uint64_t __77__ML3MediaLibraryWriter_beginTransactionForLibrary_withClient_optio
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 stringWithFormat:@"MediaLibrary Daemon State at %@\n", v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v3 stringWithFormat:@"MediaLibrary Daemon State at %@\n", date];
 
   [v5 appendString:@"Active Transactions:\n"];
   if ([(NSMutableDictionary *)self->_transactionMap count])
@@ -1855,8 +1855,8 @@ uint64_t __77__ML3MediaLibraryWriter_beginTransactionForLibrary_withClient_optio
         [v5 appendString:v14];
         if ([(NSOperationQueue *)v13 operationCount])
         {
-          v15 = [(NSOperationQueue *)v13 operations];
-          [v5 appendFormat:@"%@\n", v15];
+          operations = [(NSOperationQueue *)v13 operations];
+          [v5 appendFormat:@"%@\n", operations];
         }
 
         else
@@ -1941,27 +1941,27 @@ void __36__ML3MediaLibraryWriter_description__block_invoke(uint64_t a1, uint64_t
   return v3;
 }
 
-+ (id)writerErrorWithCode:(int64_t)a3 description:(id)a4 userInfo:(id)a5
++ (id)writerErrorWithCode:(int64_t)code description:(id)description userInfo:(id)info
 {
-  v7 = a4;
-  if (a5)
+  descriptionCopy = description;
+  if (info)
   {
-    v8 = a5;
+    infoCopy = info;
   }
 
   else
   {
-    v8 = MEMORY[0x277CBEC10];
+    infoCopy = MEMORY[0x277CBEC10];
   }
 
-  v9 = [v8 mutableCopy];
+  v9 = [infoCopy mutableCopy];
   v10 = v9;
-  if (v7)
+  if (descriptionCopy)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [v9 setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MLWriterErrorDomain" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MLWriterErrorDomain" code:code userInfo:v10];
 
   return v11;
 }

@@ -1,12 +1,12 @@
 @interface GQZEntryUncompressedInputStream
-- (GQZEntryUncompressedInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 input:(id)a5;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (GQZEntryUncompressedInputStream)initWithOffset:(int64_t)offset end:(int64_t)end input:(id)input;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation GQZEntryUncompressedInputStream
 
-- (GQZEntryUncompressedInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 input:(id)a5
+- (GQZEntryUncompressedInputStream)initWithOffset:(int64_t)offset end:(int64_t)end input:(id)input
 {
   v11.receiver = self;
   v11.super_class = GQZEntryUncompressedInputStream;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->mOffset = a3;
-    v8->mEnd = a4;
-    v8->mInput = a5;
+    v8->mOffset = offset;
+    v8->mEnd = end;
+    v8->mInput = input;
   }
 
   return v9;
@@ -29,21 +29,21 @@
   [(GQZEntryUncompressedInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   mOffset = self->mOffset;
-  if (self->mEnd - mOffset >= a4)
+  if (self->mEnd - mOffset >= size)
   {
-    v5 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v5 = self->mEnd - mOffset;
+    sizeCopy = self->mEnd - mOffset;
   }
 
   [GQZArchiveInputStream readFromOffset:"readFromOffset:size:buffer:" size:? buffer:?];
-  return v5;
+  return sizeCopy;
 }
 
 @end

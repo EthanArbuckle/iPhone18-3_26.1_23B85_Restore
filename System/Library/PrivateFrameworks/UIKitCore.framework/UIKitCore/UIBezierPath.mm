@@ -4,38 +4,38 @@
 + (UIBezierPath)bezierPathWithCGPath:(CGPathRef)CGPath;
 + (UIBezierPath)bezierPathWithOvalInRect:(CGRect)rect;
 + (UIBezierPath)bezierPathWithRect:(CGRect)rect;
-+ (id)_bezierPathWithPillRect:(CGRect)a3 cornerRadius:(double)a4;
-+ (id)_continuousRoundedCARectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(CGSize)a5 segments:(int)a6;
-+ (id)_continuousRoundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadii:(id)a5 segments:(int)a6 smoothPillShapes:(BOOL)a7 clampCornerRadii:(BOOL)a8;
-+ (id)_continuousRoundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(CGSize)a5 segments:(int)a6;
-+ (id)_roundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(double)a5 segments:(int)a6 legacyCorners:(BOOL)a7;
-+ (id)roundedRectBezierPath:(CGRect)a3 withRoundedEdges:(unint64_t)a4;
-+ (id)roundedRectBezierPath:(CGRect)a3 withTopCornerRadius:(double)a4 withBottomCornerRadius:(double)a5;
-+ (id)shadowBezierPath:(CGRect)a3 withRoundedEdges:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGPath)_createMutablePathByDecodingData:(id)a3;
++ (id)_bezierPathWithPillRect:(CGRect)rect cornerRadius:(double)radius;
++ (id)_continuousRoundedCARectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(CGSize)radius segments:(int)segments;
++ (id)_continuousRoundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadii:(id)radii segments:(int)segments smoothPillShapes:(BOOL)shapes clampCornerRadii:(BOOL)cornerRadii;
++ (id)_continuousRoundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(CGSize)radius segments:(int)segments;
++ (id)_roundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(double)radius segments:(int)segments legacyCorners:(BOOL)legacyCorners;
++ (id)roundedRectBezierPath:(CGRect)path withRoundedEdges:(unint64_t)edges;
++ (id)roundedRectBezierPath:(CGRect)path withTopCornerRadius:(double)radius withBottomCornerRadius:(double)cornerRadius;
++ (id)shadowBezierPath:(CGRect)path withRoundedEdges:(unint64_t)edges;
+- (BOOL)isEqual:(id)equal;
+- (CGPath)_createMutablePathByDecodingData:(id)data;
 - (CGPathRef)CGPath;
 - (CGPoint)currentPoint;
 - (UIBezierPath)bezierPathByReversingPath;
 - (UIBezierPath)init;
 - (UIBezierPath)initWithCoder:(NSCoder *)coder;
-- (id)_bezierPathConvertedFromCoordinateSpace:(id)a3 toCoordinateSpace:(id)a4;
-- (id)_initWithCGMutablePath:(CGPath *)a3;
+- (id)_bezierPathConvertedFromCoordinateSpace:(id)space toCoordinateSpace:(id)coordinateSpace;
+- (id)_initWithCGMutablePath:(CGPath *)path;
 - (id)_objcCodeDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_addRoundedCornerWithTrueCorner:(CGPoint)a3 radius:(CGSize)a4 corner:(unint64_t)a5 clockwise:(BOOL)a6 leadInIsContinuous:(BOOL)a7 leadOutIsContinuous:(BOOL)a8;
-- (void)_invalidatePathMetadataIncludingCornerRadius:(BOOL)a3;
+- (void)_addRoundedCornerWithTrueCorner:(CGPoint)corner radius:(CGSize)radius corner:(unint64_t)a5 clockwise:(BOOL)clockwise leadInIsContinuous:(BOOL)continuous leadOutIsContinuous:(BOOL)isContinuous;
+- (void)_invalidatePathMetadataIncludingCornerRadius:(BOOL)radius;
 - (void)addClip;
-- (void)appendBezierPath:(id)a3;
-- (void)appendBezierPathWithArcWithCenter:(CGPoint)a3 radius:(double)a4 startAngle:(double)a5 endAngle:(double)a6 clockwise:(BOOL)a7;
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3;
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3 transform:(CGAffineTransform *)a4;
-- (void)appendBezierPathWithRect:(CGRect)a3;
+- (void)appendBezierPath:(id)path;
+- (void)appendBezierPathWithArcWithCenter:(CGPoint)center radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle clockwise:(BOOL)clockwise;
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect;
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect transform:(CGAffineTransform *)transform;
+- (void)appendBezierPathWithRect:(CGRect)rect;
 - (void)appendPath:(UIBezierPath *)bezierPath;
 - (void)applyTransform:(CGAffineTransform *)transform;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fill;
 - (void)fillWithBlendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha;
 - (void)getLineDash:(CGFloat *)pattern count:(NSInteger *)count phase:(CGFloat *)phase;
@@ -91,7 +91,7 @@
 + (UIBezierPath)bezierPath
 {
   Mutable = CGPathCreateMutable();
-  v4 = [[a1 alloc] _initWithCGMutablePath:Mutable];
+  v4 = [[self alloc] _initWithCGMutablePath:Mutable];
   CFRelease(Mutable);
 
   return v4;
@@ -349,13 +349,13 @@ LABEL_36:
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-- (id)_initWithCGMutablePath:(CGPath *)a3
+- (id)_initWithCGMutablePath:(CGPath *)path
 {
   v4 = [(UIBezierPath *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (path)
     {
       path = v4->_path;
       if (path)
@@ -363,7 +363,7 @@ LABEL_36:
         CFRelease(path);
       }
 
-      v5->_path = CFRetain(a3);
+      v5->_path = CFRetain(path);
     }
 
     else
@@ -392,7 +392,7 @@ LABEL_36:
         self = 0;
 LABEL_13:
 
-        v8 = self;
+        selfCopy = self;
         goto LABEL_14;
       }
     }
@@ -414,8 +414,8 @@ LABEL_13:
       lineDashPatternCount = self->_lineDashPatternCount;
       if (v23 != 4 * lineDashPatternCount)
       {
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v22 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:151 description:@"decoded line dash pattern length mismatch"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:151 description:@"decoded line dash pattern length mismatch"];
 
         lineDashPatternCount = self->_lineDashPatternCount;
       }
@@ -450,22 +450,22 @@ LABEL_13:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:@"UIBezierPath only supports keyed coding."];
-  v8 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
     CGPathApply(self->_path, v5, __encodePathElementIntoData);
-    [v4 encodeObject:v5 forKey:@"UIBezierPathCGPathDataKey"];
-    [v4 encodeInteger:self->_lineDashPatternCount forKey:@"UIBezierPathLineDashPatternCountKey"];
+    [coderCopy encodeObject:v5 forKey:@"UIBezierPathCGPathDataKey"];
+    [coderCopy encodeInteger:self->_lineDashPatternCount forKey:@"UIBezierPathLineDashPatternCountKey"];
     lineDashPatternCount = self->_lineDashPatternCount;
     if (lineDashPatternCount)
     {
@@ -486,30 +486,30 @@ LABEL_14:
         while (v8);
       }
 
-      [v4 encodeBytes:? length:? forKey:?];
+      [coderCopy encodeBytes:? length:? forKey:?];
     }
 
     lineWidth = self->_lineWidth;
     *&lineWidth = lineWidth;
-    [v4 encodeFloat:@"UIBezierPathLineWidthKey" forKey:lineWidth];
+    [coderCopy encodeFloat:@"UIBezierPathLineWidthKey" forKey:lineWidth];
     miterLimit = self->_miterLimit;
     *&miterLimit = miterLimit;
-    [v4 encodeFloat:@"UIBezierPathMiterLimitKey" forKey:miterLimit];
+    [coderCopy encodeFloat:@"UIBezierPathMiterLimitKey" forKey:miterLimit];
     flatness = self->_flatness;
     *&flatness = flatness;
-    [v4 encodeFloat:@"UIBezierPathFlatnessKey" forKey:flatness];
+    [coderCopy encodeFloat:@"UIBezierPathFlatnessKey" forKey:flatness];
     lineDashPhase = self->_lineDashPhase;
     *&lineDashPhase = lineDashPhase;
-    [v4 encodeFloat:@"UIBezierPathLineDashPhaseKey" forKey:lineDashPhase];
-    [v4 encodeInteger:self->_lineCapStyle forKey:@"UIBezierPathLineCapStyleKey"];
-    [v4 encodeInteger:self->_lineJoinStyle forKey:@"UIBezierPathLineJoinStyleKey"];
-    [v4 encodeBool:self->_usesEvenOddFillRule forKey:@"UIBezierPathUsesEvenOddFillRuleKey"];
-    [v4 encodeBool:self->_isRoundedRect forKey:@"UIBezierPathIsRoundedRectKey"];
+    [coderCopy encodeFloat:@"UIBezierPathLineDashPhaseKey" forKey:lineDashPhase];
+    [coderCopy encodeInteger:self->_lineCapStyle forKey:@"UIBezierPathLineCapStyleKey"];
+    [coderCopy encodeInteger:self->_lineJoinStyle forKey:@"UIBezierPathLineJoinStyleKey"];
+    [coderCopy encodeBool:self->_usesEvenOddFillRule forKey:@"UIBezierPathUsesEvenOddFillRuleKey"];
+    [coderCopy encodeBool:self->_isRoundedRect forKey:@"UIBezierPathIsRoundedRectKey"];
     cornerRadius = self->_cornerRadius;
     *&cornerRadius = cornerRadius;
-    [v4 encodeFloat:@"UIBezierPathCornerRadiusKey" forKey:cornerRadius];
-    [v4 encodeInteger:self->_cornerMask forKey:@"UIBezierPathCornerMaskKey"];
-    [v4 encodeBool:self->_hasContinuousCorners forKey:@"UIBezierPathHasContinuousCornersKey"];
+    [coderCopy encodeFloat:@"UIBezierPathCornerRadiusKey" forKey:cornerRadius];
+    [coderCopy encodeInteger:self->_cornerMask forKey:@"UIBezierPathCornerMaskKey"];
+    [coderCopy encodeBool:self->_hasContinuousCorners forKey:@"UIBezierPathHasContinuousCornersKey"];
   }
 
   else
@@ -518,10 +518,10 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   MutableCopy = CGPathCreateMutableCopy(self->_path);
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initWithCGMutablePath:", MutableCopy}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initWithCGMutablePath:", MutableCopy}];
   CGPathRelease(MutableCopy);
   *(v6 + 32) = self->_lineWidth;
   *(v6 + 40) = self->_miterLimit;
@@ -546,10 +546,10 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -559,9 +559,9 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = CGPathEqualToPath([(UIBezierPath *)self CGPath], [(float64x2_t *)v4 CGPath]);
+      v5 = CGPathEqualToPath([(UIBezierPath *)self CGPath], [(float64x2_t *)equalCopy CGPath]);
       lineDashPattern = self->_lineDashPattern;
-      v7 = *&v4[1].f64[0];
+      v7 = *&equalCopy[1].f64[0];
       if (lineDashPattern == v7)
       {
         LOBYTE(lineDashPatternCount) = 0;
@@ -570,7 +570,7 @@ LABEL_14:
       else
       {
         lineDashPatternCount = self->_lineDashPatternCount;
-        if (lineDashPatternCount == *&v4[1].f64[1])
+        if (lineDashPatternCount == *&equalCopy[1].f64[1])
         {
           if (lineDashPatternCount)
           {
@@ -596,9 +596,9 @@ LABEL_14:
 
       v15 = 0;
       v16 = vdupq_n_s64(0x3E80000000000000uLL);
-      if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vcgtq_f64(v16, vabsq_f64(vsubq_f64(*&self->_lineWidth, v4[2]))), vcgtq_f64(v16, vabsq_f64(vsubq_f64(*&self->_flatness, v4[3]))))))) & 1) == 0 && self->_lineCapStyle == LODWORD(v4[4].f64[0]) && (lineDashPatternCount & 1) == 0 && v5)
+      if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vcgtq_f64(v16, vabsq_f64(vsubq_f64(*&self->_lineWidth, equalCopy[2]))), vcgtq_f64(v16, vabsq_f64(vsubq_f64(*&self->_flatness, equalCopy[3]))))))) & 1) == 0 && self->_lineCapStyle == LODWORD(equalCopy[4].f64[0]) && (lineDashPatternCount & 1) == 0 && v5)
       {
-        v15 = self->_usesEvenOddFillRule == LOBYTE(v4[4].f64[1]) && self->_lineJoinStyle == HIDWORD(v4[4].f64[0]);
+        v15 = self->_usesEvenOddFillRule == LOBYTE(equalCopy[4].f64[1]) && self->_lineJoinStyle == HIDWORD(equalCopy[4].f64[0]);
       }
     }
 
@@ -617,17 +617,17 @@ LABEL_14:
   width = rect.size.width;
   y = rect.origin.y;
   x = rect.origin.x;
-  v7 = [a1 bezierPath];
-  v8 = [v7 _mutablePath];
+  bezierPath = [self bezierPath];
+  _mutablePath = [bezierPath _mutablePath];
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
   v11.size.height = height;
-  CGPathAddRect(v8, 0, v11);
-  *(v7 + 89) = 1;
-  *(v7 + 112) = 15;
+  CGPathAddRect(_mutablePath, 0, v11);
+  *(bezierPath + 89) = 1;
+  *(bezierPath + 112) = 15;
 
-  return v7;
+  return bezierPath;
 }
 
 + (UIBezierPath)bezierPathWithOvalInRect:(CGRect)rect
@@ -636,13 +636,13 @@ LABEL_14:
   width = rect.size.width;
   y = rect.origin.y;
   x = rect.origin.x;
-  v7 = [a1 bezierPath];
-  v8 = [v7 _mutablePath];
+  bezierPath = [self bezierPath];
+  _mutablePath = [bezierPath _mutablePath];
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGPathAddEllipseInRect(v8, 0, v12);
+  CGPathAddEllipseInRect(_mutablePath, 0, v12);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -654,17 +654,17 @@ LABEL_14:
   v14.size.height = height;
   if (vabdd_f64(v9, CGRectGetHeight(v14)) <= 2.22044605e-16)
   {
-    *(v7 + 89) = 1;
+    *(bezierPath + 89) = 1;
     v15.origin.x = x;
     v15.origin.y = y;
     v15.size.width = width;
     v15.size.height = height;
-    *(v7 + 96) = CGRectGetHeight(v15) * 0.5;
-    *(v7 + 104) = 0;
-    *(v7 + 112) = 15;
+    *(bezierPath + 96) = CGRectGetHeight(v15) * 0.5;
+    *(bezierPath + 104) = 0;
+    *(bezierPath + 112) = 15;
   }
 
-  return v7;
+  return bezierPath;
 }
 
 + (UIBezierPath)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise
@@ -673,7 +673,7 @@ LABEL_14:
   x = center.x;
   Mutable = CGPathCreateMutable();
   CGPathAddArc(Mutable, 0, x, y, radius, startAngle, endAngle, !clockwise);
-  v15 = [[a1 alloc] _initWithCGMutablePath:Mutable];
+  v15 = [[self alloc] _initWithCGMutablePath:Mutable];
   CFRelease(Mutable);
 
   return v15;
@@ -684,7 +684,7 @@ LABEL_14:
   if (CGPath)
   {
     MutableCopy = CGPathCreateMutableCopy(CGPath);
-    v5 = [[a1 alloc] _initWithCGMutablePath:MutableCopy];
+    v5 = [[self alloc] _initWithCGMutablePath:MutableCopy];
     CFRelease(MutableCopy);
   }
 
@@ -732,10 +732,10 @@ LABEL_14:
   [(UIBezierPath *)self _invalidatePathMetadataIncludingCornerRadius:v9, rotation, width];
 }
 
-- (void)_invalidatePathMetadataIncludingCornerRadius:(BOOL)a3
+- (void)_invalidatePathMetadataIncludingCornerRadius:(BOOL)radius
 {
   self->_immutablePathIsValid = 0;
-  if (a3)
+  if (radius)
   {
     self->_isRoundedRect = 0;
     self->_cornerRadius = 0.0;
@@ -879,50 +879,50 @@ LABEL_14:
   CGContextRestoreGState(v8);
 }
 
-+ (id)roundedRectBezierPath:(CGRect)a3 withTopCornerRadius:(double)a4 withBottomCornerRadius:(double)a5
++ (id)roundedRectBezierPath:(CGRect)path withTopCornerRadius:(double)radius withBottomCornerRadius:(double)cornerRadius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  x = path.origin.x;
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
   for (i = 0; i != 4; ++i)
   {
     if (i >= 2)
     {
-      v14 = a5;
+      radiusCopy = cornerRadius;
     }
 
     else
     {
-      v14 = a4;
+      radiusCopy = radius;
     }
 
-    v15 = [MEMORY[0x1E696B098] valueWithCGSize:{v14, v14}];
+    v15 = [MEMORY[0x1E696B098] valueWithCGSize:{radiusCopy, radiusCopy}];
     [v12 addObject:v15];
   }
 
-  v16 = [a1 roundedRectBezierPath:-1 withRoundedCorners:v12 withCornerRadii:{x, y, width, height}];
+  v16 = [self roundedRectBezierPath:-1 withRoundedCorners:v12 withCornerRadii:{x, y, width, height}];
 
   return v16;
 }
 
-- (CGPath)_createMutablePathByDecodingData:(id)a3
+- (CGPath)_createMutablePathByDecodingData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 length];
+  dataCopy = data;
+  v6 = [dataCopy length];
   if (v6)
   {
     v7 = v6;
     Mutable = CGPathCreateMutable();
-    v9 = [v5 bytes];
+    bytes = [dataCopy bytes];
     v10 = 0;
     v24 = *MEMORY[0x1E695EFF8];
     do
     {
-      v12 = *(v9 + v10);
-      v11 = *(v9 + v10 + 4);
+      v12 = *(bytes + v10);
+      v11 = *(bytes + v10 + 4);
       v25 = v24;
       v26 = v24;
       v27 = v24;
@@ -954,7 +954,7 @@ LABEL_14:
         do
         {
           v10 = v14 + 8;
-          *v16++ = vcvtq_f64_f32(*(v9 + v14));
+          *v16++ = vcvtq_f64_f32(*(bytes + v14));
           v14 += 8;
           --v17;
         }
@@ -975,8 +975,8 @@ LABEL_14:
           {
             if (v11 != v13)
             {
-              v23 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v23 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:857 description:@"incorrect number of points for path element type kCGPathElementAddLineToPoint"];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:857 description:@"incorrect number of points for path element type kCGPathElementAddLineToPoint"];
             }
 
             CGPathAddLineToPoint(Mutable, 0, *&v25, *(&v25 + 1));
@@ -987,8 +987,8 @@ LABEL_14:
         {
           if (v11 != v13)
           {
-            v21 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v21 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:853 description:@"incorrect number of points for path element type kCGPathElementMoveToPoint"];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:853 description:@"incorrect number of points for path element type kCGPathElementMoveToPoint"];
           }
 
           CGPathMoveToPoint(Mutable, 0, *&v25, *(&v25 + 1));
@@ -1002,8 +1002,8 @@ LABEL_14:
           case 2:
             if (v11 != v13)
             {
-              v19 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v19 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:861 description:@"incorrect number of points for path element type kCGPathElementAddQuadCurveToPoint"];
+              currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:861 description:@"incorrect number of points for path element type kCGPathElementAddQuadCurveToPoint"];
             }
 
             CGPathAddQuadCurveToPoint(Mutable, 0, *&v25, *(&v25 + 1), *&v26, *(&v26 + 1));
@@ -1011,8 +1011,8 @@ LABEL_14:
           case 3:
             if (v11 != v13)
             {
-              v20 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v20 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:865 description:@"incorrect number of points for path element type kCGPathElementAddCurveToPoint"];
+              currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:865 description:@"incorrect number of points for path element type kCGPathElementAddCurveToPoint"];
             }
 
             CGPathAddCurveToPoint(Mutable, 0, *&v25, *(&v25 + 1), *&v26, *(&v26 + 1), *&v27, *(&v27 + 1));
@@ -1020,8 +1020,8 @@ LABEL_14:
           case 4:
             if (v11 != v13)
             {
-              v22 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v22 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:869 description:@"incorrect number of points for path element type kCGPathElementCloseSubpath"];
+              currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler5 handleFailureInMethod:a2 object:self file:@"UIBezierPath.m" lineNumber:869 description:@"incorrect number of points for path element type kCGPathElementCloseSubpath"];
             }
 
             CGPathCloseSubpath(Mutable);
@@ -1041,10 +1041,10 @@ LABEL_14:
   return Mutable;
 }
 
-- (void)_addRoundedCornerWithTrueCorner:(CGPoint)a3 radius:(CGSize)a4 corner:(unint64_t)a5 clockwise:(BOOL)a6 leadInIsContinuous:(BOOL)a7 leadOutIsContinuous:(BOOL)a8
+- (void)_addRoundedCornerWithTrueCorner:(CGPoint)corner radius:(CGSize)radius corner:(unint64_t)a5 clockwise:(BOOL)clockwise leadInIsContinuous:(BOOL)continuous leadOutIsContinuous:(BOOL)isContinuous
 {
-  v10 = a7;
-  if (!a6)
+  isContinuousCopy = continuous;
+  if (!clockwise)
   {
     if (a5 != 1 && a5 != 8)
     {
@@ -1052,8 +1052,8 @@ LABEL_14:
     }
 
 LABEL_7:
-    v11 = a7;
-    v10 = a8;
+    isContinuousCopy2 = continuous;
+    isContinuousCopy = isContinuous;
     goto LABEL_9;
   }
 
@@ -1063,29 +1063,29 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = a8;
+  isContinuousCopy2 = isContinuous;
 LABEL_9:
-  if (v11)
+  if (isContinuousCopy2)
   {
-    a4.width = a4.width * 1.528665;
+    radius.width = radius.width * 1.528665;
   }
 
-  if (v10)
+  if (isContinuousCopy)
   {
-    a4.height = a4.height * 1.528665;
+    radius.height = radius.height * 1.528665;
   }
 
-  if (a8)
+  if (isContinuous)
   {
-    v12 = a7 | 2;
+    continuousCopy3 = continuous | 2;
   }
 
   else
   {
-    v12 = a7;
+    continuousCopy3 = continuous;
   }
 
-  _addContinuousCornerToPath(self->_path, a5, v12, a6, 0, a3.x, a3.y, a4.width, a4.height);
+  _addContinuousCornerToPath(self->_path, a5, continuousCopy3, clockwise, 0, corner.x, corner.y, radius.width, radius.height);
   self->_immutablePathIsValid = 0;
 }
 
@@ -1304,55 +1304,55 @@ LABEL_21:
   return v14;
 }
 
-- (void)appendBezierPath:(id)a3
+- (void)appendBezierPath:(id)path
 {
-  CGPathAddPath(self->_path, 0, [a3 _mutablePath]);
+  CGPathAddPath(self->_path, 0, [path _mutablePath]);
 
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-- (void)appendBezierPathWithRect:(CGRect)a3
+- (void)appendBezierPathWithRect:(CGRect)rect
 {
-  CGPathAddRect(self->_path, 0, a3);
+  CGPathAddRect(self->_path, 0, rect);
 
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect
 {
-  CGPathAddEllipseInRect(self->_path, 0, a3);
+  CGPathAddEllipseInRect(self->_path, 0, rect);
 
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3 transform:(CGAffineTransform *)a4
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect transform:(CGAffineTransform *)transform
 {
-  CGPathAddEllipseInRect(self->_path, a4, a3);
+  CGPathAddEllipseInRect(self->_path, transform, rect);
 
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-- (void)appendBezierPathWithArcWithCenter:(CGPoint)a3 radius:(double)a4 startAngle:(double)a5 endAngle:(double)a6 clockwise:(BOOL)a7
+- (void)appendBezierPathWithArcWithCenter:(CGPoint)center radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle clockwise:(BOOL)clockwise
 {
-  CGPathAddArc(self->_path, 0, a3.x, a3.y, a4, a5, a6, !a7);
+  CGPathAddArc(self->_path, 0, center.x, center.y, radius, angle, endAngle, !clockwise);
 
   [(UIBezierPath *)self _invalidatePathMetadata];
 }
 
-+ (id)roundedRectBezierPath:(CGRect)a3 withRoundedEdges:(unint64_t)a4
++ (id)roundedRectBezierPath:(CGRect)path withRoundedEdges:(unint64_t)edges
 {
-  v4 = ((a4 << 62) >> 63) & 5;
-  if ((a4 & 8) != 0)
+  v4 = ((edges << 62) >> 63) & 5;
+  if ((edges & 8) != 0)
   {
     v4 |= 0xAuLL;
   }
 
-  if (a4)
+  if (edges)
   {
     v4 |= 3uLL;
   }
 
-  if ((a4 & 4) != 0)
+  if ((edges & 4) != 0)
   {
     v5 = v4 | 0xC;
   }
@@ -1362,38 +1362,38 @@ LABEL_21:
     v5 = v4;
   }
 
-  return [UIBezierPath _continuousRoundedRectBezierPath:v5 withRoundedCorners:16 cornerRadius:a3.origin.x segments:a3.origin.y, a3.size.width, a3.size.height, a3.size.height * 0.5, a3.size.width * 0.5];
+  return [UIBezierPath _continuousRoundedRectBezierPath:v5 withRoundedCorners:16 cornerRadius:path.origin.x segments:path.origin.y, path.size.width, path.size.height, path.size.height * 0.5, path.size.width * 0.5];
 }
 
-+ (id)_roundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(double)a5 segments:(int)a6 legacyCorners:(BOOL)a7
++ (id)_roundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(double)radius segments:(int)segments legacyCorners:(BOOL)legacyCorners
 {
-  v8 = a5;
-  v9 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  v12 = a3.origin.y;
-  x = a3.origin.x;
-  if (a7)
+  radiusCopy = radius;
+  cornersCopy = corners;
+  height = path.size.height;
+  width = path.size.width;
+  v12 = path.origin.y;
+  x = path.origin.x;
+  if (legacyCorners)
   {
-    if ((~a4 & 5) == 0 || (a4 & 0xA) == 0xA)
+    if ((~corners & 5) == 0 || (corners & 0xA) == 0xA)
     {
-      v15 = CGRectGetHeight(a3) * 0.5;
-      if (v15 <= v8)
+      v15 = CGRectGetHeight(path) * 0.5;
+      if (v15 <= radiusCopy)
       {
-        v8 = v15;
+        radiusCopy = v15;
       }
     }
 
-    if ((~v9 & 3) == 0 || (v9 & 0xC) == 0xCLL)
+    if ((~cornersCopy & 3) == 0 || (cornersCopy & 0xC) == 0xCLL)
     {
       v44.origin.x = x;
       v44.origin.y = v12;
       v44.size.width = width;
       v44.size.height = height;
       v16 = CGRectGetWidth(v44) * 0.5;
-      if (v8 >= v16)
+      if (radiusCopy >= v16)
       {
-        v8 = v16;
+        radiusCopy = v16;
       }
     }
 
@@ -1412,29 +1412,29 @@ LABEL_21:
       v18 = v17;
     }
 
-    if (v8 >= v18)
+    if (radiusCopy >= v18)
     {
-      v8 = v18;
+      radiusCopy = v18;
     }
 
     Mutable = CGPathCreateMutable();
     v20 = Mutable;
-    if ((a6 & 0x10) != 0)
+    if ((segments & 0x10) != 0)
     {
       v21 = 1;
     }
 
-    else if ((~a6 & 0xD) != 0)
+    else if ((~segments & 0xD) != 0)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = (a6 >> 1) & 1;
+      v21 = (segments >> 1) & 1;
     }
 
-    if ((a6 & 4) != 0)
+    if ((segments & 4) != 0)
     {
       v23 = 0;
     }
@@ -1445,9 +1445,9 @@ LABEL_21:
     }
 
     v24 = 0.0;
-    if (v9)
+    if (cornersCopy)
     {
-      v25 = v8;
+      v25 = radiusCopy;
     }
 
     else
@@ -1455,7 +1455,7 @@ LABEL_21:
       v25 = 0.0;
     }
 
-    if (a6)
+    if (segments)
     {
       v26 = 0;
     }
@@ -1466,15 +1466,15 @@ LABEL_21:
     }
 
     v38 = v25;
-    if ((((a6 & 1) == 0) & v23) != 0)
+    if ((((segments & 1) == 0) & v23) != 0)
     {
       v25 = 0.0;
     }
 
     v42 = v25;
-    if ((v9 & 2) != 0)
+    if ((cornersCopy & 2) != 0)
     {
-      v27 = v8;
+      v27 = radiusCopy;
     }
 
     else
@@ -1482,7 +1482,7 @@ LABEL_21:
       v27 = 0.0;
     }
 
-    if ((a6 & 8) != 0)
+    if ((segments & 8) != 0)
     {
       v28 = 0;
     }
@@ -1492,7 +1492,7 @@ LABEL_21:
       v28 = v21 ^ 1;
     }
 
-    if ((((a6 & 8) == 0) & v26) != 0)
+    if ((((segments & 8) == 0) & v26) != 0)
     {
       v29 = 0.0;
     }
@@ -1502,9 +1502,9 @@ LABEL_21:
       v29 = v27;
     }
 
-    if ((v9 & 8) != 0)
+    if ((cornersCopy & 8) != 0)
     {
-      v30 = v8;
+      v30 = radiusCopy;
     }
 
     else
@@ -1512,7 +1512,7 @@ LABEL_21:
       v30 = 0.0;
     }
 
-    if ((a6 & 2) != 0)
+    if ((segments & 2) != 0)
     {
       v31 = 0;
     }
@@ -1522,7 +1522,7 @@ LABEL_21:
       v31 = v21 ^ 1;
     }
 
-    if ((((a6 & 2) == 0) & v28) != 0)
+    if ((((segments & 2) == 0) & v28) != 0)
     {
       v32 = 0.0;
     }
@@ -1532,9 +1532,9 @@ LABEL_21:
       v32 = v30;
     }
 
-    if ((v9 & 4) != 0)
+    if ((cornersCopy & 4) != 0)
     {
-      v33 = v8;
+      v33 = radiusCopy;
     }
 
     else
@@ -1543,7 +1543,7 @@ LABEL_21:
     }
 
     v37 = v33;
-    if ((((a6 & 4) == 0) & v31) == 0)
+    if ((((segments & 4) == 0) & v31) == 0)
     {
       v24 = v33;
     }
@@ -1556,15 +1556,15 @@ LABEL_21:
       CGPathAddLineToPoint(v20, 0, x + width - v27, v12);
     }
 
-    y = v12 + v8;
+    y = v12 + radiusCopy;
     if (v29 > 0.0)
     {
       if ((v21 & 1) == 0)
       {
-        CGPathMoveToPoint(v20, 0, x + width - v8, v12);
+        CGPathMoveToPoint(v20, 0, x + width - radiusCopy, v12);
       }
 
-      CGPathAddArc(v20, 0, x + width - v8, y, v8, 4.71238898, 6.28318531, 0);
+      CGPathAddArc(v20, 0, x + width - radiusCopy, y, radiusCopy, 4.71238898, 6.28318531, 0);
     }
 
     if ((v28 & 1) == 0)
@@ -1581,10 +1581,10 @@ LABEL_21:
     {
       if ((v21 & 1) == 0)
       {
-        CGPathMoveToPoint(v20, 0, x + width - v8, v12 + height);
+        CGPathMoveToPoint(v20, 0, x + width - radiusCopy, v12 + height);
       }
 
-      CGPathAddArc(v20, 0, x + width - v8, v12 + height - v8, v8, 0.0, 1.57079633, 0);
+      CGPathAddArc(v20, 0, x + width - radiusCopy, v12 + height - radiusCopy, radiusCopy, 0.0, 1.57079633, 0);
     }
 
     if ((v31 & 1) == 0)
@@ -1608,10 +1608,10 @@ LABEL_21:
     {
       if ((v21 & 1) == 0)
       {
-        CGPathMoveToPoint(v20, 0, x + v8, v12 + height);
+        CGPathMoveToPoint(v20, 0, x + radiusCopy, v12 + height);
       }
 
-      CGPathAddArc(v20, 0, x + v8, v12 + height - v8, v8, 1.57079633, 3.14159265, 0);
+      CGPathAddArc(v20, 0, x + radiusCopy, v12 + height - radiusCopy, radiusCopy, 1.57079633, 3.14159265, 0);
     }
 
     if ((v23 & 1) == 0)
@@ -1631,98 +1631,98 @@ LABEL_21:
         CGPathMoveToPoint(v20, 0, x, y);
       }
 
-      CGPathAddArc(v20, 0, x + v8, y, v8, 3.14159265, 4.71238898, 0);
+      CGPathAddArc(v20, 0, x + radiusCopy, y, radiusCopy, 3.14159265, 4.71238898, 0);
     }
 
-    v22 = [[a1 alloc] _initWithCGMutablePath:v20];
+    v22 = [[self alloc] _initWithCGMutablePath:v20];
     CFRelease(v20);
     *(v22 + 89) = 1;
-    *(v22 + 96) = v8;
+    *(v22 + 96) = radiusCopy;
     *(v22 + 104) = 0;
-    *(v22 + 112) = v9 & 0xF;
+    *(v22 + 112) = cornersCopy & 0xF;
   }
 
   else
   {
-    v22 = [a1 _continuousRoundedRectBezierPath:a4 withRoundedCorners:*&a6 cornerRadius:a3.origin.x segments:{a3.origin.y, a3.size.width, a3.size.height, a5, a5}];
+    v22 = [self _continuousRoundedRectBezierPath:corners withRoundedCorners:*&segments cornerRadius:path.origin.x segments:{path.origin.y, path.size.width, path.size.height, radius, radius}];
   }
 
   return v22;
 }
 
-+ (id)_bezierPathWithPillRect:(CGRect)a3 cornerRadius:(double)a4
++ (id)_bezierPathWithPillRect:(CGRect)rect cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13[4] = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E696B098] valueWithCGSize:{a4, a4}];
+  v9 = [MEMORY[0x1E696B098] valueWithCGSize:{radius, radius}];
   v13[0] = v9;
   v13[1] = v9;
   v13[2] = v9;
   v13[3] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
-  v11 = [a1 _continuousRoundedRectBezierPath:-1 withRoundedCorners:v10 cornerRadii:16 segments:1 smoothPillShapes:1 clampCornerRadii:{x, y, width, height}];
+  v11 = [self _continuousRoundedRectBezierPath:-1 withRoundedCorners:v10 cornerRadii:16 segments:1 smoothPillShapes:1 clampCornerRadii:{x, y, width, height}];
 
   return v11;
 }
 
-+ (id)_continuousRoundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(CGSize)a5 segments:(int)a6
++ (id)_continuousRoundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(CGSize)radius segments:(int)segments
 {
-  v6 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v6 = *&segments;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  x = path.origin.x;
   v17[4] = *MEMORY[0x1E69E9840];
-  v13 = [MEMORY[0x1E696B098] valueWithCGSize:{a5.width, a5.height}];
+  v13 = [MEMORY[0x1E696B098] valueWithCGSize:{radius.width, radius.height}];
   v17[0] = v13;
   v17[1] = v13;
   v17[2] = v13;
   v17[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
-  v15 = [a1 _continuousRoundedRectBezierPath:a4 withRoundedCorners:v14 cornerRadii:v6 segments:0 smoothPillShapes:1 clampCornerRadii:{x, y, width, height}];
+  v15 = [self _continuousRoundedRectBezierPath:corners withRoundedCorners:v14 cornerRadii:v6 segments:0 smoothPillShapes:1 clampCornerRadii:{x, y, width, height}];
 
   return v15;
 }
 
-+ (id)_continuousRoundedCARectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadius:(CGSize)a5 segments:(int)a6
++ (id)_continuousRoundedCARectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadius:(CGSize)radius segments:(int)segments
 {
-  v6 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v6 = *&segments;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  x = path.origin.x;
   v17[4] = *MEMORY[0x1E69E9840];
-  v13 = [MEMORY[0x1E696B098] valueWithCGSize:{a5.width, a5.height}];
+  v13 = [MEMORY[0x1E696B098] valueWithCGSize:{radius.width, radius.height}];
   v17[0] = v13;
   v17[1] = v13;
   v17[2] = v13;
   v17[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
-  v15 = [a1 _continuousRoundedRectBezierPath:a4 withRoundedCorners:v14 cornerRadii:v6 segments:0 smoothPillShapes:0 clampCornerRadii:{x, y, width, height}];
+  v15 = [self _continuousRoundedRectBezierPath:corners withRoundedCorners:v14 cornerRadii:v6 segments:0 smoothPillShapes:0 clampCornerRadii:{x, y, width, height}];
 
   return v15;
 }
 
-+ (id)_continuousRoundedRectBezierPath:(CGRect)a3 withRoundedCorners:(unint64_t)a4 cornerRadii:(id)a5 segments:(int)a6 smoothPillShapes:(BOOL)a7 clampCornerRadii:(BOOL)a8
++ (id)_continuousRoundedRectBezierPath:(CGRect)path withRoundedCorners:(unint64_t)corners cornerRadii:(id)radii segments:(int)segments smoothPillShapes:(BOOL)shapes clampCornerRadii:(BOOL)cornerRadii
 {
-  v8 = a8;
-  x = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v13 = a3.origin.x;
-  v14 = a5;
+  cornerRadiiCopy = cornerRadii;
+  x = shapes;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  v13 = path.origin.x;
+  radiiCopy = radii;
   Mutable = CGPathCreateMutable();
-  v16 = (a6 >> 1) & 1;
-  if ((~a6 & 0xD) != 0)
+  v16 = (segments >> 1) & 1;
+  if ((~segments & 0xD) != 0)
   {
     v16 = 0;
   }
 
-  if ((a6 & 0x10) != 0)
+  if ((segments & 0x10) != 0)
   {
     v17 = 1;
   }
@@ -1773,16 +1773,16 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  v69 = [v14 objectAtIndex:0];
+  v69 = [radiiCopy objectAtIndex:0];
   [v69 CGSizeValue];
   v71 = v70;
 
-  v72 = [v14 objectAtIndex:0];
+  v72 = [radiiCopy objectAtIndex:0];
   [v72 CGSizeValue];
   v74 = v73;
 
   v75 = v96 ^ 1;
-  if (a4 != -1)
+  if (corners != -1)
   {
     v75 = 1;
   }
@@ -1791,7 +1791,7 @@ LABEL_21:
   {
 LABEL_9:
     v19 = v17 ^ 1;
-    if ((a6 & 4) != 0)
+    if ((segments & 4) != 0)
     {
       v20 = 0;
     }
@@ -1802,13 +1802,13 @@ LABEL_9:
     }
 
     v94 = v20;
-    if (a6)
+    if (segments)
     {
       v20 = 0;
     }
 
     v21 = MEMORY[0x1E695F060];
-    if ((a4 & 1) == 0 || v20)
+    if ((corners & 1) == 0 || v20)
     {
       v24 = *MEMORY[0x1E695F060];
       v27 = *(MEMORY[0x1E695F060] + 8);
@@ -1816,15 +1816,15 @@ LABEL_9:
 
     else
     {
-      v22 = [v14 objectAtIndex:0];
+      v22 = [radiiCopy objectAtIndex:0];
       [v22 CGSizeValue];
       v24 = v23 * 1.528665;
-      v25 = [v14 objectAtIndex:0];
+      v25 = [radiiCopy objectAtIndex:0];
       [v25 CGSizeValue];
       v27 = v26 * 1.528665;
     }
 
-    if (a6)
+    if (segments)
     {
       v28 = 0;
     }
@@ -1834,7 +1834,7 @@ LABEL_9:
       v28 = v17 ^ 1;
     }
 
-    if ((a6 & 8) != 0)
+    if ((segments & 8) != 0)
     {
       v29 = 0;
     }
@@ -1844,7 +1844,7 @@ LABEL_9:
       v29 = v28;
     }
 
-    if ((a4 & 2) == 0 || v29)
+    if ((corners & 2) == 0 || v29)
     {
       v106 = *v21;
       v102 = v21[1];
@@ -1852,15 +1852,15 @@ LABEL_9:
 
     else
     {
-      v30 = [v14 objectAtIndex:1];
+      v30 = [radiiCopy objectAtIndex:1];
       [v30 CGSizeValue];
       v106 = v31 * 1.528665;
-      v32 = [v14 objectAtIndex:1];
+      v32 = [radiiCopy objectAtIndex:1];
       [v32 CGSizeValue];
       v102 = v33 * 1.528665;
     }
 
-    if ((a6 & 8) != 0)
+    if ((segments & 8) != 0)
     {
       v34 = 0;
     }
@@ -1870,7 +1870,7 @@ LABEL_9:
       v34 = v19;
     }
 
-    if ((a6 & 2) != 0)
+    if ((segments & 2) != 0)
     {
       v35 = 0;
     }
@@ -1880,7 +1880,7 @@ LABEL_9:
       v35 = v34;
     }
 
-    if ((a4 & 8) == 0 || v35)
+    if ((corners & 8) == 0 || v35)
     {
       v104 = v21[1];
       v105 = *v21;
@@ -1888,20 +1888,20 @@ LABEL_9:
 
     else
     {
-      v36 = [v14 objectAtIndex:3];
+      v36 = [radiiCopy objectAtIndex:3];
       [v36 CGSizeValue];
       v105 = v37 * 1.528665;
-      v38 = [v14 objectAtIndex:3];
+      v38 = [radiiCopy objectAtIndex:3];
       [v38 CGSizeValue];
       v104 = v39 * 1.528665;
     }
 
-    if ((a6 & 2) != 0)
+    if ((segments & 2) != 0)
     {
       v19 = 0;
     }
 
-    if ((a6 & 4) != 0)
+    if ((segments & 4) != 0)
     {
       v40 = 0;
     }
@@ -1911,11 +1911,11 @@ LABEL_9:
       v40 = v19;
     }
 
-    if ((a4 & 4) == 0 || v40)
+    if ((corners & 4) == 0 || v40)
     {
       v107 = *v21;
       v103 = v21[1];
-      if (!v8)
+      if (!cornerRadiiCopy)
       {
         goto LABEL_46;
       }
@@ -1923,14 +1923,14 @@ LABEL_9:
 
     else
     {
-      v41 = [v14 objectAtIndex:2];
+      v41 = [radiiCopy objectAtIndex:2];
       [v41 CGSizeValue];
       v107 = v42 * 1.528665;
-      v43 = [v14 objectAtIndex:2];
+      v43 = [radiiCopy objectAtIndex:2];
       [v43 CGSizeValue];
       v103 = v44 * 1.528665;
 
-      if (!v8)
+      if (!cornerRadiiCopy)
       {
 LABEL_46:
         v97 = v27;
@@ -2103,15 +2103,15 @@ LABEL_69:
           }
 
           CGPathAddLineToPoint(Mutable, 0, v100 + v101, v57);
-          v62 = [[a1 alloc] _initWithCGMutablePath:Mutable];
+          v62 = [[self alloc] _initWithCGMutablePath:Mutable];
           CFRelease(Mutable);
           *(v62 + 89) = 1;
-          v63 = [v14 objectAtIndex:0];
+          v63 = [radiiCopy objectAtIndex:0];
           [v63 CGSizeValue];
           *(v62 + 96) = v64;
 
           *(v62 + 104) = v51 != 0;
-          v65 = a4 & 0xF;
+          v65 = corners & 0xF;
           goto LABEL_102;
         }
 
@@ -2136,7 +2136,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  v76 = [v14 objectAtIndex:1];
+  v76 = [radiiCopy objectAtIndex:1];
   [v76 CGSizeValue];
   if (v71 != v77)
   {
@@ -2146,7 +2146,7 @@ LABEL_128:
     goto LABEL_9;
   }
 
-  v78 = [v14 objectAtIndex:1];
+  v78 = [radiiCopy objectAtIndex:1];
   [v78 CGSizeValue];
   if (v74 != v79)
   {
@@ -2155,7 +2155,7 @@ LABEL_127:
     goto LABEL_128;
   }
 
-  v80 = [v14 objectAtIndex:2];
+  v80 = [radiiCopy objectAtIndex:2];
   [v80 CGSizeValue];
   if (v71 != v81)
   {
@@ -2164,7 +2164,7 @@ LABEL_126:
     goto LABEL_127;
   }
 
-  v82 = [v14 objectAtIndex:2];
+  v82 = [radiiCopy objectAtIndex:2];
   [v82 CGSizeValue];
   if (v74 != v83)
   {
@@ -2173,7 +2173,7 @@ LABEL_125:
     goto LABEL_126;
   }
 
-  v84 = [v14 objectAtIndex:3];
+  v84 = [radiiCopy objectAtIndex:3];
   [v84 CGSizeValue];
   if (v71 != v85)
   {
@@ -2181,7 +2181,7 @@ LABEL_125:
     goto LABEL_125;
   }
 
-  v86 = [v14 objectAtIndex:3];
+  v86 = [radiiCopy objectAtIndex:3];
   [v86 CGSizeValue];
   v88 = v87;
 
@@ -2196,7 +2196,7 @@ LABEL_125:
   v90 = width * 0.5;
   v91 = fmin(v71, fmin(width * 0.5, height * 0.5));
   CGPathAddContinuousRoundedRect();
-  v62 = [[a1 alloc] _initWithCGMutablePath:Mutable];
+  v62 = [[self alloc] _initWithCGMutablePath:Mutable];
   CFRelease(Mutable);
   *(v62 + 89) = 1;
   *(v62 + 96) = v71;
@@ -2214,18 +2214,18 @@ LABEL_102:
   return v62;
 }
 
-- (id)_bezierPathConvertedFromCoordinateSpace:(id)a3 toCoordinateSpace:(id)a4
+- (id)_bezierPathConvertedFromCoordinateSpace:(id)space toCoordinateSpace:(id)coordinateSpace
 {
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  coordinateSpaceCopy = coordinateSpace;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__UIBezierPath__bezierPathConvertedFromCoordinateSpace_toCoordinateSpace___block_invoke;
   aBlock[3] = &unk_1E710BC50;
-  v23 = v6;
-  v24 = v7;
-  v8 = v7;
-  v9 = v6;
+  v23 = spaceCopy;
+  v24 = coordinateSpaceCopy;
+  v8 = coordinateSpaceCopy;
+  v9 = spaceCopy;
   v10 = _Block_copy(aBlock);
   path = self->_path;
   Mutable = CGPathCreateMutable();
@@ -2300,17 +2300,17 @@ void __74__UIBezierPath__bezierPathConvertedFromCoordinateSpace_toCoordinateSpac
   }
 }
 
-+ (id)shadowBezierPath:(CGRect)a3 withRoundedEdges:(unint64_t)a4
++ (id)shadowBezierPath:(CGRect)path withRoundedEdges:(unint64_t)edges
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a3.size.height * 0.5;
-  if ((a4 & 2) != 0)
+  edgesCopy = edges;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  x = path.origin.x;
+  v9 = path.size.height * 0.5;
+  if ((edges & 2) != 0)
   {
-    v10 = a3.size.height * 0.5;
+    v10 = path.size.height * 0.5;
   }
 
   else
@@ -2318,9 +2318,9 @@ void __74__UIBezierPath__bezierPathConvertedFromCoordinateSpace_toCoordinateSpac
     v10 = 0.0;
   }
 
-  if ((a4 & 8) != 0)
+  if ((edges & 8) != 0)
   {
-    v11 = a3.size.height * 0.5;
+    v11 = path.size.height * 0.5;
   }
 
   else
@@ -2329,25 +2329,25 @@ void __74__UIBezierPath__bezierPathConvertedFromCoordinateSpace_toCoordinateSpac
   }
 
   v12 = +[UIBezierPath bezierPath];
-  v13 = [v12 _pathRef];
+  _pathRef = [v12 _pathRef];
   v14 = x + v10;
-  CGPathMoveToPoint(v13, 0, v14, y);
-  if ((v4 & 2) != 0)
+  CGPathMoveToPoint(_pathRef, 0, v14, y);
+  if ((edgesCopy & 2) != 0)
   {
-    CGPathAddArc(v13, 0, x + v9, y + v9, v9, 4.71238898, 1.57079633, 1);
+    CGPathAddArc(_pathRef, 0, x + v9, y + v9, v9, 4.71238898, 1.57079633, 1);
     v15 = y + height;
   }
 
   else
   {
     v15 = y + height;
-    CGPathAddLineToPoint(v13, 0, x, v15 + -4.0);
+    CGPathAddLineToPoint(_pathRef, 0, x, v15 + -4.0);
     [v12 appendBezierPathWithArcWithCenter:0 radius:x + 4.0 startAngle:v15 + -4.0 endAngle:4.0 clockwise:{3.14159265, 1.57079633}];
   }
 
   v16 = x + width;
-  CGPathAddLineToPoint(v13, 0, v16 - v11, v15);
-  if ((v4 & 8) != 0)
+  CGPathAddLineToPoint(_pathRef, 0, v16 - v11, v15);
+  if ((edgesCopy & 8) != 0)
   {
     [v12 appendBezierPathWithArcWithCenter:0 radius:v16 - v9 startAngle:y + v9 endAngle:v9 clockwise:{1.57079633, 4.71238898}];
   }
@@ -2355,11 +2355,11 @@ void __74__UIBezierPath__bezierPathConvertedFromCoordinateSpace_toCoordinateSpac
   else
   {
     [v12 appendBezierPathWithArcWithCenter:0 radius:v16 + -4.0 startAngle:v15 + -4.0 endAngle:4.0 clockwise:{1.57079633, 0.0}];
-    CGPathAddLineToPoint(v13, 0, v16, y);
+    CGPathAddLineToPoint(_pathRef, 0, v16, y);
   }
 
-  CGPathAddLineToPoint(v13, 0, v14, y);
-  CGPathCloseSubpath(v13);
+  CGPathAddLineToPoint(_pathRef, 0, v14, y);
+  CGPathCloseSubpath(_pathRef);
 
   return v12;
 }

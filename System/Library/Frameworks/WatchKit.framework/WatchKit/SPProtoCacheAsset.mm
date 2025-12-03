@@ -1,12 +1,12 @@
 @interface SPProtoCacheAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoCacheAsset
@@ -17,37 +17,37 @@
   v8.receiver = self;
   v8.super_class = SPProtoCacheAsset;
   v4 = [(SPProtoCacheAsset *)&v8 description];
-  v5 = [(SPProtoCacheAsset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoCacheAsset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_state];
-  [v3 setObject:v4 forKey:@"state"];
+  [dictionary setObject:v4 forKey:@"state"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_size];
-  [v3 setObject:v5 forKey:@"size"];
+  [dictionary setObject:v5 forKey:@"size"];
 
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_accessDate];
-  [v3 setObject:v7 forKey:@"accessDate"];
+  [dictionary setObject:v7 forKey:@"accessDate"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   state = self->_state;
-  v8 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   size = self->_size;
   PBDataWriterWriteUint64Field();
@@ -57,22 +57,22 @@
   PBDataWriterWriteDoubleField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 8) = self->_state;
-  *(a3 + 2) = self->_size;
+  *(to + 8) = self->_state;
+  *(to + 2) = self->_size;
   key = self->_key;
-  v5 = a3;
-  [v5 setKey:key];
-  v5[1] = self->_accessDate;
+  toCopy = to;
+  [toCopy setKey:key];
+  toCopy[1] = self->_accessDate;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 32) = self->_state;
   *(v5 + 16) = self->_size;
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -80,10 +80,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && self->_state == *(v4 + 8) && self->_size == *(v4 + 2) && ((key = self->_key, !(key | *(v4 + 3))) || -[NSString isEqual:](key, "isEqual:")) && self->_accessDate == *(v4 + 1);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_state == *(equalCopy + 8) && self->_size == *(equalCopy + 2) && ((key = self->_key, !(key | *(equalCopy + 3))) || -[NSString isEqual:](key, "isEqual:")) && self->_accessDate == *(equalCopy + 1);
 
   return v6;
 }
@@ -121,19 +121,19 @@
   return (2654435761u * size) ^ (2654435761 * state) ^ v5 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_state = *(v4 + 8);
-  self->_size = *(v4 + 2);
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_state = *(fromCopy + 8);
+  self->_size = *(fromCopy + 2);
+  if (*(fromCopy + 3))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(SPProtoCacheAsset *)self setKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_accessDate = *(v4 + 1);
+  self->_accessDate = *(fromCopy + 1);
 }
 
 @end

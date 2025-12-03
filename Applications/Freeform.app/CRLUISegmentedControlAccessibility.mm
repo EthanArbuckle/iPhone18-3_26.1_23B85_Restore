@@ -1,26 +1,26 @@
 @interface CRLUISegmentedControlAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (void)crlaxSetSegmentDescriptions:(id)a3;
++ (id)crlaxCastFrom:(id)from;
+- (void)crlaxSetSegmentDescriptions:(id)descriptions;
 @end
 
 @implementation CRLUISegmentedControlAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (void)crlaxSetSegmentDescriptions:(id)a3
+- (void)crlaxSetSegmentDescriptions:(id)descriptions
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(CRLUISegmentedControlAccessibility *)v5 valueForKey:@"_segments"];
+  descriptionsCopy = descriptions;
+  selfCopy = self;
+  v6 = [(CRLUISegmentedControlAccessibility *)selfCopy valueForKey:@"_segments"];
   v7 = [v6 count];
-  v8 = [v4 count];
+  v8 = [descriptionsCopy count];
   if (v8 == v7)
   {
     if (v7)
@@ -40,7 +40,7 @@
         v13 = v12;
 
         v25 = 0;
-        v14 = [v4 objectAtIndex:v9];
+        v14 = [descriptionsCopy objectAtIndex:v9];
         v15 = objc_opt_class();
         v16 = __CRLAccessibilityCastAsClass(v15, v14, 1, &v25);
         if (v25 == 1)

@@ -1,15 +1,15 @@
 @interface PKPassSemanticTileFactoryCachedWeatherItem
 - (BOOL)beginContentAccess;
-- (PKPassSemanticTileFactoryCachedWeatherItem)initWithWeatherInformation:(id)a3;
+- (PKPassSemanticTileFactoryCachedWeatherItem)initWithWeatherInformation:(id)information;
 - (void)discardContentIfPossible;
 @end
 
 @implementation PKPassSemanticTileFactoryCachedWeatherItem
 
-- (PKPassSemanticTileFactoryCachedWeatherItem)initWithWeatherInformation:(id)a3
+- (PKPassSemanticTileFactoryCachedWeatherItem)initWithWeatherInformation:(id)information
 {
-  v5 = a3;
-  if (v5)
+  informationCopy = information;
+  if (informationCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassSemanticTileFactoryCachedWeatherItem;
@@ -17,19 +17,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_weatherInformation, a3);
+      objc_storeStrong(&v6->_weatherInformation, information);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)beginContentAccess

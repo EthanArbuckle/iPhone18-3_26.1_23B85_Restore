@@ -1,14 +1,14 @@
 @interface FinancialConnectionExtensionModel
-- (void)authorizeWithParams:(id)a3;
+- (void)authorizeWithParams:(id)params;
 @end
 
 @implementation FinancialConnectionExtensionModel
 
-- (void)authorizeWithParams:(id)a3
+- (void)authorizeWithParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
 
-  sub_23865F520(v3);
+  sub_23865F520(paramsCopy);
 }
 
 @end

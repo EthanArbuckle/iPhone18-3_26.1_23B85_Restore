@@ -3,38 +3,38 @@
 - (BOOL)isInLoop;
 - (BOOL)isLoopNode;
 - (ICCRTree)tree;
-- (ICCRTreeNode)initWithValue:(id)a3 parent:(id)a4 tree:(id)a5;
+- (ICCRTreeNode)initWithValue:(id)value parent:(id)parent tree:(id)tree;
 - (ICCRTreeNode)parent;
 - (NSArray)children;
-- (id)insertNodeWithValue:(id)a3 atIndex:(unint64_t)a4;
+- (id)insertNodeWithValue:(id)value atIndex:(unint64_t)index;
 - (id)parentReference;
-- (void)insertNode:(id)a3 atIndex:(unint64_t)a4;
-- (void)moveNode:(id)a3 toIndex:(unint64_t)a4;
-- (void)removeNode:(id)a3;
-- (void)setParent:(id)a3;
+- (void)insertNode:(id)node atIndex:(unint64_t)index;
+- (void)moveNode:(id)node toIndex:(unint64_t)index;
+- (void)removeNode:(id)node;
+- (void)setParent:(id)parent;
 @end
 
 @implementation ICCRTreeNode
 
-- (ICCRTreeNode)initWithValue:(id)a3 parent:(id)a4 tree:(id)a5
+- (ICCRTreeNode)initWithValue:(id)value parent:(id)parent tree:(id)tree
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  valueCopy = value;
+  parentCopy = parent;
+  treeCopy = tree;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v17.receiver = self;
   v17.super_class = ICCRTreeNode;
-  v12 = [(ICCRObject *)&v17 initWithDocument:0 identity:v11];
+  v12 = [(ICCRObject *)&v17 initWithDocument:0 identity:uUID];
 
   if (v12)
   {
-    objc_storeWeak(&v12->_tree, v10);
-    [(ICCRTreeNode *)v12 setValue:v8];
-    if (v9)
+    objc_storeWeak(&v12->_tree, treeCopy);
+    [(ICCRTreeNode *)v12 setValue:valueCopy];
+    if (parentCopy)
     {
       v13 = [ICCRWeakReference alloc];
-      v14 = [v10 document];
-      v15 = [(ICCRWeakReference *)v13 initWithContents:v9 document:v14];
+      document = [treeCopy document];
+      v15 = [(ICCRWeakReference *)v13 initWithContents:parentCopy document:document];
       [(ICCRTreeNode *)v12 setParentRef:v15];
     }
   }
@@ -58,42 +58,42 @@
 
 - (id)parentReference
 {
-  v2 = [(ICCRObject *)self fields];
-  v3 = [v2 objectForKeyedSubscript:@"parentRef"];
-  v4 = [v3 contents];
+  fields = [(ICCRObject *)self fields];
+  v3 = [fields objectForKeyedSubscript:@"parentRef"];
+  contents = [v3 contents];
 
-  return v4;
+  return contents;
 }
 
 - (ICCRTreeNode)parent
 {
-  v2 = [(ICCRTreeNode *)self parentReference];
-  v3 = [v2 contents];
+  parentReference = [(ICCRTreeNode *)self parentReference];
+  contents = [parentReference contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v5 = [ICCRWeakReference alloc];
-  v10 = [(ICCRTreeNode *)self tree];
-  v6 = [v10 document];
-  v7 = [(ICCRWeakReference *)v5 initWithContents:v4 document:v6];
+  tree = [(ICCRTreeNode *)self tree];
+  document = [tree document];
+  v7 = [(ICCRWeakReference *)v5 initWithContents:parentCopy document:document];
 
-  v8 = [(ICCRObject *)self fields];
-  v9 = [v8 objectForKeyedSubscript:@"parentRef"];
+  fields = [(ICCRObject *)self fields];
+  v9 = [fields objectForKeyedSubscript:@"parentRef"];
   [v9 setContents:v7];
 }
 
 - (BOOL)isInLoop
 {
-  v3 = [(ICCRTreeNode *)self parent];
-  v4 = v3;
-  for (i = v3 != 0; v4 != self && v4; i = v4 != 0)
+  parent = [(ICCRTreeNode *)self parent];
+  parent2 = parent;
+  for (i = parent != 0; parent2 != self && parent2; i = parent2 != 0)
   {
-    v6 = v4;
-    v4 = [(ICCRTreeNode *)v4 parent];
+    v6 = parent2;
+    parent2 = [(ICCRTreeNode *)parent2 parent];
   }
 
   return i;
@@ -106,19 +106,19 @@
     return 0;
   }
 
-  v3 = [(ICCRTreeNode *)self parent];
-  if (!v3)
+  parent = [(ICCRTreeNode *)self parent];
+  if (!parent)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = parent;
   v5 = -1;
   while (1)
   {
-    v6 = [(ICCRTreeNode *)self tree];
-    v7 = [v6 nodes];
-    v8 = [v7 indexOfObject:v4];
+    tree = [(ICCRTreeNode *)self tree];
+    nodes = [tree nodes];
+    v8 = [nodes indexOfObject:v4];
 
     if (v5 >= v8)
     {
@@ -130,18 +130,18 @@
       break;
     }
 
-    v9 = [(ICCRTreeNode *)v4 parent];
+    parent2 = [(ICCRTreeNode *)v4 parent];
 
-    v4 = v9;
-    if (!v9)
+    v4 = parent2;
+    if (!parent2)
     {
       return 0;
     }
   }
 
-  v12 = [(ICCRTreeNode *)self tree];
-  v13 = [v12 nodes];
-  v10 = v5 == [v13 indexOfObject:self];
+  tree2 = [(ICCRTreeNode *)self tree];
+  nodes2 = [tree2 nodes];
+  v10 = v5 == [nodes2 indexOfObject:self];
 
   return v10;
 }
@@ -151,8 +151,8 @@
   children = self->_children;
   if (!children)
   {
-    v4 = [(ICCRTreeNode *)self tree];
-    [v4 computeChildren];
+    tree = [(ICCRTreeNode *)self tree];
+    [tree computeChildren];
 
     children = self->_children;
   }
@@ -170,52 +170,52 @@
   return v5;
 }
 
-- (void)insertNode:(id)a3 atIndex:(unint64_t)a4
+- (void)insertNode:(id)node atIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(ICCRTreeNode *)self tree];
-  v7 = [v6 nodes];
-  v8 = [v7 containsObject:v11];
+  nodeCopy = node;
+  tree = [(ICCRTreeNode *)self tree];
+  nodes = [tree nodes];
+  v8 = [nodes containsObject:nodeCopy];
 
-  v9 = [(ICCRTreeNode *)self tree];
-  v10 = v9;
+  tree2 = [(ICCRTreeNode *)self tree];
+  v10 = tree2;
   if (v8)
   {
-    [v9 moveNode:v11 toParent:self atIndex:a4];
+    [tree2 moveNode:nodeCopy toParent:self atIndex:index];
   }
 
   else
   {
-    [v9 insertNode:v11 inParent:self atIndex:a4];
+    [tree2 insertNode:nodeCopy inParent:self atIndex:index];
   }
 }
 
-- (id)insertNodeWithValue:(id)a3 atIndex:(unint64_t)a4
+- (id)insertNodeWithValue:(id)value atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICCRTreeNode *)self tree];
-  v8 = [v7 insertNodeWithValue:v6 inParent:self atIndex:a4];
+  valueCopy = value;
+  tree = [(ICCRTreeNode *)self tree];
+  v8 = [tree insertNodeWithValue:valueCopy inParent:self atIndex:index];
 
   return v8;
 }
 
-- (void)moveNode:(id)a3 toIndex:(unint64_t)a4
+- (void)moveNode:(id)node toIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICCRTreeNode *)self tree];
-  [v7 moveNode:v6 toParent:self atIndex:a4];
+  nodeCopy = node;
+  tree = [(ICCRTreeNode *)self tree];
+  [tree moveNode:nodeCopy toParent:self atIndex:index];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v7 = a3;
-  v4 = [(ICCRTreeNode *)self children];
-  v5 = [v4 containsObject:v7];
+  nodeCopy = node;
+  children = [(ICCRTreeNode *)self children];
+  v5 = [children containsObject:nodeCopy];
 
   if (v5)
   {
-    v6 = [(ICCRTreeNode *)self tree];
-    [v6 removeNode:v7];
+    tree = [(ICCRTreeNode *)self tree];
+    [tree removeNode:nodeCopy];
   }
 }
 

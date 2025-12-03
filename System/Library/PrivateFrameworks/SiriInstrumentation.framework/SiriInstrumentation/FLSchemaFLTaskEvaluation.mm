@@ -1,35 +1,35 @@
 @interface FLSchemaFLTaskEvaluation
-- (BOOL)isEqual:(id)a3;
-- (FLSchemaFLTaskEvaluation)initWithDictionary:(id)a3;
-- (FLSchemaFLTaskEvaluation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLSchemaFLTaskEvaluation)initWithDictionary:(id)dictionary;
+- (FLSchemaFLTaskEvaluation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEvaluationNodes:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvaluationNodes:(id)nodes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLTaskEvaluation
 
-- (FLSchemaFLTaskEvaluation)initWithDictionary:(id)a3
+- (FLSchemaFLTaskEvaluation)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = FLSchemaFLTaskEvaluation;
   v5 = [(FLSchemaFLTaskEvaluation *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionResolutionState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionResolutionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLSchemaFLTaskEvaluation setActionResolutionState:](v5, "setActionResolutionState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"taskOutcome"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"taskOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(FLSchemaFLTaskEvaluation *)v5 setTaskOutcome:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"evaluationNodes"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"evaluationNodes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (FLSchemaFLTaskEvaluation)initWithJSON:(id)a3
+- (FLSchemaFLTaskEvaluation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLTaskEvaluation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLTaskEvaluation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLTaskEvaluation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,17 +122,17 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(FLSchemaFLTaskEvaluation *)self actionResolutionState];
+    actionResolutionState = [(FLSchemaFLTaskEvaluation *)self actionResolutionState];
     v5 = @"FLACTIONRESOLUTIONSTATE_UNKNOWN";
-    if (v4 == 1)
+    if (actionResolutionState == 1)
     {
       v5 = @"FLACTIONRESOLUTIONSTATE_INCOMPLETE";
     }
 
-    if (v4 == 2)
+    if (actionResolutionState == 2)
     {
       v6 = @"FLACTIONRESOLUTIONSTATE_COMPLETE";
     }
@@ -142,12 +142,12 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"actionResolutionState"];
+    [dictionary setObject:v6 forKeyedSubscript:@"actionResolutionState"];
   }
 
   if ([(NSArray *)self->_evaluationNodes count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -167,16 +167,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -186,28 +186,28 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"evaluationNodes"];
+    [dictionary setObject:array forKeyedSubscript:@"evaluationNodes"];
   }
 
   if (self->_taskOutcome)
   {
-    v15 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    taskOutcome = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+    dictionaryRepresentation2 = [taskOutcome dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"taskOutcome"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"taskOutcome"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"taskOutcome"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"taskOutcome"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -226,15 +226,15 @@
   return v4 ^ [(NSArray *)self->_evaluationNodes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -242,26 +242,26 @@
   if (*&self->_has)
   {
     actionResolutionState = self->_actionResolutionState;
-    if (actionResolutionState != [v4 actionResolutionState])
+    if (actionResolutionState != [equalCopy actionResolutionState])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
-  v7 = [v4 taskOutcome];
-  if ((v6 != 0) == (v7 == 0))
+  taskOutcome = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+  taskOutcome2 = [equalCopy taskOutcome];
+  if ((taskOutcome != 0) == (taskOutcome2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
-  if (v8)
+  taskOutcome3 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+  if (taskOutcome3)
   {
-    v9 = v8;
-    v10 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
-    v11 = [v4 taskOutcome];
-    v12 = [v10 isEqual:v11];
+    v9 = taskOutcome3;
+    taskOutcome4 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+    taskOutcome5 = [equalCopy taskOutcome];
+    v12 = [taskOutcome4 isEqual:taskOutcome5];
 
     if (!v12)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
-  v7 = [v4 evaluationNodes];
-  if ((v6 != 0) != (v7 == 0))
+  taskOutcome = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
+  taskOutcome2 = [equalCopy evaluationNodes];
+  if ((taskOutcome != 0) != (taskOutcome2 == 0))
   {
-    v13 = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
-    if (!v13)
+    evaluationNodes = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
+    if (!evaluationNodes)
     {
 
 LABEL_18:
@@ -286,10 +286,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
-    v16 = [v4 evaluationNodes];
-    v17 = [v15 isEqual:v16];
+    v14 = evaluationNodes;
+    evaluationNodes2 = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
+    evaluationNodes3 = [equalCopy evaluationNodes];
+    v17 = [evaluationNodes2 isEqual:evaluationNodes3];
 
     if (v17)
     {
@@ -309,20 +309,20 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+  taskOutcome = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
 
-  if (v5)
+  if (taskOutcome)
   {
-    v6 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+    taskOutcome2 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
     PBDataWriterWriteSubmessage();
   }
 
@@ -358,41 +358,41 @@ LABEL_16:
   }
 }
 
-- (void)addEvaluationNodes:(id)a3
+- (void)addEvaluationNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   evaluationNodes = self->_evaluationNodes;
-  v8 = v4;
+  v8 = nodesCopy;
   if (!evaluationNodes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_evaluationNodes;
-    self->_evaluationNodes = v6;
+    self->_evaluationNodes = array;
 
-    v4 = v8;
+    nodesCopy = v8;
     evaluationNodes = self->_evaluationNodes;
   }
 
-  [(NSArray *)evaluationNodes addObject:v4];
+  [(NSArray *)evaluationNodes addObject:nodesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = FLSchemaFLTaskEvaluation;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  taskOutcome = [(FLSchemaFLTaskEvaluation *)self taskOutcome];
+  v7 = [taskOutcome applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLSchemaFLTaskEvaluation *)self deleteTaskOutcome];
   }
 
-  v9 = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  evaluationNodes = [(FLSchemaFLTaskEvaluation *)self evaluationNodes];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:evaluationNodes underConditions:policyCopy];
   [(FLSchemaFLTaskEvaluation *)self setEvaluationNodes:v10];
 
   return v5;

@@ -1,27 +1,27 @@
 @interface HKConceptIdentifier
 + (HKConceptIdentifier)diastolicBloodPressure;
-+ (HKConceptIdentifier)identifierWithNumber:(id)a3;
-+ (HKConceptIdentifier)identifierWithRawIdentifier:(int64_t)a3;
++ (HKConceptIdentifier)identifierWithNumber:(id)number;
++ (HKConceptIdentifier)identifierWithRawIdentifier:(int64_t)identifier;
 + (HKConceptIdentifier)inMemoryConceptIdentifier;
 + (HKConceptIdentifier)medication;
 + (HKConceptIdentifier)root;
 + (HKConceptIdentifier)systolicBloodPressure;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKConceptIdentifier)init;
-- (HKConceptIdentifier)initWithCoder:(id)a3;
-- (HKConceptIdentifier)initWithRawIdentifier:(int64_t)a3;
+- (HKConceptIdentifier)initWithCoder:(id)coder;
+- (HKConceptIdentifier)initWithRawIdentifier:(int64_t)identifier;
 @end
 
 @implementation HKConceptIdentifier
 
-- (HKConceptIdentifier)initWithRawIdentifier:(int64_t)a3
+- (HKConceptIdentifier)initWithRawIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = HKConceptIdentifier;
   result = [(HKConceptIdentifier *)&v5 init];
   if (result)
   {
-    result->_rawIdentifier = a3;
+    result->_rawIdentifier = identifier;
   }
 
   return result;
@@ -37,20 +37,20 @@
   return 0;
 }
 
-+ (HKConceptIdentifier)identifierWithRawIdentifier:(int64_t)a3
++ (HKConceptIdentifier)identifierWithRawIdentifier:(int64_t)identifier
 {
-  v3 = [[HKConceptIdentifier alloc] initWithRawIdentifier:a3];
+  v3 = [[HKConceptIdentifier alloc] initWithRawIdentifier:identifier];
 
   return v3;
 }
 
-+ (HKConceptIdentifier)identifierWithNumber:(id)a3
++ (HKConceptIdentifier)identifierWithNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = [HKConceptIdentifier alloc];
-  v5 = [v3 longLongValue];
+  longLongValue = [numberCopy longLongValue];
 
-  v6 = [(HKConceptIdentifier *)v4 initWithRawIdentifier:v5];
+  v6 = [(HKConceptIdentifier *)v4 initWithRawIdentifier:longLongValue];
 
   return v6;
 }
@@ -90,17 +90,17 @@
   return v2;
 }
 
-- (HKConceptIdentifier)initWithCoder:(id)a3
+- (HKConceptIdentifier)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeInt64ForKey:@"identifier"];
+  v4 = [coder decodeInt64ForKey:@"identifier"];
 
   return [(HKConceptIdentifier *)self initWithRawIdentifier:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -108,7 +108,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKConceptIdentifier *)v4 rawIdentifier]== self->_rawIdentifier;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKConceptIdentifier *)equalCopy rawIdentifier]== self->_rawIdentifier;
   }
 
   return v5;

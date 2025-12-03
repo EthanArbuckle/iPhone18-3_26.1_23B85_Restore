@@ -1,15 +1,15 @@
 @interface WDTableStyleOverride
 - (WDStyle)style;
-- (WDTableStyleOverride)initWithDocument:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WDTableStyleOverride)initWithDocument:(id)document;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mutableCharacterProperties;
 - (id)mutableParagraphProperties;
 - (id)mutableTableCellStyleProperties;
 - (id)mutableTableRowProperties;
-- (void)setCharacterPropertiesOverridden:(BOOL)a3;
-- (void)setTableCellStylePropertiesOverridden:(BOOL)a3;
-- (void)setTableRowPropertiesOverridden:(BOOL)a3;
+- (void)setCharacterPropertiesOverridden:(BOOL)overridden;
+- (void)setTableCellStylePropertiesOverridden:(BOOL)overridden;
+- (void)setTableRowPropertiesOverridden:(BOOL)overridden;
 @end
 
 @implementation WDTableStyleOverride
@@ -91,24 +91,24 @@
   return mTableRowProperties;
 }
 
-- (WDTableStyleOverride)initWithDocument:(id)a3
+- (WDTableStyleOverride)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v8.receiver = self;
   v8.super_class = WDTableStyleOverride;
   v5 = [(WDTableStyleOverride *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
   }
 
   return v6;
 }
 
-- (void)setCharacterPropertiesOverridden:(BOOL)a3
+- (void)setCharacterPropertiesOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -121,9 +121,9 @@
   *(self + 56) = *(self + 56) & 0xFD | v3;
 }
 
-- (void)setTableRowPropertiesOverridden:(BOOL)a3
+- (void)setTableRowPropertiesOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -136,9 +136,9 @@
   *(self + 56) = *(self + 56) & 0xFB | v3;
 }
 
-- (void)setTableCellStylePropertiesOverridden:(BOOL)a3
+- (void)setTableCellStylePropertiesOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -151,7 +151,7 @@
   *(self + 56) = *(self + 56) & 0xF7 | v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDTableStyleOverride allocWithZone:?]];
   if (v4)

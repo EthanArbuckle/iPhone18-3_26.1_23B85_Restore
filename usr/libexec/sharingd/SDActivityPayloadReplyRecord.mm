@@ -8,14 +8,14 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SDActivityPayloadReplyRecord *)self messageIdentifier];
-  v6 = [v5 UUIDString];
-  v7 = [(SDActivityPayloadReplyRecord *)self requestIdentifier];
-  v8 = [v7 UUIDString];
-  v9 = [(SDActivityPayloadReplyRecord *)self activityIdentifier];
-  v10 = [v9 UUIDString];
-  v11 = [(SDActivityPayloadReplyRecord *)self deviceIdentifier];
-  v12 = [NSString stringWithFormat:@"<%@: %p, messageIdentifier:%@, requestIdentifier:%@, activityIdentifier:%@, deviceIdentifier:%@>", v4, self, v6, v8, v10, v11];
+  messageIdentifier = [(SDActivityPayloadReplyRecord *)self messageIdentifier];
+  uUIDString = [messageIdentifier UUIDString];
+  requestIdentifier = [(SDActivityPayloadReplyRecord *)self requestIdentifier];
+  uUIDString2 = [requestIdentifier UUIDString];
+  activityIdentifier = [(SDActivityPayloadReplyRecord *)self activityIdentifier];
+  uUIDString3 = [activityIdentifier UUIDString];
+  deviceIdentifier = [(SDActivityPayloadReplyRecord *)self deviceIdentifier];
+  v12 = [NSString stringWithFormat:@"<%@: %p, messageIdentifier:%@, requestIdentifier:%@, activityIdentifier:%@, deviceIdentifier:%@>", v4, self, uUIDString, uUIDString2, uUIDString3, deviceIdentifier];
 
   return v12;
 }

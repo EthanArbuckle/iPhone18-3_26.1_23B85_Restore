@@ -1,7 +1,7 @@
 @interface NTKPeopleComplicationEntry
 + (id)lockedEntry;
-- (NTKPeopleComplicationEntry)initWithFullName:(id)a3 abbreviation:(id)a4 profileImage:(id)a5;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (NTKPeopleComplicationEntry)initWithFullName:(id)name abbreviation:(id)abbreviation profileImage:(id)image;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKPeopleComplicationEntry
@@ -15,35 +15,35 @@
   return v4;
 }
 
-- (NTKPeopleComplicationEntry)initWithFullName:(id)a3 abbreviation:(id)a4 profileImage:(id)a5
+- (NTKPeopleComplicationEntry)initWithFullName:(id)name abbreviation:(id)abbreviation profileImage:(id)image
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  abbreviationCopy = abbreviation;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = NTKPeopleComplicationEntry;
   v12 = [(NTKPeopleComplicationEntry *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fullName, a3);
-    objc_storeStrong(&v13->_abbreviation, a4);
-    objc_storeStrong(&v13->_profileImage, a5);
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [(NTKTimelineEntryModel *)v13 setEntryDate:v14];
+    objc_storeStrong(&v12->_fullName, name);
+    objc_storeStrong(&v13->_abbreviation, abbreviation);
+    objc_storeStrong(&v13->_profileImage, image);
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NTKTimelineEntryModel *)v13 setEntryDate:date];
   }
 
   return v13;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(NTKPeopleComplicationImageProvider);
   [(NTKPeopleComplicationImageProvider *)v5 setProfileImage:self->_profileImage];
   [(NTKPeopleComplicationImageProvider *)v5 setFullName:self->_fullName];
   [(NTKPeopleComplicationImageProvider *)v5 setNameAbbreviation:self->_abbreviation];
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
     [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:2.0];
     [(NTKPeopleComplicationImageProvider *)v5 setFontSize:20.0];
@@ -54,11 +54,11 @@ LABEL_3:
   }
 
   v7 = 0;
-  if (a3 > 7)
+  if (family > 7)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      if (a3 == 10)
+      if (family == 10)
       {
         [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:2.0];
         [(NTKPeopleComplicationImageProvider *)v5 setFontSize:20.0];
@@ -73,13 +73,13 @@ LABEL_3:
 
       else
       {
-        if (a3 != 12)
+        if (family != 12)
         {
           goto LABEL_24;
         }
 
-        v11 = [MEMORY[0x277CBBAE8] currentDevice];
-        __60__NTKPeopleComplicationEntry_templateForComplicationFamily___block_invoke(v11, v11);
+        currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+        __60__NTKPeopleComplicationEntry_templateForComplicationFamily___block_invoke(currentDevice, currentDevice);
 
         [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:*&templateForComplicationFamily__graphicXLargeBorderWidth];
         [(NTKPeopleComplicationImageProvider *)v5 setFontSize:*&templateForComplicationFamily__graphicXLargeFontSize];
@@ -95,7 +95,7 @@ LABEL_3:
 
     else
     {
-      if (a3 != 8)
+      if (family != 8)
       {
         [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:2.0];
         [(NTKPeopleComplicationImageProvider *)v5 setFontSize:20.0];
@@ -127,9 +127,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a3 > 3)
+  if (family > 3)
   {
-    if (a3 == 4)
+    if (family == 4)
     {
       [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:1.5];
       [(NTKPeopleComplicationImageProvider *)v5 setFontSize:15.0];
@@ -137,7 +137,7 @@ LABEL_23:
       goto LABEL_3;
     }
 
-    if (a3 == 7)
+    if (family == 7)
     {
       [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:5.0];
       [(NTKPeopleComplicationImageProvider *)v5 setFontSize:55.0];
@@ -148,7 +148,7 @@ LABEL_23:
 
   else
   {
-    if (!a3)
+    if (!family)
     {
       [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:1.5];
       [(NTKPeopleComplicationImageProvider *)v5 setFontSize:15.0];
@@ -156,7 +156,7 @@ LABEL_23:
       goto LABEL_3;
     }
 
-    if (a3 == 2)
+    if (family == 2)
     {
       [(NTKPeopleComplicationImageProvider *)v5 setBorderWidth:1.0];
       [(NTKPeopleComplicationImageProvider *)v5 setFontSize:10.5];

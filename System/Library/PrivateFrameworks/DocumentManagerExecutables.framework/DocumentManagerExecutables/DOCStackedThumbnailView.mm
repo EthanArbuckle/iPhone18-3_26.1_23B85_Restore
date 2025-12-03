@@ -1,16 +1,16 @@
 @interface DOCStackedThumbnailView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (CGSize)topThumbnailSize;
 - (NSArray)nodes;
 - (NSArray)urls;
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithFrame:(CGRect)a3;
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithTopThumbnailSize:(CGSize)a3;
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithFrame:(CGRect)frame;
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithTopThumbnailSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setNodes:(id)a3;
-- (void)setTopThumbnailSize:(CGSize)a3;
-- (void)setUrls:(id)a3;
+- (void)setNodes:(id)nodes;
+- (void)setTopThumbnailSize:(CGSize)size;
+- (void)setUrls:(id)urls;
 @end
 
 @implementation DOCStackedThumbnailView
@@ -34,17 +34,17 @@
   return v4.super.isa;
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
-  v3 = a3;
-  if (a3)
+  nodesCopy = nodes;
+  if (nodes)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
-    v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    nodesCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = self;
-  DOCStackedThumbnailView.nodes.setter(v3);
+  selfCopy = self;
+  DOCStackedThumbnailView.nodes.setter(nodesCopy);
 }
 
 - (NSArray)urls
@@ -66,17 +66,17 @@
   return v4.super.isa;
 }
 
-- (void)setUrls:(id)a3
+- (void)setUrls:(id)urls
 {
-  v3 = a3;
-  if (a3)
+  urlsCopy = urls;
+  if (urls)
   {
     type metadata accessor for URL();
-    v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    urlsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = self;
-  DOCStackedThumbnailView.urls.setter(v3);
+  selfCopy = self;
+  DOCStackedThumbnailView.urls.setter(urlsCopy);
 }
 
 - (CGSize)topThumbnailSize
@@ -90,18 +90,18 @@
   return result;
 }
 
-- (void)setTopThumbnailSize:(CGSize)a3
+- (void)setTopThumbnailSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   DOCStackedThumbnailView.topThumbnailSize.setter(width, height);
 }
 
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithTopThumbnailSize:(CGSize)a3
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithTopThumbnailSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = OBJC_IVAR____TtC26DocumentManagerExecutables23DOCStackedThumbnailView_imageCache;
   type metadata accessor for ImageCache();
   swift_allocObject();
@@ -119,7 +119,7 @@
   return v8;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC26DocumentManagerExecutables23DOCStackedThumbnailView_imageCache;
   type metadata accessor for ImageCache();
@@ -135,13 +135,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCStackedThumbnailView.layoutSubviews()();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCStackedThumbnailView.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -152,15 +152,15 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(DOCStackedThumbnailView *)self intrinsicContentSize:a3.width];
+  [(DOCStackedThumbnailView *)self intrinsicContentSize:size.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables23DOCStackedThumbnailView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

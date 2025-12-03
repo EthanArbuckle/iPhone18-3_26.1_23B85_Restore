@@ -1,16 +1,16 @@
 @interface HUClipScrubberPlayheadView
-- (HUClipScrubberPlayheadView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setEditing:(BOOL)a3;
+- (HUClipScrubberPlayheadView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation HUClipScrubberPlayheadView
 
-- (HUClipScrubberPlayheadView)initWithFrame:(CGRect)a3
+- (HUClipScrubberPlayheadView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUClipScrubberPlayheadView;
-  v3 = [(HUClipScrubberPlayheadView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUClipScrubberPlayheadView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,15 +22,15 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v17 = 0.0;
   v18 = 0.0;
   v16 = 0.0;
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v6 getRed:&v18 green:&v17 blue:&v16 alpha:0];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [systemWhiteColor getRed:&v18 green:&v17 blue:&v16 alpha:0];
 
   v7 = [MEMORY[0x277D75348] colorWithRed:v18 green:v17 blue:v16 alpha:0.4];
   [v7 setFill];
@@ -49,8 +49,8 @@
     v19.size.height = 6.0;
     v19.size.width = width;
     v11 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:3 byRoundingCorners:CGRectGetMidX(v19) + -2.0 cornerRadii:{0.0, 4.0, height, 4.0, 4.0}];
-    v12 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v12 setFill];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [systemOrangeColor setFill];
 
     [v11 fill];
   }
@@ -75,18 +75,18 @@
     }
 
     v9 = [MEMORY[0x277D75208] bezierPathWithRect:{v13, v14, 4.0, height}];
-    v15 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v15 setFill];
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    [systemOrangeColor2 setFill];
 
     [v9 fill];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(HUClipScrubberPlayheadView *)self setNeedsDisplay];
   }
 }

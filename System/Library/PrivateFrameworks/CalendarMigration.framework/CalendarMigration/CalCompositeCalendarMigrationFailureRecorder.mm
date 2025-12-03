@@ -1,20 +1,20 @@
 @interface CalCompositeCalendarMigrationFailureRecorder
-- (CalCompositeCalendarMigrationFailureRecorder)initWithFailureRecorders:(id)a3;
-- (void)recordMigrationFailure:(id)a3;
+- (CalCompositeCalendarMigrationFailureRecorder)initWithFailureRecorders:(id)recorders;
+- (void)recordMigrationFailure:(id)failure;
 - (void)reportRecordedFailures;
 @end
 
 @implementation CalCompositeCalendarMigrationFailureRecorder
 
-- (CalCompositeCalendarMigrationFailureRecorder)initWithFailureRecorders:(id)a3
+- (CalCompositeCalendarMigrationFailureRecorder)initWithFailureRecorders:(id)recorders
 {
-  v4 = a3;
+  recordersCopy = recorders;
   v9.receiver = self;
   v9.super_class = CalCompositeCalendarMigrationFailureRecorder;
   v5 = [(CalCompositeCalendarMigrationFailureRecorder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [recordersCopy copy];
     failureRecorders = v5->_failureRecorders;
     v5->_failureRecorders = v6;
   }
@@ -22,16 +22,16 @@
   return v5;
 }
 
-- (void)recordMigrationFailure:(id)a3
+- (void)recordMigrationFailure:(id)failure
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CalCompositeCalendarMigrationFailureRecorder *)self failureRecorders];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  failureRecorders = [(CalCompositeCalendarMigrationFailureRecorder *)self failureRecorders];
+  v6 = [failureRecorders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -43,14 +43,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(failureRecorders);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) recordMigrationFailure:v4];
+        [*(*(&v11 + 1) + 8 * v9++) recordMigrationFailure:failureCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [failureRecorders countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -66,8 +66,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CalCompositeCalendarMigrationFailureRecorder *)self failureRecorders];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  failureRecorders = [(CalCompositeCalendarMigrationFailureRecorder *)self failureRecorders];
+  v3 = [failureRecorders countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -79,14 +79,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(failureRecorders);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) reportRecordedFailures];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [failureRecorders countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

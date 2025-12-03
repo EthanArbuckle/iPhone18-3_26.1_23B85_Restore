@@ -1,19 +1,19 @@
 @interface TSAllanDeviationAnalysis
-- (BOOL)exportAnalysisToDirectoryURL:(id)a3 withFilename:(id)a4 fromStartWindowSize:(int64_t)a5 toEndWindowSize:(int64_t)a6 stepSize:(int64_t)a7;
+- (BOOL)exportAnalysisToDirectoryURL:(id)l withFilename:(id)filename fromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize;
 - (NSArray)adev;
-- (TSAllanDeviationAnalysis)initWithTimeErrorValues:(id)a3;
-- (id)adevFromStartWindowSize:(int64_t)a3 toEndWindowSize:(int64_t)a4 stepSize:(int64_t)a5;
-- (void)_performAnalysisFromWindowSize:(int64_t)a3 toWindowSize:(int64_t)a4 stepSize:(int64_t)a5;
+- (TSAllanDeviationAnalysis)initWithTimeErrorValues:(id)values;
+- (id)adevFromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize;
+- (void)_performAnalysisFromWindowSize:(int64_t)size toWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize;
 - (void)dealloc;
 @end
 
 @implementation TSAllanDeviationAnalysis
 
-- (TSAllanDeviationAnalysis)initWithTimeErrorValues:(id)a3
+- (TSAllanDeviationAnalysis)initWithTimeErrorValues:(id)values
 {
   v7.receiver = self;
   v7.super_class = TSAllanDeviationAnalysis;
-  v3 = [(TSTimeErrorAnalysis *)&v7 initWithTimeErrorValues:a3];
+  v3 = [(TSTimeErrorAnalysis *)&v7 initWithTimeErrorValues:values];
   v4 = v3;
   if (v3)
   {
@@ -29,43 +29,43 @@
   return v4;
 }
 
-- (void)_performAnalysisFromWindowSize:(int64_t)a3 toWindowSize:(int64_t)a4 stepSize:(int64_t)a5
+- (void)_performAnalysisFromWindowSize:(int64_t)size toWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize
 {
-  v8 = [(TSTimeErrorAnalysis *)self numberOfErrors];
+  numberOfErrors = [(TSTimeErrorAnalysis *)self numberOfErrors];
   __B = [(TSTimeErrorAnalysis *)self timeErrors];
-  v9 = malloc_type_malloc(8 * v8, 0x100004000313F17uLL);
+  v9 = malloc_type_malloc(8 * numberOfErrors, 0x100004000313F17uLL);
   [(TSTimeErrorAnalysis *)self averagePeriod];
   v11 = v10;
   [(TSTimeErrorAnalysis *)self averagePeriod];
   if (v9)
   {
-    v13 = a4;
-    if (a3 <= a4)
+    windowSizeCopy = windowSize;
+    if (size <= windowSize)
     {
       v14 = v11 * v12;
-      v15 = &__B[a3];
-      v16 = 2 * a3;
-      v17 = v8 - 2 * a3;
-      v18 = 2 * a5;
-      v19 = &__B[2 * a3];
+      v15 = &__B[size];
+      v16 = 2 * size;
+      v17 = numberOfErrors - 2 * size;
+      v18 = 2 * stepSize;
+      v19 = &__B[2 * size];
       do
       {
-        v20 = v13;
+        v20 = windowSizeCopy;
         vDSP_vsubD(v15, 1, v19, 1, v9, 1, v17);
         vDSP_vsubD(v15, 1, v9, 1, v9, 1, v17);
         vDSP_vaddD(v9, 1, __B, 1, v9, 1, v17);
         __C = 0.0;
         vDSP_svesqD(v9, 1, &__C, v17);
-        v13 = v20;
-        self->_adev[a3] = sqrt(__C / (v14 * (v16 * a3) * v17));
-        a3 += a5;
-        v15 += a5;
+        windowSizeCopy = v20;
+        self->_adev[size] = sqrt(__C / (v14 * (v16 * size) * v17));
+        size += stepSize;
+        v15 += stepSize;
         v17 -= v18;
-        v19 += 2 * a5;
+        v19 += 2 * stepSize;
         v16 += v18;
       }
 
-      while (a3 <= v20);
+      while (size <= v20);
     }
   }
 
@@ -74,7 +74,7 @@
 
 - (NSArray)adev
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (![(TSTimeErrorAnalysis *)self calculated])
   {
     [(TSTimeErrorAnalysis *)self performAnalysis];
@@ -85,92 +85,92 @@
     v5 = [TSADEVValue alloc];
     [(TSTimeErrorAnalysis *)self averagePeriod];
     v7 = [(TSADEVValue *)v5 initWithObservationInterval:v6 * i andADEV:self->_adev[i]];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)adevFromStartWindowSize:(int64_t)a3 toEndWindowSize:(int64_t)a4 stepSize:(int64_t)a5
+- (id)adevFromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize
 {
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (a3 <= 2)
+  array = [MEMORY[0x277CBEB18] array];
+  if (size <= 2)
   {
-    a3 = 2;
+    size = 2;
   }
 
-  if ([(TSAllanDeviationAnalysis *)self analysisLimit]< a4)
+  if ([(TSAllanDeviationAnalysis *)self analysisLimit]< windowSize)
   {
-    a4 = [(TSAllanDeviationAnalysis *)self analysisLimit];
+    windowSize = [(TSAllanDeviationAnalysis *)self analysisLimit];
   }
 
   if (![(TSTimeErrorAnalysis *)self calculated])
   {
-    v13 = self;
-    v14 = a3;
-    v12 = a4;
+    selfCopy2 = self;
+    sizeCopy = size;
+    windowSizeCopy2 = windowSize;
 LABEL_15:
-    [(TSTimeErrorAnalysis *)v13 performAnalysisFromStartWindowSize:v14 toEndWindowSize:v12 stepSize:a5];
+    [(TSTimeErrorAnalysis *)selfCopy2 performAnalysisFromStartWindowSize:sizeCopy toEndWindowSize:windowSizeCopy2 stepSize:stepSize];
     goto LABEL_16;
   }
 
-  if (a3 < [(TSTimeErrorAnalysis *)self lowestWindowSize]|| a4 > [(TSTimeErrorAnalysis *)self highestWindowSize]|| [(TSTimeErrorAnalysis *)self calculatedStepSize]!= a5)
+  if (size < [(TSTimeErrorAnalysis *)self lowestWindowSize]|| windowSize > [(TSTimeErrorAnalysis *)self highestWindowSize]|| [(TSTimeErrorAnalysis *)self calculatedStepSize]!= stepSize)
   {
-    v10 = a3;
-    if (a3 >= [(TSTimeErrorAnalysis *)self lowestWindowSize])
+    sizeCopy2 = size;
+    if (size >= [(TSTimeErrorAnalysis *)self lowestWindowSize])
     {
-      v10 = [(TSTimeErrorAnalysis *)self lowestWindowSize];
+      sizeCopy2 = [(TSTimeErrorAnalysis *)self lowestWindowSize];
     }
 
-    v11 = [(TSTimeErrorAnalysis *)self highestWindowSize];
-    v12 = a4;
-    if (a4 <= v11)
+    highestWindowSize = [(TSTimeErrorAnalysis *)self highestWindowSize];
+    windowSizeCopy2 = windowSize;
+    if (windowSize <= highestWindowSize)
     {
-      v12 = [(TSTimeErrorAnalysis *)self highestWindowSize];
+      windowSizeCopy2 = [(TSTimeErrorAnalysis *)self highestWindowSize];
     }
 
-    v13 = self;
-    v14 = v10;
+    selfCopy2 = self;
+    sizeCopy = sizeCopy2;
     goto LABEL_15;
   }
 
 LABEL_16:
-  while (a3 <= a4)
+  while (size <= windowSize)
   {
     v15 = [TSADEVValue alloc];
     [(TSTimeErrorAnalysis *)self averagePeriod];
-    v17 = [(TSADEVValue *)v15 initWithObservationInterval:v16 * a3 andADEV:self->_adev[a3]];
-    [v9 addObject:v17];
+    v17 = [(TSADEVValue *)v15 initWithObservationInterval:v16 * size andADEV:self->_adev[size]];
+    [array addObject:v17];
 
-    a3 += a5;
+    size += stepSize;
   }
 
-  return v9;
+  return array;
 }
 
-- (BOOL)exportAnalysisToDirectoryURL:(id)a3 withFilename:(id)a4 fromStartWindowSize:(int64_t)a5 toEndWindowSize:(int64_t)a6 stepSize:(int64_t)a7
+- (BOOL)exportAnalysisToDirectoryURL:(id)l withFilename:(id)filename fromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize
 {
-  v12 = a3;
-  v13 = a4;
-  if ([v12 isFileURL])
+  lCopy = l;
+  filenameCopy = filename;
+  if ([lCopy isFileURL])
   {
-    if (a5 <= 2)
+    if (size <= 2)
     {
-      a5 = 2;
+      size = 2;
     }
 
-    if ([(TSAllanDeviationAnalysis *)self analysisLimit]< a6)
+    if ([(TSAllanDeviationAnalysis *)self analysisLimit]< windowSize)
     {
-      a6 = [(TSAllanDeviationAnalysis *)self analysisLimit];
+      windowSize = [(TSAllanDeviationAnalysis *)self analysisLimit];
     }
 
-    if (![(TSTimeErrorAnalysis *)self calculated]|| a5 < [(TSTimeErrorAnalysis *)self lowestWindowSize]|| a6 > [(TSTimeErrorAnalysis *)self highestWindowSize]|| [(TSTimeErrorAnalysis *)self calculatedStepSize]!= a7)
+    if (![(TSTimeErrorAnalysis *)self calculated]|| size < [(TSTimeErrorAnalysis *)self lowestWindowSize]|| windowSize > [(TSTimeErrorAnalysis *)self highestWindowSize]|| [(TSTimeErrorAnalysis *)self calculatedStepSize]!= stepSize)
     {
-      [(TSTimeErrorAnalysis *)self performAnalysisFromStartWindowSize:a5 toEndWindowSize:a6 stepSize:a7];
+      [(TSTimeErrorAnalysis *)self performAnalysisFromStartWindowSize:size toEndWindowSize:windowSize stepSize:stepSize];
     }
 
-    v14 = [v12 path];
-    v15 = [v14 stringByAppendingPathComponent:v13];
+    path = [lCopy path];
+    v15 = [path stringByAppendingPathComponent:filenameCopy];
 
     v16 = fopen([v15 UTF8String], "w");
     v17 = v16 != 0;
@@ -178,10 +178,10 @@ LABEL_16:
     {
       v18 = v16;
       fwrite("window size,observation interval,adev\n", 0x26uLL, 1uLL, v16);
-      for (; a5 < a6; a5 += a7)
+      for (; size < windowSize; size += stepSize)
       {
         [(TSTimeErrorAnalysis *)self averagePeriod];
-        fprintf(v18, "%ld,%.9f,%.18f\n", a5, v19 * a5 / 1000000000.0, self->_adev[a5]);
+        fprintf(v18, "%ld,%.9f,%.18f\n", size, v19 * size / 1000000000.0, self->_adev[size]);
       }
 
       fclose(v18);

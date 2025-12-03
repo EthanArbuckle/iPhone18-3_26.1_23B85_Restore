@@ -1,24 +1,24 @@
 @interface WBSHistoryConnectionProxy
 - (WBSHistoryConnectionProxy)init;
 - (id)_createConnection;
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3;
-- (id)queryMemoryFootprintWithError:(id *)a3;
-- (void)_setupConnectionWithInProcessFallback:(BOOL)a3;
-- (void)beginURLCompletionSession:(id)a3;
-- (void)connectWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)a3 completionHandler:(id)a4;
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler;
+- (id)queryMemoryFootprintWithError:(id *)error;
+- (void)_setupConnectionWithInProcessFallback:(BOOL)fallback;
+- (void)beginURLCompletionSession:(id)session;
+- (void)connectWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler;
+- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)profiles completionHandler:(id)handler;
 - (void)dealloc;
-- (void)ensureConnected:(id)a3;
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3;
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4;
-- (void)getServiceInfo:(id)a3;
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)ensureConnected:(id)connected;
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler;
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler;
+- (void)getServiceInfo:(id)info;
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)invalidate;
 - (void)killService;
-- (void)listDatabaseURLsWithCompletionHandler:(id)a3;
-- (void)queryMemoryFootprint:(id)a3;
-- (void)releaseCloudHistory:(id)a3;
-- (void)setCompletionListVendorEndpoint:(id)a3 completionHandler:(id)a4;
+- (void)listDatabaseURLsWithCompletionHandler:(id)handler;
+- (void)queryMemoryFootprint:(id)footprint;
+- (void)releaseCloudHistory:(id)history;
+- (void)setCompletionListVendorEndpoint:(id)endpoint completionHandler:(id)handler;
 @end
 
 @implementation WBSHistoryConnectionProxy
@@ -68,7 +68,7 @@ uint64_t __39__WBSHistoryConnectionProxy_invalidate__block_invoke(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (void)_setupConnectionWithInProcessFallback:(BOOL)a3
+- (void)_setupConnectionWithInProcessFallback:(BOOL)fallback
 {
   objc_initWeak(&location, self);
   connectionProxyQueue = self->_connectionProxyQueue;
@@ -77,7 +77,7 @@ uint64_t __39__WBSHistoryConnectionProxy_invalidate__block_invoke(uint64_t a1)
   v7[2] = __67__WBSHistoryConnectionProxy__setupConnectionWithInProcessFallback___block_invoke;
   v7[3] = &unk_1E7FC6E70;
   v7[4] = self;
-  v9 = a3;
+  fallbackCopy = fallback;
   objc_copyWeak(&v8, &location);
   v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_DETACHED, QOS_CLASS_USER_INITIATED, 0, v7);
   dispatch_barrier_async(connectionProxyQueue, v6);
@@ -189,15 +189,15 @@ void __67__WBSHistoryConnectionProxy__setupConnectionWithInProcessFallback___blo
   [(WBSHistoryConnectionProxy *)&v3 dealloc];
 }
 
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__WBSHistoryConnectionProxy__defaultProxyErrorHandlerWithSimpleReplyHandler___block_invoke;
   v7[3] = &unk_1E7FB8300;
-  v8 = v3;
-  v4 = v3;
+  v8 = handlerCopy;
+  v4 = handlerCopy;
   v5 = MEMORY[0x1BFB13CE0](v7);
 
   return v5;
@@ -222,17 +222,17 @@ void __77__WBSHistoryConnectionProxy__defaultProxyErrorHandlerWithSimpleReplyHan
   }
 }
 
-- (void)ensureConnected:(id)a3
+- (void)ensureConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__WBSHistoryConnectionProxy_ensureConnected___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectedCopy;
+  v6 = connectedCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -260,17 +260,17 @@ void __45__WBSHistoryConnectionProxy_ensureConnected___block_invoke(uint64_t a1)
   [v5 ensureConnected:*(a1 + 40)];
 }
 
-- (void)getServiceInfo:(id)a3
+- (void)getServiceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__WBSHistoryConnectionProxy_getServiceInfo___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -284,17 +284,17 @@ void __44__WBSHistoryConnectionProxy_getServiceInfo___block_invoke(uint64_t a1)
   [v5 getServiceInfo:*(a1 + 40)];
 }
 
-- (void)listDatabaseURLsWithCompletionHandler:(id)a3
+- (void)listDatabaseURLsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__WBSHistoryConnectionProxy_listDatabaseURLsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -308,17 +308,17 @@ void __67__WBSHistoryConnectionProxy_listDatabaseURLsWithCompletionHandler___blo
   [v5 listDatabaseURLsWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)beginURLCompletionSession:(id)a3
+- (void)beginURLCompletionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__WBSHistoryConnectionProxy_beginURLCompletionSession___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -343,17 +343,17 @@ void __55__WBSHistoryConnectionProxy_beginURLCompletionSession___block_invoke(ui
   dispatch_barrier_async(connectionProxyQueue, block);
 }
 
-- (void)queryMemoryFootprint:(id)a3
+- (void)queryMemoryFootprint:(id)footprint
 {
-  v4 = a3;
+  footprintCopy = footprint;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__WBSHistoryConnectionProxy_queryMemoryFootprint___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = footprintCopy;
+  v6 = footprintCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -367,7 +367,7 @@ void __50__WBSHistoryConnectionProxy_queryMemoryFootprint___block_invoke(uint64_
   [v5 queryMemoryFootprint:*(a1 + 40)];
 }
 
-- (id)queryMemoryFootprintWithError:(id *)a3
+- (id)queryMemoryFootprintWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -390,9 +390,9 @@ void __50__WBSHistoryConnectionProxy_queryMemoryFootprint___block_invoke(uint64_
   block[5] = &v8;
   block[6] = &v14;
   dispatch_sync(connectionProxyQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -434,23 +434,23 @@ void __59__WBSHistoryConnectionProxy_queryMemoryFootprintWithError___block_invok
   *(v9 + 40) = v6;
 }
 
-- (void)connectWithOptions:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)connectWithOptions:(id)options delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__WBSHistoryConnectionProxy_connectWithOptions_delegate_completionHandler___block_invoke;
   v15[3] = &unk_1E7FC6F38;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = optionsCopy;
+  v17 = delegateCopy;
+  v18 = handlerCopy;
+  v12 = delegateCopy;
+  v13 = optionsCopy;
+  v14 = handlerCopy;
   dispatch_async(connectionProxyQueue, v15);
 }
 
@@ -513,17 +513,17 @@ void __75__WBSHistoryConnectionProxy_connectWithOptions_delegate_completionHandl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)a3
+- (void)finishClearingHistoryIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__WBSHistoryConnectionProxy_finishClearingHistoryIfNecessaryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -539,20 +539,20 @@ void __83__WBSHistoryConnectionProxy_finishClearingHistoryIfNecessaryWithComplet
   [v3 finishClearingHistoryIfNecessaryWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__WBSHistoryConnectionProxy_initializeCloudHistoryWithConfiguration_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v12 = v6;
-  v13 = v7;
+  v12 = configurationCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = configurationCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionProxyQueue, block);
 }
 
@@ -586,17 +586,17 @@ void __87__WBSHistoryConnectionProxy_initializeCloudHistoryWithConfiguration_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)releaseCloudHistory:(id)a3
+- (void)releaseCloudHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   connectionProxyQueue = self->_connectionProxyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__WBSHistoryConnectionProxy_releaseCloudHistory___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = historyCopy;
+  v6 = historyCopy;
   dispatch_async(connectionProxyQueue, v7);
 }
 
@@ -606,20 +606,20 @@ void __49__WBSHistoryConnectionProxy_releaseCloudHistory___block_invoke(uint64_t
   [v2 releaseCloudHistory:*(a1 + 40)];
 }
 
-- (void)setCompletionListVendorEndpoint:(id)a3 completionHandler:(id)a4
+- (void)setCompletionListVendorEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__WBSHistoryConnectionProxy_setCompletionListVendorEndpoint_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v12 = v6;
-  v13 = v7;
+  v12 = endpointCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = endpointCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionProxyQueue, block);
 }
 
@@ -629,20 +629,20 @@ void __79__WBSHistoryConnectionProxy_setCompletionListVendorEndpoint_completionH
   [v2 setCompletionListVendorEndpoint:a1[5] completionHandler:a1[6]];
 }
 
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSHistoryConnectionProxy_getCompletionListItemsForQuery_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v12 = v6;
-  v13 = v7;
+  v12 = queryCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = queryCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionProxyQueue, block);
 }
 
@@ -673,20 +673,20 @@ void __78__WBSHistoryConnectionProxy_getCompletionListItemsForQuery_completionHa
   }
 }
 
-- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)a3 completionHandler:(id)a4
+- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)profiles completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  profilesCopy = profiles;
+  handlerCopy = handler;
   connectionProxyQueue = self->_connectionProxyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__WBSHistoryConnectionProxy_copyAndRedactHistoryDatabasesForAllProfiles_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v12 = v6;
-  v13 = v7;
+  v12 = profilesCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = profilesCopy;
+  v10 = handlerCopy;
   dispatch_sync(connectionProxyQueue, block);
 }
 

@@ -1,33 +1,33 @@
 @interface HDCodableSharingSetupMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInvitationToken:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInvitationToken:(id)token;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSharingSetupMetadata
 
-- (void)addInvitationToken:(id)a3
+- (void)addInvitationToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   invitationTokens = self->_invitationTokens;
-  v8 = v4;
+  v8 = tokenCopy;
   if (!invitationTokens)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_invitationTokens;
     self->_invitationTokens = v6;
 
-    v4 = v8;
+    tokenCopy = v8;
     invitationTokens = self->_invitationTokens;
   }
 
-  [(NSMutableArray *)invitationTokens addObject:v4];
+  [(NSMutableArray *)invitationTokens addObject:tokenCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableSharingSetupMetadata;
   v4 = [(HDCodableSharingSetupMetadata *)&v8 description];
-  v5 = [(HDCodableSharingSetupMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSharingSetupMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   syncCircleIdentifier = self->_syncCircleIdentifier;
   if (syncCircleIdentifier)
   {
-    [v3 setObject:syncCircleIdentifier forKey:@"syncCircleIdentifier"];
+    [dictionary setObject:syncCircleIdentifier forKey:@"syncCircleIdentifier"];
   }
 
   ownerParticipant = self->_ownerParticipant;
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -117,10 +117,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_syncCircleIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -181,71 +181,71 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_syncCircleIdentifier)
   {
-    [v8 setSyncCircleIdentifier:?];
+    [toCopy setSyncCircleIdentifier:?];
   }
 
   if (self->_ownerParticipant)
   {
-    [v8 setOwnerParticipant:?];
+    [toCopy setOwnerParticipant:?];
   }
 
   if (self->_sourceProfileIdentifier)
   {
-    [v8 setSourceProfileIdentifier:?];
+    [toCopy setSourceProfileIdentifier:?];
   }
 
   if (self->_shareParticipant)
   {
-    [v8 setShareParticipant:?];
+    [toCopy setShareParticipant:?];
   }
 
   if (self->_ownerCloudKitEmailAddress)
   {
-    [v8 setOwnerCloudKitEmailAddress:?];
+    [toCopy setOwnerCloudKitEmailAddress:?];
   }
 
   if ([(HDCodableSharingSetupMetadata *)self invitationTokensCount])
   {
-    [v8 clearInvitationTokens];
-    v4 = [(HDCodableSharingSetupMetadata *)self invitationTokensCount];
-    if (v4)
+    [toCopy clearInvitationTokens];
+    invitationTokensCount = [(HDCodableSharingSetupMetadata *)self invitationTokensCount];
+    if (invitationTokensCount)
     {
-      v5 = v4;
+      v5 = invitationTokensCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableSharingSetupMetadata *)self invitationTokenAtIndex:i];
-        [v8 addInvitationToken:v7];
+        [toCopy addInvitationToken:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_syncCircleIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_syncCircleIdentifier copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSData *)self->_ownerParticipant copyWithZone:a3];
+  v8 = [(NSData *)self->_ownerParticipant copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_sourceProfileIdentifier copyWithZone:a3];
+  v10 = [(NSData *)self->_sourceProfileIdentifier copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSData *)self->_shareParticipant copyWithZone:a3];
+  v12 = [(NSData *)self->_shareParticipant copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_ownerCloudKitEmailAddress copyWithZone:a3];
+  v14 = [(NSString *)self->_ownerCloudKitEmailAddress copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -269,7 +269,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addInvitationToken:v21];
 
         ++v20;
@@ -286,13 +286,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((syncCircleIdentifier = self->_syncCircleIdentifier, !(syncCircleIdentifier | v4[6])) || -[NSString isEqual:](syncCircleIdentifier, "isEqual:")) && ((ownerParticipant = self->_ownerParticipant, !(ownerParticipant | v4[3])) || -[NSData isEqual:](ownerParticipant, "isEqual:")) && ((sourceProfileIdentifier = self->_sourceProfileIdentifier, !(sourceProfileIdentifier | v4[5])) || -[NSData isEqual:](sourceProfileIdentifier, "isEqual:")) && ((shareParticipant = self->_shareParticipant, !(shareParticipant | v4[4])) || -[NSData isEqual:](shareParticipant, "isEqual:")) && ((ownerCloudKitEmailAddress = self->_ownerCloudKitEmailAddress, !(ownerCloudKitEmailAddress | v4[2])) || -[NSString isEqual:](ownerCloudKitEmailAddress, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((syncCircleIdentifier = self->_syncCircleIdentifier, !(syncCircleIdentifier | equalCopy[6])) || -[NSString isEqual:](syncCircleIdentifier, "isEqual:")) && ((ownerParticipant = self->_ownerParticipant, !(ownerParticipant | equalCopy[3])) || -[NSData isEqual:](ownerParticipant, "isEqual:")) && ((sourceProfileIdentifier = self->_sourceProfileIdentifier, !(sourceProfileIdentifier | equalCopy[5])) || -[NSData isEqual:](sourceProfileIdentifier, "isEqual:")) && ((shareParticipant = self->_shareParticipant, !(shareParticipant | equalCopy[4])) || -[NSData isEqual:](shareParticipant, "isEqual:")) && ((ownerCloudKitEmailAddress = self->_ownerCloudKitEmailAddress, !(ownerCloudKitEmailAddress | equalCopy[2])) || -[NSString isEqual:](ownerCloudKitEmailAddress, "isEqual:")))
   {
     invitationTokens = self->_invitationTokens;
-    if (invitationTokens | v4[1])
+    if (invitationTokens | equalCopy[1])
     {
       v11 = [(NSMutableArray *)invitationTokens isEqual:?];
     }
@@ -321,31 +321,31 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_invitationTokens hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(HDCodableSharingSetupMetadata *)self setSyncCircleIdentifier:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableSharingSetupMetadata *)self setOwnerParticipant:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCodableSharingSetupMetadata *)self setSourceProfileIdentifier:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableSharingSetupMetadata *)self setShareParticipant:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableSharingSetupMetadata *)self setOwnerCloudKitEmailAddress:?];
   }
@@ -354,7 +354,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

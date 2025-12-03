@@ -1,12 +1,12 @@
 @interface RTEnumerationOptions
 + (BOOL)supportsSecureCoding;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)enumeratedType;
-- (RTEnumerationOptions)initWithCoder:(id)a3;
+- (RTEnumerationOptions)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)batchSize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTEnumerationOptions
@@ -39,7 +39,7 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -53,14 +53,14 @@
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (RTEnumerationOptions)initWithCoder:(id)a3
+- (RTEnumerationOptions)initWithCoder:(id)coder
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

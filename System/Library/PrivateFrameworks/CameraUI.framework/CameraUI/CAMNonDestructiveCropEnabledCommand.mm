@@ -1,14 +1,14 @@
 @interface CAMNonDestructiveCropEnabledCommand
-- (CAMNonDestructiveCropEnabledCommand)initWithCoder:(id)a3;
-- (CAMNonDestructiveCropEnabledCommand)initWithNonDestructiveCropEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMNonDestructiveCropEnabledCommand)initWithCoder:(id)coder;
+- (CAMNonDestructiveCropEnabledCommand)initWithNonDestructiveCropEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMNonDestructiveCropEnabledCommand
 
-- (CAMNonDestructiveCropEnabledCommand)initWithNonDestructiveCropEnabled:(BOOL)a3
+- (CAMNonDestructiveCropEnabledCommand)initWithNonDestructiveCropEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMNonDestructiveCropEnabledCommand;
@@ -16,47 +16,47 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMNonDestructiveCropEnabledCommand)initWithCoder:(id)a3
+- (CAMNonDestructiveCropEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"CAMNonDestructiveCropEnabledKey"];
+  v4 = [coder decodeBoolForKey:@"CAMNonDestructiveCropEnabledKey"];
 
   return [(CAMNonDestructiveCropEnabledCommand *)self initWithNonDestructiveCropEnabled:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMNonDestructiveCropEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMNonDestructiveCropEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMNonDestructiveCropEnabledKey"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMNonDestructiveCropEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMNonDestructiveCropEnabledKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMNonDestructiveCropEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMNonDestructiveCropEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v6 = [v4 currentVideoDevice];
-  v5 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  if ([v5 isNonDestructiveCropSupported])
+  if ([currentVideoDeviceFormat isNonDestructiveCropSupported])
   {
-    [v6 setNonDestructiveCropEnabled:{-[CAMNonDestructiveCropEnabledCommand _isEnabled](self, "_isEnabled")}];
+    [currentVideoDevice setNonDestructiveCropEnabled:{-[CAMNonDestructiveCropEnabledCommand _isEnabled](self, "_isEnabled")}];
   }
 }
 

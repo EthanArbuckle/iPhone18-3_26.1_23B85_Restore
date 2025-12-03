@@ -1,11 +1,11 @@
 @interface CellPerformanceMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellPerformanceMetrics
@@ -199,7 +199,7 @@ LABEL_16:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_gci)
   {
@@ -392,11 +392,11 @@ LABEL_29:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[2] = [(NSString *)self->_gci copyWithZone:a3];
+  v5[2] = [(NSString *)self->_gci copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -582,19 +582,19 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     gci = self->_gci;
-    if (!(gci | *(a3 + 2)) || (v5 = [(NSString *)gci isEqual:?]) != 0)
+    if (!(gci | *(equal + 2)) || (v5 = [(NSString *)gci isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 34);
+      v8 = *(equal + 34);
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_dlBandwidth != *(a3 + 3))
+        if ((v8 & 2) == 0 || self->_dlBandwidth != *(equal + 3))
         {
           goto LABEL_68;
         }
@@ -609,7 +609,7 @@ LABEL_68:
 
       if ((has & 0x40) != 0)
       {
-        if ((v8 & 0x40) == 0 || self->_nrFr1 != *(a3 + 10))
+        if ((v8 & 0x40) == 0 || self->_nrFr1 != *(equal + 10))
         {
           goto LABEL_68;
         }
@@ -622,7 +622,7 @@ LABEL_68:
 
       if ((has & 0x80) != 0)
       {
-        if ((v8 & 0x80) == 0 || self->_nrFr2 != *(a3 + 11))
+        if ((v8 & 0x80) == 0 || self->_nrFr2 != *(equal + 11))
         {
           goto LABEL_68;
         }
@@ -635,33 +635,33 @@ LABEL_68:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 34) & 0x100) == 0 || self->_nrRsrp != *(a3 + 12))
+        if ((*(equal + 34) & 0x100) == 0 || self->_nrRsrp != *(equal + 12))
         {
           goto LABEL_68;
         }
       }
 
-      else if ((*(a3 + 34) & 0x100) != 0)
+      else if ((*(equal + 34) & 0x100) != 0)
       {
         goto LABEL_68;
       }
 
       if ((*&self->_has & 0x400) != 0)
       {
-        if ((*(a3 + 34) & 0x400) == 0 || self->_nrSinr != *(a3 + 14))
+        if ((*(equal + 34) & 0x400) == 0 || self->_nrSinr != *(equal + 14))
         {
           goto LABEL_68;
         }
       }
 
-      else if ((*(a3 + 34) & 0x400) != 0)
+      else if ((*(equal + 34) & 0x400) != 0)
       {
         goto LABEL_68;
       }
 
       if ((has & 0x20) != 0)
       {
-        if ((v8 & 0x20) == 0 || self->_nrBw != *(a3 + 9))
+        if ((v8 & 0x20) == 0 || self->_nrBw != *(equal + 9))
         {
           goto LABEL_68;
         }
@@ -674,20 +674,20 @@ LABEL_68:
 
       if ((*&self->_has & 0x1000) != 0)
       {
-        if ((*(a3 + 34) & 0x1000) == 0 || self->_stallRate != *(a3 + 16))
+        if ((*(equal + 34) & 0x1000) == 0 || self->_stallRate != *(equal + 16))
         {
           goto LABEL_68;
         }
       }
 
-      else if ((*(a3 + 34) & 0x1000) != 0)
+      else if ((*(equal + 34) & 0x1000) != 0)
       {
         goto LABEL_68;
       }
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_latency != *(a3 + 6))
+        if ((v8 & 4) == 0 || self->_latency != *(equal + 6))
         {
           goto LABEL_68;
         }
@@ -700,20 +700,20 @@ LABEL_68:
 
       if ((*&self->_has & 0x800) != 0)
       {
-        if ((*(a3 + 34) & 0x800) == 0 || self->_stCount != *(a3 + 15))
+        if ((*(equal + 34) & 0x800) == 0 || self->_stCount != *(equal + 15))
         {
           goto LABEL_68;
         }
       }
 
-      else if ((*(a3 + 34) & 0x800) != 0)
+      else if ((*(equal + 34) & 0x800) != 0)
       {
         goto LABEL_68;
       }
 
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_count != *(a3 + 2))
+        if ((v8 & 1) == 0 || self->_count != *(equal + 2))
         {
           goto LABEL_68;
         }
@@ -726,7 +726,7 @@ LABEL_68:
 
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_lteRsrpFr1 != *(a3 + 7))
+        if ((v8 & 8) == 0 || self->_lteRsrpFr1 != *(equal + 7))
         {
           goto LABEL_68;
         }
@@ -739,7 +739,7 @@ LABEL_68:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_lteRsrpFr2 != *(a3 + 8))
+        if ((v8 & 0x10) == 0 || self->_lteRsrpFr2 != *(equal + 8))
         {
           goto LABEL_68;
         }
@@ -753,7 +753,7 @@ LABEL_68:
       LOBYTE(v5) = (v8 & 0x200) == 0;
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 34) & 0x200) == 0 || self->_nrSabw != *(a3 + 13))
+        if ((*(equal + 34) & 0x200) == 0 || self->_nrSabw != *(equal + 13))
         {
           goto LABEL_68;
         }

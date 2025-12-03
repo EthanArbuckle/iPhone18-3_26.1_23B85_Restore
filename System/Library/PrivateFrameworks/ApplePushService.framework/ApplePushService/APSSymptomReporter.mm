@@ -1,9 +1,9 @@
 @interface APSSymptomReporter
 - (APSSymptomReporter)init;
-- (void)reportClientIPAddress:(id)a3 forInterfaceOfName:(id)a4;
-- (void)reportConnectionFailureOnConnectionType:(int64_t)a3;
-- (void)reportConnectionSuccessOnConnectionType:(int64_t)a3;
-- (void)reportSymptomToAutoBugCapture:(id)a3 subType:(id)a4;
+- (void)reportClientIPAddress:(id)address forInterfaceOfName:(id)name;
+- (void)reportConnectionFailureOnConnectionType:(int64_t)type;
+- (void)reportConnectionSuccessOnConnectionType:(int64_t)type;
+- (void)reportSymptomToAutoBugCapture:(id)capture subType:(id)type;
 @end
 
 @implementation APSSymptomReporter
@@ -29,58 +29,58 @@
   return v2;
 }
 
-- (void)reportSymptomToAutoBugCapture:(id)a3 subType:(id)a4
+- (void)reportSymptomToAutoBugCapture:(id)capture subType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  captureCopy = capture;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001D918;
   block[3] = &unk_100186330;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = captureCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = captureCopy;
   dispatch_async(queue, block);
 }
 
-- (void)reportConnectionFailureOnConnectionType:(int64_t)a3
+- (void)reportConnectionFailureOnConnectionType:(int64_t)type
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001DAC8;
   block[3] = &unk_1001863D0;
-  block[4] = a3;
+  block[4] = type;
   dispatch_async(queue, block);
 }
 
-- (void)reportConnectionSuccessOnConnectionType:(int64_t)a3
+- (void)reportConnectionSuccessOnConnectionType:(int64_t)type
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001DCC8;
   block[3] = &unk_1001863D0;
-  block[4] = a3;
+  block[4] = type;
   dispatch_async(queue, block);
 }
 
-- (void)reportClientIPAddress:(id)a3 forInterfaceOfName:(id)a4
+- (void)reportClientIPAddress:(id)address forInterfaceOfName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  nameCopy = name;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001DF1C;
   v11[3] = &unk_1001864D8;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = nameCopy;
+  v13 = addressCopy;
+  v9 = addressCopy;
+  v10 = nameCopy;
   dispatch_async(queue, v11);
 }
 

@@ -1,6 +1,6 @@
 @interface TSPPackageEntryInfo
 - (TSPPackageEntryInfo)init;
-- (TSPPackageEntryInfo)initWithEncodedLength:(unint64_t)a3 lastModificationDate:(id)a4 CRC:(unsigned int)a5;
+- (TSPPackageEntryInfo)initWithEncodedLength:(unint64_t)length lastModificationDate:(id)date CRC:(unsigned int)c;
 @end
 
 @implementation TSPPackageEntryInfo
@@ -21,21 +21,21 @@
   objc_exception_throw(v13);
 }
 
-- (TSPPackageEntryInfo)initWithEncodedLength:(unint64_t)a3 lastModificationDate:(id)a4 CRC:(unsigned int)a5
+- (TSPPackageEntryInfo)initWithEncodedLength:(unint64_t)length lastModificationDate:(id)date CRC:(unsigned int)c
 {
-  v8 = a4;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = TSPPackageEntryInfo;
   v9 = [(TSPPackageEntryInfo *)&v16 init];
   v12 = v9;
   if (v9)
   {
-    v9->_encodedLength = a3;
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v9->_encodedLength = length;
+    v13 = objc_msgSend_copy(dateCopy, v10, v11);
     lastModificationDate = v12->_lastModificationDate;
     v12->_lastModificationDate = v13;
 
-    v12->_CRC = a5;
+    v12->_CRC = c;
   }
 
   return v12;

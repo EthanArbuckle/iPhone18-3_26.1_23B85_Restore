@@ -1,172 +1,172 @@
 @interface STBatteryStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STBatteryStatusDomainData)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STBatteryStatusDomainData)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithChargingState:(uint64_t)a3 percentCharge:(char)a4 batterySaverModeActive:(void *)a5 chargingDescription:(uint64_t)a6 chargingDescriptionType:;
-- (void)initWithData:(void *)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithChargingState:(uint64_t)state percentCharge:(char)charge batterySaverModeActive:(void *)active chargingDescription:(uint64_t)description chargingDescriptionType:;
+- (void)initWithData:(void *)data;
 @end
 
 @implementation STBatteryStatusDomainData
 
-- (void)initWithData:(void *)a1
+- (void)initWithData:(void *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
     v3 = a2;
-    v4 = [v3 chargingState];
-    v5 = [v3 percentCharge];
-    v6 = [v3 isBatterySaverModeActive];
-    v7 = [v3 chargingDescription];
-    v8 = [v3 chargingDescriptionType];
+    chargingState = [v3 chargingState];
+    percentCharge = [v3 percentCharge];
+    isBatterySaverModeActive = [v3 isBatterySaverModeActive];
+    chargingDescription = [v3 chargingDescription];
+    chargingDescriptionType = [v3 chargingDescriptionType];
 
-    v2 = [(STBatteryStatusDomainData *)v2 initWithChargingState:v4 percentCharge:v5 batterySaverModeActive:v6 chargingDescription:v7 chargingDescriptionType:v8];
+    dataCopy = [(STBatteryStatusDomainData *)dataCopy initWithChargingState:chargingState percentCharge:percentCharge batterySaverModeActive:isBatterySaverModeActive chargingDescription:chargingDescription chargingDescriptionType:chargingDescriptionType];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (void)initWithChargingState:(uint64_t)a3 percentCharge:(char)a4 batterySaverModeActive:(void *)a5 chargingDescription:(uint64_t)a6 chargingDescriptionType:
+- (void)initWithChargingState:(uint64_t)state percentCharge:(char)charge batterySaverModeActive:(void *)active chargingDescription:(uint64_t)description chargingDescriptionType:
 {
-  v12 = a5;
-  if (a1)
+  activeCopy = active;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = STBatteryStatusDomainData;
     v13 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v13;
+    self = v13;
     if (v13)
     {
       *(v13 + 1) = a2;
-      *(v13 + 2) = a3;
-      *(v13 + 24) = a4;
-      objc_storeStrong(v13 + 4, a5);
-      a1[5] = a6;
+      *(v13 + 2) = state;
+      *(v13 + 24) = charge;
+      objc_storeStrong(v13 + 4, active);
+      self[5] = description;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STBatteryStatusDomainData *)self chargingState];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  chargingState = [(STBatteryStatusDomainData *)self chargingState];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __37__STBatteryStatusDomainData_isEqual___block_invoke;
   v30[3] = &unk_1E85DE2F8;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
-  v8 = [v5 appendUnsignedInteger:v6 counterpart:v30];
-  v9 = [(STBatteryStatusDomainData *)self percentCharge];
+  v8 = [v5 appendUnsignedInteger:chargingState counterpart:v30];
+  percentCharge = [(STBatteryStatusDomainData *)self percentCharge];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __37__STBatteryStatusDomainData_isEqual___block_invoke_2;
   v28[3] = &unk_1E85DE2F8;
   v10 = v7;
   v29 = v10;
-  v11 = [v5 appendUnsignedInteger:v9 counterpart:v28];
-  v12 = [(STBatteryStatusDomainData *)self isBatterySaverModeActive];
+  v11 = [v5 appendUnsignedInteger:percentCharge counterpart:v28];
+  isBatterySaverModeActive = [(STBatteryStatusDomainData *)self isBatterySaverModeActive];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __37__STBatteryStatusDomainData_isEqual___block_invoke_3;
   v26[3] = &unk_1E85DDD50;
   v13 = v10;
   v27 = v13;
-  v14 = [v5 appendBool:v12 counterpart:v26];
-  v15 = [(STBatteryStatusDomainData *)self chargingDescription];
+  v14 = [v5 appendBool:isBatterySaverModeActive counterpart:v26];
+  chargingDescription = [(STBatteryStatusDomainData *)self chargingDescription];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __37__STBatteryStatusDomainData_isEqual___block_invoke_4;
   v24[3] = &unk_1E85DDD28;
   v16 = v13;
   v25 = v16;
-  v17 = [v5 appendString:v15 counterpart:v24];
+  v17 = [v5 appendString:chargingDescription counterpart:v24];
 
-  v18 = [(STBatteryStatusDomainData *)self chargingDescriptionType];
+  chargingDescriptionType = [(STBatteryStatusDomainData *)self chargingDescriptionType];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __37__STBatteryStatusDomainData_isEqual___block_invoke_5;
   v22[3] = &unk_1E85DE2F8;
   v23 = v16;
   v19 = v16;
-  v20 = [v5 appendUnsignedInteger:v18 counterpart:v22];
-  LOBYTE(v18) = [v5 isEqual];
+  v20 = [v5 appendUnsignedInteger:chargingDescriptionType counterpart:v22];
+  LOBYTE(chargingDescriptionType) = [v5 isEqual];
 
-  return v18;
+  return chargingDescriptionType;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:{-[STBatteryStatusDomainData chargingState](self, "chargingState")}];
-  v5 = [v3 appendUnsignedInteger:{-[STBatteryStatusDomainData percentCharge](self, "percentCharge")}];
-  v6 = [v3 appendBool:{-[STBatteryStatusDomainData isBatterySaverModeActive](self, "isBatterySaverModeActive")}];
-  v7 = [(STBatteryStatusDomainData *)self chargingDescription];
-  v8 = [v3 appendString:v7];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:{-[STBatteryStatusDomainData chargingState](self, "chargingState")}];
+  v5 = [builder appendUnsignedInteger:{-[STBatteryStatusDomainData percentCharge](self, "percentCharge")}];
+  v6 = [builder appendBool:{-[STBatteryStatusDomainData isBatterySaverModeActive](self, "isBatterySaverModeActive")}];
+  chargingDescription = [(STBatteryStatusDomainData *)self chargingDescription];
+  v8 = [builder appendString:chargingDescription];
 
-  v9 = [v3 appendUnsignedInteger:{-[STBatteryStatusDomainData chargingDescriptionType](self, "chargingDescriptionType")}];
-  v10 = [v3 hash];
+  v9 = [builder appendUnsignedInteger:{-[STBatteryStatusDomainData chargingDescriptionType](self, "chargingDescriptionType")}];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableBatteryStatusDomainData allocWithZone:a3];
+  v4 = [STMutableBatteryStatusDomainData allocWithZone:zone];
 
   return [(STBatteryStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STBatteryStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBatteryStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBatteryStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBatteryStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBatteryStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBatteryStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__STBatteryStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -216,13 +216,13 @@ uint64_t __77__STBatteryStatusDomainData__descriptionBuilderWithMultilinePrefix_
   return [v9 appendString:v11 withName:@"chargingDescriptionType"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STBatteryStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STBatteryStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -233,13 +233,13 @@ uint64_t __77__STBatteryStatusDomainData__descriptionBuilderWithMultilinePrefix_
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STBatteryStatusDomainData *)self copy];
     }
@@ -247,7 +247,7 @@ uint64_t __77__STBatteryStatusDomainData__descriptionBuilderWithMultilinePrefix_
     else
     {
       v5 = [(STBatteryStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -259,26 +259,26 @@ uint64_t __77__STBatteryStatusDomainData__descriptionBuilderWithMultilinePrefix_
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[STBatteryStatusDomainData chargingState](self forKey:{"chargingState"), @"chargingState"}];
-  [v5 encodeInteger:-[STBatteryStatusDomainData percentCharge](self forKey:{"percentCharge"), @"percentCharge"}];
-  [v5 encodeBool:-[STBatteryStatusDomainData isBatterySaverModeActive](self forKey:{"isBatterySaverModeActive"), @"batterySaverModeActive"}];
-  v4 = [(STBatteryStatusDomainData *)self chargingDescription];
-  [v5 encodeObject:v4 forKey:@"chargingDescription"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[STBatteryStatusDomainData chargingState](self forKey:{"chargingState"), @"chargingState"}];
+  [coderCopy encodeInteger:-[STBatteryStatusDomainData percentCharge](self forKey:{"percentCharge"), @"percentCharge"}];
+  [coderCopy encodeBool:-[STBatteryStatusDomainData isBatterySaverModeActive](self forKey:{"isBatterySaverModeActive"), @"batterySaverModeActive"}];
+  chargingDescription = [(STBatteryStatusDomainData *)self chargingDescription];
+  [coderCopy encodeObject:chargingDescription forKey:@"chargingDescription"];
 
-  [v5 encodeInteger:-[STBatteryStatusDomainData chargingDescriptionType](self forKey:{"chargingDescriptionType"), @"chargingDescriptionType"}];
+  [coderCopy encodeInteger:-[STBatteryStatusDomainData chargingDescriptionType](self forKey:{"chargingDescriptionType"), @"chargingDescriptionType"}];
 }
 
-- (STBatteryStatusDomainData)initWithCoder:(id)a3
+- (STBatteryStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"chargingState"];
-  v6 = [v4 decodeIntegerForKey:@"percentCharge"];
-  v7 = [v4 decodeBoolForKey:@"batterySaverModeActive"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chargingDescription"];
-  v9 = [v4 decodeIntegerForKey:@"chargingDescriptionType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"chargingState"];
+  v6 = [coderCopy decodeIntegerForKey:@"percentCharge"];
+  v7 = [coderCopy decodeBoolForKey:@"batterySaverModeActive"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chargingDescription"];
+  v9 = [coderCopy decodeIntegerForKey:@"chargingDescriptionType"];
 
   v10 = [(STBatteryStatusDomainData *)self initWithChargingState:v5 percentCharge:v6 batterySaverModeActive:v7 chargingDescription:v8 chargingDescriptionType:v9];
   return v10;

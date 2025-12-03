@@ -1,71 +1,71 @@
 @interface MRDeviceInfoOutputDevice
-- (MRDeviceInfoOutputDevice)initWithDeviceInfo:(id)a3 fallbackOutputDevice:(id)a4 forExporting:(BOOL)a5;
+- (MRDeviceInfoOutputDevice)initWithDeviceInfo:(id)info fallbackOutputDevice:(id)device forExporting:(BOOL)exporting;
 @end
 
 @implementation MRDeviceInfoOutputDevice
 
-- (MRDeviceInfoOutputDevice)initWithDeviceInfo:(id)a3 fallbackOutputDevice:(id)a4 forExporting:(BOOL)a5
+- (MRDeviceInfoOutputDevice)initWithDeviceInfo:(id)info fallbackOutputDevice:(id)device forExporting:(BOOL)exporting
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [a4 descriptor];
-  v10 = [v9 copy];
+  exportingCopy = exporting;
+  infoCopy = info;
+  descriptor = [device descriptor];
+  v10 = [descriptor copy];
 
-  v11 = [v8 deviceUID];
-  [v10 setUniqueIdentifier:v11];
+  deviceUID = [infoCopy deviceUID];
+  [v10 setUniqueIdentifier:deviceUID];
 
-  v12 = [v8 deviceUID];
-  [v10 setLogicalDeviceID:v12];
+  deviceUID2 = [infoCopy deviceUID];
+  [v10 setLogicalDeviceID:deviceUID2];
 
-  if ([v8 clusterType])
+  if ([infoCopy clusterType])
   {
-    [v8 groupName];
+    [infoCopy groupName];
   }
 
   else
   {
-    [v8 computerName];
+    [infoCopy computerName];
   }
   v13 = ;
   [v10 setName:v13];
 
-  v14 = [v8 modelID];
-  [v10 setModelID:v14];
+  modelID = [infoCopy modelID];
+  [v10 setModelID:modelID];
 
-  v15 = [v8 parentGroupID];
-  [v10 setParentGroupIdentifier:v15];
+  parentGroupID = [infoCopy parentGroupID];
+  [v10 setParentGroupIdentifier:parentGroupID];
 
-  v16 = [v8 airPlayGroupUID];
-  [v10 setAirPlayGroupID:v16];
+  airPlayGroupUID = [infoCopy airPlayGroupUID];
+  [v10 setAirPlayGroupID:airPlayGroupUID];
 
   [v10 setIsGroupable:1];
   [v10 setIsRemoteControllable:1];
-  [v10 setSupportsMultiplayer:{objc_msgSend(v8, "supportsMultiplayer")}];
+  [v10 setSupportsMultiplayer:{objc_msgSend(infoCopy, "supportsMultiplayer")}];
   [v10 setDeviceType:1];
-  [v10 setDeviceSubType:{objc_msgSend(v8, "deviceSubtype")}];
-  [v10 setHostDeviceClass:{objc_msgSend(v8, "deviceClass")}];
-  [v10 setClusterType:{objc_msgSend(v8, "clusterType")}];
-  [v10 setIsProxyGroupPlayer:{objc_msgSend(v8, "isProxyGroupPlayer")}];
-  [v10 setIsGroupLeader:{objc_msgSend(v8, "isGroupLeader")}];
-  [v10 setIsAirPlayReceiverSessionActive:{objc_msgSend(v8, "isAirPlayActive")}];
-  [v10 setGroupContainsGroupLeader:{objc_msgSend(v8, "groupContainsDiscoverableGroupLeader")}];
-  [v10 setParentGroupContainsDiscoverableLeader:{objc_msgSend(v8, "parentGroupContainsDiscoverableGroupLeader")}];
-  [v10 setConfiguredClusterSize:{objc_msgSend(v8, "configuredClusterSize")}];
-  v17 = [v8 clusteredDevices];
-  v18 = [v17 msv_map:&__block_literal_global_103];
+  [v10 setDeviceSubType:{objc_msgSend(infoCopy, "deviceSubtype")}];
+  [v10 setHostDeviceClass:{objc_msgSend(infoCopy, "deviceClass")}];
+  [v10 setClusterType:{objc_msgSend(infoCopy, "clusterType")}];
+  [v10 setIsProxyGroupPlayer:{objc_msgSend(infoCopy, "isProxyGroupPlayer")}];
+  [v10 setIsGroupLeader:{objc_msgSend(infoCopy, "isGroupLeader")}];
+  [v10 setIsAirPlayReceiverSessionActive:{objc_msgSend(infoCopy, "isAirPlayActive")}];
+  [v10 setGroupContainsGroupLeader:{objc_msgSend(infoCopy, "groupContainsDiscoverableGroupLeader")}];
+  [v10 setParentGroupContainsDiscoverableLeader:{objc_msgSend(infoCopy, "parentGroupContainsDiscoverableGroupLeader")}];
+  [v10 setConfiguredClusterSize:{objc_msgSend(infoCopy, "configuredClusterSize")}];
+  clusteredDevices = [infoCopy clusteredDevices];
+  v18 = [clusteredDevices msv_map:&__block_literal_global_103];
   v19 = [v18 mutableCopy];
   [v10 setClusterCompositions:v19];
 
-  if (v5)
+  if (exportingCopy)
   {
     [v10 setIsLocalDevice:0];
   }
 
   else
   {
-    v20 = [v8 deviceUID];
+    deviceUID3 = [infoCopy deviceUID];
     v21 = MRMediaRemoteCopyDeviceUID();
-    [v10 setIsLocalDevice:{objc_msgSend(v20, "isEqualToString:", v21)}];
+    [v10 setIsLocalDevice:{objc_msgSend(deviceUID3, "isEqualToString:", v21)}];
   }
 
   v24.receiver = self;

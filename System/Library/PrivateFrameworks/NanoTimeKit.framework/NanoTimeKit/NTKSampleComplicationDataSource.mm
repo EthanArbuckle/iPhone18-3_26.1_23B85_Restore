@@ -1,18 +1,18 @@
 @interface NTKSampleComplicationDataSource
-+ (BOOL)_isComplicationFamilyAvaialbleBeforeGlory:(int64_t)a3;
-+ (BOOL)acceptsClassicComplicationType:(unint64_t)a3 withFamily:(int64_t)a4;
-+ (BOOL)acceptsComplicationType:(unint64_t)NSSComplicationDataSourceClass withFamily:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)_isComplicationFamilyAvaialbleBeforeGlory:(int64_t)glory;
++ (BOOL)acceptsClassicComplicationType:(unint64_t)type withFamily:(int64_t)family;
++ (BOOL)acceptsComplicationType:(unint64_t)NSSComplicationDataSourceClass withFamily:(int64_t)family forDevice:(id)device;
 - (BOOL)supportsFlowerImages;
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3;
-- (NTKSampleComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (Class)richComplicationDisplayViewClassForDevice:(id)device;
+- (NTKSampleComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_alarmTemplate;
 - (id)_batteryTemplate;
 - (id)_breathingTemplate;
 - (id)_city;
 - (id)_currentEntryModel;
-- (id)_fullColorImageProviderWithSystemImageName:(id)a3 tintColor:(id)a4 fallbackImageName:(id)a5;
+- (id)_fullColorImageProviderWithSystemImageName:(id)name tintColor:(id)color fallbackImageName:(id)imageName;
 - (id)_heartrateTemplate;
-- (id)_imageProviderWithSystemImageName:(id)a3 overridePointSize:(id)a4 tintColor:(id)a5 fallbackImageName:(id)a6;
+- (id)_imageProviderWithSystemImageName:(id)name overridePointSize:(id)size tintColor:(id)color fallbackImageName:(id)imageName;
 - (id)_musicTemplate;
 - (id)_newsTemplate;
 - (id)_nowPlayingTemplate;
@@ -24,30 +24,30 @@
 - (id)_stopwatchTemplate;
 - (id)_worldClockTemplate;
 - (id)currentSwitcherTemplate;
-- (void)_localeDidChange:(id)a3;
+- (void)_localeDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation NTKSampleComplicationDataSource
 
-+ (BOOL)acceptsComplicationType:(unint64_t)NSSComplicationDataSourceClass withFamily:(int64_t)a4 forDevice:(id)a5
++ (BOOL)acceptsComplicationType:(unint64_t)NSSComplicationDataSourceClass withFamily:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
-  if ([NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:NSSComplicationDataSourceClass family:a4 forDevice:v8])
+  deviceCopy = device;
+  if ([NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:NSSComplicationDataSourceClass family:family forDevice:deviceCopy])
   {
     goto LABEL_13;
   }
 
-  v9 = a4 == 100 || a4 == 101;
-  v10 = v9 || a4 == 102;
-  if (v10 || a4 == 103)
+  v9 = family == 100 || family == 101;
+  v10 = v9 || family == 102;
+  if (v10 || family == 103)
   {
     goto LABEL_13;
   }
 
-  if (a4 != 6)
+  if (family != 6)
   {
-    if (a4 == 104)
+    if (family == 104)
     {
       if (acceptsComplicationType_withFamily_forDevice__onceToken_380 != -1)
       {
@@ -73,7 +73,7 @@
           if (NSSComplicationDataSourceClass == 4)
           {
             LOBYTE(NSSComplicationDataSourceClass) = 1;
-            if ((a4 - 8) < 5 || *MEMORY[0x277CBB680] == a4)
+            if ((family - 8) < 5 || *MEMORY[0x277CBB680] == family)
             {
               goto LABEL_14;
             }
@@ -84,7 +84,7 @@
           if (NSSComplicationDataSourceClass == 5)
           {
             LOBYTE(NSSComplicationDataSourceClass) = 1;
-            if (a4 - 8) < 3 || a4 == 12 || a4 == 11 && ([v8 supportsPDRCapability:740041318])
+            if (family - 8) < 3 || family == 12 || family == 11 && ([deviceCopy supportsPDRCapability:740041318])
             {
               goto LABEL_14;
             }
@@ -105,18 +105,18 @@
             goto LABEL_87;
           }
 
-          if ([v8 supportsPDRCapability:710010803])
+          if ([deviceCopy supportsPDRCapability:710010803])
           {
             goto LABEL_13;
           }
 
           LOBYTE(NSSComplicationDataSourceClass) = 1;
-          if ((a4 & 0xFFFFFFFFFFFFFFFBLL) == 0 || *MEMORY[0x277CBB668] == a4)
+          if ((family & 0xFFFFFFFFFFFFFFFBLL) == 0 || *MEMORY[0x277CBB668] == family)
           {
             goto LABEL_14;
           }
 
-          if (a4 >= 0xD)
+          if (family >= 0xD)
           {
             goto LABEL_13;
           }
@@ -130,7 +130,7 @@
       {
         if (NSSComplicationDataSourceClass == 13)
         {
-          if (a4 - 8) < 5 && ((0x17u >> (a4 - 8)))
+          if (family - 8) < 5 && ((0x17u >> (family - 8)))
           {
             goto LABEL_71;
           }
@@ -158,7 +158,7 @@
               NSSComplicationDataSourceClass = getNSSComplicationDataSourceClass();
               if (objc_opt_respondsToSelector())
               {
-                v17 = [NSSComplicationDataSourceClass nss_newsComplicationTemplateForFamily:a4 compact:{objc_msgSend(v8, "sizeClass") == 0}];
+                v17 = [NSSComplicationDataSourceClass nss_newsComplicationTemplateForFamily:family compact:{objc_msgSend(deviceCopy, "sizeClass") == 0}];
                 LOBYTE(NSSComplicationDataSourceClass) = v17 != 0;
 
                 goto LABEL_14;
@@ -168,11 +168,11 @@
             }
 
 LABEL_87:
-            v18 = [a1 acceptsClassicComplicationType:NSSComplicationDataSourceClass withFamily:a4];
+            isRadioPhoneComplicationEnabled = [self acceptsClassicComplicationType:NSSComplicationDataSourceClass withFamily:family];
             goto LABEL_63;
           }
 
-          if (a4 == 8)
+          if (family == 8)
           {
 LABEL_71:
             LOBYTE(NSSComplicationDataSourceClass) = 1;
@@ -180,15 +180,15 @@ LABEL_71:
           }
 
 LABEL_62:
-          v18 = [a1 _isComplicationFamilyAvaialbleBeforeGlory:a4];
+          isRadioPhoneComplicationEnabled = [self _isComplicationFamilyAvaialbleBeforeGlory:family];
           goto LABEL_63;
         }
 
         if (NSSComplicationDataSourceClass == 29)
         {
-          if (a4)
+          if (family)
           {
-            v20 = a4 == 10;
+            v20 = family == 10;
           }
 
           else
@@ -205,9 +205,9 @@ LABEL_62:
           goto LABEL_87;
         }
 
-        if (a4 == 3)
+        if (family == 3)
         {
-          v18 = NTKIsConnectivityPhoneComplicationEnabled();
+          isRadioPhoneComplicationEnabled = NTKIsConnectivityPhoneComplicationEnabled();
           goto LABEL_63;
         }
 
@@ -223,13 +223,13 @@ LABEL_62:
             goto LABEL_87;
           }
 
-          v18 = [v8 isRadioPhoneComplicationEnabled];
+          isRadioPhoneComplicationEnabled = [deviceCopy isRadioPhoneComplicationEnabled];
 LABEL_63:
-          LOBYTE(NSSComplicationDataSourceClass) = v18;
+          LOBYTE(NSSComplicationDataSourceClass) = isRadioPhoneComplicationEnabled;
           goto LABEL_14;
         }
 
-        if (a4 >= 0xC)
+        if (family >= 0xC)
         {
 LABEL_13:
           LOBYTE(NSSComplicationDataSourceClass) = 0;
@@ -238,13 +238,13 @@ LABEL_13:
 
         v19 = 2058;
 LABEL_74:
-        LODWORD(NSSComplicationDataSourceClass) = v19 >> a4;
+        LODWORD(NSSComplicationDataSourceClass) = v19 >> family;
         goto LABEL_14;
       }
 
       if (NSSComplicationDataSourceClass == 38)
       {
-        LOBYTE(NSSComplicationDataSourceClass) = a4 == 12 || (a4 - 9) < 2;
+        LOBYTE(NSSComplicationDataSourceClass) = family == 12 || (family - 9) < 2;
         goto LABEL_14;
       }
 
@@ -255,7 +255,7 @@ LABEL_74:
     }
 
     LOBYTE(NSSComplicationDataSourceClass) = 1;
-    if (a4 == 12 || (a4 & 0xFFFFFFFFFFFFFFFCLL) == 8)
+    if (family == 12 || (family & 0xFFFFFFFFFFFFFFFCLL) == 8)
     {
       goto LABEL_14;
     }
@@ -288,27 +288,27 @@ void __80__NTKSampleComplicationDataSource_acceptsComplicationType_withFamily_fo
   acceptsComplicationType_withFamily_forDevice__specialCasedComplicationTypes = &unk_284189FE8;
 }
 
-+ (BOOL)acceptsClassicComplicationType:(unint64_t)a3 withFamily:(int64_t)a4
++ (BOOL)acceptsClassicComplicationType:(unint64_t)type withFamily:(int64_t)family
 {
-  v5 = [a1 _isComplicationFamilyAvaialbleBeforeGlory:a4];
-  v7 = a3 == 26 || a3 == 11;
+  v5 = [self _isComplicationFamilyAvaialbleBeforeGlory:family];
+  v7 = type == 26 || type == 11;
   return v5 && v7;
 }
 
-+ (BOOL)_isComplicationFamilyAvaialbleBeforeGlory:(int64_t)a3
++ (BOOL)_isComplicationFamilyAvaialbleBeforeGlory:(int64_t)glory
 {
-  if (a3 < 7 && ((0x5Fu >> a3) & 1) != 0)
+  if (glory < 7 && ((0x5Fu >> glory) & 1) != 0)
   {
     return 1;
   }
 
-  return a3 == 7 || *MEMORY[0x277CBB668] == a3;
+  return glory == 7 || *MEMORY[0x277CBB668] == glory;
 }
 
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3
+- (Class)richComplicationDisplayViewClassForDevice:(id)device
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = [(CLKCComplicationDataSource *)self family];
+  family = [(CLKCComplicationDataSource *)self family];
   v27[0] = &unk_284181E40;
   v28[0] = objc_opt_class();
   v27[1] = &unk_284181D98;
@@ -340,15 +340,15 @@ void __80__NTKSampleComplicationDataSource_acceptsComplicationType_withFamily_fo
   v22 = objc_opt_class();
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v15 count:4];
   v9 = [(CLKCComplicationDataSource *)self complication:v15];
-  v10 = [v9 complicationType];
+  complicationType = [v9 complicationType];
 
   v11 = 0;
-  if (v4 > 10)
+  if (family > 10)
   {
     v12 = v7;
-    if (v4 != 11)
+    if (family != 11)
     {
-      if (v4 != 12)
+      if (family != 12)
       {
         goto LABEL_9;
       }
@@ -360,10 +360,10 @@ void __80__NTKSampleComplicationDataSource_acceptsComplicationType_withFamily_fo
   }
 
   v12 = v6;
-  if (v4 == 9 || (v12 = v5, v4 == 10))
+  if (family == 9 || (v12 = v5, family == 10))
   {
 LABEL_8:
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:complicationType];
     v11 = [v12 objectForKeyedSubscript:v13];
   }
 
@@ -372,15 +372,15 @@ LABEL_9:
   return v11;
 }
 
-- (NTKSampleComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKSampleComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = NTKSampleComplicationDataSource;
-  v5 = [(CLKCComplicationDataSource *)&v8 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(CLKCComplicationDataSource *)&v8 initWithComplication:complication family:family forDevice:device];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v5;
@@ -388,8 +388,8 @@ LABEL_9:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKSampleComplicationDataSource;
@@ -400,116 +400,116 @@ LABEL_9:
 {
   if (!self->_complicationTemplate)
   {
-    v3 = [(CLKCComplicationDataSource *)self complication];
-    v4 = [v3 complicationType];
+    complication = [(CLKCComplicationDataSource *)self complication];
+    complicationType = [complication complicationType];
 
-    if (v4 > 19)
+    if (complicationType > 19)
     {
-      if (v4 <= 33)
+      if (complicationType <= 33)
       {
-        switch(v4)
+        switch(complicationType)
         {
           case 20:
-            v5 = [(NTKSampleComplicationDataSource *)self _reminderTemplate];
+            _reminderTemplate = [(NTKSampleComplicationDataSource *)self _reminderTemplate];
             break;
           case 26:
-            v5 = [(NTKSampleComplicationDataSource *)self _newsTemplate];
+            _reminderTemplate = [(NTKSampleComplicationDataSource *)self _newsTemplate];
             break;
           case 29:
-            v5 = [(NTKSampleComplicationDataSource *)self _siriTemplate];
+            _reminderTemplate = [(NTKSampleComplicationDataSource *)self _siriTemplate];
             break;
           default:
             goto LABEL_36;
         }
       }
 
-      else if (v4 > 37)
+      else if (complicationType > 37)
       {
-        if (v4 == 38)
+        if (complicationType == 38)
         {
-          v5 = [(NTKSampleComplicationDataSource *)self _solarTemplate];
+          _reminderTemplate = [(NTKSampleComplicationDataSource *)self _solarTemplate];
         }
 
         else
         {
-          if (v4 != 42)
+          if (complicationType != 42)
           {
             goto LABEL_36;
           }
 
-          v5 = [(NTKSampleComplicationDataSource *)self _podcastsTemplate];
+          _reminderTemplate = [(NTKSampleComplicationDataSource *)self _podcastsTemplate];
         }
       }
 
-      else if (v4 == 34)
+      else if (complicationType == 34)
       {
-        v5 = [(NTKSampleComplicationDataSource *)self _nowPlayingTemplate];
+        _reminderTemplate = [(NTKSampleComplicationDataSource *)self _nowPlayingTemplate];
       }
 
       else
       {
-        if (v4 != 35)
+        if (complicationType != 35)
         {
           goto LABEL_36;
         }
 
-        v5 = [(NTKSampleComplicationDataSource *)self _radioTemplate];
+        _reminderTemplate = [(NTKSampleComplicationDataSource *)self _radioTemplate];
       }
     }
 
-    else if (v4 <= 12)
+    else if (complicationType <= 12)
     {
-      switch(v4)
+      switch(complicationType)
       {
         case 2:
-          v5 = [(NTKSampleComplicationDataSource *)self _alarmTemplate];
+          _reminderTemplate = [(NTKSampleComplicationDataSource *)self _alarmTemplate];
           break;
         case 4:
-          v5 = [(NTKSampleComplicationDataSource *)self _stopwatchTemplate];
+          _reminderTemplate = [(NTKSampleComplicationDataSource *)self _stopwatchTemplate];
           break;
         case 5:
-          v5 = [(NTKSampleComplicationDataSource *)self _worldClockTemplate];
+          _reminderTemplate = [(NTKSampleComplicationDataSource *)self _worldClockTemplate];
           break;
         default:
           goto LABEL_36;
       }
     }
 
-    else if (v4 > 16)
+    else if (complicationType > 16)
     {
-      if (v4 == 17)
+      if (complicationType == 17)
       {
-        v5 = [(NTKSampleComplicationDataSource *)self _musicTemplate];
+        _reminderTemplate = [(NTKSampleComplicationDataSource *)self _musicTemplate];
       }
 
       else
       {
-        if (v4 != 19)
+        if (complicationType != 19)
         {
           goto LABEL_36;
         }
 
-        v5 = [(NTKSampleComplicationDataSource *)self _breathingTemplate];
+        _reminderTemplate = [(NTKSampleComplicationDataSource *)self _breathingTemplate];
       }
     }
 
-    else if (v4 == 13)
+    else if (complicationType == 13)
     {
-      v5 = [(NTKSampleComplicationDataSource *)self _batteryTemplate];
+      _reminderTemplate = [(NTKSampleComplicationDataSource *)self _batteryTemplate];
     }
 
     else
     {
-      if (v4 != 15)
+      if (complicationType != 15)
       {
         goto LABEL_36;
       }
 
-      v5 = [(NTKSampleComplicationDataSource *)self _heartrateTemplate];
+      _reminderTemplate = [(NTKSampleComplicationDataSource *)self _heartrateTemplate];
     }
 
     complicationTemplate = self->_complicationTemplate;
-    self->_complicationTemplate = v5;
+    self->_complicationTemplate = _reminderTemplate;
   }
 
 LABEL_36:
@@ -521,36 +521,36 @@ LABEL_36:
 - (id)_batteryTemplate
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CBBAD8] complicationDate];
-  [v3 setEntryDate:v4];
+  complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
+  [v3 setEntryDate:complicationDate];
 
   LODWORD(v5) = 1.0;
   [v3 setLevel:v5];
   [v3 setState:1];
   v6 = [v3 entryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v7 = [v6 complicationTemplate];
+  complicationTemplate = [v6 complicationTemplate];
 
-  return v7;
+  return complicationTemplate;
 }
 
 - (id)_heartrateTemplate
 {
   v39[8] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBBAD8] complicationDate];
+  complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
   v4 = objc_opt_new();
-  [v4 setEntryDate:v3];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateByAddingUnit:64 value:-3 toDate:v3 options:0];
+  [v4 setEntryDate:complicationDate];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateByAddingUnit:64 value:-3 toDate:complicationDate options:0];
   [v4 setMeasurementDate:v6];
 
   [v4 setHasBPM:1];
   [v4 setBPM:64];
   if ([(CLKCComplicationDataSource *)self family]== 11)
   {
-    v32 = v5;
+    v32 = currentCalendar;
     v31 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{54, 11}];
     v39[0] = v31;
-    v33 = self;
+    selfCopy = self;
     v7 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{66, 40}];
     [v7 addIndexesInRange:{125, 25}];
     v8 = [v7 copy];
@@ -577,22 +577,22 @@ LABEL_36:
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:8];
 
     v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
-    v19 = NTKStartOfDayForDate(v3);
-    v20 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
-    v21 = [v20 components:124 fromDate:v3];
+    v19 = NTKStartOfDayForDate(complicationDate);
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    v21 = [autoupdatingCurrentCalendar components:124 fromDate:complicationDate];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __53__NTKSampleComplicationDataSource__heartrateTemplate__block_invoke;
     v34[3] = &unk_27877F1B8;
     v35 = v21;
-    v36 = v20;
+    v36 = autoupdatingCurrentCalendar;
     v37 = v19;
     v38 = v18;
     v22 = v18;
     v23 = v19;
-    self = v33;
+    self = selfCopy;
     v24 = v23;
-    v25 = v20;
+    v25 = autoupdatingCurrentCalendar;
     v26 = v21;
     [v17 enumerateObjectsUsingBlock:v34];
     [v4 setHasSummary:1];
@@ -601,13 +601,13 @@ LABEL_36:
     v27 = [v22 copy];
     [v4 setChartPoints:v27];
 
-    v5 = v32;
+    currentCalendar = v32;
   }
 
   v28 = [v4 entryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v29 = [v28 complicationTemplate];
+  complicationTemplate = [v28 complicationTemplate];
 
-  return v29;
+  return complicationTemplate;
 }
 
 void __53__NTKSampleComplicationDataSource__heartrateTemplate__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -645,59 +645,59 @@ void __53__NTKSampleComplicationDataSource__heartrateTemplate__block_invoke(uint
   v7 = CLKFormatTimeIntervalSeconds();
   v8 = [v6 textProviderWithText:v7];
 
-  v9 = [(CLKCComplicationDataSource *)self family];
-  v10 = v9;
+  family = [(CLKCComplicationDataSource *)self family];
+  v10 = family;
   v11 = 0;
-  if (v9 > 6)
+  if (family > 6)
   {
-    if (v9 > 9)
+    if (family > 9)
     {
-      switch(v9)
+      switch(family)
       {
         case 10:
-          v16 = [MEMORY[0x277CBEB38] dictionary];
-          [v16 setObject:@"NTKStopwatchComplicationMetadataStateValue_Stopped" forKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:@"NTKStopwatchComplicationMetadataStateValue_Stopped" forKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
           v17 = MEMORY[0x277CBB858];
           break;
         case 11:
           v12 = [MEMORY[0x277CBBB20] symbolImageProviderWithSystemName:@"stopwatch"];
           [v12 setMonochromeFilterType:1];
-          v30 = [MEMORY[0x277D75348] systemOrangeColor];
-          [v12 setTintColor:v30];
+          systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+          [v12 setTintColor:systemOrangeColor];
 
           v31 = MEMORY[0x277CBBB88];
           v32 = NTKClockFaceLocalizedString(@"STOPWATCH_TITLE", @"Stopwatch");
           v33 = [v31 textProviderWithText:v32];
 
-          v34 = [MEMORY[0x277D75348] systemOrangeColor];
-          [v33 setTintColor:v34];
+          systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+          [v33 setTintColor:systemOrangeColor2];
 
           v11 = [MEMORY[0x277CBB9B8] templateWithHeaderImageProvider:v12 headerTextProvider:v33 bodyTextProvider:v8];
 
           goto LABEL_31;
         case 12:
-          v16 = [MEMORY[0x277CBEB38] dictionary];
-          [v16 setObject:@"NTKStopwatchComplicationMetadataStateValue_Stopped" forKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:@"NTKStopwatchComplicationMetadataStateValue_Stopped" forKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
           v17 = MEMORY[0x277CBB940];
           break;
         default:
           goto LABEL_32;
       }
 
-      v11 = [v17 templateWithMetadata:v16];
+      v11 = [v17 templateWithMetadata:dictionary];
       goto LABEL_38;
     }
 
-    if (v9 == 7)
+    if (family == 7)
     {
-      v21 = [(CLKCComplicationDataSource *)self device];
-      v19 = [NTKComplicationModuleView _extraLargeStopwatchImageProviderForDevice:v21];
+      device = [(CLKCComplicationDataSource *)self device];
+      v19 = [NTKComplicationModuleView _extraLargeStopwatchImageProviderForDevice:device];
 
       v20 = MEMORY[0x277CBB800];
       goto LABEL_21;
     }
 
-    if (v9 != 8)
+    if (family != 8)
     {
       v37 = @"NTKStopwatchBezelComplicationMetadataTimeTextProviderKey";
       v38[0] = v8;
@@ -712,11 +712,11 @@ LABEL_31:
 
     v12 = [MEMORY[0x277CBBB20] symbolImageProviderWithSystemName:@"stopwatch"];
     [v12 setMonochromeFilterType:1];
-    v25 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v12 setTintColor:v25];
+    systemOrangeColor3 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v12 setTintColor:systemOrangeColor3];
 
-    v26 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v8 setTintColor:v26];
+    systemOrangeColor4 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v8 setTintColor:systemOrangeColor4];
 
     v14 = MEMORY[0x277CBB908];
 LABEL_28:
@@ -724,18 +724,18 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v9 > 2)
+  if (family > 2)
   {
-    if (v9 != 3)
+    if (family != 3)
     {
-      if (v9 == 4)
+      if (family == 4)
       {
         v12 = [NTKCircularComplicationView _stopwatchImageProviderMedium:0];
         v13 = [MEMORY[0x277CBB790] templateWithImageProvider:v12];
         goto LABEL_30;
       }
 
-      if (v9 != 6)
+      if (family != 6)
       {
         goto LABEL_32;
       }
@@ -748,11 +748,11 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  switch(v9)
+  switch(family)
   {
     case 0:
-      v18 = [(CLKCComplicationDataSource *)self device];
-      v19 = [NTKComplicationModuleView _modularSmallStopwatchImageProviderForDevice:v18];
+      device2 = [(CLKCComplicationDataSource *)self device];
+      v19 = [NTKComplicationModuleView _modularSmallStopwatchImageProviderForDevice:device2];
 
       v20 = MEMORY[0x277CBBA68];
 LABEL_21:
@@ -802,8 +802,8 @@ LABEL_36:
   }
 
 LABEL_37:
-  v16 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v11 setTintColor:v16];
+  dictionary = [MEMORY[0x277D75348] systemOrangeColor];
+  [v11 setTintColor:dictionary];
 LABEL_38:
 
   return v11;
@@ -811,8 +811,8 @@ LABEL_38:
 
 - (id)_alarmTemplate
 {
-  v3 = [(CLKCComplicationDataSource *)self device];
-  v4 = [NTKAlarmTimelineEntry companionModelWithDevice:v3];
+  device = [(CLKCComplicationDataSource *)self device];
+  v4 = [NTKAlarmTimelineEntry companionModelWithDevice:device];
 
   v5 = [v4 templateForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
 
@@ -821,21 +821,21 @@ LABEL_38:
 
 - (id)_worldClockTemplate
 {
-  v3 = [(NTKSampleComplicationDataSource *)self _city];
-  v4 = v3;
-  if (v3)
+  _city = [(NTKSampleComplicationDataSource *)self _city];
+  v4 = _city;
+  if (_city)
   {
     v5 = MEMORY[0x277CBEBB0];
-    v6 = [v3 timeZone];
-    v7 = [v5 timeZoneWithName:v6];
+    timeZone = [_city timeZone];
+    v7 = [v5 timeZoneWithName:timeZone];
 
     v8 = MEMORY[0x277CBBB88];
     v9 = NTKWorldClockCityAbbreviation(v4);
     v10 = [v8 textProviderWithText:v9];
 
     v11 = MEMORY[0x277CBBB88];
-    v12 = [v4 name];
-    v13 = [v11 textProviderWithText:v12];
+    name = [v4 name];
+    v13 = [v11 textProviderWithText:name];
 
     v14 = MEMORY[0x277CBBBB8];
     v15 = NTKIdealizedDate();
@@ -850,16 +850,16 @@ LABEL_38:
     v7 = 0;
   }
 
-  v17 = [(CLKCComplicationDataSource *)self family];
-  v18 = 0;
-  if (v17 == 104)
+  family = [(CLKCComplicationDataSource *)self family];
+  complicationTemplate = 0;
+  if (family == 104)
   {
     v19 = 6;
   }
 
   else
   {
-    v19 = v17;
+    v19 = family;
   }
 
   if (v19 <= 5)
@@ -884,26 +884,26 @@ LABEL_38:
           v24 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
         }
 
-        v21 = v24;
-        v31 = [v7 secondsFromGMT];
-        v32 = [MEMORY[0x277CBEBB0] systemTimeZone];
-        v33 = (v31 - [v32 secondsFromGMT]);
+        _currentEntryModel = v24;
+        secondsFromGMT = [v7 secondsFromGMT];
+        systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+        v33 = (secondsFromGMT - [systemTimeZone secondsFromGMT]);
 
         v34 = [MEMORY[0x277CBBBD8] dayForOffset:v33];
         v55 = [MEMORY[0x277CBBBD8] differenceForOffset:0 caps:0 suppressZero:v33];
         v57 = v7;
         v35 = MEMORY[0x277CBBB88];
-        v36 = [v55 string];
-        v54 = [v35 textProviderWithText:v36];
+        string = [v55 string];
+        v54 = [v35 textProviderWithText:string];
 
         v37 = NTKClockFaceLocalizedString(@"WORLDCLOCK_DAY_BEFORE_TIME", @"string used by localizers as a BOOL");
-        v38 = [v37 BOOLValue];
+        bOOLValue = [v37 BOOLValue];
 
         v39 = NTKClockFaceLocalizedString(@"WORLDCLOCK_NO_SPACE_BETWEEN_DAY_TIME", @"string used by localizers as a BOOL");
-        v40 = [v39 BOOLValue];
+        bOOLValue2 = [v39 BOOLValue];
 
         v41 = v16;
-        if (v38)
+        if (bOOLValue)
         {
           v42 = v34;
         }
@@ -913,7 +913,7 @@ LABEL_38:
           v42 = v41;
         }
 
-        if (v38)
+        if (bOOLValue)
         {
           v43 = v41;
         }
@@ -924,7 +924,7 @@ LABEL_38:
         }
 
         v44 = MEMORY[0x277CBBBA0];
-        if (v40)
+        if (bOOLValue2)
         {
           v45 = @"%@%@";
         }
@@ -936,7 +936,7 @@ LABEL_38:
 
         v53 = v34;
         v46 = [v44 textProviderWithFormat:v45, v42, v43];
-        v18 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:v21 body1TextProvider:v46 body2TextProvider:v54];
+        complicationTemplate = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:_currentEntryModel body1TextProvider:v46 body2TextProvider:v54];
 
         v7 = v57;
         v13 = v56;
@@ -946,13 +946,13 @@ LABEL_38:
       v20 = v13;
       if (v10 && v16)
       {
-        v21 = v10;
+        _currentEntryModel = v10;
         v27 = v16;
       }
 
       else
       {
-        v21 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
+        _currentEntryModel = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
         v27 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
       }
 
@@ -973,13 +973,13 @@ LABEL_38:
         v20 = v13;
         if (v10 && v16)
         {
-          v21 = v10;
+          _currentEntryModel = v10;
           v22 = v16;
         }
 
         else
         {
-          v21 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
+          _currentEntryModel = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
           v22 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
         }
 
@@ -988,7 +988,7 @@ LABEL_38:
         goto LABEL_52;
       }
 
-      v21 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", v16, v13];
+      _currentEntryModel = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", v16, v13];
       v26 = MEMORY[0x277CBBA80];
       goto LABEL_31;
     }
@@ -1005,10 +1005,10 @@ LABEL_23:
       v25 = @"%@ %@";
     }
 
-    v21 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v25, v10, v16];
+    _currentEntryModel = [MEMORY[0x277CBBBA0] textProviderWithFormat:v25, v10, v16];
     v26 = MEMORY[0x277CBBA90];
 LABEL_31:
-    v18 = [v26 templateWithTextProvider:v21];
+    complicationTemplate = [v26 templateWithTextProvider:_currentEntryModel];
     goto LABEL_53;
   }
 
@@ -1019,20 +1019,20 @@ LABEL_31:
       v20 = v13;
       if (v10 && v16)
       {
-        v21 = v10;
+        _currentEntryModel = v10;
         v28 = v16;
       }
 
       else
       {
-        v21 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
+        _currentEntryModel = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
         v28 = [MEMORY[0x277CBBB88] textProviderWithText:&stru_284110E98];
       }
 
       v29 = v28;
       v30 = MEMORY[0x277CBB808];
 LABEL_52:
-      v18 = [v30 templateWithLine1TextProvider:v21 line2TextProvider:v29];
+      complicationTemplate = [v30 templateWithLine1TextProvider:_currentEntryModel line2TextProvider:v29];
 
       v13 = v20;
       goto LABEL_53;
@@ -1046,9 +1046,9 @@ LABEL_52:
     goto LABEL_23;
   }
 
-  v21 = [(NTKSampleComplicationDataSource *)self _currentEntryModel];
-  v23 = [v21 entryForComplicationFamily:v19];
-  v18 = [v23 complicationTemplate];
+  _currentEntryModel = [(NTKSampleComplicationDataSource *)self _currentEntryModel];
+  v23 = [_currentEntryModel entryForComplicationFamily:v19];
+  complicationTemplate = [v23 complicationTemplate];
 
 LABEL_53:
 LABEL_54:
@@ -1069,39 +1069,39 @@ LABEL_54:
     v49 = v48;
     v50 = [MEMORY[0x277CBB760] templateWithLine1TextProvider:v47 line2TextProvider:v48];
 
-    v18 = v50;
+    complicationTemplate = v50;
   }
 
-  v51 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v18 setTintColor:v51];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [complicationTemplate setTintColor:systemOrangeColor];
 
-  return v18;
+  return complicationTemplate;
 }
 
 - (id)_currentEntryModel
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CBBAD8] complicationDate];
-  [v3 setEntryDate:v4];
+  complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
+  [v3 setEntryDate:complicationDate];
 
   [v3 setShowIdealizedTime:1];
-  v5 = [(NTKSampleComplicationDataSource *)self _city];
-  [v3 setCity:v5];
+  _city = [(NTKSampleComplicationDataSource *)self _city];
+  [v3 setCity:_city];
 
   return v3;
 }
 
 - (id)_city
 {
-  v2 = [(CLKCComplicationDataSource *)self complication];
-  v3 = [v2 city];
+  complication = [(CLKCComplicationDataSource *)self complication];
+  city = [complication city];
 
-  return v3;
+  return city;
 }
 
 - (id)_musicTemplate
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
+  family = [(CLKCComplicationDataSource *)self family];
   v4 = @"music";
   v5 = NTKMusicTintColor();
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1119,20 +1119,20 @@ LABEL_54:
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:v9, @"Try Me", @"Jorja Smith"];
   v11 = v10;
   v12 = 0;
-  if (v3 <= 6)
+  if (family <= 6)
   {
-    if (v3 <= 1)
+    if (family <= 1)
     {
-      if (!v3)
+      if (!family)
       {
-        v29 = [MEMORY[0x277D75348] whiteColor];
-        v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E88 tintColor:v29 fallbackImageName:@"modularSmallMusicProgress"];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E88 tintColor:whiteColor fallbackImageName:@"modularSmallMusicProgress"];
 
         v24 = MEMORY[0x277CBBA40];
         goto LABEL_25;
       }
 
-      if (v3 == 1)
+      if (family == 1)
       {
         [MEMORY[0x277CBBB88] textProviderWithText:@"Try Me"];
         objc_claimAutoreleasedReturnValue();
@@ -1144,11 +1144,11 @@ LABEL_54:
     {
       v19 = v10;
       v20 = v8;
-      switch(v3)
+      switch(family)
       {
         case 2:
-          v31 = [MEMORY[0x277D75348] whiteColor];
-          v32 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E58 tintColor:v31 fallbackImageName:@"utilityCornerMusicProgress"];
+          whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+          v32 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E58 tintColor:whiteColor2 fallbackImageName:@"utilityCornerMusicProgress"];
 
           v33 = [MEMORY[0x277CBBB80] simpleProgressProviderWithProgress:0.85];
           [v33 setTintColor:v7];
@@ -1160,8 +1160,8 @@ LABEL_54:
         case 3:
           NTKImageNamed(@"utilityLongMusicEqualizer");
         case 4:
-          v21 = [MEMORY[0x277D75348] whiteColor];
-          v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E70 tintColor:v21 fallbackImageName:@"colorAnalogMusicProgress"];
+          whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+          v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:&unk_284181E70 tintColor:whiteColor3 fallbackImageName:@"colorAnalogMusicProgress"];
 
           v24 = MEMORY[0x277CBB778];
           goto LABEL_25;
@@ -1171,11 +1171,11 @@ LABEL_54:
 
   else
   {
-    if (v3 <= 9)
+    if (family <= 9)
     {
-      if (v3 != 7)
+      if (family != 7)
       {
-        if (v3 != 8)
+        if (family != 8)
         {
           v13 = [MEMORY[0x277CBBB88] textProviderWithText:v10];
           v14 = MEMORY[0x277CBB810];
@@ -1194,8 +1194,8 @@ LABEL_54:
           goto LABEL_28;
         }
 
-        v30 = [MEMORY[0x277D75348] whiteColor];
-        v22 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:v30 fallbackImageName:@"music_signature_corner"];
+        whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+        v22 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:whiteColor4 fallbackImageName:@"music_signature_corner"];
 
         v27 = [MEMORY[0x277CBBB88] textProviderWithText:v11];
         [v27 setTintColor:v7];
@@ -1203,8 +1203,8 @@ LABEL_54:
         goto LABEL_21;
       }
 
-      v34 = [MEMORY[0x277D75348] whiteColor];
-      v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v34 fallbackImageName:@"modularXLMusicProgress"];
+      whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+      v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor5 fallbackImageName:@"modularXLMusicProgress"];
 
       v24 = MEMORY[0x277CBB7D8];
 LABEL_25:
@@ -1213,7 +1213,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    switch(v3)
+    switch(family)
     {
       case 10:
         v12 = v8[2](v8);
@@ -1221,8 +1221,8 @@ LABEL_25:
       case 11:
         NTKImageNamed(@"modularLargeMusicEqualizer");
       case 12:
-        v25 = [MEMORY[0x277D75348] whiteColor];
-        v22 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:v25 fallbackImageName:@"graphicXLMusicProgress"];
+        whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+        v22 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:whiteColor6 fallbackImageName:@"graphicXLMusicProgress"];
 
         LODWORD(v26) = 1062836634;
         v27 = [MEMORY[0x277CBBB78] gaugeProviderWithStyle:1 gaugeColor:v7 fillFraction:v26];
@@ -1236,10 +1236,10 @@ LABEL_26:
   }
 
 LABEL_28:
-  if (v3 == *MEMORY[0x277CBB668])
+  if (family == *MEMORY[0x277CBB668])
   {
-    v35 = [MEMORY[0x277D75348] whiteColor];
-    v36 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v35 fallbackImageName:@"victoryMusicProgress"];
+    whiteColor7 = [MEMORY[0x277D75348] whiteColor];
+    v36 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor7 fallbackImageName:@"victoryMusicProgress"];
 
     LODWORD(v37) = 1062836634;
     v38 = [MEMORY[0x277CBB740] templateWithImageProvider:v36 fillFraction:0 ringStyle:v37];
@@ -1270,7 +1270,7 @@ id __49__NTKSampleComplicationDataSource__musicTemplate__block_invoke(uint64_t a
 - (id)_radioTemplate
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CLKCComplicationDataSource *)self family];
+  family = [(CLKCComplicationDataSource *)self family];
   v4 = @"dot.radiowaves.left.and.right";
   v5 = NTKRadioTintColor();
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1285,13 +1285,13 @@ id __49__NTKSampleComplicationDataSource__musicTemplate__block_invoke(uint64_t a
   v8 = _Block_copy(aBlock);
   v9 = v8;
   v10 = 0;
-  if (v3 <= 6)
+  if (family <= 6)
   {
-    if (v3 <= 1)
+    if (family <= 1)
     {
-      if (v3)
+      if (family)
       {
-        if (v3 != 1)
+        if (family != 1)
         {
           goto LABEL_29;
         }
@@ -1305,32 +1305,32 @@ id __49__NTKSampleComplicationDataSource__musicTemplate__block_invoke(uint64_t a
         goto LABEL_23;
       }
 
-      v19 = [MEMORY[0x277D75348] whiteColor];
-      v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v19 fallbackImageName:@"ModularSmallRadio"];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor fallbackImageName:@"ModularSmallRadio"];
 
       v16 = MEMORY[0x277CBBA50];
     }
 
     else
     {
-      switch(v3)
+      switch(family)
       {
         case 2:
-          v23 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v23 fallbackImageName:@"UtilityCornerRadio"];
+          whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor2 fallbackImageName:@"UtilityCornerRadio"];
 
           v16 = MEMORY[0x277CBBAC0];
           break;
         case 3:
-          v20 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v20 fallbackImageName:@"UtilityTextStringRadio"];
+          whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor3 fallbackImageName:@"UtilityTextStringRadio"];
 
           v13 = [MEMORY[0x277CBBB88] textProviderWithText:@"Try Me"];
           v21 = MEMORY[0x277CBBA80];
           goto LABEL_21;
         case 4:
-          v15 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v15 fallbackImageName:@"ColorRadio"];
+          whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor4 fallbackImageName:@"ColorRadio"];
 
           v16 = MEMORY[0x277CBB790];
           break;
@@ -1344,11 +1344,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v3 <= 9)
+  if (family <= 9)
   {
-    if (v3 != 7)
+    if (family != 7)
     {
-      if (v3 != 8)
+      if (family != 8)
       {
         v11 = [MEMORY[0x277CBBB88] textProviderWithText:@"Try Me"];
         v12 = MEMORY[0x277CBB810];
@@ -1359,8 +1359,8 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v22 = [MEMORY[0x277D75348] whiteColor];
-      v11 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:v22 fallbackImageName:@"GraphicCornerRadio"];
+      whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+      v11 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:whiteColor5 fallbackImageName:@"GraphicCornerRadio"];
 
       v13 = [MEMORY[0x277CBBB88] textProviderWithText:@"Try Me"];
       [v13 setTintColor:v7];
@@ -1370,14 +1370,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v24 = [MEMORY[0x277D75348] whiteColor];
-    v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v24 fallbackImageName:@"XLRadio"];
+    whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+    v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor6 fallbackImageName:@"XLRadio"];
 
     v16 = MEMORY[0x277CBB7F0];
     goto LABEL_27;
   }
 
-  switch(v3)
+  switch(family)
   {
     case 10:
       v10 = v8[2](v8);
@@ -1398,10 +1398,10 @@ LABEL_28:
   }
 
 LABEL_29:
-  if (v3 == *MEMORY[0x277CBB668])
+  if (family == *MEMORY[0x277CBB668])
   {
-    v25 = [MEMORY[0x277D75348] whiteColor];
-    v26 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v25 fallbackImageName:@"VictoryDigitalRadio"];
+    whiteColor7 = [MEMORY[0x277D75348] whiteColor];
+    v26 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor7 fallbackImageName:@"VictoryDigitalRadio"];
 
     v27 = [MEMORY[0x277CBB748] templateWithImageProvider:v26];
 
@@ -1428,7 +1428,7 @@ id __49__NTKSampleComplicationDataSource__radioTemplate__block_invoke(uint64_t a
 
 - (id)_podcastsTemplate
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
+  family = [(CLKCComplicationDataSource *)self family];
   v4 = @"podcasts";
   v5 = NTKPodcastsTintColor();
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1443,23 +1443,23 @@ id __49__NTKSampleComplicationDataSource__radioTemplate__block_invoke(uint64_t a
   v8 = _Block_copy(aBlock);
   v9 = v8;
   v10 = 0;
-  if (v3 <= 6)
+  if (family <= 6)
   {
-    if (v3 <= 1)
+    if (family <= 1)
     {
-      if (!v3)
+      if (!family)
       {
-        v16 = [MEMORY[0x277D75348] whiteColor];
-        v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v16 fallbackImageName:@"ModularSmallPodcast"];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor fallbackImageName:@"ModularSmallPodcast"];
 
-        v17 = [MEMORY[0x277D75348] whiteColor];
-        [v11 setTintColor:v17];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [v11 setTintColor:whiteColor2];
 
         v15 = MEMORY[0x277CBBA50];
         goto LABEL_25;
       }
 
-      if (v3 == 1)
+      if (family == 1)
       {
         [MEMORY[0x277CBBB88] textProviderWithText:@"Bigfoot"];
         objc_claimAutoreleasedReturnValue();
@@ -1469,19 +1469,19 @@ id __49__NTKSampleComplicationDataSource__radioTemplate__block_invoke(uint64_t a
 
     else
     {
-      switch(v3)
+      switch(family)
       {
         case 2:
-          v19 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v19 fallbackImageName:@"UtilityCornerPodcast"];
+          whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor3 fallbackImageName:@"UtilityCornerPodcast"];
 
           v15 = MEMORY[0x277CBBAC0];
           goto LABEL_25;
         case 3:
           NTKImageNamed(@"utilityLongMusicEqualizer");
         case 4:
-          v14 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v14 fallbackImageName:@"ColorPodcast"];
+          whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor4 fallbackImageName:@"ColorPodcast"];
 
           v15 = MEMORY[0x277CBB790];
           goto LABEL_25;
@@ -1491,14 +1491,14 @@ id __49__NTKSampleComplicationDataSource__radioTemplate__block_invoke(uint64_t a
 
   else
   {
-    if (v3 <= 9)
+    if (family <= 9)
     {
-      if (v3 != 7)
+      if (family != 7)
       {
-        if (v3 == 8)
+        if (family == 8)
         {
-          v18 = [MEMORY[0x277D75348] whiteColor];
-          v11 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:v18 fallbackImageName:@"GraphicCornerPodcast"];
+          whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+          v11 = [(NTKSampleComplicationDataSource *)self _fullColorImageProviderWithSystemImageName:v6 tintColor:whiteColor5 fallbackImageName:@"GraphicCornerPodcast"];
 
           v13 = [MEMORY[0x277CBBB88] textProviderWithText:@"Bigfoot"];
           [v13 setTintColor:v7];
@@ -1517,8 +1517,8 @@ id __49__NTKSampleComplicationDataSource__radioTemplate__block_invoke(uint64_t a
         goto LABEL_26;
       }
 
-      v20 = [MEMORY[0x277D75348] whiteColor];
-      v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v20 fallbackImageName:@"XLPodcast"];
+      whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+      v11 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor6 fallbackImageName:@"XLPodcast"];
 
       v15 = MEMORY[0x277CBB7F0];
 LABEL_25:
@@ -1528,7 +1528,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    switch(v3)
+    switch(family)
     {
       case 10:
         v10 = v8[2](v8);
@@ -1543,10 +1543,10 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (v3 == *MEMORY[0x277CBB668])
+  if (family == *MEMORY[0x277CBB668])
   {
-    v21 = [MEMORY[0x277D75348] whiteColor];
-    v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:v21 fallbackImageName:@"VictoryDigitalPodcast"];
+    whiteColor7 = [MEMORY[0x277D75348] whiteColor];
+    v22 = [(NTKSampleComplicationDataSource *)self _imageProviderWithSystemImageName:v6 overridePointSize:0 tintColor:whiteColor7 fallbackImageName:@"VictoryDigitalPodcast"];
 
     v23 = [MEMORY[0x277CBB748] templateWithImageProvider:v22];
 
@@ -1573,9 +1573,9 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
 
 - (id)_nowPlayingTemplate
 {
-  v2 = [(CLKCComplicationDataSource *)self family];
-  v3 = [MEMORY[0x277D75348] systemBlueColor];
-  switch(v2)
+  family = [(CLKCComplicationDataSource *)self family];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  switch(family)
   {
     case 1:
       [MEMORY[0x277CBBB88] textProviderWithText:@"Try Me"];
@@ -1587,7 +1587,7 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
       NTKImageNamed(@"utilityLongMusicEqualizer");
   }
 
-  [0 setTintColor:v3];
+  [0 setTintColor:systemBlueColor];
 
   return 0;
 }
@@ -1598,26 +1598,26 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
   v4 = NTKClockFaceLocalizedString(@"COMPLICATION_SAMPLE_REMINDER", 0);
   [v3 setPrimaryReminderTitle:v4];
 
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = +[(CLKDate *)NTKDate];
-  v7 = [v5 dateBySettingHour:15 minute:0 second:0 ofDate:v6 options:0];
+  v7 = [currentCalendar dateBySettingHour:15 minute:0 second:0 ofDate:v6 options:0];
   [v3 setDueDate:v7];
 
   [v3 setOverlappingReminderCount:1];
   v8 = [v3 entryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v9 = [v8 complicationTemplate];
+  complicationTemplate = [v8 complicationTemplate];
 
-  return v9;
+  return complicationTemplate;
 }
 
 - (id)_breathingTemplate
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
-  if (v3 > 6)
+  family = [(CLKCComplicationDataSource *)self family];
+  if (family > 6)
   {
-    if (v3 <= 8)
+    if (family <= 8)
     {
-      if (v3 != 7)
+      if (family != 7)
       {
         NTKClockFaceLocalizedFormat(@"BREATHE_MINUTES_FORMAT", @"%i MINUTES");
         [MEMORY[0x277CCACA8] localizedStringWithFormat:objc_claimAutoreleasedReturnValue(), 2];
@@ -1636,7 +1636,7 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
       NTKImageNamed(@"XLModularBreatheBee");
     }
 
-    switch(v3)
+    switch(family)
     {
       case 9:
         NTKImageNamed(@"signatureCircularBreathe");
@@ -1649,9 +1649,9 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
     goto LABEL_30;
   }
 
-  if (v3 <= 3)
+  if (family <= 3)
   {
-    if (!v3)
+    if (!family)
     {
       if ([(NTKSampleComplicationDataSource *)self supportsFlowerImages])
       {
@@ -1661,7 +1661,7 @@ id __52__NTKSampleComplicationDataSource__podcastsTemplate__block_invoke(uint64_
       NTKImageNamed(@"modularBreatheBee");
     }
 
-    if (v3 != 2)
+    if (family != 2)
     {
       goto LABEL_30;
     }
@@ -1675,7 +1675,7 @@ LABEL_13:
     NTKImageNamed(@"analogCornerBreatheBee");
   }
 
-  if (v3 == 4)
+  if (family == 4)
   {
     if ([(NTKSampleComplicationDataSource *)self supportsFlowerImages])
     {
@@ -1690,13 +1690,13 @@ LABEL_13:
     NTKImageNamed(v6);
   }
 
-  if (v3 == 6)
+  if (family == 6)
   {
     goto LABEL_13;
   }
 
 LABEL_30:
-  if (v3 == *MEMORY[0x277CBB668])
+  if (family == *MEMORY[0x277CBB668])
   {
     if ([(NTKSampleComplicationDataSource *)self supportsFlowerImages])
     {
@@ -1716,10 +1716,10 @@ LABEL_30:
 
 - (BOOL)supportsFlowerImages
 {
-  v2 = [(CLKCComplicationDataSource *)self device];
-  v3 = [v2 isRunningGloryGMOrLater];
+  device = [(CLKCComplicationDataSource *)self device];
+  isRunningGloryGMOrLater = [device isRunningGloryGMOrLater];
 
-  return v3;
+  return isRunningGloryGMOrLater;
 }
 
 - (id)_newsTemplate
@@ -1730,11 +1730,11 @@ LABEL_30:
     NSSComplicationDataSourceClass = getNSSComplicationDataSourceClass();
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(CLKCComplicationDataSource *)self family];
-      v6 = [(CLKCComplicationDataSource *)self device];
-      v7 = [v6 sizeClass] == 0;
+      family = [(CLKCComplicationDataSource *)self family];
+      device = [(CLKCComplicationDataSource *)self device];
+      v7 = [device sizeClass] == 0;
 
-      v3 = [NSSComplicationDataSourceClass nss_newsComplicationTemplateForFamily:v5 compact:v7];
+      v3 = [NSSComplicationDataSourceClass nss_newsComplicationTemplateForFamily:family compact:v7];
     }
 
     else
@@ -1781,14 +1781,14 @@ NTKStaticSiriAnimationView *__48__NTKSampleComplicationDataSource__siriTemplate_
 
 - (id)_solarTemplate
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[NTKLocationManager sharedLocationManager];
-  v5 = [v4 anyLocation];
+  anyLocation = [v4 anyLocation];
 
-  [v3 setObject:v5 forKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
-  [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
-  v6 = [(CLKCComplicationDataSource *)self family];
-  switch(v6)
+  [dictionary setObject:anyLocation forKeyedSubscript:@"NTKSolarComplicationEntryLocationKey"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"NTKSolarComplicationUseIdealizedTimeKey"];
+  family = [(CLKCComplicationDataSource *)self family];
+  switch(family)
   {
     case 12:
       v7 = 0x277CBB940;
@@ -1799,7 +1799,7 @@ NTKStaticSiriAnimationView *__48__NTKSampleComplicationDataSource__siriTemplate_
     case 9:
       v7 = 0x277CBB820;
 LABEL_7:
-      v8 = [*v7 templateWithMetadata:v3];
+      v8 = [*v7 templateWithMetadata:dictionary];
       goto LABEL_9;
   }
 
@@ -1809,7 +1809,7 @@ LABEL_9:
   return v8;
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1829,44 +1829,44 @@ void __52__NTKSampleComplicationDataSource__localeDidChange___block_invoke(uint6
   [v4 invalidateSwitcherTemplate];
 }
 
-- (id)_imageProviderWithSystemImageName:(id)a3 overridePointSize:(id)a4 tintColor:(id)a5 fallbackImageName:(id)a6
+- (id)_imageProviderWithSystemImageName:(id)name overridePointSize:(id)size tintColor:(id)color fallbackImageName:(id)imageName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  nameCopy = name;
+  sizeCopy = size;
+  imageNameCopy = imageName;
+  colorCopy = color;
   v14 = objc_opt_class();
-  v15 = [(CLKCComplicationDataSource *)self device];
-  LODWORD(v14) = [v14 _shouldUseFallbackImagesForDevice:v15];
+  device = [(CLKCComplicationDataSource *)self device];
+  LODWORD(v14) = [v14 _shouldUseFallbackImagesForDevice:device];
 
   if (v14)
   {
-    NTKImageNamed(v12);
+    NTKImageNamed(imageNameCopy);
   }
 
-  v16 = [MEMORY[0x277CBBB98] _symbolImageProviderWithSystemName:v10];
-  [v16 setTintColor:v13];
+  v16 = [MEMORY[0x277CBBB98] _symbolImageProviderWithSystemName:nameCopy];
+  [v16 setTintColor:colorCopy];
 
-  [v16 setOverridePointSize:v11];
+  [v16 setOverridePointSize:sizeCopy];
 
   return v16;
 }
 
-- (id)_fullColorImageProviderWithSystemImageName:(id)a3 tintColor:(id)a4 fallbackImageName:(id)a5
+- (id)_fullColorImageProviderWithSystemImageName:(id)name tintColor:(id)color fallbackImageName:(id)imageName
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  nameCopy = name;
+  imageNameCopy = imageName;
+  colorCopy = color;
   v11 = objc_opt_class();
-  v12 = [(CLKCComplicationDataSource *)self device];
-  if ([v11 _shouldUseFallbackImagesForDevice:v12])
+  device = [(CLKCComplicationDataSource *)self device];
+  if ([v11 _shouldUseFallbackImagesForDevice:device])
   {
-    NTKImageNamed(v9);
+    NTKImageNamed(imageNameCopy);
   }
 
-  v13 = [MEMORY[0x277CBBB20] _symbolImageProviderWithSystemName:v8];
+  v13 = [MEMORY[0x277CBBB20] _symbolImageProviderWithSystemName:nameCopy];
 
-  [v13 setTintColor:v10];
+  [v13 setTintColor:colorCopy];
 
   return v13;
 }

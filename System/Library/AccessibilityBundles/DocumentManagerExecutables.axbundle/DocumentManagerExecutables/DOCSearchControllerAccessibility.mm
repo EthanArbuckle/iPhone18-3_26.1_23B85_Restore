@@ -1,27 +1,27 @@
 @interface DOCSearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)searchBarTextDidEndEditing:(id)editing;
 @end
 
 @implementation DOCSearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSearchController" hasInstanceMethod:@"resultCollectionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSearchController" hasInstanceMethod:@"resultCollectionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionViewController" isKindOfClass:@"UIViewController"];
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   AXPerformSafeBlock();
   objc_opt_class();
   v5 = [(DOCSearchControllerAccessibility *)self safeValueForKey:@"resultCollectionViewController"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 view];
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v7);
+  view = [v6 view];
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], view);
 }
 
 id __63__DOCSearchControllerAccessibility_searchBarTextDidEndEditing___block_invoke(uint64_t a1)

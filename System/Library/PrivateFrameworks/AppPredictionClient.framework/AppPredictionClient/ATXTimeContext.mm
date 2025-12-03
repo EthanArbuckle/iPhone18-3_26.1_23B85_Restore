@@ -1,14 +1,14 @@
 @interface ATXTimeContext
-- (ATXTimeContext)initWithCoder:(id)a3;
-- (ATXTimeContext)initWithType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXTimeContext)initWithCoder:(id)coder;
+- (ATXTimeContext)initWithType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)title;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeContext
 
-- (ATXTimeContext)initWithType:(int64_t)a3
+- (ATXTimeContext)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = ATXTimeContext;
@@ -16,36 +16,36 @@
   v5 = v4;
   if (v4)
   {
-    v4->_contextType = a3;
+    v4->_contextType = type;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (ATXTimeContext)initWithCoder:(id)a3
+- (ATXTimeContext)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"type"];
+  v4 = [coder decodeIntegerForKey:@"type"];
 
   return [(ATXTimeContext *)self initWithType:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ATXTimeContext contextType](self forKey:{"contextType"), @"type"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ATXTimeContext contextType](self forKey:{"contextType"), @"type"}];
 }
 
 - (NSString)title
 {
-  v2 = [(ATXTimeContext *)self contextType];
+  contextType = [(ATXTimeContext *)self contextType];
   v3 = @"Unknown";
-  if (v2 == 1)
+  if (contextType == 1)
   {
     v3 = @"Meet Your Goals";
   }
 
-  if (v2)
+  if (contextType)
   {
     return &v3->isa;
   }
@@ -56,18 +56,18 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTimeContext *)self isEqualToATXTimeContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTimeContext *)self isEqualToATXTimeContext:v5];
   }
 
   return v6;

@@ -1,26 +1,26 @@
 @interface _SFPBGradientColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBGradientColor)initWithDictionary:(id)a3;
-- (_SFPBGradientColor)initWithFacade:(id)a3;
-- (_SFPBGradientColor)initWithJSON:(id)a3;
+- (_SFPBGradientColor)initWithDictionary:(id)dictionary;
+- (_SFPBGradientColor)initWithFacade:(id)facade;
+- (_SFPBGradientColor)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addColors:(id)a3;
-- (void)setColors:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addColors:(id)colors;
+- (void)setColors:(id)colors;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBGradientColor
 
-- (_SFPBGradientColor)initWithFacade:(id)a3
+- (_SFPBGradientColor)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBGradientColor *)self init];
   if (v5)
   {
-    v6 = [v4 colors];
-    if (v6)
+    colors = [facadeCopy colors];
+    if (colors)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 colors];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    colors2 = [facadeCopy colors];
+    v9 = [colors2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(colors2);
           }
 
           v13 = [[_SFPBColor alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
@@ -56,16 +56,16 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [colors2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBGradientColor *)v5 setColors:v7];
-    if ([v4 hasGradientType])
+    if ([facadeCopy hasGradientType])
     {
-      -[_SFPBGradientColor setGradientType:](v5, "setGradientType:", [v4 gradientType]);
+      -[_SFPBGradientColor setGradientType:](v5, "setGradientType:", [facadeCopy gradientType]);
     }
 
     v14 = v5;
@@ -75,16 +75,16 @@
   return v5;
 }
 
-- (_SFPBGradientColor)initWithDictionary:(id)a3
+- (_SFPBGradientColor)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = _SFPBGradientColor;
   v5 = [(_SFPBGradientColor *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"colors"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"colors"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"gradientType", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"gradientType", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,30 +142,30 @@
   return v5;
 }
 
-- (_SFPBGradientColor)initWithJSON:(id)a3
+- (_SFPBGradientColor)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBGradientColor *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBGradientColor *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBGradientColor *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -179,10 +179,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_colors count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -202,16 +202,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -221,22 +221,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"colors"];
+    [dictionary setObject:array forKeyedSubscript:@"colors"];
   }
 
   if (self->_gradientType)
   {
-    v12 = [(_SFPBGradientColor *)self gradientType];
-    if (v12)
+    gradientType = [(_SFPBGradientColor *)self gradientType];
+    if (gradientType)
     {
-      if (v12 == 1)
+      if (gradientType == 1)
       {
         v13 = @"1";
       }
 
       else
       {
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", gradientType];
       }
     }
 
@@ -245,38 +245,38 @@
       v13 = @"0";
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"gradientType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"gradientType"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBGradientColor *)self colors];
-    v6 = [v4 colors];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    colors = [(_SFPBGradientColor *)self colors];
+    colors2 = [equalCopy colors];
+    v7 = colors2;
+    if ((colors != 0) != (colors2 == 0))
     {
-      v8 = [(_SFPBGradientColor *)self colors];
-      if (!v8)
+      colors3 = [(_SFPBGradientColor *)self colors];
+      if (!colors3)
       {
 
 LABEL_10:
         gradientType = self->_gradientType;
-        v13 = gradientType == [v4 gradientType];
+        v13 = gradientType == [equalCopy gradientType];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBGradientColor *)self colors];
-      v11 = [v4 colors];
-      v12 = [v10 isEqual:v11];
+      v9 = colors3;
+      colors4 = [(_SFPBGradientColor *)self colors];
+      colors5 = [equalCopy colors];
+      v12 = [colors4 isEqual:colors5];
 
       if (v12)
       {
@@ -295,16 +295,16 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBGradientColor *)self colors];
+  toCopy = to;
+  colors = [(_SFPBGradientColor *)self colors];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [colors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -316,7 +316,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(colors);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -325,7 +325,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [colors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -339,27 +339,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addColors:(id)a3
+- (void)addColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   colors = self->_colors;
-  v8 = v4;
+  v8 = colorsCopy;
   if (!colors)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_colors;
-    self->_colors = v6;
+    self->_colors = array;
 
-    v4 = v8;
+    colorsCopy = v8;
     colors = self->_colors;
   }
 
-  [(NSArray *)colors addObject:v4];
+  [(NSArray *)colors addObject:colorsCopy];
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = [a3 copy];
+  v4 = [colors copy];
   colors = self->_colors;
   self->_colors = v4;
 

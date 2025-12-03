@@ -1,14 +1,14 @@
 @interface CampaignLandingPageViewController
-- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CampaignLandingPageViewController
 
-- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles33CampaignLandingPageViewController_isImpressionable;
   sub_1D7C00434();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles33CampaignLandingPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -30,30 +30,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CampaignLandingPageViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CampaignLandingPageViewController.viewWillLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
   v4 = v10.receiver;
-  v5 = a3;
-  [(CampaignLandingPageViewController *)&v10 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v4 view];
-  if (v7)
+  changeCopy = change;
+  [(CampaignLandingPageViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  view = [v4 view];
+  if (view)
   {
-    v8 = v7;
+    v8 = view;
 
-    v9 = [objc_opt_self() systemBackgroundColor];
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
     [v8 setBackgroundColor_];
   }
 

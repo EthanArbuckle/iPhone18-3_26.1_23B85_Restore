@@ -2,11 +2,11 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
 - (void)dealloc;
-- (void)keyboardInputChangedSelection:(id)a3;
+- (void)keyboardInputChangedSelection:(id)selection;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setText:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setText:(id)text;
 @end
 
 @implementation SUTextContentView
@@ -23,45 +23,45 @@
 {
   v5.receiver = self;
   v5.super_class = SUTextContentView;
-  v3 = [(UITextContentView *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(UITextContentView *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(UILabel *)self->_placeholderLabel removeFromSuperview];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
   [(UILabel *)self->_placeholderLabel removeFromSuperview];
   v5.receiver = self;
   v5.super_class = SUTextContentView;
-  [(UITextContentView *)&v5 keyboardInputChangedSelection:a3];
+  [(UITextContentView *)&v5 keyboardInputChangedSelection:selection];
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = SUTextContentView;
-  v3 = [(UITextContentView *)&v5 resignFirstResponder];
-  if (v3 && self->_placeholderLabel && ![(NSString *)[(UITextContentView *)self text] length])
+  resignFirstResponder = [(UITextContentView *)&v5 resignFirstResponder];
+  if (resignFirstResponder && self->_placeholderLabel && ![(NSString *)[(UITextContentView *)self text] length])
   {
     [(SUTextContentView *)self addSubview:self->_placeholderLabel];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   [(UILabel *)self->_placeholderLabel setBackgroundColor:?];
   v5.receiver = self;
   v5.super_class = SUTextContentView;
-  [(SUTextContentView *)&v5 setBackgroundColor:a3];
+  [(SUTextContentView *)&v5 setBackgroundColor:color];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   if (!self->_placeholderLabel)
   {
@@ -69,7 +69,7 @@
     goto LABEL_5;
   }
 
-  v5 = [a3 length];
+  v5 = [text length];
   placeholderLabel = self->_placeholderLabel;
   if (v5)
   {
@@ -82,7 +82,7 @@ LABEL_5:
 LABEL_6:
   v7.receiver = self;
   v7.super_class = SUTextContentView;
-  [(UITextContentView *)&v7 setText:a3];
+  [(UITextContentView *)&v7 setText:text];
 }
 
 - (void)layoutSubviews
@@ -99,11 +99,11 @@ LABEL_6:
   }
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  if ([a3 length] || (placeholderLabel = self->_placeholderLabel) == 0)
+  if ([placeholder length] || (placeholderLabel = self->_placeholderLabel) == 0)
   {
-    if ([a3 length])
+    if ([placeholder length])
     {
       if (!self->_placeholderLabel)
       {
@@ -120,7 +120,7 @@ LABEL_6:
       }
 
       [(UILabel *)self->_placeholderLabel setFont:[(UITextContentView *)self font]];
-      [(UILabel *)self->_placeholderLabel setText:a3];
+      [(UILabel *)self->_placeholderLabel setText:placeholder];
       [(UILabel *)self->_placeholderLabel sizeToFit];
       if ([(UILabel *)self->_placeholderLabel superview]== self)
       {

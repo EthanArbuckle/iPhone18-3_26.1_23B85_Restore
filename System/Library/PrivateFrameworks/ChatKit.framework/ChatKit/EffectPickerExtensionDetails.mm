@@ -8,7 +8,7 @@
 
 - (void)createView
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B3B378();
 }
 
@@ -16,7 +16,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_190D53910();
 }
 

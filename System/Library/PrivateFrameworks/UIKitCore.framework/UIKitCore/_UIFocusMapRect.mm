@@ -1,11 +1,11 @@
 @interface _UIFocusMapRect
-- (BOOL)intersectsRect:(CGRect)a3;
-- (BOOL)intersectsRegion:(id)a3 inSnapshot:(id)a4;
+- (BOOL)intersectsRect:(CGRect)rect;
+- (BOOL)intersectsRegion:(id)region inSnapshot:(id)snapshot;
 - (CGRect)frame;
 - (NSString)description;
 - (UICoordinateSpace)coordinateSpace;
-- (_UIFocusMapRect)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4;
-- (id)intersectionWithRegion:(id)a3 inSnapshot:(id)a4;
+- (_UIFocusMapRect)initWithFrame:(CGRect)frame coordinateSpace:(id)space;
+- (id)intersectionWithRegion:(id)region inSnapshot:(id)snapshot;
 @end
 
 @implementation _UIFocusMapRect
@@ -30,13 +30,13 @@
   return result;
 }
 
-- (_UIFocusMapRect)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (_UIFocusMapRect)initWithFrame:(CGRect)frame coordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   v13.receiver = self;
   v13.super_class = _UIFocusMapRect;
   v10 = [(_UIFocusMapRect *)&v13 init];
@@ -47,18 +47,18 @@
     v10->_frame.origin.y = y;
     v10->_frame.size.width = width;
     v10->_frame.size.height = height;
-    objc_storeWeak(&v10->_coordinateSpace, v9);
+    objc_storeWeak(&v10->_coordinateSpace, spaceCopy);
   }
 
   return v11;
 }
 
-- (BOOL)intersectsRect:(CGRect)a3
+- (BOOL)intersectsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_UIFocusMapRect *)self frame];
   v8 = v7;
   v10 = v9;
@@ -161,31 +161,31 @@
   return v25 && v28;
 }
 
-- (BOOL)intersectsRegion:(id)a3 inSnapshot:(id)a4
+- (BOOL)intersectsRegion:(id)region inSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 coordinateSpace];
-  v10 = [(_UIFocusMapRect *)self coordinateSpace];
-  v11 = [v9 isEqual:v10];
+  regionCopy = region;
+  snapshotCopy = snapshot;
+  coordinateSpace = [snapshotCopy coordinateSpace];
+  coordinateSpace2 = [(_UIFocusMapRect *)self coordinateSpace];
+  v11 = [coordinateSpace isEqual:coordinateSpace2];
 
   if ((v11 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusMapArea.m" lineNumber:39 description:@"Focus: unable to compare intersecting regions from a snapshot using a different coordinate space than the map area's coordinate space. This is a UIKit bug."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapArea.m" lineNumber:39 description:@"Focus: unable to compare intersecting regions from a snapshot using a different coordinate space than the map area's coordinate space. This is a UIKit bug."];
   }
 
-  [v8 snapshotFrameForRegion:v7];
+  [snapshotCopy snapshotFrameForRegion:regionCopy];
   v12 = [(_UIFocusMapRect *)self intersectsRect:?];
 
   return v12;
 }
 
-- (id)intersectionWithRegion:(id)a3 inSnapshot:(id)a4
+- (id)intersectionWithRegion:(id)region inSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 snapshotFrameForRegion:v6];
+  regionCopy = region;
+  snapshotCopy = snapshot;
+  [snapshotCopy snapshotFrameForRegion:regionCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -214,9 +214,9 @@
   v34.size.height = height;
   if (CGRectEqualToRect(v29, v34))
   {
-    v24 = v6;
+    height = regionCopy;
 LABEL_3:
-    v25 = v24;
+    v25 = height;
     goto LABEL_8;
   }
 
@@ -238,7 +238,7 @@ LABEL_3:
       v32.size.height = height;
       if (fabs(CGRectGetHeight(v32)) >= 0.0001)
       {
-        v24 = [_UIFocusRegionEvaluator subregionFromRegion:v6 withSnapshotFrame:v7 inSnapshot:x, y, width, height];
+        height = [_UIFocusRegionEvaluator subregionFromRegion:regionCopy withSnapshotFrame:snapshotCopy inSnapshot:x, y, width, height];
         goto LABEL_3;
       }
     }
@@ -259,9 +259,9 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
   v7 = [v3 appendObject:WeakRetained withName:@"coordinateSpace"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

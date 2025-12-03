@@ -1,7 +1,7 @@
 @interface _IKDSEPrototypeBundle
 - (_IKDSEPrototypeBundle)init;
-- (id)prototypeForItemAtIndex:(unint64_t)a3;
-- (void)addPrototype:(id)a3 forIndexes:(id)a4;
+- (id)prototypeForItemAtIndex:(unint64_t)index;
+- (void)addPrototype:(id)prototype forIndexes:(id)indexes;
 @end
 
 @implementation _IKDSEPrototypeBundle
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (id)prototypeForItemAtIndex:(unint64_t)a3
+- (id)prototypeForItemAtIndex:(unint64_t)index
 {
   if (self->_flags.areEntriesDirty)
   {
@@ -41,11 +41,11 @@
     {
       v8 = v7 + (v6 >> 1);
       v9 = [(NSMutableArray *)self->_entries objectAtIndexedSubscript:v8];
-      v10 = [v9 range];
-      if (a3 < v10 || a3 - v10 >= v11)
+      range = [v9 range];
+      if (index < range || index - range >= v11)
       {
-        v13 = [v9 range];
-        if (v13 <= a3)
+        range2 = [v9 range];
+        if (range2 <= index)
         {
           v6 += v7 + ~v8;
         }
@@ -55,7 +55,7 @@
           v6 >>= 1;
         }
 
-        if (v13 <= a3)
+        if (range2 <= index)
         {
           v7 = v8 + 1;
         }
@@ -88,11 +88,11 @@ LABEL_22:
   return v15;
 }
 
-- (void)addPrototype:(id)a3 forIndexes:(id)a4
+- (void)addPrototype:(id)prototype forIndexes:(id)indexes
 {
   prototypes = self->_prototypes;
-  v7 = a4;
-  [(NSMutableArray *)prototypes addObject:a3];
+  indexesCopy = indexes;
+  [(NSMutableArray *)prototypes addObject:prototype];
   v8 = [(NSMutableArray *)self->_prototypes count]- 1;
   v9 = self->_entries;
   v11[0] = MEMORY[0x277D85DD0];
@@ -102,7 +102,7 @@ LABEL_22:
   v12 = v9;
   v13 = v8;
   v10 = v9;
-  [v7 enumerateRangesUsingBlock:v11];
+  [indexesCopy enumerateRangesUsingBlock:v11];
 
   self->_flags.areEntriesDirty = 1;
 }

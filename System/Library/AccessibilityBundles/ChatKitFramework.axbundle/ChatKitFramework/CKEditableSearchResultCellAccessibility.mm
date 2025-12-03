@@ -1,47 +1,47 @@
 @interface CKEditableSearchResultCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 @end
 
 @implementation CKEditableSearchResultCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKSearchViewController" hasInstanceMethod:@"searchControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSearchController" hasInstanceMethod:@"results" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSearchController" hasInstanceMethod:@"menuElementsForResult:atIndexPath:sourceRect:" withFullSignature:{"@", "@", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKSearchViewController" hasInstanceMethod:@"searchControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSearchController" hasInstanceMethod:@"results" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSearchController" hasInstanceMethod:@"menuElementsForResult:atIndexPath:sourceRect:" withFullSignature:{"@", "@", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (id)accessibilityCustomActions
 {
   v52 = *MEMORY[0x29EDCA608];
-  v29 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v50.receiver = self;
   v50.super_class = CKEditableSearchResultCellAccessibility;
-  v3 = [(CKEditableSearchResultCellAccessibility *)&v50 accessibilityCustomActions];
-  [v29 axSafelyAddObjectsFromArray:v3];
+  accessibilityCustomActions = [(CKEditableSearchResultCellAccessibility *)&v50 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   objc_opt_class();
   v4 = [(CKEditableSearchResultCellAccessibility *)self _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v25 = __UIAccessibilityCastAsClass();
 
-  v24 = [v25 delegate];
-  v27 = [v24 safeArrayForKey:@"searchControllers"];
-  v5 = [(CKEditableSearchResultCellAccessibility *)self _accessibilityIndexPath];
-  v6 = [v5 section];
-  if (v6 >= [v27 count])
+  delegate = [v25 delegate];
+  v27 = [delegate safeArrayForKey:@"searchControllers"];
+  _accessibilityIndexPath = [(CKEditableSearchResultCellAccessibility *)self _accessibilityIndexPath];
+  section = [_accessibilityIndexPath section];
+  if (section >= [v27 count])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v27 objectAtIndex:{objc_msgSend(v5, "section")}];
+    v7 = [v27 objectAtIndex:{objc_msgSend(_accessibilityIndexPath, "section")}];
   }
 
   v26 = [v7 safeArrayForKey:@"results"];
-  v8 = [v5 row];
+  v8 = [_accessibilityIndexPath row];
   if (v8 >= [v26 count])
   {
     v9 = 0;
@@ -49,7 +49,7 @@
 
   else
   {
-    v9 = [v26 objectAtIndex:{objc_msgSend(v5, "row")}];
+    v9 = [v26 objectAtIndex:{objc_msgSend(_accessibilityIndexPath, "row")}];
   }
 
   v44 = 0;
@@ -67,9 +67,9 @@
   v39 = v21;
   v23 = v9;
   v40 = v23;
-  v22 = v5;
+  v22 = _accessibilityIndexPath;
   v41 = v22;
-  v42 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v10 = v45[5];
 
@@ -94,11 +94,11 @@
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 title];
-        if (!v16)
+        title = [v15 title];
+        if (!title)
         {
-          v17 = [v15 image];
-          v16 = [v17 accessibilityLabel];
+          image = [v15 image];
+          title = [image accessibilityLabel];
         }
 
         v18 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -107,8 +107,8 @@
         v30[2] = __69__CKEditableSearchResultCellAccessibility_accessibilityCustomActions__block_invoke_2;
         v30[3] = &unk_29F2B0770;
         v30[4] = v15;
-        v19 = [v18 initWithName:v16 actionHandler:v30];
-        [v29 axSafelyAddObject:v19];
+        v19 = [v18 initWithName:title actionHandler:v30];
+        [array axSafelyAddObject:v19];
       }
 
       v11 = [obj countByEnumeratingWithState:&v31 objects:v51 count:16];
@@ -117,7 +117,7 @@
     while (v11);
   }
 
-  return v29;
+  return array;
 }
 
 uint64_t __69__CKEditableSearchResultCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)

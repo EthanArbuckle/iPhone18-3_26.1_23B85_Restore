@@ -1,25 +1,25 @@
 @interface RangeBiasEstimatorInput
-- (RangeBiasEstimatorInput)initWithData:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (RangeBiasEstimatorInput)initWithData:(id)data;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation RangeBiasEstimatorInput
 
-- (RangeBiasEstimatorInput)initWithData:(id)a3
+- (RangeBiasEstimatorInput)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (self)
   {
-    objc_storeStrong(&self->_data, a3);
+    objc_storeStrong(&self->_data, data);
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"input"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"input"])
   {
     v5 = [MLFeatureValue featureValueWithMultiArray:self->_data];
   }

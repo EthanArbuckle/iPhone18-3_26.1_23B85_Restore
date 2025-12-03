@@ -2,10 +2,10 @@
 - (BOOL)accessibilityPerformMagicTap;
 - (BOOL)prefersStatusBarHidden;
 - (UIViewController)childViewControllerForStatusBarHidden;
-- (_TtC7Journal28JurassicNavigationController)initWithCoder:(id)a3;
-- (_TtC7Journal28JurassicNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC7Journal28JurassicNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Journal28JurassicNavigationController)initWithRootViewController:(id)a3;
+- (_TtC7Journal28JurassicNavigationController)initWithCoder:(id)coder;
+- (_TtC7Journal28JurassicNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC7Journal28JurassicNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Journal28JurassicNavigationController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -18,106 +18,106 @@
   v5.super_class = type metadata accessor for JurassicNavigationController();
   v2 = v5.receiver;
   [(JurassicNavigationController *)&v5 viewDidLoad];
-  v3 = [v2 navigationBar];
-  v4 = [objc_opt_self() systemIndigoColor];
-  [v3 setTintColor:v4];
+  navigationBar = [v2 navigationBar];
+  systemIndigoColor = [objc_opt_self() systemIndigoColor];
+  [navigationBar setTintColor:systemIndigoColor];
 }
 
 - (UIViewController)childViewControllerForStatusBarHidden
 {
-  v2 = [(JurassicNavigationController *)self topViewController];
+  topViewController = [(JurassicNavigationController *)self topViewController];
 
-  return v2;
+  return topViewController;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
-  v3 = [(JurassicNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(JurassicNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 prefersStatusBarHidden];
+    v4 = topViewController;
+    prefersStatusBarHidden = [topViewController prefersStatusBarHidden];
   }
 
   else
   {
-    v5 = 0;
+    prefersStatusBarHidden = 0;
   }
 
-  return v5;
+  return prefersStatusBarHidden;
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A99B4();
 }
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
-  v3 = [(JurassicNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(JurassicNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 accessibilityPerformMagicTap];
+    v4 = topViewController;
+    accessibilityPerformMagicTap = [topViewController accessibilityPerformMagicTap];
 
-    return v5;
+    return accessibilityPerformMagicTap;
   }
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for JurassicNavigationController();
-    v7 = [(JurassicNavigationController *)&v8 accessibilityPerformMagicTap];
+    accessibilityPerformMagicTap2 = [(JurassicNavigationController *)&v8 accessibilityPerformMagicTap];
 
-    return v7;
+    return accessibilityPerformMagicTap2;
   }
 }
 
-- (_TtC7Journal28JurassicNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7Journal28JurassicNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JurassicNavigationController();
-  return [(JurassicNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(JurassicNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC7Journal28JurassicNavigationController)initWithRootViewController:(id)a3
+- (_TtC7Journal28JurassicNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for JurassicNavigationController();
-  return [(JurassicNavigationController *)&v5 initWithRootViewController:a3];
+  return [(JurassicNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC7Journal28JurassicNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal28JurassicNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for JurassicNavigationController();
-  v9 = [(JurassicNavigationController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(JurassicNavigationController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC7Journal28JurassicNavigationController)initWithCoder:(id)a3
+- (_TtC7Journal28JurassicNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JurassicNavigationController();
-  v4 = a3;
-  v5 = [(JurassicNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(JurassicNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

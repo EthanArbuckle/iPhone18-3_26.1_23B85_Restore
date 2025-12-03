@@ -1,26 +1,26 @@
 @interface BFFSimplePasscodeInputView
-- (BFFSimplePasscodeInputView)initWithFrame:(CGRect)a3 numberOfEntryFields:(unint64_t)a4;
+- (BFFSimplePasscodeInputView)initWithFrame:(CGRect)frame numberOfEntryFields:(unint64_t)fields;
 - (id)passcode;
-- (id)passcodeField:(id)a3 shouldInsertText:(id)a4;
+- (id)passcodeField:(id)field shouldInsertText:(id)text;
 - (void)layoutSubviews;
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4;
-- (void)setPasscode:(id)a3;
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode;
+- (void)setPasscode:(id)passcode;
 @end
 
 @implementation BFFSimplePasscodeInputView
 
-- (BFFSimplePasscodeInputView)initWithFrame:(CGRect)a3 numberOfEntryFields:(unint64_t)a4
+- (BFFSimplePasscodeInputView)initWithFrame:(CGRect)frame numberOfEntryFields:(unint64_t)fields
 {
   v11.receiver = self;
   v11.super_class = BFFSimplePasscodeInputView;
-  v5 = [(BFFPasscodeInputView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(BFFPasscodeInputView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    v6 = [MEMORY[0x277D3FA48] appearance];
-    v7 = [MEMORY[0x277D75348] _labelColor];
-    [v6 setTextColor:v7];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [appearance setTextColor:_labelColor];
 
-    v8 = [objc_alloc(MEMORY[0x277D3FA98]) initWithNumberOfEntryFields:a4];
+    v8 = [objc_alloc(MEMORY[0x277D3FA98]) initWithNumberOfEntryFields:fields];
     passcodeField = v5->_passcodeField;
     v5->_passcodeField = v8;
 
@@ -34,15 +34,15 @@
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v48.receiver = self;
   v48.super_class = BFFSimplePasscodeInputView;
   [(BFFPasscodeInputView *)&v48 layoutSubviews];
-  v6 = [(BFFSimplePasscodeInputView *)self passcodeField];
-  [v6 frame];
+  passcodeField = [(BFFSimplePasscodeInputView *)self passcodeField];
+  [passcodeField frame];
   v8 = v7;
   v10 = v9;
 
@@ -55,23 +55,23 @@
     v13 = floor((v14 - v10) * 0.5);
   }
 
-  v15 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+  instructionsLinkButton = [(BFFPasscodeInputView *)self instructionsLinkButton];
 
-  if (v15)
+  if (instructionsLinkButton)
   {
-    v16 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    v17 = [v16 titleLabel];
-    [v17 frame];
+    instructionsLinkButton2 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    titleLabel = [instructionsLinkButton2 titleLabel];
+    [titleLabel frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    [(BFFSimplePasscodeInputView *)self convertRect:v26 fromView:v19, v21, v23, v25];
+    instructionsLinkButton3 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    [(BFFSimplePasscodeInputView *)self convertRect:instructionsLinkButton3 fromView:v19, v21, v23, v25];
     MaxY = CGRectGetMaxY(v49);
-    v28 = [(BFFPasscodeInputView *)self instructionsLinkButton];
-    v29 = [v28 titleLabel];
-    [v29 _baselineOffsetFromBottom];
+    instructionsLinkButton4 = [(BFFPasscodeInputView *)self instructionsLinkButton];
+    titleLabel2 = [instructionsLinkButton4 titleLabel];
+    [titleLabel2 _baselineOffsetFromBottom];
     v31 = MaxY - v30 + 36.0 + -7.0;
 
     if (v13 >= v31)
@@ -82,8 +82,8 @@
 
   else
   {
-    v32 = [(BFFPasscodeInputView *)self instructions];
-    [v32 frame];
+    instructions = [(BFFPasscodeInputView *)self instructions];
+    [instructions frame];
     v34 = v33;
     v36 = v35;
     v38 = v37;
@@ -107,66 +107,66 @@
       v31 = v43;
     }
 
-    v44 = [(BFFPasscodeInputView *)self instructions];
+    instructions2 = [(BFFPasscodeInputView *)self instructions];
     v45 = v42;
     v12 = v40;
     v10 = v39;
     v8 = v47;
-    [v44 setFrame:{v34, v36, v38, v45}];
+    [instructions2 setFrame:{v34, v36, v38, v45}];
   }
 
-  v46 = [(BFFSimplePasscodeInputView *)self passcodeField];
-  [v46 setFrame:{floor((v12 - v8) * 0.5), v31, v8, v10}];
+  passcodeField2 = [(BFFSimplePasscodeInputView *)self passcodeField];
+  [passcodeField2 setFrame:{floor((v12 - v8) * 0.5), v31, v8, v10}];
 }
 
-- (void)setPasscode:(id)a3
+- (void)setPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(BFFSimplePasscodeInputView *)self passcodeField];
-  [v5 setStringValue:v4];
+  passcodeCopy = passcode;
+  passcodeField = [(BFFSimplePasscodeInputView *)self passcodeField];
+  [passcodeField setStringValue:passcodeCopy];
 }
 
 - (id)passcode
 {
-  v2 = [(BFFSimplePasscodeInputView *)self passcodeField];
-  v3 = [v2 stringValue];
+  passcodeField = [(BFFSimplePasscodeInputView *)self passcodeField];
+  stringValue = [passcodeField stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (id)passcodeField:(id)a3 shouldInsertText:(id)a4
+- (id)passcodeField:(id)field shouldInsertText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   if ([(BFFSimplePasscodeInputView *)self limitCharactersToNumbers])
   {
-    v6 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v7 = [v6 invertedSet];
-    v8 = [v5 componentsSeparatedByCharactersInSet:v7];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
+    v8 = [textCopy componentsSeparatedByCharactersInSet:invertedSet];
     v9 = [v8 componentsJoinedByString:&stru_287761F90];
   }
 
   else
   {
-    v9 = v5;
+    v9 = textCopy;
   }
 
   return v9;
 }
 
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode
 {
-  v10 = a4;
-  v5 = [(BFFPasscodeInputView *)self delegate];
-  if (v5)
+  passcodeCopy = passcode;
+  delegate = [(BFFPasscodeInputView *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(BFFPasscodeInputView *)self delegate];
+    v6 = delegate;
+    delegate2 = [(BFFPasscodeInputView *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(BFFPasscodeInputView *)self delegate];
-      [v9 passcodeInput:self enteredPasscode:v10];
+      delegate3 = [(BFFPasscodeInputView *)self delegate];
+      [delegate3 passcodeInput:self enteredPasscode:passcodeCopy];
     }
   }
 }

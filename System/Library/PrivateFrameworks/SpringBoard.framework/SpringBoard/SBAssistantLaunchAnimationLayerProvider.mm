@@ -1,33 +1,33 @@
 @interface SBAssistantLaunchAnimationLayerProvider
-- (SBAssistantLaunchAnimationLayerProvider)initWithDropletLayer:(id)a3;
-- (void)setTransitioningLayer:(id)a3;
+- (SBAssistantLaunchAnimationLayerProvider)initWithDropletLayer:(id)layer;
+- (void)setTransitioningLayer:(id)layer;
 @end
 
 @implementation SBAssistantLaunchAnimationLayerProvider
 
-- (SBAssistantLaunchAnimationLayerProvider)initWithDropletLayer:(id)a3
+- (SBAssistantLaunchAnimationLayerProvider)initWithDropletLayer:(id)layer
 {
-  v6 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = SBAssistantLaunchAnimationLayerProvider;
   v7 = [(SBAssistantLaunchAnimationLayerProvider *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!layerCopy)
     {
       [(SBAssistantLaunchAnimationLayerProvider *)a2 initWithDropletLayer:v7];
     }
 
-    objc_storeStrong(&v7->_dropletLayer, a3);
+    objc_storeStrong(&v7->_dropletLayer, layer);
   }
 
   return v7;
 }
 
-- (void)setTransitioningLayer:(id)a3
+- (void)setTransitioningLayer:(id)layer
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBAssistantLaunchAnimationLayerProvider.m" lineNumber:34 description:@"read-only"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAssistantLaunchAnimationLayerProvider.m" lineNumber:34 description:@"read-only"];
 }
 
 - (void)initWithDropletLayer:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

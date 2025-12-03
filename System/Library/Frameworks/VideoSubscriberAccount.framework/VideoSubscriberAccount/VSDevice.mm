@@ -1,16 +1,16 @@
 @interface VSDevice
-+ (BOOL)_getMobileGestaltBoolean:(__CFString *)a3 withCopyAnswer:(void *)a4;
-+ (BOOL)_runningACustomerBuildWithCopyAnswer:(void *)a3;
++ (BOOL)_getMobileGestaltBoolean:(__CFString *)boolean withCopyAnswer:(void *)answer;
++ (BOOL)_runningACustomerBuildWithCopyAnswer:(void *)answer;
 + (id)currentDevice;
-+ (unint64_t)_deviceTypeWithCopyAnswer:(void *)a3;
++ (unint64_t)_deviceTypeWithCopyAnswer:(void *)answer;
 - (BOOL)isRunningACustomerBuild;
 - (BOOL)isRunningAnInternalBuild;
-- (BOOL)setIgnoreSetTopBoxProfile:(BOOL)a3;
+- (BOOL)setIgnoreSetTopBoxProfile:(BOOL)profile;
 - (NSString)bincompatOS;
 - (NSString)bincompatPlatform;
 - (VSDevice)init;
-- (id)_stringForKey:(__CFString *)a3 copyAnswer:(void *)a4;
-- (id)accountDeletionConfirmationMessageForIdentityProviderDisplayName:(id)a3;
+- (id)_stringForKey:(__CFString *)key copyAnswer:(void *)answer;
+- (id)accountDeletionConfirmationMessageForIdentityProviderDisplayName:(id)name;
 - (id)developerIdentityProviderDeletionConfirmationMessage;
 - (id)name;
 - (id)productVersion;
@@ -21,13 +21,13 @@
 - (unint64_t)deviceType;
 - (void)cloudConfigurationDidChange;
 - (void)dealloc;
-- (void)fetchDeviceManagedSetTopBoxProfileWithCompletion:(id)a3;
-- (void)fetchSetTopBoxProfileWithCompletion:(id)a3;
-- (void)refreshSetTopBoxProfile:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)setProfileConnection:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)fetchDeviceManagedSetTopBoxProfileWithCompletion:(id)completion;
+- (void)fetchSetTopBoxProfileWithCompletion:(id)completion;
+- (void)refreshSetTopBoxProfile:(id)profile;
+- (void)registerObserver:(id)observer;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)setProfileConnection:(id)connection;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation VSDevice
@@ -114,29 +114,29 @@ VSDeveloperSettingsFetchOperation *__16__VSDevice_init__block_invoke()
   return v0;
 }
 
-- (void)setProfileConnection:(id)a3
+- (void)setProfileConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(VSManagedProfileConnection *)self->_profileConnection unregisterObserver:self];
   profileConnection = self->_profileConnection;
-  self->_profileConnection = v4;
-  v6 = v4;
+  self->_profileConnection = connectionCopy;
+  v6 = connectionCopy;
 
   [(VSManagedProfileConnection *)self->_profileConnection registerObserver:self];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VSDevice *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(VSDevice *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__VSDevice_registerObserver___block_invoke;
   v7[3] = &unk_278B73708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __29__VSDevice_registerObserver___block_invoke(uint64_t a1)
@@ -145,18 +145,18 @@ void __29__VSDevice_registerObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VSDevice *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(VSDevice *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__VSDevice_unregisterObserver___block_invoke;
   v7[3] = &unk_278B73708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __31__VSDevice_unregisterObserver___block_invoke(uint64_t a1)
@@ -167,11 +167,11 @@ void __31__VSDevice_unregisterObserver___block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(VSDevice *)self profileConnection];
-  [v4 unregisterObserver:self];
+  profileConnection = [(VSDevice *)self profileConnection];
+  [profileConnection unregisterObserver:self];
 
   v5.receiver = self;
   v5.super_class = VSDevice;
@@ -180,8 +180,8 @@ void __31__VSDevice_unregisterObserver___block_invoke(uint64_t a1)
 
 - (id)developerIdentityProviderDeletionConfirmationMessage
 {
-  v2 = [(VSDevice *)self deviceType];
-  if (v2 > 5 || (v3 = off_278B75130[v2], [MEMORY[0x277CCA8D8] vs_frameworkBundle], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "localizedStringForKey:value:table:", v3, 0, 0), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  deviceType = [(VSDevice *)self deviceType];
+  if (deviceType > 5 || (v3 = off_278B75130[deviceType], [MEMORY[0x277CCA8D8] vs_frameworkBundle], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "localizedStringForKey:value:table:", v3, 0, 0), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The question parameter must not be nil."];
     v5 = 0;
@@ -190,51 +190,51 @@ void __31__VSDevice_unregisterObserver___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)accountDeletionConfirmationMessageForIdentityProviderDisplayName:(id)a3
+- (id)accountDeletionConfirmationMessageForIdentityProviderDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = [(VSDevice *)self deviceType];
+  nameCopy = name;
+  v5 = [nameCopy length];
+  deviceType = [(VSDevice *)self deviceType];
   if (!v5)
   {
-    if (v6 >= 4)
+    if (deviceType >= 4)
     {
-      if (v6 == 4)
+      if (deviceType == 4)
       {
-        v10 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-        v11 = v10;
+        vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+        v11 = vs_frameworkBundle;
         v12 = @"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_TV";
         goto LABEL_8;
       }
 
-      if (v6 != 5)
+      if (deviceType != 5)
       {
         goto LABEL_16;
       }
     }
 
-    v10 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v11 = v10;
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v11 = vs_frameworkBundle;
     v12 = @"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_GENERIC";
 LABEL_8:
-    v9 = [v10 localizedStringForKey:v12 value:0 table:0];
+    v9 = [vs_frameworkBundle localizedStringForKey:v12 value:0 table:0];
 
     goto LABEL_9;
   }
 
-  if (v6 < 4)
+  if (deviceType < 4)
   {
     goto LABEL_3;
   }
 
-  if (v6 == 4)
+  if (deviceType == 4)
   {
-    v14 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v7 = [v14 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_TV" value:0 table:0];
+    vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    vs_frameworkBundle3 = [vs_frameworkBundle2 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_TV" value:0 table:0];
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v4];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:vs_frameworkBundle3, nameCopy];
 LABEL_4:
-    v9 = v8;
+    v9 = nameCopy;
 
     if (!v9)
     {
@@ -250,11 +250,11 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (v6 == 5)
+  if (deviceType == 5)
   {
 LABEL_3:
-    v7 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v8 = [v7 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_GENERIC" value:0 table:0];
+    vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    nameCopy = [vs_frameworkBundle3 localizedStringForKey:@"DELETE_ACCOUNT_CONFIRMATION_MESSAGE_FORMAT_GENERIC" value:0 table:0];
     goto LABEL_4;
   }
 
@@ -268,11 +268,11 @@ LABEL_17:
   return v9;
 }
 
-- (void)fetchSetTopBoxProfileWithCompletion:(id)a3
+- (void)fetchSetTopBoxProfileWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSDevice *)self newDeveloperSettingsFetchOperationBlock];
-  v6 = v5[2]();
+  completionCopy = completion;
+  newDeveloperSettingsFetchOperationBlock = [(VSDevice *)self newDeveloperSettingsFetchOperationBlock];
+  v6 = newDeveloperSettingsFetchOperationBlock[2]();
 
   v7 = MEMORY[0x277CCA8C8];
   v13[0] = MEMORY[0x277D85DD0];
@@ -280,17 +280,17 @@ LABEL_17:
   v13[2] = __48__VSDevice_fetchSetTopBoxProfileWithCompletion___block_invoke;
   v13[3] = &unk_278B73848;
   v14 = v6;
-  v15 = self;
-  v16 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v16 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   v10 = [v7 blockOperationWithBlock:v13];
   [v10 addDependency:v9];
-  v11 = [(VSDevice *)self privateQueue];
-  [v11 addOperation:v9];
+  privateQueue = [(VSDevice *)self privateQueue];
+  [privateQueue addOperation:v9];
 
-  v12 = [(VSDevice *)self privateQueue];
-  [v12 addOperation:v10];
+  privateQueue2 = [(VSDevice *)self privateQueue];
+  [privateQueue2 addOperation:v10];
 }
 
 void __48__VSDevice_fetchSetTopBoxProfileWithCompletion___block_invoke(uint64_t a1)
@@ -398,60 +398,60 @@ LABEL_18:
 LABEL_22:
 }
 
-- (void)fetchDeviceManagedSetTopBoxProfileWithCompletion:(id)a3
+- (void)fetchDeviceManagedSetTopBoxProfileWithCompletion:(id)completion
 {
-  v16 = a3;
-  v4 = [(VSDevice *)self profileConnection];
-  v5 = [v4 providerUniqueID];
+  completionCopy = completion;
+  profileConnection = [(VSDevice *)self profileConnection];
+  providerUniqueID = [profileConnection providerUniqueID];
 
-  if (v5 && (-[VSDevice preferences](self, "preferences"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 ignoreSetTopBoxProfile], v6, (v7 & 1) == 0))
+  if (providerUniqueID && (-[VSDevice preferences](self, "preferences"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 ignoreSetTopBoxProfile], v6, (v7 & 1) == 0))
   {
-    v8 = v5;
-    v9 = [(VSDevice *)self profileConnection];
-    v10 = [v9 userToken];
+    v8 = providerUniqueID;
+    profileConnection2 = [(VSDevice *)self profileConnection];
+    userToken = [profileConnection2 userToken];
 
-    if (!v10)
+    if (!userToken)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[self profileConnection] userToken] parameter must not be nil."];
     }
 
-    v11 = [(VSDevice *)self profileConnection];
-    v12 = [v11 userToken];
+    profileConnection3 = [(VSDevice *)self profileConnection];
+    userToken2 = [profileConnection3 userToken];
 
     v13 = objc_alloc_init(VSSetTopBoxProfile);
     [(VSSetTopBoxProfile *)v13 setProviderID:v8];
 
-    [(VSSetTopBoxProfile *)v13 setUserToken:v12];
+    [(VSSetTopBoxProfile *)v13 setUserToken:userToken2];
     [(VSSetTopBoxProfile *)v13 setIsDeveloper:0];
-    v14 = [(VSDevice *)self preferences];
-    v15 = [v14 setTopBoxActivationTime];
-    [(VSSetTopBoxProfile *)v13 setActivationTime:v15];
+    preferences = [(VSDevice *)self preferences];
+    setTopBoxActivationTime = [preferences setTopBoxActivationTime];
+    [(VSSetTopBoxProfile *)v13 setActivationTime:setTopBoxActivationTime];
 
-    v16[2](v16, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
   {
-    v16[2](v16, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (BOOL)isRunningAnInternalBuild
 {
   v3 = objc_opt_class();
-  v4 = [(VSDevice *)self copyAnswer];
+  copyAnswer = [(VSDevice *)self copyAnswer];
 
-  return [v3 _runningAnInternalBuildWithCopyAnswer:v4];
+  return [v3 _runningAnInternalBuildWithCopyAnswer:copyAnswer];
 }
 
-+ (BOOL)_runningACustomerBuildWithCopyAnswer:(void *)a3
++ (BOOL)_runningACustomerBuildWithCopyAnswer:(void *)answer
 {
-  if (!a3)
+  if (!answer)
   {
     return 1;
   }
 
-  v3 = (a3)(@"ReleaseType", 0);
+  v3 = (answer)(@"ReleaseType", 0);
   if (!v3)
   {
     return 1;
@@ -464,19 +464,19 @@ LABEL_22:
 - (BOOL)isRunningACustomerBuild
 {
   v3 = objc_opt_class();
-  v4 = [(VSDevice *)self copyAnswer];
+  copyAnswer = [(VSDevice *)self copyAnswer];
 
-  return [v3 _runningACustomerBuildWithCopyAnswer:v4];
+  return [v3 _runningACustomerBuildWithCopyAnswer:copyAnswer];
 }
 
-+ (BOOL)_getMobileGestaltBoolean:(__CFString *)a3 withCopyAnswer:(void *)a4
++ (BOOL)_getMobileGestaltBoolean:(__CFString *)boolean withCopyAnswer:(void *)answer
 {
-  if (!a4)
+  if (!answer)
   {
     return 0;
   }
 
-  v4 = (a4)(a3, 0);
+  v4 = (answer)(boolean, 0);
   if (!v4)
   {
     return 0;
@@ -489,14 +489,14 @@ LABEL_22:
   return v7;
 }
 
-+ (unint64_t)_deviceTypeWithCopyAnswer:(void *)a3
++ (unint64_t)_deviceTypeWithCopyAnswer:(void *)answer
 {
-  if (!a3)
+  if (!answer)
   {
     return 0;
   }
 
-  v3 = (a3)(@"DeviceClass", 0);
+  v3 = (answer)(@"DeviceClass", 0);
   if (!v3)
   {
     return 0;
@@ -549,17 +549,17 @@ LABEL_22:
 - (unint64_t)deviceType
 {
   v3 = objc_opt_class();
-  v4 = [(VSDevice *)self copyAnswer];
+  copyAnswer = [(VSDevice *)self copyAnswer];
 
-  return [v3 _deviceTypeWithCopyAnswer:v4];
+  return [v3 _deviceTypeWithCopyAnswer:copyAnswer];
 }
 
-- (BOOL)setIgnoreSetTopBoxProfile:(BOOL)a3
+- (BOOL)setIgnoreSetTopBoxProfile:(BOOL)profile
 {
-  v3 = a3;
-  v5 = [(VSDevice *)self preferences];
-  [v5 setIgnoreSetTopBoxProfile:v3];
-  v6 = [v5 ignoreSetTopBoxProfile] ^ v3;
+  profileCopy = profile;
+  preferences = [(VSDevice *)self preferences];
+  [preferences setIgnoreSetTopBoxProfile:profileCopy];
+  v6 = [preferences ignoreSetTopBoxProfile] ^ profileCopy;
   if (v6 == 1)
   {
     v7 = VSDefaultLogObject();
@@ -580,7 +580,7 @@ LABEL_22:
     v13 = __38__VSDevice_setIgnoreSetTopBoxProfile___block_invoke_138;
     v14 = &unk_278B750E8;
     objc_copyWeak(&v16, buf);
-    v15 = self;
+    selfCopy = self;
     [v8 fetchDeveloperSettingsWithCompletionHandler:&v11];
     v9 = [(VSDevice *)self setTopBoxStateRemoteNotifier:v11];
     [v9 postNotification];
@@ -678,24 +678,24 @@ void __38__VSDevice_setIgnoreSetTopBoxProfile___block_invoke_143(uint64_t a1, vo
   }
 }
 
-- (void)refreshSetTopBoxProfile:(id)a3
+- (void)refreshSetTopBoxProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = +[VSManagedProfileConnection sharedConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__VSDevice_refreshSetTopBoxProfile___block_invoke;
   v6[3] = &unk_278B73910;
-  v7 = v3;
-  v5 = v3;
+  v7 = profileCopy;
+  v5 = profileCopy;
   [v4 refreshProfileWithCompletion:v6];
 }
 
 - (id)productVersion
 {
-  v3 = [(VSDevice *)self productVersionString];
+  productVersionString = [(VSDevice *)self productVersionString];
 
-  if (!v3)
+  if (!productVersionString)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -703,15 +703,15 @@ void __38__VSDevice_setIgnoreSetTopBoxProfile___block_invoke_143(uint64_t a1, vo
     v8[3] = &unk_278B733D8;
     v8[4] = self;
     v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v8];
-    v5 = [(VSDevice *)self propertyFetchQueue];
-    [v5 addOperation:v4];
+    propertyFetchQueue = [(VSDevice *)self propertyFetchQueue];
+    [propertyFetchQueue addOperation:v4];
 
     [v4 waitUntilFinished];
   }
 
-  v6 = [(VSDevice *)self productVersionString];
+  productVersionString2 = [(VSDevice *)self productVersionString];
 
-  return v6;
+  return productVersionString2;
 }
 
 void __26__VSDevice_productVersion__block_invoke(uint64_t a1)
@@ -728,9 +728,9 @@ void __26__VSDevice_productVersion__block_invoke(uint64_t a1)
 
 - (id)serialNumber
 {
-  v3 = [(VSDevice *)self serialNumberString];
+  serialNumberString = [(VSDevice *)self serialNumberString];
 
-  if (!v3)
+  if (!serialNumberString)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -738,15 +738,15 @@ void __26__VSDevice_productVersion__block_invoke(uint64_t a1)
     v8[3] = &unk_278B733D8;
     v8[4] = self;
     v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v8];
-    v5 = [(VSDevice *)self propertyFetchQueue];
-    [v5 addOperation:v4];
+    propertyFetchQueue = [(VSDevice *)self propertyFetchQueue];
+    [propertyFetchQueue addOperation:v4];
 
     [v4 waitUntilFinished];
   }
 
-  v6 = [(VSDevice *)self serialNumberString];
+  serialNumberString2 = [(VSDevice *)self serialNumberString];
 
-  return v6;
+  return serialNumberString2;
 }
 
 void __24__VSDevice_serialNumber__block_invoke(uint64_t a1)
@@ -763,9 +763,9 @@ void __24__VSDevice_serialNumber__block_invoke(uint64_t a1)
 
 - (id)name
 {
-  v3 = [(VSDevice *)self deviceNameString];
+  deviceNameString = [(VSDevice *)self deviceNameString];
 
-  if (!v3)
+  if (!deviceNameString)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -773,15 +773,15 @@ void __24__VSDevice_serialNumber__block_invoke(uint64_t a1)
     v8[3] = &unk_278B733D8;
     v8[4] = self;
     v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v8];
-    v5 = [(VSDevice *)self propertyFetchQueue];
-    [v5 addOperation:v4];
+    propertyFetchQueue = [(VSDevice *)self propertyFetchQueue];
+    [propertyFetchQueue addOperation:v4];
 
     [v4 waitUntilFinished];
   }
 
-  v6 = [(VSDevice *)self deviceNameString];
+  deviceNameString2 = [(VSDevice *)self deviceNameString];
 
-  return v6;
+  return deviceNameString2;
 }
 
 void __16__VSDevice_name__block_invoke(uint64_t a1)
@@ -796,7 +796,7 @@ void __16__VSDevice_name__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_stringForKey:(__CFString *)a3 copyAnswer:(void *)a4
+- (id)_stringForKey:(__CFString *)key copyAnswer:(void *)answer
 {
   v20 = 0;
   v21 = &v20;
@@ -806,17 +806,17 @@ void __16__VSDevice_name__block_invoke(uint64_t a1)
   v25 = 0;
   v7 = objc_alloc_init(VSWaitGroup);
   [(VSWaitGroup *)v7 enter];
-  v8 = [(VSDevice *)self privateQueue];
+  privateQueue = [(VSDevice *)self privateQueue];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __37__VSDevice__stringForKey_copyAnswer___block_invoke;
   v15 = &unk_278B75110;
-  v18 = a4;
-  v19 = a3;
+  answerCopy = answer;
+  keyCopy = key;
   v17 = &v20;
   v9 = v7;
   v16 = v9;
-  [v8 addOperationWithBlock:&v12];
+  [privateQueue addOperationWithBlock:&v12];
 
   [(VSWaitGroup *)v9 wait:v12];
   v10 = v21[5];
@@ -859,16 +859,16 @@ uint64_t __37__VSDevice__stringForKey_copyAnswer___block_invoke(void *a1)
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Received cloud configuration did change notification.", buf, 2u);
   }
 
-  v4 = [(VSDevice *)self setTopBoxStateRemoteNotifier];
-  [v4 postNotification];
+  setTopBoxStateRemoteNotifier = [(VSDevice *)self setTopBoxStateRemoteNotifier];
+  [setTopBoxStateRemoteNotifier postNotification];
 
-  v5 = [(VSDevice *)self notificationQueue];
+  notificationQueue = [(VSDevice *)self notificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__VSDevice_cloudConfigurationDidChange__block_invoke;
   block[3] = &unk_278B733D8;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(notificationQueue, block);
 }
 
 void __39__VSDevice_cloudConfigurationDidChange__block_invoke(uint64_t a1)
@@ -913,43 +913,43 @@ void __39__VSDevice_cloudConfigurationDidChange__block_invoke(uint64_t a1)
 
 - (id)stringForAMSPlatform
 {
-  v2 = [(VSDevice *)self deviceType];
-  if (v2 > 5)
+  deviceType = [(VSDevice *)self deviceType];
+  if (deviceType > 5)
   {
     return @"ipad";
   }
 
   else
   {
-    return off_278B75160[v2];
+    return off_278B75160[deviceType];
   }
 }
 
 - (id)stringForAMSPlatformAttributes
 {
-  v2 = [(VSDevice *)self deviceType];
-  if (v2 > 5)
+  deviceType = [(VSDevice *)self deviceType];
+  if (deviceType > 5)
   {
     return @"appletvos";
   }
 
   else
   {
-    return off_278B75190[v2];
+    return off_278B75190[deviceType];
   }
 }
 
 - (id)stringForAMSDeviceFamilies
 {
-  v2 = [(VSDevice *)self deviceType];
-  if (v2 > 4)
+  deviceType = [(VSDevice *)self deviceType];
+  if (deviceType > 4)
   {
     return @"xros";
   }
 
   else
   {
-    return off_278B751C0[v2];
+    return off_278B751C0[deviceType];
   }
 }
 
@@ -979,12 +979,12 @@ void __39__VSDevice_cloudConfigurationDidChange__block_invoke(uint64_t a1)
   }
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v5 = a3;
-  v6 = [(VSDevice *)self developerSettingsRemoteNotifier];
+  notifierCopy = notifier;
+  developerSettingsRemoteNotifier = [(VSDevice *)self developerSettingsRemoteNotifier];
 
-  if (v6 == v5)
+  if (developerSettingsRemoteNotifier == notifierCopy)
   {
 
     [(VSDevice *)self cloudConfigurationDidChange];

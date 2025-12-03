@@ -1,11 +1,11 @@
 @interface DEDRequestAdvertiser
 + (id)sharedInstance;
 - (id)displayName;
-- (id)encodeRequestRecordAsJSON:(id)a3;
-- (void)advertiser:(id)a3 didReceiveInvitationFromPeer:(id)a4 withContext:(id)a5 invitationHandler:(id)a6;
-- (void)broadcastRecord:(id)a3;
-- (void)sendRecord:(id)a3 toPeer:(id)a4;
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5;
+- (id)encodeRequestRecordAsJSON:(id)n;
+- (void)advertiser:(id)advertiser didReceiveInvitationFromPeer:(id)peer withContext:(id)context invitationHandler:(id)handler;
+- (void)broadcastRecord:(id)record;
+- (void)sendRecord:(id)record toPeer:(id)peer;
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state;
 - (void)start;
 - (void)stop;
 @end
@@ -33,13 +33,13 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
 
 - (id)displayName
 {
-  v3 = [(DEDRequestAdvertiser *)self hostIdentifier];
-  if (v3 && (v4 = v3, -[DEDRequestAdvertiser hostIdentifier](self, "hostIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  hostIdentifier = [(DEDRequestAdvertiser *)self hostIdentifier];
+  if (hostIdentifier && (v4 = hostIdentifier, -[DEDRequestAdvertiser hostIdentifier](self, "hostIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(DEDRequestAdvertiser *)self hostIdentifier];
+    hostIdentifier2 = [(DEDRequestAdvertiser *)self hostIdentifier];
     v9 = +[DEDUtils deviceName];
-    v10 = [v7 stringWithFormat:@"%@ @ %@", v8, v9];
+    v10 = [v7 stringWithFormat:@"%@ @ %@", hostIdentifier2, v9];
   }
 
   else
@@ -55,27 +55,27 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
   if (+[DEDUtils isDebugRequestsEnabled]&& !self->_session)
   {
     v3 = objc_alloc(MEMORY[0x277CD7BA8]);
-    v4 = [(DEDRequestAdvertiser *)self displayName];
-    v5 = [v3 initWithDisplayName:v4];
+    displayName = [(DEDRequestAdvertiser *)self displayName];
+    v5 = [v3 initWithDisplayName:displayName];
     peerID = self->_peerID;
     self->_peerID = v5;
 
     v7 = objc_alloc(MEMORY[0x277CD7B98]);
-    v8 = [(DEDRequestAdvertiser *)self peerID];
-    v9 = [v7 initWithPeer:v8 discoveryInfo:0 serviceType:@"apple-frdb"];
+    peerID = [(DEDRequestAdvertiser *)self peerID];
+    v9 = [v7 initWithPeer:peerID discoveryInfo:0 serviceType:@"apple-frdb"];
     advertiser = self->_advertiser;
     self->_advertiser = v9;
 
     [(MCNearbyServiceAdvertiser *)self->_advertiser setDelegate:self];
     v11 = objc_alloc(MEMORY[0x277CD7BB0]);
-    v12 = [(DEDRequestAdvertiser *)self peerID];
-    v13 = [v11 initWithPeer:v12 securityIdentity:0 encryptionPreference:0];
+    peerID2 = [(DEDRequestAdvertiser *)self peerID];
+    v13 = [v11 initWithPeer:peerID2 securityIdentity:0 encryptionPreference:0];
     session = self->_session;
     self->_session = v13;
 
     [(MCSession *)self->_session setDelegate:self];
-    v15 = [(DEDRequestAdvertiser *)self advertiser];
-    [v15 startAdvertisingPeer];
+    advertiser = [(DEDRequestAdvertiser *)self advertiser];
+    [advertiser startAdvertisingPeer];
 
     v16 = Log_3();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -91,11 +91,11 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
   peerID = self->_peerID;
   self->_peerID = 0;
 
-  v4 = [(DEDRequestAdvertiser *)self advertiser];
-  [v4 stopAdvertisingPeer];
+  advertiser = [(DEDRequestAdvertiser *)self advertiser];
+  [advertiser stopAdvertisingPeer];
 
-  v5 = [(DEDRequestAdvertiser *)self session];
-  [v5 disconnect];
+  session = [(DEDRequestAdvertiser *)self session];
+  [session disconnect];
 
   advertiser = self->_advertiser;
   self->_advertiser = 0;
@@ -111,19 +111,19 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
   }
 }
 
-- (void)broadcastRecord:(id)a3
+- (void)broadcastRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (+[DEDUtils isDebugRequestsEnabled])
   {
-    v5 = [(DEDRequestAdvertiser *)self encodeRequestRecordAsJSON:v4];
+    v5 = [(DEDRequestAdvertiser *)self encodeRequestRecordAsJSON:recordCopy];
     if (v5)
     {
-      v6 = [(DEDRequestAdvertiser *)self session];
-      v7 = [(DEDRequestAdvertiser *)self session];
-      v8 = [v7 connectedPeers];
+      session = [(DEDRequestAdvertiser *)self session];
+      session2 = [(DEDRequestAdvertiser *)self session];
+      connectedPeers = [session2 connectedPeers];
       v11 = 0;
-      [v6 sendData:v5 toPeers:v8 withMode:0 error:&v11];
+      [session sendData:v5 toPeers:connectedPeers withMode:0 error:&v11];
       v9 = v11;
 
       if (v9)
@@ -131,7 +131,7 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
         v10 = Log_3();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [DEDRequestAdvertiser broadcastRecord:v4];
+          [DEDRequestAdvertiser broadcastRecord:recordCopy];
         }
       }
     }
@@ -141,27 +141,27 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
       v9 = Log_3();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [DEDRequestAdvertiser broadcastRecord:v4];
+        [DEDRequestAdvertiser broadcastRecord:recordCopy];
       }
     }
   }
 }
 
-- (void)sendRecord:(id)a3 toPeer:(id)a4
+- (void)sendRecord:(id)record toPeer:(id)peer
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  peerCopy = peer;
   if (+[DEDUtils isDebugRequestsEnabled])
   {
-    v8 = [(DEDRequestAdvertiser *)self encodeRequestRecordAsJSON:v6];
+    v8 = [(DEDRequestAdvertiser *)self encodeRequestRecordAsJSON:recordCopy];
     if (v8)
     {
-      v9 = [(DEDRequestAdvertiser *)self session];
-      v15[0] = v7;
+      session = [(DEDRequestAdvertiser *)self session];
+      v15[0] = peerCopy;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
       v14 = 0;
-      [v9 sendData:v8 toPeers:v10 withMode:0 error:&v14];
+      [session sendData:v8 toPeers:v10 withMode:0 error:&v14];
       v11 = v14;
 
       if (v11)
@@ -169,7 +169,7 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
         v12 = Log_3();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [DEDRequestAdvertiser sendRecord:v6 toPeer:v7];
+          [DEDRequestAdvertiser sendRecord:recordCopy toPeer:peerCopy];
         }
       }
     }
@@ -179,7 +179,7 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
       v11 = Log_3();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [DEDRequestAdvertiser sendRecord:v6 toPeer:?];
+        [DEDRequestAdvertiser sendRecord:recordCopy toPeer:?];
       }
     }
   }
@@ -187,35 +187,35 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeRequestRecordAsJSON:(id)a3
+- (id)encodeRequestRecordAsJSON:(id)n
 {
   v30[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nCopy = n;
   if (encodeRequestRecordAsJSON__onceToken != -1)
   {
     [DEDRequestAdvertiser encodeRequestRecordAsJSON:];
   }
 
   v29[0] = @"URL";
-  v27 = [v3 URL];
+  v27 = [nCopy URL];
   v30[0] = v27;
   v29[1] = @"date";
   v4 = encodeRequestRecordAsJSON__dateFormatter;
-  v5 = [v3 date];
-  v6 = [v4 stringFromDate:v5];
+  date = [nCopy date];
+  v6 = [v4 stringFromDate:date];
   v30[1] = v6;
   v29[2] = @"method";
-  v7 = [v3 method];
-  v30[2] = v7;
+  method = [nCopy method];
+  v30[2] = method;
   v29[3] = @"isFailure";
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isFailure")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(nCopy, "isFailure")}];
   v30[3] = v8;
   v29[4] = @"requestHeader";
-  v9 = [v3 requestHeader];
-  v10 = v9;
-  if (v9)
+  requestHeader = [nCopy requestHeader];
+  v10 = requestHeader;
+  if (requestHeader)
   {
-    v11 = v9;
+    v11 = requestHeader;
   }
 
   else
@@ -225,11 +225,11 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
 
   v30[4] = v11;
   v29[5] = @"requestBody";
-  v12 = [v3 requestBody];
-  v13 = v12;
-  if (v12)
+  requestBody = [nCopy requestBody];
+  v13 = requestBody;
+  if (requestBody)
   {
-    v14 = v12;
+    v14 = requestBody;
   }
 
   else
@@ -239,11 +239,11 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
 
   v30[5] = v14;
   v29[6] = @"responseHeader";
-  v15 = [v3 responseHeader];
-  v16 = v15;
-  if (v15)
+  responseHeader = [nCopy responseHeader];
+  v16 = responseHeader;
+  if (responseHeader)
   {
-    v17 = v15;
+    v17 = responseHeader;
   }
 
   else
@@ -253,11 +253,11 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
 
   v30[6] = v17;
   v29[7] = @"responseBody";
-  v18 = [v3 responseBody];
-  v19 = v18;
-  if (v18)
+  responseBody = [nCopy responseBody];
+  v19 = responseBody;
+  if (responseBody)
   {
-    v20 = v18;
+    v20 = responseBody;
   }
 
   else
@@ -276,7 +276,7 @@ uint64_t __38__DEDRequestAdvertiser_sharedInstance__block_invoke()
     v24 = Log_3();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [(DEDRequestAdvertiser *)v3 encodeRequestRecordAsJSON:v23];
+      [(DEDRequestAdvertiser *)nCopy encodeRequestRecordAsJSON:v23];
     }
   }
 
@@ -292,30 +292,30 @@ uint64_t __50__DEDRequestAdvertiser_encodeRequestRecordAsJSON___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state
 {
-  v7 = a4;
-  if (a5 == 2)
+  peerCopy = peer;
+  if (state == 2)
   {
-    v10 = v7;
-    v8 = [(DEDRequestAdvertiser *)self onPeerJoin];
+    v10 = peerCopy;
+    onPeerJoin = [(DEDRequestAdvertiser *)self onPeerJoin];
 
-    v7 = v10;
-    if (v8)
+    peerCopy = v10;
+    if (onPeerJoin)
     {
-      v9 = [(DEDRequestAdvertiser *)self onPeerJoin];
-      (v9)[2](v9, v10);
+      onPeerJoin2 = [(DEDRequestAdvertiser *)self onPeerJoin];
+      (onPeerJoin2)[2](onPeerJoin2, v10);
 
-      v7 = v10;
+      peerCopy = v10;
     }
   }
 }
 
-- (void)advertiser:(id)a3 didReceiveInvitationFromPeer:(id)a4 withContext:(id)a5 invitationHandler:(id)a6
+- (void)advertiser:(id)advertiser didReceiveInvitationFromPeer:(id)peer withContext:(id)context invitationHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
+  peerCopy = peer;
+  handlerCopy = handler;
   v10 = +[DEDUtils isDebugRequestsEnabled];
   v11 = Log_3();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -323,29 +323,29 @@ uint64_t __50__DEDRequestAdvertiser_encodeRequestRecordAsJSON___block_invoke()
   {
     if (v12)
     {
-      v13 = [v8 displayName];
+      displayName = [peerCopy displayName];
       v17 = 138412290;
-      v18 = v13;
+      v18 = displayName;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "Connecting to Request Debugger: [%@]", &v17, 0xCu);
     }
 
-    v14 = [(DEDRequestAdvertiser *)self session];
-    v9[2](v9, 1, v14);
+    session = [(DEDRequestAdvertiser *)self session];
+    handlerCopy[2](handlerCopy, 1, session);
 
-    v9 = v14;
+    handlerCopy = session;
   }
 
   else
   {
     if (v12)
     {
-      v15 = [v8 displayName];
+      displayName2 = [peerCopy displayName];
       v17 = 138412290;
-      v18 = v15;
+      v18 = displayName2;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "Debug requests are disabled, but we got an invitation from [%@]", &v17, 0xCu);
     }
 
-    v9[2](v9, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];

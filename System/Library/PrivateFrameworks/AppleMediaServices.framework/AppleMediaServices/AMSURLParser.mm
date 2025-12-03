@@ -3,18 +3,18 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSURLParser)initWithBag:(id)a3;
-- (AMSURLParser)initWithBagContract:(id)a3;
-- (BOOL)_matchURL:(id)a3 toPatterns:(id)a4;
-- (id)_commerceUIArrayForKey:(id)a3;
-- (id)_correctURL:(id)a3;
-- (id)_defaultWebAllowedForURL:(id)a3;
-- (id)_dynamicUIAllowedForURL:(id)a3;
-- (id)_legacyWebAllowedForURL:(id)a3;
+- (AMSURLParser)initWithBag:(id)bag;
+- (AMSURLParser)initWithBagContract:(id)contract;
+- (BOOL)_matchURL:(id)l toPatterns:(id)patterns;
+- (id)_commerceUIArrayForKey:(id)key;
+- (id)_correctURL:(id)l;
+- (id)_defaultWebAllowedForURL:(id)l;
+- (id)_dynamicUIAllowedForURL:(id)l;
+- (id)_legacyWebAllowedForURL:(id)l;
 - (id)bagContract;
-- (id)isCommerceUIURL:(id)a3;
-- (id)typeForCommerceUIURL:(id)a3;
-- (id)typeForURL:(id)a3;
+- (id)isCommerceUIURL:(id)l;
+- (id)typeForCommerceUIURL:(id)l;
+- (id)typeForURL:(id)l;
 @end
 
 @implementation AMSURLParser
@@ -26,26 +26,26 @@
   return v2;
 }
 
-- (AMSURLParser)initWithBag:(id)a3
+- (AMSURLParser)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = AMSURLParser;
   v6 = [(AMSURLParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
   }
 
   return v7;
 }
 
-- (id)isCommerceUIURL:(id)a3
+- (id)isCommerceUIURL:(id)l
 {
-  v4 = [(AMSURLParser *)self _correctURL:a3];
-  v5 = [v4 absoluteString];
-  v6 = [v5 length];
+  v4 = [(AMSURLParser *)self _correctURL:l];
+  absoluteString = [v4 absoluteString];
+  v6 = [absoluteString length];
 
   if (v6)
   {
@@ -114,11 +114,11 @@ id __32__AMSURLParser_isCommerceUIURL___block_invoke_30(uint64_t a1, uint64_t a2
   return v3;
 }
 
-- (id)typeForCommerceUIURL:(id)a3
+- (id)typeForCommerceUIURL:(id)l
 {
-  v4 = [(AMSURLParser *)self _correctURL:a3];
-  v5 = [v4 absoluteString];
-  v6 = [v5 length];
+  v4 = [(AMSURLParser *)self _correctURL:l];
+  absoluteString = [v4 absoluteString];
+  v6 = [absoluteString length];
 
   if (v6)
   {
@@ -173,14 +173,14 @@ LABEL_9:
   [v6 finishWithError:v8];
 }
 
-- (id)typeForURL:(id)a3
+- (id)typeForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(AMSURLParser *)self bag];
 
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
       v6 = objc_alloc_init(AMSMutablePromise);
       v7 = [(AMSURLParser *)self bag];
@@ -190,7 +190,7 @@ LABEL_9:
       v13[3] = &unk_1E73BCEF0;
       v8 = v6;
       v14 = v8;
-      [AMSURLParserInternal typeFor:v4 bag:v7 completionHandler:v13];
+      [AMSURLParserInternal typeFor:lCopy bag:v7 completionHandler:v13];
 
       goto LABEL_7;
     }
@@ -268,19 +268,19 @@ void __36__AMSURLParser_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (AMSURLParser)initWithBagContract:(id)a3
+- (AMSURLParser)initWithBagContract:(id)contract
 {
-  if (a3)
+  if (contract)
   {
-    v4 = a3;
-    v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+    contractCopy = contract;
+    v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
   }
 
   else
@@ -302,20 +302,20 @@ void __36__AMSURLParser_bagSubProfileVersion__block_invoke()
   return v5;
 }
 
-- (id)_commerceUIArrayForKey:(id)a3
+- (id)_commerceUIArrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(AMSURLParser *)self bag];
   v6 = [v5 dictionaryForKey:@"commerce-ui-urls"];
 
-  v7 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __39__AMSURLParser__commerceUIArrayForKey___block_invoke;
   v11[3] = &unk_1E73B5C28;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 thenWithBlock:v11];
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = [valuePromise thenWithBlock:v11];
 
   return v9;
 }
@@ -348,17 +348,17 @@ LABEL_6:
   return v10;
 }
 
-- (id)_defaultWebAllowedForURL:(id)a3
+- (id)_defaultWebAllowedForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(AMSURLParser *)self _commerceUIArrayForKey:@"v2-url-patterns"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__AMSURLParser__defaultWebAllowedForURL___block_invoke;
   v9[3] = &unk_1E73B8238;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = lCopy;
+  v6 = lCopy;
   v7 = [v5 thenWithBlock:v9];
 
   return v7;
@@ -380,17 +380,17 @@ id __41__AMSURLParser__defaultWebAllowedForURL___block_invoke(uint64_t a1, uint6
   return v2;
 }
 
-- (id)_dynamicUIAllowedForURL:(id)a3
+- (id)_dynamicUIAllowedForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(AMSURLParser *)self _commerceUIArrayForKey:@"dynamic-url-patterns"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__AMSURLParser__dynamicUIAllowedForURL___block_invoke;
   v9[3] = &unk_1E73B8238;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = lCopy;
+  v6 = lCopy;
   v7 = [v5 thenWithBlock:v9];
 
   return v7;
@@ -412,17 +412,17 @@ id __40__AMSURLParser__dynamicUIAllowedForURL___block_invoke(uint64_t a1, uint64
   return v2;
 }
 
-- (id)_legacyWebAllowedForURL:(id)a3
+- (id)_legacyWebAllowedForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(AMSURLParser *)self _commerceUIArrayForKey:@"url-patterns"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__AMSURLParser__legacyWebAllowedForURL___block_invoke;
   v9[3] = &unk_1E73B8238;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = lCopy;
+  v6 = lCopy;
   v7 = [v5 thenWithBlock:v9];
 
   return v7;
@@ -444,16 +444,16 @@ id __40__AMSURLParser__legacyWebAllowedForURL___block_invoke(uint64_t a1, uint64
   return v2;
 }
 
-- (BOOL)_matchURL:(id)a3 toPatterns:(id)a4
+- (BOOL)_matchURL:(id)l toPatterns:(id)patterns
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  patternsCopy = patterns;
+  v7 = [patternsCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
     v9 = v7;
@@ -466,7 +466,7 @@ id __40__AMSURLParser__legacyWebAllowedForURL___block_invoke(uint64_t a1, uint64
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(patternsCopy);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
@@ -481,23 +481,23 @@ id __40__AMSURLParser__legacyWebAllowedForURL___block_invoke(uint64_t a1, uint64
             v15 = +[AMSLogConfig sharedConfig];
           }
 
-          v16 = [v15 OSLogObject];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v15 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v17 = objc_opt_class();
             *buf = v23;
             v30 = v17;
             v31 = 2114;
             v32 = v14;
-            _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Invalid commerceUI pattern. %{public}@", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Invalid commerceUI pattern. %{public}@", buf, 0x16u);
           }
         }
 
         else
         {
-          v18 = [v5 absoluteString];
-          v19 = [v5 absoluteString];
-          v20 = [v13 numberOfMatchesInString:v18 options:2 range:{0, objc_msgSend(v19, "length")}];
+          absoluteString = [lCopy absoluteString];
+          absoluteString2 = [lCopy absoluteString];
+          v20 = [v13 numberOfMatchesInString:absoluteString options:2 range:{0, objc_msgSend(absoluteString2, "length")}];
 
           if (v20)
           {
@@ -508,7 +508,7 @@ id __40__AMSURLParser__legacyWebAllowedForURL___block_invoke(uint64_t a1, uint64
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v9 = [patternsCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v9)
       {
         continue;
@@ -524,23 +524,23 @@ LABEL_17:
   return v21;
 }
 
-- (id)_correctURL:(id)a3
+- (id)_correctURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 ams_parameters];
-  v5 = [v4 objectForKeyedSubscript:@"action"];
-  v6 = [v4 objectForKeyedSubscript:@"url"];
+  lCopy = l;
+  ams_parameters = [lCopy ams_parameters];
+  v5 = [ams_parameters objectForKeyedSubscript:@"action"];
+  v6 = [ams_parameters objectForKeyedSubscript:@"url"];
   if (![v6 length] || !objc_msgSend(v5, "isEqualToString:", @"account") || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v6), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = v3;
+    v7 = lCopy;
   }
 
-  v8 = [v7 scheme];
-  if (v8)
+  scheme = [v7 scheme];
+  if (scheme)
   {
-    v9 = v8;
-    v10 = [v7 scheme];
-    v11 = [v10 hasSuffix:@"http"];
+    v9 = scheme;
+    scheme2 = [v7 scheme];
+    v11 = [scheme2 hasSuffix:@"http"];
 
     if ((v11 & 1) == 0)
     {

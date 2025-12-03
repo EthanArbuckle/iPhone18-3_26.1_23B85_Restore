@@ -1,14 +1,14 @@
 @interface VUIARQLPreviewController
-- (VUIARQLPreviewController)initWithQuickLookPreviewItem:(id)a3;
-- (VUIARQLPreviewController)initWithQuickLookWebKitItem:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (VUIARQLPreviewController)initWithQuickLookPreviewItem:(id)item;
+- (VUIARQLPreviewController)initWithQuickLookWebKitItem:(id)item;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 @end
 
 @implementation VUIARQLPreviewController
 
-- (VUIARQLPreviewController)initWithQuickLookPreviewItem:(id)a3
+- (VUIARQLPreviewController)initWithQuickLookPreviewItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = VUIARQLPreviewController;
   v5 = [(VUIARQLPreviewController *)&v8 init];
@@ -16,15 +16,15 @@
   if (v5)
   {
     [(VUIARQLPreviewController *)v5 _commonInit];
-    [(VUIARQLPreviewController *)v6 setQuickLookPreviewItem:v4];
+    [(VUIARQLPreviewController *)v6 setQuickLookPreviewItem:itemCopy];
   }
 
   return v6;
 }
 
-- (VUIARQLPreviewController)initWithQuickLookWebKitItem:(id)a3
+- (VUIARQLPreviewController)initWithQuickLookWebKitItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = VUIARQLPreviewController;
   v5 = [(VUIARQLPreviewController *)&v8 init];
@@ -32,15 +32,15 @@
   if (v5)
   {
     [(VUIARQLPreviewController *)v5 _commonInit];
-    [(VUIARQLPreviewController *)v6 setQuickLookWebKitItem:v4];
+    [(VUIARQLPreviewController *)v6 setQuickLookWebKitItem:itemCopy];
   }
 
   return v6;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = a3;
+  controllerCopy = controller;
   quickLookWebKitItem = self->_quickLookWebKitItem;
   if (quickLookWebKitItem || (quickLookWebKitItem = self->_quickLookPreviewItem) != 0)
   {

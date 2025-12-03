@@ -2,7 +2,7 @@
 - (BOOL)webSearchTipAvailable;
 - (_SFTipsObserver)observer;
 - (void)invalidateWebSearchTip;
-- (void)setWebSearchTipAvailable:(BOOL)a3;
+- (void)setWebSearchTipAvailable:(BOOL)available;
 - (void)startObserving;
 @end
 
@@ -10,7 +10,7 @@
 
 - (void)startObserving
 {
-  v2 = self;
+  selfCopy = self;
   _s12MobileSafari17SFTipsCoordinatorC14startObservingyyF_0();
 }
 
@@ -21,11 +21,11 @@
   return *(self + v3);
 }
 
-- (void)setWebSearchTipAvailable:(BOOL)a3
+- (void)setWebSearchTipAvailable:(BOOL)available
 {
   v5 = OBJC_IVAR____SFTipsCoordinator_webSearchTipAvailable;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = available;
 }
 
 - (_SFTipsObserver)observer
@@ -38,7 +38,7 @@
 
 - (void)invalidateWebSearchTip
 {
-  v2 = self;
+  selfCopy = self;
   SFTipsCoordinator.invalidateWebSearchTip()();
 }
 

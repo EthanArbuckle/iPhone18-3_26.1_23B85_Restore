@@ -1,16 +1,16 @@
 @interface PBFDataRefreshState
-- (PBFDataRefreshState)initWithNeedsRefresh:(BOOL)a3 reason:(id)a4;
+- (PBFDataRefreshState)initWithNeedsRefresh:(BOOL)refresh reason:(id)reason;
 - (id)description;
 @end
 
 @implementation PBFDataRefreshState
 
-- (PBFDataRefreshState)initWithNeedsRefresh:(BOOL)a3 reason:(id)a4
+- (PBFDataRefreshState)initWithNeedsRefresh:(BOOL)refresh reason:(id)reason
 {
   v14 = &v15;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithFormat:v7 arguments:&v15];
+  reasonCopy = reason;
+  v8 = [[v6 alloc] initWithFormat:reasonCopy arguments:&v15];
 
   v13.receiver = self;
   v13.super_class = PBFDataRefreshState;
@@ -21,7 +21,7 @@
     refreshReason = v9->_refreshReason;
     v9->_refreshReason = v10;
 
-    v9->_needsRefresh = a3;
+    v9->_needsRefresh = refresh;
   }
 
   return v9;
@@ -32,9 +32,9 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:self->_needsRefresh withName:@"needsRefresh"];
   [v3 appendString:self->_refreshReason withName:@"refreshReason"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CursiveTextView
-- (_TtC23SetupAssistantSupportUI15CursiveTextView)initWithFrame:(CGRect)a3;
+- (_TtC23SetupAssistantSupportUI15CursiveTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,7 +14,7 @@
   sub_265A75D4C();
 }
 
-- (_TtC23SetupAssistantSupportUI15CursiveTextView)initWithFrame:(CGRect)a3
+- (_TtC23SetupAssistantSupportUI15CursiveTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

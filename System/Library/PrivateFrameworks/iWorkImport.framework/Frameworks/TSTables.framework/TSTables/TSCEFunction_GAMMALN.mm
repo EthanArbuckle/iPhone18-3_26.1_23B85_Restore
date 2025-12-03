@@ -1,18 +1,18 @@
 @interface TSCEFunction_GAMMALN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_GAMMALN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v26 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v26);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v26);
   v14 = v26;
   if (v14)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
   }
 
   else
@@ -21,7 +21,7 @@
 
     if (v7)
     {
-      objc_msgSend_formatWithContext_(v7, v17, a3, v18, v19);
+      objc_msgSend_formatWithContext_(v7, v17, context, v18, v19);
     }
 
     else

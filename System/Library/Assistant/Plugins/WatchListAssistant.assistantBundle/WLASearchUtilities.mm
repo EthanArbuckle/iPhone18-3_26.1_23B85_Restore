@@ -1,65 +1,65 @@
 @interface WLASearchUtilities
-+ (void)populateSearchImage:(id)a3 withMetadata:(id)a4 artworkType:(int64_t)a5;
-+ (void)populateSearchResult:(id)a3 withMetadata:(id)a4;
++ (void)populateSearchImage:(id)image withMetadata:(id)metadata artworkType:(int64_t)type;
++ (void)populateSearchResult:(id)result withMetadata:(id)metadata;
 @end
 
 @implementation WLASearchUtilities
 
-+ (void)populateSearchResult:(id)a3 withMetadata:(id)a4
++ (void)populateSearchResult:(id)result withMetadata:(id)metadata
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 canonicalID];
-  [v13 setCanonicalId:v7];
+  resultCopy = result;
+  metadataCopy = metadata;
+  canonicalID = [metadataCopy canonicalID];
+  [resultCopy setCanonicalId:canonicalID];
 
-  v8 = [v6 title];
-  [v13 setTitle:v8];
+  title = [metadataCopy title];
+  [resultCopy setTitle:title];
 
-  if ([v6 contentType] == &dword_0 + 1)
+  if ([metadataCopy contentType] == &dword_0 + 1)
   {
-    [v13 setContentType:SAVCSContentTypeMovieValue];
-    v9 = [v6 studio];
-    [v13 setStudio:v9];
+    [resultCopy setContentType:SAVCSContentTypeMovieValue];
+    studio = [metadataCopy studio];
+    [resultCopy setStudio:studio];
   }
 
   else
   {
-    if ([v6 contentType] != &dword_0 + 2)
+    if ([metadataCopy contentType] != &dword_0 + 2)
     {
       goto LABEL_6;
     }
 
-    [v13 setContentType:SAVCSContentTypeShowValue];
-    v9 = [v6 network];
-    [v13 setNetwork:v9];
+    [resultCopy setContentType:SAVCSContentTypeShowValue];
+    studio = [metadataCopy network];
+    [resultCopy setNetwork:studio];
   }
 
-  v10 = [v6 releaseDate];
-  [v13 setReleaseDate:v10];
+  releaseDate = [metadataCopy releaseDate];
+  [resultCopy setReleaseDate:releaseDate];
 
 LABEL_6:
   v11 = objc_alloc_init(SAUIImageResource);
-  [a1 populateSearchImage:v11 withMetadata:v6 artworkType:2];
-  [v13 setImage:v11];
-  [v13 setIsEvod:{objc_msgSend(v6, "isEvod")}];
+  [self populateSearchImage:v11 withMetadata:metadataCopy artworkType:2];
+  [resultCopy setImage:v11];
+  [resultCopy setIsEvod:{objc_msgSend(metadataCopy, "isEvod")}];
   v12 = objc_alloc_init(SAUIImageResource);
-  [a1 populateSearchImage:v12 withMetadata:v6 artworkType:13];
-  [v13 setEvodFeaturingImage:v12];
+  [self populateSearchImage:v12 withMetadata:metadataCopy artworkType:13];
+  [resultCopy setEvodFeaturingImage:v12];
 }
 
-+ (void)populateSearchImage:(id)a3 withMetadata:(id)a4 artworkType:(int64_t)a5
++ (void)populateSearchImage:(id)image withMetadata:(id)metadata artworkType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [a4 images];
-  v12 = [v8 bestArtworkVariantOfType:a5 forSize:{3000.0, 3000.0}];
+  imageCopy = image;
+  images = [metadata images];
+  v12 = [images bestArtworkVariantOfType:type forSize:{3000.0, 3000.0}];
 
   [v12 artworkSize];
-  [v7 setPixelWidth:?];
+  [imageCopy setPixelWidth:?];
   [v12 artworkSize];
-  [v7 setPixelHeight:v9];
-  v10 = [v12 artworkSizeTemplateURL];
-  v11 = [v10 absoluteString];
-  [v7 setUrlFormatString:v11];
+  [imageCopy setPixelHeight:v9];
+  artworkSizeTemplateURL = [v12 artworkSizeTemplateURL];
+  absoluteString = [artworkSizeTemplateURL absoluteString];
+  [imageCopy setUrlFormatString:absoluteString];
 }
 
 @end

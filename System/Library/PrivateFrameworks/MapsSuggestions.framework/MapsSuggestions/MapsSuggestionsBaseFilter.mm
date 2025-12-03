@@ -1,6 +1,6 @@
 @interface MapsSuggestionsBaseFilter
 + (BOOL)isEnabled;
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 - (NSString)uniqueName;
 @end
 
@@ -13,9 +13,9 @@
   return [v2 description];
 }
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   result = [(MapsSuggestionsBaseFilter *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
@@ -23,7 +23,7 @@
 
 + (BOOL)isEnabled
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }

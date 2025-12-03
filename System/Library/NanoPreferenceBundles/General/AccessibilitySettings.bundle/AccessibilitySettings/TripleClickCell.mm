@@ -11,8 +11,8 @@
   [(PSTableCell *)&v4 layoutSubviews];
   if (([(TripleClickCell *)self isEnabled]& 1) == 0)
   {
-    v3 = [(TripleClickCell *)self _defaultAccessoryView];
-    [v3 setAlpha:0.5];
+    _defaultAccessoryView = [(TripleClickCell *)self _defaultAccessoryView];
+    [_defaultAccessoryView setAlpha:0.5];
   }
 }
 

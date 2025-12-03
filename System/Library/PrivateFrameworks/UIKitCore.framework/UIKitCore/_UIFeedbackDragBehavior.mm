@@ -6,9 +6,9 @@
 
 - (void)snappedToFinalPosition
 {
-  v4 = [(_UIDragFeedbackGenerator *)self _dragConfiguration];
-  v3 = [v4 interactionEndedFeedback];
-  [(UIFeedbackGenerator *)self _playFeedback:v3 atLocation:1.79769313e308, 1.79769313e308];
+  _dragConfiguration = [(_UIDragFeedbackGenerator *)self _dragConfiguration];
+  interactionEndedFeedback = [_dragConfiguration interactionEndedFeedback];
+  [(UIFeedbackGenerator *)self _playFeedback:interactionEndedFeedback atLocation:1.79769313e308, 1.79769313e308];
 }
 
 @end

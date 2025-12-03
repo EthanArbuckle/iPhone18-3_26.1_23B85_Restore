@@ -1,24 +1,24 @@
 @interface PLPrivacy
-+ (id)_logDictionaryFromPhotosPickerClientLogFile:(id)a3;
++ (id)_logDictionaryFromPhotosPickerClientLogFile:(id)file;
 + (id)sharedInstance;
 - (PLPrivacy)init;
-- (id)photosPickerPresentedLibraryLogForClient:(id)a3;
+- (id)photosPickerPresentedLibraryLogForClient:(id)client;
 - (id)photosPickerPresentedLibraryLogsByClient;
-- (int64_t)_authStatusForScope:(int64_t)a3;
-- (int64_t)_resolvePreflightStatusForScope:(int64_t)a3;
-- (int64_t)checkPhotosAccessAllowedWithScope:(int64_t)a3;
-- (int64_t)photosAccessAllowedWithScope:(int64_t)a3;
-- (int64_t)photosAccessAllowedWithScope:(int64_t)a3 auditToken:(id *)a4 clientAuthorization:(id)a5;
-- (void)_checkAuthStatusForPhotosAccessScope:(int64_t)a3 preflightStatus:(int64_t)a4 promptIfUnknown:(BOOL)a5 resultHandler:(id)a6;
-- (void)_isPhotosAccessAllowedWithScope:(int64_t)a3 promptIfUnknown:(BOOL)a4 synchronous:(BOOL)a5 resultHandler:(id)a6;
-- (void)_setAuthStatus:(int64_t)a3 scope:(int64_t)a4;
-- (void)logPhotosAccessWithClientAuthorization:(id)a3;
-- (void)logPhotosAccessWithPhotoPickerClientIdentification:(id)a3;
+- (int64_t)_authStatusForScope:(int64_t)scope;
+- (int64_t)_resolvePreflightStatusForScope:(int64_t)scope;
+- (int64_t)checkPhotosAccessAllowedWithScope:(int64_t)scope;
+- (int64_t)photosAccessAllowedWithScope:(int64_t)scope;
+- (int64_t)photosAccessAllowedWithScope:(int64_t)scope auditToken:(id *)token clientAuthorization:(id)authorization;
+- (void)_checkAuthStatusForPhotosAccessScope:(int64_t)scope preflightStatus:(int64_t)status promptIfUnknown:(BOOL)unknown resultHandler:(id)handler;
+- (void)_isPhotosAccessAllowedWithScope:(int64_t)scope promptIfUnknown:(BOOL)unknown synchronous:(BOOL)synchronous resultHandler:(id)handler;
+- (void)_setAuthStatus:(int64_t)status scope:(int64_t)scope;
+- (void)logPhotosAccessWithClientAuthorization:(id)authorization;
+- (void)logPhotosAccessWithPhotoPickerClientIdentification:(id)identification;
 - (void)logPhotosAccessWithSelfAuditToken;
-- (void)logPhotosPickerPresentedLibraryForClient:(id)a3 usingOptions:(int64_t)a4;
+- (void)logPhotosPickerPresentedLibraryForClient:(id)client usingOptions:(int64_t)options;
 - (void)presentAsyncPromptForLimitedLibraryPickerIfNeeded;
-- (void)reportPhotosUseWithClientAuthorization:(id)a3;
-- (void)requestLimitedLibraryPromptForApplicationIdentifier:(id)a3;
+- (void)reportPhotosUseWithClientAuthorization:(id)authorization;
+- (void)requestLimitedLibraryPromptForApplicationIdentifier:(id)identifier;
 @end
 
 @implementation PLPrivacy
@@ -98,18 +98,18 @@ uint64_t __27__PLPrivacy_sharedInstance__block_invoke()
   }
 }
 
-- (id)photosPickerPresentedLibraryLogForClient:(id)a3
+- (id)photosPickerPresentedLibraryLogForClient:(id)client
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  clientCopy = client;
+  if ([clientCopy length])
   {
     v4 = +[PLPhotoLibraryPathManager systemLibraryPathManager];
     v5 = [v4 privateCacheDirectoryWithSubType:14];
 
     if (v5)
     {
-      v6 = [v5 stringByAppendingPathComponent:v3];
+      v6 = [v5 stringByAppendingPathComponent:clientCopy];
       v7 = [objc_opt_class() _logDictionaryFromPhotosPickerClientLogFile:v6];
     }
 
@@ -136,7 +136,7 @@ uint64_t __27__PLPrivacy_sharedInstance__block_invoke()
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v12 = 138543362;
-      v13 = v3;
+      v13 = clientCopy;
       _os_log_impl(&dword_1AA9BD000, v8, OS_LOG_TYPE_ERROR, "Failed to access photos picker client log for client with invalid bundle identifier: %{public}@", &v12, 0xCu);
     }
 
@@ -149,15 +149,15 @@ uint64_t __27__PLPrivacy_sharedInstance__block_invoke()
 - (id)photosPickerPresentedLibraryLogsByClient
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[PLPhotoLibraryPathManager systemLibraryPathManager];
   v4 = [v3 privateCacheDirectoryWithSubType:14];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v21 = 0;
-    v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v21];
+    v6 = [defaultManager contentsOfDirectoryAtPath:v4 error:&v21];
     v7 = v21;
 
     if (v6)
@@ -186,7 +186,7 @@ uint64_t __27__PLPrivacy_sharedInstance__block_invoke()
             v14 = [objc_opt_class() _logDictionaryFromPhotosPickerClientLogFile:v13];
             if (v14)
             {
-              [v2 addObject:v14];
+              [array addObject:v14];
             }
           }
 
@@ -229,30 +229,30 @@ LABEL_14:
 
 LABEL_17:
 
-  return v2;
+  return array;
 }
 
-- (void)logPhotosPickerPresentedLibraryForClient:(id)a3 usingOptions:(int64_t)a4
+- (void)logPhotosPickerPresentedLibraryForClient:(id)client usingOptions:(int64_t)options
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([(__CFString *)v5 length])
+  clientCopy = client;
+  if ([(__CFString *)clientCopy length])
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = PLPhotosPickerLogDateFormatter();
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [v7 stringFromDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [v7 stringFromDate:date];
 
-    [v6 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
-    [v6 setObject:v9 forKeyedSubscript:@"timestamp"];
-    if (a4 == 1)
+    [dictionary setObject:clientCopy forKeyedSubscript:@"bundleIdentifier"];
+    [dictionary setObject:v9 forKeyedSubscript:@"timestamp"];
+    if (options == 1)
     {
       v10 = MEMORY[0x1E695E118];
     }
 
     else
     {
-      if (a4 != 2)
+      if (options != 2)
       {
 LABEL_9:
         v11 = +[PLPhotoLibraryPathManager systemLibraryPathManager];
@@ -263,11 +263,11 @@ LABEL_9:
         if (v12)
         {
           v24 = v13;
-          v15 = [v12 stringByAppendingPathComponent:v5];
+          v15 = [v12 stringByAppendingPathComponent:clientCopy];
           v16 = [objc_opt_class() _logDictionaryFromPhotosPickerClientLogFile:v15];
           if (v16)
           {
-            [v6 addEntriesFromDictionary:v16];
+            [dictionary addEntriesFromDictionary:v16];
           }
 
           v25 = v9;
@@ -276,14 +276,14 @@ LABEL_9:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v31 = v5;
+            v31 = clientCopy;
             v32 = 2114;
-            v33 = v6;
+            v33 = dictionary;
             _os_log_impl(&dword_1AA9BD000, v17, OS_LOG_TYPE_DEFAULT, "Logging photos picker presented library for client %{public}@: %{public}@", buf, 0x16u);
           }
 
           v28 = 0;
-          v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:100 options:0 error:&v28];
+          v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:&v28];
           v27 = v28;
           v19 = v28;
           v20 = [v18 writeToFile:v15 options:1073741825 error:&v27];
@@ -303,7 +303,7 @@ LABEL_9:
 
               v31 = v23;
               v32 = 2114;
-              v33 = v6;
+              v33 = dictionary;
               v34 = 2114;
               v35 = v15;
               v36 = 2112;
@@ -323,7 +323,7 @@ LABEL_9:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v31 = v5;
+            v31 = clientCopy;
             v32 = 2112;
             v33 = v14;
             _os_log_impl(&dword_1AA9BD000, v15, OS_LOG_TYPE_ERROR, "Failed to create photos picker client log directory for client %{public}@: %@", buf, 0x16u);
@@ -336,73 +336,73 @@ LABEL_9:
       v10 = MEMORY[0x1E695E110];
     }
 
-    [v6 setObject:v10 forKeyedSubscript:@"pickerUsesOptions"];
+    [dictionary setObject:v10 forKeyedSubscript:@"pickerUsesOptions"];
     goto LABEL_9;
   }
 
-  v6 = PLPrivacyGetLog();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  dictionary = PLPrivacyGetLog();
+  if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v31 = v5;
-    _os_log_impl(&dword_1AA9BD000, v6, OS_LOG_TYPE_ERROR, "Failed to create photos picker client log for client with empty bundle identifier: %{public}@", buf, 0xCu);
+    v31 = clientCopy;
+    _os_log_impl(&dword_1AA9BD000, dictionary, OS_LOG_TYPE_ERROR, "Failed to create photos picker client log for client with empty bundle identifier: %{public}@", buf, 0xCu);
   }
 
 LABEL_24:
 }
 
-- (void)logPhotosAccessWithPhotoPickerClientIdentification:(id)a3
+- (void)logPhotosAccessWithPhotoPickerClientIdentification:(id)identification
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identificationCopy = identification;
   v4 = PLPrivacyGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 trustedCallerBundleID];
+    trustedCallerBundleID = [identificationCopy trustedCallerBundleID];
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = trustedCallerBundleID;
     *&buf[12] = 2048;
-    *&buf[14] = [v3 clientProcessIdentifier];
+    *&buf[14] = [identificationCopy clientProcessIdentifier];
     _os_log_impl(&dword_1AA9BD000, v4, OS_LOG_TYPE_DEFAULT, "Logging client %{public}@ (pid: %ld) access to photos via picker", buf, 0x16u);
   }
 
   memset(buf, 0, 32);
-  if (v3)
+  if (identificationCopy)
   {
-    [v3 clientAuditToken];
+    [identificationCopy clientAuditToken];
   }
 
   v9[0] = *buf;
   v9[1] = *&buf[16];
   v6 = [MEMORY[0x1E69C5A40] applicationWithAuditToken:v9];
   v7 = [MEMORY[0x1E69C5A48] accessWithAccessor:v6 forType:1];
-  v8 = [MEMORY[0x1E69C5A38] sharedInstance];
-  [v8 log:v7];
+  mEMORY[0x1E69C5A38] = [MEMORY[0x1E69C5A38] sharedInstance];
+  [mEMORY[0x1E69C5A38] log:v7];
 }
 
-- (void)logPhotosAccessWithClientAuthorization:(id)a3
+- (void)logPhotosAccessWithClientAuthorization:(id)authorization
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isClientAuthorizedForTCCServicePhotos])
+  authorizationCopy = authorization;
+  if ([authorizationCopy isClientAuthorizedForTCCServicePhotos])
   {
     v4 = PLPrivacyGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 trustedCallerBundleID];
+      trustedCallerBundleID = [authorizationCopy trustedCallerBundleID];
       *buf = 138543874;
-      *&buf[4] = v5;
+      *&buf[4] = trustedCallerBundleID;
       *&buf[12] = 2048;
-      *&buf[14] = [v3 clientProcessIdentifier];
+      *&buf[14] = [authorizationCopy clientProcessIdentifier];
       *&buf[22] = 2114;
       *&buf[24] = @"read-write";
       _os_log_impl(&dword_1AA9BD000, v4, OS_LOG_TYPE_DEFAULT, "Logging client %{public}@ (pid: %ld) access to photos (%{public}@)", buf, 0x20u);
     }
 
     memset(buf, 0, 32);
-    if (v3)
+    if (authorizationCopy)
     {
-      [v3 clientAuditToken];
+      [authorizationCopy clientAuditToken];
     }
 
     v6[0] = *buf;
@@ -412,22 +412,22 @@ LABEL_24:
 
   else
   {
-    [v3 isClientAuthorizedForTCCServicePhotosAdd];
+    [authorizationCopy isClientAuthorizedForTCCServicePhotosAdd];
   }
 }
 
-- (void)reportPhotosUseWithClientAuthorization:(id)a3
+- (void)reportPhotosUseWithClientAuthorization:(id)authorization
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isClientAuthorizedForTCCServicePhotos])
+  authorizationCopy = authorization;
+  if ([authorizationCopy isClientAuthorizedForTCCServicePhotos])
   {
     v4 = MEMORY[0x1E69D55C8];
   }
 
   else
   {
-    if (![v3 isClientAuthorizedForTCCServicePhotosAdd])
+    if (![authorizationCopy isClientAuthorizedForTCCServicePhotosAdd])
     {
       goto LABEL_15;
     }
@@ -441,20 +441,20 @@ LABEL_24:
     v6 = PLPrivacyGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [v3 trustedCallerBundleID];
+      trustedCallerBundleID = [authorizationCopy trustedCallerBundleID];
       *buf = 138543874;
-      *&buf[4] = v7;
+      *&buf[4] = trustedCallerBundleID;
       *&buf[12] = 2048;
-      *&buf[14] = [v3 clientProcessIdentifier];
+      *&buf[14] = [authorizationCopy clientProcessIdentifier];
       *&buf[22] = 2114;
       *&buf[24] = v5;
       _os_log_impl(&dword_1AA9BD000, v6, OS_LOG_TYPE_DEBUG, "Reporting client %{public}@ (pid: %ld) use of photos service %{public}@", buf, 0x20u);
     }
 
     memset(buf, 0, 32);
-    if (v3)
+    if (authorizationCopy)
     {
-      [v3 clientAuditToken];
+      [authorizationCopy clientAuditToken];
     }
 
     v8 = dispatch_get_global_queue(0, 0);
@@ -465,7 +465,7 @@ LABEL_24:
     v13 = v5;
     v14 = *buf;
     v15 = *&buf[16];
-    v12 = v3;
+    v12 = authorizationCopy;
     dispatch_async(v8, v11);
   }
 
@@ -474,11 +474,11 @@ LABEL_24:
     v9 = PLPrivacyGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v3 trustedCallerBundleID];
+      trustedCallerBundleID2 = [authorizationCopy trustedCallerBundleID];
       *buf = 138543874;
-      *&buf[4] = v10;
+      *&buf[4] = trustedCallerBundleID2;
       *&buf[12] = 2048;
-      *&buf[14] = [v3 clientProcessIdentifier];
+      *&buf[14] = [authorizationCopy clientProcessIdentifier];
       *&buf[22] = 2114;
       *&buf[24] = v5;
       _os_log_impl(&dword_1AA9BD000, v9, OS_LOG_TYPE_DEFAULT, "Unable to report client %{public}@ (pid: %ld) use of photos service %{public}@", buf, 0x20u);
@@ -526,20 +526,20 @@ void __52__PLPrivacy_reportPhotosUseWithClientAuthorization___block_invoke(uint6
   }
 }
 
-- (void)requestLimitedLibraryPromptForApplicationIdentifier:(id)a3
+- (void)requestLimitedLibraryPromptForApplicationIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLPrivacy.m" lineNumber:711 description:{@"Invalid parameter not satisfying: %@", @"applicationIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrivacy.m" lineNumber:711 description:{@"Invalid parameter not satisfying: %@", @"applicationIdentifier"}];
   }
 
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) == 0 && (__PLIsAssetsdProxyService & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLPrivacy.m" lineNumber:712 description:@"requestLimitedLibraryPromptForApplicationIdentifier: can only be called within assetsd"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPrivacy.m" lineNumber:712 description:@"requestLimitedLibraryPromptForApplicationIdentifier: can only be called within assetsd"];
   }
 
   isolationQueue = self->_isolationQueue;
@@ -547,8 +547,8 @@ void __52__PLPrivacy_reportPhotosUseWithClientAuthorization___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __65__PLPrivacy_requestLimitedLibraryPromptForApplicationIdentifier___block_invoke;
   block[3] = &unk_1E79329F0;
-  v11 = v5;
-  v7 = v5;
+  v11 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_sync(isolationQueue, block);
 }
 
@@ -578,7 +578,7 @@ void __65__PLPrivacy_requestLimitedLibraryPromptForApplicationIdentifier___block
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
-  v8 = [(PLPrivacy *)self hasHandledLimitedLibraryReprompt];
+  hasHandledLimitedLibraryReprompt = [(PLPrivacy *)self hasHandledLimitedLibraryReprompt];
   if ((v6[3] & 1) == 0)
   {
     pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
@@ -704,7 +704,7 @@ void __62__PLPrivacy_presentAsyncPromptForLimitedLibraryPickerIfNeeded__block_in
   }
 }
 
-- (int64_t)photosAccessAllowedWithScope:(int64_t)a3 auditToken:(id *)a4 clientAuthorization:(id)a5
+- (int64_t)photosAccessAllowedWithScope:(int64_t)scope auditToken:(id *)token clientAuthorization:(id)authorization
 {
   v6 = tcc_authorization_check_audit_token();
   if (v6 >= 5)
@@ -718,13 +718,13 @@ void __62__PLPrivacy_presentAsyncPromptForLimitedLibraryPickerIfNeeded__block_in
   }
 
   v8 = &unk_1AAA8F588;
-  if (a3 <= 1)
+  if (scope <= 1)
   {
     v8 = qword_1AAA8F5B0;
   }
 
   result = v8[v7];
-  if (a3 == 1)
+  if (scope == 1)
   {
     if ((result & 3) != 0)
     {
@@ -756,7 +756,7 @@ void __62__PLPrivacy_presentAsyncPromptForLimitedLibraryPickerIfNeeded__block_in
   return result;
 }
 
-- (int64_t)photosAccessAllowedWithScope:(int64_t)a3
+- (int64_t)photosAccessAllowedWithScope:(int64_t)scope
 {
   v6 = 0;
   v7 = &v6;
@@ -767,13 +767,13 @@ void __62__PLPrivacy_presentAsyncPromptForLimitedLibraryPickerIfNeeded__block_in
   v5[2] = __42__PLPrivacy_photosAccessAllowedWithScope___block_invoke;
   v5[3] = &unk_1E79328E0;
   v5[4] = &v6;
-  [(PLPrivacy *)self _isPhotosAccessAllowedWithScope:a3 promptIfUnknown:0 synchronous:1 resultHandler:v5];
+  [(PLPrivacy *)self _isPhotosAccessAllowedWithScope:scope promptIfUnknown:0 synchronous:1 resultHandler:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (int64_t)checkPhotosAccessAllowedWithScope:(int64_t)a3
+- (int64_t)checkPhotosAccessAllowedWithScope:(int64_t)scope
 {
   v6 = 0;
   v7 = &v6;
@@ -784,26 +784,26 @@ void __62__PLPrivacy_presentAsyncPromptForLimitedLibraryPickerIfNeeded__block_in
   v5[2] = __47__PLPrivacy_checkPhotosAccessAllowedWithScope___block_invoke;
   v5[3] = &unk_1E79328E0;
   v5[4] = &v6;
-  [(PLPrivacy *)self _isPhotosAccessAllowedWithScope:a3 promptIfUnknown:1 synchronous:1 resultHandler:v5];
+  [(PLPrivacy *)self _isPhotosAccessAllowedWithScope:scope promptIfUnknown:1 synchronous:1 resultHandler:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)_isPhotosAccessAllowedWithScope:(int64_t)a3 promptIfUnknown:(BOOL)a4 synchronous:(BOOL)a5 resultHandler:(id)a6
+- (void)_isPhotosAccessAllowedWithScope:(int64_t)scope promptIfUnknown:(BOOL)unknown synchronous:(BOOL)synchronous resultHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   isolationQueue = self->_isolationQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PLPrivacy__isPhotosAccessAllowedWithScope_promptIfUnknown_synchronous_resultHandler___block_invoke;
   v13[3] = &unk_1E7931AC8;
-  v14 = v10;
-  v15 = a3;
-  v16 = a5;
-  v17 = a4;
+  v14 = handlerCopy;
+  scopeCopy = scope;
+  synchronousCopy = synchronous;
+  unknownCopy = unknown;
   v13[4] = self;
-  v12 = v10;
+  v12 = handlerCopy;
   dispatch_sync(isolationQueue, v13);
 }
 
@@ -868,25 +868,25 @@ uint64_t __87__PLPrivacy__isPhotosAccessAllowedWithScope_promptIfUnknown_synchro
   return [v5 _checkAuthStatusForPhotosAccessScope:v3 preflightStatus:v2 promptIfUnknown:v4 resultHandler:v6];
 }
 
-- (void)_checkAuthStatusForPhotosAccessScope:(int64_t)a3 preflightStatus:(int64_t)a4 promptIfUnknown:(BOOL)a5 resultHandler:(id)a6
+- (void)_checkAuthStatusForPhotosAccessScope:(int64_t)scope preflightStatus:(int64_t)status promptIfUnknown:(BOOL)unknown resultHandler:(id)handler
 {
-  v6 = a5;
+  unknownCopy = unknown;
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = v10;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
-  v36 = a4;
-  if (!a4)
+  statusCopy = status;
+  if (!status)
   {
     v13 = TCCAccessRestricted() != 0;
     goto LABEL_23;
   }
 
-  if (a4 != 1)
+  if (status != 1)
   {
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_33;
     }
@@ -896,7 +896,7 @@ uint64_t __87__PLPrivacy__isPhotosAccessAllowedWithScope_promptIfUnknown_synchro
 
   v12 = TCCAccessRestricted();
   v13 = v12 != 0;
-  if (!v6 || v12)
+  if (!unknownCopy || v12)
   {
 LABEL_23:
     if (!v11)
@@ -922,7 +922,7 @@ LABEL_27:
     else
     {
       v23 = qword_1AAA8F5B0;
-      if (a3 > 1)
+      if (scope > 1)
       {
         v23 = &unk_1AAA8F588;
       }
@@ -933,8 +933,8 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  v14 = a3;
-  if (a3 == 1)
+  scopeCopy = scope;
+  if (scope == 1)
   {
     if (PLHasPhotoLibraryAddUsageDescription_onceToken != -1)
     {
@@ -954,7 +954,7 @@ LABEL_27:
     if (PLHasPhotoLibraryUsageDescription_hasUsageDescription != 1 || TCCAccessRestricted())
     {
 LABEL_13:
-      v14 = 1;
+      scopeCopy = 1;
     }
 
     else
@@ -966,14 +966,14 @@ LABEL_13:
         _os_log_impl(&dword_1AA9BD000, v24, OS_LOG_TYPE_DEFAULT, "Missing NSPhotoLibraryAddUsageDescription, will try photos access instead of add-only", &buf, 2u);
       }
 
-      v14 = 7;
+      scopeCopy = 7;
     }
   }
 
   v15 = PLPrivacyGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = PLStringFromPhotosAccessScope(v14);
+    v16 = PLStringFromPhotosAccessScope(scopeCopy);
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v16;
     _os_log_impl(&dword_1AA9BD000, v15, OS_LOG_TYPE_DEFAULT, "TCCAccessRequest %{public}@", &buf, 0xCu);
@@ -984,9 +984,9 @@ LABEL_13:
   v26 = 3221225472;
   v27 = __96__PLPrivacy__checkAuthStatusForPhotosAccessScope_preflightStatus_promptIfUnknown_resultHandler___block_invoke;
   v28 = &unk_1E7931A78;
-  v29 = self;
+  selfCopy = self;
   v31 = &v33;
-  v32 = a3;
+  scopeCopy2 = scope;
   v18 = v17;
   v30 = v18;
   v19 = &v25;
@@ -1002,9 +1002,9 @@ LABEL_13:
   if (v11)
   {
     pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
-    if (a3 >= 2 && (PLIsReallyAssetsd_isAssetsd & 1) == 0 && (__PLIsAssetsdProxyService & 1) == 0 && v34[3] == 3)
+    if (scope >= 2 && (PLIsReallyAssetsd_isAssetsd & 1) == 0 && (__PLIsAssetsdProxyService & 1) == 0 && v34[3] == 3)
     {
-      [(PLPrivacy *)self setHasHandledLimitedLibraryReprompt:1, v25, v26, v27, v28, v29];
+      [(PLPrivacy *)self setHasHandledLimitedLibraryReprompt:1, v25, v26, v27, v28, selfCopy];
       PLPresentLimitedLibraryPicker(1);
     }
 
@@ -1031,11 +1031,11 @@ intptr_t __96__PLPrivacy__checkAuthStatusForPhotosAccessScope_preflightStatus_pr
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (int64_t)_authStatusForScope:(int64_t)a3
+- (int64_t)_authStatusForScope:(int64_t)scope
 {
   os_unfair_lock_lock(&self->_cachedClientAuthLock);
   cachedClientAuthRightFullAccess = self->_cachedClientAuthRightFullAccess;
-  if (a3 == 1 && (cachedClientAuthRightFullAccess - 2) >= 3)
+  if (scope == 1 && (cachedClientAuthRightFullAccess - 2) >= 3)
   {
     cachedClientAuthRightFullAccess = self->_cachedClientAuthRightAddOnly;
   }
@@ -1044,21 +1044,21 @@ intptr_t __96__PLPrivacy__checkAuthStatusForPhotosAccessScope_preflightStatus_pr
   return cachedClientAuthRightFullAccess;
 }
 
-- (void)_setAuthStatus:(int64_t)a3 scope:(int64_t)a4
+- (void)_setAuthStatus:(int64_t)status scope:(int64_t)scope
 {
   os_unfair_lock_lock(&self->_cachedClientAuthLock);
-  if (a4 == 1 || (self->_cachedClientAuthRightFullAccess = a3, a3 == 2))
+  if (scope == 1 || (self->_cachedClientAuthRightFullAccess = status, status == 2))
   {
-    self->_cachedClientAuthRightAddOnly = a3;
+    self->_cachedClientAuthRightAddOnly = status;
   }
 
   os_unfair_lock_unlock(&self->_cachedClientAuthLock);
 }
 
-- (int64_t)_resolvePreflightStatusForScope:(int64_t)a3
+- (int64_t)_resolvePreflightStatusForScope:(int64_t)scope
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [(PLPrivacy *)self _authStatusForScope:a3];
+  v5 = [(PLPrivacy *)self _authStatusForScope:scope];
   if (v5 == 1)
   {
     v6 = tcc_authorization_preflight();
@@ -1073,38 +1073,38 @@ intptr_t __96__PLPrivacy__checkAuthStatusForPhotosAccessScope_preflightStatus_pr
     }
   }
 
-  if (a3 != 1 || v5 == 2)
+  if (scope != 1 || v5 == 2)
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = v5;
-    v9 = a3;
+    scopeCopy = scope;
   }
 
   else if (tcc_authorization_preflight() == 2)
   {
     v5 = 2;
-    v7 = self;
+    selfCopy3 = self;
     v8 = 2;
-    v9 = 7;
+    scopeCopy = 7;
   }
 
   else
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = v5;
-    v9 = 1;
+    scopeCopy = 1;
   }
 
-  [(PLPrivacy *)v7 _setAuthStatus:v8 scope:v9];
+  [(PLPrivacy *)selfCopy3 _setAuthStatus:v8 scope:scopeCopy];
   return v5;
 }
 
-+ (id)_logDictionaryFromPhotosPickerClientLogFile:(id)a3
++ (id)_logDictionaryFromPhotosPickerClientLogFile:(id)file
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fileCopy = file;
   v15 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3 options:0 error:&v15];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy options:0 error:&v15];
   v5 = v15;
   v6 = v5;
   if (v4)
@@ -1137,7 +1137,7 @@ intptr_t __96__PLPrivacy__checkAuthStatusForPhotosAccessScope_preflightStatus_pr
 
     v17 = v11;
     v18 = 2114;
-    v19 = v3;
+    v19 = fileCopy;
     v20 = 2112;
     v21 = v8;
     _os_log_impl(&dword_1AA9BD000, v10, OS_LOG_TYPE_ERROR, "Failed to %{public}@ photos picker client log from %{public}@: %@", buf, 0x20u);

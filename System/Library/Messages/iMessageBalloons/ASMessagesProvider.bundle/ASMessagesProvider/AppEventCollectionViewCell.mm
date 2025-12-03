@@ -1,12 +1,12 @@
 @interface AppEventCollectionViewCell
-- (_TtC18ASMessagesProvider26AppEventCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider26AppEventCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppEventCollectionViewCell
 
-- (_TtC18ASMessagesProvider26AppEventCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider26AppEventCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider26AppEventCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_EF1D8();
 }
 

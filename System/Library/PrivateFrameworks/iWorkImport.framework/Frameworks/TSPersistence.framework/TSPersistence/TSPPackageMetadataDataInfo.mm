@@ -1,15 +1,15 @@
 @interface TSPPackageMetadataDataInfo
-- (TSPPackageMetadataDataInfo)initWithDataInfo:(const void *)a3 decryptionKey:(id)a4;
-- (id)dataStorageWithPackage:(id)a3 documentURL:(id)a4;
+- (TSPPackageMetadataDataInfo)initWithDataInfo:(const void *)info decryptionKey:(id)key;
+- (id)dataStorageWithPackage:(id)package documentURL:(id)l;
 @end
 
 @implementation TSPPackageMetadataDataInfo
 
-- (TSPPackageMetadataDataInfo)initWithDataInfo:(const void *)a3 decryptionKey:(id)a4
+- (TSPPackageMetadataDataInfo)initWithDataInfo:(const void *)info decryptionKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v7 = [TSPDigest alloc];
-  v9 = objc_msgSend_initFromProtobufString_(v7, v8, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+  v9 = objc_msgSend_initFromProtobufString_(v7, v8, *(info + 3) & 0xFFFFFFFFFFFFFFFELL);
   if (v9)
   {
     v37.receiver = self;
@@ -18,15 +18,15 @@
     v11 = v10;
     if (v10)
     {
-      v10->_identifier = *(a3 + 14);
+      v10->_identifier = *(info + 14);
       objc_storeStrong(&v10->_digest, v9);
-      v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+      v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v12, *(info + 4) & 0xFFFFFFFFFFFFFFFELL);
       preferredFilename = v11->_preferredFilename;
       v11->_preferredFilename = v13;
 
-      if ((*(a3 + 16) & 4) != 0)
+      if ((*(info + 16) & 4) != 0)
       {
-        v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v15, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
+        v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v15, *(info + 5) & 0xFFFFFFFFFFFFFFFELL);
       }
 
       else
@@ -37,10 +37,10 @@
       filename = v11->_filename;
       v11->_filename = v16;
 
-      v20 = *(a3 + 4);
+      v20 = *(info + 4);
       if ((v20 & 0x20) != 0)
       {
-        v22 = *(a3 + 8) & 0xFFFFFFFFFFFFFFFELL;
+        v22 = *(info + 8) & 0xFFFFFFFFFFFFFFFELL;
         v23 = *(v22 + 23);
         if (v23 < 0)
         {
@@ -58,22 +58,22 @@
       v11->_isUnmaterializedRemoteData = v21;
       if ((v20 & 0x20000) != 0)
       {
-        v24 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v19, *(a3 + 18));
+        v24 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v19, *(info + 18));
         materializedLength = v11->_materializedLength;
         v11->_materializedLength = v24;
       }
 
-      v26 = *(a3 + 4);
-      if (v6)
+      v26 = *(info + 4);
+      if (keyCopy)
       {
         if ((v26 & 0x200) != 0)
         {
-          v27 = sub_276AB6E08(v6, *(a3 + 12));
+          v27 = sub_276AB6E08(keyCopy, *(info + 12));
         }
 
         else
         {
-          v27 = v6;
+          v27 = keyCopy;
         }
 
         decryptionInfo = v11->_decryptionInfo;
@@ -98,33 +98,33 @@
     }
 
     self = v11;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)dataStorageWithPackage:(id)a3 documentURL:(id)a4
+- (id)dataStorageWithPackage:(id)package documentURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  lCopy = l;
   v11 = objc_msgSend_dataEntryPathForFilename_(TSPPackage, v8, self->_filename);
   materializedLength = self->_materializedLength;
   decryptionInfo = self->_decryptionInfo;
   if (materializedLength)
   {
     v14 = objc_msgSend_unsignedLongLongValue(materializedLength, v9, v10);
-    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(v6, v15, v11, decryptionInfo, v14, v7, 0);
+    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(packageCopy, v15, v11, decryptionInfo, v14, lCopy, 0);
   }
 
   else
   {
-    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(v6, v9, v11, decryptionInfo, -1, v7, 0);
+    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(packageCopy, v9, v11, decryptionInfo, -1, lCopy, 0);
   }
 
   v17 = ModificationDate;

@@ -1,14 +1,14 @@
 @interface OFLinearGradientView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
 - (NSArray)colors;
 - (NSArray)locations;
 - (void)dealloc;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation OFLinearGradientView
@@ -20,82 +20,82 @@
   [(OFUIView *)&v2 dealloc];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if ([a3 isEqualToString:@"startPoint"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"endPoint") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"colors") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"locations"))
+  if ([key isEqualToString:@"startPoint"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"endPoint") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"colors") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"locations"))
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = OFLinearGradientView;
-  return [(OFLinearGradientView *)&v6 _shouldAnimatePropertyWithKey:a3];
+  return [(OFLinearGradientView *)&v6 _shouldAnimatePropertyWithKey:key];
 }
 
 - (NSArray)locations
 {
-  v2 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  return [v2 locations];
+  return [gradientLayer locations];
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v4 setLocations:a3];
+  [gradientLayer setLocations:locations];
 }
 
 - (NSArray)colors
 {
-  v2 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  return [v2 colors];
+  return [gradientLayer colors];
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v4 setColors:a3];
+  [gradientLayer setColors:colors];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v2 startPoint];
+  [gradientLayer startPoint];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(OFLinearGradientView *)self gradientLayer];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v5 setStartPoint:{x, y}];
+  [gradientLayer setStartPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(OFLinearGradientView *)self gradientLayer];
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v2 endPoint];
+  [gradientLayer endPoint];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(OFLinearGradientView *)self gradientLayer];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(OFLinearGradientView *)self gradientLayer];
 
-  [v5 setEndPoint:{x, y}];
+  [gradientLayer setEndPoint:{x, y}];
 }
 
 @end

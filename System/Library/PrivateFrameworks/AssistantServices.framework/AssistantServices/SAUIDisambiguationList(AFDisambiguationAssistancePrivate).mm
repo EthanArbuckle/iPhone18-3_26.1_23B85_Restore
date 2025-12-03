@@ -11,7 +11,7 @@
 - (id)af_assistedSelectionItem
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([a1 autoDisambiguationDisabled])
+  if ([self autoDisambiguationDisabled])
   {
     v3 = 0;
     v4 = @"disabled";
@@ -19,7 +19,7 @@
 
   else
   {
-    v3 = _af_AssistedSelectionItem(a1);
+    v3 = _af_AssistedSelectionItem(self);
     if (!v3)
     {
       goto LABEL_6;
@@ -38,28 +38,28 @@ LABEL_6:
 
 - (void)af_setDisambiguationInfo:()AFDisambiguationAssistancePrivate
 {
-  v4 = a1;
+  selfCopy = self;
   v5 = a3;
-  objc_setAssociatedObject(v4, "DisambiguationInfoKey", v5, 1);
+  objc_setAssociatedObject(selfCopy, "DisambiguationInfoKey", v5, 1);
   v7 = objc_alloc_init(AFDisambiguationStore);
-  v6 = [v4 af_disambiguationIdentifier];
+  af_disambiguationIdentifier = [selfCopy af_disambiguationIdentifier];
 
-  [(AFDisambiguationStore *)v7 saveInfo:v5 forIdentifier:v6];
+  [(AFDisambiguationStore *)v7 saveInfo:v5 forIdentifier:af_disambiguationIdentifier];
 }
 
 - (id)af_itemForIndexIdentifier:()AFDisambiguationAssistancePrivate
 {
   v4 = a3;
-  v5 = [v4 integerValue];
-  v6 = [a1 items];
-  v7 = [v6 count];
-  if (v5 || [v4 isEqualToString:@"0"])
+  integerValue = [v4 integerValue];
+  items = [self items];
+  v7 = [items count];
+  if (integerValue || [v4 isEqualToString:@"0"])
   {
     v8 = 0;
-    if (v5 <= 0x7FFFFFFFFFFFFFFELL && v5 < v7)
+    if (integerValue <= 0x7FFFFFFFFFFFFFFELL && integerValue < v7)
     {
-      v9 = [a1 items];
-      v8 = [v9 objectAtIndexedSubscript:v5];
+      items2 = [self items];
+      v8 = [items2 objectAtIndexedSubscript:integerValue];
     }
   }
 
@@ -74,8 +74,8 @@ LABEL_6:
 - (id)af_indexIdentifierForItem:()AFDisambiguationAssistancePrivate
 {
   v4 = a3;
-  v5 = [a1 items];
-  v6 = [v5 indexOfObject:v4];
+  items = [self items];
+  v6 = [items indexOfObject:v4];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -94,7 +94,7 @@ LABEL_6:
 {
   memset(&v4, 0, sizeof(v4));
   CC_SHA1_Init(&v4);
-  _UpdateSha1WithDisambiguationList(&v4, a1);
+  _UpdateSha1WithDisambiguationList(&v4, self);
   v2 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
   CC_SHA1_Final([v2 mutableBytes], &v4);
 

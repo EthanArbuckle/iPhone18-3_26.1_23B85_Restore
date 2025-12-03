@@ -12,11 +12,11 @@
 {
   v14 = a6;
   v15 = a8;
-  v16 = a1;
-  v17 = v16;
+  selfCopy = self;
+  v17 = selfCopy;
   if (a2 > 0.0)
   {
-    [v16 scale];
+    [selfCopy scale];
     v19 = v18;
     if (v14)
     {
@@ -55,8 +55,8 @@
   v8 = a5;
   v9 = a4;
   v10 = objc_opt_class();
-  [a1 size];
-  v13 = [v10 sbui_legibilityImageForSettings:v9 scale:a1 inputImage:4 inputSize:v8 type:a2 pool:{v11, v12}];
+  [self size];
+  v13 = [v10 sbui_legibilityImageForSettings:v9 scale:self inputImage:4 inputSize:v8 type:a2 pool:{v11, v12}];
 
   return v13;
 }
@@ -66,7 +66,7 @@
   v15 = a9;
   v16 = a7;
   v17 = a6;
-  v18 = [objc_opt_class() sbui_legibilityImageForSettings:v17 scale:v16 inputImage:1 inputSize:a8 allowMinFillHeightHack:v15 type:a1 pool:{a2, a3}];
+  v18 = [objc_opt_class() sbui_legibilityImageForSettings:v17 scale:v16 inputImage:1 inputSize:a8 allowMinFillHeightHack:v15 type:self pool:{a2, a3}];
 
   return v18;
 }
@@ -76,7 +76,7 @@
   v17 = a10;
   v18 = a7;
   v19 = a6;
-  v20 = [objc_opt_class() sbui_legibilityImageForSettings:v19 scale:v18 inputImage:a8 inputSize:0 allowMinFillHeightHack:a9 strength:v17 type:a1 pool:{a2, a3}];
+  v20 = [objc_opt_class() sbui_legibilityImageForSettings:v19 scale:v18 inputImage:a8 inputSize:0 allowMinFillHeightHack:a9 strength:v17 type:self pool:{a2, a3}];
 
   return v20;
 }
@@ -127,7 +127,7 @@
   v46 = vcvtq_f64_f32(vrndp_f32(vcvt_f32_f64(vmulq_f64(v27, vdupq_n_s64(0x3FC999999999999AuLL)))));
   v47 = a2;
   v48 = a3;
-  v49 = a1;
+  selfCopy = self;
   v29 = v26;
   v41 = v29;
   v51 = v25;
@@ -139,7 +139,7 @@
   v50 = a10;
   v32 = v21;
   v44 = v32;
-  v33 = [v28 sbf_imageFromContextWithSize:a10 scale:v32 type:v40 pool:*&v46 drawing:a1];
+  v33 = [v28 sbf_imageFromContextWithSize:a10 scale:v32 type:v40 pool:*&v46 drawing:self];
   if (a9)
   {
     v34 = [v53[5] sbui_strikeImageForLegibilitySettings:v31 strength:a10 size:v32 type:*a9 pool:{v37, v38}];

@@ -1,59 +1,59 @@
 @interface VMUMutableClassInfo
-- (void)addComplexAction:(id)a3 withEvaluator:(id)a4;
-- (void)addVariant:(id)a3 forField:(id)a4 withEvaluator:(id)a5;
-- (void)addVariantRecursively:(id)a3 forField:(id)a4 atOffset:(unsigned int)a5 withEvaluator:(id)a6;
-- (void)mutateTypeFieldsRecursivelyWithBlock:(id)a3;
-- (void)mutateTypeFieldsWithBlock:(id)a3;
-- (void)setBinaryPath:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setSuperclassInfo:(id)a3;
-- (void)setVariantScanType:(unsigned int)a3 withEvaluator:(id)a4;
+- (void)addComplexAction:(id)action withEvaluator:(id)evaluator;
+- (void)addVariant:(id)variant forField:(id)field withEvaluator:(id)evaluator;
+- (void)addVariantRecursively:(id)recursively forField:(id)field atOffset:(unsigned int)offset withEvaluator:(id)evaluator;
+- (void)mutateTypeFieldsRecursivelyWithBlock:(id)block;
+- (void)mutateTypeFieldsWithBlock:(id)block;
+- (void)setBinaryPath:(id)path;
+- (void)setDisplayName:(id)name;
+- (void)setSuperclassInfo:(id)info;
+- (void)setVariantScanType:(unsigned int)type withEvaluator:(id)evaluator;
 @end
 
 @implementation VMUMutableClassInfo
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   v3.receiver = self;
   v3.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v3 _setDisplayName:a3];
+  [(VMUClassInfo *)&v3 _setDisplayName:name];
 }
 
-- (void)setBinaryPath:(id)a3
+- (void)setBinaryPath:(id)path
 {
   v3.receiver = self;
   v3.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v3 _setBinaryPath:a3 sanitize:1];
+  [(VMUClassInfo *)&v3 _setBinaryPath:path sanitize:1];
 }
 
-- (void)setSuperclassInfo:(id)a3
+- (void)setSuperclassInfo:(id)info
 {
   v3.receiver = self;
   v3.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v3 _setSuperclassInfo:a3];
+  [(VMUClassInfo *)&v3 _setSuperclassInfo:info];
 }
 
-- (void)mutateTypeFieldsWithBlock:(id)a3
+- (void)mutateTypeFieldsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__VMUMutableClassInfo_mutateTypeFieldsWithBlock___block_invoke;
   v6[3] = &unk_1E8278BA8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(VMUClassInfo *)self enumerateTypeFieldsWithBlock:v6];
 }
 
-- (void)mutateTypeFieldsRecursivelyWithBlock:(id)a3
+- (void)mutateTypeFieldsRecursivelyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__VMUMutableClassInfo_mutateTypeFieldsRecursivelyWithBlock___block_invoke;
   v6[3] = &unk_1E8278BA8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(VMUClassInfo *)self enumerateTypeFieldsWithBlock:v6];
 }
 
@@ -64,23 +64,23 @@ void __60__VMUMutableClassInfo_mutateTypeFieldsRecursivelyWithBlock___block_invo
   [v3 mutateTypeFieldsRecursivelyWithBlock:*(a1 + 32) parentOffset:{objc_msgSend(v3, "offset")}];
 }
 
-- (void)addVariant:(id)a3 forField:(id)a4 withEvaluator:(id)a5
+- (void)addVariant:(id)variant forField:(id)field withEvaluator:(id)evaluator
 {
-  v8 = a3;
-  v9 = a4;
+  variantCopy = variant;
+  fieldCopy = field;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__VMUMutableClassInfo_addVariant_forField_withEvaluator___block_invoke;
   aBlock[3] = &unk_1E8278BD0;
-  v10 = v9;
+  v10 = fieldCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = variantCopy;
   v17 = v11;
-  v12 = a5;
+  evaluatorCopy = evaluator;
   v13 = _Block_copy(aBlock);
   v14.receiver = self;
   v14.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v14 _addVariantAction:v13 withEvaluator:v12];
+  [(VMUClassInfo *)&v14 _addVariantAction:v13 withEvaluator:evaluatorCopy];
 }
 
 void __57__VMUMutableClassInfo_addVariant_forField_withEvaluator___block_invoke(uint64_t a1, void *a2)
@@ -106,24 +106,24 @@ void __57__VMUMutableClassInfo_addVariant_forField_withEvaluator___block_invoke(
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addVariantRecursively:(id)a3 forField:(id)a4 atOffset:(unsigned int)a5 withEvaluator:(id)a6
+- (void)addVariantRecursively:(id)recursively forField:(id)field atOffset:(unsigned int)offset withEvaluator:(id)evaluator
 {
-  v10 = a3;
-  v11 = a4;
+  recursivelyCopy = recursively;
+  fieldCopy = field;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__VMUMutableClassInfo_addVariantRecursively_forField_atOffset_withEvaluator___block_invoke;
   aBlock[3] = &unk_1E8278BF8;
-  v12 = v11;
+  v12 = fieldCopy;
   v18 = v12;
-  v20 = a5;
-  v13 = v10;
+  offsetCopy = offset;
+  v13 = recursivelyCopy;
   v19 = v13;
-  v14 = a6;
+  evaluatorCopy = evaluator;
   v15 = _Block_copy(aBlock);
   v16.receiver = self;
   v16.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v16 _addVariantAction:v15 withEvaluator:v14];
+  [(VMUClassInfo *)&v16 _addVariantAction:v15 withEvaluator:evaluatorCopy];
 }
 
 void __77__VMUMutableClassInfo_addVariantRecursively_forField_atOffset_withEvaluator___block_invoke(uint64_t a1, void *a2)
@@ -147,25 +147,25 @@ void __77__VMUMutableClassInfo_addVariantRecursively_forField_atOffset_withEvalu
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addComplexAction:(id)a3 withEvaluator:(id)a4
+- (void)addComplexAction:(id)action withEvaluator:(id)evaluator
 {
   v4.receiver = self;
   v4.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v4 _addComplexAction:a3 withEvaluator:a4];
+  [(VMUClassInfo *)&v4 _addComplexAction:action withEvaluator:evaluator];
 }
 
-- (void)setVariantScanType:(unsigned int)a3 withEvaluator:(id)a4
+- (void)setVariantScanType:(unsigned int)type withEvaluator:(id)evaluator
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__VMUMutableClassInfo_setVariantScanType_withEvaluator___block_invoke;
   aBlock[3] = &__block_descriptor_36_e29_v16__0__VMUMutableClassInfo_8l;
-  v9 = a3;
-  v5 = a4;
+  typeCopy = type;
+  evaluatorCopy = evaluator;
   v6 = _Block_copy(aBlock);
   v7.receiver = self;
   v7.super_class = VMUMutableClassInfo;
-  [(VMUClassInfo *)&v7 _addVariantAction:v6 withEvaluator:v5];
+  [(VMUClassInfo *)&v7 _addVariantAction:v6 withEvaluator:evaluatorCopy];
 }
 
 @end

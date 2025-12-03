@@ -1,10 +1,10 @@
 @interface DEBackgroundAppRefreshExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEBackgroundAppRefreshExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = objc_opt_new();
   v4 = [DEAttachmentItem attachmentWithPath:@"/var/mobile/Library/Logs/DuetLoggingSimple.SpringBoard"];

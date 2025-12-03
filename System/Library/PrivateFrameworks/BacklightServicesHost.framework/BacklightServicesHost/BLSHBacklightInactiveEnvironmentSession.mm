@@ -1,58 +1,58 @@
 @interface BLSHBacklightInactiveEnvironmentSession
-+ (BLSHBacklightInactiveEnvironmentSession)sessionWithPresentation:(id)a3;
-- (BLSHBacklightInactiveEnvironmentSession)initWithPresentation:(id)a3;
++ (BLSHBacklightInactiveEnvironmentSession)sessionWithPresentation:(id)presentation;
+- (BLSHBacklightInactiveEnvironmentSession)initWithPresentation:(id)presentation;
 - (BLSHBacklightInactiveEnvironmentSessionUpdating)updater;
-- (void)addEnvironmentsObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)addEnvironmentsObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)hostEnvironment:(id)a3 clientDidUpdateAlwaysOnContentIs1hz:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 clientDidUpdateEnabled:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 clientDidUpdateSupportsAlwaysOn:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSet1HzFlipbook:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSetAlwaysOnEnabledForEnvironment:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSetCacheFlipbookOnDisplayWake:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSetHighLuminanceAlwaysOn:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSetLiveUpdating:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 hostDidSetUnrestrictedFramerateUpdates:(BOOL)a4;
-- (void)hostEnvironment:(id)a3 invalidateContentForReason:(id)a4;
-- (void)notifyEnvironmentObserversWithBlock:(uint64_t)a1;
-- (void)notifyObserversWithBlock:(uint64_t)a1;
-- (void)removeEnvironmentsObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)hostEnvironment:(id)environment clientDidUpdateAlwaysOnContentIs1hz:(BOOL)is1hz;
+- (void)hostEnvironment:(id)environment clientDidUpdateEnabled:(BOOL)enabled;
+- (void)hostEnvironment:(id)environment clientDidUpdateSupportsAlwaysOn:(BOOL)on;
+- (void)hostEnvironment:(id)environment hostDidSet1HzFlipbook:(BOOL)flipbook;
+- (void)hostEnvironment:(id)environment hostDidSetAlwaysOnEnabledForEnvironment:(BOOL)forEnvironment;
+- (void)hostEnvironment:(id)environment hostDidSetCacheFlipbookOnDisplayWake:(BOOL)wake;
+- (void)hostEnvironment:(id)environment hostDidSetHighLuminanceAlwaysOn:(BOOL)on;
+- (void)hostEnvironment:(id)environment hostDidSetLiveUpdating:(BOOL)updating;
+- (void)hostEnvironment:(id)environment hostDidSetUnrestrictedFramerateUpdates:(BOOL)updates;
+- (void)hostEnvironment:(id)environment invalidateContentForReason:(id)reason;
+- (void)notifyEnvironmentObserversWithBlock:(uint64_t)block;
+- (void)notifyObserversWithBlock:(uint64_t)block;
+- (void)removeEnvironmentsObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 - (void)sessionDidEnd;
-- (void)setPresentation:(id)a3;
-- (void)setUpdater:(id)a3;
-- (void)updaterDidBeginUpdateToBacklightState:(int64_t)a3;
-- (void)updaterDidUpdateToPresentation:(id)a3;
+- (void)setPresentation:(id)presentation;
+- (void)setUpdater:(id)updater;
+- (void)updaterDidBeginUpdateToBacklightState:(int64_t)state;
+- (void)updaterDidUpdateToPresentation:(id)presentation;
 @end
 
 @implementation BLSHBacklightInactiveEnvironmentSession
 
-+ (BLSHBacklightInactiveEnvironmentSession)sessionWithPresentation:(id)a3
++ (BLSHBacklightInactiveEnvironmentSession)sessionWithPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPresentation:v4];
+  presentationCopy = presentation;
+  v5 = [[self alloc] initWithPresentation:presentationCopy];
 
   return v5;
 }
 
-- (BLSHBacklightInactiveEnvironmentSession)initWithPresentation:(id)a3
+- (BLSHBacklightInactiveEnvironmentSession)initWithPresentation:(id)presentation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  presentationCopy = presentation;
   v25.receiver = self;
   v25.super_class = BLSHBacklightInactiveEnvironmentSession;
   v7 = [(BLSHBacklightInactiveEnvironmentSession *)&v25 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!presentationCopy)
     {
       [BLSHBacklightInactiveEnvironmentSession initWithPresentation:a2];
     }
 
     v7->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v7->_presentation, a3);
+    objc_storeStrong(&v7->_presentation, presentation);
     v9 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:2];
     observers = v8->_observers;
     v8->_observers = v9;
@@ -65,8 +65,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [v6 presentationEntries];
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    presentationEntries = [presentationCopy presentationEntries];
+    v14 = [presentationEntries countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -77,14 +77,14 @@
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(presentationEntries);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * i) environment];
-          [v18 addObserver:v8];
+          environment = [*(*(&v21 + 1) + 8 * i) environment];
+          [environment addObserver:v8];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v15 = [presentationEntries countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v15);
@@ -100,7 +100,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_ended"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -132,25 +132,25 @@
   return v3;
 }
 
-- (void)setUpdater:(id)a3
+- (void)setUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   os_unfair_lock_lock(&self->_lock);
   updater = self->_updater;
-  self->_updater = v4;
+  self->_updater = updaterCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPresentation:(id)a3
+- (void)setPresentation:(id)presentation
 {
-  v5 = a3;
-  if (!v5)
+  presentationCopy = presentation;
+  if (!presentationCopy)
   {
     [BLSHBacklightInactiveEnvironmentSession setPresentation:a2];
   }
 
-  v6 = v5;
+  v6 = presentationCopy;
   os_unfair_lock_lock(&self->_lock);
   if ([v6 isEqual:self->_presentation])
   {
@@ -163,11 +163,11 @@
     v8 = v6;
     v9 = self->_presentation;
     self->_presentation = v8;
-    v10 = presentation;
+    presentationCopy2 = presentation;
 
     os_unfair_lock_unlock(&self->_lock);
-    v11 = [(BLSHBacklightInactiveEnvironmentSession *)self updater];
-    [v11 inactiveEnvironmentSession:self updateToPresentation:v8];
+    updater = [(BLSHBacklightInactiveEnvironmentSession *)self updater];
+    [updater inactiveEnvironmentSession:self updateToPresentation:v8];
 
     v12[4] = self;
     v13[0] = MEMORY[0x277D85DD0];
@@ -179,56 +179,56 @@
     v12[1] = 3221225472;
     v12[2] = __59__BLSHBacklightInactiveEnvironmentSession_setPresentation___block_invoke_2;
     v12[3] = &unk_27841F0B8;
-    [(BLSHBacklightEnvironmentPresentation *)v8 differenceFromPresentation:v10 forEachRemoval:v13 forEachAddition:v12];
+    [(BLSHBacklightEnvironmentPresentation *)v8 differenceFromPresentation:presentationCopy2 forEachRemoval:v13 forEachAddition:v12];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addEnvironmentsObserver:(id)a3
+- (void)addEnvironmentsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_environmentObservers addObject:v4];
+  [(NSHashTable *)self->_environmentObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeEnvironmentsObserver:(id)a3
+- (void)removeEnvironmentsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_environmentObservers removeObject:v4];
+  [(NSHashTable *)self->_environmentObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updaterDidUpdateToPresentation:(id)a3
+- (void)updaterDidUpdateToPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__BLSHBacklightInactiveEnvironmentSession_updaterDidUpdateToPresentation___block_invoke;
   v6[3] = &unk_27841F0E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentationCopy;
+  v5 = presentationCopy;
   [(BLSHBacklightInactiveEnvironmentSession *)self notifyObserversWithBlock:v6];
 }
 
@@ -241,16 +241,16 @@ void __81__BLSHBacklightInactiveEnvironmentSession_updaterDidBeginUpdateToBackli
   }
 }
 
-- (void)hostEnvironment:(id)a3 clientDidUpdateEnabled:(BOOL)a4
+- (void)hostEnvironment:(id)environment clientDidUpdateEnabled:(BOOL)enabled
 {
-  v6 = a3;
+  environmentCopy = environment;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_clientDidUpdateEnabled___block_invoke;
   v8[3] = &unk_27841EFC8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = environmentCopy;
+  enabledCopy = enabled;
+  v7 = environmentCopy;
   [(BLSHBacklightInactiveEnvironmentSession *)self notifyEnvironmentObserversWithBlock:v8];
 }
 
@@ -344,16 +344,16 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
   }
 }
 
-- (void)notifyObserversWithBlock:(uint64_t)a1
+- (void)notifyObserversWithBlock:(uint64_t)block
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v5 = [*(a1 + 8) allObjects];
-    os_unfair_lock_unlock((a1 + 32));
-    v6 = v5;
+    os_unfair_lock_lock((block + 32));
+    allObjects = [*(block + 8) allObjects];
+    os_unfair_lock_unlock((block + 32));
+    v6 = allObjects;
     OUTLINED_FUNCTION_7_0();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -374,10 +374,10 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
           ++v24;
         }
 
-        while (v5 != v24);
+        while (allObjects != v24);
         OUTLINED_FUNCTION_7_0();
         v16 = [v6 countByEnumeratingWithState:? objects:? count:?];
-        v5 = v16;
+        allObjects = v16;
       }
 
       while (v16);
@@ -387,7 +387,7 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updaterDidBeginUpdateToBacklightState:(int64_t)a3
+- (void)updaterDidBeginUpdateToBacklightState:(int64_t)state
 {
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
@@ -403,14 +403,14 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   self->_ended = 1;
-  v3 = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
+  presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self->_presentation presentationEntries];
   [(NSHashTable *)self->_environmentObservers removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = presentationEntries;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -426,8 +426,8 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) environment];
-        [v9 removeObserver:self];
+        environment = [*(*(&v12 + 1) + 8 * v8) environment];
+        [environment removeObserver:self];
 
         ++v8;
       }
@@ -449,16 +449,16 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyEnvironmentObserversWithBlock:(uint64_t)a1
+- (void)notifyEnvironmentObserversWithBlock:(uint64_t)block
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v5 = [*(a1 + 16) allObjects];
-    os_unfair_lock_unlock((a1 + 32));
-    v6 = v5;
+    os_unfair_lock_lock((block + 32));
+    allObjects = [*(block + 16) allObjects];
+    os_unfair_lock_unlock((block + 32));
+    v6 = allObjects;
     OUTLINED_FUNCTION_7_0();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -479,10 +479,10 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
           ++v24;
         }
 
-        while (v5 != v24);
+        while (allObjects != v24);
         OUTLINED_FUNCTION_7_0();
         v16 = [v6 countByEnumeratingWithState:? objects:? count:?];
-        v5 = v16;
+        allObjects = v16;
       }
 
       while (v16);
@@ -492,87 +492,87 @@ void __91__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_hostDidSetHig
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hostEnvironment:(id)a3 clientDidUpdateSupportsAlwaysOn:(BOOL)a4
+- (void)hostEnvironment:(id)environment clientDidUpdateSupportsAlwaysOn:(BOOL)on
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 clientDidUpdateAlwaysOnContentIs1hz:(BOOL)a4
+- (void)hostEnvironment:(id)environment clientDidUpdateAlwaysOnContentIs1hz:(BOOL)is1hz
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 invalidateContentForReason:(id)a4
+- (void)hostEnvironment:(id)environment invalidateContentForReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  reasonCopy = reason;
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v11[2] = __86__BLSHBacklightInactiveEnvironmentSession_hostEnvironment_invalidateContentForReason___block_invoke;
   v11[3] = &unk_27841EFF0;
-  v12 = v6;
+  v12 = environmentCopy;
   v13 = v8;
   v9 = v8;
-  v10 = v6;
+  v10 = environmentCopy;
   [(BLSHBacklightInactiveEnvironmentSession *)self notifyEnvironmentObserversWithBlock:v11];
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSetAlwaysOnEnabledForEnvironment:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSetAlwaysOnEnabledForEnvironment:(BOOL)forEnvironment
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSetLiveUpdating:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSetLiveUpdating:(BOOL)updating
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSetUnrestrictedFramerateUpdates:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSetUnrestrictedFramerateUpdates:(BOOL)updates
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSet1HzFlipbook:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSet1HzFlipbook:(BOOL)flipbook
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSetCacheFlipbookOnDisplayWake:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSetCacheFlipbookOnDisplayWake:(BOOL)wake
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);
   OUTLINED_FUNCTION_1_6(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)hostEnvironment:(id)a3 hostDidSetHighLuminanceAlwaysOn:(BOOL)a4
+- (void)hostEnvironment:(id)environment hostDidSetHighLuminanceAlwaysOn:(BOOL)on
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, environment);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v6 = OUTLINED_FUNCTION_2_5(v5);

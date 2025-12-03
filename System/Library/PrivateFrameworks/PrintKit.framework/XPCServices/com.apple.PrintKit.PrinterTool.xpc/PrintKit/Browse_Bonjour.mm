@@ -1,25 +1,25 @@
 @interface Browse_Bonjour
-- (BOOL)isOKToAdd:(id)a3;
-- (Browse_Bonjour)initWithQueue:(id)a3;
-- (void)_browserForServiceType:(id)a3 changedFrom:(id)a4 to:(id)a5 done:(BOOL)a6;
-- (void)addResult:(id)a3;
+- (BOOL)isOKToAdd:(id)add;
+- (Browse_Bonjour)initWithQueue:(id)queue;
+- (void)_browserForServiceType:(id)type changedFrom:(id)from to:(id)to done:(BOOL)done;
+- (void)addResult:(id)result;
 - (void)cancel;
-- (void)removeResult:(id)a3;
+- (void)removeResult:(id)result;
 - (void)start;
 @end
 
 @implementation Browse_Bonjour
 
-- (Browse_Bonjour)initWithQueue:(id)a3
+- (Browse_Bonjour)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = Browse_Bonjour;
   v6 = [(Browse_Bonjour *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -32,13 +32,13 @@
   self->_serviceBrowsers = v3;
 
   secure_tcp = nw_parameters_create_secure_tcp(_nw_parameters_configure_protocol_default_configuration, _nw_parameters_configure_protocol_default_configuration);
-  v6 = [(Browse_Implementation *)self session];
-  v7 = [v6 clientBundleIdentifier];
+  session = [(Browse_Implementation *)self session];
+  clientBundleIdentifier = [session clientBundleIdentifier];
 
-  v16 = v7;
-  if (v7)
+  v16 = clientBundleIdentifier;
+  if (clientBundleIdentifier)
   {
-    [v7 UTF8String];
+    [clientBundleIdentifier UTF8String];
     nw_parameters_set_attributed_bundle_identifier();
   }
 
@@ -94,16 +94,16 @@
 
 - (void)cancel
 {
-  v3 = [(NSMutableDictionary *)self->_serviceBrowsers allValues];
-  [v3 enumerateObjectsUsingBlock:&stru_1000A2528];
+  allValues = [(NSMutableDictionary *)self->_serviceBrowsers allValues];
+  [allValues enumerateObjectsUsingBlock:&stru_1000A2528];
 
   serviceBrowsers = self->_serviceBrowsers;
   self->_serviceBrowsers = 0;
 }
 
-- (BOOL)isOKToAdd:(id)a3
+- (BOOL)isOKToAdd:(id)add
 {
-  v3 = nw_browse_result_copy_txt_record_object(a3);
+  v3 = nw_browse_result_copy_txt_record_object(add);
   if (v3 && ((+[PKDefaults urfIsOptional]& 1) != 0 || nw_txt_record_find_key(v3, "URF")))
   {
     v4 = +[PKDefaults requiredPDL];
@@ -132,34 +132,34 @@
   return v6;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = _PKLogCategory(PKLogCategoryDiscovery[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 134218242;
-    v10 = v4;
+    v10 = resultCopy;
     v11 = 2112;
-    v12 = v4;
+    v12 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CHECK Result <%p> %@", &v9, 0x16u);
   }
 
-  if ([(Browse_Bonjour *)self isOKToAdd:v4])
+  if ([(Browse_Bonjour *)self isOKToAdd:resultCopy])
   {
     v6 = _PKLogCategory(PKLogCategoryDiscovery[0]);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 134218242;
-      v10 = v4;
+      v10 = resultCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = resultCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Adding <%p> %@", &v9, 0x16u);
     }
 
-    v7 = [[BonjourBrowse_Entity alloc] initWithBrowseResult:v4];
-    v8 = [(Browse_Implementation *)self addEntity];
-    (v8)[2](v8, v7);
+    v7 = [[BonjourBrowse_Entity alloc] initWithBrowseResult:resultCopy];
+    addEntity = [(Browse_Implementation *)self addEntity];
+    (addEntity)[2](addEntity, v7);
   }
 
   else
@@ -168,44 +168,44 @@
     if (os_log_type_enabled(&v7->super.super, OS_LOG_TYPE_INFO))
     {
       v9 = 134218242;
-      v10 = v4;
+      v10 = resultCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = resultCopy;
       _os_log_impl(&_mh_execute_header, &v7->super.super, OS_LOG_TYPE_INFO, "NOT Adding <%p> %@", &v9, 0x16u);
     }
   }
 }
 
-- (void)removeResult:(id)a3
+- (void)removeResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = _PKLogCategory(PKLogCategoryDiscovery[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134218242;
-    v9 = v4;
+    v9 = resultCopy;
     v10 = 2112;
-    v11 = v4;
+    v11 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Removing <%p> %@", &v8, 0x16u);
   }
 
-  v6 = [[BonjourBrowse_Entity alloc] initWithBrowseResult:v4];
-  v7 = [(Browse_Implementation *)self removeEntity];
-  (v7)[2](v7, v6);
+  v6 = [[BonjourBrowse_Entity alloc] initWithBrowseResult:resultCopy];
+  removeEntity = [(Browse_Implementation *)self removeEntity];
+  (removeEntity)[2](removeEntity, v6);
 }
 
-- (void)_browserForServiceType:(id)a3 changedFrom:(id)a4 to:(id)a5 done:(BOOL)a6
+- (void)_browserForServiceType:(id)type changedFrom:(id)from to:(id)to done:(BOOL)done
 {
-  old_result = a4;
-  v8 = a5;
+  old_result = from;
+  toCopy = to;
   dispatch_assert_queue_V2(self->_queue);
-  changes = nw_browse_result_get_changes(old_result, v8);
+  changes = nw_browse_result_get_changes(old_result, toCopy);
   if ((changes & 1) == 0)
   {
     if ((changes & 2) != 0)
     {
 LABEL_5:
-      [(Browse_Bonjour *)self addResult:v8];
+      [(Browse_Bonjour *)self addResult:toCopy];
       goto LABEL_7;
     }
 

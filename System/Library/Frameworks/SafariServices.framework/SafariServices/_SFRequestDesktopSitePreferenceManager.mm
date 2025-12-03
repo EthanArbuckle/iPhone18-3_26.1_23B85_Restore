@@ -1,46 +1,46 @@
 @interface _SFRequestDesktopSitePreferenceManager
-- (_SFRequestDesktopSitePreferenceManager)initWithPerSitePreferencesStore:(id)a3 quirksManager:(id)a4;
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
+- (_SFRequestDesktopSitePreferenceManager)initWithPerSitePreferencesStore:(id)store quirksManager:(id)manager;
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
 - (id)preferences;
 - (void)_notifyObserversOfPerSitePreferenceDefaultValueUpdate;
 - (void)_notifyObserversOfPerSitePreferenceDomainValuesUpdate;
-- (void)_requestDesktopSitePerSitePreferenceDidChange:(id)a3;
-- (void)addRequestDesktopSitePerSitePreferenceObserver:(id)a3;
+- (void)_requestDesktopSitePerSitePreferenceDidChange:(id)change;
+- (void)addRequestDesktopSitePerSitePreferenceObserver:(id)observer;
 - (void)dealloc;
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5;
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4;
-- (void)getAllRequestDesktopSitePerSitePreferenceValues:(id)a3;
-- (void)getDefaultPreferenceValueForPreference:(id)a3 completionHandler:(id)a4;
-- (void)getDefaultPreferenceValueIfNotCustomizedForPreference:(id)a3 domain:(id)a4 completionHandler:(id)a5;
-- (void)getRequestDesktopSitePreferenceForDomain:(id)a3 withTimeout:(double)a4 completionHandler:(id)a5;
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6;
-- (void)setClientPrefersMobileUserAgentByDefault:(BOOL)a3;
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain;
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block;
+- (void)getAllRequestDesktopSitePerSitePreferenceValues:(id)values;
+- (void)getDefaultPreferenceValueForPreference:(id)preference completionHandler:(id)handler;
+- (void)getDefaultPreferenceValueIfNotCustomizedForPreference:(id)preference domain:(id)domain completionHandler:(id)handler;
+- (void)getRequestDesktopSitePreferenceForDomain:(id)domain withTimeout:(double)timeout completionHandler:(id)handler;
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block;
+- (void)setClientPrefersMobileUserAgentByDefault:(BOOL)default;
 @end
 
 @implementation _SFRequestDesktopSitePreferenceManager
 
-- (_SFRequestDesktopSitePreferenceManager)initWithPerSitePreferencesStore:(id)a3 quirksManager:(id)a4
+- (_SFRequestDesktopSitePreferenceManager)initWithPerSitePreferencesStore:(id)store quirksManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = _SFRequestDesktopSitePreferenceManager;
   v9 = [(_SFRequestDesktopSitePreferenceManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_perSitePreferencesStore, a3);
+    objc_storeStrong(&v9->_perSitePreferencesStore, store);
     v11 = objc_alloc(MEMORY[0x1E69C8FB8]);
     v12 = [v11 initWithIdentifier:*MEMORY[0x1E69C9588]];
     requestDesktopSitePreference = v10->_requestDesktopSitePreference;
     v10->_requestDesktopSitePreference = v12;
 
-    objc_storeStrong(&v10->_quirksManager, a4);
+    objc_storeStrong(&v10->_quirksManager, manager);
     [(WBSPerSitePreferenceManager *)v10 setStorageDelegate:v10];
     [(WBSPerSitePreferenceManager *)v10 setDefaultsDelegate:v10];
-    v14 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v14 addObserver:v10 selector:sel__requestDesktopSitePerSitePreferenceDidChange_ name:@"com.apple.SafariServices.RequestDesktopSitePerSitePreferenceDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__requestDesktopSitePerSitePreferenceDidChange_ name:@"com.apple.SafariServices.RequestDesktopSitePerSitePreferenceDidChange" object:0];
 
     v15 = v10;
   }
@@ -50,37 +50,37 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SFRequestDesktopSitePreferenceManager;
   [(_SFRequestDesktopSitePreferenceManager *)&v4 dealloc];
 }
 
-- (void)addRequestDesktopSitePerSitePreferenceObserver:(id)a3
+- (void)addRequestDesktopSitePerSitePreferenceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSMutableSet *)observers addObject:v4];
+  [(NSMutableSet *)observers addObject:observerCopy];
 }
 
-- (void)getRequestDesktopSitePreferenceForDomain:(id)a3 withTimeout:(double)a4 completionHandler:(id)a5
+- (void)getRequestDesktopSitePreferenceForDomain:(id)domain withTimeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 length])
+  domainCopy = domain;
+  handlerCopy = handler;
+  if ([domainCopy length])
   {
     requestDesktopSitePreference = self->_requestDesktopSitePreference;
     v11[0] = MEMORY[0x1E69E9820];
@@ -88,42 +88,42 @@
     v11[2] = __113___SFRequestDesktopSitePreferenceManager_getRequestDesktopSitePreferenceForDomain_withTimeout_completionHandler___block_invoke;
     v11[3] = &unk_1E8493770;
     v11[4] = self;
-    v12 = v8;
-    v14 = a4;
-    v13 = v9;
+    v12 = domainCopy;
+    timeoutCopy = timeout;
+    v13 = handlerCopy;
     [(_SFRequestDesktopSitePreferenceManager *)self getDefaultPreferenceValueIfNotCustomizedForPreference:requestDesktopSitePreference domain:v12 completionHandler:v11];
   }
 
   else
   {
-    (*(v9 + 2))(v9, [(_SFRequestDesktopSitePreferenceManager *)self _defaultPreferenceValue], 1);
+    (*(handlerCopy + 2))(handlerCopy, [(_SFRequestDesktopSitePreferenceManager *)self _defaultPreferenceValue], 1);
   }
 }
 
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  preferenceCopy = preference;
+  domainCopy = domain;
+  blockCopy = block;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __96___SFRequestDesktopSitePreferenceManager_getValueOfPreference_forDomain_withTimeout_usingBlock___block_invoke;
   v17[3] = &unk_1E84937C0;
-  v18 = v11;
-  v19 = self;
-  v20 = v10;
-  v21 = v12;
+  v18 = domainCopy;
+  selfCopy = self;
+  v20 = preferenceCopy;
+  v21 = blockCopy;
   v16.receiver = self;
   v16.super_class = _SFRequestDesktopSitePreferenceManager;
-  v13 = v10;
-  v14 = v11;
-  v15 = v12;
-  [(WBSPerSitePreferenceManager *)&v16 getValueOfPreference:v13 forDomain:v14 withTimeout:a5 usingBlock:v17];
+  v13 = preferenceCopy;
+  v14 = domainCopy;
+  v15 = blockCopy;
+  [(WBSPerSitePreferenceManager *)&v16 getValueOfPreference:v13 forDomain:v14 withTimeout:timeout usingBlock:v17];
 }
 
-- (void)getAllRequestDesktopSitePerSitePreferenceValues:(id)a3
+- (void)getAllRequestDesktopSitePerSitePreferenceValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v6 = *MEMORY[0x1E69C94E8];
   v8[0] = MEMORY[0x1E69E9820];
@@ -131,28 +131,28 @@
   v8[2] = __90___SFRequestDesktopSitePreferenceManager_getAllRequestDesktopSitePerSitePreferenceValues___block_invoke;
   v8[3] = &unk_1E84937E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = valuesCopy;
+  v7 = valuesCopy;
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore getAllPreferenceInformationForPreference:v6 completionHandler:v8];
 }
 
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = _SFRequestDesktopSitePreferenceManager;
-  [(WBSPerSitePreferenceManager *)&v4 getAllDomainsConfiguredForPreference:a3 usingBlock:a4];
+  [(WBSPerSitePreferenceManager *)&v4 getAllDomainsConfiguredForPreference:preference usingBlock:block];
 }
 
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain
 {
-  if ([(NSMutableSet *)self->_observers count:a3])
+  if ([(NSMutableSet *)self->_observers count:preference])
   {
 
     [(_SFRequestDesktopSitePreferenceManager *)self _notifyObserversOfPerSitePreferenceDomainValuesUpdate];
   }
 }
 
-- (void)_requestDesktopSitePerSitePreferenceDidChange:(id)a3
+- (void)_requestDesktopSitePerSitePreferenceDidChange:(id)change
 {
   [(_SFRequestDesktopSitePreferenceManager *)self _notifyObserversOfPerSitePreferenceDefaultValueUpdate];
 
@@ -198,36 +198,36 @@
   return v2;
 }
 
-- (void)getDefaultPreferenceValueForPreference:(id)a3 completionHandler:(id)a4
+- (void)getDefaultPreferenceValueForPreference:(id)preference completionHandler:(id)handler
 {
   if (self->_clientPrefersMobileUserAgentByDefault)
   {
-    v5 = a4;
+    handlerCopy = handler;
     v6 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       [_SFRequestDesktopSitePreferenceManager getDefaultPreferenceValueForPreference:v6 completionHandler:?];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_SFRequestDesktopSitePreferenceManager _defaultPreferenceValue](self, "_defaultPreferenceValue")}];
-    v5[2](v5, v7);
+    handlerCopy2 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_SFRequestDesktopSitePreferenceManager _defaultPreferenceValue](self, "_defaultPreferenceValue")}];
+    handlerCopy[2](handlerCopy, handlerCopy2);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _SFRequestDesktopSitePreferenceManager;
-    v7 = a4;
-    [(WBSPerSitePreferenceManager *)&v9 getDefaultPreferenceValueForPreference:a3 completionHandler:v7];
+    handlerCopy2 = handler;
+    [(WBSPerSitePreferenceManager *)&v9 getDefaultPreferenceValueForPreference:preference completionHandler:handlerCopy2];
   }
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [(_SFRequestDesktopSitePreferenceManager *)self onValueForPreference:a4];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  v8 = [(_SFRequestDesktopSitePreferenceManager *)self onValueForPreference:preference];
+  v9 = [valueCopy isEqual:v8];
 
   v10 = [v6 numberWithBool:v9];
 
@@ -236,18 +236,18 @@
   return v11;
 }
 
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(_SFRequestDesktopSitePreferenceManager *)self _defaultPreferenceValue];
+  _defaultPreferenceValue = [(_SFRequestDesktopSitePreferenceManager *)self _defaultPreferenceValue];
 
-  return [v3 numberWithInteger:v4];
+  return [v3 numberWithInteger:_defaultPreferenceValue];
 }
 
-- (void)getDefaultPreferenceValueIfNotCustomizedForPreference:(id)a3 domain:(id)a4 completionHandler:(id)a5
+- (void)getDefaultPreferenceValueIfNotCustomizedForPreference:(id)preference domain:(id)domain completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   quirksManager = self->_quirksManager;
   if (quirksManager)
   {
@@ -256,27 +256,27 @@
     v10[2] = __121___SFRequestDesktopSitePreferenceManager_getDefaultPreferenceValueIfNotCustomizedForPreference_domain_completionHandler___block_invoke;
     v10[3] = &unk_1E8493838;
     v10[4] = self;
-    v11 = v7;
-    [(_SFRequestDesktopSiteQuirksManager *)quirksManager quirksValueForDomain:a4 completionHandler:v10];
+    v11 = handlerCopy;
+    [(_SFRequestDesktopSiteQuirksManager *)quirksManager quirksValueForDomain:domain completionHandler:v10];
   }
 
   else
   {
-    [(_SFRequestDesktopSitePreferenceManager *)self getDefaultPreferenceValueForPreference:self->_requestDesktopSitePreference completionHandler:v7];
+    [(_SFRequestDesktopSitePreferenceManager *)self getDefaultPreferenceValueForPreference:self->_requestDesktopSitePreference completionHandler:handlerCopy];
   }
 }
 
-- (void)setClientPrefersMobileUserAgentByDefault:(BOOL)a3
+- (void)setClientPrefersMobileUserAgentByDefault:(BOOL)default
 {
-  if (self->_clientPrefersMobileUserAgentByDefault != a3)
+  if (self->_clientPrefersMobileUserAgentByDefault != default)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(_SFRequestDesktopSitePreferenceManager *)a3 setClientPrefersMobileUserAgentByDefault:v5];
+      [(_SFRequestDesktopSitePreferenceManager *)default setClientPrefersMobileUserAgentByDefault:v5];
     }
 
-    self->_clientPrefersMobileUserAgentByDefault = a3;
+    self->_clientPrefersMobileUserAgentByDefault = default;
     [(_SFRequestDesktopSitePreferenceManager *)self _notifyObserversOfPerSitePreferenceDefaultValueUpdate];
   }
 }

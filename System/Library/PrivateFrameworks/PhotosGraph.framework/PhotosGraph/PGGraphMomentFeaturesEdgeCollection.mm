@@ -1,5 +1,5 @@
 @interface PGGraphMomentFeaturesEdgeCollection
-+ (id)momentFeaturesEdgesFromMomentNodes:(id)a3 toFeatureNodes:(id)a4;
++ (id)momentFeaturesEdgesFromMomentNodes:(id)nodes toFeatureNodes:(id)featureNodes;
 - (NSSet)allRelevantAssetLocalIdentifiers;
 - (NSSet)allRelevantAssetUUIDs;
 - (unint64_t)numberOfRelevantAssets;
@@ -10,13 +10,13 @@
 - (NSSet)allRelevantAssetLocalIdentifiers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(PGGraphMomentFeaturesEdgeCollection *)self allRelevantAssetUUIDs];
-  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v2, "count")}];
+  allRelevantAssetUUIDs = [(PGGraphMomentFeaturesEdgeCollection *)self allRelevantAssetUUIDs];
+  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(allRelevantAssetUUIDs, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = allRelevantAssetUUIDs;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -84,12 +84,12 @@ void __60__PGGraphMomentFeaturesEdgeCollection_allRelevantAssetUUIDs__block_invo
   return v2;
 }
 
-+ (id)momentFeaturesEdgesFromMomentNodes:(id)a3 toFeatureNodes:(id)a4
++ (id)momentFeaturesEdgesFromMomentNodes:(id)nodes toFeatureNodes:(id)featureNodes
 {
-  v5 = a4;
-  v6 = a3;
+  featureNodesCopy = featureNodes;
+  nodesCopy = nodes;
   v7 = +[PGGraphMomentFeaturesEdge filter];
-  v8 = [(MAEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesOfType:2 betweenNodes:v6 andNodes:v5 matchingFilter:v7];
+  v8 = [(MAEdgeCollection *)PGGraphMomentFeaturesEdgeCollection edgesOfType:2 betweenNodes:nodesCopy andNodes:featureNodesCopy matchingFilter:v7];
 
   return v8;
 }

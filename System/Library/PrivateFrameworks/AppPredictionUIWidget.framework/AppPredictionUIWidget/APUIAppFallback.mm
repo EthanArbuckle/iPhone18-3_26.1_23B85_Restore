@@ -1,21 +1,21 @@
 @interface APUIAppFallback
-- (APUIAppFallback)initWithBundleId:(id)a3;
-- (APUIAppFallback)initWithProactiveSuggestion:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAPUIAppFallback:(id)a3;
+- (APUIAppFallback)initWithBundleId:(id)id;
+- (APUIAppFallback)initWithProactiveSuggestion:(id)suggestion;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAPUIAppFallback:(id)fallback;
 @end
 
 @implementation APUIAppFallback
 
-- (APUIAppFallback)initWithBundleId:(id)a3
+- (APUIAppFallback)initWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v10.receiver = self;
   v10.super_class = APUIAppFallback;
   v5 = [(APUIAppFallback *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     bundleId = v5->_bundleId;
     v5->_bundleId = v6;
 
@@ -25,54 +25,54 @@
   return v5;
 }
 
-- (APUIAppFallback)initWithProactiveSuggestion:(id)a3
+- (APUIAppFallback)initWithProactiveSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = [v5 executableSpecification];
-  v7 = [v6 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v7 == 1 && (v13.receiver = self, v13.super_class = APUIAppFallback, (self = [(APUIAppFallback *)&v13 init]) != 0))
+  if (executableType == 1 && (v13.receiver = self, v13.super_class = APUIAppFallback, (self = [(APUIAppFallback *)&v13 init]) != 0))
   {
-    v8 = [v5 executableSpecification];
-    v9 = [v8 executableObject];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableObject = [executableSpecification2 executableObject];
     bundleId = self->_bundleId;
-    self->_bundleId = v9;
+    self->_bundleId = executableObject;
 
-    objc_storeStrong(&self->_suggestion, a3);
+    objc_storeStrong(&self->_suggestion, suggestion);
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(APUIAppFallback *)self isEqualToAPUIAppFallback:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(APUIAppFallback *)self isEqualToAPUIAppFallback:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAPUIAppFallback:(id)a3
+- (BOOL)isEqualToAPUIAppFallback:(id)fallback
 {
   bundleId = self->_bundleId;
-  v4 = [a3 bundleId];
-  LOBYTE(bundleId) = [(NSString *)bundleId isEqualToString:v4];
+  bundleId = [fallback bundleId];
+  LOBYTE(bundleId) = [(NSString *)bundleId isEqualToString:bundleId];
 
   return bundleId;
 }

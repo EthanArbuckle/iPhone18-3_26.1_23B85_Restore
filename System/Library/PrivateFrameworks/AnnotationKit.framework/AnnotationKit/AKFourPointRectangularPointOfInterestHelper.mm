@@ -1,26 +1,26 @@
 @interface AKFourPointRectangularPointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKFourPointRectangularPointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
-  v9 = a6;
+  alignmentCopy = alignment;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
+  annotationCopy = annotation;
   v12 = [v10 arrayWithCapacity:4];
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
-  [v11 rectangle];
+  [annotationCopy rectangle];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v47 = 0.0;
-  v22 = [AKGeometryHelper annotationHasRotation:v11 outAngle:&v47];
+  v22 = [AKGeometryHelper annotationHasRotation:annotationCopy outAngle:&v47];
   [AKGeometryHelper rotationTransformForRect:v15 withAngle:v17, v19, v21, v47, 0, 0, 0, 0, 0, 0];
-  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:v11];
+  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:annotationCopy];
   v24 = v23;
   v26 = v25;
 
@@ -35,15 +35,15 @@
   height = v49.size.height;
   if ((v22 & 1) == 0)
   {
-    v31 = [v9 geometryHelper];
-    [v31 screenPixelAlignedRectForRect:{x, y, width, height}];
+    geometryHelper = [alignmentCopy geometryHelper];
+    [geometryHelper screenPixelAlignedRectForRect:{x, y, width, height}];
     x = v32;
     y = v33;
     width = v34;
     height = v35;
   }
 
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v9 withPageController:x, y, width, height];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:alignmentCopy withPageController:x, y, width, height];
   v36 = v50.origin.x;
   v37 = v50.origin.y;
   v38 = v50.size.width;
@@ -64,26 +64,26 @@
   v53.size.width = v38;
   v53.size.height = v39;
   MaxY = CGRectGetMaxY(v53);
-  sub_23F4AE7B8(v9, v22, &v46, v12, v13, MaxX, MinY, v36, v37, v38, v39);
-  sub_23F4AE7B8(v9, v22, &v46, v12, v13, MinX, MinY, v36, v37, v38, v39);
-  sub_23F4AE7B8(v9, v22, &v46, v12, v13, MaxX, MaxY, v36, v37, v38, v39);
-  sub_23F4AE7B8(v9, v22, &v46, v12, v13, MinX, MaxY, v36, v37, v38, v39);
+  sub_23F4AE7B8(alignmentCopy, v22, &v46, v12, v13, MaxX, MinY, v36, v37, v38, v39);
+  sub_23F4AE7B8(alignmentCopy, v22, &v46, v12, v13, MinX, MinY, v36, v37, v38, v39);
+  sub_23F4AE7B8(alignmentCopy, v22, &v46, v12, v13, MaxX, MaxY, v36, v37, v38, v39);
+  sub_23F4AE7B8(alignmentCopy, v22, &v46, v12, v13, MinX, MaxY, v36, v37, v38, v39);
   v44 = v12;
-  *a3 = v12;
+  *interest = v12;
   v45 = v13;
-  *a4 = v13;
+  *style = v13;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  if (a3 > 3)
+  if (index > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_23F4D9468[a3];
+    return qword_23F4D9468[index];
   }
 }
 

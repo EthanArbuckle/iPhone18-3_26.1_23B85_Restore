@@ -1,28 +1,28 @@
 @interface CKAppGrabberView
 + (double)compactRoundedCornerRadius;
-- (CKAppGrabberView)initWithFrame:(CGRect)a3;
+- (CKAppGrabberView)initWithFrame:(CGRect)frame;
 - (CKAppGrabberViewDelegate)delegate;
-- (double)chevronMaxYInView:(id)a3;
+- (double)chevronMaxYInView:(id)view;
 - (double)chevronMaxYOffset;
-- (double)visualOriginYInView:(id)a3;
+- (double)visualOriginYInView:(id)view;
 - (double)visualOriginYOffset;
-- (void)closeButtonTapped:(id)a3;
+- (void)closeButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setRoundsTopCorners:(BOOL)a3;
-- (void)setShowsAppTitle:(BOOL)a3;
-- (void)setShowsGrabberPill:(BOOL)a3;
-- (void)updateAppTitle:(id)a3 icon:(id)a4 appIdentifier:(id)a5;
-- (void)updateHeaderFrame:(BOOL)a3;
-- (void)updateIconImageView:(id)a3;
+- (void)setRoundsTopCorners:(BOOL)corners;
+- (void)setShowsAppTitle:(BOOL)title;
+- (void)setShowsGrabberPill:(BOOL)pill;
+- (void)updateAppTitle:(id)title icon:(id)icon appIdentifier:(id)identifier;
+- (void)updateHeaderFrame:(BOOL)frame;
+- (void)updateIconImageView:(id)view;
 @end
 
 @implementation CKAppGrabberView
 
-- (CKAppGrabberView)initWithFrame:(CGRect)a3
+- (CKAppGrabberView)initWithFrame:(CGRect)frame
 {
   v49.receiver = self;
   v49.super_class = CKAppGrabberView;
-  v3 = [(CKAppGrabberView *)&v49 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKAppGrabberView *)&v49 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,42 +32,42 @@
     v4->_headerView = v5;
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 browserSwitcherBorderColor];
+    theme = [v7 theme];
+    browserSwitcherBorderColor = [theme browserSwitcherBorderColor];
 
-    if (v9)
+    if (browserSwitcherBorderColor)
     {
-      v10 = [(UIView *)v4->_headerView layer];
+      layer = [(UIView *)v4->_headerView layer];
       v11 = +[CKUIBehavior sharedBehaviors];
-      v12 = [v11 theme];
-      v13 = [v12 browserSwitcherBorderColor];
-      [v10 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+      theme2 = [v11 theme];
+      browserSwitcherBorderColor2 = [theme2 browserSwitcherBorderColor];
+      [layer setBorderColor:{objc_msgSend(browserSwitcherBorderColor2, "CGColor")}];
 
-      v14 = [(UIView *)v4->_headerView layer];
+      layer2 = [(UIView *)v4->_headerView layer];
       LODWORD(v15) = 1041865114;
-      [v14 setShadowOpacity:v15];
+      [layer2 setShadowOpacity:v15];
 
-      v16 = [(UIView *)v4->_headerView layer];
-      [v16 setShadowRadius:1.0];
+      layer3 = [(UIView *)v4->_headerView layer];
+      [layer3 setShadowRadius:1.0];
 
-      v17 = [(UIView *)v4->_headerView layer];
-      [v17 setShadowOffset:{0.0, -1.0}];
+      layer4 = [(UIView *)v4->_headerView layer];
+      [layer4 setShadowOffset:{0.0, -1.0}];
 
-      v18 = [(UIView *)v4->_headerView layer];
-      [v18 setShadowPathIsBounds:1];
+      layer5 = [(UIView *)v4->_headerView layer];
+      [layer5 setShadowPathIsBounds:1];
     }
 
     [(CKAppGrabberView *)v4 updateHeaderFrame:1];
     v19 = v4->_headerView;
     v20 = +[CKUIBehavior sharedBehaviors];
-    v21 = [v20 theme];
-    v22 = [v21 appGrabberBackgroundColor];
-    [(UIView *)v19 setBackgroundColor:v22];
+    theme3 = [v20 theme];
+    appGrabberBackgroundColor = [theme3 appGrabberBackgroundColor];
+    [(UIView *)v19 setBackgroundColor:appGrabberBackgroundColor];
 
     [(UIView *)v4->_headerView setAutoresizingMask:10];
     [(UIView *)v4->_headerView setClipsToBounds:1];
-    v23 = [(UIView *)v4->_headerView layer];
-    [v23 setMaskedCorners:3];
+    layer6 = [(UIView *)v4->_headerView layer];
+    [layer6 setMaskedCorners:3];
 
     [(CKAppGrabberView *)v4 addSubview:v4->_headerView];
     v24 = objc_alloc_init(MEMORY[0x1E69DD4F8]);
@@ -86,8 +86,8 @@
     v4->_iconOutlineView = v28;
 
     v30 = v4->_iconOutlineView;
-    v31 = [MEMORY[0x1E69DC888] whiteColor];
-    v32 = [v31 colorWithAlphaComponent:0.25];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v32 = [whiteColor colorWithAlphaComponent:0.25];
     [(UIImageView *)v30 setTintColor:v32];
 
     v33 = MEMORY[0x1E69DCAB8];
@@ -98,7 +98,7 @@
     [(UIImageView *)v4->_iconOutlineView setImage:v36];
     [(UIView *)v4->_headerView addSubview:v4->_iconOutlineView];
     v37 = +[CKUIBehavior sharedBehaviors];
-    v38 = [v37 appLabelFont];
+    appLabelFont = [v37 appLabelFont];
 
     v39 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     pluginTitleLabel = v4->_pluginTitleLabel;
@@ -106,12 +106,12 @@
 
     [(UILabel *)v4->_pluginTitleLabel setNumberOfLines:1];
     [(UILabel *)v4->_pluginTitleLabel setAutoresizingMask:34];
-    [(UILabel *)v4->_pluginTitleLabel setFont:v38];
+    [(UILabel *)v4->_pluginTitleLabel setFont:appLabelFont];
     v41 = v4->_pluginTitleLabel;
     v42 = +[CKUIBehavior sharedBehaviors];
-    v43 = [v42 theme];
-    v44 = [v43 appGrabberTitleColor];
-    [(UILabel *)v41 setTextColor:v44];
+    theme4 = [v42 theme];
+    appGrabberTitleColor = [theme4 appGrabberTitleColor];
+    [(UILabel *)v41 setTextColor:appGrabberTitleColor];
 
     [(UILabel *)v4->_pluginTitleLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v4->_pluginTitleLabel setBaselineAdjustment:1];
@@ -126,8 +126,8 @@
     [(CKAppGrabberView *)v4 setAccessibilityIdentifier:@"collapseButtonIdentifier"];
     [(CKAppGrabberView *)v4 setShowsAppTitle:0];
     [(CKAppGrabberView *)v4 setRoundsTopCorners:0];
-    v47 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v47 addObserver:v4 selector:sel_updateIconImageView_ name:*MEMORY[0x1E69A56D0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_updateIconImageView_ name:*MEMORY[0x1E69A56D0] object:0];
   }
 
   return v4;
@@ -170,11 +170,11 @@
   v59 = v20;
   v60 = v19;
   v62 = v21;
-  v22 = [(UIImageView *)self->_iconImageView image];
-  if (v22)
+  image = [(UIImageView *)self->_iconImageView image];
+  if (image)
   {
-    v23 = [(UIImageView *)self->_iconImageView image];
-    [v23 size];
+    image2 = [(UIImageView *)self->_iconImageView image];
+    [image2 size];
     v25 = v24;
     v27 = v26;
   }
@@ -254,9 +254,9 @@
     v70.size.width = width;
     v70.size.height = v16;
     v41 = CGRectGetWidth(v70);
-    v42 = [(UIImageView *)self->_iconImageView image];
+    image3 = [(UIImageView *)self->_iconImageView image];
 
-    if (v42)
+    if (image3)
     {
       v71.origin.x = v38;
       v71.origin.y = rect;
@@ -308,9 +308,9 @@
     v76.size.width = width;
     v76.size.height = v16;
     v41 = CGRectGetWidth(v76);
-    v48 = [(UIImageView *)self->_iconImageView image];
+    image4 = [(UIImageView *)self->_iconImageView image];
 
-    if (v48)
+    if (image4)
     {
       v77.origin.x = v38;
       v77.origin.y = rect;
@@ -379,16 +379,16 @@ LABEL_29:
   [(UILabel *)self->_pluginTitleLabel setFrame:v55, floor((v40 + (v16 - v57) * 0.5) * v53) / v53, v41 - (v50 + 8.0)];
 }
 
-- (void)updateIconImageView:(id)a3
+- (void)updateIconImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CKAppGrabberView_updateIconImageView___block_invoke;
   v6[3] = &unk_1E72EB8D0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = viewCopy;
+  selfCopy = self;
+  v5 = viewCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -412,10 +412,10 @@ void __40__CKAppGrabberView_updateIconImageView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowsGrabberPill:(BOOL)a3
+- (void)setShowsGrabberPill:(BOOL)pill
 {
   v3 = 0.0;
-  if (a3)
+  if (pill)
   {
     v3 = 1.0;
   }
@@ -438,12 +438,12 @@ void __40__CKAppGrabberView_updateIconImageView___block_invoke(uint64_t a1)
   return CGRectGetMaxY(*&v3);
 }
 
-- (double)visualOriginYInView:(id)a3
+- (double)visualOriginYInView:(id)view
 {
   headerView = self->_headerView;
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)headerView frame];
-  [v5 convertRect:self fromView:?];
+  [viewCopy convertRect:self fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -457,12 +457,12 @@ void __40__CKAppGrabberView_updateIconImageView___block_invoke(uint64_t a1)
   return CGRectGetMinY(*&v14);
 }
 
-- (double)chevronMaxYInView:(id)a3
+- (double)chevronMaxYInView:(id)view
 {
   chevronView = self->_chevronView;
-  v5 = a3;
+  viewCopy = view;
   [(_UIGrabber *)chevronView frame];
-  [v5 convertRect:self->_headerView fromView:?];
+  [viewCopy convertRect:self->_headerView fromView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -476,35 +476,35 @@ void __40__CKAppGrabberView_updateIconImageView___block_invoke(uint64_t a1)
   return CGRectGetMaxY(*&v14);
 }
 
-- (void)updateAppTitle:(id)a3 icon:(id)a4 appIdentifier:(id)a5
+- (void)updateAppTitle:(id)title icon:(id)icon appIdentifier:(id)identifier
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UILabel *)self->_pluginTitleLabel text];
-  if (([v10 isEqualToString:v12] & 1) == 0)
+  titleCopy = title;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  text = [(UILabel *)self->_pluginTitleLabel text];
+  if (([text isEqualToString:titleCopy] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v11 = [(UIImageView *)self->_iconImageView image];
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (v11 != v8)
+  if (image != iconCopy)
   {
 LABEL_5:
-    [(UILabel *)self->_pluginTitleLabel setText:v12];
+    [(UILabel *)self->_pluginTitleLabel setText:titleCopy];
     [(UILabel *)self->_pluginTitleLabel sizeToFit];
-    objc_storeStrong(&self->_appIdentifier, a5);
-    [(UIImageView *)self->_iconImageView setImage:v8];
+    objc_storeStrong(&self->_appIdentifier, identifier);
+    [(UIImageView *)self->_iconImageView setImage:iconCopy];
     [(CKAppGrabberView *)self setNeedsLayout];
   }
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = [(CKAppGrabberView *)self delegate];
-  [v4 appGrabberViewCloseButtonTapped:self];
+  delegate = [(CKAppGrabberView *)self delegate];
+  [delegate appGrabberViewCloseButtonTapped:self];
 }
 
 + (double)compactRoundedCornerRadius
@@ -514,11 +514,11 @@ LABEL_5:
     return *MEMORY[0x1E69DEA60];
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 0.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return *MEMORY[0x1E69DEA60];
   }
@@ -526,12 +526,12 @@ LABEL_5:
   return result;
 }
 
-- (void)setRoundsTopCorners:(BOOL)a3
+- (void)setRoundsTopCorners:(BOOL)corners
 {
-  v3 = a3;
-  self->_roundsTopCorners = a3;
+  cornersCopy = corners;
+  self->_roundsTopCorners = corners;
   v5 = objc_opt_class();
-  if (v3)
+  if (cornersCopy)
   {
     [v5 roundedCornerRadius];
   }
@@ -542,16 +542,16 @@ LABEL_5:
   }
 
   v7 = v6;
-  v8 = [(UIView *)self->_headerView layer];
-  [v8 setCornerRadius:v7];
+  layer = [(UIView *)self->_headerView layer];
+  [layer setCornerRadius:v7];
 }
 
-- (void)setShowsAppTitle:(BOOL)a3
+- (void)setShowsAppTitle:(BOOL)title
 {
-  v3 = a3;
-  self->_showsAppTitle = a3;
-  [(CKAppGrabberView *)self updateHeaderFrame:!a3];
-  if (v3)
+  titleCopy = title;
+  self->_showsAppTitle = title;
+  [(CKAppGrabberView *)self updateHeaderFrame:!title];
+  if (titleCopy)
   {
     v5 = 1.0;
   }
@@ -564,15 +564,15 @@ LABEL_5:
   [(UIImageView *)self->_iconImageView setAlpha:v5];
   [(UILabel *)self->_pluginTitleLabel setAlpha:v5];
   [(UIButton *)self->_closeButton setAlpha:v5];
-  v6 = [(CKAppGrabberView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(CKAppGrabberView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v8 = [(UIImageView *)self->_iconImageView image];
-  [v8 size];
+  image = [(UIImageView *)self->_iconImageView image];
+  [image size];
   v10 = v9;
   v12 = v11 == 30.0;
 
-  v13 = v7 == 2 && v3;
+  v13 = userInterfaceStyle == 2 && titleCopy;
   if (v10 != 40.0)
   {
     v13 = 0;
@@ -593,12 +593,12 @@ LABEL_5:
   [(UIImageView *)iconOutlineView setAlpha:v14];
 }
 
-- (void)updateHeaderFrame:(BOOL)a3
+- (void)updateHeaderFrame:(BOOL)frame
 {
-  v3 = a3;
+  frameCopy = frame;
   v5 = +[CKUIBehavior sharedBehaviors];
   v6 = v5;
-  if (v3)
+  if (frameCopy)
   {
     [v5 browserSwitcherCompactGrabberVisibleHeight];
   }

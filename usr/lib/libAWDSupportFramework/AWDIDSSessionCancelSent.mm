@@ -1,15 +1,15 @@
 @interface AWDIDSSessionCancelSent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfRecipients:(BOOL)a3;
-- (void)setHasRemoteSessionEndReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfRecipients:(BOOL)recipients;
+- (void)setHasRemoteSessionEndReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSessionCancelSent
@@ -22,9 +22,9 @@
   [(AWDIDSSessionCancelSent *)&v3 dealloc];
 }
 
-- (void)setHasNumberOfRecipients:(BOOL)a3
+- (void)setHasNumberOfRecipients:(BOOL)recipients
 {
-  if (a3)
+  if (recipients)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemoteSessionEndReason:(BOOL)a3
+- (void)setHasRemoteSessionEndReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRecipients), @"numberOfRecipients"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRecipients), @"numberOfRecipients"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteSessionEndReason), @"remoteSessionEndReason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteSessionEndReason), @"remoteSessionEndReason"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 6) = self->_numberOfRecipients;
-    *(a3 + 32) |= 2u;
+    *(to + 6) = self->_numberOfRecipients;
+    *(to + 32) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 7) = self->_remoteSessionEndReason;
-    *(a3 + 32) |= 4u;
+    *(to + 7) = self->_remoteSessionEndReason;
+    *(to + 32) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,7 +155,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 2))
+    if (guid | *(equal + 2))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_numberOfRecipients != *(a3 + 6))
+      if ((*(equal + 32) & 2) == 0 || self->_numberOfRecipients != *(equal + 6))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_remoteSessionEndReason != *(a3 + 7))
+      if ((*(equal + 32) & 4) == 0 || self->_remoteSessionEndReason != *(equal + 7))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDIDSSessionCancelSent *)self setGuid:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 2) != 0)
   {
-    self->_numberOfRecipients = *(a3 + 6);
+    self->_numberOfRecipients = *(from + 6);
     *&self->_has |= 2u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_remoteSessionEndReason = *(a3 + 7);
+    self->_remoteSessionEndReason = *(from + 7);
     *&self->_has |= 4u;
   }
 }

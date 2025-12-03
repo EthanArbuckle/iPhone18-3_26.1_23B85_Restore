@@ -1,38 +1,38 @@
 @interface POAuthPluginCoreProcess
-- (unint64_t)getLoginTypeForUser:(id)a3;
-- (unint64_t)verifyPasswordLogin:(id)a3 passwordContext:(id)a4;
-- (unint64_t)verifyPasswordUser:(id)a3 passwordContext:(id)a4 tokens:(id *)a5;
+- (unint64_t)getLoginTypeForUser:(id)user;
+- (unint64_t)verifyPasswordLogin:(id)login passwordContext:(id)context;
+- (unint64_t)verifyPasswordUser:(id)user passwordContext:(id)context tokens:(id *)tokens;
 @end
 
 @implementation POAuthPluginCoreProcess
 
-- (unint64_t)getLoginTypeForUser:(id)a3
+- (unint64_t)getLoginTypeForUser:(id)user
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POAuthPluginCoreProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[POAuthPluginCoreProcess getLoginTypeForUser:]";
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = userCopy;
     *&buf[22] = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@ on %@", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v12 = 0;
+  selfCopy = 0;
   serviceConnection = self->_serviceConnection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__POAuthPluginCoreProcess_getLoginTypeForUser___block_invoke;
   v10[3] = &unk_279A3E5D0;
   v10[4] = buf;
-  [(POServiceCoreConnection *)serviceConnection getLoginTypeForUser:v4 completion:v10];
+  [(POServiceCoreConnection *)serviceConnection getLoginTypeForUser:userCopy completion:v10];
   v7 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
 
@@ -59,23 +59,23 @@ void __47__POAuthPluginCoreProcess_getLoginTypeForUser___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)verifyPasswordLogin:(id)a3 passwordContext:(id)a4
+- (unint64_t)verifyPasswordLogin:(id)login passwordContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  loginCopy = login;
+  contextCopy = context;
   v8 = PO_LOG_POAuthPluginCoreProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [POCredentialUtil maskName:v6];
+    v9 = [POCredentialUtil maskName:loginCopy];
     *buf = 136315906;
     *&buf[4] = "[POAuthPluginCoreProcess verifyPasswordLogin:passwordContext:]";
     *&buf[12] = 2114;
     *&buf[14] = v9;
     *&buf[22] = 2114;
-    v20 = v7;
+    v20 = contextCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v8, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
@@ -88,11 +88,11 @@ void __47__POAuthPluginCoreProcess_getLoginTypeForUser___block_invoke(uint64_t a
   v15[2] = __63__POAuthPluginCoreProcess_verifyPasswordLogin_passwordContext___block_invoke;
   v15[3] = &unk_279A3E5F8;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
+  v16 = loginCopy;
+  v17 = contextCopy;
   v18 = buf;
-  v10 = v7;
-  v11 = v6;
+  v10 = contextCopy;
+  v11 = loginCopy;
   _os_activity_initiate(&dword_25E8B1000, "PSSOPasswordVerify", OS_ACTIVITY_FLAG_DEFAULT, v15);
 
   v12 = *(*&buf[8] + 24);
@@ -133,21 +133,21 @@ void __63__POAuthPluginCoreProcess_verifyPasswordLogin_passwordContext___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)verifyPasswordUser:(id)a3 passwordContext:(id)a4 tokens:(id *)a5
+- (unint64_t)verifyPasswordUser:(id)user passwordContext:(id)context tokens:(id *)tokens
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  userCopy = user;
+  contextCopy = context;
   v10 = PO_LOG_POAuthPluginCoreProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [POCredentialUtil maskName:v8];
+    v11 = [POCredentialUtil maskName:userCopy];
     *buf = 136315906;
     *&buf[4] = "[POAuthPluginCoreProcess verifyPasswordUser:passwordContext:tokens:]";
     *&buf[12] = 2114;
     *&buf[14] = v11;
     *&buf[22] = 2114;
-    v27 = v9;
+    v27 = contextCopy;
     LOWORD(v28) = 2112;
     *(&v28 + 2) = self;
     _os_log_impl(&dword_25E8B1000, v10, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
@@ -168,17 +168,17 @@ void __63__POAuthPluginCoreProcess_verifyPasswordLogin_passwordContext___block_i
   activity_block[2] = __69__POAuthPluginCoreProcess_verifyPasswordUser_passwordContext_tokens___block_invoke;
   activity_block[3] = &unk_279A3E648;
   activity_block[4] = self;
-  v12 = v8;
+  v12 = userCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v22;
   v21 = buf;
   _os_activity_initiate(&dword_25E8B1000, "PSSOPasswordVerify", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
-  if (a5)
+  if (tokens)
   {
-    *a5 = *(*&buf[8] + 40);
+    *tokens = *(*&buf[8] + 40);
   }
 
   v14 = v23[3];

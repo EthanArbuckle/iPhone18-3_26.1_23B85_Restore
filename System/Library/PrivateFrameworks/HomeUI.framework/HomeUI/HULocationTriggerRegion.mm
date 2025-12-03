@@ -1,46 +1,46 @@
 @interface HULocationTriggerRegion
-+ (id)customRegionWithCircularRegion:(id)a3;
-+ (id)homeRegionWithHome:(id)a3 eventType:(unint64_t)a4;
++ (id)customRegionWithCircularRegion:(id)region;
++ (id)homeRegionWithHome:(id)home eventType:(unint64_t)type;
 - (CLCircularRegion)defaultCircularRegionForCoordinate;
 - (CLLocation)location;
 - (CLLocationCoordinate2D)coordinate;
-- (HULocationTriggerRegion)initWithRegionType:(unint64_t)a3 home:(id)a4 circularRegion:(id)a5 eventType:(unint64_t)a6;
+- (HULocationTriggerRegion)initWithRegionType:(unint64_t)type home:(id)home circularRegion:(id)region eventType:(unint64_t)eventType;
 - (NSString)identifier;
 @end
 
 @implementation HULocationTriggerRegion
 
-+ (id)homeRegionWithHome:(id)a3 eventType:(unint64_t)a4
++ (id)homeRegionWithHome:(id)home eventType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithRegionType:0 home:v6 circularRegion:0 eventType:a4];
+  homeCopy = home;
+  v7 = [[self alloc] initWithRegionType:0 home:homeCopy circularRegion:0 eventType:type];
 
   return v7;
 }
 
-+ (id)customRegionWithCircularRegion:(id)a3
++ (id)customRegionWithCircularRegion:(id)region
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 initWithRegionType:1 home:0 circularRegion:v4 eventType:{objc_msgSend(MEMORY[0x277CD1B38], "hf_locationEventTypeForRegion:", v4)}];
+  regionCopy = region;
+  v5 = [self alloc];
+  v6 = [v5 initWithRegionType:1 home:0 circularRegion:regionCopy eventType:{objc_msgSend(MEMORY[0x277CD1B38], "hf_locationEventTypeForRegion:", regionCopy)}];
 
   return v6;
 }
 
-- (HULocationTriggerRegion)initWithRegionType:(unint64_t)a3 home:(id)a4 circularRegion:(id)a5 eventType:(unint64_t)a6
+- (HULocationTriggerRegion)initWithRegionType:(unint64_t)type home:(id)home circularRegion:(id)region eventType:(unint64_t)eventType
 {
-  v11 = a4;
-  v12 = a5;
+  homeCopy = home;
+  regionCopy = region;
   v16.receiver = self;
   v16.super_class = HULocationTriggerRegion;
   v13 = [(HULocationTriggerRegion *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_regionType = a3;
-    objc_storeStrong(&v13->_home, a4);
-    objc_storeStrong(&v14->_circularRegion, a5);
-    v14->_eventType = a6;
+    v13->_regionType = type;
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v14->_circularRegion, region);
+    v14->_eventType = eventType;
   }
 
   return v14;
@@ -48,17 +48,17 @@
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(HULocationTriggerRegion *)self home];
+  home = [(HULocationTriggerRegion *)self home];
 
-  if (v3)
+  if (home)
   {
-    v4 = [(HULocationTriggerRegion *)self home];
-    v5 = [v4 location];
-    if (v5)
+    home2 = [(HULocationTriggerRegion *)self home];
+    location = [home2 location];
+    if (location)
     {
-      v6 = [(HULocationTriggerRegion *)self home];
-      v7 = [v6 location];
-      [v7 coordinate];
+      home3 = [(HULocationTriggerRegion *)self home];
+      location2 = [home3 location];
+      [location2 coordinate];
       v9 = v8;
       v11 = v10;
     }
@@ -72,9 +72,9 @@
 
   else
   {
-    v12 = [(HULocationTriggerRegion *)self circularRegion];
+    circularRegion = [(HULocationTriggerRegion *)self circularRegion];
 
-    if (!v12)
+    if (!circularRegion)
     {
       NSLog(&cfstr_RegionDoesNotH.isa, self);
       v9 = *MEMORY[0x277CE4278];
@@ -82,8 +82,8 @@
       goto LABEL_9;
     }
 
-    v4 = [(HULocationTriggerRegion *)self circularRegion];
-    [v4 center];
+    home2 = [(HULocationTriggerRegion *)self circularRegion];
+    [home2 center];
     v9 = v13;
     v11 = v14;
   }
@@ -98,60 +98,60 @@ LABEL_9:
 
 - (CLLocation)location
 {
-  v3 = [(HULocationTriggerRegion *)self home];
+  home = [(HULocationTriggerRegion *)self home];
 
-  if (v3)
+  if (home)
   {
-    v4 = [(HULocationTriggerRegion *)self home];
-    v5 = [v4 location];
+    home2 = [(HULocationTriggerRegion *)self home];
+    location = [home2 location];
   }
 
   else
   {
-    v6 = [(HULocationTriggerRegion *)self circularRegion];
+    circularRegion = [(HULocationTriggerRegion *)self circularRegion];
 
-    if (v6)
+    if (circularRegion)
     {
       v7 = objc_alloc(MEMORY[0x277CE41F8]);
-      v8 = [(HULocationTriggerRegion *)self circularRegion];
-      [v8 center];
+      circularRegion2 = [(HULocationTriggerRegion *)self circularRegion];
+      [circularRegion2 center];
       v10 = v9;
       v12 = v11;
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [(HULocationTriggerRegion *)self circularRegion];
-      v5 = [v7 initWithCoordinate:v13 altitude:objc_msgSend(v14 horizontalAccuracy:"referenceFrame") verticalAccuracy:v10 timestamp:v12 referenceFrame:{0.0, 0.0, -1.0}];
+      date = [MEMORY[0x277CBEAA8] date];
+      circularRegion3 = [(HULocationTriggerRegion *)self circularRegion];
+      location = [v7 initWithCoordinate:date altitude:objc_msgSend(circularRegion3 horizontalAccuracy:"referenceFrame") verticalAccuracy:v10 timestamp:v12 referenceFrame:{0.0, 0.0, -1.0}];
     }
 
     else
     {
       NSLog(&cfstr_RegionDoesNotH.isa, self);
-      v5 = 0;
+      location = 0;
     }
   }
 
-  return v5;
+  return location;
 }
 
 - (NSString)identifier
 {
-  v3 = [(HULocationTriggerRegion *)self regionType];
-  if (v3 == 1)
+  regionType = [(HULocationTriggerRegion *)self regionType];
+  if (regionType == 1)
   {
-    v5 = [(HULocationTriggerRegion *)self circularRegion];
-    v4 = [v5 identifier];
+    circularRegion = [(HULocationTriggerRegion *)self circularRegion];
+    identifier = [circularRegion identifier];
   }
 
-  else if (v3)
+  else if (regionType)
   {
-    v4 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v4 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerEditorOptionHome", @"HULocationTriggerEditorOptionHome", 1);
+    identifier = _HULocalizedStringWithDefaultValue(@"HULocationTriggerEditorOptionHome", @"HULocationTriggerEditorOptionHome", 1);
   }
 
-  return v4;
+  return identifier;
 }
 
 - (CLCircularRegion)defaultCircularRegionForCoordinate
@@ -161,8 +161,8 @@ LABEL_9:
   v5 = v4;
   v7 = v6;
   v8 = *MEMORY[0x277CE4228];
-  v9 = [(HULocationTriggerRegion *)self identifier];
-  v10 = [v3 initWithCenter:v9 radius:v5 identifier:{v7, v8}];
+  identifier = [(HULocationTriggerRegion *)self identifier];
+  v10 = [v3 initWithCenter:identifier radius:v5 identifier:{v7, v8}];
 
   [v10 setNotifyOnEntry:{-[HULocationTriggerRegion eventType](self, "eventType") == 1}];
   [v10 setNotifyOnExit:{-[HULocationTriggerRegion eventType](self, "eventType") == 2}];

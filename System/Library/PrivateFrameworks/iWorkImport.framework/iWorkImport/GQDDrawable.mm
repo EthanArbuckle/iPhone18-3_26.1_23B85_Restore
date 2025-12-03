@@ -2,10 +2,10 @@
 - (CGPath)createBezierPath;
 - (__CFString)urlString;
 - (const)wrapPoints;
-- (int)collectWrapPointsForState:(id)a3 graphicStyle:(id)a4;
-- (void)addWrapPoint:(id)a3;
+- (int)collectWrapPointsForState:(id)state graphicStyle:(id)style;
+- (void)addWrapPoint:(id)point;
 - (void)clearWrapPoints;
-- (void)collectWrapPoints:(id)a3 forPath:(CGPath *)a4 context:(FindLinesContext *)a5;
+- (void)collectWrapPoints:(id)points forPath:(CGPath *)path context:(FindLinesContext *)context;
 - (void)dealloc;
 @end
 
@@ -48,52 +48,52 @@
   return result;
 }
 
-- (int)collectWrapPointsForState:(id)a3 graphicStyle:(id)a4
+- (int)collectWrapPointsForState:(id)state graphicStyle:(id)style
 {
   v14 = 0;
   cf[0] = 0;
   memset(v12, 0, sizeof(v12));
   cf[1] = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
   v11 = 0;
-  v7 = [a4 hasValueForObjectProperty:72 value:&v11];
-  v8 = 0;
+  v7 = [style hasValueForObjectProperty:72 value:&v11];
+  floatingWrapType = 0;
   if (!v7 || !v11)
   {
     goto LABEL_9;
   }
 
-  v8 = [v11 floatingWrapType];
-  switch(v8)
+  floatingWrapType = [v11 floatingWrapType];
+  switch(floatingWrapType)
   {
     case 2u:
-      v8 = 0;
+      floatingWrapType = 0;
       goto LABEL_9;
     case 1u:
 LABEL_9:
-      HIDWORD(v14) = v8;
+      HIDWORD(v14) = floatingWrapType;
       break;
     case 0u:
-      v9 = [v11 wrapDirection];
-      if (v9 < 3)
+      wrapDirection = [v11 wrapDirection];
+      if (wrapDirection < 3)
       {
-        v8 = dword_5E9F4[v9];
+        floatingWrapType = dword_5E9F4[wrapDirection];
         goto LABEL_9;
       }
 
       break;
   }
 
-  -[GQDDrawable collectWrapPoints:forPath:context:](self, "collectWrapPoints:forPath:context:", [a3 currentWrapPointGenerator], -[GQDBezierPath path](self->mWrapPath, "path"), v12);
+  -[GQDDrawable collectWrapPoints:forPath:context:](self, "collectWrapPoints:forPath:context:", [state currentWrapPointGenerator], -[GQDBezierPath path](self->mWrapPath, "path"), v12);
   CFRelease(cf[1]);
   return 1;
 }
 
-- (void)addWrapPoint:(id)a3
+- (void)addWrapPoint:(id)point
 {
   mInnerWrapPoints = self->mInnerWrapPoints;
-  v5 = a3;
-  v4 = a3;
-  sub_9828(mInnerWrapPoints, &v5);
+  pointCopy = point;
+  pointCopy2 = point;
+  sub_9828(mInnerWrapPoints, &pointCopy);
 }
 
 - (const)wrapPoints
@@ -134,14 +134,14 @@ LABEL_9:
   return Mutable;
 }
 
-- (void)collectWrapPoints:(id)a3 forPath:(CGPath *)a4 context:(FindLinesContext *)a5
+- (void)collectWrapPoints:(id)points forPath:(CGPath *)path context:(FindLinesContext *)context
 {
   mGeometry = self->mGeometry;
-  CGPathApply(a4, a5, sub_950C);
+  CGPathApply(path, context, sub_950C);
   [(GQDAffineGeometry *)mGeometry position];
   v11 = v10;
   v13 = v12;
-  BoundingBox = CGPathGetBoundingBox(a4);
+  BoundingBox = CGPathGetBoundingBox(path);
   v14 = (10 * ((v13 + -20.0) / 10));
   v15 = (10 * ((v13 + BoundingBox.size.height + 30.0) / 10));
   if (v14 < v15)
@@ -152,7 +152,7 @@ LABEL_9:
       __src = 0;
       v59 = 0;
       v60 = 0;
-      Count = CFArrayGetCount(a5->var3);
+      Count = CFArrayGetCount(context->var3);
       v18 = Count;
       if (Count)
       {
@@ -160,7 +160,7 @@ LABEL_9:
         v20 = v14;
         do
         {
-          ValueAtIndex = CFArrayGetValueAtIndex(a5->var3, v19);
+          ValueAtIndex = CFArrayGetValueAtIndex(context->var3, v19);
           v22 = ValueAtIndex[2];
           if (v22 <= v20)
           {
@@ -236,7 +236,7 @@ LABEL_9:
       if (v59 != __src)
       {
         v37 = (v59 - __src) >> 2;
-        var5 = a5->var5;
+        var5 = context->var5;
         if (var5 - 2 < 2)
         {
           if (v37 <= 1)
@@ -268,7 +268,7 @@ LABEL_9:
           *&v56 = v14;
           v57 = [(GQDWrapPoint *)v54 initWithX:2 * (var5 != 2) y:self flowType:v55 drawable:v56];
           v57[6] = v53;
-          [a3 addWrapPoint:v57];
+          [points addWrapPoint:v57];
         }
 
         else if (var5 <= 1)
@@ -293,14 +293,14 @@ LABEL_9:
             std::__sort<std::__less<float,float> &,float *>();
             v39 = *__src;
             v40 = *(v59 - 1);
-            v41 = a5->var5;
+            v41 = context->var5;
             v42 = [GQDWrapPoint alloc];
             *&v43 = v39;
             *&v44 = v14;
             v45 = [(GQDWrapPoint *)v42 initWithX:v41 != 0 y:self flowType:v43 drawable:v44];
-            [a3 addWrapPoint:v45];
+            [points addWrapPoint:v45];
 
-            LODWORD(v45) = a5->var5;
+            LODWORD(v45) = context->var5;
             v46 = [GQDWrapPoint alloc];
             if (v45)
             {
@@ -315,8 +315,8 @@ LABEL_9:
 
           *&v47 = v40;
           *&v48 = v14;
-          v50 = [(GQDWrapPoint *)v46 initWithX:v49 y:self flowType:v47 drawable:v48, __src];
-          [a3 addWrapPoint:v50];
+          __src = [(GQDWrapPoint *)v46 initWithX:v49 y:self flowType:v47 drawable:v48, __src];
+          [points addWrapPoint:__src];
         }
       }
 

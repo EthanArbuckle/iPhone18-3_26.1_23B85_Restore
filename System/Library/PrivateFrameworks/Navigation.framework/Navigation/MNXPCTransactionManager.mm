@@ -1,25 +1,25 @@
 @interface MNXPCTransactionManager
 + (id)sharedInstance;
 - (MNXPCTransactionManager)init;
-- (void)addHighMemoryThresholdRequest:(id)a3;
-- (void)removeHighMemoryThresholdRequest:(id)a3 afterDelay:(double)a4;
+- (void)addHighMemoryThresholdRequest:(id)request;
+- (void)removeHighMemoryThresholdRequest:(id)request afterDelay:(double)delay;
 @end
 
 @implementation MNXPCTransactionManager
 
-- (void)removeHighMemoryThresholdRequest:(id)a3 afterDelay:(double)a4
+- (void)removeHighMemoryThresholdRequest:(id)request afterDelay:(double)delay
 {
-  v6 = a3;
+  requestCopy = request;
   isolater = self->_isolater;
   block[5] = MEMORY[0x1E69E9820];
   block[6] = 3221225472;
   block[7] = __71__MNXPCTransactionManager_removeHighMemoryThresholdRequest_afterDelay___block_invoke;
   block[8] = &unk_1E8430D50;
   block[9] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = requestCopy;
+  v8 = requestCopy;
   geo_isolate_sync();
-  v9 = dispatch_time(0, (a4 * 1000000000.0));
+  v9 = dispatch_time(0, (delay * 1000000000.0));
   v10 = MNNavigationQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -95,13 +95,13 @@ void __71__MNXPCTransactionManager_removeHighMemoryThresholdRequest_afterDelay__
   _geo_isolate_unlock();
 }
 
-- (void)addHighMemoryThresholdRequest:(id)a3
+- (void)addHighMemoryThresholdRequest:(id)request
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v14 = self->_isolater;
   _geo_isolate_lock();
-  if (![(NSHashTable *)self->_requesters containsObject:v4])
+  if (![(NSHashTable *)self->_requesters containsObject:requestCopy])
   {
     if (!self->_requesters)
     {
@@ -115,11 +115,11 @@ void __71__MNXPCTransactionManager_removeHighMemoryThresholdRequest_afterDelay__
     {
       v8 = [objc_opt_class() description];
       *buf = 136315138;
-      v16 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_DEFAULT, "navd > XPC transaction | Enter request from %s", buf, 0xCu);
     }
 
-    [(NSHashTable *)self->_requesters addObject:v4];
+    [(NSHashTable *)self->_requesters addObject:requestCopy];
     if ([(NSHashTable *)self->_requesters count]== 1)
     {
       v9 = os_transaction_create();

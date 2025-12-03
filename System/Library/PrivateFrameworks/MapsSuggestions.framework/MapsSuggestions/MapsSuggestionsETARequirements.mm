@@ -1,15 +1,15 @@
 @interface MapsSuggestionsETARequirements
-- (MapsSuggestionsETARequirements)initWithMaxAge:(double)a3 maxDistance:(double)a4 minAccuracy:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MapsSuggestionsETARequirements)initWithMaxAge:(double)age maxDistance:(double)distance minAccuracy:(double)accuracy;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MapsSuggestionsETARequirements
 
-- (MapsSuggestionsETARequirements)initWithMaxAge:(double)a3 maxDistance:(double)a4 minAccuracy:(double)a5
+- (MapsSuggestionsETARequirements)initWithMaxAge:(double)age maxDistance:(double)distance minAccuracy:(double)accuracy
 {
-  v5 = self;
+  selfCopy = self;
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0)
+  if (age == 0.0)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4 == 0.0)
+  if (distance == 0.0)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -55,21 +55,21 @@ LABEL_8:
   v12 = [(MapsSuggestionsETARequirements *)&v13 init];
   if (v12)
   {
-    v12->_maxAge = a3;
-    v12->_maxDistance = a4;
-    v12->_minAccuracy = a5;
+    v12->_maxAge = age;
+    v12->_maxDistance = distance;
+    v12->_minAccuracy = accuracy;
   }
 
-  v5 = v12;
-  v8 = v5;
+  selfCopy = v12;
+  v8 = selfCopy;
 LABEL_9:
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MapsSuggestionsETARequirements allocWithZone:a3];
+  v4 = [MapsSuggestionsETARequirements allocWithZone:zone];
   maxAge = self->_maxAge;
   maxDistance = self->_maxDistance;
   minAccuracy = self->_minAccuracy;

@@ -1,6 +1,6 @@
 @interface CLBatchedSensorService
 + (BOOL)isSupported;
-- (CLBatchedSensorService)initWithClientProtocol:(id)a3;
+- (CLBatchedSensorService)initWithClientProtocol:(id)protocol;
 - (ConnectionInfo)info;
 - (id).cxx_construct;
 - (void)beginService;
@@ -8,9 +8,9 @@
 - (void)disableProvider;
 - (void)enableProvider;
 - (void)endService;
-- (void)registerForData:(id)a3;
-- (void)setInfo:(ConnectionInfo *)a3;
-- (void)unregisterForData:(id)a3;
+- (void)registerForData:(id)data;
+- (void)setInfo:(ConnectionInfo *)info;
+- (void)unregisterForData:(id)data;
 @end
 
 @implementation CLBatchedSensorService
@@ -25,11 +25,11 @@
   return byte_10265AC08;
 }
 
-- (CLBatchedSensorService)initWithClientProtocol:(id)a3
+- (CLBatchedSensorService)initWithClientProtocol:(id)protocol
 {
   v4.receiver = self;
   v4.super_class = CLBatchedSensorService;
-  result = [(CLBatchedSensorService *)&v4 initWithInboundProtocol:&OBJC_PROTOCOL___CLBatchedSensorServiceProtocol outboundProtocol:a3];
+  result = [(CLBatchedSensorService *)&v4 initWithInboundProtocol:&OBJC_PROTOCOL___CLBatchedSensorServiceProtocol outboundProtocol:protocol];
   if (result)
   {
     result->_clients = 0;
@@ -105,7 +105,7 @@
   self->_clients = 0;
 }
 
-- (void)registerForData:(id)a3
+- (void)registerForData:(id)data
 {
   [(NSMutableSet *)self->_clients addObject:?];
   if (qword_1025D4540 != -1)
@@ -126,7 +126,7 @@
     *buf = 136446722;
     v23 = p_info;
     v24 = 2050;
-    v25 = a3;
+    dataCopy = data;
     v26 = 1026;
     v27 = v7;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "[service-base-%{public}s] added client %{public}p, num clients %{public}d", buf, 0x1Cu);
@@ -148,9 +148,9 @@
 
     v11 = [(NSMutableSet *)self->_clients count];
     v16 = 136446722;
-    v17 = data;
+    dataCopy2 = data;
     v18 = 2050;
-    v19 = a3;
+    dataCopy3 = data;
     v20 = 1026;
     v21 = v11;
     v12 = _os_log_send_and_compose_impl();
@@ -182,7 +182,7 @@
   }
 }
 
-- (void)unregisterForData:(id)a3
+- (void)unregisterForData:(id)data
 {
   [(NSMutableSet *)self->_clients removeObject:?];
   if (qword_1025D4540 != -1)
@@ -203,7 +203,7 @@
     *buf = 136446722;
     v10 = p_info;
     v11 = 2050;
-    v12 = a3;
+    dataCopy = data;
     v13 = 1026;
     v14 = v7;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "[service-base-%{public}s] removed client %{public}p, num clients left %{public}d", buf, 0x1Cu);
@@ -345,11 +345,11 @@ LABEL_25:
   return result;
 }
 
-- (void)setInfo:(ConnectionInfo *)a3
+- (void)setInfo:(ConnectionInfo *)info
 {
   p_info = &self->_info;
-  std::string::operator=(&self->_info, a3);
-  p_info->var0 = a3->var0;
+  std::string::operator=(&self->_info, info);
+  p_info->var0 = info->var0;
 }
 
 - (id).cxx_construct

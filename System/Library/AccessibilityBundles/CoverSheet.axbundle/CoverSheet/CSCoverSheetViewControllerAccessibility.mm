@@ -1,34 +1,34 @@
 @interface CSCoverSheetViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityShowWallpaperCollections;
 - (BOOL)_axDismissTodayView;
-- (BOOL)_axIsCapabilityRestricted:(unint64_t)a3;
+- (BOOL)_axIsCapabilityRestricted:(unint64_t)restricted;
 - (BOOL)_axShowTodayView;
 - (id)accessibilityCustomActions;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateChargingSubtitleWithString:(id)a3 timeout:(double)a4;
+- (void)_updateChargingSubtitleWithString:(id)string timeout:(double)timeout;
 - (void)viewDidLoad;
 @end
 
 @implementation CSCoverSheetViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"dateViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_presentModalViewController:shouldDismissOverlays:animated:completion:" withFullSignature:{"v", "@", "B", "B", "@?", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isPasscodeLockVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceVariable:@"_posterSwitcherGestureRecognizer" withType:"UILongPressGestureRecognizer"];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_isPresentingPosterSwitcher" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_handlePosterSwitcherActivation:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasProperty:@"activeBehavior" withType:"@"];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"activateTodayViewWithCompletion:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"deactivateTodayViewWithCompletion:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"activateCameraViewAnimated:sendingActions:completion:" withFullSignature:{"v", "B", "@", "@?", 0}];
-  [v3 validateClass:@"CSBehavior" hasInstanceMethod:@"areRestrictedCapabilities:" withFullSignature:{"B", "Q", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_updateChargingSubtitleWithString:timeout:" withFullSignature:{"v", "@", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"dateViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_presentModalViewController:shouldDismissOverlays:animated:completion:" withFullSignature:{"v", "@", "B", "B", "@?", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isPasscodeLockVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceVariable:@"_posterSwitcherGestureRecognizer" withType:"UILongPressGestureRecognizer"];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_isPresentingPosterSwitcher" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_handlePosterSwitcherActivation:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasProperty:@"activeBehavior" withType:"@"];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"activateTodayViewWithCompletion:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"deactivateTodayViewWithCompletion:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"activateCameraViewAnimated:sendingActions:completion:" withFullSignature:{"v", "B", "@", "@?", 0}];
+  [validationsCopy validateClass:@"CSBehavior" hasInstanceMethod:@"areRestrictedCapabilities:" withFullSignature:{"B", "Q", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_updateChargingSubtitleWithString:timeout:" withFullSignature:{"v", "@", "d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -54,19 +54,19 @@
   {
     v17.receiver = self;
     v17.super_class = CSCoverSheetViewControllerAccessibility;
-    v3 = [(CSCoverSheetViewControllerAccessibility *)&v17 accessibilityCustomActions];
+    accessibilityCustomActions = [(CSCoverSheetViewControllerAccessibility *)&v17 accessibilityCustomActions];
     goto LABEL_5;
   }
 
   if ([(CSCoverSheetViewControllerAccessibility *)self safeBoolForKey:@"isPasscodeLockVisible"])
   {
-    v3 = objc_opt_new();
+    accessibilityCustomActions = objc_opt_new();
 LABEL_5:
-    v4 = v3;
+    v4 = accessibilityCustomActions;
     goto LABEL_16;
   }
 
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v6 = [(CSCoverSheetViewControllerAccessibility *)self safeValueForKey:@"_posterSwitcherGestureRecognizer"];
 
   if (v6)
@@ -77,7 +77,7 @@ LABEL_5:
 
     [v9 setIgnoreWhenVoiceOverTouches:1];
     [v9 setShouldSuppressActionHint:1];
-    [v5 addObject:v9];
+    [array addObject:v9];
   }
 
   if (![(CSCoverSheetViewControllerAccessibility *)self _axIsCapabilityRestricted:64])
@@ -87,7 +87,7 @@ LABEL_5:
     v12 = [v10 initWithName:v11 target:self selector:sel__axShowTodayView];
 
     [v12 setIgnoreWhenVoiceOverTouches:1];
-    [v5 addObject:v12];
+    [array addObject:v12];
   }
 
   if (![(CSCoverSheetViewControllerAccessibility *)self _axIsCapabilityRestricted:4])
@@ -97,12 +97,12 @@ LABEL_5:
     v15 = [v13 initWithName:v14 target:self selector:sel__axShowCameraView];
 
     [v15 setIgnoreWhenVoiceOverTouches:1];
-    [v5 addObject:v15];
+    [array addObject:v15];
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v4 = v5;
+    v4 = array;
   }
 
   else
@@ -119,33 +119,33 @@ LABEL_16:
 {
   if ([(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(_axIsTodayViewShowing) = 0;
   }
 
   else
   {
     AXPerformSafeBlock();
-    v3 = [(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
-    if (v3)
+    _axIsTodayViewShowing = [(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
+    if (_axIsTodayViewShowing)
     {
       v4 = accessibilityLocalizedString(@"did.show.today.view.announcement");
       UIAccessibilitySpeakAndDoNotBeInterrupted();
     }
   }
 
-  return v3;
+  return _axIsTodayViewShowing;
 }
 
 - (BOOL)_axDismissTodayView
 {
-  v3 = [(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
-  if (v3)
+  _axIsTodayViewShowing = [(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
+  if (_axIsTodayViewShowing)
   {
     AXPerformSafeBlock();
-    LOBYTE(v3) = ![(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
+    LOBYTE(_axIsTodayViewShowing) = ![(CSCoverSheetViewControllerAccessibility *)self _axIsTodayViewShowing];
   }
 
-  return v3;
+  return _axIsTodayViewShowing;
 }
 
 - (BOOL)_accessibilityShowWallpaperCollections
@@ -181,7 +181,7 @@ uint64_t __81__CSCoverSheetViewControllerAccessibility__accessibilityShowWallpap
   return result;
 }
 
-- (BOOL)_axIsCapabilityRestricted:(unint64_t)a3
+- (BOOL)_axIsCapabilityRestricted:(unint64_t)restricted
 {
   v6 = 0;
   v7 = &v6;
@@ -202,13 +202,13 @@ uint64_t __69__CSCoverSheetViewControllerAccessibility__axIsCapabilityRestricted
   return result;
 }
 
-- (void)_updateChargingSubtitleWithString:(id)a3 timeout:(double)a4
+- (void)_updateChargingSubtitleWithString:(id)string timeout:(double)timeout
 {
   v9.receiver = self;
   v9.super_class = CSCoverSheetViewControllerAccessibility;
-  v5 = a3;
-  [(CSCoverSheetViewControllerAccessibility *)&v9 _updateChargingSubtitleWithString:v5 timeout:a4];
-  v6 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v5];
+  stringCopy = string;
+  [(CSCoverSheetViewControllerAccessibility *)&v9 _updateChargingSubtitleWithString:stringCopy timeout:timeout];
+  v6 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:stringCopy];
 
   [v6 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD978]];
   [v6 setAttribute:&unk_2A2188FA8 forKey:*MEMORY[0x29EDBD860]];

@@ -1,19 +1,19 @@
 @interface TextTableViewItemCell
-- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation TextTableViewItemCell
 
-- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   v7 = ObjectType;
-  if (a4)
+  if (identifier)
   {
     ObjectType = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
-    a4 = v8;
+    identifier = v8;
   }
 
   v9 = self + OBJC_IVAR____TtC18HealthExperienceUI21TextTableViewItemCell_item;
@@ -21,7 +21,7 @@
   *(v9 + 1) = 0u;
   *(v9 + 4) = 0;
   v10 = (*(v7 + 88))(ObjectType);
-  if (a4)
+  if (identifier)
   {
     v11 = sub_1BA4A6758();
   }
@@ -41,7 +41,7 @@
   return v13;
 }
 
-- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI21TextTableViewItemCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI21TextTableViewItemCell_item;
   *v4 = 0u;
@@ -49,8 +49,8 @@
   *(v4 + 4) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for TextTableViewItemCell();
-  v5 = a3;
-  v6 = [(TextTableViewItemCell *)&v10 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TextTableViewItemCell *)&v10 initWithCoder:coderCopy];
   v7 = v6;
   if (v6)
   {
@@ -67,18 +67,18 @@
   v7.super_class = type metadata accessor for TextTableViewItemCell();
   v2 = v7.receiver;
   [(TextTableViewItemCell *)&v7 prepareForReuse];
-  v3 = [v2 textLabel];
-  if (v3)
+  textLabel = [v2 textLabel];
+  if (textLabel)
   {
-    v4 = v3;
-    [v3 setText_];
+    v4 = textLabel;
+    [textLabel setText_];
   }
 
-  v5 = [v2 detailTextLabel];
-  if (v5)
+  detailTextLabel = [v2 detailTextLabel];
+  if (detailTextLabel)
   {
-    v6 = v5;
-    [v5 setText_];
+    v6 = detailTextLabel;
+    [detailTextLabel setText_];
   }
 }
 

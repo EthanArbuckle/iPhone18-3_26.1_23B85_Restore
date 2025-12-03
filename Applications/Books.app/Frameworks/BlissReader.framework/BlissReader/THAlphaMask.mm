@@ -1,17 +1,17 @@
 @interface THAlphaMask
-- (BOOL)testPoint:(CGPoint)a3;
-- (CGSize)p_maxSizeForResolution:(int)a3 naturalSize:(CGSize)result;
-- (THAlphaMask)initWithSize:(CGSize)a3 resolution:(int)a4 renderBlock:(id)a5;
+- (BOOL)testPoint:(CGPoint)point;
+- (CGSize)p_maxSizeForResolution:(int)resolution naturalSize:(CGSize)result;
+- (THAlphaMask)initWithSize:(CGSize)size resolution:(int)resolution renderBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation THAlphaMask
 
-- (THAlphaMask)initWithSize:(CGSize)a3 resolution:(int)a4 renderBlock:(id)a5
+- (THAlphaMask)initWithSize:(CGSize)size resolution:(int)resolution renderBlock:(id)block
 {
-  v6 = *&a4;
-  height = a3.height;
-  width = a3.width;
+  v6 = *&resolution;
+  height = size.height;
+  width = size.width;
   v23.receiver = self;
   v23.super_class = THAlphaMask;
   v9 = [(THAlphaMask *)&v23 init];
@@ -32,9 +32,9 @@
     v24.size.height = v17;
     CGContextClearRect(v18, v24);
     CGContextScaleCTM(v10->_bitmapContext, v13, v13);
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5, v10->_bitmapContext);
+      (*(block + 2))(block, v10->_bitmapContext);
     }
 
     CGAffineTransformMakeScale(&v22, v13, v13);
@@ -61,22 +61,22 @@
   [(THAlphaMask *)&v4 dealloc];
 }
 
-- (BOOL)testPoint:(CGPoint)a3
+- (BOOL)testPoint:(CGPoint)point
 {
   if (!self->_bitmapContext)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    a3.y = y;
-    a3.x = x;
+    point.y = y;
+    point.x = x;
     if (!self->_bitmapContext)
     {
       return 0;
     }
   }
 
-  v4 = vmovn_s64(vcgezq_f64(vaddq_f64(*&self->_naturalToBitmapTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_naturalToBitmapTransform.c, a3.y), *&self->_naturalToBitmapTransform.a, a3.x))));
+  v4 = vmovn_s64(vcgezq_f64(vaddq_f64(*&self->_naturalToBitmapTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_naturalToBitmapTransform.c, point.y), *&self->_naturalToBitmapTransform.a, point.x))));
   if ((v4.i32[0] & v4.i32[1] & 1) == 0)
   {
     return 0;
@@ -95,15 +95,15 @@
   return *(CGBitmapContextGetData(self->_bitmapContext) + BytesPerRow * v6 + v8) != 0;
 }
 
-- (CGSize)p_maxSizeForResolution:(int)a3 naturalSize:(CGSize)result
+- (CGSize)p_maxSizeForResolution:(int)resolution naturalSize:(CGSize)result
 {
-  if (a3 == 2)
+  if (resolution == 2)
   {
     v4 = 64.0;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (resolution == 1)
   {
     v4 = 640.0;
 LABEL_7:
@@ -112,7 +112,7 @@ LABEL_7:
     return result;
   }
 
-  if (a3)
+  if (resolution)
   {
     result.width = CGSizeZero.width;
     result.height = CGSizeZero.height;

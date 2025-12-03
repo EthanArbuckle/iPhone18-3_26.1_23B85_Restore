@@ -1,29 +1,29 @@
 @interface BKDeleteActionItemsProvider
 - (BKCollection)collection;
-- (BKDeleteActionItemsProvider)initWithBooks:(id)a3 currentCollectionId:(id)a4;
+- (BKDeleteActionItemsProvider)initWithBooks:(id)books currentCollectionId:(id)id;
 - (BOOL)canDeleteFromAllDevices;
 - (BOOL)canRemoveFromCollection;
 - (NSArray)actionItems;
-- (id)_assetPurchasedDSIDForLibraryAsset:(id)a3;
+- (id)_assetPurchasedDSIDForLibraryAsset:(id)asset;
 - (int64_t)localOnlyBookCount;
-- (unint64_t)countForActionItem:(int64_t)a3;
+- (unint64_t)countForActionItem:(int64_t)item;
 - (void)computeCounts;
 @end
 
 @implementation BKDeleteActionItemsProvider
 
-- (BKDeleteActionItemsProvider)initWithBooks:(id)a3 currentCollectionId:(id)a4
+- (BKDeleteActionItemsProvider)initWithBooks:(id)books currentCollectionId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  booksCopy = books;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = BKDeleteActionItemsProvider;
   v9 = [(BKDeleteActionItemsProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_booksToDelete, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_booksToDelete, books);
+    v11 = [idCopy copy];
     collectionId = v10->_collectionId;
     v10->_collectionId = v11;
 
@@ -36,22 +36,22 @@
 - (void)computeCounts
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v80 = [v3 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v3 isUserSignedInToiCloud];
 
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 activeStoreAccount];
-  v6 = [v5 ams_DSID];
-  v59 = [v6 stringValue];
+  activeStoreAccount = [v4 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  v7 = [(BKDeleteActionItemsProvider *)self booksToDelete];
-  v58 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
+  booksToDelete = [(BKDeleteActionItemsProvider *)self booksToDelete];
+  v58 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [booksToDelete count]);
 
-  v8 = [(BKDeleteActionItemsProvider *)self collectionId];
+  collectionId = [(BKDeleteActionItemsProvider *)self collectionId];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v56 = self;
+  selfCopy = self;
   obj = [(BKDeleteActionItemsProvider *)self booksToDelete];
   v81 = [obj countByEnumeratingWithState:&v87 objects:v92 count:16];
   if (v81)
@@ -88,7 +88,7 @@
         }
 
         v12 = *(*(&v87 + 1) + 8 * i);
-        v13 = [v12 isInSamples];
+        isInSamples = [v12 isInSamples];
         if ([v12 iTunesU])
         {
           if ([v12 isLocal])
@@ -104,17 +104,17 @@
 
         else
         {
-          v14 = [v12 storeID];
-          v15 = [v14 longLongValue];
+          storeID = [v12 storeID];
+          longLongValue = [storeID longLongValue];
 
-          if (v15)
+          if (longLongValue)
           {
             if ([v12 isCloud])
             {
               ++v68;
             }
 
-            else if (v13 & 1 | (([v12 isStoreItem] & 1) == 0))
+            else if (isInSamples & 1 | (([v12 isStoreItem] & 1) == 0))
             {
               if ([v12 isDownloading])
               {
@@ -143,14 +143,14 @@
 
               else
               {
-                if (v59 && [v12 isBook])
+                if (stringValue && [v12 isBook])
                 {
-                  v16 = [(BKDeleteActionItemsProvider *)v56 _assetPurchasedDSIDForLibraryAsset:v12];
-                  v57 += [v16 isEqualToString:v59];
+                  v16 = [(BKDeleteActionItemsProvider *)selfCopy _assetPurchasedDSIDForLibraryAsset:v12];
+                  v57 += [v16 isEqualToString:stringValue];
                 }
 
-                v17 = [v12 storeID];
-                [v58 addObject:v17];
+                storeID2 = [v12 storeID];
+                [v58 addObject:storeID2];
               }
             }
 
@@ -180,10 +180,10 @@
 
         if ([v12 isAudiobook])
         {
-          v18 = [v12 storeID];
-          v19 = [v18 longLongValue];
+          storeID3 = [v12 storeID];
+          longLongValue2 = [storeID3 longLongValue];
 
-          if (v19)
+          if (longLongValue2)
           {
             if ([v12 isCloud])
             {
@@ -202,17 +202,17 @@
           }
         }
 
-        if (v80)
+        if (isUserSignedInToiCloud)
         {
           v20 = +[BKLibraryAssetStatusController sharedController];
-          v21 = [v12 permanentOrTemporaryAssetID];
-          v22 = [v20 statusForAssetID:v21];
+          permanentOrTemporaryAssetID = [v12 permanentOrTemporaryAssetID];
+          v22 = [v20 statusForAssetID:permanentOrTemporaryAssetID];
 
           if (v22)
           {
-            v23 = [v22 state];
+            state = [v22 state];
             v24 = v77;
-            if (v23 == &dword_8 + 2)
+            if (state == &dword_8 + 2)
             {
               v24 = v77 + 1;
             }
@@ -235,13 +235,13 @@
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v25 = [v12 collectionMembers];
-        v26 = [v25 countByEnumeratingWithState:&v83 objects:v91 count:16];
+        collectionMembers = [v12 collectionMembers];
+        v26 = [collectionMembers countByEnumeratingWithState:&v83 objects:v91 count:16];
         if (v26)
         {
           v27 = v26;
           v82 = i;
-          v28 = v13;
+          v28 = isInSamples;
           v29 = v10;
           v30 = v9;
           v31 = *v84;
@@ -251,13 +251,13 @@
             {
               if (*v84 != v31)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(collectionMembers);
               }
 
-              v33 = [*(*(&v83 + 1) + 8 * j) collection];
-              v34 = [v33 collectionID];
+              collection = [*(*(&v83 + 1) + 8 * j) collection];
+              collectionID = [collection collectionID];
 
-              if (v34 && ([v8 isEqualToString:v34] & 1) == 0 && +[BKCollection allowsManualAdditionToCollectionWithID:](BKCollection, "allowsManualAdditionToCollectionWithID:", v34))
+              if (collectionID && ([collectionId isEqualToString:collectionID] & 1) == 0 && +[BKCollection allowsManualAdditionToCollectionWithID:](BKCollection, "allowsManualAdditionToCollectionWithID:", collectionID))
               {
 
                 v76 = 1;
@@ -265,7 +265,7 @@
               }
             }
 
-            v27 = [v25 countByEnumeratingWithState:&v83 objects:v91 count:16];
+            v27 = [collectionMembers countByEnumeratingWithState:&v83 objects:v91 count:16];
             if (v27)
             {
               continue;
@@ -277,11 +277,11 @@
 LABEL_63:
           v9 = v30;
           v10 = v29;
-          v13 = v28;
+          isInSamples = v28;
           i = v82;
         }
 
-        v10 |= v13;
+        v10 |= isInSamples;
       }
 
       v81 = [obj countByEnumeratingWithState:&v87 objects:v92 count:16];
@@ -369,45 +369,45 @@ LABEL_63:
     v37 = v57;
   }
 
-  v56->_ghostBookCount = v55;
-  v56->_localJaliscoBooksOnlyCount = v37;
-  v56->_localUbiquityCount = v52;
-  v56->_nonlocalUbiquityCount = v40;
-  v56->_localiTunesUCount = v54;
-  v56->_nonlocaliTunesUCount = v53;
-  v56->_downloadingCount = v51;
-  v56->_localITSAudiobookCount = v50;
-  v56->_cloudITSAudiobookCount = v49;
-  v56->_nonStoreAudiobookCount = v45;
-  v56->_ubiquityErrorCount = v47;
-  v56->_pdfCount = v9;
-  v56->_storeItemCount = v41;
-  v56->_localSampleCount = v42;
-  v56->_nonLocalSampleCount = v43;
-  v56->_recentBooksCount = v46;
-  v56->_memberOfOtherManualCollection = v48 & 1;
-  v56->_memberOfSampleCollection = v10 & 1;
-  v56->_seriesItemCount = v38;
-  v56->_seriesStackCount = v39;
-  v56->_sideloadedItemCount = v44;
+  selfCopy->_ghostBookCount = v55;
+  selfCopy->_localJaliscoBooksOnlyCount = v37;
+  selfCopy->_localUbiquityCount = v52;
+  selfCopy->_nonlocalUbiquityCount = v40;
+  selfCopy->_localiTunesUCount = v54;
+  selfCopy->_nonlocaliTunesUCount = v53;
+  selfCopy->_downloadingCount = v51;
+  selfCopy->_localITSAudiobookCount = v50;
+  selfCopy->_cloudITSAudiobookCount = v49;
+  selfCopy->_nonStoreAudiobookCount = v45;
+  selfCopy->_ubiquityErrorCount = v47;
+  selfCopy->_pdfCount = v9;
+  selfCopy->_storeItemCount = v41;
+  selfCopy->_localSampleCount = v42;
+  selfCopy->_nonLocalSampleCount = v43;
+  selfCopy->_recentBooksCount = v46;
+  selfCopy->_memberOfOtherManualCollection = v48 & 1;
+  selfCopy->_memberOfSampleCollection = v10 & 1;
+  selfCopy->_seriesItemCount = v38;
+  selfCopy->_seriesStackCount = v39;
+  selfCopy->_sideloadedItemCount = v44;
 }
 
 - (int64_t)localOnlyBookCount
 {
-  v3 = [(BKDeleteActionItemsProvider *)self booksToDelete];
-  v15 = [v3 count];
-  v14 = [(BKDeleteActionItemsProvider *)self ghostBookCount];
-  v4 = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
-  v5 = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount];
-  v6 = [(BKDeleteActionItemsProvider *)self ubiquityCount];
-  v7 = [(BKDeleteActionItemsProvider *)self iTunesUCount];
-  v8 = [(BKDeleteActionItemsProvider *)self downloadingCount];
-  v9 = [(BKDeleteActionItemsProvider *)self storeItemCount];
-  v10 = [(BKDeleteActionItemsProvider *)self sampleCount];
-  v11 = [(BKDeleteActionItemsProvider *)self seriesItemCount];
-  v12 = v15 - ([(BKDeleteActionItemsProvider *)self seriesStackCount]+ v10 + v11);
+  booksToDelete = [(BKDeleteActionItemsProvider *)self booksToDelete];
+  v15 = [booksToDelete count];
+  ghostBookCount = [(BKDeleteActionItemsProvider *)self ghostBookCount];
+  localJaliscoBooksOnlyCount = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
+  localITSAudiobookCount = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount];
+  ubiquityCount = [(BKDeleteActionItemsProvider *)self ubiquityCount];
+  iTunesUCount = [(BKDeleteActionItemsProvider *)self iTunesUCount];
+  downloadingCount = [(BKDeleteActionItemsProvider *)self downloadingCount];
+  storeItemCount = [(BKDeleteActionItemsProvider *)self storeItemCount];
+  sampleCount = [(BKDeleteActionItemsProvider *)self sampleCount];
+  seriesItemCount = [(BKDeleteActionItemsProvider *)self seriesItemCount];
+  v12 = v15 - ([(BKDeleteActionItemsProvider *)self seriesStackCount]+ sampleCount + seriesItemCount);
 
-  return v12 - (v14 + v4 + v5 + v6 + v7 + v8 + v9);
+  return v12 - (ghostBookCount + localJaliscoBooksOnlyCount + localITSAudiobookCount + ubiquityCount + iTunesUCount + downloadingCount + storeItemCount);
 }
 
 - (BOOL)canDeleteFromAllDevices
@@ -415,17 +415,17 @@ LABEL_63:
   v3 = (![(BKDeleteActionItemsProvider *)self localOnlyBookCount]|| [(BKDeleteActionItemsProvider *)self ubiquityCount]|| [(BKDeleteActionItemsProvider *)self iTunesUCount]) && ![(BKDeleteActionItemsProvider *)self ghostBookCount]&& ![(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount]&& ![(BKDeleteActionItemsProvider *)self localITSAudiobookCount]&& [(BKDeleteActionItemsProvider *)self seriesStackCount]== 0;
   if (![(BKDeleteActionItemsProvider *)self ubiquityCount]&& ![(BKDeleteActionItemsProvider *)self iTunesUCount])
   {
-    v4 = [(BKDeleteActionItemsProvider *)self collectionId];
-    if ([v4 isEqualToString:kBKCollectionDefaultAll])
+    collectionId = [(BKDeleteActionItemsProvider *)self collectionId];
+    if ([collectionId isEqualToString:kBKCollectionDefaultAll])
     {
 
       return 0;
     }
 
-    v5 = [(BKDeleteActionItemsProvider *)self collection];
-    v6 = [v5 isSeriesCollection];
+    collection = [(BKDeleteActionItemsProvider *)self collection];
+    isSeriesCollection = [collection isSeriesCollection];
 
-    if (v6)
+    if (isSeriesCollection)
     {
       return 0;
     }
@@ -436,23 +436,23 @@ LABEL_63:
 
 - (BOOL)canRemoveFromCollection
 {
-  v2 = [(BKDeleteActionItemsProvider *)self collection];
-  v3 = [v2 deleteRemovesFromCollection];
+  collection = [(BKDeleteActionItemsProvider *)self collection];
+  deleteRemovesFromCollection = [collection deleteRemovesFromCollection];
 
-  return v3;
+  return deleteRemovesFromCollection;
 }
 
 - (BKCollection)collection
 {
-  v3 = [(BKDeleteActionItemsProvider *)self collectionId];
+  collectionId = [(BKDeleteActionItemsProvider *)self collectionId];
 
-  if (v3)
+  if (collectionId)
   {
     objc_opt_class();
     v4 = +[BKLibraryManager defaultManager];
-    v5 = [v4 collectionProvider];
-    v6 = [(BKDeleteActionItemsProvider *)self collectionId];
-    v7 = [v5 collectionOnMainQueueWithCollectionID:v6 error:0];
+    collectionProvider = [v4 collectionProvider];
+    collectionId2 = [(BKDeleteActionItemsProvider *)self collectionId];
+    v7 = [collectionProvider collectionOnMainQueueWithCollectionID:collectionId2 error:0];
     v8 = BUDynamicCast();
   }
 
@@ -467,13 +467,13 @@ LABEL_63:
 - (NSArray)actionItems
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v3 isUserSignedInToiCloud];
 
-  v5 = [(BKDeleteActionItemsProvider *)self canRemoveFromCollection];
-  v6 = [(BKDeleteActionItemsProvider *)self canDeleteFromAllDevices];
-  if (v4)
+  canRemoveFromCollection = [(BKDeleteActionItemsProvider *)self canRemoveFromCollection];
+  canDeleteFromAllDevices = [(BKDeleteActionItemsProvider *)self canDeleteFromAllDevices];
+  if (isUserSignedInToiCloud)
   {
-    v7 = v6;
+    memberOfOtherManualCollection = canDeleteFromAllDevices;
     if ([(BKDeleteActionItemsProvider *)self localUbiquityCount]|| [(BKDeleteActionItemsProvider *)self localiTunesUCount])
     {
       v8 = 0;
@@ -483,12 +483,12 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (v7 && ([(BKDeleteActionItemsProvider *)self nonlocalUbiquityCount]|| [(BKDeleteActionItemsProvider *)self nonlocaliTunesUCount]))
+    if (memberOfOtherManualCollection && ([(BKDeleteActionItemsProvider *)self nonlocalUbiquityCount]|| [(BKDeleteActionItemsProvider *)self nonlocaliTunesUCount]))
     {
       v10 = 0;
       v8 = 0;
       v9 = 0;
-      v7 = 1;
+      memberOfOtherManualCollection = 1;
       goto LABEL_16;
     }
 
@@ -503,7 +503,7 @@ LABEL_15:
 LABEL_44:
     v10 = 0;
     v8 = 0;
-    v7 = 0;
+    memberOfOtherManualCollection = 0;
     v9 = 1;
   }
 
@@ -513,7 +513,7 @@ LABEL_44:
     {
       v8 = 0;
       v9 = 0;
-      v7 = 0;
+      memberOfOtherManualCollection = 0;
       goto LABEL_15;
     }
 
@@ -522,7 +522,7 @@ LABEL_44:
       if ([(BKDeleteActionItemsProvider *)self localSampleCount]&& ([(NSString *)self->_collectionId isEqualToString:kBKCollectionDefaultAll]|| [(NSString *)self->_collectionId isEqualToString:kBKCollectionDefaultIDSamples]|| [(NSString *)self->_collectionId isEqualToString:kBKCollectionDefaultIDDownloaded]))
       {
         v9 = 0;
-        v7 = 0;
+        memberOfOtherManualCollection = 0;
         v10 = 1;
       }
 
@@ -530,7 +530,7 @@ LABEL_44:
       {
         v10 = 0;
         v9 = 0;
-        v7 = 0;
+        memberOfOtherManualCollection = 0;
       }
 
       v8 = 1;
@@ -538,7 +538,7 @@ LABEL_44:
 
     else if ([(BKDeleteActionItemsProvider *)self storeItemCount])
     {
-      v7 = [(BKDeleteActionItemsProvider *)self memberOfOtherManualCollection];
+      memberOfOtherManualCollection = [(BKDeleteActionItemsProvider *)self memberOfOtherManualCollection];
       v10 = 0;
       v8 = 0;
       v9 = 0;
@@ -549,7 +549,7 @@ LABEL_44:
       v10 = 0;
       v8 = 0;
       v9 = 0;
-      v7 = 0;
+      memberOfOtherManualCollection = 0;
     }
   }
 
@@ -574,11 +574,11 @@ LABEL_16:
     v12 = v10;
   }
 
-  v13 = [(BKDeleteActionItemsProvider *)self memberOfSampleCollection];
+  memberOfSampleCollection = [(BKDeleteActionItemsProvider *)self memberOfSampleCollection];
   if ([(BKDeleteActionItemsProvider *)self storeItemCount])
   {
-    v14 = [(BKDeleteActionItemsProvider *)self collectionId];
-    v15 = (v14 != 0) & (v5 ^ 1);
+    collectionId = [(BKDeleteActionItemsProvider *)self collectionId];
+    v15 = (collectionId != 0) & (canRemoveFromCollection ^ 1);
   }
 
   else
@@ -588,15 +588,15 @@ LABEL_16:
 
   v16 = [NSMutableArray arrayWithCapacity:3];
   v17 = v16;
-  if (v5)
+  if (canRemoveFromCollection)
   {
     [v16 addObject:&off_DDFE8];
   }
 
   if ([(BKDeleteActionItemsProvider *)self memberOfSampleCollection])
   {
-    v18 = [(BKDeleteActionItemsProvider *)self collectionId];
-    v19 = [v18 isEqualToString:kBKCollectionDefaultIDSamples];
+    collectionId2 = [(BKDeleteActionItemsProvider *)self collectionId];
+    v19 = [collectionId2 isEqualToString:kBKCollectionDefaultIDSamples];
 
     if ((v19 & 1) == 0)
     {
@@ -605,9 +605,9 @@ LABEL_16:
   }
 
   v20 = +[UIApplication sharedApplication];
-  v21 = [objc_opt_class() isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [objc_opt_class() isRunningInStoreDemoMode];
 
-  if ((v21 & 1) == 0)
+  if ((isRunningInStoreDemoMode & 1) == 0)
   {
     if (v12)
     {
@@ -624,12 +624,12 @@ LABEL_16:
       [v17 addObject:&off_DE048];
     }
 
-    if (v7)
+    if (memberOfOtherManualCollection)
     {
       [v17 addObject:&off_DE060];
     }
 
-    if (v8 | v13 & !v11 & (v7 ^ 1))
+    if (v8 | memberOfSampleCollection & !v11 & (memberOfOtherManualCollection ^ 1))
     {
       [v17 addObject:&off_DE078];
     }
@@ -640,19 +640,19 @@ LABEL_16:
   return v22;
 }
 
-- (unint64_t)countForActionItem:(int64_t)a3
+- (unint64_t)countForActionItem:(int64_t)item
 {
-  if (a3 == 7)
+  if (item == 7)
   {
     if ((+[BLLibraryUtility _isMultiUser]& 1) == 0)
     {
       v8 = +[BURestrictionsProvider sharedInstance];
-      v9 = [v8 isAccountModificationAllowed];
+      isAccountModificationAllowed = [v8 isAccountModificationAllowed];
 
-      if (v9)
+      if (isAccountModificationAllowed)
       {
-        v10 = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
-        v11 = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount]+ v10;
+        localJaliscoBooksOnlyCount = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
+        v11 = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount]+ localJaliscoBooksOnlyCount;
         return [(BKDeleteActionItemsProvider *)self ghostBookCount]+ v11;
       }
     }
@@ -660,34 +660,34 @@ LABEL_16:
     return 0;
   }
 
-  if (a3 != 2)
+  if (item != 2)
   {
     return 0;
   }
 
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v4 isUserSignedInToiCloud];
 
-  if (v5)
+  if (isUserSignedInToiCloud)
   {
-    v6 = [(BKDeleteActionItemsProvider *)self localUbiquityCount];
-    v7 = [(BKDeleteActionItemsProvider *)self localiTunesUCount];
+    localUbiquityCount = [(BKDeleteActionItemsProvider *)self localUbiquityCount];
+    localiTunesUCount = [(BKDeleteActionItemsProvider *)self localiTunesUCount];
   }
 
   else
   {
-    v6 = 0;
-    v7 = 0;
+    localUbiquityCount = 0;
+    localiTunesUCount = 0;
   }
 
-  v13 = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
-  v14 = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount];
-  return [(BKDeleteActionItemsProvider *)self localSampleCount]+ v14 + v7 + v6 + v13;
+  localJaliscoBooksOnlyCount2 = [(BKDeleteActionItemsProvider *)self localJaliscoBooksOnlyCount];
+  localITSAudiobookCount = [(BKDeleteActionItemsProvider *)self localITSAudiobookCount];
+  return [(BKDeleteActionItemsProvider *)self localSampleCount]+ localITSAudiobookCount + localiTunesUCount + localUbiquityCount + localJaliscoBooksOnlyCount2;
 }
 
-- (id)_assetPurchasedDSIDForLibraryAsset:(id)a3
+- (id)_assetPurchasedDSIDForLibraryAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -703,7 +703,7 @@ LABEL_16:
   v11 = &v12;
   v6 = v4;
   v10 = v6;
-  [v5 assetAccountIdentifiersForAsset:v3 completion:v9];
+  [v5 assetAccountIdentifiersForAsset:assetCopy completion:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];

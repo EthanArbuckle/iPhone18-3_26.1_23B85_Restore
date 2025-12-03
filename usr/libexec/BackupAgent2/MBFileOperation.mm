@@ -1,294 +1,294 @@
 @interface MBFileOperation
-+ (BOOL)clone:(int)a3 sourceRpath:(id)a4 destinationBasePath:(id)a5 destinationBaseFD:(int)a6 destinationRpath:(id)a7 error:(id *)a8;
-+ (BOOL)closeFD:(int)a3 path:(id)a4 error:(id *)a5;
-+ (BOOL)createDirectories:(int)a3 destinationBasePath:(id)a4 destinationRpath:(id)a5 permissions:(unsigned __int16)a6 error:(id *)a7;
-+ (BOOL)crossVolumeCopyFrom:(const char *)a3 toDestination:(const char *)a4 shouldDeleteSource:(BOOL)a5 error:(id *)a6;
-+ (BOOL)crossVolumeMoveFrom:(id)a3 intoDir:(id)a4 toFileNamed:(id)a5 error:(id *)a6;
-+ (BOOL)exists:(BOOL *)a3 atBasePath:(id)a4 baseFD:(int)a5 rpath:(id)a6 error:(id *)a7;
-+ (BOOL)hardlink:(int)a3 sourceRpath:(id)a4 destinationBasePath:(id)a5 destinationBaseFD:(int)a6 destinationRpath:(id)a7 error:(id *)a8;
-+ (BOOL)openFD:(int *)a3 baseFD:(int)a4 rpath:(id)a5 flags:(int)a6 error:(id *)a7;
-+ (BOOL)openFD:(int *)a3 path:(id)a4 flags:(int)a5 error:(id *)a6;
-+ (BOOL)unlink:(int)a3 targetBasePath:(id)a4 targetRpath:(id)a5 error:(id *)a6;
-+ (id)createPathInDirectory:(id)a3 fileName:(id)a4;
-+ (id)symbolicLinkTargetWithPath:(id)a3 error:(id *)a4;
-+ (id)symbolicLinkTargetWithPathFSR:(const char *)a3 error:(id *)a4;
++ (BOOL)clone:(int)clone sourceRpath:(id)rpath destinationBasePath:(id)path destinationBaseFD:(int)d destinationRpath:(id)destinationRpath error:(id *)error;
++ (BOOL)closeFD:(int)d path:(id)path error:(id *)error;
++ (BOOL)createDirectories:(int)directories destinationBasePath:(id)path destinationRpath:(id)rpath permissions:(unsigned __int16)permissions error:(id *)error;
++ (BOOL)crossVolumeCopyFrom:(const char *)from toDestination:(const char *)destination shouldDeleteSource:(BOOL)source error:(id *)error;
++ (BOOL)crossVolumeMoveFrom:(id)from intoDir:(id)dir toFileNamed:(id)named error:(id *)error;
++ (BOOL)exists:(BOOL *)exists atBasePath:(id)path baseFD:(int)d rpath:(id)rpath error:(id *)error;
++ (BOOL)hardlink:(int)hardlink sourceRpath:(id)rpath destinationBasePath:(id)path destinationBaseFD:(int)d destinationRpath:(id)destinationRpath error:(id *)error;
++ (BOOL)openFD:(int *)d baseFD:(int)fD rpath:(id)rpath flags:(int)flags error:(id *)error;
++ (BOOL)openFD:(int *)d path:(id)path flags:(int)flags error:(id *)error;
++ (BOOL)unlink:(int)unlink targetBasePath:(id)path targetRpath:(id)rpath error:(id *)error;
++ (id)createPathInDirectory:(id)directory fileName:(id)name;
++ (id)symbolicLinkTargetWithPath:(id)path error:(id *)error;
++ (id)symbolicLinkTargetWithPathFSR:(const char *)r error:(id *)error;
 @end
 
 @implementation MBFileOperation
 
-+ (BOOL)openFD:(int *)a3 baseFD:(int)a4 rpath:(id)a5 flags:(int)a6 error:(id *)a7
++ (BOOL)openFD:(int *)d baseFD:(int)fD rpath:(id)rpath flags:(int)flags error:(id *)error
 {
-  v11 = a5;
-  if (!a3)
+  rpathCopy = rpath;
+  if (!d)
   {
     sub_10009C9B8();
   }
 
-  if (a4 == -1)
+  if (fD == -1)
   {
     sub_10009C98C();
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = rpathCopy;
+  if (!rpathCopy)
   {
     sub_10009C960();
   }
 
-  if (!a6)
+  if (!flags)
   {
     sub_10009C934();
   }
 
-  v13 = openat(a4, [v11 fileSystemRepresentation], a6);
+  v13 = openat(fD, [rpathCopy fileSystemRepresentation], flags);
   v14 = v13;
   if (v13 < 0)
   {
     v15 = __error();
-    if (a7)
+    if (error)
     {
-      *a7 = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v15 format:?];
+      *error = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v15 format:?];
     }
   }
 
   else
   {
-    *a3 = v13;
+    *d = v13;
   }
 
   return v14 >= 0;
 }
 
-+ (BOOL)openFD:(int *)a3 path:(id)a4 flags:(int)a5 error:(id *)a6
++ (BOOL)openFD:(int *)d path:(id)path flags:(int)flags error:(id *)error
 {
-  v9 = a4;
-  if (!a3)
+  pathCopy = path;
+  if (!d)
   {
     sub_10009CA3C();
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = pathCopy;
+  if (!pathCopy)
   {
     sub_10009CA10();
   }
 
-  if (!a5)
+  if (!flags)
   {
     sub_10009C9E4();
   }
 
-  v11 = open([v9 fileSystemRepresentation], a5);
+  v11 = open([pathCopy fileSystemRepresentation], flags);
   v12 = v11;
   if (v11 < 0)
   {
     v13 = __error();
-    if (a6)
+    if (error)
     {
-      *a6 = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v13 format:?];
+      *error = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v13 format:?];
     }
   }
 
   else
   {
-    *a3 = v11;
+    *d = v11;
   }
 
   return v12 >= 0;
 }
 
-+ (BOOL)closeFD:(int)a3 path:(id)a4 error:(id *)a5
++ (BOOL)closeFD:(int)d path:(id)path error:(id *)error
 {
-  v7 = a4;
-  if (a3 == -1)
+  pathCopy = path;
+  if (d == -1)
   {
     sub_10009CA68();
   }
 
-  v8 = v7;
-  v9 = close(a3);
+  v8 = pathCopy;
+  v9 = close(d);
   if (v9)
   {
     v10 = __error();
-    if (a5)
+    if (error)
     {
-      *a5 = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v10 format:?];
+      *error = [MBError errorWithErrno:"errorWithErrno:path:format:" path:*v10 format:?];
     }
   }
 
   return v9 == 0;
 }
 
-+ (BOOL)exists:(BOOL *)a3 atBasePath:(id)a4 baseFD:(int)a5 rpath:(id)a6 error:(id *)a7
++ (BOOL)exists:(BOOL *)exists atBasePath:(id)path baseFD:(int)d rpath:(id)rpath error:(id *)error
 {
-  v11 = a4;
-  v12 = a6;
-  if (!a3)
+  pathCopy = path;
+  rpathCopy = rpath;
+  if (!exists)
   {
     sub_10009CB18();
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     sub_10009CAEC();
   }
 
-  if (a5 == -1)
+  if (d == -1)
   {
     sub_10009CAC0();
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = rpathCopy;
+  if (!rpathCopy)
   {
     sub_10009CA94();
   }
 
-  if (faccessat(a5, [v12 fileSystemRepresentation], 0, 32))
+  if (faccessat(d, [rpathCopy fileSystemRepresentation], 0, 32))
   {
     v14 = *__error();
     if (v14 == 2)
     {
-      *a3 = 0;
-      LOBYTE(a7) = 1;
+      *exists = 0;
+      LOBYTE(error) = 1;
     }
 
-    else if (a7)
+    else if (error)
     {
-      v15 = [v11 stringByAppendingPathComponent:v13];
-      *a7 = [MBError errorWithErrno:v14 path:v15 format:@"faccessat() failure %d", v14];
+      v15 = [pathCopy stringByAppendingPathComponent:v13];
+      *error = [MBError errorWithErrno:v14 path:v15 format:@"faccessat() failure %d", v14];
 
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a7) = 1;
-    *a3 = 1;
+    LOBYTE(error) = 1;
+    *exists = 1;
   }
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)hardlink:(int)a3 sourceRpath:(id)a4 destinationBasePath:(id)a5 destinationBaseFD:(int)a6 destinationRpath:(id)a7 error:(id *)a8
++ (BOOL)hardlink:(int)hardlink sourceRpath:(id)rpath destinationBasePath:(id)path destinationBaseFD:(int)d destinationRpath:(id)destinationRpath error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (a3 == -1)
+  rpathCopy = rpath;
+  pathCopy = path;
+  destinationRpathCopy = destinationRpath;
+  if (hardlink == -1)
   {
     sub_10009CCD0();
   }
 
-  if (!v13)
+  if (!rpathCopy)
   {
     sub_10009CCA4();
   }
 
-  if (!v14)
+  if (!pathCopy)
   {
     sub_10009CC78();
   }
 
-  if (a6 == -1)
+  if (d == -1)
   {
     sub_10009CC4C();
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = destinationRpathCopy;
+  if (!destinationRpathCopy)
   {
     sub_10009CC20();
   }
 
-  v17 = linkat(a3, [v13 fileSystemRepresentation], a6, objc_msgSend(v15, "fileSystemRepresentation"), 0);
+  v17 = linkat(hardlink, [rpathCopy fileSystemRepresentation], d, objc_msgSend(destinationRpathCopy, "fileSystemRepresentation"), 0);
   v18 = v17;
-  if (a8 && v17)
+  if (error && v17)
   {
     v19 = *__error();
-    v20 = [v14 stringByAppendingPathComponent:v16];
-    *a8 = [MBError errorWithErrno:v19 path:v20 format:@"linkat() failure %d", v19];
+    v20 = [pathCopy stringByAppendingPathComponent:v16];
+    *error = [MBError errorWithErrno:v19 path:v20 format:@"linkat() failure %d", v19];
   }
 
   return v18 == 0;
 }
 
-+ (BOOL)clone:(int)a3 sourceRpath:(id)a4 destinationBasePath:(id)a5 destinationBaseFD:(int)a6 destinationRpath:(id)a7 error:(id *)a8
++ (BOOL)clone:(int)clone sourceRpath:(id)rpath destinationBasePath:(id)path destinationBaseFD:(int)d destinationRpath:(id)destinationRpath error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (a3 == -1)
+  rpathCopy = rpath;
+  pathCopy = path;
+  destinationRpathCopy = destinationRpath;
+  if (clone == -1)
   {
     sub_10009CDAC();
   }
 
-  if (!v13)
+  if (!rpathCopy)
   {
     sub_10009CD80();
   }
 
-  if (!v14)
+  if (!pathCopy)
   {
     sub_10009CD54();
   }
 
-  if (a6 == -1)
+  if (d == -1)
   {
     sub_10009CD28();
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = destinationRpathCopy;
+  if (!destinationRpathCopy)
   {
     sub_10009CCFC();
   }
 
-  v17 = clonefileat(a3, [v13 fileSystemRepresentation], a6, objc_msgSend(v15, "fileSystemRepresentation"), 0);
+  v17 = clonefileat(clone, [rpathCopy fileSystemRepresentation], d, objc_msgSend(destinationRpathCopy, "fileSystemRepresentation"), 0);
   v18 = v17;
-  if (a8 && v17)
+  if (error && v17)
   {
     v19 = *__error();
-    v20 = [v14 stringByAppendingPathComponent:v16];
-    *a8 = [MBError errorWithErrno:v19 path:v20 format:@"clonefileat() failure %d", v19];
+    v20 = [pathCopy stringByAppendingPathComponent:v16];
+    *error = [MBError errorWithErrno:v19 path:v20 format:@"clonefileat() failure %d", v19];
   }
 
   return v18 == 0;
 }
 
-+ (BOOL)createDirectories:(int)a3 destinationBasePath:(id)a4 destinationRpath:(id)a5 permissions:(unsigned __int16)a6 error:(id *)a7
++ (BOOL)createDirectories:(int)directories destinationBasePath:(id)path destinationRpath:(id)rpath permissions:(unsigned __int16)permissions error:(id *)error
 {
-  v8 = a6;
-  v11 = a4;
-  v12 = a5;
-  if (a3 == 1)
+  permissionsCopy = permissions;
+  pathCopy = path;
+  rpathCopy = rpath;
+  if (directories == 1)
   {
     sub_10009CE5C();
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     sub_10009CE30();
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = rpathCopy;
+  if (!rpathCopy)
   {
     sub_10009CE04();
   }
 
-  if (!v8)
+  if (!permissionsCopy)
   {
     sub_10009CDD8();
   }
 
-  v14 = mkpathat_np(a3, [v12 fileSystemRepresentation], v8);
+  v14 = mkpathat_np(directories, [rpathCopy fileSystemRepresentation], permissionsCopy);
   v15 = v14;
-  if (v14 && v14 != 17 && a7)
+  if (v14 && v14 != 17 && error)
   {
-    v16 = [v11 stringByAppendingPathComponent:v13];
-    *a7 = [MBError errorWithErrno:v15 path:v16 format:@"mkpathat_np() failure %d", v15];
+    v16 = [pathCopy stringByAppendingPathComponent:v13];
+    *error = [MBError errorWithErrno:v15 path:v16 format:@"mkpathat_np() failure %d", v15];
   }
 
   if (v15)
@@ -306,49 +306,49 @@
   return v18;
 }
 
-+ (BOOL)unlink:(int)a3 targetBasePath:(id)a4 targetRpath:(id)a5 error:(id *)a6
++ (BOOL)unlink:(int)unlink targetBasePath:(id)path targetRpath:(id)rpath error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  pathCopy = path;
+  rpathCopy = rpath;
+  if (unlink == 1)
   {
     sub_10009CEB4();
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = rpathCopy;
+  if (!rpathCopy)
   {
     sub_10009CE88();
   }
 
-  v12 = unlinkat(a3, [v10 fileSystemRepresentation], 0);
+  v12 = unlinkat(unlink, [rpathCopy fileSystemRepresentation], 0);
   v13 = v12;
-  if (a6 && v12)
+  if (error && v12)
   {
     v14 = *__error();
-    v15 = [v9 stringByAppendingPathComponent:v11];
-    *a6 = [MBError errorWithErrno:v14 path:v15 format:@"unlinkat() failure %d", v14];
+    v15 = [pathCopy stringByAppendingPathComponent:v11];
+    *error = [MBError errorWithErrno:v14 path:v15 format:@"unlinkat() failure %d", v14];
   }
 
   return v13 == 0;
 }
 
-+ (id)createPathInDirectory:(id)a3 fileName:(id)a4
++ (id)createPathInDirectory:(id)directory fileName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  directoryCopy = directory;
+  nameCopy = name;
+  if (!directoryCopy)
   {
     sub_10009CEF4();
   }
 
-  v7 = v6;
+  v7 = nameCopy;
   if (qword_10011E338 != -1)
   {
     sub_10009CEE0();
   }
 
-  v8 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [directoryCopy fileSystemRepresentation];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -360,8 +360,8 @@
   block[1] = 3221225472;
   block[2] = sub_10002D874;
   block[3] = &unk_1000FD840;
-  v21 = v8;
-  v10 = v5;
+  v21 = fileSystemRepresentation;
+  v10 = directoryCopy;
   v18 = v10;
   v11 = v7;
   v19 = v11;
@@ -384,24 +384,24 @@
   return v13;
 }
 
-+ (BOOL)crossVolumeCopyFrom:(const char *)a3 toDestination:(const char *)a4 shouldDeleteSource:(BOOL)a5 error:(id *)a6
++ (BOOL)crossVolumeCopyFrom:(const char *)from toDestination:(const char *)destination shouldDeleteSource:(BOOL)source error:(id *)error
 {
-  if (!a3)
+  if (!from)
   {
     sub_10009CFFC();
   }
 
-  if (!a4)
+  if (!destination)
   {
     sub_10009CFD0();
   }
 
-  if (!a6)
+  if (!error)
   {
     sub_10009CFA4();
   }
 
-  if (a5)
+  if (source)
   {
     v9 = 1179662;
   }
@@ -412,7 +412,7 @@
   }
 
   v10 = copyfile_state_alloc();
-  v11 = copyfile(a3, a4, v10, v9);
+  v11 = copyfile(from, destination, v10, v9);
   v12 = *__error();
   copyfile_state_free(v10);
   if (v11)
@@ -428,16 +428,16 @@
   v14 = v13;
   if (!v13)
   {
-    v15 = [NSString mb_stringWithFileSystemRepresentation:a3];
-    *a6 = [MBError posixErrorWithPath:v15 format:@"copyfile failed"];
+    v15 = [NSString mb_stringWithFileSystemRepresentation:from];
+    *error = [MBError posixErrorWithPath:v15 format:@"copyfile failed"];
 
     v16 = MBGetDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v19 = a3;
+      fromCopy = from;
       v20 = 2080;
-      v21 = a4;
+      destinationCopy = destination;
       v22 = 1024;
       v23 = v11;
       v24 = 1024;
@@ -450,48 +450,48 @@
   return v14;
 }
 
-+ (BOOL)crossVolumeMoveFrom:(id)a3 intoDir:(id)a4 toFileNamed:(id)a5 error:(id *)a6
++ (BOOL)crossVolumeMoveFrom:(id)from intoDir:(id)dir toFileNamed:(id)named error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  fromCopy = from;
+  dirCopy = dir;
+  namedCopy = named;
+  if (!fromCopy)
   {
     sub_10009D0AC();
   }
 
-  if (!v11)
+  if (!dirCopy)
   {
     sub_10009D080();
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = namedCopy;
+  if (!namedCopy)
   {
     sub_10009D054();
   }
 
-  if (!a6)
+  if (!error)
   {
     sub_10009D028();
   }
 
-  v14 = [v11 stringByAppendingPathComponent:@"cross_volume_copy"];
-  v15 = [a1 createPathInDirectory:v14 fileName:0];
+  v14 = [dirCopy stringByAppendingPathComponent:@"cross_volume_copy"];
+  v15 = [self createPathInDirectory:v14 fileName:0];
 
-  v16 = [v10 fileSystemRepresentation];
-  v17 = [v15 fileSystemRepresentation];
-  if ([a1 crossVolumeCopyFrom:v16 toDestination:v17 shouldDeleteSource:1 error:a6])
+  fileSystemRepresentation = [fromCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [v15 fileSystemRepresentation];
+  if ([self crossVolumeCopyFrom:fileSystemRepresentation toDestination:fileSystemRepresentation2 shouldDeleteSource:1 error:error])
   {
-    v18 = [a1 createPathInDirectory:v11 fileName:v13];
-    v19 = [v18 fileSystemRepresentation];
-    v20 = renamex_np(v17, v19, 4u);
+    v18 = [self createPathInDirectory:dirCopy fileName:v13];
+    fileSystemRepresentation3 = [v18 fileSystemRepresentation];
+    v20 = renamex_np(fileSystemRepresentation2, fileSystemRepresentation3, 4u);
     v21 = v20 == 0;
     if (v20)
     {
       v27 = *__error();
-      v22 = [NSString stringWithUTF8String:v16];
-      *a6 = [MBError errorWithErrno:v27 path:v22 format:@"renamex_np() from %s to %s failed", v16, v19];
+      v22 = [NSString stringWithUTF8String:fileSystemRepresentation];
+      *error = [MBError errorWithErrno:v27 path:v22 format:@"renamex_np() from %s to %s failed", fileSystemRepresentation, fileSystemRepresentation3];
     }
   }
 
@@ -500,15 +500,15 @@
     v23 = MBGetDefaultLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = *a6;
+      v24 = *error;
       *buf = 136315650;
-      v29 = v16;
+      v29 = fileSystemRepresentation;
       v30 = 2080;
-      v31 = v17;
+      v31 = fileSystemRepresentation2;
       v32 = 2112;
       v33 = v24;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "could not copy across volumes from %s to %s: %@", buf, 0x20u);
-      v26 = *a6;
+      v26 = *error;
       _MBLog();
     }
 
@@ -518,33 +518,33 @@
   return v21;
 }
 
-+ (id)symbolicLinkTargetWithPath:(id)a3 error:(id *)a4
++ (id)symbolicLinkTargetWithPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = [a3 fileSystemRepresentation];
+  pathCopy = path;
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  return [a1 symbolicLinkTargetWithPathFSR:v8 error:a4];
+  return [self symbolicLinkTargetWithPathFSR:fileSystemRepresentation error:error];
 }
 
-+ (id)symbolicLinkTargetWithPathFSR:(const char *)a3 error:(id *)a4
++ (id)symbolicLinkTargetWithPathFSR:(const char *)r error:(id *)error
 {
-  v7 = readlink(a3, v17, 0x400uLL);
+  v7 = readlink(r, v17, 0x400uLL);
   if (v7 < 0)
   {
     if (*__error() == 2 || *__error() == 22)
     {
-      if (a4)
+      if (error)
       {
-        v12 = [a1 description];
+        v12 = [self description];
         v13 = 4;
 LABEL_13:
-        *a4 = [MBError posixErrorWithCode:v13 path:v12 format:@"readlink error"];
+        *error = [MBError posixErrorWithCode:v13 path:v12 format:@"readlink error"];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      v12 = [a1 description];
+      v12 = [self description];
       v13 = 101;
       goto LABEL_13;
     }
@@ -563,14 +563,14 @@ LABEL_13:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v16 = a3;
+      rCopy = r;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to convert filesystem representation %s", buf, 0xCu);
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError errorWithCode:7 format:@"Failed to convert filesystem representation"];
+      *error = [MBError errorWithCode:7 format:@"Failed to convert filesystem representation"];
     }
   }
 

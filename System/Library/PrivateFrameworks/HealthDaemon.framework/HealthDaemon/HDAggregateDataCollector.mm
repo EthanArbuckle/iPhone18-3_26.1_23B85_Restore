@@ -1,21 +1,21 @@
 @interface HDAggregateDataCollector
-- (HDAggregateDataCollector)initWithProfile:(id)a3;
+- (HDAggregateDataCollector)initWithProfile:(id)profile;
 - (double)maxDatumDuration;
 - (id)_queue_lastReceivedSecondaryContext;
 - (id)_queue_lastReceivedSensorDatum;
-- (id)_queue_processSensorDataBatched:(id)a3 firstDatum:(id)a4 lastSensorDatum:(id *)a5;
-- (id)hkObjectsFromSensorData:(id)a3 baseSensorDatum:(id)a4 startDate:(id)a5 endDate:(id)a6;
+- (id)_queue_processSensorDataBatched:(id)batched firstDatum:(id)datum lastSensorDatum:(id *)sensorDatum;
+- (id)hkObjectsFromSensorData:(id)data baseSensorDatum:(id)datum startDate:(id)date endDate:(id)endDate;
 - (void)_queue_beginStreaming;
-- (void)_queue_fetchHistoricalDataForcedUpdate:(void *)a3 completion:;
-- (void)_queue_handleUpdatingHistoricalDataForcedUpdate:(void *)a3 completion:;
-- (void)_queue_updateLastReceivedSecondaryContext:(id)a3;
-- (void)_queue_updateLastReceivedSensorDatum:(id)a3;
-- (void)beginUpdatesFromDatum:(id)a3 withHandler:(id)a4;
-- (void)fetchHistoricalSensorDataSinceDatum:(id)a3 databaseIdentifier:(id)a4 completion:(id)a5;
-- (void)setMaxDatumDuration:(double)a3;
+- (void)_queue_fetchHistoricalDataForcedUpdate:(void *)update completion:;
+- (void)_queue_handleUpdatingHistoricalDataForcedUpdate:(void *)update completion:;
+- (void)_queue_updateLastReceivedSecondaryContext:(id)context;
+- (void)_queue_updateLastReceivedSensorDatum:(id)datum;
+- (void)beginUpdatesFromDatum:(id)datum withHandler:(id)handler;
+- (void)fetchHistoricalSensorDataSinceDatum:(id)datum databaseIdentifier:(id)identifier completion:(id)completion;
+- (void)setMaxDatumDuration:(double)duration;
 - (void)updateHistoricalData;
-- (void)updateHistoricalDataForcedUpdate:(BOOL)a3 completion:(id)a4;
-- (void)updateHistoricalDataWithCompletion:(id)a3;
+- (void)updateHistoricalDataForcedUpdate:(BOOL)update completion:(id)completion;
+- (void)updateHistoricalDataWithCompletion:(id)completion;
 @end
 
 @implementation HDAggregateDataCollector
@@ -254,9 +254,9 @@ void __48__HDAggregateDataCollector_updateHistoricalData__block_invoke(uint64_t 
     if (v4 && [v4 length])
     {
       v6 = MEMORY[0x277CCAAC8];
-      v7 = [objc_opt_class() secondaryContextClasses];
+      secondaryContextClasses = [objc_opt_class() secondaryContextClasses];
       v18 = 0;
-      v8 = [v6 unarchivedObjectOfClasses:v7 fromData:v5 error:&v18];
+      v8 = [v6 unarchivedObjectOfClasses:secondaryContextClasses fromData:v5 error:&v18];
       v9 = v18;
 
       if (!v8)
@@ -296,12 +296,12 @@ void __48__HDAggregateDataCollector_updateHistoricalData__block_invoke(uint64_t 
   return lastReceivedSecondaryContext;
 }
 
-- (HDAggregateDataCollector)initWithProfile:(id)a3
+- (HDAggregateDataCollector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = HDAggregateDataCollector;
-  v5 = [(HDDataCollector *)&v18 initWithProfile:v4];
+  v5 = [(HDDataCollector *)&v18 initWithProfile:profileCopy];
   v6 = v5;
   if (v5)
   {
@@ -411,14 +411,14 @@ uint64_t __44__HDAggregateDataCollector_maxDatumDuration__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setMaxDatumDuration:(double)a3
+- (void)setMaxDatumDuration:(double)duration
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__HDAggregateDataCollector_setMaxDatumDuration___block_invoke;
   v3[3] = &unk_2786138F8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = duration;
   [(HDDataCollector *)self _performAsync:v3];
 }
 
@@ -452,11 +452,11 @@ void __66__HDAggregateDataCollector__beginUpdatesHandlerWithSuccess_error___bloc
   }
 }
 
-- (void)_queue_updateLastReceivedSensorDatum:(id)a3
+- (void)_queue_updateLastReceivedSensorDatum:(id)datum
 {
   v22 = *MEMORY[0x277D85DE8];
-  objc_storeStrong(&self->_lastReceivedSensorDatum, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_lastReceivedSensorDatum, datum);
+  datumCopy = datum;
   v6 = self->_lastReceivedSensorDatum;
   v7 = v6;
   v14 = 0;
@@ -489,13 +489,13 @@ void __66__HDAggregateDataCollector__beginUpdatesHandlerWithSuccess_error___bloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateLastReceivedSecondaryContext:(id)a3
+- (void)_queue_updateLastReceivedSecondaryContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  objc_storeStrong(&self->_lastReceivedSecondaryContext, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_lastReceivedSecondaryContext, context);
+  contextCopy = context;
   v13 = 0;
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v13];
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v13];
   v6 = v13;
   if (!v12)
   {
@@ -508,7 +508,7 @@ void __66__HDAggregateDataCollector__beginUpdatesHandlerWithSuccess_error___bloc
       *buf = 138543874;
       v15 = v10;
       v16 = 2112;
-      v17 = v5;
+      v17 = contextCopy;
       v18 = 2114;
       v19 = v6;
       v11 = v10;
@@ -520,20 +520,20 @@ void __66__HDAggregateDataCollector__beginUpdatesHandlerWithSuccess_error___bloc
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_handleUpdatingHistoricalDataForcedUpdate:(void *)a3 completion:
+- (void)_queue_handleUpdatingHistoricalDataForcedUpdate:(void *)update completion:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  updateCopy = update;
+  v6 = updateCopy;
+  if (self)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __87__HDAggregateDataCollector__queue_handleUpdatingHistoricalDataForcedUpdate_completion___block_invoke;
     v7[3] = &unk_278626D18;
-    v7[4] = a1;
+    v7[4] = self;
     v9 = a2;
-    v8 = v5;
-    [(HDAggregateDataCollector *)a1 _queue_fetchHistoricalDataForcedUpdate:a2 completion:v7];
+    v8 = updateCopy;
+    [(HDAggregateDataCollector *)self _queue_fetchHistoricalDataForcedUpdate:a2 completion:v7];
   }
 }
 
@@ -600,13 +600,13 @@ LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_fetchHistoricalDataForcedUpdate:(void *)a3 completion:
+- (void)_queue_fetchHistoricalDataForcedUpdate:(void *)update completion:
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1[72] != 1)
+  updateCopy = update;
+  if (self[72] != 1)
   {
-    if (a1[120] == 1 && (a2 & 1) == 0)
+    if (self[120] == 1 && (a2 & 1) == 0)
     {
       _HKInitializeLogging();
       v9 = *MEMORY[0x277CCC298];
@@ -619,12 +619,12 @@ LABEL_14:
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Requested update while fetching historical data. Marking _needsHistoricalFetch", buf, 0xCu);
       }
 
-      a1[121] = 1;
+      self[121] = 1;
       goto LABEL_9;
     }
 
-    a1[120] = 1;
-    v12 = [a1 _queue_lastReceivedSensorDatum];
+    self[120] = 1;
+    _queue_lastReceivedSensorDatum = [self _queue_lastReceivedSensorDatum];
     Current = CFAbsoluteTimeGetCurrent();
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC298];
@@ -636,11 +636,11 @@ LABEL_14:
         v16 = v14;
         v17 = objc_opt_class();
         v18 = v17;
-        v19 = _IdentifierStringsFromSensorDatum(v12);
+        v19 = _IdentifierStringsFromSensorDatum(_queue_lastReceivedSensorDatum);
         *buf = 138543874;
         v27 = v17;
         v28 = 2112;
-        v29 = v12;
+        v29 = _queue_lastReceivedSensorDatum;
         v30 = 2114;
         v31 = v19;
         v20 = "%{public}@: Forced fetch of historical data since last record: %@ %{public}@";
@@ -654,11 +654,11 @@ LABEL_16:
       v16 = v14;
       v21 = objc_opt_class();
       v18 = v21;
-      v19 = _IdentifierStringsFromSensorDatum(v12);
+      v19 = _IdentifierStringsFromSensorDatum(_queue_lastReceivedSensorDatum);
       *buf = 138543874;
       v27 = v21;
       v28 = 2112;
-      v29 = v12;
+      v29 = _queue_lastReceivedSensorDatum;
       v30 = 2114;
       v31 = v19;
       v20 = "%{public}@: Fetching historical data since last record: %@ %{public}@";
@@ -669,10 +669,10 @@ LABEL_16:
     v23[1] = 3221225472;
     v23[2] = __78__HDAggregateDataCollector__queue_fetchHistoricalDataForcedUpdate_completion___block_invoke;
     v23[3] = &unk_278622808;
-    v23[4] = a1;
+    v23[4] = self;
     v25 = Current;
-    v24 = v5;
-    [a1 fetchHistoricalSensorDataSinceDatum:v12 databaseIdentifier:0 completion:v23];
+    v24 = updateCopy;
+    [self fetchHistoricalSensorDataSinceDatum:_queue_lastReceivedSensorDatum databaseIdentifier:0 completion:v23];
 
     goto LABEL_18;
   }
@@ -689,9 +689,9 @@ LABEL_16:
   }
 
 LABEL_9:
-  if (v5)
+  if (updateCopy)
   {
-    (*(v5 + 2))(v5, 1, 0);
+    (*(updateCopy + 2))(updateCopy, 1, 0);
   }
 
 LABEL_18:
@@ -1177,29 +1177,29 @@ uint64_t __54__HDAggregateDataCollector__queue_filteredSensorData___block_invoke
   return v5 ^ 1u;
 }
 
-- (id)_queue_processSensorDataBatched:(id)a3 firstDatum:(id)a4 lastSensorDatum:(id *)a5
+- (id)_queue_processSensorDataBatched:(id)batched firstDatum:(id)datum lastSensorDatum:(id *)sensorDatum
 {
-  v8 = a4;
+  datumCopy = datum;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a3;
+  batchedCopy = batched;
   v11 = objc_alloc_init(v9);
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __87__HDAggregateDataCollector__queue_processSensorDataBatched_firstDatum_lastSensorDatum___block_invoke;
   v24 = &unk_2786288E0;
-  v25 = self;
+  selfCopy = self;
   v12 = v11;
   v26 = v12;
   v13 = _Block_copy(&v21);
   [(HDAggregateDataCollector *)self _queue_aggregationInterval:v21];
   v15 = v14;
   [(HDAggregateDataCollector *)self _queue_maxDatumDuration];
-  v17 = HDDataCollectorEnumerateBatches(v10, v8, v13, v15, v16);
+  v17 = HDDataCollectorEnumerateBatches(batchedCopy, datumCopy, v13, v15, v16);
 
-  if (a5)
+  if (sensorDatum)
   {
     v18 = v17;
-    *a5 = v17;
+    *sensorDatum = v17;
   }
 
   v19 = v12;
@@ -1247,17 +1247,17 @@ BOOL __87__HDAggregateDataCollector__queue_processSensorDataBatched_firstDatum_l
   return v15 != 0;
 }
 
-- (void)updateHistoricalDataWithCompletion:(id)a3
+- (void)updateHistoricalDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->super._queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HDAggregateDataCollector_updateHistoricalDataWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1270,36 +1270,36 @@ void __63__HDAggregateDataCollector_updateHistoricalDataWithCompletion___block_i
   }
 }
 
-- (void)updateHistoricalDataForcedUpdate:(BOOL)a3 completion:(id)a4
+- (void)updateHistoricalDataForcedUpdate:(BOOL)update completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HDAggregateDataCollector_updateHistoricalDataForcedUpdate_completion___block_invoke;
   block[3] = &unk_2786164B0;
-  v11 = a3;
+  updateCopy = update;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)beginUpdatesFromDatum:(id)a3 withHandler:(id)a4
+- (void)beginUpdatesFromDatum:(id)datum withHandler:(id)handler
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)fetchHistoricalSensorDataSinceDatum:(id)a3 databaseIdentifier:(id)a4 completion:(id)a5
+- (void)fetchHistoricalSensorDataSinceDatum:(id)datum databaseIdentifier:(id)identifier completion:(id)completion
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (id)hkObjectsFromSensorData:(id)a3 baseSensorDatum:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (id)hkObjectsFromSensorData:(id)data baseSensorDatum:(id)datum startDate:(id)date endDate:(id)endDate
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

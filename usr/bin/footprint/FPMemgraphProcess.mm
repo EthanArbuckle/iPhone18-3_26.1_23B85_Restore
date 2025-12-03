@@ -1,23 +1,23 @@
 @interface FPMemgraphProcess
-+ (id)processWithMemgraph:(id)a3 error:(id *)p_isa;
-- (BOOL)_populateMemoryRegionWithPageQueries:(id)a3 regionInfo:(vm_region_submap_info_64 *)a4;
++ (id)processWithMemgraph:(id)memgraph error:(id *)p_isa;
+- (BOOL)_populateMemoryRegionWithPageQueries:(id)queries regionInfo:(vm_region_submap_info_64 *)info;
 - (BOOL)doOwnedAccountingAdjustments;
 - (unint64_t)_gatherPageSize;
 - (void)_gatherLedgers;
 - (void)_gatherProcessState;
-- (void)enumerateRegions:(id)a3;
+- (void)enumerateRegions:(id)regions;
 @end
 
 @implementation FPMemgraphProcess
 
-+ (id)processWithMemgraph:(id)a3 error:(id *)p_isa
++ (id)processWithMemgraph:(id)memgraph error:(id *)p_isa
 {
-  v5 = a3;
+  memgraphCopy = memgraph;
   v6 = [FPMemgraphProcess alloc];
   if (v6)
   {
     v7 = v6;
-    v8 = [NSData dataWithContentsOfURL:v5 options:1 error:p_isa];
+    v8 = [NSData dataWithContentsOfURL:memgraphCopy options:1 error:p_isa];
     if (v8)
     {
       v9 = [VMUProcessObjectGraph directedGraphWithData:v8 error:p_isa];
@@ -48,11 +48,11 @@
           goto LABEL_31;
         }
 
-        v15 = [*(&v13->super._bailedOut + 1) processName];
-        [(FPProcess *)v14 setName:v15];
+        processName = [*(&v13->super._bailedOut + 1) processName];
+        [(FPProcess *)v14 setName:processName];
 
-        v16 = [(FPProcess *)v14 name];
-        v17 = [NSString stringWithFormat:@"%@ [%d] (memgraph)", v16, [(FPProcess *)v14 pid]];
+        name = [(FPProcess *)v14 name];
+        v17 = [NSString stringWithFormat:@"%@ [%d] (memgraph)", name, [(FPProcess *)v14 pid]];
         [(FPProcess *)v14 setDisplayString:v17];
 
         [*(&v14->super._bailedOut + 1) dyldSharedCacheRange];
@@ -60,9 +60,9 @@
         {
           v19 = [FPSharedCache alloc];
           v20 = +[NSUUID UUID];
-          v21 = [*(&v14->super._bailedOut + 1) dyldSharedCacheRange];
+          dyldSharedCacheRange = [*(&v14->super._bailedOut + 1) dyldSharedCacheRange];
           [*(&v14->super._bailedOut + 1) dyldSharedCacheRange];
-          v23 = sub_100002CE0(&v19->super.isa, v20, v21, v22, 0);
+          v23 = sub_100002CE0(&v19->super.isa, v20, dyldSharedCacheRange, v22, 0);
           sharedCache = v14->super.super._sharedCache;
           v14->super.super._sharedCache = v23;
 
@@ -71,29 +71,29 @@
 
         else
         {
-          v27 = [*(&v14->super._bailedOut + 1) processDescriptionString];
-          if ([v27 containsString:@"X86-64"])
+          processDescriptionString = [*(&v14->super._bailedOut + 1) processDescriptionString];
+          if ([processDescriptionString containsString:@"X86-64"])
           {
 
             v28 = 0x7FE000000;
             v29 = 0x7FF800000000;
           }
 
-          else if ([v27 containsString:@"X86"])
+          else if ([processDescriptionString containsString:@"X86"])
           {
 
             v28 = 0x20000000;
             v29 = 2415919104;
           }
 
-          else if ([v27 containsString:@"ARM64_32"])
+          else if ([processDescriptionString containsString:@"ARM64_32"])
           {
 
             v28 = 2281701376;
             v29 = 436207616;
           }
 
-          else if ([v27 containsString:@"ARM64"])
+          else if ([processDescriptionString containsString:@"ARM64"])
           {
 
             v29 = 0x180000000;
@@ -102,7 +102,7 @@
 
           else
           {
-            v30 = [v27 containsString:@"ARM"];
+            v30 = [processDescriptionString containsString:@"ARM"];
 
             if (!v30)
             {
@@ -111,8 +111,8 @@
               goto LABEL_30;
             }
 
-            v31 = [*(&v14->super._bailedOut + 1) binaryImagesDescription];
-            v32 = [v31 containsString:@"arm64_32"];
+            binaryImagesDescription = [*(&v14->super._bailedOut + 1) binaryImagesDescription];
+            v32 = [binaryImagesDescription containsString:@"arm64_32"];
 
             if (v32)
             {
@@ -178,9 +178,9 @@ LABEL_33:
 
 - (unint64_t)_gatherPageSize
 {
-  v3 = [*(&self->super._bailedOut + 1) isTranslatedByRosetta];
+  isTranslatedByRosetta = [*(&self->super._bailedOut + 1) isTranslatedByRosetta];
   v4 = *(&self->super._bailedOut + 1);
-  if (v3)
+  if (isTranslatedByRosetta)
   {
     LODWORD(result) = [v4 vmPageSize];
   }
@@ -197,37 +197,37 @@ LABEL_33:
 {
   v5.receiver = self;
   v5.super_class = FPMemgraphProcess;
-  v3 = [(FPUserProcess *)&v5 doOwnedAccountingAdjustments];
-  if (v3)
+  doOwnedAccountingAdjustments = [(FPUserProcess *)&v5 doOwnedAccountingAdjustments];
+  if (doOwnedAccountingAdjustments)
   {
-    LOBYTE(v3) = [*(&self->super._bailedOut + 1) didPhysFootprintDirtyAccounting] ^ 1;
+    LOBYTE(doOwnedAccountingAdjustments) = [*(&self->super._bailedOut + 1) didPhysFootprintDirtyAccounting] ^ 1;
   }
 
-  return v3;
+  return doOwnedAccountingAdjustments;
 }
 
-- (BOOL)_populateMemoryRegionWithPageQueries:(id)a3 regionInfo:(vm_region_submap_info_64 *)a4
+- (BOOL)_populateMemoryRegionWithPageQueries:(id)queries regionInfo:(vm_region_submap_info_64 *)info
 {
-  v5 = a3;
-  if ([v5 dirtySize])
+  queriesCopy = queries;
+  if ([queriesCopy dirtySize])
   {
     __assert_rtn("[FPMemgraphProcess _populateMemoryRegionWithPageQueries:regionInfo:]", "FPMemgraphProcess.m", 149, "memoryRegion.dirtySize == 0");
   }
 
-  if ([v5 swappedSize])
+  if ([queriesCopy swappedSize])
   {
     __assert_rtn("[FPMemgraphProcess _populateMemoryRegionWithPageQueries:regionInfo:]", "FPMemgraphProcess.m", 150, "memoryRegion.swappedSize == 0");
   }
 
-  [v5 setDirtySize:a4->pages_dirtied];
-  [v5 setSwappedSize:a4->pages_swapped_out];
+  [queriesCopy setDirtySize:info->pages_dirtied];
+  [queriesCopy setSwappedSize:info->pages_swapped_out];
 
   return 1;
 }
 
-- (void)enumerateRegions:(id)a3
+- (void)enumerateRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -251,7 +251,7 @@ LABEL_33:
   v8[3] = &unk_100028858;
   v8[4] = self;
   v10 = v11;
-  v7 = v4;
+  v7 = regionsCopy;
   v9 = v7;
   [v6 enumerateRegionsWithBlock:v8];
 
@@ -274,15 +274,15 @@ LABEL_33:
 
 - (void)_gatherProcessState
 {
-  v3 = [*(&self->super._bailedOut + 1) idleExitStatus];
-  if (v3 - 1 >= 3)
+  idleExitStatus = [*(&self->super._bailedOut + 1) idleExitStatus];
+  if (idleExitStatus - 1 >= 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = idleExitStatus;
   }
 
   self->super.super._idleExitStatus = v4;

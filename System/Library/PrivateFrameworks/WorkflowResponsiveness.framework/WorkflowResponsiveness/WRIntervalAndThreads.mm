@@ -1,7 +1,7 @@
 @interface WRIntervalAndThreads
 - (id)encodedDict;
 - (id)initWithStart:end:;
-- (void)insertIntoSortedArray:(uint64_t)a1;
+- (void)insertIntoSortedArray:(uint64_t)array;
 @end
 
 @implementation WRIntervalAndThreads
@@ -64,24 +64,24 @@ uint64_t __46__WRIntervalAndThreads_insertIntoSortedArray___block_invoke(uint64_
 
 - (id)encodedDict
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v4 = [v2 start];
-    [(WRTimestampAndThread *)v4 encodedDict];
+    start = [selfCopy start];
+    [(WRTimestampAndThread *)start encodedDict];
     objc_claimAutoreleasedReturnValue();
     v5 = [OUTLINED_FUNCTION_87() end];
-    v6 = [(WRTimestampAndThread *)v5 encodedDict];
-    v2 = [v3 initWithObjectsAndKeys:{v1, @"iat_start", v6, @"iat_end", 0}];
+    encodedDict = [(WRTimestampAndThread *)v5 encodedDict];
+    selfCopy = [v3 initWithObjectsAndKeys:{v1, @"iat_start", encodedDict, @"iat_end", 0}];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)insertIntoSortedArray:(uint64_t)a1
+- (void)insertIntoSortedArray:(uint64_t)array
 {
-  if (a1)
+  if (array)
   {
     v17 = a2;
     v2 = [v17 count];

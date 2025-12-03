@@ -2,20 +2,20 @@
 - (OrgApacheLuceneAnalysisReusableStringReader)init;
 - (int)read;
 - (void)dealloc;
-- (void)setValueWithNSString:(id)a3;
+- (void)setValueWithNSString:(id)string;
 @end
 
 @implementation OrgApacheLuceneAnalysisReusableStringReader
 
-- (void)setValueWithNSString:(id)a3
+- (void)setValueWithNSString:(id)string
 {
-  JreStrongAssign(&self->s_, a3);
-  if (!a3)
+  JreStrongAssign(&self->s_, string);
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  self->size_ = [a3 length];
+  self->size_ = [string length];
   self->pos_ = 0;
 }
 

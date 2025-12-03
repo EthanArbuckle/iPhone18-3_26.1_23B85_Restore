@@ -3,15 +3,15 @@
 - (UIViewController)_targetViewController;
 - (_UISheetPresentationControllerConfiguration)_sheetConfiguration;
 - (id)currentPresentationController;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (id)sheetDisconnectionAssertionForReason:(id)a3;
-- (void)_setSheetConfiguration:(id)a3;
-- (void)_setViewClipsToBounds:(BOOL)a3;
-- (void)_sheetInteractionDraggingDidBeginWithRubberBandCoefficient:(double)a3;
-- (void)_sheetInteractionDraggingDidChangeWithTranslation:(CGPoint)a3 velocity:(CGPoint)a4 animateChange:(BOOL)a5;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (id)sheetDisconnectionAssertionForReason:(id)reason;
+- (void)_setSheetConfiguration:(id)configuration;
+- (void)_setViewClipsToBounds:(BOOL)bounds;
+- (void)_sheetInteractionDraggingDidBeginWithRubberBandCoefficient:(double)coefficient;
+- (void)_sheetInteractionDraggingDidChangeWithTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change;
 - (void)_sheetInteractionDraggingDidEnd;
-- (void)evaluateSheetConnectionStateForNewAssertion:(BOOL)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
+- (void)evaluateSheetConnectionStateForNewAssertion:(BOOL)assertion;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
 @end
 
 @implementation _UISceneHostingSheetPresentationHostComponent
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (id)sheetDisconnectionAssertionForReason:(id)a3
+- (id)sheetDisconnectionAssertionForReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   ++self->_sheetDisconnectionAssertionCount;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(FBSSceneComponent *)self hostScene];
-  v7 = [v6 identityToken];
-  v8 = [v5 stringWithFormat:@"sheetDisconnectionAssertion::%@", v7];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  identityToken = [hostScene identityToken];
+  v8 = [v5 stringWithFormat:@"sheetDisconnectionAssertion::%@", identityToken];
 
   objc_initWeak(&location, self);
   v9 = objc_alloc(MEMORY[0x1E698E778]);
@@ -58,7 +58,7 @@
   v14[2] = __86___UISceneHostingSheetPresentationHostComponent_sheetDisconnectionAssertionForReason___block_invoke;
   v14[3] = &unk_1E70FA170;
   objc_copyWeak(&v15, &location);
-  v10 = [v9 initWithIdentifier:v8 forReason:v4 invalidationBlock:v14];
+  v10 = [v9 initWithIdentifier:v8 forReason:reasonCopy invalidationBlock:v14];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("UISceneHosting", &sheetDisconnectionAssertionForReason____s_category);
   if (*CategoryCachedImpl)
   {
@@ -78,37 +78,37 @@
   return v10;
 }
 
-- (void)evaluateSheetConnectionStateForNewAssertion:(BOOL)a3
+- (void)evaluateSheetConnectionStateForNewAssertion:(BOOL)assertion
 {
   sheetDisconnectionAssertionCount = self->_sheetDisconnectionAssertionCount;
   if (!sheetDisconnectionAssertionCount)
   {
-    v6 = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
-    v8 = v6;
-    v7 = self;
+    currentPresentationController = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
+    v8 = currentPresentationController;
+    selfCopy = self;
     goto LABEL_9;
   }
 
-  if (sheetDisconnectionAssertionCount == 1 && a3)
+  if (sheetDisconnectionAssertionCount == 1 && assertion)
   {
-    v6 = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
-    v8 = v6;
-    v7 = 0;
+    currentPresentationController = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
+    v8 = currentPresentationController;
+    selfCopy = 0;
 LABEL_9:
-    [v6 _tryToConnectToRemoteSheet:v7];
+    [currentPresentationController _tryToConnectToRemoteSheet:selfCopy];
   }
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionsCopy = actions;
   v6 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -148,8 +148,8 @@ LABEL_9:
 
         if (v16)
         {
-          v17 = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
-          [v16 executeActionForSheetPresentationController:v17];
+          currentPresentationController = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
+          [v16 executeActionForSheetPresentationController:currentPresentationController];
 
           [v6 addObject:v16];
         }
@@ -166,103 +166,103 @@ LABEL_9:
   return v18;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 transitionContext];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
 
-  if ([v8 containsProperty:sel_sheetClientConfiguration])
+  if ([settingsDiff containsProperty:sel_sheetClientConfiguration])
   {
-    v10 = [v6 clientSettings];
-    v11 = [v10 sheetClientConfiguration];
+    clientSettings = [sceneCopy clientSettings];
+    sheetClientConfiguration = [clientSettings sheetClientConfiguration];
 
-    v12 = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
-    if (v12)
+    currentPresentationController = [(_UISceneHostingSheetPresentationHostComponent *)self currentPresentationController];
+    if (currentPresentationController)
     {
-      v13 = [(FBSSceneComponent *)self hostScene];
+      hostScene = [(FBSSceneComponent *)self hostScene];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __79___UISceneHostingSheetPresentationHostComponent_scene_didUpdateClientSettings___block_invoke;
       v14[3] = &unk_1E70F35B8;
-      v15 = v12;
-      v16 = v11;
-      [v13 ui_performBlock:v14 withTransitionContext:v9];
+      v15 = currentPresentationController;
+      v16 = sheetClientConfiguration;
+      [hostScene ui_performBlock:v14 withTransitionContext:transitionContext];
     }
   }
 }
 
-- (void)_setSheetConfiguration:(id)a3
+- (void)_setSheetConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self hostScene];
+  configurationCopy = configuration;
+  hostScene = [(FBSSceneComponent *)self hostScene];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72___UISceneHostingSheetPresentationHostComponent__setSheetConfiguration___block_invoke;
   v7[3] = &unk_1E7120A80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 _performUpdateWithoutActivation:v7];
+  v8 = configurationCopy;
+  selfCopy = self;
+  v6 = configurationCopy;
+  [hostScene _performUpdateWithoutActivation:v7];
 }
 
 - (_UISheetPresentationControllerConfiguration)_sheetConfiguration
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 settings];
-  v4 = [v3 sheetConfiguration];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  settings = [hostScene settings];
+  sheetConfiguration = [settings sheetConfiguration];
 
-  return v4;
+  return sheetConfiguration;
 }
 
-- (void)_setViewClipsToBounds:(BOOL)a3
+- (void)_setViewClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   WeakRetained = objc_loadWeakRetained(&self->_targetViewController);
-  v4 = [WeakRetained view];
-  [v4 setClipsToBounds:v3];
+  view = [WeakRetained view];
+  [view setClipsToBounds:boundsCopy];
 }
 
 - (BOOL)_viewClipsToBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_targetViewController);
-  v3 = [WeakRetained view];
-  v4 = [v3 clipsToBounds];
+  view = [WeakRetained view];
+  clipsToBounds = [view clipsToBounds];
 
-  return v4;
+  return clipsToBounds;
 }
 
-- (void)_sheetInteractionDraggingDidBeginWithRubberBandCoefficient:(double)a3
+- (void)_sheetInteractionDraggingDidBeginWithRubberBandCoefficient:(double)coefficient
 {
-  v7 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [_UISceneHostingSheetPresentationActionToClient actionForSheetInteractionDraggingDidBeginWithRubberBandCoefficient:a3];
+  v5 = [_UISceneHostingSheetPresentationActionToClient actionForSheetInteractionDraggingDidBeginWithRubberBandCoefficient:coefficient];
   v6 = [v4 setWithObject:v5];
-  [v7 sendPrivateActions:v6];
+  [scene sendPrivateActions:v6];
 }
 
-- (void)_sheetInteractionDraggingDidChangeWithTranslation:(CGPoint)a3 velocity:(CGPoint)a4 animateChange:(BOOL)a5
+- (void)_sheetInteractionDraggingDidChangeWithTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v13 = [(FBSSceneComponent *)self scene];
+  changeCopy = change;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = translation.y;
+  v9 = translation.x;
+  scene = [(FBSSceneComponent *)self scene];
   v10 = MEMORY[0x1E695DFD8];
-  v11 = [_UISceneHostingSheetPresentationActionToClient actionForSheetInteractionDraggingDidChangeWithTranslation:v5 velocity:v9 animateChange:v8, x, y];
+  v11 = [_UISceneHostingSheetPresentationActionToClient actionForSheetInteractionDraggingDidChangeWithTranslation:changeCopy velocity:v9 animateChange:v8, x, y];
   v12 = [v10 setWithObject:v11];
-  [v13 sendPrivateActions:v12];
+  [scene sendPrivateActions:v12];
 }
 
 - (void)_sheetInteractionDraggingDidEnd
 {
-  v5 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v2 = MEMORY[0x1E695DFD8];
   v3 = +[_UISceneHostingSheetPresentationActionToClient actionForSheetInteractionDraggingDidEnd];
   v4 = [v2 setWithObject:v3];
-  [v5 sendPrivateActions:v4];
+  [scene sendPrivateActions:v4];
 }
 
 - (UIViewController)_targetViewController

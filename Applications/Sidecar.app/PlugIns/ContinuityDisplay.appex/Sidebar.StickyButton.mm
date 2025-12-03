@@ -1,29 +1,29 @@
 @interface Sidebar.StickyButton
-- (void)_buttonDownWithSender:(id)a3;
-- (void)_buttonUpWithSender:(id)a3;
-- (void)_keyboardButtonGestureTriggeredWithRecognizer:(id)a3;
+- (void)_buttonDownWithSender:(id)sender;
+- (void)_buttonUpWithSender:(id)sender;
+- (void)_keyboardButtonGestureTriggeredWithRecognizer:(id)recognizer;
 @end
 
 @implementation Sidebar.StickyButton
 
-- (void)_keyboardButtonGestureTriggeredWithRecognizer:(id)a3
+- (void)_keyboardButtonGestureTriggeredWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003A4B0(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_10003A4B0(recognizerCopy);
 }
 
-- (void)_buttonDownWithSender:(id)a3
+- (void)_buttonDownWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10003A618();
 }
 
-- (void)_buttonUpWithSender:(id)a3
+- (void)_buttonUpWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10003A880();
 }
 

@@ -1,40 +1,40 @@
 @interface ReminderEntityAnnotation
-+ (id)reminderEntityAnnotationForIntegrationEvent:(id)a3;
-+ (id)reminderEntityIdentifierForIntegrationEvent:(id)a3;
++ (id)reminderEntityAnnotationForIntegrationEvent:(id)event;
++ (id)reminderEntityIdentifierForIntegrationEvent:(id)event;
 @end
 
 @implementation ReminderEntityAnnotation
 
-+ (id)reminderEntityAnnotationForIntegrationEvent:(id)a3
++ (id)reminderEntityAnnotationForIntegrationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (CalendarUIKitInternalLibraryCore())
   {
-    v4 = [v3 CUIK_reminderEntityAnnotation];
+    cUIK_reminderEntityAnnotation = [eventCopy CUIK_reminderEntityAnnotation];
   }
 
   else
   {
-    v4 = 0;
+    cUIK_reminderEntityAnnotation = 0;
   }
 
-  return v4;
+  return cUIK_reminderEntityAnnotation;
 }
 
-+ (id)reminderEntityIdentifierForIntegrationEvent:(id)a3
++ (id)reminderEntityIdentifierForIntegrationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (CalendarUIKitInternalLibraryCore())
   {
-    v4 = [v3 CUIK_reminderEntityIdentifier];
+    cUIK_reminderEntityIdentifier = [eventCopy CUIK_reminderEntityIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    cUIK_reminderEntityIdentifier = 0;
   }
 
-  return v4;
+  return cUIK_reminderEntityIdentifier;
 }
 
 @end

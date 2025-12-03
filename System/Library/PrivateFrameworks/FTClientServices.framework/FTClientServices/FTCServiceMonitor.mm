@@ -1,13 +1,13 @@
 @interface FTCServiceMonitor
-- (FTCServiceMonitor)initWithServiceType:(int64_t)a3;
-- (void)_postAvailability:(int64_t)a3;
+- (FTCServiceMonitor)initWithServiceType:(int64_t)type;
+- (void)_postAvailability:(int64_t)availability;
 - (void)_updateAvailability;
 - (void)dealloc;
 @end
 
 @implementation FTCServiceMonitor
 
-- (FTCServiceMonitor)initWithServiceType:(int64_t)a3
+- (FTCServiceMonitor)initWithServiceType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = FTCServiceMonitor;
@@ -15,10 +15,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    if (a3 <= 2)
+    v4->_type = type;
+    if (type <= 2)
     {
-      v6 = off_278FF1938[a3];
+      v6 = off_278FF1938[type];
       IMUserScopedNotification();
     }
 
@@ -38,9 +38,9 @@
   [(FTCServiceMonitor *)&v3 dealloc];
 }
 
-- (void)_postAvailability:(int64_t)a3
+- (void)_postAvailability:(int64_t)availability
 {
-  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:availability];
   v4 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v5, @"availability", 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
@@ -59,15 +59,15 @@
     v6 = OSLogHandleForRegistrationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(FTCServiceMonitor *)self serviceType];
-      if ((v7 + 1) > 3)
+      serviceType = [(FTCServiceMonitor *)self serviceType];
+      if ((serviceType + 1) > 3)
       {
         v8 = @"Unknown";
       }
 
       else
       {
-        v8 = off_278FF1950[v7 + 1];
+        v8 = off_278FF1950[serviceType + 1];
       }
 
       if ((availability + 2) > 3)
@@ -92,7 +92,7 @@
       }
 
       *buf = 138413058;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v8;
       v29 = 2112;
@@ -104,10 +104,10 @@
 
     if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
     {
-      v12 = [(FTCServiceMonitor *)self serviceType];
-      if ((v12 + 1) <= 3)
+      serviceType2 = [(FTCServiceMonitor *)self serviceType];
+      if ((serviceType2 + 1) <= 3)
       {
-        v19 = off_278FF1950[v12 + 1];
+        v19 = off_278FF1950[serviceType2 + 1];
       }
 
       if ((availability + 2) <= 3)

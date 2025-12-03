@@ -1,10 +1,10 @@
 @interface LABaseServiceManager
 - (LABaseServiceManager)init;
-- (void)_shutdownSessionsWithServiceType:(id)a3;
-- (void)bootstrapServiceWithType:(id)a3 clientConnection:(id)a4 completionHandler:(id)a5;
-- (void)bootstrapSessionServiceType:(id)a3 clientID:(id)a4 clientConnection:(id)a5 completionHandler:(id)a6;
-- (void)bootstrapSessionServiceType:(id)a3 clientID:(id)a4 completionHandler:(id)a5;
-- (void)shutdownSessionsWithMatchingID:(id)a3;
+- (void)_shutdownSessionsWithServiceType:(id)type;
+- (void)bootstrapServiceWithType:(id)type clientConnection:(id)connection completionHandler:(id)handler;
+- (void)bootstrapSessionServiceType:(id)type clientID:(id)d clientConnection:(id)connection completionHandler:(id)handler;
+- (void)bootstrapSessionServiceType:(id)type clientID:(id)d completionHandler:(id)handler;
+- (void)shutdownSessionsWithMatchingID:(id)d;
 @end
 
 @implementation LABaseServiceManager
@@ -24,30 +24,30 @@
   return v2;
 }
 
-- (void)bootstrapSessionServiceType:(id)a3 clientID:(id)a4 completionHandler:(id)a5
+- (void)bootstrapSessionServiceType:(id)type clientID:(id)d completionHandler:(id)handler
 {
   v8 = MEMORY[0x1E696B0B8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 currentConnection];
-  [(LABaseServiceManager *)self bootstrapSessionServiceType:v11 clientID:v10 clientConnection:v12 completionHandler:v9];
+  handlerCopy = handler;
+  dCopy = d;
+  typeCopy = type;
+  currentConnection = [v8 currentConnection];
+  [(LABaseServiceManager *)self bootstrapSessionServiceType:typeCopy clientID:dCopy clientConnection:currentConnection completionHandler:handlerCopy];
 }
 
-- (void)bootstrapSessionServiceType:(id)a3 clientID:(id)a4 clientConnection:(id)a5 completionHandler:(id)a6
+- (void)bootstrapSessionServiceType:(id)type clientID:(id)d clientConnection:(id)connection completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v26 = a5;
-  v27 = a6;
+  typeCopy = type;
+  dCopy = d;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   val = self;
-  v12 = [(NSMutableDictionary *)self->_sessions allValues];
-  v13 = [v12 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  allValues = [(NSMutableDictionary *)self->_sessions allValues];
+  v13 = [allValues countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
     v14 = *v35;
@@ -57,27 +57,27 @@
       {
         if (*v35 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        v17 = [v16 serviceType];
-        if ([v17 isEqualToString:v10])
+        serviceType = [v16 serviceType];
+        if ([serviceType isEqualToString:typeCopy])
         {
-          v18 = [v16 clientID];
-          v19 = [v18 isEqualToString:v11];
+          clientID = [v16 clientID];
+          v19 = [clientID isEqualToString:dCopy];
 
           if (v19)
           {
             v20 = LACLogService();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
-              [LABaseServiceManager bootstrapSessionServiceType:v16 clientID:v11 clientConnection:v20 completionHandler:?];
+              [LABaseServiceManager bootstrapSessionServiceType:v16 clientID:dCopy clientConnection:v20 completionHandler:?];
             }
 
-            v22 = [v16 service];
-            v23 = [v22 endpoint];
-            v27[2](v27, v23, 0);
+            service = [v16 service];
+            endpoint = [service endpoint];
+            handlerCopy[2](handlerCopy, endpoint, 0);
 
             goto LABEL_16;
           }
@@ -88,7 +88,7 @@
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v13)
       {
         continue;
@@ -103,11 +103,11 @@
   v28[1] = 3221225472;
   v28[2] = __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConnection_completionHandler___block_invoke;
   v28[3] = &unk_1E86B5D68;
-  v29 = v10;
-  v30 = v11;
-  v31 = v27;
+  v29 = typeCopy;
+  v30 = dCopy;
+  v31 = handlerCopy;
   objc_copyWeak(&v32, &location);
-  [(LABaseServiceManager *)val bootstrapServiceWithType:v29 clientConnection:v26 completionHandler:v28];
+  [(LABaseServiceManager *)val bootstrapServiceWithType:v29 clientConnection:connectionCopy completionHandler:v28];
   objc_destroyWeak(&v32);
 
   objc_destroyWeak(&location);
@@ -186,15 +186,15 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)shutdownSessionsWithMatchingID:(id)a3
+- (void)shutdownSessionsWithMatchingID:(id)d
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_sessions allValues];
   v5 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v5)
@@ -213,16 +213,16 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 clientID];
-        if ([v11 isEqualToString:v4])
+        clientID = [v10 clientID];
+        if ([clientID isEqualToString:dCopy])
         {
         }
 
         else
         {
-          v12 = [v10 service];
-          v13 = [v12 serviceID];
-          v14 = [v13 isEqualToString:v4];
+          service = [v10 service];
+          serviceID = [service serviceID];
+          v14 = [serviceID isEqualToString:dCopy];
 
           if (!v14)
           {
@@ -233,18 +233,18 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
         v15 = LACLogService();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v10 service];
-          v19 = [v10 clientID];
+          service2 = [v10 service];
+          clientID2 = [v10 clientID];
           *buf = v21;
-          v29 = v18;
+          v29 = service2;
           v30 = 2112;
-          v31 = v19;
+          v31 = clientID2;
           _os_log_debug_impl(&dword_1DF403000, v15, OS_LOG_TYPE_DEBUG, "Unregistered session service: %@ client: %@", buf, 0x16u);
         }
 
-        sessions = v23->_sessions;
-        v17 = [v10 sessionID];
-        [(NSMutableDictionary *)sessions setObject:0 forKeyedSubscript:v17];
+        sessions = selfCopy->_sessions;
+        sessionID = [v10 sessionID];
+        [(NSMutableDictionary *)sessions setObject:0 forKeyedSubscript:sessionID];
       }
 
       v7 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -256,16 +256,16 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_shutdownSessionsWithServiceType:(id)a3
+- (void)_shutdownSessionsWithServiceType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sessions allValues];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_sessions allValues];
+  v6 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -276,22 +276,22 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 serviceType];
-        v12 = [v11 isEqualToString:v4];
+        serviceType = [v10 serviceType];
+        v12 = [serviceType isEqualToString:typeCopy];
 
         if (v12)
         {
-          v13 = [v10 service];
-          v14 = [v13 serviceID];
-          [(LABaseServiceManager *)self shutdownSessionsWithMatchingID:v14];
+          service = [v10 service];
+          serviceID = [service serviceID];
+          [(LABaseServiceManager *)self shutdownSessionsWithMatchingID:serviceID];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -300,25 +300,25 @@ void __96__LABaseServiceManager_bootstrapSessionServiceType_clientID_clientConne
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bootstrapServiceWithType:(id)a3 clientConnection:(id)a4 completionHandler:(id)a5
+- (void)bootstrapServiceWithType:(id)type clientConnection:(id)connection completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = MEMORY[0x1E696ABC0];
   v14 = *MEMORY[0x1E696A278];
   v15[0] = @"Service bootstrapping service not implemented";
   v8 = MEMORY[0x1E695DF20];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v11 = [v7 errorWithDomain:@"ServiceKitErrorDomain" code:0 userInfo:v10];
 
   v12 = LACLogService();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [LABaseServiceManager bootstrapServiceWithType:v6 clientConnection:v11 completionHandler:v12];
+    [LABaseServiceManager bootstrapServiceWithType:typeCopy clientConnection:v11 completionHandler:v12];
   }
 
-  v9[2](v9, 0, v11);
+  handlerCopy[2](handlerCopy, 0, v11);
   v13 = *MEMORY[0x1E69E9840];
 }
 

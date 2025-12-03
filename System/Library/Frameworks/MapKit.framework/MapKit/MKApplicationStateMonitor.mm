@@ -1,17 +1,17 @@
 @interface MKApplicationStateMonitor
 + (id)sharedInstance;
-- (BOOL)_applicationStateIsForegroundForTaskState:(unsigned __int8)a3;
+- (BOOL)_applicationStateIsForegroundForTaskState:(unsigned __int8)state;
 - (MKApplicationStateMonitor)init;
-- (id)_stringForTaskState:(unsigned __int8)a3;
+- (id)_stringForTaskState:(unsigned __int8)state;
 - (void)_becomeActive;
 - (void)_enterBackground;
 - (void)_exitBackground;
-- (void)_handleApplicationStateChangeForMonitor:(id)a3 handle:(id)a4 update:(id)a5 interestedPid:(int)a6;
-- (void)_performSynchronouslyOnMainQueue:(id)a3;
+- (void)_handleApplicationStateChangeForMonitor:(id)monitor handle:(id)handle update:(id)update interestedPid:(int)pid;
+- (void)_performSynchronouslyOnMainQueue:(id)queue;
 - (void)_resignActive;
-- (void)_setupProcessMonitorWithIdentifier:(id)a3 interestedPid:(int)a4;
+- (void)_setupProcessMonitorWithIdentifier:(id)identifier interestedPid:(int)pid;
 - (void)dealloc;
-- (void)setForceRunningBoardServicesMonitoring:(BOOL)a3;
+- (void)setForceRunningBoardServicesMonitoring:(BOOL)monitoring;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -48,30 +48,30 @@
     {
 LABEL_17:
       v17 = getpid();
-      v16 = [MEMORY[0x1E69C75E0] identifierWithPid:v17];
+      defaultCenter4 = [MEMORY[0x1E69C75E0] identifierWithPid:v17];
       v32 = 0;
-      v18 = [MEMORY[0x1E69C75D0] handleForIdentifier:v16 error:&v32];
+      v18 = [MEMORY[0x1E69C75D0] handleForIdentifier:defaultCenter4 error:&v32];
       v19 = v32;
-      v20 = [v18 currentState];
-      v21 = [v20 taskState];
+      currentState = [v18 currentState];
+      taskState = [currentState taskState];
 
-      [(MKApplicationStateMonitor *)self _setupProcessMonitorWithIdentifier:v16 interestedPid:v17];
+      [(MKApplicationStateMonitor *)self _setupProcessMonitorWithIdentifier:defaultCenter4 interestedPid:v17];
       v22 = MKGetApplicationStateMonitorLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [v18 bundle];
-        v24 = [v23 identifier];
+        bundle = [v18 bundle];
+        identifier = [bundle identifier];
         *buf = 67240450;
         *v34 = v17;
         *&v34[4] = 2114;
-        *&v34[6] = v24;
+        *&v34[6] = identifier;
         _os_log_impl(&dword_1A2EA0000, v22, OS_LOG_TYPE_INFO, "Will start monitoring using RunningBoardServices (pid:%{public}d -> %{public}@)", buf, 0x12u);
       }
 
-      v25 = [(MKApplicationStateMonitor *)self _applicationStateIsForegroundForTaskState:v21];
+      v25 = [(MKApplicationStateMonitor *)self _applicationStateIsForegroundForTaskState:taskState];
       self->_inBackground = !v25;
       self->_active = v25;
-      v26 = [(MKApplicationStateMonitor *)self _stringForTaskState:v21];
+      v26 = [(MKApplicationStateMonitor *)self _stringForTaskState:taskState];
       v27 = MKGetApplicationStateMonitorLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
@@ -109,11 +109,11 @@ LABEL_17:
 
     else
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      self->_inBackground = [v6 applicationState] == 2;
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      self->_inBackground = [mEMORY[0x1E69DC668] applicationState] == 2;
 
-      v7 = [MEMORY[0x1E69DC668] sharedApplication];
-      self->_active = [v7 applicationState] == 0;
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      self->_active = [mEMORY[0x1E69DC668]2 applicationState] == 0;
 
       v8 = MKGetApplicationStateMonitorLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -147,17 +147,17 @@ LABEL_17:
         _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "Will start monitoring using UIApplicationState with initial state (inBackground:%@, active:%@)", buf, 0x16u);
       }
 
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 addObserver:self selector:sel__enterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__enterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:self selector:sel__exitBackground name:*MEMORY[0x1E69DDBC0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__exitBackground name:*MEMORY[0x1E69DDBC0] object:0];
 
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 addObserver:self selector:sel__becomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel__becomeActive name:*MEMORY[0x1E69DDAB0] object:0];
 
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 addObserver:self selector:sel__resignActive name:*MEMORY[0x1E69DDBC8] object:0];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter4 addObserver:self selector:sel__resignActive name:*MEMORY[0x1E69DDBC8] object:0];
     }
   }
 }
@@ -197,39 +197,39 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
 - (void)_exitBackground
 {
   inBackground = self->_inBackground;
-  v4 = MKGetApplicationStateMonitorLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  defaultCenter = MKGetApplicationStateMonitorLog();
+  v5 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO);
   if (inBackground)
   {
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Will exit background", v6, 2u);
+      _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Will exit background", v6, 2u);
     }
 
     self->_inBackground = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"MKApplicationStateWillEnterForegroundNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MKApplicationStateWillEnterForegroundNotification" object:self];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Asked to exit background, but not currently background", buf, 2u);
+    _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Asked to exit background, but not currently background", buf, 2u);
   }
 }
 
 - (void)_becomeActive
 {
   active = self->_active;
-  v4 = MKGetApplicationStateMonitorLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  defaultCenter = MKGetApplicationStateMonitorLog();
+  v5 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO);
   if (active)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Asked to become active, but currently active", buf, 2u);
+      _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Asked to become active, but currently active", buf, 2u);
     }
   }
 
@@ -238,12 +238,12 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Will become active", v6, 2u);
+      _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Will become active", v6, 2u);
     }
 
     self->_active = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"MKApplicationStateDidBecomeActiveNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MKApplicationStateDidBecomeActiveNotification" object:self];
   }
 }
 
@@ -260,8 +260,8 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
       _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Will resign active", v7, 2u);
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"MKApplicationStateWillResignActiveNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MKApplicationStateWillResignActiveNotification" object:self];
 
     self->_active = 0;
   }
@@ -279,14 +279,14 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
 - (void)_enterBackground
 {
   inBackground = self->_inBackground;
-  v4 = MKGetApplicationStateMonitorLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  defaultCenter = MKGetApplicationStateMonitorLog();
+  v5 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO);
   if (inBackground)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Asked to enter background, but currently background", buf, 2u);
+      _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Asked to enter background, but currently background", buf, 2u);
     }
   }
 
@@ -295,25 +295,25 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "Will enter background", v6, 2u);
+      _os_log_impl(&dword_1A2EA0000, defaultCenter, OS_LOG_TYPE_INFO, "Will enter background", v6, 2u);
     }
 
     self->_inBackground = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"MKApplicationStateDidEnterBackgroundNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MKApplicationStateDidEnterBackgroundNotification" object:self];
   }
 }
 
-- (id)_stringForTaskState:(unsigned __int8)a3
+- (id)_stringForTaskState:(unsigned __int8)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       v5 = @"background (task suspended)";
     }
 
-    else if (a3 == 4)
+    else if (state == 4)
     {
       if (self->_isVisible)
       {
@@ -337,12 +337,12 @@ void __43__MKApplicationStateMonitor_sharedInstance__block_invoke()
   else
   {
     v4 = @"terminated";
-    if (a3 != 1)
+    if (state != 1)
     {
       v4 = 0;
     }
 
-    if (a3)
+    if (state)
     {
       v5 = v4;
     }
@@ -412,14 +412,14 @@ LABEL_12:
           _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_INFO, "Will stop monitoring UIApplicationState", &v12, 2u);
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v9 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v10 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+        defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 
         processMonitor = [MEMORY[0x1E696AD88] defaultCenter];
         [processMonitor removeObserver:self name:*MEMORY[0x1E69DDBC8] object:0];
@@ -428,12 +428,12 @@ LABEL_12:
   }
 }
 
-- (void)_performSynchronouslyOnMainQueue:(id)a3
+- (void)_performSynchronouslyOnMainQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v3[2](v3);
+    queueCopy[2](queueCopy);
   }
 
   else
@@ -442,29 +442,29 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __62__MKApplicationStateMonitor__performSynchronouslyOnMainQueue___block_invoke;
     block[3] = &unk_1E76CD4D0;
-    v5 = v3;
+    v5 = queueCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_handleApplicationStateChangeForMonitor:(id)a3 handle:(id)a4 update:(id)a5 interestedPid:(int)a6
+- (void)_handleApplicationStateChangeForMonitor:(id)monitor handle:(id)handle update:(id)update interestedPid:(int)pid
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = [a4 pid];
-  if (v10 == a6)
+  updateCopy = update;
+  v10 = [handle pid];
+  if (v10 == pid)
   {
-    v11 = [v9 state];
-    v12 = [v11 taskState];
+    state = [updateCopy state];
+    taskState = [state taskState];
 
-    v13 = [(MKApplicationStateMonitor *)self isInBackground];
-    v14 = !v13;
-    v15 = [(MKApplicationStateMonitor *)self _applicationStateIsForegroundForTaskState:v12];
-    v16 = [(MKApplicationStateMonitor *)self _stringForTaskState:v12];
+    isInBackground = [(MKApplicationStateMonitor *)self isInBackground];
+    v14 = !isInBackground;
+    v15 = [(MKApplicationStateMonitor *)self _applicationStateIsForegroundForTaskState:taskState];
+    v16 = [(MKApplicationStateMonitor *)self _stringForTaskState:taskState];
     v17 = MKGetApplicationStateMonitorLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      if (v13)
+      if (isInBackground)
       {
         v18 = @"NO";
       }
@@ -514,7 +514,7 @@ LABEL_12:
       *buf = 67109376;
       *v27 = v22;
       *&v27[4] = 1024;
-      *&v27[6] = a6;
+      *&v27[6] = pid;
       _os_log_impl(&dword_1A2EA0000, v16, OS_LOG_TYPE_DEBUG, "Received update for process we don't care about, ignoring (pid:%d, interested in %d)", buf, 0xEu);
     }
   }
@@ -545,20 +545,20 @@ uint64_t __97__MKApplicationStateMonitor__handleApplicationStateChangeForMonitor
   return result;
 }
 
-- (void)_setupProcessMonitorWithIdentifier:(id)a3 interestedPid:(int)a4
+- (void)_setupProcessMonitorWithIdentifier:(id)identifier interestedPid:(int)pid
 {
-  v6 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69C75F8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__MKApplicationStateMonitor__setupProcessMonitorWithIdentifier_interestedPid___block_invoke;
   v11[3] = &unk_1E76CC7E0;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
   objc_copyWeak(&v14, &location);
-  v13 = self;
-  v15 = a4;
+  selfCopy = self;
+  pidCopy = pid;
   v9 = [v7 monitorWithConfiguration:v11];
   processMonitor = self->_processMonitor;
   self->_processMonitor = v9;
@@ -649,28 +649,28 @@ void __78__MKApplicationStateMonitor__setupProcessMonitorWithIdentifier_interest
   }
 }
 
-- (BOOL)_applicationStateIsForegroundForTaskState:(unsigned __int8)a3
+- (BOOL)_applicationStateIsForegroundForTaskState:(unsigned __int8)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     return 0;
   }
 
   else
   {
-    return a3 != 4 || self->_isVisible;
+    return state != 4 || self->_isVisible;
   }
 }
 
-- (void)setForceRunningBoardServicesMonitoring:(BOOL)a3
+- (void)setForceRunningBoardServicesMonitoring:(BOOL)monitoring
 {
-  v3 = a3;
+  monitoringCopy = monitoring;
   v10 = *MEMORY[0x1E69E9840];
   v5 = MKGetApplicationStateMonitorLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = @"NO";
-    if (v3)
+    if (monitoringCopy)
     {
       v6 = @"YES";
     }
@@ -681,7 +681,7 @@ void __78__MKApplicationStateMonitor__setupProcessMonitorWithIdentifier_interest
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "setForceRunningBoardServicesMonitoring:%@", &v8, 0xCu);
   }
 
-  self->_forceRunningBoardServicesMonitoring = v3;
+  self->_forceRunningBoardServicesMonitoring = monitoringCopy;
 }
 
 - (void)dealloc

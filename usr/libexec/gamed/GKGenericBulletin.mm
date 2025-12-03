@@ -1,14 +1,14 @@
 @interface GKGenericBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (void)assembleBulletinFromPushNotification:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (void)assembleBulletinFromPushNotification:(id)notification;
 @end
 
 @implementation GKGenericBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -25,19 +25,19 @@
   [v10 reportEvent:GKReporterDomainPushCount type:GKReporterPushCountTurnBased];
 
   v11 = [[NSMutableArray alloc] initWithCapacity:1];
-  v12 = [[a1 alloc] initWithPushNotification:v6];
-  v13 = [v6 objectForKeyedSubscript:@"i"];
+  v12 = [[self alloc] initWithPushNotification:notificationCopy];
+  v13 = [notificationCopy objectForKeyedSubscript:@"i"];
   v14 = +[GKClientProxy gameCenterClient];
   if (v13)
   {
     +[GKPlayerCredentialController sharedController];
-    v15 = v20 = v6;
+    v15 = v20 = notificationCopy;
     v16 = [v15 pushCredentialForEnvironment:{objc_msgSend(v14, "environment")}];
-    v17 = [v16 playerInternal];
-    v18 = [v17 playerID];
-    v19 = [v18 isEqualToString:v13];
+    playerInternal = [v16 playerInternal];
+    playerID = [playerInternal playerID];
+    v19 = [playerID isEqualToString:v13];
 
-    v6 = v20;
+    notificationCopy = v20;
     if (v19)
     {
       [v12 assembleBulletinFromPushNotification:v20];
@@ -45,15 +45,15 @@
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)assembleBulletinFromPushNotification:(id)a3
+- (void)assembleBulletinFromPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -66,13 +66,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKGenericBulletin assembleBulletinFromPushNotification:", buf, 2u);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"b"];
-  v8 = [v4 objectForKeyedSubscript:@"u"];
-  v17 = [v4 objectForKeyedSubscript:@"t"];
-  v9 = [v4 objectForKeyedSubscript:@"m"];
-  v10 = [v4 objectForKeyedSubscript:@"n"];
-  v11 = [v4 objectForKeyedSubscript:@"y"];
-  v12 = [v4 objectForKeyedSubscript:@"o"];
+  v7 = [notificationCopy objectForKeyedSubscript:@"b"];
+  v8 = [notificationCopy objectForKeyedSubscript:@"u"];
+  v17 = [notificationCopy objectForKeyedSubscript:@"t"];
+  v9 = [notificationCopy objectForKeyedSubscript:@"m"];
+  v10 = [notificationCopy objectForKeyedSubscript:@"n"];
+  v11 = [notificationCopy objectForKeyedSubscript:@"y"];
+  v12 = [notificationCopy objectForKeyedSubscript:@"o"];
   v13 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v13 setType:1];
   [(GKBulletinAction *)v13 setTitle:v11];

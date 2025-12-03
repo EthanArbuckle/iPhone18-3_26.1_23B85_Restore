@@ -1,22 +1,22 @@
 @interface SUIAButtonEmanatingSiriShockwaveStyle
-- (SUIAButtonEmanatingSiriShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)a3 shockwaveViewBounds:(CGRect)a4;
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3;
-- (id)edgeLightOverlayConfigurationForState:(int64_t)a3;
-- (id)fillLightConfigurationForState:(int64_t)a3;
-- (id)meshConfigurationForState:(int64_t)a3;
+- (SUIAButtonEmanatingSiriShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)location shockwaveViewBounds:(CGRect)bounds;
+- (id)chromaticAberrationConfigurationForState:(int64_t)state;
+- (id)edgeLightOverlayConfigurationForState:(int64_t)state;
+- (id)fillLightConfigurationForState:(int64_t)state;
+- (id)meshConfigurationForState:(int64_t)state;
 @end
 
 @implementation SUIAButtonEmanatingSiriShockwaveStyle
 
-- (SUIAButtonEmanatingSiriShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)a3 shockwaveViewBounds:(CGRect)a4
+- (SUIAButtonEmanatingSiriShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)location shockwaveViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
   v9.receiver = self;
   v9.super_class = SUIAButtonEmanatingSiriShockwaveStyle;
-  result = [(SUIAAbstractShockwaveStyle *)&v9 initWithShockwaveViewBounds:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  result = [(SUIAAbstractShockwaveStyle *)&v9 initWithShockwaveViewBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
     result->_normalizedButtonLocation.origin.x = x;
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3
+- (id)chromaticAberrationConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 siriButtonChromaticAberrationEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings siriButtonChromaticAberrationEnabled])
   {
     v6 = +[_SUIAShockwaveChromaticAberrationConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:a3 variant:1 buttonEmanating:1 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:state variant:1 buttonEmanating:1 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 
@@ -51,12 +51,12 @@
   return v7;
 }
 
-- (id)meshConfigurationForState:(int64_t)a3
+- (id)meshConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 shouldBehaveLikeLargeScreenIdiom:{-[SUIAAbstractShockwaveStyle userInterfaceIdiom](self, "userInterfaceIdiom")}])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings shouldBehaveLikeLargeScreenIdiom:{-[SUIAAbstractShockwaveStyle userInterfaceIdiom](self, "userInterfaceIdiom")}])
   {
-    if (([v5 siriButtonMeshEnabledLargeScreen] & 1) == 0)
+    if (([_shockwaveSettings siriButtonMeshEnabledLargeScreen] & 1) == 0)
     {
 LABEL_3:
       v6 = 0;
@@ -64,18 +64,18 @@ LABEL_3:
     }
   }
 
-  else if (![v5 siriButtonMeshEnabled])
+  else if (![_shockwaveSettings siriButtonMeshEnabled])
   {
     goto LABEL_3;
   }
 
   v7 = +[_SUIAShockwaveMeshConfiguration configurationType];
-  v6 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:a3];
+  v6 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:state];
   if (!v6)
   {
     [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-    v6 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:a3 variant:1 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v6 forType:v7 state:a3];
+    v6 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:state variant:1 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v6 forType:v7 state:state];
   }
 
 LABEL_7:
@@ -83,18 +83,18 @@ LABEL_7:
   return v6;
 }
 
-- (id)fillLightConfigurationForState:(int64_t)a3
+- (id)fillLightConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 siriButtonFillLightEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings siriButtonFillLightEnabled])
   {
     v6 = +[_SUIAShockwaveFillLightConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:a3 variant:1 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:state variant:1 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 
@@ -106,18 +106,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)edgeLightOverlayConfigurationForState:(int64_t)a3
+- (id)edgeLightOverlayConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 siriButtonEdgeLightEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings siriButtonEdgeLightEnabled])
   {
     v6 = +[_SUIAShockwaveEdgeLightOverlayConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveEdgeLightOverlayConfiguration edgeLightOverlayConfigurationForState:a3 variant:1 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:self->_normalizedButtonLocation.origin.x idiom:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveEdgeLightOverlayConfiguration edgeLightOverlayConfigurationForState:state variant:1 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:self->_normalizedButtonLocation.origin.x idiom:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 

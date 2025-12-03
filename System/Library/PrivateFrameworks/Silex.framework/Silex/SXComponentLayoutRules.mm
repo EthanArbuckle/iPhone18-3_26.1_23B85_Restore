@@ -4,7 +4,7 @@
 + (id)fullWidthLayoutRules;
 + (id)twoColumnLayoutRules;
 - (SXComponentLayoutRules)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SXComponentLayoutRules
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setMinimumColumnSpan:{-[SXComponentLayoutRules minimumColumnSpan](self, "minimumColumnSpan")}];
   [v4 setAllowsIntersection:{-[SXComponentLayoutRules allowsIntersection](self, "allowsIntersection")}];
   [v4 setShouldSpanAllColumns:{-[SXComponentLayoutRules shouldSpanAllColumns](self, "shouldSpanAllColumns")}];

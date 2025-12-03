@@ -1,29 +1,29 @@
 @interface PLModelMigrationAction_moveLocalVersionTokenFromPlistToGlobalValues
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_moveLocalVersionTokenFromPlistToGlobalValues
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [v6 persistentStores];
-  v8 = [v7 firstObject];
-  v9 = [v8 metadata];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
+  metadata = [firstObject metadata];
+  v10 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
 
   v11 = MEMORY[0x1E69BF1C0];
   v12 = *MEMORY[0x1E69BF418];
-  v13 = [(PLModelMigrationActionCore *)self pathManager];
-  v14 = [v11 readCPLPlistObjectWithKey:v12 pathManager:v13];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v14 = [v11 readCPLPlistObjectWithKey:v12 pathManager:pathManager];
 
   if ([v10 isEqualToString:v14])
   {
     v15 = MEMORY[0x1E69BF1C0];
-    v16 = [(PLModelMigrationActionCore *)self pathManager];
-    v17 = [v15 readCPLPlistObjectWithKey:@"localVersionToken" pathManager:v16];
+    pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+    v17 = [v15 readCPLPlistObjectWithKey:@"localVersionToken" pathManager:pathManager2];
 
     if (v17)
     {
@@ -35,9 +35,9 @@
 
       if (v20)
       {
-        v21 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v21)
+        if (logger)
         {
           v97 = 0u;
           v98 = 0u;
@@ -98,21 +98,21 @@
         }
       }
 
-      v32 = [[PLGlobalValues alloc] initWithManagedObjectContext:v5];
+      v32 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
       [(PLGlobalValues *)v32 setCloudTrackerLastKnownToken:v18];
       [(PLGlobalValues *)v32 setLibraryScopeRulesTrackerLastKnownToken:v18];
       v33 = MEMORY[0x1E69BF1C0];
-      v34 = [(PLModelMigrationActionCore *)self pathManager];
-      v35 = [v33 readCPLPlistObjectWithKey:@"cloudVersion" pathManager:v34];
+      pathManager3 = [(PLModelMigrationActionCore *)self pathManager];
+      v35 = [v33 readCPLPlistObjectWithKey:@"cloudVersion" pathManager:pathManager3];
 
       v36 = PLMigrationGetLog();
       v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
 
       if (v37)
       {
-        v38 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v38)
+        if (logger2)
         {
           v97 = 0u;
           v98 = 0u;
@@ -189,9 +189,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v27 = [(PLModelMigrationActionCore *)self logger];
+  logger3 = [(PLModelMigrationActionCore *)self logger];
 
-  if (!v27)
+  if (!logger3)
   {
     v17 = PLMigrationGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -260,9 +260,9 @@ LABEL_25:
 
   if (v44)
   {
-    v45 = [(PLModelMigrationActionCore *)self logger];
+    logger4 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v45)
+    if (logger4)
     {
       v97 = 0u;
       v98 = 0u;
@@ -322,17 +322,17 @@ LABEL_25:
   }
 
   v50 = MEMORY[0x1E69BF1C0];
-  v51 = [(PLModelMigrationActionCore *)self pathManager];
-  [v50 saveCPLPlistObject:0 forKey:@"localVersionToken" pathManager:v51];
+  pathManager4 = [(PLModelMigrationActionCore *)self pathManager];
+  [v50 saveCPLPlistObject:0 forKey:@"localVersionToken" pathManager:pathManager4];
 
   v52 = PLMigrationGetLog();
-  LODWORD(v51) = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
+  LODWORD(pathManager4) = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
 
-  if (v51)
+  if (pathManager4)
   {
-    v53 = [(PLModelMigrationActionCore *)self logger];
+    logger5 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v53)
+    if (logger5)
     {
       v97 = 0u;
       v98 = 0u;
@@ -392,8 +392,8 @@ LABEL_25:
   }
 
   v58 = MEMORY[0x1E69BF1C0];
-  v59 = [(PLModelMigrationActionCore *)self pathManager];
-  [v58 saveCPLPlistObject:0 forKey:@"cloudVersion" pathManager:v59];
+  pathManager5 = [(PLModelMigrationActionCore *)self pathManager];
+  [v58 saveCPLPlistObject:0 forKey:@"cloudVersion" pathManager:pathManager5];
 
   return 1;
 }

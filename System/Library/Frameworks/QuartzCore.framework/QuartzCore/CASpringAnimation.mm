@@ -1,6 +1,6 @@
 @interface CASpringAnimation
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (BOOL)allowsOverdamping;
 - (CASpringAnimation)initWithPerceptualDuration:(CFTimeInterval)perceptualDuration bounce:(CGFloat)bounce;
 - (CFTimeInterval)perceptualDuration;
@@ -8,16 +8,16 @@
 - (CGFloat)damping;
 - (CGFloat)mass;
 - (CGFloat)stiffness;
-- (double)_timeFunction:(double)a3;
-- (double)durationForEpsilon:(double)a3;
+- (double)_timeFunction:(double)function;
+- (double)durationForEpsilon:(double)epsilon;
 - (double)velocity;
-- (unsigned)_propertyFlagsForLayer:(id)a3;
-- (void)_copyRenderAnimationForLayer:(id)a3;
+- (unsigned)_propertyFlagsForLayer:(id)layer;
+- (void)_copyRenderAnimationForLayer:(id)layer;
 - (void)setAllowsOverdamping:(BOOL)allowsOverdamping;
 - (void)setDamping:(CGFloat)damping;
 - (void)setMass:(CGFloat)mass;
 - (void)setStiffness:(CGFloat)stiffness;
-- (void)setVelocity:(double)a3;
+- (void)setVelocity:(double)velocity;
 @end
 
 @implementation CASpringAnimation
@@ -62,10 +62,10 @@
   return v3 != 0;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 <= 506)
   {
     if (v5 == 24)
@@ -103,9 +103,9 @@ LABEL_14:
       }
 
 LABEL_18:
-      v11.receiver = a1;
+      v11.receiver = self;
       v11.super_class = &OBJC_METACLASS___CASpringAnimation;
-      return objc_msgSendSuper2(&v11, sel_defaultValueForKey_, a3);
+      return objc_msgSendSuper2(&v11, sel_defaultValueForKey_, key);
     }
 
     v8 = MEMORY[0x1E696AD98];
@@ -267,7 +267,7 @@ LABEL_18:
   CAAnimation_setter(self, 0x1FB, 18, v6);
 }
 
-- (double)_timeFunction:(double)a3
+- (double)_timeFunction:(double)function
 {
   v15 = *MEMORY[0x1E69E9840];
   [(CASpringAnimation *)self mass:0];
@@ -279,17 +279,17 @@ LABEL_18:
   [(CASpringAnimation *)self velocity];
   CA::Render::SpringAnimation::State::update(&v14, v6, v8, v10, v11, [(CASpringAnimation *)self allowsOverdamping]);
   [(CAAnimation *)self duration];
-  return CA::Render::SpringAnimation::State::eval(&v14, v12 * a3);
+  return CA::Render::SpringAnimation::State::eval(&v14, v12 * function);
 }
 
-- (unsigned)_propertyFlagsForLayer:(id)a3
+- (unsigned)_propertyFlagsForLayer:(id)layer
 {
-  v4 = [(CAPropertyAnimation *)self keyPath];
+  keyPath = [(CAPropertyAnimation *)self keyPath];
 
-  return animation_property_flags(v4, a3);
+  return animation_property_flags(keyPath, layer);
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   if (x_malloc_get_zone::once != -1)
   {
@@ -317,7 +317,7 @@ LABEL_18:
     *v5 = &unk_1EF202C70;
     *(v5 + 152) = xmmword_183E21540;
     *(v5 + 168) = xmmword_183E21550;
-    if (![(CASpringAnimation *)self _setCARenderAnimation:v5 layer:a3])
+    if (![(CASpringAnimation *)self _setCARenderAnimation:v5 layer:layer])
     {
       if (atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
       {
@@ -330,35 +330,35 @@ LABEL_18:
 
   else
   {
-    [(CASpringAnimation *)self _setCARenderAnimation:0 layer:a3];
+    [(CASpringAnimation *)self _setCARenderAnimation:0 layer:layer];
   }
 
   return v6;
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = CASpringAnimation;
-  v6 = [(CABasicAnimation *)&v12 _setCARenderAnimation:a3 layer:a4];
+  v6 = [(CABasicAnimation *)&v12 _setCARenderAnimation:animation layer:layer];
   if (v6)
   {
     [(CASpringAnimation *)self mass];
-    *(a3 + 19) = v7;
+    *(animation + 19) = v7;
     [(CASpringAnimation *)self stiffness];
-    *(a3 + 20) = v8;
+    *(animation + 20) = v8;
     [(CASpringAnimation *)self damping];
-    *(a3 + 21) = v9;
+    *(animation + 21) = v9;
     [(CASpringAnimation *)self velocity];
-    *(a3 + 22) = v10;
-    *(a3 + 184) = [(CASpringAnimation *)self allowsOverdamping];
+    *(animation + 22) = v10;
+    *(animation + 184) = [(CASpringAnimation *)self allowsOverdamping];
   }
 
   return v6;
 }
 
-- (double)durationForEpsilon:(double)a3
+- (double)durationForEpsilon:(double)epsilon
 {
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -380,7 +380,7 @@ LABEL_18:
 
   else
   {
-    v14 = fmax(a3, 0.000001);
+    v14 = fmax(epsilon, 0.000001);
     if (*(&v22 + 1) >= 1.0)
     {
       v13 = -1.0;
@@ -437,10 +437,10 @@ LABEL_16:
   }
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = velocity;
   CAAnimation_setter(self, 0x2E2, 18, v3);
 }
 

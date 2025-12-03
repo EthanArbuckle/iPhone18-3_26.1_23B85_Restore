@@ -1,21 +1,21 @@
 @interface _IOGPUMetalMTLEvent
 - (NSString)label;
-- (_IOGPUMetalMTLEvent)initWithDevice:(id)a3 options:(unint64_t)a4;
+- (_IOGPUMetalMTLEvent)initWithDevice:(id)device options:(unint64_t)options;
 - (id)retainedLabel;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation _IOGPUMetalMTLEvent
 
-- (_IOGPUMetalMTLEvent)initWithDevice:(id)a3 options:(unint64_t)a4
+- (_IOGPUMetalMTLEvent)initWithDevice:(id)device options:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = _IOGPUMetalMTLEvent;
-  v5 = -[IOGPUMTLEvent initWithDeviceRef:options:](&v7, sel_initWithDeviceRef_options_, [a3 deviceRef], a4);
+  v5 = -[IOGPUMTLEvent initWithDeviceRef:options:](&v7, sel_initWithDeviceRef_options_, [device deviceRef], options);
   if (v5)
   {
-    v5->_device = a3;
+    v5->_device = device;
     v5->_labelLock._os_unfair_lock_opaque = 0;
   }
 
@@ -39,22 +39,22 @@
 
 - (NSString)label
 {
-  v2 = [(_IOGPUMetalMTLEvent *)self retainedLabel];
+  retainedLabel = [(_IOGPUMetalMTLEvent *)self retainedLabel];
 
-  return v2;
+  return retainedLabel;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if (*__globalGPUCommPage)
   {
     globalTraceObjectID = self->super._globalTraceObjectID;
     labelTraceID = self->_labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->_labelTraceID = IOGPUDeviceTraceObjectLabel(0, 8, 0, globalTraceObjectID, labelTraceID);
   }
 
-  v7 = [a3 copy];
+  v7 = [label copy];
   os_unfair_lock_lock(&self->_labelLock);
   label = self->_label;
   self->_label = v7;

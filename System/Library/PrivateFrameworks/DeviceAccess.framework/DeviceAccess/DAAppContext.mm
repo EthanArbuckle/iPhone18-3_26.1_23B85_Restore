@@ -1,24 +1,24 @@
 @interface DAAppContext
-- (DAAppContext)initWithCoder:(id)a3;
-- (DAAppContext)initWithXPCObject:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DAAppContext)initWithCoder:(id)coder;
+- (DAAppContext)initWithXPCObject:(id)object error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DAAppContext
 
-- (DAAppContext)initWithCoder:(id)a3
+- (DAAppContext)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = DAAppContext;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(DAAppContext *)&v10 init];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = coderCopy;
     }
 
     else
@@ -35,22 +35,22 @@
 
   else
   {
-    [(DAAppContext *)v3 initWithCoder:?];
-    v3 = v11;
+    [(DAAppContext *)coderCopy initWithCoder:?];
+    coderCopy = v11;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (self->_xpcEndpoint)
   {
     v5 = (isKindOfClass & 1) == 0;
-    v6 = v7;
+    v6 = coderCopy;
     if (v5)
     {
       v6 = 0;
@@ -60,20 +60,20 @@
   }
 }
 
-- (DAAppContext)initWithXPCObject:(id)a3 error:(id *)a4
+- (DAAppContext)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v32.receiver = self;
   v32.super_class = DAAppContext;
   v7 = [(DAAppContext *)&v32 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v31 = objc_opt_class();
       DAErrorF(350001, "%@ init failed", v24, v25, v26, v27, v28, v29, v31);
 LABEL_13:
-      *a4 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_8;
     }
 
@@ -82,9 +82,9 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (MEMORY[0x24C1DC9E0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x24C1DC9E0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
       DAErrorF(350004, "XPC non-dict", v8, v9, v10, v11, v12, v13, v30);
       goto LABEL_13;
@@ -93,16 +93,16 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v14 = xpc_dictionary_get_value(v6, "xpcE");
+  v14 = xpc_dictionary_get_value(objectCopy, "xpcE");
   v15 = v14;
   if (v14)
   {
     if (MEMORY[0x24C1DC9E0](v14) != MEMORY[0x277D86478])
     {
-      if (a4)
+      if (error)
       {
         DAErrorF(350001, "XPC non-endpoint", v16, v17, v18, v19, v20, v21, v30);
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -123,12 +123,12 @@ LABEL_8:
   return v22;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   xpcEndpoint = self->_xpcEndpoint;
   if (xpcEndpoint)
   {
-    xpc_dictionary_set_value(a3, "xpcE", xpcEndpoint);
+    xpc_dictionary_set_value(object, "xpcE", xpcEndpoint);
   }
 }
 

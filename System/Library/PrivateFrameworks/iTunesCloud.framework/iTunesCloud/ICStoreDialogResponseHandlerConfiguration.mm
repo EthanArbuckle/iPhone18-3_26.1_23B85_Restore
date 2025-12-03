@@ -1,10 +1,10 @@
 @interface ICStoreDialogResponseHandlerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICStoreDialogResponseHandlerConfiguration)init;
-- (ICStoreDialogResponseHandlerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICStoreDialogResponseHandlerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICStoreDialogResponseHandlerConfiguration
@@ -22,30 +22,30 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allowsHandlingNonAuthenticationDialogs = self->_allowsHandlingNonAuthenticationDialogs;
-  v5 = a3;
-  [v5 encodeBool:allowsHandlingNonAuthenticationDialogs forKey:@"allowsHandlingNonAuthenticationDialogs"];
-  [v5 encodeBool:self->_shouldRecordLastAuthenticationDialogResponseTime forKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
+  coderCopy = coder;
+  [coderCopy encodeBool:allowsHandlingNonAuthenticationDialogs forKey:@"allowsHandlingNonAuthenticationDialogs"];
+  [coderCopy encodeBool:self->_shouldRecordLastAuthenticationDialogResponseTime forKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
 }
 
-- (ICStoreDialogResponseHandlerConfiguration)initWithCoder:(id)a3
+- (ICStoreDialogResponseHandlerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ICStoreDialogResponseHandlerConfiguration;
   v5 = [(ICStoreDialogResponseHandlerConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_allowsHandlingNonAuthenticationDialogs = [v4 decodeBoolForKey:@"allowsHandlingNonAuthenticationDialogs"];
-    v5->_shouldRecordLastAuthenticationDialogResponseTime = [v4 decodeBoolForKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
+    v5->_allowsHandlingNonAuthenticationDialogs = [coderCopy decodeBoolForKey:@"allowsHandlingNonAuthenticationDialogs"];
+    v5->_shouldRecordLastAuthenticationDialogResponseTime = [coderCopy decodeBoolForKey:@"shouldRecordLastAuthenticationDialogResponseTime"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -57,10 +57,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4 || [(ICStoreDialogResponseHandlerConfiguration *)v4 isMemberOfClass:objc_opt_class()]&& self->_allowsHandlingNonAuthenticationDialogs == v4->_allowsHandlingNonAuthenticationDialogs && self->_shouldRecordLastAuthenticationDialogResponseTime == v4->_shouldRecordLastAuthenticationDialogResponseTime;
+  equalCopy = equal;
+  v5 = self == equalCopy || [(ICStoreDialogResponseHandlerConfiguration *)equalCopy isMemberOfClass:objc_opt_class()]&& self->_allowsHandlingNonAuthenticationDialogs == equalCopy->_allowsHandlingNonAuthenticationDialogs && self->_shouldRecordLastAuthenticationDialogResponseTime == equalCopy->_shouldRecordLastAuthenticationDialogResponseTime;
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface VLFScanningStateCameraPitchMonitor
-- (VLFScanningStateCameraPitchMonitor)initWithDelegate:(id)a3 session:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
+- (VLFScanningStateCameraPitchMonitor)initWithDelegate:(id)delegate session:(id)session;
+- (void)session:(id)session didUpdateFrame:(id)frame;
 @end
 
 @implementation VLFScanningStateCameraPitchMonitor
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = [a4 camera];
-  [v5 eulerAngles];
+  camera = [frame camera];
+  [camera eulerAngles];
   v8 = v6;
 
   v7 = sub_1008EA780();
@@ -28,11 +28,11 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (VLFScanningStateCameraPitchMonitor)initWithDelegate:(id)a3 session:(id)a4
+- (VLFScanningStateCameraPitchMonitor)initWithDelegate:(id)delegate session:(id)session
 {
   v9.receiver = self;
   v9.super_class = VLFScanningStateCameraPitchMonitor;
-  v4 = [(VLFScanningStateMonitor *)&v9 initWithDelegate:a3 session:a4];
+  v4 = [(VLFScanningStateMonitor *)&v9 initWithDelegate:delegate session:session];
   if (v4)
   {
     GEOConfigGetDouble();

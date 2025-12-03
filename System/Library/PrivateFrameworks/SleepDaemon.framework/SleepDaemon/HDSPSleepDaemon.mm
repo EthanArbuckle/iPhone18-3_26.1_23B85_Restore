@@ -1,6 +1,6 @@
 @interface HDSPSleepDaemon
 - (HDSPSleepDaemon)init;
-- (HDSPSleepDaemon)initWithBehavior:(id)a3;
+- (HDSPSleepDaemon)initWithBehavior:(id)behavior;
 - (id)diagnosticInfo;
 - (void)_handleSigterm;
 - (void)_setupSigtermHandler;
@@ -11,16 +11,16 @@
 
 - (HDSPSleepDaemon)init
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [(HDSPSleepDaemon *)self initWithBehavior:v3];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  v4 = [(HDSPSleepDaemon *)self initWithBehavior:mEMORY[0x277CCDD30]];
 
   return v4;
 }
 
-- (HDSPSleepDaemon)initWithBehavior:(id)a3
+- (HDSPSleepDaemon)initWithBehavior:(id)behavior
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  behaviorCopy = behavior;
   v20.receiver = self;
   v20.super_class = HDSPSleepDaemon;
   v5 = [(HDSPSleepDaemon *)&v20 init];
@@ -38,20 +38,20 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     launchDate = v5->_launchDate;
-    v5->_launchDate = v9;
+    v5->_launchDate = date;
 
-    if ([v4 hksp_supportsSleep])
+    if ([behaviorCopy hksp_supportsSleep])
     {
-      if (![v4 hksp_demoMode])
+      if (![behaviorCopy hksp_demoMode])
       {
         v15 = +[HDSPEnvironment standardEnvironment];
         environment = v5->_environment;
         v5->_environment = v15;
 
-        v14 = [(HDSPEnvironment *)v5->_environment diagnostics];
-        [v14 addProvider:v5];
+        diagnostics = [(HDSPEnvironment *)v5->_environment diagnostics];
+        [diagnostics addProvider:v5];
         goto LABEL_14;
       }
 
@@ -77,7 +77,7 @@
       v12 = +[HDSPEnvironment disabledEnvironment];
     }
 
-    v14 = v5->_environment;
+    diagnostics = v5->_environment;
     v5->_environment = v12;
 LABEL_14:
 

@@ -1,13 +1,13 @@
 @interface CLBBacklightController
 + (id)sharedInstance;
 - (CLBBacklightController)init;
-- (void)_addSuppressionAssertion:(id)a3;
-- (void)_reevaluateBacklightForReason:(int64_t)a3;
-- (void)_removeSuppressionAssertion:(id)a3;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5;
+- (void)_addSuppressionAssertion:(id)assertion;
+- (void)_reevaluateBacklightForReason:(int64_t)reason;
+- (void)_removeSuppressionAssertion:(id)assertion;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event;
 - (void)dealloc;
-- (void)setPreferredFactor:(unint64_t)a3 forReason:(int64_t)a4;
+- (void)setPreferredFactor:(unint64_t)factor forReason:(int64_t)reason;
 @end
 
 @implementation CLBBacklightController
@@ -54,21 +54,21 @@
   [(CLBBacklightController *)&v3 dealloc];
 }
 
-- (void)setPreferredFactor:(unint64_t)a3 forReason:(int64_t)a4
+- (void)setPreferredFactor:(unint64_t)factor forReason:(int64_t)reason
 {
-  if (self->_preferredFactor == a3)
+  if (self->_preferredFactor == factor)
   {
     v6 = +[CLFLog backlightLog];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"off";
-      if (a3 == 100)
+      if (factor == 100)
       {
         v7 = @"max";
       }
 
       v8 = v7;
-      v9 = sub_100003FE8(a4);
+      v9 = sub_100003FE8(reason);
       v15 = 138412546;
       v16 = v8;
       v17 = 2112;
@@ -79,18 +79,18 @@
 
   else
   {
-    self->_preferredFactor = a3;
+    self->_preferredFactor = factor;
     v11 = +[CLFLog backlightLog];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"off";
-      if (a3 == 100)
+      if (factor == 100)
       {
         v12 = @"max";
       }
 
       v13 = v12;
-      v14 = sub_100003FE8(a4);
+      v14 = sub_100003FE8(reason);
       v15 = 138412546;
       v16 = v13;
       v17 = 2112;
@@ -98,24 +98,24 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Change to preferred backlight factor (%@) for reason: %@", &v15, 0x16u);
     }
 
-    [(CLBBacklightController *)self _reevaluateBacklightForReason:a4];
+    [(CLBBacklightController *)self _reevaluateBacklightForReason:reason];
   }
 }
 
-- (void)_reevaluateBacklightForReason:(int64_t)a3
+- (void)_reevaluateBacklightForReason:(int64_t)reason
 {
   preferredFactor = self->_preferredFactor;
   v6 = [(NSMutableSet *)self->_suppressionAssertions count];
   v7 = [BLSBacklightChangeRequest alloc];
   v8 = mach_continuous_time();
-  if ((a3 - 1) > 6)
+  if ((reason - 1) > 6)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_100295DC8[a3 - 1];
+    v9 = qword_100295DC8[reason - 1];
   }
 
   if (v6)
@@ -130,33 +130,33 @@
 
   v11 = v10;
   v14 = [v7 initWithRequestedActivityState:v11 explanation:@"ClarityBoard (Assistive Access)" timestamp:v8 sourceEvent:v9 sourceEventMetadata:0];
-  v12 = [(CLBBacklightController *)self backlight];
-  v13 = [v12 performChangeRequest:v14];
+  backlight = [(CLBBacklightController *)self backlight];
+  v13 = [backlight performChangeRequest:v14];
 }
 
-- (void)_addSuppressionAssertion:(id)a3
+- (void)_addSuppressionAssertion:(id)assertion
 {
   suppressionAssertions = self->_suppressionAssertions;
-  v5 = a3;
-  [(NSMutableSet *)suppressionAssertions addObject:v5];
-  v6 = [v5 reason];
+  assertionCopy = assertion;
+  [(NSMutableSet *)suppressionAssertions addObject:assertionCopy];
+  reason = [assertionCopy reason];
 
-  [(CLBBacklightController *)self _reevaluateBacklightForReason:v6];
+  [(CLBBacklightController *)self _reevaluateBacklightForReason:reason];
 }
 
-- (void)_removeSuppressionAssertion:(id)a3
+- (void)_removeSuppressionAssertion:(id)assertion
 {
   suppressionAssertions = self->_suppressionAssertions;
-  v5 = a3;
-  [(NSMutableSet *)suppressionAssertions removeObject:v5];
-  v6 = [v5 reason];
+  assertionCopy = assertion;
+  [(NSMutableSet *)suppressionAssertions removeObject:assertionCopy];
+  reason = [assertionCopy reason];
 
-  [(CLBBacklightController *)self _reevaluateBacklightForReason:v6];
+  [(CLBBacklightController *)self _reevaluateBacklightForReason:reason];
 }
 
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event
 {
-  v5 = a5;
+  eventCopy = event;
   v6 = +[CLFLog backlightLog];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,14 +164,14 @@
     v8 = 138412546;
     v9 = v7;
     v10 = 2112;
-    v11 = v5;
+    v11 = eventCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Backlight host will transition to state %@ for event %@", &v8, 0x16u);
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  v5 = a5;
+  eventCopy = event;
   v6 = +[CLFLog backlightLog];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -179,7 +179,7 @@
     v8 = 138412546;
     v9 = v7;
     v10 = 2112;
-    v11 = v5;
+    v11 = eventCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Backlight did complete update to state %@ for event %@", &v8, 0x16u);
   }
 }

@@ -1,22 +1,22 @@
 @interface UIInterpolatedFloat
-+ (id)epsilonCompatibleWithVector:(id)a3;
-+ (id)valueWithFloat:(double)a3;
-+ (id)zeroCompatibleWithVector:(id)a3;
++ (id)epsilonCompatibleWithVector:(id)vector;
++ (id)valueWithFloat:(double)float;
++ (id)zeroCompatibleWithVector:(id)vector;
 - (NSString)debugDescription;
-- (void)integrateWithVelocity:(id)a3 target:(id)a4 intermediateTarget:(id)a5 intermediateTargetVelocity:(id)a6 parameters:(id *)a7 state:(id *)a8 delta:(double)a9;
+- (void)integrateWithVelocity:(id)velocity target:(id)target intermediateTarget:(id)intermediateTarget intermediateTargetVelocity:(id)targetVelocity parameters:(id *)parameters state:(id *)state delta:(double)delta;
 @end
 
 @implementation UIInterpolatedFloat
 
-+ (id)valueWithFloat:(double)a3
++ (id)valueWithFloat:(double)float
 {
-  v4 = objc_alloc_init(a1);
-  v4[1] = a3;
+  v4 = objc_alloc_init(self);
+  v4[1] = float;
 
   return v4;
 }
 
-+ (id)epsilonCompatibleWithVector:(id)a3
++ (id)epsilonCompatibleWithVector:(id)vector
 {
   if (qword_1ED4A2AD8 != -1)
   {
@@ -35,7 +35,7 @@ void __51__UIInterpolatedFloat_epsilonCompatibleWithVector___block_invoke()
   _MergedGlobals_1382 = v0;
 }
 
-+ (id)zeroCompatibleWithVector:(id)a3
++ (id)zeroCompatibleWithVector:(id)vector
 {
   if (qword_1ED4A2AE8 != -1)
   {
@@ -54,10 +54,10 @@ void __48__UIInterpolatedFloat_zeroCompatibleWithVector___block_invoke()
   qword_1ED4A2AE0 = v0;
 }
 
-- (void)integrateWithVelocity:(id)a3 target:(id)a4 intermediateTarget:(id)a5 intermediateTargetVelocity:(id)a6 parameters:(id *)a7 state:(id *)a8 delta:(double)a9
+- (void)integrateWithVelocity:(id)velocity target:(id)target intermediateTarget:(id)intermediateTarget intermediateTargetVelocity:(id)targetVelocity parameters:(id *)parameters state:(id *)state delta:(double)delta
 {
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"UIInterpolatedFloat.m" lineNumber:82 description:@"UIInterpolatedFloat is no longer supported."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInterpolatedFloat.m" lineNumber:82 description:@"UIInterpolatedFloat is no longer supported."];
 }
 
 - (NSString)debugDescription

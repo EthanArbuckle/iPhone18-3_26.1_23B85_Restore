@@ -1,15 +1,15 @@
 @interface LinkableFooterView
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LinkableFooterView
 
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_10076FF9C();
   }
@@ -23,7 +23,7 @@
   return sub_100411DEC(v3, v4);
 }
 
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036118LinkableFooterView)initWithCoder:(id)coder
 {
   v4 = sub_10076D3DC();
   v5 = *(v4 - 8);
@@ -46,15 +46,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100412274();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10041250C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10041250C(change);
 }
 
 @end

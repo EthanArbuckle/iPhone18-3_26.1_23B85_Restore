@@ -1,34 +1,34 @@
 @interface PABridgedTCCIdentity
-- (BOOL)isEqual:(id)a3;
-- (PABridgedTCCIdentity)initWithCoder:(id)a3;
-- (PABridgedTCCIdentity)initWithTCCIdentity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PABridgedTCCIdentity)initWithCoder:(id)coder;
+- (PABridgedTCCIdentity)initWithTCCIdentity:(id)identity;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PABridgedTCCIdentity
 
-- (PABridgedTCCIdentity)initWithTCCIdentity:(id)a3
+- (PABridgedTCCIdentity)initWithTCCIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = PABridgedTCCIdentity;
   v6 = [(PABridgedTCCIdentity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identity, a3);
+    objc_storeStrong(&v6->_identity, identity);
   }
 
   return v7;
 }
 
-- (PABridgedTCCIdentity)initWithCoder:(id)a3
+- (PABridgedTCCIdentity)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v18[0] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v7 = [v4 setWithArray:v6];
@@ -37,7 +37,7 @@
   v17[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v10 = [v8 setWithArray:{v9, v17[0]}];
-  v11 = [v5 decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v10 forKey:@"identity"];
+  v11 = [coderCopy decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v10 forKey:@"identity"];
 
   if (!v11)
   {
@@ -49,25 +49,25 @@
   if (!v12)
   {
 LABEL_5:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = [(PABridgedTCCIdentity *)self initWithTCCIdentity:v12];
-  v13 = self;
+  selfCopy = self;
 LABEL_6:
-  v14 = v13;
+  v14 = selfCopy;
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identity = self->_identity;
-  v4 = a3;
+  coderCopy = coder;
   v5 = tcc_identity_copy_external_representation();
-  [v4 encodeObject:v5 forKey:@"identity"];
+  [coderCopy encodeObject:v5 forKey:@"identity"];
 }
 
 - (unint64_t)hash
@@ -91,17 +91,17 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
 
-  else if ([(PABridgedTCCIdentity *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(PABridgedTCCIdentity *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = areTCCIdentitiesEqual(self->_identity, v4->_identity);
+    v5 = areTCCIdentitiesEqual(self->_identity, equalCopy->_identity);
   }
 
   else

@@ -1,9 +1,9 @@
 @interface UAFAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPresentOnDevice;
-- (UAFAsset)initWithName:(id)a3 location:(id)a4 metadata:(id)a5;
+- (UAFAsset)initWithName:(id)name location:(id)location metadata:(id)metadata;
 - (id)description;
-- (id)propertiesAsDictionary:(BOOL)a3;
+- (id)propertiesAsDictionary:(BOOL)dictionary;
 - (unint64_t)_generateHash;
 @end
 
@@ -14,10 +14,10 @@
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AEC0];
   name = self->_name;
-  v6 = [(NSURL *)self->_location path];
+  path = [(NSURL *)self->_location path];
   v7 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"version"];
   v8 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"language"];
-  v9 = [v4 stringWithFormat:@"%@%@%@%@", name, v6, v7, v8];
+  v9 = [v4 stringWithFormat:@"%@%@%@%@", name, path, v7, v8];
 
   v10 = [v9 hash];
   objc_autoreleasePoolPop(v3);
@@ -28,20 +28,20 @@
 {
   v37 = *MEMORY[0x1E69E9840];
   memset(v24, 0, sizeof(v24));
-  v4 = [(UAFAsset *)self location];
-  v5 = [v4 path];
+  location = [(UAFAsset *)self location];
+  path = [location path];
   v23 = 0;
-  v6 = [UAFCommonUtilities stat:v5 withBuf:v24 error:&v23];
+  v6 = [UAFCommonUtilities stat:path withBuf:v24 error:&v23];
   v7 = v23;
 
   if (v6 || (v15 = WORD2(v24[0]) & 0xF000, v16 = 1, v15 != 0x4000) && v15 != 0x8000)
   {
-    v8 = [(UAFAsset *)self name];
-    v9 = v8;
+    name = [(UAFAsset *)self name];
+    v9 = name;
     v10 = &stru_1F3B6B510;
-    if (v8)
+    if (name)
     {
-      v10 = v8;
+      v10 = name;
     }
 
     v11 = v10;
@@ -49,22 +49,22 @@
     v12 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(UAFAsset *)self location];
-      if (v13)
+      location2 = [(UAFAsset *)self location];
+      if (location2)
       {
-        v2 = [(UAFAsset *)self location];
-        v14 = [v2 path];
+        location3 = [(UAFAsset *)self location];
+        path2 = [location3 path];
       }
 
       else
       {
-        v14 = &stru_1F3B6B510;
+        path2 = &stru_1F3B6B510;
       }
 
       *buf = 136316418;
       v26 = "[UAFAsset isPresentOnDevice]";
       v27 = 2114;
-      v28 = v14;
+      selfCopy = path2;
       v29 = 1024;
       v30 = v6;
       v31 = 1024;
@@ -74,7 +74,7 @@
       v35 = 2114;
       v36 = v7;
       _os_log_impl(&dword_1BCF2C000, v12, OS_LOG_TYPE_DEFAULT, "%s stat(%{public}@) = %d, type: %x, link count: %d, error: %{public}@", buf, 0x32u);
-      if (v13)
+      if (location2)
       {
       }
     }
@@ -85,7 +85,7 @@
       *buf = 136315394;
       v26 = "[UAFAsset isPresentOnDevice]";
       v27 = 2114;
-      v28 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_FAULT, "%s Asset missing: %{public}@", buf, 0x16u);
     }
 
@@ -101,22 +101,22 @@
   return v16;
 }
 
-- (UAFAsset)initWithName:(id)a3 location:(id)a4 metadata:(id)a5
+- (UAFAsset)initWithName:(id)name location:(id)location metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  locationCopy = location;
+  metadataCopy = metadata;
   v17.receiver = self;
   v17.super_class = UAFAsset;
   v12 = [(UAFAsset *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_location, a4);
-    if (v11)
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_location, location);
+    if (metadataCopy)
     {
-      v14 = v11;
+      v14 = metadataCopy;
     }
 
     else
@@ -133,57 +133,57 @@
   return v13;
 }
 
-- (id)propertiesAsDictionary:(BOOL)a3
+- (id)propertiesAsDictionary:(BOOL)dictionary
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
     v17[0] = @"name";
-    v5 = [(UAFAsset *)self name];
-    if (v5)
+    name = [(UAFAsset *)self name];
+    if (name)
     {
-      v6 = [(UAFAsset *)self name];
+      name2 = [(UAFAsset *)self name];
     }
 
     else
     {
-      v6 = &stru_1F3B6B510;
+      name2 = &stru_1F3B6B510;
     }
 
-    v18[0] = v6;
+    v18[0] = name2;
     v17[1] = @"location";
-    v7 = [(UAFAsset *)self location];
-    if (v7)
+    location = [(UAFAsset *)self location];
+    if (location)
     {
-      v3 = [(UAFAsset *)self location];
-      v8 = [v3 path];
+      location2 = [(UAFAsset *)self location];
+      path = [location2 path];
     }
 
     else
     {
-      v8 = &stru_1F3B6B510;
+      path = &stru_1F3B6B510;
     }
 
-    v18[1] = v8;
+    v18[1] = path;
     v17[2] = @"metadata";
-    v9 = [(UAFAsset *)self metadata];
-    if (v9)
+    metadata = [(UAFAsset *)self metadata];
+    if (metadata)
     {
-      v10 = [(UAFAsset *)self metadata];
+      metadata2 = [(UAFAsset *)self metadata];
     }
 
     else
     {
-      v10 = MEMORY[0x1E695E0F8];
+      metadata2 = MEMORY[0x1E695E0F8];
     }
 
-    v18[2] = v10;
+    v18[2] = metadata2;
     v17[3] = @"isPresentOnDevice";
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[UAFAsset isPresentOnDevice](self, "isPresentOnDevice")}];
     v18[3] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
-    if (!v9)
+    if (!metadata)
     {
       goto LABEL_24;
     }
@@ -194,58 +194,58 @@ LABEL_23:
   }
 
   v15[0] = @"name";
-  v5 = [(UAFAsset *)self name];
-  if (v5)
+  name = [(UAFAsset *)self name];
+  if (name)
   {
-    v6 = [(UAFAsset *)self name];
+    name2 = [(UAFAsset *)self name];
   }
 
   else
   {
-    v6 = &stru_1F3B6B510;
+    name2 = &stru_1F3B6B510;
   }
 
-  v16[0] = v6;
+  v16[0] = name2;
   v15[1] = @"location";
-  v7 = [(UAFAsset *)self location];
-  if (v7)
+  location = [(UAFAsset *)self location];
+  if (location)
   {
-    v3 = [(UAFAsset *)self location];
-    v8 = [v3 path];
+    location2 = [(UAFAsset *)self location];
+    path = [location2 path];
   }
 
   else
   {
-    v8 = &stru_1F3B6B510;
+    path = &stru_1F3B6B510;
   }
 
-  v16[1] = v8;
+  v16[1] = path;
   v15[2] = @"metadata";
-  v9 = [(UAFAsset *)self metadata];
-  if (v9)
+  metadata = [(UAFAsset *)self metadata];
+  if (metadata)
   {
-    v10 = [(UAFAsset *)self metadata];
+    metadata2 = [(UAFAsset *)self metadata];
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F8];
+    metadata2 = MEMORY[0x1E695E0F8];
   }
 
-  v16[2] = v10;
+  v16[2] = metadata2;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (v9)
+  if (metadata)
   {
     goto LABEL_23;
   }
 
 LABEL_24:
 
-  if (v7)
+  if (location)
   {
   }
 
-  if (v5)
+  if (name)
   {
   }
 
@@ -254,17 +254,17 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (v4 != self)
+    if (equalCopy != self)
     {
-      v5 = v4;
+      v5 = equalCopy;
       name = self->_name;
-      v7 = [(UAFAsset *)v5 name];
-      LODWORD(name) = [(NSString *)name isEqualToString:v7];
+      name = [(UAFAsset *)v5 name];
+      LODWORD(name) = [(NSString *)name isEqualToString:name];
 
       if (!name)
       {
@@ -275,24 +275,24 @@ LABEL_34:
       }
 
       location = self->_location;
-      v9 = [(UAFAsset *)v5 location];
-      v10 = location;
-      v11 = v9;
+      location = [(UAFAsset *)v5 location];
+      metadata = location;
+      v11 = location;
       v12 = v11;
-      if (!v10 && v11)
+      if (!metadata && v11)
       {
-        v10 = 0;
+        metadata = 0;
         goto LABEL_8;
       }
 
-      if (v10 && !v11)
+      if (metadata && !v11)
       {
         v14 = 0;
         v13 = 0;
         goto LABEL_33;
       }
 
-      if (v10 && ![(NSURL *)v10 isEqual:v11])
+      if (metadata && ![(NSURL *)metadata isEqual:v11])
       {
 LABEL_8:
         v13 = 0;
@@ -303,8 +303,8 @@ LABEL_33:
       }
 
       v15 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"version"];
-      v10 = [(UAFAsset *)v5 metadata];
-      v16 = [(NSURL *)v10 objectForKeyedSubscript:@"version"];
+      metadata = [(UAFAsset *)v5 metadata];
+      v16 = [(NSURL *)metadata objectForKeyedSubscript:@"version"];
       v14 = v15;
       v17 = v16;
       v12 = v17;
@@ -319,8 +319,8 @@ LABEL_33:
       }
 
       v18 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"language"];
-      v10 = [(UAFAsset *)v5 metadata];
-      v19 = [(NSURL *)v10 objectForKeyedSubscript:@"language"];
+      metadata = [(UAFAsset *)v5 metadata];
+      v19 = [(NSURL *)metadata objectForKeyedSubscript:@"language"];
       v14 = v18;
       v20 = v19;
       v12 = v20;

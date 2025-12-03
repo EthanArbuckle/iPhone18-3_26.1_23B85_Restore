@@ -11,7 +11,7 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSURL(AppleAccount) *)a2 aa_URLWithEndpoint:a1];
+    [(NSURL(AppleAccount) *)a2 aa_URLWithEndpoint:self];
   }
 
   v6 = MEMORY[0x1E696AEC0];
@@ -32,19 +32,19 @@
 
 - (id)aa_endpoint
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v2 = [v1 path];
-  v3 = [v2 pathComponents];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  path = [v1 path];
+  pathComponents = [path pathComponents];
 
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_6];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || [v3 count] <= (v4 + 1))
+  v4 = [pathComponents indexOfObjectPassingTest:&__block_literal_global_6];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL || [pathComponents count] <= (v4 + 1))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 objectAtIndexedSubscript:?];
+    v5 = [pathComponents objectAtIndexedSubscript:?];
   }
 
   return v5;

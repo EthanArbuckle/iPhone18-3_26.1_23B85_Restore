@@ -12,17 +12,17 @@
 - (uint64_t)isLocationSimulatedBasedOnCarPlay
 {
   v36 = *MEMORY[0x277D85DE8];
-  v2 = [a1 timestamp];
+  timestamp = [self timestamp];
 
-  if (v2)
+  if (timestamp)
   {
     v3 = +[HMDLocation sharedManager];
-    v4 = [v3 isCarPlayConnected];
+    isCarPlayConnected = [v3 isCarPlayConnected];
 
-    if (v4)
+    if (isCarPlayConnected)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = a1;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -38,12 +38,12 @@
     }
 
     v14 = +[HMDLocation sharedManager];
-    v15 = [v14 lastCarPlaySessionDisconnectionTimeStamp];
+    lastCarPlaySessionDisconnectionTimeStamp = [v14 lastCarPlaySessionDisconnectionTimeStamp];
 
-    if (v15)
+    if (lastCarPlaySessionDisconnectionTimeStamp)
     {
-      v16 = [a1 timestamp];
-      [v16 timeIntervalSinceDate:v15];
+      timestamp2 = [self timestamp];
+      [timestamp2 timeIntervalSinceDate:lastCarPlaySessionDisconnectionTimeStamp];
       v18 = fabs(v17);
 
       if (v18 <= 300.0 || fabs(v18 + -300.0) < 2.22044605e-16)
@@ -55,19 +55,19 @@ LABEL_19:
       }
 
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v22 = HMFGetLogIdentifier();
-        v23 = [v20 timestamp];
+        timestamp3 = [selfCopy2 timestamp];
         v24 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
         v28 = 138544130;
         v29 = v22;
         v30 = 2112;
-        v31 = v15;
+        v31 = lastCarPlaySessionDisconnectionTimeStamp;
         v32 = 2112;
-        v33 = v23;
+        v33 = timestamp3;
         v34 = 2112;
         v35 = v24;
         _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@It was a while between disconnecting the CarPlay session and when this location was determined. Considering this location as simulated. Last active CarPlay session: [%@], location timestamp: [%@], timeDiff: %@", &v28, 0x2Au);
@@ -79,7 +79,7 @@ LABEL_17:
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy3 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -97,7 +97,7 @@ LABEL_17:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy4 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -117,20 +117,20 @@ LABEL_20:
 - (uint64_t)isSimulated
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"allowLocationSimulation"];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"allowLocationSimulation"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (!v4)
+  if (!bOOLValue)
   {
-    v10 = [a1 sourceInformation];
+    sourceInformation = [self sourceInformation];
     v11 = objc_autoreleasePoolPush();
-    if (v10)
+    if (sourceInformation)
     {
-      if ([v10 isSimulatedBySoftware])
+      if ([sourceInformation isSimulatedBySoftware])
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = a1;
+        selfCopy = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
@@ -141,13 +141,13 @@ LABEL_20:
         }
 
         objc_autoreleasePoolPop(v12);
-        v9 = 1;
+        isLocationSimulatedBasedOnCarPlay = 1;
         goto LABEL_15;
       }
 
-      if ([v10 isProducedByAccessory])
+      if ([sourceInformation isProducedByAccessory])
       {
-        v9 = [a1 isLocationSimulatedBasedOnCarPlay];
+        isLocationSimulatedBasedOnCarPlay = [self isLocationSimulatedBasedOnCarPlay];
 LABEL_15:
         objc_autoreleasePoolPop(v11);
 LABEL_17:
@@ -158,7 +158,7 @@ LABEL_17:
 
     else
     {
-      v16 = a1;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -170,12 +170,12 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v11);
-    v9 = 0;
+    isLocationSimulatedBasedOnCarPlay = 0;
     goto LABEL_17;
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy3 = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -186,41 +186,41 @@ LABEL_17:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = 0;
+  isLocationSimulatedBasedOnCarPlay = 0;
 LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
-  return v9;
+  return isLocationSimulatedBasedOnCarPlay;
 }
 
 - (id)attributeDescriptions
 {
   v25[5] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D0F8D8] defaultFormatter];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
   v4 = MEMORY[0x277CCABB0];
-  [a1 coordinate];
+  [self coordinate];
   v24 = [v4 numberWithDouble:?];
-  v23 = [v3 initWithName:@"Latitude" value:v24 options:0 formatter:v2];
+  v23 = [v3 initWithName:@"Latitude" value:v24 options:0 formatter:defaultFormatter];
   v25[0] = v23;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v6 = MEMORY[0x277CCABB0];
-  [a1 coordinate];
+  [self coordinate];
   v8 = [v6 numberWithDouble:v7];
-  v9 = [v5 initWithName:@"Longitude" value:v8 options:0 formatter:v2];
+  v9 = [v5 initWithName:@"Longitude" value:v8 options:0 formatter:defaultFormatter];
   v25[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
   v11 = MEMORY[0x277CCABB0];
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   v12 = [v11 numberWithDouble:?];
-  v13 = [v10 initWithName:@"Horizontal Accuracy" value:v12 options:0 formatter:v2];
+  v13 = [v10 initWithName:@"Horizontal Accuracy" value:v12 options:0 formatter:defaultFormatter];
   v25[2] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [a1 timestamp];
-  v16 = [v14 initWithName:@"Timestamp" value:v15 options:0 formatter:v2];
+  timestamp = [self timestamp];
+  v16 = [v14 initWithName:@"Timestamp" value:timestamp options:0 formatter:defaultFormatter];
   v25[3] = v16;
   v17 = objc_alloc(MEMORY[0x277D0F778]);
-  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isSimulated")}];
-  v19 = [v17 initWithName:@"Simulated" value:v18 options:0 formatter:v2];
+  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isSimulated")}];
+  v19 = [v17 initWithName:@"Simulated" value:v18 options:0 formatter:defaultFormatter];
   v25[4] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:5];
 
@@ -232,8 +232,8 @@ LABEL_18:
 - (id)shortDescription
 {
   v0 = MEMORY[0x277CCACA8];
-  v1 = [objc_opt_class() shortDescription];
-  v2 = [v0 stringWithFormat:@"<%@>", v1];
+  shortDescription = [objc_opt_class() shortDescription];
+  v2 = [v0 stringWithFormat:@"<%@>", shortDescription];
 
   return v2;
 }

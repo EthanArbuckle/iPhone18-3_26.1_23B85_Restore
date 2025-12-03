@@ -1,24 +1,24 @@
 @interface IDSConversationGroupCypher
-- (IDSConversationGroupCypher)initWithCoder:(id)a3;
-- (IDSConversationGroupCypher)initWithConversationGroup:(id)a3 deviceIdentity:(id)a4 participants:(id)a5;
+- (IDSConversationGroupCypher)initWithCoder:(id)coder;
+- (IDSConversationGroupCypher)initWithConversationGroup:(id)group deviceIdentity:(id)identity participants:(id)participants;
 - (id)_memberList;
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6;
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7;
-- (void)encodeWithCoder:(id)a3;
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error;
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSConversationGroupCypher
 
-- (IDSConversationGroupCypher)initWithCoder:(id)a3
+- (IDSConversationGroupCypher)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSConversationGroupCypherGroupData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSConversationGroupCypherGroupData"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"IDSConversationGroupCypherGroupParticipants"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"IDSConversationGroupCypherGroupParticipants"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSConversationGroupCypherGroupDeviceIdentity"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSConversationGroupCypherGroupDeviceIdentity"];
 
   v11 = [IDSMPConversationGroup conversationGroupWithPrivateDataRepresentation:v5];
   v12 = [(IDSConversationGroupCypher *)self initWithConversationGroup:v11 deviceIdentity:v10 participants:v9];
@@ -26,25 +26,25 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IDSConversationGroupCypher *)self conversationGroup];
+  coderCopy = coder;
+  conversationGroup = [(IDSConversationGroupCypher *)self conversationGroup];
   v12 = 0;
-  v6 = [v5 privateDataRepresentationWithError:&v12];
+  v6 = [conversationGroup privateDataRepresentationWithError:&v12];
   v7 = v12;
 
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"IDSConversationGroupCypherGroupData"];
-    v8 = [(IDSConversationGroupCypher *)self participants];
-    [v4 encodeObject:v8 forKey:@"IDSConversationGroupCypherGroupParticipants"];
+    [coderCopy encodeObject:v6 forKey:@"IDSConversationGroupCypherGroupData"];
+    participants = [(IDSConversationGroupCypher *)self participants];
+    [coderCopy encodeObject:participants forKey:@"IDSConversationGroupCypherGroupParticipants"];
 
-    v9 = [(IDSConversationGroupCypher *)self deviceIdentity];
-    [v4 encodeObject:v9 forKey:@"IDSConversationGroupCypherGroupDeviceIdentity"];
+    deviceIdentity = [(IDSConversationGroupCypher *)self deviceIdentity];
+    [coderCopy encodeObject:deviceIdentity forKey:@"IDSConversationGroupCypherGroupDeviceIdentity"];
 
-    v4 = v9;
+    coderCopy = deviceIdentity;
   }
 
   else
@@ -52,41 +52,41 @@
     v10 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IDSConversationGroupCypher *)self conversationGroup];
+      conversationGroup2 = [(IDSConversationGroupCypher *)self conversationGroup];
       *buf = 138543619;
       v14 = v7;
       v15 = 2113;
-      v16 = v11;
+      v16 = conversationGroup2;
       _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Failed group.encodeWithCoder -- Could not create privateDataRepresentation {error: %{public}@, group: %{private}@}", buf, 0x16u);
     }
 
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
   }
 }
 
-- (IDSConversationGroupCypher)initWithConversationGroup:(id)a3 deviceIdentity:(id)a4 participants:(id)a5
+- (IDSConversationGroupCypher)initWithConversationGroup:(id)group deviceIdentity:(id)identity participants:(id)participants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  identityCopy = identity;
+  participantsCopy = participants;
   v15.receiver = self;
   v15.super_class = IDSConversationGroupCypher;
   v12 = [(IDSConversationGroupCypher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_conversationGroup, a3);
-    objc_storeStrong(&v13->_deviceIdentity, a4);
-    objc_storeStrong(&v13->_participants, a5);
+    objc_storeStrong(&v12->_conversationGroup, group);
+    objc_storeStrong(&v13->_deviceIdentity, identity);
+    objc_storeStrong(&v13->_participants, participants);
   }
 
   return v13;
 }
 
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  identityCopy = identity;
   v11 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -94,17 +94,17 @@
     _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_INFO, "ConversationGroupCypher cypher data", v21, 2u);
   }
 
-  v12 = [v10 accountKey];
+  accountKey = [identityCopy accountKey];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [v10 accountKey];
-    v15 = [(IDSConversationGroupCypher *)self _memberList];
-    v16 = [(IDSConversationGroupCypher *)self conversationGroup];
-    v17 = [v14 signingIdentity];
-    v18 = [v16 signAndProtectData:v9 senderSigningIdentity:v17 members:v15 error:a6];
+    accountKey2 = [identityCopy accountKey];
+    _memberList = [(IDSConversationGroupCypher *)self _memberList];
+    conversationGroup = [(IDSConversationGroupCypher *)self conversationGroup];
+    signingIdentity = [accountKey2 signingIdentity];
+    v18 = [conversationGroup signAndProtectData:dataCopy senderSigningIdentity:signingIdentity members:_memberList error:error];
   }
 
   else
@@ -112,13 +112,13 @@
     v19 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      sub_1A7E1C2C0(v10);
+      sub_1A7E1C2C0(identityCopy);
     }
 
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"IDSConversationGroupCypherErroDomain" code:-2000 userInfo:0];
-      *a6 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -130,15 +130,15 @@
   return v18;
 }
 
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  identityCopy = identity;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = keyCopy;
     v15 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -146,17 +146,17 @@
       _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_INFO, "ConversationGroupCypher decypher data", v27, 2u);
     }
 
-    v16 = [v14 accountIdentity];
+    accountIdentity = [v14 accountIdentity];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v18 = [(IDSConversationGroupCypher *)self _memberList];
-      v19 = [(IDSConversationGroupCypher *)self conversationGroup];
-      v20 = [v14 accountIdentity];
-      v21 = [v20 signingIdentity];
-      v22 = [v19 verifyAndExposeData:v11 senderSigningIdentity:v21 members:v18 error:a7];
+      _memberList = [(IDSConversationGroupCypher *)self _memberList];
+      conversationGroup = [(IDSConversationGroupCypher *)self conversationGroup];
+      accountIdentity2 = [v14 accountIdentity];
+      signingIdentity = [accountIdentity2 signingIdentity];
+      v22 = [conversationGroup verifyAndExposeData:dataCopy senderSigningIdentity:signingIdentity members:_memberList error:error];
     }
 
     else
@@ -164,13 +164,13 @@
       v25 = +[IDSFoundationLog accountIdentity];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
-        sub_1A7E1C2C0(v12);
+        sub_1A7E1C2C0(identityCopy);
       }
 
-      if (a7)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"IDSConversationGroupCypherErroDomain" code:-2000 userInfo:0];
-        *a7 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -187,13 +187,13 @@
     v23 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      sub_1A7E1C2C0(v12);
+      sub_1A7E1C2C0(identityCopy);
     }
 
-    if (a7)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"IDSConversationGroupCypherErroDomain" code:-2000 userInfo:0];
-      *a7 = v24 = 0;
+      *error = v24 = 0;
     }
 
     else
@@ -232,8 +232,8 @@
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v6 = [v5 devices];
-        v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        devices = [v5 devices];
+        v7 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v7)
         {
           v8 = v7;
@@ -244,28 +244,28 @@
             {
               if (*v22 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(devices);
               }
 
               v11 = *(*(&v21 + 1) + 8 * j);
-              v12 = [v11 devicePublicKey];
+              devicePublicKey = [v11 devicePublicKey];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
-                v14 = [v11 devicePublicKey];
-                v15 = [v14 modernIdentity];
+                devicePublicKey2 = [v11 devicePublicKey];
+                modernIdentity = [devicePublicKey2 modernIdentity];
 
-                if (v15)
+                if (modernIdentity)
                 {
-                  v16 = [v14 modernIdentity];
-                  [v3 addObject:v16];
+                  modernIdentity2 = [devicePublicKey2 modernIdentity];
+                  [v3 addObject:modernIdentity2];
                 }
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v8 = [devices countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v8);

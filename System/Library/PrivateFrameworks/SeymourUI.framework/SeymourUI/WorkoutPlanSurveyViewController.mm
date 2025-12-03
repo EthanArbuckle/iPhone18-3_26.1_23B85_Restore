@@ -1,15 +1,15 @@
 @interface WorkoutPlanSurveyViewController
 - (CGSize)preferredContentSize;
-- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)onCancelButtonTapped:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)onCancelButtonTapped:(id)tapped;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WorkoutPlanSurveyViewController
@@ -17,7 +17,7 @@
 - (CGSize)preferredContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20C138104();
   if (v5 == sub_20C138104())
   {
@@ -28,7 +28,7 @@
 
   else
   {
-    v12.receiver = v4;
+    v12.receiver = selfCopy;
     v12.super_class = ObjectType;
     [(WorkoutPlanSurveyViewController *)&v12 preferredContentSize];
     v9 = v8;
@@ -43,16 +43,16 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   [(WorkoutPlanSurveyViewController *)&v5 setPreferredContentSize:width, height];
 }
 
-- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9SeymourUI31WorkoutPlanSurveyViewController_currentContentInsetBehavior;
   *v3 = 0;
@@ -68,17 +68,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanSurveyViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanSurveyViewController *)&v7 viewDidAppear:v3];
+  [(WorkoutPlanSurveyViewController *)&v7 viewDidAppear:appearCopy];
   type metadata accessor for WorkoutPlanSurveyPageDataProvider(0);
   sub_20C08C510(&qword_27C7724F8, 255, type metadata accessor for WorkoutPlanSurveyPageDataProvider);
   sub_20C138C54();
@@ -87,19 +87,19 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  WorkoutPlanSurveyViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  WorkoutPlanSurveyViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanSurveyViewController *)&v7 viewDidDisappear:v3];
+  [(WorkoutPlanSurveyViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20C08C510(&qword_27C772500, v5, type metadata accessor for WorkoutPlanSurveyViewController);
   sub_20C08C510(&qword_27C772508, v6, type metadata accessor for WorkoutPlanSurveyViewController);
   sub_20C139374();
@@ -107,24 +107,24 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanSurveyViewController.viewDidLayoutSubviews()();
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanSurveyViewController.viewSafeAreaInsetsDidChange()();
 }
 
-- (void)onCancelButtonTapped:(id)a3
+- (void)onCancelButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_20C08C030();
 }
 
-- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI31WorkoutPlanSurveyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

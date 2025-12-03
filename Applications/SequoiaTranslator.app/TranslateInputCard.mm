@@ -1,20 +1,20 @@
 @interface TranslateInputCard
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (NSArray)keyCommands;
 - (UITextInputMode)textInputMode;
 - (void)closeButtonPressed;
-- (void)pasted:(id)a3;
+- (void)pasted:(id)pasted;
 - (void)selectedSegmentChanged;
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation TranslateInputCard
 
 - (UITextInputMode)textInputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100281128();
 
   return v3;
@@ -26,7 +26,7 @@
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_1002D95A0;
   v4 = objc_opt_self();
-  v5 = self;
+  selfCopy = self;
   *(v3 + 32) = [v4 keyCommandWithInput:UIKeyInputEscape modifierFlags:0 action:"closeButtonPressed"];
 
   sub_10000A2CC(0, &qword_1003BB710);
@@ -48,40 +48,40 @@
 
 - (void)selectedSegmentChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100282B34();
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_100283610();
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100283084(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100283084(changeCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  LOBYTE(v7) = sub_1002836F4(v10, v7, v9);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(v7) = sub_1002836F4(viewCopy, v7, v9);
 
   return v7 & 1;
 }
 
-- (void)pasted:(id)a3
+- (void)pasted:(id)pasted
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator18TranslateInputCard_instrumentation);
-  v5 = self;
+  selfCopy = self;
   v10 = v4;
   v6 = String.count.getter();
 
@@ -99,7 +99,7 @@
   }
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

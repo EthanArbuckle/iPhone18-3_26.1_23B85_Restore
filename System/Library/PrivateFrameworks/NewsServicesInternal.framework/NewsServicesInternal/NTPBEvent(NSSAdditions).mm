@@ -10,9 +10,9 @@
 + (id)nss_eventWithIdentifier
 {
   v0 = objc_opt_new();
-  v1 = [MEMORY[0x277CCAD78] UUID];
-  v2 = [v1 UUIDString];
-  [v0 setAppAnalyticsEventIdentifier:v2];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v0 setAppAnalyticsEventIdentifier:uUIDString];
 
   return v0;
 }
@@ -21,25 +21,25 @@
 {
   v4 = NTPBEventDateToTimestamp(a3);
 
-  return [a1 setStartTimestamp:v4];
+  return [self setStartTimestamp:v4];
 }
 
 - (void)nss_setStartDate:()NSSAdditions endDate:
 {
   v6 = a4;
-  [a1 nss_setStartDate:a3];
-  [a1 nss_setEndDate:v6];
+  [self nss_setStartDate:a3];
+  [self nss_setEndDate:v6];
 }
 
 - (void)nss_setEndDate:()NSSAdditions
 {
   v4 = a3;
-  if (([a1 hasStartTimestamp] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (([self hasStartTimestamp] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTPBEvent(NSSAdditions) nss_setEndDate:];
   }
 
-  [a1 setDuration:{NTPBEventDateToTimestamp(v4) - objc_msgSend(a1, "startTimestamp")}];
+  [self setDuration:{NTPBEventDateToTimestamp(v4) - objc_msgSend(self, "startTimestamp")}];
 }
 
 - (void)nss_setEndDate:()NSSAdditions .cold.1()

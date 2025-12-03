@@ -1,18 +1,18 @@
 @interface SFStepperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setText:(id)a3 forButton:(int64_t)a4;
+- (void)setText:(id)text forButton:(int64_t)button;
 @end
 
 @implementation SFStepperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFStepper" hasInstanceMethod:@"setText:forButton:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SFStepper" hasInstanceVariable:@"trailingButton" withType:"SFBrowsingAssistantMainButton"];
-  [v3 validateClass:@"SFStepper" hasInstanceVariable:@"leadingButton" withType:"SFBrowsingAssistantMainButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFStepper" hasInstanceMethod:@"setText:forButton:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SFStepper" hasInstanceVariable:@"trailingButton" withType:"SFBrowsingAssistantMainButton"];
+  [validationsCopy validateClass:@"SFStepper" hasInstanceVariable:@"leadingButton" withType:"SFBrowsingAssistantMainButton"];
 }
 
 - (void)accessibilityIncrement
@@ -33,11 +33,11 @@
   [v4 sendActionsForControlEvents:64];
 }
 
-- (void)setText:(id)a3 forButton:(int64_t)a4
+- (void)setText:(id)text forButton:(int64_t)button
 {
-  if (a3)
+  if (text)
   {
-    [(SFStepperAccessibility *)self setAccessibilityValue:a3, a4];
+    [(SFStepperAccessibility *)self setAccessibilityValue:text, button];
   }
 }
 

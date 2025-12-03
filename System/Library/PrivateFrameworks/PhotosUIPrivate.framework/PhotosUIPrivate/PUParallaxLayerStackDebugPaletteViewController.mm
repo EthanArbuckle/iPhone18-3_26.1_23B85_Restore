@@ -1,38 +1,38 @@
 @interface PUParallaxLayerStackDebugPaletteViewController
 - (PUParallaxLayerStackDebugPaletteViewController)init;
-- (void)addSwitchableView:(id)a3;
-- (void)modeChanged:(id)a3;
+- (void)addSwitchableView:(id)view;
+- (void)modeChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
 @implementation PUParallaxLayerStackDebugPaletteViewController
 
-- (void)modeChanged:(id)a3
+- (void)modeChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 selectedSegmentIndex] != 0;
-  v6 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorBGPaletteView];
-  [v6 setHidden:v5];
+  changedCopy = changed;
+  v5 = [changedCopy selectedSegmentIndex] != 0;
+  colorBGPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorBGPaletteView];
+  [colorBGPaletteView setHidden:v5];
 
-  v7 = [v4 selectedSegmentIndex] != 1;
-  v8 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashSinglePaletteView];
-  [v8 setHidden:v7];
+  v7 = [changedCopy selectedSegmentIndex] != 1;
+  colorWashSinglePaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashSinglePaletteView];
+  [colorWashSinglePaletteView setHidden:v7];
 
-  v9 = [v4 selectedSegmentIndex] != 2;
-  v10 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashDuotonePaletteView];
-  [v10 setHidden:v9];
+  v9 = [changedCopy selectedSegmentIndex] != 2;
+  colorWashDuotonePaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashDuotonePaletteView];
+  [colorWashDuotonePaletteView setHidden:v9];
 
-  v11 = [v4 selectedSegmentIndex] != 3;
-  v12 = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenMutedPaletteView];
-  [v12 setHidden:v11];
+  v11 = [changedCopy selectedSegmentIndex] != 3;
+  greenScreenMutedPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenMutedPaletteView];
+  [greenScreenMutedPaletteView setHidden:v11];
 
-  v13 = [v4 selectedSegmentIndex] != 4;
-  v14 = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenVibrantPaletteView];
-  [v14 setHidden:v13];
+  v13 = [changedCopy selectedSegmentIndex] != 4;
+  greenScreenVibrantPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenVibrantPaletteView];
+  [greenScreenVibrantPaletteView setHidden:v13];
 
-  v15 = [v4 selectedSegmentIndex];
-  v16 = [(PUParallaxLayerStackDebugPaletteViewController *)self customPaletteView];
-  [v16 setHidden:v15 != 5];
+  selectedSegmentIndex = [changedCopy selectedSegmentIndex];
+  customPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self customPaletteView];
+  [customPaletteView setHidden:selectedSegmentIndex != 5];
 }
 
 - (void)viewDidLoad
@@ -44,127 +44,127 @@
   v3 = [objc_alloc(MEMORY[0x1E69DCF38]) initWithItems:&unk_1F2B7D2E0];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setSwitchControl:v3];
 
-  v4 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  [v4 setSelectedSegmentIndex:0];
+  switchControl = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  [switchControl setSelectedSegmentIndex:0];
 
-  v5 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  [v5 addTarget:self action:sel_modeChanged_ forControlEvents:4096];
+  switchControl2 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  [switchControl2 addTarget:self action:sel_modeChanged_ forControlEvents:4096];
 
-  v6 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v7 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  [v6 addSubview:v7];
+  view = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  switchControl3 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  [view addSubview:switchControl3];
 
-  v8 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  switchControl4 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  [switchControl4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v45 = MEMORY[0x1E696ACD8];
-  v48 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  v46 = [v48 centerXAnchor];
-  v47 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v9 = [v47 centerXAnchor];
-  v10 = [v46 constraintEqualToAnchor:v9];
+  switchControl5 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  centerXAnchor = [switchControl5 centerXAnchor];
+  view2 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v50[0] = v10;
-  v11 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  v12 = [v11 topAnchor];
-  v13 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v14 = [v13 safeAreaLayoutGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15 constant:20.0];
+  switchControl6 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  topAnchor = [switchControl6 topAnchor];
+  view3 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v50[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
   [v45 activateConstraints:v17];
 
   v18 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v19 = [MEMORY[0x1E69BDE98] colorBGPalette];
-  v20 = [(PUParallaxLayerStackDebugPaletteView *)v18 initWithColorPalette:v19];
+  colorBGPalette = [MEMORY[0x1E69BDE98] colorBGPalette];
+  v20 = [(PUParallaxLayerStackDebugPaletteView *)v18 initWithColorPalette:colorBGPalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setColorBGPaletteView:v20];
 
-  v21 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorBGPaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v21];
+  colorBGPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorBGPaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:colorBGPaletteView];
 
   v22 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v23 = [MEMORY[0x1E69BDE98] colorWashSinglePalette];
-  v24 = [(PUParallaxLayerStackDebugPaletteView *)v22 initWithColorPalette:v23];
+  colorWashSinglePalette = [MEMORY[0x1E69BDE98] colorWashSinglePalette];
+  v24 = [(PUParallaxLayerStackDebugPaletteView *)v22 initWithColorPalette:colorWashSinglePalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setColorWashSinglePaletteView:v24];
 
-  v25 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashSinglePaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v25];
+  colorWashSinglePaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashSinglePaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:colorWashSinglePaletteView];
 
   v26 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v27 = [MEMORY[0x1E69BDE98] colorWashDuotonePalette];
-  v28 = [(PUParallaxLayerStackDebugPaletteView *)v26 initWithColorPalette:v27];
+  colorWashDuotonePalette = [MEMORY[0x1E69BDE98] colorWashDuotonePalette];
+  v28 = [(PUParallaxLayerStackDebugPaletteView *)v26 initWithColorPalette:colorWashDuotonePalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setColorWashDuotonePaletteView:v28];
 
-  v29 = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashDuotonePaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v29];
+  colorWashDuotonePaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self colorWashDuotonePaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:colorWashDuotonePaletteView];
 
   v30 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v31 = [MEMORY[0x1E69BDE98] greenScreenMutedPalette];
-  v32 = [(PUParallaxLayerStackDebugPaletteView *)v30 initWithColorPalette:v31];
+  greenScreenMutedPalette = [MEMORY[0x1E69BDE98] greenScreenMutedPalette];
+  v32 = [(PUParallaxLayerStackDebugPaletteView *)v30 initWithColorPalette:greenScreenMutedPalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setGreenScreenMutedPaletteView:v32];
 
-  v33 = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenMutedPaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v33];
+  greenScreenMutedPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenMutedPaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:greenScreenMutedPaletteView];
 
   v34 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v35 = [MEMORY[0x1E69BDE98] greenScreenVibrantPalette];
-  v36 = [(PUParallaxLayerStackDebugPaletteView *)v34 initWithColorPalette:v35];
+  greenScreenVibrantPalette = [MEMORY[0x1E69BDE98] greenScreenVibrantPalette];
+  v36 = [(PUParallaxLayerStackDebugPaletteView *)v34 initWithColorPalette:greenScreenVibrantPalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setGreenScreenVibrantPaletteView:v36];
 
-  v37 = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenVibrantPaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v37];
+  greenScreenVibrantPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self greenScreenVibrantPaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:greenScreenVibrantPaletteView];
 
   v38 = [PUParallaxLayerStackDebugPaletteView alloc];
-  v39 = [MEMORY[0x1E69BDE98] customPalette];
-  v40 = [(PUParallaxLayerStackDebugPaletteView *)v38 initWithColorPalette:v39];
+  customPalette = [MEMORY[0x1E69BDE98] customPalette];
+  v40 = [(PUParallaxLayerStackDebugPaletteView *)v38 initWithColorPalette:customPalette];
   [(PUParallaxLayerStackDebugPaletteViewController *)self setCustomPaletteView:v40];
 
-  v41 = [(PUParallaxLayerStackDebugPaletteViewController *)self customPaletteView];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:v41];
+  customPaletteView = [(PUParallaxLayerStackDebugPaletteViewController *)self customPaletteView];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self addSwitchableView:customPaletteView];
 
-  v42 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v43 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  [v43 setBackgroundColor:v42];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view4 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  [view4 setBackgroundColor:systemBackgroundColor];
 
-  v44 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  [(PUParallaxLayerStackDebugPaletteViewController *)self modeChanged:v44];
+  switchControl7 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  [(PUParallaxLayerStackDebugPaletteViewController *)self modeChanged:switchControl7];
 }
 
-- (void)addSwitchableView:(id)a3
+- (void)addSwitchableView:(id)view
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  view = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  [view addSubview:viewCopy];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = MEMORY[0x1E696ACD8];
-  v24 = [v4 leadingAnchor];
-  v25 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v23 = [v25 safeAreaLayoutGuide];
-  v22 = [v23 leadingAnchor];
-  v21 = [v24 constraintEqualToAnchor:v22];
+  leadingAnchor = [viewCopy leadingAnchor];
+  view2 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v21;
-  v19 = [v4 trailingAnchor];
-  v20 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v18 = [v20 safeAreaLayoutGuide];
-  v16 = [v18 trailingAnchor];
-  v15 = [v19 constraintEqualToAnchor:v16];
+  trailingAnchor = [viewCopy trailingAnchor];
+  view3 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v15;
-  v6 = [v4 topAnchor];
-  v7 = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
-  v8 = [v7 bottomAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [viewCopy topAnchor];
+  switchControl = [(PUParallaxLayerStackDebugPaletteViewController *)self switchControl];
+  bottomAnchor = [switchControl bottomAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v26[2] = v9;
-  v10 = [v4 bottomAnchor];
-  v11 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  view4 = [(PUParallaxLayerStackDebugPaletteViewController *)self view];
+  bottomAnchor3 = [view4 bottomAnchor];
+  v13 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v26[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   [v17 activateConstraints:v14];
 
-  [v4 setHidden:1];
+  [viewCopy setHidden:1];
 }
 
 - (PUParallaxLayerStackDebugPaletteViewController)init

@@ -1,16 +1,16 @@
 @interface AVTAvatarAttributeEditorFlowLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation AVTAvatarAttributeEditorFlowLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = AVTAvatarAttributeEditorFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v14 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewFlowLayout *)&v14 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = AVTAvatarAttributeEditorFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:a4];
+  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:path];
   [v4 _setZPosition:0];
 
   return v4;

@@ -1,17 +1,17 @@
 @interface NTKDiagnosticExtensionCompanionExtension
-- (id)_archiveDirectory:(id)a3 toFile:(id)a4;
-- (id)attachmentsForParameters:(id)a3;
+- (id)_archiveDirectory:(id)directory toFile:(id)file;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation NTKDiagnosticExtensionCompanionExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = +[NSFileManager defaultManager];
   v4 = NSTemporaryDirectory();
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  uUIDString = [v5 UUIDString];
+  v7 = [v4 stringByAppendingPathComponent:uUIDString];
 
   v47 = v3;
   [v3 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
@@ -114,15 +114,15 @@
                 v19 = *(*(&v55 + 1) + 8 * j);
                 v20 = [v15 stringByAppendingPathComponent:v19];
                 v21 = [NSData dataWithContentsOfFile:v20];
-                v22 = [v20 lastPathComponent];
-                v23 = [v22 stringByDeletingPathExtension];
+                lastPathComponent = [v20 lastPathComponent];
+                stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
                 ImagesFromData = CPBitmapCreateImagesFromData();
                 if (ImagesFromData)
                 {
                   v25 = ImagesFromData;
                   v26 = [UIImage imageWithCGImage:CFArrayGetValueAtIndex(ImagesFromData, 0)];
-                  [NSString stringWithFormat:@"%@.png", v23];
+                  [NSString stringWithFormat:@"%@.png", stringByDeletingPathExtension];
                   v28 = v27 = v15;
                   v29 = [v52 stringByAppendingPathComponent:v28];
 
@@ -183,27 +183,27 @@
   return v34;
 }
 
-- (id)_archiveDirectory:(id)a3 toFile:(id)a4
+- (id)_archiveDirectory:(id)directory toFile:(id)file
 {
-  v5 = a4;
-  v6 = a3;
+  fileCopy = file;
+  directoryCopy = directory;
   BOMCopierNew();
   v10 = @"createPKZip";
   v11 = &__kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v6 fileSystemRepresentation];
+  [directoryCopy fileSystemRepresentation];
 
-  [v5 fileSystemRepresentation];
-  LODWORD(v6) = BOMCopierCopyWithOptions();
+  [fileCopy fileSystemRepresentation];
+  LODWORD(directoryCopy) = BOMCopierCopyWithOptions();
   BOMCopierFree();
-  if (v6)
+  if (directoryCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [DEAttachmentItem attachmentWithPath:v5];
+    v8 = [DEAttachmentItem attachmentWithPath:fileCopy];
   }
 
   return v8;

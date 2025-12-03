@@ -1,24 +1,24 @@
 @interface SiriUIModalContainerViewController
-- (SiriUIModalContainerViewController)initWithContentViewController:(id)a3;
+- (SiriUIModalContainerViewController)initWithContentViewController:(id)controller;
 - (SiriUIModalContainerViewControllerDelegate)delegate;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SiriUIModalContainerViewController
 
-- (SiriUIModalContainerViewController)initWithContentViewController:(id)a3
+- (SiriUIModalContainerViewController)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SiriUIModalContainerViewController;
   v6 = [(SiriUIModalContainerViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentViewController, a3);
+    objc_storeStrong(&v6->_contentViewController, controller);
     [(SiriUIModalContainerViewController *)v7 setModalPresentationStyle:4];
   }
 
@@ -31,9 +31,9 @@
   v5.super_class = SiriUIModalContainerViewController;
   [(SiriUIModalContainerViewController *)&v5 loadView];
   [(SiriUIModalContainerViewController *)self addChildViewController:self->_contentViewController];
-  v3 = [(SiriUIModalContainerViewController *)self view];
-  v4 = [(UIViewController *)self->_contentViewController view];
-  [v3 addSubview:v4];
+  view = [(SiriUIModalContainerViewController *)self view];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [view addSubview:view2];
 
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
 }
@@ -43,39 +43,39 @@
   v5.receiver = self;
   v5.super_class = SiriUIModalContainerViewController;
   [(SiriUIModalContainerViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(UIViewController *)self->_contentViewController view];
-  v4 = [(SiriUIModalContainerViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(UIViewController *)self->_contentViewController view];
+  view2 = [(SiriUIModalContainerViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SiriUIModalContainerViewController;
-  [(SiriUIModalContainerViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(SiriUIModalContainerViewController *)self delegate];
+  [(SiriUIModalContainerViewController *)&v7 viewWillDisappear:disappear];
+  delegate = [(SiriUIModalContainerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUIModalContainerViewController *)self delegate];
-    [v6 modalContainerViewControllerViewWillDisappear:self];
+    delegate2 = [(SiriUIModalContainerViewController *)self delegate];
+    [delegate2 modalContainerViewControllerViewWillDisappear:self];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SiriUIModalContainerViewController;
-  [(SiriUIModalContainerViewController *)&v7 viewDidDisappear:a3];
-  v4 = [(SiriUIModalContainerViewController *)self delegate];
+  [(SiriUIModalContainerViewController *)&v7 viewDidDisappear:disappear];
+  delegate = [(SiriUIModalContainerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUIModalContainerViewController *)self delegate];
-    [v6 modalContainerViewControllerViewDidDisappear:self];
+    delegate2 = [(SiriUIModalContainerViewController *)self delegate];
+    [delegate2 modalContainerViewControllerViewDidDisappear:self];
   }
 }
 

@@ -1,85 +1,85 @@
 @interface WFPodcastEpisodeContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (id)episode;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)getArtworkURLForSize:(CGSize)a3 type:(id)a4;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)getArtworkDataWithURL:(id)a3 completionHandler:(id)a4;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (id)getArtworkURLForSize:(CGSize)size type:(id)type;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)getArtworkDataWithURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WFPodcastEpisodeContentItem
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  if (objc_opt_class() != a3)
+  optionsCopy = options;
+  if (objc_opt_class() != class)
   {
     v28.receiver = self;
     v28.super_class = WFPodcastEpisodeContentItem;
-    v9 = [(WFPodcastEpisodeContentItem *)&v28 generateObjectRepresentationForClass:a3 options:v8 error:a5];
+    v9 = [(WFPodcastEpisodeContentItem *)&v28 generateObjectRepresentationForClass:class options:optionsCopy error:error];
     goto LABEL_13;
   }
 
-  v10 = [(WFPodcastEpisodeContentItem *)self episode];
-  v11 = [v10 author];
-  if (v11)
+  episode = [(WFPodcastEpisodeContentItem *)self episode];
+  author = [episode author];
+  if (author)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = WFLocalizedString(@"%1$@ by %2$@");
-    v14 = [v10 title];
-    v15 = [v12 localizedStringWithFormat:v13, v14, v11];
+    title = [episode title];
+    title2 = [v12 localizedStringWithFormat:v13, title, author];
   }
 
   else
   {
-    v15 = [v10 title];
+    title2 = [episode title];
   }
 
-  v16 = [v15 length];
-  v17 = [v10 viewURL];
-  v18 = v17;
+  v16 = [title2 length];
+  viewURL = [episode viewURL];
+  v18 = viewURL;
   if (!v16)
   {
-    v24 = [v17 absoluteString];
+    absoluteString = [viewURL absoluteString];
 LABEL_11:
-    v23 = v24;
+    v23 = absoluteString;
     goto LABEL_12;
   }
 
-  if (!v17)
+  if (!viewURL)
   {
-    v24 = v15;
+    absoluteString = title2;
     goto LABEL_11;
   }
 
   v19 = MEMORY[0x277CCACA8];
   v20 = WFLocalizedString(@"%1$@ (%2$@)");
-  v21 = [v10 viewURL];
-  v22 = [v21 absoluteString];
-  v23 = [v19 localizedStringWithFormat:v20, v15, v22];
+  viewURL2 = [episode viewURL];
+  absoluteString2 = [viewURL2 absoluteString];
+  v23 = [v19 localizedStringWithFormat:v20, title2, absoluteString2];
 
 LABEL_12:
   v25 = MEMORY[0x277CFC488];
-  v26 = [(WFPodcastEpisodeContentItem *)self name];
-  v9 = [v25 object:v23 named:v26];
+  name = [(WFPodcastEpisodeContentItem *)self name];
+  v9 = [v25 object:v23 named:name];
 
 LABEL_13:
 
   return v9;
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 conformsToUTType:*MEMORY[0x277CE1DB0]])
+  representationCopy = representation;
+  optionsCopy = options;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DB0]])
   {
     v17[0] = 0;
     v17[1] = v17;
@@ -95,7 +95,7 @@ LABEL_13:
     v14[3] = &unk_278C21E20;
     v16 = v17;
     v14[4] = self;
-    v15 = v8;
+    v15 = representationCopy;
     [(WFPodcastEpisodeContentItem *)self getArtworkDataWithURL:v12 completionHandler:v14];
 
     _Block_object_dispose(v17, 8);
@@ -105,7 +105,7 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = WFPodcastEpisodeContentItem;
-    [(WFPodcastEpisodeContentItem *)&v13 generateFileRepresentation:v8 options:v9 forType:v10];
+    [(WFPodcastEpisodeContentItem *)&v13 generateFileRepresentation:representationCopy options:optionsCopy forType:typeCopy];
   }
 }
 
@@ -128,61 +128,61 @@ void __74__WFPodcastEpisodeContentItem_generateFileRepresentation_options_forTyp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getArtworkDataWithURL:(id)a3 completionHandler:(id)a4
+- (void)getArtworkDataWithURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x277CBABB8];
-  v6 = a4;
-  v7 = a3;
-  v9 = [v5 wf_sharedSession];
-  v8 = [v9 dataTaskWithURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  wf_sharedSession = [v5 wf_sharedSession];
+  v8 = [wf_sharedSession dataTaskWithURL:lCopy completionHandler:handlerCopy];
 
   [v8 resume];
 }
 
-- (id)getArtworkURLForSize:(CGSize)a3 type:(id)a4
+- (id)getArtworkURLForSize:(CGSize)size type:(id)type
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(WFPodcastEpisodeContentItem *)self episode];
-  v9 = [v8 artworkURLTemplate];
-  v10 = [v9 mutableCopy];
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
+  episode = [(WFPodcastEpisodeContentItem *)self episode];
+  artworkURLTemplate = [episode artworkURLTemplate];
+  v10 = [artworkURLTemplate mutableCopy];
 
   v11 = height * 3.0;
   *&v11 = height * 3.0;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  v13 = [v12 stringValue];
-  [v10 replaceOccurrencesOfString:@"{h}" withString:v13 options:0 range:{0, objc_msgSend(v10, "length")}];
+  stringValue = [v12 stringValue];
+  [v10 replaceOccurrencesOfString:@"{h}" withString:stringValue options:0 range:{0, objc_msgSend(v10, "length")}];
 
   v14 = width * 3.0;
   *&v14 = width * 3.0;
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:v14];
-  v16 = [v15 stringValue];
-  [v10 replaceOccurrencesOfString:@"{w}" withString:v16 options:0 range:{0, objc_msgSend(v10, "length")}];
+  stringValue2 = [v15 stringValue];
+  [v10 replaceOccurrencesOfString:@"{w}" withString:stringValue2 options:0 range:{0, objc_msgSend(v10, "length")}];
 
-  v17 = [v7 fileExtension];
+  fileExtension = [typeCopy fileExtension];
 
-  [v10 replaceOccurrencesOfString:@"{f}" withString:v17 options:0 range:{0, objc_msgSend(v10, "length")}];
+  [v10 replaceOccurrencesOfString:@"{f}" withString:fileExtension options:0 range:{0, objc_msgSend(v10, "length")}];
   v18 = [MEMORY[0x277CBEBC0] URLWithString:v10];
 
   return v18;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  if (thumbnailCopy)
   {
     v8 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D90]];
-    v9 = [(WFPodcastEpisodeContentItem *)self getArtworkURLForSize:v8 type:width, height];
+    height = [(WFPodcastEpisodeContentItem *)self getArtworkURLForSize:v8 type:width, height];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__WFPodcastEpisodeContentItem_getListThumbnail_forSize___block_invoke;
     v11[3] = &unk_278C22268;
-    v12 = v7;
-    [(WFPodcastEpisodeContentItem *)self getArtworkDataWithURL:v9 completionHandler:v11];
+    v12 = thumbnailCopy;
+    [(WFPodcastEpisodeContentItem *)self getArtworkDataWithURL:height completionHandler:v11];
   }
 
   return 1;
@@ -221,14 +221,14 @@ void __56__WFPodcastEpisodeContentItem_getListThumbnail_forSize___block_invoke_2
   }
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFPodcastEpisodeContentItem *)self episode];
-    v7 = [v6 author];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    episode = [(WFPodcastEpisodeContentItem *)self episode];
+    author = [episode author];
+    (*(subtitle + 2))(subtitleCopy, author);
   }
 
   return 1;
@@ -241,20 +241,20 @@ void __56__WFPodcastEpisodeContentItem_getListThumbnail_forSize___block_invoke_2
   return [(WFPodcastEpisodeContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Podcast episodes", @"Podcast episodes");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Podcast episode", @"Podcast episode");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -282,7 +282,7 @@ void __56__WFPodcastEpisodeContentItem_getListThumbnail_forSize___block_invoke_2
 + (id)propertyBuilders
 {
   v36[10] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x277CFC338];
     v35 = WFLocalizedContentPropertyNameMarker(@"Store ID");

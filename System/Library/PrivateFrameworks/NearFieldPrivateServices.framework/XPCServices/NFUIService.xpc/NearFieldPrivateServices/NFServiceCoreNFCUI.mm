@@ -1,12 +1,12 @@
 @interface NFServiceCoreNFCUI
 + (id)instance;
 - (NFServiceCoreNFCUI)init;
-- (void)activate:(id)a3 context:(id)a4 withCompletion:(id)a5;
+- (void)activate:(id)activate context:(id)context withCompletion:(id)completion;
 - (void)invalidate;
-- (void)setPurpose:(id)a3;
-- (void)setUIMode:(int64_t)a3;
-- (void)setUIOperationMode:(int64_t)a3;
-- (void)tagCount:(id)a3;
+- (void)setPurpose:(id)purpose;
+- (void)setUIMode:(int64_t)mode;
+- (void)setUIOperationMode:(int64_t)mode;
+- (void)tagCount:(id)count;
 @end
 
 @implementation NFServiceCoreNFCUI
@@ -36,15 +36,15 @@
   return result;
 }
 
-- (void)activate:(id)a3 context:(id)a4 withCompletion:(id)a5
+- (void)activate:(id)activate context:(id)context withCompletion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  contextCopy = context;
+  completionCopy = completion;
+  activateCopy = activate;
   v12 = +[NSXPCConnection currentConnection];
   objc_initWeak(&location, v12);
 
-  objc_initWeak(&from, v11);
+  objc_initWeak(&from, activateCopy);
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidationRequested)
   {
@@ -52,7 +52,7 @@
     v55 = @"Invalid parameter";
     v13 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v14 = [NSError errorWithDomain:@"NFUIService" code:10 userInfo:v13];
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
 
     os_unfair_lock_unlock(&self->_lock);
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -170,8 +170,8 @@
     *&v52[8] = 0x3032000000;
     *&v52[16] = sub_100003C48;
     *&v52[24] = sub_100003C58;
-    v38 = self;
-    v53 = v38;
+    selfCopy = self;
+    v53 = selfCopy;
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100003C60;
@@ -179,7 +179,7 @@
     objc_copyWeak(&v47, &from);
     v46 = buf;
     v48[1] = a2;
-    v45 = v9;
+    v45 = contextCopy;
     objc_copyWeak(v48, &location);
     [(SFNFCTagReaderUIController *)self->_uiController setInvalidationHandler:v44];
     v39 = self->_uiController;
@@ -187,8 +187,8 @@
     v42[1] = 3221225472;
     v42[2] = sub_100003F40;
     v42[3] = &unk_10000C708;
-    v42[4] = v38;
-    v43 = v10;
+    v42[4] = selfCopy;
+    v43 = completionCopy;
     [(SFNFCTagReaderUIController *)v39 activateWithCompletion:v42];
 
     objc_destroyWeak(v48);
@@ -200,7 +200,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setUIMode:(int64_t)a3
+- (void)setUIMode:(int64_t)mode
 {
   if (self->_uiController)
   {
@@ -249,10 +249,10 @@
     }
   }
 
-  self->_mode = a3;
+  self->_mode = mode;
 }
 
-- (void)setUIOperationMode:(int64_t)a3
+- (void)setUIOperationMode:(int64_t)mode
 {
   if (self->_uiController)
   {
@@ -301,17 +301,17 @@
     }
   }
 
-  self->_operationMode = a3;
+  self->_operationMode = mode;
 }
 
-- (void)tagCount:(id)a3
+- (void)tagCount:(id)count
 {
   uiController = self->_uiController;
   if (uiController)
   {
-    v4 = [a3 integerValue];
+    integerValue = [count integerValue];
 
-    [(SFNFCTagReaderUIController *)uiController nfcTagScannedCount:v4];
+    [(SFNFCTagReaderUIController *)uiController nfcTagScannedCount:integerValue];
   }
 
   else
@@ -362,11 +362,11 @@
   }
 }
 
-- (void)setPurpose:(id)a3
+- (void)setPurpose:(id)purpose
 {
-  v5 = a3;
+  purposeCopy = purpose;
   uiController = self->_uiController;
-  v7 = v5;
+  v7 = purposeCopy;
   if (uiController)
   {
     [(SFNFCTagReaderUIController *)uiController setPurpose:?];
@@ -374,7 +374,7 @@
 
   else
   {
-    objc_storeStrong(&self->_purpose, a3);
+    objc_storeStrong(&self->_purpose, purpose);
   }
 }
 

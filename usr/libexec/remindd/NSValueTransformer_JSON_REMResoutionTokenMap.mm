@@ -1,21 +1,21 @@
 @interface NSValueTransformer_JSON_REMResoutionTokenMap
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation NSValueTransformer_JSON_REMResoutionTokenMap
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objc_toJSONString];
-    v5 = v4;
-    if (v4)
+    objc_toJSONString = [valueCopy objc_toJSONString];
+    v5 = objc_toJSONString;
+    if (objc_toJSONString)
     {
-      v6 = [v4 dataUsingEncoding:4];
+      v6 = [objc_toJSONString dataUsingEncoding:4];
     }
 
     else
@@ -32,15 +32,15 @@
   return v6;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = v3;
+    v6 = valueCopy;
     if ([v6 length])
     {
       v7 = [[NSString alloc] initWithData:v6 encoding:4];

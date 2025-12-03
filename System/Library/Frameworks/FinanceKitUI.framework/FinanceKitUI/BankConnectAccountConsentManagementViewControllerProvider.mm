@@ -1,11 +1,11 @@
 @interface BankConnectAccountConsentManagementViewControllerProvider
-+ (id)makeViewControllerWithAccountIdentifier:(id)a3 institutionIdentifier:(id)a4;
++ (id)makeViewControllerWithAccountIdentifier:(id)identifier institutionIdentifier:(id)institutionIdentifier;
 - (_TtC12FinanceKitUI57BankConnectAccountConsentManagementViewControllerProvider)init;
 @end
 
 @implementation BankConnectAccountConsentManagementViewControllerProvider
 
-+ (id)makeViewControllerWithAccountIdentifier:(id)a3 institutionIdentifier:(id)a4
++ (id)makeViewControllerWithAccountIdentifier:(id)identifier institutionIdentifier:(id)institutionIdentifier
 {
   v4 = type metadata accessor for ConsentManagementView(0);
   v5 = *(*(v4 - 8) + 64);

@@ -1,7 +1,7 @@
 @interface CKDLongLivedCallbackRelayOperation
 - (BOOL)isInvalidated;
-- (CKDLongLivedCallbackRelayOperation)operationWithID:(id)a3 receivedCallback:(id)a4;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (CKDLongLivedCallbackRelayOperation)operationWithID:(id)d receivedCallback:(id)callback;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)cancel;
 - (void)main;
 @end
@@ -27,17 +27,17 @@
   objc_msgSend_registerDelegate_forOperationWithID_(v6, v10, self, v9);
 }
 
-- (CKDLongLivedCallbackRelayOperation)operationWithID:(id)a3 receivedCallback:(id)a4
+- (CKDLongLivedCallbackRelayOperation)operationWithID:(id)d receivedCallback:(id)callback
 {
-  v19 = a4;
+  callbackCopy = callback;
   if ((objc_msgSend_isCancelled(self, v5, v6) & 1) == 0)
   {
-    v8 = objc_msgSend_invocation(v19, v19, v7);
+    v8 = objc_msgSend_invocation(callbackCopy, callbackCopy, v7);
     v11 = objc_msgSend_clientOperationCallbackProxy(self, v9, v10);
     objc_msgSend_setTarget_(v8, v12, v11);
 
     objc_msgSend_invoke(v8, v13, v14);
-    if (objc_msgSend_isCompletionCallback(v19, v15, v16))
+    if (objc_msgSend_isCompletionCallback(callbackCopy, v15, v16))
     {
       objc_msgSend_finishWithError_(self, v17, 0);
     }
@@ -46,9 +46,9 @@
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_deviceContext(self, v5, v6);
   v10 = objc_msgSend_operationInfoCache(v7, v8, v9);
   v13 = objc_msgSend_operationID(self, v11, v12);
@@ -56,7 +56,7 @@
 
   v15.receiver = self;
   v15.super_class = CKDLongLivedCallbackRelayOperation;
-  [(CKDOperation *)&v15 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v15 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)cancel

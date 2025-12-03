@@ -1,9 +1,9 @@
 @interface TIFilterParameterLoader
 - (TIFilterParameterLoader)init;
-- (id)loadCandidateFilterSpecificationForLanguageIdentifier:(id)a3;
-- (id)loadContentsForPlistWithLanguage:(id)a3;
+- (id)loadCandidateFilterSpecificationForLanguageIdentifier:(id)identifier;
+- (id)loadContentsForPlistWithLanguage:(id)language;
 - (id)parameterOverridesFolderURL;
-- (void)loadCandidateFilterSpecificationForLanguageIdentifier:(id)a3 targetQueue:(id)a4 completion:(id)a5;
+- (void)loadCandidateFilterSpecificationForLanguageIdentifier:(id)identifier targetQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation TIFilterParameterLoader
@@ -17,7 +17,7 @@
   return v4;
 }
 
-- (id)loadContentsForPlistWithLanguage:(id)a3
+- (id)loadContentsForPlistWithLanguage:(id)language
 {
   v24 = *MEMORY[0x277D85DE8];
   if (TI_IS_INTERNAL_INSTALL::once_token != -1)
@@ -31,21 +31,21 @@
   }
 
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [(TIFilterParameterLoader *)self universalParameterPlist];
-  v6 = [(TIFilterParameterLoader *)self parameterOverridesFolderURL];
-  v7 = [v4 fileURLWithPath:v5 relativeToURL:v6];
+  universalParameterPlist = [(TIFilterParameterLoader *)self universalParameterPlist];
+  parameterOverridesFolderURL = [(TIFilterParameterLoader *)self parameterOverridesFolderURL];
+  v7 = [v4 fileURLWithPath:universalParameterPlist relativeToURL:parameterOverridesFolderURL];
 
   v8 = MEMORY[0x277CBEAC0];
-  v9 = [v7 path];
-  v10 = [v8 dictionaryWithContentsOfFile:v9];
+  path = [v7 path];
+  v10 = [v8 dictionaryWithContentsOfFile:path];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v7 path];
+    path2 = [v7 path];
     v20 = 136315394;
     v21 = "[TIFilterParameterLoader loadContentsForPlistWithLanguage:]";
     v22 = 2080;
-    v23 = [v19 UTF8String];
+    uTF8String = [path2 UTF8String];
     _os_log_debug_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s  Looking for candidate filter plist file under: %s", &v20, 0x16u);
   }
 
@@ -53,17 +53,17 @@
   {
 LABEL_7:
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [(TIFilterParameterLoader *)self universalParameterPlist];
-    v13 = [v11 pathForResource:v12 ofType:&stru_283FDFAF8];
+    universalParameterPlist2 = [(TIFilterParameterLoader *)self universalParameterPlist];
+    v13 = [v11 pathForResource:universalParameterPlist2 ofType:&stru_283FDFAF8];
 
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v13];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v13 UTF8String];
+      uTF8String2 = [v13 UTF8String];
       v20 = 136315394;
       v21 = "[TIFilterParameterLoader loadContentsForPlistWithLanguage:]";
       v22 = 2080;
-      v23 = v18;
+      uTF8String = uTF8String2;
       _os_log_debug_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s  Looking for candidate filter plist file under: %s", &v20, 0x16u);
     }
   }
@@ -80,11 +80,11 @@ LABEL_7:
       v14 = @"False";
     }
 
-    v15 = [(__CFString *)v14 UTF8String];
+    uTF8String3 = [(__CFString *)v14 UTF8String];
     v20 = 136315394;
     v21 = "[TIFilterParameterLoader loadContentsForPlistWithLanguage:]";
     v22 = 2080;
-    v23 = v15;
+    uTF8String = uTF8String3;
     _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s  A valid candidate filter plist was found: %s", &v20, 0x16u);
   }
 
@@ -93,18 +93,18 @@ LABEL_7:
   return v10;
 }
 
-- (id)loadCandidateFilterSpecificationForLanguageIdentifier:(id)a3
+- (id)loadCandidateFilterSpecificationForLanguageIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__10693;
   v14 = __Block_byref_object_dispose__10694;
   v15 = 0;
-  v5 = [(TIFilterParameterLoader *)self loadQueue];
-  v9 = v4;
-  v6 = v4;
+  loadQueue = [(TIFilterParameterLoader *)self loadQueue];
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   TIDispatchSync();
 
   v7 = v11[5];
@@ -123,17 +123,17 @@ uint64_t __81__TIFilterParameterLoader_loadCandidateFilterSpecificationForLangua
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)loadCandidateFilterSpecificationForLanguageIdentifier:(id)a3 targetQueue:(id)a4 completion:(id)a5
+- (void)loadCandidateFilterSpecificationForLanguageIdentifier:(id)identifier targetQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TIFilterParameterLoader *)self loadQueue];
-  v15 = v9;
-  v16 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  completionCopy = completion;
+  loadQueue = [(TIFilterParameterLoader *)self loadQueue];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
   TIDispatchAsync();
 }
 

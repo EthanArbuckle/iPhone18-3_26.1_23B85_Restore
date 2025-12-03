@@ -1,36 +1,36 @@
 @interface RCPDiscreteGestureSpec
-+ (id)rotationZ:(double)a3;
-+ (id)scaleZ:(double)a3;
-+ (id)translation:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)rotationZ:(double)z;
++ (id)scaleZ:(double)z;
++ (id)translation:(CGPoint)translation;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation RCPDiscreteGestureSpec
 
-+ (id)rotationZ:(double)a3
++ (id)rotationZ:(double)z
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   *(v4 + 8) = 1;
-  v4[4] = a3;
+  v4[4] = z;
 
   return v4;
 }
 
-+ (id)scaleZ:(double)a3
++ (id)scaleZ:(double)z
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   *(v4 + 9) = 1;
-  v4[4] = a3;
+  v4[4] = z;
 
   return v4;
 }
 
-+ (id)translation:(CGPoint)a3
++ (id)translation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = objc_alloc_init(a1);
+  y = translation.y;
+  x = translation.x;
+  v5 = objc_alloc_init(self);
   *(v5 + 10) = 1;
   v5[2] = x;
   v5[3] = y;
@@ -57,10 +57,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -69,9 +69,9 @@
   {
     v8.receiver = self;
     v8.super_class = RCPDiscreteGestureSpec;
-    if ([(RCPDiscreteGestureSpec *)&v8 isEqual:v4])
+    if ([(RCPDiscreteGestureSpec *)&v8 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5->_isRotation == self->_isRotation && v5->_isTranslation == self->_isTranslation && v5->_isScale == self->_isScale && v5->_x == self->_x && v5->_y == self->_y && v5->_z == self->_z;
     }
 

@@ -1,55 +1,55 @@
 @interface PlaylistViewController
-- (_TtC8VideosUI22PlaylistViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (_TtC8VideosUI22PlaylistViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PlaylistViewController
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E37F3E4C();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E37F3F48(a3);
+  sub_1E37F3F48(appear);
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E37F4048(a3);
+  sub_1E37F4048(appear);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E37F41F8(a3);
+  sub_1E37F41F8(disappear);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E37F475C();
 }
 
-- (_TtC8VideosUI22PlaylistViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI22PlaylistViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E37F849C();
 }
 

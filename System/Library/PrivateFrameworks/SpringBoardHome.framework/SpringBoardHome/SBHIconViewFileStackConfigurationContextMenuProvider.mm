@@ -1,29 +1,29 @@
 @interface SBHIconViewFileStackConfigurationContextMenuProvider
 - (SBHIconViewFileStackConfigurationContextMenuProvider)init;
-- (SBHIconViewFileStackConfigurationContextMenuProvider)initWithUniqueIdentifier:(id)a3;
+- (SBHIconViewFileStackConfigurationContextMenuProvider)initWithUniqueIdentifier:(id)identifier;
 - (SBHIconViewFileStackConfigurationContextMenuProviderDelegate)delegate;
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4;
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location;
 @end
 
 @implementation SBHIconViewFileStackConfigurationContextMenuProvider
 
 - (SBHIconViewFileStackConfigurationContextMenuProvider)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(SBHIconViewFileStackConfigurationContextMenuProvider *)self initWithUniqueIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(SBHIconViewFileStackConfigurationContextMenuProvider *)self initWithUniqueIdentifier:uUID];
 
   return v4;
 }
 
-- (SBHIconViewFileStackConfigurationContextMenuProvider)initWithUniqueIdentifier:(id)a3
+- (SBHIconViewFileStackConfigurationContextMenuProvider)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBHIconViewFileStackConfigurationContextMenuProvider;
   v5 = [(SBHIconViewFileStackConfigurationContextMenuProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
   }
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location
 {
   v112 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v5 = [v77 icon];
-  v6 = [v5 isFileStackIcon];
+  viewCopy = view;
+  icon = [viewCopy icon];
+  isFileStackIcon = [icon isFileStackIcon];
 
-  if (v6)
+  if (isFileStackIcon)
   {
-    v7 = [v77 icon];
+    icon2 = [viewCopy icon];
     v8 = objc_opt_class();
-    v9 = v7;
+    v9 = icon2;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -75,8 +75,8 @@
       v14 = MEMORY[0x1E696AEC0];
       v15 = SBHBundle();
       v16 = [v15 localizedStringForKey:@"OPEN_ITEM_TITLE_WITH_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-      v17 = [v78 displayName];
-      v18 = [v14 stringWithFormat:v16, v17];
+      displayName = [v78 displayName];
+      v18 = [v14 stringWithFormat:v16, displayName];
 
       v19 = MEMORY[0x1E69DC628];
       v107[0] = MEMORY[0x1E69E9820];
@@ -119,14 +119,14 @@
     v71 = [v24 actionWithTitle:v26 image:v72 identifier:0 handler:v100];
 
     [v76 addObject:v71];
-    v85 = [v78 displayMode];
-    v27 = [MEMORY[0x1E699A418] supportedDisplayModes];
+    displayMode = [v78 displayMode];
+    supportedDisplayModes = [MEMORY[0x1E699A418] supportedDisplayModes];
     v86 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    obj = v27;
+    obj = supportedDisplayModes;
     v28 = [obj countByEnumeratingWithState:&v96 objects:v111 count:16];
     if (v28)
     {
@@ -141,10 +141,10 @@
           }
 
           v31 = *(*(&v96 + 1) + 8 * i);
-          v32 = [v31 localizedName];
+          localizedName = [v31 localizedName];
           v33 = MEMORY[0x1E69DCAB8];
-          v34 = [v31 symbolName];
-          v35 = [v33 _systemImageNamed:v34];
+          symbolName = [v31 symbolName];
+          v35 = [v33 _systemImageNamed:symbolName];
 
           v36 = MEMORY[0x1E69DC628];
           v94[0] = MEMORY[0x1E69E9820];
@@ -153,10 +153,10 @@
           v94[3] = &unk_1E808F420;
           objc_copyWeak(&v95, &location);
           v94[4] = v31;
-          v37 = [v36 actionWithTitle:v32 image:v35 identifier:0 handler:v94];
-          v38 = [v85 identifier];
-          v39 = [v31 identifier];
-          LODWORD(v31) = [v38 isEqualToString:v39];
+          v37 = [v36 actionWithTitle:localizedName image:v35 identifier:0 handler:v94];
+          identifier = [displayMode identifier];
+          identifier2 = [v31 identifier];
+          LODWORD(v31) = [identifier isEqualToString:identifier2];
 
           [v37 setState:v31];
           [v86 addObject:v37];
@@ -170,15 +170,15 @@
       while (v28);
     }
 
-    v40 = [MEMORY[0x1E699A418] supportedSortOrders];
+    supportedSortOrders = [MEMORY[0x1E699A418] supportedSortOrders];
     v84 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v83 = [v78 sortOrder];
-    v41 = [v78 isCurrentSortOrderAscending];
+    sortOrder = [v78 sortOrder];
+    isCurrentSortOrderAscending = [v78 isCurrentSortOrderAscending];
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v80 = v40;
+    v80 = supportedSortOrders;
     v42 = [v80 countByEnumeratingWithState:&v90 objects:v110 count:16];
     if (v42)
     {
@@ -193,16 +193,16 @@
           }
 
           v44 = *(*(&v90 + 1) + 8 * j);
-          v45 = [v44 localizedName];
-          v46 = [v83 identifier];
-          v47 = [v44 identifier];
-          v48 = [v46 isEqualToString:v47];
+          localizedName2 = [v44 localizedName];
+          identifier3 = [sortOrder identifier];
+          identifier4 = [v44 identifier];
+          v48 = [identifier3 isEqualToString:identifier4];
 
           v49 = &stru_1F3D472A8;
           if (v48)
           {
             v50 = SBHBundle();
-            if (v41)
+            if (isCurrentSortOrderAscending)
             {
               [v50 localizedStringForKey:@"FILE_STACK_CONFIGURATION_CONTEXT_MENU_SORT_ASCENDING_SUBTITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
             }
@@ -215,8 +215,8 @@
           }
 
           v51 = MEMORY[0x1E69DCAB8];
-          v52 = [v44 symbolName];
-          v53 = [v51 _systemImageNamed:v52];
+          symbolName2 = [v44 symbolName];
+          v53 = [v51 _systemImageNamed:symbolName2];
 
           v54 = MEMORY[0x1E69DC628];
           v87[0] = MEMORY[0x1E69E9820];
@@ -225,8 +225,8 @@
           v87[3] = &unk_1E808F448;
           objc_copyWeak(&v88, &location);
           v87[4] = v44;
-          v89 = v41;
-          v55 = [v54 actionWithTitle:v45 image:v53 identifier:0 handler:v87];
+          v89 = isCurrentSortOrderAscending;
+          v55 = [v54 actionWithTitle:localizedName2 image:v53 identifier:0 handler:v87];
           [v55 setState:v48];
           [v55 setSubtitle:v49];
           [v84 addObject:v55];

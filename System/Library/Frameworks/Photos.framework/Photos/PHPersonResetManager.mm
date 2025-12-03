@@ -1,26 +1,26 @@
 @interface PHPersonResetManager
-- (PHPersonResetManager)initWithPhotoLibrary:(id)a3;
-- (id)resetPersonsWithCompletionHandler:(id)a3;
-- (id)resetSocialGroupsWithCompletionHandler:(id)a3;
+- (PHPersonResetManager)initWithPhotoLibrary:(id)library;
+- (id)resetPersonsWithCompletionHandler:(id)handler;
+- (id)resetSocialGroupsWithCompletionHandler:(id)handler;
 @end
 
 @implementation PHPersonResetManager
 
-- (id)resetSocialGroupsWithCompletionHandler:(id)a3
+- (id)resetSocialGroupsWithCompletionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PHPhotoLibrary *)self->_library assetsdClient];
-  v7 = [v6 libraryClient];
+  handlerCopy = handler;
+  assetsdClient = [(PHPhotoLibrary *)self->_library assetsdClient];
+  libraryClient = [assetsdClient libraryClient];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __63__PHPersonResetManager_resetSocialGroupsWithCompletionHandler___block_invoke;
   v23[3] = &unk_1E75A84A0;
   v23[4] = self;
-  v8 = v5;
+  v8 = handlerCopy;
   v24 = v8;
-  v9 = [v7 resetSocialGroupsWithCompletionHandler:v23];
+  v9 = [libraryClient resetSocialGroupsWithCompletionHandler:v23];
   if (v9)
   {
     v10 = _Block_copy(self->_progressHandler);
@@ -33,7 +33,7 @@
       v18[3] = &unk_1E75A84C8;
       v22 = a2;
       v19 = v9;
-      v20 = self;
+      selfCopy = self;
       v21 = v10;
       v12 = [v11 initWithSourceProgress:v19 progressHandler:v18];
       progressFollower = self->_progressFollower;
@@ -113,21 +113,21 @@ uint64_t __63__PHPersonResetManager_resetSocialGroupsWithCompletionHandler___blo
   return v8(v5, v6, v7);
 }
 
-- (id)resetPersonsWithCompletionHandler:(id)a3
+- (id)resetPersonsWithCompletionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PHPhotoLibrary *)self->_library assetsdClient];
-  v7 = [v6 libraryClient];
+  handlerCopy = handler;
+  assetsdClient = [(PHPhotoLibrary *)self->_library assetsdClient];
+  libraryClient = [assetsdClient libraryClient];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __58__PHPersonResetManager_resetPersonsWithCompletionHandler___block_invoke;
   v23[3] = &unk_1E75A84A0;
   v23[4] = self;
-  v8 = v5;
+  v8 = handlerCopy;
   v24 = v8;
-  v9 = [v7 resetPersonsWithCompletionHandler:v23];
+  v9 = [libraryClient resetPersonsWithCompletionHandler:v23];
   if (v9)
   {
     v10 = _Block_copy(self->_progressHandler);
@@ -140,7 +140,7 @@ uint64_t __63__PHPersonResetManager_resetSocialGroupsWithCompletionHandler___blo
       v18[3] = &unk_1E75A84C8;
       v22 = a2;
       v19 = v9;
-      v20 = self;
+      selfCopy = self;
       v21 = v10;
       v12 = [v11 initWithSourceProgress:v19 progressHandler:v18];
       progressFollower = self->_progressFollower;
@@ -220,16 +220,16 @@ uint64_t __58__PHPersonResetManager_resetPersonsWithCompletionHandler___block_in
   return v8(v5, v6, v7);
 }
 
-- (PHPersonResetManager)initWithPhotoLibrary:(id)a3
+- (PHPersonResetManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PHPersonResetManager;
   v6 = [(PHPersonResetManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
   }
 
   return v7;

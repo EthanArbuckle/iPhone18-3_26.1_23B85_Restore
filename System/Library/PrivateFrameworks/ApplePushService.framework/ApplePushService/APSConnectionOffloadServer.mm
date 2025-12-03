@@ -1,13 +1,13 @@
 @interface APSConnectionOffloadServer
-- (APSConnectionOffloadServer)initWithServerEndpoint:(tb_endpoint_s *)a3;
+- (APSConnectionOffloadServer)initWithServerEndpoint:(tb_endpoint_s *)endpoint;
 - (APSConnectionOffloadServerDelegate)delegate;
-- (void)reportAOPEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)a3 droppedEvents:(const aonmicroapsd_droppedtelemetryeventcount_s *)a4;
-- (void)writeKeepAliveInfoToDisk:(const aonmicroapsd_keepalivestate_s *)a3 interface:(unsigned __int8)a4 addressFamily:(unsigned __int8)a5;
+- (void)reportAOPEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)events droppedEvents:(const aonmicroapsd_droppedtelemetryeventcount_s *)droppedEvents;
+- (void)writeKeepAliveInfoToDisk:(const aonmicroapsd_keepalivestate_s *)disk interface:(unsigned __int8)interface addressFamily:(unsigned __int8)family;
 @end
 
 @implementation APSConnectionOffloadServer
 
-- (APSConnectionOffloadServer)initWithServerEndpoint:(tb_endpoint_s *)a3
+- (APSConnectionOffloadServer)initWithServerEndpoint:(tb_endpoint_s *)endpoint
 {
   v20.receiver = self;
   v20.super_class = APSConnectionOffloadServer;
@@ -18,7 +18,7 @@
     goto LABEL_7;
   }
 
-  v4->_serverEndpoint = a3;
+  v4->_serverEndpoint = endpoint;
   objc_initWeak(&location, v4);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -67,20 +67,20 @@ LABEL_8:
   return v13;
 }
 
-- (void)reportAOPEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)a3 droppedEvents:(const aonmicroapsd_droppedtelemetryeventcount_s *)a4
+- (void)reportAOPEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)events droppedEvents:(const aonmicroapsd_droppedtelemetryeventcount_s *)droppedEvents
 {
-  v6 = [(APSConnectionOffloadServer *)self delegate];
-  v7 = *a4;
-  [v6 reportOffloadEvents:a3 droppedEvents:&v7];
+  delegate = [(APSConnectionOffloadServer *)self delegate];
+  v7 = *droppedEvents;
+  [delegate reportOffloadEvents:events droppedEvents:&v7];
 }
 
-- (void)writeKeepAliveInfoToDisk:(const aonmicroapsd_keepalivestate_s *)a3 interface:(unsigned __int8)a4 addressFamily:(unsigned __int8)a5
+- (void)writeKeepAliveInfoToDisk:(const aonmicroapsd_keepalivestate_s *)disk interface:(unsigned __int8)interface addressFamily:(unsigned __int8)family
 {
-  if (!a4)
+  if (!interface)
   {
-    v8 = a3->var1 == 0;
-    v9 = [(APSConnectionOffloadServer *)self delegate];
-    [v9 connectionOffloadSever:self cacheKeepAliveInterval:v8 isInitialGrowth:a3->var0.var0];
+    v8 = disk->var1 == 0;
+    delegate = [(APSConnectionOffloadServer *)self delegate];
+    [delegate connectionOffloadSever:self cacheKeepAliveInterval:v8 isInitialGrowth:disk->var0.var0];
   }
 }
 

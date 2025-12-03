@@ -1,21 +1,21 @@
 @interface THInteractiveButtonLayer
 - (CGSize)titleShadowOffset;
 - (TSUImage)p_normalImage;
-- (id)p_buttonImageWithBackgroundImage:(id)a3;
-- (id)swapIntoView:(id)a3;
+- (id)p_buttonImageWithBackgroundImage:(id)image;
+- (id)swapIntoView:(id)view;
 - (void)dealloc;
 - (void)layoutSublayers;
 - (void)p_invalidateButtonImage;
-- (void)setBounds:(CGRect)a3;
-- (void)setNormalBackgroundImage:(id)a3;
-- (void)setPressedBackgroundImage:(id)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleShadowBlurRadius:(double)a3;
-- (void)setTitleShadowColor:(id)a3;
-- (void)setTitleShadowOffset:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setNormalBackgroundImage:(id)image;
+- (void)setPressedBackgroundImage:(id)image;
+- (void)setTarget:(id)target action:(SEL)action;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
+- (void)setTitleFont:(id)font;
+- (void)setTitleShadowBlurRadius:(double)radius;
+- (void)setTitleShadowColor:(id)color;
+- (void)setTitleShadowOffset:(CGSize)offset;
 @end
 
 @implementation THInteractiveButtonLayer
@@ -27,118 +27,118 @@
   [(THInteractiveButtonLayer *)&v3 dealloc];
 }
 
-- (void)setNormalBackgroundImage:(id)a3
+- (void)setNormalBackgroundImage:(id)image
 {
   normalBackgroundImage = self->_normalBackgroundImage;
-  if (normalBackgroundImage != a3)
+  if (normalBackgroundImage != image)
   {
 
-    self->_normalBackgroundImage = a3;
+    self->_normalBackgroundImage = image;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setPressedBackgroundImage:(id)a3
+- (void)setPressedBackgroundImage:(id)image
 {
   pressedBackgroundImage = self->_pressedBackgroundImage;
-  if (pressedBackgroundImage != a3)
+  if (pressedBackgroundImage != image)
   {
 
-    self->_pressedBackgroundImage = a3;
+    self->_pressedBackgroundImage = image;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   title = self->_title;
-  if (title != a3)
+  if (title != title)
   {
 
-    self->_title = a3;
+    self->_title = title;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
   titleFont = self->_titleFont;
-  if (titleFont != a3)
+  if (titleFont != font)
   {
 
-    self->_titleFont = a3;
+    self->_titleFont = font;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
   titleColor = self->_titleColor;
-  if (titleColor != a3)
+  if (titleColor != color)
   {
 
-    self->_titleColor = a3;
+    self->_titleColor = color;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitleShadowColor:(id)a3
+- (void)setTitleShadowColor:(id)color
 {
   titleShadowColor = self->_titleShadowColor;
-  if (titleShadowColor != a3)
+  if (titleShadowColor != color)
   {
 
-    self->_titleShadowColor = a3;
+    self->_titleShadowColor = color;
 
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitleShadowOffset:(CGSize)a3
+- (void)setTitleShadowOffset:(CGSize)offset
 {
-  if (a3.width != self->_titleShadowOffset.width || a3.height != self->_titleShadowOffset.height)
+  if (offset.width != self->_titleShadowOffset.width || offset.height != self->_titleShadowOffset.height)
   {
-    self->_titleShadowOffset = a3;
+    self->_titleShadowOffset = offset;
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTitleShadowBlurRadius:(double)a3
+- (void)setTitleShadowBlurRadius:(double)radius
 {
-  if (self->_titleShadowBlurRadius != a3)
+  if (self->_titleShadowBlurRadius != radius)
   {
-    self->_titleShadowBlurRadius = a3;
+    self->_titleShadowBlurRadius = radius;
     [(THInteractiveButtonLayer *)self p_invalidateButtonImage];
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  self->_target = a3;
-  if (a4)
+  self->_target = target;
+  if (action)
   {
-    v4 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v4 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v4;
+  self->_action = actionCopy;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(THInteractiveButtonLayer *)self bounds];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -166,7 +166,7 @@
   [(THInteractiveButtonLayer *)self setContents:[(TSUImage *)[(THInteractiveButtonLayer *)self p_normalImage] CGImage]];
 }
 
-- (id)swapIntoView:(id)a3
+- (id)swapIntoView:(id)view
 {
   v4 = [UIButton buttonWithType:0];
   [(THInteractiveButtonLayer *)self frame];
@@ -206,7 +206,7 @@
   [(THInteractiveButtonLayer *)self setNeedsLayout];
 }
 
-- (id)p_buttonImageWithBackgroundImage:(id)a3
+- (id)p_buttonImageWithBackgroundImage:(id)image
 {
   if (self->_title && self->_titleFont && self->_titleColor)
   {
@@ -219,7 +219,7 @@
     v14[2] = sub_1D0BCC;
     v14[3] = &unk_45F108;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = image;
     v14[6] = v9;
     v14[7] = v10;
     v14[8] = v11;
@@ -227,7 +227,7 @@
     return [TSUImage imageWithSize:v14 drawnUsingBlock:v6, v8];
   }
 
-  return a3;
+  return image;
 }
 
 - (CGSize)titleShadowOffset

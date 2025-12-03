@@ -1,14 +1,14 @@
 @interface PBCodable
-- (void)_ad_performForPeerLocationWithCompletion:(id)a3;
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5;
-- (void)_ad_performWithPeerLocationManagerRemote:(id)a3 completion:(id)a4;
-- (void)_ad_performWithPeerStreamConnection:(id)a3 context:(id)a4;
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4;
+- (void)_ad_performForPeerLocationWithCompletion:(id)completion;
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion;
+- (void)_ad_performWithPeerLocationManagerRemote:(id)remote completion:(id)completion;
+- (void)_ad_performWithPeerStreamConnection:(id)connection context:(id)context;
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion;
 @end
 
 @implementation PBCodable
 
-- (void)_ad_performWithPeerStreamConnection:(id)a3 context:(id)a4
+- (void)_ad_performWithPeerStreamConnection:(id)connection context:(id)context
 {
   v4 = AFSiriLogContextIDS;
   if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
@@ -19,33 +19,33 @@
   }
 }
 
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)_ad_performWithPeerLocationManagerRemote:(id)a3 completion:(id)a4
+- (void)_ad_performWithPeerLocationManagerRemote:(id)remote completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)_ad_performForPeerLocationWithCompletion:(id)a3
+- (void)_ad_performForPeerLocationWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -55,7 +55,7 @@
   }
 
   v7 = +[ADPeerCloudService _unexpectedMessageError];
-  v5[2](v5, 0, 0xFFFFLL, v7);
+  completionCopy[2](completionCopy, 0, 0xFFFFLL, v7);
 }
 
 @end

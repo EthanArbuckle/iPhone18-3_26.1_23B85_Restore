@@ -62,26 +62,26 @@
 - (id)mad_photosLocalIdentifier
 {
   v2 = objc_opt_class();
-  v3 = [a1 stringIdentifier];
-  v4 = [v2 mad_localIdentifierFromStringIdentifier:v3];
+  stringIdentifier = [self stringIdentifier];
+  v4 = [v2 mad_localIdentifierFromStringIdentifier:stringIdentifier];
 
   return v4;
 }
 
 - (uint64_t)mad_hasImageEmbedding
 {
-  v1 = [a1 stringIdentifier];
+  stringIdentifier = [self stringIdentifier];
   v2 = [objc_opt_class() mad_stringIdentifierPostfixForEmbeddingType:1];
-  v3 = [v1 hasSuffix:v2];
+  v3 = [stringIdentifier hasSuffix:v2];
 
   return v3;
 }
 
 - (uint64_t)mad_hasVideoEmbedding
 {
-  v1 = [a1 stringIdentifier];
+  stringIdentifier = [self stringIdentifier];
   v2 = [objc_opt_class() mad_stringIdentifierPostfixForEmbeddingType:2];
-  v3 = [v1 hasSuffix:v2];
+  v3 = [stringIdentifier hasSuffix:v2];
 
   return v3;
 }
@@ -89,7 +89,7 @@
 - (uint64_t)mad_embeddingVersion
 {
   v20 = *MEMORY[0x1E69E9840];
-  [a1 attributes];
+  [self attributes];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -109,15 +109,15 @@
         }
 
         v6 = *(*(&v15 + 1) + 8 * i);
-        v7 = [v6 getName];
-        v8 = [MEMORY[0x1E69DF600] mad_embeddingVersionAttributeName];
-        v9 = [v7 isEqualToString:v8];
+        getName = [v6 getName];
+        mad_embeddingVersionAttributeName = [MEMORY[0x1E69DF600] mad_embeddingVersionAttributeName];
+        v9 = [getName isEqualToString:mad_embeddingVersionAttributeName];
 
         if (v9)
         {
           v11 = [v1 objectForKeyedSubscript:v6];
-          v12 = [v11 getIntValue];
-          v10 = [v12 unsignedIntegerValue];
+          getIntValue = [v11 getIntValue];
+          unsignedIntegerValue = [getIntValue unsignedIntegerValue];
 
           goto LABEL_14;
         }
@@ -139,19 +139,19 @@
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VSKAsset+MediaAnalysis] No embedding version attribute found", v14, 2u);
   }
 
-  v10 = 0;
+  unsignedIntegerValue = 0;
 LABEL_14:
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
 - (id)mad_updateAssetWithEmbeddingVersion:()MediaAnalysis
 {
   v2 = [MEMORY[0x1E69DF5F8] mad_attributesWithEmbeddingVersion:?];
   v3 = objc_alloc(MEMORY[0x1E69DF5F8]);
-  v4 = [a1 stringIdentifier];
-  v5 = [a1 vectors];
-  v6 = [v3 initWithStringIdentifier:v4 vectors:v5 attributes:v2 payload:0];
+  stringIdentifier = [self stringIdentifier];
+  vectors = [self vectors];
+  v6 = [v3 initWithStringIdentifier:stringIdentifier vectors:vectors attributes:v2 payload:0];
 
   return v6;
 }
@@ -171,8 +171,8 @@ LABEL_14:
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
 
     v11 = objc_alloc(MEMORY[0x1E69DF630]);
-    v12 = [MEMORY[0x1E69DF600] mad_stringIdentifierAttribute];
-    v4 = [v11 initWithAttribute:v12 disjunctiveFilters:v10];
+    mad_stringIdentifierAttribute = [MEMORY[0x1E69DF600] mad_stringIdentifierAttribute];
+    v4 = [v11 initWithAttribute:mad_stringIdentifierAttribute disjunctiveFilters:v10];
   }
 
   else
@@ -194,7 +194,7 @@ LABEL_14:
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -216,10 +216,10 @@ LABEL_14:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [objc_opt_class() mad_stringIdentifierFromLocalIdentifier:v10 embeddingType:{1, v14}];
-        [v4 addObject:v11];
+        [array addObject:v11];
 
         v12 = [objc_opt_class() mad_stringIdentifierFromLocalIdentifier:v10 embeddingType:2];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -228,14 +228,14 @@ LABEL_14:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (id)mad_attributesWithEmbeddingVersion:()MediaAnalysis
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69DF600] mad_embeddingVersionAttribute];
-  v10 = v4;
+  mad_embeddingVersionAttribute = [MEMORY[0x1E69DF600] mad_embeddingVersionAttribute];
+  v10 = mad_embeddingVersionAttribute;
   v5 = objc_alloc(MEMORY[0x1E69DF620]);
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
   v7 = [v5 initWithIntegerValue:v6];
@@ -252,9 +252,9 @@ LABEL_14:
   v8 = MEMORY[0x1E6978628];
   v9 = a4;
   v10 = [v8 uuidFromLocalIdentifier:v7];
-  v11 = [v9 vcp_results];
+  vcp_results = [v9 vcp_results];
 
-  v12 = [v11 objectForKeyedSubscript:@"ImageEmbeddingResults"];
+  v12 = [vcp_results objectForKeyedSubscript:@"ImageEmbeddingResults"];
 
   v13 = VCPSignPostLog();
   v14 = os_signpost_id_generate(v13);
@@ -333,15 +333,15 @@ LABEL_14:
   v7 = MEMORY[0x1E6978628];
   v8 = a4;
   v9 = [v7 uuidFromLocalIdentifier:v6];
-  v10 = [v8 vcp_results];
-  v11 = [v10 objectForKeyedSubscript:@"VideoEmbeddingResults"];
+  vcp_results = [v8 vcp_results];
+  v11 = [vcp_results objectForKeyedSubscript:@"VideoEmbeddingResults"];
 
-  v12 = [v8 vcp_results];
-  v13 = [v12 objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"];
+  vcp_results2 = [v8 vcp_results];
+  v13 = [vcp_results2 objectForKeyedSubscript:@"AudioFusedVideoEmbeddingResults"];
 
-  v14 = [v8 vcp_results];
+  vcp_results3 = [v8 vcp_results];
 
-  v15 = [v14 objectForKeyedSubscript:@"SummarizedEmbeddingResults"];
+  v15 = [vcp_results3 objectForKeyedSubscript:@"SummarizedEmbeddingResults"];
 
   v16 = VCPSignPostLog();
   v17 = os_signpost_id_generate(v16);
@@ -410,11 +410,11 @@ LABEL_14:
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [v5 photoLibrary];
-  v7 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v6];
+  photoLibrary = [v5 photoLibrary];
+  v7 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:photoLibrary];
 
-  v8 = [v5 localIdentifier];
-  v24[0] = v8;
+  localIdentifier = [v5 localIdentifier];
+  v24[0] = localIdentifier;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v17 = 0;
   v10 = [v7 fetchAssetsWithLocalIdentifiers:v9 embeddingType:a4 error:&v17];
@@ -424,10 +424,10 @@ LABEL_14:
   {
     if ([v10 count] >= 2 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 localIdentifier];
+      localIdentifier2 = [v5 localIdentifier];
       v13 = [v10 count];
       *buf = 138412802;
-      v19 = v12;
+      v19 = localIdentifier2;
       v20 = 1024;
       v21 = v13;
       v22 = 1024;
@@ -442,9 +442,9 @@ LABEL_14:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v15 = [v5 localIdentifier];
+      localIdentifier3 = [v5 localIdentifier];
       *buf = 138412802;
-      v19 = v15;
+      v19 = localIdentifier3;
       v20 = 1024;
       v21 = a4;
       v22 = 2112;

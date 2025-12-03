@@ -1,32 +1,32 @@
 @interface SBRecordingIndicatorManager
 + (BOOL)_supportsSecureIndicator;
 + (BOOL)_systemApertureManagedIndicatorEnabled;
-- (BOOL)_controlCenterIsOnTheSameWindowScene:(id)a3;
-- (SBRecordingIndicatorManager)initWithWindowScene:(id)a3;
+- (BOOL)_controlCenterIsOnTheSameWindowScene:(id)scene;
+- (SBRecordingIndicatorManager)initWithWindowScene:(id)scene;
 - (SBWindowScene)windowScene;
-- (id)_indicatorIdentifierForSensorType:(int64_t)a3;
+- (id)_indicatorIdentifierForSensorType:(int64_t)type;
 - (uint64_t)_configureSupportForRotatingIndicator;
-- (unint64_t)_indicatorTypeForSensorType:(int64_t)a3;
-- (void)_createRecordingIndicatorForStandaloneLocation:(BOOL)a3;
+- (unint64_t)_indicatorTypeForSensorType:(int64_t)type;
+- (void)_createRecordingIndicatorForStandaloneLocation:(BOOL)location;
 - (void)_createRecordingIndicatorForStatusBarLocation;
 - (void)_createRecordingIndicatorForSystemApertureLocation;
-- (void)_dataProviderDidUpdate:(id)a3;
-- (void)_setIndicatorVisible:(BOOL)a3 atLocation:(unint64_t)a4;
-- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)a3;
-- (void)_updateIndicatorViewForSensorType:(int64_t)a3;
+- (void)_dataProviderDidUpdate:(id)update;
+- (void)_setIndicatorVisible:(BOOL)visible atLocation:(unint64_t)location;
+- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)attributions;
+- (void)_updateIndicatorViewForSensorType:(int64_t)type;
 - (void)_updateRecordingIndicatorForStatusBarChanges;
 - (void)_updateRecordingIndicatorLocationIfNecessary;
 - (void)_updateSystemApertureElementAssertion;
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3;
-- (void)controlCenterDidDismiss:(id)a3;
-- (void)controlCenterWillPresent:(id)a3;
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider;
+- (void)controlCenterDidDismiss:(id)dismiss;
+- (void)controlCenterWillPresent:(id)present;
 - (void)dealloc;
-- (void)differentiateWithoutColorDidChange:(id)a3;
-- (void)recordingIndicatorViewController:(id)a3 didUpdateIndicatorState:(unint64_t)a4;
-- (void)setIndicatorVisible:(BOOL)a3;
-- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)systemApertureLayoutDidChange:(id)a3;
+- (void)differentiateWithoutColorDidChange:(id)change;
+- (void)recordingIndicatorViewController:(id)controller didUpdateIndicatorState:(unint64_t)state;
+- (void)setIndicatorVisible:(BOOL)visible;
+- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)location;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)systemApertureLayoutDidChange:(id)change;
 @end
 
 @implementation SBRecordingIndicatorManager
@@ -34,20 +34,20 @@
 - (void)_updateRecordingIndicatorForStatusBarChanges
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SBRecordingIndicatorManager *)self displayMode];
-  if (v3 == 5)
+  displayMode = [(SBRecordingIndicatorManager *)self displayMode];
+  if (displayMode == 5)
   {
 
     [(SBRecordingIndicatorManager *)self _updateRecordingIndicatorLocationIfNecessary];
   }
 
-  else if (v3 == 3 && [(SBRecordingIndicatorManager *)self isIndicatorVisible])
+  else if (displayMode == 3 && [(SBRecordingIndicatorManager *)self isIndicatorVisible])
   {
-    v4 = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
-    v5 = [v4 statusBarManager];
-    v6 = [v5 assertionManager];
+    _sbWindowScene = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
-    v7 = [v6 isFrontmostStatusBarPartHidden:2];
+    v7 = [assertionManager isFrontmostStatusBarPartHidden:2];
     if (self->_indicatorStatusBarPartIsHidden == v7)
     {
       goto LABEL_16;
@@ -99,12 +99,12 @@ LABEL_16:
 
 - (void)_updateSystemApertureElementAssertion
 {
-  v3 = [(SBRecordingIndicatorManager *)self isIndicatorVisible];
-  v4 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
-  v5 = [(SAInvalidatable *)self->_recordingIndicatorElementAssertion isValid];
-  if (!v3 && !v4)
+  isIndicatorVisible = [(SBRecordingIndicatorManager *)self isIndicatorVisible];
+  indicatorState = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
+  isValid = [(SAInvalidatable *)self->_recordingIndicatorElementAssertion isValid];
+  if (!isIndicatorVisible && !indicatorState)
   {
-    if (!v5)
+    if (!isValid)
     {
       goto LABEL_11;
     }
@@ -112,7 +112,7 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  if (!self->_canSystemApertureRegisterRecordingIndicatorElement && ((v5 ^ 1) & 1) == 0)
+  if (!self->_canSystemApertureRegisterRecordingIndicatorElement && ((isValid ^ 1) & 1) == 0)
   {
 LABEL_7:
     v6 = SBLogStatusBarish();
@@ -130,7 +130,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (((v5 | !v3) & 1) == 0 && self->_canSystemApertureRegisterRecordingIndicatorElement)
+  if (((isValid | !isIndicatorVisible) & 1) == 0 && self->_canSystemApertureRegisterRecordingIndicatorElement)
   {
     v8 = SBLogStatusBarish();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -156,12 +156,12 @@ LABEL_11:
 {
   if (![(SBRecordingIndicatorManager *)self isIndicatorVisible])
   {
-    v5 = self;
+    selfCopy5 = self;
     v6 = 0;
 LABEL_6:
-    [(SBRecordingIndicatorManager *)v5 _setIndicatorVisible:v6 atLocation:0];
+    [(SBRecordingIndicatorManager *)selfCopy5 _setIndicatorVisible:v6 atLocation:0];
     [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:2];
-    v3 = self;
+    selfCopy4 = self;
     canSystemApertureRegisterRecordingIndicatorElement = 0;
     goto LABEL_7;
   }
@@ -170,58 +170,58 @@ LABEL_6:
   {
     [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:0];
     [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:2];
-    v3 = self;
+    selfCopy4 = self;
     canSystemApertureRegisterRecordingIndicatorElement = 1;
 LABEL_7:
 
-    [(SBRecordingIndicatorManager *)v3 _setIndicatorVisible:canSystemApertureRegisterRecordingIndicatorElement atLocation:3];
+    [(SBRecordingIndicatorManager *)selfCopy4 _setIndicatorVisible:canSystemApertureRegisterRecordingIndicatorElement atLocation:3];
     return;
   }
 
-  v7 = [(SBRecordingIndicatorManager *)self displayMode];
-  if (v7 == 2)
+  displayMode = [(SBRecordingIndicatorManager *)self displayMode];
+  if (displayMode == 2)
   {
     [(SBRecordingIndicatorManager *)self _setIndicatorVisible:!self->_canSystemApertureRegisterRecordingIndicatorElement atLocation:0];
     [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:2];
     canSystemApertureRegisterRecordingIndicatorElement = self->_canSystemApertureRegisterRecordingIndicatorElement;
-    v3 = self;
+    selfCopy4 = self;
     goto LABEL_7;
   }
 
-  if (v7 != 5)
+  if (displayMode != 5)
   {
-    if (v7 != 4)
+    if (displayMode != 4)
     {
       return;
     }
 
-    v5 = self;
+    selfCopy5 = self;
     v6 = 1;
     goto LABEL_6;
   }
 
-  v8 = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
-  v9 = [v8 statusBarManager];
-  v10 = [v9 assertionManager];
+  _sbWindowScene = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
 
-  LOBYTE(v8) = [v10 isFrontmostStatusBarPartHidden:2];
-  LOBYTE(v8) = v8 | [(SBRecordingIndicatorManager *)self systemApertureIsSoLargeThatTheStatusBarIsProbablyHidden];
-  [(SBRecordingIndicatorManager *)self _setIndicatorVisible:v8 & 1 atLocation:0];
-  [(SBRecordingIndicatorManager *)self _setIndicatorVisible:(v8 & 1) == 0 atLocation:2];
+  LOBYTE(_sbWindowScene) = [assertionManager isFrontmostStatusBarPartHidden:2];
+  LOBYTE(_sbWindowScene) = _sbWindowScene | [(SBRecordingIndicatorManager *)self systemApertureIsSoLargeThatTheStatusBarIsProbablyHidden];
+  [(SBRecordingIndicatorManager *)self _setIndicatorVisible:_sbWindowScene & 1 atLocation:0];
+  [(SBRecordingIndicatorManager *)self _setIndicatorVisible:(_sbWindowScene & 1) == 0 atLocation:2];
   [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:3];
 }
 
-- (SBRecordingIndicatorManager)initWithWindowScene:(id)a3
+- (SBRecordingIndicatorManager)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v24.receiver = self;
   v24.super_class = SBRecordingIndicatorManager;
   v5 = [(SBRecordingIndicatorManager *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
-    v7 = [v4 isMainDisplayWindowScene];
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
+    isMainDisplayWindowScene = [sceneCopy isMainDisplayWindowScene];
     v8 = SBSIsSystemApertureAvailable();
     v9 = objc_opt_class();
     if (v8)
@@ -235,15 +235,15 @@ LABEL_7:
       }
 
       v10 = 2;
-      if (!v7)
+      if (!isMainDisplayWindowScene)
       {
         v10 = 0;
       }
 
       v6->_displayMode = v10;
-      if (v7)
+      if (isMainDisplayWindowScene)
       {
-        if (![v4 isMainDisplayWindowScene])
+        if (![sceneCopy isMainDisplayWindowScene])
         {
 LABEL_13:
           [(SBRecordingIndicatorManager *)v6 _createRecordingIndicatorForSystemApertureLocation];
@@ -262,14 +262,14 @@ LABEL_22:
       goto LABEL_24;
     }
 
-    if (([v9 _supportsSecureIndicator] & v7) == 1)
+    if (([v9 _supportsSecureIndicator] & isMainDisplayWindowScene) == 1)
     {
       v6->_displayMode = 1;
       [(SBRecordingIndicatorManager *)v6 _createRecordingIndicatorForStandaloneLocation:0];
       [(SBRecordingIndicatorManager *)v6 _createRecordingIndicatorForSecureIndicator];
 LABEL_24:
-      v15 = [SBApp sensorActivityDataProvider];
-      [v15 addObserver:v6];
+      sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+      [sensorActivityDataProvider addObserver:v6];
       v16 = objc_alloc_init(SBSecureIndicatorMinimumOnTimeCoordinator);
       minimumOnTimeCoordinator = v6->_minimumOnTimeCoordinator;
       v6->_minimumOnTimeCoordinator = v16;
@@ -277,17 +277,17 @@ LABEL_24:
       v18 = +[SBRecordingIndicatorDomain rootSettings];
       [v18 addKeyObserver:v6];
 
-      v19 = [(UIWindow *)v6->_recordingIndicatorWindow _sbWindowScene];
-      v20 = [v19 statusBarManager];
-      v21 = [v20 assertionManager];
-      [v21 addObserver:v6];
+      _sbWindowScene = [(UIWindow *)v6->_recordingIndicatorWindow _sbWindowScene];
+      statusBarManager = [_sbWindowScene statusBarManager];
+      assertionManager = [statusBarManager assertionManager];
+      [assertionManager addObserver:v6];
 
-      v22 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v22 addObserver:v6 selector:sel_controlCenterWillPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
-      [v22 addObserver:v6 selector:sel_controlCenterDidDismiss_ name:@"SBControlCenterDidDismissNotification" object:0];
-      [v22 addObserver:v6 selector:sel_systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
-      [v22 addObserver:v6 selector:sel_differentiateWithoutColorDidChange_ name:*MEMORY[0x277D764E0] object:0];
-      [(SBRecordingIndicatorManager *)v6 activityDidChangeForSensorActivityDataProvider:v15];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel_controlCenterWillPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
+      [defaultCenter addObserver:v6 selector:sel_controlCenterDidDismiss_ name:@"SBControlCenterDidDismissNotification" object:0];
+      [defaultCenter addObserver:v6 selector:sel_systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+      [defaultCenter addObserver:v6 selector:sel_differentiateWithoutColorDidChange_ name:*MEMORY[0x277D764E0] object:0];
+      [(SBRecordingIndicatorManager *)v6 activityDidChangeForSensorActivityDataProvider:sensorActivityDataProvider];
 
       goto LABEL_25;
     }
@@ -304,8 +304,8 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    if ([v13 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
     }
 
@@ -331,14 +331,14 @@ LABEL_25:
   return v6;
 }
 
-- (void)_createRecordingIndicatorForStandaloneLocation:(BOOL)a3
+- (void)_createRecordingIndicatorForStandaloneLocation:(BOOL)location
 {
-  v3 = a3;
-  v13 = [(SBRecordingIndicatorManager *)self windowScene];
-  v5 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:v13 debugName:@"Recording Indicator"];
+  locationCopy = location;
+  windowScene = [(SBRecordingIndicatorManager *)self windowScene];
+  v5 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator"];
   v6 = [SBRecordingIndicatorViewController alloc];
-  v7 = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
-  v8 = [(SBRecordingIndicatorViewController *)v6 initForLocation:v3 windowScene:v13 minimumOnTimeCoordinator:v7];
+  minimumOnTimeCoordinator = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
+  v8 = [(SBRecordingIndicatorViewController *)v6 initForLocation:locationCopy windowScene:windowScene minimumOnTimeCoordinator:minimumOnTimeCoordinator];
   recordingIndicatorViewController = self->_recordingIndicatorViewController;
   self->_recordingIndicatorViewController = v8;
 
@@ -346,9 +346,9 @@ LABEL_25:
   [(SBRecordingIndicatorWindow *)v5 setWindowLevel:*MEMORY[0x277D76EB0] + 10.0];
   [(SBRecordingIndicatorWindow *)v5 setUserInteractionEnabled:0];
   [(SBWindow *)v5 setHidden:0];
-  if (v3)
+  if (locationCopy)
   {
-    SBRecordingIndicatorApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(v5, v13);
+    SBRecordingIndicatorApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(v5, windowScene);
   }
 
   recordingIndicatorWindow = self->_recordingIndicatorWindow;
@@ -363,11 +363,11 @@ LABEL_25:
 
 - (void)_createRecordingIndicatorForStatusBarLocation
 {
-  v12 = [(SBRecordingIndicatorManager *)self windowScene];
-  v3 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:v12 debugName:@"Recording Indicator (UIKit Status Bar Portal)"];
+  windowScene = [(SBRecordingIndicatorManager *)self windowScene];
+  v3 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator (UIKit Status Bar Portal)"];
   v4 = [SBRecordingIndicatorViewController alloc];
-  v5 = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
-  v6 = [(SBRecordingIndicatorViewController *)v4 initForLocation:2 windowScene:v12 minimumOnTimeCoordinator:v5];
+  minimumOnTimeCoordinator = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
+  v6 = [(SBRecordingIndicatorViewController *)v4 initForLocation:2 windowScene:windowScene minimumOnTimeCoordinator:minimumOnTimeCoordinator];
   recordingIndicatorViewControllerUIKitStatusBarPortal = self->_recordingIndicatorViewControllerUIKitStatusBarPortal;
   self->_recordingIndicatorViewControllerUIKitStatusBarPortal = v6;
 
@@ -378,21 +378,21 @@ LABEL_25:
   objc_storeStrong(&self->_recordingIndicatorWindowUIKitStatusBarPortal, v3);
   SBStatusBarIsSpeakeasy();
   v8 = objc_opt_class();
-  v9 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal indicator];
-  v10 = [v9 contentView];
+  indicator = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal indicator];
+  contentView = [indicator contentView];
 
-  v11 = [v12 screen];
-  [v8 registerSensorActivityIndicator:v10 forScreen:v11];
+  screen = [windowScene screen];
+  [v8 registerSensorActivityIndicator:contentView forScreen:screen];
   [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal setDelegate:self];
   [(SBRecordingIndicatorManager *)self _configureSupportForRotatingIndicator];
 }
 
 - (void)_createRecordingIndicatorForSystemApertureLocation
 {
-  v3 = [objc_opt_class() _systemApertureManagedIndicatorEnabled];
-  v18 = [(SBRecordingIndicatorManager *)self windowScene];
-  v4 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:v18 debugName:@"Recording Indicator (SystemAperture Portal)"];
-  if (v3)
+  _systemApertureManagedIndicatorEnabled = [objc_opt_class() _systemApertureManagedIndicatorEnabled];
+  windowScene = [(SBRecordingIndicatorManager *)self windowScene];
+  v4 = [[SBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator (SystemAperture Portal)"];
+  if (_systemApertureManagedIndicatorEnabled)
   {
     v5 = 4;
   }
@@ -403,8 +403,8 @@ LABEL_25:
   }
 
   v6 = [SBRecordingIndicatorViewController alloc];
-  v7 = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
-  v8 = [(SBRecordingIndicatorViewController *)v6 initForLocation:v5 windowScene:v18 minimumOnTimeCoordinator:v7];
+  minimumOnTimeCoordinator = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
+  v8 = [(SBRecordingIndicatorViewController *)v6 initForLocation:v5 windowScene:windowScene minimumOnTimeCoordinator:minimumOnTimeCoordinator];
   recordingIndicatorViewControllerSystemAperturePortal = self->_recordingIndicatorViewControllerSystemAperturePortal;
   self->_recordingIndicatorViewControllerSystemAperturePortal = v8;
 
@@ -413,22 +413,22 @@ LABEL_25:
   [(SBRecordingIndicatorWindow *)v4 setUserInteractionEnabled:0];
   [(SBWindow *)v4 setHidden:0];
   objc_storeStrong(&self->_recordingIndicatorWindowSystemAperturePortal, v4);
-  v10 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicator];
-  if (v3)
+  indicator = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicator];
+  if (_systemApertureManagedIndicatorEnabled)
   {
-    v11 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal secondaryIndicator];
+    secondaryIndicator = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal secondaryIndicator];
   }
 
   else
   {
-    v11 = 0;
+    secondaryIndicator = 0;
   }
 
-  v12 = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
-  v13 = v12;
-  if (v12)
+  minimumOnTimeCoordinator2 = [(SBRecordingIndicatorManager *)self minimumOnTimeCoordinator];
+  v13 = minimumOnTimeCoordinator2;
+  if (minimumOnTimeCoordinator2)
   {
-    v14 = v12;
+    v14 = minimumOnTimeCoordinator2;
   }
 
   else
@@ -438,11 +438,11 @@ LABEL_25:
 
   v15 = v14;
 
-  v16 = [[SBRecordingIndicatorSystemApertureElement alloc] initWithInterSensorRegionIndicatorVisualRepresentation:v11 microRegionIndicatorVisualRepresentation:v10 recordingIndicatorManager:self minimumOnTimeCoordinator:v15];
+  v16 = [[SBRecordingIndicatorSystemApertureElement alloc] initWithInterSensorRegionIndicatorVisualRepresentation:secondaryIndicator microRegionIndicatorVisualRepresentation:indicator recordingIndicatorManager:self minimumOnTimeCoordinator:v15];
   recordingIndicatorElement = self->_recordingIndicatorElement;
   self->_recordingIndicatorElement = v16;
 
-  SBRecordingIndicatorApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(v4, v18);
+  SBRecordingIndicatorApplyUnDisplayZoomScaleToWindowInWindowSceneIfNecessary(v4, windowScene);
   [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal setDelegate:self];
 }
 
@@ -453,22 +453,22 @@ LABEL_25:
   v3 = +[SBRecordingIndicatorDomain rootSettings];
   [v3 removeKeyObserver:self];
 
-  v4 = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
-  v5 = [v4 statusBarManager];
-  v6 = [v5 assertionManager];
-  [v6 removeObserver:self];
+  _sbWindowScene = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
+  [assertionManager removeObserver:self];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v8.receiver = self;
   v8.super_class = SBRecordingIndicatorManager;
   [(SBRecordingIndicatorManager *)&v8 dealloc];
 }
 
-- (unint64_t)_indicatorTypeForSensorType:(int64_t)a3
+- (unint64_t)_indicatorTypeForSensorType:(int64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     return 0;
   }
@@ -481,9 +481,9 @@ LABEL_25:
   return 1;
 }
 
-- (id)_indicatorIdentifierForSensorType:(int64_t)a3
+- (id)_indicatorIdentifierForSensorType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"microphone-recording-indicator";
   }
@@ -494,10 +494,10 @@ LABEL_25:
   }
 }
 
-- (void)_dataProviderDidUpdate:(id)a3
+- (void)_dataProviderDidUpdate:(id)update
 {
-  v5 = a3;
-  objc_storeStrong(&self->_dataProvider, a3);
+  updateCopy = update;
+  objc_storeStrong(&self->_dataProvider, update);
   if (self->_visibilityIsForcedByPrototypeSettings)
   {
     v6 = SBLogStatusBarish();
@@ -510,11 +510,11 @@ LABEL_25:
     goto LABEL_12;
   }
 
-  v7 = [v5 activeCameraAndMicrophoneActivityAttributions];
-  v8 = [v7 count];
+  activeCameraAndMicrophoneActivityAttributions = [updateCopy activeCameraAndMicrophoneActivityAttributions];
+  v8 = [activeCameraAndMicrophoneActivityAttributions count];
   if (v8)
   {
-    [(SBRecordingIndicatorManager *)self _updateIndicatorStyleForSensorActivityAttributions:v7];
+    [(SBRecordingIndicatorManager *)self _updateIndicatorStyleForSensorActivityAttributions:activeCameraAndMicrophoneActivityAttributions];
 LABEL_8:
     [(SBRecordingIndicatorManager *)self setIndicatorVisible:v8 != 0];
     goto LABEL_9;
@@ -534,18 +534,18 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)setIndicatorVisible:(BOOL)a3
+- (void)setIndicatorVisible:(BOOL)visible
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_indicatorVisible != a3)
+  if (self->_indicatorVisible != visible)
   {
-    v3 = a3;
-    self->_indicatorVisible = a3;
+    visibleCopy = visible;
+    self->_indicatorVisible = visible;
     v5 = SBLogStatusBarish();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"off";
-      if (v3)
+      if (visibleCopy)
       {
         v6 = @"on";
       }
@@ -555,13 +555,13 @@ LABEL_12:
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Turning %{public}@...", &v15, 0xCu);
     }
 
-    v7 = [(SBRecordingIndicatorManager *)self displayMode];
-    if (v7 <= 5)
+    displayMode = [(SBRecordingIndicatorManager *)self displayMode];
+    if (displayMode <= 5)
     {
-      if (((1 << v7) & 0x34) != 0)
+      if (((1 << displayMode) & 0x34) != 0)
       {
         [(SBRecordingIndicatorManager *)self _updateSystemApertureElementAssertion];
-        if (v3)
+        if (visibleCopy)
         {
           [(SBRecordingIndicatorSystemApertureElement *)self->_recordingIndicatorElement pulse];
         }
@@ -569,51 +569,51 @@ LABEL_12:
 
       else
       {
-        if (((1 << v7) & 3) != 0)
+        if (((1 << displayMode) & 3) != 0)
         {
-          v8 = self;
-          v9 = v3;
+          selfCopy2 = self;
+          v9 = visibleCopy;
           v10 = 0;
         }
 
         else
         {
-          if (v3)
+          if (visibleCopy)
           {
-            v11 = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
-            v12 = [v11 statusBarManager];
-            v13 = [v12 assertionManager];
-            v14 = [v13 isFrontmostStatusBarHidden];
-            [(SBRecordingIndicatorManager *)self _setIndicatorVisible:v14 atLocation:0];
-            [(SBRecordingIndicatorManager *)self _setIndicatorVisible:v14 ^ 1 atLocation:2];
+            _sbWindowScene = [(UIWindow *)self->_recordingIndicatorWindow _sbWindowScene];
+            statusBarManager = [_sbWindowScene statusBarManager];
+            assertionManager = [statusBarManager assertionManager];
+            isFrontmostStatusBarHidden = [assertionManager isFrontmostStatusBarHidden];
+            [(SBRecordingIndicatorManager *)self _setIndicatorVisible:isFrontmostStatusBarHidden atLocation:0];
+            [(SBRecordingIndicatorManager *)self _setIndicatorVisible:isFrontmostStatusBarHidden ^ 1 atLocation:2];
 
             return;
           }
 
           [(SBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:0];
-          v8 = self;
+          selfCopy2 = self;
           v9 = 0;
           v10 = 2;
         }
 
-        [(SBRecordingIndicatorManager *)v8 _setIndicatorVisible:v9 atLocation:v10];
+        [(SBRecordingIndicatorManager *)selfCopy2 _setIndicatorVisible:v9 atLocation:v10];
       }
     }
   }
 }
 
-- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)a3
+- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)location
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_indicatorVisibleAtStatusBarLocation != a3)
+  if (self->_indicatorVisibleAtStatusBarLocation != location)
   {
-    v3 = a3;
-    self->_indicatorVisibleAtStatusBarLocation = a3;
+    locationCopy = location;
+    self->_indicatorVisibleAtStatusBarLocation = location;
     v4 = SBLogStatusBarish();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = @"off";
-      if (v3)
+      if (locationCopy)
       {
         v5 = @"on";
       }
@@ -623,8 +623,8 @@ LABEL_12:
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Turning %{public}@ at Status Bar location (via status bar data change)", &v7, 0xCu);
     }
 
-    v6 = [SBApp statusBarStateAggregator];
-    [v6 updateStatusBarItem:28];
+    statusBarStateAggregator = [SBApp statusBarStateAggregator];
+    [statusBarStateAggregator updateStatusBarItem:28];
   }
 }
 
@@ -662,15 +662,15 @@ uint64_t __69__SBRecordingIndicatorManager__systemApertureManagedIndicatorEnable
   return result;
 }
 
-- (void)_setIndicatorVisible:(BOOL)a3 atLocation:(unint64_t)a4
+- (void)_setIndicatorVisible:(BOOL)visible atLocation:(unint64_t)location
 {
-  v4 = a3;
-  if (a4 < 2)
+  visibleCopy = visible;
+  if (location < 2)
   {
-    v8 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorState];
-    if (v4)
+    indicatorState = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorState];
+    if (visibleCopy)
     {
-      if (v8 - 1 < 2)
+      if (indicatorState - 1 < 2)
       {
         return;
       }
@@ -679,9 +679,9 @@ uint64_t __69__SBRecordingIndicatorManager__systemApertureManagedIndicatorEnable
       goto LABEL_9;
     }
 
-    if (v8)
+    if (indicatorState)
     {
-      v11 = v8 == 3;
+      v11 = indicatorState == 3;
     }
 
     else
@@ -698,12 +698,12 @@ uint64_t __69__SBRecordingIndicatorManager__systemApertureManagedIndicatorEnable
 
   else
   {
-    if (a4 - 3 < 2)
+    if (location - 3 < 2)
     {
-      v6 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
-      if (v4)
+      indicatorState2 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
+      if (visibleCopy)
       {
-        if (v6 - 1 < 2)
+        if (indicatorState2 - 1 < 2)
         {
           return;
         }
@@ -717,7 +717,7 @@ LABEL_25:
         return;
       }
 
-      if (!v6 || v6 == 3)
+      if (!indicatorState2 || indicatorState2 == 3)
       {
         return;
       }
@@ -728,26 +728,26 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (a4 == 2)
+    if (location == 2)
     {
-      v10 = a3;
+      visibleCopy2 = visible;
 
-      [(SBRecordingIndicatorManager *)self setIndicatorVisibleAtStatusBarLocation:v10];
+      [(SBRecordingIndicatorManager *)self setIndicatorVisibleAtStatusBarLocation:visibleCopy2];
     }
   }
 }
 
-- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)a3
+- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)attributions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  attributionsCopy = attributions;
+  if ([attributionsCopy count])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v4;
+    v5 = attributionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -790,69 +790,69 @@ LABEL_24:
 LABEL_12:
 }
 
-- (void)_updateIndicatorViewForSensorType:(int64_t)a3
+- (void)_updateIndicatorViewForSensorType:(int64_t)type
 {
   v5 = [(SBRecordingIndicatorManager *)self _indicatorTypeForSensorType:?];
   [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController updateIndicatorType:v5];
   [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal updateIndicatorType:v5];
   [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal updateIndicatorType:v5];
-  v10 = [(SBRecordingIndicatorManager *)self _indicatorIdentifierForSensorType:a3];
-  v6 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicator];
-  v7 = [v6 contentView];
-  [v7 setAccessibilityIdentifier:v10];
+  v10 = [(SBRecordingIndicatorManager *)self _indicatorIdentifierForSensorType:type];
+  indicator = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicator];
+  contentView = [indicator contentView];
+  [contentView setAccessibilityIdentifier:v10];
 
-  v8 = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController secondaryIndicator];
-  v9 = [v8 contentView];
-  [v9 setAccessibilityIdentifier:v10];
+  secondaryIndicator = [(SBRecordingIndicatorViewController *)self->_recordingIndicatorViewController secondaryIndicator];
+  contentView2 = [secondaryIndicator contentView];
+  [contentView2 setAccessibilityIdentifier:v10];
 }
 
-- (void)recordingIndicatorViewController:(id)a3 didUpdateIndicatorState:(unint64_t)a4
+- (void)recordingIndicatorViewController:(id)controller didUpdateIndicatorState:(unint64_t)state
 {
-  v5 = a3;
-  v12 = v5;
-  if (self->_recordingIndicatorViewControllerSystemAperturePortal == v5)
+  controllerCopy = controller;
+  v12 = controllerCopy;
+  if (self->_recordingIndicatorViewControllerSystemAperturePortal == controllerCopy)
   {
     [(SBRecordingIndicatorManager *)self _updateSystemApertureElementAssertion];
-    v5 = v12;
+    controllerCopy = v12;
   }
 
-  v6 = [(SBRecordingIndicatorViewController *)v5 viewIfLoaded];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  viewIfLoaded = [(SBRecordingIndicatorViewController *)controllerCopy viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  v9 = [v8 traitCollection];
-  v10 = [v9 _backlightLuminance];
+  traitCollection = [windowScene traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v10 == 1)
+  if (_backlightLuminance == 1)
   {
-    v11 = [v8 _backlightSceneEnvironment];
-    [v11 invalidateAllTimelinesForReason:@"recording indicator visibility change"];
+    _backlightSceneEnvironment = [windowScene _backlightSceneEnvironment];
+    [_backlightSceneEnvironment invalidateAllTimelinesForReason:@"recording indicator visibility change"];
   }
 }
 
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 activeCameraAndMicrophoneActivityAttributions];
-  if (![(NSSet *)self->_activeCameraAndMicrophoneActivityAttributions isEqualToSet:v5])
+  providerCopy = provider;
+  activeCameraAndMicrophoneActivityAttributions = [providerCopy activeCameraAndMicrophoneActivityAttributions];
+  if (![(NSSet *)self->_activeCameraAndMicrophoneActivityAttributions isEqualToSet:activeCameraAndMicrophoneActivityAttributions])
   {
-    objc_storeStrong(&self->_activeCameraAndMicrophoneActivityAttributions, v5);
+    objc_storeStrong(&self->_activeCameraAndMicrophoneActivityAttributions, activeCameraAndMicrophoneActivityAttributions);
     v6 = SBLogStatusBarish();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = activeCameraAndMicrophoneActivityAttributions;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Active camera/microphone activity changed:\n%{public}@", &v7, 0xCu);
     }
 
-    [(SBRecordingIndicatorManager *)self _dataProviderDidUpdate:v4];
+    [(SBRecordingIndicatorManager *)self _dataProviderDidUpdate:providerCopy];
   }
 }
 
-- (void)controlCenterWillPresent:(id)a3
+- (void)controlCenterWillPresent:(id)present
 {
-  if ([(SBRecordingIndicatorManager *)self _controlCenterIsOnTheSameWindowScene:a3]&& [(SBRecordingIndicatorManager *)self displayMode]== 3)
+  if ([(SBRecordingIndicatorManager *)self _controlCenterIsOnTheSameWindowScene:present]&& [(SBRecordingIndicatorManager *)self displayMode]== 3)
   {
     if ([(SBRecordingIndicatorManager *)self isIndicatorVisible]&& self->_indicatorStatusBarPartIsHidden)
     {
@@ -870,9 +870,9 @@ LABEL_12:
   }
 }
 
-- (void)controlCenterDidDismiss:(id)a3
+- (void)controlCenterDidDismiss:(id)dismiss
 {
-  if ([(SBRecordingIndicatorManager *)self _controlCenterIsOnTheSameWindowScene:a3]&& [(SBRecordingIndicatorManager *)self displayMode]== 3)
+  if ([(SBRecordingIndicatorManager *)self _controlCenterIsOnTheSameWindowScene:dismiss]&& [(SBRecordingIndicatorManager *)self displayMode]== 3)
   {
     if ([(SBRecordingIndicatorManager *)self isIndicatorVisible]&& self->_indicatorStatusBarPartIsHidden)
     {
@@ -890,28 +890,28 @@ LABEL_12:
   }
 }
 
-- (BOOL)_controlCenterIsOnTheSameWindowScene:(id)a3
+- (BOOL)_controlCenterIsOnTheSameWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [v4 object];
+  object = [sceneCopy object];
 
-  v7 = [v6 objectForKeyedSubscript:@"SBControlCenterNotificationWindowSceneKey"];
+  v7 = [object objectForKeyedSubscript:@"SBControlCenterNotificationWindowSceneKey"];
 
   return WeakRetained == v7;
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
-  v17 = [a3 userInfo];
-  v4 = [v17 objectForKey:@"SBSystemApertureOriginatingDisplayIdentity"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKey:@"SBSystemApertureOriginatingDisplayIdentity"];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained _sbDisplayConfiguration];
-  v7 = [v6 identity];
+  _sbDisplayConfiguration = [WeakRetained _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
-  if (v7 == v4)
+  if (identity == v4)
   {
-    v8 = [v17 objectForKey:@"SBSystemApertureVisibleElementIdentifiers"];
+    v8 = [userInfo objectForKey:@"SBSystemApertureVisibleElementIdentifiers"];
     v9 = v8;
     if (v8)
     {
@@ -924,21 +924,21 @@ LABEL_12:
     }
 
     [(SBRecordingIndicatorManager *)self setSystemApertureEmpty:v10];
-    v11 = [v17 objectForKey:@"SBSystemApertureCanRegisterRecordingIndicator"];
-    v12 = [v11 BOOLValue];
+    v11 = [userInfo objectForKey:@"SBSystemApertureCanRegisterRecordingIndicator"];
+    bOOLValue = [v11 BOOLValue];
 
-    [(SBRecordingIndicatorManager *)self setCanSystemApertureRegisterRecordingIndicatorElement:v12];
-    v13 = [(SBRecordingIndicatorManager *)self displayMode];
-    switch(v13)
+    [(SBRecordingIndicatorManager *)self setCanSystemApertureRegisterRecordingIndicatorElement:bOOLValue];
+    displayMode = [(SBRecordingIndicatorManager *)self displayMode];
+    switch(displayMode)
     {
       case 2uLL:
         goto LABEL_8;
       case 5uLL:
-        v14 = [v17 objectForKey:@"SBSystemApertureFrames"];
+        v14 = [userInfo objectForKey:@"SBSystemApertureFrames"];
         if ([v14 count])
         {
-          v15 = [v14 firstObject];
-          [v15 CGRectValue];
+          firstObject = [v14 firstObject];
+          [firstObject CGRectValue];
           v16 = BSFloatGreaterThanFloat();
           if (self->_systemApertureIsSoLargeThatTheStatusBarIsProbablyHidden != v16)
           {
@@ -956,7 +956,7 @@ LABEL_8:
   }
 }
 
-- (void)differentiateWithoutColorDidChange:(id)a3
+- (void)differentiateWithoutColorDidChange:(id)change
 {
   v4 = SBLogStatusBarish();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -968,29 +968,29 @@ LABEL_8:
   [(SBRecordingIndicatorManager *)self _dataProviderDidUpdate:self->_dataProvider];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = [SBRecordingIndicatorDomain rootSettings:a3];
-  v6 = [v5 sensorType];
+  v5 = [SBRecordingIndicatorDomain rootSettings:settings];
+  sensorType = [v5 sensorType];
 
-  if (v6 == 1)
+  if (sensorType == 1)
   {
     self->_visibilityIsForcedByPrototypeSettings = 1;
     [(SBRecordingIndicatorManager *)self setIndicatorVisible:1];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_5;
   }
 
-  if (v6 == 2)
+  if (sensorType == 2)
   {
     self->_visibilityIsForcedByPrototypeSettings = 1;
     [(SBRecordingIndicatorManager *)self setIndicatorVisible:1];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
 LABEL_5:
 
-    [(SBRecordingIndicatorManager *)v7 _updateIndicatorViewForSensorType:v8];
+    [(SBRecordingIndicatorManager *)selfCopy2 _updateIndicatorViewForSensorType:v8];
     return;
   }
 
@@ -1012,10 +1012,10 @@ LABEL_5:
   {
     v1 = result;
     [SBApp addActiveOrientationObserver:result];
-    v2 = [SBApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
     v3 = *(v1 + 32);
 
-    return [v3 setActiveInterfaceOrientation:v2 withDuration:0.0];
+    return [v3 setActiveInterfaceOrientation:activeInterfaceOrientation withDuration:0.0];
   }
 
   return result;

@@ -8,8 +8,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(FMAVPlayerViewAccessibility *)self _axAssetVideoLabel];
-  v3 = v2 != 0;
+  _axAssetVideoLabel = [(FMAVPlayerViewAccessibility *)self _axAssetVideoLabel];
+  v3 = _axAssetVideoLabel != 0;
 
   return v3;
 }
@@ -57,21 +57,21 @@ LABEL_5:
 
 - (id)accessibilityLabel
 {
-  v3 = [(FMAVPlayerViewAccessibility *)self _axAssetVideoLabel];
-  v4 = v3;
-  if (v3)
+  _axAssetVideoLabel = [(FMAVPlayerViewAccessibility *)self _axAssetVideoLabel];
+  v4 = _axAssetVideoLabel;
+  if (_axAssetVideoLabel)
   {
-    v5 = v3;
+    accessibilityLabel = _axAssetVideoLabel;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = FMAVPlayerViewAccessibility;
-    v5 = [(FMAVPlayerViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(FMAVPlayerViewAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

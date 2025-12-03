@@ -1,17 +1,17 @@
 @interface CarNavigationSearchCategoryViewCell
-- (CarNavigationSearchCategoryViewCell)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (CarNavigationSearchCategoryViewCell)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CarNavigationSearchCategoryViewCell
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12.receiver = self;
   v12.super_class = CarNavigationSearchCategoryViewCell;
   [(CarNavigationSearchCategoryViewCell *)&v12 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     CGAffineTransformMakeScale(&v11, 0.949999988, 0.949999988);
     imageView = self->_imageView;
@@ -33,17 +33,17 @@
   [(UIImageView *)imageView setTransform:&v8];
 }
 
-- (CarNavigationSearchCategoryViewCell)initWithFrame:(CGRect)a3
+- (CarNavigationSearchCategoryViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CarNavigationSearchCategoryViewCell;
-  v3 = [(CarNavigationSearchCategoryViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarNavigationSearchCategoryViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
     [(CarNavigationSearchCategoryViewCell *)v3 setBackgroundColor:v4];
-    v5 = [(CarNavigationSearchCategoryViewCell *)v3 contentView];
-    [v5 setBackgroundColor:v4];
+    contentView = [(CarNavigationSearchCategoryViewCell *)v3 contentView];
+    [contentView setBackgroundColor:v4];
 
     v6 = [UIImageView alloc];
     [(CarNavigationSearchCategoryViewCell *)v3 bounds];
@@ -53,8 +53,8 @@
 
     [(UIImageView *)v3->_imageView setAutoresizingMask:18];
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v9 = [(CarNavigationSearchCategoryViewCell *)v3 contentView];
-    [v9 addSubview:v3->_imageView];
+    contentView2 = [(CarNavigationSearchCategoryViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_imageView];
   }
 
   return v3;

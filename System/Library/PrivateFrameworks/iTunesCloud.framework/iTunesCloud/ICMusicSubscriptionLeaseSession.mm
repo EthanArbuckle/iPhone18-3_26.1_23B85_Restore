@@ -4,23 +4,23 @@
 - (ICMusicSubscriptionLeaseSessionDelegate)delegate;
 - (ICMusicSubscriptionLeaseStatus)leaseStatus;
 - (NSDate)lastPlaybackRequestDate;
-- (id)_initWithRequestContext:(id)a3 isDelegatedLeaseSession:(BOOL)a4 delegate:(id)a5 leaseStatus:(id)a6;
-- (id)_newOperationForPlaybackRequest:(id)a3 completionHandler:(id)a4;
+- (id)_initWithRequestContext:(id)context isDelegatedLeaseSession:(BOOL)session delegate:(id)delegate leaseStatus:(id)status;
+- (id)_newOperationForPlaybackRequest:(id)request completionHandler:(id)handler;
 - (id)description;
-- (id)performPlaybackRequest:(id)a3 completionHandler:(id)a4;
+- (id)performPlaybackRequest:(id)request completionHandler:(id)handler;
 - (void)_didMigratePlaybackSession;
 - (void)_handlePlaybackLeaseDidEndPushNotification;
 - (void)_handleRemoteServerDidBecomeLikelyReachable;
 - (void)_locked_handlePendingPlaybackLeaseDidEndPushNotificationIfReady;
 - (void)_locked_performAutomaticRefresh;
-- (void)_locked_setLeaseStatus:(id)a3 updatedLeaseExpirationDate:(id)a4;
+- (void)_locked_setLeaseStatus:(id)status updatedLeaseExpirationDate:(id)date;
 - (void)_locked_updateAutomaticRefreshProperties;
 - (void)_receivedUserInteractionEvent;
-- (void)_setLeaseStatus:(id)a3 updatedLeaseExpirationDate:(id)a4;
+- (void)_setLeaseStatus:(id)status updatedLeaseExpirationDate:(id)date;
 - (void)beginAutomaticallyRefreshingLease;
 - (void)dealloc;
 - (void)endAutomaticallyRefreshingLease;
-- (void)reloadFairPlayKeyStatusWithCompletionHandler:(id)a3;
+- (void)reloadFairPlayKeyStatusWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicSubscriptionLeaseSession
@@ -45,7 +45,7 @@
         if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v10 = self;
+          selfCopy5 = self;
           v4 = "[Lease] - [%{public}@] - PlaybackLeaseDidEndPushNotification - Deferred until the in-flight lease acquisition completed [hasInflightLeaseAcquisition:YES]";
 LABEL_16:
           _os_log_impl(&dword_1B4491000, &v3->super, OS_LOG_TYPE_DEFAULT, v4, buf, 0xCu);
@@ -60,19 +60,19 @@ LABEL_16:
           v3 = [[ICMusicSubscriptionLeasePlaybackRequest alloc] initWithRequestContext:self->_requestContext];
           [(ICMusicSubscriptionLeasePlaybackRequest *)v3 setShouldPreventLeaseAcquisition:1];
           [(ICMusicSubscriptionLeasePlaybackRequest *)v3 setTriggeredByLeasePrevention:1];
-          v5 = [objc_opt_class() _sharedOperationQueue];
+          _sharedOperationQueue = [objc_opt_class() _sharedOperationQueue];
           v8[0] = MEMORY[0x1E69E9820];
           v8[1] = 3221225472;
           v8[2] = __98__ICMusicSubscriptionLeaseSession__locked_handlePendingPlaybackLeaseDidEndPushNotificationIfReady__block_invoke;
           v8[3] = &unk_1E7BF7060;
           v8[4] = self;
           v6 = [(ICMusicSubscriptionLeaseSession *)self _newOperationForPlaybackRequest:v3 completionHandler:v8];
-          [v5 addOperation:v6];
+          [_sharedOperationQueue addOperation:v6];
           v7 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v10 = self;
+            selfCopy5 = self;
             _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - PlaybackLeaseDidEndPushNotification - Handled", buf, 0xCu);
           }
         }
@@ -83,7 +83,7 @@ LABEL_16:
           if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v10 = self;
+            selfCopy5 = self;
             v4 = "[Lease] - [%{public}@] - PlaybackLeaseDidEndPushNotification - Dropped [hasOnlinePlaybackKeys:NO]";
             goto LABEL_16;
           }
@@ -97,7 +97,7 @@ LABEL_16:
       if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v10 = self;
+        selfCopy5 = self;
         v4 = "[Lease] - [%{public}@] - PlaybackLeaseDidEndPushNotification - Deferred until refresh timer gets activated [_automaticRefreshCount:0]";
         goto LABEL_16;
       }
@@ -110,7 +110,7 @@ LABEL_16:
     if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy5 = self;
       v4 = "[Lease] - [%{public}@] - PlaybackLeaseDidEndPushNotification - Dropped [_hasPendingLeaseDidEndPushNotification:NO]";
       goto LABEL_16;
     }
@@ -165,7 +165,7 @@ void __98__ICMusicSubscriptionLeaseSession__locked_handlePendingPlaybackLeaseDid
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2048;
       v25 = v7;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - Automatic lease refresh timer enabled with time left: %f.", buf, 0x16u);
@@ -186,7 +186,7 @@ void __98__ICMusicSubscriptionLeaseSession__locked_handlePendingPlaybackLeaseDid
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v23 = self;
+            selfCopy3 = self;
             v24 = 2048;
             v25 = 120.0 - v11;
             _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - Delaying lease refresh for %fs due to recent attempts", buf, 0x16u);
@@ -233,7 +233,7 @@ void __98__ICMusicSubscriptionLeaseSession__locked_handlePendingPlaybackLeaseDid
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - Automatic lease refresh timer disabled.", buf, 0xCu);
     }
   }
@@ -252,30 +252,30 @@ void __75__ICMusicSubscriptionLeaseSession__locked_updateAutomaticRefreshPropert
   }
 }
 
-- (void)_locked_setLeaseStatus:(id)a3 updatedLeaseExpirationDate:(id)a4
+- (void)_locked_setLeaseStatus:(id)status updatedLeaseExpirationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  dateCopy = date;
   leaseStatus = self->_leaseStatus;
-  if (leaseStatus == v7 || [(ICMusicSubscriptionLeaseStatus *)leaseStatus isEqual:v7])
+  if (leaseStatus == statusCopy || [(ICMusicSubscriptionLeaseStatus *)leaseStatus isEqual:statusCopy])
   {
     v10 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_leaseStatus, a3);
+    objc_storeStrong(&self->_leaseStatus, status);
     v10 = 1;
   }
 
   if ([(ICMusicSubscriptionLeaseStatus *)self->_leaseStatus hasOnlinePlaybackKeys])
   {
-    if (!v8)
+    if (!dateCopy)
     {
       goto LABEL_10;
     }
 
-    v11 = [v8 copy];
+    v11 = [dateCopy copy];
   }
 
   else
@@ -321,18 +321,18 @@ void __85__ICMusicSubscriptionLeaseSession__locked_setLeaseStatus_updatedLeaseEx
     objc_initWeak(&location, self);
     self->_isPerformingAutomaticRefresh = 1;
     v5 = [ICMusicSubscriptionLeasePlaybackRequest alloc];
-    v6 = [(ICMusicSubscriptionLeaseSession *)self requestContext];
-    v7 = [(ICMusicSubscriptionLeasePlaybackRequest *)v5 initWithRequestContext:v6];
+    requestContext = [(ICMusicSubscriptionLeaseSession *)self requestContext];
+    v7 = [(ICMusicSubscriptionLeasePlaybackRequest *)v5 initWithRequestContext:requestContext];
 
     [(ICMusicSubscriptionLeasePlaybackRequest *)v7 setShouldPreventLeaseAcquisition:1];
-    v8 = [objc_opt_class() _sharedOperationQueue];
+    _sharedOperationQueue = [objc_opt_class() _sharedOperationQueue];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __66__ICMusicSubscriptionLeaseSession__locked_performAutomaticRefresh__block_invoke;
     v13 = &unk_1E7BF7038;
     objc_copyWeak(&v14, &location);
     v9 = [(ICMusicSubscriptionLeaseSession *)self _newOperationForPlaybackRequest:v7 completionHandler:&v10];
-    [v8 addOperation:{v9, v10, v11, v12, v13}];
+    [_sharedOperationQueue addOperation:{v9, v10, v11, v12, v13}];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -353,19 +353,19 @@ void __66__ICMusicSubscriptionLeaseSession__locked_performAutomaticRefresh__bloc
   }
 }
 
-- (id)_newOperationForPlaybackRequest:(id)a3 completionHandler:(id)a4
+- (id)_newOperationForPlaybackRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  handlerCopy = handler;
+  v7 = [request copy];
   v8 = [ICAsyncBlockOperation alloc];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__ICMusicSubscriptionLeaseSession__newOperationForPlaybackRequest_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF8BE8;
   v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
   v11 = [(ICAsyncBlockOperation *)v8 initWithStartHandler:v13];
 
@@ -705,12 +705,12 @@ LABEL_19:
   (*(*(a1 + 80) + 16))();
 }
 
-- (void)_setLeaseStatus:(id)a3 updatedLeaseExpirationDate:(id)a4
+- (void)_setLeaseStatus:(id)status updatedLeaseExpirationDate:(id)date
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  dateCopy = date;
+  v7 = [status copy];
   [(NSRecursiveLock *)self->_lock lock];
-  [(ICMusicSubscriptionLeaseSession *)self _locked_setLeaseStatus:v7 updatedLeaseExpirationDate:v6];
+  [(ICMusicSubscriptionLeaseSession *)self _locked_setLeaseStatus:v7 updatedLeaseExpirationDate:dateCopy];
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
@@ -721,18 +721,18 @@ LABEL_19:
   [(NSRecursiveLock *)self->_lock lock];
   if (self->_leaseExpirationDate)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     leaseExpirationDate = self->_leaseExpirationDate;
-    self->_leaseExpirationDate = v3;
+    self->_leaseExpirationDate = date;
 
-    v5 = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
+    leaseStatus = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
     v6 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
-      v10 = v5;
+      v10 = leaseStatus;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - _didMigratePlaybackSession - leaseStatus: %{public}@", &v7, 0x16u);
     }
   }
@@ -755,7 +755,7 @@ LABEL_19:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = v4;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - _receivedUserInteractionEvent - leaseStatus: %{public}@", &v6, 0x16u);
@@ -773,7 +773,7 @@ LABEL_19:
     return;
   }
 
-  v3 = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
+  leaseStatus = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
   v4 = +[ICDeviceInfo currentDeviceInfo];
   if (([v4 isWatch] & 1) == 0)
   {
@@ -781,17 +781,17 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (!v6)
+  if (!isLowPowerModeEnabled)
   {
 LABEL_6:
     v7 = 1;
     goto LABEL_7;
   }
 
-  v7 = [v3 leaseState] == 0;
+  v7 = [leaseStatus leaseState] == 0;
 LABEL_7:
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -803,7 +803,7 @@ LABEL_7:
     }
 
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2082;
     v16 = v9;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - _handleRemoteServerDidBecomeLikelyReachable: %{public}s renewal", &v13, 0x16u);
@@ -812,9 +812,9 @@ LABEL_7:
   if (v7)
   {
     v10 = [[ICMusicSubscriptionLeasePlaybackRequest alloc] initWithRequestContext:self->_requestContext];
-    v11 = [objc_opt_class() _sharedOperationQueue];
+    _sharedOperationQueue = [objc_opt_class() _sharedOperationQueue];
     v12 = [(ICMusicSubscriptionLeaseSession *)self _newOperationForPlaybackRequest:v10 completionHandler:&__block_literal_global_26278];
-    [v11 addOperation:v12];
+    [_sharedOperationQueue addOperation:v12];
   }
 }
 
@@ -826,9 +826,9 @@ LABEL_7:
   [(NSDate *)self->_leaseExpirationDate timeIntervalSinceNow];
   if (v3 >= 0.0)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     leaseExpirationDate = self->_leaseExpirationDate;
-    self->_leaseExpirationDate = v4;
+    self->_leaseExpirationDate = date;
   }
 
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
@@ -836,7 +836,7 @@ LABEL_7:
   {
     hasPendingLeaseDidEndPushNotification = self->_hasPendingLeaseDidEndPushNotification;
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
     v11 = hasPendingLeaseDidEndPushNotification;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - _handlePlaybackLeaseDidEndPushNotification - _hasPendingLeaseDidEndPushNotification: %{BOOL}u", &v8, 0x12u);
@@ -846,9 +846,9 @@ LABEL_7:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)reloadFairPlayKeyStatusWithCompletionHandler:(id)a3
+- (void)reloadFairPlayKeyStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7[0] = MEMORY[0x1E69E9820];
@@ -856,7 +856,7 @@ LABEL_7:
   v7[2] = __80__ICMusicSubscriptionLeaseSession_reloadFairPlayKeyStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF6F50;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [WeakRetained musicLeaseSession:self requestsFairPlayKeyStatusUpdateWithCompletion:v7];
 
@@ -884,14 +884,14 @@ void __80__ICMusicSubscriptionLeaseSession_reloadFairPlayKeyStatusWithCompletion
   }
 }
 
-- (id)performPlaybackRequest:(id)a3 completionHandler:(id)a4
+- (id)performPlaybackRequest:(id)request completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   [(NSRecursiveLock *)self->_lock lock];
-  if ([v6 shouldRequireLeaseAcquisition])
+  if ([requestCopy shouldRequireLeaseAcquisition])
   {
     v9 = ![(ICMusicSubscriptionLeaseStatus *)self->_leaseStatus hasPendingLeaseAcquisition];
   }
@@ -901,21 +901,21 @@ void __80__ICMusicSubscriptionLeaseSession_reloadFairPlayKeyStatusWithCompletion
     v9 = 0;
   }
 
-  if ([v6 shouldPreventLeaseAcquisition])
+  if ([requestCopy shouldPreventLeaseAcquisition])
   {
     [(NSRecursiveLock *)self->_lock unlock];
     if (!v9)
     {
 LABEL_13:
-      v14 = [objc_opt_class() _sharedOperationQueue];
+      _sharedOperationQueue = [objc_opt_class() _sharedOperationQueue];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __76__ICMusicSubscriptionLeaseSession_performPlaybackRequest_completionHandler___block_invoke;
       v25[3] = &unk_1E7BF6F28;
       v15 = v8;
       v26 = v15;
-      v27 = v7;
-      v16 = [(ICMusicSubscriptionLeaseSession *)self _newOperationForPlaybackRequest:v6 completionHandler:v25];
+      v27 = handlerCopy;
+      v16 = [(ICMusicSubscriptionLeaseSession *)self _newOperationForPlaybackRequest:requestCopy completionHandler:v25];
       [v15 setCancellable:1];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
@@ -924,24 +924,24 @@ LABEL_13:
       v17 = v16;
       v24 = v17;
       [v15 setCancellationHandler:v23];
-      [v14 addOperation:v17];
+      [_sharedOperationQueue addOperation:v17];
       v18 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v14 operationCount];
+        operationCount = [_sharedOperationQueue operationCount];
         *buf = 138543874;
-        v29 = self;
+        selfCopy = self;
         v30 = 2114;
         v31 = v17;
         v32 = 2048;
-        v33 = v19;
+        v33 = operationCount;
         _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "[Lease] - [%{public}@] - performPlaybackRequest - enqueued operation: %{public}@ - operation count: %ld", buf, 0x20u);
       }
 
       [(NSRecursiveLock *)self->_lock lock];
-      v20 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       lastPlaybackRequestDate = self->_lastPlaybackRequestDate;
-      self->_lastPlaybackRequestDate = v20;
+      self->_lastPlaybackRequestDate = date;
 
       [(NSRecursiveLock *)self->_lock unlock];
       goto LABEL_16;
@@ -950,11 +950,11 @@ LABEL_13:
 
   else
   {
-    v10 = [(ICMusicSubscriptionLeaseStatus *)self->_leaseStatus hasPendingLeaseAcquisition];
+    hasPendingLeaseAcquisition = [(ICMusicSubscriptionLeaseStatus *)self->_leaseStatus hasPendingLeaseAcquisition];
     [(NSRecursiveLock *)self->_lock unlock];
     if ((v9 & 1) == 0)
     {
-      if (v10)
+      if (hasPendingLeaseAcquisition)
       {
         leaseStatus = self->_leaseStatus;
         self->_startedLeaseAcquisitionRevisionID = self->_pendingLeaseAcquisitionRevisionID;
@@ -973,10 +973,10 @@ LABEL_13:
   }
 
   [v8 setCompletedUnitCount:1];
-  if (v7)
+  if (handlerCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7600 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
   }
 
 LABEL_16:
@@ -1006,12 +1006,12 @@ void __76__ICMusicSubscriptionLeaseSession_performPlaybackRequest_completionHand
 
 - (BOOL)isAutomaticallyRefreshingLease
 {
-  v2 = self;
+  selfCopy = self;
   [(NSRecursiveLock *)self->_lock lock];
-  lock = v2->_lock;
-  LOBYTE(v2) = v2->_automaticRefreshCount > 0;
+  lock = selfCopy->_lock;
+  LOBYTE(selfCopy) = selfCopy->_automaticRefreshCount > 0;
   [(NSRecursiveLock *)lock unlock];
-  return v2;
+  return selfCopy;
 }
 
 - (void)endAutomaticallyRefreshingLease
@@ -1060,8 +1060,8 @@ void __76__ICMusicSubscriptionLeaseSession_performPlaybackRequest_completionHand
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   requestContext = self->_requestContext;
-  v7 = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
-  v8 = [v3 stringWithFormat:@"<%@ %p requestContext: %@ leaseStatus: %@>", v5, self, requestContext, v7];;
+  leaseStatus = [(ICMusicSubscriptionLeaseSession *)self leaseStatus];
+  v8 = [v3 stringWithFormat:@"<%@ %p requestContext: %@ leaseStatus: %@>", v5, self, requestContext, leaseStatus];;
 
   return v8;
 }
@@ -1083,11 +1083,11 @@ void __76__ICMusicSubscriptionLeaseSession_performPlaybackRequest_completionHand
   [(ICMusicSubscriptionLeaseSession *)&v5 dealloc];
 }
 
-- (id)_initWithRequestContext:(id)a3 isDelegatedLeaseSession:(BOOL)a4 delegate:(id)a5 leaseStatus:(id)a6
+- (id)_initWithRequestContext:(id)context isDelegatedLeaseSession:(BOOL)session delegate:(id)delegate leaseStatus:(id)status
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  delegateCopy = delegate;
+  statusCopy = status;
   v21.receiver = self;
   v21.super_class = ICMusicSubscriptionLeaseSession;
   v13 = [(ICMusicSubscriptionLeaseSession *)&v21 init];
@@ -1101,13 +1101,13 @@ void __76__ICMusicSubscriptionLeaseSession_performPlaybackRequest_completionHand
     calloutQueue = v13->_calloutQueue;
     v13->_calloutQueue = v16;
 
-    v13->_delegatedLeaseSession = a4;
-    v18 = [v10 copy];
+    v13->_delegatedLeaseSession = session;
+    v18 = [contextCopy copy];
     requestContext = v13->_requestContext;
     v13->_requestContext = v18;
 
-    objc_storeWeak(&v13->_delegate, v11);
-    objc_storeStrong(&v13->_leaseStatus, a6);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_leaseStatus, status);
   }
 
   return v13;

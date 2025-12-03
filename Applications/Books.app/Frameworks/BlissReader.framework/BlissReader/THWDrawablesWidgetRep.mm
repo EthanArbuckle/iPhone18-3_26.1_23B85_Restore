@@ -1,38 +1,38 @@
 @interface THWDrawablesWidgetRep
 - (BOOL)canExpand;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4;
-- (BOOL)expandedHasContentForPanel:(int)a3;
-- (BOOL)freeTransformMayBeginOverRep:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep;
+- (BOOL)expandedHasContentForPanel:(int)panel;
+- (BOOL)freeTransformMayBeginOverRep:(id)rep;
 - (BOOL)freeTransformWantsShadow;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)meetsStageDimensionRequirementForExpanded;
-- (BOOL)pIsChildInfo:(id)a3 inContainerInfo:(id)a4;
+- (BOOL)pIsChildInfo:(id)info inContainerInfo:(id)containerInfo;
 - (BOOL)p_expandedStageDrawableWantsFreeTransform;
 - (BOOL)p_isExpanded;
 - (BOOL)p_isExpanding;
 - (BOOL)p_isFreeTransformInProgressOnSourceRep;
 - (BOOL)p_shouldSuppressRenderingDuringExpansion;
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3;
-- (BOOL)shouldRecognizePressOnRep:(id)a3;
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer;
+- (BOOL)shouldRecognizePressOnRep:(id)rep;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
 - (CALayer)pressableAnimationLayer;
 - (CALayer)pressableAnimationShadowLayer;
 - (CGAffineTransform)freeTransform;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)expandedFrameInUnscaledCanvasSize;
 - (CGRect)ftcTargetFrame;
 - (CGRect)pressableNaturalBounds;
 - (CGRect)rectForCompletion;
 - (THAnimationController)animationController;
-- (THWDrawablesWidgetRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (id)expandedChildInfosForPanel:(int)a3;
+- (THWDrawablesWidgetRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (id)expandedChildInfosForPanel:(int)panel;
 - (id)expandedContentDrawableToPresent;
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
 - (id)p_animationLayer;
 - (id)p_repToAnimate;
 - (id)p_setupContainerLayer;
@@ -44,50 +44,50 @@
 - (id)targetReflectionLayer;
 - (id)targetShadowLayer;
 - (int)expandedAppearance;
-- (int)expandedAppearanceForPanel:(int)a3;
+- (int)expandedAppearanceForPanel:(int)panel;
 - (int)pressableAction;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
 - (void)dealloc;
 - (void)didPresentExpanded;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
-- (void)expandedWillPresentWithController:(id)a3;
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
+- (void)expandedWillPresentWithController:(id)controller;
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (void)freeTransformWillBegin;
-- (void)p_addChildRepsToArray:(id)a3 inContainer:(id)a4;
-- (void)p_suppressRendering:(BOOL)a3;
+- (void)p_addChildRepsToArray:(id)array inContainer:(id)container;
+- (void)p_suppressRendering:(BOOL)rendering;
 - (void)p_togglePanelDescriptionExpanded;
-- (void)willBeginHandlingGesture:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
 @end
 
 @implementation THWDrawablesWidgetRep
 
-- (THWDrawablesWidgetRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWDrawablesWidgetRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v10.receiver = self;
   v10.super_class = THWDrawablesWidgetRep;
-  v4 = [(THWDrawablesWidgetRep *)&v10 initWithLayout:a3 canvas:a4];
+  v4 = [(THWDrawablesWidgetRep *)&v10 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     objc_opt_class();
     [(THWDrawablesWidgetRep *)v4 interactiveCanvasController];
-    v5 = [TSUDynamicCast() pressHandlerForPressableReps];
-    if (v5)
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      [(THWDrawablesWidgetRep *)v4 setPressableHandler:[[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:v5]];
+      [(THWDrawablesWidgetRep *)v4 setPressableHandler:[[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:pressHandlerForPressableReps]];
     }
 
-    v6 = [(THWDrawablesWidgetRep *)v4 info];
-    if (([-[THWDrawablesWidgetRep layout](v4 "layout")] & 1) != 0 || !objc_msgSend(v6, "isExpandedOnly") || -[THWDrawablesWidgetRep p_expandedStageDrawableWantsFreeTransform](v4, "p_expandedStageDrawableWantsFreeTransform"))
+    info = [(THWDrawablesWidgetRep *)v4 info];
+    if (([-[THWDrawablesWidgetRep layout](v4 "layout")] & 1) != 0 || !objc_msgSend(info, "isExpandedOnly") || -[THWDrawablesWidgetRep p_expandedStageDrawableWantsFreeTransform](v4, "p_expandedStageDrawableWantsFreeTransform"))
     {
       v4->mFreeTransformableHandler = -[THWFreeTransformableRepGestureTargetHandler initWithFreeTransformableRep:handler:]([THWFreeTransformableRepGestureTargetHandler alloc], "initWithFreeTransformableRep:handler:", v4, [objc_msgSend(-[THWDrawablesWidgetRep hostICC](v4 "hostICC")]);
     }
 
     v7 = [-[THWDrawablesWidgetRep layout](v4 "layout")];
-    v8 = [v7 repClass];
+    repClass = [v7 repClass];
     if (objc_opt_respondsToSelector())
     {
-      -[THWDrawablesWidgetRep setShouldUseContainerForAnimation:](v4, "setShouldUseContainerForAnimation:", [v8 expandableUseContainerForAnimations:v7]);
+      -[THWDrawablesWidgetRep setShouldUseContainerForAnimation:](v4, "setShouldUseContainerForAnimation:", [repClass expandableUseContainerForAnimations:v7]);
       if ([(THWDrawablesWidgetRep *)v4 shouldUseContainerForAnimation])
       {
         objc_opt_class();
@@ -109,9 +109,9 @@
 
 - (BOOL)p_isExpanded
 {
-  v2 = [(THWDrawablesWidgetRep *)self layout];
+  layout = [(THWDrawablesWidgetRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (BOOL)p_isFreeTransformInProgressOnSourceRep
@@ -162,12 +162,12 @@
   return expandedRepController;
 }
 
-- (void)p_suppressRendering:(BOOL)a3
+- (void)p_suppressRendering:(BOOL)rendering
 {
-  v3 = a3;
-  v4 = [(THWDrawablesWidgetRep *)self interactiveCanvasController];
+  renderingCopy = rendering;
+  interactiveCanvasController = [(THWDrawablesWidgetRep *)self interactiveCanvasController];
 
-  [v4 setShouldSuppressRendering:v3 animated:0];
+  [interactiveCanvasController setShouldSuppressRendering:renderingCopy animated:0];
 }
 
 - (id)p_repToAnimate
@@ -199,22 +199,22 @@
   return [v3 expandedAllowsFreeTransformForInfo:v4];
 }
 
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep
 {
-  v7 = [a3 gestureKind];
-  if (v7 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
     return 1;
   }
 
-  v8 = [(THWDrawablesWidgetRep *)self pressableHandler];
+  pressableHandler = [(THWDrawablesWidgetRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v8 canHandleGesture:a3 forChildRep:a4];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture forChildRep:rep];
 }
 
 - (id)p_setupContainerLayer
 {
-  v3 = [(THWDrawablesWidgetRep *)self p_repToAnimate];
+  p_repToAnimate = [(THWDrawablesWidgetRep *)self p_repToAnimate];
   v4 = [-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")];
   v5 = [-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")];
   [v5 setAnchorPoint:{0.5, 0.5}];
@@ -244,10 +244,10 @@
 
   else
   {
-    v3 = [(THWDrawablesWidgetRep *)self interactiveCanvasController];
-    v4 = [(THWDrawablesWidgetRep *)self p_repToAnimate];
+    interactiveCanvasController = [(THWDrawablesWidgetRep *)self interactiveCanvasController];
+    p_repToAnimate = [(THWDrawablesWidgetRep *)self p_repToAnimate];
 
-    return [v3 layerForRep:v4];
+    return [interactiveCanvasController layerForRep:p_repToAnimate];
   }
 }
 
@@ -276,54 +276,54 @@
   }
 
   v3 = [-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")];
-  v4 = [(THWDrawablesWidgetRep *)self pressableAction];
+  pressableAction = [(THWDrawablesWidgetRep *)self pressableAction];
 
-  return [v3 allowsAction:v4];
+  return [v3 allowsAction:pressableAction];
 }
 
 - (BOOL)wantsPressAction
 {
-  v3 = [(THWDrawablesWidgetRep *)self meetsStageDimensionRequirementForExpanded];
-  if (v3)
+  meetsStageDimensionRequirementForExpanded = [(THWDrawablesWidgetRep *)self meetsStageDimensionRequirementForExpanded];
+  if (meetsStageDimensionRequirementForExpanded)
   {
     v4 = [-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")];
-    v5 = [(THWDrawablesWidgetRep *)self pressableAction];
+    pressableAction = [(THWDrawablesWidgetRep *)self pressableAction];
 
-    LOBYTE(v3) = [v4 allowsAction:v5];
+    LOBYTE(meetsStageDimensionRequirementForExpanded) = [v4 allowsAction:pressableAction];
   }
 
-  return v3;
+  return meetsStageDimensionRequirementForExpanded;
 }
 
-- (BOOL)pIsChildInfo:(id)a3 inContainerInfo:(id)a4
+- (BOOL)pIsChildInfo:(id)info inContainerInfo:(id)containerInfo
 {
-  if (!a3)
+  if (!info)
   {
     return 0;
   }
 
-  v5 = a3;
+  infoCopy = info;
   do
   {
-    v6 = v5 == a4;
-    v7 = [v5 parentInfo];
-    if (!v7)
+    v6 = infoCopy == containerInfo;
+    parentInfo = [infoCopy parentInfo];
+    if (!parentInfo)
     {
       break;
     }
 
-    v8 = v5 == a4;
-    v5 = v7;
+    v8 = infoCopy == containerInfo;
+    infoCopy = parentInfo;
   }
 
   while (!v8);
   return v6;
 }
 
-- (BOOL)shouldRecognizePressOnRep:(id)a3
+- (BOOL)shouldRecognizePressOnRep:(id)rep
 {
-  v5 = [a3 info];
-  if (v5 == [objc_msgSend(-[THWDrawablesWidgetRep info](self "info")])
+  info = [rep info];
+  if (info == [objc_msgSend(-[THWDrawablesWidgetRep info](self "info")])
   {
     [objc_msgSend(-[THWDrawablesWidgetRep info](self "info")];
     v7 = v6;
@@ -340,24 +340,24 @@
     }
   }
 
-  v16 = [a3 info];
-  if (v16 == [-[THWDrawablesWidgetRep layout](self "layout")])
+  info2 = [rep info];
+  if (info2 == [-[THWDrawablesWidgetRep layout](self "layout")])
   {
     return 1;
   }
 
-  v17 = [a3 info];
+  info3 = [rep info];
   [-[THWDrawablesWidgetRep layout](self "layout")];
   v18 = TSUProtocolCast();
 
-  return [(THWDrawablesWidgetRep *)self pIsChildInfo:v17 inContainerInfo:v18];
+  return [(THWDrawablesWidgetRep *)self pIsChildInfo:info3 inContainerInfo:v18];
 }
 
 - (CGRect)pressableNaturalBounds
 {
-  v2 = [(THWDrawablesWidgetRep *)self layout];
+  layout = [(THWDrawablesWidgetRep *)self layout];
 
-  [v2 stageFrame];
+  [layout stageFrame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -395,9 +395,9 @@
     return 0;
   }
 
-  v4 = [(THWDrawablesWidgetRep *)self styledRep];
+  styledRep = [(THWDrawablesWidgetRep *)self styledRep];
 
-  return [v4 shadowLayer];
+  return [styledRep shadowLayer];
 }
 
 - (id)sourceReflectionLayer
@@ -407,12 +407,12 @@
     return 0;
   }
 
-  v4 = [(THWDrawablesWidgetRep *)self styledRep];
+  styledRep = [(THWDrawablesWidgetRep *)self styledRep];
 
-  return [v4 reflectionLayer];
+  return [styledRep reflectionLayer];
 }
 
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -423,7 +423,7 @@
 
   if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler] ftc] isFreeTransformInProgress]|| (v6 = [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler] ftc] passedThreshold]))
   {
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([a3 shouldForceDisableCrossfadeFromSource:self])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([layer shouldForceDisableCrossfadeFromSource:self])
     {
 LABEL_4:
       LOBYTE(v6) = 0;
@@ -506,9 +506,9 @@ LABEL_4:
     return 0;
   }
 
-  v4 = [(THWDrawablesWidgetRep *)self styledRep];
+  styledRep = [(THWDrawablesWidgetRep *)self styledRep];
 
-  return [v4 shadowLayer];
+  return [styledRep shadowLayer];
 }
 
 - (id)targetReflectionLayer
@@ -518,40 +518,40 @@ LABEL_4:
     return 0;
   }
 
-  v4 = [(THWDrawablesWidgetRep *)self styledRep];
+  styledRep = [(THWDrawablesWidgetRep *)self styledRep];
 
-  return [v4 reflectionLayer];
+  return [styledRep reflectionLayer];
 }
 
 - (id)expandedContentDrawableToPresent
 {
   v3 = [-[THWDrawablesWidgetRep info](self "info")];
-  v4 = [(THWDrawablesWidgetRep *)self info];
+  info = [(THWDrawablesWidgetRep *)self info];
   if (v3)
   {
-    v5 = [v4 expandedStageDrawable];
+    expandedStageDrawable = [info expandedStageDrawable];
   }
 
   else
   {
-    v5 = [v4 stageDrawable];
+    expandedStageDrawable = [info stageDrawable];
   }
 
-  v6 = [v5 repClass];
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___THWExpandedRep] && ((objc_opt_respondsToSelector() & 1) == 0 || objc_msgSend(v6, "expandedAllowsPresentationInExpandedForInfo:isReflowablePresentation:", objc_msgSend(-[THWDrawablesWidgetRep info](self, "info"), "expandedStageDrawable"), objc_msgSend(-[THWDrawablesWidgetRep layout](self, "layout"), "isReflowablePresentation"))))
+  repClass = [expandedStageDrawable repClass];
+  if ([repClass conformsToProtocol:&OBJC_PROTOCOL___THWExpandedRep] && ((objc_opt_respondsToSelector() & 1) == 0 || objc_msgSend(repClass, "expandedAllowsPresentationInExpandedForInfo:isReflowablePresentation:", objc_msgSend(-[THWDrawablesWidgetRep info](self, "info"), "expandedStageDrawable"), objc_msgSend(-[THWDrawablesWidgetRep layout](self, "layout"), "isReflowablePresentation"))))
   {
     v7 = [-[THWDrawablesWidgetRep info](self "info")];
-    v8 = [(THWDrawablesWidgetRep *)self info];
+    info2 = [(THWDrawablesWidgetRep *)self info];
     if (v7)
     {
 
-      return [v8 expandedStageDrawable];
+      return [info2 expandedStageDrawable];
     }
 
     else
     {
 
-      return [v8 stageDrawable];
+      return [info2 stageDrawable];
     }
   }
 
@@ -626,9 +626,9 @@ LABEL_4:
   return [v2 canExpand];
 }
 
-- (void)expandedWillPresentWithController:(id)a3
+- (void)expandedWillPresentWithController:(id)controller
 {
-  self->_expandedRepController = a3;
+  self->_expandedRepController = controller;
   if ([(THWDrawablesWidgetRep *)self p_shouldSuppressRenderingDuringExpansion])
   {
 
@@ -636,25 +636,25 @@ LABEL_4:
   }
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
   [-[THWDrawablesWidgetRep layout](self layout];
-  v5 = [(THWDrawablesWidgetRep *)self layout];
+  layout = [(THWDrawablesWidgetRep *)self layout];
 
-  [v5 invalidateChildren];
+  [layout invalidateChildren];
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWDrawablesWidgetRep info](self "info")];
 
   return [v4 panelContentProviderHasContentForPanel:v3];
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWDrawablesWidgetRep info](self "info")];
 
   return [v4 panelContentProviderChildInfosForPanel:v3];
@@ -678,9 +678,9 @@ LABEL_4:
   return [v3 expandedAppearance];
 }
 
-- (int)expandedAppearanceForPanel:(int)a3
+- (int)expandedAppearanceForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   if (![-[THWDrawablesWidgetRep info](self "info")])
   {
     [-[THWDrawablesWidgetRep info](self "info")];
@@ -697,14 +697,14 @@ LABEL_4:
   return [v5 expandedAppearanceForPanel:v3];
 }
 
-- (void)p_addChildRepsToArray:(id)a3 inContainer:(id)a4
+- (void)p_addChildRepsToArray:(id)array inContainer:(id)container
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a4 childReps];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childReps = [container childReps];
+  v7 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -716,21 +716,21 @@ LABEL_4:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
-        [a3 addObject:*(*(&v12 + 1) + 8 * v10)];
+        [array addObject:*(*(&v12 + 1) + 8 * v10)];
         v11 = TSUProtocolCast();
         if (v11)
         {
-          [(THWDrawablesWidgetRep *)self p_addChildRepsToArray:a3 inContainer:v11];
+          [(THWDrawablesWidgetRep *)self p_addChildRepsToArray:array inContainer:v11];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -836,9 +836,9 @@ LABEL_4:
   [(THWExpandedRepController *)expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
 }
 
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture
 {
-  if (a3 != 1)
+  if (panel != 1)
   {
     return 0;
   }
@@ -853,23 +853,23 @@ LABEL_4:
   return [[THWTapGestureAction alloc] initWithAction:v7];
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  if (a4 == 1 && !self->_panelDescriptionExpanded)
+  if (panel == 1 && !self->_panelDescriptionExpanded)
   {
-    v6 = [-[THWDrawablesWidgetRep layout](self layout];
-    if ([v6 isCompactHeight])
+    layout = [-[THWDrawablesWidgetRep layout](self layout];
+    if ([layout isCompactHeight])
     {
       return 2;
     }
 
-    else if ([v6 isCompactWidth])
+    else if ([layout isCompactWidth])
     {
       return 5;
     }
   }
 
-  return a5;
+  return default;
 }
 
 - (BOOL)meetsStageDimensionRequirementForExpanded
@@ -899,19 +899,19 @@ LABEL_4:
 
 - (void)freeTransformWillBegin
 {
-  v2 = [(THWDrawablesWidgetRep *)self pressableAnimationLayer];
+  pressableAnimationLayer = [(THWDrawablesWidgetRep *)self pressableAnimationLayer];
 
-  [(CALayer *)v2 removeAllAnimations];
+  [(CALayer *)pressableAnimationLayer removeAllAnimations];
 }
 
-- (BOOL)freeTransformMayBeginOverRep:(id)a3
+- (BOOL)freeTransformMayBeginOverRep:(id)rep
 {
   if ([(THWDrawablesWidgetRep *)self p_isExpanded])
   {
     return 1;
   }
 
-  return [(THWDrawablesWidgetRep *)self shouldRecognizePressOnRep:a3];
+  return [(THWDrawablesWidgetRep *)self shouldRecognizePressOnRep:rep];
 }
 
 - (id)styledRep
@@ -947,20 +947,20 @@ LABEL_4:
   return result;
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v9 = [(THWDrawablesWidgetRep *)self layout];
+  height = toSize.height;
+  width = toSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  layout = [(THWDrawablesWidgetRep *)self layout];
   [-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  [v9 scaleForCenteredAutoRotateFromSize:v7 toSize:v6 scale:{width, height, v10}];
+  [layout scaleForCenteredAutoRotateFromSize:v7 toSize:v6 scale:{width, height, v10}];
   return result;
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -969,69 +969,69 @@ LABEL_4:
   return result;
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler:a3.width] ftc] isFreeTransformInProgress])
+  if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler:size.width] ftc] isFreeTransformInProgress])
   {
     [-[THWDrawablesWidgetRep layout](self "layout")];
-    v4 = [(THWDrawablesWidgetRep *)self layout];
+    layout = [(THWDrawablesWidgetRep *)self layout];
 
-    [v4 invalidateChildren];
+    [layout invalidateChildren];
   }
 }
 
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  v4 = [(THWDrawablesWidgetRep *)self interactiveCanvasController:a3.width];
+  v4 = [(THWDrawablesWidgetRep *)self interactiveCanvasController:size.width];
 
   [v4 setViewScale:1.0];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if (-[THWFreeTransformableRepGestureTargetHandler canHandleGesture:](-[THWDrawablesWidgetRep freeTransformableHandler](self, "freeTransformableHandler"), "canHandleGesture:", a3) && ([objc_msgSend(-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")] & 1) != 0)
+  if (-[THWFreeTransformableRepGestureTargetHandler canHandleGesture:](-[THWDrawablesWidgetRep freeTransformableHandler](self, "freeTransformableHandler"), "canHandleGesture:", gesture) && ([objc_msgSend(-[THWDrawablesWidgetRep interactiveCanvasController](self "interactiveCanvasController")] & 1) != 0)
   {
     return 1;
   }
 
-  v6 = [(THWDrawablesWidgetRep *)self pressableHandler];
+  pressableHandler = [(THWDrawablesWidgetRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v6 canHandleGesture:a3];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self pressableHandler] handleGesture:a3]|| [(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler] handleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self pressableHandler] handleGesture:gesture]|| [(THWFreeTransformableRepGestureTargetHandler *)[(THWDrawablesWidgetRep *)self freeTransformableHandler] handleGesture:gesture])
   {
     return 1;
   }
 
-  [a3 gestureKind];
+  [gesture gestureKind];
   return 0;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWDrawablesWidgetRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWDrawablesWidgetRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v12.receiver = self;
   v12.super_class = THWDrawablesWidgetRep;
   result = [THWDrawablesWidgetRep hitRep:"hitRep:withGesture:passingTest:" withGesture:? passingTest:?];
   if (!result)
   {
-    v11 = [a4 gestureKind];
-    if (v11 == TSDFreeTransform && ([(THWDrawablesWidgetRep *)self p_isExpanded]|| ([(THWDrawablesWidgetRep *)self naturalBounds], v13.x = x, v13.y = y, CGRectContainsPoint(v14, v13))) && (!a5 || (*(a5 + 2))(a5, self)))
+    gestureKind = [gesture gestureKind];
+    if (gestureKind == TSDFreeTransform && ([(THWDrawablesWidgetRep *)self p_isExpanded]|| ([(THWDrawablesWidgetRep *)self naturalBounds], v13.x = x, v13.y = y, CGRectContainsPoint(v14, v13))) && (!test || (*(test + 2))(test, self)))
     {
       return self;
     }

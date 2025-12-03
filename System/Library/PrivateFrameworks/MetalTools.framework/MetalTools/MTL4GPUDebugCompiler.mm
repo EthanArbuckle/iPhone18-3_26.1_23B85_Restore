@@ -1,52 +1,52 @@
 @interface MTL4GPUDebugCompiler
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 completionHandler:(id)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newLibraryWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (id)newLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5;
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
-- (id)newUnwrappedMTL4BinaryFunctionDescriptor:(id *)a3;
-- (id)newUnwrappedMTL4ComputeDynamicLinkingDescriptor:(id *)a3;
-- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)a3;
-- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)a3 dynamicLinkingDescriptor:(id *)a4;
-- (id)newUnwrappedMTL4RenderDynamicLinkingDescriptor:(id *)a3;
-- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)a3;
-- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)a3 dynamicLinkingDescriptor:(id *)a4;
-- (id)wrapDynamicLibraries:(id)a3;
-- (void)_modifyComputePipelineDescriptor:(id)a3;
-- (void)_modifyComputePipelineDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4;
-- (void)_modifyDynamicLinkingDescriptor:(id)a3;
-- (void)_modifyRenderDynamicLinkingDescriptor:(id)a3;
-- (void)_modifyRenderPipelineDescriptor:(id)a3;
-- (void)_modifyRenderPipelineDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l completionHandler:(id)handler;
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error;
+- (id)newLibraryWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (id)newLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler;
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newUnwrappedMTL4BinaryFunctionDescriptor:(id *)descriptor;
+- (id)newUnwrappedMTL4ComputeDynamicLinkingDescriptor:(id *)descriptor;
+- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)descriptor;
+- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)descriptor dynamicLinkingDescriptor:(id *)linkingDescriptor;
+- (id)newUnwrappedMTL4RenderDynamicLinkingDescriptor:(id *)descriptor;
+- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)descriptor;
+- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)descriptor dynamicLinkingDescriptor:(id *)linkingDescriptor;
+- (id)wrapDynamicLibraries:(id)libraries;
+- (void)_modifyComputePipelineDescriptor:(id)descriptor;
+- (void)_modifyComputePipelineDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor;
+- (void)_modifyDynamicLinkingDescriptor:(id)descriptor;
+- (void)_modifyRenderDynamicLinkingDescriptor:(id)descriptor;
+- (void)_modifyRenderPipelineDescriptor:(id)descriptor;
+- (void)_modifyRenderPipelineDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor;
 @end
 
 @implementation MTL4GPUDebugCompiler
 
-- (id)wrapDynamicLibraries:(id)a3
+- (id)wrapDynamicLibraries:(id)libraries
 {
   v36 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  if (a3)
+  if (libraries)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(libraries, "count")}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v28 objects:v35 count:16];
+    v6 = [libraries countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v6)
     {
       v7 = v6;
@@ -57,13 +57,13 @@
         {
           if (*v29 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(libraries);
           }
 
           [v5 addObject:{objc_msgSend(*(*(&v28 + 1) + 8 * i), "baseObject")}];
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v28 objects:v35 count:16];
+        v7 = [libraries countByEnumeratingWithState:&v28 objects:v35 count:16];
       }
 
       while (v7);
@@ -131,84 +131,84 @@
   return v10;
 }
 
-- (void)_modifyDynamicLinkingDescriptor:(id)a3
+- (void)_modifyDynamicLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v5 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [a3 preloadedLibraries]);
-    [a3 setPreloadedLibraries:v5];
+    v5 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [descriptor preloadedLibraries]);
+    [descriptor setPreloadedLibraries:v5];
 
-    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [a3 preloadedLibraries]);
+    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [descriptor preloadedLibraries]);
     device = self->super.super._device;
 
-    _prepareBinaryLinkedFunctions(a3, device);
+    _prepareBinaryLinkedFunctions(descriptor, device);
   }
 }
 
-- (void)_modifyComputePipelineDescriptor:(id)a3
+- (void)_modifyComputePipelineDescriptor:(id)descriptor
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (![a3 options])
+  if (![descriptor options])
   {
     v4 = objc_opt_new();
-    [a3 setOptions:v4];
+    [descriptor setOptions:v4];
   }
 
   v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4];
   *[v5 bytes] = 1;
   v7 = @"MTLBoundsCheck::ComputePipelineData";
   v8[0] = v5;
-  [objc_msgSend(a3 "options")];
+  [objc_msgSend(descriptor "options")];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modifyComputePipelineDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4
+- (void)_modifyComputePipelineDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (linkingDescriptor)
   {
-    v7 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [a4 preloadedLibraries]);
-    [a4 setPreloadedLibraries:v7];
-    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [a4 preloadedLibraries]);
+    v7 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [linkingDescriptor preloadedLibraries]);
+    [linkingDescriptor setPreloadedLibraries:v7];
+    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [linkingDescriptor preloadedLibraries]);
   }
 
-  if (![a3 options])
+  if (![descriptor options])
   {
     v8 = objc_opt_new();
-    [a3 setOptions:v8];
+    [descriptor setOptions:v8];
   }
 
   v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4];
-  v10 = [v9 bytes];
-  *v10 = 1;
-  if (a4)
+  bytes = [v9 bytes];
+  *bytes = 1;
+  if (linkingDescriptor)
   {
-    *v10 = [a4 maxCallStackDepth];
+    *bytes = [linkingDescriptor maxCallStackDepth];
     v12 = @"MTLBoundsCheck::ComputePipelineData";
     v13[0] = v9;
-    [objc_msgSend(a3 "options")];
+    [objc_msgSend(descriptor "options")];
 
-    _prepareBinaryLinkedFunctions(a4, self->super.super._device);
+    _prepareBinaryLinkedFunctions(linkingDescriptor, self->super.super._device);
   }
 
   else
   {
     v12 = @"MTLBoundsCheck::ComputePipelineData";
     v13[0] = v9;
-    [objc_msgSend(a3 "options")];
+    [objc_msgSend(descriptor "options")];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modifyRenderPipelineDescriptor:(id)a3
+- (void)_modifyRenderPipelineDescriptor:(id)descriptor
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (![a3 options])
+  if (![descriptor options])
   {
     v4 = objc_opt_new();
-    [a3 setOptions:v4];
+    [descriptor setOptions:v4];
   }
 
   objc_opt_class();
@@ -228,12 +228,12 @@
   else
   {
     v7 = [v6 initWithLength:20];
-    v11 = [v7 bytes];
+    bytes = [v7 bytes];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *(v11 + 4) = 0x100000001;
-      *v11 = [a3 alphaToCoverageState] != 0;
+      *(bytes + 4) = 0x100000001;
+      *bytes = [descriptor alphaToCoverageState] != 0;
     }
 
     else
@@ -241,9 +241,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        *v11 = [a3 alphaToCoverageState] != 0;
-        *(v11 + 8) = 0x100000001;
-        *(v11 + 16) = 1;
+        *bytes = [descriptor alphaToCoverageState] != 0;
+        *(bytes + 8) = 0x100000001;
+        *(bytes + 16) = 1;
       }
     }
 
@@ -254,18 +254,18 @@
     v10 = &v13;
   }
 
-  [objc_msgSend(a3 "options")];
+  [objc_msgSend(descriptor "options")];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modifyRenderPipelineDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4
+- (void)_modifyRenderPipelineDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  if (![a3 options])
+  if (![descriptor options])
   {
     v7 = objc_opt_new();
-    [a3 setOptions:v7];
+    [descriptor setOptions:v7];
   }
 
   objc_opt_class();
@@ -274,26 +274,26 @@
   if ((isKindOfClass & 1) == 0)
   {
     v10 = [v9 initWithLength:20];
-    v14 = [v10 bytes];
+    bytes = [v10 bytes];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *(v14 + 4) = 0x100000001;
-      if (!a4)
+      *(bytes + 4) = 0x100000001;
+      if (!linkingDescriptor)
       {
-        *v14 = [a3 alphaToCoverageState] != 0;
+        *bytes = [descriptor alphaToCoverageState] != 0;
         goto LABEL_24;
       }
 
-      *(v14 + 4) = [objc_msgSend(a4 "vertexLinkingDescriptor")];
-      *(v14 + 8) = [objc_msgSend(a4 "fragmentLinkingDescriptor")];
-      [objc_msgSend(a4 "vertexLinkingDescriptor")];
-      -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "vertexLinkingDescriptor")]);
-      [objc_msgSend(a4 "fragmentLinkingDescriptor")];
-      -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "fragmentLinkingDescriptor")]);
-      *v14 = [a3 alphaToCoverageState] != 0;
-      _prepareBinaryLinkedFunctions([a4 vertexLinkingDescriptor], self->super.super._device);
-      v15 = [a4 fragmentLinkingDescriptor];
+      *(bytes + 4) = [objc_msgSend(linkingDescriptor "vertexLinkingDescriptor")];
+      *(bytes + 8) = [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")];
+      [objc_msgSend(linkingDescriptor "vertexLinkingDescriptor")];
+      -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "vertexLinkingDescriptor")]);
+      [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")];
+      -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")]);
+      *bytes = [descriptor alphaToCoverageState] != 0;
+      _prepareBinaryLinkedFunctions([linkingDescriptor vertexLinkingDescriptor], self->super.super._device);
+      fragmentLinkingDescriptor = [linkingDescriptor fragmentLinkingDescriptor];
       device = self->super.super._device;
     }
 
@@ -305,48 +305,48 @@
         goto LABEL_24;
       }
 
-      *v14 = [a3 alphaToCoverageState] != 0;
-      *(v14 + 8) = 0x100000001;
-      *(v14 + 16) = 1;
-      if (!a4)
+      *bytes = [descriptor alphaToCoverageState] != 0;
+      *(bytes + 8) = 0x100000001;
+      *(bytes + 16) = 1;
+      if (!linkingDescriptor)
       {
         goto LABEL_24;
       }
 
-      *(v14 + 12) = [objc_msgSend(a4 "meshLinkingDescriptor")];
-      *(v14 + 8) = [objc_msgSend(a4 "fragmentLinkingDescriptor")];
-      *(v14 + 16) = [objc_msgSend(a4 "objectLinkingDescriptor")];
-      if ([objc_msgSend(objc_msgSend(a4 "meshLinkingDescriptor")])
+      *(bytes + 12) = [objc_msgSend(linkingDescriptor "meshLinkingDescriptor")];
+      *(bytes + 8) = [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")];
+      *(bytes + 16) = [objc_msgSend(linkingDescriptor "objectLinkingDescriptor")];
+      if ([objc_msgSend(objc_msgSend(linkingDescriptor "meshLinkingDescriptor")])
       {
-        v17 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(a4 "meshLinkingDescriptor")]);
-        [objc_msgSend(a4 "meshLinkingDescriptor")];
+        v17 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(linkingDescriptor "meshLinkingDescriptor")]);
+        [objc_msgSend(linkingDescriptor "meshLinkingDescriptor")];
 
-        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "meshLinkingDescriptor")]);
+        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "meshLinkingDescriptor")]);
       }
 
-      if ([objc_msgSend(objc_msgSend(a4 "fragmentLinkingDescriptor")])
+      if ([objc_msgSend(objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")])
       {
-        v18 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(a4 "fragmentLinkingDescriptor")]);
-        [objc_msgSend(a4 "fragmentLinkingDescriptor")];
+        v18 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")]);
+        [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")];
 
-        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "fragmentLinkingDescriptor")]);
+        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "fragmentLinkingDescriptor")]);
       }
 
-      if ([objc_msgSend(objc_msgSend(a4 "objectLinkingDescriptor")])
+      if ([objc_msgSend(objc_msgSend(linkingDescriptor "objectLinkingDescriptor")])
       {
-        v19 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(a4 "objectLinkingDescriptor")]);
-        [objc_msgSend(a4 "objectLinkingDescriptor")];
+        v19 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(linkingDescriptor "objectLinkingDescriptor")]);
+        [objc_msgSend(linkingDescriptor "objectLinkingDescriptor")];
 
-        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "objectLinkingDescriptor")]);
+        -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "objectLinkingDescriptor")]);
       }
 
-      _prepareBinaryLinkedFunctions([a4 meshLinkingDescriptor], self->super.super._device);
-      _prepareBinaryLinkedFunctions([a4 fragmentLinkingDescriptor], self->super.super._device);
-      v15 = [a4 objectLinkingDescriptor];
+      _prepareBinaryLinkedFunctions([linkingDescriptor meshLinkingDescriptor], self->super.super._device);
+      _prepareBinaryLinkedFunctions([linkingDescriptor fragmentLinkingDescriptor], self->super.super._device);
+      fragmentLinkingDescriptor = [linkingDescriptor objectLinkingDescriptor];
       device = self->super.super._device;
     }
 
-    _prepareBinaryLinkedFunctions(v15, device);
+    _prepareBinaryLinkedFunctions(fragmentLinkingDescriptor, device);
 LABEL_24:
     v24 = @"MTLBoundsCheck::RenderPipelineData";
     v25 = v10;
@@ -357,9 +357,9 @@ LABEL_24:
   }
 
   v10 = [v9 initWithLength:4];
-  v11 = [v10 bytes];
-  *v11 = 1;
-  if (!a4)
+  bytes2 = [v10 bytes];
+  *bytes2 = 1;
+  if (!linkingDescriptor)
   {
     v26 = @"MTLBoundsCheck::ComputePipelineData";
     v27[0] = v10;
@@ -367,139 +367,139 @@ LABEL_24:
     v21 = v27;
     v22 = &v26;
 LABEL_25:
-    [objc_msgSend(a3 "options")];
+    [objc_msgSend(descriptor "options")];
 
     goto LABEL_26;
   }
 
-  v12 = v11;
-  if ([a4 tileLinkingDescriptor])
+  v12 = bytes2;
+  if ([linkingDescriptor tileLinkingDescriptor])
   {
-    *v12 = [objc_msgSend(a4 "tileLinkingDescriptor")];
-    v13 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(a4 "tileLinkingDescriptor")]);
-    [objc_msgSend(a4 "tileLinkingDescriptor")];
+    *v12 = [objc_msgSend(linkingDescriptor "tileLinkingDescriptor")];
+    v13 = -[MTL4GPUDebugCompiler wrapDynamicLibraries:](self, "wrapDynamicLibraries:", [objc_msgSend(linkingDescriptor "tileLinkingDescriptor")]);
+    [objc_msgSend(linkingDescriptor "tileLinkingDescriptor")];
 
-    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(a4 "tileLinkingDescriptor")]);
+    -[MTLToolsDevice prepareInsertLibraries:](self->super.super._device, "prepareInsertLibraries:", [objc_msgSend(linkingDescriptor "tileLinkingDescriptor")]);
   }
 
   v26 = @"MTLBoundsCheck::ComputePipelineData";
   v27[0] = v10;
-  [objc_msgSend(a3 "options")];
+  [objc_msgSend(descriptor "options")];
 
-  if ([a4 tileLinkingDescriptor])
+  if ([linkingDescriptor tileLinkingDescriptor])
   {
-    _prepareBinaryLinkedFunctions([a4 tileLinkingDescriptor], self->super.super._device);
+    _prepareBinaryLinkedFunctions([linkingDescriptor tileLinkingDescriptor], self->super.super._device);
   }
 
 LABEL_26:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modifyRenderDynamicLinkingDescriptor:(id)a3
+- (void)_modifyRenderDynamicLinkingDescriptor:(id)descriptor
 {
-  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [a3 tileLinkingDescriptor]);
-  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [a3 vertexLinkingDescriptor]);
-  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [a3 fragmentLinkingDescriptor]);
-  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [a3 meshLinkingDescriptor]);
-  v5 = [a3 objectLinkingDescriptor];
+  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [descriptor tileLinkingDescriptor]);
+  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [descriptor vertexLinkingDescriptor]);
+  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [descriptor fragmentLinkingDescriptor]);
+  -[MTL4GPUDebugCompiler _modifyDynamicLinkingDescriptor:](self, "_modifyDynamicLinkingDescriptor:", [descriptor meshLinkingDescriptor]);
+  objectLinkingDescriptor = [descriptor objectLinkingDescriptor];
 
-  [(MTL4GPUDebugCompiler *)self _modifyDynamicLinkingDescriptor:v5];
+  [(MTL4GPUDebugCompiler *)self _modifyDynamicLinkingDescriptor:objectLinkingDescriptor];
 }
 
-- (id)newUnwrappedMTL4BinaryFunctionDescriptor:(id *)a3
+- (id)newUnwrappedMTL4BinaryFunctionDescriptor:(id *)descriptor
 {
-  v5 = [*a3 copy];
-  *a3 = v5;
+  v5 = [*descriptor copy];
+  *descriptor = v5;
   if (![v5 pipelineOptions])
   {
     v6 = objc_opt_new();
-    [*a3 setPipelineOptions:v6];
+    [*descriptor setPipelineOptions:v6];
   }
 
-  [objc_msgSend(*a3 "pipelineOptions")];
+  [objc_msgSend(*descriptor "pipelineOptions")];
   device = self->super.super._device;
-  v8 = *a3;
+  v8 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4BinaryFunctionDescriptor:v8];
 }
 
-- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)a3
+- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)descriptor
 {
-  v5 = [*a3 copy];
-  *a3 = v5;
+  v5 = [*descriptor copy];
+  *descriptor = v5;
   [(MTL4GPUDebugCompiler *)self _modifyComputePipelineDescriptor:v5];
-  v6 = [*a3 options];
-  [v6 setShaderReflection:{objc_msgSend(v6, "shaderReflection") | 3}];
+  options = [*descriptor options];
+  [options setShaderReflection:{objc_msgSend(options, "shaderReflection") | 3}];
   device = self->super.super._device;
-  v8 = *a3;
+  v8 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4PipelineDescriptor:v8];
 }
 
-- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)a3 dynamicLinkingDescriptor:(id *)a4
+- (id)newUnwrappedMTL4ComputePipelineDescriptor:(id *)descriptor dynamicLinkingDescriptor:(id *)linkingDescriptor
 {
-  v7 = [*a3 copy];
-  *a3 = v7;
-  [(MTL4GPUDebugCompiler *)self _modifyComputePipelineDescriptor:v7 dynamicLinkingDescriptor:*a4];
-  v8 = [*a3 options];
-  [v8 setShaderReflection:{objc_msgSend(v8, "shaderReflection") | 3}];
+  v7 = [*descriptor copy];
+  *descriptor = v7;
+  [(MTL4GPUDebugCompiler *)self _modifyComputePipelineDescriptor:v7 dynamicLinkingDescriptor:*linkingDescriptor];
+  options = [*descriptor options];
+  [options setShaderReflection:{objc_msgSend(options, "shaderReflection") | 3}];
   device = self->super.super._device;
-  v10 = *a3;
+  v10 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4PipelineDescriptor:v10];
 }
 
-- (id)newUnwrappedMTL4ComputeDynamicLinkingDescriptor:(id *)a3
+- (id)newUnwrappedMTL4ComputeDynamicLinkingDescriptor:(id *)descriptor
 {
-  v5 = [*a3 copy];
-  *a3 = v5;
+  v5 = [*descriptor copy];
+  *descriptor = v5;
   [(MTL4GPUDebugCompiler *)self _modifyComputeDynamicLinkingDescriptor:v5];
   device = self->super.super._device;
-  v7 = *a3;
+  v7 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:v7];
 }
 
-- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)a3
+- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)descriptor
 {
-  v5 = [*a3 copy];
-  *a3 = v5;
+  v5 = [*descriptor copy];
+  *descriptor = v5;
   [(MTL4GPUDebugCompiler *)self _modifyRenderPipelineDescriptor:v5];
-  v6 = [*a3 options];
-  [v6 setShaderReflection:{objc_msgSend(v6, "shaderReflection") | 3}];
+  options = [*descriptor options];
+  [options setShaderReflection:{objc_msgSend(options, "shaderReflection") | 3}];
   device = self->super.super._device;
-  v8 = *a3;
+  v8 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4PipelineDescriptor:v8];
 }
 
-- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)a3 dynamicLinkingDescriptor:(id *)a4
+- (id)newUnwrappedMTL4RenderPipelineDescriptor:(id *)descriptor dynamicLinkingDescriptor:(id *)linkingDescriptor
 {
-  v7 = [*a3 copy];
-  *a3 = v7;
-  [(MTL4GPUDebugCompiler *)self _modifyRenderPipelineDescriptor:v7 dynamicLinkingDescriptor:*a4];
-  v8 = [*a3 options];
-  [v8 setShaderReflection:{objc_msgSend(v8, "shaderReflection") | 3}];
+  v7 = [*descriptor copy];
+  *descriptor = v7;
+  [(MTL4GPUDebugCompiler *)self _modifyRenderPipelineDescriptor:v7 dynamicLinkingDescriptor:*linkingDescriptor];
+  options = [*descriptor options];
+  [options setShaderReflection:{objc_msgSend(options, "shaderReflection") | 3}];
   device = self->super.super._device;
-  v10 = *a3;
+  v10 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4PipelineDescriptor:v10];
 }
 
-- (id)newUnwrappedMTL4RenderDynamicLinkingDescriptor:(id *)a3
+- (id)newUnwrappedMTL4RenderDynamicLinkingDescriptor:(id *)descriptor
 {
-  v5 = [*a3 copy];
-  *a3 = v5;
+  v5 = [*descriptor copy];
+  *descriptor = v5;
   [(MTL4GPUDebugCompiler *)self _modifyRenderDynamicLinkingDescriptor:v5];
   device = self->super.super._device;
-  v7 = *a3;
+  v7 = *descriptor;
 
   return [(MTLToolsDevice *)device newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:v7];
 }
 
-- (id)newLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (id)newLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
-  [a3 setOptions:{DebugCompileOptions(self->super.super._device, objc_msgSend(a3, "options"))}];
+  [descriptor setOptions:{DebugCompileOptions(self->super.super._device, objc_msgSend(descriptor, "options"))}];
   device = self->super.super._device;
   [(MTLToolsDevice *)device instrumentationHeapInit];
   result = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -515,17 +515,17 @@ LABEL_26:
   return result;
 }
 
-- (id)newLibraryWithDescriptor:(id)a3 completionHandler:(id)a4
+- (id)newLibraryWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  [a3 setOptions:{DebugCompileOptions(self->super.super._device, objc_msgSend(a3, "options"))}];
-  v7 = [(MTLToolsObject *)self baseObject];
+  [descriptor setOptions:{DebugCompileOptions(self->super.super._device, objc_msgSend(descriptor, "options"))}];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__MTL4GPUDebugCompiler_newLibraryWithDescriptor_completionHandler___block_invoke;
   v9[3] = &unk_2787B3768;
   v9[4] = self;
-  v9[5] = a4;
-  return [v7 newLibraryWithDescriptor:a3 completionHandler:v9];
+  v9[5] = handler;
+  return [baseObject newLibraryWithDescriptor:descriptor completionHandler:v9];
 }
 
 void __67__MTL4GPUDebugCompiler_newLibraryWithDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -545,7 +545,7 @@ void __67__MTL4GPUDebugCompiler_newLibraryWithDescriptor_completionHandler___blo
   }
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
   device = self->super.super._device;
   v13 = device;
@@ -569,16 +569,16 @@ void __67__MTL4GPUDebugCompiler_newLibraryWithDescriptor_completionHandler___blo
   return v11;
 }
 
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler
 {
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__MTL4GPUDebugCompiler_newDynamicLibrary_completionHandler___block_invoke;
   v9[3] = &unk_2787B3790;
   v9[4] = self;
-  v9[5] = a4;
-  return [v7 newDynamicLibrary:a3 completionHandler:v9];
+  v9[5] = handler;
+  return [baseObject newDynamicLibrary:library completionHandler:v9];
 }
 
 void __60__MTL4GPUDebugCompiler_newDynamicLibrary_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -598,7 +598,7 @@ void __60__MTL4GPUDebugCompiler_newDynamicLibrary_completionHandler___block_invo
   }
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error
 {
   device = self->super.super._device;
   v13 = device;
@@ -622,16 +622,16 @@ void __60__MTL4GPUDebugCompiler_newDynamicLibrary_completionHandler___block_invo
   return v11;
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 completionHandler:(id)a4
+- (id)newDynamicLibraryWithURL:(id)l completionHandler:(id)handler
 {
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__MTL4GPUDebugCompiler_newDynamicLibraryWithURL_completionHandler___block_invoke;
   v9[3] = &unk_2787B3790;
   v9[4] = self;
-  v9[5] = a4;
-  return [v7 newDynamicLibraryWithURL:a3 options:2 completionHandler:v9];
+  v9[5] = handler;
+  return [baseObject newDynamicLibraryWithURL:l options:2 completionHandler:v9];
 }
 
 void __67__MTL4GPUDebugCompiler_newDynamicLibraryWithURL_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -651,10 +651,10 @@ void __67__MTL4GPUDebugCompiler_newDynamicLibraryWithURL_completionHandler___blo
   }
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v13 = a3;
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4BinaryFunctionDescriptor:&v13];
+  descriptorCopy = descriptor;
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4BinaryFunctionDescriptor:&descriptorCopy];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -672,19 +672,19 @@ void __67__MTL4GPUDebugCompiler_newDynamicLibraryWithURL_completionHandler___blo
   return v11;
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4BinaryFunctionDescriptor:&v12];
-  v9 = [(MTLToolsObject *)self baseObject];
+  descriptorCopy = descriptor;
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4BinaryFunctionDescriptor:&descriptorCopy];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__MTL4GPUDebugCompiler_newBinaryFunctionWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v11[3] = &unk_2787B37B8;
   v11[5] = v8;
-  v11[6] = a5;
+  v11[6] = handler;
   v11[4] = self;
-  return [v9 newBinaryFunctionWithDescriptor:v8 compilerTaskOptions:a4 completionHandler:v11];
+  return [baseObject newBinaryFunctionWithDescriptor:v8 compilerTaskOptions:options completionHandler:v11];
 }
 
 void __94__MTL4GPUDebugCompiler_newBinaryFunctionWithDescriptor_compilerTaskOptions_completionHandler___block_invoke(void *a1, uint64_t a2)
@@ -699,12 +699,12 @@ void __94__MTL4GPUDebugCompiler_newBinaryFunctionWithDescriptor_compilerTaskOpti
   v4 = a1[5];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v15 = a3;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&v15];
-  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v15, v8);
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&descriptorCopy];
+  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v8);
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v10)
   {
@@ -713,21 +713,21 @@ void __94__MTL4GPUDebugCompiler_newBinaryFunctionWithDescriptor_compilerTaskOpti
 
   v11 = v10;
   v12 = [MTLGPUDebugComputePipelineState alloc];
-  v13 = [(MTLGPUDebugComputePipelineState *)v12 initWithComputePipelineState:v11 descriptor:v15 device:self->super.super._device];
+  v13 = [(MTLGPUDebugComputePipelineState *)v12 initWithComputePipelineState:v11 descriptor:descriptorCopy device:self->super.super._device];
 
   [(MTLGPUDebugComputePipelineState *)v13 setUID:v9];
   [(MTLToolsDevice *)self->super.super._device onComputePipelineCreated:v13];
   return v13;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v17 = a4;
-  v18 = a3;
+  linkingDescriptorCopy = linkingDescriptor;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&v18 dynamicLinkingDescriptor:&v17];
-  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputeDynamicLinkingDescriptor:&v17];
-  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v18, v9);
+  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&descriptorCopy dynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputeDynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v9);
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v12)
   {
@@ -736,30 +736,30 @@ void __94__MTL4GPUDebugCompiler_newBinaryFunctionWithDescriptor_compilerTaskOpti
 
   v13 = v12;
   v14 = [MTLGPUDebugComputePipelineState alloc];
-  v15 = [(MTLGPUDebugComputePipelineState *)v14 initWithComputePipelineState:v13 descriptor:v18 dynamicLinkingDescriptor:v17 device:self->super.super._device];
+  v15 = [(MTLGPUDebugComputePipelineState *)v14 initWithComputePipelineState:v13 descriptor:descriptorCopy dynamicLinkingDescriptor:linkingDescriptorCopy device:self->super.super._device];
 
   [(MTLGPUDebugComputePipelineState *)v15 setUID:v11];
   [(MTLToolsDevice *)self->super.super._device onComputePipelineCreated:v15];
   return v15;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v13 = a3;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&v13];
-  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v13, v8);
-  v10 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&descriptorCopy];
+  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v8);
+  baseObject = [(MTLToolsObject *)self baseObject];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __100__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v12[3] = &unk_2787B37E0;
-  v12[4] = v13;
+  v12[4] = descriptorCopy;
   v12[5] = self;
   v12[6] = v9;
   v12[7] = v8;
-  v12[8] = a5;
-  return [v10 newComputePipelineStateWithDescriptor:v8 compilerTaskOptions:a4 completionHandler:v12];
+  v12[8] = handler;
+  return [baseObject newComputePipelineStateWithDescriptor:v8 compilerTaskOptions:options completionHandler:v12];
 }
 
 void __100__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -780,26 +780,26 @@ void __100__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_compilerT
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v15 = a4;
-  v16 = a3;
+  linkingDescriptorCopy = linkingDescriptor;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&v16 dynamicLinkingDescriptor:&v15];
-  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputeDynamicLinkingDescriptor:&v15];
-  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v16, v9);
-  v12 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputePipelineDescriptor:&descriptorCopy dynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4ComputeDynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v9);
+  baseObject = [(MTLToolsObject *)self baseObject];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __125__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v14[3] = &unk_2787B3808;
-  v14[4] = v16;
-  v14[5] = v15;
+  v14[4] = descriptorCopy;
+  v14[5] = linkingDescriptorCopy;
   v14[6] = self;
   v14[7] = v11;
   v14[8] = v9;
-  v14[9] = a6;
-  return [v12 newComputePipelineStateWithDescriptor:v9 dynamicLinkingDescriptor:v10 compilerTaskOptions:a5 completionHandler:v14];
+  v14[9] = handler;
+  return [baseObject newComputePipelineStateWithDescriptor:v9 dynamicLinkingDescriptor:v10 compilerTaskOptions:options completionHandler:v14];
 }
 
 void __125__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -820,12 +820,12 @@ void __125__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_dynamicLi
   (*(*(a1 + 72) + 16))();
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v15 = a3;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&v15];
-  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v15, v8);
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&descriptorCopy];
+  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v8);
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v10)
   {
@@ -834,21 +834,21 @@ void __125__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_dynamicLi
 
   v11 = v10;
   v12 = [MTLGPUDebugRenderPipelineState alloc];
-  v13 = [(MTLGPUDebugRenderPipelineState *)v12 initWithRenderPipelineState:v11 descriptor:v15 device:self->super.super._device];
+  v13 = [(MTLGPUDebugRenderPipelineState *)v12 initWithRenderPipelineState:v11 descriptor:descriptorCopy device:self->super.super._device];
 
   [(MTLGPUDebugRenderPipelineState *)v13 setUID:v9];
   [(MTLToolsDevice *)self->super.super._device onRenderPipelineCreated:v13];
   return v13;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v17 = a4;
-  v18 = a3;
+  linkingDescriptorCopy = linkingDescriptor;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&v18 dynamicLinkingDescriptor:&v17];
-  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderDynamicLinkingDescriptor:&v17];
-  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v18, v9);
+  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&descriptorCopy dynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderDynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v9);
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v12)
   {
@@ -857,30 +857,30 @@ void __125__MTL4GPUDebugCompiler_newComputePipelineStateWithDescriptor_dynamicLi
 
   v13 = v12;
   v14 = [MTLGPUDebugRenderPipelineState alloc];
-  v15 = [(MTLGPUDebugRenderPipelineState *)v14 initWithRenderPipelineState:v13 descriptor:v18 dynamicLinkingDescriptor:v17 device:self->super.super._device];
+  v15 = [(MTLGPUDebugRenderPipelineState *)v14 initWithRenderPipelineState:v13 descriptor:descriptorCopy dynamicLinkingDescriptor:linkingDescriptorCopy device:self->super.super._device];
 
   [(MTLGPUDebugRenderPipelineState *)v15 setUID:v11];
   [(MTLToolsDevice *)self->super.super._device onRenderPipelineCreated:v15];
   return v15;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v13 = a3;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&v13];
-  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v13, v8);
-  v10 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&descriptorCopy];
+  v9 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v8);
+  baseObject = [(MTLToolsObject *)self baseObject];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v12[3] = &unk_2787B3830;
-  v12[4] = v13;
+  v12[4] = descriptorCopy;
   v12[5] = self;
   v12[6] = v9;
   v12[7] = v8;
-  v12[8] = a5;
-  return [v10 newRenderPipelineStateWithDescriptor:v8 compilerTaskOptions:a4 completionHandler:v12];
+  v12[8] = handler;
+  return [baseObject newRenderPipelineStateWithDescriptor:v8 compilerTaskOptions:options completionHandler:v12];
 }
 
 void __99__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -901,27 +901,27 @@ void __99__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_compilerTas
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v15 = a4;
-  v16 = a3;
+  linkingDescriptorCopy = linkingDescriptor;
+  descriptorCopy = descriptor;
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&v16 dynamicLinkingDescriptor:&v15];
-  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderDynamicLinkingDescriptor:&v15];
-  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, v16, v9);
-  v12 = [(MTLToolsObject *)self baseObject];
+  v9 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderPipelineDescriptor:&descriptorCopy dynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v10 = [(MTL4GPUDebugCompiler *)self newUnwrappedMTL4RenderDynamicLinkingDescriptor:&linkingDescriptorCopy];
+  v11 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptorCopy, v9);
+  baseObject = [(MTLToolsObject *)self baseObject];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __124__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v14[3] = &unk_2787B3858;
-  v14[4] = v16;
-  v14[5] = v15;
+  v14[4] = descriptorCopy;
+  v14[5] = linkingDescriptorCopy;
   v14[6] = self;
   v14[7] = v11;
   v14[8] = v9;
   v14[9] = v10;
-  v14[10] = a6;
-  return [v12 newRenderPipelineStateWithDescriptor:v9 dynamicLinkingDescriptor:v10 compilerTaskOptions:a5 completionHandler:v14];
+  v14[10] = handler;
+  return [baseObject newRenderPipelineStateWithDescriptor:v9 dynamicLinkingDescriptor:v10 compilerTaskOptions:options completionHandler:v14];
 }
 
 void __124__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -942,11 +942,11 @@ void __124__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_dynamicLin
   (*(*(a1 + 80) + 16))();
 }
 
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline error:(id *)error
 {
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:a3];
-  v10 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, a3, v9);
+  v9 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  v10 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptor, v9);
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v11)
   {
@@ -954,31 +954,31 @@ void __124__MTL4GPUDebugCompiler_newRenderPipelineStateWithDescriptor_dynamicLin
   }
 
   v12 = v11;
-  v13 = [[MTLGPUDebugRenderPipelineState alloc] initWithRenderPipelineState:v11 originalObject:a4 descriptor:a3 device:self->super.super._device];
+  v13 = [[MTLGPUDebugRenderPipelineState alloc] initWithRenderPipelineState:v11 originalObject:pipeline descriptor:descriptor device:self->super.super._device];
 
   [(MTLGPUDebugRenderPipelineState *)v13 setUID:v10];
   [(MTLToolsDevice *)self->super.super._device onRenderPipelineCreated:v13];
   return v13;
 }
 
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler
 {
   [(MTLToolsDevice *)self->super.super._device instrumentationHeapInit];
-  v9 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:a3];
-  v10 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, a3, v9);
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = [a4 baseObject];
+  v9 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  v10 = MTLGPUDebugSetValidationChecksOptions(self->super.super._device, descriptor, v9);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [pipeline baseObject];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __104__MTL4GPUDebugCompiler_newRenderPipelineStateBySpecializationWithDescriptor_pipeline_completionHandler___block_invoke;
   v14[3] = &unk_2787B3880;
-  v14[4] = a4;
-  v14[5] = a3;
+  v14[4] = pipeline;
+  v14[5] = descriptor;
   v14[6] = self;
   v14[7] = v10;
   v14[8] = v9;
-  v14[9] = a5;
-  return [v11 newRenderPipelineStateBySpecializationWithDescriptor:v9 pipeline:v12 completionHandler:v14];
+  v14[9] = handler;
+  return [baseObject newRenderPipelineStateBySpecializationWithDescriptor:v9 pipeline:baseObject2 completionHandler:v14];
 }
 
 void __104__MTL4GPUDebugCompiler_newRenderPipelineStateBySpecializationWithDescriptor_pipeline_completionHandler___block_invoke(uint64_t a1, uint64_t a2)

@@ -2,35 +2,35 @@
 - (BOOL)p_isForPrint;
 - (BOOL)shrinkTextToFit;
 - (CGPoint)capturedInfoPositionForAttachment;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)sizeOfScrollViewEnclosingCanvas;
-- (Class)repClassForTextLayout:(id)a3;
+- (Class)repClassForTextLayout:(id)layout;
 - (TSWPPadding)layoutMargins;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)children;
-- (id)dependentsOfTextLayout:(id)a3;
-- (id)dropCapStyleAtParIndex:(unint64_t)a3;
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (int)verticalAlignmentForTextLayout:(id)a3;
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
+- (id)dropCapStyleAtParIndex:(unint64_t)index;
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (int)verticalAlignmentForTextLayout:(id)layout;
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout;
 - (unint64_t)initialCharIndex;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)createContainedLayoutForEditing;
 - (void)dealloc;
-- (void)insertChild:(id)a3 above:(id)a4;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChild:(id)a3 below:(id)a4;
-- (void)invalidateForAutosizingTextLayout:(id)a3;
+- (void)insertChild:(id)child above:(id)above;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)insertChild:(id)child below:(id)below;
+- (void)invalidateForAutosizingTextLayout:(id)layout;
 - (void)invalidatePadding;
 - (void)invalidateSize;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setChildren:(id)a3;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setChildren:(id)children;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -61,7 +61,7 @@
   return v2;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout setChildren:]");
@@ -73,7 +73,7 @@
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout addChild:]");
@@ -85,10 +85,10 @@
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:atIndex:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:atIndex:]", index);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNNoteLayout.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 82, 0, "not supported");
 
@@ -97,10 +97,10 @@
   objc_msgSend_logBacktraceThrottled(v11, v9, v10);
 }
 
-- (void)insertChild:(id)a3 below:(id)a4
+- (void)insertChild:(id)child below:(id)below
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:below:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:below:]", below);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNNoteLayout.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 86, 0, "not supported");
 
@@ -109,10 +109,10 @@
   objc_msgSend_logBacktraceThrottled(v11, v9, v10);
 }
 
-- (void)insertChild:(id)a3 above:(id)a4
+- (void)insertChild:(id)child above:(id)above
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:above:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout insertChild:above:]", above);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNNoteLayout.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 90, 0, "not supported");
 
@@ -121,10 +121,10 @@
   objc_msgSend_logBacktraceThrottled(v11, v9, v10);
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout replaceChild:with:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNNoteLayout replaceChild:with:]", with);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNNoteLayout.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 94, 0, "not supported");
 
@@ -215,12 +215,12 @@
   return isPrintingCanvas;
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = objc_msgSend_info(self, a2, a3);
+  v7 = objc_msgSend_info(self, a2, index);
   v10 = objc_msgSend_containedStorage(v7, v8, v9);
 
-  v12 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(v10, v11, a3, a4);
+  v12 = objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(v10, v11, index, range);
   if (!objc_msgSend_darkModeEnabled(self, v13, v14))
   {
     isVariation = v12;
@@ -301,45 +301,45 @@ LABEL_14:
   return isVariation;
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v7 = objc_msgSend_info(self, a2, a3);
+  v7 = objc_msgSend_info(self, a2, index);
   v10 = objc_msgSend_containedStorage(v7, v8, v9);
-  v12 = objc_msgSend_paragraphIndexAtCharIndex_(v10, v11, a3);
+  v12 = objc_msgSend_paragraphIndexAtCharIndex_(v10, v11, index);
 
-  return objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(self, v13, v12, a4);
+  return objc_msgSend_paragraphStyleAtParIndex_effectiveRange_(self, v13, v12, range);
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = objc_msgSend_info(self, a2, a3);
+  v6 = objc_msgSend_info(self, a2, index);
   v9 = objc_msgSend_containedStorage(v6, v7, v8);
-  v11 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(v9, v10, a3, a4);
+  v11 = objc_msgSend_characterStyleAtCharIndex_effectiveRange_(v9, v10, index, range);
 
   return v11;
 }
 
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = objc_msgSend_info(self, a2, a3);
+  v6 = objc_msgSend_info(self, a2, index);
   v9 = objc_msgSend_containedStorage(v6, v7, v8);
-  v11 = objc_msgSend_listStyleAtParIndex_effectiveRange_(v9, v10, a3, a4);
+  v11 = objc_msgSend_listStyleAtParIndex_effectiveRange_(v9, v10, index, range);
 
   return v11;
 }
 
-- (id)dropCapStyleAtParIndex:(unint64_t)a3
+- (id)dropCapStyleAtParIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_info(self, a2, a3);
+  v4 = objc_msgSend_info(self, a2, index);
   v7 = objc_msgSend_containedStorage(v4, v5, v6);
-  v9 = objc_msgSend_dropCapStyleAtParIndex_(v7, v8, a3);
+  v9 = objc_msgSend_dropCapStyleAtParIndex_(v7, v8, index);
 
   return v9;
 }
 
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout
 {
-  if (objc_msgSend_p_isForPrint(self, a2, a3))
+  if (objc_msgSend_p_isForPrint(self, a2, layout))
   {
     return 0;
   }
@@ -350,25 +350,25 @@ LABEL_14:
   }
 }
 
-- (int)verticalAlignmentForTextLayout:(id)a3
+- (int)verticalAlignmentForTextLayout:(id)layout
 {
-  v3 = objc_msgSend_info(self, a2, a3);
+  v3 = objc_msgSend_info(self, a2, layout);
   v6 = objc_msgSend_verticalAlignment(v3, v4, v5);
 
   return v6;
 }
 
-- (void)invalidateForAutosizingTextLayout:(id)a3
+- (void)invalidateForAutosizingTextLayout:(id)layout
 {
-  v4 = objc_msgSend_computeLayoutGeometry(self, a2, a3);
+  v4 = objc_msgSend_computeLayoutGeometry(self, a2, layout);
   objc_msgSend_setGeometry_(self, v5, v4);
 
   objc_msgSend_invalidateSize(self, v6, v7);
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
-  if (objc_msgSend_p_isForPrint(self, a2, a3))
+  if (objc_msgSend_p_isForPrint(self, a2, layout))
   {
     v6 = objc_msgSend_info(self, v4, v5);
     objc_msgSend_frameForPrinting(v6, v7, v8);
@@ -399,10 +399,10 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  objc_msgSend_nonAutosizedFrameForTextLayout_(self, a2, a3, a4.width);
+  height = size.height;
+  objc_msgSend_nonAutosizedFrameForTextLayout_(self, a2, layout, size.width);
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -427,14 +427,14 @@ LABEL_14:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v3 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], a2, self);
 
   return v3;
 }
 
-- (Class)repClassForTextLayout:(id)a3
+- (Class)repClassForTextLayout:(id)layout
 {
   v3 = objc_opt_class();
 
@@ -455,9 +455,9 @@ LABEL_14:
   self->_padding = 0;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
-  v4 = objc_msgSend_geometry(self, a2, a3);
+  v4 = objc_msgSend_geometry(self, a2, target);
   objc_msgSend_size(v4, v5, v6);
   v8 = v7;
 
@@ -506,9 +506,9 @@ LABEL_14:
   return v6;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v5 = objc_msgSend_geometry(self, a2, a3, a4);
+  v5 = objc_msgSend_geometry(self, a2, index, width);
   objc_msgSend_size(v5, v6, v7);
   v9 = v8;
 
@@ -532,16 +532,16 @@ LABEL_14:
   return v21;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  v10 = objc_msgSend_p_adjustedPaddingForBodyWidth_(self, a2, a3, a5);
+  v10 = objc_msgSend_p_adjustedPaddingForBodyWidth_(self, a2, index, target);
   v13 = v10;
   if (v10)
   {
     objc_msgSend_leftInset(v10, v11, v12);
     v15 = v14;
     objc_msgSend_rightInset(v13, v16, v17);
-    if (!a6)
+    if (!outWidth)
     {
       goto LABEL_4;
     }
@@ -551,16 +551,16 @@ LABEL_14:
 
   v15 = 0.0;
   v18 = 0.0;
-  if (a6)
+  if (outWidth)
   {
 LABEL_3:
-    *a6 = a4 - v15 - v18;
+    *outWidth = width - v15 - v18;
   }
 
 LABEL_4:
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return v15;

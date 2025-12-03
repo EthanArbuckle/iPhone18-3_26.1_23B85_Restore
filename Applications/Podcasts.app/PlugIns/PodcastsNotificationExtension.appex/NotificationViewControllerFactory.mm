@@ -1,44 +1,44 @@
 @interface NotificationViewControllerFactory
-+ (id)contentAvailableViewControllerForNotification:(id)a3;
-+ (id)viewControllerMultipleNotificationEpisodes:(id)a3 notification:(id)a4;
-+ (id)viewControllerSingleNotificationEpisode:(id)a3 notification:(id)a4;
++ (id)contentAvailableViewControllerForNotification:(id)notification;
++ (id)viewControllerMultipleNotificationEpisodes:(id)episodes notification:(id)notification;
++ (id)viewControllerSingleNotificationEpisode:(id)episode notification:(id)notification;
 @end
 
 @implementation NotificationViewControllerFactory
 
-+ (id)contentAvailableViewControllerForNotification:(id)a3
++ (id)contentAvailableViewControllerForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 mt_notificationEpisodes];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  mt_notificationEpisodes = [content mt_notificationEpisodes];
 
-  if ([v7 count] < 2)
+  if ([mt_notificationEpisodes count] < 2)
   {
-    v9 = [v7 firstObject];
-    v8 = [a1 viewControllerSingleNotificationEpisode:v9 notification:v4];
+    firstObject = [mt_notificationEpisodes firstObject];
+    v8 = [self viewControllerSingleNotificationEpisode:firstObject notification:notificationCopy];
   }
 
   else
   {
-    v8 = [a1 viewControllerMultipleNotificationEpisodes:v7 notification:v4];
+    v8 = [self viewControllerMultipleNotificationEpisodes:mt_notificationEpisodes notification:notificationCopy];
   }
 
   return v8;
 }
 
-+ (id)viewControllerSingleNotificationEpisode:(id)a3 notification:(id)a4
++ (id)viewControllerSingleNotificationEpisode:(id)episode notification:(id)notification
 {
-  v4 = a4;
-  v5 = [[EpisodeAvailableViewController alloc] initWithNotification:v4];
+  notificationCopy = notification;
+  v5 = [[EpisodeAvailableViewController alloc] initWithNotification:notificationCopy];
 
   return v5;
 }
 
-+ (id)viewControllerMultipleNotificationEpisodes:(id)a3 notification:(id)a4
++ (id)viewControllerMultipleNotificationEpisodes:(id)episodes notification:(id)notification
 {
-  v5 = a4;
-  v6 = [a3 mt_compactMap:&stru_10002CC48];
+  notificationCopy = notification;
+  v6 = [episodes mt_compactMap:&stru_10002CC48];
   v7 = [NSSet setWithArray:v6];
   v8 = [v7 count];
 
@@ -52,7 +52,7 @@
     }
   }
 
-  v10 = [[EpisodeListAvailableViewController alloc] initWithNotification:v5];
+  v10 = [[EpisodeListAvailableViewController alloc] initWithNotification:notificationCopy];
 
   return v10;
 }

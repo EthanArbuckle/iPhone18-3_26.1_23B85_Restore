@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneCodecsDocValuesConsumer_$7
-- (OrgApacheLuceneCodecsDocValuesConsumer_$7)initWithOrgApacheLuceneIndexMultiDocValues_OrdinalMap:(id)a3 withOrgApacheLuceneIndexSortedSetDocValuesArray:(id)a4;
+- (OrgApacheLuceneCodecsDocValuesConsumer_$7)initWithOrgApacheLuceneIndexMultiDocValues_OrdinalMap:(id)map withOrgApacheLuceneIndexSortedSetDocValuesArray:(id)array;
 - (id)iterator;
 - (void)dealloc;
 @end
@@ -14,10 +14,10 @@
   return v3;
 }
 
-- (OrgApacheLuceneCodecsDocValuesConsumer_$7)initWithOrgApacheLuceneIndexMultiDocValues_OrdinalMap:(id)a3 withOrgApacheLuceneIndexSortedSetDocValuesArray:(id)a4
+- (OrgApacheLuceneCodecsDocValuesConsumer_$7)initWithOrgApacheLuceneIndexMultiDocValues_OrdinalMap:(id)map withOrgApacheLuceneIndexSortedSetDocValuesArray:(id)array
 {
-  JreStrongAssign(&self->val$map_, a3);
-  JreStrongAssign(&self->val$dvs_, a4);
+  JreStrongAssign(&self->val$map_, map);
+  JreStrongAssign(&self->val$dvs_, array);
   return self;
 }
 

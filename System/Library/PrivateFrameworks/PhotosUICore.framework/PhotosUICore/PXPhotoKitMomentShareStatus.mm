@@ -1,79 +1,79 @@
 @interface PXPhotoKitMomentShareStatus
-- (PXPhotoKitMomentShareStatus)initWithPhotoKitMomentShare:(id)a3;
+- (PXPhotoKitMomentShareStatus)initWithPhotoKitMomentShare:(id)share;
 - (id)_createStatusProvider;
 - (id)invitation;
-- (void)_prepareFetchResultsForPhotoLibrary:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (void)_prepareFetchResultsForPhotoLibrary:(id)library;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 @end
 
 @implementation PXPhotoKitMomentShareStatus
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(PXMomentShareStatus *)self copyingAssetsFetchResult];
-  v6 = [v4 changeDetailsForFetchResult:v5];
+  queueCopy = queue;
+  copyingAssetsFetchResult = [(PXMomentShareStatus *)self copyingAssetsFetchResult];
+  v6 = [queueCopy changeDetailsForFetchResult:copyingAssetsFetchResult];
 
   if (v6)
   {
-    v7 = [v6 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v6 fetchResultAfterChanges];
   }
 
   else
   {
-    v7 = 0;
+    fetchResultAfterChanges = 0;
   }
 
-  v8 = [(PXMomentShareStatus *)self copiedAssetsFetchResult];
-  v9 = [v4 changeDetailsForFetchResult:v8];
+  copiedAssetsFetchResult = [(PXMomentShareStatus *)self copiedAssetsFetchResult];
+  v9 = [queueCopy changeDetailsForFetchResult:copiedAssetsFetchResult];
 
   if (v9)
   {
-    v10 = [v9 fetchResultAfterChanges];
+    fetchResultAfterChanges2 = [v9 fetchResultAfterChanges];
   }
 
   else
   {
-    v10 = 0;
+    fetchResultAfterChanges2 = 0;
   }
 
-  v11 = [(PXMomentShareStatus *)self allAssetsFetchResult];
-  v12 = [v4 changeDetailsForFetchResult:v11];
+  allAssetsFetchResult = [(PXMomentShareStatus *)self allAssetsFetchResult];
+  v12 = [queueCopy changeDetailsForFetchResult:allAssetsFetchResult];
 
   if (v12)
   {
-    v13 = [v12 fetchResultAfterChanges];
+    fetchResultAfterChanges3 = [v12 fetchResultAfterChanges];
   }
 
   else
   {
-    v13 = 0;
+    fetchResultAfterChanges3 = 0;
   }
 
-  v14 = [(PXMomentShareStatus *)self momentShare];
-  v15 = [v4 changeDetailsForObject:v14];
+  momentShare = [(PXMomentShareStatus *)self momentShare];
+  v15 = [queueCopy changeDetailsForObject:momentShare];
 
   if (v15)
   {
-    v16 = [v15 objectAfterChanges];
+    objectAfterChanges = [v15 objectAfterChanges];
 LABEL_12:
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __64__PXPhotoKitMomentShareStatus_photoLibraryDidChangeOnMainQueue___block_invoke;
     v18[3] = &unk_1E7748B40;
-    v19 = v7;
-    v20 = v10;
+    v19 = fetchResultAfterChanges;
+    v20 = fetchResultAfterChanges2;
     v23 = v15 != 0;
-    v21 = v13;
-    v22 = v16;
-    v17 = v16;
+    v21 = fetchResultAfterChanges3;
+    v22 = objectAfterChanges;
+    v17 = objectAfterChanges;
     [(PXMomentShareStatus *)self performChanges:v18];
 
     goto LABEL_13;
   }
 
-  v16 = 0;
-  if (v7 || v10 || v13)
+  objectAfterChanges = 0;
+  if (fetchResultAfterChanges || fetchResultAfterChanges2 || fetchResultAfterChanges3)
   {
     goto LABEL_12;
   }
@@ -110,22 +110,22 @@ void __64__PXPhotoKitMomentShareStatus_photoLibraryDidChangeOnMainQueue___block_
   }
 }
 
-- (void)_prepareFetchResultsForPhotoLibrary:(id)a3
+- (void)_prepareFetchResultsForPhotoLibrary:(id)library
 {
-  v4 = [a3 librarySpecificFetchOptions];
-  v5 = [(PXMomentShareStatus *)self momentShare];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  momentShare = [(PXMomentShareStatus *)self momentShare];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"additionalAttributes.destinationAssetCopyState == %d", 1];
-  [v4 setInternalPredicate:v6];
+  [librarySpecificFetchOptions setInternalPredicate:v6];
 
-  v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v4];
+  v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:momentShare options:librarySpecificFetchOptions];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"additionalAttributes.destinationAssetCopyState == %d", 2];
-  [v4 setInternalPredicate:v8];
+  [librarySpecificFetchOptions setInternalPredicate:v8];
 
-  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v4];
+  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:momentShare options:librarySpecificFetchOptions];
   v10 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForMomentSharedAsset"), 0}];
-  [v4 setInternalPredicate:v10];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
 
-  v11 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v4];
+  v11 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:momentShare options:librarySpecificFetchOptions];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__PXPhotoKitMomentShareStatus__prepareFetchResultsForPhotoLibrary___block_invoke;
@@ -150,11 +150,11 @@ void __67__PXPhotoKitMomentShareStatus__prepareFetchResultsForPhotoLibrary___blo
 
 - (id)_createStatusProvider
 {
-  v2 = [(PXMomentShareStatus *)self momentShare];
-  v3 = [v2 photoLibrary];
+  momentShare = [(PXMomentShareStatus *)self momentShare];
+  photoLibrary = [momentShare photoLibrary];
 
-  v4 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:v3];
-  v5 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:v3 actionManager:v4];
+  v4 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:photoLibrary];
+  v5 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:photoLibrary actionManager:v4];
 
   return v5;
 }
@@ -164,8 +164,8 @@ void __67__PXPhotoKitMomentShareStatus__prepareFetchResultsForPhotoLibrary___blo
   invitation = self->_invitation;
   if (!invitation)
   {
-    v4 = [(PXMomentShareStatus *)self momentShare];
-    v5 = [PXCMMMomentShareInvitation invitationWithMomentShare:v4];
+    momentShare = [(PXMomentShareStatus *)self momentShare];
+    v5 = [PXCMMMomentShareInvitation invitationWithMomentShare:momentShare];
     v6 = self->_invitation;
     self->_invitation = v5;
 
@@ -175,10 +175,10 @@ void __67__PXPhotoKitMomentShareStatus__prepareFetchResultsForPhotoLibrary___blo
   return invitation;
 }
 
-- (PXPhotoKitMomentShareStatus)initWithPhotoKitMomentShare:(id)a3
+- (PXPhotoKitMomentShareStatus)initWithPhotoKitMomentShare:(id)share
 {
-  v5 = a3;
-  if (v5)
+  shareCopy = share;
+  if (shareCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -186,30 +186,30 @@ void __67__PXPhotoKitMomentShareStatus__prepareFetchResultsForPhotoLibrary___blo
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v5 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatus.m" lineNumber:131 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"momentShare", v11, v13}];
+    px_descriptionForAssertionMessage = [shareCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatus.m" lineNumber:131 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"momentShare", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatus.m" lineNumber:131 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"momentShare", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatus.m" lineNumber:131 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"momentShare", v11}];
   }
 
 LABEL_3:
   v14.receiver = self;
   v14.super_class = PXPhotoKitMomentShareStatus;
-  v6 = [(PXMomentShareStatus *)&v14 initWithMomentShare:v5];
+  v6 = [(PXMomentShareStatus *)&v14 initWithMomentShare:shareCopy];
   if (v6)
   {
-    v7 = [v5 photoLibrary];
-    [v7 px_registerChangeObserver:v6];
-    [(PXPhotoKitMomentShareStatus *)v6 _prepareFetchResultsForPhotoLibrary:v7];
+    photoLibrary = [shareCopy photoLibrary];
+    [photoLibrary px_registerChangeObserver:v6];
+    [(PXPhotoKitMomentShareStatus *)v6 _prepareFetchResultsForPhotoLibrary:photoLibrary];
   }
 
   return v6;

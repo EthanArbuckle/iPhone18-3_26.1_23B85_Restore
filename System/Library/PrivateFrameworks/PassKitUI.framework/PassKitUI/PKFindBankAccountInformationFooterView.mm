@@ -1,37 +1,37 @@
 @interface PKFindBankAccountInformationFooterView
-- (CGSize)_sizeForButton:(id)a3 constrainedToSize:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKFindBankAccountInformationFooterView)initWithFrame:(CGRect)a3 action:(id)a4;
+- (CGSize)_sizeForButton:(id)button constrainedToSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKFindBankAccountInformationFooterView)initWithFrame:(CGRect)frame action:(id)action;
 - (void)layoutSubviews;
-- (void)setupAccountInformationButtonWithAction:(id)a3;
+- (void)setupAccountInformationButtonWithAction:(id)action;
 @end
 
 @implementation PKFindBankAccountInformationFooterView
 
-- (PKFindBankAccountInformationFooterView)initWithFrame:(CGRect)a3 action:(id)a4
+- (PKFindBankAccountInformationFooterView)initWithFrame:(CGRect)frame action:(id)action
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = PKFindBankAccountInformationFooterView;
-  v10 = [(PKFindBankAccountInformationFooterView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PKFindBankAccountInformationFooterView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(PKFindBankAccountInformationFooterView *)v10 setupAccountInformationButtonWithAction:v9];
+    [(PKFindBankAccountInformationFooterView *)height setupAccountInformationButtonWithAction:actionCopy];
   }
 
   return v11;
 }
 
-- (void)setupAccountInformationButtonWithAction:(id)a3
+- (void)setupAccountInformationButtonWithAction:(id)action
 {
   v4 = *MEMORY[0x1E69DDCF8];
   v5 = *MEMORY[0x1E69DDC38];
-  v6 = a3;
+  actionCopy = action;
   v16 = PKFontForDefaultDesign(v4, v5);
   v7 = MEMORY[0x1E69DC740];
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBan_1.isa);
@@ -40,14 +40,14 @@
   v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info.circle.fill"];
   [v9 setImage:v10];
   [v9 setImagePadding:6.0];
-  v11 = [MEMORY[0x1E69DC888] linkColor];
-  [v9 setBaseForegroundColor:v11];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  [v9 setBaseForegroundColor:linkColor];
 
   [v16 pointSize];
   v13 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v12 * 0.8];
   [v9 setPreferredSymbolConfigurationForImage:v13];
   [v9 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:v6];
+  v14 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:actionCopy];
 
   accountInformationButton = self->_accountInformationButton;
   self->_accountInformationButton = v14;
@@ -70,10 +70,10 @@ void __82__PKFindBankAccountInformationFooterView_setupAccountInformationButtonW
   [v4 setNumberOfLines:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKFindBankAccountInformationFooterView *)self _sizeForButton:self->_accountInformationButton constrainedToSize:a3.width + PKSetupViewConstantsViewMargin() * -2.0, 1.79769313e308];
+  width = fits.width;
+  [(PKFindBankAccountInformationFooterView *)self _sizeForButton:self->_accountInformationButton constrainedToSize:fits.width + PKSetupViewConstantsViewMargin() * -2.0, 1.79769313e308];
   v5 = width;
   result.height = v4;
   result.width = v5;
@@ -93,11 +93,11 @@ void __82__PKFindBankAccountInformationFooterView_setupAccountInformationButtonW
   [(UIButton *)self->_accountInformationButton setFrame:v7, 0.0, v8, v9];
 }
 
-- (CGSize)_sizeForButton:(id)a3 constrainedToSize:(CGSize)a4
+- (CGSize)_sizeForButton:(id)button constrainedToSize:(CGSize)size
 {
-  if (a3)
+  if (button)
   {
-    [a3 sizeThatFits:{a4.width, a4.height}];
+    [button sizeThatFits:{size.width, size.height}];
   }
 
   else

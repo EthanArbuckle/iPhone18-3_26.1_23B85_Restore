@@ -1,17 +1,17 @@
 @interface CRLCanvasSizingGuide
-- (CRLCanvasSizingGuide)initWithType:(int64_t)a3 frame:(CGRect)a4;
+- (CRLCanvasSizingGuide)initWithType:(int64_t)type frame:(CGRect)frame;
 - (id)description;
-- (id)renderableWithICC:(id)a3;
+- (id)renderableWithICC:(id)c;
 @end
 
 @implementation CRLCanvasSizingGuide
 
-- (CRLCanvasSizingGuide)initWithType:(int64_t)a3 frame:(CGRect)a4
+- (CRLCanvasSizingGuide)initWithType:(int64_t)type frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = CRLCanvasSizingGuide;
   v9 = [(CRLCanvasAbstractGuide *)&v13 init];
@@ -22,8 +22,8 @@
     v9->mAlignmentFrame.origin.y = y;
     v9->mAlignmentFrame.size.width = width;
     v9->mAlignmentFrame.size.height = height;
-    v9->mIsHorizontal = a3 == 0;
-    if (a3)
+    v9->mIsHorizontal = type == 0;
+    if (type)
     {
       v11 = height;
     }
@@ -39,17 +39,17 @@
   return v10;
 }
 
-- (id)renderableWithICC:(id)a3
+- (id)renderableWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = +[CRLCanvasRenderable renderable];
-  v6 = [[CRLCanvasSizingGuideUILayer alloc] initForRect:v4 withICC:self->mIsHorizontal showWidth:!self->mIsHorizontal showHeight:self->mAlignmentFrame.origin.x, self->mAlignmentFrame.origin.y, self->mAlignmentFrame.size.width, self->mAlignmentFrame.size.height];
+  v6 = [[CRLCanvasSizingGuideUILayer alloc] initForRect:cCopy withICC:self->mIsHorizontal showWidth:!self->mIsHorizontal showHeight:self->mAlignmentFrame.origin.x, self->mAlignmentFrame.origin.y, self->mAlignmentFrame.size.width, self->mAlignmentFrame.size.height];
   v7 = [CRLCanvasRenderable renderableFromLayer:v6];
   [v5 addSubrenderable:v7];
 
   v8 = [CRLCanvasSizingGuideUILayer alloc];
   [(CRLCanvasAbstractGuide *)self snappingObjectFrame];
-  v9 = [(CRLCanvasSizingGuideUILayer *)v8 initForRect:v4 withICC:self->mIsHorizontal showWidth:!self->mIsHorizontal showHeight:?];
+  v9 = [(CRLCanvasSizingGuideUILayer *)v8 initForRect:cCopy withICC:self->mIsHorizontal showWidth:!self->mIsHorizontal showHeight:?];
 
   v10 = [CRLCanvasRenderable renderableFromLayer:v9];
   [v5 addSubrenderable:v10];

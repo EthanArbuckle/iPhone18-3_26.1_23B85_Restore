@@ -1,19 +1,19 @@
 @interface PBFPosterEditingIngestionManager
-- (id)ingestConfiguration:(id)a3 updatedConfiguredProperties:(id)a4 editingViewController:(id)a5 galleryViewController:(id)a6 showEditingConfirmation:(BOOL)a7;
+- (id)ingestConfiguration:(id)configuration updatedConfiguredProperties:(id)properties editingViewController:(id)controller galleryViewController:(id)viewController showEditingConfirmation:(BOOL)confirmation;
 - (void)dismissViewController;
 @end
 
 @implementation PBFPosterEditingIngestionManager
 
-- (id)ingestConfiguration:(id)a3 updatedConfiguredProperties:(id)a4 editingViewController:(id)a5 galleryViewController:(id)a6 showEditingConfirmation:(BOOL)a7
+- (id)ingestConfiguration:(id)configuration updatedConfiguredProperties:(id)properties editingViewController:(id)controller galleryViewController:(id)viewController showEditingConfirmation:(BOOL)confirmation
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  PosterEditingIngestionManager.ingestConfiguration(_:updatedConfiguredProperties:editingViewController:galleryViewController:showEditingConfirmation:)(v12, v13, v14, a6, v7);
+  confirmationCopy = confirmation;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  PosterEditingIngestionManager.ingestConfiguration(_:updatedConfiguredProperties:editingViewController:galleryViewController:showEditingConfirmation:)(configurationCopy, propertiesCopy, controllerCopy, viewController, confirmationCopy);
   v18 = v17;
 
   return v18;

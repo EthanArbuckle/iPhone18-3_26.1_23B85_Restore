@@ -1,16 +1,16 @@
 @interface WGWidgetWrapperView
 - (CGSize)intrinsicContentSize;
-- (WGWidgetWrapperView)initWithPlatterView:(id)a3;
+- (WGWidgetWrapperView)initWithPlatterView:(id)view;
 - (void)layoutSubviews;
-- (void)setOverrideIntrinsicContentHeight:(double)a3;
-- (void)setTopMarginForLayout:(double)a3;
+- (void)setOverrideIntrinsicContentHeight:(double)height;
+- (void)setTopMarginForLayout:(double)layout;
 @end
 
 @implementation WGWidgetWrapperView
 
-- (WGWidgetWrapperView)initWithPlatterView:(id)a3
+- (WGWidgetWrapperView)initWithPlatterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = WGWidgetWrapperView;
   v6 = [(WGWidgetWrapperView *)&v11 init];
@@ -22,11 +22,11 @@
 
     [(UIView *)v6->_contentView setClipsToBounds:0];
     [(UIView *)v6->_contentView setAutoresizingMask:18];
-    v9 = [(UIView *)v6->_contentView layer];
-    [v9 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v6->_contentView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(WGWidgetWrapperView *)v6 addSubview:v6->_contentView];
-    objc_storeStrong(&v6->_platterView, a3);
+    objc_storeStrong(&v6->_platterView, view);
     [(UIView *)v6->_contentView addSubview:v6->_platterView];
     v6->_overrideIntrinsicContentHeight = -1.0;
   }
@@ -45,20 +45,20 @@
   [(WGWidgetPlatterView *)self->_platterView setTopMarginForLayout:self->_topMarginForLayout];
 }
 
-- (void)setTopMarginForLayout:(double)a3
+- (void)setTopMarginForLayout:(double)layout
 {
-  if (vabdd_f64(self->_topMarginForLayout, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_topMarginForLayout, layout) >= 2.22044605e-16)
   {
-    self->_topMarginForLayout = a3;
+    self->_topMarginForLayout = layout;
     [(WGWidgetWrapperView *)self setNeedsLayout];
   }
 }
 
-- (void)setOverrideIntrinsicContentHeight:(double)a3
+- (void)setOverrideIntrinsicContentHeight:(double)height
 {
-  if (vabdd_f64(self->_overrideIntrinsicContentHeight, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_overrideIntrinsicContentHeight, height) >= 2.22044605e-16)
   {
-    self->_overrideIntrinsicContentHeight = a3;
+    self->_overrideIntrinsicContentHeight = height;
     [(WGWidgetWrapperView *)self invalidateIntrinsicContentSize];
   }
 }

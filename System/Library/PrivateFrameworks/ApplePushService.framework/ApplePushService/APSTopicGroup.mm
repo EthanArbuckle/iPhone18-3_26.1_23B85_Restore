@@ -1,27 +1,27 @@
 @interface APSTopicGroup
-- (APSTopicGroup)initWithEnvironment:(id)a3 topicHasher:(id)a4 user:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (APSTopicGroup)initWithEnvironment:(id)environment topicHasher:(id)hasher user:(id)user;
+- (BOOL)isEqual:(id)equal;
 - (NSString)logString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)currentFilterForTopicState:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)currentFilterForTopicState:(id)state;
 @end
 
 @implementation APSTopicGroup
 
-- (APSTopicGroup)initWithEnvironment:(id)a3 topicHasher:(id)a4 user:(id)a5
+- (APSTopicGroup)initWithEnvironment:(id)environment topicHasher:(id)hasher user:(id)user
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  environmentCopy = environment;
+  hasherCopy = hasher;
+  userCopy = user;
   v25.receiver = self;
   v25.super_class = APSTopicGroup;
   v12 = [(APSTopicGroup *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_user, a5);
-    objc_storeStrong(&v13->_environment, a3);
-    objc_storeStrong(&v13->_topicHasher, a4);
+    objc_storeStrong(&v12->_user, user);
+    objc_storeStrong(&v13->_environment, environment);
+    objc_storeStrong(&v13->_topicHasher, hasher);
     v14 = objc_alloc_init(NSMutableDictionary);
     hashesToEnabledTopics = v13->_hashesToEnabledTopics;
     v13->_hashesToEnabledTopics = v14;
@@ -46,16 +46,16 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v17 = 1;
     goto LABEL_19;
@@ -65,28 +65,28 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(APSTopicGroup *)self hashesToEnabledTopics];
-    v8 = [(APSTopicGroup *)v6 hashesToEnabledTopics];
-    if ([v7 isEqualToDictionary:v8])
+    hashesToEnabledTopics = [(APSTopicGroup *)self hashesToEnabledTopics];
+    hashesToEnabledTopics2 = [(APSTopicGroup *)v6 hashesToEnabledTopics];
+    if ([hashesToEnabledTopics isEqualToDictionary:hashesToEnabledTopics2])
     {
-      v9 = [(APSTopicGroup *)self hashesToOpportunisticTopics];
-      v10 = [(APSTopicGroup *)v6 hashesToOpportunisticTopics];
-      if ([v9 isEqualToDictionary:v10])
+      hashesToOpportunisticTopics = [(APSTopicGroup *)self hashesToOpportunisticTopics];
+      hashesToOpportunisticTopics2 = [(APSTopicGroup *)v6 hashesToOpportunisticTopics];
+      if ([hashesToOpportunisticTopics isEqualToDictionary:hashesToOpportunisticTopics2])
       {
-        v11 = [(APSTopicGroup *)self hashesToNonWakingTopics];
-        v12 = [(APSTopicGroup *)v6 hashesToNonWakingTopics];
-        if ([v11 isEqualToDictionary:v12])
+        hashesToNonWakingTopics = [(APSTopicGroup *)self hashesToNonWakingTopics];
+        hashesToNonWakingTopics2 = [(APSTopicGroup *)v6 hashesToNonWakingTopics];
+        if ([hashesToNonWakingTopics isEqualToDictionary:hashesToNonWakingTopics2])
         {
-          v13 = [(APSTopicGroup *)self hashesToIgnoredTopics];
-          v14 = [(APSTopicGroup *)v6 hashesToIgnoredTopics];
-          v21 = v13;
-          v15 = v13;
-          v16 = v14;
-          if ([v15 isEqualToDictionary:v14])
+          hashesToIgnoredTopics = [(APSTopicGroup *)self hashesToIgnoredTopics];
+          hashesToIgnoredTopics2 = [(APSTopicGroup *)v6 hashesToIgnoredTopics];
+          v21 = hashesToIgnoredTopics;
+          v15 = hashesToIgnoredTopics;
+          v16 = hashesToIgnoredTopics2;
+          if ([v15 isEqualToDictionary:hashesToIgnoredTopics2])
           {
-            v20 = [(APSTopicGroup *)self hashesToPausedTopics];
-            v19 = [(APSTopicGroup *)v6 hashesToPausedTopics];
-            v17 = [v20 isEqualToDictionary:v19];
+            hashesToPausedTopics = [(APSTopicGroup *)self hashesToPausedTopics];
+            hashesToPausedTopics2 = [(APSTopicGroup *)v6 hashesToPausedTopics];
+            v17 = [hashesToPausedTopics isEqualToDictionary:hashesToPausedTopics2];
           }
 
           else
@@ -124,40 +124,40 @@ LABEL_19:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[APSTopicGroup alloc] initWithEnvironment:self->_environment topicHasher:self->_topicHasher user:self->_user];
   v5 = [NSDictionary alloc];
-  v6 = [(APSTopicGroup *)self hashesToEnabledTopics];
-  v7 = [v5 initWithDictionary:v6 copyItems:1];
+  hashesToEnabledTopics = [(APSTopicGroup *)self hashesToEnabledTopics];
+  v7 = [v5 initWithDictionary:hashesToEnabledTopics copyItems:1];
   v8 = [v7 mutableCopy];
   hashesToEnabledTopics = v4->_hashesToEnabledTopics;
   v4->_hashesToEnabledTopics = v8;
 
   v10 = [NSDictionary alloc];
-  v11 = [(APSTopicGroup *)self hashesToOpportunisticTopics];
-  v12 = [v10 initWithDictionary:v11 copyItems:1];
+  hashesToOpportunisticTopics = [(APSTopicGroup *)self hashesToOpportunisticTopics];
+  v12 = [v10 initWithDictionary:hashesToOpportunisticTopics copyItems:1];
   v13 = [v12 mutableCopy];
   hashesToOpportunisticTopics = v4->_hashesToOpportunisticTopics;
   v4->_hashesToOpportunisticTopics = v13;
 
   v15 = [NSDictionary alloc];
-  v16 = [(APSTopicGroup *)self hashesToNonWakingTopics];
-  v17 = [v15 initWithDictionary:v16 copyItems:1];
+  hashesToNonWakingTopics = [(APSTopicGroup *)self hashesToNonWakingTopics];
+  v17 = [v15 initWithDictionary:hashesToNonWakingTopics copyItems:1];
   v18 = [v17 mutableCopy];
   hashesToNonWakingTopics = v4->_hashesToNonWakingTopics;
   v4->_hashesToNonWakingTopics = v18;
 
   v20 = [NSDictionary alloc];
-  v21 = [(APSTopicGroup *)self hashesToIgnoredTopics];
-  v22 = [v20 initWithDictionary:v21 copyItems:1];
+  hashesToIgnoredTopics = [(APSTopicGroup *)self hashesToIgnoredTopics];
+  v22 = [v20 initWithDictionary:hashesToIgnoredTopics copyItems:1];
   v23 = [v22 mutableCopy];
   hashesToIgnoredTopics = v4->_hashesToIgnoredTopics;
   v4->_hashesToIgnoredTopics = v23;
 
   v25 = [NSDictionary alloc];
-  v26 = [(APSTopicGroup *)self hashesToPausedTopics];
-  v27 = [v25 initWithDictionary:v26 copyItems:1];
+  hashesToPausedTopics = [(APSTopicGroup *)self hashesToPausedTopics];
+  v27 = [v25 initWithDictionary:hashesToPausedTopics copyItems:1];
   v28 = [v27 mutableCopy];
   hashesToPausedTopics = v4->_hashesToPausedTopics;
   v4->_hashesToPausedTopics = v28;
@@ -165,15 +165,15 @@ LABEL_19:
   return v4;
 }
 
-- (int64_t)currentFilterForTopicState:(id)a3
+- (int64_t)currentFilterForTopicState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v5 = [(NSMutableDictionary *)self->_hashesToEnabledTopics allValues];
-  v6 = [v5 countByEnumeratingWithState:&v64 objects:v72 count:16];
+  allValues = [(NSMutableDictionary *)self->_hashesToEnabledTopics allValues];
+  v6 = [allValues countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (v6)
   {
     v7 = v6;
@@ -185,13 +185,13 @@ LABEL_3:
     {
       if (*v65 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v11 = *(*(&v64 + 1) + 8 * v10);
-      v12 = [v4 topicName];
-      v13 = [v11 topicName];
-      v14 = [v12 isEqualToString:v13];
+      topicName = [stateCopy topicName];
+      topicName2 = [v11 topicName];
+      v14 = [topicName isEqualToString:topicName2];
 
       if (v14)
       {
@@ -200,7 +200,7 @@ LABEL_3:
 
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v64 objects:v72 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v64 objects:v72 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -219,8 +219,8 @@ LABEL_9:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v5 = [(NSMutableDictionary *)self->_hashesToOpportunisticTopics allValues];
-    v15 = [v5 countByEnumeratingWithState:&v60 objects:v71 count:16];
+    allValues = [(NSMutableDictionary *)self->_hashesToOpportunisticTopics allValues];
+    v15 = [allValues countByEnumeratingWithState:&v60 objects:v71 count:16];
     if (v15)
     {
       v16 = v15;
@@ -232,13 +232,13 @@ LABEL_11:
       {
         if (*v61 != v17)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v19 = *(*(&v60 + 1) + 8 * v18);
-        v20 = [v4 topicName];
-        v21 = [v19 topicName];
-        v22 = [v20 isEqualToString:v21];
+        topicName3 = [stateCopy topicName];
+        topicName4 = [v19 topicName];
+        v22 = [topicName3 isEqualToString:topicName4];
 
         if (v22)
         {
@@ -247,7 +247,7 @@ LABEL_11:
 
         if (v16 == ++v18)
         {
-          v16 = [v5 countByEnumeratingWithState:&v60 objects:v71 count:16];
+          v16 = [allValues countByEnumeratingWithState:&v60 objects:v71 count:16];
           if (v16)
           {
             goto LABEL_11;
@@ -266,8 +266,8 @@ LABEL_17:
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v5 = [(NSMutableDictionary *)self->_hashesToNonWakingTopics allValues];
-      v23 = [v5 countByEnumeratingWithState:&v56 objects:v70 count:16];
+      allValues = [(NSMutableDictionary *)self->_hashesToNonWakingTopics allValues];
+      v23 = [allValues countByEnumeratingWithState:&v56 objects:v70 count:16];
       if (v23)
       {
         v24 = v23;
@@ -279,13 +279,13 @@ LABEL_19:
         {
           if (*v57 != v25)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v27 = *(*(&v56 + 1) + 8 * v26);
-          v28 = [v4 topicName];
-          v29 = [v27 topicName];
-          v30 = [v28 isEqualToString:v29];
+          topicName5 = [stateCopy topicName];
+          topicName6 = [v27 topicName];
+          v30 = [topicName5 isEqualToString:topicName6];
 
           if (v30)
           {
@@ -294,7 +294,7 @@ LABEL_19:
 
           if (v24 == ++v26)
           {
-            v24 = [v5 countByEnumeratingWithState:&v56 objects:v70 count:16];
+            v24 = [allValues countByEnumeratingWithState:&v56 objects:v70 count:16];
             if (v24)
             {
               goto LABEL_19;
@@ -313,8 +313,8 @@ LABEL_25:
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v5 = [(NSMutableDictionary *)self->_hashesToIgnoredTopics allValues];
-        v31 = [v5 countByEnumeratingWithState:&v52 objects:v69 count:16];
+        allValues = [(NSMutableDictionary *)self->_hashesToIgnoredTopics allValues];
+        v31 = [allValues countByEnumeratingWithState:&v52 objects:v69 count:16];
         if (v31)
         {
           v32 = v31;
@@ -326,13 +326,13 @@ LABEL_27:
           {
             if (*v53 != v33)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allValues);
             }
 
             v35 = *(*(&v52 + 1) + 8 * v34);
-            v36 = [v4 topicName];
-            v37 = [v35 topicName];
-            v38 = [v36 isEqualToString:v37];
+            topicName7 = [stateCopy topicName];
+            topicName8 = [v35 topicName];
+            v38 = [topicName7 isEqualToString:topicName8];
 
             if (v38)
             {
@@ -341,7 +341,7 @@ LABEL_27:
 
             if (v32 == ++v34)
             {
-              v32 = [v5 countByEnumeratingWithState:&v52 objects:v69 count:16];
+              v32 = [allValues countByEnumeratingWithState:&v52 objects:v69 count:16];
               if (v32)
               {
                 goto LABEL_27;
@@ -360,8 +360,8 @@ LABEL_33:
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v5 = [(NSMutableDictionary *)self->_hashesToPausedTopics allValues];
-          v39 = [v5 countByEnumeratingWithState:&v48 objects:v68 count:16];
+          allValues = [(NSMutableDictionary *)self->_hashesToPausedTopics allValues];
+          v39 = [allValues countByEnumeratingWithState:&v48 objects:v68 count:16];
           if (v39)
           {
             v40 = v39;
@@ -373,13 +373,13 @@ LABEL_35:
             {
               if (*v49 != v41)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(allValues);
               }
 
               v43 = *(*(&v48 + 1) + 8 * v42);
-              v44 = [v4 topicName];
-              v45 = [v43 topicName];
-              v46 = [v44 isEqualToString:v45];
+              topicName9 = [stateCopy topicName];
+              topicName10 = [v43 topicName];
+              v46 = [topicName9 isEqualToString:topicName10];
 
               if (v46)
               {
@@ -388,7 +388,7 @@ LABEL_35:
 
               if (v40 == ++v42)
               {
-                v40 = [v5 countByEnumeratingWithState:&v48 objects:v68 count:16];
+                v40 = [allValues countByEnumeratingWithState:&v48 objects:v68 count:16];
                 if (v40)
                 {
                   goto LABEL_35;

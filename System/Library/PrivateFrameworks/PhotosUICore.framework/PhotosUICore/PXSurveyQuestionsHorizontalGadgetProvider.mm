@@ -1,14 +1,14 @@
 @interface PXSurveyQuestionsHorizontalGadgetProvider
 - (PXSurveyQuestionGadgetsProviderLemonadeUIDelegate)lemonadeUIDelegate;
-- (PXSurveyQuestionsHorizontalGadgetProvider)initWithConfiguration:(id)a3;
-- (PXSurveyQuestionsHorizontalGadgetProvider)initWithIdentifier:(id)a3 contentGadgetProvider:(id)a4 title:(id)a5 horizontalCollectionGadgetClass:(Class)a6;
-- (id)presentationEnvironmentForGadget:(id)a3;
+- (PXSurveyQuestionsHorizontalGadgetProvider)initWithConfiguration:(id)configuration;
+- (PXSurveyQuestionsHorizontalGadgetProvider)initWithIdentifier:(id)identifier contentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class;
+- (id)presentationEnvironmentForGadget:(id)gadget;
 - (unint64_t)gadgetType;
-- (void)didAnswerQuestionForGadgetProvider:(id)a3 completionHandler:(id)a4;
-- (void)horizontalCollectionGadget:(id)a3 configureCustomInfoAlertActionsForAlertController:(id)a4;
-- (void)horizontalCollectionGadget:(id)a3 hideUntilDate:(id)a4;
-- (void)setLemonadeUIDelegate:(id)a3;
-- (void)surveyQuestionsGadgetProvider:(id)a3 navigateToGadget:(id)a4;
+- (void)didAnswerQuestionForGadgetProvider:(id)provider completionHandler:(id)handler;
+- (void)horizontalCollectionGadget:(id)gadget configureCustomInfoAlertActionsForAlertController:(id)controller;
+- (void)horizontalCollectionGadget:(id)gadget hideUntilDate:(id)date;
+- (void)setLemonadeUIDelegate:(id)delegate;
+- (void)surveyQuestionsGadgetProvider:(id)provider navigateToGadget:(id)gadget;
 @end
 
 @implementation PXSurveyQuestionsHorizontalGadgetProvider
@@ -20,15 +20,15 @@
   return WeakRetained;
 }
 
-- (void)surveyQuestionsGadgetProvider:(id)a3 navigateToGadget:(id)a4
+- (void)surveyQuestionsGadgetProvider:(id)provider navigateToGadget:(id)gadget
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
-  v7 = v6;
-  if (v6)
+  gadgetCopy = gadget;
+  lemonadeUIDelegate = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
+  v7 = lemonadeUIDelegate;
+  if (lemonadeUIDelegate)
   {
-    [v6 navigateToGadget:v5];
+    [lemonadeUIDelegate navigateToGadget:gadgetCopy];
   }
 
   else
@@ -37,97 +37,97 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = gadgetCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Couldn't navigate to gadget %@", &v9, 0xCu);
     }
   }
 }
 
-- (void)didAnswerQuestionForGadgetProvider:(id)a3 completionHandler:(id)a4
+- (void)didAnswerQuestionForGadgetProvider:(id)provider completionHandler:(id)handler
 {
-  v27 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   if ((PXSurveyQuestionIsAppleInternal() & 1) == 0)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
     goto LABEL_12;
   }
 
-  v7 = [v27 dataSource];
-  v8 = [v7 fetchTotalNumberOfAnsweredYesOrNoQuestions];
+  dataSource = [providerCopy dataSource];
+  fetchTotalNumberOfAnsweredYesOrNoQuestions = [dataSource fetchTotalNumberOfAnsweredYesOrNoQuestions];
 
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [off_1E7721948 standardUserDefaults];
-  v11 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarPromptAnsweredQuestionCountDefaultsKey];
-  v12 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarPromptDateDefaultsKey];
-  v13 = [v10 valueForKey:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  radarPromptAnsweredQuestionCountDefaultsKey = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarPromptAnsweredQuestionCountDefaultsKey];
+  radarPromptDateDefaultsKey = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarPromptDateDefaultsKey];
+  v13 = [standardUserDefaults valueForKey:radarPromptDateDefaultsKey];
   if (!v13)
   {
-    v14 = [v9 dateByAddingTimeInterval:-259200.0];
-    [v10 setValue:v14 forKey:v12];
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8 - 1];
-    [v10 setValue:v24 forKey:v11];
+    v14 = [date dateByAddingTimeInterval:-259200.0];
+    [standardUserDefaults setValue:v14 forKey:radarPromptDateDefaultsKey];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:fetchTotalNumberOfAnsweredYesOrNoQuestions - 1];
+    [standardUserDefaults setValue:v24 forKey:radarPromptAnsweredQuestionCountDefaultsKey];
 
     goto LABEL_9;
   }
 
-  v14 = [v10 valueForKey:v11];
-  if ((v8 - [v14 unsignedIntegerValue]) < 0x32)
+  v14 = [standardUserDefaults valueForKey:radarPromptAnsweredQuestionCountDefaultsKey];
+  if ((fetchTotalNumberOfAnsweredYesOrNoQuestions - [v14 unsignedIntegerValue]) < 0x32)
   {
 LABEL_9:
 
 LABEL_10:
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
     goto LABEL_11;
   }
 
-  v25 = v8;
+  v25 = fetchTotalNumberOfAnsweredYesOrNoQuestions;
   [v13 dateByAddingTimeInterval:259200.0];
-  v16 = v15 = v11;
-  v26 = v9;
-  v17 = [v16 compare:v9];
+  v16 = v15 = radarPromptAnsweredQuestionCountDefaultsKey;
+  v26 = date;
+  v17 = [v16 compare:date];
 
-  v11 = v15;
+  radarPromptAnsweredQuestionCountDefaultsKey = v15;
   v18 = v17 == -1;
-  v9 = v26;
+  date = v26;
   if (!v18)
   {
     goto LABEL_10;
   }
 
-  v19 = [MEMORY[0x1E695DF00] date];
-  [v10 setValue:v19 forKey:v12];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [standardUserDefaults setValue:date2 forKey:radarPromptDateDefaultsKey];
 
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
-  [v10 setValue:v20 forKey:v15];
+  [standardUserDefaults setValue:v20 forKey:v15];
 
-  v21 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarConfiguration];
-  v22 = [[PXSurveyRadarReporterViewController alloc] initWithConfiguration:v21 completionHandler:v6];
-  v23 = [(PXGadgetProvider *)self nextGadgetResponder];
-  [v23 presentGadgetViewController:v22 animated:1 completion:0];
+  radarConfiguration = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration radarConfiguration];
+  v22 = [[PXSurveyRadarReporterViewController alloc] initWithConfiguration:radarConfiguration completionHandler:handlerCopy];
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  [nextGadgetResponder presentGadgetViewController:v22 animated:1 completion:0];
 
-  v9 = v26;
+  date = v26;
 LABEL_11:
 
 LABEL_12:
 }
 
-- (id)presentationEnvironmentForGadget:(id)a3
+- (id)presentationEnvironmentForGadget:(id)gadget
 {
-  v5 = a3;
+  gadgetCopy = gadget;
   v13.receiver = self;
   v13.super_class = PXSurveyQuestionsHorizontalGadgetProvider;
-  v6 = [(PXGadgetProvider *)&v13 presentationEnvironmentForGadget:v5];
+  v6 = [(PXGadgetProvider *)&v13 presentationEnvironmentForGadget:gadgetCopy];
   if (!v6)
   {
-    v7 = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    lemonadeUIDelegate = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
+    if (lemonadeUIDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v8 = [v5 overrideContainerViewController];
-      if (v8)
+      overrideContainerViewController = [gadgetCopy overrideContainerViewController];
+      if (overrideContainerViewController)
       {
-        v9 = v8;
-        v6 = [off_1E7721960 defaultPresenterWithViewController:v8];
+        v9 = overrideContainerViewController;
+        v6 = [off_1E7721960 defaultPresenterWithViewController:overrideContainerViewController];
 
         if (v6)
         {
@@ -139,13 +139,13 @@ LABEL_9:
 
       else
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:122 description:{@"No presentation environment for gadget: %@, gadget has nil overrideContainerViewController", v5}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:122 description:{@"No presentation environment for gadget: %@, gadget has nil overrideContainerViewController", gadgetCopy}];
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:125 description:{@"No presentation environment for gadget: %@", v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:125 description:{@"No presentation environment for gadget: %@", gadgetCopy}];
 
     v6 = 0;
     goto LABEL_9;
@@ -156,21 +156,21 @@ LABEL_10:
   return v6;
 }
 
-- (void)horizontalCollectionGadget:(id)a3 configureCustomInfoAlertActionsForAlertController:(id)a4
+- (void)horizontalCollectionGadget:(id)gadget configureCustomInfoAlertActionsForAlertController:(id)controller
 {
-  v5 = a4;
-  v6 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration customInfoAlertActionTitle];
-  if (v6)
+  controllerCopy = controller;
+  customInfoAlertActionTitle = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration customInfoAlertActionTitle];
+  if (customInfoAlertActionTitle)
   {
     v7 = MEMORY[0x1E69DC648];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __122__PXSurveyQuestionsHorizontalGadgetProvider_horizontalCollectionGadget_configureCustomInfoAlertActionsForAlertController___block_invoke;
     v13 = &unk_1E774A2C8;
-    v8 = v5;
+    v8 = controllerCopy;
     v14 = v8;
-    v15 = self;
-    v9 = [v7 actionWithTitle:v6 style:0 handler:&v10];
+    selfCopy = self;
+    v9 = [v7 actionWithTitle:customInfoAlertActionTitle style:0 handler:&v10];
     [v8 addAction:{v9, v10, v11, v12, v13}];
   }
 }
@@ -211,74 +211,74 @@ void __122__PXSurveyQuestionsHorizontalGadgetProvider_horizontalCollectionGadget
   }
 }
 
-- (void)horizontalCollectionGadget:(id)a3 hideUntilDate:(id)a4
+- (void)horizontalCollectionGadget:(id)gadget hideUntilDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [off_1E7721948 standardUserDefaults];
-  v9 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration hideDateDefaultsKey];
-  [v8 setValue:v6 forKey:v9];
+  dateCopy = date;
+  gadgetCopy = gadget;
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  hideDateDefaultsKey = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration hideDateDefaultsKey];
+  [standardUserDefaults setValue:dateCopy forKey:hideDateDefaultsKey];
 
-  [(PXGadgetProvider *)self gadget:v7 didChange:32];
-  v10 = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
-  [v10 invalidateGadgets];
+  [(PXGadgetProvider *)self gadget:gadgetCopy didChange:32];
+  lemonadeUIDelegate = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
+  [lemonadeUIDelegate invalidateGadgets];
 }
 
-- (void)setLemonadeUIDelegate:(id)a3
+- (void)setLemonadeUIDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
+  obj = delegate;
+  lemonadeUIDelegate = [(PXSurveyQuestionsHorizontalGadgetProvider *)self lemonadeUIDelegate];
 
-  if (v4 != obj)
+  if (lemonadeUIDelegate != obj)
   {
     objc_storeWeak(&self->_lemonadeUIDelegate, obj);
-    v5 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration gadgetProvider];
-    [v5 setLemonadeUIDelegate:obj];
+    gadgetProvider = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration gadgetProvider];
+    [gadgetProvider setLemonadeUIDelegate:obj];
   }
 }
 
 - (unint64_t)gadgetType
 {
-  v2 = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration gadgetProvider];
-  v3 = [v2 gadgetType];
+  gadgetProvider = [(PXSurveyQuestionsHorizontalGadgetProviderConfiguration *)self->_configuration gadgetProvider];
+  gadgetType = [gadgetProvider gadgetType];
 
-  return v3;
+  return gadgetType;
 }
 
-- (PXSurveyQuestionsHorizontalGadgetProvider)initWithConfiguration:(id)a3
+- (PXSurveyQuestionsHorizontalGadgetProvider)initWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
-  v7 = [v6 gadgetProvider];
-  [v7 setGadgetProviderDelegate:self];
-  v8 = [v6 identifier];
-  v9 = [v6 sectionTitle];
+  gadgetProvider = [configurationCopy gadgetProvider];
+  [gadgetProvider setGadgetProviderDelegate:self];
+  identifier = [configurationCopy identifier];
+  sectionTitle = [configurationCopy sectionTitle];
   v10 = objc_opt_class();
   v14.receiver = self;
   v14.super_class = PXSurveyQuestionsHorizontalGadgetProvider;
-  v11 = [(PXHorizontalCollectionGadgetProvider *)&v14 initWithIdentifier:v8 contentGadgetProvider:v7 title:v9 horizontalCollectionGadgetClass:v10];
+  v11 = [(PXHorizontalCollectionGadgetProvider *)&v14 initWithIdentifier:identifier contentGadgetProvider:gadgetProvider title:sectionTitle horizontalCollectionGadgetClass:v10];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_configuration, a3);
+    objc_storeStrong(&v11->_configuration, configuration);
     [(PXHorizontalCollectionGadgetProvider *)v11 setIsFixedHeight:1];
   }
 
   return v11;
 }
 
-- (PXSurveyQuestionsHorizontalGadgetProvider)initWithIdentifier:(id)a3 contentGadgetProvider:(id)a4 title:(id)a5 horizontalCollectionGadgetClass:(Class)a6
+- (PXSurveyQuestionsHorizontalGadgetProvider)initWithIdentifier:(id)identifier contentGadgetProvider:(id)provider title:(id)title horizontalCollectionGadgetClass:(Class)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsHorizontalGadgetProvider initWithIdentifier:contentGadgetProvider:title:horizontalCollectionGadgetClass:]"}];
+  identifierCopy = identifier;
+  providerCopy = provider;
+  titleCopy = title;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsHorizontalGadgetProvider.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsHorizontalGadgetProvider initWithIdentifier:contentGadgetProvider:title:horizontalCollectionGadgetClass:]"}];
 
   abort();
 }

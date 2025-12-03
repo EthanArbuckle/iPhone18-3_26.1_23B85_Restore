@@ -1,16 +1,16 @@
 @interface PKPaymentSetupFieldBuiltInPrimaryAccountNumber
-- (PKPaymentSetupFieldBuiltInPrimaryAccountNumber)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInPrimaryAccountNumber)initWithIdentifier:(id)identifier type:(unint64_t)type;
 - (id)compactLocalizedDisplayName;
-- (id)stringByApplyingDisplayFormat:(id)a3;
+- (id)stringByApplyingDisplayFormat:(id)format;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInPrimaryAccountNumber
 
-- (PKPaymentSetupFieldBuiltInPrimaryAccountNumber)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInPrimaryAccountNumber)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInPrimaryAccountNumber;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"primaryAccountNumber" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"primaryAccountNumber" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_CardNumber.isa, 0);
@@ -33,8 +33,8 @@
 
 - (id)compactLocalizedDisplayName
 {
-  v3 = [(PKPaymentSetupField *)self rawConfigurationDictionary];
-  v4 = [v3 objectForKey:@"localizedDisplayName"];
+  rawConfigurationDictionary = [(PKPaymentSetupField *)self rawConfigurationDictionary];
+  v4 = [rawConfigurationDictionary objectForKey:@"localizedDisplayName"];
 
   if (v4)
   {
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (id)stringByApplyingDisplayFormat:(id)a3
+- (id)stringByApplyingDisplayFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupField *)self displayFormat];
-  v6 = [v5 length];
+  formatCopy = format;
+  displayFormat = [(PKPaymentSetupField *)self displayFormat];
+  v6 = [displayFormat length];
 
-  if (!v4 || v6)
+  if (!formatCopy || v6)
   {
     v10.receiver = self;
     v10.super_class = PKPaymentSetupFieldBuiltInPrimaryAccountNumber;
-    v7 = [(PKPaymentSetupFieldText *)&v10 stringByApplyingDisplayFormat:v4];
+    v7 = [(PKPaymentSetupFieldText *)&v10 stringByApplyingDisplayFormat:formatCopy];
   }
 
   else
   {
-    v7 = PKFormattedStringForPAN(v4);
+    v7 = PKFormattedStringForPAN(formatCopy);
   }
 
   v8 = v7;

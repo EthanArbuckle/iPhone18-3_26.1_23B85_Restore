@@ -1,46 +1,46 @@
 @interface _HKSleepDurationAverageContext
 - (HKOverlaySleepRoomContextChangeDelegate)contextChangeDelegate;
-- (_HKSleepDurationAverageContext)initWithBaseDisplayType:(id)a3 overlayDisplayType:(id)a4 overlayChartController:(id)a5 useInBedAverage:(BOOL)a6 contextChangeDelegate:(id)a7 overlayAverageSeries:(id)a8 averageChartFormatter:(id)a9;
-- (double)_averageValueFromDaySummaries:(id)a3 useInBedAverage:(BOOL)a4;
-- (id)_attributedDurationStringFromDuration:(double)a3 isSelected:(BOOL)a4;
-- (id)_attributedTitleOverrideWithDuration:(double)a3;
-- (id)_averagePhraseFromAverageValue:(double)a3 shortForm:(BOOL)a4 timeScope:(int64_t)a5;
-- (id)_contextItemWithDuration:(double)a3 timeScope:(int64_t)a4;
-- (id)_findSleepDurationSeriesForTimeScope:(int64_t)a3;
-- (void)_updateRangeDataWithChartPoints:(id)a3 useInBedAverage:(BOOL)a4 isHighlighted:(BOOL)a5 timeScope:(int64_t)a6;
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (_HKSleepDurationAverageContext)initWithBaseDisplayType:(id)type overlayDisplayType:(id)displayType overlayChartController:(id)controller useInBedAverage:(BOOL)average contextChangeDelegate:(id)delegate overlayAverageSeries:(id)series averageChartFormatter:(id)formatter;
+- (double)_averageValueFromDaySummaries:(id)summaries useInBedAverage:(BOOL)average;
+- (id)_attributedDurationStringFromDuration:(double)duration isSelected:(BOOL)selected;
+- (id)_attributedTitleOverrideWithDuration:(double)duration;
+- (id)_averagePhraseFromAverageValue:(double)value shortForm:(BOOL)form timeScope:(int64_t)scope;
+- (id)_contextItemWithDuration:(double)duration timeScope:(int64_t)scope;
+- (id)_findSleepDurationSeriesForTimeScope:(int64_t)scope;
+- (void)_updateRangeDataWithChartPoints:(id)points useInBedAverage:(BOOL)average isHighlighted:(BOOL)highlighted timeScope:(int64_t)scope;
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation _HKSleepDurationAverageContext
 
-- (_HKSleepDurationAverageContext)initWithBaseDisplayType:(id)a3 overlayDisplayType:(id)a4 overlayChartController:(id)a5 useInBedAverage:(BOOL)a6 contextChangeDelegate:(id)a7 overlayAverageSeries:(id)a8 averageChartFormatter:(id)a9
+- (_HKSleepDurationAverageContext)initWithBaseDisplayType:(id)type overlayDisplayType:(id)displayType overlayChartController:(id)controller useInBedAverage:(BOOL)average contextChangeDelegate:(id)delegate overlayAverageSeries:(id)series averageChartFormatter:(id)formatter
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  seriesCopy = series;
+  formatterCopy = formatter;
   v32.receiver = self;
   v32.super_class = _HKSleepDurationAverageContext;
   v19 = [(_HKSleepDurationAverageContext *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_baseDisplayType, a3);
-    objc_storeStrong(&v20->_overlayDisplayType, a4);
-    objc_storeStrong(&v20->_overlayChartController, a5);
-    v20->_useInBedAverage = a6;
-    objc_storeWeak(&v20->_contextChangeDelegate, v16);
-    objc_storeStrong(&v20->_overlayAverageSeries, a8);
-    objc_storeStrong(&v20->_averageChartFormatter, a9);
+    objc_storeStrong(&v19->_baseDisplayType, type);
+    objc_storeStrong(&v20->_overlayDisplayType, displayType);
+    objc_storeStrong(&v20->_overlayChartController, controller);
+    v20->_useInBedAverage = average;
+    objc_storeWeak(&v20->_contextChangeDelegate, delegateCopy);
+    objc_storeStrong(&v20->_overlayAverageSeries, series);
+    objc_storeStrong(&v20->_averageChartFormatter, formatter);
     v21 = [(_HKSleepDurationAverageContext *)v20 _contextItemWithDuration:5 timeScope:-1.0];
     lastUpdatedItem = v20->_lastUpdatedItem;
     v20->_lastUpdatedItem = v21;
 
-    v23 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-    v24 = [HKUIMetricColors defaultContextViewColorsUsingColor:v23];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+    v24 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
     metricColors = v20->_metricColors;
     v20->_metricColors = v24;
 
@@ -52,15 +52,15 @@
   return v20;
 }
 
-- (id)_contextItemWithDuration:(double)a3 timeScope:(int64_t)a4
+- (id)_contextItemWithDuration:(double)duration timeScope:(int64_t)scope
 {
   v7 = objc_alloc_init(HKDisplayTypeContextItem);
-  v8 = [(_HKSleepDurationAverageContext *)self useInBedAverage];
+  useInBedAverage = [(_HKSleepDurationAverageContext *)self useInBedAverage];
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v10 = v9;
-  if (a4 == 6)
+  if (scope == 6)
   {
-    if (v8)
+    if (useInBedAverage)
     {
       v11 = @"TIME_IN_BED";
     }
@@ -75,7 +75,7 @@
 
   else
   {
-    if (v8)
+    if (useInBedAverage)
     {
       v11 = @"SLEEP_AVERAGE_IN_BED";
     }
@@ -107,63 +107,63 @@
 
   [(HKDisplayTypeContextItem *)v7 setInfoHidden:1];
   [(HKDisplayTypeContextItem *)v7 setUnit:&stru_1F42FFBE0];
-  v17 = [(_HKSleepDurationAverageContext *)self _attributedTitleOverrideWithDuration:a3];
+  v17 = [(_HKSleepDurationAverageContext *)self _attributedTitleOverrideWithDuration:duration];
   [(HKDisplayTypeContextItem *)v7 setAttributedLabelTextOverride:v17];
 
-  v18 = [(_HKSleepDurationAverageContext *)self metricColors];
-  [(HKDisplayTypeContextItem *)v7 setMetricColors:v18];
+  metricColors = [(_HKSleepDurationAverageContext *)self metricColors];
+  [(HKDisplayTypeContextItem *)v7 setMetricColors:metricColors];
 
-  v19 = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
-  [(HKDisplayTypeContextItem *)v7 setSelectedMetricColors:v19];
+  selectedMetricColors = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
+  [(HKDisplayTypeContextItem *)v7 setSelectedMetricColors:selectedMetricColors];
 
   return v7;
 }
 
-- (id)_attributedTitleOverrideWithDuration:(double)a3
+- (id)_attributedTitleOverrideWithDuration:(double)duration
 {
   v5 = [(_HKSleepDurationAverageContext *)self _attributedDurationStringFromDuration:0 isSelected:?];
-  v6 = [(_HKSleepDurationAverageContext *)self _attributedDurationStringFromDuration:1 isSelected:a3];
+  v6 = [(_HKSleepDurationAverageContext *)self _attributedDurationStringFromDuration:1 isSelected:duration];
   v7 = [HKDisplayTypeContextItemAttributedLabelOverride attributedLabelOverrideWithText:v5 selectedText:v6];
 
   return v7;
 }
 
-- (id)_attributedDurationStringFromDuration:(double)a3 isSelected:(BOOL)a4
+- (id)_attributedDurationStringFromDuration:(double)duration isSelected:(BOOL)selected
 {
-  if (a4)
+  if (selected)
   {
-    v6 = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
-    v7 = [v6 contextViewPrimaryTextColor];
+    selectedMetricColors = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
+    contextViewPrimaryTextColor = [selectedMetricColors contextViewPrimaryTextColor];
 
-    v8 = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
-    [v8 contextViewPrimaryTextColor];
+    selectedMetricColors2 = [(_HKSleepDurationAverageContext *)self selectedMetricColors];
+    [selectedMetricColors2 contextViewPrimaryTextColor];
   }
 
   else
   {
-    v9 = [(_HKSleepDurationAverageContext *)self metricColors];
-    v7 = [v9 contextViewPrimaryTextColor];
+    metricColors = [(_HKSleepDurationAverageContext *)self metricColors];
+    contextViewPrimaryTextColor = [metricColors contextViewPrimaryTextColor];
 
-    v8 = [(_HKSleepDurationAverageContext *)self metricColors];
-    [v8 contextViewSecondaryTextColor];
+    selectedMetricColors2 = [(_HKSleepDurationAverageContext *)self metricColors];
+    [selectedMetricColors2 contextViewSecondaryTextColor];
   }
   v10 = ;
 
-  v11 = [MEMORY[0x1E69DB878] hk_chartOverlaySectionItemValueAndUnitFont];
-  v12 = [HKAttributedDurationFormatter formattedValueWithDuration:0 unitsStyle:v11 font:v7 valueColor:v10 unitColor:a3];
+  hk_chartOverlaySectionItemValueAndUnitFont = [MEMORY[0x1E69DB878] hk_chartOverlaySectionItemValueAndUnitFont];
+  v12 = [HKAttributedDurationFormatter formattedValueWithDuration:0 unitsStyle:hk_chartOverlaySectionItemValueAndUnitFont font:contextViewPrimaryTextColor valueColor:v10 unitColor:duration];
 
   return v12;
 }
 
-- (double)_averageValueFromDaySummaries:(id)a3 useInBedAverage:(BOOL)a4
+- (double)_averageValueFromDaySummaries:(id)summaries useInBedAverage:(BOOL)average
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  summariesCopy = summaries;
+  v6 = summariesCopy;
+  if (summariesCopy && [summariesCopy count])
   {
     v7 = [MEMORY[0x1E696C478] sleepMetricsForDaySummaries:v6];
     v8 = v7;
-    if (a4)
+    if (average)
     {
       [v7 averageInBedDuration];
     }
@@ -190,17 +190,17 @@
   return v9;
 }
 
-- (id)_averagePhraseFromAverageValue:(double)a3 shortForm:(BOOL)a4 timeScope:(int64_t)a5
+- (id)_averagePhraseFromAverageValue:(double)value shortForm:(BOOL)form timeScope:(int64_t)scope
 {
-  if (a3 == -1.0)
+  if (value == -1.0)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", a5}];
+    v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", scope}];
     v6 = [v5 localizedStringForKey:@"SLEEP_DURATION_NO_DATA_CONTEXT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
   }
 
   else
   {
-    if (a4)
+    if (form)
     {
       v7 = 8;
     }
@@ -219,45 +219,45 @@
   return v8;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(_HKSleepDurationAverageContext *)self overlayDisplayType];
+  intervalCopy = interval;
+  completionCopy = completion;
+  overlayDisplayType = [(_HKSleepDurationAverageContext *)self overlayDisplayType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [(_HKSleepDurationAverageContext *)self overlayDisplayType];
-    v15 = [(_HKSleepDurationAverageContext *)self overlayChartController];
-    v16 = [v14 graphSeriesForTimeScope:a5];
-    v17 = [v10 startDate];
-    v18 = [v10 endDate];
+    overlayDisplayType2 = [(_HKSleepDurationAverageContext *)self overlayDisplayType];
+    overlayChartController = [(_HKSleepDurationAverageContext *)self overlayChartController];
+    v16 = [overlayDisplayType2 graphSeriesForTimeScope:scope];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __117___HKSleepDurationAverageContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
     v19[3] = &unk_1E81B6E70;
     v19[4] = self;
-    v21 = a5;
-    v20 = v11;
-    [v15 cachedDataForCustomGraphSeries:v16 timeScope:a5 resolution:0 startDate:v17 endDate:v18 completion:v19];
+    scopeCopy = scope;
+    v20 = completionCopy;
+    [overlayChartController cachedDataForCustomGraphSeries:v16 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v19];
   }
 }
 
-- (void)_updateRangeDataWithChartPoints:(id)a3 useInBedAverage:(BOOL)a4 isHighlighted:(BOOL)a5 timeScope:(int64_t)a6
+- (void)_updateRangeDataWithChartPoints:(id)points useInBedAverage:(BOOL)average isHighlighted:(BOOL)highlighted timeScope:(int64_t)scope
 {
-  v25 = a6;
-  v26 = a5;
-  v6 = a4;
+  scopeCopy = scope;
+  highlightedCopy = highlighted;
+  averageCopy = average;
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  pointsCopy = points;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v8;
+  v10 = pointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
@@ -273,10 +273,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v27 + 1) + 8 * v14) userInfo];
-        v16 = [v15 chartPointInfoProvider];
-        v17 = [v16 sleepDaySummaries];
-        [v9 addObjectsFromArray:v17];
+        userInfo = [*(*(&v27 + 1) + 8 * v14) userInfo];
+        chartPointInfoProvider = [userInfo chartPointInfoProvider];
+        sleepDaySummaries = [chartPointInfoProvider sleepDaySummaries];
+        [v9 addObjectsFromArray:sleepDaySummaries];
 
         ++v14;
       }
@@ -289,7 +289,7 @@
   }
 
   v18 = [v9 count];
-  [(_HKSleepDurationAverageContext *)self _averageValueFromDaySummaries:v9 useInBedAverage:v6];
+  [(_HKSleepDurationAverageContext *)self _averageValueFromDaySummaries:v9 useInBedAverage:averageCopy];
   v20 = v19;
   if (v19 >= 0.0)
   {
@@ -301,57 +301,57 @@
     v21 = 0;
   }
 
-  v22 = [(_HKSleepDurationAverageContext *)self averageChartFormatter];
-  [v22 setCurrentVisibleAverageNumber:v21 isTimeInBed:v6 isHighlighted:v26 useAverageCopy:v18 > 1];
+  averageChartFormatter = [(_HKSleepDurationAverageContext *)self averageChartFormatter];
+  [averageChartFormatter setCurrentVisibleAverageNumber:v21 isTimeInBed:averageCopy isHighlighted:highlightedCopy useAverageCopy:v18 > 1];
 
-  if (v26)
+  if (highlightedCopy)
   {
-    v23 = [(_HKSleepDurationAverageContext *)self overlayAverageSeries];
-    [v23 setAverageValue:v20];
+    overlayAverageSeries = [(_HKSleepDurationAverageContext *)self overlayAverageSeries];
+    [overlayAverageSeries setAverageValue:v20];
 
-    v24 = [(_HKSleepDurationAverageContext *)self _contextItemWithDuration:v25 timeScope:v20];
+    v24 = [(_HKSleepDurationAverageContext *)self _contextItemWithDuration:scopeCopy timeScope:v20];
     [(_HKSleepDurationAverageContext *)self setLastUpdatedItem:v24];
   }
 }
 
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v7 = a5;
-  v8 = [(_HKSleepDurationAverageContext *)self contextChangeDelegate];
-  [v8 setDurationContextSelected:v5];
+  changeCopy = change;
+  controllerCopy = controller;
+  contextChangeDelegate = [(_HKSleepDurationAverageContext *)self contextChangeDelegate];
+  [contextChangeDelegate setDurationContextSelected:changeCopy];
 
-  v9 = [v7 selectedTimeScopeController];
+  selectedTimeScopeController = [controllerCopy selectedTimeScopeController];
 
-  v10 = [v9 selectedTimeScope];
-  v11 = [(_HKSleepDurationAverageContext *)self _findSleepDurationSeriesForTimeScope:v10];
+  selectedTimeScope = [selectedTimeScopeController selectedTimeScope];
+  v11 = [(_HKSleepDurationAverageContext *)self _findSleepDurationSeriesForTimeScope:selectedTimeScope];
   if (v11)
   {
     v12 = v11;
     if ([(_HKSleepDurationAverageContext *)self useInBedAverage])
     {
-      [v12 setHideAsleepData:v5];
+      [v12 setHideAsleepData:changeCopy];
     }
 
     else
     {
-      [v12 setHideInBedData:v5];
+      [v12 setHideInBedData:changeCopy];
     }
 
     v11 = v12;
   }
 }
 
-- (id)_findSleepDurationSeriesForTimeScope:(int64_t)a3
+- (id)_findSleepDurationSeriesForTimeScope:(int64_t)scope
 {
-  v5 = [(_HKSleepDurationAverageContext *)self baseDisplayType];
+  baseDisplayType = [(_HKSleepDurationAverageContext *)self baseDisplayType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(_HKSleepDurationAverageContext *)self baseDisplayType];
-    v8 = [v7 graphSeriesForTimeScope:a3];
+    baseDisplayType2 = [(_HKSleepDurationAverageContext *)self baseDisplayType];
+    v8 = [baseDisplayType2 graphSeriesForTimeScope:scope];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

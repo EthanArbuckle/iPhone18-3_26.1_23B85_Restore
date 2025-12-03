@@ -1,9 +1,9 @@
 @interface PUIFeedManagerArtworkBridge
 + (PUIFeedManagerArtworkBridge)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (PUIFeedManagerArtworkBridge)init;
-- (void)invalidateArtworkForPodcast:(id)a3;
-- (void)updateArtworkForShow:(id)a3 useBackgroundFetch:(BOOL)a4 fetchUberImage:(BOOL)a5;
+- (void)invalidateArtworkForPodcast:(id)podcast;
+- (void)updateArtworkForShow:(id)show useBackgroundFetch:(BOOL)fetch fetchUberImage:(BOOL)image;
 @end
 
 @implementation PUIFeedManagerArtworkBridge
@@ -19,10 +19,10 @@
   return qword_2811FEB58;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_2811FEB50;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -30,21 +30,21 @@
 
   swift_beginAccess();
   v5 = qword_2811FEB58;
-  qword_2811FEB58 = v4;
+  qword_2811FEB58 = sharedCopy;
 }
 
-- (void)invalidateArtworkForPodcast:(id)a3
+- (void)invalidateArtworkForPodcast:(id)podcast
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B4185F8(v4);
+  podcastCopy = podcast;
+  selfCopy = self;
+  sub_21B4185F8(podcastCopy);
 }
 
-- (void)updateArtworkForShow:(id)a3 useBackgroundFetch:(BOOL)a4 fetchUberImage:(BOOL)a5
+- (void)updateArtworkForShow:(id)show useBackgroundFetch:(BOOL)fetch fetchUberImage:(BOOL)image
 {
-  v6 = a3;
-  v7 = self;
-  sub_21B41A674(v6);
+  showCopy = show;
+  selfCopy = self;
+  sub_21B41A674(showCopy);
 }
 
 - (PUIFeedManagerArtworkBridge)init

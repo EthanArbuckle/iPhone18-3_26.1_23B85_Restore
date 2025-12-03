@@ -1,15 +1,15 @@
 @interface PKDrawingPaletteInputAssistantViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation PKDrawingPaletteInputAssistantViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKDrawingPaletteInputAssistantView" hasInstanceMethod:@"keyboardButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKDrawingPaletteInputAssistantView" hasInstanceMethod:@"returnKeyButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKDrawingPaletteInputAssistantView" hasInstanceMethod:@"keyboardButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKDrawingPaletteInputAssistantView" hasInstanceMethod:@"returnKeyButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

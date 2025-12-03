@@ -1,21 +1,21 @@
 @interface SSSScreenshotItemProviderPDF
-+ (id)_sharableItemForActivityType:(id)a3 screenshot:(id)a4;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
++ (id)_sharableItemForActivityType:(id)type screenshot:(id)screenshot;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation SSSScreenshotItemProviderPDF
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if (a4)
+  if (type)
   {
     v5 = objc_opt_class();
-    v6 = [(SSSScreenshotItemProviderPDF *)self activityType];
-    v7 = [(SSSScreenshotItemProvider *)self screenshot];
-    v8 = [v5 _sharableItemForActivityType:v6 screenshot:v7];
+    activityType = [(SSSScreenshotItemProviderPDF *)self activityType];
+    screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+    v8 = [v5 _sharableItemForActivityType:activityType screenshot:screenshot];
   }
 
   else
@@ -26,17 +26,17 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v4 = a4;
-  v5 = [objc_opt_class() _dataTypeIdentifierForActivityType:v4];
+  typeCopy = type;
+  v5 = [objc_opt_class() _dataTypeIdentifierForActivityType:typeCopy];
 
   return v5;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2050000000;
@@ -75,9 +75,9 @@
   v9 = v8;
   _Block_object_dispose(&v26, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [(SSSScreenshotItemProvider *)self screenshot];
-  v12 = [v11 PDFDocument];
-  v13 = [v12 pageAtIndex:0];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  pDFDocument = [screenshot PDFDocument];
+  v13 = [pDFDocument pageAtIndex:0];
   v14 = [v13 thumbnailOfSize:1 forBox:{300.0, 300.0}];
 
   v26 = 0;
@@ -101,40 +101,40 @@
   v17 = [[v15 alloc] initWithPlatformImage:v14];
   [v10 setThumbnail:v17];
 
-  v18 = [(SSSScreenshotItemProvider *)self nameForScreenshot];
-  [v10 setName:v18];
+  nameForScreenshot = [(SSSScreenshotItemProvider *)self nameForScreenshot];
+  [v10 setName:nameForScreenshot];
 
-  v19 = [UTTypePDF identifier];
-  [v10 setType:v19];
+  identifier = [UTTypePDF identifier];
+  [v10 setType:identifier];
 
   [v7 setSpecialization:v10];
 
   return v7;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v4 = [(SSSScreenshotItemProvider *)self nameForScreenshot:a3];
+  v4 = [(SSSScreenshotItemProvider *)self nameForScreenshot:controller];
   v5 = [v4 stringByAppendingPathExtension:@"pdf"];
 
   return v5;
 }
 
-+ (id)_sharableItemForActivityType:(id)a3 screenshot:(id)a4
++ (id)_sharableItemForActivityType:(id)type screenshot:(id)screenshot
 {
-  v6 = a3;
-  v7 = [a4 editedPDFDataForShareSheet];
-  if (v7 && [v6 isEqualToString:UIActivityTypeCopyToPasteboard])
+  typeCopy = type;
+  editedPDFDataForShareSheet = [screenshot editedPDFDataForShareSheet];
+  if (editedPDFDataForShareSheet && [typeCopy isEqualToString:UIActivityTypeCopyToPasteboard])
   {
-    v8 = [a1 _dataTypeIdentifierForActivityType:v6];
+    v8 = [self _dataTypeIdentifierForActivityType:typeCopy];
     v11 = v8;
-    v12 = v7;
+    v12 = editedPDFDataForShareSheet;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   }
 
   else
   {
-    v9 = v7;
+    v9 = editedPDFDataForShareSheet;
   }
 
   return v9;

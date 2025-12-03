@@ -1,16 +1,16 @@
 @interface BRiWorkSharingInfo
-- (BRiWorkSharingInfo)initWithCoder:(id)a3;
+- (BRiWorkSharingInfo)initWithCoder:(id)coder;
 @end
 
 @implementation BRiWorkSharingInfo
 
-- (BRiWorkSharingInfo)initWithCoder:(id)a3
+- (BRiWorkSharingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BRiWorkSharingInfo *)self init];
   if (v5)
   {
-    v5->_options = [v4 decodeInt32ForKey:@"options"];
+    v5->_options = [coderCopy decodeInt32ForKey:@"options"];
   }
 
   return v5;

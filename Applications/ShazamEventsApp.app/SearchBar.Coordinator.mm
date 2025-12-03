@@ -1,19 +1,19 @@
 @interface SearchBar.Coordinator
 - (_TtCV15ShazamEventsApp9SearchBar11Coordinator)init;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
 @end
 
 @implementation SearchBar.Coordinator
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100009F70(&qword_10021EDF8);
   Binding.wrappedValue.setter();
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
   v3 = objc_opt_self();
   v5[4] = sub_10007F098;

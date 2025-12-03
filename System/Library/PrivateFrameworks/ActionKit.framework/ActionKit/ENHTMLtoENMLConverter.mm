@@ -1,19 +1,19 @@
 @interface ENHTMLtoENMLConverter
 - (ENHTMLtoENMLConverterDelegate)delegate;
-- (id)enmlFromContentsOfHTMLFile:(id)a3;
-- (id)enmlFromHTMLContent:(id)a3;
+- (id)enmlFromContentsOfHTMLFile:(id)file;
+- (id)enmlFromHTMLContent:(id)content;
 - (id)enmlWriter;
 - (id)htmlParser;
 - (void)cancel;
 - (void)finish;
-- (void)parser:(id)a3 didEndElement:(id)a4;
-- (void)parser:(id)a3 didFailWithError:(id)a4;
-- (void)parser:(id)a3 didStartElement:(id)a4 attributes:(id)a5;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parserDidStartDocument:(id)a3;
-- (void)writeData:(id)a3;
-- (void)xmlWriter:(id)a3 didGenerateData:(id)a4;
-- (void)xmlWriterDidEndWritingDocument:(id)a3;
+- (void)parser:(id)parser didEndElement:(id)element;
+- (void)parser:(id)parser didFailWithError:(id)error;
+- (void)parser:(id)parser didStartElement:(id)element attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parserDidStartDocument:(id)document;
+- (void)writeData:(id)data;
+- (void)xmlWriter:(id)writer didGenerateData:(id)data;
+- (void)xmlWriterDidEndWritingDocument:(id)document;
 @end
 
 @implementation ENHTMLtoENMLConverter
@@ -25,7 +25,7 @@
   return WeakRetained;
 }
 
-- (void)xmlWriterDidEndWritingDocument:(id)a3
+- (void)xmlWriterDidEndWritingDocument:(id)document
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -36,11 +36,11 @@
   }
 }
 
-- (void)xmlWriter:(id)a3 didGenerateData:(id)a4
+- (void)xmlWriter:(id)writer didGenerateData:(id)data
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v9 = [[v5 alloc] initWithData:v6 encoding:4];
+  dataCopy = data;
+  v9 = [[v5 alloc] initWithData:dataCopy encoding:4];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
@@ -55,33 +55,33 @@
   }
 }
 
-- (void)parser:(id)a3 didFailWithError:(id)a4
+- (void)parser:(id)parser didFailWithError:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained htmlConverter:self didFailWithError:v7];
+    [WeakRetained htmlConverter:self didFailWithError:errorCopy];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
+  charactersCopy = characters;
   if (self->_inHTMLBody && self->_skipCount <= 0)
   {
-    v6 = v5;
-    [(ENXMLWriter *)self->_enmlWriter writeString:v5];
-    v5 = v6;
+    v6 = charactersCopy;
+    [(ENXMLWriter *)self->_enmlWriter writeString:charactersCopy];
+    charactersCopy = v6;
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4
+- (void)parser:(id)parser didEndElement:(id)element
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v6;
+  parserCopy = parser;
+  elementCopy = element;
+  v7 = elementCopy;
   skipCount = self->_skipCount;
   v9 = __OFSUB__(skipCount, 1);
   v10 = skipCount - 1;
@@ -89,8 +89,8 @@
   {
     if (self->_inHTMLBody)
     {
-      v11 = [v6 lowercaseString];
-      v12 = [v11 isEqualToString:@"body"];
+      lowercaseString = [elementCopy lowercaseString];
+      v12 = [lowercaseString isEqualToString:@"body"];
 
       if (v12)
       {
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 attributes:(id)a5
+- (void)parser:(id)parser didStartElement:(id)element attributes:(id)attributes
 {
-  v7 = a5;
+  attributesCopy = attributes;
   skipCount = self->_skipCount;
   if (skipCount >= 1)
   {
@@ -120,9 +120,9 @@
     goto LABEL_12;
   }
 
-  v17 = v7;
-  v9 = [a4 lowercaseString];
-  v10 = v9;
+  v17 = attributesCopy;
+  lowercaseString = [element lowercaseString];
+  v10 = lowercaseString;
   if (self->_inHTMLBody)
   {
     v11 = [v17 objectForKey:@"class"];
@@ -138,21 +138,21 @@ LABEL_10:
       }
 
       v13 = +[ENSession sharedSession];
-      v14 = [v13 logger];
+      logger = [v13 logger];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"startElement:%@ returned NO, skipping element and children", v10];
-      [v14 evernoteLogInfoString:v15];
+      [logger evernoteLogInfoString:v15];
     }
 
     ++self->_skipCount;
     goto LABEL_10;
   }
 
-  if ([v9 isEqualToString:@"body"])
+  if ([lowercaseString isEqualToString:@"body"])
   {
     v12 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v17];
     [v12 removeObjectForKey:@"class"];
-    v16 = [(ENHTMLtoENMLConverter *)self enmlWriter];
-    [v16 startDocumentWithAttributes:v17];
+    enmlWriter = [(ENHTMLtoENMLConverter *)self enmlWriter];
+    [enmlWriter startDocumentWithAttributes:v17];
 
     self->_inHTMLBody = 1;
     goto LABEL_10;
@@ -160,11 +160,11 @@ LABEL_10:
 
 LABEL_11:
 
-  v7 = v17;
+  attributesCopy = v17;
 LABEL_12:
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -177,36 +177,36 @@ LABEL_12:
 
 - (void)cancel
 {
-  v3 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v3 stopParser];
+  htmlParser = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser stopParser];
 
-  v4 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v4 setDelegate:0];
+  htmlParser2 = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser2 setDelegate:0];
 }
 
 - (void)finish
 {
-  v2 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v2 finalizeParser];
+  htmlParser = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser finalizeParser];
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
-  v5 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v5 appendData:v4];
+  dataCopy = data;
+  htmlParser = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser appendData:dataCopy];
 }
 
-- (id)enmlFromHTMLContent:(id)a3
+- (id)enmlFromHTMLContent:(id)content
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
+  contentCopy = content;
   v6 = objc_alloc_init(v4);
   enml = self->_enml;
   self->_enml = v6;
 
-  v8 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v8 parseContents:v5];
+  htmlParser = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser parseContents:contentCopy];
 
   v9 = MEMORY[0x277CCACA8];
   v10 = self->_enml;
@@ -214,16 +214,16 @@ LABEL_12:
   return [v9 stringWithString:v10];
 }
 
-- (id)enmlFromContentsOfHTMLFile:(id)a3
+- (id)enmlFromContentsOfHTMLFile:(id)file
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
+  fileCopy = file;
   v6 = objc_alloc_init(v4);
   enml = self->_enml;
   self->_enml = v6;
 
-  v8 = [(ENHTMLtoENMLConverter *)self htmlParser];
-  [v8 parseContentsOfFile:v5];
+  htmlParser = [(ENHTMLtoENMLConverter *)self htmlParser];
+  [htmlParser parseContentsOfFile:fileCopy];
 
   v9 = MEMORY[0x277CCACA8];
   v10 = self->_enml;

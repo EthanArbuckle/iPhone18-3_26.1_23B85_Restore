@@ -22,34 +22,34 @@
 + (id)safari_HTMLFormProtectionSpaceForURL:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [v4 port];
-  v6 = [v4 host];
-  v7 = [v6 safari_stringByRemovingWwwDotPrefix];
+  port = [v4 port];
+  host = [v4 host];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
-  v8 = [v4 scheme];
+  scheme = [v4 scheme];
 
-  v9 = [a1 alloc];
-  if (v5)
+  v9 = [self alloc];
+  if (port)
   {
-    v10 = [v5 integerValue];
+    integerValue = [port integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  if (!v8)
+  if (!scheme)
   {
-    v8 = &stru_1F3064D08;
+    scheme = &stru_1F3064D08;
   }
 
-  if (!v7)
+  if (!safari_stringByRemovingWwwDotPrefix)
   {
-    v7 = &stru_1F3064D08;
+    safari_stringByRemovingWwwDotPrefix = &stru_1F3064D08;
   }
 
-  v11 = [v9 initWithHost:v7 port:v10 protocol:v8 realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
+  v11 = [v9 initWithHost:safari_stringByRemovingWwwDotPrefix port:integerValue protocol:scheme realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
 
   return v11;
 }
@@ -59,55 +59,55 @@
   v2 = MEMORY[0x1E695DFF8];
   v3 = [@"https://" stringByAppendingString:?];
   v4 = [v2 URLWithString:v3];
-  v5 = [a1 safari_HTMLFormProtectionSpaceForURL:v4];
+  v5 = [self safari_HTMLFormProtectionSpaceForURL:v4];
 
   return v5;
 }
 
 - (id)safari_protectionSpaceBySimplifyingHost
 {
-  v2 = [a1 host];
-  v3 = [v2 safari_stringByRemovingWwwDotPrefix];
+  host = [self host];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
-  v4 = [a1 host];
-  v5 = [v3 isEqualToString:v4];
+  host2 = [self host];
+  v5 = [safari_stringByRemovingWwwDotPrefix isEqualToString:host2];
 
   if (v5)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [a1 port];
-    v9 = [a1 protocol];
-    v10 = [a1 realm];
-    v11 = [a1 authenticationMethod];
-    v6 = [v7 initWithHost:v3 port:v8 protocol:v9 realm:v10 authenticationMethod:v11];
+    port = [self port];
+    protocol = [self protocol];
+    realm = [self realm];
+    authenticationMethod = [self authenticationMethod];
+    selfCopy = [v7 initWithHost:safari_stringByRemovingWwwDotPrefix port:port protocol:protocol realm:realm authenticationMethod:authenticationMethod];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (uint64_t)safari_protocolAsSecAttrProtocolValue
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 protocol];
-  if ([v1 isEqualToString:*MEMORY[0x1E695AB98]])
+  protocol = [self protocol];
+  if ([protocol isEqualToString:*MEMORY[0x1E695AB98]])
   {
     v2 = MEMORY[0x1E697AE20];
   }
 
   else
   {
-    if (([v1 isEqualToString:*MEMORY[0x1E695ABA0]] & 1) == 0)
+    if (([protocol isEqualToString:*MEMORY[0x1E695ABA0]] & 1) == 0)
     {
       v3 = WBS_LOG_CHANNEL_PREFIXPasswords();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
         v7 = 138543362;
-        v8 = v1;
+        v8 = protocol;
         _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "Unsupported protocol %{public}@", &v7, 0xCu);
       }
     }
@@ -123,43 +123,43 @@
 
 - (id)safari_protectionSpaceByReplacingHostWithHighlevelDomain
 {
-  v2 = [a1 host];
-  v3 = [v2 safari_highLevelDomainFromHost];
+  host = [self host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  v4 = [a1 host];
-  v5 = [v4 isEqualToString:v3];
+  host2 = [self host];
+  v5 = [host2 isEqualToString:safari_highLevelDomainFromHost];
 
   if (v5)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [a1 port];
-    v9 = [a1 protocol];
-    v10 = [a1 realm];
-    v11 = [a1 authenticationMethod];
-    v6 = [v7 initWithHost:v3 port:v8 protocol:v9 realm:v10 authenticationMethod:v11];
+    port = [self port];
+    protocol = [self protocol];
+    realm = [self realm];
+    authenticationMethod = [self authenticationMethod];
+    selfCopy = [v7 initWithHost:safari_highLevelDomainFromHost port:port protocol:protocol realm:realm authenticationMethod:authenticationMethod];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (uint64_t)safari_compareToHighLevelDomainFromProtectionSpaceOrderingDecimalCharactersLast:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 host];
-  v6 = [v5 safari_highLevelDomainFromHost];
+  host = [self host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-  v7 = [v4 host];
-  v8 = [v7 safari_highLevelDomainFromHost];
+  host2 = [v4 host];
+  safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
 
-  v9 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  if ([v6 length])
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  if ([safari_highLevelDomainFromHost length])
   {
-    v10 = [v9 characterIsMember:{objc_msgSend(v6, "characterAtIndex:", 0)}];
+    v10 = [decimalDigitCharacterSet characterIsMember:{objc_msgSend(safari_highLevelDomainFromHost, "characterAtIndex:", 0)}];
   }
 
   else
@@ -167,9 +167,9 @@
     v10 = 0;
   }
 
-  if ([v8 length])
+  if ([safari_highLevelDomainFromHost2 length])
   {
-    v11 = [v9 characterIsMember:{objc_msgSend(v8, "characterAtIndex:", 0)}] ^ 1;
+    v11 = [decimalDigitCharacterSet characterIsMember:{objc_msgSend(safari_highLevelDomainFromHost2, "characterAtIndex:", 0)}] ^ 1;
   }
 
   else
@@ -184,7 +184,7 @@
 
   else if ((v10 | v11))
   {
-    v12 = [a1 safari_compareToHighLevelDomainFromProtectionSpace:v4];
+    v12 = [self safari_compareToHighLevelDomainFromProtectionSpace:v4];
   }
 
   else
@@ -198,19 +198,19 @@
 - (uint64_t)safari_compareToHighLevelDomainFromProtectionSpace:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 host];
-  v6 = [v4 host];
+  host = [self host];
+  host2 = [v4 host];
 
-  v7 = [v5 safari_highLevelDomainFromHost];
-  v8 = [v6 safari_highLevelDomainFromHost];
-  v9 = [v7 caseInsensitiveCompare:v8];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+  safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
+  v9 = [safari_highLevelDomainFromHost caseInsensitiveCompare:safari_highLevelDomainFromHost2];
   if (!v9)
   {
-    if ([v5 caseInsensitiveCompare:v7])
+    if ([host caseInsensitiveCompare:safari_highLevelDomainFromHost])
     {
-      if ([v6 caseInsensitiveCompare:v7])
+      if ([host2 caseInsensitiveCompare:safari_highLevelDomainFromHost])
       {
-        v9 = [v5 caseInsensitiveCompare:v6];
+        v9 = [host caseInsensitiveCompare:host2];
       }
 
       else
@@ -230,28 +230,28 @@
 
 - (id)safari_addressString
 {
-  if ([a1 isProxy])
+  if ([self isProxy])
   {
-    [a1 proxyType];
+    [self proxyType];
   }
 
   else
   {
-    [a1 protocol];
+    [self protocol];
   }
   v2 = ;
-  v3 = [a1 port];
+  port = [self port];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [a1 host];
-  v6 = v5;
-  if (v3)
+  host = [self host];
+  v6 = host;
+  if (port)
   {
-    [v4 stringWithFormat:@"%@://%@:%ld/", v2, v5, v3];
+    [v4 stringWithFormat:@"%@://%@:%ld/", v2, host, port];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@://%@/", v2, v5, v9];
+    [v4 stringWithFormat:@"%@://%@/", v2, host, v9];
   }
   v7 = ;
 
@@ -260,8 +260,8 @@
 
 - (id)safari_userVisibleSiteForProtectionSpace
 {
-  v1 = [a1 safari_addressString];
-  v2 = [v1 safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:0 simplifiedStringOffset:0];
+  safari_addressString = [self safari_addressString];
+  v2 = [safari_addressString safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:0 simplifiedStringOffset:0];
 
   return v2;
 }
@@ -269,25 +269,25 @@
 - (id)safari_identityPreferenceDomain
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  v3 = [a1 protocol];
-  [v2 setScheme:v3];
+  protocol = [self protocol];
+  [v2 setScheme:protocol];
 
-  v4 = [a1 host];
-  [v2 setHost:v4];
+  host = [self host];
+  [v2 setHost:host];
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "port")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "port")}];
   [v2 setPort:v5];
 
-  v6 = [v2 string];
+  string = [v2 string];
 
-  return v6;
+  return string;
 }
 
 - (id)safari_URL
 {
   v2 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v3 = [a1 safari_addressString];
-  v4 = [v2 initWithString:v3];
+  safari_addressString = [self safari_addressString];
+  v4 = [v2 initWithString:safari_addressString];
 
   return v4;
 }
@@ -309,12 +309,12 @@
   v9 = *MEMORY[0x1E697AE00];
   v20[2] = v8;
   v20[3] = v9;
-  v21[3] = [a1 safari_protocolAsSecAttrProtocolValue];
+  v21[3] = [self safari_protocolAsSecAttrProtocolValue];
   v20[4] = *MEMORY[0x1E697AE80];
-  v10 = [a1 host];
+  host = [self host];
   v11 = *MEMORY[0x1E697AEB0];
   v12 = *MEMORY[0x1E697AEB8];
-  v21[4] = v10;
+  v21[4] = host;
   v21[5] = v12;
   v13 = *MEMORY[0x1E697B310];
   v20[5] = v11;
@@ -340,13 +340,13 @@
 - (uint64_t)isEqualToProtectionSpaceForPasswordManager:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 host];
-  v6 = [v4 host];
-  if ([v5 isEqualToString:v6] && (v7 = objc_msgSend(a1, "port"), v7 == objc_msgSend(v4, "port")))
+  host = [self host];
+  host2 = [v4 host];
+  if ([host isEqualToString:host2] && (v7 = objc_msgSend(self, "port"), v7 == objc_msgSend(v4, "port")))
   {
-    v8 = [a1 protocol];
-    v9 = [v4 protocol];
-    v10 = WBSIsEqual(v8, v9);
+    protocol = [self protocol];
+    protocol2 = [v4 protocol];
+    v10 = WBSIsEqual(protocol, protocol2);
   }
 
   else
@@ -359,8 +359,8 @@
 
 - (BOOL)safari_allowsCredentialSaving
 {
-  v1 = [a1 safari_URL];
-  v2 = [WBSSavedAccountMatchCriteria criteriaForExactFQDNPasswordMatchesOfURL:v1];
+  safari_URL = [self safari_URL];
+  v2 = [WBSSavedAccountMatchCriteria criteriaForExactFQDNPasswordMatchesOfURL:safari_URL];
 
   [v2 setOptions:{objc_msgSend(v2, "options") | 4}];
   v6 = 0;
@@ -383,18 +383,18 @@
 
 - (uint64_t)safari_defaultPortForProtocol
 {
-  v1 = [a1 protocol];
-  if ([v1 isEqualToString:*MEMORY[0x1E695ABA0]])
+  protocol = [self protocol];
+  if ([protocol isEqualToString:*MEMORY[0x1E695ABA0]])
   {
     v2 = 443;
   }
 
-  else if ([v1 isEqualToString:*MEMORY[0x1E695AB98]])
+  else if ([protocol isEqualToString:*MEMORY[0x1E695AB98]])
   {
     v2 = 80;
   }
 
-  else if ([v1 isEqualToString:*MEMORY[0x1E695AB90]])
+  else if ([protocol isEqualToString:*MEMORY[0x1E695AB90]])
   {
     v2 = 20;
   }
@@ -409,23 +409,23 @@
 
 - (uint64_t)safari_hasDefaultPortForProtocol
 {
-  v2 = [a1 port];
-  if (!v2)
+  port = [self port];
+  if (!port)
   {
     return 1;
   }
 
-  v3 = v2;
-  v4 = [a1 protocol];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695ABA0]];
-  if (v3 == 443 && (v5 & 1) != 0 || (v6 = [v4 isEqualToString:*MEMORY[0x1E695AB98]], v3 == 80) && (v6 & 1) != 0)
+  v3 = port;
+  protocol = [self protocol];
+  v5 = [protocol isEqualToString:*MEMORY[0x1E695ABA0]];
+  if (v3 == 443 && (v5 & 1) != 0 || (v6 = [protocol isEqualToString:*MEMORY[0x1E695AB98]], v3 == 80) && (v6 & 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v4 isEqualToString:*MEMORY[0x1E695AB90]];
+    v8 = [protocol isEqualToString:*MEMORY[0x1E695AB90]];
     if ((v3 & 0xFFFFFFFFFFFFFFFELL) == 0x14)
     {
       v7 = v8;

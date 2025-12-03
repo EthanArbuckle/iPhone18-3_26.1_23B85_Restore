@@ -1,27 +1,27 @@
 @interface TVRUINowPlayingInfoActivityItem
-- (TVRUINowPlayingInfoActivityItem)initWithNowPlayingInfo:(id)a3 shareShow:(BOOL)a4;
+- (TVRUINowPlayingInfoActivityItem)initWithNowPlayingInfo:(id)info shareShow:(BOOL)show;
 - (id)_shareURL;
 - (id)_subtitle;
 - (id)_title;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation TVRUINowPlayingInfoActivityItem
 
-- (TVRUINowPlayingInfoActivityItem)initWithNowPlayingInfo:(id)a3 shareShow:(BOOL)a4
+- (TVRUINowPlayingInfoActivityItem)initWithNowPlayingInfo:(id)info shareShow:(BOOL)show
 {
-  v7 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = TVRUINowPlayingInfoActivityItem;
   v8 = [(TVRUINowPlayingInfoActivityItem *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_nowPlayingInfo, a3);
-    v9->_shareShow = a4;
-    v10 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v10 setHTTPMaximumConnectionsPerHost:1];
-    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v10];
+    objc_storeStrong(&v8->_nowPlayingInfo, info);
+    v9->_shareShow = show;
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:1];
+    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     urlSession = v9->_urlSession;
     v9->_urlSession = v11;
   }
@@ -29,19 +29,19 @@
   return v9;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(MEMORY[0x277CD46C8]);
-  v6 = [(TVRUINowPlayingInfoActivityItem *)self _shareURL];
-  [v5 setURL:v6];
+  _shareURL = [(TVRUINowPlayingInfoActivityItem *)self _shareURL];
+  [v5 setURL:_shareURL];
 
   v7 = objc_alloc_init(MEMORY[0x277CD4698]);
-  v8 = [(TVRUINowPlayingInfoActivityItem *)self _title];
-  [v7 setTitle:v8];
+  _title = [(TVRUINowPlayingInfoActivityItem *)self _title];
+  [v7 setTitle:_title];
 
-  v9 = [(TVRUINowPlayingInfoActivityItem *)self _subtitle];
-  [v7 setSubtitle:v9];
+  _subtitle = [(TVRUINowPlayingInfoActivityItem *)self _subtitle];
+  [v7 setSubtitle:_subtitle];
 
   if ([(TVRUINowPlayingInfoActivityItem *)self shareShow])
   {
@@ -60,29 +60,29 @@
     objc_copyWeak(&v37, &location);
     [(NSItemProvider *)v12 registerObjectOfClass:v13 visibility:0 loadHandler:v36];
     v15 = objc_alloc(MEMORY[0x277CD46B0]);
-    v16 = [(TVRUINowPlayingInfoActivityItem *)self imageItemProvider];
-    v17 = [v15 initWithItemProvider:v16 properties:0 placeholderImage:0];
+    imageItemProvider = [(TVRUINowPlayingInfoActivityItem *)self imageItemProvider];
+    v17 = [v15 initWithItemProvider:imageItemProvider properties:0 placeholderImage:0];
 
     [v7 setArtwork:v17];
   }
 
   else
   {
-    v18 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-    v19 = [v18 imageData];
-    if (v19)
+    nowPlayingInfo = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+    imageData = [nowPlayingInfo imageData];
+    if (imageData)
     {
-      v20 = v19;
-      v21 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-      v22 = [v21 imageDataIsPlaceholder];
-      v23 = [v22 BOOLValue];
+      v20 = imageData;
+      nowPlayingInfo2 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+      imageDataIsPlaceholder = [nowPlayingInfo2 imageDataIsPlaceholder];
+      bOOLValue = [imageDataIsPlaceholder BOOLValue];
 
-      if ((v23 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v24 = objc_alloc(MEMORY[0x277CD46B0]);
-        v25 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-        v26 = [v25 imageData];
-        v27 = [v24 initWithData:v26 MIMEType:@"image/png"];
+        nowPlayingInfo3 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+        imageData2 = [nowPlayingInfo3 imageData];
+        v27 = [v24 initWithData:imageData2 MIMEType:@"image/png"];
 
         [v7 setArtwork:v27];
         goto LABEL_9;
@@ -243,18 +243,18 @@ void __70__TVRUINowPlayingInfoActivityItem_activityViewControllerLinkMetadata___
 
 - (id)_shareURL
 {
-  v3 = [(TVRUINowPlayingInfoActivityItem *)self shareShow];
-  v4 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-  v5 = [v4 metadata];
-  v6 = v5;
-  if (v3)
+  shareShow = [(TVRUINowPlayingInfoActivityItem *)self shareShow];
+  nowPlayingInfo = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
+  v6 = metadata;
+  if (shareShow)
   {
-    [v5 showProductPageURL];
+    [metadata showProductPageURL];
   }
 
   else
   {
-    [v5 productPageURL];
+    [metadata productPageURL];
   }
   v7 = ;
 
@@ -263,40 +263,40 @@ void __70__TVRUINowPlayingInfoActivityItem_activityViewControllerLinkMetadata___
 
 - (id)_title
 {
-  v2 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-  v3 = [v2 metadata];
-  v4 = [v3 title];
+  nowPlayingInfo = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
+  title = [metadata title];
 
-  return v4;
+  return title;
 }
 
 - (id)_subtitle
 {
-  v3 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-  v4 = [v3 metadata];
-  if ([v4 kind] == 2)
+  nowPlayingInfo = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
+  if ([metadata kind] == 2)
   {
-    v5 = [(TVRUINowPlayingInfoActivityItem *)self shareShow];
+    shareShow = [(TVRUINowPlayingInfoActivityItem *)self shareShow];
 
-    if (v5)
+    if (shareShow)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
     v16 = MEMORY[0x277CCACA8];
-    v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"TVRUIEpisodeShareSubtitle" value:&stru_287E6AEF8 table:@"Localizable"];
-    v17 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-    v15 = [v17 metadata];
-    v7 = [v15 title];
-    v8 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-    v9 = [v8 metadata];
-    v10 = [v9 seasonNumber];
-    v11 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
-    v12 = [v11 metadata];
-    v13 = [v12 episodeNumber];
-    v6 = [v16 localizedStringWithFormat:v4, v7, v10, v13];
+    nowPlayingInfo = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    metadata = [nowPlayingInfo localizedStringForKey:@"TVRUIEpisodeShareSubtitle" value:&stru_287E6AEF8 table:@"Localizable"];
+    nowPlayingInfo2 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+    metadata2 = [nowPlayingInfo2 metadata];
+    title = [metadata2 title];
+    nowPlayingInfo3 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+    metadata3 = [nowPlayingInfo3 metadata];
+    seasonNumber = [metadata3 seasonNumber];
+    nowPlayingInfo4 = [(TVRUINowPlayingInfoActivityItem *)self nowPlayingInfo];
+    metadata4 = [nowPlayingInfo4 metadata];
+    episodeNumber = [metadata4 episodeNumber];
+    v6 = [v16 localizedStringWithFormat:metadata, title, seasonNumber, episodeNumber];
   }
 
   else

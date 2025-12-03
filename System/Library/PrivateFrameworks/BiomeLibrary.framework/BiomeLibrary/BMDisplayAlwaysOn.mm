@@ -1,15 +1,15 @@
 @interface BMDisplayAlwaysOn
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDisplayAlwaysOn)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDisplayAlwaysOn)initWithUserSetState:(int)a3 resolvedState:(int)a4 blockingPolicies:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMDisplayAlwaysOn)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDisplayAlwaysOn)initWithUserSetState:(int)state resolvedState:(int)resolvedState blockingPolicies:(id)policies;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDisplayAlwaysOn
@@ -34,33 +34,33 @@
 {
   v3 = objc_opt_new();
   [(BMDisplayAlwaysOn *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDisplayAlwaysOn *)self userSetState];
-    if (v6 == [v5 userSetState] && (v7 = -[BMDisplayAlwaysOn resolvedState](self, "resolvedState"), v7 == objc_msgSend(v5, "resolvedState")))
+    v5 = equalCopy;
+    userSetState = [(BMDisplayAlwaysOn *)self userSetState];
+    if (userSetState == [v5 userSetState] && (v7 = -[BMDisplayAlwaysOn resolvedState](self, "resolvedState"), v7 == objc_msgSend(v5, "resolvedState")))
     {
-      v8 = [(BMDisplayAlwaysOn *)self blockingPolicies];
-      v9 = [v5 blockingPolicies];
-      if (v8 == v9)
+      blockingPolicies = [(BMDisplayAlwaysOn *)self blockingPolicies];
+      blockingPolicies2 = [v5 blockingPolicies];
+      if (blockingPolicies == blockingPolicies2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(BMDisplayAlwaysOn *)self blockingPolicies];
-        v11 = [v5 blockingPolicies];
-        v12 = [v10 isEqual:v11];
+        blockingPolicies3 = [(BMDisplayAlwaysOn *)self blockingPolicies];
+        blockingPolicies4 = [v5 blockingPolicies];
+        v12 = [blockingPolicies3 isEqual:blockingPolicies4];
       }
     }
 
@@ -83,33 +83,33 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDisplayAlwaysOn userSetState](self, "userSetState")}];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDisplayAlwaysOn resolvedState](self, "resolvedState")}];
-  v5 = [(BMDisplayAlwaysOn *)self _blockingPoliciesJSONArray];
+  _blockingPoliciesJSONArray = [(BMDisplayAlwaysOn *)self _blockingPoliciesJSONArray];
   v12[0] = @"userSetState";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"resolvedState";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"blockingPolicies";
-  v8 = v5;
-  if (!v5)
+  null3 = _blockingPoliciesJSONArray;
+  if (!_blockingPoliciesJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (_blockingPoliciesJSONArray)
   {
     if (v4)
     {
@@ -145,11 +145,11 @@ LABEL_10:
   return v9;
 }
 
-- (BMDisplayAlwaysOn)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDisplayAlwaysOn)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"userSetState"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"userSetState"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -163,29 +163,29 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v40 = objc_alloc(MEMORY[0x1E696ABC0]);
           v41 = *MEMORY[0x1E698F240];
           v76 = *MEMORY[0x1E696A578];
-          v42 = self;
+          selfCopy = self;
           v43 = objc_alloc(MEMORY[0x1E696AEC0]);
           v53 = objc_opt_class();
           v44 = v43;
-          self = v42;
+          self = selfCopy;
           v12 = [v44 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", v53, @"userSetState"];
           v77[0] = v12;
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:&v76 count:1];
           v46 = v40;
           v11 = v45;
           v8 = 0;
-          v26 = 0;
-          *a4 = [v46 initWithDomain:v41 code:2 userInfo:v45];
+          selfCopy4 = 0;
+          *error = [v46 initWithDomain:v41 code:2 userInfo:v45];
           goto LABEL_44;
         }
 
         v8 = 0;
-        v26 = 0;
+        selfCopy4 = 0;
         goto LABEL_45;
       }
 
@@ -200,8 +200,8 @@ LABEL_10:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"resolvedState"];
-  v59 = a4;
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"resolvedState"];
+  errorCopy = error;
   v60 = v7;
   v61 = v10;
   if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -217,28 +217,28 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v47 = objc_alloc(MEMORY[0x1E696ABC0]);
           v48 = *MEMORY[0x1E698F240];
           v74 = *MEMORY[0x1E696A578];
-          v49 = v6;
+          v49 = dictionaryCopy;
           v50 = objc_alloc(MEMORY[0x1E696AEC0]);
           v54 = objc_opt_class();
           v51 = v50;
-          v6 = v49;
-          v52 = a4;
+          dictionaryCopy = v49;
+          errorCopy2 = error;
           v13 = [v51 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", v54, @"resolvedState"];
           v75 = v13;
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
-          v26 = 0;
-          *v52 = [v47 initWithDomain:v48 code:2 userInfo:v16];
+          selfCopy4 = 0;
+          *errorCopy2 = [v47 initWithDomain:v48 code:2 userInfo:v16];
           v12 = 0;
           goto LABEL_42;
         }
 
         v12 = 0;
-        v26 = 0;
+        selfCopy4 = 0;
         goto LABEL_44;
       }
 
@@ -251,16 +251,16 @@ LABEL_10:
     v12 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"blockingPolicies"];
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v15 = [v13 isEqual:v14];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"blockingPolicies"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v15 = [v13 isEqual:null];
 
   if (v15)
   {
     v55 = v12;
     v56 = v8;
-    v57 = self;
-    v58 = v6;
+    selfCopy3 = self;
+    v58 = dictionaryCopy;
 
     v13 = 0;
   }
@@ -272,7 +272,7 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v59)
+        if (errorCopy)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -280,13 +280,13 @@ LABEL_10:
           v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"blockingPolicies"];
           v73 = v16;
           v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-          *v59 = [v37 initWithDomain:v38 code:2 userInfo:v39];
+          *errorCopy = [v37 initWithDomain:v38 code:2 userInfo:v39];
 
-          v26 = 0;
+          selfCopy4 = 0;
           goto LABEL_42;
         }
 
-        v26 = 0;
+        selfCopy4 = 0;
         v11 = v61;
         goto LABEL_43;
       }
@@ -294,8 +294,8 @@ LABEL_10:
 
     v55 = v12;
     v56 = v8;
-    v57 = self;
-    v58 = v6;
+    selfCopy3 = self;
+    v58 = dictionaryCopy;
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
@@ -325,10 +325,10 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        self = v57;
-        v6 = v58;
-        v27 = v59;
-        if (v59)
+        self = selfCopy3;
+        dictionaryCopy = v58;
+        v27 = errorCopy;
+        if (errorCopy)
         {
           v28 = objc_alloc(MEMORY[0x1E696ABC0]);
           v29 = *MEMORY[0x1E698F240];
@@ -346,7 +346,7 @@ LABEL_40:
 
 LABEL_41:
 
-        v26 = 0;
+        selfCopy4 = 0;
         v12 = v55;
         v8 = v56;
         goto LABEL_42;
@@ -355,10 +355,10 @@ LABEL_41:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v57;
-        v6 = v58;
-        v27 = v59;
-        if (v59)
+        self = selfCopy3;
+        dictionaryCopy = v58;
+        v27 = errorCopy;
+        if (errorCopy)
         {
           v28 = objc_alloc(MEMORY[0x1E696ABC0]);
           v29 = *MEMORY[0x1E698F240];
@@ -382,14 +382,14 @@ LABEL_41:
       if (v25)
       {
         v33 = v25;
-        if (v59)
+        if (errorCopy)
         {
           v34 = v25;
-          *v59 = v33;
+          *errorCopy = v33;
         }
 
-        self = v57;
-        v6 = v58;
+        self = selfCopy3;
+        dictionaryCopy = v58;
         goto LABEL_40;
       }
 
@@ -409,9 +409,9 @@ LABEL_27:
 
   v8 = v56;
   v12 = v55;
-  self = -[BMDisplayAlwaysOn initWithUserSetState:resolvedState:blockingPolicies:](v57, "initWithUserSetState:resolvedState:blockingPolicies:", [v56 intValue], objc_msgSend(v55, "intValue"), v16);
-  v26 = self;
-  v6 = v58;
+  self = -[BMDisplayAlwaysOn initWithUserSetState:resolvedState:blockingPolicies:](selfCopy3, "initWithUserSetState:resolvedState:blockingPolicies:", [v56 intValue], objc_msgSend(v55, "intValue"), v16);
+  selfCopy4 = self;
+  dictionaryCopy = v58;
 LABEL_42:
 
   v7 = v60;
@@ -422,13 +422,13 @@ LABEL_44:
 LABEL_45:
 
   v35 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   userSetState = self->_userSetState;
   PBDataWriterWriteUint32Field();
   resolvedState = self->_resolvedState;
@@ -454,7 +454,7 @@ LABEL_45:
 
         v12 = *(*(&v14 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v12 writeTo:v4];
+        [v12 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -467,9 +467,9 @@ LABEL_45:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v38.receiver = self;
   v38.super_class = BMDisplayAlwaysOn;
   v5 = [(BMEventBase *)&v38 init];
@@ -479,12 +479,12 @@ LABEL_45:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_54;
       }
@@ -495,18 +495,18 @@ LABEL_45:
       while (1)
       {
         LOBYTE(v39[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v39 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v39[0] & 0x7F) << v8;
@@ -523,9 +523,9 @@ LABEL_45:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_54;
       }
@@ -540,7 +540,7 @@ LABEL_16:
       {
         v39[0] = 0;
         v39[1] = 0;
-        if (!PBReaderPlaceMark() || (v24 = [[BMDisplayAlwaysOnBlockingPolicy alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v24 = [[BMDisplayAlwaysOnBlockingPolicy alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_58:
 
@@ -562,18 +562,18 @@ LABEL_58:
           while (1)
           {
             LOBYTE(v39[0]) = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:v39 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v39[0] & 0x7F) << v17;
@@ -590,7 +590,7 @@ LABEL_58:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 2)
           {
 LABEL_50:
             LODWORD(v19) = 0;
@@ -609,8 +609,8 @@ LABEL_52:
       }
 
 LABEL_53:
-      v32 = [v4 position];
-      if (v32 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_54;
       }
@@ -622,18 +622,18 @@ LABEL_53:
     while (1)
     {
       LOBYTE(v39[0]) = 0;
-      v28 = [v4 position] + 1;
-      if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+      v28 = [fromCopy position] + 1;
+      if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
       {
-        v30 = [v4 data];
-        [v30 getBytes:v39 range:{objc_msgSend(v4, "position"), 1}];
+        data3 = [fromCopy data];
+        [data3 getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v19 |= (v39[0] & 0x7F) << v26;
@@ -650,7 +650,7 @@ LABEL_53:
       }
     }
 
-    if (([v4 hasError] & 1) != 0 || v19 > 2)
+    if (([fromCopy hasError] & 1) != 0 || v19 > 2)
     {
 LABEL_46:
       LODWORD(v19) = 0;
@@ -665,8 +665,8 @@ LABEL_54:
   blockingPolicies = v5->_blockingPolicies;
   v5->_blockingPolicies = v33;
 
-  v35 = [v4 hasError];
-  if (v35)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_55:
     v36 = 0;
@@ -686,24 +686,24 @@ LABEL_56:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMDisplayAlwaysOnStateAsString([(BMDisplayAlwaysOn *)self userSetState]);
   v5 = BMDisplayAlwaysOnStateAsString([(BMDisplayAlwaysOn *)self resolvedState]);
-  v6 = [(BMDisplayAlwaysOn *)self blockingPolicies];
-  v7 = [v3 initWithFormat:@"BMDisplayAlwaysOn with userSetState: %@, resolvedState: %@, blockingPolicies: %@", v4, v5, v6];
+  blockingPolicies = [(BMDisplayAlwaysOn *)self blockingPolicies];
+  v7 = [v3 initWithFormat:@"BMDisplayAlwaysOn with userSetState: %@, resolvedState: %@, blockingPolicies: %@", v4, v5, blockingPolicies];
 
   return v7;
 }
 
-- (BMDisplayAlwaysOn)initWithUserSetState:(int)a3 resolvedState:(int)a4 blockingPolicies:(id)a5
+- (BMDisplayAlwaysOn)initWithUserSetState:(int)state resolvedState:(int)resolvedState blockingPolicies:(id)policies
 {
-  v9 = a5;
+  policiesCopy = policies;
   v12.receiver = self;
   v12.super_class = BMDisplayAlwaysOn;
   v10 = [(BMEventBase *)&v12 init];
   if (v10)
   {
     v10->_dataVersion = [objc_opt_class() latestDataVersion];
-    v10->_userSetState = a3;
-    v10->_resolvedState = a4;
-    objc_storeStrong(&v10->_blockingPolicies, a5);
+    v10->_userSetState = state;
+    v10->_resolvedState = resolvedState;
+    objc_storeStrong(&v10->_blockingPolicies, policies);
   }
 
   return v10;
@@ -733,9 +733,9 @@ id __28__BMDisplayAlwaysOn_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -743,8 +743,8 @@ id __28__BMDisplayAlwaysOn_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDisplayAlwaysOn alloc] initByReadFrom:v7];
     v4 = v8;

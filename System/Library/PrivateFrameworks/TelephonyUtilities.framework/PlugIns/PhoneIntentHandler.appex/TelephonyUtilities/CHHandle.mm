@@ -1,5 +1,5 @@
 @interface CHHandle
-+ (id)tu_normalizedCHHandlesFromTUHandle:(id)a3 isoCountryCodes:(id)a4;
++ (id)tu_normalizedCHHandlesFromTUHandle:(id)handle isoCountryCodes:(id)codes;
 - (TUHandle)tu_tuHandle;
 @end
 
@@ -7,28 +7,28 @@
 
 - (TUHandle)tu_tuHandle
 {
-  v3 = [(CHHandle *)self value];
-  v4 = [v3 length];
+  value = [(CHHandle *)self value];
+  v4 = [value length];
 
   if (v4)
   {
-    v5 = [(CHHandle *)self type];
-    if (v5 < 2)
+    type = [(CHHandle *)self type];
+    if (type < 2)
     {
-      v9 = [(CHHandle *)self value];
-      v10 = [v9 _appearsToBePhoneNumber];
+      value2 = [(CHHandle *)self value];
+      _appearsToBePhoneNumber = [value2 _appearsToBePhoneNumber];
 
-      if (v10)
+      if (_appearsToBePhoneNumber)
       {
         v7 = 2;
       }
 
       else
       {
-        v11 = [(CHHandle *)self value];
-        v12 = [v11 _appearsToBeEmail];
+        value3 = [(CHHandle *)self value];
+        _appearsToBeEmail = [value3 _appearsToBeEmail];
 
-        if (v12)
+        if (_appearsToBeEmail)
         {
           v7 = 3;
         }
@@ -43,12 +43,12 @@
     else
     {
       v6 = 1;
-      if (v5 == 2)
+      if (type == 2)
       {
         v6 = 2;
       }
 
-      if (v5 == 3)
+      if (type == 3)
       {
         v7 = 3;
       }
@@ -60,8 +60,8 @@
     }
 
     v13 = [TUHandle alloc];
-    v14 = [(CHHandle *)self value];
-    v8 = [v13 initWithType:v7 value:v14];
+    value4 = [(CHHandle *)self value];
+    v8 = [v13 initWithType:v7 value:value4];
   }
 
   else
@@ -72,39 +72,39 @@
   return v8;
 }
 
-+ (id)tu_normalizedCHHandlesFromTUHandle:(id)a3 isoCountryCodes:(id)a4
++ (id)tu_normalizedCHHandlesFromTUHandle:(id)handle isoCountryCodes:(id)codes
 {
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  codesCopy = codes;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 type];
-  if (v8 == 1)
+  type = [handleCopy type];
+  if (type == 1)
   {
-    v17 = [v5 value];
-    v18 = [CHHandle normalizedGenericHandleForValue:v17];
+    value = [handleCopy value];
+    v18 = [CHHandle normalizedGenericHandleForValue:value];
   }
 
-  else if (v8 == 3)
+  else if (type == 3)
   {
-    v17 = [v5 value];
-    v18 = [CHHandle normalizedEmailAddressHandleForValue:v17];
+    value = [handleCopy value];
+    v18 = [CHHandle normalizedEmailAddressHandleForValue:value];
   }
 
   else
   {
-    if (v8 != 2)
+    if (type != 2)
     {
       goto LABEL_21;
     }
 
-    if ([v6 count])
+    if ([codesCopy count])
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v22 = v6;
-      v9 = v6;
+      v22 = codesCopy;
+      v9 = codesCopy;
       v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v10)
       {
@@ -120,8 +120,8 @@
             }
 
             v14 = *(*(&v23 + 1) + 8 * i);
-            v15 = [v5 value];
-            v16 = [CHHandle normalizedPhoneNumberHandleForValue:v15 isoCountryCode:v14];
+            value2 = [handleCopy value];
+            v16 = [CHHandle normalizedPhoneNumberHandleForValue:value2 isoCountryCode:v14];
 
             if (v16)
             {
@@ -135,12 +135,12 @@
         while (v11);
       }
 
-      v6 = v22;
+      codesCopy = v22;
       goto LABEL_21;
     }
 
-    v17 = [v5 value];
-    v18 = [CHHandle normalizedPhoneNumberHandleForValue:v17 isoCountryCode:0];
+    value = [handleCopy value];
+    v18 = [CHHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:0];
   }
 
   v19 = v18;

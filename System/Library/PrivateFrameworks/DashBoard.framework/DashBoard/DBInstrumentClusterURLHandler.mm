@@ -1,22 +1,22 @@
 @interface DBInstrumentClusterURLHandler
-+ (BOOL)_isMapsClusterURL:(id)a3;
-+ (BOOL)isURLSupported:(id)a3;
-+ (id)_correctedComponentsForURL:(id)a3;
-+ (unint64_t)_clusterSettingForURLValue:(id)a3;
-+ (unint64_t)_gaugeClusterPresentationForURLValue:(id)a3;
-+ (unint64_t)_layoutSettingForURLValue:(id)a3;
-+ (unint64_t)_mapsPresentationForURLValue:(id)a3;
-+ (void)applySettingsForClusterURL:(id)a3 toSceneSettings:(id)a4;
++ (BOOL)_isMapsClusterURL:(id)l;
++ (BOOL)isURLSupported:(id)supported;
++ (id)_correctedComponentsForURL:(id)l;
++ (unint64_t)_clusterSettingForURLValue:(id)value;
++ (unint64_t)_gaugeClusterPresentationForURLValue:(id)value;
++ (unint64_t)_layoutSettingForURLValue:(id)value;
++ (unint64_t)_mapsPresentationForURLValue:(id)value;
++ (void)applySettingsForClusterURL:(id)l toSceneSettings:(id)settings;
 @end
 
 @implementation DBInstrumentClusterURLHandler
 
-+ (BOOL)isURLSupported:(id)a3
++ (BOOL)isURLSupported:(id)supported
 {
-  if (a3)
+  if (supported)
   {
 
-    return [a1 _isMapsClusterURL:?];
+    return [self _isMapsClusterURL:?];
   }
 
   else
@@ -31,32 +31,32 @@
   }
 }
 
-+ (void)applySettingsForClusterURL:(id)a3 toSceneSettings:(id)a4
++ (void)applySettingsForClusterURL:(id)l toSceneSettings:(id)settings
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 setItemType:0];
-  [v7 setShowsSpeedLimit:2];
-  [v7 setShowsCompass:2];
-  [v7 setShowsETA:2];
-  [v7 setLayoutJustification:0];
-  [v7 setHostedAltScreenPresentationType:0];
-  if (v6)
+  lCopy = l;
+  settingsCopy = settings;
+  [settingsCopy setItemType:0];
+  [settingsCopy setShowsSpeedLimit:2];
+  [settingsCopy setShowsCompass:2];
+  [settingsCopy setShowsETA:2];
+  [settingsCopy setLayoutJustification:0];
+  [settingsCopy setHostedAltScreenPresentationType:0];
+  if (lCopy)
   {
-    v8 = [a1 _correctedComponentsForURL:v6];
-    v9 = [v8 path];
-    v10 = [v9 pathComponents];
-    v11 = [v10 mutableCopy];
+    v8 = [self _correctedComponentsForURL:lCopy];
+    path = [v8 path];
+    pathComponents = [path pathComponents];
+    v11 = [pathComponents mutableCopy];
 
     [v11 db_removeFirstObjectIfMatching:@"/"];
-    v12 = [v8 scheme];
-    LODWORD(v10) = [v12 isEqualToString:@"maps"];
+    scheme = [v8 scheme];
+    LODWORD(pathComponents) = [scheme isEqualToString:@"maps"];
 
-    if (!v10)
+    if (!pathComponents)
     {
-      v15 = [v8 scheme];
-      v16 = [v15 isEqualToString:@"nextGenHostedContent"];
+      scheme2 = [v8 scheme];
+      v16 = [scheme2 isEqualToString:@"nextGenHostedContent"];
 
       if (!v16)
       {
@@ -75,14 +75,14 @@ LABEL_38:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v17 = [v8 queryItems];
-      v18 = [v17 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      queryItems = [v8 queryItems];
+      v18 = [queryItems countByEnumeratingWithState:&v52 objects:v61 count:16];
       if (!v18)
       {
 LABEL_55:
 
 LABEL_56:
-        if (v7)
+        if (settingsCopy)
         {
 LABEL_60:
 
@@ -93,17 +93,17 @@ LABEL_57:
         v48 = DBLogForCategory(0xAuLL);
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
-          [DBInstrumentClusterURLHandler applySettingsForClusterURL:v6 toSceneSettings:v48];
+          [DBInstrumentClusterURLHandler applySettingsForClusterURL:lCopy toSceneSettings:v48];
         }
 
-        v7 = 0;
+        settingsCopy = 0;
         goto LABEL_60;
       }
 
       v19 = v18;
       v49 = v11;
       v50 = v8;
-      v51 = v6;
+      v51 = lCopy;
       v20 = *v53;
       do
       {
@@ -111,62 +111,62 @@ LABEL_57:
         {
           if (*v53 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(queryItems);
           }
 
           v22 = *(*(&v52 + 1) + 8 * i);
-          v23 = [v22 value];
-          v24 = [v23 lowercaseString];
+          value = [v22 value];
+          lowercaseString = [value lowercaseString];
 
-          v25 = [v22 name];
-          v26 = [v25 isEqualToString:@"showETA"];
+          name = [v22 name];
+          v26 = [name isEqualToString:@"showETA"];
 
           if (v26)
           {
-            [v7 setShowsETA:{objc_msgSend(a1, "_clusterSettingForURLValue:", v24)}];
+            [settingsCopy setShowsETA:{objc_msgSend(self, "_clusterSettingForURLValue:", lowercaseString)}];
           }
 
           else
           {
-            v27 = [v22 name];
-            v28 = [v27 isEqualToString:@"altScreenPresentation"];
+            name2 = [v22 name];
+            v28 = [name2 isEqualToString:@"altScreenPresentation"];
 
             if (v28)
             {
-              [v7 setHostedAltScreenPresentationType:{objc_msgSend(a1, "_gaugeClusterPresentationForURLValue:", v24)}];
+              [settingsCopy setHostedAltScreenPresentationType:{objc_msgSend(self, "_gaugeClusterPresentationForURLValue:", lowercaseString)}];
             }
 
             else
             {
-              v29 = [v22 name];
-              v30 = [v29 isEqualToString:@"mapsPresentation"];
+              name3 = [v22 name];
+              v30 = [name3 isEqualToString:@"mapsPresentation"];
 
               if (v30)
               {
-                [v7 setItemType:{objc_msgSend(a1, "_mapsPresentationForURLValue:", v24)}];
+                [settingsCopy setItemType:{objc_msgSend(self, "_mapsPresentationForURLValue:", lowercaseString)}];
               }
 
               else
               {
-                v31 = [v22 name];
-                v32 = [v31 isEqualToString:@"maneuverLayout"];
+                name4 = [v22 name];
+                v32 = [name4 isEqualToString:@"maneuverLayout"];
 
                 if (v32)
                 {
-                  [v7 setLayoutJustification:{objc_msgSend(a1, "_layoutSettingForURLValue:", v24)}];
+                  [settingsCopy setLayoutJustification:{objc_msgSend(self, "_layoutSettingForURLValue:", lowercaseString)}];
                 }
               }
             }
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        v19 = [queryItems countByEnumeratingWithState:&v52 objects:v61 count:16];
       }
 
       while (v19);
 LABEL_54:
       v8 = v50;
-      v6 = v51;
+      lCopy = v51;
       v11 = v49;
       goto LABEL_55;
     }
@@ -208,8 +208,8 @@ LABEL_37:
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v17 = [v8 queryItems];
-          v33 = [v17 countByEnumeratingWithState:&v56 objects:v62 count:16];
+          queryItems = [v8 queryItems];
+          v33 = [queryItems countByEnumeratingWithState:&v56 objects:v62 count:16];
           if (!v33)
           {
             goto LABEL_55;
@@ -218,7 +218,7 @@ LABEL_37:
           v34 = v33;
           v49 = v11;
           v50 = v8;
-          v51 = v6;
+          v51 = lCopy;
           v35 = *v57;
           do
           {
@@ -226,56 +226,56 @@ LABEL_37:
             {
               if (*v57 != v35)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(queryItems);
               }
 
               v37 = *(*(&v56 + 1) + 8 * j);
-              v38 = [v37 value];
-              v39 = [v38 lowercaseString];
+              value2 = [v37 value];
+              lowercaseString2 = [value2 lowercaseString];
 
-              v40 = [v37 name];
-              v41 = [v40 isEqualToString:@"showSpeedLimit"];
+              name5 = [v37 name];
+              v41 = [name5 isEqualToString:@"showSpeedLimit"];
 
               if (v41)
               {
-                [v7 setShowsSpeedLimit:{objc_msgSend(a1, "_clusterSettingForURLValue:", v39)}];
+                [settingsCopy setShowsSpeedLimit:{objc_msgSend(self, "_clusterSettingForURLValue:", lowercaseString2)}];
               }
 
               else
               {
-                v42 = [v37 name];
-                v43 = [v42 isEqualToString:@"showCompass"];
+                name6 = [v37 name];
+                v43 = [name6 isEqualToString:@"showCompass"];
 
                 if (v43)
                 {
-                  [v7 setShowsCompass:{objc_msgSend(a1, "_clusterSettingForURLValue:", v39)}];
+                  [settingsCopy setShowsCompass:{objc_msgSend(self, "_clusterSettingForURLValue:", lowercaseString2)}];
                 }
 
                 else
                 {
-                  v44 = [v37 name];
-                  v45 = [v44 isEqualToString:@"showETA"];
+                  name7 = [v37 name];
+                  v45 = [name7 isEqualToString:@"showETA"];
 
                   if (v45)
                   {
-                    [v7 setShowsETA:{objc_msgSend(a1, "_clusterSettingForURLValue:", v39)}];
+                    [settingsCopy setShowsETA:{objc_msgSend(self, "_clusterSettingForURLValue:", lowercaseString2)}];
                   }
 
                   else
                   {
-                    v46 = [v37 name];
-                    v47 = [v46 isEqualToString:@"maneuverLayout"];
+                    name8 = [v37 name];
+                    v47 = [name8 isEqualToString:@"maneuverLayout"];
 
                     if (v47)
                     {
-                      [v7 setLayoutJustification:{objc_msgSend(a1, "_layoutSettingForURLValue:", v39)}];
+                      [settingsCopy setLayoutJustification:{objc_msgSend(self, "_layoutSettingForURLValue:", lowercaseString2)}];
                     }
                   }
                 }
               }
             }
 
-            v34 = [v17 countByEnumeratingWithState:&v56 objects:v62 count:16];
+            v34 = [queryItems countByEnumeratingWithState:&v56 objects:v62 count:16];
           }
 
           while (v34);
@@ -305,7 +305,7 @@ LABEL_37:
       v14 = 3;
     }
 
-    [v7 setItemType:v14];
+    [settingsCopy setItemType:v14];
     goto LABEL_37;
   }
 
@@ -318,19 +318,19 @@ LABEL_37:
 LABEL_61:
 }
 
-+ (id)_correctedComponentsForURL:(id)a3
++ (id)_correctedComponentsForURL:(id)l
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
-  v5 = [v3 componentsWithURL:v4 resolvingAgainstBaseURL:0];
-  v6 = [v4 absoluteString];
+  lCopy = l;
+  v5 = [v3 componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+  absoluteString = [lCopy absoluteString];
 
-  v7 = [v5 scheme];
-  v8 = [v7 stringByAppendingString:@"://"];
-  if ([v6 hasPrefix:v8])
+  scheme = [v5 scheme];
+  v8 = [scheme stringByAppendingString:@"://"];
+  if ([absoluteString hasPrefix:v8])
   {
-    v9 = [v7 stringByAppendingString:@":/"];
-    v10 = [v6 mutableCopy];
+    v9 = [scheme stringByAppendingString:@":/"];
+    v10 = [absoluteString mutableCopy];
     [v10 replaceOccurrencesOfString:v8 withString:v9 options:8 range:{0, objc_msgSend(v10, "length")}];
     v11 = MEMORY[0x277CCACE0];
     v12 = [MEMORY[0x277CBEBC0] URLWithString:v10];
@@ -342,59 +342,59 @@ LABEL_61:
   return v5;
 }
 
-+ (BOOL)_isMapsClusterURL:(id)a3
++ (BOOL)_isMapsClusterURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 lowercaseString];
+  absoluteString = [l absoluteString];
+  lowercaseString = [absoluteString lowercaseString];
 
-  if ([v4 hasPrefix:@"maps:/car/instrumentcluster"])
+  if ([lowercaseString hasPrefix:@"maps:/car/instrumentcluster"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 hasPrefix:@"maps://car/instrumentcluster"];
+    v5 = [lowercaseString hasPrefix:@"maps://car/instrumentcluster"];
   }
 
   return v5;
 }
 
-+ (unint64_t)_layoutSettingForURLValue:(id)a3
++ (unint64_t)_layoutSettingForURLValue:(id)value
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"leftaligned"])
+  lowercaseString = [value lowercaseString];
+  if ([lowercaseString isEqualToString:@"leftaligned"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"rightaligned"])
+  else if ([lowercaseString isEqualToString:@"rightaligned"])
   {
     v4 = 3;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"topaligned"];
+    v4 = [lowercaseString isEqualToString:@"topaligned"];
   }
 
   return v4;
 }
 
-+ (unint64_t)_clusterSettingForURLValue:(id)a3
++ (unint64_t)_clusterSettingForURLValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"yes"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"1"))
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"yes"] & 1) != 0 || (objc_msgSend(valueCopy, "isEqualToString:", @"1"))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"no"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"0"))
+  else if ([valueCopy isEqualToString:@"no"] & 1) != 0 || (objc_msgSend(valueCopy, "isEqualToString:", @"0"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"user"])
+  else if ([valueCopy isEqualToString:@"user"])
   {
     v4 = 3;
   }
@@ -407,25 +407,25 @@ LABEL_61:
   return v4;
 }
 
-+ (unint64_t)_gaugeClusterPresentationForURLValue:(id)a3
++ (unint64_t)_gaugeClusterPresentationForURLValue:(id)value
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"dcacarousel"])
+  lowercaseString = [value lowercaseString];
+  if ([lowercaseString isEqualToString:@"dcacarousel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"mapsmediacarousel"])
+  else if ([lowercaseString isEqualToString:@"mapsmediacarousel"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"popover"])
+  else if ([lowercaseString isEqualToString:@"popover"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"passengerdisplay"])
+  else if ([lowercaseString isEqualToString:@"passengerdisplay"])
   {
     v4 = 4;
   }
@@ -438,20 +438,20 @@ LABEL_61:
   return v4;
 }
 
-+ (unint64_t)_mapsPresentationForURLValue:(id)a3
++ (unint64_t)_mapsPresentationForURLValue:(id)value
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"anycontent"])
+  lowercaseString = [value lowercaseString];
+  if ([lowercaseString isEqualToString:@"anycontent"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"map"])
+  else if ([lowercaseString isEqualToString:@"map"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"instructioncard"])
+  else if ([lowercaseString isEqualToString:@"instructioncard"])
   {
     v4 = 2;
   }

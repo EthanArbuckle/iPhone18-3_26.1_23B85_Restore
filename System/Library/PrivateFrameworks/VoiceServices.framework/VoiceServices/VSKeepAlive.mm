@@ -3,7 +3,7 @@
 - (id)_serverConnection;
 - (void)_ensureKeepAliveMaintenance;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation VSKeepAlive
@@ -12,37 +12,37 @@
 {
   if (self->_active)
   {
-    v4 = [(VSKeepAlive *)self _remoteKeepAlive];
-    [v4 maintainWithAudioType:self->_audioType keepAudioSessionActive:self->_keepAudioSessionActive];
+    _remoteKeepAlive = [(VSKeepAlive *)self _remoteKeepAlive];
+    [_remoteKeepAlive maintainWithAudioType:self->_audioType keepAudioSessionActive:self->_keepAudioSessionActive];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    self->_active = a3;
-    v6 = [(VSKeepAlive *)self _remoteKeepAlive];
-    v7 = v6;
-    if (v4)
+    activeCopy = active;
+    self->_active = active;
+    _remoteKeepAlive = [(VSKeepAlive *)self _remoteKeepAlive];
+    v7 = _remoteKeepAlive;
+    if (activeCopy)
     {
-      [v6 maintainWithAudioType:self->_audioType keepAudioSessionActive:self->_keepAudioSessionActive];
+      [_remoteKeepAlive maintainWithAudioType:self->_audioType keepAudioSessionActive:self->_keepAudioSessionActive];
     }
 
     else
     {
-      [v6 cancel];
+      [_remoteKeepAlive cancel];
     }
   }
 }
 
 - (id)_remoteKeepAlive
 {
-  v2 = [(VSKeepAlive *)self _serverConnection];
-  v3 = [v2 remoteObjectProxy];
+  _serverConnection = [(VSKeepAlive *)self _serverConnection];
+  remoteObjectProxy = [_serverConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_serverConnection

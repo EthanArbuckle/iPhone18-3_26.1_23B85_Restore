@@ -1,31 +1,31 @@
 @interface MTSDevicePairingVendor
-+ (id)UUIDFromIdentifier:(id)a3;
++ (id)UUIDFromIdentifier:(id)identifier;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (MTSDevicePairingVendor)initWithCoder:(id)a3;
-- (MTSDevicePairingVendor)initWithIdentifier:(id)a3 displayName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTSDevicePairingVendor)initWithCoder:(id)coder;
+- (MTSDevicePairingVendor)initWithIdentifier:(id)identifier displayName:(id)name;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDevicePairingVendor
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(MTSDevicePairingVendor *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(MTSDevicePairingVendor *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(MTSDevicePairingVendor *)self displayName];
-  v9 = [v7 initWithName:@"Display Name" value:v8];
-  [v3 addObject:v9];
+  displayName = [(MTSDevicePairingVendor *)self displayName];
+  v9 = [v7 initWithName:@"Display Name" value:displayName];
+  [array addObject:v9];
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -37,12 +37,12 @@
   return [v2 shortDescription];
 }
 
-- (MTSDevicePairingVendor)initWithCoder:(id)a3
+- (MTSDevicePairingVendor)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPV.ck.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPV.ck.displayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPV.ck.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDPV.ck.displayName"];
   v7 = v6;
   if (v5)
   {
@@ -57,7 +57,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -77,39 +77,39 @@
 
   else
   {
-    v12 = [(MTSDevicePairingVendor *)self initWithIdentifier:v5 displayName:v6];
-    v13 = v12;
+    selfCopy = [(MTSDevicePairingVendor *)self initWithIdentifier:v5 displayName:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDevicePairingVendor *)self identifier];
-  [v4 encodeObject:v5 forKey:@"MTSDPV.ck.identifier"];
+  coderCopy = coder;
+  identifier = [(MTSDevicePairingVendor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"MTSDPV.ck.identifier"];
 
-  v6 = [(MTSDevicePairingVendor *)self displayName];
-  [v4 encodeObject:v6 forKey:@"MTSDPV.ck.displayName"];
+  displayName = [(MTSDevicePairingVendor *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"MTSDPV.ck.displayName"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDevicePairingVendor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MTSDevicePairingVendor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -120,13 +120,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDevicePairingVendor *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToNumber:v8])
+    identifier = [(MTSDevicePairingVendor *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v9 = [(MTSDevicePairingVendor *)self displayName];
-      v10 = [v6 displayName];
-      v11 = [v9 isEqualToString:v10];
+      displayName = [(MTSDevicePairingVendor *)self displayName];
+      displayName2 = [v6 displayName];
+      v11 = [displayName isEqualToString:displayName2];
     }
 
     else
@@ -143,18 +143,18 @@
   return v11;
 }
 
-- (MTSDevicePairingVendor)initWithIdentifier:(id)a3 displayName:(id)a4
+- (MTSDevicePairingVendor)initWithIdentifier:(id)identifier displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = nameCopy;
+  if (!nameCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -166,7 +166,7 @@ LABEL_7:
   v9 = [(MTSDevicePairingVendor *)&v19 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
@@ -174,7 +174,7 @@ LABEL_7:
     displayName = v9->_displayName;
     v9->_displayName = v12;
 
-    v14 = [MTSDevicePairingVendor UUIDFromIdentifier:v6];
+    v14 = [MTSDevicePairingVendor UUIDFromIdentifier:identifierCopy];
     uuid = v9->_uuid;
     v9->_uuid = v14;
   }
@@ -189,14 +189,14 @@ LABEL_7:
   return NSStringFromClass(v2);
 }
 
-+ (id)UUIDFromIdentifier:(id)a3
++ (id)UUIDFromIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[v3 alloc] initWithUUIDString:@"E2FA5931-1351-4518-AFD4-74218FDAA7AC"];
-  v6 = [v4 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v10 = v6;
+  v10 = integerValue;
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:8];
   v8 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v5 data:v7];
 

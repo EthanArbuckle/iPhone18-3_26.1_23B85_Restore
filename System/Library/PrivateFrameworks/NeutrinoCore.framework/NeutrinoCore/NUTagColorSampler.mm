@@ -1,5 +1,5 @@
 @interface NUTagColorSampler
-- (NUTagColorSampler)initWithComposition:(id)a3 tag:(id)a4 responseQueue:(id)a5;
+- (NUTagColorSampler)initWithComposition:(id)composition tag:(id)tag responseQueue:(id)queue;
 - (id)_pipelineFilters;
 @end
 
@@ -15,13 +15,13 @@
   return v3;
 }
 
-- (NUTagColorSampler)initWithComposition:(id)a3 tag:(id)a4 responseQueue:(id)a5
+- (NUTagColorSampler)initWithComposition:(id)composition tag:(id)tag responseQueue:(id)queue
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  compositionCopy = composition;
+  tagCopy = tag;
+  queueCopy = queue;
+  if (!compositionCopy)
   {
     v15 = NUAssertLogger_14028();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -42,8 +42,8 @@
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v36;
         v66 = 2114;
@@ -54,8 +54,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -64,7 +64,7 @@
     _NUAssertFailHandler("[NUTagColorSampler initWithComposition:tag:responseQueue:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Sampler/NUTagColorSampler.m", 23, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "composition != nil");
   }
 
-  if (!v9)
+  if (!tagCopy)
   {
     v22 = NUAssertLogger_14028();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -85,8 +85,8 @@
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v45;
         v66 = 2114;
@@ -97,8 +97,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -107,8 +107,8 @@
     _NUAssertFailHandler("[NUTagColorSampler initWithComposition:tag:responseQueue:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Sampler/NUTagColorSampler.m", 24, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, "tag != nil");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = queueCopy;
+  if (!queueCopy)
   {
     v29 = NUAssertLogger_14028();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -129,8 +129,8 @@
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v55 callStackSymbols];
+        v58 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v54;
         v66 = 2114;
@@ -141,8 +141,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -153,9 +153,9 @@
 
   v63.receiver = self;
   v63.super_class = NUTagColorSampler;
-  v12 = [(NUColorSampler *)&v63 initWithComposition:v8 responseQueue:v10];
+  v12 = [(NUColorSampler *)&v63 initWithComposition:compositionCopy responseQueue:queueCopy];
   tag = v12->_tag;
-  v12->_tag = v9;
+  v12->_tag = tagCopy;
 
   return v12;
 }

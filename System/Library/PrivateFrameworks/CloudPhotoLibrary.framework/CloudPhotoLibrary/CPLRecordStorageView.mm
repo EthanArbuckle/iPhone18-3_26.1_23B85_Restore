@@ -1,47 +1,47 @@
 @interface CPLRecordStorageView
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
-- (id)compactedBatchFromExpandedBatch:(id)a3;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
+- (id)compactedBatchFromExpandedBatch:(id)batch;
 - (id)description;
-- (id)localChangeBatchFromCloudBatch:(id)a3 usingMapping:(id)a4 withError:(id *)a5;
-- (id)recordViewWithScopedIdentifier:(id)a3;
-- (id)recordViewsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
+- (id)localChangeBatchFromCloudBatch:(id)batch usingMapping:(id)mapping withError:(id *)error;
+- (id)recordViewWithScopedIdentifier:(id)identifier;
+- (id)recordViewsWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
 - (id)redactedDescription;
-- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)a3;
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 record:(id *)a5 error:(id *)a6;
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 recordClass:(Class *)a5 error:(id *)a6;
-- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
+- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)identifier;
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier record:(id *)record error:(id *)error;
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier recordClass:(Class *)class error:(id *)error;
+- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
 @end
 
 @implementation CPLRecordStorageView
 
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 recordClass:(Class *)a5 error:(id *)a6
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier recordClass:(Class *)class error:(id *)error
 {
   v11 = 0;
-  v7 = [(CPLRecordStorageView *)self resourceOfType:a3 forRecordWithScopedIdentifier:a4 record:&v11 error:a6];
+  v7 = [(CPLRecordStorageView *)self resourceOfType:type forRecordWithScopedIdentifier:identifier record:&v11 error:error];
   v8 = v11;
   v9 = v8;
-  if (a5 && v7)
+  if (class && v7)
   {
-    *a5 = [v8 recordClass];
+    *class = [v8 recordClass];
   }
 
   return v7;
 }
 
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 record:(id *)a5 error:(id *)a6
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier record:(id *)record error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:v10];
+  identifierCopy = identifier;
+  v11 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:identifierCopy];
   v12 = v11;
   if (!v11)
   {
-    if (a6)
+    if (error)
     {
-      v20 = [CPLErrors cplErrorWithCode:25 description:@"Record %@ does not exist", v10];
+      identifierCopy = [CPLErrors cplErrorWithCode:25 description:@"Record %@ does not exist", identifierCopy];
 LABEL_16:
       v21 = 0;
-      *a6 = v20;
+      *error = identifierCopy;
       goto LABEL_23;
     }
 
@@ -52,9 +52,9 @@ LABEL_22:
 
   if (([v11 supportsResources] & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
-      v20 = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
+      identifierCopy = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
       goto LABEL_16;
     }
 
@@ -66,18 +66,18 @@ LABEL_22:
   v25 = 0u;
   v26 = 0u;
   v13 = [v12 changeForType:8];
-  v14 = [v13 resources];
+  resources = [v13 resources];
 
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v15 = [resources countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v15)
   {
 LABEL_11:
 
 LABEL_20:
-    if (a6)
+    if (error)
     {
-      v22 = [CPLResource shortDescriptionForResourceType:a3];
-      *a6 = [CPLErrors cplErrorWithCode:26 description:@"Record %@ has no resource of type %@", v10, v22];
+      v22 = [CPLResource shortDescriptionForResourceType:type];
+      *error = [CPLErrors cplErrorWithCode:26 description:@"Record %@ has no resource of type %@", identifierCopy, v22];
     }
 
     goto LABEL_22;
@@ -91,18 +91,18 @@ LABEL_5:
   {
     if (*v26 != v17)
     {
-      objc_enumerationMutation(v14);
+      objc_enumerationMutation(resources);
     }
 
     v19 = *(*(&v25 + 1) + 8 * v18);
-    if ([v19 resourceType] == a3)
+    if ([v19 resourceType] == type)
     {
       break;
     }
 
     if (v16 == ++v18)
     {
-      v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v16 = [resources countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v16)
       {
         goto LABEL_5;
@@ -119,9 +119,9 @@ LABEL_5:
     goto LABEL_20;
   }
 
-  if (a5)
+  if (record)
   {
-    *a5 = [v12 placeholderRecord];
+    *record = [v12 placeholderRecord];
   }
 
 LABEL_23:
@@ -131,24 +131,24 @@ LABEL_23:
   return v21;
 }
 
-- (id)localChangeBatchFromCloudBatch:(id)a3 usingMapping:(id)a4 withError:(id *)a5
+- (id)localChangeBatchFromCloudBatch:(id)batch usingMapping:(id)mapping withError:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  batchCopy = batch;
+  mappingCopy = mapping;
   v9 = objc_alloc_init(CPLChangeBatch);
-  v10 = [v8 engineStore];
-  v47 = [v10 quarantinedRecords];
-  v46 = [v10 cloudCache];
+  engineStore = [mappingCopy engineStore];
+  quarantinedRecords = [engineStore quarantinedRecords];
+  cloudCache = [engineStore cloudCache];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v7;
+  obj = batchCopy;
   v51 = [obj countByEnumeratingWithState:&v53 objects:v63 count:16];
   if (v51)
   {
-    v45 = v10;
+    v45 = engineStore;
     v12 = *v54;
     *&v11 = 138412546;
     v44 = v11;
@@ -166,9 +166,9 @@ LABEL_23:
         v14 = *(*(&v53 + 1) + 8 * v13);
         if ([v14 changeType] != 1024)
         {
-          if (v8)
+          if (mappingCopy)
           {
-            v21 = [v14 translateToClientChangeUsingIDMapping:v8 error:a5];
+            v21 = [v14 translateToClientChangeUsingIDMapping:mappingCopy error:error];
           }
 
           else
@@ -189,16 +189,16 @@ LABEL_66:
           goto LABEL_16;
         }
 
-        if (!v8)
+        if (!mappingCopy)
         {
           goto LABEL_14;
         }
 
-        v15 = self;
+        selfCopy = self;
         v16 = v9;
         v52 = 0;
-        v17 = [v14 scopedIdentifier];
-        v18 = [v8 localScopedIdentifierForCloudScopedIdentifier:v17 isFinal:&v52];
+        scopedIdentifier = [v14 scopedIdentifier];
+        v18 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:scopedIdentifier isFinal:&v52];
         if (v18)
         {
           v19 = v18;
@@ -206,9 +206,9 @@ LABEL_66:
 
         else
         {
-          v19 = [v17 copy];
-          v31 = [v46 hasRecordWithScopedIdentifier:v17];
-          if ((v31 & 1) == 0 && ![v47 isRecordWithScopedIdentifierQuarantined:v19])
+          v19 = [scopedIdentifier copy];
+          v31 = [cloudCache hasRecordWithScopedIdentifier:scopedIdentifier];
+          if ((v31 & 1) == 0 && ![quarantinedRecords isRecordWithScopedIdentifierQuarantined:v19])
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -226,12 +226,12 @@ LABEL_62:
             v26 = 0;
             v30 = 0;
             v9 = v16;
-            self = v15;
+            self = selfCopy;
             v12 = v48;
             goto LABEL_39;
           }
 
-          v32 = [v8 cloudScopedIdentifierForLocalScopedIdentifier:v19 isFinal:&v52];
+          v32 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:v19 isFinal:&v52];
           if (v32)
           {
             v33 = v32;
@@ -282,7 +282,7 @@ LABEL_62:
         v20 = [objc_opt_class() newDeleteChangeWithScopedIdentifier:v19];
 
         v9 = v16;
-        self = v15;
+        self = selfCopy;
         v12 = v48;
         if (!v20)
         {
@@ -290,15 +290,15 @@ LABEL_62:
         }
 
 LABEL_16:
-        v22 = [v20 scopedIdentifier];
-        v23 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:v22];
+        scopedIdentifier2 = [v20 scopedIdentifier];
+        v23 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:scopedIdentifier2];
 
         if ([v20 changeType] != 1024)
         {
-          v27 = [v20 isFullRecord];
+          isFullRecord = [v20 isFullRecord];
           if (v23)
           {
-            if (v27)
+            if (isFullRecord)
             {
               v26 = v20;
             }
@@ -315,7 +315,7 @@ LABEL_16:
             goto LABEL_31;
           }
 
-          if ((v27 & 1) == 0)
+          if ((isFullRecord & 1) == 0)
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -342,13 +342,13 @@ LABEL_29:
           goto LABEL_29;
         }
 
-        v25 = [v23 recordClass];
-        if (v25)
+        recordClass = [v23 recordClass];
+        if (recordClass)
         {
-          v26 = v25;
+          v26 = recordClass;
 LABEL_51:
-          v37 = [v20 scopedIdentifier];
-          v38 = [v26 newDeleteChangeWithScopedIdentifier:v37];
+          scopedIdentifier3 = [v20 scopedIdentifier];
+          v38 = [v26 newDeleteChangeWithScopedIdentifier:scopedIdentifier3];
 
           v26 = 0;
           v30 = 0;
@@ -361,8 +361,8 @@ LABEL_51:
           goto LABEL_32;
         }
 
-        v36 = [v20 scopedIdentifier];
-        v26 = [v47 classForQuarantinedRecordWithScopedIdentifier:v36];
+        scopedIdentifier4 = [v20 scopedIdentifier];
+        v26 = [quarantinedRecords classForQuarantinedRecordWithScopedIdentifier:scopedIdentifier4];
 
         if (v26)
         {
@@ -392,7 +392,7 @@ LABEL_39:
       if (!v41)
       {
 LABEL_67:
-        v10 = v45;
+        engineStore = v45;
         break;
       }
     }
@@ -403,10 +403,10 @@ LABEL_67:
   return v9;
 }
 
-- (id)compactedBatchFromExpandedBatch:(id)a3
+- (id)compactedBatchFromExpandedBatch:(id)batch
 {
   v73 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  batchCopy = batch;
   v44 = objc_alloc_init(CPLChangeBatch);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v42 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -414,7 +414,7 @@ LABEL_67:
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v5 = v3;
+  v5 = batchCopy;
   v6 = [v5 countByEnumeratingWithState:&v63 objects:v72 count:16];
   if (v6)
   {
@@ -434,8 +434,8 @@ LABEL_67:
         v10 = *(*(&v63 + 1) + 8 * v9);
         if ([v10 hasChangeType:{2, v42, v44}])
         {
-          v11 = [v10 relatedScopedIdentifier];
-          if (!v11)
+          relatedScopedIdentifier = [v10 relatedScopedIdentifier];
+          if (!relatedScopedIdentifier)
           {
             goto LABEL_18;
           }
@@ -443,28 +443,28 @@ LABEL_67:
 
         else
         {
-          v12 = [v10 scopedIdentifier];
-          v11 = [(CPLRecordStorageView *)self relatedScopedIdentifierForRecordWithScopedIdentifier:v12];
+          scopedIdentifier = [v10 scopedIdentifier];
+          relatedScopedIdentifier = [(CPLRecordStorageView *)self relatedScopedIdentifierForRecordWithScopedIdentifier:scopedIdentifier];
 
-          if (!v11)
+          if (!relatedScopedIdentifier)
           {
             goto LABEL_18;
           }
         }
 
-        v13 = [v4 objectForKey:v11];
+        v13 = [v4 objectForKey:relatedScopedIdentifier];
         if (v13)
         {
           v14 = v13;
-          v15 = [v10 scopedIdentifier];
-          v16 = [v14 objectForKey:v15];
+          scopedIdentifier2 = [v10 scopedIdentifier];
+          v16 = [v14 objectForKey:scopedIdentifier2];
 
           if (v16 && (_CPLSilentLogging & 1) == 0)
           {
             v17 = __CPLStorageOSLogDomain_11255();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              [v14 objectForKey:v15];
+              [v14 objectForKey:scopedIdentifier2];
               v18 = v8;
               v19 = v4;
               v21 = v20 = v5;
@@ -485,11 +485,11 @@ LABEL_67:
         else
         {
           v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          [v4 setObject:v14 forKey:v11];
-          v15 = [v10 scopedIdentifier];
+          [v4 setObject:v14 forKey:relatedScopedIdentifier];
+          scopedIdentifier2 = [v10 scopedIdentifier];
         }
 
-        [v14 setObject:v10 forKey:v15];
+        [v14 setObject:v10 forKey:scopedIdentifier2];
 
 LABEL_18:
         ++v9;
@@ -510,7 +510,7 @@ LABEL_18:
   v59[3] = &unk_1E861D248;
   v23 = v42;
   v60 = v23;
-  v61 = self;
+  selfCopy = self;
   v24 = v44;
   v62 = v24;
   v25 = MEMORY[0x1E128EBA0](v59);
@@ -545,9 +545,9 @@ LABEL_18:
         }
 
         v32 = *(*(&v51 + 1) + 8 * i);
-        v33 = [v32 scopedIdentifier];
-        v34 = [v22 objectForKey:v33];
-        v35 = [v27 additionalRecordWithScopedIdentifier:v33];
+        scopedIdentifier3 = [v32 scopedIdentifier];
+        v34 = [v22 objectForKey:scopedIdentifier3];
+        v35 = [v27 additionalRecordWithScopedIdentifier:scopedIdentifier3];
         v36 = [v32 compactedChangeWithRelatedChanges:v34 isOnlyChange:0 fullRecord:v35 usingStorageView:self];
         if (v36)
         {
@@ -556,7 +556,7 @@ LABEL_18:
 
         if (v34)
         {
-          [v22 removeObjectForKey:v33];
+          [v22 removeObjectForKey:scopedIdentifier3];
         }
       }
 
@@ -732,10 +732,10 @@ void __76__CPLRecordStorageView_CPLClientCacheView__compactedBatchFromExpandedBa
   }
 }
 
-- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(CPLRecordStorageView *)self recordViewsWithRelatedScopedIdentifier:a3 class:a4];
+  v4 = [(CPLRecordStorageView *)self recordViewsWithRelatedScopedIdentifier:identifier class:class];
   if (objc_opt_respondsToSelector())
   {
     v5 = [v4 count];
@@ -785,20 +785,20 @@ void __76__CPLRecordStorageView_CPLClientCacheView__compactedBatchFromExpandedBa
   return v5;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v3 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:a3];
+  v3 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)a3
+- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)identifier
 {
-  v3 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:a3];
-  v4 = [v3 relatedScopedIdentifier];
+  v3 = [(CPLRecordStorageView *)self recordViewWithScopedIdentifier:identifier];
+  relatedScopedIdentifier = [v3 relatedScopedIdentifier];
 
-  return v4;
+  return relatedScopedIdentifier;
 }
 
 - (id)redactedDescription
@@ -815,24 +815,24 @@ void __76__CPLRecordStorageView_CPLClientCacheView__compactedBatchFromExpandedBa
   return [v2 description];
 }
 
-- (id)recordViewsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (id)recordViewsWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLRecordStorageView.m"];
   v9 = NSStringFromSelector(a2);
-  [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:86 description:{@"%@ should be implemented by %@", v9, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:86 description:{@"%@ should be implemented by %@", v9, objc_opt_class()}];
 
   abort();
 }
 
-- (id)recordViewWithScopedIdentifier:(id)a3
+- (id)recordViewWithScopedIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLRecordStorageView.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:81 description:{@"%@ should be implemented by %@", v8, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:81 description:{@"%@ should be implemented by %@", v8, objc_opt_class()}];
 
   abort();
 }

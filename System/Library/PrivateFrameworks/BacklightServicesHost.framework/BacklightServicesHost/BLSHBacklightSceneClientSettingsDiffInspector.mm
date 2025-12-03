@@ -1,5 +1,5 @@
 @interface BLSHBacklightSceneClientSettingsDiffInspector
-- ($162FAC071EAEBA15A6F8D573D0754DF6)inspectDiff:(id)a3;
+- ($162FAC071EAEBA15A6F8D573D0754DF6)inspectDiff:(id)diff;
 - (BLSHBacklightSceneClientSettingsDiffInspector)init;
 @end
 
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- ($162FAC071EAEBA15A6F8D573D0754DF6)inspectDiff:(id)a3
+- ($162FAC071EAEBA15A6F8D573D0754DF6)inspectDiff:(id)diff
 {
   v4 = 0;
-  [(FBSSettingsDiffInspector *)self inspectDiff:a3 withContext:&v4];
+  [(FBSSettingsDiffInspector *)self inspectDiff:diff withContext:&v4];
   return v4;
 }
 

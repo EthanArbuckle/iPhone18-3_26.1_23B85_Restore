@@ -1,22 +1,22 @@
 @interface _PKSummaryViewSubviewContainer
-- (_PKSummaryViewSubviewContainer)initWithFrame:(CGRect)a3;
+- (_PKSummaryViewSubviewContainer)initWithFrame:(CGRect)frame;
 - (void)animateTransition;
 - (void)layoutSubviews;
 @end
 
 @implementation _PKSummaryViewSubviewContainer
 
-- (_PKSummaryViewSubviewContainer)initWithFrame:(CGRect)a3
+- (_PKSummaryViewSubviewContainer)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _PKSummaryViewSubviewContainer;
-  v3 = [(_PKSummaryViewSubviewContainer *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PKSummaryViewSubviewContainer *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_PKSummaryViewSubviewContainer *)v3 createView];
+    createView = [(_PKSummaryViewSubviewContainer *)v3 createView];
     view = v4->_view;
-    v4->_view = v5;
+    v4->_view = createView;
 
     [(_PKSummaryViewSubviewContainer *)v4 addSubview:v4->_view];
   }

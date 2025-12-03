@@ -1,35 +1,35 @@
 @interface FIUIWorkoutDataProvider
 - (BOOL)hasWorkouts;
-- (FIUIWorkoutDataProvider)initWithHealthStore:(id)a3 shouldSortAscending:(BOOL)a4;
+- (FIUIWorkoutDataProvider)initWithHealthStore:(id)store shouldSortAscending:(BOOL)ascending;
 - (id)allWorkouts;
-- (id)workoutsForDay:(id)a3;
+- (id)workoutsForDay:(id)day;
 - (void)_commonInit;
-- (void)_fetchAllWorkoutsFromDate:(id)a3;
-- (void)_handleAddedSamples:(id)a3;
-- (void)_handleRemovedObjects:(id)a3;
-- (void)_retryQuery:(id)a3;
-- (void)_retryQueryOnDidBecomeActiveWithDate:(id)a3;
+- (void)_fetchAllWorkoutsFromDate:(id)date;
+- (void)_handleAddedSamples:(id)samples;
+- (void)_handleRemovedObjects:(id)objects;
+- (void)_retryQuery:(id)query;
+- (void)_retryQueryOnDidBecomeActiveWithDate:(id)date;
 - (void)_runUpdateHandlers;
-- (void)_timeZoneDidChange:(id)a3;
-- (void)addUpdateHandler:(id)a3;
+- (void)_timeZoneDidChange:(id)change;
+- (void)addUpdateHandler:(id)handler;
 - (void)dealloc;
-- (void)startFetchingFromDate:(id)a3;
+- (void)startFetchingFromDate:(id)date;
 - (void)stopFetching;
 @end
 
 @implementation FIUIWorkoutDataProvider
 
-- (FIUIWorkoutDataProvider)initWithHealthStore:(id)a3 shouldSortAscending:(BOOL)a4
+- (FIUIWorkoutDataProvider)initWithHealthStore:(id)store shouldSortAscending:(BOOL)ascending
 {
-  v7 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = FIUIWorkoutDataProvider;
   v8 = [(FIUIWorkoutDataProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a3);
-    v9->_shouldSortAscending = a4;
+    objc_storeStrong(&v8->_healthStore, store);
+    v9->_shouldSortAscending = ascending;
     [(FIUIWorkoutDataProvider *)v9 _commonInit];
   }
 
@@ -54,30 +54,30 @@
   self->_gregorianCalendar = v7;
 
   v9 = self->_gregorianCalendar;
-  v10 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [(NSCalendar *)v9 setTimeZone:v10];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [(NSCalendar *)v9 setTimeZone:systemTimeZone];
 
-  v11 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
   currentCalendar = self->_currentCalendar;
-  self->_currentCalendar = v11;
+  self->_currentCalendar = autoupdatingCurrentCalendar;
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 addObserver:self selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
 
   self->_lock._os_unfair_lock_opaque = 0;
 }
 
-- (void)_timeZoneDidChange:(id)a3
+- (void)_timeZoneDidChange:(id)change
 {
   gregorianCalendar = self->_gregorianCalendar;
-  v4 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [(NSCalendar *)gregorianCalendar setTimeZone:v4];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [(NSCalendar *)gregorianCalendar setTimeZone:systemTimeZone];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FIUIWorkoutDataProvider;
@@ -92,7 +92,7 @@
   return v3;
 }
 
-- (id)workoutsForDay:(id)a3
+- (id)workoutsForDay:(id)day
 {
   v4 = _HKCacheIndexFromDateComponents();
   os_unfair_lock_lock(&self->_lock);
@@ -101,9 +101,9 @@
   v7 = [(NSMutableDictionary *)workoutsByDay objectForKeyedSubscript:v6];
 
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [v7 allSamples];
+  allSamples = [v7 allSamples];
 
-  return v8;
+  return allSamples;
 }
 
 - (id)allWorkouts
@@ -115,8 +115,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(NSMutableDictionary *)self->_workoutsByDay allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [(NSMutableDictionary *)self->_workoutsByDay allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -127,16 +127,16 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_workoutsByDay objectForKeyedSubscript:v9];
-        v11 = [v10 allSamples];
-        [v3 setObject:v11 forKey:v9];
+        allSamples = [v10 allSamples];
+        [v3 setObject:allSamples forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -148,9 +148,9 @@
   return v12;
 }
 
-- (void)startFetchingFromDate:(id)a3
+- (void)startFetchingFromDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   workoutsByDay = self->_workoutsByDay;
@@ -158,7 +158,7 @@
 
   os_unfair_lock_unlock(&self->_lock);
   [(FIUIWorkoutDataProvider *)self stopFetching];
-  [(FIUIWorkoutDataProvider *)self _fetchAllWorkoutsFromDate:v6];
+  [(FIUIWorkoutDataProvider *)self _fetchAllWorkoutsFromDate:dateCopy];
 }
 
 - (void)stopFetching
@@ -169,19 +169,19 @@
   }
 }
 
-- (void)_fetchAllWorkoutsFromDate:(id)a3
+- (void)_fetchAllWorkoutsFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  dateCopy = date;
+  date = [MEMORY[0x1E695DF00] date];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__FIUIWorkoutDataProvider__fetchAllWorkoutsFromDate___block_invoke;
   aBlock[3] = &unk_1E878C8F8;
   objc_copyWeak(&v22, &location);
-  v6 = v4;
+  v6 = dateCopy;
   v20 = v6;
-  v7 = v5;
+  v7 = date;
   v21 = v7;
   v8 = _Block_copy(aBlock);
   v16[0] = MEMORY[0x1E69E9820];
@@ -194,8 +194,8 @@
   v10 = _Block_copy(v16);
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"endDate >= %@", v9];
   v12 = objc_alloc(MEMORY[0x1E696BF08]);
-  v13 = [MEMORY[0x1E696C2E0] workoutType];
-  v14 = [v12 initWithType:v13 predicate:v11 anchor:0 limit:0 resultsHandler:v8];
+  workoutType = [MEMORY[0x1E696C2E0] workoutType];
+  v14 = [v12 initWithType:workoutType predicate:v11 anchor:0 limit:0 resultsHandler:v8];
   currentWorkoutAnchoredObjectQuery = self->_currentWorkoutAnchoredObjectQuery;
   self->_currentWorkoutAnchoredObjectQuery = v14;
 
@@ -357,10 +357,10 @@ LABEL_7:
   return [*(v1 + 32) _runUpdateHandlers];
 }
 
-- (void)addUpdateHandler:(id)a3
+- (void)addUpdateHandler:(id)handler
 {
   updateHandlers = self->_updateHandlers;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   [(NSMutableArray *)updateHandlers addObject:v4];
 }
 
@@ -399,16 +399,16 @@ LABEL_7:
   }
 }
 
-- (void)_handleAddedSamples:(id)a3
+- (void)_handleAddedSamples:(id)samples
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  samplesCopy = samples;
   os_unfair_lock_lock(&self->_lock);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = samplesCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
@@ -424,13 +424,13 @@ LABEL_7:
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 sourceRevision];
-        v11 = [v10 productType];
-        [v9 _setIsWatchWorkout:{objc_msgSend(v11, "containsString:", @"Watch"}];
+        sourceRevision = [v9 sourceRevision];
+        productType = [sourceRevision productType];
+        [v9 _setIsWatchWorkout:{objc_msgSend(productType, "containsString:", @"Watch"}];
 
         gregorianCalendar = self->_gregorianCalendar;
-        v13 = [v9 endDate];
-        v14 = [(NSCalendar *)gregorianCalendar hk_activitySummaryDateComponentsFromDate:v13];
+        endDate = [v9 endDate];
+        v14 = [(NSCalendar *)gregorianCalendar hk_activitySummaryDateComponentsFromDate:endDate];
 
         v15 = _HKCacheIndexFromDateComponents();
         workoutsByDay = self->_workoutsByDay;
@@ -462,16 +462,16 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_handleRemovedObjects:(id)a3
+- (void)_handleRemovedObjects:(id)objects
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -487,8 +487,8 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * v10) UUID];
-        [v5 addObject:v11];
+        uUID = [*(*(&v21 + 1) + 8 * v10) UUID];
+        [v5 addObject:uUID];
 
         ++v10;
       }
@@ -505,8 +505,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [(NSMutableDictionary *)self->_workoutsByDay allValues];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_workoutsByDay allValues];
+  v13 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -518,14 +518,14 @@ LABEL_7:
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v16++) removeSamplesWithUUIDs:v5];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
@@ -534,9 +534,9 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_retryQueryOnDidBecomeActiveWithDate:(id)a3
+- (void)_retryQueryOnDidBecomeActiveWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEFAULT))
@@ -546,14 +546,14 @@ LABEL_7:
   }
 
   retryDate = self->_retryDate;
-  self->_retryDate = v4;
-  v7 = v4;
+  self->_retryDate = dateCopy;
+  v7 = dateCopy;
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__retryQuery_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__retryQuery_ name:*MEMORY[0x1E69DDAB0] object:0];
 }
 
-- (void)_retryQuery:(id)a3
+- (void)_retryQuery:(id)query
 {
   _HKInitializeLogging();
   v4 = *MEMORY[0x1E696B928];
@@ -563,8 +563,8 @@ LABEL_7:
     _os_log_impl(&dword_1E5D0F000, v4, OS_LOG_TYPE_DEFAULT, "FIUIWorkoutDataProvider - did become active; retrying query", v6, 2u);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_workoutsByDay removeAllObjects];

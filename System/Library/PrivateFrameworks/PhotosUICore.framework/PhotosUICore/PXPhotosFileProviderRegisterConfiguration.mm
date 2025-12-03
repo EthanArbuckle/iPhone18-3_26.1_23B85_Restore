@@ -14,13 +14,13 @@
 - (PXPhotosFileProviderRegisterConfiguration)init;
 - (int64_t)clientEncodingPolicy;
 - (int64_t)userEncodingPolicy;
-- (void)setClientEncodingPolicy:(int64_t)a3;
-- (void)setDownscalingTargetDimension:(id)a3;
-- (void)setIsLiveWallpaperSelection:(BOOL)a3;
-- (void)setIsSpatialWallpaperSelection:(BOOL)a3;
-- (void)setShouldIncludeCaption:(BOOL)a3;
-- (void)setShouldIncludeLocation:(BOOL)a3;
-- (void)setUserEncodingPolicy:(int64_t)a3;
+- (void)setClientEncodingPolicy:(int64_t)policy;
+- (void)setDownscalingTargetDimension:(id)dimension;
+- (void)setIsLiveWallpaperSelection:(BOOL)selection;
+- (void)setIsSpatialWallpaperSelection:(BOOL)selection;
+- (void)setShouldIncludeCaption:(BOOL)caption;
+- (void)setShouldIncludeLocation:(BOOL)location;
+- (void)setUserEncodingPolicy:(int64_t)policy;
 @end
 
 @implementation PXPhotosFileProviderRegisterConfiguration
@@ -81,11 +81,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUserEncodingPolicy:(int64_t)a3
+- (void)setUserEncodingPolicy:(int64_t)policy
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_userEncodingPolicy;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = policy;
 }
 
 - (int64_t)clientEncodingPolicy
@@ -95,11 +95,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setClientEncodingPolicy:(int64_t)a3
+- (void)setClientEncodingPolicy:(int64_t)policy
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_clientEncodingPolicy;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = policy;
 }
 
 - (BOOL)shouldIncludeLocation
@@ -109,11 +109,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setShouldIncludeLocation:(BOOL)a3
+- (void)setShouldIncludeLocation:(BOOL)location
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_shouldIncludeLocation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = location;
 }
 
 - (BOOL)shouldIncludeCaption
@@ -123,11 +123,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setShouldIncludeCaption:(BOOL)a3
+- (void)setShouldIncludeCaption:(BOOL)caption
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_shouldIncludeCaption;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = caption;
 }
 
 - (NSNumber)downscalingTargetDimension
@@ -137,13 +137,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDownscalingTargetDimension:(id)a3
+- (void)setDownscalingTargetDimension:(id)dimension
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_downscalingTargetDimension;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = dimension;
+  dimensionCopy = dimension;
 }
 
 - (BOOL)isLiveWallpaperSelection
@@ -153,11 +153,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsLiveWallpaperSelection:(BOOL)a3
+- (void)setIsLiveWallpaperSelection:(BOOL)selection
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_isLiveWallpaperSelection;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = selection;
 }
 
 - (BOOL)isSpatialWallpaperSelection
@@ -167,11 +167,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsSpatialWallpaperSelection:(BOOL)a3
+- (void)setIsSpatialWallpaperSelection:(BOOL)selection
 {
   v5 = OBJC_IVAR___PXPhotosFileProviderRegisterConfiguration_isSpatialWallpaperSelection;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = selection;
 }
 
 - (PXPhotosFileProviderRegisterConfiguration)init

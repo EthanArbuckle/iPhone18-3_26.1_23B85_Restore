@@ -1,27 +1,27 @@
 @interface SUReportConcernViewController
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4;
-- (SUReportConcernViewController)initWithItemIdentifier:(unint64_t)a3;
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count;
+- (SUReportConcernViewController)initWithItemIdentifier:(unint64_t)identifier;
 - (void)_fetchConcerns;
-- (void)_hideKeyboardDidStop:(id)a3 finished:(id)a4 context:(void *)a5;
-- (void)_showKeyboardDidStop:(id)a3 finished:(id)a4 context:(void *)a5;
-- (void)_submit:(id)a3;
-- (void)keyboardWillHideWithInfo:(id)a3;
-- (void)keyboardWillShowWithInfo:(id)a3;
+- (void)_hideKeyboardDidStop:(id)stop finished:(id)finished context:(void *)context;
+- (void)_showKeyboardDidStop:(id)stop finished:(id)finished context:(void *)context;
+- (void)_submit:(id)_submit;
+- (void)keyboardWillHideWithInfo:(id)info;
+- (void)keyboardWillShowWithInfo:(id)info;
 - (void)loadView;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SUReportConcernViewController
 
-- (SUReportConcernViewController)initWithItemIdentifier:(unint64_t)a3
+- (SUReportConcernViewController)initWithItemIdentifier:(unint64_t)identifier
 {
   v4 = [(SUTableViewController *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_itemIdentifier = a3;
+    v4->_itemIdentifier = identifier;
     [(SUTableViewController *)v4 setTableViewStyle:1];
     -[SUViewController setTitle:](v5, "setTitle:", [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"REPORT_A_PROBLEM_PAGE_TITLE", &stru_1F41B3660, 0}]);
     v6 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -40,11 +40,11 @@
   return v5;
 }
 
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count
 {
-  v6 = [(SUTableViewController *)self tableView:a3];
-  v7 = [(SUTableDataSource *)self->super._dataSource selectedConcernIndex];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v7, v7 == [a3 row]))
+  v6 = [(SUTableViewController *)self tableView:path];
+  selectedConcernIndex = [(SUTableDataSource *)self->super._dataSource selectedConcernIndex];
+  if (selectedConcernIndex == 0x7FFFFFFFFFFFFFFFLL || (v8 = selectedConcernIndex, selectedConcernIndex == [path row]))
   {
     v9 = 0;
   }
@@ -54,19 +54,19 @@
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:0];
   }
 
-  -[SUTableDataSource setSelectedConcernIndex:](self->super._dataSource, "setSelectedConcernIndex:", [a3 row]);
-  -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](v6, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, v9, 0}], 5);
-  [(UITableView *)v6 deselectRowAtIndexPath:a3 animated:1];
+  -[SUTableDataSource setSelectedConcernIndex:](self->super._dataSource, "setSelectedConcernIndex:", [path row]);
+  -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](v6, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{path, v9, 0}], 5);
+  [(UITableView *)v6 deselectRowAtIndexPath:path animated:1];
   [-[SUTableDataSource textViewCell](self->super._dataSource "textViewCell")];
   return 1;
 }
 
-- (void)keyboardWillHideWithInfo:(id)a3
+- (void)keyboardWillHideWithInfo:(id)info
 {
   if (!self->_animatingKeyboard)
   {
-    v5 = [a3 objectForKey:*MEMORY[0x1E69DDF40]];
-    v6 = [a3 objectForKey:*MEMORY[0x1E69DDF38]];
+    v5 = [info objectForKey:*MEMORY[0x1E69DDF40]];
+    v6 = [info objectForKey:*MEMORY[0x1E69DDF38]];
     [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
     [(SUTableView *)self->super._tableView setScrollEnabled:0];
     self->_animatingKeyboard = 1;
@@ -111,12 +111,12 @@
 
   v21.receiver = self;
   v21.super_class = SUReportConcernViewController;
-  [(UIViewController *)&v21 keyboardWillHideWithInfo:a3];
+  [(UIViewController *)&v21 keyboardWillHideWithInfo:info];
 }
 
-- (void)keyboardWillShowWithInfo:(id)a3
+- (void)keyboardWillShowWithInfo:(id)info
 {
-  v5 = [a3 objectForKey:*MEMORY[0x1E69DDFA0]];
+  v5 = [info objectForKey:*MEMORY[0x1E69DDFA0]];
   if (!self->_animatingKeyboard)
   {
     v6 = v5;
@@ -144,8 +144,8 @@
       v36.size.height = v19;
       if (v23 < CGRectGetMaxY(v36))
       {
-        v26 = [a3 objectForKey:*MEMORY[0x1E69DDF40]];
-        v27 = [a3 objectForKey:*MEMORY[0x1E69DDF38]];
+        v26 = [info objectForKey:*MEMORY[0x1E69DDF40]];
+        v27 = [info objectForKey:*MEMORY[0x1E69DDF38]];
         [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
         [(SUTableView *)self->super._tableView setScrollEnabled:0];
         self->_animatingKeyboard = 1;
@@ -192,7 +192,7 @@
 
   v35.receiver = self;
   v35.super_class = SUReportConcernViewController;
-  [(UIViewController *)&v35 keyboardWillShowWithInfo:a3];
+  [(UIViewController *)&v35 keyboardWillShowWithInfo:info];
 }
 
 - (void)loadView
@@ -207,29 +207,29 @@
   self->_originalTableInsets.right = v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUReportConcernViewController *)self _fetchConcerns];
   v5.receiver = self;
   v5.super_class = SUReportConcernViewController;
-  [(SUTableViewController *)&v5 viewDidAppear:v3];
+  [(SUTableViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
-  v7 = [SUDialogManager newDialogWithError:a4];
+  v7 = [SUDialogManager newDialogWithError:error];
   [(SUClientInterface *)[(SUViewController *)self clientInterface] _presentDialog:v7];
 
   v8.receiver = self;
   v8.super_class = SUReportConcernViewController;
-  [(SUViewController *)&v8 operation:a3 failedWithError:a4];
+  [(SUViewController *)&v8 operation:operation failedWithError:error];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
   [-[SUNavigationItem rightBarButtonItem](-[SUViewController navigationItem](self navigationItem];
-  v6 = [a4 count];
+  v6 = [output count];
   v7 = v6 - 1;
   if (v6 < 1)
   {
@@ -241,31 +241,31 @@
     v8 = v6;
     for (i = 0; i != v8; ++i)
     {
-      if ([objc_msgSend(a4 objectAtIndex:{i), "isDefaultConcern"}])
+      if ([objc_msgSend(output objectAtIndex:{i), "isDefaultConcern"}])
       {
         v7 = i;
       }
     }
   }
 
-  [(SUTableDataSource *)self->super._dataSource setConcerns:a4];
+  [(SUTableDataSource *)self->super._dataSource setConcerns:output];
   [(SUTableDataSource *)self->super._dataSource setSelectedConcernIndex:v7];
 
   [(SUTableViewController *)self reloadData];
 }
 
-- (void)_hideKeyboardDidStop:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_hideKeyboardDidStop:(id)stop finished:(id)finished context:(void *)context
 {
   self->_animatingKeyboard = 0;
-  [(SUTableView *)self->super._tableView setScrollEnabled:1, a4, a5];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  [(SUTableView *)self->super._tableView setScrollEnabled:1, finished, context];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v5 endIgnoringInteractionEvents];
+  [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
 }
 
-- (void)_showKeyboardDidStop:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_showKeyboardDidStop:(id)stop finished:(id)finished context:(void *)context
 {
-  [(SUTableView *)self->super._tableView contentOffset:a3];
+  [(SUTableView *)self->super._tableView contentOffset:stop];
   v28 = v6;
   v8 = v7;
   [(SUTableView *)self->super._tableView frame];
@@ -279,10 +279,10 @@
   v21 = v20;
   [-[SUReportConcernViewController view](self "view")];
   v23 = v22;
-  v24 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  if (v24)
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  if (activeKeyboard)
   {
-    [v24 frame];
+    [activeKeyboard frame];
     v19 = v25 + 12.0;
   }
 
@@ -291,15 +291,15 @@
   [(SUTableView *)self->super._tableView setContentOffset:v28, v8 + fabs(v11)];
   self->_animatingKeyboard = 0;
   [(SUTableView *)self->super._tableView setScrollEnabled:1];
-  v26 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v26 endIgnoringInteractionEvents];
+  [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
 }
 
-- (void)_submit:(id)a3
+- (void)_submit:(id)_submit
 {
-  v4 = [(SUTableDataSource *)self->super._dataSource selectedConcernIndex];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  selectedConcernIndex = [(SUTableDataSource *)self->super._dataSource selectedConcernIndex];
+  if (selectedConcernIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = -[SUPostConcernOperation initWithConcern:]([SUPostConcernOperation alloc], "initWithConcern:", [-[SUTableDataSource concerns](self->super._dataSource "concerns")]);
     -[SUPostConcernOperation setCommentText:](v5, "setCommentText:", [objc_msgSend(-[SUTableDataSource textViewCell](self->super._dataSource "textViewCell")]);

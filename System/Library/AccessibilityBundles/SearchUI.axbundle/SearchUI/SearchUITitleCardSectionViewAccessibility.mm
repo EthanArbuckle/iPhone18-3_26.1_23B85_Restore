@@ -1,17 +1,17 @@
 @interface SearchUITitleCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchUITitleCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUITitleCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SFTitleCardSection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUITitleCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SFTitleCardSection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

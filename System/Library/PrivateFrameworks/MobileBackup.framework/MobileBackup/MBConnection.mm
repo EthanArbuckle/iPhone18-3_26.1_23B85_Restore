@@ -1,16 +1,16 @@
 @interface MBConnection
-- (MBConnection)initWithServiceName:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (MBConnection)initWithXPCConnection:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (MBConnection)initWithServiceName:(id)name delegate:(id)delegate delegateQueue:(id)queue;
+- (MBConnection)initWithXPCConnection:(id)connection delegate:(id)delegate delegateQueue:(id)queue;
 - (MBConnectionDelegate)delegate;
 - (id)description;
-- (id)sendMessageWithReplyAndSync:(id)a3 error:(id *)a4;
-- (void)_handleXPCError:(id)a3;
-- (void)_handleXPCEvent:(id)a3;
-- (void)_refreshProcessInfoWithXPCConnection:(id)a3;
-- (void)_setEventHandlerForXPCConnection:(id)a3;
+- (id)sendMessageWithReplyAndSync:(id)sync error:(id *)error;
+- (void)_handleXPCError:(id)error;
+- (void)_handleXPCEvent:(id)event;
+- (void)_refreshProcessInfoWithXPCConnection:(id)connection;
+- (void)_setEventHandlerForXPCConnection:(id)connection;
 - (void)cancel;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 barrierBlock:(id)a4;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message barrierBlock:(id)block;
 @end
 
 @implementation MBConnection
@@ -27,12 +27,12 @@
   v3 = atomic_load(&self->_pid);
   if (v3)
   {
-    v4 = [(MBConnection *)self processName];
+    processName = [(MBConnection *)self processName];
     v5 = MEMORY[0x1E696AEC0];
     v6 = objc_opt_class();
-    if (v4)
+    if (processName)
     {
-      [v5 stringWithFormat:@"<%@: %p; %@(%d)>", v6, self, v4, v3];
+      [v5 stringWithFormat:@"<%@: %p; %@(%d)>", v6, self, processName, v3];
     }
 
     else
@@ -50,18 +50,18 @@
   return v7;
 }
 
-- (MBConnection)initWithXPCConnection:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (MBConnection)initWithXPCConnection:(id)connection delegate:(id)delegate delegateQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!connectionCopy)
   {
     [MBConnection initWithXPCConnection:delegate:delegateQueue:];
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = queueCopy;
+  if (!queueCopy)
   {
     [MBConnection initWithXPCConnection:delegate:delegateQueue:];
   }
@@ -72,51 +72,51 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v14->_queue, a5);
-    xpc_connection_set_target_queue(v9, v12);
-    [(MBConnection *)v14 _setEventHandlerForXPCConnection:v9];
-    [(MBConnection *)v14 _refreshProcessInfoWithXPCConnection:v9];
-    objc_storeStrong(&v14->_xpcConnection, a3);
-    v15 = [MEMORY[0x1E69DF078] currentPersona];
-    v16 = [v15 userPersonaUniqueString];
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v14->_queue, queue);
+    xpc_connection_set_target_queue(connectionCopy, v12);
+    [(MBConnection *)v14 _setEventHandlerForXPCConnection:connectionCopy];
+    [(MBConnection *)v14 _refreshProcessInfoWithXPCConnection:connectionCopy];
+    objc_storeStrong(&v14->_xpcConnection, connection);
+    currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
     personaIdentifier = v14->_personaIdentifier;
-    v14->_personaIdentifier = v16;
+    v14->_personaIdentifier = userPersonaUniqueString;
   }
 
   return v14;
 }
 
-- (MBConnection)initWithServiceName:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (MBConnection)initWithServiceName:(id)name delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = MBConnection;
   v11 = [(MBConnection *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v9);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = objc_opt_class();
     v15 = [v13 initWithFormat:@"%s.%p", class_getName(v14), v12];
     v16 = v15;
-    if (!v10)
+    if (!queueCopy)
     {
-      v17 = [v15 UTF8String];
+      uTF8String = [v15 UTF8String];
       v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v10 = dispatch_queue_create(v17, v18);
+      queueCopy = dispatch_queue_create(uTF8String, v18);
     }
 
-    objc_storeStrong(&v12->_queue, v10);
+    objc_storeStrong(&v12->_queue, queueCopy);
     v19 = objc_opt_class();
     Name = class_getName(v19);
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v22 = dispatch_queue_create(Name, v21);
 
-    mach_service = xpc_connection_create_mach_service([v8 UTF8String], v22, 0);
+    mach_service = xpc_connection_create_mach_service([nameCopy UTF8String], v22, 0);
     [(MBConnection *)v12 _setEventHandlerForXPCConnection:mach_service];
     atomic_store(0, &v12->_pid);
     xpcConnection = v12->_xpcConnection;
@@ -126,9 +126,9 @@
   return v12;
 }
 
-- (void)_refreshProcessInfoWithXPCConnection:(id)a3
+- (void)_refreshProcessInfoWithXPCConnection:(id)connection
 {
-  v3 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v3 = MEMORY[0x1EEE9AC00](self, a2, connection);
   v12 = *MEMORY[0x1E69E9840];
   pid = xpc_connection_get_pid(v4);
   if (pid)
@@ -140,32 +140,32 @@
       v7 = proc_pidpath(v6, buffer, 0x1000u);
       if (v7 < 1)
       {
-        v9 = 0;
+        lastPathComponent = 0;
       }
 
       else
       {
         v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:buffer length:v7 encoding:4];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
       }
 
-      [v3 setProcessName:v9];
+      [v3 setProcessName:lastPathComponent];
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setEventHandlerForXPCConnection:(id)a3
+- (void)_setEventHandlerForXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__MBConnection__setEventHandlerForXPCConnection___block_invoke;
   v6[3] = &unk_1E8684850;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = connectionCopy;
+  v5 = connectionCopy;
   xpc_connection_set_event_handler(v5, v6);
 }
 
@@ -243,21 +243,21 @@ LABEL_12:
   }
 }
 
-- (void)_handleXPCEvent:(id)a3
+- (void)_handleXPCEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MBConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(MBConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [[MBMessage alloc] _initWithXPCObject:v4];
+  v6 = [[MBMessage alloc] _initWithXPCObject:eventCopy];
   if ((MBIsRunningInDaemon() & 1) == 0)
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v6;
       _os_log_impl(&dword_1DEB5D000, v7, OS_LOG_TYPE_INFO, "%{public}@ received %{public}@", buf, 0x16u);
@@ -265,105 +265,105 @@ LABEL_12:
     }
   }
 
-  v14 = [(MBConnection *)self delegate];
-  [v14 connection:self didReceiveMessage:v6];
+  delegate = [(MBConnection *)self delegate];
+  [delegate connection:self didReceiveMessage:v6];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleXPCError:(id)a3
+- (void)_handleXPCError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(MBConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(MBConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(MBConnection *)self delegate];
-  if (a3 == MEMORY[0x1E69E9E20])
+  delegate = [(MBConnection *)self delegate];
+  if (error == MEMORY[0x1E69E9E20])
   {
     v14 = MBGetDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1024;
-      v25 = v6 != 0;
+      v25 = delegate != 0;
       _os_log_impl(&dword_1DEB5D000, v14, OS_LOG_TYPE_INFO, "%{public}@ was invalidated (%d)", buf, 0x12u);
       _MBLog(@"I ", "%{public}@ was invalidated (%d)", v15, v16, v17, v18, v19, v20, self);
     }
 
-    [v6 connectionWasInvalidated:self];
+    [delegate connectionWasInvalidated:self];
   }
 
-  else if (a3 == MEMORY[0x1E69E9E18])
+  else if (error == MEMORY[0x1E69E9E18])
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1024;
-      v25 = v6 != 0;
+      v25 = delegate != 0;
       _os_log_impl(&dword_1DEB5D000, v7, OS_LOG_TYPE_INFO, "%{public}@ was interrupted (%d)", buf, 0x12u);
       _MBLog(@"I ", "%{public}@ was interrupted (%d)", v8, v9, v10, v11, v12, v13, self);
     }
 
-    [v6 connectionWasInterrupted:self];
+    [delegate connectionWasInterrupted:self];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = messageCopy;
     _os_log_impl(&dword_1DEB5D000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ sending %@", buf, 0x16u);
     _MBLog(@"Db", "%{public}@ sending %@", v6, v7, v8, v9, v10, v11, self);
   }
 
-  v12 = [v4 _xpcObject];
-  xpc_connection_send_message(self->_xpcConnection, v12);
+  _xpcObject = [messageCopy _xpcObject];
+  xpc_connection_send_message(self->_xpcConnection, _xpcObject);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3 barrierBlock:(id)a4
+- (void)sendMessage:(id)message barrierBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  blockCopy = block;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = messageCopy;
     _os_log_impl(&dword_1DEB5D000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ sending (barrier) %@", buf, 0x16u);
     _MBLog(@"Df", "%{public}@ sending (barrier) %@", v9, v10, v11, v12, v13, v14, self);
   }
 
-  v15 = [v6 _xpcObject];
-  xpc_connection_send_message(self->_xpcConnection, v15);
-  xpc_connection_send_barrier(self->_xpcConnection, v7);
+  _xpcObject = [messageCopy _xpcObject];
+  xpc_connection_send_message(self->_xpcConnection, _xpcObject);
+  xpc_connection_send_barrier(self->_xpcConnection, blockCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sendMessageWithReplyAndSync:(id)a3 error:(id *)a4
+- (id)sendMessageWithReplyAndSync:(id)sync error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 name];
+  syncCopy = sync;
+  name = [syncCopy name];
 
-  if (!v8)
+  if (!name)
   {
     [MBConnection sendMessageWithReplyAndSync:a2 error:self];
   }
@@ -372,17 +372,17 @@ LABEL_12:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
-    v32 = v7;
+    v32 = syncCopy;
     _os_log_impl(&dword_1DEB5D000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ sending %@", buf, 0x16u);
-    v28 = v7;
+    v28 = syncCopy;
     _MBLog(@"Db", "%{public}@ sending %@", v10, v11, v12, v13, v14, v15, self);
   }
 
-  v16 = [v7 _xpcObject];
+  _xpcObject = [syncCopy _xpcObject];
   v17 = self->_xpcConnection;
-  v18 = xpc_connection_send_message_with_reply_sync(v17, v16);
+  v18 = xpc_connection_send_message_with_reply_sync(v17, _xpcObject);
   if (MEMORY[0x1E12C5CD0]() == MEMORY[0x1E69E9E80])
   {
     v22 = [[MBMessage alloc] _initWithXPCObject:v18];
@@ -420,10 +420,10 @@ LABEL_12:
     [(MBConnection *)self _refreshProcessInfoWithXPCConnection:v17];
   }
 
-  if (a4 && v23)
+  if (error && v23)
   {
     v25 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -438,7 +438,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DEB5D000, v3, OS_LOG_TYPE_INFO, "Canceling %{public}@", buf, 0xCu);
     _MBLog(@"I ", "Canceling %{public}@", v4, v5, v6, v7, v8, v9, self);
   }

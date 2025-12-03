@@ -1,21 +1,21 @@
 @interface NTKPeopleDetailComplicationPickerDataSource
 + (CNContactFormatter)sharedFormatter;
-+ (id)_descriptorForRequiredKeysWithDescription:(id)a3;
-+ (id)_newDataSourceWithName:(id)a3;
-- (BOOL)_itemIsSelectedAtIndexPath:(id)a3;
++ (id)_descriptorForRequiredKeysWithDescription:(id)description;
++ (id)_newDataSourceWithName:(id)name;
+- (BOOL)_itemIsSelectedAtIndexPath:(id)path;
 - (NSIndexPath)selectedIndexPath;
-- (NTKPeopleDetailComplicationPickerDataSource)initWithTableView:(id)a3 detailConfiguration:(id)a4;
-- (id)_contactAtIndexPath:(id)a3;
+- (NTKPeopleDetailComplicationPickerDataSource)initWithTableView:(id)view detailConfiguration:(id)configuration;
+- (id)_contactAtIndexPath:(id)path;
 - (id)_sectionIndexTitles;
-- (id)complicationItemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)_contactIndexForIdentifier:(id)a3 inContactList:(id)a4;
+- (id)complicationItemForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)_contactIndexForIdentifier:(id)identifier inContactList:(id)list;
 - (int64_t)_favoritesSectionIndex;
 - (int64_t)_firstAllContactsSectionIndex;
 - (int64_t)_myCardSectionIndex;
-- (int64_t)_numberOfItemsInSection:(int64_t)a3;
-- (int64_t)_sectionTypeForSectionIndex:(int64_t)a3;
+- (int64_t)_numberOfItemsInSection:(int64_t)section;
+- (int64_t)_sectionTypeForSectionIndex:(int64_t)index;
 - (int64_t)_totalSectionCount;
 @end
 
@@ -46,38 +46,38 @@ uint64_t __62__NTKPeopleDetailComplicationPickerDataSource_sharedFormatter__bloc
   return [v2 setFallbackStyle:-1];
 }
 
-- (NTKPeopleDetailComplicationPickerDataSource)initWithTableView:(id)a3 detailConfiguration:(id)a4
+- (NTKPeopleDetailComplicationPickerDataSource)initWithTableView:(id)view detailConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = NTKPeopleDetailComplicationPickerDataSource;
   v9 = [(NTKPeopleDetailComplicationPickerDataSource *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tableView, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_tableView, view);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11 = [objc_opt_class() _newDataSourceWithName:@"NTKPeopleComplicationPickerViewController:allContacts"];
     allContactsDataSource = v10->_allContactsDataSource;
     v10->_allContactsDataSource = v11;
 
-    v13 = [(NTKPeopleDetailComplicationPickerDataSource *)v10 _allFavoriteContactsSorted];
+    _allFavoriteContactsSorted = [(NTKPeopleDetailComplicationPickerDataSource *)v10 _allFavoriteContactsSorted];
     allFavoriteContacts = v10->_allFavoriteContacts;
-    v10->_allFavoriteContacts = v13;
+    v10->_allFavoriteContacts = _allFavoriteContactsSorted;
 
-    v15 = [(NTKPeopleDetailComplicationPickerDataSource *)v10 _myCard];
+    _myCard = [(NTKPeopleDetailComplicationPickerDataSource *)v10 _myCard];
     myCard = v10->_myCard;
-    v10->_myCard = v15;
+    v10->_myCard = _myCard;
 
-    v17 = [v8 listProvider];
-    v18 = [[NTKCFaceDetailComplicationCellProvider alloc] initWithTableView:v7 listProvider:v17];
+    listProvider = [configurationCopy listProvider];
+    v18 = [[NTKCFaceDetailComplicationCellProvider alloc] initWithTableView:viewCopy listProvider:listProvider];
     pickerCellProvider = v10->_pickerCellProvider;
     v10->_pickerCellProvider = v18;
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v10 selector:sel__contactStoreChanged_ name:*MEMORY[0x277CBD140] object:0];
-    [v20 addObserver:v10 selector:sel__favoritesChanged_ name:*MEMORY[0x277CBD1C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__contactStoreChanged_ name:*MEMORY[0x277CBD140] object:0];
+    [defaultCenter addObserver:v10 selector:sel__favoritesChanged_ name:*MEMORY[0x277CBD1C8] object:0];
   }
 
   return v10;
@@ -85,26 +85,26 @@ uint64_t __62__NTKPeopleDetailComplicationPickerDataSource_sharedFormatter__bloc
 
 - (NSIndexPath)selectedIndexPath
 {
-  v3 = [(NTKPeopleDetailComplicationPickerDataSource *)self configuration];
-  v4 = [v3 listProvider];
-  v5 = [v4 pickerSelectedItem];
+  configuration = [(NTKPeopleDetailComplicationPickerDataSource *)self configuration];
+  listProvider = [configuration listProvider];
+  pickerSelectedItem = [listProvider pickerSelectedItem];
 
-  v6 = [v5 ntk_contactIdentifier];
-  if (!v6)
+  ntk_contactIdentifier = [pickerSelectedItem ntk_contactIdentifier];
+  if (!ntk_contactIdentifier)
   {
     v15 = 0;
     goto LABEL_12;
   }
 
   v7 = +[NTKPeopleComplicationContactsCache sharedCache];
-  v8 = [v7 contactForId:v6];
+  v8 = [v7 contactForId:ntk_contactIdentifier];
 
   if (self->_myCard)
   {
-    v9 = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+    _myCardSectionIndex = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
+    if (_myCardSectionIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = v9;
+      v16 = _myCardSectionIndex;
       v17 = MEMORY[0x277CCAA70];
       v18 = 0;
 LABEL_10:
@@ -113,23 +113,23 @@ LABEL_10:
     }
   }
 
-  v10 = [(NTKPeopleDetailComplicationPickerDataSource *)self allFavoriteContacts];
-  v11 = [v10 indexOfObject:v8];
+  allFavoriteContacts = [(NTKPeopleDetailComplicationPickerDataSource *)self allFavoriteContacts];
+  v11 = [allFavoriteContacts indexOfObject:v8];
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex];
-    if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+    _favoritesSectionIndex = [(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex];
+    if (_favoritesSectionIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = v12;
+      v16 = _favoritesSectionIndex;
       v17 = MEMORY[0x277CCAA70];
       v18 = v11;
       goto LABEL_10;
     }
   }
 
-  v13 = [(NTKPeopleDetailComplicationPickerDataSource *)self allContactsDataSource];
-  v14 = [v13 indexPathForContact:v8];
+  allContactsDataSource = [(NTKPeopleDetailComplicationPickerDataSource *)self allContactsDataSource];
+  v14 = [allContactsDataSource indexPathForContact:v8];
 
   v15 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v14 inSection:{"item"), objc_msgSend(v14, "section") + 1}];
 
@@ -139,40 +139,40 @@ LABEL_12:
   return v15;
 }
 
-- (id)complicationItemForIndexPath:(id)a3
+- (id)complicationItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NTKPeopleDetailComplicationPickerDataSource *)self _contactAtIndexPath:v4];
-  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self _isMyCardAtIndexPath:v4]|| [(NTKPeopleDetailComplicationPickerDataSource *)self _isFavoriteAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(NTKPeopleDetailComplicationPickerDataSource *)self _contactAtIndexPath:pathCopy];
+  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self _isMyCardAtIndexPath:pathCopy]|| [(NTKPeopleDetailComplicationPickerDataSource *)self _isFavoriteAtIndexPath:pathCopy];
   v7 = [NTKPeopleComplication complicationForContact:v5 forPromotedSection:v6];
 
   return v7;
 }
 
-- (int64_t)_numberOfItemsInSection:(int64_t)a3
+- (int64_t)_numberOfItemsInSection:(int64_t)section
 {
   v5 = [(NTKPeopleDetailComplicationPickerDataSource *)self _sectionTypeForSectionIndex:?];
   if (v5 == 2)
   {
-    v9 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
-    if (v9)
+    _allContactsSections = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+    if (_allContactsSections)
     {
-      v10 = a3 - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
-      if (v10 >= [v9 count])
+      v10 = section - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
+      if (v10 >= [_allContactsSections count])
       {
 
         return 0;
       }
 
-      v11 = [v9 objectAtIndexedSubscript:v10];
-      [v11 range];
+      contacts = [_allContactsSections objectAtIndexedSubscript:v10];
+      [contacts range];
       v6 = v12;
     }
 
     else
     {
-      v11 = [(CNContactStoreDataSource *)self->_allContactsDataSource contacts];
-      v6 = [v11 count];
+      contacts = [(CNContactStoreDataSource *)self->_allContactsDataSource contacts];
+      v6 = [contacts count];
     }
 
     return v6;
@@ -195,8 +195,8 @@ LABEL_12:
 
 - (int64_t)_totalSectionCount
 {
-  v3 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
-  v4 = [v3 count];
+  _allContactsSections = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+  v4 = [_allContactsSections count];
 
   if (v4 <= 1)
   {
@@ -212,19 +212,19 @@ LABEL_12:
   return v6 + [(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionNeeded];
 }
 
-- (BOOL)_itemIsSelectedAtIndexPath:(id)a3
+- (BOOL)_itemIsSelectedAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NTKPeopleDetailComplicationPickerDataSource *)self _contactAtIndexPath:v4];
-  v6 = [v5 identifier];
-  v7 = [(NTKPeopleDetailComplicationPickerDataSource *)self configuration];
-  v8 = [v7 listProvider];
-  v9 = [v8 pickerSelectedItem];
+  pathCopy = path;
+  v5 = [(NTKPeopleDetailComplicationPickerDataSource *)self _contactAtIndexPath:pathCopy];
+  identifier = [v5 identifier];
+  configuration = [(NTKPeopleDetailComplicationPickerDataSource *)self configuration];
+  listProvider = [configuration listProvider];
+  pickerSelectedItem = [listProvider pickerSelectedItem];
 
-  v10 = [v9 ntk_contactIdentifier];
-  if (-[NTKPeopleDetailComplicationPickerDataSource _isMyCardAtIndexPath:](self, "_isMyCardAtIndexPath:", v4) || -[NTKPeopleDetailComplicationPickerDataSource _isFavoriteAtIndexPath:](self, "_isFavoriteAtIndexPath:", v4) || [v9 ntk_itemType] == 4)
+  ntk_contactIdentifier = [pickerSelectedItem ntk_contactIdentifier];
+  if (-[NTKPeopleDetailComplicationPickerDataSource _isMyCardAtIndexPath:](self, "_isMyCardAtIndexPath:", pathCopy) || -[NTKPeopleDetailComplicationPickerDataSource _isFavoriteAtIndexPath:](self, "_isFavoriteAtIndexPath:", pathCopy) || [pickerSelectedItem ntk_itemType] == 4)
   {
-    v11 = [v6 isEqual:v10];
+    v11 = [identifier isEqual:ntk_contactIdentifier];
   }
 
   else
@@ -238,15 +238,15 @@ LABEL_12:
 - (id)_sectionIndexTitles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+  _allContactsSections = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v2 count])
+  if ([_allContactsSections count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v2;
+    v4 = _allContactsSections;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -261,8 +261,8 @@ LABEL_12:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) title];
-          [v3 addObject:v9];
+          title = [*(*(&v12 + 1) + 8 * i) title];
+          [v3 addObject:title];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -277,34 +277,34 @@ LABEL_12:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self complicationItemForIndexPath:v5];
-  v7 = [(NTKPeopleDetailComplicationPickerDataSource *)self pickerCellProvider];
-  v8 = [v7 cellForItem:v6 atIndexPath:v5];
+  pathCopy = path;
+  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self complicationItemForIndexPath:pathCopy];
+  pickerCellProvider = [(NTKPeopleDetailComplicationPickerDataSource *)self pickerCellProvider];
+  v8 = [pickerCellProvider cellForItem:v6 atIndexPath:pathCopy];
 
-  v9 = [(NTKPeopleDetailComplicationPickerDataSource *)self _itemIsSelectedAtIndexPath:v5];
+  v9 = [(NTKPeopleDetailComplicationPickerDataSource *)self _itemIsSelectedAtIndexPath:pathCopy];
   [v8 ntk_setPickerSelected:v9];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self _sectionTypeForSectionIndex:a4];
+  v6 = [(NTKPeopleDetailComplicationPickerDataSource *)self _sectionTypeForSectionIndex:section];
   switch(v6)
   {
     case 2:
-      v10 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
-      if (v10)
+      _allContactsSections = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+      if (_allContactsSections)
       {
-        v11 = a4 - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
-        if (v11 < [v10 count])
+        v11 = section - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
+        if (v11 < [_allContactsSections count])
         {
-          v12 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
-          v13 = [v12 objectAtIndex:v11];
-          v9 = [v13 title];
+          _allContactsSections2 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+          v13 = [_allContactsSections2 objectAtIndex:v11];
+          title = [v13 title];
 
           goto LABEL_12;
         }
@@ -319,45 +319,45 @@ LABEL_12:
       v7 = @"COMPLICATION_PICKER_PEOPLE_MY_CARD_SECTION_NAME";
       v8 = @"MY CARD";
 LABEL_6:
-      v9 = NTKClockFaceLocalizedString(v7, v8);
+      title = NTKClockFaceLocalizedString(v7, v8);
       goto LABEL_12;
   }
 
-  v9 = &stru_284110E98;
+  title = &stru_284110E98;
 LABEL_12:
 
-  return v9;
+  return title;
 }
 
-- (id)_contactAtIndexPath:(id)a3
+- (id)_contactAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = -[NTKPeopleDetailComplicationPickerDataSource _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NTKPeopleDetailComplicationPickerDataSource _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [pathCopy section]);
   if (v6 == 2)
   {
-    v9 = [v5 section];
-    v10 = [v5 row];
-    v11 = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
-    if (v11)
+    section = [pathCopy section];
+    v10 = [pathCopy row];
+    _allContactsSections = [(NTKPeopleDetailComplicationPickerDataSource *)self _allContactsSections];
+    if (_allContactsSections)
     {
-      v12 = v9 - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
-      if (v12 < [v11 count])
+      v12 = section - [(NTKPeopleDetailComplicationPickerDataSource *)self _firstAllContactsSectionIndex];
+      if (v12 < [_allContactsSections count])
       {
-        v13 = [v11 objectAtIndexedSubscript:v12];
-        v14 = [v13 range];
-        v10 = v14 + [v5 row];
+        v13 = [_allContactsSections objectAtIndexedSubscript:v12];
+        range = [v13 range];
+        v10 = range + [pathCopy row];
       }
     }
 
-    v15 = [(CNContactStoreDataSource *)self->_allContactsDataSource contacts];
-    if (v10 >= [v15 count])
+    contacts = [(CNContactStoreDataSource *)self->_allContactsDataSource contacts];
+    if (v10 >= [contacts count])
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = [v15 objectAtIndexedSubscript:v10];
+      v3 = [contacts objectAtIndexedSubscript:v10];
     }
   }
 
@@ -374,10 +374,10 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    v8 = [v5 row];
+    v8 = [pathCopy row];
     if (v8 < [(NSArray *)self->_allFavoriteContacts count])
     {
-      v7 = -[NSArray objectAtIndexedSubscript:](self->_allFavoriteContacts, "objectAtIndexedSubscript:", [v5 row]);
+      v7 = -[NSArray objectAtIndexedSubscript:](self->_allFavoriteContacts, "objectAtIndexedSubscript:", [pathCopy row]);
 LABEL_7:
       v3 = v7;
       goto LABEL_16;
@@ -391,16 +391,16 @@ LABEL_16:
   return v3;
 }
 
-- (int64_t)_contactIndexForIdentifier:(id)a3 inContactList:(id)a4
+- (int64_t)_contactIndexForIdentifier:(id)identifier inContactList:(id)list
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  listCopy = list;
+  v7 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -414,11 +414,11 @@ LABEL_3:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(listCopy);
       }
 
-      v13 = [*(*(&v16 + 1) + 8 * v11) identifier];
-      v14 = [v13 isEqualToString:v5];
+      identifier = [*(*(&v16 + 1) + 8 * v11) identifier];
+      v14 = [identifier isEqualToString:identifierCopy];
 
       if (v14)
       {
@@ -428,7 +428,7 @@ LABEL_3:
       ++v12;
       if (v8 == ++v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -466,15 +466,15 @@ LABEL_9:
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   if ([(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionNeeded])
   {
-    v4 = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    _myCardSectionIndex = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
+    if (_myCardSectionIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v4 + 1;
+      return _myCardSectionIndex + 1;
     }
   }
 
@@ -483,32 +483,32 @@ LABEL_9:
 
 - (int64_t)_firstAllContactsSectionIndex
 {
-  v3 = [(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _favoritesSectionIndex = [(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex];
+  if (_favoritesSectionIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v3 + 1;
+    return _favoritesSectionIndex + 1;
   }
 
-  v4 = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  _myCardSectionIndex = [(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex];
+  if (_myCardSectionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    return v4 + 1;
+    return _myCardSectionIndex + 1;
   }
 }
 
-- (int64_t)_sectionTypeForSectionIndex:(int64_t)a3
+- (int64_t)_sectionTypeForSectionIndex:(int64_t)index
 {
-  if ([(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex]== a3)
+  if ([(NTKPeopleDetailComplicationPickerDataSource *)self _myCardSectionIndex]== index)
   {
     return 0;
   }
 
-  if ([(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex]== a3)
+  if ([(NTKPeopleDetailComplicationPickerDataSource *)self _favoritesSectionIndex]== index)
   {
     return 1;
   }
@@ -516,11 +516,11 @@ LABEL_9:
   return 2;
 }
 
-+ (id)_newDataSourceWithName:(id)a3
++ (id)_newDataSourceWithName:(id)name
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBDAC0];
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(v4);
   v7 = tcc_identity_create();
   [v6 setAssumedIdentity:v7];
@@ -529,7 +529,7 @@ LABEL_9:
   v9 = [objc_alloc(MEMORY[0x277CBDAB8]) initWithConfiguration:v6];
   v10 = [v8 initWithStore:v9];
 
-  v11 = [a1 _descriptorForRequiredKeysWithDescription:v5];
+  v11 = [self _descriptorForRequiredKeysWithDescription:nameCopy];
 
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -539,16 +539,16 @@ LABEL_9:
   return v10;
 }
 
-+ (id)_descriptorForRequiredKeysWithDescription:(id)a3
++ (id)_descriptorForRequiredKeysWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__NTKPeopleDetailComplicationPickerDataSource__descriptorForRequiredKeysWithDescription___block_invoke;
   block[3] = &unk_27877DB10;
-  v10 = v3;
+  v10 = descriptionCopy;
   v4 = _descriptorForRequiredKeysWithDescription__cn_once_token_0;
-  v5 = v3;
+  v5 = descriptionCopy;
   if (v4 != -1)
   {
     dispatch_once(&_descriptorForRequiredKeysWithDescription__cn_once_token_0, block);

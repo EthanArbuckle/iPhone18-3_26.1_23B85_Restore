@@ -5,42 +5,42 @@
 - (NSDictionary)userInfo;
 - (NSString)titleForCurrentDestination;
 - (SearchResult)originSearchResult;
-- (void)startLoadWithTraits:(id)a3;
+- (void)startLoadWithTraits:(id)traits;
 @end
 
 @implementation CarWaypointsController
 
-- (void)startLoadWithTraits:(id)a3
+- (void)startLoadWithTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = [DirectionItem alloc];
-  v6 = [(CarWaypointsController *)self searchFieldItems];
-  v17 = [(DirectionItem *)v5 initWithItems:v6 transportType:1];
+  searchFieldItems = [(CarWaypointsController *)self searchFieldItems];
+  v17 = [(DirectionItem *)v5 initWithItems:searchFieldItems transportType:1];
 
   [(CarWaypointsController *)self configureDirectionItemForLoad:v17];
-  v7 = [(CarWaypointsController *)self userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo = [(CarWaypointsController *)self userInfo];
+  v8 = [userInfo mutableCopy];
 
   [(CarWaypointsController *)self configureUserInfoForLoad:v8];
-  v9 = sub_100D506E0(v17, v4, 0, v8);
+  v9 = sub_100D506E0(v17, traitsCopy, 0, v8);
 
   v10 = +[CarDisplayController sharedInstance];
-  v11 = [v10 platformController];
-  v12 = [v11 currentSession];
+  platformController = [v10 platformController];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v14 = +[CarDisplayController sharedInstance];
-  v15 = [v14 platformController];
-  v16 = v15;
+  platformController2 = [v14 platformController];
+  v16 = platformController2;
   if (isKindOfClass)
   {
-    [v15 replaceCurrentSessionWithSession:v9];
+    [platformController2 replaceCurrentSessionWithSession:v9];
   }
 
   else
   {
-    [v15 pushSession:v9];
+    [platformController2 pushSession:v9];
   }
 }
 
@@ -64,11 +64,11 @@
   searchFieldItems = self->_searchFieldItems;
   if (!searchFieldItems)
   {
-    v4 = [(CarWaypointsController *)self originSearchResult];
-    v5 = [SearchFieldItem searchFieldItemWithObject:v4];
+    originSearchResult = [(CarWaypointsController *)self originSearchResult];
+    v5 = [SearchFieldItem searchFieldItemWithObject:originSearchResult];
 
-    v6 = [(CarWaypointsController *)self destinationSearchResultIfAvailable];
-    v7 = [SearchFieldItem searchFieldItemWithObject:v6];
+    destinationSearchResultIfAvailable = [(CarWaypointsController *)self destinationSearchResultIfAvailable];
+    v7 = [SearchFieldItem searchFieldItemWithObject:destinationSearchResultIfAvailable];
 
     v11[0] = v5;
     v11[1] = v7;
@@ -84,11 +84,11 @@
 
 - (NSString)titleForCurrentDestination
 {
-  v2 = [(CarWaypointsController *)self searchFieldItems];
-  v3 = [v2 lastObject];
-  v4 = [v3 waypointName];
+  searchFieldItems = [(CarWaypointsController *)self searchFieldItems];
+  lastObject = [searchFieldItems lastObject];
+  waypointName = [lastObject waypointName];
 
-  return v4;
+  return waypointName;
 }
 
 - (NSDictionary)userInfo
@@ -108,11 +108,11 @@
 
 - (BOOL)canGoPrevious
 {
-  v3 = [(CarWaypointsController *)self indexOfCurrentDestination];
-  v4 = [(CarWaypointsController *)self totalDestinations];
-  if (v3)
+  indexOfCurrentDestination = [(CarWaypointsController *)self indexOfCurrentDestination];
+  totalDestinations = [(CarWaypointsController *)self totalDestinations];
+  if (indexOfCurrentDestination)
   {
-    v5 = v4 == 0;
+    v5 = totalDestinations == 0;
   }
 
   else
@@ -125,9 +125,9 @@
 
 - (BOOL)canGoNext
 {
-  v3 = [(CarWaypointsController *)self indexOfCurrentDestination];
-  v4 = [(CarWaypointsController *)self totalDestinations];
-  return v3 < v4 - 1 && v4 != 0;
+  indexOfCurrentDestination = [(CarWaypointsController *)self indexOfCurrentDestination];
+  totalDestinations = [(CarWaypointsController *)self totalDestinations];
+  return indexOfCurrentDestination < totalDestinations - 1 && totalDestinations != 0;
 }
 
 @end

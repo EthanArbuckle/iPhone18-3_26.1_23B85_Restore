@@ -1,24 +1,24 @@
 @interface NSSLocaleInfoCache
 + (id)cachedReply;
-+ (void)cacheReply:(id)a3 forGizmoBuildVersion:(id)a4;
++ (void)cacheReply:(id)reply forGizmoBuildVersion:(id)version;
 + (void)handleMemoryPressureEvent;
-- (NSSLocaleInfoCache)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NSSLocaleInfoCache)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSLocaleInfoCache
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reply = self->_reply;
-  v5 = a3;
-  [v5 encodeObject:reply forKey:@"reply"];
-  [v5 encodeObject:self->_gizmoBuildVersion forKey:@"gizmoBuildVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reply forKey:@"reply"];
+  [coderCopy encodeObject:self->_gizmoBuildVersion forKey:@"gizmoBuildVersion"];
 }
 
-- (NSSLocaleInfoCache)initWithCoder:(id)a3
+- (NSSLocaleInfoCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NSSLocaleInfoCache;
   v5 = [(NSSLocaleInfoCache *)&v14 init];
@@ -27,11 +27,11 @@
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v6, v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"reply"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"reply"];
     reply = v5->_reply;
     v5->_reply = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuildVersion"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuildVersion"];
     gizmoBuildVersion = v5->_gizmoBuildVersion;
     v5->_gizmoBuildVersion = v11;
   }
@@ -39,19 +39,19 @@
   return v5;
 }
 
-+ (void)cacheReply:(id)a3 forGizmoBuildVersion:(id)a4
++ (void)cacheReply:(id)reply forGizmoBuildVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 cachedReply];
-  if (!v8)
+  replyCopy = reply;
+  versionCopy = version;
+  cachedReply = [self cachedReply];
+  if (!cachedReply)
   {
     v9 = +[NRPairedDeviceRegistry sharedInstance];
     v10 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v11 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v10];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 
-    v13 = [v12 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    v13 = [firstObject valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
     v14 = v13;
     if (!v13)
     {
@@ -59,7 +59,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v12;
+        v30 = firstObject;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Device properties are unexectedly nil! Paired device: (%@)", buf, 0xCu);
       }
 
@@ -71,8 +71,8 @@
     v17 = qword_10003DD88;
     qword_10003DD88 = v16;
 
-    [qword_10003DD88 setReply:v6];
-    [qword_10003DD88 setGizmoBuildVersion:v7];
+    [qword_10003DD88 setReply:replyCopy];
+    [qword_10003DD88 setGizmoBuildVersion:versionCopy];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001D6B0;
@@ -131,10 +131,10 @@ LABEL_17:
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:NRDevicePropertySystemBuildVersion];
-  v7 = [v5 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  v6 = [firstObject valueForProperty:NRDevicePropertySystemBuildVersion];
+  v7 = [firstObject valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
   v8 = v7;
   if (v6)
   {
@@ -152,11 +152,11 @@ LABEL_17:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v5;
+      v21 = firstObject;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Pairing data store is unexpectedly nil! Paired device: (%@)", &v20, 0xCu);
     }
 
-    v11 = 0;
+    reply = 0;
   }
 
   else
@@ -180,10 +180,10 @@ LABEL_17:
       }
     }
 
-    v11 = [qword_10003DD88 reply];
+    reply = [qword_10003DD88 reply];
   }
 
-  return v11;
+  return reply;
 }
 
 + (void)handleMemoryPressureEvent

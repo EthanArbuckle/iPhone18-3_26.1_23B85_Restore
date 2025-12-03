@@ -1,12 +1,12 @@
 @interface MCMCommandDispatcher
-- (Class)_commandClassFromXPCMessage:(id)a3 context:(id)a4 error:(id *)a5;
+- (Class)_commandClassFromXPCMessage:(id)message context:(id)context error:(id *)error;
 - (MCMCommandDispatcher)init;
 - (NSMutableDictionary)messageToCommandClassMap;
-- (id)_commandFromCommandClass:(Class)a3 message:(id)a4 context:(id)a5 reply:(id)a6 error:(id *)a7;
-- (id)_ifNeededRelayMessage:(id)a3 context:(id)a4;
-- (id)_messageFromCommandClass:(Class)a3 xpcMessage:(id)a4 context:(id)a5 error:(id *)a6;
-- (void)dispatchMessage:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)registerCommandClass:(Class)a3;
+- (id)_commandFromCommandClass:(Class)class message:(id)message context:(id)context reply:(id)reply error:(id *)error;
+- (id)_ifNeededRelayMessage:(id)message context:(id)context;
+- (id)_messageFromCommandClass:(Class)class xpcMessage:(id)message context:(id)context error:(id *)error;
+- (void)dispatchMessage:(id)message context:(id)context reply:(id)reply;
+- (void)registerCommandClass:(Class)class;
 @end
 
 @implementation MCMCommandDispatcher
@@ -19,28 +19,28 @@
   return result;
 }
 
-- (id)_ifNeededRelayMessage:(id)a3 context:(id)a4
+- (id)_ifNeededRelayMessage:(id)message context:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 disposition];
-  if (v7 == 2)
+  messageCopy = message;
+  contextCopy = context;
+  disposition = [messageCopy disposition];
+  if (disposition == 2)
   {
     v12 = container_log_handle_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = [v5 command];
+      command = [messageCopy command];
       _os_log_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_DEFAULT, "Relaying [%llu] to daemon.", &v17, 0xCu);
     }
 
-    v13 = [MCMCommand relayToPrivilegedDaemonMessage:v5 context:v6];
+    v13 = [MCMCommand relayToPrivilegedDaemonMessage:messageCopy context:contextCopy];
   }
 
   else
   {
-    if (v7 != 1)
+    if (disposition != 1)
     {
       v10 = [MCMError alloc];
       v11 = 72;
@@ -48,9 +48,9 @@
     }
 
     v8 = containermanager_copy_global_configuration();
-    v9 = [v8 runmode];
+    runmode = [v8 runmode];
 
-    if (v9 == 3)
+    if (runmode == 3)
     {
       v10 = [MCMError alloc];
       v11 = 100;
@@ -71,17 +71,17 @@ LABEL_11:
   return v13;
 }
 
-- (id)_commandFromCommandClass:(Class)a3 message:(id)a4 context:(id)a5 reply:(id)a6 error:(id *)a7
+- (id)_commandFromCommandClass:(Class)class message:(id)message context:(id)context reply:(id)reply error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[(objc_class *)a3 alloc] initWithMessage:v13 context:v12 reply:v11];
+  replyCopy = reply;
+  contextCopy = context;
+  messageCopy = message;
+  v14 = [[(objc_class *)class alloc] initWithMessage:messageCopy context:contextCopy reply:replyCopy];
 
-  if (a7 && !v14)
+  if (error && !v14)
   {
-    *a7 = [[MCMError alloc] initWithErrorType:38 category:3];
+    *error = [[MCMError alloc] initWithErrorType:38 category:3];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -89,16 +89,16 @@ LABEL_11:
   return v14;
 }
 
-- (id)_messageFromCommandClass:(Class)a3 xpcMessage:(id)a4 context:(id)a5 error:(id *)a6
+- (id)_messageFromCommandClass:(Class)class xpcMessage:(id)message context:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  contextCopy = context;
   v20[0] = 1;
-  v11 = [(objc_class *)a3 incomingMessageClass];
-  if (v11)
+  incomingMessageClass = [(objc_class *)class incomingMessageClass];
+  if (incomingMessageClass)
   {
-    v12 = [v11 xpcMessageFromXPCObject:v9 context:v10 error:v20];
+    v12 = [incomingMessageClass xpcMessageFromXPCObject:messageCopy context:contextCopy error:v20];
     if (v12)
     {
       v13 = v12;
@@ -119,11 +119,11 @@ LABEL_11:
   }
 
   v14 = [(MCMError *)v15 initWithErrorType:v16 category:v17];
-  if (a6)
+  if (error)
   {
     v14 = v14;
     v13 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
   else
@@ -138,17 +138,17 @@ LABEL_9:
   return v13;
 }
 
-- (Class)_commandClassFromXPCMessage:(id)a3 context:(id)a4 error:(id *)a5
+- (Class)_commandClassFromXPCMessage:(id)message context:(id)context error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  uint64 = xpc_dictionary_get_uint64(a3, "Command");
-  v8 = [(MCMCommandDispatcher *)self messageToCommandClassMap];
+  uint64 = xpc_dictionary_get_uint64(message, "Command");
+  messageToCommandClassMap = [(MCMCommandDispatcher *)self messageToCommandClassMap];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:uint64];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [messageToCommandClassMap objectForKeyedSubscript:v9];
 
-  if (a5 && !v10)
+  if (error && !v10)
   {
-    *a5 = [[MCMError alloc] initWithErrorType:72 category:3];
+    *error = [[MCMError alloc] initWithErrorType:72 category:3];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -156,30 +156,30 @@ LABEL_9:
   return v10;
 }
 
-- (void)dispatchMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (void)dispatchMessage:(id)message context:(id)context reply:(id)reply
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 resultPromise];
+  messageCopy = message;
+  contextCopy = context;
+  replyCopy = reply;
+  resultPromise = [replyCopy resultPromise];
   v24[0] = 0;
-  v12 = [(MCMCommandDispatcher *)self _commandClassFromXPCMessage:v8 context:v9 error:v24];
+  v12 = [(MCMCommandDispatcher *)self _commandClassFromXPCMessage:messageCopy context:contextCopy error:v24];
   v13 = v24[0];
   v14 = v13;
   if (v12)
   {
     v23 = v13;
-    v15 = [(MCMCommandDispatcher *)self _messageFromCommandClass:v12 xpcMessage:v8 context:v9 error:&v23];
+    v15 = [(MCMCommandDispatcher *)self _messageFromCommandClass:v12 xpcMessage:messageCopy context:contextCopy error:&v23];
     v16 = v23;
 
     if (v15)
     {
-      v17 = [(MCMCommandDispatcher *)self _ifNeededRelayMessage:v15 context:v9];
+      v17 = [(MCMCommandDispatcher *)self _ifNeededRelayMessage:v15 context:contextCopy];
       if (!v17)
       {
         v22 = v16;
-        v20 = [(MCMCommandDispatcher *)self _commandFromCommandClass:v12 message:v15 context:v9 reply:v10 error:&v22];
+        v20 = [(MCMCommandDispatcher *)self _commandFromCommandClass:v12 message:v15 context:contextCopy reply:replyCopy error:&v22];
         v14 = v22;
 
         if (v20)
@@ -189,7 +189,7 @@ LABEL_9:
             v16 = +[MCMError notEntitled];
 
             v21 = [[MCMResultBase alloc] initWithError:v16];
-            [v11 completeWithResult:v21];
+            [resultPromise completeWithResult:v21];
 
             goto LABEL_7;
           }
@@ -200,20 +200,20 @@ LABEL_9:
         else
         {
           v20 = [[MCMResultBase alloc] initWithError:v14];
-          [v11 completeWithResult:v20];
+          [resultPromise completeWithResult:v20];
         }
 
         goto LABEL_8;
       }
 
       v18 = v17;
-      [v11 completeWithResult:v17];
+      [resultPromise completeWithResult:v17];
     }
 
     else
     {
       v15 = [[MCMResultBase alloc] initWithError:v16];
-      [v11 completeWithResult:v15];
+      [resultPromise completeWithResult:v15];
     }
 
 LABEL_7:
@@ -222,18 +222,18 @@ LABEL_7:
   }
 
   v15 = [[MCMResultBase alloc] initWithError:v13];
-  [v11 completeWithResult:v15];
+  [resultPromise completeWithResult:v15];
 LABEL_8:
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerCommandClass:(Class)a3
+- (void)registerCommandClass:(Class)class
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = [(MCMCommandDispatcher *)self messageToCommandClassMap];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[objc_class command](a3, "command")}];
-  [v6 setObject:a3 forKeyedSubscript:v4];
+  messageToCommandClassMap = [(MCMCommandDispatcher *)self messageToCommandClassMap];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[objc_class command](class, "command")}];
+  [messageToCommandClassMap setObject:class forKeyedSubscript:v4];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -246,9 +246,9 @@ LABEL_8:
   v2 = [(MCMCommandDispatcher *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     messageToCommandClassMap = v2->_messageToCommandClassMap;
-    v2->_messageToCommandClassMap = v3;
+    v2->_messageToCommandClassMap = dictionary;
   }
 
   v5 = *MEMORY[0x1E69E9840];

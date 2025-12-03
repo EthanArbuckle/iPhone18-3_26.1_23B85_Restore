@@ -3,11 +3,11 @@
 - (NSArray)repairedBundleIDs;
 - (NSString)repairType;
 - (_TtC9appstored26CodeSignatureVersionRepair)init;
-- (_TtC9appstored26CodeSignatureVersionRepair)initWithBundleID:(id)a3 requestToken:(id)a4;
-- (void)repairApplication:(ApplicationProxy *)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLogKey:(id)a3;
-- (void)setRepairedBundleIDs:(id)a3;
+- (_TtC9appstored26CodeSignatureVersionRepair)initWithBundleID:(id)d requestToken:(id)token;
+- (void)repairApplication:(ApplicationProxy *)application completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setLogKey:(id)key;
+- (void)setRepairedBundleIDs:(id)ds;
 @end
 
 @implementation CodeSignatureVersionRepair
@@ -28,9 +28,9 @@
   return v2.super.isa;
 }
 
-- (void)setRepairedBundleIDs:(id)a3
+- (void)setRepairedBundleIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -50,19 +50,19 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_delegate) = a3;
+  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
   v4 = *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_logKey);
-  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_logKey) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_logKey) = key;
+  keyCopy = key;
 }
 
 - (NSString)repairType
@@ -72,7 +72,7 @@
   return v2;
 }
 
-- (_TtC9appstored26CodeSignatureVersionRepair)initWithBundleID:(id)a3 requestToken:(id)a4
+- (_TtC9appstored26CodeSignatureVersionRepair)initWithBundleID:(id)d requestToken:(id)token
 {
   ObjectType = swift_getObjectType();
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -82,21 +82,21 @@
   v8 = (self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_bundleID);
   *v8 = v7;
   v8[1] = v9;
-  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_requestToken) = a4;
+  *(self + OBJC_IVAR____TtC9appstored26CodeSignatureVersionRepair_requestToken) = token;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = a4;
+  tokenCopy = token;
   return [(CodeSignatureVersionRepair *)&v12 init];
 }
 
-- (void)repairApplication:(ApplicationProxy *)a3 completionHandler:(id)a4
+- (void)repairApplication:(ApplicationProxy *)application completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = application;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -111,8 +111,8 @@
   v14[3] = 0;
   v14[4] = &unk_1004366D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v14);
 }
 

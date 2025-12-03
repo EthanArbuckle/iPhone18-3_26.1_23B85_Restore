@@ -1,19 +1,19 @@
 @interface WFContentItemStringConversionBehavior
-+ (id)accessingProperty:(id)a3;
-+ (id)coercingToStringWithDescription:(id)a3;
-- (WFContentItemStringConversionBehavior)initWithProperty:(id)a3 description:(id)a4;
++ (id)accessingProperty:(id)property;
++ (id)coercingToStringWithDescription:(id)description;
+- (WFContentItemStringConversionBehavior)initWithProperty:(id)property description:(id)description;
 @end
 
 @implementation WFContentItemStringConversionBehavior
 
-- (WFContentItemStringConversionBehavior)initWithProperty:(id)a3 description:(id)a4
+- (WFContentItemStringConversionBehavior)initWithProperty:(id)property description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  propertyCopy = property;
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFContentItemStringConversionBehavior.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"description"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemStringConversionBehavior.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"description"}];
   }
 
   v17.receiver = self;
@@ -22,8 +22,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_property, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_property, property);
+    v12 = [descriptionCopy copy];
     behaviorDescription = v11->_behaviorDescription;
     v11->_behaviorDescription = v12;
 
@@ -33,26 +33,26 @@
   return v11;
 }
 
-+ (id)coercingToStringWithDescription:(id)a3
++ (id)coercingToStringWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProperty:0 description:v4];
+  descriptionCopy = description;
+  v5 = [[self alloc] initWithProperty:0 description:descriptionCopy];
 
   return v5;
 }
 
-+ (id)accessingProperty:(id)a3
++ (id)accessingProperty:(id)property
 {
-  v5 = a3;
-  if (!v5)
+  propertyCopy = property;
+  if (!propertyCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"WFContentItemStringConversionBehavior.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"property"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemStringConversionBehavior.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"property"}];
   }
 
-  v6 = [a1 alloc];
-  v7 = [v5 localizedName];
-  v8 = [v6 initWithProperty:v5 description:v7];
+  v6 = [self alloc];
+  localizedName = [propertyCopy localizedName];
+  v8 = [v6 initWithProperty:propertyCopy description:localizedName];
 
   return v8;
 }

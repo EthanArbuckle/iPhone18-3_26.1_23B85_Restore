@@ -1,101 +1,101 @@
 @interface HMBLocalSQLContext
 + (id)logCategory;
-+ (id)openWithURL:(id)a3 error:(id *)a4;
-+ (void)unlinkDatastoreAt:(id)a3 everything:(BOOL)a4;
-- (BOOL)_deleteBlockWithRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteBlocksWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteIndexSentinelsWithModelType:(id)a3 error:(id *)a4;
-- (BOOL)_deleteIndexSentinelsWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteItemWithRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteItemWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteItemWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 externalID:(id)a5 error:(id *)a6;
-- (BOOL)_deleteItemsWithBlockRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteNullBlocksWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_deleteRecordWithRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 error:(id *)a5;
-- (BOOL)_deleteRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 error:(id *)a5;
-- (BOOL)_deleteRecordsWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteZombieRecordsWithZoneRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_deleteZoneWithRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_insertIndexSentinelWithZoneRow:(unint64_t)a3 modelType:(id)a4 error:(id *)a5;
-- (BOOL)_resetOutputForRecordsWithBlockRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_selectRecordsWithZoneRow:(unint64_t)a3 modelType:(id)a4 returning:(unint64_t)a5 error:(id *)a6 handler:(id)a7;
-- (BOOL)_updateBlockWithRow:(unint64_t)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)_updateItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 externalID:(id)a6 externalData:(id)a7 modelEncoding:(unint64_t)a8 modelData:(id)a9 error:(id *)a10;
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 error:(id *)a6;
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 modelEncoding:(unint64_t)a4 modelData:(id)a5 modelSchema:(id)a6 error:(id *)a7;
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 modelType:(id)a4 modelSchema:(id)a5 error:(id *)a6;
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 pushBlockRow:(id)a4 pushData:(id)a5 pushEncoding:(unint64_t)a6 error:(id *)a7;
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 error:(id *)a6;
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 externalData:(id)a5 error:(id *)a6;
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 pushEncoding:(unint64_t)a5 pushData:(id)a6 pushBlockRow:(id)a7 error:(id *)a8;
-- (BOOL)_updateRecordsClearPushWithPushBlockRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_updateZoneWithRow:(unint64_t)a3 replication:(id)a4 error:(id *)a5;
-- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)a3;
-- (BOOL)prepareTablesWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)sqlBlockWithActivity:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)sqlTransactionWithActivity:(id)a3 error:(id *)a4 block:(id)a5;
-- (HMBLocalSQLContext)initWithURL:(id)a3;
++ (id)openWithURL:(id)l error:(id *)error;
++ (void)unlinkDatastoreAt:(id)at everything:(BOOL)everything;
+- (BOOL)_deleteBlockWithRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteBlocksWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteIndexSentinelsWithModelType:(id)type error:(id *)error;
+- (BOOL)_deleteIndexSentinelsWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteItemWithRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteItemWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteItemWithZoneRow:(unint64_t)row type:(unint64_t)type externalID:(id)d error:(id *)error;
+- (BOOL)_deleteItemsWithBlockRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteNullBlocksWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error;
+- (BOOL)_deleteRecordWithRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteRecordWithZoneRow:(unint64_t)row externalID:(id)d error:(id *)error;
+- (BOOL)_deleteRecordWithZoneRow:(unint64_t)row modelID:(id)d error:(id *)error;
+- (BOOL)_deleteRecordsWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteZombieRecordsWithZoneRow:(unint64_t)row error:(id *)error;
+- (BOOL)_deleteZoneWithRow:(unint64_t)row error:(id *)error;
+- (BOOL)_insertIndexSentinelWithZoneRow:(unint64_t)row modelType:(id)type error:(id *)error;
+- (BOOL)_resetOutputForRecordsWithBlockRow:(unint64_t)row error:(id *)error;
+- (BOOL)_selectRecordsWithZoneRow:(unint64_t)row modelType:(id)type returning:(unint64_t)returning error:(id *)error handler:(id)handler;
+- (BOOL)_updateBlockWithRow:(unint64_t)row options:(id)options error:(id *)error;
+- (BOOL)_updateItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type externalID:(id)d externalData:(id)data modelEncoding:(unint64_t)encoding modelData:(id)modelData error:(id *)self0;
+- (BOOL)_updateRecordWithRow:(unint64_t)row externalID:(id)d externalData:(id)data error:(id *)error;
+- (BOOL)_updateRecordWithRow:(unint64_t)row modelEncoding:(unint64_t)encoding modelData:(id)data modelSchema:(id)schema error:(id *)error;
+- (BOOL)_updateRecordWithRow:(unint64_t)row modelType:(id)type modelSchema:(id)schema error:(id *)error;
+- (BOOL)_updateRecordWithRow:(unint64_t)row pushBlockRow:(id)blockRow pushData:(id)data pushEncoding:(unint64_t)encoding error:(id *)error;
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row externalID:(id)d externalData:(id)data error:(id *)error;
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row modelID:(id)d externalData:(id)data error:(id *)error;
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row modelID:(id)d pushEncoding:(unint64_t)encoding pushData:(id)data pushBlockRow:(id)blockRow error:(id *)error;
+- (BOOL)_updateRecordsClearPushWithPushBlockRow:(unint64_t)row error:(id *)error;
+- (BOOL)_updateZoneWithRow:(unint64_t)row replication:(id)replication error:(id *)error;
+- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)error;
+- (BOOL)prepareTablesWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)sqlBlockWithActivity:(id)activity error:(id *)error block:(id)block;
+- (BOOL)sqlTransactionWithActivity:(id)activity error:(id *)error block:(id)block;
+- (HMBLocalSQLContext)initWithURL:(id)l;
 - (HMBSQLQueryStatement)selectAllRecordParentModelIDRows;
 - (HMBSQLQueryStatement)selectAllRecordParentModelIDTypeRows;
 - (HMBSQLQueryStatement)selectAllRecordRows;
 - (HMBSQLQueryStatement)selectAllRecordTypeRows;
 - (HMBSQLQueryStatement)selectReadyInputBlocks;
 - (HMBSQLQueryStatement)selectReadyRollbackBlocks;
-- (id)_fetchAllZones:(id *)a3;
-- (id)_selectBlockWithRow:(unint64_t)a3 error:(id *)a4;
-- (id)_selectIndexSentinelForZoneRow:(unint64_t)a3 modelType:(id)a4 error:(id *)a5;
-- (id)_selectItemsWithBlockRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)_selectItemsWithBlockRow:(unint64_t)a3 rowGreaterThan:(unint64_t)a4 limit:(unint64_t)a5 returning:(unint64_t)a6 error:(id *)a7;
-- (id)_selectReadyBlocksWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5;
-- (id)_selectRecordModelIDWithZoneRow:(unint64_t)a3 externalID:(id)a4 error:(id *)a5;
-- (id)_selectRecordWithRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 returning:(unint64_t)a5 error:(id *)a6;
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 returning:(unint64_t)a5 error:(id *)a6;
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 parentModelID:(id)a4 modelType:(id)a5 returning:(unint64_t)a6 error:(id *)a7;
-- (id)_selectRecordsWithBlockRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 modelType:(id)a4 returning:(unint64_t)a5 error:(id *)a6;
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 parentModelID:(id)a4 returning:(unint64_t)a5 error:(id *)a6;
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)_selectZoneWithRow:(unint64_t)a3 error:(id *)a4;
-- (id)flush:(BOOL)a3;
-- (id)selectAllRecordsWithZoneRow:(unint64_t)a3 returning:(unint64_t)a4;
-- (id)sqlBlockWithActivity:(id)a3 block:(id)a4;
-- (id)sqlTransactionWithActivity:(id)a3 block:(id)a4;
-- (int64_t)migrateFromSchemaVersion:(int64_t)a3 error:(id *)a4;
-- (int64_t)migrateToSchema01WithError:(id *)a3;
-- (unint64_t)_clearPushForRecordRow:(unint64_t)a3 expectedOutputBlockRow:(unint64_t)a4 error:(id *)a5;
-- (unint64_t)_deleteRecordWithRow:(unint64_t)a3 expectedOutputBlockRow:(unint64_t)a4 error:(id *)a5;
-- (unint64_t)_insertBlockWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5;
-- (unint64_t)_insertBlockWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 options:(id)a5 items:(id)a6 error:(id *)a7;
-- (unint64_t)_insertDeletionItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelID:(id)a6 error:(id *)a7;
-- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelType:(id)a6 error:(id *)a7;
-- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 parentModelID:(id)a6 error:(id *)a7;
-- (unint64_t)_insertItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 externalID:(id)a6 externalData:(id)a7 modelEncoding:(unint64_t)a8 modelData:(id)a9 error:(id *)a10;
-- (unint64_t)_insertItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelType:(id)a6 error:(id *)a7;
-- (unint64_t)_insertRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 modelID:(id)a6 parentModelID:(id)a7 modelType:(id)a8 modelEncoding:(unint64_t)a9 modelData:(id)a10 modelSchema:(id)a11 pushEncoding:(unint64_t)a12 pushData:(id)a13 pushBlockRow:(id)a14 error:(id *)a15;
-- (unint64_t)_insertZoneWithIdentification:(id)a3 name:(id)a4 error:(id *)a5;
+- (id)_fetchAllZones:(id *)zones;
+- (id)_selectBlockWithRow:(unint64_t)row error:(id *)error;
+- (id)_selectIndexSentinelForZoneRow:(unint64_t)row modelType:(id)type error:(id *)error;
+- (id)_selectItemsWithBlockRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error;
+- (id)_selectItemsWithBlockRow:(unint64_t)row rowGreaterThan:(unint64_t)than limit:(unint64_t)limit returning:(unint64_t)returning error:(id *)error;
+- (id)_selectReadyBlocksWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error;
+- (id)_selectRecordModelIDWithZoneRow:(unint64_t)row externalID:(id)d error:(id *)error;
+- (id)_selectRecordWithRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordWithZoneRow:(unint64_t)row externalID:(id)d returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordWithZoneRow:(unint64_t)row modelID:(id)d returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordWithZoneRow:(unint64_t)row parentModelID:(id)d modelType:(id)type returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordsWithBlockRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordsWithZoneRow:(unint64_t)row modelType:(id)type returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordsWithZoneRow:(unint64_t)row parentModelID:(id)d returning:(unint64_t)returning error:(id *)error;
+- (id)_selectRecordsWithZoneRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error;
+- (id)_selectZoneWithRow:(unint64_t)row error:(id *)error;
+- (id)flush:(BOOL)flush;
+- (id)selectAllRecordsWithZoneRow:(unint64_t)row returning:(unint64_t)returning;
+- (id)sqlBlockWithActivity:(id)activity block:(id)block;
+- (id)sqlTransactionWithActivity:(id)activity block:(id)block;
+- (int64_t)migrateFromSchemaVersion:(int64_t)version error:(id *)error;
+- (int64_t)migrateToSchema01WithError:(id *)error;
+- (unint64_t)_clearPushForRecordRow:(unint64_t)row expectedOutputBlockRow:(unint64_t)blockRow error:(id *)error;
+- (unint64_t)_deleteRecordWithRow:(unint64_t)row expectedOutputBlockRow:(unint64_t)blockRow error:(id *)error;
+- (unint64_t)_insertBlockWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error;
+- (unint64_t)_insertBlockWithZoneRow:(unint64_t)row type:(unint64_t)type options:(id)options items:(id)items error:(id *)error;
+- (unint64_t)_insertDeletionItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelID:(id)d error:(id *)error;
+- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelType:(id)modelType error:(id *)error;
+- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type parentModelID:(id)d error:(id *)error;
+- (unint64_t)_insertItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type externalID:(id)d externalData:(id)data modelEncoding:(unint64_t)encoding modelData:(id)modelData error:(id *)self0;
+- (unint64_t)_insertItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelType:(id)modelType error:(id *)error;
+- (unint64_t)_insertRecordWithZoneRow:(unint64_t)row externalID:(id)d externalData:(id)data modelID:(id)iD parentModelID:(id)modelID modelType:(id)type modelEncoding:(unint64_t)encoding modelData:(id)self0 modelSchema:(id)self1 pushEncoding:(unint64_t)self2 pushData:(id)self3 pushBlockRow:(id)self4 error:(id *)self5;
+- (unint64_t)_insertZoneWithIdentification:(id)identification name:(id)name error:(id *)error;
 - (void)finalize;
 - (void)reloadSQLQueryMetadata;
 @end
 
 @implementation HMBLocalSQLContext
 
-- (BOOL)prepareTablesWithError:(id *)a3
+- (BOOL)prepareTablesWithError:(id *)error
 {
   v95[2] = *MEMORY[0x277D85DE8];
-  if (__reloadSQLQueryMetadata(self, a3))
+  if (__reloadSQLQueryMetadata(self, error))
   {
-    v5 = [(HMBLocalSQLContext *)self queryTables];
+    queryTables = [(HMBLocalSQLContext *)self queryTables];
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
     v85[2] = __56__HMBLocalSQLContext_Queryable__prepareTablesWithError___block_invoke;
     v85[3] = &unk_2786E1EC8;
     v85[4] = self;
-    [v5 enumerateKeysAndObjectsUsingBlock:v85];
+    [queryTables enumerateKeysAndObjectsUsingBlock:v85];
 
     v95[0] = @"CREATE TABLE IF NOT EXISTS index_sentinel(                 store_id            INTEGER NOT NULL, type                TEXT NOT NULL, CONSTRAINT fk_index_sentinel FOREIGN KEY (store_id) REFERENCES store_v2 (id) ON DELETE CASCADE);";
     v95[1] = @"CREATE UNIQUE INDEX IF NOT EXISTS index_sentinel_unique ON index_sentinel (store_id, type);";
@@ -118,15 +118,15 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v81 + 1) + 8 * i) UTF8String];
+          uTF8String = [*(*(&v81 + 1) + 8 * i) UTF8String];
           v80 = 0;
-          v12 = [(HMBSQLContext *)self runSQLite3:v11 error:&v80];
+          v12 = [(HMBSQLContext *)self runSQLite3:uTF8String error:&v80];
           v13 = v80;
           v14 = v13;
           if (!v12)
           {
             v47 = objc_autoreleasePoolPush();
-            v48 = self;
+            selfCopy = self;
             v49 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
             {
@@ -139,11 +139,11 @@
             }
 
             objc_autoreleasePoolPop(v47);
-            if (a3)
+            if (error)
             {
               v51 = v14;
               v46 = 0;
-              *a3 = v14;
+              *error = v14;
             }
 
             else
@@ -166,12 +166,12 @@
       }
     }
 
-    v60 = a3;
+    errorCopy = error;
     v61 = v6;
 
     v15 = +[HMBModel hmbModelClassesWithQueries];
     v16 = [MEMORY[0x277CBEB58] set];
-    v17 = [(HMBLocalSQLContext *)self queryTables];
+    queryTables2 = [(HMBLocalSQLContext *)self queryTables];
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = __56__HMBLocalSQLContext_Queryable__prepareTablesWithError___block_invoke_51;
@@ -180,7 +180,7 @@
     v78 = v62;
     v18 = v16;
     v79 = v18;
-    [v17 enumerateKeysAndObjectsUsingBlock:v77];
+    [queryTables2 enumerateKeysAndObjectsUsingBlock:v77];
 
     v76 = 0u;
     v74 = 0u;
@@ -202,14 +202,14 @@
           }
 
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP TABLE IF EXISTS %@", *(*(&v73 + 1) + 8 * j)];
-          v24 = [v23 UTF8String];
+          uTF8String2 = [v23 UTF8String];
           v72 = 0;
-          v25 = [(HMBSQLContext *)self runSQLite3:v24 error:&v72];
+          v25 = [(HMBSQLContext *)self runSQLite3:uTF8String2 error:&v72];
           v26 = v72;
           if (!v25)
           {
             v52 = objc_autoreleasePoolPush();
-            v53 = self;
+            selfCopy2 = self;
             v54 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
             {
@@ -226,10 +226,10 @@
             obj = v14;
 LABEL_44:
             v6 = v61;
-            if (v60)
+            if (errorCopy)
             {
               v57 = v26;
-              *v60 = v26;
+              *errorCopy = v26;
             }
 
             v46 = 0;
@@ -248,17 +248,17 @@ LABEL_44:
     }
 
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     v30 = v62;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       v31 = HMFGetLogIdentifier();
-      v32 = [v62 hmbDescription];
+      hmbDescription = [v62 hmbDescription];
       *buf = 138543618;
       v87 = v31;
       v88 = 2112;
-      v89 = v32;
+      v89 = hmbDescription;
       _os_log_impl(&dword_22AD27000, v29, OS_LOG_TYPE_DEBUG, "%{public}@Preparing query contexts for %@", buf, 0x16u);
     }
 
@@ -272,7 +272,7 @@ LABEL_44:
     if (v66)
     {
       v65 = *v69;
-      v63 = v28;
+      v63 = selfCopy3;
       while (2)
       {
         for (k = 0; k != v66; ++k)
@@ -283,12 +283,12 @@ LABEL_44:
           }
 
           v34 = *(*(&v68 + 1) + 8 * k);
-          v35 = [[HMBLocalSQLQueryTable alloc] initWithContext:v28 queryModel:v34];
+          v35 = [[HMBLocalSQLQueryTable alloc] initWithContext:selfCopy3 queryModel:v34];
           v67 = 0;
           v36 = [(HMBLocalSQLQueryTable *)v35 prepareWithError:&v67];
           v26 = v67;
           v37 = objc_autoreleasePoolPush();
-          v38 = v28;
+          v38 = selfCopy3;
           v39 = HMFGetOSLogHandle();
           v40 = v39;
           if (!v36)
@@ -313,23 +313,23 @@ LABEL_44:
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
             v41 = HMFGetLogIdentifier();
-            v42 = [(HMBLocalSQLQueryTable *)v35 modelType];
+            modelType = [(HMBLocalSQLQueryTable *)v35 modelType];
             *buf = 138543618;
             v87 = v41;
             v88 = 2112;
-            v89 = v42;
+            v89 = modelType;
             _os_log_impl(&dword_22AD27000, v40, OS_LOG_TYPE_DEBUG, "%{public}@Prepared query context for %@", buf, 0x16u);
 
-            v28 = v63;
+            selfCopy3 = v63;
           }
 
           objc_autoreleasePoolPop(v37);
-          v43 = [(HMBLocalSQLContext *)v38 queryContextsByClass];
-          [v43 setObject:v35 forKey:v34];
+          queryContextsByClass = [(HMBLocalSQLContext *)v38 queryContextsByClass];
+          [queryContextsByClass setObject:v35 forKey:v34];
 
-          v44 = [(HMBLocalSQLContext *)v38 queryContextsByModelType];
-          v45 = [(HMBLocalSQLQueryTable *)v35 modelType];
-          [v44 setObject:v35 forKey:v45];
+          queryContextsByModelType = [(HMBLocalSQLContext *)v38 queryContextsByModelType];
+          modelType2 = [(HMBLocalSQLQueryTable *)v35 modelType];
+          [queryContextsByModelType setObject:v35 forKey:modelType2];
         }
 
         v46 = 1;
@@ -478,14 +478,14 @@ void __56__HMBLocalSQLContext_Queryable__prepareTablesWithError___block_invoke_4
   v2 = [(HMBLocalSQLContext *)self sqlBlockWithActivity:0 block:v3];
 }
 
-- (id)flush:(BOOL)a3
+- (id)flush:(BOOL)flush
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __28__HMBLocalSQLContext_flush___block_invoke;
   v5[3] = &unk_2786E27C8;
   v5[4] = self;
-  v6 = a3;
+  flushCopy = flush;
   v3 = [(HMBLocalSQLContext *)self sqlTransactionWithActivity:0 block:v5];
 
   return v3;
@@ -576,7 +576,7 @@ id __28__HMBLocalSQLContext_flush___block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-- (BOOL)_deleteIndexSentinelsWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteIndexSentinelsWithZoneRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -588,8 +588,8 @@ id __28__HMBLocalSQLContext_flush___block_invoke(uint64_t a1, void *a2)
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM index_sentinel WHERE store_id = ?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -607,9 +607,9 @@ id __61__HMBLocalSQLContext__deleteIndexSentinelsWithZoneRow_error___block_invok
   return v5;
 }
 
-- (BOOL)_deleteIndexSentinelsWithModelType:(id)a3 error:(id *)a4
+- (BOOL)_deleteIndexSentinelsWithModelType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -618,16 +618,16 @@ id __61__HMBLocalSQLContext__deleteIndexSentinelsWithZoneRow_error___block_invok
   v10[1] = 3221225472;
   v10[2] = __63__HMBLocalSQLContext__deleteIndexSentinelsWithModelType_error___block_invoke;
   v10[3] = &unk_2786E2920;
-  v7 = v6;
+  v7 = typeCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
-  v14 = a4;
+  errorCopy = error;
   v8 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM index_sentinel WHERE type = ?1" block:v10];
-  LOBYTE(a4) = *(v16 + 24);
+  LOBYTE(error) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return error;
 }
 
 id __63__HMBLocalSQLContext__deleteIndexSentinelsWithModelType_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -641,9 +641,9 @@ id __63__HMBLocalSQLContext__deleteIndexSentinelsWithModelType_error___block_inv
   return v5;
 }
 
-- (id)_selectIndexSentinelForZoneRow:(unint64_t)a3 modelType:(id)a4 error:(id *)a5
+- (id)_selectIndexSentinelForZoneRow:(unint64_t)row modelType:(id)type error:(id *)error
 {
-  v8 = a4;
+  typeCopy = type;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -654,17 +654,17 @@ id __63__HMBLocalSQLContext__deleteIndexSentinelsWithModelType_error___block_inv
   v15[1] = 3221225472;
   v15[2] = __69__HMBLocalSQLContext__selectIndexSentinelForZoneRow_modelType_error___block_invoke;
   v15[3] = &unk_2786E2920;
-  v19 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = typeCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v18 = &v20;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT COUNT('X') FROM index_sentinel WHERE store_id = ?1 and type = ?2" block:v15];
   v11 = v10;
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v11;
+    *error = v11;
   }
 
   v13 = v21[5];
@@ -718,9 +718,9 @@ uint64_t __69__HMBLocalSQLContext__selectIndexSentinelForZoneRow_modelType_error
   return 0;
 }
 
-- (BOOL)_insertIndexSentinelWithZoneRow:(unint64_t)a3 modelType:(id)a4 error:(id *)a5
+- (BOOL)_insertIndexSentinelWithZoneRow:(unint64_t)row modelType:(id)type error:(id *)error
 {
-  v8 = a4;
+  typeCopy = type;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -729,17 +729,17 @@ uint64_t __69__HMBLocalSQLContext__selectIndexSentinelForZoneRow_modelType_error
   v12[1] = 3221225472;
   v12[2] = __70__HMBLocalSQLContext__insertIndexSentinelWithZoneRow_modelType_error___block_invoke;
   v12[3] = &unk_2786E2978;
-  v16 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = typeCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v18;
-  v17 = a5;
+  errorCopy = error;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO index_sentinel (store_id block:type) VALUES(?1, ?2)", v12];
-  LOBYTE(a5) = *(v19 + 24);
+  LOBYTE(error) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a5;
+  return error;
 }
 
 id __70__HMBLocalSQLContext__insertIndexSentinelWithZoneRow_modelType_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -758,7 +758,7 @@ id __70__HMBLocalSQLContext__insertIndexSentinelWithZoneRow_modelType_error___bl
   return v7;
 }
 
-- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -770,8 +770,8 @@ id __70__HMBLocalSQLContext__insertIndexSentinelWithZoneRow_modelType_error___bl
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 WHERE block_id IN (SELECT id FROM block_v2 WHERE store_v2_id=?1 AND options_data IS NULL)" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -789,7 +789,7 @@ id __56__HMBLocalSQLContext__deleteNullItemsWithZoneRow_error___block_invoke(uin
   return v5;
 }
 
-- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5
+- (BOOL)_deleteNullItemsWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -799,11 +799,11 @@ id __56__HMBLocalSQLContext__deleteNullItemsWithZoneRow_error___block_invoke(uin
   v8[1] = 3221225472;
   v8[2] = __61__HMBLocalSQLContext__deleteNullItemsWithZoneRow_type_error___block_invoke;
   v8[3] = &unk_2786E2700;
-  v8[6] = a3;
-  v8[7] = a4;
+  v8[6] = row;
+  v8[7] = type;
   v8[4] = self;
   v8[5] = &v9;
-  v8[8] = a5;
+  v8[8] = error;
   v5 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 WHERE block_id IN (SELECT id FROM block_v2 WHERE store_v2_id=?1 AND type=?2 AND options_data IS NULL)" block:v8];
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -826,29 +826,29 @@ id __61__HMBLocalSQLContext__deleteNullItemsWithZoneRow_type_error___block_invok
   return v7;
 }
 
-- (id)_selectItemsWithBlockRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)_selectItemsWithBlockRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__7598;
   v20 = __Block_byref_object_dispose__7599;
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__HMBLocalSQLContext__selectItemsWithBlockRow_returning_error___block_invoke;
   v15[3] = &unk_2786E29A8;
-  v15[6] = a3;
-  v15[7] = a4;
+  v15[6] = row;
+  v15[7] = returning;
   v15[4] = self;
   v15[5] = &v16;
   v9 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:external_id, external_data, model_encoding, model_data FROM transaction_v2 WHERE  block_id=?1", v15];
   v10 = v9;
   v11 = v17[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v12 = v9;
-    *a5 = v10;
+    *error = v10;
     v11 = v17[5];
   }
 
@@ -898,31 +898,31 @@ uint64_t __63__HMBLocalSQLContext__selectItemsWithBlockRow_returning_error___blo
   return 0;
 }
 
-- (id)_selectItemsWithBlockRow:(unint64_t)a3 rowGreaterThan:(unint64_t)a4 limit:(unint64_t)a5 returning:(unint64_t)a6 error:(id *)a7
+- (id)_selectItemsWithBlockRow:(unint64_t)row rowGreaterThan:(unint64_t)than limit:(unint64_t)limit returning:(unint64_t)returning error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__7598;
   v24 = __Block_byref_object_dispose__7599;
-  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
+  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:limit];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __84__HMBLocalSQLContext__selectItemsWithBlockRow_rowGreaterThan_limit_returning_error___block_invoke;
   v19[3] = &unk_2786E27A0;
-  v19[6] = a3;
-  v19[7] = a4;
-  v19[8] = a5;
-  v19[9] = a6;
+  v19[6] = row;
+  v19[7] = than;
+  v19[8] = limit;
+  v19[9] = returning;
   v19[4] = self;
   v19[5] = &v20;
   v13 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:external_id, external_data, model_encoding, model_data FROM transaction_v2 WHERE  block_id=?1 AND id>?2 ORDER BY id LIMIT ?3", v19];
   v14 = v13;
   v15 = v21[5];
-  if (a7 && !v15)
+  if (error && !v15)
   {
     v16 = v13;
-    *a7 = v14;
+    *error = v14;
     v15 = v21[5];
   }
 
@@ -982,9 +982,9 @@ uint64_t __84__HMBLocalSQLContext__selectItemsWithBlockRow_rowGreaterThan_limit_
   return 0;
 }
 
-- (BOOL)_deleteItemWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 externalID:(id)a5 error:(id *)a6
+- (BOOL)_deleteItemWithZoneRow:(unint64_t)row type:(unint64_t)type externalID:(id)d error:(id *)error
 {
-  v10 = a5;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -993,18 +993,18 @@ uint64_t __84__HMBLocalSQLContext__selectItemsWithBlockRow_rowGreaterThan_limit_
   v14[1] = 3221225472;
   v14[2] = __67__HMBLocalSQLContext__deleteItemWithZoneRow_type_externalID_error___block_invoke;
   v14[3] = &unk_2786E2778;
-  v18 = a3;
-  v19 = a4;
-  v11 = v10;
+  rowCopy = row;
+  typeCopy = type;
+  v11 = dCopy;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v17 = &v21;
-  v20 = a6;
+  errorCopy = error;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 WHERE store_v2_id=?1 AND type=?2 AND external_id=?3" block:v14];
-  LOBYTE(a6) = *(v22 + 24);
+  LOBYTE(error) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
-  return a6;
+  return error;
 }
 
 id __67__HMBLocalSQLContext__deleteItemWithZoneRow_type_externalID_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -1028,7 +1028,7 @@ id __67__HMBLocalSQLContext__deleteItemWithZoneRow_type_externalID_error___block
   return v9;
 }
 
-- (BOOL)_deleteItemWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteItemWithZoneRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1040,8 +1040,8 @@ id __67__HMBLocalSQLContext__deleteItemWithZoneRow_type_externalID_error___block
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 WHERE store_v2_id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1059,7 +1059,7 @@ id __51__HMBLocalSQLContext__deleteItemWithZoneRow_error___block_invoke(uint64_t
   return v5;
 }
 
-- (BOOL)_deleteItemsWithBlockRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteItemsWithBlockRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1071,8 +1071,8 @@ id __51__HMBLocalSQLContext__deleteItemWithZoneRow_error___block_invoke(uint64_t
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 where block_id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1090,7 +1090,7 @@ id __53__HMBLocalSQLContext__deleteItemsWithBlockRow_error___block_invoke(uint64
   return v5;
 }
 
-- (BOOL)_deleteItemWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteItemWithRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1102,8 +1102,8 @@ id __53__HMBLocalSQLContext__deleteItemsWithBlockRow_error___block_invoke(uint64
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM transaction_v2 WHERE id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1121,11 +1121,11 @@ id __47__HMBLocalSQLContext__deleteItemWithRow_error___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (BOOL)_updateItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 externalID:(id)a6 externalData:(id)a7 modelEncoding:(unint64_t)a8 modelData:(id)a9 error:(id *)a10
+- (BOOL)_updateItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type externalID:(id)d externalData:(id)data modelEncoding:(unint64_t)encoding modelData:(id)modelData error:(id *)self0
 {
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  dCopy = d;
+  dataCopy = data;
+  modelDataCopy = modelData;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -1134,19 +1134,19 @@ id __47__HMBLocalSQLContext__deleteItemWithRow_error___block_invoke(uint64_t a1,
   v24[1] = 3221225472;
   v24[2] = __113__HMBLocalSQLContext__updateItemWithZoneRow_blockRow_type_externalID_externalData_modelEncoding_modelData_error___block_invoke;
   v24[3] = &unk_2786E2728;
-  v30 = a3;
-  v31 = a4;
-  v32 = a5;
-  v19 = v16;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v19 = dCopy;
   v25 = v19;
-  v20 = v17;
+  v20 = dataCopy;
   v26 = v20;
-  v33 = a8;
-  v21 = v18;
+  encodingCopy = encoding;
+  v21 = modelDataCopy;
   v27 = v21;
-  v28 = self;
+  selfCopy = self;
   v29 = &v35;
-  v34 = a10;
+  errorCopy = error;
   v22 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT OR REPLACE INTO transaction_v2 (store_v2_id block:block_id, type, external_id, external_data, model_encoding, model_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", v24];
   LOBYTE(self) = *(v36 + 24);
 
@@ -1195,9 +1195,9 @@ id __113__HMBLocalSQLContext__updateItemWithZoneRow_blockRow_type_externalID_ext
   return v17;
 }
 
-- (unint64_t)_insertItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelType:(id)a6 error:(id *)a7
+- (unint64_t)_insertItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelType:(id)modelType error:(id *)error
 {
-  v12 = a6;
+  modelTypeCopy = modelType;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1206,14 +1206,14 @@ id __113__HMBLocalSQLContext__updateItemWithZoneRow_blockRow_type_externalID_ext
   v17[1] = 3221225472;
   v17[2] = __75__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_modelType_error___block_invoke;
   v17[3] = &unk_2786E2750;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v13 = v12;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v13 = modelTypeCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v25;
-  v24 = a7;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO transaction_v2 (store_v2_id block:block_id, type, external_id, model_encoding, model_data) SELECT ?1, ?2, ?3, COALESCE(external_id, randomblob(16)), 0, uuid FROM record_v2 WHERE store_v2_id = ?1 AND type = ?4 AND model_data IS NOT NULL", v17];
   v15 = v26[3];
 
@@ -1247,9 +1247,9 @@ id __75__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_modelType_error
   return v11;
 }
 
-- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 parentModelID:(id)a6 error:(id *)a7
+- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type parentModelID:(id)d error:(id *)error
 {
-  v12 = a6;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1258,14 +1258,14 @@ id __75__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_modelType_error
   v17[1] = 3221225472;
   v17[2] = __88__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_parentModelID_error___block_invoke;
   v17[3] = &unk_2786E2750;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v13 = v12;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v13 = dCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v25;
-  v24 = a7;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO transaction_v2 (store_v2_id block:block_id, type, external_id, model_encoding, model_data) SELECT ?1, ?2, ?3, COALESCE(external_id, randomblob(16)), 0, uuid FROM record_v2 WHERE store_v2_id = ?1 AND parent_uuid = ?4 AND model_data IS NOT NULL", v17];
   v15 = v26[3];
 
@@ -1299,9 +1299,9 @@ id __88__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_parent
   return v11;
 }
 
-- (unint64_t)_insertDeletionItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelID:(id)a6 error:(id *)a7
+- (unint64_t)_insertDeletionItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelID:(id)d error:(id *)error
 {
-  v12 = a6;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1310,14 +1310,14 @@ id __88__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_parent
   v17[1] = 3221225472;
   v17[2] = __81__HMBLocalSQLContext__insertDeletionItemWithZoneRow_blockRow_type_modelID_error___block_invoke;
   v17[3] = &unk_2786E2750;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v13 = v12;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v13 = dCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v25;
-  v24 = a7;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO transaction_v2 (store_v2_id block:block_id, type, external_id, model_encoding, model_data) SELECT ?1, ?2, ?3, COALESCE(external_id, randomblob(16)), 0, uuid FROM record_v2 WHERE store_v2_id = ?1 AND uuid = ?4 AND model_data IS NOT NULL", v17];
   v15 = v26[3];
 
@@ -1351,9 +1351,9 @@ id __81__HMBLocalSQLContext__insertDeletionItemWithZoneRow_blockRow_type_modelID
   return v11;
 }
 
-- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 modelType:(id)a6 error:(id *)a7
+- (unint64_t)_insertDeletionItemsWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type modelType:(id)modelType error:(id *)error
 {
-  v12 = a6;
+  modelTypeCopy = modelType;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1362,14 +1362,14 @@ id __81__HMBLocalSQLContext__insertDeletionItemWithZoneRow_blockRow_type_modelID
   v17[1] = 3221225472;
   v17[2] = __84__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_modelType_error___block_invoke;
   v17[3] = &unk_2786E2750;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v13 = v12;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v13 = modelTypeCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v25;
-  v24 = a7;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO transaction_v2 (store_v2_id block:block_id, type, external_id, model_encoding, model_data) SELECT ?1, ?2, ?3, COALESCE(external_id, randomblob(16)), 0, uuid FROM record_v2 WHERE store_v2_id = ?1 AND type = ?4 AND model_data IS NOT NULL", v17];
   v15 = v26[3];
 
@@ -1403,11 +1403,11 @@ id __84__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_modelT
   return v11;
 }
 
-- (unint64_t)_insertItemWithZoneRow:(unint64_t)a3 blockRow:(unint64_t)a4 type:(unint64_t)a5 externalID:(id)a6 externalData:(id)a7 modelEncoding:(unint64_t)a8 modelData:(id)a9 error:(id *)a10
+- (unint64_t)_insertItemWithZoneRow:(unint64_t)row blockRow:(unint64_t)blockRow type:(unint64_t)type externalID:(id)d externalData:(id)data modelEncoding:(unint64_t)encoding modelData:(id)modelData error:(id *)self0
 {
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  dCopy = d;
+  dataCopy = data;
+  modelDataCopy = modelData;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -1416,19 +1416,19 @@ id __84__HMBLocalSQLContext__insertDeletionItemsWithZoneRow_blockRow_type_modelT
   v25[1] = 3221225472;
   v25[2] = __113__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_externalID_externalData_modelEncoding_modelData_error___block_invoke;
   v25[3] = &unk_2786E2728;
-  v31 = a3;
-  v32 = a4;
-  v33 = a5;
-  v19 = v16;
+  rowCopy = row;
+  blockRowCopy = blockRow;
+  typeCopy = type;
+  v19 = dCopy;
   v26 = v19;
-  v20 = v17;
+  v20 = dataCopy;
   v27 = v20;
-  v34 = a8;
-  v21 = v18;
+  encodingCopy = encoding;
+  v21 = modelDataCopy;
   v28 = v21;
-  v29 = self;
+  selfCopy = self;
   v30 = &v36;
-  v35 = a10;
+  errorCopy = error;
   v22 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO transaction_v2 (store_v2_id block:block_id, type, external_id, external_data, model_encoding, model_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", v25];
   v23 = v37[3];
 
@@ -1477,22 +1477,22 @@ id __113__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_externalID_ext
   return v17;
 }
 
-- (unint64_t)_insertBlockWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 options:(id)a5 items:(id)a6 error:(id *)a7
+- (unint64_t)_insertBlockWithZoneRow:(unint64_t)row type:(unint64_t)type options:(id)options items:(id)items error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v30 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  itemsCopy = items;
   v40 = 0;
-  v32 = a3;
-  v33 = self;
-  v12 = a4;
-  v34 = [(HMBLocalSQLContext *)self _insertBlockWithZoneRow:a3 type:a4 error:&v40];
+  rowCopy = row;
+  selfCopy = self;
+  typeCopy = type;
+  v34 = [(HMBLocalSQLContext *)self _insertBlockWithZoneRow:row type:type error:&v40];
   v13 = v40;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v14 = v11;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v15)
   {
@@ -1509,26 +1509,26 @@ id __113__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_externalID_ext
         }
 
         v19 = *(*(&v36 + 1) + 8 * i);
-        v20 = [v19 externalID];
-        v21 = [v19 externalData];
-        v22 = [v19 modelEncoding];
-        v23 = [v19 modelData];
+        externalID = [v19 externalID];
+        externalData = [v19 externalData];
+        modelEncoding = [v19 modelEncoding];
+        modelData = [v19 modelData];
         v35 = v13;
-        [(HMBLocalSQLContext *)v33 _insertItemWithZoneRow:v32 blockRow:v34 type:v12 externalID:v20 externalData:v21 modelEncoding:v22 modelData:v23 error:&v35];
+        [(HMBLocalSQLContext *)selfCopy _insertItemWithZoneRow:rowCopy blockRow:v34 type:typeCopy externalID:externalID externalData:externalData modelEncoding:modelEncoding modelData:modelData error:&v35];
         v24 = v35;
 
         if (v24)
         {
-          if (a7)
+          if (error)
           {
             v25 = v24;
-            *a7 = v24;
+            *error = v24;
           }
 
           v14 = obj;
 
           v34 = 0;
-          v26 = v30;
+          v26 = optionsCopy;
           goto LABEL_15;
         }
 
@@ -1553,15 +1553,15 @@ id __113__HMBLocalSQLContext__insertItemWithZoneRow_blockRow_type_externalID_ext
     v24 = v13;
   }
 
-  v26 = v30;
-  [(HMBLocalSQLContext *)v33 _updateBlockWithRow:v34 options:v30 error:a7];
+  v26 = optionsCopy;
+  [(HMBLocalSQLContext *)selfCopy _updateBlockWithRow:v34 options:optionsCopy error:error];
 LABEL_15:
 
   v27 = *MEMORY[0x277D85DE8];
   return v34;
 }
 
-- (BOOL)_deleteNullBlocksWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteNullBlocksWithZoneRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1573,8 +1573,8 @@ LABEL_15:
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM block_v2 WHERE store_v2_id=?1 AND options_data IS NULL" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1592,7 +1592,7 @@ id __57__HMBLocalSQLContext__deleteNullBlocksWithZoneRow_error___block_invoke(ui
   return v5;
 }
 
-- (id)_selectBlockWithRow:(unint64_t)a3 error:(id *)a4
+- (id)_selectBlockWithRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1604,8 +1604,8 @@ id __57__HMBLocalSQLContext__deleteNullBlocksWithZoneRow_error___block_invoke(ui
   v7[1] = 3221225472;
   v7[2] = __48__HMBLocalSQLContext__selectBlockWithRow_error___block_invoke;
   v7[3] = &unk_2786E29A8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v7[4] = self;
   v7[5] = &v8;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:type, options_data FROM block_v2 WHERE id=?1", v7];
@@ -1656,21 +1656,21 @@ uint64_t __48__HMBLocalSQLContext__selectBlockWithRow_error___block_invoke_2(uin
   return 0;
 }
 
-- (id)_selectReadyBlocksWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5
+- (id)_selectReadyBlocksWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__7598;
   v17 = __Block_byref_object_dispose__7599;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__HMBLocalSQLContext__selectReadyBlocksWithZoneRow_type_error___block_invoke;
   v12[3] = &unk_2786E2700;
-  v12[6] = a3;
-  v12[7] = a5;
-  v12[8] = a4;
+  v12[6] = row;
+  v12[7] = error;
+  v12[8] = type;
   v12[4] = self;
   v12[5] = &v13;
   v9 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:options_data FROM block_v2 WHERE store_v2_id=?1 AND type=?2 AND options_data IS NOT NULL ORDER BY id", v12];
@@ -1722,9 +1722,9 @@ uint64_t __63__HMBLocalSQLContext__selectReadyBlocksWithZoneRow_type_error___blo
   return 0;
 }
 
-- (BOOL)_updateBlockWithRow:(unint64_t)a3 options:(id)a4 error:(id *)a5
+- (BOOL)_updateBlockWithRow:(unint64_t)row options:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -1733,17 +1733,17 @@ uint64_t __63__HMBLocalSQLContext__selectReadyBlocksWithZoneRow_type_error___blo
   v12[1] = 3221225472;
   v12[2] = __56__HMBLocalSQLContext__updateBlockWithRow_options_error___block_invoke;
   v12[3] = &unk_2786E2978;
-  v16 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = optionsCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v18;
-  v17 = a5;
+  errorCopy = error;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE block_v2 SET options_data=?2 WHERE id=?1" block:v12];
-  LOBYTE(a5) = *(v19 + 24);
+  LOBYTE(error) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a5;
+  return error;
 }
 
 id __56__HMBLocalSQLContext__updateBlockWithRow_options_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -1762,7 +1762,7 @@ id __56__HMBLocalSQLContext__updateBlockWithRow_options_error___block_invoke(uin
   return v7;
 }
 
-- (BOOL)_deleteBlocksWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteBlocksWithZoneRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1774,8 +1774,8 @@ id __56__HMBLocalSQLContext__updateBlockWithRow_options_error___block_invoke(uin
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM block_v2 WHERE store_v2_id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1793,7 +1793,7 @@ id __53__HMBLocalSQLContext__deleteBlocksWithZoneRow_error___block_invoke(uint64
   return v5;
 }
 
-- (BOOL)_deleteBlockWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteBlockWithRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1805,8 +1805,8 @@ id __53__HMBLocalSQLContext__deleteBlocksWithZoneRow_error___block_invoke(uint64
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM block_v2 WHERE id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1824,7 +1824,7 @@ id __48__HMBLocalSQLContext__deleteBlockWithRow_error___block_invoke(uint64_t a1
   return v5;
 }
 
-- (unint64_t)_insertBlockWithZoneRow:(unint64_t)a3 type:(unint64_t)a4 error:(id *)a5
+- (unint64_t)_insertBlockWithZoneRow:(unint64_t)row type:(unint64_t)type error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1834,11 +1834,11 @@ id __48__HMBLocalSQLContext__deleteBlockWithRow_error___block_invoke(uint64_t a1
   v8[1] = 3221225472;
   v8[2] = __57__HMBLocalSQLContext__insertBlockWithZoneRow_type_error___block_invoke;
   v8[3] = &unk_2786E2700;
-  v8[6] = a3;
-  v8[7] = a4;
+  v8[6] = row;
+  v8[7] = type;
   v8[4] = self;
   v8[5] = &v9;
-  v8[8] = a5;
+  v8[8] = error;
   v5 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO block_v2 (store_v2_id block:type) VALUES (?1, ?2)", v8];
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -1870,9 +1870,9 @@ id __57__HMBLocalSQLContext__insertBlockWithZoneRow_type_error___block_invoke(ui
   return v8;
 }
 
-- (BOOL)_updateZoneWithRow:(unint64_t)a3 replication:(id)a4 error:(id *)a5
+- (BOOL)_updateZoneWithRow:(unint64_t)row replication:(id)replication error:(id *)error
 {
-  v8 = a4;
+  replicationCopy = replication;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -1881,17 +1881,17 @@ id __57__HMBLocalSQLContext__insertBlockWithZoneRow_type_error___block_invoke(ui
   v12[1] = 3221225472;
   v12[2] = __59__HMBLocalSQLContext__updateZoneWithRow_replication_error___block_invoke;
   v12[3] = &unk_2786E2978;
-  v16 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = replicationCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v18;
-  v17 = a5;
+  errorCopy = error;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE store_v2 SET replication_data=?2 WHERE id=?1" block:v12];
-  LOBYTE(a5) = *(v19 + 24);
+  LOBYTE(error) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a5;
+  return error;
 }
 
 id __59__HMBLocalSQLContext__updateZoneWithRow_replication_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -1910,7 +1910,7 @@ id __59__HMBLocalSQLContext__updateZoneWithRow_replication_error___block_invoke(
   return v7;
 }
 
-- (id)_selectZoneWithRow:(unint64_t)a3 error:(id *)a4
+- (id)_selectZoneWithRow:(unint64_t)row error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -1922,17 +1922,17 @@ id __59__HMBLocalSQLContext__updateZoneWithRow_replication_error___block_invoke(
   v11[1] = 3221225472;
   v11[2] = __47__HMBLocalSQLContext__selectZoneWithRow_error___block_invoke;
   v11[3] = &unk_2786E29A8;
-  v11[6] = a3;
-  v11[7] = a4;
+  v11[6] = row;
+  v11[7] = error;
   v11[4] = self;
   v11[5] = &v12;
   v5 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:label, identifier_data, replication_data FROM store_v2 WHERE id=?1", v11];
   v6 = v5;
   v7 = v13[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v8 = v5;
-    *a4 = v6;
+    *error = v6;
     v7 = v13[5];
   }
 
@@ -1986,14 +1986,14 @@ uint64_t __47__HMBLocalSQLContext__selectZoneWithRow_error___block_invoke_2(uint
   return 0;
 }
 
-- (id)_fetchAllZones:(id *)a3
+- (id)_fetchAllZones:(id *)zones
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__7598;
   v16 = __Block_byref_object_dispose__7599;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__HMBLocalSQLContext__fetchAllZones___block_invoke;
@@ -2003,10 +2003,10 @@ uint64_t __47__HMBLocalSQLContext__selectZoneWithRow_error___block_invoke_2(uint
   v5 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT id block:label, identifier_data, replication_data FROM store_v2", v11];
   v6 = v5;
   v7 = v13[5];
-  if (a3 && !v7)
+  if (zones && !v7)
   {
     v8 = v5;
-    *a3 = v6;
+    *zones = v6;
     v7 = v13[5];
   }
 
@@ -2054,7 +2054,7 @@ uint64_t __37__HMBLocalSQLContext__fetchAllZones___block_invoke_2(uint64_t a1, s
   return 0;
 }
 
-- (BOOL)_deleteZoneWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteZoneWithRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -2066,8 +2066,8 @@ uint64_t __37__HMBLocalSQLContext__fetchAllZones___block_invoke_2(uint64_t a1, s
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM store_v2 WHERE id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -2085,10 +2085,10 @@ id __47__HMBLocalSQLContext__deleteZoneWithRow_error___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (unint64_t)_insertZoneWithIdentification:(id)a3 name:(id)a4 error:(id *)a5
+- (unint64_t)_insertZoneWithIdentification:(id)identification name:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identificationCopy = identification;
+  nameCopy = name;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2097,13 +2097,13 @@ id __47__HMBLocalSQLContext__deleteZoneWithRow_error___block_invoke(uint64_t a1,
   v15[1] = 3221225472;
   v15[2] = __63__HMBLocalSQLContext__insertZoneWithIdentification_name_error___block_invoke;
   v15[3] = &unk_2786E2688;
-  v10 = v9;
+  v10 = nameCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = identificationCopy;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v19 = &v21;
-  v20 = a5;
+  errorCopy = error;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO store_v2 (label block:identifier_data, replication_data) VALUES (?1, ?2, ?3)", v15];
   v13 = v22[3];
 
@@ -2132,13 +2132,13 @@ id __63__HMBLocalSQLContext__insertZoneWithIdentification_name_error___block_inv
   return v9;
 }
 
-- (int64_t)migrateFromSchemaVersion:(int64_t)a3 error:(id *)a4
+- (int64_t)migrateFromSchemaVersion:(int64_t)version error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  if (a3 >= 2)
+  if (version >= 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -2146,7 +2146,7 @@ id __63__HMBLocalSQLContext__insertZoneWithIdentification_name_error___block_inv
       *buf = 138543874;
       v38 = v9;
       v39 = 2048;
-      v40 = a3;
+      versionCopy = version;
       v41 = 2048;
       v42 = 1;
       _os_log_impl(&dword_22AD27000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failing database migration because the database has a later version than our current known version (%ld > %ld).", buf, 0x20u);
@@ -2157,26 +2157,26 @@ id __63__HMBLocalSQLContext__insertZoneWithIdentification_name_error___block_inv
     goto LABEL_20;
   }
 
-  if (!a3 && [(HMBLocalSQLContext *)self migrateToSchema01WithError:a4]!= 3)
+  if (!version && [(HMBLocalSQLContext *)self migrateToSchema01WithError:error]!= 3)
   {
 LABEL_10:
     v35.receiver = self;
     v35.super_class = HMBLocalSQLContext;
-    result = [(HMBSQLContext *)&v35 migrateFromSchemaVersion:a3 error:a4];
+    result = [(HMBSQLContext *)&v35 migrateFromSchemaVersion:version error:error];
     goto LABEL_20;
   }
 
-  v12 = self;
+  selfCopy2 = self;
   v13 = [MEMORY[0x277CBEB98] setWithArray:&unk_283EB9F18];
-  v14 = [(HMBSQLContext *)v12 connection];
+  connection = [(HMBSQLContext *)selfCopy2 connection];
   v36 = 0;
-  v15 = selectSQLite3(v14, "SELECT name FROM sqlite_master WHERE type = 'table'", MEMORY[0x277CBEC10], &v36);
+  v15 = selectSQLite3(connection, "SELECT name FROM sqlite_master WHERE type = 'table'", MEMORY[0x277CBEC10], &v36);
   v16 = v36;
   if (v15)
   {
     v17 = MEMORY[0x277CBEB98];
-    v18 = [v15 na_arrayByFlattening];
-    v19 = [v17 setWithArray:v18];
+    na_arrayByFlattening = [v15 na_arrayByFlattening];
+    v19 = [v17 setWithArray:na_arrayByFlattening];
 
     if ([v13 isSubsetOfSet:v19])
     {
@@ -2185,18 +2185,18 @@ LABEL_10:
     }
 
     v24 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy2;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v19 hmbDescription];
+      hmbDescription = [v19 hmbDescription];
       [v13 hmbDescription];
       v28 = v34 = v24;
       *buf = 138543874;
       v38 = v26;
       v39 = 2112;
-      v40 = v27;
+      versionCopy = hmbDescription;
       v41 = 2112;
       v42 = v28;
       _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_ERROR, "%{public}@Set of found tables: %@ does not contain all required tables: %@", buf, 0x20u);
@@ -2210,7 +2210,7 @@ LABEL_10:
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy2;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -2218,7 +2218,7 @@ LABEL_10:
       *buf = 138543618;
       v38 = v23;
       v39 = 2112;
-      v40 = v16;
+      versionCopy = v16;
       _os_log_impl(&dword_22AD27000, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to query all required tables: %@", buf, 0x16u);
     }
 
@@ -2226,7 +2226,7 @@ LABEL_10:
   }
 
   v29 = objc_autoreleasePoolPush();
-  v30 = v12;
+  v30 = selfCopy2;
   v31 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
@@ -2252,24 +2252,24 @@ LABEL_20:
   [(HMBSQLStatement *)self->_selectAllRecordTypeRows finalize];
   [(HMBSQLStatement *)self->_selectAllRecordParentModelIDRows finalize];
   [(HMBSQLStatement *)self->_selectAllRecordParentModelIDTypeRows finalize];
-  v3 = [(HMBLocalSQLContext *)self queryContextsByModelType];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7615];
+  queryContextsByModelType = [(HMBLocalSQLContext *)self queryContextsByModelType];
+  [queryContextsByModelType enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7615];
 
-  v4 = [(HMBLocalSQLContext *)self queryContextsByClass];
-  [v4 removeAllObjects];
+  queryContextsByClass = [(HMBLocalSQLContext *)self queryContextsByClass];
+  [queryContextsByClass removeAllObjects];
 
-  v5 = [(HMBLocalSQLContext *)self queryContextsByModelType];
-  [v5 removeAllObjects];
+  queryContextsByModelType2 = [(HMBLocalSQLContext *)self queryContextsByModelType];
+  [queryContextsByModelType2 removeAllObjects];
 
   v6.receiver = self;
   v6.super_class = HMBLocalSQLContext;
   [(HMBSQLContext *)&v6 finalize];
 }
 
-- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)a3
+- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = self;
+  selfCopy = self;
   [MEMORY[0x277CBEA60] arrayWithObjects:{@"CREATE TABLE IF NOT EXISTS store_v2(                              id                  INTEGER PRIMARY KEY AUTOINCREMENT, label               STRING  NOT NULL, identifier_data     BLOB UNIQUE NOT NULL, replication_data    BLOB                                             );", @"CREATE TABLE IF NOT EXISTS block_v2(                              id                  INTEGER PRIMARY KEY AUTOINCREMENT, store_v2_id         INTEGER NOT NULL CONSTRAINT fetch_store_v2_id_fkey REFERENCES store_v2 (id) ON DELETE RESTRICT, type                INTEGER NOT NULL, options_data        BLOB                                             );", @"CREATE TABLE IF NOT EXISTS transaction_v2(                        id                  INTEGER PRIMARY KEY AUTOINCREMENT, store_v2_id         INTEGER NOT NULL CONSTRAINT fetch_store_v2_id_fkey REFERENCES store_v2 (id) ON DELETE RESTRICT, block_id            INTEGER NOT NULL CONSTRAINT transaction_v2_block_v2_id_fkey REFERENCES block_v2 (id) ON DELETE RESTRICT, type                INTEGER NOT NULL, external_id         BLOB    NOT NULL, external_data       BLOB, model_encoding      INTEGER NOT NULL, model_data          BLOB                                             );", @"CREATE TABLE IF NOT EXISTS record_v2(                             id                  INTEGER PRIMARY KEY AUTOINCREMENT, store_v2_id         INTEGER NOT NULL CONSTRAINT record_v2_group_id_fkey REFERENCES store_v2 (id) ON DELETE RESTRICT, uuid                BLOB    NOT NULL, parent_uuid         BLOB    NOT NULL, type                TEXT, model_schema        BLOB, external_id         BLOB, external_data       BLOB, model_encoding      INTEGER NOT NULL, model_data          BLOB, push_encoding       INTEGER NOT NULL, push_data           BLOB, push_block_id       INTEGER CONSTRAINT record_v2_block_v2_fkey REFERENCES block_v2 (id) ON DELETE RESTRICT            );", @"CREATE TABLE IF NOT EXISTS index_sentinel(                 store_id            INTEGER NOT NULL, type                TEXT NOT NULL, CONSTRAINT fk_index_sentinel FOREIGN KEY (store_id) REFERENCES store_v2 (id) ON DELETE CASCADE);", 0}];
   v52 = 0u;
   v53 = 0u;
@@ -2290,12 +2290,12 @@ LABEL_20:
         }
 
         v10 = *(*(&v52 + 1) + 8 * i);
-        v11 = -[HMBSQLContext runSQLite3:](v4, "runSQLite3:", [v10 UTF8String]);
+        v11 = -[HMBSQLContext runSQLite3:](selfCopy, "runSQLite3:", [v10 UTF8String]);
         if (v11)
         {
           v22 = v11;
           v23 = objc_autoreleasePoolPush();
-          v24 = v4;
+          v24 = selfCopy;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
@@ -2348,12 +2348,12 @@ LABEL_20:
         }
 
         v17 = *(*(&v48 + 1) + 8 * j);
-        v18 = -[HMBSQLContext runSQLite3:](v4, "runSQLite3:", [v17 UTF8String]);
+        v18 = -[HMBSQLContext runSQLite3:](selfCopy, "runSQLite3:", [v17 UTF8String]);
         if (v18)
         {
           v28 = v18;
           v29 = objc_autoreleasePoolPush();
-          v30 = v4;
+          v30 = selfCopy;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
@@ -2387,7 +2387,7 @@ LABEL_20:
   }
 
   v47 = 0;
-  v19 = [(HMBSQLContext *)v4 setSchemaVersion:1 error:&v47];
+  v19 = [(HMBSQLContext *)selfCopy setSchemaVersion:1 error:&v47];
   v20 = v47;
   if (v19)
   {
@@ -2397,7 +2397,7 @@ LABEL_20:
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = v4;
+    v43 = selfCopy;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
@@ -2424,7 +2424,7 @@ LABEL_26:
   if (v21)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = v4;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -2440,11 +2440,11 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v33);
-    if (a3)
+    if (error)
     {
       v38 = v21;
       v39 = 0;
-      *a3 = v21;
+      *error = v21;
     }
 
     else
@@ -2455,16 +2455,16 @@ LABEL_26:
 
   else
   {
-    v46.receiver = v4;
+    v46.receiver = selfCopy;
     v46.super_class = HMBLocalSQLContext;
-    v39 = [(HMBSQLContext *)&v46 initializeNewlyCreatedDatabaseWithError:a3];
+    v39 = [(HMBSQLContext *)&v46 initializeNewlyCreatedDatabaseWithError:error];
   }
 
   v40 = *MEMORY[0x277D85DE8];
   return v39;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -2477,7 +2477,7 @@ LABEL_26:
     if (!v5)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -2490,10 +2490,10 @@ LABEL_26:
       }
 
       objc_autoreleasePoolPop(v7);
-      if (a3)
+      if (error)
       {
         v11 = v6;
-        *a3 = v6;
+        *error = v6;
       }
     }
   }
@@ -2609,20 +2609,20 @@ LABEL_26:
   return selectReadyInputBlocks;
 }
 
-- (BOOL)sqlTransactionWithActivity:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)sqlTransactionWithActivity:(id)activity error:(id *)error block:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 && *a4)
+  activityCopy = activity;
+  blockCopy = block;
+  if (error && *error)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = *a4;
+      v14 = *error;
       v19 = 138543618;
       v20 = v13;
       v21 = 2112;
@@ -2637,13 +2637,13 @@ LABEL_26:
 
   else
   {
-    v15 = [(HMBLocalSQLContext *)self sqlTransactionWithActivity:v8 block:v9];
+    v15 = [(HMBLocalSQLContext *)self sqlTransactionWithActivity:activityCopy block:blockCopy];
     v16 = v15 == 0;
-    if (a4 && v15)
+    if (error && v15)
     {
       v15 = v15;
       v16 = 0;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -2651,20 +2651,20 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)sqlBlockWithActivity:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)sqlBlockWithActivity:(id)activity error:(id *)error block:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 && *a4)
+  activityCopy = activity;
+  blockCopy = block;
+  if (error && *error)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = *a4;
+      v14 = *error;
       v19 = 138543618;
       v20 = v13;
       v21 = 2112;
@@ -2679,13 +2679,13 @@ LABEL_26:
 
   else
   {
-    v15 = [(HMBLocalSQLContext *)self sqlBlockWithActivity:v8 block:v9];
+    v15 = [(HMBLocalSQLContext *)self sqlBlockWithActivity:activityCopy block:blockCopy];
     v16 = v15 == 0;
-    if (a4 && v15)
+    if (error && v15)
     {
       v15 = v15;
       v16 = 0;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -2693,52 +2693,52 @@ LABEL_26:
   return v16;
 }
 
-- (id)sqlTransactionWithActivity:(id)a3 block:(id)a4
+- (id)sqlTransactionWithActivity:(id)activity block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__HMBLocalSQLContext_sqlTransactionWithActivity_block___block_invoke;
   v11[3] = &unk_2786E2640;
-  v12 = v6;
+  v12 = blockCopy;
   v10.receiver = self;
   v10.super_class = HMBLocalSQLContext;
-  v7 = v6;
-  v8 = [(HMBSQLContext *)&v10 sqlTransactionWithActivity:a3 block:v11];
+  v7 = blockCopy;
+  v8 = [(HMBSQLContext *)&v10 sqlTransactionWithActivity:activity block:v11];
 
   return v8;
 }
 
-- (id)sqlBlockWithActivity:(id)a3 block:(id)a4
+- (id)sqlBlockWithActivity:(id)activity block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__HMBLocalSQLContext_sqlBlockWithActivity_block___block_invoke;
   v11[3] = &unk_2786E2640;
-  v12 = v6;
+  v12 = blockCopy;
   v10.receiver = self;
   v10.super_class = HMBLocalSQLContext;
-  v7 = v6;
-  v8 = [(HMBSQLContext *)&v10 sqlBlockWithActivity:a3 block:v11];
+  v7 = blockCopy;
+  v8 = [(HMBSQLContext *)&v10 sqlBlockWithActivity:activity block:v11];
 
   return v8;
 }
 
-- (HMBLocalSQLContext)initWithURL:(id)a3
+- (HMBLocalSQLContext)initWithURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = HMBLocalSQLContext;
-  v3 = [(HMBSQLContext *)&v9 initWithURL:a3];
+  v3 = [(HMBSQLContext *)&v9 initWithURL:l];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     queryContextsByClass = v3->_queryContextsByClass;
-    v3->_queryContextsByClass = v4;
+    v3->_queryContextsByClass = strongToStrongObjectsMapTable;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     queryContextsByModelType = v3->_queryContextsByModelType;
-    v3->_queryContextsByModelType = v6;
+    v3->_queryContextsByModelType = dictionary;
   }
 
   return v3;
@@ -2766,23 +2766,23 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)openWithURL:(id)a3 error:(id *)a4
++ (id)openWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [HMBSQLFile openContextWithURL:v5 usingSubclass:objc_opt_class() error:a4];
+  lCopy = l;
+  v6 = [HMBSQLFile openContextWithURL:lCopy usingSubclass:objc_opt_class() error:error];
 
   return v6;
 }
 
-+ (void)unlinkDatastoreAt:(id)a3 everything:(BOOL)a4
++ (void)unlinkDatastoreAt:(id)at everything:(BOOL)everything
 {
-  v4 = a4;
+  everythingCopy = everything;
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 absoluteString];
+  atCopy = at;
+  absoluteString = [atCopy absoluteString];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v7 lastPathComponent];
-  v10 = [v8 stringWithFormat:@"^%@(?:|-shm|-wal)(\\..*)?$", v9];
+  lastPathComponent = [absoluteString lastPathComponent];
+  v10 = [v8 stringWithFormat:@"^%@(?:|-shm|-wal)(\\..*)?$", lastPathComponent];
 
   v47 = 0;
   v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v10 options:0 error:&v47];
@@ -2791,7 +2791,7 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
   {
     v13 = v12;
     v14 = objc_autoreleasePoolPush();
-    v15 = a1;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -2809,10 +2809,10 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
   else
   {
     v41 = v10;
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
-    v19 = [v7 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [absoluteString stringByDeletingLastPathComponent];
     v46 = 0;
-    v20 = [v18 contentsOfDirectoryAtPath:v19 error:&v46];
+    v20 = [defaultManager contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:&v46];
     v13 = v46;
     v21 = [v20 mutableCopy];
 
@@ -2820,7 +2820,7 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
     if (v13)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = a1;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -2828,7 +2828,7 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
         *buf = 138543874;
         v50 = v25;
         v51 = 2112;
-        v52 = v19;
+        v52 = stringByDeletingLastPathComponent;
         v53 = 2112;
         v54 = v13;
         _os_log_impl(&dword_22AD27000, v24, OS_LOG_TYPE_ERROR, "%{public}@unable to get files in %@ (%@)", buf, 0x20u);
@@ -2839,8 +2839,8 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
 
     else
     {
-      v38 = v7;
-      v39 = v6;
+      v38 = absoluteString;
+      v39 = atCopy;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
@@ -2866,10 +2866,10 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
             if (v32)
             {
               [v32 rangeAtIndex:1];
-              if (v34 || v4)
+              if (v34 || everythingCopy)
               {
-                v36 = [v19 stringByAppendingPathComponent:v31];
-                [v18 removeItemAtPath:v36 error:0];
+                v36 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v31];
+                [defaultManager removeItemAtPath:v36 error:0];
               }
             }
           }
@@ -2880,8 +2880,8 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
         while (v28);
       }
 
-      v7 = v38;
-      v6 = v39;
+      absoluteString = v38;
+      atCopy = v39;
       v13 = 0;
     }
 
@@ -2891,7 +2891,7 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_resetOutputForRecordsWithBlockRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_resetOutputForRecordsWithBlockRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -2903,8 +2903,8 @@ uint64_t __33__HMBLocalSQLContext_logCategory__block_invoke()
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET push_encoding = 0 block:push_data = NULL, push_block_id = NULL WHERE push_block_id=?1", v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -2922,35 +2922,35 @@ id __71__HMBLocalSQLContext_Record___resetOutputForRecordsWithBlockRow_error___b
   return v5;
 }
 
-- (id)selectAllRecordsWithZoneRow:(unint64_t)a3 returning:(unint64_t)a4
+- (id)selectAllRecordsWithZoneRow:(unint64_t)row returning:(unint64_t)returning
 {
-  v4 = [[HMBLocalSQLIteratorRowRecord alloc] initWithSQLContext:self zoneRow:a3 returning:a4];
+  v4 = [[HMBLocalSQLIteratorRowRecord alloc] initWithSQLContext:self zoneRow:row returning:returning];
 
   return v4;
 }
 
-- (id)_selectRecordsWithBlockRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)_selectRecordsWithBlockRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__7867;
   v19 = __Block_byref_object_dispose__7868;
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__HMBLocalSQLContext_Record___selectRecordsWithBlockRow_returning_error___block_invoke;
   v14[3] = &unk_2786E29A8;
-  v14[6] = a3;
-  v14[7] = a4;
+  v14[6] = row;
+  v14[7] = returning;
   v14[4] = self;
   v14[5] = &v15;
   v9 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE push_block_id=?1", v14];
   v10 = v9;
-  if (a5)
+  if (error)
   {
     v11 = v9;
-    *a5 = v10;
+    *error = v10;
   }
 
   v12 = v16[5];
@@ -2999,28 +2999,28 @@ uint64_t __73__HMBLocalSQLContext_Record___selectRecordsWithBlockRow_returning_e
   return 0;
 }
 
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)_selectRecordsWithZoneRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__7867;
   v19 = __Block_byref_object_dispose__7868;
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_returning_error___block_invoke;
   v14[3] = &unk_2786E29A8;
-  v14[6] = a3;
-  v14[7] = a4;
+  v14[6] = row;
+  v14[7] = returning;
   v14[4] = self;
   v14[5] = &v15;
   v9 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1", v14];
   v10 = v9;
-  if (a5)
+  if (error)
   {
     v11 = v9;
-    *a5 = v10;
+    *error = v10;
   }
 
   v12 = v16[5];
@@ -3069,10 +3069,10 @@ uint64_t __72__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_returning_er
   return 0;
 }
 
-- (BOOL)_selectRecordsWithZoneRow:(unint64_t)a3 modelType:(id)a4 returning:(unint64_t)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)_selectRecordsWithZoneRow:(unint64_t)row modelType:(id)type returning:(unint64_t)returning error:(id *)error handler:(id)handler
 {
-  v12 = a4;
-  v13 = a7;
+  typeCopy = type;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -3081,19 +3081,19 @@ uint64_t __72__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_returning_er
   v19[1] = 3221225472;
   v19[2] = __90__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_modelType_returning_error_handler___block_invoke;
   v19[3] = &unk_2786E2A68;
-  v24 = a3;
-  v14 = v12;
+  rowCopy = row;
+  v14 = typeCopy;
   v20 = v14;
-  v21 = self;
+  selfCopy = self;
   v23 = &v26;
-  v25 = a5;
-  v15 = v13;
+  returningCopy = returning;
+  v15 = handlerCopy;
   v22 = v15;
   v16 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 and type=?2", v19];
-  if (a6)
+  if (error)
   {
     v16 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v17 = *(v27 + 24);
@@ -3140,31 +3140,31 @@ uint64_t __90__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_modelType_re
   return 0;
 }
 
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 modelType:(id)a4 returning:(unint64_t)a5 error:(id *)a6
+- (id)_selectRecordsWithZoneRow:(unint64_t)row modelType:(id)type returning:(unint64_t)returning error:(id *)error
 {
-  v10 = a4;
+  typeCopy = type;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__7867;
   v27 = __Block_byref_object_dispose__7868;
-  v28 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_modelType_returning_error___block_invoke;
   v17[3] = &unk_2786E2978;
-  v21 = a3;
-  v11 = v10;
+  rowCopy = row;
+  v11 = typeCopy;
   v18 = v11;
-  v19 = self;
-  v22 = a5;
+  selfCopy = self;
+  returningCopy = returning;
   v20 = &v23;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 and type=?2", v17];
   v13 = v12;
-  if (a6)
+  if (error)
   {
     v14 = v12;
-    *a6 = v13;
+    *error = v13;
   }
 
   v15 = v24[5];
@@ -3218,34 +3218,34 @@ uint64_t __82__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_modelType_re
   return 0;
 }
 
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 parentModelID:(id)a4 modelType:(id)a5 returning:(unint64_t)a6 error:(id *)a7
+- (id)_selectRecordWithZoneRow:(unint64_t)row parentModelID:(id)d modelType:(id)type returning:(unint64_t)returning error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  typeCopy = type;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__7867;
   v32 = __Block_byref_object_dispose__7868;
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __95__HMBLocalSQLContext_Record___selectRecordWithZoneRow_parentModelID_modelType_returning_error___block_invoke;
   v21[3] = &unk_2786E2A10;
-  v26 = a3;
-  v14 = v13;
+  rowCopy = row;
+  v14 = typeCopy;
   v22 = v14;
-  v15 = v12;
+  v15 = dCopy;
   v23 = v15;
-  v24 = self;
-  v27 = a6;
+  selfCopy = self;
+  returningCopy = returning;
   v25 = &v28;
   v16 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 AND parent_uuid=?3 AND type=?2", v21];
   v17 = v16;
-  if (a7)
+  if (error)
   {
     v18 = v16;
-    *a7 = v17;
+    *error = v17;
   }
 
   v19 = v29[5];
@@ -3304,31 +3304,31 @@ uint64_t __95__HMBLocalSQLContext_Record___selectRecordWithZoneRow_parentModelID
   return 0;
 }
 
-- (id)_selectRecordsWithZoneRow:(unint64_t)a3 parentModelID:(id)a4 returning:(unint64_t)a5 error:(id *)a6
+- (id)_selectRecordsWithZoneRow:(unint64_t)row parentModelID:(id)d returning:(unint64_t)returning error:(id *)error
 {
-  v10 = a4;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__7867;
   v27 = __Block_byref_object_dispose__7868;
-  v28 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_parentModelID_returning_error___block_invoke;
   v17[3] = &unk_2786E2978;
-  v21 = a3;
-  v11 = v10;
+  rowCopy = row;
+  v11 = dCopy;
   v18 = v11;
-  v19 = self;
-  v22 = a5;
+  selfCopy = self;
+  returningCopy = returning;
   v20 = &v23;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 and parent_uuid=?2", v17];
   v13 = v12;
-  if (a6)
+  if (error)
   {
     v14 = v12;
-    *a6 = v13;
+    *error = v13;
   }
 
   v15 = v24[5];
@@ -3382,9 +3382,9 @@ uint64_t __86__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_parentModelI
   return 0;
 }
 
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 returning:(unint64_t)a5 error:(id *)a6
+- (id)_selectRecordWithZoneRow:(unint64_t)row externalID:(id)d returning:(unint64_t)returning error:(id *)error
 {
-  v10 = a4;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3395,18 +3395,18 @@ uint64_t __86__HMBLocalSQLContext_Record___selectRecordsWithZoneRow_parentModelI
   v17[1] = 3221225472;
   v17[2] = __82__HMBLocalSQLContext_Record___selectRecordWithZoneRow_externalID_returning_error___block_invoke;
   v17[3] = &unk_2786E2978;
-  v21 = a3;
-  v11 = v10;
+  rowCopy = row;
+  v11 = dCopy;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a5;
+  returningCopy = returning;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 and external_id=?2", v17];
   v13 = v12;
-  if (a6)
+  if (error)
   {
     v14 = v12;
-    *a6 = v13;
+    *error = v13;
   }
 
   v15 = v24[5];
@@ -3462,7 +3462,7 @@ uint64_t __82__HMBLocalSQLContext_Record___selectRecordWithZoneRow_externalID_re
   return 0;
 }
 
-- (id)_selectRecordWithRow:(unint64_t)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)_selectRecordWithRow:(unint64_t)row returning:(unint64_t)returning error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -3476,14 +3476,14 @@ uint64_t __82__HMBLocalSQLContext_Record___selectRecordWithZoneRow_externalID_re
   v11[3] = &unk_2786E29A8;
   v11[4] = self;
   v11[5] = &v12;
-  v11[6] = a3;
-  v11[7] = a4;
+  v11[6] = row;
+  v11[7] = returning;
   v6 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE id=?1", v11];
   v7 = v6;
-  if (a5)
+  if (error)
   {
     v8 = v6;
-    *a5 = v7;
+    *error = v7;
   }
 
   v9 = v13[5];
@@ -3534,9 +3534,9 @@ uint64_t __67__HMBLocalSQLContext_Record___selectRecordWithRow_returning_error__
   return 0;
 }
 
-- (id)_selectRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 returning:(unint64_t)a5 error:(id *)a6
+- (id)_selectRecordWithZoneRow:(unint64_t)row modelID:(id)d returning:(unint64_t)returning error:(id *)error
 {
-  v10 = a4;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3547,18 +3547,18 @@ uint64_t __67__HMBLocalSQLContext_Record___selectRecordWithRow_returning_error__
   v17[1] = 3221225472;
   v17[2] = __79__HMBLocalSQLContext_Record___selectRecordWithZoneRow_modelID_returning_error___block_invoke;
   v17[3] = &unk_2786E2978;
-  v21 = a3;
-  v11 = v10;
+  rowCopy = row;
+  v11 = dCopy;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a5;
+  returningCopy = returning;
   v12 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT record_v2.id block:record_v2.external_id, record_v2.external_data, record_v2.model_encoding, record_v2.model_data, record_v2.model_schema, record_v2.type, record_v2.push_encoding, record_v2.push_data, record_v2.push_block_id, record_v2.uuid FROM record_v2 WHERE store_v2_id=?1 and uuid=?2", v17];
   v13 = v12;
-  if (a6)
+  if (error)
   {
     v14 = v12;
-    *a6 = v13;
+    *error = v13;
   }
 
   v15 = v24[5];
@@ -3614,9 +3614,9 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordWithZoneRow_modelID_retur
   return 0;
 }
 
-- (id)_selectRecordModelIDWithZoneRow:(unint64_t)a3 externalID:(id)a4 error:(id *)a5
+- (id)_selectRecordModelIDWithZoneRow:(unint64_t)row externalID:(id)d error:(id *)error
 {
-  v8 = a4;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3627,17 +3627,17 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordWithZoneRow_modelID_retur
   v15[1] = 3221225472;
   v15[2] = __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_externalID_error___block_invoke;
   v15[3] = &unk_2786E2920;
-  v19 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = dCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v18 = &v20;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"SELECT uuid FROM record_v2 WHERE store_v2_id=?1 AND external_id=?2" block:v15];
   v11 = v10;
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v11;
+    *error = v11;
   }
 
   v13 = v21[5];
@@ -3691,7 +3691,7 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   return 0;
 }
 
-- (BOOL)_deleteZombieRecordsWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteZombieRecordsWithZoneRow:(unint64_t)row error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -3701,10 +3701,10 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   if (v7)
   {
     v19 = v8;
-    hmbBindIntSQLite3(v7, 1, a3, &v19);
+    hmbBindIntSQLite3(v7, 1, row, &v19);
     v10 = v19;
 
-    v11 = __execAndSetError(self, v7, v10, a4);
+    v11 = __execAndSetError(self, v7, v10, error);
     sqlite3_finalize(v7);
     v9 = v10;
   }
@@ -3712,7 +3712,7 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -3725,11 +3725,11 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       v16 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -3742,7 +3742,7 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   return v11;
 }
 
-- (BOOL)_deleteRecordsWithZoneRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteRecordsWithZoneRow:(unint64_t)row error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -3752,10 +3752,10 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   if (v7)
   {
     v19 = v8;
-    hmbBindIntSQLite3(v7, 1, a3, &v19);
+    hmbBindIntSQLite3(v7, 1, row, &v19);
     v10 = v19;
 
-    v11 = __execAndSetError(self, v7, v10, a4);
+    v11 = __execAndSetError(self, v7, v10, error);
     sqlite3_finalize(v7);
     v9 = v10;
   }
@@ -3763,7 +3763,7 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -3776,11 +3776,11 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
     }
 
     objc_autoreleasePoolPop(v12);
-    if (a4)
+    if (error)
     {
       v16 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -3793,7 +3793,7 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   return v11;
 }
 
-- (unint64_t)_clearPushForRecordRow:(unint64_t)a3 expectedOutputBlockRow:(unint64_t)a4 error:(id *)a5
+- (unint64_t)_clearPushForRecordRow:(unint64_t)row expectedOutputBlockRow:(unint64_t)blockRow error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -3803,15 +3803,15 @@ uint64_t __79__HMBLocalSQLContext_Record___selectRecordModelIDWithZoneRow_extern
   v9[1] = 3221225472;
   v9[2] = __82__HMBLocalSQLContext_Record___clearPushForRecordRow_expectedOutputBlockRow_error___block_invoke;
   v9[3] = &unk_2786E29A8;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = row;
+  v9[7] = blockRow;
   v9[4] = self;
   v9[5] = &v10;
   v6 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET push_encoding = 0 block:push_data = NULL, push_block_id = NULL WHERE id=?1 AND push_block_id=?2", v9];
-  if (a5)
+  if (error)
   {
     v6 = v6;
-    *a5 = v6;
+    *error = v6;
   }
 
   v7 = v11[3];
@@ -3869,7 +3869,7 @@ id __82__HMBLocalSQLContext_Record___clearPushForRecordRow_expectedOutputBlockRo
   return v8;
 }
 
-- (unint64_t)_deleteRecordWithRow:(unint64_t)a3 expectedOutputBlockRow:(unint64_t)a4 error:(id *)a5
+- (unint64_t)_deleteRecordWithRow:(unint64_t)row expectedOutputBlockRow:(unint64_t)blockRow error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -3879,15 +3879,15 @@ id __82__HMBLocalSQLContext_Record___clearPushForRecordRow_expectedOutputBlockRo
   v9[1] = 3221225472;
   v9[2] = __80__HMBLocalSQLContext_Record___deleteRecordWithRow_expectedOutputBlockRow_error___block_invoke;
   v9[3] = &unk_2786E29A8;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = row;
+  v9[7] = blockRow;
   v9[4] = self;
   v9[5] = &v10;
   v6 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM record_v2 WHERE id=?1 and push_block_id=?2" block:v9];
-  if (a5)
+  if (error)
   {
     v6 = v6;
-    *a5 = v6;
+    *error = v6;
   }
 
   v7 = v11[3];
@@ -3945,7 +3945,7 @@ id __80__HMBLocalSQLContext_Record___deleteRecordWithRow_expectedOutputBlockRow_
   return v8;
 }
 
-- (BOOL)_deleteRecordWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_deleteRecordWithRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -3957,8 +3957,8 @@ id __80__HMBLocalSQLContext_Record___deleteRecordWithRow_expectedOutputBlockRow_
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM record_v2 WHERE id=?1" block:v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -3976,10 +3976,10 @@ id __57__HMBLocalSQLContext_Record___deleteRecordWithRow_error___block_invoke(ui
   return v5;
 }
 
-- (BOOL)_deleteRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 error:(id *)a5
+- (BOOL)_deleteRecordWithZoneRow:(unint64_t)row externalID:(id)d error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dCopy = d;
   v23 = 0;
   v9 = prepareSQLite3([(HMBSQLContext *)self connection], "DELETE FROM record_v2 WHERE store_v2_id=?1 AND external_id=?2;", &v23);
   v10 = v23;
@@ -3987,21 +3987,21 @@ id __57__HMBLocalSQLContext_Record___deleteRecordWithRow_error___block_invoke(ui
   if (v9)
   {
     v22 = v10;
-    hmbBindIntSQLite3(v9, 1, a3, &v22);
+    hmbBindIntSQLite3(v9, 1, row, &v22);
     v12 = v22;
 
     v21 = v12;
-    hmbBindDataSQLite3(v9, 2, v8, &v21);
+    hmbBindDataSQLite3(v9, 2, dCopy, &v21);
     v11 = v21;
 
-    v13 = __execAndSetError(self, v9, v11, a5);
+    v13 = __execAndSetError(self, v9, v11, error);
     sqlite3_finalize(v9);
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -4014,11 +4014,11 @@ id __57__HMBLocalSQLContext_Record___deleteRecordWithRow_error___block_invoke(ui
     }
 
     objc_autoreleasePoolPop(v14);
-    if (a5)
+    if (error)
     {
       v18 = v11;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -4031,9 +4031,9 @@ id __57__HMBLocalSQLContext_Record___deleteRecordWithRow_error___block_invoke(ui
   return v13;
 }
 
-- (BOOL)_deleteRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 error:(id *)a5
+- (BOOL)_deleteRecordWithZoneRow:(unint64_t)row modelID:(id)d error:(id *)error
 {
-  v8 = a4;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -4042,17 +4042,17 @@ id __57__HMBLocalSQLContext_Record___deleteRecordWithRow_error___block_invoke(ui
   v12[1] = 3221225472;
   v12[2] = __69__HMBLocalSQLContext_Record___deleteRecordWithZoneRow_modelID_error___block_invoke;
   v12[3] = &unk_2786E2978;
-  v16 = a3;
-  v9 = v8;
+  rowCopy = row;
+  v9 = dCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v18;
-  v17 = a5;
+  errorCopy = error;
   v10 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"DELETE FROM record_v2 WHERE store_v2_id=?1 AND uuid=?2" block:v12];
-  LOBYTE(a5) = *(v19 + 24);
+  LOBYTE(error) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a5;
+  return error;
 }
 
 id __69__HMBLocalSQLContext_Record___deleteRecordWithZoneRow_modelID_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -4071,10 +4071,10 @@ id __69__HMBLocalSQLContext_Record___deleteRecordWithZoneRow_modelID_error___blo
   return v7;
 }
 
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 modelType:(id)a4 modelSchema:(id)a5 error:(id *)a6
+- (BOOL)_updateRecordWithRow:(unint64_t)row modelType:(id)type modelSchema:(id)schema error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  schemaCopy = schema;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4083,14 +4083,14 @@ id __69__HMBLocalSQLContext_Record___deleteRecordWithZoneRow_modelID_error___blo
   v16[1] = 3221225472;
   v16[2] = __79__HMBLocalSQLContext_Record___updateRecordWithRow_modelType_modelSchema_error___block_invoke;
   v16[3] = &unk_2786E2A10;
-  v21 = a3;
-  v12 = v10;
+  rowCopy = row;
+  v12 = typeCopy;
   v17 = v12;
-  v13 = v11;
+  v13 = schemaCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a6;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET type = ?2 block:model_schema = ?3 WHERE id = ?1", v16];
   LOBYTE(self) = *(v24 + 24);
 
@@ -4119,10 +4119,10 @@ id __79__HMBLocalSQLContext_Record___updateRecordWithRow_modelType_modelSchema_e
   return v9;
 }
 
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 pushBlockRow:(id)a4 pushData:(id)a5 pushEncoding:(unint64_t)a6 error:(id *)a7
+- (BOOL)_updateRecordWithRow:(unint64_t)row pushBlockRow:(id)blockRow pushData:(id)data pushEncoding:(unint64_t)encoding error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  blockRowCopy = blockRow;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -4131,15 +4131,15 @@ id __79__HMBLocalSQLContext_Record___updateRecordWithRow_modelType_modelSchema_e
   v18[1] = 3221225472;
   v18[2] = __92__HMBLocalSQLContext_Record___updateRecordWithRow_pushBlockRow_pushData_pushEncoding_error___block_invoke;
   v18[3] = &unk_2786E2898;
-  v23 = a3;
-  v24 = a6;
-  v14 = v13;
+  rowCopy = row;
+  encodingCopy = encoding;
+  v14 = dataCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = blockRowCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   v22 = &v26;
-  v25 = a7;
+  errorCopy = error;
   v16 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET push_encoding = ?2 block:push_data = ?3, push_block_id = ?4 WHERE id = ?1", v18];
   LOBYTE(self) = *(v27 + 24);
 
@@ -4173,10 +4173,10 @@ id __92__HMBLocalSQLContext_Record___updateRecordWithRow_pushBlockRow_pushData_p
   return v11;
 }
 
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 modelEncoding:(unint64_t)a4 modelData:(id)a5 modelSchema:(id)a6 error:(id *)a7
+- (BOOL)_updateRecordWithRow:(unint64_t)row modelEncoding:(unint64_t)encoding modelData:(id)data modelSchema:(id)schema error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  schemaCopy = schema;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -4185,15 +4185,15 @@ id __92__HMBLocalSQLContext_Record___updateRecordWithRow_pushBlockRow_pushData_p
   v18[1] = 3221225472;
   v18[2] = __93__HMBLocalSQLContext_Record___updateRecordWithRow_modelEncoding_modelData_modelSchema_error___block_invoke;
   v18[3] = &unk_2786E2898;
-  v23 = a3;
-  v24 = a4;
-  v14 = v12;
+  rowCopy = row;
+  encodingCopy = encoding;
+  v14 = dataCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = schemaCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   v22 = &v26;
-  v25 = a7;
+  errorCopy = error;
   v16 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET model_encoding=?2 block:model_data=?3, model_schema=?4 WHERE id=?1", v18];
   LOBYTE(self) = *(v27 + 24);
 
@@ -4227,7 +4227,7 @@ id __93__HMBLocalSQLContext_Record___updateRecordWithRow_modelEncoding_modelData
   return v11;
 }
 
-- (BOOL)_updateRecordsClearPushWithPushBlockRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)_updateRecordsClearPushWithPushBlockRow:(unint64_t)row error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -4239,8 +4239,8 @@ id __93__HMBLocalSQLContext_Record___updateRecordWithRow_modelEncoding_modelData
   v7[3] = &unk_2786E29A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = row;
+  v7[7] = error;
   v4 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET push_encoding = 0 block:push_data = NULL, push_block_id = NULL WHERE push_block_id=?1", v7];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -4258,11 +4258,11 @@ id __76__HMBLocalSQLContext_Record___updateRecordsClearPushWithPushBlockRow_erro
   return v5;
 }
 
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 pushEncoding:(unint64_t)a5 pushData:(id)a6 pushBlockRow:(id)a7 error:(id *)a8
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row modelID:(id)d pushEncoding:(unint64_t)encoding pushData:(id)data pushBlockRow:(id)blockRow error:(id *)error
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  dataCopy = data;
+  blockRowCopy = blockRow;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -4271,17 +4271,17 @@ id __76__HMBLocalSQLContext_Record___updateRecordsClearPushWithPushBlockRow_erro
   v22[1] = 3221225472;
   v22[2] = __104__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_pushEncoding_pushData_pushBlockRow_error___block_invoke;
   v22[3] = &unk_2786E2860;
-  v28 = a3;
-  v17 = v14;
+  rowCopy = row;
+  v17 = dCopy;
   v23 = v17;
-  v29 = a5;
-  v18 = v15;
+  encodingCopy = encoding;
+  v18 = dataCopy;
   v24 = v18;
-  v19 = v16;
+  v19 = blockRowCopy;
   v25 = v19;
-  v26 = self;
+  selfCopy = self;
   v27 = &v31;
-  v30 = a8;
+  errorCopy = error;
   v20 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET push_encoding = ?3 block:push_data = ?4, push_block_id = ?5 WHERE store_v2_id = ?1 AND uuid=?2", v22];
   LOBYTE(self) = *(v32 + 24);
 
@@ -4320,10 +4320,10 @@ id __104__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_pushEncodi
   return v13;
 }
 
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 modelID:(id)a4 externalData:(id)a5 error:(id *)a6
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row modelID:(id)d externalData:(id)data error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dataCopy = data;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4332,14 +4332,14 @@ id __104__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_pushEncodi
   v16[1] = 3221225472;
   v16[2] = __82__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_externalData_error___block_invoke;
   v16[3] = &unk_2786E2A10;
-  v21 = a3;
-  v12 = v10;
+  rowCopy = row;
+  v12 = dCopy;
   v17 = v12;
-  v13 = v11;
+  v13 = dataCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a6;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET external_data=?3 WHERE store_v2_id=?1 AND uuid=?2" block:v16];
   LOBYTE(self) = *(v24 + 24);
 
@@ -4368,10 +4368,10 @@ id __82__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_externalDat
   return v9;
 }
 
-- (BOOL)_updateRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 error:(id *)a6
+- (BOOL)_updateRecordWithZoneRow:(unint64_t)row externalID:(id)d externalData:(id)data error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dataCopy = data;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4380,14 +4380,14 @@ id __82__HMBLocalSQLContext_Record___updateRecordWithZoneRow_modelID_externalDat
   v16[1] = 3221225472;
   v16[2] = __85__HMBLocalSQLContext_Record___updateRecordWithZoneRow_externalID_externalData_error___block_invoke;
   v16[3] = &unk_2786E2A10;
-  v21 = a3;
-  v12 = v10;
+  rowCopy = row;
+  v12 = dCopy;
   v17 = v12;
-  v13 = v11;
+  v13 = dataCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a6;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET external_data=?3 WHERE store_v2_id=?1 AND external_id=?2" block:v16];
   LOBYTE(self) = *(v24 + 24);
 
@@ -4416,10 +4416,10 @@ id __85__HMBLocalSQLContext_Record___updateRecordWithZoneRow_externalID_external
   return v9;
 }
 
-- (BOOL)_updateRecordWithRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 error:(id *)a6
+- (BOOL)_updateRecordWithRow:(unint64_t)row externalID:(id)d externalData:(id)data error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dataCopy = data;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4428,14 +4428,14 @@ id __85__HMBLocalSQLContext_Record___updateRecordWithZoneRow_externalID_external
   v16[1] = 3221225472;
   v16[2] = __81__HMBLocalSQLContext_Record___updateRecordWithRow_externalID_externalData_error___block_invoke;
   v16[3] = &unk_2786E2A10;
-  v21 = a3;
-  v12 = v10;
+  rowCopy = row;
+  v12 = dCopy;
   v17 = v12;
-  v13 = v11;
+  v13 = dataCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v20 = &v23;
-  v22 = a6;
+  errorCopy = error;
   v14 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"UPDATE record_v2 SET external_id=?2 block:external_data=?3 WHERE id=?1", v16];
   LOBYTE(self) = *(v24 + 24);
 
@@ -4464,17 +4464,17 @@ id __81__HMBLocalSQLContext_Record___updateRecordWithRow_externalID_externalData
   return v9;
 }
 
-- (unint64_t)_insertRecordWithZoneRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 modelID:(id)a6 parentModelID:(id)a7 modelType:(id)a8 modelEncoding:(unint64_t)a9 modelData:(id)a10 modelSchema:(id)a11 pushEncoding:(unint64_t)a12 pushData:(id)a13 pushBlockRow:(id)a14 error:(id *)a15
+- (unint64_t)_insertRecordWithZoneRow:(unint64_t)row externalID:(id)d externalData:(id)data modelID:(id)iD parentModelID:(id)modelID modelType:(id)type modelEncoding:(unint64_t)encoding modelData:(id)self0 modelSchema:(id)self1 pushEncoding:(unint64_t)self2 pushData:(id)self3 pushBlockRow:(id)self4 error:(id *)self5
 {
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
-  v26 = a11;
-  v27 = a13;
-  v28 = a14;
+  dCopy = d;
+  dataCopy = data;
+  iDCopy = iD;
+  modelIDCopy = modelID;
+  typeCopy = type;
+  modelDataCopy = modelData;
+  schemaCopy = schema;
+  pushDataCopy = pushData;
+  blockRowCopy = blockRow;
   v58 = 0;
   v59 = &v58;
   v60 = 0x2020000000;
@@ -4483,30 +4483,30 @@ id __81__HMBLocalSQLContext_Record___updateRecordWithRow_externalID_externalData
   v42[1] = 3221225472;
   v42[2] = __188__HMBLocalSQLContext_Record___insertRecordWithZoneRow_externalID_externalData_modelID_parentModelID_modelType_modelEncoding_modelData_modelSchema_pushEncoding_pushData_pushBlockRow_error___block_invoke;
   v42[3] = &unk_2786E2818;
-  v54 = a3;
-  v29 = v20;
+  rowCopy = row;
+  v29 = dCopy;
   v43 = v29;
-  v30 = v21;
+  v30 = dataCopy;
   v44 = v30;
-  v31 = v22;
+  v31 = iDCopy;
   v45 = v31;
-  v32 = v23;
+  v32 = modelIDCopy;
   v46 = v32;
-  v33 = v24;
+  v33 = typeCopy;
   v47 = v33;
-  v55 = a9;
-  v34 = v25;
+  encodingCopy = encoding;
+  v34 = modelDataCopy;
   v48 = v34;
-  v35 = v26;
+  v35 = schemaCopy;
   v49 = v35;
-  v56 = a12;
-  v36 = v27;
+  pushEncodingCopy = pushEncoding;
+  v36 = pushDataCopy;
   v50 = v36;
-  v37 = v28;
+  v37 = blockRowCopy;
   v51 = v37;
-  v52 = self;
+  selfCopy = self;
   v53 = &v58;
-  v57 = a15;
+  errorCopy = error;
   v38 = [(HMBSQLContext *)self _performBlockWithContextManagedStatementForString:"INSERT INTO record_v2                                         (store_v2_id block:external_id, external_data, uuid, parent_uuid, type, model_encoding, model_data, model_schema, push_encoding, push_data, push_block_id)                                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)", v42];
   v39 = v59[3];
 
@@ -4580,17 +4580,17 @@ id __188__HMBLocalSQLContext_Record___insertRecordWithZoneRow_externalID_externa
   return v27;
 }
 
-- (int64_t)migrateToSchema01WithError:(id *)a3
+- (int64_t)migrateToSchema01WithError:(id *)error
 {
   v5 = -[HMBSQLContext runSQLite3:](self, "runSQLite3:", [CFSTR(""CREATE TABLE IF NOT EXISTS index_sentinel(                 store_id            INTEGER NOT NULL type                TEXT NOT NULL]);
   if (v5)
   {
-    if (a3)
+    if (error)
     {
 LABEL_3:
       v5 = v5;
       v6 = 0;
-      *a3 = v5;
+      *error = v5;
       goto LABEL_10;
     }
 
@@ -4602,7 +4602,7 @@ LABEL_6:
   v5 = -[HMBSQLContext runSQLite3:](self, "runSQLite3:", [@"CREATE UNIQUE INDEX IF NOT EXISTS index_sentinel_unique ON index_sentinel (store_id type)"]);;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -4610,7 +4610,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v7 = [(HMBSQLContext *)self setSchemaVersion:1 error:a3];
+  v7 = [(HMBSQLContext *)self setSchemaVersion:1 error:error];
   v5 = 0;
   if (v7)
   {

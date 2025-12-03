@@ -1,18 +1,18 @@
 @interface _GCLogitechRacingWheel
-- (BOOL)acquireDeviceWithError:(id *)a3;
-- (_GCLogitechRacingWheel)initWithService:(unsigned int)a3;
+- (BOOL)acquireDeviceWithError:(id *)error;
+- (_GCLogitechRacingWheel)initWithService:(unsigned int)service;
 - (id)eventObservers;
-- (id)observeGamepadEvents:(id)a3;
+- (id)observeGamepadEvents:(id)events;
 - (void)dealloc;
-- (void)setEventObservers:(void *)a1;
+- (void)setEventObservers:(void *)observers;
 @end
 
 @implementation _GCLogitechRacingWheel
 
-- (_GCLogitechRacingWheel)initWithService:(unsigned int)a3
+- (_GCLogitechRacingWheel)initWithService:(unsigned int)service
 {
   v214[2] = *MEMORY[0x1E69E9840];
-  v3 = IOHIDDeviceCreate(*MEMORY[0x1E695E480], a3);
+  v3 = IOHIDDeviceCreate(*MEMORY[0x1E695E480], service);
   if (v3)
   {
     v4 = v3;
@@ -434,7 +434,7 @@ LABEL_27:
   [(_GCLogitechRacingWheel *)&v4 dealloc];
 }
 
-- (BOOL)acquireDeviceWithError:(id *)a3
+- (BOOL)acquireDeviceWithError:(id *)error
 {
   v21[2] = *MEMORY[0x1E69E9840];
   if (gc_isInternalBuild())
@@ -445,7 +445,7 @@ LABEL_27:
   v5 = IOHIDDeviceOpen(self->_device, 0);
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v7 = v5;
@@ -455,7 +455,7 @@ LABEL_27:
       v21[0] = @"Aquire device failed";
       v21[1] = @"Failed to open device";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-      *a3 = [v6 errorWithDomain:@"IOKitErrorDomain" code:v7 userInfo:v9];
+      *error = [v6 errorWithDomain:@"IOKitErrorDomain" code:v7 userInfo:v9];
     }
 
     goto LABEL_6;
@@ -472,7 +472,7 @@ LABEL_27:
   if (gc_isInternalBuild())
   {
     [_GCLogitechRacingWheel acquireDeviceWithError:v12];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -480,7 +480,7 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_11:
     v13 = MEMORY[0x1E696ABC0];
@@ -490,7 +490,7 @@ LABEL_11:
     v19[0] = @"Aquire device failed";
     v19[1] = @"Failed to switch wheel mode to 900 degrses.";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-    *a3 = [v13 errorWithDomain:@"IOKitErrorDomain" code:0 userInfo:v15];
+    *error = [v13 errorWithDomain:@"IOKitErrorDomain" code:0 userInfo:v15];
   }
 
 LABEL_6:
@@ -500,9 +500,9 @@ LABEL_13:
   return result;
 }
 
-- (id)observeGamepadEvents:(id)a3
+- (id)observeGamepadEvents:(id)events
 {
-  v6 = [a3 copy];
+  v6 = [events copy];
   if (!self)
   {
     goto LABEL_9;
@@ -573,11 +573,11 @@ LABEL_9:
   return result;
 }
 
-- (void)setEventObservers:(void *)a1
+- (void)setEventObservers:(void *)observers
 {
-  if (a1)
+  if (observers)
   {
-    objc_setProperty_atomic_copy(a1, newValue, newValue, 144);
+    objc_setProperty_atomic_copy(observers, newValue, newValue, 144);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface HSPCNameShowerHeadsViewController
-- (HSPCNameShowerHeadsViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCNameShowerHeadsViewController)initWithCoordinator:(id)coordinator config:(id)config;
 @end
 
 @implementation HSPCNameShowerHeadsViewController
 
-- (HSPCNameShowerHeadsViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCNameShowerHeadsViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
   v7.receiver = self;
   v7.super_class = HSPCNameShowerHeadsViewController;
-  v4 = [(HSPCNameZonesViewController *)&v7 initWithCoordinator:a3 config:a4];
+  v4 = [(HSPCNameZonesViewController *)&v7 initWithCoordinator:coordinator config:config];
   if (v4)
   {
     v5 = HULocalizedString();

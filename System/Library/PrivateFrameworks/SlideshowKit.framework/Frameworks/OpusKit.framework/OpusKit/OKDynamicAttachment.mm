@@ -1,45 +1,45 @@
 @interface OKDynamicAttachment
 + (id)supportedSettings;
-- (OKDynamicAttachment)initWithSettings:(id)a3;
+- (OKDynamicAttachment)initWithSettings:(id)settings;
 - (void)dealloc;
-- (void)updateForOwningDynamicProxy:(id)a3;
+- (void)updateForOwningDynamicProxy:(id)proxy;
 @end
 
 @implementation OKDynamicAttachment
 
-- (OKDynamicAttachment)initWithSettings:(id)a3
+- (OKDynamicAttachment)initWithSettings:(id)settings
 {
   v17.receiver = self;
   v17.super_class = OKDynamicAttachment;
   v4 = [(OKDynamicAttachment *)&v17 init];
   if (v4)
   {
-    [objc_msgSend(a3 objectForKey:{@"localOffsetFromCenter", "UIOffsetValue"}];
+    [objc_msgSend(settings objectForKey:{@"localOffsetFromCenter", "UIOffsetValue"}];
     v4->_localOffsetFromCenter.horizontal = v5;
     v4->_localOffsetFromCenter.vertical = v6;
-    v7 = [a3 objectForKey:@"remoteWidgetName"];
+    v7 = [settings objectForKey:@"remoteWidgetName"];
     v4->_remoteWidgetName = v7;
     if (v7)
     {
-      [objc_msgSend(a3 objectForKey:{@"remoteOffsetFromCenter", "UIOffsetValue"}];
+      [objc_msgSend(settings objectForKey:{@"remoteOffsetFromCenter", "UIOffsetValue"}];
     }
 
     else
     {
-      [objc_msgSend(a3 objectForKey:{@"remoteAnchorPoint", "CGPointValue"}];
+      [objc_msgSend(settings objectForKey:{@"remoteAnchorPoint", "CGPointValue"}];
     }
 
     v4->_remote.offsetFromCenter.horizontal = v8;
     v4->_remote.offsetFromCenter.vertical = v9;
-    v10 = [a3 objectForKey:@"length"];
+    v10 = [settings objectForKey:@"length"];
     *&v4->_flags = *&v4->_flags & 0xFD | (2 * (v10 != 0));
     [v10 doubleValue];
     v4->_length = v11;
-    v12 = [a3 objectForKey:@"damping"];
+    v12 = [settings objectForKey:@"damping"];
     *&v4->_flags = *&v4->_flags & 0xFB | (4 * (v12 != 0));
     [v12 doubleValue];
     v4->_damping = v13;
-    v14 = [a3 objectForKey:@"frequency"];
+    v14 = [settings objectForKey:@"frequency"];
     *&v4->_flags = *&v4->_flags & 0xF7 | (8 * (v14 != 0));
     [v14 doubleValue];
     v4->_frequency = v15;
@@ -70,7 +70,7 @@
   [(OKDynamicAttachment *)&v5 dealloc];
 }
 
-- (void)updateForOwningDynamicProxy:(id)a3
+- (void)updateForOwningDynamicProxy:(id)proxy
 {
   if ((*&self->_flags & 1) == 0)
   {
@@ -87,21 +87,21 @@
       self->_behavior = 0;
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:a3 offsetFromCenter:self->_localOffsetFromCenter.horizontal attachedToAnchor:{self->_localOffsetFromCenter.vertical, self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
+    v9 = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:proxy offsetFromCenter:self->_localOffsetFromCenter.horizontal attachedToAnchor:{self->_localOffsetFromCenter.vertical, self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
     goto LABEL_15;
   }
 
-  v5 = [objc_msgSend(a3 "proxiedObject")];
+  v5 = [objc_msgSend(proxy "proxiedObject")];
   if (!v5)
   {
-    v6 = [objc_msgSend(objc_msgSend(a3 "proxiedObject")];
+    v6 = [objc_msgSend(objc_msgSend(proxy "proxiedObject")];
     if (v6)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
-    v7 = [v6 dynamicProxy];
+    dynamicProxy = [v6 dynamicProxy];
     goto LABEL_11;
   }
 
@@ -112,9 +112,9 @@ LABEL_10:
   }
 
 LABEL_5:
-  v7 = [v6 dynamicProxyForOffsetFromCenter:&self->_remote realRemoteOffsetFromCenter:{self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
+  dynamicProxy = [v6 dynamicProxyForOffsetFromCenter:&self->_remote realRemoteOffsetFromCenter:{self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
 LABEL_11:
-  v10 = v7;
+  v10 = dynamicProxy;
   v9 = self->_behavior;
   if (!v10)
   {
@@ -127,7 +127,7 @@ LABEL_11:
     self->_behavior = 0;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:a3 offsetFromCenter:v10 attachedToItem:self->_localOffsetFromCenter.horizontal offsetFromCenter:{self->_localOffsetFromCenter.vertical, self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
+  v9 = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:proxy offsetFromCenter:v10 attachedToItem:self->_localOffsetFromCenter.horizontal offsetFromCenter:{self->_localOffsetFromCenter.vertical, self->_remote.offsetFromCenter.horizontal, self->_remote.offsetFromCenter.vertical}];
 LABEL_15:
   self->_behavior = v9;
 LABEL_16:

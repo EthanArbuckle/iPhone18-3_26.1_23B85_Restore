@@ -1,22 +1,22 @@
 @interface PHASESharedListenerDebugInfo
-- (BOOL)isEqual:(id)a3;
-- (PHASESharedListenerDebugInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHASESharedListenerDebugInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHASESharedListenerDebugInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = PHASESharedListenerDebugInfo;
-  if ([(PHASESharedEntityDebugInfo *)&v10 isEqual:v4])
+  if ([(PHASESharedEntityDebugInfo *)&v10 isEqual:equalCopy])
   {
     [(PHASESharedListenerDebugInfo *)self gain];
     v6 = v5;
-    [v4 gain];
+    [equalCopy gain];
     v8 = v6 == v7;
   }
 
@@ -28,25 +28,25 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = PHASESharedListenerDebugInfo;
-  [(PHASESharedEntityDebugInfo *)&v6 encodeWithCoder:v4];
+  [(PHASESharedEntityDebugInfo *)&v6 encodeWithCoder:coderCopy];
   *&v5 = self->_gain;
-  [v4 encodeFloat:@"gain" forKey:v5];
+  [coderCopy encodeFloat:@"gain" forKey:v5];
 }
 
-- (PHASESharedListenerDebugInfo)initWithCoder:(id)a3
+- (PHASESharedListenerDebugInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PHASESharedListenerDebugInfo;
-  v5 = [(PHASESharedEntityDebugInfo *)&v8 initWithCoder:v4];
+  v5 = [(PHASESharedEntityDebugInfo *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"gain"];
+    [coderCopy decodeFloatForKey:@"gain"];
     v5->_gain = v6;
   }
 

@@ -1,15 +1,15 @@
 @interface TSCH3DLabelsResourcesSession
-+ (void)performBlockWithRenderer:(id)a3 resources:(id)a4 expectedSize:(tvec2<int>)a5 block:(id)a6;
++ (void)performBlockWithRenderer:(id)renderer resources:(id)resources expectedSize:(tvec2<int>)size block:(id)block;
 @end
 
 @implementation TSCH3DLabelsResourcesSession
 
-+ (void)performBlockWithRenderer:(id)a3 resources:(id)a4 expectedSize:(tvec2<int>)a5 block:(id)a6
++ (void)performBlockWithRenderer:(id)renderer resources:(id)resources expectedSize:(tvec2<int>)size block:(id)block
 {
-  v55 = a3;
-  v9 = a4;
-  v11 = a6;
-  if (!v55)
+  rendererCopy = renderer;
+  resourcesCopy = resources;
+  blockCopy = block;
+  if (!rendererCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v12, v13, v14, "+[TSCH3DLabelsResourcesSession performBlockWithRenderer:resources:expectedSize:block:]");
@@ -19,7 +19,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  if (!v9)
+  if (!resourcesCopy)
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v12, v13, v14, "+[TSCH3DLabelsResourcesSession performBlockWithRenderer:resources:expectedSize:block:]");
@@ -29,12 +29,12 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42, v43, v44);
   }
 
-  v45 = objc_msgSend_beginResources_expectedSize_(v55, v10, v12, v13, v14, v9, a5);
-  isCacheValid = objc_msgSend_isCacheValid(v55, v46, v47, v48, v49);
-  v11[2](v11, v45 & (isCacheValid ^ 1u));
+  v45 = objc_msgSend_beginResources_expectedSize_(rendererCopy, v10, v12, v13, v14, resourcesCopy, size);
+  isCacheValid = objc_msgSend_isCacheValid(rendererCopy, v46, v47, v48, v49);
+  blockCopy[2](blockCopy, v45 & (isCacheValid ^ 1u));
   if (v45)
   {
-    objc_msgSend_endResources(v55, v51, v52, v53, v54);
+    objc_msgSend_endResources(rendererCopy, v51, v52, v53, v54);
   }
 }
 

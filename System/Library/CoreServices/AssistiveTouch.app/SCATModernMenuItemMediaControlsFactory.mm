@@ -1,22 +1,22 @@
 @interface SCATModernMenuItemMediaControlsFactory
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4;
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5;
++ (id)itemDetailsForItem:(id)item menu:(id)menu;
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate;
 @end
 
 @implementation SCATModernMenuItemMediaControlsFactory
 
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  menuCopy = menu;
+  delegateCopy = delegate;
   v11 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [a1 itemDetailsForItem:v8 menu:{v9, 0}];
+  v12 = [self itemDetailsForItem:itemCopy menu:{menuCopy, 0}];
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -31,7 +31,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [a1 menuItemWithItemDictionary:*(*(&v19 + 1) + 8 * i) menu:v9 delegate:v10];
+        v17 = [self menuItemWithItemDictionary:*(*(&v19 + 1) + 8 * i) menu:menuCopy delegate:delegateCopy];
         [v11 addObject:v17];
       }
 
@@ -44,10 +44,10 @@
   return v11;
 }
 
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4
++ (id)itemDetailsForItem:(id)item menu:(id)menu
 {
-  v4 = a3;
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsPlayPause])
+  itemCopy = item;
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsPlayPause])
   {
     v29[0] = @"mediacontrols_play_pause";
     v28[0] = @"identifier";
@@ -65,7 +65,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsPreviousTrack])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsPreviousTrack])
   {
     v26[0] = @"mediacontrols_previous_chapter";
     v25[0] = @"identifier";
@@ -80,7 +80,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsNextTrack])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsNextTrack])
   {
     v23[0] = @"mediacontrols_next_chapter";
     v22[0] = @"identifier";
@@ -95,7 +95,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsSkipForward])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsSkipForward])
   {
     v20[0] = @"mediacontrols_seek_frame_forward";
     v19[0] = @"identifier";
@@ -110,7 +110,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsSkipBackward])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsSkipBackward])
   {
     v17[0] = @"mediacontrols_seek_frame_backward";
     v16[0] = @"identifier";
@@ -125,7 +125,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsRewind])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsRewind])
   {
     v14[0] = @"mediacontrols_rewind";
     v13[0] = @"identifier";
@@ -140,7 +140,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:AXSSwitchControlMenuItemMediaControlsFastForward])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemMediaControlsFastForward])
   {
     v11[0] = @"mediacontrols_forward";
     v10[0] = @"identifier";
@@ -162,19 +162,19 @@ LABEL_16:
   return v8;
 }
 
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"identifier"];
-  v9 = [v7 objectForKey:@"title"];
-  v10 = [v7 objectForKey:@"imageName"];
-  v11 = [v7 objectForKey:@"activateBehavior"];
-  v12 = [v11 unsignedIntegerValue];
+  delegateCopy = delegate;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKey:@"identifier"];
+  v9 = [dictionaryCopy objectForKey:@"title"];
+  v10 = [dictionaryCopy objectForKey:@"imageName"];
+  v11 = [dictionaryCopy objectForKey:@"activateBehavior"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v13 = [v7 objectForKey:@"guidedAccess"];
+  v13 = [dictionaryCopy objectForKey:@"guidedAccess"];
 
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
   if ([v8 isEqualToString:@"mediacontrols_play_pause"])
   {
     v15 = &stru_1001D3860;
@@ -217,7 +217,7 @@ LABEL_16:
 
   v16 = [objc_opt_class() updateBlockForIdentifier:v8];
   LOBYTE(v19) = 0;
-  v17 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:v6 title:v9 imageName:v10 activateBehavior:v12 allowedWithGuidedAccess:v14 allowedWithAssistiveAccess:v19 activateHandler:v15 updateHandler:v16];
+  v17 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:delegateCopy title:v9 imageName:v10 activateBehavior:unsignedIntegerValue allowedWithGuidedAccess:bOOLValue allowedWithAssistiveAccess:v19 activateHandler:v15 updateHandler:v16];
 
   return v17;
 }

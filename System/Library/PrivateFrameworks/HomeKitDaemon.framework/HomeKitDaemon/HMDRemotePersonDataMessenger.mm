@@ -2,18 +2,18 @@
 + (id)logCategory;
 - (HMDHome)home;
 - (HMDPersonDataSource)dataSource;
-- (HMDRemotePersonDataMessenger)initWithUUID:(id)a3 home:(id)a4 workQueue:(id)a5;
+- (HMDRemotePersonDataMessenger)initWithUUID:(id)d home:(id)home workQueue:(id)queue;
 - (id)logIdentifier;
 - (void)_notifyResidentsOfUpdatedFaceClassificationDependentData;
 - (void)_startDebounceTimerToNotifyResidentsOfUpdatedFaceClassificationDependentData;
-- (void)configureWithDataSource:(id)a3 home:(id)a4;
-- (void)handlePerformCloudPullMessage:(id)a3;
-- (void)handleRemovedFaceCropWithUUID:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)handleRemovedPersonWithUUID:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)handleUpdatedPerson:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)handleUpdatedPersonFaceCrop:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)handleUpdatedSettings:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)configureWithDataSource:(id)source home:(id)home;
+- (void)handlePerformCloudPullMessage:(id)message;
+- (void)handleRemovedFaceCropWithUUID:(id)d mirrorOutputFuture:(id)future;
+- (void)handleRemovedPersonWithUUID:(id)d mirrorOutputFuture:(id)future;
+- (void)handleUpdatedPerson:(id)person mirrorOutputFuture:(id)future;
+- (void)handleUpdatedPersonFaceCrop:(id)crop mirrorOutputFuture:(id)future;
+- (void)handleUpdatedSettings:(id)settings mirrorOutputFuture:(id)future;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDRemotePersonDataMessenger
@@ -32,16 +32,16 @@
   return WeakRetained;
 }
 
-- (void)handleUpdatedSettings:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleUpdatedSettings:(id)settings mirrorOutputFuture:(id)future
 {
-  v5 = a4;
-  v6 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  futureCopy = future;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = MEMORY[0x277D2C938];
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  v9 = [v7 schedulerWithDispatchQueue:v8];
-  v10 = [v5 reschedule:v9];
+  workQueue2 = [(HMDRemotePersonDataMessenger *)self workQueue];
+  v9 = [v7 schedulerWithDispatchQueue:workQueue2];
+  v10 = [futureCopy reschedule:v9];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -51,16 +51,16 @@
   v11 = [v10 addSuccessBlock:v12];
 }
 
-- (void)handleRemovedFaceCropWithUUID:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleRemovedFaceCropWithUUID:(id)d mirrorOutputFuture:(id)future
 {
-  v5 = a4;
-  v6 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  futureCopy = future;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = MEMORY[0x277D2C938];
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  v9 = [v7 schedulerWithDispatchQueue:v8];
-  v10 = [v5 reschedule:v9];
+  workQueue2 = [(HMDRemotePersonDataMessenger *)self workQueue];
+  v9 = [v7 schedulerWithDispatchQueue:workQueue2];
+  v10 = [futureCopy reschedule:v9];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -70,16 +70,16 @@
   v11 = [v10 addSuccessBlock:v12];
 }
 
-- (void)handleRemovedPersonWithUUID:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleRemovedPersonWithUUID:(id)d mirrorOutputFuture:(id)future
 {
-  v5 = a4;
-  v6 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  futureCopy = future;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = MEMORY[0x277D2C938];
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  v9 = [v7 schedulerWithDispatchQueue:v8];
-  v10 = [v5 reschedule:v9];
+  workQueue2 = [(HMDRemotePersonDataMessenger *)self workQueue];
+  v9 = [v7 schedulerWithDispatchQueue:workQueue2];
+  v10 = [futureCopy reschedule:v9];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -89,16 +89,16 @@
   v11 = [v10 addSuccessBlock:v12];
 }
 
-- (void)handleUpdatedPersonFaceCrop:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleUpdatedPersonFaceCrop:(id)crop mirrorOutputFuture:(id)future
 {
-  v5 = a4;
-  v6 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  futureCopy = future;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = MEMORY[0x277D2C938];
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  v9 = [v7 schedulerWithDispatchQueue:v8];
-  v10 = [v5 reschedule:v9];
+  workQueue2 = [(HMDRemotePersonDataMessenger *)self workQueue];
+  v9 = [v7 schedulerWithDispatchQueue:workQueue2];
+  v10 = [futureCopy reschedule:v9];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -108,16 +108,16 @@
   v11 = [v10 addSuccessBlock:v12];
 }
 
-- (void)handleUpdatedPerson:(id)a3 mirrorOutputFuture:(id)a4
+- (void)handleUpdatedPerson:(id)person mirrorOutputFuture:(id)future
 {
-  v5 = a4;
-  v6 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  futureCopy = future;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = MEMORY[0x277D2C938];
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  v9 = [v7 schedulerWithDispatchQueue:v8];
-  v10 = [v5 reschedule:v9];
+  workQueue2 = [(HMDRemotePersonDataMessenger *)self workQueue];
+  v9 = [v7 schedulerWithDispatchQueue:workQueue2];
+  v10 = [futureCopy reschedule:v9];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -127,41 +127,41 @@
   v11 = [v10 addSuccessBlock:v12];
 }
 
-- (void)configureWithDataSource:(id)a3 home:(id)a4
+- (void)configureWithDataSource:(id)source home:(id)home
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  sourceCopy = source;
+  homeCopy = home;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!v6)
+  if (!sourceCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  [(HMDRemotePersonDataMessenger *)self setDataSource:v6];
-  v9 = [HMDUserMessagePolicy userMessagePolicyWithHome:v7 userPrivilege:0 remoteAccessRequired:0];
+  [(HMDRemotePersonDataMessenger *)self setDataSource:sourceCopy];
+  v9 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
   v10 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
   [v10 setRoles:{objc_msgSend(v10, "roles") | 4}];
-  v11 = [v7 msgDispatcher];
+  msgDispatcher = [homeCopy msgDispatcher];
   v14[0] = v9;
   v14[1] = v10;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  [v11 registerForMessage:@"HMDRemotePersonDataMessengerPerformCloudPullMessage" receiver:self policies:v12 selector:sel_handlePerformCloudPullMessage_];
+  [msgDispatcher registerForMessage:@"HMDRemotePersonDataMessengerPerformCloudPullMessage" receiver:self policies:v12 selector:sel_handlePerformCloudPullMessage_];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDRemotePersonDataMessenger *)self notifyResidentsOfUpdatedDataDebounceTimer];
+  notifyResidentsOfUpdatedDataDebounceTimer = [(HMDRemotePersonDataMessenger *)self notifyResidentsOfUpdatedDataDebounceTimer];
 
-  if (v6 == v4)
+  if (notifyResidentsOfUpdatedDataDebounceTimer == fireCopy)
   {
     [(HMDRemotePersonDataMessenger *)self setNotifyResidentsOfUpdatedDataDebounceTimer:0];
 
@@ -171,21 +171,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemotePersonDataMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMDRemotePersonDataMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handlePerformCloudPullMessage:(id)a3
+- (void)handlePerformCloudPullMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -196,15 +196,15 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemotePersonDataMessenger *)v7 dataSource];
-  v11 = [v10 performCloudPull];
+  dataSource = [(HMDRemotePersonDataMessenger *)selfCopy dataSource];
+  performCloudPull = [dataSource performCloudPull];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__HMDRemotePersonDataMessenger_handlePerformCloudPullMessage___block_invoke;
   v15[3] = &unk_278687CC0;
-  v16 = v4;
-  v12 = v4;
-  v13 = [v11 addCompletionBlock:v15];
+  v16 = messageCopy;
+  v12 = messageCopy;
+  v13 = [performCloudPull addCompletionBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -212,52 +212,52 @@
 - (void)_notifyResidentsOfUpdatedFaceClassificationDependentData
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDRemotePersonDataMessenger *)self home];
-  v5 = v4;
-  if (v4)
+  home = [(HMDRemotePersonDataMessenger *)self home];
+  v5 = home;
+  if (home)
   {
-    v6 = [v4 owner];
-    v7 = [v6 account];
+    owner = [home owner];
+    account = [owner account];
 
-    if (v7)
+    if (account)
     {
-      v8 = [v7 handles];
-      v9 = [v8 firstObject];
+      handles = [account handles];
+      firstObject = [handles firstObject];
 
-      if (v9)
+      if (firstObject)
       {
         v10 = [HMDRemoteAccountMessageDestination alloc];
-        v11 = [(HMDRemotePersonDataMessenger *)self messageTargetUUID];
-        v12 = [(HMDRemoteAccountMessageDestination *)v10 initWithTarget:v11 handle:v9 multicast:1];
+        messageTargetUUID = [(HMDRemotePersonDataMessenger *)self messageTargetUUID];
+        v12 = [(HMDRemoteAccountMessageDestination *)v10 initWithTarget:messageTargetUUID handle:firstObject multicast:1];
 
         [(HMDRemoteAccountMessageDestination *)v12 setRestrictToResidentCapable:1];
         v13 = [[HMDRemoteMessage alloc] initWithName:@"HMDRemotePersonDataMessengerPerformCloudPullMessage" destination:v12 payload:0 type:3 timeout:1 secure:0.0];
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = HMFGetLogIdentifier();
-          v18 = [(HMFObject *)v13 shortDescription];
+          shortDescription = [(HMFObject *)v13 shortDescription];
           v33 = 138543618;
           v34 = v17;
           v35 = 2112;
-          v36 = v18;
+          v36 = shortDescription;
           _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Sending message to notify resident devices of updated face-classification-dependent data: %@", &v33, 0x16u);
         }
 
         objc_autoreleasePoolPop(v14);
-        v19 = [v5 msgDispatcher];
-        [v19 sendMessage:v13];
+        msgDispatcher = [v5 msgDispatcher];
+        [msgDispatcher sendMessage:v13];
       }
 
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy2 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -274,7 +274,7 @@
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy3 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -291,7 +291,7 @@
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy4 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -310,15 +310,15 @@
 - (void)_startDebounceTimerToNotifyResidentsOfUpdatedFaceClassificationDependentData
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemotePersonDataMessenger *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDRemotePersonDataMessenger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDRemotePersonDataMessenger *)self notifyResidentsOfUpdatedDataDebounceTimer];
+  notifyResidentsOfUpdatedDataDebounceTimer = [(HMDRemotePersonDataMessenger *)self notifyResidentsOfUpdatedDataDebounceTimer];
 
-  if (!v4)
+  if (!notifyResidentsOfUpdatedDataDebounceTimer)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -329,44 +329,44 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMDRemotePersonDataMessenger *)v6 notifyResidentsOfUpdatedDataDebounceTimerFactory];
-    v10 = v9[2](v9, 0, 10.0);
-    [(HMDRemotePersonDataMessenger *)v6 setNotifyResidentsOfUpdatedDataDebounceTimer:v10];
+    notifyResidentsOfUpdatedDataDebounceTimerFactory = [(HMDRemotePersonDataMessenger *)selfCopy notifyResidentsOfUpdatedDataDebounceTimerFactory];
+    v10 = notifyResidentsOfUpdatedDataDebounceTimerFactory[2](notifyResidentsOfUpdatedDataDebounceTimerFactory, 0, 10.0);
+    [(HMDRemotePersonDataMessenger *)selfCopy setNotifyResidentsOfUpdatedDataDebounceTimer:v10];
 
-    v11 = [(HMDRemotePersonDataMessenger *)v6 notifyResidentsOfUpdatedDataDebounceTimer];
-    [v11 setDelegate:v6];
+    notifyResidentsOfUpdatedDataDebounceTimer2 = [(HMDRemotePersonDataMessenger *)selfCopy notifyResidentsOfUpdatedDataDebounceTimer];
+    [notifyResidentsOfUpdatedDataDebounceTimer2 setDelegate:selfCopy];
 
-    v12 = [(HMDRemotePersonDataMessenger *)v6 workQueue];
-    v13 = [(HMDRemotePersonDataMessenger *)v6 notifyResidentsOfUpdatedDataDebounceTimer];
-    [v13 setDelegateQueue:v12];
+    workQueue2 = [(HMDRemotePersonDataMessenger *)selfCopy workQueue];
+    notifyResidentsOfUpdatedDataDebounceTimer3 = [(HMDRemotePersonDataMessenger *)selfCopy notifyResidentsOfUpdatedDataDebounceTimer];
+    [notifyResidentsOfUpdatedDataDebounceTimer3 setDelegateQueue:workQueue2];
 
-    v14 = [(HMDRemotePersonDataMessenger *)v6 notifyResidentsOfUpdatedDataDebounceTimer];
-    [v14 resume];
+    notifyResidentsOfUpdatedDataDebounceTimer4 = [(HMDRemotePersonDataMessenger *)selfCopy notifyResidentsOfUpdatedDataDebounceTimer];
+    [notifyResidentsOfUpdatedDataDebounceTimer4 resume];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDRemotePersonDataMessenger)initWithUUID:(id)a3 home:(id)a4 workQueue:(id)a5
+- (HMDRemotePersonDataMessenger)initWithUUID:(id)d home:(id)home workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  homeCopy = home;
+  queueCopy = queue;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!homeCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = queueCopy;
+  if (!queueCopy)
   {
 LABEL_9:
     v17 = _HMFPreconditionFailure();
@@ -378,12 +378,12 @@ LABEL_9:
   v12 = [(HMDRemotePersonDataMessenger *)&v18 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [dCopy copy];
     UUID = v12->_UUID;
     v12->_UUID = v13;
 
-    objc_storeWeak(&v12->_home, v9);
-    objc_storeStrong(&v12->_workQueue, a5);
+    objc_storeWeak(&v12->_home, homeCopy);
+    objc_storeStrong(&v12->_workQueue, queue);
     notifyResidentsOfUpdatedDataDebounceTimerFactory = v12->_notifyResidentsOfUpdatedDataDebounceTimerFactory;
     v12->_notifyResidentsOfUpdatedDataDebounceTimerFactory = &__block_literal_global_266287;
   }

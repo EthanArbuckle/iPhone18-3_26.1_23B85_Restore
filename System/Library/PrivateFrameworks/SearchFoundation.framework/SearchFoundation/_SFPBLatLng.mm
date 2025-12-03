@@ -1,31 +1,31 @@
 @interface _SFPBLatLng
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBLatLng)initWithDictionary:(id)a3;
-- (_SFPBLatLng)initWithFacade:(id)a3;
-- (_SFPBLatLng)initWithJSON:(id)a3;
+- (_SFPBLatLng)initWithDictionary:(id)dictionary;
+- (_SFPBLatLng)initWithFacade:(id)facade;
+- (_SFPBLatLng)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBLatLng
 
-- (_SFPBLatLng)initWithFacade:(id)a3
+- (_SFPBLatLng)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBLatLng *)self init];
   if (v5)
   {
-    if ([v4 hasLat])
+    if ([facadeCopy hasLat])
     {
-      [v4 lat];
+      [facadeCopy lat];
       [(_SFPBLatLng *)v5 setLat:?];
     }
 
-    if ([v4 hasLng])
+    if ([facadeCopy hasLng])
     {
-      [v4 lng];
+      [facadeCopy lng];
       [(_SFPBLatLng *)v5 setLng:?];
     }
 
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (_SFPBLatLng)initWithDictionary:(id)a3
+- (_SFPBLatLng)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBLatLng;
   v5 = [(_SFPBLatLng *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"lat"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"lat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(_SFPBLatLng *)v5 setLat:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"lng"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"lng"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBLatLng)initWithJSON:(id)a3
+- (_SFPBLatLng)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBLatLng *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBLatLng *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBLatLng *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,13 +101,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_lat != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBLatLng *)self lat];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"lat"];
+    [dictionary setObject:v5 forKeyedSubscript:@"lat"];
   }
 
   if (self->_lng != 0.0)
@@ -115,10 +115,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBLatLng *)self lng];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"lng"];
+    [dictionary setObject:v7 forKeyedSubscript:@"lng"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -193,13 +193,13 @@
   return v11 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (lat = self->_lat, objc_msgSend(v4, "lat"), lat == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (lat = self->_lat, objc_msgSend(equalCopy, "lat"), lat == v6))
   {
     lng = self->_lng;
-    [v4 lng];
+    [equalCopy lng];
     v7 = lng == v10;
   }
 
@@ -211,9 +211,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   [(_SFPBLatLng *)self lat];
   if (v4 != 0.0)
   {

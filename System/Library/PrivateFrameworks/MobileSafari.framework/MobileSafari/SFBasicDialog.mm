@@ -1,8 +1,8 @@
 @interface SFBasicDialog
 - (SFBasicDialog)init;
 - (id)newDialogViewRepresentation;
-- (id)newViewControllerRepresentationWithCompletionHandler:(id)a3;
-- (void)didCompleteWithResponse:(id)a3;
+- (id)newViewControllerRepresentationWithCompletionHandler:(id)handler;
+- (void)didCompleteWithResponse:(id)response;
 @end
 
 @implementation SFBasicDialog
@@ -27,33 +27,33 @@
 - (id)newDialogViewRepresentation
 {
   v3 = objc_alloc_init(SFDialogView);
-  v4 = [(SFBasicDialog *)self title];
-  [(SFDialogView *)v3 setTitleText:v4];
+  title = [(SFBasicDialog *)self title];
+  [(SFDialogView *)v3 setTitleText:title];
 
-  v5 = [(SFBasicDialog *)self message];
-  [(SFDialogView *)v3 setMessageText:v5];
+  message = [(SFBasicDialog *)self message];
+  [(SFDialogView *)v3 setMessageText:message];
 
-  v6 = [(SFBasicDialog *)self defaultText];
-  v7 = [(SFBasicDialog *)self textPlaceholder];
-  [(SFDialogView *)v3 setInputText:v6 placeholder:v7];
+  defaultText = [(SFBasicDialog *)self defaultText];
+  textPlaceholder = [(SFBasicDialog *)self textPlaceholder];
+  [(SFDialogView *)v3 setInputText:defaultText placeholder:textPlaceholder];
 
-  v8 = [(SFBasicDialog *)self defaultPassword];
-  v9 = [(SFBasicDialog *)self passwordPlaceholder];
-  [(SFDialogView *)v3 setPasswordText:v8 placeholder:v9];
+  defaultPassword = [(SFBasicDialog *)self defaultPassword];
+  passwordPlaceholder = [(SFBasicDialog *)self passwordPlaceholder];
+  [(SFDialogView *)v3 setPasswordText:defaultPassword placeholder:passwordPlaceholder];
 
-  v10 = [(SFBasicDialog *)self actions];
-  [(SFDialogView *)v3 setDialogActions:v10];
+  actions = [(SFBasicDialog *)self actions];
+  [(SFDialogView *)v3 setDialogActions:actions];
 
   [(SFDialogView *)v3 setUsesOpaqueAppearance:[(SFBasicDialog *)self shouldHideWebContent]];
-  v11 = [(SFDialog *)self accessibilityIdentifier];
-  [(SFDialogView *)v3 setAccessibilityIdentifier:v11];
+  accessibilityIdentifier = [(SFDialog *)self accessibilityIdentifier];
+  [(SFDialogView *)v3 setAccessibilityIdentifier:accessibilityIdentifier];
 
   return v3;
 }
 
-- (id)newViewControllerRepresentationWithCompletionHandler:(id)a3
+- (id)newViewControllerRepresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   alertControllerPresentsAsActionSheet = self->_alertControllerPresentsAsActionSheet;
   v6 = objc_alloc_init(MEMORY[0x1E69DC650]);
   v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:self->_title];
@@ -66,9 +66,9 @@
   [v6 setMessage:self->_message];
   [v6 setPreferredStyle:!alertControllerPresentsAsActionSheet];
   [v6 setImage:self->_icon];
-  v10 = [(SFDialog *)self accessibilityIdentifier];
-  v11 = [v6 view];
-  [v11 setAccessibilityIdentifier:v10];
+  accessibilityIdentifier = [(SFDialog *)self accessibilityIdentifier];
+  view = [v6 view];
+  [view setAccessibilityIdentifier:accessibilityIdentifier];
 
   v31[0] = 0;
   v31[1] = v31;
@@ -108,12 +108,12 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __70__SFBasicDialog_newViewControllerRepresentationWithCompletionHandler___block_invoke_3;
   aBlock[3] = &unk_1E721DBA0;
-  v12 = v4;
+  v12 = handlerCopy;
   v24 = v12;
   v25 = v31;
   v26 = v29;
   v13 = _Block_copy(aBlock);
-  v14 = [(SFBasicDialog *)self actions];
+  actions = [(SFBasicDialog *)self actions];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __70__SFBasicDialog_newViewControllerRepresentationWithCompletionHandler___block_invoke_4;
@@ -122,7 +122,7 @@
   v22 = v15;
   v16 = v6;
   v21 = v16;
-  [v14 enumerateObjectsUsingBlock:v20];
+  [actions enumerateObjectsUsingBlock:v20];
 
   v17 = v21;
   v18 = v16;
@@ -198,18 +198,18 @@ void __70__SFBasicDialog_newViewControllerRepresentationWithCompletionHandler___
   }
 }
 
-- (void)didCompleteWithResponse:(id)a3
+- (void)didCompleteWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   completionHandler = self->_completionHandler;
-  v10 = v4;
-  if (v4)
+  v10 = responseCopy;
+  if (responseCopy)
   {
-    v6 = [v4 safari_numberForKey:@"selectedActionIndex"];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [responseCopy safari_numberForKey:@"selectedActionIndex"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
     v8 = [v10 safari_stringForKey:@"text"];
     v9 = [v10 safari_stringForKey:@"password"];
-    completionHandler[2](completionHandler, v7, v8, v9);
+    completionHandler[2](completionHandler, unsignedIntegerValue, v8, v9);
   }
 
   else

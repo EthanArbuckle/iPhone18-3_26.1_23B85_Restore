@@ -4,12 +4,12 @@
 - (NSArray)allocatedViewControllers;
 - (NSArray)redundantInterfaceSections;
 - (NSDictionary)viewControllersByInitialInterfaceSection;
-- (double)boundingWidthForSynchronousRemoteViewController:(id)a3;
-- (id)_unhandledParametersForInterfaceSection:(id)a3;
+- (double)boundingWidthForSynchronousRemoteViewController:(id)controller;
+- (id)_unhandledParametersForInterfaceSection:(id)section;
 - (id)organizedInterfaceSections;
-- (void)_recursivelyConnectForInterfaceSectionQueue:(id)a3 recursionDepth:(unint64_t)a4 completion:(id)a5;
-- (void)performAllocationsFromInteraction:(id)a3 initialInterfaceSections:(id)a4 completion:(id)a5;
-- (void)setSynchronousRemoteViewControllerClass:(Class)a3;
+- (void)_recursivelyConnectForInterfaceSectionQueue:(id)queue recursionDepth:(unint64_t)depth completion:(id)completion;
+- (void)performAllocationsFromInteraction:(id)interaction initialInterfaceSections:(id)sections completion:(id)completion;
+- (void)setSynchronousRemoteViewControllerClass:(Class)class;
 @end
 
 @implementation INUICKPSynchronousRemoteViewControllerAllocator
@@ -48,34 +48,34 @@
   return v2;
 }
 
-- (void)setSynchronousRemoteViewControllerClass:(Class)a3
+- (void)setSynchronousRemoteViewControllerClass:(Class)class
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    self->_synchronousRemoteViewControllerClass = a3;
+    self->_synchronousRemoteViewControllerClass = class;
   }
 }
 
-- (void)performAllocationsFromInteraction:(id)a3 initialInterfaceSections:(id)a4 completion:(id)a5
+- (void)performAllocationsFromInteraction:(id)interaction initialInterfaceSections:(id)sections completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   mutableSynchronousRemoteViewControllers = self->_mutableSynchronousRemoteViewControllers;
-  v10 = a4;
-  v11 = a3;
+  sectionsCopy = sections;
+  interactionCopy = interaction;
   [(NSMutableArray *)mutableSynchronousRemoteViewControllers removeAllObjects];
   [(NSMutableDictionary *)self->_mutableSynchronousRemoteViewControllersByInitialInterfaceSection removeAllObjects];
   [(NSMutableArray *)self->_mutableRedundantInterfaceSections removeAllObjects];
   [(NSMutableArray *)self->_finalInterfaceSections removeAllObjects];
   [(NSMutableSet *)self->_handledParameters removeAllObjects];
-  [(INUICKPSynchronousRemoteViewControllerAllocator *)self setInteraction:v11];
+  [(INUICKPSynchronousRemoteViewControllerAllocator *)self setInteraction:interactionCopy];
 
-  v12 = [v10 mutableCopy];
+  v12 = [sectionsCopy mutableCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __121__INUICKPSynchronousRemoteViewControllerAllocator_performAllocationsFromInteraction_initialInterfaceSections_completion___block_invoke;
   v14[3] = &unk_2797EB960;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(INUICKPSynchronousRemoteViewControllerAllocator *)self _beginRecursivelyConnectingForInterfaceSectionQueue:v12 completion:v14];
 }
 
@@ -111,27 +111,27 @@ uint64_t __121__INUICKPSynchronousRemoteViewControllerAllocator_performAllocatio
   return v2;
 }
 
-- (void)_recursivelyConnectForInterfaceSectionQueue:(id)a3 recursionDepth:(unint64_t)a4 completion:(id)a5
+- (void)_recursivelyConnectForInterfaceSectionQueue:(id)queue recursionDepth:(unint64_t)depth completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 firstObject];
-  if (v10)
+  queueCopy = queue;
+  completionCopy = completion;
+  firstObject = [queueCopy firstObject];
+  if (firstObject)
   {
-    [v8 removeObject:v10];
-    v11 = [v10 parameters];
+    [queueCopy removeObject:firstObject];
+    parameters = [firstObject parameters];
 
-    v12 = [(INUICKPSynchronousRemoteViewControllerAllocator *)self _unhandledParametersForInterfaceSection:v10];
+    v12 = [(INUICKPSynchronousRemoteViewControllerAllocator *)self _unhandledParametersForInterfaceSection:firstObject];
     v33 = [v12 count];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __121__INUICKPSynchronousRemoteViewControllerAllocator__recursivelyConnectForInterfaceSectionQueue_recursionDepth_completion___block_invoke;
     v44[3] = &unk_2797EB988;
-    v45 = v8;
-    v46 = self;
-    v48 = a4;
-    v13 = v9;
+    v45 = queueCopy;
+    selfCopy = self;
+    depthCopy = depth;
+    v13 = completionCopy;
     v47 = v13;
     v14 = MEMORY[0x259C37D70](v44);
     objc_initWeak(&location, self);
@@ -142,9 +142,9 @@ uint64_t __121__INUICKPSynchronousRemoteViewControllerAllocator_performAllocatio
     objc_copyWeak(&v42, &location);
     v34 = v12;
     v37 = v34;
-    v15 = v10;
+    v15 = firstObject;
     v38 = v15;
-    v39 = self;
+    selfCopy2 = self;
     v35 = v14;
     v40 = v35;
     v41 = v13;
@@ -169,7 +169,7 @@ LABEL_17:
 
     else
     {
-      if (a4)
+      if (depth)
       {
         v23 = v33 == 0;
       }
@@ -180,17 +180,17 @@ LABEL_17:
       }
 
       v24 = !v23;
-      if (!v11 || !v24)
+      if (!parameters || !v24)
       {
         v27 = *MEMORY[0x277CF93F0];
         v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
-        if (!v11 || v33)
+        if (!parameters || v33)
         {
           if (v28)
           {
-            v31 = [v15 parameters];
+            parameters2 = [v15 parameters];
             *buf = 138412546;
-            v50 = v31;
+            v50 = parameters2;
             v51 = 2112;
             v52 = v15;
             _os_log_impl(&dword_255550000, v27, OS_LOG_TYPE_INFO, "Interface section has no parameters - continuing\n    Parameters: %@\n    Interface section: %@", buf, 0x16u);
@@ -201,16 +201,16 @@ LABEL_17:
         {
           if (v28)
           {
-            v29 = [v15 parameters];
+            parameters3 = [v15 parameters];
             *buf = 138412546;
-            v50 = v29;
+            v50 = parameters3;
             v51 = 2112;
             v52 = v15;
             _os_log_impl(&dword_255550000, v27, OS_LOG_TYPE_INFO, "All parameters are currently handled by another interface section - continuing\n    Parameters: %@\n    Interface section: %@", buf, 0x16u);
           }
 
-          v30 = [(INUICKPSynchronousRemoteViewControllerAllocator *)self mutableRedundantInterfaceSections];
-          [v30 addObject:v15];
+          mutableRedundantInterfaceSections = [(INUICKPSynchronousRemoteViewControllerAllocator *)self mutableRedundantInterfaceSections];
+          [mutableRedundantInterfaceSections addObject:v15];
         }
 
         v19 = v35;
@@ -242,9 +242,9 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_28:
@@ -376,10 +376,10 @@ void __121__INUICKPSynchronousRemoteViewControllerAllocator__recursivelyConnectF
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_unhandledParametersForInterfaceSection:(id)a3
+- (id)_unhandledParametersForInterfaceSection:(id)section
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v20 = [MEMORY[0x277CBEB58] set];
   v5 = self->_handledParameters;
   if (!v5)
@@ -391,8 +391,8 @@ void __121__INUICKPSynchronousRemoteViewControllerAllocator__recursivelyConnectF
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v4 parameters];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  parameters = [sectionCopy parameters];
+  v7 = [parameters countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -403,7 +403,7 @@ void __121__INUICKPSynchronousRemoteViewControllerAllocator__recursivelyConnectF
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(parameters);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
@@ -448,7 +448,7 @@ LABEL_18:
         ;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [parameters countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
@@ -466,10 +466,10 @@ LABEL_18:
   return v2;
 }
 
-- (double)boundingWidthForSynchronousRemoteViewController:(id)a3
+- (double)boundingWidthForSynchronousRemoteViewController:(id)controller
 {
-  v4 = [(INUICKPSynchronousRemoteViewControllerAllocator *)self delegate];
-  [v4 boundingWidthForViewControllerAllocator:self];
+  delegate = [(INUICKPSynchronousRemoteViewControllerAllocator *)self delegate];
+  [delegate boundingWidthForViewControllerAllocator:self];
   v6 = v5;
 
   return v6;

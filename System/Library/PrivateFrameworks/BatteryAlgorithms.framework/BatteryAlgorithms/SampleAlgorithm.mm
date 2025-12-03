@@ -1,28 +1,28 @@
 @interface SampleAlgorithm
-+ (id)algorithmWithData:(id)a3;
-- (SampleAlgorithm)initWithSMCKeys:(id)a3 withSystemState:(id)a4 withSavedAlgoState:(id)a5;
++ (id)algorithmWithData:(id)data;
+- (SampleAlgorithm)initWithSMCKeys:(id)keys withSystemState:(id)state withSavedAlgoState:(id)algoState;
 - (id)output;
 @end
 
 @implementation SampleAlgorithm
 
-+ (id)algorithmWithData:(id)a3
++ (id)algorithmWithData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 valueForKey:@"smcData"];
-  v7 = [v4 valueForKey:@"systemState"];
-  v8 = [v4 valueForKey:@"savedAlgoState"];
+  dataCopy = data;
+  v5 = [self alloc];
+  v6 = [dataCopy valueForKey:@"smcData"];
+  v7 = [dataCopy valueForKey:@"systemState"];
+  v8 = [dataCopy valueForKey:@"savedAlgoState"];
 
   v9 = [v5 initWithSMCKeys:v6 withSystemState:v7 withSavedAlgoState:v8];
 
   return v9;
 }
 
-- (SampleAlgorithm)initWithSMCKeys:(id)a3 withSystemState:(id)a4 withSavedAlgoState:(id)a5
+- (SampleAlgorithm)initWithSMCKeys:(id)keys withSystemState:(id)state withSavedAlgoState:(id)algoState
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keysCopy = keys;
   v18.receiver = self;
   v18.super_class = SampleAlgorithm;
   v7 = [(SampleAlgorithm *)&v18 init];
@@ -34,7 +34,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = keysCopy;
     _os_log_impl(&dword_241A71000, v10, OS_LOG_TYPE_DEFAULT, "I was passed in these keys: %@", buf, 0xCu);
   }
 

@@ -1,18 +1,18 @@
 @interface SSVPBPlayActivityEnqueuerProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)systemReleaseTypeAsString:(int)a3;
-- (int)StringAsSystemReleaseType:(id)a3;
+- (id)systemReleaseTypeAsString:(int)string;
+- (int)StringAsSystemReleaseType:(id)type;
 - (int)systemReleaseType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPrivateListeningEnabled:(BOOL)a3;
-- (void)setHasSBEnabled:(BOOL)a3;
-- (void)setHasSystemReleaseType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPrivateListeningEnabled:(BOOL)enabled;
+- (void)setHasSBEnabled:(BOOL)enabled;
+- (void)setHasSystemReleaseType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SSVPBPlayActivityEnqueuerProperties
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasSystemReleaseType:(BOOL)a3
+- (void)setHasSystemReleaseType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -45,45 +45,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)systemReleaseTypeAsString:(int)a3
+- (id)systemReleaseTypeAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E84ADBE0[a3];
+    v4 = off_1E84ADBE0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsSystemReleaseType:(id)a3
+- (int)StringAsSystemReleaseType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOMER"])
+  else if ([typeCopy isEqualToString:@"CUSTOMER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CARRIER"])
+  else if ([typeCopy isEqualToString:@"CARRIER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEVELOPER"])
+  else if ([typeCopy isEqualToString:@"DEVELOPER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INTERNAL"])
+  else if ([typeCopy isEqualToString:@"INTERNAL"])
   {
     v4 = 4;
   }
@@ -96,9 +96,9 @@
   return v4;
 }
 
-- (void)setHasSBEnabled:(BOOL)a3
+- (void)setHasSBEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPrivateListeningEnabled:(BOOL)a3
+- (void)setHasPrivateListeningEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -132,20 +132,20 @@
   v8.receiver = self;
   v8.super_class = SSVPBPlayActivityEnqueuerProperties;
   v4 = [(SSVPBPlayActivityEnqueuerProperties *)&v8 description];
-  v5 = [(SSVPBPlayActivityEnqueuerProperties *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SSVPBPlayActivityEnqueuerProperties *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   buildVersion = self->_buildVersion;
   if (buildVersion)
   {
-    [v3 setObject:buildVersion forKey:@"buildVersion"];
+    [dictionary setObject:buildVersion forKey:@"buildVersion"];
   }
 
   deviceGUID = self->_deviceGUID;
@@ -214,39 +214,39 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_buildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceGUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeZoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -266,61 +266,61 @@ LABEL_11:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_12:
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_13:
   if (self->_storeFrontID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_buildVersion)
   {
-    [v4 setBuildVersion:?];
-    v4 = v6;
+    [toCopy setBuildVersion:?];
+    toCopy = v6;
   }
 
   if (self->_deviceGUID)
   {
     [v6 setDeviceGUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceName)
   {
     [v6 setDeviceName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeZoneName)
   {
     [v6 setTimeZoneName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 12) = self->_systemReleaseType;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 12) = self->_systemReleaseType;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -339,45 +339,45 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 65) = self->_sBEnabled;
-  *(v4 + 68) |= 8u;
+  *(toCopy + 65) = self->_sBEnabled;
+  *(toCopy + 68) |= 8u;
   if (*&self->_has)
   {
 LABEL_12:
-    *(v4 + 1) = self->_storeAccountID;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 1) = self->_storeAccountID;
+    *(toCopy + 68) |= 1u;
   }
 
 LABEL_13:
   if (self->_storeFrontID)
   {
     [v6 setStoreFrontID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 64) = self->_privateListeningEnabled;
-    *(v4 + 68) |= 4u;
+    *(toCopy + 64) = self->_privateListeningEnabled;
+    *(toCopy + 68) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_deviceGUID copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceGUID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceName copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v12 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -414,7 +414,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v15 = [(NSString *)self->_storeFrontID copyWithZone:a3];
+  v15 = [(NSString *)self->_storeFrontID copyWithZone:zone];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 
@@ -427,16 +427,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 2))
+  if (buildVersion | *(equalCopy + 2))
   {
     if (![(NSString *)buildVersion isEqual:?])
     {
@@ -445,7 +445,7 @@ LABEL_5:
   }
 
   deviceGUID = self->_deviceGUID;
-  if (deviceGUID | *(v4 + 3))
+  if (deviceGUID | *(equalCopy + 3))
   {
     if (![(NSString *)deviceGUID isEqual:?])
     {
@@ -454,7 +454,7 @@ LABEL_5:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 4))
+  if (deviceName | *(equalCopy + 4))
   {
     if (![(NSString *)deviceName isEqual:?])
     {
@@ -463,7 +463,7 @@ LABEL_5:
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 7))
+  if (timeZoneName | *(equalCopy + 7))
   {
     if (![(NSString *)timeZoneName isEqual:?])
     {
@@ -474,58 +474,58 @@ LABEL_5:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_systemReleaseType != *(v4 + 12))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_systemReleaseType != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0)
+    if ((*(equalCopy + 68) & 8) == 0)
     {
       goto LABEL_35;
     }
 
     if (self->_sBEnabled)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_storeAccountID != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_storeAccountID != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_35;
   }
 
   storeFrontID = self->_storeFrontID;
-  if (storeFrontID | *(v4 + 5))
+  if (storeFrontID | *(equalCopy + 5))
   {
     if (![(NSString *)storeFrontID isEqual:?])
     {
@@ -535,20 +535,20 @@ LABEL_5:
     has = self->_has;
   }
 
-  v11 = (*(v4 + 68) & 4) == 0;
+  v11 = (*(equalCopy + 68) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) != 0)
+    if ((*(equalCopy + 68) & 4) != 0)
     {
       if (self->_privateListeningEnabled)
       {
-        if (*(v4 + 64))
+        if (*(equalCopy + 64))
         {
           goto LABEL_38;
         }
       }
 
-      else if (!*(v4 + 64))
+      else if (!*(equalCopy + 64))
       {
 LABEL_38:
         v11 = 1;
@@ -621,40 +621,40 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SSVPBPlayActivityEnqueuerProperties *)self setBuildVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SSVPBPlayActivityEnqueuerProperties *)self setDeviceGUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SSVPBPlayActivityEnqueuerProperties *)self setDeviceName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SSVPBPlayActivityEnqueuerProperties *)self setTimeZoneName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 2) != 0)
   {
-    self->_systemReleaseType = *(v4 + 12);
+    self->_systemReleaseType = *(fromCopy + 12);
     *&self->_has |= 2u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 8) == 0)
     {
 LABEL_11:
@@ -667,30 +667,30 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 68) & 8) == 0)
+  else if ((*(fromCopy + 68) & 8) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_sBEnabled = *(v4 + 65);
+  self->_sBEnabled = *(fromCopy + 65);
   *&self->_has |= 8u;
-  if (*(v4 + 68))
+  if (*(fromCopy + 68))
   {
 LABEL_12:
-    self->_storeAccountID = *(v4 + 1);
+    self->_storeAccountID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_13:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SSVPBPlayActivityEnqueuerProperties *)self setStoreFrontID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 68) & 4) != 0)
+  if ((*(fromCopy + 68) & 4) != 0)
   {
-    self->_privateListeningEnabled = *(v4 + 64);
+    self->_privateListeningEnabled = *(fromCopy + 64);
     *&self->_has |= 4u;
   }
 }

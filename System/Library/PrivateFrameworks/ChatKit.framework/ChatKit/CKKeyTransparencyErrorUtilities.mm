@@ -1,20 +1,20 @@
 @interface CKKeyTransparencyErrorUtilities
-+ (id)_getLearnMoreURL:(BOOL)a3;
-+ (id)contactVerificationViewControllerForHandles:(id)a3 options:(id)a4;
-+ (id)keyTransparencyIDFromID:(id)a3;
-+ (id)ktClearWarningAlertControllerForChat:(id)a3 confirmationHandler:(id)a4;
-+ (void)handlesAndOptionsForContactVerificationUIForConversation:(id)a3 handles:(id *)a4 options:(id *)a5;
-+ (void)learnMorePressedFromError:(BOOL)a3;
-+ (void)reportToAppleViewControllerWithCompletion:(id)a3;
-+ (void)showKTContactVerificationUIForConversation:(id)a3 fromViewController:(id)a4;
-+ (void)showReportToAppleUIFromViewController:(id)a3;
++ (id)_getLearnMoreURL:(BOOL)l;
++ (id)contactVerificationViewControllerForHandles:(id)handles options:(id)options;
++ (id)keyTransparencyIDFromID:(id)d;
++ (id)ktClearWarningAlertControllerForChat:(id)chat confirmationHandler:(id)handler;
++ (void)handlesAndOptionsForContactVerificationUIForConversation:(id)conversation handles:(id *)handles options:(id *)options;
++ (void)learnMorePressedFromError:(BOOL)error;
++ (void)reportToAppleViewControllerWithCompletion:(id)completion;
++ (void)showKTContactVerificationUIForConversation:(id)conversation fromViewController:(id)controller;
++ (void)showReportToAppleUIFromViewController:(id)controller;
 @end
 
 @implementation CKKeyTransparencyErrorUtilities
 
-+ (id)_getLearnMoreURL:(BOOL)a3
++ (id)_getLearnMoreURL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = @"https://support.apple.com/ht213478";
   }
@@ -27,17 +27,17 @@
   return [MEMORY[0x1E695DFF8] URLWithString:v3];
 }
 
-+ (void)learnMorePressedFromError:(BOOL)a3
++ (void)learnMorePressedFromError:(BOOL)error
 {
-  v4 = [a1 _getLearnMoreURL:a3];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  v4 = [self _getLearnMoreURL:error];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-+ (void)showReportToAppleUIFromViewController:(id)a3
++ (void)showReportToAppleUIFromViewController:(id)controller
 {
-  v3 = a3;
-  objc_initWeak(&location, v3);
+  controllerCopy = controller;
+  objc_initWeak(&location, controllerCopy);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController___block_invoke;
@@ -76,10 +76,10 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
   }
 }
 
-+ (void)handlesAndOptionsForContactVerificationUIForConversation:(id)a3 handles:(id *)a4 options:(id *)a5
++ (void)handlesAndOptionsForContactVerificationUIForConversation:(id)conversation handles:(id *)handles options:(id *)options
 {
   v63[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -90,24 +90,24 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
     }
   }
 
-  if (([v5 hasKnownParticipants]& 1) != 0)
+  if (([conversationCopy hasKnownParticipants]& 1) != 0)
   {
-    v7 = [v5 recipients];
-    v8 = [v7 count] == 1;
+    recipients = [conversationCopy recipients];
+    v8 = [recipients count] == 1;
 
     if (v8)
     {
-      v9 = [v5 recipients];
-      v10 = [v9 firstObject];
-      v11 = [v10 defaultIMHandle];
+      recipients2 = [conversationCopy recipients];
+      firstObject = [recipients2 firstObject];
+      defaultIMHandle = [firstObject defaultIMHandle];
 
-      if (!v11)
+      if (!defaultIMHandle)
       {
         v32 = IMLogHandleForCategory();
         v33 = v32;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:v5 handles:v32 options:?];
+          [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:conversationCopy handles:v32 options:?];
           v33 = v32;
         }
 
@@ -118,12 +118,12 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
       v63[0] = *MEMORY[0x1E695C330];
       v63[1] = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
-      v44 = [v11 cnContactWithKeys:v13];
+      v44 = [defaultIMHandle cnContactWithKeys:v13];
 
-      v14 = [v44 phoneNumberStrings];
-      v15 = [v44 emailAddressStrings];
+      phoneNumberStrings = [v44 phoneNumberStrings];
+      emailAddressStrings = [v44 emailAddressStrings];
       v16 = objc_opt_new();
-      v17 = [v11 ID];
+      v17 = [defaultIMHandle ID];
       v18 = [CKKeyTransparencyErrorUtilities keyTransparencyIDFromID:v17];
       [v16 addObject:v18];
 
@@ -131,7 +131,7 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v19 = v14;
+      v19 = phoneNumberStrings;
       v20 = [v19 countByEnumeratingWithState:&v51 objects:v62 count:16];
       if (v20)
       {
@@ -159,7 +159,7 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v24 = v15;
+      v24 = emailAddressStrings;
       v25 = [v24 countByEnumeratingWithState:&v47 objects:v61 count:16];
       if (v25)
       {
@@ -200,9 +200,9 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
         goto LABEL_60;
       }
 
-      v29 = [v5 lastAddressedHandle];
-      v30 = v29;
-      if (v29 && [v29 length])
+      lastAddressedHandle = [conversationCopy lastAddressedHandle];
+      v30 = lastAddressedHandle;
+      if (lastAddressedHandle && [lastAddressedHandle length])
       {
         v31 = objc_opt_new();
       }
@@ -215,20 +215,20 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v56 = v5;
+            v56 = conversationCopy;
             _os_log_impl(&dword_19020E000, v34, OS_LOG_TYPE_INFO, "Unable to find a valid last addressed handle ID for conversation: %@", buf, 0xCu);
           }
         }
 
-        v35 = [v5 chat];
-        v36 = [v35 account];
-        v37 = [v36 loginIMHandle];
+        chat = [conversationCopy chat];
+        account = [chat account];
+        loginIMHandle = [account loginIMHandle];
 
-        if (v37)
+        if (loginIMHandle)
         {
-          v38 = [v37 displayID];
+          displayID = [loginIMHandle displayID];
 
-          v30 = v38;
+          v30 = displayID;
         }
 
         else if (IMOSLoggingEnabled())
@@ -237,7 +237,7 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
           if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v56 = v5;
+            v56 = conversationCopy;
             v57 = 2112;
             v58 = 0;
             _os_log_impl(&dword_19020E000, v39, OS_LOG_TYPE_INFO, "Unable to find a valid handle ID for conversation: %@ login handle: %@", buf, 0x16u);
@@ -255,20 +255,20 @@ void __73__CKKeyTransparencyErrorUtilities_showReportToAppleUIFromViewController
       {
         [v31 setObject:v30 forKeyedSubscript:@"lastUsedIdentifier"];
 LABEL_51:
-        v41 = [v44 identifier];
-        if (v41)
+        identifier = [v44 identifier];
+        if (identifier)
         {
-          v42 = [v44 identifier];
-          [v31 setObject:v42 forKeyedSubscript:@"contactIdentifier"];
+          identifier2 = [v44 identifier];
+          [v31 setObject:identifier2 forKeyedSubscript:@"contactIdentifier"];
 
-          if (a4)
+          if (handles)
           {
-            *a4 = [v16 array];
+            *handles = [v16 array];
           }
 
-          if (a5)
+          if (options)
           {
-            *a5 = [v31 copy];
+            *options = [v31 copy];
           }
         }
 
@@ -302,33 +302,33 @@ LABEL_47:
       goto LABEL_51;
     }
 
-    v11 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    defaultIMHandle = IMLogHandleForCategory();
+    if (os_log_type_enabled(defaultIMHandle, OS_LOG_TYPE_ERROR))
     {
-      [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:v5 handles:v11 options:?];
+      [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:conversationCopy handles:defaultIMHandle options:?];
     }
   }
 
   else
   {
-    v11 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    defaultIMHandle = IMLogHandleForCategory();
+    if (os_log_type_enabled(defaultIMHandle, OS_LOG_TYPE_ERROR))
     {
-      [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:v11 handles:? options:?];
+      [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:defaultIMHandle handles:? options:?];
     }
   }
 
 LABEL_62:
 }
 
-+ (void)showKTContactVerificationUIForConversation:(id)a3 fromViewController:(id)a4
++ (void)showKTContactVerificationUIForConversation:(id)conversation fromViewController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  conversationCopy = conversation;
+  controllerCopy = controller;
   v13 = 0;
   v14 = 0;
-  [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:v5 handles:&v14 options:&v13];
+  [CKKeyTransparencyErrorUtilities handlesAndOptionsForContactVerificationUIForConversation:conversationCopy handles:&v14 options:&v13];
   v7 = v14;
   v8 = v13;
   if ([v7 count] && objc_msgSend(v8, "count"))
@@ -347,27 +347,27 @@ LABEL_62:
     }
 
     v10 = [objc_alloc(getTUIKTConversationViewControllerClass()) initForMembers:v7 options:v8];
-    v11 = v6;
+    v11 = controllerCopy;
     [v10 setDelegate:v11];
     v12 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v10];
     [v11 presentViewController:v12 animated:1 completion:0];
   }
 }
 
-+ (id)contactVerificationViewControllerForHandles:(id)a3 options:(id)a4
++ (id)contactVerificationViewControllerForHandles:(id)handles options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(getTUIKTConversationViewControllerClass()) initForMembers:v6 options:v5];
+  optionsCopy = options;
+  handlesCopy = handles;
+  v7 = [objc_alloc(getTUIKTConversationViewControllerClass()) initForMembers:handlesCopy options:optionsCopy];
 
   return v7;
 }
 
-+ (id)keyTransparencyIDFromID:(id)a3
++ (id)keyTransparencyIDFromID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 _stripFZIDPrefix];
+  dCopy = d;
+  _stripFZIDPrefix = [dCopy _stripFZIDPrefix];
   v5 = IMChatCanonicalIDSIDsForAddress();
 
   if (v5)
@@ -383,7 +383,7 @@ LABEL_62:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = v3;
+        v10 = dCopy;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "CKDetailsController_KT Could not get a canonical ID for the identifier: %@", &v9, 0xCu);
       }
     }
@@ -394,10 +394,10 @@ LABEL_62:
   return v6;
 }
 
-+ (id)ktClearWarningAlertControllerForChat:(id)a3 confirmationHandler:(id)a4
++ (id)ktClearWarningAlertControllerForChat:(id)chat confirmationHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  chatCopy = chat;
+  handlerCopy = handler;
   v7 = CKIsRunningInMacCatalyst();
   if (CKIsRunningInMacCatalyst())
   {
@@ -422,10 +422,10 @@ LABEL_62:
   v24[1] = 3221225472;
   v24[2] = __92__CKKeyTransparencyErrorUtilities_ktClearWarningAlertControllerForChat_confirmationHandler___block_invoke;
   v24[3] = &unk_1E72F35A0;
-  v25 = v5;
-  v26 = v6;
-  v16 = v6;
-  v17 = v5;
+  v25 = chatCopy;
+  v26 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = chatCopy;
   v18 = [v13 actionWithTitle:v15 style:2 handler:v24];
 
   v19 = MEMORY[0x1E69DC648];
@@ -453,9 +453,9 @@ uint64_t __92__CKKeyTransparencyErrorUtilities_ktClearWarningAlertControllerForC
   return result;
 }
 
-+ (void)reportToAppleViewControllerWithCompletion:(id)a3
++ (void)reportToAppleViewControllerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -479,8 +479,8 @@ uint64_t __92__CKKeyTransparencyErrorUtilities_ktClearWarningAlertControllerForC
   v8[1] = 3221225472;
   v8[2] = __77__CKKeyTransparencyErrorUtilities_reportToAppleViewControllerWithCompletion___block_invoke;
   v8[3] = &unk_1E72F7A10;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 getCurrentStatus:v8];
 }
 

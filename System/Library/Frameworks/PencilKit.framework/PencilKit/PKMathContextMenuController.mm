@@ -1,21 +1,21 @@
 @interface PKMathContextMenuController
-+ (PKMathContextMenuController)controllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6;
-+ (id)insertGraphControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 alsoShowAddToExisiting:(uint64_t)a5 view:(void *)a6 delegate:(char)a7;
-+ (id)mathCopyControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6;
-+ (id)mathResultControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6;
-+ (id)mathSolvingControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 supportCopy:(uint64_t)a5 view:(void *)a6 delegate:(char)a7;
-+ (void)mathErrorControllerForItem:(CGFloat)a3 token:(CGFloat)a4 tapBounds:(uint64_t)a5 errorString:(void *)a6 errorReasonString:(void *)a7 view:(void *)a8 delegate:(void *)a9;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
++ (PKMathContextMenuController)controllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate;
++ (id)insertGraphControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds alsoShowAddToExisiting:(uint64_t)exisiting view:(void *)view delegate:(char)delegate;
++ (id)mathCopyControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate;
++ (id)mathResultControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate;
++ (id)mathSolvingControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds supportCopy:(uint64_t)copy view:(void *)view delegate:(char)delegate;
++ (void)mathErrorControllerForItem:(CGFloat)item token:(CGFloat)token tapBounds:(uint64_t)bounds errorString:(void *)string errorReasonString:(void *)reasonString view:(void *)view delegate:(void *)delegate;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)drawing;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation PKMathContextMenuController
 
-+ (PKMathContextMenuController)controllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6
++ (PKMathContextMenuController)controllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate
 {
-  v15 = a6;
+  delegateCopy = delegate;
   v16 = a7;
   v17 = a8;
   objc_opt_self();
@@ -23,11 +23,11 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_mathItem, a6);
-    v19->_tapBounds.origin.x = a1;
+    objc_storeStrong(&v18->_mathItem, delegate);
+    v19->_tapBounds.origin.x = self;
     v19->_tapBounds.origin.y = a2;
-    v19->_tapBounds.size.width = a3;
-    v19->_tapBounds.size.height = a4;
+    v19->_tapBounds.size.width = item;
+    v19->_tapBounds.size.height = bounds;
     objc_storeWeak(&v19->_view, v16);
     objc_storeWeak(&v19->_delegate, v17);
   }
@@ -38,7 +38,7 @@
     objc_storeStrong(&v19->_interaction, v20);
   }
 
-  if ([(PKMathRecognitionItem *)v15 hasAnyTrignometry])
+  if ([(PKMathRecognitionItem *)delegateCopy hasAnyTrignometry])
   {
     v21 = _PencilKitBundle();
     v23 = [v21 localizedStringForKey:@"Math Notes uses radians if no units are specified. Use ‘°’ value:‘deg’ or ‘degrees’ to specify degrees table:{for example: sin(45°) or sin(45 deg)", @"Math Notes uses radians if no units are specified. Use ‘°’, ‘deg’ or ‘degrees’ to specify degrees, for example: sin(45°) or sin(45 deg)", @"Localizable"}];
@@ -63,13 +63,13 @@
   return v19;
 }
 
-+ (id)mathResultControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6
++ (id)mathResultControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate
 {
   v14 = a8;
   v15 = a7;
-  v16 = a6;
+  delegateCopy = delegate;
   v17 = objc_opt_self();
-  v18 = [(PKMathContextMenuController *)a1 controllerForItem:a2 tapBounds:a3 view:a4 delegate:v17, v16, v15, v14];
+  v18 = [(PKMathContextMenuController *)self controllerForItem:a2 tapBounds:item view:bounds delegate:v17, delegateCopy, v15, v14];
 
   if (v18)
   {
@@ -80,30 +80,30 @@
   return v18;
 }
 
-+ (id)mathSolvingControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 supportCopy:(uint64_t)a5 view:(void *)a6 delegate:(char)a7
++ (id)mathSolvingControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds supportCopy:(uint64_t)copy view:(void *)view delegate:(char)delegate
 {
   v16 = a9;
   v17 = a8;
-  v18 = a6;
+  viewCopy = view;
   v19 = objc_opt_self();
-  v20 = [(PKMathContextMenuController *)a1 controllerForItem:a2 tapBounds:a3 view:a4 delegate:v19, v18, v17, v16];
+  v20 = [(PKMathContextMenuController *)self controllerForItem:a2 tapBounds:item view:bounds delegate:v19, viewCopy, v17, v16];
 
   if (v20)
   {
     *(v20 + 56) = 1;
-    *(v20 + 8) = a7;
+    *(v20 + 8) = delegate;
   }
 
   return v20;
 }
 
-+ (id)mathCopyControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 view:(uint64_t)a5 delegate:(void *)a6
++ (id)mathCopyControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds view:(uint64_t)view delegate:(void *)delegate
 {
   v14 = a8;
   v15 = a7;
-  v16 = a6;
+  delegateCopy = delegate;
   v17 = objc_opt_self();
-  v18 = [(PKMathContextMenuController *)a1 controllerForItem:a2 tapBounds:a3 view:a4 delegate:v17, v16, v15, v14];
+  v18 = [(PKMathContextMenuController *)self controllerForItem:a2 tapBounds:item view:bounds delegate:v17, delegateCopy, v15, v14];
 
   if (v18)
   {
@@ -114,41 +114,41 @@
   return v18;
 }
 
-+ (void)mathErrorControllerForItem:(CGFloat)a3 token:(CGFloat)a4 tapBounds:(uint64_t)a5 errorString:(void *)a6 errorReasonString:(void *)a7 view:(void *)a8 delegate:(void *)a9
++ (void)mathErrorControllerForItem:(CGFloat)item token:(CGFloat)token tapBounds:(uint64_t)bounds errorString:(void *)string errorReasonString:(void *)reasonString view:(void *)view delegate:(void *)delegate
 {
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  reasonStringCopy = reasonString;
+  viewCopy = view;
+  delegateCopy = delegate;
   v23 = a11;
   v24 = a10;
-  v25 = a6;
+  stringCopy = string;
   v26 = objc_opt_self();
-  v27 = [(PKMathContextMenuController *)a1 controllerForItem:a2 tapBounds:a3 view:a4 delegate:v26, v25, v24, v23];
+  v27 = [(PKMathContextMenuController *)self controllerForItem:a2 tapBounds:item view:token delegate:v26, stringCopy, v24, v23];
 
   if (v27)
   {
     v27[7] = 3;
-    objc_setProperty_nonatomic_copy(v27, v28, v21, 72);
-    objc_setProperty_nonatomic_copy(v27, v29, v22, 80);
+    objc_setProperty_nonatomic_copy(v27, v28, viewCopy, 72);
+    objc_setProperty_nonatomic_copy(v27, v29, delegateCopy, 80);
   }
 
-  [(PKMathResultAttribution *)v27 setDate:v20];
+  [(PKMathResultAttribution *)v27 setDate:reasonStringCopy];
 
   return v27;
 }
 
-+ (id)insertGraphControllerForItem:(CGFloat)a3 tapBounds:(CGFloat)a4 alsoShowAddToExisiting:(uint64_t)a5 view:(void *)a6 delegate:(char)a7
++ (id)insertGraphControllerForItem:(CGFloat)item tapBounds:(CGFloat)bounds alsoShowAddToExisiting:(uint64_t)exisiting view:(void *)view delegate:(char)delegate
 {
   v16 = a9;
   v17 = a8;
-  v18 = a6;
+  viewCopy = view;
   v19 = objc_opt_self();
-  v20 = [(PKMathContextMenuController *)a1 controllerForItem:a2 tapBounds:a3 view:a4 delegate:v19, v18, v17, v16];
+  v20 = [(PKMathContextMenuController *)self controllerForItem:a2 tapBounds:item view:bounds delegate:v19, viewCopy, v17, v16];
 
   if (v20)
   {
     *(v20 + 56) = 4;
-    *(v20 + 9) = a7;
+    *(v20 + 9) = delegate;
   }
 
   return v20;
@@ -156,35 +156,35 @@
 
 - (id)drawing
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
-    v1 = [WeakRetained contextMenuControllerDrawing:v1];
+    WeakRetained = objc_loadWeakRetained(self + 6);
+    selfCopy = [WeakRetained contextMenuControllerDrawing:selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   if (self && (v6 = self->_mathItem) != 0)
   {
     v7 = v6;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [(PKMathRecognitionItem *)v7 uuid];
-    v10 = [WeakRetained contextMenuController:self resultForItemUUID:v9];
+    uuid = [(PKMathRecognitionItem *)v7 uuid];
+    v10 = [WeakRetained contextMenuController:self resultForItemUUID:uuid];
 
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [(PKMathRecognitionItem *)v7 uuid];
-    v13 = [v11 contextMenuController:self resultDrawingForItemUUID:v12];
+    uuid2 = [(PKMathRecognitionItem *)v7 uuid];
+    v13 = [v11 contextMenuController:self resultDrawingForItemUUID:uuid2];
 
     v14 = MEMORY[0x1E6997BF8];
-    v15 = [(PKMathRecognitionItem *)v7 expression];
-    v16 = [v14 textTranscriptionForLatex:v15];
+    expression = [(PKMathRecognitionItem *)v7 expression];
+    v16 = [v14 textTranscriptionForLatex:expression];
 
-    v17 = [(PKMathRecognitionItem *)v7 strokes];
+    strokes = [(PKMathRecognitionItem *)v7 strokes];
     v18 = self->_mathToken;
     objc_initWeak(&location, self);
     v19 = MEMORY[0x1E69DC8D8];
@@ -193,11 +193,11 @@
     v28[2] = __85__PKMathContextMenuController_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
     v28[3] = &unk_1E82D7F88;
     objc_copyWeak(&v36, &location);
-    v20 = v17;
+    v20 = strokes;
     v29 = v20;
     v21 = v16;
     v30 = v21;
-    v31 = self;
+    selfCopy = self;
     v22 = v13;
     v32 = v22;
     v23 = v10;
@@ -841,12 +841,12 @@ void __85__PKMathContextMenuController_contextMenuInteraction_configurationForMe
   [v3 contextMenuController:v4 addGraphForItemUUID:v5 addToExisting:1 graphableVariable:*(a1 + 40)];
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v164[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   if (!self)
   {
     v11 = 0;
@@ -867,13 +867,13 @@ void __85__PKMathContextMenuController_contextMenuInteraction_configurationForMe
 
   else if (self->_explanationString)
   {
-    v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v20 = [v19 integerForKey:@"PKTrigonometryHintCounterUserDefaultsName"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v20 = [standardUserDefaults integerForKey:@"PKTrigonometryHintCounterUserDefaultsName"];
 
     if (v20 < 3)
     {
-      v146 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v146 setInteger:v20 + 1 forKey:@"PKTrigonometryHintCounterUserDefaultsName"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults2 setInteger:v20 + 1 forKey:@"PKTrigonometryHintCounterUserDefaultsName"];
     }
 
     else
@@ -883,12 +883,12 @@ void __85__PKMathContextMenuController_contextMenuInteraction_configurationForMe
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [(PKMathRecognitionItem *)v11 uuid];
-  v17 = [WeakRetained contextMenuController:self imageForItemUUID:v16];
+  uuid = [(PKMathRecognitionItem *)v11 uuid];
+  v17 = [WeakRetained contextMenuController:self imageForItemUUID:uuid];
 
   v18 = self->_errorString;
-  v154 = v9;
-  v155 = v8;
+  v154 = configurationCopy;
+  v155 = interactionCopy;
   v156 = v17;
   if (v18)
   {
@@ -899,7 +899,7 @@ void __85__PKMathContextMenuController_contextMenuInteraction_configurationForMe
   if (self->_explanationString)
   {
 LABEL_13:
-    v150 = v10;
+    v150 = identifierCopy;
     v22 = *MEMORY[0x1E69DB648];
     v163[0] = *MEMORY[0x1E69DB648];
     v23 = +[PKMathContextMenuPreviewView footnoteBoldFont];
@@ -907,8 +907,8 @@ LABEL_13:
     v24 = *MEMORY[0x1E69DB650];
     v163[1] = *MEMORY[0x1E69DB650];
     v25 = 0x1E69DC000uLL;
-    v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v164[1] = v26;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v164[1] = secondaryLabelColor;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v164 forKeys:v163 count:2];
 
     v28 = objc_alloc_init(MEMORY[0x1E696AD40]);
@@ -917,7 +917,7 @@ LABEL_13:
     v152 = v27;
     if (errorString)
     {
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@", errorString];
+      errorString = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@", errorString];
       v32 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
       v33 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.triangle"];
       [MEMORY[0x1E69DC888] secondaryLabelColor];
@@ -928,7 +928,7 @@ LABEL_13:
 
       v37 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v32];
       [v28 appendAttributedString:v37];
-      v38 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v31 attributes:v27];
+      v38 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:errorString attributes:v27];
       [v28 appendAttributedString:v38];
 
       v22 = v35;
@@ -960,7 +960,7 @@ LABEL_18:
           if (!self->_explanationString)
           {
             [v39 sizeToFit];
-            v10 = v150;
+            identifierCopy = v150;
             v48 = v152;
             goto LABEL_25;
           }
@@ -969,7 +969,7 @@ LABEL_18:
           v47 = 360.0;
         }
 
-        v10 = v150;
+        identifierCopy = v150;
         v48 = v152;
         [v39 sizeThatFits:{v47, 100000.0}];
         [v39 setFrame:{0.0, 0.0, v49, v50}];
@@ -979,8 +979,8 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v31 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self->_explanationString attributes:v27];
-      [v28 appendAttributedString:v31];
+      errorString = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self->_explanationString attributes:v27];
+      [v28 appendAttributedString:errorString];
     }
 
     goto LABEL_18;
@@ -1004,19 +1004,19 @@ LABEL_26:
     }
 
     v52 = objc_loadWeakRetained(&self->_delegate);
-    v54 = [(PKMathRecognitionItem *)v11 uuid];
-    v53 = [v52 contextMenuController:self resultAttributionForItemUUID:v54];
+    uuid2 = [(PKMathRecognitionItem *)v11 uuid];
+    v53 = [v52 contextMenuController:self resultAttributionForItemUUID:uuid2];
   }
 
 LABEL_31:
   v55 = objc_loadWeakRetained(&self->_view);
-  v56 = [v55 traitCollection];
-  v57 = [v56 userInterfaceStyle];
+  traitCollection = [v55 traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   if (v53)
   {
     v58 = 1;
-    if (v57 == 2)
+    if (userInterfaceStyle == 2)
     {
       v58 = 2;
     }
@@ -1104,17 +1104,17 @@ LABEL_31:
     v93 = v92;
     v95 = v94;
 
-    v96 = [(PKMathRecognitionItem *)v11 isVerticalExpression];
+    isVerticalExpression = [(PKMathRecognitionItem *)v11 isVerticalExpression];
     v97 = v89;
     v98 = v91;
     v99 = v93;
     v100 = v95;
-    if (v96)
+    if (isVerticalExpression)
     {
       MidX = CGRectGetMidX(*&v97);
       v102 = objc_loadWeakRetained(&self->_view);
-      v103 = [v102 window];
-      [v103 bounds];
+      window = [v102 window];
+      [window bounds];
       v105 = v104 * 0.5;
 
       v106 = v79;
@@ -1156,8 +1156,8 @@ LABEL_31:
     {
       v112 = CGRectGetMidY(*&v97);
       v113 = objc_loadWeakRetained(&self->_view);
-      v114 = [v113 window];
-      [v114 bounds];
+      window2 = [v113 window];
+      [window2 bounds];
       v116 = v115 * 0.5;
 
       v117 = CGRectGetMidX(v147);
@@ -1205,7 +1205,7 @@ LABEL_31:
     memset(&v159, 0, sizeof(v159));
     v137 = objc_loadWeakRetained(&self->_view);
     v138 = v137;
-    v139 = v10;
+    v139 = identifierCopy;
     if (v137)
     {
       [v137 transform];
@@ -1228,7 +1228,7 @@ LABEL_31:
     v144 = [v142 initWithContainer:v143 center:&v157 transform:{v135, v136}];
     self = [v140 initWithView:v64 parameters:v141 target:v144];
 
-    v10 = v139;
+    identifierCopy = v139;
     v17 = v156;
     v60 = v153;
   }
@@ -1238,24 +1238,24 @@ LABEL_31:
     self = 0;
   }
 
-  v9 = v154;
-  v8 = v155;
+  configurationCopy = v154;
+  interactionCopy = v155;
 LABEL_63:
 
   return self;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
+  interactionCopy = interaction;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__PKMathContextMenuController_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v9[3] = &unk_1E82D6E70;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
-  [a5 addCompletion:v9];
+  v10 = interactionCopy;
+  selfCopy = self;
+  v8 = interactionCopy;
+  [animator addCompletion:v9];
 }
 
 void __87__PKMathContextMenuController_contextMenuInteraction_willEndForConfiguration_animator___block_invoke(uint64_t a1)

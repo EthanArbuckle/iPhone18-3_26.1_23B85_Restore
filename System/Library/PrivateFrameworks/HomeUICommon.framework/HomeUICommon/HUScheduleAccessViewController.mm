@@ -1,17 +1,17 @@
 @interface HUScheduleAccessViewController
-- (HUScheduleAccessViewController)initWithCoder:(id)a3;
-- (HUScheduleAccessViewController)initWithGuestAccessSchedule:(id)a3 tintColor:(id)a4 shouldDisplayAlwaysAllowedSchedule:(BOOL)a5 scheduleBackgroundColor:(id)a6 listRowBackgroundColor:(id)a7;
-- (HUScheduleAccessViewController)initWithHomeID:(id)a3 tintColor:(id)a4;
-- (HUScheduleAccessViewController)initWithHomeID:(id)a3 tintColor:(id)a4 listRowBackgroundColor:(id)a5;
-- (HUScheduleAccessViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (HUScheduleAccessViewController)initWithCoder:(id)coder;
+- (HUScheduleAccessViewController)initWithGuestAccessSchedule:(id)schedule tintColor:(id)color shouldDisplayAlwaysAllowedSchedule:(BOOL)allowedSchedule scheduleBackgroundColor:(id)backgroundColor listRowBackgroundColor:(id)rowBackgroundColor;
+- (HUScheduleAccessViewController)initWithHomeID:(id)d tintColor:(id)color;
+- (HUScheduleAccessViewController)initWithHomeID:(id)d tintColor:(id)color listRowBackgroundColor:(id)backgroundColor;
+- (HUScheduleAccessViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation HUScheduleAccessViewController
 
-- (HUScheduleAccessViewController)initWithGuestAccessSchedule:(id)a3 tintColor:(id)a4 shouldDisplayAlwaysAllowedSchedule:(BOOL)a5 scheduleBackgroundColor:(id)a6 listRowBackgroundColor:(id)a7
+- (HUScheduleAccessViewController)initWithGuestAccessSchedule:(id)schedule tintColor:(id)color shouldDisplayAlwaysAllowedSchedule:(BOOL)allowedSchedule scheduleBackgroundColor:(id)backgroundColor listRowBackgroundColor:(id)rowBackgroundColor
 {
-  v9 = a5;
+  allowedScheduleCopy = allowedSchedule;
   sub_25459A8A0();
   sub_25459A890();
   sub_25459A880();
@@ -20,16 +20,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = HUScheduleAccessViewController.init(guestAccessSchedule:tintColor:shouldDisplayAlwaysAllowedSchedule:scheduleBackgroundColor:listRowBackgroundColor:)(a3, v13, v9, v14, a7);
+  scheduleCopy = schedule;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  rowBackgroundColorCopy = rowBackgroundColor;
+  v16 = HUScheduleAccessViewController.init(guestAccessSchedule:tintColor:shouldDisplayAlwaysAllowedSchedule:scheduleBackgroundColor:listRowBackgroundColor:)(schedule, colorCopy, allowedScheduleCopy, backgroundColorCopy, rowBackgroundColor);
 
   return v16;
 }
 
-- (HUScheduleAccessViewController)initWithHomeID:(id)a3 tintColor:(id)a4
+- (HUScheduleAccessViewController)initWithHomeID:(id)d tintColor:(id)color
 {
   v6 = sub_25459A1B0();
   v7 = *(v6 - 8);
@@ -45,16 +45,16 @@
   }
 
   sub_25459A190();
-  v11 = a4;
+  colorCopy = color;
   v12 = sub_25459A170();
-  v13 = [(HUScheduleAccessViewController *)self initWithHomeID:v12 tintColor:v11 listRowBackgroundColor:0];
+  v13 = [(HUScheduleAccessViewController *)self initWithHomeID:v12 tintColor:colorCopy listRowBackgroundColor:0];
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (HUScheduleAccessViewController)initWithHomeID:(id)a3 tintColor:(id)a4 listRowBackgroundColor:(id)a5
+- (HUScheduleAccessViewController)initWithHomeID:(id)d tintColor:(id)color listRowBackgroundColor:(id)backgroundColor
 {
   v7 = sub_25459A1B0();
   v8 = *(*(v7 - 8) + 64);
@@ -69,14 +69,14 @@
   }
 
   sub_25459A190();
-  v11 = a4;
-  v12 = a5;
-  v13 = HUScheduleAccessViewController.init(homeID:tintColor:listRowBackgroundColor:)(v10, v11, a5);
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  v13 = HUScheduleAccessViewController.init(homeID:tintColor:listRowBackgroundColor:)(v10, colorCopy, backgroundColor);
 
   return v13;
 }
 
-- (HUScheduleAccessViewController)initWithCoder:(id)a3
+- (HUScheduleAccessViewController)initWithCoder:(id)coder
 {
   sub_25459A8A0();
   sub_25459A890();
@@ -98,7 +98,7 @@
   return result;
 }
 
-- (HUScheduleAccessViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUScheduleAccessViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25459A8A0();
   sub_25459A890();
@@ -130,7 +130,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   HUScheduleAccessViewController.viewDidLoad()();
 }
 

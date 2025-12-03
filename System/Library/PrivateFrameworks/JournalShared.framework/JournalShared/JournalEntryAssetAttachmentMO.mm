@@ -1,14 +1,14 @@
 @interface JournalEntryAssetAttachmentMO
-- (JournalEntryAssetAttachmentMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (JournalEntryAssetAttachmentMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation JournalEntryAssetAttachmentMO
 
-- (JournalEntryAssetAttachmentMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (JournalEntryAssetAttachmentMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JournalEntryAssetAttachmentMO();
-  return [(JournalEntryAssetAttachmentMO *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(JournalEntryAssetAttachmentMO *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

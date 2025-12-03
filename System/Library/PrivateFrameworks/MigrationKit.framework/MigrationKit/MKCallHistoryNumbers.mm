@@ -1,24 +1,24 @@
 @interface MKCallHistoryNumbers
-- (MKCallHistoryNumbers)initWithSerializedData:(id)a3;
+- (MKCallHistoryNumbers)initWithSerializedData:(id)data;
 @end
 
 @implementation MKCallHistoryNumbers
 
-- (MKCallHistoryNumbers)initWithSerializedData:(id)a3
+- (MKCallHistoryNumbers)initWithSerializedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = MKCallHistoryNumbers;
   v5 = [(MKCallHistoryNumbers *)&v9 init];
   if (v5)
   {
-    if (!v4)
+    if (!dataCopy)
     {
       v7 = 0;
       goto LABEL_6;
     }
 
-    v6 = [v4 mk_arrayForKey:@"numbers_in_use"];
+    v6 = [dataCopy mk_arrayForKey:@"numbers_in_use"];
     [(MKCallHistoryNumbers *)v5 setNumbersInUse:v6];
   }
 

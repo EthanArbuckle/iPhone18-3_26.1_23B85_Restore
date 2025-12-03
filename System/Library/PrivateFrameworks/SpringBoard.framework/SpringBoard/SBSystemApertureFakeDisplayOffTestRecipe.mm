@@ -1,9 +1,9 @@
 @interface SBSystemApertureFakeDisplayOffTestRecipe
-- (BOOL)_changeBlueLayerVisibility:(BOOL)a3;
-- (BOOL)_changeMatchMovedIndicatorVisiblity:(BOOL)a3;
-- (BOOL)_changeRecordingIndicatorLayerVisibility:(BOOL)a3;
-- (BOOL)_changeRecordingIndicatorPortalLayerVisibility:(BOOL)a3;
-- (BOOL)_changeRedLayerVisibility:(BOOL)a3;
+- (BOOL)_changeBlueLayerVisibility:(BOOL)visibility;
+- (BOOL)_changeMatchMovedIndicatorVisiblity:(BOOL)visiblity;
+- (BOOL)_changeRecordingIndicatorLayerVisibility:(BOOL)visibility;
+- (BOOL)_changeRecordingIndicatorPortalLayerVisibility:(BOOL)visibility;
+- (BOOL)_changeRedLayerVisibility:(BOOL)visibility;
 - (void)_setupContext;
 - (void)handleVolumeDecrease;
 - (void)handleVolumeIncrease;
@@ -15,11 +15,11 @@
 {
   v39[4] = *MEMORY[0x277D85DE8];
   v3 = SBMainWindowScene();
-  v4 = [v3 screen];
-  v5 = [v4 _display];
-  [v4 scale];
+  screen = [v3 screen];
+  _display = [screen _display];
+  [screen scale];
   v7 = v6;
-  v8 = [v3 isExternalDisplayWindowScene];
+  isExternalDisplayWindowScene = [v3 isExternalDisplayWindowScene];
   v9 = *MEMORY[0x277CBED28];
   v10 = *MEMORY[0x277CDA120];
   v38[0] = *MEMORY[0x277CDA100];
@@ -27,7 +27,7 @@
   v39[0] = v9;
   v39[1] = v9;
   v38[2] = *MEMORY[0x277CDA0F0];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "displayId")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(_display, "displayId")}];
   v38[3] = @"canRenderAboveBlankingContext";
   v39[2] = v11;
   v39[3] = MEMORY[0x277CBEC38];
@@ -40,26 +40,26 @@
   LODWORD(v15) = 2139095040;
   [(CAContext *)self->_underInfiniteHighLevelContext setLevel:v15];
   [(CAContext *)self->_underInfiniteHighLevelContext setSecure:1];
-  v16 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   underInfiniteHighLevelRootLayer = self->_underInfiniteHighLevelRootLayer;
-  self->_underInfiniteHighLevelRootLayer = v16;
+  self->_underInfiniteHighLevelRootLayer = layer;
 
   v18 = self->_underInfiniteHighLevelRootLayer;
-  v19 = [MEMORY[0x277D75348] blackColor];
-  -[CALayer setBackgroundColor:](v18, "setBackgroundColor:", [v19 CGColor]);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  -[CALayer setBackgroundColor:](v18, "setBackgroundColor:", [blackColor CGColor]);
 
   v20 = self->_underInfiniteHighLevelRootLayer;
-  v21 = [MEMORY[0x277D75348] systemPinkColor];
-  -[CALayer setBorderColor:](v20, "setBorderColor:", [v21 CGColor]);
+  systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+  -[CALayer setBorderColor:](v20, "setBorderColor:", [systemPinkColor CGColor]);
 
   [(CALayer *)self->_underInfiniteHighLevelRootLayer setBorderWidth:6.0];
   [(CALayer *)self->_underInfiniteHighLevelRootLayer setOpacity:0.0];
   v22 = self->_underInfiniteHighLevelRootLayer;
   CGAffineTransformMakeScale(&v37, v7, v7);
   [(CALayer *)v22 setAffineTransform:&v37];
-  if (v8)
+  if (isExternalDisplayWindowScene)
   {
-    [v4 nativeBounds];
+    [screen nativeBounds];
   }
 
   else
@@ -74,7 +74,7 @@
   v30 = v26;
   [(CALayer *)self->_underInfiniteHighLevelRootLayer setFrame:?];
   GSMainScreenOrientation();
-  if (!((v31 == 0.0) | v8 & 1))
+  if (!((v31 == 0.0) | isExternalDisplayWindowScene & 1))
   {
     v32 = v31;
     v33 = self->_underInfiniteHighLevelRootLayer;
@@ -130,9 +130,9 @@
   }
 }
 
-- (BOOL)_changeRecordingIndicatorLayerVisibility:(BOOL)a3
+- (BOOL)_changeRecordingIndicatorLayerVisibility:(BOOL)visibility
 {
-  if (!a3)
+  if (!visibility)
   {
     if (self->_recordingIndicatorLayer)
     {
@@ -183,8 +183,8 @@
   if (self->_parentSourceIndicatorOnMainLayer)
   {
     v7 = SBMainWindowScene();
-    v8 = [v7 keyWindow];
-    underInfiniteHighLevelContext = [v8 layer];
+    keyWindow = [v7 keyWindow];
+    underInfiniteHighLevelContext = [keyWindow layer];
   }
 
   else
@@ -201,10 +201,10 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)_changeRecordingIndicatorPortalLayerVisibility:(BOOL)a3
+- (BOOL)_changeRecordingIndicatorPortalLayerVisibility:(BOOL)visibility
 {
   recordingIndicatorPortalLayer = self->_recordingIndicatorPortalLayer;
-  if (a3)
+  if (visibility)
   {
     if (!recordingIndicatorPortalLayer)
     {
@@ -214,9 +214,9 @@ LABEL_16:
         [SBSystemApertureFakeDisplayOffTestRecipe _changeRecordingIndicatorPortalLayerVisibility:];
       }
 
-      v6 = [MEMORY[0x277CD9F30] layer];
+      layer = [MEMORY[0x277CD9F30] layer];
       v7 = self->_recordingIndicatorPortalLayer;
-      self->_recordingIndicatorPortalLayer = v6;
+      self->_recordingIndicatorPortalLayer = layer;
 
       v8 = 1;
       [(CAPortalLayer *)self->_recordingIndicatorPortalLayer setMatchesOpacity:1];
@@ -228,8 +228,8 @@ LABEL_16:
       [(CAPortalLayer *)self->_recordingIndicatorPortalLayer setHidesSourceLayer:0];
       [(CAPortalLayer *)self->_recordingIndicatorPortalLayer setMatchesTransform:1];
       v10 = self->_recordingIndicatorPortalLayer;
-      v11 = [MEMORY[0x277D75348] systemCyanColor];
-      -[CAPortalLayer setBorderColor:](v10, "setBorderColor:", [v11 CGColor]);
+      systemCyanColor = [MEMORY[0x277D75348] systemCyanColor];
+      -[CAPortalLayer setBorderColor:](v10, "setBorderColor:", [systemCyanColor CGColor]);
 
       [(CAPortalLayer *)self->_recordingIndicatorPortalLayer setBorderWidth:1.0];
       [(CAPortalLayer *)self->_recordingIndicatorPortalLayer setSourceLayer:self->_recordingIndicatorLayer];
@@ -294,11 +294,11 @@ void __91__SBSystemApertureFakeDisplayOffTestRecipe__changeRecordingIndicatorPor
   [*(*(a1 + 32) + 56) addAnimation:v2 forKey:@"com.apple.SpringBoard.SBSystemApertureFakeDisplayOffTestRecipe.secondTransformAnimation"];
 }
 
-- (BOOL)_changeMatchMovedIndicatorVisiblity:(BOOL)a3
+- (BOOL)_changeMatchMovedIndicatorVisiblity:(BOOL)visiblity
 {
   v21[1] = *MEMORY[0x277D85DE8];
   matchMovedRecordingIndicatorLayer = self->_matchMovedRecordingIndicatorLayer;
-  if (a3)
+  if (visiblity)
   {
     if (!matchMovedRecordingIndicatorLayer)
     {
@@ -395,10 +395,10 @@ void __80__SBSystemApertureFakeDisplayOffTestRecipe__changeMatchMovedIndicatorVi
   [*(*(a1 + 32) + 56) addAnimation:v8 forKey:@"com.apple.SpringBoard.SBSystemApertureFakeDisplayOffTestRecipe.positionAnimation"];
 }
 
-- (BOOL)_changeBlueLayerVisibility:(BOOL)a3
+- (BOOL)_changeBlueLayerVisibility:(BOOL)visibility
 {
   blueLayer = self->_blueLayer;
-  if (a3)
+  if (visibility)
   {
     if (!blueLayer)
     {
@@ -408,13 +408,13 @@ void __80__SBSystemApertureFakeDisplayOffTestRecipe__changeMatchMovedIndicatorVi
         [SBSystemApertureFakeDisplayOffTestRecipe _changeBlueLayerVisibility:];
       }
 
-      v6 = [MEMORY[0x277CD9ED0] layer];
+      layer = [MEMORY[0x277CD9ED0] layer];
       v7 = self->_blueLayer;
-      self->_blueLayer = v6;
+      self->_blueLayer = layer;
 
       v8 = self->_blueLayer;
-      v9 = [MEMORY[0x277D75348] systemBlueColor];
-      -[CALayer setBackgroundColor:](v8, "setBackgroundColor:", [v9 CGColor]);
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      -[CALayer setBackgroundColor:](v8, "setBackgroundColor:", [systemBlueColor CGColor]);
 
       [(CALayer *)self->_blueLayer setFrame:150.0, 500.0, 50.0, 50.0];
       [(CALayer *)self->_underInfiniteHighLevelRootLayer addSublayer:self->_blueLayer];
@@ -440,10 +440,10 @@ void __80__SBSystemApertureFakeDisplayOffTestRecipe__changeMatchMovedIndicatorVi
   return 0;
 }
 
-- (BOOL)_changeRedLayerVisibility:(BOOL)a3
+- (BOOL)_changeRedLayerVisibility:(BOOL)visibility
 {
   redLayer = self->_redLayer;
-  if (a3)
+  if (visibility)
   {
     if (!redLayer)
     {
@@ -453,13 +453,13 @@ void __80__SBSystemApertureFakeDisplayOffTestRecipe__changeMatchMovedIndicatorVi
         [SBSystemApertureFakeDisplayOffTestRecipe _changeRedLayerVisibility:];
       }
 
-      v6 = [MEMORY[0x277CD9ED0] layer];
+      layer = [MEMORY[0x277CD9ED0] layer];
       v7 = self->_redLayer;
-      self->_redLayer = v6;
+      self->_redLayer = layer;
 
       v8 = self->_redLayer;
-      v9 = [MEMORY[0x277D75348] systemRedColor];
-      -[CALayer setBackgroundColor:](v8, "setBackgroundColor:", [v9 CGColor]);
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+      -[CALayer setBackgroundColor:](v8, "setBackgroundColor:", [systemRedColor CGColor]);
 
       [(CALayer *)self->_redLayer setFrame:200.0, 500.0, 50.0, 50.0];
       [(CALayer *)self->_underInfiniteHighLevelRootLayer addSublayer:self->_redLayer];

@@ -1,69 +1,69 @@
 @interface HDSPUserNotificationCenter
-+ (id)_generateUniqueIdentifierForNotificationIdentifierPrefix:(id)a3 eventDate:(id)a4;
-+ (id)_stringForEventDate:(id)a3;
++ (id)_generateUniqueIdentifierForNotificationIdentifierPrefix:(id)prefix eventDate:(id)date;
++ (id)_stringForEventDate:(id)date;
 - (BOOL)_shouldPostCustomizeFocusNotification;
 - (HDSPEnvironment)environment;
-- (HDSPUserNotificationCenter)initWithEnvironment:(id)a3;
-- (HDSPUserNotificationCenter)initWithEnvironment:(id)a3 notificationCenter:(id)a4;
+- (HDSPUserNotificationCenter)initWithEnvironment:(id)environment;
+- (HDSPUserNotificationCenter)initWithEnvironment:(id)environment notificationCenter:(id)center;
 - (NSString)sourceIdentifier;
 - (id)_bedtimeReminderContent;
-- (id)_chargingReminderBodyForAlarmEnabled:(BOOL)a3 sleepTrackingEnabled:(BOOL)a4;
-- (id)_chargingReminderContentWithUserInfo:(id)a3;
-- (id)_contentByAddingCommonUserInfoTo:(id)a3;
-- (id)_localizedBedtimeOrWindDownReminderBodyHelperWithKey:(id)a3 embeddingTimeForEvent:(id)a4;
-- (id)_localizedBedtimeOrWindDownReminderBodyWithKey:(id)a3 embeddingTimeForEvent:(id)a4 shouldIntroduceFocus:(BOOL)a5;
-- (id)_notificationContentForEventIdentifier:(id)a3 userInfo:(id)a4;
-- (id)_notificationIdentifierPrefixForEventIdentifier:(id)a3;
-- (id)_notificationRequestForEvent:(id)a3;
-- (id)_notificationRequestIdentifierForEvent:(id)a3;
-- (id)_sleepScoreResultsContentWithUserInfo:(id)a3;
-- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (id)_wakeDetectionContentWithUserInfo:(id)a3;
-- (id)_wakeUpResultsContentWithUserInfo:(id)a3;
+- (id)_chargingReminderBodyForAlarmEnabled:(BOOL)enabled sleepTrackingEnabled:(BOOL)trackingEnabled;
+- (id)_chargingReminderContentWithUserInfo:(id)info;
+- (id)_contentByAddingCommonUserInfoTo:(id)to;
+- (id)_localizedBedtimeOrWindDownReminderBodyHelperWithKey:(id)key embeddingTimeForEvent:(id)event;
+- (id)_localizedBedtimeOrWindDownReminderBodyWithKey:(id)key embeddingTimeForEvent:(id)event shouldIntroduceFocus:(BOOL)focus;
+- (id)_notificationContentForEventIdentifier:(id)identifier userInfo:(id)info;
+- (id)_notificationIdentifierPrefixForEventIdentifier:(id)identifier;
+- (id)_notificationRequestForEvent:(id)event;
+- (id)_notificationRequestIdentifierForEvent:(id)event;
+- (id)_sleepScoreResultsContentWithUserInfo:(id)info;
+- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (id)_wakeDetectionContentWithUserInfo:(id)info;
+- (id)_wakeUpResultsContentWithUserInfo:(id)info;
 - (id)_windDownReminderContent;
-- (void)_handleSuccessfulNotificationRequest:(id)a3;
-- (void)_publishNotificationRequest:(id)a3;
-- (void)_recordSentUserNotificationRequest:(id)a3;
-- (void)_submitAnalyticsForNotification:(id)a3;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)publishNotificationForEvent:(id)a3;
-- (void)tearDownNotificationForEventIdentifier:(id)a3;
+- (void)_handleSuccessfulNotificationRequest:(id)request;
+- (void)_publishNotificationRequest:(id)request;
+- (void)_recordSentUserNotificationRequest:(id)request;
+- (void)_submitAnalyticsForNotification:(id)notification;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)publishNotificationForEvent:(id)event;
+- (void)tearDownNotificationForEventIdentifier:(id)identifier;
 - (void)tearDownNotifications;
 @end
 
 @implementation HDSPUserNotificationCenter
 
-- (HDSPUserNotificationCenter)initWithEnvironment:(id)a3
+- (HDSPUserNotificationCenter)initWithEnvironment:(id)environment
 {
   v4 = MEMORY[0x277CE2028];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [v4 alloc];
   v7 = [v6 initWithBundleIdentifier:*MEMORY[0x277CCE3A8]];
-  v8 = [(HDSPUserNotificationCenter *)self initWithEnvironment:v5 notificationCenter:v7];
+  v8 = [(HDSPUserNotificationCenter *)self initWithEnvironment:environmentCopy notificationCenter:v7];
 
   return v8;
 }
 
-- (HDSPUserNotificationCenter)initWithEnvironment:(id)a3 notificationCenter:(id)a4
+- (HDSPUserNotificationCenter)initWithEnvironment:(id)environment notificationCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  centerCopy = center;
   v12.receiver = self;
   v12.super_class = HDSPUserNotificationCenter;
   v8 = [(HDSPUserNotificationCenter *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_environment, v6);
-    objc_storeStrong(&v9->_notificationCenter, a4);
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    objc_storeStrong(&v9->_notificationCenter, center);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = HKSPLogForCategory();
@@ -85,9 +85,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)publishNotificationForEvent:(id)a3
+- (void)publishNotificationForEvent:(id)event
 {
-  v4 = [(HDSPUserNotificationCenter *)self _notificationRequestForEvent:a3];
+  v4 = [(HDSPUserNotificationCenter *)self _notificationRequestForEvent:event];
   if (v4)
   {
     [(HDSPUserNotificationCenter *)self _publishNotificationRequest:v4];
@@ -96,20 +96,20 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_notificationRequestForEvent:(id)a3
+- (id)_notificationRequestForEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained behavior];
-  if ([v6 isAppleWatch])
+  behavior = [WeakRetained behavior];
+  if ([behavior isAppleWatch])
   {
   }
 
   else
   {
-    v7 = [v4 identifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x277D621D8]];
+    identifier = [eventCopy identifier];
+    v8 = [identifier isEqualToString:*MEMORY[0x277D621D8]];
 
     if (v8)
     {
@@ -118,7 +118,7 @@
     }
   }
 
-  v10 = [(HDSPUserNotificationCenter *)self _notificationRequestIdentifierForEvent:v4];
+  v10 = [(HDSPUserNotificationCenter *)self _notificationRequestIdentifierForEvent:eventCopy];
   if (!v10)
   {
     v13 = HKSPLogForCategory();
@@ -126,20 +126,20 @@
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [v4 identifier];
+      identifier2 = [eventCopy identifier];
       v23 = 138543618;
       v24 = v14;
       v25 = 2114;
-      v26 = v16;
+      v26 = identifier2;
       _os_log_error_impl(&dword_269B11000, v13, OS_LOG_TYPE_ERROR, "[%{public}@] unable to create notification identifier for event %{public}@", &v23, 0x16u);
     }
 
     goto LABEL_13;
   }
 
-  v11 = [v4 identifier];
-  v12 = [v4 context];
-  v13 = [(HDSPUserNotificationCenter *)self _notificationContentForEventIdentifier:v11 userInfo:v12];
+  identifier3 = [eventCopy identifier];
+  context = [eventCopy context];
+  v13 = [(HDSPUserNotificationCenter *)self _notificationContentForEventIdentifier:identifier3 userInfo:context];
 
   if (!v13)
   {
@@ -148,11 +148,11 @@
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [v4 identifier];
+      identifier4 = [eventCopy identifier];
       v23 = 138543618;
       v24 = v20;
       v25 = 2114;
-      v26 = v22;
+      v26 = identifier4;
       _os_log_error_impl(&dword_269B11000, v17, OS_LOG_TYPE_ERROR, "[%{public}@] unable to create notification content for event %{public}@", &v23, 0x16u);
     }
 
@@ -171,9 +171,9 @@ LABEL_15:
   return v9;
 }
 
-- (void)_publishNotificationRequest:(id)a3
+- (void)_publishNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   notificationCenter = self->_notificationCenter;
   v7[0] = MEMORY[0x277D85DD0];
@@ -181,7 +181,7 @@ LABEL_15:
   v7[2] = __58__HDSPUserNotificationCenter__publishNotificationRequest___block_invoke;
   v7[3] = &unk_279C7D2D0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = requestCopy;
   v8 = v6;
   [(UNUserNotificationCenter *)notificationCenter addNotificationRequest:v6 withCompletionHandler:v7];
 
@@ -233,41 +233,41 @@ void __58__HDSPUserNotificationCenter__publishNotificationRequest___block_invoke
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSuccessfulNotificationRequest:(id)a3
+- (void)_handleSuccessfulNotificationRequest:(id)request
 {
-  v4 = a3;
-  [(HDSPUserNotificationCenter *)self _recordSentUserNotificationRequest:v4];
-  [(HDSPUserNotificationCenter *)self _submitAnalyticsForNotification:v4];
+  requestCopy = request;
+  [(HDSPUserNotificationCenter *)self _recordSentUserNotificationRequest:requestCopy];
+  [(HDSPUserNotificationCenter *)self _submitAnalyticsForNotification:requestCopy];
 }
 
-- (void)_recordSentUserNotificationRequest:(id)a3
+- (void)_recordSentUserNotificationRequest:(id)request
 {
-  v4 = [a3 content];
-  v5 = [v4 categoryIdentifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D622E0]];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  v6 = [categoryIdentifier isEqualToString:*MEMORY[0x277D622E0]];
 
   if (v6)
   {
-    v7 = [(HDSPUserNotificationCenter *)self environment];
-    v8 = [v7 sleepScheduleModelManager];
-    v9 = [v8 sleepEventRecord];
-    v10 = [v9 mutableCopy];
+    environment = [(HDSPUserNotificationCenter *)self environment];
+    sleepScheduleModelManager = [environment sleepScheduleModelManager];
+    sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
+    v10 = [sleepEventRecord mutableCopy];
 
     [v10 setLastWakeUpResultsIntroductionNotificationVersionSent:1];
-    v11 = [v7 currentDateProvider];
-    v12 = v11[2]();
+    currentDateProvider = [environment currentDateProvider];
+    v12 = currentDateProvider[2]();
     [v10 setLastWakeUpResultsIntroductionNotificationVersionSentDate:v12];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __65__HDSPUserNotificationCenter__recordSentUserNotificationRequest___block_invoke;
     v15[3] = &unk_279C7C050;
-    v16 = v8;
+    v16 = sleepScheduleModelManager;
     v17 = v10;
-    v18 = self;
+    selfCopy = self;
     v13 = v10;
-    v14 = v8;
-    [v7 perform:v15 withSource:self];
+    v14 = sleepScheduleModelManager;
+    [environment perform:v15 withSource:self];
   }
 }
 
@@ -298,32 +298,32 @@ void __65__HDSPUserNotificationCenter__recordSentUserNotificationRequest___block
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitAnalyticsForNotification:(id)a3
+- (void)_submitAnalyticsForNotification:(id)notification
 {
-  v9 = a3;
-  if ([v9 hksp_shouldSubmitAnalytics])
+  notificationCopy = notification;
+  if ([notificationCopy hksp_shouldSubmitAnalytics])
   {
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v5 = [WeakRetained analyticsManager];
-    v6 = [v5 analyticsManager];
+    analyticsManager = [WeakRetained analyticsManager];
+    v5AnalyticsManager = [analyticsManager analyticsManager];
 
-    v7 = [v9 hksp_analyticsSleepNotificationType];
-    v8 = [objc_alloc(MEMORY[0x277D62428]) initWithType:v7 action:0];
-    [v6 trackEvent:v8];
+    hksp_analyticsSleepNotificationType = [notificationCopy hksp_analyticsSleepNotificationType];
+    v8 = [objc_alloc(MEMORY[0x277D62428]) initWithType:hksp_analyticsSleepNotificationType action:0];
+    [v5AnalyticsManager trackEvent:v8];
   }
 }
 
-- (void)tearDownNotificationForEventIdentifier:(id)a3
+- (void)tearDownNotificationForEventIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = identifierCopy;
     v6 = *&buf[4];
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] tearDownNotificationForEventIdentifier %{public}@", buf, 0x16u);
   }
@@ -363,7 +363,7 @@ void __65__HDSPUserNotificationCenter__recordSentUserNotificationRequest___block
   v34 = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v30 count:6];
 
-  v18 = [v17 objectForKeyedSubscript:v4];
+  v18 = [v17 objectForKeyedSubscript:identifierCopy];
 
   if ([v18 count])
   {
@@ -373,7 +373,7 @@ void __65__HDSPUserNotificationCenter__recordSentUserNotificationRequest___block
     v21[2] = __69__HDSPUserNotificationCenter_tearDownNotificationForEventIdentifier___block_invoke;
     v21[3] = &unk_279C7D340;
     v22 = v18;
-    v23 = self;
+    selfCopy = self;
     [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:v21];
   }
 
@@ -482,17 +482,17 @@ id __69__HDSPUserNotificationCenter_tearDownNotificationForEventIdentifier___blo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_notificationRequestIdentifierForEvent:(id)a3
+- (id)_notificationRequestIdentifierForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(HDSPUserNotificationCenter *)self _notificationIdentifierPrefixForEventIdentifier:v5];
+  eventCopy = event;
+  identifier = [eventCopy identifier];
+  v6 = [(HDSPUserNotificationCenter *)self _notificationIdentifierPrefixForEventIdentifier:identifier];
 
   if (v6)
   {
     v7 = objc_opt_class();
-    v8 = [v4 dueDate];
-    v9 = [v7 _generateUniqueIdentifierForNotificationIdentifierPrefix:v6 eventDate:v8];
+    dueDate = [eventCopy dueDate];
+    v9 = [v7 _generateUniqueIdentifierForNotificationIdentifierPrefix:v6 eventDate:dueDate];
   }
 
   else
@@ -503,10 +503,10 @@ id __69__HDSPUserNotificationCenter_tearDownNotificationForEventIdentifier___blo
   return v9;
 }
 
-- (id)_notificationIdentifierPrefixForEventIdentifier:(id)a3
+- (id)_notificationIdentifierPrefixForEventIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D621F8]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D621C0]))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621F8]] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x277D621C0]))
   {
     v4 = MEMORY[0x277D62018];
 LABEL_4:
@@ -514,14 +514,14 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D621C8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621C8]])
   {
     v4 = MEMORY[0x277D62040];
     goto LABEL_4;
   }
 
   v7 = HKSHSleepScoreResultsNotificationEventIdentifier();
-  v8 = [v3 isEqualToString:v7];
+  v8 = [identifierCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -529,13 +529,13 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D621E8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621E8]])
   {
     v4 = MEMORY[0x277D62358];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277D621D8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621D8]])
   {
     v4 = MEMORY[0x277D62330];
     goto LABEL_4;
@@ -547,21 +547,21 @@ LABEL_5:
   return v5;
 }
 
-+ (id)_generateUniqueIdentifierForNotificationIdentifierPrefix:(id)a3 eventDate:(id)a4
++ (id)_generateUniqueIdentifierForNotificationIdentifierPrefix:(id)prefix eventDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _stringForEventDate:v5];
+  dateCopy = date;
+  prefixCopy = prefix;
+  v7 = [objc_opt_class() _stringForEventDate:dateCopy];
 
-  v8 = [v6 stringByAppendingFormat:@"_%@", v7];
+  v8 = [prefixCopy stringByAppendingFormat:@"_%@", v7];
 
   return v8;
 }
 
-+ (id)_stringForEventDate:(id)a3
++ (id)_stringForEventDate:(id)date
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v5 setLocale:v6];
@@ -570,55 +570,55 @@ LABEL_5:
   [v5 setTimeZone:v7];
 
   [v5 setDateFormat:@"yyyy-MM-dd_HH:mm"];
-  v8 = [v5 stringFromDate:v4];
+  v8 = [v5 stringFromDate:dateCopy];
 
   return v8;
 }
 
-- (id)_notificationContentForEventIdentifier:(id)a3 userInfo:(id)a4
+- (id)_notificationContentForEventIdentifier:(id)identifier userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x277D621F8]])
+  identifierCopy = identifier;
+  infoCopy = info;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621F8]])
   {
-    v8 = [(HDSPUserNotificationCenter *)self _windDownReminderContent];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _windDownReminderContent];
 LABEL_13:
-    v11 = v8;
-    v12 = [(HDSPUserNotificationCenter *)self _contentByAddingCommonUserInfoTo:v8];
+    v11 = _windDownReminderContent;
+    v12 = [(HDSPUserNotificationCenter *)self _contentByAddingCommonUserInfoTo:_windDownReminderContent];
 
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277D621C0]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621C0]])
   {
-    v8 = [(HDSPUserNotificationCenter *)self _bedtimeReminderContent];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _bedtimeReminderContent];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277D621C8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621C8]])
   {
-    v8 = [(HDSPUserNotificationCenter *)self _chargingReminderContentWithUserInfo:v7];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _chargingReminderContentWithUserInfo:infoCopy];
     goto LABEL_13;
   }
 
   v9 = HKSHSleepScoreResultsNotificationEventIdentifier();
-  v10 = [v6 isEqualToString:v9];
+  v10 = [identifierCopy isEqualToString:v9];
 
   if (v10)
   {
-    v8 = [(HDSPUserNotificationCenter *)self _sleepScoreResultsContentWithUserInfo:v7];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _sleepScoreResultsContentWithUserInfo:infoCopy];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277D621E8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621E8]])
   {
-    v8 = [(HDSPUserNotificationCenter *)self _wakeUpResultsContentWithUserInfo:v7];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _wakeUpResultsContentWithUserInfo:infoCopy];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277D621D8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D621D8]])
   {
-    v8 = [(HDSPUserNotificationCenter *)self _wakeDetectionContentWithUserInfo:v7];
+    _windDownReminderContent = [(HDSPUserNotificationCenter *)self _wakeDetectionContentWithUserInfo:infoCopy];
     goto LABEL_13;
   }
 
@@ -628,13 +628,13 @@ LABEL_14:
   return v12;
 }
 
-- (id)_contentByAddingCommonUserInfoTo:(id)a3
+- (id)_contentByAddingCommonUserInfoTo:(id)to
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 userInfo];
+  toCopy = to;
+  v4 = [toCopy mutableCopy];
+  userInfo = [toCopy userInfo];
 
-  v6 = [v5 mutableCopy];
+  v6 = [userInfo mutableCopy];
   [v6 setObject:&unk_287A950F8 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
   v7 = [v6 copy];
   [v4 setUserInfo:v7];
@@ -654,8 +654,8 @@ LABEL_14:
   v6 = HDSPLocalizedString(@"BEDTIME_REMINDER_TITLE");
   [v5 setTitle:v6];
 
-  v7 = [(HDSPUserNotificationCenter *)self _shouldPostCustomizeFocusNotification];
-  if (v7)
+  _shouldPostCustomizeFocusNotification = [(HDSPUserNotificationCenter *)self _shouldPostCustomizeFocusNotification];
+  if (_shouldPostCustomizeFocusNotification)
   {
     [v5 setCategoryIdentifier:*MEMORY[0x277D62080]];
     v8 = HDSPLocalizedString(@"SILENCE_NOTIFICATIONS_TITLE");
@@ -665,25 +665,25 @@ LABEL_14:
     [v5 setDefaultActionURL:v9];
 
     v10 = objc_loadWeakRetained(&self->_environment);
-    v11 = [v10 behavior];
-    v12 = [v11 isAppleWatch];
+    behavior = [v10 behavior];
+    isAppleWatch = [behavior isAppleWatch];
 
-    if ((v12 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
       v13 = [MEMORY[0x277CE1FB0] iconForApplicationIdentifier:@"com.apple.Preferences"];
       [v5 setIcon:v13];
     }
   }
 
-  v14 = [(HDSPUserNotificationCenter *)self _localizedBedtimeOrWindDownReminderBodyWithKey:@"BEDTIME_REMINDER_MESSAGE" embeddingTimeForEvent:*MEMORY[0x277D621B8] shouldIntroduceFocus:v7];
+  v14 = [(HDSPUserNotificationCenter *)self _localizedBedtimeOrWindDownReminderBodyWithKey:@"BEDTIME_REMINDER_MESSAGE" embeddingTimeForEvent:*MEMORY[0x277D621B8] shouldIntroduceFocus:_shouldPostCustomizeFocusNotification];
   [v5 setBody:v14];
 
-  v15 = [MEMORY[0x277CE1FE0] hdsp_bedtimeReminderSound];
-  [v5 setSound:v15];
+  hdsp_bedtimeReminderSound = [MEMORY[0x277CE1FE0] hdsp_bedtimeReminderSound];
+  [v5 setSound:hdsp_bedtimeReminderSound];
 
   v16 = objc_loadWeakRetained(&self->_environment);
-  v17 = [v16 currentDateProvider];
-  v18 = v17[2]();
+  currentDateProvider = [v16 currentDateProvider];
+  v18 = currentDateProvider[2]();
   v19 = [v18 dateByAddingTimeInterval:*MEMORY[0x277D623B8]];
   [v5 setExpirationDate:v19];
 
@@ -700,8 +700,8 @@ LABEL_14:
   v6 = HDSPLocalizedString(@"WIND_DOWN_REMINDER_TITLE");
   [v5 setTitle:v6];
 
-  v7 = [(HDSPUserNotificationCenter *)self _shouldPostCustomizeFocusNotification];
-  if (v7)
+  _shouldPostCustomizeFocusNotification = [(HDSPUserNotificationCenter *)self _shouldPostCustomizeFocusNotification];
+  if (_shouldPostCustomizeFocusNotification)
   {
     [v5 setCategoryIdentifier:*MEMORY[0x277D62080]];
     v8 = HDSPLocalizedString(@"SILENCE_NOTIFICATIONS_TITLE");
@@ -711,25 +711,25 @@ LABEL_14:
     [v5 setDefaultActionURL:v9];
 
     v10 = objc_loadWeakRetained(&self->_environment);
-    v11 = [v10 behavior];
-    v12 = [v11 isAppleWatch];
+    behavior = [v10 behavior];
+    isAppleWatch = [behavior isAppleWatch];
 
-    if ((v12 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
       v13 = [MEMORY[0x277CE1FB0] iconForApplicationIdentifier:@"com.apple.Preferences"];
       [v5 setIcon:v13];
     }
   }
 
-  v14 = [(HDSPUserNotificationCenter *)self _windDownReminderBodyContentShouldIntroduceFocus:v7];
+  v14 = [(HDSPUserNotificationCenter *)self _windDownReminderBodyContentShouldIntroduceFocus:_shouldPostCustomizeFocusNotification];
   [v5 setBody:v14];
 
-  v15 = [MEMORY[0x277CE1FE0] hdsp_bedtimeReminderSound];
-  [v5 setSound:v15];
+  hdsp_bedtimeReminderSound = [MEMORY[0x277CE1FE0] hdsp_bedtimeReminderSound];
+  [v5 setSound:hdsp_bedtimeReminderSound];
 
   v16 = objc_loadWeakRetained(&self->_environment);
-  v17 = [v16 currentDateProvider];
-  v18 = v17[2]();
+  currentDateProvider = [v16 currentDateProvider];
+  v18 = currentDateProvider[2]();
   v19 = [v18 dateByAddingTimeInterval:*MEMORY[0x277D623B8]];
   [v5 setExpirationDate:v19];
 
@@ -740,14 +740,14 @@ LABEL_14:
 {
   v24 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained sleepScheduleModelManager];
-  v5 = [v4 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  v6 = [v5 sleepEventRecord];
-  if ([v6 isConsolidatedSleepCoachingOnboardingCompleted])
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+  if ([sleepEventRecord isConsolidatedSleepCoachingOnboardingCompleted])
   {
-    v7 = [v5 sleepSettings];
-    if (![v7 scheduledSleepMode])
+    sleepSettings = [sleepScheduleModel sleepSettings];
+    if (![sleepSettings scheduledSleepMode])
     {
       v13 = 0;
 LABEL_13:
@@ -756,11 +756,11 @@ LABEL_13:
     }
 
     v8 = objc_loadWeakRetained(&self->_environment);
-    v9 = [v8 sleepModeManager];
-    v10 = [v9 sleepFocusModeBridge];
+    sleepModeManager = [v8 sleepModeManager];
+    sleepFocusModeBridge = [sleepModeManager sleepFocusModeBridge];
 
     v19 = 0;
-    v11 = [v10 sleepFocusConfiguration:&v19];
+    v11 = [sleepFocusModeBridge sleepFocusConfiguration:&v19];
     v12 = v19;
     if (v11)
     {
@@ -799,28 +799,28 @@ LABEL_14:
   return v13;
 }
 
-- (id)_localizedBedtimeOrWindDownReminderBodyWithKey:(id)a3 embeddingTimeForEvent:(id)a4 shouldIntroduceFocus:(BOOL)a5
+- (id)_localizedBedtimeOrWindDownReminderBodyWithKey:(id)key embeddingTimeForEvent:(id)event shouldIntroduceFocus:(BOOL)focus
 {
-  v5 = a5;
+  focusCopy = focus;
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (([v10 isEqualToString:*MEMORY[0x277D621B8]] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277D621E0]) & 1) == 0)
+  keyCopy = key;
+  eventCopy = event;
+  if (([eventCopy isEqualToString:*MEMORY[0x277D621B8]] & 1) == 0 && (objc_msgSend(eventCopy, "isEqualToString:", *MEMORY[0x277D621E0]) & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSPUserNotificationCenter.m" lineNumber:370 description:@"This method can only be used to format localized strings containing bedtime or wakeUp times."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPUserNotificationCenter.m" lineNumber:370 description:@"This method can only be used to format localized strings containing bedtime or wakeUp times."];
 
-    if (v5)
+    if (focusCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_8:
-    v13 = [(HDSPUserNotificationCenter *)self _localizedBedtimeOrWindDownReminderBodyHelperWithKey:v9 embeddingTimeForEvent:v10];
+    v13 = [(HDSPUserNotificationCenter *)self _localizedBedtimeOrWindDownReminderBodyHelperWithKey:keyCopy embeddingTimeForEvent:eventCopy];
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!focusCopy)
   {
     goto LABEL_8;
   }
@@ -844,27 +844,27 @@ LABEL_9:
   return v15;
 }
 
-- (id)_localizedBedtimeOrWindDownReminderBodyHelperWithKey:(id)a3 embeddingTimeForEvent:(id)a4
+- (id)_localizedBedtimeOrWindDownReminderBodyHelperWithKey:(id)key embeddingTimeForEvent:(id)event
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v9 = [WeakRetained sleepScheduleModelManager];
-  v10 = [v9 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
   v11 = objc_loadWeakRetained(&self->_environment);
-  v12 = [v11 currentDateProvider];
-  v13 = v12[2]();
+  currentDateProvider = [v11 currentDateProvider];
+  v13 = currentDateProvider[2]();
 
-  v14 = [v10 nextEventWithIdentifier:v7 dueAfterDate:v13];
+  v14 = [sleepScheduleModel nextEventWithIdentifier:eventCopy dueAfterDate:v13];
   if (v14)
   {
     v41 = v13;
     v15 = [MEMORY[0x277CCA968] localizedStringFromDate:v14 dateStyle:0 timeStyle:1];
-    v16 = v6;
-    v17 = [MEMORY[0x277CBEA80] currentCalendar];
-    v18 = [v17 hksp_dateRequiresSingularTimeString:v14];
+    v16 = keyCopy;
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v18 = [currentCalendar hksp_dateRequiresSingularTimeString:v14];
 
     if (v18)
     {
@@ -880,9 +880,9 @@ LABEL_9:
     if (v21)
     {
       v39 = v20;
-      v40 = v10;
-      v22 = v7;
-      v23 = v6;
+      v40 = sleepScheduleModel;
+      v22 = eventCopy;
+      v23 = keyCopy;
       v24 = [v21 localizedStandardRangeOfString:v15];
       v26 = v25;
       v27 = [v21 localizedStandardRangeOfString:@".."];
@@ -904,10 +904,10 @@ LABEL_9:
       }
 
       v31 = [v21 copy];
-      v6 = v23;
-      v7 = v22;
+      keyCopy = v23;
+      eventCopy = v22;
       v20 = v39;
-      v10 = v40;
+      sleepScheduleModel = v40;
     }
 
     else
@@ -943,9 +943,9 @@ LABEL_9:
       *buf = 138543874;
       v45 = objc_opt_class();
       v46 = 2114;
-      v47 = v7;
+      v47 = eventCopy;
       v48 = 2114;
-      v49 = v6;
+      v49 = keyCopy;
       v35 = v45;
       _os_log_error_impl(&dword_269B11000, v15, OS_LOG_TYPE_ERROR, "[%{public}@] Unable to find next event with identifier %{public}@ for message %{public}@", buf, 0x20u);
     }
@@ -958,10 +958,10 @@ LABEL_9:
   return v31;
 }
 
-- (id)_chargingReminderContentWithUserInfo:(id)a3
+- (id)_chargingReminderContentWithUserInfo:(id)info
 {
   v4 = MEMORY[0x277CE1F60];
-  v5 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v7 = [v4 hdsp_notificationContentWithEnvironment:WeakRetained];
 
@@ -969,28 +969,28 @@ LABEL_9:
   v8 = HDSPLocalizedString(@"CHARGE_WATCH_TITLE");
   [v7 setTitle:v8];
 
-  v9 = [v5 objectForKeyedSubscript:*MEMORY[0x277D62030]];
-  v10 = [v9 BOOLValue];
-  v11 = [v5 objectForKeyedSubscript:*MEMORY[0x277D62048]];
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62030]];
+  bOOLValue = [v9 BOOLValue];
+  v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62048]];
 
-  v12 = -[HDSPUserNotificationCenter _chargingReminderBodyForAlarmEnabled:sleepTrackingEnabled:](self, "_chargingReminderBodyForAlarmEnabled:sleepTrackingEnabled:", v10, [v11 BOOLValue]);
+  v12 = -[HDSPUserNotificationCenter _chargingReminderBodyForAlarmEnabled:sleepTrackingEnabled:](self, "_chargingReminderBodyForAlarmEnabled:sleepTrackingEnabled:", bOOLValue, [v11 BOOLValue]);
   [v7 setBody:v12];
 
-  v13 = [MEMORY[0x277CE1FE0] hdsp_chargingReminderSound];
-  [v7 setSound:v13];
+  hdsp_chargingReminderSound = [MEMORY[0x277CE1FE0] hdsp_chargingReminderSound];
+  [v7 setSound:hdsp_chargingReminderSound];
 
   return v7;
 }
 
-- (id)_chargingReminderBodyForAlarmEnabled:(BOOL)a3 sleepTrackingEnabled:(BOOL)a4
+- (id)_chargingReminderBodyForAlarmEnabled:(BOOL)enabled sleepTrackingEnabled:(BOOL)trackingEnabled
 {
   v4 = @"CHARGE_WATCH_NO_ALARM_OR_SLEEP_TRACKING_MESSAGE";
-  if (a4)
+  if (trackingEnabled)
   {
     v4 = @"CHARGE_WATCH_SLEEP_TRACKING_MESSAGE";
   }
 
-  if (a3)
+  if (enabled)
   {
     v5 = @"CHARGE_WATCH_ALARM_MESSAGE";
   }
@@ -1005,46 +1005,46 @@ LABEL_9:
   return v6;
 }
 
-- (id)_wakeDetectionContentWithUserInfo:(id)a3
+- (id)_wakeDetectionContentWithUserInfo:(id)info
 {
   v4 = *MEMORY[0x277D62338];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 BOOLValue];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:v4];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277D62340]];
-  v9 = [v8 BOOLValue];
+  v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62340]];
+  bOOLValue2 = [v8 BOOLValue];
 
   v10 = MEMORY[0x277CE1F60];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v12 = [v10 hdsp_notificationContentWithEnvironment:WeakRetained];
 
   [v12 setCategoryIdentifier:*MEMORY[0x277D62328]];
-  v13 = [(HDSPUserNotificationCenter *)self _wakeDetectionAlertTitleForAlarmEnabled:v7 sleepModeOn:v9];
+  v13 = [(HDSPUserNotificationCenter *)self _wakeDetectionAlertTitleForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
   [v12 setTitle:v13];
 
-  v14 = [(HDSPUserNotificationCenter *)self _wakeDetectionAlertBodyForAlarmEnabled:v7 sleepModeOn:v9];
+  v14 = [(HDSPUserNotificationCenter *)self _wakeDetectionAlertBodyForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
   [v12 setBody:v14];
 
-  v15 = [MEMORY[0x277CE1FE0] hdsp_wakeDetectionSound];
-  [v12 setSound:v15];
+  hdsp_wakeDetectionSound = [MEMORY[0x277CE1FE0] hdsp_wakeDetectionSound];
+  [v12 setSound:hdsp_wakeDetectionSound];
 
   [v12 setShouldIgnoreDoNotDisturb:1];
-  [v12 setUserInfo:v5];
+  [v12 setUserInfo:infoCopy];
 
   return v12;
 }
 
-- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = @"EARLY_WAKEUP_TITLE_SLEEP_FOCUS";
-  if (a3 && a4)
+  if (enabled && on)
   {
     v4 = @"EARLY_WAKEUP_TITLE_ALARM_AND_SLEEP_FOCUS";
   }
 
-  if (a4)
+  if (on)
   {
     v5 = v4;
   }
@@ -1054,7 +1054,7 @@ LABEL_9:
     v5 = @"EARLY_WAKEUP_TITLE_ALARM";
   }
 
-  if (!a4 && !a3)
+  if (!on && !enabled)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1074,21 +1074,21 @@ LABEL_9:
   return v7;
 }
 
-- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
   v4 = @"EARLY_WAKEUP_BODY_NONE";
-  if (a3)
+  if (enabled)
   {
     v4 = @"EARLY_WAKEUP_BODY_ALARM";
   }
 
   v5 = @"EARLY_WAKEUP_BODY_ALARM_AND_SLEEP_FOCUS";
-  if (!a3)
+  if (!enabled)
   {
     v5 = @"EARLY_WAKEUP_BODY_SLEEP_FOCUS";
   }
 
-  if (a4)
+  if (on)
   {
     v6 = v5;
   }
@@ -1103,14 +1103,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_sleepScoreResultsContentWithUserInfo:(id)a3
+- (id)_sleepScoreResultsContentWithUserInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc(MEMORY[0x277D626A0]);
-  if (v4)
+  if (infoCopy)
   {
-    v6 = v4;
+    v6 = infoCopy;
   }
 
   else
@@ -1125,25 +1125,25 @@ LABEL_9:
     WeakRetained = objc_loadWeakRetained(&self->_environment);
     v10 = [v8 hdsp_notificationContentWithEnvironment:WeakRetained];
 
-    v11 = [v7 isIntroduction];
+    isIntroduction = [v7 isIntroduction];
     v12 = MEMORY[0x277D622E0];
-    if (!v11)
+    if (!isIntroduction)
     {
       v12 = MEMORY[0x277D622E8];
     }
 
     [v10 setCategoryIdentifier:*v12];
-    v13 = [v7 title];
-    [v10 setTitle:v13];
+    title = [v7 title];
+    [v10 setTitle:title];
 
-    v14 = [v7 body];
-    [v10 setBody:v14];
+    body = [v7 body];
+    [v10 setBody:body];
 
-    v15 = [MEMORY[0x277CE1FE0] hdsp_wakeUpResultsSound];
-    [v10 setSound:v15];
+    hdsp_wakeUpResultsSound = [MEMORY[0x277CE1FE0] hdsp_wakeUpResultsSound];
+    [v10 setSound:hdsp_wakeUpResultsSound];
 
-    v16 = [v7 notificationUserInfo];
-    [v10 setUserInfo:v16];
+    notificationUserInfo = [v7 notificationUserInfo];
+    [v10 setUserInfo:notificationUserInfo];
   }
 
   else
@@ -1154,7 +1154,7 @@ LABEL_9:
       v21 = 138543618;
       v22 = objc_opt_class();
       v23 = 2114;
-      v24 = v4;
+      v24 = infoCopy;
       v20 = v22;
       _os_log_error_impl(&dword_269B11000, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Cannot create content for sleep score results without valid data: %{public}@", &v21, 0x16u);
     }
@@ -1167,11 +1167,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)_wakeUpResultsContentWithUserInfo:(id)a3
+- (id)_wakeUpResultsContentWithUserInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [HDSPWakeUpResultsNotification wakeUpResultsNotificationFromUserInfo:v4];
+  infoCopy = info;
+  v5 = [HDSPWakeUpResultsNotification wakeUpResultsNotificationFromUserInfo:infoCopy];
   v6 = HKSPLogForCategory();
   v7 = v6;
   if (v5)
@@ -1180,37 +1180,37 @@ LABEL_9:
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [v5 categoryIdentifier];
+      categoryIdentifier = [v5 categoryIdentifier];
       v25 = 138543618;
       v26 = v8;
       v27 = 2114;
-      v28 = v10;
+      v28 = categoryIdentifier;
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating content for %{public}@", &v25, 0x16u);
     }
 
     v11 = [HDSPWakeUpResultsNotificationLocalizer alloc];
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v13 = [WeakRetained healthStoreProvider];
-    v14 = [v13 healthStore];
-    v7 = [(HDSPWakeUpResultsNotificationLocalizer *)v11 initWithNotification:v5 healthStore:v14];
+    healthStoreProvider = [WeakRetained healthStoreProvider];
+    healthStore = [healthStoreProvider healthStore];
+    v7 = [(HDSPWakeUpResultsNotificationLocalizer *)v11 initWithNotification:v5 healthStore:healthStore];
 
     v15 = MEMORY[0x277CE1F60];
     v16 = objc_loadWeakRetained(&self->_environment);
     v17 = [v15 hdsp_notificationContentWithEnvironment:v16];
 
-    v18 = [v5 categoryIdentifier];
-    [v17 setCategoryIdentifier:v18];
+    categoryIdentifier2 = [v5 categoryIdentifier];
+    [v17 setCategoryIdentifier:categoryIdentifier2];
 
-    v19 = [v7 localizedTitle];
-    [v17 setTitle:v19];
+    localizedTitle = [v7 localizedTitle];
+    [v17 setTitle:localizedTitle];
 
-    v20 = [v7 localizedBody];
-    [v17 setBody:v20];
+    localizedBody = [v7 localizedBody];
+    [v17 setBody:localizedBody];
 
-    v21 = [MEMORY[0x277CE1FE0] hdsp_wakeUpResultsSound];
-    [v17 setSound:v21];
+    hdsp_wakeUpResultsSound = [MEMORY[0x277CE1FE0] hdsp_wakeUpResultsSound];
+    [v17 setSound:hdsp_wakeUpResultsSound];
 
-    [v17 setUserInfo:v4];
+    [v17 setUserInfo:infoCopy];
   }
 
   else
@@ -1220,7 +1220,7 @@ LABEL_9:
       v25 = 138543618;
       v26 = objc_opt_class();
       v27 = 2112;
-      v28 = v4;
+      v28 = infoCopy;
       v24 = v26;
       _os_log_error_impl(&dword_269B11000, v7, OS_LOG_TYPE_ERROR, "[%{public}@] Cannot create content for wake up results without valid data: %@", &v25, 0x16u);
     }

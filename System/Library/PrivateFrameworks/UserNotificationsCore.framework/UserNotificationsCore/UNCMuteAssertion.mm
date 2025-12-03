@@ -1,5 +1,5 @@
 @interface UNCMuteAssertion
-- (UNCMuteAssertion)initWithCoder:(id)a3;
+- (UNCMuteAssertion)initWithCoder:(id)coder;
 - (id)_init;
 @end
 
@@ -12,7 +12,7 @@
   return [(UNCMuteAssertion *)&v3 init];
 }
 
-- (UNCMuteAssertion)initWithCoder:(id)a3
+- (UNCMuteAssertion)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UNCMuteAssertion;

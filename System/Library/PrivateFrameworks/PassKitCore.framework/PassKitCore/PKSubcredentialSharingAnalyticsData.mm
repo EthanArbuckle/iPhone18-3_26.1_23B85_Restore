@@ -1,26 +1,26 @@
 @interface PKSubcredentialSharingAnalyticsData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharingAnalyticsData:(id)a3;
-- (PKSubcredentialSharingAnalyticsData)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharingAnalyticsData:(id)data;
+- (PKSubcredentialSharingAnalyticsData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSubcredentialSharingAnalyticsData
 
-- (PKSubcredentialSharingAnalyticsData)initWithCoder:(id)a3
+- (PKSubcredentialSharingAnalyticsData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKSubcredentialSharingAnalyticsData;
   v5 = [(PKSubcredentialSharingAnalyticsData *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharerKeyIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharerKeyIdentifier"];
     sharerKeyIdentifier = v5->_sharerKeyIdentifier;
     v5->_sharerKeyIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInvitationFlow"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInvitationFlow"];
     v9 = v8;
     if (v8)
     {
@@ -45,13 +45,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sharerKeyIdentifier = self->_sharerKeyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sharerKeyIdentifier forKey:@"sharerKeyIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sharerKeyIdentifier forKey:@"sharerKeyIdentifier"];
   v6 = PKSharingInvitationFlowToString(self->_sharingInvitationFlow);
-  [v5 encodeObject:v6 forKey:@"sharingInvitationFlow"];
+  [coderCopy encodeObject:v6 forKey:@"sharingInvitationFlow"];
 }
 
 - (id)description
@@ -71,28 +71,28 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSubcredentialSharingAnalyticsData *)self isEqualToSharingAnalyticsData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSubcredentialSharingAnalyticsData *)self isEqualToSharingAnalyticsData:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSharingAnalyticsData:(id)a3
+- (BOOL)isEqualToSharingAnalyticsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   sharerKeyIdentifier = self->_sharerKeyIdentifier;
-  v6 = v4[1];
+  v6 = dataCopy[1];
   if (sharerKeyIdentifier)
   {
     v7 = v6 == 0;
@@ -108,7 +108,7 @@
     if (sharerKeyIdentifier == v6)
     {
 LABEL_9:
-      v8 = self->_sharingInvitationFlow == v4[2];
+      v8 = self->_sharingInvitationFlow == dataCopy[2];
       goto LABEL_10;
     }
   }

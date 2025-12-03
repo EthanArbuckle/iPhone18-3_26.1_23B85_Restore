@@ -1,5 +1,5 @@
 @interface CardWrappedViewController
-- (_TtC5TeaUI25CardWrappedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI25CardWrappedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7FF3630();
 }
 
-- (_TtC5TeaUI25CardWrappedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI25CardWrappedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1D7FF390C();
 }
 

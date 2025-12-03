@@ -1,16 +1,16 @@
 @interface MPTiledArtworkRepresentationCacheKey
-- (BOOL)isEqual:(id)a3;
-- (MPTiledArtworkRepresentationCacheKey)initWithTiledArtworkRequest:(id)a3 scaledFittingSize:(CGSize)a4;
+- (BOOL)isEqual:(id)equal;
+- (MPTiledArtworkRepresentationCacheKey)initWithTiledArtworkRequest:(id)request scaledFittingSize:(CGSize)size;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation MPTiledArtworkRepresentationCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       entityIdentifier = self->_entityIdentifier;
       v9 = (entityIdentifier == v5->_entityIdentifier || [entityIdentifier isEqual:?]) && ((namespaceIdentifier = self->_namespaceIdentifier, namespaceIdentifier == v5->_namespaceIdentifier) || objc_msgSend(namespaceIdentifier, "isEqual:")) && self->_numberOfColumns == v5->_numberOfColumns && self->_numberOfRows == v5->_numberOfRows && ((revisionIdentifier = self->_revisionIdentifier, revisionIdentifier == v5->_revisionIdentifier) || objc_msgSend(revisionIdentifier, "isEqual:")) && vabdd_f64(self->_scaledFittingSize.width, v5->_scaledFittingSize.width) < 0.00000011920929 && vabdd_f64(self->_scaledFittingSize.height, v5->_scaledFittingSize.height) < 0.00000011920929 && vabdd_f64(self->_tileSpacing, v5->_tileSpacing) < 0.00000011920929;
     }
@@ -72,31 +72,31 @@
   return v6;
 }
 
-- (MPTiledArtworkRepresentationCacheKey)initWithTiledArtworkRequest:(id)a3 scaledFittingSize:(CGSize)a4
+- (MPTiledArtworkRepresentationCacheKey)initWithTiledArtworkRequest:(id)request scaledFittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  requestCopy = request;
   v17.receiver = self;
   v17.super_class = MPTiledArtworkRepresentationCacheKey;
   v8 = [(MPTiledArtworkRepresentationCacheKey *)&v17 init];
   if (v8)
   {
-    v9 = [v7 entityIdentifier];
+    entityIdentifier = [requestCopy entityIdentifier];
     entityIdentifier = v8->_entityIdentifier;
-    v8->_entityIdentifier = v9;
+    v8->_entityIdentifier = entityIdentifier;
 
-    v11 = [v7 namespaceIdentifier];
+    namespaceIdentifier = [requestCopy namespaceIdentifier];
     namespaceIdentifier = v8->_namespaceIdentifier;
-    v8->_namespaceIdentifier = v11;
+    v8->_namespaceIdentifier = namespaceIdentifier;
 
-    v8->_numberOfColumns = [v7 numberOfColumns];
-    v8->_numberOfRows = [v7 numberOfRows];
-    v13 = [v7 revisionIdentifier];
+    v8->_numberOfColumns = [requestCopy numberOfColumns];
+    v8->_numberOfRows = [requestCopy numberOfRows];
+    revisionIdentifier = [requestCopy revisionIdentifier];
     revisionIdentifier = v8->_revisionIdentifier;
-    v8->_revisionIdentifier = v13;
+    v8->_revisionIdentifier = revisionIdentifier;
 
-    [v7 tileSpacing];
+    [requestCopy tileSpacing];
     v8->_scaledFittingSize.height = height;
     v8->_tileSpacing = v15;
     v8->_scaledFittingSize.width = width;

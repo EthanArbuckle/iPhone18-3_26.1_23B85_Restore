@@ -1,20 +1,20 @@
 @interface PUPhotosGridDownloadHelper
-+ (id)createAlertControllerForDownloadError:(id)a3 withAsset:(id)a4;
-- (BOOL)isAnyPickerAssetDownloading:(id)a3;
-- (PUPhotosGridDownloadHelper)initWithUpdateHandler:(id)a3;
++ (id)createAlertControllerForDownloadError:(id)error withAsset:(id)asset;
+- (BOOL)isAnyPickerAssetDownloading:(id)downloading;
+- (PUPhotosGridDownloadHelper)initWithUpdateHandler:(id)handler;
 - (PUPhotosGridDownloadUpdateHandler)updateHandler;
 - (id)_defaultOptions;
-- (id)_downloadContextForIdentifier:(id)a3;
-- (void)_cancelPreviousDownloadsForAsset:(id)a3;
-- (void)_checkIfRetrievalIsRequiredForResourceRequest:(id)a3 completion:(id)a4;
-- (void)_downloadForRequest:(id)a3 didCompleteWithSuccess:(BOOL)a4 canceled:(BOOL)a5 error:(id)a6;
-- (void)_removeDownloadRequestForIdentifier:(id)a3;
-- (void)_setDownloadContext:(id)a3 forIdentifier:(id)a4;
-- (void)_startRetrievingRequiredResourcesForRequest:(id)a3 options:(id)a4 inCollection:(id)a5;
-- (void)_updateDownloadProgressForAsset:(id)a3;
+- (id)_downloadContextForIdentifier:(id)identifier;
+- (void)_cancelPreviousDownloadsForAsset:(id)asset;
+- (void)_checkIfRetrievalIsRequiredForResourceRequest:(id)request completion:(id)completion;
+- (void)_downloadForRequest:(id)request didCompleteWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error;
+- (void)_removeDownloadRequestForIdentifier:(id)identifier;
+- (void)_setDownloadContext:(id)context forIdentifier:(id)identifier;
+- (void)_startRetrievingRequiredResourcesForRequest:(id)request options:(id)options inCollection:(id)collection;
+- (void)_updateDownloadProgressForAsset:(id)asset;
 - (void)cancelAllDownloads;
-- (void)cancelDownloadForIdentifier:(id)a3;
-- (void)handleDownloadOfAssetIfNeeded:(id)a3 inCollection:(id)a4 withSuccessHandler:(id)a5;
+- (void)cancelDownloadForIdentifier:(id)identifier;
+- (void)handleDownloadOfAssetIfNeeded:(id)needed inCollection:(id)collection withSuccessHandler:(id)handler;
 @end
 
 @implementation PUPhotosGridDownloadHelper
@@ -26,23 +26,23 @@
   return WeakRetained;
 }
 
-- (void)_removeDownloadRequestForIdentifier:(id)a3
+- (void)_removeDownloadRequestForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   downloadContextsIsolationQueue = self->_downloadContextsIsolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PUPhotosGridDownloadHelper__removeDownloadRequestForIdentifier___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(downloadContextsIsolationQueue, v7);
 }
 
-- (id)_downloadContextForIdentifier:(id)a3
+- (id)_downloadContextForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -54,10 +54,10 @@
   block[1] = 3221225472;
   block[2] = __60__PUPhotosGridDownloadHelper__downloadContextForIdentifier___block_invoke;
   block[3] = &unk_1E7B7FFC0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(downloadContextsIsolationQueue, block);
   v7 = v13[5];
 
@@ -76,55 +76,55 @@ uint64_t __60__PUPhotosGridDownloadHelper__downloadContextForIdentifier___block_
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)_setDownloadContext:(id)a3 forIdentifier:(id)a4
+- (void)_setDownloadContext:(id)context forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   downloadContextsIsolationQueue = self->_downloadContextsIsolationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PUPhotosGridDownloadHelper__setDownloadContext_forIdentifier___block_invoke;
   block[3] = &unk_1E7B809F0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = identifierCopy;
   dispatch_sync(downloadContextsIsolationQueue, block);
 }
 
-- (void)_downloadForRequest:(id)a3 didCompleteWithSuccess:(BOOL)a4 canceled:(BOOL)a5 error:(id)a6
+- (void)_downloadForRequest:(id)request didCompleteWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  canceledCopy = canceled;
+  successCopy = success;
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 asset];
-  v13 = [v12 localIdentifier];
-  v14 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:v13];
-  if (!v8 && !v7)
+  requestCopy = request;
+  errorCopy = error;
+  asset = [requestCopy asset];
+  localIdentifier = [asset localIdentifier];
+  v14 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:localIdentifier];
+  if (!successCopy && !canceledCopy)
   {
     v15 = PLUIGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v24 = 138412546;
-      v25 = v10;
+      v25 = requestCopy;
       v26 = 2112;
-      v27 = v11;
+      v27 = errorCopy;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_ERROR, "Error downloading resources for request %@: %@", &v24, 0x16u);
     }
   }
 
-  [(PUPhotosGridDownloadHelper *)self _removeDownloadRequestForIdentifier:v13];
-  v16 = [v14 downloadHandler];
+  [(PUPhotosGridDownloadHelper *)self _removeDownloadRequestForIdentifier:localIdentifier];
+  downloadHandler = [v14 downloadHandler];
 
-  if (v8)
+  if (successCopy)
   {
-    if (v16)
+    if (downloadHandler)
     {
-      v17 = [v14 downloadHandler];
-      v17[2](v17, 1, 0);
+      downloadHandler2 = [v14 downloadHandler];
+      downloadHandler2[2](downloadHandler2, 1, 0);
 
       [v14 setDownloadHandler:0];
     }
@@ -132,72 +132,72 @@ uint64_t __60__PUPhotosGridDownloadHelper__downloadContextForIdentifier___block_
 
   else
   {
-    if (v7)
+    if (canceledCopy)
     {
-      if (!v16)
+      if (!downloadHandler)
       {
         goto LABEL_16;
       }
 
       v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PUPhotosGridDownloadHelper" code:1 userInfo:0];
-      v19 = [v14 downloadHandler];
-      (v19)[2](v19, 0, v18);
+      downloadHandler3 = [v14 downloadHandler];
+      (downloadHandler3)[2](downloadHandler3, 0, v18);
 
       [v14 setDownloadHandler:0];
     }
 
     else
     {
-      if (v16)
+      if (downloadHandler)
       {
-        v20 = [v14 downloadHandler];
-        (v20)[2](v20, 0, v11);
+        downloadHandler4 = [v14 downloadHandler];
+        (downloadHandler4)[2](downloadHandler4, 0, errorCopy);
 
         [v14 setDownloadHandler:0];
       }
 
-      v18 = [PUPhotosGridDownloadHelper createAlertControllerForDownloadError:v11 withAsset:v12];
+      v18 = [PUPhotosGridDownloadHelper createAlertControllerForDownloadError:errorCopy withAsset:asset];
       WeakRetained = objc_loadWeakRetained(&self->_updateHandler);
       [WeakRetained presentAlertController:v18];
     }
   }
 
 LABEL_16:
-  v22 = [v14 gridProgressIdentifier];
-  if (v22)
+  gridProgressIdentifier = [v14 gridProgressIdentifier];
+  if (gridProgressIdentifier)
   {
     v23 = objc_loadWeakRetained(&self->_updateHandler);
-    [v23 endShowingProgressWithIdentifier:v22 succeeded:v8 canceled:v7 error:v11];
+    [v23 endShowingProgressWithIdentifier:gridProgressIdentifier succeeded:successCopy canceled:canceledCopy error:errorCopy];
   }
 }
 
-- (void)_updateDownloadProgressForAsset:(id)a3
+- (void)_updateDownloadProgressForAsset:(id)asset
 {
-  v11 = [a3 localIdentifier];
+  localIdentifier = [asset localIdentifier];
   v4 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:?];
-  v5 = [v4 gridProgressIdentifier];
-  v6 = [v4 resourceLocalAvailabilityRequest];
-  v7 = v6;
-  if (v5 && v6)
+  gridProgressIdentifier = [v4 gridProgressIdentifier];
+  resourceLocalAvailabilityRequest = [v4 resourceLocalAvailabilityRequest];
+  v7 = resourceLocalAvailabilityRequest;
+  if (gridProgressIdentifier && resourceLocalAvailabilityRequest)
   {
-    [v6 progressFraction];
+    [resourceLocalAvailabilityRequest progressFraction];
     v9 = v8;
     WeakRetained = objc_loadWeakRetained(&self->_updateHandler);
-    [WeakRetained updateProgressWithIdentifier:v5 withValue:v9];
+    [WeakRetained updateProgressWithIdentifier:gridProgressIdentifier withValue:v9];
   }
 }
 
-- (void)_startRetrievingRequiredResourcesForRequest:(id)a3 options:(id)a4 inCollection:(id)a5
+- (void)_startRetrievingRequiredResourcesForRequest:(id)request options:(id)options inCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 asset];
-  v12 = [v11 localIdentifier];
-  v13 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:v12];
+  requestCopy = request;
+  optionsCopy = options;
+  collectionCopy = collection;
+  asset = [requestCopy asset];
+  localIdentifier = [asset localIdentifier];
+  v13 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:localIdentifier];
   WeakRetained = objc_loadWeakRetained(&self->_updateHandler);
-  v15 = [v8 asset];
-  v16 = [WeakRetained beginShowingProgressForAsset:v15 inCollection:v10];
+  asset2 = [requestCopy asset];
+  v16 = [WeakRetained beginShowingProgressForAsset:asset2 inCollection:collectionCopy];
 
   [v13 setGridProgressIdentifier:v16];
   objc_initWeak(&location, self);
@@ -206,17 +206,17 @@ LABEL_16:
   v22[2] = __95__PUPhotosGridDownloadHelper__startRetrievingRequiredResourcesForRequest_options_inCollection___block_invoke;
   v22[3] = &unk_1E7B80610;
   objc_copyWeak(&v24, &location);
-  v17 = v11;
+  v17 = asset;
   v23 = v17;
-  [v8 setProgressChangeHandler:v22];
+  [requestCopy setProgressChangeHandler:v22];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __95__PUPhotosGridDownloadHelper__startRetrievingRequiredResourcesForRequest_options_inCollection___block_invoke_2;
   v19[3] = &unk_1E7B7C870;
   objc_copyWeak(&v21, &location);
-  v18 = v8;
+  v18 = requestCopy;
   v20 = v18;
-  [v18 retrieveRequiredResourcesWithOptions:v9 completionHandler:v19];
+  [v18 retrieveRequiredResourcesWithOptions:optionsCopy completionHandler:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v24);
@@ -272,23 +272,23 @@ void __95__PUPhotosGridDownloadHelper__startRetrievingRequiredResourcesForReques
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 resourceLocalAvailabilityRequest];
-        [v9 cancelRetrievalRequest];
+        resourceLocalAvailabilityRequest = [v8 resourceLocalAvailabilityRequest];
+        [resourceLocalAvailabilityRequest cancelRetrievalRequest];
 
-        v10 = [v8 gridProgressIdentifier];
-        if (v10)
+        gridProgressIdentifier = [v8 gridProgressIdentifier];
+        if (gridProgressIdentifier)
         {
           WeakRetained = objc_loadWeakRetained(&self->_updateHandler);
-          [WeakRetained endShowingProgressWithIdentifier:v10 succeeded:0 canceled:1 error:0];
+          [WeakRetained endShowingProgressWithIdentifier:gridProgressIdentifier succeeded:0 canceled:1 error:0];
         }
 
-        v12 = [v8 downloadHandler];
+        downloadHandler = [v8 downloadHandler];
 
-        if (v12)
+        if (downloadHandler)
         {
           v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PUPhotosGridDownloadHelper" code:1 userInfo:0];
-          v14 = [v8 downloadHandler];
-          (v14)[2](v14, 0, v13);
+          downloadHandler2 = [v8 downloadHandler];
+          (downloadHandler2)[2](downloadHandler2, 0, v13);
 
           [v8 setDownloadHandler:0];
         }
@@ -322,32 +322,32 @@ void __48__PUPhotosGridDownloadHelper_cancelAllDownloads__block_invoke(uint64_t 
   [*(*(a1 + 32) + 8) removeAllObjects];
 }
 
-- (void)cancelDownloadForIdentifier:(id)a3
+- (void)cancelDownloadForIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v4 = [(PUPhotosGridDownloadHelper *)self _downloadContextForIdentifier:?];
-  v5 = [v4 downloadHandler];
+  downloadHandler = [v4 downloadHandler];
 
-  if (v5)
+  if (downloadHandler)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PUPhotosGridDownloadHelper" code:1 userInfo:0];
-    v7 = [v4 downloadHandler];
-    (v7)[2](v7, 0, v6);
+    downloadHandler2 = [v4 downloadHandler];
+    (downloadHandler2)[2](downloadHandler2, 0, v6);
 
     [v4 setDownloadHandler:0];
   }
 
-  v8 = [v4 resourceLocalAvailabilityRequest];
-  [v8 cancelRetrievalRequest];
+  resourceLocalAvailabilityRequest = [v4 resourceLocalAvailabilityRequest];
+  [resourceLocalAvailabilityRequest cancelRetrievalRequest];
 
-  v9 = [v4 gridProgressIdentifier];
-  if (v9)
+  gridProgressIdentifier = [v4 gridProgressIdentifier];
+  if (gridProgressIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_updateHandler);
-    [WeakRetained endShowingProgressWithIdentifier:v9 succeeded:0 canceled:1 error:0];
+    [WeakRetained endShowingProgressWithIdentifier:gridProgressIdentifier succeeded:0 canceled:1 error:0];
   }
 
-  [(PUPhotosGridDownloadHelper *)self _removeDownloadRequestForIdentifier:v11];
+  [(PUPhotosGridDownloadHelper *)self _removeDownloadRequestForIdentifier:identifierCopy];
 }
 
 - (id)_defaultOptions
@@ -358,18 +358,18 @@ void __48__PUPhotosGridDownloadHelper_cancelAllDownloads__block_invoke(uint64_t 
   return v3;
 }
 
-- (void)_checkIfRetrievalIsRequiredForResourceRequest:(id)a3 completion:(id)a4
+- (void)_checkIfRetrievalIsRequiredForResourceRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUPhotosGridDownloadHelper *)self _defaultOptions];
+  completionCopy = completion;
+  requestCopy = request;
+  _defaultOptions = [(PUPhotosGridDownloadHelper *)self _defaultOptions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__PUPhotosGridDownloadHelper__checkIfRetrievalIsRequiredForResourceRequest_completion___block_invoke;
   v10[3] = &unk_1E7B7C820;
-  v11 = v6;
-  v9 = v6;
-  [v7 fetchResourceAvailabilityWithOptions:v8 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [requestCopy fetchResourceAvailabilityWithOptions:_defaultOptions completionHandler:v10];
 }
 
 uint64_t __87__PUPhotosGridDownloadHelper__checkIfRetrievalIsRequiredForResourceRequest_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -383,58 +383,58 @@ uint64_t __87__PUPhotosGridDownloadHelper__checkIfRetrievalIsRequiredForResource
   return result;
 }
 
-- (void)_cancelPreviousDownloadsForAsset:(id)a3
+- (void)_cancelPreviousDownloadsForAsset:(id)asset
 {
-  v6 = a3;
-  v4 = [(PUPhotosGridDownloadHelper *)self mode];
-  if (v4 == 1)
+  assetCopy = asset;
+  mode = [(PUPhotosGridDownloadHelper *)self mode];
+  if (mode == 1)
   {
-    v5 = [v6 localIdentifier];
-    [(PUPhotosGridDownloadHelper *)self cancelDownloadForIdentifier:v5];
+    localIdentifier = [assetCopy localIdentifier];
+    [(PUPhotosGridDownloadHelper *)self cancelDownloadForIdentifier:localIdentifier];
   }
 
-  else if (!v4)
+  else if (!mode)
   {
     [(PUPhotosGridDownloadHelper *)self cancelAllDownloads];
   }
 }
 
-- (BOOL)isAnyPickerAssetDownloading:(id)a3
+- (BOOL)isAnyPickerAssetDownloading:(id)downloading
 {
   v4 = MEMORY[0x1E6978A20];
-  v5 = a3;
-  v6 = [(PUPhotosGridDownloadHelper *)self _defaultOptions];
-  v7 = [v4 indexesForAssetsRequiringResourceRetrieval:v5 requestType:1 options:v6];
+  downloadingCopy = downloading;
+  _defaultOptions = [(PUPhotosGridDownloadHelper *)self _defaultOptions];
+  v7 = [v4 indexesForAssetsRequiringResourceRetrieval:downloadingCopy requestType:1 options:_defaultOptions];
 
-  LOBYTE(v5) = [v7 count] != 0;
-  return v5;
+  LOBYTE(downloadingCopy) = [v7 count] != 0;
+  return downloadingCopy;
 }
 
-- (void)handleDownloadOfAssetIfNeeded:(id)a3 inCollection:(id)a4 withSuccessHandler:(id)a5
+- (void)handleDownloadOfAssetIfNeeded:(id)needed inCollection:(id)collection withSuccessHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(PUPhotosGridDownloadHelper *)self _cancelPreviousDownloadsForAsset:v8];
-  v11 = [objc_alloc(MEMORY[0x1E6978A20]) initWithAsset:v8 requestType:0];
+  neededCopy = needed;
+  collectionCopy = collection;
+  handlerCopy = handler;
+  [(PUPhotosGridDownloadHelper *)self _cancelPreviousDownloadsForAsset:neededCopy];
+  v11 = [objc_alloc(MEMORY[0x1E6978A20]) initWithAsset:neededCopy requestType:0];
   v12 = objc_alloc_init(PUPhotosGridDownloadHelpContext);
   [(PUPhotosGridDownloadHelpContext *)v12 setResourceLocalAvailabilityRequest:v11];
-  v13 = [v8 localIdentifier];
-  [(PUPhotosGridDownloadHelper *)self _setDownloadContext:v12 forIdentifier:v13];
+  localIdentifier = [neededCopy localIdentifier];
+  [(PUPhotosGridDownloadHelper *)self _setDownloadContext:v12 forIdentifier:localIdentifier];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __92__PUPhotosGridDownloadHelper_handleDownloadOfAssetIfNeeded_inCollection_withSuccessHandler___block_invoke;
   v19[3] = &unk_1E7B7C7F8;
   v19[4] = self;
-  v14 = v13;
+  v14 = localIdentifier;
   v20 = v14;
   v15 = v12;
   v21 = v15;
-  v16 = v10;
+  v16 = handlerCopy;
   v24 = v16;
   objc_copyWeak(&v25, &location);
-  v17 = v9;
+  v17 = collectionCopy;
   v22 = v17;
   v18 = v11;
   v23 = v18;
@@ -476,9 +476,9 @@ void __92__PUPhotosGridDownloadHelper_handleDownloadOfAssetIfNeeded_inCollection
   }
 }
 
-- (PUPhotosGridDownloadHelper)initWithUpdateHandler:(id)a3
+- (PUPhotosGridDownloadHelper)initWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = PUPhotosGridDownloadHelper;
   v5 = [(PUPhotosGridDownloadHelper *)&v11 init];
@@ -492,22 +492,22 @@ void __92__PUPhotosGridDownloadHelper_handleDownloadOfAssetIfNeeded_inCollection
     downloadContextsIsolationQueue = v5->_downloadContextsIsolationQueue;
     v5->_downloadContextsIsolationQueue = v8;
 
-    objc_storeWeak(&v5->_updateHandler, v4);
+    objc_storeWeak(&v5->_updateHandler, handlerCopy);
     v5->_mode = 0;
   }
 
   return v5;
 }
 
-+ (id)createAlertControllerForDownloadError:(id)a3 withAsset:(id)a4
++ (id)createAlertControllerForDownloadError:(id)error withAsset:(id)asset
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  assetCopy = asset;
+  errorCopy = error;
   v7 = [PUSharingErrorPresentationController alloc];
-  v14[0] = v6;
+  v14[0] = errorCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v13 = v5;
+  v13 = assetCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
 
   v10 = [(PUSharingErrorPresentationController *)v7 initWithErrors:v8 forAssets:v9 fromSource:3 preparationType:0];

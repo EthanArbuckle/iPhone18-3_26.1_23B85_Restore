@@ -3,7 +3,7 @@
 - (void)close;
 - (void)dealloc;
 - (void)reset;
-- (void)setReaderWithJavaIoReader:(id)a3;
+- (void)setReaderWithJavaIoReader:(id)reader;
 @end
 
 @implementation OrgApacheLuceneAnalysisTokenizer
@@ -22,9 +22,9 @@
   JreStrongAssign(&self->inputPending_, v4);
 }
 
-- (void)setReaderWithJavaIoReader:(id)a3
+- (void)setReaderWithJavaIoReader:(id)reader
 {
-  if (!a3)
+  if (!reader)
   {
     v4 = new_JavaLangNullPointerException_initWithNSString_(@"input must not be null");
     goto LABEL_8;
@@ -37,7 +37,7 @@ LABEL_8:
     objc_exception_throw(v4);
   }
 
-  JreStrongAssign(&self->inputPending_, a3);
+  JreStrongAssign(&self->inputPending_, reader);
 
   [(OrgApacheLuceneAnalysisTokenizer *)self setReaderTestPoint];
 }
@@ -60,7 +60,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneAnalysisTokenizer__1 alloc];
     JavaIoReader_init(v2);

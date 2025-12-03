@@ -1,16 +1,16 @@
 @interface PIRedEyeAutoCalculator
 - (id)_options;
-- (void)_configureRequest:(id)a3;
-- (void)submit:(id)a3;
+- (void)_configureRequest:(id)request;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIRedEyeAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v15 = NUAssertLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
       if (v20)
       {
         v23 = dispatch_get_specific(*v17);
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v23;
         v34 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,11 +53,11 @@
     __break(1u);
   }
 
-  v5 = [(PIRedEyeAutoCalculator *)self force];
-  v6 = [(PIRedEyeAutoCalculator *)self _options];
-  v7 = [objc_alloc(MEMORY[0x1E69B3C08]) initWithRequest:self options:v6];
-  v8 = [(NURenderRequest *)self internalComposition];
-  v9 = [v8 objectForKeyedSubscript:@"raw"];
+  force = [(PIRedEyeAutoCalculator *)self force];
+  _options = [(PIRedEyeAutoCalculator *)self _options];
+  v7 = [objc_alloc(MEMORY[0x1E69B3C08]) initWithRequest:self options:_options];
+  internalComposition = [(NURenderRequest *)self internalComposition];
+  v9 = [internalComposition objectForKeyedSubscript:@"raw"];
 
   if (v9)
   {
@@ -84,8 +84,8 @@
   v26[3] = &unk_1E82AC648;
   v13 = v7;
   v27 = v13;
-  v29 = v5;
-  v14 = v4;
+  v29 = force;
+  v14 = submitCopy;
   v28 = v14;
   [v12 submit:v26];
 }
@@ -149,33 +149,33 @@ void __33__PIRedEyeAutoCalculator_submit___block_invoke_2(uint64_t a1, void *a2)
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_configureRequest:(id)a3
+- (void)_configureRequest:(id)request
 {
-  v4 = a3;
-  [v4 setSampleMode:2];
+  requestCopy = request;
+  [requestCopy setSampleMode:2];
   v3 = [objc_alloc(MEMORY[0x1E69B3BE8]) initWithTargetPixelCount:0x100000];
-  [v4 setScalePolicy:v3];
+  [requestCopy setScalePolicy:v3];
 }
 
 - (id)_options
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [(NURenderRequest *)self composition];
-  v3 = [v2 objectForKeyedSubscript:@"orientation"];
+  composition = [(NURenderRequest *)self composition];
+  v3 = [composition objectForKeyedSubscript:@"orientation"];
   v4 = [v3 objectForKeyedSubscript:@"value"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 1;
+    integerValue = 1;
   }
 
   v10 = @"orientation";
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
   v11[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 

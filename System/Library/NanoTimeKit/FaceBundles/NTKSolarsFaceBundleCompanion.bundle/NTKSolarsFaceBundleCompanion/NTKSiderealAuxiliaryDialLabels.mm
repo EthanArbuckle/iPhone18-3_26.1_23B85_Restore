@@ -1,33 +1,33 @@
 @interface NTKSiderealAuxiliaryDialLabels
-- (NTKSiderealAuxiliaryDialLabels)initWithFrame:(CGRect)a3 device:(id)a4;
+- (NTKSiderealAuxiliaryDialLabels)initWithFrame:(CGRect)frame device:(id)device;
 - (id)_curvedLabel;
 - (void)_layoutTopLabel;
-- (void)_setFontSize:(double)a3 monospaced:(BOOL)a4 offset:(CGPoint)a5 onLabel:(id)a6;
-- (void)applyTransitionFraction:(double)a3;
+- (void)_setFontSize:(double)size monospaced:(BOOL)monospaced offset:(CGPoint)offset onLabel:(id)label;
+- (void)applyTransitionFraction:(double)fraction;
 - (void)didFinishTransition;
-- (void)setBottomText:(id)a3;
-- (void)setTopText:(id)a3;
+- (void)setBottomText:(id)text;
+- (void)setTopText:(id)text;
 - (void)setup;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)willStartTransition;
 @end
 
 @implementation NTKSiderealAuxiliaryDialLabels
 
-- (NTKSiderealAuxiliaryDialLabels)initWithFrame:(CGRect)a3 device:(id)a4
+- (NTKSiderealAuxiliaryDialLabels)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKSiderealAuxiliaryDialLabels;
-  v11 = [(NTKSiderealAuxiliaryDialLabels *)&v16 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKSiderealAuxiliaryDialLabels *)&v16 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v13 = +[NSMutableDictionary dictionary];
     fontSizeCache = v12->_fontSizeCache;
     v12->_fontSizeCache = v13;
@@ -51,9 +51,9 @@
   self->_topLabelContainerView = v4;
 
   [(NTKSiderealAuxiliaryDialLabels *)self addSubview:self->_topLabelContainerView];
-  v6 = [(NTKSiderealAuxiliaryDialLabels *)self _curvedLabel];
+  _curvedLabel = [(NTKSiderealAuxiliaryDialLabels *)self _curvedLabel];
   topLabel = self->_topLabel;
-  self->_topLabel = v6;
+  self->_topLabel = _curvedLabel;
 
   [(CLKUICurvedColoringLabel *)self->_topLabel setAlpha:1.0];
   sub_BF58(self->_device, v43);
@@ -86,8 +86,8 @@
   v19 = +[UIColor whiteColor];
   -[CAShapeLayer setShadowColor:](v18, "setShadowColor:", [v19 CGColor]);
 
-  v20 = [(UIView *)self->_topLabelContainerView layer];
-  [v20 setMask:self->_topLabelMask];
+  layer = [(UIView *)self->_topLabelContainerView layer];
+  [layer setMask:self->_topLabelMask];
 
   v21 = [UIView alloc];
   [(NTKSiderealAuxiliaryDialLabels *)self bounds];
@@ -96,17 +96,17 @@
   self->_bottomLabelContainerView = v22;
 
   [(NTKSiderealAuxiliaryDialLabels *)self addSubview:self->_bottomLabelContainerView];
-  v24 = [(NTKSiderealAuxiliaryDialLabels *)self _curvedLabel];
+  _curvedLabel2 = [(NTKSiderealAuxiliaryDialLabels *)self _curvedLabel];
   bottomLabel = self->_bottomLabel;
-  self->_bottomLabel = v24;
+  self->_bottomLabel = _curvedLabel2;
 
   [(CLKUICurvedColoringLabel *)self->_bottomLabel setAlpha:1.0];
   sub_BF58(self->_device, v41);
   [(CLKUICurvedColoringLabel *)self->_bottomLabel setCircleRadius:v42 * 0.5];
   [(CLKUICurvedColoringLabel *)self->_bottomLabel setInterior:1];
-  v26 = [(CLKUICurvedColoringLabel *)self->_bottomLabel font];
-  v27 = [v26 CLKFontWithMonospacedNumbers];
-  [(CLKUICurvedColoringLabel *)self->_bottomLabel setFont:v27];
+  font = [(CLKUICurvedColoringLabel *)self->_bottomLabel font];
+  cLKFontWithMonospacedNumbers = [font CLKFontWithMonospacedNumbers];
+  [(CLKUICurvedColoringLabel *)self->_bottomLabel setFont:cLKFontWithMonospacedNumbers];
 
   [(UIView *)self->_bottomLabelContainerView addSubview:self->_bottomLabel];
   v28 = +[CAShapeLayer layer];
@@ -135,28 +135,28 @@
   v38 = +[UIColor whiteColor];
   -[CAShapeLayer setShadowColor:](v37, "setShadowColor:", [v38 CGColor]);
 
-  v39 = [(UIView *)self->_bottomLabelContainerView layer];
-  [v39 setMask:self->_bottomLabelMask];
+  layer2 = [(UIView *)self->_bottomLabelContainerView layer];
+  [layer2 setMask:self->_bottomLabelMask];
 
   [(NTKSiderealAuxiliaryDialLabels *)self applyTransitionFraction:0.0];
 }
 
-- (void)setTopText:(id)a3
+- (void)setTopText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_topText isEqualToString:?])
   {
-    objc_storeStrong(&self->_topText, a3);
+    objc_storeStrong(&self->_topText, text);
     [(NTKSiderealAuxiliaryDialLabels *)self _layoutTopLabel];
   }
 }
 
-- (void)setBottomText:(id)a3
+- (void)setBottomText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_bottomText isEqualToString:?])
   {
-    objc_storeStrong(&self->_bottomText, a3);
+    objc_storeStrong(&self->_bottomText, text);
     [(NTKSiderealAuxiliaryDialLabels *)self _layoutBottomLabel];
   }
 }
@@ -172,46 +172,46 @@
   [(NTKSiderealAuxiliaryDialLabels *)self _layoutLabel:topLabel text:topText monospaced:0 offset:1 useCache:v5, v6];
 }
 
-- (void)_setFontSize:(double)a3 monospaced:(BOOL)a4 offset:(CGPoint)a5 onLabel:(id)a6
+- (void)_setFontSize:(double)size monospaced:(BOOL)monospaced offset:(CGPoint)offset onLabel:(id)label
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
+  y = offset.y;
+  x = offset.x;
+  monospacedCopy = monospaced;
   v11 = CLKRoundedFontDesignName;
-  v12 = a6;
-  v13 = [CLKFont systemFontOfSize:v11 weight:a3 design:UIFontWeightRegular];
-  v14 = [v13 CLKFontWithAlternativePunctuation];
+  labelCopy = label;
+  v13 = [CLKFont systemFontOfSize:v11 weight:size design:UIFontWeightRegular];
+  cLKFontWithAlternativePunctuation = [v13 CLKFontWithAlternativePunctuation];
 
-  if (v8)
+  if (monospacedCopy)
   {
-    v15 = [v14 CLKFontWithMonospacedNumbers];
+    cLKFontWithMonospacedNumbers = [cLKFontWithAlternativePunctuation CLKFontWithMonospacedNumbers];
 
-    v14 = v15;
+    cLKFontWithAlternativePunctuation = cLKFontWithMonospacedNumbers;
   }
 
-  [v12 setFont:v14];
-  [v12 sizeToFit];
+  [labelCopy setFont:cLKFontWithAlternativePunctuation];
+  [labelCopy sizeToFit];
   v20 = 0.0;
   v21 = 0.0;
-  [v12 getTextCenter:&v20 startAngle:0 endAngle:0];
+  [labelCopy getTextCenter:&v20 startAngle:0 endAngle:0];
   [(NTKSiderealAuxiliaryDialLabels *)self bounds];
   CLKRectGetCenter();
   v17 = x + v16 - v20;
   v19 = y + v18 - v21;
-  [v12 frame];
-  [v12 setFrame:{v17, v19}];
+  [labelCopy frame];
+  [labelCopy setFrame:{v17, v19}];
 }
 
 - (void)willStartTransition
 {
-  v3 = [(UIView *)self->_topLabelContainerView layer];
-  [v3 setMask:self->_topLabelMask];
+  layer = [(UIView *)self->_topLabelContainerView layer];
+  [layer setMask:self->_topLabelMask];
 
-  v4 = [(UIView *)self->_bottomLabelContainerView layer];
-  [v4 setMask:self->_bottomLabelMask];
+  layer2 = [(UIView *)self->_bottomLabelContainerView layer];
+  [layer2 setMask:self->_bottomLabelMask];
 }
 
-- (void)applyTransitionFraction:(double)a3
+- (void)applyTransitionFraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsUnclipped();
   +[CATransaction begin];
@@ -229,20 +229,20 @@
 
 - (void)didFinishTransition
 {
-  v3 = [(UIView *)self->_topLabelContainerView layer];
-  [v3 setMask:0];
+  layer = [(UIView *)self->_topLabelContainerView layer];
+  [layer setMask:0];
 
-  v4 = [(UIView *)self->_bottomLabelContainerView layer];
-  [v4 setMask:0];
+  layer2 = [(UIView *)self->_bottomLabelContainerView layer];
+  [layer2 setMask:0];
 }
 
 - (id)_curvedLabel
 {
   v2 = objc_opt_new();
   v3 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:16.0 design:UIFontWeightRegular];
-  v4 = [v3 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v3 CLKFontWithAlternativePunctuation];
 
-  [v2 setFont:v4];
+  [v2 setFont:cLKFontWithAlternativePunctuation];
   v5 = +[UIColor whiteColor];
   [v2 setColor:v5];
 
@@ -257,17 +257,17 @@
   return v2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NTKSiderealAuxiliaryDialLabels;
-  v4 = a3;
-  [(NTKSiderealAuxiliaryDialLabels *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKSiderealAuxiliaryDialLabels *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NTKSiderealAuxiliaryDialLabels *)self traitCollection:v8.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     [(NSMutableDictionary *)self->_fontSizeCache removeAllObjects];
     [(NTKSiderealAuxiliaryDialLabels *)self setNeedsLayout];

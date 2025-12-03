@@ -1,6 +1,6 @@
 @interface PNCropVariant
 - (CGRect)cropRect;
-- (PNCropVariant)initWithAspectRatio:(double)a3 scaleFactor:(double)a4 cropScore:(double)a5 cropType:(int64_t)a6 cropRect:(CGRect)a7;
+- (PNCropVariant)initWithAspectRatio:(double)ratio scaleFactor:(double)factor cropScore:(double)score cropType:(int64_t)type cropRect:(CGRect)rect;
 @end
 
 @implementation PNCropVariant
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (PNCropVariant)initWithAspectRatio:(double)a3 scaleFactor:(double)a4 cropScore:(double)a5 cropType:(int64_t)a6 cropRect:(CGRect)a7
+- (PNCropVariant)initWithAspectRatio:(double)ratio scaleFactor:(double)factor cropScore:(double)score cropType:(int64_t)type cropRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16.receiver = self;
   v16.super_class = PNCropVariant;
   result = [(PNCropVariant *)&v16 init];
@@ -33,10 +33,10 @@
     result->_cropRect.origin.y = y;
     result->_cropRect.size.width = width;
     result->_cropRect.size.height = height;
-    result->_cropType = a6;
-    result->_scaleFactor = a4;
-    result->_cropScore = a5;
-    result->_aspectRatio = a3;
+    result->_cropType = type;
+    result->_scaleFactor = factor;
+    result->_cropScore = score;
+    result->_aspectRatio = ratio;
   }
 
   return result;

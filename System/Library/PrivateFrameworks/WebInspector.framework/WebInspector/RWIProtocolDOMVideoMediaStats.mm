@@ -8,12 +8,12 @@
 - (int)bitrate;
 - (int)height;
 - (int)width;
-- (void)setCodec:(id)a3;
-- (void)setColorSpace:(id)a3;
-- (void)setFramerate:(double)a3;
-- (void)setHumanReadableCodecString:(id)a3;
-- (void)setSpatialVideoMetadata:(id)a3;
-- (void)setVideoProjectionMetadata:(id)a3;
+- (void)setCodec:(id)codec;
+- (void)setColorSpace:(id)space;
+- (void)setFramerate:(double)framerate;
+- (void)setHumanReadableCodecString:(id)string;
+- (void)setSpatialVideoMetadata:(id)metadata;
+- (void)setVideoProjectionMetadata:(id)metadata;
 @end
 
 @implementation RWIProtocolDOMVideoMediaStats
@@ -25,11 +25,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"bitrate"];
 }
 
-- (void)setCodec:(id)a3
+- (void)setCodec:(id)codec
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"codec"];
+  [(RWIProtocolJSONObject *)&v3 setString:codec forKey:@"codec"];
 }
 
 - (NSString)codec
@@ -41,11 +41,11 @@
   return v2;
 }
 
-- (void)setHumanReadableCodecString:(id)a3
+- (void)setHumanReadableCodecString:(id)string
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"humanReadableCodecString"];
+  [(RWIProtocolJSONObject *)&v3 setString:string forKey:@"humanReadableCodecString"];
 }
 
 - (NSString)humanReadableCodecString
@@ -57,11 +57,11 @@
   return v2;
 }
 
-- (void)setColorSpace:(id)a3
+- (void)setColorSpace:(id)space
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"colorSpace"];
+  [(RWIProtocolJSONObject *)&v3 setObject:space forKey:@"colorSpace"];
 }
 
 - (RWIProtocolDOMVideoColorSpace)colorSpace
@@ -119,11 +119,11 @@
   return v7;
 }
 
-- (void)setFramerate:(double)a3
+- (void)setFramerate:(double)framerate
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"framerate" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"framerate" forKey:framerate];
 }
 
 - (double)framerate
@@ -148,11 +148,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"width"];
 }
 
-- (void)setSpatialVideoMetadata:(id)a3
+- (void)setSpatialVideoMetadata:(id)metadata
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"spatialVideoMetadata"];
+  [(RWIProtocolJSONObject *)&v3 setObject:metadata forKey:@"spatialVideoMetadata"];
 }
 
 - (RWIProtocolDOMSpatialVideoMetadata)spatialVideoMetadata
@@ -210,11 +210,11 @@
   return v7;
 }
 
-- (void)setVideoProjectionMetadata:(id)a3
+- (void)setVideoProjectionMetadata:(id)metadata
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMVideoMediaStats;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"videoProjectionMetadata"];
+  [(RWIProtocolJSONObject *)&v3 setObject:metadata forKey:@"videoProjectionMetadata"];
 }
 
 - (RWIProtocolDOMVideoProjectionMetadata)videoProjectionMetadata

@@ -1,12 +1,12 @@
 @interface CADStatsEvents
 - (id)eventDictionaries;
-- (void)prepareWithContext:(id)a3;
-- (void)processEvents:(id)a3;
+- (void)prepareWithContext:(id)context;
+- (void)processEvents:(id)events;
 @end
 
 @implementation CADStatsEvents
 
-- (void)prepareWithContext:(id)a3
+- (void)prepareWithContext:(id)context
 {
   v4 = objc_opt_new();
   eventInfos = self->_eventInfos;
@@ -15,15 +15,15 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)processEvents:(id)a3
+- (void)processEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,7 +35,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
@@ -75,7 +75,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);

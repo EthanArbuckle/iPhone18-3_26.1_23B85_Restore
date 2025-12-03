@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTParameterCandidatesNotFound
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTParameterCandidatesNotFound)initWithDictionary:(id)a3;
-- (IFTSchemaIFTParameterCandidatesNotFound)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTParameterCandidatesNotFound)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTParameterCandidatesNotFound)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTParameterCandidatesNotFound
 
-- (IFTSchemaIFTParameterCandidatesNotFound)initWithDictionary:(id)a3
+- (IFTSchemaIFTParameterCandidatesNotFound)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTParameterCandidatesNotFound;
   v5 = [(IFTSchemaIFTParameterCandidatesNotFound *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTParameterCandidatesNotFound setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"parameterId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"parameterId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaIFTParameterCandidatesNotFound *)v5 setParameterId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"value"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTParameterCandidatesNotFound)initWithJSON:(id)a3
+- (IFTSchemaIFTParameterCandidatesNotFound)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTParameterCandidatesNotFound *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTParameterCandidatesNotFound *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTParameterCandidatesNotFound *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTParameterCandidatesNotFound exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_parameterId)
   {
-    v5 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"parameterId"];
+    parameterId = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
+    v6 = [parameterId copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"parameterId"];
   }
 
   if (self->_value)
   {
-    v7 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    value = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+    dictionaryRepresentation = [value dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"value"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,15 +136,15 @@
   return v4 ^ [(IFTSchemaIFTTypedValue *)self->_value hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -152,26 +152,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
-  v7 = [v4 parameterId];
-  if ((v6 != 0) == (v7 == 0))
+  parameterId = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
+  parameterId2 = [equalCopy parameterId];
+  if ((parameterId != 0) == (parameterId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
-  if (v8)
+  parameterId3 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
+  if (parameterId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
-    v11 = [v4 parameterId];
-    v12 = [v10 isEqual:v11];
+    v9 = parameterId3;
+    parameterId4 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
+    parameterId5 = [equalCopy parameterId];
+    v12 = [parameterId4 isEqual:parameterId5];
 
     if (!v12)
     {
@@ -183,12 +183,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
-  v7 = [v4 value];
-  if ((v6 != 0) != (v7 == 0))
+  parameterId = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+  parameterId2 = [equalCopy value];
+  if ((parameterId != 0) != (parameterId2 == 0))
   {
-    v13 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
-    if (!v13)
+    value = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+    if (!value)
     {
 
 LABEL_18:
@@ -196,10 +196,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
-    v16 = [v4 value];
-    v17 = [v15 isEqual:v16];
+    v14 = value;
+    value2 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+    value3 = [equalCopy value];
+    v17 = [value2 isEqual:value3];
 
     if (v17)
     {
@@ -219,44 +219,44 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
+  parameterId = [(IFTSchemaIFTParameterCandidatesNotFound *)self parameterId];
 
-  if (v4)
+  if (parameterId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+  value = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (value)
   {
-    v7 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
+    value2 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTParameterCandidatesNotFound;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTParameterCandidatesNotFound *)self value:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTParameterCandidatesNotFound *)self deleteValue];
   }

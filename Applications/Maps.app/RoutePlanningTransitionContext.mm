@@ -1,5 +1,5 @@
 @interface RoutePlanningTransitionContext
-- (RoutePlanningTransitionContext)initWithFullTableHeight:(double)a3 initiatedFromFullLayout:(BOOL)a4 withInitialOffsetY:(double)a5 heightToFrame:(double)a6 originToFrameHandler:(id)a7;
+- (RoutePlanningTransitionContext)initWithFullTableHeight:(double)height initiatedFromFullLayout:(BOOL)layout withInitialOffsetY:(double)y heightToFrame:(double)frame originToFrameHandler:(id)handler;
 - (double)currentFrameOrigin;
 - (id)description;
 @end
@@ -8,11 +8,11 @@
 
 - (double)currentFrameOrigin
 {
-  v3 = [(RoutePlanningTransitionContext *)self originToFrameHandler];
-  if (v3)
+  originToFrameHandler = [(RoutePlanningTransitionContext *)self originToFrameHandler];
+  if (originToFrameHandler)
   {
-    v4 = [(RoutePlanningTransitionContext *)self originToFrameHandler];
-    v5 = v4[2]();
+    originToFrameHandler2 = [(RoutePlanningTransitionContext *)self originToFrameHandler];
+    v5 = originToFrameHandler2[2]();
   }
 
   else
@@ -36,21 +36,21 @@
   return v7;
 }
 
-- (RoutePlanningTransitionContext)initWithFullTableHeight:(double)a3 initiatedFromFullLayout:(BOOL)a4 withInitialOffsetY:(double)a5 heightToFrame:(double)a6 originToFrameHandler:(id)a7
+- (RoutePlanningTransitionContext)initWithFullTableHeight:(double)height initiatedFromFullLayout:(BOOL)layout withInitialOffsetY:(double)y heightToFrame:(double)frame originToFrameHandler:(id)handler
 {
-  v9 = a4;
-  v12 = a7;
+  layoutCopy = layout;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = RoutePlanningTransitionContext;
   v13 = [(RoutePlanningTransitionContext *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    [(RoutePlanningTransitionContext *)v13 setTableViewHeightForFullLayout:a3];
-    [(RoutePlanningTransitionContext *)v14 setHeightToFrame:a6];
-    [(RoutePlanningTransitionContext *)v14 setInitialOffsetY:a5];
-    [(RoutePlanningTransitionContext *)v14 setInitiatedFromFullLayout:v9];
-    [(RoutePlanningTransitionContext *)v14 setOriginToFrameHandler:v12];
+    [(RoutePlanningTransitionContext *)v13 setTableViewHeightForFullLayout:height];
+    [(RoutePlanningTransitionContext *)v14 setHeightToFrame:frame];
+    [(RoutePlanningTransitionContext *)v14 setInitialOffsetY:y];
+    [(RoutePlanningTransitionContext *)v14 setInitiatedFromFullLayout:layoutCopy];
+    [(RoutePlanningTransitionContext *)v14 setOriginToFrameHandler:handlerCopy];
   }
 
   return v14;

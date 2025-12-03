@@ -1,43 +1,43 @@
 @interface TVButtonLockup
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVButtonLockup)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 groupName:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVButtonLockup)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style groupName:(id)name;
 - (void)_updateForAccessibilityChange;
 - (void)_updateForFocusStateChange;
 - (void)_updateImageMask;
-- (void)_updateShadowForLabel:(id)a3 inFocus:(BOOL)a4;
+- (void)_updateShadowForLabel:(id)label inFocus:(BOOL)focus;
 - (void)_updateTextForAccessibilityAndFocus;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setText:(id)a3 minimumScale:(double)a4 maxNumberOfLines:(unint64_t)a5;
-- (void)setTitleView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setBackgroundColor:(id)color;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHighlightColor:(id)color;
+- (void)setImageView:(id)view;
+- (void)setText:(id)text minimumScale:(double)scale maxNumberOfLines:(unint64_t)lines;
+- (void)setTitleView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TVButtonLockup
 
-- (TVButtonLockup)initWithFrame:(CGRect)a3 blurEffectStyle:(int64_t)a4 groupName:(id)a5
+- (TVButtonLockup)initWithFrame:(CGRect)frame blurEffectStyle:(int64_t)style groupName:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
   v34.receiver = self;
   v34.super_class = TVButtonLockup;
-  v12 = [(TVButtonLockup *)&v34 initWithFrame:x, y, width, height];
-  if (v12)
+  height = [(TVButtonLockup *)&v34 initWithFrame:x, y, width, height];
+  if (height)
   {
     v13 = objc_alloc(MEMORY[0x277D75F68]);
     v14 = *MEMORY[0x277CBF3A0];
@@ -45,82 +45,82 @@
     v16 = *(MEMORY[0x277CBF3A0] + 16);
     v17 = *(MEMORY[0x277CBF3A0] + 24);
     v18 = [v13 initWithFrame:{*MEMORY[0x277CBF3A0], v15, v16, v17}];
-    floatingView = v12->_floatingView;
-    v12->_floatingView = v18;
+    floatingView = height->_floatingView;
+    height->_floatingView = v18;
 
-    [(_UIFloatingContentView *)v12->_floatingView setBackgroundColor:0 forState:8];
-    [(_UIFloatingContentView *)v12->_floatingView setBackgroundColor:0 forState:1];
-    [(_UIFloatingContentView *)v12->_floatingView setFocusedSizeIncrease:14.0];
-    [(_UIFloatingContentView *)v12->_floatingView setContentMotionRotation:0.0 translation:0.0, 8.0, 0.0];
-    [(_UIFloatingContentView *)v12->_floatingView setFocusScaleAnchorPoint:0.5, 1.0];
-    [(_UIFloatingContentView *)v12->_floatingView setShadowRadius:30.0];
-    [(_UIFloatingContentView *)v12->_floatingView setShadowVerticalOffset:15.0];
-    [(_UIFloatingContentView *)v12->_floatingView setShadowOpacity:0.25];
-    [(_UIFloatingContentView *)v12->_floatingView setCornerRadius:6.0];
-    [(_UIFloatingContentView *)v12->_floatingView setContinuousCornerEnabled:0];
-    [(_UIFloatingContentView *)v12->_floatingView setVisualEffectContainerViewScaleFactor:0.988];
-    [(TVButtonLockup *)v12 addSubview:v12->_floatingView];
-    v12->_backdropStyle = a4;
-    v12->_vibrantLabelThemeOverride = 0;
+    [(_UIFloatingContentView *)height->_floatingView setBackgroundColor:0 forState:8];
+    [(_UIFloatingContentView *)height->_floatingView setBackgroundColor:0 forState:1];
+    [(_UIFloatingContentView *)height->_floatingView setFocusedSizeIncrease:14.0];
+    [(_UIFloatingContentView *)height->_floatingView setContentMotionRotation:0.0 translation:0.0, 8.0, 0.0];
+    [(_UIFloatingContentView *)height->_floatingView setFocusScaleAnchorPoint:0.5, 1.0];
+    [(_UIFloatingContentView *)height->_floatingView setShadowRadius:30.0];
+    [(_UIFloatingContentView *)height->_floatingView setShadowVerticalOffset:15.0];
+    [(_UIFloatingContentView *)height->_floatingView setShadowOpacity:0.25];
+    [(_UIFloatingContentView *)height->_floatingView setCornerRadius:6.0];
+    [(_UIFloatingContentView *)height->_floatingView setContinuousCornerEnabled:0];
+    [(_UIFloatingContentView *)height->_floatingView setVisualEffectContainerViewScaleFactor:0.988];
+    [(TVButtonLockup *)height addSubview:height->_floatingView];
+    height->_backdropStyle = style;
+    height->_vibrantLabelThemeOverride = 0;
     v20 = [_TVVisualEffectView alloc];
-    v21 = [MEMORY[0x277D75210] effectWithStyle:v12->_backdropStyle];
+    v21 = [MEMORY[0x277D75210] effectWithStyle:height->_backdropStyle];
     v22 = [(_TVVisualEffectView *)v20 initWithEffect:v21];
-    backdropView = v12->_backdropView;
-    v12->_backdropView = v22;
+    backdropView = height->_backdropView;
+    height->_backdropView = v22;
 
-    [(_TVVisualEffectView *)v12->_backdropView _setCornerRadius:6.0];
-    if ([v11 length])
+    [(_TVVisualEffectView *)height->_backdropView _setCornerRadius:6.0];
+    if ([nameCopy length])
     {
-      [(_TVVisualEffectView *)v12->_backdropView _setGroupName:v11];
+      [(_TVVisualEffectView *)height->_backdropView _setGroupName:nameCopy];
     }
 
-    v24 = [(_UIFloatingContentView *)v12->_floatingView visualEffectContainerView];
-    [v24 addSubview:v12->_backdropView];
+    visualEffectContainerView = [(_UIFloatingContentView *)height->_floatingView visualEffectContainerView];
+    [visualEffectContainerView addSubview:height->_backdropView];
 
     v25 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v14, v15, v16, v17}];
-    overlayView = v12->_overlayView;
-    v12->_overlayView = v25;
+    overlayView = height->_overlayView;
+    height->_overlayView = v25;
 
-    [(UIView *)v12->_overlayView setUserInteractionEnabled:0];
-    v27 = v12->_overlayView;
-    v28 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v27 setBackgroundColor:v28];
+    [(UIView *)height->_overlayView setUserInteractionEnabled:0];
+    v27 = height->_overlayView;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v27 setBackgroundColor:whiteColor];
 
-    [(UIView *)v12->_overlayView setAlpha:0.0];
-    [(UIView *)v12->_overlayView _setCornerRadius:6.0];
-    v29 = [(_UIFloatingContentView *)v12->_floatingView contentView];
-    [v29 addSubview:v12->_overlayView];
+    [(UIView *)height->_overlayView setAlpha:0.0];
+    [(UIView *)height->_overlayView _setCornerRadius:6.0];
+    contentView = [(_UIFloatingContentView *)height->_floatingView contentView];
+    [contentView addSubview:height->_overlayView];
 
-    v30 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v12 action:sel__selectButtonAction_];
-    [(TVButtonLockup *)v12 addGestureRecognizer:v30];
-    v31 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v12 action:sel__playButtonAction_];
+    v30 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:height action:sel__selectButtonAction_];
+    [(TVButtonLockup *)height addGestureRecognizer:v30];
+    v31 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:height action:sel__playButtonAction_];
     [v31 setAllowedPressTypes:&unk_287E487C8];
-    [(TVButtonLockup *)v12 addGestureRecognizer:v31];
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v12 selector:sel__updateForAccessibilityChange name:*MEMORY[0x277D81CF8] object:0];
+    [(TVButtonLockup *)height addGestureRecognizer:v31];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:height selector:sel__updateForAccessibilityChange name:*MEMORY[0x277D81CF8] object:0];
   }
 
-  return v12;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVButtonLockup;
   [(TVButtonLockup *)&v4 dealloc];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     backdropView = self->_backdropView;
     v4 = 1.0;
-    if (a3)
+    if (disabled)
     {
       v4 = 0.5;
     }
@@ -129,15 +129,15 @@
   }
 }
 
-- (void)setText:(id)a3 minimumScale:(double)a4 maxNumberOfLines:(unint64_t)a5
+- (void)setText:(id)text minimumScale:(double)scale maxNumberOfLines:(unint64_t)lines
 {
-  v35 = a3;
-  v8 = [(UILabel *)self->_textView attributedText];
-  if ([v8 isEqualToAttributedString:v35] && (-[UILabel minimumScaleFactor](self->_textView, "minimumScaleFactor"), v9 == a4))
+  textCopy = text;
+  attributedText = [(UILabel *)self->_textView attributedText];
+  if ([attributedText isEqualToAttributedString:textCopy] && (-[UILabel minimumScaleFactor](self->_textView, "minimumScaleFactor"), v9 == scale))
   {
-    v10 = [(UILabel *)self->_textView numberOfLines];
+    numberOfLines = [(UILabel *)self->_textView numberOfLines];
 
-    if (v10 == a5)
+    if (numberOfLines == lines)
     {
       goto LABEL_15;
     }
@@ -149,8 +149,8 @@
 
   if (self->_imageView)
   {
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
 
     [(_TVImageView *)self->_imageView removeFromSuperview];
     imageView = self->_imageView;
@@ -162,8 +162,8 @@
   }
 
   [(UILabel *)self->_textView removeFromSuperview];
-  v14 = [(UILabel *)self->_textMask layer];
-  [v14 removeFromSuperlayer];
+  layer = [(UILabel *)self->_textMask layer];
+  [layer removeFromSuperlayer];
 
   v15 = objc_alloc(MEMORY[0x277D756B8]);
   v16 = *MEMORY[0x277CBF3A0];
@@ -174,23 +174,23 @@
   textView = self->_textView;
   self->_textView = v20;
 
-  [(UILabel *)self->_textView setAttributedText:v35];
+  [(UILabel *)self->_textView setAttributedText:textCopy];
   [(UILabel *)self->_textView setOpaque:0];
   [(UILabel *)self->_textView setBackgroundColor:0];
-  [(UILabel *)self->_textView setNumberOfLines:a5];
+  [(UILabel *)self->_textView setNumberOfLines:lines];
   [(UILabel *)self->_textView setAdjustsFontForContentSizeCategory:1];
-  v22 = [(_UIFloatingContentView *)self->_floatingView contentView];
-  [v22 insertSubview:self->_textView above:self->_overlayView];
+  contentView = [(_UIFloatingContentView *)self->_floatingView contentView];
+  [contentView insertSubview:self->_textView above:self->_overlayView];
 
   v23 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v16, v17, v18, v19}];
   textMask = self->_textMask;
   self->_textMask = v23;
 
-  v25 = [v35 mutableCopy];
+  v25 = [textCopy mutableCopy];
   v26 = *MEMORY[0x277D740C0];
-  v27 = [MEMORY[0x277D75348] whiteColor];
-  v28 = [v35 string];
-  [v25 addAttribute:v26 value:v27 range:{0, objc_msgSend(v28, "length")}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  string = [textCopy string];
+  [v25 addAttribute:v26 value:whiteColor range:{0, objc_msgSend(string, "length")}];
 
   v29 = self->_textMask;
   v30 = [v25 copy];
@@ -198,9 +198,9 @@
 
   [(UILabel *)self->_textMask setOpaque:0];
   [(UILabel *)self->_textMask setBackgroundColor:0];
-  [(UILabel *)self->_textMask setNumberOfLines:a5];
+  [(UILabel *)self->_textMask setNumberOfLines:lines];
   [(UILabel *)self->_textMask setAdjustsFontForContentSizeCategory:1];
-  v31 = [(UILabel *)self->_textMask layer];
+  layer2 = [(UILabel *)self->_textMask layer];
   if (_AXSHighContrastFocusIndicatorsEnabled())
   {
     v32 = 0;
@@ -211,18 +211,18 @@
     v32 = *MEMORY[0x277CDA310];
   }
 
-  [v31 setCompositingFilter:v32];
+  [layer2 setCompositingFilter:v32];
 
-  v33 = [(UIView *)self->_overlayView layer];
-  v34 = [(UILabel *)self->_textMask layer];
-  [v33 addSublayer:v34];
+  layer3 = [(UIView *)self->_overlayView layer];
+  layer4 = [(UILabel *)self->_textMask layer];
+  [layer3 addSublayer:layer4];
 
-  if (a4 > 0.0 && a4 < 1.0)
+  if (scale > 0.0 && scale < 1.0)
   {
     [(UILabel *)self->_textView setAdjustsFontSizeToFitWidth:1];
-    [(UILabel *)self->_textView setMinimumScaleFactor:a4];
+    [(UILabel *)self->_textView setMinimumScaleFactor:scale];
     [(UILabel *)self->_textMask setAdjustsFontSizeToFitWidth:1];
-    [(UILabel *)self->_textMask setMinimumScaleFactor:a4];
+    [(UILabel *)self->_textMask setMinimumScaleFactor:scale];
   }
 
   [(TVButtonLockup *)self setNeedsLayout];
@@ -230,30 +230,30 @@
 LABEL_15:
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
-  v20 = v5;
-  if (imageView == v5)
+  v20 = viewCopy;
+  if (imageView == viewCopy)
   {
-    if (!v5)
+    if (!viewCopy)
     {
       goto LABEL_10;
     }
 
-    v17 = [(_TVImageView *)imageView image];
+    image = [(_TVImageView *)imageView image];
 
-    if (v17)
+    if (image)
     {
       goto LABEL_9;
     }
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:self selector:sel__updateImageMask name:@"TVMLImageViewImageDidLoadNotification" object:self->_imageView];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__updateImageMask name:@"TVMLImageViewImageDidLoadNotification" object:self->_imageView];
   }
 
   else
@@ -265,36 +265,36 @@ LABEL_15:
       v8 = self->_textView;
       self->_textView = 0;
 
-      v9 = [(UILabel *)self->_textMask layer];
-      [v9 removeFromSuperlayer];
+      layer = [(UILabel *)self->_textMask layer];
+      [layer removeFromSuperlayer];
 
       textMask = self->_textMask;
       self->_textMask = 0;
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
 
     [(_TVImageView *)self->_imageView removeFromSuperview];
     [(CALayer *)self->_imageMask removeFromSuperlayer];
     imageMask = self->_imageMask;
     self->_imageMask = 0;
 
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     if (self->_imageView)
     {
-      v13 = [(_UIFloatingContentView *)self->_floatingView contentView];
-      [v13 insertSubview:self->_imageView below:self->_overlayView];
+      contentView = [(_UIFloatingContentView *)self->_floatingView contentView];
+      [contentView insertSubview:self->_imageView below:self->_overlayView];
 
-      v14 = [(_TVImageView *)self->_imageView image];
+      image2 = [(_TVImageView *)self->_imageView image];
 
-      if (!v14)
+      if (!image2)
       {
-        v15 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v15 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
+        defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter4 removeObserver:self name:@"TVMLImageViewImageDidLoadNotification" object:0];
 
-        v16 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v16 addObserver:self selector:sel__updateImageMask name:@"TVMLImageViewImageDidLoadNotification" object:self->_imageView];
+        defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter5 addObserver:self selector:sel__updateImageMask name:@"TVMLImageViewImageDidLoadNotification" object:self->_imageView];
 
         goto LABEL_10;
       }
@@ -308,15 +308,15 @@ LABEL_10:
   [(TVButtonLockup *)self setNeedsLayout];
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   titleView = self->_titleView;
-  v7 = v5;
-  if (titleView != v5)
+  v7 = viewCopy;
+  if (titleView != viewCopy)
   {
     [(UILabel *)titleView removeFromSuperview];
-    objc_storeStrong(&self->_titleView, a3);
+    objc_storeStrong(&self->_titleView, view);
     if (self->_titleView)
     {
       [(TVButtonLockup *)self addSubview:?];
@@ -326,13 +326,13 @@ LABEL_10:
   [(TVButtonLockup *)self setNeedsLayout];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v11.receiver = self;
   v11.super_class = TVButtonLockup;
-  v4 = a3;
-  [(TVButtonLockup *)&v11 setBackgroundColor:v4];
-  v5 = [v4 copy];
+  colorCopy = color;
+  [(TVButtonLockup *)&v11 setBackgroundColor:colorCopy];
+  v5 = [colorCopy copy];
 
   backgroundColor = self->__backgroundColor;
   self->__backgroundColor = v5;
@@ -340,31 +340,31 @@ LABEL_10:
   if (self->__backgroundColor)
   {
     [(_TVVisualEffectView *)self->_backdropView removeFromSuperview];
-    v7 = [(_UIFloatingContentView *)self->_floatingView contentView];
-    v8 = v7;
+    contentView = [(_UIFloatingContentView *)self->_floatingView contentView];
+    v8 = contentView;
     v9 = self->__backgroundColor;
   }
 
   else
   {
-    v10 = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
-    [v10 addSubview:self->_backdropView];
+    visualEffectContainerView = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
+    [visualEffectContainerView addSubview:self->_backdropView];
 
-    v7 = [(_UIFloatingContentView *)self->_floatingView contentView];
-    v8 = v7;
+    contentView = [(_UIFloatingContentView *)self->_floatingView contentView];
+    v8 = contentView;
     v9 = 0;
   }
 
-  [v7 setBackgroundColor:v9];
+  [contentView setBackgroundColor:v9];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  if (self->_highlightColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_highlightColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_highlightColor, color);
     overlayView = self->_overlayView;
     if (self->_highlightColor)
     {
@@ -373,20 +373,20 @@ LABEL_10:
 
     else
     {
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [(UIView *)overlayView setBackgroundColor:v7];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UIView *)overlayView setBackgroundColor:whiteColor];
     }
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = TVButtonLockup;
-  v6 = a4;
-  [(TVButtonLockup *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(TVButtonLockup *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   if ([(TVButtonLockup *)self isFocused:v8.receiver])
   {
     v7 = 8;
@@ -397,21 +397,21 @@ LABEL_10:
     v7 = 0;
   }
 
-  [(_UIFloatingContentView *)self->_floatingView setControlState:v7 withAnimationCoordinator:v6];
+  [(_UIFloatingContentView *)self->_floatingView setControlState:v7 withAnimationCoordinator:coordinatorCopy];
 
   [(TVButtonLockup *)self _updateForFocusStateChange];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = TVButtonLockup;
-  v6 = a3;
-  [(TVButtonLockup *)&v9 pressesBegan:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  beganCopy = began;
+  [(TVButtonLockup *)&v9 pressesBegan:beganCopy withEvent:event];
+  anyObject = [beganCopy anyObject];
 
-  v8 = [v7 type];
-  if ((v8 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  type = [anyObject type];
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     if ([(TVButtonLockup *)self isFocused])
     {
@@ -420,11 +420,11 @@ LABEL_10:
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v7 pressesCancelled:a3 withEvent:a4];
+  [(TVButtonLockup *)&v7 pressesCancelled:cancelled withEvent:event];
   if (([(_UIFloatingContentView *)self->_floatingView controlState]& 1) != 0)
   {
     floatingView = self->_floatingView;
@@ -442,11 +442,11 @@ LABEL_10:
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v7 pressesEnded:a3 withEvent:a4];
+  [(TVButtonLockup *)&v7 pressesEnded:ended withEvent:event];
   if (([(_UIFloatingContentView *)self->_floatingView controlState]& 1) != 0)
   {
     floatingView = self->_floatingView;
@@ -464,28 +464,28 @@ LABEL_10:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v5 touchesBegan:a3 withEvent:a4];
+  [(TVButtonLockup *)&v5 touchesBegan:began withEvent:event];
   [(_UIFloatingContentView *)self->_floatingView setControlState:9 animated:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v20.receiver = self;
   v20.super_class = TVButtonLockup;
-  v6 = a3;
-  [(TVButtonLockup *)&v20 touchesMoved:v6 withEvent:a4];
+  movedCopy = moved;
+  [(TVButtonLockup *)&v20 touchesMoved:movedCopy withEvent:event];
   [(TVButtonLockup *)self bounds:v20.receiver];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 anyObject];
+  anyObject = [movedCopy anyObject];
 
-  [v15 locationInView:self];
+  [anyObject locationInView:self];
   v21.x = v16;
   v21.y = v17;
   v22.origin.x = v8;
@@ -507,31 +507,31 @@ LABEL_10:
   [(_UIFloatingContentView *)self->_floatingView setControlState:v19 animated:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v5 touchesEnded:a3 withEvent:a4];
+  [(TVButtonLockup *)&v5 touchesEnded:ended withEvent:event];
   if (([(_UIFloatingContentView *)self->_floatingView controlState]& 1) != 0)
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:0 animated:1];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(TVButtonLockup *)&v5 touchesCancelled:cancelled withEvent:event];
   if (([(_UIFloatingContentView *)self->_floatingView controlState]& 1) != 0)
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:0 animated:1];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self tv_itemWidth:a3.width];
+  [(UIView *)self tv_itemWidth:fits.width];
   if (v4 == 0.0)
   {
     v5 = 142.0;
@@ -553,15 +553,15 @@ LABEL_10:
     v7 = v6;
   }
 
-  v8 = [(TVButtonLockup *)self titleView];
-  [v8 tv_margin];
+  titleView = [(TVButtonLockup *)self titleView];
+  [titleView tv_margin];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(TVButtonLockup *)self titleView];
-  [v17 sizeThatFits:{v5 - (v12 + v16), 0.0}];
+  titleView2 = [(TVButtonLockup *)self titleView];
+  [titleView2 sizeThatFits:{v5 - (v12 + v16), 0.0}];
   v19 = v18;
 
   v20 = v14 + v7 + v10 + v19;
@@ -598,15 +598,15 @@ LABEL_10:
     v6 = v5;
   }
 
-  v7 = [(TVButtonLockup *)self titleView];
-  [v7 tv_margin];
+  titleView = [(TVButtonLockup *)self titleView];
+  [titleView tv_margin];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
   v14 = v4 - (v11 + v13);
-  v15 = [(TVButtonLockup *)self titleView];
-  [v15 sizeThatFits:{v14, 0.0}];
+  titleView2 = [(TVButtonLockup *)self titleView];
+  [titleView2 sizeThatFits:{v14, 0.0}];
   v17 = v16;
 
   [(_UIFloatingContentView *)self->_floatingView setFrame:0.0, 0.0, v4, v6];
@@ -628,13 +628,13 @@ LABEL_10:
     v31 = v9;
     v32 = floor((v6 - v26) * 0.5);
     [(UILabel *)self->_textView setFrame:v28, v32, v24, v26];
-    v33 = [(UILabel *)self->_textMask layer];
+    layer = [(UILabel *)self->_textMask layer];
     v34 = v32;
     v9 = v31;
     v17 = v30;
     v11 = v29;
     v14 = v44;
-    [v33 setFrame:{v28, v34, v25, v27}];
+    [layer setFrame:{v28, v34, v25, v27}];
   }
 
   else
@@ -655,38 +655,38 @@ LABEL_10:
     }
   }
 
-  v43 = [(TVButtonLockup *)self titleView];
-  [v43 setFrame:{v11, v6 + v9 + -7.0, v14, v17 + 2.0 + 12.0}];
+  titleView3 = [(TVButtonLockup *)self titleView];
+  [titleView3 setFrame:{v11, v6 + v9 + -7.0, v14, v17 + 2.0 + 12.0}];
 
   [(TVButtonLockup *)self _updateForFocusStateChange];
   [(TVButtonLockup *)self bounds];
   [(TVButtonLockup *)self _setFocusableContentMargins:0.0, 0.0, CGRectGetHeight(v47) - v6, 0.0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
-    v5 = [(TVButtonLockup *)self traitCollection];
-    if ([v5 userInterfaceStyle])
+    traitCollection = [(TVButtonLockup *)self traitCollection];
+    if ([traitCollection userInterfaceStyle])
     {
-      [v4 userInterfaceStyle];
-      v6 = [(TVButtonLockup *)self traitCollection];
-      [v6 userInterfaceStyle];
+      [changeCopy userInterfaceStyle];
+      traitCollection2 = [(TVButtonLockup *)self traitCollection];
+      [traitCollection2 userInterfaceStyle];
     }
   }
 
   v7.receiver = self;
   v7.super_class = TVButtonLockup;
-  [(TVButtonLockup *)&v7 traitCollectionDidChange:v4];
+  [(TVButtonLockup *)&v7 traitCollectionDidChange:changeCopy];
 }
 
 - (void)_updateTextForAccessibilityAndFocus
 {
-  v3 = [(TVButtonLockup *)self isFocused];
+  isFocused = [(TVButtonLockup *)self isFocused];
   textView = self->_textView;
-  if (v3)
+  if (isFocused)
   {
     v5 = _AXSHighContrastFocusIndicatorsEnabled();
     v6 = 1.0;
@@ -699,7 +699,7 @@ LABEL_10:
     v7 = self->_textView;
     if (_AXSHighContrastFocusIndicatorsEnabled())
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
       goto LABEL_8;
     }
   }
@@ -710,9 +710,9 @@ LABEL_10:
     v7 = self->_textView;
   }
 
-  v8 = [MEMORY[0x277D75348] whiteColor];
+  blackColor = [MEMORY[0x277D75348] whiteColor];
 LABEL_8:
-  v9 = v8;
+  v9 = blackColor;
   [(UILabel *)v7 setColor:?];
 }
 
@@ -732,7 +732,7 @@ LABEL_8:
   }
 
   [(CALayer *)imageMask setCompositingFilter:v6];
-  v7 = [(UILabel *)self->_textMask layer];
+  layer = [(UILabel *)self->_textMask layer];
   if (_AXSHighContrastFocusIndicatorsEnabled())
   {
     v8 = 0;
@@ -743,15 +743,15 @@ LABEL_8:
     v8 = v5;
   }
 
-  [v7 setCompositingFilter:v8];
+  [layer setCompositingFilter:v8];
 
   [(TVButtonLockup *)self _updateTextForAccessibilityAndFocus];
 }
 
 - (void)_updateForFocusStateChange
 {
-  v3 = [(TVButtonLockup *)self isFocused];
-  if (v3)
+  isFocused = [(TVButtonLockup *)self isFocused];
+  if (isFocused)
   {
     v4 = 1.0;
   }
@@ -761,7 +761,7 @@ LABEL_8:
     v4 = 0.0;
   }
 
-  if (v3)
+  if (isFocused)
   {
     v5 = 0.0;
   }
@@ -773,27 +773,27 @@ LABEL_8:
 
   [(UIView *)self->_overlayView setAlpha:v4];
   [(_TVImageView *)self->_imageView setAlpha:v5];
-  [(UILabel *)self->_titleView setHidden:v3 ^ 1];
-  [(CALayer *)self->_imageMask setAllowsEdgeAntialiasing:v3];
-  [(TVButtonLockup *)self _updateShadowForLabel:self->_titleView inFocus:v3];
+  [(UILabel *)self->_titleView setHidden:isFocused ^ 1];
+  [(CALayer *)self->_imageMask setAllowsEdgeAntialiasing:isFocused];
+  [(TVButtonLockup *)self _updateShadowForLabel:self->_titleView inFocus:isFocused];
 
   [(TVButtonLockup *)self _updateTextForAccessibilityAndFocus];
 }
 
 - (void)_updateImageMask
 {
-  v3 = [(_TVImageView *)self->_imageView image];
+  image = [(_TVImageView *)self->_imageView image];
 
-  if (v3)
+  if (image)
   {
-    v4 = [(_TVImageView *)self->_imageView image];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    v13 = [v4 _flatImageWithColor:v5];
+    image2 = [(_TVImageView *)self->_imageView image];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v13 = [image2 _flatImageWithColor:blackColor];
 
     [(CALayer *)self->_imageMask removeFromSuperlayer];
-    v6 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     imageMask = self->_imageMask;
-    self->_imageMask = v6;
+    self->_imageMask = layer;
 
     v8 = self->_imageMask;
     if (_AXSHighContrastFocusIndicatorsEnabled())
@@ -807,8 +807,8 @@ LABEL_8:
     }
 
     [(CALayer *)v8 setCompositingFilter:v9];
-    v10 = [(UIView *)self->_overlayView layer];
-    [v10 addSublayer:self->_imageMask];
+    layer2 = [(UIView *)self->_overlayView layer];
+    [layer2 addSublayer:self->_imageMask];
 
     v11 = self->_imageMask;
     v12 = v13;
@@ -818,12 +818,12 @@ LABEL_8:
   }
 }
 
-- (void)_updateShadowForLabel:(id)a3 inFocus:(BOOL)a4
+- (void)_updateShadowForLabel:(id)label inFocus:(BOOL)focus
 {
-  v4 = a4;
-  v5 = a3;
-  v11 = v5;
-  if (v4)
+  focusCopy = focus;
+  labelCopy = label;
+  v11 = labelCopy;
+  if (focusCopy)
   {
     if (!_updateShadowForLabel_inFocus____ShadowColor_0)
     {
@@ -831,10 +831,10 @@ LABEL_8:
       v7 = _updateShadowForLabel_inFocus____ShadowColor_0;
       _updateShadowForLabel_inFocus____ShadowColor_0 = v6;
 
-      v5 = v11;
+      labelCopy = v11;
     }
 
-    [v5 setShadowColor:?];
+    [labelCopy setShadowColor:?];
     v8 = 2.0;
     v9 = 0.0;
     v10 = 6.0;
@@ -842,7 +842,7 @@ LABEL_8:
 
   else
   {
-    [v5 setShadowColor:0];
+    [labelCopy setShadowColor:0];
     v9 = *MEMORY[0x277CBF3A8];
     v8 = *(MEMORY[0x277CBF3A8] + 8);
     v10 = 0.0;

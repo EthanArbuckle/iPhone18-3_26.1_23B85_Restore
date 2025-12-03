@@ -1,5 +1,5 @@
 @interface PHAudioCallIcon
-- (PHAudioCallIcon)initWithIconView:(id)a3 IconImage:(id)a4;
+- (PHAudioCallIcon)initWithIconView:(id)view IconImage:(id)image;
 - (UIImage)iconImage;
 - (UIView)iconView;
 @end
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (PHAudioCallIcon)initWithIconView:(id)a3 IconImage:(id)a4
+- (PHAudioCallIcon)initWithIconView:(id)view IconImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  return AudioCallIcon.init(iconView:iconImage:)(a3, a4);
+  viewCopy = view;
+  imageCopy = image;
+  return AudioCallIcon.init(iconView:iconImage:)(view, image);
 }
 
 @end

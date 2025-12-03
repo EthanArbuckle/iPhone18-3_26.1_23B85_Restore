@@ -1,49 +1,49 @@
 @interface FIUIWeeklyGoalModel
-- (FIUIWeeklyGoalModel)initWithHealthStore:(id)a3;
-- (void)fetchMostRecentWeeklyGoalWithCompletion:(id)a3;
-- (void)saveNewWeeklyGoal:(id)a3 forDate:(id)a4;
-- (void)saveNewWeeklyGoal:(id)a3 forDate:(id)a4 completion:(id)a5;
-- (void)saveNewWeeklyGoal:(id)a3 quantityType:(id)a4 forDate:(id)a5 completion:(id)a6;
+- (FIUIWeeklyGoalModel)initWithHealthStore:(id)store;
+- (void)fetchMostRecentWeeklyGoalWithCompletion:(id)completion;
+- (void)saveNewWeeklyGoal:(id)goal forDate:(id)date;
+- (void)saveNewWeeklyGoal:(id)goal forDate:(id)date completion:(id)completion;
+- (void)saveNewWeeklyGoal:(id)goal quantityType:(id)type forDate:(id)date completion:(id)completion;
 @end
 
 @implementation FIUIWeeklyGoalModel
 
-- (FIUIWeeklyGoalModel)initWithHealthStore:(id)a3
+- (FIUIWeeklyGoalModel)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = FIUIWeeklyGoalModel;
   v6 = [(FIUIWeeklyGoalModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
   }
 
   return v7;
 }
 
-- (void)fetchMostRecentWeeklyGoalWithCompletion:(id)a3
+- (void)fetchMostRecentWeeklyGoalWithCompletion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = MEMORY[0x1E696AE18];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v5 predicateWithFormat:@"startDate <= %@", v6];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [v5 predicateWithFormat:@"startDate <= %@", date];
 
     v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:0];
     v9 = objc_alloc(MEMORY[0x1E696C3C8]);
-    v10 = [MEMORY[0x1E696C2E0] calorieGoal];
+    calorieGoal = [MEMORY[0x1E696C2E0] calorieGoal];
     v15[0] = v8;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__FIUIWeeklyGoalModel_fetchMostRecentWeeklyGoalWithCompletion___block_invoke;
     v13[3] = &unk_1E878CB00;
-    v14 = v4;
-    v12 = [v9 initWithSampleType:v10 predicate:v7 limit:1 sortDescriptors:v11 resultsHandler:v13];
+    v14 = completionCopy;
+    v12 = [v9 initWithSampleType:calorieGoal predicate:v7 limit:1 sortDescriptors:v11 resultsHandler:v13];
 
     [(HKHealthStore *)self->_healthStore executeQuery:v12];
   }
@@ -57,30 +57,30 @@ void __63__FIUIWeeklyGoalModel_fetchMostRecentWeeklyGoalWithCompletion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveNewWeeklyGoal:(id)a3 forDate:(id)a4
+- (void)saveNewWeeklyGoal:(id)goal forDate:(id)date
 {
   v6 = MEMORY[0x1E696C2E0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 calorieGoal];
-  [(FIUIWeeklyGoalModel *)self saveNewWeeklyGoal:v8 quantityType:v9 forDate:v7 completion:0];
+  dateCopy = date;
+  goalCopy = goal;
+  calorieGoal = [v6 calorieGoal];
+  [(FIUIWeeklyGoalModel *)self saveNewWeeklyGoal:goalCopy quantityType:calorieGoal forDate:dateCopy completion:0];
 }
 
-- (void)saveNewWeeklyGoal:(id)a3 forDate:(id)a4 completion:(id)a5
+- (void)saveNewWeeklyGoal:(id)goal forDate:(id)date completion:(id)completion
 {
   v8 = MEMORY[0x1E696C2E0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 calorieGoal];
-  [(FIUIWeeklyGoalModel *)self saveNewWeeklyGoal:v11 quantityType:v12 forDate:v10 completion:v9];
+  completionCopy = completion;
+  dateCopy = date;
+  goalCopy = goal;
+  calorieGoal = [v8 calorieGoal];
+  [(FIUIWeeklyGoalModel *)self saveNewWeeklyGoal:goalCopy quantityType:calorieGoal forDate:dateCopy completion:completionCopy];
 }
 
-- (void)saveNewWeeklyGoal:(id)a3 quantityType:(id)a4 forDate:(id)a5 completion:(id)a6
+- (void)saveNewWeeklyGoal:(id)goal quantityType:(id)type forDate:(id)date completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [MEMORY[0x1E696C358] quantitySampleWithType:a4 quantity:a3 startDate:a5 endDate:a5];
+  completionCopy = completion;
+  v11 = [MEMORY[0x1E696C358] quantitySampleWithType:type quantity:goal startDate:date endDate:date];
   _HKInitializeLogging();
   v12 = *MEMORY[0x1E696B928];
   if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_DEBUG))
@@ -95,8 +95,8 @@ void __63__FIUIWeeklyGoalModel_fetchMostRecentWeeklyGoalWithCompletion___block_i
   v16[1] = 3221225472;
   v16[2] = __73__FIUIWeeklyGoalModel_saveNewWeeklyGoal_quantityType_forDate_completion___block_invoke;
   v16[3] = &unk_1E878CB50;
-  v17 = v10;
-  v15 = v10;
+  v17 = completionCopy;
+  v15 = completionCopy;
   [(HKHealthStore *)healthStore saveObjects:v14 withCompletion:v16];
 }
 

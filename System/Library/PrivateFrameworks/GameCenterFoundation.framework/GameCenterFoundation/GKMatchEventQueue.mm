@@ -11,9 +11,9 @@
   v2 = [(GKMatchEventQueue *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     events = v2->_events;
-    v2->_events = v3;
+    v2->_events = array;
   }
 
   return v2;

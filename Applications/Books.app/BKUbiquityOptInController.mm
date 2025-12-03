@@ -1,7 +1,7 @@
 @interface BKUbiquityOptInController
-- (BKUbiquityOptInController)initWithStatusMonitor:(id)a3 liverpoolStatusMonitor:(id)a4;
+- (BKUbiquityOptInController)initWithStatusMonitor:(id)monitor liverpoolStatusMonitor:(id)statusMonitor;
 - (void)_cleanupUserDefaults;
-- (void)_updateStatusMonitorsWithOptedIn:(BOOL)a3;
+- (void)_updateStatusMonitorsWithOptedIn:(BOOL)in;
 - (void)finalizeSetup;
 @end
 
@@ -33,10 +33,10 @@
   [v8 removeObjectForKey:@"BKCumulusEnabled"];
 }
 
-- (BKUbiquityOptInController)initWithStatusMonitor:(id)a3 liverpoolStatusMonitor:(id)a4
+- (BKUbiquityOptInController)initWithStatusMonitor:(id)monitor liverpoolStatusMonitor:(id)statusMonitor
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  statusMonitorCopy = statusMonitor;
   if (!+[NSThread isMainThread])
   {
     sub_10079090C();
@@ -48,8 +48,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_statusMonitor, a3);
-    objc_storeStrong(&v10->_liverpoolStatusMonitor, a4);
+    objc_storeStrong(&v9->_statusMonitor, monitor);
+    objc_storeStrong(&v10->_liverpoolStatusMonitor, statusMonitor);
     v11 = objc_opt_new();
     completionBlocks = v10->_completionBlocks;
     v10->_completionBlocks = v11;
@@ -69,23 +69,23 @@
 
   v5 = BUProtocolCast();
   v6 = [BKUbiquityEligibilityManager alloc];
-  v7 = [(BKUbiquityOptInController *)self statusMonitor];
-  v8 = [v6 initWithQuotaFetcher:v10 eligibleBooksProvider:v5 ubiquityStatusMonitor:v7];
+  statusMonitor = [(BKUbiquityOptInController *)self statusMonitor];
+  v8 = [v6 initWithQuotaFetcher:v10 eligibleBooksProvider:v5 ubiquityStatusMonitor:statusMonitor];
   cloudEligibilityManager = self->_cloudEligibilityManager;
   self->_cloudEligibilityManager = v8;
 }
 
-- (void)_updateStatusMonitorsWithOptedIn:(BOOL)a3
+- (void)_updateStatusMonitorsWithOptedIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   v5 = sub_1000061F0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100790948(v3, v5);
+    sub_100790948(inCopy, v5);
   }
 
-  v6 = [(BKUbiquityOptInController *)self liverpoolStatusMonitor];
-  [v6 updateWithOptedIn:v3];
+  liverpoolStatusMonitor = [(BKUbiquityOptInController *)self liverpoolStatusMonitor];
+  [liverpoolStatusMonitor updateWithOptedIn:inCopy];
 }
 
 @end

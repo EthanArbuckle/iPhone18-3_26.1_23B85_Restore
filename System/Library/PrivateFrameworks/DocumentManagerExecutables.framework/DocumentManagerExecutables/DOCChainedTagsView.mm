@@ -2,26 +2,26 @@
 - (CGPoint)alignmentOffset;
 - (CGSize)intrinsicContentSize;
 - (DOCChainedTagsView)init;
-- (DOCChainedTagsView)initWithCoder:(id)a3;
-- (DOCChainedTagsView)initWithFrame:(CGRect)a3;
+- (DOCChainedTagsView)initWithCoder:(id)coder;
+- (DOCChainedTagsView)initWithFrame:(CGRect)frame;
 - (void)_reloadRenderingRequest;
 - (void)doc_commonInit;
-- (void)drawRect:(CGRect)a3;
-- (void)setSelectionOutlineColor:(id)a3;
-- (void)setSpacing:(unint64_t)a3;
-- (void)setTagDimension:(double)a3;
-- (void)setTags:(id)a3;
-- (void)setknockOutBorderWidth:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSelectionOutlineColor:(id)color;
+- (void)setSpacing:(unint64_t)spacing;
+- (void)setTagDimension:(double)dimension;
+- (void)setTags:(id)tags;
+- (void)setknockOutBorderWidth:(double)width;
 - (void)sizeToFit;
 @end
 
 @implementation DOCChainedTagsView
 
-- (DOCChainedTagsView)initWithFrame:(CGRect)a3
+- (DOCChainedTagsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DOCChainedTagsView;
-  v3 = [(DOCChainedTagsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCChainedTagsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (DOCChainedTagsView)initWithCoder:(id)a3
+- (DOCChainedTagsView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DOCChainedTagsView;
-  v3 = [(DOCChainedTagsView *)&v6 initWithCoder:a3];
+  v3 = [(DOCChainedTagsView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -66,59 +66,59 @@
   [(DOCChainedTagsView *)self _reloadRenderingRequest];
 }
 
-- (void)setTags:(id)a3
+- (void)setTags:(id)tags
 {
-  objc_storeStrong(&self->_tags, a3);
+  objc_storeStrong(&self->_tags, tags);
 
   [(DOCChainedTagsView *)self _reloadRenderingRequest];
 }
 
-- (void)setknockOutBorderWidth:(double)a3
+- (void)setknockOutBorderWidth:(double)width
 {
-  if (self->_knockOutBorderWidth != a3)
+  if (self->_knockOutBorderWidth != width)
   {
-    self->_knockOutBorderWidth = a3;
+    self->_knockOutBorderWidth = width;
     [(DOCChainedTagsView *)self _reloadRenderingRequest];
   }
 }
 
-- (void)setSpacing:(unint64_t)a3
+- (void)setSpacing:(unint64_t)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
+    self->_spacing = spacing;
     [(DOCChainedTagsView *)self _reloadRenderingRequest];
   }
 }
 
-- (void)setTagDimension:(double)a3
+- (void)setTagDimension:(double)dimension
 {
-  if (self->_tagDimension != a3)
+  if (self->_tagDimension != dimension)
   {
-    self->_tagDimension = a3;
+    self->_tagDimension = dimension;
     [(DOCChainedTagsView *)self _reloadRenderingRequest];
   }
 }
 
-- (void)setSelectionOutlineColor:(id)a3
+- (void)setSelectionOutlineColor:(id)color
 {
-  v5 = a3;
-  if (self->_selectionOutlineColor != v5)
+  colorCopy = color;
+  if (self->_selectionOutlineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectionOutlineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_selectionOutlineColor, color);
     [(DOCChainedTagsView *)self _reloadRenderingRequest];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(DOCChainedTagsView *)self renderingRequest];
-  if (v2)
+  renderingRequest = [(DOCChainedTagsView *)self renderingRequest];
+  if (renderingRequest)
   {
     v3 = +[DOCTagRenderer shared];
-    [v3 sizeOfTagContentForRenderingRequest:v2];
+    [v3 sizeOfTagContentForRenderingRequest:renderingRequest];
     v5 = v4;
     v7 = v6;
   }
@@ -146,9 +146,9 @@
   [(DOCChainedTagsView *)self setFrame:?];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = [(DOCChainedTagsView *)self renderingRequest:a3.origin.x];
+  v3 = [(DOCChainedTagsView *)self renderingRequest:rect.origin.x];
   if (v3)
   {
     v5 = v3;
@@ -167,8 +167,8 @@
   [(DOCTagRenderingRequest *)v3 setKnockOutBorderWidth:?];
   [(DOCTagRenderingRequest *)v3 setLayoutDirection:[(DOCChainedTagsView *)self effectiveUserInterfaceLayoutDirection]];
   [(DOCTagRenderingRequest *)v3 setSpacingType:self->_spacing];
-  v4 = [(DOCChainedTagsView *)self selectionOutlineColor];
-  [(DOCTagRenderingRequest *)v3 setSelectionOutlineColor:v4];
+  selectionOutlineColor = [(DOCChainedTagsView *)self selectionOutlineColor];
+  [(DOCTagRenderingRequest *)v3 setSelectionOutlineColor:selectionOutlineColor];
 
   v5 = v22;
   if (v22)
@@ -187,8 +187,8 @@
     v10 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v11 = [(DOCTagRenderingRequest *)v5 fillColors];
-  v12 = [(DOCTagRenderingRequest *)v22 selectionOutlineColor];
+  fillColors = [(DOCTagRenderingRequest *)v5 fillColors];
+  selectionOutlineColor2 = [(DOCTagRenderingRequest *)v22 selectionOutlineColor];
   if (v3)
   {
     v13 = +[DOCTagRenderer shared];
@@ -203,8 +203,8 @@
     v17 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v18 = [(DOCTagRenderingRequest *)v3 fillColors];
-  v19 = [(DOCTagRenderingRequest *)v3 selectionOutlineColor];
+  fillColors2 = [(DOCTagRenderingRequest *)v3 fillColors];
+  selectionOutlineColor3 = [(DOCTagRenderingRequest *)v3 selectionOutlineColor];
   renderingRequest = self->_renderingRequest;
   self->_renderingRequest = v3;
 
@@ -213,12 +213,12 @@
     [(DOCChainedTagsView *)self invalidateIntrinsicContentSize];
   }
 
-  if (([v11 isEqual:v18] & 1) == 0)
+  if (([fillColors isEqual:fillColors2] & 1) == 0)
   {
     [(DOCChainedTagsView *)self setNeedsDisplay];
   }
 
-  if (([v12 isEqual:v19] & 1) == 0)
+  if (([selectionOutlineColor2 isEqual:selectionOutlineColor3] & 1) == 0)
   {
     [(DOCChainedTagsView *)self setNeedsDisplay];
   }

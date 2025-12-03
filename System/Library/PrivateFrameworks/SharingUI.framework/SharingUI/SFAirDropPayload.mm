@@ -1,7 +1,7 @@
 @interface SFAirDropPayload
-+ (id)newPayloadWithData:(id)a3 ofType:(id)a4 description:(id)a5 previewImage:(id)a6 identifier:(int64_t)a7;
-+ (id)newPayloadWithURL:(id)a3 description:(id)a4 previewImage:(id)a5 identifier:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)newPayloadWithData:(id)data ofType:(id)type description:(id)description previewImage:(id)image identifier:(int64_t)identifier;
++ (id)newPayloadWithURL:(id)l description:(id)description previewImage:(id)image identifier:(int64_t)identifier;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -34,28 +34,28 @@
   return v6 + [(NSString *)self->_payloadDescription hash]+ self->_identifer;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 URL];
+    v5 = [equalCopy URL];
     if ([v5 isEqual:self->_URL])
     {
-      v6 = [v4 data];
-      if ([v6 isEqual:self->_data])
+      data = [equalCopy data];
+      if ([data isEqual:self->_data])
       {
-        v7 = [v4 type];
-        if ([v7 isEqual:self->_type])
+        type = [equalCopy type];
+        if ([type isEqual:self->_type])
         {
-          v8 = [v4 previewImage];
-          if ([v8 isEqual:self->_previewImage])
+          previewImage = [equalCopy previewImage];
+          if ([previewImage isEqual:self->_previewImage])
           {
-            v9 = [v4 payloadDescription];
-            if ([v9 isEqual:self->_payloadDescription])
+            payloadDescription = [equalCopy payloadDescription];
+            if ([payloadDescription isEqual:self->_payloadDescription])
             {
-              v10 = [v4 identifer] == self->_identifer;
+              v10 = [equalCopy identifer] == self->_identifer;
             }
 
             else
@@ -96,28 +96,28 @@
   return v10;
 }
 
-+ (id)newPayloadWithData:(id)a3 ofType:(id)a4 description:(id)a5 previewImage:(id)a6 identifier:(int64_t)a7
++ (id)newPayloadWithData:(id)data ofType:(id)type description:(id)description previewImage:(id)image identifier:(int64_t)identifier
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  imageCopy = image;
+  descriptionCopy = description;
+  typeCopy = type;
+  dataCopy = data;
   v15 = objc_alloc_init(SFAirDropPayload);
-  [(SFAirDropPayload *)v15 setData:v14];
+  [(SFAirDropPayload *)v15 setData:dataCopy];
 
-  [(SFAirDropPayload *)v15 setType:v13];
-  [(SFAirDropPayload *)v15 setPreviewImage:v11];
+  [(SFAirDropPayload *)v15 setType:typeCopy];
+  [(SFAirDropPayload *)v15 setPreviewImage:imageCopy];
 
-  [(SFAirDropPayload *)v15 setPayloadDescription:v12];
-  [(SFAirDropPayload *)v15 setIdentifer:a7];
+  [(SFAirDropPayload *)v15 setPayloadDescription:descriptionCopy];
+  [(SFAirDropPayload *)v15 setIdentifer:identifier];
   return v15;
 }
 
-+ (id)newPayloadWithURL:(id)a3 description:(id)a4 previewImage:(id)a5 identifier:(int64_t)a6
++ (id)newPayloadWithURL:(id)l description:(id)description previewImage:(id)image identifier:(int64_t)identifier
 {
-  v9 = a3;
-  v10 = [SFAirDropPayload newPayloadWithData:0 ofType:0 description:a4 previewImage:a5 identifier:a6];
-  [v10 setURL:v9];
+  lCopy = l;
+  v10 = [SFAirDropPayload newPayloadWithData:0 ofType:0 description:description previewImage:image identifier:identifier];
+  [v10 setURL:lCopy];
 
   return v10;
 }

@@ -1,30 +1,30 @@
 @interface TSTTableViewSortRule
-+ (id)ruleWithViewIndex:(TSUViewColumnOrRowIndex)a3 direction:(int)a4;
-- (TSTTableViewSortRule)initWithViewIndex:(TSUViewColumnOrRowIndex)a3 direction:(int)a4;
++ (id)ruleWithViewIndex:(TSUViewColumnOrRowIndex)index direction:(int)direction;
+- (TSTTableViewSortRule)initWithViewIndex:(TSUViewColumnOrRowIndex)index direction:(int)direction;
 - (TSUModelColumnOrRowIndex)baseIndex;
-- (id)initFromArchive:(const void *)a3;
-- (void)encodeToArchive:(void *)a3;
+- (id)initFromArchive:(const void *)archive;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSTTableViewSortRule
 
-+ (id)ruleWithViewIndex:(TSUViewColumnOrRowIndex)a3 direction:(int)a4
++ (id)ruleWithViewIndex:(TSUViewColumnOrRowIndex)index direction:(int)direction
 {
-  v4 = *&a4;
+  v4 = *&direction;
   v6 = objc_alloc(objc_opt_class());
-  v9 = objc_msgSend_initWithViewIndex_direction_(v6, v7, a3._index, v4, v8);
+  v9 = objc_msgSend_initWithViewIndex_direction_(v6, v7, index._index, v4, v8);
 
   return v9;
 }
 
-- (TSTTableViewSortRule)initWithViewIndex:(TSUViewColumnOrRowIndex)a3 direction:(int)a4
+- (TSTTableViewSortRule)initWithViewIndex:(TSUViewColumnOrRowIndex)index direction:(int)direction
 {
   v6.receiver = self;
   v6.super_class = TSTTableViewSortRule;
-  result = [(TSTTableSortRule *)&v6 initWithBaseIndex:0x7FFFFFFFLL direction:*&a4];
+  result = [(TSTTableSortRule *)&v6 initWithBaseIndex:0x7FFFFFFFLL direction:*&direction];
   if (result)
   {
-    result->_viewIndex = a3;
+    result->_viewIndex = index;
   }
 
   return result;
@@ -43,7 +43,7 @@
   return [(TSTTableSortRule *)&v17 baseIndex];
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableViewSortRule encodeToArchive:]", v3, v4);
@@ -60,7 +60,7 @@
   objc_exception_throw(v23);
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableViewSortRule initFromArchive:]", v3, v4);

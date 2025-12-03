@@ -1,37 +1,37 @@
 @interface PhotosDetailsWidgetViewModel
 - (_TtC12PhotosUICore28PhotosDetailsWidgetViewModel)init;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)preferredContentSizeDidChangeWithNotification:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
+- (void)preferredContentSizeDidChangeWithNotification:(id)notification;
 @end
 
 @implementation PhotosDetailsWidgetViewModel
 
-- (void)preferredContentSizeDidChangeWithNotification:(id)a3
+- (void)preferredContentSizeDidChangeWithNotification:(id)notification
 {
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x158);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x88);
-  v5 = a3;
-  v11 = self;
+  changeCopy = change;
+  selfCopy = self;
   v6 = v4();
   sub_1A3C52C70(0, &qword_1EB126660);
   v7 = sub_1A524DC34();
 
   if (v7)
   {
-    v8 = [v7 objectAfterChanges];
+    objectAfterChanges = [v7 objectAfterChanges];
 
-    if (v8)
+    if (objectAfterChanges)
     {
       v9 = OBJC_IVAR____TtC12PhotosUICore28PhotosDetailsWidgetViewModel_asset;
       swift_beginAccess();
-      v10 = *(&v11->super.isa + v9);
-      *(&v11->super.isa + v9) = v8;
+      v10 = *(&selfCopy->super.isa + v9);
+      *(&selfCopy->super.isa + v9) = objectAfterChanges;
 
       return;
     }

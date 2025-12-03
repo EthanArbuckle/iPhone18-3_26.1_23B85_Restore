@@ -1,19 +1,19 @@
 @interface WFScreenTimeHelper
-+ (id)restrictedURLErrorWithHostname:(id)a3;
-+ (void)isContentDestinationAllowedByScreenTimeSettings:(id)a3 completionHandler:(id)a4;
++ (id)restrictedURLErrorWithHostname:(id)hostname;
++ (void)isContentDestinationAllowedByScreenTimeSettings:(id)settings completionHandler:(id)handler;
 @end
 
 @implementation WFScreenTimeHelper
 
-+ (id)restrictedURLErrorWithHostname:(id)a3
++ (id)restrictedURLErrorWithHostname:(id)hostname
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
   v13[0] = *MEMORY[0x1E696A578];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  hostnameCopy = hostname;
   v6 = WFLocalizedString(@"The action could not run because “%@” was blocked by the Content Restrictions on this device.");
-  v7 = [v4 localizedStringWithFormat:v6, v5, v13[0]];
+  v7 = [v4 localizedStringWithFormat:v6, hostnameCopy, v13[0]];
 
   v14[0] = v7;
   v13[1] = *MEMORY[0x1E696A598];
@@ -27,12 +27,12 @@
   return v10;
 }
 
-+ (void)isContentDestinationAllowedByScreenTimeSettings:(id)a3 completionHandler:(id)a4
++ (void)isContentDestinationAllowedByScreenTimeSettings:(id)settings completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  v7 = settingsCopy;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v32 = 0;
@@ -51,7 +51,7 @@
       v8 = v33[3];
     }
 
-    v26 = v6;
+    v26 = handlerCopy;
     v9 = v8;
     _Block_object_dispose(&v32, 8);
     v10 = [v8 alloc];
@@ -62,8 +62,8 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [v7 hostnames];
-    v13 = [v12 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    hostnames = [v7 hostnames];
+    v13 = [hostnames countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v13)
     {
       v14 = *v29;
@@ -73,7 +73,7 @@
         {
           if (*v29 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(hostnames);
           }
 
           v16 = *(*(&v28 + 1) + 8 * i);
@@ -116,7 +116,7 @@
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v13 = [hostnames countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v13)
         {
           continue;
@@ -139,13 +139,13 @@
     v26[2](v26, 1, 0);
 LABEL_25:
 
-    v6 = v26;
+    handlerCopy = v26;
   }
 
   else
   {
 
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   v25 = *MEMORY[0x1E69E9840];

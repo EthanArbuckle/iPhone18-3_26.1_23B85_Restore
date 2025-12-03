@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withOrgApacheLuceneSearchScorer:(id)a4 withInt:(int)a5 withFloatArray:(id)a6;
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer withInt:(int)int withFloatArray:(id)array;
 - (float)score;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer
 
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withOrgApacheLuceneSearchScorer:(id)a4 withInt:(int)a5 withFloatArray:(id)a6
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer withInt:(int)int withFloatArray:(id)array
 {
-  OrgApacheLuceneSearchReqOptSumScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_(self, a3, a4);
-  self->requiredCount_ = a5;
-  JreStrongAssign(&self->coords_, a6);
+  OrgApacheLuceneSearchReqOptSumScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_(self, scorer, searchScorer);
+  self->requiredCount_ = int;
+  JreStrongAssign(&self->coords_, array);
   return self;
 }
 
@@ -22,7 +22,7 @@
     goto LABEL_15;
   }
 
-  v4 = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
+  docID = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
   [(OrgApacheLuceneSearchScorer *)self->super.reqScorer_ score];
   v6 = v5;
   optScorer = self->super.optScorer_;
@@ -31,18 +31,18 @@
     goto LABEL_11;
   }
 
-  v8 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
-  if (v8 < v4)
+  docID2 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
+  if (docID2 < docID)
   {
-    v8 = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ advanceWithInt:v4];
-    if (v8 == 0x7FFFFFFF)
+    docID2 = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ advanceWithInt:docID];
+    if (docID2 == 0x7FFFFFFF)
     {
       JreStrongAssign(&self->super.optScorer_, 0);
       goto LABEL_11;
     }
   }
 
-  if (v8 != v4)
+  if (docID2 != docID)
   {
 LABEL_11:
     coords = self->coords_;
@@ -77,10 +77,10 @@ LABEL_15:
 
   v6 = v6 + v10;
   v12 = self->requiredCount_;
-  v13 = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ freq];
+  freq = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ freq];
   size = coords->super.size_;
-  requiredCount = v13 + v12;
-  if ((v13 + v12) < 0)
+  requiredCount = freq + v12;
+  if ((freq + v12) < 0)
   {
 LABEL_16:
     IOSArray_throwOutOfBoundsWithMsg(size, requiredCount);

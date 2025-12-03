@@ -1,17 +1,17 @@
 @interface ULRapportMO
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context;
 - (optional<ULRapportDO>)convertToDO;
 @end
 
 @implementation ULRapportMO
 
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = [[ULRapportMO alloc] initWithContext:a5];
-  [(ULRapportMO *)v8 setLoi:v7];
-  [(ULRapportMO *)v8 setGenerationTimestamp:*a3];
-  CLMicroLocationProto::RapportDevice::ByteSize((a3 + 32));
+  mOCopy = mO;
+  v8 = [[ULRapportMO alloc] initWithContext:context];
+  [(ULRapportMO *)v8 setLoi:mOCopy];
+  [(ULRapportMO *)v8 setGenerationTimestamp:*o];
+  CLMicroLocationProto::RapportDevice::ByteSize((o + 32));
   operator new[]();
 }
 
@@ -21,11 +21,11 @@
   [(ULRapportMO *)self generationTimestamp];
   v24 = v5;
   v6 = [(ULRapportMO *)self loi];
-  v7 = [v6 loiType];
-  v8 = v7;
-  if (v7)
+  loiType = [v6 loiType];
+  v8 = loiType;
+  if (loiType)
   {
-    [v7 stdString];
+    [loiType stdString];
   }
 
   else
@@ -37,11 +37,11 @@
   if (BYTE8(v23))
   {
     v9 = [(ULRapportMO *)self loi];
-    v10 = [v9 loiId];
-    v11 = v10;
-    if (v10)
+    loiId = [v9 loiId];
+    v11 = loiId;
+    if (loiId)
     {
-      [v10 boostUUID];
+      [loiId boostUUID];
     }
 
     else
@@ -59,14 +59,14 @@
     }
 
     CLMicroLocationProto::RapportDevice::RapportDevice(v21);
-    v14 = [(ULRapportMO *)self device];
-    v15 = v14;
-    v16 = [v14 bytes];
-    v17 = [(ULRapportMO *)self device];
-    [v17 length];
-    LOBYTE(v16) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v21, v16);
+    device = [(ULRapportMO *)self device];
+    v15 = device;
+    bytes = [device bytes];
+    device2 = [(ULRapportMO *)self device];
+    [device2 length];
+    LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v21, bytes);
 
-    if (v16)
+    if (bytes)
     {
       if ((BYTE8(v23) & 1) == 0)
       {

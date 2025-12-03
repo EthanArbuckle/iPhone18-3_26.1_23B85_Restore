@@ -24,7 +24,7 @@
   v6[3] = &unk_279C73B08;
   v7 = v2;
   v3 = v2;
-  HKSPEnumerateDaysOfWeekInCalendar(a1, v6, 0);
+  HKSPEnumerateDaysOfWeekInCalendar(self, v6, 0);
   v4 = [v3 copy];
 
   return v4;
@@ -39,7 +39,7 @@
   v9[3] = &unk_279C73B08;
   v10 = v5;
   v6 = v5;
-  HKSPWeekdaysEnumerateDaysInCalendar(a1, a3, v9, 0);
+  HKSPWeekdaysEnumerateDaysInCalendar(self, a3, v9, 0);
   v7 = [v6 copy];
 
   return v7;
@@ -55,7 +55,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = HKSPWeekendDaysInCalendar(a1);
+  v5 = HKSPWeekendDaysInCalendar(self);
   if (v5 == a3)
   {
     v3 = @"WEEKENDS";
@@ -77,7 +77,7 @@ LABEL_8:
 - (uint64_t)hksp_dayPeriodForDate:()HKSPSleep locale:options:
 {
   v8 = a3;
-  v9 = [a1 bs_dayPeriodForDate:v8 inLocale:a4];
+  v9 = [self bs_dayPeriodForDate:v8 inLocale:a4];
   v10 = 1;
   if (v9 <= 9)
   {
@@ -85,7 +85,7 @@ LABEL_8:
     {
       if (a5)
       {
-        if (([a1 component:32 fromDate:v8] - 3) < 7)
+        if (([self component:32 fromDate:v8] - 3) < 7)
         {
           v10 = 1;
         }
@@ -134,11 +134,11 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __78__NSCalendar_HKSPSleep___hksp_nextDateAfterDate_matchingComponents_backwards___block_invoke;
   v14[3] = &unk_279C73A90;
-  v14[4] = a1;
+  v14[4] = self;
   v15 = v8;
   v16 = v10;
   v11 = v8;
-  v12 = [a1 _hksp_nextDateHelperAfterDate:v9 nextDateBlock:v14];
+  v12 = [self _hksp_nextDateHelperAfterDate:v9 nextDateBlock:v14];
 
   return v12;
 }
@@ -151,11 +151,11 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __78__NSCalendar_HKSPSleep___hksp_nextDateAfterDate_matchingUnit_value_backwards___block_invoke;
   v14[3] = &unk_279C73AB8;
-  v14[4] = a1;
+  v14[4] = self;
   v14[5] = a4;
   v14[6] = a5;
   v14[7] = v11;
-  v12 = [a1 _hksp_nextDateHelperAfterDate:v10 nextDateBlock:v14];
+  v12 = [self _hksp_nextDateHelperAfterDate:v10 nextDateBlock:v14];
 
   return v12;
 }
@@ -164,15 +164,15 @@ LABEL_8:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 timeZone];
-  [v8 daylightSavingTimeOffsetForDate:v6];
+  timeZone = [self timeZone];
+  [timeZone daylightSavingTimeOffsetForDate:v6];
   v10 = v9;
 
   if (v10 > 0.0)
   {
     v11 = [v6 dateByAddingTimeInterval:-v10];
-    v12 = [a1 timeZone];
-    [v12 daylightSavingTimeOffsetForDate:v11];
+    timeZone2 = [self timeZone];
+    [timeZone2 daylightSavingTimeOffsetForDate:v11];
     v14 = v13;
 
     if (v10 > v14)
@@ -207,15 +207,15 @@ LABEL_8:
 
 - (uint64_t)hksp_dateRequiresSingularTimeString:()HKSPSleep
 {
-  result = [a1 component:32 fromDate:a3];
+  result = [self component:32 fromDate:a3];
   if (result != 1)
   {
     if (result == 13)
     {
-      v5 = [a1 locale];
-      v6 = [v5 hk_isIn24HourTime];
+      locale = [self locale];
+      hk_isIn24HourTime = [locale hk_isIn24HourTime];
 
-      return v6;
+      return hk_isIn24HourTime;
     }
 
     else
@@ -233,14 +233,14 @@ LABEL_8:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0xFFFFFFFFLL;
-  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "firstWeekday")}];
-  v3 = [a1 hk_weekendDays];
-  v4 = [v2 unsignedIntegerValue];
+  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "firstWeekday")}];
+  hk_weekendDays = [self hk_weekendDays];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v11 = __48__NSCalendar_HKSPSleep__hksp_firstNonWeekendDay__block_invoke;
   v12 = &unk_279C73AE0;
-  v5 = v3;
+  v5 = hk_weekendDays;
   v13 = v5;
   v14 = &v15;
   v19 = 0;
@@ -250,20 +250,20 @@ LABEL_8:
   {
     do
     {
-      v11(v10, v4, &v19);
+      v11(v10, unsignedIntegerValue, &v19);
       if (v19)
       {
         break;
       }
 
-      if (v4 == 7)
+      if (unsignedIntegerValue == 7)
       {
-        v4 = 1;
+        unsignedIntegerValue = 1;
       }
 
       else
       {
-        ++v4;
+        ++unsignedIntegerValue;
       }
 
       --v6;
@@ -281,12 +281,12 @@ LABEL_8:
 
 - (id)hksp_componentsByAddingTimeInterval:()HKSPSleep toComponents:
 {
-  v4 = [a1 dateFromComponents:?];
+  v4 = [self dateFromComponents:?];
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v5 setSecond:a2];
-  v6 = [a1 dateByAddingComponents:v5 toDate:v4 options:0];
+  v6 = [self dateByAddingComponents:v5 toDate:v4 options:0];
 
-  v7 = [a1 components:96 fromDate:v6];
+  v7 = [self components:96 fromDate:v6];
 
   return v7;
 }
@@ -297,9 +297,9 @@ LABEL_8:
   v7 = a4;
   v8 = a3;
   v9 = [v6 dateWithTimeIntervalSinceReferenceDate:0.0];
-  v10 = [a1 nextDateAfterDate:v9 matchingComponents:v8 options:512];
+  v10 = [self nextDateAfterDate:v9 matchingComponents:v8 options:512];
 
-  v11 = [a1 nextDateAfterDate:v10 matchingComponents:v7 options:512];
+  v11 = [self nextDateAfterDate:v10 matchingComponents:v7 options:512];
 
   [v11 timeIntervalSinceDate:v10];
   v13 = v12;

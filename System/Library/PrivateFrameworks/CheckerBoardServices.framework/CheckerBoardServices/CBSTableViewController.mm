@@ -1,18 +1,18 @@
 @interface CBSTableViewController
 - (CGRect)containerFooterViewFrame;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)headerView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_setupFooterView;
 - (void)_setupTableView;
 - (void)_setupView;
 - (void)_updateHeaderView;
-- (void)setAttributedDetailDescriptionText:(id)a3;
-- (void)setDetailDescriptionText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setAttributedDetailDescriptionText:(id)text;
+- (void)setDetailDescriptionText:(id)text;
+- (void)setTitleText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -44,105 +44,105 @@
 - (void)_setupTableView
 {
   v3 = objc_alloc(MEMORY[0x277D75B40]);
-  v4 = [(CBSTableViewController *)self view];
-  [v4 frame];
+  view = [(CBSTableViewController *)self view];
+  [view frame];
   v5 = [v3 initWithFrame:1 style:?];
   tableView = self->_tableView;
   self->_tableView = v5;
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(UITableView *)self->_tableView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UITableView *)self->_tableView setBackgroundColor:clearColor];
 
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setAutoresizingMask:18];
-  v8 = [(CBSTableViewController *)self view];
-  [v8 addSubview:self->_tableView];
+  view2 = [(CBSTableViewController *)self view];
+  [view2 addSubview:self->_tableView];
 }
 
 - (void)_updateHeaderView
 {
-  v3 = [(CBSTableViewController *)self headerView];
+  headerView = [(CBSTableViewController *)self headerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v16 = [(CBSTableViewController *)self titleText];
-    v5 = [(CBSTableViewController *)self detailDescriptionText];
-    v6 = [(CBSTableViewController *)self attributedDetailDescriptionText];
-    v7 = [(CBSTableViewController *)self iconName];
-    v8 = [(CBSTableViewController *)self iconTintColor];
-    v9 = [(CBSTableViewController *)self headerView];
-    if ([v16 length] || objc_msgSend(v5, "length") || objc_msgSend(v6, "length"))
+    titleText = [(CBSTableViewController *)self titleText];
+    detailDescriptionText = [(CBSTableViewController *)self detailDescriptionText];
+    attributedDetailDescriptionText = [(CBSTableViewController *)self attributedDetailDescriptionText];
+    iconName = [(CBSTableViewController *)self iconName];
+    iconTintColor = [(CBSTableViewController *)self iconTintColor];
+    headerView2 = [(CBSTableViewController *)self headerView];
+    if ([titleText length] || objc_msgSend(detailDescriptionText, "length") || objc_msgSend(attributedDetailDescriptionText, "length"))
     {
-      [v9 setTitleText:v16];
-      v10 = [v6 length];
-      v11 = [v9 detailTextLabel];
-      v12 = v11;
+      [headerView2 setTitleText:titleText];
+      v10 = [attributedDetailDescriptionText length];
+      detailTextLabel = [headerView2 detailTextLabel];
+      v12 = detailTextLabel;
       if (v10)
       {
-        [v11 setAttributedText:v6];
+        [detailTextLabel setAttributedText:attributedDetailDescriptionText];
       }
 
       else
       {
-        [v11 setText:v5];
+        [detailTextLabel setText:detailDescriptionText];
       }
     }
 
-    if (v7 && [v7 length])
+    if (iconName && [iconName length])
     {
-      v13 = [MEMORY[0x277D755B8] imageNamed:v7];
+      v13 = [MEMORY[0x277D755B8] imageNamed:iconName];
       v14 = v13;
-      if (v8)
+      if (iconTintColor)
       {
-        v15 = [v13 _flatImageWithColor:v8];
+        v15 = [v13 _flatImageWithColor:iconTintColor];
 
         v14 = v15;
       }
 
-      [v9 setIcon:v14];
+      [headerView2 setIcon:v14];
     }
   }
 }
 
 - (void)_setupFooterView
 {
-  v3 = [(CBSTableViewController *)self footerView];
+  footerView = [(CBSTableViewController *)self footerView];
 
-  if (v3)
+  if (footerView)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v7 = [v4 initWithFrame:{0.0, 0.0, 0.0, dbl_2433E2E20[(v6 & 0xFFFFFFFFFFFFFFFBLL) == 1]}];
+    v7 = [v4 initWithFrame:{0.0, 0.0, 0.0, dbl_2433E2E20[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1]}];
     [(CBSTableViewController *)self setContainerFooterView:v7];
 
-    v8 = [(CBSTableViewController *)self containerFooterView];
-    [v8 frame];
+    containerFooterView = [(CBSTableViewController *)self containerFooterView];
+    [containerFooterView frame];
     [(CBSTableViewController *)self setContainerFooterViewFrame:?];
 
-    v10 = [(CBSTableViewController *)self containerFooterView];
-    v9 = [(CBSTableViewController *)self footerView];
-    [v10 addSubview:v9];
+    containerFooterView2 = [(CBSTableViewController *)self containerFooterView];
+    footerView2 = [(CBSTableViewController *)self footerView];
+    [containerFooterView2 addSubview:footerView2];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return *MEMORY[0x277D76F30];
   }
 
-  v6 = a3;
-  v7 = [(CBSTableViewController *)self headerView];
-  [v6 frame];
+  viewCopy = view;
+  headerView = [(CBSTableViewController *)self headerView];
+  [viewCopy frame];
   v9 = v8;
 
-  [v7 systemLayoutSizeFittingSize:{v9, *(MEMORY[0x277D76C78] + 8)}];
+  [headerView systemLayoutSizeFittingSize:{v9, *(MEMORY[0x277D76C78] + 8)}];
   v11 = v10;
   [(CBSTableViewController *)self headerToFooterViewSpacing];
   v4 = v11 + v12;
@@ -150,55 +150,55 @@
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return *MEMORY[0x277D76F30];
   }
 
-  v5 = [(CBSTableViewController *)self containerFooterView];
-  [v5 frame];
+  containerFooterView = [(CBSTableViewController *)self containerFooterView];
+  [containerFooterView frame];
   v4 = v6;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(CBSTableViewController *)self headerView:a3];
+    v6 = [(CBSTableViewController *)self headerView:view];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(CBSTableViewController *)self containerFooterView:a3];
+    v6 = [(CBSTableViewController *)self containerFooterView:view];
   }
 
   return v6;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  if (self->_titleText != a3)
+  if (self->_titleText != text)
   {
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     if ([(CBSTableViewController *)self isViewLoaded])
     {
       [(CBSTableViewController *)self _updateHeaderView];
@@ -208,11 +208,11 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDetailDescriptionText:(id)a3
+- (void)setDetailDescriptionText:(id)text
 {
-  if (self->_detailDescriptionText != a3)
+  if (self->_detailDescriptionText != text)
   {
-    objc_storeStrong(&self->_detailDescriptionText, a3);
+    objc_storeStrong(&self->_detailDescriptionText, text);
     if ([(CBSTableViewController *)self isViewLoaded])
     {
       [(CBSTableViewController *)self _updateHeaderView];
@@ -222,11 +222,11 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAttributedDetailDescriptionText:(id)a3
+- (void)setAttributedDetailDescriptionText:(id)text
 {
-  if (self->_attributedDetailDescriptionText != a3)
+  if (self->_attributedDetailDescriptionText != text)
   {
-    objc_storeStrong(&self->_attributedDetailDescriptionText, a3);
+    objc_storeStrong(&self->_attributedDetailDescriptionText, text);
     if ([(CBSTableViewController *)self isViewLoaded])
     {
       [(CBSTableViewController *)self _updateHeaderView];
@@ -252,10 +252,10 @@
   return headerView;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   __assert_rtn("[CBSTableViewController tableView:cellForRowAtIndexPath:]", "CBSTableViewController.m", 246, "0");
 }
 

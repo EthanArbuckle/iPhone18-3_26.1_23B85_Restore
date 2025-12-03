@@ -4,12 +4,12 @@
 - (BOOL)isCurrentlyRotated;
 - (CarMapTrackingControllerDelegate)delegate;
 - (int64_t)userTrackingMode;
-- (void)_mapViewNotified:(id)a3;
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5;
+- (void)_mapViewNotified:(id)notified;
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
 - (void)dealloc;
-- (void)setForcedTrackingMode:(int64_t)a3;
-- (void)setMapView:(id)a3;
-- (void)setUseForcedTrackingMode:(BOOL)a3;
+- (void)setForcedTrackingMode:(int64_t)mode;
+- (void)setMapView:(id)view;
+- (void)setUseForcedTrackingMode:(BOOL)mode;
 @end
 
 @implementation CarMapTrackingController
@@ -72,12 +72,12 @@
   }
 }
 
-- (void)setUseForcedTrackingMode:(BOOL)a3
+- (void)setUseForcedTrackingMode:(BOOL)mode
 {
-  if (self->_useForcedTrackingMode != a3)
+  if (self->_useForcedTrackingMode != mode)
   {
-    self->_useForcedTrackingMode = a3;
-    if (a3)
+    self->_useForcedTrackingMode = mode;
+    if (mode)
     {
       v4 = +[NSNotificationCenter defaultCenter];
       [v4 postNotificationName:MKUserTrackingViewModeDidChangeNotification object:self];
@@ -88,11 +88,11 @@
   }
 }
 
-- (void)setForcedTrackingMode:(int64_t)a3
+- (void)setForcedTrackingMode:(int64_t)mode
 {
-  if (self->_forcedTrackingMode != a3)
+  if (self->_forcedTrackingMode != mode)
   {
-    self->_forcedTrackingMode = a3;
+    self->_forcedTrackingMode = mode;
     if (self->_useForcedTrackingMode)
     {
       v4 = +[NSNotificationCenter defaultCenter];
@@ -104,36 +104,36 @@
   }
 }
 
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
   if (self->_useForcedTrackingMode)
   {
-    [(CarMapTrackingController *)self setForcedTrackingMode:a3, a4, a5];
+    [(CarMapTrackingController *)self setForcedTrackingMode:mode, animated, button];
   }
 
   else
   {
-    [(MKMapView *)self->_mapView _setUserTrackingMode:a3 animated:a4 fromTrackingButton:a5];
+    [(MKMapView *)self->_mapView _setUserTrackingMode:mode animated:animated fromTrackingButton:button];
   }
 
   v6 = +[CarDisplayController sharedInstance];
-  v5 = [v6 chromeViewController];
-  [v5 setNeedsUpdateMapInsets];
+  chromeViewController = [v6 chromeViewController];
+  [chromeViewController setNeedsUpdateMapInsets];
 }
 
-- (void)_mapViewNotified:(id)a3
+- (void)_mapViewNotified:(id)notified
 {
-  v4 = a3;
+  notifiedCopy = notified;
   v7 = +[NSNotificationCenter defaultCenter];
-  v5 = [v4 name];
-  v6 = [v4 userInfo];
+  name = [notifiedCopy name];
+  userInfo = [notifiedCopy userInfo];
 
-  [v7 postNotificationName:v5 object:self userInfo:v6];
+  [v7 postNotificationName:name object:self userInfo:userInfo];
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   if (self->_mapView)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -143,8 +143,8 @@
     [v6 removeObserver:self name:MKUserTrackingViewDidUpdateUserLocationNotification object:self->_mapView];
   }
 
-  objc_storeStrong(&self->_mapView, a3);
-  if (v9)
+  objc_storeStrong(&self->_mapView, view);
+  if (viewCopy)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:self selector:"_mapViewNotified:" name:MKUserTrackingViewModeDidChangeNotification object:self->_mapView];

@@ -1,11 +1,11 @@
 @interface AVRoutePickerView
 + (id)_airPlayStatusQueue;
-- (AVRoutePickerView)initWithCoder:(id)a3;
-- (AVRoutePickerView)initWithFrame:(CGRect)a3;
+- (AVRoutePickerView)initWithCoder:(id)coder;
+- (AVRoutePickerView)initWithFrame:(CGRect)frame;
 - (BOOL)_isAirPlayOrCustomRouteActive;
-- (CGRect)_normalizedRect:(CGRect)a3 fromView:(id)a4;
+- (CGRect)_normalizedRect:(CGRect)rect fromView:(id)view;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
 - (double)baselineOffsetFromBottom;
 - (id)delegate;
@@ -13,18 +13,18 @@
 - (void)_addCustomRoutingItemsToRoutePickingControls;
 - (void)_createOrUpdateRoutePickerButton;
 - (void)_registerNotifications;
-- (void)_routePickerButtonTapped:(id)a3;
-- (void)_setRoutePickerButtonAlpha:(double)a3 animated:(BOOL)a4;
+- (void)_routePickerButtonTapped:(id)tapped;
+- (void)_setRoutePickerButtonAlpha:(double)alpha animated:(BOOL)animated;
 - (void)_setupOutputContext;
 - (void)_updateAirPlayActive;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)setActiveTintColor:(UIColor *)activeTintColor;
-- (void)setAirPlayActive:(BOOL)a3;
-- (void)setCustomButton:(id)a3;
+- (void)setAirPlayActive:(BOOL)active;
+- (void)setCustomButton:(id)button;
 - (void)setCustomRoutingController:(AVCustomRoutingController *)customRoutingController;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setPrioritizesVideoDevices:(BOOL)prioritizesVideoDevices;
 - (void)tintColorDidChange;
 - (void)updateButtonAppearance;
@@ -46,17 +46,17 @@
 
   if (WeakRetained)
   {
-    v4 = self;
-    v5 = [(AVRoutePickerView *)self customRoutingController];
-    v6 = [v5 customActionItems];
+    selfCopy = self;
+    customRoutingController = [(AVRoutePickerView *)self customRoutingController];
+    customActionItems = [customRoutingController customActionItems];
 
-    if ([v6 count])
+    if ([customActionItems count])
     {
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      obj = v6;
+      obj = customActionItems;
       v7 = [obj countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v7)
       {
@@ -74,25 +74,25 @@
             v11 = _AVLog();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v10 type];
-              v13 = [v10 overrideTitle];
-              v14 = [v10 identifier];
+              type = [v10 type];
+              overrideTitle = [v10 overrideTitle];
+              identifier = [v10 identifier];
               *buf = 136315906;
               v30 = "[AVRoutePickerView _addCustomRoutingItemsToRoutePickingControls]";
               v31 = 2112;
-              v32 = v12;
+              v32 = type;
               v33 = 2112;
-              v34 = v13;
+              v34 = overrideTitle;
               v35 = 2112;
-              v36 = v14;
+              v36 = identifier;
               _os_log_impl(&dword_18B49C000, v11, OS_LOG_TYPE_DEFAULT, "%s Adding custom row with type: %@, titleOverride: %@, identifier: %@", buf, 0x2Au);
             }
 
-            v15 = objc_loadWeakRetained(&v4->_routePickingControls);
-            v16 = [v10 type];
-            v17 = [v10 overrideTitle];
-            v18 = [v10 identifier];
-            [v15 addCustomRowWithType:v16 titleOverride:v17 identifier:v18];
+            v15 = objc_loadWeakRetained(&selfCopy->_routePickingControls);
+            type2 = [v10 type];
+            overrideTitle2 = [v10 overrideTitle];
+            identifier2 = [v10 identifier];
+            [v15 addCustomRowWithType:type2 titleOverride:overrideTitle2 identifier:identifier2];
           }
 
           v7 = [obj countByEnumeratingWithState:&v25 objects:v37 count:16];
@@ -101,15 +101,15 @@
         while (v7);
       }
 
-      objc_initWeak(buf, v4);
-      v19 = objc_loadWeakRetained(&v4->_routePickingControls);
+      objc_initWeak(buf, selfCopy);
+      v19 = objc_loadWeakRetained(&selfCopy->_routePickingControls);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __65__AVRoutePickerView__addCustomRoutingItemsToRoutePickingControls__block_invoke;
       v22[3] = &unk_1E7208BB0;
       objc_copyWeak(&v24, buf);
-      v6 = obj;
-      v23 = v6;
+      customActionItems = obj;
+      v23 = customActionItems;
       [v19 setCustomRowDidTapHandler:v22];
 
       objc_destroyWeak(&v24);
@@ -130,12 +130,12 @@
 
   else
   {
-    v6 = _AVLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    customActionItems = _AVLog();
+    if (os_log_type_enabled(customActionItems, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v30 = "[AVRoutePickerView _addCustomRoutingItemsToRoutePickingControls]";
-      _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s Can't add custom rows to MPMediaControls because MPMediaControls instance doesn't exist.", buf, 0xCu);
+      _os_log_impl(&dword_18B49C000, customActionItems, OS_LOG_TYPE_DEFAULT, "%s Can't add custom rows to MPMediaControls because MPMediaControls instance doesn't exist.", buf, 0xCu);
     }
   }
 }
@@ -185,20 +185,20 @@ void __65__AVRoutePickerView__addCustomRoutingItemsToRoutePickingControls__block
   }
 }
 
-- (CGRect)_normalizedRect:(CGRect)a3 fromView:(id)a4
+- (CGRect)_normalizedRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [v8 window];
-  [v9 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  window = [viewCopy window];
+  [window bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v9 convertRect:v8 fromView:{x, y, width, height}];
+  [window convertRect:viewCopy fromView:{x, y, width, height}];
   v32 = v19;
   v33 = v18;
   v30 = v21;
@@ -257,8 +257,8 @@ void __65__AVRoutePickerView__addCustomRoutingItemsToRoutePickingControls__block
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(AVOutputContext *)self->_outputContext outputDevices];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  outputDevices = [(AVOutputContext *)self->_outputContext outputDevices];
+  v5 = [outputDevices countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -269,7 +269,7 @@ void __65__AVRoutePickerView__addCustomRoutingItemsToRoutePickingControls__block
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputDevices);
         }
 
         if ([*(*(&v25 + 1) + 8 * i) deviceType] < 2)
@@ -279,7 +279,7 @@ void __65__AVRoutePickerView__addCustomRoutingItemsToRoutePickingControls__block
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v6 = [outputDevices countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v6)
       {
         continue;
@@ -296,10 +296,10 @@ LABEL_15:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(AVRoutePickerView *)self customRoutingController];
-  v11 = [v10 authorizedRoutes];
+  customRoutingController = [(AVRoutePickerView *)self customRoutingController];
+  authorizedRoutes = [customRoutingController authorizedRoutes];
 
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v12 = [authorizedRoutes countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -310,12 +310,12 @@ LABEL_15:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(authorizedRoutes);
         }
 
         v16 = *(*(&v21 + 1) + 8 * j);
-        v17 = [(AVRoutePickerView *)self customRoutingController];
-        LOBYTE(v16) = [v17 isRouteActive:v16];
+        customRoutingController2 = [(AVRoutePickerView *)self customRoutingController];
+        LOBYTE(v16) = [customRoutingController2 isRouteActive:v16];
 
         if (v16)
         {
@@ -324,7 +324,7 @@ LABEL_15:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v13 = [authorizedRoutes countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v13)
       {
         continue;
@@ -342,10 +342,10 @@ LABEL_25:
 
 - (void)_setupOutputContext
 {
-  v3 = [MEMORY[0x1E6958460] sharedInstance];
-  v6 = [v3 routingContextUID];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  routingContextUID = [mEMORY[0x1E6958460] routingContextUID];
 
-  v4 = [MEMORY[0x1E69587F0] outputContextForID:v6];
+  v4 = [MEMORY[0x1E69587F0] outputContextForID:routingContextUID];
   outputContext = self->_outputContext;
   self->_outputContext = v4;
 }
@@ -423,11 +423,11 @@ void __43__AVRoutePickerView__registerNotifications__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setRoutePickerButtonAlpha:(double)a3 animated:(BOOL)a4
+- (void)_setRoutePickerButtonAlpha:(double)alpha animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(UIButton *)self->_routePickerButton alpha];
-  if (v7 != a3)
+  if (v7 != alpha)
   {
     if ([(UIViewPropertyAnimator *)self->_buttonHighlightAnimator isRunning]&& [(UIViewPropertyAnimator *)self->_buttonHighlightAnimator isInterruptible])
     {
@@ -437,7 +437,7 @@ void __43__AVRoutePickerView__registerNotifications__block_invoke_2(uint64_t a1)
 
     if (([(UIViewPropertyAnimator *)self->_buttonHighlightAnimator isRunning]& 1) == 0)
     {
-      if (v4)
+      if (animatedCopy)
       {
         objc_initWeak(&location, self);
         v8 = objc_alloc(MEMORY[0x1E69DD278]);
@@ -446,7 +446,7 @@ void __43__AVRoutePickerView__registerNotifications__block_invoke_2(uint64_t a1)
         v12[2] = __57__AVRoutePickerView__setRoutePickerButtonAlpha_animated___block_invoke;
         v12[3] = &unk_1E7209A38;
         objc_copyWeak(v13, &location);
-        v13[1] = *&a3;
+        v13[1] = *&alpha;
         v9 = [v8 initWithDuration:3 curve:v12 animations:0.25];
         buttonHighlightAnimator = self->_buttonHighlightAnimator;
         self->_buttonHighlightAnimator = v9;
@@ -460,7 +460,7 @@ void __43__AVRoutePickerView__registerNotifications__block_invoke_2(uint64_t a1)
       {
         routePickerButton = self->_routePickerButton;
 
-        [(UIButton *)routePickerButton setAlpha:a3];
+        [(UIButton *)routePickerButton setAlpha:alpha];
       }
     }
   }
@@ -477,16 +477,16 @@ void __57__AVRoutePickerView__setRoutePickerButtonAlpha_animated___block_invoke(
   }
 }
 
-- (void)_routePickerButtonTapped:(id)a3
+- (void)_routePickerButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(AVRoutePickerView *)self delegate];
+  tappedCopy = tapped;
+  delegate = [(AVRoutePickerView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVRoutePickerView *)self delegate];
-    [v7 routePickerViewWillBeginPresentingRoutes:self];
+    delegate2 = [(AVRoutePickerView *)self delegate];
+    [delegate2 routePickerViewWillBeginPresentingRoutes:self];
   }
 
   objc_initWeak(&location, self);
@@ -500,14 +500,14 @@ void __57__AVRoutePickerView__setRoutePickerButtonAlpha_animated___block_invoke(
     v30 = __Block_byref_object_copy__21241;
     v31 = __Block_byref_object_dispose__21242;
     v32 = 0;
-    v9 = [(AVRoutePickerView *)self routingConfiguration];
-    v10 = v9;
-    if (v9 && ![v9 isDefault])
+    routingConfiguration = [(AVRoutePickerView *)self routingConfiguration];
+    v10 = routingConfiguration;
+    if (routingConfiguration && ![routingConfiguration isDefault])
     {
       v13 = objc_alloc(getMPMediaControlsClass());
-      v14 = [v10 sharingPolicy];
-      v12 = [v10 outputContextID];
-      v15 = [v13 initWithRouteSharingPolicy:v14 routingContextUID:v12];
+      sharingPolicy = [v10 sharingPolicy];
+      outputContextID = [v10 outputContextID];
+      v15 = [v13 initWithRouteSharingPolicy:sharingPolicy routingContextUID:outputContextID];
       v16 = v28[5];
       v28[5] = v15;
     }
@@ -515,26 +515,26 @@ void __57__AVRoutePickerView__setRoutePickerButtonAlpha_animated___block_invoke(
     else
     {
       v11 = objc_alloc_init(getMPMediaControlsClass());
-      v12 = v28[5];
+      outputContextID = v28[5];
       v28[5] = v11;
     }
 
     objc_storeWeak(&self->_routePickingControls, v28[5]);
     [(AVRoutePickerView *)self _addCustomRoutingItemsToRoutePickingControls];
-    v17 = [v28[5] configuration];
-    [v17 setSortByIsVideoRoute:{-[AVRoutePickerView prioritizesVideoDevices](self, "prioritizesVideoDevices")}];
+    configuration = [v28[5] configuration];
+    [configuration setSortByIsVideoRoute:{-[AVRoutePickerView prioritizesVideoDevices](self, "prioritizesVideoDevices")}];
 
-    v18 = [v28[5] configuration];
+    configuration2 = [v28[5] configuration];
     NSSelectorFromString(&cfstr_Usegenericdevi.isa);
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [v28[5] configuration];
+      configuration3 = [v28[5] configuration];
       v21 = MEMORY[0x1E696AD98];
-      v22 = [(AVRoutePickerView *)self customRoutingController];
-      v23 = [v21 numberWithBool:v22 != 0];
-      [v20 setValue:v23 forKey:@"useGenericDevicesIconInHeader"];
+      customRoutingController = [(AVRoutePickerView *)self customRoutingController];
+      v23 = [v21 numberWithBool:customRoutingController != 0];
+      [configuration3 setValue:v23 forKey:@"useGenericDevicesIconInHeader"];
     }
 
     [v28[5] startPrewarming];
@@ -577,30 +577,30 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
 
 - (id)topViewControllerForPresentingAlert
 {
-  v2 = [(AVRoutePickerView *)self window];
-  v3 = [v2 rootViewController];
+  window = [(AVRoutePickerView *)self window];
+  rootViewController = [window rootViewController];
 
-  if (v3)
+  if (rootViewController)
   {
-    v4 = [v3 presentedViewController];
-    if (v4)
+    presentedViewController = [rootViewController presentedViewController];
+    if (presentedViewController)
     {
-      v5 = v4;
+      presentedViewController2 = presentedViewController;
       do
       {
-        v6 = v5;
+        v6 = presentedViewController2;
 
-        v5 = [v6 presentedViewController];
+        presentedViewController2 = [v6 presentedViewController];
 
-        v3 = v6;
+        rootViewController = v6;
       }
 
-      while (v5);
+      while (presentedViewController2);
     }
 
     else
     {
-      v6 = v3;
+      v6 = rootViewController;
     }
   }
 
@@ -616,9 +616,9 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
 {
   [(UIButton *)self->_routePickerButton removeFromSuperview];
   self->_oldSize = *MEMORY[0x1E695F060];
-  v3 = [(AVRoutePickerView *)self customButton];
+  customButton = [(AVRoutePickerView *)self customButton];
   routePickerButton = self->_routePickerButton;
-  self->_routePickerButton = v3;
+  self->_routePickerButton = customButton;
 
   v5 = self->_routePickerButton;
   if (!v5)
@@ -635,18 +635,18 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     [(UIButton *)self->_routePickerButton setContentEdgeInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     [(UIButton *)self->_routePickerButton setContentHorizontalAlignment:3];
     [(UIButton *)self->_routePickerButton setContentVerticalAlignment:3];
-    v10 = [(AVRoutePickerView *)self customRoutingController];
+    customRoutingController = [(AVRoutePickerView *)self customRoutingController];
 
-    if (v10)
+    if (customRoutingController)
     {
       v11 = @"AVRoutePickerViewCustomDevicesGlyph";
     }
 
     else
     {
-      v12 = [(AVRoutePickerView *)self prioritizesVideoDevices];
+      prioritizesVideoDevices = [(AVRoutePickerView *)self prioritizesVideoDevices];
       v11 = @"AVRoutePickerViewCircularAirPlayGlyph";
-      if (v12)
+      if (prioritizesVideoDevices)
       {
         v11 = @"AVRoutePickerViewSquareAirPlayGlyph";
       }
@@ -658,17 +658,17 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     self->_routePickerButtonMicaPackage = v14;
 
     [(AVMicaPackage *)self->_routePickerButtonMicaPackage removeCompositingFiltersWithName:@"plusL"];
-    v16 = [(UIButton *)self->_routePickerButton layer];
-    v17 = [(AVMicaPackage *)self->_routePickerButtonMicaPackage rootLayer];
-    [v16 addSublayer:v17];
+    layer = [(UIButton *)self->_routePickerButton layer];
+    rootLayer = [(AVMicaPackage *)self->_routePickerButtonMicaPackage rootLayer];
+    [layer addSublayer:rootLayer];
 
     v5 = self->_routePickerButton;
   }
 
   [(UIButton *)v5 addTarget:self action:sel__routePickerButtonTapped_ forControlEvents:0x2000];
-  v18 = [(AVRoutePickerView *)self customButton];
+  customButton2 = [(AVRoutePickerView *)self customButton];
 
-  if (!v18)
+  if (!customButton2)
   {
     [(UIButton *)self->_routePickerButton addTarget:self action:sel__routePickerButtonTouchDown_ forControlEvents:1];
     [(UIButton *)self->_routePickerButton addTarget:self action:sel__routePickerButtonTouchDragEnter_ forControlEvents:16];
@@ -678,28 +678,28 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   [(UIButton *)self->_routePickerButton setPointerInteractionEnabled:1];
   [(UIButton *)self->_routePickerButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(AVRoutePickerView *)self addSubview:self->_routePickerButton];
-  v31 = [MEMORY[0x1E695DF70] array];
-  v19 = [(UIButton *)self->_routePickerButton topAnchor];
-  v20 = [(AVRoutePickerView *)self topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
-  [v31 addObject:v21];
+  array = [MEMORY[0x1E695DF70] array];
+  topAnchor = [(UIButton *)self->_routePickerButton topAnchor];
+  topAnchor2 = [(AVRoutePickerView *)self topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v21];
 
-  v22 = [(UIButton *)self->_routePickerButton bottomAnchor];
-  v23 = [(AVRoutePickerView *)self bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
-  [v31 addObject:v24];
+  bottomAnchor = [(UIButton *)self->_routePickerButton bottomAnchor];
+  bottomAnchor2 = [(AVRoutePickerView *)self bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v24];
 
-  v25 = [(UIButton *)self->_routePickerButton leadingAnchor];
-  v26 = [(AVRoutePickerView *)self leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
-  [v31 addObject:v27];
+  leadingAnchor = [(UIButton *)self->_routePickerButton leadingAnchor];
+  leadingAnchor2 = [(AVRoutePickerView *)self leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v27];
 
-  v28 = [(UIButton *)self->_routePickerButton trailingAnchor];
-  v29 = [(AVRoutePickerView *)self trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
-  [v31 addObject:v30];
+  trailingAnchor = [(UIButton *)self->_routePickerButton trailingAnchor];
+  trailingAnchor2 = [(AVRoutePickerView *)self trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v30];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v31];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   [(AVRoutePickerView *)self updateButtonAppearance];
 }
 
@@ -717,8 +717,8 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     v4 = prioritizesVideoDevices;
     self->_prioritizesVideoDevices = prioritizesVideoDevices;
     WeakRetained = objc_loadWeakRetained(&self->_routePickingControls);
-    v7 = [WeakRetained configuration];
-    [v7 setSortByIsVideoRoute:v4];
+    configuration = [WeakRetained configuration];
+    [configuration setSortByIsVideoRoute:v4];
 
     [(AVRoutePickerView *)self _createOrUpdateRoutePickerButton];
   }
@@ -727,15 +727,15 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
 - (void)updateButtonAppearance
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(AVRoutePickerView *)self customButton];
+  customButton = [(AVRoutePickerView *)self customButton];
 
-  if (!v3)
+  if (!customButton)
   {
     routePickerButton = self->_routePickerButton;
     if ([(AVRoutePickerView *)self isAirPlayActive])
     {
-      v5 = [(AVRoutePickerView *)self activeTintColor];
-      [(UIButton *)routePickerButton setTintColor:v5];
+      activeTintColor = [(AVRoutePickerView *)self activeTintColor];
+      [(UIButton *)routePickerButton setTintColor:activeTintColor];
     }
 
     else
@@ -744,31 +744,31 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     }
   }
 
-  v6 = [(AVRoutePickerView *)self isAirPlayActive];
+  isAirPlayActive = [(AVRoutePickerView *)self isAirPlayActive];
   v7 = @"off";
-  if (v6)
+  if (isAirPlayActive)
   {
     v7 = @"on";
   }
 
   v8 = v7;
-  v9 = [(AVRoutePickerView *)self tintColor];
+  tintColor = [(AVRoutePickerView *)self tintColor];
   if ([(AVRoutePickerView *)self isAirPlayActive])
   {
-    v10 = [(AVRoutePickerView *)self activeTintColor];
+    activeTintColor2 = [(AVRoutePickerView *)self activeTintColor];
   }
 
   else
   {
-    v10 = v9;
+    activeTintColor2 = tintColor;
   }
 
-  v11 = v10;
+  v11 = activeTintColor2;
   v24 = 0.0;
   v25 = 0.0;
   v22 = 0;
   v23 = 0.0;
-  [v10 getRed:&v25 green:&v24 blue:&v23 alpha:&v22];
+  [activeTintColor2 getRed:&v25 green:&v24 blue:&v23 alpha:&v22];
   v12 = _AVLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -776,13 +776,13 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     v14 = v24 * 255.0;
     v15 = v23 * 255.0;
     v16 = v22;
-    v17 = [(AVRoutePickerView *)self isAirPlayActive];
+    isAirPlayActive2 = [(AVRoutePickerView *)self isAirPlayActive];
     *buf = 136316418;
     v27 = "[AVRoutePickerView updateButtonAppearance]";
     v18 = @"Inactive";
     v28 = 2048;
     v29 = v13;
-    if (v17)
+    if (isAirPlayActive2)
     {
       v18 = @"Active";
     }
@@ -799,38 +799,38 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   }
 
   routePickerButtonMicaPackage = self->_routePickerButtonMicaPackage;
-  v20 = [(AVRoutePickerView *)self isAirPlayActive];
-  v21 = v9;
-  if (v20)
+  isAirPlayActive3 = [(AVRoutePickerView *)self isAirPlayActive];
+  activeTintColor3 = tintColor;
+  if (isAirPlayActive3)
   {
-    v21 = [(AVRoutePickerView *)self activeTintColor];
+    activeTintColor3 = [(AVRoutePickerView *)self activeTintColor];
   }
 
-  -[AVMicaPackage setState:color:](routePickerButtonMicaPackage, "setState:color:", v8, [v21 CGColor]);
+  -[AVMicaPackage setState:color:](routePickerButtonMicaPackage, "setState:color:", v8, [activeTintColor3 CGColor]);
 
-  if (v20)
+  if (isAirPlayActive3)
   {
   }
 }
 
-- (void)setCustomButton:(id)a3
+- (void)setCustomButton:(id)button
 {
-  v5 = a3;
-  if (self->_customButton != v5)
+  buttonCopy = button;
+  if (self->_customButton != buttonCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customButton, a3);
+    v6 = buttonCopy;
+    objc_storeStrong(&self->_customButton, button);
     [(AVRoutePickerView *)self _createOrUpdateRoutePickerButton];
-    v5 = v6;
+    buttonCopy = v6;
   }
 }
 
-- (void)setAirPlayActive:(BOOL)a3
+- (void)setAirPlayActive:(BOOL)active
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_airPlayActive != a3)
+  if (self->_airPlayActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -839,7 +839,7 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
       v8 = "[AVRoutePickerView setAirPlayActive:]";
       v10 = "airPlayActive";
       v9 = 2080;
-      if (v3)
+      if (activeCopy)
       {
         v6 = "YES";
       }
@@ -849,23 +849,23 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
     }
 
-    self->_airPlayActive = v3;
+    self->_airPlayActive = activeCopy;
     [(AVRoutePickerView *)self updateButtonAppearance];
   }
 }
 
 - (void)setActiveTintColor:(UIColor *)activeTintColor
 {
-  v4 = activeTintColor;
-  if (!v4)
+  _defaultActiveTintColor = activeTintColor;
+  if (!_defaultActiveTintColor)
   {
-    v4 = [(AVRoutePickerView *)self _defaultActiveTintColor];
+    _defaultActiveTintColor = [(AVRoutePickerView *)self _defaultActiveTintColor];
   }
 
-  obj = v4;
-  if (self->_activeTintColor != v4)
+  obj = _defaultActiveTintColor;
+  if (self->_activeTintColor != _defaultActiveTintColor)
   {
-    objc_storeStrong(&self->_activeTintColor, v4);
+    objc_storeStrong(&self->_activeTintColor, _defaultActiveTintColor);
   }
 
   [(AVRoutePickerView *)self updateButtonAppearance];
@@ -918,10 +918,10 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (dyld_program_sdk_at_least())
   {
     routePickerButton = self->_routePickerButton;
@@ -997,19 +997,19 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
     [(AVMicaPackage *)self->_routePickerButtonMicaPackage setTargetSize:v21, v22];
   }
 
-  v23 = [(AVRoutePickerView *)self customButton];
+  customButton = [(AVRoutePickerView *)self customButton];
 
-  if (!v23)
+  if (!customButton)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v24 = [(AVMicaPackage *)self->_routePickerButtonMicaPackage rootLayer];
-    v25 = [(UIButton *)self->_routePickerButton layer];
-    [v25 bounds];
+    rootLayer = [(AVMicaPackage *)self->_routePickerButtonMicaPackage rootLayer];
+    layer = [(UIButton *)self->_routePickerButton layer];
+    [layer bounds];
     MidX = CGRectGetMidX(v31);
-    v27 = [(UIButton *)self->_routePickerButton layer];
-    [v27 bounds];
-    [v24 setPosition:{MidX, CGRectGetMidY(v32)}];
+    layer2 = [(UIButton *)self->_routePickerButton layer];
+    [layer2 bounds];
+    [rootLayer setPosition:{MidX, CGRectGetMidY(v32)}];
 
     [MEMORY[0x1E6979518] commit];
   }
@@ -1017,11 +1017,11 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   [(AVRoutePickerView *)self updateButtonAppearance];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = AVRoutePickerView;
-  [(AVRoutePickerView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AVRoutePickerView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)dealloc
@@ -1032,11 +1032,11 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   [(AVRoutePickerView *)&v3 dealloc];
 }
 
-- (AVRoutePickerView)initWithCoder:(id)a3
+- (AVRoutePickerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AVRoutePickerView;
-  v3 = [(AVRoutePickerView *)&v6 initWithCoder:a3];
+  v3 = [(AVRoutePickerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -1046,11 +1046,11 @@ void __46__AVRoutePickerView__routePickerButtonTapped___block_invoke(uint64_t a1
   return v4;
 }
 
-- (AVRoutePickerView)initWithFrame:(CGRect)a3
+- (AVRoutePickerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVRoutePickerView;
-  v3 = [(AVRoutePickerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVRoutePickerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

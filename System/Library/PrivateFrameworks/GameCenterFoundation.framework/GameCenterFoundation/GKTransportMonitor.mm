@@ -1,6 +1,6 @@
 @interface GKTransportMonitor
 - (GKTransportMonitorDelegate)clientDelegate;
-- (void)setClientDelegate:(id)a3;
+- (void)setClientDelegate:(id)delegate;
 - (void)stopMonitoringAll;
 @end
 
@@ -13,16 +13,16 @@
   return v2;
 }
 
-- (void)setClientDelegate:(id)a3
+- (void)setClientDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   TransportMonitor.clientDelegate.setter();
 }
 
 - (void)stopMonitoringAll
 {
-  v2 = self;
+  selfCopy = self;
   TransportMonitor.stopMonitoringAll()();
 }
 

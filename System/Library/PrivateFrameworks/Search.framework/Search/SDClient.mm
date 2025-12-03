@@ -1,25 +1,25 @@
 @interface SDClient
-+ (id)clientForConnection:(id)a3;
++ (id)clientForConnection:(id)connection;
 + (void)initialize;
-+ (void)registerMessageHandlersWithServer:(id)a3;
-- (void)_beginCrashHandlingForStore:(id)a3 andQuery:(id)a4;
++ (void)registerMessageHandlersWithServer:(id)server;
+- (void)_beginCrashHandlingForStore:(id)store andQuery:(id)query;
 - (void)_endCrashHandling;
-- (void)activateForConnection:(id)a3 message:(id)a4;
-- (void)addAndStartQuery:(id)a3;
-- (void)cancelQueryWithExternalID:(unsigned int)a3;
-- (void)clearInputForConnection:(id)a3;
+- (void)activateForConnection:(id)connection message:(id)message;
+- (void)addAndStartQuery:(id)query;
+- (void)cancelQueryWithExternalID:(unsigned int)d;
+- (void)clearInputForConnection:(id)connection;
 - (void)deactivate;
 - (void)dealloc;
 - (void)death;
-- (void)removeActiveQuery:(id)a3;
-- (void)setActivation:(id)a3;
+- (void)removeActiveQuery:(id)query;
+- (void)setActivation:(id)activation;
 @end
 
 @implementation SDClient
 
-- (void)setActivation:(id)a3
+- (void)setActivation:(id)activation
 {
-  v4 = a3;
+  activationCopy = activation;
   obj = self;
   objc_sync_enter(obj);
   currentActivation = obj->_currentActivation;
@@ -29,33 +29,33 @@
   }
 
   v6 = obj->_currentActivation;
-  obj->_currentActivation = v4;
+  obj->_currentActivation = activationCopy;
 
   objc_sync_exit(obj);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.searchd"];
     byte_1000A81F0 = [v2 BOOLForKey:@"enableDebug"];
   }
 }
 
-- (void)_beginCrashHandlingForStore:(id)a3 andQuery:(id)a4
+- (void)_beginCrashHandlingForStore:(id)store andQuery:(id)query
 {
-  v5 = a4;
-  v6 = a3;
+  queryCopy = query;
+  storeCopy = store;
   qword_1000A81F8 = signal(10, sub_1000055BC);
   qword_1000A8200 = signal(6, sub_1000055BC);
   qword_1000A8208 = signal(11, sub_1000055BC);
   v7 = objc_opt_class();
 
-  v8 = [v5 queryContext];
+  queryContext = [queryCopy queryContext];
 
-  v9 = [v8 searchString];
-  v11 = [NSString stringWithFormat:@"error: crash using datastore %@ with search string '%@'\n", v7, v9];
+  searchString = [queryContext searchString];
+  v11 = [NSString stringWithFormat:@"error: crash using datastore %@ with search string '%@'\n", v7, searchString];
 
   v10 = v11;
   asprintf(&qword_1000A8210, "%s", [v11 UTF8String]);
@@ -70,21 +70,21 @@
   qword_1000A8210 = 0;
 }
 
-- (void)removeActiveQuery:(id)a3
+- (void)removeActiveQuery:(id)query
 {
-  v7 = a3;
+  queryCopy = query;
   v4 = self->_queriesByExternId;
   objc_sync_enter(v4);
   queriesByExternId = self->_queriesByExternId;
-  v6 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v7 externalID]);
+  v6 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [queryCopy externalID]);
   [(NSMutableDictionary *)queriesByExternId removeObjectForKey:v6];
 
   objc_sync_exit(v4);
 }
 
-- (void)addAndStartQuery:(id)a3
+- (void)addAndStartQuery:(id)query
 {
-  v117 = a3;
+  queryCopy = query;
   v4 = si_tracing_current_span();
   v5 = *(v4 + 16);
   v144 = *v4;
@@ -108,19 +108,19 @@
     +[SDSearchQuery prepareCacheForSearchContinuation];
   }
 
-  [v117 start];
-  v116 = [v117 queryContext];
-  v10 = [v116 searchEntities];
-  if ([v10 count])
+  [queryCopy start];
+  queryContext = [queryCopy queryContext];
+  searchEntities = [queryContext searchEntities];
+  if ([searchEntities count])
   {
-    v11 = [v116 searchEntities];
-    v12 = [v11 lastObject];
-    v114 = [v12 currentSearchString];
+    searchEntities2 = [queryContext searchEntities];
+    lastObject = [searchEntities2 lastObject];
+    currentSearchString = [lastObject currentSearchString];
   }
 
   else
   {
-    v114 = [v116 searchString];
+    currentSearchString = [queryContext searchString];
   }
 
   v13 = SPLogForSPLogCategoryDefault();
@@ -137,11 +137,11 @@
 
   if (os_log_type_enabled(v13, v15))
   {
-    v16 = [v116 searchDomains];
+    searchDomains = [queryContext searchDomains];
     *buf = 138412546;
-    v152 = v114;
+    v152 = currentSearchString;
     v153 = 2112;
-    v154 = v16;
+    v154 = searchDomains;
     _os_log_impl(&_mh_execute_header, v14, v15, "#query Starting query for %@ on domains %@", buf, 0x16u);
   }
 
@@ -166,33 +166,33 @@
 
   if (os_log_type_enabled(v19, v21))
   {
-    v22 = [v116 searchDomains];
+    searchDomains2 = [queryContext searchDomains];
     *buf = 138412546;
-    v152 = v114;
+    v152 = currentSearchString;
     v153 = 2112;
-    v154 = v22;
+    v154 = searchDomains2;
     _os_log_impl(&_mh_execute_header, v20, v21, "#query Starting query '%@' on domains:%@", buf, 0x16u);
   }
 
   v23 = self->_queriesByExternId;
   objc_sync_enter(v23);
   v24 = self->_queriesByExternId;
-  v25 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v117 externalID]);
-  [(NSMutableDictionary *)v24 setObject:v117 forKey:v25];
+  v25 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [queryCopy externalID]);
+  [(NSMutableDictionary *)v24 setObject:queryCopy forKey:v25];
 
   objc_sync_exit(v23);
-  v26 = [v117 connection];
-  v112 = [v26 bundleID];
+  connection = [queryCopy connection];
+  bundleID = [connection bundleID];
 
-  v27 = [v112 isEqual:SPSpotlightAppBundleId];
+  v27 = [bundleID isEqual:SPSpotlightAppBundleId];
   v28 = &OBJC_IVAR___SPParsecDatastore__sessionStartTime;
   if (v27)
   {
-    if ([v114 length])
+    if ([currentSearchString length])
     {
-      if (-[NSString length](self->_lastQuery, "length") && (([v114 hasPrefix:self->_lastQuery] & 1) != 0 || -[NSString hasPrefix:](self->_lastQuery, "hasPrefix:", v114)))
+      if (-[NSString length](self->_lastQuery, "length") && (([currentSearchString hasPrefix:self->_lastQuery] & 1) != 0 || -[NSString hasPrefix:](self->_lastQuery, "hasPrefix:", currentSearchString)))
       {
-        v29 = [v114 length];
+        v29 = [currentSearchString length];
         v30 = [(NSString *)self->_lastQuery length];
         v31 = &v29[-v30];
         if (&v29[-v30] < 0)
@@ -213,7 +213,7 @@
         lastQuery = self->_lastQuery;
         if (lastQuery)
         {
-          v33 = [(NSString *)lastQuery commonPrefixWithString:v114 options:2];
+          v33 = [(NSString *)lastQuery commonPrefixWithString:currentSearchString options:2];
         }
 
         else
@@ -225,32 +225,32 @@
         v139 = 3221225472;
         v140 = sub_100006730;
         v141 = &unk_100091F10;
-        v142 = v114;
+        v142 = currentSearchString;
         v143 = v33;
         AnalyticsSendEventLazy();
       }
     }
 
-    v34 = [v114 copy];
+    v34 = [currentSearchString copy];
     v35 = self->_lastQuery;
     self->_lastQuery = v34;
 
     v28 = &OBJC_IVAR___SPParsecDatastore__sessionStartTime;
   }
 
-  v36 = [v28 + 108 datastores];
-  v37 = [v36 count] == 0;
+  datastores = [v28 + 108 datastores];
+  v37 = [datastores count] == 0;
 
   if (!v37)
   {
     v38 = objc_alloc_init(NSMutableOrderedSet);
-    if ([v114 length] || (objc_msgSend(v116, "searchEntities"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "count") == 0, v39, !v40))
+    if ([currentSearchString length] || (objc_msgSend(queryContext, "searchEntities"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "count") == 0, v39, !v40))
     {
-      if ([v116 isSearchToolClient])
+      if ([queryContext isSearchToolClient])
       {
-        v41 = [v116 searchString];
-        v42 = [SPSearchQueryContext normalizeSearchString:v41 queryContext:v116];
-        [v116 setSearchString:v42];
+        searchString = [queryContext searchString];
+        v42 = [SPSearchQueryContext normalizeSearchString:searchString queryContext:queryContext];
+        [queryContext setSearchString:v42];
 
         v43 = [SDController datastoreForDomain:1];
         if (v43)
@@ -261,15 +261,15 @@
 
       else
       {
-        v46 = [v116 searchDomains];
-        v47 = [v46 arrayByAddingObject:&off_100098978];
+        searchDomains3 = [queryContext searchDomains];
+        v47 = [searchDomains3 arrayByAddingObject:&off_100098978];
 
         v43 = [v47 arrayByAddingObject:&off_100098990];
 
         v149 = @"ExtendedDeviceLockState";
         v150 = kCFBooleanTrue;
         v110 = [NSDictionary dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-        if ([v116 deviceAuthenticationState])
+        if ([queryContext deviceAuthenticationState])
         {
           v48 = [SDController datastoreForDomain:1];
           v49 = [SDController datastoreForDomain:2];
@@ -407,12 +407,12 @@
                 }
 
                 v68 = *(*(&v129 + 1) + 8 * i);
-                v69 = [v68 intValue];
-                v70 = [SDController datastoreForDomain:v69];
+                intValue = [v68 intValue];
+                v70 = [SDController datastoreForDomain:intValue];
                 v71 = v70;
-                if (v69 == 6)
+                if (intValue == 6)
                 {
-                  [v117 addDelayedStartStore:v70];
+                  [queryCopy addDelayedStartStore:v70];
                 }
 
                 else if (v70)
@@ -467,12 +467,12 @@
         _os_log_impl(&_mh_execute_header, v83, ((v84 & 1) == 0), "#query No stores for query!", buf, 2u);
       }
 
-      [v117 sendQueryCompleted];
+      [queryCopy sendQueryCompleted];
       goto LABEL_146;
     }
 
     v75 = objc_alloc_init(NSMutableSet);
-    if ([v117 infinitePatience])
+    if ([queryCopy infinitePatience])
     {
       v76 = SPLogForSPLogCategoryDefault();
       v77 = v76;
@@ -612,13 +612,13 @@ LABEL_140:
     block[1] = 3221225472;
     block[2] = sub_1000068B8;
     block[3] = &unk_100091F80;
-    v119 = v117;
-    v120 = v112;
+    v119 = queryCopy;
+    v120 = bundleID;
     v124 = v79;
     v121 = v38;
     v100 = v75;
     v122 = v100;
-    v123 = v114;
+    v123 = currentSearchString;
     v101 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, block);
     tracing_dispatch_async();
 
@@ -633,9 +633,9 @@ LABEL_146:
   }
 
   v45 = [NSError errorWithDomain:@"SearchError" code:1 userInfo:0];
-  [v117 sendError:v45];
+  [queryCopy sendError:v45];
 
-  [v117 sendQueryCompleted];
+  [queryCopy sendQueryCompleted];
 LABEL_147:
 
   v102 = *v113;
@@ -651,34 +651,34 @@ LABEL_147:
   *(v113 + 32) = v146;
 }
 
-- (void)clearInputForConnection:(id)a3
+- (void)clearInputForConnection:(id)connection
 {
   v3 = +[SDController workQueue];
   md_tracing_dispatch_async_propagating();
 }
 
-- (void)cancelQueryWithExternalID:(unsigned int)a3
+- (void)cancelQueryWithExternalID:(unsigned int)d
 {
   v3 = +[SDController workQueue];
   md_tracing_dispatch_async_propagating();
 }
 
-- (void)activateForConnection:(id)a3 message:(id)a4
+- (void)activateForConnection:(id)connection message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = +[SDLockHandler sharedLockHandler];
   [v8 checkMigrationComplete];
 
-  if (v7)
+  if (messageCopy)
   {
     goto LABEL_2;
   }
 
   if (!self->_active)
   {
-    v11 = [v6 bundleID];
-    v12 = [v11 isEqualToString:@"com.apple.Spotlight"];
+    bundleID = [connectionCopy bundleID];
+    v12 = [bundleID isEqualToString:@"com.apple.Spotlight"];
 
     if (v12)
     {
@@ -690,11 +690,11 @@ LABEL_147:
         _os_log_impl(&_mh_execute_header, v13, ((v14 & 1) == 0), "Activate Spotlight", buf, 2u);
       }
 
-      v7 = [[SPXPCMessage alloc] initWithName:@"Activate" connection:v6];
-      if (v7)
+      messageCopy = [[SPXPCMessage alloc] initWithName:@"Activate" connection:connectionCopy];
+      if (messageCopy)
       {
 LABEL_2:
-        [(SDClient *)self setActivation:v7];
+        [(SDClient *)self setActivation:messageCopy];
         if (self->_active)
         {
           v9 = SPLogForSPLogCategoryDefault();
@@ -711,17 +711,17 @@ LABEL_2:
           v9 = +[SDController workQueue];
           self->_active = 1;
           kdebug_trace();
-          v39 = [v6 bundleID];
+          bundleID2 = [connectionCopy bundleID];
           v15 = SPLogForSPLogCategoryDefault();
           v16 = gSPLogInfoAsDefault;
           if (os_log_type_enabled(v15, ((gSPLogInfoAsDefault & 1) == 0)))
           {
             *buf = 138412290;
-            v45 = v39;
+            v45 = bundleID2;
             _os_log_impl(&_mh_execute_header, v15, ((v16 & 1) == 0), "Activate from %@", buf, 0xCu);
           }
 
-          if ([v39 isEqualToString:@"com.apple.springboard"])
+          if ([bundleID2 isEqualToString:@"com.apple.springboard"])
           {
             v17 = SPLogForSPLogCategoryDefault();
             v18 = gSPLogInfoAsDefault;
@@ -736,7 +736,7 @@ LABEL_2:
               sub_1000622DC();
             }
 
-            v19 = [v7 rootObjectOfClasses:qword_1000A8220];
+            v19 = [messageCopy rootObjectOfClasses:qword_1000A8220];
             self->_isSpringBoard = 1;
             v20 = SPLogForSPLogCategoryDefault();
             v21 = v20;
@@ -758,7 +758,7 @@ LABEL_2:
               v24 = [v19 objectForKey:@"apps"];
               v25 = [v19 objectForKey:@"hiddenApps"];
               *buf = 138413314;
-              v45 = v7;
+              v45 = messageCopy;
               v46 = 2048;
               v47 = v38;
               v48 = 2048;
@@ -879,32 +879,32 @@ LABEL_2:
   [(SDClient *)self deactivate];
 }
 
-+ (id)clientForConnection:(id)a3
++ (id)clientForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 context];
+  connectionCopy = connection;
+  context = [connectionCopy context];
 
-  if (!v4)
+  if (!context)
   {
     v5 = objc_alloc_init(SDClient);
-    [v3 setContext:v5];
+    [connectionCopy setContext:v5];
   }
 
-  v6 = [v3 context];
+  context2 = [connectionCopy context];
 
-  return v6;
+  return context2;
 }
 
-+ (void)registerMessageHandlersWithServer:(id)a3
++ (void)registerMessageHandlersWithServer:(id)server
 {
-  v3 = a3;
-  [v3 setHandlerForMessageName:@"OpenQuery" handler:&stru_1000920F0];
-  [v3 setHandlerForMessageName:@"CloseQuery" handler:&stru_100092110];
-  [v3 setHandlerForMessageName:@"ClearInput" handler:&stru_100092130];
-  [v3 setHandlerForMessageName:@"RequestFTE" handler:&stru_100092150];
-  [v3 setHandlerForMessageName:@"Activate" handler:&stru_1000921E8];
-  [v3 setHandlerForMessageName:@"Deactivate" handler:&stru_100092208];
-  [v3 setHandlerForMessageName:@"Preheat" handler:&stru_100092228];
+  serverCopy = server;
+  [serverCopy setHandlerForMessageName:@"OpenQuery" handler:&stru_1000920F0];
+  [serverCopy setHandlerForMessageName:@"CloseQuery" handler:&stru_100092110];
+  [serverCopy setHandlerForMessageName:@"ClearInput" handler:&stru_100092130];
+  [serverCopy setHandlerForMessageName:@"RequestFTE" handler:&stru_100092150];
+  [serverCopy setHandlerForMessageName:@"Activate" handler:&stru_1000921E8];
+  [serverCopy setHandlerForMessageName:@"Deactivate" handler:&stru_100092208];
+  [serverCopy setHandlerForMessageName:@"Preheat" handler:&stru_100092228];
 }
 
 - (void)dealloc

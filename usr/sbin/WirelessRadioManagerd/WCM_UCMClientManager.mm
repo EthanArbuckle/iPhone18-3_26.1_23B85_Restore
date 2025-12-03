@@ -1,50 +1,50 @@
 @interface WCM_UCMClientManager
 + (id)WCM_UCMClientManagerSingleton;
 - (WCM_UCMClientManager)init;
-- (id)getControllerOfId:(int)a3;
-- (id)getUCMClientFromList:(int)a3;
-- (void)addUCMClient:(id)a3;
+- (id)getControllerOfId:(int)id;
+- (id)getUCMClientFromList:(int)list;
+- (void)addUCMClient:(id)client;
 - (void)dealloc;
-- (void)enableFrequencyUpdatesForMic:(id)a3;
-- (void)enableHomeKitTimer:(id)a3;
-- (void)enableULFrequencyUpdates:(id)a3;
-- (void)getHomeKitBtLoad:(id)a3;
+- (void)enableFrequencyUpdatesForMic:(id)mic;
+- (void)enableHomeKitTimer:(id)timer;
+- (void)enableULFrequencyUpdates:(id)updates;
+- (void)getHomeKitBtLoad:(id)load;
 - (void)postBTConnectedDevices;
-- (void)removeUCMClient:(id)a3;
-- (void)sendNRFrequencyUpdateForMic:(id)a3;
-- (void)sendULFrequencyUpdates:(id)a3;
-- (void)startHomeKitTimer:(double)a3;
+- (void)removeUCMClient:(id)client;
+- (void)sendNRFrequencyUpdateForMic:(id)mic;
+- (void)sendULFrequencyUpdates:(id)updates;
+- (void)startHomeKitTimer:(double)timer;
 - (void)stopHomeKitTimer;
-- (void)timerHandler:(id)a3;
-- (void)updateBTConnectedDevices:(WCM_BTConnections *)a3;
-- (void)updateControllerSession:(id)a3 ofId:(int)a4;
+- (void)timerHandler:(id)handler;
+- (void)updateBTConnectedDevices:(WCM_BTConnections *)devices;
+- (void)updateControllerSession:(id)session ofId:(int)id;
 @end
 
 @implementation WCM_UCMClientManager
 
-- (void)addUCMClient:(id)a3
+- (void)addUCMClient:(id)client
 {
-  [(NSMutableArray *)self->mUCMClientContexts addObject:a3];
+  [(NSMutableArray *)self->mUCMClientContexts addObject:client];
 
   [(WCM_UCMClientManager *)self existingContexts];
 }
 
-- (void)removeUCMClient:(id)a3
+- (void)removeUCMClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   [(WCM_UCMClientManager *)self existingContexts];
-  [(NSMutableArray *)self->mUCMClientContexts removeObject:v4];
+  [(NSMutableArray *)self->mUCMClientContexts removeObject:clientCopy];
 
   [(WCM_UCMClientManager *)self existingContexts];
 }
 
-- (void)updateBTConnectedDevices:(WCM_BTConnections *)a3
+- (void)updateBTConnectedDevices:(WCM_BTConnections *)devices
 {
   [WCM_Logging logLevel:2 message:@"updateBTConnectedDevices"];
-  v5 = *&a3->numA2DP;
-  v6 = *&a3->numHID;
-  v7 = *&a3->numeSCO;
-  self->mBTConnections.numLEA = a3->numLEA;
+  v5 = *&devices->numA2DP;
+  v6 = *&devices->numHID;
+  v7 = *&devices->numeSCO;
+  self->mBTConnections.numLEA = devices->numLEA;
   *&self->mBTConnections.numHID = v6;
   *&self->mBTConnections.numeSCO = v7;
   *&self->mBTConnections.numA2DP = v5;
@@ -54,18 +54,18 @@
 
 + (id)WCM_UCMClientManagerSingleton
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_1002B7E30)
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = &OBJC_METACLASS___WCM_UCMClientManager;
     v3 = [objc_msgSendSuper2(&v7 allocWithZone:{0), "init"}];
     v4 = qword_1002B7E30;
     qword_1002B7E30 = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = qword_1002B7E30;
 
@@ -116,20 +116,20 @@
   [(WCM_UCMClientManager *)&v2 dealloc];
 }
 
-- (void)updateControllerSession:(id)a3 ofId:(int)a4
+- (void)updateControllerSession:(id)session ofId:(int)id
 {
-  v6 = a3;
-  v7 = v6;
-  v10 = v6;
-  if (a4 > 40)
+  sessionCopy = session;
+  v7 = sessionCopy;
+  v10 = sessionCopy;
+  if (id > 40)
   {
-    if (a4 == 41)
+    if (id == 41)
     {
-      [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMMIC controller event %p", v6];
+      [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMMIC controller event %p", sessionCopy];
       if (!v10)
       {
         [WCM_Logging logLevel:2 message:@"updateControllerSession:remove context for WRMMIC from UCMClientManager"];
-        v8 = self;
+        selfCopy4 = self;
         v9 = 3;
         goto LABEL_15;
       }
@@ -137,29 +137,29 @@
 
     else
     {
-      if (a4 != 42)
+      if (id != 42)
       {
         goto LABEL_17;
       }
 
-      [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMSOS controller event %p", v6];
+      [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMSOS controller event %p", sessionCopy];
       if (!v10)
       {
         [WCM_Logging logLevel:2 message:@"updateControllerSession:remove context for WRMSOS from UCMClientManager"];
-        v8 = self;
+        selfCopy4 = self;
         v9 = 4;
         goto LABEL_15;
       }
     }
   }
 
-  else if (a4 == 35)
+  else if (id == 35)
   {
-    [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WCMSharing controller event %p", v6];
+    [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WCMSharing controller event %p", sessionCopy];
     if (!v10)
     {
       [WCM_Logging logLevel:2 message:@"updateControllerSession:remove context for WCMSharing from UCMClientManager"];
-      v8 = self;
+      selfCopy4 = self;
       v9 = 1;
       goto LABEL_15;
     }
@@ -167,33 +167,33 @@
 
   else
   {
-    if (a4 != 40)
+    if (id != 40)
     {
       goto LABEL_17;
     }
 
-    [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMHomeKit controller event %p", v6];
+    [WCM_Logging logLevel:2 message:@"UCMClientManager: Rcvd WRMHomeKit controller event %p", sessionCopy];
     if (!v10)
     {
       [WCM_Logging logLevel:2 message:@"updateControllerSession:remove context for WRMHomeKit from UCMClientManager"];
-      v8 = self;
+      selfCopy4 = self;
       v9 = 2;
 LABEL_15:
-      v6 = [(WCM_UCMClientManager *)v8 deleteUCMClient:v9];
+      sessionCopy = [(WCM_UCMClientManager *)selfCopy4 deleteUCMClient:v9];
       goto LABEL_16;
     }
   }
 
   [(WCM_UCMClientManager *)self addUCMClient:v10];
-  v6 = [WCM_Logging logLevel:2 message:@"UCMClientManager: Init Context"];
+  sessionCopy = [WCM_Logging logLevel:2 message:@"UCMClientManager: Init Context"];
 LABEL_16:
   v7 = v10;
 LABEL_17:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(sessionCopy, v7);
 }
 
-- (id)getUCMClientFromList:(int)a3
+- (id)getUCMClientFromList:(int)list
 {
   v12 = 0u;
   v13 = 0u;
@@ -215,7 +215,7 @@ LABEL_17:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 getMyClientType] == a3)
+        if ([v9 getMyClientType] == list)
         {
           v10 = v9;
           goto LABEL_11;
@@ -238,7 +238,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)getControllerOfId:(int)a3
+- (id)getControllerOfId:(int)id
 {
   v12 = 0u;
   v13 = 0u;
@@ -260,7 +260,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 getProcessId] == a3)
+        if ([v9 getProcessId] == id)
         {
           v10 = v9;
           goto LABEL_11;
@@ -329,9 +329,9 @@ LABEL_11:
   }
 }
 
-- (void)getHomeKitBtLoad:(id)a3
+- (void)getHomeKitBtLoad:(id)load
 {
-  xdict = a3;
+  xdict = load;
   reply = xpc_dictionary_create_reply(xdict);
   [WCM_Logging logLevel:2 message:@"getHomeKitBtLoad"];
   if (reply)
@@ -348,49 +348,49 @@ LABEL_11:
   }
 }
 
-- (void)startHomeKitTimer:(double)a3
+- (void)startHomeKitTimer:(double)timer
 {
   [WCM_Logging logLevel:2 message:@"startHomeKitTimer"];
   self->mMaximumBtLoad = self->mCurrentBtLoad;
-  v5 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+  homeKitReportingTimer = [(WCM_UCMClientManager *)self homeKitReportingTimer];
 
-  if (!v5)
+  if (!homeKitReportingTimer)
   {
-    v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"timerHandler:" selector:0 userInfo:1 repeats:a3];
+    v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"timerHandler:" selector:0 userInfo:1 repeats:timer];
     [(WCM_UCMClientManager *)self setHomeKitReportingTimer:v6];
   }
 
-  v7 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+  homeKitReportingTimer2 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
 
-  if (v7)
+  if (homeKitReportingTimer2)
   {
     v9 = +[NSRunLoop currentRunLoop];
-    v8 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
-    [v9 addTimer:v8 forMode:NSDefaultRunLoopMode];
+    homeKitReportingTimer3 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+    [v9 addTimer:homeKitReportingTimer3 forMode:NSDefaultRunLoopMode];
   }
 }
 
-- (void)timerHandler:(id)a3
+- (void)timerHandler:(id)handler
 {
   v4 = +[WCM_Server singleton];
-  v5 = [v4 getQueue];
+  getQueue = [v4 getQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000734B8;
   block[3] = &unk_10023F488;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(getQueue, block);
 }
 
 - (void)stopHomeKitTimer
 {
   [WCM_Logging logLevel:2 message:@"stopHomeKitTimer"];
-  v3 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+  homeKitReportingTimer = [(WCM_UCMClientManager *)self homeKitReportingTimer];
 
-  if (v3)
+  if (homeKitReportingTimer)
   {
-    v4 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
-    [v4 invalidate];
+    homeKitReportingTimer2 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+    [homeKitReportingTimer2 invalidate];
 
     [(WCM_UCMClientManager *)self setHomeKitReportingTimer:0];
   }
@@ -398,9 +398,9 @@ LABEL_11:
   self->mMaximumBtLoad = 0;
 }
 
-- (void)enableHomeKitTimer:(id)a3
+- (void)enableHomeKitTimer:(id)timer
 {
-  xdict = a3;
+  xdict = timer;
   [WCM_Logging logLevel:2 message:@"enableHomeKitTimer"];
   v4 = xpc_dictionary_get_value(xdict, "kMessageArgs");
   v5 = v4;
@@ -409,14 +409,14 @@ LABEL_11:
     if (xpc_dictionary_get_BOOL(v4, "kWRMHomeKitEnable"))
     {
       v6 = xpc_dictionary_get_double(v5, "kWRMHomeKitDuration");
-      v7 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
-      if (v7)
+      homeKitReportingTimer = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+      if (homeKitReportingTimer)
       {
-        v8 = v7;
-        v9 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
-        v10 = [v9 isValid];
+        v8 = homeKitReportingTimer;
+        homeKitReportingTimer2 = [(WCM_UCMClientManager *)self homeKitReportingTimer];
+        isValid = [homeKitReportingTimer2 isValid];
 
-        if (v10)
+        if (isValid)
         {
           [(WCM_UCMClientManager *)self stopHomeKitTimer];
         }
@@ -454,23 +454,23 @@ LABEL_11:
   }
 }
 
-- (void)enableFrequencyUpdatesForMic:(id)a3
+- (void)enableFrequencyUpdatesForMic:(id)mic
 {
-  v4 = a3;
+  micCopy = mic;
   [WCM_Logging logLevel:2 message:@"enableFrequencyUpdatesForMic"];
-  reply = xpc_dictionary_create_reply(v4);
+  reply = xpc_dictionary_create_reply(micCopy);
   if (reply)
   {
-    v6 = [(WCM_UCMClientManager *)self mCurrentBandStates];
-    if (v6 && (v7 = v6, [(WCM_UCMClientManager *)self mCurrentBandStates], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) != 0))
+    mCurrentBandStates = [(WCM_UCMClientManager *)self mCurrentBandStates];
+    if (mCurrentBandStates && (v7 = mCurrentBandStates, [(WCM_UCMClientManager *)self mCurrentBandStates], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) != 0))
     {
-      v10 = [(WCM_UCMClientManager *)self mCurrentBandStates];
+      mCurrentBandStates2 = [(WCM_UCMClientManager *)self mCurrentBandStates];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000739D4;
       v12[3] = &unk_10023F4B0;
       v13 = reply;
-      [v10 enumerateKeysAndObjectsUsingBlock:v12];
+      [mCurrentBandStates2 enumerateKeysAndObjectsUsingBlock:v12];
     }
 
     else
@@ -478,7 +478,7 @@ LABEL_11:
       [WCM_Logging logLevel:2 message:@"enableFrequencyUpdatesForMic: mCurrentBandStates is nil or not a dictionary"];
     }
 
-    v11 = xpc_dictionary_get_remote_connection(v4);
+    v11 = xpc_dictionary_get_remote_connection(micCopy);
     xpc_connection_send_message(v11, reply);
     [WCM_Logging logLevel:2 message:@"Sending response to enableFrequencyUpdatesForMic %@", reply];
   }
@@ -489,17 +489,17 @@ LABEL_11:
   }
 }
 
-- (void)sendNRFrequencyUpdateForMic:(id)a3
+- (void)sendNRFrequencyUpdateForMic:(id)mic
 {
-  v4 = a3;
+  micCopy = mic;
   [WCM_Logging logLevel:2 message:@"sendNRFrequencyUpdateForMic"];
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (micCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v5)
     {
-      v6 = [(WCM_UCMClientManager *)self mCurrentBandStates];
-      [v6 setDictionary:v4];
+      mCurrentBandStates = [(WCM_UCMClientManager *)self mCurrentBandStates];
+      [mCurrentBandStates setDictionary:micCopy];
 
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
@@ -507,7 +507,7 @@ LABEL_11:
       v18[3] = &unk_10023F4B0;
       v7 = v5;
       v19 = v7;
-      [v4 enumerateKeysAndObjectsUsingBlock:v18];
+      [micCopy enumerateKeysAndObjectsUsingBlock:v18];
       [WCM_Logging logLevel:2 message:@"Sending response to sendNRFrequencyUpdateForMic %@", v7];
       v16 = 0u;
       v17 = 0u;
@@ -553,7 +553,7 @@ LABEL_11:
   }
 }
 
-- (void)enableULFrequencyUpdates:(id)a3
+- (void)enableULFrequencyUpdates:(id)updates
 {
   [WCM_Logging logLevel:2 message:@"enableULFrequencyUpdates"];
   v4 = xpc_dictionary_create(0, 0, 0);
@@ -606,24 +606,24 @@ LABEL_11:
   }
 }
 
-- (void)sendULFrequencyUpdates:(id)a3
+- (void)sendULFrequencyUpdates:(id)updates
 {
-  v4 = a3;
-  if (v4)
+  updatesCopy = updates;
+  if (updatesCopy)
   {
     [WCM_Logging logLevel:2 message:@"sendULFrequencyUpdates"];
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v5)
     {
       v6 = v5;
-      v7 = [v4 objectForKeyedSubscript:@"BandInfoType"];
+      v7 = [updatesCopy objectForKeyedSubscript:@"BandInfoType"];
       self->mCurrentBandInfoType = [v7 integerValue];
 
-      v8 = [v4 objectForKeyedSubscript:@"ULCenterFrequency"];
+      v8 = [updatesCopy objectForKeyedSubscript:@"ULCenterFrequency"];
       [v8 doubleValue];
       self->mCurrentULCenterFrequency = v9;
 
-      v10 = [v4 objectForKeyedSubscript:@"ULBandwidth"];
+      v10 = [updatesCopy objectForKeyedSubscript:@"ULBandwidth"];
       [v10 doubleValue];
       self->mCurrentULBandwidth = v11;
 

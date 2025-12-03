@@ -4,12 +4,12 @@
 - (id)sceneIdentifier;
 - (id)sceneSpecification;
 - (void)_requestDestroy;
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)backgroundSceneWithCompletion:(id)a3;
-- (void)deactivateSceneWithReasonMask:(unint64_t)a3;
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion;
+- (void)backgroundSceneWithCompletion:(id)completion;
+- (void)deactivateSceneWithReasonMask:(unint64_t)mask;
 - (void)dealloc;
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)sceneContentStateDidUpdate:(int64_t)a3;
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion;
+- (void)sceneContentStateDidUpdate:(int64_t)update;
 - (void)sceneDidInvalidate;
 @end
 
@@ -17,29 +17,29 @@
 
 - (id)_displayLayoutElementIdentifier
 {
-  v3 = [(DBSceneHostViewController *)self application];
-  v4 = [v3 appPolicy];
+  application = [(DBSceneHostViewController *)self application];
+  appPolicy = [application appPolicy];
 
-  if (([v4 launchUsingMusicUIService] & 1) != 0 || (objc_msgSend(v4, "canDisplayOnCarScreen") & 1) != 0 || (-[DBSceneHostViewController application](self, "application"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "info"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "supportsBackgroundMode:", *MEMORY[0x277D76778]), v6, v5, !v7))
+  if (([appPolicy launchUsingMusicUIService] & 1) != 0 || (objc_msgSend(appPolicy, "canDisplayOnCarScreen") & 1) != 0 || (-[DBSceneHostViewController application](self, "application"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "info"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "supportsBackgroundMode:", *MEMORY[0x277D76778]), v6, v5, !v7))
   {
-    v8 = [(DBApplicationSceneHostViewController *)self sceneIdentifier];
+    sceneIdentifier = [(DBApplicationSceneHostViewController *)self sceneIdentifier];
   }
 
   else
   {
-    v8 = @"com.apple.now-playing";
+    sceneIdentifier = @"com.apple.now-playing";
   }
 
-  v9 = v8;
+  v9 = sceneIdentifier;
 
   return v9;
 }
 
 - (id)sceneIdentifier
 {
-  v3 = [(DBSceneHostViewController *)self environment];
-  v4 = [(DBSceneHostViewController *)self application];
-  v5 = [v3 sceneIdentifierForApplication:v4];
+  environment = [(DBSceneHostViewController *)self environment];
+  application = [(DBSceneHostViewController *)self application];
+  v5 = [environment sceneIdentifierForApplication:application];
 
   return v5;
 }
@@ -54,25 +54,25 @@
 - (void)dealloc
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(DBApplicationSceneHostViewController *)self layoutElementAssertion];
+  layoutElementAssertion = [(DBApplicationSceneHostViewController *)self layoutElementAssertion];
 
-  if (v3)
+  if (layoutElementAssertion)
   {
     v4 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [(DBSceneHostViewController *)self application];
+      application = [(DBSceneHostViewController *)self application];
       *buf = 138543618;
       v11 = v6;
       v12 = 2112;
-      v13 = v7;
+      v13 = application;
       _os_log_impl(&dword_248146000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deactivating layout element for application: %@", buf, 0x16u);
     }
 
-    v8 = [(DBApplicationSceneHostViewController *)self layoutElementAssertion];
-    [v8 invalidate];
+    layoutElementAssertion2 = [(DBApplicationSceneHostViewController *)self layoutElementAssertion];
+    [layoutElementAssertion2 invalidate];
   }
 
   v9.receiver = self;
@@ -80,32 +80,32 @@
   [(DBApplicationSceneHostViewController *)&v9 dealloc];
 }
 
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isSuspended];
-  v9 = [v6 waitForCommit];
-  [v6 failInterval];
+  settingsCopy = settings;
+  completionCopy = completion;
+  isSuspended = [settingsCopy isSuspended];
+  waitForCommit = [settingsCopy waitForCommit];
+  [settingsCopy failInterval];
   v11 = v10;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_completion___block_invoke;
   aBlock[3] = &unk_278F03088;
-  v20 = v8;
+  v20 = isSuspended;
   aBlock[4] = self;
-  v19 = v6;
-  v12 = v6;
+  v19 = settingsCopy;
+  v12 = settingsCopy;
   v13 = _Block_copy(aBlock);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_completion___block_invoke_125;
   v15[3] = &unk_278F030B0;
-  v17 = v8;
+  v17 = isSuspended;
   v15[4] = self;
-  v16 = v7;
-  v14 = v7;
-  [(DBSceneHostViewController *)self performSceneUpdateWithBlock:v13 waitsForSceneCommit:v9 timeout:v15 completion:v11];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(DBSceneHostViewController *)self performSceneUpdateWithBlock:v13 waitsForSceneCommit:waitForCommit timeout:v15 completion:v11];
 }
 
 uint64_t __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -271,9 +271,9 @@ uint64_t __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)backgroundSceneWithCompletion:(id)a3
+- (void)backgroundSceneWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletion___block_invoke;
@@ -284,8 +284,8 @@ uint64_t __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_
   v6[2] = __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletion___block_invoke_2;
   v6[3] = &unk_278F030D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(DBSceneHostViewController *)self performSceneUpdateWithBlock:v8 completion:v6];
 }
 
@@ -341,16 +341,16 @@ uint64_t __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletio
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actions];
+  settingsCopy = settings;
+  completionCopy = completion;
+  actions = [settingsCopy actions];
 
-  if (v8)
+  if (actions)
   {
-    v8 = [v6 actions];
+    actions = [settingsCopy actions];
     v9 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -359,12 +359,12 @@ uint64_t __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletio
       *buf = 138543618;
       v26 = v11;
       v27 = 2112;
-      v28 = v8;
+      v28 = actions;
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_INFO, "[%{public}@] Attaching actions to scene activation: %@", buf, 0x16u);
     }
   }
 
-  v12 = [v6 url];
+  v12 = [settingsCopy url];
   if (v12)
   {
     v13 = [objc_alloc(MEMORY[0x277D757D0]) initWithURL:v12];
@@ -380,16 +380,16 @@ uint64_t __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletio
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_INFO, "[%{public}@] Attaching URL to scene activation: %@", buf, 0x16u);
     }
 
-    if (v8)
+    if (actions)
     {
-      v17 = [v8 setByAddingObject:v13];
+      v17 = [actions setByAddingObject:v13];
 
-      v8 = v17;
+      actions = v17;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB98] setWithObject:v13];
+      actions = [MEMORY[0x277CBEB98] setWithObject:v13];
     }
   }
 
@@ -398,11 +398,11 @@ uint64_t __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletio
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v21 = [(DBSceneHostViewController *)self application];
+    application = [(DBSceneHostViewController *)self application];
     *buf = 138543618;
     v26 = v20;
     v27 = 2112;
-    v28 = v21;
+    v28 = application;
     _os_log_impl(&dword_248146000, v18, OS_LOG_TYPE_INFO, "[%{public}@] Activating scene for application: %@", buf, 0x16u);
   }
 
@@ -410,10 +410,10 @@ uint64_t __70__DBApplicationSceneHostViewController_backgroundSceneWithCompletio
   v23[1] = 3221225472;
   v23[2] = __77__DBApplicationSceneHostViewController_activateSceneWithSettings_completion___block_invoke;
   v23[3] = &unk_278F03100;
-  v24 = v8;
-  v22 = v8;
+  v24 = actions;
+  v22 = actions;
   [(DBSceneHostViewController *)self updateSceneSettingsWithTransitionBlock:v23];
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
 void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -428,7 +428,7 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
   }
 }
 
-- (void)deactivateSceneWithReasonMask:(unint64_t)a3
+- (void)deactivateSceneWithReasonMask:(unint64_t)mask
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = DBLogForCategory(8uLL);
@@ -436,13 +436,13 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(DBSceneHostViewController *)self application];
+    application = [(DBSceneHostViewController *)self application];
     *buf = 138543874;
     v11 = v7;
     v12 = 2112;
-    v13 = v8;
+    v13 = application;
     v14 = 2048;
-    v15 = a3;
+    maskCopy = mask;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_INFO, "[%{public}@] Deactivating scene for application: %@, reasonMask: %ld", buf, 0x20u);
   }
 
@@ -450,16 +450,16 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
   v9[1] = 3221225472;
   v9[2] = __70__DBApplicationSceneHostViewController_deactivateSceneWithReasonMask___block_invoke;
   v9[3] = &__block_descriptor_40_e50_v16__0__UIMutableCarPlayApplicationSceneSettings_8l;
-  v9[4] = a3;
+  v9[4] = mask;
   [(DBSceneHostViewController *)self updateSceneSettingsWithBlock:v9];
 }
 
 - (id)sceneSpecification
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = [(DBSceneHostViewController *)self proxyApplication];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
 
-  if (v3)
+  if (proxyApplication)
   {
     v4 = MEMORY[0x277CF9320];
   }
@@ -470,9 +470,9 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
     v11[1] = @"com.apple.Maps";
     v11[2] = @"com.apple.NightModeTester";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
-    v6 = [(DBSceneHostViewController *)self application];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v5 containsObject:v7];
+    application = [(DBSceneHostViewController *)self application];
+    bundleIdentifier = [application bundleIdentifier];
+    v8 = [v5 containsObject:bundleIdentifier];
 
     if (v8)
     {
@@ -498,11 +498,11 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(DBApplicationSceneHostViewController *)self sceneIdentifier];
+    sceneIdentifier = [(DBApplicationSceneHostViewController *)self sceneIdentifier];
     v7 = 138543618;
     v8 = v5;
     v9 = 2114;
-    v10 = v6;
+    v10 = sceneIdentifier;
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_INFO, "[%{public}@] Did destroy scene: %{public}@", &v7, 0x16u);
   }
 
@@ -510,21 +510,21 @@ void __77__DBApplicationSceneHostViewController_activateSceneWithSettings_comple
   [(DBApplicationSceneHostViewController *)self _requestDestroy];
 }
 
-- (void)sceneContentStateDidUpdate:(int64_t)a3
+- (void)sceneContentStateDidUpdate:(int64_t)update
 {
-  v5 = [(DBApplicationSceneHostViewController *)self delegate];
-  [v5 applicationSceneHostViewController:self didUpdateSceneContentState:a3];
+  delegate = [(DBApplicationSceneHostViewController *)self delegate];
+  [delegate applicationSceneHostViewController:self didUpdateSceneContentState:update];
 }
 
 - (void)_requestDestroy
 {
   v6 = objc_alloc_init(DBMutableWorkspaceStateChangeRequest);
-  v3 = [(DBSceneHostViewController *)self application];
-  [(DBMutableWorkspaceStateChangeRequest *)v6 destroyApplication:v3];
+  application = [(DBSceneHostViewController *)self application];
+  [(DBMutableWorkspaceStateChangeRequest *)v6 destroyApplication:application];
 
-  v4 = [(DBSceneHostViewController *)self environment];
-  v5 = [v4 workspace];
-  [v5 requestStateChange:v6];
+  environment = [(DBSceneHostViewController *)self environment];
+  workspace = [environment workspace];
+  [workspace requestStateChange:v6];
 }
 
 void __79__DBApplicationSceneHostViewController_foregroundSceneWithSettings_completion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

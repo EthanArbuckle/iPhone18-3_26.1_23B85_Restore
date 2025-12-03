@@ -1,15 +1,15 @@
 @interface ARPatchGrid
-- (ARPatchGrid)initWithCoder:(id)a3;
-- (ARPatchGrid)initWithPatchesVector:()vector<ARPatch pivotAngle:(std:(float)a4 :allocator<ARPatch>> *)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARPatchGrid)initWithCoder:(id)coder;
+- (ARPatchGrid)initWithPatchesVector:()vector<ARPatch pivotAngle:(std:(float)angle :allocator<ARPatch>> *)a3;
+- (BOOL)isEqual:(id)equal;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPatchGrid
 
-- (ARPatchGrid)initWithPatchesVector:()vector<ARPatch pivotAngle:(std:(float)a4 :allocator<ARPatch>> *)a3
+- (ARPatchGrid)initWithPatchesVector:()vector<ARPatch pivotAngle:(std:(float)angle :allocator<ARPatch>> *)a3
 {
   v9.receiver = self;
   v9.super_class = ARPatchGrid;
@@ -18,18 +18,18 @@
   if (v6)
   {
     std::vector<ARPatch>::__move_assign(&v6->_patchesVector, a3);
-    v7->_angle = a4;
+    v7->_angle = angle;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [v5 size];
     if (v6 == [(ARPatchGrid *)self size])
     {
@@ -78,9 +78,9 @@ LABEL_12:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v9 = 0;
   v10 = 0;
   __p = 0;
@@ -96,22 +96,22 @@ LABEL_12:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_angle;
-  v6 = v4;
-  [v4 encodeFloat:@"angle" forKey:v5];
+  v6 = coderCopy;
+  [coderCopy encodeFloat:@"angle" forKey:v5];
   [v6 encodeBytes:self->_patchesVector.__begin_ length:self->_patchesVector.__end_ - self->_patchesVector.__begin_ forKey:@"patchesVector"];
 }
 
-- (ARPatchGrid)initWithCoder:(id)a3
+- (ARPatchGrid)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"angle"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"angle"];
   v6 = v5;
   v15 = 0;
-  v7 = [v4 decodeBytesForKey:@"patchesVector" returnedLength:&v15];
+  v7 = [coderCopy decodeBytesForKey:@"patchesVector" returnedLength:&v15];
   v13[1] = 0;
   v14 = 0;
   v13[0] = 0;

@@ -1,27 +1,27 @@
 @interface HKUserAnnotatedMedicationQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)a3 limit:(unint64_t)a4 batchHandler:(id)a5;
-- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)a3 limit:(unint64_t)a4 resultsHandler:(id)a5;
-- (void)_enumerateUserAnnotatedMedicationsWithHandler:(id)a3 handler:(id)a4;
-- (void)client_deliverUserAnnotatedMedications:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)predicate limit:(unint64_t)limit batchHandler:(id)handler;
+- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)predicate limit:(unint64_t)limit resultsHandler:(id)handler;
+- (void)_enumerateUserAnnotatedMedicationsWithHandler:(id)handler handler:(id)a4;
+- (void)client_deliverUserAnnotatedMedications:(id)medications queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKUserAnnotatedMedicationQuery
 
-- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)a3 limit:(unint64_t)a4 resultsHandler:(id)a5
+- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)predicate limit:(unint64_t)limit resultsHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__HKUserAnnotatedMedicationQuery_initWithPredicate_limit_resultsHandler___block_invoke;
   v12[3] = &unk_1E7378258;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(HKUserAnnotatedMedicationQuery *)self initWithPredicate:a3 limit:a4 batchHandler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [(HKUserAnnotatedMedicationQuery *)self initWithPredicate:predicate limit:limit batchHandler:v12];
 
   return v10;
 }
@@ -40,19 +40,19 @@ uint64_t __73__HKUserAnnotatedMedicationQuery_initWithPredicate_limit_resultsHan
   }
 }
 
-- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)a3 limit:(unint64_t)a4 batchHandler:(id)a5
+- (HKUserAnnotatedMedicationQuery)initWithPredicate:(id)predicate limit:(unint64_t)limit batchHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  predicateCopy = predicate;
   v10 = +[HKObjectType userAnnotatedMedicationType];
   v15.receiver = self;
   v15.super_class = HKUserAnnotatedMedicationQuery;
-  v11 = [(HKQuery *)&v15 _initWithObjectType:v10 predicate:v9];
+  v11 = [(HKQuery *)&v15 _initWithObjectType:v10 predicate:predicateCopy];
 
   if (v11)
   {
-    v11->_limit = a4;
-    v12 = [v8 copy];
+    v11->_limit = limit;
+    v12 = [handlerCopy copy];
     batchHandler = v11->_batchHandler;
     v11->_batchHandler = v12;
   }
@@ -60,43 +60,43 @@ uint64_t __73__HKUserAnnotatedMedicationQuery_initWithPredicate_limit_resultsHan
   return v11;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKUserAnnotatedMedicationQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setLimit:{self->_limit, v5.receiver, v5.super_class}];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setLimit:{self->_limit, v5.receiver, v5.super_class}];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKUserAnnotatedMedicationQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverUserAnnotatedMedications_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverUserAnnotatedMedications_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = __Block_byref_object_copy__0;
   v10[4] = __Block_byref_object_dispose__0;
   v11 = _Block_copy(self->_batchHandler);
-  v5 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__HKUserAnnotatedMedicationQuery_queue_deliverError___block_invoke;
   block[3] = &unk_1E7378280;
-  v8 = v4;
+  v8 = errorCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v6 = errorCopy;
+  dispatch_async(clientQueue, block);
 
   _Block_object_dispose(v10, 8);
 }
@@ -112,30 +112,30 @@ uint64_t __73__HKUserAnnotatedMedicationQuery_initWithPredicate_limit_resultsHan
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKUserAnnotatedMedicationQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   batchHandler = self->_batchHandler;
   self->_batchHandler = 0;
 }
 
-- (void)client_deliverUserAnnotatedMedications:(id)a3 queryUUID:(id)a4
+- (void)client_deliverUserAnnotatedMedications:(id)medications queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  medicationsCopy = medications;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__HKUserAnnotatedMedicationQuery_client_deliverUserAnnotatedMedications_queryUUID___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = medicationsCopy;
+  v9 = medicationsCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__HKUserAnnotatedMedicationQuery_client_deliverUserAnnotatedMedications_queryUUID___block_invoke(uint64_t a1)
@@ -159,24 +159,24 @@ void __83__HKUserAnnotatedMedicationQuery_client_deliverUserAnnotatedMedications
   }
 }
 
-- (void)_enumerateUserAnnotatedMedicationsWithHandler:(id)a3 handler:(id)a4
+- (void)_enumerateUserAnnotatedMedicationsWithHandler:(id)handler handler:(id)a4
 {
-  v6 = a3;
+  handlerCopy = handler;
   v7 = a4;
-  v8 = [v6 count];
+  v8 = [handlerCopy count];
   if (v8)
   {
     v9 = v8;
-    v10 = [(HKQuery *)self deactivateCallCount];
+    deactivateCallCount = [(HKQuery *)self deactivateCallCount];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __88__HKUserAnnotatedMedicationQuery__enumerateUserAnnotatedMedicationsWithHandler_handler___block_invoke;
     v11[3] = &unk_1E73782A8;
     v11[4] = self;
-    v13 = v10;
+    v13 = deactivateCallCount;
     v14 = v9;
     v12 = v7;
-    [v6 enumerateObjectsUsingBlock:v11];
+    [handlerCopy enumerateObjectsUsingBlock:v11];
   }
 
   else

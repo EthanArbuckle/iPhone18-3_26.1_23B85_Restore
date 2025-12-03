@@ -1,16 +1,16 @@
 @interface TSCellularSetupTimeoutFailureViewController
-- (TSCellularSetupTimeoutFailureViewController)initWithTimeoutReason:(int64_t)a3 isEmbeddedInResultView:(BOOL)a4 plans:(id)a5;
+- (TSCellularSetupTimeoutFailureViewController)initWithTimeoutReason:(int64_t)reason isEmbeddedInResultView:(BOOL)view plans:(id)plans;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_continueButtonTapped;
-- (void)prepare:(id)a3;
+- (void)prepare:(id)prepare;
 - (void)viewDidLoad;
 @end
 
 @implementation TSCellularSetupTimeoutFailureViewController
 
-- (TSCellularSetupTimeoutFailureViewController)initWithTimeoutReason:(int64_t)a3 isEmbeddedInResultView:(BOOL)a4 plans:(id)a5
+- (TSCellularSetupTimeoutFailureViewController)initWithTimeoutReason:(int64_t)reason isEmbeddedInResultView:(BOOL)view plans:(id)plans
 {
-  v25 = a5;
+  plansCopy = plans;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"ACTIVATE_EXCEED_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
@@ -29,7 +29,7 @@
 
   v13 = [v10 localizedStringForKey:v12 value:&stru_28753DF48 table:@"Localizable"];
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"ERROR_TRANSFER_ITEM_ACTIVATION_TIMEOUT_TITLE" value:&stru_28753DF48 table:@"Localizable"];
@@ -65,9 +65,9 @@
   v22 = v21;
   if (v21)
   {
-    v21->_timeoutReason = a3;
-    v21->_isEmbeddedInResultView = a4;
-    objc_storeStrong(&v21->_plans, a5);
+    v21->_timeoutReason = reason;
+    v21->_isEmbeddedInResultView = view;
+    objc_storeStrong(&v21->_plans, plans);
   }
 
   return v22;
@@ -80,9 +80,9 @@
   [(TSOBWelcomeController *)&v21 viewDidLoad];
   if (!self->_isEmbeddedInResultView)
   {
-    v3 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     continueButton = self->_continueButton;
-    self->_continueButton = v3;
+    self->_continueButton = boldButton;
 
     [(OBBoldTrayButton *)self->_continueButton addTarget:self action:sel__continueButtonTapped forControlEvents:64];
     v5 = +[TSUtilities inBuddy];
@@ -102,23 +102,23 @@
     v10 = [v7 localizedStringForKey:v9 value:&stru_28753DF48 table:@"Localizable"];
     [(OBBoldTrayButton *)v6 setTitle:v10 forState:0];
 
-    v11 = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
-    [v11 addButton:self->_continueButton];
+    buttonTray = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
+    [buttonTray addButton:self->_continueButton];
 
     [(OBBoldTrayButton *)self->_continueButton setEnabled:1];
-    v12 = [(OBBaseWelcomeController *)self navigationItem];
-    [v12 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
     if (+[TSUtilities inBuddy])
     {
       if (self->_timeoutReason == 1)
       {
-        v13 = [(OBBaseWelcomeController *)self navigationItem];
-        [v13 setHidesBackButton:0 animated:0];
+        navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+        [navigationItem2 setHidesBackButton:0 animated:0];
 
-        v14 = [MEMORY[0x277D37650] linkButton];
+        linkButton = [MEMORY[0x277D37650] linkButton];
         skipButton = self->_skipButton;
-        self->_skipButton = v14;
+        self->_skipButton = linkButton;
 
         [(OBLinkTrayButton *)self->_skipButton setRole:2];
         v16 = self->_skipButton;
@@ -127,11 +127,11 @@
         [(OBLinkTrayButton *)v16 setTitle:v18 forState:0];
 
         [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__continueButtonTapped forControlEvents:64];
-        v19 = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
-        [v19 addButton:self->_skipButton];
+        buttonTray2 = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
+        [buttonTray2 addButton:self->_skipButton];
 
-        v20 = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
-        [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+        buttonTray3 = [(TSCellularSetupTimeoutFailureViewController *)self buttonTray];
+        [buttonTray3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
         [(OBBoldTrayButton *)self->_continueButton setEnabled:0];
       }
@@ -143,12 +143,12 @@
 {
   if (self->_timeoutReason == 1)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"ss.user.canceled" object:@"cancel.button.event"];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ss.user.canceled" object:@"cancel.button.event"];
   }
 
-  v4 = [(TSCellularSetupTimeoutFailureViewController *)self delegate];
-  [v4 viewControllerDidComplete:self];
+  delegate = [(TSCellularSetupTimeoutFailureViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -158,18 +158,18 @@
   return WeakRetained;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v5 = a3;
+  prepareCopy = prepare;
   if ([(NSArray *)self->_plans count]== 1)
   {
     v4 = [(NSArray *)self->_plans objectAtIndexedSubscript:0];
-    v5[2](v5, [v4 activatingState] == 2);
+    prepareCopy[2](prepareCopy, [v4 activatingState] == 2);
   }
 
   else
   {
-    v5[2](v5, 0);
+    prepareCopy[2](prepareCopy, 0);
   }
 }
 

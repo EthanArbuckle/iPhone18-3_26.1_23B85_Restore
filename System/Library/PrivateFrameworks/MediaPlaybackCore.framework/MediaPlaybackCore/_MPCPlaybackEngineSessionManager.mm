@@ -1,13 +1,13 @@
 @interface _MPCPlaybackEngineSessionManager
-+ (id)archivesAtURL:(id)a3;
++ (id)archivesAtURL:(id)l;
 - (MPCPlaybackEngine)playbackEngine;
 - (NSString)stateRestorationSessionIdentifier;
-- (_MPCPlaybackEngineSessionManager)initWithPlaybackEngine:(id)a3;
+- (_MPCPlaybackEngineSessionManager)initWithPlaybackEngine:(id)engine;
 - (id)_playbackSessionsDirectory;
-- (void)deleteSessionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)saveSessionWithCompletion:(id)a3;
-- (void)setStateRestorationSessionIdentifier:(id)a3;
-- (void)setStateRestorationSupported:(BOOL)a3;
+- (void)deleteSessionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)saveSessionWithCompletion:(id)completion;
+- (void)setStateRestorationSessionIdentifier:(id)identifier;
+- (void)setStateRestorationSupported:(BOOL)supported;
 @end
 
 @implementation _MPCPlaybackEngineSessionManager
@@ -15,23 +15,23 @@
 - (id)_playbackSessionsDirectory
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v4 = [v3 URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:&v20];
+  v4 = [defaultManager URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:&v20];
   v5 = v20;
   if (v4)
   {
-    v6 = v4;
+    lastObject = v4;
   }
 
   else
   {
-    v7 = [v3 URLsForDirectory:9 inDomains:1];
-    v6 = [v7 lastObject];
+    v7 = [defaultManager URLsForDirectory:9 inDomains:1];
+    lastObject = [v7 lastObject];
 
-    if (!v6)
+    if (!lastObject)
     {
-      v6 = [v3 temporaryDirectory];
+      lastObject = [defaultManager temporaryDirectory];
     }
   }
 
@@ -51,15 +51,15 @@
         v10 = @" [fallback]";
       }
 
-      v11 = [v5 treeDescription];
+      treeDescription = [v5 treeDescription];
       *buf = 134218754;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
-      v24 = v6;
+      v24 = lastObject;
       v25 = 2114;
       v26 = v10;
       v27 = 2114;
-      v28 = v11;
+      v28 = treeDescription;
       _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_FAULT, "_MPCPlaybackEngineSessionManager %p - container URL: %{public}@%{public}@ error=%{public}@", buf, 0x2Au);
     }
   }
@@ -68,23 +68,23 @@
   {
     v12 = &stru_1F454A698;
     *buf = 134218498;
-    v22 = self;
+    selfCopy3 = self;
     v23 = 2114;
     if (!v4)
     {
       v12 = @" [fallback]";
     }
 
-    v24 = v6;
+    v24 = lastObject;
     v25 = 2114;
     v26 = v12;
     _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_DEFAULT, "_MPCPlaybackEngineSessionManager %p - container URL: %{public}@%{public}@", buf, 0x20u);
   }
 
-  v13 = [v6 URLByAppendingPathComponent:@"PlaybackSessions" isDirectory:1];
-  v14 = [v13 path];
+  v13 = [lastObject URLByAppendingPathComponent:@"PlaybackSessions" isDirectory:1];
+  path = [v13 path];
   v19 = 0;
-  v15 = [v3 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:&v19];
+  v15 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v19];
   v16 = v19;
 
   if ((v15 & 1) == 0)
@@ -93,7 +93,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
       *buf = 134218498;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2114;
       v24 = v13;
       v25 = 2114;
@@ -107,8 +107,8 @@
 
 - (NSString)stateRestorationSessionIdentifier
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"LastPlaybackSessionIdentifier"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"LastPlaybackSessionIdentifier"];
 
   return v3;
 }
@@ -120,81 +120,81 @@
   return WeakRetained;
 }
 
-- (void)setStateRestorationSessionIdentifier:(id)a3
+- (void)setStateRestorationSessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v3 = [v6 length];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = v4;
+  identifierCopy = identifier;
+  v3 = [identifierCopy length];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = standardUserDefaults;
   if (v3)
   {
-    [v4 setObject:v6 forKey:@"LastPlaybackSessionIdentifier"];
+    [standardUserDefaults setObject:identifierCopy forKey:@"LastPlaybackSessionIdentifier"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"LastPlaybackSessionIdentifier"];
+    [standardUserDefaults removeObjectForKey:@"LastPlaybackSessionIdentifier"];
   }
 }
 
-- (void)deleteSessionWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteSessionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (self->_stateRestorationSupported)
   {
-    v8 = [(NSMutableDictionary *)self->_sessionIdentifierArchiveMap objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_sessionIdentifierArchiveMap objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
-      v10 = [v8 packageURL];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      packageURL = [v8 packageURL];
       v13 = 0;
-      [v9 removeItemAtURL:v10 error:&v13];
+      [defaultManager removeItemAtURL:packageURL error:&v13];
       v11 = v13;
 
       if (!v11)
       {
-        [(NSMutableDictionary *)self->_sessionIdentifierArchiveMap setObject:0 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_sessionIdentifierArchiveMap setObject:0 forKeyedSubscript:identifierCopy];
         [(NSMutableArray *)self->_sessionArchives removeObjectIdenticalTo:v8];
       }
 
-      v7[2](v7, v11);
+      completionCopy[2](completionCopy, v11);
     }
 
     else
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:999 userInfo:0];
-      v7[2](v7, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 
   else
   {
     v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:2 debugDescription:@"Playback engine doesn't support state restoration"];
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)saveSessionWithCompletion:(id)a3
+- (void)saveSessionWithCompletion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
-  v7 = [WeakRetained queueController];
-  if (v7)
+  queueController = [WeakRetained queueController];
+  if (queueController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"_MPCPlaybackEngineSessionManager.m" lineNumber:117 description:@"Session management only available with MPCQueueController"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCPlaybackEngineSessionManager.m" lineNumber:117 description:@"Session management only available with MPCQueueController"];
     }
 
     if (self->_stateRestorationSupported)
     {
-      v8 = [MEMORY[0x1E69E45A0] sharedSecurityInfo];
-      if ([v8 isContentProtectionEnabled] && (objc_msgSend(v8, "isDeviceClassCUnlocked") & 1) == 0)
+      mEMORY[0x1E69E45A0] = [MEMORY[0x1E69E45A0] sharedSecurityInfo];
+      if ([mEMORY[0x1E69E45A0] isContentProtectionEnabled] && (objc_msgSend(mEMORY[0x1E69E45A0], "isDeviceClassCUnlocked") & 1) == 0)
       {
         v25 = os_log_create("com.apple.amp.mediaplaybackcore", "Session");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -211,32 +211,32 @@
 
       else
       {
-        if ([v7 containsRestorableContent])
+        if ([queueController containsRestorableContent])
         {
-          v9 = [WeakRetained mediaRemotePublisher];
-          v10 = [v9 infoCenter];
+          mediaRemotePublisher = [WeakRetained mediaRemotePublisher];
+          infoCenter = [mediaRemotePublisher infoCenter];
 
-          v11 = [v7 sessionID];
-          v12 = [v10 nowPlayingContentItem];
-          v13 = v12;
-          if (v12)
+          sessionID = [queueController sessionID];
+          nowPlayingContentItem = [infoCenter nowPlayingContentItem];
+          v13 = nowPlayingContentItem;
+          if (nowPlayingContentItem)
           {
-            v47 = v11;
-            v14 = [v12 userInfo];
-            v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69702C8]];
-            v16 = [v15 BOOLValue];
+            v47 = sessionID;
+            userInfo = [nowPlayingContentItem userInfo];
+            v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69702C8]];
+            bOOLValue = [v15 BOOLValue];
 
-            if (v16)
+            if (bOOLValue)
             {
               v17 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackSessionManagerError" code:2 debugDescription:@"Opting not to save an archive with a placeholder content item."];
-              v5[2](v5, 0, v17);
+              completionCopy[2](completionCopy, 0, v17);
             }
 
             else
             {
-              v27 = [(_MPCPlaybackEngineSessionManager *)self _playbackSessionsDirectory];
+              _playbackSessionsDirectory = [(_MPCPlaybackEngineSessionManager *)self _playbackSessionsDirectory];
               v28 = [v47 stringByAppendingPathExtension:@"playbackSessionArchive"];
-              [v27 URLByAppendingPathComponent:v28 isDirectory:1];
+              [_playbackSessionsDirectory URLByAppendingPathComponent:v28 isDirectory:1];
               v29 = v44 = v13;
 
               v30 = [_MPCPlaybackSessionArchive alloc];
@@ -246,16 +246,16 @@
               v32 = [(_MPCPlaybackSessionArchive *)v30 initWithURL:v31 identifier:v47];
               [(_MPCPlaybackSessionArchive *)v32 setContentItem:v44];
               group = dispatch_group_create();
-              v33 = [MEMORY[0x1E69708A8] standardUserDefaults];
-              v34 = [v33 archiveSessionArtwork];
+              standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+              archiveSessionArtwork = [standardUserDefaults archiveSessionArtwork];
 
-              if (v34)
+              if (archiveSessionArtwork)
               {
-                v35 = [v10 playbackQueueDataSource];
+                playbackQueueDataSource = [infoCenter playbackQueueDataSource];
                 if (objc_opt_respondsToSelector())
                 {
                   dispatch_group_enter(group);
-                  v36 = [v10 nowPlayingContentItem];
+                  nowPlayingContentItem2 = [infoCenter nowPlayingContentItem];
                   v57[0] = MEMORY[0x1E69E9820];
                   v57[1] = 3221225472;
                   v57[2] = __62___MPCPlaybackEngineSessionManager_saveSessionWithCompletion___block_invoke;
@@ -263,7 +263,7 @@
                   v57[4] = self;
                   v58 = group;
                   v59 = v32;
-                  v37 = [v35 nowPlayingInfoCenter:v10 artworkForContentItem:v36 size:v57 completion:{1200.0, 1200.0}];
+                  v37 = [playbackQueueDataSource nowPlayingInfoCenter:infoCenter artworkForContentItem:nowPlayingContentItem2 size:v57 completion:{1200.0, 1200.0}];
                 }
               }
 
@@ -279,7 +279,7 @@
               block[1] = 3221225472;
               block[2] = __62___MPCPlaybackEngineSessionManager_saveSessionWithCompletion___block_invoke_45;
               block[3] = &unk_1E8238210;
-              v53 = v7;
+              v53 = queueController;
               v39 = v32;
               v55 = group;
               p_buf = &buf;
@@ -294,20 +294,20 @@
               v51 = &buf;
               v48[4] = self;
               v49 = v39;
-              v50 = v5;
+              v50 = completionCopy;
               v42 = v39;
               dispatch_group_notify(v40, v41, v48);
 
               _Block_object_dispose(&buf, 8);
             }
 
-            v11 = v47;
+            sessionID = v47;
           }
 
           else
           {
             v26 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackSessionManagerError" code:2 debugDescription:@"Can't save an archive without a now playing content item."];
-            v5[2](v5, 0, v26);
+            completionCopy[2](completionCopy, 0, v26);
           }
 
           goto LABEL_29;
@@ -326,8 +326,8 @@
         v24 = 3;
       }
 
-      v10 = [v22 msv_errorWithDomain:@"MPCPlaybackSessionManagerError" code:v24 debugDescription:v23];
-      v5[2](v5, 0, v10);
+      infoCenter = [v22 msv_errorWithDomain:@"MPCPlaybackSessionManagerError" code:v24 debugDescription:v23];
+      completionCopy[2](completionCopy, 0, infoCenter);
 LABEL_29:
 
       goto LABEL_30;
@@ -345,32 +345,32 @@ LABEL_29:
     v20 = @"Can't save an archive without a QueueController";
   }
 
-  v8 = [v18 msv_errorWithDomain:v19 code:2 debugDescription:v20];
-  v5[2](v5, 0, v8);
+  mEMORY[0x1E69E45A0] = [v18 msv_errorWithDomain:v19 code:2 debugDescription:v20];
+  completionCopy[2](completionCopy, 0, mEMORY[0x1E69E45A0]);
 LABEL_30:
 }
 
-- (void)setStateRestorationSupported:(BOOL)a3
+- (void)setStateRestorationSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_stateRestorationSupported != v3)
+  if (self->_stateRestorationSupported != supportedCopy)
   {
-    self->_stateRestorationSupported = v3;
+    self->_stateRestorationSupported = supportedCopy;
     serialQueue = self->_serialQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65___MPCPlaybackEngineSessionManager_setStateRestorationSupported___block_invoke;
     v6[3] = &unk_1E82373B8;
-    v7 = v3;
+    v7 = supportedCopy;
     v6[4] = self;
     dispatch_async(serialQueue, v6);
   }
 }
 
-- (_MPCPlaybackEngineSessionManager)initWithPlaybackEngine:(id)a3
+- (_MPCPlaybackEngineSessionManager)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v14.receiver = self;
   v14.super_class = _MPCPlaybackEngineSessionManager;
   v5 = [(_MPCPlaybackEngineSessionManager *)&v14 init];
@@ -381,35 +381,35 @@ LABEL_30:
     serialQueue = v5->_serialQueue;
     v5->_serialQueue = v7;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sessionArchives = v5->_sessionArchives;
-    v5->_sessionArchives = v9;
+    v5->_sessionArchives = array;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sessionIdentifierArchiveMap = v5->_sessionIdentifierArchiveMap;
-    v5->_sessionIdentifierArchiveMap = v11;
+    v5->_sessionIdentifierArchiveMap = dictionary;
 
-    objc_storeWeak(&v5->_playbackEngine, v4);
-    [v4 addEngineObserver:v5];
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
+    [engineCopy addEngineObserver:v5];
   }
 
   return v5;
 }
 
-+ (id)archivesAtURL:(id)a3
++ (id)archivesAtURL:(id)l
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v24 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = *MEMORY[0x1E695DB78];
   v6 = *MEMORY[0x1E695DA98];
   v31[0] = *MEMORY[0x1E695DB78];
   v31[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  v8 = v4;
-  v23 = v3;
-  v9 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:v7 options:4 errorHandler:0];
+  v8 = defaultManager;
+  v23 = lCopy;
+  v9 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:4 errorHandler:0];
 
   v28 = 0u;
   v29 = 0u;
@@ -437,8 +437,8 @@ LABEL_30:
         v18 = v17;
         if (v16 && [v17 BOOLValue])
         {
-          v19 = [v15 pathExtension];
-          v20 = [v19 isEqualToString:@"playbackSessionArchive"];
+          pathExtension = [v15 pathExtension];
+          v20 = [pathExtension isEqualToString:@"playbackSessionArchive"];
 
           if (v20)
           {

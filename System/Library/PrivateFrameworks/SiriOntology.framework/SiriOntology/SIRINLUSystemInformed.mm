@@ -1,37 +1,37 @@
 @interface SIRINLUSystemInformed
-- (SIRINLUSystemInformed)initWithCoder:(id)a3;
-- (SIRINLUSystemInformed)initWithEntities:(id)a3;
+- (SIRINLUSystemInformed)initWithCoder:(id)coder;
+- (SIRINLUSystemInformed)initWithEntities:(id)entities;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUSystemInformed
 
 - (id)description
 {
-  v3 = [(SIRINLUSystemInformed *)self entities];
-  v4 = [SIRINLUPrintUtils indentArray:v3 numSpaces:4];
+  entities = [(SIRINLUSystemInformed *)self entities];
+  v4 = [SIRINLUPrintUtils indentArray:entities numSpaces:4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(SIRINLUSystemInformed *)self renderedText];
-  v7 = [v5 stringWithFormat:@"{SystemInformed\n  entities:\n%@\n  renderedText: %@\n}", v4, v6];
+  renderedText = [(SIRINLUSystemInformed *)self renderedText];
+  v7 = [v5 stringWithFormat:@"{SystemInformed\n  entities:\n%@\n  renderedText: %@\n}", v4, renderedText];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUSystemInformed *)self entities];
-  [v4 encodeObject:v5 forKey:@"entities"];
+  coderCopy = coder;
+  entities = [(SIRINLUSystemInformed *)self entities];
+  [coderCopy encodeObject:entities forKey:@"entities"];
 
-  v6 = [(SIRINLUSystemInformed *)self renderedText];
-  [v4 encodeObject:v6 forKey:@"renderedText"];
+  renderedText = [(SIRINLUSystemInformed *)self renderedText];
+  [coderCopy encodeObject:renderedText forKey:@"renderedText"];
 }
 
-- (SIRINLUSystemInformed)initWithCoder:(id)a3
+- (SIRINLUSystemInformed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SIRINLUSystemInformed;
   v5 = [(SIRINLUSystemInformed *)&v14 init];
@@ -40,11 +40,11 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"entities"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"entities"];
     entities = v5->_entities;
     v5->_entities = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
     renderedText = v5->renderedText;
     v5->renderedText = v11;
   }
@@ -52,16 +52,16 @@
   return v5;
 }
 
-- (SIRINLUSystemInformed)initWithEntities:(id)a3
+- (SIRINLUSystemInformed)initWithEntities:(id)entities
 {
-  v5 = a3;
+  entitiesCopy = entities;
   v9.receiver = self;
   v9.super_class = SIRINLUSystemInformed;
   v6 = [(SIRINLUSystemInformed *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entities, a3);
+    objc_storeStrong(&v6->_entities, entities);
   }
 
   return v7;

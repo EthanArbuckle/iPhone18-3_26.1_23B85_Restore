@@ -6,15 +6,15 @@
 
 - (id)childrenNodes
 {
-  v2 = [(REMCDObjectEffectiveVersionValidationNode *)self backingCDObject];
-  if (!v2)
+  backingCDObject = [(REMCDObjectEffectiveVersionValidationNode *)self backingCDObject];
+  if (!backingCDObject)
   {
     sub_10076AAC0();
   }
 
   v3 = +[NSMutableArray array];
-  v4 = [v2 entity];
-  v5 = [REMCDObject relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:v4];
+  entity = [backingCDObject entity];
+  v5 = [REMCDObject relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:entity];
 
   v27 = 0u;
   v28 = 0u;
@@ -34,9 +34,9 @@
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v25 + 1) + 8 * i) name];
-        v8 = v2;
-        v9 = [v2 objectIDsForRelationshipNamed:v7];
+        name = [*(*(&v25 + 1) + 8 * i) name];
+        v8 = backingCDObject;
+        v9 = [backingCDObject objectIDsForRelationshipNamed:name];
 
         v23 = 0u;
         v24 = 0u;
@@ -70,7 +70,7 @@
           while (v12);
         }
 
-        v2 = v8;
+        backingCDObject = v8;
       }
 
       v20 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];

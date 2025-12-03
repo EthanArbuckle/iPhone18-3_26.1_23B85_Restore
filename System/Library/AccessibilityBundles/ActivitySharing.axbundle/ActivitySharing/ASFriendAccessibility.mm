@@ -1,17 +1,17 @@
 @interface ASFriendAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (ASFriendAccessibility)initWithActivitySnapshots:(id)a3 friendAchievements:(id)a4 friendWorkouts:(id)a5 contact:(id)a6 competitions:(id)a7;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (ASFriendAccessibility)initWithActivitySnapshots:(id)snapshots friendAchievements:(id)achievements friendWorkouts:(id)workouts contact:(id)contact competitions:(id)competitions;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ASFriendAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASFriend" hasInstanceVariable:@"_competitions" withType:"NSArray"];
-  [v3 validateClass:@"ASFriend" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASFriend" hasInstanceMethod:@"initWithActivitySnapshots:friendAchievements:friendWorkouts:contact:competitions:" withFullSignature:{"@", "@", "@", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASFriend" hasInstanceVariable:@"_competitions" withType:"NSArray"];
+  [validationsCopy validateClass:@"ASFriend" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASFriend" hasInstanceMethod:@"initWithActivitySnapshots:friendAchievements:friendWorkouts:contact:competitions:" withFullSignature:{"@", "@", "@", "@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -55,11 +55,11 @@
   }
 }
 
-- (ASFriendAccessibility)initWithActivitySnapshots:(id)a3 friendAchievements:(id)a4 friendWorkouts:(id)a5 contact:(id)a6 competitions:(id)a7
+- (ASFriendAccessibility)initWithActivitySnapshots:(id)snapshots friendAchievements:(id)achievements friendWorkouts:(id)workouts contact:(id)contact competitions:(id)competitions
 {
   v9.receiver = self;
   v9.super_class = ASFriendAccessibility;
-  v7 = [(ASFriendAccessibility *)&v9 initWithActivitySnapshots:a3 friendAchievements:a4 friendWorkouts:a5 contact:a6 competitions:a7];
+  v7 = [(ASFriendAccessibility *)&v9 initWithActivitySnapshots:snapshots friendAchievements:achievements friendWorkouts:workouts contact:contact competitions:competitions];
   [(ASFriendAccessibility *)v7 _accessibilityLoadAccessibilityInformation];
 
   return v7;

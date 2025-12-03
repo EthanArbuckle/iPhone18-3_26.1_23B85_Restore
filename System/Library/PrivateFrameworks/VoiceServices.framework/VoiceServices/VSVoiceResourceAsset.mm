@@ -1,47 +1,47 @@
 @interface VSVoiceResourceAsset
-+ (id)resourceFromTrial:(id)a3;
++ (id)resourceFromTrial:(id)trial;
 - (NSArray)resourceList;
 - (NSDictionary)resourceMimeTypes;
 - (NSDictionary)vocalizerConfig;
 - (NSDictionary)voiceConfig;
-- (VSVoiceResourceAsset)initWithCoder:(id)a3;
+- (VSVoiceResourceAsset)initWithCoder:(id)coder;
 - (float)pitch;
 - (float)rate;
 - (float)volume;
 - (id)_defaultVoices;
 - (id)defaultVoice;
-- (id)defaultVoiceNameForGender:(int64_t)a3;
+- (id)defaultVoiceNameForGender:(int64_t)gender;
 - (id)description;
 - (id)key;
 - (int64_t)defaultVoiceGender;
 - (int64_t)defaultVoiceType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSVoiceResourceAsset
 
-+ (id)resourceFromTrial:(id)a3
++ (id)resourceFromTrial:(id)trial
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  trialCopy = trial;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setStorage:3];
-  v5 = [v3 language];
-  v14[0] = v5;
+  language = [trialCopy language];
+  v14[0] = language;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   [v4 setLanguages:v6];
 
-  v7 = [v3 path];
+  path = [trialCopy path];
 
-  if (v7)
+  if (path)
   {
     v8 = MEMORY[0x277CBEBC0];
-    v9 = [v3 path];
-    v10 = [v8 fileURLWithPath:v9];
+    path2 = [trialCopy path];
+    v10 = [v8 fileURLWithPath:path2];
     [v4 setSearchPathURL:v10];
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "version")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(trialCopy, "version")}];
   [v4 setContentVersion:v11];
 
   [v4 setCompatibilityVersion:&unk_2881E0DE8];
@@ -61,8 +61,8 @@
     *v9 = 0;
   }
 
-  v4 = [(VSVoiceResourceAsset *)self _defaultVoices];
-  v5 = [v4 objectForKeyedSubscript:@"default"];
+  _defaultVoices = [(VSVoiceResourceAsset *)self _defaultVoices];
+  v5 = [_defaultVoices objectForKeyedSubscript:@"default"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -106,19 +106,19 @@
   return v7;
 }
 
-- (id)defaultVoiceNameForGender:(int64_t)a3
+- (id)defaultVoiceNameForGender:(int64_t)gender
 {
-  v4 = [(VSVoiceResourceAsset *)self _defaultVoices];
-  v5 = [VSVoiceAsset genderStringFromGender:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _defaultVoices = [(VSVoiceResourceAsset *)self _defaultVoices];
+  v5 = [VSVoiceAsset genderStringFromGender:gender];
+  v6 = [_defaultVoices objectForKeyedSubscript:v5];
 
   return v6;
 }
 
 - (int64_t)defaultVoiceGender
 {
-  v2 = [(VSVoiceResourceAsset *)self _defaultVoices];
-  v3 = [v2 objectForKeyedSubscript:@"default"];
+  _defaultVoices = [(VSVoiceResourceAsset *)self _defaultVoices];
+  v3 = [_defaultVoices objectForKeyedSubscript:@"default"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -136,12 +136,12 @@
 
 - (id)_defaultVoices
 {
-  v3 = [(VSVoiceResourceAsset *)self voiceConfig];
+  voiceConfig = [(VSVoiceResourceAsset *)self voiceConfig];
 
-  if (v3)
+  if (voiceConfig)
   {
-    v4 = [(VSVoiceResourceAsset *)self voiceConfig];
-    v5 = [v4 objectForKeyedSubscript:@"_voices"];
+    voiceConfig2 = [(VSVoiceResourceAsset *)self voiceConfig];
+    v5 = [voiceConfig2 objectForKeyedSubscript:@"_voices"];
 
     if (v5)
     {
@@ -181,8 +181,8 @@ LABEL_10:
   resourceList = self->_resourceList;
   if (!resourceList)
   {
-    v4 = [(VSVoiceResourceAsset *)self voiceConfig];
-    v5 = [v4 objectForKeyedSubscript:@"vocalizer_resource_order"];
+    voiceConfig = [(VSVoiceResourceAsset *)self voiceConfig];
+    v5 = [voiceConfig objectForKeyedSubscript:@"vocalizer_resource_order"];
     v6 = self->_resourceList;
     self->_resourceList = v5;
 
@@ -197,8 +197,8 @@ LABEL_10:
   resourceMimeTypes = self->_resourceMimeTypes;
   if (!resourceMimeTypes)
   {
-    v4 = [(VSVoiceResourceAsset *)self voiceConfig];
-    v5 = [v4 objectForKeyedSubscript:@"vocalizer_resources"];
+    voiceConfig = [(VSVoiceResourceAsset *)self voiceConfig];
+    v5 = [voiceConfig objectForKeyedSubscript:@"vocalizer_resources"];
     v6 = self->_resourceMimeTypes;
     self->_resourceMimeTypes = v5;
 
@@ -214,8 +214,8 @@ LABEL_10:
   voiceConfig = self->_voiceConfig;
   if (!voiceConfig)
   {
-    v4 = [(VSVoiceResourceAsset *)self searchPathURL];
-    v5 = [v4 URLByAppendingPathComponent:@"voice_configs.plist"];
+    searchPathURL = [(VSVoiceResourceAsset *)self searchPathURL];
+    v5 = [searchPathURL URLByAppendingPathComponent:@"voice_configs.plist"];
 
     v12 = 0;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5 error:&v12];
@@ -250,8 +250,8 @@ LABEL_10:
   if (!vocalizerConfig)
   {
     v4 = MEMORY[0x277CBEAC0];
-    v5 = [(VSVoiceResourceAsset *)self searchPathURL];
-    v6 = [v5 URLByAppendingPathComponent:@"VoiceServices-Config.plist"];
+    searchPathURL = [(VSVoiceResourceAsset *)self searchPathURL];
+    v6 = [searchPathURL URLByAppendingPathComponent:@"VoiceServices-Config.plist"];
     v7 = [v4 dictionaryWithContentsOfURL:v6];
     v8 = self->_vocalizerConfig;
     self->_vocalizerConfig = v7;
@@ -267,8 +267,8 @@ LABEL_10:
   result = self->_volume;
   if (result == 0.0)
   {
-    v4 = [(VSVoiceResourceAsset *)self vocalizerConfig];
-    v5 = [v4 objectForKeyedSubscript:@"voice_speech_volume"];
+    vocalizerConfig = [(VSVoiceResourceAsset *)self vocalizerConfig];
+    v5 = [vocalizerConfig objectForKeyedSubscript:@"voice_speech_volume"];
 
     [v5 floatValue];
     self->_volume = v6;
@@ -284,8 +284,8 @@ LABEL_10:
   result = self->_pitch;
   if (result == 0.0)
   {
-    v4 = [(VSVoiceResourceAsset *)self vocalizerConfig];
-    v5 = [v4 objectForKeyedSubscript:@"voice_speech_pitch"];
+    vocalizerConfig = [(VSVoiceResourceAsset *)self vocalizerConfig];
+    v5 = [vocalizerConfig objectForKeyedSubscript:@"voice_speech_pitch"];
 
     [v5 floatValue];
     self->_pitch = v6;
@@ -301,8 +301,8 @@ LABEL_10:
   result = self->_rate;
   if (result == 0.0)
   {
-    v4 = [(VSVoiceResourceAsset *)self vocalizerConfig];
-    v5 = [v4 objectForKeyedSubscript:@"voice_speech_rate"];
+    vocalizerConfig = [(VSVoiceResourceAsset *)self vocalizerConfig];
+    v5 = [vocalizerConfig objectForKeyedSubscript:@"voice_speech_rate"];
 
     [v5 floatValue];
     self->_rate = v6;
@@ -316,22 +316,22 @@ LABEL_10:
 - (id)key
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(VSVoiceResourceAsset *)self languages];
-  v5 = [v4 firstObject];
-  v6 = [(VSAssetBase *)self masteredVersion];
-  v7 = [(VSAssetBase *)self contentVersion];
-  v8 = [v3 stringWithFormat:@"%@:%@:%@", v5, v6, v7];
+  languages = [(VSVoiceResourceAsset *)self languages];
+  firstObject = [languages firstObject];
+  masteredVersion = [(VSAssetBase *)self masteredVersion];
+  contentVersion = [(VSAssetBase *)self contentVersion];
+  v8 = [v3 stringWithFormat:@"%@:%@:%@", firstObject, masteredVersion, contentVersion];
 
   return v8;
 }
 
-- (VSVoiceResourceAsset)initWithCoder:(id)a3
+- (VSVoiceResourceAsset)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VSVoiceResourceAsset;
-  v5 = [(VSAssetBase *)&v15 initWithCoder:v4];
+  v5 = [(VSAssetBase *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -339,11 +339,11 @@ LABEL_10:
     v16[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_languages"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_languages"];
     languages = v5->_languages;
     v5->_languages = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_searchPathURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_searchPathURL"];
     searchPathURL = v5->_searchPathURL;
     v5->_searchPathURL = v11;
   }
@@ -352,22 +352,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VSVoiceResourceAsset;
-  v4 = a3;
-  [(VSAssetBase *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_languages forKey:{@"_languages", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_searchPathURL forKey:@"_searchPathURL"];
+  coderCopy = coder;
+  [(VSAssetBase *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_languages forKey:{@"_languages", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_searchPathURL forKey:@"_searchPathURL"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [(NSArray *)self->_languages componentsJoinedByString:@", "];
-  v5 = [(VSAssetBase *)self contentVersion];
-  v6 = [v3 stringWithFormat:@"VoiceResource: %@_CV%@", v4, v5];
+  contentVersion = [(VSAssetBase *)self contentVersion];
+  v6 = [v3 stringWithFormat:@"VoiceResource: %@_CV%@", v4, contentVersion];
 
   return v6;
 }

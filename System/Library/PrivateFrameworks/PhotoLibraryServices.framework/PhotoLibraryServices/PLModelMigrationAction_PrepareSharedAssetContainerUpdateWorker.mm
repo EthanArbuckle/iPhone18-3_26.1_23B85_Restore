@@ -1,23 +1,23 @@
 @interface PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker
-- (BOOL)_insertWorkItemsForAssetObjectIDs:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (int64_t)_markEntireLibraryNeedingProcessingWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (BOOL)_insertWorkItemsForAssetObjectIDs:(id)ds inManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)_markEntireLibraryNeedingProcessingWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker
 
-- (int64_t)_markEntireLibraryNeedingProcessingWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)_markEntireLibraryNeedingProcessingWithManagedObjectContext:(id)context error:(id *)error
 {
   v142 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = PLMigrationGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
   if (v8)
   {
-    v9 = [(PLModelMigrationActionBackground *)self logger];
+    logger = [(PLModelMigrationActionBackground *)self logger];
 
-    if (v9)
+    if (logger)
     {
       v140 = 0u;
       v141 = 0u;
@@ -89,7 +89,7 @@
 
   [v16 setFetchBatchSize:100];
   v103 = 0;
-  v18 = [v6 executeFetchRequest:v16 error:&v103];
+  v18 = [contextCopy executeFetchRequest:v16 error:&v103];
   v19 = v103;
   v20 = PLMigrationGetLog();
   v21 = v20;
@@ -99,9 +99,9 @@
 
     if (v28)
     {
-      v29 = [(PLModelMigrationActionBackground *)self logger];
+      logger2 = [(PLModelMigrationActionBackground *)self logger];
 
-      if (!v29)
+      if (!logger2)
       {
         v82 = PLMigrationGetLog();
         if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
@@ -111,7 +111,7 @@
           _os_log_impl(&dword_19BF1F000, v82, OS_LOG_TYPE_ERROR, "Failed to fetch memories for entire library: %@", &buf, 0xCu);
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_19;
         }
@@ -167,7 +167,7 @@
       }
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_19:
 
@@ -178,19 +178,19 @@ LABEL_70:
 
 LABEL_18:
     v33 = v19;
-    *a4 = v19;
+    *error = v19;
     goto LABEL_19;
   }
 
   v91 = v19;
-  v89 = a4;
+  errorCopy = error;
   v22 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
 
   if (v22)
   {
-    v23 = [(PLModelMigrationActionBackground *)self logger];
+    logger3 = [(PLModelMigrationActionBackground *)self logger];
 
-    if (v23)
+    if (logger3)
     {
       v140 = 0u;
       v141 = 0u;
@@ -254,7 +254,7 @@ LABEL_18:
     }
   }
 
-  v90 = self;
+  selfCopy = self;
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
@@ -275,9 +275,9 @@ LABEL_18:
         }
 
         v41 = *(*(&v99 + 1) + 8 * i);
-        v42 = [v6 photoLibrary];
+        photoLibrary = [contextCopy photoLibrary];
         v43 = [v41 objectForKeyedSubscript:@"uuid"];
-        v44 = [v42 addBackgroundJobWorkItemWithIdentifier:v43 jobType:9 jobFlags:2];
+        v44 = [photoLibrary addBackgroundJobWorkItemWithIdentifier:v43 jobType:9 jobFlags:2];
       }
 
       v38 = [v36 countByEnumeratingWithState:&v99 objects:v106 count:16];
@@ -298,7 +298,7 @@ LABEL_18:
 
   [v16 setFetchBatchSize:100];
   v98 = 0;
-  v48 = [v6 executeFetchRequest:v16 error:&v98];
+  v48 = [contextCopy executeFetchRequest:v16 error:&v98];
   v49 = v98;
   v50 = PLMigrationGetLog();
   v51 = v50;
@@ -308,9 +308,9 @@ LABEL_18:
 
     if (v58)
     {
-      v59 = [(PLModelMigrationActionBackground *)v90 logger];
+      logger4 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-      if (v59)
+      if (logger4)
       {
         v140 = 0u;
         v141 = 0u;
@@ -351,7 +351,7 @@ LABEL_18:
         LODWORD(v88) = 12;
         v61 = _os_log_send_and_compose_impl();
 
-        v62 = [(PLModelMigrationActionBackground *)v90 logger:&v107];
+        v62 = [(PLModelMigrationActionBackground *)selfCopy logger:&v107];
         [v62 logWithMessage:v61 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2151, 16}];
 
         if (v61 != &buf)
@@ -372,10 +372,10 @@ LABEL_18:
       }
     }
 
-    if (v89)
+    if (errorCopy)
     {
       v84 = v49;
-      *v89 = v49;
+      *errorCopy = v49;
     }
 
     goto LABEL_70;
@@ -386,9 +386,9 @@ LABEL_18:
 
   if (v52)
   {
-    v53 = [(PLModelMigrationActionBackground *)v90 logger];
+    logger5 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-    if (v53)
+    if (logger5)
     {
       v140 = 0u;
       v141 = 0u;
@@ -430,7 +430,7 @@ LABEL_18:
       LODWORD(v88) = 12;
       v56 = _os_log_send_and_compose_impl();
 
-      v57 = [(PLModelMigrationActionBackground *)v90 logger:&v107];
+      v57 = [(PLModelMigrationActionBackground *)selfCopy logger:&v107];
       [v57 logWithMessage:v56 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2155, 0}];
 
       if (v56 != &buf)
@@ -472,9 +472,9 @@ LABEL_18:
         }
 
         v70 = *(*(&v94 + 1) + 8 * j);
-        v71 = [v6 photoLibrary];
+        photoLibrary2 = [contextCopy photoLibrary];
         v72 = [v70 objectForKeyedSubscript:@"uuid"];
-        v73 = [v71 addBackgroundJobWorkItemWithIdentifier:v72 jobType:9 jobFlags:4];
+        v73 = [photoLibrary2 addBackgroundJobWorkItemWithIdentifier:v72 jobType:9 jobFlags:4];
       }
 
       v67 = [v65 countByEnumeratingWithState:&v94 objects:v104 count:16];
@@ -484,7 +484,7 @@ LABEL_18:
   }
 
   v93 = 0;
-  v74 = [v6 save:&v93];
+  v74 = [contextCopy save:&v93];
   v16 = v93;
   if ((v74 & 1) == 0)
   {
@@ -493,9 +493,9 @@ LABEL_18:
 
     if (v77)
     {
-      v78 = [(PLModelMigrationActionBackground *)v90 logger];
+      logger6 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-      if (v78)
+      if (logger6)
       {
         v140 = 0u;
         v141 = 0u;
@@ -536,7 +536,7 @@ LABEL_18:
         LODWORD(v88) = 12;
         v80 = _os_log_send_and_compose_impl();
 
-        v81 = [(PLModelMigrationActionBackground *)v90 logger:&v107];
+        v81 = [(PLModelMigrationActionBackground *)selfCopy logger:&v107];
         [v81 logWithMessage:v80 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2163, 0}];
 
         if (v80 != &buf)
@@ -557,10 +557,10 @@ LABEL_18:
       }
     }
 
-    if (v89)
+    if (errorCopy)
     {
       v86 = v16;
-      *v89 = v16;
+      *errorCopy = v16;
     }
 
     goto LABEL_70;
@@ -572,12 +572,12 @@ LABEL_71:
   return v75;
 }
 
-- (BOOL)_insertWorkItemsForAssetObjectIDs:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_insertWorkItemsForAssetObjectIDs:(id)ds inManagedObjectContext:(id)context error:(id *)error
 {
   v114[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  dsCopy = ds;
+  contextCopy = context;
+  if ([dsCopy count])
   {
     v10 = MEMORY[0x1E695D5E0];
     v11 = +[PLManagedAsset entityName];
@@ -588,21 +588,21 @@ LABEL_71:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:1];
     [v12 setPropertiesToFetch:v13];
 
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
-    [v12 setPredicate:v14];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+    [v12 setPredicate:dsCopy];
 
     v78 = 0;
-    v15 = [v9 executeFetchRequest:v12 error:&v78];
+    v15 = [contextCopy executeFetchRequest:v12 error:&v78];
     v16 = v78;
     if (v15)
     {
-      v72 = v9;
+      v72 = contextCopy;
       if ([v15 count])
       {
-        v68 = v8;
+        v68 = dsCopy;
         v69 = v16;
         v66 = v15;
-        v71 = self;
+        selfCopy = self;
         v67 = v12;
         v76 = 0u;
         v77 = 0u;
@@ -627,7 +627,7 @@ LABEL_71:
               v22 = [*(*(&v74 + 1) + 8 * i) objectForKeyedSubscript:@"uuid"];
               if (v22)
               {
-                v23 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v22 jobType:9 jobFlags:1 inManagedObjectContext:v9];
+                v23 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v22 jobType:9 jobFlags:1 inManagedObjectContext:contextCopy];
               }
 
               else
@@ -635,12 +635,12 @@ LABEL_71:
                 v24 = PLMigrationGetLog();
                 v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
 
-                v9 = v72;
+                contextCopy = v72;
                 if (v25)
                 {
-                  v26 = [(PLModelMigrationActionBackground *)self logger];
+                  logger = [(PLModelMigrationActionBackground *)self logger];
 
-                  if (v26)
+                  if (logger)
                   {
                     v112 = 0u;
                     v113 = 0u;
@@ -699,7 +699,7 @@ LABEL_71:
                     }
                   }
 
-                  v9 = v72;
+                  contextCopy = v72;
                   v17 = v70;
                 }
               }
@@ -712,7 +712,7 @@ LABEL_71:
         }
 
         v73 = v69;
-        v31 = [v9 save:&v73];
+        v31 = [contextCopy save:&v73];
         v32 = v73;
 
         v33 = PLMigrationGetLog();
@@ -721,14 +721,14 @@ LABEL_71:
         if ((v31 & 1) == 0)
         {
           v12 = v67;
-          v8 = v68;
-          v9 = v72;
+          dsCopy = v68;
+          contextCopy = v72;
           v15 = v66;
           if (v34)
           {
-            v54 = [(PLModelMigrationActionBackground *)v71 logger];
+            logger2 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-            if (v54)
+            if (logger2)
             {
               v112 = 0u;
               v113 = 0u;
@@ -769,7 +769,7 @@ LABEL_71:
               LODWORD(v65) = 12;
               v56 = _os_log_send_and_compose_impl();
 
-              v57 = [(PLModelMigrationActionBackground *)v71 logger:&v80];
+              v57 = [(PLModelMigrationActionBackground *)selfCopy logger:&v80];
               [v57 logWithMessage:v56 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2111, 0}];
 
               if (v56 != &buf)
@@ -790,11 +790,11 @@ LABEL_71:
             }
           }
 
-          if (a5)
+          if (error)
           {
             v63 = v32;
             v40 = 0;
-            *a5 = v32;
+            *error = v32;
           }
 
           else
@@ -806,13 +806,13 @@ LABEL_71:
         }
 
         v12 = v67;
-        v8 = v68;
+        dsCopy = v68;
         v15 = v66;
         if (v34)
         {
-          v35 = [(PLModelMigrationActionBackground *)v71 logger];
+          logger3 = [(PLModelMigrationActionBackground *)selfCopy logger];
 
-          if (v35)
+          if (logger3)
           {
             v112 = 0u;
             v113 = 0u;
@@ -854,10 +854,10 @@ LABEL_71:
             LODWORD(v65) = 12;
             v38 = _os_log_send_and_compose_impl();
 
-            v39 = [(PLModelMigrationActionBackground *)v71 logger:&v80];
+            v39 = [(PLModelMigrationActionBackground *)selfCopy logger:&v80];
             [v39 logWithMessage:v38 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2115, 0}];
 
-            v9 = v72;
+            contextCopy = v72;
             if (v38 != &buf)
             {
               free(v38);
@@ -867,7 +867,7 @@ LABEL_71:
           else
           {
             v60 = PLMigrationGetLog();
-            v9 = v72;
+            contextCopy = v72;
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
             {
               v61 = [v70 count];
@@ -895,9 +895,9 @@ LABEL_61:
 
         if (v49)
         {
-          v50 = [(PLModelMigrationActionBackground *)self logger];
+          logger4 = [(PLModelMigrationActionBackground *)self logger];
 
-          if (v50)
+          if (logger4)
           {
             v112 = 0u;
             v113 = 0u;
@@ -940,7 +940,7 @@ LABEL_61:
             v53 = [(PLModelMigrationActionBackground *)self logger:&v80];
             [v53 logWithMessage:v52 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{2096, 1}];
 
-            v9 = v72;
+            contextCopy = v72;
             if (v52 != &buf)
             {
               free(v52);
@@ -952,7 +952,7 @@ LABEL_61:
           else
           {
             v59 = PLMigrationGetLog();
-            v9 = v72;
+            contextCopy = v72;
             if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
             {
               LOWORD(buf) = 0;
@@ -966,7 +966,7 @@ LABEL_61:
         }
       }
 
-      v9 = v72;
+      contextCopy = v72;
 LABEL_62:
 
       goto LABEL_63;
@@ -977,9 +977,9 @@ LABEL_62:
 
     if (v42)
     {
-      v43 = [(PLModelMigrationActionBackground *)self logger];
+      logger5 = [(PLModelMigrationActionBackground *)self logger];
 
-      if (!v43)
+      if (!logger5)
       {
         v58 = PLMigrationGetLog();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
@@ -989,7 +989,7 @@ LABEL_62:
           _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_DEFAULT, "Failed to fetch assets. Error: %@", &buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_32;
         }
@@ -1045,12 +1045,12 @@ LABEL_62:
       }
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_32:
       v47 = v16;
       v40 = 0;
-      *a5 = v16;
+      *error = v16;
       goto LABEL_62;
     }
 
@@ -1065,30 +1065,30 @@ LABEL_63:
   return v40;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v123 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v65 = [[PLGlobalValues alloc] initWithManagedObjectContext:v6];
+  contextCopy = context;
+  v65 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
   if (([(PLGlobalValues *)v65 libraryCreateOptions]& 0x40) == 0)
   {
-    v61 = a4;
-    v62 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" managedObjectContext:v6];
+    errorCopy = error;
+    v62 = [PLModelMigrationActionUtility getHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" managedObjectContext:contextCopy];
     if (v62)
     {
-      if ([PLModelMigrationActionUtility shouldProcessHistoryTokenWithAction:self token:v62 cutoffPercent:v6 managedObjectContext:0.5])
+      if ([PLModelMigrationActionUtility shouldProcessHistoryTokenWithAction:self token:v62 cutoffPercent:contextCopy managedObjectContext:0.5])
       {
         v80 = 0;
-        v66 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v62 withManagedObjectObjectContext:v6 error:&v80];
+        v66 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v62 withManagedObjectObjectContext:contextCopy error:&v80];
         v7 = v80;
         if (v66)
         {
           v8 = MEMORY[0x1E695D5B8];
           v9 = +[PLManagedAsset entityName];
-          v64 = [v8 entityForName:v9 inManagedObjectContext:v6];
+          v64 = [v8 entityForName:v9 inManagedObjectContext:contextCopy];
 
-          v10 = [v64 relationshipsByName];
-          v63 = [v10 objectForKeyedSubscript:@"libraryScope"];
+          relationshipsByName = [v64 relationshipsByName];
+          v63 = [relationshipsByName objectForKeyedSubscript:@"libraryScope"];
 
           v11 = 0;
           *&v88 = 0;
@@ -1119,7 +1119,7 @@ LABEL_63:
             v74 = v63;
             v15 = v14;
             v75 = v15;
-            v76 = self;
+            selfCopy = self;
             [v66 enumerateRemainingTransactionsWithBlock:v72];
             v71 = v7;
             v16 = [(PLModelMigrationActionBackground *)self isCancelledWithResumeMarker:0 error:&v71];
@@ -1137,19 +1137,19 @@ LABEL_63:
             {
               v19 = [v15 copy];
               v70 = v17;
-              v20 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _insertWorkItemsForAssetObjectIDs:v19 inManagedObjectContext:v6 error:&v70];
+              v20 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _insertWorkItemsForAssetObjectIDs:v19 inManagedObjectContext:contextCopy error:&v70];
               v21 = v70;
 
               if (v20)
               {
-                v22 = [v66 lastIteratedToken];
-                [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" value:v22 managedObjectContext:v6];
+                lastIteratedToken = [v66 lastIteratedToken];
+                [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" value:lastIteratedToken managedObjectContext:contextCopy];
 
                 v68 = v21;
-                LOBYTE(v22) = [v6 save:&v68];
+                LOBYTE(lastIteratedToken) = [contextCopy save:&v68];
                 v7 = v68;
 
-                if (v22)
+                if (lastIteratedToken)
                 {
                   v18 = 1;
                 }
@@ -1161,8 +1161,8 @@ LABEL_63:
 
                   if (v24)
                   {
-                    v25 = [(PLModelMigrationActionBackground *)self logger];
-                    v26 = v25 == 0;
+                    logger = [(PLModelMigrationActionBackground *)self logger];
+                    v26 = logger == 0;
 
                     if (v26)
                     {
@@ -1235,7 +1235,7 @@ LABEL_63:
               else
               {
                 v69 = v21;
-                v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:v6 error:&v69];
+                v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:contextCopy error:&v69];
                 v7 = v69;
 
                 v18 = 0;
@@ -1252,24 +1252,24 @@ LABEL_63:
           {
             v31 = v7;
             v32 = v31;
-            if (v12 != 1 && v61)
+            if (v12 != 1 && errorCopy)
             {
               v33 = v31;
-              *v61 = v32;
+              *errorCopy = v32;
             }
           }
 
           else
           {
-            v49 = [v6 photoLibrary];
-            [v49 signalBackgroundProcessingNeeded];
+            photoLibrary = [contextCopy photoLibrary];
+            [photoLibrary signalBackgroundProcessingNeeded];
 
-            [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" value:0 managedObjectContext:v6];
+            [PLModelMigrationActionUtility setHistoryTokenWithAction:self key:@"LastSharedAssetContainerUpdateToken" value:0 managedObjectContext:contextCopy];
             v67 = v7;
-            LOBYTE(v49) = [v6 save:&v67];
+            LOBYTE(photoLibrary) = [contextCopy save:&v67];
             v32 = v67;
 
-            if (v49)
+            if (photoLibrary)
             {
               [(PLModelMigrationActionBackground *)self finalizeProgress];
               v12 = 1;
@@ -1282,8 +1282,8 @@ LABEL_63:
 
               if (v51)
               {
-                v52 = [(PLModelMigrationActionBackground *)self logger];
-                v53 = v52 == 0;
+                logger2 = [(PLModelMigrationActionBackground *)self logger];
+                v53 = logger2 == 0;
 
                 if (v53)
                 {
@@ -1363,8 +1363,8 @@ LABEL_63:
 
           if (v43)
           {
-            v44 = [(PLModelMigrationActionBackground *)self logger];
-            v45 = v44 == 0;
+            logger3 = [(PLModelMigrationActionBackground *)self logger];
+            v45 = logger3 == 0;
 
             if (v45)
             {
@@ -1429,7 +1429,7 @@ LABEL_63:
           }
 
           v79 = v7;
-          v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:v6 error:&v79];
+          v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:contextCopy error:&v79];
           v32 = v79;
         }
 
@@ -1437,14 +1437,14 @@ LABEL_63:
       }
 
       v81 = 0;
-      v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:v6 error:&v81];
+      v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:contextCopy error:&v81];
       v40 = v81;
     }
 
     else
     {
       v82 = 0;
-      v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:v6 error:&v82];
+      v12 = [(PLModelMigrationAction_PrepareSharedAssetContainerUpdateWorker *)self _markEntireLibraryNeedingProcessingWithManagedObjectContext:contextCopy error:&v82];
       v40 = v82;
     }
 
@@ -1459,9 +1459,9 @@ LABEL_58:
 
   if (v35)
   {
-    v36 = [(PLModelMigrationActionBackground *)self logger];
+    logger4 = [(PLModelMigrationActionBackground *)self logger];
 
-    if (v36)
+    if (logger4)
     {
       v121 = 0u;
       v122 = 0u;

@@ -1,11 +1,11 @@
 @interface UIWebPlaybackTargetPicker
 - (void)_dismissAirPlayRoutePickerIPad;
-- (void)_presentAirPlayPopoverAnimated:(BOOL)a3 fromRect:(CGRect)a4;
+- (void)_presentAirPlayPopoverAnimated:(BOOL)animated fromRect:(CGRect)rect;
 - (void)dealloc;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)show:(BOOL)a3 fromRect:(CGRect)a4;
-- (void)showAirPlayPickerIPad:(int64_t)a3 fromRect:(CGRect)a4;
-- (void)showAirPlayPickerIPhone:(int64_t)a3;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)show:(BOOL)show fromRect:(CGRect)rect;
+- (void)showAirPlayPickerIPad:(int64_t)pad fromRect:(CGRect)rect;
+- (void)showAirPlayPickerIPhone:(int64_t)phone;
 @end
 
 @implementation UIWebPlaybackTargetPicker
@@ -19,24 +19,24 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
-  if (self->_popoverController == a3)
+  if (self->_popoverController == popover)
   {
     [(UIWebPlaybackTargetPicker *)self _dismissAirPlayRoutePickerIPad];
   }
 }
 
-- (void)_presentAirPlayPopoverAnimated:(BOOL)a3 fromRect:(CGRect)a4
+- (void)_presentAirPlayPopoverAnimated:(BOOL)animated fromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  animatedCopy = animated;
   popoverController = self->_popoverController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [(MPAudioVideoRoutingPopoverController *)popoverController presentPopoverFromRect:WeakRetained inView:15 permittedArrowDirections:v8 animated:x, y, width, height];
+  [(MPAudioVideoRoutingPopoverController *)popoverController presentPopoverFromRect:WeakRetained inView:15 permittedArrowDirections:animatedCopy animated:x, y, width, height];
 }
 
 - (void)_dismissAirPlayRoutePickerIPad
@@ -46,9 +46,9 @@
 
   if (self->_popoverController)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
-    [v5 removeObserver:self name:@"UIWindowDidRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowDidRotateNotification" object:0];
     [(MPAudioVideoRoutingPopoverController *)self->_popoverController dismissPopoverAnimated:0];
     [(MPAudioVideoRoutingPopoverController *)self->_popoverController setDelegate:0];
     popoverController = self->_popoverController;
@@ -56,14 +56,14 @@
   }
 }
 
-- (void)showAirPlayPickerIPad:(int64_t)a3 fromRect:(CGRect)a4
+- (void)showAirPlayPickerIPad:(int64_t)pad fromRect:(CGRect)rect
 {
   if (!self->_popoverController)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     v16 = 0;
     v17 = &v16;
     v18 = 0x2050000000;
@@ -82,19 +82,19 @@
 
     v11 = v10;
     _Block_object_dispose(&v16, 8);
-    v12 = [[v10 alloc] initWithType:a3];
+    v12 = [[v10 alloc] initWithType:pad];
     popoverController = self->_popoverController;
     self->_popoverController = v12;
 
     [(MPAudioVideoRoutingPopoverController *)self->_popoverController setDelegate:self];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:self selector:sel__windowWillRotate_ name:@"UIWindowWillRotateNotification" object:0];
-    [v14 addObserver:self selector:sel__windowDidRotate_ name:@"UIWindowDidRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowWillRotate_ name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__windowDidRotate_ name:@"UIWindowDidRotateNotification" object:0];
     [(UIWebPlaybackTargetPicker *)self _presentAirPlayPopoverAnimated:1 fromRect:x, y, width, height];
   }
 }
 
-- (void)showAirPlayPickerIPhone:(int64_t)a3
+- (void)showAirPlayPickerIPhone:(int64_t)phone
 {
   if (!self->_actionSheet)
   {
@@ -116,7 +116,7 @@
 
     v6 = v5;
     _Block_object_dispose(&v13, 8);
-    v7 = [[v5 alloc] initWithAVItemType:a3];
+    v7 = [[v5 alloc] initWithAVItemType:phone];
     actionSheet = self->_actionSheet;
     self->_actionSheet = v7;
 
@@ -142,13 +142,13 @@ void __53__UIWebPlaybackTargetPicker_showAirPlayPickerIPhone___block_invoke(uint
   *(v4 + 424) = 0;
 }
 
-- (void)show:(BOOL)a3 fromRect:(CGRect)a4
+- (void)show:(BOOL)show fromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  showCopy = show;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -172,7 +172,7 @@ void __53__UIWebPlaybackTargetPicker_showAirPlayPickerIPhone___block_invoke(uint
   self->_routingController = v12;
 
   [(MPAVRoutingController *)self->_routingController setDiscoveryMode:3];
-  if (v8)
+  if (showCopy)
   {
     v14 = 2;
   }

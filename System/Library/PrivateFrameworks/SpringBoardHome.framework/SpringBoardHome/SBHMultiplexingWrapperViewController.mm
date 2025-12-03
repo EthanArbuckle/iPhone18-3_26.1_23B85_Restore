@@ -4,8 +4,8 @@
 - (BOOL)wantsCaptureOnlyBackgroundView;
 - (CGRect)visibleBounds;
 - (NSArray)applicationShortcutItems;
-- (SBHMultiplexingWrapperViewController)initWithIcon:(id)a3 location:(id)a4 multiplexingViewController:(id)a5 appPredictionViewController:(id)a6 canAlignWithGrid:(BOOL)a7;
-- (SBHMultiplexingWrapperViewController)initWithIcon:(id)a3 location:(id)a4 multiplexingViewController:(id)a5 component:(unint64_t)a6;
+- (SBHMultiplexingWrapperViewController)initWithIcon:(id)icon location:(id)location multiplexingViewController:(id)controller appPredictionViewController:(id)viewController canAlignWithGrid:(BOOL)grid;
+- (SBHMultiplexingWrapperViewController)initWithIcon:(id)icon location:(id)location multiplexingViewController:(id)controller component:(unint64_t)component;
 - (SBHMultiplexingWrapperViewControllerDelegate)delegate;
 - (SBIconApproximateLayoutPosition)approximateLayoutPosition;
 - (SBLeafIconDataSource)visiblyActiveDataSource;
@@ -13,74 +13,74 @@
 - (id)_widgetContextMenuController;
 - (unint64_t)expectedAppPredictionViewControllerMode;
 - (void)_configureBackgroundViewIfNecessary;
-- (void)_setBackgroundViewWeighting:(double)a3;
+- (void)_setBackgroundViewWeighting:(double)weighting;
 - (void)_updateEdgeAntialiasing;
-- (void)_updateMultiplexingViewControllerModeAnimated:(BOOL)a3;
+- (void)_updateMultiplexingViewControllerModeAnimated:(BOOL)animated;
 - (void)_updateWidgetViewHitTesting;
-- (void)addCustomImageViewControllerObserver:(id)a3;
-- (void)didSelectApplicationShortcutItem:(id)a3;
+- (void)addCustomImageViewControllerObserver:(id)observer;
+- (void)didSelectApplicationShortcutItem:(id)item;
 - (void)loadView;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setBackgroundViewConfigurator:(id)a3;
-- (void)setBackgroundViewProvider:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setForcesEdgeAntialiasing:(BOOL)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setImageViewAlignment:(unint64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setOverlapping:(BOOL)a3;
-- (void)setPauseReasons:(unint64_t)a3;
-- (void)setShowingContextMenu:(BOOL)a3;
-- (void)setShowsSquareCorners:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setWantsEditingDisplayStyle:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setBackgroundViewConfigurator:(id)configurator;
+- (void)setBackgroundViewProvider:(id)provider;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setForcesEdgeAntialiasing:(BOOL)antialiasing;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setImageViewAlignment:(unint64_t)alignment;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setOverlapping:(BOOL)overlapping;
+- (void)setPauseReasons:(unint64_t)reasons;
+- (void)setShowingContextMenu:(BOOL)menu;
+- (void)setShowsSquareCorners:(BOOL)corners;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setWantsEditingDisplayStyle:(BOOL)style animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willShowContextMenuAtLocation:(CGPoint)a3;
+- (void)willShowContextMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation SBHMultiplexingWrapperViewController
 
-- (SBHMultiplexingWrapperViewController)initWithIcon:(id)a3 location:(id)a4 multiplexingViewController:(id)a5 appPredictionViewController:(id)a6 canAlignWithGrid:(BOOL)a7
+- (SBHMultiplexingWrapperViewController)initWithIcon:(id)icon location:(id)location multiplexingViewController:(id)controller appPredictionViewController:(id)viewController canAlignWithGrid:(BOOL)grid
 {
-  v12 = a6;
-  v13 = [(SBHMultiplexingWrapperViewController *)self initWithIcon:a3 location:a4 multiplexingViewController:a5 component:0];
+  viewControllerCopy = viewController;
+  v13 = [(SBHMultiplexingWrapperViewController *)self initWithIcon:icon location:location multiplexingViewController:controller component:0];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_appPredictionViewController, v12);
-    v14->_canAlignWithGrid = a7;
+    objc_storeWeak(&v13->_appPredictionViewController, viewControllerCopy);
+    v14->_canAlignWithGrid = grid;
     v14->_backgroundViewWeighting = -1.0;
-    v15 = [(SBHMultiplexingWrapperViewController *)v14 expectedAppPredictionViewControllerMode];
-    if (v15 != [v12 mode])
+    expectedAppPredictionViewControllerMode = [(SBHMultiplexingWrapperViewController *)v14 expectedAppPredictionViewControllerMode];
+    if (expectedAppPredictionViewControllerMode != [viewControllerCopy mode])
     {
-      [v12 setMode:v15];
+      [viewControllerCopy setMode:expectedAppPredictionViewControllerMode];
     }
   }
 
   return v14;
 }
 
-- (SBHMultiplexingWrapperViewController)initWithIcon:(id)a3 location:(id)a4 multiplexingViewController:(id)a5 component:(unint64_t)a6
+- (SBHMultiplexingWrapperViewController)initWithIcon:(id)icon location:(id)location multiplexingViewController:(id)controller component:(unint64_t)component
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  iconCopy = icon;
+  locationCopy = location;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = SBHMultiplexingWrapperViewController;
   v14 = [(SBHMultiplexingWrapperViewController *)&v22 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_icon, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_icon, icon);
+    v16 = [locationCopy copy];
     location = v15->_location;
     v15->_location = v16;
 
-    objc_storeStrong(&v15->_multiplexingViewController, a5);
-    v15->_component = a6;
-    [v13 addObserver:v15];
+    objc_storeStrong(&v15->_multiplexingViewController, controller);
+    v15->_component = component;
+    [controllerCopy addObserver:v15];
     v15->_imageViewAlignment = 0;
     v18 = objc_opt_self();
     v23[0] = v18;
@@ -109,24 +109,24 @@
   v7.receiver = self;
   v7.super_class = SBHMultiplexingWrapperViewController;
   [(SBHMultiplexingWrapperViewController *)&v7 loadView];
-  v3 = [(SBHMultiplexingWrapperViewController *)self view];
+  view = [(SBHMultiplexingWrapperViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   containerView = self->_containerView;
   self->_containerView = v5;
 
   [(UIView *)self->_containerView setClipsToBounds:1];
-  [v3 addSubview:self->_containerView];
+  [view addSubview:self->_containerView];
   [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:0];
   [(SBHMultiplexingWrapperViewController *)self bs_addChildViewController:self->_multiplexingViewController withSuperview:self->_containerView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHMultiplexingWrapperViewController;
-  [(SBHMultiplexingWrapperViewController *)&v4 viewWillAppear:a3];
+  [(SBHMultiplexingWrapperViewController *)&v4 viewWillAppear:appear];
   [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:0];
 }
 
@@ -135,16 +135,16 @@
   v38.receiver = self;
   v38.super_class = SBHMultiplexingWrapperViewController;
   [(SBHMultiplexingWrapperViewController *)&v38 viewWillLayoutSubviews];
-  v3 = [(SBHMultiplexingWrapperViewController *)self view];
-  [v3 bounds];
+  view = [(SBHMultiplexingWrapperViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   WeakRetained = objc_loadWeakRetained(&self->_appPredictionViewController);
-  v13 = [WeakRetained mode];
-  v14 = v13;
+  mode = [WeakRetained mode];
+  v14 = mode;
   v15 = 0.0;
   if (self->_component)
   {
@@ -153,7 +153,7 @@
 
   else
   {
-    v16 = v13 == 1;
+    v16 = mode == 1;
   }
 
   if (!v16)
@@ -185,11 +185,11 @@
   }
 
   v30 = v26 + v29;
-  v31 = [(UIViewController *)self->_multiplexingViewController view];
-  [v31 setBounds:{v20, v22, v37, v25}];
+  view2 = [(UIViewController *)self->_multiplexingViewController view];
+  [view2 setBounds:{v20, v22, v37, v25}];
 
-  v32 = [(UIViewController *)self->_multiplexingViewController view];
-  [v32 setCenter:{v28, v30}];
+  view3 = [(UIViewController *)self->_multiplexingViewController view];
+  [view3 setCenter:{v28, v30}];
 
   continuousCornerRadius = self->_iconImageInfo.continuousCornerRadius;
   [(UIView *)self->_containerView _setContinuousCornerRadius:continuousCornerRadius];
@@ -197,17 +197,17 @@
   [(UIView *)self->_containerView setClipsToBounds:BSFloatEqualToFloat() ^ 1];
   if (!self->_component)
   {
-    v34 = [WeakRetained view];
-    v35 = v34;
+    view4 = [WeakRetained view];
+    v35 = view4;
     if (v14 == 1)
     {
-      [v34 sbh_createGlassGroup];
+      [view4 sbh_createGlassGroup];
       v36 = 1.0;
     }
 
     else
     {
-      [v34 sbh_removeGlass];
+      [view4 sbh_removeGlass];
       v36 = 0.0;
     }
 
@@ -215,7 +215,7 @@
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -228,78 +228,78 @@
     p_iconImageInfo->size.height = v9;
     p_iconImageInfo->scale = v8;
     p_iconImageInfo->continuousCornerRadius = v7;
-    v13 = [(SBHMultiplexingWrapperViewController *)self view];
-    v15 = [v13 layer];
+    view = [(SBHMultiplexingWrapperViewController *)self view];
+    layer = [view layer];
 
-    [v15 setCornerRadius:v7];
-    [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
-    v14 = [(SBHMultiplexingWrapperViewController *)self view];
-    [v14 setNeedsLayout];
+    [layer setCornerRadius:v7];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    view2 = [(SBHMultiplexingWrapperViewController *)self view];
+    [view2 setNeedsLayout];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v5 = a4;
-    self->_editing = a3;
+    animatedCopy = animated;
+    self->_editing = editing;
     [(SBHMultiplexingWrapperViewController *)self _updateWidgetViewHitTesting];
 
-    [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:v5];
+    [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:animatedCopy];
   }
 }
 
-- (void)setWantsEditingDisplayStyle:(BOOL)a3 animated:(BOOL)a4
+- (void)setWantsEditingDisplayStyle:(BOOL)style animated:(BOOL)animated
 {
-  if (self->_wantsEditingDisplayStyle != a3)
+  if (self->_wantsEditingDisplayStyle != style)
   {
-    self->_wantsEditingDisplayStyle = a3;
-    [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:a4];
+    self->_wantsEditingDisplayStyle = style;
+    [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:animated];
   }
 }
 
-- (void)setShowingContextMenu:(BOOL)a3
+- (void)setShowingContextMenu:(BOOL)menu
 {
-  if (self->_showingContextMenu != a3)
+  if (self->_showingContextMenu != menu)
   {
-    v4 = a3;
-    self->_showingContextMenu = a3;
+    menuCopy = menu;
+    self->_showingContextMenu = menu;
     [(SBHMultiplexingWrapperViewController *)self _updateMultiplexingViewControllerModeAnimated:1];
-    v6 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
-    [v6 setShowingContextMenu:v4];
+    _widgetContextMenuController = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
+    [_widgetContextMenuController setShowingContextMenu:menuCopy];
   }
 }
 
-- (void)willShowContextMenuAtLocation:(CGPoint)a3
+- (void)willShowContextMenuAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
+  y = location.y;
+  x = location.x;
+  _widgetContextMenuController = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
-    [v8 willShowContextMenuAtLocation:{x, y}];
+    _widgetContextMenuController2 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
+    [_widgetContextMenuController2 willShowContextMenuAtLocation:{x, y}];
   }
 }
 
-- (void)setOverlapping:(BOOL)a3
+- (void)setOverlapping:(BOOL)overlapping
 {
-  if (self->_overlapping != a3)
+  if (self->_overlapping != overlapping)
   {
-    self->_overlapping = a3;
-    v4 = [(SBHMultiplexingWrapperViewController *)self view];
-    [v4 setNeedsLayout];
+    self->_overlapping = overlapping;
+    view = [(SBHMultiplexingWrapperViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  if (self->_userInteractionEnabled != a3)
+  if (self->_userInteractionEnabled != enabled)
   {
-    self->_userInteractionEnabled = a3;
+    self->_userInteractionEnabled = enabled;
     [(SBHMultiplexingWrapperViewController *)self _updateWidgetViewHitTesting];
   }
 }
@@ -329,28 +329,28 @@
 
   v6 = v5;
 
-  v7 = [(SBIcon *)v6 activeDataSource];
+  activeDataSource = [(SBIcon *)v6 activeDataSource];
 
-  return v7;
+  return activeDataSource;
 }
 
-- (void)setForcesEdgeAntialiasing:(BOOL)a3
+- (void)setForcesEdgeAntialiasing:(BOOL)antialiasing
 {
-  if (self->_forcesEdgeAntialiasing != a3)
+  if (self->_forcesEdgeAntialiasing != antialiasing)
   {
-    self->_forcesEdgeAntialiasing = a3;
+    self->_forcesEdgeAntialiasing = antialiasing;
     [(SBHMultiplexingWrapperViewController *)self _updateEdgeAntialiasing];
   }
 }
 
-- (void)setBackgroundViewProvider:(id)a3
+- (void)setBackgroundViewProvider:(id)provider
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_backgroundViewProvider != v4)
+  providerCopy = provider;
+  v5 = providerCopy;
+  if (self->_backgroundViewProvider != providerCopy)
   {
-    v14 = v4;
-    v6 = [v4 copy];
+    v14 = providerCopy;
+    v6 = [providerCopy copy];
     backgroundViewProvider = self->_backgroundViewProvider;
     self->_backgroundViewProvider = v6;
 
@@ -362,35 +362,35 @@
       self->_backgroundView = 0;
     }
 
-    v4 = self->_backgroundViewProvider;
+    providerCopy = self->_backgroundViewProvider;
     v5 = v14;
-    if (v4)
+    if (providerCopy)
     {
-      v10 = (*(v4 + 2))(v4, v14);
+      v10 = (*(providerCopy + 2))(providerCopy, v14);
       v11 = self->_backgroundView;
       self->_backgroundView = v10;
 
       [(UIView *)self->_backgroundView setClipsToBounds:!self->_showsSquareCorners];
       [(UIView *)self->_containerView insertSubview:self->_backgroundView atIndex:0];
-      v12 = [(SBHMultiplexingWrapperViewController *)self view];
-      [v12 setNeedsLayout];
+      view = [(SBHMultiplexingWrapperViewController *)self view];
+      [view setNeedsLayout];
 
-      v13 = [(SBHMultiplexingWrapperViewController *)self view];
-      [v13 layoutIfNeeded];
+      view2 = [(SBHMultiplexingWrapperViewController *)self view];
+      [view2 layoutIfNeeded];
 
-      v4 = [(SBHMultiplexingWrapperViewController *)self _configureBackgroundViewIfNecessary];
+      providerCopy = [(SBHMultiplexingWrapperViewController *)self _configureBackgroundViewIfNecessary];
       v5 = v14;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](providerCopy, v5);
 }
 
-- (void)setBackgroundViewConfigurator:(id)a3
+- (void)setBackgroundViewConfigurator:(id)configurator
 {
-  if (self->_backgroundViewConfigurator != a3)
+  if (self->_backgroundViewConfigurator != configurator)
   {
-    v4 = [a3 copy];
+    v4 = [configurator copy];
     backgroundViewConfigurator = self->_backgroundViewConfigurator;
     self->_backgroundViewConfigurator = v4;
 
@@ -436,51 +436,51 @@
   return v5 == 0;
 }
 
-- (void)setImageViewAlignment:(unint64_t)a3
+- (void)setImageViewAlignment:(unint64_t)alignment
 {
-  if (self->_imageViewAlignment != a3)
+  if (self->_imageViewAlignment != alignment)
   {
-    self->_imageViewAlignment = a3;
-    v5 = [(SBHMultiplexingWrapperViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_imageViewAlignment = alignment;
+    view = [(SBHMultiplexingWrapperViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(SBHMultiplexingWrapperViewController *)self view];
-    [v6 layoutIfNeeded];
+    view2 = [(SBHMultiplexingWrapperViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v5 = v8;
+    v8 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    settingsCopy = v8;
     if (!self->_component)
     {
       WeakRetained = objc_loadWeakRetained(&self->_appPredictionViewController);
-      v7 = [(SBHLegibilitySettings *)v8 _UILegibilitySettings];
-      [WeakRetained setLegibilitySettings:v7];
+      _UILegibilitySettings = [(SBHLegibilitySettings *)v8 _UILegibilitySettings];
+      [WeakRetained setLegibilitySettings:_UILegibilitySettings];
 
-      v5 = v8;
+      settingsCopy = v8;
     }
   }
 }
 
 - (NSArray)applicationShortcutItems
 {
-  v2 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
-  v3 = [v2 applicationShortcutItems];
+  _widgetContextMenuController = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
+  applicationShortcutItems = [_widgetContextMenuController applicationShortcutItems];
 
-  return v3;
+  return applicationShortcutItems;
 }
 
-- (void)didSelectApplicationShortcutItem:(id)a3
+- (void)didSelectApplicationShortcutItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
-  [v5 didSelectApplicationShortcutItem:v4];
+  itemCopy = item;
+  _widgetContextMenuController = [(SBHMultiplexingWrapperViewController *)self _widgetContextMenuController];
+  [_widgetContextMenuController didSelectApplicationShortcutItem:itemCopy];
 }
 
 - (id)_widgetContextMenuController
@@ -511,22 +511,22 @@
   return v4;
 }
 
-- (void)setPauseReasons:(unint64_t)a3
+- (void)setPauseReasons:(unint64_t)reasons
 {
-  if (self->_pauseReasons != a3)
+  if (self->_pauseReasons != reasons)
   {
-    self->_pauseReasons = a3;
+    self->_pauseReasons = reasons;
     if (!self->_component)
     {
       WeakRetained = objc_loadWeakRetained(&self->_appPredictionViewController);
-      [WeakRetained setOccluded:a3 != 0];
+      [WeakRetained setOccluded:reasons != 0];
     }
   }
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  v3 = a3;
+  groupingCopy = grouping;
   backgroundView = self->_backgroundView;
   v5 = objc_opt_class();
   v6 = backgroundView;
@@ -550,7 +550,7 @@
 
   v8 = v7;
 
-  [(UIView *)v8 setAllowsGlassGrouping:v3];
+  [(UIView *)v8 setAllowsGlassGrouping:groupingCopy];
 }
 
 - (CGRect)visibleBounds
@@ -567,31 +567,31 @@
   return result;
 }
 
-- (void)setShowsSquareCorners:(BOOL)a3
+- (void)setShowsSquareCorners:(BOOL)corners
 {
-  if (self->_showsSquareCorners != a3)
+  if (self->_showsSquareCorners != corners)
   {
-    self->_showsSquareCorners = a3;
-    [(UIView *)self->_backgroundView setClipsToBounds:!a3];
+    self->_showsSquareCorners = corners;
+    [(UIView *)self->_backgroundView setClipsToBounds:!corners];
   }
 }
 
-- (void)addCustomImageViewControllerObserver:(id)a3
+- (void)addCustomImageViewControllerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (id)_backdropGroupName
@@ -620,16 +620,16 @@
   v6 = v5;
 
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v8 = [(UIViewController *)v6 identifier];
+  identifier = [(UIViewController *)v6 identifier];
 
-  v9 = [v7 initWithFormat:@"SBWidget-%@", v8];
+  v9 = [v7 initWithFormat:@"SBWidget-%@", identifier];
 
   return v9;
 }
 
-- (void)_setBackgroundViewWeighting:(double)a3
+- (void)_setBackgroundViewWeighting:(double)weighting
 {
-  if (self->_backgroundViewWeighting == a3)
+  if (self->_backgroundViewWeighting == weighting)
   {
     return;
   }
@@ -682,9 +682,9 @@
 
   if (v15)
   {
-    [(UIView *)v15 setWeighting:a3];
+    [(UIView *)v15 setWeighting:weighting];
 LABEL_18:
-    self->_backgroundViewWeighting = a3;
+    self->_backgroundViewWeighting = weighting;
     goto LABEL_19;
   }
 
@@ -697,7 +697,7 @@ LABEL_18:
   v14 = self->_backgroundView;
   if (v14)
   {
-    [(UIView *)v14 setAlpha:a3];
+    [(UIView *)v14 setAlpha:weighting];
     goto LABEL_18;
   }
 
@@ -706,7 +706,7 @@ LABEL_19:
 
 - (unint64_t)expectedAppPredictionViewControllerMode
 {
-  v3 = [(SBHMultiplexingWrapperViewController *)self canAlignWithGrid];
+  canAlignWithGrid = [(SBHMultiplexingWrapperViewController *)self canAlignWithGrid];
   if (self->_editing)
   {
     return 1;
@@ -722,13 +722,13 @@ LABEL_19:
     return 1;
   }
 
-  v4 = v3;
+  v4 = canAlignWithGrid;
   return (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", self->_location) & 1) != 0 || [(NSString *)self->_location isEqualToString:@"SBIconLocationAddWidgetSheet"]|| !v4;
 }
 
-- (void)_updateMultiplexingViewControllerModeAnimated:(BOOL)a3
+- (void)_updateMultiplexingViewControllerModeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (self->_component)
   {
     v5 = 0;
@@ -739,32 +739,32 @@ LABEL_19:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appPredictionViewController);
-    v9 = [(SBHMultiplexingWrapperViewController *)self expectedAppPredictionViewControllerMode];
-    v6 = v9 != [WeakRetained mode];
+    expectedAppPredictionViewControllerMode = [(SBHMultiplexingWrapperViewController *)self expectedAppPredictionViewControllerMode];
+    v6 = expectedAppPredictionViewControllerMode != [WeakRetained mode];
     v10 = WeakRetained;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__SBHMultiplexingWrapperViewController__updateMultiplexingViewControllerModeAnimated___block_invoke;
     aBlock[3] = &unk_1E8088CB8;
     v24 = v10;
-    v25 = v9;
+    v25 = expectedAppPredictionViewControllerMode;
     v7 = v10;
     v5 = _Block_copy(aBlock);
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
   ++self->_backgroundAnimationCount;
   if (v6)
   {
-    v12 = [(SBHMultiplexingWrapperViewController *)self delegate];
+    delegate = [(SBHMultiplexingWrapperViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 multiplexingWrapperViewControllerWillChangeGridAlignment:self];
+      [delegate multiplexingWrapperViewControllerWillChangeGridAlignment:self];
     }
   }
 
   v13 = MEMORY[0x1E69DD250];
-  if (v3)
+  if (animatedCopy)
   {
     v14 = 3;
   }
@@ -779,7 +779,7 @@ LABEL_19:
   v18[2] = __86__SBHMultiplexingWrapperViewController__updateMultiplexingViewControllerModeAnimated___block_invoke_2;
   v18[3] = &unk_1E808BF00;
   v22 = v6;
-  v20 = self;
+  selfCopy = self;
   v21 = v5;
   v19 = v7;
   v17[0] = MEMORY[0x1E69E9820];
@@ -789,7 +789,7 @@ LABEL_19:
   v17[4] = self;
   v15 = v7;
   v16 = v5;
-  [v13 sb_animateWithSettings:v11 mode:v14 animations:v18 completion:v17];
+  [v13 sb_animateWithSettings:initWithDefaultValues mode:v14 animations:v18 completion:v17];
 }
 
 void __86__SBHMultiplexingWrapperViewController__updateMultiplexingViewControllerModeAnimated___block_invoke_2(uint64_t a1)
@@ -879,20 +879,20 @@ void __86__SBHMultiplexingWrapperViewController__updateMultiplexingViewControlle
 - (void)_updateWidgetViewHitTesting
 {
   v2 = self->_editing || !self->_userInteractionEnabled;
-  v3 = [(UIViewController *)self->_multiplexingViewController view];
-  [v3 bs_setHitTestingDisabled:v2];
+  view = [(UIViewController *)self->_multiplexingViewController view];
+  [view bs_setHitTestingDisabled:v2];
 }
 
 - (void)_updateEdgeAntialiasing
 {
-  v3 = [(SBHMultiplexingWrapperViewController *)self view];
-  v10 = [v3 layer];
+  view = [(SBHMultiplexingWrapperViewController *)self view];
+  layer = [view layer];
 
-  v4 = [(SBHMultiplexingWrapperViewController *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(SBHMultiplexingWrapperViewController *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  [v10 setAllowsEdgeAntialiasing:self->_forcesEdgeAntialiasing];
+  [layer setAllowsEdgeAntialiasing:self->_forcesEdgeAntialiasing];
   backgroundView = self->_backgroundView;
   v8 = objc_opt_class();
   v9 = backgroundView;
@@ -911,18 +911,18 @@ void __86__SBHMultiplexingWrapperViewController__updateMultiplexingViewControlle
 
   if (!v8)
   {
-    [v10 setShouldRasterize:self->_forcesEdgeAntialiasing];
-    [v10 setRasterizationScale:v6];
+    [layer setShouldRasterize:self->_forcesEdgeAntialiasing];
+    [layer setRasterizationScale:v6];
   }
 }
 
 - (void)_configureBackgroundViewIfNecessary
 {
-  v3 = [(SBHMultiplexingWrapperViewController *)self visiblyActiveDataSource];
+  visiblyActiveDataSource = [(SBHMultiplexingWrapperViewController *)self visiblyActiveDataSource];
   backgroundViewConfigurator = self->_backgroundViewConfigurator;
   if (backgroundViewConfigurator)
   {
-    if (self->_backgroundView && v3 != 0)
+    if (self->_backgroundView && visiblyActiveDataSource != 0)
     {
       backgroundViewConfigurator[2]();
     }

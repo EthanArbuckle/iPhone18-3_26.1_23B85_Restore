@@ -1,28 +1,28 @@
 @interface MPModelStoreRadioMusicKitRequestOperation
 - (id)additionalCatalogURLQueryItems;
-- (id)additionalURLRequestsWithStoreURLBag:(id)a3;
-- (id)groupingNameWithMusicSubscriptionDictionary:(id)a3;
-- (id)radioStationWithDictionary:(id)a3;
-- (id)recentlyPlayedItemWithDictionary:(id)a3;
-- (id)recentlyPlayedItemsWithAPILoadedOutput:(id)a3;
-- (id)recentlyPlayedSectionWithTitle:(id)a3;
-- (id)recentlyPlayedURLWithStoreURLBag:(id)a3;
-- (id)rootObjectIdentifierWithSubscriptionStatus:(int64_t)a3;
-- (int64_t)radioStationSubTypeFromSubType:(id)a3;
-- (int64_t)radioStationTypeFromKind:(id)a3;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (id)additionalURLRequestsWithStoreURLBag:(id)bag;
+- (id)groupingNameWithMusicSubscriptionDictionary:(id)dictionary;
+- (id)radioStationWithDictionary:(id)dictionary;
+- (id)recentlyPlayedItemWithDictionary:(id)dictionary;
+- (id)recentlyPlayedItemsWithAPILoadedOutput:(id)output;
+- (id)recentlyPlayedSectionWithTitle:(id)title;
+- (id)recentlyPlayedURLWithStoreURLBag:(id)bag;
+- (id)rootObjectIdentifierWithSubscriptionStatus:(int64_t)status;
+- (int64_t)radioStationSubTypeFromSubType:(id)type;
+- (int64_t)radioStationTypeFromKind:(id)kind;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation MPModelStoreRadioMusicKitRequestOperation
 
-- (id)radioStationWithDictionary:(id)a3
+- (id)radioStationWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__MPModelStoreRadioMusicKitRequestOperation_radioStationWithDictionary___block_invoke;
   aBlock[3] = &unk_1E7680B28;
-  v5 = v4;
+  v5 = dictionaryCopy;
   v18 = v5;
   v6 = _Block_copy(aBlock);
   v7 = [MPModelRadioStation alloc];
@@ -34,7 +34,7 @@
   v14[2] = __72__MPModelStoreRadioMusicKitRequestOperation_radioStationWithDictionary___block_invoke_3;
   v14[3] = &unk_1E767EC90;
   v15 = v5;
-  v16 = self;
+  selfCopy = self;
   v11 = v5;
   v12 = [(MPModelObject *)v7 initWithIdentifiers:v10 block:v14];
 
@@ -155,11 +155,11 @@ void __72__MPModelStoreRadioMusicKitRequestOperation_radioStationWithDictionary_
   [v3 setStationStringID:v4];
 }
 
-- (id)recentlyPlayedItemWithDictionary:(id)a3
+- (id)recentlyPlayedItemWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[MPIdentifierSet emptyIdentifierSet];
-  v6 = [(MPModelStoreRadioMusicKitRequestOperation *)self radioStationWithDictionary:v4];
+  v6 = [(MPModelStoreRadioMusicKitRequestOperation *)self radioStationWithDictionary:dictionaryCopy];
 
   v7 = [MPModelStoreBrowseContentItem alloc];
   v11[0] = MEMORY[0x1E69E9820];
@@ -181,14 +181,14 @@ void __78__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedItemWithDicti
   [v3 setRadioStation:*(a1 + 32)];
 }
 
-- (id)recentlyPlayedItemsWithAPILoadedOutput:(id)a3
+- (id)recentlyPlayedItemsWithAPILoadedOutput:(id)output
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  outputCopy = output;
   v5 = objc_opt_new();
   if (_NSIsNSDictionary())
   {
-    v6 = [v4 objectForKeyedSubscript:@"data"];
+    v6 = [outputCopy objectForKeyedSubscript:@"data"];
     if (_NSIsNSArray())
     {
       v17 = 0u;
@@ -237,15 +237,15 @@ void __78__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedItemWithDicti
   return v13;
 }
 
-- (int64_t)radioStationSubTypeFromSubType:(id)a3
+- (int64_t)radioStationSubTypeFromSubType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Episode"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Episode"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Shoutcast"])
+  else if ([typeCopy isEqualToString:@"Shoutcast"])
   {
     v4 = 2;
   }
@@ -258,73 +258,73 @@ void __78__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedItemWithDicti
   return v4;
 }
 
-- (int64_t)radioStationTypeFromKind:(id)a3
+- (int64_t)radioStationTypeFromKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"albumSeeded"])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"albumSeeded"])
   {
     v4 = 10;
   }
 
   else
   {
-    if ([v3 isEqualToString:@"artistOnly"])
+    if ([kindCopy isEqualToString:@"artistOnly"])
     {
       goto LABEL_4;
     }
 
-    if ([v3 isEqualToString:@"artistSeeded"])
+    if ([kindCopy isEqualToString:@"artistSeeded"])
     {
       v4 = 2;
       goto LABEL_13;
     }
 
-    if ([v3 isEqualToString:@"editorial"])
+    if ([kindCopy isEqualToString:@"editorial"])
     {
       v4 = 6;
       goto LABEL_13;
     }
 
-    if ([v3 isEqualToString:@"format"])
+    if ([kindCopy isEqualToString:@"format"])
     {
       v4 = 5;
       goto LABEL_13;
     }
 
-    if ([v3 isEqualToString:@"genre"])
+    if ([kindCopy isEqualToString:@"genre"])
     {
       v4 = 7;
       goto LABEL_13;
     }
 
-    if ([v3 isEqualToString:@"libraryPlaylistSeeded"])
+    if ([kindCopy isEqualToString:@"libraryPlaylistSeeded"])
     {
       goto LABEL_4;
     }
 
-    if ([v3 isEqualToString:@"playlistSeeded"])
+    if ([kindCopy isEqualToString:@"playlistSeeded"])
     {
       v4 = 9;
       goto LABEL_13;
     }
 
-    if ([v3 isEqualToString:@"query"])
+    if ([kindCopy isEqualToString:@"query"])
     {
 LABEL_4:
       v4 = 0;
     }
 
-    else if ([v3 isEqualToString:@"songSeeded"])
+    else if ([kindCopy isEqualToString:@"songSeeded"])
     {
       v4 = 1;
     }
 
-    else if ([v3 isEqualToString:@"streaming"])
+    else if ([kindCopy isEqualToString:@"streaming"])
     {
       v4 = 4;
     }
 
-    else if ([v3 isEqualToString:@"user"])
+    else if ([kindCopy isEqualToString:@"user"])
     {
       v4 = 8;
     }
@@ -340,17 +340,17 @@ LABEL_13:
   return v4;
 }
 
-- (id)recentlyPlayedSectionWithTitle:(id)a3
+- (id)recentlyPlayedSectionWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [MPModelStoreBrowseSection alloc];
   v5 = +[MPIdentifierSet emptyIdentifierSet];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedSectionWithTitle___block_invoke;
   v9[3] = &unk_1E767CCC0;
-  v10 = v3;
-  v6 = v3;
+  v10 = titleCopy;
+  v6 = titleCopy;
   v7 = [(MPModelObject *)v4 initWithIdentifiers:v5 block:v9];
 
   return v7;
@@ -366,33 +366,33 @@ void __76__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedSectionWithTi
   [v3 setLoadAdditionalContentURL:0];
 }
 
-- (id)rootObjectIdentifierWithSubscriptionStatus:(int64_t)a3
+- (id)rootObjectIdentifierWithSubscriptionStatus:(int64_t)status
 {
-  if ((a3 - 1) > 2)
+  if ((status - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E767CD20[a3 - 1];
+    return off_1E767CD20[status - 1];
   }
 }
 
-- (id)recentlyPlayedURLWithStoreURLBag:(id)a3
+- (id)recentlyPlayedURLWithStoreURLBag:(id)bag
 {
-  v3 = MusicURLComponentsWithURLBag(a3, 0);
+  v3 = MusicURLComponentsWithURLBag(bag, 0);
   [v3 setPath:@"/v1/me/recent/radio-stations"];
   v4 = [v3 URL];
 
   return v4;
 }
 
-- (id)groupingNameWithMusicSubscriptionDictionary:(id)a3
+- (id)groupingNameWithMusicSubscriptionDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(MPModelStoreRadioMusicKitRequestOperation *)self groupingNameBagKey];
-  v6 = [v4 objectForKey:v5];
+  dictionaryCopy = dictionary;
+  groupingNameBagKey = [(MPModelStoreRadioMusicKitRequestOperation *)self groupingNameBagKey];
+  v6 = [dictionaryCopy objectForKey:groupingNameBagKey];
 
   if (v6)
   {
@@ -409,52 +409,52 @@ void __76__MPModelStoreRadioMusicKitRequestOperation_recentlyPlayedSectionWithTi
   return v7;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPStoreModelRequestOperation *)self request];
-  if ([v8 additionalContent] == 1)
+  outputCopy = output;
+  completionCopy = completion;
+  request = [(MPStoreModelRequestOperation *)self request];
+  if ([request additionalContent] == 1)
   {
     if ((_NSIsNSArray() & 1) == 0)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69E4198] code:-7102 userInfo:0];
-      v7[2](v7, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
 
       goto LABEL_9;
     }
 
-    v9 = v6;
+    v9 = outputCopy;
     if ([v9 count] != 2)
     {
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69E4198] code:-7102 userInfo:0];
-      v7[2](v7, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
 
       goto LABEL_9;
     }
 
-    v10 = [v9 firstObject];
-    v11 = [v9 lastObject];
+    firstObject = [v9 firstObject];
+    lastObject = [v9 lastObject];
   }
 
   else
   {
-    v10 = v6;
-    v11 = 0;
+    firstObject = outputCopy;
+    lastObject = 0;
   }
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__MPModelStoreRadioMusicKitRequestOperation_produceResponseWithLoadedOutput_completion___block_invoke;
   v16[3] = &unk_1E767CC98;
-  v17 = v8;
-  v18 = self;
-  v19 = v11;
-  v20 = v7;
+  v17 = request;
+  selfCopy = self;
+  v19 = lastObject;
+  v20 = completionCopy;
   v15.receiver = self;
   v15.super_class = MPModelStoreRadioMusicKitRequestOperation;
-  v12 = v11;
-  [(MPModelStoreGroupingsMusicKitRequestOperation *)&v15 produceResponseWithLoadedOutput:v10 completion:v16];
+  v12 = lastObject;
+  [(MPModelStoreGroupingsMusicKitRequestOperation *)&v15 produceResponseWithLoadedOutput:firstObject completion:v16];
 
 LABEL_9:
 }
@@ -564,15 +564,15 @@ void __88__MPModelStoreRadioMusicKitRequestOperation_produceResponseWithLoadedOu
   return v6;
 }
 
-- (id)additionalURLRequestsWithStoreURLBag:(id)a3
+- (id)additionalURLRequestsWithStoreURLBag:(id)bag
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPStoreModelRequestOperation *)self request];
-  if ([v5 additionalContent] == 1)
+  bagCopy = bag;
+  request = [(MPStoreModelRequestOperation *)self request];
+  if ([request additionalContent] == 1)
   {
     v6 = MEMORY[0x1E696AF68];
-    v7 = [(MPModelStoreRadioMusicKitRequestOperation *)self recentlyPlayedURLWithStoreURLBag:v4];
+    v7 = [(MPModelStoreRadioMusicKitRequestOperation *)self recentlyPlayedURLWithStoreURLBag:bagCopy];
     v8 = [v6 requestWithURL:v7];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];

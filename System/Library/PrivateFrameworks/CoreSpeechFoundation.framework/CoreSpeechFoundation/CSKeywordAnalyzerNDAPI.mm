@@ -1,15 +1,15 @@
 @interface CSKeywordAnalyzerNDAPI
-- (CSKeywordAnalyzerNDAPI)initWithConfigPath:(id)a3 resourcePath:(id)a4;
+- (CSKeywordAnalyzerNDAPI)initWithConfigPath:(id)path resourcePath:(id)resourcePath;
 - (float)getLoggingThreshold;
 - (float)getRejectLoggingThreshold;
 - (float)getThreshold;
-- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)a3 phId:(unint64_t)a4;
+- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)result phId:(unint64_t)id;
 - (id)getAnalyzedResults;
-- (id)getAnalyzedResultsFromAudioChunk:(id)a3;
+- (id)getAnalyzedResultsFromAudioChunk:(id)chunk;
 - (id)getBestAnalyzedResults;
-- (id)getBestAnalyzedResultsFromAudioChunk:(id)a3;
-- (void)_processAudioChunk:(id)a3;
-- (void)_setStartAnalyzeTime:(unint64_t)a3;
+- (id)getBestAnalyzedResultsFromAudioChunk:(id)chunk;
+- (void)_processAudioChunk:(id)chunk;
+- (void)_setStartAnalyzeTime:(unint64_t)time;
 - (void)reset;
 @end
 
@@ -26,18 +26,18 @@
 
 - (id)getAnalyzedResults
 {
-  v3 = [(CSNovDetector *)self->_novDetector numResultsAvailable];
-  if (v3)
+  numResultsAvailable = [(CSNovDetector *)self->_novDetector numResultsAvailable];
+  if (numResultsAvailable)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x1E695DF70] array];
+    v4 = numResultsAvailable;
+    array = [MEMORY[0x1E695DF70] array];
     v6 = 0;
     v7 = v4;
     do
     {
       v8 = [(CSNovDetector *)self->_novDetector getAnalyzedResultForPhId:v6];
       v9 = [(CSKeywordAnalyzerNDAPI *)self _keywordAnalyzerNDAPIResultFromNovDetectorResult:v8 phId:v6];
-      [v5 addObject:v9];
+      [array addObject:v9];
 
       ++v6;
     }
@@ -47,10 +47,10 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
 - (float)getRejectLoggingThreshold
@@ -139,29 +139,29 @@
 
 - (id)getBestAnalyzedResults
 {
-  v3 = [(CSNovDetector *)self->_novDetector getBestAnalyzedResult];
-  v4 = -[CSKeywordAnalyzerNDAPI _keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:](self, "_keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:", v3, [v3 bestPhrase]);
+  getBestAnalyzedResult = [(CSNovDetector *)self->_novDetector getBestAnalyzedResult];
+  v4 = -[CSKeywordAnalyzerNDAPI _keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:](self, "_keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:", getBestAnalyzedResult, [getBestAnalyzedResult bestPhrase]);
 
   return v4;
 }
 
-- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)a3 phId:(unint64_t)a4
+- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)result phId:(unint64_t)id
 {
-  if (a3)
+  if (result)
   {
-    v6 = a3;
+    resultCopy = result;
     v7 = objc_alloc_init(CSKeywordAnalyzerNDAPIResult);
-    [(CSKeywordAnalyzerNDAPIResult *)v7 setPhId:a4];
-    -[CSKeywordAnalyzerNDAPIResult setSamplesFed:](v7, "setSamplesFed:", [v6 sampleFed]);
-    -[CSKeywordAnalyzerNDAPIResult setBestPhrase:](v7, "setBestPhrase:", [v6 bestPhrase]);
-    -[CSKeywordAnalyzerNDAPIResult setBestStart:](v7, "setBestStart:", self->_startAnalyzeSampleCount + [v6 bestStart] + self->_sampleFedWrapAroundOffset);
-    -[CSKeywordAnalyzerNDAPIResult setBestEnd:](v7, "setBestEnd:", self->_startAnalyzeSampleCount + [v6 bestEnd] + self->_sampleFedWrapAroundOffset);
-    [v6 bestScore];
+    [(CSKeywordAnalyzerNDAPIResult *)v7 setPhId:id];
+    -[CSKeywordAnalyzerNDAPIResult setSamplesFed:](v7, "setSamplesFed:", [resultCopy sampleFed]);
+    -[CSKeywordAnalyzerNDAPIResult setBestPhrase:](v7, "setBestPhrase:", [resultCopy bestPhrase]);
+    -[CSKeywordAnalyzerNDAPIResult setBestStart:](v7, "setBestStart:", self->_startAnalyzeSampleCount + [resultCopy bestStart] + self->_sampleFedWrapAroundOffset);
+    -[CSKeywordAnalyzerNDAPIResult setBestEnd:](v7, "setBestEnd:", self->_startAnalyzeSampleCount + [resultCopy bestEnd] + self->_sampleFedWrapAroundOffset);
+    [resultCopy bestScore];
     [(CSKeywordAnalyzerNDAPIResult *)v7 setBestScore:?];
-    -[CSKeywordAnalyzerNDAPIResult setIsEarlyWarning:](v7, "setIsEarlyWarning:", [v6 earlyWarning]);
-    v8 = [v6 sampleFed];
+    -[CSKeywordAnalyzerNDAPIResult setIsEarlyWarning:](v7, "setIsEarlyWarning:", [resultCopy earlyWarning]);
+    sampleFed = [resultCopy sampleFed];
 
-    [(CSKeywordAnalyzerNDAPIResult *)v7 setSamplesAtFire:self->_startAnalyzeSampleCount + v8 + self->_sampleFedWrapAroundOffset];
+    [(CSKeywordAnalyzerNDAPIResult *)v7 setSamplesAtFire:self->_startAnalyzeSampleCount + sampleFed + self->_sampleFedWrapAroundOffset];
     [(CSKeywordAnalyzerNDAPIResult *)v7 setStartSampleCount:self->_startAnalyzeSampleCount];
   }
 
@@ -173,22 +173,22 @@
   return v7;
 }
 
-- (void)_processAudioChunk:(id)a3
+- (void)_processAudioChunk:(id)chunk
 {
-  v4 = a3;
-  -[CSKeywordAnalyzerNDAPI _setStartAnalyzeTime:](self, "_setStartAnalyzeTime:", [v4 startSampleCount]);
-  v5 = [v4 numSamples];
-  v6 = [v4 isFloat];
-  v7 = [v4 dataForChannel:self->_activeChannel];
+  chunkCopy = chunk;
+  -[CSKeywordAnalyzerNDAPI _setStartAnalyzeTime:](self, "_setStartAnalyzeTime:", [chunkCopy startSampleCount]);
+  numSamples = [chunkCopy numSamples];
+  isFloat = [chunkCopy isFloat];
+  v7 = [chunkCopy dataForChannel:self->_activeChannel];
 
-  if (v6)
+  if (isFloat)
   {
-    [(CSKeywordAnalyzerNDAPI *)self analyzeWavFloatData:v7 numSamples:v5];
+    [(CSKeywordAnalyzerNDAPI *)self analyzeWavFloatData:v7 numSamples:numSamples];
   }
 
   else
   {
-    [(CSKeywordAnalyzerNDAPI *)self analyzeWavData:v7 numSamples:v5];
+    [(CSKeywordAnalyzerNDAPI *)self analyzeWavData:v7 numSamples:numSamples];
   }
 
   v8 = [(CSNovDetector *)self->_novDetector getAnalyzedResultForPhId:self->_activePhId];
@@ -205,34 +205,34 @@
   }
 }
 
-- (id)getBestAnalyzedResultsFromAudioChunk:(id)a3
+- (id)getBestAnalyzedResultsFromAudioChunk:(id)chunk
 {
-  [(CSKeywordAnalyzerNDAPI *)self _processAudioChunk:a3];
+  [(CSKeywordAnalyzerNDAPI *)self _processAudioChunk:chunk];
 
   return [(CSKeywordAnalyzerNDAPI *)self getBestAnalyzedResults];
 }
 
-- (id)getAnalyzedResultsFromAudioChunk:(id)a3
+- (id)getAnalyzedResultsFromAudioChunk:(id)chunk
 {
-  [(CSKeywordAnalyzerNDAPI *)self _processAudioChunk:a3];
+  [(CSKeywordAnalyzerNDAPI *)self _processAudioChunk:chunk];
 
   return [(CSKeywordAnalyzerNDAPI *)self getAnalyzedResults];
 }
 
-- (void)_setStartAnalyzeTime:(unint64_t)a3
+- (void)_setStartAnalyzeTime:(unint64_t)time
 {
   v10 = *MEMORY[0x1E69E9840];
   if (!self->_isStartSampleCountMarked)
   {
     self->_isStartSampleCountMarked = 1;
-    self->_startAnalyzeSampleCount = a3;
+    self->_startAnalyzeSampleCount = time;
     v4 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315394;
       v7 = "[CSKeywordAnalyzerNDAPI _setStartAnalyzeTime:]";
       v8 = 2050;
-      v9 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s set StartAnalyzeSampleCount = %{public}lld", &v6, 0x16u);
     }
   }
@@ -240,15 +240,15 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (CSKeywordAnalyzerNDAPI)initWithConfigPath:(id)a3 resourcePath:(id)a4
+- (CSKeywordAnalyzerNDAPI)initWithConfigPath:(id)path resourcePath:(id)resourcePath
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v15.receiver = self;
   v15.super_class = CSKeywordAnalyzerNDAPI;
   v8 = [(CSKeywordAnalyzerNDAPI *)&v15 init];
-  if (v8 && (v9 = [[CSNovDetector alloc] initWithConfigPath:v6 resourcePath:v7], novDetector = v8->_novDetector, v8->_novDetector = v9, novDetector, !v8->_novDetector))
+  if (v8 && (v9 = [[CSNovDetector alloc] initWithConfigPath:pathCopy resourcePath:resourcePathCopy], novDetector = v8->_novDetector, v8->_novDetector = v9, novDetector, !v8->_novDetector))
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))

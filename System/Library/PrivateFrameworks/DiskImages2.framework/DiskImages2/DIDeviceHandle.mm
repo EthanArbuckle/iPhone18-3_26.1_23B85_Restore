@@ -1,28 +1,28 @@
 @interface DIDeviceHandle
-- (BOOL)addToRefCountWithError:(id *)a3;
-- (BOOL)updateBSDNameWithBlockDevice:(id)a3 error:(id *)a4;
-- (BOOL)waitForDeviceWithError:(id *)a3;
-- (BOOL)waitForQuietWithService:(unsigned int)a3 error:(id *)a4;
-- (DIDeviceHandle)initWithCoder:(id)a3;
-- (DIDeviceHandle)initWithRegEntryID:(unint64_t)a3 xpcEndpoint:(id)a4;
+- (BOOL)addToRefCountWithError:(id *)error;
+- (BOOL)updateBSDNameWithBlockDevice:(id)device error:(id *)error;
+- (BOOL)waitForDeviceWithError:(id *)error;
+- (BOOL)waitForQuietWithService:(unsigned int)service error:(id *)error;
+- (DIDeviceHandle)initWithCoder:(id)coder;
+- (DIDeviceHandle)initWithRegEntryID:(unint64_t)d xpcEndpoint:(id)endpoint;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIDeviceHandle
 
-- (DIDeviceHandle)initWithRegEntryID:(unint64_t)a3 xpcEndpoint:(id)a4
+- (DIDeviceHandle)initWithRegEntryID:(unint64_t)d xpcEndpoint:(id)endpoint
 {
-  v7 = a4;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = DIDeviceHandle;
   v8 = [(DIDeviceHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_regEntryID = a3;
-    objc_storeStrong(&v8->_xpcEndpoint, a4);
+    v8->_regEntryID = d;
+    objc_storeStrong(&v8->_xpcEndpoint, endpoint);
   }
 
   return v9;
@@ -31,9 +31,9 @@
 - (void)dealloc
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(DIDeviceHandle *)self client2IOhandler];
+  client2IOhandler = [(DIDeviceHandle *)self client2IOhandler];
 
-  if (v3)
+  if (client2IOhandler)
   {
     v4 = *__error();
     if (DIForwardLogs())
@@ -70,8 +70,8 @@
     }
 
     *__error() = v4;
-    v8 = [(DIDeviceHandle *)self client2IOhandler];
-    [v8 closeConnection];
+    client2IOhandler2 = [(DIDeviceHandle *)self client2IOhandler];
+    [client2IOhandler2 closeConnection];
   }
 
   v12.receiver = self;
@@ -80,19 +80,19 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateBSDNameWithBlockDevice:(id)a3 error:(id *)a4
+- (BOOL)updateBSDNameWithBlockDevice:(id)device error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = [a3 copyIOMediaWithError:a4];
+  v6 = [device copyIOMediaWithError:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BSDName];
-    [(DIDeviceHandle *)self setBSDName:v8];
+    bSDName = [v6 BSDName];
+    [(DIDeviceHandle *)self setBSDName:bSDName];
 
-    v9 = [(DIDeviceHandle *)self BSDName];
+    bSDName2 = [(DIDeviceHandle *)self BSDName];
 
-    if (v9)
+    if (bSDName2)
     {
       v10 = *__error();
       if (DIForwardLogs())
@@ -119,13 +119,13 @@
         v14 = getDIOSLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(DIDeviceHandle *)self BSDName];
+          bSDName3 = [(DIDeviceHandle *)self BSDName];
           *buf = 68158210;
           v19 = 53;
           v20 = 2080;
           v21 = "[DIDeviceHandle updateBSDNameWithBlockDevice:error:]";
           v22 = 2114;
-          v23 = v15;
+          v23 = bSDName3;
           _os_log_impl(&dword_248DE0000, v14, OS_LOG_TYPE_DEFAULT, "%.*s: BSD name: %{public}@", buf, 0x1Cu);
         }
       }
@@ -136,7 +136,7 @@
 
     else
     {
-      v13 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot find BSD name in IO media service" error:a4];
+      v13 = [DIError failWithEnumValue:153 verboseInfo:@"Cannot find BSD name in IO media service" error:error];
     }
   }
 
@@ -149,13 +149,13 @@
   return v13;
 }
 
-- (BOOL)waitForQuietWithService:(unsigned int)a3 error:(id *)a4
+- (BOOL)waitForQuietWithService:(unsigned int)service error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   waitTime = 30;
   while (1)
   {
-    v5 = IOServiceWaitQuiet(a3, &waitTime);
+    v5 = IOServiceWaitQuiet(service, &waitTime);
     if (v5 != -536870186)
     {
       break;
@@ -198,7 +198,7 @@
   if (v5)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"IOServiceWaitQuiet error 0x%x", v5];
-    v14 = [DIError failWithEnumValue:154 verboseInfo:v13 error:a4];
+    v14 = [DIError failWithEnumValue:154 verboseInfo:v13 error:error];
   }
 
   else
@@ -242,19 +242,19 @@
   return v14;
 }
 
-- (BOOL)waitForDeviceWithError:(id *)a3
+- (BOOL)waitForDeviceWithError:(id *)error
 {
   v22 = 0;
   notification = 0;
-  v5 = [DIBlockDevice copyUnmatchedDiskImageWithRegEntryID:[(DIDeviceHandle *)self regEntryID] error:a3];
+  v5 = [DIBlockDevice copyUnmatchedDiskImageWithRegEntryID:[(DIDeviceHandle *)self regEntryID] error:error];
   v6 = v5;
   if (v5)
   {
     refCon[0] = &v22;
     refCon[1] = [v5 ioObj];
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v8 = [v7 getCFRunLoop];
-    if (!-[DIDeviceHandle waitForQuietWithService:error:](self, "waitForQuietWithService:error:", [v6 ioObj], a3))
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    getCFRunLoop = [currentRunLoop getCFRunLoop];
+    if (!-[DIDeviceHandle waitForQuietWithService:error:](self, "waitForQuietWithService:error:", [v6 ioObj], error))
     {
       goto LABEL_16;
     }
@@ -268,7 +268,7 @@
       {
         v12 = RunLoopSource;
         v13 = *MEMORY[0x277CBF058];
-        CFRunLoopAddSource(v8, RunLoopSource, *MEMORY[0x277CBF058]);
+        CFRunLoopAddSource(getCFRunLoop, RunLoopSource, *MEMORY[0x277CBF058]);
         v14 = IOServiceMatching("IOMedia");
         if (!IOServiceAddMatchingNotification(v10, "IOServiceMatched", v14, waitForDevCB, refCon, &notification))
         {
@@ -280,7 +280,7 @@
             do
             {
               v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{1.0, v19}];
-              [v7 runMode:v15 beforeDate:v16];
+              [currentRunLoop runMode:v15 beforeDate:v16];
             }
 
             while (!v22);
@@ -290,7 +290,7 @@
           v13 = v19;
         }
 
-        CFRunLoopRemoveSource(v8, v12, v13);
+        CFRunLoopRemoveSource(getCFRunLoop, v12, v13);
       }
 
       else
@@ -303,7 +303,7 @@
 
     if (v22)
     {
-      v17 = [(DIDeviceHandle *)self updateBSDNameWithBlockDevice:v6 error:a3];
+      v17 = [(DIDeviceHandle *)self updateBSDNameWithBlockDevice:v6 error:error];
       v22 = v17;
     }
 
@@ -322,24 +322,24 @@ LABEL_16:
   return v17;
 }
 
-- (DIDeviceHandle)initWithCoder:(id)a3
+- (DIDeviceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DIDeviceHandle;
   v5 = [(DIDeviceHandle *)&v12 init];
   if (v5)
   {
-    v5->_regEntryID = [v4 decodeInt64ForKey:@"regEntryID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xpcEndpoint"];
+    v5->_regEntryID = [coderCopy decodeInt64ForKey:@"regEntryID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xpcEndpoint"];
     xpcEndpoint = v5->_xpcEndpoint;
     v5->_xpcEndpoint = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BSDname"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BSDname"];
     BSDName = v5->_BSDName;
     v5->_BSDName = v8;
 
-    v10 = [v4 decodeBoolForKey:@"handleRefCount"];
+    v10 = [coderCopy decodeBoolForKey:@"handleRefCount"];
     v5->_handleRefCount = v10;
     if (v10)
     {
@@ -353,37 +353,37 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInt64:-[DIDeviceHandle regEntryID](self forKey:{"regEntryID"), @"regEntryID"}];
-  v4 = [(DIDeviceHandle *)self xpcEndpoint];
-  [v6 encodeObject:v4 forKey:@"xpcEndpoint"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[DIDeviceHandle regEntryID](self forKey:{"regEntryID"), @"regEntryID"}];
+  xpcEndpoint = [(DIDeviceHandle *)self xpcEndpoint];
+  [coderCopy encodeObject:xpcEndpoint forKey:@"xpcEndpoint"];
 
-  v5 = [(DIDeviceHandle *)self BSDName];
-  [v6 encodeObject:v5 forKey:@"BSDname"];
+  bSDName = [(DIDeviceHandle *)self BSDName];
+  [coderCopy encodeObject:bSDName forKey:@"BSDname"];
 
-  [v6 encodeBool:-[DIDeviceHandle handleRefCount](self forKey:{"handleRefCount"), @"handleRefCount"}];
+  [coderCopy encodeBool:-[DIDeviceHandle handleRefCount](self forKey:{"handleRefCount"), @"handleRefCount"}];
 }
 
-- (BOOL)addToRefCountWithError:(id *)a3
+- (BOOL)addToRefCountWithError:(id *)error
 {
   [(DIDeviceHandle *)self setHandleRefCount:1];
   v5 = [DIClient2IODaemonXPCHandler alloc];
-  v6 = [(DIDeviceHandle *)self xpcEndpoint];
-  v7 = [(DIClient2IODaemonXPCHandler *)v5 initWithEndpoint:v6];
+  xpcEndpoint = [(DIDeviceHandle *)self xpcEndpoint];
+  v7 = [(DIClient2IODaemonXPCHandler *)v5 initWithEndpoint:xpcEndpoint];
   [(DIDeviceHandle *)self setClient2IOhandler:v7];
 
-  v8 = [(DIDeviceHandle *)self client2IOhandler];
-  LODWORD(v6) = [v8 connectWithError:a3];
+  client2IOhandler = [(DIDeviceHandle *)self client2IOhandler];
+  LODWORD(xpcEndpoint) = [client2IOhandler connectWithError:error];
 
-  if (!v6)
+  if (!xpcEndpoint)
   {
     return 0;
   }
 
-  v9 = [(DIDeviceHandle *)self client2IOhandler];
-  v10 = [v9 addToRefCountWithError:a3];
+  client2IOhandler2 = [(DIDeviceHandle *)self client2IOhandler];
+  v10 = [client2IOhandler2 addToRefCountWithError:error];
 
   return v10;
 }
@@ -393,15 +393,15 @@ LABEL_16:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DIDeviceHandle *)self BSDName];
-  v7 = [(DIDeviceHandle *)self xpcEndpoint];
+  bSDName = [(DIDeviceHandle *)self BSDName];
+  xpcEndpoint = [(DIDeviceHandle *)self xpcEndpoint];
   v8 = @"managed";
-  if (!v7)
+  if (!xpcEndpoint)
   {
     v8 = @"unmanaged";
   }
 
-  v9 = [v3 stringWithFormat:@"%@[%@, %@]", v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@[%@, %@]", v5, bSDName, v8];
 
   return v9;
 }

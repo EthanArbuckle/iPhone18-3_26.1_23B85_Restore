@@ -1,21 +1,21 @@
 @interface _NSLocalizedStringResourceSwiftWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSLocale)locale;
 - (NSString)defaultValue;
 - (NSString)key;
 - (NSString)table;
 - (NSURL)bundleURL;
 - (_NSLocalizedStringResourceSwiftWrapper)init;
-- (_NSLocalizedStringResourceSwiftWrapper)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 locale:(id)a6 bundleURL:(id)a7;
-- (id)copyWithZone:(void *)a3;
-- (id)localizeWithOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocale:(id)a3;
+- (_NSLocalizedStringResourceSwiftWrapper)initWithKey:(id)key defaultValue:(id)value table:(id)table locale:(id)locale bundleURL:(id)l;
+- (id)copyWithZone:(void *)zone;
+- (id)localizeWithOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation _NSLocalizedStringResourceSwiftWrapper
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = *&self->wrapped[OBJC_IVAR____NSLocalizedStringResourceSwiftWrapper_wrapped + 56];
@@ -49,7 +49,7 @@
   return [(_NSLocalizedStringResourceSwiftWrapper *)&v17 init];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   type metadata accessor for _NSSwiftLocale();
   v5 = swift_dynamicCastClass();
@@ -64,9 +64,9 @@
   {
     type metadata accessor for _LocaleBridged();
     v6 = swift_allocObject();
-    *(v6 + 16) = a3;
+    *(v6 + 16) = locale;
     v7 = lazy protocol witness table accessor for type String.LocalizationValue.FormatArgument.CodableStorage and conformance String.LocalizationValue.FormatArgument.CodableStorage(&lazy protocol witness table cache variable for type _LocaleBridged and conformance _LocaleBridged, type metadata accessor for _LocaleBridged);
-    v8 = a3;
+    localeCopy = locale;
   }
 
   v9 = self + OBJC_IVAR____NSLocalizedStringResourceSwiftWrapper_wrapped;
@@ -76,7 +76,7 @@
   swift_unknownObjectRelease();
 }
 
-- (id)localizeWithOptions:(id)a3
+- (id)localizeWithOptions:(id)options
 {
   v4 = *&self->wrapped[OBJC_IVAR____NSLocalizedStringResourceSwiftWrapper_wrapped + 40];
   v5 = *&self->wrapped[OBJC_IVAR____NSLocalizedStringResourceSwiftWrapper_wrapped + 72];
@@ -99,10 +99,10 @@
   v26 = *&self->wrapped[OBJC_IVAR____NSLocalizedStringResourceSwiftWrapper_wrapped + 88];
   v25[2] = v28;
   v25[3] = v4;
-  v11 = a3;
-  v12 = self;
+  optionsCopy = options;
+  selfCopy = self;
   outlined init with copy of LocalizedStringResource(v27, &v20);
-  String.LocalizationOptions.init(nsOptions:)(v11, &v20);
+  String.LocalizationOptions.init(nsOptions:)(optionsCopy, &v20);
   v15 = v20;
   v16 = v21;
   v17 = v22;
@@ -115,18 +115,18 @@
   return v13;
 }
 
-- (_NSLocalizedStringResourceSwiftWrapper)initWithKey:(id)a3 defaultValue:(id)a4 table:(id)a5 locale:(id)a6 bundleURL:(id)a7
+- (_NSLocalizedStringResourceSwiftWrapper)initWithKey:(id)key defaultValue:(id)value table:(id)table locale:(id)locale bundleURL:(id)l
 {
-  v11 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v11 = static String._unconditionallyBridgeFromObjectiveC(_:)(key);
   v13 = v12;
-  if (a4)
+  if (value)
   {
-    v14 = static String._unconditionallyBridgeFromObjectiveC(_:)(a4);
+    v14 = static String._unconditionallyBridgeFromObjectiveC(_:)(value);
     v16 = v15;
-    if (a5)
+    if (table)
     {
 LABEL_3:
-      a5 = static String._unconditionallyBridgeFromObjectiveC(_:)(a5);
+      table = static String._unconditionallyBridgeFromObjectiveC(_:)(table);
       v18 = v17;
       goto LABEL_6;
     }
@@ -136,7 +136,7 @@ LABEL_3:
   {
     v14 = 0;
     v16 = 0;
-    if (a5)
+    if (table)
     {
       goto LABEL_3;
     }
@@ -157,16 +157,16 @@ LABEL_6:
   {
     type metadata accessor for _LocaleBridged();
     v21 = swift_allocObject();
-    *(v21 + 16) = a6;
+    *(v21 + 16) = locale;
     v20 = lazy protocol witness table accessor for type String.LocalizationValue.FormatArgument.CodableStorage and conformance String.LocalizationValue.FormatArgument.CodableStorage(&lazy protocol witness table cache variable for type _LocaleBridged and conformance _LocaleBridged, type metadata accessor for _LocaleBridged);
-    v22 = a6;
+    localeCopy = locale;
   }
 
   *&v26 = v21;
   *(&v26 + 1) = v20;
-  static URL._unconditionallyBridgeFromObjectiveC(_:)(a7, &v25);
+  static URL._unconditionallyBridgeFromObjectiveC(_:)(l, &v25);
   v24 = v25;
-  return _NSLocalizedStringResourceSwiftWrapper.init(key:defaultValue:table:locale:bundleURL:)(v11, v13, v14, v16, a5, v18, &v26, &v24);
+  return _NSLocalizedStringResourceSwiftWrapper.init(key:defaultValue:table:locale:bundleURL:)(v11, v13, v14, v16, table, v18, &v26, &v24);
 }
 
 - (NSString)defaultValue
@@ -198,11 +198,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _NSLocalizedStringResourceSwiftWrapper.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _NSLocalizedStringResourceSwiftWrapper.encode(with:)(coderCopy);
 }
 
 - (NSURL)bundleURL
@@ -229,11 +229,11 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -242,7 +242,7 @@ LABEL_6:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _NSLocalizedStringResourceSwiftWrapper.isEqual(_:)(v8);

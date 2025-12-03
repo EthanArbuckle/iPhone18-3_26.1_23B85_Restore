@@ -1,15 +1,15 @@
 @interface HKDotAnnotationView
-- (HKDotAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (HKDotAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation HKDotAnnotationView
 
-- (HKDotAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (HKDotAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKDotAnnotationView;
-  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -19,18 +19,18 @@
   return v5;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)
   {
     v9 = CurrentContext;
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [v10 setFill];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [whiteColor setFill];
 
     v12.origin.x = x;
     v12.origin.y = y;

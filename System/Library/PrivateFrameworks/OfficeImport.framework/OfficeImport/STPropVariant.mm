@@ -1,33 +1,33 @@
 @interface STPropVariant
-- (id)asDataOfType:(int *)a3;
+- (id)asDataOfType:(int *)type;
 - (void)dealloc;
-- (void)setBlobValue:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)setBlobValue:(id)value;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation STPropVariant
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   v6[2] = 0;
   v6[0] = 30;
-  v5 = a3;
-  v6[1] = [a3 UTF8String];
+  valueCopy = value;
+  v6[1] = [value UTF8String];
   propVariantCopyContents(v6, &self->mProp);
 }
 
-- (void)setBlobValue:(id)a3
+- (void)setBlobValue:(id)value
 {
   v6[0] = 65;
-  v4 = a3;
-  v6[1] = [v4 length];
-  v5 = [v4 bytes];
+  valueCopy = value;
+  v6[1] = [valueCopy length];
+  bytes = [valueCopy bytes];
 
-  v6[2] = v5;
+  v6[2] = bytes;
   propVariantCopyContents(v6, &self->mProp);
 }
 
-- (id)asDataOfType:(int *)a3
+- (id)asDataOfType:(int *)type
 {
   v4 = 0;
   vt = self->mProp.vt;
@@ -36,19 +36,19 @@
     switch(vt)
     {
       case 2u:
-        *a3 = 0;
+        *type = 0;
         v8 = MEMORY[0x277CBEA90];
         p_v = &self->mProp.v;
         cbSize = 2;
         break;
       case 3u:
-        *a3 = 1;
+        *type = 1;
         v8 = MEMORY[0x277CBEA90];
         p_v = &self->mProp.v;
         cbSize = 4;
         break;
       case 0x1Eu:
-        *a3 = 2;
+        *type = 2;
         bstrVal = self->mProp.v.bstrVal;
         cbSize = strlen(bstrVal) + 1;
         v8 = MEMORY[0x277CBEA90];
@@ -63,7 +63,7 @@
 
   if (vt == 64)
   {
-    *a3 = 3;
+    *type = 3;
     v16 = malloc_type_malloc(8uLL, 0x100004000313F17uLL);
     if (v16)
     {
@@ -86,7 +86,7 @@ LABEL_16:
 
   if (vt == 65)
   {
-    *a3 = 5;
+    *type = 5;
     v8 = MEMORY[0x277CBEA90];
     p_v = self->mProp.v.blob.pData;
     cbSize = self->mProp.v.blob.cbSize;
@@ -100,7 +100,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  *a3 = 4;
+  *type = 4;
   v10 = *self->mProp.v.bstrVal;
   if (v10 > 0xFFFFFFFB)
   {

@@ -1,13 +1,13 @@
 @interface WFShortcutsV10CustomModificationStep
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4;
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error;
 @end
 
 @implementation WFShortcutsV10CustomModificationStep
 
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v45 = a3;
+  contextCopy = context;
   v5 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,10 +27,10 @@
   [v9 setPredicate:v10];
 
   v59 = 0;
-  v11 = [v45 executeFetchRequest:v9 error:&v59];
+  v11 = [contextCopy executeFetchRequest:v9 error:&v59];
   v12 = v59;
   v40 = v8;
-  v42 = a4;
+  errorCopy = error;
   if ([v11 count])
   {
     v13 = getWFDatabaseLogObject();
@@ -79,13 +79,13 @@
       }
 
       v54 = v12;
-      [v45 save:&v54];
+      [contextCopy save:&v54];
       v22 = v54;
 
-      [v45 reset];
+      [contextCopy reset];
       [v9 setFetchOffset:{objc_msgSend(v9, "fetchOffset") + objc_msgSend(v9, "fetchLimit")}];
       v53 = v22;
-      v11 = [v45 executeFetchRequest:v9 error:&v53];
+      v11 = [contextCopy executeFetchRequest:v9 error:&v53];
       v12 = v53;
 
       objc_autoreleasePoolPop(context);
@@ -99,7 +99,7 @@
   v24 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Trigger"];
   [v24 setFetchLimit:5];
   v52 = v12;
-  v25 = [v45 executeFetchRequest:v24 error:&v52];
+  v25 = [contextCopy executeFetchRequest:v24 error:&v52];
   v26 = v52;
 
   v41 = v23;
@@ -151,13 +151,13 @@
       }
 
       v47 = v26;
-      [v45 save:&v47];
+      [contextCopy save:&v47];
       v36 = v47;
 
-      [v45 reset];
+      [contextCopy reset];
       [v24 setFetchOffset:{objc_msgSend(v24, "fetchOffset") + objc_msgSend(v24, "fetchLimit")}];
       v46 = v36;
-      v25 = [v45 executeFetchRequest:v24 error:&v46];
+      v25 = [contextCopy executeFetchRequest:v24 error:&v46];
       v26 = v46;
 
       objc_autoreleasePoolPop(contexta);
@@ -167,10 +167,10 @@
   }
 
   objc_autoreleasePoolPop(v41);
-  if (v42)
+  if (errorCopy)
   {
     v37 = v26;
-    *v42 = v26;
+    *errorCopy = v26;
   }
 
   v38 = *MEMORY[0x1E69E9840];

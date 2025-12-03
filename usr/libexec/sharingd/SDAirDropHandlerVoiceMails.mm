@@ -8,10 +8,10 @@
 
 - (BOOL)canHandleTransfer
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 senderBundleID];
-  v6 = [v5 isEqual:@"com.apple.mobilephone"];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  senderBundleID = [metaData senderBundleID];
+  v6 = [senderBundleID isEqual:@"com.apple.mobilephone"];
 
   return v6 & [(SDAirDropHandlerVoiceMemos *)self canHandleTransferRegardlessOfBundleID];
 }
@@ -25,10 +25,10 @@
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"VOICEMAIL";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -39,12 +39,12 @@
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 

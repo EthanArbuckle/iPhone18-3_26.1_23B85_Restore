@@ -1,19 +1,19 @@
 @interface CNDispatchSource
-- (CNDispatchSource)initWithSource:(id)a3;
+- (CNDispatchSource)initWithSource:(id)source;
 @end
 
 @implementation CNDispatchSource
 
-- (CNDispatchSource)initWithSource:(id)a3
+- (CNDispatchSource)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = CNDispatchSource;
   v6 = [(CNDispatchSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
     v8 = v7;
   }
 

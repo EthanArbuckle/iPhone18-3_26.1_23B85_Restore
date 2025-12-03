@@ -1,27 +1,27 @@
 @interface PKFieldPropertiesProbe
-+ (id)createProbeForProperties:(id)a3 queue:(id)a4;
-- (id)_initWithProperties:(id)a3 queue:(id)a4;
-- (void)_acceptSession:(id)a3;
++ (id)createProbeForProperties:(id)properties queue:(id)queue;
+- (id)_initWithProperties:(id)properties queue:(id)queue;
+- (void)_acceptSession:(id)session;
 - (void)_resolve;
-- (void)beginWithCompletion:(id)a3;
+- (void)beginWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4;
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3;
-- (void)session:(id)a3 didEndTransaction:(id)a4;
-- (void)sessionDidEndUnexpectedly:(id)a3;
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions;
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)session:(id)session didEndTransaction:(id)transaction;
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly;
 @end
 
 @implementation PKFieldPropertiesProbe
 
-+ (id)createProbeForProperties:(id)a3 queue:(id)a4
++ (id)createProbeForProperties:(id)properties queue:(id)queue
 {
-  v5 = a3;
-  result = a4;
-  if (v5 && (v7 = result) != 0)
+  propertiesCopy = properties;
+  result = queue;
+  if (propertiesCopy && (v7 = result) != 0)
   {
-    v8 = [[PKFieldPropertiesProbe alloc] _initWithProperties:v5 queue:result];
+    v8 = [[PKFieldPropertiesProbe alloc] _initWithProperties:propertiesCopy queue:result];
 
     return v8;
   }
@@ -34,19 +34,19 @@
   return result;
 }
 
-- (id)_initWithProperties:(id)a3 queue:(id)a4
+- (id)_initWithProperties:(id)properties queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  propertiesCopy = properties;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = PKFieldPropertiesProbe;
   v9 = [(PKFieldPropertiesProbe *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeStrong(&v9->_queue, queue);
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_properties, a3);
+    objc_storeStrong(&v10->_properties, properties);
     v10->_type = [(PKFieldProperties *)v10->_properties accessTerminalSubtype]== 2;
   }
 
@@ -61,11 +61,11 @@
   [(PKFieldPropertiesProbe *)&v3 dealloc];
 }
 
-- (void)beginWithCompletion:(id)a3
+- (void)beginWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 || (v5 = v4, os_unfair_lock_lock(&self->_lock), self->_started))
+  completionCopy = completion;
+  if (!completionCopy || (v5 = completionCopy, os_unfair_lock_lock(&self->_lock), self->_started))
   {
     __break(1u);
   }
@@ -86,7 +86,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKFieldPropertiesProbe (%p): starting lookup session...", buf, 0xCu);
   }
 
@@ -101,8 +101,8 @@
   objc_copyWeak(&v23, buf);
   aBlock[4] = self;
   v9 = _Block_copy(aBlock);
-  v10 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-  v11 = v10;
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  v11 = pKGetClassNFHardwareManager();
   type = self->_type;
   if (type)
   {
@@ -112,12 +112,12 @@
       goto LABEL_13;
     }
 
-    v13 = [v10 startDigitalCarKeySession:v9];
+    v13 = [pKGetClassNFHardwareManager() startDigitalCarKeySession:v9];
   }
 
   else
   {
-    v13 = [v10 startLoyaltyAndContactlessPaymentSession:v9];
+    v13 = [pKGetClassNFHardwareManager() startLoyaltyAndContactlessPaymentSession:v9];
   }
 
   v14 = v13;
@@ -282,7 +282,7 @@ void __46__PKFieldPropertiesProbe_beginWithCompletion___block_invoke_177(uint64_
   {
     os_unfair_lock_unlock(&self->_lock);
     v6 = 0;
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -303,32 +303,32 @@ void __46__PKFieldPropertiesProbe_beginWithCompletion___block_invoke_177(uint64_
     self->_completion = 0;
 
     os_unfair_lock_unlock(&self->_lock);
-    v3 = 0;
+    selfCopy = 0;
     if (!invalidated && v6)
     {
-      v3 = self;
-      (v6)[2](v6, v3, v3->_properties);
+      selfCopy = self;
+      (v6)[2](v6, selfCopy, selfCopy->_properties);
     }
   }
 
   [(PKFieldPropertiesProbe *)self invalidate];
 }
 
-- (void)_acceptSession:(id)a3
+- (void)_acceptSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     __break(1u);
   }
 
-  v6 = v5;
+  v6 = sessionCopy;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = v6;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKFieldPropertiesProbe (%p): started lookup session %p.", buf, 0x16u);
@@ -340,7 +340,7 @@ void __46__PKFieldPropertiesProbe_beginWithCompletion___block_invoke_177(uint64_
 
   if (!self->_invalidated)
   {
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     os_unfair_lock_unlock(&self->_lock);
     type = self->_type;
     if (type)
@@ -379,20 +379,20 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  transactionsCopy = transactions;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__PKFieldPropertiesProbe_loyaltyAndPaymentSession_didPerformValueAddedServiceTransactions___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = transactionsCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = transactionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -428,17 +428,17 @@ void __91__PKFieldPropertiesProbe_loyaltyAndPaymentSession_didPerformValueAddedS
   }
 }
 
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__PKFieldPropertiesProbe_loyaltyAndPaymentSessionDidEndUnexpectedly___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = unexpectedlyCopy;
+  v6 = unexpectedlyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -460,20 +460,20 @@ uint64_t __69__PKFieldPropertiesProbe_loyaltyAndPaymentSessionDidEndUnexpectedly
   return [*(a1 + 32) _resolve];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  transactionCopy = transaction;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PKFieldPropertiesProbe_loyaltyAndPaymentSession_didEndTransaction___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = transactionCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = transactionCopy;
   dispatch_async(queue, block);
 }
 
@@ -509,17 +509,17 @@ void __69__PKFieldPropertiesProbe_loyaltyAndPaymentSession_didEndTransaction___b
   }
 }
 
-- (void)sessionDidEndUnexpectedly:(id)a3
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PKFieldPropertiesProbe_sessionDidEndUnexpectedly___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = unexpectedlyCopy;
+  v6 = unexpectedlyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -541,20 +541,20 @@ uint64_t __52__PKFieldPropertiesProbe_sessionDidEndUnexpectedly___block_invoke(u
   return [*(a1 + 32) _resolve];
 }
 
-- (void)session:(id)a3 didEndTransaction:(id)a4
+- (void)session:(id)session didEndTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  transactionCopy = transaction;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PKFieldPropertiesProbe_session_didEndTransaction___block_invoke;
   block[3] = &unk_1E79C4E00;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = transactionCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = transactionCopy;
   dispatch_async(queue, block);
 }
 

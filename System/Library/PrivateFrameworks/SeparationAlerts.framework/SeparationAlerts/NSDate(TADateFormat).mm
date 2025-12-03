@@ -8,7 +8,7 @@
 
 - (__CFString)getDateString
 {
-  if (a1)
+  if (self)
   {
     if (getDateString_onceTokenForDateFormatter != -1)
     {
@@ -17,7 +17,7 @@
 
     v2 = gTADateFormatDateFormatter;
     objc_sync_enter(v2);
-    v3 = [gTADateFormatDateFormatter stringFromDate:a1];
+    v3 = [gTADateFormatDateFormatter stringFromDate:self];
     objc_sync_exit(v2);
   }
 
@@ -31,17 +31,17 @@
 
 - (id)getNextDateAtHour:()TADateFormat
 {
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 nextDateAfterDate:a1 matchingHour:a3 minute:0 second:0 options:512];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar nextDateAfterDate:self matchingHour:a3 minute:0 second:0 options:512];
 
   return v6;
 }
 
 - (uint64_t)getMinutesSinceStartOfDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
-  [a1 timeIntervalSinceDate:v3];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
+  [self timeIntervalSinceDate:v3];
   v5 = v4 / 60;
 
   return v5;

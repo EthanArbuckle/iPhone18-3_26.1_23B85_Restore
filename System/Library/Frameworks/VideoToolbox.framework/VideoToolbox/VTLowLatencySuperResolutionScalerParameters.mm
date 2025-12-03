@@ -1,11 +1,11 @@
 @interface VTLowLatencySuperResolutionScalerParameters
-- (VTLowLatencySuperResolutionScalerParameters)initWithSourceFrame:(id)a3 destinationFrame:(id)a4;
+- (VTLowLatencySuperResolutionScalerParameters)initWithSourceFrame:(id)frame destinationFrame:(id)destinationFrame;
 - (void)dealloc;
 @end
 
 @implementation VTLowLatencySuperResolutionScalerParameters
 
-- (VTLowLatencySuperResolutionScalerParameters)initWithSourceFrame:(id)a3 destinationFrame:(id)a4
+- (VTLowLatencySuperResolutionScalerParameters)initWithSourceFrame:(id)frame destinationFrame:(id)destinationFrame
 {
   if ((loadVCPFrameworkOnce() & 1) == 0)
   {
@@ -22,20 +22,20 @@
     return v7;
   }
 
-  if (!a3)
+  if (!frame)
   {
     NSLog(&cfstr_SourceframeIsN.isa);
     return 0;
   }
 
-  if (!a4)
+  if (!destinationFrame)
   {
     NSLog(&cfstr_Destinationfra.isa);
     return 0;
   }
 
-  v7->_sourceFrame = a3;
-  v7->_destinationFrame = a4;
+  v7->_sourceFrame = frame;
+  v7->_destinationFrame = destinationFrame;
   return v7;
 }
 

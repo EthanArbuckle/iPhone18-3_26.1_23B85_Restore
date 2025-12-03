@@ -1,8 +1,8 @@
 @interface _SBFolderControllerIconImageViewControllerKeepSnapshotAssertion
 - (SBFolderController)folderController;
-- (_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion)initWithFolderController:(id)a3 snapshotType:(unint64_t)a4 pageIndexesToExclude:(id)a5 reason:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion)initWithFolderController:(id)controller snapshotType:(unint64_t)type pageIndexesToExclude:(id)exclude reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,24 +10,24 @@
 
 @implementation _SBFolderControllerIconImageViewControllerKeepSnapshotAssertion
 
-- (_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion)initWithFolderController:(id)a3 snapshotType:(unint64_t)a4 pageIndexesToExclude:(id)a5 reason:(id)a6
+- (_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion)initWithFolderController:(id)controller snapshotType:(unint64_t)type pageIndexesToExclude:(id)exclude reason:(id)reason
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  excludeCopy = exclude;
+  reasonCopy = reason;
   v20.receiver = self;
   v20.super_class = _SBFolderControllerIconImageViewControllerKeepSnapshotAssertion;
   v13 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_folderController, v10);
-    v14->_snapshotType = a4;
-    v15 = [v11 copy];
+    objc_storeWeak(&v13->_folderController, controllerCopy);
+    v14->_snapshotType = type;
+    v15 = [excludeCopy copy];
     pageIndexesToExclude = v14->_pageIndexesToExclude;
     v14->_pageIndexesToExclude = v15;
 
-    v17 = [v12 copy];
+    v17 = [reasonCopy copy];
     reason = v14->_reason;
     v14->_reason = v17;
   }
@@ -53,42 +53,42 @@
   if (![(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self isInvalidated])
   {
     [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self setInvalidated:1];
-    v3 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self folderController];
-    [v3 _removeIconImageViewControllerKeepStaticAssertion:self];
+    folderController = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self folderController];
+    [folderController _removeIconImageViewControllerKeepStaticAssertion:self];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self succinctDescriptionBuilder];
-  v5 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self folderController];
-  v6 = [v4 appendPointer:v5 withName:@"folderController"];
+  succinctDescriptionBuilder = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self succinctDescriptionBuilder];
+  folderController = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self folderController];
+  v6 = [succinctDescriptionBuilder appendPointer:folderController withName:@"folderController"];
 
-  v7 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self pageIndexesToExclude];
-  v8 = [v4 appendObject:v7 withName:@"pageIndexesToExclude"];
+  pageIndexesToExclude = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self pageIndexesToExclude];
+  v8 = [succinctDescriptionBuilder appendObject:pageIndexesToExclude withName:@"pageIndexesToExclude"];
 
-  v9 = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self reason];
-  v10 = [v4 appendObject:v9 withName:@"reason"];
+  reason = [(_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion *)self reason];
+  v10 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v11 = [v4 appendBool:-[_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  v11 = [succinctDescriptionBuilder appendBool:-[_SBFolderControllerIconImageViewControllerKeepSnapshotAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBFolderController)folderController

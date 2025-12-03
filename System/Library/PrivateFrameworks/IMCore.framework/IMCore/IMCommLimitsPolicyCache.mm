@@ -1,14 +1,14 @@
 @interface IMCommLimitsPolicyCache
-- (BOOL)isFetchingCommLimitsPolicyForChat:(id)a3;
+- (BOOL)isFetchingCommLimitsPolicyForChat:(id)chat;
 - (IMCommLimitsPolicyCache)init;
-- (id)chatForConversationContext:(id)a3;
-- (id)chatForParticipantIDsHash:(id)a3;
-- (id)contextForParticipantIDsHash:(id)a3;
-- (id)conversationContextForChat:(id)a3;
-- (void)addSentinelContextForParticipantIDsHash:(id)a3;
-- (void)addTrackingForChat:(id)a3 participantIDsHash:(id)a4;
-- (void)addTrackingForConversationContext:(id)a3 forParticipantIDsHash:(id)a4;
-- (void)removeTrackingForChat:(id)a3;
+- (id)chatForConversationContext:(id)context;
+- (id)chatForParticipantIDsHash:(id)hash;
+- (id)contextForParticipantIDsHash:(id)hash;
+- (id)conversationContextForChat:(id)chat;
+- (void)addSentinelContextForParticipantIDsHash:(id)hash;
+- (void)addTrackingForChat:(id)chat participantIDsHash:(id)hash;
+- (void)addTrackingForConversationContext:(id)context forParticipantIDsHash:(id)hash;
+- (void)removeTrackingForChat:(id)chat;
 @end
 
 @implementation IMCommLimitsPolicyCache
@@ -40,25 +40,25 @@
   return v2;
 }
 
-- (void)addTrackingForChat:(id)a3 participantIDsHash:(id)a4
+- (void)addTrackingForChat:(id)chat participantIDsHash:(id)hash
 {
-  v17 = a4;
-  v10 = objc_msgSend_chatIdentifier(a3, v6, v7);
-  if (v17 && v10)
+  hashCopy = hash;
+  v10 = objc_msgSend_chatIdentifier(chat, v6, v7);
+  if (hashCopy && v10)
   {
     v11 = objc_msgSend_participantIDsHashToChatIdentifier(self, v8, v9);
-    objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v10, v17);
+    objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v10, hashCopy);
 
     v15 = objc_msgSend_chatIdentifierToParticipantIDsHash(self, v13, v14);
-    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v17, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, hashCopy, v10);
   }
 }
 
-- (void)removeTrackingForChat:(id)a3
+- (void)removeTrackingForChat:(id)chat
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9 = objc_msgSend_chatIdentifier(v4, v5, v6);
+  chatCopy = chat;
+  v9 = objc_msgSend_chatIdentifier(chatCopy, v5, v6);
   if (v9)
   {
     v10 = objc_msgSend_chatIdentifierToParticipantIDsHash(self, v7, v8);
@@ -72,7 +72,7 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v37 = 138412546;
-          v38 = v4;
+          v38 = chatCopy;
           v39 = 2112;
           v40 = v12;
           _os_log_impl(&dword_1A823F000, v15, OS_LOG_TYPE_INFO, "Participants changed for chat %@. Invalidating cached Screen Time policy for participants group IDs hash: %@", &v37, 0x16u);
@@ -103,9 +103,9 @@
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isFetchingCommLimitsPolicyForChat:(id)a3
+- (BOOL)isFetchingCommLimitsPolicyForChat:(id)chat
 {
-  v6 = objc_msgSend_chatIdentifier(a3, a2, a3);
+  v6 = objc_msgSend_chatIdentifier(chat, a2, chat);
   if (v6 && (objc_msgSend_chatIdentifierToParticipantIDsHash(self, v4, v5), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v7, v8, v6), v9 = objc_claimAutoreleasedReturnValue(), v7, v9))
   {
     v12 = objc_msgSend_participantIDsHashToConversationContext(self, v10, v11);
@@ -123,13 +123,13 @@
   return isKindOfClass & 1;
 }
 
-- (id)chatForParticipantIDsHash:(id)a3
+- (id)chatForParticipantIDsHash:(id)hash
 {
-  if (a3)
+  if (hash)
   {
-    v4 = a3;
+    hashCopy = hash;
     v7 = objc_msgSend_participantIDsHashToChatIdentifier(self, v5, v6);
-    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, hashCopy);
 
     if (v9)
     {
@@ -151,11 +151,11 @@
   return v14;
 }
 
-- (id)chatForConversationContext:(id)a3
+- (id)chatForConversationContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v4 = objc_msgSend_valueWithPointer_(MEMORY[0x1E696B098], a2, a3);
+    v4 = objc_msgSend_valueWithPointer_(MEMORY[0x1E696B098], a2, context);
     v7 = objc_msgSend_conversationContextToParticipantIDsHash(self, v5, v6);
     v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
 
@@ -170,9 +170,9 @@
   return v11;
 }
 
-- (id)conversationContextForChat:(id)a3
+- (id)conversationContextForChat:(id)chat
 {
-  v6 = objc_msgSend_chatIdentifier(a3, a2, a3);
+  v6 = objc_msgSend_chatIdentifier(chat, a2, chat);
   if (v6)
   {
     v7 = objc_msgSend_chatIdentifierToParticipantIDsHash(self, v4, v5);
@@ -202,41 +202,41 @@ LABEL_8:
   return v14;
 }
 
-- (void)addTrackingForConversationContext:(id)a3 forParticipantIDsHash:(id)a4
+- (void)addTrackingForConversationContext:(id)context forParticipantIDsHash:(id)hash
 {
-  if (a3 && a4)
+  if (context && hash)
   {
-    v6 = a4;
-    v7 = a3;
+    hashCopy = hash;
+    contextCopy = context;
     v10 = objc_msgSend_participantIDsHashToConversationContext(self, v8, v9);
-    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, v7, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, contextCopy, hashCopy);
 
-    v17 = objc_msgSend_valueWithPointer_(MEMORY[0x1E696B098], v12, v7);
+    v17 = objc_msgSend_valueWithPointer_(MEMORY[0x1E696B098], v12, contextCopy);
 
     v15 = objc_msgSend_conversationContextToParticipantIDsHash(self, v13, v14);
-    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, v6, v17);
+    objc_msgSend_setObject_forKeyedSubscript_(v15, v16, hashCopy, v17);
   }
 }
 
-- (void)addSentinelContextForParticipantIDsHash:(id)a3
+- (void)addSentinelContextForParticipantIDsHash:(id)hash
 {
-  if (a3)
+  if (hash)
   {
     v4 = MEMORY[0x1E695DFB0];
-    v5 = a3;
+    hashCopy = hash;
     v12 = objc_msgSend_null(v4, v6, v7);
     v10 = objc_msgSend_participantIDsHashToConversationContext(self, v8, v9);
-    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, v12, v5);
+    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, v12, hashCopy);
   }
 }
 
-- (id)contextForParticipantIDsHash:(id)a3
+- (id)contextForParticipantIDsHash:(id)hash
 {
-  if (a3)
+  if (hash)
   {
-    v4 = a3;
+    hashCopy = hash;
     v7 = objc_msgSend_participantIDsHashToConversationContext(self, v5, v6);
-    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, hashCopy);
   }
 
   else

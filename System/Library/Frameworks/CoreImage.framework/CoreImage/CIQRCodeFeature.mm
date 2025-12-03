@@ -1,20 +1,20 @@
 @interface CIQRCodeFeature
-+ (CIQRCodeFeature)featureWithInternalRepresentation:(id *)a3;
++ (CIQRCodeFeature)featureWithInternalRepresentation:(id *)representation;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
 - (CGRect)bounds;
-- (CIQRCodeFeature)initWithCoder:(id)a3;
-- (CIQRCodeFeature)initWithInternalRepresentation:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CIQRCodeFeature)initWithCoder:(id)coder;
+- (CIQRCodeFeature)initWithInternalRepresentation:(id *)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIQRCodeFeature
 
-- (CIQRCodeFeature)initWithCoder:(id)a3
+- (CIQRCodeFeature)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = CIQRCodeFeature;
@@ -22,40 +22,40 @@
   v5 = v4;
   if (v4)
   {
-    v4->bounds.origin.x = decodeRectForKey(a3, @"bounds");
+    v4->bounds.origin.x = decodeRectForKey(coder, @"bounds");
     v5->bounds.origin.y = v6;
     v5->bounds.size.width = v7;
     v5->bounds.size.height = v8;
-    v5->topLeft.x = decodePointForKey(a3, @"topLeft");
+    v5->topLeft.x = decodePointForKey(coder, @"topLeft");
     v5->topLeft.y = v9;
-    v5->topRight.x = decodePointForKey(a3, @"topRight");
+    v5->topRight.x = decodePointForKey(coder, @"topRight");
     v5->topRight.y = v10;
-    v5->bottomLeft.x = decodePointForKey(a3, @"bottomLeft");
+    v5->bottomLeft.x = decodePointForKey(coder, @"bottomLeft");
     v5->bottomLeft.y = v11;
-    v5->bottomRight.x = decodePointForKey(a3, @"bottomRight");
+    v5->bottomRight.x = decodePointForKey(coder, @"bottomRight");
     v5->bottomRight.y = v12;
-    v5->symbolDescriptor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"symbolDescriptor"];
+    v5->symbolDescriptor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"symbolDescriptor"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  encodeRectForKey(a3, @"bounds", self->bounds.origin.x, self->bounds.origin.y, self->bounds.size.width, self->bounds.size.height);
-  encodePointForKey(a3, @"topLeft", self->topLeft.x);
-  encodePointForKey(a3, @"topRight", self->topRight.x);
-  encodePointForKey(a3, @"bottomLeft", self->bottomLeft.x);
-  encodePointForKey(a3, @"bottomRight", self->bottomRight.x);
+  encodeRectForKey(coder, @"bounds", self->bounds.origin.x, self->bounds.origin.y, self->bounds.size.width, self->bounds.size.height);
+  encodePointForKey(coder, @"topLeft", self->topLeft.x);
+  encodePointForKey(coder, @"topRight", self->topRight.x);
+  encodePointForKey(coder, @"bottomLeft", self->bottomLeft.x);
+  encodePointForKey(coder, @"bottomRight", self->bottomRight.x);
   symbolDescriptor = self->symbolDescriptor;
 
-  [a3 encodeObject:symbolDescriptor forKey:@"symbolDescriptor"];
+  [coder encodeObject:symbolDescriptor forKey:@"symbolDescriptor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CIQRCodeFeature allocWithZone:?];
-  v6 = [(CIQRCodeDescriptor *)self->symbolDescriptor copyWithZone:a3];
+  v6 = [(CIQRCodeDescriptor *)self->symbolDescriptor copyWithZone:zone];
   size = self->bounds.size;
   topLeft = self->topLeft;
   v13[0] = self->bounds.origin;
@@ -84,7 +84,7 @@
   [(CIQRCodeFeature *)&v4 dealloc];
 }
 
-- (CIQRCodeFeature)initWithInternalRepresentation:(id *)a3
+- (CIQRCodeFeature)initWithInternalRepresentation:(id *)representation
 {
   v8.receiver = self;
   v8.super_class = CIQRCodeFeature;
@@ -92,22 +92,22 @@
   v5 = v4;
   if (v4)
   {
-    size = a3->var0.size;
-    v4->bounds.origin = a3->var0.origin;
+    size = representation->var0.size;
+    v4->bounds.origin = representation->var0.origin;
     v4->bounds.size = size;
-    v4->topLeft = a3->var1;
-    v4->topRight = a3->var2;
-    v4->bottomLeft = a3->var3;
-    v4->bottomRight = a3->var4;
-    v4->symbolDescriptor = a3->var5;
+    v4->topLeft = representation->var1;
+    v4->topRight = representation->var2;
+    v4->bottomLeft = representation->var3;
+    v4->bottomRight = representation->var4;
+    v4->symbolDescriptor = representation->var5;
   }
 
   return v5;
 }
 
-+ (CIQRCodeFeature)featureWithInternalRepresentation:(id *)a3
++ (CIQRCodeFeature)featureWithInternalRepresentation:(id *)representation
 {
-  v3 = [[CIQRCodeFeature alloc] initWithInternalRepresentation:a3];
+  v3 = [[CIQRCodeFeature alloc] initWithInternalRepresentation:representation];
 
   return v3;
 }

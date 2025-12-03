@@ -1,9 +1,9 @@
 @interface MDMSkipKeysUtilities
-- (BOOL)isBuddyPaneSkipped:(id)a3;
+- (BOOL)isBuddyPaneSkipped:(id)skipped;
 - (id)_cloudConfigSkipKeys;
 - (id)_payloadSkipKeys;
 - (id)_specialSkipKeys;
-- (id)_validateAndUpdateSkipKeys:(id)a3;
+- (id)_validateAndUpdateSkipKeys:(id)keys;
 - (id)currentSkipKeys;
 @end
 
@@ -12,25 +12,25 @@
 - (id)currentSkipKeys
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(MDMSkipKeysUtilities *)self _cloudConfigSkipKeys];
-  v5 = [v3 setWithArray:v4];
+  _cloudConfigSkipKeys = [(MDMSkipKeysUtilities *)self _cloudConfigSkipKeys];
+  v5 = [v3 setWithArray:_cloudConfigSkipKeys];
 
-  v6 = [(MDMSkipKeysUtilities *)self _payloadSkipKeys];
-  [v5 addObjectsFromArray:v6];
+  _payloadSkipKeys = [(MDMSkipKeysUtilities *)self _payloadSkipKeys];
+  [v5 addObjectsFromArray:_payloadSkipKeys];
 
-  v7 = [(MDMSkipKeysUtilities *)self _specialSkipKeys];
-  [v5 addObjectsFromArray:v7];
+  _specialSkipKeys = [(MDMSkipKeysUtilities *)self _specialSkipKeys];
+  [v5 addObjectsFromArray:_specialSkipKeys];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (BOOL)isBuddyPaneSkipped:(id)a3
+- (BOOL)isBuddyPaneSkipped:(id)skipped
 {
-  v4 = a3;
-  v5 = [(MDMSkipKeysUtilities *)self currentSkipKeys];
-  v6 = [v5 containsObject:v4];
+  skippedCopy = skipped;
+  currentSkipKeys = [(MDMSkipKeysUtilities *)self currentSkipKeys];
+  v6 = [currentSkipKeys containsObject:skippedCopy];
 
   return v6;
 }
@@ -41,20 +41,20 @@
   [v3 refreshDetailsFromDisk];
 
   v4 = +[MDMCloudConfiguration sharedConfiguration];
-  v5 = [v4 skipSetupKeys];
+  skipSetupKeys = [v4 skipSetupKeys];
 
-  v6 = [(MDMSkipKeysUtilities *)self _validateAndUpdateSkipKeys:v5];
+  v6 = [(MDMSkipKeysUtilities *)self _validateAndUpdateSkipKeys:skipSetupKeys];
 
   return v6;
 }
 
 - (id)_payloadSkipKeys
 {
-  v3 = [(MDMSkipKeysUtilities *)self testSetupAssistantPayloadPath];
-  v4 = v3;
-  if (v3)
+  testSetupAssistantPayloadPath = [(MDMSkipKeysUtilities *)self testSetupAssistantPayloadPath];
+  v4 = testSetupAssistantPayloadPath;
+  if (testSetupAssistantPayloadPath)
   {
-    v5 = v3;
+    v5 = testSetupAssistantPayloadPath;
   }
 
   else
@@ -64,8 +64,8 @@
 
   v6 = v5;
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if (v8)
   {
@@ -96,8 +96,8 @@
 {
   v2 = objc_opt_new();
   v3 = DMCDeviceManagementDaemonSetupOptionDirectoryPath();
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
@@ -109,17 +109,17 @@
   return v6;
 }
 
-- (id)_validateAndUpdateSkipKeys:(id)a3
+- (id)_validateAndUpdateSkipKeys:(id)keys
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = MEMORY[0x277D03000];
-  v5 = a3;
-  v6 = [v4 allSkipKeys];
-  v7 = [v3 setWithArray:v6];
+  keysCopy = keys;
+  allSkipKeys = [v4 allSkipKeys];
+  v7 = [v3 setWithArray:allSkipKeys];
 
-  if (v5)
+  if (keysCopy)
   {
-    v8 = v5;
+    v8 = keysCopy;
   }
 
   else
@@ -141,9 +141,9 @@
     [v9 intersectSet:v7];
   }
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TSWPInteriorTextWrapController
 + (id)sharedInteriorTextWrapController;
-- (id)beginWrappingToColumn:(id)a3 target:(id)a4 hasWrapables:(BOOL *)a5;
-- (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 floatingCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9;
+- (id)beginWrappingToColumn:(id)column target:(id)target hasWrapables:(BOOL *)wrapables;
+- (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics floatingCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info;
 @end
 
 @implementation TSWPInteriorTextWrapController
@@ -11,31 +11,31 @@
   result = +[TSWPInteriorTextWrapController sharedInteriorTextWrapController]::sSharedInstance;
   if (!+[TSWPInteriorTextWrapController sharedInteriorTextWrapController]::sSharedInstance)
   {
-    result = objc_alloc_init(a1);
+    result = objc_alloc_init(self);
     +[TSWPInteriorTextWrapController sharedInteriorTextWrapController]::sSharedInstance = result;
   }
 
   return result;
 }
 
-- (id)beginWrappingToColumn:(id)a3 target:(id)a4 hasWrapables:(BOOL *)a5
+- (id)beginWrappingToColumn:(id)column target:(id)target hasWrapables:(BOOL *)wrapables
 {
   v8 = objc_alloc_init(TSWPInteriorCookie);
   objc_opt_class();
-  [a4 parent];
+  [target parent];
   [(TSWPInteriorCookie *)v8 setLayout:TSUDynamicCast()];
-  [(TSWPInteriorCookie *)v8 setColumn:a3];
-  *a5 = 1;
+  [(TSWPInteriorCookie *)v8 setColumn:column];
+  *wrapables = 1;
   return v8;
 }
 
-- (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 floatingCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9
+- (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics floatingCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  *a8 = 1.0;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  *hint = 1.0;
   objc_opt_class();
   v14 = TSUDynamicCast();
   if (!v14)
@@ -43,9 +43,9 @@
     return 1;
   }
 
-  v15 = [v14 layout];
+  layout = [v14 layout];
 
-  return [v15 cropLine:a4 lineSegmentRects:{x, y, width, height}];
+  return [layout cropLine:rects lineSegmentRects:{x, y, width, height}];
 }
 
 @end

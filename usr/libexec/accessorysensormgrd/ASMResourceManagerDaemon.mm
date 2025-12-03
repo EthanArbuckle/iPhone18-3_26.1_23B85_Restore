@@ -1,21 +1,21 @@
 @interface ASMResourceManagerDaemon
 + (id)sharedInstance;
 - (ASMResourceManagerDaemon)init;
-- (id)_availablePeripheralWithIdentifier:(id)a3;
+- (id)_availablePeripheralWithIdentifier:(id)identifier;
 - (id)availablePeripherals;
 - (void)_activate;
-- (void)_addPeripheralToAvailableMap:(id)a3;
+- (void)_addPeripheralToAvailableMap:(id)map;
 - (void)_handleXPCLaunchEvent;
 - (void)_invalidate;
 - (void)_peripheralControlEnsureStarted;
 - (void)_peripheralControlEnsureStopped;
 - (void)_polarisResourceProviderEnsureStarted;
 - (void)_polarisResourceProviderEnsureStopped;
-- (void)_polarisResourceStart:(id)a3;
-- (void)_polarisResourceStop:(id)a3;
+- (void)_polarisResourceStart:(id)start;
+- (void)_polarisResourceStop:(id)stop;
 - (void)_prefsChanged;
 - (void)_removeAllPeripheralsFromAvailableMap;
-- (void)_removePeripheralFromAvailableMap:(id)a3;
+- (void)_removePeripheralFromAvailableMap:(id)map;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -222,23 +222,23 @@
   self->_polarisResourceProvider = 0;
 }
 
-- (void)_polarisResourceStart:(id)a3
+- (void)_polarisResourceStart:(id)start
 {
-  v3 = a3;
-  [v3 type];
+  startCopy = start;
+  [startCopy type];
   if (dword_10001A408 <= 90 && (dword_10001A408 != -1 || _LogCategory_Initialize()))
   {
-    sub_100009534(v3);
+    sub_100009534(startCopy);
   }
 }
 
-- (void)_polarisResourceStop:(id)a3
+- (void)_polarisResourceStop:(id)stop
 {
-  v3 = a3;
-  [v3 type];
+  stopCopy = stop;
+  [stopCopy type];
   if (dword_10001A408 <= 90 && (dword_10001A408 != -1 || _LogCategory_Initialize()))
   {
-    sub_100009578(v3);
+    sub_100009578(stopCopy);
   }
 }
 
@@ -256,9 +256,9 @@
 
 - (id)availablePeripherals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_availablePeripheralMap copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_availablePeripheralMap copy];
   v4 = v3;
   if (v3)
   {
@@ -272,49 +272,49 @@
 
   v6 = v5;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_addPeripheralToAvailableMap:(id)a3
+- (void)_addPeripheralToAvailableMap:(id)map
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v10;
-  availablePeripheralMap = v4->_availablePeripheralMap;
+  mapCopy = map;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = mapCopy;
+  availablePeripheralMap = selfCopy->_availablePeripheralMap;
   if (!availablePeripheralMap)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = v4->_availablePeripheralMap;
-    v4->_availablePeripheralMap = v7;
+    v8 = selfCopy->_availablePeripheralMap;
+    selfCopy->_availablePeripheralMap = v7;
 
-    availablePeripheralMap = v4->_availablePeripheralMap;
-    v5 = v10;
+    availablePeripheralMap = selfCopy->_availablePeripheralMap;
+    v5 = mapCopy;
   }
 
-  v9 = [v5 bluetoothUUID];
-  [(NSMutableDictionary *)availablePeripheralMap setObject:v10 forKeyedSubscript:v9];
+  bluetoothUUID = [v5 bluetoothUUID];
+  [(NSMutableDictionary *)availablePeripheralMap setObject:mapCopy forKeyedSubscript:bluetoothUUID];
 
   if (dword_10001A408 <= 30 && (dword_10001A408 != -1 || _LogCategory_Initialize()))
   {
-    [(NSMutableDictionary *)v4->_availablePeripheralMap count];
+    [(NSMutableDictionary *)selfCopy->_availablePeripheralMap count];
     LogPrintF();
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_availablePeripheralWithIdentifier:(id)a3
+- (id)_availablePeripheralWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  availablePeripheralMap = v5->_availablePeripheralMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  availablePeripheralMap = selfCopy->_availablePeripheralMap;
   if (availablePeripheralMap)
   {
-    v7 = [(NSMutableDictionary *)availablePeripheralMap objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)availablePeripheralMap objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -322,34 +322,34 @@
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)_removePeripheralFromAvailableMap:(id)a3
+- (void)_removePeripheralFromAvailableMap:(id)map
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  availablePeripheralMap = v4->_availablePeripheralMap;
+  mapCopy = map;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  availablePeripheralMap = selfCopy->_availablePeripheralMap;
   if (availablePeripheralMap)
   {
-    [(NSMutableDictionary *)availablePeripheralMap setObject:0 forKeyedSubscript:v7];
-    if (![(NSMutableDictionary *)v4->_availablePeripheralMap count])
+    [(NSMutableDictionary *)availablePeripheralMap setObject:0 forKeyedSubscript:mapCopy];
+    if (![(NSMutableDictionary *)selfCopy->_availablePeripheralMap count])
     {
-      v6 = v4->_availablePeripheralMap;
-      v4->_availablePeripheralMap = 0;
+      v6 = selfCopy->_availablePeripheralMap;
+      selfCopy->_availablePeripheralMap = 0;
     }
 
     if (dword_10001A408 <= 30 && (dword_10001A408 != -1 || _LogCategory_Initialize()))
     {
-      [(NSMutableDictionary *)v4->_availablePeripheralMap count];
+      [(NSMutableDictionary *)selfCopy->_availablePeripheralMap count];
       LogPrintF();
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_removeAllPeripheralsFromAvailableMap

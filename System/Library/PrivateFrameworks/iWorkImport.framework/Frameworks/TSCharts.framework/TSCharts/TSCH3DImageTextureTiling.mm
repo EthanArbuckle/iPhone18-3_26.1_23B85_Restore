@@ -1,21 +1,21 @@
 @interface TSCH3DImageTextureTiling
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DImageTextureTiling)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DImageTextureTiling)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)copyFromBaseImageTextureTiling:(id)a3;
+- (void)copyFromBaseImageTextureTiling:(id)tiling;
 - (void)restoreDefault;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCH3DImageTextureTiling
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TSCH3DImageTextureTiling;
-  result = [(TSCH3DBaseImageTextureTiling *)&v5 copyWithZone:a3];
+  result = [(TSCH3DBaseImageTextureTiling *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 5) = *(&self->super._rotation + 1);
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -48,7 +48,7 @@
     {
       v9.receiver = self;
       v9.super_class = TSCH3DImageTextureTiling;
-      v7 = [(TSCH3DBaseImageTextureTiling *)&v9 isEqual:v4];
+      v7 = [(TSCH3DBaseImageTextureTiling *)&v9 isEqual:equalCopy];
     }
 
     else
@@ -82,13 +82,13 @@
   LOBYTE(self->_tContinuity) = 0;
 }
 
-- (void)copyFromBaseImageTextureTiling:(id)a3
+- (void)copyFromBaseImageTextureTiling:(id)tiling
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  tilingCopy = tiling;
+  v9 = tilingCopy;
+  if (tilingCopy)
   {
-    objc_msgSend_scale(v4, v5, v6, v7, v8);
+    objc_msgSend_scale(tilingCopy, v5, v6, v7, v8);
     v10 = v19;
   }
 
@@ -104,20 +104,20 @@
   objc_msgSend_setRotation_(self, v15, v16, v17, v18);
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DImageTextureTiling alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DImageTextureTiling)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DImageTextureTiling)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v5 = *(a3 + 3);
+    v5 = *(archive + 3);
   }
 
   else
@@ -127,16 +127,16 @@
 
   v16.receiver = self;
   v16.super_class = TSCH3DImageTextureTiling;
-  result = [(TSCH3DBaseImageTextureTiling *)&v16 initWithArchive:v5 unarchiver:a4];
+  result = [(TSCH3DBaseImageTextureTiling *)&v16 initWithArchive:v5 unarchiver:unarchiver];
   if (!result)
   {
     return result;
   }
 
-  v7 = *(a3 + 4);
+  v7 = *(archive + 4);
   if ((v7 & 2) != 0)
   {
-    *(&result->super._rotation + 1) = *(a3 + 8) != 0;
+    *(&result->super._rotation + 1) = *(archive + 8) != 0;
     if ((v7 & 4) == 0)
     {
 LABEL_7:
@@ -154,7 +154,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  result->_mode = *(a3 + 9) == 1;
+  result->_mode = *(archive + 9) == 1;
   if ((v7 & 8) == 0)
   {
 LABEL_8:
@@ -167,7 +167,7 @@ LABEL_8:
   }
 
 LABEL_17:
-  v8 = *(a3 + 10);
+  v8 = *(archive + 10);
   if (v8 == 2)
   {
     v9 = 2;
@@ -191,7 +191,7 @@ LABEL_9:
   }
 
 LABEL_21:
-  v10 = *(a3 + 11);
+  v10 = *(archive + 11);
   if (v10 == 2)
   {
     v11 = 2;
@@ -212,7 +212,7 @@ LABEL_10:
     }
 
 LABEL_29:
-    v14 = *(a3 + 13);
+    v14 = *(archive + 13);
     if ((v14 - 1) >= 3)
     {
       v14 = 0;
@@ -234,7 +234,7 @@ LABEL_12:
   }
 
 LABEL_25:
-  v12 = *(a3 + 12);
+  v12 = *(archive + 12);
   if (v12 == 2)
   {
     v13 = 2;
@@ -258,7 +258,7 @@ LABEL_11:
   }
 
 LABEL_32:
-  v15 = *(a3 + 14);
+  v15 = *(archive + 14);
   if ((v15 - 1) >= 3)
   {
     v15 = 0;
@@ -268,37 +268,37 @@ LABEL_32:
   if ((v7 & 0x100) != 0)
   {
 LABEL_13:
-    LOBYTE(result->_tContinuity) = *(a3 + 60);
+    LOBYTE(result->_tContinuity) = *(archive + 60);
   }
 
   return result;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = sub_276447E2C(v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v18.receiver = self;
   v18.super_class = TSCH3DImageTextureTiling;
-  [(TSCH3DBaseImageTextureTiling *)&v18 saveToArchive:v7 archiver:v6];
-  v9 = *(a3 + 4);
+  [(TSCH3DBaseImageTextureTiling *)&v18 saveToArchive:v7 archiver:archiverCopy];
+  v9 = *(archive + 4);
   v10 = self->_mode == 1;
   wrap = self->_wrap;
-  *(a3 + 8) = *(&self->super._rotation + 1) != 0;
-  *(a3 + 9) = v10;
+  *(archive + 8) = *(&self->super._rotation + 1) != 0;
+  *(archive + 9) = v10;
   v12 = wrap == 1;
   if (wrap == 2)
   {
@@ -317,20 +317,20 @@ LABEL_13:
   }
 
   xPosition = self->_xPosition;
-  *(a3 + 10) = v12;
-  *(a3 + 11) = v14;
+  *(archive + 10) = v12;
+  *(archive + 11) = v14;
   v16 = xPosition == 1;
   if (xPosition == 2)
   {
     v16 = 2;
   }
 
-  *(a3 + 12) = v16;
-  *(a3 + 4) = v9 | 0x7E;
-  *(a3 + 52) = vand_s8(*&self->_yPosition, vcgt_u32(0x300000003, vadd_s32(*&self->_yPosition, -1)));
+  *(archive + 12) = v16;
+  *(archive + 4) = v9 | 0x7E;
+  *(archive + 52) = vand_s8(*&self->_yPosition, vcgt_u32(0x300000003, vadd_s32(*&self->_yPosition, -1)));
   tContinuity = self->_tContinuity;
-  *(a3 + 4) = v9 | 0x1FE;
-  *(a3 + 60) = tContinuity;
+  *(archive + 4) = v9 | 0x1FE;
+  *(archive + 60) = tContinuity;
 }
 
 @end

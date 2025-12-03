@@ -1,8 +1,8 @@
 @interface SUScriptViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (BOOL)equals:(id)a3;
+- (BOOL)equals:(id)equals;
 - (NSString)contextDictionary;
 - (NSString)modalPresentationStyle;
 - (SUScriptNavigationController)navigationController;
@@ -18,34 +18,34 @@
 - (UIViewController)nativeViewController;
 - (id)_parentViewControllerForVolumeViewController;
 - (id)backgroundColor;
-- (id)newScriptColorWithValue:(id)a3;
+- (id)newScriptColorWithValue:(id)value;
 - (id)scriptAttributeKeys;
 - (id)showsLibraryButton;
 - (id)toolbarItems;
 - (id)topBackgroundColor;
 - (id)usesBlurredBackground;
-- (int)_transitionForString:(id)a3;
-- (void)_dismissModalViewControllerAnimated:(BOOL)a3;
-- (void)_dismissModalViewControllerWithTransition:(id)a3;
-- (void)_presentModalViewController:(id)a3 withTransition:(id)a4;
-- (void)addPassbookPassWithURL:(id)a3;
+- (int)_transitionForString:(id)string;
+- (void)_dismissModalViewControllerAnimated:(BOOL)animated;
+- (void)_dismissModalViewControllerWithTransition:(id)transition;
+- (void)_presentModalViewController:(id)controller withTransition:(id)transition;
+- (void)addPassbookPassWithURL:(id)l;
 - (void)dealloc;
-- (void)dismissModalViewControllerAnimated:(BOOL)a3;
-- (void)dismissModalViewControllerWithTransition:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissVolumeViewControllerAnimated:(id)a3;
-- (void)presentModalViewController:(id)a3 withTransition:(id)a4;
-- (void)presentVolumeViewController:(id)a3 animated:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setInputAccessoryViewController:(id)a3;
-- (void)setModalPresentationStyle:(id)a3;
-- (void)setNativeViewController:(id)a3;
-- (void)setSection:(id)a3;
-- (void)setShowsLibraryButton:(id)a3;
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4;
-- (void)setTopBackgroundColor:(id)a3;
-- (void)setTransientViewController:(id)a3;
-- (void)setUsesBlurredBackground:(id)a3;
+- (void)dismissModalViewControllerAnimated:(BOOL)animated;
+- (void)dismissModalViewControllerWithTransition:(id)transition;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissVolumeViewControllerAnimated:(id)animated;
+- (void)presentModalViewController:(id)controller withTransition:(id)transition;
+- (void)presentVolumeViewController:(id)controller animated:(id)animated;
+- (void)setBackgroundColor:(id)color;
+- (void)setInputAccessoryViewController:(id)controller;
+- (void)setModalPresentationStyle:(id)style;
+- (void)setNativeViewController:(id)controller;
+- (void)setSection:(id)section;
+- (void)setShowsLibraryButton:(id)button;
+- (void)setToolbarItems:(id)items animated:(BOOL)animated;
+- (void)setTopBackgroundColor:(id)color;
+- (void)setTransientViewController:(id)controller;
+- (void)setUsesBlurredBackground:(id)background;
 - (void)tearDownUserInterface;
 @end
 
@@ -87,12 +87,12 @@
   [(SUScriptObject *)&v8 dealloc];
 }
 
-- (id)newScriptColorWithValue:(id)a3
+- (id)newScriptColorWithValue:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    value = 0;
   }
 
   objc_opt_class();
@@ -100,7 +100,7 @@
   {
     v3 = [SUScriptColor alloc];
 
-    return [(SUScriptColor *)v3 initWithStyleString:a3];
+    return [(SUScriptColor *)v3 initWithStyleString:value];
   }
 
   else
@@ -109,10 +109,10 @@
     if (objc_opt_isKindOfClass())
     {
 
-      return a3;
+      return value;
     }
 
-    else if (a3)
+    else if (value)
     {
       return 0;
     }
@@ -120,50 +120,50 @@
     else
     {
       v5 = [SUScriptColor alloc];
-      v6 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-      return [(SUScriptColor *)v5 initWithUIColor:v6];
+      return [(SUScriptColor *)v5 initWithUIColor:clearColor];
     }
   }
 }
 
 - (UIViewController)nativeViewController
 {
-  v3 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [(SUScriptViewController *)self newNativeViewController];
-    if (v3)
+    object = [(SUScriptViewController *)self newNativeViewController];
+    if (object)
     {
-      [(SUScriptViewController *)self setNativeViewController:v3];
-      v4 = v3;
+      [(SUScriptViewController *)self setNativeViewController:object];
+      v4 = object;
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(UIViewController *)v3 copyScriptProperties];
-    if ([v5 usesBlurredBackground])
+    copyScriptProperties = [(UIViewController *)object copyScriptProperties];
+    if ([copyScriptProperties usesBlurredBackground])
     {
-      [(UIViewController *)v3 setModalPresentationStyle:17];
+      [(UIViewController *)object setModalPresentationStyle:17];
     }
   }
 
-  return v3;
+  return object;
 }
 
-- (void)setNativeViewController:(id)a3
+- (void)setNativeViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    a3 = [(SUScriptNativeObject *)SUScriptViewControllerNativeObject objectWithNativeObject:?];
+    controller = [(SUScriptNativeObject *)SUScriptViewControllerNativeObject objectWithNativeObject:?];
   }
 
-  [(SUScriptObject *)self setNativeObject:a3];
+  [(SUScriptObject *)self setNativeObject:controller];
 }
 
-- (BOOL)equals:(id)a3
+- (BOOL)equals:(id)equals
 {
   v7 = 0;
   v8 = &v7;
@@ -172,7 +172,7 @@
   objc_opt_class();
   v10 = objc_opt_isKindOfClass() & 1;
   v5 = *(v8 + 24);
-  if (self != a3 && (v8[3] & 1) != 0)
+  if (self != equals && (v8[3] & 1) != 0)
   {
     WebThreadRunOnMainThread();
     v5 = *(v8 + 24);
@@ -192,13 +192,13 @@ uint64_t __33__SUScriptViewController_equals___block_invoke(uint64_t a1)
 - (void)tearDownUserInterface
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
-  v4 = [v3 toolbarItems];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  toolbarItems = [object toolbarItems];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [toolbarItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -210,7 +210,7 @@ uint64_t __33__SUScriptViewController_equals___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(toolbarItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -224,13 +224,13 @@ uint64_t __33__SUScriptViewController_equals___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [toolbarItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
     if (v7)
     {
-      [v3 setToolbarItems:0];
+      [object setToolbarItems:0];
     }
   }
 
@@ -239,7 +239,7 @@ uint64_t __33__SUScriptViewController_equals___block_invoke(uint64_t a1)
   [(SUScriptObject *)&v11 tearDownUserInterface];
 }
 
-- (void)addPassbookPassWithURL:(id)a3
+- (void)addPassbookPassWithURL:(id)l
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -263,23 +263,23 @@ uint64_t __49__SUScriptViewController_addPassbookPassWithURL___block_invoke(uint
   return [v2 _loadPassbookPassWithURL:v3];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
-  v6 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+  animatedCopy = animated;
+  webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-  [v6 dismissViewControllerAnimated:v5 completion:a4];
+  [webThreadMainThreadBatchProxy dismissViewControllerAnimated:animatedCopy completion:completion];
 }
 
-- (void)dismissModalViewControllerAnimated:(BOOL)a3
+- (void)dismissModalViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+  animatedCopy = animated;
+  webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-  [v4 _dismissModalViewControllerAnimated:v3];
+  [webThreadMainThreadBatchProxy _dismissModalViewControllerAnimated:animatedCopy];
 }
 
-- (void)dismissModalViewControllerWithTransition:(id)a3
+- (void)dismissModalViewControllerWithTransition:(id)transition
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -291,12 +291,12 @@ uint64_t __49__SUScriptViewController_addPassbookPassWithURL___block_invoke(uint
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!transition || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = transition, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
-    v6 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+    webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-    [v6 _dismissModalViewControllerWithTransition:v5];
+    [webThreadMainThreadBatchProxy _dismissModalViewControllerWithTransition:v5];
     return;
   }
 
@@ -305,20 +305,20 @@ LABEL_3:
   [v8 throwException:@"Invalid argument"];
 }
 
-- (void)presentModalViewController:(id)a3 withTransition:(id)a4
+- (void)presentModalViewController:(id)controller withTransition:(id)transition
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    transition = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!transition || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v7 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+    webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-    [v7 _presentModalViewController:a3 withTransition:a4];
+    [webThreadMainThreadBatchProxy _presentModalViewController:controller withTransition:transition];
   }
 
   else
@@ -339,26 +339,26 @@ uint64_t __64__SUScriptViewController_runScrollTest_withDelta_forIterations___bl
   return [v2 runScrollTest:v3 withDelta:v5 forIterations:v4];
 }
 
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4
+- (void)setToolbarItems:(id)items animated:(BOOL)animated
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = 0;
+    itemsCopy = 0;
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = 0;
-    if (a3)
+    itemsCopy = 0;
+    if (items)
     {
       if ((isKindOfClass & 1) == 0)
       {
         objc_opt_class();
-        v6 = a3;
+        itemsCopy = items;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v20 = MEMORY[0x1E69E2F88];
@@ -368,7 +368,7 @@ uint64_t __64__SUScriptViewController_runScrollTest_withDelta_forIterations___bl
     }
   }
 
-  v7 = [v6 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+  v7 = [itemsCopy copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
   if (v7)
   {
     v8 = v7;
@@ -527,15 +527,15 @@ void __43__SUScriptViewController_contextDictionary__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -650,20 +650,20 @@ uint64_t __48__SUScriptViewController_modalPresentationStyle__block_invoke(uint6
   v8 = 3221225472;
   v9 = __45__SUScriptViewController_modalViewController__block_invoke;
   v10 = &unk_1E81650D8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptViewController_modalViewController__block_invoke, &unk_1E81650D8, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptViewController_modalViewController__block_invoke, &unk_1E81650D8, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -783,15 +783,15 @@ uint64_t __46__SUScriptViewController_navigationController__block_invoke(uint64_
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -823,20 +823,20 @@ uint64_t __40__SUScriptViewController_navigationItem__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __33__SUScriptViewController_popOver__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptViewController_popOver__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptViewController_popOver__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -894,15 +894,15 @@ uint64_t __50__SUScriptViewController_presentingViewController__block_invoke(uin
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -919,9 +919,9 @@ SUScriptSection *__33__SUScriptViewController_section__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v3 = [(SUScriptViewController *)self newScriptColorWithValue:a3];
+  v3 = [(SUScriptViewController *)self newScriptColorWithValue:color];
   if (v3)
   {
     v4 = v3;
@@ -955,10 +955,10 @@ void __45__SUScriptViewController_setBackgroundColor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setInputAccessoryViewController:(id)a3
+- (void)setInputAccessoryViewController:(id)controller
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !controller) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -985,22 +985,22 @@ uint64_t __58__SUScriptViewController_setInputAccessoryViewController___block_in
   return result;
 }
 
-- (void)setModalPresentationStyle:(id)a3
+- (void)setModalPresentationStyle:(id)style
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    styleCopy = 0;
 LABEL_3:
-    [v5 isEqualToString:{-[SUScriptViewController modalPresentationStyleNameFormSheet](self, "modalPresentationStyleNameFormSheet")}];
+    [styleCopy isEqualToString:{-[SUScriptViewController modalPresentationStyleNameFormSheet](self, "modalPresentationStyleNameFormSheet")}];
     WebThreadRunOnMainThread();
     return;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  styleCopy = 0;
+  if (!style)
   {
     goto LABEL_3;
   }
@@ -1011,7 +1011,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  styleCopy = style;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -1042,7 +1042,7 @@ uint64_t __52__SUScriptViewController_setModalPresentationStyle___block_invoke_2
   return [v1 setModalPresentationStyle:0];
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1074,7 +1074,7 @@ uint64_t __37__SUScriptViewController_setSection___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShowsLibraryButton:(id)a3
+- (void)setShowsLibraryButton:(id)button
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1103,9 +1103,9 @@ uint64_t __48__SUScriptViewController_setShowsLibraryButton___block_invoke(uint6
   return result;
 }
 
-- (void)setTopBackgroundColor:(id)a3
+- (void)setTopBackgroundColor:(id)color
 {
-  v3 = [(SUScriptViewController *)self newScriptColorWithValue:a3];
+  v3 = [(SUScriptViewController *)self newScriptColorWithValue:color];
   if (v3)
   {
     v4 = v3;
@@ -1131,10 +1131,10 @@ void __48__SUScriptViewController_setTopBackgroundColor___block_invoke(uint64_t 
   }
 }
 
-- (void)setTransientViewController:(id)a3
+- (void)setTransientViewController:(id)controller
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !controller) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -1161,7 +1161,7 @@ uint64_t __53__SUScriptViewController_setTransientViewController___block_invoke(
   return [v2 setTransientViewController:v3];
 }
 
-- (void)setUsesBlurredBackground:(id)a3
+- (void)setUsesBlurredBackground:(id)background
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1234,20 +1234,20 @@ uint64_t __44__SUScriptViewController_showsLibraryButton__block_invoke(uint64_t 
   v8 = 3221225472;
   v9 = __45__SUScriptViewController_splitViewController__block_invoke;
   v10 = &unk_1E81650D8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptViewController_splitViewController__block_invoke, &unk_1E81650D8, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptViewController_splitViewController__block_invoke, &unk_1E81650D8, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -1265,9 +1265,9 @@ void __45__SUScriptViewController_splitViewController__block_invoke(uint64_t a1)
 
 - (id)toolbarItems
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   WebThreadRunOnMainThread();
-  return v2;
+  return array;
 }
 
 uint64_t __38__SUScriptViewController_toolbarItems__block_invoke(uint64_t a1)
@@ -1325,15 +1325,15 @@ uint64_t __38__SUScriptViewController_toolbarItems__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -1366,20 +1366,20 @@ void __44__SUScriptViewController_topBackgroundColor__block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __49__SUScriptViewController_transientViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptViewController_transientViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptViewController_transientViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -1430,24 +1430,24 @@ void __47__SUScriptViewController_usesBlurredBackground__block_invoke(uint64_t a
   }
 }
 
-- (void)_dismissModalViewControllerAnimated:(BOOL)a3
+- (void)_dismissModalViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SUScriptViewController *)self nativeViewController];
-  v6 = [(UIViewController *)v5 tabBarController];
-  if ([(UITabBarController *)v6 transientViewController]&& [(UIViewController *)v5 isDescendantOfViewController:[(UITabBarController *)v6 transientViewController]])
+  animatedCopy = animated;
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
+  tabBarController = [(UIViewController *)nativeViewController tabBarController];
+  if ([(UITabBarController *)tabBarController transientViewController]&& [(UIViewController *)nativeViewController isDescendantOfViewController:[(UITabBarController *)tabBarController transientViewController]])
   {
-    v7 = [MEMORY[0x1E69DD258] transitionSafePerformer:v6];
+    v7 = [MEMORY[0x1E69DD258] transitionSafePerformer:tabBarController];
 
-    [v7 setTransientViewController:0 animated:v3];
+    [v7 setTransientViewController:0 animated:animatedCopy];
   }
 
   else
   {
-    v8 = [(SUScriptObject *)self clientInterface];
-    if (v5)
+    clientInterface = [(SUScriptObject *)self clientInterface];
+    if (nativeViewController)
     {
-      v9 = v5;
+      parentViewController = nativeViewController;
       while (1)
       {
         NSSelectorFromString(&cfstr_Embeddedparent.isa);
@@ -1456,10 +1456,10 @@ void __47__SUScriptViewController_usesBlurredBackground__block_invoke(uint64_t a
           break;
         }
 
-        v9 = [(UIViewController *)v9 parentViewController];
-        if (!v9)
+        parentViewController = [(UIViewController *)parentViewController parentViewController];
+        if (!parentViewController)
         {
-          v9 = v5;
+          parentViewController = nativeViewController;
           break;
         }
       }
@@ -1467,33 +1467,33 @@ void __47__SUScriptViewController_usesBlurredBackground__block_invoke(uint64_t a
 
     else
     {
-      v9 = 0;
+      parentViewController = 0;
     }
 
-    v10 = [MEMORY[0x1E69DD258] transitionSafePerformer:v9];
-    if (v8)
+    v10 = [MEMORY[0x1E69DD258] transitionSafePerformer:parentViewController];
+    if (clientInterface)
     {
 
-      [(SUClientInterface *)v8 _dismissViewControllerFromViewController:v10 animated:v3 completion:0];
+      [(SUClientInterface *)clientInterface _dismissViewControllerFromViewController:v10 animated:animatedCopy completion:0];
     }
 
     else
     {
 
-      [v10 dismissViewControllerAnimated:v3 completion:0];
+      [v10 dismissViewControllerAnimated:animatedCopy completion:0];
     }
   }
 }
 
-- (void)_dismissModalViewControllerWithTransition:(id)a3
+- (void)_dismissModalViewControllerWithTransition:(id)transition
 {
-  v5 = [(SUScriptObject *)self clientInterface];
+  clientInterface = [(SUScriptObject *)self clientInterface];
   v6 = [MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptViewController nativeViewController](self, "nativeViewController")}];
-  v7 = [(SUScriptViewController *)self _transitionForString:a3];
-  if (v5)
+  v7 = [(SUScriptViewController *)self _transitionForString:transition];
+  if (clientInterface)
   {
 
-    [(SUClientInterface *)v5 _dismissModalViewControllerFromViewController:v6 withTransition:v7];
+    [(SUClientInterface *)clientInterface _dismissModalViewControllerFromViewController:v6 withTransition:v7];
   }
 
   else
@@ -1503,31 +1503,31 @@ void __47__SUScriptViewController_usesBlurredBackground__block_invoke(uint64_t a
   }
 }
 
-- (void)_presentModalViewController:(id)a3 withTransition:(id)a4
+- (void)_presentModalViewController:(id)controller withTransition:(id)transition
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = [(SUScriptViewController *)self nativeViewController];
-  if ([(UIViewController *)v7 parentViewController])
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
+  if ([(UIViewController *)nativeViewController parentViewController])
   {
-    v8 = [a3 nativeViewController];
-    if (v8)
+    nativeViewController2 = [controller nativeViewController];
+    if (nativeViewController2)
     {
-      v9 = v8;
-      if ([v8 presentingViewController])
+      v9 = nativeViewController2;
+      if ([nativeViewController2 presentingViewController])
       {
-        v10 = [MEMORY[0x1E69D4938] sharedConfig];
-        v11 = [v10 shouldLog];
-        if ([v10 shouldLogToDisk])
+        mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+        if ([mEMORY[0x1E69D4938] shouldLogToDisk])
         {
-          v12 = v11 | 2;
+          v12 = shouldLog | 2;
         }
 
         else
         {
-          v12 = v11;
+          v12 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
         {
           v12 &= 2u;
         }
@@ -1536,9 +1536,9 @@ void __47__SUScriptViewController_usesBlurredBackground__block_invoke(uint64_t a
         {
 LABEL_24:
           v34 = 138412546;
-          v35 = [(SUScriptViewController *)self _className];
+          _className = [(SUScriptViewController *)self _className];
           v36 = 2112;
-          v37 = a3;
+          controllerCopy = controller;
           LODWORD(v24) = 22;
           v19 = _os_log_send_and_compose_impl();
           if (v19)
@@ -1553,17 +1553,17 @@ LABEL_24:
 
       else
       {
-        v21 = [(SUScriptObject *)self clientInterface];
-        v22 = [MEMORY[0x1E69DD258] transitionSafePerformer:v7];
+        clientInterface = [(SUScriptObject *)self clientInterface];
+        v22 = [MEMORY[0x1E69DD258] transitionSafePerformer:nativeViewController];
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v27 = __69__SUScriptViewController__presentModalViewController_withTransition___block_invoke;
         v28 = &unk_1E8165860;
-        v29 = v21;
+        v29 = clientInterface;
         v30 = v9;
         v31 = v22;
-        v32 = self;
-        v33 = a4;
+        selfCopy = self;
+        transitionCopy = transition;
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && (v23 = [v9 firstViewController], objc_opt_class(), (objc_opt_isKindOfClass()))
         {
@@ -1585,19 +1585,19 @@ LABEL_24:
 
     else
     {
-      v16 = [MEMORY[0x1E69D4938] sharedConfig];
-      v17 = [v16 shouldLog];
-      if ([v16 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v18 &= 2u;
       }
@@ -1611,19 +1611,19 @@ LABEL_24:
 
   else
   {
-    v13 = [MEMORY[0x1E69D4938] sharedConfig];
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+    if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog3 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog3;
     }
 
-    if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -1669,34 +1669,34 @@ uint64_t __69__SUScriptViewController__presentModalViewController_withTransition
   return result;
 }
 
-- (int)_transitionForString:(id)a3
+- (int)_transitionForString:(id)string
 {
-  if ([a3 isEqualToString:@"show-sheet"])
+  if ([string isEqualToString:@"show-sheet"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"hide-sheet"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"reveal-down"))
+  if ([string isEqualToString:@"hide-sheet"] & 1) != 0 || (objc_msgSend(string, "isEqualToString:", @"reveal-down"))
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"cover-up"])
+  if ([string isEqualToString:@"cover-up"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"flip-from-left"])
+  if ([string isEqualToString:@"flip-from-left"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"flip-from-right"])
+  if ([string isEqualToString:@"flip-from-right"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"cross-dissolve"])
+  if ([string isEqualToString:@"cross-dissolve"])
   {
     return 6;
   }
@@ -1704,27 +1704,27 @@ uint64_t __69__SUScriptViewController__presentModalViewController_withTransition
   return 0;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_20 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_15, 7);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_15, 7);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -1734,14 +1734,14 @@ uint64_t __69__SUScriptViewController__presentModalViewController_withTransition
 {
   v4.receiver = self;
   v4.super_class = SUScriptViewController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_20 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_20 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_15 = sel_addPassbookPassWithURL_;
     *algn_1EBF3AB18 = @"addPassbookPassWithURL";
@@ -1773,20 +1773,20 @@ uint64_t __69__SUScriptViewController__presentModalViewController_withTransition
   v8 = 3221225472;
   v9 = __75__SUScriptViewController_SUScriptVolumeViewAdditions__volumeViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __75__SUScriptViewController_SUScriptVolumeViewAdditions__volumeViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __75__SUScriptViewController_SUScriptVolumeViewAdditions__volumeViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -1798,10 +1798,10 @@ uint64_t __75__SUScriptViewController_SUScriptVolumeViewAdditions__volumeViewCon
   return result;
 }
 
-- (void)dismissVolumeViewControllerAnimated:(id)a3
+- (void)dismissVolumeViewControllerAnimated:(id)animated
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !animated) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
   {
     WebThreadRunOnMainThread();
   }
@@ -1864,16 +1864,16 @@ uint64_t __91__SUScriptViewController_SUScriptVolumeViewAdditions__dismissVolume
   return result;
 }
 
-- (void)presentVolumeViewController:(id)a3 animated:(id)a4
+- (void)presentVolumeViewController:(id)controller animated:(id)animated
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    animated = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_respondsToSelector()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!animated || (objc_opt_respondsToSelector()))
   {
     WebThreadRunOnMainThread();
   }
@@ -1903,23 +1903,23 @@ uint64_t __92__SUScriptViewController_SUScriptVolumeViewAdditions__presentVolume
 
 - (id)_parentViewControllerForVolumeViewController
 {
-  v2 = [(SUScriptViewController *)self nativeViewController];
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [(UIViewController *)v2 selectedNavigationController];
+    nativeViewController = [(UIViewController *)nativeViewController selectedNavigationController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [(UIViewController *)v2 topViewController];
+    nativeViewController = [(UIViewController *)nativeViewController topViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return nativeViewController;
   }
 
   else

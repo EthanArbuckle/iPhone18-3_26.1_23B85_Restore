@@ -14,7 +14,7 @@
 - (id)SHA256Hash
 {
   v4 = *MEMORY[0x1E69E9840];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
 
   return v1;
@@ -23,7 +23,7 @@
 - (id)SHA1Hash
 {
   v4 = *MEMORY[0x1E69E9840];
-  CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA1([self bytes], objc_msgSend(self, "length"), md);
   v1 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:20];
 
   return v1;
@@ -31,7 +31,7 @@
 
 - (id)fileSafeBase64Encoding
 {
-  v1 = [a1 base64EncodedStringWithOptions:0];
+  v1 = [self base64EncodedStringWithOptions:0];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 
   return v2;
@@ -40,11 +40,11 @@
 - (id)hexEncoding
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v3 = [a1 length];
-  v4 = [a1 bytes];
+  v3 = [self length];
+  bytes = [self bytes];
   if (v3)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;
@@ -104,13 +104,13 @@
 - (BOOL)hasPDFMIMEType
 {
   v2 = 0;
-  [a1 getBytes:&v2 length:1];
+  [self getBytes:&v2 length:1];
   return v2 == 37;
 }
 
 - (id)URLBase64EncodedString
 {
-  v1 = [a1 base64EncodedStringWithOptions:0];
+  v1 = [self base64EncodedStringWithOptions:0];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];

@@ -1,12 +1,12 @@
 @interface MediaShowcasingToolbar
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation MediaShowcasingToolbar
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E3FC0A14();
   v5 = v4;
   v7 = v6;

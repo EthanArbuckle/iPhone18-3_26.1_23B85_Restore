@@ -3,10 +3,10 @@
 - (CGPoint)wideLensDistortionOpticalCenter;
 - (CGSize)teleIntrinsicMatrixReferenceDimensions;
 - (CGSize)wideIntrinsicMatrixReferenceDimensions;
-- (__n128)setTeleExtrinsicMatrix:(__n128)a3;
-- (__n128)setTeleIntrinsicMatrix:(__n128)a3;
-- (__n128)setWideExtrinsicMatrix:(__n128)a3;
-- (__n128)setWideIntrinsicMatrix:(__n128)a3;
+- (__n128)setTeleExtrinsicMatrix:(__n128)matrix;
+- (__n128)setTeleIntrinsicMatrix:(__n128)matrix;
+- (__n128)setWideExtrinsicMatrix:(__n128)matrix;
+- (__n128)setWideIntrinsicMatrix:(__n128)matrix;
 - (__n128)teleExtrinsicMatrix;
 - (__n128)teleIntrinsicMatrix;
 - (__n128)wideExtrinsicMatrix;
@@ -162,32 +162,32 @@
 
 - (__n128)teleIntrinsicMatrix
 {
-  result = *(a1 + 128);
-  v2 = *(a1 + 144);
-  v3 = *(a1 + 160);
+  result = *(self + 128);
+  v2 = *(self + 144);
+  v3 = *(self + 160);
   return result;
 }
 
-- (__n128)setTeleIntrinsicMatrix:(__n128)a3
+- (__n128)setTeleIntrinsicMatrix:(__n128)matrix
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = matrix;
   result[10] = a4;
   return result;
 }
 
 - (__n128)wideIntrinsicMatrix
 {
-  result = *(a1 + 176);
-  v2 = *(a1 + 192);
-  v3 = *(a1 + 208);
+  result = *(self + 176);
+  v2 = *(self + 192);
+  v3 = *(self + 208);
   return result;
 }
 
-- (__n128)setWideIntrinsicMatrix:(__n128)a3
+- (__n128)setWideIntrinsicMatrix:(__n128)matrix
 {
   result[11] = a2;
-  result[12] = a3;
+  result[12] = matrix;
   result[13] = a4;
   return result;
 }
@@ -212,17 +212,17 @@
 
 - (__n128)teleExtrinsicMatrix
 {
-  result = *(a1 + 224);
-  v2 = *(a1 + 240);
-  v3 = *(a1 + 256);
-  v4 = *(a1 + 272);
+  result = *(self + 224);
+  v2 = *(self + 240);
+  v3 = *(self + 256);
+  v4 = *(self + 272);
   return result;
 }
 
-- (__n128)setTeleExtrinsicMatrix:(__n128)a3
+- (__n128)setTeleExtrinsicMatrix:(__n128)matrix
 {
   result[14] = a2;
-  result[15] = a3;
+  result[15] = matrix;
   result[16] = a4;
   result[17] = a5;
   return result;
@@ -230,17 +230,17 @@
 
 - (__n128)wideExtrinsicMatrix
 {
-  result = *(a1 + 288);
-  v2 = *(a1 + 304);
-  v3 = *(a1 + 320);
-  v4 = *(a1 + 336);
+  result = *(self + 288);
+  v2 = *(self + 304);
+  v3 = *(self + 320);
+  v4 = *(self + 336);
   return result;
 }
 
-- (__n128)setWideExtrinsicMatrix:(__n128)a3
+- (__n128)setWideExtrinsicMatrix:(__n128)matrix
 {
   result[18] = a2;
-  result[19] = a3;
+  result[19] = matrix;
   result[20] = a4;
   result[21] = a5;
   return result;

@@ -1,27 +1,27 @@
 @interface SUUIDefaultCardLayout
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5;
-- (id)attributedStringForButton:(id)a3;
-- (id)attributedStringForLabel:(id)a3;
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width;
+- (id)attributedStringForButton:(id)button;
+- (id)attributedStringForLabel:(id)label;
 @end
 
 @implementation SUUIDefaultCardLayout
 
-- (id)attributedStringForButton:(id)a3
+- (id)attributedStringForButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 buttonTitleStyle];
-  v5 = v4;
-  if (v4)
+  buttonCopy = button;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v5 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v6 = v4;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v6 = [v3 style];
+    style = [buttonCopy style];
   }
 
-  v7 = v6;
+  v7 = style;
 
   v8 = SUUIViewElementFontWithStyle(v7);
   if (!v8)
@@ -40,22 +40,22 @@
     v10 = 1;
   }
 
-  v11 = [v3 buttonText];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:0 textAlignment:v10 style:v7];
+  buttonText = [buttonCopy buttonText];
+  v12 = [buttonText attributedStringWithDefaultFont:v8 foregroundColor:0 textAlignment:v10 style:v7];
 
   return v12;
 }
 
-- (id)attributedStringForLabel:(id)a3
+- (id)attributedStringForLabel:(id)label
 {
-  v4 = a3;
-  v5 = [v4 style];
-  v6 = SUUIViewElementFontWithStyle(v5);
-  v7 = [(SUUICardLayout *)self layoutContext];
-  v8 = [v7 tintColor];
-  v9 = SUUIViewElementPlainColorWithStyle(v5, v8);
+  labelCopy = label;
+  style = [labelCopy style];
+  v6 = SUUIViewElementFontWithStyle(style);
+  layoutContext = [(SUUICardLayout *)self layoutContext];
+  tintColor = [layoutContext tintColor];
+  v9 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v10 = SUUIViewElementAlignmentForStyle(v5);
+  v10 = SUUIViewElementAlignmentForStyle(style);
   if (v10)
   {
     v11 = SUUIViewElementNSTextAlignmentForIKElementAlignment(v10);
@@ -66,10 +66,10 @@
     v11 = 1;
   }
 
-  v12 = [v4 labelViewStyle];
-  if (v12 <= 5)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle <= 5)
   {
-    if (((1 << v12) & 0x1B) != 0)
+    if (((1 << labelViewStyle) & 0x1B) != 0)
     {
       if (v6)
       {
@@ -88,7 +88,7 @@
         }
       }
 
-      v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
+      blackColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
     }
 
     else
@@ -110,27 +110,27 @@
         }
       }
 
-      v13 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    v9 = v13;
+    v9 = blackColor;
   }
 
 LABEL_17:
-  v14 = [v4 text];
-  v15 = [v14 attributedStringWithDefaultFont:v6 foregroundColor:v9 textAlignment:v11];
+  text = [labelCopy text];
+  v15 = [text attributedStringWithDefaultFont:v6 foregroundColor:v9 textAlignment:v11];
 
   return v15;
 }
 
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 elementType] == 66)
+  elementCopy = element;
+  viewElementCopy = viewElement;
+  if ([viewElementCopy elementType] == 66)
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v12 = v11;
     v14 = v13;
 
@@ -140,14 +140,14 @@ LABEL_17:
     }
 
     v15 = 12.0;
-    if ([v8 elementType] != 131 && objc_msgSend(v9, "elementType") != 131)
+    if ([elementCopy elementType] != 131 && objc_msgSend(viewElementCopy, "elementType") != 131)
     {
       v15 = 20.0;
       if (v14 <= 736.0)
       {
-        v16 = [v8 parent];
+        parent = [elementCopy parent];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v15 = 12.0, ([v16 isAdCard] & 1) == 0))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v15 = 12.0, ([parent isAdCard] & 1) == 0))
         {
           if (v14 <= 568.0)
           {
@@ -167,7 +167,7 @@ LABEL_17:
   {
     v19.receiver = self;
     v19.super_class = SUUIDefaultCardLayout;
-    [(SUUICardLayout *)&v19 topInsetForViewElement:v8 previousViewElement:v9 width:a5];
+    [(SUUICardLayout *)&v19 topInsetForViewElement:elementCopy previousViewElement:viewElementCopy width:width];
     v15 = v17;
   }
 

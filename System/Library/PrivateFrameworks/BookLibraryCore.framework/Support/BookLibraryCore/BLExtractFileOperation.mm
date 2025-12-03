@@ -1,32 +1,32 @@
 @interface BLExtractFileOperation
 - (BLBookInstallInfo)installInfo;
-- (BLExtractFileOperation)initWithSoucePath:(id)a3 destinationPath:(id)a4 fileAttributes:(id)a5 installInfo:(id)a6;
-- (BOOL)_applyFileAttributesToDirectory:(id)a3 error:(id *)a4;
-- (BOOL)_performExtraction:(id *)a3;
+- (BLExtractFileOperation)initWithSoucePath:(id)path destinationPath:(id)destinationPath fileAttributes:(id)attributes installInfo:(id)info;
+- (BOOL)_applyFileAttributesToDirectory:(id)directory error:(id *)error;
+- (BOOL)_performExtraction:(id *)extraction;
 - (NSString)description;
 - (void)_initializeProgress;
-- (void)_updateProgressWithByteCount:(int64_t)a3;
+- (void)_updateProgressWithByteCount:(int64_t)count;
 - (void)main;
 @end
 
 @implementation BLExtractFileOperation
 
-- (BLExtractFileOperation)initWithSoucePath:(id)a3 destinationPath:(id)a4 fileAttributes:(id)a5 installInfo:(id)a6
+- (BLExtractFileOperation)initWithSoucePath:(id)path destinationPath:(id)destinationPath fileAttributes:(id)attributes installInfo:(id)info
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
+  attributesCopy = attributes;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = BLExtractFileOperation;
   v15 = [(BLExtractFileOperation *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sourceFilePath, a3);
-    objc_storeStrong(&v16->_destinationFilePath, a4);
-    objc_storeStrong(&v16->_fileAttributes, a5);
-    objc_storeWeak(&v16->_installInfo, v14);
+    objc_storeStrong(&v15->_sourceFilePath, path);
+    objc_storeStrong(&v16->_destinationFilePath, destinationPath);
+    objc_storeStrong(&v16->_fileAttributes, attributes);
+    objc_storeWeak(&v16->_installInfo, infoCopy);
     v17 = objc_alloc_init(BLOperationProgress);
     progress = v16->_progress;
     v16->_progress = v17;
@@ -38,15 +38,15 @@
 - (void)main
 {
   [(BLExtractFileOperation *)self _initializeProgress];
-  v3 = [(BLExtractFileOperation *)self sourceFilePath];
-  if (![v3 length])
+  sourceFilePath = [(BLExtractFileOperation *)self sourceFilePath];
+  if (![sourceFilePath length])
   {
 
     goto LABEL_6;
   }
 
-  v4 = [(BLExtractFileOperation *)self destinationFilePath];
-  v5 = [v4 length];
+  destinationFilePath = [(BLExtractFileOperation *)self destinationFilePath];
+  v5 = [destinationFilePath length];
 
   if (!v5)
   {
@@ -61,8 +61,8 @@ LABEL_6:
   v7 = v9;
   if (v6)
   {
-    v8 = [(BLExtractFileOperation *)self destinationFilePath];
-    [(BLExtractFileOperation *)self _applyFileAttributesToDirectory:v8 error:0];
+    destinationFilePath2 = [(BLExtractFileOperation *)self destinationFilePath];
+    [(BLExtractFileOperation *)self _applyFileAttributesToDirectory:destinationFilePath2 error:0];
 
     v6 = 1;
   }
@@ -72,20 +72,20 @@ LABEL_7:
   [(BLExtractFileOperation *)self setSuccess:v6];
 }
 
-- (BOOL)_applyFileAttributesToDirectory:(id)a3 error:(id *)a4
+- (BOOL)_applyFileAttributesToDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v7 = BLBookInstallLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     buf.st_dev = 138412290;
-    *&buf.st_mode = v6;
+    *&buf.st_mode = directoryCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[Install-ExtractFile-Op]: Fixing file permissions for %@", &buf, 0xCu);
   }
 
   v41 = 0;
   v35 = objc_alloc_init(NSFileManager);
-  v8 = [v35 subpathsOfDirectoryAtPath:v6 error:&v41];
+  v8 = [v35 subpathsOfDirectoryAtPath:directoryCopy error:&v41];
   v9 = v41;
   if (!v8)
   {
@@ -93,7 +93,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       buf.st_dev = 138412546;
-      *&buf.st_mode = v6;
+      *&buf.st_mode = directoryCopy;
       WORD2(buf.st_ino) = 2112;
       *(&buf.st_ino + 6) = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[Install-ExtractFile-Op]: Could not get sub-paths of %@:  %@", &buf, 0x16u);
@@ -103,8 +103,8 @@ LABEL_7:
     goto LABEL_30;
   }
 
-  v10 = [(BLExtractFileOperation *)self fileAttributes];
-  v11 = [v10 mutableCopy];
+  fileAttributes = [(BLExtractFileOperation *)self fileAttributes];
+  v11 = [fileAttributes mutableCopy];
 
   if (!v11)
   {
@@ -126,7 +126,7 @@ LABEL_7:
   v13 = v12;
   v34 = v11;
   v31 = v8;
-  v32 = a4;
+  errorCopy = error;
   v14 = *v38;
   while (2)
   {
@@ -139,12 +139,12 @@ LABEL_7:
 
       v16 = *(*(&v37 + 1) + 8 * i);
       v17 = objc_autoreleasePoolPush();
-      v18 = [v6 stringByAppendingPathComponent:v16];
-      v19 = [v18 fileSystemRepresentation];
-      if (v19)
+      v18 = [directoryCopy stringByAppendingPathComponent:v16];
+      fileSystemRepresentation = [v18 fileSystemRepresentation];
+      if (fileSystemRepresentation)
       {
         memset(&buf, 0, sizeof(buf));
-        if (stat(v19, &buf))
+        if (stat(fileSystemRepresentation, &buf))
         {
           v24 = BLBookInstallLog();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -165,8 +165,8 @@ LABEL_7:
         else
         {
           v20 = [NSNumber alloc];
-          v21 = [v20 initWithShort:buf.st_mode | 0x1B0u];
-          [v34 setObject:v21 forKey:NSFilePosixPermissions];
+          0x1B0u = [v20 initWithShort:buf.st_mode | 0x1B0u];
+          [v34 setObject:0x1B0u forKey:NSFilePosixPermissions];
 
           v36 = 0;
           v22 = [v35 setAttributes:v34 ofItemAtPath:v18 error:&v36];
@@ -189,7 +189,7 @@ LABEL_7:
         }
 
         v8 = v31;
-        a4 = v32;
+        error = errorCopy;
         v11 = v34;
 
         objc_autoreleasePoolPop(v17);
@@ -213,15 +213,15 @@ LABEL_15:
 
   v23 = 1;
   v8 = v31;
-  a4 = v32;
+  error = errorCopy;
   v11 = v34;
 LABEL_29:
 
 LABEL_30:
-  if (a4)
+  if (error)
   {
     v29 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v23;
@@ -230,16 +230,16 @@ LABEL_30:
 - (void)_initializeProgress
 {
   v12 = 0;
-  v3 = [(BLExtractFileOperation *)self sourceFilePath];
-  v4 = [NSURL fileURLWithPath:v3];
+  sourceFilePath = [(BLExtractFileOperation *)self sourceFilePath];
+  v4 = [NSURL fileURLWithPath:sourceFilePath];
 
   v11 = 0;
   v5 = [[BUUnarchivingFileCopier alloc] initWithURL:v4 options:4 error:&v11];
   v6 = v11;
   [(BLExtractFileOperation *)self setCopier:v5];
 
-  v7 = [(BLExtractFileOperation *)self copier];
-  [v7 setDelegate:self];
+  copier = [(BLExtractFileOperation *)self copier];
+  [copier setDelegate:self];
 
   if (v6)
   {
@@ -258,8 +258,8 @@ LABEL_30:
 
   else
   {
-    v9 = [(BLExtractFileOperation *)self copier];
-    [v9 countTotalFileSize:&v12 totalFileCount:0];
+    copier2 = [(BLExtractFileOperation *)self copier];
+    [copier2 countTotalFileSize:&v12 totalFileCount:0];
 
     v10 = BLBookInstallLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -277,41 +277,41 @@ LABEL_30:
   }
 }
 
-- (BOOL)_performExtraction:(id *)a3
+- (BOOL)_performExtraction:(id *)extraction
 {
-  v5 = [(BLExtractFileOperation *)self sourceFilePath];
-  v6 = [NSURL fileURLWithPath:v5];
+  sourceFilePath = [(BLExtractFileOperation *)self sourceFilePath];
+  v6 = [NSURL fileURLWithPath:sourceFilePath];
 
-  v7 = [(BLExtractFileOperation *)self destinationFilePath];
-  v8 = [NSURL fileURLWithPath:v7];
+  destinationFilePath = [(BLExtractFileOperation *)self destinationFilePath];
+  v8 = [NSURL fileURLWithPath:destinationFilePath];
 
   v9 = BLBookInstallLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v6 path];
-    v11 = [v8 path];
+    path = [v6 path];
+    path2 = [v8 path];
     *buf = 141558786;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v10;
+    v24 = path;
     v25 = 2160;
     v26 = 1752392040;
     v27 = 2112;
-    v28 = v11;
+    v28 = path2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[Install-ExtractFile-Op]: Extracting %{mask.hash}@ to %{mask.hash}@", buf, 0x2Au);
   }
 
-  v12 = [(BLExtractFileOperation *)self copier];
-  v13 = v12;
-  if (v12)
+  copier = [(BLExtractFileOperation *)self copier];
+  v13 = copier;
+  if (copier)
   {
     v20 = 0;
-    v14 = [v12 copyToURL:v8 error:&v20];
+    v14 = [copier copyToURL:v8 error:&v20];
     v15 = v20;
     if (v14)
     {
       v16 = 1;
-      if (!a3)
+      if (!extraction)
       {
         goto LABEL_12;
       }
@@ -334,11 +334,11 @@ LABEL_30:
   }
 
   v16 = 0;
-  if (a3)
+  if (extraction)
   {
 LABEL_11:
     v18 = v15;
-    *a3 = v15;
+    *extraction = v15;
   }
 
 LABEL_12:
@@ -346,14 +346,14 @@ LABEL_12:
   return v16;
 }
 
-- (void)_updateProgressWithByteCount:(int64_t)a3
+- (void)_updateProgressWithByteCount:(int64_t)count
 {
-  v5 = [(BLOperationProgress *)self->_progress currentValue];
-  v6 = v5 + a3;
-  v7 = [(BLOperationProgress *)self->_progress maxValue];
-  if (v6 >= v7)
+  currentValue = [(BLOperationProgress *)self->_progress currentValue];
+  v6 = currentValue + count;
+  maxValue = [(BLOperationProgress *)self->_progress maxValue];
+  if (v6 >= maxValue)
   {
-    v8 = v7;
+    v8 = maxValue;
   }
 
   else
@@ -361,7 +361,7 @@ LABEL_12:
     v8 = v6;
   }
 
-  if (v8 != v5)
+  if (v8 != currentValue)
   {
     [(BLOperationProgress *)self->_progress setCurrentValue:?];
   }
@@ -371,9 +371,9 @@ LABEL_12:
   if (v10 < Current)
   {
     [(BLOperationProgress *)self->_progress snapshot];
-    v12 = [(BLExtractFileOperation *)self installInfo];
-    v11 = [v12 progressDelegate];
-    [v11 operation:self updatedProgress:self->_progress forInstall:v12];
+    installInfo = [(BLExtractFileOperation *)self installInfo];
+    progressDelegate = [installInfo progressDelegate];
+    [progressDelegate operation:self updatedProgress:self->_progress forInstall:installInfo];
 
     self->_lastSnapshotTime = Current;
   }

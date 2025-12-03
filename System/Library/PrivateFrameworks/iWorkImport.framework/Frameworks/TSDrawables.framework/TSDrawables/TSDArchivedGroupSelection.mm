@@ -1,25 +1,25 @@
 @interface TSDArchivedGroupSelection
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSDArchivedGroupSelection
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v11 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v11, v4, off_2812F5188[112]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[112]);
 
   v6 = [TSDGroupSelection alloc];
   if (*(v5 + 24))
   {
-    v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, *(v5 + 24), v11);
+    v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, *(v5 + 24), unarchiverCopy);
   }
 
   else
   {
-    v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, &TSD::_DrawableSelectionArchive_default_instance_, v11);
+    v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, &TSD::_DrawableSelectionArchive_default_instance_, unarchiverCopy);
   }
 
   v10 = v8;
@@ -31,11 +31,11 @@
   objc_msgSend_setSelection_(self, v9, v10);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276791888, off_2812F5188[112]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276791888, off_2812F5188[112]);
 
   *(v6 + 16) |= 1u;
   v7 = *(v6 + 24);
@@ -53,7 +53,7 @@
 
   v16.receiver = self;
   v16.super_class = TSDArchivedGroupSelection;
-  [(TSDArchivedDrawableSelection *)&v16 saveToArchiver:v4 intoMessage:v7];
+  [(TSDArchivedDrawableSelection *)&v16 saveToArchiver:archiverCopy intoMessage:v7];
   objc_opt_class();
   v11 = objc_msgSend_selection(self, v9, v10);
   v12 = TSUDynamicCast();

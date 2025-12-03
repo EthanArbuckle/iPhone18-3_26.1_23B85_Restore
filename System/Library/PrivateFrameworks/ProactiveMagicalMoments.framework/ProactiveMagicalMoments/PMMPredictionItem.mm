@@ -1,56 +1,56 @@
 @interface PMMPredictionItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPredictionItem:(id)a3;
-- (PMMPredictionItem)initWithBundleId:(id)a3 predictionSource:(unint64_t)a4 reason:(int64_t)a5 reasonMetadata:(id)a6 anchorType:(int64_t)a7 confidence:(double)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPredictionItem:(id)item;
+- (PMMPredictionItem)initWithBundleId:(id)id predictionSource:(unint64_t)source reason:(int64_t)reason reasonMetadata:(id)metadata anchorType:(int64_t)type confidence:(double)confidence;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PMMPredictionItem
 
-- (PMMPredictionItem)initWithBundleId:(id)a3 predictionSource:(unint64_t)a4 reason:(int64_t)a5 reasonMetadata:(id)a6 anchorType:(int64_t)a7 confidence:(double)a8
+- (PMMPredictionItem)initWithBundleId:(id)id predictionSource:(unint64_t)source reason:(int64_t)reason reasonMetadata:(id)metadata anchorType:(int64_t)type confidence:(double)confidence
 {
-  v15 = a3;
-  v16 = a6;
+  idCopy = id;
+  metadataCopy = metadata;
   v20.receiver = self;
   v20.super_class = PMMPredictionItem;
   v17 = [(PMMPredictionItem *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_bundleId, a3);
-    v18->_predictionSource = a4;
-    v18->_reason = a5;
-    objc_storeStrong(&v18->_reasonMetadata, a6);
-    v18->_anchorType = a7;
-    v18->_confidence = a8;
+    objc_storeStrong(&v17->_bundleId, id);
+    v18->_predictionSource = source;
+    v18->_reason = reason;
+    objc_storeStrong(&v18->_reasonMetadata, metadata);
+    v18->_anchorType = type;
+    v18->_confidence = confidence;
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PMMPredictionItem *)self isEqualToPredictionItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PMMPredictionItem *)self isEqualToPredictionItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPredictionItem:(id)a3
+- (BOOL)isEqualToPredictionItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (*&self->_predictionSource != *(v4 + 1) || self->_confidence != *(v4 + 6))
+  itemCopy = item;
+  v5 = itemCopy;
+  if (*&self->_predictionSource != *(itemCopy + 1) || self->_confidence != *(itemCopy + 6))
   {
     goto LABEL_3;
   }

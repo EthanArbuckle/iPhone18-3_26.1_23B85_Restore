@@ -1,7 +1,7 @@
 @interface MRApplicationConnection
-- (BOOL)isEqual:(id)a3;
-- (MRApplicationConnection)initWithContext:(id)a3 requestInfo:(id)a4;
-- (MRApplicationConnection)initWithServiceName:(id)a3 playerPath:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MRApplicationConnection)initWithContext:(id)context requestInfo:(id)info;
+- (MRApplicationConnection)initWithServiceName:(id)name playerPath:(id)path;
 - (NSString)identifier;
 - (NSString)serviceName;
 - (id)description;
@@ -10,90 +10,90 @@
 - (void)activate;
 - (void)close;
 - (void)dealloc;
-- (void)handleMediaRemoteServiceInvalidatedNotification:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)invalidate:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)setIncomingMessageHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)handleMediaRemoteServiceInvalidatedNotification:(id)notification;
+- (void)handleMessage:(id)message;
+- (void)invalidate:(id)invalidate;
+- (void)sendMessage:(id)message;
+- (void)setIncomingMessageHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation MRApplicationConnection
 
-- (MRApplicationConnection)initWithServiceName:(id)a3 playerPath:(id)a4
+- (MRApplicationConnection)initWithServiceName:(id)name playerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 origin];
-  if (v8)
+  nameCopy = name;
+  pathCopy = path;
+  selfCopy = [pathCopy origin];
+  if (selfCopy)
   {
-    v9 = [v7 client];
-    v10 = [v9 bundleIdentifier];
+    client = [pathCopy client];
+    bundleIdentifier = [client bundleIdentifier];
 
-    if (v10)
+    if (bundleIdentifier)
     {
       v11 = [MRApplicationConnectionContext alloc];
       v12 = MSVNanoIDCreateTaggedPointer();
-      v13 = [(MRApplicationConnectionContext *)v11 initWithIdentifier:v12 service:v6 destinationPlayerPath:v7];
+      v13 = [(MRApplicationConnectionContext *)v11 initWithIdentifier:v12 service:nameCopy destinationPlayerPath:pathCopy];
       self = [(MRApplicationConnection *)self initWithContext:v13 requestInfo:0];
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (MRApplicationConnection)initWithContext:(id)a3 requestInfo:(id)a4
+- (MRApplicationConnection)initWithContext:(id)context requestInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v30.receiver = self;
   v30.super_class = MRApplicationConnection;
   v9 = [(MRApplicationConnection *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
+    objc_storeStrong(&v9->_context, context);
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v7 identifier];
-    v13 = [v11 stringWithFormat:@"com.apple.MediaRemote.MRApplicationConnection-%@", v12];
+    identifier = [contextCopy identifier];
+    v13 = [v11 stringWithFormat:@"com.apple.MediaRemote.MRApplicationConnection-%@", identifier];
 
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = MRApplicationConnectionGetQueue();
-    v17 = dispatch_queue_create_with_target_V2(v14, v15, v16);
+    v17 = dispatch_queue_create_with_target_V2(uTF8String, v15, v16);
     queue = v10->_queue;
     v10->_queue = v17;
 
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v7 identifier];
-    v21 = [v19 stringWithFormat:@"com.apple.MediaRemote.MRApplicationConnectionMessage-%@", v20];
+    identifier2 = [contextCopy identifier];
+    v21 = [v19 stringWithFormat:@"com.apple.MediaRemote.MRApplicationConnectionMessage-%@", identifier2];
 
-    v22 = [v21 UTF8String];
+    uTF8String2 = [v21 UTF8String];
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = MRApplicationConnectionGetMessageQueue();
-    v25 = dispatch_queue_create_with_target_V2(v22, v23, v24);
+    v25 = dispatch_queue_create_with_target_V2(uTF8String2, v23, v24);
     messageQueue = v10->_messageQueue;
     v10->_messageQueue = v25;
 
     v10->_lock._os_unfair_lock_opaque = 0;
     v10->_state = 0;
-    objc_storeStrong(&v10->_requestInfo, a4);
-    v10->_isIncomingConnection = v8 != 0;
+    objc_storeStrong(&v10->_requestInfo, info);
+    v10->_isIncomingConnection = infoCopy != 0;
     v27 = _MRLogForCategory(0);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
       v32 = v10;
       v33 = 2112;
-      v34 = v7;
+      v34 = contextCopy;
       _os_log_impl(&dword_1A2860000, v27, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection] initialize<%p> - context: %@", buf, 0x16u);
     }
   }
@@ -109,7 +109,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection]<%p> dealloc", buf, 0xCu);
   }
 
@@ -122,34 +122,34 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MRApplicationConnection *)self context];
-  v5 = [v3 initWithFormat:@"<MRApplicationConnection<%p> - context: %@>", self, v4];
+  context = [(MRApplicationConnection *)self context];
+  v5 = [v3 initWithFormat:@"<MRApplicationConnection<%p> - context: %@>", self, context];
 
   return v5;
 }
 
 - (NSString)serviceName
 {
-  v2 = [(MRApplicationConnection *)self context];
-  v3 = [v2 service];
+  context = [(MRApplicationConnection *)self context];
+  service = [context service];
 
-  return v3;
+  return service;
 }
 
 - (NSString)identifier
 {
-  v2 = [(MRApplicationConnection *)self context];
-  v3 = [v2 identifier];
+  context = [(MRApplicationConnection *)self context];
+  identifier = [context identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)destinationPlayerPath
 {
-  v2 = [(MRApplicationConnection *)self context];
-  v3 = [v2 destinationPlayerPath];
+  context = [(MRApplicationConnection *)self context];
+  destinationPlayerPath = [context destinationPlayerPath];
 
-  return v3;
+  return destinationPlayerPath;
 }
 
 - (void)activate
@@ -184,7 +184,7 @@ uint64_t __35__MRApplicationConnection_activate__block_invoke(uint64_t result, u
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A2860000, v4, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection]<%p> close - invalidating)", buf, 0xCu);
     }
 
@@ -202,7 +202,7 @@ uint64_t __35__MRApplicationConnection_activate__block_invoke(uint64_t result, u
   {
     v8 = MRApplicationConnectionStateDescription(state);
     *buf = 134218242;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2112;
     v19 = v8;
     _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection]<%p> close - state: %@", buf, 0x16u);
@@ -225,13 +225,13 @@ uint64_t __35__MRApplicationConnection_activate__block_invoke(uint64_t result, u
     }
 
     v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:v11];
-    v13 = [(MRApplicationConnection *)self queue];
+    queue = [(MRApplicationConnection *)self queue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __32__MRApplicationConnection_close__block_invoke;
     v15[3] = &unk_1E769AFC0;
     v15[4] = self;
-    [v10 closeApplicationConnection:self error:v12 queue:v13 completion:v15];
+    [v10 closeApplicationConnection:self error:v12 queue:queue completion:v15];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -250,10 +250,10 @@ void __32__MRApplicationConnection_close__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state == 2)
   {
@@ -267,9 +267,9 @@ void __32__MRApplicationConnection_close__block_invoke(uint64_t a1, void *a2)
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v4;
+      v18 = invalidateCopy;
       _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection]<%p> invalidate - error: %@", buf, 0x16u);
     }
 
@@ -283,25 +283,25 @@ void __32__MRApplicationConnection_close__block_invoke(uint64_t a1, void *a2)
     os_unfair_lock_unlock(&self->_lock);
     if (v6)
     {
-      v9 = [(MRApplicationConnection *)self messageQueue];
+      messageQueue = [(MRApplicationConnection *)self messageQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __38__MRApplicationConnection_invalidate___block_invoke;
       v12[3] = &unk_1E769AB28;
       v14 = v6;
-      v13 = v4;
+      v13 = invalidateCopy;
       v10 = v6;
-      dispatch_async(v9, v12);
+      dispatch_async(messageQueue, v12);
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_lock);
@@ -309,26 +309,26 @@ void __32__MRApplicationConnection_close__block_invoke(uint64_t a1, void *a2)
   {
     v6 = MRGetSharedService();
     v7 = objc_alloc_init(MRApplicationConnectionMessageHeader);
-    [v4 setHeader:v7];
+    [messageCopy setHeader:v7];
 
     v8 = _MRLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 underlyingMessage];
+      underlyingMessage = [messageCopy underlyingMessage];
       *buf = 134218242;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v9;
+      v16 = underlyingMessage;
       _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRApplicationConnection]<%p> sendMessage - sending payload: %@", buf, 0x16u);
     }
 
-    v10 = [(MRApplicationConnection *)self queue];
+    queue = [(MRApplicationConnection *)self queue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__MRApplicationConnection_sendMessage___block_invoke;
     v12[3] = &unk_1E769AFC0;
     v12[4] = self;
-    [v6 sendApplicationConnectionMessage:v4 forConnection:self queue:v10 completion:v12];
+    [v6 sendApplicationConnectionMessage:messageCopy forConnection:self queue:queue completion:v12];
   }
 
   else
@@ -353,15 +353,15 @@ uint64_t __39__MRApplicationConnection_sendMessage___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
   if (*&self->_state == 0)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingReceivedMessages = self->_pendingReceivedMessages;
-    self->_pendingReceivedMessages = v9;
+    self->_pendingReceivedMessages = array;
 
     v11 = 1;
   }
@@ -374,7 +374,7 @@ uint64_t __39__MRApplicationConnection_sendMessage___block_invoke(uint64_t resul
   v5 = self->_pendingReceivedMessages;
   if (v5)
   {
-    [(NSMutableArray *)self->_pendingReceivedMessages addObject:v4];
+    [(NSMutableArray *)self->_pendingReceivedMessages addObject:messageCopy];
   }
 
   v6 = MEMORY[0x1A58E3570](self->_incomingMessageHandler);
@@ -396,15 +396,15 @@ LABEL_11:
 
   else if (v6)
   {
-    v8 = [(MRApplicationConnection *)self messageQueue];
+    messageQueue = [(MRApplicationConnection *)self messageQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __41__MRApplicationConnection_handleMessage___block_invoke_143;
     v12[3] = &unk_1E769E410;
     v12[4] = self;
-    v13 = v4;
+    v13 = messageCopy;
     v14 = v6;
-    dispatch_async(v8, v12);
+    dispatch_async(messageQueue, v12);
 
     v7 = v13;
     goto LABEL_11;
@@ -544,10 +544,10 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -557,17 +557,17 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRApplicationConnection *)self identifier];
-      v7 = [(MRApplicationConnection *)v5 identifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(MRApplicationConnection *)self identifier];
+      identifier2 = [(MRApplicationConnection *)v5 identifier];
+      if (identifier == identifier2)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [v6 isEqual:v7];
+        v8 = [identifier isEqual:identifier2];
       }
     }
 
@@ -582,15 +582,15 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
 
 - (unint64_t)hash
 {
-  v2 = [(MRApplicationConnection *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MRApplicationConnection *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)setIncomingMessageHandler:(id)a3
+- (void)setIncomingMessageHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state)
   {
@@ -603,7 +603,7 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
 
   else
   {
-    v6 = MEMORY[0x1A58E3570](v4);
+    v6 = MEMORY[0x1A58E3570](handlerCopy);
     incomingMessageHandler = self->_incomingMessageHandler;
     self->_incomingMessageHandler = v6;
   }
@@ -611,9 +611,9 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state)
   {
@@ -626,7 +626,7 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
 
   else
   {
-    v6 = MEMORY[0x1A58E3570](v4);
+    v6 = MEMORY[0x1A58E3570](handlerCopy);
     invalidationHandler = self->_invalidationHandler;
     self->_invalidationHandler = v6;
   }
@@ -634,7 +634,7 @@ uint64_t __41__MRApplicationConnection_handleMessage___block_invoke_143(uint64_t
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)handleMediaRemoteServiceInvalidatedNotification:(id)a3
+- (void)handleMediaRemoteServiceInvalidatedNotification:(id)notification
 {
   if ([(MRApplicationConnection *)self isIncomingConnection])
   {

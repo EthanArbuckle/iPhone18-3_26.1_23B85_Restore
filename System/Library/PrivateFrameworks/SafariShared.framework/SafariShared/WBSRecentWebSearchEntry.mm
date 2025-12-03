@@ -1,53 +1,53 @@
 @interface WBSRecentWebSearchEntry
-- (BOOL)isEqual:(id)a3;
-- (WBSRecentWebSearchEntry)initWithDictionaryRepresentation:(id)a3;
-- (WBSRecentWebSearchEntry)initWithSearchString:(id)a3 date:(id)a4 URLs:(id)a5;
-- (WBSRecentWebSearchEntry)initWithSearchString:(id)a3 url:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WBSRecentWebSearchEntry)initWithDictionaryRepresentation:(id)representation;
+- (WBSRecentWebSearchEntry)initWithSearchString:(id)string date:(id)date URLs:(id)ls;
+- (WBSRecentWebSearchEntry)initWithSearchString:(id)string url:(id)url;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation WBSRecentWebSearchEntry
 
-- (WBSRecentWebSearchEntry)initWithSearchString:(id)a3 date:(id)a4 URLs:(id)a5
+- (WBSRecentWebSearchEntry)initWithSearchString:(id)string date:(id)date URLs:(id)ls
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  dateCopy = date;
+  lsCopy = ls;
   v20.receiver = self;
   v20.super_class = WBSRecentWebSearchEntry;
   v11 = [(WBSRecentWebSearchEntry *)&v20 init];
-  if (v11 && [v8 length])
+  if (v11 && [stringCopy length])
   {
-    v12 = [v8 copy];
+    v12 = [stringCopy copy];
     searchString = v11->_searchString;
     v11->_searchString = v12;
 
-    if (v9)
+    if (dateCopy)
     {
-      v14 = v9;
+      date = dateCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     date = v11->_date;
-    v11->_date = v14;
+    v11->_date = date;
 
-    if (v10)
+    if (lsCopy)
     {
-      v17 = v10;
+      array = lsCopy;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     URLStrings = v11->_URLStrings;
-    v11->_URLStrings = v17;
+    v11->_URLStrings = array;
 
     v15 = v11;
   }
@@ -60,33 +60,33 @@
   return v15;
 }
 
-- (WBSRecentWebSearchEntry)initWithSearchString:(id)a3 url:(id)a4
+- (WBSRecentWebSearchEntry)initWithSearchString:(id)string url:(id)url
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11[0] = v7;
+  stringCopy = string;
+  urlCopy = url;
+  v11[0] = urlCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [(WBSRecentWebSearchEntry *)self initWithSearchString:v6 date:0 URLs:v8];
+  v9 = [(WBSRecentWebSearchEntry *)self initWithSearchString:stringCopy date:0 URLs:v8];
 
   return v9;
 }
 
-- (WBSRecentWebSearchEntry)initWithDictionaryRepresentation:(id)a3
+- (WBSRecentWebSearchEntry)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_stringForKey:@"SearchString"];
-  v6 = [v4 safari_dateForKey:@"Date"];
-  v7 = [v4 safari_arrayForKey:@"URLs"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_stringForKey:@"SearchString"];
+  v6 = [representationCopy safari_dateForKey:@"Date"];
+  v7 = [representationCopy safari_arrayForKey:@"URLs"];
   v8 = [(WBSRecentWebSearchEntry *)self initWithSearchString:v5 date:v6 URLs:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -96,18 +96,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled];
+      isStreamlinedCompletionListEnabled = [MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled];
       searchString = self->_searchString;
-      if (v5)
+      if (isStreamlinedCompletionListEnabled)
       {
-        v7 = [(WBSRecentWebSearchEntry *)v4 searchString];
-        v8 = [(NSString *)searchString safari_isCaseInsensitiveEqualToString:v7];
+        searchString = [(WBSRecentWebSearchEntry *)equalCopy searchString];
+        v8 = [(NSString *)searchString safari_isCaseInsensitiveEqualToString:searchString];
       }
 
       else
       {
-        v7 = [(WBSRecentWebSearchEntry *)v4 searchString];
-        v8 = [(NSString *)searchString isEqualToString:v7];
+        searchString = [(WBSRecentWebSearchEntry *)equalCopy searchString];
+        v8 = [(NSString *)searchString isEqualToString:searchString];
       }
 
       v9 = v8;

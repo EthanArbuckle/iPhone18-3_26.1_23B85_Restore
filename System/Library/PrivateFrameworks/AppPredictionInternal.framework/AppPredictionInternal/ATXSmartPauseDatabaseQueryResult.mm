@@ -1,57 +1,57 @@
 @interface ATXSmartPauseDatabaseQueryResult
-+ (id)groupByBundleId:(id)a3;
-- (ATXSmartPauseDatabaseQueryResult)initWithBundleId:(id)a3 threadId:(id)a4;
-- (void)mergeWithOther:(id)a3;
++ (id)groupByBundleId:(id)id;
+- (ATXSmartPauseDatabaseQueryResult)initWithBundleId:(id)id threadId:(id)threadId;
+- (void)mergeWithOther:(id)other;
 @end
 
 @implementation ATXSmartPauseDatabaseQueryResult
 
-- (ATXSmartPauseDatabaseQueryResult)initWithBundleId:(id)a3 threadId:(id)a4
+- (ATXSmartPauseDatabaseQueryResult)initWithBundleId:(id)id threadId:(id)threadId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  threadIdCopy = threadId;
   v11.receiver = self;
   v11.super_class = ATXSmartPauseDatabaseQueryResult;
   v8 = [(ATXSmartPauseDatabaseQueryResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ATXSmartPauseDatabaseQueryResult *)v8 setBundleId:v6];
-    [(ATXSmartPauseDatabaseQueryResult *)v9 setThreadId:v7];
+    [(ATXSmartPauseDatabaseQueryResult *)v8 setBundleId:idCopy];
+    [(ATXSmartPauseDatabaseQueryResult *)v9 setThreadId:threadIdCopy];
   }
 
   return v9;
 }
 
-- (void)mergeWithOther:(id)a3
+- (void)mergeWithOther:(id)other
 {
-  v4 = a3;
-  -[ATXSmartPauseDatabaseQueryResult setCountLastFiveMinutesNotifications:](self, "setCountLastFiveMinutesNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastFiveMinutesNotifications](self, "countLastFiveMinutesNotifications") + [v4 countLastFiveMinutesNotifications]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastFiveMinutesPositiveEngagements:](self, "setCountLastFiveMinutesPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastFiveMinutesPositiveEngagements](self, "countLastFiveMinutesPositiveEngagements") + [v4 countLastFiveMinutesPositiveEngagements]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastHourNotifications:](self, "setCountLastHourNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastHourNotifications](self, "countLastHourNotifications") + [v4 countLastHourNotifications]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastHourPositiveEngagements:](self, "setCountLastHourPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastHourPositiveEngagements](self, "countLastHourPositiveEngagements") + [v4 countLastHourPositiveEngagements]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastDayNotifications:](self, "setCountLastDayNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastDayNotifications](self, "countLastDayNotifications") + [v4 countLastDayNotifications]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastDayPositiveEngagements:](self, "setCountLastDayPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastDayPositiveEngagements](self, "countLastDayPositiveEngagements") + [v4 countLastDayPositiveEngagements]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastWeekNotifications:](self, "setCountLastWeekNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastWeekNotifications](self, "countLastWeekNotifications") + [v4 countLastWeekNotifications]);
-  -[ATXSmartPauseDatabaseQueryResult setCountLastWeekPositiveEngagements:](self, "setCountLastWeekPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastWeekPositiveEngagements](self, "countLastWeekPositiveEngagements") + [v4 countLastWeekPositiveEngagements]);
-  -[ATXSmartPauseDatabaseQueryResult setCountNotifications:](self, "setCountNotifications:", -[ATXSmartPauseDatabaseQueryResult countNotifications](self, "countNotifications") + [v4 countNotifications]);
-  v5 = [v4 countPositiveEngagements];
+  otherCopy = other;
+  -[ATXSmartPauseDatabaseQueryResult setCountLastFiveMinutesNotifications:](self, "setCountLastFiveMinutesNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastFiveMinutesNotifications](self, "countLastFiveMinutesNotifications") + [otherCopy countLastFiveMinutesNotifications]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastFiveMinutesPositiveEngagements:](self, "setCountLastFiveMinutesPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastFiveMinutesPositiveEngagements](self, "countLastFiveMinutesPositiveEngagements") + [otherCopy countLastFiveMinutesPositiveEngagements]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastHourNotifications:](self, "setCountLastHourNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastHourNotifications](self, "countLastHourNotifications") + [otherCopy countLastHourNotifications]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastHourPositiveEngagements:](self, "setCountLastHourPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastHourPositiveEngagements](self, "countLastHourPositiveEngagements") + [otherCopy countLastHourPositiveEngagements]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastDayNotifications:](self, "setCountLastDayNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastDayNotifications](self, "countLastDayNotifications") + [otherCopy countLastDayNotifications]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastDayPositiveEngagements:](self, "setCountLastDayPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastDayPositiveEngagements](self, "countLastDayPositiveEngagements") + [otherCopy countLastDayPositiveEngagements]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastWeekNotifications:](self, "setCountLastWeekNotifications:", -[ATXSmartPauseDatabaseQueryResult countLastWeekNotifications](self, "countLastWeekNotifications") + [otherCopy countLastWeekNotifications]);
+  -[ATXSmartPauseDatabaseQueryResult setCountLastWeekPositiveEngagements:](self, "setCountLastWeekPositiveEngagements:", -[ATXSmartPauseDatabaseQueryResult countLastWeekPositiveEngagements](self, "countLastWeekPositiveEngagements") + [otherCopy countLastWeekPositiveEngagements]);
+  -[ATXSmartPauseDatabaseQueryResult setCountNotifications:](self, "setCountNotifications:", -[ATXSmartPauseDatabaseQueryResult countNotifications](self, "countNotifications") + [otherCopy countNotifications]);
+  countPositiveEngagements = [otherCopy countPositiveEngagements];
 
-  v6 = [(ATXSmartPauseDatabaseQueryResult *)self countPositiveEngagements]+ v5;
+  v6 = [(ATXSmartPauseDatabaseQueryResult *)self countPositiveEngagements]+ countPositiveEngagements;
 
   [(ATXSmartPauseDatabaseQueryResult *)self setCountPositiveEngagements:v6];
 }
 
-+ (id)groupByBundleId:(id)a3
++ (id)groupByBundleId:(id)id
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = idCopy;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -67,24 +67,24 @@
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 bundleId];
+        bundleId = [v10 bundleId];
 
-        if (v11)
+        if (bundleId)
         {
-          v12 = [v10 bundleId];
-          v13 = [v4 objectForKeyedSubscript:v12];
+          bundleId2 = [v10 bundleId];
+          v13 = [v4 objectForKeyedSubscript:bundleId2];
 
           if (!v13)
           {
             v14 = [ATXSmartPauseDatabaseQueryResult alloc];
-            v15 = [v10 bundleId];
-            v16 = [(ATXSmartPauseDatabaseQueryResult *)v14 initWithBundleId:v15 threadId:0];
-            v17 = [v10 bundleId];
-            [v4 setObject:v16 forKeyedSubscript:v17];
+            bundleId3 = [v10 bundleId];
+            v16 = [(ATXSmartPauseDatabaseQueryResult *)v14 initWithBundleId:bundleId3 threadId:0];
+            bundleId4 = [v10 bundleId];
+            [v4 setObject:v16 forKeyedSubscript:bundleId4];
           }
 
-          v18 = [v10 bundleId];
-          v19 = [v4 objectForKeyedSubscript:v18];
+          bundleId5 = [v10 bundleId];
+          v19 = [v4 objectForKeyedSubscript:bundleId5];
 
           [v19 mergeWithOther:v10];
         }

@@ -1,33 +1,33 @@
 @interface PKPhysicsJointDistance
-+ (id)jointWithBodyA:(id)a3 bodyB:(id)a4 anchorA:(CGPoint)a5 anchorB:(CGPoint)a6;
-+ (id)jointWithBodyA:(id)a3 bodyB:(id)a4 localAnchorA:(CGPoint)a5 localAnchorB:(CGPoint)a6;
-- (BOOL)isEqualToDistanceJoint:(id)a3;
-- (PKPhysicsJointDistance)initWithBodyA:(id)a3 bodyB:(id)a4 anchorA:(CGPoint)a5 anchorB:(CGPoint)a6;
-- (PKPhysicsJointDistance)initWithBodyA:(id)a3 bodyB:(id)a4 localAnchorA:(CGPoint)a5 localAnchorB:(CGPoint)a6;
-- (PKPhysicsJointDistance)initWithCoder:(id)a3;
++ (id)jointWithBodyA:(id)a bodyB:(id)b anchorA:(CGPoint)anchorA anchorB:(CGPoint)anchorB;
++ (id)jointWithBodyA:(id)a bodyB:(id)b localAnchorA:(CGPoint)anchorA localAnchorB:(CGPoint)anchorB;
+- (BOOL)isEqualToDistanceJoint:(id)joint;
+- (PKPhysicsJointDistance)initWithBodyA:(id)a bodyB:(id)b anchorA:(CGPoint)anchorA anchorB:(CGPoint)anchorB;
+- (PKPhysicsJointDistance)initWithBodyA:(id)a bodyB:(id)b localAnchorA:(CGPoint)anchorA localAnchorB:(CGPoint)anchorB;
+- (PKPhysicsJointDistance)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (void)create;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCollideConnected:(BOOL)a3;
-- (void)setDamping:(double)a3;
-- (void)setFrequency:(double)a3;
-- (void)setLength:(double)a3;
-- (void)set_joint:(b2Joint *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCollideConnected:(BOOL)connected;
+- (void)setDamping:(double)damping;
+- (void)setFrequency:(double)frequency;
+- (void)setLength:(double)length;
+- (void)set_joint:(b2Joint *)set_joint;
 @end
 
 @implementation PKPhysicsJointDistance
 
-- (PKPhysicsJointDistance)initWithBodyA:(id)a3 bodyB:(id)a4 anchorA:(CGPoint)a5 anchorB:(CGPoint)a6
+- (PKPhysicsJointDistance)initWithBodyA:(id)a bodyB:(id)b anchorA:(CGPoint)anchorA anchorB:(CGPoint)anchorB
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v12 = a3;
-  v13 = a4;
+  y = anchorB.y;
+  x = anchorB.x;
+  v8 = anchorA.y;
+  v9 = anchorA.x;
+  aCopy = a;
+  bCopy = b;
   v14 = [(PKPhysicsJoint *)self init];
-  [(PKPhysicsJoint *)v14 setBodyA:v12];
-  [(PKPhysicsJoint *)v14 setBodyB:v13];
+  [(PKPhysicsJoint *)v14 setBodyA:aCopy];
+  [(PKPhysicsJoint *)v14 setBodyB:bCopy];
   v14->_anchorA.x = v9;
   v14->_anchorA.y = v8;
   v14->_anchorB.x = x;
@@ -36,40 +36,40 @@
   return v14;
 }
 
-+ (id)jointWithBodyA:(id)a3 bodyB:(id)a4 localAnchorA:(CGPoint)a5 localAnchorB:(CGPoint)a6
++ (id)jointWithBodyA:(id)a bodyB:(id)b localAnchorA:(CGPoint)anchorA localAnchorB:(CGPoint)anchorB
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [[PKPhysicsJointDistance alloc] initWithBodyA:v11 bodyB:v12 localAnchorA:v9 localAnchorB:v8, x, y];
+  y = anchorB.y;
+  x = anchorB.x;
+  v8 = anchorA.y;
+  v9 = anchorA.x;
+  aCopy = a;
+  bCopy = b;
+  v13 = [[PKPhysicsJointDistance alloc] initWithBodyA:aCopy bodyB:bCopy localAnchorA:v9 localAnchorB:v8, x, y];
 
   return v13;
 }
 
-- (PKPhysicsJointDistance)initWithBodyA:(id)a3 bodyB:(id)a4 localAnchorA:(CGPoint)a5 localAnchorB:(CGPoint)a6
+- (PKPhysicsJointDistance)initWithBodyA:(id)a bodyB:(id)b localAnchorA:(CGPoint)anchorA localAnchorB:(CGPoint)anchorB
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v12 = a3;
-  v13 = a4;
+  y = anchorB.y;
+  x = anchorB.x;
+  v8 = anchorA.y;
+  v9 = anchorA.x;
+  aCopy = a;
+  bCopy = b;
   v14 = [(PKPhysicsJoint *)self init];
-  [(PKPhysicsJoint *)v14 setBodyA:v12];
-  [(PKPhysicsJoint *)v14 setBodyB:v13];
+  [(PKPhysicsJoint *)v14 setBodyA:aCopy];
+  [(PKPhysicsJoint *)v14 setBodyB:bCopy];
   v15 = PKGet_INV_PTM_RATIO();
   v16 = PKGet_INV_PTM_RATIO();
   v17 = PKGet_INV_PTM_RATIO();
   v33 = PKGet_INV_PTM_RATIO();
-  v18 = [v12 _body];
-  v19 = *(v18 + 32);
-  v34 = *(v18 + 40);
-  v20 = [v13 _body];
-  v30 = *(v20 + 40);
-  v31 = *(v20 + 32);
+  _body = [aCopy _body];
+  v19 = *(_body + 32);
+  v34 = *(_body + 40);
+  _body2 = [bCopy _body];
+  v30 = *(_body2 + 40);
+  v31 = *(_body2 + 32);
   v32 = PKGet_PTM_RATIO();
   v21 = PKGet_PTM_RATIO();
   v22 = v9 * v15;
@@ -88,54 +88,54 @@
   return v14;
 }
 
-+ (id)jointWithBodyA:(id)a3 bodyB:(id)a4 anchorA:(CGPoint)a5 anchorB:(CGPoint)a6
++ (id)jointWithBodyA:(id)a bodyB:(id)b anchorA:(CGPoint)anchorA anchorB:(CGPoint)anchorB
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [[PKPhysicsJointDistance alloc] initWithBodyA:v11 bodyB:v12 anchorA:v9 anchorB:v8, x, y];
+  y = anchorB.y;
+  x = anchorB.x;
+  v8 = anchorA.y;
+  v9 = anchorA.x;
+  aCopy = a;
+  bCopy = b;
+  v13 = [[PKPhysicsJointDistance alloc] initWithBodyA:aCopy bodyB:bCopy anchorA:v9 anchorB:v8, x, y];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PKPhysicsJointDistance;
-  [(PKPhysicsJoint *)&v5 encodeWithCoder:v4];
-  [v4 encodeCGPoint:@"_anchorA" forKey:{self->_anchorA.x, self->_anchorA.y}];
-  [v4 encodeCGPoint:@"_anchorB" forKey:{self->_anchorB.x, self->_anchorB.y}];
+  [(PKPhysicsJoint *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeCGPoint:@"_anchorA" forKey:{self->_anchorA.x, self->_anchorA.y}];
+  [coderCopy encodeCGPoint:@"_anchorB" forKey:{self->_anchorB.x, self->_anchorB.y}];
   [(PKPhysicsJointDistance *)self damping];
-  [v4 encodeDouble:@"damping" forKey:?];
+  [coderCopy encodeDouble:@"damping" forKey:?];
   [(PKPhysicsJointDistance *)self frequency];
-  [v4 encodeDouble:@"frequency" forKey:?];
+  [coderCopy encodeDouble:@"frequency" forKey:?];
 }
 
-- (PKPhysicsJointDistance)initWithCoder:(id)a3
+- (PKPhysicsJointDistance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPhysicsJointDistance;
-  v5 = [(PKPhysicsJoint *)&v14 initWithCoder:v4];
+  v5 = [(PKPhysicsJoint *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeCGPointForKey:@"_anchorA"];
+    [coderCopy decodeCGPointForKey:@"_anchorA"];
     v5->_anchorA.x = v6;
     v5->_anchorA.y = v7;
-    [v4 decodeCGPointForKey:@"_anchorB"];
+    [coderCopy decodeCGPointForKey:@"_anchorB"];
     v5->_anchorB.x = v8;
     v5->_anchorB.y = v9;
-    v10 = [(PKPhysicsJoint *)v5 bodyA];
-    v11 = [(PKPhysicsJoint *)v5 bodyB];
-    v12 = [(PKPhysicsJointDistance *)v5 initWithBodyA:v10 bodyB:v11 anchorA:v5->_anchorA.x anchorB:v5->_anchorA.y, v5->_anchorB.x, v5->_anchorB.y];
+    bodyA = [(PKPhysicsJoint *)v5 bodyA];
+    bodyB = [(PKPhysicsJoint *)v5 bodyB];
+    v12 = [(PKPhysicsJointDistance *)v5 initWithBodyA:bodyA bodyB:bodyB anchorA:v5->_anchorA.x anchorB:v5->_anchorA.y, v5->_anchorB.x, v5->_anchorB.y];
 
-    [v4 decodeDoubleForKey:@"damping"];
+    [coderCopy decodeDoubleForKey:@"damping"];
     [(PKPhysicsJointDistance *)v12 setDamping:?];
-    [v4 decodeDoubleForKey:@"frequency"];
+    [coderCopy decodeDoubleForKey:@"frequency"];
     [(PKPhysicsJointDistance *)v12 setFrequency:?];
   }
 
@@ -147,34 +147,34 @@
   return v12;
 }
 
-- (BOOL)isEqualToDistanceJoint:(id)a3
+- (BOOL)isEqualToDistanceJoint:(id)joint
 {
-  v4 = a3;
-  if (self != v4)
+  jointCopy = joint;
+  if (self != jointCopy)
   {
     [(PKPhysicsJointDistance *)self damping];
-    [(PKPhysicsJointDistance *)v4 damping];
+    [(PKPhysicsJointDistance *)jointCopy damping];
     [(PKPhysicsJointDistance *)self frequency];
-    [(PKPhysicsJointDistance *)v4 frequency];
+    [(PKPhysicsJointDistance *)jointCopy frequency];
   }
 
   return 1;
 }
 
-- (void)set_joint:(b2Joint *)a3
+- (void)set_joint:(b2Joint *)set_joint
 {
   v5.receiver = self;
   v5.super_class = PKPhysicsJointDistance;
   [(PKPhysicsJoint *)&v5 set_joint:?];
-  self->_joint = a3;
+  self->_joint = set_joint;
 }
 
 - (void)create
 {
-  v3 = [(PKPhysicsJoint *)self bodyA];
-  v4 = [v3 _body];
-  v5 = [(PKPhysicsJoint *)self bodyB];
-  v6 = [v5 _body];
+  bodyA = [(PKPhysicsJoint *)self bodyA];
+  _body = [bodyA _body];
+  bodyB = [(PKPhysicsJoint *)self bodyB];
+  _body2 = [bodyB _body];
   x = self->_anchorA.x;
   v13 = PKGet_INV_PTM_RATIO();
   y = self->_anchorA.y;
@@ -189,50 +189,50 @@
   v10.f64[0] = v16;
   v10.f64[1] = v12;
   v17 = vcvt_f32_f64(vmulq_f64(v10, vcvtq_f64_f32(__PAIR64__(LODWORD(v9), LODWORD(v14)))));
-  b2DistanceJointDef::Initialize(&self->_jointDef, v4, v6, &v18, &v17);
+  b2DistanceJointDef::Initialize(&self->_jointDef, _body, _body2, &v18, &v17);
 }
 
-- (void)setDamping:(double)a3
+- (void)setDamping:(double)damping
 {
-  v3 = a3;
-  self->_jointDef.dampingRatio = v3;
+  dampingCopy = damping;
+  self->_jointDef.dampingRatio = dampingCopy;
   joint = self->_joint;
   if (joint)
   {
-    joint->var12 = v3;
+    joint->var12 = dampingCopy;
   }
 }
 
-- (void)setLength:(double)a3
+- (void)setLength:(double)length
 {
-  v5 = PKGet_INV_PTM_RATIO() * a3;
+  v5 = PKGet_INV_PTM_RATIO() * length;
   self->_jointDef.length = v5;
   joint = self->_joint;
   if (joint)
   {
-    v7 = PKGet_INV_PTM_RATIO() * a3;
+    v7 = PKGet_INV_PTM_RATIO() * length;
     joint->var18 = v7;
   }
 }
 
-- (void)setFrequency:(double)a3
+- (void)setFrequency:(double)frequency
 {
-  v3 = a3;
-  self->_jointDef.frequencyHz = v3;
+  frequencyCopy = frequency;
+  self->_jointDef.frequencyHz = frequencyCopy;
   joint = self->_joint;
   if (joint)
   {
-    joint->var11 = v3;
+    joint->var11 = frequencyCopy;
   }
 }
 
-- (void)setCollideConnected:(BOOL)a3
+- (void)setCollideConnected:(BOOL)connected
 {
-  self->_jointDef.collideConnected = a3;
+  self->_jointDef.collideConnected = connected;
   joint = self->_joint;
   if (joint)
   {
-    b2Joint::SetCollideConnected(joint, a3);
+    b2Joint::SetCollideConnected(joint, connected);
   }
 }
 

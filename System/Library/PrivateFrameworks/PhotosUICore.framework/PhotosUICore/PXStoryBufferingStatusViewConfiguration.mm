@@ -1,21 +1,21 @@
 @interface PXStoryBufferingStatusViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStoryBufferingStatusViewConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXStoryBufferingStatusViewConfiguration);
   [(PXStoryBufferingStatusViewConfiguration *)v4 setWantsBackground:[(PXStoryBufferingStatusViewConfiguration *)self wantsBackground]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -25,8 +25,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXStoryBufferingStatusViewConfiguration *)v4 wantsBackground];
-      v6 = v5 ^ [(PXStoryBufferingStatusViewConfiguration *)self wantsBackground]^ 1;
+      wantsBackground = [(PXStoryBufferingStatusViewConfiguration *)equalCopy wantsBackground];
+      v6 = wantsBackground ^ [(PXStoryBufferingStatusViewConfiguration *)self wantsBackground]^ 1;
     }
 
     else

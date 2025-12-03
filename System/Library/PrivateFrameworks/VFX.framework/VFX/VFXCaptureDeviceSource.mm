@@ -1,9 +1,9 @@
 @interface VFXCaptureDeviceSource
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)connectToProxy:(__CFXImageProxy *)a3;
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)connectToProxy:(__CFXImageProxy *)proxy;
 - (void)dealloc;
-- (void)setCaptureDevice:(id)a3;
+- (void)setCaptureDevice:(id)device;
 @end
 
 @implementation VFXCaptureDeviceSource
@@ -25,26 +25,26 @@
   [(VFXTextureSource *)&v6 dealloc];
 }
 
-- (void)setCaptureDevice:(id)a3
+- (void)setCaptureDevice:(id)device
 {
-  if (self->_captureDevice != a3)
+  if (self->_captureDevice != device)
   {
-    objc_msgSend_stopRunning(self->_captureSession, a2, a3, v3);
+    objc_msgSend_stopRunning(self->_captureSession, a2, device, v3);
 
     self->_captureSession = 0;
-    self->_captureDevice = a3;
+    self->_captureDevice = device;
   }
 }
 
-- (void)connectToProxy:(__CFXImageProxy *)a3
+- (void)connectToProxy:(__CFXImageProxy *)proxy
 {
-  sub_1AF27679C(a3, self, 2);
+  sub_1AF27679C(proxy, self, 2);
   v4[0] = xmmword_1F24EBE18;
   v4[1] = *&off_1F24EBE28;
-  sub_1AF276824(a3, v4);
+  sub_1AF276824(proxy, v4);
 }
 
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status
 {
   v49[2] = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -72,7 +72,7 @@
     objc_msgSend_startRunning(self->_captureSession, v41, v42, v43);
   }
 
-  v11 = sub_1AF12E2AC(a3);
+  v11 = sub_1AF12E2AC(context);
   if (!self->_data.videoOutput)
   {
     v12 = objc_alloc_init(MEMORY[0x1E6987178]);
@@ -92,7 +92,7 @@
   mtlTextureForRenderer = self->_data.mtlTextureForRenderer;
   if (mtlTextureForRenderer)
   {
-    *a6 = 256;
+    *status = 256;
     goto LABEL_15;
   }
 
@@ -121,22 +121,22 @@ LABEL_10:
   }
 
   sub_1AF28BEAC(&self->_data, v11, textureCache, v10);
-  *a6 = 257;
+  *status = 257;
   mtlTextureForRenderer = self->_data.mtlTextureForRenderer;
 LABEL_15:
   objc_sync_exit(self);
   return mtlTextureForRenderer;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   objc_sync_enter(self);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
     sub_1AF28BE04(&self->_data, v8, v9, v10);
     self->_data.var0 = CVPixelBufferRetain(ImageBuffer);
-    self->_videoMirrored = objc_msgSend_isVideoMirrored(a5, v12, v13, v14);
+    self->_videoMirrored = objc_msgSend_isVideoMirrored(connection, v12, v13, v14);
     self->_width = CVPixelBufferGetWidth(ImageBuffer);
     self->_height = CVPixelBufferGetHeight(ImageBuffer);
   }

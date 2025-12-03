@@ -1,12 +1,12 @@
 @interface SmallContactCardCollectionViewCell
-- (_TtC8AppStore34SmallContactCardCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore34SmallContactCardCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SmallContactCardCollectionViewCell
 
-- (_TtC8AppStore34SmallContactCardCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore34SmallContactCardCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore34SmallContactCardCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();

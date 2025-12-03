@@ -1,32 +1,32 @@
 @interface PKPaymentHeroImageSet
-- (PKPaymentHeroImageSet)initWithDictionary:(id)a3;
-- (id)imageForPreferredLanguages:(id)a3 scale:(double)a4;
+- (PKPaymentHeroImageSet)initWithDictionary:(id)dictionary;
+- (id)imageForPreferredLanguages:(id)languages scale:(double)scale;
 @end
 
 @implementation PKPaymentHeroImageSet
 
-- (PKPaymentHeroImageSet)initWithDictionary:(id)a3
+- (PKPaymentHeroImageSet)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(PKPaymentHeroImageSet *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, dictionary);
   }
 
   return v7;
 }
 
-- (id)imageForPreferredLanguages:(id)a3 scale:(double)a4
+- (id)imageForPreferredLanguages:(id)languages scale:(double)scale
 {
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  languagesCopy = languages;
+  v7 = [languagesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -37,7 +37,7 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(languagesCopy);
         }
 
         v11 = [(NSDictionary *)self->_model objectForKey:*(*(&v23 + 1) + 8 * i)];
@@ -49,7 +49,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [languagesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v8)
       {
         continue;
@@ -63,7 +63,7 @@
   if (v12)
   {
 LABEL_14:
-    if (a4 <= 2.0)
+    if (scale <= 2.0)
     {
       v14 = @"2x";
     }
@@ -82,7 +82,7 @@ LABEL_14:
 
     else
     {
-      if (a4 >= 3.0)
+      if (scale >= 3.0)
       {
         v18 = @"2x";
       }

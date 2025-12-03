@@ -1,84 +1,84 @@
 @interface DRSService
 + (BOOL)defaultServiceIsEnabled;
-+ (BOOL)shouldRunBackstopUpload:(id)a3 currentDate:(id)a4 errorOut:(id *)a5;
-+ (BOOL)updateUploadSessionDateFromContainer:(id)a3 toDate:(id)a4 errorOut:(id *)a5;
-+ (id)_currentUploadSession_ON_MOC_QUEUE:(id)a3 errorOut:(id *)a4;
++ (BOOL)shouldRunBackstopUpload:(id)upload currentDate:(id)date errorOut:(id *)out;
++ (BOOL)updateUploadSessionDateFromContainer:(id)container toDate:(id)date errorOut:(id *)out;
++ (id)_currentUploadSession_ON_MOC_QUEUE:(id)e errorOut:(id *)out;
 + (id)carrierConfigurationDirectory;
 + (id)customerConfigurationDirectory;
 + (id)deviceTeamConfigurationDirectory;
 + (id)internalConfigurationDirectory;
-+ (id)previousUploadSessionDateFromContainer:(id)a3 errorOut:(id *)a4;
++ (id)previousUploadSessionDateFromContainer:(id)container errorOut:(id *)out;
 + (id)seedConfigurationDirectory;
 + (id)sharedInstance;
 + (unint64_t)uploadSessionUploadCapBytes;
-- (BOOL)_connectionHasEntitlement:(id)a3;
+- (BOOL)_connectionHasEntitlement:(id)entitlement;
 - (BOOL)_enableDataGatheringQueryPassesRandomRejection;
-- (BOOL)_persistEnableLogGatheringResult:(id)a3 workingContext:(id)a4;
-- (BOOL)_saveDampeningManagerErrorOut:(id *)a3;
-- (BOOL)_syncConfigurationToDisk:(id)a3;
+- (BOOL)_persistEnableLogGatheringResult:(id)result workingContext:(id)context;
+- (BOOL)_saveDampeningManagerErrorOut:(id *)out;
+- (BOOL)_syncConfigurationToDisk:(id)disk;
 - (BOOL)activateService;
-- (BOOL)clearUploadSessionDate:(id *)a3;
+- (BOOL)clearUploadSessionDate:(id *)date;
 - (BOOL)isEnabled;
-- (BOOL)shouldRunBackstopUpload:(id *)a3;
-- (BOOL)updateUploadSessionDate:(id *)a3;
+- (BOOL)shouldRunBackstopUpload:(id *)upload;
+- (BOOL)updateUploadSessionDate:(id *)date;
 - (DRSService)init;
 - (NSNumber)ignoreAutomatedDeviceGroup;
 - (NSNumber)isEnabledOverride;
 - (double)_resolvedEnableDataGatheringQueryAcceptanceRate;
-- (id)_cachedMatchingQuery:(id)a3 workingContext:(id)a4;
-- (id)_permissiveXPCActivitCriteriaDict:(unsigned int)a3;
-- (id)_updateCKConfig:(id)a3;
-- (unint64_t)_remainingMonthlyUploadQuotaBytesWithContext:(id)a3;
-- (unint64_t)_remainingSessionUploadQuotaBytesWithContext:(id)a3;
-- (void)_addCKConfigSettingsToReplyMessage:(id)a3;
-- (void)_addRequestToDAFileList:(id)a3;
+- (id)_cachedMatchingQuery:(id)query workingContext:(id)context;
+- (id)_permissiveXPCActivitCriteriaDict:(unsigned int)dict;
+- (id)_updateCKConfig:(id)config;
+- (unint64_t)_remainingMonthlyUploadQuotaBytesWithContext:(id)context;
+- (unint64_t)_remainingSessionUploadQuotaBytesWithContext:(id)context;
+- (void)_addCKConfigSettingsToReplyMessage:(id)message;
+- (void)_addRequestToDAFileList:(id)list;
 - (void)_adjustStateForNewConfiguration;
-- (void)_ckQueueDownstreamOnly_uploadInFlightWithTransaction:(id)a3 xpcActivity:(id)a4 ckHelper:(id)a5 isExpedited:(BOOL)a6 completionBlock:(id)a7;
-- (void)_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction:(id)a3 xpcActivity:(id)a4 ckHelper:(id)a5 followupWorkBlock:(id)a6;
+- (void)_ckQueueDownstreamOnly_uploadInFlightWithTransaction:(id)transaction xpcActivity:(id)activity ckHelper:(id)helper isExpedited:(BOOL)expedited completionBlock:(id)block;
+- (void)_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction:(id)transaction xpcActivity:(id)activity ckHelper:(id)helper followupWorkBlock:(id)block;
 - (void)_configureExpeditedUploadXPCActivity;
 - (void)_configureReportStatsXPCActivity;
 - (void)_configureUploadXPCActivity;
 - (void)_configureXPCActivities;
-- (void)_finishReportingStatsSessionWithActivity:(id)a3 withState:(int64_t)a4 transaction:(id)a5 endResultString:(id)a6;
+- (void)_finishReportingStatsSessionWithActivity:(id)activity withState:(int64_t)state transaction:(id)transaction endResultString:(id)string;
 - (void)_getConfiguration;
-- (void)_handleCKConfigUpdate:(id)a3 state:(id)a4;
-- (void)_handleCKWorkTriggerRequest:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleCancelScheduledUploadRequest:(id)a3 state:(id)a4;
-- (void)_handleDRSRequestMessage:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleDampeningConfigurationDictMessage:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleDampeningConfigurationGlobalEnablementMessage:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleDampeningConfigurationReset:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleEnableLogGatheringRequest:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleGetCKConfig:(id)a3 state:(id)a4;
-- (void)_handleGetIgnoreADG:(id)a3 state:(id)a4;
-- (void)_handleGetUploadServiceEnabled:(id)a3 state:(id)a4;
-- (void)_handleInjectEnableLogGatheringRequestResult:(id)a3 state:(id)a4;
-- (void)_handleNewEntitledConnection:(id)a3 state:(id)a4;
-- (void)_handleRefreshDampeningConfigMessage:(id)a3 state:(id)a4 transaction:(id)a5;
-- (void)_handleRequestCleanTrigger:(id)a3 state:(id)a4;
-- (void)_handleResetCKConfig:(id)a3 state:(id)a4;
-- (void)_handleSetIgnoreADG:(id)a3 state:(id)a4;
-- (void)_handleSetUploadServiceEnabled:(id)a3 state:(id)a4;
-- (void)_handleUploadSchedulingRequest:(id)a3 state:(id)a4;
+- (void)_handleCKConfigUpdate:(id)update state:(id)state;
+- (void)_handleCKWorkTriggerRequest:(id)request state:(id)state transaction:(id)transaction;
+- (void)_handleCancelScheduledUploadRequest:(id)request state:(id)state;
+- (void)_handleDRSRequestMessage:(id)message state:(id)state transaction:(id)transaction;
+- (void)_handleDampeningConfigurationDictMessage:(id)message state:(id)state transaction:(id)transaction;
+- (void)_handleDampeningConfigurationGlobalEnablementMessage:(id)message state:(id)state transaction:(id)transaction;
+- (void)_handleDampeningConfigurationReset:(id)reset state:(id)state transaction:(id)transaction;
+- (void)_handleEnableLogGatheringRequest:(id)request state:(id)state transaction:(id)transaction;
+- (void)_handleGetCKConfig:(id)config state:(id)state;
+- (void)_handleGetIgnoreADG:(id)g state:(id)state;
+- (void)_handleGetUploadServiceEnabled:(id)enabled state:(id)state;
+- (void)_handleInjectEnableLogGatheringRequestResult:(id)result state:(id)state;
+- (void)_handleNewEntitledConnection:(id)connection state:(id)state;
+- (void)_handleRefreshDampeningConfigMessage:(id)message state:(id)state transaction:(id)transaction;
+- (void)_handleRequestCleanTrigger:(id)trigger state:(id)state;
+- (void)_handleResetCKConfig:(id)config state:(id)state;
+- (void)_handleSetIgnoreADG:(id)g state:(id)state;
+- (void)_handleSetUploadServiceEnabled:(id)enabled state:(id)state;
+- (void)_handleUploadSchedulingRequest:(id)request state:(id)state;
 - (void)_initializeServiceContainer;
-- (void)_postReceiptProcessingWork:(id)a3;
-- (void)_registerPermissiveExpeditedUploadXPCActivity:(unsigned int)a3;
-- (void)_rejectInjectRequest:(id)a3 state:(id)a4 reason:(const char *)a5;
-- (void)_replyToCKConfigMessageWithCurrentCKConfig:(id)a3;
-- (void)_runReportingSessionWithTransaction:(id)a3 xpcActivity:(id)a4;
-- (void)_sendAdminRequestReply:(BOOL)a3 rejectionReason:(const char *)a4 requestMessage:(id)a5;
-- (void)_sendCurrentIgnoreADGReply:(id)a3 state:(id)a4;
-- (void)_sendCurrentUploadServiceEnabledReply:(id)a3 state:(id)a4;
-- (void)_sendRejectionMessage:(id)a3 rejectionReason:(unint64_t)a4 state:(id)a5;
-- (void)_setConfigValue:(id)a3 forKey:(id)a4 expectedClass:(Class)a5;
+- (void)_postReceiptProcessingWork:(id)work;
+- (void)_registerPermissiveExpeditedUploadXPCActivity:(unsigned int)activity;
+- (void)_rejectInjectRequest:(id)request state:(id)state reason:(const char *)reason;
+- (void)_replyToCKConfigMessageWithCurrentCKConfig:(id)config;
+- (void)_runReportingSessionWithTransaction:(id)transaction xpcActivity:(id)activity;
+- (void)_sendAdminRequestReply:(BOOL)reply rejectionReason:(const char *)reason requestMessage:(id)message;
+- (void)_sendCurrentIgnoreADGReply:(id)reply state:(id)state;
+- (void)_sendCurrentUploadServiceEnabledReply:(id)reply state:(id)state;
+- (void)_sendRejectionMessage:(id)message rejectionReason:(unint64_t)reason state:(id)state;
+- (void)_setConfigValue:(id)value forKey:(id)key expectedClass:(Class)class;
 - (void)_unregisterPermissiveExpeditedUploadXPCActivity;
-- (void)_updateConfigDict:(id)a3;
+- (void)_updateConfigDict:(id)dict;
 - (void)_waitForDeviceUnlockAndInitializeServiceState;
 - (void)deactivateService;
 - (void)dealloc;
-- (void)handleRequest:(id)a3 state:(id)a4;
-- (void)setIgnoreAutomatedDeviceGroup:(id)a3;
-- (void)setIsEnabledOverride:(id)a3;
+- (void)handleRequest:(id)request state:(id)state;
+- (void)setIgnoreAutomatedDeviceGroup:(id)group;
+- (void)setIsEnabledOverride:(id)override;
 @end
 
 @implementation DRSService
@@ -121,7 +121,7 @@ void __37__DRSService_defaultServiceIsEnabled__block_invoke()
   block[1] = 3221225472;
   block[2] = __41__DRSService_uploadSessionUploadCapBytes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (uploadSessionUploadCapBytes_onceToken != -1)
   {
     dispatch_once(&uploadSessionUploadCapBytes_onceToken, block);
@@ -144,31 +144,31 @@ void __41__DRSService_uploadSessionUploadCapBytes__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_remainingSessionUploadQuotaBytesWithContext:(id)a3
+- (unint64_t)_remainingSessionUploadQuotaBytesWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DRSService *)self maxSingleSessionUploadSizeInBytes];
-  v6 = [(DRSService *)self _remainingMonthlyUploadQuotaBytesWithContext:v4];
+  contextCopy = context;
+  maxSingleSessionUploadSizeInBytes = [(DRSService *)self maxSingleSessionUploadSizeInBytes];
+  v6 = [(DRSService *)self _remainingMonthlyUploadQuotaBytesWithContext:contextCopy];
 
-  if (v5 >= v6)
+  if (maxSingleSessionUploadSizeInBytes >= v6)
   {
     return v6;
   }
 
   else
   {
-    return v5;
+    return maxSingleSessionUploadSizeInBytes;
   }
 }
 
-- (unint64_t)_remainingMonthlyUploadQuotaBytesWithContext:(id)a3
+- (unint64_t)_remainingMonthlyUploadQuotaBytesWithContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 dateWithTimeIntervalSinceNow:-2592000.0];
   v20 = 0;
-  v7 = [DRSRequest uploadedBytesSinceDate:v6 context:v5 errorOut:&v20];
+  v7 = [DRSRequest uploadedBytesSinceDate:v6 context:contextCopy errorOut:&v20];
 
   v8 = v20;
   if (v8)
@@ -186,12 +186,12 @@ void __41__DRSService_uploadSessionUploadCapBytes__block_invoke(uint64_t a1)
     v10 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v10))
     {
-      v11 = [v8 localizedDescription];
-      v12 = v11;
+      localizedDescription = [v8 localizedDescription];
+      v12 = localizedDescription;
       v13 = @"Unknown";
-      if (v11)
+      if (localizedDescription)
       {
-        v13 = v11;
+        v13 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -204,23 +204,23 @@ void __41__DRSService_uploadSessionUploadCapBytes__block_invoke(uint64_t a1)
 
   else
   {
-    v15 = [v7 unsignedLongLongValue];
-    if (v15 >= [(DRSService *)self monthlyUploadQuotaBytes])
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
+    if (unsignedLongLongValue >= [(DRSService *)self monthlyUploadQuotaBytes])
     {
       v14 = 0;
       goto LABEL_16;
     }
 
-    v16 = [(DRSService *)self monthlyUploadQuotaBytes];
-    v14 = v16 - [v7 unsignedLongLongValue];
+    monthlyUploadQuotaBytes = [(DRSService *)self monthlyUploadQuotaBytes];
+    v14 = monthlyUploadQuotaBytes - [v7 unsignedLongLongValue];
     v10 = DPLogHandle_ServiceLifecycle();
     if (os_signpost_enabled(v10))
     {
-      v17 = [(DRSService *)self monthlyUploadQuotaBytes];
+      monthlyUploadQuotaBytes2 = [(DRSService *)self monthlyUploadQuotaBytes];
       *buf = 134218240;
       v22 = v14;
       v23 = 2048;
-      v24 = v17;
+      v24 = monthlyUploadQuotaBytes2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RemainingMonthlyQuotaCalculated", "%lluB remain out of monthly upload quota of %lluB", buf, 0x16u);
     }
   }
@@ -253,7 +253,7 @@ void __28__DRSService_sharedInstance__block_invoke()
 - (void)_initializeServiceContainer
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_0_0(&dword_232906000, v2, v3, "FATAL ERROR: Could not instantiate the service persistent container due to error %{public}@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -427,48 +427,48 @@ uint64_t __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_i
 + (id)deviceTeamConfigurationDirectory
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [v3 isCarrier];
+  isCarrier = [v3 isCarrier];
 
-  if (v4)
+  if (isCarrier)
   {
-    v5 = [a1 carrierConfigurationDirectory];
+    carrierConfigurationDirectory = [self carrierConfigurationDirectory];
   }
 
   else
   {
     v6 = +[DRSSystemProfile sharedInstance];
-    v7 = [v6 isInternal];
+    isInternal = [v6 isInternal];
 
-    if (v7)
+    if (isInternal)
     {
-      v5 = [a1 internalConfigurationDirectory];
+      carrierConfigurationDirectory = [self internalConfigurationDirectory];
     }
 
     else
     {
       v8 = +[DRSSystemProfile sharedInstance];
-      v9 = [v8 isSeed];
+      isSeed = [v8 isSeed];
 
-      if (v9)
+      if (isSeed)
       {
-        [a1 seedConfigurationDirectory];
+        [self seedConfigurationDirectory];
       }
 
       else
       {
-        [a1 customerConfigurationDirectory];
+        [self customerConfigurationDirectory];
       }
-      v5 = ;
+      carrierConfigurationDirectory = ;
     }
   }
 
-  return v5;
+  return carrierConfigurationDirectory;
 }
 
 + (id)carrierConfigurationDirectory
 {
-  v2 = [a1 configurationDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"TeamConfiguration"];
+  configurationDirectory = [self configurationDirectory];
+  v3 = [configurationDirectory stringByAppendingPathComponent:@"TeamConfiguration"];
 
   v4 = [v3 stringByAppendingPathComponent:@"Carrier"];
 
@@ -477,8 +477,8 @@ uint64_t __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_i
 
 + (id)internalConfigurationDirectory
 {
-  v2 = [a1 configurationDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"TeamConfiguration"];
+  configurationDirectory = [self configurationDirectory];
+  v3 = [configurationDirectory stringByAppendingPathComponent:@"TeamConfiguration"];
 
   v4 = [v3 stringByAppendingPathComponent:@"Internal"];
 
@@ -487,8 +487,8 @@ uint64_t __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_i
 
 + (id)seedConfigurationDirectory
 {
-  v2 = [a1 configurationDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"TeamConfiguration"];
+  configurationDirectory = [self configurationDirectory];
+  v3 = [configurationDirectory stringByAppendingPathComponent:@"TeamConfiguration"];
 
   v4 = [v3 stringByAppendingPathComponent:@"Seed"];
 
@@ -497,18 +497,18 @@ uint64_t __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_i
 
 + (id)customerConfigurationDirectory
 {
-  v2 = [a1 configurationDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"TeamConfiguration"];
+  configurationDirectory = [self configurationDirectory];
+  v3 = [configurationDirectory stringByAppendingPathComponent:@"TeamConfiguration"];
 
   v4 = [v3 stringByAppendingPathComponent:@"Customer"];
 
   return v4;
 }
 
-- (BOOL)_connectionHasEntitlement:(id)a3
+- (BOOL)_connectionHasEntitlement:(id)entitlement
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = xpc_connection_copy_entitlement_value();
   v5 = v4;
   if (!v4)
@@ -517,7 +517,7 @@ uint64_t __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_i
     if (os_signpost_enabled(v6))
     {
       v12 = 67109120;
-      pid = xpc_connection_get_pid(v3);
+      pid = xpc_connection_get_pid(entitlementCopy);
       v7 = "ClientConnectionMissingEntitlement";
       v8 = "Client connection from [%d] missing entitlement 'com.apple.diagnosticpipeline.request'";
       goto LABEL_11;
@@ -535,7 +535,7 @@ LABEL_12:
     if (os_signpost_enabled(v6))
     {
       v12 = 67109120;
-      pid = xpc_connection_get_pid(v3);
+      pid = xpc_connection_get_pid(entitlementCopy);
       v7 = "ClientConnectionBadEntitlementType";
       v8 = "Client connection from [%d] has wrong type for entitlement 'com.apple.diagnosticpipeline.request'";
 LABEL_11:
@@ -552,7 +552,7 @@ LABEL_11:
     if (os_signpost_enabled(v6))
     {
       v12 = 67109120;
-      pid = xpc_connection_get_pid(v3);
+      pid = xpc_connection_get_pid(entitlementCopy);
       v7 = "ClientConnectionFalseEntitlement";
       v8 = "Client connection from [%d] has a 'false' value for entitlement 'com.apple.diagnosticpipeline.request'";
       goto LABEL_11;
@@ -568,27 +568,27 @@ LABEL_13:
   return v9;
 }
 
-- (void)_sendRejectionMessage:(id)a3 rejectionReason:(unint64_t)a4 state:(id)a5
+- (void)_sendRejectionMessage:(id)message rejectionReason:(unint64_t)reason state:(id)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  messageCopy = message;
+  stateCopy = state;
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v8, "ServiceMessageType", 1uLL);
   xpc_dictionary_set_uint64(v8, "RejectionType", 1uLL);
-  xpc_connection_send_message(v6, v8);
+  xpc_connection_send_message(messageCopy, v8);
   v9 = DPLogHandle_ServiceXPCError();
   if (os_signpost_enabled(v9))
   {
-    v10 = [v7 stateDescription];
+    stateDescription = [stateCopy stateDescription];
     v12 = 138543618;
-    v13 = v10;
+    v13 = stateDescription;
     v14 = 2114;
     v15 = @"Missing entitlement 'com.apple.diagnosticpipeline.request'";
     _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RejectingClientConnection", "Rejecting client connection from %{public}@ due to reason: %{public}@", &v12, 0x16u);
   }
 
-  xpc_connection_cancel(v6);
+  xpc_connection_cancel(messageCopy);
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -622,8 +622,8 @@ LABEL_13:
   configurationSyncQueue = v2->_configurationSyncQueue;
   v2->_configurationSyncQueue = v11;
 
-  v13 = [(DRSService *)v2 messageQueue];
-  mach_service = xpc_connection_create_mach_service("com.apple.diagnosticpipeline.service", v13, 1uLL);
+  messageQueue = [(DRSService *)v2 messageQueue];
+  mach_service = xpc_connection_create_mach_service("com.apple.diagnosticpipeline.service", messageQueue, 1uLL);
   serviceConnection = v2->_serviceConnection;
   v2->_serviceConnection = mach_service;
 
@@ -633,19 +633,19 @@ LABEL_13:
 
   v2->_maxSingleSessionUploadSizeInBytes = [objc_opt_class() uploadSessionUploadCapBytes];
   v2->_state = 0;
-  v18 = [(DRSService *)v2 serviceConnection];
+  serviceConnection = [(DRSService *)v2 serviceConnection];
 
-  if (v18)
+  if (serviceConnection)
   {
     objc_initWeak(location, v2);
-    v19 = [(DRSService *)v2 serviceConnection];
+    serviceConnection2 = [(DRSService *)v2 serviceConnection];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __18__DRSService_init__block_invoke;
     v24[3] = &unk_27899F270;
     v25 = v2;
     objc_copyWeak(&v26, location);
-    xpc_connection_set_event_handler(v19, v24);
+    xpc_connection_set_event_handler(serviceConnection2, v24);
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(location);
@@ -747,19 +747,19 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveDampeningManagerErrorOut:(id *)a3
+- (BOOL)_saveDampeningManagerErrorOut:(id *)out
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(DRSService *)self dampeningManager];
-  v6 = [v5 saveToPersistentContainerWithErrorOut:a3];
+  dampeningManager = [(DRSService *)self dampeningManager];
+  v6 = [dampeningManager saveToPersistentContainerWithErrorOut:out];
 
   if (v6)
   {
     v7 = DPLogHandle_DampeningManager();
     if (os_signpost_enabled(v7))
     {
-      v8 = [(DRSService *)self dampeningManager];
-      v9 = [v8 debugDescription];
+      dampeningManager2 = [(DRSService *)self dampeningManager];
+      v9 = [dampeningManager2 debugDescription];
       v13 = 138543362;
       v14 = v9;
       _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationUpdated", "Saved updated dampening configuration: %{public}@", &v13, 0xCu);
@@ -771,7 +771,7 @@ LABEL_16:
     v7 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v7))
     {
-      v10 = *a3;
+      v10 = *out;
       v13 = 138543362;
       v14 = v10;
       _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationSaveFailed", "Saving updated configuration failed due to error: %{public}@", &v13, 0xCu);
@@ -782,19 +782,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)_handleDampeningConfigurationGlobalEnablementMessage:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleDampeningConfigurationGlobalEnablementMessage:(id)message state:(id)state transaction:(id)transaction
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasAdminEntitlement])
+  messageCopy = message;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v9 = xpc_dictionary_get_BOOL(v7, "DampeningEnabled");
+    v9 = xpc_dictionary_get_BOOL(messageCopy, "DampeningEnabled");
     v10 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v10))
     {
-      v11 = [v8 stateDescription];
-      v12 = v11;
+      stateDescription = [stateCopy stateDescription];
+      v12 = stateDescription;
       v13 = @"Disabled";
       if (v9)
       {
@@ -802,32 +802,32 @@ LABEL_16:
       }
 
       *buf = 138543618;
-      v26 = v11;
+      v26 = stateDescription;
       v27 = 2114;
       v28 = v13;
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationGlobalEnablement", "Accepting global enablement request from %{public}@. Dampening will be %{public}@", buf, 0x16u);
     }
 
-    v14 = [(DRSService *)self dampeningManager];
-    v15 = [v14 enforcementSettings];
-    [v15 setAllEnforcement:v9];
+    dampeningManager = [(DRSService *)self dampeningManager];
+    enforcementSettings = [dampeningManager enforcementSettings];
+    [enforcementSettings setAllEnforcement:v9];
 
     v24 = 0;
-    LOBYTE(v14) = [(DRSService *)self _saveDampeningManagerErrorOut:&v24];
+    LOBYTE(dampeningManager) = [(DRSService *)self _saveDampeningManagerErrorOut:&v24];
     v16 = v24;
     v17 = v16;
-    if (v14)
+    if (dampeningManager)
     {
-      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v7];
+      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:messageCopy];
     }
 
     else
     {
-      v20 = [v16 localizedDescription];
-      v21 = [v20 UTF8String];
-      if (v21)
+      localizedDescription = [v16 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      if (uTF8String)
       {
-        v22 = v21;
+        v22 = uTF8String;
       }
 
       else
@@ -835,7 +835,7 @@ LABEL_16:
         v22 = "Unknown save error";
       }
 
-      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v22 requestMessage:v7];
+      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v22 requestMessage:messageCopy];
     }
   }
 
@@ -844,48 +844,48 @@ LABEL_16:
     v18 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v18))
     {
-      v19 = [v8 stateDescription];
+      stateDescription2 = [stateCopy stateDescription];
       *buf = 138543362;
-      v26 = v19;
+      v26 = stateDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationGlobalEnablementRejected", "Rejecting global enablement request from %{public}@ due to missing entitlement", buf, 0xCu);
     }
 
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Client missing entitlement" requestMessage:v7];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Client missing entitlement" requestMessage:messageCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDampeningConfigurationReset:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleDampeningConfigurationReset:(id)reset state:(id)state transaction:(id)transaction
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 hasAdminEntitlement])
+  resetCopy = reset;
+  stateCopy = state;
+  transactionCopy = transaction;
+  if ([stateCopy hasAdminEntitlement])
   {
     v11 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v11))
     {
-      v12 = [v9 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       *buf = 138543362;
-      *&buf[4] = v12;
+      *&buf[4] = stateDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationReset", "Dampening configuration will be reset to defaults due to request from %{public}@", buf, 0xCu);
     }
 
     v13 = [DRSDampeningManager alloc];
-    v14 = [(DRSService *)self serviceContainer];
-    v15 = [objc_opt_class() deviceTeamConfigurationDirectory];
-    v16 = [(DRSDampeningManager *)v13 initWithPersistentContainer:v14 teamConfigurationDirectory:v15];
+    serviceContainer = [(DRSService *)self serviceContainer];
+    deviceTeamConfigurationDirectory = [objc_opt_class() deviceTeamConfigurationDirectory];
+    v16 = [(DRSDampeningManager *)v13 initWithPersistentContainer:serviceContainer teamConfigurationDirectory:deviceTeamConfigurationDirectory];
     dampeningManager = self->_dampeningManager;
     self->_dampeningManager = v16;
 
-    v18 = [(DRSService *)self serviceContainer];
-    v19 = [v18 newBackgroundContext];
+    serviceContainer2 = [(DRSService *)self serviceContainer];
+    newBackgroundContext = [serviceContainer2 newBackgroundContext];
 
-    v20 = [(DRSService *)self dampeningManager];
+    dampeningManager = [(DRSService *)self dampeningManager];
     v58 = 0;
-    v21 = [objc_opt_class() removeExistingDampeningManagerStateFromManagedObjectContext:v19 errorOut:&v58];
+    v21 = [objc_opt_class() removeExistingDampeningManagerStateFromManagedObjectContext:newBackgroundContext errorOut:&v58];
     v22 = v58;
 
     if (v21)
@@ -906,20 +906,20 @@ LABEL_16:
       v48 = __67__DRSService__handleDampeningConfigurationReset_state_transaction___block_invoke;
       v49 = &unk_27899F298;
       v52 = &v54;
-      v50 = v19;
+      v50 = newBackgroundContext;
       v53 = buf;
-      v51 = v9;
+      v51 = stateCopy;
       [v50 performBlockAndWait:&v46];
       v23 = *(*&buf[8] + 40);
       if (v23)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [v23 localizedDescription];
-        v26 = v25;
+        localizedDescription = [v23 localizedDescription];
+        v26 = localizedDescription;
         v27 = @"Unknown";
-        if (v25)
+        if (localizedDescription)
         {
-          v27 = v25;
+          v27 = localizedDescription;
         }
 
         v28 = [v24 stringWithFormat:@"Failed save dampening manager due to error: %@", v27, v46, v47, v48, v49, v50];
@@ -928,23 +928,23 @@ LABEL_16:
         if (v28)
         {
           v30 = v28;
-          v31 = [v28 UTF8String];
+          uTF8String = [v28 UTF8String];
         }
 
         else
         {
-          v31 = 0;
+          uTF8String = 0;
         }
       }
 
       else
       {
         v28 = 0;
-        v31 = 0;
+        uTF8String = 0;
         v29 = *(v55 + 24);
       }
 
-      [(DRSService *)self _sendAdminRequestReply:v29 & 1 rejectionReason:v31 requestMessage:v8];
+      [(DRSService *)self _sendAdminRequestReply:v29 & 1 rejectionReason:uTF8String requestMessage:resetCopy];
 
       _Block_object_dispose(buf, 8);
       _Block_object_dispose(&v54, 8);
@@ -955,12 +955,12 @@ LABEL_16:
       v34 = DPLogHandle_CoreDataError();
       if (os_signpost_enabled(v34))
       {
-        v35 = [v9 stateDescription];
-        v36 = [v22 localizedDescription];
-        v37 = v36;
-        if (v36)
+        stateDescription2 = [stateCopy stateDescription];
+        localizedDescription2 = [v22 localizedDescription];
+        v37 = localizedDescription2;
+        if (localizedDescription2)
         {
-          v38 = v36;
+          v38 = localizedDescription2;
         }
 
         else
@@ -969,18 +969,18 @@ LABEL_16:
         }
 
         *buf = 138543618;
-        *&buf[4] = v35;
+        *&buf[4] = stateDescription2;
         *&buf[12] = 2114;
         *&buf[14] = v38;
         _os_signpost_emit_with_name_impl(&dword_232906000, v34, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationResetPersistenceFailure", "Failed to cleanup dampening manager state for reset request from %{public}@ due to error: %{public}@", buf, 0x16u);
       }
 
       v39 = MEMORY[0x277CCACA8];
-      v40 = [v22 localizedDescription];
-      v41 = v40;
-      if (v40)
+      localizedDescription3 = [v22 localizedDescription];
+      v41 = localizedDescription3;
+      if (localizedDescription3)
       {
-        v42 = v40;
+        v42 = localizedDescription3;
       }
 
       else
@@ -991,7 +991,7 @@ LABEL_16:
       v43 = [v39 stringWithFormat:@"Failed to cleanup dampening manager state due to error: %@", v42];
 
       v44 = v43;
-      -[DRSService _sendAdminRequestReply:rejectionReason:requestMessage:](self, "_sendAdminRequestReply:rejectionReason:requestMessage:", 0, [v43 UTF8String], v8);
+      -[DRSService _sendAdminRequestReply:rejectionReason:requestMessage:](self, "_sendAdminRequestReply:rejectionReason:requestMessage:", 0, [v43 UTF8String], resetCopy);
     }
   }
 
@@ -1000,13 +1000,13 @@ LABEL_16:
     v32 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v32))
     {
-      v33 = [v9 stateDescription];
+      stateDescription3 = [stateCopy stateDescription];
       *buf = 138543362;
-      *&buf[4] = v33;
+      *&buf[4] = stateDescription3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v32, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationResetRejected", "Rejecting reset request from %{public}@ due to missing entitlement", buf, 0xCu);
     }
 
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Client missing entitlement" requestMessage:v8];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Client missing entitlement" requestMessage:resetCopy];
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -1047,118 +1047,118 @@ void __67__DRSService__handleDampeningConfigurationReset_state_transaction___blo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDampeningConfigurationDictMessage:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleDampeningConfigurationDictMessage:(id)message state:(id)state transaction:(id)transaction
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasAdminEntitlement])
+  messageCopy = message;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v9 = xpc_dictionary_get_value(v7, "EnforceResourceHysteresis");
+    v9 = xpc_dictionary_get_value(messageCopy, "EnforceResourceHysteresis");
 
     if (v9)
     {
-      v10 = xpc_dictionary_get_BOOL(v7, "EnforceResourceHysteresis");
-      v11 = [(DRSService *)self dampeningManager];
-      v12 = [v11 enforcementSettings];
-      [v12 setEnforcesResourceHysteresis:v10];
+      v10 = xpc_dictionary_get_BOOL(messageCopy, "EnforceResourceHysteresis");
+      dampeningManager = [(DRSService *)self dampeningManager];
+      enforcementSettings = [dampeningManager enforcementSettings];
+      [enforcementSettings setEnforcesResourceHysteresis:v10];
     }
 
-    v13 = xpc_dictionary_get_value(v7, "EnforceResourceCap");
+    v13 = xpc_dictionary_get_value(messageCopy, "EnforceResourceCap");
 
     if (v13)
     {
-      v14 = xpc_dictionary_get_BOOL(v7, "EnforceResourceCap");
-      v15 = [(DRSService *)self dampeningManager];
-      v16 = [v15 enforcementSettings];
-      [v16 setEnforcesResourceCap:v14];
+      v14 = xpc_dictionary_get_BOOL(messageCopy, "EnforceResourceCap");
+      dampeningManager2 = [(DRSService *)self dampeningManager];
+      enforcementSettings2 = [dampeningManager2 enforcementSettings];
+      [enforcementSettings2 setEnforcesResourceCap:v14];
     }
 
-    v17 = xpc_dictionary_get_value(v7, "EnforceResourceDownsampling");
+    v17 = xpc_dictionary_get_value(messageCopy, "EnforceResourceDownsampling");
 
     if (v17)
     {
-      v18 = xpc_dictionary_get_BOOL(v7, "EnforceResourceDownsampling");
-      v19 = [(DRSService *)self dampeningManager];
-      v20 = [v19 enforcementSettings];
-      [v20 setEnforcesResourceDownsampling:v18];
+      v18 = xpc_dictionary_get_BOOL(messageCopy, "EnforceResourceDownsampling");
+      dampeningManager3 = [(DRSService *)self dampeningManager];
+      enforcementSettings3 = [dampeningManager3 enforcementSettings];
+      [enforcementSettings3 setEnforcesResourceDownsampling:v18];
     }
 
-    v21 = xpc_dictionary_get_value(v7, "EnforceSignatureHysteresis");
+    v21 = xpc_dictionary_get_value(messageCopy, "EnforceSignatureHysteresis");
 
     if (v21)
     {
-      v22 = xpc_dictionary_get_BOOL(v7, "EnforceSignatureHysteresis");
-      v23 = [(DRSService *)self dampeningManager];
-      v24 = [v23 enforcementSettings];
-      [v24 setEnforcesSignatureHysteresis:v22];
+      v22 = xpc_dictionary_get_BOOL(messageCopy, "EnforceSignatureHysteresis");
+      dampeningManager4 = [(DRSService *)self dampeningManager];
+      enforcementSettings4 = [dampeningManager4 enforcementSettings];
+      [enforcementSettings4 setEnforcesSignatureHysteresis:v22];
     }
 
-    v25 = xpc_dictionary_get_value(v7, "EnforceSignatureCap");
+    v25 = xpc_dictionary_get_value(messageCopy, "EnforceSignatureCap");
 
     if (v25)
     {
-      v26 = xpc_dictionary_get_BOOL(v7, "EnforceSignatureCap");
-      v27 = [(DRSService *)self dampeningManager];
-      v28 = [v27 enforcementSettings];
-      [v28 setEnforcesSignatureCap:v26];
+      v26 = xpc_dictionary_get_BOOL(messageCopy, "EnforceSignatureCap");
+      dampeningManager5 = [(DRSService *)self dampeningManager];
+      enforcementSettings5 = [dampeningManager5 enforcementSettings];
+      [enforcementSettings5 setEnforcesSignatureCap:v26];
     }
 
-    v29 = xpc_dictionary_get_value(v7, "EnforceSignatureDownsampling");
+    v29 = xpc_dictionary_get_value(messageCopy, "EnforceSignatureDownsampling");
 
     if (v29)
     {
-      v30 = xpc_dictionary_get_BOOL(v7, "EnforceSignatureDownsampling");
-      v31 = [(DRSService *)self dampeningManager];
-      v32 = [v31 enforcementSettings];
-      [v32 setEnforcesSignatureDownsampling:v30];
+      v30 = xpc_dictionary_get_BOOL(messageCopy, "EnforceSignatureDownsampling");
+      dampeningManager6 = [(DRSService *)self dampeningManager];
+      enforcementSettings6 = [dampeningManager6 enforcementSettings];
+      [enforcementSettings6 setEnforcesSignatureDownsampling:v30];
     }
 
-    v33 = xpc_dictionary_get_value(v7, "EnforceTotalCap");
+    v33 = xpc_dictionary_get_value(messageCopy, "EnforceTotalCap");
 
     if (v33)
     {
-      v34 = xpc_dictionary_get_BOOL(v7, "EnforceTotalCap");
-      v35 = [(DRSService *)self dampeningManager];
-      v36 = [v35 enforcementSettings];
-      [v36 setEnforcesTotalCap:v34];
+      v34 = xpc_dictionary_get_BOOL(messageCopy, "EnforceTotalCap");
+      dampeningManager7 = [(DRSService *)self dampeningManager];
+      enforcementSettings7 = [dampeningManager7 enforcementSettings];
+      [enforcementSettings7 setEnforcesTotalCap:v34];
     }
 
-    v37 = [(DRSService *)self dampeningManager];
-    v38 = [v37 defaultSignatureConfiguration];
-    uint64 = [v38 countCap];
+    dampeningManager8 = [(DRSService *)self dampeningManager];
+    defaultSignatureConfiguration = [dampeningManager8 defaultSignatureConfiguration];
+    uint64 = [defaultSignatureConfiguration countCap];
 
-    v40 = [(DRSService *)self dampeningManager];
-    v41 = [v40 defaultSignatureConfiguration];
-    [v41 hysteresis];
+    dampeningManager9 = [(DRSService *)self dampeningManager];
+    defaultSignatureConfiguration2 = [dampeningManager9 defaultSignatureConfiguration];
+    [defaultSignatureConfiguration2 hysteresis];
     v43 = v42;
 
-    v44 = [(DRSService *)self dampeningManager];
-    v45 = [v44 defaultSignatureConfiguration];
-    [v45 acceptanceRate];
+    dampeningManager10 = [(DRSService *)self dampeningManager];
+    defaultSignatureConfiguration3 = [dampeningManager10 defaultSignatureConfiguration];
+    [defaultSignatureConfiguration3 acceptanceRate];
     v47 = v46;
 
-    v48 = xpc_dictionary_get_value(v7, "DefaultSignatureHysteresis");
+    v48 = xpc_dictionary_get_value(messageCopy, "DefaultSignatureHysteresis");
 
     v49 = v48 != 0;
     if (v48)
     {
-      v43 = xpc_dictionary_get_double(v7, "DefaultSignatureHysteresis");
+      v43 = xpc_dictionary_get_double(messageCopy, "DefaultSignatureHysteresis");
     }
 
-    v50 = xpc_dictionary_get_value(v7, "DefaultSignatureCap");
+    v50 = xpc_dictionary_get_value(messageCopy, "DefaultSignatureCap");
 
     if (v50)
     {
-      uint64 = xpc_dictionary_get_uint64(v7, "DefaultSignatureCap");
+      uint64 = xpc_dictionary_get_uint64(messageCopy, "DefaultSignatureCap");
       v49 = 1;
     }
 
-    v51 = xpc_dictionary_get_value(v7, "AcceptanceRate");
+    v51 = xpc_dictionary_get_value(messageCopy, "AcceptanceRate");
 
     if (v51)
     {
-      v47 = xpc_dictionary_get_double(v7, "AcceptanceRate");
+      v47 = xpc_dictionary_get_double(messageCopy, "AcceptanceRate");
     }
 
     else if (!v49)
@@ -1167,8 +1167,8 @@ void __67__DRSService__handleDampeningConfigurationReset_state_transaction___blo
     }
 
     v54 = [[DRSDampeningConfiguration alloc] initWithHysteresis:uint64 cap:v43 acceptanceRate:v47];
-    v55 = [(DRSService *)self dampeningManager];
-    [v55 setDefaultSignatureConfiguration:v54];
+    dampeningManager11 = [(DRSService *)self dampeningManager];
+    [dampeningManager11 setDefaultSignatureConfiguration:v54];
 
 LABEL_26:
     v62 = 0;
@@ -1177,16 +1177,16 @@ LABEL_26:
     v52 = v57;
     if (v56)
     {
-      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v7];
+      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:messageCopy];
     }
 
     else
     {
-      v58 = [v57 localizedDescription];
-      v59 = [v58 UTF8String];
-      if (v59)
+      localizedDescription = [v57 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      if (uTF8String)
       {
-        v60 = v59;
+        v60 = uTF8String;
       }
 
       else
@@ -1194,7 +1194,7 @@ LABEL_26:
         v60 = "Unknown save error";
       }
 
-      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v60 requestMessage:v7];
+      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v60 requestMessage:messageCopy];
     }
 
     goto LABEL_32;
@@ -1203,9 +1203,9 @@ LABEL_26:
   v52 = DPLogHandle_ServiceXPCError();
   if (os_signpost_enabled(v52))
   {
-    v53 = [v8 stateDescription];
+    stateDescription = [stateCopy stateDescription];
     *buf = 138543362;
-    v64 = v53;
+    v64 = stateDescription;
     _os_signpost_emit_with_name_impl(&dword_232906000, v52, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationDictionaryRejected", "Rejecting dampening configuration dictionary request from %{public}@ due to missing entitlement", buf, 0xCu);
   }
 
@@ -1214,17 +1214,17 @@ LABEL_32:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRefreshDampeningConfigMessage:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleRefreshDampeningConfigMessage:(id)message state:(id)state transaction:(id)transaction
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasAdminEntitlement])
+  messageCopy = message;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
     v9 = [DRSDampeningManager alloc];
-    v10 = [(DRSService *)self serviceContainer];
-    v11 = [objc_opt_class() deviceTeamConfigurationDirectory];
-    v12 = [(DRSDampeningManager *)v9 initWithPersistentContainer:v10 teamConfigurationDirectory:v11];
+    serviceContainer = [(DRSService *)self serviceContainer];
+    deviceTeamConfigurationDirectory = [objc_opt_class() deviceTeamConfigurationDirectory];
+    v12 = [(DRSDampeningManager *)v9 initWithPersistentContainer:serviceContainer teamConfigurationDirectory:deviceTeamConfigurationDirectory];
 
     if (v12)
     {
@@ -1232,13 +1232,13 @@ LABEL_32:
       v13 = DPLogHandle_ServiceXPC();
       if (os_signpost_enabled(v13))
       {
-        v14 = [v8 stateDescription];
+        stateDescription = [stateCopy stateDescription];
         v22 = 138543362;
-        v23 = v14;
+        v23 = stateDescription;
         _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RefreshDampeningConfigurationSucceeded", "Request from %{public}@ succeeded", &v22, 0xCu);
       }
 
-      v15 = self;
+      selfCopy2 = self;
       v16 = 1;
       v17 = 0;
     }
@@ -1248,18 +1248,18 @@ LABEL_32:
       v19 = DPLogHandle_ServiceXPCError();
       if (os_signpost_enabled(v19))
       {
-        v20 = [v8 stateDescription];
+        stateDescription2 = [stateCopy stateDescription];
         v22 = 138543362;
-        v23 = v20;
+        v23 = stateDescription2;
         _os_signpost_emit_with_name_impl(&dword_232906000, v19, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RefreshDampeningConfigurationFailed", "Request from %{public}@ failed: we could not instantiate a new dampening manager...", &v22, 0xCu);
       }
 
       v17 = "Could not instantiate refreshed dampening manager";
-      v15 = self;
+      selfCopy2 = self;
       v16 = 0;
     }
 
-    [(DRSService *)v15 _sendAdminRequestReply:v16 rejectionReason:v17 requestMessage:v7];
+    [(DRSService *)selfCopy2 _sendAdminRequestReply:v16 rejectionReason:v17 requestMessage:messageCopy];
   }
 
   else
@@ -1267,9 +1267,9 @@ LABEL_32:
     v12 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v12))
     {
-      v18 = [v8 stateDescription];
+      stateDescription3 = [stateCopy stateDescription];
       v22 = 138543362;
-      v23 = v18;
+      v23 = stateDescription3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RefreshDampeningConfigurationMessageRejected", "Rejecting refresh dampening configuration request from %{public}@ due to missing entitlement", &v22, 0xCu);
     }
   }
@@ -1277,21 +1277,21 @@ LABEL_32:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addRequestToDAFileList:(id)a3
+- (void)_addRequestToDAFileList:(id)list
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 requestOutcome])
+  listCopy = list;
+  if (![listCopy requestOutcome])
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = [v3 teamID];
-    v6 = [v3 issueCategory];
-    v7 = [v4 initWithFormat:@"DiagnosticRequest_%@_%@", v5, v6];
+    teamID = [listCopy teamID];
+    issueCategory = [listCopy issueCategory];
+    v7 = [v4 initWithFormat:@"DiagnosticRequest_%@_%@", teamID, issueCategory];
 
     v8 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_2847F1D58];
 
-    v9 = [v3 debugDescription];
-    v15 = v3;
+    v9 = [listCopy debugDescription];
+    v15 = listCopy;
     v10 = v9;
     if (OSAWriteLogForSubmission())
     {
@@ -1362,12 +1362,12 @@ void __38__DRSService__addRequestToDAFileList___block_invoke(uint64_t a1, void *
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postReceiptProcessingWork:(id)a3
+- (void)_postReceiptProcessingWork:(id)work
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DRSService *)self serviceContainer];
-  v6 = [v5 newBackgroundContext];
+  workCopy = work;
+  serviceContainer = [(DRSService *)self serviceContainer];
+  newBackgroundContext = [serviceContainer newBackgroundContext];
 
   v29 = 0;
   v30 = &v29;
@@ -1383,9 +1383,9 @@ void __38__DRSService__addRequestToDAFileList___block_invoke(uint64_t a1, void *
   v20[1] = 3221225472;
   v20[2] = __41__DRSService__postReceiptProcessingWork___block_invoke;
   v20[3] = &unk_27899ED80;
-  v7 = v4;
+  v7 = workCopy;
   v21 = v7;
-  v8 = v6;
+  v8 = newBackgroundContext;
   v22 = v8;
   v23 = &v25;
   v24 = &v29;
@@ -1408,12 +1408,12 @@ void __38__DRSService__addRequestToDAFileList___block_invoke(uint64_t a1, void *
     if (os_signpost_enabled(v9))
     {
       v11 = [v7 debugDescription];
-      v12 = [v30[5] localizedDescription];
-      v13 = v12;
+      localizedDescription = [v30[5] localizedDescription];
+      v13 = localizedDescription;
       v14 = @"Unknown";
-      if (v12)
+      if (localizedDescription)
       {
-        v14 = v12;
+        v14 = localizedDescription;
       }
 
       *buf = 138412546;
@@ -1427,7 +1427,7 @@ void __38__DRSService__addRequestToDAFileList___block_invoke(uint64_t a1, void *
   _Block_object_dispose(&v25, 8);
   _Block_object_dispose(&v29, 8);
 
-  v15 = [(DRSService *)self postReceiptWorkQueue];
+  postReceiptWorkQueue = [(DRSService *)self postReceiptWorkQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __41__DRSService__postReceiptProcessingWork___block_invoke_97;
@@ -1435,7 +1435,7 @@ void __38__DRSService__addRequestToDAFileList___block_invoke(uint64_t a1, void *
   v18[4] = self;
   v19 = v7;
   v16 = v7;
-  dispatch_async(v15, v18);
+  dispatch_async(postReceiptWorkQueue, v18);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1466,24 +1466,24 @@ uint64_t __41__DRSService__postReceiptProcessingWork___block_invoke_97(uint64_t 
   return result;
 }
 
-- (void)_handleDRSRequestMessage:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleDRSRequestMessage:(id)message state:(id)state transaction:(id)transaction
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [DRSRequest requestForMessage:v7];
+  messageCopy = message;
+  stateCopy = state;
+  v9 = [DRSRequest requestForMessage:messageCopy];
   v10 = v9;
   if (v9)
   {
     [v9 addAutomatedDeviceGroupContext];
     [v10 addHWModelContextMetadata];
     [v10 addIsLikelyCarryContextMetadata];
-    v11 = [objc_opt_class() fileDirectory];
+    fileDirectory = [objc_opt_class() fileDirectory];
     v12 = DPLogHandle_ServiceLifecycle();
     v13 = DPLogHandle_ServiceLifecycleError();
-    DRSConfirmDirectoryIsInitialized(v11, v12, v13);
+    DRSConfirmDirectoryIsInitialized(fileDirectory, v12, v13);
 
-    uint64 = xpc_dictionary_get_uint64(v7, "ClientMessageType");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "ClientMessageType");
     v15 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v15))
     {
@@ -1594,27 +1594,27 @@ LABEL_19:
         }
       }
 
-      v19 = [v8 stateDescription];
-      v20 = [v10 teamID];
-      v21 = [v10 issueCategory];
-      v22 = [v10 issueDescription];
+      stateDescription = [stateCopy stateDescription];
+      teamID = [v10 teamID];
+      issueCategory = [v10 issueCategory];
+      issueDescription = [v10 issueDescription];
       v28 = 138413314;
       v29 = v16;
       v30 = 2114;
-      v31 = v19;
+      v31 = stateDescription;
       v32 = 2114;
-      v33 = v20;
+      v33 = teamID;
       v34 = 2114;
-      v35 = v21;
+      v35 = issueCategory;
       v36 = 2114;
-      v37 = v22;
+      v37 = issueDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientRequest", "Received '%@' from client %{public}@: %{public, name=teamID}@/%{public, name=issueCategory}@/%{public, name=issueDescription}@", &v28, 0x34u);
     }
 
     if ([(DRSService *)self isEnabled])
     {
-      v23 = [(DRSService *)self dampeningManager];
-      v24 = [v23 dampeningOutcomeForRequest:v10];
+      dampeningManager = [(DRSService *)self dampeningManager];
+      v24 = [dampeningManager dampeningOutcomeForRequest:v10];
     }
 
     else
@@ -1622,13 +1622,13 @@ LABEL_19:
       v24 = 8;
     }
 
-    v25 = [objc_opt_class() fileDirectory];
-    [v10 performOnReceiptWork:v25 dampeningOutcome:v24];
+    fileDirectory2 = [objc_opt_class() fileDirectory];
+    [v10 performOnReceiptWork:fileDirectory2 dampeningOutcome:v24];
 
-    v17 = [v10 replyForMessage:v7];
+    v17 = [v10 replyForMessage:messageCopy];
     if (v17)
     {
-      v26 = xpc_dictionary_get_remote_connection(v7);
+      v26 = xpc_dictionary_get_remote_connection(messageCopy);
       xpc_connection_send_message(v26, v17);
     }
 
@@ -1640,9 +1640,9 @@ LABEL_19:
     v17 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v17))
     {
-      v18 = [v8 stateDescription];
+      stateDescription2 = [stateCopy stateDescription];
       v28 = 138543362;
-      v29 = v18;
+      v29 = stateDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidRequest", "Received invalid request from client %{public}@", &v28, 0xCu);
     }
   }
@@ -1650,20 +1650,20 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishReportingStatsSessionWithActivity:(id)a3 withState:(int64_t)a4 transaction:(id)a5 endResultString:(id)a6
+- (void)_finishReportingStatsSessionWithActivity:(id)activity withState:(int64_t)state transaction:(id)transaction endResultString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a6;
-  if (a3)
+  stringCopy = string;
+  if (activity)
   {
-    v9 = a3;
+    activityCopy = activity;
     v10 = DPLogHandle_ServiceLifecycle();
     if (os_signpost_enabled(v10))
     {
       v11 = @"Success!";
-      if (v8)
+      if (stringCopy)
       {
-        v11 = v8;
+        v11 = stringCopy;
       }
 
       v13 = 138543362;
@@ -1671,34 +1671,34 @@ LABEL_19:
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CloudKitReportStatsXPCActivity", "Ended with reason: %{public}@", &v13, 0xCu);
     }
 
-    xpc_activity_set_state(v9, a4);
+    xpc_activity_set_state(activityCopy, state);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ckQueueDownstreamOnly_uploadInFlightWithTransaction:(id)a3 xpcActivity:(id)a4 ckHelper:(id)a5 isExpedited:(BOOL)a6 completionBlock:(id)a7
+- (void)_ckQueueDownstreamOnly_uploadInFlightWithTransaction:(id)transaction xpcActivity:(id)activity ckHelper:(id)helper isExpedited:(BOOL)expedited completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(DRSService *)self uploadRequestLookupQueue];
+  transactionCopy = transaction;
+  activityCopy = activity;
+  helperCopy = helper;
+  blockCopy = block;
+  uploadRequestLookupQueue = [(DRSService *)self uploadRequestLookupQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcActivity_ckHelper_isExpedited_completionBlock___block_invoke;
   v21[3] = &unk_27899F338;
-  v26 = a6;
+  expeditedCopy = expedited;
   v21[4] = self;
-  v22 = v13;
-  v24 = v14;
-  v25 = v15;
-  v23 = v12;
-  v17 = v14;
-  v18 = v15;
-  v19 = v12;
-  v20 = v13;
-  dispatch_sync(v16, v21);
+  v22 = activityCopy;
+  v24 = helperCopy;
+  v25 = blockCopy;
+  v23 = transactionCopy;
+  v17 = helperCopy;
+  v18 = blockCopy;
+  v19 = transactionCopy;
+  v20 = activityCopy;
+  dispatch_sync(uploadRequestLookupQueue, v21);
 }
 
 void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcActivity_ckHelper_isExpedited_completionBlock___block_invoke(uint64_t a1)
@@ -2102,13 +2102,13 @@ void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcA
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction:(id)a3 xpcActivity:(id)a4 ckHelper:(id)a5 followupWorkBlock:(id)a6
+- (void)_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction:(id)transaction xpcActivity:(id)activity ckHelper:(id)helper followupWorkBlock:(id)block
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  transactionCopy = transaction;
+  activityCopy = activity;
+  helperCopy = helper;
+  blockCopy = block;
   v14 = DPLogHandle_ServiceLifecycle();
   if (os_signpost_enabled(v14))
   {
@@ -2116,8 +2116,8 @@ void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcA
     _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ServiceCKEnableDataGatheringQueriesSession", &unk_232980861, buf, 2u);
   }
 
-  v15 = [(DRSService *)self serviceContainer];
-  v16 = [v15 newBackgroundContext];
+  serviceContainer = [(DRSService *)self serviceContainer];
+  newBackgroundContext = [serviceContainer newBackgroundContext];
 
   if (_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction_xpcActivity_ckHelper_followupWorkBlock__onceToken != -1)
   {
@@ -2129,19 +2129,19 @@ void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcA
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
 
   v31 = 0;
-  v19 = [DRSEnableDataGatheringQuery enableDataGatheringQueriesForFilterPredicate:_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction_xpcActivity_ckHelper_followupWorkBlock__outstandingQueryPredicate context:v16 sortDescriptors:v18 fetchLimit:0 errorOut:&v31];
+  v19 = [DRSEnableDataGatheringQuery enableDataGatheringQueriesForFilterPredicate:_ckQueueOnly_submitOutstandingEnableDataGatheringQueriesWithTransaction_xpcActivity_ckHelper_followupWorkBlock__outstandingQueryPredicate context:newBackgroundContext sortDescriptors:v18 fetchLimit:0 errorOut:&v31];
   v20 = v31;
   if (v20)
   {
     v21 = DPLogHandle_ServiceLifecycle();
     if (os_signpost_enabled(v21))
     {
-      v22 = [v20 localizedDescription];
-      v23 = v22;
+      localizedDescription = [v20 localizedDescription];
+      v23 = localizedDescription;
       v24 = @"Unknown";
-      if (v22)
+      if (localizedDescription)
       {
-        v24 = v22;
+        v24 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -2160,10 +2160,10 @@ void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcA
       v26[3] = &unk_27899F360;
       v26[4] = self;
       v27 = v19;
-      v30 = v13;
-      v28 = v10;
-      v29 = v11;
-      [v12 shouldEnableDataGathering:v27 xpcActivity:v29 replyHandler:v26];
+      v30 = blockCopy;
+      v28 = transactionCopy;
+      v29 = activityCopy;
+      [helperCopy shouldEnableDataGathering:v27 xpcActivity:v29 replyHandler:v26];
 
       goto LABEL_17;
     }
@@ -2176,9 +2176,9 @@ void __116__DRSService__ckQueueDownstreamOnly_uploadInFlightWithTransaction_xpcA
     }
   }
 
-  if (v13)
+  if (blockCopy)
   {
-    (*(v13 + 2))(v13, v10, v11);
+    (*(blockCopy + 2))(blockCopy, transactionCopy, activityCopy);
   }
 
 LABEL_17:
@@ -2361,27 +2361,27 @@ void __99__DRSService__runCloudKitUploadWorkSessionWithTransaction_xpcActivity_i
   }
 }
 
-- (void)_runReportingSessionWithTransaction:(id)a3 xpcActivity:(id)a4
+- (void)_runReportingSessionWithTransaction:(id)transaction xpcActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && !xpc_activity_set_state(v7, 4))
+  transactionCopy = transaction;
+  activityCopy = activity;
+  v8 = activityCopy;
+  if (activityCopy && !xpc_activity_set_state(activityCopy, 4))
   {
-    [(DRSService *)self _finishReportingStatsSessionWithActivity:v8 withState:5 transaction:v6 endResultString:@"Failed to mark activity as continued, so bailing on activity"];
+    [(DRSService *)self _finishReportingStatsSessionWithActivity:v8 withState:5 transaction:transactionCopy endResultString:@"Failed to mark activity as continued, so bailing on activity"];
   }
 
   else
   {
-    v9 = [(DRSService *)self cloudKitQueue];
+    cloudKitQueue = [(DRSService *)self cloudKitQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__DRSService__runReportingSessionWithTransaction_xpcActivity___block_invoke;
     block[3] = &unk_27899F400;
     block[4] = self;
     v11 = v8;
-    v12 = v6;
-    dispatch_async(v9, block);
+    v12 = transactionCopy;
+    dispatch_async(cloudKitQueue, block);
   }
 }
 
@@ -2519,16 +2519,16 @@ void __62__DRSService__runReportingSessionWithTransaction_xpcActivity___block_in
 - (double)_resolvedEnableDataGatheringQueryAcceptanceRate
 {
   v2 = +[DRSSystemProfile sharedInstance];
-  v3 = [v2 isInternal];
+  isInternal = [v2 isInternal];
 
   result = 1.0;
-  if ((v3 & 1) == 0)
+  if ((isInternal & 1) == 0)
   {
     v5 = +[DRSSystemProfile sharedInstance];
-    v6 = [v5 isSeed];
+    isSeed = [v5 isSeed];
 
     result = 0.01;
-    if (v6)
+    if (isSeed)
     {
       return 0.1;
     }
@@ -2544,11 +2544,11 @@ void __62__DRSService__runReportingSessionWithTransaction_xpcActivity___block_in
   return [DRSDampeningManager passesAcceptanceRate:?];
 }
 
-- (BOOL)_persistEnableLogGatheringResult:(id)a3 workingContext:(id)a4
+- (BOOL)_persistEnableLogGatheringResult:(id)result workingContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  contextCopy = context;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2563,9 +2563,9 @@ void __62__DRSService__runReportingSessionWithTransaction_xpcActivity___block_in
   v19 = 3221225472;
   v20 = __62__DRSService__persistEnableLogGatheringResult_workingContext___block_invoke;
   v21 = &unk_27899ED80;
-  v7 = v5;
+  v7 = resultCopy;
   v22 = v7;
-  v8 = v6;
+  v8 = contextCopy;
   v23 = v8;
   v24 = &v26;
   v25 = &v30;
@@ -2588,12 +2588,12 @@ void __62__DRSService__runReportingSessionWithTransaction_xpcActivity___block_in
     if (os_signpost_enabled(v9))
     {
       v11 = [v7 debugDescription];
-      v12 = [v31[5] localizedDescription];
-      v13 = v12;
+      localizedDescription = [v31[5] localizedDescription];
+      v13 = localizedDescription;
       v14 = @"Unknown";
-      if (v12)
+      if (localizedDescription)
       {
-        v14 = v12;
+        v14 = localizedDescription;
       }
 
       *buf = 138543618;
@@ -2626,12 +2626,12 @@ void __62__DRSService__persistEnableLogGatheringResult_workingContext___block_in
   *(v5 + 40) = 0;
 }
 
-- (id)_cachedMatchingQuery:(id)a3 workingContext:(id)a4
+- (id)_cachedMatchingQuery:(id)query workingContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queryCopy = query;
   v18 = 0;
-  v6 = [DRSEnableDataGatheringQuery cachedQueryResponseForQuery:v5 inContext:a4 errorOut:&v18];
+  v6 = [DRSEnableDataGatheringQuery cachedQueryResponseForQuery:queryCopy inContext:context errorOut:&v18];
   v7 = v18;
   if (!v7)
   {
@@ -2640,7 +2640,7 @@ void __62__DRSService__persistEnableLogGatheringResult_workingContext___block_in
       v14 = DPLogHandle_CoreData();
       if (os_signpost_enabled(v14))
       {
-        v15 = [v5 debugDescription];
+        v15 = [queryCopy debugDescription];
         *buf = 138543362;
         v20 = v15;
         _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CachedQueryResultNotFound", "No cached result for '%{public}@'", buf, 0xCu);
@@ -2657,13 +2657,13 @@ LABEL_9:
   v8 = DPLogHandle_CoreDataError();
   if (os_signpost_enabled(v8))
   {
-    v9 = [v5 debugDescription];
-    v10 = [v7 localizedDescription];
-    v11 = v10;
+    v9 = [queryCopy debugDescription];
+    localizedDescription = [v7 localizedDescription];
+    v11 = localizedDescription;
     v12 = @"Unknown";
-    if (v10)
+    if (localizedDescription)
     {
-      v12 = v10;
+      v12 = localizedDescription;
     }
 
     *buf = 138543618;
@@ -2687,25 +2687,25 @@ LABEL_14:
   return v13;
 }
 
-- (void)_handleEnableLogGatheringRequest:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleEnableLogGatheringRequest:(id)request state:(id)state transaction:(id)transaction
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [[DRSEnableDataGatheringQuery alloc] initWithXPCDict:v7];
-  reply = xpc_dictionary_create_reply(v7);
+  requestCopy = request;
+  stateCopy = state;
+  v9 = [[DRSEnableDataGatheringQuery alloc] initWithXPCDict:requestCopy];
+  reply = xpc_dictionary_create_reply(requestCopy);
   v11 = reply;
   if (v9)
   {
     v12 = +[DRSSystemProfile sharedInstance];
-    v13 = [v12 isLogUploadEnabled];
+    isLogUploadEnabled = [v12 isLogUploadEnabled];
 
-    if (v13)
+    if (isLogUploadEnabled)
     {
-      v14 = [(DRSService *)self serviceContainer];
-      v15 = [v14 newBackgroundContext];
+      serviceContainer = [(DRSService *)self serviceContainer];
+      newBackgroundContext = [serviceContainer newBackgroundContext];
 
-      v16 = [(DRSService *)self _cachedMatchingQuery:v9 workingContext:v15];
+      v16 = [(DRSService *)self _cachedMatchingQuery:v9 workingContext:newBackgroundContext];
       if (v16)
       {
         v17 = v16;
@@ -2724,7 +2724,7 @@ LABEL_14:
           }
 
           xpc_dictionary_set_uint64(v11, "EnableLogGatheringQueryReply", [v17 response]);
-          v21 = xpc_dictionary_get_remote_connection(v7);
+          v21 = xpc_dictionary_get_remote_connection(requestCopy);
           xpc_connection_send_message(v21, v11);
 
 LABEL_23:
@@ -2745,7 +2745,7 @@ LABEL_23:
 
         [(DRSEnableDataGatheringQuery *)v9 setIsContinue:1];
         xpc_dictionary_set_uint64(v11, "EnableLogGatheringQueryReply", [v17 response]);
-        v32 = xpc_dictionary_get_remote_connection(v7);
+        v32 = xpc_dictionary_get_remote_connection(requestCopy);
         xpc_connection_send_message(v32, v11);
       }
 
@@ -2759,22 +2759,22 @@ LABEL_20:
         [(DRSEnableDataGatheringQuery *)v9 setResponse:v28];
         [(DRSEnableDataGatheringQuery *)v9 setRejectionReason:v17];
         xpc_dictionary_set_uint64(v11, "EnableLogGatheringQueryReply", v28);
-        v33 = xpc_dictionary_get_remote_connection(v7);
+        v33 = xpc_dictionary_get_remote_connection(requestCopy);
         xpc_connection_send_message(v33, v11);
 
         v34 = DPLogHandle_ServiceXPC();
         if (os_signpost_enabled(v34))
         {
           v35 = [(DRSEnableDataGatheringQuery *)v9 debugDescription];
-          v36 = [v8 stateDescription];
+          stateDescription = [stateCopy stateDescription];
           *buf = 138412546;
           v39 = v35;
           v40 = 2114;
-          v41 = v36;
+          v41 = stateDescription;
           _os_signpost_emit_with_name_impl(&dword_232906000, v34, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EnableLogGatheringQueryReply", "Replied %@ to query from %{public}@", buf, 0x16u);
         }
 
-        [(DRSService *)self _persistEnableLogGatheringResult:v9 workingContext:v15];
+        [(DRSService *)self _persistEnableLogGatheringResult:v9 workingContext:newBackgroundContext];
         goto LABEL_23;
       }
 
@@ -2784,11 +2784,11 @@ LABEL_20:
     }
 
     xpc_dictionary_set_uint64(v11, "EnableLogGatheringQueryReply", 0);
-    v25 = xpc_dictionary_get_remote_connection(v7);
+    v25 = xpc_dictionary_get_remote_connection(requestCopy);
     xpc_connection_send_message(v25, v11);
 
-    v15 = DPLogHandle_EnableDataGatheringQuery();
-    if (os_signpost_enabled(v15))
+    newBackgroundContext = DPLogHandle_EnableDataGatheringQuery();
+    if (os_signpost_enabled(newBackgroundContext))
     {
       *buf = 0;
       v23 = "CustomerDoesNotApprove";
@@ -2800,17 +2800,17 @@ LABEL_20:
   else
   {
     xpc_dictionary_set_uint64(reply, "EnableLogGatheringQueryReply", 3uLL);
-    v22 = xpc_dictionary_get_remote_connection(v7);
+    v22 = xpc_dictionary_get_remote_connection(requestCopy);
     xpc_connection_send_message(v22, v11);
 
-    v15 = DPLogHandle_EnableDataGatheringQueryError();
-    if (os_signpost_enabled(v15))
+    newBackgroundContext = DPLogHandle_EnableDataGatheringQueryError();
+    if (os_signpost_enabled(newBackgroundContext))
     {
       *buf = 0;
       v23 = "InvalidEnableDataGatheringQuery";
       v24 = "Rejecting enable data gathering query due to malformed message";
 LABEL_13:
-      _os_signpost_emit_with_name_impl(&dword_232906000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, v23, v24, buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_232906000, newBackgroundContext, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, v23, v24, buf, 2u);
     }
   }
 
@@ -2819,86 +2819,86 @@ LABEL_24:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAdminRequestReply:(BOOL)a3 rejectionReason:(const char *)a4 requestMessage:(id)a5
+- (void)_sendAdminRequestReply:(BOOL)reply rejectionReason:(const char *)reason requestMessage:(id)message
 {
-  v6 = a3;
+  replyCopy = reply;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  reply = xpc_dictionary_create_reply(v7);
-  xpc_dictionary_set_BOOL(reply, "AdminRequest_Reply", v6);
-  if (a4 && !v6)
+  messageCopy = message;
+  reply = xpc_dictionary_create_reply(messageCopy);
+  xpc_dictionary_set_BOOL(reply, "AdminRequest_Reply", replyCopy);
+  if (reason && !replyCopy)
   {
-    xpc_dictionary_set_string(reply, "AdminRequest_RejectionReason", a4);
+    xpc_dictionary_set_string(reply, "AdminRequest_RejectionReason", reason);
   }
 
   v9 = DPLogHandle_ClientXPC();
   if (os_signpost_enabled(v9))
   {
     v10 = "Rejected";
-    if (v6)
+    if (replyCopy)
     {
       v10 = "Accepted";
     }
 
-    v11 = "Success!";
-    if (a4)
+    reasonCopy = "Success!";
+    if (reason)
     {
-      v11 = a4;
+      reasonCopy = reason;
     }
 
     v14 = 136315394;
     v15 = v10;
     v16 = 2082;
-    v17 = v11;
+    v17 = reasonCopy;
     _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "AdminRequestReply", "%s: %{public}s", &v14, 0x16u);
   }
 
-  v12 = xpc_dictionary_get_remote_connection(v7);
+  v12 = xpc_dictionary_get_remote_connection(messageCopy);
 
   xpc_connection_send_message(v12, reply);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rejectInjectRequest:(id)a3 state:(id)a4 reason:(const char *)a5
+- (void)_rejectInjectRequest:(id)request state:(id)state reason:(const char *)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:a5 requestMessage:a3];
+  stateCopy = state;
+  [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:reason requestMessage:request];
   v9 = DPLogHandle_ServiceXPCError();
   if (os_signpost_enabled(v9))
   {
-    v10 = [v8 stateDescription];
+    stateDescription = [stateCopy stateDescription];
     v12 = 138543618;
-    v13 = v10;
+    v13 = stateDescription;
     v14 = 2080;
-    v15 = a5;
+    reasonCopy = reason;
     _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InjectEnableLogGatheringResultResult_Rejected", "Rejecting inject enable log gathering result request from %{public}@ due reason: %s", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleInjectEnableLogGatheringRequestResult:(id)a3 state:(id)a4
+- (void)_handleInjectEnableLogGatheringRequestResult:(id)result state:(id)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v7 hasAdminEntitlement] & 1) == 0)
+  resultCopy = result;
+  stateCopy = state;
+  if (([stateCopy hasAdminEntitlement] & 1) == 0)
   {
     v12 = "Missing required entitlement";
     goto LABEL_9;
   }
 
   v8 = +[DRSSystemProfile sharedInstance];
-  v9 = [v8 isInternal];
+  isInternal = [v8 isInternal];
 
-  if ((v9 & 1) == 0)
+  if ((isInternal & 1) == 0)
   {
     v12 = "Device is running non-Internal build";
     goto LABEL_9;
   }
 
-  v10 = xpc_dictionary_get_value(v6, "InjectEnableLogGatheringQueryInjectedResult");
+  v10 = xpc_dictionary_get_value(resultCopy, "InjectEnableLogGatheringQueryInjectedResult");
 
   if (!v10)
   {
@@ -2906,17 +2906,17 @@ LABEL_24:
     goto LABEL_9;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v6, "InjectEnableLogGatheringQueryInjectedResult");
+  uint64 = xpc_dictionary_get_uint64(resultCopy, "InjectEnableLogGatheringQueryInjectedResult");
   if ((uint64 & 0xFE) != 0)
   {
     v12 = "Injected response is not a valid value";
 LABEL_9:
-    [(DRSService *)self _rejectInjectRequest:v6 state:v7 reason:v12];
+    [(DRSService *)self _rejectInjectRequest:resultCopy state:stateCopy reason:v12];
     goto LABEL_10;
   }
 
   v14 = uint64;
-  v15 = [[DRSEnableDataGatheringQuery alloc] initWithXPCDict:v6];
+  v15 = [[DRSEnableDataGatheringQuery alloc] initWithXPCDict:resultCopy];
   if (!v15)
   {
     v12 = "Malformed query parameters";
@@ -2924,10 +2924,10 @@ LABEL_9:
   }
 
   v16 = v15;
-  v17 = [(DRSService *)self serviceContainer];
-  v18 = [v17 newBackgroundContext];
+  serviceContainer = [(DRSService *)self serviceContainer];
+  newBackgroundContext = [serviceContainer newBackgroundContext];
 
-  v19 = [(DRSService *)self _cachedMatchingQuery:v16 workingContext:v18];
+  v19 = [(DRSService *)self _cachedMatchingQuery:v16 workingContext:newBackgroundContext];
   if (v19)
   {
     v20 = DPLogHandle_CoreData();
@@ -2952,47 +2952,47 @@ LABEL_9:
     [(DRSEnableDataGatheringQuery *)v16 setRejectionReason:@"Injected response"];
   }
 
-  if ([(DRSService *)self _persistEnableLogGatheringResult:v16 workingContext:v18])
+  if ([(DRSService *)self _persistEnableLogGatheringResult:v16 workingContext:newBackgroundContext])
   {
     v24 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v24))
     {
-      v25 = [v7 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       v26 = [(DRSEnableDataGatheringQuery *)v16 debugDescription];
       v27 = 138543618;
-      v28 = v25;
+      v28 = stateDescription;
       v29 = 2114;
       v30 = v26;
       _os_signpost_emit_with_name_impl(&dword_232906000, v24, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InjectEnableLogGatheringResultResult_Accepted", "Accepted inject enable log gathering result request from %{public}@: %{public}@", &v27, 0x16u);
     }
 
-    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:resultCopy];
   }
 
   else
   {
-    [(DRSService *)self _rejectInjectRequest:v6 state:v7 reason:"Failed to persist injected result"];
+    [(DRSService *)self _rejectInjectRequest:resultCopy state:stateCopy reason:"Failed to persist injected result"];
   }
 
 LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCKWorkTriggerRequest:(id)a3 state:(id)a4 transaction:(id)a5
+- (void)_handleCKWorkTriggerRequest:(id)request state:(id)state transaction:(id)transaction
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 hasAdminEntitlement])
+  requestCopy = request;
+  stateCopy = state;
+  transactionCopy = transaction;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v11 = xpc_dictionary_get_BOOL(v8, "isExpedited");
-    v12 = xpc_dictionary_get_BOOL(v8, "isAsync");
+    v11 = xpc_dictionary_get_BOOL(requestCopy, "isExpedited");
+    v12 = xpc_dictionary_get_BOOL(requestCopy, "isAsync");
     v13 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v13))
     {
-      v14 = [v9 stateDescription];
-      v15 = v14;
+      stateDescription = [stateCopy stateDescription];
+      v15 = stateDescription;
       v16 = @"NO";
       if (v11)
       {
@@ -3005,7 +3005,7 @@ LABEL_10:
       }
 
       *buf = 138543874;
-      v26 = v14;
+      v26 = stateDescription;
       v28 = v17;
       v27 = 2112;
       if (v12)
@@ -3020,7 +3020,7 @@ LABEL_10:
 
     if (v12)
     {
-      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v8];
+      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:requestCopy];
     }
 
     v21[0] = MEMORY[0x277D85DD0];
@@ -3029,20 +3029,20 @@ LABEL_10:
     v21[3] = &unk_27899F428;
     v24 = v12;
     v21[4] = self;
-    v22 = v8;
-    v23 = v10;
+    v22 = requestCopy;
+    v23 = transactionCopy;
     [(DRSService *)self _runCloudKitUploadWorkSessionWithTransaction:v23 xpcActivity:0 isExpedited:v11 completionBlock:v21];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v8];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:requestCopy];
     v18 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v18))
     {
-      v19 = [v9 stateDescription];
+      stateDescription2 = [stateCopy stateDescription];
       *buf = 138543362;
-      v26 = v19;
+      v26 = stateDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKWorkTriggerRejected", "Rejecting CK work trigger from %{public}@ due to missing entitlement", buf, 0xCu);
     }
   }
@@ -3075,18 +3075,18 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
   return result;
 }
 
-- (void)_handleRequestCleanTrigger:(id)a3 state:(id)a4
+- (void)_handleRequestCleanTrigger:(id)trigger state:(id)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  triggerCopy = trigger;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v8 = xpc_dictionary_get_BOOL(v6, "KeepRequestRecords");
-    v9 = xpc_dictionary_get_BOOL(v6, "KeepRequestLogs");
-    v10 = [(DRSService *)self serviceContainer];
+    v8 = xpc_dictionary_get_BOOL(triggerCopy, "KeepRequestRecords");
+    v9 = xpc_dictionary_get_BOOL(triggerCopy, "KeepRequestLogs");
+    serviceContainer = [(DRSService *)self serviceContainer];
     v28 = 0;
-    v11 = [DRSRequest cleanRequestRecordsFromPersistentContainer:v10 removeFiles:!v9 removeRecord:!v8 matchingPredicate:0 errorOut:&v28];
+    v11 = [DRSRequest cleanRequestRecordsFromPersistentContainer:serviceContainer removeFiles:!v9 removeRecord:!v8 matchingPredicate:0 errorOut:&v28];
     v12 = v28;
 
     if (v11)
@@ -3114,33 +3114,33 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
           v15 = "NO";
         }
 
-        v16 = [v7 stateDescription];
+        stateDescription = [stateCopy stateDescription];
         *buf = 136446722;
         v30 = v14;
         v31 = 2082;
         v32 = v15;
         v33 = 2114;
-        v34 = v16;
+        v34 = stateDescription;
         _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestCleanTrigger_Success", "clean request records with 'KeepRecords' %{public}s ' KeepLogs' %{public}s from %{public}@ succeeded", buf, 0x20u);
       }
 
-      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v6];
+      [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:triggerCopy];
     }
 
     else
     {
       v18 = objc_alloc(MEMORY[0x277CCACA8]);
-      v19 = [v12 localizedDescription];
-      v20 = v19;
+      localizedDescription = [v12 localizedDescription];
+      v20 = localizedDescription;
       v21 = @"Unknown";
-      if (v19)
+      if (localizedDescription)
       {
-        v21 = v19;
+        v21 = localizedDescription;
       }
 
       v22 = [v18 initWithFormat:@"Error encountered trying to clean records: %@", v21];
 
-      -[DRSService _sendAdminRequestReply:rejectionReason:requestMessage:](self, "_sendAdminRequestReply:rejectionReason:requestMessage:", 0, [v22 UTF8String], v6);
+      -[DRSService _sendAdminRequestReply:rejectionReason:requestMessage:](self, "_sendAdminRequestReply:rejectionReason:requestMessage:", 0, [v22 UTF8String], triggerCopy);
       v23 = DPLogHandle_ServiceXPCError();
       if (os_signpost_enabled(v23))
       {
@@ -3164,13 +3164,13 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
           v25 = "NO";
         }
 
-        v26 = [v7 stateDescription];
+        stateDescription2 = [stateCopy stateDescription];
         *buf = 136446978;
         v30 = v24;
         v31 = 2082;
         v32 = v25;
         v33 = 2114;
-        v34 = v26;
+        v34 = stateDescription2;
         v35 = 2114;
         v36 = v22;
         _os_signpost_emit_with_name_impl(&dword_232906000, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestCleanTrigger_Failed", "Failed to clean request records with 'KeepRecords' %{public}s ' KeepLogs' %{public}s from %{public}@ due reason: %{public}@", buf, 0x2Au);
@@ -3180,13 +3180,13 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:triggerCopy];
     v12 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v12))
     {
-      v17 = [v7 stateDescription];
+      stateDescription3 = [stateCopy stateDescription];
       *buf = 138543362;
-      v30 = v17;
+      v30 = stateDescription3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestCleanTrigger_Rejected", "Rejecting request to clean request records from %{public}@ due to missing entitlement", buf, 0xCu);
     }
   }
@@ -3194,40 +3194,40 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addCKConfigSettingsToReplyMessage:(id)a3
+- (void)_addCKConfigSettingsToReplyMessage:(id)message
 {
-  xdict = a3;
-  v4 = [(DRSService *)self ckConfig];
-  v5 = [v4 containerEnvironment] == 1;
+  xdict = message;
+  ckConfig = [(DRSService *)self ckConfig];
+  v5 = [ckConfig containerEnvironment] == 1;
 
-  v6 = [(DRSService *)self ckConfig];
-  LOBYTE(v4) = [v6 rapidEnvironment] == 1;
+  ckConfig2 = [(DRSService *)self ckConfig];
+  LOBYTE(ckConfig) = [ckConfig2 rapidEnvironment] == 1;
 
   xpc_dictionary_set_BOOL(xdict, "ContainerEnv", v5);
-  xpc_dictionary_set_BOOL(xdict, "RapidEnv", v4);
+  xpc_dictionary_set_BOOL(xdict, "RapidEnv", ckConfig);
 }
 
-- (void)_replyToCKConfigMessageWithCurrentCKConfig:(id)a3
+- (void)_replyToCKConfigMessageWithCurrentCKConfig:(id)config
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _acceptingAdminReplyMessage(v4);
-  v6 = [(DRSService *)self ckConfig];
-  v7 = [v6 containerEnvironment];
+  configCopy = config;
+  v5 = _acceptingAdminReplyMessage(configCopy);
+  ckConfig = [(DRSService *)self ckConfig];
+  containerEnvironment = [ckConfig containerEnvironment];
 
-  v8 = [(DRSService *)self ckConfig];
-  v9 = [v8 rapidEnvironment];
+  ckConfig2 = [(DRSService *)self ckConfig];
+  rapidEnvironment = [ckConfig2 rapidEnvironment];
 
-  xpc_dictionary_set_BOOL(v5, "ContainerEnv", v7 == 1);
-  xpc_dictionary_set_BOOL(v5, "RapidEnv", v9 == 1);
-  v10 = [(DRSService *)self ckConfig];
-  xpc_dictionary_set_BOOL(v5, "OverridesDefault", [v10 overridesDefault]);
+  xpc_dictionary_set_BOOL(v5, "ContainerEnv", containerEnvironment == 1);
+  xpc_dictionary_set_BOOL(v5, "RapidEnv", rapidEnvironment == 1);
+  ckConfig3 = [(DRSService *)self ckConfig];
+  xpc_dictionary_set_BOOL(v5, "OverridesDefault", [ckConfig3 overridesDefault]);
 
   v11 = DPLogHandle_ClientXPC();
   if (os_signpost_enabled(v11))
   {
     v12 = "Sandbox";
-    if (v7 == 1)
+    if (containerEnvironment == 1)
     {
       v13 = "Prod";
     }
@@ -3237,7 +3237,7 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
       v13 = "Sandbox";
     }
 
-    if (v9 == 1)
+    if (rapidEnvironment == 1)
     {
       v12 = "Prod";
     }
@@ -3249,31 +3249,31 @@ uint64_t __60__DRSService__handleCKWorkTriggerRequest_state_transaction___block_
     _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKConfigRequestReply", "Container environment: %{public}s, RAPID environment: %{public}s", &v16, 0x16u);
   }
 
-  v14 = xpc_dictionary_get_remote_connection(v4);
+  v14 = xpc_dictionary_get_remote_connection(configCopy);
 
   xpc_connection_send_message(v14, v5);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updateCKConfig:(id)a3
+- (id)_updateCKConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(DRSService *)self cloudKitQueue];
+  cloudKitQueue = [(DRSService *)self cloudKitQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__DRSService__updateCKConfig___block_invoke;
   block[3] = &unk_27899EDA8;
   block[4] = self;
-  v10 = v4;
+  v10 = configCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = configCopy;
+  dispatch_sync(cloudKitQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3341,15 +3341,15 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCKConfigUpdate:(id)a3 state:(id)a4
+- (void)_handleCKConfigUpdate:(id)update state:(id)state
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  updateCopy = update;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v8 = xpc_dictionary_get_BOOL(v6, "ContainerEnv");
-    v9 = xpc_dictionary_get_BOOL(v6, "RapidEnv");
+    v8 = xpc_dictionary_get_BOOL(updateCopy, "ContainerEnv");
+    v9 = xpc_dictionary_get_BOOL(updateCopy, "RapidEnv");
     v10 = v9;
     if (v8)
     {
@@ -3374,8 +3374,8 @@ LABEL_9:
     v13 = DPLogHandle_ServiceXPC();
     if (os_signpost_enabled(v13))
     {
-      v14 = [v7 stateDescription];
-      v15 = v14;
+      stateDescription = [stateCopy stateDescription];
+      v15 = stateDescription;
       v16 = "Sandbox";
       if (v8)
       {
@@ -3388,7 +3388,7 @@ LABEL_9:
       }
 
       *v32 = 138543874;
-      *&v32[4] = v14;
+      *&v32[4] = stateDescription;
       *&v32[12] = 2082;
       *&v32[14] = v17;
       if (v10)
@@ -3401,24 +3401,24 @@ LABEL_9:
       _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKConfigUpdate_Status", "Client %{public}@ requesting: Container environment: %{public}s, RAPID environment: %{public}s", v32, 0x20u);
     }
 
-    v18 = [(DRSService *)self ckConfig];
-    if ([v18 containerEnvironment] == v11)
+    ckConfig = [(DRSService *)self ckConfig];
+    if ([ckConfig containerEnvironment] == v11)
     {
-      v19 = [(DRSService *)self ckConfig];
-      v20 = [v19 rapidEnvironment];
+      ckConfig2 = [(DRSService *)self ckConfig];
+      rapidEnvironment = [ckConfig2 rapidEnvironment];
 
-      if (v20 == v12)
+      if (rapidEnvironment == v12)
       {
         v21 = DPLogHandle_ServiceXPC();
         if (os_signpost_enabled(v21))
         {
-          v22 = [v7 stateDescription];
+          stateDescription2 = [stateCopy stateDescription];
           *v32 = 138543362;
-          *&v32[4] = v22;
+          *&v32[4] = stateDescription2;
           _os_signpost_emit_with_name_impl(&dword_232906000, v21, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKConfigUpdate_AlreadySet", "Config is already what client %{public}@ is asking for", v32, 0xCu);
         }
 
-        [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:v6];
+        [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:updateCopy];
         goto LABEL_31;
       }
     }
@@ -3432,11 +3432,11 @@ LABEL_9:
     v27 = v26;
     if (v26)
     {
-      v28 = [v26 localizedDescription];
-      v29 = [v28 UTF8String];
-      if (v29)
+      localizedDescription = [v26 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      if (uTF8String)
       {
-        v30 = v29;
+        v30 = uTF8String;
       }
 
       else
@@ -3444,24 +3444,24 @@ LABEL_9:
         v30 = "Unknown";
       }
 
-      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v30 requestMessage:v6, *v32, *&v32[16]];
+      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v30 requestMessage:updateCopy, *v32, *&v32[16]];
     }
 
     else
     {
-      [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:v6];
+      [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:updateCopy];
     }
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:updateCopy];
     v23 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v23))
     {
-      v24 = [v7 stateDescription];
+      stateDescription3 = [stateCopy stateDescription];
       *v32 = 138543362;
-      *&v32[4] = v24;
+      *&v32[4] = stateDescription3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKConfigUpdate_Rejected", "Rejecting request to update CK config %{public}@ due to missing entitlement", v32, 0xCu);
     }
   }
@@ -3471,50 +3471,50 @@ LABEL_31:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleGetCKConfig:(id)a3 state:(id)a4
+- (void)_handleGetCKConfig:(id)config state:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  if ([v6 hasAdminEntitlement])
+  stateCopy = state;
+  configCopy = config;
+  if ([stateCopy hasAdminEntitlement])
   {
-    [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:v7];
+    [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:configCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v7];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:configCopy];
 
-    v7 = DPLogHandle_ServiceXPCError();
-    if (os_signpost_enabled(v7))
+    configCopy = DPLogHandle_ServiceXPCError();
+    if (os_signpost_enabled(configCopy))
     {
-      v8 = [v6 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       v10 = 138543362;
-      v11 = v8;
-      _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetCKConfig_Rejected", "Rejecting request for current CK config %{public}@ due to missing entitlement", &v10, 0xCu);
+      v11 = stateDescription;
+      _os_signpost_emit_with_name_impl(&dword_232906000, configCopy, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetCKConfig_Rejected", "Rejecting request for current CK config %{public}@ due to missing entitlement", &v10, 0xCu);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResetCKConfig:(id)a3 state:(id)a4
+- (void)_handleResetCKConfig:(id)config state:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  configCopy = config;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
     v8 = +[DRSCKConfig defaultConfig];
     v9 = [(DRSService *)self _updateCKConfig:v8];
 
     if (v9)
     {
-      v10 = [v9 localizedDescription];
-      v11 = [v10 UTF8String];
-      if (v11)
+      localizedDescription = [v9 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      if (uTF8String)
       {
-        v12 = v11;
+        v12 = uTF8String;
       }
 
       else
@@ -3522,24 +3522,24 @@ LABEL_31:
         v12 = "Unknown";
       }
 
-      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v12 requestMessage:v6];
+      [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:v12 requestMessage:configCopy];
     }
 
     else
     {
-      [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:v6];
+      [(DRSService *)self _replyToCKConfigMessageWithCurrentCKConfig:configCopy];
     }
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:configCopy];
     v13 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v13))
     {
-      v14 = [v7 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       v16 = 138543362;
-      v17 = v14;
+      v17 = stateDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ResetCKConfig_Rejected", "Rejecting request to reset CK config %{public}@ due to missing entitlement", &v16, 0xCu);
     }
   }
@@ -3547,26 +3547,26 @@ LABEL_31:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUploadSchedulingRequest:(id)a3 state:(id)a4
+- (void)_handleUploadSchedulingRequest:(id)request state:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  requestCopy = request;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    [(DRSService *)self _registerPermissiveExpeditedUploadXPCActivity:xpc_dictionary_get_uint64(v6, "delaySeconds")];
-    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v6];
+    [(DRSService *)self _registerPermissiveExpeditedUploadXPCActivity:xpc_dictionary_get_uint64(requestCopy, "delaySeconds")];
+    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:requestCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:requestCopy];
     v8 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v8))
     {
-      v9 = [v7 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       v11 = 138543362;
-      v12 = v9;
+      v12 = stateDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UploadSchedulingRequest_Rejected", "Rejecting request to schedule a more permissive expedited upload from %{public}@ due to missing entitlement", &v11, 0xCu);
     }
   }
@@ -3574,35 +3574,35 @@ LABEL_31:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCancelScheduledUploadRequest:(id)a3 state:(id)a4
+- (void)_handleCancelScheduledUploadRequest:(id)request state:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  requestCopy = request;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
     v8 = DPLogHandle_PermissiveUploadActivity();
     if (os_signpost_enabled(v8))
     {
-      v9 = [v7 stateDescription];
+      stateDescription = [stateCopy stateDescription];
       v13 = 138543362;
-      v14 = v9;
+      v14 = stateDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CancelScheduledUploadRequest", "Cancelling scheduled permissive expedited upload due to request from %{public}@", &v13, 0xCu);
     }
 
     [(DRSService *)self _unregisterPermissiveExpeditedUploadXPCActivity];
-    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:1 rejectionReason:0 requestMessage:requestCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:requestCopy];
     v10 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v10))
     {
-      v11 = [v7 stateDescription];
+      stateDescription2 = [stateCopy stateDescription];
       v13 = 138543362;
-      v14 = v11;
+      v14 = stateDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CancelScheduledUploadRequest_Rejected", "Rejecting request to cancel scheduled permissive expedited upload from %{public}@ due to missing entitlement", &v13, 0xCu);
     }
   }
@@ -3610,28 +3610,28 @@ LABEL_31:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendCurrentIgnoreADGReply:(id)a3 state:(id)a4
+- (void)_sendCurrentIgnoreADGReply:(id)reply state:(id)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = _acceptingAdminReplyMessage(v5);
-  v7 = [(DRSService *)self ignoreAutomatedDeviceGroup];
+  replyCopy = reply;
+  v6 = _acceptingAdminReplyMessage(replyCopy);
+  ignoreAutomatedDeviceGroup = [(DRSService *)self ignoreAutomatedDeviceGroup];
 
-  if (v7)
+  if (ignoreAutomatedDeviceGroup)
   {
-    v8 = [(DRSService *)self ignoreAutomatedDeviceGroup];
-    xpc_dictionary_set_BOOL(v6, "IgnoreADGValue", [v8 BOOLValue]);
+    ignoreAutomatedDeviceGroup2 = [(DRSService *)self ignoreAutomatedDeviceGroup];
+    xpc_dictionary_set_BOOL(v6, "IgnoreADGValue", [ignoreAutomatedDeviceGroup2 BOOLValue]);
   }
 
   v9 = DPLogHandle_ClientXPC();
   if (os_signpost_enabled(v9))
   {
-    v10 = [(DRSService *)self ignoreAutomatedDeviceGroup];
-    v11 = v10;
+    ignoreAutomatedDeviceGroup3 = [(DRSService *)self ignoreAutomatedDeviceGroup];
+    v11 = ignoreAutomatedDeviceGroup3;
     v12 = @"<none>";
-    if (v10)
+    if (ignoreAutomatedDeviceGroup3)
     {
-      v12 = v10;
+      v12 = ignoreAutomatedDeviceGroup3;
     }
 
     v15 = 138543362;
@@ -3639,50 +3639,50 @@ LABEL_31:
     _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "IgnoreADGRequestReply", "Current value: %{public}@", &v15, 0xCu);
   }
 
-  v13 = xpc_dictionary_get_remote_connection(v5);
+  v13 = xpc_dictionary_get_remote_connection(replyCopy);
 
   xpc_connection_send_message(v13, v6);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleGetIgnoreADG:(id)a3 state:(id)a4
+- (void)_handleGetIgnoreADG:(id)g state:(id)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  if ([v6 hasAdminEntitlement])
+  stateCopy = state;
+  gCopy = g;
+  if ([stateCopy hasAdminEntitlement])
   {
-    [(DRSService *)self _sendCurrentIgnoreADGReply:v7 state:v6];
+    [(DRSService *)self _sendCurrentIgnoreADGReply:gCopy state:stateCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v7];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:gCopy];
 
-    v7 = DPLogHandle_ServiceXPCError();
-    if (os_signpost_enabled(v7))
+    gCopy = DPLogHandle_ServiceXPCError();
+    if (os_signpost_enabled(gCopy))
     {
       v9[0] = 67109120;
-      v9[1] = [v6 pid];
-      _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetIgnoreADG_Rejected", "Rejecting request for current 'Ignore AutomatedDeviceGroup' setting [%d] due to missing entitlement", v9, 8u);
+      v9[1] = [stateCopy pid];
+      _os_signpost_emit_with_name_impl(&dword_232906000, gCopy, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetIgnoreADG_Rejected", "Rejecting request for current 'Ignore AutomatedDeviceGroup' setting [%d] due to missing entitlement", v9, 8u);
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetIgnoreADG:(id)a3 state:(id)a4
+- (void)_handleSetIgnoreADG:(id)g state:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  gCopy = g;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v8 = xpc_dictionary_get_value(v6, "IgnoreADGValue");
+    v8 = xpc_dictionary_get_value(gCopy, "IgnoreADGValue");
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:{xpc_dictionary_get_BOOL(v6, "IgnoreADGValue")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:{xpc_dictionary_get_BOOL(gCopy, "IgnoreADGValue")}];
     }
 
     else
@@ -3691,17 +3691,17 @@ LABEL_31:
     }
 
     [(DRSService *)self setIgnoreAutomatedDeviceGroup:v9];
-    [(DRSService *)self _sendCurrentIgnoreADGReply:v6 state:v7];
+    [(DRSService *)self _sendCurrentIgnoreADGReply:gCopy state:stateCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:gCopy];
     v10 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v10))
     {
       v12[0] = 67109120;
-      v12[1] = [v7 pid];
+      v12[1] = [stateCopy pid];
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SetIgnoreADG_Rejected", "Rejecting request to update 'Ignore AutomatedDeviceGroup' setting [%d] due to missing entitlement", v12, 8u);
     }
   }
@@ -3709,21 +3709,21 @@ LABEL_31:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendCurrentUploadServiceEnabledReply:(id)a3 state:(id)a4
+- (void)_sendCurrentUploadServiceEnabledReply:(id)reply state:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = _acceptingAdminReplyMessage(v5);
+  replyCopy = reply;
+  v6 = _acceptingAdminReplyMessage(replyCopy);
   xpc_dictionary_set_BOOL(v6, "UploadServiceEnabled", [(DRSService *)self isEnabled]);
-  v7 = [(DRSService *)self isEnabledOverride];
-  xpc_dictionary_set_BOOL(v6, "HasOverride", v7 != 0);
+  isEnabledOverride = [(DRSService *)self isEnabledOverride];
+  xpc_dictionary_set_BOOL(v6, "HasOverride", isEnabledOverride != 0);
 
   v8 = DPLogHandle_ClientXPC();
   if (os_signpost_enabled(v8))
   {
-    v9 = [(DRSService *)self isEnabled];
+    isEnabled = [(DRSService *)self isEnabled];
     v10 = @"Disabled";
-    if (v9)
+    if (isEnabled)
     {
       v10 = @"Enabled";
     }
@@ -3733,50 +3733,50 @@ LABEL_31:
     _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UploadServiceEnabledRequestReply", "Current value: %{public}@", &v13, 0xCu);
   }
 
-  v11 = xpc_dictionary_get_remote_connection(v5);
+  v11 = xpc_dictionary_get_remote_connection(replyCopy);
 
   xpc_connection_send_message(v11, v6);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleGetUploadServiceEnabled:(id)a3 state:(id)a4
+- (void)_handleGetUploadServiceEnabled:(id)enabled state:(id)state
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  if ([v6 hasAdminEntitlement])
+  stateCopy = state;
+  enabledCopy = enabled;
+  if ([stateCopy hasAdminEntitlement])
   {
-    [(DRSService *)self _sendCurrentUploadServiceEnabledReply:v7 state:v6];
+    [(DRSService *)self _sendCurrentUploadServiceEnabledReply:enabledCopy state:stateCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v7];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:enabledCopy];
 
-    v7 = DPLogHandle_ServiceXPCError();
-    if (os_signpost_enabled(v7))
+    enabledCopy = DPLogHandle_ServiceXPCError();
+    if (os_signpost_enabled(enabledCopy))
     {
       v9[0] = 67109120;
-      v9[1] = [v6 pid];
-      _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetUploadServiceEnabled_Rejected", "Rejecting request for current 'Upload Service Enabled' setting [%d] due to missing entitlement", v9, 8u);
+      v9[1] = [stateCopy pid];
+      _os_signpost_emit_with_name_impl(&dword_232906000, enabledCopy, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GetUploadServiceEnabled_Rejected", "Rejecting request for current 'Upload Service Enabled' setting [%d] due to missing entitlement", v9, 8u);
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSetUploadServiceEnabled:(id)a3 state:(id)a4
+- (void)_handleSetUploadServiceEnabled:(id)enabled state:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasAdminEntitlement])
+  enabledCopy = enabled;
+  stateCopy = state;
+  if ([stateCopy hasAdminEntitlement])
   {
-    v8 = xpc_dictionary_get_value(v6, "UploadServiceEnabled");
+    v8 = xpc_dictionary_get_value(enabledCopy, "UploadServiceEnabled");
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:{xpc_dictionary_get_BOOL(v6, "UploadServiceEnabled")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:{xpc_dictionary_get_BOOL(enabledCopy, "UploadServiceEnabled")}];
     }
 
     else
@@ -3785,17 +3785,17 @@ LABEL_31:
     }
 
     [(DRSService *)self setIsEnabledOverride:v9];
-    [(DRSService *)self _sendCurrentUploadServiceEnabledReply:v6 state:v7];
+    [(DRSService *)self _sendCurrentUploadServiceEnabledReply:enabledCopy state:stateCopy];
   }
 
   else
   {
-    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:v6];
+    [(DRSService *)self _sendAdminRequestReply:0 rejectionReason:"Missing required entitlement" requestMessage:enabledCopy];
     v10 = DPLogHandle_ServiceXPCError();
     if (os_signpost_enabled(v10))
     {
       v12[0] = 67109120;
-      v12[1] = [v7 pid];
+      v12[1] = [stateCopy pid];
       _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SetUploadServiceEnablement", "Rejecting request for current 'Upload Service Enabled' setting [%d] due to missing entitlement", v12, 8u);
     }
   }
@@ -3803,63 +3803,63 @@ LABEL_31:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRequest:(id)a3 state:(id)a4
+- (void)handleRequest:(id)request state:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  stateCopy = state;
   v8 = objc_autoreleasePoolPush();
   v9 = os_transaction_create();
-  uint64 = xpc_dictionary_get_uint64(v6, "ClientMessageType");
+  uint64 = xpc_dictionary_get_uint64(requestCopy, "ClientMessageType");
   switch(uint64)
   {
     case 'd':
-      [(DRSService *)self _handleDampeningConfigurationGlobalEnablementMessage:v6 state:v7 transaction:v9];
+      [(DRSService *)self _handleDampeningConfigurationGlobalEnablementMessage:requestCopy state:stateCopy transaction:v9];
       goto LABEL_26;
     case 'e':
-      [(DRSService *)self _handleDampeningConfigurationReset:v6 state:v7 transaction:v9];
+      [(DRSService *)self _handleDampeningConfigurationReset:requestCopy state:stateCopy transaction:v9];
       goto LABEL_26;
     case 'f':
-      [(DRSService *)self _handleDampeningConfigurationDictMessage:v6 state:v7 transaction:v9];
+      [(DRSService *)self _handleDampeningConfigurationDictMessage:requestCopy state:stateCopy transaction:v9];
       goto LABEL_26;
     case 'g':
-      [(DRSService *)self _handleCKWorkTriggerRequest:v6 state:v7 transaction:v9];
+      [(DRSService *)self _handleCKWorkTriggerRequest:requestCopy state:stateCopy transaction:v9];
       goto LABEL_26;
     case 'h':
-      [(DRSService *)self _handleInjectEnableLogGatheringRequestResult:v6 state:v7];
+      [(DRSService *)self _handleInjectEnableLogGatheringRequestResult:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'i':
-      [(DRSService *)self _handleRequestCleanTrigger:v6 state:v7];
+      [(DRSService *)self _handleRequestCleanTrigger:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'j':
-      [(DRSService *)self _handleRefreshDampeningConfigMessage:v6 state:v7 transaction:v9];
+      [(DRSService *)self _handleRefreshDampeningConfigMessage:requestCopy state:stateCopy transaction:v9];
       goto LABEL_26;
     case 'k':
-      [(DRSService *)self _handleCKConfigUpdate:v6 state:v7];
+      [(DRSService *)self _handleCKConfigUpdate:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'l':
-      [(DRSService *)self _handleGetCKConfig:v6 state:v7];
+      [(DRSService *)self _handleGetCKConfig:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'm':
-      [(DRSService *)self _handleResetCKConfig:v6 state:v7];
+      [(DRSService *)self _handleResetCKConfig:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'n':
-      [(DRSService *)self _handleUploadSchedulingRequest:v6 state:v7];
+      [(DRSService *)self _handleUploadSchedulingRequest:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'o':
-      [(DRSService *)self _handleCancelScheduledUploadRequest:v6 state:v7];
+      [(DRSService *)self _handleCancelScheduledUploadRequest:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'p':
-      [(DRSService *)self _handleGetIgnoreADG:v6 state:v7];
+      [(DRSService *)self _handleGetIgnoreADG:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'q':
-      [(DRSService *)self _handleSetIgnoreADG:v6 state:v7];
+      [(DRSService *)self _handleSetIgnoreADG:requestCopy state:stateCopy];
       goto LABEL_26;
     case 'r':
-      [(DRSService *)self _handleGetUploadServiceEnabled:v6 state:v7];
+      [(DRSService *)self _handleGetUploadServiceEnabled:requestCopy state:stateCopy];
       goto LABEL_26;
     case 's':
-      [(DRSService *)self _handleSetUploadServiceEnabled:v6 state:v7];
+      [(DRSService *)self _handleSetUploadServiceEnabled:requestCopy state:stateCopy];
       goto LABEL_26;
     default:
       v11 = uint64;
@@ -3870,12 +3870,12 @@ LABEL_31:
 
       if (((1 << uint64) & 0x36) != 0)
       {
-        [(DRSService *)self _handleDRSRequestMessage:v6 state:v7 transaction:v9];
+        [(DRSService *)self _handleDRSRequestMessage:requestCopy state:stateCopy transaction:v9];
       }
 
       else if (uint64 == 3)
       {
-        [(DRSService *)self _handleEnableLogGatheringRequest:v6 state:v7 transaction:v9];
+        [(DRSService *)self _handleEnableLogGatheringRequest:requestCopy state:stateCopy transaction:v9];
       }
 
       else
@@ -3884,11 +3884,11 @@ LABEL_9:
         v12 = DPLogHandle_ServiceXPCError();
         if (os_signpost_enabled(v12))
         {
-          v13 = [v7 stateDescription];
+          stateDescription = [stateCopy stateDescription];
           v15 = 134349314;
           v16 = v11;
           v17 = 2114;
-          v18 = v13;
+          v18 = stateDescription;
           _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UnknownRequest", "Received unknown request %{public}llu from client %{public}@", &v15, 0x16u);
         }
       }
@@ -3901,35 +3901,35 @@ LABEL_26:
   }
 }
 
-- (void)_handleNewEntitledConnection:(id)a3 state:(id)a4
+- (void)_handleNewEntitledConnection:(id)connection state:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  stateCopy = state;
+  connectionCopy = connection;
   [(DRSService *)self _waitForDeviceUnlockAndInitializeServiceState];
   v8 = DPLogHandle_ServiceLifecycle();
   if (os_signpost_enabled(v8))
   {
-    v9 = [v6 stateDescription];
+    stateDescription = [stateCopy stateDescription];
     v11 = 138543362;
-    v12 = v9;
+    v12 = stateDescription;
     _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NewClientConnection", "New connection from client %{public}@", &v11, 0xCu);
   }
 
-  [(DRSService *)self _sendCurrentConfigurationToConnection:v7];
+  [(DRSService *)self _sendCurrentConfigurationToConnection:connectionCopy];
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)activateService
 {
   [(DRSService *)self _configureXPCActivities];
-  v3 = [(DRSService *)self messageQueue];
+  messageQueue = [(DRSService *)self messageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__DRSService_activateService__block_invoke;
   block[3] = &unk_27899EF98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(messageQueue, block);
 
   return 1;
 }
@@ -3985,8 +3985,8 @@ LABEL_6:
   else
   {
     self->_state = 2;
-    v7 = [(DRSService *)self serviceConnection];
-    xpc_connection_cancel(v7);
+    serviceConnection = [(DRSService *)self serviceConnection];
+    xpc_connection_cancel(serviceConnection);
 
     v3 = DPLogHandle_ServiceLifecycle();
     if (os_signpost_enabled(v3))
@@ -4205,7 +4205,7 @@ LABEL_17:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_permissiveXPCActivitCriteriaDict:(unsigned int)a3
+- (id)_permissiveXPCActivitCriteriaDict:(unsigned int)dict
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 0);
@@ -4215,7 +4215,7 @@ LABEL_17:
   xpc_dictionary_set_int64(v4, *MEMORY[0x277D86320], 20971520);
   xpc_dictionary_set_int64(v4, *MEMORY[0x277D86270], *MEMORY[0x277D862A0]);
   xpc_dictionary_set_string(v4, *MEMORY[0x277D86340], *MEMORY[0x277D86348]);
-  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], a3);
+  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], dict);
 
   return v4;
 }
@@ -4232,14 +4232,14 @@ LABEL_17:
   xpc_activity_unregister("com.apple.diagnosticpipeline.cloudkit_permissive_upload");
 }
 
-- (void)_registerPermissiveExpeditedUploadXPCActivity:(unsigned int)a3
+- (void)_registerPermissiveExpeditedUploadXPCActivity:(unsigned int)activity
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = DPLogHandle_PermissiveUploadActivity();
   if (os_signpost_enabled(v5))
   {
     *buf = 67240192;
-    v11 = a3;
+    activityCopy = activity;
     _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SchedulingPermissiveExpeditedUploadXPCActivity", "%{public, name=delaySeconds}u second(s) delay", buf, 8u);
   }
 
@@ -4249,7 +4249,7 @@ LABEL_17:
   v8[2] = __60__DRSService__registerPermissiveExpeditedUploadXPCActivity___block_invoke;
   v8[3] = &unk_27899F478;
   v8[4] = self;
-  v9 = a3;
+  activityCopy2 = activity;
   xpc_activity_register("com.apple.diagnosticpipeline.cloudkit_permissive_upload", v6, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -4449,13 +4449,13 @@ LABEL_19:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_currentUploadSession_ON_MOC_QUEUE:(id)a3 errorOut:(id *)a4
++ (id)_currentUploadSession_ON_MOC_QUEUE:(id)e errorOut:(id *)out
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eCopy = e;
   v6 = +[DRSUploadSessionRecordMO fetchRequest];
   v37 = 0;
-  v7 = [v5 executeFetchRequest:v6 error:&v37];
+  v7 = [eCopy executeFetchRequest:v6 error:&v37];
   v8 = v37;
 
   if (v8)
@@ -4463,12 +4463,12 @@ LABEL_19:
     v9 = DPLogHandle_UploadSessionDateError();
     if (os_signpost_enabled(v9))
     {
-      v10 = [v8 localizedDescription];
-      v11 = v10;
+      localizedDescription = [v8 localizedDescription];
+      v11 = localizedDescription;
       v12 = @"Unknown";
-      if (v10)
+      if (localizedDescription)
       {
-        v12 = v10;
+        v12 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -4476,11 +4476,11 @@ LABEL_19:
       _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UploadSessionDateMOFetch", "Failed to fetch an upload session managed object due to error: %{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (out)
     {
       v13 = v8;
-      v14 = 0;
-      *a4 = v8;
+      firstObject = 0;
+      *out = v8;
       goto LABEL_31;
     }
 
@@ -4529,7 +4529,7 @@ LABEL_19:
             objc_enumerationMutation(v17);
           }
 
-          [v5 deleteObject:*(*(&v33 + 1) + 8 * i)];
+          [eCopy deleteObject:*(*(&v33 + 1) + 8 * i)];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -4539,19 +4539,19 @@ LABEL_19:
     }
 
     v32 = 0;
-    v22 = [v5 save:&v32];
+    v22 = [eCopy save:&v32];
     v23 = v32;
     if ((v22 & 1) == 0)
     {
       v24 = DPLogHandle_CoreDataError();
       if (os_signpost_enabled(v24))
       {
-        v25 = [v23 localizedDescription];
-        v26 = v25;
+        localizedDescription2 = [v23 localizedDescription];
+        v26 = localizedDescription2;
         v27 = @"Unknown";
-        if (v25)
+        if (localizedDescription2)
         {
-          v27 = v25;
+          v27 = localizedDescription2;
         }
 
         *buf = 138543362;
@@ -4559,29 +4559,29 @@ LABEL_19:
         _os_signpost_emit_with_name_impl(&dword_232906000, v24, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "FailedToSaveUploadSession", "To save upload session updates due to error: %{public}@", buf, 0xCu);
       }
 
-      if (a4)
+      if (out)
       {
         v28 = v23;
-        *a4 = v23;
+        *out = v23;
       }
     }
 
 LABEL_30:
-    v14 = 0;
+    firstObject = 0;
     goto LABEL_31;
   }
 
-  v14 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 LABEL_31:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)previousUploadSessionDateFromContainer:(id)a3 errorOut:(id *)a4
++ (id)previousUploadSessionDateFromContainer:(id)container errorOut:(id *)out
 {
-  v6 = a3;
+  containerCopy = container;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4594,20 +4594,20 @@ LABEL_31:
   v19 = __Block_byref_object_copy__2;
   v20 = __Block_byref_object_dispose__2;
   v21 = 0;
-  v7 = [v6 newBackgroundContext];
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__DRSService_previousUploadSessionDateFromContainer_errorOut___block_invoke;
   v11[3] = &unk_27899F4A0;
-  v15 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = newBackgroundContext;
   v12 = v8;
   v13 = &v16;
   v14 = &v22;
   [v8 performBlockAndWait:v11];
-  if (a4)
+  if (out)
   {
-    *a4 = v17[5];
+    *out = v17[5];
   }
 
   v9 = v23[5];
@@ -4636,31 +4636,31 @@ void __62__DRSService_previousUploadSessionDateFromContainer_errorOut___block_in
   *(v10 + 40) = v9;
 }
 
-+ (BOOL)updateUploadSessionDateFromContainer:(id)a3 toDate:(id)a4 errorOut:(id *)a5
++ (BOOL)updateUploadSessionDateFromContainer:(id)container toDate:(id)date errorOut:(id *)out
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  dateCopy = date;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__2;
   v24 = __Block_byref_object_dispose__2;
   v25 = 0;
-  v10 = [v8 newBackgroundContext];
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__DRSService_updateUploadSessionDateFromContainer_toDate_errorOut___block_invoke;
   v15[3] = &unk_27899F4C8;
-  v19 = a1;
-  v11 = v10;
+  selfCopy = self;
+  v11 = newBackgroundContext;
   v16 = v11;
   v18 = &v20;
-  v12 = v9;
+  v12 = dateCopy;
   v17 = v12;
   [v11 performBlockAndWait:v15];
-  if (a5)
+  if (out)
   {
-    *a5 = v21[5];
+    *out = v21[5];
   }
 
   v13 = v21[5] == 0;
@@ -4727,49 +4727,49 @@ void __67__DRSService_updateUploadSessionDateFromContainer_toDate_errorOut___blo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateUploadSessionDate:(id *)a3
+- (BOOL)updateUploadSessionDate:(id *)date
 {
   v5 = objc_opt_class();
-  v6 = [(DRSService *)self serviceContainer];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [v5 updateUploadSessionDateFromContainer:v6 toDate:v7 errorOut:a3];
+  serviceContainer = [(DRSService *)self serviceContainer];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(date) = [v5 updateUploadSessionDateFromContainer:serviceContainer toDate:date errorOut:date];
 
-  return a3;
+  return date;
 }
 
-- (BOOL)clearUploadSessionDate:(id *)a3
+- (BOOL)clearUploadSessionDate:(id *)date
 {
   v5 = objc_opt_class();
-  v6 = [(DRSService *)self serviceContainer];
-  LOBYTE(a3) = [v5 updateUploadSessionDateFromContainer:v6 toDate:0 errorOut:a3];
+  serviceContainer = [(DRSService *)self serviceContainer];
+  LOBYTE(date) = [v5 updateUploadSessionDateFromContainer:serviceContainer toDate:0 errorOut:date];
 
-  return a3;
+  return date;
 }
 
-- (BOOL)shouldRunBackstopUpload:(id *)a3
+- (BOOL)shouldRunBackstopUpload:(id *)upload
 {
   v5 = objc_opt_class();
-  v6 = [(DRSService *)self serviceContainer];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(a3) = [v5 shouldRunBackstopUpload:v6 currentDate:v7 errorOut:a3];
+  serviceContainer = [(DRSService *)self serviceContainer];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(upload) = [v5 shouldRunBackstopUpload:serviceContainer currentDate:date errorOut:upload];
 
-  return a3;
+  return upload;
 }
 
-+ (BOOL)shouldRunBackstopUpload:(id)a3 currentDate:(id)a4 errorOut:(id *)a5
++ (BOOL)shouldRunBackstopUpload:(id)upload currentDate:(id)date errorOut:(id *)out
 {
-  v8 = a4;
+  dateCopy = date;
   v18 = 0;
-  v9 = [a1 previousUploadSessionDateFromContainer:a3 errorOut:&v18];
+  v9 = [self previousUploadSessionDateFromContainer:upload errorOut:&v18];
   v10 = v18;
   v11 = v10;
   if (v10)
   {
-    if (a5)
+    if (out)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *out = v11;
     }
 
     else
@@ -4780,28 +4780,28 @@ void __67__DRSService_updateUploadSessionDateFromContainer_toDate_errorOut___blo
 
   else
   {
-    [v8 timeIntervalSinceDate:v9];
+    [dateCopy timeIntervalSinceDate:v9];
     v15 = v14;
-    [a1 backstopInterval];
+    [self backstopInterval];
     v13 = v15 > v16;
   }
 
   return v13;
 }
 
-- (BOOL)_syncConfigurationToDisk:(id)a3
+- (BOOL)_syncConfigurationToDisk:(id)disk
 {
   v18 = *MEMORY[0x277D85DE8];
   v15 = 0;
-  v4 = DRSSetConfigurationDictionary(@"/private/var/mobile/Library/DiagnosticPipeline/Configuration", a3, &v15);
+  v4 = DRSSetConfigurationDictionary(@"/private/var/mobile/Library/DiagnosticPipeline/Configuration", disk, &v15);
   v5 = v15;
   if (v4)
   {
     v6 = DPLogHandle_DRSConfig();
     if (os_signpost_enabled(v6))
     {
-      v7 = [(DRSService *)self configDict];
-      v8 = [v7 description];
+      configDict = [(DRSService *)self configDict];
+      v8 = [configDict description];
       v9 = v8;
       v10 = @"-";
       if (v8)
@@ -4822,12 +4822,12 @@ LABEL_10:
     v6 = DPLogHandle_DRSConfigError();
     if (os_signpost_enabled(v6))
     {
-      v11 = [v5 localizedDescription];
-      v7 = v11;
+      localizedDescription = [v5 localizedDescription];
+      configDict = localizedDescription;
       v12 = @"Unknown";
-      if (v11)
+      if (localizedDescription)
       {
-        v12 = v11;
+        v12 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -4843,13 +4843,13 @@ LABEL_10:
 
 - (void)_getConfiguration
 {
-  v3 = [(DRSService *)self configurationSyncQueue];
+  configurationSyncQueue = [(DRSService *)self configurationSyncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__DRSService__getConfiguration__block_invoke;
   block[3] = &unk_27899EF98;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(configurationSyncQueue, block);
 }
 
 void __31__DRSService__getConfiguration__block_invoke(uint64_t a1)
@@ -4886,18 +4886,18 @@ void __31__DRSService__getConfiguration__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateConfigDict:(id)a3
+- (void)_updateConfigDict:(id)dict
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([(DRSService *)self _syncConfigurationToDisk:v5])
+  dictCopy = dict;
+  if ([(DRSService *)self _syncConfigurationToDisk:dictCopy])
   {
-    objc_storeStrong(&self->_configDict, a3);
+    objc_storeStrong(&self->_configDict, dict);
     [(DRSService *)self _adjustStateForNewConfiguration];
     v6 = DPLogHandle_DRSConfig();
     if (os_signpost_enabled(v6))
     {
-      v7 = [v5 description];
+      v7 = [dictCopy description];
       v8 = v7;
       v9 = @"<none>";
       if (v7)
@@ -4926,8 +4926,8 @@ void __31__DRSService__getConfiguration__block_invoke(uint64_t a1)
 
 - (void)_adjustStateForNewConfiguration
 {
-  v2 = [(DRSService *)self configDict];
-  v5 = [v2 objectForKeyedSubscript:kDRSIgnoreAutomatedDeviceGroupKey];
+  configDict = [(DRSService *)self configDict];
+  v5 = [configDict objectForKeyedSubscript:kDRSIgnoreAutomatedDeviceGroupKey];
 
   if (v5 && ([v5 BOOLValue] & 1) != 0)
   {
@@ -4953,14 +4953,14 @@ void __31__DRSService__getConfiguration__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(DRSService *)self configurationSyncQueue];
+  configurationSyncQueue = [(DRSService *)self configurationSyncQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__DRSService_ignoreAutomatedDeviceGroup__block_invoke;
   v6[3] = &unk_27899F4F0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(configurationSyncQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -4977,22 +4977,22 @@ void __40__DRSService_ignoreAutomatedDeviceGroup__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_setConfigValue:(id)a3 forKey:(id)a4 expectedClass:(Class)a5
+- (void)_setConfigValue:(id)value forKey:(id)key expectedClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DRSService *)self configurationSyncQueue];
+  valueCopy = value;
+  keyCopy = key;
+  configurationSyncQueue = [(DRSService *)self configurationSyncQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__DRSService__setConfigValue_forKey_expectedClass___block_invoke;
   v13[3] = &unk_27899F518;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = valueCopy;
+  v15 = keyCopy;
+  classCopy = class;
+  v11 = keyCopy;
+  v12 = valueCopy;
+  dispatch_sync(configurationSyncQueue, v13);
 }
 
 void __51__DRSService__setConfigValue_forKey_expectedClass___block_invoke(uint64_t a1)
@@ -5069,28 +5069,28 @@ void __51__DRSService__setConfigValue_forKey_expectedClass___block_invoke(uint64
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIgnoreAutomatedDeviceGroup:(id)a3
+- (void)setIgnoreAutomatedDeviceGroup:(id)group
 {
   v4 = kDRSIgnoreAutomatedDeviceGroupKey;
-  v5 = a3;
-  [(DRSService *)self _setConfigValue:v5 forKey:v4 expectedClass:objc_opt_class()];
+  groupCopy = group;
+  [(DRSService *)self _setConfigValue:groupCopy forKey:v4 expectedClass:objc_opt_class()];
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(DRSService *)self isEnabledOverride];
-  v3 = v2;
-  if (v2)
+  isEnabledOverride = [(DRSService *)self isEnabledOverride];
+  v3 = isEnabledOverride;
+  if (isEnabledOverride)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [isEnabledOverride BOOLValue];
   }
 
   else
   {
-    v4 = [objc_opt_class() defaultServiceIsEnabled];
+    bOOLValue = [objc_opt_class() defaultServiceIsEnabled];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -5103,14 +5103,14 @@ void __51__DRSService__setConfigValue_forKey_expectedClass___block_invoke(uint64
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(DRSService *)self configurationSyncQueue];
+  configurationSyncQueue = [(DRSService *)self configurationSyncQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__DRSService_isEnabledOverride__block_invoke;
   v6[3] = &unk_27899F4F0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(configurationSyncQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -5127,11 +5127,11 @@ void __31__DRSService_isEnabledOverride__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setIsEnabledOverride:(id)a3
+- (void)setIsEnabledOverride:(id)override
 {
   v4 = kDRSUploadServiceEnabledKey;
-  v5 = a3;
-  [(DRSService *)self _setConfigValue:v5 forKey:v4 expectedClass:objc_opt_class()];
+  overrideCopy = override;
+  [(DRSService *)self _setConfigValue:overrideCopy forKey:v4 expectedClass:objc_opt_class()];
 }
 
 void __59__DRSService__waitForDeviceUnlockAndInitializeServiceState__block_invoke_cold_1(void *a1)

@@ -1,23 +1,23 @@
 @interface CredentialSession
-- (void)installationCompletedWithCredentials:(NSArray *)a3 completionHandler:(id)a4;
-- (void)presentmentAssertionTimeoutWithError:(NSError *)a3 completionHandler:(id)a4;
-- (void)receivedHciDataWithData:(NSData *)a3 appletIdentifier:(NSData *)a4 completionHandler:(id)a5;
-- (void)rfFieldChanged:(BOOL)a3 completionHandler:(id)a4;
-- (void)sessionEndedWithError:(id)a3;
-- (void)sessionErrorEventWithReason:(NSError *)a3 completionHandler:(id)a4;
+- (void)installationCompletedWithCredentials:(NSArray *)credentials completionHandler:(id)handler;
+- (void)presentmentAssertionTimeoutWithError:(NSError *)error completionHandler:(id)handler;
+- (void)receivedHciDataWithData:(NSData *)data appletIdentifier:(NSData *)identifier completionHandler:(id)handler;
+- (void)rfFieldChanged:(BOOL)changed completionHandler:(id)handler;
+- (void)sessionEndedWithError:(id)error;
+- (void)sessionErrorEventWithReason:(NSError *)reason completionHandler:(id)handler;
 @end
 
 @implementation CredentialSession
 
-- (void)presentmentAssertionTimeoutWithError:(NSError *)a3 completionHandler:(id)a4
+- (void)presentmentAssertionTimeoutWithError:(NSError *)error completionHandler:(id)handler
 {
   v7 = sub_23AA76CEC(&qword_27DFC18B8, &qword_23AA98090);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = error;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23AA961EC();
@@ -32,20 +32,20 @@
   v15[3] = 0;
   v15[4] = &unk_23AA97F30;
   v15[5] = v14;
-  v16 = a3;
+  errorCopy = error;
 
   sub_23AA8F52C(0, 0, v10, &unk_23AA97F38, v15);
 }
 
-- (void)installationCompletedWithCredentials:(NSArray *)a3 completionHandler:(id)a4
+- (void)installationCompletedWithCredentials:(NSArray *)credentials completionHandler:(id)handler
 {
   v7 = sub_23AA76CEC(&qword_27DFC18B8, &qword_23AA98090);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = credentials;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23AA961EC();
@@ -60,21 +60,21 @@
   v15[3] = 0;
   v15[4] = &unk_23AA97EE8;
   v15[5] = v14;
-  v16 = a3;
+  credentialsCopy = credentials;
 
   sub_23AA8F52C(0, 0, v10, &unk_23AA97EF0, v15);
 }
 
-- (void)receivedHciDataWithData:(NSData *)a3 appletIdentifier:(NSData *)a4 completionHandler:(id)a5
+- (void)receivedHciDataWithData:(NSData *)data appletIdentifier:(NSData *)identifier completionHandler:(id)handler
 {
   v9 = sub_23AA76CEC(&qword_27DFC18B8, &qword_23AA98090);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = identifier;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_23AA961EC();
@@ -89,21 +89,21 @@
   v17[3] = 0;
   v17[4] = &unk_23AA97EB0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
 
   sub_23AA8F52C(0, 0, v12, &unk_23AA97EB8, v17);
 }
 
-- (void)rfFieldChanged:(BOOL)a3 completionHandler:(id)a4
+- (void)rfFieldChanged:(BOOL)changed completionHandler:(id)handler
 {
   v7 = sub_23AA76CEC(&qword_27DFC18B8, &qword_23AA98090);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = changed;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_23AA961EC();
@@ -122,15 +122,15 @@
   sub_23AA8F52C(0, 0, v10, &unk_23AA97E80, v15);
 }
 
-- (void)sessionErrorEventWithReason:(NSError *)a3 completionHandler:(id)a4
+- (void)sessionErrorEventWithReason:(NSError *)reason completionHandler:(id)handler
 {
   v7 = sub_23AA76CEC(&qword_27DFC18B8, &qword_23AA98090);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = reason;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23AA961EC();
@@ -145,16 +145,16 @@
   v15[3] = 0;
   v15[4] = &unk_23AA97E18;
   v15[5] = v14;
-  v16 = a3;
+  reasonCopy = reason;
 
   sub_23AA8F52C(0, 0, v10, &unk_23AA97E28, v15);
 }
 
-- (void)sessionEndedWithError:(id)a3
+- (void)sessionEndedWithError:(id)error
 {
 
-  v4 = a3;
-  sub_23AA8EDDC(a3);
+  errorCopy = error;
+  sub_23AA8EDDC(error);
 }
 
 @end

@@ -4,31 +4,31 @@
 - (UIMenu)searchTextFieldMenu;
 - (UITextField)searchTextField;
 - (id)_demoMenuProvider;
-- (id)systemHelpMenusForScene:(id)a3;
-- (id)userGuideMenuForBundleId:(id)a3;
-- (void)_searchTextDidChange:(id)a3;
+- (id)systemHelpMenusForScene:(id)scene;
+- (id)userGuideMenuForBundleId:(id)id;
+- (void)_searchTextDidChange:(id)change;
 @end
 
 @implementation SBMenuBarHelpMenuProvider
 
-- (id)systemHelpMenusForScene:(id)a3
+- (id)systemHelpMenusForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(SBMenuBarHelpMenuProvider *)self searchTextFieldMenu];
-  v7 = [v5 arrayWithObject:v6];
+  searchTextFieldMenu = [(SBMenuBarHelpMenuProvider *)self searchTextFieldMenu];
+  v7 = [v5 arrayWithObject:searchTextFieldMenu];
 
-  v8 = [v4 clientHandle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [(SBMenuBarHelpMenuProvider *)self userGuideMenuForBundleId:v9];
+  clientHandle = [sceneCopy clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  v10 = [(SBMenuBarHelpMenuProvider *)self userGuideMenuForBundleId:bundleIdentifier];
 
   if (v10)
   {
     [v7 addObject:v10];
   }
 
-  v11 = [(SBMenuBarHelpMenuProvider *)self _demoMenuProvider];
-  v12 = [v11 demoMenuForScene:v4 invokingFromSearch:0];
+  _demoMenuProvider = [(SBMenuBarHelpMenuProvider *)self _demoMenuProvider];
+  v12 = [_demoMenuProvider demoMenuForScene:sceneCopy invokingFromSearch:0];
 
   if (v12)
   {
@@ -38,12 +38,12 @@
   return v7;
 }
 
-- (id)userGuideMenuForBundleId:(id)a3
+- (id)userGuideMenuForBundleId:(id)id
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = +[SBApplicationController sharedInstanceIfExists];
-  v6 = [v5 applicationWithBundleIdentifier:v4];
+  v6 = [v5 applicationWithBundleIdentifier:idCopy];
 
   if (v6)
   {
@@ -51,23 +51,23 @@
     v26 = [v7 URLForResource:@"iPadUserGuideURLs" withExtension:@"plist"];
 
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v26];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    v9 = [v8 objectForKeyedSubscript:idCopy];
     if (v9)
     {
       v10 = MEMORY[0x277D717E8];
-      v11 = [MEMORY[0x277CCA8D8] mainBundle];
-      v12 = [v11 bundleIdentifier];
-      v13 = [v10 privateURLWithBookIdentifier:0 topicIdentifier:v9 version:0 referrer:v12];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v13 = [v10 privateURLWithBookIdentifier:0 topicIdentifier:v9 version:0 referrer:bundleIdentifier];
 
       if (v13)
       {
         objc_initWeak(&location, self);
         v14 = MEMORY[0x277D750C8];
         v15 = MEMORY[0x277CCACA8];
-        v25 = [MEMORY[0x277CCA8D8] mainBundle];
-        v16 = [v25 localizedStringForKey:@"HELP_MENU_TIPS" value:&stru_283094718 table:@"SpringBoard"];
-        v17 = [v6 displayName];
-        v18 = [v15 stringWithFormat:v16, v17];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v16 = [mainBundle2 localizedStringForKey:@"HELP_MENU_TIPS" value:&stru_283094718 table:@"SpringBoard"];
+        displayName = [v6 displayName];
+        v18 = [v15 stringWithFormat:v16, displayName];
         v19 = [MEMORY[0x277D755B8] _systemImageNamed:@"tips"];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
@@ -122,16 +122,16 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
     v5 = self->_searchFieldContainer;
     self->_searchFieldContainer = v4;
 
-    v6 = [(SBMenuBarHelpSearchField *)self->_searchFieldContainer searchTextField];
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 localizedStringForKey:@"HELP_MENU_SEARCH_PLACEHOLDER" value:&stru_283094718 table:@"SpringBoard"];
-    [v6 setPlaceholder:v8];
+    searchTextField = [(SBMenuBarHelpSearchField *)self->_searchFieldContainer searchTextField];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"HELP_MENU_SEARCH_PLACEHOLDER" value:&stru_283094718 table:@"SpringBoard"];
+    [searchTextField setPlaceholder:v8];
 
-    [v6 setDelegate:self];
-    [v6 _setSupportsKeyboardNavigationForSuggestions:1];
-    [v6 setFocusGroupIdentifier:0];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__searchTextDidChange_ name:*MEMORY[0x277D770B0] object:v6];
+    [searchTextField setDelegate:self];
+    [searchTextField _setSupportsKeyboardNavigationForSuggestions:1];
+    [searchTextField setFocusGroupIdentifier:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__searchTextDidChange_ name:*MEMORY[0x277D770B0] object:searchTextField];
 
     searchFieldContainer = self->_searchFieldContainer;
   }
@@ -141,10 +141,10 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
 
 - (UITextField)searchTextField
 {
-  v2 = [(SBMenuBarHelpMenuProvider *)self searchFieldContainer];
-  v3 = [v2 searchTextField];
+  searchFieldContainer = [(SBMenuBarHelpMenuProvider *)self searchFieldContainer];
+  searchTextField = [searchFieldContainer searchTextField];
 
-  return v3;
+  return searchTextField;
 }
 
 - (UIMenu)searchTextFieldMenu
@@ -153,14 +153,14 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
   searchTextFieldMenu = self->_searchTextFieldMenu;
   if (!searchTextFieldMenu)
   {
-    v4 = [(SBMenuBarHelpMenuProvider *)self searchFieldContainer];
+    searchFieldContainer = [(SBMenuBarHelpMenuProvider *)self searchFieldContainer];
     v5 = MEMORY[0x277D753D8];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __48__SBMenuBarHelpMenuProvider_searchTextFieldMenu__block_invoke;
     v13[3] = &unk_2783BC8C8;
-    v14 = v4;
-    v6 = v4;
+    v14 = searchFieldContainer;
+    v6 = searchFieldContainer;
     v7 = [v5 elementWithViewProvider:v13];
     v8 = MEMORY[0x277D75710];
     v15[0] = v7;
@@ -175,26 +175,26 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
   return searchTextFieldMenu;
 }
 
-- (void)_searchTextDidChange:(id)a3
+- (void)_searchTextDidChange:(id)change
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [(SBMenuBarHelpMenuProvider *)self searchTextField];
+  object = [change object];
+  searchTextField = [(SBMenuBarHelpMenuProvider *)self searchTextField];
 
-  if (v4 == v5)
+  if (object == searchTextField)
   {
-    v6 = [(SBMenuBarHelpMenuProvider *)self searchTextField];
-    v7 = [v6 text];
-    v8 = [v7 lowercaseString];
+    searchTextField2 = [(SBMenuBarHelpMenuProvider *)self searchTextField];
+    text = [searchTextField2 text];
+    lowercaseString = [text lowercaseString];
 
-    if (!self->_searchTextFieldUsedOnce && [v8 length])
+    if (!self->_searchTextFieldUsedOnce && [lowercaseString length])
     {
       self->_searchTextFieldUsedOnce = 1;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained noteSearchUsedInMenuBarHelpMenuProvider:self];
     }
 
-    v10 = [(SBMenuBarHelpMenuProvider *)self searchableMenu];
+    searchableMenu = [(SBMenuBarHelpMenuProvider *)self searchableMenu];
     v30[0] = objc_opt_class();
     v30[1] = objc_opt_class();
     v30[2] = objc_opt_class();
@@ -203,14 +203,14 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
     v28[1] = 3221225472;
     v28[2] = __50__SBMenuBarHelpMenuProvider__searchTextDidChange___block_invoke;
     v28[3] = &unk_2783A8B78;
-    v28[4] = v8;
-    v12 = [v10 sb_searchResultsExcludingClasses:v11 passingTest:v28];
+    v28[4] = lowercaseString;
+    v12 = [searchableMenu sb_searchResultsExcludingClasses:v11 passingTest:v28];
 
     if (![v12 count])
     {
       v13 = MEMORY[0x277D750C8];
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v15 = [v14 localizedStringForKey:@"NO_SEARCH_RESULTS" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v15 = [mainBundle localizedStringForKey:@"NO_SEARCH_RESULTS" value:&stru_283094718 table:@"SpringBoard"];
       v16 = [v13 actionWithTitle:v15 image:0 identifier:0 handler:&__block_literal_global_257];
 
       [v16 setAttributes:1];
@@ -220,10 +220,10 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
       v12 = v17;
     }
 
-    v18 = [(SBMenuBarHelpMenuProvider *)self _demoMenuProvider];
-    v19 = [(SBMenuBarHelpMenuProvider *)self delegate];
-    v20 = [v19 menuBarHelpMenuProviderTargetScene:self];
-    v21 = [v18 demoMenuForScene:v20 invokingFromSearch:1];
+    _demoMenuProvider = [(SBMenuBarHelpMenuProvider *)self _demoMenuProvider];
+    delegate = [(SBMenuBarHelpMenuProvider *)self delegate];
+    v20 = [delegate menuBarHelpMenuProviderTargetScene:self];
+    v21 = [_demoMenuProvider demoMenuForScene:v20 invokingFromSearch:1];
 
     if (v21)
     {
@@ -233,7 +233,7 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
     }
 
     v23 = [MEMORY[0x277D75710] menuWithTitle:&stru_283094718 image:0 identifier:@"com.apple.springboard.menubar.search-results" options:1 children:v12];
-    if ([v8 length] || (-[SBMenuBarHelpMenuProvider emptySearchMenuToRestore](self, "emptySearchMenuToRestore"), v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
+    if ([lowercaseString length] || (-[SBMenuBarHelpMenuProvider emptySearchMenuToRestore](self, "emptySearchMenuToRestore"), v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
     {
       v25 = MEMORY[0x277D75D18];
       v26[0] = MEMORY[0x277D85DD0];
@@ -241,7 +241,7 @@ void __54__SBMenuBarHelpMenuProvider_userGuideMenuForBundleId___block_invoke(uin
       v26[2] = __50__SBMenuBarHelpMenuProvider__searchTextDidChange___block_invoke_3;
       v26[3] = &unk_2783A8ED8;
       v26[4] = self;
-      v26[5] = v8;
+      v26[5] = lowercaseString;
       v27 = v23;
       [v25 performWithoutAnimation:v26];
     }
@@ -301,8 +301,8 @@ id __50__SBMenuBarHelpMenuProvider__searchTextDidChange___block_invoke_4(uint64_
 
 - (id)_demoMenuProvider
 {
-  v3 = [(SBMenuBarHelpMenuProvider *)self delegate];
-  v4 = [v3 menuBarHelpMenuProviderDemoMenuProvider:self];
+  delegate = [(SBMenuBarHelpMenuProvider *)self delegate];
+  v4 = [delegate menuBarHelpMenuProviderDemoMenuProvider:self];
 
   return v4;
 }

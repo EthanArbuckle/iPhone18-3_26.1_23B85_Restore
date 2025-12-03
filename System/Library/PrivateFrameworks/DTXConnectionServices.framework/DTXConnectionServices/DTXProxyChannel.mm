@@ -1,31 +1,31 @@
 @interface DTXProxyChannel
-- (DTXProxyChannel)initWithChannel:(id)a3 remoteProtocol:(id)a4 localProtocol:(id)a5;
-- (id)_allowedClassesForArgumentsOfRemoteInterfaceSelector:(SEL)a3 methodSignature:(id)a4;
+- (DTXProxyChannel)initWithChannel:(id)channel remoteProtocol:(id)protocol localProtocol:(id)localProtocol;
+- (id)_allowedClassesForArgumentsOfRemoteInterfaceSelector:(SEL)selector methodSignature:(id)signature;
 - (id)_allowedClassesForReturnValues;
-- (id)_validateDispatch:(id)a3;
+- (id)_validateDispatch:(id)dispatch;
 - (id)remoteObjectProxy;
-- (void)_sendInvocationMessage:(id)a3;
+- (void)_sendInvocationMessage:(id)message;
 - (void)cancel;
-- (void)setAdditionalAllowedClassesForProtocolMethods:(id)a3;
-- (void)setExportedObject:(id)a3 queue:(id)a4;
+- (void)setAdditionalAllowedClassesForProtocolMethods:(id)methods;
+- (void)setExportedObject:(id)object queue:(id)queue;
 @end
 
 @implementation DTXProxyChannel
 
-- (DTXProxyChannel)initWithChannel:(id)a3 remoteProtocol:(id)a4 localProtocol:(id)a5
+- (DTXProxyChannel)initWithChannel:(id)channel remoteProtocol:(id)protocol localProtocol:(id)localProtocol
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  channelCopy = channel;
+  protocolCopy = protocol;
+  localProtocolCopy = localProtocol;
   v24.receiver = self;
   v24.super_class = DTXProxyChannel;
   v12 = [(DTXProxyChannel *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_channel, a3);
-    objc_storeStrong(&v13->_remoteInterface, a4);
-    objc_storeStrong(&v13->_exportedInterface, a5);
+    objc_storeStrong(&v12->_channel, channel);
+    objc_storeStrong(&v13->_remoteInterface, protocol);
+    objc_storeStrong(&v13->_exportedInterface, localProtocol);
     v16 = objc_msgSend_set(MEMORY[0x277CBEB98], v14, v15);
     additionalAllowedClassesForProtocolMethods = v13->_additionalAllowedClassesForProtocolMethods;
     v13->_additionalAllowedClassesForProtocolMethods = v16;
@@ -64,11 +64,11 @@
   objc_msgSend_sendControlAsync_replyHandler_(channel, a2, kDTXAckBarrierMessage, v3);
 }
 
-- (id)_allowedClassesForArgumentsOfRemoteInterfaceSelector:(SEL)a3 methodSignature:(id)a4
+- (id)_allowedClassesForArgumentsOfRemoteInterfaceSelector:(SEL)selector methodSignature:(id)signature
 {
-  v5 = a4;
+  signatureCopy = signature;
   v8 = objc_msgSend_defaultAllowedSecureCodingClasses(DTXMessage, v6, v7);
-  v9 = v5;
+  v9 = signatureCopy;
   v10 = objc_opt_new();
   if (objc_msgSend_numberOfArguments(v9, v11, v12))
   {
@@ -119,16 +119,16 @@
   return v4;
 }
 
-- (id)_validateDispatch:(id)a3
+- (id)_validateDispatch:(id)dispatch
 {
-  v6 = a3;
+  dispatchCopy = dispatch;
   atomic_store(1u, &self->_hasProcessedMessage);
   if (!self->_exportedInterface)
   {
     objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v4, @"DTXMissingInterfaceException", @"No exported interface has been specified");
   }
 
-  v7 = objc_msgSend_selector(v6, v4, v5);
+  v7 = objc_msgSend_selector(dispatchCopy, v4, v5);
   exportedInterface = self->_exportedInterface;
   MethodTypeEncoding = _protocol_getMethodTypeEncoding();
   if (!MethodTypeEncoding)
@@ -139,7 +139,7 @@
   }
 
   v14 = objc_msgSend_signatureWithObjCTypes_(MEMORY[0x277CBEB08], v9, MethodTypeEncoding);
-  v17 = objc_msgSend_methodSignature(v6, v15, v16);
+  v17 = objc_msgSend_methodSignature(dispatchCopy, v15, v16);
   v20 = objc_msgSend_numberOfArguments(v17, v18, v19);
   v23 = objc_msgSend_numberOfArguments(v14, v21, v22);
 
@@ -150,8 +150,8 @@
     objc_msgSend_raise_format_(v26, v28, @"DTXSelectorMismatchException", @"Incorrect number of arguments in incoming message with selector %@", v27);
   }
 
-  v55 = v6;
-  v29 = objc_msgSend_target(v6, v24, v25);
+  v55 = dispatchCopy;
+  v29 = objc_msgSend_target(dispatchCopy, v24, v25);
   v30 = objc_opt_respondsToSelector();
 
   if ((v30 & 1) == 0)
@@ -195,29 +195,29 @@
   return v53;
 }
 
-- (void)setExportedObject:(id)a3 queue:(id)a4
+- (void)setExportedObject:(id)object queue:(id)queue
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v10;
-  v8 = v6;
-  if (v10)
+  objectCopy = object;
+  queueCopy = queue;
+  v7 = objectCopy;
+  v8 = queueCopy;
+  if (objectCopy)
   {
-    v9 = objc_msgSend_conformsToProtocol_(v10, v10, self->_exportedInterface);
-    v7 = v10;
+    v9 = objc_msgSend_conformsToProtocol_(objectCopy, objectCopy, self->_exportedInterface);
+    v7 = objectCopy;
     if ((v9 & 1) == 0)
     {
-      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v10, *MEMORY[0x277CBE648], @"Exported object does not conform to the exported interface.");
-      v7 = v10;
+      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], objectCopy, *MEMORY[0x277CBE648], @"Exported object does not conform to the exported interface.");
+      v7 = objectCopy;
     }
   }
 
   objc_msgSend__setDispatchTarget_queue_(self->_channel, v7, v7, v8);
 }
 
-- (void)setAdditionalAllowedClassesForProtocolMethods:(id)a3
+- (void)setAdditionalAllowedClassesForProtocolMethods:(id)methods
 {
-  v5 = a3;
+  methodsCopy = methods;
   if (atomic_exchange(&self->_hasProcessedMessage, 1u))
   {
     v6 = MEMORY[0x277CBEAD8];
@@ -227,18 +227,18 @@
   }
 
   additionalAllowedClassesForProtocolMethods = self->_additionalAllowedClassesForProtocolMethods;
-  self->_additionalAllowedClassesForProtocolMethods = v5;
+  self->_additionalAllowedClassesForProtocolMethods = methodsCopy;
 }
 
-- (void)_sendInvocationMessage:(id)a3
+- (void)_sendInvocationMessage:(id)message
 {
   atomic_store(1u, &self->_hasProcessedMessage);
-  v4 = a3;
+  messageCopy = message;
   v17 = objc_opt_new();
-  objc_msgSend_setReturnValue_(v4, v5, &v17);
-  objc_msgSend_retainArguments(v4, v6, v7);
+  objc_msgSend_setReturnValue_(messageCopy, v5, &v17);
+  objc_msgSend_retainArguments(messageCopy, v6, v7);
   v8 = [DTXMessage alloc];
-  v10 = objc_msgSend_initWithInvocation_(v8, v9, v4);
+  v10 = objc_msgSend_initWithInvocation_(v8, v9, messageCopy);
 
   v13 = objc_msgSend_channel(self, v11, v12);
   v15[0] = MEMORY[0x277D85DD0];

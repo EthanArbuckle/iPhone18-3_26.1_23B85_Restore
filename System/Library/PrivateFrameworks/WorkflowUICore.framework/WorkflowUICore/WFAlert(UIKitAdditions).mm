@@ -9,24 +9,24 @@
 - (void)addKeyCommand:()UIKitAdditions
 {
   v4 = a3;
-  v5 = [a1 keyCommands];
-  v6 = v5;
+  keyCommands = [self keyCommands];
+  v6 = keyCommands;
   v7 = MEMORY[0x277CBEBF8];
-  if (v5)
+  if (keyCommands)
   {
-    v7 = v5;
+    v7 = keyCommands;
   }
 
   v8 = v7;
 
   value = [v8 arrayByAddingObject:v4];
 
-  objc_setAssociatedObject(a1, sel_keyCommands, value, 1);
+  objc_setAssociatedObject(self, sel_keyCommands, value, 1);
 }
 
 - (double)contentViewPadding
 {
-  v1 = objc_getAssociatedObject(a1, sel_contentViewPadding);
+  v1 = objc_getAssociatedObject(self, sel_contentViewPadding);
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -36,7 +36,7 @@
 - (void)setContentViewPadding:()UIKitAdditions
 {
   v2 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:?];
-  objc_setAssociatedObject(a1, sel_contentViewPadding, v2, 1);
+  objc_setAssociatedObject(self, sel_contentViewPadding, v2, 1);
 }
 
 @end

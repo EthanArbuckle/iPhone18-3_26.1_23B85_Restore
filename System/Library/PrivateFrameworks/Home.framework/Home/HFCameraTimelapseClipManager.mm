@@ -4,16 +4,16 @@
 - (HMCameraClipManager)clipManager;
 - (NSArray)timelapseClips;
 - (NSDictionary)timelapseClipsByID;
-- (id)timelapseClipPositionForDate:(id)a3 inHighQualityClip:(id)a4;
-- (id)timelapseClipPositionForDate:(id)a3 inHighQualityClip:(id)a4 scrubbingType:(unint64_t)a5;
-- (void)_fetchClipsFromStartDate:(id)a3 toEndDate:(id)a4 limit:(unint64_t)a5;
+- (id)timelapseClipPositionForDate:(id)date inHighQualityClip:(id)clip;
+- (id)timelapseClipPositionForDate:(id)date inHighQualityClip:(id)clip scrubbingType:(unint64_t)type;
+- (void)_fetchClipsFromStartDate:(id)date toEndDate:(id)endDate limit:(unint64_t)limit;
 - (void)_fetchTimelapseClips;
-- (void)addTimelapseClips:(id)a3;
-- (void)clipManager:(id)a3 didUpdateClips:(id)a4;
+- (void)addTimelapseClips:(id)clips;
+- (void)clipManager:(id)manager didUpdateClips:(id)clips;
 - (void)removeAllTimelapseClips;
-- (void)setClipManager:(id)a3;
-- (void)setTimelapseClips:(id)a3;
-- (void)setTimelapseClipsByID:(id)a3;
+- (void)setClipManager:(id)manager;
+- (void)setTimelapseClips:(id)clips;
+- (void)setTimelapseClipsByID:(id)d;
 @end
 
 @implementation HFCameraTimelapseClipManager
@@ -44,9 +44,9 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   v2 = [(HFCameraTimelapseClipManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     timelapseClips = v2->_timelapseClips;
-    v2->_timelapseClips = v3;
+    v2->_timelapseClips = array;
 
     v5 = dispatch_queue_create("com.apple.home.HFCameraTimelapseClipManager.updateQueue", 0);
     updateQueue = v2->_updateQueue;
@@ -56,12 +56,12 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)setTimelapseClips:(id)a3
+- (void)setTimelapseClips:(id)clips
 {
-  v4 = a3;
+  clipsCopy = clips;
   os_unfair_lock_lock_with_options();
   timelapseClips = self->_timelapseClips;
-  self->_timelapseClips = v4;
+  self->_timelapseClips = clipsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -75,12 +75,12 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)setTimelapseClipsByID:(id)a3
+- (void)setTimelapseClipsByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   timelapseClipsByID = self->_timelapseClipsByID;
-  self->_timelapseClipsByID = v4;
+  self->_timelapseClipsByID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -94,13 +94,13 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (id)timelapseClipPositionForDate:(id)a3 inHighQualityClip:(id)a4
+- (id)timelapseClipPositionForDate:(id)date inHighQualityClip:(id)clip
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFCameraTimelapseClipManager *)self timelapseClips];
-  v9 = [HFCameraPlaybackEngine findClipPositionForDate:v7 inEvents:v8 options:0];
+  clipCopy = clip;
+  dateCopy = date;
+  timelapseClips = [(HFCameraTimelapseClipManager *)self timelapseClips];
+  v9 = [HFCameraPlaybackEngine findClipPositionForDate:dateCopy inEvents:timelapseClips options:0];
 
   v10 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -108,7 +108,7 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
     v13 = 138412546;
     v14 = v9;
     v15 = 2112;
-    v16 = v6;
+    v16 = clipCopy;
     _os_log_debug_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEBUG, "Found clipPosition:%@ for highQualityClip:%@", &v13, 0x16u);
   }
 
@@ -117,13 +117,13 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   return v9;
 }
 
-- (id)timelapseClipPositionForDate:(id)a3 inHighQualityClip:(id)a4 scrubbingType:(unint64_t)a5
+- (id)timelapseClipPositionForDate:(id)date inHighQualityClip:(id)clip scrubbingType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HFCameraTimelapseClipManager *)self timelapseClips];
-  v10 = [HFCameraPlaybackEngine findClipPositionForDate:v8 inEvents:v9 options:0];
+  clipCopy = clip;
+  dateCopy = date;
+  timelapseClips = [(HFCameraTimelapseClipManager *)self timelapseClips];
+  v10 = [HFCameraPlaybackEngine findClipPositionForDate:dateCopy inEvents:timelapseClips options:0];
 
   v11 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -131,7 +131,7 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
     v14 = 138412546;
     v15 = v10;
     v16 = 2112;
-    v17 = v7;
+    v17 = clipCopy;
     _os_log_debug_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEBUG, "Found clipPosition:%@ for highQualityClip:%@", &v14, 0x16u);
   }
 
@@ -140,9 +140,9 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   return v10;
 }
 
-- (void)setClipManager:(id)a3
+- (void)setClipManager:(id)manager
 {
-  obj = a3;
+  obj = manager;
   WeakRetained = objc_loadWeakRetained(&self->_clipManager);
 
   if (WeakRetained)
@@ -158,17 +158,17 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
   if (obj)
   {
     v8 = objc_loadWeakRetained(&self->_clipManager);
-    v9 = [(HFCameraTimelapseClipManager *)self updateQueue];
-    [v8 addObserver:self queue:v9];
+    updateQueue = [(HFCameraTimelapseClipManager *)self updateQueue];
+    [v8 addObserver:self queue:updateQueue];
 
     [(HFCameraTimelapseClipManager *)self _fetchTimelapseClips];
   }
 }
 
-- (void)addTimelapseClips:(id)a3
+- (void)addTimelapseClips:(id)clips
 {
-  v4 = a3;
-  if ([v4 count])
+  clipsCopy = clips;
+  if ([clipsCopy count])
   {
     os_unfair_lock_lock_with_options();
     v5 = [(NSArray *)self->_timelapseClips mutableCopy];
@@ -181,7 +181,7 @@ void __45__HFCameraTimelapseClipManager_sharedManager__block_invoke()
     v14 = v7;
     v8 = v5;
     v15 = v8;
-    [v4 na_each:v13];
+    [clipsCopy na_each:v13];
     timelapseClips = self->_timelapseClips;
     self->_timelapseClips = v8;
     v10 = v8;
@@ -287,52 +287,52 @@ LABEL_12:
   v3 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFCameraTimelapseClipManager *)self timelapseClips];
+    timelapseClips = [(HFCameraTimelapseClipManager *)self timelapseClips];
     v9 = 134217984;
-    v10 = [v4 count];
+    v10 = [timelapseClips count];
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Begin timelapse clip fetching with cached count:%ld", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v5 sinceDate:-864000.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:date sinceDate:-864000.0];
   [(HFCameraTimelapseClipManager *)self setOldestValidDateForTimeline:v6];
 
-  v7 = [(HFCameraTimelapseClipManager *)self oldestValidDateForTimeline];
-  [(HFCameraTimelapseClipManager *)self _fetchClipsFromStartDate:v7 toEndDate:v5 limit:0x7FFFFFFFFFFFFFFFLL];
+  oldestValidDateForTimeline = [(HFCameraTimelapseClipManager *)self oldestValidDateForTimeline];
+  [(HFCameraTimelapseClipManager *)self _fetchClipsFromStartDate:oldestValidDateForTimeline toEndDate:date limit:0x7FFFFFFFFFFFFFFFLL];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchClipsFromStartDate:(id)a3 toEndDate:(id)a4 limit:(unint64_t)a5
+- (void)_fetchClipsFromStartDate:(id)date toEndDate:(id)endDate limit:(unint64_t)limit
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 endDate:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:endDateCopy];
   v11 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(HFCameraTimelapseClipManager *)self oldestFetchedClip];
+    oldestFetchedClip = [(HFCameraTimelapseClipManager *)self oldestFetchedClip];
     *buf = 138412802;
     v20 = v10;
     v21 = 2048;
-    v22 = a5;
+    limitCopy = limit;
     v23 = 2112;
-    v24 = v12;
+    v24 = oldestFetchedClip;
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Fetching timelapse clips with date interval:%@ limit:%ld oldestClip:%@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  v13 = [(HFCameraTimelapseClipManager *)self clipManager];
+  clipManager = [(HFCameraTimelapseClipManager *)self clipManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__HFCameraTimelapseClipManager__fetchClipsFromStartDate_toEndDate_limit___block_invoke;
   v16[3] = &unk_277DFACD8;
   objc_copyWeak(v18, buf);
-  v14 = v8;
+  v14 = dateCopy;
   v17 = v14;
-  v18[1] = a5;
-  [v13 fetchClipsWithDateInterval:v10 quality:1 limit:a5 shouldOrderAscending:1 completion:v16];
+  v18[1] = limit;
+  [clipManager fetchClipsWithDateInterval:v10 quality:1 limit:limit shouldOrderAscending:1 completion:v16];
 
   objc_destroyWeak(v18);
   objc_destroyWeak(buf);
@@ -429,17 +429,17 @@ void __73__HFCameraTimelapseClipManager__fetchClipsFromStartDate_toEndDate_limit
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clipManager:(id)a3 didUpdateClips:(id)a4
+- (void)clipManager:(id)manager didUpdateClips:(id)clips
 {
-  v7 = a4;
+  clipsCopy = clips;
   if (!+[HFUtilities isInternalTest])
   {
-    v5 = [(HFCameraTimelapseClipManager *)self updateQueue];
-    dispatch_assert_queue_V2(v5);
+    updateQueue = [(HFCameraTimelapseClipManager *)self updateQueue];
+    dispatch_assert_queue_V2(updateQueue);
   }
 
-  v6 = [v7 allObjects];
-  [(HFCameraTimelapseClipManager *)self addTimelapseClips:v6];
+  allObjects = [clipsCopy allObjects];
+  [(HFCameraTimelapseClipManager *)self addTimelapseClips:allObjects];
 }
 
 - (HMCameraClipManager)clipManager

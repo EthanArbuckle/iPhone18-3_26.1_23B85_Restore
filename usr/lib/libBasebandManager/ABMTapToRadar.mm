@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (ABMTapToRadar)init;
 - (BOOL)checkAudioTraces_sync;
-- (BOOL)checkNotificationCriteria:(int *)a3 :(const void *)a4 :(BOOL)a5;
-- (BOOL)checkTraces_sync:(int)a3;
+- (BOOL)checkNotificationCriteria:(int *)criteria :(const void *)a4 :(BOOL)a5;
+- (BOOL)checkTraces_sync:(int)traces_sync;
 - (vector<std::string,)findLogFiles_sync:(ABMTapToRadar *)self :(SEL)a3;
-- (void)setMode:(int)a3;
-- (void)showNotification:(int)a3 :()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> ::;
-- (void)showUserNotification:(int)a3 dumpReason:()basic_string<char;
+- (void)setMode:(int)mode;
+- (void)showNotification:(int)notification :()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> ::;
+- (void)showUserNotification:(int)notification dumpReason:()basic_string<char;
 @end
 
 @implementation ABMTapToRadar
@@ -132,7 +132,7 @@ LABEL_20:
   }
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
   fObj = self->fQueue.fObj.fObj;
   v4[0] = MEMORY[0x29EDCA5F8];
@@ -140,7 +140,7 @@ LABEL_20:
   v4[2] = __25__ABMTapToRadar_setMode___block_invoke;
   v4[3] = &unk_29EE641E0;
   v4[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(fObj, v4);
 }
 
@@ -239,7 +239,7 @@ LABEL_16:
   {
     (v9->__on_zero_shared)(v9);
     std::__shared_weak_count::__release_weak(v9);
-    v62 = self;
+    selfCopy2 = self;
     std::locale::~locale(&v69);
     if ((SHIBYTE(v71.__r_.__value_.__r.__words[2]) & 0x80000000) == 0)
     {
@@ -263,7 +263,7 @@ LABEL_124:
 
   else
   {
-    v62 = self;
+    selfCopy2 = self;
     std::locale::~locale(&v69);
     if ((SHIBYTE(v71.__r_.__value_.__r.__words[2]) & 0x80000000) == 0)
     {
@@ -506,10 +506,10 @@ LABEL_136:
 
       v64 = 2;
       strcpy(v63, ".*");
-      result = v62;
-      if (v62)
+      result = selfCopy2;
+      if (selfCopy2)
       {
-        result = [(ABMTapToRadar *)v62 findLogFiles_sync:&v65];
+        result = [(ABMTapToRadar *)selfCopy2 findLogFiles_sync:&v65];
         if (v64 < 0)
         {
           operator delete(v63[0]);
@@ -825,17 +825,17 @@ LABEL_19:
   return v12 == 0;
 }
 
-- (BOOL)checkTraces_sync:(int)a3
+- (BOOL)checkTraces_sync:(int)traces_sync
 {
   v17 = 1;
-  if (a3 > 5)
+  if (traces_sync > 5)
   {
     return v17;
   }
 
-  if (((1 << a3) & 0x26) == 0)
+  if (((1 << traces_sync) & 0x26) == 0)
   {
-    if (((1 << a3) & 0x18) == 0)
+    if (((1 << traces_sync) & 0x18) == 0)
     {
       return v17;
     }
@@ -952,7 +952,7 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)checkNotificationCriteria:(int *)a3 :(const void *)a4 :(BOOL)a5
+- (BOOL)checkNotificationCriteria:(int *)criteria :(const void *)a4 :(BOOL)a5
 {
   v9 = operator new(0x20uLL);
   strcpy(v9, "Carrier Bundle file push failed");
@@ -1025,7 +1025,7 @@ LABEL_26:
     {
       if (v18 != v16 && v18 - v14 != -1)
       {
-        *a3 = 1;
+        *criteria = 1;
         LOBYTE(v13) = *(a4 + 23);
       }
 
@@ -1112,13 +1112,13 @@ LABEL_47:
   v38 = 0;
   if (capabilities::radio::supportsAutomaticRadarFiling(v23))
   {
-    v74 = a3;
+    criteriaCopy = criteria;
     if (!a5)
     {
       v38 = 0;
       v39 = *(a4 + 23);
       v40 = v39 >= 0 ? *(a4 + 23) : *(a4 + 1);
-      if (v40 && *v74 != 1)
+      if (v40 && *criteriaCopy != 1)
       {
         v41 = v77;
         if (v77 == &v76)
@@ -1193,7 +1193,7 @@ LABEL_47:
         }
 
 LABEL_76:
-        *v74 = *(v41 + 10);
+        *criteriaCopy = *(v41 + 10);
         v25 = *(a4 + 23);
         if (v25 >= 0)
         {
@@ -1384,7 +1384,7 @@ LABEL_111:
   return v38;
 }
 
-- (void)showUserNotification:(int)a3 dumpReason:()basic_string<char
+- (void)showUserNotification:(int)notification dumpReason:()basic_string<char
 {
   v26 = *MEMORY[0x29EDCA608];
   *&v22.__r_.__value_.__r.__words[1] = 0u;
@@ -1451,7 +1451,7 @@ LABEL_111:
   }
 
   *buf = 67109378;
-  *&buf[4] = a3;
+  *&buf[4] = notification;
   *&buf[8] = 2080;
   *&buf[10] = v8;
   _os_log_impl(&dword_296FF7000, v7, OS_LOG_TYPE_DEFAULT, "Showing user notification for radarType: %d with header: %s", buf, 0x12u);
@@ -1655,7 +1655,7 @@ LABEL_55:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)showNotification:(int)a3 :()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> ::
+- (void)showNotification:(int)notification :()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> ::
 {
   v7 = v6;
   v8 = v4;
@@ -1665,11 +1665,11 @@ LABEL_55:
   v11[2] = __38__ABMTapToRadar_showNotification___::__block_invoke;
   v11[3] = &unk_2A1E27FC0;
   v11[4] = self;
-  v16 = a3;
+  notificationCopy = notification;
   if (*(v5 + 23) < 0)
   {
     std::string::__init_copy_ctor_external(&v12, *v5, *(v5 + 8));
-    if ((*(&a4->var0.var1 + 23) & 0x80000000) == 0)
+    if ((*(&std->var0.var1 + 23) & 0x80000000) == 0)
     {
       goto LABEL_3;
     }
@@ -1678,15 +1678,15 @@ LABEL_55:
   else
   {
     v12 = *v5;
-    if ((*(&a4->var0.var1 + 23) & 0x80000000) == 0)
+    if ((*(&std->var0.var1 + 23) & 0x80000000) == 0)
     {
 LABEL_3:
-      v13 = *a4;
+      v13 = *std;
       goto LABEL_6;
     }
   }
 
-  std::string::__init_copy_ctor_external(&v13, a4->var0.var1.var0, a4->var0.var1.var1);
+  std::string::__init_copy_ctor_external(&v13, std->var0.var1.var0, std->var0.var1.var1);
 LABEL_6:
   if (*(v8 + 23) < 0)
   {

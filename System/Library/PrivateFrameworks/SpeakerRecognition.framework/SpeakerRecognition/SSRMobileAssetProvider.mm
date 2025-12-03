@@ -1,31 +1,31 @@
 @interface SSRMobileAssetProvider
-- (id)_buildAssetQueryForAssetType:(unint64_t)a3;
-- (id)_filteredAssets:(id)a3 forLanguage:(id)a4;
-- (id)_findLatestInstalledAsset:(id)a3;
+- (id)_buildAssetQueryForAssetType:(unint64_t)type;
+- (id)_filteredAssets:(id)assets forLanguage:(id)language;
+- (id)_findLatestInstalledAsset:(id)asset;
 - (id)_getEndpointAssetTypeString;
 - (id)_getSSRAssetTypeString;
 - (id)_getVTRepromptListAssetTypeString;
-- (id)_installedMobileAssetOfType:(unint64_t)a3 forLanguage:(id)a4 ofType:(int64_t)a5;
-- (id)_queryMAAssetsForAssetType:(unint64_t)a3 Language:(id)a4;
-- (id)allInstalledAssetsOfType:(unint64_t)a3 forLanguage:(id)a4;
-- (id)installedAssetOfType:(unint64_t)a3 forLanguageCode:(id)a4;
-- (id)installedSpeakerRecognitionAssetForLanguage:(id)a3;
+- (id)_installedMobileAssetOfType:(unint64_t)type forLanguage:(id)language ofType:(int64_t)ofType;
+- (id)_queryMAAssetsForAssetType:(unint64_t)type Language:(id)language;
+- (id)allInstalledAssetsOfType:(unint64_t)type forLanguage:(id)language;
+- (id)installedAssetOfType:(unint64_t)type forLanguageCode:(id)code;
+- (id)installedSpeakerRecognitionAssetForLanguage:(id)language;
 - (unint64_t)_getEndpointAssetCurrentCompatibilityVersion;
 @end
 
 @implementation SSRMobileAssetProvider
 
-- (id)_filteredAssets:(id)a3 forLanguage:(id)a4
+- (id)_filteredAssets:(id)assets forLanguage:(id)language
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  languageCopy = language;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -42,10 +42,10 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 attributes];
-        v16 = [v15 valueForKey:v12];
+        attributes = [v14 attributes];
+        v16 = [attributes valueForKey:v12];
         v17 = v16;
-        if (!v6 || [v16 containsObject:v6])
+        if (!languageCopy || [v16 containsObject:languageCopy])
         {
           [v7 addObject:v14];
         }
@@ -62,15 +62,15 @@
   return v7;
 }
 
-- (id)_findLatestInstalledAsset:(id)a3
+- (id)_findLatestInstalledAsset:(id)asset
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetCopy = asset;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v4 = [assetCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   v6 = MEMORY[0x277D01970];
   if (v4)
   {
@@ -85,22 +85,22 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 state];
+        state = [v11 state];
         v13 = *v6;
         if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v20;
           v26 = "[SSRMobileAssetProvider _findLatestInstalledAsset:]";
           v27 = 2050;
-          v28 = v12;
+          v28 = state;
           _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s Asset state : %{public}ld", buf, 0x16u);
         }
 
-        if ((v12 - 7) >= 0xFFFFFFFFFFFFFFFELL)
+        if ((state - 7) >= 0xFFFFFFFFFFFFFFFELL)
         {
           if (v8)
           {
@@ -119,7 +119,7 @@
         }
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v7 = [assetCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v7);
@@ -134,11 +134,11 @@
   if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v8 attributes];
+    attributes = [v8 attributes];
     *buf = 136315394;
     v26 = "[SSRMobileAssetProvider _findLatestInstalledAsset:]";
     v27 = 2114;
-    v28 = v17;
+    v28 = attributes;
     _os_log_impl(&dword_225E12000, v16, OS_LOG_TYPE_DEFAULT, "%s Chosen Asset %{public}@", buf, 0x16u);
   }
 
@@ -147,19 +147,19 @@
   return v8;
 }
 
-- (id)_installedMobileAssetOfType:(unint64_t)a3 forLanguage:(id)a4 ofType:(int64_t)a5
+- (id)_installedMobileAssetOfType:(unint64_t)type forLanguage:(id)language ofType:(int64_t)ofType
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(SSRMobileAssetProvider *)self _buildAssetQueryForAssetType:a3];
-  [v9 returnTypes:a5];
-  v10 = [v9 queryMetaDataSync];
-  v11 = [v9 results];
-  v12 = [(SSRMobileAssetProvider *)self _filteredAssets:v11 forLanguage:v8];
+  languageCopy = language;
+  v9 = [(SSRMobileAssetProvider *)self _buildAssetQueryForAssetType:type];
+  [v9 returnTypes:ofType];
+  queryMetaDataSync = [v9 queryMetaDataSync];
+  results = [v9 results];
+  v12 = [(SSRMobileAssetProvider *)self _filteredAssets:results forLanguage:languageCopy];
 
   v13 = *MEMORY[0x277D01970];
   v14 = *MEMORY[0x277D01970];
-  if ((v10 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -168,7 +168,7 @@
       v23 = 2114;
       v24 = v9;
       v25 = 2050;
-      v26 = v10;
+      v26 = queryMetaDataSync;
       _os_log_error_impl(&dword_225E12000, v13, OS_LOG_TYPE_ERROR, "%s Error running asset-query: %{public}@, error: %{public}lu", &v21, 0x20u);
     }
 
@@ -181,13 +181,13 @@
     {
       v16 = v13;
       v17 = [v12 count];
-      v18 = [v9 queryParams];
+      queryParams = [v9 queryParams];
       v21 = 136315650;
       v22 = "[SSRMobileAssetProvider _installedMobileAssetOfType:forLanguage:ofType:]";
       v23 = 2050;
       v24 = v17;
       v25 = 2114;
-      v26 = v18;
+      v26 = queryParams;
       _os_log_impl(&dword_225E12000, v16, OS_LOG_TYPE_DEFAULT, "%s ::: found %{public}lu assets matching query: %{public}@", &v21, 0x20u);
     }
 
@@ -199,43 +199,43 @@
   return v15;
 }
 
-- (id)_buildAssetQueryForAssetType:(unint64_t)a3
+- (id)_buildAssetQueryForAssetType:(unint64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_15;
       }
 
-      v5 = [(SSRMobileAssetProvider *)self _getEndpointAssetTypeString];
-      v6 = [(SSRMobileAssetProvider *)self _getEndpointAssetCurrentCompatibilityVersion];
+      _getEndpointAssetTypeString = [(SSRMobileAssetProvider *)self _getEndpointAssetTypeString];
+      _getEndpointAssetCurrentCompatibilityVersion = [(SSRMobileAssetProvider *)self _getEndpointAssetCurrentCompatibilityVersion];
     }
 
     else
     {
-      v5 = [(SSRMobileAssetProvider *)self _getVoiceTriggerAssetTypeString];
-      v6 = [(SSRMobileAssetProvider *)self _getVoiceTriggerAssetCurrentCompatibilityVersion];
+      _getEndpointAssetTypeString = [(SSRMobileAssetProvider *)self _getVoiceTriggerAssetTypeString];
+      _getEndpointAssetCurrentCompatibilityVersion = [(SSRMobileAssetProvider *)self _getVoiceTriggerAssetCurrentCompatibilityVersion];
     }
 
     goto LABEL_13;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
-    v5 = [(SSRMobileAssetProvider *)self _getVTRepromptListAssetTypeString];
+    _getEndpointAssetTypeString = [(SSRMobileAssetProvider *)self _getVTRepromptListAssetTypeString];
     v7 = 1;
-    if (!v5)
+    if (!_getEndpointAssetTypeString)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
-    v8 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:v5];
+    v8 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:_getEndpointAssetTypeString];
     v9 = *MEMORY[0x277D288E8];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v7];
     [v8 addKeyValuePair:v9 with:v10];
@@ -243,23 +243,23 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
-    v5 = @"com.apple.MobileAsset.VoiceTriggerAssetsMac";
+    _getEndpointAssetTypeString = @"com.apple.MobileAsset.VoiceTriggerAssetsMac";
     v7 = 15;
     goto LABEL_14;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     goto LABEL_15;
   }
 
-  v5 = [(SSRMobileAssetProvider *)self _getSSRAssetTypeString];
-  v6 = [(SSRMobileAssetProvider *)self _getSSRAssetCurrentCompatibilityVersion];
+  _getEndpointAssetTypeString = [(SSRMobileAssetProvider *)self _getSSRAssetTypeString];
+  _getEndpointAssetCurrentCompatibilityVersion = [(SSRMobileAssetProvider *)self _getSSRAssetCurrentCompatibilityVersion];
 LABEL_13:
-  v7 = v6;
-  if (v5)
+  v7 = _getEndpointAssetCurrentCompatibilityVersion;
+  if (_getEndpointAssetTypeString)
   {
     goto LABEL_14;
   }
@@ -271,7 +271,7 @@ LABEL_15:
     *buf = 136315394;
     v15 = "[SSRMobileAssetProvider _buildAssetQueryForAssetType:]";
     v16 = 1026;
-    v17 = v3;
+    v17 = typeCopy;
     _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s Failed to get assetString for assetType %{public}d", buf, 0x12u);
   }
 
@@ -335,7 +335,7 @@ LABEL_18:
 - (id)_getVTRepromptListAssetTypeString
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D018F8] deviceProductType];
+  deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{@"iPhone16, 1", @"iPhone16, 2", @"iPhone15, 4", @"iPhone15, 5", 0}];
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{@"iPhone14, 7", @"iPhone14, 8", @"iPhone15, 2", @"iPhone15, 3", @"iPhone14, 6", 0}];
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"iPhone14, 2", @"iPhone14, 3", @"iPhone14, 4", @"iPhone14, 5", 0}];
@@ -344,17 +344,17 @@ LABEL_18:
     v6 = @"com.apple.MobileAsset.VoiceTriggerRePromptListiPad";
   }
 
-  else if ([v3 containsObject:v2])
+  else if ([v3 containsObject:deviceProductType])
   {
     v6 = @"com.apple.MobileAsset.VoiceTriggerRePromptListiPhone15x";
   }
 
-  else if ([v4 containsObject:v2])
+  else if ([v4 containsObject:deviceProductType])
   {
     v6 = @"com.apple.MobileAsset.VoiceTriggerRePromptListiPhone14x";
   }
 
-  else if ([v5 containsObject:v2])
+  else if ([v5 containsObject:deviceProductType])
   {
     v6 = @"com.apple.MobileAsset.VoiceTriggerRePromptListiPhone13x";
   }
@@ -372,7 +372,7 @@ LABEL_18:
     v12 = 2114;
     v13 = v6;
     v14 = 2114;
-    v15 = v2;
+    v15 = deviceProductType;
     _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s Fetched assetStr: %{public}@ for deviceType: %{public}@", buf, 0x20u);
   }
 
@@ -393,30 +393,30 @@ LABEL_18:
   }
 }
 
-- (id)installedSpeakerRecognitionAssetForLanguage:(id)a3
+- (id)installedSpeakerRecognitionAssetForLanguage:(id)language
 {
-  v3 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:3 forLanguage:a3];
+  v3 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:3 forLanguage:language];
   v4 = [v3 getCSAssetOfType:3];
 
   return v4;
 }
 
-- (id)_queryMAAssetsForAssetType:(unint64_t)a3 Language:(id)a4
+- (id)_queryMAAssetsForAssetType:(unint64_t)type Language:(id)language
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SSRMobileAssetProvider *)self _buildAssetQueryForAssetType:a3];
+  languageCopy = language;
+  v7 = [(SSRMobileAssetProvider *)self _buildAssetQueryForAssetType:type];
   v8 = v7;
   if (v7)
   {
     [v7 returnTypes:2];
-    v9 = [v8 queryMetaDataSync];
-    v10 = [v8 results];
-    v11 = [(SSRMobileAssetProvider *)self _filteredAssets:v10 forLanguage:v6];
+    queryMetaDataSync = [v8 queryMetaDataSync];
+    results = [v8 results];
+    v11 = [(SSRMobileAssetProvider *)self _filteredAssets:results forLanguage:languageCopy];
 
     v12 = *MEMORY[0x277D01970];
     v13 = *MEMORY[0x277D01970];
-    if ((v9 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -425,7 +425,7 @@ LABEL_18:
         v32 = 2114;
         v33 = v8;
         v34 = 2050;
-        v35 = v9;
+        v35 = queryMetaDataSync;
         _os_log_error_impl(&dword_225E12000, v12, OS_LOG_TYPE_ERROR, "%s Error running query: %{public}@, error: %{public}lu", buf, 0x20u);
       }
 
@@ -438,25 +438,25 @@ LABEL_18:
       {
         v15 = v12;
         v16 = [v11 count];
-        v17 = [v8 queryParams];
+        queryParams = [v8 queryParams];
         *buf = 136315650;
         v31 = "[SSRMobileAssetProvider _queryMAAssetsForAssetType:Language:]";
         v32 = 2050;
         v33 = v16;
         v34 = 2114;
-        v35 = v17;
+        v35 = queryParams;
         _os_log_impl(&dword_225E12000, v15, OS_LOG_TYPE_DEFAULT, "%s ::: found %{public}lu installed assets for matching query: %{public}@", buf, 0x20u);
       }
 
       v18 = [v11 sortedArrayUsingComparator:&__block_literal_global_7724];
-      v19 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v24 = MEMORY[0x277D85DD0];
       v25 = 3221225472;
       v26 = __62__SSRMobileAssetProvider__queryMAAssetsForAssetType_Language___block_invoke_2;
       v27 = &unk_2785792C0;
-      v28 = v19;
-      v29 = a3;
-      v20 = v19;
+      v28 = array;
+      typeCopy = type;
+      v20 = array;
       [v18 enumerateObjectsUsingBlock:&v24];
       if ([v20 count])
       {
@@ -526,14 +526,14 @@ uint64_t __62__SSRMobileAssetProvider__queryMAAssetsForAssetType_Language___bloc
   }
 }
 
-- (id)allInstalledAssetsOfType:(unint64_t)a3 forLanguage:(id)a4
+- (id)allInstalledAssetsOfType:(unint64_t)type forLanguage:(id)language
 {
   v6 = MEMORY[0x277D018F8];
-  v7 = a4;
-  v8 = [v6 supportsSpeakerRecognitionAssets];
-  if (a3 == 3)
+  languageCopy = language;
+  supportsSpeakerRecognitionAssets = [v6 supportsSpeakerRecognitionAssets];
+  if (type == 3)
   {
-    v9 = v8;
+    v9 = supportsSpeakerRecognitionAssets;
   }
 
   else
@@ -543,28 +543,28 @@ uint64_t __62__SSRMobileAssetProvider__queryMAAssetsForAssetType_Language___bloc
 
   if (v9)
   {
-    v10 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v10 = 0;
+    typeCopy = 0;
   }
 
-  v11 = [(SSRMobileAssetProvider *)self _queryMAAssetsForAssetType:v10 Language:v7];
+  v11 = [(SSRMobileAssetProvider *)self _queryMAAssetsForAssetType:typeCopy Language:languageCopy];
 
   return v11;
 }
 
-- (id)installedAssetOfType:(unint64_t)a3 forLanguageCode:(id)a4
+- (id)installedAssetOfType:(unint64_t)type forLanguageCode:(id)code
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277D018F8] supportsSpeakerRecognitionAssets];
-  if (a3 != 3 || (v7 & 1) != 0)
+  codeCopy = code;
+  supportsSpeakerRecognitionAssets = [MEMORY[0x277D018F8] supportsSpeakerRecognitionAssets];
+  if (type != 3 || (supportsSpeakerRecognitionAssets & 1) != 0)
   {
-    v8 = a3;
-    if (a3)
+    typeCopy = type;
+    if (type)
     {
       goto LABEL_10;
     }
@@ -572,7 +572,7 @@ uint64_t __62__SSRMobileAssetProvider__queryMAAssetsForAssetType_Language___bloc
 
   else if (CSIsGibraltarMac())
   {
-    v8 = 7;
+    typeCopy = 7;
     if (![MEMORY[0x277D018F8] isDarwinOS])
     {
       goto LABEL_19;
@@ -583,22 +583,22 @@ uint64_t __62__SSRMobileAssetProvider__queryMAAssetsForAssetType_Language___bloc
 
   if (CSIsGibraltarMac())
   {
-    v8 = 7;
+    typeCopy = 7;
   }
 
   else
   {
-    v8 = 0;
+    typeCopy = 0;
   }
 
 LABEL_10:
   if ([MEMORY[0x277D018F8] isDarwinOS])
   {
 LABEL_11:
-    v9 = [MEMORY[0x277D01850] remoteAssetManager];
-    v10 = [v9 assetForCurrentLanguageOfType:v8];
-    v11 = [v9 languageCode];
-    v12 = [v6 isEqualToString:v11];
+    remoteAssetManager = [MEMORY[0x277D01850] remoteAssetManager];
+    v10 = [remoteAssetManager assetForCurrentLanguageOfType:typeCopy];
+    languageCode = [remoteAssetManager languageCode];
+    v12 = [codeCopy isEqualToString:languageCode];
 
     if (v12)
     {
@@ -621,32 +621,32 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  if (a3 != 8)
+  if (type != 8)
   {
 LABEL_19:
-    v21 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:v8 forLanguage:v6];
+    v21 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:typeCopy forLanguage:codeCopy];
 LABEL_26:
-    v9 = v21;
-    v13 = [v21 getCSAssetOfType:v8];
+    remoteAssetManager = v21;
+    v13 = [v21 getCSAssetOfType:typeCopy];
     goto LABEL_27;
   }
 
-  v14 = [MEMORY[0x277D01788] sharedPreferences];
-  v15 = [v14 isVoiceTriggerRepromptAssetOverridingEnabled];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isVoiceTriggerRepromptAssetOverridingEnabled = [mEMORY[0x277D01788] isVoiceTriggerRepromptAssetOverridingEnabled];
 
-  if (!v15)
+  if (!isVoiceTriggerRepromptAssetOverridingEnabled)
   {
 LABEL_25:
-    v21 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:v8 forLanguage:v6 ofType:3];
+    v21 = [(SSRMobileAssetProvider *)self _installedMobileAssetOfType:typeCopy forLanguage:codeCopy ofType:3];
     goto LABEL_26;
   }
 
-  v16 = [MEMORY[0x277D01788] sharedPreferences];
-  v9 = [v16 fakeVoiceTriggerRepromptAssetPath];
+  mEMORY[0x277D01788]2 = [MEMORY[0x277D01788] sharedPreferences];
+  remoteAssetManager = [mEMORY[0x277D01788]2 fakeVoiceTriggerRepromptAssetPath];
 
-  v17 = [v9 stringByDeletingLastPathComponent];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v18 fileExistsAtPath:v9];
+  stringByDeletingLastPathComponent = [remoteAssetManager stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v19 = [defaultManager fileExistsAtPath:remoteAssetManager];
 
   if (!v19)
   {
@@ -662,7 +662,7 @@ LABEL_25:
     _os_log_impl(&dword_225E12000, v20, OS_LOG_TYPE_DEFAULT, "%s Retuning the override asset", &v25, 0xCu);
   }
 
-  v13 = [MEMORY[0x277D015F8] assetForAssetType:8 resourcePath:v17 configVersion:@"override-asset"];
+  v13 = [MEMORY[0x277D015F8] assetForAssetType:8 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset"];
 
 LABEL_27:
   v23 = *MEMORY[0x277D85DE8];

@@ -1,22 +1,22 @@
 @interface MapsAppTestScrollSearch
 - (BOOL)runTest;
 - (void)_scrollingTest;
-- (void)addFullyDrawnCallback:(id)a3;
-- (void)cleanup:(BOOL)a3;
+- (void)addFullyDrawnCallback:(id)callback;
+- (void)cleanup:(BOOL)cleanup;
 - (void)searchForSearchString;
 - (void)searchResultsDidAppear;
 @end
 
 @implementation MapsAppTestScrollSearch
 
-- (void)addFullyDrawnCallback:(id)a3
+- (void)addFullyDrawnCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self fullyDrawnCallbacks];
-  v6 = [v4 copy];
+  callbackCopy = callback;
+  fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+  v6 = [callbackCopy copy];
 
   v7 = objc_retainBlock(v6);
-  [v5 addObject:v7];
+  [fullyDrawnCallbacks addObject:v7];
 
   [(MapsAppTest *)self setupFullyDrawnNotification:"onFullyDrawn:"];
   v8 = dispatch_time(0, 1000000000);
@@ -30,8 +30,8 @@
 
 - (void)_scrollingTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollView];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
   RPTContentSizeInDirection();
   v6 = v5;
@@ -41,10 +41,10 @@
   v12 = v11;
   v14 = v13;
   v15 = [RPTScrollViewTestParameters alloc];
-  v16 = [(MapsAppTest *)self testName];
-  v17 = [v15 initWithTestName:v16 scrollBounds:1 scrollContentLength:&stru_10162A140 direction:v8 completionHandler:{v10, v12, v14, v6}];
+  testName = [(MapsAppTest *)self testName];
+  v17 = [v15 initWithTestName:testName scrollBounds:1 scrollContentLength:&stru_10162A140 direction:v8 completionHandler:{v10, v12, v14, v6}];
 
-  v18 = [(MapsAppTest *)self testName];
+  testName2 = [(MapsAppTest *)self testName];
   v22 = v17;
   v19 = [NSArray arrayWithObjects:&v22 count:1];
   v21[0] = _NSConcreteStackBlock;
@@ -52,7 +52,7 @@
   v21[2] = sub_1007BD49C;
   v21[3] = &unk_101661B18;
   v21[4] = self;
-  v20 = [RPTGroupScrollTestParameters newWithTestName:v18 parameters:v19 completionHandler:v21];
+  v20 = [RPTGroupScrollTestParameters newWithTestName:testName2 parameters:v19 completionHandler:v21];
 
   [RPTTestRunner runTestWithParameters:v20];
 }
@@ -98,50 +98,50 @@
   v7[4] = self;
   v7[5] = v9;
   [PPTNotificationCenter addOnceObserverForName:@"MapsPinsDroppedForSearchResultsNotification" object:0 usingBlock:v7];
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"searchString"];
+  options = [(MapsAppTest *)self options];
+  v4 = [options objectForKeyedSubscript:@"searchString"];
 
   v5 = objc_alloc_init(SearchFieldItem);
   [(SearchFieldItem *)v5 setSearchString:v4];
 
-  v6 = [(MapsAppTest *)self testCoordinator];
-  [v6 pptTestSearchForFieldItem:v5];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestSearchForFieldItem:v5];
 
   _Block_object_dispose(v9, 8);
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(MapsAppTest *)self dismissTrayWithAssertTrayType:2 completion:0];
   v5.receiver = self;
   v5.super_class = MapsAppTestScrollSearch;
-  [(MapsAppTest *)&v5 cleanup:v3];
+  [(MapsAppTest *)&v5 cleanup:cleanupCopy];
 }
 
 - (BOOL)runTest
 {
   [(MapsAppTest *)self setupForVKTest];
-  v3 = [(MapsAppTest *)self options];
-  [v3 _mapstest_jumpPoint];
+  options = [(MapsAppTest *)self options];
+  [options _mapstest_jumpPoint];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(MapsAppTest *)self options];
-  [v10 _mapstest_pitch];
+  options2 = [(MapsAppTest *)self options];
+  [options2 _mapstest_pitch];
   v12 = v11;
 
-  v13 = [(MapsAppTest *)self options];
-  [v13 _mapstest_yaw];
+  options3 = [(MapsAppTest *)self options];
+  [options3 _mapstest_yaw];
   v15 = v14;
 
-  v16 = [(MapsAppTest *)self options];
-  v17 = [v16 _mapstest_mapType];
+  options4 = [(MapsAppTest *)self options];
+  _mapstest_mapType = [options4 _mapstest_mapType];
 
-  [(MapsAppTest *)self switchToMapType:v17];
-  v18 = [(MapsAppTest *)self mainVKMapView];
-  [v18 _mapstest_jumpToCoords:1 pitch:v5 yaw:v7 altitudeIsRegionSize:{v9, v12, v15}];
+  [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView _mapstest_jumpToCoords:1 pitch:v5 yaw:v7 altitudeIsRegionSize:{v9, v12, v15}];
 
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;

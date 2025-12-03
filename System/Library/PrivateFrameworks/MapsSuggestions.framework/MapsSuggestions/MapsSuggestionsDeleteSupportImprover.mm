@@ -1,15 +1,15 @@
 @interface MapsSuggestionsDeleteSupportImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsDeleteSupportImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_7;
   }
 
-  if ([v3 availableRemovalBehaviors])
+  if ([entryCopy availableRemovalBehaviors])
   {
 LABEL_7:
     v5 = 0;

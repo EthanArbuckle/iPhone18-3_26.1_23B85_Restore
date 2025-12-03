@@ -1,8 +1,8 @@
 @interface VKLabelExternalTextElement
-- (VKLabelExternalTextElement)initWithCoder:(id)a3;
-- (VKLabelExternalTextElement)initWithTextElement:(const void *)a3;
+- (VKLabelExternalTextElement)initWithCoder:(id)coder;
+- (VKLabelExternalTextElement)initWithTextElement:(const void *)element;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKLabelExternalTextElement
@@ -19,9 +19,9 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   p_text = &self->_element.text;
   if (*(&self->_element.text.text.__rep_.__l + 23) < 0)
   {
@@ -29,7 +29,7 @@
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:p_text];
-  [v12 encodeObject:v5 forKey:@"text"];
+  [coderCopy encodeObject:v5 forKey:@"text"];
   p_var0 = &self->_element.text.var0;
   if (SHIBYTE(self[1].super.isa) < 0)
   {
@@ -37,7 +37,7 @@
   }
 
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:p_var0];
-  [v12 encodeObject:v7 forKey:@"textLocale"];
+  [coderCopy encodeObject:v7 forKey:@"textLocale"];
   p_element = &self[1]._element;
   if (self[1]._element.text.text.__rep_.__s.__data_[15] < 0)
   {
@@ -45,7 +45,7 @@
   }
 
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:p_element];
-  [v12 encodeObject:v9 forKey:@"localizedText"];
+  [coderCopy encodeObject:v9 forKey:@"localizedText"];
   v10 = &self[1]._element.text.text.__rep_.__l + 1;
   if (SHIBYTE(self[1]._element.var0) < 0)
   {
@@ -53,21 +53,21 @@
   }
 
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
-  [v12 encodeObject:v11 forKey:@"localizedTextLocale"];
-  [v12 encodeInt32:self->_element.textType forKey:@"textType"];
-  [v12 encodeInt32:self->_element.minZoom forKey:@"minZoom"];
+  [coderCopy encodeObject:v11 forKey:@"localizedTextLocale"];
+  [coderCopy encodeInt32:self->_element.textType forKey:@"textType"];
+  [coderCopy encodeInt32:self->_element.minZoom forKey:@"minZoom"];
 }
 
-- (VKLabelExternalTextElement)initWithCoder:(id)a3
+- (VKLabelExternalTextElement)initWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = VKLabelExternalTextElement;
   v5 = [(VKLabelExternalTextElement *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     v7 = v6;
     std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v36, [v6 UTF8String]);
     if ((v38 & 0x80u) == 0)
@@ -98,7 +98,7 @@
       geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::deallocate<char>(v12, v11);
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textLocale"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textLocale"];
     v14 = v13;
     std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v36, [v13 UTF8String]);
     if ((v38 & 0x80u) == 0)
@@ -129,7 +129,7 @@
       geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::deallocate<char>(v19, v18);
     }
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedText"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedText"];
     v21 = v20;
     std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v36, [v20 UTF8String]);
     if ((v38 & 0x80u) == 0)
@@ -160,7 +160,7 @@
       geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::deallocate<char>(v26, v25);
     }
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTextLocale"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTextLocale"];
     v28 = v27;
     std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v36, [v27 UTF8String]);
     if ((v38 & 0x80u) == 0)
@@ -191,14 +191,14 @@
       geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::deallocate<char>(v33, v32);
     }
 
-    v5[9] = [v4 decodeInt32ForKey:@"textType"];
-    v5[8] = [v4 decodeInt32ForKey:@"minZoom"];
+    v5[9] = [coderCopy decodeInt32ForKey:@"textType"];
+    v5[8] = [coderCopy decodeInt32ForKey:@"minZoom"];
   }
 
   return v5;
 }
 
-- (VKLabelExternalTextElement)initWithTextElement:(const void *)a3
+- (VKLabelExternalTextElement)initWithTextElement:(const void *)element
 {
   v7.receiver = self;
   v7.super_class = VKLabelExternalTextElement;
@@ -206,11 +206,11 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 4) = *a3;
-    std::string::operator=((v4 + 16), (a3 + 8));
-    std::string::operator=((v5 + 40), (a3 + 32));
-    std::string::operator=((v5 + 64), (a3 + 56));
-    std::string::operator=((v5 + 88), (a3 + 80));
+    *(v4 + 4) = *element;
+    std::string::operator=((v4 + 16), (element + 8));
+    std::string::operator=((v5 + 40), (element + 32));
+    std::string::operator=((v5 + 64), (element + 56));
+    std::string::operator=((v5 + 88), (element + 80));
   }
 
   return v5;

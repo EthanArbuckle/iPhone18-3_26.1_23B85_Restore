@@ -1,22 +1,22 @@
 @interface SharedFlowPluginService
-- (void)endTurnWithReply:(id)a3;
-- (void)loadFlowPluginWithBundleId:(id)a3 bundlePath:(id)a4 rcId:(id)a5 hypothesisId:(id)a6 reply:(id)a7;
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5;
+- (void)endTurnWithReply:(id)reply;
+- (void)loadFlowPluginWithBundleId:(id)id bundlePath:(id)path rcId:(id)rcId hypothesisId:(id)hypothesisId reply:(id)reply;
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply;
 @end
 
 @implementation SharedFlowPluginService
 
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v22 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(reply);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   v15 = one-time initialization token for executor;
-  v16 = a3;
+  dataCopy = data;
   swift_unknownObjectRetain();
 
   if (v15 != -1)
@@ -29,8 +29,8 @@
   Logger.debugF(file:function:)();
   v18 = swift_allocObject();
   v18[2] = self;
-  v18[3] = v16;
-  v18[4] = a4;
+  v18[3] = dataCopy;
+  v18[4] = bridge;
   v19 = type metadata accessor for TaskPriority();
   (*(*(v19 - 8) + 56))(v12, 1, 1, v19);
   v20 = swift_allocObject();
@@ -40,7 +40,7 @@
   v20[5] = v18;
   v20[6] = partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned NSError?) -> ();
   v20[7] = v14;
-  v21 = v16;
+  v21 = dataCopy;
   swift_unknownObjectRetain();
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v12, &closure #1 in static AsyncTaskUtils.taskWithCatchingCompletion(completion:do:)partial apply, v20);
@@ -48,21 +48,21 @@
   swift_unknownObjectRelease();
 }
 
-- (void)loadFlowPluginWithBundleId:(id)a3 bundlePath:(id)a4 rcId:(id)a5 hypothesisId:(id)a6 reply:(id)a7
+- (void)loadFlowPluginWithBundleId:(id)id bundlePath:(id)path rcId:(id)rcId hypothesisId:(id)hypothesisId reply:(id)reply
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v13 = &v26 - v12;
-  v14 = _Block_copy(a7);
+  v14 = _Block_copy(reply);
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
   v18 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v20 = v19;
-  if (!a5)
+  if (!rcId)
   {
     v21 = 0;
-    if (a6)
+    if (hypothesisId)
     {
       goto LABEL_3;
     }
@@ -74,8 +74,8 @@ LABEL_5:
   }
 
   v21 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  a5 = v22;
-  if (!a6)
+  rcId = v22;
+  if (!hypothesisId)
   {
     goto LABEL_5;
   }
@@ -88,18 +88,18 @@ LABEL_6:
   v25 = swift_allocObject();
   *(v25 + 16) = v14;
 
-  SharedFlowPluginService.loadFlowPlugin(bundleId:bundlePath:rcId:hypothesisId:reply:)(v15, v17, v18, v20, v21, a5, v13, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ConversationCanHandleResult) -> (), v25);
+  SharedFlowPluginService.loadFlowPlugin(bundleId:bundlePath:rcId:hypothesisId:reply:)(v15, v17, v18, v20, v21, rcId, v13, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ConversationCanHandleResult) -> (), v25);
 
   outlined destroy of ReferenceResolutionClientProtocol?(v13, &_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
 }
 
-- (void)endTurnWithReply:(id)a3
+- (void)endTurnWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v18 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;

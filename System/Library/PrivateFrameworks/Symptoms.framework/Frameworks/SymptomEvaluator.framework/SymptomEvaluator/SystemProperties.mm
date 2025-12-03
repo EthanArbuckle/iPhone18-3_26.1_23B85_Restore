@@ -1,11 +1,11 @@
 @interface SystemProperties
 + (id)sharedInstance;
-+ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)a3;
-+ (unint64_t)retrieveDeviceConfigTypeForKey:(__CFString *)a3;
-+ (unint64_t)retrieveDeviceConfigTypePreferenceForKey:(__CFString *)a3;
-+ (void)deleteDeviceConfigTypePreferenceForKey:(__CFString *)a3;
-+ (void)saveDeviceConfigType:(unint64_t)a3 forKey:(__CFString *)a4;
-+ (void)setDeviceConfigTypeForSerialNumber:(id)a3;
++ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)class;
++ (unint64_t)retrieveDeviceConfigTypeForKey:(__CFString *)key;
++ (unint64_t)retrieveDeviceConfigTypePreferenceForKey:(__CFString *)key;
++ (void)deleteDeviceConfigTypePreferenceForKey:(__CFString *)key;
++ (void)saveDeviceConfigType:(unint64_t)type forKey:(__CFString *)key;
++ (void)setDeviceConfigTypeForSerialNumber:(id)number;
 - (BOOL)carrierBuild;
 - (BOOL)carrierSeedBuild;
 - (BOOL)customerSeedBuild;
@@ -20,10 +20,10 @@
 - (void)buildVariant;
 - (void)refreshDualSIMCapability;
 - (void)refreshDualSIMCapabilityIfNecessary;
-- (void)setCarrierSeedBuildOverride:(id)a3;
-- (void)setInternalBuildDisabledByOverride:(BOOL)a3;
-- (void)setSeedBuildOverride:(id)a3;
-- (void)setVendorBuildOverride:(id)a3;
+- (void)setCarrierSeedBuildOverride:(id)override;
+- (void)setInternalBuildDisabledByOverride:(BOOL)override;
+- (void)setSeedBuildOverride:(id)override;
+- (void)setVendorBuildOverride:(id)override;
 @end
 
 @implementation SystemProperties
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __34__SystemProperties_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_instancePred != -1)
   {
     dispatch_once(&sharedInstance_instancePred, block);
@@ -52,30 +52,30 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)saveDeviceConfigType:(unint64_t)a3 forKey:(__CFString *)a4
++ (void)saveDeviceConfigType:(unint64_t)type forKey:(__CFString *)key
 {
   v11 = *MEMORY[0x277D85DE8];
   v6 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "Saving device config type: %lu", &v9, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  CFPreferencesSetValue(a4, v7, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  CFPreferencesSetValue(key, v7, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
   CFPreferencesAppSynchronize(@"com.apple.symptomsd");
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)retrieveDeviceConfigTypeForKey:(__CFString *)a3
++ (unint64_t)retrieveDeviceConfigTypeForKey:(__CFString *)key
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = key;
   if (retrieveDeviceConfigTypeForKey__pred != -1)
   {
     dispatch_once(&retrieveDeviceConfigTypeForKey__pred, block);
@@ -91,37 +91,37 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
   return result;
 }
 
-+ (unint64_t)retrieveDeviceConfigTypePreferenceForKey:(__CFString *)a3
++ (unint64_t)retrieveDeviceConfigTypePreferenceForKey:(__CFString *)key
 {
-  result = CFPreferencesCopyValue(a3, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  result = CFPreferencesCopyValue(key, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
   if (result)
   {
     v4 = result;
-    v5 = [result unsignedIntegerValue];
+    unsignedIntegerValue = [result unsignedIntegerValue];
 
-    return v5;
+    return unsignedIntegerValue;
   }
 
   return result;
 }
 
-+ (void)deleteDeviceConfigTypePreferenceForKey:(__CFString *)a3
++ (void)deleteDeviceConfigTypePreferenceForKey:(__CFString *)key
 {
-  CFPreferencesSetValue(a3, 0, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(key, 0, @"com.apple.symptomsd", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesAppSynchronize(@"com.apple.symptomsd");
 }
 
-+ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)a3
++ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)class
 {
-  if ((a3 - 1) >= 7)
+  if ((class - 1) >= 7)
   {
     return -1;
   }
 
   else
   {
-    return a3;
+    return class;
   }
 }
 
@@ -129,14 +129,14 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
 {
   productName = self->_productName;
   v22 = MEMORY[0x277CCACA8];
-  v23 = [(SystemProperties *)self deviceClassString];
+  deviceClassString = [(SystemProperties *)self deviceClassString];
   productVersion = self->_productVersion;
   productType = self->_productType;
   buildVersion = self->_buildVersion;
   buildPlatform = self->_buildPlatform;
-  v3 = [(SystemProperties *)self buildVariant];
+  buildVariant = [(SystemProperties *)self buildVariant];
   basebandCapability = self->_basebandCapability;
-  v16 = [(SystemProperties *)self dualSIMCapabilityString];
+  dualSIMCapabilityString = [(SystemProperties *)self dualSIMCapabilityString];
   if ([(NSString *)self->_basebandChipset length])
   {
     basebandChipset = self->_basebandChipset;
@@ -218,7 +218,7 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
     v12 = "no";
   }
 
-  v13 = [v22 stringWithFormat:@"ProductName = %@, ProductClass = %@, ProductType = %@, ProductVersion = %@, BuildVersion = %@, BuildPlatform = %@, BuildVariant = %@, basebandCapability = %s, dualSIMCapability = %s, Baseband Chipset = %@, InternalBuild = %s, VendorBuild = %s, CarrierBuild = %s, SeedBuild = %s, CarrierSeedBuild = %s, CustomerSeedBuild = %s", productName, v23, productType, productVersion, buildVersion, buildPlatform, v3, v6, v16, v15, v7, v8, v9, v10, v11, v12];
+  v13 = [v22 stringWithFormat:@"ProductName = %@, ProductClass = %@, ProductType = %@, ProductVersion = %@, BuildVersion = %@, BuildPlatform = %@, BuildVariant = %@, basebandCapability = %s, dualSIMCapability = %s, Baseband Chipset = %@, InternalBuild = %s, VendorBuild = %s, CarrierBuild = %s, SeedBuild = %s, CarrierSeedBuild = %s, CustomerSeedBuild = %s", productName, deviceClassString, productType, productVersion, buildVersion, buildPlatform, buildVariant, v6, dualSIMCapabilityString, v15, v7, v8, v9, v10, v11, v12];
 
   return v13;
 }
@@ -231,12 +231,12 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
   v2 = [(SystemProperties *)&v37 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 arguments];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    arguments = [processInfo arguments];
 
-    if ([v4 count])
+    if ([arguments count])
     {
-      v5 = [v4 objectAtIndexedSubscript:0];
+      v5 = [arguments objectAtIndexedSubscript:0];
       v2->_isSymptomsdHelper = [v5 hasPrefix:@"/usr/libexec/symptomsd-helper"];
     }
 
@@ -395,12 +395,12 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
   return v2;
 }
 
-+ (void)setDeviceConfigTypeForSerialNumber:(id)a3
++ (void)setDeviceConfigTypeForSerialNumber:(id)number
 {
-  v4 = a3;
-  if ([v4 length])
+  numberCopy = number;
+  if ([numberCopy length])
   {
-    if ([v4 characterAtIndex:{objc_msgSend(v4, "length") - 1}])
+    if ([numberCopy characterAtIndex:{objc_msgSend(numberCopy, "length") - 1}])
     {
       v3 = 1;
     }
@@ -460,21 +460,21 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
 
 - (BOOL)customerSeedBuild
 {
-  v3 = [(SystemProperties *)self seedBuild];
-  if (v3)
+  seedBuild = [(SystemProperties *)self seedBuild];
+  if (seedBuild)
   {
     if ([(SystemProperties *)self internalBuild]|| [(SystemProperties *)self carrierBuild])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(seedBuild) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(SystemProperties *)self vendorBuild];
+      LOBYTE(seedBuild) = ![(SystemProperties *)self vendorBuild];
     }
   }
 
-  return v3;
+  return seedBuild;
 }
 
 - (BOOL)carrierBuild
@@ -520,67 +520,67 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
   return v4;
 }
 
-- (void)setInternalBuildDisabledByOverride:(BOOL)a3
+- (void)setInternalBuildDisabledByOverride:(BOOL)override
 {
-  if (self->_internalBuildDisabledByOverride != a3)
+  if (self->_internalBuildDisabledByOverride != override)
   {
-    self->_internalBuildDisabledByOverride = a3;
+    self->_internalBuildDisabledByOverride = override;
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setCarrierSeedBuildOverride:(id)a3
+- (void)setCarrierSeedBuildOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   p_carrierSeedBuildOverride = &self->_carrierSeedBuildOverride;
-  if (self->_carrierSeedBuildOverride != v5)
+  if (self->_carrierSeedBuildOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_carrierSeedBuildOverride, a3);
+    v8 = overrideCopy;
+    objc_storeStrong(p_carrierSeedBuildOverride, override);
     self->_internalBuildDisabledByOverride = [(NSNumber *)self->_carrierSeedBuildOverride BOOLValue];
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
 
-    v5 = v8;
+    overrideCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_carrierSeedBuildOverride, v5);
+  MEMORY[0x2821F96F8](p_carrierSeedBuildOverride, overrideCopy);
 }
 
-- (void)setSeedBuildOverride:(id)a3
+- (void)setSeedBuildOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   p_seedBuildOverride = &self->_seedBuildOverride;
-  if (self->_seedBuildOverride != v5)
+  if (self->_seedBuildOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_seedBuildOverride, a3);
+    v8 = overrideCopy;
+    objc_storeStrong(p_seedBuildOverride, override);
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
 
-    v5 = v8;
+    overrideCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_seedBuildOverride, v5);
+  MEMORY[0x2821F96F8](p_seedBuildOverride, overrideCopy);
 }
 
-- (void)setVendorBuildOverride:(id)a3
+- (void)setVendorBuildOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   p_vendorBuildOverride = &self->_vendorBuildOverride;
-  if (self->_vendorBuildOverride != v5)
+  if (self->_vendorBuildOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_vendorBuildOverride, a3);
+    v8 = overrideCopy;
+    objc_storeStrong(p_vendorBuildOverride, override);
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
 
-    v5 = v8;
+    overrideCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_vendorBuildOverride, v5);
+  MEMORY[0x2821F96F8](p_vendorBuildOverride, overrideCopy);
 }
 
 - (NSString)buildVariant
@@ -620,34 +620,34 @@ unint64_t __51__SystemProperties_retrieveDeviceConfigTypeForKey___block_invoke(u
       _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_INFO, "Refreshing knowledge of dual SIM capability from %d", &v15, 8u);
     }
 
-    v5 = [(SystemProperties *)self getDualSIMCapabilityFromCoreTelephony];
+    getDualSIMCapabilityFromCoreTelephony = [(SystemProperties *)self getDualSIMCapabilityFromCoreTelephony];
     v6 = configurationLogHandle;
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v15 = 67109120;
-      v16 = v5;
+      v16 = getDualSIMCapabilityFromCoreTelephony;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Result of CTDualSimCapability lookup: %d", &v15, 8u);
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    if (v5 <= 4)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (getDualSIMCapabilityFromCoreTelephony <= 4)
     {
-      v7->_dualSIMCapability = dword_2328168B8[v5];
+      selfCopy->_dualSIMCapability = dword_2328168B8[getDualSIMCapabilityFromCoreTelephony];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     v8 = configurationLogHandle;
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      v9 = v7->_dualSIMCapability;
+      v9 = selfCopy->_dualSIMCapability;
       v15 = 67109120;
       v16 = v9;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "New dual SIM capability: %d", &v15, 8u);
     }
 
-    v10 = v7->_dualSIMCapability & 0xFFFFFFFE;
+    v10 = selfCopy->_dualSIMCapability & 0xFFFFFFFE;
     v11 = configurationLogHandle;
     v12 = os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEFAULT);
     if (v10 == 2)
@@ -715,14 +715,14 @@ LABEL_16:
 
 - (void)buildVariant
 {
-  if ([a1 internalBuild])
+  if ([self internalBuild])
   {
     v6 = *a2;
     *a2 = @"Internal";
 
-    v7 = [a1 carrierBuild];
-    v8 = [a1 seedBuild];
-    if (v8)
+    carrierBuild = [self carrierBuild];
+    seedBuild = [self seedBuild];
+    if (seedBuild)
     {
       v9 = @"Seed";
     }
@@ -732,14 +732,14 @@ LABEL_16:
       v9 = 0;
     }
 
-    if (v7)
+    if (carrierBuild)
     {
       v10 = [*a2 stringByAppendingString:@"Carrier"];
       v11 = *a2;
       *a2 = v10;
     }
 
-    if (v8)
+    if (seedBuild)
     {
       v12 = *a2;
       v13 = v9;
@@ -752,12 +752,12 @@ LABEL_16:
 
   else
   {
-    if ([a1 carrierBuild])
+    if ([self carrierBuild])
     {
       v14 = @"Carrier";
     }
 
-    else if ([a1 vendorBuild])
+    else if ([self vendorBuild])
     {
       v14 = @"Vendor";
     }
@@ -767,11 +767,11 @@ LABEL_16:
       v14 = @"Customer";
     }
 
-    v15 = [a1 seedBuild];
+    seedBuild2 = [self seedBuild];
     v16 = *a2;
     *a2 = v14;
 
-    if (v15)
+    if (seedBuild2)
     {
       v12 = *a2;
       v13 = @"Seed";

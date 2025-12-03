@@ -1,8 +1,8 @@
 @interface NUVisionSegmentationJob
-- (BOOL)render:(id *)a3;
-- (NUVisionSegmentationJob)initWithRequest:(id)a3;
-- (NUVisionSegmentationJob)initWithVisionSegmentationRequest:(id)a3;
-- (__CVBuffer)_combineMultipleObservations:(id)a3 context:(id)a4 error:(id *)a5;
+- (BOOL)render:(id *)render;
+- (NUVisionSegmentationJob)initWithRequest:(id)request;
+- (NUVisionSegmentationJob)initWithVisionSegmentationRequest:(id)request;
+- (__CVBuffer)_combineMultipleObservations:(id)observations context:(id)context error:(id *)error;
 - (id)result;
 - (id)scalePolicy;
 - (void)cleanUp;
@@ -21,20 +21,20 @@
 - (id)result
 {
   v3 = [_NUVisionSegmentationResult alloc];
-  v4 = [(NUVisionSegmentationJob *)self segmentedMatte];
-  v5 = [(NUVisionSegmentationJob *)self confidenceMap];
-  v6 = [(_NUVisionSegmentationResult *)v3 initWithSegmentedMatteBuffer:v4 confidenceMapBuffer:v5];
+  segmentedMatte = [(NUVisionSegmentationJob *)self segmentedMatte];
+  confidenceMap = [(NUVisionSegmentationJob *)self confidenceMap];
+  v6 = [(_NUVisionSegmentationResult *)v3 initWithSegmentedMatteBuffer:segmentedMatte confidenceMapBuffer:confidenceMap];
 
-  v7 = [(NUVisionSegmentationJob *)self segmentationRequest];
-  -[_NUVisionSegmentationResult setSegmentationType:](v6, "setSegmentationType:", [v7 segmentationType]);
+  segmentationRequest = [(NUVisionSegmentationJob *)self segmentationRequest];
+  -[_NUVisionSegmentationResult setSegmentationType:](v6, "setSegmentationType:", [segmentationRequest segmentationType]);
 
   return v6;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v93 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v57 = NUAssertLogger_22592();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -55,8 +55,8 @@
         v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v67 = [v65 callStackSymbols];
-        v68 = [v67 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v65 callStackSymbols];
+        v68 = [callStackSymbols componentsJoinedByString:@"\n"];
         *pixelBufferOut = 138543618;
         *&pixelBufferOut[4] = v64;
         v91 = 2114;
@@ -67,8 +67,8 @@
 
     else if (v61)
     {
-      v62 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v63 = [v62 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v63 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *pixelBufferOut = 138543362;
       *&pixelBufferOut[4] = v63;
       _os_log_error_impl(&dword_1C0184000, v60, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", pixelBufferOut, 0xCu);
@@ -80,40 +80,40 @@
   v5 = [(NURenderJob *)self renderer:?];
   if (v5)
   {
-    v6 = [(NURenderJob *)self outputImage];
-    v7 = [v5 context];
+    outputImage = [(NURenderJob *)self outputImage];
+    context = [v5 context];
     v8 = objc_alloc(MEMORY[0x1E69845B8]);
     v88 = *MEMORY[0x1E6984998];
-    v89 = v7;
+    v89 = context;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
     v10 = +[NUFactory sharedFactory];
-    v11 = [v10 visionSession];
-    v12 = [v8 initWithCIImage:v6 options:v9 session:v11];
+    visionSession = [v10 visionSession];
+    v12 = [v8 initWithCIImage:outputImage options:v9 session:visionSession];
 
-    v13 = [(NUVisionSegmentationJob *)self segmentationRequest];
-    v14 = [v13 segmentationType];
+    segmentationRequest = [(NUVisionSegmentationJob *)self segmentationRequest];
+    segmentationType = [segmentationRequest segmentationType];
 
     v15 = 0;
-    if (v14 <= 1)
+    if (segmentationType <= 1)
     {
-      if (!v14)
+      if (!segmentationType)
       {
-        *a3 = [NUError unknownError:@"Unknown segmentation type" object:0];
+        *render = [NUError unknownError:@"Unknown segmentation type" object:0];
 LABEL_57:
 
         goto LABEL_58;
       }
 
-      if (v14 == 1)
+      if (segmentationType == 1)
       {
-        v77 = v7;
-        v16 = v6;
+        v77 = context;
+        v16 = outputImage;
         v17 = v12;
         v15 = objc_alloc_init(MEMORY[0x1E6984570]);
-        v18 = [(NUVisionSegmentationJob *)self segmentationRequest];
-        v19 = [v18 produceConfidenceMap];
+        segmentationRequest2 = [(NUVisionSegmentationJob *)self segmentationRequest];
+        produceConfidenceMap = [segmentationRequest2 produceConfidenceMap];
 
-        if (v19)
+        if (produceConfidenceMap)
         {
           v20 = objc_alloc_init(MEMORY[0x1E6984570]);
           [v20 setRevision:1];
@@ -127,7 +127,7 @@ LABEL_57:
             v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
             v23 = 0;
             v80 = v16;
-            v7 = v77;
+            context = v77;
             goto LABEL_19;
           }
         }
@@ -137,12 +137,12 @@ LABEL_57:
           v12 = v17;
         }
 
-        v6 = v16;
-        v7 = v77;
+        outputImage = v16;
+        context = v77;
       }
 
 LABEL_18:
-      v80 = v6;
+      v80 = outputImage;
       v86 = v15;
       v23 = 1;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
@@ -157,35 +157,35 @@ LABEL_19:
       if ((v25 & 1) == 0)
       {
         [NUError errorWithCode:1 reason:@"Vision segmentation failed" object:v15 underlyingError:v26];
-        *a3 = LOBYTE(v14) = 0;
+        *render = LOBYTE(segmentationType) = 0;
         v12 = v82;
         v31 = v21;
 LABEL_56:
 
-        v6 = v80;
+        outputImage = v80;
         goto LABEL_57;
       }
 
       v79 = v26;
-      if (v14 != 3)
+      if (segmentationType != 3)
       {
-        if (v14 == 2)
+        if (segmentationType == 2)
         {
-          v32 = [v15 results];
-          v33 = [v32 count];
+          results = [v15 results];
+          v33 = [results count];
 
           if (v33)
           {
-            v14 = [v15 results];
+            segmentationType = [v15 results];
             v84 = 0;
-            v78 = v7;
-            v29 = [(NUVisionSegmentationJob *)self _combineMultipleObservations:v14 context:v7 error:&v84];
+            v78 = context;
+            pixelBuffer = [(NUVisionSegmentationJob *)self _combineMultipleObservations:segmentationType context:context error:&v84];
             v76 = v84;
-            v30 = 0;
+            pixelBuffer2 = 0;
             goto LABEL_29;
           }
 
-          LOBYTE(v14) = 1;
+          LOBYTE(segmentationType) = 1;
 LABEL_35:
           v12 = v82;
           v31 = v21;
@@ -194,36 +194,36 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        if (v14 != 1)
+        if (segmentationType != 1)
         {
-          v14 = 0;
+          segmentationType = 0;
           v31 = v21;
           goto LABEL_53;
         }
       }
 
-      v28 = [v15 results];
-      v14 = [v28 firstObject];
+      results2 = [v15 results];
+      segmentationType = [results2 firstObject];
 
-      if (v14)
+      if (segmentationType)
       {
-        v78 = v7;
-        v29 = [v14 pixelBuffer];
+        v78 = context;
+        pixelBuffer = [segmentationType pixelBuffer];
         if ((v23 & 1) == 0)
         {
           v31 = v21;
-          v35 = [v21 results];
-          v36 = [v35 firstObject];
+          results3 = [v21 results];
+          firstObject = [results3 firstObject];
 
-          if (v36)
+          if (firstObject)
           {
-            v30 = [v36 pixelBuffer];
-            v34 = v29;
+            pixelBuffer2 = [firstObject pixelBuffer];
+            v34 = pixelBuffer;
           }
 
           else
           {
-            v34 = v29;
+            v34 = pixelBuffer;
             if (_NULogOnceToken != -1)
             {
               dispatch_once(&_NULogOnceToken, &__block_literal_global_227_22606);
@@ -239,49 +239,49 @@ LABEL_55:
               _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "%@", pixelBufferOut, 0xCu);
             }
 
-            v30 = 0;
+            pixelBuffer2 = 0;
           }
 
           v76 = 0;
           goto LABEL_42;
         }
 
-        v30 = 0;
+        pixelBuffer2 = 0;
         v76 = 0;
 LABEL_29:
         v31 = v21;
-        v34 = v29;
+        v34 = pixelBuffer;
 LABEL_42:
 
         if (v34)
         {
-          v38 = [(NURenderJob *)self outputGeometry];
-          v39 = [v38 scaledSize];
+          outputGeometry = [(NURenderJob *)self outputGeometry];
+          scaledSize = [outputGeometry scaledSize];
           v75 = v40;
 
           Width = CVPixelBufferGetWidth(v34);
           Height = CVPixelBufferGetHeight(v34);
-          v7 = v78;
+          context = v78;
           if (!CVImageBufferGetColorSpace(v34))
           {
             v41 = +[NUColorSpace linearGrayColorSpace];
             CVBufferSetAttachment(v34, *MEMORY[0x1E6965CE8], [v41 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
           }
 
-          if (v30)
+          if (pixelBuffer2)
           {
-            if (!CVImageBufferGetColorSpace(v30))
+            if (!CVImageBufferGetColorSpace(pixelBuffer2))
             {
               v42 = +[NUColorSpace linearGrayColorSpace];
-              CVBufferSetAttachment(v30, *MEMORY[0x1E6965CE8], [v42 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
+              CVBufferSetAttachment(pixelBuffer2, *MEMORY[0x1E6965CE8], [v42 CGColorSpace], kCVAttachmentMode_ShouldPropagate);
             }
 
-            v43 = [[NUCVPixelBuffer alloc] initWithCVPixelBuffer:v30];
+            v43 = [[NUCVPixelBuffer alloc] initWithCVPixelBuffer:pixelBuffer2];
             [(NUVisionSegmentationJob *)self setConfidenceMap:v43];
           }
 
-          v44 = v39;
-          if (Width != v39 || Height != v75)
+          v44 = scaledSize;
+          if (Width != scaledSize || Height != v75)
           {
             *pixelBufferOut = 0;
             v47 = CVBufferCopyAttachments(v34, kCVAttachmentMode_ShouldPropagate);
@@ -292,9 +292,9 @@ LABEL_42:
             {
               v50 = v47;
               v51 = [MEMORY[0x1E696AD98] numberWithInt:v49];
-              *a3 = [NUError failureError:@"Failed to create output pixel buffer" object:v51];
+              *render = [NUError failureError:@"Failed to create output pixel buffer" object:v51];
 
-              LOBYTE(v14) = 0;
+              LOBYTE(segmentationType) = 0;
             }
 
             else
@@ -309,12 +309,12 @@ LABEL_42:
                 pixelTransferSessionOut = 0;
               }
 
-              LOBYTE(v14) = v52 == 0;
+              LOBYTE(segmentationType) = v52 == 0;
               v50 = v47;
               if (v52)
               {
                 v53 = [MEMORY[0x1E696AD98] numberWithInt:v52];
-                *a3 = [NUError failureError:@"Failed to transfer pixel buffer" object:v53];
+                *render = [NUError failureError:@"Failed to transfer pixel buffer" object:v53];
               }
 
               else
@@ -336,33 +336,33 @@ LABEL_42:
           v45 = [[NUCVPixelBuffer alloc] initWithCVPixelBuffer:v34];
           [(NUVisionSegmentationJob *)self setSegmentedMatte:v45];
 
-          LOBYTE(v14) = 1;
+          LOBYTE(segmentationType) = 1;
           goto LABEL_54;
         }
 
-        v14 = v76;
-        v7 = v78;
+        segmentationType = v76;
+        context = v78;
 LABEL_53:
-        *a3 = [NUError errorWithCode:3 reason:@"No pixelBuffer from vision segmentation" object:v15 underlyingError:v14];
+        *render = [NUError errorWithCode:3 reason:@"No pixelBuffer from vision segmentation" object:v15 underlyingError:segmentationType];
 
-        LOBYTE(v14) = 0;
+        LOBYTE(segmentationType) = 0;
 LABEL_54:
         v12 = v82;
         goto LABEL_55;
       }
 
-      *a3 = [NUError missingError:@"Vision segmentation missing observation" object:v15];
+      *render = [NUError missingError:@"Vision segmentation missing observation" object:v15];
       goto LABEL_35;
     }
 
-    if (v14 == 2)
+    if (segmentationType == 2)
     {
       v24 = 0x1E6984538;
     }
 
     else
     {
-      if (v14 != 3)
+      if (segmentationType != 3)
       {
         goto LABEL_18;
       }
@@ -374,18 +374,18 @@ LABEL_54:
     goto LABEL_18;
   }
 
-  LOBYTE(v14) = 0;
+  LOBYTE(segmentationType) = 0;
 LABEL_58:
 
-  return v14;
+  return segmentationType;
 }
 
-- (__CVBuffer)_combineMultipleObservations:(id)a3 context:(id)a4 error:(id *)a5
+- (__CVBuffer)_combineMultipleObservations:(id)observations context:(id)context error:(id *)error
 {
   v84 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (![v9 count])
+  observationsCopy = observations;
+  contextCopy = context;
+  if (![observationsCopy count])
   {
     v52 = NUAssertLogger_22592();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -406,8 +406,8 @@ LABEL_58:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v60 callStackSymbols];
+        v63 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v81 = v59;
         v82 = 2114;
@@ -418,8 +418,8 @@ LABEL_58:
 
     else if (v56)
     {
-      v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v58 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v81 = v58;
       _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -428,55 +428,55 @@ LABEL_58:
     _NUAssertFailHandler("[NUVisionSegmentationJob _combineMultipleObservations:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVisionSegmentationRequest.m", 207, @"Invalid parameter not satisfying: %s", v64, v65, v66, v67, "observations.count > 0");
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(observationsCopy, "count")}];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v12 = v9;
+  v12 = observationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v74 objects:v79 count:16];
   if (v13)
   {
-    v5 = v13;
+    pixelBuffer = v13;
     v14 = *v75;
     do
     {
-      for (i = 0; i != v5; i = (i + 1))
+      for (i = 0; i != pixelBuffer; i = (i + 1))
       {
         if (*v75 != v14)
         {
           objc_enumerationMutation(v12);
         }
 
-        v16 = [*(*(&v74 + 1) + 8 * i) instanceSegmentationMask];
-        [v11 addObject:v16];
+        instanceSegmentationMask = [*(*(&v74 + 1) + 8 * i) instanceSegmentationMask];
+        [v11 addObject:instanceSegmentationMask];
       }
 
-      v5 = [v12 countByEnumeratingWithState:&v74 objects:v79 count:16];
+      pixelBuffer = [v12 countByEnumeratingWithState:&v74 objects:v79 count:16];
     }
 
-    while (v5);
+    while (pixelBuffer);
   }
 
-  v17 = [(NUVisionSegmentationJob *)self segmentationRequest];
-  v18 = [v17 visionSegmentationPolicy];
+  segmentationRequest = [(NUVisionSegmentationJob *)self segmentationRequest];
+  visionSegmentationPolicy = [segmentationRequest visionSegmentationPolicy];
 
-  if (v18 > 1)
+  if (visionSegmentationPolicy > 1)
   {
-    if (v18 == 3)
+    if (visionSegmentationPolicy == 3)
     {
       v37 = [v11 objectAtIndexedSubscript:0];
-      v5 = [v37 pixelBuffer];
+      pixelBuffer = [v37 pixelBuffer];
 
       if ([v11 count] == 1)
       {
         goto LABEL_29;
       }
 
-      v68 = v10;
-      v19 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:v5];
-      v38 = [MEMORY[0x1E695F608] componentAdd];
-      [v19 setBlendKernel:v38];
+      v68 = contextCopy;
+      v19 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:pixelBuffer];
+      componentAdd = [MEMORY[0x1E695F608] componentAdd];
+      [v19 setBlendKernel:componentAdd];
 
       v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count") - 1}];
       if ([v11 count] < 2)
@@ -501,7 +501,7 @@ LABEL_35:
                 objc_enumerationMutation(v43);
               }
 
-              v50 = [*(*(&v69 + 1) + 8 * j) waitUntilCompletedAndReturnError:a5];
+              v50 = [*(*(&v69 + 1) + 8 * j) waitUntilCompletedAndReturnError:error];
             }
 
             v47 = [v43 countByEnumeratingWithState:&v69 objects:v78 count:16];
@@ -537,16 +537,16 @@ LABEL_35:
         }
 
         v51 = [v11 objectAtIndexedSubscript:v40];
-        *a5 = [NUError errorWithCode:1 reason:@"Merge render failed" object:v51 underlyingError:v45];
+        *error = [NUError errorWithCode:1 reason:@"Merge render failed" object:v51 underlyingError:v45];
 
-        v5 = 0;
+        pixelBuffer = 0;
       }
 
-      v10 = v68;
+      contextCopy = v68;
       goto LABEL_28;
     }
 
-    if (v18 == 2)
+    if (visionSegmentationPolicy == 2)
     {
       v19 = 0;
       if ([v12 count])
@@ -579,14 +579,14 @@ LABEL_35:
 
   else
   {
-    if (!v18)
+    if (!visionSegmentationPolicy)
     {
       v35 = [v11 objectAtIndexedSubscript:0];
       v19 = v35;
       goto LABEL_27;
     }
 
-    if (v18 == 1)
+    if (visionSegmentationPolicy == 1)
     {
       v19 = 0;
       if ([v12 count])
@@ -619,28 +619,28 @@ LABEL_35:
 LABEL_25:
       v35 = v19;
 LABEL_27:
-      v5 = [v35 pixelBuffer];
+      pixelBuffer = [v35 pixelBuffer];
 LABEL_28:
     }
   }
 
 LABEL_29:
 
-  return v5;
+  return pixelBuffer;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NUVisionSegmentationJob *)self segmentationRequest];
-  v3 = [v2 scalePolicy];
+  segmentationRequest = [(NUVisionSegmentationJob *)self segmentationRequest];
+  scalePolicy = [segmentationRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
-- (NUVisionSegmentationJob)initWithRequest:(id)a3
+- (NUVisionSegmentationJob)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_22511);
@@ -684,8 +684,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -701,8 +701,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -718,11 +718,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUVisionSegmentationJob initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVisionSegmentationRequest.m", 183, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUVisionSegmentationJob)initWithVisionSegmentationRequest:(id)a3
+- (NUVisionSegmentationJob)initWithVisionSegmentationRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = NUVisionSegmentationJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface MapsUIImageCache
 + (id)sharedCache;
 + (id)sharedCarCache;
-- (MapsUIImageCache)initWithCarPlay:(BOOL)a3;
+- (MapsUIImageCache)initWithCarPlay:(BOOL)play;
 - (MapsUIImageCacheUserInterfaceDelegate)userInterfaceDelegate;
 - (UIImage)searchImage;
 - (double)screenScale;
 - (void)dealloc;
-- (void)fetchImageForKey:(id)a3 completion:(id)a4;
-- (void)getImageForAppIcon:(id)a3 format:(int)a4 completion:(id)a5;
-- (void)getImageForCarSmallWidget:(id)a3 completion:(id)a4;
-- (void)getImageForCategory:(id)a3 completion:(id)a4;
-- (void)getImageForContact:(id)a3 style:(int64_t)a4 tintColor:(id)a5 size:(double)a6 completion:(id)a7;
-- (void)getImageForInvertedStyleAttributes:(id)a3 completion:(id)a4;
-- (void)getImageForInvertedSuggestion:(id)a3 completion:(id)a4;
-- (void)getImageForMapItem:(id)a3 completion:(id)a4;
-- (void)getImageForMarkerTransparent:(BOOL)a3 completion:(id)a4;
-- (void)getImageForPublisherWithIconIdentifier:(unsigned int)a3 completion:(id)a4;
-- (void)getImageForRowFavorite:(id)a3 inverted:(BOOL)a4 completion:(id)a5;
-- (void)getImageForRowSuggestion:(id)a3 inverted:(BOOL)a4 completion:(id)a5;
-- (void)getImageForSearchResult:(id)a3 completion:(id)a4;
-- (void)getImageForSpec:(id)a3 completion:(id)a4;
-- (void)getImageForSpec:(id)a3 loadImageOnBackgroundQueue:(BOOL)a4 completion:(id)a5;
-- (void)getImageForStyleAttributes:(id)a3 completion:(id)a4;
-- (void)getImageForSuggestion:(id)a3 completion:(id)a4;
-- (void)getImageForTransparentStyleAttributes:(id)a3 completion:(id)a4;
-- (void)handleMemoryWarning:(id)a3;
-- (void)loadImageForKey:(id)a3 loadImageOnBackgroundQueue:(BOOL)a4 withBlock:(id)a5;
-- (void)setImage:(id)a3 forKey:(id)a4;
+- (void)fetchImageForKey:(id)key completion:(id)completion;
+- (void)getImageForAppIcon:(id)icon format:(int)format completion:(id)completion;
+- (void)getImageForCarSmallWidget:(id)widget completion:(id)completion;
+- (void)getImageForCategory:(id)category completion:(id)completion;
+- (void)getImageForContact:(id)contact style:(int64_t)style tintColor:(id)color size:(double)size completion:(id)completion;
+- (void)getImageForInvertedStyleAttributes:(id)attributes completion:(id)completion;
+- (void)getImageForInvertedSuggestion:(id)suggestion completion:(id)completion;
+- (void)getImageForMapItem:(id)item completion:(id)completion;
+- (void)getImageForMarkerTransparent:(BOOL)transparent completion:(id)completion;
+- (void)getImageForPublisherWithIconIdentifier:(unsigned int)identifier completion:(id)completion;
+- (void)getImageForRowFavorite:(id)favorite inverted:(BOOL)inverted completion:(id)completion;
+- (void)getImageForRowSuggestion:(id)suggestion inverted:(BOOL)inverted completion:(id)completion;
+- (void)getImageForSearchResult:(id)result completion:(id)completion;
+- (void)getImageForSpec:(id)spec completion:(id)completion;
+- (void)getImageForSpec:(id)spec loadImageOnBackgroundQueue:(BOOL)queue completion:(id)completion;
+- (void)getImageForStyleAttributes:(id)attributes completion:(id)completion;
+- (void)getImageForSuggestion:(id)suggestion completion:(id)completion;
+- (void)getImageForTransparentStyleAttributes:(id)attributes completion:(id)completion;
+- (void)handleMemoryWarning:(id)warning;
+- (void)loadImageForKey:(id)key loadImageOnBackgroundQueue:(BOOL)queue withBlock:(id)block;
+- (void)setImage:(id)image forKey:(id)key;
 @end
 
 @implementation MapsUIImageCache
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000B484;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195E698 != -1)
   {
     dispatch_once(&qword_10195E698, block);
@@ -53,8 +53,8 @@
   if ([(MapsUIImageCache *)self isCarPlay])
   {
     v2 = +[CarDisplayController sharedInstance];
-    v3 = [v2 screenTraitCollection];
-    [v3 displayScale];
+    screenTraitCollection = [v2 screenTraitCollection];
+    [screenTraitCollection displayScale];
     v5 = v4;
   }
 
@@ -75,12 +75,12 @@
   return WeakRetained;
 }
 
-- (void)fetchImageForKey:(id)a3 completion:(id)a4
+- (void)fetchImageForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  keyCopy = key;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (keyCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -95,7 +95,7 @@
     v11[3] = &unk_101638358;
     v14 = &v15;
     v11[4] = self;
-    v12 = v6;
+    v12 = keyCopy;
     v10 = v8;
     v13 = v10;
     dispatch_sync(lock, v11);
@@ -109,15 +109,15 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)setImage:(id)a3 forKey:(id)a4
+- (void)setImage:(id)image forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imageCopy = image;
+  keyCopy = key;
+  if (keyCopy)
   {
     v22[0] = 0;
     v22[1] = v22;
@@ -130,10 +130,10 @@
     block[1] = 3221225472;
     block[2] = sub_100B15194;
     block[3] = &unk_10165CFA8;
-    v9 = v6;
+    v9 = imageCopy;
     v18 = v9;
-    v19 = self;
-    v20 = v7;
+    selfCopy = self;
+    v20 = keyCopy;
     v21 = v22;
     dispatch_sync(lock, block);
     v11 = _NSConcreteStackBlock;
@@ -157,12 +157,12 @@
   }
 }
 
-- (void)loadImageForKey:(id)a3 loadImageOnBackgroundQueue:(BOOL)a4 withBlock:(id)a5
+- (void)loadImageForKey:(id)key loadImageOnBackgroundQueue:(BOOL)queue withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  keyCopy = key;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (keyCopy && blockCopy)
   {
     lock = self->_lock;
     v13[0] = _NSConcreteStackBlock;
@@ -170,227 +170,227 @@
     v13[2] = sub_100B15420;
     v13[3] = &unk_101661068;
     v13[4] = self;
-    v14 = v8;
-    v16 = a4;
+    v14 = keyCopy;
+    queueCopy = queue;
     v12 = v10;
     v15 = v12;
     dispatch_sync(lock, v13);
-    if (!a4)
+    if (!queue)
     {
       v12[2](v12);
     }
   }
 }
 
-- (void)getImageForSpec:(id)a3 loadImageOnBackgroundQueue:(BOOL)a4 completion:(id)a5
+- (void)getImageForSpec:(id)spec loadImageOnBackgroundQueue:(BOOL)queue completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  specCopy = spec;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_userInterfaceDelegate);
-  [v8 setNightMode:{objc_msgSend(WeakRetained, "isNightMode")}];
+  [specCopy setNightMode:{objc_msgSend(WeakRetained, "isNightMode")}];
 
-  [v8 setIsRTL:MKApplicationLayoutDirectionIsRightToLeft()];
+  [specCopy setIsRTL:MKApplicationLayoutDirectionIsRightToLeft()];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100B156C4;
   v18[3] = &unk_101661A90;
-  v11 = v8;
+  v11 = specCopy;
   v19 = v11;
-  v20 = self;
-  [(MapsUIImageCache *)self loadImageForKey:v11 loadImageOnBackgroundQueue:v6 withBlock:v18];
+  selfCopy = self;
+  [(MapsUIImageCache *)self loadImageForKey:v11 loadImageOnBackgroundQueue:queueCopy withBlock:v18];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100B15740;
   v14[3] = &unk_101638330;
   v15 = v11;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
+  selfCopy2 = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = v11;
   [(MapsUIImageCache *)self fetchImageForKey:v13 completion:v14];
 }
 
-- (void)getImageForSpec:(id)a3 completion:(id)a4
+- (void)getImageForSpec:(id)spec completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  specCopy = spec;
   objc_opt_class();
-  [(MapsUIImageCache *)self getImageForSpec:v7 loadImageOnBackgroundQueue:(objc_opt_isKindOfClass() & 1) == 0 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:specCopy loadImageOnBackgroundQueue:(objc_opt_isKindOfClass() & 1) == 0 completion:completionCopy];
 }
 
-- (void)getImageForAppIcon:(id)a3 format:(int)a4 completion:(id)a5
+- (void)getImageForAppIcon:(id)icon format:(int)format completion:(id)completion
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[MapsUIImageAppIconSpec alloc] initWithBundleIdentifier:v9 format:v5];
+  v5 = *&format;
+  completionCopy = completion;
+  iconCopy = icon;
+  v10 = [[MapsUIImageAppIconSpec alloc] initWithBundleIdentifier:iconCopy format:v5];
 
-  [(MapsUIImageCache *)self getImageForSpec:v10 completion:v8];
+  [(MapsUIImageCache *)self getImageForSpec:v10 completion:completionCopy];
 }
 
-- (void)getImageForPublisherWithIconIdentifier:(unsigned int)a3 completion:(id)a4
+- (void)getImageForPublisherWithIconIdentifier:(unsigned int)identifier completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&identifier;
+  completionCopy = completion;
   v7 = [[MapsUIImagePublisherSpec alloc] initWithIconIdentifier:v4];
-  [(MapsUIImageCache *)self getImageForSpec:v7 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v7 completion:completionCopy];
 }
 
-- (void)getImageForRowFavorite:(id)a3 inverted:(BOOL)a4 completion:(id)a5
+- (void)getImageForRowFavorite:(id)favorite inverted:(BOOL)inverted completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[MapsUIImageSuggestionSpec alloc] initWithFavorite:v9];
+  invertedCopy = inverted;
+  completionCopy = completion;
+  favoriteCopy = favorite;
+  v10 = [[MapsUIImageSuggestionSpec alloc] initWithFavorite:favoriteCopy];
 
-  [(MapsUIImageSuggestionSpec *)v10 setInverted:v5];
-  [(MapsUIImageCache *)self getImageForSpec:v10 completion:v8];
+  [(MapsUIImageSuggestionSpec *)v10 setInverted:invertedCopy];
+  [(MapsUIImageCache *)self getImageForSpec:v10 completion:completionCopy];
 }
 
-- (void)getImageForRowSuggestion:(id)a3 inverted:(BOOL)a4 completion:(id)a5
+- (void)getImageForRowSuggestion:(id)suggestion inverted:(BOOL)inverted completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:v9];
+  invertedCopy = inverted;
+  completionCopy = completion;
+  suggestionCopy = suggestion;
+  v10 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:suggestionCopy];
 
-  [(MapsUIImageSuggestionSpec *)v10 setInverted:v5];
-  [(MapsUIImageCache *)self getImageForSpec:v10 completion:v8];
+  [(MapsUIImageSuggestionSpec *)v10 setInverted:invertedCopy];
+  [(MapsUIImageCache *)self getImageForSpec:v10 completion:completionCopy];
 }
 
-- (void)getImageForCarSmallWidget:(id)a3 completion:(id)a4
+- (void)getImageForCarSmallWidget:(id)widget completion:(id)completion
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:v6];
+  completionCopy = completion;
+  widgetCopy = widget;
+  v7 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:widgetCopy];
 
-  v8 = [(MapsUIImageSuggestionSpec *)v7 suggestionType];
-  if (v8 <= 0xC && ((1 << v8) & 0x1308) != 0)
+  suggestionType = [(MapsUIImageSuggestionSpec *)v7 suggestionType];
+  if (suggestionType <= 0xC && ((1 << suggestionType) & 0x1308) != 0)
   {
     [(MapsUIImageSuggestionSpec *)v7 setIsDashboardWidget:1];
   }
 
-  [(MapsUIImageCache *)self getImageForSpec:v7 completion:v10];
+  [(MapsUIImageCache *)self getImageForSpec:v7 completion:completionCopy];
 }
 
-- (void)getImageForInvertedSuggestion:(id)a3 completion:(id)a4
+- (void)getImageForInvertedSuggestion:(id)suggestion completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:v7];
+  completionCopy = completion;
+  suggestionCopy = suggestion;
+  v8 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:suggestionCopy];
 
   [(MapsUIImageSuggestionSpec *)v8 setInverted:1];
-  [(MapsUIImageCache *)self getImageForSpec:v8 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v8 completion:completionCopy];
 }
 
-- (void)getImageForSuggestion:(id)a3 completion:(id)a4
+- (void)getImageForSuggestion:(id)suggestion completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:v7];
+  completionCopy = completion;
+  suggestionCopy = suggestion;
+  v8 = [[MapsUIImageSuggestionSpec alloc] initWithSuggestion:suggestionCopy];
 
-  [(MapsUIImageCache *)self getImageForSpec:v8 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v8 completion:completionCopy];
 }
 
-- (void)getImageForTransparentStyleAttributes:(id)a3 completion:(id)a4
+- (void)getImageForTransparentStyleAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attributesCopy = attributes;
   v8 = objc_opt_new();
-  [v8 setStyle:v7];
+  [v8 setStyle:attributesCopy];
 
   [v8 setTransparent:1];
-  [(MapsUIImageCache *)self getImageForSpec:v8 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v8 completion:completionCopy];
 }
 
-- (void)getImageForStyleAttributes:(id)a3 completion:(id)a4
+- (void)getImageForStyleAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attributesCopy = attributes;
   v8 = objc_opt_new();
-  [v8 setStyle:v7];
+  [v8 setStyle:attributesCopy];
 
-  [(MapsUIImageCache *)self getImageForSpec:v8 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v8 completion:completionCopy];
 }
 
-- (void)getImageForInvertedStyleAttributes:(id)a3 completion:(id)a4
+- (void)getImageForInvertedStyleAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attributesCopy = attributes;
   v8 = objc_opt_new();
-  [v8 setStyle:v7];
+  [v8 setStyle:attributesCopy];
 
   [v8 setInverted:1];
-  [(MapsUIImageCache *)self getImageForSpec:v8 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v8 completion:completionCopy];
 }
 
-- (void)getImageForMarkerTransparent:(BOOL)a3 completion:(id)a4
+- (void)getImageForMarkerTransparent:(BOOL)transparent completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  transparentCopy = transparent;
+  completionCopy = completion;
   v7 = objc_opt_new();
-  [v7 setTransparent:v4];
-  [(MapsUIImageCache *)self getImageForSpec:v7 completion:v6];
+  [v7 setTransparent:transparentCopy];
+  [(MapsUIImageCache *)self getImageForSpec:v7 completion:completionCopy];
 }
 
-- (void)getImageForContact:(id)a3 style:(int64_t)a4 tintColor:(id)a5 size:(double)a6 completion:(id)a7
+- (void)getImageForContact:(id)contact style:(int64_t)style tintColor:(id)color size:(double)size completion:(id)completion
 {
-  v15 = a3;
-  v12 = a5;
-  v13 = a7;
-  if (v15)
+  contactCopy = contact;
+  colorCopy = color;
+  completionCopy = completion;
+  if (contactCopy)
   {
     v14 = objc_opt_new();
-    [v14 setContact:v15];
-    [v14 setStyle:a4];
-    [v14 setTintColor:v12];
-    if (a6 > 0.0)
+    [v14 setContact:contactCopy];
+    [v14 setStyle:style];
+    [v14 setTintColor:colorCopy];
+    if (size > 0.0)
     {
-      [v14 setSize:a6];
+      [v14 setSize:size];
     }
 
-    [(MapsUIImageCache *)self getImageForSpec:v14 completion:v13];
+    [(MapsUIImageCache *)self getImageForSpec:v14 completion:completionCopy];
   }
 
   else
   {
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)getImageForCategory:(id)a3 completion:(id)a4
+- (void)getImageForCategory:(id)category completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  categoryCopy = category;
   v9 = objc_opt_new();
   [v9 setMarkerFallback:0];
-  v8 = [v7 styleAttributes];
+  styleAttributes = [categoryCopy styleAttributes];
 
-  [v9 setStyle:v8];
-  [(MapsUIImageCache *)self getImageForSpec:v9 completion:v6];
+  [v9 setStyle:styleAttributes];
+  [(MapsUIImageCache *)self getImageForSpec:v9 completion:completionCopy];
 }
 
-- (void)getImageForSearchResult:(id)a3 completion:(id)a4
+- (void)getImageForSearchResult:(id)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  resultCopy = result;
   v9 = objc_opt_new();
-  v8 = [GEOFeatureStyleAttributes styleAttributesForSearchResult:v7];
+  v8 = [GEOFeatureStyleAttributes styleAttributesForSearchResult:resultCopy];
 
   [v9 setStyle:v8];
-  [(MapsUIImageCache *)self getImageForSpec:v9 completion:v6];
+  [(MapsUIImageCache *)self getImageForSpec:v9 completion:completionCopy];
 }
 
-- (void)getImageForMapItem:(id)a3 completion:(id)a4
+- (void)getImageForMapItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  itemCopy = item;
   v9 = objc_opt_new();
-  v8 = [v7 _styleAttributes];
+  _styleAttributes = [itemCopy _styleAttributes];
 
-  [v9 setStyle:v8];
-  [(MapsUIImageCache *)self getImageForSpec:v9 completion:v6];
+  [v9 setStyle:_styleAttributes];
+  [(MapsUIImageCache *)self getImageForSpec:v9 completion:completionCopy];
 }
 
 - (UIImage)searchImage
@@ -417,7 +417,7 @@
   return searchImage;
 }
 
-- (void)handleMemoryWarning:(id)a3
+- (void)handleMemoryWarning:(id)warning
 {
   lock = self->_lock;
   block[0] = _NSConcreteStackBlock;
@@ -438,7 +438,7 @@
   [(MapsUIImageCache *)&v4 dealloc];
 }
 
-- (MapsUIImageCache)initWithCarPlay:(BOOL)a3
+- (MapsUIImageCache)initWithCarPlay:(BOOL)play
 {
   v20.receiver = self;
   v20.super_class = MapsUIImageCache;
@@ -446,7 +446,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isCarPlay = a3;
+    v4->_isCarPlay = play;
     v6 = objc_alloc_init(NSCache);
     imageCache = v5->_imageCache;
     v5->_imageCache = v6;
@@ -462,9 +462,9 @@
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     lock = v5->_lock;
     v5->_lock = v16;
 
@@ -481,7 +481,7 @@
   block[1] = 3221225472;
   block[2] = sub_100B1656C;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195E6A8 != -1)
   {
     dispatch_once(&qword_10195E6A8, block);

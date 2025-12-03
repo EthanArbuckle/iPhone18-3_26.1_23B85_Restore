@@ -1,15 +1,15 @@
 @interface MediaControlsInteractionRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MediaControlsInteractionRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   [(MediaControlsInteractionRecognizer *)self setState:1];
   [(MSVTimer *)self->_interactionTimer invalidate];
   objc_initWeak(&location, self);
@@ -35,17 +35,17 @@ void __61__MediaControlsInteractionRecognizer_touchesBegan_withEvent___block_inv
   [WeakRetained setState:2];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(MediaControlsInteractionRecognizer *)self setState:3, a4];
+  [(MediaControlsInteractionRecognizer *)self setState:3, event];
   [(MSVTimer *)self->_interactionTimer invalidate];
   interactionTimer = self->_interactionTimer;
   self->_interactionTimer = 0;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(MediaControlsInteractionRecognizer *)self setState:4, a4];
+  [(MediaControlsInteractionRecognizer *)self setState:4, event];
   [(MSVTimer *)self->_interactionTimer invalidate];
   interactionTimer = self->_interactionTimer;
   self->_interactionTimer = 0;

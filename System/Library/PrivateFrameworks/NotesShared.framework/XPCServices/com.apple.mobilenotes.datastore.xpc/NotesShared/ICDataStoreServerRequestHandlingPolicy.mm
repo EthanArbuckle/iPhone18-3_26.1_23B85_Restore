@@ -1,14 +1,14 @@
 @interface ICDataStoreServerRequestHandlingPolicy
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3;
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context;
 @end
 
 @implementation ICDataStoreServerRequestHandlingPolicy
 
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 entitlements];
-  v5 = [v4 objectForKeyedSubscript:@"com.apple.security.application-groups"];
+  contextCopy = context;
+  entitlements = [contextCopy entitlements];
+  v5 = [entitlements objectForKeyedSubscript:@"com.apple.security.application-groups"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -32,12 +32,12 @@ LABEL_5:
   else
   {
     v11 = +[ICPaths persistentStoreURL];
-    v12 = [v11 path];
-    [v12 fileSystemRepresentation];
+    path = [v11 path];
+    [path fileSystemRepresentation];
 
-    if (v3)
+    if (contextCopy)
     {
-      [v3 auditToken];
+      [contextCopy auditToken];
     }
 
     v10 = sandbox_check_by_audit_token() == 0;

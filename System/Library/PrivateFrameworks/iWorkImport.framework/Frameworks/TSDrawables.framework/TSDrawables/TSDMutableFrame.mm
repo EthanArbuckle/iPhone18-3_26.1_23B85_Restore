@@ -1,11 +1,11 @@
 @interface TSDMutableFrame
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAssetScale:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAssetScale:(double)scale;
 @end
 
 @implementation TSDMutableFrame
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDFrame alloc];
   v7 = objc_msgSend_frameSpec(self, v5, v6);
@@ -17,7 +17,7 @@
   return v16;
 }
 
-- (void)setAssetScale:(double)a3
+- (void)setAssetScale:(double)scale
 {
   v5 = objc_msgSend_frameSpec(self, a2, v3);
   objc_msgSend_i_minimumAssetScale(v5, v6, v7);

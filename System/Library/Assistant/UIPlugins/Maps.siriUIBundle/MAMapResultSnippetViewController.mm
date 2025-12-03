@@ -1,29 +1,29 @@
 @interface MAMapResultSnippetViewController
-- (MAMapResultSnippetViewController)initWithMapItemSnippet:(id)a3;
-- (double)desiredHeightForWidth:(double)a3;
+- (MAMapResultSnippetViewController)initWithMapItemSnippet:(id)snippet;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_loadMapSnippetView;
 - (id)_mapSnippetView;
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3;
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)loadView;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)mapView:(id)a3 didChooseMapItem:(id)a4 headerTapped:(BOOL)a5;
-- (void)mapViewDidChooseMapAttribution:(id)a3 mapItem:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)mapView:(id)view didChooseMapItem:(id)item headerTapped:(BOOL)tapped;
+- (void)mapViewDidChooseMapAttribution:(id)attribution mapItem:(id)item;
 @end
 
 @implementation MAMapResultSnippetViewController
 
-- (MAMapResultSnippetViewController)initWithMapItemSnippet:(id)a3
+- (MAMapResultSnippetViewController)initWithMapItemSnippet:(id)snippet
 {
   v8.receiver = self;
   v8.super_class = MAMapResultSnippetViewController;
-  v3 = [(MABaseSnippetViewController *)&v8 initWithMapItemSnippet:a3];
+  v3 = [(MABaseSnippetViewController *)&v8 initWithMapItemSnippet:snippet];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MABaseSnippetViewController *)v3 selectedLocalSearchMapItem];
-    v9 = v5;
+    selectedLocalSearchMapItem = [(MABaseSnippetViewController *)v3 selectedLocalSearchMapItem];
+    v9 = selectedLocalSearchMapItem;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
     [(MAMapResultSnippetViewController *)v4 setRequestContext:v6];
   }
@@ -31,33 +31,33 @@
   return v4;
 }
 
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSBundle _ma_bundle];
   v6 = [v5 siriUILocalizedStringForKey:@"Details"];
 
   [(MAMapResultSnippetViewController *)self setNavigationTitle:v6];
-  v7 = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
-  v8 = [v7 label];
-  [(MAMapResultSnippetViewController *)self setTitle:v8];
+  selectedLocalSearchMapItem = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
+  label = [selectedLocalSearchMapItem label];
+  [(MAMapResultSnippetViewController *)self setTitle:label];
 
-  v9 = [v7 distance];
+  distance = [selectedLocalSearchMapItem distance];
 
-  if (v9)
+  if (distance)
   {
-    v10 = [v7 distance];
-    v11 = [v10 value];
-    [v11 doubleValue];
+    distance2 = [selectedLocalSearchMapItem distance];
+    value = [distance2 value];
+    [value doubleValue];
     self->_fallbackDistance = v12;
 
-    v13 = [v7 distance];
-    v14 = [v13 localizedDistanceString];
-    [(MAMapResultSnippetViewController *)self setSubtitle:v14];
+    distance3 = [selectedLocalSearchMapItem distance];
+    localizedDistanceString = [distance3 localizedDistanceString];
+    [(MAMapResultSnippetViewController *)self setSubtitle:localizedDistanceString];
 
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -68,9 +68,9 @@
     v17[1] = 3221225472;
     v17[2] = sub_1A8C;
     v17[3] = &unk_2C6B0;
-    v18 = v7;
-    v19 = self;
-    v20 = v4;
+    v18 = selectedLocalSearchMapItem;
+    selfCopy = self;
+    v20 = handlerCopy;
     v16 = [v15 singleLocationUpdateWithDesiredAccuracy:v17 handler:kCLLocationAccuracyNearestTenMeters timeout:1.0];
     [v16 start];
   }
@@ -81,18 +81,18 @@
   v4.receiver = self;
   v4.super_class = MAMapResultSnippetViewController;
   [(MAMapResultSnippetViewController *)&v4 loadView];
-  v3 = [(MAMapResultSnippetViewController *)self _loadMapSnippetView];
-  [v3 _ma_updateSemanticContentAttribute];
-  [v3 _mapkit_setNeedsLayout];
-  [(MAMapResultSnippetViewController *)self setView:v3];
+  _loadMapSnippetView = [(MAMapResultSnippetViewController *)self _loadMapSnippetView];
+  [_loadMapSnippetView _ma_updateSemanticContentAttribute];
+  [_loadMapSnippetView _mapkit_setNeedsLayout];
+  [(MAMapResultSnippetViewController *)self setView:_loadMapSnippetView];
 }
 
 - (void)dealloc
 {
   if ([(MAMapResultSnippetViewController *)self isViewLoaded])
   {
-    v3 = [(MAMapResultSnippetViewController *)self _mapSnippetView];
-    [v3 setDelegate:0];
+    _mapSnippetView = [(MAMapResultSnippetViewController *)self _mapSnippetView];
+    [_mapSnippetView setDelegate:0];
   }
 
   v4.receiver = self;
@@ -100,11 +100,11 @@
   [(MABaseSnippetViewController *)&v4 dealloc];
 }
 
-- (void)mapView:(id)a3 didChooseMapItem:(id)a4 headerTapped:(BOOL)a5
+- (void)mapView:(id)view didChooseMapItem:(id)item headerTapped:(BOOL)tapped
 {
-  v5 = a5;
-  v7 = a4;
-  if (v5)
+  tappedCopy = tapped;
+  itemCopy = item;
+  if (tappedCopy)
   {
     v8 = 6042;
   }
@@ -114,35 +114,35 @@
     v8 = 6007;
   }
 
-  v9 = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
-  v10 = [v9 placeData2];
-  [(MABaseSnippetViewController *)self captureUserAction:v8 mapItemPlaceData:v10];
+  selectedLocalSearchMapItem = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
+  placeData2 = [selectedLocalSearchMapItem placeData2];
+  [(MABaseSnippetViewController *)self captureUserAction:v8 mapItemPlaceData:placeData2];
 
-  v11 = [(MAMapResultSnippetViewController *)self delegate];
-  v12 = [v7 commands];
-  [v11 siriViewController:self performAceCommands:v12];
+  delegate = [(MAMapResultSnippetViewController *)self delegate];
+  commands = [itemCopy commands];
+  [delegate siriViewController:self performAceCommands:commands];
 
   v13 = +[NSMutableDictionary dictionary];
-  v14 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v15 = [v14 regionOfInterestRadiusInMiles];
-  [v15 doubleValue];
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  regionOfInterestRadiusInMiles = [mapItemSnippet regionOfInterestRadiusInMiles];
+  [regionOfInterestRadiusInMiles doubleValue];
   v17 = v16;
 
-  v18 = [v14 regionOfInterestRadiusInMiles];
+  regionOfInterestRadiusInMiles2 = [mapItemSnippet regionOfInterestRadiusInMiles];
 
-  if (v18 && v17 > 0.0)
+  if (regionOfInterestRadiusInMiles2 && v17 > 0.0)
   {
     v19 = [NSNumber numberWithDouble:v17 * 1609.344];
     [v13 setObject:v19 forKey:MKLaunchOptionsMapRadiusInMetersKey];
   }
 
-  if ([v7 isCurrentLocation])
+  if ([itemCopy isCurrentLocation])
   {
     v20 = [NSNumber numberWithBool:1];
     [v13 setObject:v20 forKey:MKLaunchOptionsCurrentLocationPlacecardKey];
   }
 
-  if ([v7 isParkingLocation])
+  if ([itemCopy isParkingLocation])
   {
     v21 = [NSURL URLWithString:@"x-maps-bulletin://?MapsPushNotificationType=ParkedCar"];
     [(MABaseSnippetViewController *)self openURL:v21 completion:0];
@@ -150,18 +150,18 @@
     goto LABEL_18;
   }
 
-  v22 = [v14 items];
-  v23 = [v22 indexOfObject:v7];
+  items = [mapItemSnippet items];
+  v23 = [items indexOfObject:itemCopy];
 
   if (v23 != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_14;
   }
 
-  v24 = [(MABaseSnippetViewController *)self selectedMapItemIndex];
-  if (v24 != 0x7FFFFFFFFFFFFFFFLL)
+  selectedMapItemIndex = [(MABaseSnippetViewController *)self selectedMapItemIndex];
+  if (selectedMapItemIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v23 = v24;
+    v23 = selectedMapItemIndex;
 LABEL_14:
     v25 = [NSNumber numberWithUnsignedInteger:v23];
     [v13 setObject:v25 forKeyedSubscript:MKLaunchOptionsSelectedIndexKey];
@@ -171,7 +171,7 @@ LABEL_14:
   v28 = 3221225472;
   v29 = sub_20B8;
   v30 = &unk_2C6D8;
-  v31 = v14;
+  v31 = mapItemSnippet;
   v32 = v13;
   v26 = [(MABaseSnippetViewController *)self generateURLWithSession:&v27];
   if (v26)
@@ -182,41 +182,41 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)mapViewDidChooseMapAttribution:(id)a3 mapItem:(id)a4
+- (void)mapViewDidChooseMapAttribution:(id)attribution mapItem:(id)item
 {
-  v7 = a3;
-  v6 = [a4 _placeDataAsData];
-  [(MABaseSnippetViewController *)self captureUserAction:6041 resultIndex:0xFFFFFFFFLL mapItemPlaceData:v6];
+  attributionCopy = attribution;
+  _placeDataAsData = [item _placeDataAsData];
+  [(MABaseSnippetViewController *)self captureUserAction:6041 resultIndex:0xFFFFFFFFLL mapItemPlaceData:_placeDataAsData];
 
-  [(MABaseSnippetViewController *)self openURL:v7 completion:0];
+  [(MABaseSnippetViewController *)self openURL:attributionCopy completion:0];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = [a4 lastObject];
-  v5 = [(MAMapResultSnippetViewController *)self _mapSnippetView];
-  [v5 updateMapZoom:-[MABaseSnippetViewController appearing](self withLocation:{"appearing") ^ 1, v6}];
+  lastObject = [locations lastObject];
+  _mapSnippetView = [(MAMapResultSnippetViewController *)self _mapSnippetView];
+  [_mapSnippetView updateMapZoom:-[MABaseSnippetViewController appearing](self withLocation:{"appearing") ^ 1, lastObject}];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v7.receiver = self;
   v7.super_class = MAMapResultSnippetViewController;
-  v4 = a3;
-  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:v4];
-  v5 = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:authorizationCopy];
+  authorizationStatus = [authorizationCopy authorizationStatus];
 
-  if (v5 == 2)
+  if (authorizationStatus == 2)
   {
-    v6 = [(MAMapResultSnippetViewController *)self _mapSnippetView];
-    [v6 updateMapZoom:1 withLocation:0];
+    _mapSnippetView = [(MAMapResultSnippetViewController *)self _mapSnippetView];
+    [_mapSnippetView updateMapZoom:1 withLocation:0];
   }
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(MAMapResultSnippetViewController *)self _mapSnippetView];
-  [v4 desiredHeightForWidth:a3];
+  _mapSnippetView = [(MAMapResultSnippetViewController *)self _mapSnippetView];
+  [_mapSnippetView desiredHeightForWidth:width];
   v6 = v5;
 
   return v6;
@@ -224,20 +224,20 @@ LABEL_18:
 
 - (id)_loadMapSnippetView
 {
-  v3 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v4 = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  selectedLocalSearchMapItem = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
   v5 = [MAMapSnippetView alloc];
-  v6 = [v3 userCurrentLocation];
-  v7 = [v6 BOOLValue];
-  v8 = [v3 regionOfInterestRadiusInMiles];
-  v9 = [(MAMapSnippetView *)v5 initWithFrame:v4 mapItem:v7 itemRepresentsCurrentLocation:v8 regionOfInterest:self fallbackDistance:CGRectZero.origin.x reservationDelegate:CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, self->_fallbackDistance];
+  userCurrentLocation = [mapItemSnippet userCurrentLocation];
+  bOOLValue = [userCurrentLocation BOOLValue];
+  regionOfInterestRadiusInMiles = [mapItemSnippet regionOfInterestRadiusInMiles];
+  v9 = [(MAMapSnippetView *)v5 initWithFrame:selectedLocalSearchMapItem mapItem:bOOLValue itemRepresentsCurrentLocation:regionOfInterestRadiusInMiles regionOfInterest:self fallbackDistance:CGRectZero.origin.x reservationDelegate:CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, self->_fallbackDistance];
 
   [(MAMapSnippetView *)v9 setDelegate:self];
-  if ([v3 usesFixedLocation])
+  if ([mapItemSnippet usesFixedLocation])
   {
-    v10 = [v3 searchRegionCenter];
-    v11 = [v10 clRepresentation];
-    [(MAMapSnippetView *)v9 updateMapZoom:0 withLocation:v11];
+    searchRegionCenter = [mapItemSnippet searchRegionCenter];
+    clRepresentation = [searchRegionCenter clRepresentation];
+    [(MAMapSnippetView *)v9 updateMapZoom:0 withLocation:clRepresentation];
   }
 
   return v9;
@@ -245,19 +245,19 @@ LABEL_18:
 
 - (id)_mapSnippetView
 {
-  v3 = [(MAMapResultSnippetViewController *)self view];
+  view = [(MAMapResultSnippetViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MAMapResultSnippetViewController *)self view];
+    view2 = [(MAMapResultSnippetViewController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view2 = 0;
   }
 
-  return v4;
+  return view2;
 }
 
 @end

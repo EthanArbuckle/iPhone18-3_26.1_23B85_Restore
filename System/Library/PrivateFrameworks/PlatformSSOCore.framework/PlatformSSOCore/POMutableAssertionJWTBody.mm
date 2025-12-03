@@ -1,82 +1,82 @@
 @interface POMutableAssertionJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setAud:(id)a3;
-- (void)setExp:(id)a3;
-- (void)setIat:(id)a3;
-- (void)setIss:(id)a3;
-- (void)setNonce:(id)a3;
-- (void)setRequest_nonce:(id)a3;
-- (void)setScope:(id)a3;
-- (void)setSub:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setAud:(id)aud;
+- (void)setExp:(id)exp;
+- (void)setIat:(id)iat;
+- (void)setIss:(id)iss;
+- (void)setNonce:(id)nonce;
+- (void)setRequest_nonce:(id)request_nonce;
+- (void)setScope:(id)scope;
+- (void)setSub:(id)sub;
 @end
 
 @implementation POMutableAssertionJWTBody
 
-- (void)setAud:(id)a3
+- (void)setAud:(id)aud
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"aud"];
+  audCopy = aud;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:audCopy forKeyedSubscript:@"aud"];
 }
 
-- (void)setIss:(id)a3
+- (void)setIss:(id)iss
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"iss"];
+  issCopy = iss;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:issCopy forKeyedSubscript:@"iss"];
 }
 
-- (void)setSub:(id)a3
+- (void)setSub:(id)sub
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"sub"];
+  subCopy = sub;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:subCopy forKeyedSubscript:@"sub"];
 }
 
-- (void)setIat:(id)a3
+- (void)setIat:(id)iat
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [iat timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"iat"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"iat"];
 }
 
-- (void)setExp:(id)a3
+- (void)setExp:(id)exp
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [exp timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"exp"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"exp"];
 }
 
-- (void)setScope:(id)a3
+- (void)setScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"scope"];
+  scopeCopy = scope;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:scopeCopy forKeyedSubscript:@"scope"];
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"nonce"];
+  nonceCopy = nonce;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nonceCopy forKeyedSubscript:@"nonce"];
 }
 
-- (void)setRequest_nonce:(id)a3
+- (void)setRequest_nonce:(id)request_nonce
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"request_nonce"];
+  request_nonceCopy = request_nonce;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:request_nonceCopy forKeyedSubscript:@"request_nonce"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

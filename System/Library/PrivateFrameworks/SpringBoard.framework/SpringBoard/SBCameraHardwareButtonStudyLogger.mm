@@ -1,21 +1,21 @@
 @interface SBCameraHardwareButtonStudyLogger
 - (SBCameraHardwareButtonStudyLogger)init;
-- (void)_handleApplicationProcessStateDidChangeNotification:(id)a3;
+- (void)_handleApplicationProcessStateDidChangeNotification:(id)notification;
 - (void)_startProcessMonitor;
 - (void)_stopProcessMonitor;
 - (void)dealloc;
-- (void)logButtonEvent:(__IOHIDEvent *)a3;
-- (void)logPocketState:(int64_t)a3;
+- (void)logButtonEvent:(__IOHIDEvent *)event;
+- (void)logPocketState:(int64_t)state;
 @end
 
 @implementation SBCameraHardwareButtonStudyLogger
 
 - (SBCameraHardwareButtonStudyLogger)init
 {
-  v3 = [MEMORY[0x277D6A798] sharedInstance];
-  v4 = [v3 isEnabled];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v4)
+  if (isEnabled)
   {
     v13.receiver = self;
     v13.super_class = SBCameraHardwareButtonStudyLogger;
@@ -24,8 +24,8 @@
     {
       v6 = objc_alloc(MEMORY[0x277D6A7A0]);
       v7 = objc_alloc(MEMORY[0x277D6A790]);
-      v8 = [MEMORY[0x277D6A798] sharedInstance];
-      v9 = [v7 initWithLogger:v8];
+      mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
+      v9 = [v7 initWithLogger:mEMORY[0x277D6A798]2];
       v10 = [v6 initWithLogger:v9];
       logger = v5->_logger;
       v5->_logger = v10;
@@ -67,7 +67,7 @@ id __41__SBCameraHardwareButtonStudyLogger_init__block_invoke_2()
   return v6;
 }
 
-- (void)logButtonEvent:(__IOHIDEvent *)a3
+- (void)logButtonEvent:(__IOHIDEvent *)event
 {
   [(SLGNotificationActivatedLogger *)self->_logger setActive:1];
   logger = self->_logger;
@@ -75,7 +75,7 @@ id __41__SBCameraHardwareButtonStudyLogger_init__block_invoke_2()
   v6[1] = 3221225472;
   v6[2] = __52__SBCameraHardwareButtonStudyLogger_logButtonEvent___block_invoke;
   v6[3] = &__block_descriptor_40_e5__8__0l;
-  v6[4] = a3;
+  v6[4] = event;
   [(SLGNotificationActivatedLogger *)logger logBlock:v6 domain:@"com.apple.SpringBoard.cameraButton"];
 }
 
@@ -104,14 +104,14 @@ id __52__SBCameraHardwareButtonStudyLogger_logButtonEvent___block_invoke()
   return v8;
 }
 
-- (void)logPocketState:(int64_t)a3
+- (void)logPocketState:(int64_t)state
 {
   logger = self->_logger;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__SBCameraHardwareButtonStudyLogger_logPocketState___block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a3;
+  v4[4] = state;
   [(SLGNotificationActivatedLogger *)logger logBlock:v4 domain:@"com.apple.SpringBoard.cameraButton"];
 }
 
@@ -135,18 +135,18 @@ id __52__SBCameraHardwareButtonStudyLogger_logPocketState___block_invoke(uint64_
   [(SBCameraHardwareButtonStudyLogger *)&v3 dealloc];
 }
 
-- (void)_handleApplicationProcessStateDidChangeNotification:(id)a3
+- (void)_handleApplicationProcessStateDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [v4 processState];
-  if ([v5 isForeground])
+  object = [notification object];
+  processState = [object processState];
+  if ([processState isForeground])
   {
     logger = self->_logger;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __89__SBCameraHardwareButtonStudyLogger__handleApplicationProcessStateDidChangeNotification___block_invoke;
     v7[3] = &unk_2783A91C8;
-    v8 = v4;
+    v8 = object;
     [(SLGNotificationActivatedLogger *)logger logBlock:v7 domain:@"com.apple.SpringBoard.cameraButton"];
   }
 }
@@ -167,8 +167,8 @@ id __89__SBCameraHardwareButtonStudyLogger__handleApplicationProcessStateDidChan
   if (!self->_monitoringProcesses)
   {
     self->_monitoringProcesses = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__handleApplicationProcessStateDidChangeNotification_ name:@"SBApplicationProcessStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleApplicationProcessStateDidChangeNotification_ name:@"SBApplicationProcessStateDidChange" object:0];
   }
 }
 
@@ -177,8 +177,8 @@ id __89__SBCameraHardwareButtonStudyLogger__handleApplicationProcessStateDidChan
   if (self->_monitoringProcesses)
   {
     self->_monitoringProcesses = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 }
 

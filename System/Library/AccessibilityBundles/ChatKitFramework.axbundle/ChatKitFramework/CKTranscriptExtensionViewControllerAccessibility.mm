@@ -9,8 +9,8 @@
   v4.receiver = self;
   v4.super_class = CKTranscriptExtensionViewControllerAccessibility;
   [(CKTranscriptExtensionViewControllerAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CKTranscriptExtensionViewControllerAccessibility *)self _accessibilityWindow];
-  [v3 setAccessibilityIdentifier:@"AXMessagesExtensionWindow"];
+  _accessibilityWindow = [(CKTranscriptExtensionViewControllerAccessibility *)self _accessibilityWindow];
+  [_accessibilityWindow setAccessibilityIdentifier:@"AXMessagesExtensionWindow"];
 }
 
 @end

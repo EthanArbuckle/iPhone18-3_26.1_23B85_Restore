@@ -1,26 +1,26 @@
 @interface AXInvertColors_SpringBoardUIServices
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SpringBoardUIServices
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUILegibilityLabel" hasInstanceMethod:@"legibilitySettings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBUIProudLockIconView"];
-  [v3 validateClass:@"SBUIPasscodeLockViewFactory" hasClassMethod:@"_passcodeLockViewForStyle:withLightStyle:" withFullSignature:{"@", "i", "B", 0}];
-  [v3 validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"_activeViewsForState:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUILegibilityLabel" hasInstanceMethod:@"legibilitySettings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBUIProudLockIconView"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewFactory" hasClassMethod:@"_passcodeLockViewForStyle:withLightStyle:" withFullSignature:{"@", "i", "B", 0}];
+  [validationsCopy validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"_activeViewsForState:" withFullSignature:{"@", "q", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SBPasscodeNumberPadButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SBUILegibilityLabelInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SBUIPasscodeLockViewFactoryInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SBUIProudLockIconViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SBPasscodeNumberPadButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SBUILegibilityLabelInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SBUIPasscodeLockViewFactoryInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SBUIProudLockIconViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

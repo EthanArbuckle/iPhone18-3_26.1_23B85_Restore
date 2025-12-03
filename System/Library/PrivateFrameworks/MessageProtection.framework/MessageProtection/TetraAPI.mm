@@ -1,40 +1,40 @@
 @interface TetraAPI
-+ (BOOL)markForStateResetWithOurURI:(id)a3 ourPushToken:(id)a4 theirURI:(id)a5 theirPushToken:(id)a6 theirRegistration:(id)a7 signedByOur:(id)a8;
-+ (id)sealNoRatchetWithMessage:(id)a3 authenticatedData:(id)a4 sendingURI:(id)a5 sendingPushToken:(id)a6 receivingURI:(id)a7 receivingPushToken:(id)a8 encryptedAttributes:(id)a9 receiverIdentity:(id)a10 senderIdentity:(id)a11 error:(id *)a12;
-+ (id)sealWithMessage:(id)a3 authenticatedData:(id)a4 guid:(id)a5 sendingURI:(id)a6 sendingPushToken:(id)a7 receivingURI:(id)a8 receivingPushToken:(id)a9 receiverRegistration:(id)a10 encryptedAttributes:(id)a11 resetState:(BOOL)a12 signedBy:(id)a13 error:(id *)a14;
-+ (void)openWithMessage:(id)a3 authenticatedData:(id)a4 guid:(id)a5 sendingURI:(id)a6 sendingPushToken:(id)a7 receivingURI:(id)a8 receivingPushToken:(id)a9 theirIdentity:(id)a10 signedBy:(id)a11 tetraVersion:(unsigned int)a12 ourPrekeys:(id)a13 ourSigningPublicKeyCompactRepresentation:(id)a14 decryptionBlock:(id)aBlock;
++ (BOOL)markForStateResetWithOurURI:(id)i ourPushToken:(id)token theirURI:(id)rI theirPushToken:(id)pushToken theirRegistration:(id)registration signedByOur:(id)our;
++ (id)sealNoRatchetWithMessage:(id)message authenticatedData:(id)data sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken encryptedAttributes:(id)attributes receiverIdentity:(id)self0 senderIdentity:(id)self1 error:(id *)self2;
++ (id)sealWithMessage:(id)message authenticatedData:(id)data guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken receiverRegistration:(id)self0 encryptedAttributes:(id)self1 resetState:(BOOL)self2 signedBy:(id)self3 error:(id *)self4;
++ (void)openWithMessage:(id)message authenticatedData:(id)data guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken theirIdentity:(id)self0 signedBy:(id)self1 tetraVersion:(unsigned int)self2 ourPrekeys:(id)self3 ourSigningPublicKeyCompactRepresentation:(id)self4 decryptionBlock:(id)aBlock;
 - (_TtC17MessageProtection8TetraAPI)init;
 @end
 
 @implementation TetraAPI
 
-+ (BOOL)markForStateResetWithOurURI:(id)a3 ourPushToken:(id)a4 theirURI:(id)a5 theirPushToken:(id)a6 theirRegistration:(id)a7 signedByOur:(id)a8
++ (BOOL)markForStateResetWithOurURI:(id)i ourPushToken:(id)token theirURI:(id)rI theirPushToken:(id)pushToken theirRegistration:(id)registration signedByOur:(id)our
 {
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  LOBYTE(v15) = specialized static TetraAPI.markForStateReset(ourURI:ourPushToken:theirURI:theirPushToken:theirRegistration:signedByOur:)(v12, v14, v18, v15, v17, v19, v20, v21);
+  tokenCopy = token;
+  pushTokenCopy = pushToken;
+  registrationCopy = registration;
+  ourCopy = our;
+  LOBYTE(v15) = specialized static TetraAPI.markForStateReset(ourURI:ourPushToken:theirURI:theirPushToken:theirRegistration:signedByOur:)(v12, v14, tokenCopy, v15, v17, pushTokenCopy, registrationCopy, ourCopy);
 
   return v15 & 1;
 }
 
-+ (id)sealWithMessage:(id)a3 authenticatedData:(id)a4 guid:(id)a5 sendingURI:(id)a6 sendingPushToken:(id)a7 receivingURI:(id)a8 receivingPushToken:(id)a9 receiverRegistration:(id)a10 encryptedAttributes:(id)a11 resetState:(BOOL)a12 signedBy:(id)a13 error:(id *)a14
++ (id)sealWithMessage:(id)message authenticatedData:(id)data guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken receiverRegistration:(id)self0 encryptedAttributes:(id)self1 resetState:(BOOL)self2 signedBy:(id)self3 error:(id *)self4
 {
-  v38 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v42 = a7;
-  v22 = a8;
-  v41 = a9;
-  v35 = a10;
-  v23 = a11;
-  v24 = a13;
+  messageCopy = message;
+  dataCopy = data;
+  guidCopy = guid;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  registrationCopy = registration;
+  attributesCopy = attributes;
+  byCopy = by;
   v37 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v40 = v25;
 
@@ -48,7 +48,7 @@
   v32 = v31;
 
   v33 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v43 = specialized static TetraAPI.seal(message:authenticatedData:guid:sendingURI:sendingPushToken:receivingURI:receivingPushToken:receiverRegistration:encryptedAttributes:resetState:signedBy:)(v37, v40, v39, v27, v36, v29, v42, v30, v32, v41, v35, v33, a12, v24);
+  v43 = specialized static TetraAPI.seal(message:authenticatedData:guid:sendingURI:sendingPushToken:receivingURI:receivingPushToken:receiverRegistration:encryptedAttributes:resetState:signedBy:)(v37, v40, v39, v27, v36, v29, tokenCopy, v30, v32, pushTokenCopy, registrationCopy, v33, state, byCopy);
 
   outlined consume of Data._Representation(v39, v27);
   outlined consume of Data._Representation(v37, v40);
@@ -56,20 +56,20 @@
   return v43;
 }
 
-+ (void)openWithMessage:(id)a3 authenticatedData:(id)a4 guid:(id)a5 sendingURI:(id)a6 sendingPushToken:(id)a7 receivingURI:(id)a8 receivingPushToken:(id)a9 theirIdentity:(id)a10 signedBy:(id)a11 tetraVersion:(unsigned int)a12 ourPrekeys:(id)a13 ourSigningPublicKeyCompactRepresentation:(id)a14 decryptionBlock:(id)aBlock
++ (void)openWithMessage:(id)message authenticatedData:(id)data guid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken theirIdentity:(id)self0 signedBy:(id)self1 tetraVersion:(unsigned int)self2 ourPrekeys:(id)self3 ourSigningPublicKeyCompactRepresentation:(id)self4 decryptionBlock:(id)aBlock
 {
   v21 = _Block_copy(aBlock);
-  v45 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v48 = a7;
-  v25 = a8;
-  v26 = a9;
-  v49 = a10;
-  v40 = a11;
-  v27 = a13;
-  v50 = a14;
+  messageCopy = message;
+  dataCopy = data;
+  guidCopy = guid;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  identityCopy = identity;
+  byCopy = by;
+  prekeysCopy = prekeys;
+  representationCopy = representation;
   v28 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v47 = v29;
 
@@ -91,7 +91,7 @@
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v21);
-  specialized static TetraAPI.open(message:authenticatedData:guid:sendingURI:sendingPushToken:receivingURI:receivingPushToken:theirIdentity:signedBy:tetraVersion:ourPrekeys:ourSigningPublicKeyCompactRepresentation:decryptionBlock:)(v28, v47, v46, v44, v43, v42, v41, v39, v48, v34, v36, v26, a10, v40, a12, v38, v50, ObjCClassMetadata, v21);
+  specialized static TetraAPI.open(message:authenticatedData:guid:sendingURI:sendingPushToken:receivingURI:receivingPushToken:theirIdentity:signedBy:tetraVersion:ourPrekeys:ourSigningPublicKeyCompactRepresentation:decryptionBlock:)(v28, v47, v46, v44, v43, v42, v41, v39, tokenCopy, v34, v36, pushTokenCopy, identity, byCopy, version, v38, representationCopy, ObjCClassMetadata, v21);
   _Block_release(v21);
   _Block_release(v21);
 
@@ -106,17 +106,17 @@
   return [(TetraAPI *)&v3 init];
 }
 
-+ (id)sealNoRatchetWithMessage:(id)a3 authenticatedData:(id)a4 sendingURI:(id)a5 sendingPushToken:(id)a6 receivingURI:(id)a7 receivingPushToken:(id)a8 encryptedAttributes:(id)a9 receiverIdentity:(id)a10 senderIdentity:(id)a11 error:(id *)a12
++ (id)sealNoRatchetWithMessage:(id)message authenticatedData:(id)data sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken encryptedAttributes:(id)attributes receiverIdentity:(id)self0 senderIdentity:(id)self1 error:(id *)self2
 {
-  v38 = a3;
-  v17 = a4;
-  v18 = a5;
-  v41 = a6;
-  v19 = a7;
-  v40 = a8;
-  v20 = a9;
-  v35 = a10;
-  v21 = a11;
+  messageCopy = message;
+  dataCopy = data;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  attributesCopy = attributes;
+  identityCopy = identity;
+  senderIdentityCopy = senderIdentity;
   v36 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v23 = v22;
 
@@ -131,7 +131,7 @@
   v30 = v29;
 
   v31 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v34 = specialized static TetraAPI.sealNoRatchet(message:authenticatedData:sendingURI:sendingPushToken:receivingURI:receivingPushToken:encryptedAttributes:receiverIdentity:senderIdentity:)(v36, v23, v39, v37, v26, v28, v41, v33, v30, v40, v31, v35, v21);
+  v34 = specialized static TetraAPI.sealNoRatchet(message:authenticatedData:sendingURI:sendingPushToken:receivingURI:receivingPushToken:encryptedAttributes:receiverIdentity:senderIdentity:)(v36, v23, v39, v37, v26, v28, tokenCopy, v33, v30, pushTokenCopy, v31, identityCopy, senderIdentityCopy);
 
   outlined consume of Data._Representation(v39, v37);
   outlined consume of Data._Representation(v36, v23);

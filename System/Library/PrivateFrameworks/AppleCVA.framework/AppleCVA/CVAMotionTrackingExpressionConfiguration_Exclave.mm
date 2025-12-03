@@ -1,20 +1,20 @@
 @interface CVAMotionTrackingExpressionConfiguration_Exclave
 + ($AA6A45B2DFCED8527C3A0E9A46B0D48F)_emptyAccessibilityExpressions;
-+ (BOOL)_jawOpenStartingWithValue:(float)a3 mouthClose:(float)a4 forActivation:(unint64_t)a5;
-+ (float)_minConfidenceExpressionStarted:(unint64_t)a3 forActivation:(unint64_t)a4;
++ (BOOL)_jawOpenStartingWithValue:(float)value mouthClose:(float)close forActivation:(unint64_t)activation;
++ (float)_minConfidenceExpressionStarted:(unint64_t)started forActivation:(unint64_t)activation;
 + (id)_facialExpressionToActivationToValueMapping;
 - ($AA6A45B2DFCED8527C3A0E9A46B0D48F)previousExpressions;
-- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)processIncomingExpressions:(SEL)a3;
-- (void)setPreviousExpressions:(id *)a3;
+- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)processIncomingExpressions:(SEL)expressions;
+- (void)setPreviousExpressions:(id *)expressions;
 @end
 
 @implementation CVAMotionTrackingExpressionConfiguration_Exclave
 
-+ (BOOL)_jawOpenStartingWithValue:(float)a3 mouthClose:(float)a4 forActivation:(unint64_t)a5
++ (BOOL)_jawOpenStartingWithValue:(float)value mouthClose:(float)close forActivation:(unint64_t)activation
 {
-  v5 = a3 - a4;
-  v7 = v5 >= 0.1 && a5 == 3;
-  if (a5 - 1 <= 1)
+  v5 = value - close;
+  v7 = v5 >= 0.1 && activation == 3;
+  if (activation - 1 <= 1)
   {
     return v5 >= 0.05;
   }
@@ -37,12 +37,12 @@
   return v3;
 }
 
-+ (float)_minConfidenceExpressionStarted:(unint64_t)a3 forActivation:(unint64_t)a4
++ (float)_minConfidenceExpressionStarted:(unint64_t)started forActivation:(unint64_t)activation
 {
-  v6 = [objc_opt_class() _facialExpressionToActivationToValueMapping];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  _facialExpressionToActivationToValueMapping = [objc_opt_class() _facialExpressionToActivationToValueMapping];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:started];
+  v8 = [_facialExpressionToActivationToValueMapping objectForKeyedSubscript:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:activation];
   v10 = [v8 objectForKeyedSubscript:v9];
   [v10 floatValue];
   v12 = v11;
@@ -60,13 +60,13 @@
   return result;
 }
 
-- (void)setPreviousExpressions:(id *)a3
+- (void)setPreviousExpressions:(id *)expressions
 {
-  *&self->_previousExpressions.raiseEyebrows = *&a3->var0;
-  v3 = *&a3->var2;
-  v4 = *&a3->var4;
-  v5 = *&a3->var6;
-  self->_previousExpressions.puckerLipsRight = a3->var8;
+  *&self->_previousExpressions.raiseEyebrows = *&expressions->var0;
+  v3 = *&expressions->var2;
+  v4 = *&expressions->var4;
+  v5 = *&expressions->var6;
+  self->_previousExpressions.puckerLipsRight = expressions->var8;
   *&self->_previousExpressions.mouthPuckerCenter = v5;
   *&self->_previousExpressions.eyeBlink = v4;
   *&self->_previousExpressions.smile = v3;
@@ -84,7 +84,7 @@
   return self;
 }
 
-- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)processIncomingExpressions:(SEL)a3
+- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)processIncomingExpressions:(SEL)expressions
 {
   v5 = retstr;
   v109 = *MEMORY[0x277D85DE8];
@@ -143,24 +143,24 @@
           objc_enumerationMutation(&unk_28522C090);
         }
 
-        v12 = [*(*(&v104 + 1) + 8 * i) unsignedIntegerValue];
-        [objc_opt_class() _minConfidenceExpressionStarted:3 forActivation:v12];
+        unsignedIntegerValue = [*(*(&v104 + 1) + 8 * i) unsignedIntegerValue];
+        [objc_opt_class() _minConfidenceExpressionStarted:3 forActivation:unsignedIntegerValue];
         v82 = v13;
-        [objc_opt_class() _minConfidenceExpressionStarted:2 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:2 forActivation:unsignedIntegerValue];
         v15 = v14;
-        [objc_opt_class() _minConfidenceExpressionStarted:1 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:1 forActivation:unsignedIntegerValue];
         v17 = v16;
-        [objc_opt_class() _minConfidenceExpressionStarted:0 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:0 forActivation:unsignedIntegerValue];
         v19 = v18;
-        [objc_opt_class() _minConfidenceExpressionStarted:4 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:4 forActivation:unsignedIntegerValue];
         v21 = v20;
-        [objc_opt_class() _minConfidenceExpressionStarted:5 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:5 forActivation:unsignedIntegerValue];
         v23 = v22;
-        [objc_opt_class() _minConfidenceExpressionStarted:6 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:6 forActivation:unsignedIntegerValue];
         v84 = v24;
-        [objc_opt_class() _minConfidenceExpressionStarted:7 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:7 forActivation:unsignedIntegerValue];
         v83 = v25;
-        [objc_opt_class() _minConfidenceExpressionStarted:8 forActivation:v12];
+        [objc_opt_class() _minConfidenceExpressionStarted:8 forActivation:unsignedIntegerValue];
         v26 = 0;
         v81 = v27;
         v29 = var2 > v15 && var1 > v15;
@@ -176,7 +176,7 @@
           v36 = objc_opt_class();
           *&v37 = var3;
           *&v38 = var4;
-          v26 = [v36 _jawOpenStartingWithValue:v12 mouthClose:v37 forActivation:v38];
+          v26 = [v36 _jawOpenStartingWithValue:unsignedIntegerValue mouthClose:v37 forActivation:v38];
         }
 
         v76 = v26;
@@ -184,11 +184,11 @@
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
-        v75 = v100 >= v12;
+        v75 = v100 >= unsignedIntegerValue;
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
-        v39 = v99 >= v12;
+        v39 = v99 >= unsignedIntegerValue;
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
-        v40 = v98 >= v12;
+        v40 = v98 >= unsignedIntegerValue;
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
         [(CVAMotionTrackingExpressionConfiguration_Exclave *)self previousExpressions];
@@ -196,15 +196,15 @@
         v42 = v21 * 0.95;
         v43 = v23 * 0.65;
         v45 = var2 > (v15 * 0.61538) && var1 > (v15 * 0.61538);
-        v47 = var3 > (v17 * 0.5) && v102 >= v12;
+        v47 = var3 > (v17 * 0.5) && v102 >= unsignedIntegerValue;
         v49 = var6 > v41 && var5 > v41;
         v51 = var7 > v42 && var8 > v42;
         v53 = var9 > v43 && var10 > v43;
-        v55 = v69 > (v84 * 0.6) && v97 >= v12;
-        v57 = v70 > (v81 * 0.6) && v95 >= v12;
-        v59 = v71 > (v83 * 0.6) && v96 >= v12;
-        v60 = var0 > (v82 * 0.1) && v101 >= v12;
-        v61 = v45 && v103 >= v12;
+        v55 = v69 > (v84 * 0.6) && v97 >= unsignedIntegerValue;
+        v57 = v70 > (v81 * 0.6) && v95 >= unsignedIntegerValue;
+        v59 = v71 > (v83 * 0.6) && v96 >= unsignedIntegerValue;
+        v60 = var0 > (v82 * 0.1) && v101 >= unsignedIntegerValue;
+        v61 = v45 && v103 >= unsignedIntegerValue;
         v62 = var0 <= v82;
         if (v60)
         {
@@ -214,43 +214,43 @@
         v5 = v72;
         if ((v77 | v61))
         {
-          v72->var2 = v12;
+          v72->var2 = unsignedIntegerValue;
         }
 
         if ((v62 & v76 | v47))
         {
-          v72->var1 = v12;
+          v72->var1 = unsignedIntegerValue;
         }
 
         if (!v62)
         {
-          v72->var3 = v12;
+          v72->var3 = unsignedIntegerValue;
         }
 
         if (v78 || v49 && v75)
         {
-          v72->var0 = v12;
+          v72->var0 = unsignedIntegerValue;
         }
 
         if (v79 || v51 && v39)
         {
-          v72->var4 = v12;
+          v72->var4 = unsignedIntegerValue;
         }
 
         if (v80 || v53 && v40)
         {
-          v72->var5 = v12;
+          v72->var5 = unsignedIntegerValue;
         }
 
         if (v70 > v81 || v57)
         {
-          v72->var7 = v12;
+          v72->var7 = unsignedIntegerValue;
         }
 
         if (v71 > v83 || v59)
         {
-          v72->var8 = v12;
-          v63 = v12;
+          v72->var8 = unsignedIntegerValue;
+          v63 = unsignedIntegerValue;
         }
 
         else
@@ -260,7 +260,7 @@
 
         if (!v72->var7 && !v63 && (v69 > v84 || v55))
         {
-          v72->var6 = v12;
+          v72->var6 = unsignedIntegerValue;
         }
       }
 

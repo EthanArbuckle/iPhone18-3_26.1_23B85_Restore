@@ -1,18 +1,18 @@
 @interface CNContactChangesNotifier
-+ (CNContactChangesObserverProxy)createProxyForObserver:(void *)a3 keysToFetch:;
++ (CNContactChangesObserverProxy)createProxyForObserver:(void *)observer keysToFetch:;
 + (id)os_log;
 + (id)sharedNotifier;
-+ (id)workQueue_createFetchersFromRegisteredObservers:(id)a3;
-- (BOOL)resourceLock_removeProxiesForIdentifier:(void *)a3 passingTest:;
++ (id)workQueue_createFetchersFromRegisteredObservers:(id)observers;
+- (BOOL)resourceLock_removeProxiesForIdentifier:(void *)identifier passingTest:;
 - (CNContactChangesNotifier)init;
-- (CNContactChangesNotifier)initWithContactStore:(id)a3 downstreamScheduler:(id)a4 schedulerProvider:(id)a5;
-- (void)contactStoreDidChange:(id)a3;
-- (void)registerObserver:(id)a3 forContact:(id)a4;
-- (void)registerObserver:(id)a3 forContact:(id)a4 keysToFetch:(id)a5 completionHandler:(id)a6;
-- (void)registerProxy:(void *)a3 identifier:;
+- (CNContactChangesNotifier)initWithContactStore:(id)store downstreamScheduler:(id)scheduler schedulerProvider:(id)provider;
+- (void)contactStoreDidChange:(id)change;
+- (void)registerObserver:(id)observer forContact:(id)contact;
+- (void)registerObserver:(id)observer forContact:(id)contact keysToFetch:(id)fetch completionHandler:(id)handler;
+- (void)registerProxy:(void *)proxy identifier:;
 - (void)removeEntriesWithoutObservers;
-- (void)removeProxiesForObserver:(void *)a3 forContact:(void *)a4 completionHandler:;
-- (void)timerDidEmitEvent:(id)a3;
+- (void)removeProxiesForObserver:(void *)observer forContact:(void *)contact completionHandler:;
+- (void)timerDidEmitEvent:(id)event;
 - (void)workQueue_updateObservers;
 - (void)workQueue_updateObserving;
 @end
@@ -43,38 +43,38 @@ uint64_t __34__CNContactChangesNotifier_os_log__block_invoke()
 
 - (void)workQueue_updateObserving
 {
-  if (a1)
+  if (self)
   {
     v6 = 0;
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __53__CNContactChangesNotifier_workQueue_updateObserving__block_invoke;
     v5[3] = &unk_1E7412358;
-    v5[4] = a1;
+    v5[4] = self;
     v5[5] = &v6;
     [v2 performBlock:v5];
 
     if (v7[3])
     {
-      if ((*(a1 + 8) & 1) == 0)
+      if ((*(self + 8) & 1) == 0)
       {
-        v3 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v3 addObserver:a1 selector:sel_contactStoreDidChange_ name:@"CNContactStoreDidChangeNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel_contactStoreDidChange_ name:@"CNContactStoreDidChangeNotification" object:0];
         v4 = 1;
 LABEL_7:
 
-        *(a1 + 8) = v4;
+        *(self + 8) = v4;
       }
     }
 
-    else if (*(a1 + 8))
+    else if (*(self + 8))
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 removeObserver:a1 name:@"CNContactStoreDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"CNContactStoreDidChangeNotification" object:0];
       v4 = 0;
       goto LABEL_7;
     }
@@ -116,7 +116,7 @@ void __53__CNContactChangesNotifier_workQueue_updateObserving__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__CNContactChangesNotifier_sharedNotifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedNotifier_cn_once_token_0 != -1)
   {
     dispatch_once(&sharedNotifier_cn_once_token_0, block);
@@ -138,38 +138,38 @@ uint64_t __42__CNContactChangesNotifier_sharedNotifier__block_invoke(uint64_t a1
 
 - (CNContactChangesNotifier)init
 {
-  v3 = [MEMORY[0x1E6996820] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
   v4 = objc_alloc_init(CNContactStore);
-  v5 = [v3 mainThreadScheduler];
-  v6 = [(CNContactChangesNotifier *)self initWithContactStore:v4 downstreamScheduler:v5 schedulerProvider:v3];
+  mainThreadScheduler = [defaultProvider mainThreadScheduler];
+  v6 = [(CNContactChangesNotifier *)self initWithContactStore:v4 downstreamScheduler:mainThreadScheduler schedulerProvider:defaultProvider];
 
   return v6;
 }
 
-- (CNContactChangesNotifier)initWithContactStore:(id)a3 downstreamScheduler:(id)a4 schedulerProvider:(id)a5
+- (CNContactChangesNotifier)initWithContactStore:(id)store downstreamScheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = CNContactChangesNotifier;
   v12 = [(CNContactChangesNotifier *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactStore, a3);
-    v14 = [v11 newSerialSchedulerWithName:@"com.apple.Contacts.CNContactChangesNotifier.workQueue"];
+    objc_storeStrong(&v12->_contactStore, store);
+    v14 = [providerCopy newSerialSchedulerWithName:@"com.apple.Contacts.CNContactChangesNotifier.workQueue"];
     workQueue = v13->_workQueue;
     v13->_workQueue = v14;
 
-    objc_storeStrong(&v13->_downstream, a4);
-    v16 = [v11 newSynchronousSerialSchedulerWithName:@"com.apple.Contacts.CNContactChangesNotifier.resourceLock"];
+    objc_storeStrong(&v13->_downstream, scheduler);
+    v16 = [providerCopy newSynchronousSerialSchedulerWithName:@"com.apple.Contacts.CNContactChangesNotifier.resourceLock"];
     resourceLock = v13->_resourceLock;
     v13->_resourceLock = v16;
 
-    v18 = [MEMORY[0x1E6996780] multiDictionary];
+    multiDictionary = [MEMORY[0x1E6996780] multiDictionary];
     registeredObservers = v13->_registeredObservers;
-    v13->_registeredObservers = v18;
+    v13->_registeredObservers = multiDictionary;
 
     v20 = [objc_alloc(MEMORY[0x1E6996678]) initWithDelay:0 options:v13 delegate:1.0];
     entryCompactionTimer = v13->_entryCompactionTimer;
@@ -181,46 +181,46 @@ uint64_t __42__CNContactChangesNotifier_sharedNotifier__block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)registerObserver:(id)a3 forContact:(id)a4
+- (void)registerObserver:(id)observer forContact:(id)contact
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 availableKeyDescriptor];
-  v10[0] = v8;
+  contactCopy = contact;
+  observerCopy = observer;
+  availableKeyDescriptor = [contactCopy availableKeyDescriptor];
+  v10[0] = availableKeyDescriptor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  [(CNContactChangesNotifier *)self registerObserver:v7 forContact:v6 keysToFetch:v9];
+  [(CNContactChangesNotifier *)self registerObserver:observerCopy forContact:contactCopy keysToFetch:v9];
 }
 
-- (void)registerObserver:(id)a3 forContact:(id)a4 keysToFetch:(id)a5 completionHandler:(id)a6
+- (void)registerObserver:(id)observer forContact:(id)contact keysToFetch:(id)fetch completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  observerCopy = observer;
+  contactCopy = contact;
+  fetchCopy = fetch;
+  handlerCopy = handler;
+  if (contactCopy)
   {
-    v14 = [v11 hasBeenPersisted];
-    if (v10)
+    hasBeenPersisted = [contactCopy hasBeenPersisted];
+    if (observerCopy)
     {
-      if (v14)
+      if (hasBeenPersisted)
       {
-        v15 = [CNContactChangesNotifier createProxyForObserver:v10 keysToFetch:v12];
-        v16 = [v11 identifier];
-        [(CNContactChangesNotifier *)self registerProxy:v15 identifier:v16];
+        v15 = [CNContactChangesNotifier createProxyForObserver:observerCopy keysToFetch:fetchCopy];
+        identifier = [contactCopy identifier];
+        [(CNContactChangesNotifier *)self registerProxy:v15 identifier:identifier];
 
-        v17 = [v11 snapshot];
-        [(CNContactChangesObserverProxy *)v15 setContactSnapshot:v17];
+        snapshot = [contactCopy snapshot];
+        [(CNContactChangesObserverProxy *)v15 setContactSnapshot:snapshot];
 
-        v18 = [v11 isUnified];
+        isUnified = [contactCopy isUnified];
         if (v15)
         {
-          v15[8] = v18;
+          v15[8] = isUnified;
         }
 
-        if (v13)
+        if (handlerCopy)
         {
-          [CNContactChangesNotifier registerObserver:v19 forContact:v13 keysToFetch:? completionHandler:?];
+          [CNContactChangesNotifier registerObserver:v19 forContact:handlerCopy keysToFetch:? completionHandler:?];
         }
 
         goto LABEL_11;
@@ -228,9 +228,9 @@ uint64_t __42__CNContactChangesNotifier_sharedNotifier__block_invoke(uint64_t a1
     }
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    [CNContactChangesNotifier registerObserver:v20 forContact:v13 keysToFetch:&v21 completionHandler:?];
+    [CNContactChangesNotifier registerObserver:v20 forContact:handlerCopy keysToFetch:&v21 completionHandler:?];
     v15 = v21;
 LABEL_11:
   }
@@ -383,23 +383,23 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
 - (void)workQueue_updateObservers
 {
   v87 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v48 = *(a1 + 40);
+    v48 = *(self + 40);
     v77 = 0;
     v78 = &v77;
     v79 = 0x3032000000;
     v80 = __Block_byref_object_copy__27;
     v81 = __Block_byref_object_dispose__27;
     v82 = 0;
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     v76[0] = MEMORY[0x1E69E9820];
     v76[1] = 3221225472;
     v76[2] = __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke;
     v76[3] = &unk_1E7412358;
     v76[5] = &v77;
-    v52 = a1;
-    v76[4] = a1;
+    selfCopy = self;
+    v76[4] = self;
     [v2 performBlock:v76];
 
     v3 = [objc_opt_class() workQueue_createFetchersFromRegisteredObservers:v78[5]];
@@ -435,8 +435,8 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
           }
 
           v8 = v7;
-          v9 = [v8 allObjects];
-          v10 = [CNContact predicateForContactsWithIdentifiers:v9];
+          allObjects = [v8 allObjects];
+          v10 = [CNContact predicateForContactsWithIdentifiers:allObjects];
 
           v11 = [CNContactFetchRequest alloc];
           if (v6)
@@ -450,8 +450,8 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
           }
 
           v13 = v12;
-          v14 = [v13 allObjects];
-          v15 = [(CNContactFetchRequest *)v11 initWithKeysToFetch:v14];
+          allObjects2 = [v13 allObjects];
+          v15 = [(CNContactFetchRequest *)v11 initWithKeysToFetch:allObjects2];
 
           [(CNContactFetchRequest *)v15 setPredicate:v10];
           if (v6)
@@ -465,7 +465,7 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
           }
 
           [(CNContactFetchRequest *)v15 setUnifyResults:v16 & 1];
-          v17 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v70 = 0u;
           v71 = 0u;
           v68 = 0u;
@@ -481,9 +481,9 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
           }
 
           v19 = v18;
-          v20 = [v19 allObjects];
+          allObjects3 = [v19 allObjects];
 
-          v21 = [v20 countByEnumeratingWithState:&v68 objects:v85 count:16];
+          v21 = [allObjects3 countByEnumeratingWithState:&v68 objects:v85 count:16];
           if (v21)
           {
             v22 = *v69;
@@ -493,29 +493,29 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
               {
                 if (*v69 != v22)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(allObjects3);
                 }
 
                 v24 = [v78[5] objectsForKey:*(*(&v68 + 1) + 8 * i)];
                 if (v24)
                 {
-                  [v17 addObjectsFromArray:v24];
+                  [array addObjectsFromArray:v24];
                 }
               }
 
-              v21 = [v20 countByEnumeratingWithState:&v68 objects:v85 count:16];
+              v21 = [allObjects3 countByEnumeratingWithState:&v68 objects:v85 count:16];
             }
 
             while (v21);
           }
 
-          v25 = *(v52 + 32);
-          v26 = *(v52 + 16);
+          v25 = *(selfCopy + 32);
+          v26 = *(selfCopy + 16);
           v63[0] = MEMORY[0x1E69E9820];
           v63[1] = 3221225472;
           v63[2] = __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke_62;
           v63[3] = &unk_1E7416690;
-          v27 = v17;
+          v27 = array;
           v64 = v27;
           v65 = v49;
           v28 = v25;
@@ -539,12 +539,12 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v31 = [v78[5] allKeys];
-    v47 = [v31 countByEnumeratingWithState:&v59 objects:v84 count:16];
+    allKeys = [v78[5] allKeys];
+    v47 = [allKeys countByEnumeratingWithState:&v59 objects:v84 count:16];
     if (v47)
     {
       v46 = *v60;
-      v44 = v31;
+      v44 = allKeys;
       do
       {
         for (j = 0; j != v47; ++j)
@@ -592,12 +592,12 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
 
                   if (v40)
                   {
-                    v41 = *(v52 + 32);
+                    v41 = *(selfCopy + 32);
                     v54[0] = MEMORY[0x1E69E9820];
                     v54[1] = 3221225472;
                     v54[2] = __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke_4;
                     v54[3] = &unk_1E7412A60;
-                    v54[4] = v52;
+                    v54[4] = selfCopy;
                     v54[5] = v38;
                     v54[6] = v32;
                     [v41 performBlock:v54];
@@ -614,18 +614,18 @@ void __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completi
               while (v42);
             }
 
-            v43 = *(v52 + 16);
+            v43 = *(selfCopy + 16);
             v53[0] = MEMORY[0x1E69E9820];
             v53[1] = 3221225472;
             v53[2] = __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke_6;
             v53[3] = &unk_1E74121B8;
-            v53[4] = v52;
+            v53[4] = selfCopy;
             v53[5] = v32;
             [v43 performBlock:v53];
           }
         }
 
-        v31 = v44;
+        allKeys = v44;
         v47 = [v44 countByEnumeratingWithState:&v59 objects:v84 count:16];
       }
 
@@ -789,17 +789,17 @@ void __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke_2(vo
   _Block_object_dispose(&v4, 8);
 }
 
-+ (id)workQueue_createFetchersFromRegisteredObservers:(id)a3
++ (id)workQueue_createFetchersFromRegisteredObservers:(id)observers
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v33 = [MEMORY[0x1E695DF70] array];
-  v34 = v3;
+  observersCopy = observers;
+  array = [MEMORY[0x1E695DF70] array];
+  v34 = observersCopy;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = [v3 allKeys];
+  obj = [observersCopy allKeys];
   v35 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v35)
   {
@@ -866,7 +866,7 @@ void __53__CNContactChangesNotifier_workQueue_updateObservers__block_invoke_2(vo
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v38 = v33;
+        v38 = array;
         v15 = [v38 countByEnumeratingWithState:&v39 objects:v51 count:16];
         if (v15)
         {
@@ -973,15 +973,15 @@ LABEL_42:
     while (v35);
   }
 
-  v29 = [v33 copy];
+  v29 = [array copy];
 
   return v29;
 }
 
-+ (CNContactChangesObserverProxy)createProxyForObserver:(void *)a3 keysToFetch:
++ (CNContactChangesObserverProxy)createProxyForObserver:(void *)observer keysToFetch:
 {
   v4 = a2;
-  v5 = a3;
+  observerCopy = observer;
   objc_opt_self();
   v6 = objc_alloc_init(CNContactChangesObserverProxy);
   v7 = v6;
@@ -990,84 +990,84 @@ LABEL_42:
     objc_storeWeak(&v6->_observer, v4);
   }
 
-  [(CNContactChangesObserverProxy *)v7 setKeysToFetch:v5];
+  [(CNContactChangesObserverProxy *)v7 setKeysToFetch:observerCopy];
 
   return v7;
 }
 
-- (void)registerProxy:(void *)a3 identifier:
+- (void)registerProxy:(void *)proxy identifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
-    v7 = *(a1 + 16);
+    v7 = *(self + 16);
     OUTLINED_FUNCTION_0();
     v9 = 3221225472;
     v10 = __53__CNContactChangesNotifier_registerProxy_identifier___block_invoke;
     v11 = &unk_1E7412A60;
-    v12 = a1;
+    selfCopy = self;
     v13 = v5;
-    v14 = v6;
+    v14 = proxyCopy;
     [v7 performBlock:v8];
   }
 }
 
-- (void)removeProxiesForObserver:(void *)a3 forContact:(void *)a4 completionHandler:
+- (void)removeProxiesForObserver:(void *)observer forContact:(void *)contact completionHandler:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  observerCopy = observer;
+  contactCopy = contact;
+  if (self)
   {
-    v10 = *(a1 + 16);
+    v10 = *(self + 16);
     OUTLINED_FUNCTION_2();
     v11[1] = 3221225472;
     v11[2] = __82__CNContactChangesNotifier_removeProxiesForObserver_forContact_completionHandler___block_invoke;
     v11[3] = &unk_1E7416648;
-    v12 = v8;
-    v13 = a1;
+    v12 = observerCopy;
+    selfCopy = self;
     v14 = v7;
-    v15 = v9;
+    v15 = contactCopy;
     [v10 performBlock:v11];
   }
 }
 
-- (BOOL)resourceLock_removeProxiesForIdentifier:(void *)a3 passingTest:
+- (BOOL)resourceLock_removeProxiesForIdentifier:(void *)identifier passingTest:
 {
   v33 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 56);
-    v7 = a3;
+    v6 = *(self + 56);
+    identifierCopy = identifier;
     v8 = [v6 objectsForKey:v5];
-    v9 = [v8 _cn_partition:v7];
+    v9 = [v8 _cn_partition:identifierCopy];
 
-    v10 = [v9 second];
-    v11 = [v10 count];
+    second = [v9 second];
+    v11 = [second count];
     v12 = [v8 count];
     v13 = v11 == v12;
     v14 = v11 != v12;
     if (v13)
     {
       objc_opt_class();
-      v17 = +[CNContactChangesNotifier os_log];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+      first = +[CNContactChangesNotifier os_log];
+      if (os_log_type_enabled(first, OS_LOG_TYPE_DEBUG))
       {
         v25 = 134217984;
         v26 = [v8 count];
-        _os_log_debug_impl(&dword_1954A0000, v17, OS_LOG_TYPE_DEBUG, "No entries were removed (total: %lu)", &v25, 0xCu);
+        _os_log_debug_impl(&dword_1954A0000, first, OS_LOG_TYPE_DEBUG, "No entries were removed (total: %lu)", &v25, 0xCu);
       }
     }
 
     else
     {
-      v15 = [v10 count];
-      v16 = *(a1 + 56);
+      v15 = [second count];
+      v16 = *(self + 56);
       if (v15)
       {
-        [v16 setObjects:v10 forKey:v5];
+        [v16 setObjects:second forKey:v5];
       }
 
       else
@@ -1075,14 +1075,14 @@ LABEL_42:
         [v16 removeObjectsForKey:v5];
       }
 
-      v17 = [v9 first];
-      [v17 _cn_each:&__block_literal_global_45_0];
+      first = [v9 first];
+      [first _cn_each:&__block_literal_global_45_0];
       objc_opt_class();
       v18 = +[CNContactChangesNotifier os_log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [v17 count];
-        if ([v17 count]== 1)
+        v20 = [first count];
+        if ([first count]== 1)
         {
           v21 = @"entry";
         }
@@ -1092,8 +1092,8 @@ LABEL_42:
           v21 = @"entries";
         }
 
-        v22 = [v10 count];
-        v23 = [v10 count];
+        v22 = [second count];
+        v23 = [second count];
         v25 = 134218754;
         v24 = @"entry";
         if (v23 != 1)
@@ -1131,7 +1131,7 @@ id __80__CNContactChangesNotifier_resourceLock_removeProxiesForIdentifier_passin
   return result;
 }
 
-- (void)timerDidEmitEvent:(id)a3
+- (void)timerDidEmitEvent:(id)event
 {
   objc_opt_class();
   v4 = +[CNContactChangesNotifier os_log];
@@ -1151,7 +1151,7 @@ id __80__CNContactChangesNotifier_resourceLock_removeProxiesForIdentifier_passin
   }
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
   if (self)
   {

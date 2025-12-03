@@ -1,37 +1,37 @@
 @interface IDSNRDeviceBridge
 - (BOOL)isClassCConnected;
 - (BOOL)isConnected;
-- (BOOL)isDevicesIdentifierEqualTo:(id)a3;
+- (BOOL)isDevicesIdentifierEqualTo:(id)to;
 - (BOOL)isNearby;
 - (BOOL)isRegistered;
-- (IDSNRDeviceBridge)initWithDeviceIdentifier:(id)a3 delegate:(id)a4 startMonitor:(BOOL)a5;
+- (IDSNRDeviceBridge)initWithDeviceIdentifier:(id)identifier delegate:(id)delegate startMonitor:(BOOL)monitor;
 - (IDSNRDeviceBridgeDelegate)delegate;
-- (void)_notifyWirelessRadioManagerAboutLinkChange:(unsigned __int8)a3;
-- (void)_startNRDeviceMonitor:(id)a3;
+- (void)_notifyWirelessRadioManagerAboutLinkChange:(unsigned __int8)change;
+- (void)_startNRDeviceMonitor:(id)monitor;
 - (void)dealloc;
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4;
-- (void)deviceIsClassCConnectedDidChange:(id)a3 isClassCConnected:(BOOL)a4;
-- (void)deviceIsCloudConnectedDidChange:(id)a3 isCloudConnected:(BOOL)a4;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4;
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep;
+- (void)deviceIsClassCConnectedDidChange:(id)change isClassCConnected:(BOOL)connected;
+- (void)deviceIsCloudConnectedDidChange:(id)change isCloudConnected:(BOOL)connected;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type;
 @end
 
 @implementation IDSNRDeviceBridge
 
 - (BOOL)isConnected
 {
-  v2 = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
-  v3 = [v2 isConnected];
+  nrDeviceMonitor = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
+  isConnected = [nrDeviceMonitor isConnected];
 
-  return v3;
+  return isConnected;
 }
 
-- (IDSNRDeviceBridge)initWithDeviceIdentifier:(id)a3 delegate:(id)a4 startMonitor:(BOOL)a5
+- (IDSNRDeviceBridge)initWithDeviceIdentifier:(id)identifier delegate:(id)delegate startMonitor:(BOOL)monitor
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  monitorCopy = monitor;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = IDSNRDeviceBridge;
   v10 = [(IDSNRDeviceBridge *)&v18 init];
@@ -43,14 +43,14 @@
     nrMonitorQueue = v10->_nrMonitorQueue;
     v10->_nrMonitorQueue = v13;
 
-    objc_storeWeak(&v10->_delegate, v9);
-    v15 = [v8 copy];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    v15 = [identifierCopy copy];
     deviceIdentifier = v10->_deviceIdentifier;
     v10->_deviceIdentifier = v15;
 
-    if (v5)
+    if (monitorCopy)
     {
-      [(IDSNRDeviceBridge *)v10 _startNRDeviceMonitor:v8];
+      [(IDSNRDeviceBridge *)v10 _startNRDeviceMonitor:identifierCopy];
     }
   }
 
@@ -63,7 +63,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Dealloc'ing IDSNRDeviceBridge {pointer: %p}", buf, 0xCu);
   }
 
@@ -72,62 +72,62 @@
   [(IDSNRDeviceBridge *)&v4 dealloc];
 }
 
-- (void)_startNRDeviceMonitor:(id)a3
+- (void)_startNRDeviceMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   nrMonitorQueue = self->_nrMonitorQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003220E4;
   v7[3] = &unk_100BD6E40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = monitorCopy;
+  selfCopy = self;
+  v6 = monitorCopy;
   dispatch_async(nrMonitorQueue, v7);
 }
 
 - (BOOL)isNearby
 {
-  v2 = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
-  v3 = [v2 isNearby];
+  nrDeviceMonitor = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
+  isNearby = [nrDeviceMonitor isNearby];
 
-  return v3;
+  return isNearby;
 }
 
 - (BOOL)isRegistered
 {
-  v2 = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
-  v3 = [v2 isRegistered];
+  nrDeviceMonitor = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
+  isRegistered = [nrDeviceMonitor isRegistered];
 
-  return v3;
+  return isRegistered;
 }
 
-- (BOOL)isDevicesIdentifierEqualTo:(id)a3
+- (BOOL)isDevicesIdentifierEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(IDSNRDeviceBridge *)self deviceIdentifier];
-  v6 = [v5 isEqual:v4];
+  toCopy = to;
+  deviceIdentifier = [(IDSNRDeviceBridge *)self deviceIdentifier];
+  v6 = [deviceIdentifier isEqual:toCopy];
 
   return v6;
 }
 
 - (BOOL)isClassCConnected
 {
-  v2 = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
-  v3 = [v2 isClassCConnected];
+  nrDeviceMonitor = [(IDSNRDeviceBridge *)self nrDeviceMonitor];
+  isClassCConnected = [nrDeviceMonitor isClassCConnected];
 
-  return v3;
+  return isClassCConnected;
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isRegistered];
+  connectedCopy = connected;
+  changeCopy = change;
+  isRegistered = [changeCopy isRegistered];
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (connectedCopy)
     {
       v9 = @"YES";
     }
@@ -137,7 +137,7 @@
       v9 = @"NO";
     }
 
-    if (v7)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -147,17 +147,17 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v16 = v9;
     v17 = 2114;
     v18 = v10;
     v19 = 2113;
-    v20 = v11;
+    v20 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isConnected didChange {isConnected: %{public}@, isRegistered: %{public}@, deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
-  if (v7)
+  if (isRegistered)
   {
     v12 = im_primary_queue();
     v13[0] = _NSConcreteStackBlock;
@@ -165,20 +165,20 @@
     v13[2] = sub_100322504;
     v13[3] = &unk_100BD7478;
     v13[4] = self;
-    v14 = v4;
+    v14 = connectedCopy;
     dispatch_async(v12, v13);
   }
 }
 
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isRegistered];
+  nearbyCopy = nearby;
+  changeCopy = change;
+  isRegistered = [changeCopy isRegistered];
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (nearbyCopy)
     {
       v9 = @"YES";
     }
@@ -188,7 +188,7 @@
       v9 = @"NO";
     }
 
-    if (v7)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -198,17 +198,17 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v16 = v9;
     v17 = 2114;
     v18 = v10;
     v19 = 2113;
-    v20 = v11;
+    v20 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isNearby didChange {isNearby: %{public}@, isRegistered: %{public}@, deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
-  if (v7)
+  if (isRegistered)
   {
     v12 = im_primary_queue();
     v13[0] = _NSConcreteStackBlock;
@@ -216,20 +216,20 @@
     v13[2] = sub_1003226EC;
     v13[3] = &unk_100BD7478;
     v13[4] = self;
-    v14 = v4;
+    v14 = nearbyCopy;
     dispatch_async(v12, v13);
   }
 }
 
-- (void)deviceIsCloudConnectedDidChange:(id)a3 isCloudConnected:(BOOL)a4
+- (void)deviceIsCloudConnectedDidChange:(id)change isCloudConnected:(BOOL)connected
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isRegistered];
+  connectedCopy = connected;
+  changeCopy = change;
+  isRegistered = [changeCopy isRegistered];
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (connectedCopy)
     {
       v9 = @"YES";
     }
@@ -239,7 +239,7 @@
       v9 = @"NO";
     }
 
-    if (v7)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -249,17 +249,17 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v16 = v9;
     v17 = 2114;
     v18 = v10;
     v19 = 2113;
-    v20 = v11;
+    v20 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isCloudConnected didChange {isCloudConnected: %{public}@, isRegistered: %{public}@, deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
-  if (v7)
+  if (isRegistered)
   {
     v12 = im_primary_queue();
     v13[0] = _NSConcreteStackBlock;
@@ -267,20 +267,20 @@
     v13[2] = sub_1003228D4;
     v13[3] = &unk_100BD7478;
     v13[4] = self;
-    v14 = v4;
+    v14 = connectedCopy;
     dispatch_async(v12, v13);
   }
 }
 
-- (void)deviceIsAsleepDidChange:(id)a3 isAsleep:(BOOL)a4
+- (void)deviceIsAsleepDidChange:(id)change isAsleep:(BOOL)asleep
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isRegistered];
+  asleepCopy = asleep;
+  changeCopy = change;
+  isRegistered = [changeCopy isRegistered];
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (asleepCopy)
     {
       v9 = @"NO";
     }
@@ -290,7 +290,7 @@
       v9 = @"YES";
     }
 
-    if (v7)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -300,19 +300,19 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v17 = v9;
     v18 = 2114;
     v19 = v10;
     v20 = 2113;
-    v21 = v11;
+    v21 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isAwake didChange {isAwake: %{public}@, isRegistered: %{public}@, deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
-  if (v7)
+  if (isRegistered)
   {
-    v12 = !v4;
+    v12 = !asleepCopy;
     v13 = im_primary_queue();
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -324,16 +324,16 @@
   }
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  changeCopy = change;
   StringFromNRLinkType = j__createStringFromNRLinkType();
-  v8 = [v6 isRegistered];
+  isRegistered = [changeCopy isRegistered];
   v9 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -343,49 +343,49 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v20 = StringFromNRLinkType;
     v21 = 2114;
     v22 = v10;
     v23 = 2113;
-    v24 = v11;
+    v24 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "linkType didChange {linkType: %{public}@, isRegistered: %{public}@ deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
   v12 = [NSDictionary alloc];
-  v13 = [NSNumber numberWithUnsignedChar:v4];
+  v13 = [NSNumber numberWithUnsignedChar:typeCopy];
   v14 = [v12 initWithObjectsAndKeys:{v13, @"IPsecLinkType", 0}];
 
-  v15 = v4;
-  if (!v4)
+  latestLinkType = typeCopy;
+  if (!typeCopy)
   {
-    v15 = [(IDSNRDeviceBridge *)self latestLinkType];
+    latestLinkType = [(IDSNRDeviceBridge *)self latestLinkType];
   }
 
-  [(IDSNRDeviceBridge *)self setLatestLinkType:v15];
+  [(IDSNRDeviceBridge *)self setLatestLinkType:latestLinkType];
   v16 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100322D34;
   block[3] = &unk_100BD7478;
   block[4] = self;
-  v18 = v4;
+  v18 = typeCopy;
   dispatch_async(v16, block);
 
   IDSPowerLogDictionary();
-  [(IDSNRDeviceBridge *)self _notifyWirelessRadioManagerAboutLinkChange:v4];
+  [(IDSNRDeviceBridge *)self _notifyWirelessRadioManagerAboutLinkChange:typeCopy];
 }
 
-- (void)deviceIsClassCConnectedDidChange:(id)a3 isClassCConnected:(BOOL)a4
+- (void)deviceIsClassCConnectedDidChange:(id)change isClassCConnected:(BOOL)connected
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 isRegistered];
+  connectedCopy = connected;
+  changeCopy = change;
+  isRegistered = [changeCopy isRegistered];
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (connectedCopy)
     {
       v9 = @"YES";
     }
@@ -395,7 +395,7 @@
       v9 = @"NO";
     }
 
-    if (v7)
+    if (isRegistered)
     {
       v10 = @"YES";
     }
@@ -405,17 +405,17 @@
       v10 = @"NO";
     }
 
-    v11 = [v6 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     *buf = 138543875;
     v16 = v9;
     v17 = 2114;
     v18 = v10;
     v19 = 2113;
-    v20 = v11;
+    v20 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "isClassCConnected didChange {isClassCConnected: %{public}@, isRegistered: %{public}@, deviceIdentifier: %{private}@}", buf, 0x20u);
   }
 
-  if (v7)
+  if (isRegistered)
   {
     v12 = im_primary_queue();
     v13[0] = _NSConcreteStackBlock;
@@ -423,16 +423,16 @@
     v13[2] = sub_100322F1C;
     v13[3] = &unk_100BD7478;
     v13[4] = self;
-    v14 = v4;
+    v14 = connectedCopy;
     dispatch_async(v12, v13);
   }
 }
 
-- (void)_notifyWirelessRadioManagerAboutLinkChange:(unsigned __int8)a3
+- (void)_notifyWirelessRadioManagerAboutLinkChange:(unsigned __int8)change
 {
-  if (a3 <= 2u)
+  if (change <= 2u)
   {
-    v4 = qword_1009AB4E0[a3];
+    v4 = qword_1009AB4E0[change];
     v5 = +[IDSWRMExchange sharedInstance];
     [v5 handleActiveLinkChange:v4];
   }

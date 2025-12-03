@@ -1,18 +1,18 @@
 @interface SBTraitsInputsOrientationLockValidator
-- (SBTraitsInputsOrientationLockValidator)initWithValidatorOrder:(id)a3;
+- (SBTraitsInputsOrientationLockValidator)initWithValidatorOrder:(id)order;
 - (id)description;
-- (id)validateInputs:(id)a3 withContext:(id)a4;
-- (void)setLockOrientation:(int64_t)a3;
-- (void)setPrefersDeferringOrientationUpdates:(BOOL)a3;
+- (id)validateInputs:(id)inputs withContext:(id)context;
+- (void)setLockOrientation:(int64_t)orientation;
+- (void)setPrefersDeferringOrientationUpdates:(BOOL)updates;
 @end
 
 @implementation SBTraitsInputsOrientationLockValidator
 
-- (SBTraitsInputsOrientationLockValidator)initWithValidatorOrder:(id)a3
+- (SBTraitsInputsOrientationLockValidator)initWithValidatorOrder:(id)order
 {
   v7.receiver = self;
   v7.super_class = SBTraitsInputsOrientationLockValidator;
-  v3 = [(SBTraitsInputsValidator *)&v7 initWithValidatorOrder:a3];
+  v3 = [(SBTraitsInputsValidator *)&v7 initWithValidatorOrder:order];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:0 nonFlatDeviceOrientation:0];
@@ -48,27 +48,27 @@
   return v5;
 }
 
-- (void)setLockOrientation:(int64_t)a3
+- (void)setLockOrientation:(int64_t)orientation
 {
-  if (self->_lockOrientation != a3)
+  if (self->_lockOrientation != orientation)
   {
-    self->_lockOrientation = a3;
+    self->_lockOrientation = orientation;
   }
 }
 
-- (void)setPrefersDeferringOrientationUpdates:(BOOL)a3
+- (void)setPrefersDeferringOrientationUpdates:(BOOL)updates
 {
-  if (self->_prefersDeferringOrientationUpdates != a3)
+  if (self->_prefersDeferringOrientationUpdates != updates)
   {
-    self->_prefersDeferringOrientationUpdates = a3;
+    self->_prefersDeferringOrientationUpdates = updates;
   }
 }
 
-- (id)validateInputs:(id)a3 withContext:(id)a4
+- (id)validateInputs:(id)inputs withContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = SBTraitsInputsOrientationLockValidator;
-  v5 = [(SBTraitsInputsValidator *)&v16 validateInputs:a3 withContext:a4];
+  v5 = [(SBTraitsInputsValidator *)&v16 validateInputs:inputs withContext:context];
   lastForwardedOrientationInputs = [v5 deviceOrientationInputs];
   if (self->_lockOrientation && (v7 = [objc_alloc(MEMORY[0x277D734A8]) initWithCurrentDeviceOrientation:self->_lockOrientation nonFlatDeviceOrientation:self->_lockOrientation], lastForwardedOrientationInputs, lastForwardedOrientationInputs = v7, self->_lockOrientation) || !self->_prefersDeferringOrientationUpdates)
   {
@@ -83,11 +83,11 @@
   }
 
   v9 = objc_alloc(MEMORY[0x277D734B0]);
-  v10 = [v5 interfaceIdiomInputs];
-  v11 = [v5 userInterfaceStyleInputs];
-  v12 = [v5 keyboardInputs];
-  v13 = [v5 ambientPresentationInputs];
-  v14 = [v9 initWithInterfaceIdiomInputs:v10 userInterfaceStyleInputs:v11 deviceOrientationInputs:v8 keyboardInputs:v12 ambientPresentationInputs:v13];
+  interfaceIdiomInputs = [v5 interfaceIdiomInputs];
+  userInterfaceStyleInputs = [v5 userInterfaceStyleInputs];
+  keyboardInputs = [v5 keyboardInputs];
+  ambientPresentationInputs = [v5 ambientPresentationInputs];
+  v14 = [v9 initWithInterfaceIdiomInputs:interfaceIdiomInputs userInterfaceStyleInputs:userInterfaceStyleInputs deviceOrientationInputs:v8 keyboardInputs:keyboardInputs ambientPresentationInputs:ambientPresentationInputs];
 
   return v14;
 }

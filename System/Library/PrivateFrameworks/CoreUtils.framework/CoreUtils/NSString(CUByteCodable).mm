@@ -8,7 +8,7 @@
 
 - (id)encodedDataAndReturnError:()CUByteCodable
 {
-  v4 = [a1 dataUsingEncoding:4];
+  v4 = [self dataUsingEncoding:4];
   v11 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
 
 - (const)encodedBytesAndReturnLength:()CUByteCodable error:
 {
-  v6 = [a1 UTF8String];
-  v13 = v6;
-  if (v6)
+  uTF8String = [self UTF8String];
+  v13 = uTF8String;
+  if (uTF8String)
   {
-    *a3 = strlen(v6);
+    *a3 = strlen(uTF8String);
   }
 
   else if (a4)

@@ -1,36 +1,36 @@
 @interface WFTranslateTextAction
 - (id)disabledOnPlatforms;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)translateText:(id)a3 fromLocale:(id)a4 toLocale:(id)a5 translator:(id)a6 completionBlock:(id)a7;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)translateText:(id)text fromLocale:(id)locale toLocale:(id)toLocale translator:(id)translator completionBlock:(id)block;
 @end
 
 @implementation WFTranslateTextAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a5;
-  v8 = a3;
+  nameCopy = name;
+  descriptionCopy = description;
   v9 = WFLocalizedString(@"Allow “%1$@” to use %2$@ to translate?");
-  v10 = [v6 localizedStringWithFormat:v9, v7, v8];
+  descriptionCopy = [v6 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
 
-  return v10;
+  return descriptionCopy;
 }
 
-- (void)translateText:(id)a3 fromLocale:(id)a4 toLocale:(id)a5 translator:(id)a6 completionBlock:(id)a7
+- (void)translateText:(id)text fromLocale:(id)locale toLocale:(id)toLocale translator:(id)translator completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v13 isEqual:v14])
+  textCopy = text;
+  localeCopy = locale;
+  toLocaleCopy = toLocale;
+  translatorCopy = translator;
+  blockCopy = block;
+  if ([localeCopy isEqual:toLocaleCopy])
   {
-    v17 = [(WFTranslateTextAction *)self output];
-    [v17 addObject:v12];
+    output = [(WFTranslateTextAction *)self output];
+    [output addObject:textCopy];
 
-    v16[2](v16, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
@@ -53,8 +53,8 @@
 
     v19 = v18;
     _Block_object_dispose(&v27, 8);
-    v20 = [[v18 alloc] initWithSourceLocale:v13 targetLocale:v14];
-    v21 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v12];
+    v20 = [[v18 alloc] initWithSourceLocale:localeCopy targetLocale:toLocaleCopy];
+    v21 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy];
     [v20 setText:v21];
 
     [v20 setTaskHint:5];
@@ -63,13 +63,13 @@
     v24[2] = __86__WFTranslateTextAction_translateText_fromLocale_toLocale_translator_completionBlock___block_invoke;
     v24[3] = &unk_278C1A568;
     v24[4] = self;
-    v25 = v16;
+    v25 = blockCopy;
     [v20 setTextTranslationHandler:v24];
     request = self->_request;
     self->_request = v20;
     v23 = v20;
 
-    [v15 translate:v23];
+    [translatorCopy translate:v23];
   }
 }
 
@@ -114,16 +114,16 @@ LABEL_6:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__WFTranslateTextAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C21150;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   [v5 getStringRepresentations:v6];
 }
 
@@ -254,8 +254,8 @@ void __52__WFTranslateTextAction_runAsynchronouslyWithInput___block_invoke_2(uin
 {
   v5.receiver = self;
   v5.super_class = WFTranslateTextAction;
-  v2 = [(WFTranslateTextAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFTranslateTextAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

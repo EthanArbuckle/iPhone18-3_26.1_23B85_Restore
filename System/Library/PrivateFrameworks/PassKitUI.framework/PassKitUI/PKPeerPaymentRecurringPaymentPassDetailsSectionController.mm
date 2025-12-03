@@ -1,35 +1,35 @@
 @interface PKPeerPaymentRecurringPaymentPassDetailsSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
++ (BOOL)validForPaymentPass:(id)pass;
 - (BOOL)_sectionAvailable;
-- (PKPeerPaymentRecurringPaymentPassDetailsSectionController)initWithDelegate:(id)a3 pass:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6;
+- (PKPeerPaymentRecurringPaymentPassDetailsSectionController)initWithDelegate:(id)delegate pass:(id)pass context:(int64_t)context passLibraryDataProvider:(id)provider;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)_presentRecurringPaymentsWithIdentifier:(id)a3;
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3;
-- (void)preflight:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)_presentRecurringPaymentsWithIdentifier:(id)identifier;
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion;
+- (void)preflight:(id)preflight;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentPassDetailsSectionController
 
-- (PKPeerPaymentRecurringPaymentPassDetailsSectionController)initWithDelegate:(id)a3 pass:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6
+- (PKPeerPaymentRecurringPaymentPassDetailsSectionController)initWithDelegate:(id)delegate pass:(id)pass context:(int64_t)context passLibraryDataProvider:(id)provider
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = PKPeerPaymentRecurringPaymentPassDetailsSectionController;
   v9 = [(PKPaymentPassDetailSectionController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_context = a5;
-    v11 = [MEMORY[0x1E69B9000] sharedInstance];
-    v12 = [v11 account];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_context = context;
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+    account = [mEMORY[0x1E69B9000] account];
     account = v10->_account;
-    v10->_account = v12;
+    v10->_account = account;
 
-    [v11 registerObserver:v10];
+    [mEMORY[0x1E69B9000] registerObserver:v10];
   }
 
   return v10;
@@ -48,46 +48,46 @@
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment]|| ![(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self _sectionAvailable])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69B9000] sharedInstance];
-  v5 = [v4 account];
+  passCopy = pass;
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+  account = [mEMORY[0x1E69B9000] account];
 
-  if ([v3 hasAssociatedPeerPaymentAccount] && !objc_msgSend(v3, "passActivationState"))
+  if ([passCopy hasAssociatedPeerPaymentAccount] && !objc_msgSend(passCopy, "passActivationState"))
   {
-    v6 = [v5 supportsRecurringPayments];
+    supportsRecurringPayments = [account supportsRecurringPayments];
   }
 
   else
   {
-    v6 = 0;
+    supportsRecurringPayments = 0;
   }
 
-  return v6;
+  return supportsRecurringPayments;
 }
 
-- (void)preflight:(id)a3
+- (void)preflight:(id)preflight
 {
   v4 = MEMORY[0x1E69B9000];
-  v8 = a3;
-  v5 = [v4 sharedInstance];
-  v6 = [v5 account];
+  preflightCopy = preflight;
+  sharedInstance = [v4 sharedInstance];
+  account = [sharedInstance account];
   account = self->_account;
-  self->_account = v6;
+  self->_account = account;
 
-  [(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self _updateRecurringPaymentsWithCompletion:v8];
+  [(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self _updateRecurringPaymentsWithCompletion:preflightCopy];
 }
 
 - (BOOL)_sectionAvailable
@@ -96,9 +96,9 @@
   {
     account = self->_account;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained familyCollection];
-    v6 = [v5 currentUser];
-    if ([(PKPeerPaymentAccount *)account isEligibleForRecurringPaymentsForUser:v6])
+    familyCollection = [WeakRetained familyCollection];
+    currentUser = [familyCollection currentUser];
+    if ([(PKPeerPaymentAccount *)account isEligibleForRecurringPaymentsForUser:currentUser])
     {
       v7 = PKIsVision() ^ 1;
     }
@@ -117,19 +117,19 @@
   return v7;
 }
 
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B9000] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __100__PKPeerPaymentRecurringPaymentPassDetailsSectionController__updateRecurringPaymentsWithCompletion___block_invoke;
   v7[3] = &unk_1E8012940;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 recurringPaymentsWithCompletion:v7];
+  [mEMORY[0x1E69B9000] recurringPaymentsWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -189,17 +189,17 @@ void __100__PKPeerPaymentRecurringPaymentPassDetailsSectionController__updateRec
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:{@"PeerPaymentRecurringPayments", a4, a5}];
+  v6 = [view dequeueReusableCellWithIdentifier:{@"PeerPaymentRecurringPayments", path, identifier}];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:2 reuseIdentifier:@"PeerPaymentRecurringPayments"];
   }
 
-  v7 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v8 = PKLocalizedPeerPaymentRecurringString(&cfstr_DashboardMoreM.isa);
-  [v7 setText:v8];
+  [valueCellConfiguration setText:v8];
 
   v9 = [(NSArray *)self->_recurringPayments count];
   if (v9)
@@ -208,21 +208,21 @@ void __100__PKPeerPaymentRecurringPaymentPassDetailsSectionController__updateRec
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
     v12 = [v10 localizedStringFromNumber:v11 numberStyle:0];
 
-    [v7 setSecondaryText:v12];
+    [valueCellConfiguration setSecondaryText:v12];
   }
 
   [v6 setAccessoryType:1];
-  [v6 setContentConfiguration:v7];
+  [v6 setContentConfiguration:valueCellConfiguration];
   PKAccessibilityIDCellSet(v6, *MEMORY[0x1E69B9B40]);
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   if (self->_context != 3 || (PKPeerPaymentRecurringPaymentHasShownEducationMessage() & 1) != 0 || [(NSArray *)self->_recurringPayments count])
   {
     [(PKPeerPaymentRecurringPaymentPassDetailsSectionController *)self _presentRecurringPaymentsWithIdentifier:0];
@@ -234,10 +234,10 @@ void __100__PKPeerPaymentRecurringPaymentPassDetailsSectionController__updateRec
     v11 = [PKPeerPaymentRecurringPaymentEducationViewController alloc];
     context = self->_context;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [WeakRetained transactionSourceCollection];
+    transactionSourceCollection = [WeakRetained transactionSourceCollection];
     v15 = objc_loadWeakRetained(&self->_delegate);
-    v16 = [v15 familyCollection];
-    v17 = [(PKPeerPaymentRecurringPaymentEducationViewController *)v11 initWithContext:context transactionSourceCollection:v14 familyCollection:v16];
+    familyCollection = [v15 familyCollection];
+    v17 = [(PKPeerPaymentRecurringPaymentEducationViewController *)v11 initWithContext:context transactionSourceCollection:transactionSourceCollection familyCollection:familyCollection];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -252,14 +252,14 @@ void __100__PKPeerPaymentRecurringPaymentPassDetailsSectionController__updateRec
     }
 
     v19 = objc_loadWeakRetained(&self->_delegate);
-    v20 = [v19 navigationController];
-    [v20 presentViewController:v18 animated:1 completion:0];
+    navigationController = [v19 navigationController];
+    [navigationController presentViewController:v18 animated:1 completion:0];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
   }
 
-  [v8 deselectRowAtIndexPath:v9 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 void __113__PKPeerPaymentRecurringPaymentPassDetailsSectionController_tableView_didSelectRowAtIndexPath_sectionIdentifier___block_invoke(uint64_t a1)
@@ -275,17 +275,17 @@ void __113__PKPeerPaymentRecurringPaymentPassDetailsSectionController_tableView_
   }
 }
 
-- (void)_presentRecurringPaymentsWithIdentifier:(id)a3
+- (void)_presentRecurringPaymentsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [PKPeerPaymentRecurringPaymentViewController alloc];
   context = self->_context;
-  v7 = [MEMORY[0x1E69B9000] sharedInstance];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained transactionSourceCollection];
+  transactionSourceCollection = [WeakRetained transactionSourceCollection];
   v10 = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v10 familyCollection];
-  v12 = [(PKPeerPaymentRecurringPaymentViewController *)v5 initWithContext:context peerPaymentService:v7 transactionSourceCollection:v9 familyCollection:v11];
+  familyCollection = [v10 familyCollection];
+  v12 = [(PKPeerPaymentRecurringPaymentViewController *)v5 initWithContext:context peerPaymentService:mEMORY[0x1E69B9000] transactionSourceCollection:transactionSourceCollection familyCollection:familyCollection];
 
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
@@ -295,7 +295,7 @@ void __113__PKPeerPaymentRecurringPaymentPassDetailsSectionController_tableView_
   objc_copyWeak(&v18, &location);
   v13 = v12;
   v16 = v13;
-  v14 = v4;
+  v14 = identifierCopy;
   v17 = v14;
   [(PKPeerPaymentRecurringPaymentViewController *)v13 preflightWithCompletion:v15];
 

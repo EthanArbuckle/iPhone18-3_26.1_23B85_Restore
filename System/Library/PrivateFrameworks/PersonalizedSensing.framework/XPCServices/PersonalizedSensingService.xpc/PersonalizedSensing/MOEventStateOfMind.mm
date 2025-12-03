@@ -1,43 +1,43 @@
 @interface MOEventStateOfMind
-- (MOEventStateOfMind)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventStateOfMind)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventStateOfMind
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reflectiveInterval = self->_reflectiveInterval;
-  v5 = a3;
-  [v5 encodeDouble:@"reflectiveInterval" forKey:reflectiveInterval];
-  [v5 encodeDouble:@"valence" forKey:self->_valence];
-  [v5 encodeDouble:@"valenceClassification" forKey:self->_valenceClassification];
-  [v5 encodeObject:self->_labels forKey:@"labels"];
-  [v5 encodeObject:self->_domains forKey:@"domains"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"reflectiveInterval" forKey:reflectiveInterval];
+  [coderCopy encodeDouble:@"valence" forKey:self->_valence];
+  [coderCopy encodeDouble:@"valenceClassification" forKey:self->_valenceClassification];
+  [coderCopy encodeObject:self->_labels forKey:@"labels"];
+  [coderCopy encodeObject:self->_domains forKey:@"domains"];
 }
 
-- (MOEventStateOfMind)initWithCoder:(id)a3
+- (MOEventStateOfMind)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = MOEventStateOfMind;
   v5 = [(MOEventStateOfMind *)&v22 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"reflectiveInterval"];
+    [coderCopy decodeDoubleForKey:@"reflectiveInterval"];
     v5->_reflectiveInterval = v6;
-    [v4 decodeDoubleForKey:@"valence"];
+    [coderCopy decodeDoubleForKey:@"valence"];
     v5->_valence = v7;
-    [v4 decodeDoubleForKey:@"valenceClassification"];
+    [coderCopy decodeDoubleForKey:@"valenceClassification"];
     v5->_valenceClassification = v8;
     v9 = objc_autoreleasePoolPush();
     v10 = [NSSet alloc];
     v11 = objc_opt_class();
     v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v9);
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"labels"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"labels"];
     labels = v5->_labels;
     v5->_labels = v13;
 
@@ -46,7 +46,7 @@
     v17 = objc_opt_class();
     v18 = [v16 initWithObjects:{v17, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v15);
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"domains"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"domains"];
     domains = v5->_domains;
     v5->_domains = v19;
   }
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventStateOfMind);
   v4->_reflectiveInterval = self->_reflectiveInterval;

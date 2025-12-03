@@ -1,31 +1,31 @@
 @interface HKMCRecentBasalBodyTemperature
-- (BOOL)isEqual:(id)a3;
-- (HKMCRecentBasalBodyTemperature)initWithCoder:(id)a3;
-- (HKMCRecentBasalBodyTemperature)initWithMostRecent:(id)a3 upperQuantile:(id)a4 median:(id)a5 lowerQuantile:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKMCRecentBasalBodyTemperature)initWithCoder:(id)coder;
+- (HKMCRecentBasalBodyTemperature)initWithMostRecent:(id)recent upperQuantile:(id)quantile median:(id)median lowerQuantile:(id)lowerQuantile;
 - (NSString)shortDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCRecentBasalBodyTemperature
 
-- (HKMCRecentBasalBodyTemperature)initWithMostRecent:(id)a3 upperQuantile:(id)a4 median:(id)a5 lowerQuantile:(id)a6
+- (HKMCRecentBasalBodyTemperature)initWithMostRecent:(id)recent upperQuantile:(id)quantile median:(id)median lowerQuantile:(id)lowerQuantile
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recentCopy = recent;
+  quantileCopy = quantile;
+  medianCopy = median;
+  lowerQuantileCopy = lowerQuantile;
   v18.receiver = self;
   v18.super_class = HKMCRecentBasalBodyTemperature;
   v15 = [(HKMCRecentBasalBodyTemperature *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mostRecent, a3);
-    objc_storeStrong(&v16->_upperQuantile, a4);
-    objc_storeStrong(&v16->_median, a5);
-    objc_storeStrong(&v16->_lowerQuantile, a6);
+    objc_storeStrong(&v15->_mostRecent, recent);
+    objc_storeStrong(&v16->_upperQuantile, quantile);
+    objc_storeStrong(&v16->_median, median);
+    objc_storeStrong(&v16->_lowerQuantile, lowerQuantile);
   }
 
   return v16;
@@ -35,32 +35,32 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMCRecentBasalBodyTemperature *)self shortDescription];
-  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, v5];
+  shortDescription = [(HKMCRecentBasalBodyTemperature *)self shortDescription];
+  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, shortDescription];
 
   return v6;
 }
 
 - (NSString)shortDescription
 {
-  v3 = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
+  degreeCelsiusUnit = [MEMORY[0x277CCDAB0] degreeCelsiusUnit];
   v4 = MEMORY[0x277CCACA8];
-  [(HKQuantity *)self->_mostRecent doubleValueForUnit:v3];
+  [(HKQuantity *)self->_mostRecent doubleValueForUnit:degreeCelsiusUnit];
   v6 = v5;
-  [(HKQuantity *)self->_lowerQuantile doubleValueForUnit:v3];
+  [(HKQuantity *)self->_lowerQuantile doubleValueForUnit:degreeCelsiusUnit];
   v8 = v7;
-  [(HKQuantity *)self->_median doubleValueForUnit:v3];
+  [(HKQuantity *)self->_median doubleValueForUnit:degreeCelsiusUnit];
   v10 = v9;
-  [(HKQuantity *)self->_upperQuantile doubleValueForUnit:v3];
-  v12 = [v4 stringWithFormat:@"last:%.2f [%.2f, %.2f, %.2f] %@", v6, v8, v10, v11, v3];
+  [(HKQuantity *)self->_upperQuantile doubleValueForUnit:degreeCelsiusUnit];
+  v12 = [v4 stringWithFormat:@"last:%.2f [%.2f, %.2f, %.2f] %@", v6, v8, v10, v11, degreeCelsiusUnit];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -70,7 +70,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       mostRecent = self->_mostRecent;
       v7 = v5->_mostRecent;
       if (mostRecent != v7 && (!v7 || ![(HKQuantity *)mostRecent isEqual:?]))
@@ -132,23 +132,23 @@ LABEL_19:
   return v4 ^ v5 ^ [(HKQuantity *)self->_lowerQuantile hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mostRecent = self->_mostRecent;
-  v5 = a3;
-  [v5 encodeObject:mostRecent forKey:@"MostRecent"];
-  [v5 encodeObject:self->_upperQuantile forKey:@"UpperQuantile"];
-  [v5 encodeObject:self->_median forKey:@"Median"];
-  [v5 encodeObject:self->_lowerQuantile forKey:@"LowerQuantile"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mostRecent forKey:@"MostRecent"];
+  [coderCopy encodeObject:self->_upperQuantile forKey:@"UpperQuantile"];
+  [coderCopy encodeObject:self->_median forKey:@"Median"];
+  [coderCopy encodeObject:self->_lowerQuantile forKey:@"LowerQuantile"];
 }
 
-- (HKMCRecentBasalBodyTemperature)initWithCoder:(id)a3
+- (HKMCRecentBasalBodyTemperature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MostRecent"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UpperQuantile"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Median"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LowerQuantile"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MostRecent"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpperQuantile"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Median"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LowerQuantile"];
 
   v9 = [(HKMCRecentBasalBodyTemperature *)self initWithMostRecent:v5 upperQuantile:v6 median:v7 lowerQuantile:v8];
   return v9;

@@ -1,48 +1,48 @@
 @interface CaptureMTLIndirectRenderCommand
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLIndirectRenderCommand)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLIndirectRenderCommand)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11 tessellationFactorBuffer:(id)a12 tessellationFactorBufferOffset:(unint64_t)a13 tessellationFactorBufferInstanceStride:(unint64_t)a14;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9 tessellationFactorBuffer:(id)a10 tessellationFactorBufferOffset:(unint64_t)a11 tessellationFactorBufferInstanceStride:(unint64_t)a12;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1 tessellationFactorBuffer:(id)self2 tessellationFactorBufferOffset:(unint64_t)self3 tessellationFactorBufferInstanceStride:(unint64_t)self4;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance tessellationFactorBuffer:(id)self0 tessellationFactorBufferOffset:(unint64_t)self1 tessellationFactorBufferInstanceStride:(unint64_t)self2;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)reset;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setCullMode:(unint64_t)a3;
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthStencilState:(id)a3;
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
-- (void)setTriangleFillMode:(unint64_t)a3;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setCullMode:(unint64_t)mode;
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthStencilState:(id)state;
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
+- (void)setTriangleFillMode:(unint64_t)mode;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
 - (void)touch;
 @end
 
 @implementation CaptureMTLIndirectRenderCommand
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setViewports:a3 count:a4];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setViewports:viewports count:count];
   v8 = v19;
   *(v19 + 8) = -14915;
   v9 = BYTE9(v20);
@@ -62,10 +62,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -73,9 +73,9 @@
     var0 = 0;
   }
 
-  v15 = GTTraceEncoder_storeBlob(&v18, a3, 48 * a4);
+  v15 = GTTraceEncoder_storeBlob(&v18, viewports, 48 * count);
   *v10 = var0;
-  *(v10 + 1) = a4;
+  *(v10 + 1) = count;
   v10[16] = v15;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
@@ -85,7 +85,7 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
   v21 = 0u;
   v22 = 0u;
@@ -93,10 +93,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v7 = *&a3->var2;
-  v19[0] = *&a3->var0;
+  v7 = *&viewport->var2;
+  v19[0] = *&viewport->var0;
   v19[1] = v7;
-  v19[2] = *&a3->var4;
+  v19[2] = *&viewport->var4;
   [(MTLIndirectRenderCommandSPI *)baseObject setViewport:v19];
   v8 = v21;
   *(v21 + 8) = -14916;
@@ -117,10 +117,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -129,9 +129,9 @@
   }
 
   *v10 = var0;
-  v15 = *&a3->var2;
-  v16 = *&a3->var4;
-  *(v10 + 8) = *&a3->var0;
+  v15 = *&viewport->var2;
+  v16 = *&viewport->var4;
+  *(v10 + 8) = *&viewport->var0;
   *(v10 + 24) = v15;
   *(v10 + 40) = v16;
   s();
@@ -140,18 +140,18 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v12 = a3;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v26);
   baseObject = self->_baseObject;
-  v14 = [v12 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setVertexBuffer:v14 offset:a4 attributeStride:a5 atIndex:a6];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setVertexBuffer:baseObject offset:offset attributeStride:stride atIndex:index];
 
   v15 = v27;
   *(v27 + 8) = -15276;
@@ -172,10 +172,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -183,11 +183,11 @@
     var0 = 0;
   }
 
-  v22 = [v12 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v22)
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -197,27 +197,27 @@
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a4;
-  *(v17 + 3) = a5;
-  *(v17 + 4) = a6;
+  *(v17 + 2) = offset;
+  *(v17 + 3) = stride;
+  *(v17 + 4) = index;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
   *(v27 + 15) |= 8u;
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v10 = a3;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v10 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setVertexBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setVertexBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15955;
@@ -238,10 +238,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -249,11 +249,11 @@
     var0 = 0;
   }
 
-  v20 = [v10 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v20)
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -263,22 +263,22 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setTriangleFillMode:(unint64_t)a3
+- (void)setTriangleFillMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setTriangleFillMode:a3];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setTriangleFillMode:mode];
   v6 = v16;
   *(v16 + 8) = -14917;
   v7 = BYTE9(v17);
@@ -298,10 +298,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -310,21 +310,21 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setScissorRects:a3 count:a4];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setScissorRects:rects count:count];
   v8 = v19;
   *(v19 + 8) = -14920;
   v9 = BYTE9(v20);
@@ -344,10 +344,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -355,9 +355,9 @@
     var0 = 0;
   }
 
-  v15 = GTTraceEncoder_storeBlob(&v18, a3, 32 * a4);
+  v15 = GTTraceEncoder_storeBlob(&v18, rects, 32 * count);
   *v10 = var0;
-  *(v10 + 1) = a4;
+  *(v10 + 1) = count;
   v10[16] = v15;
   *(v10 + 17) = 0;
   *(v10 + 5) = 0;
@@ -367,7 +367,7 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
   v20 = 0u;
   v21 = 0u;
@@ -375,8 +375,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
   baseObject = self->_baseObject;
-  v7 = *&a3->var2;
-  v18[0] = *&a3->var0;
+  v7 = *&rect->var2;
+  v18[0] = *&rect->var0;
   v18[1] = v7;
   [(MTLIndirectRenderCommandSPI *)baseObject setScissorRect:v18];
   v8 = v20;
@@ -398,10 +398,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -410,8 +410,8 @@
   }
 
   *v10 = var0;
-  v15 = *&a3->var2;
-  *(v10 + 8) = *&a3->var0;
+  v15 = *&rect->var2;
+  *(v10 + 8) = *&rect->var0;
   *(v10 + 24) = v15;
   s();
   *v16 = v17;
@@ -419,18 +419,18 @@
   *(v20 + 15) |= 8u;
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v6 = a3;
+  stateCopy = state;
   GTTraceContext_pushEncoderWithStream(traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v6 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setRenderPipelineState:v8];
+  baseObject = [stateCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setRenderPipelineState:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15956;
@@ -451,10 +451,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -462,11 +462,11 @@
     var0 = 0;
   }
 
-  v16 = [v6 traceStream];
+  traceStream2 = [stateCopy traceStream];
 
-  if (v16)
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -482,14 +482,14 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setObjectThreadgroupMemoryLength:a3 atIndex:a4];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setObjectThreadgroupMemoryLength:length atIndex:index];
   v8 = v18;
   *(v18 + 8) = -15262;
   v9 = BYTE9(v19);
@@ -509,10 +509,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -521,26 +521,26 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = length;
+  *(v10 + 2) = index;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v10 = a3;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v10 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setObjectBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setObjectBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15263;
@@ -561,10 +561,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -572,11 +572,11 @@
     var0 = 0;
   }
 
-  v20 = [v10 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v20)
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -586,26 +586,26 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v10 = a3;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v10 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setMeshBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setMeshBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15264;
@@ -626,10 +626,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -637,11 +637,11 @@
     var0 = 0;
   }
 
-  v20 = [v10 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v20)
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -651,22 +651,22 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setFrontFacingWinding:a3];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setFrontFacingWinding:winding];
   v6 = v16;
   *(v16 + 8) = -14922;
   v7 = BYTE9(v17);
@@ -686,10 +686,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -698,25 +698,25 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = winding;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v10 = a3;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v24);
   baseObject = self->_baseObject;
-  v12 = [v10 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setFragmentBuffer:v12 offset:a4 atIndex:a5];
+  baseObject = [bufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setFragmentBuffer:baseObject offset:offset atIndex:index];
 
   v13 = v25;
   *(v25 + 8) = -15954;
@@ -737,10 +737,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -748,11 +748,11 @@
     var0 = 0;
   }
 
-  v20 = [v10 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v20)
+  if (traceStream2)
   {
-    v21 = *v20;
+    v21 = *traceStream2;
   }
 
   else
@@ -762,23 +762,23 @@
 
   *v15 = var0;
   *(v15 + 1) = v21;
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a5;
+  *(v15 + 2) = offset;
+  *(v15 + 3) = index;
   s();
   *v22 = v23;
   *(v22 + 8) = BYTE8(v26);
   *(v25 + 15) |= 8u;
 }
 
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  *&v8 = a3;
-  *&v9 = a4;
+  *&v8 = bound;
+  *&v9 = maxBound;
   [(MTLIndirectRenderCommandSPI *)self->_baseObject setDepthTestMinBound:v8 maxBound:v9];
   v10 = v20;
   *(v20 + 8) = -14923;
@@ -799,10 +799,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -811,26 +811,26 @@
   }
 
   *v12 = var0;
-  *(v12 + 2) = a3;
-  *(v12 + 3) = a4;
+  *(v12 + 2) = bound;
+  *(v12 + 3) = maxBound;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v6 = a3;
+  stateCopy = state;
   GTTraceContext_pushEncoderWithStream(traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v6 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject setDepthStencilState:v8];
+  baseObject = [stateCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject setDepthStencilState:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -14924;
@@ -851,10 +851,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -862,11 +862,11 @@
     var0 = 0;
   }
 
-  v16 = [v6 traceStream];
+  traceStream2 = [stateCopy traceStream];
 
-  if (v16)
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -882,14 +882,14 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setDepthClipMode:a3];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setDepthClipMode:mode];
   v6 = v16;
   *(v16 + 8) = -14925;
   v7 = BYTE9(v17);
@@ -909,10 +909,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -921,23 +921,23 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp
 {
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
-  *&v10 = a3;
-  *&v11 = a4;
-  *&v12 = a5;
+  *&v10 = bias;
+  *&v11 = scale;
+  *&v12 = clamp;
   [(MTLIndirectRenderCommandSPI *)self->_baseObject setDepthBias:v10 slopeScale:v11 clamp:v12];
   v13 = v23;
   *(v23 + 8) = -14926;
@@ -958,10 +958,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -970,9 +970,9 @@
   }
 
   *v15 = var0;
-  *(v15 + 2) = a3;
-  *(v15 + 3) = a4;
-  *(v15 + 4) = a5;
+  *(v15 + 2) = bias;
+  *(v15 + 3) = scale;
+  *(v15 + 4) = clamp;
   *(v15 + 5) = 0;
   s();
   *v20 = v21;
@@ -980,14 +980,14 @@
   *(v23 + 15) |= 8u;
 }
 
-- (void)setCullMode:(unint64_t)a3
+- (void)setCullMode:(unint64_t)mode
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject setCullMode:a3];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject setCullMode:mode];
   v6 = v16;
   *(v16 + 8) = -14927;
   v7 = BYTE9(v17);
@@ -1007,10 +1007,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1019,24 +1019,24 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = mode;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v25);
-  *&v12 = a3;
-  *&v13 = a4;
-  *&v14 = a5;
-  *&v15 = a6;
+  *&v12 = red;
+  *&v13 = green;
+  *&v14 = blue;
+  *&v15 = alpha;
   [(MTLIndirectRenderCommandSPI *)self->_baseObject setBlendColorRed:v12 green:v13 blue:v14 alpha:v15];
   v16 = v26;
   *(v26 + 8) = -14928;
@@ -1057,10 +1057,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1069,10 +1069,10 @@
   }
 
   *v18 = var0;
-  *(v18 + 2) = a3;
-  *(v18 + 3) = a4;
-  *(v18 + 4) = a5;
-  *(v18 + 5) = a6;
+  *(v18 + 2) = red;
+  *(v18 + 3) = green;
+  *(v18 + 4) = blue;
+  *(v18 + 5) = alpha;
   s();
   *v23 = v24;
   *(v23 + 8) = BYTE8(v27);
@@ -1106,10 +1106,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1124,14 +1124,14 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v23);
-  [(MTLIndirectRenderCommandSPI *)self->_baseObject drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+  [(MTLIndirectRenderCommandSPI *)self->_baseObject drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
   v14 = v24;
   *(v24 + 8) = -15949;
   v15 = BYTE9(v25);
@@ -1151,10 +1151,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1163,32 +1163,32 @@
   }
 
   *v16 = var0;
-  *(v16 + 1) = a3;
-  *(v16 + 2) = a4;
-  *(v16 + 3) = a5;
-  *(v16 + 4) = a6;
-  *(v16 + 5) = a7;
+  *(v16 + 1) = primitives;
+  *(v16 + 2) = start;
+  *(v16 + 3) = count;
+  *(v16 + 4) = instanceCount;
+  *(v16 + 5) = instance;
   s();
   *v21 = v22;
   *(v21 + 8) = BYTE8(v25);
   *(v24 + 15) |= 8u;
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9 tessellationFactorBuffer:(id)a10 tessellationFactorBufferOffset:(unint64_t)a11 tessellationFactorBufferInstanceStride:(unint64_t)a12
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance tessellationFactorBuffer:(id)self0 tessellationFactorBufferOffset:(unint64_t)self1 tessellationFactorBufferInstanceStride:(unint64_t)self2
 {
   v40 = 0u;
   v41 = 0u;
   v39 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v18 = a10;
-  v19 = a6;
+  factorBufferCopy = factorBuffer;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v39);
   baseObject = self->_baseObject;
-  v21 = [v19 baseObject];
-  v38 = v18;
-  v22 = [v18 baseObject];
-  [(MTLIndirectRenderCommandSPI *)baseObject drawPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:v21 patchIndexBufferOffset:a7 instanceCount:a8 baseInstance:a9 tessellationFactorBuffer:v22 tessellationFactorBufferOffset:a11 tessellationFactorBufferInstanceStride:a12];
+  baseObject = [bufferCopy baseObject];
+  v38 = factorBufferCopy;
+  baseObject2 = [factorBufferCopy baseObject];
+  [(MTLIndirectRenderCommandSPI *)baseObject drawPatches:patches patchStart:start patchCount:count patchIndexBuffer:baseObject patchIndexBufferOffset:offset instanceCount:instanceCount baseInstance:instance tessellationFactorBuffer:baseObject2 tessellationFactorBufferOffset:bufferOffset tessellationFactorBufferInstanceStride:stride];
 
   v23 = *(&v39 + 1);
   v24 = v40;
@@ -1198,10 +1198,10 @@
   ++BYTE10(v41);
   Bytes = GTTraceMemPool_allocateBytes(v25, *(&v40 + 1), v26 | 0x5800000000);
   *(v24 + 13) = v26;
-  v28 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1209,18 +1209,18 @@
     var0 = 0;
   }
 
-  v30 = [v19 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v30)
+  if (traceStream2)
   {
-    v30 = *v30;
+    traceStream2 = *traceStream2;
   }
 
-  v31 = [v38 traceStream];
+  traceStream3 = [v38 traceStream];
 
-  if (v31)
+  if (traceStream3)
   {
-    v32 = *v31;
+    v32 = *traceStream3;
   }
 
   else
@@ -1229,23 +1229,23 @@
   }
 
   *(Bytes + 2) = var0;
-  *(Bytes + 3) = a3;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
-  *(Bytes + 6) = v30;
-  *(Bytes + 7) = a7;
-  *(Bytes + 8) = a8;
-  *(Bytes + 9) = a9;
+  *(Bytes + 3) = patches;
+  *(Bytes + 4) = start;
+  *(Bytes + 5) = count;
+  *(Bytes + 6) = traceStream2;
+  *(Bytes + 7) = offset;
+  *(Bytes + 8) = instanceCount;
+  *(Bytes + 9) = instance;
   *(Bytes + 10) = v32;
-  *(Bytes + 11) = a11;
-  *(Bytes + 12) = a12;
+  *(Bytes + 11) = bufferOffset;
+  *(Bytes + 12) = stride;
   s();
   *v33 = v34;
   *(v33 + 8) = BYTE8(v41);
   *(v40 + 15) |= 8u;
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   v29 = 0u;
   v30 = 0u;
@@ -1253,9 +1253,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v27 = *a3;
-  v26 = *a4;
-  v25 = *a5;
+  v27 = *threads;
+  v26 = *threadgroup;
+  v25 = *meshThreadgroup;
   [(MTLIndirectRenderCommandSPI *)baseObject drawMeshThreads:&v27 threadsPerObjectThreadgroup:&v26 threadsPerMeshThreadgroup:&v25];
   v11 = *(&v28 + 1);
   v12 = v29;
@@ -1265,10 +1265,10 @@
   ++BYTE10(v30);
   Bytes = GTTraceMemPool_allocateBytes(v13, *(&v29 + 1), v14 | 0x5000000000);
   *(v12 + 13) = v14;
-  v16 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1276,13 +1276,13 @@
     var0 = 0;
   }
 
-  var2 = a3->var2;
-  v19 = a4->var2;
-  v20 = a5->var2;
+  var2 = threads->var2;
+  v19 = threadgroup->var2;
+  v20 = meshThreadgroup->var2;
   *(Bytes + 2) = var0;
-  v21 = *&a4->var0;
-  v22 = *&a5->var0;
-  *(Bytes + 24) = *&a3->var0;
+  v21 = *&threadgroup->var0;
+  v22 = *&meshThreadgroup->var0;
+  *(Bytes + 24) = *&threads->var0;
   *(Bytes + 5) = var2;
   *(Bytes + 3) = v21;
   *(Bytes + 8) = v19;
@@ -1294,7 +1294,7 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   v29 = 0u;
   v30 = 0u;
@@ -1302,9 +1302,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v27 = *a3;
-  v26 = *a4;
-  v25 = *a5;
+  v27 = *threadgroups;
+  v26 = *threadgroup;
+  v25 = *meshThreadgroup;
   [(MTLIndirectRenderCommandSPI *)baseObject drawMeshThreadgroups:&v27 threadsPerObjectThreadgroup:&v26 threadsPerMeshThreadgroup:&v25];
   v11 = *(&v28 + 1);
   v12 = v29;
@@ -1314,10 +1314,10 @@
   ++BYTE10(v30);
   Bytes = GTTraceMemPool_allocateBytes(v13, *(&v29 + 1), v14 | 0x5000000000);
   *(v12 + 13) = v14;
-  v16 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1325,13 +1325,13 @@
     var0 = 0;
   }
 
-  var2 = a3->var2;
-  v19 = a4->var2;
-  v20 = a5->var2;
+  var2 = threadgroups->var2;
+  v19 = threadgroup->var2;
+  v20 = meshThreadgroup->var2;
   *(Bytes + 2) = var0;
-  v21 = *&a4->var0;
-  v22 = *&a5->var0;
-  *(Bytes + 24) = *&a3->var0;
+  v21 = *&threadgroup->var0;
+  v22 = *&meshThreadgroup->var0;
+  *(Bytes + 24) = *&threadgroups->var0;
   *(Bytes + 5) = var2;
   *(Bytes + 3) = v21;
   *(Bytes + 8) = v19;
@@ -1343,19 +1343,19 @@
   *(v29 + 15) |= 8u;
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v17 = a6;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v33);
   baseObject = self->_baseObject;
-  v19 = [v17 baseObject];
-  v32 = a8;
-  [(MTLIndirectRenderCommandSPI *)baseObject drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v19 indexBufferOffset:a7 instanceCount:a8 baseVertex:a9 baseInstance:a10];
+  baseObject = [bufferCopy baseObject];
+  instanceCountCopy = instanceCount;
+  [(MTLIndirectRenderCommandSPI *)baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject indexBufferOffset:offset instanceCount:instanceCount baseVertex:vertex baseInstance:instance];
 
   v20 = *(&v33 + 1);
   v21 = v34;
@@ -1365,10 +1365,10 @@
   ++BYTE10(v35);
   Bytes = GTTraceMemPool_allocateBytes(v22, *(&v34 + 1), v23 | 0x4800000000);
   *(v21 + 13) = v23;
-  v25 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1376,11 +1376,11 @@
     var0 = 0;
   }
 
-  v27 = [v17 traceStream];
+  traceStream2 = [bufferCopy traceStream];
 
-  if (v27)
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -1389,38 +1389,38 @@
   }
 
   *(Bytes + 2) = var0;
-  *(Bytes + 3) = a3;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 3) = primitives;
+  *(Bytes + 4) = count;
+  *(Bytes + 5) = type;
   *(Bytes + 6) = v28;
-  *(Bytes + 7) = a7;
-  *(Bytes + 8) = v32;
-  *(Bytes + 9) = a9;
-  *(Bytes + 10) = a10;
+  *(Bytes + 7) = offset;
+  *(Bytes + 8) = instanceCountCopy;
+  *(Bytes + 9) = vertex;
+  *(Bytes + 10) = instance;
   s();
   *v29 = v30;
   *(v29 + 8) = BYTE8(v35);
   *(v34 + 15) |= 8u;
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11 tessellationFactorBuffer:(id)a12 tessellationFactorBufferOffset:(unint64_t)a13 tessellationFactorBufferInstanceStride:(unint64_t)a14
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1 tessellationFactorBuffer:(id)self2 tessellationFactorBufferOffset:(unint64_t)self3 tessellationFactorBufferInstanceStride:(unint64_t)self4
 {
   v47 = 0u;
   v48 = 0u;
   v46 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v20 = a12;
-  v21 = a8;
-  v22 = a6;
+  factorBufferCopy = factorBuffer;
+  indexBufferCopy = indexBuffer;
+  bufferCopy = buffer;
   GTTraceContext_pushEncoderWithStream(traceContext, &v46);
   baseObject = self->_baseObject;
-  v44 = v22;
-  v24 = [v22 baseObject];
-  v25 = [v21 baseObject];
-  v45 = v20;
-  v26 = [v20 baseObject];
-  [MTLIndirectRenderCommandSPI drawIndexedPatches:"drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:" patchStart:a3 patchCount:a4 patchIndexBuffer:a5 patchIndexBufferOffset:v24 controlPointIndexBuffer:a9 controlPointIndexBufferOffset:a10 instanceCount:a11 baseInstance:v26 tessellationFactorBuffer:a13 tessellationFactorBufferOffset:a14 tessellationFactorBufferInstanceStride:?];
+  v44 = bufferCopy;
+  baseObject = [bufferCopy baseObject];
+  baseObject2 = [indexBufferCopy baseObject];
+  v45 = factorBufferCopy;
+  baseObject3 = [factorBufferCopy baseObject];
+  [MTLIndirectRenderCommandSPI drawIndexedPatches:"drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:" patchStart:patches patchCount:start patchIndexBuffer:count patchIndexBufferOffset:baseObject controlPointIndexBuffer:bufferOffset controlPointIndexBufferOffset:instanceCount instanceCount:instance baseInstance:baseObject3 tessellationFactorBuffer:factorBufferOffset tessellationFactorBufferOffset:stride tessellationFactorBufferInstanceStride:?];
 
   v27 = *(&v46 + 1);
   v28 = v47;
@@ -1430,10 +1430,10 @@
   ++BYTE10(v48);
   Bytes = GTTraceMemPool_allocateBytes(v29, *(&v47 + 1), v30 | 0x6800000000);
   *(v28 + 13) = v30;
-  v32 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v32)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v32->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1441,11 +1441,11 @@
     var0 = 0;
   }
 
-  v34 = [v44 traceStream];
+  traceStream2 = [v44 traceStream];
 
-  if (v34)
+  if (traceStream2)
   {
-    v35 = *v34;
+    v35 = *traceStream2;
   }
 
   else
@@ -1453,18 +1453,18 @@
     v35 = 0;
   }
 
-  v36 = [v21 traceStream];
+  traceStream3 = [indexBufferCopy traceStream];
 
-  if (v36)
+  if (traceStream3)
   {
-    v36 = *v36;
+    traceStream3 = *traceStream3;
   }
 
-  v37 = [v45 traceStream];
+  traceStream4 = [v45 traceStream];
 
-  if (v37)
+  if (traceStream4)
   {
-    v38 = *v37;
+    v38 = *traceStream4;
   }
 
   else
@@ -1473,18 +1473,18 @@
   }
 
   *(Bytes + 2) = var0;
-  *(Bytes + 3) = a3;
-  *(Bytes + 4) = a4;
-  *(Bytes + 5) = a5;
+  *(Bytes + 3) = patches;
+  *(Bytes + 4) = start;
+  *(Bytes + 5) = count;
   *(Bytes + 6) = v35;
-  *(Bytes + 7) = a7;
-  *(Bytes + 8) = v36;
-  *(Bytes + 9) = a9;
-  *(Bytes + 10) = a10;
-  *(Bytes + 11) = a11;
+  *(Bytes + 7) = offset;
+  *(Bytes + 8) = traceStream3;
+  *(Bytes + 9) = bufferOffset;
+  *(Bytes + 10) = instanceCount;
+  *(Bytes + 11) = instance;
   *(Bytes + 12) = v38;
-  *(Bytes + 13) = a13;
-  *(Bytes + 14) = a14;
+  *(Bytes + 13) = factorBufferOffset;
+  *(Bytes + 14) = stride;
   s();
   *v39 = v40;
   *(v39 + 8) = BYTE8(v48);
@@ -1517,10 +1517,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLIndirectRenderCommand *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLIndirectRenderCommand *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1539,13 +1539,13 @@
   [(CaptureMTLIndirectRenderCommand *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLIndirectRenderCommandSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLIndirectRenderCommandSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1600,19 +1600,19 @@
   }
 }
 
-- (CaptureMTLIndirectRenderCommand)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLIndirectRenderCommand)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTLIndirectRenderCommand;
   v8 = [(CaptureMTLIndirectRenderCommand *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

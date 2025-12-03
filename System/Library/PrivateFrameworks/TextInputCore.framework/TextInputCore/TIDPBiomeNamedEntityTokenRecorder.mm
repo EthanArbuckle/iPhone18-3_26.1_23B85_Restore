@@ -1,8 +1,8 @@
 @interface TIDPBiomeNamedEntityTokenRecorder
 - (BOOL)report;
-- (BOOL)shouldSkipWordEntry:(id)a3;
+- (BOOL)shouldSkipWordEntry:(id)entry;
 - (id)delegate;
-- (id)filterTokenFrequencies:(id)a3 forTokenClass:(unsigned int)a4;
+- (id)filterTokenFrequencies:(id)frequencies forTokenClass:(unsigned int)class;
 - (id)records;
 @end
 
@@ -17,8 +17,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(TIDPBiomeNamedEntityTokenRecorder *)self records];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  records = [(TIDPBiomeNamedEntityTokenRecorder *)self records];
+  v5 = [records countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,12 +29,12 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(records);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
-        v10 = [v9 word];
-        v11 = [v3 objectForKey:v10];
+        word = [v9 word];
+        v11 = [v3 objectForKey:word];
 
         if (v11)
         {
@@ -46,11 +46,11 @@
           v12 = [MEMORY[0x277CCABB0] numberWithInt:1];
         }
 
-        v13 = [v9 word];
-        [v3 setObject:v12 forKey:v13];
+        word2 = [v9 word];
+        [v3 setObject:v12 forKey:word2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v6 = [records countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v6);
@@ -62,25 +62,25 @@
     v15 = [(TIDPBiomeNamedEntityTokenRecorder *)self filterTokenFrequencies:v3 forTokenClass:69];
     if ([v14 count] || objc_msgSend(v15, "count"))
     {
-      v16 = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
+      delegate = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
       v17 = objc_opt_respondsToSelector();
 
       if (v17)
       {
         if ([v14 count])
         {
-          v18 = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
-          v19 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-          v20 = [(TIDPBiomeNamedEntityTokenRecorder *)self givenNameRecordingKey];
-          [v18 recordTokenFrequency:v14 withLocale:v19 withTokenType:v20];
+          delegate2 = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
+          recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+          givenNameRecordingKey = [(TIDPBiomeNamedEntityTokenRecorder *)self givenNameRecordingKey];
+          [delegate2 recordTokenFrequency:v14 withLocale:recordingKeyLocaleSubstring withTokenType:givenNameRecordingKey];
         }
 
         if ([v15 count])
         {
-          v21 = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
-          v22 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-          v23 = [(TIDPBiomeNamedEntityTokenRecorder *)self surnameRecordingKey];
-          [v21 recordTokenFrequency:v15 withLocale:v22 withTokenType:v23];
+          delegate3 = [(TIDPBiomeNamedEntityTokenRecorder *)self delegate];
+          recordingKeyLocaleSubstring2 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+          surnameRecordingKey = [(TIDPBiomeNamedEntityTokenRecorder *)self surnameRecordingKey];
+          [delegate3 recordTokenFrequency:v15 withLocale:recordingKeyLocaleSubstring2 withTokenType:surnameRecordingKey];
         }
       }
 
@@ -103,21 +103,21 @@
   return v24;
 }
 
-- (id)filterTokenFrequencies:(id)a3 forTokenClass:(unsigned int)a4
+- (id)filterTokenFrequencies:(id)frequencies forTokenClass:(unsigned int)class
 {
-  v5 = a3;
+  frequenciesCopy = frequencies;
   SharedVocabulary = LMVocabularyGetSharedVocabulary();
-  v7 = [v5 allKeys];
+  allKeys = [frequenciesCopy allKeys];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClass___block_invoke;
   v12[3] = &__block_descriptor_44_e35_B24__0__NSString_8__NSDictionary_16l;
   v12[4] = SharedVocabulary;
-  v13 = a4;
+  classCopy = class;
   v8 = [MEMORY[0x277CCAC30] predicateWithBlock:v12];
-  v9 = [v7 filteredArrayUsingPredicate:v8];
+  v9 = [allKeys filteredArrayUsingPredicate:v8];
 
-  v10 = [v5 dictionaryWithValuesForKeys:v9];
+  v10 = [frequenciesCopy dictionaryWithValuesForKeys:v9];
 
   return v10;
 }
@@ -138,17 +138,17 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v4 = [(TIDPRecorder *)self typingSessionAligned];
-  v5 = [v4 alignedEntries];
+  typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries = [typingSessionAligned alignedEntries];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  obj = alignedEntries;
+  v6 = [alignedEntries countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v38;
     v29 = *v38;
-    v30 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -161,26 +161,26 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
         }
 
         v10 = *(*(&v37 + 1) + 8 * v9);
-        v11 = [v10 originalWord];
-        v12 = [v11 editedEntry];
-        v13 = v12;
-        if (v12)
+        originalWord = [v10 originalWord];
+        editedEntry = [originalWord editedEntry];
+        v13 = editedEntry;
+        if (editedEntry)
         {
-          v14 = v12;
+          originalWord2 = editedEntry;
         }
 
         else
         {
-          v14 = [v10 originalWord];
+          originalWord2 = [v10 originalWord];
         }
 
-        v15 = v14;
+        v15 = originalWord2;
 
         if (![(TIDPBiomeNamedEntityTokenRecorder *)self shouldSkipWordEntry:v15])
         {
-          v16 = [v15 acceptedString];
-          v17 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v18 = [v16 componentsSeparatedByCharactersInSet:v17];
+          acceptedString = [v15 acceptedString];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          v18 = [acceptedString componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
           v35 = 0u;
           v36 = 0u;
@@ -216,7 +216,7 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
           }
 
           v8 = v29;
-          self = v30;
+          self = selfCopy;
           v7 = v31;
         }
 
@@ -236,10 +236,10 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
   return v26;
 }
 
-- (BOOL)shouldSkipWordEntry:(id)a3
+- (BOOL)shouldSkipWordEntry:(id)entry
 {
-  v3 = [a3 acceptedCandidate];
-  v4 = ([v3 sourceMask] & 8) == 0;
+  acceptedCandidate = [entry acceptedCandidate];
+  v4 = ([acceptedCandidate sourceMask] & 8) == 0;
 
   return v4;
 }
@@ -248,9 +248,9 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
 {
   v9.receiver = self;
   v9.super_class = TIDPBiomeNamedEntityTokenRecorder;
-  v3 = [(TIDPRecorder *)&v9 delegate];
+  delegate = [(TIDPRecorder *)&v9 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc_init(TIDPBiomeReportingDelegate);
     v8.receiver = self;
@@ -260,9 +260,9 @@ BOOL __74__TIDPBiomeNamedEntityTokenRecorder_filterTokenFrequencies_forTokenClas
 
   v7.receiver = self;
   v7.super_class = TIDPBiomeNamedEntityTokenRecorder;
-  v5 = [(TIDPRecorder *)&v7 delegate];
+  delegate2 = [(TIDPRecorder *)&v7 delegate];
 
-  return v5;
+  return delegate2;
 }
 
 @end

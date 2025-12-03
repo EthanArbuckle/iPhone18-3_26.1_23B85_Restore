@@ -1,14 +1,14 @@
 @interface SBDeviceApplicationScreenTimeLockoutViewProvider
-- (SBDeviceApplicationScreenTimeLockoutViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4;
-- (id)_newBlockingViewControllerWithBundleIdentifier:(id)a3;
+- (SBDeviceApplicationScreenTimeLockoutViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate;
+- (id)_newBlockingViewControllerWithBundleIdentifier:(id)identifier;
 - (id)_realOverlayViewController;
 - (void)_activateIfPossible;
-- (void)_deactivateIfPossibleRespectingAppBlockedState:(BOOL)a3;
-- (void)_handleInstalledAppsChanged:(id)a3;
+- (void)_deactivateIfPossibleRespectingAppBlockedState:(BOOL)state;
+- (void)_handleInstalledAppsChanged:(id)changed;
 - (void)dealloc;
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
 @end
 
 @implementation SBDeviceApplicationScreenTimeLockoutViewProvider
@@ -16,30 +16,30 @@
 - (void)_activateIfPossible
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v4 = [v3 application];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
 
-  v5 = [v4 info];
-  if ([v5 isBlockedForScreenTimeExpiration])
+  info = [application info];
+  if ([info isBlockedForScreenTimeExpiration])
   {
-    v6 = [SBApp privacyPreflightController];
-    v7 = [v5 applicationIdentity];
-    v8 = [v6 requiresPreflightForApplication:v7];
+    privacyPreflightController = [SBApp privacyPreflightController];
+    applicationIdentity = [info applicationIdentity];
+    v8 = [privacyPreflightController requiresPreflightForApplication:applicationIdentity];
 
     if (v8)
     {
       v9 = SBLogScreenTime();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 bundleIdentifier];
+        bundleIdentifier = [application bundleIdentifier];
         *buf = 138543362;
-        v27 = v10;
+        v27 = bundleIdentifier;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "not activating overlay for %{public}@, exiting early because the app still requires privacy disclosure", buf, 0xCu);
       }
 
       self->_waitingForPrivacyPreflight = 1;
-      v11 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-      [v11 addObserver:self];
+      sceneHandle2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+      [sceneHandle2 addObserver:self];
     }
 
     else
@@ -51,37 +51,37 @@
       {
         if (v16)
         {
-          v17 = [v4 bundleIdentifier];
+          bundleIdentifier2 = [application bundleIdentifier];
           *buf = 138543618;
-          v27 = v17;
+          v27 = bundleIdentifier2;
           v28 = 2048;
-          v29 = [v5 screenTimePolicy];
+          screenTimePolicy = [info screenTimePolicy];
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_INFO, "had existing VC for app %{public}@, updating with new policy %ld", buf, 0x16u);
         }
 
         v18 = self->_blockingViewController;
-        v19 = [v5 screenTimePolicy];
-        v20 = [v5 bundleIdentifier];
-        [(STBlockingViewController *)v18 updateAppearanceUsingPolicy:v19 forBundleIdentifier:v20];
+        screenTimePolicy2 = [info screenTimePolicy];
+        bundleIdentifier3 = [info bundleIdentifier];
+        [(STBlockingViewController *)v18 updateAppearanceUsingPolicy:screenTimePolicy2 forBundleIdentifier:bundleIdentifier3];
       }
 
       else
       {
         if (v16)
         {
-          v21 = [v4 bundleIdentifier];
+          bundleIdentifier4 = [application bundleIdentifier];
           *buf = 138543362;
-          v27 = v21;
+          v27 = bundleIdentifier4;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_INFO, "creating new blocking view controller for app %{public}@", buf, 0xCu);
         }
 
-        v22 = [v4 bundleIdentifier];
-        v23 = [(SBDeviceApplicationScreenTimeLockoutViewProvider *)self _newBlockingViewControllerWithBundleIdentifier:v22];
+        bundleIdentifier5 = [application bundleIdentifier];
+        v23 = [(SBDeviceApplicationScreenTimeLockoutViewProvider *)self _newBlockingViewControllerWithBundleIdentifier:bundleIdentifier5];
         v24 = self->_blockingViewController;
         self->_blockingViewController = v23;
 
-        v20 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v20 addObserver:self selector:sel__blockingViewControllerDismissedItself name:*MEMORY[0x277D4BDB0] object:self->_blockingViewController];
+        bundleIdentifier3 = [MEMORY[0x277CCAB98] defaultCenter];
+        [bundleIdentifier3 addObserver:self selector:sel__blockingViewControllerDismissedItself name:*MEMORY[0x277D4BDB0] object:self->_blockingViewController];
       }
 
       self->_isActive = 1;
@@ -96,23 +96,23 @@
     v12 = SBLogScreenTime();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 bundleIdentifier];
+      bundleIdentifier6 = [application bundleIdentifier];
       *buf = 138543362;
-      v27 = v13;
+      v27 = bundleIdentifier6;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "attempted to activate overlay for %{public}@, exiting early because app is not blocked", buf, 0xCu);
     }
   }
 }
 
-- (SBDeviceApplicationScreenTimeLockoutViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4
+- (SBDeviceApplicationScreenTimeLockoutViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = SBDeviceApplicationScreenTimeLockoutViewProvider;
-  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v7 initWithSceneHandle:a3 delegate:a4];
+  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v7 initWithSceneHandle:handle delegate:delegate];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
   }
 
   return v4;
@@ -120,11 +120,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
   if (self->_blockingViewController)
   {
-    [v3 removeObserver:self name:*MEMORY[0x277D4BDB0] object:?];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D4BDB0] object:?];
   }
 
   v4.receiver = self;
@@ -132,11 +132,11 @@
   [(SBDeviceApplicationSceneOverlayViewProvider *)&v4 dealloc];
 }
 
-- (void)_handleInstalledAppsChanged:(id)a3
+- (void)_handleInstalledAppsChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
 
   if ([v5 count])
   {
@@ -148,85 +148,85 @@
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "scene overlay got applicationsChanged: %{public}@", &v13, 0xCu);
     }
 
-    v7 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v8 = [v7 application];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    application = [sceneHandle application];
 
-    v9 = [v8 bundleIdentifier];
-    v10 = [v8 info];
-    v11 = [v10 isBlockedForScreenTimeExpiration];
+    bundleIdentifier = [application bundleIdentifier];
+    info = [application info];
+    isBlockedForScreenTimeExpiration = [info isBlockedForScreenTimeExpiration];
 
     v12 = SBLogScreenTime();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 138543618;
-      v14 = v9;
+      v14 = bundleIdentifier;
       v15 = 1024;
-      v16 = v11;
+      v16 = isBlockedForScreenTimeExpiration;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "app %{public}@ is now blocked for Downtime: %d", &v13, 0x12u);
     }
 
-    if (([v5 containsObject:v9] & v11) == 1)
+    if (([v5 containsObject:bundleIdentifier] & isBlockedForScreenTimeExpiration) == 1)
     {
       [(SBDeviceApplicationScreenTimeLockoutViewProvider *)self _activateIfPossible];
     }
 
-    else if (self->_isActive && !(v11 & 1 | (([v5 containsObject:v9] & 1) == 0)))
+    else if (self->_isActive && !(isBlockedForScreenTimeExpiration & 1 | (([v5 containsObject:bundleIdentifier] & 1) == 0)))
     {
       [(SBDeviceApplicationScreenTimeLockoutViewProvider *)self _deactivateIfPossibleRespectingAppBlockedState:1];
     }
   }
 }
 
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  v4 = a3;
+  animationCopy = animation;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = SBLogScreenTime();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v9 = [v8 application];
-    v10 = [v9 bundleIdentifier];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    application = [sceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
     v11[0] = 67109378;
-    v11[1] = v4;
+    v11[1] = animationCopy;
     v12 = 2114;
-    v13 = v10;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "showing content with animation: %d for app %{public}@", v11, 0x12u);
   }
 
-  [(STBlockingViewController *)self->_blockingViewController showWithAnimation:v4 completionHandler:v6];
+  [(STBlockingViewController *)self->_blockingViewController showWithAnimation:animationCopy completionHandler:handlerCopy];
 }
 
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  v4 = a3;
+  animationCopy = animation;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = SBLogScreenTime();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v9 = [v8 application];
-    v10 = [v9 bundleIdentifier];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    application = [sceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
     v11[0] = 67109378;
-    v11[1] = v4;
+    v11[1] = animationCopy;
     v12 = 2114;
-    v13 = v10;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "hiding content with animation: %d for app %{public}@", v11, 0x12u);
   }
 
-  [(STBlockingViewController *)self->_blockingViewController hideWithAnimation:v4 completionHandler:v6];
+  [(STBlockingViewController *)self->_blockingViewController hideWithAnimation:animationCopy completionHandler:handlerCopy];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
   if (self->_waitingForPrivacyPreflight)
   {
     block[7] = v4;
     block[8] = v5;
     self->_waitingForPrivacyPreflight = 0;
-    [a3 removeObserver:{self, a4}];
+    [handle removeObserver:{self, scene}];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__SBDeviceApplicationScreenTimeLockoutViewProvider_sceneHandle_didCreateScene___block_invoke;
@@ -236,20 +236,20 @@
   }
 }
 
-- (void)_deactivateIfPossibleRespectingAppBlockedState:(BOOL)a3
+- (void)_deactivateIfPossibleRespectingAppBlockedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = v5;
-  if (v3)
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  v6 = sceneHandle;
+  if (stateCopy)
   {
-    v7 = [v5 application];
-    v8 = [v7 info];
-    v3 = [v8 isBlockedForScreenTimeExpiration];
+    application = [sceneHandle application];
+    info = [application info];
+    stateCopy = [info isBlockedForScreenTimeExpiration];
   }
 
-  if (self->_isActive && (v3 & 1) == 0 && self->_blockingViewController)
+  if (self->_isActive && (stateCopy & 1) == 0 && self->_blockingViewController)
   {
     self->_isActive = 0;
     v14.receiver = self;
@@ -262,16 +262,16 @@
     v9 = SBLogScreenTime();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 application];
-      v11 = [v10 bundleIdentifier];
+      application2 = [v6 application];
+      bundleIdentifier = [application2 bundleIdentifier];
       isActive = self->_isActive;
       blockingViewController = self->_blockingViewController;
       *buf = 138544130;
-      v16 = v11;
+      v16 = bundleIdentifier;
       v17 = 1024;
       v18 = isActive;
       v19 = 1024;
-      v20 = v3;
+      v20 = stateCopy;
       v21 = 2114;
       v22 = blockingViewController;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "attempted to deactivate overlay for %{public}@, exiting early with state %d, %d, %{public}@", buf, 0x22u);
@@ -292,20 +292,20 @@
   }
 }
 
-- (id)_newBlockingViewControllerWithBundleIdentifier:(id)a3
+- (id)_newBlockingViewControllerWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D4BD90];
-  v5 = a3;
-  v6 = [v4 newTranslucentBlockingViewController];
-  v7 = [MEMORY[0x277D4BD90] closeApplicationHandler];
-  [v6 setOkButtonHandler:v7];
+  identifierCopy = identifier;
+  newTranslucentBlockingViewController = [v4 newTranslucentBlockingViewController];
+  closeApplicationHandler = [MEMORY[0x277D4BD90] closeApplicationHandler];
+  [newTranslucentBlockingViewController setOkButtonHandler:closeApplicationHandler];
 
-  v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v9 = [v8 application];
-  v10 = [v9 info];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  info = [application info];
 
-  [v6 updateAppearanceUsingPolicy:objc_msgSend(v10 forBundleIdentifier:{"screenTimePolicy"), v5}];
-  return v6;
+  [newTranslucentBlockingViewController updateAppearanceUsingPolicy:objc_msgSend(info forBundleIdentifier:{"screenTimePolicy"), identifierCopy}];
+  return newTranslucentBlockingViewController;
 }
 
 @end

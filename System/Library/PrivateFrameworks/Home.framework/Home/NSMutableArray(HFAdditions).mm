@@ -8,11 +8,11 @@
 {
   v8 = a3;
   v9 = a5;
-  v10 = [a1 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(a1 usingComparator:{"count"), a4, v9}];
+  v10 = [self indexOfObject:v8 inSortedRange:0 options:objc_msgSend(self usingComparator:{"count"), a4, v9}];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 insertObject:v8 atIndex:v10];
+    [self insertObject:v8 atIndex:v10];
   }
 
   return v10;

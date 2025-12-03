@@ -1,9 +1,9 @@
 @interface _UIScrollViewScrollIndicatorVisualStyle_iOS
-- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)a3;
-- (CGRect)hitTestingRectForIndicatorRect:(CGRect)a3;
+- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)expanding;
+- (CGRect)hitTestingRectForIndicatorRect:(CGRect)rect;
 - (UIEdgeInsets)cursorHitTestingInsets;
-- (id)colorForIndicatorStyle:(int64_t)a3 expanded:(BOOL)a4;
-- (id)feedbackGeneratorWithView:(id)a3;
+- (id)colorForIndicatorStyle:(int64_t)style expanded:(BOOL)expanded;
+- (id)feedbackGeneratorWithView:(id)view;
 - (id)fillView;
 @end
 
@@ -13,8 +13,8 @@
 {
   v2 = objc_opt_new();
   v3 = *MEMORY[0x1E69796E8];
-  v4 = [v2 layer];
-  [v4 setCornerCurve:v3];
+  layer = [v2 layer];
+  [layer setCornerCurve:v3];
 
   return v2;
 }
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (CGRect)hitTestingRectForIndicatorRect:(CGRect)a3
+- (CGRect)hitTestingRectForIndicatorRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_UIScrollViewScrollIndicatorVisualStyle_iOS *)self cursorHitTestingInsets];
   v8 = y + v7;
   v11 = width - (v9 + v10);
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (id)colorForIndicatorStyle:(int64_t)a3 expanded:(BOOL)a4
+- (id)colorForIndicatorStyle:(int64_t)style expanded:(BOOL)expanded
 {
-  switch(a3)
+  switch(style)
   {
     case 0:
       v5 = 0.35;
@@ -78,7 +78,7 @@ LABEL_10:
   return v6;
 }
 
-- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)a3
+- ($600A803A2DA5524344F8C742CF1B11BB)valuesForLayoutSizeAnimationWhenExpanding:(SEL)expanding
 {
   v4 = 0.3;
   if (a4)
@@ -93,10 +93,10 @@ LABEL_10:
   return self;
 }
 
-- (id)feedbackGeneratorWithView:(id)a3
+- (id)feedbackGeneratorWithView:(id)view
 {
-  v3 = a3;
-  v4 = [[_UIClickFeedbackGenerator alloc] initWithView:v3];
+  viewCopy = view;
+  v4 = [[_UIClickFeedbackGenerator alloc] initWithView:viewCopy];
 
   return v4;
 }

@@ -2,7 +2,7 @@
 - (DTGPUAPSConfig)init;
 - (NSDictionary)grcTrigger;
 - (id)toDictionary;
-- (void)readConfig:(id)a3;
+- (void)readConfig:(id)config;
 @end
 
 @implementation DTGPUAPSConfig
@@ -99,38 +99,38 @@
   return result;
 }
 
-- (void)readConfig:(id)a3
+- (void)readConfig:(id)config
 {
-  v36 = a3;
-  v4 = [v36 objectForKeyedSubscript:@"Duration"];
+  configCopy = config;
+  v4 = [configCopy objectForKeyedSubscript:@"Duration"];
   if (v4)
   {
-    v5 = [v36 objectForKeyedSubscript:@"Duration"];
+    v5 = [configCopy objectForKeyedSubscript:@"Duration"];
     self->_duration = [v5 unsignedIntegerValue];
   }
 
-  v6 = [v36 objectForKeyedSubscript:@"RingBufferSizeInKB"];
+  v6 = [configCopy objectForKeyedSubscript:@"RingBufferSizeInKB"];
   if (v6)
   {
-    v7 = [v36 objectForKeyedSubscript:@"RingBufferSizeInKB"];
+    v7 = [configCopy objectForKeyedSubscript:@"RingBufferSizeInKB"];
     self->_ringBufferSizeInKB = [v7 unsignedIntegerValue];
   }
 
-  v8 = [v36 objectForKeyedSubscript:@"SystemTimePeriod"];
+  v8 = [configCopy objectForKeyedSubscript:@"SystemTimePeriod"];
   if (v8)
   {
-    v9 = [v36 objectForKeyedSubscript:@"SystemTimePeriod"];
+    v9 = [configCopy objectForKeyedSubscript:@"SystemTimePeriod"];
     self->_systemTimePeriod = [v9 unsignedIntegerValue];
   }
 
-  v10 = [v36 objectForKeyedSubscript:@"NumRingBuffers"];
+  v10 = [configCopy objectForKeyedSubscript:@"NumRingBuffers"];
   if (v10)
   {
-    v11 = [v36 objectForKeyedSubscript:@"NumRingBuffers"];
+    v11 = [configCopy objectForKeyedSubscript:@"NumRingBuffers"];
     self->_nRingBuffers = [v11 unsignedIntegerValue];
   }
 
-  v12 = [v36 objectForKeyedSubscript:@"ProfileControl"];
+  v12 = [configCopy objectForKeyedSubscript:@"ProfileControl"];
   v13 = v12;
   if (v12)
   {
@@ -156,7 +156,7 @@
     }
   }
 
-  v20 = [v36 objectForKeyedSubscript:@"CliqueSubSampling"];
+  v20 = [configCopy objectForKeyedSubscript:@"CliqueSubSampling"];
   v21 = v20;
   if (v20)
   {
@@ -175,7 +175,7 @@
     }
   }
 
-  v26 = [v36 objectForKeyedSubscript:@"KickAndStateTracing"];
+  v26 = [configCopy objectForKeyedSubscript:@"KickAndStateTracing"];
   v27 = v26;
   if (v26)
   {
@@ -211,8 +211,8 @@
 
 - (NSDictionary)grcTrigger
 {
-  v2 = [(DTGPUAPSConfig *)self toDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"KickAndStateTracing"];
+  toDictionary = [(DTGPUAPSConfig *)self toDictionary];
+  v3 = [toDictionary objectForKeyedSubscript:@"KickAndStateTracing"];
 
   return v3;
 }

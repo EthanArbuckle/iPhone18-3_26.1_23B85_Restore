@@ -1,15 +1,15 @@
 @interface ATXPBBlendingSessionERMEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEngagementType:(id)a3;
+- (int)StringAsEngagementType:(id)type;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)addBlendingUpdateUUID:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBlendingUpdateUUID:(id)d;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBBlendingSessionERMEvent
@@ -27,30 +27,30 @@
   }
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Engaged"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Engaged"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Rejected"])
+  else if ([typeCopy isEqualToString:@"Rejected"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotShown"])
+  else if ([typeCopy isEqualToString:@"NotShown"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"InferredEngagement"])
+  else if ([typeCopy isEqualToString:@"InferredEngagement"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"InferredRejected"])
+  else if ([typeCopy isEqualToString:@"InferredRejected"])
   {
     v4 = 4;
   }
@@ -63,22 +63,22 @@
   return v4;
 }
 
-- (void)addBlendingUpdateUUID:(id)a3
+- (void)addBlendingUpdateUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   blendingUpdateUUIDs = self->_blendingUpdateUUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!blendingUpdateUUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_blendingUpdateUUIDs;
     self->_blendingUpdateUUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     blendingUpdateUUIDs = self->_blendingUpdateUUIDs;
   }
 
-  [(NSMutableArray *)blendingUpdateUUIDs addObject:v4];
+  [(NSMutableArray *)blendingUpdateUUIDs addObject:dCopy];
 }
 
 - (id)description
@@ -87,20 +87,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBBlendingSessionERMEvent;
   v4 = [(ATXPBBlendingSessionERMEvent *)&v8 description];
-  v5 = [(ATXPBBlendingSessionERMEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBBlendingSessionERMEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   executableId = self->_executableId;
   if (executableId)
   {
-    [v3 setObject:executableId forKey:@"executableId"];
+    [dictionary setObject:executableId forKey:@"executableId"];
   }
 
   if (*&self->_has)
@@ -134,10 +134,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_executableId)
   {
     PBDataWriterWriteStringField();
@@ -189,20 +189,20 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_executableId)
   {
-    [v4 setExecutableId:?];
-    v4 = v9;
+    [toCopy setExecutableId:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_engagementType;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 6) = self->_engagementType;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_consumerSubType)
@@ -213,10 +213,10 @@
   if ([(ATXPBBlendingSessionERMEvent *)self blendingUpdateUUIDsCount])
   {
     [v9 clearBlendingUpdateUUIDs];
-    v5 = [(ATXPBBlendingSessionERMEvent *)self blendingUpdateUUIDsCount];
-    if (v5)
+    blendingUpdateUUIDsCount = [(ATXPBBlendingSessionERMEvent *)self blendingUpdateUUIDsCount];
+    if (blendingUpdateUUIDsCount)
     {
-      v6 = v5;
+      v6 = blendingUpdateUUIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBBlendingSessionERMEvent *)self blendingUpdateUUIDAtIndex:i];
@@ -226,11 +226,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_executableId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_executableId copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -240,7 +240,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v8 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -264,7 +264,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addBlendingUpdateUUID:v15];
 
         ++v14;
@@ -281,16 +281,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   executableId = self->_executableId;
-  if (executableId | *(v4 + 4))
+  if (executableId | *(equalCopy + 4))
   {
     if (![(NSString *)executableId isEqual:?])
     {
@@ -298,16 +298,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_engagementType != *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_engagementType != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -315,13 +315,13 @@ LABEL_13:
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 2) && ![(NSString *)consumerSubType isEqual:?])
+  if (consumerSubType | *(equalCopy + 2) && ![(NSString *)consumerSubType isEqual:?])
   {
     goto LABEL_13;
   }
 
   blendingUpdateUUIDs = self->_blendingUpdateUUIDs;
-  if (blendingUpdateUUIDs | *(v4 + 1))
+  if (blendingUpdateUUIDs | *(equalCopy + 1))
   {
     v9 = [(NSMutableArray *)blendingUpdateUUIDs isEqual:?];
   }
@@ -354,22 +354,22 @@ LABEL_14:
   return v5 ^ v6 ^ [(NSMutableArray *)self->_blendingUpdateUUIDs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(ATXPBBlendingSessionERMEvent *)self setExecutableId:?];
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_engagementType = *(v4 + 6);
+    self->_engagementType = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBBlendingSessionERMEvent *)self setConsumerSubType:?];
   }
@@ -378,7 +378,7 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

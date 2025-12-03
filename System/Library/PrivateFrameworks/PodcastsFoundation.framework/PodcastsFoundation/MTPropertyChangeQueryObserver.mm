@@ -1,7 +1,7 @@
 @interface MTPropertyChangeQueryObserver
 - (NSArray)propertyKeys;
 - (id)_frc;
-- (void)setPropertyKeys:(id)a3;
+- (void)setPropertyKeys:(id)keys;
 @end
 
 @implementation MTPropertyChangeQueryObserver
@@ -10,24 +10,24 @@
 {
   v4.receiver = self;
   v4.super_class = MTPropertyChangeQueryObserver;
-  v2 = [(MTBaseQueryObserver *)&v4 _frc];
+  _frc = [(MTBaseQueryObserver *)&v4 _frc];
 
-  return v2;
+  return _frc;
 }
 
-- (void)setPropertyKeys:(id)a3
+- (void)setPropertyKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(MTPropertyChangeQueryObserver *)self _frc];
-  [v5 setPropertyKeys:v4];
+  keysCopy = keys;
+  _frc = [(MTPropertyChangeQueryObserver *)self _frc];
+  [_frc setPropertyKeys:keysCopy];
 }
 
 - (NSArray)propertyKeys
 {
-  v2 = [(MTPropertyChangeQueryObserver *)self _frc];
-  v3 = [v2 propertyKeys];
+  _frc = [(MTPropertyChangeQueryObserver *)self _frc];
+  propertyKeys = [_frc propertyKeys];
 
-  return v3;
+  return propertyKeys;
 }
 
 @end

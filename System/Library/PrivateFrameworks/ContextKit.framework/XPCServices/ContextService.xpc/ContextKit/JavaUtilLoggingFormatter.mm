@@ -1,33 +1,33 @@
 @interface JavaUtilLoggingFormatter
-- (id)formatMessageWithJavaUtilLoggingLogRecord:(id)a3;
+- (id)formatMessageWithJavaUtilLoggingLogRecord:(id)record;
 @end
 
 @implementation JavaUtilLoggingFormatter
 
-- (id)formatMessageWithJavaUtilLoggingLogRecord:(id)a3
+- (id)formatMessageWithJavaUtilLoggingLogRecord:(id)record
 {
-  if (!a3)
+  if (!record)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 getMessage];
-  v5 = [a3 getResourceBundle];
-  if (v5)
+  getMessage = [record getMessage];
+  getResourceBundle = [record getResourceBundle];
+  if (getResourceBundle)
   {
-    v4 = [v5 getStringWithNSString:v4];
+    getMessage = [getResourceBundle getStringWithNSString:getMessage];
   }
 
-  if (v4)
+  if (getMessage)
   {
-    v6 = [a3 getParameters];
-    if (([v4 indexOfString:@"{0"] & 0x80000000) == 0 && v6 && v6[2] >= 1)
+    getParameters = [record getParameters];
+    if (([getMessage indexOfString:@"{0"] & 0x80000000) == 0 && getParameters && getParameters[2] >= 1)
     {
-      return JavaTextMessageFormat_formatWithNSString_withNSObjectArray_(v4, v6);
+      return JavaTextMessageFormat_formatWithNSString_withNSObjectArray_(getMessage, getParameters);
     }
   }
 
-  return v4;
+  return getMessage;
 }
 
 @end

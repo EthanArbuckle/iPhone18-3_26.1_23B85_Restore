@@ -1,19 +1,19 @@
 @interface DDMLTokenType
-- (DDMLTokenType)initWithClassification:(int)a3 beginning:(BOOL)a4;
+- (DDMLTokenType)initWithClassification:(int)classification beginning:(BOOL)beginning;
 - (id)debugDescription;
 @end
 
 @implementation DDMLTokenType
 
-- (DDMLTokenType)initWithClassification:(int)a3 beginning:(BOOL)a4
+- (DDMLTokenType)initWithClassification:(int)classification beginning:(BOOL)beginning
 {
   v7.receiver = self;
   v7.super_class = DDMLTokenType;
   result = [(DDMLTokenType *)&v7 init];
   if (result)
   {
-    result->_classification = a3;
-    result->_beginning = a4;
+    result->_classification = classification;
+    result->_beginning = beginning;
   }
 
   return result;
@@ -39,15 +39,15 @@
       v5 = @"I";
     }
 
-    v6 = [(DDMLTokenType *)self classification];
-    if (v6 > 0xA)
+    classification = [(DDMLTokenType *)self classification];
+    if (classification > 0xA)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_1E8001DD8[v6];
+      v7 = off_1E8001DD8[classification];
     }
 
     v8 = v7;

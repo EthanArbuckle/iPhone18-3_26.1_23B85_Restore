@@ -1,18 +1,18 @@
 @interface PAEOffset
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEOffset)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEOffset)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEOffset
 
-- (PAEOffset)initWithAPIManager:(id)a3
+- (PAEOffset)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEOffset;
-  return [(PAETile *)&v4 initWithAPIManager:a3];
+  return [(PAETile *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -38,7 +38,7 @@
   return v2 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = v9;
@@ -46,20 +46,20 @@
   {
     v29 = 0.0;
     v30 = 0.0;
-    [v9 getFloatValue:&v30 fromParm:1 atFxTime:a5->var0.var1];
-    [v10 getFloatValue:&v29 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v30 fromParm:1 atFxTime:info->var0.var1];
+    [v10 getFloatValue:&v29 fromParm:2 atFxTime:info->var0.var1];
     v28 = 0;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    if (a3)
+    if (output)
     {
-      [a3 imageInfo];
+      [output imageInfo];
     }
 
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
     v11 = v29;
     if (*(&v26 + 1))
     {
@@ -68,11 +68,11 @@
 
     v29 = v11 / 100.0 - floor(v11 / 100.0);
     v30 = v30 / 100.0 - floor(v30 / 100.0);
-    if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", a5->var0.var1) && [a4 imageType] == 3)
+    if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", info->var0.var1) && [input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -80,7 +80,7 @@
         v23 = 0;
       }
 
-      [(PAESharedDefaultBase *)self getScaleForImage:a4];
+      [(PAESharedDefaultBase *)self getScaleForImage:input];
       v19 = v23;
       if (v23)
       {
@@ -88,19 +88,19 @@
       }
 
       v12 = v30;
-      v13 = [a4 width];
+      width = [input width];
       v14 = v21;
       v15 = v29;
-      v16 = [a4 height];
+      height = [input height];
       *v18 = v21;
       *&v18[1] = v22;
-      [(PAETile *)self transformAndTile:&v19 withXValue:v18 YValue:a4 skew:v12 * v13 * v14 scale:v15 * v16 * v22 stretch:0.0 rotation:1.0 resolution:1.0 inputImage:0.0];
+      [(PAETile *)self transformAndTile:&v19 withXValue:v18 YValue:input skew:v12 * width * v14 scale:v15 * height * v22 stretch:0.0 rotation:1.0 resolution:1.0 inputImage:0.0];
       if (v19)
       {
         (*(*v19 + 24))(v19);
       }
 
-      [a3 setHeliumRef:&v20];
+      [output setHeliumRef:&v20];
       if (v20)
       {
         (*(*v20 + 24))(v20);
@@ -116,15 +116,15 @@
   return v10 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

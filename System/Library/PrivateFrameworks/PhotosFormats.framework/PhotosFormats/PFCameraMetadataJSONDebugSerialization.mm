@@ -1,5 +1,5 @@
 @interface PFCameraMetadataJSONDebugSerialization
-+ (id)vnObjectPlaceholderForObject:(id)a3;
++ (id)vnObjectPlaceholderForObject:(id)object;
 - (PFCameraMetadataJSONDebugSerialization)init;
 - (id)JSONDebugData;
 @end
@@ -54,21 +54,21 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   v2 = [(PFCameraMetadataJSONDebugSerialization *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     debugInfo = v2->_debugInfo;
-    v2->_debugInfo = v3;
+    v2->_debugInfo = dictionary;
   }
 
   return v2;
 }
 
-+ (id)vnObjectPlaceholderForObject:(id)a3
++ (id)vnObjectPlaceholderForObject:(id)object
 {
   v122[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   v4 = MEMORY[0x1E695DF90];
   v121[0] = @"ObjectDescription";
-  v5 = [v3 description];
+  v5 = [objectCopy description];
   v121[1] = @"ClassName";
   v122[0] = v5;
   v6 = objc_opt_class();
@@ -77,19 +77,19 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v122 forKeys:v121 count:2];
   v9 = [v4 dictionaryWithDictionary:v8];
 
-  if ([v3 conformsToProtocol:&unk_1F2AC9D58])
+  if ([objectCopy conformsToProtocol:&unk_1F2AC9D58])
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "requestRevision")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(objectCopy, "requestRevision")}];
     [v9 setObject:v10 forKeyedSubscript:@"requestRevision"];
   }
 
   getVNObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v3;
-    v12 = [v11 uuid];
-    v13 = [v12 UUIDString];
-    [v9 setObject:v13 forKeyedSubscript:@"uuid"];
+    v11 = objectCopy;
+    uuid = [v11 uuid];
+    uUIDString = [uuid UUIDString];
+    [v9 setObject:uUIDString forKeyedSubscript:@"uuid"];
 
     v14 = MEMORY[0x1E696AD98];
     [v11 confidence];
@@ -155,30 +155,30 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   if (objc_opt_isKindOfClass())
   {
     v23 = MEMORY[0x1E696AD98];
-    v24 = v3;
+    v24 = objectCopy;
     v25 = [v23 numberWithUnsignedInteger:{objc_msgSend(v24, "elementType")}];
     [v9 setObject:v25 forKeyedSubscript:@"elementType"];
 
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v24, "elementCount")}];
     [v9 setObject:v26 forKeyedSubscript:@"elementCount"];
 
-    v27 = [v24 data];
+    data = [v24 data];
 
-    [v9 setObject:v27 forKeyedSubscript:@"data"];
+    [v9 setObject:data forKeyedSubscript:@"data"];
   }
 
   getVNSceneObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v3 sceneprints];
-    [v9 setObject:v28 forKeyedSubscript:@"sceneprints"];
+    sceneprints = [objectCopy sceneprints];
+    [v9 setObject:sceneprints forKeyedSubscript:@"sceneprints"];
   }
 
   getVNClassificationObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [v3 identifier];
-    [v9 setObject:v29 forKeyedSubscript:@"identifier"];
+    identifier = [objectCopy identifier];
+    [v9 setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   v104 = 0;
@@ -201,15 +201,15 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   _Block_object_dispose(&v104, 8);
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v3 featureName];
-    [v9 setObject:v32 forKeyedSubscript:@"featureName"];
+    featureName = [objectCopy featureName];
+    [v9 setObject:featureName forKeyedSubscript:@"featureName"];
   }
 
   getVNSaliencyImageObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v33 = [v3 salientObjects];
-    [v9 setObject:v33 forKeyedSubscript:@"salientObjects"];
+    salientObjects = [objectCopy salientObjects];
+    [v9 setObject:salientObjects forKeyedSubscript:@"salientObjects"];
   }
 
   v104 = 0;
@@ -232,7 +232,7 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   _Block_object_dispose(&v104, 8);
   if (objc_opt_isKindOfClass())
   {
-    [v3 boundingBox];
+    [objectCopy boundingBox];
     v37 = v36;
     v39 = v38;
     v41 = v40;
@@ -274,7 +274,7 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   {
     v115[0] = @"x";
     v49 = MEMORY[0x1E696AD98];
-    v50 = v3;
+    v50 = objectCopy;
     [v50 topLeft];
     v51 = [v49 numberWithDouble:?];
     v115[1] = @"y";
@@ -331,14 +331,14 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
   getVNRecognizedObjectObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v75 = v3;
-    v76 = [MEMORY[0x1E695DF70] array];
+    v75 = objectCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v77 = [v75 labels];
-    v78 = [v77 countByEnumeratingWithState:&v92 objects:v108 count:16];
+    labels = [v75 labels];
+    v78 = [labels countByEnumeratingWithState:&v92 objects:v108 count:16];
     if (v78)
     {
       v79 = *v93;
@@ -348,30 +348,30 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
         {
           if (*v93 != v79)
           {
-            objc_enumerationMutation(v77);
+            objc_enumerationMutation(labels);
           }
 
-          [v76 addObject:*(*(&v92 + 1) + 8 * i)];
+          [array addObject:*(*(&v92 + 1) + 8 * i)];
         }
 
-        v78 = [v77 countByEnumeratingWithState:&v92 objects:v108 count:16];
+        v78 = [labels countByEnumeratingWithState:&v92 objects:v108 count:16];
       }
 
       while (v78);
     }
 
-    [v9 setObject:v76 forKeyedSubscript:@"labels"];
+    [v9 setObject:array forKeyedSubscript:@"labels"];
   }
 
   getVNEspressoModelImageprintClass();
   if (objc_opt_isKindOfClass())
   {
-    v81 = v3;
-    v82 = [objc_opt_class() currentVersion];
-    [v9 setObject:v82 forKeyedSubscript:@"currentVersion"];
+    v81 = objectCopy;
+    currentVersion = [objc_opt_class() currentVersion];
+    [v9 setObject:currentVersion forKeyedSubscript:@"currentVersion"];
 
-    v83 = [v81 descriptorData];
-    [v9 setObject:v83 forKeyedSubscript:@"descriptorData"];
+    descriptorData = [v81 descriptorData];
+    [v9 setObject:descriptorData forKeyedSubscript:@"descriptorData"];
 
     v84 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v81, "elementCount")}];
     [v9 setObject:v84 forKeyedSubscript:@"elementCount"];
@@ -379,16 +379,16 @@ id __55__PFCameraMetadataJSONDebugSerialization_JSONDebugData__block_invoke(uint
     v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v81, "lengthInBytes")}];
     [v9 setObject:v85 forKeyedSubscript:@"lengthInBytes"];
 
-    v86 = [v81 labelsAndConfidence];
-    [v9 setObject:v86 forKeyedSubscript:@"labelsAndConfidence"];
+    labelsAndConfidence = [v81 labelsAndConfidence];
+    [v9 setObject:labelsAndConfidence forKeyedSubscript:@"labelsAndConfidence"];
 
     v87 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v81, "confidenceScoreType")}];
     [v9 setObject:v87 forKeyedSubscript:@"confidenceScoreType"];
 
     v88 = MEMORY[0x1E696AD98];
-    v89 = [v81 requestRevision];
+    requestRevision = [v81 requestRevision];
 
-    v90 = [v88 numberWithUnsignedInteger:v89];
+    v90 = [v88 numberWithUnsignedInteger:requestRevision];
     [v9 setObject:v90 forKeyedSubscript:@"requestRevision"];
   }
 

@@ -1,54 +1,54 @@
 @interface TPSNotificationController
 + (BOOL)isValidNotificationInterval;
 + (double)standardNotificationInterval;
-+ (id)cacheDirectoryCreateIfEmpty:(BOOL)a3;
++ (id)cacheDirectoryCreateIfEmpty:(BOOL)empty;
 + (int64_t)remainingCountOfNotificationsUntilOptOut;
 + (void)removeAssetCacheDirectory;
 + (void)removeNotificationCache;
-- (BOOL)canUpdateHintEligibilityForIdentifier:(id)a3;
-- (BOOL)collectionEligibleForNotification:(id)a3;
-- (BOOL)isDocumentHintDisplayedOnOtherDevices:(id)a3;
-- (BOOL)isNotificationDeliveryInfoValid:(id)a3 identifier:(id)a4 overrideOptOutContentOnly:(BOOL)a5 ignoreSuppressContent:(BOOL)a6;
+- (BOOL)canUpdateHintEligibilityForIdentifier:(id)identifier;
+- (BOOL)collectionEligibleForNotification:(id)notification;
+- (BOOL)isDocumentHintDisplayedOnOtherDevices:(id)devices;
+- (BOOL)isNotificationDeliveryInfoValid:(id)valid identifier:(id)identifier overrideOptOutContentOnly:(BOOL)only ignoreSuppressContent:(BOOL)content;
 - (BOOL)isSoftOptedOut;
 - (BOOL)shouldDisplayCollectionIcon;
-- (BOOL)updateHintEligibleForTip:(id)a3 isValid:(BOOL)a4;
+- (BOOL)updateHintEligibleForTip:(id)tip isValid:(BOOL)valid;
 - (NSBundle)frameworkBundle;
 - (TPSNotificationController)init;
 - (TPSNotificationControllerDelegate)delegate;
-- (id)assetsConfigurationForDocument:(id)a3;
-- (id)cacheAssetFileURLForDocument:(id)a3;
-- (id)cacheFilePathForFile:(id)a3;
-- (id)copyFileURL:(id)a3 cachePath:(id)a4;
-- (id)documentToNotifyForTipsInCollection:(id)a3 tipMap:(id)a4 tipDeliveryInfoMap:(id)a5 deliveryInfoMap:(id)a6 overrideOptOutContentOnly:(BOOL)a7;
-- (id)notificationDeliveryInfoForIdentifier:(id)a3 documentDeliveryIdentifierMap:(id)a4 deliveryInfoMap:(id)a5;
-- (id)updateNotificationCacheWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5 extensionPayload:(id)a6;
+- (id)assetsConfigurationForDocument:(id)document;
+- (id)cacheAssetFileURLForDocument:(id)document;
+- (id)cacheFilePathForFile:(id)file;
+- (id)copyFileURL:(id)l cachePath:(id)path;
+- (id)documentToNotifyForTipsInCollection:(id)collection tipMap:(id)map tipDeliveryInfoMap:(id)infoMap deliveryInfoMap:(id)deliveryInfoMap overrideOptOutContentOnly:(BOOL)only;
+- (id)notificationDeliveryInfoForIdentifier:(id)identifier documentDeliveryIdentifierMap:(id)map deliveryInfoMap:(id)infoMap;
+- (id)updateNotificationCacheWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type extensionPayload:(id)payload;
 - (void)_registerWakingEvents;
 - (void)_unregisterAllWakingEvents;
 - (void)_updateNotificationCache;
 - (void)_updateWakingEventMapCache;
 - (void)clearNotificationCache;
 - (void)clearNotificationCount;
-- (void)dataProviderManager:(id)a3 didReceiveCallbackWithResult:(id)a4 type:(int64_t)a5;
-- (void)fetchNotificationAssetIfNeededCompletionHandler:(id)a3;
+- (void)dataProviderManager:(id)manager didReceiveCallbackWithResult:(id)result type:(int64_t)type;
+- (void)fetchNotificationAssetIfNeededCompletionHandler:(id)handler;
 - (void)notificationPosted;
-- (void)registerWakingEventsForDeliveryIdentifierMap:(id)a3 deliveryInfoMap:(id)a4;
+- (void)registerWakingEventsForDeliveryIdentifierMap:(id)map deliveryInfoMap:(id)infoMap;
 - (void)removeAllNotifications;
-- (void)removeNotificationWithIdentifier:(id)a3;
-- (void)showNotificationWithCompletionHandler:(id)a3;
-- (void)updateDocumentToNotifyWithPreferredIdentifiers:(id)a3 collectionOrder:(id)a4 collectionMap:(id)a5 collectionDeliveryIdentifierMap:(id)a6 tipMap:(id)a7 tipsDeliveryIdentifierMap:(id)a8 deliveryInfoMap:(id)a9 documentDictionaryMap:(id)a10 metadataDictionary:(id)a11 completionHandler:(id)a12;
+- (void)removeNotificationWithIdentifier:(id)identifier;
+- (void)showNotificationWithCompletionHandler:(id)handler;
+- (void)updateDocumentToNotifyWithPreferredIdentifiers:(id)identifiers collectionOrder:(id)order collectionMap:(id)map collectionDeliveryIdentifierMap:(id)identifierMap tipMap:(id)tipMap tipsDeliveryIdentifierMap:(id)deliveryIdentifierMap deliveryInfoMap:(id)infoMap documentDictionaryMap:(id)self0 metadataDictionary:(id)self1 completionHandler:(id)self2;
 - (void)updateNotificationCount;
-- (void)updateNotificationRegistrationEventsWithCollectionDeliveryIdentifierMap:(id)a3 tipsDeliveryIdentifierMap:(id)a4 deliveryInfoMap:(id)a5 completionHandler:(id)a6;
+- (void)updateNotificationRegistrationEventsWithCollectionDeliveryIdentifierMap:(id)map tipsDeliveryIdentifierMap:(id)identifierMap deliveryInfoMap:(id)infoMap completionHandler:(id)handler;
 @end
 
 @implementation TPSNotificationController
 
 + (double)standardNotificationInterval
 {
-  v2 = [MEMORY[0x277D71740] standardNotificationInterval];
-  v3 = v2;
-  if (v2)
+  standardNotificationInterval = [MEMORY[0x277D71740] standardNotificationInterval];
+  v3 = standardNotificationInterval;
+  if (standardNotificationInterval)
   {
-    [v2 doubleValue];
+    [standardNotificationInterval doubleValue];
     v5 = v4;
   }
 
@@ -67,16 +67,16 @@
     return -1;
   }
 
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"ConsecutiveNotificationsCount"];
-  v4 = [v3 intValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"ConsecutiveNotificationsCount"];
+  intValue = [v3 intValue];
 
-  return +[TPSNotificationController softOptOutNotificationCount]- v4;
+  return +[TPSNotificationController softOptOutNotificationCount]- intValue;
 }
 
-+ (id)cacheDirectoryCreateIfEmpty:(BOOL)a3
++ (id)cacheDirectoryCreateIfEmpty:(BOOL)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if (![v4 count])
   {
@@ -84,25 +84,25 @@
     goto LABEL_11;
   }
 
-  v5 = [v4 firstObject];
-  v6 = [v5 stringByAppendingPathComponent:@"com.apple.TipsDaemon"];
+  firstObject = [v4 firstObject];
+  v6 = [firstObject stringByAppendingPathComponent:@"com.apple.TipsDaemon"];
 
   if (!v6)
   {
     goto LABEL_11;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v7 fileExistsAtPath:v6] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:v6] & 1) == 0)
   {
-    if (!v3)
+    if (!emptyCopy)
     {
 
       goto LABEL_9;
     }
 
     v11 = 0;
-    [v7 createDirectoryAtPath:v6 withIntermediateDirectories:0 attributes:0 error:&v11];
+    [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:0 attributes:0 error:&v11];
     v8 = v11;
     if (v8)
     {
@@ -124,26 +124,26 @@ LABEL_11:
   if (v2)
   {
     v9 = v2;
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 enumeratorAtPath:v9];
-    v5 = [v4 nextObject];
-    if (v5)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager enumeratorAtPath:v9];
+    nextObject = [v4 nextObject];
+    if (nextObject)
     {
-      v6 = v5;
+      v6 = nextObject;
       do
       {
         v7 = [v9 stringByAppendingPathComponent:v6];
         if (v7)
         {
-          [v3 removeItemAtPath:v7 error:0];
+          [defaultManager removeItemAtPath:v7 error:0];
         }
 
-        v8 = [v4 nextObject];
+        nextObject2 = [v4 nextObject];
 
-        v6 = v8;
+        v6 = nextObject2;
       }
 
-      while (v8);
+      while (nextObject2);
     }
 
     v2 = v9;
@@ -165,12 +165,12 @@ LABEL_11:
   v2 = [(TPSNotificationController *)&v27 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v4 = [MEMORY[0x277D717A8] unarchivedObjectOfClass:objc_opt_class() forKey:@"NotificationCache"];
     notificationCache = v2->_notificationCache;
     v2->_notificationCache = v4;
 
-    v6 = [v3 objectForKey:@"ConsecutiveNotificationsCount"];
+    v6 = [standardUserDefaults objectForKey:@"ConsecutiveNotificationsCount"];
     v2->_notificationCount = [v6 intValue];
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -178,9 +178,9 @@ LABEL_11:
     syncQueue = v2->_syncQueue;
     v2->_syncQueue = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     assetURLSessionMap = v2->_assetURLSessionMap;
-    v2->_assetURLSessionMap = v10;
+    v2->_assetURLSessionMap = dictionary;
 
     v12 = objc_alloc_init(MEMORY[0x277D71750]);
     eventsProviderManager = v2->_eventsProviderManager;
@@ -188,8 +188,8 @@ LABEL_11:
 
     [(TPSEventsProviderManager *)v2->_eventsProviderManager setDelegate:v2];
     v14 = [TPSUserNotificationController alloc];
-    v15 = [MEMORY[0x277D716E8] notificationBundleIdentifier];
-    v16 = [(TPSUserNotificationController *)v14 initWithBundleIdentifier:v15];
+    notificationBundleIdentifier = [MEMORY[0x277D716E8] notificationBundleIdentifier];
+    v16 = [(TPSUserNotificationController *)v14 initWithBundleIdentifier:notificationBundleIdentifier];
     localNotificationController = v2->_localNotificationController;
     v2->_localNotificationController = v16;
 
@@ -208,9 +208,9 @@ LABEL_11:
 
     else
     {
-      v24 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       v25 = v2->_registeredWakingEventMap;
-      v2->_registeredWakingEventMap = v24;
+      v2->_registeredWakingEventMap = dictionary2;
     }
 
     if ([MEMORY[0x277D71740] resetDaemonData])
@@ -234,22 +234,22 @@ LABEL_11:
   else
   {
     v3 = v2;
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 objectForKey:@"TPSLastNotificationDate"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"TPSLastNotificationDate"];
 
     [v5 timeIntervalSinceNow];
     v7 = v6;
     v8 = fabs(v6) > v3 || v6 >= 0.0;
     if (!v8)
     {
-      v9 = [MEMORY[0x277D71778] data];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      data = [MEMORY[0x277D71778] data];
+      if (os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218240;
         v13 = v7;
         v14 = 2048;
         v15 = v3;
-        _os_log_impl(&dword_232D6F000, v9, OS_LOG_TYPE_DEFAULT, "Last notification interval: %f is less than expected interval %f", &v12, 0x16u);
+        _os_log_impl(&dword_232D6F000, data, OS_LOG_TYPE_DEFAULT, "Last notification interval: %f is less than expected interval %f", &v12, 0x16u);
       }
     }
   }
@@ -273,28 +273,28 @@ LABEL_11:
   return frameworkBundle;
 }
 
-- (void)updateDocumentToNotifyWithPreferredIdentifiers:(id)a3 collectionOrder:(id)a4 collectionMap:(id)a5 collectionDeliveryIdentifierMap:(id)a6 tipMap:(id)a7 tipsDeliveryIdentifierMap:(id)a8 deliveryInfoMap:(id)a9 documentDictionaryMap:(id)a10 metadataDictionary:(id)a11 completionHandler:(id)a12
+- (void)updateDocumentToNotifyWithPreferredIdentifiers:(id)identifiers collectionOrder:(id)order collectionMap:(id)map collectionDeliveryIdentifierMap:(id)identifierMap tipMap:(id)tipMap tipsDeliveryIdentifierMap:(id)deliveryIdentifierMap deliveryInfoMap:(id)infoMap documentDictionaryMap:(id)self0 metadataDictionary:(id)self1 completionHandler:(id)self2
 {
   v123[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v62 = a5;
-  v55 = a6;
-  v61 = a7;
-  v56 = a8;
-  v19 = v18;
-  v57 = a9;
-  v58 = a10;
-  v59 = a11;
-  v60 = a12;
-  v20 = [MEMORY[0x277D71778] data];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  identifiersCopy = identifiers;
+  orderCopy = order;
+  mapCopy = map;
+  identifierMapCopy = identifierMap;
+  tipMapCopy = tipMap;
+  deliveryIdentifierMapCopy = deliveryIdentifierMap;
+  v19 = orderCopy;
+  infoMapCopy = infoMap;
+  dictionaryMapCopy = dictionaryMap;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  data = [MEMORY[0x277D71778] data];
+  if (os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_232D6F000, v20, OS_LOG_TYPE_DEFAULT, "Checking document to notify.", buf, 2u);
+    _os_log_impl(&dword_232D6F000, data, OS_LOG_TYPE_DEFAULT, "Checking document to notify.", buf, 2u);
   }
 
-  if ([v18 count] && objc_msgSend(v62, "count") || objc_msgSend(v61, "count"))
+  if ([orderCopy count] && objc_msgSend(mapCopy, "count") || objc_msgSend(tipMapCopy, "count"))
   {
     *buf = 0;
     v116 = buf;
@@ -314,7 +314,7 @@ LABEL_11:
     v106 = __Block_byref_object_copy__10;
     v107 = __Block_byref_object_dispose__10;
     v108 = 0;
-    v54 = [(TPSNotificationController *)self isSoftOptedOut];
+    isSoftOptedOut = [(TPSNotificationController *)self isSoftOptedOut];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __246__TPSNotificationController_updateDocumentToNotifyWithPreferredIdentifiers_collectionOrder_collectionMap_collectionDeliveryIdentifierMap_tipMap_tipsDeliveryIdentifierMap_deliveryInfoMap_documentDictionaryMap_metadataDictionary_completionHandler___block_invoke;
@@ -322,20 +322,20 @@ LABEL_11:
     v100 = buf;
     v101 = &v109;
     v102 = &v103;
-    v97 = v58;
-    v98 = v59;
-    v17 = v17;
-    v99 = v17;
+    v97 = dictionaryMapCopy;
+    v98 = dictionaryCopy;
+    identifiersCopy = identifiersCopy;
+    v99 = identifiersCopy;
     v21 = _Block_copy(aBlock);
-    v22 = [MEMORY[0x277D71740] notificationDocument];
-    v53 = v22;
-    if (v22)
+    notificationDocument = [MEMORY[0x277D71740] notificationDocument];
+    v53 = notificationDocument;
+    if (notificationDocument)
     {
-      v123[0] = v22;
+      v123[0] = notificationDocument;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v123 count:1];
-      v24 = [v23 arrayByAddingObjectsFromArray:v17];
+      v24 = [v23 arrayByAddingObjectsFromArray:identifiersCopy];
 
-      v17 = v24;
+      identifiersCopy = v24;
     }
 
     v92 = 0;
@@ -346,38 +346,38 @@ LABEL_11:
     v80[1] = 3221225472;
     v80[2] = __246__TPSNotificationController_updateDocumentToNotifyWithPreferredIdentifiers_collectionOrder_collectionMap_collectionDeliveryIdentifierMap_tipMap_tipsDeliveryIdentifierMap_deliveryInfoMap_documentDictionaryMap_metadataDictionary_completionHandler___block_invoke_2;
     v80[3] = &unk_2789B0CF8;
-    v25 = v62;
+    v25 = mapCopy;
     v88 = &v109;
     v81 = v25;
-    v82 = self;
-    v26 = v55;
+    selfCopy = self;
+    v26 = identifierMapCopy;
     v83 = v26;
-    v27 = v57;
+    v27 = infoMapCopy;
     v84 = v27;
-    v91 = v54;
-    v28 = v61;
+    v91 = isSoftOptedOut;
+    v28 = tipMapCopy;
     v85 = v28;
-    v29 = v56;
+    v29 = deliveryIdentifierMapCopy;
     v86 = v29;
     v30 = v21;
     v87 = v30;
     v89 = buf;
     v90 = &v92;
-    [v17 enumerateObjectsUsingBlock:v80];
-    if (![v17 count])
+    [identifiersCopy enumerateObjectsUsingBlock:v80];
+    if (![identifiersCopy count])
     {
-      v31 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v32 = [v31 objectForKey:@"LastNotifiedCollectionIdentifier"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v32 = [standardUserDefaults objectForKey:@"LastNotifiedCollectionIdentifier"];
       v33 = *(v116 + 5);
       *(v116 + 5) = v32;
 
-      v34 = [MEMORY[0x277D71778] daemon];
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+      daemon = [MEMORY[0x277D71778] daemon];
+      if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
       {
         v35 = *(v116 + 5);
         *v121 = 138412290;
         v122 = v35;
-        _os_log_impl(&dword_232D6F000, v34, OS_LOG_TYPE_DEFAULT, "Last notified collection identifier %@", v121, 0xCu);
+        _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Last notified collection identifier %@", v121, 0xCu);
       }
 
       if (!*(v116 + 5))
@@ -415,10 +415,10 @@ LABEL_14:
       v43 = v25;
       v77 = &v109;
       v73 = v43;
-      v74 = self;
+      selfCopy2 = self;
       v75 = v26;
       v44 = v27;
-      v79 = v54;
+      v79 = isSoftOptedOut;
       v76 = v44;
       v78 = buf;
       [v42 enumerateObjectsUsingBlock:v72];
@@ -429,11 +429,11 @@ LABEL_14:
         v64[2] = __246__TPSNotificationController_updateDocumentToNotifyWithPreferredIdentifiers_collectionOrder_collectionMap_collectionDeliveryIdentifierMap_tipMap_tipsDeliveryIdentifierMap_deliveryInfoMap_documentDictionaryMap_metadataDictionary_completionHandler___block_invoke_2_55;
         v64[3] = &unk_2789B0D48;
         v65 = v43;
-        v66 = self;
+        selfCopy3 = self;
         v67 = v28;
         v68 = v29;
         v69 = v44;
-        v71 = v54;
+        v71 = isSoftOptedOut;
         v70 = v30;
         [v42 enumerateObjectsUsingBlock:v64];
       }
@@ -445,7 +445,7 @@ LABEL_14:
     v48 = [v104[5] copy];
     v49 = [(TPSNotificationController *)self updateNotificationCacheWithCollectionIdentifier:v45 document:v46 type:v47 extensionPayload:v48];
 
-    v60[2](v60, self->_notificationCache);
+    handlerCopy[2](handlerCopy, self->_notificationCache);
     _Block_object_dispose(&v92, 8);
 
     _Block_object_dispose(&v103, 8);
@@ -456,15 +456,15 @@ LABEL_14:
 
   else
   {
-    v50 = [MEMORY[0x277D71778] data];
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+    data2 = [MEMORY[0x277D71778] data];
+    if (os_log_type_enabled(data2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_232D6F000, v50, OS_LOG_TYPE_DEFAULT, "No collections or tips available.", buf, 2u);
+      _os_log_impl(&dword_232D6F000, data2, OS_LOG_TYPE_DEFAULT, "No collections or tips available.", buf, 2u);
     }
 
     [(TPSNotificationController *)self clearNotificationCache];
-    v60[2](v60, self->_notificationCache);
+    handlerCopy[2](handlerCopy, self->_notificationCache);
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -606,52 +606,52 @@ void __246__TPSNotificationController_updateDocumentToNotifyWithPreferredIdentif
   }
 }
 
-- (void)updateNotificationRegistrationEventsWithCollectionDeliveryIdentifierMap:(id)a3 tipsDeliveryIdentifierMap:(id)a4 deliveryInfoMap:(id)a5 completionHandler:(id)a6
+- (void)updateNotificationRegistrationEventsWithCollectionDeliveryIdentifierMap:(id)map tipsDeliveryIdentifierMap:(id)identifierMap deliveryInfoMap:(id)infoMap completionHandler:(id)handler
 {
-  v12 = a6;
-  v10 = a5;
-  v11 = a4;
-  [(TPSNotificationController *)self registerWakingEventsForDeliveryIdentifierMap:a3 deliveryInfoMap:v10];
-  [(TPSNotificationController *)self registerWakingEventsForDeliveryIdentifierMap:v11 deliveryInfoMap:v10];
+  handlerCopy = handler;
+  infoMapCopy = infoMap;
+  identifierMapCopy = identifierMap;
+  [(TPSNotificationController *)self registerWakingEventsForDeliveryIdentifierMap:map deliveryInfoMap:infoMapCopy];
+  [(TPSNotificationController *)self registerWakingEventsForDeliveryIdentifierMap:identifierMapCopy deliveryInfoMap:infoMapCopy];
 
-  v12[2](v12, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)registerWakingEventsForDeliveryIdentifierMap:(id)a3 deliveryInfoMap:(id)a4
+- (void)registerWakingEventsForDeliveryIdentifierMap:(id)map deliveryInfoMap:(id)infoMap
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allKeys];
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [MEMORY[0x277D716E8] sharedInstance];
-  v11 = [v10 tipStatusController];
+  mapCopy = map;
+  infoMapCopy = infoMap;
+  allKeys = [mapCopy allKeys];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allKeys, "count")}];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
-  v12 = [(TPSNotificationController *)self isSoftOptedOut];
+  isSoftOptedOut = [(TPSNotificationController *)self isSoftOptedOut];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifierMap_deliveryInfoMap___block_invoke;
   v21[3] = &unk_2789B0D70;
-  v13 = v11;
+  v13 = tipStatusController;
   v22 = v13;
-  v23 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = mapCopy;
   v24 = v14;
-  v15 = v7;
+  v15 = infoMapCopy;
   v25 = v15;
-  v27 = v12;
+  v27 = isSoftOptedOut;
   v16 = v9;
   v26 = v16;
-  [v8 enumerateObjectsUsingBlock:v21];
+  [allKeys enumerateObjectsUsingBlock:v21];
   if ([v16 count])
   {
-    v17 = [(TPSNotificationController *)self syncQueue];
+    syncQueue = [(TPSNotificationController *)self syncQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifierMap_deliveryInfoMap___block_invoke_2;
     v18[3] = &unk_2789B08F8;
     v19 = v16;
-    v20 = self;
-    dispatch_sync(v17, v18);
+    selfCopy2 = self;
+    dispatch_sync(syncQueue, v18);
   }
 }
 
@@ -796,16 +796,16 @@ uint64_t __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifi
   return result;
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TPSNotificationController *)self localNotificationController];
-  [v5 removeNotificationWithIdentifier:v4];
+  identifierCopy = identifier;
+  localNotificationController = [(TPSNotificationController *)self localNotificationController];
+  [localNotificationController removeNotificationWithIdentifier:identifierCopy];
 
-  v6 = [(TPSNotificationController *)self notificationCache];
-  v7 = [v6 document];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:v4];
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  document = [notificationCache document];
+  identifier = [document identifier];
+  v9 = [identifier isEqualToString:identifierCopy];
 
   if (v9)
   {
@@ -816,8 +816,8 @@ uint64_t __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifi
 
 - (void)removeAllNotifications
 {
-  v3 = [(TPSNotificationController *)self localNotificationController];
-  [v3 removeAllNotifications];
+  localNotificationController = [(TPSNotificationController *)self localNotificationController];
+  [localNotificationController removeAllNotifications];
 
   [(TPSNotificationController *)self clearNotificationCache];
 
@@ -827,9 +827,9 @@ uint64_t __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifi
 - (void)clearNotificationCache
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 notificationCache];
+  notificationCache = [self notificationCache];
   v5 = 138412290;
-  v6 = v3;
+  v6 = notificationCache;
   _os_log_debug_impl(&dword_232D6F000, a2, OS_LOG_TYPE_DEBUG, "Clear notification cache %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
@@ -839,69 +839,69 @@ uint64_t __90__TPSNotificationController_registerWakingEventsForDeliveryIdentifi
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_232D6F000, a2, OS_LOG_TYPE_DEBUG, "Re-registering notification for waking events: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_unregisterAllWakingEvents
 {
-  v2 = [(TPSNotificationController *)self eventsProviderManager];
-  [v2 unregisterAllWakingEvents];
+  eventsProviderManager = [(TPSNotificationController *)self eventsProviderManager];
+  [eventsProviderManager unregisterAllWakingEvents];
 }
 
 - (void)_updateWakingEventMapCache
 {
   v2 = MEMORY[0x277D717A8];
-  v3 = [(TPSNotificationController *)self registeredWakingEventMap];
-  [v2 archivedDataWithRootObject:v3 forKey:@"RegisteredWakingEventMapKey"];
+  registeredWakingEventMap = [(TPSNotificationController *)self registeredWakingEventMap];
+  [v2 archivedDataWithRootObject:registeredWakingEventMap forKey:@"RegisteredWakingEventMapKey"];
 }
 
 - (void)_updateNotificationCache
 {
   v2 = MEMORY[0x277D717A8];
-  v3 = [(TPSNotificationController *)self notificationCache];
-  [v2 archivedDataWithRootObject:v3 forKey:@"NotificationCache"];
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  [v2 archivedDataWithRootObject:notificationCache forKey:@"NotificationCache"];
 }
 
-- (id)updateNotificationCacheWithCollectionIdentifier:(id)a3 document:(id)a4 type:(unint64_t)a5 extensionPayload:(id)a6
+- (id)updateNotificationCacheWithCollectionIdentifier:(id)identifier document:(id)document type:(unint64_t)type extensionPayload:(id)payload
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x277D71778] daemon];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  identifierCopy = identifier;
+  documentCopy = document;
+  payloadCopy = payload;
+  daemon = [MEMORY[0x277D71778] daemon];
+  if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v11;
+    v28 = documentCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = identifierCopy;
     v31 = 2048;
-    v32 = a5;
-    _os_log_impl(&dword_232D6F000, v13, OS_LOG_TYPE_DEFAULT, "Update notification cache for document %@, collectionIdentifier %@, type %lu", buf, 0x20u);
+    typeCopy = type;
+    _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Update notification cache for document %@, collectionIdentifier %@, type %lu", buf, 0x20u);
   }
 
-  if (!v10 || !v11)
+  if (!identifierCopy || !documentCopy)
   {
     [(TPSNotificationController *)self clearNotificationCache];
     goto LABEL_17;
   }
 
-  v14 = [(TPSNotificationController *)self notificationCache];
-  v15 = [v14 type];
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  type = [notificationCache type];
 
-  if (v15 == 1)
+  if (type == 1)
   {
-    if (a5 != 1)
+    if (type != 1)
     {
-      v16 = [MEMORY[0x277D71778] daemon];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      daemon2 = [MEMORY[0x277D71778] daemon];
+      if (os_log_type_enabled(daemon2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v17 = "Cannot update notification document due to a welcome type in progress.";
 LABEL_14:
-        _os_log_impl(&dword_232D6F000, v16, OS_LOG_TYPE_DEFAULT, v17, buf, 2u);
+        _os_log_impl(&dword_232D6F000, daemon2, OS_LOG_TYPE_DEFAULT, v17, buf, 2u);
         goto LABEL_15;
       }
 
@@ -909,10 +909,10 @@ LABEL_14:
     }
   }
 
-  else if (a5 != 2 && v15 == 2)
+  else if (type != 2 && type == 2)
   {
-    v16 = [MEMORY[0x277D71778] daemon];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    daemon2 = [MEMORY[0x277D71778] daemon];
+    if (os_log_type_enabled(daemon2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v17 = "Cannot update notification document due to a immediate type in progress.";
@@ -924,24 +924,24 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v18 = [(TPSNotificationController *)self syncQueue];
+  syncQueue = [(TPSNotificationController *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__TPSNotificationController_updateNotificationCacheWithCollectionIdentifier_document_type_extensionPayload___block_invoke;
   block[3] = &unk_2789B0D98;
   block[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v26 = a5;
-  v25 = v12;
-  dispatch_sync(v18, block);
+  v23 = identifierCopy;
+  v24 = documentCopy;
+  typeCopy2 = type;
+  v25 = payloadCopy;
+  dispatch_sync(syncQueue, block);
 
 LABEL_17:
-  v19 = [(TPSNotificationController *)self notificationCache];
+  notificationCache2 = [(TPSNotificationController *)self notificationCache];
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return notificationCache2;
 }
 
 void __108__TPSNotificationController_updateNotificationCacheWithCollectionIdentifier_document_type_extensionPayload___block_invoke(uint64_t a1)
@@ -997,44 +997,44 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationDeliveryInfoForIdentifier:(id)a3 documentDeliveryIdentifierMap:(id)a4 deliveryInfoMap:(id)a5
+- (id)notificationDeliveryInfoForIdentifier:(id)identifier documentDeliveryIdentifierMap:(id)map deliveryInfoMap:(id)infoMap
 {
-  v7 = a5;
-  v8 = [a4 TPSSafeStringForKey:a3];
-  v9 = [v7 TPSSafeDictionaryForKey:v8];
+  infoMapCopy = infoMap;
+  v8 = [map TPSSafeStringForKey:identifier];
+  v9 = [infoMapCopy TPSSafeDictionaryForKey:v8];
 
   v10 = [v9 objectForKeyedSubscript:@"notification"];
 
   return v10;
 }
 
-- (id)documentToNotifyForTipsInCollection:(id)a3 tipMap:(id)a4 tipDeliveryInfoMap:(id)a5 deliveryInfoMap:(id)a6 overrideOptOutContentOnly:(BOOL)a7
+- (id)documentToNotifyForTipsInCollection:(id)collection tipMap:(id)map tipDeliveryInfoMap:(id)infoMap deliveryInfoMap:(id)deliveryInfoMap overrideOptOutContentOnly:(BOOL)only
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  collectionCopy = collection;
+  mapCopy = map;
+  infoMapCopy = infoMap;
+  deliveryInfoMapCopy = deliveryInfoMap;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__10;
   v32 = __Block_byref_object_dispose__10;
   v33 = 0;
-  v16 = [v12 tipIdentifiers];
+  tipIdentifiers = [collectionCopy tipIdentifiers];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap_tipDeliveryInfoMap_deliveryInfoMap_overrideOptOutContentOnly___block_invoke;
   v22[3] = &unk_2789B0DC0;
   v26 = &v28;
   v22[4] = self;
-  v17 = v13;
+  v17 = mapCopy;
   v23 = v17;
-  v18 = v14;
+  v18 = infoMapCopy;
   v24 = v18;
-  v19 = v15;
+  v19 = deliveryInfoMapCopy;
   v25 = v19;
-  v27 = a7;
-  [v16 enumerateObjectsUsingBlock:v22];
+  onlyCopy = only;
+  [tipIdentifiers enumerateObjectsUsingBlock:v22];
 
   v20 = v29[5];
   _Block_object_dispose(&v28, 8);
@@ -1052,17 +1052,17 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
   *a4 = *(*(*(a1 + 64) + 8) + 40) != 0;
 }
 
-- (BOOL)canUpdateHintEligibilityForIdentifier:(id)a3
+- (BOOL)canUpdateHintEligibilityForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D716E8] sharedInstance];
-  v5 = [v4 tipStatusController];
+  identifierCopy = identifier;
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
-  if ([v5 isContentNeverVisibleForIdentifier:v3] && (objc_msgSend(v5, "isHintIneligibleForIdentifier:", v3) & 1) == 0)
+  if ([tipStatusController isContentNeverVisibleForIdentifier:identifierCopy] && (objc_msgSend(tipStatusController, "isHintIneligibleForIdentifier:", identifierCopy) & 1) == 0)
   {
-    if ([v5 displayTypeForIdentifier:v3] == 1)
+    if ([tipStatusController displayTypeForIdentifier:identifierCopy] == 1)
     {
-      v8 = [v5 hintEligibleDateForIdentifier:v3];
+      v8 = [tipStatusController hintEligibleDateForIdentifier:identifierCopy];
       v6 = v8 != 0;
     }
 
@@ -1080,50 +1080,50 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
   return v6;
 }
 
-- (BOOL)updateHintEligibleForTip:(id)a3 isValid:(BOOL)a4
+- (BOOL)updateHintEligibleForTip:(id)tip isValid:(BOOL)valid
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(TPSNotificationController *)self isDocumentHintDisplayedOnOtherDevices:v6];
+  validCopy = valid;
+  tipCopy = tip;
+  identifier = [tipCopy identifier];
+  v8 = [(TPSNotificationController *)self isDocumentHintDisplayedOnOtherDevices:tipCopy];
 
   if (v8)
   {
-    v9 = [(TPSNotificationController *)self delegate];
-    [v9 notificationController:self markIdentifier:v7 type:1 ineligibleWithReason:3];
+    delegate = [(TPSNotificationController *)self delegate];
+    [delegate notificationController:self markIdentifier:identifier type:1 ineligibleWithReason:3];
 
-    v4 = 0;
+    validCopy = 0;
   }
 
-  v10 = [MEMORY[0x277D716E8] sharedInstance];
-  v11 = [v10 tipStatusController];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
-  if (v4 && ![v11 displayTypeForIdentifier:v7])
+  if (validCopy && ![tipStatusController displayTypeForIdentifier:identifier])
   {
-    v12 = [v11 hintEligibleDateForIdentifier:v7];
+    v12 = [tipStatusController hintEligibleDateForIdentifier:identifier];
 
     if (!v12)
     {
-      [v11 updateHintEligibleDateForIdentifier:v7 value:1];
+      [tipStatusController updateHintEligibleDateForIdentifier:identifier value:1];
     }
   }
 
-  return v4;
+  return validCopy;
 }
 
-- (BOOL)isNotificationDeliveryInfoValid:(id)a3 identifier:(id)a4 overrideOptOutContentOnly:(BOOL)a5 ignoreSuppressContent:(BOOL)a6
+- (BOOL)isNotificationDeliveryInfoValid:(id)valid identifier:(id)identifier overrideOptOutContentOnly:(BOOL)only ignoreSuppressContent:(BOOL)content
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (!a6 && ([v9 TPSSafeBoolForKey:@"suppress"] & 1) != 0 || v7 && !objc_msgSend(v9, "TPSSafeBoolForKey:", @"overrideOptOut"))
+  onlyCopy = only;
+  validCopy = valid;
+  identifierCopy = identifier;
+  if (!content && ([validCopy TPSSafeBoolForKey:@"suppress"] & 1) != 0 || onlyCopy && !objc_msgSend(validCopy, "TPSSafeBoolForKey:", @"overrideOptOut"))
   {
     v16 = 0;
   }
 
-  else if ([v9 count])
+  else if ([validCopy count])
   {
-    v11 = [v9 TPSSafeDictionaryForKey:@"preconditions"];
+    v11 = [validCopy TPSSafeDictionaryForKey:@"preconditions"];
     if ([v11 count])
     {
       v12 = [[TPSDeliveryPrecondition alloc] initWithDictionary:v11];
@@ -1132,7 +1132,7 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
       {
         v14 = [(TPSDeliveryPrecondition *)v12 conditionsForType:2];
         v18 = 0;
-        v15 = [TPSTargetingValidator validateConditions:v14 joinType:[(TPSDeliveryPrecondition *)v13 joinType] context:v10 cache:0 completionQueue:0 error:&v18];
+        v15 = [TPSTargetingValidator validateConditions:v14 joinType:[(TPSDeliveryPrecondition *)v13 joinType] context:identifierCopy cache:0 completionQueue:0 error:&v18];
         v16 = v18 == 0 && v15;
       }
 
@@ -1156,20 +1156,20 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
   return v16;
 }
 
-- (void)showNotificationWithCompletionHandler:(id)a3
+- (void)showNotificationWithCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSNotificationController *)self notificationCache];
-  v6 = [v5 document];
+  handlerCopy = handler;
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  document = [notificationCache document];
 
-  if (v6)
+  if (document)
   {
-    v7 = [(TPSNotificationController *)self notificationCache];
-    v8 = [v7 hasLocaleChanged];
+    notificationCache2 = [(TPSNotificationController *)self notificationCache];
+    hasLocaleChanged = [notificationCache2 hasLocaleChanged];
 
-    v9 = v8 ^ 1;
-    if (v8)
+    v9 = hasLocaleChanged ^ 1;
+    if (hasLocaleChanged)
     {
       v10 = 2;
     }
@@ -1186,9 +1186,9 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
     v10 = 1;
   }
 
-  v11 = [v6 identifier];
-  v12 = [MEMORY[0x277D716E8] sharedInstance];
-  v13 = [v12 tipStatusController];
+  identifier = [document identifier];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
   if (v9)
   {
@@ -1196,7 +1196,7 @@ void __133__TPSNotificationController_documentToNotifyForTipsInCollection_tipMap
     if (objc_opt_isKindOfClass())
     {
       v14 = 1;
-      if (([v13 isLockScreenHintDisplayEligibleForIdentifier:v11] & 1) == 0)
+      if (([tipStatusController isLockScreenHintDisplayEligibleForIdentifier:identifier] & 1) == 0)
       {
         goto LABEL_21;
       }
@@ -1215,14 +1215,14 @@ LABEL_21:
         v10 = 3;
 LABEL_22:
         v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.TipsDaemon.notificationController" code:v10 userInfo:0];
-        v18 = [MEMORY[0x277D71778] daemon];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        daemon = [MEMORY[0x277D71778] daemon];
+        if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138412546;
-          v28 = v11;
+          notificationCount = identifier;
           v29 = 2112;
           v30 = v17;
-          _os_log_impl(&dword_232D6F000, v18, OS_LOG_TYPE_DEFAULT, "Notification for %@ is no longer eligible due to error %@.", &v27, 0x16u);
+          _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Notification for %@ is no longer eligible due to error %@.", &v27, 0x16u);
         }
 
         goto LABEL_27;
@@ -1238,7 +1238,7 @@ LABEL_22:
         v14 = 3;
       }
 
-      if (![(TPSNotificationController *)self collectionEligibleForNotification:v11])
+      if (![(TPSNotificationController *)self collectionEligibleForNotification:identifier])
       {
         goto LABEL_21;
       }
@@ -1254,38 +1254,38 @@ LABEL_22:
     }
   }
 
-  if ([(TPSNotificationController *)self isDocumentHintDisplayedOnOtherDevices:v6])
+  if ([(TPSNotificationController *)self isDocumentHintDisplayedOnOtherDevices:document])
   {
     v10 = 4;
     goto LABEL_22;
   }
 
-  v19 = [(TPSNotificationController *)self notificationCache];
-  v18 = [v19 attachmentURL];
+  notificationCache3 = [(TPSNotificationController *)self notificationCache];
+  daemon = [notificationCache3 attachmentURL];
 
-  v20 = [(TPSNotificationController *)self localNotificationController];
-  v21 = [(TPSNotificationController *)self notificationCache];
-  [v20 showNotificationForNotificationCache:v21 attachmentURL:v18];
+  localNotificationController = [(TPSNotificationController *)self localNotificationController];
+  notificationCache4 = [(TPSNotificationController *)self notificationCache];
+  [localNotificationController showNotificationForNotificationCache:notificationCache4 attachmentURL:daemon];
 
   [(TPSNotificationController *)self notificationPosted];
-  v22 = [MEMORY[0x277D71778] daemon];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  daemon2 = [MEMORY[0x277D71778] daemon];
+  if (os_log_type_enabled(daemon2, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 134217984;
-    v28 = [(TPSNotificationController *)self notificationCount];
-    _os_log_impl(&dword_232D6F000, v22, OS_LOG_TYPE_DEFAULT, "Consecutive notification count %ld", &v27, 0xCu);
+    notificationCount = [(TPSNotificationController *)self notificationCount];
+    _os_log_impl(&dword_232D6F000, daemon2, OS_LOG_TYPE_DEFAULT, "Consecutive notification count %ld", &v27, 0xCu);
   }
 
   v17 = 0;
 LABEL_27:
 
-  v23 = [MEMORY[0x277D716E8] sharedInstance];
-  v24 = [(TPSNotificationController *)self notificationCache];
-  v25 = [v24 collectionIdentifier];
-  [v23 notifiedCollection:v25];
+  mEMORY[0x277D716E8]2 = [MEMORY[0x277D716E8] sharedInstance];
+  notificationCache5 = [(TPSNotificationController *)self notificationCache];
+  collectionIdentifier = [notificationCache5 collectionIdentifier];
+  [mEMORY[0x277D716E8]2 notifiedCollection:collectionIdentifier];
 
   [(TPSNotificationController *)self clearNotificationCache];
-  v4[2](v4, v6, v14, v17);
+  handlerCopy[2](handlerCopy, document, v14, v17);
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -1299,8 +1299,8 @@ LABEL_27:
 
 - (BOOL)isSoftOptedOut
 {
-  v2 = [(TPSNotificationController *)self notificationCount];
-  if (v2 < +[TPSNotificationController softOptOutNotificationCount])
+  notificationCount = [(TPSNotificationController *)self notificationCount];
+  if (notificationCount < +[TPSNotificationController softOptOutNotificationCount])
   {
     return 0;
   }
@@ -1312,58 +1312,58 @@ LABEL_27:
 {
   [(TPSNotificationController *)self setNotificationCount:[(TPSNotificationController *)self notificationCount]+ 1];
   [(TPSNotificationController *)self updateNotificationCount];
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v6 setObject:v3 forKey:@"TPSLastNotificationDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  date = [MEMORY[0x277CBEAA8] date];
+  [standardUserDefaults setObject:date forKey:@"TPSLastNotificationDate"];
 
-  v4 = [(TPSNotificationController *)self notificationCache];
-  v5 = [v4 collectionIdentifier];
-  [v6 setObject:v5 forKey:@"LastNotifiedCollectionIdentifier"];
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  collectionIdentifier = [notificationCache collectionIdentifier];
+  [standardUserDefaults setObject:collectionIdentifier forKey:@"LastNotifiedCollectionIdentifier"];
 
-  [v6 synchronize];
+  [standardUserDefaults synchronize];
 }
 
 - (void)updateNotificationCount
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [MEMORY[0x277D71778] daemon];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  daemon = [MEMORY[0x277D71778] daemon];
+  if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [(TPSNotificationController *)self notificationCount];
-    _os_log_impl(&dword_232D6F000, v4, OS_LOG_TYPE_DEFAULT, "Consecutive notification ignore count %zd", &v8, 0xCu);
+    notificationCount = [(TPSNotificationController *)self notificationCount];
+    _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Consecutive notification ignore count %zd", &v8, 0xCu);
   }
 
   if ([(TPSNotificationController *)self isSoftOptedOut])
   {
-    v5 = [MEMORY[0x277D71778] daemon];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    daemon2 = [MEMORY[0x277D71778] daemon];
+    if (os_log_type_enabled(daemon2, OS_LOG_TYPE_DEFAULT))
     {
       v6 = +[TPSNotificationController softOptOutNotificationCount];
       v8 = 134217984;
-      v9 = v6;
-      _os_log_impl(&dword_232D6F000, v5, OS_LOG_TYPE_DEFAULT, "User hasn't launch the app after %ld notifications. Will only look for override opt-out notifications next time.", &v8, 0xCu);
+      notificationCount = v6;
+      _os_log_impl(&dword_232D6F000, daemon2, OS_LOG_TYPE_DEFAULT, "User hasn't launch the app after %ld notifications. Will only look for override opt-out notifications next time.", &v8, 0xCu);
     }
   }
 
-  [v3 setInteger:-[TPSNotificationController notificationCount](self forKey:{"notificationCount"), @"ConsecutiveNotificationsCount"}];
-  [v3 synchronize];
+  [standardUserDefaults setInteger:-[TPSNotificationController notificationCount](self forKey:{"notificationCount"), @"ConsecutiveNotificationsCount"}];
+  [standardUserDefaults synchronize];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)collectionEligibleForNotification:(id)a3
+- (BOOL)collectionEligibleForNotification:(id)notification
 {
   v3 = MEMORY[0x277D716E8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 collectionStatusForCollectionIdentifier:v4];
+  notificationCopy = notification;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance collectionStatusForCollectionIdentifier:notificationCopy];
 
   if ([v6 canNotify])
   {
-    v7 = [v6 firstViewedDate];
-    v8 = v7 == 0;
+    firstViewedDate = [v6 firstViewedDate];
+    v8 = firstViewedDate == 0;
   }
 
   else
@@ -1374,29 +1374,29 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)isDocumentHintDisplayedOnOtherDevices:(id)a3
+- (BOOL)isDocumentHintDisplayedOnOtherDevices:(id)devices
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-    v6 = [v3 correlationID];
-    [v5 na_safeAddObject:v6];
+    correlationID = [devicesCopy correlationID];
+    [v5 na_safeAddObject:correlationID];
 
-    v7 = [v3 clonedFromID];
-    [v5 na_safeAddObject:v7];
+    clonedFromID = [devicesCopy clonedFromID];
+    [v5 na_safeAddObject:clonedFromID];
 
-    v8 = [v3 identifier];
-    [v5 na_safeAddObject:v8];
+    identifier = [devicesCopy identifier];
+    [v5 na_safeAddObject:identifier];
 
-    v9 = [MEMORY[0x277D716D0] sharedInstance];
+    mEMORY[0x277D716D0] = [MEMORY[0x277D716D0] sharedInstance];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __67__TPSNotificationController_isDocumentHintDisplayedOnOtherDevices___block_invoke;
     v17[3] = &unk_2789B0DE8;
-    v10 = v9;
+    v10 = mEMORY[0x277D716D0];
     v18 = v10;
     if ([v5 na_any:v17])
     {
@@ -1406,19 +1406,19 @@ LABEL_27:
         goto LABEL_10;
       }
 
-      v11 = [MEMORY[0x277D71778] daemon];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      daemon = [MEMORY[0x277D71778] daemon];
+      if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v3 identifier];
-        v13 = [v3 correlationID];
-        v14 = [v3 clonedFromID];
+        identifier2 = [devicesCopy identifier];
+        correlationID2 = [devicesCopy correlationID];
+        clonedFromID2 = [devicesCopy clonedFromID];
         *buf = 138412802;
-        v20 = v12;
+        v20 = identifier2;
         v21 = 2112;
-        v22 = v13;
+        v22 = correlationID2;
         v23 = 2112;
-        v24 = v14;
-        _os_log_impl(&dword_232D6F000, v11, OS_LOG_TYPE_DEFAULT, "Overriding ineligibility due to content %@ already seen on other devices (correlationId: %@, cloneFromID: %@)", buf, 0x20u);
+        v24 = clonedFromID2;
+        _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Overriding ineligibility due to content %@ already seen on other devices (correlationId: %@, cloneFromID: %@)", buf, 0x20u);
       }
     }
 
@@ -1444,11 +1444,11 @@ LABEL_11:
 
   else
   {
-    v4 = [(TPSNotificationController *)self notificationCache];
-    v5 = [v4 document];
+    notificationCache = [(TPSNotificationController *)self notificationCache];
+    document = [notificationCache document];
 
-    v6 = [(TPSNotificationController *)self notificationCache];
-    if ([v6 type] == 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    notificationCache2 = [(TPSNotificationController *)self notificationCache];
+    if ([notificationCache2 type] == 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       isKindOfClass = 1;
     }
@@ -1463,12 +1463,12 @@ LABEL_11:
   return isKindOfClass & 1;
 }
 
-- (void)fetchNotificationAssetIfNeededCompletionHandler:(id)a3
+- (void)fetchNotificationAssetIfNeededCompletionHandler:(id)handler
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSNotificationController *)self notificationCache];
-  v6 = [v5 document];
+  handlerCopy = handler;
+  notificationCache = [(TPSNotificationController *)self notificationCache];
+  document = [notificationCache document];
 
   if (![(TPSNotificationController *)self shouldDisplayCollectionIcon])
   {
@@ -1480,22 +1480,22 @@ LABEL_11:
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy__10;
   v57 = __Block_byref_object_dispose__10;
-  v7 = [(TPSNotificationController *)self notificationCache];
-  v58 = [v7 attachmentURL];
+  notificationCache2 = [(TPSNotificationController *)self notificationCache];
+  attachmentURL = [notificationCache2 attachmentURL];
 
-  v8 = [(TPSNotificationController *)self cacheAssetFileURLForDocument:v6];
+  v8 = [(TPSNotificationController *)self cacheAssetFileURLForDocument:document];
   v9 = v54[5];
   if (v8)
   {
     if (([v9 isEqual:v8] & 1) == 0)
     {
-      v10 = [(TPSNotificationController *)self notificationCache];
-      [v10 setAttachmentURL:v8];
+      notificationCache3 = [(TPSNotificationController *)self notificationCache];
+      [notificationCache3 setAttachmentURL:v8];
 
       [(TPSNotificationController *)self _updateNotificationCache];
     }
 
-    v4[2](v4, v8);
+    handlerCopy[2](handlerCopy, v8);
     goto LABEL_6;
   }
 
@@ -1503,8 +1503,8 @@ LABEL_11:
 
   if (v54[5])
   {
-    v12 = [(TPSNotificationController *)self notificationCache];
-    [v12 setAttachmentURL:0];
+    notificationCache4 = [(TPSNotificationController *)self notificationCache];
+    [notificationCache4 setAttachmentURL:0];
 
     [(TPSNotificationController *)self _updateNotificationCache];
     if (v54[5])
@@ -1515,18 +1515,18 @@ LABEL_6:
     }
   }
 
-  v13 = [v6 notification];
-  v14 = [v13 assets];
+  notification = [document notification];
+  assets = [notification assets];
 
-  v15 = [v14 imageIdentifier];
-  if (!v15 || ([v14 baseURL], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, v15, v17))
+  imageIdentifier = [assets imageIdentifier];
+  if (!imageIdentifier || ([assets baseURL], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, imageIdentifier, v17))
   {
     v11 = 1;
   }
 
   else
   {
-    v33 = [(TPSNotificationController *)self assetsConfigurationForDocument:v6];
+    v33 = [(TPSNotificationController *)self assetsConfigurationForDocument:document];
     v18 = [v33 cacheIdentifierForType:0];
     v47 = 0;
     v48 = &v47;
@@ -1534,7 +1534,7 @@ LABEL_6:
     v50 = __Block_byref_object_copy__10;
     v51 = __Block_byref_object_dispose__10;
     v52 = 0;
-    v19 = [(TPSNotificationController *)self syncQueue];
+    syncQueue = [(TPSNotificationController *)self syncQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHandler___block_invoke;
@@ -1543,7 +1543,7 @@ LABEL_6:
     block[4] = self;
     v20 = v18;
     v45 = v20;
-    dispatch_sync(v19, block);
+    dispatch_sync(syncQueue, block);
 
     v11 = 1;
     if (!v48[5] && v20)
@@ -1554,20 +1554,20 @@ LABEL_6:
       {
         v32 = v21;
         objc_initWeak(&location, self);
-        v22 = [MEMORY[0x277D71778] daemon];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+        daemon = [MEMORY[0x277D71778] daemon];
+        if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v6 identifier];
+          identifier = [document identifier];
           *buf = 138412802;
-          v60 = v23;
+          v60 = identifier;
           v61 = 2112;
           v62 = v20;
           v63 = 2112;
           v64 = v32;
-          _os_log_impl(&dword_232D6F000, v22, OS_LOG_TYPE_DEFAULT, "Attempt to cache asset for document id %@ with asset identifier %@ at %@", buf, 0x20u);
+          _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Attempt to cache asset for document id %@ with asset identifier %@ at %@", buf, 0x20u);
         }
 
-        v24 = [MEMORY[0x277D716A0] sharedInstance];
+        mEMORY[0x277D716A0] = [MEMORY[0x277D716A0] sharedInstance];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHandler___block_invoke_71;
@@ -1578,14 +1578,14 @@ LABEL_6:
         v26 = v20;
         v38 = v26;
         v41 = &v53;
-        v39 = v6;
-        v40 = v4;
+        v39 = document;
+        v40 = handlerCopy;
         LODWORD(v27) = v25;
-        v28 = [v24 formattedDataForPath:v32 identifier:v26 attributionIdentifier:0 priority:v37 completionHandler:v27];
+        v28 = [mEMORY[0x277D716A0] formattedDataForPath:v32 identifier:v26 attributionIdentifier:0 priority:v37 completionHandler:v27];
         v29 = v48[5];
         v48[5] = v28;
 
-        v30 = [(TPSNotificationController *)self syncQueue];
+        syncQueue2 = [(TPSNotificationController *)self syncQueue];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHandler___block_invoke_73;
@@ -1593,7 +1593,7 @@ LABEL_6:
         v34[4] = self;
         v35 = v26;
         v36 = &v47;
-        dispatch_async(v30, v34);
+        dispatch_async(syncQueue2, v34);
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(&location);
@@ -1610,7 +1610,7 @@ LABEL_21:
   if (v8 == 0 && v11)
   {
 LABEL_22:
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -1708,20 +1708,20 @@ void __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHan
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (id)assetsConfigurationForDocument:(id)a3
+- (id)assetsConfigurationForDocument:(id)document
 {
-  v3 = a3;
-  v4 = [v3 notification];
-  v5 = [v4 assets];
+  documentCopy = document;
+  notification = [documentCopy notification];
+  assets = [notification assets];
 
-  if (v5)
+  if (assets)
   {
     v6 = objc_alloc_init(MEMORY[0x277D77768]);
     v7 = [v6 userInterfaceStyle] == 2;
     v8 = objc_alloc(MEMORY[0x277D716B0]);
-    v9 = [v3 language];
-    v10 = [v3 assetFileInfoManager];
-    v11 = [v8 initWithAssets:v5 language:v9 userInterfaceStyle:v7 assetFileInfoManager:v10];
+    language = [documentCopy language];
+    assetFileInfoManager = [documentCopy assetFileInfoManager];
+    v11 = [v8 initWithAssets:assets language:language userInterfaceStyle:v7 assetFileInfoManager:assetFileInfoManager];
   }
 
   else
@@ -1732,14 +1732,14 @@ void __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHan
   return v11;
 }
 
-- (id)cacheFilePathForFile:(id)a3
+- (id)cacheFilePathForFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = [TPSNotificationController cacheDirectoryCreateIfEmpty:1];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 stringByAppendingPathComponent:v3];
+    v6 = [v4 stringByAppendingPathComponent:fileCopy];
   }
 
   else
@@ -1750,9 +1750,9 @@ void __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHan
   return v6;
 }
 
-- (id)cacheAssetFileURLForDocument:(id)a3
+- (id)cacheAssetFileURLForDocument:(id)document
 {
-  v4 = [(TPSNotificationController *)self assetsConfigurationForDocument:a3];
+  v4 = [(TPSNotificationController *)self assetsConfigurationForDocument:document];
   v5 = [v4 cacheIdentifierForType:0];
   v6 = [(TPSNotificationController *)self cacheFilePathForFile:v5];
   v7 = v6;
@@ -1765,8 +1765,8 @@ void __77__TPSNotificationController_fetchNotificationAssetIfNeededCompletionHan
   if (!v6)
   {
 LABEL_8:
-    v10 = [(TPSNotificationController *)self frameworkBundle];
-    v11 = [v10 URLForResource:v5 withExtension:&stru_284826B40];
+    frameworkBundle = [(TPSNotificationController *)self frameworkBundle];
+    v11 = [frameworkBundle URLForResource:v5 withExtension:&stru_284826B40];
 
     if (v11)
     {
@@ -1781,8 +1781,8 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v8 fileExistsAtPath:v7] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:v7] & 1) == 0)
   {
 
     goto LABEL_8;
@@ -1800,24 +1800,24 @@ LABEL_12:
   return v9;
 }
 
-- (id)copyFileURL:(id)a3 cachePath:(id)a4
+- (id)copyFileURL:(id)l cachePath:(id)path
 {
-  v5 = a3;
+  lCopy = l;
   v6 = 0;
-  if (v5 && a4)
+  if (lCopy && path)
   {
     v7 = MEMORY[0x277CCAA00];
-    v8 = a4;
-    v9 = [v7 defaultManager];
-    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:0];
-    v10 = [v9 fileExistsAtPath:v8];
+    pathCopy = path;
+    defaultManager = [v7 defaultManager];
+    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
+    v10 = [defaultManager fileExistsAtPath:pathCopy];
 
     if ((v10 & 1) == 0)
     {
       if (v6)
       {
         v15 = 0;
-        v11 = [v9 copyItemAtURL:v5 toURL:v6 error:&v15];
+        v11 = [defaultManager copyItemAtURL:lCopy toURL:v6 error:&v15];
         v12 = v15;
         v13 = v12;
         if (v11 && !v12)
@@ -1840,18 +1840,18 @@ LABEL_10:
   return v6;
 }
 
-- (void)dataProviderManager:(id)a3 didReceiveCallbackWithResult:(id)a4 type:(int64_t)a5
+- (void)dataProviderManager:(id)manager didReceiveCallbackWithResult:(id)result type:(int64_t)type
 {
-  v6 = a4;
-  v7 = [(TPSNotificationController *)self syncQueue];
+  resultCopy = result;
+  syncQueue = [(TPSNotificationController *)self syncQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__TPSNotificationController_dataProviderManager_didReceiveCallbackWithResult_type___block_invoke;
   v9[3] = &unk_2789B08F8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, v9);
+  v10 = resultCopy;
+  v8 = resultCopy;
+  dispatch_sync(syncQueue, v9);
 }
 
 void __83__TPSNotificationController_dataProviderManager_didReceiveCallbackWithResult_type___block_invoke(uint64_t a1)

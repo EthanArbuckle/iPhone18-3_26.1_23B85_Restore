@@ -1,31 +1,31 @@
 @interface OspreyService
-- (OspreyService)initWithConnectionConfiguration:(id)a3;
-- (OspreyService)initWithConnectionURL:(id)a3;
+- (OspreyService)initWithConnectionConfiguration:(id)configuration;
+- (OspreyService)initWithConnectionURL:(id)l;
 @end
 
 @implementation OspreyService
 
-- (OspreyService)initWithConnectionURL:(id)a3
+- (OspreyService)initWithConnectionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(OspreyConnectionConfiguration);
-  [(OspreyConnectionConfiguration *)v5 setConnectionUrl:v4];
+  [(OspreyConnectionConfiguration *)v5 setConnectionUrl:lCopy];
 
   v6 = [(OspreyService *)self initWithConnectionConfiguration:v5];
   return v6;
 }
 
-- (OspreyService)initWithConnectionConfiguration:(id)a3
+- (OspreyService)initWithConnectionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = OspreyService;
   v5 = [(OspreyService *)&v11 init];
   if (v5)
   {
     v6 = +[OspreyServiceConfiguration sharedConfiguration];
-    v7 = [v6 connectionPool];
-    v8 = [v7 connectionForConfiguration:v4];
+    connectionPool = [v6 connectionPool];
+    v8 = [connectionPool connectionForConfiguration:configurationCopy];
     channel = v5->_channel;
     v5->_channel = v8;
   }

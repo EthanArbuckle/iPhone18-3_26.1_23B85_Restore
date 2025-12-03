@@ -1,6 +1,6 @@
 @interface HMDHouseholdHomeActivityStateTransitionLogEvent
-- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithDictionary:(id)a3;
-- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithHomeUUID:(id)a3 homeCount:(int64_t)a4 awayCount:(int64_t)a5 vacationCount:(int64_t)a6 comingHomeCount:(int64_t)a7 comingHomeFromVacationCount:(int64_t)a8 automatedCount:(int64_t)a9 automatedHoldEndCount:(int64_t)a10 manualHoldEndCount:(int64_t)a11 manualHoldStartCount:(int64_t)a12 otherCount:(int64_t)a13;
+- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithDictionary:(id)dictionary;
+- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithHomeUUID:(id)d homeCount:(int64_t)count awayCount:(int64_t)awayCount vacationCount:(int64_t)vacationCount comingHomeCount:(int64_t)homeCount comingHomeFromVacationCount:(int64_t)fromVacationCount automatedCount:(int64_t)automatedCount automatedHoldEndCount:(int64_t)self0 manualHoldEndCount:(int64_t)self1 manualHoldStartCount:(int64_t)self2 otherCount:(int64_t)self3;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -49,11 +49,11 @@
   return v12;
 }
 
-- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithDictionary:(id)a3
+- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"homeUUID"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"homeUUID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -72,7 +72,7 @@
   v8 = [objc_claimAutoreleasedReturnValue() initWithUUIDString:v7];
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"numTransitions_toState1_Home"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_toState1_Home"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
 
     v11 = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"numTransitions_toState2_Away"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_toState2_Away"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
 
     v14 = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"numTransitions_toState4_Vacation"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_toState4_Vacation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
 
     v17 = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"numTransitions_toState1_Home"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_toState1_Home"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
 
     v20 = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"numTransitions_toState7_ComingHomeFromVacation"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_toState7_ComingHomeFromVacation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,9 +147,9 @@
     v58 = v20;
     if (v11 && v14 && v17 && v20 && v59)
     {
-      v53 = self;
+      selfCopy = self;
       v55 = v14;
-      v23 = [v4 objectForKeyedSubscript:@"numTransitions_reason1_automated"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_reason1_automated"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -163,7 +163,7 @@
 
       v25 = v24;
 
-      v26 = [v4 objectForKeyedSubscript:@"numTransitions_reason2_automatedHoldEnd"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_reason2_automatedHoldEnd"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -177,7 +177,7 @@
 
       v28 = v27;
 
-      v29 = [v4 objectForKeyedSubscript:@"numTransitions_reason3_manualHoldEnd"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_reason3_manualHoldEnd"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -192,7 +192,7 @@
       v31 = v30;
 
       v32 = v28;
-      v33 = [v4 objectForKeyedSubscript:@"numTransitions_reason4_manualHoldStart"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_reason4_manualHoldStart"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -206,7 +206,7 @@
 
       v35 = v34;
 
-      v36 = [v4 objectForKeyedSubscript:@"numTransitions_reason5_other"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"numTransitions_reason5_other"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -223,14 +223,14 @@
       v39 = v31;
       if (v25 && v32 && v31 && v35 && v38)
       {
-        v40 = -[HMDHouseholdHomeActivityStateTransitionLogEvent initWithHomeUUID:homeCount:awayCount:vacationCount:comingHomeCount:comingHomeFromVacationCount:automatedCount:automatedHoldEndCount:manualHoldEndCount:manualHoldStartCount:otherCount:](v53, "initWithHomeUUID:homeCount:awayCount:vacationCount:comingHomeCount:comingHomeFromVacationCount:automatedCount:automatedHoldEndCount:manualHoldEndCount:manualHoldStartCount:otherCount:", v8, [v57 integerValue], objc_msgSend(v55, "integerValue"), objc_msgSend(v17, "integerValue"), objc_msgSend(v58, "integerValue"), objc_msgSend(v59, "integerValue"), objc_msgSend(v25, "integerValue"), objc_msgSend(v32, "integerValue"), objc_msgSend(v31, "integerValue"), objc_msgSend(v35, "integerValue"), objc_msgSend(v38, "integerValue"));
-        v41 = v40;
+        selfCopy3 = -[HMDHouseholdHomeActivityStateTransitionLogEvent initWithHomeUUID:homeCount:awayCount:vacationCount:comingHomeCount:comingHomeFromVacationCount:automatedCount:automatedHoldEndCount:manualHoldEndCount:manualHoldStartCount:otherCount:](selfCopy, "initWithHomeUUID:homeCount:awayCount:vacationCount:comingHomeCount:comingHomeFromVacationCount:automatedCount:automatedHoldEndCount:manualHoldEndCount:manualHoldStartCount:otherCount:", v8, [v57 integerValue], objc_msgSend(v55, "integerValue"), objc_msgSend(v17, "integerValue"), objc_msgSend(v58, "integerValue"), objc_msgSend(v59, "integerValue"), objc_msgSend(v25, "integerValue"), objc_msgSend(v32, "integerValue"), objc_msgSend(v31, "integerValue"), objc_msgSend(v35, "integerValue"), objc_msgSend(v38, "integerValue"));
+        v41 = selfCopy3;
       }
 
       else
       {
         v48 = objc_autoreleasePoolPush();
-        v40 = v53;
+        selfCopy3 = selfCopy;
         v49 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
@@ -239,7 +239,7 @@
           *buf = 138543618;
           v62 = v50;
           v63 = 2112;
-          v64 = v4;
+          v64 = dictionaryCopy;
           _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_ERROR, "%{public}@Failed to initialize from dictionary -- missing transition reason counts: %@", buf, 0x16u);
 
           v48 = v54;
@@ -255,7 +255,7 @@
     else
     {
       v45 = objc_autoreleasePoolPush();
-      v40 = self;
+      selfCopy3 = self;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
@@ -263,7 +263,7 @@
         *buf = 138543618;
         v62 = v47;
         v63 = 2112;
-        v64 = v4;
+        v64 = dictionaryCopy;
         _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_ERROR, "%{public}@Failed to initialize from dictionary -- missing activity state type counts: %@", buf, 0x16u);
       }
 
@@ -275,7 +275,7 @@
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy3 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -283,7 +283,7 @@
       *buf = 138543618;
       v62 = v44;
       v63 = 2112;
-      v64 = v4;
+      v64 = dictionaryCopy;
       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, "%{public}@Failed to initialize from dictionary -- missing homeUUID: %@", buf, 0x16u);
     }
 
@@ -295,24 +295,24 @@
   return v41;
 }
 
-- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithHomeUUID:(id)a3 homeCount:(int64_t)a4 awayCount:(int64_t)a5 vacationCount:(int64_t)a6 comingHomeCount:(int64_t)a7 comingHomeFromVacationCount:(int64_t)a8 automatedCount:(int64_t)a9 automatedHoldEndCount:(int64_t)a10 manualHoldEndCount:(int64_t)a11 manualHoldStartCount:(int64_t)a12 otherCount:(int64_t)a13
+- (HMDHouseholdHomeActivityStateTransitionLogEvent)initWithHomeUUID:(id)d homeCount:(int64_t)count awayCount:(int64_t)awayCount vacationCount:(int64_t)vacationCount comingHomeCount:(int64_t)homeCount comingHomeFromVacationCount:(int64_t)fromVacationCount automatedCount:(int64_t)automatedCount automatedHoldEndCount:(int64_t)self0 manualHoldEndCount:(int64_t)self1 manualHoldStartCount:(int64_t)self2 otherCount:(int64_t)self3
 {
   v19.receiver = self;
   v19.super_class = HMDHouseholdHomeActivityStateTransitionLogEvent;
-  result = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:a3];
+  result = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:d];
   if (result)
   {
-    result->_homeCount = a4;
-    result->_awayCount = a5;
-    result->_vacationCount = a6;
-    result->_comingHomeCount = a7;
-    result->_comingHomeFromVacationCount = a8;
-    result->_automatedCount = a9;
-    result->_automatedHoldEndCount = a10;
-    result->_manualHoldEndCount = a11;
-    result->_manualHoldStartCount = a12;
-    result->_otherCount = a13;
-    result->_totalCount = a10 + a9 + a11 + a12 + a13;
+    result->_homeCount = count;
+    result->_awayCount = awayCount;
+    result->_vacationCount = vacationCount;
+    result->_comingHomeCount = homeCount;
+    result->_comingHomeFromVacationCount = fromVacationCount;
+    result->_automatedCount = automatedCount;
+    result->_automatedHoldEndCount = endCount;
+    result->_manualHoldEndCount = holdEndCount;
+    result->_manualHoldStartCount = startCount;
+    result->_otherCount = otherCount;
+    result->_totalCount = endCount + automatedCount + holdEndCount + startCount + otherCount;
   }
 
   return result;

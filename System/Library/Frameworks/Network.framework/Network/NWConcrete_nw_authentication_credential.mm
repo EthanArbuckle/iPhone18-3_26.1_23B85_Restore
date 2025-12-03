@@ -14,12 +14,12 @@
     self->username = 0;
   }
 
-  v4 = self;
-  v5 = v4;
-  password = v4->password;
+  selfCopy = self;
+  v5 = selfCopy;
+  password = selfCopy->password;
   if (password)
   {
-    v7 = strlen(v4->password);
+    v7 = strlen(selfCopy->password);
     bzero(password, v7);
     v8 = v5->password;
     if (v8)

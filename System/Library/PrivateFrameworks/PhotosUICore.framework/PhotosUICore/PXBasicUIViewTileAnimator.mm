@@ -1,202 +1,202 @@
 @interface PXBasicUIViewTileAnimator
-+ (void)animateWithOptions:(id)a3 animations:(id)a4 completion:(id)a5;
-- (void)_applyGeometry:(PXTileGeometry *)a3 toTile:(id)a4;
-- (void)_applyGeometry:(PXTileGeometry *)a3 userData:(id)a4 toTile:(id)a5;
-- (void)animateTile:(id)a3 toGeometry:(PXTileGeometry *)a4 userData:(id)a5 withOptions:(id)a6 completionHandler:(id)a7;
-- (void)prepareTile:(id)a3 withGeometry:(PXTileGeometry *)a4 userData:(id)a5;
-- (void)suspendAnimationsForTile:(id)a3;
++ (void)animateWithOptions:(id)options animations:(id)animations completion:(id)completion;
+- (void)_applyGeometry:(PXTileGeometry *)geometry toTile:(id)tile;
+- (void)_applyGeometry:(PXTileGeometry *)geometry userData:(id)data toTile:(id)tile;
+- (void)animateTile:(id)tile toGeometry:(PXTileGeometry *)geometry userData:(id)data withOptions:(id)options completionHandler:(id)handler;
+- (void)prepareTile:(id)tile withGeometry:(PXTileGeometry *)geometry userData:(id)data;
+- (void)suspendAnimationsForTile:(id)tile;
 @end
 
 @implementation PXBasicUIViewTileAnimator
 
-+ (void)animateWithOptions:(id)a3 animations:(id)a4 completion:(id)a5
++ (void)animateWithOptions:(id)options animations:(id)animations completion:(id)completion
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v14)
+  optionsCopy = options;
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (optionsCopy)
   {
-    v9 = [v14 style];
+    style = [optionsCopy style];
     v10 = MEMORY[0x1E69DD250];
-    if (v9 == 2)
+    if (style == 2)
     {
-      [v14 delay];
-      [v10 _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:v7 options:v8 animations:? completion:?];
+      [optionsCopy delay];
+      [v10 _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:animationsCopy options:completionCopy animations:? completion:?];
     }
 
-    else if (v9 == 3)
+    else if (style == 3)
     {
-      [v14 duration];
-      [v10 px_animateUsingDefaultDampedEaseInEaseOutWithDuration:v7 animations:v8 completion:?];
+      [optionsCopy duration];
+      [v10 px_animateUsingDefaultDampedEaseInEaseOutWithDuration:animationsCopy animations:completionCopy completion:?];
     }
 
     else
     {
-      [v14 duration];
+      [optionsCopy duration];
       v12 = v11;
-      [v14 delay];
-      [v10 animateWithDuration:2 delay:v7 options:v8 animations:v12 completion:v13];
+      [optionsCopy delay];
+      [v10 animateWithDuration:2 delay:animationsCopy options:completionCopy animations:v12 completion:v13];
     }
   }
 
   else
   {
-    v7[2](v7);
-    if (v8)
+    animationsCopy[2](animationsCopy);
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
-- (void)_applyGeometry:(PXTileGeometry *)a3 userData:(id)a4 toTile:(id)a5
+- (void)_applyGeometry:(PXTileGeometry *)geometry userData:(id)data toTile:(id)tile
 {
-  v8 = *&a3->contentSize.height;
-  v30 = *&a3->hidden;
+  v8 = *&geometry->contentSize.height;
+  v30 = *&geometry->hidden;
   v31 = v8;
-  v9 = *&a3->contentsRect.size.height;
-  v32 = *&a3->contentsRect.origin.y;
+  v9 = *&geometry->contentsRect.size.height;
+  v32 = *&geometry->contentsRect.origin.y;
   v33 = v9;
-  v10 = *&a3->transform.c;
-  v26 = *&a3->transform.a;
+  v10 = *&geometry->transform.c;
+  v26 = *&geometry->transform.a;
   v27 = v10;
-  v11 = *&a3->alpha;
-  v28 = *&a3->transform.tx;
+  v11 = *&geometry->alpha;
+  v28 = *&geometry->transform.tx;
   v29 = v11;
-  size = a3->frame.size;
-  origin = a3->frame.origin;
+  size = geometry->frame.size;
+  origin = geometry->frame.origin;
   v23 = size;
-  v13 = a3->size;
-  center = a3->center;
+  v13 = geometry->size;
+  center = geometry->center;
   v25 = v13;
-  v14 = a5;
-  v15 = a4;
-  [(PXBasicUIViewTileAnimator *)self _applyGeometry:&origin toTile:v14];
-  v16 = *&a3->contentSize.height;
-  v30 = *&a3->hidden;
+  tileCopy = tile;
+  dataCopy = data;
+  [(PXBasicUIViewTileAnimator *)self _applyGeometry:&origin toTile:tileCopy];
+  v16 = *&geometry->contentSize.height;
+  v30 = *&geometry->hidden;
   v31 = v16;
-  v17 = *&a3->contentsRect.size.height;
-  v32 = *&a3->contentsRect.origin.y;
+  v17 = *&geometry->contentsRect.size.height;
+  v32 = *&geometry->contentsRect.origin.y;
   v33 = v17;
-  v18 = *&a3->transform.c;
-  v26 = *&a3->transform.a;
+  v18 = *&geometry->transform.c;
+  v26 = *&geometry->transform.a;
   v27 = v18;
-  v19 = *&a3->alpha;
-  v28 = *&a3->transform.tx;
+  v19 = *&geometry->alpha;
+  v28 = *&geometry->transform.tx;
   v29 = v19;
-  v20 = a3->frame.size;
-  origin = a3->frame.origin;
+  v20 = geometry->frame.size;
+  origin = geometry->frame.origin;
   v23 = v20;
-  v21 = a3->size;
-  center = a3->center;
+  v21 = geometry->size;
+  center = geometry->center;
   v25 = v21;
-  [v14 didApplyGeometry:&origin withUserData:v15];
+  [tileCopy didApplyGeometry:&origin withUserData:dataCopy];
 }
 
-- (void)_applyGeometry:(PXTileGeometry *)a3 toTile:(id)a4
+- (void)_applyGeometry:(PXTileGeometry *)geometry toTile:(id)tile
 {
-  v5 = [a4 view];
-  [v5 setCenter:{a3->center.x, a3->center.y}];
-  [v5 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3->size.width, a3->size.height}];
-  [v5 setAlpha:a3->alpha];
-  [v5 setHidden:a3->hidden];
-  v6 = *&a3->transform.c;
-  v8[0] = *&a3->transform.a;
+  view = [tile view];
+  [view setCenter:{geometry->center.x, geometry->center.y}];
+  [view setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), geometry->size.width, geometry->size.height}];
+  [view setAlpha:geometry->alpha];
+  [view setHidden:geometry->hidden];
+  v6 = *&geometry->transform.c;
+  v8[0] = *&geometry->transform.a;
   v8[1] = v6;
-  v8[2] = *&a3->transform.tx;
-  [v5 setTransform:v8];
-  v7 = [v5 layer];
-  [v7 setZPosition:a3->zPosition + -11000000.0];
+  v8[2] = *&geometry->transform.tx;
+  [view setTransform:v8];
+  layer = [view layer];
+  [layer setZPosition:geometry->zPosition + -11000000.0];
 
   if ([MEMORY[0x1E69DD250] _isInAnimationBlockWithAnimationsEnabled])
   {
-    [v5 layoutIfNeeded];
+    [view layoutIfNeeded];
   }
 }
 
-- (void)suspendAnimationsForTile:(id)a3
+- (void)suspendAnimationsForTile:(id)tile
 {
-  v4 = a3;
+  tileCopy = tile;
   suspendedTiles = self->_suspendedTiles;
-  v8 = v4;
+  v8 = tileCopy;
   if (!suspendedTiles)
   {
     v6 = [MEMORY[0x1E696AB50] set];
     v7 = self->_suspendedTiles;
     self->_suspendedTiles = v6;
 
-    v4 = v8;
+    tileCopy = v8;
     suspendedTiles = self->_suspendedTiles;
   }
 
-  [(NSCountedSet *)suspendedTiles addObject:v4];
+  [(NSCountedSet *)suspendedTiles addObject:tileCopy];
 }
 
-- (void)animateTile:(id)a3 toGeometry:(PXTileGeometry *)a4 userData:(id)a5 withOptions:(id)a6 completionHandler:(id)a7
+- (void)animateTile:(id)tile toGeometry:(PXTileGeometry *)geometry userData:(id)data withOptions:(id)options completionHandler:(id)handler
 {
   v94[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([(NSCountedSet *)self->_suspendedTiles containsObject:v12])
+  tileCopy = tile;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(NSCountedSet *)self->_suspendedTiles containsObject:tileCopy])
   {
-    v15[2](v15);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v16 = [v14 shouldNotifyTiles];
-    v17 = v16;
-    if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+    shouldNotifyTiles = [optionsCopy shouldNotifyTiles];
+    v17 = shouldNotifyTiles;
+    if (shouldNotifyTiles && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v18 = *&a4->contentSize.height;
-      v93[8] = *&a4->hidden;
+      v18 = *&geometry->contentSize.height;
+      v93[8] = *&geometry->hidden;
       v93[9] = v18;
-      v19 = *&a4->contentsRect.size.height;
-      v93[10] = *&a4->contentsRect.origin.y;
+      v19 = *&geometry->contentsRect.size.height;
+      v93[10] = *&geometry->contentsRect.origin.y;
       v93[11] = v19;
-      v20 = *&a4->transform.c;
-      v93[4] = *&a4->transform.a;
+      v20 = *&geometry->transform.c;
+      v93[4] = *&geometry->transform.a;
       v93[5] = v20;
-      v21 = *&a4->alpha;
-      v93[6] = *&a4->transform.tx;
+      v21 = *&geometry->alpha;
+      v93[6] = *&geometry->transform.tx;
       v93[7] = v21;
-      size = a4->frame.size;
-      v93[0] = a4->frame.origin;
+      size = geometry->frame.size;
+      v93[0] = geometry->frame.origin;
       v93[1] = size;
-      v23 = a4->size;
-      v93[2] = a4->center;
+      v23 = geometry->size;
+      v93[2] = geometry->center;
       v93[3] = v23;
-      [v12 willAnimateToGeometry:v93 toUserData:v13 withOptions:v14];
+      [tileCopy willAnimateToGeometry:v93 toUserData:dataCopy withOptions:optionsCopy];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
-    v24 = *&a4->contentSize.height;
-    v89 = *&a4->hidden;
+    v24 = *&geometry->contentSize.height;
+    v89 = *&geometry->hidden;
     v90 = v24;
-    v25 = *&a4->contentsRect.size.height;
-    v91 = *&a4->contentsRect.origin.y;
+    v25 = *&geometry->contentsRect.size.height;
+    v91 = *&geometry->contentsRect.origin.y;
     v92 = v25;
-    v26 = *&a4->transform.c;
-    v85 = *&a4->transform.a;
+    v26 = *&geometry->transform.c;
+    v85 = *&geometry->transform.a;
     v86 = v26;
-    v27 = *&a4->alpha;
-    v87 = *&a4->transform.tx;
+    v27 = *&geometry->alpha;
+    v87 = *&geometry->transform.tx;
     v88 = v27;
-    v28 = a4->frame.size;
-    origin = a4->frame.origin;
+    v28 = geometry->frame.size;
+    origin = geometry->frame.origin;
     v82 = v28;
-    v29 = a4->size;
-    center = a4->center;
+    v29 = geometry->size;
+    center = geometry->center;
     aBlock[2] = __91__PXBasicUIViewTileAnimator_animateTile_toGeometry_userData_withOptions_completionHandler___block_invoke;
     aBlock[3] = &unk_1E773D860;
     aBlock[4] = self;
     v84 = v29;
-    v30 = v13;
+    v30 = dataCopy;
     v79 = v30;
-    v31 = v12;
+    v31 = tileCopy;
     v80 = v31;
     v32 = _Block_copy(aBlock);
     v57 = MEMORY[0x1E69E9820];
@@ -206,47 +206,47 @@
     v77 = v17;
     v33 = v31;
     v61 = v33;
-    v34 = *&a4->contentSize.height;
-    v73 = *&a4->hidden;
+    v34 = *&geometry->contentSize.height;
+    v73 = *&geometry->hidden;
     v74 = v34;
-    v35 = *&a4->contentsRect.size.height;
-    v75 = *&a4->contentsRect.origin.y;
+    v35 = *&geometry->contentsRect.size.height;
+    v75 = *&geometry->contentsRect.origin.y;
     v76 = v35;
-    v36 = *&a4->transform.c;
-    v69 = *&a4->transform.a;
+    v36 = *&geometry->transform.c;
+    v69 = *&geometry->transform.a;
     v70 = v36;
-    v37 = *&a4->alpha;
-    v71 = *&a4->transform.tx;
+    v37 = *&geometry->alpha;
+    v71 = *&geometry->transform.tx;
     v72 = v37;
-    v38 = a4->frame.size;
-    v65 = a4->frame.origin;
+    v38 = geometry->frame.size;
+    v65 = geometry->frame.origin;
     v66 = v38;
-    v39 = a4->size;
-    v67 = a4->center;
+    v39 = geometry->size;
+    v67 = geometry->center;
     v68 = v39;
     v62 = v30;
-    v40 = v14;
+    v40 = optionsCopy;
     v63 = v40;
-    v41 = v15;
+    v41 = handlerCopy;
     v64 = v41;
     v42 = _Block_copy(&v57);
     if (v40)
     {
       if ([v40 style] == 1)
       {
-        v43 = [v33 view];
-        v44 = [v43 snapshotViewAfterScreenUpdates:0];
-        v45 = [v43 layer];
-        v46 = [v45 presentationLayer];
-        [v46 frame];
+        view = [v33 view];
+        v44 = [view snapshotViewAfterScreenUpdates:0];
+        layer = [view layer];
+        presentationLayer = [layer presentationLayer];
+        [presentationLayer frame];
         v48 = v47;
         v50 = v49;
         v52 = v51;
         v54 = v53;
 
         [v44 setFrame:{v48, v50, v52, v54}];
-        v55 = [v43 superview];
-        [v55 addSubview:v44];
+        superview = [view superview];
+        [superview addSubview:v44];
 
         if (v44)
         {
@@ -334,38 +334,38 @@ uint64_t __91__PXBasicUIViewTileAnimator_animateTile_toGeometry_userData_withOpt
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)prepareTile:(id)a3 withGeometry:(PXTileGeometry *)a4 userData:(id)a5
+- (void)prepareTile:(id)tile withGeometry:(PXTileGeometry *)geometry userData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
+  tileCopy = tile;
+  dataCopy = data;
   v10 = MEMORY[0x1E69DD250];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
-  v11 = *&a4->contentSize.height;
-  v30 = *&a4->hidden;
+  v11 = *&geometry->contentSize.height;
+  v30 = *&geometry->hidden;
   v31 = v11;
-  v12 = *&a4->contentsRect.size.height;
-  v32 = *&a4->contentsRect.origin.y;
+  v12 = *&geometry->contentsRect.size.height;
+  v32 = *&geometry->contentsRect.origin.y;
   v33 = v12;
-  v13 = *&a4->transform.a;
-  v27 = *&a4->transform.c;
-  v14 = *&a4->alpha;
-  v28 = *&a4->transform.tx;
+  v13 = *&geometry->transform.a;
+  v27 = *&geometry->transform.c;
+  v14 = *&geometry->alpha;
+  v28 = *&geometry->transform.tx;
   v29 = v14;
-  size = a4->frame.size;
-  origin = a4->frame.origin;
+  size = geometry->frame.size;
+  origin = geometry->frame.origin;
   v23 = size;
-  v16 = a4->size;
-  center = a4->center;
+  v16 = geometry->size;
+  center = geometry->center;
   v19[2] = __63__PXBasicUIViewTileAnimator_prepareTile_withGeometry_userData___block_invoke;
   v19[3] = &unk_1E773D860;
   v25 = v16;
   v26 = v13;
   v19[4] = self;
-  v20 = v9;
-  v21 = v8;
-  v17 = v8;
-  v18 = v9;
+  v20 = dataCopy;
+  v21 = tileCopy;
+  v17 = tileCopy;
+  v18 = dataCopy;
   [v10 performWithoutAnimation:v19];
 }
 

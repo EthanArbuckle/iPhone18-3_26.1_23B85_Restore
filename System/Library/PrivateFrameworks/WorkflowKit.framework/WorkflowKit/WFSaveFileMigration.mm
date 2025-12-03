@@ -1,16 +1,16 @@
 @interface WFSaveFileMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFSaveFileMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1106"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1106"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.documentpicker.save", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.documentpicker.save", migrationCopy);
   }
 
   else
@@ -44,13 +44,13 @@
         }
 
         v7 = *(*(&v19 + 1) + 8 * i);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKey:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKey:actionIdentifierKey];
 
         if ([v9 isEqualToString:@"is.workflow.actions.documentpicker.save"])
         {
-          v10 = [(WFWorkflowMigration *)self actionParametersKey];
-          v11 = [v7 objectForKeyedSubscript:v10];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v11 = [v7 objectForKeyedSubscript:actionParametersKey];
 
           v12 = [v11 objectForKeyedSubscript:@"WFFileStorageService"];
           if (v12)
@@ -77,8 +77,8 @@
           v15 = [v14 isEqualToString:@"Dropbox"];
           if (v15)
           {
-            v16 = [(WFWorkflowMigration *)self actionIdentifierKey];
-            [v7 setObject:@"is.workflow.actions.dropbox.savefile" forKey:v16];
+            actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+            [v7 setObject:@"is.workflow.actions.dropbox.savefile" forKey:actionIdentifierKey2];
           }
 
           [v11 removeObjectForKey:@"WFFileStorageService"];

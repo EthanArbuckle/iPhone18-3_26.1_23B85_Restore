@@ -1,6 +1,6 @@
 @interface ADFanInfoManager
 - (void)dealloc;
-- (void)getCurrentFanInfo:(id)a3;
+- (void)getCurrentFanInfo:(id)info;
 @end
 
 @implementation ADFanInfoManager
@@ -12,11 +12,11 @@
   [(ADFanInfoManager *)&v2 dealloc];
 }
 
-- (void)getCurrentFanInfo:(id)a3
+- (void)getCurrentFanInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(info + 2))(info, 0);
   }
 }
 

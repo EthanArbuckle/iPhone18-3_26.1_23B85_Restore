@@ -1,9 +1,9 @@
 @interface AXRedirectedEventDetector
 - (AXRedirectedEventDetector)init;
-- (BOOL)isRedirectedEvent:(id)a3;
-- (double)_elapsedTimeFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (BOOL)isRedirectedEvent:(id)event;
+- (double)_elapsedTimeFrom:(unint64_t)from to:(unint64_t)to;
 - (void)_flushEventsIfNecessary;
-- (void)addEvent:(id)a3;
+- (void)addEvent:(id)event;
 @end
 
 @implementation AXRedirectedEventDetector
@@ -37,18 +37,18 @@
 {
   if (AXNeedsEventFlush == 1)
   {
-    v2 = [(AXRedirectedEventDetector *)self recentEvents];
-    [v2 removeAllObjects];
+    recentEvents = [(AXRedirectedEventDetector *)self recentEvents];
+    [recentEvents removeAllObjects];
 
     AXNeedsEventFlush = 0;
   }
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -56,7 +56,7 @@
     v7[2] = __38__AXRedirectedEventDetector_addEvent___block_invoke;
     v7[3] = &unk_1E71EA128;
     v7[4] = self;
-    v8 = v4;
+    v8 = eventCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -88,11 +88,11 @@ void __38__AXRedirectedEventDetector_addEvent___block_invoke_2(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (BOOL)isRedirectedEvent:(id)a3
+- (BOOL)isRedirectedEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -104,7 +104,7 @@ void __38__AXRedirectedEventDetector_addEvent___block_invoke_2(uint64_t a1)
     block[2] = __47__AXRedirectedEventDetector_isRedirectedEvent___block_invoke;
     block[3] = &unk_1E71EA7A0;
     block[4] = self;
-    v10 = v4;
+    v10 = eventCopy;
     v11 = &v12;
     dispatch_sync(queue, block);
     v7 = *(v13 + 24);
@@ -175,7 +175,7 @@ void __47__AXRedirectedEventDetector_isRedirectedEvent___block_invoke(uint64_t a
 LABEL_13:
 }
 
-- (double)_elapsedTimeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (double)_elapsedTimeFrom:(unint64_t)from to:(unint64_t)to
 {
   v6 = dword_1EA9B8AB0;
   if (!dword_1EA9B8AB0)
@@ -184,7 +184,7 @@ LABEL_13:
     v6 = dword_1EA9B8AB0;
   }
 
-  return ((a4 - a3) * _elapsedTimeFrom_to___TimebaseInfo / v6) / 1000000000.0;
+  return ((to - from) * _elapsedTimeFrom_to___TimebaseInfo / v6) / 1000000000.0;
 }
 
 @end

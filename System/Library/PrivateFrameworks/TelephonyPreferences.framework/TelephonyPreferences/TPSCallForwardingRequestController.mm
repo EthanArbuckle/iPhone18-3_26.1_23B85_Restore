@@ -1,21 +1,21 @@
 @interface TPSCallForwardingRequestController
-- (id)valueForNotificationData:(id)a3;
-- (void)executeFetchForRequest:(id)a3;
-- (void)executeRequest:(id)a3;
-- (void)executeSetForRequest:(id)a3;
-- (void)respondWithSubscriptionContext:(id)a3 value:(id)a4 error:(id)a5;
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6;
+- (id)valueForNotificationData:(id)data;
+- (void)executeFetchForRequest:(id)request;
+- (void)executeRequest:(id)request;
+- (void)executeSetForRequest:(id)request;
+- (void)respondWithSubscriptionContext:(id)context value:(id)value error:(id)error;
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data;
 @end
 
 @implementation TPSCallForwardingRequestController
 
-- (void)executeRequest:(id)a3
+- (void)executeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(TPSCallForwardingRequestController *)self executeSetForRequest:v4];
+    [(TPSCallForwardingRequestController *)self executeSetForRequest:requestCopy];
   }
 
   else
@@ -23,26 +23,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(TPSCallForwardingRequestController *)self executeFetchForRequest:v4];
+      [(TPSCallForwardingRequestController *)self executeFetchForRequest:requestCopy];
     }
   }
 }
 
-- (void)executeFetchForRequest:(id)a3
+- (void)executeFetchForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TPSRequestController *)self telephonyClient];
-  v6 = [v4 subscriptionContext];
-  v7 = [v4 reason];
-  v8 = [v4 callClass];
+  requestCopy = request;
+  telephonyClient = [(TPSRequestController *)self telephonyClient];
+  subscriptionContext = [requestCopy subscriptionContext];
+  reason = [requestCopy reason];
+  callClass = [requestCopy callClass];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__TPSCallForwardingRequestController_executeFetchForRequest___block_invoke;
   v10[3] = &unk_2782E3BD8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v5 fetchCallForwardingValue:v6 reason:v7 callClass:v8 completion:v10];
+  v11 = requestCopy;
+  v9 = requestCopy;
+  [telephonyClient fetchCallForwardingValue:subscriptionContext reason:reason callClass:callClass completion:v10];
 }
 
 void __61__TPSCallForwardingRequestController_executeFetchForRequest___block_invoke(uint64_t a1, void *a2)
@@ -57,20 +57,20 @@ void __61__TPSCallForwardingRequestController_executeFetchForRequest___block_inv
   }
 }
 
-- (void)executeSetForRequest:(id)a3
+- (void)executeSetForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TPSRequestController *)self telephonyClient];
-  v6 = [v4 subscriptionContext];
-  v7 = [v4 value];
+  requestCopy = request;
+  telephonyClient = [(TPSRequestController *)self telephonyClient];
+  subscriptionContext = [requestCopy subscriptionContext];
+  value = [requestCopy value];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__TPSCallForwardingRequestController_executeSetForRequest___block_invoke;
   v9[3] = &unk_2782E3BD8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 saveCallForwardingValue:v6 value:v7 completion:v9];
+  v10 = requestCopy;
+  v8 = requestCopy;
+  [telephonyClient saveCallForwardingValue:subscriptionContext value:value completion:v9];
 }
 
 void __59__TPSCallForwardingRequestController_executeSetForRequest___block_invoke(uint64_t a1, void *a2)
@@ -85,22 +85,22 @@ void __59__TPSCallForwardingRequestController_executeSetForRequest___block_invok
   }
 }
 
-- (void)respondWithSubscriptionContext:(id)a3 value:(id)a4 error:(id)a5
+- (void)respondWithSubscriptionContext:(id)context value:(id)value error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[TPSCallForwardingResponse alloc] initWithSubscriptionContext:v10 error:v8 value:v9];
+  errorCopy = error;
+  valueCopy = value;
+  contextCopy = context;
+  v11 = [[TPSCallForwardingResponse alloc] initWithSubscriptionContext:contextCopy error:errorCopy value:valueCopy];
 
   [(TPSRequestController *)self postResponse:v11];
 }
 
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (a5 == 1)
+  eventCopy = event;
+  dataCopy = data;
+  if (type == 1)
   {
     v12 = TPSLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -112,20 +112,20 @@ void __59__TPSCallForwardingRequestController_executeSetForRequest___block_invok
       v27 = 2112;
       v28 = v14;
       v29 = 2112;
-      v30 = v11;
+      v30 = dataCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = eventCopy;
       _os_log_impl(&dword_21B8E9000, v12, OS_LOG_TYPE_DEFAULT, "Received event %@, settings type %@, data %@ for context %@.", &v25, 0x2Au);
     }
 
-    v15 = [(TPSRequestController *)self pendingRequest];
+    pendingRequest = [(TPSRequestController *)self pendingRequest];
     if (a4 > 2)
     {
       if (a4 != 3)
       {
         if (a4 == 4)
         {
-          v16 = [TPSResponseError errorWithCode:4 userInfo:0];
+          value = [TPSResponseError errorWithCode:4 userInfo:0];
           v17 = TPSLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -136,10 +136,10 @@ void __59__TPSCallForwardingRequestController_executeSetForRequest___block_invok
         }
 
 LABEL_14:
-        v16 = TPSLog();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        value = TPSLog();
+        if (os_log_type_enabled(value, OS_LOG_TYPE_ERROR))
         {
-          [TPSCallForwardingRequestController suppServicesEvent:a4 event:v16 settingsType:? data:?];
+          [TPSCallForwardingRequestController suppServicesEvent:a4 event:value settingsType:? data:?];
         }
 
         goto LABEL_27;
@@ -149,11 +149,11 @@ LABEL_14:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138412290;
-        v26 = v15;
+        v26 = pendingRequest;
         _os_log_impl(&dword_21B8E9000, v22, OS_LOG_TYPE_DEFAULT, "Call forwarding save request succeeded for %@.", &v25, 0xCu);
       }
 
-      v16 = [v15 value];
+      value = [pendingRequest value];
     }
 
     else
@@ -162,7 +162,7 @@ LABEL_14:
       {
         if (a4 == 2)
         {
-          v16 = [TPSResponseError errorWithCode:2 userInfo:0];
+          value = [TPSResponseError errorWithCode:2 userInfo:0];
           v17 = TPSLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -171,12 +171,12 @@ LABEL_14:
 
 LABEL_13:
 
-          v18 = self;
-          v19 = v10;
+          selfCopy2 = self;
+          v19 = eventCopy;
           v20 = 0;
-          v21 = v16;
+          v21 = value;
 LABEL_26:
-          [(TPSCallForwardingRequestController *)v18 respondWithSubscriptionContext:v19 value:v20 error:v21];
+          [(TPSCallForwardingRequestController *)selfCopy2 respondWithSubscriptionContext:v19 value:v20 error:v21];
 LABEL_27:
 
           goto LABEL_28;
@@ -185,30 +185,30 @@ LABEL_27:
         goto LABEL_14;
       }
 
-      if (v11)
+      if (dataCopy)
       {
-        v16 = [(TPSCallForwardingRequestController *)self valueForNotificationData:v11];
+        value = [(TPSCallForwardingRequestController *)self valueForNotificationData:dataCopy];
       }
 
       else
       {
-        v16 = 0;
+        value = 0;
       }
 
       v23 = TPSLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138412546;
-        v26 = v15;
+        v26 = pendingRequest;
         v27 = 2112;
-        v28 = v16;
+        v28 = value;
         _os_log_impl(&dword_21B8E9000, v23, OS_LOG_TYPE_DEFAULT, "Call forwarding fetch request succeeded for %@; value is %@.", &v25, 0x16u);
       }
     }
 
-    v18 = self;
-    v19 = v10;
-    v20 = v16;
+    selfCopy2 = self;
+    v19 = eventCopy;
+    v20 = value;
     v21 = 0;
     goto LABEL_26;
   }
@@ -218,26 +218,26 @@ LABEL_28:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForNotificationData:(id)a3
+- (id)valueForNotificationData:(id)data
 {
   v3 = MEMORY[0x277CC3628];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 callClass];
-  [v5 setClss:{objc_msgSend(v6, "unsignedIntValue")}];
+  callClass = [dataCopy callClass];
+  [v5 setClss:{objc_msgSend(callClass, "unsignedIntValue")}];
 
-  v7 = [v4 enabled];
-  [v5 setEnabled:{objc_msgSend(v7, "BOOLValue")}];
+  enabled = [dataCopy enabled];
+  [v5 setEnabled:{objc_msgSend(enabled, "BOOLValue")}];
 
-  v8 = [v4 callForwardingNoReplyTime];
-  [v5 setNoReplyTime:v8];
+  callForwardingNoReplyTime = [dataCopy callForwardingNoReplyTime];
+  [v5 setNoReplyTime:callForwardingNoReplyTime];
 
-  v9 = [v4 callForwardingReason];
-  [v5 setReason:{objc_msgSend(v9, "unsignedIntValue")}];
+  callForwardingReason = [dataCopy callForwardingReason];
+  [v5 setReason:{objc_msgSend(callForwardingReason, "unsignedIntValue")}];
 
-  v10 = [v4 callForwardingNumber];
+  callForwardingNumber = [dataCopy callForwardingNumber];
 
-  [v5 setSaveNumber:v10];
+  [v5 setSaveNumber:callForwardingNumber];
 
   return v5;
 }

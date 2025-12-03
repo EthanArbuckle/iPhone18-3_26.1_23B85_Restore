@@ -1,6 +1,6 @@
 @interface WFTrelloAccessResource
 + (id)userInterfaceClasses;
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFTrelloAccessResource
@@ -19,17 +19,17 @@
   return v3;
 }
 
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__WFTrelloAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke;
   v8[3] = &unk_278C20360;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 authorizeWithCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [interface authorizeWithCompletionHandler:v8];
 }
 
 void __77__WFTrelloAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)

@@ -1,23 +1,23 @@
 @interface VUIViewElementDataSource
 - (IKViewElement)viewElement;
 - (VUIRouterDataSource)routerDataSource;
-- (VUIViewElementDataSource)initWithDataDictionary:(id)a3 viewElement:(id)a4;
+- (VUIViewElementDataSource)initWithDataDictionary:(id)dictionary viewElement:(id)element;
 @end
 
 @implementation VUIViewElementDataSource
 
-- (VUIViewElementDataSource)initWithDataDictionary:(id)a3 viewElement:(id)a4
+- (VUIViewElementDataSource)initWithDataDictionary:(id)dictionary viewElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = VUIViewElementDataSource;
   v9 = [(VUIViewElementDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataDictionary, a3);
-    objc_storeWeak(&v10->_viewElement, v8);
+    objc_storeStrong(&v9->_dataDictionary, dictionary);
+    objc_storeWeak(&v10->_viewElement, elementCopy);
   }
 
   return v10;

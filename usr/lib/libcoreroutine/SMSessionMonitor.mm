@@ -1,103 +1,103 @@
 @interface SMSessionMonitor
-+ (id)riskStateToString:(unint64_t)a3;
++ (id)riskStateToString:(unint64_t)string;
 - (SMSessionManagerMonitorProtocol)sessionManagerDelegate;
-- (SMSessionMonitor)initWithDefaultsManager:(id)a3 dataProtectionManager:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 wristStateManager:(id)a11 noMovementMonitor:(id)a12;
-- (SMSessionMonitor)initWithDefaultsManager:(id)a3 dataProtectionManager:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 wristStateManager:(id)a11 timerManager:(id)a12 noMovementMonitor:(id)a13;
-- (id)_createTriggersWithConfiguration:(id)a3;
+- (SMSessionMonitor)initWithDefaultsManager:(id)manager dataProtectionManager:(id)protectionManager healthKitManager:(id)kitManager locationManager:(id)locationManager motionActivityManager:(id)activityManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 wristStateManager:(id)self1 noMovementMonitor:(id)self2;
+- (SMSessionMonitor)initWithDefaultsManager:(id)manager dataProtectionManager:(id)protectionManager healthKitManager:(id)kitManager locationManager:(id)locationManager motionActivityManager:(id)activityManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 wristStateManager:(id)self1 timerManager:(id)self2 noMovementMonitor:(id)self3;
+- (id)_createTriggersWithConfiguration:(id)configuration;
 - (void)_addObservers;
 - (void)_bootstrap;
-- (void)_handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5;
-- (void)_initializeSessionWithConfiguration:(id)a3;
+- (void)_handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier;
+- (void)_initializeSessionWithConfiguration:(id)configuration;
 - (void)_initializeTriggersForRemoteSessionIfNecessary;
-- (void)_onBecomingActiveDevice:(id)a3;
-- (void)_onBecomingNonActiveDevice:(id)a3;
+- (void)_onBecomingActiveDevice:(id)device;
+- (void)_onBecomingNonActiveDevice:(id)device;
 - (void)_onRegionExit;
 - (void)_onRegionInsidePendingTimerExpiry;
 - (void)_persistState;
 - (void)_processSessionEnd;
-- (void)_processSessionResumeWithState:(id)a3;
-- (void)_processTriggerEstimatedEndDateUpdateNotification:(id)a3;
-- (void)_processTriggerNotification:(id)a3;
-- (void)_processUserTriggerResponse:(int64_t)a3;
-- (void)_promptDestinationAnomalyVerificationWithContext:(id)a3;
-- (void)_promptDirectTriggerWithContext:(id)a3;
-- (void)_promptEstimatedEndDateUpdateWithContext:(id)a3;
-- (void)_promptRoundTripAnomalyVerificationWithContext:(id)a3;
-- (void)_promptSafeArrivalWithContext:(id)a3;
-- (void)_promptTimerEndedVerificationWithContext:(id)a3;
-- (void)_promptWorkoutAnomalyVerificationWithContext:(id)a3;
-- (void)_registerForCircularRegionEventsForIdentifier:(id)a3;
-- (void)_registerForTriggersWithConfiguration:(id)a3;
+- (void)_processSessionResumeWithState:(id)state;
+- (void)_processTriggerEstimatedEndDateUpdateNotification:(id)notification;
+- (void)_processTriggerNotification:(id)notification;
+- (void)_processUserTriggerResponse:(int64_t)response;
+- (void)_promptDestinationAnomalyVerificationWithContext:(id)context;
+- (void)_promptDirectTriggerWithContext:(id)context;
+- (void)_promptEstimatedEndDateUpdateWithContext:(id)context;
+- (void)_promptRoundTripAnomalyVerificationWithContext:(id)context;
+- (void)_promptSafeArrivalWithContext:(id)context;
+- (void)_promptTimerEndedVerificationWithContext:(id)context;
+- (void)_promptWorkoutAnomalyVerificationWithContext:(id)context;
+- (void)_registerForCircularRegionEventsForIdentifier:(id)identifier;
+- (void)_registerForTriggersWithConfiguration:(id)configuration;
 - (void)_removeObservers;
 - (void)_reset;
 - (void)_setup;
-- (void)_setupGeofenceWithLocation:(id)a3 regionIdentifier:(id)a4 radius:(double)a5 destinationType:(unint64_t)a6;
-- (void)_unregisterForCircularRegionEventsForIdentifier:(id)a3;
+- (void)_setupGeofenceWithLocation:(id)location regionIdentifier:(id)identifier radius:(double)radius destinationType:(unint64_t)type;
+- (void)_unregisterForCircularRegionEventsForIdentifier:(id)identifier;
 - (void)_unregisterForTriggers;
-- (void)_updateDestinationBoundRegionStateWithCircularRegionCallback:(int64_t)a3;
-- (void)_updateGeofenceWithConfiguration:(id)a3;
-- (void)_updateRegionStateWithCircularRegionCallback:(int64_t)a3;
-- (void)_updateRoundTripRegionStateWithCircularRegionCallback:(int64_t)a3;
-- (void)_updateTriggersWithConfiguration:(id)a3;
-- (void)_updateTriggersWithUserResponse:(int64_t)a3;
-- (void)_updateUserWithTriggerContext:(id)a3;
-- (void)handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5;
-- (void)onBecomingActiveDevice:(id)a3;
-- (void)onBecomingNonActiveDevice:(id)a3;
-- (void)onLocationNotification:(id)a3;
-- (void)onRemoteEmergencyContactsNotified:(unint64_t)a3;
-- (void)onSessionChangedWithConfiguration:(id)a3;
-- (void)onSessionEndedForActiveDevice:(BOOL)a3;
-- (void)onSessionResumedWithState:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)onSessionStartedWithConfiguration:(id)a3;
-- (void)onTriggerNotification:(id)a3;
-- (void)onUserTriggerResponse:(int64_t)a3;
+- (void)_updateDestinationBoundRegionStateWithCircularRegionCallback:(int64_t)callback;
+- (void)_updateGeofenceWithConfiguration:(id)configuration;
+- (void)_updateRegionStateWithCircularRegionCallback:(int64_t)callback;
+- (void)_updateRoundTripRegionStateWithCircularRegionCallback:(int64_t)callback;
+- (void)_updateTriggersWithConfiguration:(id)configuration;
+- (void)_updateTriggersWithUserResponse:(int64_t)response;
+- (void)_updateUserWithTriggerContext:(id)context;
+- (void)handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier;
+- (void)onBecomingActiveDevice:(id)device;
+- (void)onBecomingNonActiveDevice:(id)device;
+- (void)onLocationNotification:(id)notification;
+- (void)onRemoteEmergencyContactsNotified:(unint64_t)notified;
+- (void)onSessionChangedWithConfiguration:(id)configuration;
+- (void)onSessionEndedForActiveDevice:(BOOL)device;
+- (void)onSessionResumedWithState:(id)state forActiveDevice:(BOOL)device;
+- (void)onSessionStartedWithConfiguration:(id)configuration;
+- (void)onTriggerNotification:(id)notification;
+- (void)onUserTriggerResponse:(int64_t)response;
 - (void)onWorkoutPause;
 - (void)onWorkoutResume;
-- (void)setRiskState:(unint64_t)a3;
-- (void)setSessionManagerDelegate:(id)a3;
+- (void)setRiskState:(unint64_t)state;
+- (void)setSessionManagerDelegate:(id)delegate;
 @end
 
 @implementation SMSessionMonitor
 
-- (SMSessionMonitor)initWithDefaultsManager:(id)a3 dataProtectionManager:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 wristStateManager:(id)a11 noMovementMonitor:(id)a12
+- (SMSessionMonitor)initWithDefaultsManager:(id)manager dataProtectionManager:(id)protectionManager healthKitManager:(id)kitManager locationManager:(id)locationManager motionActivityManager:(id)activityManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 wristStateManager:(id)self1 noMovementMonitor:(id)self2
 {
-  v28 = a12;
-  v27 = a11;
-  v26 = a10;
-  v17 = a9;
-  v25 = a8;
-  v18 = a7;
-  v19 = a6;
-  v24 = a5;
-  v20 = a4;
-  v21 = a3;
+  monitorCopy = monitor;
+  stateManagerCopy = stateManager;
+  storeCopy = store;
+  metricManagerCopy = metricManager;
+  platformCopy = platform;
+  activityManagerCopy = activityManager;
+  locationManagerCopy = locationManager;
+  kitManagerCopy = kitManager;
+  protectionManagerCopy = protectionManager;
+  managerCopy = manager;
   v22 = objc_opt_new();
-  v31 = [(SMSessionMonitor *)self initWithDefaultsManager:v21 dataProtectionManager:v20 healthKitManager:v24 locationManager:v19 motionActivityManager:v18 platform:v25 sessionMetricManager:v17 sessionStore:v26 wristStateManager:v27 timerManager:v22 noMovementMonitor:v28];
+  v31 = [(SMSessionMonitor *)self initWithDefaultsManager:managerCopy dataProtectionManager:protectionManagerCopy healthKitManager:kitManagerCopy locationManager:locationManagerCopy motionActivityManager:activityManagerCopy platform:platformCopy sessionMetricManager:metricManagerCopy sessionStore:storeCopy wristStateManager:stateManagerCopy timerManager:v22 noMovementMonitor:monitorCopy];
 
   return v31;
 }
 
-- (SMSessionMonitor)initWithDefaultsManager:(id)a3 dataProtectionManager:(id)a4 healthKitManager:(id)a5 locationManager:(id)a6 motionActivityManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 wristStateManager:(id)a11 timerManager:(id)a12 noMovementMonitor:(id)a13
+- (SMSessionMonitor)initWithDefaultsManager:(id)manager dataProtectionManager:(id)protectionManager healthKitManager:(id)kitManager locationManager:(id)locationManager motionActivityManager:(id)activityManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 wristStateManager:(id)self1 timerManager:(id)self2 noMovementMonitor:(id)self3
 {
-  v18 = a3;
-  v47 = a4;
-  v19 = a4;
-  v48 = a5;
-  v51 = a5;
-  v49 = a6;
-  v20 = a6;
-  v50 = a7;
-  v21 = a7;
-  v56 = a8;
-  v58 = a9;
-  v59 = a10;
-  v54 = a11;
-  v57 = a12;
-  v22 = a13;
-  v55 = v18;
-  v53 = v22;
-  if (!v18)
+  managerCopy = manager;
+  protectionManagerCopy = protectionManager;
+  protectionManagerCopy2 = protectionManager;
+  kitManagerCopy = kitManager;
+  kitManagerCopy2 = kitManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  activityManagerCopy = activityManager;
+  activityManagerCopy2 = activityManager;
+  platformCopy = platform;
+  metricManagerCopy = metricManager;
+  storeCopy = store;
+  stateManagerCopy = stateManager;
+  timerManagerCopy = timerManager;
+  monitorCopy = monitor;
+  v55 = managerCopy;
+  v53 = monitorCopy;
+  if (!managerCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -107,18 +107,18 @@
     }
 
     v36 = 0;
-    v23 = v19;
-    v24 = v51;
-    v25 = v21;
+    v23 = protectionManagerCopy2;
+    v24 = kitManagerCopy2;
+    v25 = activityManagerCopy2;
     goto LABEL_20;
   }
 
-  v23 = v19;
-  if (!v19)
+  v23 = protectionManagerCopy2;
+  if (!protectionManagerCopy2)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v24 = v51;
-    v25 = v21;
+    v24 = kitManagerCopy2;
+    v25 = activityManagerCopy2;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -127,18 +127,18 @@
 
     v36 = 0;
 LABEL_20:
-    v26 = v56;
+    v26 = platformCopy;
 LABEL_39:
-    v40 = self;
+    selfCopy = self;
     goto LABEL_40;
   }
 
-  v24 = v51;
-  v25 = v21;
-  if (!v51)
+  v24 = kitManagerCopy2;
+  v25 = activityManagerCopy2;
+  if (!kitManagerCopy2)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v26 = v56;
+    v26 = platformCopy;
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_38;
@@ -151,8 +151,8 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v26 = v56;
-  if (!v20)
+  v26 = platformCopy;
+  if (!locationManagerCopy2)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -178,7 +178,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v56)
+  if (!platformCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -191,7 +191,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v59)
+  if (!storeCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -204,7 +204,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v58)
+  if (!metricManagerCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -217,7 +217,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v57)
+  if (!timerManagerCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -230,7 +230,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v22)
+  if (!monitorCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -252,55 +252,55 @@ LABEL_38:
   if (v27)
   {
     v28 = v27;
-    objc_storeStrong(&v27->_defaultsManager, a3);
-    objc_storeStrong(&v28->_dataProtectionManager, v47);
+    objc_storeStrong(&v27->_defaultsManager, manager);
+    objc_storeStrong(&v28->_dataProtectionManager, protectionManagerCopy);
     v29 = objc_opt_new();
     distanceCalculator = v28->_distanceCalculator;
     v28->_distanceCalculator = v29;
 
-    objc_storeStrong(&v28->_healthKitManager, v48);
-    objc_storeStrong(&v28->_locationManager, v49);
-    objc_storeStrong(&v28->_motionActivityManager, v50);
-    objc_storeStrong(&v28->_platform, a8);
-    objc_storeStrong(&v28->_sessionMetricManager, a9);
-    objc_storeStrong(&v28->_sessionStore, a10);
-    objc_storeStrong(&v28->_wristStateManager, a11);
-    objc_storeStrong(&v28->_timerManager, a12);
-    objc_storeStrong(&v28->_noMovementMonitor, a13);
+    objc_storeStrong(&v28->_healthKitManager, kitManagerCopy);
+    objc_storeStrong(&v28->_locationManager, locationManagerCopy);
+    objc_storeStrong(&v28->_motionActivityManager, activityManagerCopy);
+    objc_storeStrong(&v28->_platform, platform);
+    objc_storeStrong(&v28->_sessionMetricManager, metricManager);
+    objc_storeStrong(&v28->_sessionStore, store);
+    objc_storeStrong(&v28->_wristStateManager, stateManager);
+    objc_storeStrong(&v28->_timerManager, timerManager);
+    objc_storeStrong(&v28->_noMovementMonitor, monitor);
     v31 = v28;
     v32 = v28;
     v33 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [(SMSessionMonitor *)v32 UTF8String];
+      uTF8String = [(SMSessionMonitor *)v32 UTF8String];
     }
 
     else
     {
       v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v32];
-      v34 = [v42 UTF8String];
+      uTF8String = [v42 UTF8String];
     }
 
-    v43 = dispatch_queue_create(v34, v33);
+    v43 = dispatch_queue_create(uTF8String, v33);
 
     queue = v32->_queue;
     v32->_queue = v43;
 
-    v45 = [(SMSessionMonitor *)v32 queue];
+    queue = [(SMSessionMonitor *)v32 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __213__SMSessionMonitor_initWithDefaultsManager_dataProtectionManager_healthKitManager_locationManager_motionActivityManager_platform_sessionMetricManager_sessionStore_wristStateManager_timerManager_noMovementMonitor___block_invoke;
     block[3] = &unk_2788C4EA0;
     v61 = v32;
-    dispatch_async(v45, block);
+    dispatch_async(queue, block);
 
-    v26 = v56;
+    v26 = platformCopy;
     v27 = v31;
   }
 
-  v40 = v27;
-  v36 = v40;
+  selfCopy = v27;
+  v36 = selfCopy;
 LABEL_40:
 
   return v36;
@@ -365,9 +365,9 @@ LABEL_8:
   v46 = __Block_byref_object_dispose__29;
   v47 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(SMSessionMonitor *)self sessionStore];
-  v5 = [(SMSessionMonitor *)self configuration];
-  v6 = [v5 sessionID];
+  sessionStore = [(SMSessionMonitor *)self sessionStore];
+  configuration = [(SMSessionMonitor *)self configuration];
+  sessionID = [configuration sessionID];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __30__SMSessionMonitor__bootstrap__block_invoke;
@@ -376,7 +376,7 @@ LABEL_8:
   v41 = &v42;
   v7 = v3;
   v39 = v7;
-  [v4 fetchMostRecentSessionMonitorStateWithSessionID:v6 handler:v38];
+  [sessionStore fetchMostRecentSessionMonitorStateWithSessionID:sessionID handler:v38];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -388,11 +388,11 @@ LABEL_8:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_398];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -474,10 +474,10 @@ LABEL_24:
     else
     {
       v32 = objc_alloc(MEMORY[0x277D4ABD0]);
-      v33 = [(SMSessionMonitor *)self configuration];
-      v34 = [v33 sessionID];
-      v35 = [MEMORY[0x277CBEAA8] date];
-      v36 = [v32 initWithSessionIdentifier:v34 currentRegionState:0 triggerPending:0 triggerConfirmed:0 date:v35];
+      configuration2 = [(SMSessionMonitor *)self configuration];
+      sessionID2 = [configuration2 sessionID];
+      date = [MEMORY[0x277CBEAA8] date];
+      v36 = [v32 initWithSessionIdentifier:sessionID2 currentRegionState:0 triggerPending:0 triggerConfirmed:0 date:date];
       [(SMSessionMonitor *)self setSessionMonitorState:v36];
 
       [(SMSessionMonitor *)self _persistState];
@@ -488,11 +488,11 @@ LABEL_24:
       v28 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        v37 = [(SMSessionMonitor *)self sessionMonitorState];
+        sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
         *buf = 136315394;
         *&buf[4] = "[SMSessionMonitor _bootstrap]";
         v55 = 2112;
-        v56 = v37;
+        v56 = sessionMonitorState;
         _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "%s     , %@", buf, 0x16u);
       }
 
@@ -535,30 +535,30 @@ void __30__SMSessionMonitor__bootstrap__block_invoke(uint64_t a1, void *a2, void
     }
   }
 
-  v4 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v4 setTriggerPending:0];
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setTriggerPending:0];
 
-  v5 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v5 setTriggerConfirmed:0];
+  sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState2 setTriggerConfirmed:0];
 
   [(SMSessionMonitor *)self setConfiguration:0];
-  v6 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v6 setCurrentRegionState:0];
+  sessionMonitorState3 = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState3 setCurrentRegionState:0];
 
   [(SMSessionMonitor *)self setRiskState:0];
-  v7 = [(SMSessionMonitor *)self regionInsidePendingTimer];
-  [v7 invalidate];
+  regionInsidePendingTimer = [(SMSessionMonitor *)self regionInsidePendingTimer];
+  [regionInsidePendingTimer invalidate];
 
   [(SMSessionMonitor *)self setRegionInsidePendingTimer:0];
   [(SMSessionMonitor *)self _persistState];
 }
 
-- (void)setSessionManagerDelegate:(id)a3
+- (void)setSessionManagerDelegate:(id)delegate
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_284619CA8] && (objc_msgSend(v4, "conformsToProtocol:", &unk_284619EB0) & 1) != 0)
+  delegateCopy = delegate;
+  if ([delegateCopy conformsToProtocol:&unk_284619CA8] && (objc_msgSend(delegateCopy, "conformsToProtocol:", &unk_284619EB0) & 1) != 0)
   {
-    objc_storeWeak(&self->_sessionManagerDelegate, v4);
+    objc_storeWeak(&self->_sessionManagerDelegate, delegateCopy);
   }
 
   else
@@ -572,14 +572,14 @@ void __30__SMSessionMonitor__bootstrap__block_invoke(uint64_t a1, void *a2, void
   }
 }
 
-- (void)setRiskState:(unint64_t)a3
+- (void)setRiskState:(unint64_t)state
 {
   v33 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D4ABC8];
-  v6 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-  v7 = [v5 isSOSTriggerCategory:{objc_msgSend(v6, "triggerCategory")}];
+  mostRecentTriggerContext = [(SMSessionMonitor *)self mostRecentTriggerContext];
+  v7 = [v5 isSOSTriggerCategory:{objc_msgSend(mostRecentTriggerContext, "triggerCategory")}];
 
-  if (self->_riskState != a3 || (v7 & 1) != 0)
+  if (self->_riskState != state || (v7 & 1) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -587,7 +587,7 @@ void __30__SMSessionMonitor__bootstrap__block_invoke(uint64_t a1, void *a2, void
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = [SMSessionMonitor riskStateToString:self->_riskState];
-        v12 = [SMSessionMonitor riskStateToString:a3];
+        v12 = [SMSessionMonitor riskStateToString:state];
         v27 = 136315650;
         v28 = "[SMSessionMonitor setRiskState:]";
         v29 = 2112;
@@ -598,88 +598,88 @@ void __30__SMSessionMonitor__bootstrap__block_invoke(uint64_t a1, void *a2, void
       }
     }
 
-    switch(a3)
+    switch(state)
     {
       case 4uLL:
-        v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-        [(SMSessionMonitor *)self _promptSafeArrivalWithContext:v15];
+        mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+        [(SMSessionMonitor *)self _promptSafeArrivalWithContext:mostRecentTriggerContext2];
         break;
       case 3uLL:
-        v16 = [(SMSessionMonitor *)self sessionMonitorState];
-        v17 = v7 | ~[v16 triggerConfirmed];
+        sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+        v17 = v7 | ~[sessionMonitorState triggerConfirmed];
 
-        v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+        mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
         if ((v17 & 1) == 0)
         {
 LABEL_22:
-          [(SMSessionMonitor *)self _updateUserWithTriggerContext:v15];
+          [(SMSessionMonitor *)self _updateUserWithTriggerContext:mostRecentTriggerContext2];
           break;
         }
 
-        [(SMSessionMonitor *)self _promptDirectTriggerWithContext:v15];
+        [(SMSessionMonitor *)self _promptDirectTriggerWithContext:mostRecentTriggerContext2];
         break;
       case 2uLL:
         if (self->_riskState == 3)
         {
 LABEL_8:
-          v9 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-          [(SMSessionMonitor *)self _updateUserWithTriggerContext:v9];
+          mostRecentTriggerContext3 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+          [(SMSessionMonitor *)self _updateUserWithTriggerContext:mostRecentTriggerContext3];
 
           return;
         }
 
-        v13 = [(SMSessionMonitor *)self sessionMonitorState];
-        v14 = [v13 triggerPending];
+        sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+        triggerPending = [sessionMonitorState2 triggerPending];
 
-        if (!v14)
+        if (!triggerPending)
         {
           v18 = MEMORY[0x277D4ABC8];
-          v19 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-          LODWORD(v18) = [v18 isRoundTripTriggerCategory:{objc_msgSend(v19, "triggerCategory")}];
+          mostRecentTriggerContext4 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+          LODWORD(v18) = [v18 isRoundTripTriggerCategory:{objc_msgSend(mostRecentTriggerContext4, "triggerCategory")}];
 
           if (v18)
           {
-            v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-            [(SMSessionMonitor *)self _promptRoundTripAnomalyVerificationWithContext:v15];
+            mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+            [(SMSessionMonitor *)self _promptRoundTripAnomalyVerificationWithContext:mostRecentTriggerContext2];
           }
 
           else
           {
             v20 = MEMORY[0x277D4ABC8];
-            v21 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-            LODWORD(v20) = [v20 isDestinationTriggerCategory:{objc_msgSend(v21, "triggerCategory")}];
+            mostRecentTriggerContext5 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+            LODWORD(v20) = [v20 isDestinationTriggerCategory:{objc_msgSend(mostRecentTriggerContext5, "triggerCategory")}];
 
             if (v20)
             {
-              v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-              [(SMSessionMonitor *)self _promptDestinationAnomalyVerificationWithContext:v15];
+              mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+              [(SMSessionMonitor *)self _promptDestinationAnomalyVerificationWithContext:mostRecentTriggerContext2];
             }
 
             else
             {
               v23 = MEMORY[0x277D4ABC8];
-              v24 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-              LODWORD(v23) = [v23 isDurationTriggerCategory:{objc_msgSend(v24, "triggerCategory")}];
+              mostRecentTriggerContext6 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+              LODWORD(v23) = [v23 isDurationTriggerCategory:{objc_msgSend(mostRecentTriggerContext6, "triggerCategory")}];
 
               if (v23)
               {
-                v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-                [(SMSessionMonitor *)self _promptTimerEndedVerificationWithContext:v15];
+                mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+                [(SMSessionMonitor *)self _promptTimerEndedVerificationWithContext:mostRecentTriggerContext2];
               }
 
               else
               {
                 v25 = MEMORY[0x277D4ABC8];
-                v26 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-                LODWORD(v25) = [v25 isWorkoutTriggerCategory:{objc_msgSend(v26, "triggerCategory")}];
+                mostRecentTriggerContext7 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+                LODWORD(v25) = [v25 isWorkoutTriggerCategory:{objc_msgSend(mostRecentTriggerContext7, "triggerCategory")}];
 
                 if (!v25)
                 {
                   goto LABEL_24;
                 }
 
-                v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-                [(SMSessionMonitor *)self _promptWorkoutAnomalyVerificationWithContext:v15];
+                mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+                [(SMSessionMonitor *)self _promptWorkoutAnomalyVerificationWithContext:mostRecentTriggerContext2];
               }
             }
           }
@@ -687,11 +687,11 @@ LABEL_8:
           break;
         }
 
-        v15 = [(SMSessionMonitor *)self mostRecentTriggerContext];
+        mostRecentTriggerContext2 = [(SMSessionMonitor *)self mostRecentTriggerContext];
         goto LABEL_22;
       default:
 LABEL_24:
-        self->_riskState = a3;
+        self->_riskState = state;
         return;
     }
 
@@ -712,34 +712,34 @@ LABEL_24:
     }
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     goto LABEL_8;
   }
 }
 
-+ (id)riskStateToString:(unint64_t)a3
++ (id)riskStateToString:(unint64_t)string
 {
-  if (a3 - 1 > 3)
+  if (string - 1 > 3)
   {
     return @"SMSessionMonitorRiskStateUnknown";
   }
 
   else
   {
-    return off_2788C7658[a3 - 1];
+    return off_2788C7658[string - 1];
   }
 }
 
-- (id)_createTriggersWithConfiguration:(id)a3
+- (id)_createTriggersWithConfiguration:(id)configuration
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_new();
   v6 = [SMTriggerSOS alloc];
-  v7 = [(SMSessionMonitor *)self queue];
-  v8 = [(SMSessionMonitor *)self sessionStore];
-  v9 = [(SMTriggerSOS *)v6 initWithQueue:v7 sessionStore:v8];
+  queue = [(SMSessionMonitor *)self queue];
+  sessionStore = [(SMSessionMonitor *)self sessionStore];
+  v9 = [(SMTriggerSOS *)v6 initWithQueue:queue sessionStore:sessionStore];
 
   if (!v9)
   {
@@ -755,29 +755,29 @@ LABEL_24:
   }
 
   [v5 addObject:v9];
-  v11 = [v4 sessionType];
-  if ((v11 - 2) < 2)
+  sessionType = [configurationCopy sessionType];
+  if ((sessionType - 2) < 2)
   {
     v45 = v9;
-    v46 = v4;
+    v46 = configurationCopy;
     v47 = v5;
     v41 = [SMTriggerDestination alloc];
-    v43 = [(SMSessionMonitor *)self queue];
-    v18 = [(SMSessionMonitor *)self defaultsManager];
-    v19 = [(SMSessionMonitor *)self dataProtectionManager];
-    v20 = [(SMSessionMonitor *)self locationManager];
-    v21 = [(SMSessionMonitor *)self motionActivityManager];
-    v22 = [(SMSessionMonitor *)self distanceCalculator];
-    v23 = [(SMSessionMonitor *)self platform];
-    v24 = [(SMSessionMonitor *)self sessionStore];
-    v25 = [(SMSessionMonitor *)self timerManager];
-    v26 = [(SMSessionMonitor *)self sessionMetricManager];
-    v16 = [(SMTriggerDestination *)v41 initWithQueue:v43 defaultsManager:v18 dataProtectionManager:v19 locationManager:v20 motionActivityManager:v21 distanceCalculator:v22 platform:v23 sessionStore:v24 timerManager:v25 sessionMetricManager:v26];
+    queue2 = [(SMSessionMonitor *)self queue];
+    defaultsManager = [(SMSessionMonitor *)self defaultsManager];
+    dataProtectionManager = [(SMSessionMonitor *)self dataProtectionManager];
+    locationManager = [(SMSessionMonitor *)self locationManager];
+    motionActivityManager = [(SMSessionMonitor *)self motionActivityManager];
+    distanceCalculator = [(SMSessionMonitor *)self distanceCalculator];
+    platform = [(SMSessionMonitor *)self platform];
+    sessionStore2 = [(SMSessionMonitor *)self sessionStore];
+    timerManager = [(SMSessionMonitor *)self timerManager];
+    sessionMetricManager = [(SMSessionMonitor *)self sessionMetricManager];
+    v16 = [(SMTriggerDestination *)v41 initWithQueue:queue2 defaultsManager:defaultsManager dataProtectionManager:dataProtectionManager locationManager:locationManager motionActivityManager:motionActivityManager distanceCalculator:distanceCalculator platform:platform sessionStore:sessionStore2 timerManager:timerManager sessionMetricManager:sessionMetricManager];
 
     if (v16)
     {
 LABEL_15:
-      v4 = v46;
+      configurationCopy = v46;
       v5 = v47;
       v9 = v45;
       goto LABEL_19;
@@ -787,7 +787,7 @@ LABEL_15:
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
 LABEL_17:
-      v4 = v46;
+      configurationCopy = v46;
       v5 = v47;
       v9 = v45;
 LABEL_18:
@@ -806,24 +806,24 @@ LABEL_28:
     goto LABEL_17;
   }
 
-  if (v11 == 4)
+  if (sessionType == 4)
   {
     v45 = v9;
-    v46 = v4;
+    v46 = configurationCopy;
     v47 = v5;
     v40 = [SMSessionWorkoutMonitor alloc];
-    v44 = [(SMSessionMonitor *)self queue];
-    v42 = [(SMSessionMonitor *)self defaultsManager];
-    v28 = [(SMSessionMonitor *)self distanceCalculator];
-    v29 = [(SMSessionMonitor *)self locationManager];
-    v30 = [(SMSessionMonitor *)self healthKitManager];
-    v39 = [(SMSessionMonitor *)self platform];
-    v31 = [(SMSessionMonitor *)self sessionMetricManager];
-    v32 = [(SMSessionMonitor *)self sessionStore];
-    v33 = [(SMSessionMonitor *)self timerManager];
-    v34 = [(SMSessionMonitor *)self noMovementMonitor];
-    v35 = [(SMSessionMonitor *)self motionActivityManager];
-    v16 = [(SMSessionWorkoutMonitor *)v40 initWithQueue:v44 defaultsManager:v42 distanceCalculator:v28 locationManager:v29 healthKitManager:v30 platform:v39 sessionMetricManager:v31 sessionStore:v32 timerManager:v33 noMovementMonitor:v34 motionActivityManager:v35];
+    queue3 = [(SMSessionMonitor *)self queue];
+    defaultsManager2 = [(SMSessionMonitor *)self defaultsManager];
+    distanceCalculator2 = [(SMSessionMonitor *)self distanceCalculator];
+    locationManager2 = [(SMSessionMonitor *)self locationManager];
+    healthKitManager = [(SMSessionMonitor *)self healthKitManager];
+    platform2 = [(SMSessionMonitor *)self platform];
+    sessionMetricManager2 = [(SMSessionMonitor *)self sessionMetricManager];
+    sessionStore3 = [(SMSessionMonitor *)self sessionStore];
+    timerManager2 = [(SMSessionMonitor *)self timerManager];
+    noMovementMonitor = [(SMSessionMonitor *)self noMovementMonitor];
+    motionActivityManager2 = [(SMSessionMonitor *)self motionActivityManager];
+    v16 = [(SMSessionWorkoutMonitor *)v40 initWithQueue:queue3 defaultsManager:defaultsManager2 distanceCalculator:distanceCalculator2 locationManager:locationManager2 healthKitManager:healthKitManager platform:platform2 sessionMetricManager:sessionMetricManager2 sessionStore:sessionStore3 timerManager:timerManager2 noMovementMonitor:noMovementMonitor motionActivityManager:motionActivityManager2];
 
     if (v16)
     {
@@ -844,16 +844,16 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (v11 != 1)
+  if (sessionType != 1)
   {
     goto LABEL_20;
   }
 
   v12 = [SMTriggerDuration alloc];
-  v13 = [(SMSessionMonitor *)self queue];
-  v14 = [(SMSessionMonitor *)self defaultsManager];
-  v15 = [(SMSessionMonitor *)self sessionStore];
-  v16 = [(SMTriggerDuration *)v12 initWithQueue:v13 defaultsManager:v14 sessionStore:v15];
+  queue4 = [(SMSessionMonitor *)self queue];
+  defaultsManager3 = [(SMSessionMonitor *)self defaultsManager];
+  sessionStore4 = [(SMSessionMonitor *)self sessionStore];
+  v16 = [(SMTriggerDuration *)v12 initWithQueue:queue4 defaultsManager:defaultsManager3 sessionStore:sessionStore4];
 
   if (!v16)
   {
@@ -879,7 +879,7 @@ LABEL_20:
     v36 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v37 = [MEMORY[0x277D4AB78] sessionTypeToString:{objc_msgSend(v4, "sessionType")}];
+      v37 = [MEMORY[0x277D4AB78] sessionTypeToString:{objc_msgSend(configurationCopy, "sessionType")}];
       *buf = 136315650;
       v49 = "[SMSessionMonitor _createTriggersWithConfiguration:]";
       v50 = 2112;
@@ -893,11 +893,11 @@ LABEL_20:
   return v5;
 }
 
-- (void)_processTriggerNotification:(id)a3
+- (void)_processTriggerNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -911,10 +911,10 @@ LABEL_20:
   }
 
   v6 = objc_alloc(MEMORY[0x277D4ABC8]);
-  v7 = [v4 triggerCategory];
-  v8 = [(SMSessionMonitor *)self configuration];
-  v9 = [v8 sessionID];
-  v10 = [v6 initWithUpdateReason:1 triggerCategory:v7 sessionID:v9];
+  triggerCategory = [notificationCopy triggerCategory];
+  configuration = [(SMSessionMonitor *)self configuration];
+  sessionID = [configuration sessionID];
+  v10 = [v6 initWithUpdateReason:1 triggerCategory:triggerCategory sessionID:sessionID];
 
   [(SMSessionMonitor *)self setMostRecentTriggerContext:v10];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -925,40 +925,40 @@ LABEL_20:
       v15 = 136315394;
       v16 = "[SMSessionMonitor _processTriggerNotification:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s, processing trigger notification, %@", &v15, 0x16u);
     }
   }
 
-  if ([v4 SOSState] == 2)
+  if ([notificationCopy SOSState] == 2)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 3;
   }
 
   else
   {
-    if ([v4 SOSState] != 1)
+    if ([notificationCopy SOSState] != 1)
     {
-      v14 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-      [(SMSessionMonitor *)self _updateUserWithTriggerContext:v14];
+      mostRecentTriggerContext = [(SMSessionMonitor *)self mostRecentTriggerContext];
+      [(SMSessionMonitor *)self _updateUserWithTriggerContext:mostRecentTriggerContext];
 
       goto LABEL_15;
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2;
   }
 
-  [(SMSessionMonitor *)v12 setRiskState:v13];
+  [(SMSessionMonitor *)selfCopy2 setRiskState:v13];
 LABEL_15:
 }
 
-- (void)_processTriggerEstimatedEndDateUpdateNotification:(id)a3
+- (void)_processTriggerEstimatedEndDateUpdateNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -972,12 +972,12 @@ LABEL_15:
   }
 
   v6 = objc_alloc(MEMORY[0x277D4ABC8]);
-  v7 = [v4 triggerCategory];
-  v8 = [v4 estimatedEndDate];
-  v9 = [v4 coarseEstimatedEndDate];
-  v10 = [(SMSessionMonitor *)self configuration];
-  v11 = [v10 sessionID];
-  v12 = [v6 initWithUpdateReason:5 triggerCategory:v7 estimatedEndDate:v8 coarseEstimatedEndDate:v9 sessionID:v11];
+  triggerCategory = [notificationCopy triggerCategory];
+  estimatedEndDate = [notificationCopy estimatedEndDate];
+  coarseEstimatedEndDate = [notificationCopy coarseEstimatedEndDate];
+  configuration = [(SMSessionMonitor *)self configuration];
+  sessionID = [configuration sessionID];
+  v12 = [v6 initWithUpdateReason:5 triggerCategory:triggerCategory estimatedEndDate:estimatedEndDate coarseEstimatedEndDate:coarseEstimatedEndDate sessionID:sessionID];
 
   [(SMSessionMonitor *)self setMostRecentTriggerContext:v12];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -988,26 +988,26 @@ LABEL_15:
       v15 = 136315394;
       v16 = "[SMSessionMonitor _processTriggerEstimatedEndDateUpdateNotification:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, processing trigger notification, %@", &v15, 0x16u);
     }
   }
 
-  v14 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-  [(SMSessionMonitor *)self _promptEstimatedEndDateUpdateWithContext:v14];
+  mostRecentTriggerContext = [(SMSessionMonitor *)self mostRecentTriggerContext];
+  [(SMSessionMonitor *)self _promptEstimatedEndDateUpdateWithContext:mostRecentTriggerContext];
 }
 
-- (void)_processUserTriggerResponse:(int64_t)a3
+- (void)_processUserTriggerResponse:(int64_t)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (response == 2)
   {
     v5 = 1;
   }
 
   else
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if ((response & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
       goto LABEL_6;
     }
@@ -1015,22 +1015,22 @@ LABEL_15:
     v5 = 3;
   }
 
-  v6 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v6 setTriggerConfirmed:a3 != 2];
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setTriggerConfirmed:response != 2];
 
-  v7 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v7 setTriggerPending:0];
+  sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState2 setTriggerPending:0];
 
   [(SMSessionMonitor *)self setRiskState:v5];
 LABEL_6:
   [(SMSessionMonitor *)self _persistState];
-  [(SMSessionMonitor *)self _updateTriggersWithUserResponse:a3];
+  [(SMSessionMonitor *)self _updateTriggersWithUserResponse:response];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [MEMORY[0x277D4ABC8] userTriggerResponseToString:a3];
+      v9 = [MEMORY[0x277D4ABC8] userTriggerResponseToString:response];
       v10 = 136315394;
       v11 = "[SMSessionMonitor _processUserTriggerResponse:]";
       v12 = 2112;
@@ -1043,9 +1043,9 @@ LABEL_6:
 - (void)_processSessionEnd
 {
   [(SMSessionMonitor *)self _reset];
-  v3 = [(SMSessionMonitor *)self locationManager];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v4 = 0;
-  [v3 stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v4];
+  [locationManager stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v4];
 
   [(SMSessionMonitor *)self _unregisterForTriggers];
   [(SMSessionMonitor *)self _shutdownWithHandler:&__block_literal_global_24];
@@ -1069,11 +1069,11 @@ void __38__SMSessionMonitor__processSessionEnd__block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)_processSessionResumeWithState:(id)a3
+- (void)_processSessionResumeWithState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1086,20 +1086,20 @@ void __38__SMSessionMonitor__processSessionEnd__block_invoke(uint64_t a1, void *
     }
   }
 
-  v6 = [v4 configuration];
-  [(SMSessionMonitor *)self _initializeSessionWithConfiguration:v6];
+  configuration = [stateCopy configuration];
+  [(SMSessionMonitor *)self _initializeSessionWithConfiguration:configuration];
 
-  v7 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v4, "sessionState")}];
-  v8 = [v4 sessionState];
-  if (v8 <= 8)
+  v7 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(stateCopy, "sessionState")}];
+  sessionState = [stateCopy sessionState];
+  if (sessionState <= 8)
   {
-    if (v8 <= 3)
+    if (sessionState <= 3)
     {
-      if (v8)
+      if (sessionState)
       {
-        if (v8 != 1)
+        if (sessionState != 1)
         {
-          if (v8 == 2)
+          if (sessionState == 2)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -1114,7 +1114,7 @@ void __38__SMSessionMonitor__processSessionEnd__block_invoke(uint64_t a1, void *
               }
             }
 
-            v10 = self;
+            selfCopy2 = self;
             v11 = 1;
             goto LABEL_44;
           }
@@ -1162,11 +1162,11 @@ LABEL_34:
       goto LABEL_53;
     }
 
-    switch(v8)
+    switch(sessionState)
     {
       case 4:
-        v16 = [(SMSessionMonitor *)self sessionMonitorState];
-        [v16 setTriggerConfirmed:1];
+        sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+        [sessionMonitorState setTriggerConfirmed:1];
 
         [(SMSessionMonitor *)self setRiskState:3];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1227,21 +1227,21 @@ LABEL_43:
     v14 = [(SMSessionMonitor *)self sessionMonitorState:*v17];
     [v14 setTriggerPending:1];
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = 2;
 LABEL_44:
-    [(SMSessionMonitor *)v10 setRiskState:v11];
+    [(SMSessionMonitor *)selfCopy2 setRiskState:v11];
     goto LABEL_45;
   }
 
-  if (v8 > 11)
+  if (sessionState > 11)
   {
-    if (v8 == 12)
+    if (sessionState == 12)
     {
       goto LABEL_31;
     }
 
-    if (v8 != 14)
+    if (sessionState != 14)
     {
       goto LABEL_45;
     }
@@ -1260,9 +1260,9 @@ LABEL_44:
     goto LABEL_43;
   }
 
-  if ((v8 - 10) >= 2)
+  if ((sessionState - 10) >= 2)
   {
-    if (v8 != 9)
+    if (sessionState != 9)
     {
       goto LABEL_45;
     }
@@ -1296,20 +1296,20 @@ LABEL_44:
 LABEL_46:
 }
 
-- (void)_registerForTriggersWithConfiguration:(id)a3
+- (void)_registerForTriggersWithConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   [(SMSessionMonitor *)self _unregisterForTriggers];
-  v5 = [(SMSessionMonitor *)self _createTriggersWithConfiguration:v4];
+  v5 = [(SMSessionMonitor *)self _createTriggersWithConfiguration:configurationCopy];
   [(SMSessionMonitor *)self setTriggers:v5];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(SMSessionMonitor *)self triggers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  triggers = [(SMSessionMonitor *)self triggers];
+  v7 = [triggers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1321,7 +1321,7 @@ LABEL_46:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(triggers);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -1333,14 +1333,14 @@ LABEL_46:
           v12[2] = __58__SMSessionMonitor__registerForTriggersWithConfiguration___block_invoke;
           v12[3] = &unk_2788C4730;
           v12[4] = v11;
-          [v11 startMonitoringWithConfiguration:v4 handler:v12];
+          [v11 startMonitoringWithConfiguration:configurationCopy handler:v12];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [triggers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1375,8 +1375,8 @@ void __58__SMSessionMonitor__registerForTriggersWithConfiguration___block_invoke
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SMSessionMonitor *)self triggers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  triggers = [(SMSessionMonitor *)self triggers];
+  v3 = [triggers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1388,7 +1388,7 @@ void __58__SMSessionMonitor__registerForTriggersWithConfiguration___block_invoke
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(triggers);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
@@ -1407,7 +1407,7 @@ void __58__SMSessionMonitor__registerForTriggersWithConfiguration___block_invoke
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [triggers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1437,11 +1437,11 @@ void __42__SMSessionMonitor__unregisterForTriggers__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_updateGeofenceWithConfiguration:(id)a3
+- (void)_updateGeofenceWithConfiguration:(id)configuration
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1454,14 +1454,14 @@ void __42__SMSessionMonitor__unregisterForTriggers__block_invoke(uint64_t a1, vo
     }
   }
 
-  v6 = [v4 destination];
-  v7 = [v6 clLocation];
+  destination = [configurationCopy destination];
+  clLocation = [destination clLocation];
 
-  if (v7)
+  if (clLocation)
   {
-    v8 = [(SMSessionMonitor *)self configuration];
-    v9 = [v8 destination];
-    v10 = [v9 clLocation];
+    configuration = [(SMSessionMonitor *)self configuration];
+    destination2 = [configuration destination];
+    clLocation2 = [destination2 clLocation];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1471,14 +1471,14 @@ void __42__SMSessionMonitor__unregisterForTriggers__block_invoke(uint64_t a1, vo
         *buf = 136315651;
         v23 = "[SMSessionMonitor _updateGeofenceWithConfiguration:]";
         v24 = 2117;
-        v25 = v10;
+        v25 = clLocation2;
         v26 = 2117;
-        v27 = v7;
+        v27 = clLocation;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s, current configuration destination, %{sensitive}@, updated configuration destination, %{sensitive}@", buf, 0x20u);
       }
     }
 
-    if (v10 && ([v10 distanceFromLocation:v7], v12 < 10.0))
+    if (clLocation2 && ([clLocation2 distanceFromLocation:clLocation], v12 < 10.0))
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1509,9 +1509,9 @@ LABEL_29:
         }
       }
 
-      v15 = [(SMSessionMonitor *)self locationManager];
+      locationManager = [(SMSessionMonitor *)self locationManager];
       v21 = 0;
-      [v15 stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v21];
+      [locationManager stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v21];
       v13 = v21;
 
       if (v13)
@@ -1527,8 +1527,8 @@ LABEL_29:
         }
       }
 
-      v17 = [v4 destination];
-      [v17 radius];
+      destination3 = [configurationCopy destination];
+      [destination3 radius];
       v19 = v18;
 
       if (v19 <= 0.0)
@@ -1541,8 +1541,8 @@ LABEL_29:
         v19 = *MEMORY[0x277D4ADC0];
       }
 
-      v20 = [v4 destination];
-      -[SMSessionMonitor _setupGeofenceWithLocation:regionIdentifier:radius:destinationType:](self, "_setupGeofenceWithLocation:regionIdentifier:radius:destinationType:", v7, @"SMDestinationRegionIdentifier", [v20 destinationType], v19);
+      destination4 = [configurationCopy destination];
+      -[SMSessionMonitor _setupGeofenceWithLocation:regionIdentifier:radius:destinationType:](self, "_setupGeofenceWithLocation:regionIdentifier:radius:destinationType:", clLocation, @"SMDestinationRegionIdentifier", [destination4 destinationType], v19);
     }
 
     goto LABEL_29;
@@ -1551,11 +1551,11 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)_initializeSessionWithConfiguration:(id)a3
+- (void)_initializeSessionWithConfiguration:(id)configuration
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1570,9 +1570,9 @@ LABEL_30:
 
   [(SMSessionMonitor *)self _addObservers];
   [(SMSessionMonitor *)self _registerForCircularRegionEventsForIdentifier:@"SMDestinationRegionClientIdentifier"];
-  [(SMSessionMonitor *)self _registerForTriggersWithConfiguration:v4];
-  v6 = [(SMSessionMonitor *)self locationManager];
-  v7 = [v6 isMonitoringForRegionWithClientIdentifier:@"SMDestinationRegionClientIdentifier" regionIdentifier:@"SMDestinationRegionIdentifier"];
+  [(SMSessionMonitor *)self _registerForTriggersWithConfiguration:configurationCopy];
+  locationManager = [(SMSessionMonitor *)self locationManager];
+  v7 = [locationManager isMonitoringForRegionWithClientIdentifier:@"SMDestinationRegionClientIdentifier" regionIdentifier:@"SMDestinationRegionIdentifier"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1588,7 +1588,7 @@ LABEL_30:
       }
 
       *&v10[12] = 2117;
-      *&v10[14] = v4;
+      *&v10[14] = configurationCopy;
       v11 = 2112;
       v12 = v9;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@, monitoringForConfiguration, %@", v10, 0x20u);
@@ -1597,17 +1597,17 @@ LABEL_30:
 
   if ((v7 & 1) == 0)
   {
-    [(SMSessionMonitor *)self _updateGeofenceWithConfiguration:v4];
+    [(SMSessionMonitor *)self _updateGeofenceWithConfiguration:configurationCopy];
   }
 
-  [(SMSessionMonitor *)self setConfiguration:v4, *v10];
+  [(SMSessionMonitor *)self setConfiguration:configurationCopy, *v10];
   [(SMSessionMonitor *)self _bootstrap];
 }
 
 - (void)_initializeTriggersForRemoteSessionIfNecessary
 {
-  v3 = [(SMSessionMonitor *)self triggers];
-  v4 = [v3 count];
+  triggers = [(SMSessionMonitor *)self triggers];
+  v4 = [triggers count];
 
   if (!v4)
   {
@@ -1618,24 +1618,24 @@ LABEL_30:
 
 - (void)_addObservers
 {
-  v4 = [(SMSessionMonitor *)self locationManager];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v3 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-  [v4 addObserver:self selector:sel_onLocationNotification_ name:v3];
+  [locationManager addObserver:self selector:sel_onLocationNotification_ name:v3];
 }
 
 - (void)_removeObservers
 {
-  v3 = [(SMSessionMonitor *)self locationManager];
-  [v3 removeObserver:self];
+  locationManager = [(SMSessionMonitor *)self locationManager];
+  [locationManager removeObserver:self];
 }
 
 - (void)_persistState
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionMonitor *)self sessionMonitorState];
-  v4 = [v3 dirty];
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  dirty = [sessionMonitorState dirty];
 
-  if (v4)
+  if (dirty)
   {
     v35 = 0;
     v36 = &v35;
@@ -1644,9 +1644,9 @@ LABEL_30:
     v39 = __Block_byref_object_dispose__29;
     v40 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [(SMSessionMonitor *)self sessionStore];
-    v7 = [(SMSessionMonitor *)self sessionMonitorState];
-    v46 = v7;
+    sessionStore = [(SMSessionMonitor *)self sessionStore];
+    sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+    v46 = sessionMonitorState2;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -1655,7 +1655,7 @@ LABEL_30:
     v34 = &v35;
     v9 = v5;
     v33 = v9;
-    [v6 storeSessionMonitorStates:v8 handler:v32];
+    [sessionStore storeSessionMonitorStates:v8 handler:v32];
 
     v10 = (v36 + 5);
     obj = v36[5];
@@ -1669,11 +1669,11 @@ LABEL_30:
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_398];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -1701,20 +1701,20 @@ LABEL_30:
       v27 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(SMSessionMonitor *)self sessionMonitorState];
+        sessionMonitorState3 = [(SMSessionMonitor *)self sessionMonitorState];
         v29 = v36[5];
         *buf = 136315650;
         *&buf[4] = "[SMSessionMonitor _persistState]";
         v42 = 2112;
-        v43 = v28;
+        v43 = sessionMonitorState3;
         v44 = 2112;
         v45 = v29;
         _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%s, persisted state, %@, error, %@", buf, 0x20u);
       }
     }
 
-    v30 = [(SMSessionMonitor *)self sessionMonitorState];
-    [v30 setDirty:0];
+    sessionMonitorState4 = [(SMSessionMonitor *)self sessionMonitorState];
+    [sessionMonitorState4 setDirty:0];
 
     _Block_object_dispose(&v35, 8);
   }
@@ -1727,24 +1727,24 @@ void __33__SMSessionMonitor__persistState__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)onBecomingActiveDevice:(id)a3
+- (void)onBecomingActiveDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self queue];
+  deviceCopy = device;
+  queue = [(SMSessionMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SMSessionMonitor_onBecomingActiveDevice___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  v6 = deviceCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onBecomingActiveDevice:(id)a3
+- (void)_onBecomingActiveDevice:(id)device
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1753,32 +1753,32 @@ void __33__SMSessionMonitor__persistState__block_invoke(uint64_t a1, void *a2)
       v6 = 136315395;
       v7 = "[SMSessionMonitor _onBecomingActiveDevice:]";
       v8 = 2117;
-      v9 = v4;
+      v9 = deviceCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, state, %{sensitive}@, initiating actions to become an active device", &v6, 0x16u);
     }
   }
 
-  [(SMSessionMonitor *)self onSessionResumedWithState:v4 forActiveDevice:1];
+  [(SMSessionMonitor *)self onSessionResumedWithState:deviceCopy forActiveDevice:1];
 }
 
-- (void)onBecomingNonActiveDevice:(id)a3
+- (void)onBecomingNonActiveDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self queue];
+  deviceCopy = device;
+  queue = [(SMSessionMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__SMSessionMonitor_onBecomingNonActiveDevice___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  v6 = deviceCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onBecomingNonActiveDevice:(id)a3
+- (void)_onBecomingNonActiveDevice:(id)device
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1787,32 +1787,32 @@ void __33__SMSessionMonitor__persistState__block_invoke(uint64_t a1, void *a2)
       *buf = 136315395;
       v9 = "[SMSessionMonitor _onBecomingNonActiveDevice:]";
       v10 = 2117;
-      v11 = v4;
+      v11 = deviceCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, state, %{sensitive}@, initiating actions to become a non active device", buf, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self locationManager];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v7 = 0;
-  [v6 stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v7];
+  [locationManager stopMonitoringAllRegionsForClientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v7];
 
   [(SMSessionMonitor *)self _unregisterForTriggers];
   [(SMSessionMonitor *)self _reset];
   [(SMSessionMonitor *)self _initializeTriggersForRemoteSessionIfNecessary];
 }
 
-- (void)onSessionStartedWithConfiguration:(id)a3
+- (void)onSessionStartedWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self queue];
+  configurationCopy = configuration;
+  queue = [(SMSessionMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SMSessionMonitor_onSessionStartedWithConfiguration___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  selfCopy = self;
+  v6 = configurationCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __54__SMSessionMonitor_onSessionStartedWithConfiguration___block_invoke(uint64_t a1)
@@ -1835,16 +1835,16 @@ uint64_t __54__SMSessionMonitor_onSessionStartedWithConfiguration___block_invoke
   return [*(a1 + 40) _initializeSessionWithConfiguration:*(a1 + 32)];
 }
 
-- (void)onSessionChangedWithConfiguration:(id)a3
+- (void)onSessionChangedWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __54__SMSessionMonitor_onSessionChangedWithConfiguration___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = configurationCopy;
+  selfCopy = self;
+  v5 = configurationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(SMSessionMonitor *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1873,20 +1873,20 @@ uint64_t __54__SMSessionMonitor_onSessionChangedWithConfiguration___block_invoke
   return [*(a1 + 40) setConfiguration:*(a1 + 32)];
 }
 
-- (void)onSessionResumedWithState:(id)a3 forActiveDevice:(BOOL)a4
+- (void)onSessionResumedWithState:(id)state forActiveDevice:(BOOL)device
 {
-  v6 = a3;
+  stateCopy = state;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__SMSessionMonitor_onSessionResumedWithState_forActiveDevice___block_invoke;
   aBlock[3] = &unk_2788C53C8;
-  v13 = a4;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
+  deviceCopy = device;
+  v11 = stateCopy;
+  selfCopy = self;
+  v7 = stateCopy;
   v8 = _Block_copy(aBlock);
-  v9 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v9, v8);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v8);
 }
 
 void __62__SMSessionMonitor_onSessionResumedWithState_forActiveDevice___block_invoke(uint64_t a1)
@@ -1956,7 +1956,7 @@ void __62__SMSessionMonitor_onSessionResumedWithState_forActiveDevice___block_in
   }
 }
 
-- (void)onSessionEndedForActiveDevice:(BOOL)a3
+- (void)onSessionEndedForActiveDevice:(BOOL)device
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1964,8 +1964,8 @@ void __62__SMSessionMonitor_onSessionResumedWithState_forActiveDevice___block_in
   aBlock[3] = &unk_2788C4EA0;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v5, v4);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v4);
 }
 
 uint64_t __50__SMSessionMonitor_onSessionEndedForActiveDevice___block_invoke(uint64_t a1)
@@ -1986,17 +1986,17 @@ uint64_t __50__SMSessionMonitor_onSessionEndedForActiveDevice___block_invoke(uin
   return [*(a1 + 32) _processSessionEnd];
 }
 
-- (void)onUserTriggerResponse:(int64_t)a3
+- (void)onUserTriggerResponse:(int64_t)response
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SMSessionMonitor_onUserTriggerResponse___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = response;
   v4 = _Block_copy(v6);
-  v5 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v5, v4);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v4);
 }
 
 uint64_t __42__SMSessionMonitor_onUserTriggerResponse___block_invoke(uint64_t a1)
@@ -2016,17 +2016,17 @@ uint64_t __42__SMSessionMonitor_onUserTriggerResponse___block_invoke(uint64_t a1
   return [*(a1 + 32) _processUserTriggerResponse:*(a1 + 40)];
 }
 
-- (void)onRemoteEmergencyContactsNotified:(unint64_t)a3
+- (void)onRemoteEmergencyContactsNotified:(unint64_t)notified
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SMSessionMonitor_onRemoteEmergencyContactsNotified___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = notified;
   v4 = _Block_copy(v6);
-  v5 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v5, v4);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v4);
 }
 
 void __54__SMSessionMonitor_onRemoteEmergencyContactsNotified___block_invoke(uint64_t a1)
@@ -2088,8 +2088,8 @@ void __54__SMSessionMonitor_onRemoteEmergencyContactsNotified___block_invoke(uin
   aBlock[3] = &unk_2788C4EA0;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v4, v3);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v3);
 }
 
 void __34__SMSessionMonitor_onWorkoutPause__block_invoke(uint64_t a1)
@@ -2151,8 +2151,8 @@ void __34__SMSessionMonitor_onWorkoutPause__block_invoke(uint64_t a1)
   aBlock[3] = &unk_2788C4EA0;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(SMSessionMonitor *)self queue];
-  dispatch_async(v4, v3);
+  queue = [(SMSessionMonitor *)self queue];
+  dispatch_async(queue, v3);
 }
 
 void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
@@ -2206,10 +2206,10 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_promptEstimatedEndDateUpdateWithContext:(id)a3
+- (void)_promptEstimatedEndDateUpdateWithContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2218,21 +2218,21 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v7 = 136315394;
       v8 = "[SMSessionMonitor _promptEstimatedEndDateUpdateWithContext:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v7, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v6 promptEstimatedEndDateUpdateWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptEstimatedEndDateUpdateWithContext:contextCopy];
 }
 
-- (void)_promptTimerEndedVerificationWithContext:(id)a3
+- (void)_promptTimerEndedVerificationWithContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v5 setTriggerPending:1];
+  contextCopy = context;
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setTriggerPending:1];
 
   [(SMSessionMonitor *)self _persistState];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2243,21 +2243,21 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v8 = 136315394;
       v9 = "[SMSessionMonitor _promptTimerEndedVerificationWithContext:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v8, 0x16u);
     }
   }
 
-  v7 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v7 promptTimerEndedVerificationWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptTimerEndedVerificationWithContext:contextCopy];
 }
 
-- (void)_promptDestinationAnomalyVerificationWithContext:(id)a3
+- (void)_promptDestinationAnomalyVerificationWithContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v5 setTriggerPending:1];
+  contextCopy = context;
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setTriggerPending:1];
 
   [(SMSessionMonitor *)self _persistState];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2268,21 +2268,21 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v8 = 136315394;
       v9 = "[SMSessionMonitor _promptDestinationAnomalyVerificationWithContext:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v8, 0x16u);
     }
   }
 
-  v7 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v7 promptDestinationAnomalyVerificationWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptDestinationAnomalyVerificationWithContext:contextCopy];
 }
 
-- (void)_promptRoundTripAnomalyVerificationWithContext:(id)a3
+- (void)_promptRoundTripAnomalyVerificationWithContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v5 setTriggerPending:1];
+  contextCopy = context;
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setTriggerPending:1];
 
   [(SMSessionMonitor *)self _persistState];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2293,19 +2293,19 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v8 = 136315394;
       v9 = "[SMSessionMonitor _promptRoundTripAnomalyVerificationWithContext:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v8, 0x16u);
     }
   }
 
-  v7 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v7 promptRoundTripAnomalyVerificationWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptRoundTripAnomalyVerificationWithContext:contextCopy];
 }
 
-- (void)_promptWorkoutAnomalyVerificationWithContext:(id)a3
+- (void)_promptWorkoutAnomalyVerificationWithContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2314,19 +2314,19 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v7 = 136315394;
       v8 = "[SMSessionMonitor _promptWorkoutAnomalyVerificationWithContext:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v7, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v6 promptWorkoutAnomalyVerificationWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptWorkoutAnomalyVerificationWithContext:contextCopy];
 }
 
-- (void)_promptDirectTriggerWithContext:(id)a3
+- (void)_promptDirectTriggerWithContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2335,19 +2335,19 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v7 = 136315394;
       v8 = "[SMSessionMonitor _promptDirectTriggerWithContext:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v7, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v6 promptDirectTriggerWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptDirectTriggerWithContext:contextCopy];
 }
 
-- (void)_promptSafeArrivalWithContext:(id)a3
+- (void)_promptSafeArrivalWithContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2356,20 +2356,20 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v7 = 136315394;
       v8 = "[SMSessionMonitor _promptSafeArrivalWithContext:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = contextCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, context, %@", &v7, 0x16u);
     }
   }
 
   [(SMSessionMonitor *)self _processSessionEnd];
-  v6 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v6 promptSafeArrivalWithContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate promptSafeArrivalWithContext:contextCopy];
 }
 
-- (void)_updateUserWithTriggerContext:(id)a3
+- (void)_updateUserWithTriggerContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2378,19 +2378,19 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       v7 = 136315394;
       v8 = "[SMSessionMonitor _updateUserWithTriggerContext:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = contextCopy;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%s, sessionMonitorContext, %@", &v7, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self sessionManagerDelegate];
-  [v6 updateUserWithTriggerContext:v4];
+  sessionManagerDelegate = [(SMSessionMonitor *)self sessionManagerDelegate];
+  [sessionManagerDelegate updateUserWithTriggerContext:contextCopy];
 }
 
-- (void)onTriggerNotification:(id)a3
+- (void)onTriggerNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2399,7 +2399,7 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
       *buf = 136315394;
       v16 = "[SMSessionMonitor onTriggerNotification:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, notification, %@", buf, 0x16u);
     }
   }
@@ -2408,9 +2408,9 @@ void __35__SMSessionMonitor_onWorkoutResume__block_invoke(uint64_t a1)
   v10 = 3221225472;
   v11 = __42__SMSessionMonitor_onTriggerNotification___block_invoke;
   v12 = &unk_2788C4A70;
-  v13 = v4;
-  v14 = self;
-  v6 = v4;
+  v13 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   v7 = _Block_copy(&v9);
   v8 = [(SMSessionMonitor *)self queue:v9];
   dispatch_async(v8, v7);
@@ -2461,16 +2461,16 @@ void __42__SMSessionMonitor_onTriggerNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateTriggersWithConfiguration:(id)a3
+- (void)_updateTriggersWithConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(SMSessionMonitor *)self triggers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  triggers = [(SMSessionMonitor *)self triggers];
+  v6 = [triggers countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -2485,7 +2485,7 @@ void __42__SMSessionMonitor_onTriggerNotification___block_invoke(uint64_t a1)
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(triggers);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
@@ -2504,14 +2504,14 @@ void __42__SMSessionMonitor_onTriggerNotification___block_invoke(uint64_t a1)
             }
           }
 
-          [v12 modifyMonitoringWithConfiguration:v4 handler:{&__block_literal_global_156, v14}];
+          [v12 modifyMonitoringWithConfiguration:configurationCopy handler:{&__block_literal_global_156, v14}];
         }
 
         ++v11;
       }
 
       while (v8 != v11);
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v8 = [triggers countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v8);
@@ -2536,15 +2536,15 @@ void __53__SMSessionMonitor__updateTriggersWithConfiguration___block_invoke(uint
   }
 }
 
-- (void)_updateTriggersWithUserResponse:(int64_t)a3
+- (void)_updateTriggersWithUserResponse:(int64_t)response
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(SMSessionMonitor *)self triggers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  triggers = [(SMSessionMonitor *)self triggers];
+  v5 = [triggers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2556,35 +2556,35 @@ void __53__SMSessionMonitor__updateTriggersWithConfiguration___block_invoke(uint
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(triggers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 onUserTriggerResponse:a3];
+          [v9 onUserTriggerResponse:response];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [triggers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setupGeofenceWithLocation:(id)a3 regionIdentifier:(id)a4 radius:(double)a5 destinationType:(unint64_t)a6
+- (void)_setupGeofenceWithLocation:(id)location regionIdentifier:(id)identifier radius:(double)radius destinationType:(unint64_t)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  locationCopy = location;
+  identifierCopy = identifier;
+  v12 = identifierCopy;
+  if (locationCopy)
   {
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_10;
     }
@@ -2622,35 +2622,35 @@ LABEL_10:
     v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [MEMORY[0x277D4AB88] destinationTypeToString:a6];
+      v16 = [MEMORY[0x277D4AB88] destinationTypeToString:type];
       *buf = 136316163;
       v28 = "[SMSessionMonitor _setupGeofenceWithLocation:regionIdentifier:radius:destinationType:]";
       v29 = 2117;
-      v30 = v10;
+      v30 = locationCopy;
       v31 = 2112;
       v32 = v12;
       v33 = 2048;
-      v34 = a5;
+      radiusCopy = radius;
       v35 = 2112;
       v36 = v16;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%s, regionLocation, %{sensitive}@, regionIdentifier, %@, radius, %.3f, destinationType, %@", buf, 0x34u);
     }
   }
 
-  [v10 coordinate];
+  [locationCopy coordinate];
   v18 = v17;
-  [v10 coordinate];
+  [locationCopy coordinate];
   v20 = 0x277CBFCD8;
-  if (a6 != 1)
+  if (type != 1)
   {
     v20 = 0x277CBFBC8;
   }
 
-  v21 = [objc_alloc(*v20) initWithCenter:v12 radius:v18 identifier:{v19, a5}];
-  [v21 setGeoReferenceFrame:{objc_msgSend(v10, "referenceFrame")}];
-  v22 = [(SMSessionMonitor *)self locationManager];
+  v21 = [objc_alloc(*v20) initWithCenter:v12 radius:v18 identifier:{v19, radius}];
+  [v21 setGeoReferenceFrame:{objc_msgSend(locationCopy, "referenceFrame")}];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v26 = 0;
-  [v22 startMonitoringForRegion:v21 clientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v26];
+  [locationManager startMonitoringForRegion:v21 clientIdentifier:@"SMDestinationRegionClientIdentifier" error:&v26];
   v23 = v26;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2680,10 +2680,10 @@ LABEL_10:
   }
 }
 
-- (void)_registerForCircularRegionEventsForIdentifier:(id)a3
+- (void)_registerForCircularRegionEventsForIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2692,20 +2692,20 @@ LABEL_10:
       *buf = 136315394;
       v11 = "[SMSessionMonitor _registerForCircularRegionEventsForIdentifier:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, Registering for circular region events with identifier, %@", buf, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self locationManager];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SMSessionMonitor__registerForCircularRegionEventsForIdentifier___block_invoke;
   v8[3] = &unk_2788C7610;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 registerForRegionEventsWithClientIdentifier:v7 handler:v8];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [locationManager registerForRegionEventsWithClientIdentifier:v7 handler:v8];
 }
 
 void __66__SMSessionMonitor__registerForCircularRegionEventsForIdentifier___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2825,10 +2825,10 @@ LABEL_20:
 LABEL_10:
 }
 
-- (void)_unregisterForCircularRegionEventsForIdentifier:(id)a3
+- (void)_unregisterForCircularRegionEventsForIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2837,19 +2837,19 @@ LABEL_10:
       *buf = 136315394;
       v11 = "[SMSessionMonitor _unregisterForCircularRegionEventsForIdentifier:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, Unregistering for circular region events with identifier, %@", buf, 0x16u);
     }
   }
 
-  v6 = [(SMSessionMonitor *)self locationManager];
+  locationManager = [(SMSessionMonitor *)self locationManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__SMSessionMonitor__unregisterForCircularRegionEventsForIdentifier___block_invoke;
   v8[3] = &unk_2788C4730;
-  v9 = v4;
-  v7 = v4;
-  [v6 unregisterForRegionEventsWithClientIdentifier:v7 handler:v8];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [locationManager unregisterForRegionEventsWithClientIdentifier:v7 handler:v8];
 }
 
 void __68__SMSessionMonitor__unregisterForCircularRegionEventsForIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -2893,33 +2893,33 @@ void __68__SMSessionMonitor__unregisterForCircularRegionEventsForIdentifier___bl
 LABEL_5:
 }
 
-- (void)handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5
+- (void)handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SMSessionMonitor *)self queue];
+  regionCopy = region;
+  identifierCopy = identifier;
+  queue = [(SMSessionMonitor *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__SMSessionMonitor_handleCircularRegionCallback_region_clientIdentifier___block_invoke;
   v13[3] = &unk_2788C4C70;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = regionCopy;
+  v15 = identifierCopy;
+  callbackCopy = callback;
+  v11 = identifierCopy;
+  v12 = regionCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_handleCircularRegionCallback:(int64_t)a3 region:(id)a4 clientIdentifier:(id)a5
+- (void)_handleCircularRegionCallback:(int64_t)callback region:(id)region clientIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  regionCopy = region;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (regionCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_10;
     }
@@ -2957,13 +2957,13 @@ LABEL_10:
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [RTLocationManager stringForRegionCallbackType:a3];
+      v14 = [RTLocationManager stringForRegionCallbackType:callback];
       v16 = 136315907;
       v17 = "[SMSessionMonitor _handleCircularRegionCallback:region:clientIdentifier:]";
       v18 = 2112;
       v19 = v14;
       v20 = 2117;
-      v21 = v8;
+      v21 = regionCopy;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, Received event, %@, region, %{sensitive}@, clientIdentifier, %@", &v16, 0x2Au);
@@ -2972,9 +2972,9 @@ LABEL_10:
 
   if (v10 == @"SMDestinationRegionClientIdentifier")
   {
-    if ((a3 - 1) <= 1)
+    if ((callback - 1) <= 1)
     {
-      [(SMSessionMonitor *)self _updateRegionStateWithCircularRegionCallback:a3];
+      [(SMSessionMonitor *)self _updateRegionStateWithCircularRegionCallback:callback];
     }
   }
 
@@ -2992,7 +2992,7 @@ LABEL_10:
   }
 }
 
-- (void)_updateRegionStateWithCircularRegionCallback:(int64_t)a3
+- (void)_updateRegionStateWithCircularRegionCallback:(int64_t)callback
 {
   v22 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3000,12 +3000,12 @@ LABEL_10:
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [RTLocationManager stringForRegionCallbackType:a3];
-      v7 = [(SMSessionMonitor *)self currentLocation];
-      v8 = [(SMSessionMonitor *)self configuration];
-      v9 = [v8 destination];
-      v10 = [v9 clLocation];
-      [v7 distanceFromLocation:v10];
+      v6 = [RTLocationManager stringForRegionCallbackType:callback];
+      currentLocation = [(SMSessionMonitor *)self currentLocation];
+      configuration = [(SMSessionMonitor *)self configuration];
+      destination = [configuration destination];
+      clLocation = [destination clLocation];
+      [currentLocation distanceFromLocation:clLocation];
       v16 = 136315650;
       v17 = "[SMSessionMonitor _updateRegionStateWithCircularRegionCallback:]";
       v18 = 2112;
@@ -3016,27 +3016,27 @@ LABEL_10:
     }
   }
 
-  v12 = [(SMSessionMonitor *)self configuration];
-  v13 = [v12 sessionType];
+  configuration2 = [(SMSessionMonitor *)self configuration];
+  sessionType = [configuration2 sessionType];
 
-  if (v13 == 2)
+  if (sessionType == 2)
   {
-    [(SMSessionMonitor *)self _updateDestinationBoundRegionStateWithCircularRegionCallback:a3];
+    [(SMSessionMonitor *)self _updateDestinationBoundRegionStateWithCircularRegionCallback:callback];
   }
 
   else
   {
-    v14 = [(SMSessionMonitor *)self configuration];
-    v15 = [v14 sessionType];
+    configuration3 = [(SMSessionMonitor *)self configuration];
+    sessionType2 = [configuration3 sessionType];
 
-    if (v15 == 3)
+    if (sessionType2 == 3)
     {
-      [(SMSessionMonitor *)self _updateRoundTripRegionStateWithCircularRegionCallback:a3];
+      [(SMSessionMonitor *)self _updateRoundTripRegionStateWithCircularRegionCallback:callback];
     }
   }
 }
 
-- (void)_updateDestinationBoundRegionStateWithCircularRegionCallback:(int64_t)a3
+- (void)_updateDestinationBoundRegionStateWithCircularRegionCallback:(int64_t)callback
 {
   v34 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3044,10 +3044,10 @@ LABEL_10:
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [RTLocationManager stringForRegionCallbackType:a3];
+      v6 = [RTLocationManager stringForRegionCallbackType:callback];
       v7 = MEMORY[0x277D4ABD0];
-      v8 = [(SMSessionMonitor *)self sessionMonitorState];
-      v9 = [v7 regionStateToString:{objc_msgSend(v8, "currentRegionState")}];
+      sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+      v9 = [v7 regionStateToString:{objc_msgSend(sessionMonitorState, "currentRegionState")}];
       *buf = 136315650;
       v29 = "[SMSessionMonitor _updateDestinationBoundRegionStateWithCircularRegionCallback:]";
       v30 = 2112;
@@ -3058,40 +3058,40 @@ LABEL_10:
     }
   }
 
-  if (a3 == 1)
+  if (callback == 1)
   {
-    v10 = [(SMSessionMonitor *)self sessionMonitorState];
-    v11 = [v10 currentRegionState];
+    sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+    currentRegionState = [sessionMonitorState2 currentRegionState];
 
-    if (v11 <= 2)
+    if (currentRegionState <= 2)
     {
-      v12 = [(SMSessionMonitor *)self sessionMonitorState];
-      [v12 setCurrentRegionState:2];
+      sessionMonitorState3 = [(SMSessionMonitor *)self sessionMonitorState];
+      [sessionMonitorState3 setCurrentRegionState:2];
 
       [(SMSessionMonitor *)self _persistState];
-      v13 = [(SMSessionMonitor *)self regionInsidePendingTimer];
-      [v13 invalidate];
+      regionInsidePendingTimer = [(SMSessionMonitor *)self regionInsidePendingTimer];
+      [regionInsidePendingTimer invalidate];
 
       [(SMSessionMonitor *)self setRegionInsidePendingTimer:0];
       objc_initWeak(&location, self);
-      v14 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v15 = [RTXPCTimerAlarm alloc];
-      v16 = [(SMSessionMonitor *)self queue];
+      queue = [(SMSessionMonitor *)self queue];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __81__SMSessionMonitor__updateDestinationBoundRegionStateWithCircularRegionCallback___block_invoke;
       v24[3] = &unk_2788C7638;
-      v17 = v14;
+      v17 = date;
       v25 = v17;
       objc_copyWeak(&v26, &location);
-      v18 = [(RTXPCTimerAlarm *)v15 initWithIdentifier:@"com.apple.routined.SMSessionMonitor.insidePendingTimer" queue:v16 handler:v24];
+      v18 = [(RTXPCTimerAlarm *)v15 initWithIdentifier:@"com.apple.routined.SMSessionMonitor.insidePendingTimer" queue:queue handler:v24];
       [(SMSessionMonitor *)self setRegionInsidePendingTimer:v18];
 
-      v19 = [(SMSessionMonitor *)self regionInsidePendingTimer];
+      regionInsidePendingTimer2 = [(SMSessionMonitor *)self regionInsidePendingTimer];
       [(SMSessionMonitor *)self sessionMonitorRegionInsidePendingTimerDelay];
       v20 = [v17 dateByAddingTimeInterval:?];
       v23 = 0;
-      [v19 fireWithDate:v20 error:&v23];
+      [regionInsidePendingTimer2 fireWithDate:v20 error:&v23];
       v21 = v23;
 
       if (v21)
@@ -3112,7 +3112,7 @@ LABEL_10:
     }
   }
 
-  else if (a3 == 2)
+  else if (callback == 2)
   {
     [(SMSessionMonitor *)self _onRegionExit];
   }
@@ -3142,7 +3142,7 @@ void __81__SMSessionMonitor__updateDestinationBoundRegionStateWithCircularRegion
   [WeakRetained _onRegionInsidePendingTimerExpiry];
 }
 
-- (void)_updateRoundTripRegionStateWithCircularRegionCallback:(int64_t)a3
+- (void)_updateRoundTripRegionStateWithCircularRegionCallback:(int64_t)callback
 {
   v34 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3150,10 +3150,10 @@ void __81__SMSessionMonitor__updateDestinationBoundRegionStateWithCircularRegion
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [RTLocationManager stringForRegionCallbackType:a3];
+      v6 = [RTLocationManager stringForRegionCallbackType:callback];
       v7 = MEMORY[0x277D4ABD0];
-      v8 = [(SMSessionMonitor *)self sessionMonitorState];
-      v9 = [v7 regionStateToString:{objc_msgSend(v8, "currentRegionState")}];
+      sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+      v9 = [v7 regionStateToString:{objc_msgSend(sessionMonitorState, "currentRegionState")}];
       *buf = 136315650;
       v29 = "[SMSessionMonitor _updateRoundTripRegionStateWithCircularRegionCallback:]";
       v30 = 2112;
@@ -3164,45 +3164,45 @@ void __81__SMSessionMonitor__updateDestinationBoundRegionStateWithCircularRegion
     }
   }
 
-  if (a3 == 2)
+  if (callback == 2)
   {
     [(SMSessionMonitor *)self _onRegionExit];
   }
 
   else
   {
-    v10 = [(SMSessionMonitor *)self sessionMonitorState];
-    v11 = [v10 currentRegionState];
+    sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+    currentRegionState = [sessionMonitorState2 currentRegionState];
 
-    if ((v11 - 2) >= 2 && v11)
+    if ((currentRegionState - 2) >= 2 && currentRegionState)
     {
-      if (v11 == 1)
+      if (currentRegionState == 1)
       {
-        if (a3 == 1)
+        if (callback == 1)
         {
-          v12 = [(SMSessionMonitor *)self sessionMonitorState];
-          [v12 setCurrentRegionState:2];
+          sessionMonitorState3 = [(SMSessionMonitor *)self sessionMonitorState];
+          [sessionMonitorState3 setCurrentRegionState:2];
 
           [(SMSessionMonitor *)self _persistState];
           objc_initWeak(&location, self);
-          v13 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           v14 = [RTXPCTimerAlarm alloc];
-          v15 = [(SMSessionMonitor *)self queue];
+          queue = [(SMSessionMonitor *)self queue];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __74__SMSessionMonitor__updateRoundTripRegionStateWithCircularRegionCallback___block_invoke;
           v24[3] = &unk_2788C7638;
-          v16 = v13;
+          v16 = date;
           v25 = v16;
           objc_copyWeak(&v26, &location);
-          v17 = [(RTXPCTimerAlarm *)v14 initWithIdentifier:@"com.apple.routined.SMSessionMonitor.insidePendingTimer" queue:v15 handler:v24];
+          v17 = [(RTXPCTimerAlarm *)v14 initWithIdentifier:@"com.apple.routined.SMSessionMonitor.insidePendingTimer" queue:queue handler:v24];
           [(SMSessionMonitor *)self setRegionInsidePendingTimer:v17];
 
-          v18 = [(SMSessionMonitor *)self regionInsidePendingTimer];
+          regionInsidePendingTimer = [(SMSessionMonitor *)self regionInsidePendingTimer];
           [(SMSessionMonitor *)self sessionMonitorRegionInsidePendingTimerDelay];
           v19 = [v16 dateByAddingTimeInterval:?];
           v23 = 0;
-          [v18 fireWithDate:v19 error:&v23];
+          [regionInsidePendingTimer fireWithDate:v19 error:&v23];
           v20 = v23;
 
           if (v20)
@@ -3270,8 +3270,8 @@ void __74__SMSessionMonitor__updateRoundTripRegionStateWithCircularRegionCallbac
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = MEMORY[0x277D4ABD0];
-      v5 = [(SMSessionMonitor *)self sessionMonitorState];
-      v6 = [v4 regionStateToString:{objc_msgSend(v5, "currentRegionState")}];
+      sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+      v6 = [v4 regionStateToString:{objc_msgSend(sessionMonitorState, "currentRegionState")}];
       v17 = 136315394;
       v18 = "[SMSessionMonitor _onRegionInsidePendingTimerExpiry]";
       v19 = 2112;
@@ -3280,33 +3280,33 @@ void __74__SMSessionMonitor__updateRoundTripRegionStateWithCircularRegionCallbac
     }
   }
 
-  v7 = [(SMSessionMonitor *)self sessionMonitorState];
-  v8 = [v7 currentRegionState];
+  sessionMonitorState2 = [(SMSessionMonitor *)self sessionMonitorState];
+  currentRegionState = [sessionMonitorState2 currentRegionState];
 
-  if (v8 == 2)
+  if (currentRegionState == 2)
   {
-    v9 = [(SMSessionMonitor *)self sessionMonitorState];
-    [v9 setCurrentRegionState:3];
+    sessionMonitorState3 = [(SMSessionMonitor *)self sessionMonitorState];
+    [sessionMonitorState3 setCurrentRegionState:3];
 
     [(SMSessionMonitor *)self _persistState];
     v10 = objc_alloc(MEMORY[0x277D4ABC8]);
-    v11 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-    if (v11)
+    mostRecentTriggerContext = [(SMSessionMonitor *)self mostRecentTriggerContext];
+    if (mostRecentTriggerContext)
     {
-      v8 = [(SMSessionMonitor *)self mostRecentTriggerContext];
-      v12 = [v8 triggerCategory];
+      currentRegionState = [(SMSessionMonitor *)self mostRecentTriggerContext];
+      triggerCategory = [currentRegionState triggerCategory];
     }
 
     else
     {
-      v12 = 0;
+      triggerCategory = 0;
     }
 
-    v13 = [(SMSessionMonitor *)self configuration];
-    v14 = [v13 sessionID];
-    v15 = [v10 initWithUpdateReason:4 triggerCategory:v12 sessionID:v14];
+    configuration = [(SMSessionMonitor *)self configuration];
+    sessionID = [configuration sessionID];
+    v15 = [v10 initWithUpdateReason:4 triggerCategory:triggerCategory sessionID:sessionID];
 
-    if (v11)
+    if (mostRecentTriggerContext)
     {
     }
 
@@ -3314,8 +3314,8 @@ void __74__SMSessionMonitor__updateRoundTripRegionStateWithCircularRegionCallbac
     [(SMSessionMonitor *)self setRiskState:4];
   }
 
-  v16 = [(SMSessionMonitor *)self regionInsidePendingTimer];
-  [v16 invalidate];
+  regionInsidePendingTimer = [(SMSessionMonitor *)self regionInsidePendingTimer];
+  [regionInsidePendingTimer invalidate];
 
   [(SMSessionMonitor *)self setRegionInsidePendingTimer:0];
 }
@@ -3334,26 +3334,26 @@ void __74__SMSessionMonitor__updateRoundTripRegionStateWithCircularRegionCallbac
     }
   }
 
-  v4 = [(SMSessionMonitor *)self sessionMonitorState];
-  [v4 setCurrentRegionState:1];
+  sessionMonitorState = [(SMSessionMonitor *)self sessionMonitorState];
+  [sessionMonitorState setCurrentRegionState:1];
 
   [(SMSessionMonitor *)self _persistState];
-  v5 = [(SMSessionMonitor *)self regionInsidePendingTimer];
-  [v5 invalidate];
+  regionInsidePendingTimer = [(SMSessionMonitor *)self regionInsidePendingTimer];
+  [regionInsidePendingTimer invalidate];
 
   [(SMSessionMonitor *)self setRegionInsidePendingTimer:0];
 }
 
-- (void)onLocationNotification:(id)a3
+- (void)onLocationNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __43__SMSessionMonitor_onLocationNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(SMSessionMonitor *)self queue:v8];
   dispatch_async(v7, v6);

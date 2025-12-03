@@ -1,7 +1,7 @@
 @interface KPFGingerAnimationRegistry
-- (Class)effectClassWithName:(id)a3 andType:(id)a4;
+- (Class)effectClassWithName:(id)name andType:(id)type;
 - (KPFGingerAnimationRegistry)init;
-- (id)p_animationTypeNumberFromString:(id)a3;
+- (id)p_animationTypeNumberFromString:(id)string;
 - (void)dealloc;
 @end
 
@@ -16,12 +16,12 @@
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = +[NSMutableDictionary dictionary];
-    v5 = [objc_opt_class() supportedAnimations];
+    supportedAnimations = [objc_opt_class() supportedAnimations];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v34 objects:v41 count:16];
+    v6 = [supportedAnimations countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
@@ -32,7 +32,7 @@
         {
           if (*v35 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supportedAnimations);
           }
 
           v10 = *(*(&v34 + 1) + 8 * i);
@@ -43,20 +43,20 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v34 objects:v41 count:16];
+        v7 = [supportedAnimations countByEnumeratingWithState:&v34 objects:v41 count:16];
       }
 
       while (v7);
     }
 
-    v12 = [v4 allValues];
+    allValues = [v4 allValues];
     v2->mClassesForTypeAndName = objc_alloc_init(NSMutableDictionary);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v12;
-    v25 = [v12 countByEnumeratingWithState:&v30 objects:v40 count:16];
+    obj = allValues;
+    v25 = [allValues countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v25)
     {
       v24 = *v31;
@@ -74,8 +74,8 @@
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v15 = [v14 supportedTypes];
-          v16 = [v15 countByEnumeratingWithState:&v26 objects:v39 count:16];
+          supportedTypes = [v14 supportedTypes];
+          v16 = [supportedTypes countByEnumeratingWithState:&v26 objects:v39 count:16];
           if (v16)
           {
             v17 = v16;
@@ -86,7 +86,7 @@
               {
                 if (*v27 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(supportedTypes);
                 }
 
                 v20 = *(*(&v26 + 1) + 8 * k);
@@ -100,7 +100,7 @@
                 [v21 setObject:v14 forKeyedSubscript:{objc_msgSend(v14, "animationName")}];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v26 objects:v39 count:16];
+              v17 = [supportedTypes countByEnumeratingWithState:&v26 objects:v39 count:16];
             }
 
             while (v17);
@@ -124,19 +124,19 @@
   [(KPFGingerAnimationRegistry *)&v3 dealloc];
 }
 
-- (id)p_animationTypeNumberFromString:(id)a3
+- (id)p_animationTypeNumberFromString:(id)string
 {
-  KNAnimationTypeFromKPFAnimationType(a3);
+  KNAnimationTypeFromKPFAnimationType(string);
   v3 = KNAnimationTypeAsNumber();
   [v3 intValue];
   return v3;
 }
 
-- (Class)effectClassWithName:(id)a3 andType:(id)a4
+- (Class)effectClassWithName:(id)name andType:(id)type
 {
-  v5 = [(NSMutableDictionary *)self->mClassesForTypeAndName objectForKeyedSubscript:[(KPFGingerAnimationRegistry *)self p_animationTypeNumberFromString:a4]];
+  v5 = [(NSMutableDictionary *)self->mClassesForTypeAndName objectForKeyedSubscript:[(KPFGingerAnimationRegistry *)self p_animationTypeNumberFromString:type]];
 
-  return [v5 objectForKeyedSubscript:a3];
+  return [v5 objectForKeyedSubscript:name];
 }
 
 @end

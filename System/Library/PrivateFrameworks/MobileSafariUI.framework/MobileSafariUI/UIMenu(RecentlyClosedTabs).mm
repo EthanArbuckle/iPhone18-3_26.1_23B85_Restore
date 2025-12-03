@@ -17,8 +17,8 @@
   {
     v15 = MEMORY[0x277CCACA8];
     v16 = _WBSLocalizedString();
-    v17 = [v11 title];
-    v18 = [v15 stringWithFormat:v16, v17];
+    title = [v11 title];
+    v18 = [v15 stringWithFormat:v16, title];
 
     v14 = v18;
   }
@@ -64,21 +64,21 @@
   v7 = a5;
   v8 = a4;
   v9 = a3;
-  v10 = [v9 payload];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = [v10 UUIDString];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D28FB0]];
+  payload = [v9 payload];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uUIDString = [payload UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277D28FB0]];
 
-  v13 = [v8 UUIDString];
+  uUIDString2 = [v8 UUIDString];
 
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277D28FA8]];
+  [dictionary setObject:uUIDString2 forKeyedSubscript:*MEMORY[0x277D28FA8]];
   v14 = MEMORY[0x277D75370];
-  v15 = [v9 title];
-  v16 = [v14 commandWithTitle:v15 image:v7 action:sel_openRecentlyClosedTab_ propertyList:v11];
+  title = [v9 title];
+  v16 = [v14 commandWithTitle:title image:v7 action:sel_openRecentlyClosedTab_ propertyList:dictionary];
 
-  v17 = [v9 subtitle];
+  subtitle = [v9 subtitle];
 
-  [v16 setDiscoverabilityTitle:v17];
+  [v16 setDiscoverabilityTitle:subtitle];
   [v16 setAccessibilityIdentifier:@"RecentlyClosedTabsMenuItem"];
 
   return v16;
@@ -88,10 +88,10 @@
 {
   v3 = MEMORY[0x277D28F00];
   v4 = a3;
-  v5 = [v3 sharedBrowserSavedState];
-  v6 = [v4 identifier];
+  sharedBrowserSavedState = [v3 sharedBrowserSavedState];
+  identifier = [v4 identifier];
 
-  v7 = [v5 recentlyClosedTabsForProfileWithIdentifier:v6];
+  v7 = [sharedBrowserSavedState recentlyClosedTabsForProfileWithIdentifier:identifier];
 
   v8 = [v7 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_6];
 

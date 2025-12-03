@@ -1,45 +1,45 @@
 @interface TypistKeyboardDataInputUIClient
-+ (BOOL)_attemptRemoteKeyboardConnection:(double)a3 targetApplication:(id)a4;
-+ (BOOL)connectToRemoteKeyboard:(double)a3 targetApplication:(id)a4;
++ (BOOL)_attemptRemoteKeyboardConnection:(double)connection targetApplication:(id)application;
++ (BOOL)connectToRemoteKeyboard:(double)keyboard targetApplication:(id)application;
 + (BOOL)dismissKeyboard;
 + (BOOL)hasMarkedText;
 + (BOOL)isExtendedCandidateViewMode;
-+ (BOOL)switchToKeyboard:(id)a3;
-+ (BOOL)switchToPlane:(id)a3;
-+ (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4;
-+ (CGPoint)getCandidateCenter:(id)a3;
-+ (CGPoint)getCandidateCenterAtIndex:(int64_t)a3;
++ (BOOL)switchToKeyboard:(id)keyboard;
++ (BOOL)switchToPlane:(id)plane;
++ (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset;
++ (CGPoint)getCandidateCenter:(id)center;
++ (CGPoint)getCandidateCenterAtIndex:(int64_t)index;
 + (CGPoint)getExtendedCandidateViewToggleButtonCenter;
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3;
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard;
 + (CGRect)getCandidateBarRect;
 + (__n128)getKeyboardScaleTransform;
 + (double)getKeyboardPPM;
-+ (id)addKeyboardPopupKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6 keyplaneKeycaps:(id)a7;
-+ (id)addKeyboards:(id)a3;
-+ (id)dismissOneTimeTIActions:(id)a3;
++ (id)addKeyboardPopupKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps;
++ (id)addKeyboards:(id)keyboards;
++ (id)dismissOneTimeTIActions:(id)actions;
 + (id)getAllCandidates;
-+ (id)getKeyboardLayout:(id)a3;
++ (id)getKeyboardLayout:(id)layout;
 + (id)getKeyboardUISettings;
-+ (id)getKeyplaneDescription:(id)a3;
++ (id)getKeyplaneDescription:(id)description;
 + (id)getSentenceBoundaryStrings;
 + (id)getTIPreferences;
-+ (id)getVisibleCandidateList:(id)a3;
++ (id)getVisibleCandidateList:(id)list;
 + (id)getVisibleKeyplaneName;
 + (id)markedText;
-+ (id)removeKeyboards:(id)a3;
-+ (id)setKeyboardUISettings:(id)a3;
-+ (id)setKeyboards:(id)a3;
-+ (id)setTIPreferences:(id)a3;
++ (id)removeKeyboards:(id)keyboards;
++ (id)setKeyboardUISettings:(id)settings;
++ (id)setKeyboards:(id)keyboards;
++ (id)setTIPreferences:(id)preferences;
 + (void)disconnectFromRemoteKeyboard;
-+ (void)showCandidateAtIndex:(int64_t)a3;
++ (void)showCandidateAtIndex:(int64_t)index;
 + (void)tryConnection;
 @end
 
 @implementation TypistKeyboardDataInputUIClient
 
-+ (BOOL)connectToRemoteKeyboard:(double)a3 targetApplication:(id)a4
++ (BOOL)connectToRemoteKeyboard:(double)keyboard targetApplication:(id)application
 {
-  v6 = a4;
+  applicationCopy = application;
   if (_inputTeletypeIsLinked_onceToken != -1)
   {
     +[TypistKeyboardDataInputUIClient connectToRemoteKeyboard:targetApplication:];
@@ -48,31 +48,31 @@
   v7 = _inputTeletypeIsLinked_linked | _activeConnectionPtr_activeConnectionPtr;
   if (_inputTeletypeIsLinked_linked == 1 && (_activeConnectionPtr_activeConnectionPtr & 1) == 0)
   {
-    v7 = [a1 _attemptRemoteKeyboardConnection:v6 targetApplication:a3];
+    v7 = [self _attemptRemoteKeyboardConnection:applicationCopy targetApplication:keyboard];
     _activeConnectionPtr_activeConnectionPtr = v7;
   }
 
   return v7 & 1;
 }
 
-+ (BOOL)_attemptRemoteKeyboardConnection:(double)a3 targetApplication:(id)a4
++ (BOOL)_attemptRemoteKeyboardConnection:(double)connection targetApplication:(id)application
 {
-  v5 = a4;
+  applicationCopy = application;
   if (+[TypistKeyboardData isKeyboardUIOutOfProcess])
   {
-    v12 = [getITTKeyboardProxyClass() connectToRemoteKeyboard:a3];
+    v12 = [getITTKeyboardProxyClass() connectToRemoteKeyboard:connection];
   }
 
   else
   {
-    if (!v5)
+    if (!applicationCopy)
     {
       TYLogl(OS_LOG_TYPE_ERROR, @"No target application bundle id is provided for IP keyboard.", v6, v7, v8, v9, v10, v11, v15);
       v13 = 0;
       goto LABEL_6;
     }
 
-    v12 = [getITTKeyboardProxyClass() connectToRemoteKeyboard:v5 targetApplication:a3];
+    v12 = [getITTKeyboardProxyClass() connectToRemoteKeyboard:applicationCopy targetApplication:connection];
   }
 
   v13 = v12;
@@ -87,7 +87,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tryConnection_onceToken != -1)
   {
     dispatch_once(&tryConnection_onceToken, block);
@@ -117,10 +117,10 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
   }
 }
 
-+ (id)getKeyboardLayout:(id)a3
++ (id)getKeyboardLayout:(id)layout
 {
-  v4 = a3;
-  [a1 tryConnection];
+  layoutCopy = layout;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
@@ -129,7 +129,7 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
     v26 = [@"ITT" stringByAppendingString:?];
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v4 performSelector:sel_flickTable];
+      v25 = [layoutCopy performSelector:sel_flickTable];
     }
 
     else
@@ -139,7 +139,7 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v4 performSelector:sel__flickGestureDirection];
+      v24 = [layoutCopy performSelector:sel__flickGestureDirection];
     }
 
     else
@@ -149,7 +149,7 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v4 performSelector:sel_whiteSpaceRegex];
+      v7 = [layoutCopy performSelector:sel_whiteSpaceRegex];
     }
 
     else
@@ -159,7 +159,7 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v4 performSelector:sel_multiTapOrbit];
+      v8 = [layoutCopy performSelector:sel_multiTapOrbit];
     }
 
     else
@@ -186,20 +186,20 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
     v10 = v9;
     _Block_object_dispose(&v29, 8);
     v11 = [v9 alloc];
-    v12 = [v4 isTenKey];
-    v13 = [v4 isKanaKeyboard];
-    v14 = [v4 flickTyping];
-    v15 = [v4 shouldShowDictationKey];
-    v16 = [v4 shouldShowGlobeKey];
-    LOBYTE(v23) = [v4 usePopupKeys];
-    v17 = [v11 initWithClassKey:v26 isTenKey:v12 isKana:v13 flickTyping:v14 showDictationKey:v15 showGlobeKey:v16 usePopupKeys:v23 flickTable:v25 flickGestureDirection:v24 whiteSpaceRegex:v7 multiTapOrbit:v8];
+    isTenKey = [layoutCopy isTenKey];
+    isKanaKeyboard = [layoutCopy isKanaKeyboard];
+    flickTyping = [layoutCopy flickTyping];
+    shouldShowDictationKey = [layoutCopy shouldShowDictationKey];
+    shouldShowGlobeKey = [layoutCopy shouldShowGlobeKey];
+    LOBYTE(v23) = [layoutCopy usePopupKeys];
+    v17 = [v11 initWithClassKey:v26 isTenKey:isTenKey isKana:isKanaKeyboard flickTyping:flickTyping showDictationKey:shouldShowDictationKey showGlobeKey:shouldShowGlobeKey usePopupKeys:v23 flickTable:v25 flickGestureDirection:v24 whiteSpaceRegex:v7 multiTapOrbit:v8];
     v18 = [getITTKeyboardProxyClass() getKeyboardLayoutWithConfiguration:v17];
-    v19 = [v18 asPropertyList];
-    v20 = v19;
+    asPropertyList = [v18 asPropertyList];
+    v20 = asPropertyList;
     v21 = MEMORY[0x277CBEC10];
-    if (v19)
+    if (asPropertyList)
     {
-      v21 = v19;
+      v21 = asPropertyList;
     }
 
     v5 = v21;
@@ -210,15 +210,15 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
 + (id)getTIPreferences
 {
-  [a1 tryConnection];
+  [self tryConnection];
   v2 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() getTIPreferences];
-    v4 = v3;
-    if (v3)
+    getTIPreferences = [getITTKeyboardProxyClass() getTIPreferences];
+    v4 = getTIPreferences;
+    if (getTIPreferences)
     {
-      v5 = v3;
+      v5 = getTIPreferences;
     }
 
     else
@@ -234,15 +234,15 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
 + (id)getKeyboardUISettings
 {
-  [a1 tryConnection];
+  [self tryConnection];
   v2 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() getKeyboardUISettings];
-    v4 = v3;
-    if (v3)
+    getKeyboardUISettings = [getITTKeyboardProxyClass() getKeyboardUISettings];
+    v4 = getKeyboardUISettings;
+    if (getKeyboardUISettings)
     {
-      v5 = v3;
+      v5 = getKeyboardUISettings;
     }
 
     else
@@ -258,15 +258,15 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
 
 + (id)getSentenceBoundaryStrings
 {
-  [a1 tryConnection];
+  [self tryConnection];
   v2 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() getSentenceBoundaryStrings];
-    v4 = v3;
-    if (v3)
+    getSentenceBoundaryStrings = [getITTKeyboardProxyClass() getSentenceBoundaryStrings];
+    v4 = getSentenceBoundaryStrings;
+    if (getSentenceBoundaryStrings)
     {
-      v5 = v3;
+      v5 = getSentenceBoundaryStrings;
     }
 
     else
@@ -280,21 +280,21 @@ void __48__TypistKeyboardDataInputUIClient_tryConnection__block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)setTIPreferences:(id)a3
++ (id)setTIPreferences:(id)preferences
 {
-  v4 = a3;
-  [a1 tryConnection];
+  preferencesCopy = preferences;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(preferencesCopy, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __52__TypistKeyboardDataInputUIClient_setTIPreferences___block_invoke;
     v12[3] = &unk_279DF4C40;
     v13 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v12];
+    [preferencesCopy enumerateKeysAndObjectsUsingBlock:v12];
     v8 = [getITTKeyboardProxyClass() setTIPreferences:v7];
     v9 = v8;
     if (v8)
@@ -333,21 +333,21 @@ void __52__TypistKeyboardDataInputUIClient_setTIPreferences___block_invoke(uint6
   }
 }
 
-+ (id)setKeyboardUISettings:(id)a3
++ (id)setKeyboardUISettings:(id)settings
 {
-  v4 = a3;
-  [a1 tryConnection];
+  settingsCopy = settings;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(settingsCopy, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke;
     v12[3] = &unk_279DF4C40;
     v13 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v12];
+    [settingsCopy enumerateKeysAndObjectsUsingBlock:v12];
     v8 = [getITTKeyboardProxyClass() setKeyboardUISettings:v7];
     v9 = v8;
     if (v8)
@@ -386,14 +386,14 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   }
 }
 
-+ (id)setKeyboards:(id)a3
++ (id)setKeyboards:(id)keyboards
 {
-  v4 = a3;
-  [a1 tryConnection];
+  keyboardsCopy = keyboards;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEBF8];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [getITTKeyboardProxyClass() setKeyboards:v4];
+    v6 = [getITTKeyboardProxyClass() setKeyboards:keyboardsCopy];
     v7 = v6;
     if (v6)
     {
@@ -411,14 +411,14 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v5;
 }
 
-+ (id)addKeyboards:(id)a3
++ (id)addKeyboards:(id)keyboards
 {
-  v4 = a3;
-  [a1 tryConnection];
+  keyboardsCopy = keyboards;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEBF8];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [getITTKeyboardProxyClass() addKeyboards:v4];
+    v6 = [getITTKeyboardProxyClass() addKeyboards:keyboardsCopy];
     v7 = v6;
     if (v6)
     {
@@ -436,14 +436,14 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v5;
 }
 
-+ (id)removeKeyboards:(id)a3
++ (id)removeKeyboards:(id)keyboards
 {
-  v4 = a3;
-  [a1 tryConnection];
+  keyboardsCopy = keyboards;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEBF8];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [getITTKeyboardProxyClass() removeKeyboards:v4];
+    v6 = [getITTKeyboardProxyClass() removeKeyboards:keyboardsCopy];
     v7 = v6;
     if (v6)
     {
@@ -461,14 +461,14 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v5;
 }
 
-+ (id)dismissOneTimeTIActions:(id)a3
++ (id)dismissOneTimeTIActions:(id)actions
 {
-  v4 = a3;
-  [a1 tryConnection];
+  actionsCopy = actions;
+  [self tryConnection];
   v5 = MEMORY[0x277CBEC10];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v6 = [getITTKeyboardProxyClass() dismissOneTimeTIActions:v4];
+    v6 = [getITTKeyboardProxyClass() dismissOneTimeTIActions:actionsCopy];
     v7 = v6;
     if (v6)
     {
@@ -486,13 +486,13 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v5;
 }
 
-+ (BOOL)switchToKeyboard:(id)a3
++ (BOOL)switchToKeyboard:(id)keyboard
 {
-  v4 = a3;
-  [a1 tryConnection];
+  keyboardCopy = keyboard;
+  [self tryConnection];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v5 = [getITTKeyboardProxyClass() switchToKeyboard:v4];
+    v5 = [getITTKeyboardProxyClass() switchToKeyboard:keyboardCopy];
   }
 
   else
@@ -505,7 +505,7 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
 
 + (BOOL)dismissKeyboard
 {
-  [a1 tryConnection];
+  [self tryConnection];
   if (_activeConnectionPtr_activeConnectionPtr != 1)
   {
     return 0;
@@ -516,13 +516,13 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return [ITTKeyboardProxyClass dismissKeyboard];
 }
 
-+ (BOOL)switchToPlane:(id)a3
++ (BOOL)switchToPlane:(id)plane
 {
-  v4 = a3;
-  [a1 tryConnection];
+  planeCopy = plane;
+  [self tryConnection];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v5 = [getITTKeyboardProxyClass() switchToPlane:v4];
+    v5 = [getITTKeyboardProxyClass() switchToPlane:planeCopy];
   }
 
   else
@@ -535,15 +535,15 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
 
 + (id)getVisibleKeyplaneName
 {
-  [a1 tryConnection];
+  [self tryConnection];
   v2 = &stru_288014100;
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() getVisibleKeyplaneName];
-    v4 = v3;
-    if (v3)
+    getVisibleKeyplaneName = [getITTKeyboardProxyClass() getVisibleKeyplaneName];
+    v4 = getVisibleKeyplaneName;
+    if (getVisibleKeyplaneName)
     {
-      v5 = v3;
+      v5 = getVisibleKeyplaneName;
     }
 
     else
@@ -557,16 +557,16 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v2;
 }
 
-+ (id)getKeyplaneDescription:(id)a3
++ (id)getKeyplaneDescription:(id)description
 {
-  v4 = a3;
-  [a1 tryConnection];
-  if (_activeConnectionPtr_activeConnectionPtr == 1 && ([getITTKeyboardProxyClass() getDescriptionOfKeyplane:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  descriptionCopy = description;
+  [self tryConnection];
+  if (_activeConnectionPtr_activeConnectionPtr == 1 && ([getITTKeyboardProxyClass() getDescriptionOfKeyplane:descriptionCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = objc_alloc_init(TypistKeyplane);
-    v8 = [v6 name];
-    [(TypistKeyplane *)v7 setName:v8];
+    name = [v6 name];
+    [(TypistKeyplane *)v7 setName:name];
 
     -[TypistKeyplane setIsLetters:](v7, "setIsLetters:", [v6 isLetters]);
     -[TypistKeyplane setIsAlphabeticPlane:](v7, "setIsAlphabeticPlane:", [v6 isAlphabeticPlane]);
@@ -588,11 +588,11 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   v2 = MEMORY[0x277CBEBF8];
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() getAllCandidates];
-    v4 = v3;
-    if (v3)
+    getAllCandidates = [getITTKeyboardProxyClass() getAllCandidates];
+    v4 = getAllCandidates;
+    if (getAllCandidates)
     {
-      v5 = v3;
+      v5 = getAllCandidates;
     }
 
     else
@@ -606,13 +606,13 @@ void __57__TypistKeyboardDataInputUIClient_setKeyboardUISettings___block_invoke(
   return v2;
 }
 
-+ (id)getVisibleCandidateList:(id)a3
++ (id)getVisibleCandidateList:(id)list
 {
-  v3 = a3;
-  v4 = v3;
+  listCopy = list;
+  v4 = listCopy;
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    if ([v3 isEqualToString:@"typistCandidateBarTypeMecabra"])
+    if ([listCopy isEqualToString:@"typistCandidateBarTypeMecabra"])
     {
       v5 = 1;
 LABEL_5:
@@ -644,9 +644,9 @@ LABEL_7:
   return v7;
 }
 
-+ (CGPoint)getCandidateCenter:(id)a3
++ (CGPoint)getCandidateCenter:(id)center
 {
-  v3 = a3;
+  centerCopy = center;
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
     getITTKeyboardProxyClass();
@@ -782,11 +782,11 @@ LABEL_7:
   v2 = &stru_288014100;
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = [getITTKeyboardProxyClass() markedText];
-    v4 = v3;
-    if (v3)
+    markedText = [getITTKeyboardProxyClass() markedText];
+    v4 = markedText;
+    if (markedText)
     {
-      v5 = v3;
+      v5 = markedText;
     }
 
     else
@@ -800,22 +800,22 @@ LABEL_7:
   return v2;
 }
 
-+ (void)showCandidateAtIndex:(int64_t)a3
++ (void)showCandidateAtIndex:(int64_t)index
 {
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
     ITTKeyboardProxyClass = getITTKeyboardProxyClass();
 
-    [ITTKeyboardProxyClass showCandidateAtIndex:a3];
+    [ITTKeyboardProxyClass showCandidateAtIndex:index];
   }
 }
 
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard
 {
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    v3 = a3;
-    [getITTKeyboardProxyClass() findKeyBoundsInKeyboard:v3];
+    keyboardCopy = keyboard;
+    [getITTKeyboardProxyClass() findKeyBoundsInKeyboard:keyboardCopy];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -841,30 +841,30 @@ LABEL_7:
   return result;
 }
 
-+ (id)addKeyboardPopupKeys:(id)a3 keys:(id)a4 inPlane:(id)a5 addTo:(id)a6 keyplaneKeycaps:(id)a7
++ (id)addKeyboardPopupKeys:(id)keys keys:(id)a4 inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps
 {
-  v11 = a3;
+  keysCopy = keys;
   v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  planeCopy = plane;
+  toCopy = to;
+  keycapsCopy = keycaps;
   __assert_rtn("+[TypistKeyboardDataInputUIClient addKeyboardPopupKeys:keys:inPlane:addTo:keyplaneKeycaps:]", "TypistKeyboardDataInputUIClient.m", 459, "false && Do no expect calls to [TypistKeyboardDataInputUIClient addKeyboardPopupKeys:keys:inPlane:addTo:keyplaneCaps:]");
 }
 
-+ (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4
++ (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = key.x + offset.x;
+  v5 = key.y + offset.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)getCandidateCenterAtIndex:(int64_t)a3
++ (CGPoint)getCandidateCenterAtIndex:(int64_t)index
 {
   if (_activeConnectionPtr_activeConnectionPtr == 1)
   {
-    [getITTKeyboardProxyClass() getCandidateCenterWithIndex:a3];
+    [getITTKeyboardProxyClass() getCandidateCenterWithIndex:index];
   }
 
   else

@@ -1,34 +1,34 @@
 @interface ICIAMMessageContent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContentParameters:(id)a3;
-- (void)addImages:(id)a3;
-- (void)addMessageActions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentParameters:(id)parameters;
+- (void)addImages:(id)images;
+- (void)addMessageActions:(id)actions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMMessageContent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(ICIAMMessageContent *)self setTitle:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ICIAMMessageContent *)self setSubtitle:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ICIAMMessageContent *)self setBody:?];
   }
@@ -37,7 +37,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = *(v4 + 6);
+  v5 = *(fromCopy + 6);
   v6 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v6)
   {
@@ -65,7 +65,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = *(v4 + 7);
+  v10 = *(fromCopy + 7);
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v11)
   {
@@ -93,7 +93,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v16)
   {
@@ -117,13 +117,13 @@
     while (v17);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ICIAMMessageContent *)self setIdentifier:?];
   }
 
   pageEvent = self->_pageEvent;
-  v21 = *(v4 + 8);
+  v21 = *(fromCopy + 8);
   if (pageEvent)
   {
     if (v21)
@@ -138,7 +138,7 @@
   }
 
   closeClickEvent = self->_closeClickEvent;
-  v23 = *(v4 + 3);
+  v23 = *(fromCopy + 3);
   if (closeClickEvent)
   {
     if (v23)
@@ -153,7 +153,7 @@
   }
 
   cardClickEvent = self->_cardClickEvent;
-  v25 = *(v4 + 2);
+  v25 = *(fromCopy + 2);
   if (cardClickEvent)
   {
     if (v25)
@@ -182,13 +182,13 @@
   return v9 ^ v11 ^ [(ICIAMMetricEvent *)self->_cardClickEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | v4[10])) || -[NSString isEqual:](title, "isEqual:")) && ((subtitle = self->_subtitle, !(subtitle | v4[9])) || -[NSString isEqual:](subtitle, "isEqual:")) && ((body = self->_body, !(body | v4[1])) || -[NSString isEqual:](body, "isEqual:")) && ((images = self->_images, !(images | v4[6])) || -[NSMutableArray isEqual:](images, "isEqual:")) && ((messageActions = self->_messageActions, !(messageActions | v4[7])) || -[NSMutableArray isEqual:](messageActions, "isEqual:")) && ((contentParameters = self->_contentParameters, !(contentParameters | v4[4])) || -[NSMutableArray isEqual:](contentParameters, "isEqual:")) && ((identifier = self->_identifier, !(identifier | v4[5])) || -[NSString isEqual:](identifier, "isEqual:")) && ((pageEvent = self->_pageEvent, !(pageEvent | v4[8])) || -[ICIAMMetricEvent isEqual:](pageEvent, "isEqual:")) && ((closeClickEvent = self->_closeClickEvent, !(closeClickEvent | v4[3])) || -[ICIAMMetricEvent isEqual:](closeClickEvent, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | equalCopy[10])) || -[NSString isEqual:](title, "isEqual:")) && ((subtitle = self->_subtitle, !(subtitle | equalCopy[9])) || -[NSString isEqual:](subtitle, "isEqual:")) && ((body = self->_body, !(body | equalCopy[1])) || -[NSString isEqual:](body, "isEqual:")) && ((images = self->_images, !(images | equalCopy[6])) || -[NSMutableArray isEqual:](images, "isEqual:")) && ((messageActions = self->_messageActions, !(messageActions | equalCopy[7])) || -[NSMutableArray isEqual:](messageActions, "isEqual:")) && ((contentParameters = self->_contentParameters, !(contentParameters | equalCopy[4])) || -[NSMutableArray isEqual:](contentParameters, "isEqual:")) && ((identifier = self->_identifier, !(identifier | equalCopy[5])) || -[NSString isEqual:](identifier, "isEqual:")) && ((pageEvent = self->_pageEvent, !(pageEvent | equalCopy[8])) || -[ICIAMMetricEvent isEqual:](pageEvent, "isEqual:")) && ((closeClickEvent = self->_closeClickEvent, !(closeClickEvent | equalCopy[3])) || -[ICIAMMetricEvent isEqual:](closeClickEvent, "isEqual:")))
   {
     cardClickEvent = self->_cardClickEvent;
-    if (cardClickEvent | v4[2])
+    if (cardClickEvent | equalCopy[2])
     {
       v15 = [(ICIAMMetricEvent *)cardClickEvent isEqual:?];
     }
@@ -207,19 +207,19 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   v9 = v5[9];
   v5[9] = v8;
 
-  v10 = [(NSString *)self->_body copyWithZone:a3];
+  v10 = [(NSString *)self->_body copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
@@ -243,7 +243,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v47 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v47 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addImages:v17];
 
         ++v16;
@@ -276,7 +276,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v43 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v43 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addMessageActions:v23];
 
         ++v22;
@@ -309,7 +309,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v39 + 1) + 8 * v28) copyWithZone:{a3, v39}];
+        v29 = [*(*(&v39 + 1) + 8 * v28) copyWithZone:{zone, v39}];
         [v5 addContentParameters:v29];
 
         ++v28;
@@ -322,117 +322,117 @@
     while (v26);
   }
 
-  v30 = [(NSString *)self->_identifier copyWithZone:a3];
+  v30 = [(NSString *)self->_identifier copyWithZone:zone];
   v31 = v5[5];
   v5[5] = v30;
 
-  v32 = [(ICIAMMetricEvent *)self->_pageEvent copyWithZone:a3];
+  v32 = [(ICIAMMetricEvent *)self->_pageEvent copyWithZone:zone];
   v33 = v5[8];
   v5[8] = v32;
 
-  v34 = [(ICIAMMetricEvent *)self->_closeClickEvent copyWithZone:a3];
+  v34 = [(ICIAMMetricEvent *)self->_closeClickEvent copyWithZone:zone];
   v35 = v5[3];
   v5[3] = v34;
 
-  v36 = [(ICIAMMetricEvent *)self->_cardClickEvent copyWithZone:a3];
+  v36 = [(ICIAMMetricEvent *)self->_cardClickEvent copyWithZone:zone];
   v37 = v5[2];
   v5[2] = v36;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if (self->_title)
   {
-    [v17 setTitle:?];
+    [toCopy setTitle:?];
   }
 
   if (self->_subtitle)
   {
-    [v17 setSubtitle:?];
+    [toCopy setSubtitle:?];
   }
 
   if (self->_body)
   {
-    [v17 setBody:?];
+    [toCopy setBody:?];
   }
 
   if ([(ICIAMMessageContent *)self imagesCount])
   {
-    [v17 clearImages];
-    v4 = [(ICIAMMessageContent *)self imagesCount];
-    if (v4)
+    [toCopy clearImages];
+    imagesCount = [(ICIAMMessageContent *)self imagesCount];
+    if (imagesCount)
     {
-      v5 = v4;
+      v5 = imagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ICIAMMessageContent *)self imagesAtIndex:i];
-        [v17 addImages:v7];
+        [toCopy addImages:v7];
       }
     }
   }
 
   if ([(ICIAMMessageContent *)self messageActionsCount])
   {
-    [v17 clearMessageActions];
-    v8 = [(ICIAMMessageContent *)self messageActionsCount];
-    if (v8)
+    [toCopy clearMessageActions];
+    messageActionsCount = [(ICIAMMessageContent *)self messageActionsCount];
+    if (messageActionsCount)
     {
-      v9 = v8;
+      v9 = messageActionsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ICIAMMessageContent *)self messageActionsAtIndex:j];
-        [v17 addMessageActions:v11];
+        [toCopy addMessageActions:v11];
       }
     }
   }
 
   if ([(ICIAMMessageContent *)self contentParametersCount])
   {
-    [v17 clearContentParameters];
-    v12 = [(ICIAMMessageContent *)self contentParametersCount];
-    if (v12)
+    [toCopy clearContentParameters];
+    contentParametersCount = [(ICIAMMessageContent *)self contentParametersCount];
+    if (contentParametersCount)
     {
-      v13 = v12;
+      v13 = contentParametersCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ICIAMMessageContent *)self contentParametersAtIndex:k];
-        [v17 addContentParameters:v15];
+        [toCopy addContentParameters:v15];
       }
     }
   }
 
   if (self->_identifier)
   {
-    [v17 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
-  v16 = v17;
+  v16 = toCopy;
   if (self->_pageEvent)
   {
-    [v17 setPageEvent:?];
-    v16 = v17;
+    [toCopy setPageEvent:?];
+    v16 = toCopy;
   }
 
   if (self->_closeClickEvent)
   {
-    [v17 setCloseClickEvent:?];
-    v16 = v17;
+    [toCopy setCloseClickEvent:?];
+    v16 = toCopy;
   }
 
   if (self->_cardClickEvent)
   {
-    [v17 setCardClickEvent:?];
-    v16 = v17;
+    [toCopy setCardClickEvent:?];
+    v16 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
@@ -565,12 +565,12 @@
 - (id)dictionaryRepresentation
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   subtitle = self->_subtitle;
@@ -607,8 +607,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -642,8 +642,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation2 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation2];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -677,8 +677,8 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v37 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation3 = [*(*(&v37 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation3];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v37 objects:v49 count:16];
@@ -699,22 +699,22 @@
   pageEvent = self->_pageEvent;
   if (pageEvent)
   {
-    v31 = [(ICIAMMetricEvent *)pageEvent dictionaryRepresentation];
-    [v4 setObject:v31 forKey:@"pageEvent"];
+    dictionaryRepresentation4 = [(ICIAMMetricEvent *)pageEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"pageEvent"];
   }
 
   closeClickEvent = self->_closeClickEvent;
   if (closeClickEvent)
   {
-    v33 = [(ICIAMMetricEvent *)closeClickEvent dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"closeClickEvent"];
+    dictionaryRepresentation5 = [(ICIAMMetricEvent *)closeClickEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"closeClickEvent"];
   }
 
   cardClickEvent = self->_cardClickEvent;
   if (cardClickEvent)
   {
-    v35 = [(ICIAMMetricEvent *)cardClickEvent dictionaryRepresentation];
-    [v4 setObject:v35 forKey:@"cardClickEvent"];
+    dictionaryRepresentation6 = [(ICIAMMetricEvent *)cardClickEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"cardClickEvent"];
   }
 
   return v4;
@@ -726,64 +726,64 @@
   v8.receiver = self;
   v8.super_class = ICIAMMessageContent;
   v4 = [(ICIAMMessageContent *)&v8 description];
-  v5 = [(ICIAMMessageContent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMMessageContent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addContentParameters:(id)a3
+- (void)addContentParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   contentParameters = self->_contentParameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!contentParameters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentParameters;
     self->_contentParameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     contentParameters = self->_contentParameters;
   }
 
-  [(NSMutableArray *)contentParameters addObject:v4];
+  [(NSMutableArray *)contentParameters addObject:parametersCopy];
 }
 
-- (void)addMessageActions:(id)a3
+- (void)addMessageActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   messageActions = self->_messageActions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!messageActions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_messageActions;
     self->_messageActions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     messageActions = self->_messageActions;
   }
 
-  [(NSMutableArray *)messageActions addObject:v4];
+  [(NSMutableArray *)messageActions addObject:actionsCopy];
 }
 
-- (void)addImages:(id)a3
+- (void)addImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   images = self->_images;
-  v8 = v4;
+  v8 = imagesCopy;
   if (!images)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_images;
     self->_images = v6;
 
-    v4 = v8;
+    imagesCopy = v8;
     images = self->_images;
   }
 
-  [(NSMutableArray *)images addObject:v4];
+  [(NSMutableArray *)images addObject:imagesCopy];
 }
 
 @end

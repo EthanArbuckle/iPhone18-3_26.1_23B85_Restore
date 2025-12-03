@@ -1,80 +1,80 @@
 @interface PRRangingClientExportedObject
-- (PRRangingClientExportedObject)initWithRangingClient:(id)a3;
+- (PRRangingClientExportedObject)initWithRangingClient:(id)client;
 - (PRRangingClientProtocol)rangingClient;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
-- (void)sendDataToPeers:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
+- (void)sendDataToPeers:(id)peers;
 @end
 
 @implementation PRRangingClientExportedObject
 
-- (PRRangingClientExportedObject)initWithRangingClient:(id)a3
+- (PRRangingClientExportedObject)initWithRangingClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = PRRangingClientExportedObject;
   v5 = [(PRRangingClientExportedObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_rangingClient, v4);
+    objc_storeWeak(&v5->_rangingClient, clientCopy);
   }
 
   return v6;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained didFailWithError:v4];
+  [WeakRetained didFailWithError:errorCopy];
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
-  [WeakRetained rangingServiceDidUpdateState:a3 cause:a4];
+  [WeakRetained rangingServiceDidUpdateState:state cause:cause];
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v5 = a3;
+  solutionsCopy = solutions;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained didReceiveNewSolutions:v5];
+    [WeakRetained didReceiveNewSolutions:solutionsCopy];
   }
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained rangingRequestDidUpdateStatus:a3];
+    [WeakRetained rangingRequestDidUpdateStatus:status];
   }
 }
 
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
-  v7 = a3;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteDevice:v7 didChangeState:a4];
+    [WeakRetained remoteDevice:deviceCopy didChangeState:state];
   }
 }
 
-- (void)sendDataToPeers:(id)a3
+- (void)sendDataToPeers:(id)peers
 {
-  v5 = a3;
+  peersCopy = peers;
   WeakRetained = objc_loadWeakRetained(&self->_rangingClient);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained sendDataToPeers:v5];
+    [WeakRetained sendDataToPeers:peersCopy];
   }
 }
 

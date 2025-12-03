@@ -1,12 +1,12 @@
 @interface BRCBuddyFlowObserver
 + (id)sharedBuddyFlowObserver;
-- (BOOL)observeBuddyIfNecessaryWithKey:(id)a3 block:(id)a4 description:(id)a5;
+- (BOOL)observeBuddyIfNecessaryWithKey:(id)key block:(id)block description:(id)description;
 - (id)_init;
 - (void)_registerForBYSetupAssistantFinishedNotification;
 - (void)_stopObservingBuddyAndExecuteCallbacks;
 - (void)_unregisterForBYSetupAssistantFinishedNotification;
 - (void)logStatus;
-- (void)stopObservingBuddyWithKey:(id)a3;
+- (void)stopObservingBuddyWithKey:(id)key;
 @end
 
 @implementation BRCBuddyFlowObserver
@@ -129,22 +129,22 @@ LABEL_6:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)observeBuddyIfNecessaryWithKey:(id)a3 block:(id)a4 description:(id)a5
+- (BOOL)observeBuddyIfNecessaryWithKey:(id)key block:(id)block description:(id)description
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  blockCopy = block;
+  descriptionCopy = description;
   if ([(BRCBuddyFlowObserver *)self doesBuddyFlowNeedsToRun])
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    if ([(BRCBuddyFlowObserver *)v11 doesBuddyFlowNeedsToRun])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(BRCBuddyFlowObserver *)selfCopy doesBuddyFlowNeedsToRun])
     {
-      if (!v11->_waitingForBuddy)
+      if (!selfCopy->_waitingForBuddy)
       {
-        v11->_waitingForBuddy = 1;
-        [(BRCBuddyFlowObserver *)v11 _registerForBYSetupAssistantFinishedNotification];
+        selfCopy->_waitingForBuddy = 1;
+        [(BRCBuddyFlowObserver *)selfCopy _registerForBYSetupAssistantFinishedNotification];
       }
 
       v12 = brc_bread_crumbs();
@@ -152,19 +152,19 @@ LABEL_6:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        *&buf[4] = v10;
+        *&buf[4] = descriptionCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = keyCopy;
         *&buf[22] = 2112;
         v46 = v12;
         _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEFAULT, "[NOTICE] We are in Buddy. Register block [%@] with key [%@]%@", buf, 0x20u);
       }
 
-      if (!v11->_registerdKeyToToken)
+      if (!selfCopy->_registerdKeyToToken)
       {
         v14 = objc_opt_new();
-        registerdKeyToToken = v11->_registerdKeyToToken;
-        v11->_registerdKeyToToken = v14;
+        registerdKeyToToken = selfCopy->_registerdKeyToToken;
+        selfCopy->_registerdKeyToToken = v14;
       }
 
       *buf = 0;
@@ -173,9 +173,9 @@ LABEL_6:
       v46 = __Block_byref_object_copy__9;
       v47 = __Block_byref_object_dispose__9;
       v48 = 0;
-      if (v8)
+      if (keyCopy)
       {
-        v16 = [(NSMutableDictionary *)v11->_registerdKeyToToken objectForKeyedSubscript:v8];
+        v16 = [(NSMutableDictionary *)selfCopy->_registerdKeyToToken objectForKeyedSubscript:keyCopy];
         v17 = *(*&buf[8] + 40);
         *(*&buf[8] + 40) = v16;
 
@@ -186,7 +186,7 @@ LABEL_6:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *v41 = 138412546;
-            v42 = v8;
+            v42 = keyCopy;
             v43 = 2112;
             v44 = v18;
             _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[NOTICE] Key %@ already registered%@", v41, 0x16u);
@@ -195,47 +195,47 @@ LABEL_6:
 
         else
         {
-          v25 = [MEMORY[0x277CCAB98] defaultCenter];
-          observersQueue = v11->_observersQueue;
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          observersQueue = selfCopy->_observersQueue;
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __73__BRCBuddyFlowObserver_observeBuddyIfNecessaryWithKey_block_description___block_invoke;
           v36[3] = &unk_278501000;
-          v37 = v10;
-          v38 = v11;
-          v27 = v8;
+          v37 = descriptionCopy;
+          v38 = selfCopy;
+          v27 = keyCopy;
           v39 = v27;
-          v40 = v9;
-          v28 = [v25 addObserverForName:@"com.apple.clouddocs.buddy-flow-done" object:0 queue:observersQueue usingBlock:v36];
+          v40 = blockCopy;
+          v28 = [defaultCenter addObserverForName:@"com.apple.clouddocs.buddy-flow-done" object:0 queue:observersQueue usingBlock:v36];
           v29 = *(*&buf[8] + 40);
           *(*&buf[8] + 40) = v28;
 
-          [(NSMutableDictionary *)v11->_registerdKeyToToken setObject:*(*&buf[8] + 40) forKeyedSubscript:v27];
+          [(NSMutableDictionary *)selfCopy->_registerdKeyToToken setObject:*(*&buf[8] + 40) forKeyedSubscript:v27];
           v18 = v37;
         }
       }
 
       else
       {
-        v21 = [MEMORY[0x277CCAB98] defaultCenter];
-        v22 = v11->_observersQueue;
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        v22 = selfCopy->_observersQueue;
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __73__BRCBuddyFlowObserver_observeBuddyIfNecessaryWithKey_block_description___block_invoke_13;
         v32[3] = &unk_278501028;
-        v33 = v10;
+        v33 = descriptionCopy;
         v35 = buf;
-        v34 = v9;
-        v23 = [v21 addObserverForName:@"com.apple.clouddocs.buddy-flow-done" object:0 queue:v22 usingBlock:v32];
+        v34 = blockCopy;
+        v23 = [defaultCenter2 addObserverForName:@"com.apple.clouddocs.buddy-flow-done" object:0 queue:v22 usingBlock:v32];
         v24 = *(*&buf[8] + 40);
         *(*&buf[8] + 40) = v23;
 
         v18 = v33;
       }
 
-      if (![(BRCBuddyFlowObserver *)v11 doesBuddyFlowNeedsToRun])
+      if (![(BRCBuddyFlowObserver *)selfCopy doesBuddyFlowNeedsToRun])
       {
-        [(BRCBuddyFlowObserver *)v11 _stopObservingBuddyAndExecuteCallbacks];
+        [(BRCBuddyFlowObserver *)selfCopy _stopObservingBuddyAndExecuteCallbacks];
       }
 
       v20 = *(*&buf[8] + 40) != 0;
@@ -247,7 +247,7 @@ LABEL_6:
       v20 = 0;
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -306,14 +306,14 @@ uint64_t __73__BRCBuddyFlowObserver_observeBuddyIfNecessaryWithKey_block_descrip
 - (void)logStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"no";
-    if (v2->_waitingForBuddy)
+    if (selfCopy->_waitingForBuddy)
     {
       v5 = @"yes";
     }
@@ -325,7 +325,7 @@ uint64_t __73__BRCBuddyFlowObserver_observeBuddyIfNecessaryWithKey_block_descrip
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[NOTICE] Waiting for buddy to complete: %@%@", &v7, 0x16u);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -367,8 +367,8 @@ LABEL_8:
       _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[NOTICE] Trigger %@%@", buf, 0x16u);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"com.apple.clouddocs.buddy-flow-done" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.clouddocs.buddy-flow-done" object:0 userInfo:0];
 
     goto LABEL_8;
   }
@@ -377,26 +377,26 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopObservingBuddyWithKey:(id)a3
+- (void)stopObservingBuddyWithKey:(id)key
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_registerdKeyToToken objectForKeyedSubscript:v8];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_registerdKeyToToken objectForKeyedSubscript:keyCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)v4->_registerdKeyToToken removeObjectForKey:v8];
-    if (![(NSMutableDictionary *)v4->_registerdKeyToToken count])
+    [(NSMutableDictionary *)selfCopy->_registerdKeyToToken removeObjectForKey:keyCopy];
+    if (![(NSMutableDictionary *)selfCopy->_registerdKeyToToken count])
     {
-      registerdKeyToToken = v4->_registerdKeyToToken;
-      v4->_registerdKeyToToken = 0;
+      registerdKeyToToken = selfCopy->_registerdKeyToToken;
+      selfCopy->_registerdKeyToToken = 0;
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:v5];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

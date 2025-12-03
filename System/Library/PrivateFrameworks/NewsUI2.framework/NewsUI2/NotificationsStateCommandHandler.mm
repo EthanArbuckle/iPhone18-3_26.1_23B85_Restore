@@ -1,6 +1,6 @@
 @interface NotificationsStateCommandHandler
 - (_TtC7NewsUI232NotificationsStateCommandHandler)init;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
 @end
 
 @implementation NotificationsStateCommandHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
-    v5 = self;
+    selfCopy = self;
     sub_219BEABA4();
     sub_219BE6FD4();
 

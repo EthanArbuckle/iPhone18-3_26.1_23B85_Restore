@@ -1,21 +1,21 @@
 @interface SFAnnounceMessagesEvent
-+ (id)stringForExitView:(int64_t)a3;
++ (id)stringForExitView:(int64_t)view;
 - (NSDictionary)eventPayload;
 - (void)submitEvent;
 @end
 
 @implementation SFAnnounceMessagesEvent
 
-+ (id)stringForExitView:(int64_t)a3
++ (id)stringForExitView:(int64_t)view
 {
-  if ((a3 - 1) > 4)
+  if ((view - 1) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E788CEB8[a3 - 1];
+    return off_1E788CEB8[view - 1];
   }
 }
 
@@ -53,8 +53,8 @@
 - (void)submitEvent
 {
   v4 = +[SFAnnounceMessagesEvent eventName];
-  v3 = [(SFAnnounceMessagesEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFAnnounceMessagesEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

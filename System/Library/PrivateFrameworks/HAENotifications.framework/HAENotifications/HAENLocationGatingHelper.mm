@@ -1,26 +1,26 @@
 @interface HAENLocationGatingHelper
 + (id)sharedInstance;
-- (BOOL)_isHAENFeatureMandatory:(id)a3 dataDisposition:(id)a4;
+- (BOOL)_isHAENFeatureMandatory:(id)mandatory dataDisposition:(id)disposition;
 - (BOOL)_isIPad;
 - (BOOL)_isIPod;
 - (BOOL)_isMandatoryDeviceClass;
-- (BOOL)_regionAndDeviceMandatesFeature:(id)a3;
-- (BOOL)_shouldUpdateLocation:(id)a3;
-- (BOOL)_validDataDisposition:(id)a3;
+- (BOOL)_regionAndDeviceMandatesFeature:(id)feature;
+- (BOOL)_shouldUpdateLocation:(id)location;
+- (BOOL)_validDataDisposition:(id)disposition;
 - (HAENLocationGatingHelper)init;
 - (id)_readDeviceDisposition;
 - (int)_getMGProductType;
-- (void)_contryConfigurationDidChange:(id)a3;
-- (void)_donateSignalToTipsKit:(BOOL)a3;
+- (void)_contryConfigurationDidChange:(id)change;
+- (void)_donateSignalToTipsKit:(BOOL)kit;
 - (void)_donateSignalToTipsKitOnInitialization;
 - (void)_loadRegionPlistFile;
 - (void)_logLocationGatingFlags;
-- (void)_setFeatureMandatoryFlag:(id)a3;
-- (void)_setHEANEnabled:(id)a3;
+- (void)_setFeatureMandatoryFlag:(id)flag;
+- (void)_setHEANEnabled:(id)enabled;
 - (void)_updateImpl;
 - (void)_updateLocationGatingFlags;
-- (void)_updateSampleTransient:(id)a3;
-- (void)_updateStatsWithGeoLocation:(id)a3 disposition:(id)a4 andMandatoryFlag:(BOOL)a5;
+- (void)_updateSampleTransient:(id)transient;
+- (void)_updateStatsWithGeoLocation:(id)location disposition:(id)disposition andMandatoryFlag:(BOOL)flag;
 - (void)dealloc;
 - (void)deviceDataDispositionDidChange;
 - (void)reloadProductTypeOverride;
@@ -176,8 +176,8 @@ uint64_t __42__HAENLocationGatingHelper_sharedInstance__block_invoke()
 
     if ([(HAENGeoLocation *)v2->_geoLocation source]!= 2)
     {
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 addObserver:v2 selector:sel__contryConfigurationDidChange_ name:*MEMORY[0x277D0E7C8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__contryConfigurationDidChange_ name:*MEMORY[0x277D0E7C8] object:0];
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -201,22 +201,22 @@ uint64_t __42__HAENLocationGatingHelper_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_setFeatureMandatoryFlag:(id)a3
+- (void)_setFeatureMandatoryFlag:(id)flag
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flagCopy = flag;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = flagCopy;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "*** setting HAEN feature mandatory flag to %@", &v7, 0xCu);
   }
 
-  SetDeviceSpecificDefaultsFor(@"HAENFeatureMandatory", v4);
+  SetDeviceSpecificDefaultsFor(@"HAENFeatureMandatory", flagCopy);
   CFPreferencesAppSynchronize(*MEMORY[0x277CEFAA8]);
-  [(HAENLocationGatingHelper *)self _updateSampleTransient:v4];
-  [(HAENLocationGatingHelper *)self _setHEANEnabled:v4];
+  [(HAENLocationGatingHelper *)self _updateSampleTransient:flagCopy];
+  [(HAENLocationGatingHelper *)self _setHEANEnabled:flagCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -227,22 +227,22 @@ uint64_t __42__HAENLocationGatingHelper_sharedInstance__block_invoke()
   SetDeviceSpecificDefaultsFor(@"HAENGeoLocationSource", v3);
 
   CFPreferencesAppSynchronize(*MEMORY[0x277CEFAA8]);
-  v6 = [(HAENLocationGatingHelper *)self _readDeviceDisposition];
-  v4 = [(HAENLocationGatingHelper *)self _isHAENFeatureMandatory:self->_geoLocation dataDisposition:v6];
+  _readDeviceDisposition = [(HAENLocationGatingHelper *)self _readDeviceDisposition];
+  v4 = [(HAENLocationGatingHelper *)self _isHAENFeatureMandatory:self->_geoLocation dataDisposition:_readDeviceDisposition];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:v4];
   [(HAENLocationGatingHelper *)self _setFeatureMandatoryFlag:v5];
 }
 
-- (void)_setHEANEnabled:(id)a3
+- (void)_setHEANEnabled:(id)enabled
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v3 = objc_alloc_init(MEMORY[0x277CEFB38]);
-  v4 = [v3 setPreferenceFor:*MEMORY[0x277CEFAF0] value:v5];
+  v4 = [v3 setPreferenceFor:*MEMORY[0x277CEFAF0] value:enabledCopy];
 }
 
-- (void)_updateSampleTransient:(id)a3
+- (void)_updateSampleTransient:(id)transient
 {
-  if ([a3 BOOLValue])
+  if ([transient BOOLValue])
   {
     v3 = objc_alloc_init(MEMORY[0x277CEFB38]);
     [v3 removePreferenceFor:*MEMORY[0x277CEFB10]];
@@ -250,7 +250,7 @@ uint64_t __42__HAENLocationGatingHelper_sharedInstance__block_invoke()
   }
 }
 
-- (void)_contryConfigurationDidChange:(id)a3
+- (void)_contryConfigurationDidChange:(id)change
 {
   v4 = HAENotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -285,10 +285,10 @@ uint64_t __58__HAENLocationGatingHelper_deviceDataDispositionDidChange__block_in
   return [*(a1 + 32) _updateImpl];
 }
 
-- (BOOL)_shouldUpdateLocation:(id)a3
+- (BOOL)_shouldUpdateLocation:(id)location
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = GetDeviceSpecificDefaults(@"HAENFeatureMandatory");
   if (-[HAENLocationGatingHelper _isIPad](self, "_isIPad") && ([v5 BOOLValue] & 1) != 0)
   {
@@ -308,16 +308,16 @@ uint64_t __58__HAENLocationGatingHelper_deviceDataDispositionDidChange__block_in
       v8 = &unk_2862C97A8;
     }
 
-    v6 = -[HAENLocationGatingHelper _validCountryCodeSource:](self, "_validCountryCodeSource:", [v4 source]);
+    v6 = -[HAENLocationGatingHelper _validCountryCodeSource:](self, "_validCountryCodeSource:", [locationCopy source]);
     v9 = HAENotificationsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 describeSource];
+      describeSource = [locationCopy describeSource];
       v11 = [MEMORY[0x277CCABB0] numberWithBool:v6];
       v14 = 138412802;
       v15 = v8;
       v16 = 2112;
-      v17 = v10;
+      v17 = describeSource;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_25081E000, v9, OS_LOG_TYPE_DEFAULT, "Stored geo location source: %@, new source: %@, valid: %@", &v14, 0x20u);
@@ -325,7 +325,7 @@ uint64_t __58__HAENLocationGatingHelper_deviceDataDispositionDidChange__block_in
 
     if (v6)
     {
-      LODWORD(v6) = [v4 source];
+      LODWORD(v6) = [locationCopy source];
       LOBYTE(v6) = v6 > [v8 intValue];
     }
   }
@@ -360,15 +360,15 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   _isMandatoryDeviceClass_ans = v0;
 }
 
-- (BOOL)_isHAENFeatureMandatory:(id)a3 dataDisposition:(id)a4
+- (BOOL)_isHAENFeatureMandatory:(id)mandatory dataDisposition:(id)disposition
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 countryCode];
-  v9 = [(HAENLocationGatingHelper *)self _regionAndDeviceMandatesFeature:v8];
+  dispositionCopy = disposition;
+  mandatoryCopy = mandatory;
+  countryCode = [mandatoryCopy countryCode];
+  v9 = [(HAENLocationGatingHelper *)self _regionAndDeviceMandatesFeature:countryCode];
 
-  v10 = self->_EUVolumeLimitFlagOn | v9 & ([v6 isEqualToString:*MEMORY[0x277CEFAA0]] ^ 1);
+  v10 = self->_EUVolumeLimitFlagOn | v9 & ([dispositionCopy isEqualToString:*MEMORY[0x277CEFAA0]] ^ 1);
   v11 = ![(HAENLocationGatingHelper *)self _isIPad];
   v12 = HAENotificationsLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -381,13 +381,13 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v6;
+    v23 = dispositionCopy;
     v24 = 2112;
     v25 = v15;
     _os_log_impl(&dword_25081E000, v12, OS_LOG_TYPE_DEFAULT, "*** HAE Feature Regional Status: ** %@ ** [ Mandatory: %@, Dispositon: %@, EUVolumeLimit: %@ ]", &v18, 0x2Au);
   }
 
-  [(HAENLocationGatingHelper *)self _updateStatsWithGeoLocation:v7 disposition:v6 andMandatoryFlag:v11 & v10];
+  [(HAENLocationGatingHelper *)self _updateStatsWithGeoLocation:mandatoryCopy disposition:dispositionCopy andMandatoryFlag:v11 & v10];
   [(HAENLocationGatingHelper *)self _donateSignalToTipsKit:v11 & v10];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -411,17 +411,17 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   return v2;
 }
 
-- (BOOL)_validDataDisposition:(id)a3
+- (BOOL)_validDataDisposition:(id)disposition
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CEFAA0]])
+  dispositionCopy = disposition;
+  if ([dispositionCopy isEqualToString:*MEMORY[0x277CEFAA0]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277CEFA98]];
+    v4 = [dispositionCopy isEqualToString:*MEMORY[0x277CEFA98]];
   }
 
   return v4;
@@ -438,8 +438,8 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
 - (void)_loadRegionPlistFile
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 stringWithUTF8String:{objc_msgSend(v4, "fileSystemRepresentationWithPath:", @"/System/Library/CoreServices/RegionalOverrideSoftwareBehaviors.plist"}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [v3 stringWithUTF8String:{objc_msgSend(defaultManager, "fileSystemRepresentationWithPath:", @"/System/Library/CoreServices/RegionalOverrideSoftwareBehaviors.plist"}];
 
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v5];
   regionBehavior = self->_regionBehavior;
@@ -455,22 +455,22 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   }
 }
 
-- (BOOL)_regionAndDeviceMandatesFeature:(id)a3
+- (BOOL)_regionAndDeviceMandatesFeature:(id)feature
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  featureCopy = feature;
+  if (featureCopy)
   {
-    v5 = [(NSDictionary *)self->_regionBehavior objectForKey:v4];
+    v5 = [(NSDictionary *)self->_regionBehavior objectForKey:featureCopy];
     v6 = [v5 valueForKey:@"haen"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(HAENLocationGatingHelper *)self _isMandatoryDeviceClass];
+    _isMandatoryDeviceClass = [(HAENLocationGatingHelper *)self _isMandatoryDeviceClass];
     v9 = HAENotificationsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = "optional";
-      if (v7)
+      if (bOOLValue)
       {
         v11 = "mandatory";
       }
@@ -482,19 +482,19 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
 
       v15 = 136315650;
       v16 = v11;
-      if (v8)
+      if (_isMandatoryDeviceClass)
       {
         v10 = "mandatory";
       }
 
       v17 = 2112;
-      v18 = v4;
+      v18 = featureCopy;
       v19 = 2080;
       v20 = v10;
       _os_log_impl(&dword_25081E000, v9, OS_LOG_TYPE_DEFAULT, "HAEN is [%s] for country: [%@] with device [%s]", &v15, 0x20u);
     }
 
-    v12 = v7 & v8;
+    v12 = bOOLValue & _isMandatoryDeviceClass;
   }
 
   else
@@ -509,31 +509,31 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
 - (int)_getMGProductType
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = MGGetProductType();
+  unsignedIntValue = MGGetProductType();
   productTypeOverride = self->_productTypeOverride;
   if (productTypeOverride)
   {
-    v3 = [(NSNumber *)productTypeOverride unsignedIntValue];
+    unsignedIntValue = [(NSNumber *)productTypeOverride unsignedIntValue];
     v5 = HAENotificationsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NSNumber *)self->_productTypeOverride unsignedLongValue];
+      unsignedLongValue = [(NSNumber *)self->_productTypeOverride unsignedLongValue];
       v9 = 134217984;
-      v10 = v6;
+      v10 = unsignedLongValue;
       _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "HAEN device product type is overriden: 0x%08lx", &v9, 0xCu);
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v3;
+  return unsignedIntValue;
 }
 
 - (void)dealloc
 {
   if ([(HAENGeoLocation *)self->_geoLocation source]!= 2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D0E7C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D0E7C8] object:0];
   }
 
   v4.receiver = self;
@@ -541,22 +541,22 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   [(HAENLocationGatingHelper *)&v4 dealloc];
 }
 
-- (void)_updateStatsWithGeoLocation:(id)a3 disposition:(id)a4 andMandatoryFlag:(BOOL)a5
+- (void)_updateStatsWithGeoLocation:(id)location disposition:(id)disposition andMandatoryFlag:(BOOL)flag
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 countryCode];
+  dispositionCopy = disposition;
+  locationCopy = location;
+  countryCode = [locationCopy countryCode];
   countryCode = self->_stats.countryCode;
   self = (self + 48);
-  self->super.isa = v11;
+  self->super.isa = countryCode;
 
-  v13 = [v10 describeSource];
+  describeSource = [locationCopy describeSource];
 
   geoLocation = self->_geoLocation;
-  self->_geoLocation = v13;
+  self->_geoLocation = describeSource;
 
-  objc_storeStrong(&self->_updateQueue, a4);
-  LOBYTE(self->_regionBehavior) = a5;
+  objc_storeStrong(&self->_updateQueue, disposition);
+  LOBYTE(self->_regionBehavior) = flag;
   BYTE1(self->_regionBehavior) = self[-1]._stats.disposition;
   v15 = +[HAENStatistics sharedInstance];
   __copy_constructor_8_8_s0_s8_s16_t24w2(v16, self);
@@ -570,16 +570,16 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   }
 }
 
-- (void)_donateSignalToTipsKit:(BOOL)a3
+- (void)_donateSignalToTipsKit:(BOOL)kit
 {
-  v3 = a3;
+  kitCopy = kit;
   v4 = BiomeLibrary();
-  v5 = [v4 Discoverability];
-  v16 = [v5 Signals];
+  discoverability = [v4 Discoverability];
+  signals = [discoverability Signals];
 
-  v6 = [v16 source];
+  source = [signals source];
   v7 = objc_alloc(MEMORY[0x277CF1160]);
-  if (v3)
+  if (kitCopy)
   {
     v8 = @"true";
   }
@@ -590,15 +590,15 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
   }
 
   v9 = [v7 initWithContentIdentifier:@"com.apple.Health.Hearing.HAENRequired" context:v8 osBuild:0 userInfo:0];
-  [v6 sendEvent:v9];
-  if (!v3)
+  [source sendEvent:v9];
+  if (!kitCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x277CEFB38]);
     v11 = [v10 getPreferenceFor:*MEMORY[0x277CEFAF0]];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
     v13 = objc_alloc(MEMORY[0x277CF1160]);
-    if (v12)
+    if (bOOLValue)
     {
       v14 = @"true";
     }
@@ -609,7 +609,7 @@ void __51__HAENLocationGatingHelper__isMandatoryDeviceClass__block_invoke()
     }
 
     v15 = [v13 initWithContentIdentifier:@"com.apple.Health.Hearing.HAENOptIn" context:v14 osBuild:0 userInfo:0];
-    [v6 sendEvent:v15];
+    [source sendEvent:v15];
   }
 }
 

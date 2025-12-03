@@ -1,10 +1,10 @@
 @interface VCAlgosStreamingScoreAggregator
 - (VCAlgosStreamingScoreAggregator)init;
-- (double)aggregateScoresWithDictionaryLogging:(BOOL)a3 time:(double)a4;
+- (double)aggregateScoresWithDictionaryLogging:(BOOL)logging time:(double)time;
 - (id)algoScorerParticipantIDList;
 - (id)algosScorerForNonDefaultParticipantID;
-- (id)algosScorerWithParticipantID:(id)a3;
-- (void)addParticipantWithTime:(double)a3 participantID:(id)a4;
+- (id)algosScorerWithParticipantID:(id)d;
+- (void)addParticipantWithTime:(double)time participantID:(id)d;
 - (void)dealloc;
 @end
 
@@ -70,13 +70,13 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)algosScorerWithParticipantID:(id)a3
+- (id)algosScorerWithParticipantID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_blockAlgosScorersDictionaryLock);
-  if ([(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:d])
   {
-    v5 = [(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:a3];
+    v5 = [(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:d];
   }
 
   else
@@ -89,7 +89,7 @@
       {
         if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [a3 UTF8String];
+          uTF8String = [d UTF8String];
           v11 = [objc_msgSend(-[NSMutableDictionary allKeys](self->_participantAlgosScorers "allKeys")];
           v14 = 136316162;
           v15 = v8;
@@ -98,7 +98,7 @@
           v18 = 1024;
           v19 = 53;
           v20 = 2080;
-          v21 = v10;
+          v21 = uTF8String;
           v22 = 2080;
           v23 = v11;
           _os_log_impl(&dword_23D4DF000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d scorer NOT FOUND for participantID %s within scorers: %s", &v14, 0x30u);
@@ -107,7 +107,7 @@
 
       else if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [a3 UTF8String];
+        uTF8String2 = [d UTF8String];
         v13 = [objc_msgSend(-[NSMutableDictionary allKeys](self->_participantAlgosScorers "allKeys")];
         v14 = 136316162;
         v15 = v8;
@@ -116,7 +116,7 @@
         v18 = 1024;
         v19 = 53;
         v20 = 2080;
-        v21 = v12;
+        v21 = uTF8String2;
         v22 = 2080;
         v23 = v13;
         _os_log_debug_impl(&dword_23D4DF000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d scorer NOT FOUND for participantID %s within scorers: %s", &v14, 0x30u);
@@ -175,7 +175,7 @@
                   if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
                   {
                     v19 = [(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:v9];
-                    v13 = [v9 UTF8String];
+                    uTF8String = [v9 UTF8String];
                     *buf = v18;
                     v26 = v11;
                     v27 = 2080;
@@ -185,7 +185,7 @@
                     v31 = 2048;
                     v32 = v19;
                     v33 = 2080;
-                    v34 = v13;
+                    v34 = uTF8String;
                     v35 = 2048;
                     v36 = v7;
                     _os_log_impl(&dword_23D4DF000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d algosScorer[%p], participantID=%s, net-duration=%2.3f", buf, 0x3Au);
@@ -195,7 +195,7 @@
                 else if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEBUG))
                 {
                   v20 = [(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:v9];
-                  v14 = [v9 UTF8String];
+                  uTF8String2 = [v9 UTF8String];
                   *buf = v18;
                   v26 = v11;
                   v27 = 2080;
@@ -205,7 +205,7 @@
                   v31 = 2048;
                   v32 = v20;
                   v33 = 2080;
-                  v34 = v14;
+                  v34 = uTF8String2;
                   v35 = 2048;
                   v36 = v7;
                   _os_log_debug_impl(&dword_23D4DF000, v12, OS_LOG_TYPE_DEBUG, " [%s] %s:%d algosScorer[%p], participantID=%s, net-duration=%2.3f", buf, 0x3Au);
@@ -240,19 +240,19 @@ LABEL_21:
   return result;
 }
 
-- (void)addParticipantWithTime:(double)a3 participantID:(id)a4
+- (void)addParticipantWithTime:(double)time participantID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_blockAlgosScorersDictionaryLock);
-  if ([(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:a4])
+  if ([(NSMutableDictionary *)self->_participantAlgosScorers objectForKeyedSubscript:d])
   {
-    [VCAlgosStreamingScoreAggregator addParticipantWithTime:a4 participantID:?];
+    [VCAlgosStreamingScoreAggregator addParticipantWithTime:d participantID:?];
   }
 
   else
   {
-    v7 = [[VCAlgosStreamingScorer alloc] initWithLaunchTime:a3];
-    [(NSMutableDictionary *)self->_participantAlgosScorers setObject:v7 forKeyedSubscript:a4];
+    v7 = [[VCAlgosStreamingScorer alloc] initWithLaunchTime:time];
+    [(NSMutableDictionary *)self->_participantAlgosScorers setObject:v7 forKeyedSubscript:d];
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
       v8 = VRTraceErrorLogLevelToCSTR(7u);
@@ -266,7 +266,7 @@ LABEL_21:
         v15 = 1024;
         v16 = 90;
         v17 = 2080;
-        v18 = [a4 UTF8String];
+        uTF8String = [d UTF8String];
         v19 = 2048;
         v20 = v7;
         _os_log_impl(&dword_23D4DF000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d add participantID %s scorer %p", &v11, 0x30u);
@@ -281,14 +281,14 @@ LABEL_21:
 - (id)algoScorerParticipantIDList
 {
   os_unfair_lock_lock(&self->_blockAlgosScorersDictionaryLock);
-  v3 = [(NSMutableDictionary *)self->_participantAlgosScorers allKeys];
+  allKeys = [(NSMutableDictionary *)self->_participantAlgosScorers allKeys];
   os_unfair_lock_unlock(&self->_blockAlgosScorersDictionaryLock);
-  return v3;
+  return allKeys;
 }
 
-- (double)aggregateScoresWithDictionaryLogging:(BOOL)a3 time:(double)a4
+- (double)aggregateScoresWithDictionaryLogging:(BOOL)logging time:(double)time
 {
-  v5 = a3;
+  loggingCopy = logging;
   v47 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_blockAlgosScorersDictionaryLock);
   if (objc_opt_class())
@@ -343,9 +343,9 @@ LABEL_21:
 
           v15 = *(*(&v32 + 1) + 8 * i);
           v16 = self->_participantAlgosScorers;
-          if (v5)
+          if (loggingCopy)
           {
-            [-[NSMutableDictionary objectForKeyedSubscript:](v16 objectForKeyedSubscript:{*(*(&v32 + 1) + 8 * i)), "finalizeScoreStreamingWithTime:", a4}];
+            [-[NSMutableDictionary objectForKeyedSubscript:](v16 objectForKeyedSubscript:{*(*(&v32 + 1) + 8 * i)), "finalizeScoreStreamingWithTime:", time}];
           }
 
           else
@@ -357,13 +357,13 @@ LABEL_21:
           if (([v15 isEqual:{@"DefaultParticipantID", v30}] & 1) == 0 && !objc_msgSend(v15, "isEqual:", @"AlternateParticipantID") || -[NSMutableDictionary count](self->_participantAlgosScorers, "count") < 2 || v18 > 0.0)
           {
             [v31 addScore:@"streaming-media" weight:v15 type:v18 label:1.0];
-            if (v5 && VRTraceGetErrorLogLevelForModule("") >= 7)
+            if (loggingCopy && VRTraceGetErrorLogLevelForModule("") >= 7)
             {
               v19 = VRTraceErrorLogLevelToCSTR(7u);
               v20 = gVRTraceOSLog;
               if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
               {
-                v21 = [v15 UTF8String];
+                uTF8String = [v15 UTF8String];
                 v22 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_participantAlgosScorers objectForKeyedSubscript:{v15), "algosScoreDictionary"}];
                 *buf = v30;
                 v37 = v19;
@@ -372,7 +372,7 @@ LABEL_21:
                 v40 = 1024;
                 v41 = 133;
                 v42 = 2080;
-                v43 = v21;
+                v43 = uTF8String;
                 v44 = 2112;
                 v45 = v22;
                 _os_log_impl(&dword_23D4DF000, v20, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d participantID %s participant scoreDictionary %@", buf, 0x30u);
@@ -393,7 +393,7 @@ LABEL_21:
     {
       [objc_msgSend(v23 objectForKeyedSubscript:{@"score", "doubleValue"}];
       self->_score = v25;
-      if (v5 && VRTraceGetErrorLogLevelForModule("") >= 7)
+      if (loggingCopy && VRTraceGetErrorLogLevelForModule("") >= 7)
       {
         v26 = VRTraceErrorLogLevelToCSTR(7u);
         v27 = gVRTraceOSLog;

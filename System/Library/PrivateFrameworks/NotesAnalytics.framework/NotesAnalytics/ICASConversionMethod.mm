@@ -1,33 +1,33 @@
 @interface ICASConversionMethod
-- (ICASConversionMethod)initWithConversionMethod:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASConversionMethod)initWithConversionMethod:(int64_t)method;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASConversionMethod
 
-- (ICASConversionMethod)initWithConversionMethod:(int64_t)a3
+- (ICASConversionMethod)initWithConversionMethod:(int64_t)method
 {
   v5.receiver = self;
   v5.super_class = ICASConversionMethod;
   result = [(ICASConversionMethod *)&v5 init];
   if (result)
   {
-    result->_conversionMethod = a3;
+    result->_conversionMethod = method;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASConversionMethod *)self conversionMethod];
+  conversionMethod = [(ICASConversionMethod *)self conversionMethod];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (conversionMethod == 1)
   {
     v4 = @"manual";
   }
 
-  if (v3 == 2)
+  if (conversionMethod == 2)
   {
     return @"automatic";
   }

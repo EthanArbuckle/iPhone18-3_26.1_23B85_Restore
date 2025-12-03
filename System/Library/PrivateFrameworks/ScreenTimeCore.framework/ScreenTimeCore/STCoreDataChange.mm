@@ -1,42 +1,42 @@
 @interface STCoreDataChange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCoreDataChange:(id)a3;
-- (STCoreDataChange)initWithChangeIdentifier:(id)a3 primaryType:(int64_t)a4 secondaryType:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCoreDataChange:(id)change;
+- (STCoreDataChange)initWithChangeIdentifier:(id)identifier primaryType:(int64_t)type secondaryType:(int64_t)secondaryType;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STCoreDataChange
 
-- (STCoreDataChange)initWithChangeIdentifier:(id)a3 primaryType:(int64_t)a4 secondaryType:(int64_t)a5
+- (STCoreDataChange)initWithChangeIdentifier:(id)identifier primaryType:(int64_t)type secondaryType:(int64_t)secondaryType
 {
   v12.receiver = self;
   v12.super_class = STCoreDataChange;
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(STCoreDataChange *)&v12 init];
-  v9 = [v7 copy];
+  v9 = [identifierCopy copy];
 
   changeIdentifier = v8->_changeIdentifier;
   v8->_changeIdentifier = v9;
 
-  v8->_primaryType = a4;
-  v8->_secondaryType = a5;
+  v8->_primaryType = type;
+  v8->_secondaryType = secondaryType;
   return v8;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STCoreDataChange *)self changeIdentifier];
-  v5 = [(STCoreDataChange *)self primaryType];
+  changeIdentifier = [(STCoreDataChange *)self changeIdentifier];
+  primaryType = [(STCoreDataChange *)self primaryType];
   v6 = @"Unknown";
-  if (v5 == 1)
+  if (primaryType == 1)
   {
     v6 = @"Configuration";
   }
 
-  if (v5 == 2)
+  if (primaryType == 2)
   {
     v7 = @"Device State";
   }
@@ -46,14 +46,14 @@
     v7 = v6;
   }
 
-  v8 = [NSString stringWithFormat:@"<%@ { Change Identifier: %@, PrimaryType: %@, SecondaryType: %ld }>", v3, v4, v7, [(STCoreDataChange *)self secondaryType]];
+  v8 = [NSString stringWithFormat:@"<%@ { Change Identifier: %@, PrimaryType: %@, SecondaryType: %ld }>", v3, changeIdentifier, v7, [(STCoreDataChange *)self secondaryType]];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   changeIdentifier = self->_changeIdentifier;
   primaryType = self->_primaryType;
   secondaryType = self->_secondaryType;
@@ -61,10 +61,10 @@
   return [v4 initWithChangeIdentifier:changeIdentifier primaryType:primaryType secondaryType:secondaryType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STCoreDataChange *)self isEqualToCoreDataChange:v4];
+      v5 = [(STCoreDataChange *)self isEqualToCoreDataChange:equalCopy];
     }
 
     else
@@ -86,22 +86,22 @@
   return v5;
 }
 
-- (BOOL)isEqualToCoreDataChange:(id)a3
+- (BOOL)isEqualToCoreDataChange:(id)change
 {
-  v4 = a3;
-  if (self == v4)
+  changeCopy = change;
+  if (self == changeCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(STCoreDataChange *)self changeIdentifier];
-    v6 = [(STCoreDataChange *)v4 changeIdentifier];
-    if ([v5 isEqual:v6] && (v7 = -[STCoreDataChange primaryType](self, "primaryType"), v7 == -[STCoreDataChange primaryType](v4, "primaryType")))
+    changeIdentifier = [(STCoreDataChange *)self changeIdentifier];
+    changeIdentifier2 = [(STCoreDataChange *)changeCopy changeIdentifier];
+    if ([changeIdentifier isEqual:changeIdentifier2] && (v7 = -[STCoreDataChange primaryType](self, "primaryType"), v7 == -[STCoreDataChange primaryType](changeCopy, "primaryType")))
     {
-      v8 = [(STCoreDataChange *)self secondaryType];
-      v9 = v8 == [(STCoreDataChange *)v4 secondaryType];
+      secondaryType = [(STCoreDataChange *)self secondaryType];
+      v9 = secondaryType == [(STCoreDataChange *)changeCopy secondaryType];
     }
 
     else
@@ -115,10 +115,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STCoreDataChange *)self changeIdentifier];
-  v4 = [v3 hash];
-  v5 = [(STCoreDataChange *)self primaryType];
-  v6 = [(STCoreDataChange *)self secondaryType]+ v5;
+  changeIdentifier = [(STCoreDataChange *)self changeIdentifier];
+  v4 = [changeIdentifier hash];
+  primaryType = [(STCoreDataChange *)self primaryType];
+  v6 = [(STCoreDataChange *)self secondaryType]+ primaryType;
 
   return v4 + v6;
 }

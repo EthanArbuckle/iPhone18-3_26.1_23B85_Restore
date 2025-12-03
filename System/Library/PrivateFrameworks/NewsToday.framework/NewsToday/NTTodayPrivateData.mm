@@ -1,8 +1,8 @@
 @interface NTTodayPrivateData
 - (NTTodayPrivateData)init;
-- (NTTodayPrivateData)initWithDerivedPersonalizationData:(id)a3 localNewsTagID:(id)a4 mutedTagIDs:(id)a5 autoFavoriteTagIDs:(id)a6 purchasedTagIDs:(id)a7 groupableTagIDs:(id)a8 rankedAllSubscribedTagIDs:(id)a9 rankedAllSubscriptionDates:(id)a10 recentlySeenHistoryItems:(id)a11 recentlyReadHistoryItems:(id)a12 onboardingVersion:(id)a13 bundleSubscription:(id)a14 userEmbeddingData:(id)a15;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)prepareForUseWithCompletion:(id)a3;
+- (NTTodayPrivateData)initWithDerivedPersonalizationData:(id)data localNewsTagID:(id)d mutedTagIDs:(id)ds autoFavoriteTagIDs:(id)iDs purchasedTagIDs:(id)tagIDs groupableTagIDs:(id)groupableTagIDs rankedAllSubscribedTagIDs:(id)subscribedTagIDs rankedAllSubscriptionDates:(id)self0 recentlySeenHistoryItems:(id)self1 recentlyReadHistoryItems:(id)self2 onboardingVersion:(id)self3 bundleSubscription:(id)self4 userEmbeddingData:(id)self5;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)prepareForUseWithCompletion:(id)completion;
 @end
 
 @implementation NTTodayPrivateData
@@ -33,30 +33,30 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayPrivateData)initWithDerivedPersonalizationData:(id)a3 localNewsTagID:(id)a4 mutedTagIDs:(id)a5 autoFavoriteTagIDs:(id)a6 purchasedTagIDs:(id)a7 groupableTagIDs:(id)a8 rankedAllSubscribedTagIDs:(id)a9 rankedAllSubscriptionDates:(id)a10 recentlySeenHistoryItems:(id)a11 recentlyReadHistoryItems:(id)a12 onboardingVersion:(id)a13 bundleSubscription:(id)a14 userEmbeddingData:(id)a15
+- (NTTodayPrivateData)initWithDerivedPersonalizationData:(id)data localNewsTagID:(id)d mutedTagIDs:(id)ds autoFavoriteTagIDs:(id)iDs purchasedTagIDs:(id)tagIDs groupableTagIDs:(id)groupableTagIDs rankedAllSubscribedTagIDs:(id)subscribedTagIDs rankedAllSubscriptionDates:(id)self0 recentlySeenHistoryItems:(id)self1 recentlyReadHistoryItems:(id)self2 onboardingVersion:(id)self3 bundleSubscription:(id)self4 userEmbeddingData:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v64 = a7;
-  v63 = a8;
-  v24 = v21;
-  v62 = a9;
-  v25 = v22;
-  v61 = a10;
-  v26 = a11;
-  v27 = v23;
-  v28 = a12;
-  v29 = a13;
-  v30 = a14;
-  v31 = a15;
+  dataCopy = data;
+  dCopy = d;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  tagIDsCopy = tagIDs;
+  groupableTagIDsCopy = groupableTagIDs;
+  v24 = dCopy;
+  subscribedTagIDsCopy = subscribedTagIDs;
+  v25 = dsCopy;
+  datesCopy = dates;
+  itemsCopy = items;
+  v27 = iDsCopy;
+  historyItemsCopy = historyItems;
+  versionCopy = version;
+  subscriptionCopy = subscription;
+  embeddingDataCopy = embeddingData;
   v65.receiver = self;
   v65.super_class = NTTodayPrivateData;
   v32 = [(NTTodayPrivateData *)&v65 init];
   if (v32)
   {
-    v33 = [v20 copy];
+    v33 = [dataCopy copy];
     derivedPersonalizationData = v32->_derivedPersonalizationData;
     v32->_derivedPersonalizationData = v33;
 
@@ -72,39 +72,39 @@
     autoFavoriteTagIDs = v32->_autoFavoriteTagIDs;
     v32->_autoFavoriteTagIDs = v39;
 
-    v41 = [v64 copy];
+    v41 = [tagIDsCopy copy];
     purchasedTagIDs = v32->_purchasedTagIDs;
     v32->_purchasedTagIDs = v41;
 
-    v43 = [v63 copy];
+    v43 = [groupableTagIDsCopy copy];
     groupableTagIDs = v32->_groupableTagIDs;
     v32->_groupableTagIDs = v43;
 
-    v45 = [v62 copy];
+    v45 = [subscribedTagIDsCopy copy];
     rankedAllSubscribedTagIDs = v32->_rankedAllSubscribedTagIDs;
     v32->_rankedAllSubscribedTagIDs = v45;
 
-    v47 = [v61 copy];
+    v47 = [datesCopy copy];
     rankedAllSubscriptionDates = v32->_rankedAllSubscriptionDates;
     v32->_rankedAllSubscriptionDates = v47;
 
-    v49 = [v26 copy];
+    v49 = [itemsCopy copy];
     recentlySeenHistoryItems = v32->_recentlySeenHistoryItems;
     v32->_recentlySeenHistoryItems = v49;
 
-    v51 = [v28 copy];
+    v51 = [historyItemsCopy copy];
     recentlyReadHistoryItems = v32->_recentlyReadHistoryItems;
     v32->_recentlyReadHistoryItems = v51;
 
-    v53 = [v29 copy];
+    v53 = [versionCopy copy];
     onboardingVersion = v32->_onboardingVersion;
     v32->_onboardingVersion = v53;
 
-    v55 = [v30 copy];
+    v55 = [subscriptionCopy copy];
     bundleSubscription = v32->_bundleSubscription;
     v32->_bundleSubscription = v55;
 
-    v57 = [v31 copy];
+    v57 = [embeddingDataCopy copy];
     userEmbeddingData = v32->_userEmbeddingData;
     v32->_userEmbeddingData = v57;
   }
@@ -112,7 +112,7 @@
   return v32;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -138,11 +138,11 @@
   objc_exception_throw(v7);
 }
 
-- (void)prepareForUseWithCompletion:(id)a3
+- (void)prepareForUseWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 

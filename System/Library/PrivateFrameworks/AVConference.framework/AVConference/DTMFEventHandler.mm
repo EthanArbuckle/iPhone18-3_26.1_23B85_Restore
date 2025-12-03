@@ -1,15 +1,15 @@
 @interface DTMFEventHandler
-- (BOOL)insertStartBlockWithEvent:(unsigned __int8)a3 volume:(unsigned __int8)a4 timestamp:(unsigned int)a5;
-- (BOOL)insertStopBlockWithEndTimestamp:(unsigned int)a3 withPauseCompleteTimestamp:(unsigned int)a4;
-- (BOOL)shouldAdjustForLastPauseCompleteTimestamp:(unsigned int *)a3;
-- (BOOL)shouldTransmitDTMFWithTimestamp:(unsigned int)a3;
+- (BOOL)insertStartBlockWithEvent:(unsigned __int8)event volume:(unsigned __int8)volume timestamp:(unsigned int)timestamp;
+- (BOOL)insertStopBlockWithEndTimestamp:(unsigned int)timestamp withPauseCompleteTimestamp:(unsigned int)completeTimestamp;
+- (BOOL)shouldAdjustForLastPauseCompleteTimestamp:(unsigned int *)timestamp;
+- (BOOL)shouldTransmitDTMFWithTimestamp:(unsigned int)timestamp;
 - (DTMFEventHandler)init;
-- (int)constructDTMFEventPacketWithEvent:(unsigned __int8)a3 volume:(unsigned __int8)a4 durationCounter:(unsigned int)a5 dataBuffer:(char *)a6 isEnd:(BOOL)a7;
+- (int)constructDTMFEventPacketWithEvent:(unsigned __int8)event volume:(unsigned __int8)volume durationCounter:(unsigned int)counter dataBuffer:(char *)buffer isEnd:(BOOL)end;
 - (void)dealloc;
-- (void)sendDTMFEvent:(id)a3 atTimestamp:(unsigned int)a4 withSampleRate:(unsigned int)a5;
-- (void)sendingDTMFEventWithTimeStamp:(unsigned int)a3 interval:(unsigned int)a4 RTPHandle:(tagHANDLE *)a5;
-- (void)setDTMFRTPEventDurationForPayload:(int)a3;
-- (void)stopDTMFEventAtTimestamp:(unsigned int)a3 withSampleRate:(unsigned int)a4;
+- (void)sendDTMFEvent:(id)event atTimestamp:(unsigned int)timestamp withSampleRate:(unsigned int)rate;
+- (void)sendingDTMFEventWithTimeStamp:(unsigned int)stamp interval:(unsigned int)interval RTPHandle:(tagHANDLE *)handle;
+- (void)setDTMFRTPEventDurationForPayload:(int)payload;
+- (void)stopDTMFEventAtTimestamp:(unsigned int)timestamp withSampleRate:(unsigned int)rate;
 @end
 
 @implementation DTMFEventHandler
@@ -40,16 +40,16 @@
   [(DTMFEventHandler *)&v3 dealloc];
 }
 
-- (void)setDTMFRTPEventDurationForPayload:(int)a3
+- (void)setDTMFRTPEventDurationForPayload:(int)payload
 {
-  if ((a3 - 97) > 0xE)
+  if ((payload - 97) > 0xE)
   {
     goto LABEL_7;
   }
 
-  if (((1 << (a3 - 97)) & 0x4C02) == 0)
+  if (((1 << (payload - 97)) & 0x4C02) == 0)
   {
-    if (a3 == 97)
+    if (payload == 97)
     {
       v3 = 160;
       goto LABEL_4;
@@ -65,18 +65,18 @@ LABEL_4:
   self->_rtpEventDuration = v3;
 }
 
-- (BOOL)insertStartBlockWithEvent:(unsigned __int8)a3 volume:(unsigned __int8)a4 timestamp:(unsigned int)a5
+- (BOOL)insertStartBlockWithEvent:(unsigned __int8)event volume:(unsigned __int8)volume timestamp:(unsigned int)timestamp
 {
-  v5 = *&a5;
-  v6 = a4;
-  v7 = a3;
+  v5 = *&timestamp;
+  volumeCopy = volume;
+  eventCopy = event;
   v13[3] = *MEMORY[0x1E69E9840];
   v9 = objc_autoreleasePoolPush();
   dtmfEventQueue = self->dtmfEventQueue;
   v12[0] = @"event";
-  v13[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v7];
+  v13[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:eventCopy];
   v12[1] = @"volume";
-  v13[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v6];
+  v13[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:volumeCopy];
   v12[2] = @"startTimestamp";
   v13[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
   -[NSMutableArray addObject:](dtmfEventQueue, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3]);
@@ -84,10 +84,10 @@ LABEL_4:
   return 1;
 }
 
-- (BOOL)insertStopBlockWithEndTimestamp:(unsigned int)a3 withPauseCompleteTimestamp:(unsigned int)a4
+- (BOOL)insertStopBlockWithEndTimestamp:(unsigned int)timestamp withPauseCompleteTimestamp:(unsigned int)completeTimestamp
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&completeTimestamp;
+  v5 = *&timestamp;
   v11[2] = *MEMORY[0x1E69E9840];
   v7 = objc_autoreleasePoolPush();
   dtmfEventQueue = self->dtmfEventQueue;
@@ -100,20 +100,20 @@ LABEL_4:
   return 1;
 }
 
-- (void)sendDTMFEvent:(id)a3 atTimestamp:(unsigned int)a4 withSampleRate:(unsigned int)a5
+- (void)sendDTMFEvent:(id)event atTimestamp:(unsigned int)timestamp withSampleRate:(unsigned int)rate
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKeyedSubscript:@"event"])
+  if ([event objectForKeyedSubscript:@"event"])
   {
     dtmfQueue = self->dtmfQueue;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__DTMFEventHandler_sendDTMFEvent_atTimestamp_withSampleRate___block_invoke;
     v10[3] = &unk_1E85F50D8;
-    v10[4] = a3;
+    v10[4] = event;
     v10[5] = self;
-    v11 = a4;
-    v12 = a5;
+    timestampCopy = timestamp;
+    rateCopy = rate;
     dispatch_async(dtmfQueue, v10);
   }
 }
@@ -181,7 +181,7 @@ void __61__DTMFEventHandler_sendDTMFEvent_atTimestamp_withSampleRate___block_inv
 LABEL_20:
 }
 
-- (void)sendingDTMFEventWithTimeStamp:(unsigned int)a3 interval:(unsigned int)a4 RTPHandle:(tagHANDLE *)a5
+- (void)sendingDTMFEventWithTimeStamp:(unsigned int)stamp interval:(unsigned int)interval RTPHandle:(tagHANDLE *)handle
 {
   v29 = *MEMORY[0x1E69E9840];
   v27 = -1431655766;
@@ -201,7 +201,7 @@ LABEL_20:
   block[3] = &unk_1E85F9068;
   block[4] = self;
   block[5] = &v23;
-  v18 = a3;
+  stampCopy = stamp;
   block[6] = &v19;
   dispatch_sync(dtmfQueue, block);
   if (*(v24 + 24) == 1)
@@ -213,7 +213,7 @@ LABEL_20:
 
     else
     {
-      v11 = self->currentEndTimestamp - a3;
+      v11 = self->currentEndTimestamp - stamp;
       if (v11)
       {
         v12 = v11 > 0x7FFFFFFE;
@@ -235,7 +235,7 @@ LABEL_20:
     v13 = *(v20 + 24);
     currentStartTimestamp = self->currentStartTimestamp;
     v15 = micro();
-    RTPSendRTP(a5, 117, v13, currentStartTimestamp, &v28, 4u, &v27, 0, v15, a4, 0, 0, 0, 0, 0, 0);
+    RTPSendRTP(handle, 117, v13, currentStartTimestamp, &v28, 4u, &v27, 0, v15, interval, 0, 0, 0, 0, 0, 0);
     currentEventRetransmitFinalPacketCount = self->currentEventRetransmitFinalPacketCount;
     if (v10)
     {
@@ -247,7 +247,7 @@ LABEL_20:
 
     else if (currentEventRetransmitFinalPacketCount >= 3)
     {
-      self->currentStartTimestamp = a3;
+      self->currentStartTimestamp = stamp;
       self->currentDurationCounter = 1;
       self->currentEventRetransmitFinalPacketCount = 0;
     }
@@ -410,7 +410,7 @@ uint64_t __69__DTMFEventHandler_sendingDTMFEventWithTimeStamp_interval_RTPHandle
   return result;
 }
 
-- (void)stopDTMFEventAtTimestamp:(unsigned int)a3 withSampleRate:(unsigned int)a4
+- (void)stopDTMFEventAtTimestamp:(unsigned int)timestamp withSampleRate:(unsigned int)rate
 {
   v8 = *MEMORY[0x1E69E9840];
   dtmfQueue = self->dtmfQueue;
@@ -418,13 +418,13 @@ uint64_t __69__DTMFEventHandler_sendingDTMFEventWithTimeStamp_interval_RTPHandle
   block[1] = 3221225472;
   block[2] = __60__DTMFEventHandler_stopDTMFEventAtTimestamp_withSampleRate___block_invoke;
   block[3] = &unk_1E85F40E0;
-  v6 = a3;
-  v7 = a4;
+  timestampCopy = timestamp;
+  rateCopy = rate;
   block[4] = self;
   dispatch_async(dtmfQueue, block);
 }
 
-- (BOOL)shouldTransmitDTMFWithTimestamp:(unsigned int)a3
+- (BOOL)shouldTransmitDTMFWithTimestamp:(unsigned int)timestamp
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -436,7 +436,7 @@ uint64_t __69__DTMFEventHandler_sendingDTMFEventWithTimeStamp_interval_RTPHandle
   v6[1] = 3221225472;
   v6[2] = __52__DTMFEventHandler_shouldTransmitDTMFWithTimestamp___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  timestampCopy = timestamp;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(dtmfQueue, v6);
@@ -505,10 +505,10 @@ uint64_t __52__DTMFEventHandler_shouldTransmitDTMFWithTimestamp___block_invoke(u
   return result;
 }
 
-- (int)constructDTMFEventPacketWithEvent:(unsigned __int8)a3 volume:(unsigned __int8)a4 durationCounter:(unsigned int)a5 dataBuffer:(char *)a6 isEnd:(BOOL)a7
+- (int)constructDTMFEventPacketWithEvent:(unsigned __int8)event volume:(unsigned __int8)volume durationCounter:(unsigned int)counter dataBuffer:(char *)buffer isEnd:(BOOL)end
 {
-  *a6 = a3;
-  if (a7)
+  *buffer = event;
+  if (end)
   {
     v7 = 0x80;
   }
@@ -518,8 +518,8 @@ uint64_t __52__DTMFEventHandler_shouldTransmitDTMFWithTimestamp___block_invoke(u
     v7 = 0;
   }
 
-  a6[1] = v7 & 0xC0 | a4 & 0x3F;
-  v8 = self->_rtpEventDuration * a5;
+  buffer[1] = v7 & 0xC0 | volume & 0x3F;
+  v8 = self->_rtpEventDuration * counter;
   if (v8 >= 0xFFFF)
   {
     v9 = 0xFFFF;
@@ -527,14 +527,14 @@ uint64_t __52__DTMFEventHandler_shouldTransmitDTMFWithTimestamp___block_invoke(u
 
   else
   {
-    v9 = self->_rtpEventDuration * a5;
+    v9 = self->_rtpEventDuration * counter;
   }
 
-  *(a6 + 1) = bswap32(v9) >> 16;
-  return v8 > 0xFFFE || a7;
+  *(buffer + 1) = bswap32(v9) >> 16;
+  return v8 > 0xFFFE || end;
 }
 
-- (BOOL)shouldAdjustForLastPauseCompleteTimestamp:(unsigned int *)a3
+- (BOOL)shouldAdjustForLastPauseCompleteTimestamp:(unsigned int *)timestamp
 {
   if (-[NSMutableArray count](self->dtmfEventQueue, "count") && (v5 = [-[NSMutableArray lastObject](self->dtmfEventQueue "lastObject")]) != 0)
   {
@@ -551,7 +551,7 @@ uint64_t __52__DTMFEventHandler_shouldTransmitDTMFWithTimestamp___block_invoke(u
     currentPauseCompleteTimestamp = self->_currentPauseCompleteTimestamp;
   }
 
-  *a3 = currentPauseCompleteTimestamp;
+  *timestamp = currentPauseCompleteTimestamp;
   return 1;
 }
 

@@ -1,20 +1,20 @@
 @interface WLKOnboarding
 + (BOOL)isOptedIn;
-+ (void)optInUserIfNeeded:(id)a3;
-+ (void)optInUserIfNeededAndRefreshConfig:(id)a3;
++ (void)optInUserIfNeeded:(id)needed;
++ (void)optInUserIfNeededAndRefreshConfig:(id)config;
 @end
 
 @implementation WLKOnboarding
 
-+ (void)optInUserIfNeeded:(id)a3
++ (void)optInUserIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__WLKOnboarding_optInUserIfNeeded___block_invoke;
   v5[3] = &unk_279E5EA68;
-  v6 = v3;
-  v4 = v3;
+  v6 = neededCopy;
+  v4 = neededCopy;
   [WLKSettingsCloudUtilities synchronizeSettingsFromCloudIfNeededWithCompletion:v5];
 }
 
@@ -97,16 +97,16 @@ void __35__WLKOnboarding_optInUserIfNeeded___block_invoke_2(uint64_t a1, int a2,
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)optInUserIfNeededAndRefreshConfig:(id)a3
++ (void)optInUserIfNeededAndRefreshConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__WLKOnboarding_optInUserIfNeededAndRefreshConfig___block_invoke;
   v6[3] = &unk_279E5EA68;
-  v7 = v4;
-  v5 = v4;
-  [a1 optInUserIfNeeded:v6];
+  v7 = configCopy;
+  v5 = configCopy;
+  [self optInUserIfNeeded:v6];
 }
 
 void __51__WLKOnboarding_optInUserIfNeededAndRefreshConfig___block_invoke(uint64_t a1, int a2, void *a3)
@@ -176,9 +176,9 @@ LABEL_6:
 + (BOOL)isOptedIn
 {
   v2 = +[WLKSettingsStore sharedSettings];
-  v3 = [v2 optedIn];
+  optedIn = [v2 optedIn];
 
-  return v3;
+  return optedIn;
 }
 
 @end

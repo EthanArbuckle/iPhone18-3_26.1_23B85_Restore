@@ -1,34 +1,34 @@
 @interface PKPaymentOfferInstallmentPlanSelectionModel
-+ (id)initForPostPurchaseInstallmentsWithPaymentOffersController:(id)a3 criteria:(id)a4 pass:(id)a5 fromPushNotification:(BOOL)a6;
++ (id)initForPostPurchaseInstallmentsWithPaymentOffersController:(id)controller criteria:(id)criteria pass:(id)pass fromPushNotification:(BOOL)notification;
 - (PKPaymentOfferInstallmentPlanSelectionModel)init;
-- (void)startWithCompletionHandler:(id)a3 viewChangedHandler:(id)a4;
+- (void)startWithCompletionHandler:(id)handler viewChangedHandler:(id)changedHandler;
 @end
 
 @implementation PKPaymentOfferInstallmentPlanSelectionModel
 
-+ (id)initForPostPurchaseInstallmentsWithPaymentOffersController:(id)a3 criteria:(id)a4 pass:(id)a5 fromPushNotification:(BOOL)a6
++ (id)initForPostPurchaseInstallmentsWithPaymentOffersController:(id)controller criteria:(id)criteria pass:(id)pass fromPushNotification:(BOOL)notification
 {
-  v14 = a5;
-  v15 = !a6 | 0xC0;
+  passCopy = pass;
+  v15 = !notification | 0xC0;
   v8 = objc_allocWithZone(swift_getObjCClassMetadata());
-  v9 = a3;
-  v10 = a4;
-  v11 = v14;
-  v12 = sub_1BD8D1EE0(&v14, a3, a4);
+  controllerCopy = controller;
+  criteriaCopy = criteria;
+  v11 = passCopy;
+  v12 = sub_1BD8D1EE0(&passCopy, controller, criteria);
 
   return v12;
 }
 
-- (void)startWithCompletionHandler:(id)a3 viewChangedHandler:(id)a4
+- (void)startWithCompletionHandler:(id)handler viewChangedHandler:(id)changedHandler
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
+  v7 = _Block_copy(changedHandler);
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
   *(swift_allocObject() + 16) = v7;
   swift_getKeyPath();
   sub_1BD8D2BB0(&qword_1EBD39ED8, type metadata accessor for PaymentOfferInstallmentPlanSelectionModel);
-  v9 = self;
+  selfCopy = self;
   sub_1BE04B584();
 
   v10 = swift_allocObject();

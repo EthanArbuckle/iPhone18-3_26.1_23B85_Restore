@@ -1,8 +1,8 @@
 @interface TSDTilingHostingLayer
 - (TSDTilingHostingLayer)init;
-- (TSDTilingHostingLayer)initWithCoder:(id)a3;
+- (TSDTilingHostingLayer)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)setNeedsDisplayForDirtyTiles:(id)a3;
+- (void)setNeedsDisplayForDirtyTiles:(id)tiles;
 @end
 
 @implementation TSDTilingHostingLayer
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (TSDTilingHostingLayer)initWithCoder:(id)a3
+- (TSDTilingHostingLayer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TSDTilingHostingLayer;
-  v3 = [(TSDTilingHostingLayer *)&v6 initWithCoder:a3];
+  v3 = [(TSDTilingHostingLayer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -42,12 +42,12 @@
   [(TSDTilingHostingLayer *)&v3 dealloc];
 }
 
-- (void)setNeedsDisplayForDirtyTiles:(id)a3
+- (void)setNeedsDisplayForDirtyTiles:(id)tiles
 {
   [(TSDTilingHostingLayer *)self setNeedsDisplay];
   mDirtyTilingLayers = self->mDirtyTilingLayers;
 
-  [(NSMutableSet *)mDirtyTilingLayers addObject:a3];
+  [(NSMutableSet *)mDirtyTilingLayers addObject:tiles];
 }
 
 @end

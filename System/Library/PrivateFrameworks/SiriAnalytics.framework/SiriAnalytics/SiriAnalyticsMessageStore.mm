@@ -6,7 +6,7 @@
 
 - (void)prune
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D98B0954();
 }
 

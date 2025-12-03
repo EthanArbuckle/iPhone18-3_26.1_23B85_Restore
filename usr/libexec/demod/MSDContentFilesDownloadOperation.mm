@@ -1,7 +1,7 @@
 @interface MSDContentFilesDownloadOperation
 - (BOOL)_downloadCreationList;
 - (id)methodSelectors;
-- (void)_downloadContentFile:(id)a3 ofHash:(id)a4 toPath:(id)a5 completionHandler:(id)a6;
+- (void)_downloadContentFile:(id)file ofHash:(id)hash toPath:(id)path completionHandler:(id)handler;
 @end
 
 @implementation MSDContentFilesDownloadOperation
@@ -18,9 +18,9 @@
 {
   v52 = +[MSDContentCacheManager sharedInstance];
   v57 = objc_alloc_init(NSCondition);
-  v2 = [(MSDOperation *)self context];
-  v3 = [v2 creationList];
-  v4 = [v3 mutableCopy];
+  context = [(MSDOperation *)self context];
+  creationList = [context creationList];
+  v4 = [creationList mutableCopy];
 
   v51 = objc_alloc_init(NSMutableSet);
   v50 = +[MSDOperationContext downloadOnly];
@@ -44,13 +44,13 @@
   }
 
   v5 = +[MSDTestPreferences sharedInstance];
-  v6 = [v5 concurrentSession];
+  concurrentSession = [v5 concurrentSession];
 
   v7 = +[MSDTestPreferences sharedInstance];
-  v8 = [v7 concurrentDownloadRequest];
+  concurrentDownloadRequest = [v7 concurrentDownloadRequest];
 
-  v55 = v8 * v6;
-  if ((v8 * v6) >= 1)
+  v55 = concurrentDownloadRequest * concurrentSession;
+  if ((concurrentDownloadRequest * concurrentSession) >= 1)
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -67,9 +67,9 @@ LABEL_6:
     v55 = 3;
   }
 
-  v10 = [(MSDOperation *)self context];
-  v11 = [v10 cloneFailedList];
-  [v4 addObjectsFromArray:v11];
+  context2 = [(MSDOperation *)self context];
+  cloneFailedList = [context2 cloneFailedList];
+  [v4 addObjectsFromArray:cloneFailedList];
 
   v71 = 0u;
   v72 = 0u;
@@ -91,52 +91,52 @@ LABEL_9:
 
       v14 = *(*(&v69 + 1) + 8 * v13);
       v15 = objc_autoreleasePoolPush();
-      v16 = [(MSDOperation *)self canPassCheckpoint];
-      if ((v16 & 1) == 0)
+      canPassCheckpoint = [(MSDOperation *)self canPassCheckpoint];
+      if ((canPassCheckpoint & 1) == 0)
       {
         goto LABEL_40;
       }
 
-      v17 = [(MSDOperation *)self context];
-      v18 = [v17 masterManifest];
-      v19 = [v18 metadataForFile:v14];
+      context3 = [(MSDOperation *)self context];
+      masterManifest = [context3 masterManifest];
+      v19 = [masterManifest metadataForFile:v14];
 
       if (!v19)
       {
         break;
       }
 
-      v20 = [v19 getFileType];
-      v21 = [v20 isEqualToString:NSFileTypeRegular];
+      getFileType = [v19 getFileType];
+      v21 = [getFileType isEqualToString:NSFileTypeRegular];
 
       if (v21 && [v19 getFileSize])
       {
-        v22 = [v19 getHash];
-        v23 = [v22 hexStringRepresentation];
+        getHash = [v19 getHash];
+        hexStringRepresentation = [getHash hexStringRepresentation];
 
-        v24 = [v52 findFileInCache:v23];
+        v24 = [v52 findFileInCache:hexStringRepresentation];
 
         if (v24)
         {
           v25 = sub_100063BEC();
-          v26 = [(MSDOperation *)self signpostId];
-          if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
+          signpostId = [(MSDOperation *)self signpostId];
+          if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
           {
             *buf = 138412290;
-            v88 = v23;
-            _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_EVENT, v26, "File Cache Hit", "File cache hit: %{xcode:string}@", buf, 0xCu);
+            v88 = hexStringRepresentation;
+            _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_EVENT, signpostId, "File Cache Hit", "File cache hit: %{xcode:string}@", buf, 0xCu);
           }
         }
 
-        else if (([v51 containsObject:v23] & 1) == 0)
+        else if (([v51 containsObject:hexStringRepresentation] & 1) == 0)
         {
-          [v51 addObject:v23];
-          v30 = [(MSDOperation *)self context];
-          v31 = [v30 contentRootPath];
-          v28 = [v31 stringByAppendingPathComponent:v14];
+          [v51 addObject:hexStringRepresentation];
+          context4 = [(MSDOperation *)self context];
+          contentRootPath = [context4 contentRootPath];
+          v28 = [contentRootPath stringByAppendingPathComponent:v14];
 
           v32 = [v52 fileCachePathFromSourcePath:v28 forBackgroundDownload:v50];
-          v27 = [v32 stringByAppendingPathComponent:v23];
+          v27 = [v32 stringByAppendingPathComponent:hexStringRepresentation];
 
           [v57 lock];
           while (1)
@@ -155,14 +155,14 @@ LABEL_9:
             v84[3] = v33 + 1;
             [v57 unlock];
             v34 = sub_100063BEC();
-            v35 = [(MSDOperation *)self signpostId];
-            if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+            signpostId2 = [(MSDOperation *)self signpostId];
+            if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
             {
-              spid = v35;
+              spid = signpostId2;
               if (os_signpost_enabled(v34))
               {
                 *buf = 138412290;
-                v88 = v23;
+                v88 = hexStringRepresentation;
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_INTERVAL_BEGIN, spid, "Download File", "File download hash: %{xcode:string}@", buf, 0xCu);
               }
             }
@@ -172,18 +172,18 @@ LABEL_9:
             v59[2] = sub_1000B60CC;
             v59[3] = &unk_10016C490;
             v59[4] = self;
-            v68 = v16;
+            v68 = canPassCheckpoint;
             v60 = v52;
-            v23 = v23;
+            hexStringRepresentation = hexStringRepresentation;
             v65 = &v73;
-            v61 = v23;
+            v61 = hexStringRepresentation;
             v62 = v14;
             v27 = v27;
             v63 = v27;
             v66 = &v79;
             v64 = v57;
             v67 = &v83;
-            [(MSDContentFilesDownloadOperation *)self _downloadContentFile:v14 ofHash:v23 toPath:v27 completionHandler:v59];
+            [(MSDContentFilesDownloadOperation *)self _downloadContentFile:v14 ofHash:hexStringRepresentation toPath:v27 completionHandler:v59];
 
             v29 = 0;
           }
@@ -207,7 +207,7 @@ LABEL_9:
 
       else
       {
-        v23 = 0;
+        hexStringRepresentation = 0;
       }
 
       v27 = 0;
@@ -243,7 +243,7 @@ LABEL_23:
     v37 = sub_100063A54();
     sub_1000E9CAC(v37, v89, &v90);
 LABEL_40:
-    v23 = 0;
+    hexStringRepresentation = 0;
     v27 = 0;
     v28 = 0;
     v19 = 0;
@@ -278,8 +278,8 @@ LABEL_44:
           v43 = sub_100063A54();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
-            v44 = [v42 localizedDescription];
-            sub_1000E9D68(v44, buf, v43);
+            localizedDescription = [v42 localizedDescription];
+            sub_1000E9D68(localizedDescription, buf, v43);
           }
         }
       }
@@ -304,8 +304,8 @@ LABEL_44:
   {
 LABEL_55:
     [(MSDOperation *)self setRetryable:1];
-    v46 = [(MSDOperation *)self error];
-    v47 = v46 == 0;
+    error = [(MSDOperation *)self error];
+    v47 = error == 0;
 
     if (v47)
     {
@@ -329,30 +329,30 @@ LABEL_61:
   return v45 & 1;
 }
 
-- (void)_downloadContentFile:(id)a3 ofHash:(id)a4 toPath:(id)a5 completionHandler:(id)a6
+- (void)_downloadContentFile:(id)file ofHash:(id)hash toPath:(id)path completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  fileCopy = file;
+  hashCopy = hash;
+  pathCopy = path;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v14 = objc_alloc_init(MSDDownloadFileRequest);
-  v15 = [(MSDDownloadFileRequest *)v14 fileInfo];
-  [v15 setFile:v10];
+  fileInfo = [(MSDDownloadFileRequest *)v14 fileInfo];
+  [fileInfo setFile:fileCopy];
 
-  v16 = [(MSDDownloadFileRequest *)v14 fileInfo];
-  [v16 setFileHash:v11];
+  fileInfo2 = [(MSDDownloadFileRequest *)v14 fileInfo];
+  [fileInfo2 setFileHash:hashCopy];
 
-  [(MSDServerRequest *)v14 setSavePath:v12];
-  v17 = [(MSDOperation *)self context];
-  v18 = [v17 originServer];
-  [(MSDCDNServerRequest *)v14 setOriginServer:v18];
+  [(MSDServerRequest *)v14 setSavePath:pathCopy];
+  context = [(MSDOperation *)self context];
+  originServer = [context originServer];
+  [(MSDCDNServerRequest *)v14 setOriginServer:originServer];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000B64C0;
   v21[3] = &unk_10016C4B8;
-  v19 = v13;
+  v19 = handlerCopy;
   v22 = v19;
   objc_copyWeak(&v23, &location);
   [(MSDServerRequest *)v14 setCompletion:v21];

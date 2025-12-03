@@ -1,38 +1,38 @@
 @interface TSTLayoutContentCachedKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutContentCachedKey:(id)a3;
-- (TSTLayoutContentCachedKey)initWithString:(id)a3 width:(double)a4 height:(double)a5 paragraphStyle:(id)a6 cellWraps:(BOOL)a7 valueType:(int)a8 paddingInsets:(UIEdgeInsets)a9 verticalAlignment:(unsigned int)a10 writingDirection:(int)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutContentCachedKey:(id)key;
+- (TSTLayoutContentCachedKey)initWithString:(id)string width:(double)width height:(double)height paragraphStyle:(id)style cellWraps:(BOOL)wraps valueType:(int)type paddingInsets:(UIEdgeInsets)insets verticalAlignment:(unsigned int)self0 writingDirection:(int)self1;
 - (UIEdgeInsets)paddingInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation TSTLayoutContentCachedKey
 
-- (TSTLayoutContentCachedKey)initWithString:(id)a3 width:(double)a4 height:(double)a5 paragraphStyle:(id)a6 cellWraps:(BOOL)a7 valueType:(int)a8 paddingInsets:(UIEdgeInsets)a9 verticalAlignment:(unsigned int)a10 writingDirection:(int)a11
+- (TSTLayoutContentCachedKey)initWithString:(id)string width:(double)width height:(double)height paragraphStyle:(id)style cellWraps:(BOOL)wraps valueType:(int)type paddingInsets:(UIEdgeInsets)insets verticalAlignment:(unsigned int)self0 writingDirection:(int)self1
 {
-  right = a9.right;
-  bottom = a9.bottom;
-  left = a9.left;
-  top = a9.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v25.receiver = self;
   v25.super_class = TSTLayoutContentCachedKey;
   v23 = [(TSTLayoutContentCachedKey *)&v25 init];
   if (v23)
   {
-    v23->mString = [a3 copy];
-    v23->mWidth = a4;
-    v23->mHeight = a5;
-    v23->mParagraphStyle = a6;
-    v23->mCellWraps = a7;
-    v23->mValueType = a8;
+    v23->mString = [string copy];
+    v23->mWidth = width;
+    v23->mHeight = height;
+    v23->mParagraphStyle = style;
+    v23->mCellWraps = wraps;
+    v23->mValueType = type;
     v23->mPaddingInsets.top = top;
     v23->mPaddingInsets.left = left;
     v23->mPaddingInsets.bottom = bottom;
     v23->mPaddingInsets.right = right;
-    v23->mVerticalAlignment = a10;
-    v23->mWritingDirection = a11;
+    v23->mVerticalAlignment = alignment;
+    v23->mWritingDirection = direction;
   }
 
   return v23;
@@ -48,36 +48,36 @@
   [(TSTLayoutContentCachedKey *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSTLayoutContentCachedKey allocWithZone:a3];
-  v5 = [(TSTLayoutContentCachedKey *)self string];
+  v4 = [TSTLayoutContentCachedKey allocWithZone:zone];
+  string = [(TSTLayoutContentCachedKey *)self string];
   [(TSTLayoutContentCachedKey *)self width];
   v7 = v6;
   [(TSTLayoutContentCachedKey *)self height];
   v9 = v8;
-  v10 = [(TSTLayoutContentCachedKey *)self paragraphStyle];
-  v11 = [(TSTLayoutContentCachedKey *)self cellWraps];
-  v12 = [(TSTLayoutContentCachedKey *)self valueType];
+  paragraphStyle = [(TSTLayoutContentCachedKey *)self paragraphStyle];
+  cellWraps = [(TSTLayoutContentCachedKey *)self cellWraps];
+  valueType = [(TSTLayoutContentCachedKey *)self valueType];
   [(TSTLayoutContentCachedKey *)self paddingInsets];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(TSTLayoutContentCachedKey *)self verticalAlignment];
-  v22 = [(TSTLayoutContentCachedKey *)self writingDirection];
+  verticalAlignment = [(TSTLayoutContentCachedKey *)self verticalAlignment];
+  writingDirection = [(TSTLayoutContentCachedKey *)self writingDirection];
 
-  return [(TSTLayoutContentCachedKey *)v4 initWithString:v5 width:v10 height:v11 paragraphStyle:v12 cellWraps:v21 valueType:v22 paddingInsets:v7 verticalAlignment:v9 writingDirection:v14, v16, v18, v20];
+  return [(TSTLayoutContentCachedKey *)v4 initWithString:string width:paragraphStyle height:cellWraps paragraphStyle:valueType cellWraps:verticalAlignment valueType:writingDirection paddingInsets:v7 verticalAlignment:v9 writingDirection:v14, v16, v18, v20];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -88,12 +88,12 @@
     return 0;
   }
 
-  return [(TSTLayoutContentCachedKey *)self isEqualToLayoutContentCachedKey:a3];
+  return [(TSTLayoutContentCachedKey *)self isEqualToLayoutContentCachedKey:equal];
 }
 
-- (BOOL)isEqualToLayoutContentCachedKey:(id)a3
+- (BOOL)isEqualToLayoutContentCachedKey:(id)key
 {
-  if (self == a3)
+  if (self == key)
   {
     LOBYTE(v17) = 1;
   }
@@ -101,16 +101,16 @@
   else
   {
     mWidth = self->mWidth;
-    [a3 width];
-    if (vabdd_f64(mWidth, v6) < 0.00999999978 && (mHeight = self->mHeight, [a3 height], vabdd_f64(mHeight, v8) < 0.00999999978) && (mCellWraps = self->mCellWraps, mCellWraps == objc_msgSend(a3, "cellWraps")) && (mVerticalAlignment = self->mVerticalAlignment, mVerticalAlignment == objc_msgSend(a3, "verticalAlignment")) && (mWritingDirection = self->mWritingDirection, mWritingDirection == objc_msgSend(a3, "writingDirection")) && (mValueType = self->mValueType, mValueType == objc_msgSend(a3, "valueType")) && (objc_msgSend(a3, "paddingInsets"), v14.f64[1] = v13, v16.f64[1] = v15, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->mPaddingInsets.top, v14), vceqq_f64(*&self->mPaddingInsets.bottom, v16)))) & 1) != 0))
+    [key width];
+    if (vabdd_f64(mWidth, v6) < 0.00999999978 && (mHeight = self->mHeight, [key height], vabdd_f64(mHeight, v8) < 0.00999999978) && (mCellWraps = self->mCellWraps, mCellWraps == objc_msgSend(key, "cellWraps")) && (mVerticalAlignment = self->mVerticalAlignment, mVerticalAlignment == objc_msgSend(key, "verticalAlignment")) && (mWritingDirection = self->mWritingDirection, mWritingDirection == objc_msgSend(key, "writingDirection")) && (mValueType = self->mValueType, mValueType == objc_msgSend(key, "valueType")) && (objc_msgSend(key, "paddingInsets"), v14.f64[1] = v13, v16.f64[1] = v15, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->mPaddingInsets.top, v14), vceqq_f64(*&self->mPaddingInsets.bottom, v16)))) & 1) != 0))
     {
-      v17 = -[TSSStyle isEqual:](self->mParagraphStyle, "isEqual:", [a3 paragraphStyle]);
+      v17 = -[TSSStyle isEqual:](self->mParagraphStyle, "isEqual:", [key paragraphStyle]);
       if (v17)
       {
         mString = self->mString;
-        v19 = [a3 string];
+        string = [key string];
 
-        LOBYTE(v17) = [(NSString *)mString isEqualToString:v19];
+        LOBYTE(v17) = [(NSString *)mString isEqualToString:string];
       }
     }
 

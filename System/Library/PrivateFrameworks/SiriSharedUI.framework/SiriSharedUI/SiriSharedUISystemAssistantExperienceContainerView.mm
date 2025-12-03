@@ -7,7 +7,7 @@
 - (BOOL)isInVoiceLatency;
 - (BOOL)loadingToResultRequiresMerge;
 - (BOOL)resultEligibleForLightEffects;
-- (BOOL)shouldExecuteContinuerAction:(int64_t)a3;
+- (BOOL)shouldExecuteContinuerAction:(int64_t)action;
 - (BOOL)shouldPreserveResultSpace;
 - (BOOL)showsSensitiveUI;
 - (CGRect)frame;
@@ -23,96 +23,96 @@
 - (double)textFieldHeight;
 - (double)userUtteranceViewHeight;
 - (id)createDefaultMaterialBackgroundView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)transitionToRemovedResponseElements:(unint64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)transitionToRemovedResponseElements:(unint64_t)elements;
 - (int64_t)inputType;
 - (unint64_t)presentedResponseElements;
-- (void)applyDestOverFilter:(BOOL)a3;
-- (void)applyPressTransformAnimationToSuggestionTo:(id)a3 from:(double)a4 to:(double)a5 duration:(double)a6;
+- (void)applyDestOverFilter:(BOOL)filter;
+- (void)applyPressTransformAnimationToSuggestionTo:(id)to from:(double)from to:(double)a5 duration:(double)duration;
 - (void)cleanupBottomFloatingButtonIfNeeded;
 - (void)cleanupLoadingTransitionIfNeeded;
-- (void)cleanupResponseElementsByIds:(id)a3;
+- (void)cleanupResponseElementsByIds:(id)ids;
 - (void)cleanupResultTransitionIfNeeded;
 - (void)cleanupResultView;
 - (void)clearResultViewAndBackground;
 - (void)didDismissResults;
-- (void)finalizePopAnimationOfType:(int64_t)a3;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
+- (void)finalizePopAnimationOfType:(int64_t)type;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
 - (void)layoutSubviews;
-- (void)mitoseWithDuration:(float)a3 mitosingIntoSnippet:(BOOL)a4;
-- (void)performAnimatedBlur:(int64_t)a3 usingSpringWithMass:(double)a4 stiffness:(double)a5 damping:(double)a6;
-- (void)performAnimatedBlur:(int64_t)a3 withDuration:(double)a4;
-- (void)pillMergeContinuerWithIndex:(int64_t)a3;
+- (void)mitoseWithDuration:(float)duration mitosingIntoSnippet:(BOOL)snippet;
+- (void)performAnimatedBlur:(int64_t)blur usingSpringWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping;
+- (void)performAnimatedBlur:(int64_t)blur withDuration:(double)duration;
+- (void)pillMergeContinuerWithIndex:(int64_t)index;
 - (void)postPillMergeBounce;
-- (void)preFollowupPulseWithDuration:(float)a3;
-- (void)prepSuggestionContentViewForAnimation:(id)a3 :(id)a4 :(id)a5 :(CGSize)a6 :(BOOL)a7 :(int64_t)a8;
+- (void)preFollowupPulseWithDuration:(float)duration;
+- (void)prepSuggestionContentViewForAnimation:(id)animation :(id)a4 :(id)a5 :(CGSize)a6 :(BOOL)a7 :(int64_t)a8;
 - (void)prepareForDrillinAnimation;
-- (void)prepareForPillMergeContinuerWithIndex:(int64_t)a3;
-- (void)prepareForPopAnimationOfType:(int64_t)a3;
-- (void)reduceMotionCarouselWithDuration:(float)a3 isFirstSnippet:(BOOL)a4;
-- (void)reduceMotionMitosisWithDuration:(float)a3 intoSnippet:(BOOL)a4;
+- (void)prepareForPillMergeContinuerWithIndex:(int64_t)index;
+- (void)prepareForPopAnimationOfType:(int64_t)type;
+- (void)reduceMotionCarouselWithDuration:(float)duration isFirstSnippet:(BOOL)snippet;
+- (void)reduceMotionMitosisWithDuration:(float)duration intoSnippet:(BOOL)snippet;
 - (void)removeContinuerPill;
 - (void)removeContinuerSuggestions;
 - (void)removeSuggestions;
 - (void)removeSuggestionsForDrillIn;
 - (void)restoreSubviewsFromDrillIn;
 - (void)safeAreaInsetsDidChange;
-- (void)searchUIBackgroundColorUpdateSuccessful:(BOOL)a3;
-- (void)setBackgroundColorAsyncDict:(id)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setBottomFloatingButton:(id)a3;
-- (void)setBottomFloatingButtonView:(id)a3;
-- (void)setCollapseLoadingView:(id)a3;
-- (void)setCollapseLoadingWith:(id)a3 collapseLoadingSize:(CGSize)a4;
-- (void)setContinuerPill:(id)a3;
-- (void)setExposureStateIfInViewWithAvailableMaxWidth:(double)a3 suggestionWidths:(id)a4 suggestionsInset:(double)a5;
-- (void)setFrame:(CGRect)a3;
-- (void)setGradientLayer:(id)a3;
-- (void)setInputType:(int64_t)a3;
-- (void)setIsExternalKeyboardPresented:(BOOL)a3;
-- (void)setIsFirstSnippet:(BOOL)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInVoiceLatency:(BOOL)a3;
+- (void)searchUIBackgroundColorUpdateSuccessful:(BOOL)successful;
+- (void)setBackgroundColorAsyncDict:(id)dict;
+- (void)setBottomContentInset:(double)inset;
+- (void)setBottomFloatingButton:(id)button;
+- (void)setBottomFloatingButtonView:(id)view;
+- (void)setCollapseLoadingView:(id)view;
+- (void)setCollapseLoadingWith:(id)with collapseLoadingSize:(CGSize)size;
+- (void)setContinuerPill:(id)pill;
+- (void)setExposureStateIfInViewWithAvailableMaxWidth:(double)width suggestionWidths:(id)widths suggestionsInset:(double)inset;
+- (void)setFrame:(CGRect)frame;
+- (void)setGradientLayer:(id)layer;
+- (void)setInputType:(int64_t)type;
+- (void)setIsExternalKeyboardPresented:(BOOL)presented;
+- (void)setIsFirstSnippet:(BOOL)snippet;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInVoiceLatency:(BOOL)latency;
 - (void)setMergedResultsForTransition;
-- (void)setOriginalViewSizeDict:(id)a3;
-- (void)setPairedSmartDialogViewForBackground:(id)a3;
-- (void)setPreviousResultView:(id)a3;
-- (void)setResultEligibleForLightEffects:(BOOL)a3;
-- (void)setResultView:(id)a3;
-- (void)setResultWithResultView:(id)a3 resultSize:(CGSize)a4 eligibleForLightEffects:(BOOL)a5;
-- (void)setShouldPreserveResultSpace:(BOOL)a3;
-- (void)setShowsSensitiveUI:(BOOL)a3;
-- (void)setSnippetBackgroundView:(id)a3;
-- (void)setSnippetSuggestionPageantView:(id)a3;
-- (void)setSuggestionContentViewsToRemove:(id)a3;
-- (void)setTextFieldHeight:(double)a3;
-- (void)setTextFieldLoadingView:(id)a3;
-- (void)setTextFieldView:(id)a3;
-- (void)setTextFieldWithTextFieldView:(id)a3;
-- (void)setTransitionLoadingToResultWithResultSize:(CGSize)a3;
-- (void)setUserUtteranceViewHeight:(double)a3;
-- (void)setVoiceLoading:(id)a3;
-- (void)setVoiceLoadingView:(id)a3;
-- (void)setVoiceLoadingWith:(id)a3 voiceLoadingSize:(CGSize)a4;
+- (void)setOriginalViewSizeDict:(id)dict;
+- (void)setPairedSmartDialogViewForBackground:(id)background;
+- (void)setPreviousResultView:(id)view;
+- (void)setResultEligibleForLightEffects:(BOOL)effects;
+- (void)setResultView:(id)view;
+- (void)setResultWithResultView:(id)view resultSize:(CGSize)size eligibleForLightEffects:(BOOL)effects;
+- (void)setShouldPreserveResultSpace:(BOOL)space;
+- (void)setShowsSensitiveUI:(BOOL)i;
+- (void)setSnippetBackgroundView:(id)view;
+- (void)setSnippetSuggestionPageantView:(id)view;
+- (void)setSuggestionContentViewsToRemove:(id)remove;
+- (void)setTextFieldHeight:(double)height;
+- (void)setTextFieldLoadingView:(id)view;
+- (void)setTextFieldView:(id)view;
+- (void)setTextFieldWithTextFieldView:(id)view;
+- (void)setTransitionLoadingToResultWithResultSize:(CGSize)size;
+- (void)setUserUtteranceViewHeight:(double)height;
+- (void)setVoiceLoading:(id)loading;
+- (void)setVoiceLoadingView:(id)view;
+- (void)setVoiceLoadingWith:(id)with voiceLoadingSize:(CGSize)size;
 - (void)startLatencyLightOnActivePill;
 - (void)stopLatencyBreathingLoop;
-- (void)suggestionTapAnimationWithIndex:(int64_t)a3 isTouchUp:(BOOL)a4;
+- (void)suggestionTapAnimationWithIndex:(int64_t)index isTouchUp:(BOOL)up;
 - (void)suggestionsMitose;
 - (void)transitionFromResultToCollapseLoading;
 - (void)transitionMergedResults;
-- (void)transitionSuggestionToLoadingWithIndex:(int64_t)a3;
+- (void)transitionSuggestionToLoadingWithIndex:(int64_t)index;
 - (void)transitionTextFieldLoadingToLoading;
 - (void)transitionToResult;
 - (void)transitionToSuggestionsCollapsed;
-- (void)transitionToSuggestionsCollapsedWithIndex:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)transitionToSuggestionsCollapsedWithIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block;
 - (void)transitionToSuggestionsExpanded;
 - (void)transitionToUpdatedContentInset;
 - (void)transitionVoiceLoadingToLoading;
-- (void)updateBackgroundView:(id)a3 smartDialogView:(id)a4 isSnippetAsyncColored:(BOOL)a5;
-- (void)updateBottomFloatingButtonVisibility:(BOOL)a3;
-- (void)updateKeyboardLightEffects:(BOOL)a3;
-- (void)updateLoadingPillSizeWithCandidateSize:(CGSize)a3;
-- (void)updateResultSizeWithResultSize:(CGSize)a3;
+- (void)updateBackgroundView:(id)view smartDialogView:(id)dialogView isSnippetAsyncColored:(BOOL)colored;
+- (void)updateBottomFloatingButtonVisibility:(BOOL)visibility;
+- (void)updateKeyboardLightEffects:(BOOL)effects;
+- (void)updateLoadingPillSizeWithCandidateSize:(CGSize)size;
+- (void)updateResultSizeWithResultSize:(CGSize)size;
 @end
 
 @implementation SiriSharedUISystemAssistantExperienceContainerView
@@ -124,11 +124,11 @@
   return *(self + v3);
 }
 
-- (void)setTextFieldHeight:(double)a3
+- (void)setTextFieldHeight:(double)height
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldHeight;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = height;
 }
 
 - (double)userUtteranceViewHeight
@@ -138,11 +138,11 @@
   return *(self + v3);
 }
 
-- (void)setUserUtteranceViewHeight:(double)a3
+- (void)setUserUtteranceViewHeight:(double)height
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_userUtteranceViewHeight;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = height;
 }
 
 - (BOOL)isExternalKeyboardPresented
@@ -152,11 +152,11 @@
   return *(self + v3);
 }
 
-- (void)setIsExternalKeyboardPresented:(BOOL)a3
+- (void)setIsExternalKeyboardPresented:(BOOL)presented
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isExternalKeyboardPresented;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = presented;
 }
 
 - (BOOL)shouldPreserveResultSpace
@@ -166,18 +166,18 @@
   return *(self + v3);
 }
 
-- (void)setShouldPreserveResultSpace:(BOOL)a3
+- (void)setShouldPreserveResultSpace:(BOOL)space
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_shouldPreserveResultSpace;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = space;
 }
 
 - (id)createDefaultMaterialBackgroundView
 {
-  v2 = self;
-  v3 = [(SiriSharedUISystemAssistantExperienceContainerView *)v2 traitCollection];
-  [v3 userInterfaceStyle];
+  selfCopy = self;
+  traitCollection = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy traitCollection];
+  [traitCollection userInterfaceStyle];
 
   v4 = objc_allocWithZone(type metadata accessor for SiriSharedUIStandardViewDropletMaterial());
   v5 = sub_21E4523C4(1);
@@ -185,14 +185,14 @@
   return v5;
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEC4968);
   MEMORY[0x28223BE20](v8 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   v12[2] = x;
   v12[3] = y;
@@ -210,15 +210,15 @@
   v15[3] = 0;
   v15[4] = &unk_21E4E9760;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_21E4CF930(0, 0, v10, &unk_21E4E9770, v15);
 }
 
 - (BOOL)isDisplayingResponse
 {
-  v2 = self;
-  v3 = [(SiriSharedUISystemAssistantExperienceContainerView *)v2 resultView];
-  if (v3)
+  selfCopy = self;
+  resultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy resultView];
+  if (resultView)
   {
 
     return 1;
@@ -226,7 +226,7 @@
 
   else
   {
-    v5 = [(SiriSharedUISystemAssistantExperienceContainerView *)v2 loadingViews];
+    loadingViews = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy loadingViews];
     type metadata accessor for SiriSharedUIDropletContainerView();
     v6 = sub_21E4DD088();
 
@@ -246,152 +246,152 @@
 
 - (unint64_t)presentedResponseElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SiriSharedUISystemAssistantExperienceContainerView.presentedResponseElements()();
 
   return v3;
 }
 
-- (void)setTextFieldWithTextFieldView:(id)a3
+- (void)setTextFieldWithTextFieldView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.setTextField(textFieldView:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.setTextField(textFieldView:)(view);
 }
 
 - (void)removeSuggestions
 {
   sub_21E43F008(0, &qword_280C140A0);
-  v4 = self;
+  selfCopy = self;
   v3 = sub_21E4DD078();
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v4 setSuggestions:v3];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setSuggestions:v3];
 }
 
 - (void)removeSuggestionsForDrillIn
 {
-  v3 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy delegate];
+  if (delegate)
   {
-    [(SiriSharedUISystemAssistantExperienceContainerViewDelegate *)v2 fadeOutContinuerSuggestionsForDrillIn];
+    [(SiriSharedUISystemAssistantExperienceContainerViewDelegate *)delegate fadeOutContinuerSuggestionsForDrillIn];
     swift_unknownObjectRelease();
   }
 }
 
 - (void)removeContinuerSuggestions
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.removeContinuerSuggestions()();
 }
 
-- (void)setVoiceLoading:(id)a3
+- (void)setVoiceLoading:(id)loading
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E4B9B14(v4, 0, 0, 1);
+  loadingCopy = loading;
+  selfCopy = self;
+  sub_21E4B9B14(loadingCopy, 0, 0, 1);
 }
 
-- (void)setVoiceLoadingWith:(id)a3 voiceLoadingSize:(CGSize)a4
+- (void)setVoiceLoadingWith:(id)with voiceLoadingSize:(CGSize)size
 {
-  v5 = *&a4.width;
-  v6 = *&a4.height;
-  v7 = a3;
-  v8 = self;
-  sub_21E4B9B14(v7, v5, v6, 0);
+  v5 = *&size.width;
+  v6 = *&size.height;
+  withCopy = with;
+  selfCopy = self;
+  sub_21E4B9B14(withCopy, v5, v6, 0);
 }
 
-- (void)setCollapseLoadingWith:(id)a3 collapseLoadingSize:(CGSize)a4
+- (void)setCollapseLoadingWith:(id)with collapseLoadingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.setCollapseLoading(collapseLoading:collapseLoadingSize:)(v7, __PAIR128__(*&height, *&width));
+  height = size.height;
+  width = size.width;
+  withCopy = with;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.setCollapseLoading(collapseLoading:collapseLoadingSize:)(withCopy, __PAIR128__(*&height, *&width));
 }
 
-- (void)setBottomFloatingButton:(id)a3
+- (void)setBottomFloatingButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.setBottomFloatingButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.setBottomFloatingButton(_:)(buttonCopy);
 }
 
-- (void)updateBottomFloatingButtonVisibility:(BOOL)a3
+- (void)updateBottomFloatingButtonVisibility:(BOOL)visibility
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.updateBottomFloatingButtonVisibility(_:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.updateBottomFloatingButtonVisibility(_:)(visibility);
 }
 
 - (void)cleanupBottomFloatingButtonIfNeeded
 {
-  v2 = self;
-  v3 = [(SiriSharedUISystemAssistantExperienceContainerView *)v2 bottomFloatingButtonView];
-  if (v3)
+  selfCopy = self;
+  bottomFloatingButtonView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy bottomFloatingButtonView];
+  if (bottomFloatingButtonView)
   {
     v4 = OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUIDropletContainerView_removeOnNextLayoutPass;
-    v5 = v3;
+    v5 = bottomFloatingButtonView;
     swift_beginAccess();
     *(&v5->super.super.super.super.isa + v4) = 1;
   }
 
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setNeedsLayout];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 layoutIfNeeded];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
 }
 
-- (void)setResultWithResultView:(id)a3 resultSize:(CGSize)a4 eligibleForLightEffects:(BOOL)a5
+- (void)setResultWithResultView:(id)view resultSize:(CGSize)size eligibleForLightEffects:(BOOL)effects
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.setResult(resultView:resultSize:eligibleForLightEffects:)(v9, __PAIR128__(*&height, *&width), a5);
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.setResult(resultView:resultSize:eligibleForLightEffects:)(viewCopy, __PAIR128__(*&height, *&width), effects);
 }
 
-- (void)updateResultSizeWithResultSize:(CGSize)a3
+- (void)updateResultSizeWithResultSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.updateResultSize(resultSize:)(__PAIR128__(*&height, *&width));
 }
 
-- (void)updateLoadingPillSizeWithCandidateSize:(CGSize)a3
+- (void)updateLoadingPillSizeWithCandidateSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.updateLoadingPillSize(withCandidateSize:)(__PAIR128__(*&height, *&width));
 }
 
-- (void)setTransitionLoadingToResultWithResultSize:(CGSize)a3
+- (void)setTransitionLoadingToResultWithResultSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.setTransitionLoadingToResult(resultSize:)(__PAIR128__(*&height, *&width));
 }
 
 - (void)setMergedResultsForTransition
 {
   *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultViewState) = 2;
-  v2 = self;
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setNeedsLayout];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (*(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isInAmbient) != a3)
+  if (*(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isInAmbient) != ambient)
   {
-    *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isInAmbient) = a3;
+    *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isInAmbient) = ambient;
     [(SiriSharedUISystemAssistantExperienceContainerView *)self setNeedsLayout];
   }
 }
 
-- (void)updateKeyboardLightEffects:(BOOL)a3
+- (void)updateKeyboardLightEffects:(BOOL)effects
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.updateKeyboardLightEffects(_:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.updateKeyboardLightEffects(_:)(effects);
 }
 
 - (SiriSharedUISystemAssistantExperienceContainerViewDelegate)delegate
@@ -409,11 +409,11 @@
   return *(self + v3);
 }
 
-- (void)setInputType:(int64_t)a3
+- (void)setInputType:(int64_t)type
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_inputType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)showsSensitiveUI
@@ -423,11 +423,11 @@
   return *(self + v3);
 }
 
-- (void)setShowsSensitiveUI:(BOOL)a3
+- (void)setShowsSensitiveUI:(BOOL)i
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_showsSensitiveUI;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = i;
 }
 
 - (double)bottomContentInset
@@ -437,11 +437,11 @@
   return *(self + v3);
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_bottomContentInset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = inset;
 }
 
 - (BOOL)isFirstSnippet
@@ -451,11 +451,11 @@
   return *(self + v3);
 }
 
-- (void)setIsFirstSnippet:(BOOL)a3
+- (void)setIsFirstSnippet:(BOOL)snippet
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isFirstSnippet;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = snippet;
 }
 
 - (BOOL)isInVoiceLatency
@@ -465,18 +465,18 @@
   return *(self + v3);
 }
 
-- (void)setIsInVoiceLatency:(BOOL)a3
+- (void)setIsInVoiceLatency:(BOOL)latency
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_isInVoiceLatency;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = latency;
 }
 
-- (void)setGradientLayer:(id)a3
+- (void)setGradientLayer:(id)layer
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_gradientLayer);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_gradientLayer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_gradientLayer) = layer;
+  layerCopy = layer;
 }
 
 - (BOOL)resultEligibleForLightEffects
@@ -486,18 +486,18 @@
   return *(self + v3);
 }
 
-- (void)setResultEligibleForLightEffects:(BOOL)a3
+- (void)setResultEligibleForLightEffects:(BOOL)effects
 {
   v5 = OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultEligibleForLightEffects;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = effects;
 }
 
 - (BOOL)loadingToResultRequiresMerge
 {
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)self previousResultView];
-  v3 = v2;
-  if (v2)
+  previousResultView = [(SiriSharedUISystemAssistantExperienceContainerView *)self previousResultView];
+  v3 = previousResultView;
+  if (previousResultView)
   {
   }
 
@@ -506,8 +506,8 @@
 
 - (BOOL)hasLoadingViews
 {
-  v2 = self;
-  v3 = [(SiriSharedUISystemAssistantExperienceContainerView *)v2 loadingViews];
+  selfCopy = self;
+  loadingViews = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy loadingViews];
   type metadata accessor for SiriSharedUIDropletContainerView();
   v4 = sub_21E4DD088();
 
@@ -526,66 +526,66 @@
 
 - (void)cleanupResultTransitionIfNeeded
 {
-  v4 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 previousResultView];
-  if (v2)
+  selfCopy = self;
+  previousResultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy previousResultView];
+  if (previousResultView)
   {
-    v3 = v2;
-    sub_21E4B5BE0(v2);
+    v3 = previousResultView;
+    sub_21E4B5BE0(previousResultView);
   }
 
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v4 setPreviousResultView:0];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setPreviousResultView:0];
 }
 
 - (void)cleanupLoadingTransitionIfNeeded
 {
-  v3 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3 voiceLoadingView];
-  [(SiriSharedUIDropletContainerView *)v2 removeFromSuperview];
+  selfCopy = self;
+  voiceLoadingView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy voiceLoadingView];
+  [(SiriSharedUIDropletContainerView *)voiceLoadingView removeFromSuperview];
 }
 
-- (void)cleanupResponseElementsByIds:(id)a3
+- (void)cleanupResponseElementsByIds:(id)ids
 {
   sub_21E4DB698();
   v4 = sub_21E4DD088();
-  v5 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.cleanupResponseElements(by:)(v4);
 }
 
 - (void)cleanupResultView
 {
-  v4 = self;
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v4 cleanupResultTransitionIfNeeded];
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 resultView];
-  if (v2)
+  selfCopy = self;
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy cleanupResultTransitionIfNeeded];
+  resultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy resultView];
+  if (resultView)
   {
-    v3 = v2;
-    sub_21E4B5BE0(v2);
-    [(SiriSharedUISystemAssistantExperienceContainerView *)v4 setResultView:0];
+    v3 = resultView;
+    sub_21E4B5BE0(resultView);
+    [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setResultView:0];
   }
 }
 
-- (BOOL)shouldExecuteContinuerAction:(int64_t)a3
+- (BOOL)shouldExecuteContinuerAction:(int64_t)action
 {
-  v4 = self;
-  v5 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 continuerSuggestionsViews];
+  selfCopy = self;
+  continuerSuggestionsViews = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy continuerSuggestionsViews];
   type metadata accessor for SiriSharedUIDropletContainerView();
   v6 = sub_21E4DD088();
 
   if ((v6 & 0xC000000000000001) != 0)
   {
-    v8 = MEMORY[0x223D5B080](a3, v6);
+    v8 = MEMORY[0x223D5B080](action, v6);
     goto LABEL_5;
   }
 
-  if (a3 < 0)
+  if (action < 0)
   {
     __break(1u);
   }
 
-  else if (*((v6 & 0xFFFFFFFFFFFFFF8) + 0x10) > a3)
+  else if (*((v6 & 0xFFFFFFFFFFFFFF8) + 0x10) > action)
   {
-    v8 = *(v6 + 8 * a3 + 32);
+    v8 = *(v6 + 8 * action + 32);
 LABEL_5:
     v9 = v8;
 
@@ -600,107 +600,107 @@ LABEL_5:
   return result;
 }
 
-- (void)prepareForPillMergeContinuerWithIndex:(int64_t)a3
+- (void)prepareForPillMergeContinuerWithIndex:(int64_t)index
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.prepareForPillMergeContinuerWith(index:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.prepareForPillMergeContinuerWith(index:)(index);
 }
 
-- (void)pillMergeContinuerWithIndex:(int64_t)a3
+- (void)pillMergeContinuerWithIndex:(int64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   _sSo50SiriSharedUISystemAssistantExperienceContainerViewC0aB2UIE22pillMergeContinuerWith5indexySi_tF_0();
 }
 
 - (void)removeContinuerPill
 {
-  v4 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 continuerPill];
-  if (v2)
+  selfCopy = self;
+  continuerPill = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy continuerPill];
+  if (continuerPill)
   {
-    v3 = v2;
-    [(SiriSharedUIDropletContainerView *)v2 removeFromSuperview];
+    v3 = continuerPill;
+    [(SiriSharedUIDropletContainerView *)continuerPill removeFromSuperview];
     [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUIDropletContainerView_backgroundView) removeFromSuperview];
-    [(SiriSharedUISystemAssistantExperienceContainerView *)v4 setContinuerPill:0];
+    [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setContinuerPill:0];
   }
 }
 
-- (void)suggestionTapAnimationWithIndex:(int64_t)a3 isTouchUp:(BOOL)a4
+- (void)suggestionTapAnimationWithIndex:(int64_t)index isTouchUp:(BOOL)up
 {
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.suggestionTapAnimationWith(index:isTouchUp:)(a3, a4);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.suggestionTapAnimationWith(index:isTouchUp:)(index, up);
 }
 
-- (void)applyPressTransformAnimationToSuggestionTo:(id)a3 from:(double)a4 to:(double)a5 duration:(double)a6
+- (void)applyPressTransformAnimationToSuggestionTo:(id)to from:(double)from to:(double)a5 duration:(double)duration
 {
-  v10 = a3;
-  v11 = self;
-  sub_21E4D2264(v10, a4, a5, a6);
+  toCopy = to;
+  selfCopy = self;
+  sub_21E4D2264(toCopy, from, a5, duration);
 }
 
 - (void)transitionToSuggestionsExpanded
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.transitionToSuggestionsExpanded()();
 }
 
-- (void)prepSuggestionContentViewForAnimation:(id)a3 :(id)a4 :(id)a5 :(CGSize)a6 :(BOOL)a7 :(int64_t)a8
+- (void)prepSuggestionContentViewForAnimation:(id)animation :(id)a4 :(id)a5 :(CGSize)a6 :(BOOL)a7 :(int64_t)a8
 {
   v9 = a7;
   width = a6.width;
-  v14 = a3;
+  animationCopy = animation;
   v15 = a4;
   v16 = a5;
-  v17 = self;
-  sub_21E4BFD70(v14, v15, v16, v9, a8, width);
+  selfCopy = self;
+  sub_21E4BFD70(animationCopy, v15, v16, v9, a8, width);
 }
 
-- (void)transitionToSuggestionsCollapsedWithIndex:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)transitionToSuggestionsCollapsedWithIndex:(int64_t)index animated:(BOOL)animated completionBlock:(id)block
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.transitionToSuggestionsCollapsedWith(index:animated:completionBlock:)(a3, a4, sub_21E4D21E4, v9);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.transitionToSuggestionsCollapsedWith(index:animated:completionBlock:)(index, animated, sub_21E4D21E4, v9);
 }
 
 - (void)transitionToSuggestionsCollapsed
 {
-  v2 = self;
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setSuggestionsExpanded:0];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setNeedsLayout];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setSuggestionsExpanded:0];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
 }
 
-- (void)transitionSuggestionToLoadingWithIndex:(int64_t)a3
+- (void)transitionSuggestionToLoadingWithIndex:(int64_t)index
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.transitionSuggestionToLoading(index:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.transitionSuggestionToLoading(index:)(index);
 }
 
 - (void)transitionVoiceLoadingToLoading
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.transitionVoiceLoadingToLoading()();
 }
 
 - (void)startLatencyLightOnActivePill
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.startLatencyLightOnActivePill()();
 }
 
 - (void)transitionTextFieldLoadingToLoading
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.transitionTextFieldLoadingToLoading()();
 }
 
-- (id)transitionToRemovedResponseElements:(unint64_t)a3
+- (id)transitionToRemovedResponseElements:(unint64_t)elements
 {
-  v3 = a3;
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.transition(toRemovedResponseElements:)(v3);
+  elementsCopy = elements;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.transition(toRemovedResponseElements:)(elementsCopy);
 
   sub_21E4DB698();
   v5 = sub_21E4DD078();
@@ -710,115 +710,115 @@ LABEL_5:
 
 - (void)stopLatencyBreathingLoop
 {
-  v4 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 resultView];
-  if (v2)
+  selfCopy = self;
+  resultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy resultView];
+  if (resultView)
   {
-    v3 = v2;
+    v3 = resultView;
     sub_21E4D5550();
   }
 }
 
 - (void)transitionMergedResults
 {
-  v3 = self;
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3 previousResultView];
-  if (v2)
+  selfCopy = self;
+  previousResultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy previousResultView];
+  if (previousResultView)
   {
 
-    *(v3 + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultViewState) = 1;
-    [(SiriSharedUISystemAssistantExperienceContainerView *)v3 setNeedsLayout];
-    [(SiriSharedUISystemAssistantExperienceContainerView *)v3 layoutIfNeeded];
+    *(selfCopy + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultViewState) = 1;
+    [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout];
+    [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
   }
 }
 
 - (void)transitionToResult
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.transitionToResult()();
 }
 
 - (void)transitionFromResultToCollapseLoading
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.transitionFromResultToCollapseLoading()();
 }
 
 - (void)transitionToUpdatedContentInset
 {
-  v2 = self;
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setNeedsLayout];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
 }
 
 - (void)clearResultViewAndBackground
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.clearResultViewAndBackground()();
 }
 
 - (void)prepareForDrillinAnimation
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.prepareForDrillinAnimation()();
 }
 
 - (void)restoreSubviewsFromDrillIn
 {
-  v4 = self;
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v4 updateBottomFloatingButtonVisibility:1];
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v4 bottomFloatingButtonView];
-  if (v2)
+  selfCopy = self;
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy updateBottomFloatingButtonVisibility:1];
+  bottomFloatingButtonView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy bottomFloatingButtonView];
+  if (bottomFloatingButtonView)
   {
-    v3 = v2;
+    v3 = bottomFloatingButtonView;
     sub_21E4D652C();
   }
 }
 
-- (void)prepareForPopAnimationOfType:(int64_t)a3
+- (void)prepareForPopAnimationOfType:(int64_t)type
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.prepareForPopAnimation(ofType:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.prepareForPopAnimation(ofType:)(type);
 }
 
-- (void)finalizePopAnimationOfType:(int64_t)a3
+- (void)finalizePopAnimationOfType:(int64_t)type
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.finalizePopAnimation(ofType:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.finalizePopAnimation(ofType:)(type);
 }
 
 - (void)didDismissResults
 {
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)self fluidDismissalManager];
-  *(&v2->super.isa + OBJC_IVAR____TtC12SiriSharedUI46SiriSharedUIResultViewPanFluidDismissalManager_isDismissing) = 0;
+  fluidDismissalManager = [(SiriSharedUISystemAssistantExperienceContainerView *)self fluidDismissalManager];
+  *(&fluidDismissalManager->super.isa + OBJC_IVAR____TtC12SiriSharedUI46SiriSharedUIResultViewPanFluidDismissalManager_isDismissing) = 0;
 }
 
 - (UIView)resultViewContainer
 {
-  v2 = [(SiriSharedUISystemAssistantExperienceContainerView *)self resultView];
+  resultView = [(SiriSharedUISystemAssistantExperienceContainerView *)self resultView];
 
-  return v2;
+  return resultView;
 }
 
-- (void)updateBackgroundView:(id)a3 smartDialogView:(id)a4 isSnippetAsyncColored:(BOOL)a5
+- (void)updateBackgroundView:(id)view smartDialogView:(id)dialogView isSnippetAsyncColored:(BOOL)colored
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.updateBackgroundView(_:smartDialogView:isSnippetAsyncColored:)(v8, a4, a5);
+  viewCopy = view;
+  dialogViewCopy = dialogView;
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.updateBackgroundView(_:smartDialogView:isSnippetAsyncColored:)(viewCopy, dialogView, colored);
 }
 
-- (void)searchUIBackgroundColorUpdateSuccessful:(BOOL)a3
+- (void)searchUIBackgroundColorUpdateSuccessful:(BOOL)successful
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.searchUIBackgroundColorUpdateSuccessful(_:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.searchUIBackgroundColorUpdateSuccessful(_:)(successful);
 }
 
-- (void)setTextFieldView:(id)a3
+- (void)setTextFieldView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldView) = view;
+  viewCopy = view;
 }
 
 - (NSArray)suggestionContentViewsToRemove
@@ -830,26 +830,26 @@ LABEL_5:
   return v2;
 }
 
-- (void)setSuggestionContentViewsToRemove:(id)a3
+- (void)setSuggestionContentViewsToRemove:(id)remove
 {
   sub_21E43F008(0, &qword_280C140A0);
   *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_suggestionContentViewsToRemove) = sub_21E4DD088();
 }
 
-- (void)setResultView:(id)a3
+- (void)setResultView:(id)view
 {
   v6 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultView) = a3;
-  v4 = a3;
-  v5 = self;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_resultView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_21E4C4880(v6);
 }
 
-- (void)setBottomFloatingButtonView:(id)a3
+- (void)setBottomFloatingButtonView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_bottomFloatingButtonView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_bottomFloatingButtonView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_bottomFloatingButtonView) = view;
+  viewCopy = view;
 }
 
 - (NSDictionary)originalViewSizeDict
@@ -863,7 +863,7 @@ LABEL_5:
   return v2;
 }
 
-- (void)setOriginalViewSizeDict:(id)a3
+- (void)setOriginalViewSizeDict:(id)dict
 {
   type metadata accessor for SiriSharedUIDropletContainerView();
   type metadata accessor for CGSize(0);
@@ -871,46 +871,46 @@ LABEL_5:
   *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_originalViewSizeDict) = sub_21E4DCE98();
 }
 
-- (void)setPreviousResultView:(id)a3
+- (void)setPreviousResultView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_previousResultView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_previousResultView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_previousResultView) = view;
+  viewCopy = view;
 }
 
-- (void)setVoiceLoadingView:(id)a3
+- (void)setVoiceLoadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_voiceLoadingView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_voiceLoadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_voiceLoadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setTextFieldLoadingView:(id)a3
+- (void)setTextFieldLoadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldLoadingView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldLoadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_textFieldLoadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setCollapseLoadingView:(id)a3
+- (void)setCollapseLoadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_collapseLoadingView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_collapseLoadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_collapseLoadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setContinuerPill:(id)a3
+- (void)setContinuerPill:(id)pill
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_continuerPill);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_continuerPill) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_continuerPill) = pill;
+  pillCopy = pill;
 }
 
-- (void)setSnippetSuggestionPageantView:(id)a3
+- (void)setSnippetSuggestionPageantView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetSuggestionPageantView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetSuggestionPageantView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetSuggestionPageantView) = view;
+  viewCopy = view;
 }
 
 - (CGSize)previousResultSize
@@ -941,7 +941,7 @@ LABEL_5:
   return v2;
 }
 
-- (void)setBackgroundColorAsyncDict:(id)a3
+- (void)setBackgroundColorAsyncDict:(id)dict
 {
   sub_21E43F008(0, &qword_280C140A0);
   sub_21E4D1674();
@@ -969,21 +969,21 @@ LABEL_5:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = SiriSharedUISystemAssistantExperienceContainerView;
-  v7 = self;
+  selfCopy = self;
   [(SiriSharedUISystemAssistantExperienceContainerView *)&v10 setFrame:x, y, width, height];
-  v8 = [(SiriSharedUISystemAssistantExperienceContainerView *)v7 gradientLayer:v10.receiver];
+  v8 = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy gradientLayer:v10.receiver];
   if (v8)
   {
     v9 = v8;
-    [(SiriSharedUISystemAssistantExperienceContainerView *)v7 frame];
+    [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy frame];
     v12 = CGRectInset(v11, -30.0, -30.0);
     [(CALayer *)v9 setFrame:v12.origin.x, v12.origin.y, v12.size.width, v12.size.height];
   }
@@ -993,27 +993,27 @@ LABEL_5:
 {
   v3.receiver = self;
   v3.super_class = SiriSharedUISystemAssistantExperienceContainerView;
-  v2 = self;
+  selfCopy = self;
   [(SiriSharedUISystemAssistantExperienceContainerView *)&v3 safeAreaInsetsDidChange];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 setNeedsLayout:v3.receiver];
-  [(SiriSharedUISystemAssistantExperienceContainerView *)v2 layoutIfNeeded];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy setNeedsLayout:v3.receiver];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy layoutIfNeeded];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.layoutSubviews()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = SiriSharedUISystemAssistantExperienceContainerView;
-  v7 = self;
-  v8 = a4;
-  v9 = [(SiriSharedUISystemAssistantExperienceContainerView *)&v13 hitTest:v8 withEvent:x, y];
+  selfCopy = self;
+  eventCopy = event;
+  v9 = [(SiriSharedUISystemAssistantExperienceContainerView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -1022,113 +1022,113 @@ LABEL_5:
 
   v10 = v9;
   sub_21E43F008(0, &qword_280C140A0);
-  v11 = v7;
-  v7 = v10;
+  v11 = selfCopy;
+  selfCopy = v10;
   LOBYTE(v10) = sub_21E4DD2F8();
 
   if (v10)
   {
 LABEL_5:
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)setExposureStateIfInViewWithAvailableMaxWidth:(double)a3 suggestionWidths:(id)a4 suggestionsInset:(double)a5
+- (void)setExposureStateIfInViewWithAvailableMaxWidth:(double)width suggestionWidths:(id)widths suggestionsInset:(double)inset
 {
   v8 = sub_21E4DD088();
-  v9 = self;
-  sub_21E4CA38C(v8, a3, a5);
+  selfCopy = self;
+  sub_21E4CA38C(v8, width, inset);
 }
 
 - (void)suggestionsMitose
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.suggestionsMitose()();
 }
 
-- (void)reduceMotionCarouselWithDuration:(float)a3 isFirstSnippet:(BOOL)a4
+- (void)reduceMotionCarouselWithDuration:(float)duration isFirstSnippet:(BOOL)snippet
 {
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.reduceMotionCarousel(withDuration:isFirstSnippet:)(a3, a4);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.reduceMotionCarousel(withDuration:isFirstSnippet:)(duration, snippet);
 }
 
-- (void)reduceMotionMitosisWithDuration:(float)a3 intoSnippet:(BOOL)a4
+- (void)reduceMotionMitosisWithDuration:(float)duration intoSnippet:(BOOL)snippet
 {
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.reduceMotionMitosis(withDuration:intoSnippet:)(a3, a4);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.reduceMotionMitosis(withDuration:intoSnippet:)(duration, snippet);
 }
 
-- (void)applyDestOverFilter:(BOOL)a3
+- (void)applyDestOverFilter:(BOOL)filter
 {
-  v4 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.applyDestOverFilter(_:)(a3);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.applyDestOverFilter(_:)(filter);
 }
 
 - (BOOL)attemptToApplySDFMask
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21E4CBB34();
 
   return v3 & 1;
 }
 
-- (void)mitoseWithDuration:(float)a3 mitosingIntoSnippet:(BOOL)a4
+- (void)mitoseWithDuration:(float)duration mitosingIntoSnippet:(BOOL)snippet
 {
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.mitose(withDuration:mitosingIntoSnippet:)(a3, a4);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.mitose(withDuration:mitosingIntoSnippet:)(duration, snippet);
 }
 
 - (void)postPillMergeBounce
 {
-  v2 = self;
+  selfCopy = self;
   SiriSharedUISystemAssistantExperienceContainerView.postPillMergeBounce()();
 }
 
-- (void)preFollowupPulseWithDuration:(float)a3
+- (void)preFollowupPulseWithDuration:(float)duration
 {
-  v8 = self;
-  v4 = [(SiriSharedUISystemAssistantExperienceContainerView *)v8 resultView];
-  if (v4)
+  selfCopy = self;
+  resultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy resultView];
+  if (resultView)
   {
-    v5 = v4;
-    sub_21E4D69CC(a3);
+    v5 = resultView;
+    sub_21E4D69CC(duration);
   }
 
-  v6 = [(SiriSharedUISystemAssistantExperienceContainerView *)v8 previousResultView];
-  if (v6)
+  previousResultView = [(SiriSharedUISystemAssistantExperienceContainerView *)selfCopy previousResultView];
+  if (previousResultView)
   {
-    v7 = v6;
-    sub_21E4D69CC(a3);
+    v7 = previousResultView;
+    sub_21E4D69CC(duration);
   }
 }
 
-- (void)performAnimatedBlur:(int64_t)a3 withDuration:(double)a4
+- (void)performAnimatedBlur:(int64_t)blur withDuration:(double)duration
 {
-  v6 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.performAnimatedBlur(_:withDuration:)(a3, a4);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.performAnimatedBlur(_:withDuration:)(blur, duration);
 }
 
-- (void)performAnimatedBlur:(int64_t)a3 usingSpringWithMass:(double)a4 stiffness:(double)a5 damping:(double)a6
+- (void)performAnimatedBlur:(int64_t)blur usingSpringWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping
 {
-  v10 = self;
-  SiriSharedUISystemAssistantExperienceContainerView.performAnimatedBlur(_:usingSpringWithMass:stiffness:damping:)(a3, a4, a5, a6);
+  selfCopy = self;
+  SiriSharedUISystemAssistantExperienceContainerView.performAnimatedBlur(_:usingSpringWithMass:stiffness:damping:)(blur, mass, stiffness, damping);
 }
 
-- (void)setSnippetBackgroundView:(id)a3
+- (void)setSnippetBackgroundView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetBackgroundView);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetBackgroundView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_snippetBackgroundView) = view;
+  viewCopy = view;
 }
 
-- (void)setPairedSmartDialogViewForBackground:(id)a3
+- (void)setPairedSmartDialogViewForBackground:(id)background
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_pairedSmartDialogViewForBackground);
-  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_pairedSmartDialogViewForBackground) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISystemAssistantExperienceContainerView_pairedSmartDialogViewForBackground) = background;
+  backgroundCopy = background;
 }
 
 @end

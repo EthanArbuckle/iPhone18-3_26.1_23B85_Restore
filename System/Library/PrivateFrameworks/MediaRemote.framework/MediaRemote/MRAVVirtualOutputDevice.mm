@@ -25,7 +25,7 @@
 - (BOOL)supportsBufferedAirPlay;
 - (BOOL)supportsExternalScreen;
 - (BOOL)supportsRapport;
-- (MRAVVirtualOutputDevice)initWithJSONData:(id)a3 pipeEndpoint:(id)a4;
+- (MRAVVirtualOutputDevice)initWithJSONData:(id)data pipeEndpoint:(id)endpoint;
 - (float)batteryLevel;
 - (float)volume;
 - (id)MACAddress;
@@ -47,10 +47,10 @@
 
 @implementation MRAVVirtualOutputDevice
 
-- (MRAVVirtualOutputDevice)initWithJSONData:(id)a3 pipeEndpoint:(id)a4
+- (MRAVVirtualOutputDevice)initWithJSONData:(id)data pipeEndpoint:(id)endpoint
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  endpointCopy = endpoint;
   v70.receiver = self;
   v70.super_class = MRAVVirtualOutputDevice;
   v9 = [(MRAVVirtualOutputDevice *)&v70 init];
@@ -61,9 +61,9 @@
     accessSerialQueue = v9->_accessSerialQueue;
     v9->_accessSerialQueue = v11;
 
-    objc_storeStrong(&v9->_jsonDeviceDefinition, a3);
+    objc_storeStrong(&v9->_jsonDeviceDefinition, data);
     v69 = 0;
-    v13 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:&v69];
+    v13 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v69];
     v14 = v69;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -201,7 +201,7 @@
       v9->_isUsingJSONProtocol = [v66 BOOLValue];
     }
 
-    objc_storeStrong(&v9->_pipeEndpoint, a4);
+    objc_storeStrong(&v9->_pipeEndpoint, endpoint);
   }
 
   return v9;
@@ -254,9 +254,9 @@
 - (id)logicalDeviceID
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 useClusterDevices];
+  useClusterDevices = [v3 useClusterDevices];
 
-  if (v4)
+  if (useClusterDevices)
   {
     v5 = 0;
   }

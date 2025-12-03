@@ -1,16 +1,16 @@
 @interface GKContentView
 + (CGSize)preferredSize;
-- (GKContentView)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7;
+- (GKContentView)initWithTitle:(id)title message:(id)message icon:(id)icon cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle;
 - (int64_t)numberOfTitleLines;
 @end
 
 @implementation GKContentView
 
-- (GKContentView)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5 cancelButtonTitle:(id)a6 otherButtonTitle:(id)a7
+- (GKContentView)initWithTitle:(id)title message:(id)message icon:(id)icon cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle
 {
   v8.receiver = self;
   v8.super_class = GKContentView;
-  return [(GKContentView *)&v8 init:a3];
+  return [(GKContentView *)&v8 init:title];
 }
 
 - (int64_t)numberOfTitleLines

@@ -1,9 +1,9 @@
 @interface WKBokehInfiniteImpulseResponseFilter
-+ (id)lowpassFilterWithCoefficient:(double)a1;
-+ (id)lowpassInertiaFilterWithCoefficient:(double)a1;
++ (id)lowpassFilterWithCoefficient:(double)coefficient;
++ (id)lowpassInertiaFilterWithCoefficient:(double)coefficient;
 - (BOOL)zeroGradient;
-- (WKBokehInfiniteImpulseResponseFilter)initWithCount:(unint64_t)a3 feedforwardCoefficients:(double *)a4 feedbackCoefficients:(double *)a5;
-- (double)filterWithInput:(void *)a1;
+- (WKBokehInfiniteImpulseResponseFilter)initWithCount:(unint64_t)count feedforwardCoefficients:(double *)coefficients feedbackCoefficients:(double *)feedbackCoefficients;
+- (double)filterWithInput:(void *)input;
 - (double)output;
 - (double)outputGradient;
 - (double)zeroGradientThreshold;
@@ -15,21 +15,21 @@
 
 @implementation WKBokehInfiniteImpulseResponseFilter
 
-- (WKBokehInfiniteImpulseResponseFilter)initWithCount:(unint64_t)a3 feedforwardCoefficients:(double *)a4 feedbackCoefficients:(double *)a5
+- (WKBokehInfiniteImpulseResponseFilter)initWithCount:(unint64_t)count feedforwardCoefficients:(double *)coefficients feedbackCoefficients:(double *)feedbackCoefficients
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
     v8 = @"count < 2";
 LABEL_20:
-    [v6 raise:v7 format:{v8, a5}];
-    v25 = 0;
+    [v6 raise:v7 format:{v8, feedbackCoefficients}];
+    selfCopy = 0;
     goto LABEL_21;
   }
 
-  v9 = a4;
-  if (!a4)
+  coefficientsCopy = coefficients;
+  if (!coefficients)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -37,8 +37,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v10 = a5;
-  if (!a5)
+  feedbackCoefficientsCopy = feedbackCoefficients;
+  if (!feedbackCoefficients)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -46,22 +46,22 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v11 = a3;
+  countCopy = count;
   v12 = 0.0;
-  for (i = 1; i != a3; ++i)
+  for (i = 1; i != count; ++i)
   {
-    v12 = v12 + a5[i];
+    v12 = v12 + feedbackCoefficients[i];
   }
 
   v14 = 0;
   v15 = 0.0;
   do
   {
-    v15 = v15 + a4[v14++];
+    v15 = v15 + coefficients[v14++];
   }
 
-  while (a3 != v14);
-  if (fabs((v15 - v12) * (1.0 / *a5) + -1.0) > 0.00001)
+  while (count != v14);
+  if (fabs((v15 - v12) * (1.0 / *feedbackCoefficients) + -1.0) > 0.00001)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"coefficients scale the output, (1.0 / fbC[0])(sum(ffC) - sum(fbC[1:])) should be 1.0"}];
   }
@@ -72,56 +72,56 @@ LABEL_20:
   v17 = v16;
   if (v16)
   {
-    v16->_count = v11;
-    v16->_ffC = malloc_type_malloc(8 * v11, 0x100004000313F17uLL);
-    v18 = malloc_type_malloc(8 * v11, 0x100004000313F17uLL);
+    v16->_count = countCopy;
+    v16->_ffC = malloc_type_malloc(8 * countCopy, 0x100004000313F17uLL);
+    v18 = malloc_type_malloc(8 * countCopy, 0x100004000313F17uLL);
     v17->_fbC = v18;
     ffC = v17->_ffC;
-    v20 = v11;
+    v20 = countCopy;
     do
     {
-      v21 = *v9++;
+      v21 = *coefficientsCopy++;
       *ffC++ = v21;
-      v22 = *v10++;
+      v22 = *feedbackCoefficientsCopy++;
       *v18++ = v22;
       --v20;
     }
 
     while (v20);
-    v17->_inputHistory = malloc_type_malloc(8 * v11, 0x100004000313F17uLL);
-    v23 = malloc_type_malloc(8 * v11, 0x100004000313F17uLL);
+    v17->_inputHistory = malloc_type_malloc(8 * countCopy, 0x100004000313F17uLL);
+    v23 = malloc_type_malloc(8 * countCopy, 0x100004000313F17uLL);
     v17->_outputHistory = v23;
     inputHistory = v17->_inputHistory;
     do
     {
       *inputHistory++ = 0.0;
       *v23++ = 0.0;
-      --v11;
+      --countCopy;
     }
 
-    while (v11);
+    while (countCopy);
     v17->_zeroGradientThreshold = 0.001;
   }
 
   self = v17;
-  v25 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)lowpassFilterWithCoefficient:(double)a1
++ (id)lowpassFilterWithCoefficient:(double)coefficient
 {
   v7[2] = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a1 <= 0.0)
+  if (coefficient <= 0.0)
   {
     v2 = @"coeff <= 0.0";
   }
 
   else
   {
-    if (a1 < 1.0)
+    if (coefficient < 1.0)
     {
       goto LABEL_6;
     }
@@ -133,27 +133,27 @@ LABEL_21:
 LABEL_6:
   v7[1] = 0;
   v6[0] = 0x3FF0000000000000;
-  *&v6[1] = a1 + -1.0;
-  *v7 = a1;
+  *&v6[1] = coefficient + -1.0;
+  *v7 = coefficient;
   v3 = [objc_alloc(objc_opt_class()) initWithCount:2 feedforwardCoefficients:v7 feedbackCoefficients:v6];
   v4 = *MEMORY[0x1E69E9840];
 
   return v3;
 }
 
-+ (id)lowpassInertiaFilterWithCoefficient:(double)a1
++ (id)lowpassInertiaFilterWithCoefficient:(double)coefficient
 {
   v15 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v1 = a1;
-  if (a1 <= 0.0)
+  coefficientCopy = coefficient;
+  if (coefficient <= 0.0)
   {
     v2 = @"coeff <= 0.0";
   }
 
   else
   {
-    if (a1 < 1.0)
+    if (coefficient < 1.0)
     {
       goto LABEL_6;
     }
@@ -161,17 +161,17 @@ LABEL_6:
     v2 = @"coeff >= 1.0";
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v2, *&a1}];
-  v1 = v8;
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v2, *&coefficient}];
+  coefficientCopy = v8;
 LABEL_6:
-  v11 = v1;
-  v12 = vmulq_n_f64(xmmword_1E4AADDB0, v1);
-  v3 = vmulq_n_f64(xmmword_1E4AADDC0, v1);
-  v13 = v1 * 0.3;
+  v11 = coefficientCopy;
+  v12 = vmulq_n_f64(xmmword_1E4AADDB0, coefficientCopy);
+  v3 = vmulq_n_f64(xmmword_1E4AADDC0, coefficientCopy);
+  v13 = coefficientCopy * 0.3;
   v14 = v3.f64[0];
   v9[0] = 0x3FF0000000000000;
-  *&v9[1] = v1 + -1.0;
-  *&v9[2] = v1 * 0.4;
+  *&v9[1] = coefficientCopy + -1.0;
+  *&v9[2] = coefficientCopy * 0.4;
   v10 = v3;
   v4 = [objc_alloc(objc_opt_class()) initWithCount:5 feedforwardCoefficients:&v11 feedbackCoefficients:v9];
   v5 = *MEMORY[0x1E69E9840];
@@ -210,21 +210,21 @@ LABEL_6:
   return result;
 }
 
-- (double)filterWithInput:(void *)a1
+- (double)filterWithInput:(void *)input
 {
-  if (!a1)
+  if (!input)
   {
     return 0.0;
   }
 
-  v4 = a1[4];
-  memmove(v4 + 1, v4, 8 * a1[1] - 8);
+  v4 = input[4];
+  memmove(v4 + 1, v4, 8 * input[1] - 8);
   *v4 = a2;
-  v5 = a1[1];
+  v5 = input[1];
   if (v5 >= 2)
   {
-    v6 = a1[5];
-    v7 = (a1[3] + 8);
+    v6 = input[5];
+    v7 = (input[3] + 8);
     v8 = v5 - 1;
     v9 = 0.0;
     do
@@ -244,10 +244,10 @@ LABEL_6:
   if (v5)
   {
 LABEL_7:
-    v13 = a1[4];
-    v14 = a1[2];
+    v13 = input[4];
+    v14 = input[2];
     v15 = 0.0;
-    v16 = a1[1];
+    v16 = input[1];
     do
     {
       v17 = *v13++;
@@ -261,8 +261,8 @@ LABEL_7:
     v9 = v15 - v9;
   }
 
-  v20 = v9 * (1.0 / *a1[3]);
-  v21 = a1[5];
+  v20 = v9 * (1.0 / *input[3]);
+  v21 = input[5];
   memmove(v21 + 1, v21, 8 * v5 - 8);
   *v21 = v20;
   return v20;
@@ -270,9 +270,9 @@ LABEL_7:
 
 - (double)output
 {
-  if (a1)
+  if (self)
   {
-    return **(a1 + 40);
+    return **(self + 40);
   }
 
   else
@@ -283,9 +283,9 @@ LABEL_7:
 
 - (double)outputGradient
 {
-  if (a1)
+  if (self)
   {
-    return **(a1 + 40) - *(*(a1 + 40) + 8);
+    return **(self + 40) - *(*(self + 40) + 8);
   }
 
   else
@@ -366,9 +366,9 @@ LABEL_7:
 
 - (double)zeroGradientThreshold
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else

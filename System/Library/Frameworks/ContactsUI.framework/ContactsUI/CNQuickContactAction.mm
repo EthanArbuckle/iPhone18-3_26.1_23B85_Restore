@@ -1,11 +1,11 @@
 @interface CNQuickContactAction
-- (CNQuickContactAction)initWithContactAction:(id)a3;
+- (CNQuickContactAction)initWithContactAction:(id)action;
 - (CNQuickContactActionDelegate)delegate;
-- (void)action:(id)a3 presentViewController:(id)a4 sender:(id)a5;
-- (void)actionDidFinish:(id)a3;
-- (void)actionDidUpdate:(id)a3;
-- (void)actionWasCanceled:(id)a3;
-- (void)performWithCompletionBlock:(id)a3;
+- (void)action:(id)action presentViewController:(id)controller sender:(id)sender;
+- (void)actionDidFinish:(id)finish;
+- (void)actionDidUpdate:(id)update;
+- (void)actionWasCanceled:(id)canceled;
+- (void)performWithCompletionBlock:(id)block;
 @end
 
 @implementation CNQuickContactAction
@@ -17,85 +17,85 @@
   return WeakRetained;
 }
 
-- (void)actionWasCanceled:(id)a3
+- (void)actionWasCanceled:(id)canceled
 {
-  v4 = [(CNQuickContactAction *)self completionBlock];
+  completionBlock = [(CNQuickContactAction *)self completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
-    v5 = [(CNQuickContactAction *)self completionBlock];
-    v5[2]();
+    completionBlock2 = [(CNQuickContactAction *)self completionBlock];
+    completionBlock2[2]();
   }
 
-  v6 = [(CNQuickAction *)self previousStyle];
-  [CNContactStyle setCurrentStyle:v6];
+  previousStyle = [(CNQuickAction *)self previousStyle];
+  [CNContactStyle setCurrentStyle:previousStyle];
 }
 
-- (void)actionDidFinish:(id)a3
+- (void)actionDidFinish:(id)finish
 {
-  v4 = [(CNQuickContactAction *)self completionBlock];
+  completionBlock = [(CNQuickContactAction *)self completionBlock];
 
-  if (v4)
+  if (completionBlock)
   {
-    v5 = [(CNQuickContactAction *)self completionBlock];
-    v5[2]();
+    completionBlock2 = [(CNQuickContactAction *)self completionBlock];
+    completionBlock2[2]();
   }
 
-  v6 = [(CNQuickAction *)self manager];
-  [v6 actionPerformed:self];
+  manager = [(CNQuickAction *)self manager];
+  [manager actionPerformed:self];
 
-  v7 = [(CNQuickAction *)self previousStyle];
-  [CNContactStyle setCurrentStyle:v7];
+  previousStyle = [(CNQuickAction *)self previousStyle];
+  [CNContactStyle setCurrentStyle:previousStyle];
 }
 
-- (void)action:(id)a3 presentViewController:(id)a4 sender:(id)a5
+- (void)action:(id)action presentViewController:(id)controller sender:(id)sender
 {
-  v9 = a4;
-  v6 = [(CNQuickContactAction *)self delegate];
+  controllerCopy = controller;
+  delegate = [(CNQuickContactAction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    [v9 setModalPresentationStyle:5];
-    v8 = [(CNQuickContactAction *)self delegate];
-    [v8 contactAction:self presentViewController:v9];
+    [controllerCopy setModalPresentationStyle:5];
+    delegate2 = [(CNQuickContactAction *)self delegate];
+    [delegate2 contactAction:self presentViewController:controllerCopy];
   }
 }
 
-- (void)actionDidUpdate:(id)a3
+- (void)actionDidUpdate:(id)update
 {
-  v4 = [(CNQuickContactAction *)self delegate];
+  delegate = [(CNQuickContactAction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNQuickContactAction *)self delegate];
-    [v6 contactActionDidUpdate:self];
+    delegate2 = [(CNQuickContactAction *)self delegate];
+    [delegate2 contactActionDidUpdate:self];
   }
 }
 
-- (void)performWithCompletionBlock:(id)a3
+- (void)performWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CNContactStyle currentStyle];
   [(CNQuickAction *)self setPreviousStyle:v5];
 
   v6 = +[CNContactStyle defaultStyle];
   [CNContactStyle setCurrentStyle:v6];
 
-  [(CNQuickContactAction *)self setCompletionBlock:v4];
-  v7 = [(CNQuickContactAction *)self contactAction];
-  [v7 performActionWithSender:self];
+  [(CNQuickContactAction *)self setCompletionBlock:blockCopy];
+  contactAction = [(CNQuickContactAction *)self contactAction];
+  [contactAction performActionWithSender:self];
 }
 
-- (CNQuickContactAction)initWithContactAction:(id)a3
+- (CNQuickContactAction)initWithContactAction:(id)action
 {
   v6.receiver = self;
   v6.super_class = CNQuickContactAction;
-  v3 = a3;
+  actionCopy = action;
   v4 = [(CNQuickAction *)&v6 init];
-  [v3 setDelegate:{v4, v6.receiver, v6.super_class}];
-  [(CNQuickContactAction *)v4 setContactAction:v3];
+  [actionCopy setDelegate:{v4, v6.receiver, v6.super_class}];
+  [(CNQuickContactAction *)v4 setContactAction:actionCopy];
 
   return v4;
 }

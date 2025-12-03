@@ -1,23 +1,23 @@
 @interface _SFSettingsAlertItemBackgroundView
-- (_SFSettingsAlertItemBackgroundView)initWithFrame:(CGRect)a3;
+- (_SFSettingsAlertItemBackgroundView)initWithFrame:(CGRect)frame;
 - (id)_highlightEffect;
-- (void)setMode:(int64_t)a3;
+- (void)setMode:(int64_t)mode;
 - (void)updateConstraints;
 @end
 
 @implementation _SFSettingsAlertItemBackgroundView
 
-- (_SFSettingsAlertItemBackgroundView)initWithFrame:(CGRect)a3
+- (_SFSettingsAlertItemBackgroundView)initWithFrame:(CGRect)frame
 {
   v40[1] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = _SFSettingsAlertItemBackgroundView;
-  v3 = [(_SFSettingsAlertItemBackgroundView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFSettingsAlertItemBackgroundView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD298]);
-    v5 = [(_SFSettingsAlertItemBackgroundView *)v3 _highlightEffect];
-    v6 = [v4 initWithEffect:v5];
+    _highlightEffect = [(_SFSettingsAlertItemBackgroundView *)v3 _highlightEffect];
+    v6 = [v4 initWithEffect:_highlightEffect];
     highlightView = v3->_highlightView;
     v3->_highlightView = v6;
 
@@ -25,51 +25,51 @@
     [(_SFSettingsAlertItemBackgroundView *)v3 bounds];
     [(UIVisualEffectView *)v3->_highlightView setFrame:?];
     [(UIVisualEffectView *)v3->_highlightView setHidden:1];
-    v8 = [(UIVisualEffectView *)v3->_highlightView contentView];
-    v9 = [v8 tintColor];
-    v10 = [(UIVisualEffectView *)v3->_highlightView contentView];
-    [v10 setBackgroundColor:v9];
+    contentView = [(UIVisualEffectView *)v3->_highlightView contentView];
+    tintColor = [contentView tintColor];
+    contentView2 = [(UIVisualEffectView *)v3->_highlightView contentView];
+    [contentView2 setBackgroundColor:tintColor];
 
     [(_SFSettingsAlertItemBackgroundView *)v3 addSubview:v3->_highlightView];
-    v11 = [(UIVisualEffectView *)v3->_highlightView topAnchor];
-    v12 = [(_SFSettingsAlertItemBackgroundView *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UIVisualEffectView *)v3->_highlightView topAnchor];
+    topAnchor2 = [(_SFSettingsAlertItemBackgroundView *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     highlightToTopConstraint = v3->_highlightToTopConstraint;
     v3->_highlightToTopConstraint = v13;
 
-    v15 = [(UIVisualEffectView *)v3->_highlightView bottomAnchor];
-    v16 = [(_SFSettingsAlertItemBackgroundView *)v3 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(UIVisualEffectView *)v3->_highlightView bottomAnchor];
+    bottomAnchor2 = [(_SFSettingsAlertItemBackgroundView *)v3 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     highlightToBottomConstraint = v3->_highlightToBottomConstraint;
     v3->_highlightToBottomConstraint = v17;
 
-    v19 = [(UIVisualEffectView *)v3->_highlightView leadingAnchor];
-    v20 = [(_SFSettingsAlertItemBackgroundView *)v3 leadingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    leadingAnchor = [(UIVisualEffectView *)v3->_highlightView leadingAnchor];
+    leadingAnchor2 = [(_SFSettingsAlertItemBackgroundView *)v3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     highlightToLeadingConstraint = v3->_highlightToLeadingConstraint;
     v3->_highlightToLeadingConstraint = v21;
 
-    v23 = [(UIVisualEffectView *)v3->_highlightView leadingAnchor];
-    v24 = [(_SFSettingsAlertItemBackgroundView *)v3 leadingAnchor];
-    v25 = [v23 constraintEqualToSystemSpacingAfterAnchor:v24 multiplier:1.0];
+    leadingAnchor3 = [(UIVisualEffectView *)v3->_highlightView leadingAnchor];
+    leadingAnchor4 = [(_SFSettingsAlertItemBackgroundView *)v3 leadingAnchor];
+    v25 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
     highlightToLeadingWithSpaceConstraint = v3->_highlightToLeadingWithSpaceConstraint;
     v3->_highlightToLeadingWithSpaceConstraint = v25;
 
-    v27 = [(UIVisualEffectView *)v3->_highlightView heightAnchor];
+    heightAnchor = [(UIVisualEffectView *)v3->_highlightView heightAnchor];
     _SFOnePixel();
-    v28 = [v27 constraintEqualToConstant:?];
+    v28 = [heightAnchor constraintEqualToConstant:?];
     highlightPixelHeightConstraint = v3->_highlightPixelHeightConstraint;
     v3->_highlightPixelHeightConstraint = v28;
 
-    v30 = [(UIVisualEffectView *)v3->_highlightView widthAnchor];
+    widthAnchor = [(UIVisualEffectView *)v3->_highlightView widthAnchor];
     _SFOnePixel();
-    v31 = [v30 constraintEqualToConstant:?];
+    v31 = [widthAnchor constraintEqualToConstant:?];
     highlightPixelWidthConstraint = v3->_highlightPixelWidthConstraint;
     v3->_highlightPixelWidthConstraint = v31;
 
-    v33 = [(UIVisualEffectView *)v3->_highlightView trailingAnchor];
-    v34 = [(_SFSettingsAlertItemBackgroundView *)v3 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    trailingAnchor = [(UIVisualEffectView *)v3->_highlightView trailingAnchor];
+    trailingAnchor2 = [(_SFSettingsAlertItemBackgroundView *)v3 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[0] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
     [(_SFSettingsAlertItemBackgroundView *)v3 addConstraints:v36];
@@ -81,13 +81,13 @@
   return v3;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    v5 = [(_SFSettingsAlertItemBackgroundView *)self _highlightEffect];
-    [(UIVisualEffectView *)self->_highlightView setEffect:v5];
+    self->_mode = mode;
+    _highlightEffect = [(_SFSettingsAlertItemBackgroundView *)self _highlightEffect];
+    [(UIVisualEffectView *)self->_highlightView setEffect:_highlightEffect];
 
     [(_SFSettingsAlertItemBackgroundView *)self setNeedsUpdateConstraints];
   }
@@ -107,8 +107,8 @@
   }
 
   v4 = MEMORY[0x1E69DD248];
-  v5 = [MEMORY[0x1E69DC730] _sf_defaultPopoverBackgroundEffect];
-  v6 = [v4 effectForBlurEffect:v5 style:v3];
+  _sf_defaultPopoverBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultPopoverBackgroundEffect];
+  v6 = [v4 effectForBlurEffect:_sf_defaultPopoverBackgroundEffect style:v3];
 
   return v6;
 }
@@ -149,8 +149,8 @@
     }
 
     [(UIVisualEffectView *)self->_highlightView setHidden:1];
-    v15 = [MEMORY[0x1E69DC888] systemGray4Color];
-    [(_SFSettingsAlertItemBackgroundView *)self setBackgroundColor:v15];
+    systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+    [(_SFSettingsAlertItemBackgroundView *)self setBackgroundColor:systemGray4Color];
   }
 
   mode = self->_mode;

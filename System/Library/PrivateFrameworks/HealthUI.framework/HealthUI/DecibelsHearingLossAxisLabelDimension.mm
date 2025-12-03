@@ -1,20 +1,20 @@
 @interface DecibelsHearingLossAxisLabelDimension
 - (_TtC8HealthUI37DecibelsHearingLossAxisLabelDimension)init;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation DecibelsHearingLossAxisLabelDimension
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  [v6 doubleValue];
-  v10 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
-  v14.receiver = v7;
+  locationCopy = location;
+  selfCopy = self;
+  sizeCopy = size;
+  [locationCopy doubleValue];
+  initWithDouble_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
+  v14.receiver = selfCopy;
   v14.super_class = type metadata accessor for DecibelsHearingLossAxisLabelDimension();
-  v11 = [(HKAxisLabelDimensionScalar *)&v14 stringForLocation:v10 formatterForStepSize:v8];
+  v11 = [(HKAxisLabelDimensionScalar *)&v14 stringForLocation:initWithDouble_ formatterForStepSize:sizeCopy];
 
   if (v11)
   {

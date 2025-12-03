@@ -1,18 +1,18 @@
 @interface CSDFaceTimeIDSService
-- (CSDFaceTimeIDSService)initWithName:(id)a3;
+- (CSDFaceTimeIDSService)initWithName:(id)name;
 - (id)callerID;
-- (void)account:(id)a3 aliasesChanged:(id)a4;
+- (void)account:(id)account aliasesChanged:(id)changed;
 - (void)dealloc;
-- (void)faceTimeIMAccountCallerIDChanged:(id)a3;
+- (void)faceTimeIMAccountCallerIDChanged:(id)changed;
 @end
 
 @implementation CSDFaceTimeIDSService
 
-- (CSDFaceTimeIDSService)initWithName:(id)a3
+- (CSDFaceTimeIDSService)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = CSDFaceTimeIDSService;
-  v3 = [(CSDIDSService *)&v7 initWithName:a3];
+  v3 = [(CSDIDSService *)&v7 initWithName:name];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -37,25 +37,25 @@
 - (id)callerID
 {
   v2 = +[CSDFaceTimeIMAccount sharedInstance];
-  v3 = [v2 callerID];
+  callerID = [v2 callerID];
 
-  return v3;
+  return callerID;
 }
 
-- (void)faceTimeIMAccountCallerIDChanged:(id)a3
+- (void)faceTimeIMAccountCallerIDChanged:(id)changed
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"CSDIDSServiceCallerIDChangedNotification" object:self];
 }
 
-- (void)account:(id)a3 aliasesChanged:(id)a4
+- (void)account:(id)account aliasesChanged:(id)changed
 {
-  v7 = a3;
-  v5 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v6 = +[CSDFaceTimeIMAccount sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    [v6 account:v7 aliasesChanged:v5];
+    [v6 account:accountCopy aliasesChanged:changedCopy];
   }
 }
 

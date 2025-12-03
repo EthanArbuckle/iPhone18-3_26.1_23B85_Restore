@@ -6,7 +6,7 @@
 
 - (id)getHelloWorld
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SampleClassObjC.getHelloWorld()();
 
   return v3;

@@ -1,20 +1,20 @@
 @interface MTFinalValidationFilter
-- (id)apply:(id)a3;
-- (void)validateFields:(id)a3;
+- (id)apply:(id)apply;
+- (void)validateFields:(id)fields;
 @end
 
 @implementation MTFinalValidationFilter
 
-- (void)validateFields:(id)a3
+- (void)validateFields:(id)fields
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 allKeys];
+  fieldsCopy = fields;
+  allKeys = [fieldsCopy allKeys];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,7 +26,7 @@
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v34 + 1) + 8 * v8);
@@ -34,15 +34,15 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v16 = MTConfigurationError(108, @"The created metricsData contains a invalid field name %@", v10, v11, v12, v13, v14, v15, v9);
-          [v3 removeObjectForKey:v9];
+          [fieldsCopy removeObjectForKey:v9];
         }
 
-        v17 = [v3 objectForKeyedSubscript:v9];
+        v17 = [fieldsCopy objectForKeyedSubscript:v9];
         if (([v17 conformsToProtocol:&unk_286A4D9F8] & 1) == 0)
         {
           v18 = objc_opt_class();
           v25 = MTConfigurationError(108, @"The created metricsData value type '%@' for field name '%@' does not conform to NSCoding protocol", v19, v20, v21, v22, v23, v24, v18);
-          [v3 removeObjectForKey:v9];
+          [fieldsCopy removeObjectForKey:v9];
         }
 
         objc_opt_class();
@@ -51,7 +51,7 @@
           if (([MEMORY[0x277CCAAA0] isValidJSONObject:v17] & 1) == 0)
           {
             v32 = MTConfigurationError(108, @"The created metricsData value for field name %@ can't be serialized", v26, v27, v28, v29, v30, v31, v9);
-            [v3 removeObjectForKey:v9];
+            [fieldsCopy removeObjectForKey:v9];
           }
         }
 
@@ -59,7 +59,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v6);
@@ -68,18 +68,18 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)apply:(id)a3
+- (id)apply:(id)apply
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTObject *)self metricsKit];
-  v6 = [v5 config];
-  v7 = [v6 sources];
+  applyCopy = apply;
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  sources = [config sources];
 
-  if (v4 && v7)
+  if (applyCopy && sources)
   {
-    v21[0] = v7;
-    v21[1] = v4;
+    v21[0] = sources;
+    v21[1] = applyCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
     v15 = [MTPromise promiseWithAll:v14];
 

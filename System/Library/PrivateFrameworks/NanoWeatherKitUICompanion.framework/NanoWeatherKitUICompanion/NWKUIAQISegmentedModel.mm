@@ -1,39 +1,39 @@
 @interface NWKUIAQISegmentedModel
-- (NWKUIAQISegmentedModel)initWithName:(id)a3 label:(id)a4 categoryDescription:(id)a5 color:(id)a6 date:(id)a7 expiration:(id)a8 segments:(id)a9 glyph:(id)a10;
-- (id)_createGlyphWithName:(id)a3;
+- (NWKUIAQISegmentedModel)initWithName:(id)name label:(id)label categoryDescription:(id)description color:(id)color date:(id)date expiration:(id)expiration segments:(id)segments glyph:(id)self0;
+- (id)_createGlyphWithName:(id)name;
 @end
 
 @implementation NWKUIAQISegmentedModel
 
-- (NWKUIAQISegmentedModel)initWithName:(id)a3 label:(id)a4 categoryDescription:(id)a5 color:(id)a6 date:(id)a7 expiration:(id)a8 segments:(id)a9 glyph:(id)a10
+- (NWKUIAQISegmentedModel)initWithName:(id)name label:(id)label categoryDescription:(id)description color:(id)color date:(id)date expiration:(id)expiration segments:(id)segments glyph:(id)self0
 {
-  v17 = a9;
-  v18 = a10;
+  segmentsCopy = segments;
+  glyphCopy = glyph;
   v23.receiver = self;
   v23.super_class = NWKUIAQISegmentedModel;
-  v19 = [(NWKUIAQIModel *)&v23 initWithName:a3 label:a4 categoryDescription:a5 color:a6 date:a7 expiration:a8];
+  v19 = [(NWKUIAQIModel *)&v23 initWithName:name label:label categoryDescription:description color:color date:date expiration:expiration];
   if (v19)
   {
-    v20 = [v17 copy];
+    v20 = [segmentsCopy copy];
     segments = v19->_segments;
     v19->_segments = v20;
 
-    objc_storeStrong(&v19->_glyph, a10);
+    objc_storeStrong(&v19->_glyph, glyph);
   }
 
   return v19;
 }
 
-- (id)_createGlyphWithName:(id)a3
+- (id)_createGlyphWithName:(id)name
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 containsString:@"high"])
+  nameCopy = name;
+  if ([nameCopy containsString:@"high"])
   {
-    v5 = [MEMORY[0x277D75348] yellowColor];
-    v17[0] = v5;
-    v6 = [(NWKUIAQIModel *)self color];
-    v17[1] = v6;
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    v17[0] = yellowColor;
+    color = [(NWKUIAQIModel *)self color];
+    v17[1] = color;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
 
     v8 = [MEMORY[0x277D755D0] _configurationWithHierarchicalColors:v7];
@@ -51,7 +51,7 @@
     v13 = 0;
   }
 
-  v14 = [MEMORY[0x277D755B8] systemImageNamed:v4 withConfiguration:v13];
+  v14 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy withConfiguration:v13];
 
   v15 = *MEMORY[0x277D85DE8];
 

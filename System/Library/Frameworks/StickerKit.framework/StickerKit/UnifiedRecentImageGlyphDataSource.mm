@@ -1,27 +1,27 @@
 @interface UnifiedRecentImageGlyphDataSource
 - (BOOL)isReady;
 - (NSArray)categories;
-- (id)accessibilityTextForItem:(id)a3;
-- (id)indexPathForCategory:(id)a3;
-- (id)indexPathForItemAtIndex:(int64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionLayoutForSectionIndex:(int64_t)a3 environment:(id)a4;
-- (id)snapshotIdentifiersInSection:(int64_t)a3;
-- (int64_t)categoryIndexForIndexPath:(id)a3;
+- (id)accessibilityTextForItem:(id)item;
+- (id)indexPathForCategory:(id)category;
+- (id)indexPathForItemAtIndex:(int64_t)index;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionLayoutForSectionIndex:(int64_t)index environment:(id)environment;
+- (id)snapshotIdentifiersInSection:(int64_t)section;
+- (int64_t)categoryIndexForIndexPath:(id)path;
 - (int64_t)numberOfItems;
-- (int64_t)numberOfItemsInCategory:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
-- (void)configureWith:(id)a3;
-- (void)deleteItem:(STKImageGlyph *)a3 completionHandler:(id)a4;
-- (void)imageAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4;
-- (void)imageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4;
-- (void)moveItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4 completionHandler:(id)a5;
-- (void)moveItemFromIndexPath:(NSIndexPath *)a3 toIndexPath:(NSIndexPath *)a4 completionHandler:(id)a5;
+- (int64_t)numberOfItemsInCategory:(id)category;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
+- (void)configureWith:(id)with;
+- (void)deleteItem:(STKImageGlyph *)item completionHandler:(id)handler;
+- (void)imageAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler;
+- (void)imageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler;
+- (void)moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex completionHandler:(id)handler;
+- (void)moveItemFromIndexPath:(NSIndexPath *)path toIndexPath:(NSIndexPath *)indexPath completionHandler:(id)handler;
 - (void)refresh;
-- (void)setIsReady:(BOOL)a3;
-- (void)stickerAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4;
-- (void)stickerForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4;
+- (void)setIsReady:(BOOL)ready;
+- (void)stickerAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler;
+- (void)stickerForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler;
 @end
 
 @implementation UnifiedRecentImageGlyphDataSource
@@ -45,7 +45,7 @@
   return v2 & 1;
 }
 
-- (void)setIsReady:(BOOL)a3
+- (void)setIsReady:(BOOL)ready
 {
 
   sub_19A645FBC();
@@ -66,7 +66,7 @@
   sub_19A6816F0(0, 0, v5, &unk_19A7B9520, v7);
 }
 
-- (id)indexPathForItemAtIndex:(int64_t)a3
+- (id)indexPathForItemAtIndex:(int64_t)index
 {
   v4 = sub_19A7A9094();
   v5 = *(v4 - 8);
@@ -92,7 +92,7 @@ LABEL_3:
         v11 = *((v10 & 0xFFFFFFFFFFFFFF8) + 0x10);
       }
 
-      if (v11 > a3)
+      if (v11 > index)
       {
         goto LABEL_6;
       }
@@ -111,10 +111,10 @@ LABEL_3:
     }
   }
 
-  if (a3 < 32)
+  if (index < 32)
   {
 LABEL_6:
-    MEMORY[0x19A903470](a3, 0);
+    MEMORY[0x19A903470](index, 0);
 
     v12 = sub_19A7A9014();
     (*(v5 + 8))(v7, v4);
@@ -130,13 +130,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)configureWith:(id)a3
+- (void)configureWith:(id)with
 {
   glyphType = self->glyphType;
   v6 = objc_allocWithZone(type metadata accessor for ImageGlyphUIConfiguration());
-  v7 = a3;
+  withCopy = with;
 
-  v9 = ImageGlyphUIConfiguration.init(_:glyphType:)(a3, glyphType);
+  v9 = ImageGlyphUIConfiguration.init(_:glyphType:)(with, glyphType);
   v8 = *(*self->_uiConfig + 16);
 
   os_unfair_lock_lock(v8 + 4);
@@ -144,7 +144,7 @@ LABEL_10:
   os_unfair_lock_unlock(v8 + 4);
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
 
   v3 = sub_19A64B174();
@@ -152,7 +152,7 @@ LABEL_10:
   return v3;
 }
 
-- (id)sectionLayoutForSectionIndex:(int64_t)a3 environment:(id)a4
+- (id)sectionLayoutForSectionIndex:(int64_t)index environment:(id)environment
 {
   swift_unknownObjectRetain();
 
@@ -162,15 +162,15 @@ LABEL_10:
   return v4;
 }
 
-- (void)moveItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4 completionHandler:(id)a5
+- (void)moveItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v17 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = index;
+  v13[3] = toIndex;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_19A7AB394();
@@ -189,15 +189,15 @@ LABEL_10:
   sub_19A78E8A0(0, 0, v11, &unk_19A7B9510, v16);
 }
 
-- (void)moveItemFromIndexPath:(NSIndexPath *)a3 toIndexPath:(NSIndexPath *)a4 completionHandler:(id)a5
+- (void)moveItemFromIndexPath:(NSIndexPath *)path toIndexPath:(NSIndexPath *)indexPath completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = path;
+  v13[3] = indexPath;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_19A7AB394();
@@ -212,8 +212,8 @@ LABEL_10:
   v16[3] = 0;
   v16[4] = &unk_19A7B94E8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
 
   sub_19A78E8A0(0, 0, v11, &unk_19A7B94F0, v16);
 }
@@ -260,9 +260,9 @@ LABEL_8:
   return v5;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -306,7 +306,7 @@ LABEL_10:
   return v7;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   v3 = sub_19A7A9094();
   v4 = *(v3 - 8);
@@ -321,11 +321,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)accessibilityTextForItem:(id)a3
+- (id)accessibilityTextForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
 
-  sub_19A64B7B8(v3);
+  sub_19A64B7B8(itemCopy);
   v5 = v4;
 
   if (v5)
@@ -341,26 +341,26 @@ LABEL_10:
   return v6;
 }
 
-- (id)snapshotIdentifiersInSection:(int64_t)a3
+- (id)snapshotIdentifiersInSection:(int64_t)section
 {
 
-  sub_19A648E54(a3);
+  sub_19A648E54(section);
 
   v4 = sub_19A7AB234();
 
   return v4;
 }
 
-- (int64_t)numberOfItemsInCategory:(id)a3
+- (int64_t)numberOfItemsInCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
 
-  v4 = sub_19A64928C(v3);
+  v4 = sub_19A64928C(categoryCopy);
 
   return v4;
 }
 
-- (int64_t)categoryIndexForIndexPath:(id)a3
+- (int64_t)categoryIndexForIndexPath:(id)path
 {
   v3 = sub_19A7A9094();
   v4 = *(v3 - 8);
@@ -381,14 +381,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)indexPathForCategory:(id)a3
+- (id)indexPathForCategory:(id)category
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCF110);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v14 - v5;
-  v7 = a3;
+  categoryCopy = category;
 
-  sub_19A64954C(v7, v6);
+  sub_19A64954C(categoryCopy, v6);
 
   v8 = sub_19A7A9094();
   v9 = *(v8 - 8);
@@ -404,14 +404,14 @@ LABEL_10:
   return v11;
 }
 
-- (void)deleteItem:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)deleteItem:(STKImageGlyph *)item completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = item;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -426,19 +426,19 @@ LABEL_10:
   v14[3] = 0;
   v14[4] = &unk_19A7B94C8;
   v14[5] = v13;
-  v15 = a3;
+  itemCopy = item;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B94D0, v14);
 }
 
-- (void)stickerAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4
+- (void)stickerAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = path;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -453,19 +453,19 @@ LABEL_10:
   v14[3] = 0;
   v14[4] = &unk_19A7B94A8;
   v14[5] = v13;
-  v15 = a3;
+  pathCopy = path;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B94B0, v14);
 }
 
-- (void)imageAtIndexPath:(NSIndexPath *)a3 completionHandler:(id)a4
+- (void)imageAtIndexPath:(NSIndexPath *)path completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = path;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -480,19 +480,19 @@ LABEL_10:
   v14[3] = 0;
   v14[4] = &unk_19A7B9488;
   v14[5] = v13;
-  v15 = a3;
+  pathCopy = path;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B9490, v14);
 }
 
-- (void)imageForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)imageForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = glyph;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -507,19 +507,19 @@ LABEL_10:
   v14[3] = 0;
   v14[4] = &unk_19A7B9468;
   v14[5] = v13;
-  v15 = a3;
+  glyphCopy = glyph;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B9470, v14);
 }
 
-- (void)stickerForImageGlyph:(STKImageGlyph *)a3 completionHandler:(id)a4
+- (void)stickerForImageGlyph:(STKImageGlyph *)glyph completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = glyph;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_19A7AB394();
@@ -534,7 +534,7 @@ LABEL_10:
   v14[3] = 0;
   v14[4] = &unk_19A7BE620;
   v14[5] = v13;
-  v15 = a3;
+  glyphCopy = glyph;
 
   sub_19A78E8A0(0, 0, v9, &unk_19A7B6B20, v14);
 }

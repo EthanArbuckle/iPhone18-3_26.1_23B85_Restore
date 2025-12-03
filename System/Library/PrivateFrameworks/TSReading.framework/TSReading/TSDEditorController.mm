@@ -1,30 +1,30 @@
 @interface TSDEditorController
-- (BOOL)anyEditorProhibitsAction:(SEL)a3;
+- (BOOL)anyEditorProhibitsAction:(SEL)action;
 - (TSDEditorController)init;
-- (TSDEditorController)initWithDocumentRoot:(id)a3;
-- (id)currentEditorsConformingToProtocol:(id)a3;
-- (id)currentEditorsOfClass:(Class)a3;
-- (id)editorForEditAction:(SEL)a3 withSender:(id)a4 response:(int *)a5;
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3;
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3 conformingToProtocol:(id)a4;
+- (TSDEditorController)initWithDocumentRoot:(id)root;
+- (id)currentEditorsConformingToProtocol:(id)protocol;
+- (id)currentEditorsOfClass:(Class)class;
+- (id)editorForEditAction:(SEL)action withSender:(id)sender response:(int *)response;
+- (id)mostSpecificCurrentEditorOfClass:(Class)class;
+- (id)mostSpecificCurrentEditorOfClass:(Class)class conformingToProtocol:(id)protocol;
 - (void)dealloc;
 - (void)didChangeCurrentEditorsWhenCommittingInspectorChanges;
-- (void)editorDidChangeSelection:(id)a3 withSelectionFlags:(unint64_t)a4;
-- (void)editorDidChangeSelectionAndWantsKeyboard:(id)a3 withSelectionFlags:(unint64_t)a4;
-- (void)editorSelectionWasForciblyChanged:(id)a3;
+- (void)editorDidChangeSelection:(id)selection withSelectionFlags:(unint64_t)flags;
+- (void)editorDidChangeSelectionAndWantsKeyboard:(id)keyboard withSelectionFlags:(unint64_t)flags;
+- (void)editorSelectionWasForciblyChanged:(id)changed;
 - (void)endTransaction;
-- (void)enumerateEditorsOnStackUsingBlock:(id)a3;
+- (void)enumerateEditorsOnStackUsingBlock:(id)block;
 - (void)notifyResignedTextInputEditors;
 - (void)p_didChangeCurrentEditors;
 - (void)p_didChangeTextInputEditor;
-- (void)p_setTextInputEditor:(id)a3;
-- (void)p_willChangeCurrentEditorsWithNewEditors:(id)a3;
+- (void)p_setTextInputEditor:(id)editor;
+- (void)p_willChangeCurrentEditorsWithNewEditors:(id)editors;
 - (void)p_willChangeTextInputEditor;
-- (void)popEditor:(id)a3;
-- (void)popEditor:(id)a3 andPushTextInputEditor:(id)a4;
-- (void)popToEditor:(id)a3;
-- (void)pushEditor:(id)a3;
-- (void)setTextInputEditor:(id)a3;
+- (void)popEditor:(id)editor;
+- (void)popEditor:(id)editor andPushTextInputEditor:(id)inputEditor;
+- (void)popToEditor:(id)editor;
+- (void)pushEditor:(id)editor;
+- (void)setTextInputEditor:(id)editor;
 - (void)teardown;
 @end
 
@@ -37,30 +37,30 @@
   result = [(TSDEditorController *)&v5 init];
   if (result)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController init]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 84, @"Use the designated initializer."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 84, @"Use the designated initializer."}];
     objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Use the designated initializer.", "-[TSDEditorController init]"), 0}]);
   }
 
   return result;
 }
 
-- (TSDEditorController)initWithDocumentRoot:(id)a3
+- (TSDEditorController)initWithDocumentRoot:(id)root
 {
   v8.receiver = self;
   v8.super_class = TSDEditorController;
   v4 = [(TSDEditorController *)&v8 init];
   if (v4)
   {
-    if (!a3)
+    if (!root)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController initWithDocumentRoot:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 94, @"invalid nil value for '%s'", "docRoot"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 94, @"invalid nil value for '%s'", "docRoot"}];
     }
 
-    v4->mDocumentRoot = a3;
+    v4->mDocumentRoot = root;
     v4->mEditorStack = objc_alloc_init(MEMORY[0x277CBEB18]);
     v4->mResignedTextInputEditors = objc_alloc_init(MEMORY[0x277CBEB18]);
     v4->mInspectorPropertyValueMap = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -76,8 +76,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -88,7 +88,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -99,7 +99,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -115,43 +115,43 @@
   [(TSDEditorController *)&v3 dealloc];
 }
 
-- (void)setTextInputEditor:(id)a3
+- (void)setTextInputEditor:(id)editor
 {
-  if (!a3)
+  if (!editor)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController setTextInputEditor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 170, @"invalid nil value for '%s'", "newTextInputEditor"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 170, @"invalid nil value for '%s'", "newTextInputEditor"}];
   }
 
-  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController setTextInputEditor:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 171, @"can't set an editor to be the text input editor if it isn't on the stack"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 171, @"can't set an editor to be the text input editor if it isn't on the stack"}];
   }
 
-  if (a3)
+  if (editor)
   {
-    [(TSDEditorController *)self p_setTextInputEditor:a3];
+    [(TSDEditorController *)self p_setTextInputEditor:editor];
   }
 
   [(TSDEditorController *)self notifyResignedTextInputEditors];
 }
 
-- (id)editorForEditAction:(SEL)a3 withSender:(id)a4 response:(int *)a5
+- (id)editorForEditAction:(SEL)action withSender:(id)sender response:(int *)response
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v9)
   {
     v11 = 0;
-    if (!a5)
+    if (!response)
     {
       return v11;
     }
@@ -160,7 +160,7 @@
   }
 
   v10 = v9;
-  v18 = a5;
+  responseCopy = response;
   v11 = 0;
   v12 = *v20;
   v13 = &selRef_animateDismissWithContext_;
@@ -171,13 +171,13 @@ LABEL_3:
   {
     if (*v20 != v12)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v16 = *(*(&v19 + 1) + 8 * v14);
     if (objc_opt_respondsToSelector())
     {
-      LODWORD(v9) = [v16 canPerformEditorAction:a3 withSender:a4];
+      LODWORD(v9) = [v16 canPerformEditorAction:action withSender:sender];
       if (v9 == 1)
       {
         v11 = v16;
@@ -191,7 +191,7 @@ LABEL_3:
 
     if (v10 == ++v14)
     {
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       v10 = v9;
       v13 = v15;
       if (v9)
@@ -203,25 +203,25 @@ LABEL_3:
     }
   }
 
-  a5 = v18;
-  if (v18)
+  response = responseCopy;
+  if (responseCopy)
   {
 LABEL_13:
-    *a5 = v9;
+    *response = v9;
   }
 
   return v11;
 }
 
-- (BOOL)anyEditorProhibitsAction:(SEL)a3
+- (BOOL)anyEditorProhibitsAction:(SEL)action
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -233,11 +233,11 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 shouldProhibitAction:a3])
+        if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 shouldProhibitAction:action])
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -247,7 +247,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       v6 = v5;
       if (v5)
       {
@@ -261,39 +261,39 @@ LABEL_13:
   return v5;
 }
 
-- (void)pushEditor:(id)a3
+- (void)pushEditor:(id)editor
 {
-  if (!a3)
+  if (!editor)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController pushEditor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 260, @"invalid nil value for '%s'", "newEditor"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 260, @"invalid nil value for '%s'", "newEditor"}];
   }
 
-  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController pushEditor:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 261, @"shouldn't push the same editor twice"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 261, @"shouldn't push the same editor twice"}];
   }
 
-  v9 = [(NSMutableArray *)self->mEditorStack arrayByAddingObject:a3];
-  if (a3)
+  v9 = [(NSMutableArray *)self->mEditorStack arrayByAddingObject:editor];
+  if (editor)
   {
     v10 = v9;
-    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor]== 0x7FFFFFFFFFFFFFFFLL)
     {
       [(TSDEditorController *)self p_willChangeCurrentEditorsWithNewEditors:v10];
-      [(NSMutableArray *)self->mEditorStack addObject:a3];
+      [(NSMutableArray *)self->mEditorStack addObject:editor];
       if (objc_opt_respondsToSelector())
       {
-        [a3 didBecomeCurrentEditor];
+        [editor didBecomeCurrentEditor];
       }
 
       [(TSDEditorController *)self p_didChangeCurrentEditors];
       if (![(TSDEditorController *)self textInputEditor])
       {
-        [(TSDEditorController *)self p_setTextInputEditor:a3];
+        [(TSDEditorController *)self p_setTextInputEditor:editor];
       }
     }
   }
@@ -301,31 +301,31 @@ LABEL_13:
   [(TSDEditorController *)self notifyResignedTextInputEditors];
 }
 
-- (void)popEditor:(id)a3
+- (void)popEditor:(id)editor
 {
-  if (!a3)
+  if (!editor)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popEditor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 293, @"invalid nil value for '%s'", "poppedEditor"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 293, @"invalid nil value for '%s'", "poppedEditor"}];
   }
 
-  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popEditor:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 294, @"shouldn't pop an editor that isn't on the stack"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 294, @"shouldn't pop an editor that isn't on the stack"}];
   }
 
-  if (a3)
+  if (editor)
   {
-    v9 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3];
+    v9 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v9;
       [(TSDEditorController *)self p_willChangeCurrentEditorsWithNewEditors:[(NSMutableArray *)self->mEditorStack subarrayWithRange:0, v9]];
-      v11 = [(TSDEditorController *)self textInputEditor];
-      if (v11 && [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:v11]>= v10)
+      textInputEditor = [(TSDEditorController *)self textInputEditor];
+      if (textInputEditor && [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:textInputEditor]>= v10)
       {
         if (v10)
         {
@@ -348,16 +348,16 @@ LABEL_13:
           break;
         }
 
-        v14 = [(NSMutableArray *)self->mEditorStack lastObject];
+        lastObject = [(NSMutableArray *)self->mEditorStack lastObject];
         if (objc_opt_respondsToSelector())
         {
-          [v14 willResignCurrentEditor];
+          [lastObject willResignCurrentEditor];
         }
 
         [(NSMutableArray *)self->mEditorStack removeLastObject];
       }
 
-      while (v14 != a3);
+      while (lastObject != editor);
       [(TSDEditorController *)self p_didChangeCurrentEditors];
     }
   }
@@ -365,36 +365,36 @@ LABEL_13:
   [(TSDEditorController *)self notifyResignedTextInputEditors];
 }
 
-- (void)popEditor:(id)a3 andPushTextInputEditor:(id)a4
+- (void)popEditor:(id)editor andPushTextInputEditor:(id)inputEditor
 {
-  if (!a3)
+  if (!editor)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popEditor:andPushTextInputEditor:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 354, @"invalid nil value for '%s'", "oldEditor"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 354, @"invalid nil value for '%s'", "oldEditor"}];
   }
 
-  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popEditor:andPushTextInputEditor:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 355, @"shouldn't pop an editor that isn't on the stack"}];
+    [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 355, @"shouldn't pop an editor that isn't on the stack"}];
   }
 
-  if (a3)
+  if (editor)
   {
-    v11 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3];
+    v11 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v11;
-      -[TSDEditorController p_willChangeCurrentEditorsWithNewEditors:](self, "p_willChangeCurrentEditorsWithNewEditors:", [-[NSMutableArray subarrayWithRange:](self->mEditorStack subarrayWithRange:{0, v11), "arrayByAddingObject:", a4}]);
-      [(NSMutableArray *)self->mEditorStack insertObject:a4 atIndex:v12];
+      -[TSDEditorController p_willChangeCurrentEditorsWithNewEditors:](self, "p_willChangeCurrentEditorsWithNewEditors:", [-[NSMutableArray subarrayWithRange:](self->mEditorStack subarrayWithRange:{0, v11), "arrayByAddingObject:", inputEditor}]);
+      [(NSMutableArray *)self->mEditorStack insertObject:inputEditor atIndex:v12];
       if (objc_opt_respondsToSelector())
       {
-        [a4 didBecomeCurrentEditor];
+        [inputEditor didBecomeCurrentEditor];
       }
 
-      [(TSDEditorController *)self p_setTextInputEditor:a4];
+      [(TSDEditorController *)self p_setTextInputEditor:inputEditor];
       v13 = [(NSMutableArray *)self->mEditorStack count]+ 1;
       do
       {
@@ -403,16 +403,16 @@ LABEL_13:
           break;
         }
 
-        v14 = [(NSMutableArray *)self->mEditorStack lastObject];
+        lastObject = [(NSMutableArray *)self->mEditorStack lastObject];
         if (objc_opt_respondsToSelector())
         {
-          [v14 willResignCurrentEditor];
+          [lastObject willResignCurrentEditor];
         }
 
         [(NSMutableArray *)self->mEditorStack removeLastObject];
       }
 
-      while (v14 != a3);
+      while (lastObject != editor);
       [(TSDEditorController *)self p_didChangeCurrentEditors];
     }
   }
@@ -475,7 +475,7 @@ LABEL_13:
   }
 }
 
-- (void)enumerateEditorsOnStackUsingBlock:(id)a3
+- (void)enumerateEditorsOnStackUsingBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -483,8 +483,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -495,10 +495,10 @@ LABEL_3:
     {
       if (*v10 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
-      (*(a3 + 2))(a3, *(*(&v9 + 1) + 8 * v8), &v13);
+      (*(block + 2))(block, *(*(&v9 + 1) + 8 * v8), &v13);
       if (v13)
       {
         break;
@@ -506,7 +506,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+        v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -518,7 +518,7 @@ LABEL_3:
   }
 }
 
-- (id)currentEditorsOfClass:(Class)a3
+- (id)currentEditorsOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -561,17 +561,17 @@ LABEL_3:
   return v4;
 }
 
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3
+- (id)mostSpecificCurrentEditorOfClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+    v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (!v4)
     {
       return 0;
@@ -585,7 +585,7 @@ LABEL_4:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v8 = *(*(&v11 + 1) + 8 * v7);
@@ -596,7 +596,7 @@ LABEL_4:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           goto LABEL_4;
@@ -615,15 +615,15 @@ LABEL_4:
   }
 }
 
-- (id)mostSpecificCurrentEditorOfClass:(Class)a3 conformingToProtocol:(id)a4
+- (id)mostSpecificCurrentEditorOfClass:(Class)class conformingToProtocol:(id)protocol
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mEditorStack reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v7)
   {
     return 0;
@@ -637,18 +637,18 @@ LABEL_3:
   {
     if (*v14 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v11 = *(*(&v13 + 1) + 8 * v10);
-    if (!a3 || (objc_opt_isKindOfClass()) && ([v11 conformsToProtocol:a4])
+    if (!class || (objc_opt_isKindOfClass()) && ([v11 conformsToProtocol:protocol])
     {
       return v11;
     }
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         goto LABEL_3;
@@ -659,7 +659,7 @@ LABEL_3:
   }
 }
 
-- (id)currentEditorsConformingToProtocol:(id)a3
+- (id)currentEditorsConformingToProtocol:(id)protocol
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -683,7 +683,7 @@ LABEL_3:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 conformsToProtocol:a3])
+        if ([v11 conformsToProtocol:protocol])
         {
           [v5 addObject:v11];
         }
@@ -698,23 +698,23 @@ LABEL_3:
   return v5;
 }
 
-- (void)popToEditor:(id)a3
+- (void)popToEditor:(id)editor
 {
-  if (!a3)
+  if (!editor)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popToEditor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 521, @"invalid nil value for '%s'", "editor"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 521, @"invalid nil value for '%s'", "editor"}];
   }
 
-  v7 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:a3];
+  v7 = [(NSMutableArray *)self->mEditorStack indexOfObjectIdenticalTo:editor];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController popToEditor:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"];
 
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:524 description:{@"can't popToEditor:, that editor isn't in the stack"}];
+    [currentHandler2 handleFailureInFunction:v9 file:v10 lineNumber:524 description:{@"can't popToEditor:, that editor isn't in the stack"}];
   }
 
   else
@@ -738,51 +738,51 @@ LABEL_3:
   }
 }
 
-- (void)editorDidChangeSelection:(id)a3 withSelectionFlags:(unint64_t)a4
+- (void)editorDidChangeSelection:(id)selection withSelectionFlags:(unint64_t)flags
 {
-  if (!a3)
+  if (!selection)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController editorDidChangeSelection:withSelectionFlags:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 574, @"invalid nil value for '%s'", "editor"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 574, @"invalid nil value for '%s'", "editor"}];
   }
 
   v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v10 = [v9 initWithObjectsAndKeys:{a3, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a4), @"TSDEditorControllerSelectionFlagsKey", 0}];
+  v10 = [v9 initWithObjectsAndKeys:{selection, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", flags), @"TSDEditorControllerSelectionFlagsKey", 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)editorSelectionWasForciblyChanged:(id)a3
+- (void)editorSelectionWasForciblyChanged:(id)changed
 {
-  if (!a3)
+  if (!changed)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController editorSelectionWasForciblyChanged:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 589, @"invalid nil value for '%s'", "editor"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 589, @"invalid nil value for '%s'", "editor"}];
   }
 
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v8 = [v7 initWithObjectsAndKeys:{a3, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 0), @"TSDEditorControllerSelectionFlagsKey", 0}];
+  v8 = [v7 initWithObjectsAndKeys:{changed, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 0), @"TSDEditorControllerSelectionFlagsKey", 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)editorDidChangeSelectionAndWantsKeyboard:(id)a3 withSelectionFlags:(unint64_t)a4
+- (void)editorDidChangeSelectionAndWantsKeyboard:(id)keyboard withSelectionFlags:(unint64_t)flags
 {
-  if (!a3)
+  if (!keyboard)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDEditorController editorDidChangeSelectionAndWantsKeyboard:withSelectionFlags:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 604, @"invalid nil value for '%s'", "editor"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDEditorController.m"), 604, @"invalid nil value for '%s'", "editor"}];
   }
 
   v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v10 = [v9 initWithObjectsAndKeys:{a3, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a4), @"TSDEditorControllerSelectionFlagsKey", 0}];
+  v10 = [v9 initWithObjectsAndKeys:{keyboard, @"TSDEditorControllerEditorKey", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", flags), @"TSDEditorControllerSelectionFlagsKey", 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)p_setTextInputEditor:(id)a3
+- (void)p_setTextInputEditor:(id)editor
 {
-  if (self->mTextInputEditor != a3)
+  if (self->mTextInputEditor != editor)
   {
     [(TSDEditorController *)self p_willChangeTextInputEditor];
     if (self->mTextInputEditor)
@@ -795,7 +795,7 @@ LABEL_3:
       [(TSDEditor *)self->mTextInputEditor willResignTextInputEditor];
     }
 
-    self->mTextInputEditor = a3;
+    self->mTextInputEditor = editor;
     if (objc_opt_respondsToSelector())
     {
       [(TSDEditor *)self->mTextInputEditor didBecomeTextInputEditor];
@@ -832,15 +832,15 @@ LABEL_3:
   *(&self->super.isa + v4) = v3;
 }
 
-- (void)p_willChangeCurrentEditorsWithNewEditors:(id)a3
+- (void)p_willChangeCurrentEditorsWithNewEditors:(id)editors
 {
   v6[1] = *MEMORY[0x277D85DE8];
   if (!self->mNotifiedWillChangeCurrentEditors)
   {
-    if (a3 && !self->mTransactionLevel)
+    if (editors && !self->mTransactionLevel)
     {
       v5 = @"TSDEditorControllerNewEditorsKey";
-      v6[0] = a3;
+      v6[0] = editors;
       v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
     }
 

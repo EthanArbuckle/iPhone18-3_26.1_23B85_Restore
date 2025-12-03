@@ -1,16 +1,16 @@
 @interface CSKeywordDetector
-- (CSKeywordDetector)initWithManager:(id)a3 asset:(id)a4;
+- (CSKeywordDetector)initWithManager:(id)manager asset:(id)asset;
 - (CSSpeechManager)speechManager;
 - (CSVoiceTriggerDelegate)delegate;
 - (void)_reset;
-- (void)_setAsset:(id)a3;
-- (void)keywordAnalyzerQuasar:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
+- (void)_setAsset:(id)asset;
+- (void)keywordAnalyzerQuasar:(id)quasar hasResultAvailable:(id)available forChannel:(unint64_t)channel;
 - (void)reset;
-- (void)setAsset:(id)a3;
-- (void)speechManagerDidStartForwarding:(id)a3 successfully:(BOOL)a4 error:(id)a5;
-- (void)speechManagerDidStopForwarding:(id)a3 forReason:(int64_t)a4;
-- (void)speechManagerLPCMRecordBufferAvailable:(id)a3 chunk:(id)a4;
-- (void)startDetectKeyword:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)speechManagerDidStartForwarding:(id)forwarding successfully:(BOOL)successfully error:(id)error;
+- (void)speechManagerDidStopForwarding:(id)forwarding forReason:(int64_t)reason;
+- (void)speechManagerLPCMRecordBufferAvailable:(id)available chunk:(id)chunk;
+- (void)startDetectKeyword:(id)keyword;
 @end
 
 @implementation CSKeywordDetector
@@ -29,10 +29,10 @@
   return WeakRetained;
 }
 
-- (void)keywordAnalyzerQuasar:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)keywordAnalyzerQuasar:(id)quasar hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
   v22 = *MEMORY[0x277D85DE8];
-  [a3 triggerConfidence];
+  [quasar triggerConfidence];
   v7 = v6;
   keywordThreshold = self->_keywordThreshold;
   v9 = *MEMORY[0x277D015D8];
@@ -90,7 +90,7 @@ void __73__CSKeywordDetector_keywordAnalyzerQuasar_hasResultAvailable_forChannel
   }
 }
 
-- (void)speechManagerDidStopForwarding:(id)a3 forReason:(int64_t)a4
+- (void)speechManagerDidStopForwarding:(id)forwarding forReason:(int64_t)reason
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015D8];
@@ -124,7 +124,7 @@ uint64_t __62__CSKeywordDetector_speechManagerDidStopForwarding_forReason___bloc
   return result;
 }
 
-- (void)speechManagerDidStartForwarding:(id)a3 successfully:(BOOL)a4 error:(id)a5
+- (void)speechManagerDidStartForwarding:(id)forwarding successfully:(BOOL)successfully error:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D015D8];
@@ -152,17 +152,17 @@ uint64_t __72__CSKeywordDetector_speechManagerDidStartForwarding_successfully_er
   return result;
 }
 
-- (void)speechManagerLPCMRecordBufferAvailable:(id)a3 chunk:(id)a4
+- (void)speechManagerLPCMRecordBufferAvailable:(id)available chunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__CSKeywordDetector_speechManagerLPCMRecordBufferAvailable_chunk___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
@@ -203,15 +203,15 @@ void __66__CSKeywordDetector_speechManagerLPCMRecordBufferAvailable_chunk___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    objc_storeStrong(&self->_currentAsset, a3);
-    v6 = [(CSAsset *)self->_currentAsset keywordDetectorConfigPathRecognizer];
-    v7 = [objc_alloc(MEMORY[0x277D017D0]) initWithConfigPath:v6 triggerTokens:0 useKeywordSpotting:1];
+    objc_storeStrong(&self->_currentAsset, asset);
+    keywordDetectorConfigPathRecognizer = [(CSAsset *)self->_currentAsset keywordDetectorConfigPathRecognizer];
+    v7 = [objc_alloc(MEMORY[0x277D017D0]) initWithConfigPath:keywordDetectorConfigPathRecognizer triggerTokens:0 useKeywordSpotting:1];
     keywordAnalyzer = self->_keywordAnalyzer;
     self->_keywordAnalyzer = v7;
 
@@ -235,17 +235,17 @@ void __66__CSKeywordDetector_speechManagerLPCMRecordBufferAvailable_chunk___bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__CSKeywordDetector_setAsset___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -268,10 +268,10 @@ void __66__CSKeywordDetector_speechManagerLPCMRecordBufferAvailable_chunk___bloc
   dispatch_async(queue, block);
 }
 
-- (void)startDetectKeyword:(id)a3
+- (void)startDetectKeyword:(id)keyword
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keywordCopy = keyword;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -286,8 +286,8 @@ void __66__CSKeywordDetector_speechManagerLPCMRecordBufferAvailable_chunk___bloc
   v9[2] = __40__CSKeywordDetector_startDetectKeyword___block_invoke;
   v9[3] = &unk_2784C6FA8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = keywordCopy;
+  v7 = keywordCopy;
   dispatch_sync(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -333,10 +333,10 @@ void __40__CSKeywordDetector_startDetectKeyword___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (CSKeywordDetector)initWithManager:(id)a3 asset:(id)a4
+- (CSKeywordDetector)initWithManager:(id)manager asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = CSKeywordDetector;
   v8 = [(CSKeywordDetector *)&v14 init];
@@ -350,8 +350,8 @@ void __40__CSKeywordDetector_startDetectKeyword___block_invoke(uint64_t a1)
     v12 = dispatch_get_global_queue(33, 0);
     dispatch_set_target_queue(v11, v12);
 
-    objc_storeWeak(&v8->_speechManager, v6);
-    [(CSKeywordDetector *)v8 _setAsset:v7];
+    objc_storeWeak(&v8->_speechManager, managerCopy);
+    [(CSKeywordDetector *)v8 _setAsset:assetCopy];
   }
 
   return v8;

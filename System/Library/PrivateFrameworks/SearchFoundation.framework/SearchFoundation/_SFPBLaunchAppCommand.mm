@@ -1,34 +1,34 @@
 @interface _SFPBLaunchAppCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBLaunchAppCommand)initWithDictionary:(id)a3;
-- (_SFPBLaunchAppCommand)initWithFacade:(id)a3;
-- (_SFPBLaunchAppCommand)initWithJSON:(id)a3;
+- (_SFPBLaunchAppCommand)initWithDictionary:(id)dictionary;
+- (_SFPBLaunchAppCommand)initWithFacade:(id)facade;
+- (_SFPBLaunchAppCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBLaunchAppCommand
 
-- (_SFPBLaunchAppCommand)initWithFacade:(id)a3
+- (_SFPBLaunchAppCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBLaunchAppCommand *)self init];
   if (v5)
   {
-    v6 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v6)
+    if (applicationBundleIdentifier)
     {
-      v7 = [v4 applicationBundleIdentifier];
-      [(_SFPBLaunchAppCommand *)v5 setApplicationBundleIdentifier:v7];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBLaunchAppCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    if ([v4 hasIsOnenessApplication])
+    if ([facadeCopy hasIsOnenessApplication])
     {
-      -[_SFPBLaunchAppCommand setIsOnenessApplication:](v5, "setIsOnenessApplication:", [v4 isOnenessApplication]);
+      -[_SFPBLaunchAppCommand setIsOnenessApplication:](v5, "setIsOnenessApplication:", [facadeCopy isOnenessApplication]);
     }
 
     v8 = v5;
@@ -37,15 +37,15 @@
   return v5;
 }
 
-- (_SFPBLaunchAppCommand)initWithDictionary:(id)a3
+- (_SFPBLaunchAppCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBLaunchAppCommand;
   v5 = [(_SFPBLaunchAppCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(_SFPBLaunchAppCommand *)v5 setApplicationBundleIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isOnenessApplication"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isOnenessApplication"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (_SFPBLaunchAppCommand)initWithJSON:(id)a3
+- (_SFPBLaunchAppCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBLaunchAppCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBLaunchAppCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBLaunchAppCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,21 +102,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_isOnenessApplication)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBLaunchAppCommand isOnenessApplication](self, "isOnenessApplication")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isOnenessApplication"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isOnenessApplication"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,30 +131,30 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
-    v6 = [v4 applicationBundleIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    applicationBundleIdentifier = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier2 = [equalCopy applicationBundleIdentifier];
+    v7 = applicationBundleIdentifier2;
+    if ((applicationBundleIdentifier != 0) != (applicationBundleIdentifier2 == 0))
     {
-      v8 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
-      if (!v8)
+      applicationBundleIdentifier3 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
+      if (!applicationBundleIdentifier3)
       {
 
 LABEL_10:
         isOnenessApplication = self->_isOnenessApplication;
-        v13 = isOnenessApplication == [v4 isOnenessApplication];
+        v13 = isOnenessApplication == [equalCopy isOnenessApplication];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
-      v11 = [v4 applicationBundleIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = applicationBundleIdentifier3;
+      applicationBundleIdentifier4 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
+      applicationBundleIdentifier5 = [equalCopy applicationBundleIdentifier];
+      v12 = [applicationBundleIdentifier4 isEqual:applicationBundleIdentifier5];
 
       if (v12)
       {
@@ -173,11 +173,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
-  if (v4)
+  toCopy = to;
+  applicationBundleIdentifier = [(_SFPBLaunchAppCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -188,9 +188,9 @@ LABEL_8:
   }
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 

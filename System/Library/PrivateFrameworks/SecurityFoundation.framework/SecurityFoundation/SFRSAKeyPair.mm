@@ -1,14 +1,14 @@
 @interface SFRSAKeyPair
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4;
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain;
 @end
 
 @implementation SFRSAKeyPair
 
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = objc_opt_new();
-  v7 = [(_SFKeyPair *)self initWithData:v6 specifier:v5 error:0];
+  v7 = [(_SFKeyPair *)self initWithData:v6 specifier:specifierCopy error:0];
 
   return v7;
 }

@@ -1,5 +1,5 @@
 @interface WLLockScreenViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)didAppear;
 - (void)willDisappear;
@@ -7,13 +7,13 @@
 
 @implementation WLLockScreenViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WLLockScreenCardsViewController" hasInstanceMethod:@"dismissAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"WLLockScreenView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WLLockScreenView" hasInstanceMethod:@"didAppear" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WLLockScreenView" hasInstanceMethod:@"willDisappear" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WLLockScreenCardsViewController" hasInstanceMethod:@"dismissAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"WLLockScreenView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WLLockScreenView" hasInstanceMethod:@"didAppear" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WLLockScreenView" hasInstanceMethod:@"willDisappear" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape

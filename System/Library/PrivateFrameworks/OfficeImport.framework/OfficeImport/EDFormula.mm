@@ -1,53 +1,53 @@
 @interface EDFormula
 + (id)formula;
-- (BOOL)addArrayWithCol:(int)a3 andRow:(int)a4;
-- (BOOL)addToken:(int)a3 extendedDataLength:(unsigned int)a4 extendedDataCount:(unsigned int)a5;
+- (BOOL)addArrayWithCol:(int)col andRow:(int)row;
+- (BOOL)addToken:(int)token extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)count;
 - (BOOL)convertLastRefsToArea;
-- (BOOL)convertToList:(unsigned int)a3 withFinalParen:(BOOL)a4;
-- (BOOL)convertTokensToSharedAtRow:(unsigned int)a3 column:(unsigned int)a4;
-- (BOOL)copyTokenAtIndex:(unsigned int)a3 fromFormula:(id)a4;
-- (BOOL)copyTokenFromXlPtg:(XlPtg *)a3;
-- (BOOL)insertExternalName:(unint64_t)a3 withLink:(unint64_t)a4 atIndex:(unsigned int)a5;
+- (BOOL)convertToList:(unsigned int)list withFinalParen:(BOOL)paren;
+- (BOOL)convertTokensToSharedAtRow:(unsigned int)row column:(unsigned int)column;
+- (BOOL)copyTokenAtIndex:(unsigned int)index fromFormula:(id)formula;
+- (BOOL)copyTokenFromXlPtg:(XlPtg *)ptg;
+- (BOOL)insertExternalName:(unint64_t)name withLink:(unint64_t)link atIndex:(unsigned int)index;
 - (BOOL)isCleaned;
 - (BOOL)isCleanedWithEvaluationStack;
 - (BOOL)isContainsRelativeReferences;
 - (BOOL)isSupportedFormula;
-- (BOOL)removeTokenAtIndex:(unsigned int)a3;
-- (BOOL)replaceTokenAtIndex:(unsigned int)a3 withFormula:(id)a4;
-- (BOOL)replaceTokenAtIndex:(unsigned int)a3 withFormula:(id)a4 formulaTokenIndex:(unsigned int)a5;
-- (BOOL)setupTokensWithTokensCount:(unsigned int)a3 tokensWithDataCount:(unsigned int)a4 extendedDataLength:(unsigned int)a5 extendedDataCount:(unsigned int)a6;
+- (BOOL)removeTokenAtIndex:(unsigned int)index;
+- (BOOL)replaceTokenAtIndex:(unsigned int)index withFormula:(id)formula;
+- (BOOL)replaceTokenAtIndex:(unsigned int)index withFormula:(id)formula formulaTokenIndex:(unsigned int)tokenIndex;
+- (BOOL)setupTokensWithTokensCount:(unsigned int)count tokensWithDataCount:(unsigned int)dataCount extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)extendedDataCount;
 - (EDFormula)init;
-- (EDFormula)initWithFormula:(id)a3;
-- (EDToken)tokenAtIndex:(unsigned int)a3;
+- (EDFormula)initWithFormula:(id)formula;
+- (EDToken)tokenAtIndex:(unsigned int)index;
 - (NSString)description;
-- (char)addToken:(int)a3 extendedDataLength:(unsigned int)a4;
-- (char)extendedDataForTokenAtIndex:(unsigned int)a3 extendedDataIndex:(unsigned int)a4 length:(unsigned int *)a5;
-- (char)lastExtendedDataForTokenAtIndex:(unsigned int)a3 length:(unsigned int *)a4;
-- (char)setExtendedDataAtIndex:(unsigned int)a3 extendedDataIndex:(unsigned int)a4 length:(unsigned int)a5;
-- (char)setExtendedDataForLastTokenAtIndex:(unsigned int)a3 length:(unsigned int)a4;
-- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)a3 withEDLinks:(id)a4;
+- (char)addToken:(int)token extendedDataLength:(unsigned int)length;
+- (char)extendedDataForTokenAtIndex:(unsigned int)index extendedDataIndex:(unsigned int)dataIndex length:(unsigned int *)length;
+- (char)lastExtendedDataForTokenAtIndex:(unsigned int)index length:(unsigned int *)length;
+- (char)setExtendedDataAtIndex:(unsigned int)index extendedDataIndex:(unsigned int)dataIndex length:(unsigned int)length;
+- (char)setExtendedDataForLastTokenAtIndex:(unsigned int)index length:(unsigned int)length;
+- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)valid withEDLinks:(id)links;
 - (id)originalFormulaString;
-- (id)saveArgs:(unsigned int)a3 andDelete:(BOOL)a4;
+- (id)saveArgs:(unsigned int)args andDelete:(BOOL)delete;
 - (id)warning;
 - (id)warningParameter;
-- (int)tokenTypeAtIndex:(unsigned int)a3;
+- (int)tokenTypeAtIndex:(unsigned int)index;
 - (int)warningType;
-- (unsigned)countExtendedDataForTokenAtIndex:(unsigned int)a3;
-- (unsigned)firstTokenIndexForArgAtIndex:(unsigned int)a3;
+- (unsigned)countExtendedDataForTokenAtIndex:(unsigned int)index;
+- (unsigned)firstTokenIndexForArgAtIndex:(unsigned int)index;
 - (unsigned)tokenCount;
-- (void)archiveByAppendingToMutableData:(__CFData *)a3;
+- (void)archiveByAppendingToMutableData:(__CFData *)data;
 - (void)dealloc;
-- (void)populateXlPtg:(XlPtg *)a3 index:(unsigned int)a4;
+- (void)populateXlPtg:(XlPtg *)ptg index:(unsigned int)index;
 - (void)removeAllTokens;
-- (void)replaceTokenTypeAtIndex:(unsigned int)a3 withType:(int)a4;
-- (void)setCleaned:(BOOL)a3;
-- (void)setOriginalFormulaString:(id)a3;
-- (void)setWarning:(int)a3;
-- (void)setWarningParameter:(id)a3;
-- (void)setupExtendedDataForTokenAtIndex:(unsigned int)a3 extendedDataLength:(unsigned int)a4 extendedDataCount:(unsigned int)a5;
-- (void)unarchiveFromData:(__CFData *)a3 offset:(unint64_t *)a4;
-- (void)updateCleanedWithEvaluationStack:(BOOL)a3;
-- (void)updateContainsRelativeReferences:(BOOL)a3;
+- (void)replaceTokenTypeAtIndex:(unsigned int)index withType:(int)type;
+- (void)setCleaned:(BOOL)cleaned;
+- (void)setOriginalFormulaString:(id)string;
+- (void)setWarning:(int)warning;
+- (void)setWarningParameter:(id)parameter;
+- (void)setupExtendedDataForTokenAtIndex:(unsigned int)index extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)count;
+- (void)unarchiveFromData:(__CFData *)data offset:(unint64_t *)offset;
+- (void)updateCleanedWithEvaluationStack:(BOOL)stack;
+- (void)updateContainsRelativeReferences:(BOOL)references;
 - (void)xlPtgs;
 @end
 
@@ -225,21 +225,21 @@
   return mPackedData;
 }
 
-- (EDFormula)initWithFormula:(id)a3
+- (EDFormula)initWithFormula:(id)formula
 {
-  v4 = a3;
+  formulaCopy = formula;
   v7.receiver = self;
   v7.super_class = EDFormula;
   v5 = [(EDFormula *)&v7 init];
   if (v5)
   {
-    v5->mPackedData = CFDataCreateMutableCopy(*MEMORY[0x277CBECE8], 0, v4[1]);
+    v5->mPackedData = CFDataCreateMutableCopy(*MEMORY[0x277CBECE8], 0, formulaCopy[1]);
   }
 
   return v5;
 }
 
-- (BOOL)setupTokensWithTokensCount:(unsigned int)a3 tokensWithDataCount:(unsigned int)a4 extendedDataLength:(unsigned int)a5 extendedDataCount:(unsigned int)a6
+- (BOOL)setupTokensWithTokensCount:(unsigned int)count tokensWithDataCount:(unsigned int)dataCount extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)extendedDataCount
 {
   mPackedData = self->mPackedData;
   Mutable = mPackedData;
@@ -249,8 +249,8 @@
     self->mPackedData = Mutable;
   }
 
-  v13 = 6 * a3;
-  v14 = v13 + 4 * a4 + 2 * a6 + a5 + 20;
+  v13 = 6 * count;
+  v14 = v13 + 4 * dataCount + 2 * extendedDataCount + length + 20;
   if (mPackedData)
   {
     if (!Mutable)
@@ -305,9 +305,9 @@
   return Mutable;
 }
 
-- (int)tokenTypeAtIndex:(unsigned int)a3
+- (int)tokenTypeAtIndex:(unsigned int)index
 {
-  v3 = [(EDFormula *)self tokenAtIndex:*&a3];
+  v3 = [(EDFormula *)self tokenAtIndex:*&index];
   if (v3)
   {
     LODWORD(v3) = v3->var0;
@@ -316,20 +316,20 @@
   return v3;
 }
 
-- (void)replaceTokenTypeAtIndex:(unsigned int)a3 withType:(int)a4
+- (void)replaceTokenTypeAtIndex:(unsigned int)index withType:(int)type
 {
-  v4 = a4;
-  v5 = [(EDFormula *)self tokenAtIndex:*&a3];
+  typeCopy = type;
+  v5 = [(EDFormula *)self tokenAtIndex:*&index];
   if (v5)
   {
-    v5->var0 = v4;
+    v5->var0 = typeCopy;
   }
 }
 
-- (char)extendedDataForTokenAtIndex:(unsigned int)a3 extendedDataIndex:(unsigned int)a4 length:(unsigned int *)a5
+- (char)extendedDataForTokenAtIndex:(unsigned int)index extendedDataIndex:(unsigned int)dataIndex length:(unsigned int *)length
 {
-  *a5 = 0;
-  result = [(EDFormula *)self tokenAtIndex:*&a3];
+  *length = 0;
+  result = [(EDFormula *)self tokenAtIndex:*&index];
   if (result)
   {
     v9 = result;
@@ -351,14 +351,14 @@
     }
 
     v10 = &result[*result + *(result + 2) + *(result + 14) + *(v9 + 2)];
-    if (*(v10 + 11) <= a4)
+    if (*(v10 + 11) <= dataIndex)
     {
       return 0;
     }
 
     v11 = v10 + 20;
     v12 = *(v10 + 12);
-    for (result = v11 + 6; a4; --a4)
+    for (result = v11 + 6; dataIndex; --dataIndex)
     {
       v13 = &result[v12];
       v14 = *v13;
@@ -366,16 +366,16 @@
       v12 = v14;
     }
 
-    *a5 = v12;
+    *length = v12;
   }
 
   return result;
 }
 
-- (char)lastExtendedDataForTokenAtIndex:(unsigned int)a3 length:(unsigned int *)a4
+- (char)lastExtendedDataForTokenAtIndex:(unsigned int)index length:(unsigned int *)length
 {
-  *a4 = 0;
-  result = [(EDFormula *)self tokenAtIndex:*&a3];
+  *length = 0;
+  result = [(EDFormula *)self tokenAtIndex:*&index];
   if (result)
   {
     v7 = result;
@@ -405,7 +405,7 @@
             v11 = v13;
           }
 
-          *a4 = v11;
+          *length = v11;
           return result;
         }
 
@@ -417,9 +417,9 @@
   return result;
 }
 
-- (unsigned)countExtendedDataForTokenAtIndex:(unsigned int)a3
+- (unsigned)countExtendedDataForTokenAtIndex:(unsigned int)index
 {
-  mPackedData = [(EDFormula *)self tokenAtIndex:*&a3];
+  mPackedData = [(EDFormula *)self tokenAtIndex:*&index];
   if (mPackedData)
   {
     v5 = mPackedData;
@@ -445,10 +445,10 @@
   return mPackedData;
 }
 
-- (char)addToken:(int)a3 extendedDataLength:(unsigned int)a4
+- (char)addToken:(int)token extendedDataLength:(unsigned int)length
 {
-  v4 = *&a4;
-  if (![(EDFormula *)self addToken:*&a3 extendedDataLength:*&a4 extendedDataCount:a4 != 0])
+  v4 = *&length;
+  if (![(EDFormula *)self addToken:*&token extendedDataLength:*&length extendedDataCount:length != 0])
   {
     return 0;
   }
@@ -470,23 +470,23 @@
   return [(EDFormula *)self setExtendedDataAtIndex:v8 extendedDataIndex:0 length:v4];
 }
 
-- (BOOL)addToken:(int)a3 extendedDataLength:(unsigned int)a4 extendedDataCount:(unsigned int)a5
+- (BOOL)addToken:(int)token extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)count
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v9 = a3;
+    tokenCopy = token;
     mPackedData = CFDataGetMutableBytePtr(mPackedData);
     if (mPackedData)
     {
       v10 = mPackedData;
-      v11 = 2 * a5 + 4;
-      if (!a5)
+      v11 = 2 * count + 4;
+      if (!count)
       {
         v11 = 0;
       }
 
-      v12 = v11 + a4;
+      v12 = v11 + length;
       v13 = *mPackedData;
       v14 = mPackedData[2];
       v15 = mPackedData + v13 + v14;
@@ -516,9 +516,9 @@
         v22 = *(v10 + 3);
         *(v10 + 3) = v22 + 1;
         v23 = &v10[3 * v22] + *v10 + v10[2];
-        *(v23 + 20) = v9;
+        *(v23 + 20) = tokenCopy;
         *(v23 + 22) = -1;
-        if (a5)
+        if (count)
         {
           [EDFormula setupExtendedDataForTokenAtIndex:"setupExtendedDataForTokenAtIndex:extendedDataLength:extendedDataCount:" extendedDataLength:? extendedDataCount:?];
         }
@@ -531,9 +531,9 @@
   return mPackedData;
 }
 
-- (char)setExtendedDataAtIndex:(unsigned int)a3 extendedDataIndex:(unsigned int)a4 length:(unsigned int)a5
+- (char)setExtendedDataAtIndex:(unsigned int)index extendedDataIndex:(unsigned int)dataIndex length:(unsigned int)length
 {
-  v7 = *&a3;
+  v7 = *&index;
   result = [(EDFormula *)self tokenAtIndex:?];
   if (result)
   {
@@ -558,7 +558,7 @@
     v11 = *(result + 14);
     v12 = *(v10 + 2);
     v13 = &result[*result + *(result + 2) + v11 + v12];
-    if (*(v13 + 11) <= a4)
+    if (*(v13 + 11) <= dataIndex)
     {
       return 0;
     }
@@ -566,24 +566,24 @@
     v14 = (v13 + 20);
     v15 = v13 + 26;
     v16 = 0;
-    if (a4)
+    if (dataIndex)
     {
       v17 = v14 + 2;
-      v18 = a4;
+      dataIndexCopy = dataIndex;
       do
       {
         v19 = *v17;
         v16 += v19;
         v17 = (v15 + v19);
         v15 = v17 + 1;
-        --v18;
+        --dataIndexCopy;
       }
 
-      while (v18);
+      while (dataIndexCopy);
     }
 
-    *(v15 - 1) = a5;
-    v20 = v16 + a5;
+    *(v15 - 1) = length;
+    v20 = v16 + length;
     v21 = *v14;
     if (v20 > v21)
     {
@@ -596,22 +596,22 @@
       v26 = v14 + 2;
       memcpy(v14 + 2, &MutableBytePtr[v22], v23);
       v15 = v14 + 3;
-      if (a4)
+      if (dataIndex)
       {
-        v27 = a4;
+        dataIndexCopy2 = dataIndex;
         do
         {
           v26 = (v15 + *v26);
           v15 = v26 + 1;
-          --v27;
+          --dataIndexCopy2;
         }
 
-        while (v27);
+        while (dataIndexCopy2);
       }
     }
 
-    v28 = a4 + 1;
-    if (a4 + 1 < v14[1])
+    v28 = dataIndex + 1;
+    if (dataIndex + 1 < v14[1])
     {
       v29 = v15;
       do
@@ -625,8 +625,8 @@
       while (v28 < v14[1]);
     }
 
-    bzero(v15, a5);
-    if (a5)
+    bzero(v15, length);
+    if (length)
     {
       return v15;
     }
@@ -640,7 +640,7 @@
   return result;
 }
 
-- (void)setupExtendedDataForTokenAtIndex:(unsigned int)a3 extendedDataLength:(unsigned int)a4 extendedDataCount:(unsigned int)a5
+- (void)setupExtendedDataForTokenAtIndex:(unsigned int)index extendedDataLength:(unsigned int)length extendedDataCount:(unsigned int)count
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
@@ -650,7 +650,7 @@
     {
       v11 = MutableBytePtr;
       v12 = *MutableBytePtr + *(MutableBytePtr + 2) + *(MutableBytePtr + 10) + 20;
-      v13 = a4 + 2 * a5 + 4;
+      v13 = length + 2 * count + 4;
       if (v12 + v13 > CFDataGetLength(self->mPackedData))
       {
         CFDataIncreaseLength(self->mPackedData, v13);
@@ -658,34 +658,34 @@
       }
 
       v14 = &v11[v12];
-      *v14 = a4;
-      *(v14 + 1) = a5;
-      *&v11[6 * a3 + 22 + *v11 + *(v11 + 2)] = v12 - (*v11 + *(v11 + 2) + *(v11 + 14)) - 20;
-      *(v11 + 10) += a4 + 2 * a5 + 4;
-      if (a5)
+      *v14 = length;
+      *(v14 + 1) = count;
+      *&v11[6 * index + 22 + *v11 + *(v11 + 2)] = v12 - (*v11 + *(v11 + 2) + *(v11 + 14)) - 20;
+      *(v11 + 10) += length + 2 * count + 4;
+      if (count)
       {
         v15 = 0;
         v16 = v14 + 6;
         do
         {
           *(v16 - 1) = 0;
-          v16 += v15++ < a5 - 1;
+          v16 += v15++ < count - 1;
         }
 
-        while (a5 != v15);
+        while (count != v15);
       }
     }
   }
 }
 
-- (BOOL)copyTokenAtIndex:(unsigned int)a3 fromFormula:(id)a4
+- (BOOL)copyTokenAtIndex:(unsigned int)index fromFormula:(id)formula
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  v4 = *&index;
+  formulaCopy = formula;
+  v7 = formulaCopy;
+  if (formulaCopy)
   {
-    v8 = v6[1];
+    v8 = formulaCopy[1];
     if (v8)
     {
       MutableBytePtr = CFDataGetMutableBytePtr(v8);
@@ -772,12 +772,12 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)copyTokenFromXlPtg:(XlPtg *)a3
+- (BOOL)copyTokenFromXlPtg:(XlPtg *)ptg
 {
-  if (a3)
+  if (ptg)
   {
-    NumberOfExtendedDataEntries = XlPtg::getNumberOfExtendedDataEntries(a3);
-    LODWORD(mPackedData) = [(EDFormula *)self addToken:a3->var1 extendedDataLength:XlPtg::getTotalSizeOfExtendedData(a3) extendedDataCount:NumberOfExtendedDataEntries];
+    NumberOfExtendedDataEntries = XlPtg::getNumberOfExtendedDataEntries(ptg);
+    LODWORD(mPackedData) = [(EDFormula *)self addToken:ptg->var1 extendedDataLength:XlPtg::getTotalSizeOfExtendedData(ptg) extendedDataCount:NumberOfExtendedDataEntries];
     if (mPackedData)
     {
       mPackedData = self->mPackedData;
@@ -793,7 +793,7 @@ LABEL_24:
             do
             {
               LODWORD(__n) = 0;
-              ExtendedData = XlPtg::getExtendedData(a3, v7, &__n);
+              ExtendedData = XlPtg::getExtendedData(ptg, v7, &__n);
               if (ExtendedData)
               {
                 v10 = ExtendedData;
@@ -824,7 +824,7 @@ LABEL_24:
   return mPackedData;
 }
 
-- (BOOL)removeTokenAtIndex:(unsigned int)a3
+- (BOOL)removeTokenAtIndex:(unsigned int)index
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
@@ -834,7 +834,7 @@ LABEL_24:
     {
       v5 = mPackedData;
       v6 = *(mPackedData + 3);
-      if (v6 <= a3)
+      if (v6 <= index)
       {
         LOBYTE(mPackedData) = 0;
       }
@@ -842,7 +842,7 @@ LABEL_24:
       else
       {
         v7 = mPackedData + *mPackedData + mPackedData[2] + 20;
-        v8 = v7 + 6 * a3;
+        v8 = v7 + 6 * index;
         v9 = *(v8 + 2);
         if (v9 == -1)
         {
@@ -855,9 +855,9 @@ LABEL_24:
         }
 
         v11 = v6 - 1;
-        if (v11 != a3)
+        if (v11 != index)
         {
-          memmove(v8, (v8 + 6), 6 * (v11 - a3));
+          memmove(v8, (v8 + 6), 6 * (v11 - index));
           v11 = *(v5 + 3) - 1;
         }
 
@@ -880,10 +880,10 @@ LABEL_24:
   return mPackedData;
 }
 
-- (BOOL)replaceTokenAtIndex:(unsigned int)a3 withFormula:(id)a4
+- (BOOL)replaceTokenAtIndex:(unsigned int)index withFormula:(id)formula
 {
-  v6 = a4;
-  if ([(EDFormula *)self tokenCount]<= a3 || ([(EDFormula *)self warning], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  formulaCopy = formula;
+  if ([(EDFormula *)self tokenCount]<= index || ([(EDFormula *)self warning], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = 0;
   }
@@ -896,7 +896,7 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    if (a3)
+    if (index)
     {
       v11 = 0;
       v12 = 0;
@@ -908,10 +908,10 @@ LABEL_24:
         }
 
         v12 = (v12 + 1);
-        v11 = v12 >= a3;
+        v11 = v12 >= index;
       }
 
-      while (a3 != v12);
+      while (index != v12);
     }
 
     else
@@ -920,9 +920,9 @@ LABEL_24:
     }
 
     v13 = 0;
-    while ((v11 & (v13 < [v6 tokenCount])) != 0)
+    while ((v11 & (v13 < [formulaCopy tokenCount])) != 0)
     {
-      v14 = [(EDFormula *)v10 copyTokenAtIndex:v13 fromFormula:v6];
+      v14 = [(EDFormula *)v10 copyTokenAtIndex:v13 fromFormula:formulaCopy];
       v13 = (v13 + 1);
       if (!v14)
       {
@@ -931,7 +931,7 @@ LABEL_24:
       }
     }
 
-    v15 = a3 + 1;
+    v15 = index + 1;
     while ((v11 & (v15 < [(EDFormula *)self tokenCount])) != 0)
     {
       v16 = [(EDFormula *)v10 copyTokenAtIndex:v15 fromFormula:self];
@@ -965,13 +965,13 @@ LABEL_24:
   return v8;
 }
 
-- (BOOL)replaceTokenAtIndex:(unsigned int)a3 withFormula:(id)a4 formulaTokenIndex:(unsigned int)a5
+- (BOOL)replaceTokenAtIndex:(unsigned int)index withFormula:(id)formula formulaTokenIndex:(unsigned int)tokenIndex
 {
-  v5 = *&a5;
-  v6 = *&a3;
-  v8 = a4;
+  v5 = *&tokenIndex;
+  v6 = *&index;
+  formulaCopy = formula;
   mPackedData = self->mPackedData;
-  if (mPackedData && (MutableBytePtr = CFDataGetMutableBytePtr(mPackedData)) != 0 && (v11 = CFDataGetMutableBytePtr(v8[1])) != 0)
+  if (mPackedData && (MutableBytePtr = CFDataGetMutableBytePtr(mPackedData)) != 0 && (v11 = CFDataGetMutableBytePtr(formulaCopy[1])) != 0)
   {
     v12 = &v11[*v11 + 20 + *(v11 + 2)];
     v13 = *(v12 + 6 * v5 + 2);
@@ -991,7 +991,7 @@ LABEL_24:
 
     v18 = *MutableBytePtr;
     v19 = *(MutableBytePtr + 2);
-    v20 = [(CFMutableDataRef *)v8 tokenTypeAtIndex:v5];
+    v20 = [(CFMutableDataRef *)formulaCopy tokenTypeAtIndex:v5];
     v21 = &MutableBytePtr[6 * v6 + v18 + v19];
     *(v21 + 20) = v20;
     *(v21 + 22) = -1;
@@ -1053,23 +1053,23 @@ LABEL_16:
   return v17;
 }
 
-- (void)populateXlPtg:(XlPtg *)a3 index:(unsigned int)a4
+- (void)populateXlPtg:(XlPtg *)ptg index:(unsigned int)index
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v6 = *&a4;
+    v6 = *&index;
     MutableBytePtr = CFDataGetMutableBytePtr(mPackedData);
-    if (a3)
+    if (ptg)
     {
       v9 = MutableBytePtr;
       if (MutableBytePtr)
       {
-        XlPtg::XlPtg(a3);
+        XlPtg::XlPtg(ptg);
         v10 = [(EDFormula *)self tokenAtIndex:v6];
         if (v10)
         {
-          a3->var1 = v10->var0;
+          ptg->var1 = v10->var0;
           v11 = *(&v10->var0 + 1);
           if (v11 != -1)
           {
@@ -1082,7 +1082,7 @@ LABEL_16:
               if (v15)
               {
 
-                XlPtg::setExtendedData(a3, v13 + 4, v15);
+                XlPtg::setExtendedData(ptg, v13 + 4, v15);
               }
             }
           }
@@ -1110,13 +1110,13 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)convertTokensToSharedAtRow:(unsigned int)a3 column:(unsigned int)a4
+- (BOOL)convertTokensToSharedAtRow:(unsigned int)row column:(unsigned int)column
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v5 = a4;
-    v6 = a3;
+    columnCopy = column;
+    rowCopy = row;
     mPackedData = CFDataGetMutableBytePtr(mPackedData);
     if (mPackedData)
     {
@@ -1178,7 +1178,7 @@ LABEL_17:
       else if (v15 == 37)
       {
 LABEL_16:
-        adjustRowAndColumn(v14, v13 + 5, v6, v5);
+        adjustRowAndColumn(v14, v13 + 5, rowCopy, columnCopy);
         v14 = v13 + 4;
         v16 = 6;
       }
@@ -1192,7 +1192,7 @@ LABEL_16:
         }
       }
 
-      adjustRowAndColumn(v14, &v13[v16], v6, v5);
+      adjustRowAndColumn(v14, &v13[v16], rowCopy, columnCopy);
       *(v11 + 10) = v15 + 8;
       goto LABEL_19;
     }
@@ -1201,10 +1201,10 @@ LABEL_16:
   return mPackedData;
 }
 
-- (void)setOriginalFormulaString:(id)a3
+- (void)setOriginalFormulaString:(id)string
 {
-  v4 = a3;
-  if (!([v4 length] >> 16))
+  stringCopy = string;
+  if (!([stringCopy length] >> 16))
   {
     mPackedData = self->mPackedData;
     if (mPackedData)
@@ -1214,7 +1214,7 @@ LABEL_16:
       {
         v7 = *MutableBytePtr;
         v9 = 0;
-        [ECPackedDataUtils writeString:"writeString:toPackedData:packedDataSize:atIndex:withPreviousLength:outLength:" toPackedData:v4 packedDataSize:self->mPackedData atIndex:v7 + *(MutableBytePtr + 2) + *(MutableBytePtr + 10) + 20 withPreviousLength:20 outLength:?];
+        [ECPackedDataUtils writeString:"writeString:toPackedData:packedDataSize:atIndex:withPreviousLength:outLength:" toPackedData:stringCopy packedDataSize:self->mPackedData atIndex:v7 + *(MutableBytePtr + 2) + *(MutableBytePtr + 10) + 20 withPreviousLength:20 outLength:?];
         v8 = CFDataGetMutableBytePtr(self->mPackedData);
         *v8 = v9;
       }
@@ -1222,16 +1222,16 @@ LABEL_16:
   }
 }
 
-- (void)setWarning:(int)a3
+- (void)setWarning:(int)warning
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v4 = a3;
+    warningCopy = warning;
     MutableBytePtr = CFDataGetMutableBytePtr(mPackedData);
     if (MutableBytePtr)
     {
-      MutableBytePtr[2] = v4;
+      MutableBytePtr[2] = warningCopy;
     }
   }
 }
@@ -1253,10 +1253,10 @@ LABEL_16:
   return mPackedData;
 }
 
-- (void)setWarningParameter:(id)a3
+- (void)setWarningParameter:(id)parameter
 {
-  v4 = a3;
-  if (!([v4 length] >> 16))
+  parameterCopy = parameter;
+  if (!([parameterCopy length] >> 16))
   {
     mPackedData = self->mPackedData;
     if (mPackedData)
@@ -1267,7 +1267,7 @@ LABEL_16:
         v7 = *(MutableBytePtr + 2);
         v8 = *MutableBytePtr + 20;
         v10 = 0;
-        [ECPackedDataUtils writeString:"writeString:toPackedData:packedDataSize:atIndex:withPreviousLength:outLength:" toPackedData:v4 packedDataSize:self->mPackedData atIndex:(v8 + v7 + *(MutableBytePtr + 10)) withPreviousLength:? outLength:?];
+        [ECPackedDataUtils writeString:"writeString:toPackedData:packedDataSize:atIndex:withPreviousLength:outLength:" toPackedData:parameterCopy packedDataSize:self->mPackedData atIndex:(v8 + v7 + *(MutableBytePtr + 10)) withPreviousLength:? outLength:?];
         v9 = CFDataGetMutableBytePtr(self->mPackedData);
         *(v9 + 2) = v10;
       }
@@ -1275,7 +1275,7 @@ LABEL_16:
   }
 }
 
-- (void)setCleaned:(BOOL)a3
+- (void)setCleaned:(BOOL)cleaned
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
@@ -1283,22 +1283,22 @@ LABEL_16:
     MutableBytePtr = CFDataGetMutableBytePtr(mPackedData);
     if (MutableBytePtr)
     {
-      MutableBytePtr[18] = MutableBytePtr[18] & 0xFE | a3;
+      MutableBytePtr[18] = MutableBytePtr[18] & 0xFE | cleaned;
     }
   }
 }
 
-- (void)updateContainsRelativeReferences:(BOOL)a3
+- (void)updateContainsRelativeReferences:(BOOL)references
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v4 = a3;
+    referencesCopy = references;
     MutableBytePtr = CFDataGetMutableBytePtr(mPackedData);
     if (MutableBytePtr)
     {
       v6 = MutableBytePtr[18];
-      if (v4 | ((v6 & 2) >> 1))
+      if (referencesCopy | ((v6 & 2) >> 1))
       {
         v7 = 2;
       }
@@ -1313,17 +1313,17 @@ LABEL_16:
   }
 }
 
-- (void)updateCleanedWithEvaluationStack:(BOOL)a3
+- (void)updateCleanedWithEvaluationStack:(BOOL)stack
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
   {
-    v4 = a3;
+    stackCopy = stack;
     MutableBytePtr = CFDataGetMutableBytePtr(mPackedData);
     if (MutableBytePtr)
     {
       v6 = MutableBytePtr[18];
-      if (v4 | ((v6 & 4) >> 2))
+      if (stackCopy | ((v6 & 4) >> 2))
       {
         v7 = 4;
       }
@@ -1338,44 +1338,44 @@ LABEL_16:
   }
 }
 
-- (unsigned)firstTokenIndexForArgAtIndex:(unsigned int)a3
+- (unsigned)firstTokenIndexForArgAtIndex:(unsigned int)index
 {
-  v3 = [EDTokenTree buildSubtree:*&a3 formula:self];
+  v3 = [EDTokenTree buildSubtree:*&index formula:self];
   if (v3)
   {
     while (1)
     {
-      v4 = [v3 firstChild];
+      firstChild = [v3 firstChild];
 
-      if (!v4)
+      if (!firstChild)
       {
         break;
       }
 
-      v5 = v4;
+      v5 = firstChild;
 
       v3 = v5;
     }
   }
 
-  v6 = [v3 tokenIndex];
+  tokenIndex = [v3 tokenIndex];
 
-  return v6;
+  return tokenIndex;
 }
 
-- (id)saveArgs:(unsigned int)a3 andDelete:(BOOL)a4
+- (id)saveArgs:(unsigned int)args andDelete:(BOOL)delete
 {
-  if (a3)
+  if (args)
   {
-    v4 = a4;
+    deleteCopy = delete;
     v7 = +[EDFormula formula];
-    v8 = [(EDFormula *)self tokenCount];
-    LODWORD(v9) = v8;
-    if (v8)
+    tokenCount = [(EDFormula *)self tokenCount];
+    LODWORD(v9) = tokenCount;
+    if (tokenCount)
     {
       v10 = 0;
-      v11 = v8 - 1;
-      v12 = v8 - 1;
+      v11 = tokenCount - 1;
+      v12 = tokenCount - 1;
       while (1)
       {
         v13 = [(EDFormula *)self firstTokenIndexForArgAtIndex:v12 - (v10 != 0)];
@@ -1385,7 +1385,7 @@ LABEL_16:
           break;
         }
 
-        if (a3 == ++v10)
+        if (args == ++v10)
         {
           if (v13 > v11)
           {
@@ -1405,7 +1405,7 @@ LABEL_16:
 
       while (v9 != v14);
 LABEL_9:
-      if (v4 && v11 >= v12)
+      if (deleteCopy && v11 >= v12)
       {
         do
         {
@@ -1433,13 +1433,13 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)insertExternalName:(unint64_t)a3 withLink:(unint64_t)a4 atIndex:(unsigned int)a5
+- (BOOL)insertExternalName:(unint64_t)name withLink:(unint64_t)link atIndex:(unsigned int)index
 {
-  v5 = a4;
-  v6 = a3;
-  if (a5)
+  linkCopy = link;
+  nameCopy = name;
+  if (index)
   {
-    v8 = [(EDFormula *)self saveArgs:*&a5 andDelete:1];
+    v8 = [(EDFormula *)self saveArgs:*&index andDelete:1];
   }
 
   else
@@ -1451,13 +1451,13 @@ LABEL_9:
   v10 = v9;
   if (v9)
   {
-    *v9 = v5;
-    *(v9 + 1) = v6;
+    *v9 = linkCopy;
+    *(v9 + 1) = nameCopy;
     *(v9 + 2) = 0;
     if (v8)
     {
-      v11 = [v8 tokenCount];
-      if (v11)
+      tokenCount = [v8 tokenCount];
+      if (tokenCount)
       {
         v12 = 0;
         do
@@ -1466,7 +1466,7 @@ LABEL_9:
           v12 = (v12 + 1);
         }
 
-        while (v11 != v12);
+        while (tokenCount != v12);
       }
     }
   }
@@ -1474,45 +1474,45 @@ LABEL_9:
   return v10 != 0;
 }
 
-- (BOOL)addArrayWithCol:(int)a3 andRow:(int)a4
+- (BOOL)addArrayWithCol:(int)col andRow:(int)row
 {
-  [(EDFormula *)self addToken:96 extendedDataLength:8 extendedDataCount:(a3 + 1 + (a3 + 1) * a4 + 2)];
+  [(EDFormula *)self addToken:96 extendedDataLength:8 extendedDataCount:(col + 1 + (col + 1) * row + 2)];
   v7 = [(EDFormula *)self setExtendedDataForLastTokenAtIndex:0 length:4];
   v8 = [(EDFormula *)self setExtendedDataForLastTokenAtIndex:1 length:4];
-  if (a3 <= 255)
+  if (col <= 255)
   {
-    v9 = a3;
+    colCopy = col;
   }
 
   else
   {
-    v9 = 0;
+    colCopy = 0;
   }
 
-  *v7 = v9;
-  *v8 = a4;
+  *v7 = colCopy;
+  *v8 = row;
   return 1;
 }
 
-- (char)setExtendedDataForLastTokenAtIndex:(unsigned int)a3 length:(unsigned int)a4
+- (char)setExtendedDataForLastTokenAtIndex:(unsigned int)index length:(unsigned int)length
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&length;
+  v5 = *&index;
   v7 = [(EDFormula *)self tokenCount]- 1;
 
   return [(EDFormula *)self setExtendedDataAtIndex:v7 extendedDataIndex:v5 length:v4];
 }
 
-- (BOOL)convertToList:(unsigned int)a3 withFinalParen:(BOOL)a4
+- (BOOL)convertToList:(unsigned int)list withFinalParen:(BOOL)paren
 {
-  v4 = a4;
-  if (a3 > 2)
+  parenCopy = paren;
+  if (list > 2)
   {
-    v8 = [(EDFormula *)self tokenCount];
-    if (v8 >= a3)
+    tokenCount = [(EDFormula *)self tokenCount];
+    if (tokenCount >= list)
     {
-      v10 = v8;
-      v31 = v8 - 1;
+      v10 = tokenCount;
+      v31 = tokenCount - 1;
       v28 = 0;
       v29 = 0;
       v30 = 0;
@@ -1530,7 +1530,7 @@ LABEL_9:
         std::vector<unsigned int>::push_back[abi:ne200100](&v28, &v31);
         v12 = v28;
         v13 = (v29 - v28) >> 2;
-        if (v13 >= a3)
+        if (v13 >= list)
         {
           goto LABEL_16;
         }
@@ -1539,7 +1539,7 @@ LABEL_9:
       v12 = v28;
       v13 = (v29 - v28) >> 2;
 LABEL_16:
-      if (v13 == a3)
+      if (v13 == list)
       {
         v14 = +[EDFormula formula];
         v15 = v29;
@@ -1596,8 +1596,8 @@ LABEL_16:
           while (v25);
         }
 
-        v26 = [v14 tokenCount];
-        if (v26)
+        tokenCount2 = [v14 tokenCount];
+        if (tokenCount2)
         {
           v27 = 0;
           do
@@ -1606,10 +1606,10 @@ LABEL_16:
             v27 = (v27 + 1);
           }
 
-          while (v26 != v27);
+          while (tokenCount2 != v27);
         }
 
-        if (v4)
+        if (parenCopy)
         {
           v9 = addOperator(self, 21);
         }
@@ -1643,12 +1643,12 @@ LABEL_16:
     return 0;
   }
 
-  if (a3 == 2)
+  if (list == 2)
   {
     addOperator(self, 16);
   }
 
-  if (!v4)
+  if (!parenCopy)
   {
     return 1;
   }
@@ -1658,12 +1658,12 @@ LABEL_16:
 
 - (BOOL)convertLastRefsToArea
 {
-  v3 = [(EDFormula *)self tokenCount];
-  v4 = [(EDFormula *)self tokenTypeAtIndex:v3 - 2];
-  v5 = v3 - 1;
+  tokenCount = [(EDFormula *)self tokenCount];
+  v4 = [(EDFormula *)self tokenTypeAtIndex:tokenCount - 2];
+  v5 = tokenCount - 1;
   v6 = [(EDFormula *)self tokenTypeAtIndex:v5];
-  v7 = v3 >= 2;
-  v8 = v3 - 2;
+  v7 = tokenCount >= 2;
+  v8 = tokenCount - 2;
   if (v7 && (v6 == 90 || v6 == 68) && (v4 == 68 || v4 == 90))
   {
     v15 = 0;
@@ -1694,16 +1694,16 @@ LABEL_16:
   return v13;
 }
 
-- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)a3 withEDLinks:(id)a4
+- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)valid withEDLinks:(id)links
 {
-  v6 = a4;
-  v7 = [(EDFormula *)self tokenCount];
-  if (!v7)
+  linksCopy = links;
+  tokenCount = [(EDFormula *)self tokenCount];
+  if (!tokenCount)
   {
     goto LABEL_9;
   }
 
-  v8 = v7 - 1;
+  v8 = tokenCount - 1;
   v9 = [(EDFormula *)self tokenTypeAtIndex:v8];
   v10 = 0;
   v11 = v9 - 22;
@@ -1712,7 +1712,7 @@ LABEL_16:
     if (((1 << v11) & 0xC0000000C001) != 0)
     {
 LABEL_10:
-      if (!a3)
+      if (!valid)
       {
         goto LABEL_13;
       }
@@ -1728,7 +1728,7 @@ LABEL_7:
       v13 = [(EDFormula *)self extendedDataForTokenAtIndex:v8 extendedDataIndex:0 length:&v16];
       if (v13)
       {
-        v10 = [v6 referenceAtIndex:*v13];
+        v10 = [linksCopy referenceAtIndex:*v13];
         goto LABEL_10;
       }
 
@@ -1753,11 +1753,11 @@ LABEL_9:
   }
 
   v10 = 0;
-  if (a3)
+  if (valid)
   {
     v14 = 0;
 LABEL_12:
-    *a3 = v14;
+    *valid = v14;
   }
 
 LABEL_13:
@@ -1774,7 +1774,7 @@ LABEL_13:
   return v2;
 }
 
-- (EDToken)tokenAtIndex:(unsigned int)a3
+- (EDToken)tokenAtIndex:(unsigned int)index
 {
   result = self->mPackedData;
   if (result)
@@ -1782,14 +1782,14 @@ LABEL_13:
     result = CFDataGetMutableBytePtr(result);
     if (result)
     {
-      if (*(&result->var1 + 2) <= a3)
+      if (*(&result->var1 + 2) <= index)
       {
         return 0;
       }
 
       else
       {
-        return (result + 6 * a3 + result->var0 + LOWORD(result->var1) + 20);
+        return (result + 6 * index + result->var0 + LOWORD(result->var1) + 20);
       }
     }
   }
@@ -1797,24 +1797,24 @@ LABEL_13:
   return result;
 }
 
-- (void)unarchiveFromData:(__CFData *)a3 offset:(unint64_t *)a4
+- (void)unarchiveFromData:(__CFData *)data offset:(unint64_t *)offset
 {
-  if (a3)
+  if (data)
   {
-    BytePtr = CFDataGetBytePtr(a3);
+    BytePtr = CFDataGetBytePtr(data);
     if (BytePtr)
     {
       v7 = BytePtr;
       CFDataSetLength(self->mPackedData, 0);
-      v8 = &v7[*a4];
+      v8 = &v7[*offset];
       v9 = *v8 + *(v8 + 2) + *(v8 + 10) + 20;
       CFDataAppendBytes(self->mPackedData, v8, v9);
-      *a4 += v9;
+      *offset += v9;
     }
   }
 }
 
-- (void)archiveByAppendingToMutableData:(__CFData *)a3
+- (void)archiveByAppendingToMutableData:(__CFData *)data
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
@@ -1824,7 +1824,7 @@ LABEL_13:
     {
       v6 = *MutableBytePtr + *(MutableBytePtr + 2) + *(MutableBytePtr + 10) + 20;
 
-      CFDataAppendBytes(a3, MutableBytePtr, v6);
+      CFDataAppendBytes(data, MutableBytePtr, v6);
     }
   }
 }

@@ -1,11 +1,11 @@
 @interface NavdNavigationStateProvider
-- (NavdNavigationStateProvider)initWithNavigationService:(id)a3 startNavigationDetails:(id)a4;
+- (NavdNavigationStateProvider)initWithNavigationService:(id)service startNavigationDetails:(id)details;
 - (NavigationStateProviderDelegate)delegate;
-- (unint64_t)_navigationStateForServiceState:(unint64_t)a3;
+- (unint64_t)_navigationStateForServiceState:(unint64_t)state;
 - (unint64_t)navigationState;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)setNavigationState:(unint64_t)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)setNavigationState:(unint64_t)state;
 @end
 
 @implementation NavdNavigationStateProvider
@@ -17,22 +17,22 @@
   return WeakRetained;
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = [(NavdNavigationStateProvider *)self _navigationStateForServiceState:a4];
-  v8 = [(NavdNavigationStateProvider *)self _navigationStateForServiceState:a5];
+  v7 = [(NavdNavigationStateProvider *)self _navigationStateForServiceState:state];
+  v8 = [(NavdNavigationStateProvider *)self _navigationStateForServiceState:toState];
   if (v7 != v8)
   {
     v9 = v8;
-    v10 = [(NavdNavigationStateProvider *)self delegate];
-    [v10 navigationStateProvider:self didChangeNavigationState:v9];
+    delegate = [(NavdNavigationStateProvider *)self delegate];
+    [delegate navigationStateProvider:self didChangeNavigationState:v9];
   }
 }
 
-- (unint64_t)_navigationStateForServiceState:(unint64_t)a3
+- (unint64_t)_navigationStateForServiceState:(unint64_t)state
 {
   IsNavigating = MNNavigationServiceStateIsNavigating();
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = 1;
   }
@@ -55,69 +55,69 @@
 
 - (unint64_t)navigationState
 {
-  v3 = [(NavdNavigationStateProvider *)self navigationService];
+  navigationService = [(NavdNavigationStateProvider *)self navigationService];
 
-  if (!v3)
+  if (!navigationService)
   {
     return 0;
   }
 
-  v4 = [(NavdNavigationStateProvider *)self navigationService];
-  v5 = -[NavdNavigationStateProvider _navigationStateForServiceState:](self, "_navigationStateForServiceState:", [v4 state]);
+  navigationService2 = [(NavdNavigationStateProvider *)self navigationService];
+  v5 = -[NavdNavigationStateProvider _navigationStateForServiceState:](self, "_navigationStateForServiceState:", [navigationService2 state]);
 
   return v5;
 }
 
-- (void)setNavigationState:(unint64_t)a3
+- (void)setNavigationState:(unint64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
-    v9 = [(NavdNavigationStateProvider *)self navigationService];
-    [v9 stopNavigationWithReason:2];
+    navigationService = [(NavdNavigationStateProvider *)self navigationService];
+    [navigationService stopNavigationWithReason:2];
   }
 
-  else if (a3 == 2)
+  else if (state == 2)
   {
-    v4 = [(NavdNavigationStateProvider *)self navigationService];
-    v5 = [(NavdNavigationStateProvider *)self startNavigationDetails];
+    navigationService2 = [(NavdNavigationStateProvider *)self navigationService];
+    startNavigationDetails = [(NavdNavigationStateProvider *)self startNavigationDetails];
     v6 = dispatch_get_global_queue(33, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100BDCB18;
     block[3] = &unk_101661A90;
-    v11 = v4;
-    v12 = v5;
-    v7 = v5;
-    v8 = v4;
+    v11 = navigationService2;
+    v12 = startNavigationDetails;
+    v7 = startNavigationDetails;
+    v8 = navigationService2;
     dispatch_async(v6, block);
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(NavdNavigationStateProvider *)self navigationService];
-  [v3 unregisterObserver:self];
+  navigationService = [(NavdNavigationStateProvider *)self navigationService];
+  [navigationService unregisterObserver:self];
 
-  v4 = [(NavdNavigationStateProvider *)self navigationService];
-  [v4 closeForClient:self];
+  navigationService2 = [(NavdNavigationStateProvider *)self navigationService];
+  [navigationService2 closeForClient:self];
 
   v5.receiver = self;
   v5.super_class = NavdNavigationStateProvider;
   [(NavdNavigationStateProvider *)&v5 dealloc];
 }
 
-- (NavdNavigationStateProvider)initWithNavigationService:(id)a3 startNavigationDetails:(id)a4
+- (NavdNavigationStateProvider)initWithNavigationService:(id)service startNavigationDetails:(id)details
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  detailsCopy = details;
   v12.receiver = self;
   v12.super_class = NavdNavigationStateProvider;
   v9 = [(NavdNavigationStateProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startNavigationDetails, a4);
-    objc_storeStrong(&v10->_navigationService, a3);
+    objc_storeStrong(&v9->_startNavigationDetails, details);
+    objc_storeStrong(&v10->_navigationService, service);
     [(MNNavigationService *)v10->_navigationService registerObserver:v10];
     [(MNNavigationService *)v10->_navigationService openForClient:v10];
   }

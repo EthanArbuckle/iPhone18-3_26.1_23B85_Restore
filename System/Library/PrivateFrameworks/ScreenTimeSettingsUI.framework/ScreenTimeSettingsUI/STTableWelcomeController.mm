@@ -1,85 +1,85 @@
 @interface STTableWelcomeController
-- (void)_contentSizeDidChangeFrom:(CGSize)a3 to:(CGSize)a4;
+- (void)_contentSizeDidChangeFrom:(CGSize)from to:(CGSize)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setTableView:(id)a3;
-- (void)setTableViewController:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setTableView:(id)view;
+- (void)setTableViewController:(id)controller;
 @end
 
 @implementation STTableWelcomeController
 
 - (void)dealloc
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 removeObserver:self forKeyPath:@"contentSize" context:"KVOContextSTTableWelcomeController"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView removeObserver:self forKeyPath:@"contentSize" context:"KVOContextSTTableWelcomeController"];
 
   v4.receiver = self;
   v4.super_class = STTableWelcomeController;
   [(STTableWelcomeController *)&v4 dealloc];
 }
 
-- (void)setTableViewController:(id)a3
+- (void)setTableViewController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [(STTableWelcomeController *)a2 setTableViewController:?];
   }
 
   tableViewController = self->_tableViewController;
-  self->_tableViewController = v5;
-  v9 = v5;
+  self->_tableViewController = controllerCopy;
+  v9 = controllerCopy;
   v7 = tableViewController;
 
   [(UITableViewController *)v7 willMoveToParentViewController:0];
   [(STTableWelcomeController *)self addChildViewController:v9];
-  v8 = [(UITableViewController *)v9 tableView];
-  [(STTableWelcomeController *)self setTableView:v8];
+  tableView = [(UITableViewController *)v9 tableView];
+  [(STTableWelcomeController *)self setTableView:tableView];
 
   [(UITableViewController *)v9 didMoveToParentViewController:self];
   [(UITableViewController *)v7 removeFromParentViewController];
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 removeObserver:self forKeyPath:@"contentSize" context:"KVOContextSTTableWelcomeController"];
+  viewCopy = view;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView removeObserver:self forKeyPath:@"contentSize" context:"KVOContextSTTableWelcomeController"];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 setScrollEnabled:0];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [viewCopy setScrollEnabled:0];
   v9.receiver = self;
   v9.super_class = STTableWelcomeController;
-  [(OBTableWelcomeController *)&v9 setTableView:v4];
-  v6 = [v4 heightAnchor];
-  [v4 contentSize];
-  v8 = [v6 constraintEqualToConstant:v7];
+  [(OBTableWelcomeController *)&v9 setTableView:viewCopy];
+  heightAnchor = [viewCopy heightAnchor];
+  [viewCopy contentSize];
+  v8 = [heightAnchor constraintEqualToConstant:v7];
 
   [(STTableWelcomeController *)self setHeightConstraint:v8];
   [v8 setActive:1];
-  [v4 addObserver:self forKeyPath:@"contentSize" options:3 context:"KVOContextSTTableWelcomeController"];
+  [viewCopy addObserver:self forKeyPath:@"contentSize" options:3 context:"KVOContextSTTableWelcomeController"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextSTTableWelcomeController")
+  changeCopy = change;
+  if (context == "KVOContextSTTableWelcomeController")
   {
-    if ([a3 isEqualToString:@"contentSize"])
+    if ([path isEqualToString:@"contentSize"])
     {
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v12 = [MEMORY[0x277CBEB68] null];
+      v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v11 == v12)
+      if (v11 == null)
       {
 
         v11 = 0;
       }
 
-      v13 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v14)
+      if (v13 == null2)
       {
 
         v13 = 0;
@@ -97,16 +97,16 @@
   {
     v21.receiver = self;
     v21.super_class = STTableWelcomeController;
-    [(STTableWelcomeController *)&v21 observeValueForKeyPath:@"contentSize" ofObject:a4 change:v10 context:a6];
+    [(STTableWelcomeController *)&v21 observeValueForKeyPath:@"contentSize" ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_contentSizeDidChangeFrom:(CGSize)a3 to:(CGSize)a4
+- (void)_contentSizeDidChangeFrom:(CGSize)from to:(CGSize)to
 {
-  if (a3.height != a4.height)
+  if (from.height != to.height)
   {
-    height = a4.height;
-    v7 = [(STTableWelcomeController *)self heightConstraint:a3.width];
+    height = to.height;
+    v7 = [(STTableWelcomeController *)self heightConstraint:from.width];
     [v7 setConstant:height];
 
     [(STTableWelcomeController *)self performSelector:sel_viewDidLayoutSubviews withObject:0 afterDelay:0.0];

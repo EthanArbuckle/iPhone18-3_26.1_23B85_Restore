@@ -1,15 +1,15 @@
 @interface RichTextWrapper.TextFieldDelegate
 - (_TtCV28AccessibilitySharedUISupport15RichTextWrapper17TextFieldDelegate)init;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation RichTextWrapper.TextFieldDelegate
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_23DB35F58(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_23DB35F58(changeCopy);
 }
 
 - (_TtCV28AccessibilitySharedUISupport15RichTextWrapper17TextFieldDelegate)init

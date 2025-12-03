@@ -1,39 +1,39 @@
 @interface RKDailyRoutineRelevantContext
-- (BOOL)isEqual:(id)a3;
-- (RKDailyRoutineRelevantContext)initWithCoder:(id)a3;
-- (RKDailyRoutineRelevantContext)initWithSituation:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (RKDailyRoutineRelevantContext)initWithCoder:(id)coder;
+- (RKDailyRoutineRelevantContext)initWithSituation:(int64_t)situation;
 - (id)analyticsDescription;
 - (id)description;
 @end
 
 @implementation RKDailyRoutineRelevantContext
 
-- (RKDailyRoutineRelevantContext)initWithSituation:(int64_t)a3
+- (RKDailyRoutineRelevantContext)initWithSituation:(int64_t)situation
 {
   v8.receiver = self;
   v8.super_class = RKDailyRoutineRelevantContext;
-  v4 = [(RKRelevantContext *)&v8 _init];
-  v5 = v4;
-  if (v4)
+  _init = [(RKRelevantContext *)&v8 _init];
+  v5 = _init;
+  if (_init)
   {
-    v4->_situation = a3;
-    v6 = v4;
+    _init->_situation = situation;
+    v6 = _init;
   }
 
   return v5;
 }
 
-- (RKDailyRoutineRelevantContext)initWithCoder:(id)a3
+- (RKDailyRoutineRelevantContext)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"situation"];
+  v4 = [coder decodeIntegerForKey:@"situation"];
 
   return [(RKDailyRoutineRelevantContext *)self initWithSituation:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -41,7 +41,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_situation == v4->_situation;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_situation == equalCopy->_situation;
   }
 
   return v5;
@@ -58,9 +58,9 @@
 
 - (id)analyticsDescription
 {
-  v2 = [(RKDailyRoutineRelevantContext *)self situation];
+  situation = [(RKDailyRoutineRelevantContext *)self situation];
 
-  return RKStringFromRoutineSituation(v2);
+  return RKStringFromRoutineSituation(situation);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CNTextField
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNTextField)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNTextField)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CNTextField
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v12 = *MEMORY[0x1E69E9840];
   v6 = CNUILogContactCard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_199A75000, v6, OS_LOG_TYPE_ERROR, "%@ did not use fast-path for sizing", buf, 0xCu);
   }
 
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (CNTextField)initWithFrame:(CGRect)a3
+- (CNTextField)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNTextField;
-  v3 = [(CNTextField *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNTextField *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {

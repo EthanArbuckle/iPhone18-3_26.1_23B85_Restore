@@ -1,9 +1,9 @@
 @interface CMStylingArchiveManager
 - (CMStylingArchiveManager)init;
-- (id)addCssStyle:(id)a3;
+- (id)addCssStyle:(id)style;
 - (id)commitStylesheet;
 - (id)cssStylesheetString;
-- (void)addCssStyle:(id)a3 withName:(id)a4;
+- (void)addCssStyle:(id)style withName:(id)name;
 @end
 
 @implementation CMStylingArchiveManager
@@ -27,24 +27,24 @@
   return v2;
 }
 
-- (id)addCssStyle:(id)a3
+- (id)addCssStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mStyleCache objectForKey:v4];
+  styleCopy = style;
+  v5 = [(NSMutableDictionary *)self->mStyleCache objectForKey:styleCopy];
   if (!v5)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"s%lu", -[NSMutableDictionary count](self->mStyleCache, "count")];
-    [(NSMutableDictionary *)self->mStyleCache setObject:v5 forKey:v4];
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@".%@.%@.%@ {%@}\n", v5, v5, v5, v4];
-    [(NSMutableString *)self->mCssString appendString:v6];
+    [(NSMutableDictionary *)self->mStyleCache setObject:v5 forKey:styleCopy];
+    styleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@".%@.%@.%@ {%@}\n", v5, v5, v5, styleCopy];
+    [(NSMutableString *)self->mCssString appendString:styleCopy];
   }
 
   return v5;
 }
 
-- (void)addCssStyle:(id)a3 withName:(id)a4
+- (void)addCssStyle:(id)style withName:(id)name
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@".%@ {%@}\n", a4, a3];
+  style = [MEMORY[0x277CCACA8] stringWithFormat:@".%@ {%@}\n", name, style];
   [(NSMutableString *)self->mCssString appendString:?];
 }
 

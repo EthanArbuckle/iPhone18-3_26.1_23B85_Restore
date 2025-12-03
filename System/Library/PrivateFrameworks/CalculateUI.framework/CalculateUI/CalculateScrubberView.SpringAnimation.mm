@@ -1,24 +1,24 @@
 @interface CalculateScrubberView.SpringAnimation
-- (void)displayLinkDidUpdate:(id)a3;
+- (void)displayLinkDidUpdate:(id)update;
 @end
 
 @implementation CalculateScrubberView.SpringAnimation
 
-- (void)displayLinkDidUpdate:(id)a3
+- (void)displayLinkDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
 
-  [v4 duration];
+  [updateCopy duration];
   sub_1C1DD93DC(v5);
-  [v4 timestamp];
+  [updateCopy timestamp];
   if (v6 - *self->startTime >= 0.5)
   {
-    v7 = [v4 invalidate];
+    invalidate = [updateCopy invalidate];
     v8 = *self->completion;
     if (v8)
     {
       v9 = *&self->completion[8];
-      v8(v7);
+      v8(invalidate);
     }
   }
 }

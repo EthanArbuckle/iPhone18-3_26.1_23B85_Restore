@@ -1,25 +1,25 @@
 @interface CLBacklightStateNotifierAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLBacklightStateNotifierAdapter)init;
-- (CLBacklightStateNotifierAdapter)initWithCLBacklightStateNotifier:(void *)a3;
+- (CLBacklightStateNotifierAdapter)initWithCLBacklightStateNotifier:(void *)notifier;
 - (void)adaptee;
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
 @end
 
 @implementation CLBacklightStateNotifierAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -66,57 +66,57 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLBacklightStateNotifierAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLBacklightStateNotifierAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLBacklightStateNotifierAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLBacklightStateNotifierAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (CLBacklightStateNotifierAdapter)initWithCLBacklightStateNotifier:(void *)a3
+- (CLBacklightStateNotifierAdapter)initWithCLBacklightStateNotifier:(void *)notifier
 {
   v5.receiver = self;
   v5.super_class = CLBacklightStateNotifierAdapter;
   result = [(CLNotifierServiceAdapter *)&v5 init];
   if (result)
   {
-    result->_backlightStateNotifier = a3;
+    result->_backlightStateNotifier = notifier;
   }
 
   return result;
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  v6 = a4;
-  v8 = [objc_msgSend(a5 changeRequest];
+  stateCopy = state;
+  changeRequest = [objc_msgSend(event changeRequest];
   if (objc_opt_class())
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = 0;
+      changeRequest = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    changeRequest = 0;
   }
 
-  [objc_msgSend(a5 "changeRequest")];
+  [objc_msgSend(event "changeRequest")];
   v9 = NSStringFromBLSBacklightChangeSourceEvent();
-  if (v8 && ([v8 type] == 1 || objc_msgSend(v8, "type") == 2))
+  if (changeRequest && ([changeRequest type] == 1 || objc_msgSend(changeRequest, "type") == 2))
   {
-    [v8 reason];
+    [changeRequest reason];
     v10 = NSStringFromBLSAlwaysOnSuppressionReason();
   }
 
@@ -128,7 +128,7 @@
   backlightStateNotifier = self->_backlightStateNotifier;
   sub_10000EC00(v14, [v9 UTF8String]);
   sub_10000EC00(__p, [(__CFString *)v10 UTF8String]);
-  sub_10081798C(backlightStateNotifier, v6, v14, __p);
+  sub_10081798C(backlightStateNotifier, stateCopy, v14, __p);
   if (v13 < 0)
   {
     operator delete(__p[0]);
@@ -140,7 +140,7 @@
   }
 }
 
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled
 {
   backlightStateNotifier = self->_backlightStateNotifier;
   v5 = backlightStateNotifier[5];
@@ -149,7 +149,7 @@
   v6[2] = sub_100818264;
   v6[3] = &unk_102460CC8;
   v6[4] = backlightStateNotifier;
-  v7 = a4;
+  enabledCopy = enabled;
   [v5 async:v6];
 }
 

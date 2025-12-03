@@ -1,17 +1,17 @@
 @interface PKPeerPaymentServiceUnregisterRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentServiceUnregisterRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (!lCopy)
   {
     v13 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!informationCopy)
   {
     v13 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -48,12 +48,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (v10)
+  if (identifierCopy)
   {
     v20[0] = @"devices";
-    v20[1] = v10;
+    v20[1] = identifierCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
-    v13 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:v12 queryParameters:0 appleAccountInformation:v9];
+    v13 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v13 setHTTPMethod:@"DELETE"];
     [v13 setCachePolicy:1];

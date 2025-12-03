@@ -1,21 +1,21 @@
 @interface TSCEQuotedRefPathSplitter
-+ (BOOL)isLeftParen:(id)a3;
-+ (BOOL)isRightParen:(id)a3;
-+ (BOOL)isSingleQuote:(id)a3;
++ (BOOL)isLeftParen:(id)paren;
++ (BOOL)isRightParen:(id)paren;
++ (BOOL)isSingleQuote:(id)quote;
 + (id)refPathInterestingCharactersSet;
-- (TSCEQuotedRefPathSplitter)initWithComponents:(id)a3 aggregateFunction:(id)a4;
-- (TSCEQuotedRefPathSplitter)initWithReferenceString:(id)a3;
-- (id)componentAtIndex:(unint64_t)a3;
-- (void)addComponent:(id)a3;
-- (void)splitRefPath:(id)a3;
+- (TSCEQuotedRefPathSplitter)initWithComponents:(id)components aggregateFunction:(id)function;
+- (TSCEQuotedRefPathSplitter)initWithReferenceString:(id)string;
+- (id)componentAtIndex:(unint64_t)index;
+- (void)addComponent:(id)component;
+- (void)splitRefPath:(id)path;
 @end
 
 @implementation TSCEQuotedRefPathSplitter
 
-+ (BOOL)isSingleQuote:(id)a3
++ (BOOL)isSingleQuote:(id)quote
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7) != 1 || (v11 = objc_msgSend_characterAtIndex_(v3, v8, 0, v9, v10), v12 = 1, (v11 - 8216) >= 2) && v11 != 39 && v11 != 65287)
+  quoteCopy = quote;
+  if (objc_msgSend_length(quoteCopy, v4, v5, v6, v7) != 1 || (v11 = objc_msgSend_characterAtIndex_(quoteCopy, v8, 0, v9, v10), v12 = 1, (v11 - 8216) >= 2) && v11 != 39 && v11 != 65287)
   {
     v12 = 0;
   }
@@ -23,12 +23,12 @@
   return v12;
 }
 
-+ (BOOL)isLeftParen:(id)a3
++ (BOOL)isLeftParen:(id)paren
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7) == 1)
+  parenCopy = paren;
+  if (objc_msgSend_length(parenCopy, v4, v5, v6, v7) == 1)
   {
-    v11 = objc_msgSend_characterAtIndex_(v3, v8, 0, v9, v10);
+    v11 = objc_msgSend_characterAtIndex_(parenCopy, v8, 0, v9, v10);
   }
 
   else
@@ -41,12 +41,12 @@
   return v13;
 }
 
-+ (BOOL)isRightParen:(id)a3
++ (BOOL)isRightParen:(id)paren
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7) == 1)
+  parenCopy = paren;
+  if (objc_msgSend_length(parenCopy, v4, v5, v6, v7) == 1)
   {
-    v11 = objc_msgSend_characterAtIndex_(v3, v8, 0, v9, v10);
+    v11 = objc_msgSend_characterAtIndex_(parenCopy, v8, 0, v9, v10);
   }
 
   else
@@ -71,26 +71,26 @@
   return v3;
 }
 
-- (TSCEQuotedRefPathSplitter)initWithReferenceString:(id)a3
+- (TSCEQuotedRefPathSplitter)initWithReferenceString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = TSCEQuotedRefPathSplitter;
   v5 = [(TSCEQuotedRefPathSplitter *)&v11 init];
   v9 = v5;
   if (v5)
   {
-    objc_msgSend_splitRefPath_(v5, v6, v4, v7, v8);
+    objc_msgSend_splitRefPath_(v5, v6, stringCopy, v7, v8);
   }
 
   return v9;
 }
 
-- (TSCEQuotedRefPathSplitter)initWithComponents:(id)a3 aggregateFunction:(id)a4
+- (TSCEQuotedRefPathSplitter)initWithComponents:(id)components aggregateFunction:(id)function
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  functionCopy = function;
   v73.receiver = self;
   v73.super_class = TSCEQuotedRefPathSplitter;
   v8 = [(TSCEQuotedRefPathSplitter *)&v73 init];
@@ -104,7 +104,7 @@
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v11 = v6;
+    v11 = componentsCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v69, v74, 16);
     if (v13)
     {
@@ -138,20 +138,20 @@
       while (v13);
     }
 
-    if (objc_msgSend_length(v7, v30, v31, v32, v33) && objc_msgSend_count(v8->_quotedComponents, v34, v35, v36, v37))
+    if (objc_msgSend_length(functionCopy, v30, v31, v32, v33) && objc_msgSend_count(v8->_quotedComponents, v34, v35, v36, v37))
     {
       v42 = objc_msgSend_lastObject(v8->_quotedComponents, v38, v39, v40, v41);
-      if (objc_msgSend_hasPrefix_(v7, v43, @"("), v44, v45 && objc_msgSend_hasSuffix_(v7, v46, @""), v47, v48))
+      if (objc_msgSend_hasPrefix_(functionCopy, v43, @"("), v44, v45 && objc_msgSend_hasSuffix_(functionCopy, v46, @""), v47, v48))
       {
         v49 = [TSCEQuotedRefPathWord alloc];
-        v53 = objc_msgSend_initWithRawString_(v49, v50, v7, v51, v52);
+        v53 = objc_msgSend_initWithRawString_(v49, v50, functionCopy, v51, v52);
         objc_msgSend_addRefPathWord_(v42, v54, v53, v55, v56);
       }
 
       else
       {
         v57 = [TSCEQuotedRefPathWord alloc];
-        v61 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"(%@)", v59, v60, v7);
+        v61 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"(%@)", v59, v60, functionCopy);
         v53 = objc_msgSend_initWithRawString_(v57, v62, v61, v63, v64);
 
         objc_msgSend_addRefPathWord_(v42, v65, v53, v66, v67);
@@ -162,10 +162,10 @@
   return v8;
 }
 
-- (void)splitRefPath:(id)a3
+- (void)splitRefPath:(id)path
 {
-  v8 = a3;
-  v223 = self;
+  pathCopy = path;
+  selfCopy = self;
   quotedComponents = self->_quotedComponents;
   if (quotedComponents)
   {
@@ -180,14 +180,14 @@
   }
 
   v16 = objc_msgSend_refPathInterestingCharactersSet(TSCEQuotedRefPathSplitter, v10, v11, v12, v13);
-  v20 = objc_msgSend_rangeOfCharacterFromSet_(v8, v17, v16, v18, v19);
+  v20 = objc_msgSend_rangeOfCharacterFromSet_(pathCopy, v17, v16, v18, v19);
 
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v25 = objc_opt_new();
     objc_msgSend_addObject_(self->_quotedComponents, v26, v25, v27, v28);
     v29 = [TSCEQuotedRefPathWord alloc];
-    v33 = objc_msgSend_initWithRawString_(v29, v30, v8, v31, v32);
+    v33 = objc_msgSend_initWithRawString_(v29, v30, pathCopy, v31, v32);
     objc_msgSend_addRefPathWord_(v25, v34, v33, v35, v36);
 
     goto LABEL_101;
@@ -200,13 +200,13 @@
   v230 = sub_22141C9C4;
   v231 = &unk_22188E88F;
   memset(v232, 0, 24);
-  v37 = objc_msgSend_length(v8, v21, v22, v23, v24);
+  v37 = objc_msgSend_length(pathCopy, v21, v22, v23, v24);
   v225[0] = MEMORY[0x277D85DD0];
   v225[1] = 3221225472;
   v225[2] = sub_22141C9F0;
   v225[3] = &unk_278464D58;
   v225[4] = &v226;
-  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v8, v38, 0, v37, 2, v225);
+  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(pathCopy, v38, 0, v37, 2, v225);
   v43 = v227;
   v45 = v227[7];
   v44 = v227[8];
@@ -270,7 +270,7 @@
     goto LABEL_100;
   }
 
-  v219 = v8;
+  v219 = pathCopy;
   v54 = 0;
   v221 = 0;
   v222 = 0;
@@ -319,7 +319,7 @@ LABEL_90:
       {
         if (v221)
         {
-          if (!v223->_forceSplitting)
+          if (!selfCopy->_forceSplitting)
           {
             v55 = 0;
             v56 = 0;
@@ -374,7 +374,7 @@ LABEL_79:
       if (!v222)
       {
         v67 = objc_opt_new();
-        objc_msgSend_addObject_(v223->_quotedComponents, v80, v67, v81, v82);
+        objc_msgSend_addObject_(selfCopy->_quotedComponents, v80, v67, v81, v82);
       }
 
       v222 = v67;
@@ -445,7 +445,7 @@ LABEL_89:
         if (!v222)
         {
           v67 = objc_opt_new();
-          objc_msgSend_addObject_(v223->_quotedComponents, v116, v67, v117, v118);
+          objc_msgSend_addObject_(selfCopy->_quotedComponents, v116, v67, v117, v118);
         }
 
         v222 = v67;
@@ -468,7 +468,7 @@ LABEL_89:
         if (!v222)
         {
           v67 = objc_opt_new();
-          objc_msgSend_addObject_(v223->_quotedComponents, v141, v67, v142, v143);
+          objc_msgSend_addObject_(selfCopy->_quotedComponents, v141, v67, v142, v143);
         }
 
         v144 = objc_msgSend_numWords(v67, v112, v113, v114, v115);
@@ -490,7 +490,7 @@ LABEL_89:
         {
           v164 = objc_opt_new();
 
-          objc_msgSend_addObject_(v223->_quotedComponents, v165, v164, v166, v167);
+          objc_msgSend_addObject_(selfCopy->_quotedComponents, v165, v164, v166, v167);
           v55 = 0;
           v56 = 1;
           v222 = v164;
@@ -532,7 +532,7 @@ LABEL_26:
     if (!v222)
     {
       v222 = objc_opt_new();
-      objc_msgSend_addObject_(v223->_quotedComponents, v168, v222, v169, v170);
+      objc_msgSend_addObject_(selfCopy->_quotedComponents, v168, v222, v169, v170);
     }
 
     v171 = [TSCEQuotedRefPathWord alloc];
@@ -551,12 +551,12 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v223->_forceSplitting)
+  if (selfCopy->_forceSplitting)
   {
     if (!v222)
     {
       v222 = objc_opt_new();
-      objc_msgSend_addObject_(v223->_quotedComponents, v189, v222, v190, v191);
+      objc_msgSend_addObject_(selfCopy->_quotedComponents, v189, v222, v190, v191);
     }
 
     v192 = [TSCEQuotedRefPathWord alloc];
@@ -579,7 +579,7 @@ LABEL_26:
   }
 
 LABEL_87:
-  if (v223->_forceSplitting)
+  if (selfCopy->_forceSplitting)
   {
     v133 = 1;
     goto LABEL_89;
@@ -587,10 +587,10 @@ LABEL_87:
 
   v216 = 0;
 LABEL_96:
-  v8 = v219;
-  if (!v223->_forceSplitting && (v216 & 1) == 0)
+  pathCopy = v219;
+  if (!selfCopy->_forceSplitting && (v216 & 1) == 0)
   {
-    objc_msgSend_removeAllObjects(v223->_quotedComponents, v204, v205, v206, v207);
+    objc_msgSend_removeAllObjects(selfCopy->_quotedComponents, v204, v205, v206, v207);
   }
 
   v217 = v222;
@@ -602,10 +602,10 @@ LABEL_100:
 LABEL_101:
 }
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
-  v10 = a3;
-  if (v10)
+  componentCopy = component;
+  if (componentCopy)
   {
     quotedComponents = self->_quotedComponents;
     if (!quotedComponents)
@@ -617,20 +617,20 @@ LABEL_101:
       quotedComponents = self->_quotedComponents;
     }
 
-    objc_msgSend_addObject_(quotedComponents, v4, v10, v5, v6);
+    objc_msgSend_addObject_(quotedComponents, v4, componentCopy, v5, v6);
   }
 }
 
-- (id)componentAtIndex:(unint64_t)a3
+- (id)componentAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_quotedComponents, a2, a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_quotedComponents, a2, index, v3, v4) <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_objectAtIndex_(self->_quotedComponents, v7, a3, v8, v9);
+    v10 = objc_msgSend_objectAtIndex_(self->_quotedComponents, v7, index, v8, v9);
   }
 
   return v10;

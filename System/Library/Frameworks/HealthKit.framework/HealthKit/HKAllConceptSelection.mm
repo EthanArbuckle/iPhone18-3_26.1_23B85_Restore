@@ -1,13 +1,13 @@
 @interface HKAllConceptSelection
-- (BOOL)isEqual:(id)a3;
-- (HKAllConceptSelection)initWithCoder:(id)a3;
-- (HKAllConceptSelection)initWithValue:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKAllConceptSelection)initWithCoder:(id)coder;
+- (HKAllConceptSelection)initWithValue:(BOOL)value;
 - (id)description;
 @end
 
 @implementation HKAllConceptSelection
 
-- (HKAllConceptSelection)initWithValue:(BOOL)a3
+- (HKAllConceptSelection)initWithValue:(BOOL)value
 {
   v8.receiver = self;
   v8.super_class = HKAllConceptSelection;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
     v6 = v4;
   }
 
@@ -32,25 +32,25 @@
   return v6;
 }
 
-- (HKAllConceptSelection)initWithCoder:(id)a3
+- (HKAllConceptSelection)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"ValueKey"];
+  v4 = [coder decodeBoolForKey:@"ValueKey"];
 
   return [(HKAllConceptSelection *)self initWithValue:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = HKAllConceptSelection;
-  if ([(HKConceptSelection *)&v10 isEqual:v4])
+  if ([(HKConceptSelection *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(HKAllConceptSelection *)self value];
-    v7 = [v5 value];
+    v5 = equalCopy;
+    value = [(HKAllConceptSelection *)self value];
+    value2 = [v5 value];
 
-    v8 = v6 ^ v7 ^ 1;
+    v8 = value ^ value2 ^ 1;
   }
 
   else

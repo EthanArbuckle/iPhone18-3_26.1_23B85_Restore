@@ -5,11 +5,11 @@
 - (id)_deviceIdentifier;
 - (id)_init;
 - (id)_internalDeviceIdentifier;
-- (id)_pathExtension:(id)a3;
-- (id)_stringByRemovingPathExtension:(id)a3;
-- (id)markFileForUpload:(id)a3;
+- (id)_pathExtension:(id)extension;
+- (id)_stringByRemovingPathExtension:(id)extension;
+- (id)markFileForUpload:(id)upload;
 - (void)_forceUpload;
-- (void)_logUploadWithPath:(id)a3;
+- (void)_logUploadWithPath:(id)path;
 - (void)_purgeFilesForOSUpdate;
 - (void)_purgeOutdatedFiles;
 - (void)_refreshExternalDeviceMetadata;
@@ -53,21 +53,21 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
     v3->_storageDirectory = v4;
 
     v6 = MEMORY[0x277CBEB18];
-    v7 = [(BRKDataCollectionLogger *)v3 _idsFileListPath];
-    v8 = [v6 arrayWithContentsOfFile:v7];
+    _idsFileListPath = [(BRKDataCollectionLogger *)v3 _idsFileListPath];
+    v8 = [v6 arrayWithContentsOfFile:_idsFileListPath];
     v9 = v8;
     if (v8)
     {
-      v10 = v8;
+      array = v8;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
     idsFilesList = v3->_idsFilesList;
-    v3->_idsFilesList = v10;
+    v3->_idsFilesList = array;
 
     v12 = objc_alloc_init(MEMORY[0x277CCA968]);
     dateFormatter = v3->_dateFormatter;
@@ -82,20 +82,20 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
     queue = v3->_queue;
     v3->_queue = v16;
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = BRKSignificantTimeChangeNotification();
-    [v18 addObserver:v3 selector:sel__purgeOutdatedFiles name:v19 object:0];
+    [defaultCenter addObserver:v3 selector:sel__purgeOutdatedFiles name:v19 object:0];
 
     if ((BRKIsInternalBuild() & 1) == 0)
     {
-      v20 = [MEMORY[0x277CCAD78] UUID];
-      v21 = [v20 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       externalDailyDeviceIdentifier = v3->_externalDailyDeviceIdentifier;
-      v3->_externalDailyDeviceIdentifier = v21;
+      v3->_externalDailyDeviceIdentifier = uUIDString;
 
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v24 = BRKSignificantTimeChangeNotification();
-      [v23 addObserver:v3 selector:sel__refreshExternalDeviceMetadata name:v24 object:0];
+      [defaultCenter2 addObserver:v3 selector:sel__refreshExternalDeviceMetadata name:v24 object:0];
     }
 
     [(BRKDataCollectionLogger *)v3 _purgeOutdatedFiles];
@@ -107,8 +107,8 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -119,32 +119,32 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
 
 - (id)_internalDeviceIdentifier
 {
-  v2 = CFPreferencesCopyAppValue(@"DCDeviceId", @"com.apple.dcservices");
-  if (!v2)
+  uUIDString = CFPreferencesCopyAppValue(@"DCDeviceId", @"com.apple.dcservices");
+  if (!uUIDString)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v2 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    CFPreferencesSetAppValue(@"DCDeviceId", v2, @"com.apple.dcservices");
+    CFPreferencesSetAppValue(@"DCDeviceId", uUIDString, @"com.apple.dcservices");
     CFPreferencesAppSynchronize(@"com.apple.dcservices");
   }
 
-  return v2;
+  return uUIDString;
 }
 
 - (id)_deviceIdentifier
 {
   if (BRKIsInternalBuild())
   {
-    v3 = [(BRKDataCollectionLogger *)self _internalDeviceIdentifier];
+    _internalDeviceIdentifier = [(BRKDataCollectionLogger *)self _internalDeviceIdentifier];
   }
 
   else
   {
-    v3 = self->_externalDailyDeviceIdentifier;
+    _internalDeviceIdentifier = self->_externalDailyDeviceIdentifier;
   }
 
-  return v3;
+  return _internalDeviceIdentifier;
 }
 
 - (void)_refreshExternalDeviceMetadata
@@ -170,10 +170,10 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
     _os_log_impl(&dword_241ED9000, v4, OS_LOG_TYPE_INFO, "Current device identifier: %@, session upload count: %lu", &v14, 0x16u);
   }
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v9 = self->_externalDailyDeviceIdentifier;
-  self->_externalDailyDeviceIdentifier = v8;
+  self->_externalDailyDeviceIdentifier = uUIDString;
 
   self->_externalDailySessionUploadCount = 0;
   v10 = BRKLoggingObjectForDomain();
@@ -202,11 +202,11 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
 
     if ((v5 & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
-      [v6 removeItemAtPath:self->_storageDirectory error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtPath:self->_storageDirectory error:0];
 
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
-      [v7 createDirectoryAtPath:self->_storageDirectory withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtPath:self->_storageDirectory withIntermediateDirectories:1 attributes:0 error:0];
 
       [v3 setObject:v8 forKey:@"DataCollectionLoggerBuild"];
     }
@@ -218,9 +218,9 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
   v32 = *MEMORY[0x277D85DE8];
   if ([(BRKDataCollectionLogger *)self _dataCollectionIsAllowedToRunInCurrentProcess])
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_storageDirectory];
-    v5 = [v3 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:0 errorHandler:0];
+    v5 = [defaultManager enumeratorAtURL:v4 includingPropertiesForKeys:0 options:0 errorHandler:0];
 
     v25 = 0u;
     v26 = 0u;
@@ -249,9 +249,9 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
 
           if (v15 > 259200.0)
           {
-            v16 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
             v22 = v9;
-            v17 = [v16 removeItemAtURL:v12 error:&v22];
+            v17 = [defaultManager2 removeItemAtURL:v12 error:&v22];
             v18 = v22;
 
             if ((v17 & 1) == 0)
@@ -293,69 +293,69 @@ uint64_t __41__BRKDataCollectionLogger_sharedInstance__block_invoke()
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stringByRemovingPathExtension:(id)a3
+- (id)_stringByRemovingPathExtension:(id)extension
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@".tar.gz"])
+  extensionCopy = extension;
+  if ([extensionCopy hasSuffix:@".tar.gz"])
   {
-    [v3 substringToIndex:{objc_msgSend(v3, "length") - objc_msgSend(@".tar.gz", "length")}];
+    [extensionCopy substringToIndex:{objc_msgSend(extensionCopy, "length") - objc_msgSend(@".tar.gz", "length")}];
   }
 
   else
   {
-    [v3 stringByDeletingPathExtension];
+    [extensionCopy stringByDeletingPathExtension];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_pathExtension:(id)a3
+- (id)_pathExtension:(id)extension
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@".tar.gz"])
+  extensionCopy = extension;
+  if ([extensionCopy hasSuffix:@".tar.gz"])
   {
-    v4 = @"tar";
+    pathExtension = @"tar";
   }
 
   else
   {
-    v4 = [v3 pathExtension];
+    pathExtension = [extensionCopy pathExtension];
   }
 
-  return v4;
+  return pathExtension;
 }
 
-- (id)markFileForUpload:(id)a3
+- (id)markFileForUpload:(id)upload
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uploadCopy = upload;
   v5 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = uploadCopy;
     _os_log_impl(&dword_241ED9000, v5, OS_LOG_TYPE_DEFAULT, "Mark file for upload: %@", buf, 0xCu);
   }
 
   if ([(BRKDataCollectionLogger *)self _dataCollectionIsAllowedToRunInCurrentProcess])
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v4 lastPathComponent];
-    v8 = [(BRKDataCollectionLogger *)self _stringByRemovingPathExtension:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastPathComponent = [uploadCopy lastPathComponent];
+    v8 = [(BRKDataCollectionLogger *)self _stringByRemovingPathExtension:lastPathComponent];
 
     v9 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
     v10 = MEMORY[0x277CCACA8];
-    [v6 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v12 = [v10 stringWithFormat:@"%@-%@-%@-%@-%f", @"brook", @"archive", @"Carousel", v9, v11];
-    v13 = [(BRKDataCollectionLogger *)self _pathExtension:v4];
+    v13 = [(BRKDataCollectionLogger *)self _pathExtension:uploadCopy];
     v14 = [v12 stringByAppendingPathExtension:v13];
 
     v15 = [(NSString *)self->_storageDirectory stringByAppendingPathComponent:v14];
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v25 = 0;
-    v17 = [v16 copyItemAtPath:v4 toPath:v15 error:&v25];
+    v17 = [defaultManager copyItemAtPath:uploadCopy toPath:v15 error:&v25];
     v18 = v25;
 
     v19 = BRKLoggingObjectForDomain();
@@ -388,7 +388,7 @@ LABEL_16:
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [(BRKDataCollectionLogger *)v4 markFileForUpload:v18, v20];
+        [(BRKDataCollectionLogger *)uploadCopy markFileForUpload:v18, v20];
       }
     }
 
@@ -396,11 +396,11 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v6 = BRKLoggingObjectForDomain();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  date = BRKLoggingObjectForDomain();
+  if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_241ED9000, v6, OS_LOG_TYPE_DEFAULT, "Not running in correct process", buf, 2u);
+    _os_log_impl(&dword_241ED9000, date, OS_LOG_TYPE_DEFAULT, "Not running in correct process", buf, 2u);
   }
 
   v22 = 0;
@@ -415,17 +415,17 @@ LABEL_17:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_241ED9000, a2, OS_LOG_TYPE_ERROR, "Unable to clear collected data %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)_dataCollectionEnabled
 {
-  v2 = [MEMORY[0x277CF3480] settingsForActiveDevice];
-  v3 = [v2 isDataCollectionEnabled];
+  settingsForActiveDevice = [MEMORY[0x277CF3480] settingsForActiveDevice];
+  isDataCollectionEnabled = [settingsForActiveDevice isDataCollectionEnabled];
 
-  return v3;
+  return isDataCollectionEnabled;
 }
 
 - (BOOL)_shouldAllowDataCollectionUpload
@@ -474,15 +474,15 @@ LABEL_14:
   return 0;
 }
 
-- (void)_logUploadWithPath:(id)a3
+- (void)_logUploadWithPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   if ([(BRKDataCollectionLogger *)self _dataCollectionEnabled])
   {
-    [(NSMutableArray *)self->_idsFilesList addObject:v6];
+    [(NSMutableArray *)self->_idsFilesList addObject:pathCopy];
     idsFilesList = self->_idsFilesList;
-    v5 = [(BRKDataCollectionLogger *)self _idsFileListPath];
-    [(NSMutableArray *)idsFilesList writeToFile:v5 atomically:1];
+    _idsFileListPath = [(BRKDataCollectionLogger *)self _idsFileListPath];
+    [(NSMutableArray *)idsFilesList writeToFile:_idsFileListPath atomically:1];
   }
 }
 

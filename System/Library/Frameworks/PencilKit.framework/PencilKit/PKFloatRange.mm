@@ -1,5 +1,5 @@
 @interface PKFloatRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PKFloatRange)initWithLowerBound:(CGFloat)lowerBound upperBound:(CGFloat)upperBound;
 - (id)description;
 @end
@@ -16,14 +16,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && (-[PKFloatRange lowerBound](self, "lowerBound"), v9 = v8, [v4 lowerBound], v9 == v10))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()) && (-[PKFloatRange lowerBound](self, "lowerBound"), v9 = v8, [equalCopy lowerBound], v9 == v10))
   {
     [(PKFloatRange *)self upperBound];
     v12 = v11;
-    [v4 upperBound];
+    [equalCopy upperBound];
     v6 = v12 == v13;
   }
 

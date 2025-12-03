@@ -1,103 +1,103 @@
 @interface UIWebPDFViewHandler
-- ($1AB5FA073B851C12C2339EC22442E995)doubleTapScalesForSize:(CGSize)a3;
-- ($1AB5FA073B851C12C2339EC22442E995)scalesForContainerSize:(CGSize)a3;
-- (CGRect)_frameForDocumentBounds:(CGRect)a3;
-- (CGRect)_rectForPasswordView:(id)a3;
-- (CGRect)_rectForPdfView:(CGRect)a3;
-- (CGRect)activeRectForRectOfInterest:(CGRect)a3;
-- (CGRect)initialPresentationRectInHostViewForSheet:(id)a3;
-- (CGRect)rectOfInterestForPoint:(CGPoint)a3;
+- ($1AB5FA073B851C12C2339EC22442E995)doubleTapScalesForSize:(CGSize)size;
+- ($1AB5FA073B851C12C2339EC22442E995)scalesForContainerSize:(CGSize)size;
+- (CGRect)_frameForDocumentBounds:(CGRect)bounds;
+- (CGRect)_rectForPasswordView:(id)view;
+- (CGRect)_rectForPdfView:(CGRect)view;
+- (CGRect)activeRectForRectOfInterest:(CGRect)interest;
+- (CGRect)initialPresentationRectInHostViewForSheet:(id)sheet;
+- (CGRect)rectOfInterestForPoint:(CGPoint)point;
 - (CGRect)rectOfInterestForRotation;
 - (CGRect)visibleContentRect;
 - (UIView)frontView;
 - (UIWebPDFViewHandler)init;
-- (double)_pinValueForVerticalEdge:(unint64_t)a3 inScrollView:(id)a4;
-- (double)minimumScaleForSize:(CGSize)a3;
+- (double)_pinValueForVerticalEdge:(unint64_t)edge inScrollView:(id)view;
+- (double)minimumScaleForSize:(CGSize)size;
 - (double)zoomedDocumentScale;
-- (id)_absoluteUrlRelativeToDocumentURL:(id)a3;
-- (id)_actionForType:(int)a3 withActionInfo:(id)a4;
-- (id)_actionsForInteractionInfo:(id)a3;
+- (id)_absoluteUrlRelativeToDocumentURL:(id)l;
+- (id)_actionForType:(int)type withActionInfo:(id)info;
+- (id)_actionsForInteractionInfo:(id)info;
 - (id)_getLabelViewFormatter;
-- (id)_getPDFDocumentViewForWebView:(id)a3;
-- (id)_scroller:(id)a3;
+- (id)_getPDFDocumentViewForWebView:(id)view;
+- (id)_scroller:(id)_scroller;
 - (id)createLinkHighlight;
 - (id)createPageLabel;
 - (id)findOnPageHighlighter;
-- (id)hostViewForSheet:(id)a3;
-- (id)passwordForPDFView:(id)a3;
-- (id)searchControllerForHighlighter:(id)a3;
-- (unint64_t)_verticalEdgeForContentOffsetInScrollView:(id)a3;
+- (id)hostViewForSheet:(id)sheet;
+- (id)passwordForPDFView:(id)view;
+- (id)searchControllerForHighlighter:(id)highlighter;
+- (unint64_t)_verticalEdgeForContentOffsetInScrollView:(id)view;
 - (void)_adjustContentOffsetForKeyboardIfNeeded;
-- (void)_adjustZoomScalesForScrollViewInternal:(id)a3;
-- (void)_completeLinkClickWithURL:(id)a3;
-- (void)_completeLinkClickWithURLString:(id)a3;
-- (void)_createPDFViewIfNeeded:(id)a3;
-- (void)_ensurePDFViewInHierarchyForWebDocView:(id)a3;
-- (void)_notifyDelegateDidClickLink:(id)a3;
-- (void)_notifyDelegateWillClickLink:(id)a3;
+- (void)_adjustZoomScalesForScrollViewInternal:(id)internal;
+- (void)_completeLinkClickWithURL:(id)l;
+- (void)_completeLinkClickWithURLString:(id)string;
+- (void)_createPDFViewIfNeeded:(id)needed;
+- (void)_ensurePDFViewInHierarchyForWebDocView:(id)view;
+- (void)_notifyDelegateDidClickLink:(id)link;
+- (void)_notifyDelegateWillClickLink:(id)link;
 - (void)_postdidDetermineDocumentBounds;
-- (void)_removePDFViewIfWebDocViewIsNotPDF:(id)a3;
-- (void)_removePDFViewIfWebDocViewIsNotSamePDF:(id)a3;
-- (void)_replacePDFViewIfPresentWithWebDocView:(id)a3;
-- (void)_resultRects:(id)a3 andResultViews:(id)a4 forSearchResult:(id)a5 inViewCoordinates:(id)a6;
-- (void)_setSearchControllerDocumentToSearch:(id)a3;
-- (void)_showLinkSheet:(id)a3;
-- (void)_showPasswordEntryViewForFile:(id)a3;
+- (void)_removePDFViewIfWebDocViewIsNotPDF:(id)f;
+- (void)_removePDFViewIfWebDocViewIsNotSamePDF:(id)f;
+- (void)_replacePDFViewIfPresentWithWebDocView:(id)view;
+- (void)_resultRects:(id)rects andResultViews:(id)views forSearchResult:(id)result inViewCoordinates:(id)coordinates;
+- (void)_setSearchControllerDocumentToSearch:(id)search;
+- (void)_showLinkSheet:(id)sheet;
+- (void)_showPasswordEntryViewForFile:(id)file;
 - (void)_showPasswordErrorAlert;
-- (void)_updateViewHierarchyForDocumentView:(id)a3 ignoreIfSame:(BOOL)a4;
+- (void)_updateViewHierarchyForDocumentView:(id)view ignoreIfSame:(BOOL)same;
 - (void)adjustZoomScalesForScrollView;
 - (void)clearActionSheet;
 - (void)clearAllViews;
 - (void)clearLinkHighlight;
 - (void)clearPageLabel;
-- (void)clearSearchControllerForHighlighter:(id)a3;
+- (void)clearSearchControllerForHighlighter:(id)highlighter;
 - (void)dealloc;
-- (void)didBeginEditingPassword:(id)a3 inView:(id)a4;
-- (void)didDetermineDocumentBounds:(id)a3;
-- (void)didEndEditingPassword:(id)a3 inView:(id)a4;
-- (void)didReceiveMemoryWarning:(id)a3;
-- (void)didScroll:(id)a3;
-- (void)ensureCorrectPagesAreInstalled:(BOOL)a3;
-- (void)handleLinkClick:(id)a3 inRect:(CGRect)a4;
-- (void)handleLongPressOnLink:(id)a3 atPoint:(CGPoint)a4 inRect:(CGRect)a5 contentRect:(CGRect)a6;
-- (void)handleScrollToAnchor:(id)a3;
-- (void)highlightRect:(CGRect)a3;
-- (void)pdfView:(id)a3 zoomToRect:(CGRect)a4 forPoint:(CGPoint)a5 considerHeight:(BOOL)a6;
-- (void)performAction:(id)a3 fromAlertController:(id)a4;
+- (void)didBeginEditingPassword:(id)password inView:(id)view;
+- (void)didDetermineDocumentBounds:(id)bounds;
+- (void)didEndEditingPassword:(id)password inView:(id)view;
+- (void)didReceiveMemoryWarning:(id)warning;
+- (void)didScroll:(id)scroll;
+- (void)ensureCorrectPagesAreInstalled:(BOOL)installed;
+- (void)handleLinkClick:(id)click inRect:(CGRect)rect;
+- (void)handleLongPressOnLink:(id)link atPoint:(CGPoint)point inRect:(CGRect)rect contentRect:(CGRect)contentRect;
+- (void)handleScrollToAnchor:(id)anchor;
+- (void)highlightRect:(CGRect)rect;
+- (void)pdfView:(id)view zoomToRect:(CGRect)rect forPoint:(CGPoint)point considerHeight:(BOOL)height;
+- (void)performAction:(id)action fromAlertController:(id)controller;
 - (void)removeViewFromSuperview;
-- (void)resetZoom:(id)a3;
-- (void)restoreStateFromHistoryItem:(id)a3 forWebView:(id)a4;
+- (void)resetZoom:(id)zoom;
+- (void)restoreStateFromHistoryItem:(id)item forWebView:(id)view;
 - (void)restoreStateFromPendingHistoryItem;
-- (void)revealSearchResult:(id)a3 andZoomIn:(BOOL)a4;
-- (void)rotateEnclosingScrollViewToFrame:(CGRect)a3;
-- (void)saveStateToHistoryItem:(id)a3 forWebView:(id)a4;
-- (void)scrollToPageNumber:(int64_t)a3 animate:(BOOL)a4;
-- (void)setBackgroundColorForUnRenderedContent:(id)a3;
-- (void)setShowPageLabels:(BOOL)a3;
-- (void)updateBoundariesOfScrollView:(id)a3 withScales:(id)a4;
-- (void)updatePageNumberLabelWithUserScrolling:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateViewHierarchyForDocumentViewLoadComplete:(id)a3;
-- (void)updateViewHierarchyForDocumentViewNewLoad:(id)a3;
-- (void)updateViewHierarchyForDocumentViewTabSwitch:(id)a3 restoringZoomScale:(double)a4 andScrollPt:(CGPoint)a5;
+- (void)revealSearchResult:(id)result andZoomIn:(BOOL)in;
+- (void)rotateEnclosingScrollViewToFrame:(CGRect)frame;
+- (void)saveStateToHistoryItem:(id)item forWebView:(id)view;
+- (void)scrollToPageNumber:(int64_t)number animate:(BOOL)animate;
+- (void)setBackgroundColorForUnRenderedContent:(id)content;
+- (void)setShowPageLabels:(BOOL)labels;
+- (void)updateBoundariesOfScrollView:(id)view withScales:(id)scales;
+- (void)updatePageNumberLabelWithUserScrolling:(BOOL)scrolling animated:(BOOL)animated;
+- (void)updateViewHierarchyForDocumentViewLoadComplete:(id)complete;
+- (void)updateViewHierarchyForDocumentViewNewLoad:(id)load;
+- (void)updateViewHierarchyForDocumentViewTabSwitch:(id)switch restoringZoomScale:(double)scale andScrollPt:(CGPoint)pt;
 - (void)updateViewSettings;
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4;
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view;
 @end
 
 @implementation UIWebPDFViewHandler
 
-- (void)setBackgroundColorForUnRenderedContent:(id)a3
+- (void)setBackgroundColorForUnRenderedContent:(id)content
 {
-  v5 = a3;
-  self->_backgroundColorForUnRenderedContent = v5;
+  contentCopy = content;
+  self->_backgroundColorForUnRenderedContent = contentCopy;
   pdfView = self->_pdfView;
 
-  [(UIWebPDFView *)pdfView setBackgroundColorForUnRenderedContent:v5];
+  [(UIWebPDFView *)pdfView setBackgroundColorForUnRenderedContent:contentCopy];
 }
 
-- (void)setShowPageLabels:(BOOL)a3
+- (void)setShowPageLabels:(BOOL)labels
 {
   showPageLabels = self->_showPageLabels;
-  if (showPageLabels == a3)
+  if (showPageLabels == labels)
   {
     if (showPageLabels)
     {
@@ -107,17 +107,17 @@
     goto LABEL_3;
   }
 
-  self->_showPageLabels = a3;
-  if (!a3)
+  self->_showPageLabels = labels;
+  if (!labels)
   {
 LABEL_3:
     [(UIWebPDFViewHandler *)self clearPageLabel];
   }
 }
 
-- (void)_setSearchControllerDocumentToSearch:(id)a3
+- (void)_setSearchControllerDocumentToSearch:(id)search
 {
-  if (a3)
+  if (search)
   {
     v4 = CGPDFDocumentCopy([(UIWebPDFView *)self->_pdfView cgPDFDocument], [(UIWebPDFView *)self->_pdfView documentPassword]);
     if (v4)
@@ -132,11 +132,11 @@ LABEL_3:
       v6 = 0;
     }
 
-    [a3 setDocumentToSearch:v6];
+    [search setDocumentToSearch:v6];
   }
 }
 
-- (id)searchControllerForHighlighter:(id)a3
+- (id)searchControllerForHighlighter:(id)highlighter
 {
   searchControllers = self->_searchControllers;
   if (!searchControllers)
@@ -145,11 +145,11 @@ LABEL_3:
     self->_searchControllers = searchControllers;
   }
 
-  v6 = [(NSMapTable *)searchControllers objectForKey:a3];
+  v6 = [(NSMapTable *)searchControllers objectForKey:highlighter];
   if (!v6)
   {
     v6 = objc_alloc_init(UIWebPDFSearchController);
-    [(NSMapTable *)self->_searchControllers setObject:v6 forKey:a3];
+    [(NSMapTable *)self->_searchControllers setObject:v6 forKey:highlighter];
   }
 
   [(UIWebPDFViewHandler *)self _setSearchControllerDocumentToSearch:v6];
@@ -158,7 +158,7 @@ LABEL_3:
   return v6;
 }
 
-- (void)clearSearchControllerForHighlighter:(id)a3
+- (void)clearSearchControllerForHighlighter:(id)highlighter
 {
   v5 = [(NSMapTable *)self->_searchControllers objectForKey:?];
   if (v5)
@@ -166,7 +166,7 @@ LABEL_3:
     [v5 setSearchDelegate:0];
     searchControllers = self->_searchControllers;
 
-    [(NSMapTable *)searchControllers removeObjectForKey:a3];
+    [(NSMapTable *)searchControllers removeObjectForKey:highlighter];
   }
 }
 
@@ -198,10 +198,10 @@ LABEL_3:
 - (void)dealloc
 {
   v5[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5[0] = @"UIApplicationDidReceiveMemoryWarningNotification";
   v5[1] = @"UIKeyboardDidShowNotification";
-  -[NSNotificationCenter _uiRemoveObserver:names:](v3, self, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:2]);
+  -[NSNotificationCenter _uiRemoveObserver:names:](defaultCenter, self, [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:2]);
   [(UIWebPDFViewHandler *)self clearAllViews];
   [(UIWebPDFViewHandler *)self setBackgroundColorForUnRenderedContent:0];
   v4.receiver = self;
@@ -209,21 +209,21 @@ LABEL_3:
   [(UIWebPDFViewHandler *)&v4 dealloc];
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
-  [(UIWebPDFView *)self->_pdfView didReceiveMemoryWarning:a3];
-  v4 = [(NSMapTable *)self->_searchControllers objectEnumerator];
-  v5 = [(NSEnumerator *)v4 nextObject];
-  if (v5)
+  [(UIWebPDFView *)self->_pdfView didReceiveMemoryWarning:warning];
+  objectEnumerator = [(NSMapTable *)self->_searchControllers objectEnumerator];
+  nextObject = [(NSEnumerator *)objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      [(UIWebPDFViewHandler *)self _setSearchControllerDocumentToSearch:v6];
-      v6 = [(NSEnumerator *)v4 nextObject];
+      [(UIWebPDFViewHandler *)self _setSearchControllerDocumentToSearch:nextObject2];
+      nextObject2 = [(NSEnumerator *)objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 }
 
@@ -245,22 +245,22 @@ LABEL_3:
   self->_labelViewFormatter = 0;
 }
 
-- (id)_scroller:(id)a3
+- (id)_scroller:(id)_scroller
 {
   result = [(UIView *)self->_pdfView _scroller];
   if (!result)
   {
 
-    return [a3 _scroller];
+    return [_scroller _scroller];
   }
 
   return result;
 }
 
-- (id)_getPDFDocumentViewForWebView:(id)a3
+- (id)_getPDFDocumentViewForWebView:(id)view
 {
   WebThreadLock();
-  v4 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "webView")];
+  v4 = [objc_msgSend(objc_msgSend(objc_msgSend(view "webView")];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -273,12 +273,12 @@ LABEL_3:
   }
 }
 
-- (CGRect)_rectForPdfView:(CGRect)a3
+- (CGRect)_rectForPdfView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   if (objc_opt_respondsToSelector())
   {
     [(UIWebPDFViewHandlerDelegate *)self->_pdfHandlerDelegate frameForPDFViewWithHandler:self proposedFrame:x, y, width, height];
@@ -299,11 +299,11 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)_frameForDocumentBounds:(CGRect)a3
+- (CGRect)_frameForDocumentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(UIView *)self->_pdfView frame:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(UIView *)self->_pdfView frame:bounds.origin.x];
   v7 = v6;
   v9 = v8;
   pdfView = self->_pdfView;
@@ -332,12 +332,12 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)_rectForPasswordView:(id)a3
+- (CGRect)_rectForPasswordView:(id)view
 {
   [(UIView *)self->_passwordEntryView frame];
   v6 = v5;
   v8 = v7;
-  [a3 frame];
+  [view frame];
 
   [(UIWebPDFViewHandler *)self _rectForPdfView:v6, v8];
   result.size.height = v12;
@@ -347,12 +347,12 @@ LABEL_3:
   return result;
 }
 
-- (void)_replacePDFViewIfPresentWithWebDocView:(id)a3
+- (void)_replacePDFViewIfPresentWithWebDocView:(id)view
 {
   if (self->_pdfView)
   {
     v5 = [(UIWebPDFViewHandler *)self _scroller:?];
-    [v5 insertSubview:a3 aboveSubview:self->_pdfView];
+    [v5 insertSubview:view aboveSubview:self->_pdfView];
     [(UIWebPDFViewHandler *)self clearAllViews];
     showsShadowsForHTMLContent = self->_showsShadowsForHTMLContent;
 
@@ -360,25 +360,25 @@ LABEL_3:
   }
 }
 
-- (void)_removePDFViewIfWebDocViewIsNotPDF:(id)a3
+- (void)_removePDFViewIfWebDocViewIsNotPDF:(id)f
 {
   if (![(UIWebPDFViewHandler *)self _getPDFDocumentViewForWebView:?])
   {
 
-    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:a3];
+    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:f];
   }
 }
 
-- (void)_removePDFViewIfWebDocViewIsNotSamePDF:(id)a3
+- (void)_removePDFViewIfWebDocViewIsNotSamePDF:(id)f
 {
-  if (([objc_msgSend(objc_msgSend(a3 "_documentUrl")] & 1) == 0)
+  if (([objc_msgSend(objc_msgSend(f "_documentUrl")] & 1) == 0)
   {
 
-    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:a3];
+    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:f];
   }
 }
 
-- (void)_createPDFViewIfNeeded:(id)a3
+- (void)_createPDFViewIfNeeded:(id)needed
 {
   if (!self->_pdfView)
   {
@@ -386,12 +386,12 @@ LABEL_3:
     if (v5)
     {
       v6 = v5;
-      v7 = [(UIWebPDFViewHandler *)self _scroller:a3];
-      v8 = v7 ? v7 : a3;
+      v7 = [(UIWebPDFViewHandler *)self _scroller:needed];
+      v8 = v7 ? v7 : needed;
       v9 = [[UIWebPDFView alloc] initWithWebPDFViewPlaceholder:v6];
       self->_pdfView = v9;
       [(UIWebPDFView *)v9 setInitialZoomScale:self->_initialZoomScale];
-      -[UIWebPDFView setDocumentURL:](self->_pdfView, "setDocumentURL:", [a3 _documentUrl]);
+      -[UIWebPDFView setDocumentURL:](self->_pdfView, "setDocumentURL:", [needed _documentUrl]);
       [(UIWebPDFView *)self->_pdfView setHidePageViewsUntilReadyToRender:self->_hidePageViewsUntilReadyToRender];
       [(UIWebPDFView *)self->_pdfView setBackgroundColorForUnRenderedContent:self->_backgroundColorForUnRenderedContent];
       [(UIWebPDFView *)self->_pdfView setHideActivityIndicatorForUnRenderedContent:self->_hideActivityIndicatorForUnRenderedContent];
@@ -410,7 +410,7 @@ LABEL_3:
   }
 }
 
-- (void)_ensurePDFViewInHierarchyForWebDocView:(id)a3
+- (void)_ensurePDFViewInHierarchyForWebDocView:(id)view
 {
   pdfView = self->_pdfView;
   if (pdfView)
@@ -418,15 +418,15 @@ LABEL_3:
     [(UIView *)self->_pdfView frame];
     [(UIWebPDFViewHandler *)self _rectForPdfView:?];
     [(UIView *)pdfView setFrame:?];
-    v6 = [(UIWebPDFViewHandler *)self _scroller:a3];
+    v6 = [(UIWebPDFViewHandler *)self _scroller:view];
     if (v6 != [(UIView *)self->_pdfView superview])
     {
-      [(UIView *)v6 insertSubview:self->_pdfView aboveSubview:a3];
+      [(UIView *)v6 insertSubview:self->_pdfView aboveSubview:view];
     }
 
-    if ([a3 superview])
+    if ([view superview])
     {
-      [a3 removeFromSuperview];
+      [view removeFromSuperview];
     }
 
     passwordEntryView = self->_passwordEntryView;
@@ -441,22 +441,22 @@ LABEL_3:
   }
 }
 
-- (void)_updateViewHierarchyForDocumentView:(id)a3 ignoreIfSame:(BOOL)a4
+- (void)_updateViewHierarchyForDocumentView:(id)view ignoreIfSame:(BOOL)same
 {
-  if (a4)
+  if (same)
   {
-    [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotPDF:a3];
-    [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotSamePDF:a3];
+    [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotPDF:view];
+    [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotSamePDF:view];
   }
 
   else if (self->_pdfView)
   {
-    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:a3];
+    [(UIWebPDFViewHandler *)self _replacePDFViewIfPresentWithWebDocView:view];
   }
 
-  [(UIWebPDFViewHandler *)self _createPDFViewIfNeeded:a3];
+  [(UIWebPDFViewHandler *)self _createPDFViewIfNeeded:view];
 
-  [(UIWebPDFViewHandler *)self _ensurePDFViewInHierarchyForWebDocView:a3];
+  [(UIWebPDFViewHandler *)self _ensurePDFViewInHierarchyForWebDocView:view];
 }
 
 - (void)updateViewSettings
@@ -507,19 +507,19 @@ LABEL_3:
   }
 }
 
-- (void)_adjustZoomScalesForScrollViewInternal:(id)a3
+- (void)_adjustZoomScalesForScrollViewInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
     [(UIWebPDFView *)self->_pdfView setIgnoreContentOffsetChanges:1];
-    [a3 setMinimumZoomScale:1.0];
-    [a3 setMaximumZoomScale:32.0];
-    [a3 setZoomScale:1.0];
+    [internal setMinimumZoomScale:1.0];
+    [internal setMaximumZoomScale:32.0];
+    [internal setZoomScale:1.0];
     v5 = *MEMORY[0x1E695EFF8];
     v6 = *(MEMORY[0x1E695EFF8] + 8);
-    [a3 setContentOffset:0 animated:{*MEMORY[0x1E695EFF8], v6}];
-    [a3 setBouncesVertically:1];
-    [a3 setScrollEnabled:1];
+    [internal setContentOffset:0 animated:{*MEMORY[0x1E695EFF8], v6}];
+    [internal setBouncesVertically:1];
+    [internal setScrollEnabled:1];
     [(UIWebPDFView *)self->_pdfView documentBounds];
     v8 = v7;
     v10 = v9;
@@ -542,19 +542,19 @@ LABEL_3:
     v24.size.height = v14;
     v25 = CGRectApplyAffineTransform(v24, &v23);
     width = v25.size.width;
-    [a3 setContentSize:{v25.size.width, v25.size.height}];
+    [internal setContentSize:{v25.size.width, v25.size.height}];
     if (width > 0.0 && self->_scalesPageToFit)
     {
-      [a3 contentOffset];
+      [internal contentOffset];
       v18 = v17;
       v20 = v19;
-      [a3 frame];
+      [internal frame];
       v22 = v21 / width;
-      [a3 setMinimumZoomScale:v22];
-      [a3 setZoomScale:v22];
+      [internal setMinimumZoomScale:v22];
+      [internal setZoomScale:v22];
       if (v5 == v18 && v6 == v20)
       {
-        [a3 setContentOffset:0 animated:{v5, v6}];
+        [internal setContentOffset:0 animated:{v5, v6}];
       }
     }
 
@@ -616,12 +616,12 @@ LABEL_3:
   return linkHighlightView;
 }
 
-- (void)highlightRect:(CGRect)a3
+- (void)highlightRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UIWebPDFViewHandler *)self clearLinkHighlight];
   if (self->_pdfView)
   {
@@ -634,9 +634,9 @@ LABEL_3:
     v9 = v17.origin.y;
     v10 = v17.size.width;
     v11 = v17.size.height;
-    v12 = [(UIWebPDFViewHandler *)self createLinkHighlight];
-    [v12 removeFromSuperview];
-    [(UIView *)self->_pdfView addSubview:v12];
+    createLinkHighlight = [(UIWebPDFViewHandler *)self createLinkHighlight];
+    [createLinkHighlight removeFromSuperview];
+    [(UIView *)self->_pdfView addSubview:createLinkHighlight];
     v13 = 4;
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
     do
@@ -646,29 +646,29 @@ LABEL_3:
     }
 
     while (v13);
-    [v12 setCornerRadii:v14];
+    [createLinkHighlight setCornerRadii:v14];
 
-    [v12 setFrame:{v8, v9, v10, v11}];
+    [createLinkHighlight setFrame:{v8, v9, v10, v11}];
   }
 }
 
-- (void)scrollToPageNumber:(int64_t)a3 animate:(BOOL)a4
+- (void)scrollToPageNumber:(int64_t)number animate:(BOOL)animate
 {
-  v4 = a3 - 1;
-  if (a3 >= 1)
+  v4 = number - 1;
+  if (number >= 1)
   {
-    v7 = [(UIWebPDFViewHandler *)self _scroller:0, a4];
-    if (v7)
+    animate = [(UIWebPDFViewHandler *)self _scroller:0, animate];
+    if (animate)
     {
-      v8 = v7;
-      v9 = [(UIWebPDFView *)self->_pdfView pageRects];
-      if ([(NSArray *)v9 count])
+      v8 = animate;
+      pageRects = [(UIWebPDFView *)self->_pdfView pageRects];
+      if ([(NSArray *)pageRects count])
       {
-        if ([(NSArray *)v9 count]>= a3)
+        if ([(NSArray *)pageRects count]>= number)
         {
           [(UIWebPDFView *)self->_pdfView setIgnoreContentOffsetChanges:1];
           [v8 setZoomScale:self->_initialZoomScale];
-          [-[NSArray objectAtIndex:](v9 objectAtIndex:{v4), "CGRectValue"}];
+          [-[NSArray objectAtIndex:](pageRects objectAtIndex:{v4), "CGRectValue"}];
           v11 = v10;
           v13 = v12;
           v15 = v14;
@@ -702,23 +702,23 @@ LABEL_3:
   }
 }
 
-- (id)_absoluteUrlRelativeToDocumentURL:(id)a3
+- (id)_absoluteUrlRelativeToDocumentURL:(id)l
 {
-  v4 = [(NSURL *)[(UIWebPDFView *)self->_pdfView documentURL] absoluteURL];
-  if (([a3 hasPrefix:@"#"] & 1) == 0 && !-[NSString hasSuffix:](-[NSURL absoluteString](v4, "absoluteString"), "hasSuffix:", @"/"))
+  absoluteURL = [(NSURL *)[(UIWebPDFView *)self->_pdfView documentURL] absoluteURL];
+  if (([l hasPrefix:@"#"] & 1) == 0 && !-[NSString hasSuffix:](-[NSURL absoluteString](absoluteURL, "absoluteString"), "hasSuffix:", @"/"))
   {
-    v4 = [(NSURL *)v4 URLByDeletingLastPathComponent];
+    absoluteURL = [(NSURL *)absoluteURL URLByDeletingLastPathComponent];
   }
 
-  v5 = [objc_msgSend(MEMORY[0x1E695DFF8] URLWithString:a3 relativeToURL:{v4), "absoluteURL"}];
+  v5 = [objc_msgSend(MEMORY[0x1E695DFF8] URLWithString:l relativeToURL:{absoluteURL), "absoluteURL"}];
 
   return [v5 standardizedURL];
 }
 
-- (void)_completeLinkClickWithURL:(id)a3
+- (void)_completeLinkClickWithURL:(id)l
 {
   [(UIWebPDFViewHandler *)self clearLinkHighlight];
-  if (a3)
+  if (l)
   {
     [(UIWebPDFView *)self->_pdfView pdfPlaceHolderView];
     WebThreadRun();
@@ -732,40 +732,40 @@ uint64_t __49__UIWebPDFViewHandler__completeLinkClickWithURL___block_invoke(uint
   return WebThreadRunOnMainThread();
 }
 
-- (void)_completeLinkClickWithURLString:(id)a3
+- (void)_completeLinkClickWithURLString:(id)string
 {
-  v4 = [(UIWebPDFViewHandler *)self _absoluteUrlRelativeToDocumentURL:a3];
+  v4 = [(UIWebPDFViewHandler *)self _absoluteUrlRelativeToDocumentURL:string];
 
   [(UIWebPDFViewHandler *)self _completeLinkClickWithURL:v4];
 }
 
-- (void)_notifyDelegateWillClickLink:(id)a3
+- (void)_notifyDelegateWillClickLink:(id)link
 {
   if (objc_opt_respondsToSelector())
   {
     pdfHandlerDelegate = self->_pdfHandlerDelegate;
 
-    [(UIWebPDFViewHandlerDelegate *)pdfHandlerDelegate pdfViewHandler:self willClickLink:a3];
+    [(UIWebPDFViewHandlerDelegate *)pdfHandlerDelegate pdfViewHandler:self willClickLink:link];
   }
 }
 
-- (void)_notifyDelegateDidClickLink:(id)a3
+- (void)_notifyDelegateDidClickLink:(id)link
 {
   if (objc_opt_respondsToSelector())
   {
     pdfHandlerDelegate = self->_pdfHandlerDelegate;
 
-    [(UIWebPDFViewHandlerDelegate *)pdfHandlerDelegate pdfViewHandler:self linkClicked:a3];
+    [(UIWebPDFViewHandlerDelegate *)pdfHandlerDelegate pdfViewHandler:self linkClicked:link];
   }
 }
 
-- (void)handleLinkClick:(id)a3 inRect:(CGRect)a4
+- (void)handleLinkClick:(id)click inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(UIWebPDFViewHandler *)self performSelector:sel__completeLinkClickWithURLString_ withObject:a3 afterDelay:0.2];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(UIWebPDFViewHandler *)self performSelector:sel__completeLinkClickWithURLString_ withObject:click afterDelay:0.2];
 
   [(UIWebPDFViewHandler *)self highlightRect:x, y, width, height];
 }
@@ -780,15 +780,15 @@ uint64_t __49__UIWebPDFViewHandler__completeLinkClickWithURL___block_invoke(uint
   self->_linkActionInfo = 0;
 }
 
-- (id)_actionForType:(int)a3 withActionInfo:(id)a4
+- (id)_actionForType:(int)type withActionInfo:(id)info
 {
-  v4 = *&a3;
+  v4 = *&type;
   result = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return result;
       }
@@ -825,7 +825,7 @@ uint64_t __49__UIWebPDFViewHandler__completeLinkClickWithURL___block_invoke(uint
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         v8 = _UINSLocalizedStringWithDefaultValue(@"Add to Reading List", @"Add to Reading List");
@@ -846,7 +846,7 @@ uint64_t __49__UIWebPDFViewHandler__completeLinkClickWithURL___block_invoke(uint
 
         break;
       case 4:
-        v7 = [a4 objectForKeyedSubscript:@"UIWebPDFLinkActionExternalApplicationName"];
+        v7 = [info objectForKeyedSubscript:@"UIWebPDFLinkActionExternalApplicationName"];
         v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:objc_msgSend(_UIKitBundle(), "localizedStringForKey:value:table:", @"Open in “%@” (Link Element Action Sheet Button)", @"Open in “%@”", @"Localizable", v7];
         v9 = &__block_literal_global_474_1;
         if (!v8)
@@ -947,20 +947,20 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
   return [v2 openInWebBrowser:0 setAppropriateOpenStrategyAndWebBrowserState:0 completionHandler:&__block_literal_global_476_0];
 }
 
-- (id)_actionsForInteractionInfo:(id)a3
+- (id)_actionsForInteractionInfo:(id)info
 {
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [a3 valueForKey:@"UIWebPDFLinkActionURLAttribute"];
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = [info valueForKey:@"UIWebPDFLinkActionURLAttribute"];
   if (_UIApplicationHasAppLinkEntitlements() && (v8 = _UIAppLinkForURL(v7)) != 0)
   {
     v9 = v8;
-    v10 = [a3 mutableCopy];
+    v10 = [info mutableCopy];
     v11 = [objc_msgSend(v9 "targetApplicationRecord")];
     if (v11)
     {
       [v10 setObject:v11 forKeyedSubscript:@"UIWebPDFLinkActionExternalApplicationName"];
       [v10 setObject:v9 forKeyedSubscript:@"UIWebPDFLinkActionAppLinkAttribute"];
-      [v6 addObject:{-[UIWebPDFViewHandler _actionForType:withActionInfo:](self, "_actionForType:withActionInfo:", 3, v10)}];
+      [array addObject:{-[UIWebPDFViewHandler _actionForType:withActionInfo:](self, "_actionForType:withActionInfo:", 3, v10)}];
       v12 = 4;
     }
 
@@ -970,12 +970,12 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
       v12 = 3;
     }
 
-    [v6 addObject:{-[UIWebPDFViewHandler _actionForType:withActionInfo:](self, "_actionForType:withActionInfo:", v12, v10)}];
+    [array addObject:{-[UIWebPDFViewHandler _actionForType:withActionInfo:](self, "_actionForType:withActionInfo:", v12, v10)}];
   }
 
   else
   {
-    [v6 addObject:{-[UIWebPDFViewHandler _actionForType:](self, "_actionForType:", 0)}];
+    [array addObject:{-[UIWebPDFViewHandler _actionForType:](self, "_actionForType:", 0)}];
   }
 
   if ([v7 isHTTPOrHTTPSURL])
@@ -986,7 +986,7 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
 
-    [v6 addObject:v13];
+    [array addObject:v13];
   }
 
   v14 = [(UIWebPDFViewHandler *)self _actionForType:1];
@@ -995,33 +995,33 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [v6 addObject:v14];
-  return v6;
+  [array addObject:v14];
+  return array;
 }
 
-- (void)_showLinkSheet:(id)a3
+- (void)_showLinkSheet:(id)sheet
 {
   v25 = *MEMORY[0x1E69E9840];
   [(UIWebPDFViewHandler *)self clearLinkHighlight];
-  v5 = [a3 valueForKey:@"UIWebPDFLinkActionURLAttribute"];
+  v5 = [sheet valueForKey:@"UIWebPDFLinkActionURLAttribute"];
   if (v5)
   {
     v6 = v5;
     v7 = objc_alloc_init(_UIRotatingAlertController);
     -[UIAlertController setTitle:](v7, "setTitle:", [v6 _web_userVisibleString]);
     [(_UIRotatingAlertController *)v7 setRotatingSheetDelegate:self];
-    v8 = [(UIWebPDFViewHandler *)self _actionsForInteractionInfo:a3];
-    v16 = a3;
+    sheet = [(UIWebPDFViewHandler *)self _actionsForInteractionInfo:sheet];
+    sheetCopy = sheet;
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(UIWebPDFViewHandlerDelegate *)self->_pdfHandlerDelegate pdfViewHandler:self actionsForURL:v6 suggestedActions:v8, a3];
+      sheet = [(UIWebPDFViewHandlerDelegate *)self->_pdfHandlerDelegate pdfViewHandler:self actionsForURL:v6 suggestedActions:sheet, sheet];
     }
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:{16, v16}];
+    v9 = [sheet countByEnumeratingWithState:&v20 objects:v24 count:{16, sheetCopy}];
     if (v9)
     {
       v10 = v9;
@@ -1032,11 +1032,11 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sheet);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 title];
+          title = [v13 title];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __38__UIWebPDFViewHandler__showLinkSheet___block_invoke;
@@ -1044,10 +1044,10 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
           v19[4] = self;
           v19[5] = v13;
           v19[6] = v7;
-          [(UIAlertController *)v7 _addActionWithTitle:v14 image:0 style:0 handler:v19];
+          [(UIAlertController *)v7 _addActionWithTitle:title image:0 style:0 handler:v19];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [sheet countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
@@ -1063,7 +1063,7 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
     [(UIAlertController *)v7 _addActionWithTitle:v15 image:0 style:1 handler:v18];
     self->_linkActionSheet = v7;
     self->_linkActionInfo = v17;
-    self->_linkActions = v8;
+    self->_linkActions = sheet;
     if (![(_UIRotatingAlertController *)v7 presentSheet])
     {
       [(UIWebPDFViewHandler *)self performAction:0 fromAlertController:v7];
@@ -1071,17 +1071,17 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
   }
 }
 
-- (void)handleLongPressOnLink:(id)a3 atPoint:(CGPoint)a4 inRect:(CGRect)a5 contentRect:(CGRect)a6
+- (void)handleLongPressOnLink:(id)link atPoint:(CGPoint)point inRect:(CGRect)rect contentRect:(CGRect)contentRect
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (link)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v10 = a4.y;
-    v11 = a4.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    v10 = point.y;
+    v11 = point.x;
     v13 = [(UIWebPDFViewHandler *)self _absoluteUrlRelativeToDocumentURL:?];
     if (v13)
     {
@@ -1092,24 +1092,24 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
       v14[2] = @"UIWebPDFLinkActionRectAttribute";
       v15[2] = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
       v14[3] = @"UIWebPDFLinkActionContentRectAttribute";
-      v15[3] = [MEMORY[0x1E696B098] valueWithCGRect:{a6.origin.x, a6.origin.y, a6.size.width, a6.size.height}];
+      v15[3] = [MEMORY[0x1E696B098] valueWithCGRect:{contentRect.origin.x, contentRect.origin.y, contentRect.size.width, contentRect.size.height}];
       -[UIWebPDFViewHandler performSelector:withObject:afterDelay:](self, "performSelector:withObject:afterDelay:", sel__showLinkSheet_, [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4], 0.75);
       [(UIWebPDFViewHandler *)self highlightRect:x, y, width, height];
     }
   }
 }
 
-- (void)performAction:(id)a3 fromAlertController:(id)a4
+- (void)performAction:(id)action fromAlertController:(id)controller
 {
-  if (self->_linkActionSheet == a4)
+  if (self->_linkActionSheet == controller)
   {
     v10 = v4;
-    if (!a3)
+    if (!action)
     {
-      v9 = [0 handler];
-      if (v9)
+      handler = [0 handler];
+      if (handler)
       {
-        (*(v9 + 16))(v9, self->_linkActionInfo);
+        (*(handler + 16))(handler, self->_linkActionInfo);
       }
     }
 
@@ -1119,7 +1119,7 @@ uint64_t __53__UIWebPDFViewHandler__actionForType_withActionInfo___block_invoke_
   }
 }
 
-- (id)hostViewForSheet:(id)a3
+- (id)hostViewForSheet:(id)sheet
 {
   if ((objc_opt_respondsToSelector() & 1) == 0 || (result = [(UIWebPDFViewHandlerDelegate *)self->_pdfHandlerDelegate hostViewForLinkSheet:self]) == 0)
   {
@@ -1154,7 +1154,7 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)initialPresentationRectInHostViewForSheet:(id)a3
+- (CGRect)initialPresentationRectInHostViewForSheet:(id)sheet
 {
   v4 = [(UIWebPDFViewHandler *)self hostViewForSheet:0];
   if (v4 && (v5 = v4, (v6 = [(NSDictionary *)self->_linkActionInfo valueForKey:@"UIWebPDFLinkActionPointAttribute"]) != 0))
@@ -1213,9 +1213,9 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
   return [v1 becomeFirstResponder];
 }
 
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view
 {
-  if ([(UIWebPDFView *)self->_pdfView _tryToUnlockDocumentWithPassword:a3, a4])
+  if ([(UIWebPDFView *)self->_pdfView _tryToUnlockDocumentWithPassword:password, view])
   {
     [(UIWebPDFView *)self->_pdfView pdfPlaceHolderView];
     WebThreadRun();
@@ -1233,8 +1233,8 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
   passwordEntryView = self->_passwordEntryView;
   if (passwordEntryView)
   {
-    v4 = [(UIDocumentPasswordView *)passwordEntryView passwordField];
-    if ([(UITextField *)v4 isEditing])
+    passwordField = [(UIDocumentPasswordView *)passwordEntryView passwordField];
+    if ([(UITextField *)passwordField isEditing])
     {
       v5 = [(UIWebPDFViewHandler *)self _scroller:0];
       if (v5)
@@ -1249,8 +1249,8 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
           height = v35.size.height;
           if (!CGRectIsEmpty(v35))
           {
-            v11 = [v6 window];
-            if ([+[UIWindow allWindowsIncludingInternalWindows:onlyVisibleWindows:](UIWindow allWindowsIncludingInternalWindows:0 onlyVisibleWindows:{0), "containsObject:", v11}])
+            window = [v6 window];
+            if ([+[UIWindow allWindowsIncludingInternalWindows:onlyVisibleWindows:](UIWindow allWindowsIncludingInternalWindows:0 onlyVisibleWindows:{0), "containsObject:", window}])
             {
               v12 = y;
             }
@@ -1260,14 +1260,14 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
               v12 = y + -50.0;
             }
 
-            [v11 convertRect:0 fromWindow:{x, v12, width, height}];
-            [v6 convertRect:v11 fromView:?];
+            [window convertRect:0 fromWindow:{x, v12, width, height}];
+            [v6 convertRect:window fromView:?];
             v14 = v13;
             v16 = v15;
             v18 = v17;
             v20 = v19;
-            [(UIView *)v4 bounds];
-            [(UIView *)v4 convertRect:v6 toView:?];
+            [(UIView *)passwordField bounds];
+            [(UIView *)passwordField convertRect:v6 toView:?];
             v32 = v22;
             v33 = v21;
             v24 = v23;
@@ -1309,24 +1309,24 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
   }
 }
 
-- (void)didBeginEditingPassword:(id)a3 inView:(id)a4
+- (void)didBeginEditingPassword:(id)password inView:(id)view
 {
   if (self->_passwordEntryView)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v5 addObserver:self selector:sel__keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
   }
 }
 
-- (void)didEndEditingPassword:(id)a3 inView:(id)a4
+- (void)didEndEditingPassword:(id)password inView:(id)view
 {
   if (self->_passwordEntryView)
   {
-    v5 = [(UIWebPDFViewHandler *)self _scroller:0, a4];
-    if (v5)
+    view = [(UIWebPDFViewHandler *)self _scroller:0, view];
+    if (view)
     {
-      v6 = v5;
+      v6 = view;
       [(UIView *)self->_passwordEntryView frame];
       x = v14.origin.x;
       y = v14.origin.y;
@@ -1339,18 +1339,18 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
       v15.size.height = height;
       [v6 setContentSize:{MaxX, CGRectGetMaxY(v15)}];
       [v6 setContentOffset:1 animated:{0.0, y}];
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-      [v12 removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
+      [defaultCenter removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
     }
   }
 }
 
-- (void)_showPasswordEntryViewForFile:(id)a3
+- (void)_showPasswordEntryViewForFile:(id)file
 {
   if (!self->_passwordEntryView)
   {
-    v4 = [[UIDocumentPasswordView alloc] initWithDocumentName:a3];
+    v4 = [[UIDocumentPasswordView alloc] initWithDocumentName:file];
     self->_passwordEntryView = v4;
     [(UIDocumentPasswordView *)v4 setPasswordDelegate:self];
     passwordEntryView = self->_passwordEntryView;
@@ -1358,11 +1358,11 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
     [(UIView *)passwordEntryView setFrame:?];
   }
 
-  v6 = [(UIView *)self->_pdfView superview];
+  superview = [(UIView *)self->_pdfView superview];
   v7 = self->_passwordEntryView;
   pdfView = self->_pdfView;
 
-  [(UIView *)v6 insertSubview:v7 aboveSubview:pdfView];
+  [(UIView *)superview insertSubview:v7 aboveSubview:pdfView];
 }
 
 - (void)_postdidDetermineDocumentBounds
@@ -1383,7 +1383,7 @@ uint64_t __46__UIWebPDFViewHandler__showPasswordErrorAlert__block_invoke(uint64_
   }
 }
 
-- (void)didDetermineDocumentBounds:(id)a3
+- (void)didDetermineDocumentBounds:(id)bounds
 {
   pdfView = self->_pdfView;
   [(UIWebPDFView *)pdfView documentBounds];
@@ -1422,18 +1422,18 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   return [v2 _postdidDetermineDocumentBounds];
 }
 
-- (void)pdfView:(id)a3 zoomToRect:(CGRect)a4 forPoint:(CGPoint)a5 considerHeight:(BOOL)a6
+- (void)pdfView:(id)view zoomToRect:(CGRect)rect forPoint:(CGPoint)point considerHeight:(BOOL)height
 {
-  self->_rectOfInterest = a4;
-  self->_rectOfInterestConsidersHeight = a6;
-  _UIWebDoubleTapAtLocation(self, a5.x, a5.y);
+  self->_rectOfInterest = rect;
+  self->_rectOfInterestConsidersHeight = height;
+  _UIWebDoubleTapAtLocation(self, point.x, point.y);
   self->_rectOfInterestConsidersHeight = 0;
   v7 = *(MEMORY[0x1E695F058] + 16);
   self->_rectOfInterest.origin = *MEMORY[0x1E695F058];
   self->_rectOfInterest.size = v7;
 }
 
-- (void)resetZoom:(id)a3
+- (void)resetZoom:(id)zoom
 {
   v4 = [(UIWebPDFViewHandler *)self _scroller:0];
   if (v4)
@@ -1444,7 +1444,7 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   }
 }
 
-- (id)passwordForPDFView:(id)a3
+- (id)passwordForPDFView:(id)view
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1461,9 +1461,9 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   }
 }
 
-- (void)didScroll:(id)a3
+- (void)didScroll:(id)scroll
 {
-  if (![a3 ignoreContentOffsetChanges])
+  if (![scroll ignoreContentOffsetChanges])
   {
     v4 = [-[UIView _scroller](self->_pdfView "_scroller")];
 
@@ -1471,14 +1471,14 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   }
 }
 
-- (void)ensureCorrectPagesAreInstalled:(BOOL)a3
+- (void)ensureCorrectPagesAreInstalled:(BOOL)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   if ([(UIView *)self->_pdfView superview])
   {
     pdfView = self->_pdfView;
 
-    [(UIWebPDFView *)pdfView ensureCorrectPagesAreInstalled:v3];
+    [(UIWebPDFView *)pdfView ensureCorrectPagesAreInstalled:installedCopy];
   }
 }
 
@@ -1504,7 +1504,7 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   [(UIView *)pageLabelView removeFromSuperview];
 }
 
-- (void)updateViewHierarchyForDocumentViewNewLoad:(id)a3
+- (void)updateViewHierarchyForDocumentViewNewLoad:(id)load
 {
   v5 = [(UIWebPDFViewHandler *)self _scroller:?];
   if (!self->_cachedScrollViewShadowsState)
@@ -1513,29 +1513,29 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
     self->_cachedScrollViewShadowsState = 1;
   }
 
-  if ([(UIWebPDFViewHandler *)self _getPDFDocumentViewForWebView:a3])
+  if ([(UIWebPDFViewHandler *)self _getPDFDocumentViewForWebView:load])
   {
     self->_initialZoomScale = 1.0;
 
-    [(UIWebPDFViewHandler *)self _updateViewHierarchyForDocumentView:a3 ignoreIfSame:0];
+    [(UIWebPDFViewHandler *)self _updateViewHierarchyForDocumentView:load ignoreIfSame:0];
   }
 }
 
-- (void)updateViewHierarchyForDocumentViewTabSwitch:(id)a3 restoringZoomScale:(double)a4 andScrollPt:(CGPoint)a5
+- (void)updateViewHierarchyForDocumentViewTabSwitch:(id)switch restoringZoomScale:(double)scale andScrollPt:(CGPoint)pt
 {
-  y = a5.y;
-  x = a5.x;
+  y = pt.y;
+  x = pt.x;
   pdfView = self->_pdfView;
   [(UIWebPDFView *)pdfView setIgnoreContentOffsetChanges:1];
-  [(UIWebPDFViewHandler *)self _updateViewHierarchyForDocumentView:a3 ignoreIfSame:1];
+  [(UIWebPDFViewHandler *)self _updateViewHierarchyForDocumentView:switch ignoreIfSame:1];
   [(UIWebPDFViewHandler *)self adjustZoomScalesForScrollView];
   if (!self->_passwordEntryView)
   {
-    v11 = [(UIView *)self->_pdfView _scroller];
-    v12 = v11;
-    if (a4 > 1.00000012)
+    _scroller = [(UIView *)self->_pdfView _scroller];
+    v12 = _scroller;
+    if (scale > 1.00000012)
     {
-      [v11 setZoomScale:a4];
+      [_scroller setZoomScale:scale];
     }
 
     [v12 _setContentOffsetPinned:0 animated:{x, y}];
@@ -1549,9 +1549,9 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   [(UIWebPDFViewHandler *)self ensureCorrectPagesAreInstalled:1];
 }
 
-- (void)updateViewHierarchyForDocumentViewLoadComplete:(id)a3
+- (void)updateViewHierarchyForDocumentViewLoadComplete:(id)complete
 {
-  [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotPDF:a3];
+  [(UIWebPDFViewHandler *)self _removePDFViewIfWebDocViewIsNotPDF:complete];
 
   [(UIWebPDFViewHandler *)self ensureCorrectPagesAreInstalled:0];
 }
@@ -1568,15 +1568,15 @@ uint64_t __50__UIWebPDFViewHandler_didDetermineDocumentBounds___block_invoke_2(u
   return result;
 }
 
-- (void)updatePageNumberLabelWithUserScrolling:(BOOL)a3 animated:(BOOL)a4
+- (void)updatePageNumberLabelWithUserScrolling:(BOOL)scrolling animated:(BOOL)animated
 {
   if (!self->_showPageLabels)
   {
     goto LABEL_6;
   }
 
-  v5 = a4;
-  if (!a3 && ![(UIWebPDFLabelView *)self->_pageLabelView isTimerInstalled])
+  animatedCopy = animated;
+  if (!scrolling && ![(UIWebPDFLabelView *)self->_pageLabelView isTimerInstalled])
   {
     return;
   }
@@ -1588,28 +1588,28 @@ LABEL_6:
     pageLabelView = self->_pageLabelView;
 LABEL_7:
 
-    [(UIWebPDFLabelView *)pageLabelView fadeOut:a3];
+    [(UIWebPDFLabelView *)pageLabelView fadeOut:scrolling];
     return;
   }
 
-  v8 = [(UIWebPDFView *)self->_pdfView firstVisiblePageNumber];
+  firstVisiblePageNumber = [(UIWebPDFView *)self->_pdfView firstVisiblePageNumber];
   pageLabelView = self->_pageLabelView;
-  if (!v8)
+  if (!firstVisiblePageNumber)
   {
     goto LABEL_7;
   }
 
-  if ([(UIWebPDFLabelView *)pageLabelView currentPageIndex]== v8)
+  if ([(UIWebPDFLabelView *)pageLabelView currentPageIndex]== firstVisiblePageNumber)
   {
     v9 = 0;
   }
 
   else
   {
-    [(UIWebPDFLabelView *)self->_pageLabelView setCurrentPageIndex:v8];
-    v10 = [(UIWebPDFViewHandler *)self _getLabelViewFormatter];
-    v11 = [v10 stringFromNumber:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v8)}];
-    v12 = [v10 stringFromNumber:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[UIWebPDFView totalPages](self->_pdfView, "totalPages"))}];
+    [(UIWebPDFLabelView *)self->_pageLabelView setCurrentPageIndex:firstVisiblePageNumber];
+    _getLabelViewFormatter = [(UIWebPDFViewHandler *)self _getLabelViewFormatter];
+    v11 = [_getLabelViewFormatter stringFromNumber:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", firstVisiblePageNumber)}];
+    v12 = [_getLabelViewFormatter stringFromNumber:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[UIWebPDFView totalPages](self->_pdfView, "totalPages"))}];
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:_UINSLocalizedStringWithDefaultValue(@"%1$@ of %2$@", @"%1$@ of %2$@", v11, v12];
   }
 
@@ -1624,43 +1624,43 @@ LABEL_7:
     v17 = v19;
   }
 
-  v20 = [(UIWebPDFViewHandler *)self createPageLabel];
+  createPageLabel = [(UIWebPDFViewHandler *)self createPageLabel];
 
-  [v20 showNowInSuperView:v13 atOrigin:v9 withText:v5 animated:{v15, v17}];
+  [createPageLabel showNowInSuperView:v13 atOrigin:v9 withText:animatedCopy animated:{v15, v17}];
 }
 
-- (void)handleScrollToAnchor:(id)a3
+- (void)handleScrollToAnchor:(id)anchor
 {
-  if (a3 && [(UIView *)self->_pdfView superview])
+  if (anchor && [(UIView *)self->_pdfView superview])
   {
-    v5 = [a3 lowercaseString];
-    if ([v5 hasPrefix:@"page"])
+    lowercaseString = [anchor lowercaseString];
+    if ([lowercaseString hasPrefix:@"page"])
     {
-      v5 = [v5 substringFromIndex:4];
+      lowercaseString = [lowercaseString substringFromIndex:4];
     }
 
-    v6 = [v5 integerValue];
-    if (v6 >= 1)
+    integerValue = [lowercaseString integerValue];
+    if (integerValue >= 1)
     {
 
-      [(UIWebPDFViewHandler *)self scrollToPageNumber:v6 animate:0];
+      [(UIWebPDFViewHandler *)self scrollToPageNumber:integerValue animate:0];
     }
   }
 }
 
-- (void)_resultRects:(id)a3 andResultViews:(id)a4 forSearchResult:(id)a5 inViewCoordinates:(id)a6
+- (void)_resultRects:(id)rects andResultViews:(id)views forSearchResult:(id)result inViewCoordinates:(id)coordinates
 {
-  v11 = [a5 rects];
-  v12 = [a5 strings];
-  v13 = [a5 rotationAngles];
-  v14 = [v11 count];
-  v15 = [v12 count];
+  rects = [result rects];
+  strings = [result strings];
+  rotationAngles = [result rotationAngles];
+  v14 = [rects count];
+  v15 = [strings count];
   if (v14 >= v15)
   {
     v14 = v15;
   }
 
-  v16 = [v13 count];
+  v16 = [rotationAngles count];
   if (v14 >= v16)
   {
     v17 = v16;
@@ -1675,43 +1675,43 @@ LABEL_7:
   {
     for (i = 0; i != v17; ++i)
     {
-      [objc_msgSend(v11 objectAtIndex:{i), "CGRectValue"}];
-      [a6 convertRectFromPDFPageSpace:?];
-      [a6 convertRect:self->_pdfView toView:?];
+      [objc_msgSend(rects objectAtIndex:{i), "CGRectValue"}];
+      [coordinates convertRectFromPDFPageSpace:?];
+      [coordinates convertRect:self->_pdfView toView:?];
       v28 = CGRectIntegral(v27);
       x = v28.origin.x;
       y = v28.origin.y;
       width = v28.size.width;
       height = v28.size.height;
-      [a3 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGRect:")}];
-      v23 = [[_UIAttributedStringView alloc] initWithFrame:x, y, width, height];
-      -[_UIAttributedStringView setString:](v23, "setString:", [v12 objectAtIndex:i]);
-      [objc_msgSend(v13 objectAtIndex:{i), "floatValue"}];
-      [(_UIAttributedStringView *)v23 setTextRotationAngle:v24];
-      [a6 convertRectFromPDFPageSpace:{0.0, 0.0, 1.0, 1.0}];
-      [a6 convertRect:self->_pdfView toView:?];
+      [rects addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithCGRect:")}];
+      height = [[_UIAttributedStringView alloc] initWithFrame:x, y, width, height];
+      -[_UIAttributedStringView setString:](height, "setString:", [strings objectAtIndex:i]);
+      [objc_msgSend(rotationAngles objectAtIndex:{i), "floatValue"}];
+      [(_UIAttributedStringView *)height setTextRotationAngle:v24];
+      [coordinates convertRectFromPDFPageSpace:{0.0, 0.0, 1.0, 1.0}];
+      [coordinates convertRect:self->_pdfView toView:?];
       CGAffineTransformMakeScale(&v26, v25, v25);
-      [(UIView *)v23 setTransform:&v26];
-      [a4 addObject:v23];
+      [(UIView *)height setTransform:&v26];
+      [views addObject:height];
     }
   }
 }
 
-- (void)revealSearchResult:(id)a3 andZoomIn:(BOOL)a4
+- (void)revealSearchResult:(id)result andZoomIn:(BOOL)in
 {
-  if (a3)
+  if (result)
   {
-    v4 = a4;
+    inCopy = in;
     v7 = [(UIWebPDFViewHandler *)self _scroller:0];
     if (v7)
     {
       v8 = v7;
-      [a3 boundingBox];
+      [result boundingBox];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = -[UIWebPDFView _addPageAtIndex:](self->_pdfView, "_addPageAtIndex:", [a3 pageIndex]);
+      v17 = -[UIWebPDFView _addPageAtIndex:](self->_pdfView, "_addPageAtIndex:", [result pageIndex]);
       if (v17)
       {
         v18 = v17;
@@ -1722,7 +1722,7 @@ LABEL_7:
         y = v36.origin.y;
         width = v36.size.width;
         height = v36.size.height;
-        if (v4)
+        if (inCopy)
         {
           [v8 zoomToRect:1 animated:{v36.origin.x, v36.origin.y, v36.size.width, v36.size.height}];
         }
@@ -1753,7 +1753,7 @@ LABEL_7:
         {
           v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          [(UIWebPDFViewHandler *)self _resultRects:v32 andResultViews:v33 forSearchResult:a3 inViewCoordinates:v18];
+          [(UIWebPDFViewHandler *)self _resultRects:v32 andResultViews:v33 forSearchResult:result inViewCoordinates:v18];
           [(UIWebPDFViewHandlerDelegate *)self->_pdfHandlerDelegate highlightSearchResultBounds:v32 resultRects:v33 contentViews:self forPDFViewHandler:x, y, width, height];
         }
       }
@@ -1761,10 +1761,10 @@ LABEL_7:
   }
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)scalesForContainerSize:(CGSize)a3
+- ($1AB5FA073B851C12C2339EC22442E995)scalesForContainerSize:(CGSize)size
 {
-  width = a3.width;
-  [(UIWebPDFView *)self->_pdfView documentBounds:a3.width];
+  width = size.width;
+  [(UIWebPDFView *)self->_pdfView documentBounds:size.width];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1815,22 +1815,22 @@ LABEL_7:
   return result;
 }
 
-- (void)saveStateToHistoryItem:(id)a3 forWebView:(id)a4
+- (void)saveStateToHistoryItem:(id)item forWebView:(id)view
 {
-  if (![a4 documentType])
+  if (![view documentType])
   {
     v6 = [(UIWebPDFViewHandler *)self _scroller:0];
     if (v6)
     {
       v7 = v6;
       [v6 contentOffset];
-      [a3 _setScrollPoint:?];
+      [item _setScrollPoint:?];
       [v7 zoomScale];
       *&v8 = v10;
       v9 = self->_initialZoomScale == v10;
       *&v10 = v10;
 
-      [a3 _setScale:v9 isInitial:{v10, v8}];
+      [item _setScale:v9 isInitial:{v10, v8}];
     }
   }
 }
@@ -1859,16 +1859,16 @@ LABEL_7:
   }
 }
 
-- (void)restoreStateFromHistoryItem:(id)a3 forWebView:(id)a4
+- (void)restoreStateFromHistoryItem:(id)item forWebView:(id)view
 {
-  if (![a4 documentType])
+  if (![view documentType])
   {
     self->_pendingHistoryItemRestore.restorePending = 1;
-    self->_pendingHistoryItemRestore.isInitialScale = [a3 _scaleIsInitial];
-    [a3 _scrollPoint];
+    self->_pendingHistoryItemRestore.isInitialScale = [item _scaleIsInitial];
+    [item _scrollPoint];
     self->_pendingHistoryItemRestore.contentOffset.x = v6;
     self->_pendingHistoryItemRestore.contentOffset.y = v7;
-    [a3 _scale];
+    [item _scale];
     self->_pendingHistoryItemRestore.zoomScale = v8;
     if ([(UIWebPDFView *)self->_pdfView _hasPageRects])
     {
@@ -1901,9 +1901,9 @@ LABEL_7:
   return result;
 }
 
-- (double)minimumScaleForSize:(CGSize)a3
+- (double)minimumScaleForSize:(CGSize)size
 {
-  v3 = [(UIWebPDFViewHandler *)self _scroller:0, a3.width, a3.height];
+  v3 = [(UIWebPDFViewHandler *)self _scroller:0, size.width, size.height];
   if (!v3)
   {
     return 1.0;
@@ -1913,7 +1913,7 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)rectOfInterestForPoint:(CGPoint)a3
+- (CGRect)rectOfInterestForPoint:(CGPoint)point
 {
   x = self->_rectOfInterest.origin.x;
   y = self->_rectOfInterest.origin.y;
@@ -1926,9 +1926,9 @@ LABEL_7:
   return result;
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)doubleTapScalesForSize:(CGSize)a3
+- ($1AB5FA073B851C12C2339EC22442E995)doubleTapScalesForSize:(CGSize)size
 {
-  v3 = [(UIWebPDFViewHandler *)self _scroller:0, a3.width, a3.height];
+  v3 = [(UIWebPDFViewHandler *)self _scroller:0, size.width, size.height];
   if (v3)
   {
     v4 = v3;
@@ -1952,12 +1952,12 @@ LABEL_7:
   return result;
 }
 
-- (void)updateBoundariesOfScrollView:(id)a3 withScales:(id)a4
+- (void)updateBoundariesOfScrollView:(id)view withScales:(id)scales
 {
-  var2 = a4.var2;
-  var1 = a4.var1;
-  [a3 setMinimumZoomScale:a4.var0];
-  [a3 setMaximumZoomScale:var1];
+  var2 = scales.var2;
+  var1 = scales.var1;
+  [view setMinimumZoomScale:scales.var0];
+  [view setMaximumZoomScale:var1];
   [(UIWebPDFView *)self->_pdfView setInitialZoomScale:var2];
   self->_initialZoomScale = var2;
 }
@@ -1975,7 +1975,7 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)activeRectForRectOfInterest:(CGRect)a3
+- (CGRect)activeRectForRectOfInterest:(CGRect)interest
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1988,16 +1988,16 @@ LABEL_7:
   return result;
 }
 
-- (double)_pinValueForVerticalEdge:(unint64_t)a3 inScrollView:(id)a4
+- (double)_pinValueForVerticalEdge:(unint64_t)edge inScrollView:(id)view
 {
   v4 = 0.0;
-  if (a3 != 1)
+  if (edge != 1)
   {
-    if (a3 == 2)
+    if (edge == 2)
     {
-      [a4 contentSize];
+      [view contentSize];
       v7 = v6;
-      [a4 bounds];
+      [view bounds];
       return v7 - v8;
     }
 
@@ -2015,15 +2015,15 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)_verticalEdgeForContentOffsetInScrollView:(id)a3
+- (unint64_t)_verticalEdgeForContentOffsetInScrollView:(id)view
 {
-  [a3 contentOffset];
+  [view contentOffset];
   v6 = v5;
   v7 = 1;
-  [(UIWebPDFViewHandler *)self _pinValueForVerticalEdge:1 inScrollView:a3];
+  [(UIWebPDFViewHandler *)self _pinValueForVerticalEdge:1 inScrollView:view];
   if (v6 > v8)
   {
-    [(UIWebPDFViewHandler *)self _pinValueForVerticalEdge:2 inScrollView:a3];
+    [(UIWebPDFViewHandler *)self _pinValueForVerticalEdge:2 inScrollView:view];
     if (v6 >= v9)
     {
       return 2;
@@ -2038,12 +2038,12 @@ LABEL_7:
   return v7;
 }
 
-- (void)rotateEnclosingScrollViewToFrame:(CGRect)a3
+- (void)rotateEnclosingScrollViewToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_passwordEntryView)
   {
     v8 = [(UIWebPDFViewHandler *)self _scroller:0];
@@ -2061,7 +2061,7 @@ LABEL_7:
   else
   {
 
-    _UIWebRotateToFrame(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+    _UIWebRotateToFrame(self, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
   }
 }
 

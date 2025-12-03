@@ -1,26 +1,26 @@
 @interface CCToolKitToolTypedValueDeferredValue
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTypeIdentifier)type;
 - (CCToolKitToolTypeInstance)expectedTypeInstance;
-- (CCToolKitToolTypedValueDeferredValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValueDeferredValue)initWithType:(id)a3 expectedTypeInstance:(id)a4 storage:(id)a5 error:(id *)a6;
+- (CCToolKitToolTypedValueDeferredValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValueDeferredValue)initWithType:(id)type expectedTypeInstance:(id)instance storage:(id)storage error:(id *)error;
 - (CCToolKitToolTypedValueDeferredValueStorage)storage;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValueDeferredValue
 
-- (CCToolKitToolTypedValueDeferredValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValueDeferredValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v23[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v9)
     {
       v23[0] = 0;
@@ -36,7 +36,7 @@
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"expectedTypeInstance"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"expectedTypeInstance"];
     if (v12)
     {
       v22 = 0;
@@ -53,7 +53,7 @@
       v12 = v13;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"storage"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"storage"];
     if (!v15)
     {
       v16 = 0;
@@ -69,7 +69,7 @@
     {
 
 LABEL_18:
-      v19 = [[CCToolKitToolTypedValueDeferredValue alloc] initWithType:v9 expectedTypeInstance:v12 storage:v16 error:a4];
+      v19 = [[CCToolKitToolTypedValueDeferredValue alloc] initWithType:v9 expectedTypeInstance:v12 storage:v16 error:error];
       v10 = v16;
 LABEL_21:
 
@@ -95,23 +95,23 @@ LABEL_22:
   v3 = objc_opt_new();
   if (self->_type)
   {
-    v4 = [(CCToolKitToolTypedValueDeferredValue *)self type];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"type"];
+    type = [(CCToolKitToolTypedValueDeferredValue *)self type];
+    jsonDictionary = [type jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"type"];
   }
 
   if (self->_expectedTypeInstance)
   {
-    v6 = [(CCToolKitToolTypedValueDeferredValue *)self expectedTypeInstance];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"expectedTypeInstance"];
+    expectedTypeInstance = [(CCToolKitToolTypedValueDeferredValue *)self expectedTypeInstance];
+    jsonDictionary2 = [expectedTypeInstance jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"expectedTypeInstance"];
   }
 
   if (self->_storage)
   {
-    v8 = [(CCToolKitToolTypedValueDeferredValue *)self storage];
-    v9 = [v8 jsonDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"storage"];
+    storage = [(CCToolKitToolTypedValueDeferredValue *)self storage];
+    jsonDictionary3 = [storage jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"storage"];
   }
 
   v10 = [v3 copy];
@@ -119,11 +119,11 @@ LABEL_22:
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_type)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_type];
@@ -167,10 +167,10 @@ LABEL_22:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -340,13 +340,13 @@ LABEL_40:
   return v37;
 }
 
-- (CCToolKitToolTypedValueDeferredValue)initWithType:(id)a3 expectedTypeInstance:(id)a4 storage:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValueDeferredValue)initWithType:(id)type expectedTypeInstance:(id)instance storage:(id)storage error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  instanceCopy = instance;
+  storageCopy = storage;
   v13 = objc_opt_new();
-  if (v10)
+  if (typeCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -356,14 +356,14 @@ LABEL_40:
       goto LABEL_7;
     }
 
-    v16 = [v10 data];
+    data = [typeCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v11)
+    if (!instanceCopy)
     {
 LABEL_4:
       v17 = v15;
-      if (v12)
+      if (storageCopy)
       {
         goto LABEL_5;
       }
@@ -377,7 +377,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!instanceCopy)
     {
       goto LABEL_4;
     }
@@ -390,15 +390,15 @@ LABEL_11:
   if (!v21)
   {
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     v15 = v17;
     goto LABEL_14;
   }
 
-  v22 = [v11 data];
+  data2 = [instanceCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v12)
+  if (!storageCopy)
   {
     goto LABEL_11;
   }
@@ -410,23 +410,23 @@ LABEL_5:
 
   if (v18)
   {
-    v19 = [v12 data];
+    data3 = [storageCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v23 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v23 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v20 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v20 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

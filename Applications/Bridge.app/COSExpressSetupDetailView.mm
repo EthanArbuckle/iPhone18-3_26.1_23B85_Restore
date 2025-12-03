@@ -1,7 +1,7 @@
 @interface COSExpressSetupDetailView
 + (id)testSections;
-- (COSExpressSetupDetailView)initWithSections:(id)a3;
-- (id)sectionViewForSection:(id)a3;
+- (COSExpressSetupDetailView)initWithSections:(id)sections;
+- (id)sectionViewForSection:(id)section;
 - (void)_setupSections;
 @end
 
@@ -78,17 +78,17 @@
   return v28;
 }
 
-- (COSExpressSetupDetailView)initWithSections:(id)a3
+- (COSExpressSetupDetailView)initWithSections:(id)sections
 {
-  v5 = a3;
+  sectionsCopy = sections;
   v11.receiver = self;
   v11.super_class = COSExpressSetupDetailView;
   v6 = [(COSExpressSetupDetailView *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sections, a3);
-    v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    objc_storeStrong(&v6->_sections, sections);
+    v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(sectionsCopy, "count")}];
     sectionMap = v7->_sectionMap;
     v7->_sectionMap = v8;
 
@@ -98,11 +98,11 @@
   return v7;
 }
 
-- (id)sectionViewForSection:(id)a3
+- (id)sectionViewForSection:(id)section
 {
   sectionMap = self->_sectionMap;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)sectionMap objectForKey:v4];
+  identifier = [section identifier];
+  v5 = [(NSMutableDictionary *)sectionMap objectForKey:identifier];
 
   return v5;
 }
@@ -118,20 +118,20 @@
   [(UIStackView *)self->_sectionStackView setAxis:1];
   [(UIStackView *)self->_sectionStackView setSpacing:16.0];
   obja = [(COSExpressSetupDetailView *)self topAnchor];
-  v24 = [(UIStackView *)self->_sectionStackView topAnchor];
-  v23 = [obja constraintEqualToAnchor:v24];
+  topAnchor = [(UIStackView *)self->_sectionStackView topAnchor];
+  v23 = [obja constraintEqualToAnchor:topAnchor];
   v32[0] = v23;
-  v22 = [(COSExpressSetupDetailView *)self leadingAnchor];
-  v21 = [(UIStackView *)self->_sectionStackView leadingAnchor];
-  v5 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [(COSExpressSetupDetailView *)self leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_sectionStackView leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[1] = v5;
-  v6 = [(COSExpressSetupDetailView *)self trailingAnchor];
-  v7 = [(UIStackView *)self->_sectionStackView trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor = [(COSExpressSetupDetailView *)self trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_sectionStackView trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[2] = v8;
-  v9 = [(COSExpressSetupDetailView *)self bottomAnchor];
-  v10 = [(UIStackView *)self->_sectionStackView bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(COSExpressSetupDetailView *)self bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_sectionStackView bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v11;
   v12 = [NSArray arrayWithObjects:v32 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -159,8 +159,8 @@
         v18 = objc_opt_new();
         [v18 populateSection:v17];
         sectionMap = self->_sectionMap;
-        v20 = [v17 identifier];
-        [(NSMutableDictionary *)sectionMap setObject:v18 forKey:v20];
+        identifier = [v17 identifier];
+        [(NSMutableDictionary *)sectionMap setObject:v18 forKey:identifier];
 
         [(UIStackView *)self->_sectionStackView addArrangedSubview:v18];
       }

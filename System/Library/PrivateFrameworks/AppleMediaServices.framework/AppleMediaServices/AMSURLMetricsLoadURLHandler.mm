@@ -1,8 +1,8 @@
 @interface AMSURLMetricsLoadURLHandler
 - (AMSURLMetricsLoadURLHandler)init;
-- (AMSURLMetricsLoadURLHandler)initWithMetrics:(Class)a3;
-- (id)_reportMetricsForContext:(id)a3;
-- (void)_enqueueLoadURLEvent:(id)a3 forContext:(id)a4;
+- (AMSURLMetricsLoadURLHandler)initWithMetrics:(Class)metrics;
+- (id)_reportMetricsForContext:(id)context;
+- (void)_enqueueLoadURLEvent:(id)event forContext:(id)context;
 @end
 
 @implementation AMSURLMetricsLoadURLHandler
@@ -14,7 +14,7 @@
   return [(AMSURLMetricsLoadURLHandler *)self initWithMetrics:v3];
 }
 
-- (AMSURLMetricsLoadURLHandler)initWithMetrics:(Class)a3
+- (AMSURLMetricsLoadURLHandler)initWithMetrics:(Class)metrics
 {
   v7.receiver = self;
   v7.super_class = AMSURLMetricsLoadURLHandler;
@@ -22,20 +22,20 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_metricsClass, a3);
+    objc_storeStrong(&v4->_metricsClass, metrics);
   }
 
   return v5;
 }
 
-- (id)_reportMetricsForContext:(id)a3
+- (id)_reportMetricsForContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 properties];
-  v6 = [v5 disableLoadURLMetrics];
+  contextCopy = context;
+  properties = [contextCopy properties];
+  disableLoadURLMetrics = [properties disableLoadURLMetrics];
 
-  if (v6)
+  if (disableLoadURLMetrics)
   {
     v7 = +[AMSLogConfig sharedURLLoadingConfig];
     if (!v7)
@@ -43,42 +43,42 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v4 properties];
-      v12 = [v11 logUUID];
-      v13 = [v4 task];
-      v14 = [v13 originalRequest];
-      v15 = AMSLogableURLRequest(v14);
+      properties2 = [contextCopy properties];
+      logUUID = [properties2 logUUID];
+      task = [contextCopy task];
+      originalRequest = [task originalRequest];
+      v15 = AMSLogableURLRequest(originalRequest);
       *buf = 138543874;
       v27 = v9;
       v28 = 2114;
-      v29 = v12;
+      v29 = logUUID;
       v30 = 2114;
       v31 = v15;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skip LoadURL Metrics due to client disabling for URL request: %{public}@.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skip LoadURL Metrics due to client disabling for URL request: %{public}@.", buf, 0x20u);
     }
 
-    v16 = +[AMSBinaryPromise promiseWithSuccess];
+    binaryPromiseAdapter = +[AMSBinaryPromise promiseWithSuccess];
   }
 
   else
   {
-    v17 = [AMSMetricsLoadURLEvent shouldCollectMetricsPromiseForContext:v4];
+    v17 = [AMSMetricsLoadURLEvent shouldCollectMetricsPromiseForContext:contextCopy];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __56__AMSURLMetricsLoadURLHandler__reportMetricsForContext___block_invoke;
     v23 = &unk_1E73B3078;
-    v24 = self;
-    v25 = v4;
+    selfCopy = self;
+    v25 = contextCopy;
     v18 = [v17 thenWithBlock:&v20];
-    v16 = [v18 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v18 binaryPromiseAdapter];
   }
 
-  return v16;
+  return binaryPromiseAdapter;
 }
 
 id __56__AMSURLMetricsLoadURLHandler__reportMetricsForContext___block_invoke(uint64_t a1, void *a2)
@@ -181,19 +181,19 @@ id __56__AMSURLMetricsLoadURLHandler__reportMetricsForContext___block_invoke_5(u
   return v7;
 }
 
-- (void)_enqueueLoadURLEvent:(id)a3 forContext:(id)a4
+- (void)_enqueueLoadURLEvent:(id)event forContext:(id)context
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSURLMetricsLoadURLHandler *)self metricsClass];
-  v9 = [v6 bag];
-  v10 = [(objc_class *)v8 internalInstanceUsingBag:v9];
+  contextCopy = context;
+  eventCopy = event;
+  metricsClass = [(AMSURLMetricsLoadURLHandler *)self metricsClass];
+  v9 = [contextCopy bag];
+  v10 = [(objc_class *)metricsClass internalInstanceUsingBag:v9];
 
-  v11 = [v6 error];
+  error = [contextCopy error];
 
-  LODWORD(v6) = [v11 ams_hasDomain:*MEMORY[0x1E696A978]];
-  if (v6)
+  LODWORD(contextCopy) = [error ams_hasDomain:*MEMORY[0x1E696A978]];
+  if (contextCopy)
   {
     v12 = 2;
   }
@@ -203,7 +203,7 @@ id __56__AMSURLMetricsLoadURLHandler__reportMetricsForContext___block_invoke_5(u
     v12 = 0;
   }
 
-  v15[0] = v7;
+  v15[0] = eventCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
   v14 = [v10 promiseForEnqueueingEvents:v13 options:v12];

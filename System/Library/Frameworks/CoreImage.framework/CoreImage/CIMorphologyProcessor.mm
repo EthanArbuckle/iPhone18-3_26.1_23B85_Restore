@@ -1,15 +1,15 @@
 @interface CIMorphologyProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)applyBoxToImage:(id)a3 width:(int)a4 height:(int)a5 doMin:(BOOL)a6;
-+ (id)logDescription:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)applyBoxToImage:(id)image width:(int)width height:(int)height doMin:(BOOL)min;
++ (id)logDescription:(id)description;
 @end
 
 @implementation CIMorphologyProcessor
 
-+ (id)logDescription:(id)a3
++ (id)logDescription:(id)description
 {
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"doMin", "BOOLValue"}])
+  if ([objc_msgSend(description objectForKeyedSubscript:{@"doMin", "BOOLValue"}])
   {
     v4 = "Min";
   }
@@ -19,46 +19,46 @@
     v4 = "Max";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"CIMorphologyProcessor-%s%@x%@", v4, objc_msgSend(a3, "objectForKeyedSubscript:", @"w", objc_msgSend(a3, "objectForKeyedSubscript:", @"h"];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"CIMorphologyProcessor-%s%@x%@", v4, objc_msgSend(description, "objectForKeyedSubscript:", @"w", objc_msgSend(description, "objectForKeyedSubscript:", @"h"];
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = [a4 objectForKeyedSubscript:@"w"];
-  v11 = [a4 objectForKeyedSubscript:@"h"];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [arguments objectForKeyedSubscript:@"w"];
+  v11 = [arguments objectForKeyedSubscript:@"h"];
   v12 = ([v10 intValue] - 1) / -2;
-  v13 = [v11 intValue];
+  intValue = [v11 intValue];
   v14 = x;
   v15 = y;
   v16 = width;
   v17 = height;
 
-  return CGRectInset(*&v14, v12, ((v13 - 1) / -2));
+  return CGRectInset(*&v14, v12, ((intValue - 1) / -2));
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a4 objectForKeyedSubscript:@"w"];
-  v10 = [a4 objectForKeyedSubscript:@"h"];
-  v11 = [a4 objectForKeyedSubscript:@"doMin"];
-  v12 = [a3 objectAtIndexedSubscript:0];
-  if (v12)
+  v9 = [arguments objectForKeyedSubscript:@"w"];
+  v10 = [arguments objectForKeyedSubscript:@"h"];
+  v11 = [arguments objectForKeyedSubscript:@"doMin"];
+  metalCommandBuffer = [inputs objectAtIndexedSubscript:0];
+  if (metalCommandBuffer)
   {
-    v13 = v12;
-    v14 = [v12 format];
-    if (v14 == [a5 format])
+    v13 = metalCommandBuffer;
+    format = [metalCommandBuffer format];
+    if (format == [output format])
     {
-      v15 = [v9 intValue];
-      v16 = [v10 intValue];
-      v17 = [v11 BOOLValue];
-      v12 = [a5 metalCommandBuffer];
-      if (v12)
+      intValue = [v9 intValue];
+      intValue2 = [v10 intValue];
+      bOOLValue = [v11 BOOLValue];
+      metalCommandBuffer = [output metalCommandBuffer];
+      if (metalCommandBuffer)
       {
-        v18 = v12;
+        v18 = metalCommandBuffer;
         [v13 region];
         x = v37.origin.x;
         y = v37.origin.y;
@@ -98,7 +98,7 @@
           }
         }
 
-        [a5 region];
+        [output region];
         v24 = v42.origin.x;
         v25 = v42.origin.y;
         v26 = v42.size.width;
@@ -138,45 +138,45 @@
         }
 
         v31 = 0x1E6974570;
-        if (!v17)
+        if (!bOOLValue)
         {
           v31 = 0x1E6974568;
         }
 
-        v12 = [objc_alloc(*v31) initWithDevice:objc_msgSend(v18 kernelWidth:"device") kernelHeight:{v15, v16}];
-        if (v12)
+        metalCommandBuffer = [objc_alloc(*v31) initWithDevice:objc_msgSend(v18 kernelWidth:"device") kernelHeight:{intValue, intValue2}];
+        if (metalCommandBuffer)
         {
-          v32 = v12;
+          v32 = metalCommandBuffer;
           v36[0] = v30 - v23;
           v36[1] = v35 + v34 - (v28 + v29);
           v36[2] = 0;
-          [v12 setOffset:v36];
-          [v32 encodeToCommandBuffer:v18 sourceTexture:objc_msgSend(v13 destinationTexture:{"metalTexture"), objc_msgSend(a5, "metalTexture")}];
+          [metalCommandBuffer setOffset:v36];
+          [v32 encodeToCommandBuffer:v18 sourceTexture:objc_msgSend(v13 destinationTexture:{"metalTexture"), objc_msgSend(output, "metalTexture")}];
 
-          LOBYTE(v12) = 1;
+          LOBYTE(metalCommandBuffer) = 1;
         }
       }
     }
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(metalCommandBuffer) = 0;
     }
   }
 
-  return v12;
+  return metalCommandBuffer;
 }
 
-+ (id)applyBoxToImage:(id)a3 width:(int)a4 height:(int)a5 doMin:(BOOL)a6
++ (id)applyBoxToImage:(id)image width:(int)width height:(int)height doMin:(BOOL)min
 {
-  v6 = a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = a3;
+  minCopy = min;
+  v7 = *&height;
+  v8 = *&width;
+  imageCopy = image;
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a4 != 1 || a5 != 1)
+  if (width != 1 || height != 1)
   {
-    if (a6)
+    if (min)
     {
       v11 = 1;
     }
@@ -186,23 +186,23 @@
       v11 = -1;
     }
 
-    [a3 extent];
+    [image extent];
     v22 = CGRectInset(v21, (v11 * v8 / 2), (v11 * v7 / 2));
     x = v22.origin.x;
     y = v22.origin.y;
     width = v22.size.width;
     height = v22.size.height;
-    v20[0] = v9;
+    v20[0] = imageCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v19[0] = [MEMORY[0x1E696AD98] numberWithInt:{v8, @"w"}];
     v18[1] = @"h";
     v19[1] = [MEMORY[0x1E696AD98] numberWithInt:v7];
     v18[2] = @"doMin";
-    v19[2] = [MEMORY[0x1E696AD98] numberWithBool:v6];
-    return [a1 applyWithExtent:v16 inputs:objc_msgSend(MEMORY[0x1E695DF20] arguments:"dictionaryWithObjects:forKeys:count:" error:{v19, v18, 3), 0, x, y, width, height}];
+    v19[2] = [MEMORY[0x1E696AD98] numberWithBool:minCopy];
+    return [self applyWithExtent:v16 inputs:objc_msgSend(MEMORY[0x1E695DF20] arguments:"dictionaryWithObjects:forKeys:count:" error:{v19, v18, 3), 0, x, y, width, height}];
   }
 
-  return v9;
+  return imageCopy;
 }
 
 @end

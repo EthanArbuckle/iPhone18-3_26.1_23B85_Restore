@@ -1,31 +1,31 @@
 @interface BKSearchController
 - (BESearchControllerDelegate)delegate;
 - (BKSearchController)init;
-- (BOOL)_isDocumentOrdinalSearchable:(int64_t)a3;
-- (BOOL)_searchOnCandidateOrdinal:(int64_t)a3;
-- (id)_newSearchOperationForOrdinal:(int64_t)a3;
+- (BOOL)_isDocumentOrdinalSearchable:(int64_t)searchable;
+- (BOOL)_searchOnCandidateOrdinal:(int64_t)ordinal;
+- (id)_newSearchOperationForOrdinal:(int64_t)ordinal;
 - (id)_searchQueue;
-- (void)_addResultsFromSearch:(id)a3;
-- (void)_didFinishCreatingWebView:(id)a3 forTrackingID:(int64_t)a4 completion:(id)a5;
+- (void)_addResultsFromSearch:(id)search;
+- (void)_didFinishCreatingWebView:(id)view forTrackingID:(int64_t)d completion:(id)completion;
 - (void)_resultsChanged;
-- (void)_scheduleSearchAfterDelay:(double)a3 reportAnalytics:(BOOL)a4;
-- (void)_searchOnOrdinal:(int64_t)a3;
-- (void)_startSearchNowWithReportAnalytics:(id)a3;
+- (void)_scheduleSearchAfterDelay:(double)delay reportAnalytics:(BOOL)analytics;
+- (void)_searchOnOrdinal:(int64_t)ordinal;
+- (void)_startSearchNowWithReportAnalytics:(id)analytics;
 - (void)_unscheduleSearch;
-- (void)beginSearchWithReportAnalytics:(BOOL)a3;
+- (void)beginSearchWithReportAnalytics:(BOOL)analytics;
 - (void)cancelSearch;
 - (void)continueSearch;
 - (void)dealloc;
 - (void)endSearch;
 - (void)loadMore;
 - (void)pauseSearch;
-- (void)provideWebView:(CGRect)a3 protocolCacheItem:(id)a4 paginationOptions:(id)a5 cleanupOptions:(id)a6 cfiOptions:(id)a7 stylesheetSet:(id)a8 styleManager:(id)a9 contentSupportMode:(unint64_t)a10 completion:(id)a11;
-- (void)searchDidFinish:(id)a3;
-- (void)searchHasPartialResults:(id)a3;
-- (void)searchLimitHit:(id)a3;
-- (void)setContentStyle:(id)a3 configuration:(id)a4;
-- (void)setSearchBook:(id)a3;
-- (void)setSearchString:(id)a3;
+- (void)provideWebView:(CGRect)view protocolCacheItem:(id)item paginationOptions:(id)options cleanupOptions:(id)cleanupOptions cfiOptions:(id)cfiOptions stylesheetSet:(id)set styleManager:(id)manager contentSupportMode:(unint64_t)self0 completion:(id)self1;
+- (void)searchDidFinish:(id)finish;
+- (void)searchHasPartialResults:(id)results;
+- (void)searchLimitHit:(id)hit;
+- (void)setContentStyle:(id)style configuration:(id)configuration;
+- (void)setSearchBook:(id)book;
+- (void)setSearchString:(id)string;
 @end
 
 @implementation BKSearchController
@@ -83,11 +83,11 @@
   return searchQueue;
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  obj = [v4 stringByTrimmingCharactersInSet:v5];
+  obj = [stringCopy stringByTrimmingCharactersInSet:v5];
 
   if (([(NSString *)self->_searchString isEqual:obj]& 1) == 0)
   {
@@ -106,41 +106,41 @@
   }
 }
 
-- (void)setContentStyle:(id)a3 configuration:(id)a4
+- (void)setContentStyle:(id)style configuration:(id)configuration
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = [v17 isEqual:self->_style];
+  styleCopy = style;
+  configurationCopy = configuration;
+  v8 = [styleCopy isEqual:self->_style];
   if ((v8 & 1) == 0)
   {
-    objc_storeStrong(&self->_style, a3);
+    objc_storeStrong(&self->_style, style);
   }
 
-  v9 = [v7 copy];
-  v10 = [v9 environment];
-  [v10 unfreeze];
+  v9 = [configurationCopy copy];
+  environment = [v9 environment];
+  [environment unfreeze];
 
-  v11 = [(BKSearchController *)self delegate];
+  delegate = [(BKSearchController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(BKSearchController *)self delegate];
-    v14 = [v13 environmentOverrideViewForSearchController:self];
+    delegate2 = [(BKSearchController *)self delegate];
+    v14 = [delegate2 environmentOverrideViewForSearchController:self];
 
     if (v14)
     {
-      v15 = [v9 environment];
-      [v15 setView:v14];
+      environment2 = [v9 environment];
+      [environment2 setView:v14];
     }
   }
 
-  v16 = [v9 environment];
-  [v16 freeze];
+  environment3 = [v9 environment];
+  [environment3 freeze];
 
   if (![(BKFlowingBookLayoutConfiguration *)self->_configuration isEqual:v9])
   {
-    [(BKSearchController *)self setConfiguration:v7];
+    [(BKSearchController *)self setConfiguration:configurationCopy];
     goto LABEL_11;
   }
 
@@ -151,35 +151,35 @@ LABEL_11:
   }
 }
 
-- (void)setSearchBook:(id)a3
+- (void)setSearchBook:(id)book
 {
-  v5 = a3;
+  bookCopy = book;
   p_book = &self->_book;
-  if (self->_book != v5)
+  if (self->_book != bookCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_book, a3);
+    v7 = bookCopy;
+    objc_storeStrong(p_book, book);
     p_book = [(BKSearchController *)self setSearchString:0];
-    v5 = v7;
+    bookCopy = v7;
   }
 
-  _objc_release_x1(p_book, v5);
+  _objc_release_x1(p_book, bookCopy);
 }
 
-- (id)_newSearchOperationForOrdinal:(int64_t)a3
+- (id)_newSearchOperationForOrdinal:(int64_t)ordinal
 {
   v5 = _AESearchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = a3;
+    ordinalCopy = ordinal;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "-- _newSearchOperationForOrdinal for ordinal: %ld", &v12, 0xCu);
   }
 
-  v6 = [(AEBookInfo *)self->_book contentType];
-  if (v6)
+  contentType = [(AEBookInfo *)self->_book contentType];
+  if (contentType)
   {
-    if (v6 != 2)
+    if (contentType != 2)
     {
       v8 = 0;
       goto LABEL_9;
@@ -196,24 +196,24 @@ LABEL_11:
   v8 = objc_alloc_init(*v7);
 LABEL_9:
   [v8 setDelegate:self];
-  v9 = [(BKSearchController *)self searchString];
-  [v8 setSearchString:v9];
+  searchString = [(BKSearchController *)self searchString];
+  [v8 setSearchString:searchString];
 
-  v10 = [(BKSearchController *)self searchBook];
-  [v8 setSearchBook:v10];
+  searchBook = [(BKSearchController *)self searchBook];
+  [v8 setSearchBook:searchBook];
 
   [v8 setTimeOut:0.0];
-  [v8 setOrdinal:a3];
+  [v8 setOrdinal:ordinal];
   return v8;
 }
 
-- (BOOL)_searchOnCandidateOrdinal:(int64_t)a3
+- (BOOL)_searchOnCandidateOrdinal:(int64_t)ordinal
 {
   v5 = _AESearchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = a3;
+    ordinalCopy3 = ordinal;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "-- _searchOnCandidateOrdinal ordinal: %ld", buf, 0xCu);
   }
 
@@ -223,27 +223,27 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = a3;
+      ordinalCopy3 = ordinal;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "-- _searchOnCandidateOrdinal _indexQueryResult available for ordinal: %ld", buf, 0xCu);
     }
 
     v15 = 0;
-    v7 = [(BKSearchController *)self searchBook];
-    v8 = [v7 readingDocumentCount];
+    searchBook = [(BKSearchController *)self searchBook];
+    readingDocumentCount = [searchBook readingDocumentCount];
 
-    if (v8 > a3)
+    if (readingDocumentCount > ordinal)
     {
       *&v9 = 134218498;
       v14 = v9;
-      while (![(BKTextIndexQueryResult *)self->_indexQueryResult isCandidateOrdinal:a3 isMissing:&v15, v14]|| ![(BKSearchController *)self _isDocumentOrdinalSearchable:a3])
+      while (![(BKTextIndexQueryResult *)self->_indexQueryResult isCandidateOrdinal:ordinal isMissing:&v15, v14]|| ![(BKSearchController *)self _isDocumentOrdinalSearchable:ordinal])
       {
         v10 = _AESearchLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [NSNumber numberWithBool:[(BKSearchController *)self _isDocumentOrdinalSearchable:a3]];
-          v12 = [NSNumber numberWithBool:[(BKTextIndexQueryResult *)self->_indexQueryResult isCandidateOrdinal:a3 isMissing:&v15]];
+          v11 = [NSNumber numberWithBool:[(BKSearchController *)self _isDocumentOrdinalSearchable:ordinal]];
+          v12 = [NSNumber numberWithBool:[(BKTextIndexQueryResult *)self->_indexQueryResult isCandidateOrdinal:ordinal isMissing:&v15]];
           *buf = v14;
-          v17 = a3;
+          ordinalCopy3 = ordinal;
           v18 = 2112;
           v19 = v11;
           v20 = 2112;
@@ -251,58 +251,58 @@ LABEL_9:
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "-- _searchOnCandidateOrdinal skipping ordinal: %ld isDocumentSearchable: %@ isCandidateOrdinal: %@", buf, 0x20u);
         }
 
-        ++a3;
+        ++ordinal;
         --self->_chaptersRemaining;
-        if (v8 == a3)
+        if (readingDocumentCount == ordinal)
         {
           return 0;
         }
       }
     }
 
-    if (a3 >= v8)
+    if (ordinal >= readingDocumentCount)
     {
       return 0;
     }
   }
 
-  [(BKSearchController *)self _searchOnOrdinal:a3];
+  [(BKSearchController *)self _searchOnOrdinal:ordinal];
   return 1;
 }
 
-- (BOOL)_isDocumentOrdinalSearchable:(int64_t)a3
+- (BOOL)_isDocumentOrdinalSearchable:(int64_t)searchable
 {
-  v4 = [(BKSearchController *)self searchBook];
-  if ([v4 contentType])
+  searchBook = [(BKSearchController *)self searchBook];
+  if ([searchBook contentType])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 linearIndexForOrdinal:a3] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [searchBook linearIndexForOrdinal:searchable] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v5;
 }
 
-- (void)_searchOnOrdinal:(int64_t)a3
+- (void)_searchOnOrdinal:(int64_t)ordinal
 {
-  v5 = [(BKSearchController *)self searchBook];
-  v6 = [v5 readingDocumentCount];
+  searchBook = [(BKSearchController *)self searchBook];
+  readingDocumentCount = [searchBook readingDocumentCount];
 
-  if (v6 <= a3)
+  if (readingDocumentCount <= ordinal)
   {
     return;
   }
 
-  v17 = [(BKSearchController *)self _newSearchOperationForOrdinal:a3];
+  v17 = [(BKSearchController *)self _newSearchOperationForOrdinal:ordinal];
   [v17 setStartSearchFromIndex:{-[BKSearchController startSearchIndex](self, "startSearchIndex")}];
-  v7 = [(BKSearchController *)self lastSavedSearchResult];
-  [v17 setLastSavedSearchResult:v7];
+  lastSavedSearchResult = [(BKSearchController *)self lastSavedSearchResult];
+  [v17 setLastSavedSearchResult:lastSavedSearchResult];
 
-  v8 = [(AEBookInfo *)self->_book contentType];
-  if (v8 == 2)
+  contentType = [(AEBookInfo *)self->_book contentType];
+  if (contentType == 2)
   {
     objc_opt_class();
     v9 = BUDynamicCast();
@@ -310,9 +310,9 @@ LABEL_9:
     {
       [v9 setCurrentPageIndex:{-[BKSearchController startSearchIndex](self, "startSearchIndex")}];
       objc_opt_class();
-      v11 = [(BKSearchController *)self lastSavedSearchResult];
-      v14 = BUDynamicCast();
-      [v9 setLastSavedSearchResult:v14];
+      lastSavedSearchResult2 = [(BKSearchController *)self lastSavedSearchResult];
+      searchBook4 = BUDynamicCast();
+      [v9 setLastSavedSearchResult:searchBook4];
       goto LABEL_9;
     }
 
@@ -321,22 +321,22 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!contentType)
   {
     objc_opt_class();
     v9 = BUDynamicCast();
     if (v9)
     {
-      v10 = [(BKSearchController *)self searchBook];
-      v11 = [v10 documentWithOrdinal:a3];
+      searchBook2 = [(BKSearchController *)self searchBook];
+      lastSavedSearchResult2 = [searchBook2 documentWithOrdinal:ordinal];
 
-      v12 = [(BKSearchController *)self searchBook];
-      v13 = [v12 physicalPageMapForDocument:v11];
+      searchBook3 = [(BKSearchController *)self searchBook];
+      v13 = [searchBook3 physicalPageMapForDocument:lastSavedSearchResult2];
       [v9 setPhysicalPageMap:v13];
 
-      v14 = [(BKSearchController *)self searchBook];
-      v15 = [v14 baseURL];
-      [v9 setBaseURL:v15];
+      searchBook4 = [(BKSearchController *)self searchBook];
+      baseURL = [searchBook4 baseURL];
+      [v9 setBaseURL:baseURL];
 
 LABEL_9:
       goto LABEL_10;
@@ -346,13 +346,13 @@ LABEL_9:
   }
 
 LABEL_11:
-  v16 = [(BKSearchController *)self _searchQueue];
-  [v16 addOperation:v17];
+  _searchQueue = [(BKSearchController *)self _searchQueue];
+  [_searchQueue addOperation:v17];
 }
 
-- (void)beginSearchWithReportAnalytics:(BOOL)a3
+- (void)beginSearchWithReportAnalytics:(BOOL)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   [(BKSearchController *)self cancelSearch];
   v5 = _AESearchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -361,64 +361,64 @@ LABEL_11:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "beginSearchWithReportAnalytics - schedule search after 0", v6, 2u);
   }
 
-  [(BKSearchController *)self _scheduleSearchAfterDelay:v3 reportAnalytics:0.0];
+  [(BKSearchController *)self _scheduleSearchAfterDelay:analyticsCopy reportAnalytics:0.0];
 }
 
 - (void)_unscheduleSearch
 {
-  v3 = [(BKSearchController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v3 selector:"_startSearchNowWithReportAnalytics:" object:&__kCFBooleanTrue];
+  performSelectorProxy = [(BKSearchController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"_startSearchNowWithReportAnalytics:" object:&__kCFBooleanTrue];
 
-  v4 = [(BKSearchController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v4 selector:"_startSearchNowWithReportAnalytics:" object:&__kCFBooleanFalse];
+  performSelectorProxy2 = [(BKSearchController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy2 selector:"_startSearchNowWithReportAnalytics:" object:&__kCFBooleanFalse];
 }
 
-- (void)_scheduleSearchAfterDelay:(double)a3 reportAnalytics:(BOOL)a4
+- (void)_scheduleSearchAfterDelay:(double)delay reportAnalytics:(BOOL)analytics
 {
-  v4 = a4;
+  analyticsCopy = analytics;
   [(BKSearchController *)self _unscheduleSearch];
-  v8 = [(BKSearchController *)self performSelectorProxy];
-  v7 = [NSNumber numberWithBool:v4];
-  [v8 performSelector:"_startSearchNowWithReportAnalytics:" withObject:v7 afterDelay:a3];
+  performSelectorProxy = [(BKSearchController *)self performSelectorProxy];
+  v7 = [NSNumber numberWithBool:analyticsCopy];
+  [performSelectorProxy performSelector:"_startSearchNowWithReportAnalytics:" withObject:v7 afterDelay:delay];
 }
 
-- (void)_startSearchNowWithReportAnalytics:(id)a3
+- (void)_startSearchNowWithReportAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   if ([(NSString *)self->_searchString length]&& ![(BKSearchController *)self isSearching])
   {
     [(BKSearchController *)self cancelSearch];
-    v5 = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
-    [v5 unfreeze];
+    environment = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
+    [environment unfreeze];
 
-    v6 = [(BKSearchController *)self delegate];
+    delegate = [(BKSearchController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(BKSearchController *)self delegate];
-      v9 = [v8 environmentOverrideViewForSearchController:self];
+      delegate2 = [(BKSearchController *)self delegate];
+      v9 = [delegate2 environmentOverrideViewForSearchController:self];
 
       if (v9)
       {
-        v10 = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
-        [v10 setView:v9];
+        environment2 = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
+        [environment2 setView:v9];
       }
     }
 
-    v11 = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
-    [v11 freeze];
+    environment3 = [(BKFlowingBookLayoutConfiguration *)self->_configuration environment];
+    [environment3 freeze];
 
     if (!self->_indexQueryResult)
     {
-      v12 = [(AEBookInfo *)self->_book baseURL];
-      v13 = [v12 absoluteString];
-      v14 = [v13 lastPathComponent];
-      v15 = [BKTextIndex bookIndexWithName:v14];
+      baseURL = [(AEBookInfo *)self->_book baseURL];
+      absoluteString = [baseURL absoluteString];
+      lastPathComponent = [absoluteString lastPathComponent];
+      v15 = [BKTextIndex bookIndexWithName:lastPathComponent];
 
       searchString = self->_searchString;
-      v17 = [(BKSearchController *)self searchBook];
-      v18 = [v15 queryForString:searchString maxOrdinal:{objc_msgSend(v17, "readingDocumentCount")}];
+      searchBook = [(BKSearchController *)self searchBook];
+      v18 = [v15 queryForString:searchString maxOrdinal:{objc_msgSend(searchBook, "readingDocumentCount")}];
       indexQueryResult = self->_indexQueryResult;
       self->_indexQueryResult = v18;
 
@@ -433,8 +433,8 @@ LABEL_11:
     self->_maxSearchResults = 100;
     [(BKSearchController *)self setStartSearchIndex:0];
     [(BKSearchController *)self setLastSavedSearchResult:0];
-    v20 = [(BKSearchController *)self searchBook];
-    self->_chaptersRemaining = [v20 readingDocumentCount];
+    searchBook2 = [(BKSearchController *)self searchBook];
+    self->_chaptersRemaining = [searchBook2 readingDocumentCount];
 
     v21 = _AESearchLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -451,8 +451,8 @@ LABEL_11:
     }
 
     [(BKSearchController *)self setSearching:1];
-    v23 = [(BKSearchController *)self delegate];
-    [v23 searchControllerWillBeginSearching:self reportAnalytics:{objc_msgSend(v4, "BOOLValue")}];
+    delegate3 = [(BKSearchController *)self delegate];
+    [delegate3 searchControllerWillBeginSearching:self reportAnalytics:{objc_msgSend(analyticsCopy, "BOOLValue")}];
 
     [(BKSearchController *)self setAborted:0];
     [(BKSearchController *)self setPartialResults:0];
@@ -465,15 +465,15 @@ LABEL_15:
 
 - (void)cancelSearch
 {
-  v3 = [(BKSearchController *)self isSearching];
+  isSearching = [(BKSearchController *)self isSearching];
   [(BKSearchController *)self _unscheduleSearch];
   [(BKSearchController *)self setSearching:0];
   [(BKSearchController *)self setPartialResults:0];
   [(BKSearchController *)self setStartSearchIndex:0];
   [(BKSearchController *)self setLastSavedSearchResult:0];
   [(BKSearchController *)self setSearchCompleted:0];
-  v4 = [(BKSearchController *)self _searchQueue];
-  [v4 cancelAllOperations];
+  _searchQueue = [(BKSearchController *)self _searchQueue];
+  [_searchQueue cancelAllOperations];
 
   [(BKSearchController *)self setWebView:0];
   [(BKSearchController *)self setWebViewTrackingID:[(BKSearchController *)self webViewTrackingID]+ 1];
@@ -483,13 +483,13 @@ LABEL_15:
     [(BKSearchController *)self _resultsChanged];
   }
 
-  else if (!v3)
+  else if (!isSearching)
   {
     goto LABEL_5;
   }
 
-  v5 = [(BKSearchController *)self delegate];
-  [v5 searchControllerDidFinishSearching:self];
+  delegate = [(BKSearchController *)self delegate];
+  [delegate searchControllerDidFinishSearching:self];
 
 LABEL_5:
   indexQueryResult = self->_indexQueryResult;
@@ -502,16 +502,16 @@ LABEL_5:
   {
     [(BKSearchController *)self setSearching:0];
     [(BKSearchController *)self setPartialResults:1];
-    v3 = [(BKSearchController *)self delegate];
-    [v3 searchControllerResultsChanged:self];
+    delegate = [(BKSearchController *)self delegate];
+    [delegate searchControllerResultsChanged:self];
 
-    v4 = [(BKSearchController *)self delegate];
-    [v4 searchControllerDidFinishSearching:self];
+    delegate2 = [(BKSearchController *)self delegate];
+    [delegate2 searchControllerDidFinishSearching:self];
 
-    v5 = [(AEBookInfo *)self->_book baseURL];
-    v6 = [v5 absoluteString];
-    v7 = [v6 lastPathComponent];
-    v8 = [BKTextIndex bookIndexWithName:v7];
+    baseURL = [(AEBookInfo *)self->_book baseURL];
+    absoluteString = [baseURL absoluteString];
+    lastPathComponent = [absoluteString lastPathComponent];
+    v8 = [BKTextIndex bookIndexWithName:lastPathComponent];
 
     [v8 save];
   }
@@ -521,22 +521,22 @@ LABEL_5:
 {
   if (![(BKSearchController *)self isSearching])
   {
-    v3 = [(BKSearchController *)self searchString];
-    v4 = [v3 length];
+    searchString = [(BKSearchController *)self searchString];
+    v4 = [searchString length];
 
     if (v4)
     {
-      v5 = [(BKSearchController *)self delegate];
-      [v5 searchControllerWillBeginSearching:self reportAnalytics:1];
+      delegate = [(BKSearchController *)self delegate];
+      [delegate searchControllerWillBeginSearching:self reportAnalytics:1];
 
       [(BKSearchController *)self setAborted:0];
       [(BKSearchController *)self setPartialResults:0];
       [(BKSearchController *)self setSearchCompleted:0];
       [(BKSearchController *)self setSearching:1];
-      v6 = [(BKSearchController *)self searchBook];
-      v7 = [v6 readingDocumentCount];
+      searchBook = [(BKSearchController *)self searchBook];
+      readingDocumentCount = [searchBook readingDocumentCount];
 
-      if (![(BKSearchController *)self _searchOnCandidateOrdinal:&v7[-self->_chaptersRemaining]])
+      if (![(BKSearchController *)self _searchOnCandidateOrdinal:&readingDocumentCount[-self->_chaptersRemaining]])
       {
 
         [(BKSearchController *)self endSearch];
@@ -549,21 +549,21 @@ LABEL_5:
 {
   [(BKSearchController *)self setSearching:0];
   [(BKSearchController *)self setSearchCompleted:1];
-  v3 = [(BKSearchController *)self _searchQueue];
-  [v3 cancelAllOperations];
+  _searchQueue = [(BKSearchController *)self _searchQueue];
+  [_searchQueue cancelAllOperations];
 
   [(BKSearchController *)self setWebView:0];
   [(BKSearchController *)self setWebViewTrackingID:[(BKSearchController *)self webViewTrackingID]+ 1];
-  v4 = [(BKSearchController *)self delegate];
-  [v4 searchControllerResultsChanged:self];
+  delegate = [(BKSearchController *)self delegate];
+  [delegate searchControllerResultsChanged:self];
 
-  v5 = [(BKSearchController *)self delegate];
-  [v5 searchControllerDidFinishSearching:self];
+  delegate2 = [(BKSearchController *)self delegate];
+  [delegate2 searchControllerDidFinishSearching:self];
 
-  v6 = [(AEBookInfo *)self->_book baseURL];
-  v7 = [v6 absoluteString];
-  v8 = [v7 lastPathComponent];
-  v9 = [BKTextIndex bookIndexWithName:v8];
+  baseURL = [(AEBookInfo *)self->_book baseURL];
+  absoluteString = [baseURL absoluteString];
+  lastPathComponent = [absoluteString lastPathComponent];
+  v9 = [BKTextIndex bookIndexWithName:lastPathComponent];
 
   [v9 save];
 }
@@ -572,8 +572,8 @@ LABEL_5:
 {
   if (![(BKSearchController *)self isSearching])
   {
-    v3 = [(BKSearchController *)self searchString];
-    v4 = [v3 length];
+    searchString = [(BKSearchController *)self searchString];
+    v4 = [searchString length];
 
     if (v4)
     {
@@ -584,17 +584,17 @@ LABEL_5:
   }
 }
 
-- (void)_addResultsFromSearch:(id)a3
+- (void)_addResultsFromSearch:(id)search
 {
-  v8 = a3;
-  v4 = [v8 results];
-  v5 = [v4 count];
+  searchCopy = search;
+  results = [searchCopy results];
+  v5 = [results count];
 
   if (v5)
   {
     results = self->_results;
-    v7 = [v8 results];
-    [(NSMutableArray *)results addObjectsFromArray:v7];
+    results2 = [searchCopy results];
+    [(NSMutableArray *)results addObjectsFromArray:results2];
 
     [(BKSearchController *)self _resultsChanged];
   }
@@ -602,53 +602,53 @@ LABEL_5:
 
 - (void)_resultsChanged
 {
-  v3 = [(BKSearchController *)self delegate];
-  [v3 searchControllerResultsChanged:self];
+  delegate = [(BKSearchController *)self delegate];
+  [delegate searchControllerResultsChanged:self];
 }
 
-- (void)provideWebView:(CGRect)a3 protocolCacheItem:(id)a4 paginationOptions:(id)a5 cleanupOptions:(id)a6 cfiOptions:(id)a7 stylesheetSet:(id)a8 styleManager:(id)a9 contentSupportMode:(unint64_t)a10 completion:(id)a11
+- (void)provideWebView:(CGRect)view protocolCacheItem:(id)item paginationOptions:(id)options cleanupOptions:(id)cleanupOptions cfiOptions:(id)cfiOptions stylesheetSet:(id)set styleManager:(id)manager contentSupportMode:(unint64_t)self0 completion:(id)self1
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v27 = a11;
-  v28 = [(BKSearchController *)self webView];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  itemCopy = item;
+  optionsCopy = options;
+  cleanupOptionsCopy = cleanupOptions;
+  cfiOptionsCopy = cfiOptions;
+  setCopy = set;
+  managerCopy = manager;
+  completionCopy = completion;
+  webView = [(BKSearchController *)self webView];
 
-  if (v28)
+  if (webView)
   {
     v29 = _AESearchLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(BKSearchController *)self webView];
+      webView2 = [(BKSearchController *)self webView];
       *buf = 138412290;
-      v39 = v30;
+      v39 = webView2;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Reusing web view %@", buf, 0xCu);
     }
 
-    v31 = objc_retainBlock(v27);
+    v31 = objc_retainBlock(completionCopy);
     if (v31)
     {
-      v32 = [(BKSearchController *)self webView];
-      v31[2](v31, v32, 0);
+      webView3 = [(BKSearchController *)self webView];
+      v31[2](v31, webView3, 0);
     }
   }
 
   else
   {
     [(BKSearchController *)self setWebViewTrackingID:[(BKSearchController *)self webViewTrackingID]+ 1];
-    v33 = [(BKSearchController *)self webViewTrackingID];
+    webViewTrackingID = [(BKSearchController *)self webViewTrackingID];
     v34 = _AESearchLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v39) = v33;
+      LODWORD(v39) = webViewTrackingID;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Creating web view for tracking ID: %d", buf, 8u);
     }
 
@@ -658,30 +658,30 @@ LABEL_5:
     v35[2] = sub_8F3C8;
     v35[3] = &unk_1E4E10;
     objc_copyWeak(v37, buf);
-    v37[1] = v33;
-    v36 = v27;
-    [BEWebViewFactory viewConfiguredForSearch:v21 protocolCacheItem:v22 paginationOptions:v23 cleanupOptions:v24 cfiOptions:v25 stylesheetSet:v26 styleManager:x contentSupportMode:y completion:width, height, a10, v35];
+    v37[1] = webViewTrackingID;
+    v36 = completionCopy;
+    [BEWebViewFactory viewConfiguredForSearch:itemCopy protocolCacheItem:optionsCopy paginationOptions:cleanupOptionsCopy cleanupOptions:cfiOptionsCopy cfiOptions:setCopy stylesheetSet:managerCopy styleManager:x contentSupportMode:y completion:width, height, mode, v35];
 
     objc_destroyWeak(v37);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_didFinishCreatingWebView:(id)a3 forTrackingID:(int64_t)a4 completion:(id)a5
+- (void)_didFinishCreatingWebView:(id)view forTrackingID:(int64_t)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   v10 = _AESearchLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    v15 = a4;
+    dCopy2 = d;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Finished creating web view for tracking ID: %d", &v14, 8u);
   }
 
-  if ([(BKSearchController *)self webViewTrackingID]== a4)
+  if ([(BKSearchController *)self webViewTrackingID]== d)
   {
-    [(BKSearchController *)self setWebView:v8];
+    [(BKSearchController *)self setWebView:viewCopy];
   }
 
   else
@@ -689,62 +689,62 @@ LABEL_5:
     v11 = _AESearchLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BKSearchController *)self webViewTrackingID];
+      webViewTrackingID = [(BKSearchController *)self webViewTrackingID];
       v14 = 67109376;
-      v15 = a4;
+      dCopy2 = d;
       v16 = 1024;
-      v17 = v12;
+      v17 = webViewTrackingID;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Ignoring web view for old tracking ID: %d (currently: %d)", &v14, 0xEu);
     }
   }
 
-  v13 = objc_retainBlock(v9);
+  v13 = objc_retainBlock(completionCopy);
 
   if (v13)
   {
-    v13[2](v13, v8, 1);
+    v13[2](v13, viewCopy, 1);
   }
 }
 
-- (void)searchLimitHit:(id)a3
+- (void)searchLimitHit:(id)hit
 {
-  v8 = a3;
-  v4 = [(BKSearchController *)self delegate];
-  [v4 searchControllerFinishedSearchingChapter:self];
+  hitCopy = hit;
+  delegate = [(BKSearchController *)self delegate];
+  [delegate searchControllerFinishedSearchingChapter:self];
 
-  [(BKSearchController *)self _addResultsFromSearch:v8];
-  v5 = [(BKSearchController *)self contentIsPages];
-  v6 = [v8 startSearchFromIndex];
-  if ((v5 & 1) == 0)
+  [(BKSearchController *)self _addResultsFromSearch:hitCopy];
+  contentIsPages = [(BKSearchController *)self contentIsPages];
+  startSearchFromIndex = [hitCopy startSearchFromIndex];
+  if ((contentIsPages & 1) == 0)
   {
-    v6 = &v6[[(BKSearchController *)self startSearchIndex]];
+    startSearchFromIndex = &startSearchFromIndex[[(BKSearchController *)self startSearchIndex]];
   }
 
-  [(BKSearchController *)self setStartSearchIndex:v6];
-  v7 = [v8 lastSavedSearchResult];
-  [(BKSearchController *)self setLastSavedSearchResult:v7];
+  [(BKSearchController *)self setStartSearchIndex:startSearchFromIndex];
+  lastSavedSearchResult = [hitCopy lastSavedSearchResult];
+  [(BKSearchController *)self setLastSavedSearchResult:lastSavedSearchResult];
 
   [(BKSearchController *)self pauseSearch];
 }
 
-- (void)searchHasPartialResults:(id)a3
+- (void)searchHasPartialResults:(id)results
 {
-  v9 = a3;
-  v4 = [(BKSearchController *)self contentIsPages];
-  v5 = v9;
-  if (v4)
+  resultsCopy = results;
+  contentIsPages = [(BKSearchController *)self contentIsPages];
+  v5 = resultsCopy;
+  if (contentIsPages)
   {
     objc_opt_class();
     v6 = BUDynamicCast();
-    v7 = [v6 remainingPages];
-    if (self->_pagesRemaining != v7)
+    remainingPages = [v6 remainingPages];
+    if (self->_pagesRemaining != remainingPages)
     {
-      self->_pagesRemaining = v7;
-      v8 = [(BKSearchController *)self delegate];
-      [v8 searchControllerFinishedSearchingChapter:self];
+      self->_pagesRemaining = remainingPages;
+      delegate = [(BKSearchController *)self delegate];
+      [delegate searchControllerFinishedSearchingChapter:self];
     }
 
-    v5 = v9;
+    v5 = resultsCopy;
   }
 
   [(BKSearchController *)self _addResultsFromSearch:v5];
@@ -754,39 +754,39 @@ LABEL_5:
   }
 }
 
-- (void)searchDidFinish:(id)a3
+- (void)searchDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   --self->_chaptersRemaining;
   v5 = _AESearchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 ordinal];
+    ordinal = [finishCopy ordinal];
     chaptersRemaining = self->_chaptersRemaining;
     *buf = 134218240;
-    v21 = v6;
+    v21 = ordinal;
     v22 = 2048;
     v23 = chaptersRemaining;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "-- searchDidFinishfor ordinal: %ld  chaptersRemaining: %ld", buf, 0x16u);
   }
 
-  v8 = [(BKSearchController *)self delegate];
-  [v8 searchControllerFinishedSearchingChapter:self];
+  delegate = [(BKSearchController *)self delegate];
+  [delegate searchControllerFinishedSearchingChapter:self];
 
-  [(BKSearchController *)self _addResultsFromSearch:v4];
+  [(BKSearchController *)self _addResultsFromSearch:finishCopy];
   [(BKSearchController *)self setStartSearchIndex:0];
   [(BKSearchController *)self setLastSavedSearchResult:0];
   if ([(NSMutableArray *)self->_results count]< self->_maxSearchResults && [(BKSearchController *)self isSearching])
   {
-    -[BKSearchController _searchOnCandidateOrdinal:](self, "_searchOnCandidateOrdinal:", [v4 ordinal] + 1);
+    -[BKSearchController _searchOnCandidateOrdinal:](self, "_searchOnCandidateOrdinal:", [finishCopy ordinal] + 1);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(BKSearchController *)self _searchQueue];
-    v10 = [v9 operations];
+    _searchQueue = [(BKSearchController *)self _searchQueue];
+    operations = [_searchQueue operations];
 
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v11 = [operations countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -798,7 +798,7 @@ LABEL_5:
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(operations);
           }
 
           if (![*(*(&v15 + 1) + 8 * v14) isDone])
@@ -811,7 +811,7 @@ LABEL_5:
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [operations countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v12)
         {
           continue;

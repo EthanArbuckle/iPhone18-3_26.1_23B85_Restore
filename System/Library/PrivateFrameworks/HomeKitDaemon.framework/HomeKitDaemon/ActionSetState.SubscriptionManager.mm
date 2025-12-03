@@ -1,22 +1,22 @@
 @interface ActionSetState.SubscriptionManager
-- (BOOL)isActionSetOn:(id)a3;
-- (BOOL)isMonitoringActionSet:(id)a3;
+- (BOOL)isActionSetOn:(id)on;
+- (BOOL)isMonitoringActionSet:(id)set;
 - (_TtCC13HomeKitDaemon14ActionSetState19SubscriptionManager)init;
-- (void)actionSetStateDidChange:(id)a3 state:(BOOL)a4;
-- (void)stopAllMonitoringForActionSetUUID:(NSUUID *)a3 completion:(id)a4;
+- (void)actionSetStateDidChange:(id)change state:(BOOL)state;
+- (void)stopAllMonitoringForActionSetUUID:(NSUUID *)d completion:(id)completion;
 @end
 
 @implementation ActionSetState.SubscriptionManager
 
-- (void)stopAllMonitoringForActionSetUUID:(NSUUID *)a3 completion:(id)a4
+- (void)stopAllMonitoringForActionSetUUID:(NSUUID *)d completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -31,12 +31,12 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }
 
-- (BOOL)isMonitoringActionSet:(id)a3
+- (BOOL)isMonitoringActionSet:(id)set
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -44,14 +44,14 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB79C();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_2297486D0(v8);
 
   (*(v5 + 8))(v8, v4);
   return v10 & 1;
 }
 
-- (BOOL)isActionSetOn:(id)a3
+- (BOOL)isActionSetOn:(id)on
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -60,7 +60,7 @@
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB79C();
   v9 = *(&self->super.super.isa + OBJC_IVAR____TtCC13HomeKitDaemon14ActionSetState19SubscriptionManager_monitoredActionSets);
-  v10 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v9 + 6);
   sub_229748838(&v9[4], v8, &v13);
@@ -71,7 +71,7 @@
   return self;
 }
 
-- (void)actionSetStateDidChange:(id)a3 state:(BOOL)a4
+- (void)actionSetStateDidChange:(id)change state:(BOOL)state
 {
   v6 = sub_22A4DB7DC();
   v7 = *(v6 - 8);
@@ -79,8 +79,8 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB79C();
-  v11 = self;
-  sub_2297489C4(v10, a4);
+  selfCopy = self;
+  sub_2297489C4(v10, state);
 
   (*(v7 + 8))(v10, v6);
 }

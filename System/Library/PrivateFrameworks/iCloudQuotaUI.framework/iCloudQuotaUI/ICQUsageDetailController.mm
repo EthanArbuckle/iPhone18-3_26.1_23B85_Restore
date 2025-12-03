@@ -1,26 +1,26 @@
 @interface ICQUsageDetailController
-+ (BOOL)hasMediaForGroups:(id)a3;
-+ (float)totalSizeForGroups:(id)a3;
++ (BOOL)hasMediaForGroups:(id)groups;
++ (float)totalSizeForGroups:(id)groups;
 + (id)mpKeyTranslations;
-+ (void)setupSpecifier:(id)a3 forMediaGroups:(id)a4;
++ (void)setupSpecifier:(id)specifier forMediaGroups:(id)groups;
 - (BOOL)hasMedia;
 - (BOOL)isAppController;
-- (BOOL)removeMediaEntry:(id)a3 inSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (BOOL)updateSizesAfterDeletingMediaKind:(id)a3 deletedSection:(BOOL)a4 shouldPop:(BOOL)a5;
+- (BOOL)removeMediaEntry:(id)entry inSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (BOOL)updateSizesAfterDeletingMediaKind:(id)kind deletedSection:(BOOL)section shouldPop:(BOOL)pop;
 - (ICQUsageStorageController)storageController;
 - (id)copyMediaSpecifiers;
 - (id)documentsAndDataSpecifiers;
-- (id)dynamicSize:(id)a3;
-- (id)size:(id)a3;
+- (id)dynamicSize:(id)size;
+- (id)size:(id)size;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)confirmAppDeletion;
 - (void)deleteApp;
 - (void)loadView;
-- (void)showMore:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showMore:(id)more;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQUsageDetailController
@@ -48,16 +48,16 @@
   return v5;
 }
 
-+ (float)totalSizeForGroups:(id)a3
++ (float)totalSizeForGroups:(id)groups
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  groupsCopy = groups;
   v4 = +[ICQUsageStorageMonitor sharedMonitor];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = groupsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -92,18 +92,18 @@
   return v9;
 }
 
-+ (BOOL)hasMediaForGroups:(id)a3
++ (BOOL)hasMediaForGroups:(id)groups
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  groupsCopy = groups;
+  if ([groupsCopy count])
   {
     v4 = +[ICQUsageStorageMonitor sharedMonitor];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = groupsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -118,8 +118,8 @@
           }
 
           v9 = [v4 mediaCollectionForKey:{*(*(&v13 + 1) + 8 * i), v13}];
-          v10 = [v9 items];
-          v11 = [v10 count];
+          items = [v9 items];
+          v11 = [items count];
 
           if (v11)
           {
@@ -149,18 +149,18 @@ LABEL_12:
   return v6;
 }
 
-+ (void)setupSpecifier:(id)a3 forMediaGroups:(id)a4
++ (void)setupSpecifier:(id)specifier forMediaGroups:(id)groups
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 propertyForKey:@"USAGE_APP"];
-  [ICQUsageDetailController totalSizeForGroups:v6];
+  specifierCopy = specifier;
+  groupsCopy = groups;
+  v7 = [specifierCopy propertyForKey:@"USAGE_APP"];
+  [ICQUsageDetailController totalSizeForGroups:groupsCopy];
   v9 = v8;
   v10 = MEMORY[0x277CCABB0];
   [v7 totalSize];
   *&v12 = v9 + v11;
   v13 = [v10 numberWithFloat:v12];
-  [v16 setProperty:v13 forKey:kTotalSizeProperty];
+  [specifierCopy setProperty:v13 forKey:kTotalSizeProperty];
 
   if (v7)
   {
@@ -169,7 +169,7 @@ LABEL_12:
 
   else
   {
-    [a1 totalSizeForGroups:v6];
+    [self totalSizeForGroups:groupsCopy];
     if (v15 <= 0.0)
     {
       v14 = 4;
@@ -181,21 +181,21 @@ LABEL_12:
     }
   }
 
-  [v16 setCellType:v14];
+  [specifierCopy setCellType:v14];
 }
 
 - (BOOL)hasMedia
 {
-  v2 = [objc_opt_class() mediaGroups];
-  v3 = [objc_opt_class() hasMediaForGroups:v2];
+  mediaGroups = [objc_opt_class() mediaGroups];
+  v3 = [objc_opt_class() hasMediaForGroups:mediaGroups];
 
   return v3;
 }
 
 - (BOOL)isAppController
 {
-  v2 = [(ICQUsageDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"USAGE_APP"];
+  specifier = [(ICQUsageDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"USAGE_APP"];
   v4 = v3 != 0;
 
   return v4;
@@ -206,21 +206,21 @@ LABEL_12:
   v15.receiver = self;
   v15.super_class = ICQUsageDetailController;
   [(ICQUsageDetailController *)&v15 loadView];
-  v3 = [(ICQUsageDetailController *)self table];
+  table = [(ICQUsageDetailController *)self table];
   if ([(ICQUsageDetailController *)self isAppController])
   {
     v4 = [ICQUsageDetailHeader alloc];
     +[ICQUsageDetailHeader usageDetailHeaderHeight];
     v6 = [(ICQUsageDetailHeader *)v4 initWithFrame:0.0, 0.0, 0.0, v5];
     [(ICQUsageDetailHeader *)v6 setLabelTextAndIconWithSpecifier:*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
-    [v3 setTableHeaderView:v6];
+    [table setTableHeaderView:v6];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"INFO" value:&stru_28844FC60 table:@"Usage Statistics"];
     [(ICQUsageDetailController *)self setTitle:v8];
 
-    v9 = [(ICQUsageDetailController *)self navigationItem];
-    v10 = [v9 rightBarButtonItem];
-    [v10 setEnabled:0];
+    navigationItem = [(ICQUsageDetailController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 
   else
@@ -237,7 +237,7 @@ LABEL_12:
     }
 
     v6 = [v11 initWithFrame:{0.0, 0.0, 0.0, v12}];
-    [v3 setTableHeaderView:v6];
+    [table setTableHeaderView:v6];
   }
 
   if (![(ICQUsageDetailController *)self hasMedia])
@@ -246,28 +246,28 @@ LABEL_12:
   }
 
   v13 = +[ICQUsageStorageMonitor sharedMonitor];
-  v14 = [v13 footerItems];
-  [(ICQUsageDetailController *)self setToolbarItems:v14 animated:0];
+  footerItems = [v13 footerItems];
+  [(ICQUsageDetailController *)self setToolbarItems:footerItems animated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ICQUsageDetailController;
-  [(ICQUsageDetailController *)&v4 viewDidDisappear:a3];
+  [(ICQUsageDetailController *)&v4 viewDidDisappear:disappear];
   if ([(ICQUsageDetailController *)self isMovingFromParentViewController])
   {
     [(ICQUsageDetailController *)self setStorageController:0];
   }
 }
 
-- (void)showMore:(id)a3
+- (void)showMore:(id)more
 {
-  v4 = a3;
+  moreCopy = more;
   v12 = 0;
-  [(ICQUsageDetailController *)self getGroup:&v12 row:0 ofSpecifier:v4];
+  [(ICQUsageDetailController *)self getGroup:&v12 row:0 ofSpecifier:moreCopy];
   media = self->_media;
-  v6 = [v4 propertyForKey:@"mediaKind"];
+  v6 = [moreCopy propertyForKey:@"mediaKind"];
   v7 = [(NSMutableDictionary *)media objectForKey:v6];
 
   v8 = [v7 objectForKey:@"usageGroupSpecifiers"];
@@ -283,7 +283,7 @@ LABEL_12:
 
   [v7 removeObjectForKey:@"usageGroupShowAllSpecifier"];
   [(ICQUsageDetailController *)self beginUpdates];
-  [(ICQUsageDetailController *)self removeSpecifier:v4];
+  [(ICQUsageDetailController *)self removeSpecifier:moreCopy];
   if (v10)
   {
     [(ICQUsageDetailController *)self insertContiguousSpecifiers:v10 atEndOfGroup:v12 animated:1];
@@ -292,22 +292,22 @@ LABEL_12:
   [(ICQUsageDetailController *)self endUpdates];
 }
 
-- (BOOL)removeMediaEntry:(id)a3 inSection:(int64_t)a4
+- (BOOL)removeMediaEntry:(id)entry inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 propertyForKey:@"mediaKind"];
+  entryCopy = entry;
+  v7 = [entryCopy propertyForKey:@"mediaKind"];
   v8 = [(NSMutableDictionary *)self->_media objectForKey:v7];
   v9 = [v8 objectForKey:@"usageGroupSpecifiers"];
   [(ICQUsageDetailController *)self beginUpdates];
   v10 = [v8 objectForKey:@"usageGroupShowAll"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [v9 removeObject:v6];
+    [v9 removeObject:entryCopy];
     if ([v9 count] > 6)
     {
-      [(ICQUsageDetailController *)self removeSpecifier:v6 animated:1];
+      [(ICQUsageDetailController *)self removeSpecifier:entryCopy animated:1];
       v17 = [v9 objectAtIndex:5];
       v18 = [v8 objectForKey:@"usageGroupShowAllSpecifier"];
       [(ICQUsageDetailController *)self insertSpecifier:v17 atIndex:[(ICQUsageDetailController *)self indexOfSpecifier:v18] animated:1];
@@ -321,10 +321,10 @@ LABEL_12:
       v13 = [v8 objectForKey:@"usageGroupShowAllSpecifier"];
       [(ICQUsageDetailController *)self removeSpecifier:v13 animated:1];
 
-      [(ICQUsageDetailController *)self removeSpecifier:v6 animated:1];
+      [(ICQUsageDetailController *)self removeSpecifier:entryCopy animated:1];
       [v8 removeObjectForKey:@"usageGroupShowAllSpecifier"];
       v14 = [v9 objectAtIndex:5];
-      [(ICQUsageDetailController *)self insertSpecifier:v14 atEndOfGroup:a4 animated:1];
+      [(ICQUsageDetailController *)self insertSpecifier:v14 atEndOfGroup:section animated:1];
     }
 
     goto LABEL_8;
@@ -332,8 +332,8 @@ LABEL_12:
 
   if ([v9 count] >= 3)
   {
-    [(ICQUsageDetailController *)self removeSpecifier:v6 animated:1];
-    [v9 removeObject:v6];
+    [(ICQUsageDetailController *)self removeSpecifier:entryCopy animated:1];
+    [v9 removeObject:entryCopy];
 LABEL_8:
     v16 = v9;
     goto LABEL_9;
@@ -351,47 +351,47 @@ LABEL_9:
   return v16 == 0;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [v6 row];
-  v8 = [v6 section];
-  v9 = [(ICQUsageDetailController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  v7 = [pathCopy row];
+  section = [pathCopy section];
+  v9 = [(ICQUsageDetailController *)self indexForIndexPath:pathCopy];
 
   v10 = [(ICQUsageDetailController *)self specifierAtIndex:v9];
   v11 = [v10 propertyForKey:@"mediaKind"];
   v12 = [(NSMutableDictionary *)self->_media objectForKey:v11];
   v13 = +[ICQUsageStorageMonitor sharedMonitor];
   v14 = [v13 mediaCollectionForKey:v11];
-  v15 = [(ICQUsageDetailController *)self removeMediaEntry:v10 inSection:v8];
+  v15 = [(ICQUsageDetailController *)self removeMediaEntry:v10 inSection:section];
   v16 = [v12 objectForKey:@"usageGroupMediaType"];
-  v17 = [v16 intValue];
+  intValue = [v16 intValue];
 
-  if (v17)
+  if (intValue)
   {
-    if (v17 != 1)
+    if (intValue != 1)
     {
       v22 = 0;
       goto LABEL_7;
     }
 
-    v18 = [v14 items];
-    v19 = [v18 objectAtIndex:v7];
+    items = [v14 items];
+    v19 = [items objectAtIndex:v7];
 
     v27[0] = v19;
-    v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
+    items3 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   }
 
   else
   {
-    v21 = [v14 items];
-    v19 = [v21 objectAtIndex:v7];
+    items2 = [v14 items];
+    v19 = [items2 objectAtIndex:v7];
 
-    v20 = [v19 items];
+    items3 = [v19 items];
   }
 
-  v22 = v20;
+  v22 = items3;
 
 LABEL_7:
   v23 = dispatch_get_global_queue(-2, 0);
@@ -423,16 +423,16 @@ void __75__ICQUsageDetailController_tableView_commitEditingStyle_forRowAtIndexPa
   [v0 fetchSystemSizeStrings];
 }
 
-- (BOOL)updateSizesAfterDeletingMediaKind:(id)a3 deletedSection:(BOOL)a4 shouldPop:(BOOL)a5
+- (BOOL)updateSizesAfterDeletingMediaKind:(id)kind deletedSection:(BOOL)section shouldPop:(BOOL)pop
 {
-  v5 = a5;
-  v8 = a3;
-  if (!a4)
+  popCopy = pop;
+  kindCopy = kind;
+  if (!section)
   {
-    v9 = [(NSMutableDictionary *)self->_media objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_media objectForKey:kindCopy];
     v10 = [v9 objectForKey:@"usageGroupSpecifiers"];
     v11 = +[ICQUsageStorageMonitor sharedMonitor];
-    v12 = [v11 mediaCollectionForKey:v8];
+    v12 = [v11 mediaCollectionForKey:kindCopy];
 
     v13 = [v10 objectAtIndex:0];
     [v12 totalSize];
@@ -445,14 +445,14 @@ void __75__ICQUsageDetailController_tableView_commitEditingStyle_forRowAtIndexPa
     [v18 setSize:v17];
   }
 
-  v19 = [(ICQUsageDetailController *)self isAppController];
+  isAppController = [(ICQUsageDetailController *)self isAppController];
   v20 = objc_opt_class();
   v21 = *MEMORY[0x277D3FD20];
   v22 = *(&self->super.super.super.super.super.super.isa + v21);
-  v23 = [objc_opt_class() mediaGroups];
-  [v20 setupSpecifier:v22 forMediaGroups:v23];
+  mediaGroups = [objc_opt_class() mediaGroups];
+  [v20 setupSpecifier:v22 forMediaGroups:mediaGroups];
 
-  if (!v19 && ![(NSMutableDictionary *)self->_media count])
+  if (!isAppController && ![(NSMutableDictionary *)self->_media count])
   {
     [*(&self->super.super.super.super.super.super.isa + v21) setCellType:4];
   }
@@ -466,45 +466,45 @@ void __75__ICQUsageDetailController_tableView_commitEditingStyle_forRowAtIndexPa
   v25 = objc_loadWeakRetained(&self->_storageController);
   [v25 sizeChangedForSpecifier:*(&self->super.super.super.super.super.super.isa + v21)];
 
-  if (v19 || !v5 || [(NSMutableDictionary *)self->_media count])
+  if (isAppController || !popCopy || [(NSMutableDictionary *)self->_media count])
   {
     v26 = 0;
   }
 
   else
   {
-    v28 = [(ICQUsageDetailController *)self navigationController];
-    v29 = [(ICQUsageDetailController *)self parentController];
+    navigationController = [(ICQUsageDetailController *)self navigationController];
+    parentController = [(ICQUsageDetailController *)self parentController];
     v26 = 1;
-    v30 = [v28 popToViewController:v29 animated:1];
+    v30 = [navigationController popToViewController:parentController animated:1];
   }
 
   return v26;
 }
 
-- (id)size:(id)a3
+- (id)size:(id)size
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"mediaKind"];
+  sizeCopy = size;
+  v5 = [sizeCopy propertyForKey:@"mediaKind"];
   v20 = 0;
-  [(ICQUsageDetailController *)self getGroup:0 row:&v20 ofSpecifier:v4];
+  [(ICQUsageDetailController *)self getGroup:0 row:&v20 ofSpecifier:sizeCopy];
 
   v6 = +[ICQUsageStorageMonitor sharedMonitor];
   v7 = [(NSMutableDictionary *)self->_media objectForKey:v5];
   v8 = [v7 objectForKey:@"usageGroupMediaType"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
-  if (v9)
+  if (intValue)
   {
     v10 = 0;
-    if (v9 != 1)
+    if (intValue != 1)
     {
       goto LABEL_6;
     }
 
     v11 = [v6 mediaCollectionForKey:v5];
-    v12 = [v11 items];
-    v13 = [v12 objectAtIndex:v20];
+    items = [v11 items];
+    v13 = [items objectAtIndex:v20];
     v14 = [v13 valueForProperty:*MEMORY[0x277CD5748]];
     [v14 floatValue];
     v16 = v15;
@@ -513,8 +513,8 @@ void __75__ICQUsageDetailController_tableView_commitEditingStyle_forRowAtIndexPa
   else
   {
     v11 = [v6 mediaCollectionForKey:v5];
-    v12 = [v11 itemSizes];
-    v13 = [v12 objectAtIndex:v20];
+    items = [v11 itemSizes];
+    v13 = [items objectAtIndex:v20];
     [v13 floatValue];
     v16 = v17;
   }
@@ -526,29 +526,29 @@ LABEL_6:
   return v18;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(ICQUsageDetailController *)self indexForIndexPath:a4];
+  v5 = [(ICQUsageDetailController *)self indexForIndexPath:path];
   v6 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v5];
   v7 = (*&v6[*MEMORY[0x277D3FC90]] - 1) < 4;
-  v8 = [v6 identifier];
-  v9 = [v8 isEqualToString:@"DOCS_AND_DATA"];
+  identifier = [v6 identifier];
+  v9 = [identifier isEqualToString:@"DOCS_AND_DATA"];
 
   v10 = v7 & ((v9 | [MEMORY[0x277D75128] isRunningInStoreDemoMode]) ^ 1);
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if ([(ICQUsageDetailController *)self tableView:a3 editingStyleForRowAtIndexPath:v6])
+  pathCopy = path;
+  if ([(ICQUsageDetailController *)self tableView:view editingStyleForRowAtIndexPath:pathCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:{-[ICQUsageDetailController indexForIndexPath:](self, "indexForIndexPath:", v6)}];
+    v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:{-[ICQUsageDetailController indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
     v9 = [v8 propertyForKey:*MEMORY[0x277D3FFB8]];
     v7 = [v9 isEqualToString:@"SHOW_ALL"];
   }
@@ -556,7 +556,7 @@ LABEL_6:
   return v7;
 }
 
-- (id)dynamicSize:(id)a3
+- (id)dynamicSize:(id)size
 {
   v4 = *MEMORY[0x277D3FD20];
   v5 = [*(&self->super.super.super.super.super.super.isa + v4) propertyForKey:@"USAGE_APP"];
@@ -592,8 +592,8 @@ LABEL_6:
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DELETE_APP_EXPLANATION" value:&stru_28844FC60 table:@"Usage Statistics"];
-  v7 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) name];
-  v8 = [v4 stringWithFormat:v6, v7];
+  name = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) name];
+  v8 = [v4 stringWithFormat:v6, name];
   v9 = *MEMORY[0x277D3FE90];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"DELETE_APP" value:&stru_28844FC60 table:@"Usage Statistics"];
@@ -612,7 +612,7 @@ LABEL_6:
 {
   v6 = *MEMORY[0x277D85DE8];
   v2 = 138412546;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[ICQUsageDetailController deleteApp]";
   _os_log_error_impl(&dword_275623000, a2, OS_LOG_TYPE_ERROR, "%@-%s: This class should no longer be used.", &v2, 0x16u);
@@ -620,13 +620,13 @@ LABEL_6:
 
 - (id)documentsAndDataSpecifiers
 {
-  v3 = [(ICQUsageDetailController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  [v4 setEnabled:0];
+  navigationItem = [(ICQUsageDetailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v5 addObject:v6];
+  array = [MEMORY[0x277CBEB18] array];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [array addObject:emptyGroupSpecifier];
 
   v7 = MEMORY[0x277D3FAD8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -635,9 +635,9 @@ LABEL_6:
 
   [v10 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   [v10 setIdentifier:@"DOCS_AND_DATA"];
-  [v5 addObject:v10];
+  [array addObject:v10];
 
-  return v5;
+  return array;
 }
 
 - (id)copyMediaSpecifiers
@@ -652,14 +652,14 @@ LABEL_6:
   }
 
   v5 = +[ICQUsageStorageMonitor sharedMonitor];
-  v6 = [objc_opt_class() mediaGroups];
+  mediaGroups = [objc_opt_class() mediaGroups];
   v96[0] = MEMORY[0x277D85DD0];
   v96[1] = 3221225472;
   v96[2] = __47__ICQUsageDetailController_copyMediaSpecifiers__block_invoke;
   v96[3] = &unk_27A65AF08;
   v7 = v5;
   v97 = v7;
-  v8 = [v6 sortedArrayUsingComparator:v96];
+  v8 = [mediaGroups sortedArrayUsingComparator:v96];
 
   v94 = 0u;
   v95 = 0u;
@@ -693,8 +693,8 @@ LABEL_6:
         v75 = v12;
         v13 = *(*(&v92 + 1) + 8 * v12);
         v77 = [v7 mediaCollectionForKey:v13];
-        v14 = [v77 items];
-        v15 = [v14 count];
+        items = [v77 items];
+        v15 = [items count];
 
         if (v15)
         {
@@ -704,9 +704,9 @@ LABEL_6:
             v17 = v16;
             v18 = [v16 objectForKey:@"usageGroupSpecifiers"];
             v19 = [v17 objectForKey:@"usageGroupShowAll"];
-            v20 = [v19 BOOLValue];
+            bOOLValue = [v19 BOOLValue];
 
-            if (v20)
+            if (bOOLValue)
             {
               [v73 addObjectsFromArray:v18];
             }
@@ -725,24 +725,24 @@ LABEL_6:
           {
             v83 = v13;
             [v77 sortItemsByMediaKey:v67];
-            v21 = [v77 items];
+            items2 = [v77 items];
             v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:4];
-            v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v21, "count") + 1}];
+            v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(items2, "count") + 1}];
             [v22 setObject:v23 forKey:@"usageGroupSpecifiers"];
-            v24 = [v77 isGrouped];
-            v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24 ^ 1u];
+            isGrouped = [v77 isGrouped];
+            v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:isGrouped ^ 1u];
             v71 = v22;
             [v22 setObject:v25 forKey:@"usageGroupMediaType"];
 
-            v74 = v21;
+            v74 = items2;
             v82 = v23;
-            if (v24)
+            if (isGrouped)
             {
               v86 = 0uLL;
               v87 = 0uLL;
               v84 = 0uLL;
               v85 = 0uLL;
-              v78 = v21;
+              v78 = items2;
               v26 = [v78 countByEnumeratingWithState:&v84 objects:v98 count:16];
               if (v26)
               {
@@ -752,23 +752,23 @@ LABEL_6:
                 {
                   for (i = 0; i != v27; ++i)
                   {
-                    v29 = self;
+                    selfCopy = self;
                     if (*v85 != v79)
                     {
                       objc_enumerationMutation(v78);
                     }
 
-                    v30 = [*(*(&v84 + 1) + 8 * i) representativeItem];
+                    representativeItem = [*(*(&v84 + 1) + 8 * i) representativeItem];
                     v31 = +[ICQUsageDetailController mpKeyTranslations];
                     v32 = [v31 objectForKey:@"name"];
                     v33 = [v32 objectForKey:v83];
-                    v34 = [v30 valueForProperty:v33];
+                    v34 = [representativeItem valueForProperty:v33];
 
-                    self = v29;
-                    v35 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v34 target:v29 set:0 get:sel_size_ detail:0 cell:4 edit:0];
+                    self = selfCopy;
+                    v35 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v34 target:selfCopy set:0 get:sel_size_ detail:0 cell:4 edit:0];
                     [v35 setProperty:objc_opt_class() forKey:v81];
-                    v36 = [v30 artworkCatalog];
-                    [v35 setProperty:v36 forKey:@"ICON_LOADER"];
+                    artworkCatalog = [representativeItem artworkCatalog];
+                    [v35 setProperty:artworkCatalog forKey:@"ICON_LOADER"];
 
                     v37 = [MEMORY[0x277CCABB0] numberWithBool:1];
                     [v35 setProperty:v37 forKey:v80];
@@ -790,7 +790,7 @@ LABEL_6:
               v91 = 0uLL;
               v88 = 0uLL;
               v89 = 0uLL;
-              v40 = v21;
+              v40 = items2;
               v41 = [v40 countByEnumeratingWithState:&v88 objects:v99 count:16];
               if (v41)
               {
@@ -809,8 +809,8 @@ LABEL_6:
                     v46 = [v45 valueForProperty:v76];
                     v47 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v46 target:self set:0 get:sel_size_ detail:0 cell:4 edit:0];
                     [v47 setProperty:objc_opt_class() forKey:v81];
-                    v48 = [v45 artworkCatalog];
-                    [v47 setProperty:v48 forKey:@"ICON_LOADER"];
+                    artworkCatalog2 = [v45 artworkCatalog];
+                    [v47 setProperty:artworkCatalog2 forKey:@"ICON_LOADER"];
 
                     v49 = [MEMORY[0x277CCABB0] numberWithBool:1];
                     [v47 setProperty:v49 forKey:v80];
@@ -967,19 +967,19 @@ uint64_t __47__ICQUsageDetailController_copyMediaSpecifiers__block_invoke(uint64
   {
     if ([(ICQUsageDetailController *)self hasMedia])
     {
-      v5 = [(ICQUsageDetailController *)self copyMediaSpecifiers];
+      copyMediaSpecifiers = [(ICQUsageDetailController *)self copyMediaSpecifiers];
     }
 
     else
     {
-      v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
+      copyMediaSpecifiers = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    v6 = v5;
+    v6 = copyMediaSpecifiers;
     if ([(ICQUsageDetailController *)self isAppController])
     {
-      v7 = [(ICQUsageDetailController *)self documentsAndDataSpecifiers];
-      [v6 addObjectsFromArray:v7];
+      documentsAndDataSpecifiers = [(ICQUsageDetailController *)self documentsAndDataSpecifiers];
+      [v6 addObjectsFromArray:documentsAndDataSpecifiers];
     }
 
     if (![(ICQUsageDetailController *)self isAppController])
@@ -987,21 +987,21 @@ uint64_t __47__ICQUsageDetailController_copyMediaSpecifiers__block_invoke(uint64
       goto LABEL_11;
     }
 
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v8 effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25D20]] != 2)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0] effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25D20]] != 2)
     {
-      v9 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+      isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
 
-      if (v9)
+      if (isRunningInStoreDemoMode)
       {
         goto LABEL_11;
       }
 
-      v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) propertyForKey:@"USAGE_APP"];
-      if (([v8 isSystemApp] & 1) == 0)
+      mEMORY[0x277D262A0] = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) propertyForKey:@"USAGE_APP"];
+      if (([mEMORY[0x277D262A0] isSystemApp] & 1) == 0)
       {
-        v12 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        [v6 addObject:v12];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        [v6 addObject:emptyGroupSpecifier];
 
         v13 = MEMORY[0x277D3FAD8];
         v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];

@@ -1,19 +1,19 @@
 @interface BWVideoFormat
-+ (id)colorInfoWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6;
-+ (id)compressionPropertiesForColorSpaceProperties:(int)a3;
-+ (id)formatByResolvingRequirements:(id)a3 printErrors:(BOOL)a4;
-+ (id)pixelBufferAttachmentsForColorSpaceProperties:(int)a3;
-+ (int)colorSpacePropertiesForPixelBufferAttachments:(id)a3;
-+ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)a3 sourceColorSpace:(int)a4 sourcePixelFormat:(unsigned int)a5 sourceDimensions:(id)a6 requestedPixelFormat:(unsigned int)a7;
-+ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)a3 sourceColorSpace:(int)a4 sourcePixelFormat:(unsigned int)a5 sourceDimensions:(id)a6 requestedPixelFormat:(unsigned int)a7 supportedColorSpaces:(id)a8;
-+ (int)colorSpacePropertiesWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6;
-+ (int)colorSpacePropertiesWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6 supportedColorSpaces:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)colorInfoWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat;
++ (id)compressionPropertiesForColorSpaceProperties:(int)properties;
++ (id)formatByResolvingRequirements:(id)requirements printErrors:(BOOL)errors;
++ (id)pixelBufferAttachmentsForColorSpaceProperties:(int)properties;
++ (int)colorSpacePropertiesForPixelBufferAttachments:(id)attachments;
++ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)color sourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat;
++ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)color sourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat supportedColorSpaces:(id)spaces;
++ (int)colorSpacePropertiesWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat;
++ (int)colorSpacePropertiesWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat supportedColorSpaces:(id)spaces;
+- (BOOL)isEqual:(id)equal;
 - (id)debugDescription;
 - (id)description;
 - (opaqueCMFormatDescription)formatDescription;
 - (uint64_t)formatDescription;
-- (void)_initWithResolvedRequirements:(void *)a1;
+- (void)_initWithResolvedRequirements:(void *)requirements;
 - (void)dealloc;
 @end
 
@@ -30,9 +30,9 @@
   return CFAutorelease(formatDescriptionOut);
 }
 
-+ (id)formatByResolvingRequirements:(id)a3 printErrors:(BOOL)a4
++ (id)formatByResolvingRequirements:(id)requirements printErrors:(BOOL)errors
 {
-  if (![a3 count])
+  if (![requirements count])
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *MEMORY[0x1E695D940];
@@ -45,7 +45,7 @@ LABEL_21:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  v5 = [requirements countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (!v5)
   {
     goto LABEL_10;
@@ -60,7 +60,7 @@ LABEL_21:
     {
       if (*v27 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(requirements);
       }
 
       objc_opt_class();
@@ -76,7 +76,7 @@ LABEL_21:
     }
 
     while (v6 != v8);
-    v6 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+    v6 = [requirements countByEnumeratingWithState:&v26 objects:v25 count:16];
   }
 
   while (v6);
@@ -86,7 +86,7 @@ LABEL_10:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  v10 = [requirements countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -97,7 +97,7 @@ LABEL_12:
     {
       if (*v22 != v12)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(requirements);
       }
 
       if (![BWVideoFormatRequirements _resolveWith:v9 printErrors:*(*(&v21 + 1) + 8 * v13)])
@@ -107,7 +107,7 @@ LABEL_12:
 
       if (v11 == ++v13)
       {
-        v11 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v11 = [requirements countByEnumeratingWithState:&v21 objects:v20 count:16];
         if (v11)
         {
           goto LABEL_12;
@@ -139,9 +139,9 @@ LABEL_18:
   [(BWVideoFormat *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -152,56 +152,56 @@ LABEL_18:
     return 0;
   }
 
-  v5 = [(BWVideoFormat *)self width];
-  if (v5 != [a3 width])
+  width = [(BWVideoFormat *)self width];
+  if (width != [equal width])
   {
     return 0;
   }
 
-  v6 = [(BWVideoFormat *)self height];
-  if (v6 != [a3 height])
+  height = [(BWVideoFormat *)self height];
+  if (height != [equal height])
   {
     return 0;
   }
 
-  v7 = [(BWVideoFormat *)self sliceCount];
-  if (v7 != [a3 sliceCount])
+  sliceCount = [(BWVideoFormat *)self sliceCount];
+  if (sliceCount != [equal sliceCount])
   {
     return 0;
   }
 
-  v8 = [(BWVideoFormat *)self pixelFormat];
-  if (v8 != [a3 pixelFormat])
+  pixelFormat = [(BWVideoFormat *)self pixelFormat];
+  if (pixelFormat != [equal pixelFormat])
   {
     return 0;
   }
 
-  v9 = [(BWVideoFormat *)self bytesPerRowAlignment];
-  if (v9 != [a3 bytesPerRowAlignment])
+  bytesPerRowAlignment = [(BWVideoFormat *)self bytesPerRowAlignment];
+  if (bytesPerRowAlignment != [equal bytesPerRowAlignment])
   {
     return 0;
   }
 
-  v10 = [(BWVideoFormat *)self planeAlignment];
-  if (v10 != [a3 planeAlignment])
+  planeAlignment = [(BWVideoFormat *)self planeAlignment];
+  if (planeAlignment != [equal planeAlignment])
   {
     return 0;
   }
 
-  v11 = [(BWVideoFormat *)self extendedWidth];
-  if (v11 != [a3 extendedWidth])
+  extendedWidth = [(BWVideoFormat *)self extendedWidth];
+  if (extendedWidth != [equal extendedWidth])
   {
     return 0;
   }
 
-  v12 = [(BWVideoFormat *)self extendedHeight];
-  if (v12 != [a3 extendedHeight])
+  extendedHeight = [(BWVideoFormat *)self extendedHeight];
+  if (extendedHeight != [equal extendedHeight])
   {
     return 0;
   }
 
-  v13 = [(BWVideoFormat *)self cacheMode];
-  return v13 == [a3 cacheMode];
+  cacheMode = [(BWVideoFormat *)self cacheMode];
+  return cacheMode == [equal cacheMode];
 }
 
 - (id)description
@@ -258,14 +258,14 @@ LABEL_18:
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWVideoFormat description](self, "description")];
 }
 
-+ (id)pixelBufferAttachmentsForColorSpaceProperties:(int)a3
++ (id)pixelBufferAttachmentsForColorSpaceProperties:(int)properties
 {
   result = 0;
-  if (a3 <= 6)
+  if (properties <= 6)
   {
-    if (a3 > 3)
+    if (properties > 3)
     {
-      if (a3 == 4)
+      if (properties == 4)
       {
         v26 = *MEMORY[0x1E6965DD0];
         v27 = *MEMORY[0x1E6965F98];
@@ -281,7 +281,7 @@ LABEL_18:
         v9 = v100;
       }
 
-      else if (a3 == 5)
+      else if (properties == 5)
       {
         v36 = *MEMORY[0x1E6965DD0];
         v37 = *MEMORY[0x1E6965F98];
@@ -316,7 +316,7 @@ LABEL_18:
 
     else
     {
-      switch(a3)
+      switch(properties)
       {
         case 1:
           v20 = *MEMORY[0x1E6965DB8];
@@ -368,9 +368,9 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (a3 <= 9)
+  if (properties <= 9)
   {
-    if (a3 == 7)
+    if (properties == 7)
     {
       v23 = *MEMORY[0x1E6965DD0];
       v24 = *MEMORY[0x1E6965F98];
@@ -390,7 +390,7 @@ LABEL_18:
     {
       v10 = *MEMORY[0x1E6965DD0];
       v11 = *MEMORY[0x1E6965F98];
-      if (a3 == 8)
+      if (properties == 8)
       {
         v64 = *MEMORY[0x1E6965D88];
         v65 = v11;
@@ -422,7 +422,7 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (a3 == 10)
+  if (properties == 10)
   {
     v29 = *MEMORY[0x1E6965DB0];
     v30 = *MEMORY[0x1E6965F98];
@@ -441,7 +441,7 @@ LABEL_26:
     return [v7 dictionaryWithObjects:v8 forKeys:v9 count:{v19, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99}];
   }
 
-  if (a3 == 11)
+  if (properties == 11)
   {
     v39 = *MEMORY[0x1E6965DD0];
     v40 = *MEMORY[0x1E6965F98];
@@ -458,7 +458,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 != 12)
+  if (properties != 12)
   {
     return result;
   }
@@ -477,39 +477,39 @@ LABEL_26:
   return [v7 dictionaryWithObjects:v8 forKeys:v9 count:{v19, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99}];
 }
 
-+ (id)compressionPropertiesForColorSpaceProperties:(int)a3
++ (id)compressionPropertiesForColorSpaceProperties:(int)properties
 {
-  v3 = [a1 pixelBufferAttachmentsForColorSpaceProperties:*&a3];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  v3 = [self pixelBufferAttachmentsForColorSpaceProperties:*&properties];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6965F98]];
   if (v5)
   {
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69838B8]];
+    [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E69838B8]];
   }
 
   v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6965D88]];
   if (v6)
   {
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69835B0]];
+    [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E69835B0]];
   }
 
   v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6965F30]];
   if (v7)
   {
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6983878]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E6983878]];
   }
 
   v8 = MEMORY[0x1E695DF20];
 
-  return [v8 dictionaryWithDictionary:v4];
+  return [v8 dictionaryWithDictionary:dictionary];
 }
 
-+ (int)colorSpacePropertiesForPixelBufferAttachments:(id)a3
++ (int)colorSpacePropertiesForPixelBufferAttachments:(id)attachments
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6965D88]];
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6965F30]];
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6965ED0]];
-  v7 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6965F98]];
+  v4 = [attachments objectForKeyedSubscript:*MEMORY[0x1E6965D88]];
+  v5 = [attachments objectForKeyedSubscript:*MEMORY[0x1E6965F30]];
+  v6 = [attachments objectForKeyedSubscript:*MEMORY[0x1E6965ED0]];
+  v7 = [attachments objectForKeyedSubscript:*MEMORY[0x1E6965F98]];
   v8 = *MEMORY[0x1E6965DD0];
   if ([v4 isEqualToString:*MEMORY[0x1E6965DD0]] && objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E6965FC8]) && (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E6965F50]) & 1) != 0)
   {
@@ -598,48 +598,48 @@ LABEL_26:
   return result;
 }
 
-+ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)a3 sourceColorSpace:(int)a4 sourcePixelFormat:(unsigned int)a5 sourceDimensions:(id)a6 requestedPixelFormat:(unsigned int)a7
++ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)color sourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat
 {
-  v7 = *&a7;
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = a3;
+  v7 = *&pixelFormat;
+  v9 = *&format;
+  v10 = *&space;
+  colorCopy = color;
   v12 = objc_opt_class();
 
-  return [v12 colorSpacePropertiesForSourceThatSupportsWideColor:v11 sourceColorSpace:v10 sourcePixelFormat:v9 sourceDimensions:a6 requestedPixelFormat:v7 supportedColorSpaces:0];
+  return [v12 colorSpacePropertiesForSourceThatSupportsWideColor:colorCopy sourceColorSpace:v10 sourcePixelFormat:v9 sourceDimensions:dimensions requestedPixelFormat:v7 supportedColorSpaces:0];
 }
 
-+ (int)colorSpacePropertiesWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6
++ (int)colorSpacePropertiesWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat
 {
-  v6 = *&a6;
-  v8 = *&a4;
-  v9 = *&a3;
+  v6 = *&pixelFormat;
+  v8 = *&format;
+  v9 = *&space;
   v10 = objc_opt_class();
 
-  return [v10 colorSpacePropertiesWithSourceColorSpace:v9 sourcePixelFormat:v8 sourceDimensions:a5 requestedPixelFormat:v6 supportedColorSpaces:0];
+  return [v10 colorSpacePropertiesWithSourceColorSpace:v9 sourcePixelFormat:v8 sourceDimensions:dimensions requestedPixelFormat:v6 supportedColorSpaces:0];
 }
 
-+ (id)colorInfoWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6
++ (id)colorInfoWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat
 {
-  v6 = [objc_opt_class() colorSpacePropertiesWithSourceColorSpace:*&a3 sourcePixelFormat:*&a4 sourceDimensions:a5 requestedPixelFormat:*&a6];
+  v6 = [objc_opt_class() colorSpacePropertiesWithSourceColorSpace:*&space sourcePixelFormat:*&format sourceDimensions:dimensions requestedPixelFormat:*&pixelFormat];
   v7 = objc_opt_class();
 
   return [v7 pixelBufferAttachmentsForColorSpaceProperties:v6];
 }
 
-- (void)_initWithResolvedRequirements:(void *)a1
+- (void)_initWithResolvedRequirements:(void *)requirements
 {
-  v2 = a1;
-  if (a1)
+  requirementsCopy = requirements;
+  if (requirements)
   {
-    if (a2 && [objc_msgSend(a2 "supportedPixelFormats")] == 1 && (v4 = objc_msgSend(objc_msgSend(objc_msgSend(a2, "supportedPixelFormats"), "firstObject"), "unsignedIntValue"), v4) && ((v5 = v4, (FigCapturePixelFormatIsVersatileRaw(v4) & 1) != 0) || objc_msgSend(a2, "width") && objc_msgSend(a2, "height")) && objc_msgSend(objc_msgSend(a2, "supportedCacheModes"), "count") <= 1 && objc_msgSend(objc_msgSend(a2, "supportedColorSpaceProperties"), "count") <= 1 && (v13.receiver = v2, v13.super_class = BWVideoFormat, (v2 = objc_msgSendSuper2(&v13, sel_init)) != 0))
+    if (a2 && [objc_msgSend(a2 "supportedPixelFormats")] == 1 && (v4 = objc_msgSend(objc_msgSend(objc_msgSend(a2, "supportedPixelFormats"), "firstObject"), "unsignedIntValue"), v4) && ((v5 = v4, (FigCapturePixelFormatIsVersatileRaw(v4) & 1) != 0) || objc_msgSend(a2, "width") && objc_msgSend(a2, "height")) && objc_msgSend(objc_msgSend(a2, "supportedCacheModes"), "count") <= 1 && objc_msgSend(objc_msgSend(a2, "supportedColorSpaceProperties"), "count") <= 1 && (v13.receiver = requirementsCopy, v13.super_class = BWVideoFormat, (requirementsCopy = objc_msgSendSuper2(&v13, sel_init)) != 0))
     {
-      v2[2] = [OUTLINED_FUNCTION_4_74(objc_msgSend(a2 "width")];
-      *(v2 + 8) = v5;
+      requirementsCopy[2] = [OUTLINED_FUNCTION_4_74(objc_msgSend(a2 "width")];
+      *(requirementsCopy + 8) = v5;
       v6 = [OUTLINED_FUNCTION_4_74(objc_msgSend(a2 "sliceCount")];
       v7 = [OUTLINED_FUNCTION_4_74(v6 40)];
-      *(v2 + 18) = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_4_74(v7 48)];
-      v8 = v2[1];
+      *(requirementsCopy + 18) = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_4_74(v7 48)];
+      v8 = requirementsCopy[1];
       v9 = a2[9];
       if (v9)
       {
@@ -654,8 +654,8 @@ LABEL_26:
         }
       }
 
-      v2[7] = v9 + v8;
-      v10 = v2[2];
+      requirementsCopy[7] = v9 + v8;
+      v10 = requirementsCopy[2];
       v11 = a2[10];
       if (v11)
       {
@@ -670,10 +670,10 @@ LABEL_26:
         }
       }
 
-      v2[8] = v11 + v10;
-      *(v2 + 76) = [a2 prewireBuffers];
-      *(v2 + 77) = [a2 memoryPoolUseAllowed];
-      *(v2 + 22) = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_4_74(objc_msgSend(objc_msgSend(a2 "pixelBufferAttributes")];
+      requirementsCopy[8] = v11 + v10;
+      *(requirementsCopy + 76) = [a2 prewireBuffers];
+      *(requirementsCopy + 77) = [a2 memoryPoolUseAllowed];
+      *(requirementsCopy + 22) = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_4_74(objc_msgSend(objc_msgSend(a2 "pixelBufferAttributes")];
     }
 
     else
@@ -683,54 +683,54 @@ LABEL_26:
     }
   }
 
-  return v2;
+  return requirementsCopy;
 }
 
-+ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)a3 sourceColorSpace:(int)a4 sourcePixelFormat:(unsigned int)a5 sourceDimensions:(id)a6 requestedPixelFormat:(unsigned int)a7 supportedColorSpaces:(id)a8
++ (int)colorSpacePropertiesForSourceThatSupportsWideColor:(BOOL)color sourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat supportedColorSpaces:(id)spaces
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
 
-  v9 = *&a7;
-  v11 = *&a5;
-  v12 = *&a4;
+  v9 = *&pixelFormat;
+  v11 = *&format;
+  v12 = *&space;
   v13 = objc_opt_class();
 
-  return [v13 colorSpacePropertiesWithSourceColorSpace:v12 sourcePixelFormat:v11 sourceDimensions:a6 requestedPixelFormat:v9 supportedColorSpaces:a8];
+  return [v13 colorSpacePropertiesWithSourceColorSpace:v12 sourcePixelFormat:v11 sourceDimensions:dimensions requestedPixelFormat:v9 supportedColorSpaces:spaces];
 }
 
-+ (int)colorSpacePropertiesWithSourceColorSpace:(int)a3 sourcePixelFormat:(unsigned int)a4 sourceDimensions:(id)a5 requestedPixelFormat:(unsigned int)a6 supportedColorSpaces:(id)a7
++ (int)colorSpacePropertiesWithSourceColorSpace:(int)space sourcePixelFormat:(unsigned int)format sourceDimensions:(id)dimensions requestedPixelFormat:(unsigned int)pixelFormat supportedColorSpaces:(id)spaces
 {
-  if ((FigCapturePixelFormatIsYCbCr(a4) & 1) == 0 && (FigCapturePixelFormatIsBGRA(a4) & 1) == 0 && !FigCapturePixelFormatIsPackedBayerRaw(a4))
+  if ((FigCapturePixelFormatIsYCbCr(format) & 1) == 0 && (FigCapturePixelFormatIsBGRA(format) & 1) == 0 && !FigCapturePixelFormatIsPackedBayerRaw(format))
   {
     return 0;
   }
 
-  IsWide = BWColorSpaceIsWide(a3);
-  if (FigCapturePixelFormatIsBGRA(a6))
+  IsWide = BWColorSpaceIsWide(space);
+  if (FigCapturePixelFormatIsBGRA(pixelFormat))
   {
-    v13 = a4;
+    pixelFormatCopy = format;
   }
 
   else
   {
-    v13 = a6;
+    pixelFormatCopy = pixelFormat;
   }
 
-  v14 = FigCaptureUncompressedPixelFormatForPixelFormat(v13);
+  v14 = FigCaptureUncompressedPixelFormatForPixelFormat(pixelFormatCopy);
   if (v14 == 875704438)
   {
-    if (a5.var0 <= a5.var1)
+    if (dimensions.var0 <= dimensions.var1)
     {
-      if (a5.var1 < 960)
+      if (dimensions.var1 < 960)
       {
         return 1;
       }
     }
 
-    else if (a5.var0 < 960)
+    else if (dimensions.var0 < 960)
     {
       return 1;
     }
@@ -762,19 +762,19 @@ LABEL_26:
 
   else if (FigCapturePixelFormatIsTenBit(v14))
   {
-    if (a3 == 3)
+    if (space == 3)
     {
       return 10;
     }
 
-    else if (a3 == 4)
+    else if (space == 4)
     {
       return 12;
     }
 
     else if (IsWide)
     {
-      if ([a7 containsObject:&unk_1F22460D8])
+      if ([spaces containsObject:&unk_1F22460D8])
       {
         return 6;
       }
@@ -798,7 +798,7 @@ LABEL_26:
 
   else if (FigCapturePixelFormatIsPackedBayerRaw(v15))
   {
-    if (a3 == 4)
+    if (space == 4)
     {
       v17 = 12;
     }
@@ -808,7 +808,7 @@ LABEL_26:
       v17 = 0;
     }
 
-    if (a3 == 3)
+    if (space == 3)
     {
       return 10;
     }

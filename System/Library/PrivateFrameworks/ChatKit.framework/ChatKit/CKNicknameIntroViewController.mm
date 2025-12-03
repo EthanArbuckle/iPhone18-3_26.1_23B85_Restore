@@ -1,9 +1,9 @@
 @interface CKNicknameIntroViewController
 - (double)_contentViewHeight;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKNicknameIntroViewController
@@ -13,30 +13,30 @@
   v5.receiver = self;
   v5.super_class = CKNicknameIntroViewController;
   [(OBBaseWelcomeController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(CKNicknameIntroViewController *)self contentView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  contentView = [(CKNicknameIntroViewController *)self contentView];
+  [contentView setBackgroundColor:clearColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CKNicknameIntroViewController;
-  [(OBBaseWelcomeController *)&v6 viewDidAppear:a3];
-  v4 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v4 setShouldStopAnimation:0];
+  [(OBBaseWelcomeController *)&v6 viewDidAppear:appear];
+  nicknamePreviewView = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView setShouldStopAnimation:0];
 
-  v5 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v5 beginAnimation];
+  nicknamePreviewView2 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView2 beginAnimation];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CKNicknameIntroViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
-  v4 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v4 setShouldStopAnimation:1];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
+  nicknamePreviewView = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView setShouldStopAnimation:1];
 }
 
 - (void)viewDidLayoutSubviews
@@ -44,8 +44,8 @@
   v17.receiver = self;
   v17.super_class = CKNicknameIntroViewController;
   [(OBBaseWelcomeController *)&v17 viewDidLayoutSubviews];
-  v3 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v3 frame];
+  nicknamePreviewView = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -54,8 +54,8 @@
   [v10 nicknameIntroViewControllerPreviewTopPadding];
   v12 = v11;
 
-  v13 = [(CKNicknameIntroViewController *)self contentView];
-  [v13 frame];
+  contentView = [(CKNicknameIntroViewController *)self contentView];
+  [contentView frame];
   Width = CGRectGetWidth(v18);
   v19.origin.x = v5;
   v19.origin.y = v12;
@@ -63,20 +63,20 @@
   v19.size.height = v9;
   v15 = (Width - CGRectGetWidth(v19)) * 0.5;
 
-  v16 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v16 setFrame:{v15, v12, v7, v9}];
+  nicknamePreviewView2 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView2 setFrame:{v15, v12, v7, v9}];
 }
 
 - (double)_contentViewHeight
 {
-  v3 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v3 sizeToFit];
+  nicknamePreviewView = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView sizeToFit];
 
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 nicknameIntroViewControllerPreviewTopPadding];
   v6 = v5;
-  v7 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
-  [v7 frame];
+  nicknamePreviewView2 = [(CKNicknameIntroViewController *)self nicknamePreviewView];
+  [nicknamePreviewView2 frame];
   v9 = v6 + v8;
   v10 = +[CKUIBehavior sharedBehaviors];
   [v10 nicknameIntroViewControllerPreviewBottomPadding];

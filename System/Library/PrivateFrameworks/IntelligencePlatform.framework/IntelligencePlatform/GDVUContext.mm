@@ -1,13 +1,13 @@
 @interface GDVUContext
-- (void)setSource:(int64_t)a3;
+- (void)setSource:(int64_t)source;
 @end
 
 @implementation GDVUContext
 
-- (void)setSource:(int64_t)a3
+- (void)setSource:(int64_t)source
 {
-  v4 = self;
-  GDVUContext.source.setter(a3);
+  selfCopy = self;
+  GDVUContext.source.setter(source);
 }
 
 @end

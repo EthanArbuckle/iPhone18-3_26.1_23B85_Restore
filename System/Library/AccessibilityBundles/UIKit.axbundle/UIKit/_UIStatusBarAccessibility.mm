@@ -1,25 +1,25 @@
 @interface _UIStatusBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityEnumerateSiblingsWithParent:(id *)a3 options:(id)a4 usingBlock:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityEnumerateSiblingsWithParent:(id *)parent options:(id)options usingBlock:(id)block;
 - (BOOL)_axElementWithinFocused;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
 - (uint64_t)_axGetIsHitTesting;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_prepareVisualProviderIfNeeded;
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5;
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations;
 @end
 
 @implementation _UIStatusBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v13 = location;
   v12 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarItem";
   [location[0] validateClass:?];
   v4 = @"_UIStatusBarDisplayItem";
@@ -59,13 +59,13 @@
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v58 = *MEMORY[0x29EDCA608];
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
   v53.receiver = self;
   v53.super_class = _UIStatusBarAccessibility;
   [(_UIStatusBarAccessibility *)&v53 _accessibilityLoadAccessibilityInformation];
   memset(__b, 0, sizeof(__b));
-  v19 = [(_UIStatusBarAccessibility *)v55 safeDictionaryForKey:@"_regions"];
+  v19 = [(_UIStatusBarAccessibility *)selfCopy safeDictionaryForKey:@"_regions"];
   obj = [v19 allValues];
   v17 = [obj countByEnumeratingWithState:__b objects:v57 count:{16, MEMORY[0x29EDC9740](v19).n128_f64[0]}];
   if (v17)
@@ -109,19 +109,19 @@
   }
 
   *&v2 = MEMORY[0x29EDC9740](obj).n128_u64[0];
-  v42 = [(_UIStatusBarAccessibility *)v55 safeValueForKey:@"visualProvider", v2];
+  v42 = [(_UIStatusBarAccessibility *)selfCopy safeValueForKey:@"visualProvider", v2];
   [v42 _accessibilityLoadAccessibilityInformation];
   v40 = 0;
   objc_opt_class();
-  v11 = [(_UIStatusBarAccessibility *)v55 safeValueForKey:@"items"];
+  v11 = [(_UIStatusBarAccessibility *)selfCopy safeValueForKey:@"items"];
   v39 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v11);
   v38 = MEMORY[0x29EDC9748](v39);
   objc_storeStrong(&v39, 0);
   v41 = v38;
   memset(v36, 0, sizeof(v36));
-  v9 = [v38 allValues];
-  v10 = [v9 countByEnumeratingWithState:v36 objects:v56 count:16];
+  allValues = [v38 allValues];
+  v10 = [allValues countByEnumeratingWithState:v36 objects:v56 count:16];
   if (v10)
   {
     v6 = *v36[2];
@@ -132,7 +132,7 @@
       v5 = v7;
       if (*v36[2] != v6)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allValues);
       }
 
       v37 = *(v36[1] + 8 * v7);
@@ -150,7 +150,7 @@
       {
         v30 = 0;
         objc_opt_class();
-        v4 = [(_UIStatusBarAccessibility *)v55 safeValueForKey:@"displayItemStates"];
+        v4 = [(_UIStatusBarAccessibility *)selfCopy safeValueForKey:@"displayItemStates"];
         v29 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v4);
         if (v30)
@@ -177,7 +177,7 @@
         if (v23)
         {
           v20 = MEMORY[0x29EDC9748](v26);
-          v21 = MEMORY[0x29EDC9748](v55);
+          v21 = MEMORY[0x29EDC9748](selfCopy);
           v22 = MEMORY[0x29EDC9748](v37);
           AXPerformSafeBlock();
           objc_storeStrong(&v22, 0);
@@ -196,7 +196,7 @@
       if (v5 + 1 >= v8)
       {
         v7 = 0;
-        v8 = [v9 countByEnumeratingWithState:v36 objects:v56 count:16];
+        v8 = [allValues countByEnumeratingWithState:v36 objects:v56 count:16];
         if (!v8)
         {
           break;
@@ -205,14 +205,14 @@
     }
   }
 
-  MEMORY[0x29EDC9740](v9);
+  MEMORY[0x29EDC9740](allValues);
   objc_storeStrong(&v41, 0);
   objc_storeStrong(&v42, 0);
 }
 
 - (uint64_t)_axGetIsHitTesting
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -225,23 +225,23 @@
   return v2 & 1;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v71 = *MEMORY[0x29EDCA608];
-  v66 = a3;
-  v65 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  [(_UIStatusBarAccessibility *)v65 _axSetIsHitTesting:1];
-  v62.receiver = v65;
+  objc_storeStrong(location, event);
+  [(_UIStatusBarAccessibility *)selfCopy _axSetIsHitTesting:1];
+  v62.receiver = selfCopy;
   v62.super_class = _UIStatusBarAccessibility;
-  v63 = [(_UIStatusBarAccessibility *)&v62 _accessibilityHitTest:location[0] withEvent:v66.x, v66.y];
+  v63 = [(_UIStatusBarAccessibility *)&v62 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
   if (!v63)
   {
-    v61 = MEMORY[0x29EDC9748](v65);
-    v34 = [v61 superview];
-    [v34 convertPoint:v61 toView:{v66.x, v66.y}];
+    v61 = MEMORY[0x29EDC9748](selfCopy);
+    superview = [v61 superview];
+    [superview convertPoint:v61 toView:{testCopy.x, testCopy.y}];
     point.x = v4;
     point.y = v5;
     [v61 frame];
@@ -251,7 +251,7 @@
       v58 = 1.79769313e308;
       v56 = 0;
       objc_opt_class();
-      v33 = [(_UIStatusBarAccessibility *)v65 safeValueForKey:@"items"];
+      v33 = [(_UIStatusBarAccessibility *)selfCopy safeValueForKey:@"items"];
       v55 = __UIAccessibilityCastAsClass();
       MEMORY[0x29EDC9740](v33);
       v54 = MEMORY[0x29EDC9748](v55);
@@ -291,8 +291,8 @@
             objc_storeStrong(&v49, 0);
             v51 = v48;
             memset(v46, 0, sizeof(v46));
-            v24 = [v48 allValues];
-            v25 = [v24 countByEnumeratingWithState:v46 objects:v69 count:16];
+            allValues = [v48 allValues];
+            v25 = [allValues countByEnumeratingWithState:v46 objects:v69 count:16];
             if (v25)
             {
               v21 = *v46[2];
@@ -303,7 +303,7 @@
                 v20 = v22;
                 if (*v46[2] != v21)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v47 = *(v46[1] + 8 * v22);
@@ -313,26 +313,26 @@
                   v45 = [v47 safeUIViewForKey:@"view"];
                   v43 = 0.0;
                   v44 = 0.0;
-                  v17 = [MEMORY[0x29EDC7C40] mainScreen];
-                  v16 = [v17 coordinateSpace];
+                  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+                  coordinateSpace = [mainScreen coordinateSpace];
                   [v45 center];
                   v41 = v6;
                   v42 = v7;
-                  v15 = [v45 superview];
-                  [v16 convertPoint:v41 fromCoordinateSpace:v42];
+                  superview2 = [v45 superview];
+                  [coordinateSpace convertPoint:v41 fromCoordinateSpace:v42];
                   v43 = v8;
                   v44 = v9;
-                  MEMORY[0x29EDC9740](v15);
-                  MEMORY[0x29EDC9740](v16);
-                  MEMORY[0x29EDC9740](v17);
+                  MEMORY[0x29EDC9740](superview2);
+                  MEMORY[0x29EDC9740](coordinateSpace);
+                  MEMORY[0x29EDC9740](mainScreen);
                   AX_CGPointGetDistanceToPoint();
                   v40 = v10;
                   v39 = 0.0;
-                  v19 = [MEMORY[0x29EDBDFA8] server];
-                  v18 = [v19 medusaApps];
-                  v39 = [v18 count];
-                  MEMORY[0x29EDC9740](v18);
-                  MEMORY[0x29EDC9740](v19);
+                  server = [MEMORY[0x29EDBDFA8] server];
+                  medusaApps = [server medusaApps];
+                  v39 = [medusaApps count];
+                  MEMORY[0x29EDC9740](medusaApps);
+                  MEMORY[0x29EDC9740](server);
                   if (v39 <= 1.0)
                   {
                     v14 = 1.79769313e308;
@@ -351,7 +351,7 @@
                   v38 = v14;
                   if (v40 <= v14 && v40 < v58)
                   {
-                    v35.receiver = v65;
+                    v35.receiver = selfCopy;
                     v35.super_class = _UIStatusBarAccessibility;
                     v36 = [(_UIStatusBarAccessibility *)&v35 _accessibilityHitTest:location[0] withEvent:v43, v44];
                     if (v36)
@@ -370,7 +370,7 @@
                 if (v20 + 1 >= v23)
                 {
                   v22 = 0;
-                  v23 = [v24 countByEnumeratingWithState:v46 objects:v69 count:16];
+                  v23 = [allValues countByEnumeratingWithState:v46 objects:v69 count:16];
                   if (!v23)
                   {
                     break;
@@ -379,7 +379,7 @@
               }
             }
 
-            MEMORY[0x29EDC9740](v24);
+            MEMORY[0x29EDC9740](allValues);
             objc_storeStrong(&v51, 0);
           }
 
@@ -403,7 +403,7 @@
     objc_storeStrong(&v61, 0);
   }
 
-  [(_UIStatusBarAccessibility *)v65 _axSetIsHitTesting:0];
+  [(_UIStatusBarAccessibility *)selfCopy _axSetIsHitTesting:0];
   v13 = MEMORY[0x29EDC9748](v63);
   objc_storeStrong(&v63, 0);
   objc_storeStrong(location, 0);
@@ -411,15 +411,15 @@
   return v13;
 }
 
-- (BOOL)_accessibilityEnumerateSiblingsWithParent:(id *)a3 options:(id)a4 usingBlock:(id)a5
+- (BOOL)_accessibilityEnumerateSiblingsWithParent:(id *)parent options:(id)options usingBlock:(id)block
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = parent;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, options);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, block);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;
@@ -427,10 +427,10 @@
 
 - (void)_prepareVisualProviderIfNeeded
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  v3 = [(_UIStatusBarAccessibility *)v12 safeUIViewForKey:@"foregroundView"];
+  v3 = [(_UIStatusBarAccessibility *)selfCopy safeUIViewForKey:@"foregroundView"];
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
   v7 = 0;
@@ -439,7 +439,7 @@
   objc_copyWeak(v10, location);
   [v3 _setAccessibilityElementsHiddenBlock:&v5];
   *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v4.receiver = v12;
+  v4.receiver = selfCopy;
   v4.super_class = _UIStatusBarAccessibility;
   [(_UIStatusBarAccessibility *)&v4 _prepareVisualProviderIfNeeded];
   objc_destroyWeak(v10);
@@ -449,7 +449,7 @@
 - (BOOL)_axElementWithinFocused
 {
   v24 = *MEMORY[0x29EDCA608];
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
   memset(__b, 0, sizeof(__b));
   obj = _UIAccessibilityFocusedElements();
@@ -474,7 +474,7 @@
       v13 = 0;
       v14 = __52___UIStatusBarAccessibility__axElementWithinFocused__block_invoke;
       v15 = &unk_29F30C818;
-      v16 = MEMORY[0x29EDC9748](v21);
+      v16 = MEMORY[0x29EDC9748](selfCopy);
       location = [v3 _accessibilityFindAncestor:&v11 startWithSelf:0];
       if (location)
       {
@@ -524,7 +524,7 @@ LABEL_11:
 
 - (id)accessibilityElements
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   if ([(_UIStatusBarAccessibility *)self _axElementWithinFocused])
   {
@@ -533,34 +533,34 @@ LABEL_11:
     v5 = __UIAccessibilityCastAsClass();
     v4 = MEMORY[0x29EDC9748](v5);
     objc_storeStrong(&v5, 0);
-    v9 = [v4 subviews];
+    subviews = [v4 subviews];
     MEMORY[0x29EDC9740](v4);
   }
 
   else
   {
-    v9 = 0;
+    subviews = 0;
   }
 
-  v2 = v9;
+  v2 = subviews;
 
   return v2;
 }
 
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, attributes);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7.receiver = v11;
+  objc_storeStrong(&v8, animations);
+  v7.receiver = selfCopy;
   v7.super_class = _UIStatusBarAccessibility;
   [(_UIStatusBarAccessibility *)&v7 _updateDisplayedItemsWithData:location[0] styleAttributes:v9 extraAnimations:v8];
-  if ([(_UIStatusBarAccessibility *)v11 _axElementWithinFocused])
+  if ([(_UIStatusBarAccessibility *)selfCopy _axElementWithinFocused])
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }

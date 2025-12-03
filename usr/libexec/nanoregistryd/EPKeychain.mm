@@ -1,28 +1,28 @@
 @interface EPKeychain
-+ (BOOL)keyExistsInKeychain:(id)a3 keychainGroup:(id)a4 attributes:(id)a5;
-+ (BOOL)newKeysWithName:(id)a3;
-+ (BOOL)storeKeyWithData:(id)a3 name:(id)a4 keychainGroup:(id)a5;
-+ (BOOL)storeWatchTransferData:(id)a3 watchIdentifier:(id)a4;
-+ (id)keyAttributesWithName:(id)a3 keychainGroup:(id)a4;
-+ (id)removeKeyWithName:(id)a3 keychainGroup:(id)a4;
-+ (id)removeKeyWithName:(id)a3 keychainGroup:(id)a4 attributes:(id)a5;
-+ (id)retrieveKeyWithName:(id)a3 keychainGroup:(id)a4;
-+ (id)retrieveKeyWithName:(id)a3 keychainGroup:(id)a4 attributes:(id)a5;
++ (BOOL)keyExistsInKeychain:(id)keychain keychainGroup:(id)group attributes:(id)attributes;
++ (BOOL)newKeysWithName:(id)name;
++ (BOOL)storeKeyWithData:(id)data name:(id)name keychainGroup:(id)group;
++ (BOOL)storeWatchTransferData:(id)data watchIdentifier:(id)identifier;
++ (id)keyAttributesWithName:(id)name keychainGroup:(id)group;
++ (id)removeKeyWithName:(id)name keychainGroup:(id)group;
++ (id)removeKeyWithName:(id)name keychainGroup:(id)group attributes:(id)attributes;
++ (id)retrieveKeyWithName:(id)name keychainGroup:(id)group;
++ (id)retrieveKeyWithName:(id)name keychainGroup:(id)group attributes:(id)attributes;
 + (id)retrieveWatchTransferData;
-+ (id)storeKey:(id)a3 keychainGroup:(id)a4;
-+ (void)removeWatchTransferDataForWatchWithIdentifier:(id)a3;
++ (id)storeKey:(id)key keychainGroup:(id)group;
++ (void)removeWatchTransferDataForWatchWithIdentifier:(id)identifier;
 @end
 
 @implementation EPKeychain
 
-+ (id)keyAttributesWithName:(id)a3 keychainGroup:(id)a4
++ (id)keyAttributesWithName:(id)name keychainGroup:(id)group
 {
-  v5 = a3;
+  nameCopy = name;
   v11[0] = kSecAttrLabel;
-  v6 = a4;
+  groupCopy = group;
   v7 = [NSString stringWithFormat:@"%@.%@", @"com.apple.nanoregistry", @"migration"];
   v12[0] = v7;
-  v12[1] = v6;
+  v12[1] = groupCopy;
   v11[1] = kSecAttrAccessGroup;
   v11[2] = kSecClass;
   v12[2] = kSecClassGenericPassword;
@@ -35,30 +35,30 @@
   v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:6];
 
   v9 = [v8 mutableCopy];
-  if (v5 && ([v5 isEqual:@"migration"] & 1) == 0)
+  if (nameCopy && ([nameCopy isEqual:@"migration"] & 1) == 0)
   {
-    [v9 setObject:v5 forKeyedSubscript:kSecAttrAccount];
+    [v9 setObject:nameCopy forKeyedSubscript:kSecAttrAccount];
   }
 
   return v9;
 }
 
-+ (id)removeKeyWithName:(id)a3 keychainGroup:(id)a4
++ (id)removeKeyWithName:(id)name keychainGroup:(id)group
 {
-  v5 = a4;
-  v6 = a3;
+  groupCopy = group;
+  nameCopy = name;
   v7 = objc_opt_class();
-  v8 = [objc_opt_class() keyAttributesWithName:v6 keychainGroup:v5];
+  v8 = [objc_opt_class() keyAttributesWithName:nameCopy keychainGroup:groupCopy];
   v9 = [v8 mutableCopy];
-  v10 = [v7 removeKeyWithName:v6 keychainGroup:v5 attributes:v9];
+  v10 = [v7 removeKeyWithName:nameCopy keychainGroup:groupCopy attributes:v9];
 
   return v10;
 }
 
-+ (id)removeKeyWithName:(id)a3 keychainGroup:(id)a4 attributes:(id)a5
++ (id)removeKeyWithName:(id)name keychainGroup:(id)group attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = SecItemDelete(a5);
+  nameCopy = name;
+  v7 = SecItemDelete(attributes);
   v8 = nr_framework_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -70,7 +70,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v18 = v6;
+        v18 = nameCopy;
         v19 = 2048;
         v20 = v7;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "EPKeychain: Failed to delete keys for device %{public}@ from keychain, error code %ld", buf, 0x16u);
@@ -93,7 +93,7 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v6;
+      v18 = nameCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "EPKeychain: Deleted keys for device %{public}@ from keychain", buf, 0xCu);
     }
 
@@ -107,12 +107,12 @@ LABEL_12:
   return v13;
 }
 
-+ (BOOL)newKeysWithName:(id)a3
++ (BOOL)newKeysWithName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() removeKeyWithName:v4 keychainGroup:@"com.apple.nanoregistry.migration"];
+  nameCopy = name;
+  v5 = [objc_opt_class() removeKeyWithName:nameCopy keychainGroup:@"com.apple.nanoregistry.migration"];
   v6 = [objc_opt_class() removeKeyWithName:@"migration" keychainGroup:@"com.apple.nanoregistry.migration"];
-  v7 = [objc_opt_class() removeKeyWithName:v4 keychainGroup:@"com.apple.nanoregistry.migration2"];
+  v7 = [objc_opt_class() removeKeyWithName:nameCopy keychainGroup:@"com.apple.nanoregistry.migration2"];
   if (!SecRandomCopyBytes(kSecRandomDefault, 0x20uLL, bytes))
   {
     v10 = [NSData dataWithBytes:bytes length:32];
@@ -126,8 +126,8 @@ LABEL_12:
         v13 = nr_daemon_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v10 SHA256Data];
-          v15 = [v14 base64EncodedStringWithOptions:0];
+          sHA256Data = [v10 SHA256Data];
+          v15 = [sHA256Data base64EncodedStringWithOptions:0];
           v16 = [v15 substringToIndex:6];
           v25 = 138412290;
           v26 = v16;
@@ -137,10 +137,10 @@ LABEL_12:
     }
 
     v17 = [EPKey keyFromData:v10];
-    v18 = [v17 data];
-    v19 = [a1 storeKeyWithData:v18 name:v4 keychainGroup:@"com.apple.nanoregistry.migration2"];
+    data = [v17 data];
+    v19 = [self storeKeyWithData:data name:nameCopy keychainGroup:@"com.apple.nanoregistry.migration2"];
 
-    v9 = v19 & [a1 storeKeyWithData:v10 name:@"migration" keychainGroup:@"com.apple.nanoregistry.migration2"];
+    v9 = v19 & [self storeKeyWithData:v10 name:@"migration" keychainGroup:@"com.apple.nanoregistry.migration2"];
     if (v9 == 1)
     {
       v20 = nr_framework_log();
@@ -153,7 +153,7 @@ LABEL_12:
         {
           v23 = sub_1000FDEC4(v17);
           v25 = 138543618;
-          v26 = v4;
+          v26 = nameCopy;
           v27 = 2048;
           v28 = v23;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "EPKeychain: Keys generated and stored for %{public}@ version %lx", &v25, 0x16u);
@@ -182,13 +182,13 @@ LABEL_17:
   return v9;
 }
 
-+ (BOOL)storeKeyWithData:(id)a3 name:(id)a4 keychainGroup:(id)a5
++ (BOOL)storeKeyWithData:(id)data name:(id)name keychainGroup:(id)group
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 base64EncodedDataWithOptions:0];
-  v11 = [objc_opt_class() keyAttributesWithName:v9 keychainGroup:v8];
+  dataCopy = data;
+  groupCopy = group;
+  nameCopy = name;
+  v10 = [dataCopy base64EncodedDataWithOptions:0];
+  v11 = [objc_opt_class() keyAttributesWithName:nameCopy keychainGroup:groupCopy];
 
   v12 = [v11 mutableCopy];
   [v12 setObject:v10 forKeyedSubscript:kSecValueData];
@@ -221,7 +221,7 @@ LABEL_8:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 134217984;
-        v21 = [v7 length];
+        v21 = [dataCopy length];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "EPKeychain: storeKeyWithData stored key, length %ld", &v20, 0xCu);
       }
 
@@ -232,26 +232,26 @@ LABEL_8:
   return v13 == 0;
 }
 
-+ (id)retrieveKeyWithName:(id)a3 keychainGroup:(id)a4
++ (id)retrieveKeyWithName:(id)name keychainGroup:(id)group
 {
-  v5 = a4;
-  v6 = a3;
+  groupCopy = group;
+  nameCopy = name;
   v7 = objc_opt_class();
-  v8 = [objc_opt_class() keyAttributesWithName:v6 keychainGroup:v5];
+  v8 = [objc_opt_class() keyAttributesWithName:nameCopy keychainGroup:groupCopy];
   v9 = [v8 mutableCopy];
-  v10 = [v7 retrieveKeyWithName:v6 keychainGroup:v5 attributes:v9];
+  v10 = [v7 retrieveKeyWithName:nameCopy keychainGroup:groupCopy attributes:v9];
 
   return v10;
 }
 
-+ (id)retrieveKeyWithName:(id)a3 keychainGroup:(id)a4 attributes:(id)a5
++ (id)retrieveKeyWithName:(id)name keychainGroup:(id)group attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a5;
-  [v7 setObject:kCFBooleanTrue forKeyedSubscript:kSecReturnData];
-  [v7 setObject:kSecMatchLimitOne forKeyedSubscript:kSecMatchLimit];
+  nameCopy = name;
+  attributesCopy = attributes;
+  [attributesCopy setObject:kCFBooleanTrue forKeyedSubscript:kSecReturnData];
+  [attributesCopy setObject:kSecMatchLimitOne forKeyedSubscript:kSecMatchLimit];
   result = 0;
-  v8 = SecItemCopyMatching(v7, &result);
+  v8 = SecItemCopyMatching(attributesCopy, &result);
 
   v9 = result;
   if (!result || v8)
@@ -288,7 +288,7 @@ LABEL_8:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v23 = v6;
+          v23 = nameCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "EPKeychain: retrieveKeyWithName retrieved key %@", buf, 0xCu);
         }
       }
@@ -320,14 +320,14 @@ LABEL_20:
   return v14;
 }
 
-+ (BOOL)keyExistsInKeychain:(id)a3 keychainGroup:(id)a4 attributes:(id)a5
++ (BOOL)keyExistsInKeychain:(id)keychain keychainGroup:(id)group attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a5;
-  [v7 setObject:kCFBooleanTrue forKeyedSubscript:kSecReturnData];
-  [v7 setObject:kSecMatchLimitOne forKeyedSubscript:kSecMatchLimit];
+  keychainCopy = keychain;
+  attributesCopy = attributes;
+  [attributesCopy setObject:kCFBooleanTrue forKeyedSubscript:kSecReturnData];
+  [attributesCopy setObject:kSecMatchLimitOne forKeyedSubscript:kSecMatchLimit];
   result = 0;
-  v8 = SecItemCopyMatching(v7, &result);
+  v8 = SecItemCopyMatching(attributesCopy, &result);
 
   if (v8)
   {
@@ -347,13 +347,13 @@ LABEL_20:
   return v8 == 0;
 }
 
-+ (id)storeKey:(id)a3 keychainGroup:(id)a4
++ (id)storeKey:(id)key keychainGroup:(id)group
 {
-  v4 = a4;
+  groupCopy = group;
   v21[0] = kSecAttrLabel;
   v5 = [NSString stringWithFormat:@"%@.%@", @"com.apple.nanoregistry", @"watchgraduation"];
   v22[0] = v5;
-  v22[1] = v4;
+  v22[1] = groupCopy;
   v21[1] = kSecAttrAccessGroup;
   v21[2] = kSecClass;
   v22[2] = kSecClassGenericPassword;
@@ -411,11 +411,11 @@ LABEL_12:
   return v15;
 }
 
-+ (BOOL)storeWatchTransferData:(id)a3 watchIdentifier:(id)a4
++ (BOOL)storeWatchTransferData:(id)data watchIdentifier:(id)identifier
 {
-  v5 = a3;
+  dataCopy = data;
   v19[0] = kSecAttrAccessGroup;
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = [NSString stringWithFormat:@"%@.%@", @"com.apple.nanoregistry", @"watchtransfer"];
   v20[0] = v7;
   v20[1] = kSecClassGenericPassword;
@@ -427,11 +427,11 @@ LABEL_12:
   v19[4] = kSecAttrAccessible;
   v19[5] = kSecAttrAccount;
   v20[4] = kSecAttrAccessibleAfterFirstUnlock;
-  v20[5] = v6;
+  v20[5] = identifierCopy;
   v8 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:6];
 
   v9 = [v8 mutableCopy];
-  [v9 setObject:v5 forKeyedSubscript:kSecValueData];
+  [v9 setObject:dataCopy forKeyedSubscript:kSecValueData];
   v10 = SecItemAdd(v9, 0);
   v11 = nr_daemon_log();
   v12 = v11;
@@ -461,7 +461,7 @@ LABEL_8:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v18 = [v5 length];
+        v18 = [dataCopy length];
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "EPKeychain: stored watch transfer data with length %ld", buf, 0xCu);
       }
 
@@ -570,9 +570,9 @@ LABEL_28:
             v20 = nr_daemon_log();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v11 lastObject];
+              lastObject = [v11 lastObject];
               *buf = 138412290;
-              v36 = v21;
+              v36 = lastObject;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "EPKeychain: added data %@", buf, 0xCu);
             }
 
@@ -624,10 +624,10 @@ LABEL_35:
   return v32;
 }
 
-+ (void)removeWatchTransferDataForWatchWithIdentifier:(id)a3
++ (void)removeWatchTransferDataForWatchWithIdentifier:(id)identifier
 {
   v19[0] = kSecAttrAccessGroup;
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [NSString stringWithFormat:@"%@.%@", @"com.apple.nanoregistry", @"watchtransfer"];
   v20[0] = v4;
   v20[1] = kSecClassGenericPassword;
@@ -639,7 +639,7 @@ LABEL_35:
   v19[4] = kSecAttrAccessible;
   v19[5] = kSecAttrAccount;
   v20[4] = kSecAttrAccessibleAfterFirstUnlock;
-  v20[5] = v3;
+  v20[5] = identifierCopy;
   v5 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:6];
 
   v6 = SecItemDelete(v5);

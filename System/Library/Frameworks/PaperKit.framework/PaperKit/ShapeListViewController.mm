@@ -1,14 +1,14 @@
 @interface ShapeListViewController
-- (_TtC8PaperKit23ShapeListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8PaperKit23ShapeListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation ShapeListViewController
 
-- (_TtC8PaperKit23ShapeListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit23ShapeListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -20,23 +20,23 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ShapeListViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return ShapeListViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ShapeListViewController.viewDidLoad()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(ShapeListViewController *)&v6 viewDidDisappear:v3];
+  [(ShapeListViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC8PaperKit23ShapeListViewController_temporaryMarkupEditViewController];
   *&v4[OBJC_IVAR____TtC8PaperKit23ShapeListViewController_temporaryMarkupEditViewController] = 0;
 }

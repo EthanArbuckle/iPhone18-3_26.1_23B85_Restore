@@ -3,7 +3,7 @@
 - (SBLockScreenDeviceMotionEffectController)init;
 - (id)_acquireBacklightChangeSourceDeviceMotionDisableAssertion;
 - (id)_acquireCoverSheetNotVisibleDeviceMotionDisableAssertion;
-- (id)_acquireDisableAssertionForReason:(id)a3 optimizationEnabled:(BOOL)a4;
+- (id)_acquireDisableAssertionForReason:(id)reason optimizationEnabled:(BOOL)enabled;
 - (id)_acquireLowPowerDeviceMotionDisableAssertion;
 - (id)_acquireNoUserPresenceDeviceMotionDisableAssertion;
 - (id)_acquireReducedMotionDeviceMotionDisableAssertion;
@@ -11,19 +11,19 @@
 - (void)_updateClientWantsMotionEventState;
 - (void)_updateLockScreenForSensitiveUI;
 - (void)_updatePerformanceOptimizationState;
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source;
 - (void)dealloc;
-- (void)deviceMotionController:(uint64_t)a3 didUpdateMotionWithRotation:(_OWORD *)a4;
-- (void)deviceMotionControllerDidUpdateDeviceMotionSettings:(id)a3;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
-- (void)setCoverSheetVisible:(BOOL)a3;
-- (void)setMotionUpdateInterval:(double)a3;
-- (void)setPosterClientDeviceMotionMode:(unint64_t)a3;
-- (void)setPosterClientWantsMotionEvents:(BOOL)a3;
-- (void)setUserPresenceDetected:(BOOL)a3;
-- (void)setWallpaperObscured:(BOOL)a3;
-- (void)setWallpaperVisible:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)deviceMotionController:(uint64_t)controller didUpdateMotionWithRotation:(_OWORD *)rotation;
+- (void)deviceMotionControllerDidUpdateDeviceMotionSettings:(id)settings;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
+- (void)setCoverSheetVisible:(BOOL)visible;
+- (void)setMotionUpdateInterval:(double)interval;
+- (void)setPosterClientDeviceMotionMode:(unint64_t)mode;
+- (void)setPosterClientWantsMotionEvents:(BOOL)events;
+- (void)setUserPresenceDetected:(BOOL)detected;
+- (void)setWallpaperObscured:(BOOL)obscured;
+- (void)setWallpaperVisible:(BOOL)visible;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation SBLockScreenDeviceMotionEffectController
@@ -60,9 +60,9 @@ void __58__SBLockScreenDeviceMotionEffectController_sharedInstance__block_invoke
 
     [(SBBacklightController *)v2->_backlightController addObserver:v2];
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 miscellaneousDefaults];
+    miscellaneousDefaults = [v5 miscellaneousDefaults];
     miscellaneousDefaults = v2->_miscellaneousDefaults;
-    v2->_miscellaneousDefaults = v6;
+    v2->_miscellaneousDefaults = miscellaneousDefaults;
 
     objc_initWeak(&location, v2);
     v8 = v2->_miscellaneousDefaults;
@@ -96,13 +96,13 @@ void __58__SBLockScreenDeviceMotionEffectController_sharedInstance__block_invoke
     v2->_posterDeviceMotionController = v20;
 
     [(PRUISDeviceMotionController *)v2->_posterDeviceMotionController setDelegate:v2];
-    v22 = [MEMORY[0x277D0AAA0] sharedInstance];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
     displayLayoutPublisher = v2->_displayLayoutPublisher;
-    v2->_displayLayoutPublisher = v22;
+    v2->_displayLayoutPublisher = mEMORY[0x277D0AAA0];
 
-    v24 = [MEMORY[0x277D3EA70] sharedInstance];
+    mEMORY[0x277D3EA70] = [MEMORY[0x277D3EA70] sharedInstance];
     deviceMotionDisableAssertionManager = v2->_deviceMotionDisableAssertionManager;
-    v2->_deviceMotionDisableAssertionManager = v24;
+    v2->_deviceMotionDisableAssertionManager = mEMORY[0x277D3EA70];
 
     [(PRUISDeviceMotionDisablementAssertionManager *)v2->_deviceMotionDisableAssertionManager addObserver:v2];
     v26 = +[SBWallpaperController sharedInstance];
@@ -115,9 +115,9 @@ void __58__SBLockScreenDeviceMotionEffectController_sharedInstance__block_invoke
 
     else
     {
-      v27 = [(SBLockScreenDeviceMotionEffectController *)v2 _acquirePosterClientDeviceMotionDisableAssertion];
+      _acquirePosterClientDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)v2 _acquirePosterClientDeviceMotionDisableAssertion];
       posterDeviceMotionDisableAssertion = v2->_posterDeviceMotionDisableAssertion;
-      v2->_posterDeviceMotionDisableAssertion = v27;
+      v2->_posterDeviceMotionDisableAssertion = _acquirePosterClientDeviceMotionDisableAssertion;
     }
 
     [(SBLockScreenDeviceMotionEffectController *)v2 setUserPresenceDetected:1];
@@ -147,50 +147,50 @@ void __48__SBLockScreenDeviceMotionEffectController_init__block_invoke(uint64_t 
   [(SBLockScreenDeviceMotionEffectController *)&v3 dealloc];
 }
 
-- (void)setWallpaperVisible:(BOOL)a3
+- (void)setWallpaperVisible:(BOOL)visible
 {
-  if (self->_wallpaperVisible == a3)
+  if (self->_wallpaperVisible == visible)
   {
     return;
   }
 
-  self->_wallpaperVisible = a3;
+  self->_wallpaperVisible = visible;
   wallpaperNotVisibleDeviceMotionDisableAssertion = self->_wallpaperNotVisibleDeviceMotionDisableAssertion;
-  if (a3)
+  if (visible)
   {
     if (wallpaperNotVisibleDeviceMotionDisableAssertion)
     {
       [(BSInvalidatable *)wallpaperNotVisibleDeviceMotionDisableAssertion invalidate];
-      v6 = 0;
+      _acquireWallpaperNotVisibleDeviceMotionDisableAssertion = 0;
 LABEL_7:
       v7 = self->_wallpaperNotVisibleDeviceMotionDisableAssertion;
-      self->_wallpaperNotVisibleDeviceMotionDisableAssertion = v6;
+      self->_wallpaperNotVisibleDeviceMotionDisableAssertion = _acquireWallpaperNotVisibleDeviceMotionDisableAssertion;
     }
   }
 
   else if (!wallpaperNotVisibleDeviceMotionDisableAssertion)
   {
-    v6 = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperNotVisibleDeviceMotionDisableAssertion];
+    _acquireWallpaperNotVisibleDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperNotVisibleDeviceMotionDisableAssertion];
     goto LABEL_7;
   }
 
   [(SBLockScreenDeviceMotionEffectController *)self _updateClientWantsMotionEventState];
 }
 
-- (void)setWallpaperObscured:(BOOL)a3
+- (void)setWallpaperObscured:(BOOL)obscured
 {
-  if (self->_wallpaperObscured != a3)
+  if (self->_wallpaperObscured != obscured)
   {
-    self->_wallpaperObscured = a3;
+    self->_wallpaperObscured = obscured;
     wallpaperObscuredDeviceMotionDisableAssertion = self->_wallpaperObscuredDeviceMotionDisableAssertion;
-    if (a3)
+    if (obscured)
     {
       if (wallpaperObscuredDeviceMotionDisableAssertion)
       {
         return;
       }
 
-      v5 = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperObscuredDeviceMotionDisableAssertion];
+      _acquireWallpaperObscuredDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperObscuredDeviceMotionDisableAssertion];
     }
 
     else
@@ -201,21 +201,21 @@ LABEL_7:
       }
 
       [(BSInvalidatable *)wallpaperObscuredDeviceMotionDisableAssertion invalidate];
-      v5 = 0;
+      _acquireWallpaperObscuredDeviceMotionDisableAssertion = 0;
     }
 
     v6 = self->_wallpaperObscuredDeviceMotionDisableAssertion;
-    self->_wallpaperObscuredDeviceMotionDisableAssertion = v5;
+    self->_wallpaperObscuredDeviceMotionDisableAssertion = _acquireWallpaperObscuredDeviceMotionDisableAssertion;
   }
 }
 
-- (void)setPosterClientWantsMotionEvents:(BOOL)a3
+- (void)setPosterClientWantsMotionEvents:(BOOL)events
 {
-  if (self->_posterClientWantsMotionEvents != a3)
+  if (self->_posterClientWantsMotionEvents != events)
   {
-    self->_posterClientWantsMotionEvents = a3;
+    self->_posterClientWantsMotionEvents = events;
     posterDeviceMotionDisableAssertion = self->_posterDeviceMotionDisableAssertion;
-    if (a3)
+    if (events)
     {
       if (posterDeviceMotionDisableAssertion)
       {
@@ -233,9 +233,9 @@ LABEL_7:
     {
       if (!posterDeviceMotionDisableAssertion)
       {
-        v7 = [(SBLockScreenDeviceMotionEffectController *)self _acquirePosterClientDeviceMotionDisableAssertion];
+        _acquirePosterClientDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquirePosterClientDeviceMotionDisableAssertion];
         v8 = self->_posterDeviceMotionDisableAssertion;
-        self->_posterDeviceMotionDisableAssertion = v7;
+        self->_posterDeviceMotionDisableAssertion = _acquirePosterClientDeviceMotionDisableAssertion;
       }
 
       v9 = self->_displayLayoutPublisher;
@@ -245,39 +245,39 @@ LABEL_7:
   }
 }
 
-- (void)setPosterClientDeviceMotionMode:(unint64_t)a3
+- (void)setPosterClientDeviceMotionMode:(unint64_t)mode
 {
-  if (self->_posterClientDeviceMotionMode != a3)
+  if (self->_posterClientDeviceMotionMode != mode)
   {
     v8 = v3;
-    self->_posterClientDeviceMotionMode = a3;
-    if (a3 != 2)
+    self->_posterClientDeviceMotionMode = mode;
+    if (mode != 2)
     {
-      a3 = a3 == 1;
+      mode = mode == 1;
     }
 
-    [(PRUISDeviceMotionController *)self->_posterDeviceMotionController setDeviceMotionMode:a3, v4, v8, v5];
+    [(PRUISDeviceMotionController *)self->_posterDeviceMotionController setDeviceMotionMode:mode, v4, v8, v5];
 
     [(SBLockScreenDeviceMotionEffectController *)self _updateClientWantsMotionEventState];
   }
 }
 
-- (void)setMotionUpdateInterval:(double)a3
+- (void)setMotionUpdateInterval:(double)interval
 {
-  if (self->_motionUpdateInterval != a3)
+  if (self->_motionUpdateInterval != interval)
   {
-    self->_motionUpdateInterval = a3;
+    self->_motionUpdateInterval = interval;
     [(PRUISDeviceMotionController *)self->_posterDeviceMotionController updateMotionUpdateInterval:2 reason:?];
   }
 }
 
-- (void)setUserPresenceDetected:(BOOL)a3
+- (void)setUserPresenceDetected:(BOOL)detected
 {
-  if (self->_userPresenceDetected != a3)
+  if (self->_userPresenceDetected != detected)
   {
-    self->_userPresenceDetected = a3;
+    self->_userPresenceDetected = detected;
     userPresenceDisableAssertion = self->_userPresenceDisableAssertion;
-    if (a3)
+    if (detected)
     {
       if (!userPresenceDisableAssertion)
       {
@@ -285,7 +285,7 @@ LABEL_7:
       }
 
       [(BSInvalidatable *)userPresenceDisableAssertion invalidate];
-      v5 = 0;
+      _acquireNoUserPresenceDeviceMotionDisableAssertion = 0;
     }
 
     else
@@ -295,21 +295,21 @@ LABEL_7:
         return;
       }
 
-      v5 = [(SBLockScreenDeviceMotionEffectController *)self _acquireNoUserPresenceDeviceMotionDisableAssertion];
+      _acquireNoUserPresenceDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireNoUserPresenceDeviceMotionDisableAssertion];
     }
 
     v6 = self->_userPresenceDisableAssertion;
-    self->_userPresenceDisableAssertion = v5;
+    self->_userPresenceDisableAssertion = _acquireNoUserPresenceDeviceMotionDisableAssertion;
   }
 }
 
-- (void)setCoverSheetVisible:(BOOL)a3
+- (void)setCoverSheetVisible:(BOOL)visible
 {
-  if (self->_coverSheetVisible != a3)
+  if (self->_coverSheetVisible != visible)
   {
-    self->_coverSheetVisible = a3;
+    self->_coverSheetVisible = visible;
     coverSheetNotVisibleDisableAssertion = self->_coverSheetNotVisibleDisableAssertion;
-    if (a3)
+    if (visible)
     {
       if (!coverSheetNotVisibleDisableAssertion)
       {
@@ -317,7 +317,7 @@ LABEL_7:
       }
 
       [(BSInvalidatable *)coverSheetNotVisibleDisableAssertion invalidate];
-      v5 = 0;
+      _acquireCoverSheetNotVisibleDeviceMotionDisableAssertion = 0;
     }
 
     else
@@ -327,28 +327,28 @@ LABEL_7:
         return;
       }
 
-      v5 = [(SBLockScreenDeviceMotionEffectController *)self _acquireCoverSheetNotVisibleDeviceMotionDisableAssertion];
+      _acquireCoverSheetNotVisibleDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireCoverSheetNotVisibleDeviceMotionDisableAssertion];
     }
 
     v6 = self->_coverSheetNotVisibleDisableAssertion;
-    self->_coverSheetNotVisibleDisableAssertion = v5;
+    self->_coverSheetNotVisibleDisableAssertion = _acquireCoverSheetNotVisibleDeviceMotionDisableAssertion;
   }
 }
 
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
-  if (SBBacklightStateIsActive(a4) == a4)
+  if (SBBacklightStateIsActive(state) == state)
   {
-    if ((a5 > 0x2F || ((1 << a5) & 0x80E7E01122FCLL) == 0) && !self->_backlightChangeSourceDisableAssertion)
+    if ((source > 0x2F || ((1 << source) & 0x80E7E01122FCLL) == 0) && !self->_backlightChangeSourceDisableAssertion)
     {
-      v12 = [(SBLockScreenDeviceMotionEffectController *)self _acquireBacklightChangeSourceDeviceMotionDisableAssertion];
+      _acquireBacklightChangeSourceDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireBacklightChangeSourceDeviceMotionDisableAssertion];
       backlightChangeSourceDisableAssertion = self->_backlightChangeSourceDisableAssertion;
-      self->_backlightChangeSourceDisableAssertion = v12;
+      self->_backlightChangeSourceDisableAssertion = _acquireBacklightChangeSourceDeviceMotionDisableAssertion;
 
       v14 = SBLogDeviceMotionEffect();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        [SBLockScreenDeviceMotionEffectController backlightController:a5 didTransitionToBacklightState:v14 source:?];
+        [SBLockScreenDeviceMotionEffectController backlightController:source didTransitionToBacklightState:v14 source:?];
       }
     }
 
@@ -366,9 +366,9 @@ LABEL_10:
   {
     if (!self->_backlightDeviceMotionDisableAssertion)
     {
-      v9 = [(SBLockScreenDeviceMotionEffectController *)self _acquireBacklightDeviceMotionDisableAssertion];
+      _acquireBacklightDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireBacklightDeviceMotionDisableAssertion];
       v10 = self->_backlightDeviceMotionDisableAssertion;
-      self->_backlightDeviceMotionDisableAssertion = v9;
+      self->_backlightDeviceMotionDisableAssertion = _acquireBacklightDeviceMotionDisableAssertion;
     }
 
     v11 = self->_backlightChangeSourceDisableAssertion;
@@ -384,31 +384,31 @@ LABEL_10:
   [(SBLockScreenDeviceMotionEffectController *)self _updateClientWantsMotionEventState];
 }
 
-- (void)deviceMotionController:(uint64_t)a3 didUpdateMotionWithRotation:(_OWORD *)a4
+- (void)deviceMotionController:(uint64_t)controller didUpdateMotionWithRotation:(_OWORD *)rotation
 {
-  v6 = [a1[22] deviceMotionSettings];
-  if ([v6 hasSignificantMotion] & 1) != 0 || (objc_msgSend(a1, "_isPerformanceOptimizationDisabled"))
+  deviceMotionSettings = [self[22] deviceMotionSettings];
+  if ([deviceMotionSettings hasSignificantMotion] & 1) != 0 || (objc_msgSend(self, "_isPerformanceOptimizationDisabled"))
   {
 
 LABEL_4:
     v7 = +[SBWallpaperController sharedInstance];
-    v8 = a4[1];
-    v10[0] = *a4;
+    v8 = rotation[1];
+    v10[0] = *rotation;
     v10[1] = v8;
     [v7 updateWallpaperAnimationWithRotation:v10];
 
     return;
   }
 
-  v9 = [a1[19] optimizingSignificantMotion];
+  optimizingSignificantMotion = [self[19] optimizingSignificantMotion];
 
-  if ((v9 & 1) == 0)
+  if ((optimizingSignificantMotion & 1) == 0)
   {
     goto LABEL_4;
   }
 }
 
-- (void)deviceMotionControllerDidUpdateDeviceMotionSettings:(id)a3
+- (void)deviceMotionControllerDidUpdateDeviceMotionSettings:(id)settings
 {
   objc_initWeak(&location, self);
   performanceOptimizationUpdateQueue = self->_performanceOptimizationUpdateQueue;
@@ -437,9 +437,9 @@ void __96__SBLockScreenDeviceMotionEffectController_deviceMotionControllerDidUpd
 
 - (void)_updateLockScreenForSensitiveUI
 {
-  v3 = [(SBLockScreenDeviceMotionEffectController *)self _isSensitiveUIEnabled];
+  _isSensitiveUIEnabled = [(SBLockScreenDeviceMotionEffectController *)self _isSensitiveUIEnabled];
   sensitiveUIDeviceMotionDisableAssertion = self->_sensitiveUIDeviceMotionDisableAssertion;
-  if (v3)
+  if (_isSensitiveUIEnabled)
   {
     if (!sensitiveUIDeviceMotionDisableAssertion)
     {
@@ -447,7 +447,7 @@ void __96__SBLockScreenDeviceMotionEffectController_deviceMotionControllerDidUpd
     }
 
     [(BSInvalidatable *)sensitiveUIDeviceMotionDisableAssertion invalidate];
-    v5 = 0;
+    _acquireSensitiveUIDeviceMotionDisableAssertion = 0;
   }
 
   else
@@ -457,97 +457,97 @@ void __96__SBLockScreenDeviceMotionEffectController_deviceMotionControllerDidUpd
       return;
     }
 
-    v5 = [(SBLockScreenDeviceMotionEffectController *)self _acquireSensitiveUIDeviceMotionDisableAssertion];
+    _acquireSensitiveUIDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireSensitiveUIDeviceMotionDisableAssertion];
   }
 
   v6 = self->_sensitiveUIDeviceMotionDisableAssertion;
-  self->_sensitiveUIDeviceMotionDisableAssertion = v5;
+  self->_sensitiveUIDeviceMotionDisableAssertion = _acquireSensitiveUIDeviceMotionDisableAssertion;
 }
 
 - (void)_updatePerformanceOptimizationState
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = [(SBLockScreenDeviceMotionEffectController *)self _isPerformanceOptimizationDisabled];
+  _isPerformanceOptimizationDisabled = [(SBLockScreenDeviceMotionEffectController *)self _isPerformanceOptimizationDisabled];
   [(SBLockScreenDeviceMotionEffectController *)self _updateLockScreenForSensitiveUI];
-  v37 = v3;
-  v4 = !v3;
-  v5 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingReducedMotion]&& !v3;
-  v6 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
-  v7 = [v6 isReducedMotionEnabled];
+  v37 = _isPerformanceOptimizationDisabled;
+  v4 = !_isPerformanceOptimizationDisabled;
+  v5 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingReducedMotion]&& !_isPerformanceOptimizationDisabled;
+  deviceMotionSettings = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
+  isReducedMotionEnabled = [deviceMotionSettings isReducedMotionEnabled];
 
-  v8 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
-  v9 = [v8 shouldIgnoreReducedMotionChange];
+  deviceMotionSettings2 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
+  shouldIgnoreReducedMotionChange = [deviceMotionSettings2 shouldIgnoreReducedMotionChange];
 
   reducedMotionDeviceMotionDisableAssertion = self->_reducedMotionDeviceMotionDisableAssertion;
-  v35 = v7;
+  v35 = isReducedMotionEnabled;
   v36 = v5;
-  v11 = v5 != 1 || v7 == 0;
-  if (v11 || (v9 & 1) != 0)
+  v11 = v5 != 1 || isReducedMotionEnabled == 0;
+  if (v11 || (shouldIgnoreReducedMotionChange & 1) != 0)
   {
     if (reducedMotionDeviceMotionDisableAssertion)
     {
       [(BSInvalidatable *)reducedMotionDeviceMotionDisableAssertion invalidate];
-      v12 = 0;
+      _acquireReducedMotionDeviceMotionDisableAssertion = 0;
       goto LABEL_10;
     }
   }
 
   else if (!reducedMotionDeviceMotionDisableAssertion)
   {
-    v12 = [(SBLockScreenDeviceMotionEffectController *)self _acquireReducedMotionDeviceMotionDisableAssertion];
+    _acquireReducedMotionDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireReducedMotionDeviceMotionDisableAssertion];
 LABEL_10:
     v13 = self->_reducedMotionDeviceMotionDisableAssertion;
-    self->_reducedMotionDeviceMotionDisableAssertion = v12;
+    self->_reducedMotionDeviceMotionDisableAssertion = _acquireReducedMotionDeviceMotionDisableAssertion;
   }
 
   v14 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingLowPower]& v4;
-  v15 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
-  v16 = [v15 isLowPowerModeEnabled];
+  deviceMotionSettings3 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
+  isLowPowerModeEnabled = [deviceMotionSettings3 isLowPowerModeEnabled];
 
   lowPowerDeviceMotionDisableAssertion = self->_lowPowerDeviceMotionDisableAssertion;
-  if (v14 == 1 && v16)
+  if (v14 == 1 && isLowPowerModeEnabled)
   {
     if (!lowPowerDeviceMotionDisableAssertion)
     {
-      v18 = [(SBLockScreenDeviceMotionEffectController *)self _acquireLowPowerDeviceMotionDisableAssertion];
+      _acquireLowPowerDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireLowPowerDeviceMotionDisableAssertion];
 LABEL_17:
       v19 = self->_lowPowerDeviceMotionDisableAssertion;
-      self->_lowPowerDeviceMotionDisableAssertion = v18;
+      self->_lowPowerDeviceMotionDisableAssertion = _acquireLowPowerDeviceMotionDisableAssertion;
     }
   }
 
   else if (lowPowerDeviceMotionDisableAssertion)
   {
     [(BSInvalidatable *)lowPowerDeviceMotionDisableAssertion invalidate];
-    v18 = 0;
+    _acquireLowPowerDeviceMotionDisableAssertion = 0;
     goto LABEL_17;
   }
 
   v20 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingWallpaperObscured]& v4;
-  v21 = [(SBLockScreenDeviceMotionEffectController *)self isWallpaperObscured];
+  isWallpaperObscured = [(SBLockScreenDeviceMotionEffectController *)self isWallpaperObscured];
   wallpaperObscuredDeviceMotionDisableAssertion = self->_wallpaperObscuredDeviceMotionDisableAssertion;
-  if (v20 == 1 && v21)
+  if (v20 == 1 && isWallpaperObscured)
   {
     if (!wallpaperObscuredDeviceMotionDisableAssertion)
     {
-      v23 = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperObscuredDeviceMotionDisableAssertion];
+      _acquireWallpaperObscuredDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireWallpaperObscuredDeviceMotionDisableAssertion];
 LABEL_24:
       v24 = self->_wallpaperObscuredDeviceMotionDisableAssertion;
-      self->_wallpaperObscuredDeviceMotionDisableAssertion = v23;
+      self->_wallpaperObscuredDeviceMotionDisableAssertion = _acquireWallpaperObscuredDeviceMotionDisableAssertion;
     }
   }
 
   else if (wallpaperObscuredDeviceMotionDisableAssertion)
   {
     [(BSInvalidatable *)wallpaperObscuredDeviceMotionDisableAssertion invalidate];
-    v23 = 0;
+    _acquireWallpaperObscuredDeviceMotionDisableAssertion = 0;
     goto LABEL_24;
   }
 
   v25 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingUserPresence]& v4;
-  v26 = [(SBLockScreenDeviceMotionEffectController *)self isUserPresenceDetected];
+  isUserPresenceDetected = [(SBLockScreenDeviceMotionEffectController *)self isUserPresenceDetected];
   userPresenceDisableAssertion = self->_userPresenceDisableAssertion;
-  if (v25 != 1 || v26)
+  if (v25 != 1 || isUserPresenceDetected)
   {
     if (!userPresenceDisableAssertion)
     {
@@ -555,7 +555,7 @@ LABEL_24:
     }
 
     [(BSInvalidatable *)userPresenceDisableAssertion invalidate];
-    v28 = 0;
+    _acquireNoUserPresenceDeviceMotionDisableAssertion = 0;
   }
 
   else
@@ -565,18 +565,18 @@ LABEL_24:
       goto LABEL_32;
     }
 
-    v28 = [(SBLockScreenDeviceMotionEffectController *)self _acquireNoUserPresenceDeviceMotionDisableAssertion];
+    _acquireNoUserPresenceDeviceMotionDisableAssertion = [(SBLockScreenDeviceMotionEffectController *)self _acquireNoUserPresenceDeviceMotionDisableAssertion];
   }
 
   v29 = self->_userPresenceDisableAssertion;
-  self->_userPresenceDisableAssertion = v28;
+  self->_userPresenceDisableAssertion = _acquireNoUserPresenceDeviceMotionDisableAssertion;
 
 LABEL_32:
-  v30 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingSignificantMotion];
-  v31 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
-  v32 = [v31 hasSignificantMotion];
+  optimizingSignificantMotion = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingSignificantMotion];
+  deviceMotionSettings4 = [(PRUISDeviceMotionController *)self->_posterDeviceMotionController deviceMotionSettings];
+  hasSignificantMotion = [deviceMotionSettings4 hasSignificantMotion];
 
-  v33 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingBacklightChangeSource];
+  optimizingBacklightChangeSource = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingBacklightChangeSource];
   v34 = SBLogDeviceMotionEffect();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
@@ -589,81 +589,81 @@ LABEL_32:
     v44 = 1024;
     v45 = v14;
     v46 = 1024;
-    v47 = v16;
+    v47 = isLowPowerModeEnabled;
     v48 = 1024;
     v49 = v20;
     v50 = 1024;
-    v51 = v21;
+    v51 = isWallpaperObscured;
     v52 = 1024;
     v53 = v25;
     v54 = 1024;
-    v55 = v26;
+    v55 = isUserPresenceDetected;
     v56 = 1024;
-    v57 = v30;
+    v57 = optimizingSignificantMotion;
     v58 = 1024;
-    v59 = v32;
+    v59 = hasSignificantMotion;
     v60 = 1024;
-    v61 = v33;
+    v61 = optimizingBacklightChangeSource;
     _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "Device Motion Effect performance optimization settings have changed. areAllPerformanceOptimizationsDisabled: %{BOOL}u, Reduced Motion(OptimizationEnabled: %{BOOL}u, ReducedMotionSetting: %{BOOL}u), Low Power Mode(OptimizationEnabled: %{BOOL}u, LowPowerModeSetting: %{BOOL}u), Wallpaper Obscured(OptimizationEnabled: %{BOOL}u, isWallpaperObscured: %{BOOL}u), User Presence(OptimizationEnabled: %{BOOL}u, isUserPresenceDetected: %{BOOL}u), Significant Motion (OptimizationEnabled: %{BOOL}u, hasSignificantMotion: %{BOOL}u), Backlight Change Source(OptimizationEnabled: %{BOOL}u)", buf, 0x4Au);
   }
 }
 
 - (id)_acquireReducedMotionDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingReducedMotion];
+  optimizingReducedMotion = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingReducedMotion];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"ReduceMotionDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"ReduceMotionDidDisableMotionEvents" optimizationEnabled:optimizingReducedMotion];
 }
 
 - (id)_acquireLowPowerDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingLowPower];
+  optimizingLowPower = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingLowPower];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"LowPowerDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"LowPowerDidDisableMotionEvents" optimizationEnabled:optimizingLowPower];
 }
 
 - (id)_acquireWallpaperObscuredDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingWallpaperObscured];
+  optimizingWallpaperObscured = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingWallpaperObscured];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"WallpaperObscuredDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"WallpaperObscuredDidDisableMotionEvents" optimizationEnabled:optimizingWallpaperObscured];
 }
 
 - (id)_acquireBacklightChangeSourceDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingBacklightChangeSource];
+  optimizingBacklightChangeSource = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingBacklightChangeSource];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"BacklightChangeSourceDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"BacklightChangeSourceDidDisableMotionEvents" optimizationEnabled:optimizingBacklightChangeSource];
 }
 
 - (id)_acquireNoUserPresenceDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingUserPresence];
+  optimizingUserPresence = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingUserPresence];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"NoUserPresenceDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"NoUserPresenceDidDisableMotionEvents" optimizationEnabled:optimizingUserPresence];
 }
 
 - (id)_acquireCoverSheetNotVisibleDeviceMotionDisableAssertion
 {
-  v3 = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingWallpaperObscured];
+  optimizingWallpaperObscured = [(SBDeviceMotionEffectSettings *)self->_deviceMotionEffectPrototypeSettings optimizingWallpaperObscured];
 
-  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"CoverSheetNotVisibleDidDisableMotionEvents" optimizationEnabled:v3];
+  return [(SBLockScreenDeviceMotionEffectController *)self _acquireDisableAssertionForReason:@"CoverSheetNotVisibleDidDisableMotionEvents" optimizationEnabled:optimizingWallpaperObscured];
 }
 
-- (id)_acquireDisableAssertionForReason:(id)a3 optimizationEnabled:(BOOL)a4
+- (id)_acquireDisableAssertionForReason:(id)reason optimizationEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
+  enabledCopy = enabled;
+  reasonCopy = reason;
   v7 = 0;
-  if (![(SBLockScreenDeviceMotionEffectController *)self _isPerformanceOptimizationDisabled]&& v4)
+  if (![(SBLockScreenDeviceMotionEffectController *)self _isPerformanceOptimizationDisabled]&& enabledCopy)
   {
-    v7 = [(PRUISDeviceMotionDisablementAssertionManager *)self->_deviceMotionDisableAssertionManager acquireDeviceMotionDisablementAssertionForReason:v6];
+    v7 = [(PRUISDeviceMotionDisablementAssertionManager *)self->_deviceMotionDisableAssertionManager acquireDeviceMotionDisablementAssertionForReason:reasonCopy];
   }
 
   return v7;
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
   objc_initWeak(&location, self);
   performanceOptimizationUpdateQueue = self->_performanceOptimizationUpdateQueue;
@@ -706,12 +706,12 @@ void __103__SBLockScreenDeviceMotionEffectController_deviceMotionDisableAssertio
   }
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  publisherCopy = publisher;
+  layoutCopy = layout;
+  transitionCopy = transition;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -724,14 +724,14 @@ void __103__SBLockScreenDeviceMotionEffectController_deviceMotionDisableAssertio
   v21 = __Block_byref_object_copy__27;
   v22 = __Block_byref_object_dispose__27;
   v23 = 0;
-  v11 = [v9 elements];
+  elements = [layoutCopy elements];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__SBLockScreenDeviceMotionEffectController_publisher_didUpdateLayout_withTransition___block_invoke;
   v17[3] = &unk_2783B05D8;
   v17[4] = &v18;
   v17[5] = &v24;
-  [v11 enumerateObjectsWithOptions:2 usingBlock:v17];
+  [elements enumerateObjectsWithOptions:2 usingBlock:v17];
 
   v12 = v25[5];
   if (v12)
@@ -748,9 +748,9 @@ void __103__SBLockScreenDeviceMotionEffectController_deviceMotionDisableAssertio
   v15 = SBLogDeviceMotionEffect();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v19[5] identifier];
+    identifier = [v19[5] identifier];
     *buf = 138412546;
-    v31 = v16;
+    v31 = identifier;
     v32 = 1024;
     v33 = v14;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SBLockScreenDeviceMotionEffectController: Highest element in layout: %@, isCoverSheetVisible: %{BOOL}u", buf, 0x12u);

@@ -1,55 +1,55 @@
 @interface IMDChat
 - (NSNumber)transcriptBackgroundVersion;
 - (id)backgroundPropertiesForNewGroupParticipant;
-- (id)makeGroupContextDictionaryWithCallerID:(id)a3 skipVersions:(BOOL)a4;
+- (id)makeGroupContextDictionaryWithCallerID:(id)d skipVersions:(BOOL)versions;
 @end
 
 @implementation IMDChat
 
-- (id)makeGroupContextDictionaryWithCallerID:(id)a3 skipVersions:(BOOL)a4
+- (id)makeGroupContextDictionaryWithCallerID:(id)d skipVersions:(BOOL)versions
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [(IMDChat *)self groupID];
-  [v7 setObject:v8 forKeyedSubscript:@"gid"];
+  groupID = [(IMDChat *)self groupID];
+  [v7 setObject:groupID forKeyedSubscript:@"gid"];
 
-  v9 = [(IMDChat *)self participants];
-  v10 = [v9 arrayByApplyingSelector:"ID"];
+  participants = [(IMDChat *)self participants];
+  v10 = [participants arrayByApplyingSelector:"ID"];
   v11 = [v10 mutableCopy];
 
-  if ([v6 length])
+  if ([dCopy length])
   {
-    v12 = [v6 _stripFZIDPrefix];
-    [v11 addObject:v12];
+    _stripFZIDPrefix = [dCopy _stripFZIDPrefix];
+    [v11 addObject:_stripFZIDPrefix];
   }
 
-  v13 = [v11 _URIsFromIDs];
-  [v7 setObject:v13 forKeyedSubscript:@"p"];
-  v14 = [(IMDChat *)self displayName];
+  _URIsFromIDs = [v11 _URIsFromIDs];
+  [v7 setObject:_URIsFromIDs forKeyedSubscript:@"p"];
+  displayName = [(IMDChat *)self displayName];
 
-  if (v14)
+  if (displayName)
   {
-    v15 = [(IMDChat *)self displayName];
-    [v7 setObject:v15 forKeyedSubscript:@"n"];
+    displayName2 = [(IMDChat *)self displayName];
+    [v7 setObject:displayName2 forKeyedSubscript:@"n"];
   }
 
-  if (!a4)
+  if (!versions)
   {
-    v16 = [(IMDChat *)self properties];
-    v17 = [v16 objectForKeyedSubscript:@"gv"];
+    properties = [(IMDChat *)self properties];
+    v17 = [properties objectForKeyedSubscript:@"gv"];
 
     if (v17)
     {
-      v18 = [v16 objectForKeyedSubscript:@"gv"];
+      v18 = [properties objectForKeyedSubscript:@"gv"];
       [v7 setObject:v18 forKeyedSubscript:@"gv"];
     }
 
     v19 = IMDChatGroupParticipantVersionKey;
-    v20 = [v16 objectForKeyedSubscript:IMDChatGroupParticipantVersionKey];
+    v20 = [properties objectForKeyedSubscript:IMDChatGroupParticipantVersionKey];
 
     if (v20)
     {
-      v21 = [v16 objectForKeyedSubscript:v19];
+      v21 = [properties objectForKeyedSubscript:v19];
       [v7 setObject:v21 forKeyedSubscript:v19];
     }
   }
@@ -61,7 +61,7 @@
 
 - (NSNumber)transcriptBackgroundVersion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IMDChat.backgroundVersion.getter();
 
   return v3;
@@ -69,7 +69,7 @@
 
 - (id)backgroundPropertiesForNewGroupParticipant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IMDChat.backgroundPropertiesForNewGroupParticipant()();
 
   if (v3)

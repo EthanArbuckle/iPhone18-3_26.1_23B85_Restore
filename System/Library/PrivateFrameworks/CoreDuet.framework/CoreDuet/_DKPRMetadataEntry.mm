@@ -1,6 +1,6 @@
 @interface _DKPRMetadataEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)hasIndex;
@@ -9,9 +9,9 @@
 - (uint64_t)setIndex:(uint64_t)result;
 - (uint64_t)value;
 - (unint64_t)hash;
-- (void)setKey:(uint64_t)a1;
-- (void)setValue:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setKey:(uint64_t)key;
+- (void)setValue:(uint64_t)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRMetadataEntry
@@ -32,27 +32,27 @@
   v8.receiver = self;
   v8.super_class = _DKPRMetadataEntry;
   v4 = [(_DKPRMetadataEntry *)&v8 description];
-  v5 = [(_DKPRMetadataEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRMetadataEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(_DKPRValue *)value dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation = [(_DKPRValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   if (*&self->_has)
@@ -64,9 +64,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     [_DKPRMetadataEntry writeTo:];
@@ -86,14 +86,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(_DKPRValue *)self->_value copyWithZone:a3];
+  v8 = [(_DKPRValue *)self->_value copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -106,16 +106,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -124,7 +124,7 @@
   }
 
   value = self->_value;
-  if (value | *(v4 + 3))
+  if (value | *(equalCopy + 3))
   {
     if (![(_DKPRValue *)value isEqual:?])
     {
@@ -132,10 +132,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_index == *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_index == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_11;
@@ -188,19 +188,19 @@ LABEL_11:
   return result;
 }
 
-- (void)setKey:(uint64_t)a1
+- (void)setKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 16);
+    OUTLINED_FUNCTION_0_8(key, a2, 16);
   }
 }
 
-- (void)setValue:(uint64_t)a1
+- (void)setValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 24);
+    OUTLINED_FUNCTION_0_8(value, a2, 24);
   }
 }
 

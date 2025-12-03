@@ -1,28 +1,28 @@
 @interface PDDPHandout
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPublishingState:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsPublishingState:(id)state;
+- (int)StringAsType:(id)type;
 - (int)publishingState;
 - (int)type;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsReviewed:(BOOL)a3;
-- (void)setHasPublishingState:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsReviewed:(BOOL)reviewed;
+- (void)setHasPublishingState:(BOOL)state;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandout
 
-- (void)setHasIsReviewed:(BOOL)a3
+- (void)setHasIsReviewed:(BOOL)reviewed
 {
-  if (a3)
+  if (reviewed)
   {
     v3 = 16;
   }
@@ -48,9 +48,9 @@
   }
 }
 
-- (void)setHasPublishingState:(BOOL)a3
+- (void)setHasPublishingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -63,50 +63,50 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsPublishingState:(id)a3
+- (int)StringAsPublishingState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN_STATE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PENDING"])
+  else if ([stateCopy isEqualToString:@"PENDING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PUBLISHING"])
+  else if ([stateCopy isEqualToString:@"PUBLISHING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PUBLISHED"])
+  else if ([stateCopy isEqualToString:@"PUBLISHED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UPDATING"])
+  else if ([stateCopy isEqualToString:@"UPDATING"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ERROR"])
+  else if ([stateCopy isEqualToString:@"ERROR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SUBMITTED"])
+  else if ([stateCopy isEqualToString:@"SUBMITTED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULING"])
+  else if ([stateCopy isEqualToString:@"SCHEDULING"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED"])
+  else if ([stateCopy isEqualToString:@"SCHEDULED"])
   {
     v4 = 8;
   }
@@ -132,9 +132,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -147,20 +147,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PRIVATE_TYPE"])
+  else if ([typeCopy isEqualToString:@"PRIVATE_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_TYPE"])
+  else if ([typeCopy isEqualToString:@"PUBLIC_TYPE"])
   {
     v4 = 2;
   }
@@ -173,9 +173,9 @@
   return v4;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -188,22 +188,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
 - (id)description
@@ -211,8 +211,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandout;
   v3 = [(PDDPHandout *)&v7 description];
-  v4 = [(PDDPHandout *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandout *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -248,29 +248,29 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v10 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateDue = self->_dateDue;
   if (dateDue)
   {
-    v12 = [(PDDPDate *)dateDue dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"date_due"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateDue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_due"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v14 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"date_last_modified"];
+    dictionaryRepresentation3 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"date_last_modified"];
   }
 
   dateOfPublication = self->_dateOfPublication;
   if (dateOfPublication)
   {
-    v16 = [(PDDPDate *)dateOfPublication dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"date_of_publication"];
+    dictionaryRepresentation4 = [(PDDPDate *)dateOfPublication dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"date_of_publication"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -282,8 +282,8 @@
   dateLastReviewed = self->_dateLastReviewed;
   if (dateLastReviewed)
   {
-    v19 = [(PDDPDate *)dateLastReviewed dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"date_last_reviewed"];
+    dictionaryRepresentation5 = [(PDDPDate *)dateLastReviewed dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"date_last_reviewed"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -305,8 +305,8 @@
   status = self->_status;
   if (status)
   {
-    v23 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"status"];
+    dictionaryRepresentation6 = [(PDDPStatus *)status dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"status"];
   }
 
   has = self->_has;
@@ -355,9 +355,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -475,115 +475,115 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v10;
+    [toCopy setObjectId:?];
+    toCopy = v10;
   }
 
   if (self->_appIdentifier)
   {
     [v10 setAppIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_title)
   {
     [v10 setTitle:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_instructions)
   {
     [v10 setInstructions:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateCreated)
   {
     [v10 setDateCreated:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateDue)
   {
     [v10 setDateDue:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateLastModified)
   {
     [v10 setDateLastModified:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateOfPublication)
   {
     [v10 setDateOfPublication:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 128) = self->_isReviewed;
-    *(v4 + 132) |= 0x10u;
+    *(toCopy + 128) = self->_isReviewed;
+    *(toCopy + 132) |= 0x10u;
   }
 
   if (self->_dateLastReviewed)
   {
     [v10 setDateLastReviewed:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 24) = self->_publishingState;
-    *(v4 + 132) |= 2u;
+    *(toCopy + 24) = self->_publishingState;
+    *(toCopy + 132) |= 2u;
   }
 
   if (self->_status)
   {
     [v10 setStatus:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_flags;
-    *(v4 + 132) |= 1u;
+    *(toCopy + 1) = self->_flags;
+    *(toCopy + 132) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 30) = self->_type;
-    *(v4 + 132) |= 4u;
+    *(toCopy + 30) = self->_type;
+    *(toCopy + 132) |= 4u;
   }
 
   if (self->_publicShareLink)
   {
     [v10 setPublicShareLink:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 31) = self->_version;
-    *(v4 + 132) |= 8u;
+    *(toCopy + 31) = self->_version;
+    *(toCopy + 132) |= 8u;
   }
 
   if ([(PDDPHandout *)self classIdsCount])
   {
     [v10 clearClassIds];
-    v6 = [(PDDPHandout *)self classIdsCount];
-    if (v6)
+    classIdsCount = [(PDDPHandout *)self classIdsCount];
+    if (classIdsCount)
     {
-      v7 = v6;
+      v7 = classIdsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPHandout *)self classIdsAtIndex:i];
@@ -593,38 +593,38 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   v11 = v5[14];
   v5[14] = v10;
 
-  v12 = [(NSString *)self->_instructions copyWithZone:a3];
+  v12 = [(NSString *)self->_instructions copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
-  v14 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v14 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
-  v16 = [(PDDPDate *)self->_dateDue copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_dateDue copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
-  v18 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v18 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
-  v20 = [(PDDPDate *)self->_dateOfPublication copyWithZone:a3];
+  v20 = [(PDDPDate *)self->_dateOfPublication copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
@@ -634,7 +634,7 @@
     *(v5 + 132) |= 0x10u;
   }
 
-  v22 = [(PDDPDate *)self->_dateLastReviewed copyWithZone:a3];
+  v22 = [(PDDPDate *)self->_dateLastReviewed copyWithZone:zone];
   v23 = v5[7];
   v5[7] = v22;
 
@@ -644,7 +644,7 @@
     *(v5 + 132) |= 2u;
   }
 
-  v24 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v24 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v25 = v5[13];
   v5[13] = v24;
 
@@ -662,7 +662,7 @@
     *(v5 + 132) |= 4u;
   }
 
-  v27 = [(NSString *)self->_publicShareLink copyWithZone:a3];
+  v27 = [(NSString *)self->_publicShareLink copyWithZone:zone];
   v28 = v5[11];
   v5[11] = v27;
 
@@ -691,7 +691,7 @@
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v36 + 1) + 8 * i) copyWithZone:{a3, v36}];
+        v34 = [*(*(&v36 + 1) + 8 * i) copyWithZone:{zone, v36}];
         [v5 addClassIds:v34];
       }
 
@@ -704,16 +704,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 10))
+  if (objectId | *(equalCopy + 10))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -722,7 +722,7 @@
   }
 
   appIdentifier = self->_appIdentifier;
-  if (appIdentifier | *(v4 + 2))
+  if (appIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)appIdentifier isEqual:?])
     {
@@ -731,7 +731,7 @@
   }
 
   title = self->_title;
-  if (title | *(v4 + 14))
+  if (title | *(equalCopy + 14))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -740,7 +740,7 @@
   }
 
   instructions = self->_instructions;
-  if (instructions | *(v4 + 9))
+  if (instructions | *(equalCopy + 9))
   {
     if (![(NSString *)instructions isEqual:?])
     {
@@ -749,7 +749,7 @@
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 4))
+  if (dateCreated | *(equalCopy + 4))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -758,7 +758,7 @@
   }
 
   dateDue = self->_dateDue;
-  if (dateDue | *(v4 + 5))
+  if (dateDue | *(equalCopy + 5))
   {
     if (![(PDDPDate *)dateDue isEqual:?])
     {
@@ -767,7 +767,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 6))
+  if (dateLastModified | *(equalCopy + 6))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -776,7 +776,7 @@
   }
 
   dateOfPublication = self->_dateOfPublication;
-  if (dateOfPublication | *(v4 + 8))
+  if (dateOfPublication | *(equalCopy + 8))
   {
     if (![(PDDPDate *)dateOfPublication isEqual:?])
     {
@@ -785,36 +785,36 @@
   }
 
   has = self->_has;
-  v14 = *(v4 + 132);
+  v14 = *(equalCopy + 132);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 132) & 0x10) == 0)
+    if ((*(equalCopy + 132) & 0x10) == 0)
     {
       goto LABEL_57;
     }
 
-    v16 = *(v4 + 128);
+    v16 = *(equalCopy + 128);
     if (self->_isReviewed)
     {
-      if ((*(v4 + 128) & 1) == 0)
+      if ((*(equalCopy + 128) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 128))
+    else if (*(equalCopy + 128))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 132) & 0x10) != 0)
+  else if ((*(equalCopy + 132) & 0x10) != 0)
   {
     goto LABEL_57;
   }
 
   dateLastReviewed = self->_dateLastReviewed;
-  if (dateLastReviewed | *(v4 + 7))
+  if (dateLastReviewed | *(equalCopy + 7))
   {
     if (![(PDDPDate *)dateLastReviewed isEqual:?])
     {
@@ -822,12 +822,12 @@
     }
 
     has = self->_has;
-    v14 = *(v4 + 132);
+    v14 = *(equalCopy + 132);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v14 & 2) == 0 || self->_publishingState != *(v4 + 24))
+    if ((v14 & 2) == 0 || self->_publishingState != *(equalCopy + 24))
     {
       goto LABEL_57;
     }
@@ -839,7 +839,7 @@
   }
 
   status = self->_status;
-  if (status | *(v4 + 13))
+  if (status | *(equalCopy + 13))
   {
     if (![(PDDPStatus *)status isEqual:?])
     {
@@ -847,12 +847,12 @@
     }
 
     has = self->_has;
-    v14 = *(v4 + 132);
+    v14 = *(equalCopy + 132);
   }
 
   if (has)
   {
-    if ((v14 & 1) == 0 || self->_flags != *(v4 + 1))
+    if ((v14 & 1) == 0 || self->_flags != *(equalCopy + 1))
     {
       goto LABEL_57;
     }
@@ -865,7 +865,7 @@
 
   if ((has & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_type != *(v4 + 30))
+    if ((v14 & 4) == 0 || self->_type != *(equalCopy + 30))
     {
       goto LABEL_57;
     }
@@ -877,12 +877,12 @@
   }
 
   publicShareLink = self->_publicShareLink;
-  if (publicShareLink | *(v4 + 11))
+  if (publicShareLink | *(equalCopy + 11))
   {
     if ([(NSString *)publicShareLink isEqual:?])
     {
       has = self->_has;
-      v14 = *(v4 + 132);
+      v14 = *(equalCopy + 132);
       goto LABEL_50;
     }
 
@@ -894,7 +894,7 @@ LABEL_57:
 LABEL_50:
   if ((has & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_version != *(v4 + 31))
+    if ((v14 & 8) == 0 || self->_version != *(equalCopy + 31))
     {
       goto LABEL_57;
     }
@@ -906,7 +906,7 @@ LABEL_50:
   }
 
   classIds = self->_classIds;
-  if (classIds | *(v4 + 3))
+  if (classIds | *(equalCopy + 3))
   {
     v20 = [(NSMutableArray *)classIds isEqual:?];
   }
@@ -989,31 +989,31 @@ LABEL_12:
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSMutableArray *)self->_classIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(PDDPHandout *)self setObjectId:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPHandout *)self setAppIdentifier:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PDDPHandout *)self setTitle:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPHandout *)self setInstructions:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (dateCreated)
   {
     if (v6)
@@ -1028,7 +1028,7 @@ LABEL_12:
   }
 
   dateDue = self->_dateDue;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (dateDue)
   {
     if (v8)
@@ -1043,7 +1043,7 @@ LABEL_12:
   }
 
   dateLastModified = self->_dateLastModified;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   if (dateLastModified)
   {
     if (v10)
@@ -1058,7 +1058,7 @@ LABEL_12:
   }
 
   dateOfPublication = self->_dateOfPublication;
-  v12 = *(v4 + 8);
+  v12 = *(fromCopy + 8);
   if (dateOfPublication)
   {
     if (v12)
@@ -1072,14 +1072,14 @@ LABEL_12:
     [(PDDPHandout *)self setDateOfPublication:?];
   }
 
-  if ((*(v4 + 132) & 0x10) != 0)
+  if ((*(fromCopy + 132) & 0x10) != 0)
   {
-    self->_isReviewed = *(v4 + 128);
+    self->_isReviewed = *(fromCopy + 128);
     *&self->_has |= 0x10u;
   }
 
   dateLastReviewed = self->_dateLastReviewed;
-  v14 = *(v4 + 7);
+  v14 = *(fromCopy + 7);
   if (dateLastReviewed)
   {
     if (v14)
@@ -1093,14 +1093,14 @@ LABEL_12:
     [(PDDPHandout *)self setDateLastReviewed:?];
   }
 
-  if ((*(v4 + 132) & 2) != 0)
+  if ((*(fromCopy + 132) & 2) != 0)
   {
-    self->_publishingState = *(v4 + 24);
+    self->_publishingState = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 
   status = self->_status;
-  v16 = *(v4 + 13);
+  v16 = *(fromCopy + 13);
   if (status)
   {
     if (v16)
@@ -1114,28 +1114,28 @@ LABEL_12:
     [(PDDPHandout *)self setStatus:?];
   }
 
-  v17 = *(v4 + 132);
+  v17 = *(fromCopy + 132);
   if (v17)
   {
-    self->_flags = *(v4 + 1);
+    self->_flags = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v17 = *(v4 + 132);
+    v17 = *(fromCopy + 132);
   }
 
   if ((v17 & 4) != 0)
   {
-    self->_type = *(v4 + 30);
+    self->_type = *(fromCopy + 30);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PDDPHandout *)self setPublicShareLink:?];
   }
 
-  if ((*(v4 + 132) & 8) != 0)
+  if ((*(fromCopy + 132) & 8) != 0)
   {
-    self->_version = *(v4 + 31);
+    self->_version = *(fromCopy + 31);
     *&self->_has |= 8u;
   }
 
@@ -1143,7 +1143,7 @@ LABEL_12:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v18 = *(v4 + 3);
+  v18 = *(fromCopy + 3);
   v19 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v19)
   {

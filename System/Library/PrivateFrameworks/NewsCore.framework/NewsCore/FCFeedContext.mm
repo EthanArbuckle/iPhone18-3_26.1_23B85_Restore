@@ -1,56 +1,56 @@
 @interface FCFeedContext
 + (FCFeedContext)feedContextForSmarterFetch;
-+ (id)feedContextForChannel:(id)a3 sectionID:(id)a4;
-+ (id)feedContextForEditorialChannel:(id)a3 editorialGemsSectionID:(id)a4;
-+ (id)feedContextForEditorialChannel:(id)a3 sectionID:(id)a4;
-+ (id)feedContextForEditorialTag:(id)a3;
++ (id)feedContextForChannel:(id)channel sectionID:(id)d;
++ (id)feedContextForEditorialChannel:(id)channel editorialGemsSectionID:(id)d;
++ (id)feedContextForEditorialChannel:(id)channel sectionID:(id)d;
++ (id)feedContextForEditorialTag:(id)tag;
 + (id)feedContextForHiddenFeed;
 + (id)feedContextForPaidBundleFeed;
-+ (id)feedContextForTag:(id)a3;
-+ (id)feedContextForTopStoriesChannel:(id)a3 sectionID:(id)a4;
-+ (id)feedContextForTopStoriesTag:(id)a3;
-- (FCFeedContext)initWithChannelID:(id)a3 sectionID:(id)a4 topicID:(id)a5 flags:(int64_t)a6;
-- (FCFeedContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)feedContextForTag:(id)tag;
++ (id)feedContextForTopStoriesChannel:(id)channel sectionID:(id)d;
++ (id)feedContextForTopStoriesTag:(id)tag;
+- (FCFeedContext)initWithChannelID:(id)d sectionID:(id)iD topicID:(id)topicID flags:(int64_t)flags;
+- (FCFeedContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCFeedContext
 
-+ (id)feedContextForTag:(id)a3
++ (id)feedContextForTag:(id)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v4 = objc_opt_new();
-  v5 = [v3 asChannel];
-  v6 = [v3 asSection];
-  v7 = [v3 asTopic];
+  asChannel = [tagCopy asChannel];
+  asSection = [tagCopy asSection];
+  asTopic = [tagCopy asTopic];
 
-  if (v5)
+  if (asChannel)
   {
-    v8 = [v5 identifier];
-    [v4 setChannelID:v8];
+    identifier = [asChannel identifier];
+    [v4 setChannelID:identifier];
 
-    v9 = [v5 defaultSectionID];
+    defaultSectionID = [asChannel defaultSectionID];
 LABEL_5:
-    v11 = v9;
-    [v4 setSectionID:v9];
+    identifier2 = defaultSectionID;
+    [v4 setSectionID:defaultSectionID];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (v6)
+  if (asSection)
   {
-    v10 = [v6 parentID];
-    [v4 setChannelID:v10];
+    parentID = [asSection parentID];
+    [v4 setChannelID:parentID];
 
-    v9 = [v6 identifier];
+    defaultSectionID = [asSection identifier];
     goto LABEL_5;
   }
 
-  if (v7)
+  if (asTopic)
   {
-    v11 = [v7 identifier];
-    [v4 setTopicID:v11];
+    identifier2 = [asTopic identifier];
+    [v4 setTopicID:identifier2];
     goto LABEL_6;
   }
 
@@ -59,54 +59,54 @@ LABEL_7:
   return v4;
 }
 
-+ (id)feedContextForTopStoriesTag:(id)a3
++ (id)feedContextForTopStoriesTag:(id)tag
 {
-  v3 = [a1 feedContextForTag:a3];
+  v3 = [self feedContextForTag:tag];
   [v3 setFlags:4];
 
   return v3;
 }
 
-+ (id)feedContextForEditorialTag:(id)a3
++ (id)feedContextForEditorialTag:(id)tag
 {
-  v3 = [a1 feedContextForTag:a3];
+  v3 = [self feedContextForTag:tag];
   [v3 setFlags:8];
 
   return v3;
 }
 
-+ (id)feedContextForChannel:(id)a3 sectionID:(id)a4
++ (id)feedContextForChannel:(id)channel sectionID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  channelCopy = channel;
   v7 = objc_opt_new();
-  v8 = [v6 identifier];
+  identifier = [channelCopy identifier];
 
-  [v7 setChannelID:v8];
-  [v7 setSectionID:v5];
+  [v7 setChannelID:identifier];
+  [v7 setSectionID:dCopy];
 
   return v7;
 }
 
-+ (id)feedContextForTopStoriesChannel:(id)a3 sectionID:(id)a4
++ (id)feedContextForTopStoriesChannel:(id)channel sectionID:(id)d
 {
-  v4 = [a1 feedContextForChannel:a3 sectionID:a4];
+  v4 = [self feedContextForChannel:channel sectionID:d];
   [v4 setFlags:4];
 
   return v4;
 }
 
-+ (id)feedContextForEditorialChannel:(id)a3 sectionID:(id)a4
++ (id)feedContextForEditorialChannel:(id)channel sectionID:(id)d
 {
-  v4 = [a1 feedContextForChannel:a3 sectionID:a4];
+  v4 = [self feedContextForChannel:channel sectionID:d];
   [v4 setFlags:8];
 
   return v4;
 }
 
-+ (id)feedContextForEditorialChannel:(id)a3 editorialGemsSectionID:(id)a4
++ (id)feedContextForEditorialChannel:(id)channel editorialGemsSectionID:(id)d
 {
-  v4 = [a1 feedContextForChannel:a3 sectionID:a4];
+  v4 = [self feedContextForChannel:channel sectionID:d];
   [v4 setFlags:16];
 
   return v4;
@@ -136,51 +136,51 @@ LABEL_7:
   return v2;
 }
 
-- (FCFeedContext)initWithChannelID:(id)a3 sectionID:(id)a4 topicID:(id)a5 flags:(int64_t)a6
+- (FCFeedContext)initWithChannelID:(id)d sectionID:(id)iD topicID:(id)topicID flags:(int64_t)flags
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  topicIDCopy = topicID;
   v17.receiver = self;
   v17.super_class = FCFeedContext;
   v14 = [(FCFeedContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_channelID, a3);
-    objc_storeStrong(&v15->_sectionID, a4);
-    objc_storeStrong(&v15->_topicID, a5);
-    v15->_flags = a6;
+    objc_storeStrong(&v14->_channelID, d);
+    objc_storeStrong(&v15->_sectionID, iD);
+    objc_storeStrong(&v15->_topicID, topicID);
+    v15->_flags = flags;
   }
 
   return v15;
 }
 
-- (FCFeedContext)initWithCoder:(id)a3
+- (FCFeedContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topicID"];
-  v8 = [v4 decodeIntegerForKey:@"flags"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topicID"];
+  v8 = [coderCopy decodeIntegerForKey:@"flags"];
 
   v9 = [(FCFeedContext *)self initWithChannelID:v5 sectionID:v6 topicID:v7 flags:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(FCFeedContext *)self channelID];
-  [v7 encodeObject:v4 forKey:@"channelID"];
+  coderCopy = coder;
+  channelID = [(FCFeedContext *)self channelID];
+  [coderCopy encodeObject:channelID forKey:@"channelID"];
 
-  v5 = [(FCFeedContext *)self sectionID];
-  [v7 encodeObject:v5 forKey:@"sectionID"];
+  sectionID = [(FCFeedContext *)self sectionID];
+  [coderCopy encodeObject:sectionID forKey:@"sectionID"];
 
-  v6 = [(FCFeedContext *)self topicID];
-  [v7 encodeObject:v6 forKey:@"topicID"];
+  topicID = [(FCFeedContext *)self topicID];
+  [coderCopy encodeObject:topicID forKey:@"topicID"];
 
-  [v7 encodeInteger:-[FCFeedContext flags](self forKey:{"flags"), @"flags"}];
+  [coderCopy encodeInteger:-[FCFeedContext flags](self forKey:{"flags"), @"flags"}];
 }
 
 @end

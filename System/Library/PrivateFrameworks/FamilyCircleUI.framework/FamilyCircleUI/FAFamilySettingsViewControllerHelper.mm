@@ -1,49 +1,49 @@
 @interface FAFamilySettingsViewControllerHelper
-- (BOOL)loadRemoteUIWithRequest:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (BOOL)loadRemoteUIWithRequest:(id)a3 url:(id)a4 type:(int64_t)a5 completion:(id)a6;
-- (FAFamilySettingsViewControllerHelper)initWithAppleAccount:(id)a3 grandSlamSigner:(id)a4 familyPictureStore:(id)a5 accountManager:(id)a6;
+- (BOOL)loadRemoteUIWithRequest:(id)request type:(int64_t)type completion:(id)completion;
+- (BOOL)loadRemoteUIWithRequest:(id)request url:(id)url type:(int64_t)type completion:(id)completion;
+- (FAFamilySettingsViewControllerHelper)initWithAppleAccount:(id)account grandSlamSigner:(id)signer familyPictureStore:(id)store accountManager:(id)manager;
 - (FAFamilySettingsViewControllerHelperDelegate)delegate;
 - (UINavigationController)navigationController;
 - (id)_appleIDGrandSlamSigner;
 - (id)_itunesAccount;
 - (id)_requestConfigurator;
-- (id)remoteUIController:(id)a3 createPageWithName:(id)a4 attributes:(id)a5;
-- (void)_fetchFamilyPaymentInfoWithCompletion:(id)a3;
-- (void)_setFresnoRemoteUIDelgate:(id)a3;
+- (id)remoteUIController:(id)controller createPageWithName:(id)name attributes:(id)attributes;
+- (void)_fetchFamilyPaymentInfoWithCompletion:(id)completion;
+- (void)_setFresnoRemoteUIDelgate:(id)delgate;
 - (void)dealloc;
-- (void)loadMemberDetailsForFamilyMember:(id)a3 completion:(id)a4;
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4;
-- (void)remoteUIController:(id)a3 willLoadRequest:(id)a4;
+- (void)loadMemberDetailsForFamilyMember:(id)member completion:(id)completion;
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model;
+- (void)remoteUIController:(id)controller willLoadRequest:(id)request;
 @end
 
 @implementation FAFamilySettingsViewControllerHelper
 
-- (FAFamilySettingsViewControllerHelper)initWithAppleAccount:(id)a3 grandSlamSigner:(id)a4 familyPictureStore:(id)a5 accountManager:(id)a6
+- (FAFamilySettingsViewControllerHelper)initWithAppleAccount:(id)account grandSlamSigner:(id)signer familyPictureStore:(id)store accountManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  signerCopy = signer;
+  storeCopy = store;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = FAFamilySettingsViewControllerHelper;
   v15 = [(FAFamilySettingsViewControllerHelper *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_iCloudGrandSlamSigner, a4);
-    objc_storeStrong(&v16->_appleAccount, a3);
-    objc_storeStrong(&v16->_accountManager, a6);
-    v17 = [(AAGrandSlamSigner *)v16->_iCloudGrandSlamSigner accountStore];
+    objc_storeStrong(&v15->_iCloudGrandSlamSigner, signer);
+    objc_storeStrong(&v16->_appleAccount, account);
+    objc_storeStrong(&v16->_accountManager, manager);
+    accountStore = [(AAGrandSlamSigner *)v16->_iCloudGrandSlamSigner accountStore];
     accountStore = v16->_accountStore;
-    v16->_accountStore = v17;
+    v16->_accountStore = accountStore;
 
-    v19 = [(AAGrandSlamSigner *)v16->_iCloudGrandSlamSigner grandSlamAccount];
+    grandSlamAccount = [(AAGrandSlamSigner *)v16->_iCloudGrandSlamSigner grandSlamAccount];
     grandSlamAccount = v16->_grandSlamAccount;
-    v16->_grandSlamAccount = v19;
+    v16->_grandSlamAccount = grandSlamAccount;
 
-    objc_storeStrong(&v16->_familyPictureStore, a5);
+    objc_storeStrong(&v16->_familyPictureStore, store);
     v21 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkingQueue = v16->_networkingQueue;
     v16->_networkingQueue = v21;
@@ -92,10 +92,10 @@
   itunesAccount = self->_itunesAccount;
   if (!itunesAccount)
   {
-    v4 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v5 = [v4 ams_activeiTunesAccount];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
     v6 = self->_itunesAccount;
-    self->_itunesAccount = v5;
+    self->_itunesAccount = ams_activeiTunesAccount;
 
     itunesAccount = self->_itunesAccount;
   }
@@ -123,38 +123,38 @@
   [(FAFamilySettingsViewControllerHelper *)&v5 dealloc];
 }
 
-- (BOOL)loadRemoteUIWithRequest:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (BOOL)loadRemoteUIWithRequest:(id)request type:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 urlRequest];
-  v11 = [v10 mutableCopy];
-  v12 = [v9 urlRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  urlRequest = [requestCopy urlRequest];
+  v11 = [urlRequest mutableCopy];
+  urlRequest2 = [requestCopy urlRequest];
 
-  v13 = [v12 URL];
-  LOBYTE(a4) = [(FAFamilySettingsViewControllerHelper *)self loadRemoteUIWithRequest:v11 url:v13 type:a4 completion:v8];
+  v13 = [urlRequest2 URL];
+  LOBYTE(type) = [(FAFamilySettingsViewControllerHelper *)self loadRemoteUIWithRequest:v11 url:v13 type:type completion:completionCopy];
 
-  return a4;
+  return type;
 }
 
-- (BOOL)loadRemoteUIWithRequest:(id)a3 url:(id)a4 type:(int64_t)a5 completion:(id)a6
+- (BOOL)loadRemoteUIWithRequest:(id)request url:(id)url type:(int64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  requestCopy = request;
+  urlCopy = url;
+  completionCopy = completion;
   urlBeingLoaded = self->_urlBeingLoaded;
   if (!urlBeingLoaded)
   {
-    objc_storeStrong(&self->_urlBeingLoaded, a4);
+    objc_storeStrong(&self->_urlBeingLoaded, url);
     v14 = objc_alloc_init(MEMORY[0x277CECAB8]);
-    if (a5 == 1)
+    if (type == 1)
     {
       v15 = 72;
     }
 
     else
     {
-      if (a5 == 2)
+      if (type == 2)
       {
         objc_storeStrong(&self->_familyV2RemoteUIController, v14);
       }
@@ -164,12 +164,12 @@
 
     objc_storeStrong((&self->super.isa + v15), v14);
     v16 = objc_alloc(MEMORY[0x277CECAC0]);
-    v17 = [MEMORY[0x277CECAC0] fcui_defaultFresnoServerHooks];
-    v18 = [v16 initWithRemoteUIController:v14 hooks:v17];
+    fcui_defaultFresnoServerHooks = [MEMORY[0x277CECAC0] fcui_defaultFresnoServerHooks];
+    v18 = [v16 initWithRemoteUIController:v14 hooks:fcui_defaultFresnoServerHooks];
     serverUIHookHandler = self->_serverUIHookHandler;
     self->_serverUIHookHandler = v18;
 
-    if (a5 == 2)
+    if (type == 2)
     {
       [(FAFamilySettingsViewControllerHelper *)self _setFresnoRemoteUIDelgate:v14];
     }
@@ -179,8 +179,8 @@
       [v14 setDelegate:self];
     }
 
-    v20 = [(FAFamilySettingsViewControllerHelper *)self navigationController];
-    [v14 setNavigationController:v20];
+    navigationController = [(FAFamilySettingsViewControllerHelper *)self navigationController];
+    [v14 setNavigationController:navigationController];
 
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x277D85DD0];
@@ -188,8 +188,8 @@
     v22[2] = __84__FAFamilySettingsViewControllerHelper_loadRemoteUIWithRequest_url_type_completion___block_invoke;
     v22[3] = &unk_2782F3CB8;
     objc_copyWeak(&v24, &location);
-    v23 = v12;
-    [v14 loadRequest:v10 completion:v22];
+    v23 = completionCopy;
+    [v14 loadRequest:requestCopy completion:v22];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -243,26 +243,26 @@ void __84__FAFamilySettingsViewControllerHelper_loadRemoteUIWithRequest_url_type
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadMemberDetailsForFamilyMember:(id)a3 completion:(id)a4
+- (void)loadMemberDetailsForFamilyMember:(id)member completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_memberBeingViewed, a3);
+  memberCopy = member;
+  completionCopy = completion;
+  objc_storeStrong(&self->_memberBeingViewed, member);
   v9 = [(FAFamilyRequest *)[FAFamilyMemberDetailsUIRequest alloc] initWithGrandSlamSigner:self->_iCloudGrandSlamSigner];
-  v10 = [(FAFamilyMember *)self->_memberBeingViewed dsid];
-  v11 = [v10 integerValue];
+  dsid = [(FAFamilyMember *)self->_memberBeingViewed dsid];
+  integerValue = [dsid integerValue];
 
   memberBeingViewed = self->_memberBeingViewed;
-  if (v11 < 1)
+  if (integerValue < 1)
   {
-    v13 = [(FAFamilyMember *)memberBeingViewed inviteEmail];
-    [(FAFamilyMemberDetailsUIRequest *)v9 setMemberEmail:v13];
+    inviteEmail = [(FAFamilyMember *)memberBeingViewed inviteEmail];
+    [(FAFamilyMemberDetailsUIRequest *)v9 setMemberEmail:inviteEmail];
   }
 
   else
   {
-    v13 = [(FAFamilyMember *)memberBeingViewed dsid];
-    [(FAFamilyMemberDetailsUIRequest *)v9 setMemberDSID:v13];
+    inviteEmail = [(FAFamilyMember *)memberBeingViewed dsid];
+    [(FAFamilyMemberDetailsUIRequest *)v9 setMemberDSID:inviteEmail];
   }
 
   objc_initWeak(&location, self);
@@ -271,7 +271,7 @@ void __84__FAFamilySettingsViewControllerHelper_loadRemoteUIWithRequest_url_type
   v15[2] = __84__FAFamilySettingsViewControllerHelper_loadMemberDetailsForFamilyMember_completion___block_invoke;
   v15[3] = &unk_2782F3CE0;
   objc_copyWeak(&v17, &location);
-  v14 = v8;
+  v14 = completionCopy;
   v16 = v14;
   [(FAFamilyMemberDetailsUIRequest *)v9 URLRequestWithCompletion:v15];
 
@@ -289,32 +289,32 @@ void __84__FAFamilySettingsViewControllerHelper_loadMemberDetailsForFamilyMember
   [WeakRetained loadRemoteUIWithRequest:v4 url:v5 type:0 completion:*(a1 + 32)];
 }
 
-- (void)_setFresnoRemoteUIDelgate:(id)a3
+- (void)_setFresnoRemoteUIDelgate:(id)delgate
 {
-  v4 = a3;
+  delgateCopy = delgate;
   v7 = [[FACircleContext alloc] initWithEventType:@"FACircleEventTypeFamilySettings"];
   v5 = [[FACircleRemoteUIDelegate alloc] initWithContext:v7 serverHookHandler:self->_serverUIHookHandler pictureStore:self->_familyPictureStore];
   familyRemoteUIDelegate = self->_familyRemoteUIDelegate;
   self->_familyRemoteUIDelegate = v5;
 
-  [v4 setDelegate:self->_familyRemoteUIDelegate];
+  [delgateCopy setDelegate:self->_familyRemoteUIDelegate];
 }
 
-- (void)_fetchFamilyPaymentInfoWithCompletion:(id)a3
+- (void)_fetchFamilyPaymentInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_fetchingPaymentInfo = 1;
   v5 = [(AAFamilyRequest *)[FAFamilyPaymentInfoRequest alloc] initWithGrandSlamSigner:self->_iCloudGrandSlamSigner];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __78__FAFamilySettingsViewControllerHelper__fetchFamilyPaymentInfoWithCompletion___block_invoke;
   v13 = &unk_2782F3BC8;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v6 = completionCopy;
   v7 = _Block_copy(&v10);
   v8 = objc_alloc(MEMORY[0x277CEC840]);
-  v9 = [v8 initWithRequest:v5 handler:{v7, v10, v11, v12, v13, v14}];
+  v9 = [v8 initWithRequest:v5 handler:{v7, v10, v11, v12, v13, selfCopy}];
   [(NSOperationQueue *)self->_networkingQueue addOperation:v9];
 }
 
@@ -382,63 +382,63 @@ uint64_t __78__FAFamilySettingsViewControllerHelper__fetchFamilyPaymentInfoWithC
   return result;
 }
 
-- (void)remoteUIController:(id)a3 willLoadRequest:(id)a4
+- (void)remoteUIController:(id)controller willLoadRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_currentRemoteUIRequest, a4);
-  v8 = [v7 URL];
+  controllerCopy = controller;
+  requestCopy = request;
+  objc_storeStrong(&self->_currentRemoteUIRequest, request);
+  v8 = [requestCopy URL];
   v9 = [v8 isEqual:self->_urlBeingLoaded];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v7 URL];
-    v11 = [v10 absoluteString];
-    v12 = [v11 containsString:@"prefs:itunes"];
+    v10 = [requestCopy URL];
+    absoluteString = [v10 absoluteString];
+    v12 = [absoluteString containsString:@"prefs:itunes"];
 
     if (v12)
     {
-      v13 = [(AAUIRemoteUIController *)v6 dismissObjectModelsAnimated:1 completion:0];
+      v13 = [(AAUIRemoteUIController *)controllerCopy dismissObjectModelsAnimated:1 completion:0];
       v14 = dispatch_time(0, 500000000);
       dispatch_after(v14, MEMORY[0x277D85CD0], &__block_literal_global_82);
     }
 
     else
     {
-      if (self->_appleIDRemoteUIController == v6)
+      if (self->_appleIDRemoteUIController == controllerCopy)
       {
-        v15 = [(FAFamilySettingsViewControllerHelper *)self _appleIDGrandSlamSigner];
+        _appleIDGrandSlamSigner = [(FAFamilySettingsViewControllerHelper *)self _appleIDGrandSlamSigner];
       }
 
-      else if (self->_iCloudRemoteUIController == v6)
+      else if (self->_iCloudRemoteUIController == controllerCopy)
       {
-        v15 = self->_iCloudGrandSlamSigner;
-        [v7 aa_addLoggedInAppleIDHeaderWithAccount:self->_appleAccount];
+        _appleIDGrandSlamSigner = self->_iCloudGrandSlamSigner;
+        [requestCopy aa_addLoggedInAppleIDHeaderWithAccount:self->_appleAccount];
       }
 
       else
       {
-        v15 = 0;
+        _appleIDGrandSlamSigner = 0;
       }
 
-      [(AAGrandSlamSigner *)v15 signURLRequest:v7 isUserInitiated:1];
-      [v7 aa_addBasicAuthorizationHeaderWithAccount:self->_appleAccount preferUsingPassword:0];
-      v16 = [MEMORY[0x277CEC7B8] clientInfoHeader];
-      [v7 setValue:v16 forHTTPHeaderField:@"X-MMe-Client-Info"];
+      [(AAGrandSlamSigner *)_appleIDGrandSlamSigner signURLRequest:requestCopy isUserInitiated:1];
+      [requestCopy aa_addBasicAuthorizationHeaderWithAccount:self->_appleAccount preferUsingPassword:0];
+      clientInfoHeader = [MEMORY[0x277CEC7B8] clientInfoHeader];
+      [requestCopy setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
 
-      v17 = [MEMORY[0x277CBEAF8] currentLocale];
-      v18 = [v17 objectForKey:*MEMORY[0x277CBE690]];
-      v19 = [v18 uppercaseString];
-      [v7 setValue:v19 forHTTPHeaderField:@"X-MMe-Country"];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v18 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+      uppercaseString = [v18 uppercaseString];
+      [requestCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
-      v20 = [(FAFamilySettingsViewControllerHelper *)self _itunesAccount];
-      v21 = [v20 ams_DSID];
-      v22 = [v21 stringValue];
+      _itunesAccount = [(FAFamilySettingsViewControllerHelper *)self _itunesAccount];
+      ams_DSID = [_itunesAccount ams_DSID];
+      stringValue = [ams_DSID stringValue];
 
-      if ([v22 length])
+      if ([stringValue length])
       {
-        [v7 aa_addDeviceProvisioningInfoHeadersWithDSID:v22];
+        [requestCopy aa_addDeviceProvisioningInfoHeadersWithDSID:stringValue];
       }
 
       else
@@ -453,13 +453,13 @@ uint64_t __78__FAFamilySettingsViewControllerHelper__fetchFamilyPaymentInfoWithC
         }
       }
 
-      [v7 aa_addDeviceInternalDevHeaderIfEnabled];
-      [v7 aa_addDeviceIDHeader];
-      [v7 aa_addLocationSharingAllowedHeader];
+      [requestCopy aa_addDeviceInternalDevHeaderIfEnabled];
+      [requestCopy aa_addDeviceIDHeader];
+      [requestCopy aa_addLocationSharingAllowedHeader];
       if ([(FAFamilyMember *)self->_memberBeingViewed isMe])
       {
-        v25 = [(FAFamilySettingsViewControllerHelper *)self _itunesAccount];
-        [v7 fam_addiTunesHeadersWithAccount:v25];
+        _itunesAccount2 = [(FAFamilySettingsViewControllerHelper *)self _itunesAccount];
+        [requestCopy fam_addiTunesHeadersWithAccount:_itunesAccount2];
       }
     }
   }
@@ -475,12 +475,12 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
   [v1 openSensitiveURL:v0 withOptions:0];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 statusCode] == 401)
+  controllerCopy = controller;
+  responseCopy = response;
+  if ([responseCopy statusCode] == 401)
   {
     v8 = _FALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -494,18 +494,18 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
 
   else
   {
-    if ([v7 statusCode] == 200)
+    if ([responseCopy statusCode] == 200)
     {
-      v9 = [v7 allHeaderFields];
-      v10 = [v9 valueForKey:@"X-Apple-Family-Changed"];
+      allHeaderFields = [responseCopy allHeaderFields];
+      delegate = [allHeaderFields valueForKey:@"X-Apple-Family-Changed"];
 
-      if (v10)
+      if (delegate)
       {
         v11 = _FALogSystem();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v31 = v10;
+          v31 = delegate;
           _os_log_impl(&dword_21BB35000, v11, OS_LOG_TYPE_DEFAULT, "Family properties changed while we're in BML: %@", buf, 0xCu);
         }
 
@@ -514,13 +514,13 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
         block[2] = __82__FAFamilySettingsViewControllerHelper_remoteUIController_didReceiveHTTPResponse___block_invoke_95;
         block[3] = &unk_2782F3190;
         block[4] = self;
-        v28 = v10;
-        v29 = v7;
+        v28 = delegate;
+        v29 = responseCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
 
-      v12 = [v7 allHeaderFields];
-      v13 = [v12 valueForKey:@"X-Apple-Family-Subscription-Changed"];
+      allHeaderFields2 = [responseCopy allHeaderFields];
+      v13 = [allHeaderFields2 valueForKey:@"X-Apple-Family-Subscription-Changed"];
 
       if ([v13 BOOLValue])
       {
@@ -535,8 +535,8 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
         dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_99);
       }
 
-      v15 = [v7 allHeaderFields];
-      v16 = [v15 valueForKey:@"X-MMe-Setup-Family-Linked-ITunes-AppleID"];
+      allHeaderFields3 = [responseCopy allHeaderFields];
+      v16 = [allHeaderFields3 valueForKey:@"X-MMe-Setup-Family-Linked-ITunes-AppleID"];
 
       if (v16)
       {
@@ -557,7 +557,7 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
         dispatch_async(MEMORY[0x277D85CD0], v25);
       }
 
-      if ([(NSMutableURLRequest *)self->_currentRemoteUIRequest aa_addDeviceProvisioningInfoHeadersWithDSIDFromReponse:v7])
+      if ([(NSMutableURLRequest *)self->_currentRemoteUIRequest aa_addDeviceProvisioningInfoHeadersWithDSIDFromReponse:responseCopy])
       {
         v18 = _FALogSystem();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -566,22 +566,22 @@ void __75__FAFamilySettingsViewControllerHelper_remoteUIController_willLoadReque
           _os_log_impl(&dword_21BB35000, v18, OS_LOG_TYPE_DEFAULT, "Device is provisioned... Reissuing request...", buf, 2u);
         }
 
-        v19 = [v6 loadCompletion];
+        loadCompletion = [controllerCopy loadCompletion];
         currentRemoteUIRequest = self->_currentRemoteUIRequest;
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __82__FAFamilySettingsViewControllerHelper_remoteUIController_didReceiveHTTPResponse___block_invoke_102;
         v23[3] = &unk_2782F2FC0;
-        v24 = v19;
-        v21 = v19;
-        [v6 loadRequest:currentRemoteUIRequest completion:v23];
+        v24 = loadCompletion;
+        v21 = loadCompletion;
+        [controllerCopy loadRequest:currentRemoteUIRequest completion:v23];
       }
     }
 
     else
     {
-      v10 = [(FAFamilySettingsViewControllerHelper *)self delegate];
-      [v10 familySettingsHelperShowConnectivityAlert:self];
+      delegate = [(FAFamilySettingsViewControllerHelper *)self delegate];
+      [delegate familySettingsHelperShowConnectivityAlert:self];
     }
   }
 
@@ -651,20 +651,20 @@ void __82__FAFamilySettingsViewControllerHelper_remoteUIController_didReceiveHTT
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v8 = a3;
-  v9 = a4;
-  if (*a5 == 1)
+  controllerCopy = controller;
+  modelCopy = model;
+  if (*signal == 1)
   {
-    [(FAFamilySettingsViewControllerHelper *)self _handleObjectModelChangeForController:v8 objectModel:v9 isModal:0];
+    [(FAFamilySettingsViewControllerHelper *)self _handleObjectModelChangeForController:controllerCopy objectModel:modelCopy isModal:0];
   }
 
-  v10 = [v9 clientInfo];
-  v11 = [v10 objectForKey:@"paymentMethodUpdated"];
-  v12 = [v11 BOOLValue];
+  clientInfo = [modelCopy clientInfo];
+  v11 = [clientInfo objectForKey:@"paymentMethodUpdated"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -672,20 +672,20 @@ void __82__FAFamilySettingsViewControllerHelper_remoteUIController_didReceiveHTT
     v18[3] = &unk_2782F29E8;
     v18[4] = self;
     [(FAFamilySettingsViewControllerHelper *)self _fetchFamilyPaymentInfoWithCompletion:v18];
-    if (*a5 == 4)
+    if (*signal == 4)
     {
-      v13 = [v9 allPages];
-      v14 = [v13 count];
+      allPages = [modelCopy allPages];
+      v14 = [allPages count];
 
       if (v14)
       {
-        v15 = [(FAFamilySettingsViewControllerHelper *)self navigationController];
-        v16 = [v15 viewControllers];
+        navigationController = [(FAFamilySettingsViewControllerHelper *)self navigationController];
+        viewControllers = [navigationController viewControllers];
 
-        v17 = [v16 indexOfObject:self];
-        if (v17 == [v16 count] - 2)
+        v17 = [viewControllers indexOfObject:self];
+        if (v17 == [viewControllers count] - 2)
         {
-          [v9 setPages:0];
+          [modelCopy setPages:0];
         }
       }
     }
@@ -698,23 +698,23 @@ void __94__FAFamilySettingsViewControllerHelper_remoteUIController_didReceiveObj
   [v2 familySettingsHelperDidUpdatePaymentInfo:*(a1 + 32)];
 }
 
-- (id)remoteUIController:(id)a3 createPageWithName:(id)a4 attributes:(id)a5
+- (id)remoteUIController:(id)controller createPageWithName:(id)name attributes:(id)attributes
 {
   v5 = objc_alloc_init(MEMORY[0x277CECAB0]);
 
   return v5;
 }
 
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model
 {
-  v8 = a4;
-  v5 = [v8 sourceURL];
+  modelCopy = model;
+  sourceURL = [modelCopy sourceURL];
 
-  if (v5)
+  if (sourceURL)
   {
     objectModelDecorators = self->_objectModelDecorators;
-    v7 = [v8 sourceURL];
-    [(NSMutableDictionary *)objectModelDecorators removeObjectForKey:v7];
+    sourceURL2 = [modelCopy sourceURL];
+    [(NSMutableDictionary *)objectModelDecorators removeObjectForKey:sourceURL2];
   }
 }
 

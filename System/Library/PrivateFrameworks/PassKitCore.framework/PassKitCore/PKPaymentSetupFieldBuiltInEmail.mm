@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInEmail
-- (PKPaymentSetupFieldBuiltInEmail)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInEmail)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInEmail
 
-- (PKPaymentSetupFieldBuiltInEmail)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInEmail)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInEmail;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"email" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"email" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_Email_0.isa, 0);

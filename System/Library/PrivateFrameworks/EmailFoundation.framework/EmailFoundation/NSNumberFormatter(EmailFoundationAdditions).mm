@@ -44,8 +44,8 @@
 
 - (BOOL)ef_isCurrencySymbolAtStart
 {
-  v1 = [a1 positiveFormat];
-  v2 = [v1 rangeOfString:@"¤"];
+  positiveFormat = [self positiveFormat];
+  v2 = [positiveFormat rangeOfString:@"¤"];
 
   return v2 == 0;
 }

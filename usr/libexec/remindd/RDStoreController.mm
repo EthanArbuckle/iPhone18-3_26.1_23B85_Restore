@@ -1,26 +1,26 @@
 @interface RDStoreController
-+ (BOOL)isDummyStoreURL:(id)a3;
++ (BOOL)isDummyStoreURL:(id)l;
 + (id)entityNamesToIncludeFromTracking;
 + (id)managedObjectModel;
 + (id)persistentStoreOptions;
-- (BOOL)_removeFilesOfStoresAtURLs:(id)a3 outRemovedFileURLs:(id *)a4 error:(id *)a5;
-- (BOOL)createAccountStoresWithIdentifiers:(id)a3 didAddNewStores:(BOOL *)a4 error:(id *)a5;
-- (BOOL)deleteCloudObjectIfFullyPushed:(id)a3;
+- (BOOL)_removeFilesOfStoresAtURLs:(id)ls outRemovedFileURLs:(id *)rLs error:(id *)error;
+- (BOOL)createAccountStoresWithIdentifiers:(id)identifiers didAddNewStores:(BOOL *)stores error:(id *)error;
+- (BOOL)deleteCloudObjectIfFullyPushed:(id)pushed;
 - (BOOL)hasPassedBuddyAndSystemDataMigrator;
-- (BOOL)invalidateStoreConnectionsWithError:(id *)a3;
+- (BOOL)invalidateStoreConnectionsWithError:(id *)error;
 - (BOOL)isolated;
-- (BOOL)l_createAccountStoresWithIdentifiers:(id)a3 didAddNewStores:(BOOL *)a4 error:(id *)a5;
-- (BOOL)l_createOrLoadAccountStoresWithURLs:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 isCreatingStores:(BOOL)a5 error:(id *)a6;
-- (BOOL)l_loadAccountStoresFromDiskAndValidateInBatchesWithStoreURLs:(id)a3 shouldDeleteInvalidStoresImmediately:(BOOL)a4 error:(id *)a5;
-- (BOOL)l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:(id)a3 processedStoreIdentifiers:(id)a4 shouldDeleteInvalidStoresImmediately:(BOOL)a5 connectionPoolMaxSize:(unint64_t)a6 error:(id *)a7;
-- (BOOL)l_markAccountStoreDeletedAndDeleteData:(id)a3 deletedObjectIDs:(id *)a4 error:(id *)a5;
-- (BOOL)l_removeAccountStoresWithIdentifiers:(id)a3 deletedObjectIDs:(id *)a4 error:(id *)a5;
-- (BOOL)l_setAccountIdentifier:(id)a3 intoMetadataOfCreatedStore:(id)a4 error:(id *)a5;
-- (BOOL)notificationContainsChangeTrackingChangesOnly:(id)a3;
-- (BOOL)notificationContainsInternalChangesOnly:(id)a3;
-- (BOOL)nukeDataWithError:(id *)a3;
-- (BOOL)purgeFilesForAccountWithAccountID:(id)a3 error:(id *)a4;
-- (BOOL)removeAccountStoresWithIdentifiers:(id)a3 error:(id *)a4;
+- (BOOL)l_createAccountStoresWithIdentifiers:(id)identifiers didAddNewStores:(BOOL *)stores error:(id *)error;
+- (BOOL)l_createOrLoadAccountStoresWithURLs:(id)ls persistentStoreDescriptionOptionsOverride:(id)override isCreatingStores:(BOOL)stores error:(id *)error;
+- (BOOL)l_loadAccountStoresFromDiskAndValidateInBatchesWithStoreURLs:(id)ls shouldDeleteInvalidStoresImmediately:(BOOL)immediately error:(id *)error;
+- (BOOL)l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:(id)ls processedStoreIdentifiers:(id)identifiers shouldDeleteInvalidStoresImmediately:(BOOL)immediately connectionPoolMaxSize:(unint64_t)size error:(id *)error;
+- (BOOL)l_markAccountStoreDeletedAndDeleteData:(id)data deletedObjectIDs:(id *)ds error:(id *)error;
+- (BOOL)l_removeAccountStoresWithIdentifiers:(id)identifiers deletedObjectIDs:(id *)ds error:(id *)error;
+- (BOOL)l_setAccountIdentifier:(id)identifier intoMetadataOfCreatedStore:(id)store error:(id *)error;
+- (BOOL)notificationContainsChangeTrackingChangesOnly:(id)only;
+- (BOOL)notificationContainsInternalChangesOnly:(id)only;
+- (BOOL)nukeDataWithError:(id *)error;
+- (BOOL)purgeFilesForAccountWithAccountID:(id)d error:(id *)error;
+- (BOOL)removeAccountStoresWithIdentifiers:(id)identifiers error:(id *)error;
 - (BOOL)supportsAccountUtils;
 - (BOOL)supportsAlarmEngine;
 - (BOOL)supportsApplicationShortcuts;
@@ -38,88 +38,88 @@
 - (BOOL)supportsTemplateOperation;
 - (BOOL)supportsTimelineEngine;
 - (NSArray)validPersistentStores;
-- (RDStoreController)initWithIsolatedReminderDataContainerURL:(id)a3 accountStoreManagementDelegate:(id)a4 appleAccountUitilities:(id)a5;
+- (RDStoreController)initWithIsolatedReminderDataContainerURL:(id)l accountStoreManagementDelegate:(id)delegate appleAccountUitilities:(id)uitilities;
 - (RDStoreControllerAccountStoreManagementDelegate)accountStoreManagementDelegate;
-- (id)URLForAttachmentDirectory:(id)a3 accountID:(id)a4;
-- (id)URLForAttachmentFile:(id)a3 accountID:(id)a4 fileName:(id)a5 sha512Sum:(id)a6;
+- (id)URLForAttachmentDirectory:(id)directory accountID:(id)d;
+- (id)URLForAttachmentFile:(id)file accountID:(id)d fileName:(id)name sha512Sum:(id)sum;
 - (id)_dataSeparationIncompatible_defaultReminderDataContainerURL;
-- (id)_deduplicateLocalAccountStore:(id)a3 withStore:(id)a4 managedObjectContext:(id)a5;
-- (id)_deduplicateStore:(id)a3 withStore:(id)a4 isLocalAccountType:(BOOL)a5 managedObjectContext:(id)a6;
+- (id)_deduplicateLocalAccountStore:(id)store withStore:(id)withStore managedObjectContext:(id)context;
+- (id)_deduplicateStore:(id)store withStore:(id)withStore isLocalAccountType:(BOOL)type managedObjectContext:(id)context;
 - (id)_discoverReminderDataContainerURLs;
 - (id)_makePersistentStoreCoordinator;
-- (id)_relocateMisplacedDataSeparationStoresWithDataSeparatedStoreURLsMap:(id)a3 deleteFilesMarkedDeleted:(BOOL)a4;
-- (id)_reminderDataContainerURLForAccountIdentifier:(id)a3;
-- (id)_urlsToDeleteFromFileURLs:(id)a3 matchingStoreURL:(id)a4;
-- (id)accountIdentifierForStoreID:(id)a3;
-- (id)accountStoragesForAccountExternalIdentifiers:(id)a3;
-- (id)accountStoragesForAccountObjectIDs:(id)a3;
+- (id)_relocateMisplacedDataSeparationStoresWithDataSeparatedStoreURLsMap:(id)map deleteFilesMarkedDeleted:(BOOL)deleted;
+- (id)_reminderDataContainerURLForAccountIdentifier:(id)identifier;
+- (id)_urlsToDeleteFromFileURLs:(id)ls matchingStoreURL:(id)l;
+- (id)accountIdentifierForStoreID:(id)d;
+- (id)accountStoragesForAccountExternalIdentifiers:(id)identifiers;
+- (id)accountStoragesForAccountObjectIDs:(id)ds;
 - (id)accountStoragesForAllGenericAccounts;
-- (id)attachmentIDsFromAttachmentDirectoryWithAccountID:(id)a3 error:(id *)a4;
+- (id)attachmentIDsFromAttachmentDirectoryWithAccountID:(id)d error:(id *)error;
 - (id)containerStats;
-- (id)extractSha512Sum:(id)a3;
+- (id)extractSha512Sum:(id)sum;
 - (id)fileIOWorkerQueue;
 - (id)inMemoryPrimaryActiveCKAccountREMObjectID;
-- (id)invalidStoreBackupURLWithFileName:(id)a3 withContainerURL:(id)a4;
-- (id)l_accountStoragesForAccountObjectIDs:(id)a3;
-- (id)l_discoverAccountStoreURLsFromDatabaseDirectoryURL:(id)a3 deletingFilesMarkedDeleted:(BOOL)a4 storesDiscoveryStatesRef:(id *)a5 error:(id *)a6;
-- (id)l_discoverAccountStoreURLsFromReminderDataContainerURLs:(id)a3 deletingFilesMarkedDeleted:(BOOL)a4 storesDiscoveryStatesRef:(id *)a5 error:(id *)a6;
-- (id)newBackgroundContextWithAuthor:(id)a3 enableQueryGenerationToken:(BOOL)a4;
-- (id)observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)a3 successHandler:(id)a4 errorHandler:(id)a5;
-- (id)purgeAttachmentFilesWithAttachmentIDs:(id)a3 accountID:(id)a4 error:(id *)a5;
-- (id)purgeAttachmentFilesWithSha512SumsAndExtensions:(id)a3 accountID:(id)a4 error:(id *)a5;
-- (id)status:(BOOL)a3;
-- (id)storeBackupURLWithFileName:(id)a3 withContainerURL:(id)a4;
-- (id)storeForAccountIdentifier:(id)a3;
-- (id)storeURLWithName:(id)a3 withContainerURL:(id)a4;
-- (id)storesForAccountTypes:(id)a3;
+- (id)invalidStoreBackupURLWithFileName:(id)name withContainerURL:(id)l;
+- (id)l_accountStoragesForAccountObjectIDs:(id)ds;
+- (id)l_discoverAccountStoreURLsFromDatabaseDirectoryURL:(id)l deletingFilesMarkedDeleted:(BOOL)deleted storesDiscoveryStatesRef:(id *)ref error:(id *)error;
+- (id)l_discoverAccountStoreURLsFromReminderDataContainerURLs:(id)ls deletingFilesMarkedDeleted:(BOOL)deleted storesDiscoveryStatesRef:(id *)ref error:(id *)error;
+- (id)newBackgroundContextWithAuthor:(id)author enableQueryGenerationToken:(BOOL)token;
+- (id)observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler;
+- (id)purgeAttachmentFilesWithAttachmentIDs:(id)ds accountID:(id)d error:(id *)error;
+- (id)purgeAttachmentFilesWithSha512SumsAndExtensions:(id)extensions accountID:(id)d error:(id *)error;
+- (id)status:(BOOL)status;
+- (id)storeBackupURLWithFileName:(id)name withContainerURL:(id)l;
+- (id)storeForAccountIdentifier:(id)identifier;
+- (id)storeURLWithName:(id)name withContainerURL:(id)l;
+- (id)storesForAccountTypes:(id)types;
 - (int64_t)unittest_countKeysInAccountStoreMap;
-- (unint64_t)_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:(unint64_t)a3;
-- (void)_backupInvalidStores:(id)a3 outBackUpFailedStores:(id *)a4;
-- (void)_cleanUpActivityObservers:(id)a3;
+- (unint64_t)_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:(unint64_t)count;
+- (void)_backupInvalidStores:(id)stores outBackUpFailedStores:(id *)failedStores;
+- (void)_cleanUpActivityObservers:(id)observers;
 - (void)_cleanUpPreDataSeparationDataContainerIfNeeded;
-- (void)_migrateAttachmentFilesToPostDataSeparationLocationsIfNeededWithAccountIdentifiers:(id)a3;
+- (void)_migrateAttachmentFilesToPostDataSeparationLocationsIfNeededWithAccountIdentifiers:(id)identifiers;
 - (void)_migrateBackupStoresToPostDataSeparationLocationIfNeeded;
-- (void)_migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:(id)a3 dataSeparationAttachmentFileManager:(id)a4;
+- (void)_migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:(id)manager dataSeparationAttachmentFileManager:(id)fileManager;
 - (void)_migrateMLModelsToPostDataSeparationLocationIfNeeded;
-- (void)_moveAttachmentFilesFromAttachmentFileManager:(id)a3 toAttachmentFileManager:(id)a4 affectedAccountIdentifiers:(id)a5 logPrefix:(id)a6;
-- (void)_notifyCloudKitNetworkActivityObservers:(id)a3;
-- (void)_performStagedLightweightMigrationIfNeededForAccountStoreWithURL:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 migrationCoordinator:(id)a5;
-- (void)_performStagedLightweightMigrationIfNeededForAccountStoresWithURLs:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4;
-- (void)_populateCountForEntity:(Class)a3 withinCDAccount:(id)a4 statsAccumulator:(id)a5 errorAccumulator:(id)a6;
-- (void)_postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:(id)a3;
-- (void)_relocateMisplacedDataSeparationAccountAttachmentFilesWithRelocatedAccountIdentifiers:(id)a3;
-- (void)_validateAccountStores:(id)a3 outValidStoresByAccountIDs:(id *)a4 outInvalidStores:(id *)a5 outLocalAccountStores:(id *)a6;
-- (void)autoCategorizationOperationDidBeginNotification:(id)a3;
-- (void)autoCategorizationOperationDidEndNotification:(id)a3;
-- (void)cloudContext:(id)a3 didFetchUserRecord:(id)a4 accountID:(id)a5;
-- (void)cloudContext:(id)a3 receivedZoneNotFound:(id)a4 accountID:(id)a5;
-- (void)cloudContext:(id)a3 sharedZoneWasDeleted:(id)a4 accountID:(id)a5;
-- (void)cloudContext:(id)a3 userDidDeleteRecordZoneWithID:(id)a4 accountID:(id)a5;
-- (void)cloudContextHasPendingOperationsDidChange:(id)a3;
+- (void)_moveAttachmentFilesFromAttachmentFileManager:(id)manager toAttachmentFileManager:(id)fileManager affectedAccountIdentifiers:(id)identifiers logPrefix:(id)prefix;
+- (void)_notifyCloudKitNetworkActivityObservers:(id)observers;
+- (void)_performStagedLightweightMigrationIfNeededForAccountStoreWithURL:(id)l persistentStoreDescriptionOptionsOverride:(id)override migrationCoordinator:(id)coordinator;
+- (void)_performStagedLightweightMigrationIfNeededForAccountStoresWithURLs:(id)ls persistentStoreDescriptionOptionsOverride:(id)override;
+- (void)_populateCountForEntity:(Class)entity withinCDAccount:(id)account statsAccumulator:(id)accumulator errorAccumulator:(id)errorAccumulator;
+- (void)_postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:(id)ds;
+- (void)_relocateMisplacedDataSeparationAccountAttachmentFilesWithRelocatedAccountIdentifiers:(id)identifiers;
+- (void)_validateAccountStores:(id)stores outValidStoresByAccountIDs:(id *)ds outInvalidStores:(id *)invalidStores outLocalAccountStores:(id *)accountStores;
+- (void)autoCategorizationOperationDidBeginNotification:(id)notification;
+- (void)autoCategorizationOperationDidEndNotification:(id)notification;
+- (void)cloudContext:(id)context didFetchUserRecord:(id)record accountID:(id)d;
+- (void)cloudContext:(id)context receivedZoneNotFound:(id)found accountID:(id)d;
+- (void)cloudContext:(id)context sharedZoneWasDeleted:(id)deleted accountID:(id)d;
+- (void)cloudContext:(id)context userDidDeleteRecordZoneWithID:(id)d accountID:(id)iD;
+- (void)cloudContextHasPendingOperationsDidChange:(id)change;
 - (void)dealloc;
-- (void)didFailPushingExceededStorageQuotaForContext:(id)a3 accountID:(id)a4;
+- (void)didFailPushingExceededStorageQuotaForContext:(id)context accountID:(id)d;
 - (void)l_activateCoreSpotlightDelegates;
-- (void)l_addValidatedStoresToAccountStoreMapWithStores:(id)a3 shouldDeleteInvalidStoresImmediately:(BOOL)a4;
-- (void)l_invalidateAccountStorageCaches:(id)a3;
+- (void)l_addValidatedStoresToAccountStoreMapWithStores:(id)stores shouldDeleteInvalidStoresImmediately:(BOOL)immediately;
+- (void)l_invalidateAccountStorageCaches:(id)caches;
 - (void)l_loadDummyStoreIfNeeded;
 - (void)l_loadPPTStoreStatus;
-- (void)l_performManualStoreMigrations:(id)a3;
-- (void)l_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)a3;
-- (void)l_setAccountStorages:(id)a3 forAccountObjectIDs:(id)a4;
-- (void)managedObjectContextDidSave:(id)a3;
+- (void)l_performManualStoreMigrations:(id)migrations;
+- (void)l_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)stores;
+- (void)l_setAccountStorages:(id)storages forAccountObjectIDs:(id)ds;
+- (void)managedObjectContextDidSave:(id)save;
 - (void)notifyAutoCategorizationActivityObservers;
-- (void)purgeDeletedObjectsWithCompletionHandler:(id)a3;
+- (void)purgeDeletedObjectsWithCompletionHandler:(id)handler;
 - (void)reindexAllSearchableItems;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3;
-- (void)requestFreeSpaceToLoadAccountStoresWithQueue:(id)a3 completionBlock:(id)a4;
-- (void)setAccountStorages:(id)a3 forAccountExternalIdentifiers:(id)a4;
-- (void)setAccountStorages:(id)a3 forAccountObjectIDs:(id)a4;
-- (void)setAccountStoragesForAllGenericAccountsWithStorages:(id)a3;
-- (void)startObservingAutoCategorizationActivityWithObserver:(id)a3;
-- (void)startObservingCloudKitNetworkActivityWithObserver:(id)a3;
-- (void)unittest_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)a3;
-- (void)unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)a3;
-- (void)updateInMemoryPrimaryActiveCKAccountREMObjectIDIfNecessary:(id)a3;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers;
+- (void)requestFreeSpaceToLoadAccountStoresWithQueue:(id)queue completionBlock:(id)block;
+- (void)setAccountStorages:(id)storages forAccountExternalIdentifiers:(id)identifiers;
+- (void)setAccountStorages:(id)storages forAccountObjectIDs:(id)ds;
+- (void)setAccountStoragesForAllGenericAccountsWithStorages:(id)storages;
+- (void)startObservingAutoCategorizationActivityWithObserver:(id)observer;
+- (void)startObservingCloudKitNetworkActivityWithObserver:(id)observer;
+- (void)unittest_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)stores;
+- (void)unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)changes;
+- (void)updateInMemoryPrimaryActiveCKAccountREMObjectIDIfNecessary:(id)necessary;
 @end
 
 @implementation RDStoreController
@@ -149,8 +149,8 @@
 
 - (BOOL)supportsCoreSpotlightIndexing
 {
-  v3 = [(RDStoreController *)self coreSpotlightDelegateManager];
-  if ([v3 enableCoreSpotlightIndexing])
+  coreSpotlightDelegateManager = [(RDStoreController *)self coreSpotlightDelegateManager];
+  if ([coreSpotlightDelegateManager enableCoreSpotlightIndexing])
   {
     v4 = ![(RDStoreController *)self isPPTStore];
   }
@@ -210,17 +210,17 @@
 
 - (BOOL)isolated
 {
-  v2 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-  v3 = v2 != 0;
+  isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
+  v3 = isolatedReminderDataContainerURL != 0;
 
   return v3;
 }
 
-- (RDStoreController)initWithIsolatedReminderDataContainerURL:(id)a3 accountStoreManagementDelegate:(id)a4 appleAccountUitilities:(id)a5
+- (RDStoreController)initWithIsolatedReminderDataContainerURL:(id)l accountStoreManagementDelegate:(id)delegate appleAccountUitilities:(id)uitilities
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  delegateCopy = delegate;
+  uitilitiesCopy = uitilities;
   v52.receiver = self;
   v52.super_class = RDStoreController;
   v12 = [(RDStoreController *)&v52 init];
@@ -233,10 +233,10 @@
     daemonUserDefaults = v13->_daemonUserDefaults;
     v13->_daemonUserDefaults = v14;
 
-    objc_storeWeak(&v13->_accountStoreManagementDelegate, v10);
-    if (v11)
+    objc_storeWeak(&v13->_accountStoreManagementDelegate, delegateCopy);
+    if (uitilitiesCopy)
     {
-      v16 = v11;
+      v16 = uitilitiesCopy;
     }
 
     else
@@ -247,9 +247,9 @@
     appleAccountUtilities = v13->_appleAccountUtilities;
     v13->_appleAccountUtilities = v16;
 
-    if (v9)
+    if (lCopy)
     {
-      objc_storeStrong(&v13->_isolatedReminderDataContainerURL, a3);
+      objc_storeStrong(&v13->_isolatedReminderDataContainerURL, l);
     }
 
     v18 = [[RDAttachmentFileManager alloc] initWithDocumentsURLProvider:v13];
@@ -261,9 +261,9 @@
     mergePolicy = v13->_mergePolicy;
     v13->_mergePolicy = v20;
 
-    v22 = [(RDStoreController *)v13 _makePersistentStoreCoordinator];
+    _makePersistentStoreCoordinator = [(RDStoreController *)v13 _makePersistentStoreCoordinator];
     persistentStoreCoordinator = v13->_persistentStoreCoordinator;
-    v13->_persistentStoreCoordinator = v22;
+    v13->_persistentStoreCoordinator = _makePersistentStoreCoordinator;
 
     v24 = [[RDCoreSpotlightDelegateManager alloc] initWithIsolated:[(RDStoreController *)v13 isolated] coordinator:v13->_persistentStoreCoordinator];
     coreSpotlightDelegateManager = v13->_coreSpotlightDelegateManager;
@@ -284,7 +284,7 @@
     v49[3] = &unk_1008D9B98;
     v30 = v13;
     v50 = v30;
-    v51 = v10;
+    v51 = delegateCopy;
     sub_1000CC524(v49);
     os_unfair_lock_unlock(&v13->_ivarLock);
 
@@ -349,9 +349,9 @@
     }
 
     v3 = objc_alloc_init(REMDatabaseMigrationContext);
-    v4 = [v3 isDatabaseMigrated];
+    isDatabaseMigrated = [v3 isDatabaseMigrated];
 
-    if (v4)
+    if (isDatabaseMigrated)
     {
       return 1;
     }
@@ -387,12 +387,12 @@ LABEL_7:
   v3 = +[REMLogStore container];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(RDStoreController *)self isolatedReminderDataContainerURL];
+    isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
     v5 = +[RDPaths defaultReminderDataContainerURL];
     *buf = 134218498;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = isolatedReminderDataContainerURL;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Deallocating RDStoreController {pointer: %p, isolatedReminderDataContainerURL: %@, defaultReminderDataContainerURL: %@}", buf, 0x20u);
@@ -403,40 +403,40 @@ LABEL_7:
   [(RDStoreController *)&v6 dealloc];
 }
 
-+ (BOOL)isDummyStoreURL:(id)a3
++ (BOOL)isDummyStoreURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 storeFileNameWithStoreName:@"local"];
-  v6 = [v4 lastPathComponent];
+  lCopy = l;
+  v5 = [self storeFileNameWithStoreName:@"local"];
+  lastPathComponent = [lCopy lastPathComponent];
 
-  LOBYTE(v4) = [v6 isEqualToString:v5];
-  return v4;
+  LOBYTE(lCopy) = [lastPathComponent isEqualToString:v5];
+  return lCopy;
 }
 
-- (id)storeURLWithName:(id)a3 withContainerURL:(id)a4
+- (id)storeURLWithName:(id)name withContainerURL:(id)l
 {
-  v6 = a3;
-  v7 = [(RDStoreController *)self databaseDirectoryURLWithContainerURL:a4];
-  v8 = [objc_opt_class() storeFileNameWithStoreName:v6];
+  nameCopy = name;
+  v7 = [(RDStoreController *)self databaseDirectoryURLWithContainerURL:l];
+  v8 = [objc_opt_class() storeFileNameWithStoreName:nameCopy];
 
   v9 = [v7 URLByAppendingPathComponent:v8];
 
   return v9;
 }
 
-- (id)storeBackupURLWithFileName:(id)a3 withContainerURL:(id)a4
+- (id)storeBackupURLWithFileName:(id)name withContainerURL:(id)l
 {
-  v6 = a3;
-  v7 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:a4];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  nameCopy = name;
+  v7 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:l];
+  v8 = [v7 URLByAppendingPathComponent:nameCopy];
 
   return v8;
 }
 
-- (id)invalidStoreBackupURLWithFileName:(id)a3 withContainerURL:(id)a4
+- (id)invalidStoreBackupURLWithFileName:(id)name withContainerURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  nameCopy = name;
   v8 = +[NSTimeZone systemTimeZone];
   v9 = [NSISO8601DateFormatter rem_formatterWithTimeZone:v8];
 
@@ -445,34 +445,34 @@ LABEL_7:
   v12 = +[NSCharacterSet URLHostAllowedCharacterSet];
   v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
 
-  v14 = [v7 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
 
-  v15 = [NSString stringWithFormat:@"%@--%@.sqlite", v14, v13];
+  v15 = [NSString stringWithFormat:@"%@--%@.sqlite", stringByDeletingPathExtension, v13];
 
-  v16 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:v6];
+  v16 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:lCopy];
 
   v17 = [v16 URLByAppendingPathComponent:v15];
 
   return v17;
 }
 
-- (id)_reminderDataContainerURLForAccountIdentifier:(id)a3
+- (id)_reminderDataContainerURLForAccountIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-  if (v6 && (v7 = v6, v8 = [(RDStoreController *)self unittest_isTestingDataSeparation], v7, (v8 & 1) == 0))
+  identifierCopy = identifier;
+  isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
+  if (isolatedReminderDataContainerURL && (v7 = isolatedReminderDataContainerURL, v8 = [(RDStoreController *)self unittest_isTestingDataSeparation], v7, (v8 & 1) == 0))
   {
-    v10 = [(RDStoreController *)self isolatedReminderDataContainerURL];
+    isolatedReminderDataContainerURL2 = [(RDStoreController *)self isolatedReminderDataContainerURL];
   }
 
   else
   {
-    v9 = [(RDStoreController *)self appleAccountUtilities];
-    v10 = [v9 reminderDataContainerURLForAccountIdentifier:v5];
+    appleAccountUtilities = [(RDStoreController *)self appleAccountUtilities];
+    isolatedReminderDataContainerURL2 = [appleAccountUtilities reminderDataContainerURLForAccountIdentifier:identifierCopy];
 
     v11 = +[NSFileManager defaultManager];
     v21 = 0;
-    v12 = [v11 rem_createDirectoryIfNecessaryAtURL:v10 error:&v21];
+    v12 = [v11 rem_createDirectoryIfNecessaryAtURL:isolatedReminderDataContainerURL2 error:&v21];
     v13 = v21;
     if ((v12 & 1) == 0)
     {
@@ -483,37 +483,37 @@ LABEL_7:
         v17 = NSStringFromClass(v16);
         v18 = NSStringFromSelector(a2);
         v19 = [NSString stringWithFormat:@"%@.%@", v17, v18];
-        v20 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
         *buf = 138544130;
         v23 = v19;
         v24 = 2114;
-        v25 = v5;
+        v25 = identifierCopy;
         v26 = 2112;
-        v27 = v10;
+        v27 = isolatedReminderDataContainerURL2;
         v28 = 2112;
-        v29 = v20;
+        v29 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] Create directory failed {accountIdentifier: %{public}@, reminderDataContainerURL: %@, error: %@}", buf, 0x2Au);
       }
     }
   }
 
-  return v10;
+  return isolatedReminderDataContainerURL2;
 }
 
 - (id)_makePersistentStoreCoordinator
 {
-  v2 = [objc_opt_class() managedObjectModel];
-  v3 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:v2];
+  managedObjectModel = [objc_opt_class() managedObjectModel];
+  v3 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
 
   return v3;
 }
 
 - (void)l_loadPPTStoreStatus
 {
-  v4 = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
+  _dataSeparationIncompatible_defaultReminderDataContainerURL = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
   v5 = +[NSFileManager defaultManager];
   v20 = 0;
-  v6 = [v5 rem_createDirectoryIfNecessaryAtURL:v4 error:&v20];
+  v6 = [v5 rem_createDirectoryIfNecessaryAtURL:_dataSeparationIncompatible_defaultReminderDataContainerURL error:&v20];
   v7 = v20;
   if ((v6 & 1) == 0)
   {
@@ -524,21 +524,21 @@ LABEL_7:
       v19 = NSStringFromClass(v15);
       v16 = NSStringFromSelector(a2);
       v17 = [NSString stringWithFormat:@"%@.%@", v19, v16];
-      v18 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138543874;
       v22 = v17;
       v23 = 2112;
-      v24 = v4;
+      v24 = _dataSeparationIncompatible_defaultReminderDataContainerURL;
       v25 = 2112;
-      v26 = v18;
+      v26 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}@] Create directory failed {defaultReminderDataContainerURL: %@, error: %@}", buf, 0x20u);
     }
   }
 
-  v9 = [RDPaths pptSentinelURLInContainerURL:v4];
+  v9 = [RDPaths pptSentinelURLInContainerURL:_dataSeparationIncompatible_defaultReminderDataContainerURL];
   v10 = +[NSFileManager defaultManager];
-  v11 = [v9 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  path = [v9 path];
+  v12 = [v10 fileExistsAtPath:path];
 
   if (v12)
   {
@@ -577,11 +577,11 @@ LABEL_14:
 
 - (id)_discoverReminderDataContainerURLs
 {
-  v3 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-  if (v3 && (v4 = v3, v5 = [(RDStoreController *)self unittest_isTestingDataSeparation], v4, (v5 & 1) == 0))
+  isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
+  if (isolatedReminderDataContainerURL && (v4 = isolatedReminderDataContainerURL, v5 = [(RDStoreController *)self unittest_isTestingDataSeparation], v4, (v5 & 1) == 0))
   {
-    v19 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-    v6 = [NSSet setWithObject:v19];
+    isolatedReminderDataContainerURL2 = [(RDStoreController *)self isolatedReminderDataContainerURL];
+    v6 = [NSSet setWithObject:isolatedReminderDataContainerURL2];
   }
 
   else
@@ -592,14 +592,14 @@ LABEL_14:
 
     if ([(RDStoreController *)self hasPassedBuddyAndSystemDataMigrator])
     {
-      v8 = [(RDStoreController *)self appleAccountUtilities];
-      v9 = [v8 unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts];
+      appleAccountUtilities = [(RDStoreController *)self appleAccountUtilities];
+      unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts = [appleAccountUtilities unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts];
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v10 = v9;
+      v10 = unsafeUntilSystemReady_allCloudKitRemindersEnabledICloudACAccounts;
       v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v11)
       {
@@ -616,13 +616,13 @@ LABEL_14:
               objc_enumerationMutation(v10);
             }
 
-            v16 = [*(*(&v22 + 1) + 8 * i) identifier];
-            v17 = [(RDStoreController *)self _reminderDataContainerURLForAccountIdentifier:v16];
+            identifier = [*(*(&v22 + 1) + 8 * i) identifier];
+            v17 = [(RDStoreController *)self _reminderDataContainerURLForAccountIdentifier:identifier];
             v18 = +[REMLogStore container];
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v21;
-              v27 = v16;
+              v27 = identifier;
               v28 = 2112;
               v29 = v17;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[discoverApplicationDocumentURLs] Queried application documents URL for account {accountIdentifier: %{public}@, reminderDataContainerURL: %@}", buf, 0x16u);
@@ -637,13 +637,13 @@ LABEL_14:
         while (v13);
       }
 
-      v19 = v10;
+      isolatedReminderDataContainerURL2 = v10;
     }
 
     else
     {
-      v19 = +[RDPaths defaultReminderDataContainerURL];
-      [v6 addObject:v19];
+      isolatedReminderDataContainerURL2 = +[RDPaths defaultReminderDataContainerURL];
+      [v6 addObject:isolatedReminderDataContainerURL2];
       v10 = +[REMLogStore container];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -655,14 +655,14 @@ LABEL_14:
   return v6;
 }
 
-- (id)l_discoverAccountStoreURLsFromReminderDataContainerURLs:(id)a3 deletingFilesMarkedDeleted:(BOOL)a4 storesDiscoveryStatesRef:(id *)a5 error:(id *)a6
+- (id)l_discoverAccountStoreURLsFromReminderDataContainerURLs:(id)ls deletingFilesMarkedDeleted:(BOOL)deleted storesDiscoveryStatesRef:(id *)ref error:(id *)error
 {
-  v38 = a4;
-  v8 = a3;
-  if (a5)
+  deletedCopy = deleted;
+  lsCopy = ls;
+  if (ref)
   {
-    a5->var2 = 1;
-    *&a5->var0 = 0;
+    ref->var2 = 1;
+    *&ref->var0 = 0;
   }
 
   v9 = +[NSFileManager defaultManager];
@@ -672,7 +672,7 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = v8;
+    v47 = lsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[discoverAccountStoreURLsFromApplicationDocumentsURLs] Scanning into {appDocumentsURLs: %{public}@}", buf, 0xCu);
   }
 
@@ -680,13 +680,13 @@ LABEL_14:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v8;
+  obj = lsCopy;
   v11 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v43;
-    v37 = a5;
+    refCopy = ref;
     do
     {
       v14 = 0;
@@ -710,16 +710,16 @@ LABEL_14:
             v33 = NSStringFromClass(v24);
             v31 = NSStringFromSelector(a2);
             v30 = [NSString stringWithFormat:@"%@.%@", v33, v31];
-            v25 = [v17 localizedDescription];
+            localizedDescription = [v17 localizedDescription];
             *buf = 138543874;
             v47 = v30;
             v48 = 2112;
             v49 = v15;
             v50 = 2112;
-            v51 = v25;
+            v51 = localizedDescription;
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}@] Create directory failed {databaseDirectoryURL: %@, error: %@}", buf, 0x20u);
 
-            a5 = v37;
+            ref = refCopy;
           }
         }
 
@@ -729,35 +729,35 @@ LABEL_14:
           v19 = +[REMLogStore container];
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v15 absoluteString];
+            absoluteString = [v15 absoluteString];
             *buf = 138412546;
-            v47 = v23;
+            v47 = absoluteString;
             v48 = 1024;
             LODWORD(v49) = v40;
             _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromApplicationDocumentsURLs] Given appDocumentsURL is not an existing directory {databaseDirectoryURL: %@, isDirectory: %d}", buf, 0x12u);
 
-            a5 = v37;
+            ref = refCopy;
           }
         }
 
         v39 = 0;
-        v20 = [(RDStoreController *)self l_discoverAccountStoreURLsFromDatabaseDirectoryURL:v15 deletingFilesMarkedDeleted:v38 storesDiscoveryStatesRef:a5 error:&v39];
+        v20 = [(RDStoreController *)self l_discoverAccountStoreURLsFromDatabaseDirectoryURL:v15 deletingFilesMarkedDeleted:deletedCopy storesDiscoveryStatesRef:ref error:&v39];
         v21 = v39;
         if (v21)
         {
           v22 = +[REMLogStore container];
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v32 = [v15 absoluteString];
+            absoluteString2 = [v15 absoluteString];
             *buf = 138412546;
-            v47 = v32;
+            v47 = absoluteString2;
             v48 = 2114;
             v49 = v21;
             _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromApplicationDocumentsURLs] Error getting store URLs from {databaseDirectoryURL: %@, error: %{public}@}", buf, 0x16u);
           }
 
           [v35 addObject:v21];
-          a5 = v37;
+          ref = refCopy;
         }
 
         if (v20)
@@ -775,7 +775,7 @@ LABEL_14:
     while (v12);
   }
 
-  if (a6)
+  if (error)
   {
     v26 = [v35 count];
     if (v26)
@@ -783,33 +783,33 @@ LABEL_14:
       v26 = [REMError errorFromErrors:v35];
     }
 
-    *a6 = v26;
+    *error = v26;
   }
 
   return v36;
 }
 
-- (id)l_discoverAccountStoreURLsFromDatabaseDirectoryURL:(id)a3 deletingFilesMarkedDeleted:(BOOL)a4 storesDiscoveryStatesRef:(id *)a5 error:(id *)a6
+- (id)l_discoverAccountStoreURLsFromDatabaseDirectoryURL:(id)l deletingFilesMarkedDeleted:(BOOL)deleted storesDiscoveryStatesRef:(id *)ref error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v92 = self;
-  v9 = [(RDStoreController *)self daemonUserDefaults];
-  v90 = [v9 debugSimulateSqliteFull];
+  deletedCopy = deleted;
+  lCopy = l;
+  selfCopy = self;
+  daemonUserDefaults = [(RDStoreController *)self daemonUserDefaults];
+  debugSimulateSqliteFull = [daemonUserDefaults debugSimulateSqliteFull];
 
   v10 = REMCRMergeableOrderedSet_ptr;
   v11 = +[REMLogStore container];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_10076C890(v8);
+    sub_10076C890(lCopy);
   }
 
   v12 = +[NSFileManager defaultManager];
   v119 = NSURLFileSizeKey;
   v13 = [NSArray arrayWithObjects:&v119 count:1];
   v110 = 0;
-  v87 = v8;
-  v14 = [v12 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v13 options:1 error:&v110];
+  v87 = lCopy;
+  v14 = [v12 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v13 options:1 error:&v110];
   v15 = v110;
 
   v16 = +[REMLogStore container];
@@ -821,10 +821,10 @@ LABEL_14:
   v84 = v14;
   if (v14)
   {
-    v83 = v6;
+    v83 = deletedCopy;
     v96 = [objc_opt_class() storeFileNameWithStoreName:@"local"];
     v86 = +[NSMutableDictionary dictionary];
-    v91 = [objc_opt_class() persistentStoreOptions];
+    persistentStoreOptions = [objc_opt_class() persistentStoreOptions];
     v88 = +[NSMutableSet set];
     v106 = 0u;
     v107 = 0u;
@@ -854,42 +854,42 @@ LABEL_14:
         }
 
         v22 = *(*(&v106 + 1) + 8 * v21);
-        v23 = [(__CFString *)v22 pathExtension];
-        v24 = [v23 lowercaseString];
-        v25 = [v24 isEqualToString:@"sqlite"];
+        pathExtension = [(__CFString *)v22 pathExtension];
+        lowercaseString = [pathExtension lowercaseString];
+        v25 = [lowercaseString isEqualToString:@"sqlite"];
 
         if (v25)
         {
-          v26 = [(__CFString *)v22 lastPathComponent];
-          v27 = v26;
-          if (v26 && ([(__CFString *)v26 hasPrefix:@"Data-"]& 1) != 0)
+          lastPathComponent = [(__CFString *)v22 lastPathComponent];
+          v27 = lastPathComponent;
+          if (lastPathComponent && ([(__CFString *)lastPathComponent hasPrefix:@"Data-"]& 1) != 0)
           {
             if (([(__CFString *)v27 isEqualToString:v96]& 1) == 0)
             {
               v104 = 0;
               v105 = 0;
               v28 = [(__CFString *)v22 getResourceValue:&v105 forKey:NSURLFileSizeKey error:&v104];
-              v29 = v105;
+              container4 = v105;
               v30 = v104;
 
-              if (!v28 || !v29)
+              if (!v28 || !container4)
               {
-                v31 = [v10[51] container];
-                if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+                container = [v10[51] container];
+                if (os_log_type_enabled(container, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543618;
                   v112 = v27;
                   v113 = 2114;
                   v114 = v30;
-                  _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to get file size {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
+                  _os_log_error_impl(&_mh_execute_header, container, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to get file size {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
                 }
               }
 
               v103 = 0;
-              v32 = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType URL:v22 options:v91 error:&v103];
+              v32 = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType URL:v22 options:persistentStoreOptions error:&v103];
               v33 = v103;
               v99 = v32;
-              if (v90)
+              if (debugSimulateSqliteFull)
               {
                 v34 = [NSNumber numberWithInteger:13];
                 v35 = [NSDictionary dictionaryWithObject:v34 forKey:NSSQLiteErrorDomain];
@@ -901,19 +901,19 @@ LABEL_14:
 
               if ([v33 rem_isDiskFullSQLError])
               {
-                if (a5)
+                if (ref)
                 {
-                  a5->var0 = 1;
+                  ref->var0 = 1;
                 }
 
-                v37 = [v10[51] container];
-                if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+                container2 = [v10[51] container];
+                if (os_log_type_enabled(container2, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543618;
                   v112 = v27;
                   v113 = 2114;
                   v114 = v30;
-                  _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to fetch store metadata for sqlite file due to disk full {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
+                  _os_log_error_impl(&_mh_execute_header, container2, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to fetch store metadata for sqlite file due to disk full {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
                 }
 
                 v32 = v99;
@@ -923,14 +923,14 @@ LABEL_14:
 
               if (!v32)
               {
-                v39 = [v10[51] container];
-                if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+                container3 = [v10[51] container];
+                if (os_log_type_enabled(container3, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543618;
                   v112 = v27;
                   v113 = 2114;
                   v114 = v38;
-                  _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to fetch store metadata for sqlite file {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
+                  _os_log_error_impl(&_mh_execute_header, container3, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to fetch store metadata for sqlite file {fileName: %{public}@, error: %{public}@}", buf, 0x16u);
                 }
               }
 
@@ -941,10 +941,10 @@ LABEL_14:
               objc_opt_class();
               v42 = [v32 objectForKeyedSubscript:@"RDMarkedForDeletion"];
               v43 = REMDynamicCast();
-              v44 = [v43 BOOLValue];
+              bOOLValue = [v43 BOOLValue];
 
               v97 = v40;
-              if ([(RDStoreController *)v92 supportsLocalInternalAccount])
+              if ([(RDStoreController *)selfCopy supportsLocalInternalAccount])
               {
                 v45 = 1;
               }
@@ -952,65 +952,65 @@ LABEL_14:
               else
               {
                 v46 = +[REMAccount localInternalAccountID];
-                v47 = [v46 uuid];
-                v48 = [v47 UUIDString];
-                v49 = [(__CFString *)v40 isEqualToString:v48];
+                uuid = [v46 uuid];
+                uUIDString = [uuid UUIDString];
+                v49 = [(__CFString *)v40 isEqualToString:uUIDString];
 
                 v45 = v49 ^ 1;
               }
 
-              v98 = [(__CFString *)v22 URLByResolvingSymlinksInPath];
+              uRLByResolvingSymlinksInPath = [(__CFString *)v22 URLByResolvingSymlinksInPath];
               v50 = +[REMLogStore container];
               if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
               {
-                v51 = [v98 absoluteString];
+                absoluteString = [uRLByResolvingSymlinksInPath absoluteString];
                 *buf = 138413314;
-                v112 = v51;
+                v112 = absoluteString;
                 v113 = 2114;
                 v114 = v97;
                 v115 = 1024;
                 *v116 = v41 != 0;
                 *&v116[4] = 1024;
-                *&v116[6] = v44;
+                *&v116[6] = bOOLValue;
                 LOWORD(v117) = 1024;
                 *(&v117 + 2) = v45 & 1;
                 _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "[discoverAccountStoreURLsFromURL] Considering sqlite store on disk... {storeURL: %@, accountIdentifier: %{public}@, initialized: %d, markedAsDeleted: %d, supported: %d}", buf, 0x28u);
               }
 
               v15 = v95;
-              if ((v41 != 0) | v44 & 1)
+              if ((v41 != 0) | bOOLValue & 1)
               {
                 v17 = v93;
                 v20 = v94;
                 v52 = v97;
-                if (v44)
+                if (bOOLValue)
                 {
-                  v53 = v98;
-                  [v88 addObject:v98];
+                  v53 = uRLByResolvingSymlinksInPath;
+                  [v88 addObject:uRLByResolvingSymlinksInPath];
                   v10 = REMCRMergeableOrderedSet_ptr;
                 }
 
                 else if (v45)
                 {
-                  v56 = [v29 unsignedIntegerValue];
-                  v57 = v56;
+                  unsignedIntegerValue = [container4 unsignedIntegerValue];
+                  v57 = unsignedIntegerValue;
                   v10 = REMCRMergeableOrderedSet_ptr;
-                  if (a5 && v56 >= 0xA00000)
+                  if (ref && unsignedIntegerValue >= 0xA00000)
                   {
-                    a5->var2 = 0;
+                    ref->var2 = 0;
                   }
 
-                  if (v56 >> 21 >= 0x19)
+                  if (unsignedIntegerValue >> 21 >= 0x19)
                   {
-                    if (a5)
+                    if (ref)
                     {
-                      a5->var1 = 1;
+                      ref->var1 = 1;
                     }
 
                     v58 = +[REMLogStore container];
                     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
                     {
-                      v63 = [v98 absoluteString];
+                      absoluteString2 = [uRLByResolvingSymlinksInPath absoluteString];
                       *buf = v82;
                       v112 = v57;
                       v113 = 2114;
@@ -1018,7 +1018,7 @@ LABEL_14:
                       v115 = 2114;
                       *v116 = v97;
                       *&v116[8] = 2112;
-                      v117 = v63;
+                      v117 = absoluteString2;
                       _os_log_error_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] WARNING that we're loading a large database exceeding 50MB, large database is suboptimal in every way {fileSize: %lu, store: %{public}@, accountIdentifier: %{public}@, storeURL: %@}", buf, 0x2Au);
 
                       v52 = v97;
@@ -1037,8 +1037,8 @@ LABEL_14:
                     v59 = @"NullMetadataAccountIdentifier";
                   }
 
-                  v53 = v98;
-                  [v86 setObject:v59 forKey:v98];
+                  v53 = uRLByResolvingSymlinksInPath;
+                  [v86 setObject:v59 forKey:uRLByResolvingSymlinksInPath];
                   v17 = v93;
                 }
 
@@ -1048,20 +1048,20 @@ LABEL_14:
                   v60 = +[REMLogStore container];
                   if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
                   {
-                    v61 = [v98 absoluteString];
+                    absoluteString3 = [uRLByResolvingSymlinksInPath absoluteString];
                     *buf = 138543874;
                     v112 = v22;
                     v113 = 2114;
                     v114 = v97;
                     v115 = 2112;
-                    *v116 = v61;
+                    *v116 = absoluteString3;
                     _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "[discoverAccountStoreURLsFromURL] Unsupported storeURL. DELETING {store: %{public}@, accountIdentifier: %{public}@, storeURL: %@}", buf, 0x20u);
 
                     v52 = v97;
                   }
 
-                  v53 = v98;
-                  [v88 addObject:v98];
+                  v53 = uRLByResolvingSymlinksInPath;
+                  [v88 addObject:uRLByResolvingSymlinksInPath];
                   v20 = v94;
                 }
               }
@@ -1075,20 +1075,20 @@ LABEL_14:
                 v52 = v97;
                 if (os_log_type_enabled(v54, OS_LOG_TYPE_FAULT))
                 {
-                  v62 = [v98 absoluteString];
+                  absoluteString4 = [uRLByResolvingSymlinksInPath absoluteString];
                   *buf = 138543618;
                   v112 = v27;
                   v113 = 2112;
-                  v114 = v62;
+                  v114 = absoluteString4;
                   _os_log_fault_impl(&_mh_execute_header, v54, OS_LOG_TYPE_FAULT, "[discoverAccountStoreURLsFromURL] The store sqlite file is neither initialized or marked as deleted -- probably corrupted. Will delete the file if <= 4096 bytes (i.e. empty) {fileName: %{public}@, storeURL: %@}", buf, 0x16u);
 
                   v52 = v97;
                 }
 
-                v53 = v98;
-                if (v29 && [v29 unsignedIntegerValue]<= 0x1000)
+                v53 = uRLByResolvingSymlinksInPath;
+                if (container4 && [container4 unsignedIntegerValue]<= 0x1000)
                 {
-                  [v88 addObject:v98];
+                  [v88 addObject:uRLByResolvingSymlinksInPath];
                 }
               }
 
@@ -1098,15 +1098,15 @@ LABEL_14:
 
           else
           {
-            v29 = [v10[51] container];
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
+            container4 = [v10[51] container];
+            if (os_log_type_enabled(container4, OS_LOG_TYPE_FAULT))
             {
-              v55 = [v87 absoluteString];
+              absoluteString5 = [v87 absoluteString];
               *buf = 138412546;
-              v112 = v55;
+              v112 = absoluteString5;
               v113 = 2114;
               v114 = v27;
-              _os_log_fault_impl(&_mh_execute_header, v29, OS_LOG_TYPE_FAULT, "[discoverAccountStoreURLsFromURL] Found sqlite file that doesn't have the prefix RDPathComponentStoreFilePrefix {databaseDirectoryURL: %@, fileName: %{public}@}", buf, 0x16u);
+              _os_log_fault_impl(&_mh_execute_header, container4, OS_LOG_TYPE_FAULT, "[discoverAccountStoreURLsFromURL] Found sqlite file that doesn't have the prefix RDPathComponentStoreFilePrefix {databaseDirectoryURL: %@, fileName: %{public}@}", buf, 0x16u);
             }
 
 LABEL_36:
@@ -1127,14 +1127,14 @@ LABEL_70:
         {
           v101 = 0;
           v102 = 0;
-          v65 = [(RDStoreController *)v92 _removeFilesOfStoresAtURLs:v88 outRemovedFileURLs:&v102 error:&v101];
+          v65 = [(RDStoreController *)selfCopy _removeFilesOfStoresAtURLs:v88 outRemovedFileURLs:&v102 error:&v101];
           v66 = v102;
           v67 = v101;
-          v68 = [v10[51] container];
-          v69 = v68;
+          container5 = [v10[51] container];
+          v69 = container5;
           if (v65)
           {
-            if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(container5, OS_LOG_TYPE_DEFAULT))
             {
               v70 = [v88 count];
               v71 = [v66 count];
@@ -1146,7 +1146,7 @@ LABEL_70:
             }
           }
 
-          else if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
+          else if (os_log_type_enabled(container5, OS_LOG_TYPE_ERROR))
           {
             v80 = [v88 count];
             v81 = [v66 count];
@@ -1159,12 +1159,12 @@ LABEL_70:
             _os_log_error_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "[discoverAccountStoreURLsFromURL] Failed to delete (some) store files marked for deletion in previous launches {storesToRemove.count: %ld, removed.files.count: %ld, error: %{public}@}", buf, 0x20u);
           }
 
-          v73 = [(RDStoreController *)v92 accountStoreManagementDelegate];
-          [v73 didRemoveStoreFilesOnInitWithURLs:v66];
+          accountStoreManagementDelegate = [(RDStoreController *)selfCopy accountStoreManagementDelegate];
+          [accountStoreManagementDelegate didRemoveStoreFilesOnInitWithURLs:v66];
         }
 
-        v74 = [v10[51] container];
-        if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+        container6 = [v10[51] container];
+        if (os_log_type_enabled(container6, OS_LOG_TYPE_DEFAULT))
         {
           v75 = [v17 count];
           v76 = [v86 count];
@@ -1175,7 +1175,7 @@ LABEL_70:
           v114 = v76;
           v115 = 2048;
           *v116 = v77;
-          _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "[discoverAccountStoreURLsFromURL] Finished discovering account identifiers on disk {file.count: %ld, storeURLs.count: %ld, deletedStores.count: %ld}", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, container6, OS_LOG_TYPE_DEFAULT, "[discoverAccountStoreURLsFromURL] Finished discovering account identifiers on disk {file.count: %ld, storeURLs.count: %ld, deletedStores.count: %ld}", buf, 0x20u);
         }
 
         v72 = v87;
@@ -1194,32 +1194,32 @@ LABEL_70:
   v86 = 0;
 LABEL_84:
 
-  if (a6)
+  if (error)
   {
     v78 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v86;
 }
 
-- (id)_relocateMisplacedDataSeparationStoresWithDataSeparatedStoreURLsMap:(id)a3 deleteFilesMarkedDeleted:(BOOL)a4
+- (id)_relocateMisplacedDataSeparationStoresWithDataSeparatedStoreURLsMap:(id)map deleteFilesMarkedDeleted:(BOOL)deleted
 {
-  v50 = a4;
-  v5 = a3;
+  deletedCopy = deleted;
+  mapCopy = map;
   v63 = +[NSFileManager defaultManager];
-  v68 = self;
+  selfCopy = self;
   v53 = [(RDStoreController *)self _reminderDataContainerURLForAccountIdentifier:0];
-  v6 = [v53 path];
-  v66 = [v6 stringByStandardizingPath];
+  path = [v53 path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
 
-  v51 = [v5 mutableCopy];
+  v51 = [mapCopy mutableCopy];
   v52 = +[NSMutableSet set];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v7 = v5;
+  v7 = mapCopy;
   v8 = [v7 countByEnumeratingWithState:&v74 objects:v88 count:16];
   if (v8)
   {
@@ -1241,29 +1241,29 @@ LABEL_84:
 
         v13 = *(*(&v74 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 path];
-        v16 = [v15 stringByStandardizingPath];
+        path2 = [v13 path];
+        stringByStandardizingPath2 = [path2 stringByStandardizingPath];
 
-        v17 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v18 = [v7 objectForKey:v13];
-        if (-[NSObject length](v17, "length") && [v16 length] && objc_msgSend(v18, "length") && !objc_msgSend(v18, "isEqualToString:", @"NullMetadataAccountIdentifier"))
+        if (-[NSObject length](lastPathComponent, "length") && [stringByStandardizingPath2 length] && objc_msgSend(v18, "length") && !objc_msgSend(v18, "isEqualToString:", @"NullMetadataAccountIdentifier"))
         {
           v20 = v7;
-          v19 = [(RDStoreController *)v68 _reminderDataContainerURLForAccountIdentifier:v18];
-          v21 = [v19 path];
-          v22 = [v21 stringByStandardizingPath];
+          v19 = [(RDStoreController *)selfCopy _reminderDataContainerURLForAccountIdentifier:v18];
+          path3 = [v19 path];
+          stringByStandardizingPath3 = [path3 stringByStandardizingPath];
 
-          v70 = v22;
-          if ([v22 length] && objc_msgSend(v66, "length"))
+          v70 = stringByStandardizingPath3;
+          if ([stringByStandardizingPath3 length] && objc_msgSend(stringByStandardizingPath, "length"))
           {
             v11 = v67;
             v7 = v20;
             v10 = v69;
-            if (([v16 hasPrefix:v70] & 1) == 0 && objc_msgSend(v16, "hasPrefix:", v66))
+            if (([stringByStandardizingPath2 hasPrefix:v70] & 1) == 0 && objc_msgSend(stringByStandardizingPath2, "hasPrefix:", stringByStandardizingPath))
             {
               v65 = v13;
-              v23 = [(RDStoreController *)v68 databaseDirectoryURLWithContainerURL:v19];
-              v24 = [v23 URLByAppendingPathComponent:v17];
+              v23 = [(RDStoreController *)selfCopy databaseDirectoryURLWithContainerURL:v19];
+              v24 = [v23 URLByAppendingPathComponent:lastPathComponent];
 
               v25 = v24;
               if ([v63 rem_fileExistsAtURL:v24])
@@ -1272,15 +1272,15 @@ LABEL_84:
                 log = +[REMLogStore container];
                 if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
                 {
-                  v57 = [v65 absoluteString];
+                  absoluteString = [v65 absoluteString];
                   [v25 absoluteString];
                   v27 = v61 = v25;
                   *buf = 138544130;
                   v79 = v18;
                   v80 = 2114;
-                  v81 = v17;
+                  v81 = lastPathComponent;
                   v82 = 2112;
-                  v83 = v57;
+                  v83 = absoluteString;
                   v84 = 2112;
                   v85 = v27;
                   _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "[relocateMisplacedStores] There's already a store at the persona container with the same name, skipping this mis-located store at the default container {accountIdentifier: %{public}@, basename: %{public}@, misLocatedStoreURL: %@, relocateToStoreURL: %@}", buf, 0x2Au);
@@ -1292,11 +1292,11 @@ LABEL_84:
 
               else
               {
-                v54 = [v65 path];
+                path4 = [v65 path];
                 v62 = v24;
-                v28 = [v24 path];
+                path5 = [v24 path];
                 v73 = 0;
-                v58 = [RDSQLiteDBUtils copySQLiteFileAtPath:v54 toPath:v28 timeout:&v73 error:1.0];
+                v58 = [RDSQLiteDBUtils copySQLiteFileAtPath:path4 toPath:path5 timeout:&v73 error:1.0];
                 v29 = v73;
 
                 v30 = +[REMLogStore container];
@@ -1308,15 +1308,15 @@ LABEL_84:
                 {
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                   {
-                    v56 = [v65 absoluteString];
+                    absoluteString2 = [v65 absoluteString];
                     [v62 absoluteString];
                     v34 = v60 = v31;
                     *buf = v49;
                     v79 = v18;
                     v80 = 2114;
-                    v81 = v17;
+                    v81 = lastPathComponent;
                     v82 = 2112;
-                    v83 = v56;
+                    v83 = absoluteString2;
                     v84 = 2112;
                     v85 = v34;
                     v86 = 2114;
@@ -1333,15 +1333,15 @@ LABEL_84:
                 {
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                   {
-                    v55 = [v65 absoluteString];
+                    absoluteString3 = [v65 absoluteString];
                     [v62 absoluteString];
                     v33 = v59 = v31;
                     *buf = 138544130;
                     v79 = v18;
                     v80 = 2114;
-                    v81 = v17;
+                    v81 = lastPathComponent;
                     v82 = 2112;
-                    v83 = v55;
+                    v83 = absoluteString3;
                     v84 = 2112;
                     v85 = v33;
                     _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "[relocateMisplacedStores] Successfully cloned store located at default container to its correct container path {accountIdentifier: %{public}@, basename: %{public}@, misLocatedStoreURL: %@, relocateToStoreURL: %@}", buf, 0x2Au);
@@ -1390,7 +1390,7 @@ LABEL_24:
           *buf = 138543874;
           v79 = v18;
           v80 = 2114;
-          v81 = v17;
+          v81 = lastPathComponent;
           v82 = 2112;
           v83 = v13;
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "[relocateMisplacedStores] Unexpectedly nil store basename/storeURLPath/accountIdentifier {accountIdentifier: %{public}@, basename: %{public}@, storeURL: %@}", buf, 0x20u);
@@ -1410,15 +1410,15 @@ LABEL_12:
     while (v35);
   }
 
-  if (v50 && [v52 count])
+  if (deletedCopy && [v52 count])
   {
     v71 = 0;
     v72 = 0;
-    v36 = [(RDStoreController *)v68 _removeFilesOfStoresAtURLs:v52 outRemovedFileURLs:&v72 error:&v71];
+    v36 = [(RDStoreController *)selfCopy _removeFilesOfStoresAtURLs:v52 outRemovedFileURLs:&v72 error:&v71];
     v37 = v72;
     v38 = v71;
-    v39 = [v37 allObjects];
-    v40 = [v39 valueForKey:@"lastPathComponent"];
+    allObjects = [v37 allObjects];
+    v40 = [allObjects valueForKey:@"lastPathComponent"];
 
     v41 = [v40 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
 
@@ -1456,13 +1456,13 @@ LABEL_12:
   return v51;
 }
 
-- (void)_relocateMisplacedDataSeparationAccountAttachmentFilesWithRelocatedAccountIdentifiers:(id)a3
+- (void)_relocateMisplacedDataSeparationAccountAttachmentFilesWithRelocatedAccountIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v14 = objc_opt_new();
   v6 = [[RDAttachmentFileManager alloc] initWithDocumentsURLProvider:v14];
-  v7 = [(RDStoreController *)self attachmentFileManager];
-  v8 = [NSMutableSet setWithArray:v5];
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v8 = [NSMutableSet setWithArray:identifiersCopy];
 
   v9 = [NSSet setWithObjects:@"NullMetadataAccountIdentifier", @"NotFoundInStoreURLsMapAccountIdentifier", 0];
   [v8 minusSet:v9];
@@ -1471,7 +1471,7 @@ LABEL_12:
   v11 = NSStringFromClass(v10);
   v12 = NSStringFromSelector(a2);
   v13 = [NSString stringWithFormat:@"%@.%@", v11, v12];
-  [(RDStoreController *)self _moveAttachmentFilesFromAttachmentFileManager:v6 toAttachmentFileManager:v7 affectedAccountIdentifiers:v8 logPrefix:v13];
+  [(RDStoreController *)self _moveAttachmentFilesFromAttachmentFileManager:v6 toAttachmentFileManager:attachmentFileManager affectedAccountIdentifiers:v8 logPrefix:v13];
 }
 
 - (void)_migrateBackupStoresToPostDataSeparationLocationIfNeeded
@@ -1500,11 +1500,11 @@ LABEL_12:
         v29 = NSStringFromSelector(a2);
         [NSString stringWithFormat:@"%@.%@", v33, v29];
         v14 = v31 = v9;
-        v15 = [v8 absoluteString];
+        absoluteString = [v8 absoluteString];
         *buf = 138543618;
         v44 = v14;
         v45 = 2112;
-        v46 = v15;
+        v46 = absoluteString;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Moved Stores-Backup from legacy contanier to the post-data-separation default container {modernStoresBackupDirURL: %@}", buf, 0x16u);
 
         v9 = v31;
@@ -1518,11 +1518,11 @@ LABEL_12:
       v30 = NSStringFromSelector(a2);
       [NSString stringWithFormat:@"%@.%@", v32, v30];
       v17 = v34 = v8;
-      v18 = [v34 absoluteString];
+      absoluteString2 = [v34 absoluteString];
       *buf = 138543874;
       v44 = v17;
       v45 = 2112;
-      v46 = v18;
+      v46 = absoluteString2;
       v47 = 2114;
       v48 = v36;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Failed to move Stores-Backup from legacy contanier to the post-data-separation default container {modernStoresBackupDirURL: %@, error: %{public}@}", buf, 0x20u);
@@ -1545,12 +1545,12 @@ LABEL_12:
         v22 = objc_opt_class();
         v35 = NSStringFromClass(v22);
         aSelectora = NSStringFromSelector(a2);
-        v23 = [NSString stringWithFormat:@"%@.%@", v35, aSelectora];
-        v24 = [v9 absoluteString];
+        aSelectora = [NSString stringWithFormat:@"%@.%@", v35, aSelectora];
+        absoluteString3 = [v9 absoluteString];
         *buf = 138543618;
-        v44 = v23;
+        v44 = aSelectora;
         v45 = 2112;
-        v46 = v24;
+        v46 = absoluteString3;
         v25 = "[%{public}@] Moved Stores-StagedMigration from legacy contanier to the post-data-separation default container {modernStoresStagedMigrationDirURL: %@}";
         v26 = v20;
         v27 = 22;
@@ -1564,12 +1564,12 @@ LABEL_14:
       v28 = objc_opt_class();
       v35 = NSStringFromClass(v28);
       aSelectora = NSStringFromSelector(a2);
-      v23 = [NSString stringWithFormat:@"%@.%@", v35, aSelectora];
-      v24 = [v9 absoluteString];
+      aSelectora = [NSString stringWithFormat:@"%@.%@", v35, aSelectora];
+      absoluteString3 = [v9 absoluteString];
       *buf = 138543874;
-      v44 = v23;
+      v44 = aSelectora;
       v45 = 2112;
-      v46 = v24;
+      v46 = absoluteString3;
       v47 = 2114;
       v48 = v37;
       v25 = "[%{public}@] Failed to move Stores-StagedMigration from legacy contanier to the post-data-separation default container {modernStoresStagedMigrationDirURL: %@, error: %{public}@}";
@@ -1591,8 +1591,8 @@ LABEL_14:
     if ([v3 rem_fileExistsAtURL:v6])
     {
       v7 = [v3 rem_isEmptyDirectoryAtURL:v6 skipsHiddenFiles:0];
-      v8 = +[REMLogStore container];
-      v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+      _legacy_temporaryMLModelURL = +[REMLogStore container];
+      v9 = os_log_type_enabled(_legacy_temporaryMLModelURL, OS_LOG_TYPE_DEFAULT);
       if (!v7)
       {
         if (v9)
@@ -1607,7 +1607,7 @@ LABEL_14:
           v67 = v37;
           v68 = 2112;
           v69 = v39;
-          _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] ML models already exist and non-empty at modern location, don't overwrite it with the legacy copy {modernMLModelURL: %@}", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, _legacy_temporaryMLModelURL, OS_LOG_TYPE_DEFAULT, "[%{public}@] ML models already exist and non-empty at modern location, don't overwrite it with the legacy copy {modernMLModelURL: %@}", buf, 0x16u);
 
           a2 = v38;
           v4 = REMCRMergeableOrderedSet_ptr;
@@ -1628,7 +1628,7 @@ LABEL_14:
         v67 = v13;
         v68 = 2112;
         v69 = v15;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] ML model directory exists at modern location but is empty or not a directory, removing before proceeding {modernMLModelURL: %@}", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, _legacy_temporaryMLModelURL, OS_LOG_TYPE_DEFAULT, "[%{public}@] ML model directory exists at modern location but is empty or not a directory, removing before proceeding {modernMLModelURL: %@}", buf, 0x16u);
 
         a2 = v14;
         v4 = REMCRMergeableOrderedSet_ptr;
@@ -1661,7 +1661,7 @@ LABEL_14:
 
     v64 = 0;
     v18 = [v3 moveItemAtURL:v5 toURL:v6 error:&v64];
-    v8 = v64;
+    _legacy_temporaryMLModelURL = v64;
     v19 = +[REMLogStore container];
     v20 = v19;
     if ((v18 & 1) == 0)
@@ -1684,7 +1684,7 @@ LABEL_35:
       v70 = 2112;
       v71 = v6;
       v72 = 2114;
-      v73 = v8;
+      v73 = _legacy_temporaryMLModelURL;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to move ML models to modern location {legacyMLModelURL: %@, modernMLModelURL: %@, error: %{public}@}", buf, 0x2Au);
 
       goto LABEL_34;
@@ -1727,11 +1727,11 @@ LABEL_21:
 LABEL_27:
 
 LABEL_28:
-        v8 = [v4[61] _legacy_temporaryMLModelURL];
-        if ([v3 rem_fileExistsAtURL:v8])
+        _legacy_temporaryMLModelURL = [v4[61] _legacy_temporaryMLModelURL];
+        if ([v3 rem_fileExistsAtURL:_legacy_temporaryMLModelURL])
         {
           v62 = 0;
-          v49 = [v3 removeItemAtURL:v8 error:&v62];
+          v49 = [v3 removeItemAtURL:_legacy_temporaryMLModelURL error:&v62];
           v20 = v62;
           v50 = +[REMLogStore container];
           v33 = v50;
@@ -1749,7 +1749,7 @@ LABEL_28:
             *buf = 138543874;
             v67 = v54;
             v68 = 2112;
-            v69 = v8;
+            v69 = _legacy_temporaryMLModelURL;
             v70 = 2114;
             v71 = v20;
             _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to remove temporary ML models at legacy location {legacyTempMLModelURL: %@, error: %{public}@}", buf, 0x20u);
@@ -1765,7 +1765,7 @@ LABEL_28:
             *buf = 138543618;
             v67 = v54;
             v68 = 2112;
-            v69 = v8;
+            v69 = _legacy_temporaryMLModelURL;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully removed temporary ML models at legacty location {legacyTempMLModelURL: %@}", buf, 0x16u);
 LABEL_32:
           }
@@ -1825,12 +1825,12 @@ LABEL_36:
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = NSStringFromSelector(a2);
-    v8 = [NSString stringWithFormat:@"%@.%@", v27, v28];
-    v29 = [v5 absoluteString];
+    _legacy_temporaryMLModelURL = [NSString stringWithFormat:@"%@.%@", v27, v28];
+    absoluteString = [v5 absoluteString];
     *buf = 138543618;
-    v67 = v8;
+    v67 = _legacy_temporaryMLModelURL;
     v68 = 2112;
-    v69 = v29;
+    v69 = absoluteString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] No ML models found at legacy location {legacyMLModelURL: %@}", buf, 0x16u);
 
     goto LABEL_36;
@@ -1839,25 +1839,25 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)_migrateAttachmentFilesToPostDataSeparationLocationsIfNeededWithAccountIdentifiers:(id)a3
+- (void)_migrateAttachmentFilesToPostDataSeparationLocationsIfNeededWithAccountIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = objc_opt_new();
   v7 = [[RDAttachmentFileManager alloc] initWithDocumentsURLProvider:v6];
-  v8 = [(RDStoreController *)self attachmentFileManager];
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
   v9 = +[NSFileManager defaultManager];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = NSStringFromSelector(a2);
   v13 = [NSString stringWithFormat:@"%@.%@", v11, v12];
-  [(RDStoreController *)self _moveAttachmentFilesFromAttachmentFileManager:v7 toAttachmentFileManager:v8 affectedAccountIdentifiers:v5 logPrefix:v13];
+  [(RDStoreController *)self _moveAttachmentFilesFromAttachmentFileManager:v7 toAttachmentFileManager:attachmentFileManager affectedAccountIdentifiers:identifiersCopy logPrefix:v13];
 
-  [(RDStoreController *)self _migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:v7 dataSeparationAttachmentFileManager:v8];
-  v14 = [(RDAttachmentFileManager *)v7 URLForDefaultFilesDirectory];
-  if ([v9 rem_isEmptyDirectoryAtURL:v14 skipsHiddenFiles:0])
+  [(RDStoreController *)self _migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:v7 dataSeparationAttachmentFileManager:attachmentFileManager];
+  uRLForDefaultFilesDirectory = [(RDAttachmentFileManager *)v7 URLForDefaultFilesDirectory];
+  if ([v9 rem_isEmptyDirectoryAtURL:uRLForDefaultFilesDirectory skipsHiddenFiles:0])
   {
     v24 = 0;
-    v15 = [v9 removeItemAtURL:v14 error:&v24];
+    v15 = [v9 removeItemAtURL:uRLForDefaultFilesDirectory error:&v24];
     v16 = v24;
     v17 = +[REMLogStore container];
     v18 = v17;
@@ -1903,18 +1903,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_moveAttachmentFilesFromAttachmentFileManager:(id)a3 toAttachmentFileManager:(id)a4 affectedAccountIdentifiers:(id)a5 logPrefix:(id)a6
+- (void)_moveAttachmentFilesFromAttachmentFileManager:(id)manager toAttachmentFileManager:(id)fileManager affectedAccountIdentifiers:(id)identifiers logPrefix:(id)prefix
 {
-  v9 = a3;
-  v40 = a4;
-  v10 = a5;
-  v37 = a6;
+  managerCopy = manager;
+  fileManagerCopy = fileManager;
+  identifiersCopy = identifiers;
+  prefixCopy = prefix;
   v11 = +[NSFileManager defaultManager];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v12 = v10;
+  v12 = identifiersCopy;
   v13 = v11;
   obj = v12;
   v42 = [v12 countByEnumeratingWithState:&v47 objects:v61 count:16];
@@ -1925,7 +1925,7 @@ LABEL_8:
     *&v14 = 138544130;
     v35 = v14;
     v38 = v13;
-    v36 = v9;
+    v36 = managerCopy;
     do
     {
       v16 = 0;
@@ -1941,8 +1941,8 @@ LABEL_8:
         v19 = [objc_alloc(v15[481]) initWithUUIDString:v17];
         if (v19)
         {
-          v20 = [v9 URLForAccountFileDirectory:v19];
-          v21 = [v40 URLForAccountFileDirectory:v19];
+          v20 = [managerCopy URLForAccountFileDirectory:v19];
+          v21 = [fileManagerCopy URLForAccountFileDirectory:v19];
           if ([v13 rem_fileExistsAtURL:v20])
           {
             if (![v13 rem_fileExistsAtURL:v21])
@@ -1956,7 +1956,7 @@ LABEL_8:
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
-                v52 = v37;
+                v52 = prefixCopy;
                 v53 = 2114;
                 v54 = v17;
                 _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] File attachment directory exists but is empty or not directory with given toAttachmentFileManager, removing before proceeding {accountIdentifier: %{public}@}", buf, 0x16u);
@@ -1971,7 +1971,7 @@ LABEL_8:
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543874;
-                  v52 = v37;
+                  v52 = prefixCopy;
                   v53 = 2114;
                   v54 = v17;
                   v55 = 2114;
@@ -1983,11 +1983,11 @@ LABEL_8:
               }
 
 LABEL_17:
-              v25 = [v21 URLByDeletingLastPathComponent];
-              if (v25)
+              uRLByDeletingLastPathComponent = [v21 URLByDeletingLastPathComponent];
+              if (uRLByDeletingLastPathComponent)
               {
                 v44 = 0;
-                [v13 rem_createDirectoryIfNecessaryAtURL:v25 error:&v44];
+                [v13 rem_createDirectoryIfNecessaryAtURL:uRLByDeletingLastPathComponent error:&v44];
                 v26 = v44;
                 if (v26)
                 {
@@ -1996,9 +1996,9 @@ LABEL_17:
                   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543618;
-                    v52 = v37;
+                    v52 = prefixCopy;
                     v53 = 2112;
-                    v54 = v25;
+                    v54 = uRLByDeletingLastPathComponent;
                     _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to create container files directory given by the toAttachmentFileManager {destinationContainerFilesDirectoryURL: %@}", buf, 0x16u);
                   }
 
@@ -2016,7 +2016,7 @@ LABEL_17:
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543618;
-                  v52 = v37;
+                  v52 = prefixCopy;
                   v53 = 2114;
                   v54 = v17;
                   _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sucessfully moved file attachment directory to target location given by the toAttachmentFileManager {accountIdentifier: %{public}@}", buf, 0x16u);
@@ -2026,7 +2026,7 @@ LABEL_17:
               else if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138544386;
-                v52 = v37;
+                v52 = prefixCopy;
                 v53 = 2114;
                 v54 = v17;
                 v55 = 2112;
@@ -2038,14 +2038,14 @@ LABEL_17:
                 _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to move file attachment directory given by the fromAttachmentFileManager to target location given by the toAttachmentFileManager {accountIdentifier: %{public}@, fromAccountFileDirectoryURL: %@, toAccountFileDirectoryURL: %@, error: %{public}@}", buf, 0x34u);
               }
 
-              v9 = v36;
+              managerCopy = v36;
             }
 
             else
             {
               v45 = 0;
               v33 = [v13 removeItemAtURL:v20 error:&v45];
-              v25 = v45;
+              uRLByDeletingLastPathComponent = v45;
               v34 = +[REMLogStore container];
               v27 = v34;
               if (v33)
@@ -2053,7 +2053,7 @@ LABEL_17:
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543618;
-                  v52 = v37;
+                  v52 = prefixCopy;
                   v53 = 2114;
                   v54 = v17;
                   _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] File attachment directory already exist and non-empty with given fromAttachmentFileManager, successfully removed source copy {accountIdentifier: %{public}@}", buf, 0x16u);
@@ -2063,13 +2063,13 @@ LABEL_17:
               else if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
                 *buf = v35;
-                v52 = v37;
+                v52 = prefixCopy;
                 v53 = 2112;
                 v54 = v17;
                 v55 = 2112;
                 v56 = v20;
                 v57 = 2114;
-                v58 = v25;
+                v58 = uRLByDeletingLastPathComponent;
                 _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "[%{public}@] File attachment directory already exist and non-empty with given fromAttachmentFileManager, but failed to remove the source copy {accountIdentifier: %@, fromAccountFileDirectoryURL: %@, error: %{public}@}", buf, 0x2Au);
               }
 
@@ -2082,14 +2082,14 @@ LABEL_37:
 
           else
           {
-            v25 = +[REMLogStore container];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+            uRLByDeletingLastPathComponent = +[REMLogStore container];
+            if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_INFO))
             {
               *buf = 138543618;
-              v52 = v37;
+              v52 = prefixCopy;
               v53 = 2114;
               v54 = v17;
-              _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[%{public}@] No need to move file attachments of given fromAttachmentFileManager as the source directory is not found {accountIdentifier: %{public}@}", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, uRLByDeletingLastPathComponent, OS_LOG_TYPE_INFO, "[%{public}@] No need to move file attachments of given fromAttachmentFileManager as the source directory is not found {accountIdentifier: %{public}@}", buf, 0x16u);
             }
           }
 
@@ -2100,7 +2100,7 @@ LABEL_37:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
         {
           *buf = 138543618;
-          v52 = v37;
+          v52 = prefixCopy;
           v53 = 2114;
           v54 = v17;
           _os_log_fault_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "[%{public}@] Account identifier is not a UUID {accountIdentifier: %{public}@}", buf, 0x16u);
@@ -2120,10 +2120,10 @@ LABEL_40:
   }
 }
 
-- (void)_migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:(id)a3 dataSeparationAttachmentFileManager:(id)a4
+- (void)_migrateImageDeduplicationSentinelFileIfNeededWithPreMigrationAttachmentFileManager:(id)manager dataSeparationAttachmentFileManager:(id)fileManager
 {
-  v46 = a3;
-  v43 = a4;
+  managerCopy = manager;
+  fileManagerCopy = fileManager;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -2151,15 +2151,15 @@ LABEL_40:
         }
 
         v11 = *(*(&v50 + 1) + 8 * i);
-        v12 = [v9[458] defaultManager];
-        v13 = [v46 URLForDefaultFilesDirectory];
-        v14 = [v13 URLByAppendingPathComponent:v11];
-        if ([v12 rem_fileExistsAtURL:v14])
+        defaultManager = [v9[458] defaultManager];
+        uRLForDefaultFilesDirectory = [managerCopy URLForDefaultFilesDirectory];
+        v14 = [uRLForDefaultFilesDirectory URLByAppendingPathComponent:v11];
+        if ([defaultManager rem_fileExistsAtURL:v14])
         {
-          v45 = v13;
-          v15 = [v43 URLForDefaultFilesDirectory];
-          v16 = [v15 URLByAppendingPathComponent:v11];
-          if ([v12 rem_fileExistsAtURL:v16])
+          v45 = uRLForDefaultFilesDirectory;
+          uRLForDefaultFilesDirectory2 = [fileManagerCopy URLForDefaultFilesDirectory];
+          v16 = [uRLForDefaultFilesDirectory2 URLByAppendingPathComponent:v11];
+          if ([defaultManager rem_fileExistsAtURL:v16])
           {
             v17 = +[REMLogStore container];
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -2169,13 +2169,13 @@ LABEL_40:
               NSStringFromSelector(a2);
               v20 = v19 = v16;
               v21 = [NSString stringWithFormat:@"%@.%@", v39, v20];
-              v22 = [v19 absoluteString];
+              absoluteString = [v19 absoluteString];
               *buf = 138543874;
               v55 = v21;
               v56 = 2114;
               v57 = v11;
               v58 = 2112;
-              v59 = v22;
+              v59 = absoluteString;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}@] Post-migration '%{public}@' sentinel file already exists, removing pre-migration copy {postMigrationImageDedupSentinelFileURL: %@}", buf, 0x20u);
 
               v9 = &_s19ReminderKitInternal24REMRemindersListDataViewO25ScheduledDateBucketsModelVSeAAMc_ptr;
@@ -2185,7 +2185,7 @@ LABEL_40:
             }
 
             v49 = 0;
-            [v12 removeItemAtURL:v14 error:&v49];
+            [defaultManager removeItemAtURL:v14 error:&v49];
             v23 = v49;
             if (v23)
             {
@@ -2211,12 +2211,12 @@ LABEL_40:
 LABEL_23:
             }
 
-            v13 = v45;
+            uRLForDefaultFilesDirectory = v45;
             goto LABEL_25;
           }
 
           v48 = 0;
-          v35 = [v12 moveItemAtURL:v14 toURL:v16 error:&v48];
+          v35 = [defaultManager moveItemAtURL:v14 toURL:v16 error:&v48];
           v23 = v48;
           v36 = +[REMLogStore container];
           v24 = v36;
@@ -2265,8 +2265,8 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        v15 = +[REMLogStore container];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+        uRLForDefaultFilesDirectory2 = +[REMLogStore container];
+        if (os_log_type_enabled(uRLForDefaultFilesDirectory2, OS_LOG_TYPE_INFO))
         {
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
@@ -2278,7 +2278,7 @@ LABEL_21:
           v57 = v11;
           v58 = 2112;
           v59 = v14;
-          _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] No pre-migration '%{public}@' sentinel file found {preMigrationImageDedupSentinelFileURL: %@}", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, uRLForDefaultFilesDirectory2, OS_LOG_TYPE_INFO, "[%{public}@] No pre-migration '%{public}@' sentinel file found {preMigrationImageDedupSentinelFileURL: %@}", buf, 0x20u);
 
           v9 = &_s19ReminderKitInternal24REMRemindersListDataViewO25ScheduledDateBucketsModelVSeAAMc_ptr;
         }
@@ -2401,20 +2401,20 @@ LABEL_14:
 LABEL_15:
 }
 
-- (BOOL)l_loadAccountStoresFromDiskAndValidateInBatchesWithStoreURLs:(id)a3 shouldDeleteInvalidStoresImmediately:(BOOL)a4 error:(id *)a5
+- (BOOL)l_loadAccountStoresFromDiskAndValidateInBatchesWithStoreURLs:(id)ls shouldDeleteInvalidStoresImmediately:(BOOL)immediately error:(id *)error
 {
-  v30 = a5;
-  v36 = a4;
-  v6 = a3;
-  v35 = -[RDStoreController _persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:](self, "_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:", [v6 count]);
+  errorCopy = error;
+  immediatelyCopy = immediately;
+  lsCopy = ls;
+  v35 = -[RDStoreController _persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:](self, "_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:", [lsCopy count]);
   v41 = qword_1009358C0;
   v7 = [NSMutableSet setWithCapacity:?];
-  v38 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v6 count]);
+  v38 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [lsCopy count]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = v6;
+  v8 = lsCopy;
   v40 = [v8 countByEnumeratingWithState:&v44 objects:v57 count:16];
   if (v40)
   {
@@ -2423,7 +2423,7 @@ LABEL_15:
     v9 = 1;
     v10 = REMCRMergeableOrderedSet_ptr;
     v33 = 1;
-    v32 = self;
+    selfCopy = self;
     v31 = v7;
     v34 = v8;
     do
@@ -2438,8 +2438,8 @@ LABEL_15:
         v12 = *(*(&v44 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
         [v7 addObject:v12];
-        v14 = [v10[51] container];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        container = [v10[51] container];
+        if (os_log_type_enabled(container, OS_LOG_TYPE_DEBUG))
         {
           sub_10076CAE0(v56, v12);
         }
@@ -2447,8 +2447,8 @@ LABEL_15:
         if (!(v9 % v41) || v9 == [v8 count])
         {
           v42 = v13;
-          v15 = [v10[51] container];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+          container2 = [v10[51] container];
+          if (os_log_type_enabled(container2, OS_LOG_TYPE_INFO))
           {
             v16 = [v8 count];
             *buf = 134218496;
@@ -2457,25 +2457,25 @@ LABEL_15:
             v51 = v9 / v41;
             v52 = 2048;
             v53 = v16;
-            _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[loadAccountStoresFromDisk] Flusing batch {idx: %ld, batch: %ld, storeURLs.count: %ld}", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, container2, OS_LOG_TYPE_INFO, "[loadAccountStoresFromDisk] Flusing batch {idx: %ld, batch: %ld, storeURLs.count: %ld}", buf, 0x20u);
           }
 
-          v17 = [v7 allObjects];
+          allObjects = [v7 allObjects];
           v43 = 0;
-          v18 = [(RDStoreController *)self l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:v17 processedStoreIdentifiers:v38 shouldDeleteInvalidStoresImmediately:v36 connectionPoolMaxSize:v35 error:&v43];
+          v18 = [(RDStoreController *)self l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:allObjects processedStoreIdentifiers:v38 shouldDeleteInvalidStoresImmediately:immediatelyCopy connectionPoolMaxSize:v35 error:&v43];
           v19 = v43;
 
           v20 = v10;
-          v21 = [v10[51] container];
-          v22 = v21;
+          container3 = [v10[51] container];
+          v22 = container3;
           if (v18)
           {
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(container3, OS_LOG_TYPE_DEFAULT))
             {
               v23 = [v7 valueForKey:@"lastPathComponent"];
-              v24 = [(RDStoreController *)self l_accountStoreMap];
-              v25 = [v24 keyEnumerator];
-              v26 = [v25 allObjects];
+              l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+              keyEnumerator = [l_accountStoreMap keyEnumerator];
+              allObjects2 = [keyEnumerator allObjects];
               *buf = 134218754;
               v49 = v9 / v41;
               v50 = 2048;
@@ -2483,17 +2483,17 @@ LABEL_15:
               v52 = 2114;
               v53 = v23;
               v54 = 2114;
-              v55 = v26;
+              v55 = allObjects2;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[loadAccountStoresFromDisk] Loaded accounts from disk {batch: %ld, batchSize: %ld, urls: %{public}@, accountIdentifiers: %{public}@}", buf, 0x2Au);
 
               v7 = v31;
-              self = v32;
+              self = selfCopy;
             }
           }
 
           else
           {
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(container3, OS_LOG_TYPE_ERROR))
             {
               v27 = [v7 valueForKey:@"lastPathComponent"];
               *buf = 134218754;
@@ -2506,7 +2506,7 @@ LABEL_15:
               v55 = v19;
               _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[loadAccountStoresFromDisk] Failed to load accountStoreFromDisk. {batch: %ld, batchSize: %ld, urls: %{public}@, error: %{public}@}", buf, 0x2Au);
 
-              self = v32;
+              self = selfCopy;
             }
 
             v33 = 0;
@@ -2537,39 +2537,39 @@ LABEL_15:
     v33 = 1;
   }
 
-  if (v30)
+  if (errorCopy)
   {
     v28 = v37;
-    *v30 = v37;
+    *errorCopy = v37;
   }
 
   return v33 & 1;
 }
 
-- (BOOL)l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:(id)a3 processedStoreIdentifiers:(id)a4 shouldDeleteInvalidStoresImmediately:(BOOL)a5 connectionPoolMaxSize:(unint64_t)a6 error:(id *)a7
+- (BOOL)l_loadBatchOfAccountStoresFromDiskAndValidateWithStoreURLs:(id)ls processedStoreIdentifiers:(id)identifiers shouldDeleteInvalidStoresImmediately:(BOOL)immediately connectionPoolMaxSize:(unint64_t)size error:(id *)error
 {
-  v31 = a5;
-  v10 = a3;
-  v11 = a4;
+  immediatelyCopy = immediately;
+  lsCopy = ls;
+  identifiersCopy = identifiers;
   v42 = NSPersistentStoreConnectionPoolMaxSizeKey;
-  v12 = [NSNumber numberWithUnsignedInteger:a6];
+  v12 = [NSNumber numberWithUnsignedInteger:size];
   v43 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
 
   v38 = 0;
-  v33 = v10;
+  v33 = lsCopy;
   v30 = v13;
-  v28 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:v10 persistentStoreDescriptionOptionsOverride:v13 isCreatingStores:0 error:&v38];
+  v28 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:lsCopy persistentStoreDescriptionOptionsOverride:v13 isCreatingStores:0 error:&v38];
   v29 = v38;
   v14 = +[NSMutableArray array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = [(RDStoreController *)self persistentStoreCoordinator];
-  v16 = [v15 persistentStores];
+  persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
-  v17 = [v16 countByEnumeratingWithState:&v34 objects:v41 count:16];
+  v17 = [persistentStores countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2580,17 +2580,17 @@ LABEL_15:
       {
         if (*v35 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(persistentStores);
         }
 
         v21 = *(*(&v34 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        if (v22)
+        identifier = [v21 identifier];
+        if (identifier)
         {
-          if (([v11 containsObject:v22] & 1) == 0)
+          if (([identifiersCopy containsObject:identifier] & 1) == 0)
           {
             [v14 addObject:v21];
-            [v11 addObject:v22];
+            [identifiersCopy addObject:identifier];
           }
         }
 
@@ -2606,7 +2606,7 @@ LABEL_15:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v34 objects:v41 count:16];
+      v18 = [persistentStores countByEnumeratingWithState:&v34 objects:v41 count:16];
     }
 
     while (v18);
@@ -2621,11 +2621,11 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[loadAccountStoresFromDisk] candidates stores to validate... {candidateStores.count: %ld}", buf, 0xCu);
   }
 
-  [(RDStoreController *)self l_addValidatedStoresToAccountStoreMapWithStores:v14 shouldDeleteInvalidStoresImmediately:v31];
-  if (a7)
+  [(RDStoreController *)self l_addValidatedStoresToAccountStoreMapWithStores:v14 shouldDeleteInvalidStoresImmediately:immediatelyCopy];
+  if (error)
   {
     v26 = v29;
-    *a7 = v29;
+    *error = v29;
   }
 
   return v28;
@@ -2633,18 +2633,18 @@ LABEL_15:
 
 - (void)l_loadDummyStoreIfNeeded
 {
-  v3 = [(RDStoreController *)self persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
-  v5 = [v4 count];
+  persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v5 = [persistentStores count];
 
   if (!v5)
   {
-    v6 = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
-    v7 = [(RDStoreController *)self storeURLWithName:@"local" withContainerURL:v6];
+    _dataSeparationIncompatible_defaultReminderDataContainerURL = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
+    v7 = [(RDStoreController *)self storeURLWithName:@"local" withContainerURL:_dataSeparationIncompatible_defaultReminderDataContainerURL];
     v8 = [NSSet setWithObject:v7];
-    v9 = [v8 allObjects];
+    allObjects = [v8 allObjects];
     v27 = 0;
-    v10 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:v9 persistentStoreDescriptionOptionsOverride:0 isCreatingStores:0 error:&v27];
+    v10 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:allObjects persistentStoreDescriptionOptionsOverride:0 isCreatingStores:0 error:&v27];
     v11 = v27;
 
     if ((v10 & 1) == 0)
@@ -2684,13 +2684,13 @@ LABEL_15:
         }
       }
 
-      v21 = [(RDStoreController *)self persistentStoreCoordinator];
-      v22 = [v21 persistentStoreForURL:v7];
+      persistentStoreCoordinator2 = [(RDStoreController *)self persistentStoreCoordinator];
+      v22 = [persistentStoreCoordinator2 persistentStoreForURL:v7];
 
       if (v22)
       {
-        v23 = [(RDStoreController *)self l_accountStoreMap];
-        [v23 setObject:v22 forKey:@"local"];
+        l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+        [l_accountStoreMap setObject:v22 forKey:@"local"];
 
         v24 = +[REMLogStore container];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -2713,13 +2713,13 @@ LABEL_15:
   }
 }
 
-- (void)l_addValidatedStoresToAccountStoreMapWithStores:(id)a3 shouldDeleteInvalidStoresImmediately:(BOOL)a4
+- (void)l_addValidatedStoresToAccountStoreMapWithStores:(id)stores shouldDeleteInvalidStoresImmediately:(BOOL)immediately
 {
-  v37 = a4;
+  immediatelyCopy = immediately;
   v69 = 0;
   v70 = 0;
   v68 = 0;
-  v38 = a3;
+  storesCopy = stores;
   [RDStoreController _validateAccountStores:"_validateAccountStores:outValidStoresByAccountIDs:outInvalidStores:outLocalAccountStores:" outValidStoresByAccountIDs:? outInvalidStores:? outLocalAccountStores:?];
   v45 = v70;
   v39 = v69;
@@ -2750,8 +2750,8 @@ LABEL_15:
         v8 = [v45 objectForKey:v6];
         if (v8)
         {
-          v9 = [(RDStoreController *)self l_accountStoreMap];
-          v10 = [v9 objectForKey:v6];
+          l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+          v10 = [l_accountStoreMap objectForKey:v6];
 
           if (v10)
           {
@@ -2794,17 +2794,17 @@ LABEL_15:
             v20 = +[REMLogStore container];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v25 = [v8 identifier];
-              v26 = [v59[5] identifier];
+              identifier = [v8 identifier];
+              identifier2 = [v59[5] identifier];
               v27 = v59[5];
               *buf = 138544386;
               *v73 = v6;
               *&v73[8] = 2114;
-              *&v73[10] = v25;
+              *&v73[10] = identifier;
               v74 = 2112;
               v75 = v8;
               v76 = 2114;
-              v77 = v26;
+              v77 = identifier2;
               v78 = 2112;
               v79 = v27;
               _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[addValidatedStoresToAccountStoreMapWithStores] Found duplicated stores for the same account, treating one of them as invalid {accountID: %{public}@, valid: storeid=%{public}@ %@, invalid: storeid=%{public}@ %@}", buf, 0x34u);
@@ -2817,16 +2817,16 @@ LABEL_15:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             v22 = [v8 URL];
-            v23 = [v22 absoluteString];
+            absoluteString = [v22 absoluteString];
             *buf = 138543618;
             *v73 = v6;
             *&v73[8] = 2112;
-            *&v73[10] = v23;
+            *&v73[10] = absoluteString;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[addValidatedStoresToAccountStoreMapWithStores] Adding valid store to accountStoreMap {accountID: %{public}@, store.URL: %@}", buf, 0x16u);
           }
 
-          v24 = [(RDStoreController *)self l_accountStoreMap];
-          [v24 setObject:v8 forKey:v6];
+          l_accountStoreMap2 = [(RDStoreController *)self l_accountStoreMap];
+          [l_accountStoreMap2 setObject:v8 forKey:v6];
         }
 
         else
@@ -2873,13 +2873,13 @@ LABEL_15:
     {
       v32 = [v42 count];
       *buf = 67109376;
-      *v73 = v37;
+      *v73 = immediatelyCopy;
       *&v73[4] = 2048;
       *&v73[6] = v32;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[addValidatedStoresToAccountStoreMapWithStores] Processing invalid stores, either to delete immediately or mark as deleted {shouldDeleteInvalidStoresImmediately: %d, count: %ld}", buf, 0x12u);
     }
 
-    if (v37)
+    if (immediatelyCopy)
     {
       [(RDStoreController *)self l_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:v42];
     }
@@ -2916,20 +2916,20 @@ LABEL_15:
   }
 }
 
-- (void)_validateAccountStores:(id)a3 outValidStoresByAccountIDs:(id *)a4 outInvalidStores:(id *)a5 outLocalAccountStores:(id *)a6
+- (void)_validateAccountStores:(id)stores outValidStoresByAccountIDs:(id *)ds outInvalidStores:(id *)invalidStores outLocalAccountStores:(id *)accountStores
 {
-  v8 = a3;
+  storesCopy = stores;
   v9 = +[NSMutableDictionary dictionary];
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
-  v12 = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
-  v13 = [(RDStoreController *)self storeURLWithName:@"local" withContainerURL:v12];
+  _dataSeparationIncompatible_defaultReminderDataContainerURL = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
+  v13 = [(RDStoreController *)self storeURLWithName:@"local" withContainerURL:_dataSeparationIncompatible_defaultReminderDataContainerURL];
   v14 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.remindd.RDStoreController.validateAccounts"];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1000D3D50;
   v36[3] = &unk_1008DC598;
-  v15 = v8;
+  v15 = storesCopy;
   v37 = v15;
   v33 = v13;
   v38 = v33;
@@ -2941,80 +2941,80 @@ LABEL_15:
   v41 = v18;
   v19 = v10;
   v42 = v19;
-  v43 = self;
+  selfCopy = self;
   [v17 performBlockAndWait:v36];
-  v20 = [v16 allKeys];
+  allKeys = [v16 allKeys];
   v21 = +[REMLogStore container];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v32 = v18;
-    v22 = v12;
+    v22 = _dataSeparationIncompatible_defaultReminderDataContainerURL;
     v23 = [v15 count];
     v24 = v17;
     v25 = v15;
-    v26 = a6;
-    v27 = [v20 count];
+    accountStoresCopy = accountStores;
+    v27 = [allKeys count];
     v28 = [v19 count];
     *buf = 134218754;
     v45 = v23;
-    v12 = v22;
+    _dataSeparationIncompatible_defaultReminderDataContainerURL = v22;
     v18 = v32;
     v46 = 2048;
     v47 = v27;
-    a6 = v26;
+    accountStores = accountStoresCopy;
     v15 = v25;
     v17 = v24;
     v48 = 2048;
     v49 = v28;
     v50 = 2114;
-    v51 = v20;
+    v51 = allKeys;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[_validateAccountStores] Validate results {input.count: %ld, valid.count: %ld, invalid.count: %ld, valid.accountIDs: %{public}@}", buf, 0x2Au);
   }
 
-  if (a4)
+  if (ds)
   {
     v29 = v16;
-    *a4 = v16;
+    *ds = v16;
   }
 
-  if (a5)
+  if (invalidStores)
   {
     v30 = v19;
-    *a5 = v19;
+    *invalidStores = v19;
   }
 
-  if (a6)
+  if (accountStores)
   {
     v31 = v18;
-    *a6 = v18;
+    *accountStores = v18;
   }
 }
 
-- (id)_deduplicateStore:(id)a3 withStore:(id)a4 isLocalAccountType:(BOOL)a5 managedObjectContext:(id)a6
+- (id)_deduplicateStore:(id)store withStore:(id)withStore isLocalAccountType:(BOOL)type managedObjectContext:(id)context
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v7)
+  typeCopy = type;
+  storeCopy = store;
+  withStoreCopy = withStore;
+  contextCopy = context;
+  if (typeCopy)
   {
-    v13 = [(RDStoreController *)self _deduplicateLocalAccountStore:v10 withStore:v11 managedObjectContext:v12];
+    v13 = [(RDStoreController *)self _deduplicateLocalAccountStore:storeCopy withStore:withStoreCopy managedObjectContext:contextCopy];
   }
 
   else
   {
-    v14 = [v10 identifier];
-    v15 = [v11 identifier];
-    v16 = [v14 caseInsensitiveCompare:v15];
+    identifier = [storeCopy identifier];
+    identifier2 = [withStoreCopy identifier];
+    v16 = [identifier caseInsensitiveCompare:identifier2];
 
     if (v16 == -1)
     {
-      v13 = v10;
+      v13 = storeCopy;
     }
 
     else
     {
-      v13 = v11;
+      v13 = withStoreCopy;
     }
   }
 
@@ -3023,39 +3023,39 @@ LABEL_15:
   return v17;
 }
 
-- (id)_deduplicateLocalAccountStore:(id)a3 withStore:(id)a4 managedObjectContext:(id)a5
+- (id)_deduplicateLocalAccountStore:(id)store withStore:(id)withStore managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v31 = v7;
-  v9 = a5;
+  storeCopy = store;
+  withStoreCopy = withStore;
+  v31 = storeCopy;
+  contextCopy = context;
   v10 = [NSArray arrayWithObjects:&v31 count:1];
-  v11 = [REMChangeTracking lastTransactionTimestampWithManagedObjectContext:v9 affectedStores:v10];
+  v11 = [REMChangeTracking lastTransactionTimestampWithManagedObjectContext:contextCopy affectedStores:v10];
 
-  v30 = v8;
+  v30 = withStoreCopy;
   v12 = [NSArray arrayWithObjects:&v30 count:1];
-  v13 = [REMChangeTracking lastTransactionTimestampWithManagedObjectContext:v9 affectedStores:v12];
+  v13 = [REMChangeTracking lastTransactionTimestampWithManagedObjectContext:contextCopy affectedStores:v12];
 
-  v14 = v8;
+  v14 = withStoreCopy;
   v15 = v14;
   if ([v11 compare:v13] == -1)
   {
-    v15 = v7;
+    v15 = storeCopy;
   }
 
   v16 = +[REMLogStore container];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v7 identifier];
-    v18 = [v14 identifier];
+    identifier = [storeCopy identifier];
+    identifier2 = [v14 identifier];
     v20 = 138544386;
     v21 = v15;
     v22 = 2114;
-    v23 = v17;
+    v23 = identifier;
     v24 = 2114;
     v25 = v11;
     v26 = 2114;
-    v27 = v18;
+    v27 = identifier2;
     v28 = 2114;
     v29 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[_deduplicateLocalAccountStore] {storeToDrop: %{public}@, store1: {id=%{public}@, lastEdit=%{public}@}, store2: {id=%{public}@, lastEdit=%{public}@}", &v20, 0x34u);
@@ -3064,9 +3064,9 @@ LABEL_15:
   return v15;
 }
 
-- (void)l_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)a3
+- (void)l_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)stores
 {
-  v4 = a3;
+  storesCopy = stores;
   if ([(RDStoreController *)self isInitializing])
   {
     v28 = +[NSMutableSet set];
@@ -3074,8 +3074,8 @@ LABEL_15:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = v4;
-    v5 = v4;
+    v27 = storesCopy;
+    v5 = storesCopy;
     v6 = [v5 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v6)
     {
@@ -3091,9 +3091,9 @@ LABEL_15:
           }
 
           v10 = *(*(&v32 + 1) + 8 * i);
-          v11 = [(RDStoreController *)self persistentStoreCoordinator];
+          persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
           v31 = 0;
-          v12 = [v11 removePersistentStore:v10 error:&v31];
+          v12 = [persistentStoreCoordinator removePersistentStore:v10 error:&v31];
           v13 = v31;
 
           v14 = [v10 URL];
@@ -3124,8 +3124,8 @@ LABEL_15:
           else
           {
             [v28 addObject:v14];
-            v17 = [(RDStoreController *)self accountStoreManagementDelegate];
-            [v17 didRemoveInvalidPersistentStoreOnInitWithStore:v10];
+            accountStoreManagementDelegate = [(RDStoreController *)self accountStoreManagementDelegate];
+            [accountStoreManagementDelegate didRemoveInvalidPersistentStoreOnInitWithStore:v10];
 
             v18 = +[REMLogStore container];
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3152,7 +3152,7 @@ LABEL_15:
     v24 = v23;
     if (v20)
     {
-      v4 = v27;
+      storesCopy = v27;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v25 = [v28 count];
@@ -3164,15 +3164,15 @@ LABEL_15:
 
     else
     {
-      v4 = v27;
+      storesCopy = v27;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         sub_10076CD40();
       }
     }
 
-    v26 = [(RDStoreController *)self accountStoreManagementDelegate];
-    [v26 didRemoveStoreFilesOnInitWithURLs:v21];
+    accountStoreManagementDelegate2 = [(RDStoreController *)self accountStoreManagementDelegate];
+    [accountStoreManagementDelegate2 didRemoveStoreFilesOnInitWithURLs:v21];
   }
 
   else
@@ -3185,15 +3185,15 @@ LABEL_15:
   }
 }
 
-- (void)l_performManualStoreMigrations:(id)a3
+- (void)l_performManualStoreMigrations:(id)migrations
 {
-  v3 = a3;
+  migrationsCopy = migrations;
   v4 = REMCRMergeableOrderedSet_ptr;
   v5 = +[REMLogStore container];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v68 = [v3 count];
+    v68 = [migrationsCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MIGRATE STORES] BEGIN {stores.count: %ld}", buf, 0xCu);
   }
 
@@ -3222,7 +3222,7 @@ LABEL_15:
   v73[10] = v9;
   v10 = objc_alloc_init(_TtC7remindd73RDStoreControllerMigrator_MostRecentTargetTemplateIdentifierByCurrentUser);
   v73[11] = v10;
-  v11 = v3;
+  v11 = migrationsCopy;
   v12 = objc_alloc_init(_TtC7remindd53RDStoreControllerMigrator_RemoveObsoleteDueDateDeltas);
   v73[12] = v12;
   v13 = objc_alloc_init(_TtC7remindd50RDStoreControllerMigrator_ResetReminderCountsCache);
@@ -3255,12 +3255,12 @@ LABEL_15:
 
         v19 = *(*(&v62 + 1) + 8 * v18);
         v20 = [v19 URL];
-        v21 = [v20 lastPathComponent];
+        lastPathComponent = [v20 lastPathComponent];
         if (v20)
         {
           v22 = [objc_opt_class() isDummyStoreURL:v20];
-          v23 = [v4[51] container];
-          v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
+          container = [v4[51] container];
+          v24 = os_log_type_enabled(container, OS_LOG_TYPE_INFO);
           if (v22)
           {
             if (v24)
@@ -3268,8 +3268,8 @@ LABEL_15:
               *buf = 138412546;
               v68 = v20;
               v69 = 2114;
-              v70 = v21;
-              _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] Skipping local dummy store {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
+              v70 = lastPathComponent;
+              _os_log_impl(&_mh_execute_header, container, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] Skipping local dummy store {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
             }
           }
 
@@ -3281,12 +3281,12 @@ LABEL_15:
               *buf = 138412546;
               v68 = v20;
               v69 = 2114;
-              v70 = v21;
-              _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] BEGIN {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
+              v70 = lastPathComponent;
+              _os_log_impl(&_mh_execute_header, container, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] BEGIN {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
             }
 
-            v26 = [v19 metadata];
-            v23 = [v26 mutableCopy];
+            metadata = [v19 metadata];
+            container = [metadata mutableCopy];
 
             v60 = 0u;
             v61 = 0u;
@@ -3307,7 +3307,7 @@ LABEL_15:
                     objc_enumerationMutation(v27);
                   }
 
-                  [*(*(&v58 + 1) + 8 * i) migrateStoreIfNeeded:v19 metadata:v23];
+                  [*(*(&v58 + 1) + 8 * i) migrateStoreIfNeeded:v19 metadata:container];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v58 objects:v66 count:16];
@@ -3316,27 +3316,27 @@ LABEL_15:
               while (v29);
             }
 
-            v32 = [v19 metadata];
-            v33 = [v23 isEqualToDictionary:v32];
+            metadata2 = [v19 metadata];
+            v33 = [container isEqualToDictionary:metadata2];
 
             if ((v33 & 1) == 0)
             {
-              v34 = [v23 copy];
+              v34 = [container copy];
               [v19 setMetadata:v34];
 
               [v45 addObject:v19];
             }
 
             v4 = v25;
-            v35 = [v25[51] container];
+            container2 = [v25[51] container];
             v16 = v50;
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(container2, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
               v68 = v20;
               v69 = 2114;
-              v70 = v21;
-              _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] END {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
+              v70 = lastPathComponent;
+              _os_log_impl(&_mh_execute_header, container2, OS_LOG_TYPE_INFO, "RDStoreControllerMigrator: [MIGRATE STORE] END {storeURL: %@, fileName: %{public}@}", buf, 0x16u);
             }
 
             v17 = v47;
@@ -3345,8 +3345,8 @@ LABEL_15:
 
         else
         {
-          v23 = [v4[51] container];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+          container = [v4[51] container];
+          if (os_log_type_enabled(container, OS_LOG_TYPE_ERROR))
           {
             sub_10076CDA8(v71, v19);
           }
@@ -3365,8 +3365,8 @@ LABEL_15:
   if ([v45 count])
   {
     v36 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    v37 = [(RDStoreController *)self persistentStoreCoordinator];
-    [v36 setPersistentStoreCoordinator:v37];
+    persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+    [v36 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
@@ -3378,8 +3378,8 @@ LABEL_15:
     [v38 performBlockAndWait:v55];
   }
 
-  v39 = [v4[51] container];
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  container3 = [v4[51] container];
+  if (os_log_type_enabled(container3, OS_LOG_TYPE_DEFAULT))
   {
     v40 = [v45 count];
     v41 = [v45 valueForKey:@"URL"];
@@ -3387,14 +3387,14 @@ LABEL_15:
     v68 = v40;
     v69 = 2114;
     v70 = v41;
-    _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "RDStoreControllerMigrator: [MIGRATE STORES] END {updatedStoreURLs.count: %ld, updatedStoreURLs: %{public}@}", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, container3, OS_LOG_TYPE_DEFAULT, "RDStoreControllerMigrator: [MIGRATE STORES] END {updatedStoreURLs.count: %ld, updatedStoreURLs: %{public}@}", buf, 0x16u);
   }
 }
 
-- (BOOL)_removeFilesOfStoresAtURLs:(id)a3 outRemovedFileURLs:(id *)a4 error:(id *)a5
+- (BOOL)_removeFilesOfStoresAtURLs:(id)ls outRemovedFileURLs:(id *)rLs error:(id *)error
 {
-  v35 = a4;
-  v5 = a3;
+  rLsCopy = rLs;
+  lsCopy = ls;
   v6 = +[NSFileManager defaultManager];
   v38 = +[NSMutableDictionary dictionary];
   v47 = +[NSMutableSet set];
@@ -3402,7 +3402,7 @@ LABEL_15:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v5;
+  obj = lsCopy;
   v41 = [obj countByEnumeratingWithState:&v54 objects:v65 count:16];
   v7 = 0;
   if (!v41)
@@ -3424,9 +3424,9 @@ LABEL_15:
       }
 
       v45 = *(*(&v54 + 1) + 8 * v8);
-      v9 = [v45 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [v45 URLByDeletingLastPathComponent];
       v44 = v8;
-      if (!v9)
+      if (!uRLByDeletingLastPathComponent)
       {
         v14 = +[REMLogStore container];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -3440,16 +3440,16 @@ LABEL_15:
         goto LABEL_14;
       }
 
-      v10 = [v38 objectForKey:v9];
+      v10 = [v38 objectForKey:uRLByDeletingLastPathComponent];
       if (v10)
       {
         v11 = v10;
         v12 = +[REMLogStore container];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v9 absoluteString];
+          absoluteString = [uRLByDeletingLastPathComponent absoluteString];
           *buf = 138543618;
-          v60 = v13;
+          v60 = absoluteString;
           v61 = 2112;
           v62 = v45;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[_removeFilesOfStoresAtURLs] Obtained store directory content cached for {storeDir: %{public}@, store.url: %@}", buf, 0x16u);
@@ -3461,7 +3461,7 @@ LABEL_14:
       }
 
       v53 = v7;
-      v11 = [v6 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v53];
+      v11 = [v6 contentsOfDirectoryAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v53];
       v15 = v53;
 
       v28 = +[REMLogStore container];
@@ -3470,24 +3470,24 @@ LABEL_14:
       {
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v30 = [v9 absoluteString];
+          absoluteString2 = [uRLByDeletingLastPathComponent absoluteString];
           *buf = 138543618;
-          v60 = v30;
+          v60 = absoluteString2;
           v61 = 2112;
           v62 = v45;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[_removeFilesOfStoresAtURLs] Obtained store directory content from {storeDir: %{public}@, store.url: %@}", buf, 0x16u);
         }
 
-        [v38 setObject:v11 forKey:v9];
+        [v38 setObject:v11 forKey:uRLByDeletingLastPathComponent];
       }
 
       else
       {
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v31 = [v9 absoluteString];
+          absoluteString3 = [uRLByDeletingLastPathComponent absoluteString];
           *buf = 138543874;
-          v60 = v31;
+          v60 = absoluteString3;
           v61 = 2112;
           v62 = v45;
           v63 = 2114;
@@ -3500,7 +3500,7 @@ LABEL_14:
 
 LABEL_15:
       v42 = v11;
-      v43 = v9;
+      v43 = uRLByDeletingLastPathComponent;
       v16 = [(RDStoreController *)self _urlsToDeleteFromFileURLs:v11 matchingStoreURL:v45];
       v49 = 0u;
       v50 = 0u;
@@ -3534,9 +3534,9 @@ LABEL_15:
             {
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
-                v26 = [v22 lastPathComponent];
+                lastPathComponent = [v22 lastPathComponent];
                 *buf = 138543618;
-                v60 = v26;
+                v60 = lastPathComponent;
                 v61 = 2112;
                 v62 = v45;
                 _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[_removeFilesOfStoresAtURLs] Removed store file {filename: %{public}@, storeUrl: %@}", buf, 0x16u);
@@ -3549,9 +3549,9 @@ LABEL_15:
             {
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
-                v27 = [v22 lastPathComponent];
+                lastPathComponent2 = [v22 lastPathComponent];
                 *buf = 138543874;
-                v60 = v27;
+                v60 = lastPathComponent2;
                 v61 = 2112;
                 v62 = v45;
                 v63 = 2114;
@@ -3589,36 +3589,36 @@ LABEL_15:
   while (v32);
 LABEL_43:
 
-  if (v35)
+  if (rLsCopy)
   {
-    *v35 = v47;
+    *rLsCopy = v47;
   }
 
-  if (a5)
+  if (error)
   {
     v33 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
   return v46 & 1;
 }
 
-- (id)_urlsToDeleteFromFileURLs:(id)a3 matchingStoreURL:(id)a4
+- (id)_urlsToDeleteFromFileURLs:(id)ls matchingStoreURL:(id)l
 {
-  v5 = a3;
-  v6 = [a4 URLByStandardizingPath];
-  v7 = [NSMutableSet setWithObject:v6];
-  v8 = [v6 lastPathComponent];
-  v9 = v8;
-  if (v5 && v8)
+  lsCopy = ls;
+  uRLByStandardizingPath = [l URLByStandardizingPath];
+  v7 = [NSMutableSet setWithObject:uRLByStandardizingPath];
+  lastPathComponent = [uRLByStandardizingPath lastPathComponent];
+  v9 = lastPathComponent;
+  if (lsCopy && lastPathComponent)
   {
-    v20 = v6;
-    v21 = v5;
+    v20 = uRLByStandardizingPath;
+    v21 = lsCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v5;
+    v10 = lsCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -3633,16 +3633,16 @@ LABEL_43:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v22 + 1) + 8 * i) URLByStandardizingPath];
-          v16 = [v15 lastPathComponent];
-          if ([v16 hasPrefix:v9])
+          uRLByStandardizingPath2 = [*(*(&v22 + 1) + 8 * i) URLByStandardizingPath];
+          lastPathComponent2 = [uRLByStandardizingPath2 lastPathComponent];
+          if ([lastPathComponent2 hasPrefix:v9])
           {
-            v17 = [v15 lastPathComponent];
-            v18 = [v17 isEqualToString:v9];
+            lastPathComponent3 = [uRLByStandardizingPath2 lastPathComponent];
+            v18 = [lastPathComponent3 isEqualToString:v9];
 
             if ((v18 & 1) == 0)
             {
-              [v7 addObject:v15];
+              [v7 addObject:uRLByStandardizingPath2];
             }
           }
 
@@ -3657,16 +3657,16 @@ LABEL_43:
       while (v12);
     }
 
-    v6 = v20;
-    v5 = v21;
+    uRLByStandardizingPath = v20;
+    lsCopy = v21;
   }
 
   return v7;
 }
 
-- (void)_backupInvalidStores:(id)a3 outBackUpFailedStores:(id *)a4
+- (void)_backupInvalidStores:(id)stores outBackUpFailedStores:(id *)failedStores
 {
-  v7 = a3;
+  storesCopy = stores;
   v8 = +[NSFileManager defaultManager];
   +[NSMutableSet set];
   v12[0] = _NSConcreteStackBlock;
@@ -3675,31 +3675,31 @@ LABEL_43:
   v9 = v12[3] = &unk_1008DC5C0;
   v13 = v9;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v16 = a2;
   v10 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [storesCopy enumerateObjectsUsingBlock:v12];
 
-  if (a4)
+  if (failedStores)
   {
     v11 = v9;
-    *a4 = v9;
+    *failedStores = v9;
   }
 }
 
-- (void)_performStagedLightweightMigrationIfNeededForAccountStoresWithURLs:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4
+- (void)_performStagedLightweightMigrationIfNeededForAccountStoresWithURLs:(id)ls persistentStoreDescriptionOptionsOverride:(id)override
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RDStoreController *)self accountStoreManagementDelegate];
-  v9 = [v8 clientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation];
+  lsCopy = ls;
+  overrideCopy = override;
+  accountStoreManagementDelegate = [(RDStoreController *)self accountStoreManagementDelegate];
+  clientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation = [accountStoreManagementDelegate clientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation];
 
-  v10 = [_TtC7remindd47RDStagedLightweightCoreDataMigrationCoordinator createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:v9];
+  v10 = [_TtC7remindd47RDStagedLightweightCoreDataMigrationCoordinator createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:clientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v6;
+  v11 = lsCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -3717,7 +3717,7 @@ LABEL_43:
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        [(RDStoreController *)self _performStagedLightweightMigrationIfNeededForAccountStoreWithURL:v16 persistentStoreDescriptionOptionsOverride:v7 migrationCoordinator:v10, v18];
+        [(RDStoreController *)self _performStagedLightweightMigrationIfNeededForAccountStoreWithURL:v16 persistentStoreDescriptionOptionsOverride:overrideCopy migrationCoordinator:v10, v18];
         objc_autoreleasePoolPop(v17);
         v15 = v15 + 1;
       }
@@ -3730,20 +3730,20 @@ LABEL_43:
   }
 }
 
-- (void)_performStagedLightweightMigrationIfNeededForAccountStoreWithURL:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 migrationCoordinator:(id)a5
+- (void)_performStagedLightweightMigrationIfNeededForAccountStoreWithURL:(id)l persistentStoreDescriptionOptionsOverride:(id)override migrationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  overrideCopy = override;
+  coordinatorCopy = coordinator;
   v11 = +[NSFileManager defaultManager];
-  v12 = [v8 path];
+  path = [lCopy path];
   v98 = v11;
-  if ([v11 fileExistsAtPath:v12] && objc_msgSend(v10, "shouldPerformStagedLightweightMigrationForStoreAtStoreURL:", v8))
+  if ([v11 fileExistsAtPath:path] && objc_msgSend(coordinatorCopy, "shouldPerformStagedLightweightMigrationForStoreAtStoreURL:", lCopy))
   {
-    v13 = [v8 URLByDeletingLastPathComponent];
-    v14 = [v13 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    v13URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
 
-    if (!v14)
+    if (!v13URLByDeletingLastPathComponent)
     {
       v15 = +[REMLogStore stagedLightweightCoreDataMigration];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3754,7 +3754,7 @@ LABEL_43:
       goto LABEL_64;
     }
 
-    v15 = [(RDStoreController *)self databaseStagedMigrationDirectoryURLWithContainerURL:v14];
+    v15 = [(RDStoreController *)self databaseStagedMigrationDirectoryURLWithContainerURL:v13URLByDeletingLastPathComponent];
     v110 = 0;
     v16 = [v98 rem_createDirectoryIfNecessaryAtURL:v15 error:&v110];
     v91 = v110;
@@ -3772,7 +3772,7 @@ LABEL_43:
         *buf = 138544130;
         v115 = v27;
         v116 = 2112;
-        v117 = v14;
+        v117 = v13URLByDeletingLastPathComponent;
         v118 = 2112;
         v119 = v28;
         v120 = 2112;
@@ -3786,15 +3786,15 @@ LABEL_43:
     }
 
     [v15 setRd_isExcludedFromBackup:1];
-    [v8 lastPathComponent];
+    [lCopy lastPathComponent];
     log = v88 = v15;
     v17 = [v15 URLByAppendingPathComponent:?];
-    v87 = v14;
+    v87 = v13URLByDeletingLastPathComponent;
     v90 = v17;
     v85 = +[REMSystemUtilities isInternalInstall];
     if (v85)
     {
-      v18 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:v14];
+      v18 = [(RDStoreController *)self databaseBackupDirectoryURLWithContainerURL:v13URLByDeletingLastPathComponent];
       v109 = 0;
       v19 = [v98 rem_createDirectoryIfNecessaryAtURL:v18 error:&v109];
       v20 = v109;
@@ -3808,7 +3808,7 @@ LABEL_43:
           v78 = NSStringFromSelector(a2);
           v79 = [NSString stringWithFormat:@"%@.%@", v97, v78];
           [v20 localizedDescription];
-          v81 = v80 = v12;
+          v81 = v80 = path;
           *buf = 138544130;
           v115 = v79;
           v116 = 2112;
@@ -3819,13 +3819,13 @@ LABEL_43:
           v121 = v81;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%{public}@] Create directory failed {reminderDataContainerURL: %@, databaseBackupDirectoryURL: %@, error: %@}", buf, 0x2Au);
 
-          v12 = v80;
-          v14 = v87;
+          path = v80;
+          v13URLByDeletingLastPathComponent = v87;
         }
       }
 
       [v18 setRd_isExcludedFromBackup:1];
-      v89 = [(RDStoreController *)self storeBackupURLWithFileName:log withContainerURL:v14];
+      v89 = [(RDStoreController *)self storeBackupURLWithFileName:log withContainerURL:v13URLByDeletingLastPathComponent];
       v22 = v90;
       v125[0] = v89;
       v125[1] = v90;
@@ -3840,25 +3840,25 @@ LABEL_43:
       v22 = v17;
     }
 
-    v86 = v12;
-    v95 = v10;
+    v86 = path;
+    v95 = coordinatorCopy;
     v30 = +[REMLogStore stagedLightweightCoreDataMigration];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v8 path];
+      path2 = [lCopy path];
       v32 = [NSNumber numberWithBool:v85];
-      v33 = [v89 path];
-      v34 = [v22 path];
+      path3 = [v89 path];
+      path4 = [v22 path];
       *buf = 138544386;
       v115 = log;
       v116 = 2112;
-      v117 = v31;
+      v117 = path2;
       v118 = 2114;
       v119 = v32;
       v120 = 2112;
-      v121 = v33;
+      v121 = path3;
       v122 = 2112;
-      v123 = v34;
+      v123 = path4;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Creating clones of store before performing staged lightweight migration for store. {fileName: %{public}@, storeUrl: %@, isInternalInstall: %{public}@, storeBackupURL: %@, storeCloneURL: %@}", buf, 0x34u);
     }
 
@@ -3872,10 +3872,10 @@ LABEL_43:
     if (v36)
     {
       v37 = v36;
-      v84 = v9;
+      v84 = overrideCopy;
       v38 = 0;
       v39 = *v106;
-      v40 = v8;
+      v40 = lCopy;
       do
       {
         v41 = 0;
@@ -3887,8 +3887,8 @@ LABEL_43:
           }
 
           v42 = *(*(&v105 + 1) + 8 * v41);
-          v43 = [v42 path];
-          if ([v98 fileExistsAtPath:v43])
+          path5 = [v42 path];
+          if ([v98 fileExistsAtPath:path5])
           {
             v44 = [NSSet alloc];
             v112 = v42;
@@ -3898,7 +3898,7 @@ LABEL_43:
             [(RDStoreController *)self _removeFilesOfStoresAtURLs:v46 outRemovedFileURLs:0 error:&v104];
             v47 = v104;
 
-            v8 = v40;
+            lCopy = v40;
             if (v47)
             {
               goto LABEL_26;
@@ -3907,7 +3907,7 @@ LABEL_43:
 
           v48 = objc_autoreleasePoolPush();
           v103 = 0;
-          [v95 cloneStoreAtSourceStoreURL:v8 destinationStoreURL:v42 error:&v103];
+          [v95 cloneStoreAtSourceStoreURL:lCopy destinationStoreURL:v42 error:&v103];
           v47 = v103;
           objc_autoreleasePoolPop(v48);
           if (v47)
@@ -3916,19 +3916,19 @@ LABEL_26:
             v49 = +[REMLogStore stagedLightweightCoreDataMigration];
             if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
             {
-              v53 = [v8 path];
-              v54 = [v42 path];
+              path6 = [lCopy path];
+              path7 = [v42 path];
               *buf = 138544130;
               v115 = log;
               v116 = 2112;
-              v117 = v53;
+              v117 = path6;
               v118 = 2112;
-              v119 = v54;
+              v119 = path7;
               v120 = 2114;
               v121 = v47;
               _os_log_fault_impl(&_mh_execute_header, v49, OS_LOG_TYPE_FAULT, "Failed to create clone of store before performing staged lightweight migration for store. {fileName: %{public}@, storeURL: %@, destinationStoreURL: %@, error: %{public}@}", buf, 0x2Au);
 
-              v8 = v40;
+              lCopy = v40;
             }
 
             v50 = v47;
@@ -3940,14 +3940,14 @@ LABEL_26:
             v50 = +[REMLogStore stagedLightweightCoreDataMigration];
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
             {
-              v51 = [v8 path];
-              v52 = [v42 path];
+              path8 = [lCopy path];
+              path9 = [v42 path];
               *buf = 138543874;
               v115 = log;
               v116 = 2112;
-              v117 = v51;
+              v117 = path8;
               v118 = 2112;
-              v119 = v52;
+              v119 = path9;
               _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Created clone of store before performing staged lightweight migration for store. {fileName: %{public}@, storeURL: %@, destinationStoreURL: %@}", buf, 0x20u);
             }
           }
@@ -3962,9 +3962,9 @@ LABEL_26:
 
       while (v55);
 
-      v9 = v84;
-      v10 = v95;
-      v12 = v86;
+      overrideCopy = v84;
+      coordinatorCopy = v95;
+      path = v86;
       v15 = v88;
       if (v38)
       {
@@ -3975,13 +3975,13 @@ LABEL_26:
     else
     {
 
-      v12 = v86;
+      path = v86;
       v15 = v88;
     }
 
     v56 = objc_autoreleasePoolPush();
     v102 = 0;
-    [v10 performStagedLightweightMigrationForStoreAtStoreURL:v90 persistentStoreDescriptionOptionsOverride:v9 postMigrationDataUpdatesTransactionAuthor:RDStagedLightweightMigrationAuthor error:&v102];
+    [coordinatorCopy performStagedLightweightMigrationForStoreAtStoreURL:v90 persistentStoreDescriptionOptionsOverride:overrideCopy postMigrationDataUpdatesTransactionAuthor:RDStagedLightweightMigrationAuthor error:&v102];
     v57 = v102;
     objc_autoreleasePoolPop(v56);
     v58 = objc_opt_new();
@@ -3991,13 +3991,13 @@ LABEL_26:
     {
       if (os_log_type_enabled(v59, OS_LOG_TYPE_FAULT))
       {
-        v74 = [v8 path];
+        path10 = [lCopy path];
         [v90 path];
         v76 = v75 = v58;
         *buf = 138544130;
         v115 = log;
         v116 = 2112;
-        v117 = v74;
+        v117 = path10;
         v118 = 2112;
         v119 = v76;
         v120 = 2114;
@@ -4007,27 +4007,27 @@ LABEL_26:
         v58 = v75;
       }
 
-      [v58 addObject:v8];
+      [v58 addObject:lCopy];
       goto LABEL_54;
     }
 
     v96 = v58;
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [v8 path];
-      v62 = [v90 path];
+      path11 = [lCopy path];
+      path12 = [v90 path];
       *buf = 138543874;
       v115 = log;
       v116 = 2112;
-      v117 = v61;
+      v117 = path11;
       v118 = 2112;
-      v119 = v62;
+      v119 = path12;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Performed staged lightweight migration on store clone. Will replace store with store clone. {fileName: %{public}@, storeURL: %@, storeCloneURL: %@}", buf, 0x20u);
     }
 
     v63 = objc_autoreleasePoolPush();
     v64 = [NSSet alloc];
-    v111 = v8;
+    v111 = lCopy;
     v65 = [NSArray arrayWithObjects:&v111 count:1];
     v66 = [v64 initWithArray:v65];
     v101 = 0;
@@ -4044,7 +4044,7 @@ LABEL_26:
     else
     {
       v100 = 0;
-      [v10 cloneStoreAtSourceStoreURL:v90 destinationStoreURL:v8 error:&v100];
+      [coordinatorCopy cloneStoreAtSourceStoreURL:v90 destinationStoreURL:lCopy error:&v100];
       v67 = v100;
       v58 = v96;
       if (!v67)
@@ -4087,7 +4087,7 @@ LABEL_54:
         v38 = 0;
 LABEL_62:
 
-        v14 = v87;
+        v13URLByDeletingLastPathComponent = v87;
 LABEL_63:
 
 LABEL_64:
@@ -4100,14 +4100,14 @@ LABEL_64:
     v68 = +[REMLogStore stagedLightweightCoreDataMigration];
     if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
     {
-      v82 = [v8 path];
-      v83 = [v90 path];
+      path13 = [lCopy path];
+      path14 = [v90 path];
       *buf = 138544130;
       v115 = log;
       v116 = 2112;
-      v117 = v82;
+      v117 = path13;
       v118 = 2112;
-      v119 = v83;
+      v119 = path14;
       v120 = 2114;
       v121 = v67;
       _os_log_fault_impl(&_mh_execute_header, v68, OS_LOG_TYPE_FAULT, "Failed to replace store with store clone. {fileName: %{public}@, storeURL: %@, storeCloneURL: %@, error: %{public}@}", buf, 0x2Au);
@@ -4127,9 +4127,9 @@ LABEL_64:
 LABEL_65:
 }
 
-- (unint64_t)_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:(unint64_t)a3
+- (unint64_t)_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:(unint64_t)count
 {
-  if (a3 >= 5)
+  if (count >= 5)
   {
     v4 = 2;
   }
@@ -4143,7 +4143,7 @@ LABEL_65:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134218240;
-    v8 = a3;
+    countCopy = count;
     v9 = 2048;
     v10 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount] {totalStoreCount: %ld, result: %ld}", &v7, 0x16u);
@@ -4152,9 +4152,9 @@ LABEL_65:
   return v4;
 }
 
-- (id)accountIdentifierForStoreID:(id)a3
+- (id)accountIdentifierForStoreID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -4167,7 +4167,7 @@ LABEL_65:
   v8[2] = sub_1000D731C;
   v8[3] = &unk_1008D9EE0;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   v10 = &v11;
   sub_1000D731C(v8);
@@ -4179,9 +4179,9 @@ LABEL_65:
   return v6;
 }
 
-- (id)storeForAccountIdentifier:(id)a3
+- (id)storeForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -4195,7 +4195,7 @@ LABEL_65:
   v8[3] = &unk_1008D9C38;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   sub_1000D75E4(v8);
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -4206,13 +4206,13 @@ LABEL_65:
   return v6;
 }
 
-- (id)storesForAccountTypes:(id)a3
+- (id)storesForAccountTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = +[NSMutableArray array];
   v6 = +[REMCDAccount fetchRequest];
-  v7 = [NSPredicate predicateWithFormat:@"type IN %@", v4];
-  [v6 setPredicate:v7];
+  typesCopy = [NSPredicate predicateWithFormat:@"type IN %@", typesCopy];
+  [v6 setPredicate:typesCopy];
 
   [v6 setResultType:2];
   [v6 setReturnsDistinctResults:1];
@@ -4226,11 +4226,11 @@ LABEL_65:
   v16[3] = &unk_1008DA408;
   v17 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.remindd.RDStoreController.storesForAccounts"];
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v9 = v5;
   v20 = v9;
-  v21 = v4;
-  v10 = v4;
+  v21 = typesCopy;
+  v10 = typesCopy;
   v11 = v6;
   v12 = v17;
   [v12 performBlockAndWait:v16];
@@ -4246,7 +4246,7 @@ LABEL_65:
   block[1] = 3221225472;
   block[2] = sub_1000D7B64;
   block[3] = &unk_1008DBDD8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100952B30 != -1)
   {
     dispatch_once(&qword_100952B30, block);
@@ -4257,9 +4257,9 @@ LABEL_65:
   return v2;
 }
 
-- (BOOL)createAccountStoresWithIdentifiers:(id)a3 didAddNewStores:(BOOL *)a4 error:(id *)a5
+- (BOOL)createAccountStoresWithIdentifiers:(id)identifiers didAddNewStores:(BOOL *)stores error:(id *)error
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4277,16 +4277,16 @@ LABEL_65:
   v12[3] = &unk_1008DC5E8;
   v14 = &v23;
   v12[4] = self;
-  v9 = v8;
+  v9 = identifiersCopy;
   v15 = &v17;
-  v16 = a4;
+  storesCopy = stores;
   v13 = v9;
   sub_1000D7E74(v12);
   os_unfair_lock_unlock(&self->_ivarLock);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v10 = *(v24 + 24);
@@ -4296,38 +4296,38 @@ LABEL_65:
   return v10;
 }
 
-- (BOOL)l_createAccountStoresWithIdentifiers:(id)a3 didAddNewStores:(BOOL *)a4 error:(id *)a5
+- (BOOL)l_createAccountStoresWithIdentifiers:(id)identifiers didAddNewStores:(BOOL *)stores error:(id *)error
 {
-  v8 = a3;
-  v59 = a5;
-  v60 = a4;
+  identifiersCopy = identifiers;
+  errorCopy = error;
+  storesCopy = stores;
   if ([(RDStoreController *)self hasPassedBuddyAndSystemDataMigrator])
   {
-    v9 = [(RDStoreController *)self appleAccountUtilities];
-    v10 = [v9 unsafeUntilSystemReady_allICloudACAccounts];
+    appleAccountUtilities = [(RDStoreController *)self appleAccountUtilities];
+    unsafeUntilSystemReady_allICloudACAccounts = [appleAccountUtilities unsafeUntilSystemReady_allICloudACAccounts];
   }
 
   else
   {
-    v9 = +[REMLogStore container];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    appleAccountUtilities = +[REMLogStore container];
+    if (os_log_type_enabled(appleAccountUtilities, OS_LOG_TYPE_DEFAULT))
     {
       v11 = +[NSThread callStackSymbols];
       *buf = 138543618;
-      v80 = v8;
+      v80 = identifiersCopy;
       v81 = 2112;
       v82 = v11;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[createAccountStoresWithIdentifiers] Attempt to create new store before buddy/system-data-migrator is passed, stores are ALWAYS stored into default container path {accountIdentifiers: %{public}@, callStack: %@}", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, appleAccountUtilities, OS_LOG_TYPE_DEFAULT, "[createAccountStoresWithIdentifiers] Attempt to create new store before buddy/system-data-migrator is passed, stores are ALWAYS stored into default container path {accountIdentifiers: %{public}@, callStack: %@}", buf, 0x16u);
     }
   }
 
-  v65 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+  v65 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [identifiersCopy count]);
   v12 = objc_alloc_init(NSMutableArray);
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v8;
+  obj = identifiersCopy;
   v13 = [obj countByEnumeratingWithState:&v72 objects:v85 count:16];
   v63 = v12;
   if (v13)
@@ -4344,8 +4344,8 @@ LABEL_65:
         }
 
         v17 = *(*(&v72 + 1) + 8 * i);
-        v18 = [(RDStoreController *)self l_accountStoreMap];
-        v19 = [v18 objectForKey:v17];
+        l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+        v19 = [l_accountStoreMap objectForKey:v17];
 
         if (v19)
         {
@@ -4362,8 +4362,8 @@ LABEL_65:
         {
           v20 = [(RDStoreController *)self _reminderDataContainerURLForAccountIdentifier:v17];
           v21 = +[NSUUID UUID];
-          v22 = [v21 UUIDString];
-          v23 = [(RDStoreController *)self storeURLWithName:v22 withContainerURL:v20];
+          uUIDString = [v21 UUIDString];
+          v23 = [(RDStoreController *)self storeURLWithName:uUIDString withContainerURL:v20];
 
           v24 = +[REMLogStore container];
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -4391,8 +4391,8 @@ LABEL_65:
 
   if ([v12 count])
   {
-    v25 = [(RDStoreController *)self l_accountStoreMap];
-    v26 = [v25 count];
+    l_accountStoreMap2 = [(RDStoreController *)self l_accountStoreMap];
+    v26 = [l_accountStoreMap2 count];
 
     v27 = -[RDStoreController _persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:](self, "_persistentStoreConnectionPoolMaxSizeWithTotalStoreCount:", v26 + [v12 count]);
     v28 = +[REMLogStore container];
@@ -4413,10 +4413,10 @@ LABEL_65:
     v78 = v30;
     v31 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
 
-    v32 = [v65 allKeys];
+    allKeys = [v65 allKeys];
     v71 = 0;
     v58 = v31;
-    v57 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:v32 persistentStoreDescriptionOptionsOverride:v31 isCreatingStores:1 error:&v71];
+    v57 = [(RDStoreController *)self l_createOrLoadAccountStoresWithURLs:allKeys persistentStoreDescriptionOptionsOverride:v31 isCreatingStores:1 error:&v71];
     v56 = v71;
 
     v61 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
@@ -4424,11 +4424,11 @@ LABEL_65:
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v33 = [(RDStoreController *)self persistentStoreCoordinator];
-    v34 = [v33 persistentStores];
+    persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
 
-    v62 = v34;
-    v35 = [v34 countByEnumeratingWithState:&v67 objects:v76 count:16];
+    v62 = persistentStores;
+    v35 = [persistentStores countByEnumeratingWithState:&v67 objects:v76 count:16];
     if (v35)
     {
       v36 = v35;
@@ -4470,8 +4470,8 @@ LABEL_65:
                 }
               }
 
-              v47 = [(RDStoreController *)self l_accountStoreMap];
-              [v47 setObject:v39 forKey:v43];
+              l_accountStoreMap3 = [(RDStoreController *)self l_accountStoreMap];
+              [l_accountStoreMap3 setObject:v39 forKey:v43];
 
               [v61 addObject:v39];
             }
@@ -4491,8 +4491,8 @@ LABEL_65:
     v48 = +[REMLogStore container];
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [(RDStoreController *)self l_accountStoreMap];
-      v50 = [v49 count];
+      l_accountStoreMap4 = [(RDStoreController *)self l_accountStoreMap];
+      v50 = [l_accountStoreMap4 count];
       v51 = [v61 count];
       *buf = 134218498;
       v80 = v50;
@@ -4505,15 +4505,15 @@ LABEL_65:
 
     [(RDStoreController *)self l_performManualStoreMigrations:v61];
     v12 = v63;
-    if (v59)
+    if (errorCopy)
     {
       v52 = v56;
-      *v59 = v56;
+      *errorCopy = v56;
     }
 
-    if (v60)
+    if (storesCopy)
     {
-      *v60 = 1;
+      *storesCopy = 1;
     }
 
     v53 = v58;
@@ -4535,16 +4535,16 @@ LABEL_65:
   return v54;
 }
 
-- (BOOL)l_createOrLoadAccountStoresWithURLs:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 isCreatingStores:(BOOL)a5 error:(id *)a6
+- (BOOL)l_createOrLoadAccountStoresWithURLs:(id)ls persistentStoreDescriptionOptionsOverride:(id)override isCreatingStores:(BOOL)stores error:(id *)error
 {
-  v7 = a3;
-  v52 = a4;
+  lsCopy = ls;
+  overrideCopy = override;
   v59 = +[NSFileManager defaultManager];
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v7;
+  obj = lsCopy;
   v8 = [obj countByEnumeratingWithState:&v83 objects:v101 count:16];
   if (v8)
   {
@@ -4558,9 +4558,9 @@ LABEL_65:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v83 + 1) + 8 * i) URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [*(*(&v83 + 1) + 8 * i) URLByDeletingLastPathComponent];
         v82 = 0;
-        v12 = [v59 rem_createDirectoryIfNecessaryAtURL:v11 error:&v82];
+        v12 = [v59 rem_createDirectoryIfNecessaryAtURL:uRLByDeletingLastPathComponent error:&v82];
         v13 = v82;
         if ((v12 & 1) == 0)
         {
@@ -4571,13 +4571,13 @@ LABEL_65:
             v16 = NSStringFromClass(v15);
             v17 = NSStringFromSelector(a2);
             v18 = [NSString stringWithFormat:@"%@.%@", v16, v17];
-            v19 = [v13 localizedDescription];
+            localizedDescription = [v13 localizedDescription];
             *buf = 138543874;
             *&buf[4] = v18;
             *&buf[12] = 2112;
-            *&buf[14] = v11;
+            *&buf[14] = uRLByDeletingLastPathComponent;
             *&buf[22] = 2112;
-            v96 = v19;
+            v96 = localizedDescription;
             _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] Create directory failed {directoryURL: %@, error: %@}", buf, 0x20u);
           }
         }
@@ -4590,12 +4590,12 @@ LABEL_65:
   }
 
   v20 = [NSMutableDictionary alloc];
-  v21 = [objc_opt_class() persistentStoreOptions];
-  aSelectora = [v20 initWithDictionary:v21];
+  persistentStoreOptions = [objc_opt_class() persistentStoreOptions];
+  aSelectora = [v20 initWithDictionary:persistentStoreOptions];
 
-  if (v52)
+  if (overrideCopy)
   {
-    [aSelectora addEntriesFromDictionary:v52];
+    [aSelectora addEntriesFromDictionary:overrideCopy];
   }
 
   v50 = [[NSMutableDictionary alloc] initWithDictionary:aSelectora];
@@ -4638,13 +4638,13 @@ LABEL_65:
         }
 
         v25 = *(*(&v70 + 1) + 8 * j);
-        v26 = [(RDStoreController *)self persistentStoreCoordinator];
-        v27 = [v26 persistentStores];
-        v28 = [v27 count];
+        persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+        persistentStores = [persistentStoreCoordinator persistentStores];
+        v28 = [persistentStores count];
 
         if (v28 >= 0xF)
         {
-          if (!a5)
+          if (!stores)
           {
             v44 = +[REMLogStore container];
             if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
@@ -4674,17 +4674,17 @@ LABEL_65:
         v30 = +[REMLogStore container];
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v25 lastPathComponent];
+          lastPathComponent = [v25 lastPathComponent];
           *v88 = 138543874;
-          v89 = v31;
+          v89 = lastPathComponent;
           v90 = 2112;
           v91 = v25;
           v92 = 2114;
-          v93 = v52;
+          v93 = overrideCopy;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[createOrLoadAccountStores] Will add store {fileName: %{public}@, storeURL: %@, optionsOverride: %{public}@}", v88, 0x20u);
         }
 
-        v32 = [v25 lastPathComponent];
+        lastPathComponent2 = [v25 lastPathComponent];
         v33 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v25];
         [v33 setType:NSSQLiteStoreType];
         [v33 setShouldMigrateStoreAutomatically:1];
@@ -4721,24 +4721,24 @@ LABEL_65:
         }
 
         [v33 setShouldAddStoreAsynchronously:0];
-        v40 = [(RDStoreController *)self persistentStoreCoordinator];
+        persistentStoreCoordinator2 = [(RDStoreController *)self persistentStoreCoordinator];
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
         v60[2] = sub_1000D8FD8;
         v60[3] = &unk_1008DC610;
         v41 = v33;
         v61 = v41;
-        v42 = v32;
+        v42 = lastPathComponent2;
         v62 = v42;
         v63 = buf;
         v64 = &v78;
         v65 = &v74;
-        [v40 addPersistentStoreWithDescription:v41 completionHandler:v60];
+        [persistentStoreCoordinator2 addPersistentStoreWithDescription:v41 completionHandler:v60];
 
         if ([(RDStoreController *)self supportsCoreSpotlightIndexing])
         {
-          v43 = [(RDStoreController *)self coreSpotlightDelegateManager];
-          [v43 createAndAttachCoreSpotlightDelegateForStoreWithDescription:v41];
+          coreSpotlightDelegateManager = [(RDStoreController *)self coreSpotlightDelegateManager];
+          [coreSpotlightDelegateManager createAndAttachCoreSpotlightDelegateForStoreWithDescription:v41];
         }
       }
 
@@ -4759,9 +4759,9 @@ LABEL_41:
     [(RDStoreController *)self setHasFailedLoadingAccountStoresFromDiskDueToDiskFull:1];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v47 = *(v79 + 24);
@@ -4772,10 +4772,10 @@ LABEL_41:
   return v47 & 1;
 }
 
-- (BOOL)l_setAccountIdentifier:(id)a3 intoMetadataOfCreatedStore:(id)a4 error:(id *)a5
+- (BOOL)l_setAccountIdentifier:(id)identifier intoMetadataOfCreatedStore:(id)store error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -4785,30 +4785,30 @@ LABEL_41:
   v15[1] = 3221225472;
   v15[2] = sub_1000D92EC;
   v15[3] = &unk_1008DC638;
-  v11 = v9;
+  v11 = storeCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = identifierCopy;
   v17 = v12;
   v19 = &v21;
   v13 = v10;
   v18 = v13;
-  v20 = a5;
+  errorCopy = error;
   [v13 performBlockAndWait:v15];
-  LOBYTE(a5) = *(v22 + 24);
+  LOBYTE(error) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
-  return a5;
+  return error;
 }
 
 - (void)l_activateCoreSpotlightDelegates
 {
-  v2 = [(RDStoreController *)self coreSpotlightDelegateManager];
-  [v2 activateCoreSpotlightDelegates];
+  coreSpotlightDelegateManager = [(RDStoreController *)self coreSpotlightDelegateManager];
+  [coreSpotlightDelegateManager activateCoreSpotlightDelegates];
 }
 
-- (BOOL)removeAccountStoresWithIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)removeAccountStoresWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4832,7 +4832,7 @@ LABEL_41:
   v10[3] = &unk_1008DC660;
   v12 = &v21;
   v10[4] = self;
-  v7 = v6;
+  v7 = identifiersCopy;
   v11 = v7;
   v13 = &v25;
   v14 = &v15;
@@ -4844,9 +4844,9 @@ LABEL_41:
     [(RDStoreController *)self _postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:?];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v8 = *(v22 + 24);
@@ -4858,21 +4858,21 @@ LABEL_41:
   return v8;
 }
 
-- (BOOL)l_removeAccountStoresWithIdentifiers:(id)a3 deletedObjectIDs:(id *)a4 error:(id *)a5
+- (BOOL)l_removeAccountStoresWithIdentifiers:(id)identifiers deletedObjectIDs:(id *)ds error:(id *)error
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v27 = +[NSMutableSet set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
+  obj = identifiersCopy;
   v9 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
-    v25 = a4;
-    v26 = a5;
+    dsCopy = ds;
+    errorCopy = error;
     v11 = 0;
     v29 = 0;
     v30 = *v34;
@@ -4886,7 +4886,7 @@ LABEL_41:
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [(RDStoreController *)self l_accountStoreMap:v25];
+        v14 = [(RDStoreController *)self l_accountStoreMap:dsCopy];
         v15 = [v14 objectForKey:v13];
 
         v16 = +[REMLogStore container];
@@ -4910,8 +4910,8 @@ LABEL_41:
 
           if (v18)
           {
-            v20 = [(RDStoreController *)self l_accountStoreMap];
-            [v20 removeObjectForKey:v13];
+            l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+            [l_accountStoreMap removeObjectForKey:v13];
 
             v21 = +[REMLogStore container];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -4955,8 +4955,8 @@ LABEL_41:
 
     while (v10);
     v22 = v29 == 0;
-    a4 = v25;
-    a5 = v26;
+    ds = dsCopy;
+    error = errorCopy;
   }
 
   else
@@ -4970,37 +4970,37 @@ LABEL_41:
     [(RDStoreController *)self l_invalidateAccountStorageCaches:@"removeAccountStoresWithIdentifiers"];
   }
 
-  if (a4)
+  if (ds)
   {
-    *a4 = v27;
+    *ds = v27;
   }
 
-  if (a5)
+  if (error)
   {
     v23 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v22;
 }
 
-- (BOOL)l_markAccountStoreDeletedAndDeleteData:(id)a3 deletedObjectIDs:(id *)a4 error:(id *)a5
+- (BOOL)l_markAccountStoreDeletedAndDeleteData:(id)data deletedObjectIDs:(id *)ds error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
   v65 = sub_1000D39EC;
   v66 = sub_1000D39FC;
   v67 = 0;
-  v39 = [(RDStoreController *)self persistentStoreCoordinator];
-  v41 = self;
+  persistentStoreCoordinator = [(RDStoreController *)self persistentStoreCoordinator];
+  selfCopy = self;
   v7 = [(RDStoreController *)self newBackgroundContextWithAuthor:RDStoreControllerDeleteAccountStoreAuthor];
   v8 = +[REMLogStore container];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = dataCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[markAccountStoreDeleted] Marking account store as deleted {store: %@}", &buf, 0xCu);
   }
 
@@ -5014,7 +5014,7 @@ LABEL_41:
   v57[1] = 3221225472;
   v57[2] = sub_1000DA1E0;
   v57[3] = &unk_1008DC688;
-  v45 = v6;
+  v45 = dataCopy;
   v58 = v45;
   p_buf = &buf;
   v59 = v7;
@@ -5038,7 +5038,7 @@ LABEL_41:
     v36 = 1;
   }
 
-  if ([(RDStoreController *)v41 supportsCoreSpotlightIndexing])
+  if ([(RDStoreController *)selfCopy supportsCoreSpotlightIndexing])
   {
     v11 = +[REMLogStore container];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -5048,16 +5048,16 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[markAccountStoreDeleted] Deleting spotlight indices {store: %@}", v68, 0xCu);
     }
 
-    v12 = [(RDStoreController *)v41 coreSpotlightDelegateManager];
+    coreSpotlightDelegateManager = [(RDStoreController *)selfCopy coreSpotlightDelegateManager];
     v75 = v45;
     v13 = [NSArray arrayWithObjects:&v75 count:1];
-    [v12 stopCoreSpotlightDelegatesForStores:v13];
+    [coreSpotlightDelegateManager stopCoreSpotlightDelegatesForStores:v13];
 
-    v14 = [(RDStoreController *)v41 coreSpotlightDelegateManager];
-    [v14 deleteIndicesForStore:v45];
+    coreSpotlightDelegateManager2 = [(RDStoreController *)selfCopy coreSpotlightDelegateManager];
+    [coreSpotlightDelegateManager2 deleteIndicesForStore:v45];
   }
 
-  if (a4)
+  if (ds)
   {
     v44 = +[NSMutableArray array];
   }
@@ -5067,13 +5067,13 @@ LABEL_41:
     v44 = 0;
   }
 
-  v38 = [v39 managedObjectModel];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v15 = [v38 entities];
-  v16 = [v15 countByEnumeratingWithState:&v53 objects:v74 count:16];
+  entities = [managedObjectModel entities];
+  v16 = [entities countByEnumeratingWithState:&v53 objects:v74 count:16];
   if (v16)
   {
     v17 = *v54;
@@ -5083,16 +5083,16 @@ LABEL_41:
       {
         if (*v54 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(entities);
         }
 
         v19 = *(*(&v53 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 name];
-        if (v21)
+        name = [v19 name];
+        if (name)
         {
-          v22 = [v19 superentity];
-          v23 = v22 == 0;
+          superentity = [v19 superentity];
+          v23 = superentity == 0;
 
           if (v23)
           {
@@ -5100,7 +5100,7 @@ LABEL_41:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               *v68 = 138412546;
-              v69 = v21;
+              v69 = name;
               v70 = 2112;
               v71 = v45;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[markAccountStoreDeleted] Going to delete objects for entity {entity: %@, store: %@}", v68, 0x16u);
@@ -5110,7 +5110,7 @@ LABEL_41:
             v47[1] = 3221225472;
             v47[2] = sub_1000DA300;
             v47[3] = &unk_1008DA6F8;
-            v48 = v21;
+            v48 = name;
             v49 = v45;
             v25 = v43;
             v50 = v25;
@@ -5123,7 +5123,7 @@ LABEL_41:
         objc_autoreleasePoolPop(v20);
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v53 objects:v74 count:16];
+      v16 = [entities countByEnumeratingWithState:&v53 objects:v74 count:16];
     }
 
     while (v16);
@@ -5134,7 +5134,7 @@ LABEL_41:
     if ((v36 & 1) == 0)
     {
       v46 = 0;
-      v26 = [(RDStoreController *)v41 purgeFilesForAccountWithAccountID:v40 error:&v46];
+      v26 = [(RDStoreController *)selfCopy purgeFilesForAccountWithAccountID:v40 error:&v46];
       v27 = v46;
       if (v27)
       {
@@ -5164,9 +5164,9 @@ LABEL_41:
         v29 = +[REMLogStore container];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v35 = [v63[5] localizedDescription];
+          localizedDescription = [v63[5] localizedDescription];
           *v68 = 138412802;
-          v69 = v35;
+          v69 = localizedDescription;
           v70 = 2114;
           v71 = v40;
           v72 = 2112;
@@ -5176,20 +5176,20 @@ LABEL_41:
       }
     }
 
-    v30 = [(RDStoreController *)v41 accountStoreManagementDelegate];
-    [v30 didMarkForDeletingOnNextLanuchWithPersistentStore:v45 deletedObjectIDs:v44];
+    accountStoreManagementDelegate = [(RDStoreController *)selfCopy accountStoreManagementDelegate];
+    [accountStoreManagementDelegate didMarkForDeletingOnNextLanuchWithPersistentStore:v45 deletedObjectIDs:v44];
   }
 
-  if (a4)
+  if (ds)
   {
     v31 = v44;
-    *a4 = v44;
+    *ds = v44;
   }
 
   v32 = v63;
-  if (a5)
+  if (error)
   {
-    *a5 = v63[5];
+    *error = v63[5];
     v32 = v63;
   }
 
@@ -5201,14 +5201,14 @@ LABEL_41:
   return v33;
 }
 
-- (void)_postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:(id)a3
+- (void)_postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v7 = NSDeletedObjectIDsKey;
-    v8 = a3;
-    v4 = a3;
-    v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
+    dsCopy = ds;
+    dsCopy2 = ds;
+    v5 = [NSDictionary dictionaryWithObjects:&dsCopy forKeys:&v7 count:1];
     v6 = +[NSNotificationCenter defaultCenter];
 
     [v6 postNotificationName:@"RDStoreControllerDidRemoveAccountStoresNotification" object:self userInfo:v5];
@@ -5227,71 +5227,71 @@ LABEL_41:
   return v3;
 }
 
-- (id)URLForAttachmentDirectory:(id)a3 accountID:(id)a4
+- (id)URLForAttachmentDirectory:(id)directory accountID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RDStoreController *)self attachmentFileManager];
-  v9 = [v8 URLForAttachmentDirectory:v7 accountID:v6];
+  dCopy = d;
+  directoryCopy = directory;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v9 = [attachmentFileManager URLForAttachmentDirectory:directoryCopy accountID:dCopy];
 
   return v9;
 }
 
-- (id)URLForAttachmentFile:(id)a3 accountID:(id)a4 fileName:(id)a5 sha512Sum:(id)a6
+- (id)URLForAttachmentFile:(id)file accountID:(id)d fileName:(id)name sha512Sum:(id)sum
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(RDStoreController *)self attachmentFileManager];
-  v15 = [v14 URLForAttachmentFile:v13 accountID:v12 fileName:v11 sha512Sum:v10];
+  sumCopy = sum;
+  nameCopy = name;
+  dCopy = d;
+  fileCopy = file;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v15 = [attachmentFileManager URLForAttachmentFile:fileCopy accountID:dCopy fileName:nameCopy sha512Sum:sumCopy];
 
   return v15;
 }
 
-- (id)extractSha512Sum:(id)a3
+- (id)extractSha512Sum:(id)sum
 {
-  v4 = a3;
-  v5 = [(RDStoreController *)self attachmentFileManager];
-  v6 = [objc_opt_class() extractSha512Sum:v4];
+  sumCopy = sum;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v6 = [objc_opt_class() extractSha512Sum:sumCopy];
 
   return v6;
 }
 
-- (BOOL)purgeFilesForAccountWithAccountID:(id)a3 error:(id *)a4
+- (BOOL)purgeFilesForAccountWithAccountID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RDStoreController *)self attachmentFileManager];
-  LOBYTE(a4) = [v7 purgeFilesForAccountWithAccountID:v6 error:a4];
+  dCopy = d;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  LOBYTE(error) = [attachmentFileManager purgeFilesForAccountWithAccountID:dCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)purgeAttachmentFilesWithAttachmentIDs:(id)a3 accountID:(id)a4 error:(id *)a5
+- (id)purgeAttachmentFilesWithAttachmentIDs:(id)ds accountID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(RDStoreController *)self attachmentFileManager];
-  v11 = [v10 purgeAttachmentFilesWithAttachmentIDs:v9 accountID:v8 error:a5];
+  dCopy = d;
+  dsCopy = ds;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v11 = [attachmentFileManager purgeAttachmentFilesWithAttachmentIDs:dsCopy accountID:dCopy error:error];
 
   return v11;
 }
 
-- (id)purgeAttachmentFilesWithSha512SumsAndExtensions:(id)a3 accountID:(id)a4 error:(id *)a5
+- (id)purgeAttachmentFilesWithSha512SumsAndExtensions:(id)extensions accountID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(RDStoreController *)self attachmentFileManager];
-  v11 = [v10 purgeAttachmentFilesWithSha512SumsAndExtensions:v9 accountID:v8 error:a5];
+  dCopy = d;
+  extensionsCopy = extensions;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v11 = [attachmentFileManager purgeAttachmentFilesWithSha512SumsAndExtensions:extensionsCopy accountID:dCopy error:error];
 
   return v11;
 }
 
-- (id)attachmentIDsFromAttachmentDirectoryWithAccountID:(id)a3 error:(id *)a4
+- (id)attachmentIDsFromAttachmentDirectoryWithAccountID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RDStoreController *)self attachmentFileManager];
-  v8 = [v7 attachmentIDsFromAttachmentDirectoryWithAccountID:v6 error:a4];
+  dCopy = d;
+  attachmentFileManager = [(RDStoreController *)self attachmentFileManager];
+  v8 = [attachmentFileManager attachmentIDsFromAttachmentDirectoryWithAccountID:dCopy error:error];
 
   return v8;
 }
@@ -5301,16 +5301,16 @@ LABEL_41:
   if ([(RDStoreController *)self supportsCoreSpotlightIndexing])
   {
     os_unfair_lock_lock(&self->_ivarLock);
-    v3 = [(RDStoreController *)self coreSpotlightDelegateManager];
-    [v3 reindexAllSearchableItems];
+    coreSpotlightDelegateManager = [(RDStoreController *)self coreSpotlightDelegateManager];
+    [coreSpotlightDelegateManager reindexAllSearchableItems];
 
     os_unfair_lock_unlock(&self->_ivarLock);
   }
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ([(RDStoreController *)self supportsCoreSpotlightIndexing])
   {
     os_unfair_lock_lock(&self->_ivarLock);
@@ -5319,16 +5319,16 @@ LABEL_41:
     v5[2] = sub_1000DADAC;
     v5[3] = &unk_1008D9B98;
     v5[4] = self;
-    v6 = v4;
+    v6 = identifiersCopy;
     sub_1000DADAC(v5);
     os_unfair_lock_unlock(&self->_ivarLock);
   }
 }
 
-- (BOOL)invalidateStoreConnectionsWithError:(id *)a3
+- (BOOL)invalidateStoreConnectionsWithError:(id *)error
 {
-  v5 = [(RDStoreController *)self isolated];
-  if (v5)
+  isolated = [(RDStoreController *)self isolated];
+  if (isolated)
   {
     os_unfair_lock_lock(&self->_ivarLock);
     v7[0] = _NSConcreteStackBlock;
@@ -5336,28 +5336,28 @@ LABEL_41:
     v7[2] = sub_1000DAE9C;
     v7[3] = &unk_1008DB318;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = error;
     sub_1000DAE9C(v7);
     os_unfair_lock_unlock(&self->_ivarLock);
-    LOBYTE(v5) = a3 == 0;
+    LOBYTE(isolated) = error == 0;
   }
 
-  return v5;
+  return isolated;
 }
 
-- (id)newBackgroundContextWithAuthor:(id)a3 enableQueryGenerationToken:(BOOL)a4
+- (id)newBackgroundContextWithAuthor:(id)author enableQueryGenerationToken:(BOOL)token
 {
-  v6 = a3;
+  authorCopy = author;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000DAFEC;
   v12[3] = &unk_1008DC6D0;
   v7 = [[RDStoreControllerManagedObjectContext alloc] initWithConcurrencyType:1];
   v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v16 = a4;
-  v8 = v6;
+  selfCopy = self;
+  v15 = authorCopy;
+  tokenCopy = token;
+  v8 = authorCopy;
   [(RDStoreControllerManagedObjectContext *)v7 performBlockAndWait:v12];
   v9 = v15;
   v10 = v7;
@@ -5365,12 +5365,12 @@ LABEL_41:
   return v10;
 }
 
-- (void)requestFreeSpaceToLoadAccountStoresWithQueue:(id)a3 completionBlock:(id)a4
+- (void)requestFreeSpaceToLoadAccountStoresWithQueue:(id)queue completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
-  v9 = [(RDStoreController *)self databaseDirectoryURLWithContainerURL:v8];
+  queueCopy = queue;
+  blockCopy = block;
+  _dataSeparationIncompatible_defaultReminderDataContainerURL = [(RDStoreController *)self _dataSeparationIncompatible_defaultReminderDataContainerURL];
+  v9 = [(RDStoreController *)self databaseDirectoryURLWithContainerURL:_dataSeparationIncompatible_defaultReminderDataContainerURL];
   v10 = +[NSFileManager defaultManager];
   v64 = NSURLFileSizeKey;
   v11 = [NSArray arrayWithObjects:&v64 count:1];
@@ -5382,7 +5382,7 @@ LABEL_41:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     [v9 absoluteString];
-    v16 = v15 = v6;
+    v16 = v15 = queueCopy;
     v17 = [v12 count];
     *buf = 138478339;
     v59 = v16;
@@ -5392,7 +5392,7 @@ LABEL_41:
     v63 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[RDStoreController requestFreeSpaceToLoadAccountStores] Files from URL {url: %{private}@, count: %ld, error: %@}", buf, 0x20u);
 
-    v6 = v15;
+    queueCopy = v15;
   }
 
   if (v12)
@@ -5410,9 +5410,9 @@ LABEL_41:
       v40 = v12;
       v41 = v10;
       v42 = v9;
-      v43 = v8;
-      v44 = v7;
-      v45 = v6;
+      v43 = _dataSeparationIncompatible_defaultReminderDataContainerURL;
+      v44 = blockCopy;
+      v45 = queueCopy;
       v47 = 0;
       v22 = *v53;
       v46 = v18;
@@ -5427,15 +5427,15 @@ LABEL_41:
           }
 
           v24 = *(*(&v52 + 1) + 8 * v23);
-          v25 = [v24 pathExtension];
-          v26 = [v25 lowercaseString];
-          v27 = [v26 isEqualToString:@"sqlite"];
+          pathExtension = [v24 pathExtension];
+          lowercaseString = [pathExtension lowercaseString];
+          v27 = [lowercaseString isEqualToString:@"sqlite"];
 
           if (v27)
           {
-            v28 = [v24 lastPathComponent];
-            v29 = v28;
-            if (v28 && [v28 hasPrefix:@"Data-"] && (objc_msgSend(v29, "isEqualToString:", v18) & 1) == 0)
+            lastPathComponent = [v24 lastPathComponent];
+            v29 = lastPathComponent;
+            if (lastPathComponent && [lastPathComponent hasPrefix:@"Data-"] && (objc_msgSend(v29, "isEqualToString:", v18) & 1) == 0)
             {
               v50 = 0;
               v51 = 0;
@@ -5448,9 +5448,9 @@ LABEL_41:
                 v33 = +[REMLogStore container];
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                 {
-                  v36 = [v24 lastPathComponent];
+                  lastPathComponent2 = [v24 lastPathComponent];
                   *buf = 138543618;
-                  v59 = v36;
+                  v59 = lastPathComponent2;
                   v60 = 2114;
                   v61 = v30;
                   _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "[RDStoreController requestFreeSpaceToLoadAccountStores] Failed to get file size {file: %{public}@, error: %{public}@}", buf, 0x16u);
@@ -5460,9 +5460,9 @@ LABEL_41:
               v34 = +[REMLogStore container];
               if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
               {
-                v35 = [v24 lastPathComponent];
+                lastPathComponent3 = [v24 lastPathComponent];
                 *buf = 138412546;
-                v59 = v35;
+                v59 = lastPathComponent3;
                 v60 = 2112;
                 v61 = v32;
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "[RDStoreController requestFreeSpaceToLoadAccountStores] File size is {file: %@, size: %@}", buf, 0x16u);
@@ -5493,10 +5493,10 @@ LABEL_41:
       if (v47)
       {
         v38 = +[REMLogStore container];
-        v7 = v44;
-        v6 = v45;
+        blockCopy = v44;
+        queueCopy = v45;
         v9 = v42;
-        v8 = v43;
+        _dataSeparationIncompatible_defaultReminderDataContainerURL = v43;
         v12 = v40;
         v10 = v41;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -5512,10 +5512,10 @@ LABEL_41:
         goto LABEL_35;
       }
 
-      v7 = v44;
-      v6 = v45;
+      blockCopy = v44;
+      queueCopy = v45;
       v9 = v42;
-      v8 = v43;
+      _dataSeparationIncompatible_defaultReminderDataContainerURL = v43;
       v12 = v40;
       v10 = v41;
     }
@@ -5536,17 +5536,17 @@ LABEL_41:
   block[1] = 3221225472;
   block[2] = sub_1000DB718;
   block[3] = &unk_1008DA020;
-  v49 = v7;
-  dispatch_async(v6, block);
+  v49 = blockCopy;
+  dispatch_async(queueCopy, block);
 
 LABEL_35:
 }
 
-- (BOOL)notificationContainsInternalChangesOnly:(id)a3
+- (BOOL)notificationContainsInternalChangesOnly:(id)only
 {
-  v4 = a3;
-  v5 = [(RDStoreController *)self cloudContext];
-  v6 = [v5 notificationContainsCloudContextInternalChangesOnly:v4];
+  onlyCopy = only;
+  cloudContext = [(RDStoreController *)self cloudContext];
+  v6 = [cloudContext notificationContainsCloudContextInternalChangesOnly:onlyCopy];
 
   if (v6)
   {
@@ -5555,17 +5555,17 @@ LABEL_35:
 
   else
   {
-    v7 = [(RDStoreController *)self notificationContainsChangeTrackingChangesOnly:v4];
+    v7 = [(RDStoreController *)self notificationContainsChangeTrackingChangesOnly:onlyCopy];
   }
 
   return v7;
 }
 
-- (BOOL)notificationContainsChangeTrackingChangesOnly:(id)a3
+- (BOOL)notificationContainsChangeTrackingChangesOnly:(id)only
 {
   v3 = NSManagedObjectContextTransactionAuthorKey;
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:v3];
+  userInfo = [only userInfo];
+  v5 = [userInfo objectForKey:v3];
 
   objc_opt_class();
   v6 = REMDynamicCast();
@@ -5583,34 +5583,34 @@ LABEL_35:
   return v8;
 }
 
-- (void)startObservingCloudKitNetworkActivityWithObserver:(id)a3
+- (void)startObservingCloudKitNetworkActivityWithObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
-    objc_sync_enter(v5);
-    v6 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
-    [v6 addObject:v9];
+    v9 = observerCopy;
+    cloudKitNetworkActivityObservers = [(RDStoreController *)self cloudKitNetworkActivityObservers];
+    objc_sync_enter(cloudKitNetworkActivityObservers);
+    cloudKitNetworkActivityObservers2 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
+    [cloudKitNetworkActivityObservers2 addObject:v9];
 
-    objc_sync_exit(v5);
-    v7 = [(RDStoreController *)self cloudContext];
-    v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 hasPendingOperations]);
+    objc_sync_exit(cloudKitNetworkActivityObservers);
+    cloudContext = [(RDStoreController *)self cloudContext];
+    v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [cloudContext hasPendingOperations]);
 
     [(RDStoreController *)self _notifyCloudKitNetworkActivityObservers:v8];
-    v4 = v9;
+    observerCopy = v9;
   }
 }
 
-- (void)_cleanUpActivityObservers:(id)a3
+- (void)_cleanUpActivityObservers:(id)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 copy];
+  v4 = [observersCopy copy];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -5628,7 +5628,7 @@ LABEL_35:
         v9 = *(*(&v10 + 1) + 8 * i);
         if ([v9 isObsolete])
         {
-          [v3 removeObject:v9];
+          [observersCopy removeObject:v9];
         }
       }
 
@@ -5639,20 +5639,20 @@ LABEL_35:
   }
 }
 
-- (void)_notifyCloudKitNetworkActivityObservers:(id)a3
+- (void)_notifyCloudKitNetworkActivityObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
-  objc_sync_enter(v5);
-  v6 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
-  [(RDStoreController *)self _cleanUpActivityObservers:v6];
+  observersCopy = observers;
+  cloudKitNetworkActivityObservers = [(RDStoreController *)self cloudKitNetworkActivityObservers];
+  objc_sync_enter(cloudKitNetworkActivityObservers);
+  cloudKitNetworkActivityObservers2 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
+  [(RDStoreController *)self _cleanUpActivityObservers:cloudKitNetworkActivityObservers2];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
-  v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  cloudKitNetworkActivityObservers3 = [(RDStoreController *)self cloudKitNetworkActivityObservers];
+  v8 = [cloudKitNetworkActivityObservers3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
     v9 = *v12;
@@ -5663,30 +5663,30 @@ LABEL_35:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cloudKitNetworkActivityObservers3);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) updateNetworkActivityWithValue:v4];
+        [*(*(&v11 + 1) + 8 * v10) updateNetworkActivityWithValue:observersCopy];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [cloudKitNetworkActivityObservers3 countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(cloudKitNetworkActivityObservers);
 }
 
-- (void)cloudContextHasPendingOperationsDidChange:(id)a3
+- (void)cloudContextHasPendingOperationsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"operationCount"];
+  v6 = [userInfo objectForKeyedSubscript:@"operationCount"];
   v7 = REMDynamicCast();
   v8 = v7;
   v9 = &off_100905178;
@@ -5700,30 +5700,30 @@ LABEL_35:
   [(RDStoreController *)self _notifyCloudKitNetworkActivityObservers:v10];
 }
 
-- (void)startObservingAutoCategorizationActivityWithObserver:(id)a3
+- (void)startObservingAutoCategorizationActivityWithObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    v5 = [(RDStoreController *)self autoCategorizationActivityObservers];
-    objc_sync_enter(v5);
-    v6 = [(RDStoreController *)self autoCategorizationActivityObservers];
-    [v6 addObject:v7];
+    v7 = observerCopy;
+    autoCategorizationActivityObservers = [(RDStoreController *)self autoCategorizationActivityObservers];
+    objc_sync_enter(autoCategorizationActivityObservers);
+    autoCategorizationActivityObservers2 = [(RDStoreController *)self autoCategorizationActivityObservers];
+    [autoCategorizationActivityObservers2 addObject:v7];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(autoCategorizationActivityObservers);
     [(RDStoreController *)self notifyAutoCategorizationActivityObservers];
-    v4 = v7;
+    observerCopy = v7;
   }
 }
 
-- (void)autoCategorizationOperationDidBeginNotification:(id)a3
+- (void)autoCategorizationOperationDidBeginNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"RDAutoCategorizationActivityUserInfoKey"];
+  v6 = [userInfo objectForKeyedSubscript:@"RDAutoCategorizationActivityUserInfoKey"];
   v7 = REMDynamicCast();
 
   if (v7)
@@ -5733,7 +5733,7 @@ LABEL_35:
     v9 = 3221225472;
     v10 = sub_1000DBE48;
     v11 = &unk_1008D9B98;
-    v12 = self;
+    selfCopy = self;
     v13 = v7;
     sub_1000DBE48(&v8);
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -5742,13 +5742,13 @@ LABEL_35:
   }
 }
 
-- (void)autoCategorizationOperationDidEndNotification:(id)a3
+- (void)autoCategorizationOperationDidEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"RDAutoCategorizationActivityUserInfoKey"];
+  v6 = [userInfo objectForKeyedSubscript:@"RDAutoCategorizationActivityUserInfoKey"];
   v7 = REMDynamicCast();
 
   if (v7)
@@ -5758,7 +5758,7 @@ LABEL_35:
     v9 = 3221225472;
     v10 = sub_1000DBFD0;
     v11 = &unk_1008D9B98;
-    v12 = self;
+    selfCopy = self;
     v13 = v7;
     sub_1000DBFD0(&v8);
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -5780,25 +5780,25 @@ LABEL_35:
   v17 = 3221225472;
   v18 = sub_1000DC27C;
   v19 = &unk_1008D9A28;
-  v20 = self;
+  selfCopy = self;
   v21 = &v22;
-  v3 = [(RDStoreController *)self l_currentAutoCategorizationActivity];
+  l_currentAutoCategorizationActivity = [(RDStoreController *)self l_currentAutoCategorizationActivity];
   v4 = v21[1];
   v5 = *(v4 + 40);
-  *(v4 + 40) = v3;
+  *(v4 + 40) = l_currentAutoCategorizationActivity;
 
   os_unfair_lock_unlock(&self->_ivarLock);
-  v6 = [(RDStoreController *)self autoCategorizationActivityObservers];
-  objc_sync_enter(v6);
-  v7 = [(RDStoreController *)self autoCategorizationActivityObservers];
-  [(RDStoreController *)self _cleanUpActivityObservers:v7];
+  autoCategorizationActivityObservers = [(RDStoreController *)self autoCategorizationActivityObservers];
+  objc_sync_enter(autoCategorizationActivityObservers);
+  autoCategorizationActivityObservers2 = [(RDStoreController *)self autoCategorizationActivityObservers];
+  [(RDStoreController *)self _cleanUpActivityObservers:autoCategorizationActivityObservers2];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v8 = [(RDStoreController *)self autoCategorizationActivityObservers];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v28 count:16];
+  autoCategorizationActivityObservers3 = [(RDStoreController *)self autoCategorizationActivityObservers];
+  v9 = [autoCategorizationActivityObservers3 countByEnumeratingWithState:&v12 objects:v28 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -5809,7 +5809,7 @@ LABEL_35:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(autoCategorizationActivityObservers3);
         }
 
         [*(*(&v12 + 1) + 8 * v11) updateAutoCategorizationActivity:v23[5]];
@@ -5817,25 +5817,25 @@ LABEL_35:
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v28 count:16];
+      v9 = [autoCategorizationActivityObservers3 countByEnumeratingWithState:&v12 objects:v28 count:16];
     }
 
     while (v9);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(autoCategorizationActivityObservers);
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)cloudContext:(id)a3 didFetchUserRecord:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context didFetchUserRecord:(id)record accountID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  recordCopy = record;
+  dCopy = d;
   v9 = +[REMLog cloudkit];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v7;
+    v18 = recordCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didFetchUserRecord: %@", buf, 0xCu);
   }
 
@@ -5843,39 +5843,39 @@ LABEL_35:
   v13[1] = 3221225472;
   v13[2] = sub_1000DC434;
   v13[3] = &unk_1008D9C10;
-  v14 = v7;
-  v15 = v8;
+  v14 = recordCopy;
+  v15 = dCopy;
   v16 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.RDStoreController.ckFetchUser"];
   v10 = v16;
-  v11 = v8;
-  v12 = v7;
+  v11 = dCopy;
+  v12 = recordCopy;
   [v10 performBlockAndWait:v13];
 }
 
-- (void)cloudContext:(id)a3 receivedZoneNotFound:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context receivedZoneNotFound:(id)found accountID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  foundCopy = found;
+  dCopy = d;
   v9 = +[REMLog cloudkit];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 zoneName];
+    zoneName = [foundCopy zoneName];
     *buf = 138543618;
-    v18 = v10;
+    v18 = zoneName;
     v19 = 2114;
-    v20 = v8;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received an error that a zone (%{public}@) wasn't found. Re-uploading everything for that zone for accountID %{public}@.", buf, 0x16u);
   }
 
-  if (v8)
+  if (dCopy)
   {
     v11 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.RDStoreController.ckZoneNotFound"];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000DC690;
     v13[3] = &unk_1008D9C10;
-    v14 = v7;
-    v15 = v8;
+    v14 = foundCopy;
+    v15 = dCopy;
     v16 = v11;
     v12 = v11;
     [v12 performBlock:v13];
@@ -5886,23 +5886,23 @@ LABEL_35:
     v12 = +[REMLog cloudkit];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10076D564(v7);
+      sub_10076D564(foundCopy);
     }
   }
 }
 
-- (void)cloudContext:(id)a3 sharedZoneWasDeleted:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context sharedZoneWasDeleted:(id)deleted accountID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  deletedCopy = deleted;
+  dCopy = d;
   v9 = +[REMLog cloudkit];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 ic_loggingDescription];
+    ic_loggingDescription = [deletedCopy ic_loggingDescription];
     *buf = 138543618;
-    v19 = v8;
+    v19 = dCopy;
     v20 = 2114;
-    v21 = v10;
+    v21 = ic_loggingDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Shared zone was deleted for account ID %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -5910,42 +5910,42 @@ LABEL_35:
   v14[1] = 3221225472;
   v14[2] = sub_1000DC9B4;
   v14[3] = &unk_1008D9C10;
-  v15 = v7;
+  v15 = deletedCopy;
   v16 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.RDStoreController.ckSharedZoneWasDeleted"];
-  v17 = v8;
-  v11 = v8;
+  v17 = dCopy;
+  v11 = dCopy;
   v12 = v16;
-  v13 = v7;
+  v13 = deletedCopy;
   [v12 performBlockAndWait:v14];
 }
 
-- (void)cloudContext:(id)a3 userDidDeleteRecordZoneWithID:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context userDidDeleteRecordZoneWithID:(id)d accountID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v9 = +[REMLog cloudkit];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2114;
-    v21 = v8;
+    v21 = iDCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "userDidDeleteRecordZoneWithID: %{public}@, accountID:%{public}@", buf, 0x16u);
   }
 
-  if (!v8)
+  if (!iDCopy)
   {
     v13 = +[REMLog cloudkit];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10076D5F0(v7);
+      sub_10076D5F0(dCopy);
     }
 
     goto LABEL_8;
   }
 
   v10 = +[ICCloudContext appZoneID];
-  v11 = [v7 isEqual:v10];
+  v11 = [dCopy isEqual:v10];
 
   if (v11)
   {
@@ -5954,9 +5954,9 @@ LABEL_35:
     v14[1] = 3221225472;
     v14[2] = sub_1000DCE68;
     v14[3] = &unk_1008D9C10;
-    v15 = v8;
+    v15 = iDCopy;
     v16 = v12;
-    v17 = self;
+    selfCopy = self;
     v13 = v12;
     [v13 performBlockAndWait:v14];
 
@@ -5964,24 +5964,24 @@ LABEL_8:
   }
 }
 
-- (BOOL)deleteCloudObjectIfFullyPushed:(id)a3
+- (BOOL)deleteCloudObjectIfFullyPushed:(id)pushed
 {
-  v4 = a3;
-  if ([v4 isDeleted])
+  pushedCopy = pushed;
+  if ([pushedCopy isDeleted])
   {
 LABEL_14:
     v12 = 1;
     goto LABEL_20;
   }
 
-  if ([v4 hasSuccessfullyPushedLatestVersionToCloud] & 1) != 0 || (objc_msgSend(v4, "markedForDeletion"))
+  if ([pushedCopy hasSuccessfullyPushedLatestVersionToCloud] & 1) != 0 || (objc_msgSend(pushedCopy, "markedForDeletion"))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 objectsToBeDeletedBeforeThisObject];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    objectsToBeDeletedBeforeThisObject = [pushedCopy objectsToBeDeletedBeforeThisObject];
+    v6 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5992,7 +5992,7 @@ LABEL_14:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectsToBeDeletedBeforeThisObject);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -6005,7 +6005,7 @@ LABEL_14:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           continue;
@@ -6015,14 +6015,14 @@ LABEL_14:
       }
     }
 
-    [v4 deleteFromLocalDatabase];
+    [pushedCopy deleteFromLocalDatabase];
     goto LABEL_14;
   }
 
   v13 = +[REMLog cloudkit];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    sub_10076D6E4(v4);
+    sub_10076D6E4(pushedCopy);
   }
 
 LABEL_19:
@@ -6032,40 +6032,40 @@ LABEL_20:
   return v12;
 }
 
-- (void)didFailPushingExceededStorageQuotaForContext:(id)a3 accountID:(id)a4
+- (void)didFailPushingExceededStorageQuotaForContext:(id)context accountID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  dCopy = d;
   v7 = +[REMLog cloudkit];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = contextCopy;
     v10 = 2114;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "didFailPushingExceededStorageQuotaForContext: %@, accountID: %{public}@", &v8, 0x16u);
   }
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:NSDeletedObjectIDsKey];
+  saveCopy = save;
+  userInfo = [saveCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NSDeletedObjectIDsKey];
 
-  v7 = [v4 userInfo];
-  v63 = [v7 objectForKeyedSubscript:NSInsertedObjectIDsKey];
+  userInfo2 = [saveCopy userInfo];
+  v63 = [userInfo2 objectForKeyedSubscript:NSInsertedObjectIDsKey];
 
-  v8 = [v4 userInfo];
-  v62 = [v8 objectForKeyedSubscript:NSUpdatedObjectIDsKey];
+  userInfo3 = [saveCopy userInfo];
+  v62 = [userInfo3 objectForKeyedSubscript:NSUpdatedObjectIDsKey];
 
   v9 = +[REMLogStore write];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
 
   if (v10)
   {
-    v59 = v4;
-    v60 = self;
+    v59 = saveCopy;
+    selfCopy = self;
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
@@ -6172,8 +6172,8 @@ LABEL_20:
       while (v27);
     }
 
-    v4 = v59;
-    self = v60;
+    saveCopy = v59;
+    self = selfCopy;
     v6 = v58;
   }
 
@@ -6196,9 +6196,9 @@ LABEL_20:
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v72 + 1) + 8 * m) entity];
+        entity = [*(*(&v72 + 1) + 8 * m) entity];
         v38 = +[(REMCDObject *)REMCDAccount];
-        v39 = [v37 isEqual:v38];
+        v39 = [entity isEqual:v38];
 
         if (v39)
         {
@@ -6217,7 +6217,7 @@ LABEL_20:
     }
   }
 
-  v61 = self;
+  selfCopy2 = self;
 
   v70 = 0u;
   v71 = 0u;
@@ -6238,9 +6238,9 @@ LABEL_40:
         objc_enumerationMutation(v40);
       }
 
-      v45 = [*(*(&v68 + 1) + 8 * v44) entity];
+      entity2 = [*(*(&v68 + 1) + 8 * v44) entity];
       v46 = +[(REMCDObject *)REMCDAccount];
-      v47 = [v45 isEqual:v46];
+      v47 = [entity2 isEqual:v46];
 
       if (v47)
       {
@@ -6286,9 +6286,9 @@ LABEL_48:
         objc_enumerationMutation(v40);
       }
 
-      v52 = [*(*(&v64 + 1) + 8 * v51) entity];
+      entity3 = [*(*(&v64 + 1) + 8 * v51) entity];
       v53 = +[(REMCDObject *)REMCDAccount];
-      v54 = [v52 isEqual:v53];
+      v54 = [entity3 isEqual:v53];
 
       if (v54)
       {
@@ -6308,35 +6308,35 @@ LABEL_48:
     }
   }
 
-  self = v61;
+  self = selfCopy2;
 LABEL_57:
 
   os_unfair_lock_lock(&self->_ivarLock);
-  v55 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
-  v56 = [v55 keyEnumerator];
-  v57 = [v56 allObjects];
-  v40 = [NSString stringWithFormat:@"managedObjectContextDidSave(REMCDAccount-changed) {self: %p, keys: %@}", self, v57];
+  l_accountStorageCacheByObjectIDs = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
+  keyEnumerator = [l_accountStorageCacheByObjectIDs keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v40 = [NSString stringWithFormat:@"managedObjectContextDidSave(REMCDAccount-changed) {self: %p, keys: %@}", self, allObjects];
 
   [(RDStoreController *)self l_invalidateAccountStorageCaches:v40];
   os_unfair_lock_unlock(&self->_ivarLock);
 LABEL_58:
 }
 
-- (id)observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)a3 successHandler:(id)a4 errorHandler:(id)a5
+- (id)observePrimaryCloudKitAccountPersonIDSaltChangesOnQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RDStoreController *)self cloudContext];
-  v12 = [v11 hasPassedBuddy];
+  queueCopy = queue;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  cloudContext = [(RDStoreController *)self cloudContext];
+  hasPassedBuddy = [cloudContext hasPassedBuddy];
 
-  v13 = [(RDStoreController *)self cloudContext];
-  v14 = [v13 isSystemAvailableForSyncing];
+  cloudContext2 = [(RDStoreController *)self cloudContext];
+  isSystemAvailableForSyncing = [cloudContext2 isSystemAvailableForSyncing];
 
-  if (v12 & v14)
+  if (hasPassedBuddy & isSystemAvailableForSyncing)
   {
     v15 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.remindd.RDStoreController.observePrimaryCloudKitAccountPersonIDSaltChanges"];
-    v16 = [(RDStoreController *)self appleAccountUtilities];
+    appleAccountUtilities = [(RDStoreController *)self appleAccountUtilities];
     *v50 = 0;
     v51 = v50;
     v52 = 0x3032000000;
@@ -6359,7 +6359,7 @@ LABEL_58:
     v34[3] = &unk_1008DAA08;
     v17 = v15;
     v35 = v17;
-    v18 = v16;
+    v18 = appleAccountUtilities;
     v36 = v18;
     v37 = v50;
     v38 = &v44;
@@ -6369,7 +6369,7 @@ LABEL_58:
     {
       v23 = [REMAccount objectIDWithUUID:?];
       v24 = [RDAccountPersonIDSaltObserver alloc];
-      v25 = [(RDAccountPersonIDSaltObserver *)v24 initWithAccountObjectID:v23 accountType:_auto_REMAccountTypeForPrimaryCloudKit() initialSaltValue:v45[5] callbackQueue:v8 successHandler:v9 errorHandler:v10];
+      v25 = [(RDAccountPersonIDSaltObserver *)v24 initWithAccountObjectID:v23 accountType:_auto_REMAccountTypeForPrimaryCloudKit() initialSaltValue:v45[5] callbackQueue:queueCopy successHandler:handlerCopy errorHandler:errorHandlerCopy];
       v22 = v25;
       if (!v25 || ([(RDAccountPersonIDSaltObserver *)v25 uuid], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v27))
       {
@@ -6382,15 +6382,15 @@ LABEL_58:
 
       else
       {
-        v28 = [(RDStoreController *)self accountPropertiesNotifier];
-        [v28 observeWithObserver:v22];
+        accountPropertiesNotifier = [(RDStoreController *)self accountPropertiesNotifier];
+        [accountPropertiesNotifier observeWithObserver:v22];
 
         v29 = +[REMLog cloudkit];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v30 = [(RDAccountPersonIDSaltObserver *)v22 uuid];
+          uuid = [(RDAccountPersonIDSaltObserver *)v22 uuid];
           *buf = 138412546;
-          v57 = v30;
+          v57 = uuid;
           v58 = 2112;
           v59 = v23;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Created an RDAccountPersonIDSaltObserver and added to accountPropertiesNotifier {observerID: %@, accountObjID: %@}", buf, 0x16u);
@@ -6416,8 +6416,8 @@ LABEL_58:
       v32[1] = 3221225472;
       v32[2] = sub_1000DDF70;
       v32[3] = &unk_1008DA020;
-      v33 = v10;
-      dispatch_async(v8, v32);
+      v33 = errorHandlerCopy;
+      dispatch_async(queueCopy, v32);
       v22 = 0;
       v23 = v33;
     }
@@ -6443,18 +6443,18 @@ LABEL_58:
   return v22;
 }
 
-- (void)unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)a3
+- (void)unobservePrimaryCloudKitAccountPersonIDSaltChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(RDStoreController *)self accountPropertiesNotifier];
-  [v5 unobserveWithObserver:v4];
+  changesCopy = changes;
+  accountPropertiesNotifier = [(RDStoreController *)self accountPropertiesNotifier];
+  [accountPropertiesNotifier unobserveWithObserver:changesCopy];
 
   v6 = +[REMLog cloudkit];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 uuid];
+    uuid = [changesCopy uuid];
     v8 = 138412290;
-    v9 = v7;
+    v9 = uuid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Removed RDAccountPersonIDSaltObserver from accountPropertiesNotifier {observerID: %@}", &v8, 0xCu);
   }
 }
@@ -6471,25 +6471,25 @@ LABEL_58:
   return v3;
 }
 
-- (void)_populateCountForEntity:(Class)a3 withinCDAccount:(id)a4 statsAccumulator:(id)a5 errorAccumulator:(id)a6
+- (void)_populateCountForEntity:(Class)entity withinCDAccount:(id)account statsAccumulator:(id)accumulator errorAccumulator:(id)errorAccumulator
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = NSStringFromClass(a3);
-  v13 = [NSPredicate predicateWithFormat:@"%K == %@", @"account", v9];
+  accountCopy = account;
+  accumulatorCopy = accumulator;
+  errorAccumulatorCopy = errorAccumulator;
+  v12 = NSStringFromClass(entity);
+  accountCopy = [NSPredicate predicateWithFormat:@"%K == %@", @"account", accountCopy];
   v14 = [NSFetchRequest fetchRequestWithEntityName:v12];
-  [v14 setPredicate:v13];
+  [v14 setPredicate:accountCopy];
   [v14 setResultType:4];
-  v15 = [v9 managedObjectContext];
+  managedObjectContext = [accountCopy managedObjectContext];
   v23 = 0;
-  v16 = [v15 countForFetchRequest:v14 error:&v23];
+  v16 = [managedObjectContext countForFetchRequest:v14 error:&v23];
   v17 = v23;
 
   if (v17)
   {
     v18 = [v17 debugDescription];
-    [v11 addObject:v18];
+    [errorAccumulatorCopy addObject:v18];
 LABEL_5:
 
     goto LABEL_6;
@@ -6499,10 +6499,10 @@ LABEL_5:
   {
     v18 = [NSNumber numberWithUnsignedInteger:v16];
     v21 = [NSString stringWithFormat:@"%@", v18];
-    v22 = [v9 identifier];
-    v19 = [v22 UUIDString];
-    v20 = [NSString stringWithFormat:@"account[%@].%@.count", v19, v12];
-    [v10 setObject:v21 forKeyedSubscript:v20];
+    identifier = [accountCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v20 = [NSString stringWithFormat:@"account[%@].%@.count", uUIDString, v12];
+    [accumulatorCopy setObject:v21 forKeyedSubscript:v20];
 
     goto LABEL_5;
   }
@@ -6629,10 +6629,10 @@ LABEL_6:
 
 - (BOOL)supportsCloudSchemaCatchUpSyncBackgroundScheduling
 {
-  v3 = [(RDStoreController *)self daemonUserDefaults];
-  v4 = [v3 debugForceSupportCloudKitSchemaCatchUpSyncBackgroundScheduling];
+  daemonUserDefaults = [(RDStoreController *)self daemonUserDefaults];
+  debugForceSupportCloudKitSchemaCatchUpSyncBackgroundScheduling = [daemonUserDefaults debugForceSupportCloudKitSchemaCatchUpSyncBackgroundScheduling];
 
-  if (v4)
+  if (debugForceSupportCloudKitSchemaCatchUpSyncBackgroundScheduling)
   {
     return 1;
   }
@@ -6699,24 +6699,24 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)updateInMemoryPrimaryActiveCKAccountREMObjectIDIfNecessary:(id)a3
+- (void)updateInMemoryPrimaryActiveCKAccountREMObjectIDIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   os_unfair_lock_lock(&self->_ivarLock);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000DEDE8;
   v6[3] = &unk_1008D9B98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = necessaryCopy;
+  v5 = necessaryCopy;
   sub_1000DEDE8(v6);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (id)accountStoragesForAccountObjectIDs:(id)a3
+- (id)accountStoragesForAccountObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -6730,7 +6730,7 @@ LABEL_6:
   v8[3] = &unk_1008D9C38;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dsCopy;
   v9 = v5;
   sub_1000DEFA0(v8);
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -6741,27 +6741,27 @@ LABEL_6:
   return v6;
 }
 
-- (void)setAccountStorages:(id)a3 forAccountObjectIDs:(id)a4
+- (void)setAccountStorages:(id)storages forAccountObjectIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  storagesCopy = storages;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->_ivarLock);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000DF0CC;
   v10[3] = &unk_1008D9C10;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = storagesCopy;
+  v12 = dsCopy;
+  v8 = dsCopy;
+  v9 = storagesCopy;
   sub_1000DF0CC(v10);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (id)accountStoragesForAccountExternalIdentifiers:(id)a3
+- (id)accountStoragesForAccountExternalIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -6773,9 +6773,9 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = sub_1000DF21C;
   v8[3] = &unk_1008D9EE0;
-  v5 = v4;
+  v5 = identifiersCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   sub_1000DF21C(v8);
   os_unfair_lock_unlock(&self->_ivarLock);
@@ -6786,17 +6786,17 @@ LABEL_6:
   return v6;
 }
 
-- (void)setAccountStorages:(id)a3 forAccountExternalIdentifiers:(id)a4
+- (void)setAccountStorages:(id)storages forAccountExternalIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  storagesCopy = storages;
   os_unfair_lock_lock(&self->_ivarLock);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DF43C;
   v7[3] = &unk_1008D9B98;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = storagesCopy;
+  selfCopy = self;
+  v6 = storagesCopy;
   sub_1000DF43C(v7);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -6824,33 +6824,33 @@ LABEL_6:
   return v3;
 }
 
-- (void)setAccountStoragesForAllGenericAccountsWithStorages:(id)a3
+- (void)setAccountStoragesForAllGenericAccountsWithStorages:(id)storages
 {
-  v4 = a3;
+  storagesCopy = storages;
   os_unfair_lock_lock(&self->_ivarLock);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000DF99C;
   v6[3] = &unk_1008D9B98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = storagesCopy;
+  selfCopy = self;
+  v5 = storagesCopy;
   sub_1000DF99C(v6);
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (id)l_accountStoragesForAccountObjectIDs:(id)a3
+- (id)l_accountStoragesForAccountObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
-  v7 = [v6 keyEnumerator];
+  l_accountStorageCacheByObjectIDs = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
+  keyEnumerator = [l_accountStorageCacheByObjectIDs keyEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -6861,20 +6861,20 @@ LABEL_6:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v4 containsObject:v12])
+        if ([dsCopy containsObject:v12])
         {
-          v13 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
-          v14 = [v13 objectForKey:v12];
+          l_accountStorageCacheByObjectIDs2 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
+          v14 = [l_accountStorageCacheByObjectIDs2 objectForKey:v12];
 
           [v5 addObject:v14];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -6883,62 +6883,62 @@ LABEL_6:
   return v5;
 }
 
-- (void)l_setAccountStorages:(id)a3 forAccountObjectIDs:(id)a4
+- (void)l_setAccountStorages:(id)storages forAccountObjectIDs:(id)ds
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v6 count])
+  storagesCopy = storages;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 objectAtIndex:v7];
-      v9 = [v13 objectAtIndex:v7];
-      v10 = [v9 externalIdentifier];
-      v11 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
-      [v11 setObject:v9 forKey:v8];
+      v8 = [dsCopy objectAtIndex:v7];
+      v9 = [storagesCopy objectAtIndex:v7];
+      externalIdentifier = [v9 externalIdentifier];
+      l_accountStorageCacheByObjectIDs = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
+      [l_accountStorageCacheByObjectIDs setObject:v9 forKey:v8];
 
-      if (v10)
+      if (externalIdentifier)
       {
-        v12 = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
-        [v12 setObject:v8 forKey:v10];
+        l_accountExternalIdentifiersToObjectIDsMap = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
+        [l_accountExternalIdentifiersToObjectIDsMap setObject:v8 forKey:externalIdentifier];
       }
 
       ++v7;
     }
 
-    while (v7 < [v6 count]);
+    while (v7 < [dsCopy count]);
   }
 }
 
-- (void)l_invalidateAccountStorageCaches:(id)a3
+- (void)l_invalidateAccountStorageCaches:(id)caches
 {
-  v4 = a3;
-  v5 = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
-  [v5 removeAllObjects];
+  cachesCopy = caches;
+  l_accountStorageCacheByObjectIDs = [(RDStoreController *)self l_accountStorageCacheByObjectIDs];
+  [l_accountStorageCacheByObjectIDs removeAllObjects];
 
-  v6 = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
-  [v6 removeAllObjects];
+  l_accountExternalIdentifiersToObjectIDsMap = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
+  [l_accountExternalIdentifiersToObjectIDsMap removeAllObjects];
 
-  v7 = [(RDStoreController *)self l_allGenericAccountsObjectIDs];
-  [v7 removeAllObjects];
+  l_allGenericAccountsObjectIDs = [(RDStoreController *)self l_allGenericAccountsObjectIDs];
+  [l_allGenericAccountsObjectIDs removeAllObjects];
 
   v8 = +[REMLogStore container];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = cachesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Account storage invocation caches invalidated {reason: %{public}@}", &v9, 0xCu);
   }
 }
 
 - (id)_dataSeparationIncompatible_defaultReminderDataContainerURL
 {
-  v2 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-  v3 = v2;
-  if (v2)
+  isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
+  v3 = isolatedReminderDataContainerURL;
+  if (isolatedReminderDataContainerURL)
   {
-    v4 = v2;
+    v4 = isolatedReminderDataContainerURL;
   }
 
   else
@@ -6951,7 +6951,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)nukeDataWithError:(id *)a3
+- (BOOL)nukeDataWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -6985,9 +6985,9 @@ LABEL_6:
     [(RDStoreController *)self _postDidRemoveAccountStoresNotificationWithDeletedObjectIDs:?];
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v5 = *(v9 + 24);
@@ -6998,41 +6998,41 @@ LABEL_6:
   return v5;
 }
 
-- (void)purgeDeletedObjectsWithCompletionHandler:(id)a3
+- (void)purgeDeletedObjectsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E07AC;
   v7[3] = &unk_1008DA048;
   v8 = [(RDStoreController *)self newBackgroundContextWithAuthor:@"com.apple.RDStoreController.purgeDeleted"];
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v8;
   [v6 performBlock:v7];
 }
 
-- (id)status:(BOOL)a3
+- (id)status:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v87 = +[NSMutableDictionary dictionary];
   os_unfair_lock_lock(&self->_ivarLock);
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v5 = [(RDStoreController *)self l_accountStoreMap];
-  v6 = [v5 keyEnumerator];
+  l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+  keyEnumerator = [l_accountStoreMap keyEnumerator];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v96 objects:v101 count:16];
+  obj = keyEnumerator;
+  v7 = [keyEnumerator countByEnumeratingWithState:&v96 objects:v101 count:16];
   v8 = &_s19ReminderKitInternal24REMRemindersListDataViewO25ScheduledDateBucketsModelVSeAAMc_ptr;
-  v91 = self;
+  selfCopy = self;
   v88 = v7;
   if (v7)
   {
     v86 = *v97;
-    v81 = v3;
+    v81 = statusCopy;
     do
     {
       v9 = 0;
@@ -7045,24 +7045,24 @@ LABEL_6:
 
         v10 = *(*(&v96 + 1) + 8 * v9);
         v11 = [v8[476] stringWithFormat:@"accountStore.%@", v10];
-        v12 = [(RDStoreController *)self l_accountStoreMap];
-        v13 = [v12 objectForKey:v10];
+        l_accountStoreMap2 = [(RDStoreController *)self l_accountStoreMap];
+        v13 = [l_accountStoreMap2 objectForKey:v10];
 
-        v14 = [v13 identifier];
+        identifier = [v13 identifier];
         v15 = [v13 URL];
         v16 = v15;
-        if (v3)
+        if (statusCopy)
         {
           objc_opt_class();
-          v90 = v14;
-          v17 = [v13 options];
-          v18 = [v17 valueForKey:NSPersistentStoreConnectionPoolMaxSizeKey];
+          v90 = identifier;
+          options = [v13 options];
+          v18 = [options valueForKey:NSPersistentStoreConnectionPoolMaxSizeKey];
           v85 = REMDynamicCast();
 
-          v19 = [(RDStoreController *)v91 appleAccountUtilities];
-          v83 = [v19 applicationDocumentsURLForAccountIdentifier:v10];
+          appleAccountUtilities = [(RDStoreController *)selfCopy appleAccountUtilities];
+          v83 = [appleAccountUtilities applicationDocumentsURLForAccountIdentifier:v10];
 
-          v89 = [(RDStoreController *)v91 _reminderDataContainerURLForAccountIdentifier:v10];
+          v89 = [(RDStoreController *)selfCopy _reminderDataContainerURLForAccountIdentifier:v10];
           v84 = [_TtC7remindd47RDStagedLightweightCoreDataMigrationCoordinator stagedMigrationsInfoForPersistentStoreAt:v16];
           v20 = v8[476];
           [v16 absoluteString];
@@ -7071,18 +7071,18 @@ LABEL_6:
           [v87 setObject:v23 forKeyedSubscript:v11];
 
           v24 = v21[476];
-          v25 = [v83 absoluteString];
-          v26 = [v24 stringWithFormat:@"%@", v25];
+          absoluteString = [v83 absoluteString];
+          v26 = [v24 stringWithFormat:@"%@", absoluteString];
           v27 = [v21[476] stringWithFormat:@"%@.applicationDocumentsURL", v11];
           [v87 setObject:v26 forKeyedSubscript:v27];
 
           v28 = v21[476];
-          v29 = [v89 absoluteString];
-          v30 = [v28 stringWithFormat:@"%@", v29];
+          absoluteString2 = [v89 absoluteString];
+          v30 = [v28 stringWithFormat:@"%@", absoluteString2];
           v31 = [v21[476] stringWithFormat:@"%@.reminderDataContainerURL", v11];
           [v87 setObject:v30 forKeyedSubscript:v31];
 
-          self = v91;
+          self = selfCopy;
           v32 = &__NSArray0__struct;
           if (v84)
           {
@@ -7091,20 +7091,20 @@ LABEL_6:
 
           v33 = [v21[476] stringWithFormat:@"%@", v32];
           v34 = v21[476];
-          v3 = v81;
+          statusCopy = v81;
           v35 = [v34 stringWithFormat:@"%@.stagedMigrations", v11];
-          v36 = v85;
+          absoluteString3 = v85;
           [v87 setObject:v33 forKeyedSubscript:v35];
 
-          v14 = v90;
+          identifier = v90;
           v37 = v83;
         }
 
         else
         {
           v38 = v8[476];
-          v36 = [v15 absoluteString];
-          v37 = [v38 stringWithFormat:@"{storeID: %@, URL: %@}", v14, v36];
+          absoluteString3 = [v15 absoluteString];
+          v37 = [v38 stringWithFormat:@"{storeID: %@, URL: %@}", identifier, absoluteString3];
           [v87 setObject:v37 forKeyedSubscript:v11];
         }
 
@@ -7123,10 +7123,10 @@ LABEL_6:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v39 = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
-  v40 = [v39 keyEnumerator];
+  l_accountExternalIdentifiersToObjectIDsMap = [(RDStoreController *)self l_accountExternalIdentifiersToObjectIDsMap];
+  keyEnumerator2 = [l_accountExternalIdentifiersToObjectIDsMap keyEnumerator];
 
-  v41 = [v40 countByEnumeratingWithState:&v92 objects:v100 count:16];
+  v41 = [keyEnumerator2 countByEnumeratingWithState:&v92 objects:v100 count:16];
   if (v41)
   {
     v42 = v41;
@@ -7137,57 +7137,57 @@ LABEL_6:
       {
         if (*v93 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v45 = *(*(&v92 + 1) + 8 * i);
         v46 = [NSString stringWithFormat:@"accountExternalIDsMap.%@", v45];
-        v47 = [(RDStoreController *)v91 l_accountExternalIdentifiersToObjectIDsMap];
-        v48 = [v47 objectForKey:v45];
+        l_accountExternalIdentifiersToObjectIDsMap2 = [(RDStoreController *)selfCopy l_accountExternalIdentifiersToObjectIDsMap];
+        v48 = [l_accountExternalIdentifiersToObjectIDsMap2 objectForKey:v45];
         v49 = [v48 description];
         [v87 setObject:v49 forKeyedSubscript:v46];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v92 objects:v100 count:16];
+      v42 = [keyEnumerator2 countByEnumeratingWithState:&v92 objects:v100 count:16];
     }
 
     while (v42);
   }
 
-  v50 = [(RDStoreController *)v91 l_accountStorageCacheByObjectIDs];
-  v51 = [v50 keyEnumerator];
-  v52 = [v51 allObjects];
-  v53 = [v52 description];
+  l_accountStorageCacheByObjectIDs = [(RDStoreController *)selfCopy l_accountStorageCacheByObjectIDs];
+  keyEnumerator3 = [l_accountStorageCacheByObjectIDs keyEnumerator];
+  allObjects = [keyEnumerator3 allObjects];
+  v53 = [allObjects description];
   [v87 setObject:v53 forKeyedSubscript:@"accountStorageCache.keys"];
 
-  v54 = [(RDStoreController *)v91 l_allGenericAccountsObjectIDs];
-  v55 = [v54 allObjects];
-  v56 = [v55 description];
+  l_allGenericAccountsObjectIDs = [(RDStoreController *)selfCopy l_allGenericAccountsObjectIDs];
+  allObjects2 = [l_allGenericAccountsObjectIDs allObjects];
+  v56 = [allObjects2 description];
   [v87 setObject:v56 forKeyedSubscript:@"accountStorageCache.hasAllGenericAccounts"];
 
   v57 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", +[RDPaths isDataSeparationEnabled]);
   [v87 setObject:v57 forKeyedSubscript:@"dataSeparationEnabled"];
 
   v58 = +[RDPaths defaultReminderDataContainerURL];
-  v59 = [v58 absoluteString];
-  [v87 setObject:v59 forKeyedSubscript:@"defaultReminderDataContainerURL"];
+  absoluteString4 = [v58 absoluteString];
+  [v87 setObject:absoluteString4 forKeyedSubscript:@"defaultReminderDataContainerURL"];
 
   v60 = +[RDPaths defaultApplicationDocumentsURL];
-  v61 = [v60 absoluteString];
-  [v87 setObject:v61 forKeyedSubscript:@"defaultApplicationDocumentsURL"];
+  absoluteString5 = [v60 absoluteString];
+  [v87 setObject:absoluteString5 forKeyedSubscript:@"defaultApplicationDocumentsURL"];
 
-  v62 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 isolated]];
+  v62 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy isolated]];
   [v87 setObject:v62 forKeyedSubscript:@"isolated"];
 
-  v63 = [(RDStoreController *)v91 isolatedReminderDataContainerURL];
-  v64 = [v63 absoluteString];
-  [v87 setObject:v64 forKeyedSubscript:@"isolatedReminderDataContainerURL"];
+  isolatedReminderDataContainerURL = [(RDStoreController *)selfCopy isolatedReminderDataContainerURL];
+  absoluteString6 = [isolatedReminderDataContainerURL absoluteString];
+  [v87 setObject:absoluteString6 forKeyedSubscript:@"isolatedReminderDataContainerURL"];
 
-  v65 = [(RDStoreController *)v91 l_primaryActiveCloudKitAccountREMObjectID];
-  v66 = v65;
-  if (v65)
+  l_primaryActiveCloudKitAccountREMObjectID = [(RDStoreController *)selfCopy l_primaryActiveCloudKitAccountREMObjectID];
+  v66 = l_primaryActiveCloudKitAccountREMObjectID;
+  if (l_primaryActiveCloudKitAccountREMObjectID)
   {
-    v67 = [v65 description];
+    v67 = [l_primaryActiveCloudKitAccountREMObjectID description];
     [v87 setObject:v67 forKeyedSubscript:@"primaryActiveCKAccountID"];
   }
 
@@ -7199,40 +7199,40 @@ LABEL_6:
   v68 = [NSString stringWithFormat:@"%ld", rem_currentRuntimeVersion()];
   [v87 setObject:v68 forKeyedSubscript:@"remCurrentRuntimeVersion"];
 
-  v69 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsAccountUtils]];
+  v69 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsAccountUtils]];
   [v87 setObject:v69 forKeyedSubscript:@"supportsAccountUtils"];
 
-  v70 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsAlarmEngine]];
+  v70 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsAlarmEngine]];
   [v87 setObject:v70 forKeyedSubscript:@"supportsAlarmEngine"];
 
-  v71 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsTimelineEngine]];
+  v71 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsTimelineEngine]];
   [v87 setObject:v71 forKeyedSubscript:@"supportsTimelineEngine"];
 
-  v72 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsAssignmentNotificationEngine]];
+  v72 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsAssignmentNotificationEngine]];
   [v87 setObject:v72 forKeyedSubscript:@"supportsAssignmentNotificationEngine"];
 
-  v73 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsCoreSpotlightIndexing]];
+  v73 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsCoreSpotlightIndexing]];
   [v87 setObject:v73 forKeyedSubscript:@"supportsCoreSpotlightIndexing"];
 
-  v74 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsSyncingToCloudKit]];
+  v74 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsSyncingToCloudKit]];
   [v87 setObject:v74 forKeyedSubscript:@"supportsSyncingToCloudKit"];
 
-  v75 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsApplicationShortcuts]];
+  v75 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsApplicationShortcuts]];
   [v87 setObject:v75 forKeyedSubscript:@"supportsApplicationShortcuts"];
 
-  v76 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsLocalInternalAccount]];
+  v76 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsLocalInternalAccount]];
   [v87 setObject:v76 forKeyedSubscript:@"supportsLocalInternalAccount"];
 
-  v77 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsSuggestedAttributes]];
+  v77 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsSuggestedAttributes]];
   [v87 setObject:v77 forKeyedSubscript:@"supportsSuggestedAttributes"];
 
-  v78 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsSyncActivityNotificationEngine]];
+  v78 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsSyncActivityNotificationEngine]];
   [v87 setObject:v78 forKeyedSubscript:@"supportsSyncActivityNotificationEngine"];
 
-  v79 = [NSString stringWithFormat:@"%d", [(RDStoreController *)v91 supportsSharedInlineTagAutoConvertEngine]];
+  v79 = [NSString stringWithFormat:@"%d", [(RDStoreController *)selfCopy supportsSharedInlineTagAutoConvertEngine]];
   [v87 setObject:v79 forKeyedSubscript:@"supportsSharedInlineTagAutoConvertEngine"];
 
-  os_unfair_lock_unlock(&v91->_ivarLock);
+  os_unfair_lock_unlock(&selfCopy->_ivarLock);
 
   return v87;
 }
@@ -7245,11 +7245,11 @@ LABEL_6:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [(RDStoreController *)self l_accountStoreMap];
-  v4 = [v3 keyEnumerator];
+  l_accountStoreMap = [(RDStoreController *)self l_accountStoreMap];
+  keyEnumerator = [l_accountStoreMap keyEnumerator];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  obj = keyEnumerator;
+  v5 = [keyEnumerator countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7265,16 +7265,16 @@ LABEL_6:
 
         v9 = *(*(&v41 + 1) + 8 * i);
         v10 = [NSString stringWithFormat:@"accountStore.%@", v9];
-        v11 = [(RDStoreController *)self l_accountStoreMap];
-        v12 = [v11 objectForKey:v9];
-        v13 = [v12 identifier];
+        l_accountStoreMap2 = [(RDStoreController *)self l_accountStoreMap];
+        v12 = [l_accountStoreMap2 objectForKey:v9];
+        identifier = [v12 identifier];
 
-        v14 = [(RDStoreController *)self l_accountStoreMap];
-        v15 = [v14 objectForKey:v9];
+        l_accountStoreMap3 = [(RDStoreController *)self l_accountStoreMap];
+        v15 = [l_accountStoreMap3 objectForKey:v9];
         v16 = [v15 URL];
 
-        v17 = [v16 absoluteString];
-        v18 = [NSString stringWithFormat:@"{storeID: %@, URL: %@}", v13, v17];
+        absoluteString = [v16 absoluteString];
+        v18 = [NSString stringWithFormat:@"{storeID: %@, URL: %@}", identifier, absoluteString];
         [v36 setObject:v18 forKeyedSubscript:v10];
       }
 
@@ -7285,18 +7285,18 @@ LABEL_6:
   }
 
   v19 = +[RDPaths defaultReminderDataContainerURL];
-  v20 = [v19 absoluteString];
-  [v36 setObject:v20 forKeyedSubscript:@"defaultReminderDataContainerURL"];
+  absoluteString2 = [v19 absoluteString];
+  [v36 setObject:absoluteString2 forKeyedSubscript:@"defaultReminderDataContainerURL"];
 
-  v21 = [(RDStoreController *)self isolatedReminderDataContainerURL];
-  v22 = [v21 absoluteString];
-  [v36 setObject:v22 forKeyedSubscript:@"isolatedReminderDataContainerURL"];
+  isolatedReminderDataContainerURL = [(RDStoreController *)self isolatedReminderDataContainerURL];
+  absoluteString3 = [isolatedReminderDataContainerURL absoluteString];
+  [v36 setObject:absoluteString3 forKeyedSubscript:@"isolatedReminderDataContainerURL"];
 
-  v23 = [(RDStoreController *)self l_primaryActiveCloudKitAccountREMObjectID];
-  v24 = v23;
-  if (v23)
+  l_primaryActiveCloudKitAccountREMObjectID = [(RDStoreController *)self l_primaryActiveCloudKitAccountREMObjectID];
+  v24 = l_primaryActiveCloudKitAccountREMObjectID;
+  if (l_primaryActiveCloudKitAccountREMObjectID)
   {
-    v25 = [v23 description];
+    v25 = [l_primaryActiveCloudKitAccountREMObjectID description];
     [v36 setObject:v25 forKeyedSubscript:@"primaryActiveCKAccountID"];
   }
 
@@ -7354,17 +7354,17 @@ LABEL_6:
   return v3;
 }
 
-- (void)unittest_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)a3
+- (void)unittest_removeFromPersistentStoreCoordinatorAndDeleteImmediatelyWithStores:(id)stores
 {
-  v4 = a3;
+  storesCopy = stores;
   os_unfair_lock_lock(&self->_ivarLock);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000E1FC4;
   v6[3] = &unk_1008D9B98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = storesCopy;
+  v5 = storesCopy;
   sub_1000E1FC4(v6);
   os_unfair_lock_unlock(&self->_ivarLock);
 }

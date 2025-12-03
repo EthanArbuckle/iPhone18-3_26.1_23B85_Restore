@@ -1,61 +1,61 @@
 @interface CarClusterUpdateLaneGuidanceLaneInfo
 + (id)_enumProperties;
 + (id)_integersKeyed;
-+ (id)laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:(id)a3;
-- (CarClusterUpdateLaneGuidanceLaneInfo)initWithComposedRouteLaneInfo:(id)a3 atIndex:(unint64_t)a4 highlightFirstAngle:(BOOL)a5;
-- (double)_angleFromLaneDirection:(int)a3;
++ (id)laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:(id)infos;
+- (CarClusterUpdateLaneGuidanceLaneInfo)initWithComposedRouteLaneInfo:(id)info atIndex:(unint64_t)index highlightFirstAngle:(BOOL)angle;
+- (double)_angleFromLaneDirection:(int)direction;
 @end
 
 @implementation CarClusterUpdateLaneGuidanceLaneInfo
 
-- (double)_angleFromLaneDirection:(int)a3
+- (double)_angleFromLaneDirection:(int)direction
 {
   result = 0.0;
-  if (a3 > 31)
+  if (direction > 31)
   {
-    if (a3 > 127)
+    if (direction > 127)
     {
-      if (a3 == 256)
+      if (direction == 256)
       {
         return 180.0;
       }
 
-      else if (a3 == 128)
+      else if (direction == 128)
       {
         return -45.0;
       }
     }
 
-    else if (a3 == 32)
+    else if (direction == 32)
     {
       return -135.0;
     }
 
-    else if (a3 == 64)
+    else if (direction == 64)
     {
       return -90.0;
     }
   }
 
-  else if (a3 > 7)
+  else if (direction > 7)
   {
-    if (a3 == 8)
+    if (direction == 8)
     {
       return 135.0;
     }
 
-    else if (a3 == 16)
+    else if (direction == 16)
     {
       return -180.0;
     }
   }
 
-  else if (a3 == 2)
+  else if (direction == 2)
   {
     return 45.0;
   }
 
-  else if (a3 == 4)
+  else if (direction == 4)
   {
     return 90.0;
   }
@@ -63,10 +63,10 @@
   return result;
 }
 
-- (CarClusterUpdateLaneGuidanceLaneInfo)initWithComposedRouteLaneInfo:(id)a3 atIndex:(unint64_t)a4 highlightFirstAngle:(BOOL)a5
+- (CarClusterUpdateLaneGuidanceLaneInfo)initWithComposedRouteLaneInfo:(id)info atIndex:(unint64_t)index highlightFirstAngle:(BOOL)angle
 {
-  v5 = a5;
-  v8 = a3;
+  angleCopy = angle;
+  infoCopy = info;
   v37.receiver = self;
   v37.super_class = CarClusterUpdateLaneGuidanceLaneInfo;
   v9 = [(CarClusterUpdateLaneGuidanceLaneInfo *)&v37 init];
@@ -76,12 +76,12 @@
   }
 
   v10 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  v11 = [NSNumber numberWithUnsignedInteger:index];
   index = v9->_index;
   v9->_index = v11;
 
   v9->_status = 0;
-  if ([v8 isPreferredLaneForManeuver])
+  if ([infoCopy isPreferredLaneForManeuver])
   {
     v13 = 2;
 LABEL_6:
@@ -89,7 +89,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v8 isLaneForManeuver])
+  if ([infoCopy isLaneForManeuver])
   {
     v13 = 1;
     goto LABEL_6;
@@ -101,7 +101,7 @@ LABEL_7:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [v8 directions];
+  obj = [infoCopy directions];
   v14 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v14)
   {
@@ -120,7 +120,7 @@ LABEL_7:
         v18 = *(*(&v33 + 1) + 8 * v17);
         -[CarClusterUpdateLaneGuidanceLaneInfo _angleFromLaneDirection:](v9, "_angleFromLaneDirection:", [v18 direction]);
         v20 = v19;
-        if (v5 && ([v8 directions], v21 = v5, v22 = v10, v23 = v8, v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "firstObject"), v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v8 = v23, v10 = v22, v5 = v21, v18 == v25))
+        if (angleCopy && ([infoCopy directions], v21 = angleCopy, v22 = v10, v23 = infoCopy, v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "firstObject"), v25 = objc_claimAutoreleasedReturnValue(), v25, v24, infoCopy = v23, v10 = v22, angleCopy = v21, v18 == v25))
         {
           v27 = [v10[445] numberWithDouble:v20];
           angleHighlight = v9->_angleHighlight;
@@ -175,14 +175,14 @@ LABEL_20:
   return v3;
 }
 
-+ (id)laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:(id)a3
++ (id)laneGuidanceLaneInfoUpdateWithComposedRouteLaneInfos:(id)infos
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  infosCopy = infos;
+  v4 = [infosCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -192,7 +192,7 @@ LABEL_20:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infosCopy);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) isPreferredLaneForManeuver])
@@ -202,7 +202,7 @@ LABEL_20:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [infosCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -221,7 +221,7 @@ LABEL_11:
   v9[3] = &unk_1016606C0;
   v7 = v11 = v4;
   v10 = v7;
-  [v3 enumerateObjectsUsingBlock:v9];
+  [infosCopy enumerateObjectsUsingBlock:v9];
 
   return v7;
 }

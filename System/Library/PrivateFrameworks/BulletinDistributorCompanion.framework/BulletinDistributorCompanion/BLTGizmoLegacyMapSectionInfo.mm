@@ -1,15 +1,15 @@
 @interface BLTGizmoLegacyMapSectionInfo
-- (BLTGizmoLegacyMapSectionInfo)initWithNotificationMap:(id)a3;
+- (BLTGizmoLegacyMapSectionInfo)initWithNotificationMap:(id)map;
 @end
 
 @implementation BLTGizmoLegacyMapSectionInfo
 
-- (BLTGizmoLegacyMapSectionInfo)initWithNotificationMap:(id)a3
+- (BLTGizmoLegacyMapSectionInfo)initWithNotificationMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys = [mapCopy allKeys];
+  v7 = [v5 setWithArray:allKeys];
   if (BLTGizmoLegacyMapSectionInfoKeySet_onceToken != -1)
   {
     [BLTGizmoLegacyMapSectionInfo initWithNotificationMap:];
@@ -24,7 +24,7 @@
     v9 = [(BLTGizmoLegacyMapSectionInfo *)&v13 init];
     if (v9)
     {
-      v10 = [v4 copy];
+      v10 = [mapCopy copy];
       notificationMap = v9->_notificationMap;
       v9->_notificationMap = v10;
     }

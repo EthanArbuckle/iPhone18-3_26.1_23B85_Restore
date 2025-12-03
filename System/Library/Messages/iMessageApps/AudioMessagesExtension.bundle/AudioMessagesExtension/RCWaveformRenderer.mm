@@ -3,19 +3,19 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)visibleTimeRange;
 - (BOOL)_needsWaveformRendering;
 - (CGRect)visibleRect;
-- (RCWaveformRenderer)initWithNibName:(id)a3 bundle:(id)a4;
+- (RCWaveformRenderer)initWithNibName:(id)name bundle:(id)bundle;
 - (RCWaveformRendererDelegate)rendererDelegate;
 - (double)_duration;
-- (double)_pointOffsetForTime:(double)a3;
-- (double)_timeForPointOffset:(double)a3 withVisibleTimeRange:(id)a4;
-- (double)pointsPerSecondWithVisibleTimeRange:(id)a3;
+- (double)_pointOffsetForTime:(double)time;
+- (double)_timeForPointOffset:(double)offset withVisibleTimeRange:(id)range;
+- (double)pointsPerSecondWithVisibleTimeRange:(id)range;
 - (id).cxx_construct;
-- (id)rasterizeTimeRange:(id)a3 imageSize:(CGSize)a4;
+- (id)rasterizeTimeRange:(id)range imageSize:(CGSize)size;
 - (void)_clearRenderingState;
-- (void)_draw:(double)a3;
-- (void)_performOrDispatchToMainThread:(id)a3;
-- (void)_renderTimeRangeOfSegments:(id)a3 withDuration:(double)a4 needsWaveformCalculation:(BOOL)a5;
-- (void)_renderVisibleTimeRangeWithDuration:(double)a3;
+- (void)_draw:(double)_draw;
+- (void)_performOrDispatchToMainThread:(id)thread;
+- (void)_renderTimeRangeOfSegments:(id)segments withDuration:(double)duration needsWaveformCalculation:(BOOL)calculation;
+- (void)_renderVisibleTimeRangeWithDuration:(double)duration;
 - (void)_setNeedsRendering;
 - (void)_setNeedsVisibleTimeRangeRendering;
 - (void)_setNeedsVisibleTimeRangeRenderingFromFrameChange;
@@ -24,30 +24,30 @@
 - (void)_stopRendering;
 - (void)_updateOverviewUnitsPerSecond;
 - (void)dealloc;
-- (void)displayLinkDidUpdate:(id)a3 withTimeController:(id)a4;
+- (void)displayLinkDidUpdate:(id)update withTimeController:(id)controller;
 - (void)loadView;
-- (void)setActiveDisplayLinkRequired:(BOOL)a3;
-- (void)setDataSource:(id)a3;
-- (void)setIsRecordWaveform:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setVisibleTimeRange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setActiveDisplayLinkRequired:(BOOL)required;
+- (void)setDataSource:(id)source;
+- (void)setIsRecordWaveform:(BOOL)waveform;
+- (void)setPaused:(BOOL)paused;
+- (void)setVisibleTimeRange:(id)range;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4;
-- (void)waveformDataSourceDidFinishLoading:(id)a3;
-- (void)waveformDataSourceRequiresUpdate:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment;
+- (void)waveformDataSourceDidFinishLoading:(id)loading;
+- (void)waveformDataSourceRequiresUpdate:(id)update;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation RCWaveformRenderer
 
-- (RCWaveformRenderer)initWithNibName:(id)a3 bundle:(id)a4
+- (RCWaveformRenderer)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = RCWaveformRenderer;
-  v4 = [(RCWaveformRenderer *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(RCWaveformRenderer *)&v10 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -93,11 +93,11 @@
   [(RCWaveformRenderer *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RCWaveformRenderer;
-  [(RCWaveformRenderer *)&v4 viewDidAppear:a3];
+  [(RCWaveformRenderer *)&v4 viewDidAppear:appear];
   if (self->_dataSource)
   {
     [(RCWaveformRenderer *)self _startUpdating];
@@ -113,7 +113,7 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   if (self->_dataSource)
   {
@@ -126,13 +126,13 @@
   [(RCWaveformRenderer *)&v4 viewWillDisappear:0];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5.receiver = self;
   v5.super_class = RCWaveformRenderer;
-  [(RCWaveformRenderer *)&v5 willMoveToParentViewController:v4];
-  if (!v4)
+  [(RCWaveformRenderer *)&v5 willMoveToParentViewController:controllerCopy];
+  if (!controllerCopy)
   {
     [(RCWaveformRenderer *)self _stopUpdating];
     [(RCWaveformRenderer *)self _stopRendering];
@@ -146,7 +146,7 @@
   [(RCWaveformRenderer *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)waveformDataSourceRequiresUpdate:(id)a3
+- (void)waveformDataSourceRequiresUpdate:(id)update
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -162,40 +162,40 @@
   {
     [(RCWaveformRenderer *)self _pointsPerSecond];
     v4 = v3;
-    v5 = [(RCWaveformDataSource *)self->_dataSource waveformGenerator];
-    [v5 setOverviewUnitsPerSecond:v4];
+    waveformGenerator = [(RCWaveformDataSource *)self->_dataSource waveformGenerator];
+    [waveformGenerator setOverviewUnitsPerSecond:v4];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_900C;
   v4[3] = &unk_6D078;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RCWaveformRenderer *)v5 _performOrDispatchToMainThread:v4];
+  selfCopy = self;
+  sourceCopy = source;
+  v3 = sourceCopy;
+  [(RCWaveformRenderer *)selfCopy _performOrDispatchToMainThread:v4];
 }
 
-- (void)setIsRecordWaveform:(BOOL)a3
+- (void)setIsRecordWaveform:(BOOL)waveform
 {
-  if (self->_isRecordWaveform != a3)
+  if (self->_isRecordWaveform != waveform)
   {
-    self->_isRecordWaveform = a3;
+    self->_isRecordWaveform = waveform;
     [(RCWaveformRenderer *)self _setNeedsVisibleTimeRangeRendering];
 
     [(RCWaveformRenderer *)self _setNeedsRendering];
   }
 }
 
-- (void)setVisibleTimeRange:(id)a3
+- (void)setVisibleTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   p_visibleTimeRange = &self->_visibleTimeRange;
-  if (!RCTimeRangeEqualToTimeRange(self->_visibleTimeRange.beginTime, self->_visibleTimeRange.endTime, a3.var0, a3.var1))
+  if (!RCTimeRangeEqualToTimeRange(self->_visibleTimeRange.beginTime, self->_visibleTimeRange.endTime, range.var0, range.var1))
   {
     if (self->_isOverview || (v7 = RCTimeRangeDelta(p_visibleTimeRange->beginTime, p_visibleTimeRange->endTime), vabdd_f64(v7, RCTimeRangeDelta(var0, var1)) > 0.00000011920929))
     {
@@ -236,22 +236,22 @@
   }
 }
 
-- (double)pointsPerSecondWithVisibleTimeRange:(id)a3
+- (double)pointsPerSecondWithVisibleTimeRange:(id)range
 {
   v3 = 1.0;
-  if (a3.var1 - a3.var0 >= 4.4408921e-16)
+  if (range.var1 - range.var0 >= 4.4408921e-16)
   {
-    v5 = [(RCWaveformRenderer *)self view];
-    [v5 bounds];
+    view = [(RCWaveformRenderer *)self view];
+    [view bounds];
     v7 = v6;
 
     if (v7 >= 1.0)
     {
-      v8 = [(RCWaveformRenderer *)self view];
-      [v8 bounds];
+      view2 = [(RCWaveformRenderer *)self view];
+      [view2 bounds];
       v10 = v9;
-      v11 = [(RCWaveformRenderer *)self rendererDelegate];
-      [v11 desiredTimeDeltaForVisibleTimeRange];
+      rendererDelegate = [(RCWaveformRenderer *)self rendererDelegate];
+      [rendererDelegate desiredTimeDeltaForVisibleTimeRange];
       v3 = v10 / v12;
     }
   }
@@ -266,8 +266,8 @@
   v5 = v4;
   [(RCWaveformRenderer *)self horizontalOffsetAtTime:p_visibleTimeRange->endTime];
   v7 = v6;
-  v8 = [(RCWaveformRenderer *)self view];
-  [v8 bounds];
+  view = [(RCWaveformRenderer *)self view];
+  [view bounds];
   v10 = v9;
 
   v11 = 0.0;
@@ -281,12 +281,12 @@
   return result;
 }
 
-- (id)rasterizeTimeRange:(id)a3 imageSize:(CGSize)a4
+- (id)rasterizeTimeRange:(id)range imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  height = size.height;
+  width = size.width;
+  var1 = range.var1;
+  var0 = range.var0;
   [(RCWaveformDataSource *)self->_dataSource duration];
   if (v9 >= var1)
   {
@@ -298,10 +298,10 @@
     v10 = v9;
   }
 
-  v11 = [(RCWaveformRenderer *)self view];
-  v12 = [v11 window];
+  view = [(RCWaveformRenderer *)self view];
+  window = [view window];
 
-  if (v12)
+  if (window)
   {
     v13 = 0;
   }
@@ -325,14 +325,14 @@
     }
 
     v13 = [v19 initWithFrame:{v20 + v20, v20 + v20, width, height}];
-    v21 = [(RCWaveformRenderer *)self view];
-    [v13 addSubview:v21];
+    view2 = [(RCWaveformRenderer *)self view];
+    [v13 addSubview:view2];
 
     [v13 setHidden:0];
   }
 
-  v22 = [(RCWaveformRenderer *)self view];
-  [v22 frame];
+  view3 = [(RCWaveformRenderer *)self view];
+  [view3 frame];
   v50 = v24;
   v51 = v23;
   v26 = v25;
@@ -342,15 +342,15 @@
   v48 = v30;
   v49 = v29;
   y = CGPointZero.y;
-  v32 = [(RCWaveformRenderer *)self view];
-  [v32 setFrame:{CGPointZero.x, y, width, height}];
+  view4 = [(RCWaveformRenderer *)self view];
+  [view4 setFrame:{CGPointZero.x, y, width, height}];
 
   [(RCWaveformRenderer *)self setVisibleTimeRange:fmax(var0, 0.0), v10];
   v33 = +[NSRunLoop mainRunLoop];
   [v33 rc_runUntilNextDisplayLinkEventWithTimeout:0.5];
 
-  v34 = [(RCWaveformRenderer *)self view];
-  [v34 bounds];
+  view5 = [(RCWaveformRenderer *)self view];
+  [view5 bounds];
   v36 = v35;
   v38 = v37;
   v39 = +[UIScreen mainScreen];
@@ -360,21 +360,21 @@
   v53.height = v38;
   UIGraphicsBeginImageContextWithOptions(v53, 0, v41);
 
-  v42 = [(RCWaveformRenderer *)self view];
-  v43 = [(RCWaveformRenderer *)self view];
-  [v43 bounds];
-  [v42 drawViewHierarchyInRect:1 afterScreenUpdates:?];
+  view6 = [(RCWaveformRenderer *)self view];
+  view7 = [(RCWaveformRenderer *)self view];
+  [view7 bounds];
+  [view6 drawViewHierarchyInRect:1 afterScreenUpdates:?];
 
   v44 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v45 = [(RCWaveformRenderer *)self view];
-  [v45 setFrame:{v51, v50, v26, v28}];
+  view8 = [(RCWaveformRenderer *)self view];
+  [view8 setFrame:{v51, v50, v26, v28}];
 
   [(RCWaveformRenderer *)self setVisibleTimeRange:v49, v48];
   if (v13)
   {
-    v46 = [(RCWaveformRenderer *)self view];
-    [v46 removeFromSuperview];
+    view9 = [(RCWaveformRenderer *)self view];
+    [view9 removeFromSuperview];
 
     [v13 setHidden:1];
   }
@@ -382,10 +382,10 @@
   return v44;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  self->_paused = a3;
-  if (a3)
+  self->_paused = paused;
+  if (paused)
   {
     [(RCWaveformRenderer *)self _stopUpdating];
 
@@ -400,19 +400,19 @@
   }
 }
 
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_98EC;
   v5[3] = &unk_6D078;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(RCWaveformRenderer *)v6 _performOrDispatchToMainThread:v5];
+  selfCopy = self;
+  segmentCopy = segment;
+  v4 = segmentCopy;
+  [(RCWaveformRenderer *)selfCopy _performOrDispatchToMainThread:v5];
 }
 
-- (void)waveformDataSourceDidFinishLoading:(id)a3
+- (void)waveformDataSourceDidFinishLoading:(id)loading
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -484,12 +484,12 @@
   }
 }
 
-- (void)setActiveDisplayLinkRequired:(BOOL)a3
+- (void)setActiveDisplayLinkRequired:(BOOL)required
 {
-  if (self->_activeDisplayLinkRequired != a3)
+  if (self->_activeDisplayLinkRequired != required)
   {
-    self->_activeDisplayLinkRequired = a3;
-    if (a3)
+    self->_activeDisplayLinkRequired = required;
+    if (required)
     {
       [(RCWaveformRenderer *)self _startRendering];
     }
@@ -501,17 +501,17 @@
   }
 }
 
-- (void)displayLinkDidUpdate:(id)a3 withTimeController:(id)a4
+- (void)displayLinkDidUpdate:(id)update withTimeController:(id)controller
 {
-  v5 = [(RCWaveformRenderer *)self view:a3];
+  v5 = [(RCWaveformRenderer *)self view:update];
   [v5 frame];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(RCWaveformRenderer *)self view];
-  v11 = [v10 window];
+  view = [(RCWaveformRenderer *)self view];
+  window = [view window];
 
-  if (v11 && v7 != 0.0 && v9 != 0.0)
+  if (window && v7 != 0.0 && v9 != 0.0)
   {
     if (!self->_isOverview)
     {
@@ -525,9 +525,9 @@
   }
 }
 
-- (void)_draw:(double)a3
+- (void)_draw:(double)_draw
 {
-  if (a3 > 0.0)
+  if (_draw > 0.0)
   {
     [(RCWaveformRenderer *)self _renderVisibleTimeRangeWithDuration:?];
   }
@@ -544,10 +544,10 @@
   dispatch_sync(self->_renderingQueue, v3);
 }
 
-- (void)_renderTimeRangeOfSegments:(id)a3 withDuration:(double)a4 needsWaveformCalculation:(BOOL)a5
+- (void)_renderTimeRangeOfSegments:(id)segments withDuration:(double)duration needsWaveformCalculation:(BOOL)calculation
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = segments.var1;
+  var0 = segments.var0;
   if ((atomic_load_explicit(&qword_82318, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_82318))
   {
     v95 = +[RCRecorderStyleProvider sharedStyleProvider];
@@ -615,8 +615,8 @@
   }
 
   v8 = *v7;
-  v9 = [(RCWaveformRenderer *)self view];
-  [v9 bounds];
+  view = [(RCWaveformRenderer *)self view];
+  [view bounds];
   v11 = v10;
   v13 = v12;
 
@@ -628,8 +628,8 @@
     {
       if (self->_calcBlockShouldRefreshAllSlices)
       {
-        v16 = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
-        v17 = [v16 count] == 0;
+        waveformAmpSlicesForRendering = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
+        v17 = [waveformAmpSlicesForRendering count] == 0;
       }
 
       else
@@ -637,8 +637,8 @@
         v17 = 0;
       }
 
-      v18 = [(RCWaveformRenderer *)self view];
-      [v18 frame];
+      view2 = [(RCWaveformRenderer *)self view];
+      [view2 frame];
       v20 = v19;
 
       v21 = +[RCRecorderStyleProvider sharedStyleProvider];
@@ -672,7 +672,7 @@ LABEL_22:
       {
         v28.f64[0] = var0;
         v28.f64[1] = var1;
-        v29 = vdupq_lane_s64(*&a4, 0);
+        v29 = vdupq_lane_s64(*&duration, 0);
         v30 = vbslq_s8(vcgtq_f64(v29, v28), v28, v29);
         v31 = vbicq_s8(v30, vcltzq_f64(v30));
       }
@@ -777,7 +777,7 @@ LABEL_31:
       }
 
 LABEL_39:
-      if (a5)
+      if (calculation)
       {
 LABEL_41:
         v135[1] = 3221225472;
@@ -817,14 +817,14 @@ LABEL_41:
         }
 
 LABEL_45:
-        v55 = [(RCWaveformRenderer *)self view];
-        v56 = [v55 waveformLayer];
+        view3 = [(RCWaveformRenderer *)self view];
+        waveformLayer = [view3 waveformLayer];
 
-        v57 = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
+        waveformAmpSlicesForRendering2 = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
         if (self->_isOverview)
         {
-          v58 = [(RCWaveformRenderer *)self renderReadyForDraw];
-          if (!v56)
+          renderReadyForDraw = [(RCWaveformRenderer *)self renderReadyForDraw];
+          if (!waveformLayer)
           {
             goto LABEL_83;
           }
@@ -832,8 +832,8 @@ LABEL_45:
 
         else
         {
-          v58 = 1;
-          if (!v56)
+          renderReadyForDraw = 1;
+          if (!waveformLayer)
           {
 LABEL_83:
 
@@ -841,30 +841,30 @@ LABEL_83:
           }
         }
 
-        if ((([v57 count] != 0) & v58) == 1)
+        if ((([waveformAmpSlicesForRendering2 count] != 0) & renderReadyForDraw) == 1)
         {
-          v59 = [(RCWaveformRenderer *)self traitCollection];
-          v60 = [v59 isUserInterfaceStyleDark];
+          traitCollection = [(RCWaveformRenderer *)self traitCollection];
+          isUserInterfaceStyleDark = [traitCollection isUserInterfaceStyleDark];
 
           v61 = +[RCRecorderStyleProvider sharedStyleProvider];
           v118 = v61;
           if (self->_isRecordWaveform)
           {
-            v62 = [v61 waveformRecordingColor];
-            v63 = [v118 waveformStandardColor:v60];
-            v64 = v62;
+            waveformRecordingColor = [v61 waveformRecordingColor];
+            v63 = [v118 waveformStandardColor:isUserInterfaceStyleDark];
+            v64 = waveformRecordingColor;
           }
 
           else
           {
-            v63 = [v61 waveformStandardColor:v60];
+            v63 = [v61 waveformStandardColor:isUserInterfaceStyleDark];
             v64 = v63;
           }
 
           v65 = v63;
           if (self->_isOverview)
           {
-            if (v60)
+            if (isUserInterfaceStyleDark)
             {
               +[UIColor blackColor];
             }
@@ -948,7 +948,7 @@ LABEL_83:
           [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
           if (self->_isOverview)
           {
-            [v56 transform];
+            [waveformLayer transform];
             if (!CATransform3DIsIdentity(&v119))
             {
               v84 = *&CATransform3DIdentity.m33;
@@ -963,14 +963,14 @@ LABEL_83:
               v87 = *&CATransform3DIdentity.m23;
               *&v119.m21 = *&CATransform3DIdentity.m21;
               *&v119.m23 = v87;
-              [v56 setTransform:&v119];
-              v88 = [(RCWaveformRenderer *)self view];
-              [v88 bounds];
-              [v56 setFrame:?];
+              [waveformLayer setTransform:&v119];
+              view4 = [(RCWaveformRenderer *)self view];
+              [view4 bounds];
+              [waveformLayer setFrame:?];
             }
           }
 
-          (v81[2])(v81, v57, v56, v83);
+          (v81[2])(v81, waveformAmpSlicesForRendering2, waveformLayer, v83);
           +[CATransaction commit];
           self->_renderedTimeRange = waveformAmpSlicesForRenderingTimeRange;
           if (*(v131 + 24) == 1)
@@ -981,7 +981,7 @@ LABEL_83:
           *(&self->super.super.super.isa + v110) = 0;
           [(RCWaveformRenderer *)self setRenderReadyForDraw:0];
           [(RCWaveformRenderer *)self setWaitForFinalCalc:0];
-          [(RCWaveformRenderer *)self _nonCachedContentWidthWithDuration:a4];
+          [(RCWaveformRenderer *)self _nonCachedContentWidthWithDuration:duration];
           if (self->_cachedContentWidth != v89)
           {
             self->_cachedContentWidth = v89;
@@ -1022,8 +1022,8 @@ LABEL_40:
   beginTime = self->_waveformAmpSlicesForRenderingTimeRange.beginTime;
   endTime = self->_waveformAmpSlicesForRenderingTimeRange.endTime;
   waveformAmpSlicesForRenderingRecordStateChanged = self->_waveformAmpSlicesForRenderingRecordStateChanged;
-  v7 = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
-  v8 = [v7 count];
+  waveformAmpSlicesForRendering = [(RCWaveformRenderer *)self waveformAmpSlicesForRendering];
+  v8 = [waveformAmpSlicesForRendering count];
   v9 = v8 == 0;
   if (v8 && !waveformAmpSlicesForRenderingRecordStateChanged)
   {
@@ -1035,7 +1035,7 @@ LABEL_40:
   return v2;
 }
 
-- (void)_renderVisibleTimeRangeWithDuration:(double)a3
+- (void)_renderVisibleTimeRangeWithDuration:(double)duration
 {
   if ([(RCWaveformRenderer *)self _needsWaveformRendering]|| self->_needsVisibleRangeRendering)
   {
@@ -1078,34 +1078,34 @@ LABEL_40:
       }
     }
 
-    [(RCWaveformRenderer *)self _renderTimeRangeOfSegments:v6 withDuration:v8 needsWaveformCalculation:v10, a3];
+    [(RCWaveformRenderer *)self _renderTimeRangeOfSegments:v6 withDuration:v8 needsWaveformCalculation:v10, duration];
     self->_needsVisibleRangeRendering = 0;
   }
 }
 
-- (double)_pointOffsetForTime:(double)a3
+- (double)_pointOffsetForTime:(double)time
 {
-  v5 = [(RCWaveformRenderer *)self view];
-  [v5 bounds];
+  view = [(RCWaveformRenderer *)self view];
+  [view bounds];
   v7 = v6;
 
-  v8 = [(RCWaveformRenderer *)self rendererDelegate];
-  [v8 desiredTimeDeltaForVisibleTimeRange];
+  rendererDelegate = [(RCWaveformRenderer *)self rendererDelegate];
+  [rendererDelegate desiredTimeDeltaForVisibleTimeRange];
   v10 = v9;
 
   result = 0.0;
   if (v10 > 0.0)
   {
-    return v7 / v10 * a3;
+    return v7 / v10 * time;
   }
 
   return result;
 }
 
-- (double)_timeForPointOffset:(double)a3 withVisibleTimeRange:(id)a4
+- (double)_timeForPointOffset:(double)offset withVisibleTimeRange:(id)range
 {
-  [(RCWaveformRenderer *)self pointsPerSecondWithVisibleTimeRange:a4.var0, a4.var1];
-  v6 = a3 / v5;
+  [(RCWaveformRenderer *)self pointsPerSecondWithVisibleTimeRange:range.var0, range.var1];
+  v6 = offset / v5;
   v7 = v5 == 0.0;
   result = 0.0;
   if (!v7)
@@ -1116,9 +1116,9 @@ LABEL_40:
   return result;
 }
 
-- (void)_performOrDispatchToMainThread:(id)a3
+- (void)_performOrDispatchToMainThread:(id)thread
 {
-  block = a3;
+  block = thread;
   if (+[NSThread isMainThread])
   {
     block[2](block);

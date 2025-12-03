@@ -1,17 +1,17 @@
 @interface _LTLanguageStatusMulticaster
 + (id)shared;
-- (BOOL)_connectObserverIfNeeded:(id)a3;
+- (BOOL)_connectObserverIfNeeded:(id)needed;
 - (_LTLanguageStatusMulticaster)init;
 - (id)_currentObservers;
-- (void)_closeConnectionForObserver:(id)a3;
-- (void)_didEnterBackground:(id)a3;
-- (void)_didEnterForeground:(id)a3;
-- (void)_multicastObservations:(id)a3 taskHint:(int64_t)a4 progress:(BOOL)a5;
-- (void)_reconnectIfStreamingWithConnectionIdentifier:(id)a3 taskHint:(int64_t)a4 useDedicatedMachPort:(BOOL)a5;
+- (void)_closeConnectionForObserver:(id)observer;
+- (void)_didEnterBackground:(id)background;
+- (void)_didEnterForeground:(id)foreground;
+- (void)_multicastObservations:(id)observations taskHint:(int64_t)hint progress:(BOOL)progress;
+- (void)_reconnectIfStreamingWithConnectionIdentifier:(id)identifier taskHint:(int64_t)hint useDedicatedMachPort:(BOOL)port;
 - (void)_removeAllObservers;
-- (void)_removeObserver:(id)a3 forceCloseConnection:(BOOL)a4;
-- (void)_replayLastObservationsOnHeartbeat:(double)a3;
-- (void)addObserver:(id)a3;
+- (void)_removeObserver:(id)observer forceCloseConnection:(BOOL)connection;
+- (void)_replayLastObservationsOnHeartbeat:(double)heartbeat;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 @end
 
@@ -40,9 +40,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     statusObservers = v2->_statusObservers;
-    v2->_statusObservers = v5;
+    v2->_statusObservers = strongToWeakObjectsMapTable;
 
     v7 = objc_opt_new();
     lastStatusObservations = v2->_lastStatusObservations;
@@ -53,11 +53,11 @@
     v2->_connectionIdentifiers = v9;
 
     [(_LTLanguageStatusMulticaster *)v2 _replayLastObservationsOnHeartbeat:15.0];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel__didEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
 
     v13 = v2;
   }
@@ -97,9 +97,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -107,20 +107,20 @@
   block[2] = __44___LTLanguageStatusMulticaster_addObserver___block_invoke;
   block[3] = &unk_278B6CD08;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_removeObserver:(id)a3 forceCloseConnection:(BOOL)a4
+- (void)_removeObserver:(id)observer forceCloseConnection:(BOOL)connection
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 taskHint];
-  v9 = [v6 useDedicatedMachPort];
+  observerCopy = observer;
+  identifier = [observerCopy identifier];
+  taskHint = [observerCopy taskHint];
+  useDedicatedMachPort = [observerCopy useDedicatedMachPort];
 
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -129,45 +129,45 @@
   block[2] = __69___LTLanguageStatusMulticaster__removeObserver_forceCloseConnection___block_invoke;
   block[3] = &unk_278B6D100;
   objc_copyWeak(v14, &location);
-  v15 = a4;
-  v13 = v7;
-  v14[1] = v8;
-  v16 = v9;
-  v11 = v7;
+  connectionCopy = connection;
+  v13 = identifier;
+  v14[1] = taskHint;
+  v16 = useDedicatedMachPort;
+  v11 = identifier;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_connectObserverIfNeeded:(id)a3
+- (BOOL)_connectObserverIfNeeded:(id)needed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (neededCopy)
   {
-    v5 = _keyForObserver(v4);
+    v5 = _keyForObserver(neededCopy);
     v6 = [(NSMutableDictionary *)self->_connectionIdentifiers objectForKeyedSubscript:v5];
 
     v7 = v6 == 0;
     if (!v6)
     {
-      v8 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       v9 = _LTOSLogAssetObservation();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = v9;
-        v11 = [v4 identifier];
+        identifier = [neededCopy identifier];
         v14 = 138543618;
-        v15 = v11;
+        v15 = identifier;
         v16 = 2114;
-        v17 = v8;
+        v17 = uUID;
         _os_log_impl(&dword_23AAF5000, v10, OS_LOG_TYPE_INFO, "Starting/resuming connection for identifier %{public}@; connectionID: %{public}@", &v14, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_connectionIdentifiers setObject:v8 forKeyedSubscript:v5];
-      -[_LTLanguageStatusMulticaster _startWithConnectionIdentifier:taskHint:useDedicatedMachPort:](self, "_startWithConnectionIdentifier:taskHint:useDedicatedMachPort:", v8, [v4 taskHint], objc_msgSend(v4, "useDedicatedMachPort"));
+      [(NSMutableDictionary *)self->_connectionIdentifiers setObject:uUID forKeyedSubscript:v5];
+      -[_LTLanguageStatusMulticaster _startWithConnectionIdentifier:taskHint:useDedicatedMachPort:](self, "_startWithConnectionIdentifier:taskHint:useDedicatedMachPort:", uUID, [neededCopy taskHint], objc_msgSend(neededCopy, "useDedicatedMachPort"));
     }
   }
 
@@ -180,16 +180,16 @@
   return v7;
 }
 
-- (void)_closeConnectionForObserver:(id)a3
+- (void)_closeConnectionForObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v7 = [v4 identifier];
-    v5 = [v4 taskHint];
-    v6 = [v4 useDedicatedMachPort];
+    observerCopy = observer;
+    identifier = [observerCopy identifier];
+    taskHint = [observerCopy taskHint];
+    useDedicatedMachPort = [observerCopy useDedicatedMachPort];
 
-    [(_LTLanguageStatusMulticaster *)self _closeConnectionForced:1 forIdentifier:v7 taskHint:v5 useDedicatedMachPort:v6];
+    [(_LTLanguageStatusMulticaster *)self _closeConnectionForced:1 forIdentifier:identifier taskHint:taskHint useDedicatedMachPort:useDedicatedMachPort];
   }
 }
 
@@ -197,13 +197,13 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMapTable *)self->_statusObservers objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_statusObservers objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -214,25 +214,25 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v3 addObject:*(*(&v12 + 1) + 8 * i)];
+        [array addObject:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)_didEnterForeground:(id)a3
+- (void)_didEnterForeground:(id)foreground
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -246,7 +246,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -260,9 +260,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_multicastObservations:(id)a3 taskHint:(int64_t)a4 progress:(BOOL)a5
+- (void)_multicastObservations:(id)observations taskHint:(int64_t)hint progress:(BOOL)progress
 {
-  v8 = a3;
+  observationsCopy = observations;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -270,28 +270,28 @@
   block[2] = __73___LTLanguageStatusMulticaster__multicastObservations_taskHint_progress___block_invoke;
   block[3] = &unk_278B6D150;
   objc_copyWeak(v13, &location);
-  v12 = v8;
-  v13[1] = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = observationsCopy;
+  v13[1] = hint;
+  progressCopy = progress;
+  v10 = observationsCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_replayLastObservationsOnHeartbeat:(double)a3
+- (void)_replayLastObservationsOnHeartbeat:(double)heartbeat
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = _LTOSLogAssetObservation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    heartbeatCopy = heartbeat;
     _os_log_impl(&dword_23AAF5000, v5, OS_LOG_TYPE_DEFAULT, "Schedule replay of last language status observationsin in %fs", buf, 0xCu);
   }
 
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (heartbeat * 1000000000.0));
   objc_initWeak(buf, self);
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -299,19 +299,19 @@
   v9[2] = __67___LTLanguageStatusMulticaster__replayLastObservationsOnHeartbeat___block_invoke;
   v9[3] = &unk_278B6D178;
   objc_copyWeak(v10, buf);
-  v10[1] = *&a3;
+  v10[1] = *&heartbeat;
   dispatch_after(v6, queue, v9);
   objc_destroyWeak(v10);
   objc_destroyWeak(buf);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reconnectIfStreamingWithConnectionIdentifier:(id)a3 taskHint:(int64_t)a4 useDedicatedMachPort:(BOOL)a5
+- (void)_reconnectIfStreamingWithConnectionIdentifier:(id)identifier taskHint:(int64_t)hint useDedicatedMachPort:(BOOL)port
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_connectionIdentifiers allValues];
-  v10 = [v9 containsObject:v8];
+  identifierCopy = identifier;
+  allValues = [(NSMutableDictionary *)self->_connectionIdentifiers allValues];
+  v10 = [allValues containsObject:identifierCopy];
 
   if (v10)
   {
@@ -319,7 +319,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v19 = v8;
+      v19 = identifierCopy;
       _os_log_impl(&dword_23AAF5000, v11, OS_LOG_TYPE_INFO, "Reconnecting language status observation connection %{public}@", buf, 0xCu);
     }
 
@@ -330,9 +330,9 @@
     v14[2] = __108___LTLanguageStatusMulticaster__reconnectIfStreamingWithConnectionIdentifier_taskHint_useDedicatedMachPort___block_invoke;
     v14[3] = &unk_278B6D150;
     objc_copyWeak(v16, buf);
-    v15 = v8;
-    v16[1] = a4;
-    v17 = a5;
+    v15 = identifierCopy;
+    v16[1] = hint;
+    portCopy = port;
     dispatch_async(queue, v14);
 
     objc_destroyWeak(v16);

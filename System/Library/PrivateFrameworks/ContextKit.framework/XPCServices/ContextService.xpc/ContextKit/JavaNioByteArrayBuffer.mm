@@ -1,19 +1,19 @@
 @interface JavaNioByteArrayBuffer
-- (JavaNioByteArrayBuffer)initWithByteArray:(id)a3;
+- (JavaNioByteArrayBuffer)initWithByteArray:(id)array;
 - (char)get;
-- (char)getWithInt:(int)a3;
+- (char)getWithInt:(int)int;
 - (double)getDouble;
 - (float)getFloat;
 - (id)compact;
 - (id)protectedArray;
-- (id)putCharWithChar:(unsigned __int16)a3;
-- (id)putDoubleWithDouble:(double)a3;
-- (id)putFloatWithFloat:(float)a3;
-- (id)putIntWithInt:(int)a3;
-- (id)putLongWithLong:(int64_t)a3;
-- (id)putShortWithShort:(signed __int16)a3;
-- (id)putWithByte:(char)a3;
-- (id)putWithInt:(int)a3 withByte:(char)a4;
+- (id)putCharWithChar:(unsigned __int16)char;
+- (id)putDoubleWithDouble:(double)double;
+- (id)putFloatWithFloat:(float)float;
+- (id)putIntWithInt:(int)int;
+- (id)putLongWithLong:(int64_t)long;
+- (id)putShortWithShort:(signed __int16)short;
+- (id)putWithByte:(char)byte;
+- (id)putWithInt:(int)int withByte:(char)byte;
 - (id)slice;
 - (int)protectedArrayOffset;
 - (signed)getShort;
@@ -25,14 +25,14 @@
 
 @implementation JavaNioByteArrayBuffer
 
-- (JavaNioByteArrayBuffer)initWithByteArray:(id)a3
+- (JavaNioByteArrayBuffer)initWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  sub_1002102C0(self, *(a3 + 2), a3, 0, 0, v3, v4, v5);
+  sub_1002102C0(self, *(array + 2), array, 0, 0, v3, v4, v5);
   return self;
 }
 
@@ -53,13 +53,13 @@
 
 - (id)slice
 {
-  v3 = [(JavaNioBuffer *)self remaining];
+  remaining = [(JavaNioBuffer *)self remaining];
   backingArray = self->backingArray_;
   arrayOffset = self->arrayOffset_;
   position = self->super.super.position_;
   isReadOnly = self->isReadOnly_;
   v8 = [JavaNioByteArrayBuffer alloc];
-  sub_1002102C0(v8, v3, backingArray, (position + arrayOffset), isReadOnly, v9, v10, v11);
+  sub_1002102C0(v8, remaining, backingArray, (position + arrayOffset), isReadOnly, v9, v10, v11);
 
   return v8;
 }
@@ -113,7 +113,7 @@
   return *(&backingArray->super.size_ + v6 + 4);
 }
 
-- (char)getWithInt:(int)a3
+- (char)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   backingArray = self->backingArray_;
@@ -123,7 +123,7 @@
   }
 
   size = backingArray->super.size_;
-  v7 = (self->arrayOffset_ + a3);
+  v7 = (self->arrayOffset_ + int);
   if (v7 < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
@@ -156,16 +156,16 @@
 
 - (unint64_t)getLong
 {
-  v1 = *(a1 + 20);
+  v1 = *(self + 20);
   v2 = v1 + 8;
-  if (v1 + 8 > *(a1 + 12))
+  if (v1 + 8 > *(self + 12))
   {
     v5 = new_JavaNioBufferUnderflowException_init();
     objc_exception_throw(v5);
   }
 
-  result = LibcoreIoMemory_peekLongWithByteArray_withInt_withJavaNioByteOrder_(*(a1 + 48), (*(a1 + 56) + v1), *(a1 + 40));
-  *(a1 + 20) = v2;
+  result = LibcoreIoMemory_peekLongWithByteArray_withInt_withJavaNioByteOrder_(*(self + 48), (*(self + 56) + v1), *(self + 40));
+  *(self + 20) = v2;
   return result;
 }
 
@@ -178,16 +178,16 @@
 
 - (uint64_t)getInt
 {
-  v1 = *(a1 + 20);
+  v1 = *(self + 20);
   v2 = v1 + 4;
-  if (v1 + 4 > *(a1 + 12))
+  if (v1 + 4 > *(self + 12))
   {
     v5 = new_JavaNioBufferUnderflowException_init();
     objc_exception_throw(v5);
   }
 
-  result = LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(*(a1 + 48), (*(a1 + 56) + v1), *(a1 + 40));
-  *(a1 + 20) = v2;
+  result = LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(*(self + 48), (*(self + 56) + v1), *(self + 40));
+  *(self + 20) = v2;
   return result;
 }
 
@@ -206,7 +206,7 @@
   return result;
 }
 
-- (id)putWithByte:(char)a3
+- (id)putWithByte:(char)byte
 {
   if (self->isReadOnly_)
   {
@@ -237,11 +237,11 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(size, (arrayOffset + position));
   }
 
-  *(&backingArray->super.size_ + v8 + 4) = a3;
+  *(&backingArray->super.size_ + v8 + 4) = byte;
   return self;
 }
 
-- (id)putWithInt:(int)a3 withByte:(char)a4
+- (id)putWithInt:(int)int withByte:(char)byte
 {
   if (self->isReadOnly_)
   {
@@ -257,17 +257,17 @@ LABEL_11:
   }
 
   size = backingArray->super.size_;
-  v9 = (self->arrayOffset_ + a3);
+  v9 = (self->arrayOffset_ + int);
   if (v9 < 0 || v9 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v9);
   }
 
-  *(&backingArray->super.size_ + v9 + 4) = a4;
+  *(&backingArray->super.size_ + v9 + 4) = byte;
   return self;
 }
 
-- (id)putCharWithChar:(unsigned __int16)a3
+- (id)putCharWithChar:(unsigned __int16)char
 {
   if (self->isReadOnly_)
   {
@@ -284,26 +284,26 @@ LABEL_6:
     objc_exception_throw(OnlyBufferException_init);
   }
 
-  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), a3, self->super.order_);
+  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), char, self->super.order_);
   self->super.super.position_ = v5;
   return self;
 }
 
-- (id)putDoubleWithDouble:(double)a3
+- (id)putDoubleWithDouble:(double)double
 {
-  v4 = JavaLangDouble_doubleToRawLongBitsWithDouble_(a3);
+  v4 = JavaLangDouble_doubleToRawLongBitsWithDouble_(double);
 
   return [(JavaNioByteArrayBuffer *)self putLongWithLong:v4];
 }
 
-- (id)putFloatWithFloat:(float)a3
+- (id)putFloatWithFloat:(float)float
 {
-  v4 = JavaLangFloat_floatToRawIntBitsWithFloat_(a3);
+  v4 = JavaLangFloat_floatToRawIntBitsWithFloat_(float);
 
   return [(JavaNioByteArrayBuffer *)self putIntWithInt:v4];
 }
 
-- (id)putIntWithInt:(int)a3
+- (id)putIntWithInt:(int)int
 {
   if (self->isReadOnly_)
   {
@@ -320,12 +320,12 @@ LABEL_6:
     objc_exception_throw(OnlyBufferException_init);
   }
 
-  LibcoreIoMemory_pokeIntWithByteArray_withInt_withInt_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), a3, self->super.order_);
+  LibcoreIoMemory_pokeIntWithByteArray_withInt_withInt_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), int, self->super.order_);
   self->super.super.position_ = v5;
   return self;
 }
 
-- (id)putLongWithLong:(int64_t)a3
+- (id)putLongWithLong:(int64_t)long
 {
   if (self->isReadOnly_)
   {
@@ -342,12 +342,12 @@ LABEL_6:
     objc_exception_throw(OnlyBufferException_init);
   }
 
-  LibcoreIoMemory_pokeLongWithByteArray_withInt_withLong_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), a3, self->super.order_);
+  LibcoreIoMemory_pokeLongWithByteArray_withInt_withLong_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), long, self->super.order_);
   self->super.super.position_ = v5;
   return self;
 }
 
-- (id)putShortWithShort:(signed __int16)a3
+- (id)putShortWithShort:(signed __int16)short
 {
   if (self->isReadOnly_)
   {
@@ -364,7 +364,7 @@ LABEL_6:
     objc_exception_throw(OnlyBufferException_init);
   }
 
-  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), a3, self->super.order_);
+  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(self->backingArray_, (self->arrayOffset_ + position), short, self->super.order_);
   self->super.super.position_ = v5;
   return self;
 }

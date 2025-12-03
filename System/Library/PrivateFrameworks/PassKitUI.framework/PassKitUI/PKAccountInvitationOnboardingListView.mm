@@ -1,15 +1,15 @@
 @interface PKAccountInvitationOnboardingListView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountInvitationOnboardingListView)initWithConfigurations:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountInvitationOnboardingListView)initWithConfigurations:(id)configurations;
 - (void)layoutSubviews;
 @end
 
 @implementation PKAccountInvitationOnboardingListView
 
-- (PKAccountInvitationOnboardingListView)initWithConfigurations:(id)a3
+- (PKAccountInvitationOnboardingListView)initWithConfigurations:(id)configurations
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationsCopy = configurations;
   v21.receiver = self;
   v21.super_class = PKAccountInvitationOnboardingListView;
   v5 = [(PKAccountInvitationOnboardingListView *)&v21 init];
@@ -20,7 +20,7 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = configurationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -59,10 +59,10 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
@@ -87,9 +87,9 @@
         v12 = *(*(&v17 + 1) + 8 * i);
         [v12 sizeThatFits:{width, height, v17}];
         v10 = v10 + v13;
-        v14 = [(NSArray *)self->_listContentViews firstObject];
+        firstObject = [(NSArray *)self->_listContentViews firstObject];
 
-        if (v12 != v14)
+        if (v12 != firstObject)
         {
           v10 = v10 + 10.0;
         }
@@ -148,9 +148,9 @@
         [v12 sizeThatFits:{remainder.size.width, remainder.size.height, v15}];
         CGRectDivide(remainder, &slice, &remainder, v13, CGRectMinYEdge);
         [v12 setFrame:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
-        v14 = [(NSArray *)self->_listContentViews lastObject];
+        lastObject = [(NSArray *)self->_listContentViews lastObject];
 
-        if (v12 != v14)
+        if (v12 != lastObject)
         {
           CGRectDivide(remainder, &slice, &remainder, 10.0, CGRectMinYEdge);
         }

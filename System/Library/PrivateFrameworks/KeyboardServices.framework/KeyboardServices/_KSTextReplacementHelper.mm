@@ -1,76 +1,76 @@
 @interface _KSTextReplacementHelper
 + (id)appleLanguagesPreference;
-+ (id)errorStringForCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 failedAdds:(id)a4 failedDeletes:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 forEntry:(id)a4;
++ (id)errorStringForCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code description:(id)description;
++ (id)errorWithCode:(int64_t)code failedAdds:(id)adds failedDeletes:(id)deletes;
++ (id)errorWithCode:(int64_t)code forEntry:(id)entry;
 + (id)fetchConfigurationPlist;
-+ (id)multipleAddErrors:(id)a3 removeErrors:(id)a4;
++ (id)multipleAddErrors:(id)errors removeErrors:(id)removeErrors;
 + (id)sampleShortcut;
-+ (id)textReplaceEntryFromTIDictionaryValue:(id)a3;
-+ (id)transactionFromTextReplacementEntry:(id)a3 forDelete:(BOOL)a4;
-+ (int64_t)validateTextReplacement:(id)a3;
-+ (void)extractAggdMetricsForTextReplacement:(id)a3;
++ (id)textReplaceEntryFromTIDictionaryValue:(id)value;
++ (id)transactionFromTextReplacementEntry:(id)entry forDelete:(BOOL)delete;
++ (int64_t)validateTextReplacement:(id)replacement;
++ (void)extractAggdMetricsForTextReplacement:(id)replacement;
 + (void)fetchConfigurationPlistIfNeeded;
-+ (void)logAggdValueForSyncIsPull:(BOOL)a3 success:(BOOL)a4;
-+ (void)logPhraseWordCount:(int64_t)a3;
++ (void)logAggdValueForSyncIsPull:(BOOL)pull success:(BOOL)success;
++ (void)logPhraseWordCount:(int64_t)count;
 @end
 
 @implementation _KSTextReplacementHelper
 
-+ (id)errorStringForCode:(int64_t)a3
++ (id)errorStringForCode:(int64_t)code
 {
-  if ((a3 + 2) > 0xE)
+  if ((code + 2) > 0xE)
   {
     return @"_KSTextReplacementErrorNone";
   }
 
   else
   {
-    return off_2797F75A0[a3 + 2];
+    return off_2797F75A0[code + 2];
   }
 }
 
-+ (id)textReplaceEntryFromTIDictionaryValue:(id)a3
++ (id)textReplaceEntryFromTIDictionaryValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(_KSTextReplacementEntry);
-  v5 = [v3 phrase];
-  [(_KSTextReplacementEntry *)v4 setPhrase:v5];
+  phrase = [valueCopy phrase];
+  [(_KSTextReplacementEntry *)v4 setPhrase:phrase];
 
-  v6 = [v3 shortcut];
-  [(_KSTextReplacementEntry *)v4 setShortcut:v6];
+  shortcut = [valueCopy shortcut];
+  [(_KSTextReplacementEntry *)v4 setShortcut:shortcut];
 
-  v7 = [v3 timestamp];
+  timestamp = [valueCopy timestamp];
 
-  [(_KSTextReplacementEntry *)v4 setTimestamp:v7];
+  [(_KSTextReplacementEntry *)v4 setTimestamp:timestamp];
 
   return v4;
 }
 
-+ (id)transactionFromTextReplacementEntry:(id)a3 forDelete:(BOOL)a4
++ (id)transactionFromTextReplacementEntry:(id)entry forDelete:(BOOL)delete
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = objc_alloc_init(_KSTIUserDictionaryEntryValue);
-  v7 = [v5 phrase];
-  [(_KSTIUserDictionaryEntryValue *)v6 setPhrase:v7];
+  phrase = [entryCopy phrase];
+  [(_KSTIUserDictionaryEntryValue *)v6 setPhrase:phrase];
 
-  v8 = [v5 shortcut];
-  if (!v8 || (v9 = v8, [v5 shortcut], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", &stru_286796E30), v10, v9, v11))
+  shortcut = [entryCopy shortcut];
+  if (!shortcut || (v9 = shortcut, [entryCopy shortcut], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", &stru_286796E30), v10, v9, v11))
   {
-    v12 = [v5 phrase];
-    [v5 setShortcut:v12];
+    phrase2 = [entryCopy phrase];
+    [entryCopy setShortcut:phrase2];
   }
 
-  v13 = [v5 shortcut];
-  [(_KSTIUserDictionaryEntryValue *)v6 setShortcut:v13];
+  shortcut2 = [entryCopy shortcut];
+  [(_KSTIUserDictionaryEntryValue *)v6 setShortcut:shortcut2];
 
-  v14 = [v5 timestamp];
-  [(_KSTIUserDictionaryEntryValue *)v6 setTimestamp:v14];
+  timestamp = [entryCopy timestamp];
+  [(_KSTIUserDictionaryEntryValue *)v6 setTimestamp:timestamp];
 
   v15 = objc_alloc_init(_KSTIUserDictionaryTransaction);
   v16 = v15;
-  if (a4)
+  if (delete)
   {
     [(_KSTIUserDictionaryTransaction *)v15 setValueToDelete:v6];
   }
@@ -83,19 +83,19 @@
   return v16;
 }
 
-+ (int64_t)validateTextReplacement:(id)a3
++ (int64_t)validateTextReplacement:(id)replacement
 {
-  v3 = a3;
-  v4 = [v3 phrase];
-  v5 = [v3 shortcut];
+  replacementCopy = replacement;
+  phrase = [replacementCopy phrase];
+  shortcut = [replacementCopy shortcut];
 
-  v6 = [v4 length] == 0;
-  if ([v4 length] > 0x7D0)
+  v6 = [phrase length] == 0;
+  if ([phrase length] > 0x7D0)
   {
     v6 = 3;
   }
 
-  if ([v5 length] > 0x7D0)
+  if ([shortcut length] > 0x7D0)
   {
     v6 = 5;
   }
@@ -105,14 +105,14 @@
     goto LABEL_6;
   }
 
-  v9 = [v4 _containsIdeographicCharacters];
+  _containsIdeographicCharacters = [phrase _containsIdeographicCharacters];
   v10 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@" "];
-  v11 = [v4 stringByTrimmingCharactersInSet:v10];
+  v11 = [phrase stringByTrimmingCharactersInSet:v10];
   v12 = [v11 length];
 
   if (v12)
   {
-    if ([v5 length])
+    if ([shortcut length])
     {
       v13 = 0;
     }
@@ -123,12 +123,12 @@
     }
 
     v14 = !v13;
-    if ((v14 | v9))
+    if ((v14 | _containsIdeographicCharacters))
     {
-      if (v5)
+      if (shortcut)
       {
-        v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v16 = [v5 rangeOfCharacterFromSet:v15];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        v16 = [shortcut rangeOfCharacterFromSet:whitespaceCharacterSet];
 
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -137,30 +137,30 @@
         }
       }
 
-      if ([v5 _containsEmoji])
+      if ([shortcut _containsEmoji])
       {
         v6 = 7;
       }
 
       else
       {
-        v17 = [v5 _containsCJKSymbolsAndPunctuation];
-        if (v17 & 1) != 0 || ((v9 ^ 1))
+        _containsCJKSymbolsAndPunctuation = [shortcut _containsCJKSymbolsAndPunctuation];
+        if (_containsCJKSymbolsAndPunctuation & 1) != 0 || ((_containsIdeographicCharacters ^ 1))
         {
-          if (v17)
+          if (_containsCJKSymbolsAndPunctuation)
           {
             v6 = 8;
             goto LABEL_6;
           }
         }
 
-        else if (![v5 length])
+        else if (![shortcut length])
         {
           v6 = 9;
           goto LABEL_6;
         }
 
-        if (![v5 _containsIdeographicCharacters])
+        if (![shortcut _containsIdeographicCharacters])
         {
           v6 = 0;
           goto LABEL_9;
@@ -192,87 +192,87 @@ LABEL_9:
   return v6;
 }
 
-+ (id)errorWithCode:(int64_t)a3 forEntry:(id)a4
++ (id)errorWithCode:(int64_t)code forEntry:(id)entry
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v12 = @"_KSTextReplacementEntryDidFailErrorKey";
-  v13[0] = a4;
+  v13[0] = entry;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  entryCopy = entry;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"KSTextReplacementErrorDomain" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"KSTextReplacementErrorDomain" code:code userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4
++ (id)errorWithCode:(int64_t)code description:(id)description
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v12 = *MEMORY[0x277CCA470];
-  v13[0] = a4;
+  v13[0] = description;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  descriptionCopy = description;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"KSTextReplacementErrorDomain" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"KSTextReplacementErrorDomain" code:code userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (id)errorWithCode:(int64_t)a3 failedAdds:(id)a4 failedDeletes:(id)a5
++ (id)errorWithCode:(int64_t)code failedAdds:(id)adds failedDeletes:(id)deletes
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v7 count])
+  addsCopy = adds;
+  deletesCopy = deletes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([addsCopy count])
   {
-    [v9 setObject:v7 forKeyedSubscript:@"_KSTextReplacementUpdateDidFailEntriesKey"];
+    [dictionary setObject:addsCopy forKeyedSubscript:@"_KSTextReplacementUpdateDidFailEntriesKey"];
   }
 
-  if ([v8 count])
+  if ([deletesCopy count])
   {
-    [v9 setObject:v8 forKeyedSubscript:@"_KSTextReplacementDeleteDidFailEntriesKey"];
+    [dictionary setObject:deletesCopy forKeyedSubscript:@"_KSTextReplacementDeleteDidFailEntriesKey"];
   }
 
-  v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"KSTextReplacementErrorDomain" code:a3 userInfo:v9];
+  v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"KSTextReplacementErrorDomain" code:code userInfo:dictionary];
 
   return v10;
 }
 
-+ (id)multipleAddErrors:(id)a3 removeErrors:(id)a4
++ (id)multipleAddErrors:(id)errors removeErrors:(id)removeErrors
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v5 count])
+  errorsCopy = errors;
+  removeErrorsCopy = removeErrors;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([errorsCopy count])
   {
-    [v7 setObject:v5 forKeyedSubscript:@"_KSTextReplacementUpdateDidFailErrorsKey"];
+    [dictionary setObject:errorsCopy forKeyedSubscript:@"_KSTextReplacementUpdateDidFailErrorsKey"];
   }
 
-  if ([v6 count])
+  if ([removeErrorsCopy count])
   {
-    [v7 setObject:v6 forKeyedSubscript:@"_KSTextReplacementDeleteDidFailErrorsKey"];
+    [dictionary setObject:removeErrorsCopy forKeyedSubscript:@"_KSTextReplacementDeleteDidFailErrorsKey"];
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"KSTextReplacementErrorDomain" code:11 userInfo:v7];
+  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"KSTextReplacementErrorDomain" code:11 userInfo:dictionary];
 
   return v8;
 }
 
-+ (void)extractAggdMetricsForTextReplacement:(id)a3
++ (void)extractAggdMetricsForTextReplacement:(id)replacement
 {
-  v4 = a3;
-  v5 = [v4 phrase];
-  [a1 logPhraseWordCount:{objc_msgSend(v5, "wordCount")}];
+  replacementCopy = replacement;
+  phrase = [replacementCopy phrase];
+  [self logPhraseWordCount:{objc_msgSend(phrase, "wordCount")}];
 
-  v6 = [v4 shortcut];
+  shortcut = [replacementCopy shortcut];
 
-  v7 = [v6 length];
+  v7 = [shortcut length];
   if (!v7)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.phraseOnly", @"com.apple.keyboard.textReplacement"];
@@ -280,22 +280,22 @@ LABEL_9:
   }
 }
 
-+ (void)logPhraseWordCount:(int64_t)a3
++ (void)logPhraseWordCount:(int64_t)count
 {
   if (logPhraseWordCount__onceToken != -1)
   {
     +[_KSTextReplacementHelper logPhraseWordCount:];
   }
 
-  if ((a3 - 1) > 4)
+  if ((count - 1) > 4)
   {
     v5 = @"sixteenToInf";
-    if (a3 < 0x10)
+    if (count < 0x10)
     {
       v5 = @"elevenToFifteen";
     }
 
-    if (a3 >= 11)
+    if (count >= 11)
     {
       v4 = v5;
     }
@@ -316,13 +316,13 @@ LABEL_9:
   [_KSAggdLogger addValue:1 forDistributionKey:v6];
 }
 
-+ (void)logAggdValueForSyncIsPull:(BOOL)a3 success:(BOOL)a4
++ (void)logAggdValueForSyncIsPull:(BOOL)pull success:(BOOL)success
 {
-  v4 = a4;
-  v5 = a3;
+  successCopy = success;
+  pullCopy = pull;
   v6 = [MEMORY[0x277CCAB68] stringWithString:@"com.apple.keyboard.textReplacement"];
   v9 = v6;
-  if (v5)
+  if (pullCopy)
   {
     v7 = @".pull";
   }
@@ -333,7 +333,7 @@ LABEL_9:
   }
 
   [v6 appendString:v7];
-  if (v4)
+  if (successCopy)
   {
     v8 = @".success";
   }
@@ -381,8 +381,8 @@ LABEL_9:
   }
 
   v6 = MEMORY[0x277CCA8D8];
-  v7 = [v3 localizations];
-  v8 = [v6 preferredLocalizationsFromArray:v7 forPreferences:v5];
+  localizations = [v3 localizations];
+  v8 = [v6 preferredLocalizationsFromArray:localizations forPreferences:v5];
 
   NSLog(&cfstr_PreferredLocal.isa, v8);
   if ([v8 count])
@@ -418,9 +418,9 @@ LABEL_9:
   v3 = +[_KSUtilities userDefaultsSuiteName];
   v4 = [v2 initWithSuiteName:v3];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = [v4 objectForKey:@"configPullTime"];
-  [v5 timeIntervalSinceDate:v6];
+  [date timeIntervalSinceDate:v6];
   if (!v6 || fabs(v7) >= 86400.0)
   {
     v8 = +[_KSTextReplacementHelper fetchConfigurationPlist];
@@ -433,11 +433,11 @@ LABEL_9:
       v9 = v4;
       v14 = v9;
       [v8 enumerateKeysAndObjectsUsingBlock:v13];
-      v10 = [MEMORY[0x277CBEAA8] date];
-      [v9 setObject:v10 forKey:@"configPullTime"];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [v9 setObject:date2 forKey:@"configPullTime"];
 
-      v11 = [v8 allKeys];
-      if ([v11 containsObject:@"osxMajorVersForCloudKitSync"])
+      allKeys = [v8 allKeys];
+      if ([allKeys containsObject:@"osxMajorVersForCloudKitSync"])
       {
       }
 

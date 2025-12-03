@@ -6,9 +6,9 @@
 
 - (uint64_t)convertFrameInRect:()Frame
 {
-  [a1 bounds];
-  [a1 frame];
-  return [a1 interfaceOrientation];
+  [self bounds];
+  [self frame];
+  return [self interfaceOrientation];
 }
 
 @end

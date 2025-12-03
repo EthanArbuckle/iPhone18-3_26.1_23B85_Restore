@@ -1,9 +1,9 @@
 @interface LineSeriesAccessibilityElement
 - (AXChartDescriptor)accessibilityChartDescriptor;
 - (CGRect)accessibilityFrame;
-- (_TtC9TeaCharts30LineSeriesAccessibilityElement)initWithAccessibilityContainer:(id)a3;
-- (id)tc_accessibilityDataSeriesValueDescriptionForPosition:(double)a3 axis:(int64_t)a4;
-- (void)setAccessibilityChartDescriptor:(id)a3;
+- (_TtC9TeaCharts30LineSeriesAccessibilityElement)initWithAccessibilityContainer:(id)container;
+- (id)tc_accessibilityDataSeriesValueDescriptionForPosition:(double)position axis:(int64_t)axis;
+- (void)setAccessibilityChartDescriptor:(id)descriptor;
 @end
 
 @implementation LineSeriesAccessibilityElement
@@ -20,23 +20,23 @@
 
 - (AXChartDescriptor)accessibilityChartDescriptor
 {
-  v2 = self;
+  selfCopy = self;
   sub_26D16BDF0();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAccessibilityChartDescriptor:(id)a3
+- (void)setAccessibilityChartDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = self;
+  descriptorCopy = descriptor;
+  selfCopy = self;
 }
 
-- (id)tc_accessibilityDataSeriesValueDescriptionForPosition:(double)a3 axis:(int64_t)a4
+- (id)tc_accessibilityDataSeriesValueDescriptionForPosition:(double)position axis:(int64_t)axis
 {
-  v6 = self;
-  sub_26D16C604(a4, a3);
+  selfCopy = self;
+  sub_26D16C604(axis, position);
   v8 = v7;
 
   if (v8)
@@ -52,7 +52,7 @@
   return v9;
 }
 
-- (_TtC9TeaCharts30LineSeriesAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtC9TeaCharts30LineSeriesAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_26D1744D4();

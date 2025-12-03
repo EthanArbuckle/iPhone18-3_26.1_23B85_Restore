@@ -1,33 +1,33 @@
 @interface TSWPStorageMeasurer
-- (BOOL)containsStartOfRange:(_NSRange)a3;
+- (BOOL)containsStartOfRange:(_NSRange)range;
 - (CGPoint)anchorPoint;
 - (CGPoint)position;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)maxSize;
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3;
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5;
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags;
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags minSize:(CGSize)size maxSize:(CGSize)maxSize;
 - (CGSize)minSize;
-- (TSWPStorageMeasurer)initWithStorage:(id)a3;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
+- (TSWPStorageMeasurer)initWithStorage:(id)storage;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
 - (double)maxAnchorInBlockDirection;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (id)addPartitionableAttachmentLayout:(id)a3;
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)layoutForInlineDrawable:(id)a3;
-- (id)pLayoutWithMinSize:(CGSize)a3 maxSize:(CGSize)a4 anchor:(CGPoint)a5 flags:(unsigned int)a6;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)addPartitionableAttachmentLayout:(id)layout;
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (id)pLayoutWithMinSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(unsigned int)flags;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 @end
 
 @implementation TSWPStorageMeasurer
 
-- (TSWPStorageMeasurer)initWithStorage:(id)a3
+- (TSWPStorageMeasurer)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v8 = objc_msgSend_init(self, v6, v7);
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong((v8 + 8), a3);
+    objc_storeStrong((v8 + 8), storage);
     v10 = objc_opt_new();
     columns = v9->_columns;
     v9->_columns = v10;
@@ -36,21 +36,21 @@
   return v9;
 }
 
-- (id)pLayoutWithMinSize:(CGSize)a3 maxSize:(CGSize)a4 anchor:(CGPoint)a5 flags:(unsigned int)a6
+- (id)pLayoutWithMinSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(unsigned int)flags
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3.height;
-  v12 = a3.width;
-  if (objc_msgSend_length(self->_storage, a2, *&a6))
+  y = anchor.y;
+  x = anchor.x;
+  height = maxSize.height;
+  width = maxSize.width;
+  v11 = size.height;
+  v12 = size.width;
+  if (objc_msgSend_length(self->_storage, a2, *&flags))
   {
     self->_minSize.width = v12;
     self->_minSize.height = v11;
     self->_maxSize.width = width;
     self->_maxSize.height = height;
-    self->_flags = a6;
+    self->_flags = flags;
     self->_anchor.x = x;
     self->_anchor.y = y;
     v14 = [TSWPLayoutManager alloc];
@@ -97,11 +97,11 @@
   return v43;
 }
 
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = objc_msgSend_pLayoutWithMinSize_maxSize_anchor_flags_(self, a2, a3 | 0x1000, *MEMORY[0x277CBF3A8], v4, 4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  v5 = objc_msgSend_pLayoutWithMinSize_maxSize_anchor_flags_(self, a2, flags | 0x1000, *MEMORY[0x277CBF3A8], v4, 4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
   v8 = v5;
   if (v5)
   {
@@ -117,11 +117,11 @@
   return result;
 }
 
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags minSize:(CGSize)size maxSize:(CGSize)maxSize
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  v7 = objc_msgSend_pLayoutWithMinSize_maxSize_anchor_flags_(self, a2, a3 | 0x1000, a4.width, a4.height, a5.width, a5.height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  v7 = objc_msgSend_pLayoutWithMinSize_maxSize_anchor_flags_(self, a2, flags | 0x1000, size.width, size.height, maxSize.width, maxSize.height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
   v10 = v7;
   if (v7)
   {
@@ -137,19 +137,19 @@
   return result;
 }
 
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (objc_msgSend_supportsColumnStyles(self->_storage, a2, a3, a4))
+  if (objc_msgSend_supportsColumnStyles(self->_storage, a2, index, range))
   {
-    v6 = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(self->_storage, v5, 0, 0);
+    selfCopy = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(self->_storage, v5, 0, 0);
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (CGSize)minSize
@@ -188,7 +188,7 @@
   return result;
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -201,7 +201,7 @@
   return result;
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorageMeasurer layoutForInlineDrawable:]");
@@ -212,7 +212,7 @@
   return 0;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPStorageMeasurer validatedLayoutForAnchoredDrawable:]");
@@ -223,9 +223,9 @@
   return 0;
 }
 
-- (id)addPartitionableAttachmentLayout:(id)a3
+- (id)addPartitionableAttachmentLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSWPStorageMeasurer addPartitionableAttachmentLayout:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPText.mm");
@@ -245,7 +245,7 @@
   return v5 + v8;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -258,25 +258,25 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4;
+    *outWidth = width;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;
 }
 
-- (BOOL)containsStartOfRange:(_NSRange)a3
+- (BOOL)containsStartOfRange:(_NSRange)range
 {
-  location = a3.location;
-  v4 = objc_msgSend_columns(self, a2, a3.location, a3.length);
+  location = range.location;
+  v4 = objc_msgSend_columns(self, a2, range.location, range.length);
   v6 = objc_msgSend_rangeOfColumns_(TSWPColumn, v5, v4);
   v8 = v7;
 

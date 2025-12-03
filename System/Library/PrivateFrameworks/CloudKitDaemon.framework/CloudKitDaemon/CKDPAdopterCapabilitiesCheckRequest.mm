@@ -1,16 +1,16 @@
 @interface CKDPAdopterCapabilitiesCheckRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFieldLevelCapabilities:(id)a3;
-- (void)addRecordLevelCapabilities:(id)a3;
-- (void)addZoneLevelCapabilities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFieldLevelCapabilities:(id)capabilities;
+- (void)addRecordLevelCapabilities:(id)capabilities;
+- (void)addZoneLevelCapabilities:(id)capabilities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAdopterCapabilitiesCheckRequest
@@ -27,58 +27,58 @@
   return v3;
 }
 
-- (void)addZoneLevelCapabilities:(id)a3
+- (void)addZoneLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   zoneLevelCapabilities = self->_zoneLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!zoneLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zoneLevelCapabilities;
     self->_zoneLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     zoneLevelCapabilities = self->_zoneLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(zoneLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(zoneLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
-- (void)addRecordLevelCapabilities:(id)a3
+- (void)addRecordLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   recordLevelCapabilities = self->_recordLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!recordLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordLevelCapabilities;
     self->_recordLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     recordLevelCapabilities = self->_recordLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(recordLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(recordLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
-- (void)addFieldLevelCapabilities:(id)a3
+- (void)addFieldLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   fieldLevelCapabilities = self->_fieldLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!fieldLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fieldLevelCapabilities;
     self->_fieldLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     fieldLevelCapabilities = self->_fieldLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(fieldLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(fieldLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
 - (id)description
@@ -239,10 +239,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
@@ -363,18 +363,18 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v36 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v36, v4, zoneIdentifier);
+    objc_msgSend_setZoneIdentifier_(toCopy, v4, zoneIdentifier);
   }
 
   if (objc_msgSend_zoneLevelCapabilitiesCount(self, v4, zoneIdentifier))
   {
-    objc_msgSend_clearZoneLevelCapabilities(v36, v6, v7);
+    objc_msgSend_clearZoneLevelCapabilities(toCopy, v6, v7);
     v10 = objc_msgSend_zoneLevelCapabilitiesCount(self, v8, v9);
     if (v10)
     {
@@ -382,14 +382,14 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_zoneLevelCapabilitiesAtIndex_(self, v6, i);
-        objc_msgSend_addZoneLevelCapabilities_(v36, v14, v13);
+        objc_msgSend_addZoneLevelCapabilities_(toCopy, v14, v13);
       }
     }
   }
 
   if (objc_msgSend_recordLevelCapabilitiesCount(self, v6, v7))
   {
-    objc_msgSend_clearRecordLevelCapabilities(v36, v15, v16);
+    objc_msgSend_clearRecordLevelCapabilities(toCopy, v15, v16);
     v19 = objc_msgSend_recordLevelCapabilitiesCount(self, v17, v18);
     if (v19)
     {
@@ -397,14 +397,14 @@
       for (j = 0; j != v20; ++j)
       {
         v22 = objc_msgSend_recordLevelCapabilitiesAtIndex_(self, v15, j);
-        objc_msgSend_addRecordLevelCapabilities_(v36, v23, v22);
+        objc_msgSend_addRecordLevelCapabilities_(toCopy, v23, v22);
       }
     }
   }
 
   if (objc_msgSend_fieldLevelCapabilitiesCount(self, v15, v16))
   {
-    objc_msgSend_clearFieldLevelCapabilities(v36, v24, v25);
+    objc_msgSend_clearFieldLevelCapabilities(toCopy, v24, v25);
     v28 = objc_msgSend_fieldLevelCapabilitiesCount(self, v26, v27);
     if (v28)
     {
@@ -412,7 +412,7 @@
       for (k = 0; k != v29; ++k)
       {
         v31 = objc_msgSend_fieldLevelCapabilitiesAtIndex_(self, v24, k);
-        objc_msgSend_addFieldLevelCapabilities_(v36, v32, v31);
+        objc_msgSend_addFieldLevelCapabilities_(toCopy, v32, v31);
       }
     }
   }
@@ -420,31 +420,31 @@
   excludeZoneAccessBefore = self->_excludeZoneAccessBefore;
   if (excludeZoneAccessBefore)
   {
-    objc_msgSend_setExcludeZoneAccessBefore_(v36, v24, excludeZoneAccessBefore);
+    objc_msgSend_setExcludeZoneAccessBefore_(toCopy, v24, excludeZoneAccessBefore);
   }
 
-  v34 = v36;
+  v34 = toCopy;
   if (*&self->_has)
   {
-    v36[56] = self->_excludeDevicesWithoutCapabilityCheckingSupport;
-    v36[60] |= 1u;
+    toCopy[56] = self->_excludeDevicesWithoutCapabilityCheckingSupport;
+    toCopy[60] |= 1u;
   }
 
   continuation = self->_continuation;
   if (continuation)
   {
-    objc_msgSend_setContinuation_(v36, v24, continuation);
-    v34 = v36;
+    objc_msgSend_setContinuation_(toCopy, v24, continuation);
+    v34 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = *(v10 + 40);
   *(v10 + 40) = v12;
 
@@ -467,7 +467,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v57 + 1) + 8 * i), v17, a3);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v57 + 1) + 8 * i), v17, zone);
         objc_msgSend_addZoneLevelCapabilities_(v10, v22, v21);
       }
 
@@ -496,7 +496,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v30 = objc_msgSend_copyWithZone_(*(*(&v53 + 1) + 8 * j), v26, a3);
+        v30 = objc_msgSend_copyWithZone_(*(*(&v53 + 1) + 8 * j), v26, zone);
         objc_msgSend_addRecordLevelCapabilities_(v10, v31, v30);
       }
 
@@ -525,7 +525,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v39 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * k), v35, a3, v49);
+        v39 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * k), v35, zone, v49);
         objc_msgSend_addFieldLevelCapabilities_(v10, v40, v39);
       }
 
@@ -535,7 +535,7 @@
     while (v36);
   }
 
-  v42 = objc_msgSend_copyWithZone_(self->_excludeZoneAccessBefore, v41, a3);
+  v42 = objc_msgSend_copyWithZone_(self->_excludeZoneAccessBefore, v41, zone);
   v43 = *(v10 + 16);
   *(v10 + 16) = v42;
 
@@ -545,7 +545,7 @@
     *(v10 + 60) |= 1u;
   }
 
-  v45 = objc_msgSend_copyWithZone_(self->_continuation, v44, a3, v49);
+  v45 = objc_msgSend_copyWithZone_(self->_continuation, v44, zone, v49);
   v46 = *(v10 + 8);
   *(v10 + 8) = v45;
 
@@ -553,17 +553,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_17;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[5];
+  v9 = equalCopy[5];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -573,7 +573,7 @@
   }
 
   zoneLevelCapabilities = self->_zoneLevelCapabilities;
-  v11 = v4[6];
+  v11 = equalCopy[6];
   if (zoneLevelCapabilities | v11)
   {
     if (!objc_msgSend_isEqual_(zoneLevelCapabilities, v7, v11))
@@ -583,7 +583,7 @@
   }
 
   recordLevelCapabilities = self->_recordLevelCapabilities;
-  v13 = v4[4];
+  v13 = equalCopy[4];
   if (recordLevelCapabilities | v13)
   {
     if (!objc_msgSend_isEqual_(recordLevelCapabilities, v7, v13))
@@ -593,7 +593,7 @@
   }
 
   fieldLevelCapabilities = self->_fieldLevelCapabilities;
-  v15 = v4[3];
+  v15 = equalCopy[3];
   if (fieldLevelCapabilities | v15)
   {
     if (!objc_msgSend_isEqual_(fieldLevelCapabilities, v7, v15))
@@ -603,7 +603,7 @@
   }
 
   excludeZoneAccessBefore = self->_excludeZoneAccessBefore;
-  v17 = v4[2];
+  v17 = equalCopy[2];
   if (excludeZoneAccessBefore | v17)
   {
     if (!objc_msgSend_isEqual_(excludeZoneAccessBefore, v7, v17))
@@ -612,18 +612,18 @@
     }
   }
 
-  v18 = *(v4 + 60);
+  v18 = *(equalCopy + 60);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  if ((*(v4 + 60) & 1) == 0)
+  if ((*(equalCopy + 60) & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  v18 = *(v4 + 56);
+  v18 = *(equalCopy + 56);
   if (!self->_excludeDevicesWithoutCapabilityCheckingSupport)
   {
 LABEL_13:
@@ -637,14 +637,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ((v4[7] & 1) == 0)
+  if ((equalCopy[7] & 1) == 0)
   {
     goto LABEL_17;
   }
 
 LABEL_14:
   continuation = self->_continuation;
-  v20 = v4[1];
+  v20 = equalCopy[1];
   if (continuation | v20)
   {
     isEqual = objc_msgSend_isEqual_(continuation, v7, v20);
@@ -680,12 +680,12 @@ LABEL_18:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16 ^ v19 ^ objc_msgSend_hash(self->_continuation, v17, v18);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v7 = *(v5 + 5);
+  v7 = *(fromCopy + 5);
   if (zoneIdentifier)
   {
     if (v7)
@@ -703,7 +703,7 @@ LABEL_18:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = *(v5 + 6);
+  v8 = *(fromCopy + 6);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v42, v48, 16);
   if (v10)
   {
@@ -731,7 +731,7 @@ LABEL_18:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v15 = *(v5 + 4);
+  v15 = *(fromCopy + 4);
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v38, v47, 16);
   if (v17)
   {
@@ -759,7 +759,7 @@ LABEL_18:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = *(v5 + 3);
+  v22 = *(fromCopy + 3);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v34, v46, 16);
   if (v24)
   {
@@ -784,7 +784,7 @@ LABEL_18:
   }
 
   excludeZoneAccessBefore = self->_excludeZoneAccessBefore;
-  v31 = *(v5 + 2);
+  v31 = *(fromCopy + 2);
   if (excludeZoneAccessBefore)
   {
     if (v31)
@@ -798,13 +798,13 @@ LABEL_18:
     objc_msgSend_setExcludeZoneAccessBefore_(self, v29, v31);
   }
 
-  if (*(v5 + 60))
+  if (*(fromCopy + 60))
   {
-    self->_excludeDevicesWithoutCapabilityCheckingSupport = *(v5 + 56);
+    self->_excludeDevicesWithoutCapabilityCheckingSupport = *(fromCopy + 56);
     *&self->_has |= 1u;
   }
 
-  v32 = *(v5 + 1);
+  v32 = *(fromCopy + 1);
   if (v32)
   {
     objc_msgSend_setContinuation_(self, v29, v32);

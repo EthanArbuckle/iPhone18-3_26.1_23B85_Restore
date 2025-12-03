@@ -1,36 +1,36 @@
 @interface GKSavedGameDocument
-- (GKSavedGameDocument)initWithFileURL:(id)a3;
+- (GKSavedGameDocument)initWithFileURL:(id)l;
 - (NSOperationQueue)presentedItemOperationQueue;
 - (NSString)description;
 - (id)metadata;
 - (void)dealloc;
-- (void)deleteAllVersionsIncludingCurrent:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)deleteConflictVersion:(id)a3 completionHandler:(id)a4;
-- (void)loadMetadataWithCompletionHandler:(id)a3;
-- (void)loadWrapperDataWithFilename:(id)a3 completionHandler:(id)a4;
+- (void)deleteAllVersionsIncludingCurrent:(BOOL)current withCompletionHandler:(id)handler;
+- (void)deleteConflictVersion:(id)version completionHandler:(id)handler;
+- (void)loadMetadataWithCompletionHandler:(id)handler;
+- (void)loadWrapperDataWithFilename:(id)filename completionHandler:(id)handler;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidGainVersion:(id)a3;
-- (void)presentedItemDidLoseVersion:(id)a3;
-- (void)presentedItemDidResolveConflictVersion:(id)a3;
-- (void)saveData:(id)a3 completionHandler:(id)a4;
-- (void)setIsConflictVersion:(BOOL)a3;
-- (void)setMetadata:(id)a3;
-- (void)updateConflictStateWithCompletionHandler:(id)a3;
+- (void)presentedItemDidGainVersion:(id)version;
+- (void)presentedItemDidLoseVersion:(id)version;
+- (void)presentedItemDidResolveConflictVersion:(id)version;
+- (void)saveData:(id)data completionHandler:(id)handler;
+- (void)setIsConflictVersion:(BOOL)version;
+- (void)setMetadata:(id)metadata;
+- (void)updateConflictStateWithCompletionHandler:(id)handler;
 - (void)updateMetadata;
 @end
 
 @implementation GKSavedGameDocument
 
-- (GKSavedGameDocument)initWithFileURL:(id)a3
+- (GKSavedGameDocument)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = GKSavedGameDocument;
   v5 = [(GKSavedGameDocument *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKSavedGameDocument *)v5 setFileURL:v4];
+    [(GKSavedGameDocument *)v5 setFileURL:lCopy];
     [MEMORY[0x277CCA9E8] addFilePresenter:v6];
   }
 
@@ -45,12 +45,12 @@
   [(GKSavedGameDocument *)&v3 dealloc];
 }
 
-- (void)setIsConflictVersion:(BOOL)a3
+- (void)setIsConflictVersion:(BOOL)version
 {
-  if (self->_isConflictVersion != a3)
+  if (self->_isConflictVersion != version)
   {
-    self->_isConflictVersion = a3;
-    if (a3)
+    self->_isConflictVersion = version;
+    if (version)
     {
       [MEMORY[0x277CCA9E8] removeFilePresenter:self];
     }
@@ -101,7 +101,7 @@ void __45__GKSavedGameDocument_presentedItemDidChange__block_invoke(uint64_t a1)
   [v2 postNotificationName:@"GKSavedGameDocumentModifiedNotification" object:*(a1 + 32)];
 }
 
-- (void)presentedItemDidGainVersion:(id)a3
+- (void)presentedItemDidGainVersion:(id)version
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -117,7 +117,7 @@ void __51__GKSavedGameDocument_presentedItemDidGainVersion___block_invoke(uint64
   [v2 postNotificationName:@"GKSavedGameDocumentConflictStateChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)presentedItemDidLoseVersion:(id)a3
+- (void)presentedItemDidLoseVersion:(id)version
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -133,7 +133,7 @@ void __51__GKSavedGameDocument_presentedItemDidLoseVersion___block_invoke(uint64
   [v2 postNotificationName:@"GKSavedGameDocumentConflictStateChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)presentedItemDidResolveConflictVersion:(id)a3
+- (void)presentedItemDidResolveConflictVersion:(id)version
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -149,9 +149,9 @@ void __62__GKSavedGameDocument_presentedItemDidResolveConflictVersion___block_in
   [v2 postNotificationName:@"GKSavedGameDocumentConflictStateChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)updateConflictStateWithCompletionHandler:(id)a3
+- (void)updateConflictStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v15[0] = 0;
   v15[1] = v15;
@@ -175,10 +175,10 @@ void __62__GKSavedGameDocument_presentedItemDidResolveConflictVersion___block_in
   v9[1] = 3221225472;
   v9[2] = __64__GKSavedGameDocument_updateConflictStateWithCompletionHandler___block_invoke_3;
   v9[3] = &unk_2785DE7E0;
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = v15;
   v9[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   dispatch_group_notify(v7, MEMORY[0x277D85CD0], v9);
 
   _Block_object_dispose(v15, 8);
@@ -223,10 +223,10 @@ uint64_t __64__GKSavedGameDocument_updateConflictStateWithCompletionHandler___bl
   return result;
 }
 
-- (void)loadWrapperDataWithFilename:(id)a3 completionHandler:(id)a4
+- (void)loadWrapperDataWithFilename:(id)filename completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  filenameCopy = filename;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
   v24[0] = 0;
   v24[1] = v24;
@@ -247,22 +247,22 @@ uint64_t __64__GKSavedGameDocument_updateConflictStateWithCompletionHandler___bl
   block[2] = __69__GKSavedGameDocument_loadWrapperDataWithFilename_completionHandler___block_invoke;
   block[3] = &unk_2785DE830;
   block[4] = self;
-  v18 = v6;
+  v18 = filenameCopy;
   v20 = v22;
   v21 = v24;
   v19 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = filenameCopy;
   dispatch_async(v9, block);
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__GKSavedGameDocument_loadWrapperDataWithFilename_completionHandler___block_invoke_3;
   v13[3] = &unk_2785DE858;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = v24;
   v16 = v22;
-  v12 = v7;
+  v12 = handlerCopy;
   dispatch_group_notify(v10, MEMORY[0x277D85CD0], v13);
 
   _Block_object_dispose(v22, 8);
@@ -368,16 +368,16 @@ uint64_t __69__GKSavedGameDocument_loadWrapperDataWithFilename_completionHandler
   return result;
 }
 
-- (void)loadMetadataWithCompletionHandler:(id)a3
+- (void)loadMetadataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__GKSavedGameDocument_loadMetadataWithCompletionHandler___block_invoke;
   v6[3] = &unk_2785DD870;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(GKSavedGameDocument *)self loadWrapperDataWithFilename:@"metadata" completionHandler:v6];
 }
 
@@ -408,13 +408,13 @@ void __57__GKSavedGameDocument_loadMetadataWithCompletionHandler___block_invoke(
   v3 = +[GKSavedGameDocument currentDeviceName];
   [(GKSavedGameDocument *)self setDeviceName:v3];
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(GKSavedGameDocument *)self setModificationDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(GKSavedGameDocument *)self setModificationDate:date];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:metadata options:0 format:0 error:0];
   if (v4)
   {
     v7 = v4;
@@ -457,24 +457,24 @@ void __57__GKSavedGameDocument_loadMetadataWithCompletionHandler___block_invoke(
   return v6;
 }
 
-- (void)saveData:(id)a3 completionHandler:(id)a4
+- (void)saveData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   [(GKSavedGameDocument *)self updateMetadata];
-  v8 = [(GKSavedGameDocument *)self metadata];
+  metadata = [(GKSavedGameDocument *)self metadata];
   v9 = dispatch_get_global_queue(0, 0);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__GKSavedGameDocument_saveData_completionHandler___block_invoke;
   v13[3] = &unk_2785DD960;
   v13[4] = self;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
+  v14 = dataCopy;
+  v15 = metadata;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = metadata;
+  v12 = dataCopy;
   dispatch_async(v9, v13);
 }
 
@@ -543,18 +543,18 @@ uint64_t __50__GKSavedGameDocument_saveData_completionHandler___block_invoke_3(u
   return result;
 }
 
-- (void)deleteAllVersionsIncludingCurrent:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)deleteAllVersionsIncludingCurrent:(BOOL)current withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__GKSavedGameDocument_deleteAllVersionsIncludingCurrent_withCompletionHandler___block_invoke;
   block[3] = &unk_2785DE8F8;
-  v11 = a3;
+  currentCopy = current;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, block);
 }
 
@@ -654,20 +654,20 @@ uint64_t __79__GKSavedGameDocument_deleteAllVersionsIncludingCurrent_withComplet
   return result;
 }
 
-- (void)deleteConflictVersion:(id)a3 completionHandler:(id)a4
+- (void)deleteConflictVersion:(id)version completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__GKSavedGameDocument_deleteConflictVersion_completionHandler___block_invoke;
   block[3] = &unk_2785DE948;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = versionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = versionCopy;
   dispatch_async(v8, block);
 }
 
@@ -730,10 +730,10 @@ uint64_t __63__GKSavedGameDocument_deleteConflictVersion_completionHandler___blo
   v11.super_class = GKSavedGameDocument;
   v3 = [(GKSavedGameDocument *)&v11 description];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(GKSavedGameDocument *)self fileURL];
-  v6 = [(GKSavedGameDocument *)self deviceName];
-  v7 = [(GKSavedGameDocument *)self modificationDate];
-  v8 = [v4 stringWithFormat:@", fileURL = %@, deviceName = %@, modificationDate = %@", v5, v6, v7];
+  fileURL = [(GKSavedGameDocument *)self fileURL];
+  deviceName = [(GKSavedGameDocument *)self deviceName];
+  modificationDate = [(GKSavedGameDocument *)self modificationDate];
+  v8 = [v4 stringWithFormat:@", fileURL = %@, deviceName = %@, modificationDate = %@", fileURL, deviceName, modificationDate];
   v9 = [v3 stringByAppendingString:v8];
 
   return v9;

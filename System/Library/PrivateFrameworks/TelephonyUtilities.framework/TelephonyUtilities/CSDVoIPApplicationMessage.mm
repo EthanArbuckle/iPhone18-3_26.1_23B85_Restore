@@ -1,24 +1,24 @@
 @interface CSDVoIPApplicationMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessage:(id)a3;
-- (CSDVoIPApplicationMessage)initWithTransportType:(int64_t)a3 payload:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessage:(id)message;
+- (CSDVoIPApplicationMessage)initWithTransportType:(int64_t)type payload:(id)payload;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CSDVoIPApplicationMessage
 
-- (CSDVoIPApplicationMessage)initWithTransportType:(int64_t)a3 payload:(id)a4
+- (CSDVoIPApplicationMessage)initWithTransportType:(int64_t)type payload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v14.receiver = self;
   v14.super_class = CSDVoIPApplicationMessage;
   v7 = [(CSDVoIPApplicationMessage *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_transportType = a3;
-    v9 = [v6 copy];
+    v7->_transportType = type;
+    v9 = [payloadCopy copy];
     payload = v8->_payload;
     v8->_payload = v9;
 
@@ -40,14 +40,14 @@
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector("payload");
-  v7 = [(CSDVoIPApplicationMessage *)self payload];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  payload = [(CSDVoIPApplicationMessage *)self payload];
+  [v3 appendFormat:@"%@=%@", v6, payload];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector("uuid");
-  v9 = [(CSDVoIPApplicationMessage *)self uuid];
-  v10 = [v9 UUIDString];
-  [v3 appendFormat:@"%@=%@", v8, v10];
+  uuid = [(CSDVoIPApplicationMessage *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v3 appendFormat:@"%@=%@", v8, uUIDString];
 
   [v3 appendFormat:@">"];
   v11 = [v3 copy];
@@ -57,16 +57,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CSDVoIPApplicationMessage *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(CSDVoIPApplicationMessage *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CSDVoIPApplicationMessage *)self isEqualToMessage:v4];
+      v5 = [(CSDVoIPApplicationMessage *)self isEqualToMessage:equalCopy];
     }
 
     else
@@ -88,14 +88,14 @@
   return v5;
 }
 
-- (BOOL)isEqualToMessage:(id)a3
+- (BOOL)isEqualToMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationMessage *)self uuid];
-  v6 = [v4 uuid];
+  messageCopy = message;
+  uuid = [(CSDVoIPApplicationMessage *)self uuid];
+  uuid2 = [messageCopy uuid];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(messageCopy) = [uuid isEqual:uuid2];
+  return messageCopy;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface PKAutoFillVirtualCardDescriptor
 - (CGImage)artwork;
-- (PKAutoFillVirtualCardDescriptor)initWithCoder:(id)a3;
-- (id)_initWithVirtualCard:(id)a3 type:(unint64_t)a4;
+- (PKAutoFillVirtualCardDescriptor)initWithCoder:(id)coder;
+- (id)_initWithVirtualCard:(id)card type:(unint64_t)type;
 - (id)urlToCardDetails;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAutoFillVirtualCardDescriptor
 
-- (id)_initWithVirtualCard:(id)a3 type:(unint64_t)a4
+- (id)_initWithVirtualCard:(id)card type:(unint64_t)type
 {
-  v7 = a3;
+  cardCopy = card;
   v15.receiver = self;
   v15.super_class = PKAutoFillVirtualCardDescriptor;
-  v8 = [(PKAutoFillCardDescriptor *)&v15 _initWithType:a4];
+  v8 = [(PKAutoFillCardDescriptor *)&v15 _initWithType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 12, a3);
-    v10 = [v7 identifier];
-    [v9 setIdentifier:v10];
+    objc_storeStrong(v8 + 12, card);
+    identifier = [cardCopy identifier];
+    [v9 setIdentifier:identifier];
 
-    v11 = [v7 displayName];
-    [v9 setCardNickname:v11];
+    displayName = [cardCopy displayName];
+    [v9 setCardNickname:displayName];
 
-    v12 = [v7 displayablePANSuffix];
-    [v9 setDisplayableLastFour:v12];
+    displayablePANSuffix = [cardCopy displayablePANSuffix];
+    [v9 setDisplayableLastFour:displayablePANSuffix];
 
-    v13 = [v7 lastAutoFilledBySafari];
-    [v9 setLastUsage:v13];
+    lastAutoFilledBySafari = [cardCopy lastAutoFilledBySafari];
+    [v9 setLastUsage:lastAutoFilledBySafari];
   }
 
   return v9;
@@ -41,8 +41,8 @@
     v3 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v3 setScheme:@"wallet"];
     [v3 setHost:@"virtualCard"];
-    v4 = [(PKVirtualCard *)self->_virtualCard identifier];
-    v5 = [@"/" stringByAppendingFormat:@"%@/%@", v4, @"details"];
+    identifier = [(PKVirtualCard *)self->_virtualCard identifier];
+    v5 = [@"/" stringByAppendingFormat:@"%@/%@", identifier, @"details"];
     [v3 setPath:v5];
 
     v6 = [v3 URL];
@@ -53,8 +53,8 @@
     v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"prefs:root=PASSBOOK&path="];
     [v3 appendString:@"virtualCard"];
     [v3 appendString:@"/"];
-    v7 = [(PKVirtualCard *)self->_virtualCard identifier];
-    [v3 appendString:v7];
+    identifier2 = [(PKVirtualCard *)self->_virtualCard identifier];
+    [v3 appendString:identifier2];
 
     [v3 appendString:@"/"];
     [v3 appendString:@"details"];
@@ -72,9 +72,9 @@
   {
     v3 = PKPassKitUIFoundationBundle();
     v4 = [PKImage imageNamed:@"AppleCardAutoFillCreditCardIconLarge" inBundle:v3];
-    v5 = [v4 imageRef];
+    imageRef = [v4 imageRef];
 
-    return v5;
+    return imageRef;
   }
 
   else
@@ -85,24 +85,24 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKAutoFillVirtualCardDescriptor;
-  v4 = a3;
-  [(PKAutoFillCardDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_virtualCard forKey:{@"virtualCard", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKAutoFillCardDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_virtualCard forKey:{@"virtualCard", v5.receiver, v5.super_class}];
 }
 
-- (PKAutoFillVirtualCardDescriptor)initWithCoder:(id)a3
+- (PKAutoFillVirtualCardDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKAutoFillVirtualCardDescriptor;
-  v5 = [(PKAutoFillCardDescriptor *)&v9 initWithCoder:v4];
+  v5 = [(PKAutoFillCardDescriptor *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"virtualCard"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"virtualCard"];
     virtualCard = v5->_virtualCard;
     v5->_virtualCard = v6;
   }

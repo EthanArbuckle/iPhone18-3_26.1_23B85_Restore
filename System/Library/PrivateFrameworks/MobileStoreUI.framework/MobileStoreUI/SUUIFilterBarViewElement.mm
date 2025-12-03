@@ -1,7 +1,7 @@
 @interface SUUIFilterBarViewElement
 - (SUUIDividerViewElement)bottomDivider;
-- (id)childViewElementsForAlignment:(unint64_t)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (id)childViewElementsForAlignment:(unint64_t)alignment;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIFilterBarViewElement
@@ -38,11 +38,11 @@ void __41__SUUIFilterBarViewElement_bottomDivider__block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)childViewElementsForAlignment:(unint64_t)a3
+- (id)childViewElementsForAlignment:(unint64_t)alignment
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  if (a3 - 1 <= 2)
+  array = [MEMORY[0x277CBEB18] array];
+  if (alignment - 1 <= 2)
   {
     [(SUUIViewElement *)self flattenedChildren];
     v22 = 0u;
@@ -87,14 +87,14 @@ void __41__SUUIFilterBarViewElement_bottomDivider__block_invoke(uint64_t a1, voi
     v15 = v19;
     v16 = v7;
     v17 = v11;
-    v18 = a3;
-    v14 = v5;
+    alignmentCopy = alignment;
+    v14 = array;
     [v6 enumerateObjectsUsingBlock:v13];
 
     _Block_object_dispose(v19, 8);
   }
 
-  return v5;
+  return array;
 }
 
 void __58__SUUIFilterBarViewElement_childViewElementsForAlignment___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -170,17 +170,17 @@ LABEL_2:
   }
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SUUIFilterBarViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F6008;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUIFilterBarViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 

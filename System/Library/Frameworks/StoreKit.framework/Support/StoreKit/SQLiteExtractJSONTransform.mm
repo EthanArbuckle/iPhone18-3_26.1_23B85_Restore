@@ -1,15 +1,15 @@
 @interface SQLiteExtractJSONTransform
-+ (id)extractJSONAtKey:(id)a3;
-- (id)appending:(id)a3;
-- (id)appendingWithIndex:(int64_t)a3;
-- (id)appendingWithKey:(id)a3;
-- (id)transformSQLWithRoot:(id)a3;
-- (void)applyTransformBinding:(id)a3 atIndex:(int *)a4;
++ (id)extractJSONAtKey:(id)key;
+- (id)appending:(id)appending;
+- (id)appendingWithIndex:(int64_t)index;
+- (id)appendingWithKey:(id)key;
+- (id)transformSQLWithRoot:(id)root;
+- (void)applyTransformBinding:(id)binding atIndex:(int *)index;
 @end
 
 @implementation SQLiteExtractJSONTransform
 
-+ (id)extractJSONAtKey:(id)a3
++ (id)extractJSONAtKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -18,36 +18,36 @@
   return v3;
 }
 
-- (id)appendingWithKey:(id)a3
+- (id)appendingWithKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1001D46DC();
 
   return v5;
 }
 
-- (id)appendingWithIndex:(int64_t)a3
+- (id)appendingWithIndex:(int64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1001D47E8();
 
   return v4;
 }
 
-- (id)appending:(id)a3
+- (id)appending:(id)appending
 {
-  v4 = a3;
-  v5 = self;
+  appendingCopy = appending;
+  selfCopy = self;
   v6 = sub_1001D48AC();
 
   return v6;
 }
 
-- (id)transformSQLWithRoot:(id)a3
+- (id)transformSQLWithRoot:(id)root
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1001D49F8();
 
   v5 = String._bridgeToObjectiveC()();
@@ -55,10 +55,10 @@
   return v5;
 }
 
-- (void)applyTransformBinding:(id)a3 atIndex:(int *)a4
+- (void)applyTransformBinding:(id)binding atIndex:(int *)index
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1001D4C4C();
   swift_unknownObjectRelease();
 }

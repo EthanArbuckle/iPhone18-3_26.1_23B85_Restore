@@ -3,7 +3,7 @@
 - (double)elapsedTime;
 - (double)timeSinceLastSecond;
 - (double)videoPlaybackCurrentTime;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)fireTimer;
 @end
 
@@ -32,7 +32,7 @@
   else
   {
     (*(v8 + 32))(v11, v6, v7);
-    v14 = self;
+    selfCopy = self;
     static Double.currentMachTimestamp()();
     v16 = Playback.playbackTime(at:)(v15);
 
@@ -48,7 +48,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   Date.init()();
   SeymourElapsedTimeAccumulator.elapsedTime(at:)(v7);
   v10 = v9;
@@ -57,13 +57,13 @@
   return v10;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v13 - v8;
-  if (a3)
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for Date();
@@ -76,7 +76,7 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = self;
+  selfCopy = self;
   SeymourElapsedTimeAccumulator.setupTimer(initialFireInterval:)(0.0);
 
   outlined destroy of Playback?(v9, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
@@ -84,13 +84,13 @@
 
 - (void)fireTimer
 {
-  v2 = self;
+  selfCopy = self;
   SeymourElapsedTimeAccumulator.fireTimer()();
 }
 
 - (double)timeSinceLastSecond
 {
-  v2 = self;
+  selfCopy = self;
   SeymourElapsedTimeAccumulator.timeUntilNextSecond.getter();
   v4 = v3;
 

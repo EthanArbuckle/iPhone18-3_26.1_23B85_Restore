@@ -1,16 +1,16 @@
 @interface CustomContentView
-- (_TtC16HealthArticlesUI17CustomContentView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI17CustomContentView)initWithFrame:(CGRect)a3;
+- (_TtC16HealthArticlesUI17CustomContentView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI17CustomContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CustomContentView
 
-- (_TtC16HealthArticlesUI17CustomContentView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI17CustomContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -23,12 +23,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16HealthArticlesUI17CustomContentView_currentConstraints) = MEMORY[0x277D84F90];
   v10.receiver = self;
   v10.super_class = type metadata accessor for CustomContentView();
-  v8 = [(CustomContentView *)&v10 initWithFrame:x, y, width, height];
+  height = [(CustomContentView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC16HealthArticlesUI17CustomContentView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI17CustomContentView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();

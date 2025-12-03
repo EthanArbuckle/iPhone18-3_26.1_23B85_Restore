@@ -1,16 +1,16 @@
 @interface LACBackgroundTask
-- (LACBackgroundTask)initWithIdentifier:(id)a3 worker:(id)a4;
+- (LACBackgroundTask)initWithIdentifier:(id)identifier worker:(id)worker;
 - (LACBackgroundTaskDelegate)delegate;
 - (id)description;
-- (id)runSynchronouslyWithTimeout:(double)a3;
-- (void)_queuedCompleteTaskWithResult:(id)a3;
-- (void)_queuedRunInReplyQueue:(id)a3;
-- (void)_queuedRunWithTimeout:(double)a3 replyQueue:(id)a4 completion:(id)a5;
+- (id)runSynchronouslyWithTimeout:(double)timeout;
+- (void)_queuedCompleteTaskWithResult:(id)result;
+- (void)_queuedRunInReplyQueue:(id)queue;
+- (void)_queuedRunWithTimeout:(double)timeout replyQueue:(id)queue completion:(id)completion;
 - (void)_queuedStartWorkerIfNeeded;
-- (void)_queuedStartWorkerWatchdogWithTimeout:(double)a3;
+- (void)_queuedStartWorkerWatchdogWithTimeout:(double)timeout;
 - (void)_queuedStopWorkerWatchdog;
 - (void)dealloc;
-- (void)runWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5;
+- (void)runWithTimeout:(double)timeout queue:(id)queue completion:(id)completion;
 @end
 
 @implementation LACBackgroundTask
@@ -68,7 +68,7 @@ void __47__LACBackgroundTask__queuedStartWorkerIfNeeded__block_invoke(uint64_t a
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "%{public}@ ignoring run request because is already running", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -104,16 +104,16 @@ void __47__LACBackgroundTask__queuedStartWorkerIfNeeded__block_invoke_2(uint64_t
   [(LACBackgroundTask *)&v4 dealloc];
 }
 
-- (LACBackgroundTask)initWithIdentifier:(id)a3 worker:(id)a4
+- (LACBackgroundTask)initWithIdentifier:(id)identifier worker:(id)worker
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  workerCopy = worker;
   v17.receiver = self;
   v17.super_class = LACBackgroundTask;
   v9 = [(LACBackgroundTask *)&v17 init];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(workerCopy);
     worker = v9->_worker;
     v9->_worker = v10;
 
@@ -125,13 +125,13 @@ void __47__LACBackgroundTask__queuedStartWorkerIfNeeded__block_invoke_2(uint64_t
 
     objc_storeStrong(&v9->_replyQueue, v9->_innerQueue);
     v9->_isWorkerRunning = 0;
-    objc_storeStrong(&v9->_identifier, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
   }
 
   return v9;
 }
 
-- (id)runSynchronouslyWithTimeout:(double)a3
+- (id)runSynchronouslyWithTimeout:(double)timeout
 {
   v5 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_7);
   v17 = 0;
@@ -147,11 +147,11 @@ void __47__LACBackgroundTask__queuedStartWorkerIfNeeded__block_invoke_2(uint64_t
   v16 = &v17;
   v6 = v5;
   v15 = v6;
-  [(LACBackgroundTask *)self runWithTimeout:v14 completion:a3];
-  v7 = dispatch_time(0, ((a3 + 0.05) * 1000000000.0));
+  [(LACBackgroundTask *)self runWithTimeout:v14 completion:timeout];
+  v7 = dispatch_time(0, ((timeout + 0.05) * 1000000000.0));
   if (dispatch_block_wait(v6, v7))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sync request timed out after %.3f secs", *&a3];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sync request timed out after %.3f secs", *&timeout];
     v9 = [LACBackgroundTaskErrorBuilder errorWithCode:2 debugDescription:v8];
     v10 = [[LACBackgroundTaskResult alloc] initWithError:v9];
     v11 = v18[5];
@@ -172,10 +172,10 @@ void __49__LACBackgroundTask_runSynchronouslyWithTimeout___block_invoke_5(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)runWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5
+- (void)runWithTimeout:(double)timeout queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   innerQueue = self->_innerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -183,11 +183,11 @@ void __49__LACBackgroundTask_runSynchronouslyWithTimeout___block_invoke_5(uint64
   block[2] = __53__LACBackgroundTask_runWithTimeout_queue_completion___block_invoke;
   block[3] = &unk_1E7A95EF0;
   objc_copyWeak(v16, &location);
-  v16[1] = *&a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = *&timeout;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(v16);
@@ -205,16 +205,16 @@ void __53__LACBackgroundTask_runWithTimeout_queue_completion___block_invoke(uint
   }
 }
 
-- (void)_queuedRunWithTimeout:(double)a3 replyQueue:(id)a4 completion:(id)a5
+- (void)_queuedRunWithTimeout:(double)timeout replyQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_innerQueue);
   if (self->_currentHandler || self->_isWorkerRunning)
   {
     objc_initWeak(&location, self);
-    replyQueue = v8;
-    if (!v8)
+    replyQueue = queueCopy;
+    if (!queueCopy)
     {
       replyQueue = self->_replyQueue;
     }
@@ -225,7 +225,7 @@ void __53__LACBackgroundTask_runWithTimeout_queue_completion___block_invoke(uint
     v14[3] = &unk_1E7A95D70;
     objc_copyWeak(&v16, &location);
     v14[4] = self;
-    v15 = v9;
+    v15 = completionCopy;
     dispatch_async(replyQueue, v14);
 
     objc_destroyWeak(&v16);
@@ -234,18 +234,18 @@ void __53__LACBackgroundTask_runWithTimeout_queue_completion___block_invoke(uint
 
   else
   {
-    v11 = v8;
-    if (!v8)
+    v11 = queueCopy;
+    if (!queueCopy)
     {
       v11 = self->_replyQueue;
     }
 
     objc_storeStrong(&self->_replyQueue, v11);
-    v12 = _Block_copy(v9);
+    v12 = _Block_copy(completionCopy);
     currentHandler = self->_currentHandler;
     self->_currentHandler = v12;
 
-    [(LACBackgroundTask *)self _queuedStartWorkerWatchdogWithTimeout:a3];
+    [(LACBackgroundTask *)self _queuedStartWorkerWatchdogWithTimeout:timeout];
     [(LACBackgroundTask *)self _queuedStartWorkerIfNeeded];
   }
 }
@@ -270,7 +270,7 @@ void __65__LACBackgroundTask__queuedRunWithTimeout_replyQueue_completion___block
   }
 }
 
-- (void)_queuedStartWorkerWatchdogWithTimeout:(double)a3
+- (void)_queuedStartWorkerWatchdogWithTimeout:(double)timeout
 {
   dispatch_assert_queue_V2(self->_innerQueue);
   [(LACBackgroundTask *)self _queuedStopWorkerWatchdog];
@@ -282,8 +282,8 @@ void __65__LACBackgroundTask__queuedRunWithTimeout_replyQueue_completion___block
   v7[2] = __59__LACBackgroundTask__queuedStartWorkerWatchdogWithTimeout___block_invoke;
   v7[3] = &unk_1E7A95F18;
   objc_copyWeak(v8, &location);
-  v8[1] = *&a3;
-  [(LACTimer *)watchdog dispatchAfter:innerQueue inQueue:v7 block:a3];
+  v8[1] = *&timeout;
+  [(LACTimer *)watchdog dispatchAfter:innerQueue inQueue:v7 block:timeout];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
 }
@@ -304,21 +304,21 @@ void __59__LACBackgroundTask__queuedStartWorkerWatchdogWithTimeout___block_invok
   }
 }
 
-- (void)_queuedCompleteTaskWithResult:(id)a3
+- (void)_queuedCompleteTaskWithResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_innerQueue);
   v5 = LACLogTask();
-  v6 = [v4 error];
-  v7 = 16 * (v6 != 0);
+  error = [resultCopy error];
+  v7 = 16 * (error != 0);
 
   if (os_log_type_enabled(v5, v7))
   {
     *buf = 138543618;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v4;
+    v24 = resultCopy;
     _os_log_impl(&dword_1B0233000, v5, v7, "%{public}@ finished run with result %{public}@", buf, 0x16u);
   }
 
@@ -335,15 +335,15 @@ void __59__LACBackgroundTask__queuedStartWorkerWatchdogWithTimeout___block_invok
     v18[2] = __51__LACBackgroundTask__queuedCompleteTaskWithResult___block_invoke;
     v18[3] = &unk_1E7A95798;
     v20 = v9;
-    v19 = v4;
+    v19 = resultCopy;
     v11 = v9;
     [(LACBackgroundTask *)self _queuedRunInReplyQueue:v18];
   }
 
   else
   {
-    v12 = [(LACBackgroundTask *)self delegate];
-    v13 = v12 == 0;
+    delegate = [(LACBackgroundTask *)self delegate];
+    v13 = delegate == 0;
 
     if (!v13)
     {
@@ -353,7 +353,7 @@ void __59__LACBackgroundTask__queuedStartWorkerWatchdogWithTimeout___block_invok
       v15[2] = __51__LACBackgroundTask__queuedCompleteTaskWithResult___block_invoke_2;
       v15[3] = &unk_1E7A95F68;
       objc_copyWeak(&v17, buf);
-      v16 = v4;
+      v16 = resultCopy;
       [(LACBackgroundTask *)self _queuedRunInReplyQueue:v15];
 
       objc_destroyWeak(&v17);
@@ -377,10 +377,10 @@ void __51__LACBackgroundTask__queuedCompleteTaskWithResult___block_invoke_2(uint
   }
 }
 
-- (void)_queuedRunInReplyQueue:(id)a3
+- (void)_queuedRunInReplyQueue:(id)queue
 {
   innerQueue = self->_innerQueue;
-  block = a3;
+  block = queue;
   dispatch_assert_queue_V2(innerQueue);
   replyQueue = self->_replyQueue;
   if (replyQueue)

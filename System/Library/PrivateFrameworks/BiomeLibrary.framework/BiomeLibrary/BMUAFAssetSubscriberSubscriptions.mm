@@ -1,39 +1,39 @@
 @interface BMUAFAssetSubscriberSubscriptions
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUAFAssetSubscriberSubscriptions)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMUAFAssetSubscriberSubscriptions)initWithSubscriberName:(id)a3 subscriptions:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMUAFAssetSubscriberSubscriptions)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMUAFAssetSubscriberSubscriptions)initWithSubscriberName:(id)name subscriptions:(id)subscriptions;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_subscriptionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUAFAssetSubscriberSubscriptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
-    v7 = [v5 subscriberName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    subscriberName = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
+    subscriberName2 = [v5 subscriberName];
+    v8 = subscriberName2;
+    if (subscriberName == subscriberName2)
     {
     }
 
     else
     {
-      v9 = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
-      v10 = [v5 subscriberName];
-      v11 = [v9 isEqual:v10];
+      subscriberName3 = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
+      subscriberName4 = [v5 subscriberName];
+      v11 = [subscriberName3 isEqual:subscriberName4];
 
       if (!v11)
       {
@@ -44,18 +44,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
-    v14 = [v5 subscriptions];
-    if (v13 == v14)
+    subscriptions = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
+    subscriptions2 = [v5 subscriptions];
+    if (subscriptions == subscriptions2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
-      v16 = [v5 subscriptions];
-      v12 = [v15 isEqual:v16];
+      subscriptions3 = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
+      subscriptions4 = [v5 subscriptions];
+      v12 = [subscriptions3 isEqual:subscriptions4];
     }
 
     goto LABEL_11;
@@ -70,28 +70,28 @@ LABEL_12:
 - (id)jsonDictionary
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
-  v4 = [(BMUAFAssetSubscriberSubscriptions *)self _subscriptionsJSONArray];
+  subscriberName = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
+  _subscriptionsJSONArray = [(BMUAFAssetSubscriberSubscriptions *)self _subscriptionsJSONArray];
   v10[0] = @"subscriberName";
-  v5 = v3;
-  if (!v3)
+  null = subscriberName;
+  if (!subscriberName)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"subscriptions";
-  v11[0] = v5;
-  v6 = v4;
-  if (!v4)
+  v11[0] = null;
+  null2 = _subscriptionsJSONArray;
+  if (!_subscriptionsJSONArray)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (v4)
+  if (_subscriptionsJSONArray)
   {
-    if (v3)
+    if (subscriberName)
     {
       goto LABEL_7;
     }
@@ -100,7 +100,7 @@ LABEL_12:
   else
   {
 
-    if (v3)
+    if (subscriberName)
     {
       goto LABEL_7;
     }
@@ -120,8 +120,8 @@ LABEL_7:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subscriptions = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -132,14 +132,14 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -150,11 +150,11 @@ LABEL_7:
   return v3;
 }
 
-- (BMUAFAssetSubscriberSubscriptions)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMUAFAssetSubscriberSubscriptions)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"subscriberName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"subscriberName"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -188,17 +188,17 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"subscriptions"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"subscriptions"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   v45 = v7;
   if (v11)
   {
     v41 = p_isa;
     v42 = v8;
-    v43 = v6;
-    v44 = self;
+    v43 = dictionaryCopy;
+    selfCopy2 = self;
 
     v9 = 0;
 LABEL_9:
@@ -235,8 +235,8 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = v43;
-        self = v44;
+        dictionaryCopy = v43;
+        self = selfCopy2;
         v7 = v45;
         v26 = v41;
         if (!v41)
@@ -269,8 +269,8 @@ LABEL_11:
           *v41 = v32;
         }
 
-        v6 = v43;
-        self = v44;
+        dictionaryCopy = v43;
+        self = selfCopy2;
         v7 = v45;
 LABEL_32:
 
@@ -293,9 +293,9 @@ LABEL_33:
 LABEL_19:
 
         v8 = v42;
-        self = [(BMUAFAssetSubscriberSubscriptions *)v44 initWithSubscriberName:v42 subscriptions:v12];
+        self = [(BMUAFAssetSubscriberSubscriptions *)selfCopy2 initWithSubscriberName:v42 subscriptions:v12];
         p_isa = &self->super.super.isa;
-        v6 = v43;
+        dictionaryCopy = v43;
         v7 = v45;
 LABEL_34:
 
@@ -303,8 +303,8 @@ LABEL_34:
       }
     }
 
-    v6 = v43;
-    self = v44;
+    dictionaryCopy = v43;
+    self = selfCopy2;
     v7 = v45;
     v26 = v41;
     if (!v41)
@@ -332,8 +332,8 @@ LABEL_28:
   {
     v41 = p_isa;
     v42 = v8;
-    v43 = v6;
-    v44 = self;
+    v43 = dictionaryCopy;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
@@ -363,15 +363,15 @@ LABEL_36:
 {
   v3 = objc_opt_new();
   [(BMUAFAssetSubscriberSubscriptions *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_subscriberName)
   {
     PBDataWriterWriteStringField();
@@ -398,7 +398,7 @@ LABEL_36:
 
         v10 = *(*(&v12 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -411,9 +411,9 @@ LABEL_36:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v26.receiver = self;
   v26.super_class = BMUAFAssetSubscriberSubscriptions;
   v5 = [(BMEventBase *)&v26 init];
@@ -423,12 +423,12 @@ LABEL_36:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -439,18 +439,18 @@ LABEL_36:
       while (1)
       {
         LOBYTE(v27[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v27 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v27 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v27[0] & 0x7F) << v8;
@@ -467,9 +467,9 @@ LABEL_36:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -478,7 +478,7 @@ LABEL_16:
       {
         v27[0] = 0;
         v27[1] = 0;
-        if (!PBReaderPlaceMark() || (v18 = [[BMUAFAssetSetSubscription alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v18 = [[BMUAFAssetSetSubscription alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_28:
 
@@ -502,18 +502,18 @@ LABEL_28:
         goto LABEL_28;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v21 = [v6 copy];
   subscriptions = v5->_subscriptions;
   v5->_subscriptions = v21;
 
-  v23 = [v4 hasError];
-  if (v23)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_29:
     v24 = 0;
@@ -531,25 +531,25 @@ LABEL_27:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
-  v5 = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
-  v6 = [v3 initWithFormat:@"BMUAFAssetSubscriberSubscriptions with subscriberName: %@, subscriptions: %@", v4, v5];
+  subscriberName = [(BMUAFAssetSubscriberSubscriptions *)self subscriberName];
+  subscriptions = [(BMUAFAssetSubscriberSubscriptions *)self subscriptions];
+  v6 = [v3 initWithFormat:@"BMUAFAssetSubscriberSubscriptions with subscriberName: %@, subscriptions: %@", subscriberName, subscriptions];
 
   return v6;
 }
 
-- (BMUAFAssetSubscriberSubscriptions)initWithSubscriberName:(id)a3 subscriptions:(id)a4
+- (BMUAFAssetSubscriberSubscriptions)initWithSubscriberName:(id)name subscriptions:(id)subscriptions
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  subscriptionsCopy = subscriptions;
   v11.receiver = self;
   v11.super_class = BMUAFAssetSubscriberSubscriptions;
   v9 = [(BMEventBase *)&v11 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_subscriberName, a3);
-    objc_storeStrong(&v9->_subscriptions, a4);
+    objc_storeStrong(&v9->_subscriberName, name);
+    objc_storeStrong(&v9->_subscriptions, subscriptions);
   }
 
   return v9;
@@ -592,9 +592,9 @@ id __44__BMUAFAssetSubscriberSubscriptions_columns__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -602,8 +602,8 @@ id __44__BMUAFAssetSubscriberSubscriptions_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMUAFAssetSubscriberSubscriptions alloc] initByReadFrom:v7];
     v4 = v8;

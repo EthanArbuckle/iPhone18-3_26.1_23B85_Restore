@@ -1,9 +1,9 @@
 @interface MTLTensorDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithBuffer:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithBuffer:(id)buffer offset:(unint64_t)offset error:(id *)error;
+- (BOOL)validateWithDevice:(id)device error:(id *)error;
 - (MTLTensorDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -36,12 +36,12 @@
   [(MTLTensorDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 16) = [(MTLTensorExtents *)self->_dimensions copyWithZone:a3];
-  *(v5 + 24) = [(MTLTensorExtents *)self->_strides copyWithZone:a3];
+  *(v5 + 16) = [(MTLTensorExtents *)self->_dimensions copyWithZone:zone];
+  *(v5 + 24) = [(MTLTensorExtents *)self->_strides copyWithZone:zone];
   [v5 setDataType:self->_dataType];
   [v5 setUsage:self->_usage];
   [v5 setForceResourceIndex:self->_forceResourceIndex];
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  result = Class == object_getClass(a3) && (v6 = -[MTLTensorExtents tensorExtentsInternal](self->_dimensions, "tensorExtentsInternal"), v6 == [*(a3 + 2) tensorExtentsInternal]) && (v7 = -[MTLTensorExtents tensorExtentsInternal](self->_strides, "tensorExtentsInternal"), v7 == objc_msgSend(*(a3 + 3), "tensorExtentsInternal")) && self->_dataType == *(a3 + 4) && self->_usage == *(a3 + 5) && self->_forceResourceIndex == *(a3 + 8) && self->_resourceIndex == *(a3 + 7) && self->_resourceOptions == *(a3 + 6);
+  result = Class == object_getClass(equal) && (v6 = -[MTLTensorExtents tensorExtentsInternal](self->_dimensions, "tensorExtentsInternal"), v6 == [*(equal + 2) tensorExtentsInternal]) && (v7 = -[MTLTensorExtents tensorExtentsInternal](self->_strides, "tensorExtentsInternal"), v7 == objc_msgSend(*(equal + 3), "tensorExtentsInternal")) && self->_dataType == *(equal + 4) && self->_usage == *(equal + 5) && self->_forceResourceIndex == *(equal + 8) && self->_resourceIndex == *(equal + 7) && self->_resourceOptions == *(equal + 6);
   return result;
 }
 
@@ -74,9 +74,9 @@
   return _MTLHashState(v5, 0x38uLL);
 }
 
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4
+- (BOOL)validateWithDevice:(id)device error:(id *)error
 {
-  _MTLMessageContextBegin_(v25, "[MTLTensorDescriptor validateWithDevice:error:]", 323, a3, 47, "Tensor Descriptor Validation");
+  _MTLMessageContextBegin_(v25, "[MTLTensorDescriptor validateWithDevice:error:]", 323, device, 47, "Tensor Descriptor Validation");
   validateDataType(self->_dataType, v25, v6, v7, v8, v9, v10, v11);
   if ((self->_usage & 0xFFFFFFFFFFFFFFF8) != 0)
   {
@@ -90,13 +90,13 @@
     _MTLMessageContextPush_(v25, 4, @"Strides should be nil when using [MTLDevice newTensorWithDescriptor:error:]", v18, v19, v20, v21, v22, v24);
   }
 
-  *a4 = _MTLMessageContextEndNSError(v25, @"MTLTensorDomain", 2);
+  *error = _MTLMessageContextEndNSError(v25, @"MTLTensorDomain", 2);
   return v25[0] == 0;
 }
 
-- (BOOL)validateWithBuffer:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (BOOL)validateWithBuffer:(id)buffer offset:(unint64_t)offset error:(id *)error
 {
-  _MTLMessageContextBegin_(v49, "-[MTLTensorDescriptor validateWithBuffer:offset:error:]", 339, [a3 device], 47, "Tensor Descriptor Validation");
+  _MTLMessageContextBegin_(v49, "-[MTLTensorDescriptor validateWithBuffer:offset:error:]", 339, [buffer device], 47, "Tensor Descriptor Validation");
   v16 = tensorDataTypeBitCount(self->_dataType, v9, v10, v11, v12, v13, v14, v15);
   validateDataType(self->_dataType, v49, v17, v18, v19, v20, v21, v22);
   if ((self->_usage & 0xFFFFFFFFFFFFFFF8) != 0)
@@ -104,30 +104,30 @@
     _MTLMessageContextPush_(v49, 4, @"Tensor usage (0x%lx) contains unknown bits", v23, v24, v25, v26, v27, self->_usage & 0xFFFFFFFFFFFFFFF8);
   }
 
-  v28 = [(MTLTensorDescriptor *)self storageMode];
-  if (v28 != [a3 storageMode])
+  storageMode = [(MTLTensorDescriptor *)self storageMode];
+  if (storageMode != [buffer storageMode])
   {
     [MTLTensorDescriptor validateWithBuffer:offset:error:];
   }
 
-  v29 = [(MTLTensorDescriptor *)self cpuCacheMode];
-  if (v29 != [a3 cpuCacheMode])
+  cpuCacheMode = [(MTLTensorDescriptor *)self cpuCacheMode];
+  if (cpuCacheMode != [buffer cpuCacheMode])
   {
     [MTLTensorDescriptor validateWithBuffer:offset:error:];
   }
 
   if ([(MTLTensorDescriptor *)self hazardTrackingMode])
   {
-    v35 = [(MTLTensorDescriptor *)self hazardTrackingMode];
-    if (v35 != [a3 hazardTrackingMode])
+    hazardTrackingMode = [(MTLTensorDescriptor *)self hazardTrackingMode];
+    if (hazardTrackingMode != [buffer hazardTrackingMode])
     {
       [MTLTensorDescriptor validateWithBuffer:offset:error:];
     }
   }
 
-  if (8 * a4 % v16)
+  if (8 * offset % v16)
   {
-    _MTLMessageContextPush_(v49, 4, @"Buffer offset (%llu bytes, %llu bits) should be aligned to the tensor data type size (%lu bits)", v30, v31, v32, v33, v34, a4);
+    _MTLMessageContextPush_(v49, 4, @"Buffer offset (%llu bytes, %llu bits) should be aligned to the tensor data type size (%lu bits)", v30, v31, v32, v33, v34, offset);
   }
 
   validateDimensions(self->_dimensions, v49);
@@ -142,9 +142,9 @@
   verifyStrides(v49, 4, self->_usage, self->_dimensions, strides);
   if ((self->_usage & 4) != 0)
   {
-    if (a4)
+    if (offset)
     {
-      _MTLMessageContextPush_(v49, 4, @"Buffer offset (%llu) should be 0 when using MTLTensorUsageMachineLearning", v42, v43, v44, v45, v46, a4);
+      _MTLMessageContextPush_(v49, 4, @"Buffer offset (%llu) should be 0 when using MTLTensorUsageMachineLearning", v42, v43, v44, v45, v46, offset);
     }
 
     if ([*p_strides rank] && objc_msgSend(*p_strides, "extentAtDimensionIndex:", 0) != 1)
@@ -158,7 +158,7 @@
     }
   }
 
-  *a5 = _MTLMessageContextEndNSError(v49, @"MTLTensorDomain", 2);
+  *error = _MTLMessageContextEndNSError(v49, @"MTLTensorDomain", 2);
   return v49[0] == 0;
 }
 

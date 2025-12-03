@@ -1,5 +1,5 @@
 @interface VKCImageVisualSearchViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsItemsInFocusContainer;
 - (id)accessibilityValue;
 - (int64_t)accessibilityContainerType;
@@ -8,11 +8,11 @@
 
 @implementation VKCImageVisualSearchViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VKCImageVisualSearchView" hasInstanceMethod:@"resultViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCImageVisualSearchView" hasInstanceMethod:@"updateUIForVisualSearchResultsClearExistingResults:includeNotVisibleItems:" withFullSignature:{"v", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VKCImageVisualSearchView" hasInstanceMethod:@"resultViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCImageVisualSearchView" hasInstanceMethod:@"updateUIForVisualSearchResultsClearExistingResults:includeNotVisibleItems:" withFullSignature:{"v", "B", "B", 0}];
 }
 
 - (int64_t)accessibilityContainerType
@@ -32,8 +32,8 @@
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityLocalizedString(@"items.count");
-  v5 = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
-  v6 = [v3 localizedStringWithFormat:v4, objc_msgSend(v5, "count")];
+  _axVisualSearchResultViews = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
+  v6 = [v3 localizedStringWithFormat:v4, objc_msgSend(_axVisualSearchResultViews, "count")];
 
   return v6;
 }
@@ -43,8 +43,8 @@
   v12.receiver = self;
   v12.super_class = VKCImageVisualSearchViewAccessibility;
   [(VKCImageVisualSearchViewAccessibility *)&v12 _accessibilityLoadAccessibilityInformation];
-  v3 = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
-  v4 = [v3 count];
+  _axVisualSearchResultViews = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
+  v4 = [_axVisualSearchResultViews count];
   if (v4)
   {
     v5 = v4;
@@ -52,7 +52,7 @@
     do
     {
       objc_opt_class();
-      v7 = [v3 objectAtIndexedSubscript:v6];
+      v7 = [_axVisualSearchResultViews objectAtIndexedSubscript:v6];
       v8 = __UIAccessibilityCastAsSafeCategory();
 
       v9 = MEMORY[0x29EDBA0F8];
@@ -67,8 +67,8 @@
 
 - (BOOL)_axIsItemsInFocusContainer
 {
-  v2 = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
-  v3 = [v2 count] != 0;
+  _axVisualSearchResultViews = [(VKCImageVisualSearchViewAccessibility *)self _axVisualSearchResultViews];
+  v3 = [_axVisualSearchResultViews count] != 0;
 
   return v3;
 }

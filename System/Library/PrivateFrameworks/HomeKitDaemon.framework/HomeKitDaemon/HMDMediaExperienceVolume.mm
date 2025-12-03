@@ -1,15 +1,15 @@
 @interface HMDMediaExperienceVolume
-+ (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4;
++ (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name;
 @end
 
 @implementation HMDMediaExperienceVolume
 
-+ (BOOL)getActiveCategoryVolume:(float *)a3 andName:(id *)a4
++ (BOOL)getActiveCategoryVolume:(float *)volume andName:(id *)name
 {
-  v6 = [MEMORY[0x277D26E58] sharedInstance];
-  LOBYTE(a4) = [v6 getActiveCategoryVolume:a3 andName:a4];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+  LOBYTE(name) = [mEMORY[0x277D26E58] getActiveCategoryVolume:volume andName:name];
 
-  return a4;
+  return name;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface PLDuplicateDetectorLivePhotoContext
-- (BOOL)hasStableHash:(id)a3 contextData:(id)a4;
+- (BOOL)hasStableHash:(id)hash contextData:(id)data;
 - (PLDuplicateDetectorLivePhotoContext)init;
 - (id)description;
-- (void)addStableHash:(id)a3 contextData:(id)a4;
+- (void)addStableHash:(id)hash contextData:(id)data;
 @end
 
 @implementation PLDuplicateDetectorLivePhotoContext
@@ -17,14 +17,14 @@
   return v4;
 }
 
-- (BOOL)hasStableHash:(id)a3 contextData:(id)a4
+- (BOOL)hasStableHash:(id)hash contextData:(id)data
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_container objectForKeyedSubscript:a3];
+  dataCopy = data;
+  v7 = [(NSMutableDictionary *)self->_container objectForKeyedSubscript:hash];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 containsObject:v6];
+    v9 = [v7 containsObject:dataCopy];
   }
 
   else
@@ -35,20 +35,20 @@
   return v9;
 }
 
-- (void)addStableHash:(id)a3 contextData:(id)a4
+- (void)addStableHash:(id)hash contextData:(id)data
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  hashCopy = hash;
+  dataCopy = data;
+  if (hashCopy)
   {
     v7 = [(NSMutableDictionary *)self->_container objectForKeyedSubscript:?];
     if (!v7)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [(NSMutableDictionary *)self->_container setObject:v7 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_container setObject:v7 forKeyedSubscript:hashCopy];
     }
 
-    [v7 addObject:v6];
+    [v7 addObject:dataCopy];
   }
 }
 

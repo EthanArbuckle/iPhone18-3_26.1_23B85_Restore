@@ -1,22 +1,22 @@
 @interface CRLInspectorTextFieldLengthFormatter
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9;
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted;
 - (id)crl_numberFormatterForAnalysis;
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)crlaxLocalizedDescriptionFromValue:(id)value;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation CRLInspectorTextFieldLengthFormatter
 
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted
 {
-  v31 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  originalValueCopy = originalValue;
   v17 = +[CRLRulerUnits instance];
-  v18 = [v17 rulerUnits];
+  rulerUnits = [v17 rulerUnits];
 
-  if (v18 == 4)
+  if (rulerUnits == 4)
   {
     v19 = &qword_101A35428;
     v38 = qword_101A35418;
@@ -25,7 +25,7 @@
     v22 = &v38;
   }
 
-  else if (v18 == 1)
+  else if (rulerUnits == 1)
   {
     v19 = &qword_101A35428;
     v39 = qword_101A35430;
@@ -37,7 +37,7 @@
   else
   {
     v19 = &qword_101A35430;
-    if (v18)
+    if (rulerUnits)
     {
       v37 = qword_101A35408;
       v20 = &qword_101A35418;
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v24);
         }
 
-        if ([*(*(&v32 + 1) + 8 * i) p_getObjectValue:a3 forString:v31 withMinimum:v14 andMaximum:v15 originalValue:v16 errorDescription:a8 valueObjectWasAdjusted:a9])
+        if ([*(*(&v32 + 1) + 8 * i) p_getObjectValue:value forString:stringCopy withMinimum:minimumCopy andMaximum:maximumCopy originalValue:originalValueCopy errorDescription:description valueObjectWasAdjusted:adjusted])
         {
           v29 = 1;
           goto LABEL_18;
@@ -100,34 +100,34 @@ LABEL_18:
   return v29;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = +[CRLRulerUnits instance];
-  v6 = [v5 rulerUnits];
+  rulerUnits = [v5 rulerUnits];
 
   v7 = objc_opt_class();
-  v8 = sub_100014370(v7, v4);
+  v8 = sub_100014370(v7, valueCopy);
   if (v8)
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v9 = [NSNumber numberWithDouble:?];
 
-    v4 = v9;
+    valueCopy = v9;
   }
 
-  v10 = [(CRLInspectorTextFieldClampNumberFormatter *)self valueBeforeEditing];
-  if (v6 > 4)
+  valueBeforeEditing = [(CRLInspectorTextFieldClampNumberFormatter *)self valueBeforeEditing];
+  if (rulerUnits > 4)
   {
     v11 = &qword_101A35408;
   }
 
   else
   {
-    v11 = (&off_10186C838)[v6];
+    v11 = (&off_10186C838)[rulerUnits];
   }
 
-  v12 = [*v11 stringForObjectValue:v4 originalValue:v10];
+  v12 = [*v11 stringForObjectValue:valueCopy originalValue:valueBeforeEditing];
 
   return v12;
 }
@@ -135,16 +135,16 @@ LABEL_18:
 - (id)crl_numberFormatterForAnalysis
 {
   v2 = +[CRLRulerUnits instance];
-  v3 = [v2 rulerUnits];
+  rulerUnits = [v2 rulerUnits];
 
-  if (v3 > 4)
+  if (rulerUnits > 4)
   {
     v4 = &qword_101A35408;
   }
 
   else
   {
-    v4 = (&off_10186C838)[v3];
+    v4 = (&off_10186C838)[rulerUnits];
   }
 
   v5 = *v4;
@@ -152,17 +152,17 @@ LABEL_18:
   return v5;
 }
 
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3
+- (id)crlaxLocalizedDescriptionFromValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = [(CRLInspectorTextFieldLengthFormatter *)self crl_numberFormatterForAnalysis];
-  v7 = [v6 copy];
+  crl_numberFormatterForAnalysis = [(CRLInspectorTextFieldLengthFormatter *)self crl_numberFormatterForAnalysis];
+  v7 = [crl_numberFormatterForAnalysis copy];
   v8 = sub_100014370(v5, v7);
 
-  v9 = [(CRLInspectorTextFieldAbstractNumberFormatter *)v8 crlaxValueFormat];
+  crlaxValueFormat = [(CRLInspectorTextFieldAbstractNumberFormatter *)v8 crlaxValueFormat];
 
-  if (v9)
+  if (crlaxValueFormat)
   {
     v10 = v8 == self;
   }
@@ -203,12 +203,12 @@ LABEL_18:
 
     v19.receiver = self;
     v19.super_class = CRLInspectorTextFieldLengthFormatter;
-    v16 = [(CRLInspectorTextFieldAbstractNumberFormatter *)&v19 crlaxLocalizedDescriptionFromValue:v4];
+    v16 = [(CRLInspectorTextFieldAbstractNumberFormatter *)&v19 crlaxLocalizedDescriptionFromValue:valueCopy];
   }
 
   else
   {
-    v16 = [(CRLInspectorTextFieldLengthFormatter *)v8 crlaxLocalizedDescriptionFromValue:v4];
+    v16 = [(CRLInspectorTextFieldLengthFormatter *)v8 crlaxLocalizedDescriptionFromValue:valueCopy];
   }
 
   v17 = v16;

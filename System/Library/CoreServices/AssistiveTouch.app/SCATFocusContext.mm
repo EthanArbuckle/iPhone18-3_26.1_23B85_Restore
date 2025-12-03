@@ -1,19 +1,19 @@
 @interface SCATFocusContext
-+ (SCATFocusContext)focusContextWithElement:(id)a3 elementManager:(id)a4 selectBehavior:(int)a5 options:(int)a6;
-+ (id)adHocFocusContext:(id)a3;
++ (SCATFocusContext)focusContextWithElement:(id)element elementManager:(id)manager selectBehavior:(int)behavior options:(int)options;
++ (id)adHocFocusContext:(id)context;
 + (id)focusContextAutomatic;
 + (id)focusContextSelf;
-+ (id)menuOnlyFocusContext:(id)a3;
-+ (int)_behaviorForElement:(id)a3 manager:(id)a4;
++ (id)menuOnlyFocusContext:(id)context;
++ (int)_behaviorForElement:(id)element manager:(id)manager;
 - (AXElementGroup)parentGroup;
-- (BOOL)containsPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point;
 - (BOOL)isGroup;
 - (BOOL)shouldDeferFocusToNativeFocusElement;
 - (BOOL)shouldSuppressAudioOutput;
 - (BOOL)waitsForSelectAction;
-- (SCATFocusContext)initWithElement:(id)a3 elementManager:(id)a4 selectBehavior:(int)a5;
-- (id)_descriptionForSelectBehavior:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCATFocusContext)initWithElement:(id)element elementManager:(id)manager selectBehavior:(int)behavior;
+- (id)_descriptionForSelectBehavior:(int)behavior;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)elemLog;
 - (unsigned)displayID;
@@ -23,18 +23,18 @@
 
 - (id)elemLog
 {
-  v3 = [(SCATFocusContext *)self element];
+  element = [(SCATFocusContext *)self element];
   v4 = objc_opt_respondsToSelector();
-  v5 = [(SCATFocusContext *)self element];
-  v6 = v5;
+  element2 = [(SCATFocusContext *)self element];
+  v6 = element2;
   if (v4)
   {
-    [v5 elemLog];
+    [element2 elemLog];
   }
 
   else
   {
-    [v5 description];
+    [element2 description];
   }
   v7 = ;
   v8 = sub_1000DB534([(SCATFocusContext *)self selectBehavior]);
@@ -67,20 +67,20 @@
   return v3;
 }
 
-+ (SCATFocusContext)focusContextWithElement:(id)a3 elementManager:(id)a4 selectBehavior:(int)a5 options:(int)a6
++ (SCATFocusContext)focusContextWithElement:(id)element elementManager:(id)manager selectBehavior:(int)behavior options:(int)options
 {
-  v6 = a6;
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithElement:v11 elementManager:v10 selectBehavior:v7];
+  optionsCopy = options;
+  v7 = *&behavior;
+  managerCopy = manager;
+  elementCopy = element;
+  v12 = [[self alloc] initWithElement:elementCopy elementManager:managerCopy selectBehavior:v7];
 
-  if ((v6 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     [v12 setShouldResumeFromMenuDismissal:1];
   }
 
-  if (v6)
+  if (optionsCopy)
   {
     [v12 setSelectBehavior:1];
   }
@@ -88,10 +88,10 @@
   return v12;
 }
 
-+ (int)_behaviorForElement:(id)a3 manager:(id)a4
++ (int)_behaviorForElement:(id)element manager:(id)manager
 {
-  v4 = a3;
-  if ([v4 isGroup])
+  elementCopy = element;
+  if ([elementCopy isGroup])
   {
     v5 = 3;
   }
@@ -99,10 +99,10 @@
   else
   {
     v5 = 1;
-    if (([v4 scatShouldActivateDirectly] & 1) == 0)
+    if (([elementCopy scatShouldActivateDirectly] & 1) == 0)
     {
       v6 = +[SCATScannerManager sharedManager];
-      v7 = [v6 shouldBypassShowingMenuForElement:v4];
+      v7 = [v6 shouldBypassShowingMenuForElement:elementCopy];
 
       if (v7)
       {
@@ -119,20 +119,20 @@
   return v5;
 }
 
-+ (id)menuOnlyFocusContext:(id)a3
++ (id)menuOnlyFocusContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(SCATFocusContext);
-  [(SCATFocusContext *)v4 setMenuElement:v3];
+  [(SCATFocusContext *)v4 setMenuElement:contextCopy];
 
   return v4;
 }
 
-+ (id)adHocFocusContext:(id)a3
++ (id)adHocFocusContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(SCATFocusContext);
-  [(SCATFocusContext *)v4 setElement:v3];
+  [(SCATFocusContext *)v4 setElement:contextCopy];
 
   [(SCATFocusContext *)v4 setShouldBeTrackedByZoom:0];
   [(SCATFocusContext *)v4 setSelectBehavior:2];
@@ -140,27 +140,27 @@
   return v4;
 }
 
-- (SCATFocusContext)initWithElement:(id)a3 elementManager:(id)a4 selectBehavior:(int)a5
+- (SCATFocusContext)initWithElement:(id)element elementManager:(id)manager selectBehavior:(int)behavior
 {
-  v9 = a3;
-  v10 = a4;
+  elementCopy = element;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SCATFocusContext;
   v11 = [(SCATFocusContext *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    if (v9 && v10)
+    if (elementCopy && managerCopy)
     {
       v11->_shouldBeTrackedByZoom = 1;
-      objc_storeStrong(&v11->_element, a3);
-      if (!a5)
+      objc_storeStrong(&v11->_element, element);
+      if (!behavior)
       {
-        a5 = [objc_opt_class() _behaviorForElement:v12->_element manager:v12->_elementManager];
+        behavior = [objc_opt_class() _behaviorForElement:v12->_element manager:v12->_elementManager];
       }
 
-      v12->_selectBehavior = a5;
-      v12->_elementManager = v10;
+      v12->_selectBehavior = behavior;
+      v12->_elementManager = managerCopy;
     }
 
     else
@@ -175,17 +175,17 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCATFocusContext);
-  v5 = [(SCATFocusContext *)self element];
-  [(SCATFocusContext *)v4 setElement:v5];
+  element = [(SCATFocusContext *)self element];
+  [(SCATFocusContext *)v4 setElement:element];
 
-  v6 = [(SCATFocusContext *)self menuElement];
-  [(SCATFocusContext *)v4 setMenuElement:v6];
+  menuElement = [(SCATFocusContext *)self menuElement];
+  [(SCATFocusContext *)v4 setMenuElement:menuElement];
 
-  v7 = [(SCATFocusContext *)self elementManager];
-  [(SCATFocusContext *)v4 setElementManager:v7];
+  elementManager = [(SCATFocusContext *)self elementManager];
+  [(SCATFocusContext *)v4 setElementManager:elementManager];
 
   [(SCATFocusContext *)v4 setSelectBehavior:[(SCATFocusContext *)self selectBehavior]];
   [(SCATFocusContext *)v4 setFirstInSequence:[(SCATFocusContext *)self isFirstInSequence]];
@@ -201,12 +201,12 @@
 
   if (v4)
   {
-    v5 = [(SCATFocusContext *)self element];
-    v6 = [(SCATFocusContext *)self elementManager];
+    element = [(SCATFocusContext *)self element];
+    elementManager = [(SCATFocusContext *)self elementManager];
     v7 = [(SCATFocusContext *)self _descriptionForSelectBehavior:[(SCATFocusContext *)self selectBehavior]];
     v8 = [NSNumber numberWithBool:[(SCATFocusContext *)self isFirstInSequence]];
-    v9 = [(SCATFocusContext *)self menuElement];
-    [NSString stringWithFormat:@"SCATFocusContext<%p>. SELF-SENTINAL. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@", self, v5, v6, v7, v8, v9];
+    menuElement = [(SCATFocusContext *)self menuElement];
+    [NSString stringWithFormat:@"SCATFocusContext<%p>. SELF-SENTINAL. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@", self, element, elementManager, v7, v8, menuElement];
     v13 = LABEL_5:;
     goto LABEL_7;
   }
@@ -214,51 +214,51 @@
   v10 = +[SCATFocusContext focusContextAutomatic];
   v11 = [(SCATFocusContext *)self isEqual:v10];
 
-  v5 = [(SCATFocusContext *)self element];
-  v6 = [(SCATFocusContext *)self elementManager];
+  element = [(SCATFocusContext *)self element];
+  elementManager = [(SCATFocusContext *)self elementManager];
   v7 = [(SCATFocusContext *)self _descriptionForSelectBehavior:[(SCATFocusContext *)self selectBehavior]];
   v8 = [NSNumber numberWithBool:[(SCATFocusContext *)self isFirstInSequence]];
-  v12 = [(SCATFocusContext *)self menuElement];
-  v9 = v12;
+  menuElement2 = [(SCATFocusContext *)self menuElement];
+  menuElement = menuElement2;
   if (v11)
   {
-    [NSString stringWithFormat:@"SCATFocusContext<%p>. AUTOMATIC-SENTINAL. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@", self, v5, v6, v7, v8, v12];
+    [NSString stringWithFormat:@"SCATFocusContext<%p>. AUTOMATIC-SENTINAL. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@", self, element, elementManager, v7, v8, menuElement2];
     goto LABEL_5;
   }
 
   v14 = [NSNumber numberWithBool:[(SCATFocusContext *)self shouldResumeFromMenuDismissal]];
-  v13 = [NSString stringWithFormat:@"SCATFocusContext<%p>. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@ resumesFromMenu:%@", self, v5, v6, v7, v8, v9, v14];
+  v13 = [NSString stringWithFormat:@"SCATFocusContext<%p>. element:%@ manager:%@ selectBehavior:%@ isFirstInSequence:%@ menuElement:%@ resumesFromMenu:%@", self, element, elementManager, v7, v8, menuElement, v14];
 
 LABEL_7:
 
   return v13;
 }
 
-- (id)_descriptionForSelectBehavior:(int)a3
+- (id)_descriptionForSelectBehavior:(int)behavior
 {
-  if ((a3 - 1) > 3)
+  if ((behavior - 1) > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1001D7498[a3 - 1];
+    return off_1001D7498[behavior - 1];
   }
 }
 
 - (BOOL)waitsForSelectAction
 {
-  v3 = [(SCATFocusContext *)self element];
-  v4 = [v3 scatShouldActivateDirectly];
+  element = [(SCATFocusContext *)self element];
+  scatShouldActivateDirectly = [element scatShouldActivateDirectly];
 
-  if (v4)
+  if (scatShouldActivateDirectly)
   {
     return 0;
   }
 
-  v6 = [(SCATFocusContext *)self element];
-  if ([v6 isGroup])
+  element2 = [(SCATFocusContext *)self element];
+  if ([element2 isGroup])
   {
     v5 = [(SCATFocusContext *)self selectBehavior]== 3;
   }
@@ -273,33 +273,33 @@ LABEL_7:
 
 - (BOOL)shouldSuppressAudioOutput
 {
-  v3 = [(SCATFocusContext *)self element];
-  v4 = [v3 scatShouldSuppressAudioOutput];
+  element = [(SCATFocusContext *)self element];
+  scatShouldSuppressAudioOutput = [element scatShouldSuppressAudioOutput];
 
-  return (v4 & 1) != 0 || self->_shouldSuppressAudioOutput;
+  return (scatShouldSuppressAudioOutput & 1) != 0 || self->_shouldSuppressAudioOutput;
 }
 
 - (AXElementGroup)parentGroup
 {
-  v2 = [(SCATFocusContext *)self element];
-  v3 = [v2 parentGroup];
+  element = [(SCATFocusContext *)self element];
+  parentGroup = [element parentGroup];
 
-  return v3;
+  return parentGroup;
 }
 
 - (BOOL)isGroup
 {
-  v2 = [(SCATFocusContext *)self element];
-  v3 = [v2 isGroup];
+  element = [(SCATFocusContext *)self element];
+  isGroup = [element isGroup];
 
-  return v3;
+  return isGroup;
 }
 
 - (unsigned)displayID
 {
-  v3 = [(SCATFocusContext *)self menuElement];
+  menuElement = [(SCATFocusContext *)self menuElement];
 
-  if (v3)
+  if (menuElement)
   {
     [(SCATFocusContext *)self menuElement];
   }
@@ -309,25 +309,25 @@ LABEL_7:
     [(SCATFocusContext *)self element];
   }
   v4 = ;
-  v5 = [v4 scatDisplayId];
+  scatDisplayId = [v4 scatDisplayId];
 
-  return v5;
+  return scatDisplayId;
 }
 
 - (BOOL)shouldDeferFocusToNativeFocusElement
 {
-  v2 = [(SCATFocusContext *)self element];
-  v3 = [v2 scatShouldAllowDeferFocusToNativeFocusedElement];
+  element = [(SCATFocusContext *)self element];
+  scatShouldAllowDeferFocusToNativeFocusedElement = [element scatShouldAllowDeferFocusToNativeFocusedElement];
 
-  return v3;
+  return scatShouldAllowDeferFocusToNativeFocusedElement;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SCATFocusContext *)self element];
-  [v5 scatFrame];
+  y = point.y;
+  x = point.x;
+  element = [(SCATFocusContext *)self element];
+  [element scatFrame];
   v8.x = x;
   v8.y = y;
   v6 = CGRectContainsPoint(v9, v8);

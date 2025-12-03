@@ -1,7 +1,7 @@
 @interface REReminderSampleDataSource
 + (id)overrideDataSourceImage;
 - (id)supportedSections;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation REReminderSampleDataSource
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = REUISampleRelevanceProviderForSamplePosition();
   v6 = +[NSCalendar currentCalendar];
   v7 = +[NSDate date];
@@ -41,7 +41,7 @@
 
   v16 = v14;
   v15 = [NSArray arrayWithObjects:&v16 count:1];
-  v4[2](v4, v15);
+  handlerCopy[2](handlerCopy, v15);
 }
 
 @end

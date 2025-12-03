@@ -1,16 +1,16 @@
 @interface CSDIDSTransport
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransport:(id)a3;
-- (CSDIDSTransport)initWithDestination:(id)a3;
-- (CSDIDSTransport)initWithSocket:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransport:(id)transport;
+- (CSDIDSTransport)initWithDestination:(id)destination;
+- (CSDIDSTransport)initWithSocket:(int)socket;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CSDIDSTransport
 
-- (CSDIDSTransport)initWithSocket:(int)a3
+- (CSDIDSTransport)initWithSocket:(int)socket
 {
   v5.receiver = self;
   v5.super_class = CSDIDSTransport;
@@ -18,15 +18,15 @@
   if (result)
   {
     result->_type = 1;
-    result->_socket = a3;
+    result->_socket = socket;
   }
 
   return result;
 }
 
-- (CSDIDSTransport)initWithDestination:(id)a3
+- (CSDIDSTransport)initWithDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = CSDIDSTransport;
   v6 = [(CSDIDSTransport *)&v9 init];
@@ -34,7 +34,7 @@
   if (v6)
   {
     v6->_type = 2;
-    objc_storeStrong(&v6->_destination, a3);
+    objc_storeStrong(&v6->_destination, destination);
     v7->_socket = -1;
   }
 
@@ -44,34 +44,34 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p type=%d", objc_opt_class(), self, [(CSDIDSTransport *)self type]];
-  v4 = [(CSDIDSTransport *)self type];
-  if (v4 == 2)
+  type = [(CSDIDSTransport *)self type];
+  if (type == 2)
   {
-    v5 = [(CSDIDSTransport *)self destination];
-    [v3 appendFormat:@" destination=%@", v5];
+    destination = [(CSDIDSTransport *)self destination];
+    [v3 appendFormat:@" destination=%@", destination];
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     [v3 appendFormat:@" socket=%d", -[CSDIDSTransport socket](self, "socket")];
   }
 
   [v3 appendFormat:@" initialLinkType=%lu", -[CSDIDSTransport initialLinkType](self, "initialLinkType")];
-  v6 = [(CSDIDSTransport *)self remoteDestination];
+  remoteDestination = [(CSDIDSTransport *)self remoteDestination];
 
-  if (v6)
+  if (remoteDestination)
   {
-    v7 = [(CSDIDSTransport *)self remoteDestination];
-    [v3 appendFormat:@" remoteDestination=%@", v7];
+    remoteDestination2 = [(CSDIDSTransport *)self remoteDestination];
+    [v3 appendFormat:@" remoteDestination=%@", remoteDestination2];
   }
 
-  v8 = [(CSDIDSTransport *)self remoteDevice];
+  remoteDevice = [(CSDIDSTransport *)self remoteDevice];
 
-  if (v8)
+  if (remoteDevice)
   {
-    v9 = [(CSDIDSTransport *)self remoteDevice];
-    v10 = [v9 uniqueIDOverride];
-    [v3 appendFormat:@" remoteDeviceUniqueIdentifier=%@", v10];
+    remoteDevice2 = [(CSDIDSTransport *)self remoteDevice];
+    uniqueIDOverride = [remoteDevice2 uniqueIDOverride];
+    [v3 appendFormat:@" remoteDeviceUniqueIdentifier=%@", uniqueIDOverride];
   }
 
   [v3 appendString:@">"];
@@ -80,13 +80,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CSDIDSTransport *)self isEqualToTransport:v4];
+    v5 = [(CSDIDSTransport *)self isEqualToTransport:equalCopy];
   }
 
   else
@@ -97,24 +97,24 @@
   return v5;
 }
 
-- (BOOL)isEqualToTransport:(id)a3
+- (BOOL)isEqualToTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CSDIDSTransport *)self type];
-  if (v5 == [v4 type] && (v6 = -[CSDIDSTransport socket](self, "socket"), v6 == objc_msgSend(v4, "socket")))
+  transportCopy = transport;
+  type = [(CSDIDSTransport *)self type];
+  if (type == [transportCopy type] && (v6 = -[CSDIDSTransport socket](self, "socket"), v6 == objc_msgSend(transportCopy, "socket")))
   {
-    v7 = [(CSDIDSTransport *)self destination];
-    v8 = [v4 destination];
-    if (TUStringsAreEqualOrNil() && (v9 = -[CSDIDSTransport initialLinkType](self, "initialLinkType"), v9 == [v4 initialLinkType]))
+    destination = [(CSDIDSTransport *)self destination];
+    destination2 = [transportCopy destination];
+    if (TUStringsAreEqualOrNil() && (v9 = -[CSDIDSTransport initialLinkType](self, "initialLinkType"), v9 == [transportCopy initialLinkType]))
     {
-      v10 = [(CSDIDSTransport *)self remoteDestination];
-      v11 = [v4 remoteDestination];
+      remoteDestination = [(CSDIDSTransport *)self remoteDestination];
+      remoteDestination2 = [transportCopy remoteDestination];
       if (TUObjectsAreEqualOrNil())
       {
-        v12 = [(CSDIDSTransport *)self remoteDevice];
-        v13 = [v12 uniqueIDOverride];
-        v14 = [v4 remoteDevice];
-        v15 = [v14 uniqueIDOverride];
+        remoteDevice = [(CSDIDSTransport *)self remoteDevice];
+        uniqueIDOverride = [remoteDevice uniqueIDOverride];
+        remoteDevice2 = [transportCopy remoteDevice];
+        uniqueIDOverride2 = [remoteDevice2 uniqueIDOverride];
         v16 = TUStringsAreEqualOrNil();
       }
 
@@ -140,33 +140,33 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CSDIDSTransport *)self type];
-  v4 = ([(CSDIDSTransport *)self socket]^ v3);
-  v5 = [(CSDIDSTransport *)self destination];
-  v6 = [v5 hash];
+  type = [(CSDIDSTransport *)self type];
+  v4 = ([(CSDIDSTransport *)self socket]^ type);
+  destination = [(CSDIDSTransport *)self destination];
+  v6 = [destination hash];
   v7 = v6 ^ [(CSDIDSTransport *)self initialLinkType]^ v4;
-  v8 = [(CSDIDSTransport *)self remoteDestination];
-  v9 = [v8 hash];
-  v10 = [(CSDIDSTransport *)self remoteDevice];
-  v11 = [v10 uniqueIDOverride];
-  v12 = v9 ^ [v11 hash];
+  remoteDestination = [(CSDIDSTransport *)self remoteDestination];
+  v9 = [remoteDestination hash];
+  remoteDevice = [(CSDIDSTransport *)self remoteDevice];
+  uniqueIDOverride = [remoteDevice uniqueIDOverride];
+  v12 = v9 ^ [uniqueIDOverride hash];
 
   return v7 ^ v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(CSDIDSTransport *)self type];
-  if (v5 == 2)
+  type = [(CSDIDSTransport *)self type];
+  if (type == 2)
   {
-    v7 = [objc_opt_class() allocWithZone:a3];
-    v8 = [(CSDIDSTransport *)self destination];
-    v6 = [v7 initWithDestination:v8];
+    v7 = [objc_opt_class() allocWithZone:zone];
+    destination = [(CSDIDSTransport *)self destination];
+    v6 = [v7 initWithDestination:destination];
   }
 
-  else if (v5 == 1)
+  else if (type == 1)
   {
-    v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSocket:", -[CSDIDSTransport socket](self, "socket")}];
+    v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSocket:", -[CSDIDSTransport socket](self, "socket")}];
   }
 
   else
@@ -175,11 +175,11 @@
   }
 
   [v6 setInitialLinkType:{-[CSDIDSTransport initialLinkType](self, "initialLinkType")}];
-  v9 = [(CSDIDSTransport *)self remoteDestination];
-  [v6 setRemoteDestination:v9];
+  remoteDestination = [(CSDIDSTransport *)self remoteDestination];
+  [v6 setRemoteDestination:remoteDestination];
 
-  v10 = [(CSDIDSTransport *)self remoteDevice];
-  [v6 setRemoteDevice:v10];
+  remoteDevice = [(CSDIDSTransport *)self remoteDevice];
+  [v6 setRemoteDevice:remoteDevice];
 
   return v6;
 }

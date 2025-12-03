@@ -1,46 +1,46 @@
 @interface AVCaptureSystemStylePicker
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3;
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3 action:(id)a4;
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3 styles:(id)a4 action:(id)a5;
-- (id)_automaticStylesWithSystemSmartStyle:(id)a3;
+- (AVCaptureSystemStylePicker)initWithSession:(id)session;
+- (AVCaptureSystemStylePicker)initWithSession:(id)session action:(id)action;
+- (AVCaptureSystemStylePicker)initWithSession:(id)session styles:(id)styles action:(id)action;
+- (id)_automaticStylesWithSystemSmartStyle:(id)style;
 - (id)actionQueue;
 - (id)overlayControl;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
 - (void)installObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overlayVisibilityDidChange:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overlayVisibilityDidChange:(BOOL)change;
 - (void)removeObservers;
 @end
 
 @implementation AVCaptureSystemStylePicker
 
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3
+- (AVCaptureSystemStylePicker)initWithSession:(id)session
 {
-  v5 = -[AVCaptureSystemStylePicker _automaticStylesWithSystemSmartStyle:](self, "_automaticStylesWithSystemSmartStyle:", [a3 systemSmartStyle]);
+  v5 = -[AVCaptureSystemStylePicker _automaticStylesWithSystemSmartStyle:](self, "_automaticStylesWithSystemSmartStyle:", [session systemSmartStyle]);
 
-  return [(AVCaptureSystemStylePicker *)self initWithSession:a3 styles:v5 action:0];
+  return [(AVCaptureSystemStylePicker *)self initWithSession:session styles:v5 action:0];
 }
 
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3 action:(id)a4
+- (AVCaptureSystemStylePicker)initWithSession:(id)session action:(id)action
 {
-  v7 = -[AVCaptureSystemStylePicker _automaticStylesWithSystemSmartStyle:](self, "_automaticStylesWithSystemSmartStyle:", [a3 systemSmartStyle]);
+  v7 = -[AVCaptureSystemStylePicker _automaticStylesWithSystemSmartStyle:](self, "_automaticStylesWithSystemSmartStyle:", [session systemSmartStyle]);
 
-  return [(AVCaptureSystemStylePicker *)self initWithSession:a3 styles:v7 action:a4];
+  return [(AVCaptureSystemStylePicker *)self initWithSession:session styles:v7 action:action];
 }
 
-- (AVCaptureSystemStylePicker)initWithSession:(id)a3 styles:(id)a4 action:(id)a5
+- (AVCaptureSystemStylePicker)initWithSession:(id)session styles:(id)styles action:(id)action
 {
   v27.receiver = self;
   v27.super_class = AVCaptureSystemStylePicker;
-  v8 = [(AVCaptureControl *)&v27 initSubclass];
-  if (v8)
+  initSubclass = [(AVCaptureControl *)&v27 initSubclass];
+  if (initSubclass)
   {
-    v8->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
-    v8->_styles = [a4 copy];
-    v20 = v8;
-    v8->_action = [a5 copy];
+    initSubclass->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:session];
+    initSubclass->_styles = [styles copy];
+    v20 = initSubclass;
+    initSubclass->_action = [action copy];
     v21 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AVFCapture"];
     v28[0] = AVSmartStyleCastTypeStandard[0];
     v28[1] = AVSmartStyleCastTypeTanWarm[0];
@@ -75,12 +75,12 @@
     v29[14] = @"SMART_STYLE_CLOUD_COVER";
     v29[15] = @"SMART_STYLE_LONG_GRAY";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:16];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    v11 = [styles countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -91,13 +91,13 @@
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(styles);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
           v16 = [v9 objectForKeyedSubscript:{objc_msgSend(v15, "cast")}];
-          v17 = [v15 cast];
-          if ([v17 isEqualToString:AVSmartStyleCastTypeBrightPop[0]])
+          cast = [v15 cast];
+          if ([cast isEqualToString:AVSmartStyleCastTypeBrightPop[0]])
           {
             v18 = @"AVCaptureSystemStylePickerUT6";
           }
@@ -107,24 +107,24 @@
             v18 = @"AVCaptureSystemStylePicker";
           }
 
-          [v10 addObject:{objc_msgSend(v21, "localizedStringForKey:value:table:", v16, &stru_1F1CBCFE8, v18)}];
+          [array addObject:{objc_msgSend(v21, "localizedStringForKey:value:table:", v16, &stru_1F1CBCFE8, v18)}];
         }
 
-        v12 = [a4 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v12 = [styles countByEnumeratingWithState:&v23 objects:v22 count:16];
       }
 
       while (v12);
     }
 
-    v8 = v20;
-    v20->_titles = [v10 copy];
+    initSubclass = v20;
+    v20->_titles = [array copy];
     v20->_selectedStyleLock._os_unfair_lock_opaque = 0;
-    v20->_selectedStyle = [a3 activeSmartStyle];
+    v20->_selectedStyle = [session activeSmartStyle];
     v20->_actionLock._os_unfair_lock_opaque = 0;
     v20->_changeSmartStyleInProcess = 1;
   }
 
-  return v8;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -137,9 +137,9 @@
   [(AVCaptureControl *)&v3 dealloc];
 }
 
-- (id)_automaticStylesWithSystemSmartStyle:(id)a3
+- (id)_automaticStylesWithSystemSmartStyle:(id)style
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -167,7 +167,7 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if (!a3 || (v11 = [v10 isEqualToString:{objc_msgSend(a3, "cast")}], v12 = a3, (v11 & 1) == 0))
+        if (!style || (v11 = [v10 isEqualToString:{objc_msgSend(style, "cast")}], v12 = style, (v11 & 1) == 0))
         {
           if ([v10 isEqualToString:AVSmartStyleCastTypeStandard[0]])
           {
@@ -182,7 +182,7 @@
           v12 = [AVCaptureSmartStyle styleWithCast:v10 intensity:v13 toneBias:0.0 colorBias:0.0];
         }
 
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -191,7 +191,7 @@
     while (v7);
   }
 
-  return [v4 copy];
+  return [array copy];
 }
 
 - (id)overlayControl
@@ -269,14 +269,14 @@ uint64_t __43__AVCaptureSystemStylePicker_overlayUpdate__block_invoke(uint64_t a
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   os_unfair_lock_lock(&self->_actionLock);
   observing = self->_observing;
   os_unfair_lock_unlock(&self->_actionLock);
-  if ([a3 isEqualToString:@"smartStyle"] && -[AVWeakReference referencedObject](self->_sessionReference, "referencedObject") == a4)
+  if ([path isEqualToString:@"smartStyle"] && -[AVWeakReference referencedObject](self->_sessionReference, "referencedObject") == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (observing && v11 != 0)
     {
       v13 = v11;
@@ -308,24 +308,24 @@ uint64_t __77__AVCaptureSystemStylePicker_observeValueForKeyPath_ofObject_change
   return [v3 isEqualToString:v4];
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  v4 = [a3 indexValue];
-  if ((v4 & 0x8000000000000000) == 0)
+  indexValue = [update indexValue];
+  if ((indexValue & 0x8000000000000000) == 0)
   {
-    v5 = v4;
-    if (v4 < [(NSArray *)self->_styles count])
+    v5 = indexValue;
+    if (indexValue < [(NSArray *)self->_styles count])
     {
       v6 = [(NSArray *)self->_styles objectAtIndexedSubscript:v5];
       if (self->_changeSmartStyleInProcess)
       {
-        v7 = [(AVWeakReference *)self->_sessionReference referencedObject];
-        if (!v7)
+        referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
+        if (!referencedObject)
         {
           return;
         }
 
-        [v7 setSmartStyle:v6];
+        [referencedObject setSmartStyle:v6];
         self->_smartStyleHasChanged = 1;
       }
 
@@ -347,19 +347,19 @@ uint64_t __77__AVCaptureSystemStylePicker_observeValueForKeyPath_ofObject_change
   }
 }
 
-- (void)overlayVisibilityDidChange:(BOOL)a3
+- (void)overlayVisibilityDidChange:(BOOL)change
 {
   v6.receiver = self;
   v6.super_class = AVCaptureSystemStylePicker;
   [(AVCaptureControl *)&v6 overlayVisibilityDidChange:?];
-  if (!a3)
+  if (!change)
   {
-    v5 = [(AVWeakReference *)self->_sessionReference referencedObject];
-    if (v5)
+    referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
+    if (referencedObject)
     {
       if (self->_changeSmartStyleInProcess && self->_smartStyleHasChanged)
       {
-        [v5 saveSystemStyleOverrideToDefaults:{objc_msgSend(v5, "smartStyle")}];
+        [referencedObject saveSystemStyleOverrideToDefaults:{objc_msgSend(referencedObject, "smartStyle")}];
         self->_smartStyleHasChanged = 0;
       }
     }

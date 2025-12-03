@@ -1,29 +1,29 @@
 @interface MFMessageSigner
 - (MFError)error;
-- (MFMessageSigner)initWithSender:(id)a3 signingTrust:(__SecTrust *)a4 encryptionTrust:(__SecTrust *)a5 verification:(int)a6;
+- (MFMessageSigner)initWithSender:(id)sender signingTrust:(__SecTrust *)trust encryptionTrust:(__SecTrust *)encryptionTrust verification:(int)verification;
 @end
 
 @implementation MFMessageSigner
 
-- (MFMessageSigner)initWithSender:(id)a3 signingTrust:(__SecTrust *)a4 encryptionTrust:(__SecTrust *)a5 verification:(int)a6
+- (MFMessageSigner)initWithSender:(id)sender signingTrust:(__SecTrust *)trust encryptionTrust:(__SecTrust *)encryptionTrust verification:(int)verification
 {
-  v11 = a3;
+  senderCopy = sender;
   v12 = [(MFMessageSigner *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->_status = a6;
-    objc_storeStrong(&v12->_sender, a3);
-    if (a4)
+    v12->_status = verification;
+    objc_storeStrong(&v12->_sender, sender);
+    if (trust)
     {
-      v14 = [[MFCertificateTrustInfo alloc] initWithCertificateType:0 trust:a4 sender:v11];
+      v14 = [[MFCertificateTrustInfo alloc] initWithCertificateType:0 trust:trust sender:senderCopy];
       signingCertificateTrustInfo = v13->_signingCertificateTrustInfo;
       v13->_signingCertificateTrustInfo = v14;
     }
 
-    if (a5)
+    if (encryptionTrust)
     {
-      v16 = [[MFCertificateTrustInfo alloc] initWithCertificateType:1 trust:a5 sender:v11];
+      v16 = [[MFCertificateTrustInfo alloc] initWithCertificateType:1 trust:encryptionTrust sender:senderCopy];
       encryptionCertificateTrustInfo = v13->_encryptionCertificateTrustInfo;
       v13->_encryptionCertificateTrustInfo = v16;
     }
@@ -48,8 +48,8 @@
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     v7 = MFLookupLocalizedString(@"SMIME_DAMAGED_SIG", @"The digital signature for this message is incorrect. The message may have been tampered with or corrupted since being signed by “%@”.", @"Delayed");
-    v8 = [(MFCertificateTrustInfo *)self->_signingCertificateTrustInfo sender];
-    v2 = [v6 initWithFormat:v7, v8];
+    sender = [(MFCertificateTrustInfo *)self->_signingCertificateTrustInfo sender];
+    v2 = [v6 initWithFormat:v7, sender];
 
     v9 = MFLogGeneral();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))

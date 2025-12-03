@@ -10,13 +10,13 @@
 
 - (void)schedule
 {
-  v2 = self;
+  selfCopy = self;
   DOCRenameOperation.schedule()();
 }
 
 - (NSString)actionNameForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCRenameOperation.actionNameForUndoing.getter();
   v5 = v4;
 
@@ -35,7 +35,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCRenameOperation.operationForRedoing()();
 
   return v3;
@@ -43,7 +43,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCRenameOperation.operationForUndoing()();
 
   return v3;

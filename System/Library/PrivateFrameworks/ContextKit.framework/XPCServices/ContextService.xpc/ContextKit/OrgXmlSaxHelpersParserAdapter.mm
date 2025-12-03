@@ -1,45 +1,45 @@
 @interface OrgXmlSaxHelpersParserAdapter
-- (BOOL)getFeatureWithNSString:(id)a3;
-- (id)getPropertyWithNSString:(id)a3;
+- (BOOL)getFeatureWithNSString:(id)string;
+- (id)getPropertyWithNSString:(id)string;
 - (id)setupParser;
 - (void)dealloc;
 - (void)endDocument;
-- (void)endElementWithNSString:(id)a3;
-- (void)parseWithNSString:(id)a3;
-- (void)parseWithOrgXmlSaxInputSource:(id)a3;
-- (void)processingInstructionWithNSString:(id)a3 withNSString:(id)a4;
-- (void)reportErrorWithNSString:(id)a3;
-- (void)setDocumentLocatorWithOrgXmlSaxLocator:(id)a3;
-- (void)setFeatureWithNSString:(id)a3 withBoolean:(BOOL)a4;
-- (void)setPropertyWithNSString:(id)a3 withId:(id)a4;
+- (void)endElementWithNSString:(id)string;
+- (void)parseWithNSString:(id)string;
+- (void)parseWithOrgXmlSaxInputSource:(id)source;
+- (void)processingInstructionWithNSString:(id)string withNSString:(id)sString;
+- (void)reportErrorWithNSString:(id)string;
+- (void)setDocumentLocatorWithOrgXmlSaxLocator:(id)locator;
+- (void)setFeatureWithNSString:(id)string withBoolean:(BOOL)boolean;
+- (void)setPropertyWithNSString:(id)string withId:(id)id;
 - (void)startDocument;
-- (void)startElementWithNSString:(id)a3 withOrgXmlSaxAttributeList:(id)a4;
+- (void)startElementWithNSString:(id)string withOrgXmlSaxAttributeList:(id)list;
 @end
 
 @implementation OrgXmlSaxHelpersParserAdapter
 
-- (void)setFeatureWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (void)setFeatureWithNSString:(id)string withBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 isEqual:off_1005501D8])
+  if ([string isEqual:off_1005501D8])
   {
-    sub_1001A17BC(self, @"feature", a3, v7, v8, v9, v10, v11);
-    self->namespaces_ = a4;
-    if (!a4 && !self->prefixes_)
+    sub_1001A17BC(self, @"feature", string, v7, v8, v9, v10, v11);
+    self->namespaces_ = boolean;
+    if (!boolean && !self->prefixes_)
     {
       self->prefixes_ = 1;
     }
   }
 
-  else if ([a3 isEqual:off_1005501E0])
+  else if ([string isEqual:off_1005501E0])
   {
-    sub_1001A17BC(self, @"feature", a3, v12, v13, v14, v15, v16);
-    self->prefixes_ = a4;
-    if (!a4 && !self->namespaces_)
+    sub_1001A17BC(self, @"feature", string, v12, v13, v14, v15, v16);
+    self->prefixes_ = boolean;
+    if (!boolean && !self->namespaces_)
     {
       self->namespaces_ = 1;
     }
@@ -47,38 +47,38 @@
 
   else
   {
-    if (![a3 isEqual:off_1005501E8])
+    if (![string isEqual:off_1005501E8])
     {
       v24 = JreStrcat("$$", v17, v18, v19, v20, v21, v22, v23, @"Feature: ");
       v25 = new_OrgXmlSaxSAXNotRecognizedException_initWithNSString_(v24);
       objc_exception_throw(v25);
     }
 
-    sub_1001A17BC(self, @"feature", a3, v19, v20, v21, v22, v23);
-    self->uris_ = a4;
+    sub_1001A17BC(self, @"feature", string, v19, v20, v21, v22, v23);
+    self->uris_ = boolean;
   }
 }
 
-- (BOOL)getFeatureWithNSString:(id)a3
+- (BOOL)getFeatureWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 isEqual:off_1005501D8])
+  if ([string isEqual:off_1005501D8])
   {
     v5 = 96;
   }
 
-  else if ([a3 isEqual:off_1005501E0])
+  else if ([string isEqual:off_1005501E0])
   {
     v5 = 97;
   }
 
   else
   {
-    if (([a3 isEqual:off_1005501E8] & 1) == 0)
+    if (([string isEqual:off_1005501E8] & 1) == 0)
     {
       v14 = JreStrcat("$$", v6, v7, v8, v9, v10, v11, v12, @"Feature: ");
       v15 = new_OrgXmlSaxSAXNotRecognizedException_initWithNSString_(v14);
@@ -91,28 +91,28 @@
   return *(&self->super.isa + v5);
 }
 
-- (void)setPropertyWithNSString:(id)a3 withId:(id)a4
+- (void)setPropertyWithNSString:(id)string withId:(id)id
 {
-  v8 = JreStrcat("$$", a2, a3, a4, v4, v5, v6, v7, @"Property: ");
+  v8 = JreStrcat("$$", a2, string, id, v4, v5, v6, v7, @"Property: ");
   v9 = new_OrgXmlSaxSAXNotRecognizedException_initWithNSString_(v8);
   objc_exception_throw(v9);
 }
 
-- (id)getPropertyWithNSString:(id)a3
+- (id)getPropertyWithNSString:(id)string
 {
-  v8 = JreStrcat("$$", a2, a3, v3, v4, v5, v6, v7, @"Property: ");
+  v8 = JreStrcat("$$", a2, string, v3, v4, v5, v6, v7, @"Property: ");
   v9 = new_OrgXmlSaxSAXNotRecognizedException_initWithNSString_(v8);
   objc_exception_throw(v9);
 }
 
-- (void)parseWithNSString:(id)a3
+- (void)parseWithNSString:(id)string
 {
-  v4 = new_OrgXmlSaxInputSource_initWithNSString_(a3);
+  v4 = new_OrgXmlSaxInputSource_initWithNSString_(string);
 
   [(OrgXmlSaxHelpersParserAdapter *)self parseWithOrgXmlSaxInputSource:v4];
 }
 
-- (void)parseWithOrgXmlSaxInputSource:(id)a3
+- (void)parseWithOrgXmlSaxInputSource:(id)source
 {
   if (self->parsing_)
   {
@@ -128,33 +128,33 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgXmlSaxParser *)parser parseWithOrgXmlSaxInputSource:a3];
+  [(OrgXmlSaxParser *)parser parseWithOrgXmlSaxInputSource:source];
   self->parsing_ = 0;
 }
 
 - (id)setupParser
 {
-  if ((*(a1 + 97) & 1) == 0 && (*(a1 + 96) & 1) == 0)
+  if ((*(self + 97) & 1) == 0 && (*(self + 96) & 1) == 0)
   {
     v8 = new_JavaLangIllegalStateException_init();
     objc_exception_throw(v8);
   }
 
-  v2 = *(a1 + 48);
+  v2 = *(self + 48);
   if (!v2)
   {
     goto LABEL_19;
   }
 
   [v2 reset];
-  if (*(a1 + 98) == 1)
+  if (*(self + 98) == 1)
   {
-    [*(a1 + 48) setNamespaceDeclUrisWithBoolean:1];
+    [*(self + 48) setNamespaceDeclUrisWithBoolean:1];
   }
 
-  if (*(a1 + 16))
+  if (*(self + 16))
   {
-    v3 = *(a1 + 80);
+    v3 = *(self + 80);
     if (!v3)
     {
       goto LABEL_19;
@@ -163,9 +163,9 @@
     [v3 setEntityResolverWithOrgXmlSaxEntityResolver:?];
   }
 
-  if (*(a1 + 24))
+  if (*(self + 24))
   {
-    v4 = *(a1 + 80);
+    v4 = *(self + 80);
     if (!v4)
     {
       goto LABEL_19;
@@ -174,9 +174,9 @@
     [v4 setDTDHandlerWithOrgXmlSaxDTDHandler:?];
   }
 
-  if (*(a1 + 40))
+  if (*(self + 40))
   {
-    v5 = *(a1 + 80);
+    v5 = *(self + 80);
     if (!v5)
     {
       goto LABEL_19;
@@ -185,26 +185,26 @@
     [v5 setErrorHandlerWithOrgXmlSaxErrorHandler:?];
   }
 
-  v6 = *(a1 + 80);
+  v6 = *(self + 80);
   if (!v6)
   {
 LABEL_19:
     JreThrowNullPointerException();
   }
 
-  [v6 setDocumentHandlerWithOrgXmlSaxDocumentHandler:a1];
+  [v6 setDocumentHandlerWithOrgXmlSaxDocumentHandler:self];
 
-  return JreStrongAssign((a1 + 8), 0);
+  return JreStrongAssign((self + 8), 0);
 }
 
-- (void)setDocumentLocatorWithOrgXmlSaxLocator:(id)a3
+- (void)setDocumentLocatorWithOrgXmlSaxLocator:(id)locator
 {
-  JreStrongAssign(&self->locator_, a3);
+  JreStrongAssign(&self->locator_, locator);
   contentHandler = self->contentHandler_;
   if (contentHandler)
   {
 
-    [(OrgXmlSaxContentHandler *)contentHandler setDocumentLocatorWithOrgXmlSaxLocator:a3];
+    [(OrgXmlSaxContentHandler *)contentHandler setDocumentLocatorWithOrgXmlSaxLocator:locator];
   }
 }
 
@@ -226,7 +226,7 @@ LABEL_19:
   }
 }
 
-- (void)startElementWithNSString:(id)a3 withOrgXmlSaxAttributeList:(id)a4
+- (void)startElementWithNSString:(id)string withOrgXmlSaxAttributeList:(id)list
 {
   if (!self->namespaces_)
   {
@@ -238,14 +238,14 @@ LABEL_19:
     attAdapter = self->attAdapter_;
     if (attAdapter)
     {
-      [(OrgXmlSaxHelpersParserAdapter_AttributeListAdapter *)attAdapter setAttributeListWithOrgXmlSaxAttributeList:a4];
-      if (a3)
+      [(OrgXmlSaxHelpersParserAdapter_AttributeListAdapter *)attAdapter setAttributeListWithOrgXmlSaxAttributeList:list];
+      if (string)
       {
         contentHandler = self->contentHandler_;
-        v42 = [a3 intern];
+        intern = [string intern];
         v43 = self->attAdapter_;
 
-        [(OrgXmlSaxContentHandler *)contentHandler startElementWithNSString:&stru_100484358 withNSString:&stru_100484358 withNSString:v42 withOrgXmlSaxAttributes:v43];
+        [(OrgXmlSaxContentHandler *)contentHandler startElementWithNSString:&stru_100484358 withNSString:&stru_100484358 withNSString:intern withOrgXmlSaxAttributes:v43];
         return;
       }
     }
@@ -261,13 +261,13 @@ LABEL_57:
   }
 
   [(OrgXmlSaxHelpersNamespaceSupport *)nsSupport pushContext];
-  if (!a4)
+  if (!list)
   {
     goto LABEL_57;
   }
 
-  v51 = [a4 getLength];
-  if (v51 < 1)
+  getLength = [list getLength];
+  if (getLength < 1)
   {
     atts = self->atts_;
     p_atts = &self->atts_;
@@ -280,11 +280,11 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  v52 = a4;
+  listCopy = list;
   v8 = 0;
   do
   {
-    v9 = [v52 getNameWithInt:v8];
+    v9 = [listCopy getNameWithInt:v8];
     if (!v9)
     {
       goto LABEL_57;
@@ -314,7 +314,7 @@ LABEL_57:
         }
       }
 
-      v14 = [v52 getValueWithInt:v8];
+      v14 = [listCopy getValueWithInt:v8];
       if ([(OrgXmlSaxHelpersNamespaceSupport *)self->nsSupport_ declarePrefixWithNSString:v13 withNSString:v14])
       {
         v22 = self->contentHandler_;
@@ -334,7 +334,7 @@ LABEL_17:
     v8 = (v8 + 1);
   }
 
-  while (v51 != v8);
+  while (getLength != v8);
   v23 = self->atts_;
   p_atts = &self->atts_;
   if (!v23)
@@ -342,14 +342,14 @@ LABEL_17:
     goto LABEL_57;
   }
 
-  v49 = a3;
+  stringCopy = string;
   [(OrgXmlSaxHelpersAttributesImpl *)v23 clear];
   v24 = 0;
   do
   {
-    v25 = [v52 getNameWithInt:v24];
-    v26 = [v52 getTypeWithInt:v24];
-    v27 = [v52 getValueWithInt:v24];
+    v25 = [listCopy getNameWithInt:v24];
+    v26 = [listCopy getTypeWithInt:v24];
+    v27 = [listCopy getValueWithInt:v24];
     if (!v25)
     {
       goto LABEL_57;
@@ -416,7 +416,7 @@ LABEL_25:
       if (self->uris_)
       {
         v35 = OrgXmlSaxHelpersNamespaceSupport_XMLNS_;
-        v36 = [v25 intern];
+        intern2 = [v25 intern];
         v37 = v34;
         v38 = v35;
         v39 = v30;
@@ -424,25 +424,25 @@ LABEL_25:
 
       else
       {
-        v36 = [v25 intern];
+        intern2 = [v25 intern];
         v37 = v34;
         v38 = &stru_100484358;
         v39 = &stru_100484358;
       }
 
-      [(OrgXmlSaxHelpersAttributesImpl *)v37 addAttributeWithNSString:v38 withNSString:v39 withNSString:v36 withNSString:v26 withNSString:v28];
+      [(OrgXmlSaxHelpersAttributesImpl *)v37 addAttributeWithNSString:v38 withNSString:v39 withNSString:intern2 withNSString:v26 withNSString:v28];
     }
 
 LABEL_30:
     v24 = (v24 + 1);
   }
 
-  while (v51 != v24);
-  a3 = v49;
+  while (getLength != v24);
+  string = stringCopy;
 LABEL_50:
   if (self->contentHandler_)
   {
-    v45 = sub_1001A2220(self, a3, 0, 0);
+    v45 = sub_1001A2220(self, string, 0, 0);
     v46 = v45;
     if (!v45)
     {
@@ -470,11 +470,11 @@ LABEL_50:
   }
 }
 
-- (void)endElementWithNSString:(id)a3
+- (void)endElementWithNSString:(id)string
 {
   if (self->namespaces_)
   {
-    v4 = sub_1001A2220(self, a3, 0, 0);
+    v4 = sub_1001A2220(self, string, 0, 0);
     if (self->contentHandler_)
     {
       v5 = v4;
@@ -506,25 +506,25 @@ LABEL_50:
         goto LABEL_23;
       }
 
-      v8 = [(OrgXmlSaxHelpersNamespaceSupport *)nsSupport getDeclaredPrefixes];
-      if (!v8)
+      getDeclaredPrefixes = [(OrgXmlSaxHelpersNamespaceSupport *)nsSupport getDeclaredPrefixes];
+      if (!getDeclaredPrefixes)
       {
         goto LABEL_23;
       }
 
-      v9 = v8;
-      if ([v8 hasMoreElements])
+      v9 = getDeclaredPrefixes;
+      if ([getDeclaredPrefixes hasMoreElements])
       {
         do
         {
-          v10 = [v9 nextElement];
+          nextElement = [v9 nextElement];
           objc_opt_class();
-          if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
+          if (nextElement && (objc_opt_isKindOfClass() & 1) == 0)
           {
             JreThrowClassCastException();
           }
 
-          [(OrgXmlSaxContentHandler *)self->contentHandler_ endPrefixMappingWithNSString:v10];
+          [(OrgXmlSaxContentHandler *)self->contentHandler_ endPrefixMappingWithNSString:nextElement];
         }
 
         while (([v9 hasMoreElements] & 1) != 0);
@@ -549,31 +549,31 @@ LABEL_23:
     return;
   }
 
-  if (!a3)
+  if (!string)
   {
     goto LABEL_23;
   }
 
-  v13 = [a3 intern];
+  intern = [string intern];
 
-  [(OrgXmlSaxContentHandler *)contentHandler endElementWithNSString:&stru_100484358 withNSString:&stru_100484358 withNSString:v13];
+  [(OrgXmlSaxContentHandler *)contentHandler endElementWithNSString:&stru_100484358 withNSString:&stru_100484358 withNSString:intern];
 }
 
-- (void)processingInstructionWithNSString:(id)a3 withNSString:(id)a4
+- (void)processingInstructionWithNSString:(id)string withNSString:(id)sString
 {
   contentHandler = self->contentHandler_;
   if (contentHandler)
   {
-    [(OrgXmlSaxContentHandler *)contentHandler processingInstructionWithNSString:a3 withNSString:a4];
+    [(OrgXmlSaxContentHandler *)contentHandler processingInstructionWithNSString:string withNSString:sString];
   }
 }
 
-- (void)reportErrorWithNSString:(id)a3
+- (void)reportErrorWithNSString:(id)string
 {
   errorHandler = self->errorHandler_;
   if (errorHandler)
   {
-    v4 = sub_1001A2574(self, a3);
+    v4 = sub_1001A2574(self, string);
 
     [(OrgXmlSaxErrorHandler *)errorHandler errorWithOrgXmlSaxSAXParseException:v4];
   }

@@ -1,13 +1,13 @@
 @interface AccountSuggestionManager
 - (void)reloadAccounts;
-- (void)reloadDelay:(id)a3;
+- (void)reloadDelay:(id)delay;
 @end
 
 @implementation AccountSuggestionManager
 
-- (void)reloadDelay:(id)a3
+- (void)reloadDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
 
   sub_23DC7B3BC();
 }

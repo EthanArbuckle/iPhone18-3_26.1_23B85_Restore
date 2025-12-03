@@ -1,19 +1,19 @@
 @interface CircularProgressView.SpinAnimator.Delegate
 - (_TtCCC11MusicCoreUI20CircularProgressViewP33_2327D9925563EEC9FF3A63D4DED4721D12SpinAnimator8Delegate)init;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation CircularProgressView.SpinAnimator.Delegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCCC11MusicCoreUI20CircularProgressViewP33_2327D9925563EEC9FF3A63D4DED4721D12SpinAnimator8Delegate_onAnimationDidStop);
   if (v4)
   {
-    v6 = a3;
-    v7 = self;
+    stopCopy = stop;
+    selfCopy = self;
     sub_10002F518(v4);
-    v4(v6);
+    v4(stopCopy);
 
     sub_10003CC4C(v4);
   }

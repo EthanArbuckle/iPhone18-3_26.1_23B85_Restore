@@ -11,13 +11,13 @@
 
 - (void)startTiming
 {
-  v3 = [(DYGLExperimentResultsGenerator *)self functionPlayer];
-  v4 = [(DYGLExperimentResultsGenerator *)self experiment];
-  v5 = [v4 enableExperimentFinish];
+  functionPlayer = [(DYGLExperimentResultsGenerator *)self functionPlayer];
+  experiment = [(DYGLExperimentResultsGenerator *)self experiment];
+  enableExperimentFinish = [experiment enableExperimentFinish];
 
-  if (v5)
+  if (enableExperimentFinish)
   {
-    (*([v3 gliDispatch] + 89))(objc_msgSend(v3, "gliContext"));
+    (*([functionPlayer gliDispatch] + 89))(objc_msgSend(functionPlayer, "gliContext"));
   }
 
   v6.receiver = self;
@@ -27,13 +27,13 @@
 
 - (void)stopTiming
 {
-  v3 = [(DYGLExperimentResultsGenerator *)self functionPlayer];
-  v4 = [(DYGLExperimentResultsGenerator *)self experiment];
-  v5 = [v4 enableExperimentFinish];
+  functionPlayer = [(DYGLExperimentResultsGenerator *)self functionPlayer];
+  experiment = [(DYGLExperimentResultsGenerator *)self experiment];
+  enableExperimentFinish = [experiment enableExperimentFinish];
 
-  if (v5)
+  if (enableExperimentFinish)
   {
-    (*([v3 gliDispatch] + 89))(objc_msgSend(v3, "gliContext"));
+    (*([functionPlayer gliDispatch] + 89))(objc_msgSend(functionPlayer, "gliContext"));
   }
 
   v6.receiver = self;
@@ -50,15 +50,15 @@
   overrides = self->_overrides;
   self->_overrides = v2;
 
-  v4 = [(DYGLExperimentResultsGenerator *)self functionPlayer];
+  functionPlayer = [(DYGLExperimentResultsGenerator *)self functionPlayer];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(DYGLExperimentResultsGenerator *)self experiment];
-  v6 = [v5 overrideTypeStrings];
+  experiment = [(DYGLExperimentResultsGenerator *)self experiment];
+  overrideTypeStrings = [experiment overrideTypeStrings];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v7 = [overrideTypeStrings countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -69,7 +69,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(overrideTypeStrings);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -81,7 +81,7 @@
 
         else
         {
-          v12 = [[DYEAGLFunctionPlayerOverride alloc] initWithFunctionPlayer:v4 overrideKey:v11];
+          v12 = [[DYEAGLFunctionPlayerOverride alloc] initWithFunctionPlayer:functionPlayer overrideKey:v11];
           if (v12)
           {
             [(NSMutableArray *)self->_overrides addObject:v12];
@@ -89,7 +89,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [overrideTypeStrings countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
@@ -108,15 +108,15 @@
 
 - (void)onGraphicsFunctionEnd
 {
-  v3 = [(DYGLExperimentResultsGenerator *)self experiment];
-  v4 = [v3 profilingFlags];
+  experiment = [(DYGLExperimentResultsGenerator *)self experiment];
+  profilingFlags = [experiment profilingFlags];
 
-  if ((v4 & 0x40) != 0)
+  if ((profilingFlags & 0x40) != 0)
   {
-    v5 = [(DYGLExperimentResultsGenerator *)self functionPlayer];
-    v6 = [v5 context];
-    [v5 ctxID];
-    [v5 currentFileFunctionIndex];
+    functionPlayer = [(DYGLExperimentResultsGenerator *)self functionPlayer];
+    context = [functionPlayer context];
+    [functionPlayer ctxID];
+    [functionPlayer currentFileFunctionIndex];
     DYAddPerFunctionProfilingData();
   }
 
@@ -157,18 +157,18 @@
     while (v4);
   }
 
-  v7 = [(DYGLExperimentResultsGenerator *)self experiment];
-  v8 = ([v7 profilingFlags] & 0x40) == 0;
+  experiment = [(DYGLExperimentResultsGenerator *)self experiment];
+  v8 = ([experiment profilingFlags] & 0x40) == 0;
 
   if (!v8)
   {
-    v9 = [(DYGLExperimentResultsGenerator *)self functionPlayer];
-    v10 = [(DYGLExperimentResultsGenerator *)self prevFileFunctionIndex];
-    if (v10 != [v9 currentFileFunctionIndex])
+    functionPlayer = [(DYGLExperimentResultsGenerator *)self functionPlayer];
+    prevFileFunctionIndex = [(DYGLExperimentResultsGenerator *)self prevFileFunctionIndex];
+    if (prevFileFunctionIndex != [functionPlayer currentFileFunctionIndex])
     {
-      v11 = [v9 context];
-      [v9 ctxID];
-      [v9 currentFileFunctionIndex];
+      context = [functionPlayer context];
+      [functionPlayer ctxID];
+      [functionPlayer currentFileFunctionIndex];
       DYAddPerFunctionProfilingData();
     }
   }

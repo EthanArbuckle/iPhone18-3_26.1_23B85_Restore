@@ -1,14 +1,14 @@
 @interface LiveListenLevels
-- (LiveListenLevels)initWithFrame:(CGRect)a3 inCompact:(BOOL)a4;
+- (LiveListenLevels)initWithFrame:(CGRect)frame inCompact:(BOOL)compact;
 - (void)layoutSubviews;
-- (void)updateLevel:(double)a3;
+- (void)updateLevel:(double)level;
 @end
 
 @implementation LiveListenLevels
 
-- (LiveListenLevels)initWithFrame:(CGRect)a3 inCompact:(BOOL)a4
+- (LiveListenLevels)initWithFrame:(CGRect)frame inCompact:(BOOL)compact
 {
-  if (a4)
+  if (compact)
   {
     v4 = 4;
   }
@@ -20,7 +20,7 @@
 
   v5 = 8.0;
   v6 = 4.0;
-  if (a4)
+  if (compact)
   {
     v5 = 4.0;
     v6 = 2.0;
@@ -31,7 +31,7 @@
   self->_dotSpacing = v6;
   v19.receiver = self;
   v19.super_class = LiveListenLevels;
-  v7 = [(LiveListenLevels *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(LiveListenLevels *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v8 = +[NSMutableArray array];
@@ -45,8 +45,8 @@
         v12 = [v11 colorWithAlphaComponent:0.25];
         [v10 setFillColor:{objc_msgSend(v12, "CGColor")}];
 
-        v13 = [(LiveListenLevels *)v7 layer];
-        [v13 addSublayer:v10];
+        layer = [(LiveListenLevels *)v7 layer];
+        [layer addSublayer:v10];
 
         [v8 addObject:v10];
         ++v9;
@@ -86,7 +86,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(LiveListenLevels *)self levels];
+  levels = [(LiveListenLevels *)self levels];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100001DB8;
@@ -96,19 +96,19 @@
   v12[6] = v6;
   v12[7] = v8;
   v12[8] = v10;
-  [v11 enumerateObjectsUsingBlock:v12];
+  [levels enumerateObjectsUsingBlock:v12];
 }
 
-- (void)updateLevel:(double)a3
+- (void)updateLevel:(double)level
 {
-  v5 = [(LiveListenLevels *)self levels];
+  levels = [(LiveListenLevels *)self levels];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100001FA8;
   v6[3] = &unk_1000106A0;
-  *&v6[5] = a3;
+  *&v6[5] = level;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [levels enumerateObjectsUsingBlock:v6];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SBDockIconListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityScannerGroupElements;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
@@ -8,20 +8,20 @@
 
 @implementation SBDockIconListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconListModel"];
-  [v3 validateClass:@"SBIconListView"];
-  [v3 validateClass:@"SBDockIconListView" isKindOfClass:@"SBIconListView"];
-  [v3 validateClass:@"SBIconListView" hasInstanceVariable:@"_model" withType:"SBIconListModel"];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"isEmpty" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"visibleIcons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconLocation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"displayedIconViewForIcon:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconListViewAccessibility" hasInstanceMethod:@"_accessibilityEmptyListDropString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockViewController" hasInstanceVariable:@"_libraryPodIconView" withType:"SBIconView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconListModel"];
+  [validationsCopy validateClass:@"SBIconListView"];
+  [validationsCopy validateClass:@"SBDockIconListView" isKindOfClass:@"SBIconListView"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceVariable:@"_model" withType:"SBIconListModel"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"isEmpty" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"visibleIcons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconLocation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"displayedIconViewForIcon:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewAccessibility" hasInstanceMethod:@"_accessibilityEmptyListDropString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockViewController" hasInstanceVariable:@"_libraryPodIconView" withType:"SBIconView"];
 }
 
 - (id)accessibilityLabel
@@ -47,21 +47,21 @@
   return v4;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (AXDeviceIsPad() && (NSClassFromString(&cfstr_Sbdocksuggesti.isa), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11.receiver = self;
     v11.super_class = SBDockIconListViewAccessibility;
-    v8 = [(SBDockIconListViewAccessibility *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    v8 = [(SBDockIconListViewAccessibility *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   else
   {
-    v8 = [(SBDockIconListViewAccessibility *)self _accessibilityBaseHitTest:v7 withEvent:x, y];
+    v8 = [(SBDockIconListViewAccessibility *)self _accessibilityBaseHitTest:eventCopy withEvent:x, y];
   }
 
   v9 = v8;
@@ -71,8 +71,8 @@
 
 - (id)accessibilityElements
 {
-  v2 = [(SBDockIconListViewAccessibility *)self _accessibilitySubviews];
-  v3 = [v2 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  _accessibilitySubviews = [(SBDockIconListViewAccessibility *)self _accessibilitySubviews];
+  v3 = [_accessibilitySubviews sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
 
   return v3;
 }
@@ -80,7 +80,7 @@
 - (id)_accessibilityScannerGroupElements
 {
   v31 = *MEMORY[0x29EDCA608];
-  v16 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -111,7 +111,7 @@
         v7 = v18[5];
         _Block_object_dispose(&v17, 8);
 
-        [v16 axSafelyAddObject:v7];
+        [array axSafelyAddObject:v7];
       }
 
       v4 = [obj countByEnumeratingWithState:&v23 objects:v30 count:16];
@@ -123,14 +123,14 @@
   NSClassFromString(&cfstr_Sbdocksuggesti.isa);
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(SBDockIconListViewAccessibility *)self _accessibilityViewController];
-    v9 = [v8 safeValueForKey:@"floatingDockViewController"];
+    _accessibilityViewController = [(SBDockIconListViewAccessibility *)self _accessibilityViewController];
+    v9 = [_accessibilityViewController safeValueForKey:@"floatingDockViewController"];
 
     v10 = [v9 safeValueForKey:@"_libraryPodIconView"];
-    [v16 axSafelyAddObject:v10];
+    [array axSafelyAddObject:v10];
   }
 
-  v11 = [v16 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  v11 = [array sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
   v27[0] = @"GroupTraits";
   v27[1] = @"GroupElements";
   v28[0] = &unk_2A2318CC8;

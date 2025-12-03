@@ -1,33 +1,33 @@
 @interface ATXModeScheduler
-- (ATXModeScheduler)initWithQueue:(id)a3 operationBlock:(id)a4 andLeeway:(double)a5;
-- (id)runAfterDelaySecondsIfNotYetScheduled:(double)a3;
+- (ATXModeScheduler)initWithQueue:(id)queue operationBlock:(id)block andLeeway:(double)leeway;
+- (id)runAfterDelaySecondsIfNotYetScheduled:(double)scheduled;
 - (void)cancelPendingOperation;
 @end
 
 @implementation ATXModeScheduler
 
-- (ATXModeScheduler)initWithQueue:(id)a3 operationBlock:(id)a4 andLeeway:(double)a5
+- (ATXModeScheduler)initWithQueue:(id)queue operationBlock:(id)block andLeeway:(double)leeway
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = ATXModeScheduler;
   v11 = [(ATXModeScheduler *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a3);
-    v13 = MEMORY[0x2666EC640](v10);
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = MEMORY[0x2666EC640](blockCopy);
     block = v12->_block;
     v12->_block = v13;
 
-    v12->_leewaySeconds = a5;
+    v12->_leewaySeconds = leeway;
   }
 
   return v12;
 }
 
-- (id)runAfterDelaySecondsIfNotYetScheduled:(double)a3
+- (id)runAfterDelaySecondsIfNotYetScheduled:(double)scheduled
 {
   if (self->_timer)
   {
@@ -44,7 +44,7 @@
     timer = self->_timer;
     self->_timer = v6;
 
-    dispatch_source_set_timer(self->_timer, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:a3], 0xFFFFFFFFFFFFFFFFLL, (self->_leewaySeconds * 1000000000.0));
+    dispatch_source_set_timer(self->_timer, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:scheduled], 0xFFFFFFFFFFFFFFFFLL, (self->_leewaySeconds * 1000000000.0));
     objc_initWeak(&location, self);
     v8 = self->_timer;
     v14 = MEMORY[0x277D85DD0];
@@ -54,14 +54,14 @@
     objc_copyWeak(&v18, &location);
     dispatch_source_set_event_handler(v8, &v14);
     dispatch_resume(self->_timer);
-    v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{a3, v14, v15, v16, v17}];
+    v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{scheduled, v14, v15, v16, v17}];
     scheduledDate = self->_scheduledDate;
     self->_scheduledDate = v9;
 
     v11 = __atxlog_handle_modes();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXModeScheduler *)v11 runAfterDelaySecondsIfNotYetScheduled:a3];
+      [(ATXModeScheduler *)v11 runAfterDelaySecondsIfNotYetScheduled:scheduled];
     }
 
     objc_destroyWeak(&v18);

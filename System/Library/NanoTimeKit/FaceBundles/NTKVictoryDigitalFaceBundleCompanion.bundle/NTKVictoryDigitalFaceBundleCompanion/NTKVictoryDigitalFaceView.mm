@@ -1,32 +1,32 @@
 @interface NTKVictoryDigitalFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 + (int64_t)uiSensitivity;
 - (BOOL)_wantsStatusBarIconShadow;
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4;
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
 - (CGRect)_timeViewFrame;
-- (NTKVictoryDigitalFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_bottomComplicationAlphaForEditMode:(int64_t)a3;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_keylineEdgeGapForState:(int64_t)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_logoPlatterAlphaForEditMode:(int64_t)a3;
-- (double)_logoPlatterXOffsetForEditMode:(int64_t)a3;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
+- (NTKVictoryDigitalFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_bottomComplicationAlphaForEditMode:(int64_t)mode;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_keylineEdgeGapForState:(int64_t)state;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_logoPlatterAlphaForEditMode:(int64_t)mode;
+- (double)_logoPlatterXOffsetForEditMode:(int64_t)mode;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
 - (id)_additionalPrelaunchApplicationIdentifiers;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyColor:(id)a3 platterColor:(id)a4 toComplicationView:(id)a5 slot:(id)a6;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPopAnimationWithFraction:(double)a3;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyColor:(id)color platterColor:(id)platterColor toComplicationView:(id)view slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPopAnimationWithFraction:(double)fraction;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_logoTapped;
@@ -35,7 +35,7 @@
 - (void)_setupLogoViews;
 - (void)_unloadSnapshotContentViews;
 - (void)layoutSubviews;
-- (void)updateComplicationWithPalette:(id)a3;
+- (void)updateComplicationWithPalette:(id)palette;
 @end
 
 @implementation NTKVictoryDigitalFaceView
@@ -43,18 +43,18 @@
 + (int64_t)uiSensitivity
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
+  device = [v2 device];
   v4 = NTKSensitivityForVictoryFaces();
 
   return v4;
 }
 
-- (NTKVictoryDigitalFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKVictoryDigitalFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = NTKVictoryDigitalFaceView;
-  v9 = [(NTKVictoryDigitalFaceView *)&v28 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKVictoryDigitalFaceView *)&v28 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
@@ -67,10 +67,10 @@
     v20 = 0u;
     v21 = 0u;
     v19 = 0u;
-    v11 = [(NTKVictoryDigitalFaceView *)v9 device];
-    sub_4444(v11, &v19);
+    device = [(NTKVictoryDigitalFaceView *)v9 device];
+    sub_4444(device, &v19);
 
-    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     utilityComplicationFactory = v10->_utilityComplicationFactory;
     v10->_utilityComplicationFactory = v12;
 
@@ -78,7 +78,7 @@
     [(NTKUtilityComplicationFactory *)v10->_utilityComplicationFactory setBottomCenterLayout:3];
     [(NTKUtilityComplicationFactory *)v10->_utilityComplicationFactory setMaxNormalLongWidth:*(&v23 + 1)];
     [(NTKUtilityComplicationFactory *)v10->_utilityComplicationFactory setScreenEdgeInsets:0.0, 0.0, *&v24, 0.0];
-    v14 = [(NTKVictoryDigitalFaceView *)v10 device];
+    device2 = [(NTKVictoryDigitalFaceView *)v10 device];
     NTKCircularMediumComplicationDiameter();
     v16 = v15 * 0.5;
 
@@ -100,26 +100,26 @@
 - (void)_loadSnapshotContentViews
 {
   v3 = [UIView alloc];
-  v4 = [(NTKVictoryDigitalFaceView *)self device];
-  [v4 screenBounds];
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  [device screenBounds];
   v5 = [v3 initWithFrame:?];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v5;
 
-  v7 = [(NTKVictoryDigitalFaceView *)self contentView];
-  [v7 addSubview:self->_backgroundView];
+  contentView = [(NTKVictoryDigitalFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundView];
 
   v8 = [NTKVictoryDigitalTimeView alloc];
-  v9 = [(NTKVictoryDigitalFaceView *)self device];
-  v10 = [(NTKVictoryDigitalTimeView *)v8 initForDevice:v9];
+  device2 = [(NTKVictoryDigitalFaceView *)self device];
+  v10 = [(NTKVictoryDigitalTimeView *)v8 initForDevice:device2];
   [(NTKVictoryDigitalFaceView *)self setTimeView:v10];
 
-  v11 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v11 setDelegate:self];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView setDelegate:self];
 
-  v12 = [(NTKVictoryDigitalFaceView *)self contentView];
-  v13 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v12 addSubview:v13];
+  contentView2 = [(NTKVictoryDigitalFaceView *)self contentView];
+  timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
+  [contentView2 addSubview:timeView2];
 
   [(NTKVictoryDigitalFaceView *)self _setupLogoViews];
   [(NTKVictoryDigitalFaceView *)self _updateImageToBlur];
@@ -133,11 +133,11 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = 0;
 
-  v4 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v4 setDelegate:0];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView setDelegate:0];
 
-  v5 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v5 removeFromSuperview];
+  timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView2 removeFromSuperview];
 
   [(NTKVictoryDigitalFaceView *)self setTimeView:0];
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView removeFromSuperview];
@@ -152,7 +152,7 @@
   logoWrapperView = self->_logoWrapperView;
   self->_logoWrapperView = v4;
 
-  v6 = [(NTKVictoryDigitalFaceView *)self device];
+  device = [(NTKVictoryDigitalFaceView *)self device];
   NTKCircularMediumComplicationDiameter();
   v8 = v7;
 
@@ -162,19 +162,19 @@
 
   v10 = [CLKComplicationTemplateCircularMediumSimpleImage templateWithImageProvider:v13];
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView setComplicationTemplate:v10 reason:0 animation:0];
-  v11 = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
-  [(NTKVictoryDigitalFaceView *)self _configureComplicationView:v11 forSlot:0];
+  display = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
+  [(NTKVictoryDigitalFaceView *)self _configureComplicationView:display forSlot:0];
 
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView setTapEnabled:1];
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView addTarget:self action:"_logoTapped" forControlEvents:64];
-  v12 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
-  [v12 addSubview:self->_logoWrapperView];
+  foregroundContainerView = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+  [foregroundContainerView addSubview:self->_logoWrapperView];
 }
 
 - (void)_logoTapped
 {
-  v3 = [(NTKVictoryDigitalFaceView *)self delegate];
-  [NTKVictoryAppLauncher attemptLaunchWithDelegate:v3];
+  delegate = [(NTKVictoryDigitalFaceView *)self delegate];
+  [NTKVictoryAppLauncher attemptLaunchWithDelegate:delegate];
 
   logoWrapperView = self->_logoWrapperView;
   [(NTKComplicationDisplayWrapperView *)logoWrapperView bounds];
@@ -183,8 +183,8 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKVictoryDigitalFaceView *)self delegate];
-  [v13 faceViewRequestedLaunchFromRect:{v6, v8, v10, v12}];
+  delegate2 = [(NTKVictoryDigitalFaceView *)self delegate];
+  [delegate2 faceViewRequestedLaunchFromRect:{v6, v8, v10, v12}];
 }
 
 - (id)_additionalPrelaunchApplicationIdentifiers
@@ -200,9 +200,9 @@
   v4.receiver = self;
   v4.super_class = NTKVictoryDigitalFaceView;
   [(NTKVictoryDigitalFaceView *)&v4 layoutSubviews];
-  v3 = [(NTKVictoryDigitalFaceView *)self timeView];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
   [(NTKVictoryDigitalFaceView *)self _timeViewFrame];
-  [v3 ntk_setBoundsAndPositionFromFrame:?];
+  [timeView ntk_setBoundsAndPositionFromFrame:?];
 
   [(NTKVictoryDigitalFaceView *)self _positionLogoPlatterView];
 }
@@ -210,8 +210,8 @@
 - (void)_positionLogoPlatterView
 {
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView setCenter:self->_logoPlatterCenter.x + self->_currentLogoPlatterXOffset, self->_logoPlatterCenter.y];
-  v3 = [(NTKVictoryDigitalFaceView *)self device];
-  sub_4444(v3, v5);
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  sub_4444(device, v5);
   v4[0] = v5[6];
   v4[1] = v5[7];
   v4[2] = v5[8];
@@ -220,73 +220,73 @@
 
 - (BOOL)_wantsStatusBarIconShadow
 {
-  v2 = [(NTKVictoryDigitalFaceView *)self palette];
-  v3 = [v2 background];
+  palette = [(NTKVictoryDigitalFaceView *)self palette];
+  background = [palette background];
   v4 = CLKIsBlackColor();
 
   return v4 ^ 1;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
-  v7 = [(NTKVictoryDigitalFaceView *)self timeView];
-  if (a4 == 10)
+  optionCopy = option;
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  if (mode == 10)
   {
-    v8 = [(NTKVictoryDigitalFaceView *)self palette];
-    v9 = [v8 background];
-    [(UIView *)self->_backgroundView setBackgroundColor:v9];
+    palette = [(NTKVictoryDigitalFaceView *)self palette];
+    background = [palette background];
+    [(UIView *)self->_backgroundView setBackgroundColor:background];
 
-    v10 = [(NTKVictoryDigitalFaceView *)self palette];
-    [v7 setColorPalette:v10];
+    palette2 = [(NTKVictoryDigitalFaceView *)self palette];
+    [timeView setColorPalette:palette2];
 
-    v11 = [(NTKVictoryDigitalFaceView *)self palette];
-    [(NTKVictoryDigitalFaceView *)self updateComplicationWithPalette:v11];
+    palette3 = [(NTKVictoryDigitalFaceView *)self palette];
+    [(NTKVictoryDigitalFaceView *)self updateComplicationWithPalette:palette3];
 
-    v12 = [(NTKVictoryDigitalFaceView *)self delegate];
-    [v12 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKVictoryDigitalFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
-  else if (a4 == 13)
+  else if (mode == 13)
   {
-    [v7 setStyle:{objc_msgSend(v14, "style")}];
+    [timeView setStyle:{objc_msgSend(optionCopy, "style")}];
   }
 
-  v13 = [(NTKVictoryDigitalFaceView *)self timeView];
+  timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
   [(NTKVictoryDigitalFaceView *)self _timeViewFrame];
-  [v13 ntk_setBoundsAndPositionFromFrame:?];
+  [timeView2 ntk_setBoundsAndPositionFromFrame:?];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v17 = a4;
-  v11 = a5;
-  v12 = [(NTKVictoryDigitalFaceView *)self timeView];
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  if (mode == 10)
   {
-    v13 = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
-    v14 = [v13 background];
-    [(UIView *)self->_backgroundView setBackgroundColor:v14];
+    interpolatedColorPalette = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
+    background = [interpolatedColorPalette background];
+    [(UIView *)self->_backgroundView setBackgroundColor:background];
 
-    v15 = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
-    [v12 setColorPalette:v15];
+    interpolatedColorPalette2 = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
+    [timeView setColorPalette:interpolatedColorPalette2];
 
-    v16 = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
-    [(NTKVictoryDigitalFaceView *)self updateComplicationWithPalette:v16];
+    interpolatedColorPalette3 = [(NTKVictoryDigitalFaceView *)self interpolatedColorPalette];
+    [(NTKVictoryDigitalFaceView *)self updateComplicationWithPalette:interpolatedColorPalette3];
 
-    [(NTKVictoryDigitalFaceView *)self _applyPopAnimationWithFraction:a3];
+    [(NTKVictoryDigitalFaceView *)self _applyPopAnimationWithFraction:fraction];
   }
 
-  else if (a6 == 13)
+  else if (mode == 13)
   {
-    [v12 applyTransitionFraction:objc_msgSend(v17 fromStyle:"style") toStyle:{objc_msgSend(v11, "style"), a3}];
+    [timeView applyTransitionFraction:objc_msgSend(optionCopy fromStyle:"style") toStyle:{objc_msgSend(toOptionCopy, "style"), fraction}];
   }
 }
 
-- (void)_applyPopAnimationWithFraction:(double)a3
+- (void)_applyPopAnimationWithFraction:(double)fraction
 {
-  v13 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v13 applyPopAnimationTransitionFraction:a3];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView applyPopAnimationTransitionFraction:fraction];
   v19[0] = NTKComplicationSlot1;
   v19[1] = NTKComplicationSlot2;
   v19[2] = NTKComplicationSlotBottom;
@@ -297,7 +297,7 @@
   v16[2] = sub_25E8;
   v12 = v16[3] = &unk_10420;
   v17 = v12;
-  v18 = a3;
+  fractionCopy = fraction;
   v6 = objc_retainBlock(v16);
   for (i = 0; i != 4; ++i)
   {
@@ -306,57 +306,57 @@
     {
       v9 = [v5 objectAtIndex:i - 1];
       v10 = [(NTKVictoryDigitalFaceView *)self normalComplicationDisplayWrapperForSlot:v9];
-      v11 = [v10 display];
+      display = [v10 display];
     }
 
     else
     {
-      v11 = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
+      display = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
     }
 
     CGAffineTransformMakeScale(&v15, v8 * 0.15 + 0.85, v8 * 0.15 + 0.85);
     v14 = v15;
-    [v11 setTransform:&v14];
+    [display setTransform:&v14];
   }
 }
 
-- (void)updateComplicationWithPalette:(id)a3
+- (void)updateComplicationWithPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 complication];
-  v6 = [v4 complicationPlatter];
-  v7 = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
-  [(NTKVictoryDigitalFaceView *)self _applyColor:v5 platterColor:v6 toComplicationView:v7 slot:0];
+  paletteCopy = palette;
+  complication = [paletteCopy complication];
+  complicationPlatter = [paletteCopy complicationPlatter];
+  display = [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView display];
+  [(NTKVictoryDigitalFaceView *)self _applyColor:complication platterColor:complicationPlatter toComplicationView:display slot:0];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2720;
   v9[3] = &unk_10448;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = paletteCopy;
+  v8 = paletteCopy;
   [(NTKVictoryDigitalFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v9];
 }
 
-- (void)_applyColor:(id)a3 platterColor:(id)a4 toComplicationView:(id)a5 slot:(id)a6
+- (void)_applyColor:(id)color platterColor:(id)platterColor toComplicationView:(id)view slot:(id)slot
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  colorCopy = color;
+  platterColorCopy = platterColor;
+  viewCopy = view;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v10 = v9;
-    [v10 setForegroundColor:v11];
-    [v10 setPlatterColor:v8];
+    v10 = viewCopy;
+    [v10 setForegroundColor:colorCopy];
+    [v10 setPlatterColor:platterColorCopy];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v16.receiver = self;
   v16.super_class = NTKVictoryDigitalFaceView;
-  [(NTKVictoryDigitalFaceView *)&v16 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKVictoryDigitalFaceView *)&v16 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKScaleForRubberBandingFraction();
     v8 = v7;
@@ -364,42 +364,42 @@
     v10 = v9;
     memset(&v15, 0, sizeof(v15));
     CGAffineTransformMakeScale(&v15, v8, v8);
-    if (a4 == 10)
+    if (mode == 10)
     {
       v13 = v15;
       [(NTKVictoryDigitalFaceView *)self setTransform:&v13];
       [(NTKVictoryDigitalFaceView *)self setAlpha:v10];
     }
 
-    else if (a4 == 13)
+    else if (mode == 13)
     {
       v14 = v15;
-      v11 = [(NTKVictoryDigitalFaceView *)self timeView];
+      timeView = [(NTKVictoryDigitalFaceView *)self timeView];
       v13 = v14;
-      [v11 setTransform:&v13];
+      [timeView setTransform:&v13];
 
-      v12 = [(NTKVictoryDigitalFaceView *)self timeView];
-      [v12 setAlpha:v10];
+      timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
+      [timeView2 setAlpha:v10];
     }
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKVictoryDigitalFaceView;
-  [(NTKVictoryDigitalFaceView *)&v15 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 13)
+  [(NTKVictoryDigitalFaceView *)&v15 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 13)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v14, 0, sizeof(v14));
     CGAffineTransformMakeScale(&v14, v11, v11);
-    v10 = [(NTKVictoryDigitalFaceView *)self timeView];
+    timeView = [(NTKVictoryDigitalFaceView *)self timeView];
   }
 
   else
   {
-    if (a4 != 10)
+    if (mode != 10)
     {
       return;
     }
@@ -407,20 +407,20 @@
     NTKLargeElementScaleForBreathingFraction();
     memset(&v14, 0, sizeof(v14));
     CGAffineTransformMakeScale(&v14, v7, v7);
-    v8 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
     v13 = v14;
-    [v8 setTransform:&v13];
+    [foregroundContainerView setTransform:&v13];
 
-    v9 = [(NTKVictoryDigitalFaceView *)self timeView];
+    timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
     v13 = v14;
-    [v9 setTransform:&v13];
+    [timeView2 setTransform:&v13];
 
-    v10 = [(NTKVictoryDigitalFaceView *)self complicationContainerView];
+    timeView = [(NTKVictoryDigitalFaceView *)self complicationContainerView];
   }
 
-  v12 = v10;
+  v12 = timeView;
   v13 = v14;
-  [v10 setTransform:&v13];
+  [timeView setTransform:&v13];
 }
 
 - (void)_prepareForEditing
@@ -428,8 +428,8 @@
   v4.receiver = self;
   v4.super_class = NTKVictoryDigitalFaceView;
   [(NTKVictoryDigitalFaceView *)&v4 _prepareForEditing];
-  v3 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v3 willBeginEditing];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView willBeginEditing];
 }
 
 - (void)_cleanupAfterEditing
@@ -437,41 +437,41 @@
   v13.receiver = self;
   v13.super_class = NTKVictoryDigitalFaceView;
   [(NTKVictoryDigitalFaceView *)&v13 _cleanupAfterEditing];
-  v3 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+  foregroundContainerView = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
   v8 = *&CGAffineTransformIdentity.c;
   v10 = *&CGAffineTransformIdentity.a;
   v9 = v10;
   v11 = v8;
   v12 = *&CGAffineTransformIdentity.tx;
   v7 = v12;
-  [v3 setTransform:&v10];
+  [foregroundContainerView setTransform:&v10];
 
-  v4 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
-  [v4 setAlpha:1.0];
+  foregroundContainerView2 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+  [foregroundContainerView2 setAlpha:1.0];
 
-  v5 = [(NTKVictoryDigitalFaceView *)self timeView];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
   v10 = v9;
   v11 = v8;
   v12 = v7;
-  [v5 setTransform:&v10];
+  [timeView setTransform:&v10];
 
-  v6 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v6 setAlpha:1.0];
+  timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView2 setAlpha:1.0];
 }
 
 - (CGRect)_timeViewFrame
 {
-  v3 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
-  [v3 bounds];
+  foregroundContainerView = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+  [foregroundContainerView bounds];
   v5 = v4;
 
-  v6 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v6 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(NTKVictoryDigitalFaceView *)self device];
-  sub_4444(v11, v17);
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  sub_4444(device, v17);
   v12 = v18;
 
   v13 = v5 - v8;
@@ -485,56 +485,56 @@
   return result;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v22.receiver = self;
   v22.super_class = NTKVictoryDigitalFaceView;
   [NTKVictoryDigitalFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKVictoryDigitalFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKVictoryDigitalFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKVictoryDigitalFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKVictoryDigitalFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView setAlpha:v9];
 
-  [(NTKVictoryDigitalFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKVictoryDigitalFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKVictoryDigitalFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKVictoryDigitalFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
-  [v13 setAlpha:v12];
+  foregroundContainerView = [(NTKVictoryDigitalFaceView *)self foregroundContainerView];
+  [foregroundContainerView setAlpha:v12];
 
-  v14 = [(NTKVictoryDigitalFaceView *)self device];
-  v15 = [v14 deviceCategory];
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v15 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
-    [(NTKVictoryDigitalFaceView *)self _bottomComplicationAlphaForEditMode:a4];
-    [(NTKVictoryDigitalFaceView *)self _bottomComplicationAlphaForEditMode:a5];
+    [(NTKVictoryDigitalFaceView *)self _bottomComplicationAlphaForEditMode:mode];
+    [(NTKVictoryDigitalFaceView *)self _bottomComplicationAlphaForEditMode:editMode];
     CLKInterpolateBetweenFloatsClipped();
     v17 = v16;
     v18 = [(NTKVictoryDigitalFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBottom];
-    v19 = [v18 display];
-    [v19 setAlpha:v17];
+    display = [v18 display];
+    [display setAlpha:v17];
   }
 
-  [(NTKVictoryDigitalFaceView *)self _logoPlatterAlphaForEditMode:a4];
-  [(NTKVictoryDigitalFaceView *)self _logoPlatterAlphaForEditMode:a5];
+  [(NTKVictoryDigitalFaceView *)self _logoPlatterAlphaForEditMode:mode];
+  [(NTKVictoryDigitalFaceView *)self _logoPlatterAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(NTKComplicationDisplayWrapperView *)self->_logoWrapperView setAlpha:?];
-  [(NTKVictoryDigitalFaceView *)self _logoPlatterXOffsetForEditMode:a4];
-  [(NTKVictoryDigitalFaceView *)self _logoPlatterXOffsetForEditMode:a5];
+  [(NTKVictoryDigitalFaceView *)self _logoPlatterXOffsetForEditMode:mode];
+  [(NTKVictoryDigitalFaceView *)self _logoPlatterXOffsetForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   self->_currentLogoPlatterXOffset = v20;
   [(NTKVictoryDigitalFaceView *)self _positionLogoPlatterView];
-  v21 = [(NTKVictoryDigitalFaceView *)self timeView];
-  [v21 clearEditingTransitions];
+  timeView2 = [(NTKVictoryDigitalFaceView *)self timeView];
+  [timeView2 clearEditingTransitions];
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -542,10 +542,10 @@
   return result;
 }
 
-- (double)_bottomComplicationAlphaForEditMode:(int64_t)a3
+- (double)_bottomComplicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 10)
+  if (mode != 10)
   {
     return 1.0;
   }
@@ -553,24 +553,24 @@
   return result;
 }
 
-- (double)_logoPlatterXOffsetForEditMode:(int64_t)a3
+- (double)_logoPlatterXOffsetForEditMode:(int64_t)mode
 {
-  if (!a3)
+  if (!mode)
   {
     return 0.0;
   }
 
-  v3 = [(NTKVictoryDigitalFaceView *)self device];
-  sub_4444(v3, &v6);
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  sub_4444(device, &v6);
   v4 = *(&v6 + 1);
 
   return v4;
 }
 
-- (double)_logoPlatterAlphaForEditMode:(int64_t)a3
+- (double)_logoPlatterAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -578,10 +578,10 @@
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 13)
+  if (mode != 13)
   {
     return 1.0;
   }
@@ -589,11 +589,11 @@
   return result;
 }
 
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
   v8.receiver = self;
   v8.super_class = NTKVictoryDigitalFaceView;
-  [(NTKVictoryDigitalFaceView *)&v8 _keylineFrameForComplicationSlot:a3 selected:0];
+  [(NTKVictoryDigitalFaceView *)&v8 _keylineFrameForComplicationSlot:slot selected:0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -601,19 +601,19 @@
   return result;
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKVictoryDigitalFaceView *)self device];
-  if ([v5 deviceCategory] != &dword_0 + 1)
+  slotCopy = slot;
+  device = [(NTKVictoryDigitalFaceView *)self device];
+  if ([device deviceCategory] != &dword_0 + 1)
   {
-    if ([v4 isEqualToString:NTKComplicationSlot1])
+    if ([slotCopy isEqualToString:NTKComplicationSlot1])
     {
     }
 
     else
     {
-      v7 = [v4 isEqualToString:NTKComplicationSlot2];
+      v7 = [slotCopy isEqualToString:NTKComplicationSlot2];
 
       if ((v7 & 1) == 0)
       {
@@ -628,62 +628,62 @@
 LABEL_3:
   v9.receiver = self;
   v9.super_class = NTKVictoryDigitalFaceView;
-  v6 = [(NTKVictoryDigitalFaceView *)&v9 _keylineStyleForComplicationSlot:v4];
+  v6 = [(NTKVictoryDigitalFaceView *)&v9 _keylineStyleForComplicationSlot:slotCopy];
 LABEL_8:
 
   return v6;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a3;
+  complicationCopy = complication;
   v9 = NTKComplicationSlotBottom;
-  v10 = a5;
-  if ([v10 isEqual:v9])
+  slotCopy = slot;
+  if ([slotCopy isEqual:v9])
   {
-    v11 = [(NTKUtilityComplicationFactory *)self->_utilityComplicationFactory newViewForComplication:v8 family:a4 forSlot:[(NTKVictoryDigitalFaceView *)self _utilitySlotForSlot:v10]];
+    v11 = [(NTKUtilityComplicationFactory *)self->_utilityComplicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKVictoryDigitalFaceView *)self _utilitySlotForSlot:slotCopy]];
   }
 
   else
   {
-    v11 = +[NTKCircularComplicationView mediumViewForComplicationType:](NTKCircularComplicationView, "mediumViewForComplicationType:", [v8 complicationType]);
+    v11 = +[NTKCircularComplicationView mediumViewForComplicationType:](NTKCircularComplicationView, "mediumViewForComplicationType:", [complicationCopy complicationType]);
   }
 
   v12 = v11;
-  [(NTKVictoryDigitalFaceView *)self _configureComplicationView:v11 forSlot:v10];
+  [(NTKVictoryDigitalFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
 
   return v12;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:NTKComplicationSlotBottom])
+  viewCopy = view;
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottom])
   {
     v21.receiver = self;
     v21.super_class = NTKVictoryDigitalFaceView;
-    [(NTKVictoryDigitalFaceView *)&v21 _configureComplicationView:v6 forSlot:v7];
-    v8 = v6;
-    v9 = [(NTKVictoryDigitalFaceView *)self palette];
-    v10 = [v9 complication];
-    [v8 setForegroundColor:v10];
+    [(NTKVictoryDigitalFaceView *)&v21 _configureComplicationView:viewCopy forSlot:slotCopy];
+    v8 = viewCopy;
+    palette = [(NTKVictoryDigitalFaceView *)self palette];
+    complication = [palette complication];
+    [v8 setForegroundColor:complication];
 
-    v11 = [(NTKVictoryDigitalFaceView *)self palette];
-    v12 = [v11 complicationPlatter];
-    [v8 setPlatterColor:v12];
+    palette2 = [(NTKVictoryDigitalFaceView *)self palette];
+    complicationPlatter = [palette2 complicationPlatter];
+    [v8 setPlatterColor:complicationPlatter];
 
     [v8 setForegroundAlpha:1.0];
     [v8 setForegroundImageAlpha:1.0];
-    v13 = [(NTKVictoryDigitalFaceView *)self device];
-    [v8 setShouldUseBackgroundPlatter:{objc_msgSend(v13, "deviceCategory") == &dword_0 + 1}];
+    device = [(NTKVictoryDigitalFaceView *)self device];
+    [v8 setShouldUseBackgroundPlatter:{objc_msgSend(device, "deviceCategory") == &dword_0 + 1}];
 
     [v8 setAlwaysEnforcePlatterInset:1];
-    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKVictoryDigitalFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v7))}];
-    v14 = [(NTKVictoryDigitalFaceView *)self device];
-    v15 = [v14 sizeClass];
+    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKVictoryDigitalFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
+    device2 = [(NTKVictoryDigitalFaceView *)self device];
+    sizeClass = [device2 sizeClass];
 
-    if (v15 == &dword_0 + 3)
+    if (sizeClass == &dword_0 + 3)
     {
       [v8 setFontSize:14.5];
     }
@@ -694,22 +694,22 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v6;
+      v16 = viewCopy;
       [v16 setUsesMediumLayout:1];
-      v17 = [(NTKVictoryDigitalFaceView *)self palette];
-      v18 = [v17 complication];
-      [v16 setForegroundColor:v18];
+      palette3 = [(NTKVictoryDigitalFaceView *)self palette];
+      complication2 = [palette3 complication];
+      [v16 setForegroundColor:complication2];
 
-      v19 = [(NTKVictoryDigitalFaceView *)self palette];
-      v20 = [v19 complicationPlatter];
-      [v16 setPlatterColor:v20];
+      palette4 = [(NTKVictoryDigitalFaceView *)self palette];
+      complicationPlatter2 = [palette4 complicationPlatter];
+      [v16 setPlatterColor:complicationPlatter2];
     }
   }
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  if ([a3 isEqualToString:NTKComplicationSlotBottom])
+  if ([slot isEqualToString:NTKComplicationSlotBottom])
   {
     return 10;
   }
@@ -737,22 +737,22 @@ LABEL_8:
   [(NTKUtilityComplicationFactory *)self->_utilityComplicationFactory configureComplicationLayout:v13 forSlot:[(NTKVictoryDigitalFaceView *)self _utilitySlotForSlot:v12] withBounds:v4, v6, v8, v10];
 }
 
-- (double)_keylineEdgeGapForState:(int64_t)a3
+- (double)_keylineEdgeGapForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v4 = [(NTKVictoryDigitalFaceView *)self device];
-      sub_4444(v4, &v6);
+      device = [(NTKVictoryDigitalFaceView *)self device];
+      sub_4444(device, &v6);
       v3 = *(&v6 + 1);
     }
 
     else
     {
-      v4 = [(NTKVictoryDigitalFaceView *)self device];
-      sub_4444(v4, v7);
+      device = [(NTKVictoryDigitalFaceView *)self device];
+      sub_4444(device, v7);
       v3 = v7[0];
     }
   }
@@ -760,10 +760,10 @@ LABEL_8:
   return v3;
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   result = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     NTKKeylineWidth();
     return v4 + 2.0;
@@ -772,9 +772,9 @@ LABEL_8:
   return result;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 13)
+  if (options == 13)
   {
     return &off_11070;
   }
@@ -785,14 +785,14 @@ LABEL_8:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 == 13)
+  optionCopy = option;
+  v9 = optionCopy;
+  if (mode == 13)
   {
-    v10 = v8;
-    v11 = [a5 objectForKeyedSubscript:&off_10B70];
+    v10 = optionCopy;
+    v11 = [options objectForKeyedSubscript:&off_10B70];
     if (!qword_16DC8)
     {
       v12 = objc_opt_new();
@@ -804,17 +804,17 @@ LABEL_8:
     v15 = [qword_16DC8 objectForKey:v14];
     if (!v15)
     {
-      v16 = [v10 style];
+      style = [v10 style];
       v17 = &stru_107B0;
       v18 = @"Italic-Fill";
       v19 = @"Italic-Fill";
       v20 = 1;
-      if (v16 == (&dword_0 + 3))
+      if (style == (&dword_0 + 3))
       {
         v17 = @"Italic-Fill";
       }
 
-      if (v16 == &dword_4)
+      if (style == &dword_4)
       {
         v20 = 0;
         v17 = @"Italic-HalfFill";
@@ -825,7 +825,7 @@ LABEL_8:
         v19 = 0;
       }
 
-      if (v16 == (&dword_4 + 1))
+      if (style == (&dword_4 + 1))
       {
         v21 = 0;
       }
@@ -835,13 +835,13 @@ LABEL_8:
         v21 = v20;
       }
 
-      if (v16 != (&dword_4 + 1))
+      if (style != (&dword_4 + 1))
       {
         v18 = v19;
       }
 
       v41 = v18;
-      if (v16 == (&dword_4 + 1))
+      if (style == (&dword_4 + 1))
       {
         v22 = @"Italic-Outline";
       }
@@ -852,17 +852,17 @@ LABEL_8:
       }
 
       v23 = [@"Swatch-VictoryDigital-" stringByAppendingString:v22];
-      v24 = [(NTKVictoryDigitalFaceView *)self faceColorPalette];
-      v25 = [v24 copy];
+      faceColorPalette = [(NTKVictoryDigitalFaceView *)self faceColorPalette];
+      v25 = [faceColorPalette copy];
 
-      v26 = [v11 pigmentEditOption];
-      [v25 setPigmentEditOption:v26];
+      pigmentEditOption = [v11 pigmentEditOption];
+      [v25 setPigmentEditOption:pigmentEditOption];
 
-      v27 = [v25 digits];
+      digits = [v25 digits];
       v43 = v23;
       v28 = [NTKVictoryDigitalFaceBundle imageWithName:v23];
-      v42 = v27;
-      v29 = [v28 _flatImageWithColor:v27];
+      v42 = digits;
+      v29 = [v28 _flatImageWithColor:digits];
 
       if (v21)
       {
@@ -873,10 +873,10 @@ LABEL_8:
       else
       {
         v32 = [@"Swatch-VictoryDigital-" stringByAppendingString:v41];
-        v33 = [v25 digitsOutlineBackground];
+        digitsOutlineBackground = [v25 digitsOutlineBackground];
         v31 = v32;
         v34 = [NTKVictoryDigitalFaceBundle imageWithName:v32];
-        v30 = [v34 _flatImageWithColor:v33];
+        v30 = [v34 _flatImageWithColor:digitsOutlineBackground];
       }
 
       v35 = [UIGraphicsImageRenderer alloc];
@@ -901,7 +901,7 @@ LABEL_8:
   {
     v44.receiver = self;
     v44.super_class = NTKVictoryDigitalFaceView;
-    v15 = [(NTKVictoryDigitalFaceView *)&v44 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v15 = [(NTKVictoryDigitalFaceView *)&v44 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v15;

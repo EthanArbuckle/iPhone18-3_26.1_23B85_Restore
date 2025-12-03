@@ -1,7 +1,7 @@
 @interface EDNonAcceptingServer
 + (OS_os_log)log;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (EDNonAcceptingServer)initWithMachServiceNames:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (EDNonAcceptingServer)initWithMachServiceNames:(id)names;
 @end
 
 @implementation EDNonAcceptingServer
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __27__EDNonAcceptingServer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_70 != -1)
   {
     dispatch_once(&log_onceToken_70, block);
@@ -31,10 +31,10 @@ void __27__EDNonAcceptingServer_log__block_invoke(uint64_t a1)
   log_log_70 = v1;
 }
 
-- (EDNonAcceptingServer)initWithMachServiceNames:(id)a3
+- (EDNonAcceptingServer)initWithMachServiceNames:(id)names
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namesCopy = names;
   v21.receiver = self;
   v21.super_class = EDNonAcceptingServer;
   v5 = [(EDNonAcceptingServer *)&v21 init];
@@ -48,7 +48,7 @@ void __27__EDNonAcceptingServer_log__block_invoke(uint64_t a1)
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = namesCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
@@ -85,15 +85,15 @@ void __27__EDNonAcceptingServer_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[EDNonAcceptingServer log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = connectionCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Not accepting %@", &v8, 0xCu);
   }
 

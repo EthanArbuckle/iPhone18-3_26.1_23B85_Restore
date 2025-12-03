@@ -8,20 +8,20 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 passwordSecurityUIURL];
+  passwordSecurityUIURL = [v2 passwordSecurityUIURL];
 
-  return v3;
+  return passwordSecurityUIURL;
 }
 
 - (id)urlRequest
 {
   v9.receiver = self;
   v9.super_class = AAPasswordSecurityUIRequest;
-  v3 = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
+  urlRequest = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
   v8.receiver = self;
   v8.super_class = AAPasswordSecurityUIRequest;
-  v4 = [(AAAppleIDSettingsRequest *)&v8 urlRequest];
-  v5 = [v4 mutableCopy];
+  urlRequest2 = [(AAAppleIDSettingsRequest *)&v8 urlRequest];
+  v5 = [urlRequest2 mutableCopy];
 
   if ([(AAPasswordSecurityUIRequest *)self spyglassOptionMask])
   {

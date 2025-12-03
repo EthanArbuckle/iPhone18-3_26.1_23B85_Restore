@@ -1,5 +1,5 @@
 @interface CHChannelGradientWithAngle
-- (double)gradientAngleAtTime:(id *)a3;
+- (double)gradientAngleAtTime:(id *)time;
 - (id)gradientAngleChannel;
 - (void)ozChannel;
 @end
@@ -22,7 +22,7 @@
   return CHChannelWrapperForOZChannel(v2, 0);
 }
 
-- (double)gradientAngleAtTime:(id *)a3
+- (double)gradientAngleAtTime:(id *)time
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
@@ -34,7 +34,7 @@
     v5 = 0;
   }
 
-  (*(*v5 + 336))(&v7, v5, a3);
+  (*(*v5 + 336))(&v7, v5, time);
   OZChannel::getValueAsDouble((v5 + 1056), &v7, 0.0);
   return result;
 }

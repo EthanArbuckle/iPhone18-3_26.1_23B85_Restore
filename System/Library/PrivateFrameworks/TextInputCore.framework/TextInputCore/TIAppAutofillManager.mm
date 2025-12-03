@@ -2,35 +2,35 @@
 + (BOOL)_simulatesAutofillCandidates;
 + (BOOL)isSuggestingStrongPasswordsAvailable;
 + (id)sharedInstance;
-+ (void)_fetchCredentialsWithPasskeyProvider:(id)a3 autofillContext:(id)a4 textContentType:(id)a5 applicationIdentifier:(id)a6 auditToken:(id *)a7 completion:(id)a8;
-+ (void)getCredentialsWithApplicationIdentifier:(id)a3 autofillContext:(id)a4 withCompletionHandler:(id)a5;
-+ (void)setSharedAppAutofillManager:(id)a3;
-- (BOOL)hasAutofillContextEntitlementForConnection:(id)a3;
-- (BOOL)hasCoreTelephonyEntitlementForConnection:(id)a3;
-- (BOOL)isValidedString:(id)a3;
++ (void)_fetchCredentialsWithPasskeyProvider:(id)provider autofillContext:(id)context textContentType:(id)type applicationIdentifier:(id)identifier auditToken:(id *)token completion:(id)completion;
++ (void)getCredentialsWithApplicationIdentifier:(id)identifier autofillContext:(id)context withCompletionHandler:(id)handler;
++ (void)setSharedAppAutofillManager:(id)manager;
+- (BOOL)hasAutofillContextEntitlementForConnection:(id)connection;
+- (BOOL)hasCoreTelephonyEntitlementForConnection:(id)connection;
+- (BOOL)isValidedString:(id)string;
 - (BOOL)shouldAuthenticateToAcceptAutofill;
-- (id)_autoFillPayloadForPasskey:(id)a3 keyboardInfoType:(unint64_t *)a4;
-- (id)_autoFillPayloadForPasswordCredential:(id)a3 keyboardInfoType:(unint64_t *)a4;
-- (id)_secureCandidateForPasskey:(id)a3 fromLocalizedStringKey:(id)a4;
-- (id)_secureCandidateForPasswordCredential:(id)a3 fromLocalizedStringKey:(id)a4;
-- (id)customInfoFromCredential:(id)a3;
-- (id)generateCellularCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4;
-- (id)generateOneTimeCodeCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4;
+- (id)_autoFillPayloadForPasskey:(id)passkey keyboardInfoType:(unint64_t *)type;
+- (id)_autoFillPayloadForPasswordCredential:(id)credential keyboardInfoType:(unint64_t *)type;
+- (id)_secureCandidateForPasskey:(id)passkey fromLocalizedStringKey:(id)key;
+- (id)_secureCandidateForPasswordCredential:(id)credential fromLocalizedStringKey:(id)key;
+- (id)customInfoFromCredential:(id)credential;
+- (id)generateCellularCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state;
+- (id)generateOneTimeCodeCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state;
 - (id)initPrivate;
-- (id)localizedCellularAutofillStringForKey:(id)a3 defaultValue:(id)a4;
-- (void)_acceptOneTimeCode:(id)a3;
-- (void)_finishAutofillFormCandidatesOnMainThreadWithCredentials:(id)a3 renderTraits:(id)a4 documentIdentifier:(id)a5 clientIdentifier:(id)a6 completion:(id)a7;
-- (void)generateAutofillFormCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completion:(id)a5;
-- (void)generateAutofillFormSuggestedUsernameWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completionHandler:(id)a5;
-- (void)generateHideMyEmailCandidateWithSlotID:(unsigned int)a3 applicationBundleId:(id)a4 applicationId:(id)a5 keyboardState:(id)a6 secureCandidateWidth:(double)a7 secureCandidateHash:(unint64_t)a8 isSecureCandidateDoubleLines:(BOOL)a9 completionHandler:(id)a10;
-- (void)generateJustHMEAutofillFormSuggestionWithRenderTraits:(id)a3 withKeyboardState:(id)a4 applicationID:(id)a5 applicationBundleID:(id)a6 completionHandler:(id)a7;
-- (void)obtainCredential:(id)a3;
-- (void)oneTimeCodeProvider:(id)a3 didUpdateOneTimeCode:(id)a4;
-- (void)oneTimeCodeProviderReceivedCode:(id)a3;
-- (void)presentHideMyEmailUI:(id)a3 keyboardState:(id)a4 completion:(id)a5;
-- (void)pushQueuedCredentialIfNecessaryForKeyboardState:(id)a3;
-- (void)shouldAcceptAutofill:(id)a3 withPayload:(id)a4 completion:(id)a5;
-- (void)shouldAcceptOneTimeCode:(id)a3 completion:(id)a4;
+- (id)localizedCellularAutofillStringForKey:(id)key defaultValue:(id)value;
+- (void)_acceptOneTimeCode:(id)code;
+- (void)_finishAutofillFormCandidatesOnMainThreadWithCredentials:(id)credentials renderTraits:(id)traits documentIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completion:(id)completion;
+- (void)generateAutofillFormCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state completion:(id)completion;
+- (void)generateAutofillFormSuggestedUsernameWithRenderTraits:(id)traits withKeyboardState:(id)state completionHandler:(id)handler;
+- (void)generateHideMyEmailCandidateWithSlotID:(unsigned int)d applicationBundleId:(id)id applicationId:(id)applicationId keyboardState:(id)state secureCandidateWidth:(double)width secureCandidateHash:(unint64_t)hash isSecureCandidateDoubleLines:(BOOL)lines completionHandler:(id)self0;
+- (void)generateJustHMEAutofillFormSuggestionWithRenderTraits:(id)traits withKeyboardState:(id)state applicationID:(id)d applicationBundleID:(id)iD completionHandler:(id)handler;
+- (void)obtainCredential:(id)credential;
+- (void)oneTimeCodeProvider:(id)provider didUpdateOneTimeCode:(id)code;
+- (void)oneTimeCodeProviderReceivedCode:(id)code;
+- (void)presentHideMyEmailUI:(id)i keyboardState:(id)state completion:(id)completion;
+- (void)pushQueuedCredentialIfNecessaryForKeyboardState:(id)state;
+- (void)shouldAcceptAutofill:(id)autofill withPayload:(id)payload completion:(id)completion;
+- (void)shouldAcceptOneTimeCode:(id)code completion:(id)completion;
 @end
 
 @implementation TIAppAutofillManager
@@ -59,15 +59,15 @@
   return v4;
 }
 
-- (id)_autoFillPayloadForPasskey:(id)a3 keyboardInfoType:(unint64_t *)a4
+- (id)_autoFillPayloadForPasskey:(id)passkey keyboardInfoType:(unint64_t *)type
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D6F8F0];
-  *a4 = 2056;
+  *type = 2056;
   v10 = *v4;
-  v11[0] = a3;
+  v11[0] = passkey;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  passkeyCopy = passkey;
   v7 = [v5 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -75,19 +75,19 @@
   return v7;
 }
 
-- (id)_secureCandidateForPasskey:(id)a3 fromLocalizedStringKey:(id)a4
+- (id)_secureCandidateForPasskey:(id)passkey fromLocalizedStringKey:(id)key
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 username];
-  v9 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-  v10 = [v9 localizedStringForKey:v7];
+  passkeyCopy = passkey;
+  keyCopy = key;
+  username = [passkeyCopy username];
+  secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+  v10 = [secureCandidateRenderer localizedStringForKey:keyCopy];
 
   v11 = MEMORY[0x277CCACA8];
   v24 = 0;
-  v12 = [v6 relyingPartyIdentifier];
-  v13 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:&v24, v12];
+  relyingPartyIdentifier = [passkeyCopy relyingPartyIdentifier];
+  v13 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:&v24, relyingPartyIdentifier];
   v14 = v24;
   v15 = &stru_283FDFAF8;
   if (v13)
@@ -99,13 +99,13 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v6 customTitle];
+    customTitle = [passkeyCopy customTitle];
 
-    if (v17)
+    if (customTitle)
     {
-      v18 = [v6 customTitle];
+      customTitle2 = [passkeyCopy customTitle];
 
-      v16 = v18;
+      v16 = customTitle2;
     }
   }
 
@@ -119,55 +119,55 @@
     v19 = TIOSLogFacility();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s ERROR: invalid localized format for key %@: %@", "-[TIAppAutofillManager _secureCandidateForPasskey:fromLocalizedStringKey:]", v7, v14];
+      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s ERROR: invalid localized format for key %@: %@", "-[TIAppAutofillManager _secureCandidateForPasskey:fromLocalizedStringKey:]", keyCopy, v14];
       *buf = 138412290;
       v26 = v23;
       _os_log_debug_impl(&dword_22CA55000, v19, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
-  v20 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v16 secureContent:v8 secureFormattedContent:v8 input:&stru_283FDFAF8 truncationSentinel:0];
+  v20 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v16 secureContent:username secureFormattedContent:username input:&stru_283FDFAF8 truncationSentinel:0];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (id)_autoFillPayloadForPasswordCredential:(id)a3 keyboardInfoType:(unint64_t *)a4
+- (id)_autoFillPayloadForPasswordCredential:(id)credential keyboardInfoType:(unint64_t *)type
 {
-  v5 = a3;
-  v6 = [v5 user];
-  v7 = [v5 password];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v5 isExternal])
+  credentialCopy = credential;
+  user = [credentialCopy user];
+  password = [credentialCopy password];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([credentialCopy isExternal])
   {
-    *a4 = 264;
-    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    *type = 264;
+    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:credentialCopy requiringSecureCoding:1 error:0];
     v10 = MEMORY[0x277D6F8D0];
 LABEL_12:
-    [v8 setObject:v9 forKey:*v10];
+    [dictionary setObject:v9 forKey:*v10];
     goto LABEL_13;
   }
 
-  *a4 = 24;
-  if (v6)
+  *type = 24;
+  if (user)
   {
-    [v8 setObject:v6 forKey:*MEMORY[0x277D6F918]];
+    [dictionary setObject:user forKey:*MEMORY[0x277D6F918]];
   }
 
-  if (v7)
+  if (password)
   {
-    [v8 setObject:v7 forKey:*MEMORY[0x277D6F8F8]];
+    [dictionary setObject:password forKey:*MEMORY[0x277D6F8F8]];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 requestedHost];
+    [credentialCopy requestedHost];
   }
 
   else
   {
-    [v5 site];
+    [credentialCopy site];
   }
   v9 = ;
   if (v9)
@@ -178,38 +178,38 @@ LABEL_12:
 
 LABEL_13:
 
-  return v8;
+  return dictionary;
 }
 
-- (id)_secureCandidateForPasswordCredential:(id)a3 fromLocalizedStringKey:(id)a4
+- (id)_secureCandidateForPasswordCredential:(id)credential fromLocalizedStringKey:(id)key
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 user];
-  v9 = [v6 site];
-  v10 = [v6 customTitle];
+  credentialCopy = credential;
+  keyCopy = key;
+  user = [credentialCopy user];
+  site = [credentialCopy site];
+  customTitle = [credentialCopy customTitle];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [MEMORY[0x277D49DF0] textSuggestionHeaderForCredential:v6];
+    v11 = [MEMORY[0x277D49DF0] textSuggestionHeaderForCredential:credentialCopy];
 LABEL_3:
     v12 = v11;
     goto LABEL_23;
   }
 
-  if ([v6 isExternal] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([credentialCopy isExternal] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = [MEMORY[0x277D49DF0] textSuggestionHeaderForExternalCredential:v6];
+    v11 = [MEMORY[0x277D49DF0] textSuggestionHeaderForExternalCredential:credentialCopy];
     goto LABEL_3;
   }
 
-  v13 = [(__CFString *)v9 length];
-  v14 = v9;
+  v13 = [(__CFString *)site length];
+  v14 = site;
   if (!v13)
   {
-    if ([(__CFString *)v10 length])
+    if ([(__CFString *)customTitle length])
     {
-      v14 = v10;
+      v14 = customTitle;
     }
 
     else
@@ -220,12 +220,12 @@ LABEL_3:
 
   v15 = v14;
   v16 = [(__CFString *)v15 length];
-  v17 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-  v18 = v17;
+  secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+  v18 = secureCandidateRenderer;
   if (v16)
   {
-    v41 = v7;
-    v19 = [v17 localizedStringForKey:v7];
+    v41 = keyCopy;
+    v19 = [secureCandidateRenderer localizedStringForKey:keyCopy];
 
     v44 = 0;
     v20 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@" error:&v44, v15];
@@ -256,28 +256,28 @@ LABEL_3:
       }
     }
 
-    v7 = v41;
+    keyCopy = v41;
   }
 
   else
   {
-    v12 = [v17 localizedStringForKey:@"AUTOFILL_SAVED_PASSWORD_TITLE"];
+    v12 = [secureCandidateRenderer localizedStringForKey:@"AUTOFILL_SAVED_PASSWORD_TITLE"];
   }
 
 LABEL_23:
-  if (![v8 length])
+  if (![user length])
   {
-    v25 = [v6 creationDate];
+    creationDate = [credentialCopy creationDate];
 
-    if (v25)
+    if (creationDate)
     {
-      v42 = v7;
-      v26 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v27 = [v26 localizedStringForKey:@"SAFARI_CREDENTIAL_DATE"];
+      v42 = keyCopy;
+      secureCandidateRenderer2 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      v27 = [secureCandidateRenderer2 localizedStringForKey:@"SAFARI_CREDENTIAL_DATE"];
 
       v28 = MEMORY[0x277CCA968];
-      v29 = [v6 creationDate];
-      v30 = [v28 localizedStringFromDate:v29 dateStyle:1 timeStyle:0];
+      creationDate2 = [credentialCopy creationDate];
+      v30 = [v28 localizedStringFromDate:creationDate2 dateStyle:1 timeStyle:0];
 
       v43 = 0;
       v31 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v27 validFormatSpecifiers:@"%@" error:&v43, v30];
@@ -307,94 +307,94 @@ LABEL_23:
         }
       }
 
-      v8 = v34;
-      v7 = v42;
+      user = v34;
+      keyCopy = v42;
     }
   }
 
-  v36 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v12 secureContent:v8 secureFormattedContent:v8 input:&stru_283FDFAF8 truncationSentinel:0];
+  v36 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v12 secureContent:user secureFormattedContent:user input:&stru_283FDFAF8 truncationSentinel:0];
 
   v37 = *MEMORY[0x277D85DE8];
 
   return v36;
 }
 
-- (void)oneTimeCodeProvider:(id)a3 didUpdateOneTimeCode:(id)a4
+- (void)oneTimeCodeProvider:(id)provider didUpdateOneTimeCode:(id)code
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277D6F8E0];
   v10[0] = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v5 = +[TIKeyboardInputManagerLoader sharedLoader];
-  v6 = [v5 interactingConnection];
+  interactingConnection = [v5 interactingConnection];
 
-  if (v6)
+  if (interactingConnection)
   {
-    v7 = [v6 remoteObjectProxy];
-    [v7 processPayloadInfo:v4];
+    remoteObjectProxy = [interactingConnection remoteObjectProxy];
+    [remoteObjectProxy processPayloadInfo:v4];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)oneTimeCodeProviderReceivedCode:(id)a3
+- (void)oneTimeCodeProviderReceivedCode:(id)code
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277D6F8E0];
   v9[0] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v4 = +[TIKeyboardInputManagerLoader sharedLoader];
-  v5 = [v4 interactingConnection];
+  interactingConnection = [v4 interactingConnection];
 
-  if (v5)
+  if (interactingConnection)
   {
-    v6 = [v5 remoteObjectProxy];
-    [v6 processPayloadInfo:v3];
+    remoteObjectProxy = [interactingConnection remoteObjectProxy];
+    [remoteObjectProxy processPayloadInfo:v3];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentHideMyEmailUI:(id)a3 keyboardState:(id)a4 completion:(id)a5
+- (void)presentHideMyEmailUI:(id)i keyboardState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  iCopy = i;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CF02A0]);
-  v9 = [v6 altDSID];
-  if (!v9)
+  altDSID = [iCopy altDSID];
+  if (!altDSID)
   {
     goto LABEL_6;
   }
 
-  v10 = v9;
-  v11 = [v6 applicationKey];
-  if (!v11)
+  v10 = altDSID;
+  applicationKey = [iCopy applicationKey];
+  if (!applicationKey)
   {
 
     goto LABEL_6;
   }
 
-  v12 = v11;
-  v13 = [v6 applicationBundleId];
+  v12 = applicationKey;
+  applicationBundleId = [iCopy applicationBundleId];
 
-  if (!v13)
+  if (!applicationBundleId)
   {
 LABEL_6:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_7;
   }
 
   v14 = objc_alloc(MEMORY[0x277CF0298]);
-  v15 = [v6 applicationKey];
-  v16 = [v6 altDSID];
-  v17 = [v6 applicationBundleId];
-  v18 = [v14 initWithKey:v15 altDSID:v16 clientAppBundleId:v17];
+  applicationKey2 = [iCopy applicationKey];
+  altDSID2 = [iCopy altDSID];
+  applicationBundleId2 = [iCopy applicationBundleId];
+  v18 = [v14 initWithKey:applicationKey2 altDSID:altDSID2 clientAppBundleId:applicationBundleId2];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __70__TIAppAutofillManager_presentHideMyEmailUI_keyboardState_completion___block_invoke;
   v19[3] = &unk_27872EF20;
-  v20 = v7;
+  v20 = completionCopy;
   [v8 fetchPrivateEmailWithContext:v18 completion:v19];
 
 LABEL_7:
@@ -443,15 +443,15 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acceptOneTimeCode:(id)a3
+- (void)_acceptOneTimeCode:(id)code
 {
-  if (a3)
+  if (code)
   {
-    v4 = a3;
+    codeCopy = code;
     [(TIAppAutofillManager *)self setLastAutofilledUsername:0];
-    v5 = [v4 customInfoType];
+    customInfoType = [codeCopy customInfoType];
 
-    if (v5 == 64)
+    if (customInfoType == 64)
     {
       [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider consumeCurrentOneTimeCode];
     }
@@ -462,49 +462,49 @@ LABEL_8:
   }
 }
 
-- (void)shouldAcceptOneTimeCode:(id)a3 completion:(id)a4
+- (void)shouldAcceptOneTimeCode:(id)code completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (![v6 isOneTimeCodeThatRequiresAuthentication])
+    if (![codeCopy isOneTimeCodeThatRequiresAuthentication])
     {
       goto LABEL_7;
     }
 
-    v8 = [(TIAppAutofillManager *)self laContext];
+    laContext = [(TIAppAutofillManager *)self laContext];
 
-    if (!v8)
+    if (!laContext)
     {
       v9 = objc_alloc_init(getLAContextClass());
       [(TIAppAutofillManager *)self setLaContext:v9];
     }
 
-    v10 = [(TIAppAutofillManager *)self laContext];
-    v11 = [v10 canEvaluatePolicy:1 error:0];
+    laContext2 = [(TIAppAutofillManager *)self laContext];
+    v11 = [laContext2 canEvaluatePolicy:1 error:0];
 
     if (v11)
     {
-      v12 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v13 = [v12 localizedStringForKey:@"TOTP_AUTOFILL_AUTH_ALERT_TITLE"];
+      secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      v13 = [secureCandidateRenderer localizedStringForKey:@"TOTP_AUTOFILL_AUTH_ALERT_TITLE"];
 
-      v14 = [(TIAppAutofillManager *)self laContext];
+      laContext3 = [(TIAppAutofillManager *)self laContext];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __59__TIAppAutofillManager_shouldAcceptOneTimeCode_completion___block_invoke;
       v15[3] = &unk_27872EEF8;
-      v17 = v7;
+      v17 = completionCopy;
       v15[4] = self;
-      v16 = v6;
-      [v14 evaluatePolicy:1 localizedReason:v13 reply:v15];
+      v16 = codeCopy;
+      [laContext3 evaluatePolicy:1 localizedReason:v13 reply:v15];
     }
 
     else
     {
 LABEL_7:
-      (*(v7 + 2))(v7, 1);
-      [(TIAppAutofillManager *)self _acceptOneTimeCode:v6];
+      (*(completionCopy + 2))(completionCopy, 1);
+      [(TIAppAutofillManager *)self _acceptOneTimeCode:codeCopy];
     }
   }
 }
@@ -540,25 +540,25 @@ uint64_t __59__TIAppAutofillManager_shouldAcceptOneTimeCode_completion___block_i
   return result;
 }
 
-- (void)shouldAcceptAutofill:(id)a3 withPayload:(id)a4 completion:(id)a5
+- (void)shouldAcceptAutofill:(id)autofill withPayload:(id)payload completion:(id)completion
 {
   v105 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  autofillCopy = autofill;
+  payloadCopy = payload;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    if (v8)
+    if (autofillCopy)
     {
-      v77 = v10;
-      v12 = [v8 customInfoType];
-      if (v12 == 24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      v77 = completionCopy;
+      customInfoType = [autofillCopy customInfoType];
+      if (customInfoType == 24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v13 = [v9 objectForKeyedSubscript:*MEMORY[0x277D6F918]];
+        v13 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277D6F918]];
         [(TIAppAutofillManager *)self setLastAutofilledUsername:v13];
 
-        v14 = [v9 objectForKeyedSubscript:*MEMORY[0x277D6F8D8]];
+        v14 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277D6F8D8]];
       }
 
       else
@@ -566,13 +566,13 @@ uint64_t __59__TIAppAutofillManager_shouldAcceptOneTimeCode_completion___block_i
         v14 = 0;
       }
 
-      v15 = [v8 customInfoType];
-      v16 = v15 == 264;
-      v78 = v9;
-      v79 = self;
-      if (v15 == 264 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      customInfoType2 = [autofillCopy customInfoType];
+      v16 = customInfoType2 == 264;
+      v78 = payloadCopy;
+      selfCopy = self;
+      if (customInfoType2 == 264 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v17 = [v9 objectForKeyedSubscript:*MEMORY[0x277D6F8D0]];
+        v17 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277D6F8D0]];
         if (v17)
         {
           v74 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v17 error:0];
@@ -589,57 +589,57 @@ uint64_t __59__TIAppAutofillManager_shouldAcceptOneTimeCode_completion___block_i
         v74 = 0;
       }
 
-      v18 = [v8 customInfoType];
-      v75 = v8;
-      v19 = [v8 customInfoType];
-      v20 = [MEMORY[0x277CCAE80] currentConnection];
-      v21 = [TIXPCUtils obtainApplicationIdentifierFromConnection:v20];
+      customInfoType3 = [autofillCopy customInfoType];
+      v75 = autofillCopy;
+      customInfoType4 = [autofillCopy customInfoType];
+      currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+      v21 = [TIXPCUtils obtainApplicationIdentifierFromConnection:currentConnection];
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___block_invoke;
       aBlock[3] = &unk_27872EEA8;
-      v92 = v12 == 24;
-      aBlock[4] = v79;
+      v92 = customInfoType == 24;
+      aBlock[4] = selfCopy;
       v22 = v14;
       v88 = v22;
       v93 = v16;
       v23 = v21;
-      v25 = v12 == 24 || v18 == 512;
+      v25 = customInfoType == 24 || customInfoType3 == 512;
       v73 = v23;
       v89 = v23;
-      v94 = v19 == 2056;
-      v26 = v19 == 2056 || v25;
-      v9 = v78;
+      v94 = customInfoType4 == 2056;
+      v26 = customInfoType4 == 2056 || v25;
+      payloadCopy = v78;
       v72 = v78;
       v90 = v72;
       v11 = v77;
       v91 = v77;
       v76 = _Block_copy(aBlock);
-      if (![(TIAppAutofillManager *)v79 shouldAuthenticateToAcceptAutofill]|| !v26)
+      if (![(TIAppAutofillManager *)selfCopy shouldAuthenticateToAcceptAutofill]|| !v26)
       {
         v37 = v76;
         (*(v76 + 2))(v76, 1, 0);
 LABEL_77:
 
-        v8 = v75;
+        autofillCopy = v75;
         goto LABEL_78;
       }
 
       v69 = v22;
-      v27 = [MEMORY[0x277CCAE80] currentConnection];
-      v71 = [TIXPCUtils obtainBundleIdentifierFromConnection:v27];
+      currentConnection2 = [MEMORY[0x277CCAE80] currentConnection];
+      v71 = [TIXPCUtils obtainBundleIdentifierFromConnection:currentConnection2];
 
       v28 = objc_alloc_init(getLAContextClass());
-      [(TIAppAutofillManager *)v79 setLaContext:v28];
+      [(TIAppAutofillManager *)selfCopy setLaContext:v28];
 
-      v29 = [[TIKeyboardSecureCandidateRenderer alloc] initForLocalizedStrings];
+      initForLocalizedStrings = [[TIKeyboardSecureCandidateRenderer alloc] initForLocalizedStrings];
       v30 = deviceClassString();
       v68 = v30;
-      if (v12 == 24)
+      if (customInfoType == 24)
       {
         v31 = MEMORY[0x277CCACA8];
-        v32 = [v29 localizedStringForKey:@"AUTOFILL_AUTH_PASSCODE_TITLE"];
+        v32 = [initForLocalizedStrings localizedStringForKey:@"AUTOFILL_AUTH_PASSCODE_TITLE"];
         v86 = 0;
         v33 = [v31 stringWithValidatedFormat:v32 validFormatSpecifiers:@"%@" error:&v86, v30];
         v34 = v86;
@@ -678,10 +678,10 @@ LABEL_77:
       else
       {
         v37 = v76;
-        if (v18 == 512)
+        if (customInfoType3 == 512)
         {
           v40 = MEMORY[0x277CCACA8];
-          v41 = [v29 localizedStringForKey:@"TOTP_AUTOFILL_AUTH_PASSCODE_TITLE"];
+          v41 = [initForLocalizedStrings localizedStringForKey:@"TOTP_AUTOFILL_AUTH_PASSCODE_TITLE"];
           v85 = 0;
           v42 = [v40 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@" error:&v85, v30];
           v34 = v85;
@@ -718,7 +718,7 @@ LABEL_77:
 
         else
         {
-          if (v19 != 2056)
+          if (customInfoType4 != 2056)
           {
             v48 = 0;
             v36 = 0;
@@ -749,8 +749,8 @@ LABEL_60:
 
               v51 = v50;
               _Block_object_dispose(&v95, 8);
-              v52 = [v50 sharedInstance];
-              if ([v52 isFeatureEnabled])
+              sharedInstance = [v50 sharedInstance];
+              if ([sharedInstance isFeatureEnabled])
               {
                 v49 = 1025;
               }
@@ -762,14 +762,14 @@ LABEL_60:
             }
 
             v53 = v36;
-            v54 = [(TIAppAutofillManager *)v79 laContext];
+            laContext = [(TIAppAutofillManager *)selfCopy laContext];
             v83 = 0;
-            v55 = [v54 canEvaluatePolicy:v49 error:&v83];
+            v55 = [laContext canEvaluatePolicy:v49 error:&v83];
             v56 = v83;
 
             if (v55)
             {
-              v9 = v78;
+              payloadCopy = v78;
               if ([v71 isEqualToString:@"com.apple.springboard"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v37[2](v37, 0, 0);
@@ -784,23 +784,23 @@ LABEL_60:
               }
 
               v11 = v77;
-              v60 = [(TIAppAutofillManager *)v79 laContext];
+              laContext2 = [(TIAppAutofillManager *)selfCopy laContext];
               v80[0] = MEMORY[0x277D85DD0];
               v80[1] = 3221225472;
               v80[2] = __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___block_invoke_396;
               v80[3] = &unk_27872EED0;
-              v80[4] = v79;
+              v80[4] = selfCopy;
               v82 = v57;
               v37 = v76;
               v81 = v76;
-              [v60 evaluatePolicy:v49 options:v70 reply:v80];
+              [laContext2 evaluatePolicy:v49 options:v70 reply:v80];
 
               if (v58)
               {
                 v61 = [TICredentialCustomInfo alloc];
-                v62 = [(TIAppAutofillManager *)v79 documentIdentifierForLastAutofillGeneration];
-                v63 = [(TICredentialCustomInfo *)v61 initWithCustomInfo:v72 documentIdentifier:v62];
-                [(TIAppAutofillManager *)v79 setQueuedUnauthenticatedCustomInfo:v63];
+                documentIdentifierForLastAutofillGeneration = [(TIAppAutofillManager *)selfCopy documentIdentifierForLastAutofillGeneration];
+                v63 = [(TICredentialCustomInfo *)v61 initWithCustomInfo:v72 documentIdentifier:documentIdentifierForLastAutofillGeneration];
+                [(TIAppAutofillManager *)selfCopy setQueuedUnauthenticatedCustomInfo:v63];
               }
 
               v59 = v71;
@@ -808,10 +808,10 @@ LABEL_60:
 
             else
             {
-              [(TIAppAutofillManager *)v79 setLaContext:0];
+              [(TIAppAutofillManager *)selfCopy setLaContext:0];
               v37[2](v37, 1, 0);
               v11 = v77;
-              v9 = v78;
+              payloadCopy = v78;
               v59 = v71;
             }
 
@@ -820,7 +820,7 @@ LABEL_60:
           }
 
           v44 = MEMORY[0x277CCACA8];
-          v45 = [v29 localizedStringForKey:@"PASSKEY_AUTOFILL_AUTH_PASSCODE_TITLE"];
+          v45 = [initForLocalizedStrings localizedStringForKey:@"PASSKEY_AUTOFILL_AUTH_PASSCODE_TITLE"];
           v84 = 0;
           v46 = [v44 stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@" error:&v84, v30];
           v34 = v84;
@@ -857,12 +857,12 @@ LABEL_60:
       }
 
 LABEL_59:
-      v48 = [v29 localizedStringForKey:v39];
+      v48 = [initForLocalizedStrings localizedStringForKey:v39];
 
       goto LABEL_60;
     }
 
-    (*(v10 + 2))(v10, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_78:
@@ -997,7 +997,7 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
 
   v3 = v2;
   _Block_object_dispose(&v16, 8);
-  v4 = [v2 sharedConnection];
+  sharedConnection = [v2 sharedConnection];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1020,7 +1020,7 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
   _Block_object_dispose(&v16, 8);
   if (v5)
   {
-    v8 = [v4 effectiveBoolValueForSetting:*v5] == 1;
+    v8 = [sharedConnection effectiveBoolValueForSetting:*v5] == 1;
 
     return v8;
   }
@@ -1033,12 +1033,12 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
   }
 }
 
-- (void)generateHideMyEmailCandidateWithSlotID:(unsigned int)a3 applicationBundleId:(id)a4 applicationId:(id)a5 keyboardState:(id)a6 secureCandidateWidth:(double)a7 secureCandidateHash:(unint64_t)a8 isSecureCandidateDoubleLines:(BOOL)a9 completionHandler:(id)a10
+- (void)generateHideMyEmailCandidateWithSlotID:(unsigned int)d applicationBundleId:(id)id applicationId:(id)applicationId keyboardState:(id)state secureCandidateWidth:(double)width secureCandidateHash:(unint64_t)hash isSecureCandidateDoubleLines:(BOOL)lines completionHandler:(id)self0
 {
   v96 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a10;
+  idCopy = id;
+  applicationIdCopy = applicationId;
+  handlerCopy = handler;
   v89[0] = 0;
   v89[1] = v89;
   v89[2] = 0x3032000000;
@@ -1054,7 +1054,7 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
   v88 = v89;
   v20 = v18;
   v87 = v20;
-  [v19 getApprovedSharedWebCredentialsEntriesForAppWithAppID:v16 completionHandler:v86];
+  [v19 getApprovedSharedWebCredentialsEntriesForAppWithAppID:applicationIdCopy completionHandler:v86];
   v21 = dispatch_time(0, 200000000);
   if (dispatch_semaphore_wait(v20, v21))
   {
@@ -1062,35 +1062,35 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%s HME: Timeout on getApprovedSharedWebCredentialsEntriesForAppWithAppID:completionHandler:", "-[TIAppAutofillManager generateHideMyEmailCandidateWithSlotID:applicationBundleId:applicationId:keyboardState:secureCandidateWidth:secureCandidateHash:isSecureCandidateDoubleLines:completionHandler:]"];
-      v40 = v39 = v16;
+      v40 = v39 = applicationIdCopy;
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v40;
       _os_log_error_impl(&dword_22CA55000, v22, OS_LOG_TYPE_ERROR, "%@", &buf, 0xCu);
 
-      v16 = v39;
+      applicationIdCopy = v39;
     }
 
-    v17[2](v17, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v23 = [MEMORY[0x277CF0130] sharedInstance];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v92 = 0x3032000000;
     v93 = __Block_byref_object_copy__80;
     v94 = __Block_byref_object_dispose__81;
     v95 = objc_alloc_init(MEMORY[0x277CF02A0]);
-    v42 = v23;
-    v41 = [v23 primaryAuthKitAccount];
-    v44 = v16;
+    v42 = mEMORY[0x277CF0130];
+    primaryAuthKitAccount = [mEMORY[0x277CF0130] primaryAuthKitAccount];
+    v44 = applicationIdCopy;
     v84[0] = 0;
     v84[1] = v84;
     v84[2] = 0x3032000000;
     v84[3] = __Block_byref_object_copy__80;
     v84[4] = __Block_byref_object_dispose__81;
-    v85 = [v23 altDSIDForAccount:v41];
+    v85 = [mEMORY[0x277CF0130] altDSIDForAccount:primaryAuthKitAccount];
     objc_initWeak(&location, self);
     v81[0] = 0;
     v81[1] = v81;
@@ -1101,18 +1101,18 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     aBlock[1] = 3221225472;
     aBlock[2] = __199__TIAppAutofillManager_generateHideMyEmailCandidateWithSlotID_applicationBundleId_applicationId_keyboardState_secureCandidateWidth_secureCandidateHash_isSecureCandidateDoubleLines_completionHandler___block_invoke_317;
     aBlock[3] = &unk_27872EDB8;
-    v43 = v15;
-    v24 = v15;
+    v43 = idCopy;
+    v24 = idCopy;
     v71 = v24;
-    v25 = v16;
+    v25 = applicationIdCopy;
     v72 = v25;
-    v73 = self;
-    v26 = v17;
-    v27 = a3;
-    v79 = a3;
-    v77 = a7;
-    v78 = a8;
-    v80 = a9;
+    selfCopy = self;
+    v26 = handlerCopy;
+    dCopy = d;
+    dCopy2 = d;
+    widthCopy = width;
+    hashCopy = hash;
+    linesCopy = lines;
     v75 = v84;
     v76 = v81;
     v28 = v26;
@@ -1126,8 +1126,8 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     v66 = v84;
     v30 = v24;
     v62 = v30;
-    v63 = self;
-    v69 = v27;
+    selfCopy2 = self;
+    v69 = dCopy;
     p_buf = &buf;
     v68 = v81;
     v31 = v28;
@@ -1142,7 +1142,7 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     v50[3] = &unk_27872EE80;
     v54 = v81;
     v34 = v31;
-    v15 = v43;
+    idCopy = v43;
     v35 = v34;
     v52 = v34;
     v55 = v89;
@@ -1150,8 +1150,8 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     v51 = v30;
     v57 = &buf;
     objc_copyWeak(&v58, &location);
-    v59 = v27;
-    v17 = v26;
+    v59 = dCopy;
+    handlerCopy = v26;
     v53 = v32;
     v36 = v32;
     [v33 requestFeatureWithId:@"mail.hide-my-email.create" completion:v50];
@@ -1165,7 +1165,7 @@ void __68__TIAppAutofillManager_shouldAcceptAutofill_withPayload_completion___bl
     dispatch_after(v37, MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v58);
-    v16 = v44;
+    applicationIdCopy = v44;
 
     _Block_object_dispose(v81, 8);
     objc_destroyWeak(&location);
@@ -1540,33 +1540,33 @@ void __199__TIAppAutofillManager_generateHideMyEmailCandidateWithSlotID_applicat
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateJustHMEAutofillFormSuggestionWithRenderTraits:(id)a3 withKeyboardState:(id)a4 applicationID:(id)a5 applicationBundleID:(id)a6 completionHandler:(id)a7
+- (void)generateJustHMEAutofillFormSuggestionWithRenderTraits:(id)traits withKeyboardState:(id)state applicationID:(id)d applicationBundleID:(id)iD completionHandler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  traitsCopy = traits;
+  stateCopy = state;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:0];
   [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:0];
-  if (v12)
+  if (traitsCopy)
   {
-    v64 = v16;
-    v17 = v12;
-    v18 = [v13 documentIdentifier];
-    v66 = [v18 copy];
+    v64 = handlerCopy;
+    v17 = traitsCopy;
+    documentIdentifier = [stateCopy documentIdentifier];
+    v66 = [documentIdentifier copy];
 
-    v19 = [v13 clientIdentifier];
-    v65 = [v19 copy];
+    clientIdentifier = [stateCopy clientIdentifier];
+    v65 = [clientIdentifier copy];
 
-    v20 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+    secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
 
     v21 = MEMORY[0x277D6F980];
-    if (v20)
+    if (secureCandidateRenderer)
     {
-      v22 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v23 = [v22 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
+      secureCandidateRenderer2 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      v23 = [secureCandidateRenderer2 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
 
       if (v23 && [v23 length])
       {
@@ -1575,21 +1575,21 @@ LABEL_15:
         v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
         v62 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:&stru_283FDFAF8 secureContent:v23 secureFormattedContent:v23 input:&stru_283FDFAF8 truncationSentinel:0];
         [v28 addObject:?];
-        v29 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+        secureCandidateRenderer3 = [(TIAppAutofillManager *)self secureCandidateRenderer];
         v63 = v17;
-        v30 = [v29 slotIDsFromSecureCandidates:v28 withRenderTraits:v17];
+        v30 = [secureCandidateRenderer3 slotIDsFromSecureCandidates:v28 withRenderTraits:v17];
 
         if (v30)
         {
-          v60 = v13;
-          v61 = v15;
-          v58 = v12;
+          v60 = stateCopy;
+          v61 = iDCopy;
+          v58 = traitsCopy;
           v31 = [v30 objectAtIndex:0];
-          v32 = [v31 slotID];
+          slotID = [v31 slotID];
 
-          v33 = [MEMORY[0x277CBEB38] dictionary];
-          v34 = v14;
-          v35 = v33;
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          v34 = dCopy;
+          v35 = dictionary;
           if (v23)
           {
             v36 = v23;
@@ -1600,26 +1600,26 @@ LABEL_15:
             v36 = *v21;
           }
 
-          [v33 setObject:v36 forKey:*MEMORY[0x277D6F910]];
-          v37 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-          v38 = [v37 secureCandidateCache];
-          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v32];
-          [v38 setObject:v35 forKey:v39];
+          [dictionary setObject:v36 forKey:*MEMORY[0x277D6F910]];
+          secureCandidateRenderer4 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+          secureCandidateCache = [secureCandidateRenderer4 secureCandidateCache];
+          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID];
+          [secureCandidateCache setObject:v35 forKey:v39];
 
           v40 = +[TIKeyboardSecureTouchManager sharedInstance];
-          [v40 registerSlotID:v32];
+          [v40 registerSlotID:slotID];
 
           v41 = _os_feature_enabled_impl();
           v59 = v34;
           if (v34 && v61 && v41)
           {
-            v57 = [v30 firstObject];
-            [v57 secureCandidateWidth];
+            firstObject = [v30 firstObject];
+            [firstObject secureCandidateWidth];
             v43 = v42;
-            v44 = [v28 firstObject];
-            v56 = [v44 candidateHash];
-            v45 = [v30 firstObject];
-            v55 = [v45 isSecureCandidateDoubleLines];
+            firstObject2 = [v28 firstObject];
+            candidateHash = [firstObject2 candidateHash];
+            firstObject3 = [v30 firstObject];
+            isSecureCandidateDoubleLines = [firstObject3 isSecureCandidateDoubleLines];
             v67[0] = MEMORY[0x277D85DD0];
             v67[1] = 3221225472;
             v67[2] = __148__TIAppAutofillManager_generateJustHMEAutofillFormSuggestionWithRenderTraits_withKeyboardState_applicationID_applicationBundleID_completionHandler___block_invoke;
@@ -1628,25 +1628,25 @@ LABEL_15:
             v68 = v66;
             v69 = v65;
             v70 = v64;
-            v16 = v64;
-            v15 = v61;
-            [(TIAppAutofillManager *)self generateHideMyEmailCandidateWithSlotID:v32 applicationBundleId:v61 applicationId:v59 keyboardState:v60 secureCandidateWidth:v56 secureCandidateHash:v55 isSecureCandidateDoubleLines:v43 completionHandler:v67];
+            handlerCopy = v64;
+            iDCopy = v61;
+            [(TIAppAutofillManager *)self generateHideMyEmailCandidateWithSlotID:slotID applicationBundleId:v61 applicationId:v59 keyboardState:v60 secureCandidateWidth:candidateHash secureCandidateHash:isSecureCandidateDoubleLines isSecureCandidateDoubleLines:v43 completionHandler:v67];
 
-            v12 = v58;
+            traitsCopy = v58;
           }
 
           else
           {
             [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:v66];
             [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:v65];
-            v16 = v64;
+            handlerCopy = v64;
             v64[2](v64, 0);
-            v12 = v58;
-            v15 = v61;
+            traitsCopy = v58;
+            iDCopy = v61;
           }
 
-          v14 = v59;
-          v13 = v60;
+          dCopy = v59;
+          stateCopy = v60;
         }
 
         else
@@ -1660,7 +1660,7 @@ LABEL_15:
             _os_log_error_impl(&dword_22CA55000, v46, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
 
-          v16 = v64;
+          handlerCopy = v64;
           v64[2](v64, 0);
         }
 
@@ -1706,15 +1706,15 @@ LABEL_15:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%s secureCandidateRenderTraits is nil", "-[TIAppAutofillManager generateJustHMEAutofillFormSuggestionWithRenderTraits:withKeyboardState:applicationID:applicationBundleID:completionHandler:]"];
-    v51 = v50 = v16;
+    v51 = v50 = handlerCopy;
     *buf = 138412290;
     v72 = v51;
     _os_log_error_impl(&dword_22CA55000, v24, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
 
-    v16 = v50;
+    handlerCopy = v50;
   }
 
-  (*(v16 + 2))(v16, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_29:
 
   v47 = *MEMORY[0x277D85DE8];
@@ -1730,28 +1730,28 @@ void __148__TIAppAutofillManager_generateJustHMEAutofillFormSuggestionWithRender
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)generateAutofillFormSuggestedUsernameWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completionHandler:(id)a5
+- (void)generateAutofillFormSuggestedUsernameWithRenderTraits:(id)traits withKeyboardState:(id)state completionHandler:(id)handler
 {
   v105 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v85 = a4;
-  v80 = a5;
+  traitsCopy = traits;
+  stateCopy = state;
+  handlerCopy = handler;
   [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:0];
-  v87 = self;
+  selfCopy = self;
   [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:0];
   v97 = 0;
   v98 = &v97;
   v99 = 0x3032000000;
   v100 = __Block_byref_object_copy__80;
   v101 = __Block_byref_object_dispose__81;
-  v102 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([MEMORY[0x277D49DF0] isAppAutoFillAvailable])
   {
     v9 = dispatch_semaphore_create(0);
-    v10 = [v85 textInputTraits];
-    v11 = [v10 keyboardType] == 7;
+    textInputTraits = [stateCopy textInputTraits];
+    v11 = [textInputTraits keyboardType] == 7;
 
-    v12 = [MEMORY[0x277D49E08] sharedProvider];
+    mEMORY[0x277D49E08] = [MEMORY[0x277D49E08] sharedProvider];
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
     v94[2] = __114__TIAppAutofillManager_generateAutofillFormSuggestedUsernameWithRenderTraits_withKeyboardState_completionHandler___block_invoke;
@@ -1759,25 +1759,25 @@ void __148__TIAppAutofillManager_generateJustHMEAutofillFormSuggestionWithRender
     v95 = v9;
     v96 = &v97;
     v13 = v9;
-    [v12 suggestedUsersOfType:v11 completionHandler:v94];
+    [mEMORY[0x277D49E08] suggestedUsersOfType:v11 completionHandler:v94];
 
     v14 = dispatch_time(0, 200000000);
     dispatch_semaphore_wait(v13, v14);
   }
 
-  if (_os_feature_enabled_impl() && [v85 autofillSubMode] == 7)
+  if (_os_feature_enabled_impl() && [stateCopy autofillSubMode] == 7)
   {
-    v15 = [(TIAppAutofillManager *)v87 secureCandidateRenderer];
+    secureCandidateRenderer = [(TIAppAutofillManager *)selfCopy secureCandidateRenderer];
 
-    if (v15)
+    if (secureCandidateRenderer)
     {
-      v16 = [(TIAppAutofillManager *)v87 secureCandidateRenderer];
-      v17 = [v16 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
+      secureCandidateRenderer2 = [(TIAppAutofillManager *)selfCopy secureCandidateRenderer];
+      v17 = [secureCandidateRenderer2 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
 
       if (v17 && [v17 length])
       {
 LABEL_15:
-        [v8 setHideMyEmailLocalizedText:v17];
+        [traitsCopy setHideMyEmailLocalizedText:v17];
         [v98[5] insertObject:v17 atIndex:0];
 
         goto LABEL_16;
@@ -1814,22 +1814,22 @@ LABEL_15:
 
 LABEL_16:
   v21 = [v98[5] count];
-  v81 = v8;
-  if (v21 >= [v8 maxCellCount])
+  v81 = traitsCopy;
+  if (v21 >= [traitsCopy maxCellCount])
   {
-    v22 = [v8 maxCellCount];
+    maxCellCount = [traitsCopy maxCellCount];
   }
 
   else
   {
-    v22 = [v98[5] count];
+    maxCellCount = [v98[5] count];
   }
 
-  v23 = v22;
-  v88 = [MEMORY[0x277CBEB18] arrayWithCapacity:v22];
+  v23 = maxCellCount;
+  v88 = [MEMORY[0x277CBEB18] arrayWithCapacity:maxCellCount];
   v86 = [MEMORY[0x277CBEB18] arrayWithCapacity:v23];
-  v24 = v85;
-  v25 = v87;
+  v24 = stateCopy;
+  v25 = selfCopy;
   if (v23)
   {
     v26 = [v98[5] objectAtIndex:0];
@@ -1853,8 +1853,8 @@ LABEL_16:
 
       v31 = v23;
 LABEL_27:
-      v24 = v85;
-      v25 = v87;
+      v24 = stateCopy;
+      v25 = selfCopy;
       v32 = v31 < v23;
     }
 
@@ -1869,14 +1869,14 @@ LABEL_27:
       v35 = &stru_283FDFAF8;
       if (v32)
       {
-        v36 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
-        v35 = [v36 localizedStringForKey:@"SAFARI_CREDENTIAL_SUGGESTED_USERNAME"];
+        secureCandidateRenderer3 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
+        v35 = [secureCandidateRenderer3 localizedStringForKey:@"SAFARI_CREDENTIAL_SUGGESTED_USERNAME"];
       }
 
       if (_os_feature_enabled_impl() && [v24 autofillSubMode] == 7)
       {
-        v37 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
-        v38 = [v37 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
+        secureCandidateRenderer4 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
+        v38 = [secureCandidateRenderer4 localizedStringForKey:@"SAFARI_HIDE_MY_EMAIL_SUGGESTION"];
         v39 = [v34 isEqualToString:v38];
 
         if (v39)
@@ -1885,8 +1885,8 @@ LABEL_27:
           v35 = &stru_283FDFAF8;
         }
 
-        v24 = v85;
-        v25 = v87;
+        v24 = stateCopy;
+        v25 = selfCopy;
       }
 
       v40 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v35 secureContent:v34 secureFormattedContent:v34 input:&stru_283FDFAF8 truncationSentinel:0];
@@ -1894,14 +1894,14 @@ LABEL_27:
     }
   }
 
-  v41 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
-  v42 = [v41 slotIDsFromSecureCandidates:v88 withRenderTraits:v81];
+  secureCandidateRenderer5 = [(TIAppAutofillManager *)v25 secureCandidateRenderer];
+  v42 = [secureCandidateRenderer5 slotIDsFromSecureCandidates:v88 withRenderTraits:v81];
 
   if ([v42 count])
   {
     v43 = 0;
-    v82 = 0;
-    v83 = 0;
+    isSecureCandidateDoubleLines = 0;
+    candidateHash = 0;
     v44 = 0;
     v84 = *MEMORY[0x277D6F910];
     v45 = 0.0;
@@ -1909,9 +1909,9 @@ LABEL_27:
     {
       v46 = [v98[5] objectAtIndex:v43];
       v47 = [v42 objectAtIndex:v43];
-      v48 = [v47 slotID];
+      slotID = [v47 slotID];
 
-      if (_os_feature_enabled_impl() && [v85 autofillSubMode] == 7 && (-[TIAppAutofillManager secureCandidateRenderer](v87, "secureCandidateRenderer"), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v49, "localizedStringForKey:", @"SAFARI_HIDE_MY_EMAIL_SUGGESTION"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v46, "isEqualToString:", v50), v50, v49, v51))
+      if (_os_feature_enabled_impl() && [stateCopy autofillSubMode] == 7 && (-[TIAppAutofillManager secureCandidateRenderer](selfCopy, "secureCandidateRenderer"), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v49, "localizedStringForKey:", @"SAFARI_HIDE_MY_EMAIL_SUGGESTION"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v46, "isEqualToString:", v50), v50, v49, v51))
       {
         v45 = 0.0;
         if ([v42 count] > v43)
@@ -1922,21 +1922,21 @@ LABEL_27:
         }
 
         v54 = [v88 objectAtIndexedSubscript:v43];
-        v83 = [v54 candidateHash];
+        candidateHash = [v54 candidateHash];
 
         if ([v42 count] <= v43)
         {
-          v82 = 0;
+          isSecureCandidateDoubleLines = 0;
           goto LABEL_54;
         }
 
         v55 = [v42 objectAtIndexedSubscript:v43];
-        v82 = [v55 isSecureCandidateDoubleLines];
+        isSecureCandidateDoubleLines = [v55 isSecureCandidateDoubleLines];
       }
 
       else
       {
-        v55 = [MEMORY[0x277D6F3D8] secureCandidateForInput:&stru_283FDFAF8 slotID:v48 customInfoType:128 applicationKey:&stru_283FDFAF8 applicationBundleId:&stru_283FDFAF8 altDSID:&stru_283FDFAF8];
+        v55 = [MEMORY[0x277D6F3D8] secureCandidateForInput:&stru_283FDFAF8 slotID:slotID customInfoType:128 applicationKey:&stru_283FDFAF8 applicationBundleId:&stru_283FDFAF8 altDSID:&stru_283FDFAF8];
         if ([v42 count] <= v43)
         {
           [v55 setSecureCandidateWidth:0.0];
@@ -1964,22 +1964,22 @@ LABEL_27:
         }
 
         [v86 addObject:v55];
-        v59 = [MEMORY[0x277CBEB38] dictionary];
-        [v59 setObject:v46 forKey:v84];
-        v60 = [(TIAppAutofillManager *)v87 secureCandidateRenderer];
-        v61 = [v60 secureCandidateCache];
-        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v48];
-        [v61 setObject:v59 forKey:v62];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary setObject:v46 forKey:v84];
+        secureCandidateRenderer6 = [(TIAppAutofillManager *)selfCopy secureCandidateRenderer];
+        secureCandidateCache = [secureCandidateRenderer6 secureCandidateCache];
+        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID];
+        [secureCandidateCache setObject:dictionary forKey:v62];
 
         v63 = +[TIKeyboardSecureTouchManager sharedInstance];
-        [v63 registerSlotID:v48];
+        [v63 registerSlotID:slotID];
 
-        v48 = v44;
+        slotID = v44;
       }
 
 LABEL_54:
       ++v43;
-      v44 = v48;
+      v44 = slotID;
       if (v43 >= [v42 count])
       {
         goto LABEL_58;
@@ -1987,47 +1987,47 @@ LABEL_54:
     }
   }
 
-  v48 = 0;
-  v83 = 0;
-  v82 = 0;
+  slotID = 0;
+  candidateHash = 0;
+  isSecureCandidateDoubleLines = 0;
   v45 = 0.0;
 LABEL_58:
-  v64 = v85;
-  if ((_os_feature_enabled_impl() & 1) == 0 || [v85 autofillSubMode] != 7 || !v48)
+  v64 = stateCopy;
+  if ((_os_feature_enabled_impl() & 1) == 0 || [stateCopy autofillSubMode] != 7 || !slotID)
   {
     goto LABEL_71;
   }
 
-  v65 = [MEMORY[0x277CCAE80] currentConnection];
-  v66 = [v85 autofillContext];
-  v67 = [v66 objectForKey:*MEMORY[0x277D6F9B0]];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  autofillContext = [stateCopy autofillContext];
+  v67 = [autofillContext objectForKey:*MEMORY[0x277D6F9B0]];
 
   if (!v67)
   {
-    v67 = [TIXPCUtils obtainApplicationIdentifierFromConnection:v65];
+    v67 = [TIXPCUtils obtainApplicationIdentifierFromConnection:currentConnection];
   }
 
-  v68 = [v85 autofillContext];
-  v69 = [v68 objectForKey:*MEMORY[0x277D6F9C0]];
+  autofillContext2 = [stateCopy autofillContext];
+  v69 = [autofillContext2 objectForKey:*MEMORY[0x277D6F9C0]];
 
   if (!v69)
   {
-    v69 = [TIXPCUtils obtainBundleIdentifierFromConnection:v65];
+    v69 = [TIXPCUtils obtainBundleIdentifierFromConnection:currentConnection];
   }
 
   if (!v69 || !v67)
   {
 
 LABEL_71:
-    v74 = [v85 documentIdentifier];
-    [(TIAppAutofillManager *)v87 setDocumentIdentifierForLastAutofillGeneration:v74];
+    documentIdentifier = [stateCopy documentIdentifier];
+    [(TIAppAutofillManager *)selfCopy setDocumentIdentifierForLastAutofillGeneration:documentIdentifier];
 
-    v75 = [v85 clientIdentifier];
-    [(TIAppAutofillManager *)v87 setClientIdentifierForLastAutofillGeneration:v75];
+    clientIdentifier = [stateCopy clientIdentifier];
+    [(TIAppAutofillManager *)selfCopy setClientIdentifierForLastAutofillGeneration:clientIdentifier];
 
-    v73 = v80;
+    v73 = handlerCopy;
     v72 = v86;
-    (*(v80 + 2))(v80, v86);
+    (*(handlerCopy + 2))(handlerCopy, v86);
     goto LABEL_72;
   }
 
@@ -2045,16 +2045,16 @@ LABEL_71:
   v89[1] = 3221225472;
   v89[2] = __114__TIAppAutofillManager_generateAutofillFormSuggestedUsernameWithRenderTraits_withKeyboardState_completionHandler___block_invoke_300;
   v89[3] = &unk_27872ED68;
-  v89[4] = v87;
-  v90 = v85;
+  v89[4] = selfCopy;
+  v90 = stateCopy;
   v72 = v86;
   v91 = v86;
-  v92 = v80;
+  v92 = handlerCopy;
   v93 = v70;
-  v64 = v85;
-  [(TIAppAutofillManager *)v87 generateHideMyEmailCandidateWithSlotID:v48 applicationBundleId:v69 applicationId:v67 keyboardState:v90 secureCandidateWidth:v83 secureCandidateHash:v82 & 1 isSecureCandidateDoubleLines:v45 completionHandler:v89];
+  v64 = stateCopy;
+  [(TIAppAutofillManager *)selfCopy generateHideMyEmailCandidateWithSlotID:slotID applicationBundleId:v69 applicationId:v67 keyboardState:v90 secureCandidateWidth:candidateHash secureCandidateHash:isSecureCandidateDoubleLines & 1 isSecureCandidateDoubleLines:v45 completionHandler:v89];
 
-  v73 = v80;
+  v73 = handlerCopy;
 LABEL_72:
 
   _Block_object_dispose(&v97, 8);
@@ -2132,31 +2132,31 @@ void __114__TIAppAutofillManager_generateAutofillFormSuggestedUsernameWithRender
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateCellularCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4
+- (id)generateCellularCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state
 {
   v93 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 textInputTraits];
-  v9 = [v8 textContentType];
+  traitsCopy = traits;
+  stateCopy = state;
+  textInputTraits = [stateCopy textInputTraits];
+  textContentType = [textInputTraits textContentType];
   v10 = *MEMORY[0x277D6FC40];
-  if ([v9 isEqualToString:*MEMORY[0x277D6FC40]])
+  if ([textContentType isEqualToString:*MEMORY[0x277D6FC40]])
   {
 
     goto LABEL_4;
   }
 
-  v11 = [v7 textInputTraits];
-  v12 = [v11 textContentType];
-  v13 = [v12 isEqualToString:*MEMORY[0x277D6FC48]];
+  textInputTraits2 = [stateCopy textInputTraits];
+  textContentType2 = [textInputTraits2 textContentType];
+  v13 = [textContentType2 isEqualToString:*MEMORY[0x277D6FC48]];
 
   if (v13)
   {
 LABEL_4:
     v14 = deviceClassString();
-    v15 = [v7 textInputTraits];
-    v16 = [v15 textContentType];
-    v17 = [v16 isEqualToString:v10];
+    textInputTraits3 = [stateCopy textInputTraits];
+    textContentType3 = [textInputTraits3 textContentType];
+    v17 = [textContentType3 isEqualToString:v10];
 
     v18 = MEMORY[0x277CCACA8];
     if (v17)
@@ -2185,36 +2185,36 @@ LABEL_4:
     v23 = v22;
 
     v79 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-    v24 = [(TIAppAutofillManager *)self coreTelephonyMockObject];
+    coreTelephonyMockObject = [(TIAppAutofillManager *)self coreTelephonyMockObject];
 
-    v25 = [v7 textInputTraits];
-    v26 = [v25 textContentType];
-    v27 = [v26 isEqualToString:v10];
+    textInputTraits4 = [stateCopy textInputTraits];
+    textContentType4 = [textInputTraits4 textContentType];
+    v27 = [textContentType4 isEqualToString:v10];
     v77 = v14;
     v78 = v23;
-    if (v24)
+    if (coreTelephonyMockObject)
     {
       v28 = v27 ^ 1u;
 
-      v29 = [(TIAppAutofillManager *)self coreTelephonyMockObject];
-      v30 = [v29 retrieveDeviceIdentifier:v28];
+      coreTelephonyMockObject2 = [(TIAppAutofillManager *)self coreTelephonyMockObject];
+      v30 = [coreTelephonyMockObject2 retrieveDeviceIdentifier:v28];
 LABEL_11:
 
-      [v6 setShouldForceDoubleLineCandidateForCellularAutofill:1];
+      [traitsCopy setShouldForceDoubleLineCandidateForCellularAutofill:1];
       v31 = MEMORY[0x277D6F570];
       v30 = v30;
       v73 = [[v31 alloc] initWithSecureHeader:v23 secureContent:v30 secureFormattedContent:v30 input:v30 truncationSentinel:0];
       [v79 addObject:?];
-      v32 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v74 = v6;
-      v33 = [v32 slotIDsFromSecureCandidates:v79 withRenderTraits:v6];
+      secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      v74 = traitsCopy;
+      v33 = [secureCandidateRenderer slotIDsFromSecureCandidates:v79 withRenderTraits:traitsCopy];
 
-      v34 = [v33 firstObject];
-      v35 = [v34 slotID];
+      firstObject = [v33 firstObject];
+      slotID = [firstObject slotID];
 
-      v36 = [v7 textInputTraits];
-      v37 = [v36 textContentType];
-      if ([v37 isEqualToString:v10])
+      textInputTraits5 = [stateCopy textInputTraits];
+      textContentType5 = [textInputTraits5 textContentType];
+      if ([textContentType5 isEqualToString:v10])
       {
         v38 = 0x2000;
       }
@@ -2224,9 +2224,9 @@ LABEL_11:
         v38 = 0x4000;
       }
 
-      v39 = [v7 textInputTraits];
-      v40 = [v39 textContentType];
-      v41 = [v40 isEqualToString:v10];
+      textInputTraits6 = [stateCopy textInputTraits];
+      textContentType6 = [textInputTraits6 textContentType];
+      v41 = [textContentType6 isEqualToString:v10];
       v42 = MEMORY[0x277D6F8C0];
       if (!v41)
       {
@@ -2235,27 +2235,27 @@ LABEL_11:
 
       v43 = *v42;
 
-      v44 = [MEMORY[0x277D6F3D8] secureCandidateForInput:v30 slotID:v35 customInfoType:v38];
-      v45 = [v33 firstObject];
-      [v45 secureCandidateWidth];
+      v44 = [MEMORY[0x277D6F3D8] secureCandidateForInput:v30 slotID:slotID customInfoType:v38];
+      firstObject2 = [v33 firstObject];
+      [firstObject2 secureCandidateWidth];
       [v44 setSecureCandidateWidth:?];
 
-      v46 = [v79 firstObject];
-      [v44 setSecureCandidateHash:{objc_msgSend(v46, "candidateHash")}];
+      firstObject3 = [v79 firstObject];
+      [v44 setSecureCandidateHash:{objc_msgSend(firstObject3, "candidateHash")}];
 
-      v47 = [v33 firstObject];
-      [v44 setIsSecureCandidateDoubleLines:{objc_msgSend(v47, "isSecureCandidateDoubleLines")}];
+      firstObject4 = [v33 firstObject];
+      [v44 setIsSecureCandidateDoubleLines:{objc_msgSend(firstObject4, "isSecureCandidateDoubleLines")}];
 
-      v48 = [MEMORY[0x277CBEB38] dictionary];
-      [v48 setObject:v30 forKeyedSubscript:v43];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:v30 forKeyedSubscript:v43];
 
-      v49 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v50 = [v49 secureCandidateCache];
-      v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v35];
-      [v50 setObject:v48 forKey:v51];
+      secureCandidateRenderer2 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      secureCandidateCache = [secureCandidateRenderer2 secureCandidateCache];
+      v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID];
+      [secureCandidateCache setObject:dictionary forKey:v51];
 
       v52 = +[TIKeyboardSecureTouchManager sharedInstance];
-      [v52 registerSlotID:v35];
+      [v52 registerSlotID:slotID];
 
       if (v44)
       {
@@ -2268,8 +2268,8 @@ LABEL_11:
         v53 = 0;
       }
 
-      v29 = v73;
-      v6 = v74;
+      coreTelephonyMockObject2 = v73;
+      traitsCopy = v74;
       goto LABEL_48;
     }
 
@@ -2283,8 +2283,8 @@ LABEL_11:
       v54 = 2;
     }
 
-    v29 = [MEMORY[0x277CCAE80] currentConnection];
-    if (![(TIAppAutofillManager *)self hasCoreTelephonyEntitlementForConnection:v29])
+    coreTelephonyMockObject2 = [MEMORY[0x277CCAE80] currentConnection];
+    if (![(TIAppAutofillManager *)self hasCoreTelephonyEntitlementForConnection:coreTelephonyMockObject2])
     {
       v33 = TIAppAutofillOSLogFacility();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -2319,13 +2319,13 @@ LABEL_11:
     _Block_object_dispose(&v84, 8);
     v57 = [v55 alloc];
     v33 = [v57 initWithQueue:MEMORY[0x277D85CD0]];
-    v58 = [v7 autofillContext];
-    v59 = [v58 objectForKey:*MEMORY[0x277D6F9C0]];
+    autofillContext = [stateCopy autofillContext];
+    v59 = [autofillContext objectForKey:*MEMORY[0x277D6F9C0]];
 
     v75 = v59;
     if (!v59)
     {
-      v75 = [TIXPCUtils obtainBundleIdentifierFromConnection:v29];
+      v75 = [TIXPCUtils obtainBundleIdentifierFromConnection:coreTelephonyMockObject2];
     }
 
     if (objc_opt_respondsToSelector())
@@ -2378,12 +2378,12 @@ LABEL_48:
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%s CoreTelephony client returned error on retrieveDeviceIdentifier:error: ERROR:%@", "-[TIAppAutofillManager generateCellularCandidatesWithRenderTraits:withKeyboardState:]", v64];
-      v71 = v70 = v29;
+      v71 = v70 = coreTelephonyMockObject2;
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v71;
       _os_log_error_impl(&dword_22CA55000, v65, OS_LOG_TYPE_ERROR, "%@", &buf, 0xCu);
 
-      v29 = v70;
+      coreTelephonyMockObject2 = v70;
     }
 
     goto LABEL_46;
@@ -2406,13 +2406,13 @@ LABEL_49:
   return v53;
 }
 
-- (id)generateOneTimeCodeCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4
+- (id)generateOneTimeCodeCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state
 {
   v130 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 autofillContext];
-  v9 = [v8 objectForKey:@"_WebViewURL"];
+  traitsCopy = traits;
+  stateCopy = state;
+  autofillContext = [stateCopy autofillContext];
+  v9 = [autofillContext objectForKey:@"_WebViewURL"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2421,16 +2421,16 @@ LABEL_49:
     v9 = 0;
   }
 
-  v10 = [v7 textInputTraits];
-  v11 = [v10 textContentType];
-  v12 = [v11 isEqualToString:@"one-time-code"];
+  textInputTraits = [stateCopy textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v12 = [textContentType isEqualToString:@"one-time-code"];
 
-  v13 = [(TIAppAutofillManager *)self dateOfLastPasswordAutoFill];
-  if (v13)
+  dateOfLastPasswordAutoFill = [(TIAppAutofillManager *)self dateOfLastPasswordAutoFill];
+  if (dateOfLastPasswordAutoFill)
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [(TIAppAutofillManager *)self dateOfLastPasswordAutoFill];
-    [v14 timeIntervalSinceDate:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    dateOfLastPasswordAutoFill2 = [(TIAppAutofillManager *)self dateOfLastPasswordAutoFill];
+    [date timeIntervalSinceDate:dateOfLastPasswordAutoFill2];
     v112 = v16 <= 30.0;
   }
 
@@ -2439,11 +2439,11 @@ LABEL_49:
     v112 = 0;
   }
 
-  v17 = [MEMORY[0x277CCAE80] currentConnection];
-  v18 = [TIXPCUtils obtainApplicationIdentifierFromConnection:v17];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v18 = [TIXPCUtils obtainApplicationIdentifierFromConnection:currentConnection];
   v19 = [v18 isEqualToString:@"com.apple.InputUI"];
-  v20 = TIAppAutofillOSLogFacility();
-  v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
+  autofillContext2 = TIAppAutofillOSLogFacility();
+  v21 = os_log_type_enabled(autofillContext2, OS_LOG_TYPE_DEBUG);
   if (v19)
   {
     if (v21)
@@ -2451,11 +2451,11 @@ LABEL_49:
       v99 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Grabbing application identifier from keyboardState.autofillContext.", "-[TIAppAutofillManager generateOneTimeCodeCandidatesWithRenderTraits:withKeyboardState:]"];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v99;
-      _os_log_debug_impl(&dword_22CA55000, v20, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
+      _os_log_debug_impl(&dword_22CA55000, autofillContext2, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
     }
 
-    v20 = [v7 autofillContext];
-    v22 = [v20 objectForKey:*MEMORY[0x277D6F9B0]];
+    autofillContext2 = [stateCopy autofillContext];
+    v22 = [autofillContext2 objectForKey:*MEMORY[0x277D6F9B0]];
 
     v18 = v22;
   }
@@ -2465,7 +2465,7 @@ LABEL_49:
     v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Grabbing application identifier from xpc connection.", "-[TIAppAutofillManager generateOneTimeCodeCandidatesWithRenderTraits:withKeyboardState:]"];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v100;
-    _os_log_debug_impl(&dword_22CA55000, v20, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
+    _os_log_debug_impl(&dword_22CA55000, autofillContext2, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
   }
 
   v115 = v18;
@@ -2477,13 +2477,13 @@ LABEL_49:
     v127 = __Block_byref_object_copy__80;
     v128 = __Block_byref_object_dispose__81;
     v129 = 0;
-    v23 = [v7 autofillContext];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D6F9B8]];
+    autofillContext3 = [stateCopy autofillContext];
+    v24 = [autofillContext3 objectForKeyedSubscript:*MEMORY[0x277D6F9B8]];
 
     v25 = dispatch_group_create();
     objc_opt_class();
-    v110 = v17;
-    v111 = v6;
+    v110 = currentConnection;
+    v111 = traitsCopy;
     if (objc_opt_respondsToSelector())
     {
       dispatch_group_enter(v25);
@@ -2519,44 +2519,44 @@ LABEL_49:
 
         *v122 = 0;
         v33 = [(TIAppAutofillManager *)self _autoFillPayloadForPasswordCredential:*(*(&buf + 1) + 40) keyboardInfoType:v122];
-        v34 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-        v35 = [v34 slotIDsFromSecureCandidates:v32 withRenderTraits:v6];
+        secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+        v35 = [secureCandidateRenderer slotIDsFromSecureCandidates:v32 withRenderTraits:traitsCopy];
 
         v36 = MEMORY[0x277D6F3D8];
-        v37 = [v35 firstObject];
-        v38 = [v37 slotID];
-        v39 = [v36 secureCandidateForInput:&stru_283FDFAF8 slotID:v38 customInfoType:*v122];
+        firstObject = [v35 firstObject];
+        slotID = [firstObject slotID];
+        v39 = [v36 secureCandidateForInput:&stru_283FDFAF8 slotID:slotID customInfoType:*v122];
 
-        v40 = [v35 firstObject];
-        v41 = [v40 slotID];
+        firstObject2 = [v35 firstObject];
+        slotID2 = [firstObject2 slotID];
 
-        v42 = [v35 firstObject];
-        [v42 secureCandidateWidth];
+        firstObject3 = [v35 firstObject];
+        [firstObject3 secureCandidateWidth];
         [v39 setSecureCandidateWidth:?];
 
         v108 = v32;
-        v43 = [v32 firstObject];
-        [v39 setSecureCandidateHash:{objc_msgSend(v43, "candidateHash")}];
+        firstObject4 = [v32 firstObject];
+        [v39 setSecureCandidateHash:{objc_msgSend(firstObject4, "candidateHash")}];
 
-        v44 = [v35 firstObject];
-        [v39 setIsSecureCandidateDoubleLines:{objc_msgSend(v44, "isSecureCandidateDoubleLines")}];
+        firstObject5 = [v35 firstObject];
+        [v39 setIsSecureCandidateDoubleLines:{objc_msgSend(firstObject5, "isSecureCandidateDoubleLines")}];
 
-        v45 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-        [v45 secureCandidateCache];
-        v47 = v46 = v7;
-        v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v41];
+        secureCandidateRenderer2 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+        [secureCandidateRenderer2 secureCandidateCache];
+        v47 = v46 = stateCopy;
+        v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID2];
         [v47 setObject:v33 forKey:v48];
 
-        v7 = v46;
+        stateCopy = v46;
         v49 = +[TIKeyboardSecureTouchManager sharedInstance];
-        [v49 registerSlotID:v41];
+        [v49 registerSlotID:slotID2];
 
-        v50 = [v46 documentIdentifier];
-        v51 = [v50 copy];
+        documentIdentifier = [v46 documentIdentifier];
+        v51 = [documentIdentifier copy];
         [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:v51];
 
-        v52 = [v46 clientIdentifier];
-        v53 = [v52 copy];
+        clientIdentifier = [v46 clientIdentifier];
+        v53 = [clientIdentifier copy];
         [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:v53];
 
         if (v39)
@@ -2572,9 +2572,9 @@ LABEL_49:
 
         v25 = v105;
 
-        v61 = v117;
-        v17 = v110;
-        v6 = v111;
+        firstObject6 = v117;
+        currentConnection = v110;
+        traitsCopy = v111;
         v24 = v113;
 LABEL_59:
 
@@ -2599,7 +2599,7 @@ LABEL_59:
       }
 
       v60 = [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider currentOneTimeCodesWithAppIdentifier:v115 website:v9 usernameHint:self->_lastAutofilledUsername fieldClassification:v59];
-      v61 = [v60 firstObject];
+      firstObject6 = [v60 firstObject];
     }
 
     else
@@ -2607,11 +2607,11 @@ LABEL_59:
       v62 = v25;
       v63 = v24;
       v60 = +[TIKeyboardInputManagerLoader sharedLoader];
-      v64 = [v60 interactingConnection];
-      v65 = v64;
-      if (v64)
+      interactingConnection = [v60 interactingConnection];
+      v65 = interactingConnection;
+      if (interactingConnection)
       {
-        [v64 auditToken];
+        [interactingConnection auditToken];
       }
 
       else
@@ -2631,29 +2631,29 @@ LABEL_59:
       }
 
       v67 = [(SFAppAutoFillOneTimeCodeProvider *)v58 currentOneTimeCodesWithAuditToken:v122 website:v9 usernameHint:self->_lastAutofilledUsername fieldClassification:v66];
-      v61 = [v67 firstObject];
+      firstObject6 = [v67 firstObject];
 
       v24 = v63;
       v25 = v62;
-      v6 = v111;
+      traitsCopy = v111;
     }
 
     v68 = MEMORY[0x277D6F3D8];
-    v69 = [MEMORY[0x277D6F3C0] keyboardCandidateInputStringUsedWithAutofillExtraThatSignifiesOTPExtra];
-    v109 = [v68 candidateWithCandidate:&stru_283FDFAF8 forInput:v69 customInfoType:32];
+    keyboardCandidateInputStringUsedWithAutofillExtraThatSignifiesOTPExtra = [MEMORY[0x277D6F3C0] keyboardCandidateInputStringUsedWithAutofillExtraThatSignifiesOTPExtra];
+    v109 = [v68 candidateWithCandidate:&stru_283FDFAF8 forInput:keyboardCandidateInputStringUsedWithAutofillExtraThatSignifiesOTPExtra customInfoType:32];
 
-    if (v61)
+    if (firstObject6)
     {
       v114 = v24;
-      v103 = v7;
+      v103 = stateCopy;
       v104 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-      v70 = [v61 localizedTitleForContext:0];
-      v71 = [v61 displayCode];
-      v72 = [v61 localizedSubtitleForContext:0];
+      v70 = [firstObject6 localizedTitleForContext:0];
+      displayCode = [firstObject6 displayCode];
+      v72 = [firstObject6 localizedSubtitleForContext:0];
       v73 = v72;
-      if (v71)
+      if (displayCode)
       {
-        v74 = v71;
+        v74 = displayCode;
       }
 
       else
@@ -2663,7 +2663,7 @@ LABEL_59:
 
       v75 = v74;
       v107 = v9;
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v61 requiresAuthentication])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [firstObject6 requiresAuthentication])
       {
         v76 = v73;
 
@@ -2674,14 +2674,14 @@ LABEL_59:
       v77 = [objc_alloc(MEMORY[0x277D6F570]) initWithSecureHeader:v70 secureContent:v75 secureFormattedContent:v73 input:&stru_283FDFAF8 truncationSentinel:0];
       [v104 addObject:v77];
 
-      v78 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v79 = [v78 slotIDsFromSecureCandidates:v104 withRenderTraits:v111];
+      secureCandidateRenderer3 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      v79 = [secureCandidateRenderer3 slotIDsFromSecureCandidates:v104 withRenderTraits:v111];
 
-      v80 = [v61 code];
-      v81 = [v79 firstObject];
-      v82 = [v81 slotID];
+      code = [firstObject6 code];
+      firstObject7 = [v79 firstObject];
+      slotID3 = [firstObject7 slotID];
 
-      if ([v61 source] == 3)
+      if ([firstObject6 source] == 3)
       {
         v83 = 512;
       }
@@ -2691,33 +2691,33 @@ LABEL_59:
         v83 = 64;
       }
 
-      v84 = [MEMORY[0x277D6F3D8] secureCandidateForInput:v80 slotID:v82 customInfoType:v83];
-      v85 = [v79 firstObject];
-      [v85 secureCandidateWidth];
+      v84 = [MEMORY[0x277D6F3D8] secureCandidateForInput:code slotID:slotID3 customInfoType:v83];
+      firstObject8 = [v79 firstObject];
+      [firstObject8 secureCandidateWidth];
       [v84 setSecureCandidateWidth:?];
 
-      v86 = [v104 firstObject];
-      [v84 setSecureCandidateHash:{objc_msgSend(v86, "candidateHash")}];
+      firstObject9 = [v104 firstObject];
+      [v84 setSecureCandidateHash:{objc_msgSend(firstObject9, "candidateHash")}];
 
-      v87 = [v79 firstObject];
-      [v84 setIsSecureCandidateDoubleLines:{objc_msgSend(v87, "isSecureCandidateDoubleLines")}];
+      firstObject10 = [v79 firstObject];
+      [v84 setIsSecureCandidateDoubleLines:{objc_msgSend(firstObject10, "isSecureCandidateDoubleLines")}];
 
       if (objc_opt_respondsToSelector())
       {
-        [v84 setIsOneTimeCodeThatRequiresAuthentication:{objc_msgSend(v61, "requiresAuthentication")}];
+        [v84 setIsOneTimeCodeThatRequiresAuthentication:{objc_msgSend(firstObject6, "requiresAuthentication")}];
       }
 
-      v88 = [MEMORY[0x277CBEB38] dictionary];
-      [v88 setObject:v80 forKeyedSubscript:*MEMORY[0x277D6F8E8]];
-      v89 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v90 = [v89 secureCandidateCache];
-      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v82];
-      [v90 setObject:v88 forKey:v91];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:code forKeyedSubscript:*MEMORY[0x277D6F8E8]];
+      secureCandidateRenderer4 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      secureCandidateCache = [secureCandidateRenderer4 secureCandidateCache];
+      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID3];
+      [secureCandidateCache setObject:dictionary forKey:v91];
 
       v92 = +[TIKeyboardSecureTouchManager sharedInstance];
-      [v92 registerSlotID:v82];
+      [v92 registerSlotID:slotID3];
 
-      [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider addObserver:self forOneTimeCode:v61];
+      [(SFAppAutoFillOneTimeCodeProvider *)self->_oneTimeCodeProvider addObserver:self forOneTimeCode:firstObject6];
       v93 = v109;
       if (v84)
       {
@@ -2739,11 +2739,11 @@ LABEL_59:
       v54 = [v94 arrayWithObjects:v95 count:v96];
       v25 = v106;
       v9 = v107;
-      v17 = v110;
+      currentConnection = v110;
 
-      v6 = v111;
+      traitsCopy = v111;
       v24 = v114;
-      v7 = v103;
+      stateCopy = v103;
     }
 
     else if (v112)
@@ -2791,30 +2791,30 @@ void __88__TIAppAutofillManager_generateOneTimeCodeCandidatesWithRenderTraits_wi
   dispatch_group_leave(v6);
 }
 
-- (void)_finishAutofillFormCandidatesOnMainThreadWithCredentials:(id)a3 renderTraits:(id)a4 documentIdentifier:(id)a5 clientIdentifier:(id)a6 completion:(id)a7
+- (void)_finishAutofillFormCandidatesOnMainThreadWithCredentials:(id)credentials renderTraits:(id)traits documentIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v53 = a5;
-  v14 = a6;
-  v51 = a7;
-  v15 = [v12 count];
-  v52 = v14;
-  if (v15 >= [v13 maxCellCount])
+  credentialsCopy = credentials;
+  traitsCopy = traits;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  completionCopy = completion;
+  v15 = [credentialsCopy count];
+  v52 = clientIdentifierCopy;
+  if (v15 >= [traitsCopy maxCellCount])
   {
-    v16 = [v13 maxCellCount];
-    [v13 setCellRenderingStyle:1];
+    maxCellCount = [traitsCopy maxCellCount];
+    [traitsCopy setCellRenderingStyle:1];
   }
 
   else
   {
-    v16 = [v12 count];
+    maxCellCount = [credentialsCopy count];
   }
 
-  v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:v16];
-  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:v16];
+  v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:maxCellCount];
+  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:maxCellCount];
   v17 = @"SAFARI_CREDENTIAL_SITE_LONG";
-  if (v16 <= 1)
+  if (maxCellCount <= 1)
   {
     v18 = @"SAFARI_PASSKEY_SITE_LONG";
   }
@@ -2846,12 +2846,12 @@ void __88__TIAppAutofillManager_generateOneTimeCodeCandidatesWithRenderTraits_wi
   v57 = v20;
   v21 = v20;
   _Block_object_dispose(&v61, 8);
-  v22 = [v12 count];
+  v22 = [credentialsCopy count];
   if (v22)
   {
     v23 = v22;
     v24 = 0;
-    if (v16 <= 1)
+    if (maxCellCount <= 1)
     {
       v25 = @"SAFARI_CREDENTIAL_CUSTOM_TITLE_LONG";
     }
@@ -2863,12 +2863,12 @@ void __88__TIAppAutofillManager_generateOneTimeCodeCandidatesWithRenderTraits_wi
 
     do
     {
-      v26 = [v12 objectAtIndexedSubscript:v24];
+      v26 = [credentialsCopy objectAtIndexedSubscript:v24];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v26 site];
-        v28 = [v27 length];
+        site = [v26 site];
+        v28 = [site length];
 
         if (!v28)
         {
@@ -2903,18 +2903,18 @@ LABEL_21:
   v32 = +[TIKeyboardSecureTouchManager sharedInstance];
   [v32 clearRegistrations];
 
-  [v13 setShouldForceDoubleLineCandidateForPasswordAutofill:1];
-  v33 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-  v54 = v13;
-  v34 = [v33 slotIDsFromSecureCandidates:v59 withRenderTraits:v13];
+  [traitsCopy setShouldForceDoubleLineCandidateForPasswordAutofill:1];
+  secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+  v54 = traitsCopy;
+  v34 = [secureCandidateRenderer slotIDsFromSecureCandidates:v59 withRenderTraits:traitsCopy];
 
   if ([v34 count])
   {
     v35 = 0;
-    v56 = v12;
+    v56 = credentialsCopy;
     do
     {
-      v36 = [v12 objectAtIndex:v35];
+      v36 = [credentialsCopy objectAtIndex:v35];
       v60[0] = 0;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -2936,9 +2936,9 @@ LABEL_21:
       v38 = v37;
 LABEL_31:
       v39 = [v34 objectAtIndex:v35];
-      v40 = [v39 slotID];
+      slotID = [v39 slotID];
 
-      v41 = [MEMORY[0x277D6F3D8] secureCandidateForInput:&stru_283FDFAF8 slotID:v40 customInfoType:v60[0]];
+      v41 = [MEMORY[0x277D6F3D8] secureCandidateForInput:&stru_283FDFAF8 slotID:slotID customInfoType:v60[0]];
       if ([v34 count] <= v35)
       {
         [v41 setSecureCandidateWidth:0.0];
@@ -2966,47 +2966,47 @@ LABEL_31:
       }
 
       [v58 addObject:v41];
-      v45 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-      v46 = [v45 secureCandidateCache];
-      v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v40];
-      [v46 setObject:v38 forKey:v47];
+      secureCandidateRenderer2 = [(TIAppAutofillManager *)self secureCandidateRenderer];
+      secureCandidateCache = [secureCandidateRenderer2 secureCandidateCache];
+      v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:slotID];
+      [secureCandidateCache setObject:v38 forKey:v47];
 
       v48 = +[TIKeyboardSecureTouchManager sharedInstance];
-      [v48 registerSlotID:v40];
+      [v48 registerSlotID:slotID];
 
       ++v35;
-      v12 = v56;
+      credentialsCopy = v56;
     }
 
     while (v35 < [v34 count]);
   }
 
-  [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:v53];
+  [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:identifierCopy];
   [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:v52];
   v49 = [MEMORY[0x277D6F3D8] candidateWithCandidate:&stru_283FDFAF8 forInput:&stru_283FDFAF8 customInfoType:32];
   [v58 addObject:v49];
-  v51[2](v51, v58);
+  completionCopy[2](completionCopy, v58);
 }
 
-- (void)generateAutofillFormCandidatesWithRenderTraits:(id)a3 withKeyboardState:(id)a4 completion:(id)a5
+- (void)generateAutofillFormCandidatesWithRenderTraits:(id)traits withKeyboardState:(id)state completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TIAppAutofillManager *)self privateQueue];
+  traitsCopy = traits;
+  stateCopy = state;
+  completionCopy = completion;
+  privateQueue = [(TIAppAutofillManager *)self privateQueue];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__TIAppAutofillManager_generateAutofillFormCandidatesWithRenderTraits_withKeyboardState_completion___block_invoke;
   aBlock[3] = &unk_278730308;
-  v12 = v11;
+  v12 = privateQueue;
   v54 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v55 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [v9 documentIdentifier];
+  documentIdentifier = [stateCopy documentIdentifier];
 
-  if (v15)
+  if (documentIdentifier)
   {
     [(TIAppAutofillManager *)self setDocumentIdentifierForLastAutofillGeneration:0];
     [(TIAppAutofillManager *)self setClientIdentifierForLastAutofillGeneration:0];
@@ -3014,27 +3014,27 @@ LABEL_31:
     {
       v41 = v13;
       v42 = v12;
-      v16 = [v9 documentIdentifier];
-      v40 = [v16 copy];
+      documentIdentifier2 = [stateCopy documentIdentifier];
+      v40 = [documentIdentifier2 copy];
 
-      v17 = [v9 clientIdentifier];
-      v39 = [v17 copy];
+      clientIdentifier = [stateCopy clientIdentifier];
+      v39 = [clientIdentifier copy];
 
-      v18 = [v9 textInputTraits];
-      v19 = [v18 textContentType];
-      v20 = [v19 copy];
+      textInputTraits = [stateCopy textInputTraits];
+      textContentType = [textInputTraits textContentType];
+      v20 = [textContentType copy];
 
-      v21 = [v9 autofillContext];
-      v22 = [v21 copy];
+      autofillContext = [stateCopy autofillContext];
+      v22 = [autofillContext copy];
 
-      v23 = [(TIAppAutofillManager *)self passkeyProvider];
-      v24 = [MEMORY[0x277CCAE80] currentConnection];
-      v25 = v24;
+      passkeyProvider = [(TIAppAutofillManager *)self passkeyProvider];
+      currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+      v25 = currentConnection;
       *buf = 0u;
       v57 = 0u;
-      if (v24)
+      if (currentConnection)
       {
-        [v24 auditToken];
+        [currentConnection auditToken];
       }
 
       v26 = [v22 objectForKey:*MEMORY[0x277D6F9B0]];
@@ -3047,9 +3047,9 @@ LABEL_31:
 
 LABEL_16:
           objc_initWeak(&location, self);
-          v30 = [(TIAppAutofillManager *)self privateQueue];
+          privateQueue2 = [(TIAppAutofillManager *)self privateQueue];
           v50 = *buf;
-          v43 = v23;
+          v43 = passkeyProvider;
           v44 = v22;
           v45 = v20;
           v46 = v27;
@@ -3057,9 +3057,9 @@ LABEL_16:
           v38 = v27;
           v37 = v20;
           v31 = v22;
-          v32 = v23;
+          v32 = passkeyProvider;
           objc_copyWeak(&v49, &location);
-          v47 = v8;
+          v47 = traitsCopy;
           v48 = v14;
           v33 = v39;
           v34 = v40;
@@ -3171,18 +3171,18 @@ void __100__TIAppAutofillManager_generateAutofillFormCandidatesWithRenderTraits_
   }
 }
 
-- (BOOL)hasCoreTelephonyEntitlementForConnection:(id)a3
+- (BOOL)hasCoreTelephonyEntitlementForConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  connectionCopy = connection;
+  v4 = connectionCopy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -3206,9 +3206,9 @@ void __100__TIAppAutofillManager_generateAutofillFormCandidatesWithRenderTraits_
       v8 = TIOSLogFacility();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain core telephony entitlement: %@", "-[TIAppAutofillManager hasCoreTelephonyEntitlementForConnection:]", error];
+        error = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain core telephony entitlement: %@", "-[TIAppAutofillManager hasCoreTelephonyEntitlementForConnection:]", error];
         token.val[0] = 138412290;
-        *&token.val[1] = v12;
+        *&token.val[1] = error;
         _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", &token, 0xCu);
       }
 
@@ -3251,14 +3251,14 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
   return result;
 }
 
-- (BOOL)hasAutofillContextEntitlementForConnection:(id)a3
+- (BOOL)hasAutofillContextEntitlementForConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -3272,7 +3272,7 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
     v6 = v5;
     error = 0;
     v7 = SecTaskCopyValueForEntitlement(v5, @"com.apple.textInput.autofillContext", &error);
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
     if (error)
     {
@@ -3284,9 +3284,9 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
       v9 = TIOSLogFacility();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain autofill context: %@", "-[TIAppAutofillManager hasAutofillContextEntitlementForConnection:]", error];
+        error = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain autofill context: %@", "-[TIAppAutofillManager hasAutofillContextEntitlementForConnection:]", error];
         token.val[0] = 138412290;
-        *&token.val[1] = v12;
+        *&token.val[1] = error;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", &token, 0xCu);
       }
 
@@ -3298,20 +3298,20 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
-- (id)localizedCellularAutofillStringForKey:(id)a3 defaultValue:(id)a4
+- (id)localizedCellularAutofillStringForKey:(id)key defaultValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIAppAutofillManager *)self secureCandidateRenderer];
-  v9 = [v8 localizedStringForKey:v7];
+  valueCopy = value;
+  keyCopy = key;
+  secureCandidateRenderer = [(TIAppAutofillManager *)self secureCandidateRenderer];
+  v9 = [secureCandidateRenderer localizedStringForKey:keyCopy];
 
   if (![v9 length])
   {
@@ -3324,7 +3324,7 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
       _os_log_error_impl(&dword_22CA55000, v10, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    v11 = v6;
+    v11 = valueCopy;
     v9 = v11;
   }
 
@@ -3333,43 +3333,43 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
   return v9;
 }
 
-- (id)customInfoFromCredential:(id)a3
+- (id)customInfoFromCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 user];
-  if ([(TIAppAutofillManager *)self isValidedString:v6])
+  user = [credentialCopy user];
+  if ([(TIAppAutofillManager *)self isValidedString:user])
   {
-    v7 = [v4 user];
+    user2 = [credentialCopy user];
   }
 
   else
   {
-    v7 = &stru_283FDFAF8;
+    user2 = &stru_283FDFAF8;
   }
 
-  v8 = [v4 password];
-  if ([(TIAppAutofillManager *)self isValidedString:v8])
+  password = [credentialCopy password];
+  if ([(TIAppAutofillManager *)self isValidedString:password])
   {
-    v9 = [v4 password];
+    password2 = [credentialCopy password];
   }
 
   else
   {
-    v9 = &stru_283FDFAF8;
+    password2 = &stru_283FDFAF8;
   }
 
-  [v5 setObject:v7 forKey:*MEMORY[0x277D6F918]];
-  [v5 setObject:v9 forKey:*MEMORY[0x277D6F8F8]];
+  [v5 setObject:user2 forKey:*MEMORY[0x277D6F918]];
+  [v5 setObject:password2 forKey:*MEMORY[0x277D6F8F8]];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v4 oneTimeCode];
-    v11 = [(TIAppAutofillManager *)self isValidedString:v10];
+    oneTimeCode = [credentialCopy oneTimeCode];
+    v11 = [(TIAppAutofillManager *)self isValidedString:oneTimeCode];
 
     if (v11)
     {
-      v12 = [v4 oneTimeCode];
-      [v5 setObject:v12 forKey:*MEMORY[0x277D6F8E8]];
+      oneTimeCode2 = [credentialCopy oneTimeCode];
+      [v5 setObject:oneTimeCode2 forKey:*MEMORY[0x277D6F8E8]];
     }
   }
 
@@ -3378,10 +3378,10 @@ uint64_t __65__TIAppAutofillManager_hasCoreTelephonyEntitlementForConnection___b
   return v13;
 }
 
-- (BOOL)isValidedString:(id)a3
+- (BOOL)isValidedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (isValidedString__onceToken != -1)
   {
     dispatch_once(&isValidedString__onceToken, &__block_literal_global_132);
@@ -3395,7 +3395,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
@@ -3422,16 +3422,16 @@ void __40__TIAppAutofillManager_isValidedString___block_invoke()
   [v4 formUnionWithCharacterSet:v5];
 }
 
-- (void)pushQueuedCredentialIfNecessaryForKeyboardState:(id)a3
+- (void)pushQueuedCredentialIfNecessaryForKeyboardState:(id)state
 {
-  v14 = a3;
-  v4 = [(TIAppAutofillManager *)self queuedCustomInfo];
-  if (v4 && (([v14 needAutofill] & 1) != 0 || objc_msgSend(v14, "autofillMode") == 1 || objc_msgSend(v14, "autofillMode") == 3))
+  stateCopy = state;
+  queuedCustomInfo = [(TIAppAutofillManager *)self queuedCustomInfo];
+  if (queuedCustomInfo && (([stateCopy needAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 1 || objc_msgSend(stateCopy, "autofillMode") == 3))
   {
-    v5 = [v14 documentIdentifier];
-    v6 = [(TIAppAutofillManager *)self queuedCustomInfo];
-    v7 = [v6 documentIdentifier];
-    v8 = [v5 isEqual:v7];
+    documentIdentifier = [stateCopy documentIdentifier];
+    queuedCustomInfo2 = [(TIAppAutofillManager *)self queuedCustomInfo];
+    documentIdentifier2 = [queuedCustomInfo2 documentIdentifier];
+    v8 = [documentIdentifier isEqual:documentIdentifier2];
 
     if (!v8)
     {
@@ -3439,44 +3439,44 @@ void __40__TIAppAutofillManager_isValidedString___block_invoke()
     }
 
     v9 = +[TIKeyboardInputManagerLoader sharedLoader];
-    v4 = [v9 interactingConnection];
+    queuedCustomInfo = [v9 interactingConnection];
 
-    if (v4)
+    if (queuedCustomInfo)
     {
-      v10 = [v4 remoteObjectProxy];
-      v11 = [(TIAppAutofillManager *)self queuedCustomInfo];
-      v12 = [v11 customInfo];
-      [v10 processPayloadInfo:v12];
+      remoteObjectProxy = [queuedCustomInfo remoteObjectProxy];
+      queuedCustomInfo3 = [(TIAppAutofillManager *)self queuedCustomInfo];
+      customInfo = [queuedCustomInfo3 customInfo];
+      [remoteObjectProxy processPayloadInfo:customInfo];
 
       [(TIAppAutofillManager *)self setQueuedCustomInfo:0];
     }
   }
 
 LABEL_9:
-  v13 = [v14 clientIdentifier];
-  [(TIAppAutofillManager *)self setClientIdentifierForLastKeyboardSync:v13];
+  clientIdentifier = [stateCopy clientIdentifier];
+  [(TIAppAutofillManager *)self setClientIdentifierForLastKeyboardSync:clientIdentifier];
 }
 
-- (void)obtainCredential:(id)a3
+- (void)obtainCredential:(id)credential
 {
-  v15 = [(TIAppAutofillManager *)self customInfoFromCredential:a3];
+  v15 = [(TIAppAutofillManager *)self customInfoFromCredential:credential];
   v4 = +[TIKeyboardInputManagerLoader sharedLoader];
-  v5 = [v4 interactingConnection];
+  interactingConnection = [v4 interactingConnection];
 
-  v6 = [TIXPCUtils obtainBundleIdentifierFromConnection:v5];
-  if (v5)
+  v6 = [TIXPCUtils obtainBundleIdentifierFromConnection:interactingConnection];
+  if (interactingConnection)
   {
-    v7 = [(TIAppAutofillManager *)self clientIdentifierForLastKeyboardSync];
-    v8 = [(TIAppAutofillManager *)self clientIdentifierForLastAutofillGeneration];
-    if ([v7 isEqualToString:v8])
+    clientIdentifierForLastKeyboardSync = [(TIAppAutofillManager *)self clientIdentifierForLastKeyboardSync];
+    clientIdentifierForLastAutofillGeneration = [(TIAppAutofillManager *)self clientIdentifierForLastAutofillGeneration];
+    if ([clientIdentifierForLastKeyboardSync isEqualToString:clientIdentifierForLastAutofillGeneration])
     {
-      v9 = [(TIAppAutofillManager *)self clientIdentifierForLastKeyboardSync];
-      v10 = [v9 isEqualToString:v6];
+      clientIdentifierForLastKeyboardSync2 = [(TIAppAutofillManager *)self clientIdentifierForLastKeyboardSync];
+      v10 = [clientIdentifierForLastKeyboardSync2 isEqualToString:v6];
 
       if (v10)
       {
-        v11 = [v5 remoteObjectProxy];
-        [v11 processPayloadInfo:v15];
+        remoteObjectProxy = [interactingConnection remoteObjectProxy];
+        [remoteObjectProxy processPayloadInfo:v15];
         goto LABEL_7;
       }
     }
@@ -3487,13 +3487,13 @@ LABEL_9:
   }
 
   v12 = [TICredentialCustomInfo alloc];
-  v11 = [(TIAppAutofillManager *)self documentIdentifierForLastAutofillGeneration];
-  v13 = [(TICredentialCustomInfo *)v12 initWithCustomInfo:v15 documentIdentifier:v11];
+  remoteObjectProxy = [(TIAppAutofillManager *)self documentIdentifierForLastAutofillGeneration];
+  v13 = [(TICredentialCustomInfo *)v12 initWithCustomInfo:v15 documentIdentifier:remoteObjectProxy];
   [(TIAppAutofillManager *)self setQueuedCustomInfo:v13];
 
 LABEL_7:
-  v14 = [MEMORY[0x277CBEAA8] date];
-  [(TIAppAutofillManager *)self setDateOfLastPasswordAutoFill:v14];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(TIAppAutofillManager *)self setDateOfLastPasswordAutoFill:date];
 }
 
 - (id)initPrivate
@@ -3556,14 +3556,14 @@ LABEL_7:
   return [v2 isSuggestingStrongPasswordsAvailable];
 }
 
-+ (void)_fetchCredentialsWithPasskeyProvider:(id)a3 autofillContext:(id)a4 textContentType:(id)a5 applicationIdentifier:(id)a6 auditToken:(id *)a7 completion:(id)a8
++ (void)_fetchCredentialsWithPasskeyProvider:(id)provider autofillContext:(id)context textContentType:(id)type applicationIdentifier:(id)identifier auditToken:(id *)token completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
-  v16 = a5;
+  providerCopy = provider;
+  contextCopy = context;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  typeCopy = type;
   v17 = dispatch_group_create();
   v18 = objc_alloc_init(MEMORY[0x277CCAAF8]);
   v60 = 0;
@@ -3572,11 +3572,11 @@ LABEL_7:
   v63 = __Block_byref_object_copy__80;
   v64 = __Block_byref_object_dispose__81;
   v65 = 0;
-  v19 = [v16 isEqualToString:*MEMORY[0x277D6FCE8]];
+  v19 = [typeCopy isEqualToString:*MEMORY[0x277D6FCE8]];
 
   if (v19)
   {
-    if (!v12)
+    if (!providerCopy)
     {
       goto LABEL_13;
     }
@@ -3586,18 +3586,18 @@ LABEL_7:
   }
 
   v20 = *MEMORY[0x277D6F9C8];
-  v21 = [v13 objectForKeyedSubscript:*MEMORY[0x277D6F9C8]];
+  v21 = [contextCopy objectForKeyedSubscript:*MEMORY[0x277D6F9C8]];
   if ([v21 isEqualToString:@"webauthn"])
   {
 
-    if (!v12)
+    if (!providerCopy)
     {
       goto LABEL_13;
     }
 
 LABEL_6:
     dispatch_group_enter(v17);
-    v22 = [v13 objectForKeyedSubscript:v20];
+    v22 = [contextCopy objectForKeyedSubscript:v20];
     if ([v22 isEqualToString:@"webauthn"])
     {
       v23 = objc_opt_respondsToSelector();
@@ -3614,7 +3614,7 @@ LABEL_11:
         v24[4] = v18;
         v24[6] = &v60;
         v24[5] = v17;
-        [v12 getAvailablePasskeysForApplicationIdentifier:v14 completionHandler:v24];
+        [providerCopy getAvailablePasskeysForApplicationIdentifier:identifierCopy completionHandler:v24];
 
         v21 = v24[4];
         goto LABEL_12;
@@ -3651,7 +3651,7 @@ LABEL_13:
   v51 = &v52;
   v27 = v17;
   v50 = v27;
-  [TIAppAutofillManager getCredentialsWithApplicationIdentifier:v14 autofillContext:v13 withCompletionHandler:&v45];
+  [TIAppAutofillManager getCredentialsWithApplicationIdentifier:identifierCopy autofillContext:contextCopy withCompletionHandler:&v45];
   v28 = dispatch_time(0, 3000000000);
   if (dispatch_group_wait(v27, v28))
   {
@@ -3698,30 +3698,30 @@ LABEL_13:
   [v26 unlock];
   if ([v34 count])
   {
-    v39 = [v34 firstObject];
-    v67 = v39;
+    firstObject = [v34 firstObject];
+    v67 = firstObject;
     v40 = &v67;
   }
 
   else
   {
-    v41 = [v38 firstObject];
+    firstObject2 = [v38 firstObject];
 
-    if (!v41)
+    if (!firstObject2)
     {
       v42 = 0;
       goto LABEL_28;
     }
 
-    v39 = [v38 firstObject];
-    v66 = v39;
+    firstObject = [v38 firstObject];
+    v66 = firstObject;
     v40 = &v66;
   }
 
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
 
 LABEL_28:
-  v15[2](v15, v42);
+  completionCopy[2](completionCopy, v42);
 
   _Block_object_dispose(&v52, 8);
   _Block_object_dispose(&v60, 8);
@@ -3772,32 +3772,32 @@ void __137__TIAppAutofillManager__fetchCredentialsWithPasskeyProvider_autofillCo
   dispatch_group_leave(v8);
 }
 
-+ (void)getCredentialsWithApplicationIdentifier:(id)a3 autofillContext:(id)a4 withCompletionHandler:(id)a5
++ (void)getCredentialsWithApplicationIdentifier:(id)identifier autofillContext:(id)context withCompletionHandler:(id)handler
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
+  handlerCopy = handler;
   if (+[TIAppAutofillManager _simulatesAutofillCandidates](TIAppAutofillManager, "_simulatesAutofillCandidates") && [MEMORY[0x277D49DE8] instancesRespondToSelector:sel_initWithUser_password_site_creationDate_])
   {
     v10 = objc_alloc(MEMORY[0x277D49DE8]);
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [v10 initWithUser:@"simulateduser573" password:@"thisisasimulatedcandidate" site:@"apple.com" creationDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [v10 initWithUser:@"simulateduser573" password:@"thisisasimulatedcandidate" site:@"apple.com" creationDate:date];
 
     v13 = objc_alloc(MEMORY[0x277D49DE8]);
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [v13 initWithUser:@"Pablo 黑客 Jjyy" password:@"ascenders & descenders" site:@"jjyyPP.apple.com" creationDate:v14];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v15 = [v13 initWithUser:@"Pablo 黑客 Jjyy" password:@"ascenders & descenders" site:@"jjyyPP.apple.com" creationDate:date2];
 
     v20[0] = v12;
     v20[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-    v9[2](v9, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 
-  v17 = [v8 objectForKeyedSubscript:*MEMORY[0x277D6F9B8]];
+  v17 = [contextCopy objectForKeyedSubscript:*MEMORY[0x277D6F9B8]];
   if ([v17 count] && (objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0))
   {
-    [objc_opt_class() getCredentialsForAppWithAppID:v7 externallyVerifiedAndApprovedSharedWebCredentialDomains:v17 completionHandler:v9];
+    [objc_opt_class() getCredentialsForAppWithAppID:identifierCopy externallyVerifiedAndApprovedSharedWebCredentialDomains:v17 completionHandler:handlerCopy];
   }
 
   else
@@ -3805,7 +3805,7 @@ void __137__TIAppAutofillManager__fetchCredentialsWithPasskeyProvider_autofillCo
     objc_opt_class();
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v8 objectForKey:@"_WebViewURL"];
+      v18 = [contextCopy objectForKey:@"_WebViewURL"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -3813,12 +3813,12 @@ void __137__TIAppAutofillManager__fetchCredentialsWithPasskeyProvider_autofillCo
         v18 = 0;
       }
 
-      [objc_opt_class() getCredentialsForAppWithAppID:v7 websiteURL:v18 completionHandler:v9];
+      [objc_opt_class() getCredentialsForAppWithAppID:identifierCopy websiteURL:v18 completionHandler:handlerCopy];
     }
 
     else
     {
-      [MEMORY[0x277D49DF0] getCredentialsForAppWithAppID:v7 completionHandler:v9];
+      [MEMORY[0x277D49DF0] getCredentialsForAppWithAppID:identifierCopy completionHandler:handlerCopy];
     }
   }
 
@@ -3827,8 +3827,8 @@ void __137__TIAppAutofillManager__fetchCredentialsWithPasskeyProvider_autofillCo
 
 + (BOOL)_simulatesAutofillCandidates
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 BOOLForPreferenceKey:*MEMORY[0x277D6F9A0]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F9A0]];
 
   return v3;
 }
@@ -3840,14 +3840,14 @@ uint64_t __38__TIAppAutofillManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setSharedAppAutofillManager:(id)a3
++ (void)setSharedAppAutofillManager:(id)manager
 {
-  v4 = a3;
-  if (__testingInstance != v4)
+  managerCopy = manager;
+  if (__testingInstance != managerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance, a3);
-    v4 = v5;
+    v5 = managerCopy;
+    objc_storeStrong(&__testingInstance, manager);
+    managerCopy = v5;
   }
 }
 

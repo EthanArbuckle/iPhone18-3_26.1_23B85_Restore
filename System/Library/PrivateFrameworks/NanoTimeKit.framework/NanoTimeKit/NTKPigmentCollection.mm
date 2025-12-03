@@ -1,54 +1,54 @@
 @interface NTKPigmentCollection
-+ (id)collectionFromProtoBuffer:(id)a3 sharedCollections:(id)a4;
-+ (id)stubCollectionWithName:(id)a3;
++ (id)collectionFromProtoBuffer:(id)buffer sharedCollections:(id)collections;
++ (id)stubCollectionWithName:(id)name;
 - (BOOL)hasAddableCollection;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRootCollection;
 - (NSArray)collections;
 - (NSDictionary)collectionsByName;
 - (NSDictionary)migration;
 - (NSOrderedSet)allItems;
 - (NSOrderedSet)items;
-- (NTKPigmentCollection)initWithName:(id)a3;
+- (NTKPigmentCollection)initWithName:(id)name;
 - (NTKPigmentEditOption)defaultOption;
-- (id)_pigmentForName:(id)a3;
-- (id)buildNamesMappingWithPigments:(id)a3;
-- (id)defaultOptionWithName:(id)a3;
+- (id)_pigmentForName:(id)name;
+- (id)buildNamesMappingWithPigments:(id)pigments;
+- (id)defaultOptionWithName:(id)name;
 - (id)description;
 - (id)pigmentsFromMostRecentAddableCollection;
 - (id)pigmentsFromMostRecentAddableCollections;
-- (id)protoBufferIgnoringSharedCollections:(BOOL)a3;
+- (id)protoBufferIgnoringSharedCollections:(BOOL)collections;
 - (unint64_t)count;
-- (void)appendCollection:(id)a3;
-- (void)fulfillWithSharedCollections:(id)a3;
-- (void)mergeWithCollection:(id)a3;
-- (void)setCollections:(id)a3;
-- (void)setDefaultGalleryColorWithNames:(id)a3;
-- (void)setDefaultOption:(id)a3;
-- (void)setItems:(id)a3;
+- (void)appendCollection:(id)collection;
+- (void)fulfillWithSharedCollections:(id)collections;
+- (void)mergeWithCollection:(id)collection;
+- (void)setCollections:(id)collections;
+- (void)setDefaultGalleryColorWithNames:(id)names;
+- (void)setDefaultOption:(id)option;
+- (void)setItems:(id)items;
 @end
 
 @implementation NTKPigmentCollection
 
-- (NTKPigmentCollection)initWithName:(id)a3
+- (NTKPigmentCollection)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = NTKPigmentCollection;
   v6 = [(NTKPigmentCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionName, a3);
+    objc_storeStrong(&v6->_collectionName, name);
   }
 
   return v7;
 }
 
-+ (id)stubCollectionWithName:(id)a3
++ (id)stubCollectionWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[NTKPigmentCollection alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[NTKPigmentCollection alloc] initWithName:nameCopy];
 
   [(NTKPigmentCollection *)v4 setStub:1];
 
@@ -57,20 +57,20 @@
 
 - (NSOrderedSet)allItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_allItems)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_allItems)
   {
     v3 = MEMORY[0x277CBEB40];
-    v4 = [(NTKPigmentCollection *)v2 items];
-    v5 = [v4 array];
-    v6 = [v3 orderedSetWithArray:v5];
+    items = [(NTKPigmentCollection *)selfCopy items];
+    array = [items array];
+    v6 = [v3 orderedSetWithArray:array];
 
-    v7 = [(NTKPigmentCollection *)v2 config];
-    v8 = [v7 isAddable];
+    config = [(NTKPigmentCollection *)selfCopy config];
+    isAddable = [config isAddable];
 
-    v9 = [(NTKPigmentCollection *)v2 collections];
-    if (v8)
+    collections = [(NTKPigmentCollection *)selfCopy collections];
+    if (isAddable)
     {
       v10 = v16;
       v16[0] = MEMORY[0x277D85DD0];
@@ -78,7 +78,7 @@
       v16[2] = __32__NTKPigmentCollection_allItems__block_invoke;
       v16[3] = &unk_278781E10;
       v16[4] = v6;
-      [v9 enumerateObjectsWithOptions:2 usingBlock:v16];
+      [collections enumerateObjectsWithOptions:2 usingBlock:v16];
     }
 
     else
@@ -89,19 +89,19 @@
       v15[2] = __32__NTKPigmentCollection_allItems__block_invoke_2;
       v15[3] = &unk_278781E10;
       v15[4] = v6;
-      [v9 enumerateObjectsUsingBlock:v15];
+      [collections enumerateObjectsUsingBlock:v15];
     }
 
-    v11 = [(NTKPigmentCollection *)v2 config];
-    [v11 removeExcludedItemsFromList:v6];
+    config2 = [(NTKPigmentCollection *)selfCopy config];
+    [config2 removeExcludedItemsFromList:v6];
 
-    allItems = v2->_allItems;
-    v2->_allItems = v6;
+    allItems = selfCopy->_allItems;
+    selfCopy->_allItems = v6;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v13 = v2->_allItems;
+  v13 = selfCopy->_allItems;
 
   return v13;
 }
@@ -125,43 +125,43 @@ void __32__NTKPigmentCollection_allItems__block_invoke_2(uint64_t a1, void *a2)
 - (unint64_t)count
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_allItems)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_allItems)
   {
     goto LABEL_5;
   }
 
-  v3 = [(NTKPigmentCollection *)v2 config];
-  v4 = [v3 exclusions];
-  if ([v4 count])
+  config = [(NTKPigmentCollection *)selfCopy config];
+  exclusions = [config exclusions];
+  if ([exclusions count])
   {
 
 LABEL_5:
-    v8 = [(NTKPigmentCollection *)v2 allItems];
-    v9 = [v8 count];
+    allItems = [(NTKPigmentCollection *)selfCopy allItems];
+    v9 = [allItems count];
 
     goto LABEL_6;
   }
 
-  v5 = [(NTKPigmentCollection *)v2 config];
-  v6 = [v5 excludesDuotone];
-  v7 = [v6 BOOLValue];
+  config2 = [(NTKPigmentCollection *)selfCopy config];
+  excludesDuotone = [config2 excludesDuotone];
+  bOOLValue = [excludesDuotone BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     goto LABEL_5;
   }
 
-  v11 = [(NTKPigmentCollection *)v2 items];
-  v9 = [v11 count];
+  items = [(NTKPigmentCollection *)selfCopy items];
+  v9 = [items count];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v12 = [(NTKPigmentCollection *)v2 collections];
-  v13 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  collections = [(NTKPigmentCollection *)selfCopy collections];
+  v13 = [collections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v13)
   {
     v14 = *v17;
@@ -172,21 +172,21 @@ LABEL_5:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(collections);
         }
 
         v9 += [*(*(&v16 + 1) + 8 * v15++) count];
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [collections countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -194,11 +194,11 @@ LABEL_6:
 - (BOOL)hasAddableCollection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKPigmentCollection *)self config];
-  v4 = [v3 isAddable];
-  v5 = [v4 BOOLValue];
+  config = [(NTKPigmentCollection *)self config];
+  isAddable = [config isAddable];
+  bOOLValue = [isAddable BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     LOBYTE(v6) = 1;
   }
@@ -209,8 +209,8 @@ LABEL_6:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [(NTKPigmentCollection *)self collections];
-    v6 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    collections = [(NTKPigmentCollection *)self collections];
+    v6 = [collections countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v8 = *v12;
@@ -220,7 +220,7 @@ LABEL_6:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(collections);
           }
 
           if ([*(*(&v11 + 1) + 8 * i) hasAddableCollection])
@@ -230,7 +230,7 @@ LABEL_6:
           }
         }
 
-        v6 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [collections countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -248,62 +248,62 @@ LABEL_13:
 
 - (NSOrderedSet)items
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_items;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_items;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isRootCollection
 {
-  v2 = [(NTKPigmentCollection *)self collectionName];
-  v3 = [v2 containsString:@"."];
+  collectionName = [(NTKPigmentCollection *)self collectionName];
+  v3 = [collectionName containsString:@"."];
 
   return v3 ^ 1;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v11 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_items, a3);
-  defaultOption = v5->_defaultOption;
-  v5->_defaultOption = 0;
+  itemsCopy = items;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_items, items);
+  defaultOption = selfCopy->_defaultOption;
+  selfCopy->_defaultOption = 0;
 
-  allItems = v5->_allItems;
-  v5->_allItems = 0;
+  allItems = selfCopy->_allItems;
+  selfCopy->_allItems = 0;
 
-  v8 = [(NTKPigmentCollection *)v5 buildNamesMappingWithPigments:v11];
-  itemsByName = v5->_itemsByName;
-  v5->_itemsByName = v8;
+  v8 = [(NTKPigmentCollection *)selfCopy buildNamesMappingWithPigments:itemsCopy];
+  itemsByName = selfCopy->_itemsByName;
+  selfCopy->_itemsByName = v8;
 
-  faceSpecificPigmentsByFullname = v5->_faceSpecificPigmentsByFullname;
-  v5->_faceSpecificPigmentsByFullname = 0;
+  faceSpecificPigmentsByFullname = selfCopy->_faceSpecificPigmentsByFullname;
+  selfCopy->_faceSpecificPigmentsByFullname = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)collections
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_collections;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_collections;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCollections:(id)a3
+- (void)setCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   obj = self;
   objc_sync_enter(obj);
   collections = obj->_collections;
-  obj->_collections = v4;
-  v6 = v4;
+  obj->_collections = collectionsCopy;
+  v6 = collectionsCopy;
 
   collectionsByName = obj->_collectionsByName;
   obj->_collectionsByName = 0;
@@ -320,14 +320,14 @@ LABEL_13:
   objc_sync_exit(obj);
 }
 
-- (void)appendCollection:(id)a3
+- (void)appendCollection:(id)collection
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [(NTKPigmentCollection *)self collections];
-  v8 = [v4 arrayWithArray:v6];
+  collectionCopy = collection;
+  collections = [(NTKPigmentCollection *)self collections];
+  v8 = [v4 arrayWithArray:collections];
 
-  [v8 addObject:v5];
+  [v8 addObject:collectionCopy];
   v7 = [v8 copy];
   [(NTKPigmentCollection *)self setCollections:v7];
 }
@@ -339,8 +339,8 @@ LABEL_13:
   if (!collectionsByName)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = [(NTKPigmentCollection *)self collections];
-    v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    collections = [(NTKPigmentCollection *)self collections];
+    v6 = [v4 dictionaryWithCapacity:{objc_msgSend(collections, "count")}];
     v7 = self->_collectionsByName;
     self->_collectionsByName = v6;
 
@@ -348,8 +348,8 @@ LABEL_13:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NTKPigmentCollection *)self collections];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    collections2 = [(NTKPigmentCollection *)self collections];
+    v9 = [collections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -360,16 +360,16 @@ LABEL_13:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(collections2);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
           v14 = self->_collectionsByName;
-          v15 = [v13 collectionName];
-          [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+          collectionName = [v13 collectionName];
+          [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:collectionName];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [collections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -383,49 +383,49 @@ LABEL_13:
 
 - (NTKPigmentEditOption)defaultOption
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  defaultOption = v2->_defaultOption;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultOption = selfCopy->_defaultOption;
   if (!defaultOption)
   {
-    v4 = [(NTKPigmentCollectionConfig *)v2->_config defaultColorOptionName];
-    v5 = [(NTKPigmentCollection *)v2 defaultOptionWithName:v4];
-    v6 = v2->_defaultOption;
-    v2->_defaultOption = v5;
+    defaultColorOptionName = [(NTKPigmentCollectionConfig *)selfCopy->_config defaultColorOptionName];
+    v5 = [(NTKPigmentCollection *)selfCopy defaultOptionWithName:defaultColorOptionName];
+    v6 = selfCopy->_defaultOption;
+    selfCopy->_defaultOption = v5;
 
-    defaultOption = v2->_defaultOption;
+    defaultOption = selfCopy->_defaultOption;
     if (!defaultOption)
     {
-      v7 = [(NTKPigmentCollectionConfig *)v2->_config fallbackDefaultColorOptionName];
-      v8 = [(NTKPigmentCollection *)v2 defaultOptionWithName:v7];
-      v9 = v2->_defaultOption;
-      v2->_defaultOption = v8;
+      fallbackDefaultColorOptionName = [(NTKPigmentCollectionConfig *)selfCopy->_config fallbackDefaultColorOptionName];
+      v8 = [(NTKPigmentCollection *)selfCopy defaultOptionWithName:fallbackDefaultColorOptionName];
+      v9 = selfCopy->_defaultOption;
+      selfCopy->_defaultOption = v8;
 
-      defaultOption = v2->_defaultOption;
+      defaultOption = selfCopy->_defaultOption;
       if (!defaultOption)
       {
-        v10 = [(NTKPigmentCollection *)v2 allItems];
-        v11 = [v10 firstObject];
-        v12 = v2->_defaultOption;
-        v2->_defaultOption = v11;
+        allItems = [(NTKPigmentCollection *)selfCopy allItems];
+        firstObject = [allItems firstObject];
+        v12 = selfCopy->_defaultOption;
+        selfCopy->_defaultOption = firstObject;
 
-        defaultOption = v2->_defaultOption;
+        defaultOption = selfCopy->_defaultOption;
       }
     }
   }
 
   v13 = defaultOption;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (id)defaultOptionWithName:(id)a3
+- (id)defaultOptionWithName:(id)name
 {
   v12 = 0;
   v13 = 0.0;
   v11 = 0;
-  [NTKPigmentEditOption parseFullname:a3 collectionName:&v12 optionName:&v11 fraction:&v13];
+  [NTKPigmentEditOption parseFullname:name collectionName:&v12 optionName:&v11 fraction:&v13];
   v4 = v12;
   v5 = v11;
   v6 = [NTKPigmentEditOption fullnameWithCollectionName:v4 optionName:v5];
@@ -444,27 +444,27 @@ LABEL_13:
   return v7;
 }
 
-- (void)setDefaultOption:(id)a3
+- (void)setDefaultOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   obj = self;
   objc_sync_enter(obj);
   defaultOption = obj->_defaultOption;
-  obj->_defaultOption = v4;
+  obj->_defaultOption = optionCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setDefaultGalleryColorWithNames:(id)a3
+- (void)setDefaultGalleryColorWithNames:(id)names
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  namesCopy = names;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -500,16 +500,16 @@ LABEL_13:
   [(NTKPigmentCollection *)self setDefaultGalleryColors:v12];
 }
 
-- (id)buildNamesMappingWithPigments:(id)a3
+- (id)buildNamesMappingWithPigments:(id)pigments
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pigmentsCopy = pigments;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = pigmentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -525,36 +525,36 @@ LABEL_13:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 effectiveOptionName];
+        effectiveOptionName = [v10 effectiveOptionName];
 
-        if (v11)
+        if (effectiveOptionName)
         {
-          v12 = [v10 effectiveOptionName];
-          [v4 setObject:v10 forKeyedSubscript:v12];
+          effectiveOptionName2 = [v10 effectiveOptionName];
+          [v4 setObject:v10 forKeyedSubscript:effectiveOptionName2];
         }
 
-        v13 = [v10 optionName];
+        optionName = [v10 optionName];
 
-        if (v13)
+        if (optionName)
         {
-          v14 = [v10 optionName];
-          [v4 setObject:v10 forKeyedSubscript:v14];
+          optionName2 = [v10 optionName];
+          [v4 setObject:v10 forKeyedSubscript:optionName2];
         }
 
-        v15 = [v10 fullname];
+        fullname = [v10 fullname];
 
-        if (v15)
+        if (fullname)
         {
-          v16 = [v10 fullname];
-          [v4 setObject:v10 forKeyedSubscript:v16];
+          fullname2 = [v10 fullname];
+          [v4 setObject:v10 forKeyedSubscript:fullname2];
         }
 
-        v17 = [v10 identifier];
+        identifier = [v10 identifier];
 
-        if (v17)
+        if (identifier)
         {
-          v18 = [v10 identifier];
-          [v4 setObject:v10 forKeyedSubscript:v18];
+          identifier2 = [v10 identifier];
+          [v4 setObject:v10 forKeyedSubscript:identifier2];
         }
       }
 
@@ -567,21 +567,21 @@ LABEL_13:
   return v4;
 }
 
-- (id)_pigmentForName:(id)a3
+- (id)_pigmentForName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_itemsByName objectForKeyedSubscript:v4];
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_itemsByName objectForKeyedSubscript:nameCopy];
   if (!v6)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NTKPigmentCollection *)v5 collections];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    collections = [(NTKPigmentCollection *)selfCopy collections];
+    v8 = [collections countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = *v13;
@@ -591,10 +591,10 @@ LABEL_4:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(collections);
         }
 
-        v6 = [*(*(&v12 + 1) + 8 * v10) _pigmentForName:v4];
+        v6 = [*(*(&v12 + 1) + 8 * v10) _pigmentForName:nameCopy];
         if (v6)
         {
           break;
@@ -602,7 +602,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [collections countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -620,7 +620,7 @@ LABEL_10:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -628,22 +628,22 @@ LABEL_10:
 - (NSDictionary)migration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  migration = v2->_migration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  migration = selfCopy->_migration;
   if (!migration)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = [(NTKPigmentCollection *)v2 config];
-    v6 = [v5 migration];
-    v7 = [v4 dictionaryWithDictionary:v6];
+    config = [(NTKPigmentCollection *)selfCopy config];
+    migration = [config migration];
+    v7 = [v4 dictionaryWithDictionary:migration];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NTKPigmentCollection *)v2 collections];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    collections = [(NTKPigmentCollection *)selfCopy collections];
+    v9 = [collections countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = *v18;
@@ -653,28 +653,28 @@ LABEL_10:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(collections);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) migration];
-          [v7 addEntriesFromDictionary:v12];
+          migration2 = [*(*(&v17 + 1) + 8 * i) migration];
+          [v7 addEntriesFromDictionary:migration2];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [collections countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
     }
 
     v13 = [v7 copy];
-    v14 = v2->_migration;
-    v2->_migration = v13;
+    v14 = selfCopy->_migration;
+    selfCopy->_migration = v13;
 
-    migration = v2->_migration;
+    migration = selfCopy->_migration;
   }
 
   v15 = migration;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
@@ -682,13 +682,13 @@ LABEL_10:
 - (id)pigmentsFromMostRecentAddableCollection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(NTKPigmentCollection *)self allItems];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allItems = [(NTKPigmentCollection *)self allItems];
+  v5 = [allItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -701,7 +701,7 @@ LABEL_10:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allItems);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -714,17 +714,17 @@ LABEL_10:
               goto LABEL_16;
             }
 
-            v14 = [v11 collectionName];
+            collectionName = [v11 collectionName];
 
             v7 = 1;
-            v8 = v14;
+            v8 = collectionName;
           }
 
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -737,19 +737,19 @@ LABEL_10:
 
 LABEL_16:
 
-  return v3;
+  return array;
 }
 
 - (id)pigmentsFromMostRecentAddableCollections
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NTKPigmentCollection *)self allItems];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allItems = [(NTKPigmentCollection *)self allItems];
+  v5 = [allItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -761,7 +761,7 @@ LABEL_16:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -769,21 +769,21 @@ LABEL_16:
         {
           if (!v7 || ([v10 collectionName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", v7), v11, (v12 & 1) == 0))
           {
-            if ([v3 count] > 1)
+            if ([array count] > 1)
             {
               goto LABEL_16;
             }
 
-            v13 = [v10 collectionName];
+            collectionName = [v10 collectionName];
 
-            v7 = v13;
+            v7 = collectionName;
           }
 
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -796,15 +796,15 @@ LABEL_16:
 
 LABEL_16:
 
-  return v3;
+  return array;
 }
 
-- (void)mergeWithCollection:(id)a3
+- (void)mergeWithCollection:(id)collection
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 items];
-  v6 = [v5 count];
+  collectionCopy = collection;
+  items = [collectionCopy items];
+  v6 = [items count];
 
   if (!v6)
   {
@@ -812,30 +812,30 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v7 = [(NTKPigmentCollection *)self items];
-  v8 = [v7 mutableCopy];
+  items2 = [(NTKPigmentCollection *)self items];
+  v8 = [items2 mutableCopy];
 
-  v9 = [v4 items];
+  items3 = [collectionCopy items];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __44__NTKPigmentCollection_mergeWithCollection___block_invoke;
   v66[3] = &unk_278781E38;
   v10 = v8;
   v67 = v10;
-  [v9 enumerateObjectsUsingBlock:v66];
+  [items3 enumerateObjectsUsingBlock:v66];
 
-  v11 = [(NTKPigmentCollection *)self config];
-  v12 = [v11 collectionOverride];
-  if ([v12 length])
+  config = [(NTKPigmentCollection *)self config];
+  collectionOverride = [config collectionOverride];
+  if ([collectionOverride length])
   {
-    v13 = [v4 config];
-    v14 = [v13 collectionOverride];
-    v15 = [v14 length];
+    config2 = [collectionCopy config];
+    collectionOverride2 = [config2 collectionOverride];
+    v15 = [collectionOverride2 length];
 
     if (!v15)
     {
-      v16 = [(NTKPigmentCollection *)self config];
-      [v16 applyCollectionOverrideNameOnItems:v10];
+      config3 = [(NTKPigmentCollection *)self config];
+      [config3 applyCollectionOverrideNameOnItems:v10];
       goto LABEL_8;
     }
   }
@@ -844,33 +844,33 @@ LABEL_16:
   {
   }
 
-  v16 = [v4 config];
-  v17 = [v16 collectionOverride];
-  v18 = [(NTKPigmentCollection *)self config];
-  [v18 setCollectionOverride:v17];
+  config3 = [collectionCopy config];
+  collectionOverride3 = [config3 collectionOverride];
+  config4 = [(NTKPigmentCollection *)self config];
+  [config4 setCollectionOverride:collectionOverride3];
 
 LABEL_8:
-  v19 = [(NTKPigmentCollection *)self config];
-  v20 = [v19 isAddable];
-  if (!v20)
+  config5 = [(NTKPigmentCollection *)self config];
+  isAddable = [config5 isAddable];
+  if (!isAddable)
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v21 = v20;
-  v22 = [v4 config];
-  v23 = [v22 isAddable];
+  v21 = isAddable;
+  config6 = [collectionCopy config];
+  isAddable2 = [config6 isAddable];
 
-  if (!v23)
+  if (!isAddable2)
   {
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v19 = v10;
-    v24 = [v19 countByEnumeratingWithState:&v62 objects:v68 count:16];
+    config5 = v10;
+    v24 = [config5 countByEnumeratingWithState:&v62 objects:v68 count:16];
     if (v24)
     {
       v25 = v24;
@@ -881,16 +881,16 @@ LABEL_17:
         {
           if (*v63 != v26)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(config5);
           }
 
           v28 = *(*(&v62 + 1) + 8 * i);
-          v29 = [(NTKPigmentCollection *)self config];
-          v30 = [v29 isAddable];
-          [v28 setIsAddable:{objc_msgSend(v30, "BOOLValue")}];
+          config7 = [(NTKPigmentCollection *)self config];
+          isAddable3 = [config7 isAddable];
+          [v28 setIsAddable:{objc_msgSend(isAddable3, "BOOLValue")}];
         }
 
-        v25 = [v19 countByEnumeratingWithState:&v62 objects:v68 count:16];
+        v25 = [config5 countByEnumeratingWithState:&v62 objects:v68 count:16];
       }
 
       while (v25);
@@ -902,91 +902,91 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  v31 = [(NTKPigmentCollection *)self config];
+  config8 = [(NTKPigmentCollection *)self config];
 
-  if (!v31)
+  if (!config8)
   {
     v32 = objc_alloc_init(NTKPigmentCollectionConfig);
     [(NTKPigmentCollection *)self setConfig:v32];
   }
 
-  v33 = [v4 config];
-  v34 = [v33 defaultGalleryColorNames];
+  config9 = [collectionCopy config];
+  defaultGalleryColorNames = [config9 defaultGalleryColorNames];
 
-  if (v34)
+  if (defaultGalleryColorNames)
   {
-    v35 = [v4 config];
-    v36 = [v35 defaultGalleryColorNames];
-    v37 = [(NTKPigmentCollection *)self config];
-    [v37 setDefaultGalleryColorNames:v36];
+    config10 = [collectionCopy config];
+    defaultGalleryColorNames2 = [config10 defaultGalleryColorNames];
+    config11 = [(NTKPigmentCollection *)self config];
+    [config11 setDefaultGalleryColorNames:defaultGalleryColorNames2];
 
-    v38 = [(NTKPigmentCollection *)self config];
-    v39 = [v38 defaultGalleryColorNames];
-    [(NTKPigmentCollection *)self setDefaultGalleryColorWithNames:v39];
+    config12 = [(NTKPigmentCollection *)self config];
+    defaultGalleryColorNames3 = [config12 defaultGalleryColorNames];
+    [(NTKPigmentCollection *)self setDefaultGalleryColorWithNames:defaultGalleryColorNames3];
   }
 
-  v40 = [v4 config];
-  v41 = [v40 defaultColorOptionName];
+  config13 = [collectionCopy config];
+  defaultColorOptionName = [config13 defaultColorOptionName];
 
-  if (v41)
+  if (defaultColorOptionName)
   {
-    v42 = [v4 config];
-    v43 = [v42 defaultColorOptionName];
-    v44 = [(NTKPigmentCollection *)self config];
-    [v44 setDefaultColorOptionName:v43];
+    config14 = [collectionCopy config];
+    defaultColorOptionName2 = [config14 defaultColorOptionName];
+    config15 = [(NTKPigmentCollection *)self config];
+    [config15 setDefaultColorOptionName:defaultColorOptionName2];
 
     [(NTKPigmentCollection *)self setDefaultOption:0];
   }
 
-  v45 = [v4 config];
-  v46 = [v45 exclusions];
+  config16 = [collectionCopy config];
+  exclusions = [config16 exclusions];
 
-  if (v46)
+  if (exclusions)
   {
-    v47 = [(NTKPigmentCollection *)self config];
-    v48 = [v47 exclusions];
-    v49 = [v46 arrayByAddingObjectsFromArray:v48];
-    v50 = [(NTKPigmentCollection *)self config];
-    [v50 setExclusions:v49];
+    config17 = [(NTKPigmentCollection *)self config];
+    exclusions2 = [config17 exclusions];
+    v49 = [exclusions arrayByAddingObjectsFromArray:exclusions2];
+    config18 = [(NTKPigmentCollection *)self config];
+    [config18 setExclusions:v49];
   }
 
   if (v10)
   {
     [(NTKPigmentCollection *)self setItems:v10];
-    v51 = [(NTKPigmentCollection *)self items];
-    [v4 setItems:v51];
+    items4 = [(NTKPigmentCollection *)self items];
+    [collectionCopy setItems:items4];
   }
 
-  v52 = [v4 collections];
+  collections = [collectionCopy collections];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __44__NTKPigmentCollection_mergeWithCollection___block_invoke_2;
   v61[3] = &unk_278781E10;
   v61[4] = self;
-  [v52 enumerateObjectsUsingBlock:v61];
+  [collections enumerateObjectsUsingBlock:v61];
 
-  v53 = [(NTKPigmentCollection *)self collections];
-  [v4 setCollections:v53];
+  collections2 = [(NTKPigmentCollection *)self collections];
+  [collectionCopy setCollections:collections2];
 
-  v54 = [(NTKPigmentCollection *)self config];
-  v55 = [v54 isAddable];
-  v56 = [v55 BOOLValue];
+  config19 = [(NTKPigmentCollection *)self config];
+  isAddable4 = [config19 isAddable];
+  bOOLValue = [isAddable4 BOOLValue];
 
-  if (v56)
+  if (bOOLValue)
   {
-    v57 = [v4 allItems];
-    [v57 enumerateObjectsUsingBlock:&__block_literal_global_66];
+    allItems = [collectionCopy allItems];
+    [allItems enumerateObjectsUsingBlock:&__block_literal_global_66];
   }
 
-  v58 = self;
-  objc_sync_enter(v58);
-  allItems = v58->_allItems;
-  v58->_allItems = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allItems = selfCopy->_allItems;
+  selfCopy->_allItems = 0;
 
-  faceSpecificPigmentsByFullname = v58->_faceSpecificPigmentsByFullname;
-  v58->_faceSpecificPigmentsByFullname = 0;
+  faceSpecificPigmentsByFullname = selfCopy->_faceSpecificPigmentsByFullname;
+  selfCopy->_faceSpecificPigmentsByFullname = 0;
 
-  objc_sync_exit(v58);
+  objc_sync_exit(selfCopy);
 }
 
 void __44__NTKPigmentCollection_mergeWithCollection___block_invoke(uint64_t a1, void *a2)
@@ -1019,30 +1019,30 @@ void __44__NTKPigmentCollection_mergeWithCollection___block_invoke_2(uint64_t a1
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSString *)v5->_collectionName copy];
-  v7 = [(NTKPigmentCollection *)v5 defaultOption];
-  v8 = [v7 copy];
+  equalCopy = equal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSString *)selfCopy->_collectionName copy];
+  defaultOption = [(NTKPigmentCollection *)selfCopy defaultOption];
+  v8 = [defaultOption copy];
 
-  v9 = [(NSOrderedSet *)v5->_items copy];
-  v10 = [(NSArray *)v5->_defaultGalleryColors copy];
-  v11 = [(NSArray *)v5->_collections copy];
-  v12 = [(NTKPigmentCollectionConfig *)v5->_config copy];
-  shared = v5->_shared;
-  objc_sync_exit(v5);
+  v9 = [(NSOrderedSet *)selfCopy->_items copy];
+  v10 = [(NSArray *)selfCopy->_defaultGalleryColors copy];
+  v11 = [(NSArray *)selfCopy->_collections copy];
+  v12 = [(NTKPigmentCollectionConfig *)selfCopy->_config copy];
+  shared = selfCopy->_shared;
+  objc_sync_exit(selfCopy);
 
-  if (v4 && ([v4 collectionName], v14 = objc_claimAutoreleasedReturnValue(), v15 = NTKEqualObjects(v6, v14), v14, v15) && shared == objc_msgSend(v4, "isShared") && (objc_msgSend(v4, "defaultOption"), v16 = objc_claimAutoreleasedReturnValue(), v17 = NTKEqualObjects(v8, v16), v16, v17))
+  if (equalCopy && ([equalCopy collectionName], v14 = objc_claimAutoreleasedReturnValue(), v15 = NTKEqualObjects(v6, v14), v14, v15) && shared == objc_msgSend(equalCopy, "isShared") && (objc_msgSend(equalCopy, "defaultOption"), v16 = objc_claimAutoreleasedReturnValue(), v17 = NTKEqualObjects(v8, v16), v16, v17))
   {
     v46 = v10;
     v18 = [v9 count];
-    v19 = [v4 items];
-    v20 = [v19 count];
+    items = [equalCopy items];
+    v20 = [items count];
 
-    if (v18 != v20 || (v21 = [v46 count], objc_msgSend(v4, "defaultGalleryColors"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21 != v23) || (v24 = objc_msgSend(v11, "count"), objc_msgSend(v4, "collections"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v24 != v26))
+    if (v18 != v20 || (v21 = [v46 count], objc_msgSend(equalCopy, "defaultGalleryColors"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21 != v23) || (v24 = objc_msgSend(v11, "count"), objc_msgSend(equalCopy, "collections"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v24 != v26))
     {
       v42 = 0;
 LABEL_25:
@@ -1057,8 +1057,8 @@ LABEL_25:
       do
       {
         v28 = [v9 objectAtIndexedSubscript:v27];
-        v29 = [v4 items];
-        v30 = [v29 objectAtIndexedSubscript:v27];
+        items2 = [equalCopy items];
+        v30 = [items2 objectAtIndexedSubscript:v27];
         v31 = [v28 isEqual:v30];
 
         if ((v31 & 1) == 0)
@@ -1070,8 +1070,8 @@ LABEL_25:
       while ([v9 count] > ++v27);
     }
 
-    v32 = [v4 config];
-    v33 = NTKEqualObjects(v12, v32);
+    config = [equalCopy config];
+    v33 = NTKEqualObjects(v12, config);
 
     if (!v33)
     {
@@ -1097,8 +1097,8 @@ LABEL_17:
       while (1)
       {
         v39 = [v11 objectAtIndexedSubscript:v38];
-        v40 = [v4 collections];
-        v41 = [v40 objectAtIndexedSubscript:v38];
+        collections = [equalCopy collections];
+        v41 = [collections objectAtIndexedSubscript:v38];
         v42 = [v39 isEqual:v41];
 
         if ((v42 & 1) == 0)
@@ -1120,8 +1120,8 @@ LABEL_17:
     while (1)
     {
       v35 = [v46 objectAtIndexedSubscript:v34];
-      v36 = [v4 defaultGalleryColors];
-      v37 = [v36 objectAtIndexedSubscript:v34];
+      defaultGalleryColors = [equalCopy defaultGalleryColors];
+      v37 = [defaultGalleryColors objectAtIndexedSubscript:v34];
       v45 = [v35 isEqual:v37];
 
       if ((v45 & 1) == 0)
@@ -1151,17 +1151,17 @@ LABEL_23:
 
 - (id)description
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v5 = [(NTKPigmentCollection *)v3 items];
+  items = [(NTKPigmentCollection *)selfCopy items];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __35__NTKPigmentCollection_description__block_invoke;
   v28[3] = &unk_278781E38;
   v6 = v4;
   v29 = v6;
-  [v5 enumerateObjectsUsingBlock:v28];
+  [items enumerateObjectsUsingBlock:v28];
 
   if ([v6 length])
   {
@@ -1175,14 +1175,14 @@ LABEL_23:
 
   [v6 appendString:v7];
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v9 = [(NTKPigmentCollection *)v3 collections];
+  collections = [(NTKPigmentCollection *)selfCopy collections];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __35__NTKPigmentCollection_description__block_invoke_2;
   v26[3] = &unk_278781E10;
   v10 = v8;
   v27 = v10;
-  [v9 enumerateObjectsUsingBlock:v26];
+  [collections enumerateObjectsUsingBlock:v26];
 
   if ([v10 length])
   {
@@ -1196,17 +1196,17 @@ LABEL_23:
 
   [v10 appendString:v11];
   v23 = MEMORY[0x277CCACA8];
-  v24 = [(NTKPigmentCollection *)v3 collectionName];
-  v25 = [(NTKPigmentCollection *)v3 config];
-  v12 = [v25 exclusions];
-  v13 = [v12 count];
+  collectionName = [(NTKPigmentCollection *)selfCopy collectionName];
+  config = [(NTKPigmentCollection *)selfCopy config];
+  exclusions = [config exclusions];
+  v13 = [exclusions count];
   if (v13)
   {
     v14 = MEMORY[0x277CCACA8];
-    v22 = [(NTKPigmentCollection *)v3 config];
-    v21 = [v22 exclusions];
-    v2 = [v21 ntk_flatDescription];
-    v15 = [v14 stringWithFormat:@", exclusions: %@", v2];
+    config2 = [(NTKPigmentCollection *)selfCopy config];
+    exclusions2 = [config2 exclusions];
+    ntk_flatDescription = [exclusions2 ntk_flatDescription];
+    v15 = [v14 stringWithFormat:@", exclusions: %@", ntk_flatDescription];
   }
 
   else
@@ -1214,21 +1214,21 @@ LABEL_23:
     v15 = &stru_284110E98;
   }
 
-  v16 = [(NTKPigmentCollection *)v3 config];
-  v17 = [v16 excludesDuotone];
+  config3 = [(NTKPigmentCollection *)selfCopy config];
+  excludesDuotone = [config3 excludesDuotone];
   v18 = @", excludesDuotone";
-  if (!v17)
+  if (!excludesDuotone)
   {
     v18 = &stru_284110E98;
   }
 
-  v19 = [v23 stringWithFormat:@"%@ [items: %@, collections: %@%@%@]", v24, v6, v10, v15, v18];
+  v19 = [v23 stringWithFormat:@"%@ [items: %@, collections: %@%@%@]", collectionName, v6, v10, v15, v18];
 
   if (v13)
   {
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v19;
 }
@@ -1275,115 +1275,115 @@ void __35__NTKPigmentCollection_description__block_invoke_2(uint64_t a1, void *a
   [v6 appendString:v7];
 }
 
-+ (id)collectionFromProtoBuffer:(id)a3 sharedCollections:(id)a4
++ (id)collectionFromProtoBuffer:(id)buffer sharedCollections:(id)collections
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = [v7 length];
+  bufferCopy = buffer;
+  collectionsCopy = collections;
+  name = [bufferCopy name];
+  v8 = [name length];
 
   if (v8)
   {
-    if ([v5 isStub])
+    if ([bufferCopy isStub])
     {
-      if (v6 && ([v5 name], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+      if (collectionsCopy && ([bufferCopy name], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(collectionsCopy, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
       {
-        v11 = [v5 name];
-        v12 = [v6 objectForKeyedSubscript:v11];
+        name2 = [bufferCopy name];
+        v12 = [collectionsCopy objectForKeyedSubscript:name2];
 
         if (v12)
         {
           goto LABEL_19;
         }
 
-        v13 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        name3 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
+        if (os_log_type_enabled(name3, OS_LOG_TYPE_ERROR))
         {
-          [NTKPigmentCollection collectionFromProtoBuffer:v5 sharedCollections:?];
+          [NTKPigmentCollection collectionFromProtoBuffer:bufferCopy sharedCollections:?];
         }
       }
 
       else
       {
-        v13 = [v5 name];
-        v12 = [NTKPigmentCollection stubCollectionWithName:v13];
+        name3 = [bufferCopy name];
+        v12 = [NTKPigmentCollection stubCollectionWithName:name3];
       }
 
       goto LABEL_18;
     }
 
     v15 = [NTKPigmentCollection alloc];
-    v16 = [v5 name];
-    v12 = [(NTKPigmentCollection *)v15 initWithName:v16];
+    name4 = [bufferCopy name];
+    v12 = [(NTKPigmentCollection *)v15 initWithName:name4];
 
-    *(v12 + 32) = [v5 isShared];
-    *(v12 + 33) = [v5 isStub];
-    v17 = [v5 config];
-    v18 = [NTKPigmentCollectionConfig collectionConfigFromProtoBuffer:v17];
+    *(v12 + 32) = [bufferCopy isShared];
+    *(v12 + 33) = [bufferCopy isStub];
+    config = [bufferCopy config];
+    v18 = [NTKPigmentCollectionConfig collectionConfigFromProtoBuffer:config];
     v19 = *(v12 + 72);
     *(v12 + 72) = v18;
 
     v20 = [NTKPigmentEditOption alloc];
-    v21 = [v5 defaultOption];
-    v22 = [(NTKPigmentEditOption *)v20 initWithProtoBuffer:v21];
+    defaultOption = [bufferCopy defaultOption];
+    v22 = [(NTKPigmentEditOption *)v20 initWithProtoBuffer:defaultOption];
     v23 = *(v12 + 56);
     *(v12 + 56) = v22;
 
-    v24 = [v5 items];
+    items = [bufferCopy items];
 
-    if (v24)
+    if (items)
     {
-      v25 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:{objc_msgSend(v5, "itemsCount")}];
-      v26 = [v5 items];
+      v25 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:{objc_msgSend(bufferCopy, "itemsCount")}];
+      items2 = [bufferCopy items];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___block_invoke;
       v50[3] = &unk_278781E80;
       v51 = v25;
-      v52 = v5;
+      v52 = bufferCopy;
       v27 = v25;
-      [v26 enumerateObjectsUsingBlock:v50];
+      [items2 enumerateObjectsUsingBlock:v50];
 
       v28 = [v27 copy];
       [v12 setItems:v28];
     }
 
-    v29 = [v5 defaultGalleryColors];
+    defaultGalleryColors = [bufferCopy defaultGalleryColors];
 
-    if (v29)
+    if (defaultGalleryColors)
     {
-      v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "defaultGalleryColorsCount")}];
-      v31 = [v5 defaultGalleryColors];
+      v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(bufferCopy, "defaultGalleryColorsCount")}];
+      defaultGalleryColors2 = [bufferCopy defaultGalleryColors];
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___block_invoke_33;
       v47[3] = &unk_278781E80;
       v48 = v30;
-      v49 = v5;
+      v49 = bufferCopy;
       v32 = v30;
-      [v31 enumerateObjectsUsingBlock:v47];
+      [defaultGalleryColors2 enumerateObjectsUsingBlock:v47];
 
       v33 = [v32 copy];
       v34 = *(v12 + 80);
       *(v12 + 80) = v33;
     }
 
-    v35 = [v5 collections];
+    collections = [bufferCopy collections];
 
-    if (v35)
+    if (collections)
     {
-      v36 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "collectionsCount")}];
-      v37 = [v5 collections];
+      v36 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(bufferCopy, "collectionsCount")}];
+      collections2 = [bufferCopy collections];
       v41 = MEMORY[0x277D85DD0];
       v42 = 3221225472;
       v43 = __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___block_invoke_34;
       v44 = &unk_278781EA8;
-      v45 = v6;
+      v45 = collectionsCopy;
       v46 = v36;
-      v13 = v36;
-      [v37 enumerateObjectsUsingBlock:&v41];
+      name3 = v36;
+      [collections2 enumerateObjectsUsingBlock:&v41];
 
-      v38 = [v13 copy:v41];
+      v38 = [name3 copy:v41];
       v39 = *(v12 + 48);
       *(v12 + 48) = v38;
 
@@ -1396,7 +1396,7 @@ LABEL_18:
     v14 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [NTKPigmentCollection collectionFromProtoBuffer:v5 sharedCollections:v14];
+      [NTKPigmentCollection collectionFromProtoBuffer:bufferCopy sharedCollections:v14];
     }
 
     v12 = 0;
@@ -1451,22 +1451,22 @@ void __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___bl
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)protoBufferIgnoringSharedCollections:(BOOL)a3
+- (id)protoBufferIgnoringSharedCollections:(BOOL)collections
 {
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_alloc_init(NTKProtoPigmentCollection);
-  [(NTKProtoPigmentCollection *)v5 setIsShared:v4->_shared];
-  [(NTKProtoPigmentCollection *)v5 setIsStub:v4->_stub];
-  [(NTKProtoPigmentCollection *)v5 setName:v4->_collectionName];
-  v6 = [(NTKPigmentCollectionConfig *)v4->_config protoBuffer];
-  [(NTKProtoPigmentCollection *)v5 setConfig:v6];
+  [(NTKProtoPigmentCollection *)v5 setIsShared:selfCopy->_shared];
+  [(NTKProtoPigmentCollection *)v5 setIsStub:selfCopy->_stub];
+  [(NTKProtoPigmentCollection *)v5 setName:selfCopy->_collectionName];
+  protoBuffer = [(NTKPigmentCollectionConfig *)selfCopy->_config protoBuffer];
+  [(NTKProtoPigmentCollection *)v5 setConfig:protoBuffer];
 
-  v7 = [(NTKPigmentCollection *)v4 defaultOption];
-  v8 = [v7 protoBuffer];
-  [(NTKProtoPigmentCollection *)v5 setDefaultOption:v8];
+  defaultOption = [(NTKPigmentCollection *)selfCopy defaultOption];
+  protoBuffer2 = [defaultOption protoBuffer];
+  [(NTKProtoPigmentCollection *)v5 setDefaultOption:protoBuffer2];
 
-  items = v4->_items;
+  items = selfCopy->_items;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __61__NTKPigmentCollection_protoBufferIgnoringSharedCollections___block_invoke;
@@ -1474,7 +1474,7 @@ void __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___bl
   v10 = v5;
   v24 = v10;
   [(NSOrderedSet *)items enumerateObjectsUsingBlock:v23];
-  defaultGalleryColors = v4->_defaultGalleryColors;
+  defaultGalleryColors = selfCopy->_defaultGalleryColors;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __61__NTKPigmentCollection_protoBufferIgnoringSharedCollections___block_invoke_2;
@@ -1482,19 +1482,19 @@ void __68__NTKPigmentCollection_collectionFromProtoBuffer_sharedCollections___bl
   v12 = v10;
   v22 = v12;
   [(NSArray *)defaultGalleryColors enumerateObjectsUsingBlock:v21];
-  collections = v4->_collections;
+  collections = selfCopy->_collections;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __61__NTKPigmentCollection_protoBufferIgnoringSharedCollections___block_invoke_3;
   v18[3] = &unk_278781ED0;
   v14 = v12;
   v19 = v14;
-  v20 = a3;
+  collectionsCopy = collections;
   [(NSArray *)collections enumerateObjectsUsingBlock:v18];
   v15 = v19;
   v16 = v14;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
@@ -1528,48 +1528,48 @@ void __61__NTKPigmentCollection_protoBufferIgnoringSharedCollections___block_inv
   [v5 addCollections:v6];
 }
 
-- (void)fulfillWithSharedCollections:(id)a3
+- (void)fulfillWithSharedCollections:(id)collections
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NTKPigmentCollection *)v4 collections];
-  v6 = [v5 mutableCopy];
+  collectionsCopy = collections;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  collections = [(NTKPigmentCollection *)selfCopy collections];
+  v6 = [collections mutableCopy];
 
   for (i = 0; ; ++i)
   {
-    v8 = [(NTKPigmentCollection *)v4 collections];
-    v9 = [v8 count];
+    collections2 = [(NTKPigmentCollection *)selfCopy collections];
+    v9 = [collections2 count];
 
     if (v9 <= i)
     {
       break;
     }
 
-    v10 = [(NTKPigmentCollection *)v4 collections];
-    v11 = [v10 objectAtIndexedSubscript:i];
+    collections3 = [(NTKPigmentCollection *)selfCopy collections];
+    v11 = [collections3 objectAtIndexedSubscript:i];
 
     if ([v11 isStub])
     {
-      v12 = [v11 collectionName];
-      if (v12)
+      collectionName = [v11 collectionName];
+      if (collectionName)
       {
-        v13 = [v11 collectionName];
-        v14 = [v17 objectForKeyedSubscript:v13];
+        collectionName2 = [v11 collectionName];
+        v14 = [collectionsCopy objectForKeyedSubscript:collectionName2];
 
         if (v14)
         {
-          v15 = [v11 collectionName];
-          v16 = [v17 objectForKeyedSubscript:v15];
+          collectionName3 = [v11 collectionName];
+          v16 = [collectionsCopy objectForKeyedSubscript:collectionName3];
           [v6 setObject:v16 atIndexedSubscript:i];
         }
       }
     }
   }
 
-  [(NTKPigmentCollection *)v4 setCollections:v6];
+  [(NTKPigmentCollection *)selfCopy setCollections:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (void)collectionFromProtoBuffer:(void *)a1 sharedCollections:.cold.1(void *a1)

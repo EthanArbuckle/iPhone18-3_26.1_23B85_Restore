@@ -56,8 +56,8 @@
   v14 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v6 = [(UIFont *)self fontDescriptor];
-  v7 = [v6 fontDescriptorByAddingAttributes:v5];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v8 = [UIFont fontWithDescriptor:v7 size:0.0];
 

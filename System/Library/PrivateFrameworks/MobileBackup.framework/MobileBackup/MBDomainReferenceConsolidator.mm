@@ -1,9 +1,9 @@
 @interface MBDomainReferenceConsolidator
-- (BOOL)addDomainReference:(id)a3 error:(id *)a4;
-- (BOOL)consolidateDomainName:(id)a3 hmacKey:(id)a4;
+- (BOOL)addDomainReference:(id)reference error:(id *)error;
+- (BOOL)consolidateDomainName:(id)name hmacKey:(id)key;
 - (MBDomainReferenceConsolidator)init;
-- (void)enumerateConsolidatedDomainNamesAndReference:(id)a3;
-- (void)enumerateReferencesWithUnknownDomainName:(id)a3;
+- (void)enumerateConsolidatedDomainNamesAndReference:(id)reference;
+- (void)enumerateReferencesWithUnknownDomainName:(id)name;
 @end
 
 @implementation MBDomainReferenceConsolidator
@@ -31,22 +31,22 @@
   return v2;
 }
 
-- (BOOL)addDomainReference:(id)a3 error:(id *)a4
+- (BOOL)addDomainReference:(id)reference error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 baseRecordID];
-  v8 = [MBDomainRecord domainHmacFromBaseRecordID:v7];
+  referenceCopy = reference;
+  baseRecordID = [referenceCopy baseRecordID];
+  v8 = [MBDomainRecord domainHmacFromBaseRecordID:baseRecordID];
 
   v9 = [(NSMutableDictionary *)self->_domainReferencesByHmac objectForKeyedSubscript:v8];
   v10 = v9;
   if (!v9)
   {
-    [(NSMutableDictionary *)self->_domainReferencesByHmac setObject:v6 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_domainReferencesByHmac setObject:referenceCopy forKeyedSubscript:v8];
     [(NSMutableSet *)self->_domainHmacsWithUnknownDomainName addObject:v8];
     goto LABEL_8;
   }
 
-  if ([v9 isEqualToReference:v6])
+  if ([v9 isEqualToReference:referenceCopy])
   {
 LABEL_8:
     v12 = 1;
@@ -59,15 +59,15 @@ LABEL_8:
     *buf = 138412546;
     v15 = v10;
     v16 = 2112;
-    v17 = v6;
+    v17 = referenceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Inconsistent baseRecordIDs %@ != %@", buf, 0x16u);
     _MBLog();
   }
 
-  if (a4)
+  if (error)
   {
-    [MBError errorWithCode:205 format:@"Inconsistent baseRecordIDs %@ != %@", v10, v6];
-    *a4 = v12 = 0;
+    [MBError errorWithCode:205 format:@"Inconsistent baseRecordIDs %@ != %@", v10, referenceCopy];
+    *error = v12 = 0;
   }
 
   else
@@ -80,24 +80,24 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)consolidateDomainName:(id)a3 hmacKey:(id)a4
+- (BOOL)consolidateDomainName:(id)name hmacKey:(id)key
 {
-  v6 = a3;
-  v7 = [MBDomainRecord domainHmacForDomainName:v6 hmacKey:a4];
+  nameCopy = name;
+  v7 = [MBDomainRecord domainHmacForDomainName:nameCopy hmacKey:key];
   v8 = [(NSMutableDictionary *)self->_domainReferencesByHmac objectForKeyedSubscript:v7];
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_domainNamesByHmac setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_domainNamesByHmac setObject:nameCopy forKeyedSubscript:v7];
     [(NSMutableSet *)self->_domainHmacsWithUnknownDomainName removeObject:v7];
   }
 
   return v8 != 0;
 }
 
-- (void)enumerateReferencesWithUnknownDomainName:(id)a3
+- (void)enumerateReferencesWithUnknownDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -124,7 +124,7 @@ LABEL_3:
       }
 
       v11 = v10;
-      v12 = v4[2](v4, v10);
+      v12 = nameCopy[2](nameCopy, v10);
 
       if (!v12)
       {
@@ -145,17 +145,17 @@ LABEL_3:
   }
 }
 
-- (void)enumerateConsolidatedDomainNamesAndReference:(id)a3
+- (void)enumerateConsolidatedDomainNamesAndReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   domainNamesByHmac = self->_domainNamesByHmac;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100125318;
   v7[3] = &unk_1003BF538;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = referenceCopy;
+  v6 = referenceCopy;
   [(NSMutableDictionary *)domainNamesByHmac enumerateKeysAndObjectsUsingBlock:v7];
 }
 

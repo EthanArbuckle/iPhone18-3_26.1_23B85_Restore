@@ -1,64 +1,64 @@
 @interface ConversationHUDViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC15ConversationKit29ConversationHUDViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC15ConversationKit29ConversationHUDViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissPeoplePicker;
 - (void)handleFindoTap;
-- (void)isTranslationStartedDidChange:(id)a3;
+- (void)isTranslationStartedDidChange:(id)change;
 - (void)loadView;
-- (void)secondaryButtonTapped:(id)a3;
+- (void)secondaryButtonTapped:(id)tapped;
 - (void)showCallDetailsButtonTapped;
 - (void)statusViewTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ConversationHUDViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.viewDidLoad()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   ConversationHUDViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  ConversationHUDViewController.viewWillTransition(to:with:)(a4);
+  selfCopy = self;
+  ConversationHUDViewController.viewWillTransition(to:with:)(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)handleFindoTap
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.handleFindoTap()();
 }
 
-- (void)isTranslationStartedDidChange:(id)a3
+- (void)isTranslationStartedDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   ConversationHUDViewController.isTranslationStartedDidChange(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -66,47 +66,47 @@
 
 - (void)statusViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.statusViewTapped()();
 }
 
 - (void)showCallDetailsButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.showCallDetailsButtonTapped()();
 }
 
-- (void)secondaryButtonTapped:(id)a3
+- (void)secondaryButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  ConversationHUDViewController.secondaryButtonTapped(_:)(v5);
+  tappedCopy = tapped;
+  selfCopy = self;
+  ConversationHUDViewController.secondaryButtonTapped(_:)(selfCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = ConversationHUDViewController.gestureRecognizer(_:shouldReceive:)(v8, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = ConversationHUDViewController.gestureRecognizer(_:shouldReceive:)(selfCopy, touchCopy);
 
   return v9;
 }
 
-- (_TtC15ConversationKit29ConversationHUDViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit29ConversationHUDViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ConversationHUDViewController.init(nibName:bundle:)();
 }
 
 - (void)dismissPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDViewController.dismissPeoplePicker()();
 }
 

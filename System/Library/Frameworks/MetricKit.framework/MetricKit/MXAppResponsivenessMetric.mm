@@ -1,27 +1,27 @@
 @interface MXAppResponsivenessMetric
-- (MXAppResponsivenessMetric)initWithAppResponsivenessData:(id)a3;
-- (MXAppResponsivenessMetric)initWithAppResponsivenessHangData:(id)a3 spinData:(id)a4;
-- (MXAppResponsivenessMetric)initWithCoder:(id)a3;
+- (MXAppResponsivenessMetric)initWithAppResponsivenessData:(id)data;
+- (MXAppResponsivenessMetric)initWithAppResponsivenessHangData:(id)data spinData:(id)spinData;
+- (MXAppResponsivenessMetric)initWithCoder:(id)coder;
 - (id)toDictionary;
 @end
 
 @implementation MXAppResponsivenessMetric
 
-- (MXAppResponsivenessMetric)initWithAppResponsivenessData:(id)a3
+- (MXAppResponsivenessMetric)initWithAppResponsivenessData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MXAppResponsivenessMetric;
   v5 = [(MXMetric *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!dataCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    v6 = [[MXHistogram alloc] initWithHistogramBucketData:v4];
+    v6 = [[MXHistogram alloc] initWithHistogramBucketData:dataCopy];
     histogrammedApplicationHangTime = v5->_histogrammedApplicationHangTime;
     v5->_histogrammedApplicationHangTime = v6;
   }
@@ -32,21 +32,21 @@ LABEL_6:
   return v8;
 }
 
-- (MXAppResponsivenessMetric)initWithAppResponsivenessHangData:(id)a3 spinData:(id)a4
+- (MXAppResponsivenessMetric)initWithAppResponsivenessHangData:(id)data spinData:(id)spinData
 {
-  v5 = a4;
+  spinDataCopy = spinData;
   v11.receiver = self;
   v11.super_class = MXAppResponsivenessMetric;
   v6 = [(MXMetric *)&v11 init];
   if (v6)
   {
-    if (!v5)
+    if (!spinDataCopy)
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    v7 = [[MXHistogram alloc] initWithHistogramBucketData:v5];
+    v7 = [[MXHistogram alloc] initWithHistogramBucketData:spinDataCopy];
     histogrammedApplicationHangTime = v6->_histogrammedApplicationHangTime;
     v6->_histogrammedApplicationHangTime = v7;
   }
@@ -57,15 +57,15 @@ LABEL_6:
   return v9;
 }
 
-- (MXAppResponsivenessMetric)initWithCoder:(id)a3
+- (MXAppResponsivenessMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MXAppResponsivenessMetric;
   v5 = [(MXMetric *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedAppHangTime"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedAppHangTime"];
     histogrammedApplicationHangTime = v5->_histogrammedApplicationHangTime;
     v5->_histogrammedApplicationHangTime = v6;
   }
@@ -79,8 +79,8 @@ LABEL_6:
   histogrammedApplicationHangTime = self->_histogrammedApplicationHangTime;
   if (histogrammedApplicationHangTime)
   {
-    v5 = [(MXHistogram *)histogrammedApplicationHangTime toDictionary];
-    [v3 setObject:v5 forKey:@"histogrammedAppHangTime"];
+    toDictionary = [(MXHistogram *)histogrammedApplicationHangTime toDictionary];
+    [v3 setObject:toDictionary forKey:@"histogrammedAppHangTime"];
   }
 
   return v3;

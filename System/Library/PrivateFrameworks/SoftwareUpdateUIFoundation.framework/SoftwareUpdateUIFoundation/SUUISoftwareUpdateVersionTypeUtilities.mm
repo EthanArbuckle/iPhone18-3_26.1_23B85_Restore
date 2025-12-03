@@ -1,19 +1,19 @@
 @interface SUUISoftwareUpdateVersionTypeUtilities
-+ (id)description:(int64_t)a3;
++ (id)description:(int64_t)description;
 @end
 
 @implementation SUUISoftwareUpdateVersionTypeUtilities
 
-+ (id)description:(int64_t)a3
++ (id)description:(int64_t)description
 {
-  if (a3)
+  if (description)
   {
-    if (a3 == 1)
+    if (description == 1)
     {
       v4 = MEMORY[0x277D82BE0](@"SUUISoftwareUpdateVersionTypeMajor");
     }
 
-    else if (a3 == 2)
+    else if (description == 2)
     {
       v4 = MEMORY[0x277D82BE0](@"SUUISoftwareUpdateVersionTypeMinor");
     }

@@ -1,6 +1,6 @@
 @interface CIMotionBlur
 + (id)customAttributes;
-- (id)_blur:(id)a3 pass:(int)a4 weightsFactor:(float)a5 legacyExtent:(CGRect *)a6;
+- (id)_blur:(id)_blur pass:(int)pass weightsFactor:(float)factor legacyExtent:(CGRect *)extent;
 - (id)outputImage;
 @end
 
@@ -36,22 +36,22 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
 }
 
-- (id)_blur:(id)a3 pass:(int)a4 weightsFactor:(float)a5 legacyExtent:(CGRect *)a6
+- (id)_blur:(id)_blur pass:(int)pass weightsFactor:(float)factor legacyExtent:(CGRect *)extent
 {
-  v8 = a4;
+  passCopy = pass;
   v31[2] = *MEMORY[0x1E69E9840];
   [(NSNumber *)self->inputAngle floatValue];
   v28 = sinf(v11);
   [(NSNumber *)self->inputAngle floatValue];
   v13.f32[0] = cosf(v12);
   v13.f32[1] = v28;
-  v14 = vmul_n_f32(v13, (1 << v8));
+  v14 = vmul_n_f32(v13, (1 << passCopy));
   v15 = vcvtq_f64_f32(vabs_f32(v14));
   v27 = v14.f32[0];
   v29 = vcvt_f32_f64(vrndpq_f64(vaddq_f64(v15, v15)));
   v16 = v14.f32[1];
-  v17 = [CIVector vectorWithX:v14.f32[0] Y:v14.f32[1] Z:(1.0 - a5) + a5 * 0.375 W:a5 * 0.25];
-  [a3 extent];
+  v17 = [CIVector vectorWithX:v14.f32[0] Y:v14.f32[1] Z:(1.0 - factor) + factor * 0.375 W:factor * 0.25];
+  [_blur extent];
   v33 = CGRectInset(v32, -v29.f32[0], -v29.f32[1]);
   x = v33.origin.x;
   y = v33.origin.y;
@@ -70,16 +70,16 @@
     v24 = v16;
   }
 
-  *a6 = CGRectInset(*a6, v23, -floor(v24 + v24));
-  v25 = [(CIMotionBlur *)self _kernel];
+  *extent = CGRectInset(*extent, v23, -floor(v24 + v24));
+  _kernel = [(CIMotionBlur *)self _kernel];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __54__CIMotionBlur__blur_pass_weightsFactor_legacyExtent___block_invoke;
   v30[3] = &__block_descriptor_40_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
   v30[4] = v29;
-  v31[0] = a3;
+  v31[0] = _blur;
   v31[1] = v17;
-  return [v25 applyWithExtent:v30 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v31, 2), x, y, width, height}];
+  return [_kernel applyWithExtent:v30 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v31, 2), x, y, width, height}];
 }
 
 - (id)outputImage
@@ -90,9 +90,9 @@
     return 0;
   }
 
-  v3 = [(CIMotionBlur *)self _isIdentity];
+  _isIdentity = [(CIMotionBlur *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 

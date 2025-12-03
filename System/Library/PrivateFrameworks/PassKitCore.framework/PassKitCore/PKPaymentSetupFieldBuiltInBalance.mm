@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInBalance
-- (PKPaymentSetupFieldBuiltInBalance)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInBalance)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInBalance
 
-- (PKPaymentSetupFieldBuiltInBalance)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInBalance)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInBalance;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"balance" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"balance" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_Balance_0.isa, 0);

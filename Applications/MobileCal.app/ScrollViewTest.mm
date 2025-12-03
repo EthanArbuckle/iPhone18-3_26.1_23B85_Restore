@@ -1,5 +1,5 @@
 @interface ScrollViewTest
-- (ScrollViewTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5;
+- (ScrollViewTest)initWithApplication:(id)application model:(id)model options:(id)options;
 - (UIScrollView)scrollView;
 - (void)navigateToScrollView;
 - (void)runTest;
@@ -7,18 +7,18 @@
 
 @implementation ScrollViewTest
 
-- (ScrollViewTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5
+- (ScrollViewTest)initWithApplication:(id)application model:(id)model options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = ScrollViewTest;
-  v10 = [(ApplicationTest *)&v16 initWithApplication:v8 model:a4 options:v9];
+  v10 = [(ApplicationTest *)&v16 initWithApplication:applicationCopy model:model options:optionsCopy];
   if (v10)
   {
     v11 = [TestScroller alloc];
-    v12 = [objc_opt_class() testName];
-    v13 = [(TestScroller *)v11 initWithOptions:v9 testName:v12 application:v8];
+    testName = [objc_opt_class() testName];
+    v13 = [(TestScroller *)v11 initWithOptions:optionsCopy testName:testName application:applicationCopy];
     scroller = v10->_scroller;
     v10->_scroller = v13;
   }
@@ -28,20 +28,20 @@
 
 - (void)runTest
 {
-  v3 = [(ApplicationTest *)self application];
-  v4 = [objc_opt_class() testName];
-  v5 = [(ScrollViewTest *)self checkTestPreconditions];
+  application = [(ApplicationTest *)self application];
+  testName = [objc_opt_class() testName];
+  checkTestPreconditions = [(ScrollViewTest *)self checkTestPreconditions];
   if ([(TestScroller *)self->_scroller inputInvalid])
   {
-    [v3 startedTest:v4];
+    [application startedTest:testName];
     v6 = @"input invalid was marked as true when trying to run test";
-    v7 = v3;
-    v8 = v4;
+    v7 = application;
+    v8 = testName;
   }
 
   else
   {
-    if (!v5)
+    if (!checkTestPreconditions)
     {
       [(ScrollViewTest *)self navigateToScrollView];
       v9 = dispatch_time(0, 5000000000);
@@ -54,10 +54,10 @@
       goto LABEL_6;
     }
 
-    [v3 startedTest:v4];
-    v7 = v3;
-    v8 = v4;
-    v6 = v5;
+    [application startedTest:testName];
+    v7 = application;
+    v8 = testName;
+    v6 = checkTestPreconditions;
   }
 
   [v7 failedTest:v8 withFailure:v6];

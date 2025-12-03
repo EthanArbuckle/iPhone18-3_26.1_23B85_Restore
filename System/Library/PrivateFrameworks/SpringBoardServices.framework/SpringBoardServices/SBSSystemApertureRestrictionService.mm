@@ -1,8 +1,8 @@
 @interface SBSSystemApertureRestrictionService
 - (SBSSystemApertureRestrictionService)init;
-- (id)acquireRestrictSystemApertureLayoutToInertAssertionWithReason:(id)a3;
-- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason:(id)a3;
-- (id)acquireSystemApertureCompleteSuppressionAssertionWithReason:(id)a3;
+- (id)acquireRestrictSystemApertureLayoutToInertAssertionWithReason:(id)reason;
+- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason:(id)reason;
+- (id)acquireSystemApertureCompleteSuppressionAssertionWithReason:(id)reason;
 - (void)init;
 - (void)invalidate;
 @end
@@ -17,9 +17,9 @@
   if (v2)
   {
     dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.springboard"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
     if (v5)
     {
@@ -33,9 +33,9 @@
     v2->_connectionQueue = v7;
 
     v9 = MEMORY[0x1E698F498];
-    v10 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v11 = +[SBSSystemApertureRestrictionServiceSpecification identifier];
-    v12 = [v9 endpointForMachName:v10 service:v11 instance:0];
+    v12 = [v9 endpointForMachName:defaultShellMachName service:v11 instance:0];
 
     v13 = [MEMORY[0x1E698F490] connectionWithEndpoint:v12];
     connection = v2->_connection;
@@ -105,11 +105,11 @@ void __43__SBSSystemApertureRestrictionService_init__block_invoke_13(uint64_t a1
   self->_isValid = 0;
 }
 
-- (id)acquireRestrictSystemApertureLayoutToInertAssertionWithReason:(id)a3
+- (id)acquireRestrictSystemApertureLayoutToInertAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  if (!v4)
+  if (!reasonCopy)
   {
     [SBSSystemApertureRestrictionService acquireRestrictSystemApertureLayoutToInertAssertionWithReason:];
   }
@@ -123,19 +123,19 @@ void __43__SBSSystemApertureRestrictionService_init__block_invoke_13(uint64_t a1
   if (!WeakRetained)
   {
     objc_initWeak(&location, self);
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    v7 = [v6 acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:v4];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    v7 = [remoteTarget acquireRestrictSystemApertureLayoutToInertAssertionIdentifierWithReason:reasonCopy];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E698E778]);
-      v9 = [v7 UUIDString];
+      uUIDString = [v7 UUIDString];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __101__SBSSystemApertureRestrictionService_acquireRestrictSystemApertureLayoutToInertAssertionWithReason___block_invoke;
       v11[3] = &unk_1E735F278;
       objc_copyWeak(&v12, &location);
-      WeakRetained = [v8 initWithIdentifier:v9 forReason:v4 invalidationBlock:v11];
+      WeakRetained = [v8 initWithIdentifier:uUIDString forReason:reasonCopy invalidationBlock:v11];
 
       objc_storeWeak(&self->_restrictToInertAssertion, WeakRetained);
       objc_destroyWeak(&v12);
@@ -184,11 +184,11 @@ void __101__SBSSystemApertureRestrictionService_acquireRestrictSystemApertureLay
   }
 }
 
-- (id)acquireSystemApertureCompleteSuppressionAssertionWithReason:(id)a3
+- (id)acquireSystemApertureCompleteSuppressionAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  if (!v4)
+  if (!reasonCopy)
   {
     [SBSSystemApertureRestrictionService acquireSystemApertureCompleteSuppressionAssertionWithReason:];
   }
@@ -202,19 +202,19 @@ void __101__SBSSystemApertureRestrictionService_acquireRestrictSystemApertureLay
   if (!WeakRetained)
   {
     objc_initWeak(&location, self);
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    v7 = [v6 acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:v4];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    v7 = [remoteTarget acquireSystemApertureCompleteSuppressionAssertionIdentifierWithReason:reasonCopy];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E698E778]);
-      v9 = [v7 UUIDString];
+      uUIDString = [v7 UUIDString];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __99__SBSSystemApertureRestrictionService_acquireSystemApertureCompleteSuppressionAssertionWithReason___block_invoke;
       v11[3] = &unk_1E735F278;
       objc_copyWeak(&v12, &location);
-      WeakRetained = [v8 initWithIdentifier:v9 forReason:v4 invalidationBlock:v11];
+      WeakRetained = [v8 initWithIdentifier:uUIDString forReason:reasonCopy invalidationBlock:v11];
 
       objc_storeWeak(&self->_completeSuppressionAssertion, WeakRetained);
       objc_destroyWeak(&v12);
@@ -263,11 +263,11 @@ void __99__SBSSystemApertureRestrictionService_acquireSystemApertureCompleteSupp
   }
 }
 
-- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason:(id)a3
+- (id)acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  if (!v4)
+  if (!reasonCopy)
   {
     [SBSSystemApertureRestrictionService acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason:];
   }
@@ -281,19 +281,19 @@ void __99__SBSSystemApertureRestrictionService_acquireSystemApertureCompleteSupp
   if (!WeakRetained)
   {
     objc_initWeak(&location, self);
-    v6 = [(BSServiceConnection *)self->_connection remoteTarget];
-    v7 = [v6 acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:v4];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+    v7 = [remoteTarget acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionIdentifierWithReason:reasonCopy];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E698E778]);
-      v9 = [v7 UUIDString];
+      uUIDString = [v7 UUIDString];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __115__SBSSystemApertureRestrictionService_acquireSuppressHidingEmptySystemApertureOnClonedDisplaysAssertionWithReason___block_invoke;
       v11[3] = &unk_1E735F278;
       objc_copyWeak(&v12, &location);
-      WeakRetained = [v8 initWithIdentifier:v9 forReason:v4 invalidationBlock:v11];
+      WeakRetained = [v8 initWithIdentifier:uUIDString forReason:reasonCopy invalidationBlock:v11];
 
       objc_storeWeak(&self->_emptyHidingSuppressionAssertion, WeakRetained);
       objc_destroyWeak(&v12);
@@ -345,7 +345,7 @@ void __115__SBSSystemApertureRestrictionService_acquireSuppressHidingEmptySystem
 - (void)init
 {
   OUTLINED_FUNCTION_0();
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

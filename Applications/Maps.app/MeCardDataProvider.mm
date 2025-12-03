@@ -1,20 +1,20 @@
 @interface MeCardDataProvider
 - (GEOObserverHashTable)observers;
 - (MeCardDataProvider)init;
-- (void)_updateMeCardAndNotifyObservers:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_updateMeCardAndNotifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MeCardDataProvider
 
-- (void)_updateMeCardAndNotifyObservers:(BOOL)a3
+- (void)_updateMeCardAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
-    v6 = [(ShortcutManager *)self->_shortcutManager meCard];
-    v7 = v6;
-    if (v6 && !self->_hasInitialData)
+    observersCopy = observers;
+    meCard = [(ShortcutManager *)self->_shortcutManager meCard];
+    v7 = meCard;
+    if (meCard && !self->_hasInitialData)
     {
       v8 = 1;
       self->_hasInitialData = 1;
@@ -25,14 +25,14 @@
       v8 = 0;
     }
 
-    if (v6 == self->_meCard)
+    if (meCard == self->_meCard)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [(MapsSuggestionsMeCard *)v6 isEqual:?]^ 1;
+      v9 = [(MapsSuggestionsMeCard *)meCard isEqual:?]^ 1;
     }
 
     v10 = sub_1000410AC();
@@ -42,9 +42,9 @@
       NSStringFromClass(v11);
       v12 = v22 = v9;
       v19 = NSStringFromSelector(a2);
-      v13 = [(MapsSuggestionsMeCard *)v7 shortcutsForAll];
-      v14 = [v13 count];
-      v21 = v3;
+      shortcutsForAll = [(MapsSuggestionsMeCard *)v7 shortcutsForAll];
+      v14 = [shortcutsForAll count];
+      v21 = observersCopy;
       if (v8)
       {
         v15 = @"YES";
@@ -80,7 +80,7 @@
       v32 = v18;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@ %@, # favorites = %d, hasInitialDataChanged = %@, meCardChanged = %@", buf, 0x30u);
 
-      v3 = v21;
+      observersCopy = v21;
       v8 = v20;
 
       v9 = v22;
@@ -89,7 +89,7 @@
     if ((v8 | v9))
     {
       objc_storeStrong(&self->_meCard, v7);
-      if (v3)
+      if (observersCopy)
       {
         [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
       }
@@ -112,13 +112,13 @@
   return observers;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     shortcutManager = self->_shortcutManager;
-    if (a3)
+    if (active)
     {
       [(ShortcutManager *)shortcutManager addObserver:self];
 

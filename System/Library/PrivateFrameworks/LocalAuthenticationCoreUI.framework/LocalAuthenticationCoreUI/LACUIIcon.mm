@@ -1,7 +1,7 @@
 @interface LACUIIcon
 + (UIImage)genericIcon;
-+ (id)imageForBundleIdentifier:(id)a3;
-+ (id)imageForPath:(id)a3;
++ (id)imageForBundleIdentifier:(id)identifier;
++ (id)imageForPath:(id)path;
 - (LACUIIcon)init;
 @end
 
@@ -9,38 +9,38 @@
 
 + (UIImage)genericIcon
 {
-  v2 = [objc_opt_self() genericApplicationIcon];
-  v3 = LACUIImageWithIcon(v2);
+  genericApplicationIcon = [objc_opt_self() genericApplicationIcon];
+  v3 = LACUIImageWithIcon(genericApplicationIcon);
 
   return v3;
 }
 
-+ (id)imageForBundleIdentifier:(id)a3
++ (id)imageForBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v4;
     v6 = objc_allocWithZone(MEMORY[0x277D1B1A8]);
     v7 = MEMORY[0x259C58D00](v3, v5);
-    v8 = [v6 initWithBundleIdentifier_];
+    initWithBundleIdentifier_ = [v6 initWithBundleIdentifier_];
 
-    v9 = LACUIImageWithIcon(v8);
+    v9 = LACUIImageWithIcon(initWithBundleIdentifier_);
 
-    v10 = v9;
+    genericIcon = v9;
   }
 
   else
   {
-    v10 = [a1 genericIcon];
+    genericIcon = [self genericIcon];
   }
 
-  return v10;
+  return genericIcon;
 }
 
-+ (id)imageForPath:(id)a3
++ (id)imageForPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -58,15 +58,15 @@
   {
     v8 = LACUIImageWithIcon(v7);
 
-    v9 = v8;
+    genericIcon = v8;
   }
 
   else
   {
-    v9 = [a1 genericIcon];
+    genericIcon = [self genericIcon];
   }
 
-  return v9;
+  return genericIcon;
 }
 
 - (LACUIIcon)init

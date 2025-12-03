@@ -1,38 +1,38 @@
 @interface ENOAuthAuthenticator
-+ (id)parametersFromQueryString:(id)a3;
-+ (id)queryStringFromParameters:(id)a3;
-- (BOOL)canHandleSwitchProfileURL:(id)a3;
-- (BOOL)handleOpenURL:(id)a3;
++ (id)parametersFromQueryString:(id)string;
++ (id)queryStringFromParameters:(id)parameters;
+- (BOOL)canHandleSwitchProfileURL:(id)l;
+- (BOOL)handleOpenURL:(id)l;
 - (ENAuthenticatorDelegate)delegate;
 - (id)callbackScheme;
 - (id)oauthCallback;
-- (id)userAuthorizationURLStringWithParameters:(id)a3;
+- (id)userAuthorizationURLStringWithParameters:(id)parameters;
 - (void)authenticate;
-- (void)completeAuthenticationWithCredentials:(id)a3 usesLinkedAppNotebook:(BOOL)a4;
-- (void)completeAuthenticationWithError:(id)a3;
+- (void)completeAuthenticationWithCredentials:(id)credentials usesLinkedAppNotebook:(BOOL)notebook;
+- (void)completeAuthenticationWithError:(id)error;
 - (void)didFinishLoading;
 - (void)emptyCookieJar;
 - (void)enableIsActiveBecauseOfCallback;
-- (void)failedWithError:(id)a3;
-- (void)getOAuthTokenForURL:(id)a3;
-- (void)gotCallbackURL:(id)a3;
+- (void)failedWithError:(id)error;
+- (void)getOAuthTokenForURL:(id)l;
+- (void)gotCallbackURL:(id)l;
 - (void)handleDidBecomeActive;
-- (void)receivedData:(id)a3;
-- (void)receivedResponse:(id)a3;
+- (void)receivedData:(id)data;
+- (void)receivedResponse:(id)response;
 - (void)startOauthAuthentication;
 - (void)switchProfile;
-- (void)updateCurrentBootstrapProfileWithName:(id)a3;
+- (void)updateCurrentBootstrapProfileWithName:(id)name;
 @end
 
 @implementation ENOAuthAuthenticator
 
-+ (id)parametersFromQueryString:(id)a3
++ (id)parametersFromQueryString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v18 = v3;
-  v5 = [v3 componentsSeparatedByString:@"&"];
+  v18 = stringCopy;
+  v5 = [stringCopy componentsSeparatedByString:@"&"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -55,14 +55,14 @@
         if ([v10 count] == 2)
         {
           v11 = [v10 objectAtIndex:0];
-          v12 = [v11 en_stringByUrlDecoding];
+          en_stringByUrlDecoding = [v11 en_stringByUrlDecoding];
 
           v13 = [v10 objectAtIndex:1];
-          v14 = [v13 en_stringByUrlDecoding];
+          en_stringByUrlDecoding2 = [v13 en_stringByUrlDecoding];
 
-          if (v12)
+          if (en_stringByUrlDecoding)
           {
-            v15 = v14 == 0;
+            v15 = en_stringByUrlDecoding2 == 0;
           }
 
           else
@@ -72,7 +72,7 @@
 
           if (!v15)
           {
-            [v4 setObject:v14 forKey:v12];
+            [v4 setObject:en_stringByUrlDecoding2 forKey:en_stringByUrlDecoding];
           }
         }
       }
@@ -88,18 +88,18 @@
   return v4;
 }
 
-+ (id)queryStringFromParameters:(id)a3
++ (id)queryStringFromParameters:(id)parameters
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  parametersCopy = parameters;
+  array = [v3 array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__ENOAuthAuthenticator_queryStringFromParameters___block_invoke;
   v9[3] = &unk_278C1DE20;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = array;
+  v6 = array;
+  [parametersCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 componentsJoinedByString:@"&"];
 
@@ -125,13 +125,13 @@ void __50__ENOAuthAuthenticator_queryStringFromParameters___block_invoke(uint64_
   return WeakRetained;
 }
 
-- (void)getOAuthTokenForURL:(id)a3
+- (void)getOAuthTokenForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
-  v6 = [v4 query];
+  query = [lCopy query];
 
-  v7 = [v5 parametersFromQueryString:v6];
+  v7 = [v5 parametersFromQueryString:query];
 
   v8 = [v7 objectForKey:@"oauth_token"];
   v18 = [v7 objectForKey:@"oauth_verifier"];
@@ -139,19 +139,19 @@ void __50__ENOAuthAuthenticator_queryStringFromParameters___block_invoke(uint64_
   -[ENOAuthAuthenticator setUserSelectedLinkedAppNotebook:](self, "setUserSelectedLinkedAppNotebook:", [v9 BOOLValue]);
 
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v18, @"oauth_verifier", 0}];
-  v11 = [(ENOAuthAuthenticator *)self host];
-  v12 = [(ENOAuthAuthenticator *)self consumerKey];
-  v13 = [(ENOAuthAuthenticator *)self consumerSecret];
-  v14 = [(ENOAuthAuthenticator *)self tokenSecret];
-  v15 = [ENGCOAuth URLRequestForPath:@"/oauth" GETParameters:v10 scheme:@"https" host:v11 consumerKey:v12 consumerSecret:v13 accessToken:v8 tokenSecret:v14];
+  host = [(ENOAuthAuthenticator *)self host];
+  consumerKey = [(ENOAuthAuthenticator *)self consumerKey];
+  consumerSecret = [(ENOAuthAuthenticator *)self consumerSecret];
+  tokenSecret = [(ENOAuthAuthenticator *)self tokenSecret];
+  v15 = [ENGCOAuth URLRequestForPath:@"/oauth" GETParameters:v10 scheme:@"https" host:host consumerKey:consumerKey consumerSecret:consumerSecret accessToken:v8 tokenSecret:tokenSecret];
 
-  v16 = [MEMORY[0x277CBABB8] sharedSession];
+  mEMORY[0x277CBABB8] = [MEMORY[0x277CBABB8] sharedSession];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __44__ENOAuthAuthenticator_getOAuthTokenForURL___block_invoke;
   v19[3] = &unk_278C1BB20;
   v19[4] = self;
-  v17 = [v16 dataTaskWithRequest:v15 completionHandler:v19];
+  v17 = [mEMORY[0x277CBABB8] dataTaskWithRequest:v15 completionHandler:v19];
 
   [v17 resume];
 }
@@ -179,9 +179,9 @@ void __44__ENOAuthAuthenticator_getOAuthTokenForURL___block_invoke(uint64_t a1, 
   [*(a1 + 32) didFinishLoading];
 }
 
-- (void)gotCallbackURL:(id)a3
+- (void)gotCallbackURL:(id)l
 {
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:a3];
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:l];
   v6 = v4;
   if (v4)
   {
@@ -195,15 +195,15 @@ void __44__ENOAuthAuthenticator_getOAuthTokenForURL___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)canHandleSwitchProfileURL:(id)a3
+- (BOOL)canHandleSwitchProfileURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 componentsSeparatedByString:@"/"];
+  lCopy = l;
+  path = [lCopy path];
+  v6 = [path componentsSeparatedByString:@"/"];
   v7 = [v6 count];
   if (v7 <= 1)
   {
-    NSLog(&cfstr_UrlHasInvalidC.isa, v4, [v6 count]);
+    NSLog(&cfstr_UrlHasInvalidC.isa, lCopy, [v6 count]);
   }
 
   else
@@ -222,33 +222,33 @@ void __44__ENOAuthAuthenticator_getOAuthTokenForURL___block_invoke(uint64_t a1, 
   [(ENOAuthAuthenticator *)self performSelector:sel_disableIsActiveBecauseOfCallback withObject:0 afterDelay:2.0];
 }
 
-- (BOOL)handleOpenURL:(id)a3
+- (BOOL)handleOpenURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v5 isEqualToString:@"invalidURL"];
+  lCopy = l;
+  host = [lCopy host];
+  v6 = [host isEqualToString:@"invalidURL"];
 
   if (!v6)
   {
     [(ENOAuthAuthenticator *)self setState:2];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(ENOAuthAuthenticator *)self consumerKey];
-    v10 = [v8 stringWithFormat:@"en-%@", v9];
+    consumerKey = [(ENOAuthAuthenticator *)self consumerKey];
+    v10 = [v8 stringWithFormat:@"en-%@", consumerKey];
 
-    v11 = [v4 scheme];
-    if ([v10 isEqualToString:v11])
+    scheme = [lCopy scheme];
+    if ([v10 isEqualToString:scheme])
     {
-      v12 = [v4 host];
-      v13 = [@"oauth" isEqualToString:v12];
+      host2 = [lCopy host];
+      v13 = [@"oauth" isEqualToString:host2];
 
       if (v13)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = [(ENOAuthAuthenticator *)self consumerKey];
-        v16 = [v14 stringWithFormat:@"en-%@://oauth/", v15];
+        consumerKey2 = [(ENOAuthAuthenticator *)self consumerKey];
+        v16 = [v14 stringWithFormat:@"en-%@://oauth/", consumerKey2];
 
-        v17 = [v4 absoluteString];
-        v18 = [v17 stringByReplacingOccurrencesOfString:v16 withString:&stru_2850323E8];
+        absoluteString = [lCopy absoluteString];
+        v18 = [absoluteString stringByReplacingOccurrencesOfString:v16 withString:&stru_2850323E8];
 
         [(ENOAuthAuthenticator *)self gotCallbackURL:v18];
 LABEL_10:
@@ -263,11 +263,11 @@ LABEL_17:
     {
     }
 
-    v19 = [v4 scheme];
-    if ([v10 isEqualToString:v19])
+    scheme2 = [lCopy scheme];
+    if ([v10 isEqualToString:scheme2])
     {
-      v20 = [v4 host];
-      v21 = [@"loginCancelled" isEqualToString:v20];
+      host3 = [lCopy host];
+      v21 = [@"loginCancelled" isEqualToString:host3];
 
       if (v21)
       {
@@ -280,16 +280,16 @@ LABEL_17:
     {
     }
 
-    v22 = [v4 scheme];
-    if ([v10 isEqualToString:v22])
+    scheme3 = [lCopy scheme];
+    if ([v10 isEqualToString:scheme3])
     {
-      v23 = [v4 host];
-      v24 = [@"incorrectProfile" isEqualToString:v23];
+      host4 = [lCopy host];
+      v24 = [@"incorrectProfile" isEqualToString:host4];
 
       if (v24)
       {
         [(ENOAuthAuthenticator *)self enableIsActiveBecauseOfCallback];
-        v7 = [(ENOAuthAuthenticator *)self canHandleSwitchProfileURL:v4];
+        v7 = [(ENOAuthAuthenticator *)self canHandleSwitchProfileURL:lCopy];
         goto LABEL_17;
       }
     }
@@ -309,16 +309,16 @@ LABEL_18:
   return v7;
 }
 
-- (void)updateCurrentBootstrapProfileWithName:(id)a3
+- (void)updateCurrentBootstrapProfileWithName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(ENOAuthAuthenticator *)self profiles];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  profiles = [(ENOAuthAuthenticator *)self profiles];
+  v6 = [profiles countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -329,27 +329,27 @@ LABEL_18:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v4 isEqualToString:v11];
+        name = [v10 name];
+        v12 = [nameCopy isEqualToString:name];
 
         if (v12)
         {
-          v13 = [v10 name];
-          [(ENOAuthAuthenticator *)self setCurrentProfile:v13];
+          name2 = [v10 name];
+          [(ENOAuthAuthenticator *)self setCurrentProfile:name2];
 
-          v14 = [v10 settings];
-          v15 = [v14 serviceHost];
-          [(ENOAuthAuthenticator *)self setHost:v15];
+          settings = [v10 settings];
+          serviceHost = [settings serviceHost];
+          [(ENOAuthAuthenticator *)self setHost:serviceHost];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [profiles countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -367,20 +367,20 @@ LABEL_11:
 
 - (void)switchProfile
 {
-  v3 = [(ENOAuthAuthenticator *)self profiles];
-  v4 = [v3 count];
+  profiles = [(ENOAuthAuthenticator *)self profiles];
+  v4 = [profiles count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(ENOAuthAuthenticator *)self profiles];
-      v7 = [v6 objectAtIndex:v5];
+      profiles2 = [(ENOAuthAuthenticator *)self profiles];
+      v7 = [profiles2 objectAtIndex:v5];
 
-      v8 = [(ENOAuthAuthenticator *)self currentProfile];
-      v9 = [v7 name];
-      v10 = [v8 isEqualToString:v9];
+      currentProfile = [(ENOAuthAuthenticator *)self currentProfile];
+      name = [v7 name];
+      v10 = [currentProfile isEqualToString:name];
 
       if (v10)
       {
@@ -388,8 +388,8 @@ LABEL_11:
       }
 
       ++v5;
-      v11 = [(ENOAuthAuthenticator *)self profiles];
-      v12 = [v11 count];
+      profiles3 = [(ENOAuthAuthenticator *)self profiles];
+      v12 = [profiles3 count];
     }
 
     while (v5 < v12);
@@ -401,40 +401,40 @@ LABEL_11:
     v13 = 1;
   }
 
-  v14 = [(ENOAuthAuthenticator *)self profiles];
-  v15 = [(ENOAuthAuthenticator *)self profiles];
-  v17 = [v14 objectAtIndex:{v13 % objc_msgSend(v15, "count")}];
+  profiles4 = [(ENOAuthAuthenticator *)self profiles];
+  profiles5 = [(ENOAuthAuthenticator *)self profiles];
+  v17 = [profiles4 objectAtIndex:{v13 % objc_msgSend(profiles5, "count")}];
 
-  v16 = [v17 name];
-  [(ENOAuthAuthenticator *)self updateCurrentBootstrapProfileWithName:v16];
+  name2 = [v17 name];
+  [(ENOAuthAuthenticator *)self updateCurrentBootstrapProfileWithName:name2];
 }
 
-- (void)completeAuthenticationWithError:(id)a3
+- (void)completeAuthenticationWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (![(ENOAuthAuthenticator *)self isCancelled])
   {
     [(ENOAuthAuthenticator *)self setState:0];
-    v4 = [(ENOAuthAuthenticator *)self delegate];
-    [v4 authenticatorDidFailWithError:v5];
+    delegate = [(ENOAuthAuthenticator *)self delegate];
+    [delegate authenticatorDidFailWithError:errorCopy];
   }
 }
 
-- (void)completeAuthenticationWithCredentials:(id)a3 usesLinkedAppNotebook:(BOOL)a4
+- (void)completeAuthenticationWithCredentials:(id)credentials usesLinkedAppNotebook:(BOOL)notebook
 {
-  v4 = a4;
-  v9 = a3;
+  notebookCopy = notebook;
+  credentialsCopy = credentials;
   if (![(ENOAuthAuthenticator *)self isCancelled])
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = v6;
-    if (v4)
+    if (notebookCopy)
     {
       [v6 setObject:MEMORY[0x277CBEC38] forKey:@"ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked"];
     }
 
-    v8 = [(ENOAuthAuthenticator *)self delegate];
-    [v8 authenticatorDidAuthenticateWithCredentials:v9 authInfo:v7];
+    delegate = [(ENOAuthAuthenticator *)self delegate];
+    [delegate authenticatorDidAuthenticateWithCredentials:credentialsCopy authInfo:v7];
   }
 }
 
@@ -444,10 +444,10 @@ LABEL_11:
   if (![(ENOAuthAuthenticator *)self isCancelled])
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = [(ENOAuthAuthenticator *)self receivedData];
-    v5 = [v3 initWithData:v4 encoding:4];
+    receivedData = [(ENOAuthAuthenticator *)self receivedData];
+    v5 = [v3 initWithData:receivedData encoding:4];
 
-    v6 = [(ENOAuthAuthenticator *)self response];
+    response = [(ENOAuthAuthenticator *)self response];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) != 0 && (-[ENOAuthAuthenticator response](self, "response"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 statusCode], v8, v9 != 200))
@@ -478,43 +478,43 @@ LABEL_11:
 
         v12 = [(ENOAuthAuthenticator *)self userAuthorizationURLStringWithParameters:v9];
         v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
-        v14 = [(ENOAuthAuthenticator *)self delegate];
-        v15 = [(ENOAuthAuthenticator *)self oauthCallback];
+        delegate = [(ENOAuthAuthenticator *)self delegate];
+        oauthCallback = [(ENOAuthAuthenticator *)self oauthCallback];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __40__ENOAuthAuthenticator_didFinishLoading__block_invoke;
         v31[3] = &unk_278C19140;
         v31[4] = self;
-        [v14 authenticatorShouldShowAuthorizationUIWithURL:v13 callbackPrefix:v15 completionBlock:v31];
+        [delegate authenticatorShouldShowAuthorizationUIWithURL:v13 callbackPrefix:oauthCallback completionBlock:v31];
       }
 
       else
       {
         v12 = [v9 objectForKey:@"oauth_token"];
         v13 = [v9 objectForKey:@"edam_noteStoreUrl"];
-        v14 = [v9 objectForKey:@"edam_userId"];
-        v15 = [v9 objectForKey:@"edam_webApiUrlPrefix"];
+        delegate = [v9 objectForKey:@"edam_userId"];
+        oauthCallback = [v9 objectForKey:@"edam_webApiUrlPrefix"];
         v16 = [v9 objectForKey:@"edam_expires"];
         v17 = MEMORY[0x277CBEAA8];
         [v16 doubleValue];
         v19 = [v17 dateWithTimeIntervalSince1970:v18 / 1000.0];
-        if (v12 && v13 && v14 && v15)
+        if (v12 && v13 && delegate && oauthCallback)
         {
           v20 = [ENCredentials alloc];
           [(ENOAuthAuthenticator *)self host];
           v30 = v16;
-          v21 = v15;
+          v21 = oauthCallback;
           v22 = v19;
-          v23 = v14;
+          v23 = delegate;
           v24 = v13;
           v26 = v25 = v12;
           v27 = [(ENCredentials *)v20 initWithHost:v26 edamUserId:v23 noteStoreUrl:v24 webApiUrlPrefix:v21 authenticationToken:v25 expirationDate:v22];
 
           v12 = v25;
           v13 = v24;
-          v14 = v23;
+          delegate = v23;
           v19 = v22;
-          v15 = v21;
+          oauthCallback = v21;
           v16 = v30;
           [(ENOAuthAuthenticator *)self completeAuthenticationWithCredentials:v27 usesLinkedAppNotebook:[(ENOAuthAuthenticator *)self userSelectedLinkedAppNotebook]];
           [(ENOAuthAuthenticator *)self setState:3];
@@ -535,35 +535,35 @@ LABEL_11:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = a3;
-  v5 = [(ENOAuthAuthenticator *)self receivedData];
-  [v5 appendData:v4];
+  dataCopy = data;
+  receivedData = [(ENOAuthAuthenticator *)self receivedData];
+  [receivedData appendData:dataCopy];
 }
 
-- (void)receivedResponse:(id)a3
+- (void)receivedResponse:(id)response
 {
-  [(ENOAuthAuthenticator *)self setResponse:a3];
-  v4 = [MEMORY[0x277CBEB28] data];
-  [(ENOAuthAuthenticator *)self setReceivedData:v4];
+  [(ENOAuthAuthenticator *)self setResponse:response];
+  data = [MEMORY[0x277CBEB28] data];
+  [(ENOAuthAuthenticator *)self setReceivedData:data];
 }
 
-- (void)failedWithError:(id)a3
+- (void)failedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (![(ENOAuthAuthenticator *)self isCancelled])
   {
     [(ENOAuthAuthenticator *)self setReceivedData:0];
     [(ENOAuthAuthenticator *)self setResponse:0];
-    [(ENOAuthAuthenticator *)self completeAuthenticationWithError:v4];
+    [(ENOAuthAuthenticator *)self completeAuthenticationWithError:errorCopy];
   }
 }
 
 - (void)handleDidBecomeActive
 {
-  v3 = [(ENOAuthAuthenticator *)self state];
-  v4 = v3 > 3 || v3 == 1;
+  state = [(ENOAuthAuthenticator *)self state];
+  v4 = state > 3 || state == 1;
   if (v4 && ![(ENOAuthAuthenticator *)self isActiveBecauseOfCallback])
   {
     [(ENOAuthAuthenticator *)self gotCallbackURL:0];
@@ -572,24 +572,24 @@ LABEL_11:
   }
 }
 
-- (id)userAuthorizationURLStringWithParameters:(id)a3
+- (id)userAuthorizationURLStringWithParameters:(id)parameters
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v4 string];
-  v7 = [objc_opt_class() deviceDescription];
+  parametersCopy = parameters;
+  string = [v4 string];
+  deviceDescription = [objc_opt_class() deviceDescription];
   v8 = MEMORY[0x277CBEB38];
   v18[0] = @"oauth_token";
-  v9 = [v5 objectForKey:?];
+  v9 = [parametersCopy objectForKey:?];
 
   v19[0] = v9;
   v19[1] = @"ios";
   v18[1] = @"inapp";
   v18[2] = @"deviceDescription";
   v18[3] = @"deviceIdentifier";
-  v19[2] = v7;
-  v19[3] = v6;
+  v19[2] = deviceDescription;
+  v19[3] = string;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v11 = [v8 dictionaryWithDictionary:v10];
 
@@ -605,8 +605,8 @@ LABEL_11:
 
   v12 = [objc_opt_class() queryStringFromParameters:v11];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(ENOAuthAuthenticator *)self host];
-  v15 = [v13 stringWithFormat:@"%@://%@/OAuth.action?%@", @"https", v14, v12];
+  host = [(ENOAuthAuthenticator *)self host];
+  v15 = [v13 stringWithFormat:@"%@://%@/OAuth.action?%@", @"https", host, v12];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -616,8 +616,8 @@ LABEL_11:
 - (id)oauthCallback
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ENOAuthAuthenticator *)self callbackScheme];
-  v4 = [v2 stringWithFormat:@"%@://response", v3];
+  callbackScheme = [(ENOAuthAuthenticator *)self callbackScheme];
+  v4 = [v2 stringWithFormat:@"%@://response", callbackScheme];
 
   return v4;
 }
@@ -625,8 +625,8 @@ LABEL_11:
 - (id)callbackScheme
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ENOAuthAuthenticator *)self consumerKey];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"+"];
+  consumerKey = [(ENOAuthAuthenticator *)self consumerKey];
+  v4 = [consumerKey stringByReplacingOccurrencesOfString:@"_" withString:@"+"];
   v5 = [v2 stringWithFormat:@"en-%@", v4];
 
   return v5;
@@ -637,20 +637,20 @@ LABEL_11:
   if (![(ENOAuthAuthenticator *)self isCancelled])
   {
     v3 = MEMORY[0x277CBEAC0];
-    v4 = [(ENOAuthAuthenticator *)self oauthCallback];
-    v5 = [v3 dictionaryWithObjectsAndKeys:{v4, @"oauth_callback", 0}];
-    v6 = [(ENOAuthAuthenticator *)self host];
-    v7 = [(ENOAuthAuthenticator *)self consumerKey];
-    v8 = [(ENOAuthAuthenticator *)self consumerSecret];
-    v9 = [ENGCOAuth URLRequestForPath:@"/oauth" GETParameters:v5 scheme:@"https" host:v6 consumerKey:v7 consumerSecret:v8 accessToken:0 tokenSecret:0];
+    oauthCallback = [(ENOAuthAuthenticator *)self oauthCallback];
+    v5 = [v3 dictionaryWithObjectsAndKeys:{oauthCallback, @"oauth_callback", 0}];
+    host = [(ENOAuthAuthenticator *)self host];
+    consumerKey = [(ENOAuthAuthenticator *)self consumerKey];
+    consumerSecret = [(ENOAuthAuthenticator *)self consumerSecret];
+    v9 = [ENGCOAuth URLRequestForPath:@"/oauth" GETParameters:v5 scheme:@"https" host:host consumerKey:consumerKey consumerSecret:consumerSecret accessToken:0 tokenSecret:0];
 
-    v10 = [MEMORY[0x277CBABB8] sharedSession];
+    mEMORY[0x277CBABB8] = [MEMORY[0x277CBABB8] sharedSession];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__ENOAuthAuthenticator_startOauthAuthentication__block_invoke;
     v12[3] = &unk_278C1BB20;
     v12[4] = self;
-    v11 = [v10 dataTaskWithRequest:v9 completionHandler:v12];
+    v11 = [mEMORY[0x277CBABB8] dataTaskWithRequest:v9 completionHandler:v12];
 
     [v11 resume];
   }
@@ -683,24 +683,24 @@ void __48__ENOAuthAuthenticator_startOauthAuthentication__block_invoke(uint64_t 
 {
   if ([(ENOAuthAuthenticator *)self inProgress])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ENOAuthAuthenticator.m" lineNumber:84 description:@"Authenticator is a single-use-only object!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ENOAuthAuthenticator.m" lineNumber:84 description:@"Authenticator is a single-use-only object!"];
   }
 
-  v4 = [(ENOAuthAuthenticator *)self delegate];
+  delegate = [(ENOAuthAuthenticator *)self delegate];
 
-  if (!v4)
+  if (!delegate)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ENOAuthAuthenticator.m" lineNumber:85 description:@"Must set authenticator delegate"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ENOAuthAuthenticator.m" lineNumber:85 description:@"Must set authenticator delegate"];
   }
 
   if ([(ENOAuthAuthenticator *)self inProgress])
   {
     v14 = +[ENSession sharedSession];
-    v5 = [v14 logger];
+    logger = [v14 logger];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot reuse single instance of %@", objc_opt_class()];
-    [v5 evernoteLogErrorString:v6];
+    [logger evernoteLogErrorString:v6];
   }
 
   else
@@ -710,18 +710,18 @@ void __48__ENOAuthAuthenticator_startOauthAuthentication__block_invoke(uint64_t 
     v7 = objc_alloc_init(ENCredentialStore);
     [(ENOAuthAuthenticator *)self setCredentialStore:v7];
 
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
-    v9 = [v8 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v10 = [(ENOAuthAuthenticator *)self delegate];
-    v11 = [v10 userStoreClientForBootstrapping];
+    delegate2 = [(ENOAuthAuthenticator *)self delegate];
+    userStoreClientForBootstrapping = [delegate2 userStoreClientForBootstrapping];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __36__ENOAuthAuthenticator_authenticate__block_invoke;
     v15[3] = &unk_278C19118;
     v15[4] = self;
-    [v11 fetchBootstrapInfoWithLocale:v9 completion:v15];
+    [userStoreClientForBootstrapping fetchBootstrapInfoWithLocale:localeIdentifier completion:v15];
   }
 }
 
@@ -756,17 +756,17 @@ void __36__ENOAuthAuthenticator_authenticate__block_invoke(uint64_t a1, void *a2
 - (void)emptyCookieJar
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ENOAuthAuthenticator *)self host];
+  host = [(ENOAuthAuthenticator *)self host];
 
-  if (v3)
+  if (host)
   {
-    v4 = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
+    mEMORY[0x277CBAB38] = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [v4 cookies];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    cookies = [mEMORY[0x277CBAB38] cookies];
+    v6 = [cookies countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -777,21 +777,21 @@ void __36__ENOAuthAuthenticator_authenticate__block_invoke(uint64_t a1, void *a2
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(cookies);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 domain];
-          v12 = [(ENOAuthAuthenticator *)self host];
-          v13 = [v11 hasSuffix:v12];
+          domain = [v10 domain];
+          host2 = [(ENOAuthAuthenticator *)self host];
+          v13 = [domain hasSuffix:host2];
 
           if (v13)
           {
-            [v4 deleteCookie:v10];
+            [mEMORY[0x277CBAB38] deleteCookie:v10];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [cookies countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);

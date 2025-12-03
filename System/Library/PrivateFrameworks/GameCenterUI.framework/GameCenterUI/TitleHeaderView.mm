@@ -1,15 +1,15 @@
 @interface TitleHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (_TtC12GameCenterUI11ArtworkView)iconArtworkView;
 - (id)accessoryView;
 - (id)titleLabel;
-- (void)didTapWithAccessoryView:(id)a3;
+- (void)didTapWithAccessoryView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setIconArtworkView:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessoryView:(id)view;
+- (void)setIconArtworkView:(id)view;
 @end
 
 @implementation TitleHeaderView
@@ -28,11 +28,11 @@
   return v0;
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E27E748(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24E27E748(view);
 }
 
 - (_TtC12GameCenterUI11ArtworkView)iconArtworkView
@@ -42,25 +42,25 @@
   return v2;
 }
 
-- (void)setIconArtworkView:(id)a3
+- (void)setIconArtworkView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E27E9E0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24E27E9E0(view);
 }
 
-- (void)didTapWithAccessoryView:(id)a3
+- (void)didTapWithAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E27ED8C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_24E27ED8C(viewCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_24E27EE94(width, height);
   v7 = v6;
   v9 = v8;
@@ -74,19 +74,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E27F26C();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E280308();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E280460();
   v4 = v3;
 
@@ -103,9 +103,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -117,7 +117,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24E2806B8(v4, v6);
 }
 

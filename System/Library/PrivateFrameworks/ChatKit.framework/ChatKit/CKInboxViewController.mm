@@ -1,9 +1,9 @@
 @interface CKInboxViewController
 - (BOOL)_shouldShowJunkCell;
 - (BOOL)_wantsThreeColumnLayout;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (BOOL)wantsCollapsedAppearance;
-- (CKInboxViewController)initWithConversationListController:(id)a3;
+- (CKInboxViewController)initWithConversationListController:(id)controller;
 - (CKInboxViewControllerDelegate)delegate;
 - (NSArray)categoriesCellsDataArray;
 - (NSArray)junkCellsDataArray;
@@ -11,9 +11,9 @@
 - (NSArray)recentlyDeletedCellDataArray;
 - (UITextView)pinnedFooterTextView;
 - (UITextView)scrollingFooterTextView;
-- (id)_getHeaderStringForExtension:(id)a3;
-- (id)_setHeaderAttributedStringForFont:(id)a3;
-- (id)_unreadCountStringForIndexPath:(id)a3;
+- (id)_getHeaderStringForExtension:(id)extension;
+- (id)_setHeaderAttributedStringForFont:(id)font;
+- (id)_unreadCountStringForIndexPath:(id)path;
 - (id)_updateCategoriesCellsDataArray;
 - (id)footerTextView;
 - (int64_t)_categoriesSectionIndex;
@@ -21,47 +21,47 @@
 - (int64_t)_lastSectionIndex;
 - (int64_t)_primarySectionIndex;
 - (int64_t)_recentlyDeletedSectionIndex;
-- (unint64_t)_filterModeForIndexPath:(id)a3;
-- (void)_chatUnreadCountDidChange:(id)a3;
+- (unint64_t)_filterModeForIndexPath:(id)path;
+- (void)_chatUnreadCountDidChange:(id)change;
 - (void)_contentSizeCategoryChanged;
-- (void)_conversationListDidFinishSorting:(id)a3;
+- (void)_conversationListDidFinishSorting:(id)sorting;
 - (void)_localeDidChange;
-- (void)_messageFilteringEnabledDidChange:(id)a3;
-- (void)_setCommonTextProperties:(uint64_t)a1;
+- (void)_messageFilteringEnabledDidChange:(id)change;
+- (void)_setCommonTextProperties:(uint64_t)properties;
 - (void)_spamFilteringStateChanged;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)focusStateDidChange;
 - (void)reloadCollectionViewData;
 - (void)setupCollectionView;
 - (void)updateBackButton;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKInboxViewController
 
-- (CKInboxViewController)initWithConversationListController:(id)a3
+- (CKInboxViewController)initWithConversationListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc(MEMORY[0x1E69DC808]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__CKInboxViewController_initWithConversationListController___block_invoke;
   v11[3] = &unk_1E72F87C8;
-  v6 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = selfCopy;
   v7 = [v5 initWithSectionProvider:v11];
-  v10.receiver = v6;
+  v10.receiver = selfCopy;
   v10.super_class = CKInboxViewController;
   v8 = [(CKInboxViewController *)&v10 initWithCollectionViewLayout:v7];
 
   if (v8)
   {
-    [(CKInboxViewController *)v8 setConversationListController:v4];
+    [(CKInboxViewController *)v8 setConversationListController:controllerCopy];
     [(CKInboxViewController *)v8 updateBackButton];
     [(CKInboxViewController *)v8 setupCollectionView];
     v8->_shouldProcessBackButtonUpdates = 1;
@@ -119,43 +119,43 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   [(CKInboxViewController *)self setTitle:v4];
 
   v5 = CKIsRunningInMacCatalyst();
-  v6 = [(CKInboxViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  v8 = v7;
+  navigationController = [(CKInboxViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  v8 = navigationBar;
   if (v5)
   {
-    [v7 setPrefersLargeTitles:0];
+    [navigationBar setPrefersLargeTitles:0];
 
-    v9 = [(CKInboxViewController *)self navigationItem];
-    [v9 setLargeTitleDisplayMode:2];
+    navigationItem = [(CKInboxViewController *)self navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v10 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
+    navigationItem3 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     v22 = *MEMORY[0x1E69DB650];
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    v23[0] = v11;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v23[0] = clearColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    [v10 setTitleTextAttributes:v12];
+    [navigationItem3 setTitleTextAttributes:v12];
 
-    [v10 configureWithTransparentBackground];
-    v13 = [(CKInboxViewController *)self navigationItem];
-    [v13 setStandardAppearance:v10];
+    [navigationItem3 configureWithTransparentBackground];
+    navigationItem2 = [(CKInboxViewController *)self navigationItem];
+    [navigationItem2 setStandardAppearance:navigationItem3];
   }
 
   else
   {
-    [v7 setPrefersLargeTitles:1];
+    [navigationBar setPrefersLargeTitles:1];
 
-    v10 = [(CKInboxViewController *)self navigationItem];
-    [v10 setLargeTitleDisplayMode:1];
+    navigationItem3 = [(CKInboxViewController *)self navigationItem];
+    [navigationItem3 setLargeTitleDisplayMode:1];
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel__chatUnreadCountDidChange_ name:*MEMORY[0x1E69A5930] object:0];
-  [v14 addObserver:self selector:sel__chatUnreadCountDidChange_ name:@"CKConversationListChangedNotification" object:0];
-  v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v16 = [v15 isUnreadCountRefactorEnabled];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__chatUnreadCountDidChange_ name:*MEMORY[0x1E69A5930] object:0];
+  [defaultCenter addObserver:self selector:sel__chatUnreadCountDidChange_ name:@"CKConversationListChangedNotification" object:0];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isUnreadCountRefactorEnabled = [mEMORY[0x1E69A8070] isUnreadCountRefactorEnabled];
 
-  if (v16)
+  if (isUnreadCountRefactorEnabled)
   {
     v17 = *MEMORY[0x1E69A7DD0];
   }
@@ -165,51 +165,51 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
     v17 = *MEMORY[0x1E69A5920];
   }
 
-  [v14 addObserver:self selector:sel__chatUnreadCountDidChange_ name:v17 object:0];
-  [v14 addObserver:self selector:sel__conversationListDidFinishSorting_ name:@"CKConversationListDidFinishSorting" object:0];
-  [v14 addObserver:self selector:sel__messageFilteringEnabledDidChange_ name:CKMessageFilteringChangedNotification[0] object:0];
-  [v14 addObserver:self selector:sel__spamFilteringStateChanged name:CKMessageSpamFilteringChangedNotification object:0];
-  [v14 addObserver:self selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
-  [v14 addObserver:self selector:sel__localeDidChange name:*MEMORY[0x1E695D8F0] object:0];
+  [defaultCenter addObserver:self selector:sel__chatUnreadCountDidChange_ name:v17 object:0];
+  [defaultCenter addObserver:self selector:sel__conversationListDidFinishSorting_ name:@"CKConversationListDidFinishSorting" object:0];
+  [defaultCenter addObserver:self selector:sel__messageFilteringEnabledDidChange_ name:CKMessageFilteringChangedNotification[0] object:0];
+  [defaultCenter addObserver:self selector:sel__spamFilteringStateChanged name:CKMessageSpamFilteringChangedNotification object:0];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+  [defaultCenter addObserver:self selector:sel__localeDidChange name:*MEMORY[0x1E695D8F0] object:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v19 = self;
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v19, _SMSSubClassificationParamsUpdated, @"CKSMSFilterExtensionParamsUpdateDistributedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  v20 = [MEMORY[0x1E69A8088] sharedManager];
-  [v20 addDelegate:v19];
+  selfCopy = self;
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, selfCopy, _SMSSubClassificationParamsUpdated, @"CKSMSFilterExtensionParamsUpdateDistributedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  mEMORY[0x1E69A8088] = [MEMORY[0x1E69A8088] sharedManager];
+  [mEMORY[0x1E69A8088] addDelegate:selfCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = CKInboxViewController;
-  [(CKInboxViewController *)&v12 viewWillAppear:a3];
-  v4 = [(CKInboxViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setNeedsLayout];
+  [(CKInboxViewController *)&v12 viewWillAppear:appear];
+  navigationController = [(CKInboxViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setNeedsLayout];
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [(CKInboxViewController *)self navigationController];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setupNavBarAppearanceWithNavigationController:v7 withBackgroundColor:v8];
+  navigationController2 = [(CKInboxViewController *)self navigationController];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setupNavBarAppearanceWithNavigationController:navigationController2 withBackgroundColor:clearColor];
 
   [(CKInboxViewController *)self reloadCollectionViewData];
   self->_isVisible = 1;
-  v9 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v10 = *MEMORY[0x1E69A73E8];
   v13[0] = @"actionType";
   v13[1] = @"fromView";
   v14[0] = @"ViewedInbox";
   v14[1] = @"InboxView";
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [v9 trackEvent:v10 withDictionary:v11];
+  [mEMORY[0x1E69A8168] trackEvent:v10 withDictionary:v11];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CKInboxViewController;
-  [(CKInboxViewController *)&v10 viewDidAppear:a3];
+  [(CKInboxViewController *)&v10 viewDidAppear:appear];
   if ([(CKInboxViewController *)self wantsCollapsedAppearance])
   {
     if (IMOSLoggingEnabled())
@@ -222,30 +222,30 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
       }
     }
 
-    v5 = [(CKInboxViewController *)self conversationListController];
-    [v5 setFilterMode:1];
+    conversationListController = [(CKInboxViewController *)self conversationListController];
+    [conversationListController setFilterMode:1];
 
-    v6 = [(CKInboxViewController *)self _conversationList];
-    [v6 releaseWasKnownSenderHold];
+    _conversationList = [(CKInboxViewController *)self _conversationList];
+    [_conversationList releaseWasKnownSenderHold];
 
-    v7 = [(CKInboxViewController *)self _conversationList];
-    [v7 updateConversationsWasKnownSender];
+    _conversationList2 = [(CKInboxViewController *)self _conversationList];
+    [_conversationList2 updateConversationsWasKnownSender];
 
-    v8 = [(CKInboxViewController *)self _conversationList];
-    [v8 clearHoldInUnreadFilter];
+    _conversationList3 = [(CKInboxViewController *)self _conversationList];
+    [_conversationList3 clearHoldInUnreadFilter];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [(CKInboxViewController *)self navigationController];
-  [v5 setupNavBarAppearanceWithNavigationController:v6];
+  navigationController = [(CKInboxViewController *)self navigationController];
+  [v5 setupNavBarAppearanceWithNavigationController:navigationController];
 
   v7.receiver = self;
   v7.super_class = CKInboxViewController;
-  [(CKInboxViewController *)&v7 viewWillDisappear:v3];
+  [(CKInboxViewController *)&v7 viewWillDisappear:disappearCopy];
   self->_isVisible = 0;
 }
 
@@ -256,48 +256,48 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   [(CKInboxViewController *)&v40 viewDidLayoutSubviews];
   if (![(CKInboxViewController *)self shouldHideInboxFooterTextView])
   {
-    v3 = [(CKInboxViewController *)self collectionView];
-    [v3 contentInset];
+    collectionView = [(CKInboxViewController *)self collectionView];
+    [collectionView contentInset];
     v5 = v4;
     v7 = v6;
     v9 = v8;
 
-    v10 = [(CKInboxViewController *)self collectionView];
-    [v10 setContentInset:{v5, v7, 25.0, v9}];
+    collectionView2 = [(CKInboxViewController *)self collectionView];
+    [collectionView2 setContentInset:{v5, v7, 25.0, v9}];
 
-    v11 = [(CKInboxViewController *)self collectionView];
-    [v11 bounds];
+    collectionView3 = [(CKInboxViewController *)self collectionView];
+    [collectionView3 bounds];
     v13 = v12;
 
-    v14 = [(CKInboxViewController *)self collectionView];
-    [v14 safeAreaInsets];
+    collectionView4 = [(CKInboxViewController *)self collectionView];
+    [collectionView4 safeAreaInsets];
     v16 = v15;
-    v17 = [(CKInboxViewController *)self collectionView];
-    [v17 safeAreaInsets];
+    collectionView5 = [(CKInboxViewController *)self collectionView];
+    [collectionView5 safeAreaInsets];
     v19 = (v16 + v18);
 
-    v20 = [(CKInboxViewController *)self pinnedFooterTextView];
-    v21 = [(CKInboxViewController *)self collectionView];
-    [v21 bounds];
-    [v20 sizeThatFits:{(v13 - v19), v22}];
+    pinnedFooterTextView = [(CKInboxViewController *)self pinnedFooterTextView];
+    collectionView6 = [(CKInboxViewController *)self collectionView];
+    [collectionView6 bounds];
+    [pinnedFooterTextView sizeThatFits:{(v13 - v19), v22}];
     v24 = v23;
 
-    v25 = [(CKInboxViewController *)self scrollingFooterTextView];
-    [v25 sizeToFit];
+    scrollingFooterTextView = [(CKInboxViewController *)self scrollingFooterTextView];
+    [scrollingFooterTextView sizeToFit];
 
-    v26 = [(CKInboxViewController *)self collectionView];
-    [v26 contentSize];
+    collectionView7 = [(CKInboxViewController *)self collectionView];
+    [collectionView7 contentSize];
     v28 = v27;
-    v29 = [(CKInboxViewController *)self scrollingFooterTextView];
-    [v29 bounds];
+    scrollingFooterTextView2 = [(CKInboxViewController *)self scrollingFooterTextView];
+    [scrollingFooterTextView2 bounds];
     v31 = (v28 - v30);
 
-    v32 = [(CKInboxViewController *)self collectionView];
-    [v32 adjustedContentInset];
+    collectionView8 = [(CKInboxViewController *)self collectionView];
+    [collectionView8 adjustedContentInset];
     v34 = v33 + 25.0;
 
-    v35 = [(CKInboxViewController *)self collectionView];
-    [v35 visibleSize];
+    collectionView9 = [(CKInboxViewController *)self collectionView];
+    [collectionView9 visibleSize];
     v37 = v36 - (2 * v31) - v34;
 
     v38 = v37;
@@ -307,33 +307,33 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = pathCopy;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Selected index path: %@", buf, 0xCu);
     }
   }
 
-  v9 = [(CKInboxViewController *)self initiallySelectedCell];
-  [v9 setSelected:0];
+  initiallySelectedCell = [(CKInboxViewController *)self initiallySelectedCell];
+  [initiallySelectedCell setSelected:0];
 
   [(CKInboxViewController *)self setInitiallySelectedCell:0];
-  v10 = [(CKInboxViewController *)self _filterModeForIndexPath:v7];
-  v11 = [(CKInboxViewController *)self delegate];
-  [v11 inboxViewController:self didSelectFilterMode:v10];
+  v10 = [(CKInboxViewController *)self _filterModeForIndexPath:pathCopy];
+  delegate = [(CKInboxViewController *)self delegate];
+  [delegate inboxViewController:self didSelectFilterMode:v10];
 
   [(CKInboxViewController *)self updateBackButton];
   v12 = [MEMORY[0x1E69A8210] conversationFilterModeForMessageFilter:v10];
-  v13 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v19[0] = @"ChoseFilter";
   v16 = @"actionType";
   v17 = @"filterType";
@@ -342,90 +342,90 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   v18 = @"fromView";
   v19[2] = @"InboxView";
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v16 count:3];
-  [v13 trackEvent:*MEMORY[0x1E69A73E8] withDictionary:{v15, v16, v17}];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A73E8] withDictionary:{v15, v16, v17}];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v13 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   if (![(CKInboxViewController *)self wantsCollapsedAppearance])
   {
-    v8 = [(CKInboxViewController *)self collectionViewDataSource];
-    v9 = [v8 itemIdentifierForIndexPath:v7];
+    collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+    v9 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-    v10 = [v9 filterMode];
-    v11 = [(CKInboxViewController *)self conversationListController];
-    v12 = [v11 filterMode];
+    filterMode = [v9 filterMode];
+    conversationListController = [(CKInboxViewController *)self conversationListController];
+    filterMode2 = [conversationListController filterMode];
 
-    if (v10 == v12)
+    if (filterMode == filterMode2)
     {
-      [v13 setSelected:1];
-      [(CKInboxViewController *)self setInitiallySelectedCell:v13];
+      [cellCopy setSelected:1];
+      [(CKInboxViewController *)self setInitiallySelectedCell:cellCopy];
     }
 
     else
     {
-      [v13 setSelected:0];
+      [cellCopy setSelected:0];
     }
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:@"prefs:root=MESSAGES&path=JUNK_CONVERSATIONS_BUTTON"];
-  v7 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v7 openSensitiveURL:v6 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v6 withOptions:0];
 
-  v8 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v9 = *MEMORY[0x1E69A73E8];
   v12[0] = @"actionType";
   v12[1] = @"fromView";
   v13[0] = @"JumpToJunkInbox";
   v13[1] = @"InboxView";
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v8 trackEvent:v9 withDictionary:v10];
+  [mEMORY[0x1E69A8168] trackEvent:v9 withDictionary:v10];
 
   return 0;
 }
 
-- (id)_unreadCountStringForIndexPath:(id)a3
+- (id)_unreadCountStringForIndexPath:(id)path
 {
-  v4 = [(CKInboxViewController *)self _filterModeForIndexPath:a3];
-  v5 = [(CKInboxViewController *)self _conversationList];
-  v6 = [v5 unreadCountForFilterMode:v4];
+  v4 = [(CKInboxViewController *)self _filterModeForIndexPath:path];
+  _conversationList = [(CKInboxViewController *)self _conversationList];
+  v6 = [_conversationList unreadCountForFilterMode:v4];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
   v8 = v7;
   if (v6)
   {
-    v9 = [v7 __ck_localizedString];
+    __ck_localizedString = [v7 __ck_localizedString];
   }
 
   else
   {
-    v9 = &stru_1F04268F8;
+    __ck_localizedString = &stru_1F04268F8;
   }
 
-  return v9;
+  return __ck_localizedString;
 }
 
-- (unint64_t)_filterModeForIndexPath:(id)a3
+- (unint64_t)_filterModeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CKInboxViewController *)self collectionViewDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  v6 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [v6 filterMode];
-  return v7;
+  filterMode = [v6 filterMode];
+  return filterMode;
 }
 
 - (UITextView)pinnedFooterTextView
 {
-  v3 = [(CKInboxViewController *)self shouldHideInboxFooterTextView];
+  shouldHideInboxFooterTextView = [(CKInboxViewController *)self shouldHideInboxFooterTextView];
   pinnedFooterTextView = self->_pinnedFooterTextView;
-  if (v3)
+  if (shouldHideInboxFooterTextView)
   {
     [(UITextView *)pinnedFooterTextView removeFromSuperview];
     v5 = 0;
@@ -435,32 +435,32 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   {
     if (!pinnedFooterTextView)
     {
-      v6 = [(CKInboxViewController *)self footerTextView];
+      footerTextView = [(CKInboxViewController *)self footerTextView];
       v7 = self->_pinnedFooterTextView;
-      self->_pinnedFooterTextView = v6;
+      self->_pinnedFooterTextView = footerTextView;
 
-      v8 = [(CKInboxViewController *)self view];
-      [v8 addSubview:self->_pinnedFooterTextView];
+      view = [(CKInboxViewController *)self view];
+      [view addSubview:self->_pinnedFooterTextView];
 
-      v9 = [(UITextView *)self->_pinnedFooterTextView bottomAnchor];
-      v10 = [(CKInboxViewController *)self view];
-      v11 = [v10 safeAreaLayoutGuide];
-      v12 = [v11 bottomAnchor];
-      v13 = [v9 constraintEqualToAnchor:v12 constant:-25.0];
+      bottomAnchor = [(UITextView *)self->_pinnedFooterTextView bottomAnchor];
+      view2 = [(CKInboxViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+      v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-25.0];
       [v13 setActive:1];
 
-      v14 = [(UITextView *)self->_pinnedFooterTextView widthAnchor];
-      v15 = [(CKInboxViewController *)self view];
-      v16 = [v15 safeAreaLayoutGuide];
-      v17 = [v16 widthAnchor];
-      v18 = [v14 constraintEqualToAnchor:v17];
+      widthAnchor = [(UITextView *)self->_pinnedFooterTextView widthAnchor];
+      view3 = [(CKInboxViewController *)self view];
+      safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+      widthAnchor2 = [safeAreaLayoutGuide2 widthAnchor];
+      v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v18 setActive:1];
 
-      v19 = [(UITextView *)self->_pinnedFooterTextView centerXAnchor];
-      v20 = [(CKInboxViewController *)self view];
-      v21 = [v20 safeAreaLayoutGuide];
-      v22 = [v21 centerXAnchor];
-      v23 = [v19 constraintEqualToAnchor:v22];
+      centerXAnchor = [(UITextView *)self->_pinnedFooterTextView centerXAnchor];
+      view4 = [(CKInboxViewController *)self view];
+      safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+      centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+      v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v23 setActive:1];
 
       pinnedFooterTextView = self->_pinnedFooterTextView;
@@ -474,9 +474,9 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
 
 - (UITextView)scrollingFooterTextView
 {
-  v3 = [(CKInboxViewController *)self shouldHideInboxFooterTextView];
+  shouldHideInboxFooterTextView = [(CKInboxViewController *)self shouldHideInboxFooterTextView];
   scrollingFooterTextView = self->_scrollingFooterTextView;
-  if (v3)
+  if (shouldHideInboxFooterTextView)
   {
     [(UITextView *)scrollingFooterTextView removeFromSuperview];
     v5 = 0;
@@ -486,9 +486,9 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   {
     if (!scrollingFooterTextView)
     {
-      v6 = [(CKInboxViewController *)self footerTextView];
+      footerTextView = [(CKInboxViewController *)self footerTextView];
       v7 = self->_scrollingFooterTextView;
-      self->_scrollingFooterTextView = v6;
+      self->_scrollingFooterTextView = footerTextView;
 
       scrollingFooterTextView = self->_scrollingFooterTextView;
     }
@@ -509,10 +509,10 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   v7 = [v6 localizedStringForKey:@"FILTER_FOOTER_TEXT_%@" value:&stru_1F04268F8 table:@"ChatKit"];
   v8 = [v5 stringWithFormat:v7, v4];
 
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [v9 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v10 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v11 = @"\u200F";
   }
@@ -528,10 +528,10 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   v14 = objc_opt_new();
   [v14 setAlignment:1];
   [v13 addAttribute:*MEMORY[0x1E69DB688] value:v14 range:{0, objc_msgSend(v13, "length")}];
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 addAttribute:*MEMORY[0x1E69DB650] value:v15 range:{0, objc_msgSend(v13, "length")}];
-  v16 = [v13 string];
-  v17 = [v16 rangeOfString:v4];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v13 addAttribute:*MEMORY[0x1E69DB650] value:secondaryLabelColor range:{0, objc_msgSend(v13, "length")}];
+  string = [v13 string];
+  v17 = [string rangeOfString:v4];
   v19 = v18;
 
   [v13 addAttribute:*MEMORY[0x1E69DB670] value:&stru_1F04268F8 range:{v17, v19}];
@@ -547,15 +547,15 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   [v23 setSelectable:1];
   [v23 setUserInteractionEnabled:1];
   [v23 setDelegate:self];
-  v24 = [v23 textDragInteraction];
-  [v24 setEnabled:0];
+  textDragInteraction = [v23 textDragInteraction];
+  [textDragInteraction setEnabled:0];
 
   [v23 setClipsToBounds:0];
   [v23 setAdjustsFontForContentSizeCategory:1];
   [v23 setAttributedText:v13];
-  v25 = [(CKInboxViewController *)self view];
-  v26 = [v25 backgroundColor];
-  [v23 setBackgroundColor:v26];
+  view = [(CKInboxViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  [v23 setBackgroundColor:backgroundColor];
 
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
 
@@ -580,8 +580,8 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
       [v4 addObject:v7];
     }
 
-    v8 = [(CKInboxViewController *)self delegate];
-    v9 = [v8 inboxViewController:self shouldShowFilterMode:8];
+    delegate = [(CKInboxViewController *)self delegate];
+    v9 = [delegate inboxViewController:self shouldShowFilterMode:8];
 
     if (v9)
     {
@@ -601,11 +601,11 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
 
 - (NSArray)categoriesCellsDataArray
 {
-  v2 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   if (![(NSArray *)self->_categoriesCellsDataArray count])
   {
-    v19 = v2;
+    v19 = selfCopy;
     v3 = objc_opt_new();
     v21 = 0u;
     v22 = 0u;
@@ -628,11 +628,11 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
 
           v8 = *(*(&v21 + 1) + 8 * i);
           v9 = [CKInboxCellData alloc];
-          v10 = [v8 iconName];
+          iconName = [v8 iconName];
           v11 = IMSharedUtilitiesFrameworkBundle();
-          v12 = [v8 folderName];
-          v13 = [v11 localizedStringForKey:v12 value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-          v14 = -[CKInboxCellData initWithImageName:title:filterMode:](v9, "initWithImageName:title:filterMode:", v10, v13, [v8 filterMode]);
+          folderName = [v8 folderName];
+          v13 = [v11 localizedStringForKey:folderName value:&stru_1F04268F8 table:@"IMSharedUtilities"];
+          v14 = -[CKInboxCellData initWithImageName:title:filterMode:](v9, "initWithImageName:title:filterMode:", iconName, v13, [v8 filterMode]);
 
           [v3 addObject:v14];
         }
@@ -644,12 +644,12 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
     }
 
     v15 = [v3 copy];
-    v2 = v19;
+    selfCopy = v19;
     categoriesCellsDataArray = v19->_categoriesCellsDataArray;
     v19->_categoriesCellsDataArray = v15;
   }
 
-  v17 = v2->_categoriesCellsDataArray;
+  v17 = selfCopy->_categoriesCellsDataArray;
 
   return v17;
 }
@@ -701,8 +701,8 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
 - (BOOL)_shouldShowJunkCell
 {
   v3 = IMIsOscarEnabled();
-  v4 = [(CKInboxViewController *)self delegate];
-  v5 = v4;
+  delegate = [(CKInboxViewController *)self delegate];
+  v5 = delegate;
   if (v3)
   {
     v6 = 9;
@@ -713,7 +713,7 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
     v6 = 6;
   }
 
-  v7 = [v4 inboxViewController:self shouldShowFilterMode:v6];
+  v7 = [delegate inboxViewController:self shouldShowFilterMode:v6];
 
   return v7;
 }
@@ -730,8 +730,8 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
     self->_recentlyDeletedCellDataArray = v4;
   }
 
-  v6 = [(CKInboxViewController *)self delegate];
-  v7 = [v6 inboxViewController:self shouldShowFilterMode:7];
+  delegate = [(CKInboxViewController *)self delegate];
+  v7 = [delegate inboxViewController:self shouldShowFilterMode:7];
 
   if (v7)
   {
@@ -748,14 +748,14 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
 
 - (void)setupCollectionView
 {
-  v3 = [(CKInboxViewController *)self collectionView];
-  [v3 setDelegate:self];
+  collectionView = [(CKInboxViewController *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v4 = [(CKInboxViewController *)self collectionView];
-  [v4 setAutoresizingMask:18];
+  collectionView2 = [(CKInboxViewController *)self collectionView];
+  [collectionView2 setAutoresizingMask:18];
 
-  v5 = [(CKInboxViewController *)self collectionView];
-  [v5 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(CKInboxViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
   v6 = MEMORY[0x1E69DC870];
   v7 = objc_opt_class();
@@ -784,17 +784,17 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   v29[4] = self;
   v16 = [v13 registrationWithSupplementaryClass:v14 elementKind:v15 configurationHandler:v29];
   v17 = objc_alloc(MEMORY[0x1E69DC820]);
-  v18 = [(CKInboxViewController *)self collectionView];
+  collectionView4 = [(CKInboxViewController *)self collectionView];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __44__CKInboxViewController_setupCollectionView__block_invoke_3;
   v27[3] = &unk_1E72F8840;
   v28 = v12;
   v19 = v12;
-  v20 = [v17 initWithCollectionView:v18 cellProvider:v27];
+  v20 = [v17 initWithCollectionView:collectionView4 cellProvider:v27];
   [(CKInboxViewController *)self setCollectionViewDataSource:v20];
 
-  v21 = [(CKInboxViewController *)self collectionViewDataSource];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __44__CKInboxViewController_setupCollectionView__block_invoke_4;
@@ -803,7 +803,7 @@ id __60__CKInboxViewController_initWithConversationListController___block_invoke
   v26 = v9;
   v22 = v9;
   v23 = v16;
-  [v21 setSupplementaryViewProvider:v24];
+  [collectionViewDataSource setSupplementaryViewProvider:v24];
 }
 
 void __44__CKInboxViewController_setupCollectionView__block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -949,8 +949,8 @@ id __44__CKInboxViewController_setupCollectionView__block_invoke_4(uint64_t a1, 
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   [v3 appendSectionsWithIdentifiers:v4];
 
-  v5 = [(CKInboxViewController *)self primaryCellsData];
-  [v3 appendItemsWithIdentifiers:v5 intoSectionWithIdentifier:@"CKInboxViewPrimarySectionID"];
+  primaryCellsData = [(CKInboxViewController *)self primaryCellsData];
+  [v3 appendItemsWithIdentifiers:primaryCellsData intoSectionWithIdentifier:@"CKInboxViewPrimarySectionID"];
 
   if ([(CKInboxViewController *)self _spamFilteringEnabled])
   {
@@ -958,63 +958,63 @@ id __44__CKInboxViewController_setupCollectionView__block_invoke_4(uint64_t a1, 
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     [v3 appendSectionsWithIdentifiers:v6];
 
-    v7 = [(CKInboxViewController *)self categoriesCellsDataArray];
-    [v3 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:@"CKInboxViewCategoriesSectionID"];
+    categoriesCellsDataArray = [(CKInboxViewController *)self categoriesCellsDataArray];
+    [v3 appendItemsWithIdentifiers:categoriesCellsDataArray intoSectionWithIdentifier:@"CKInboxViewCategoriesSectionID"];
   }
 
-  v8 = [(CKInboxViewController *)self junkCellsDataArray];
-  if ([v8 count])
+  junkCellsDataArray = [(CKInboxViewController *)self junkCellsDataArray];
+  if ([junkCellsDataArray count])
   {
     v15 = @"CKInboxViewJunkSectionID";
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     [v3 appendSectionsWithIdentifiers:v9];
 
-    [v3 appendItemsWithIdentifiers:v8 intoSectionWithIdentifier:@"CKInboxViewJunkSectionID"];
+    [v3 appendItemsWithIdentifiers:junkCellsDataArray intoSectionWithIdentifier:@"CKInboxViewJunkSectionID"];
   }
 
-  v10 = [(CKInboxViewController *)self recentlyDeletedCellDataArray];
-  if ([v10 count])
+  recentlyDeletedCellDataArray = [(CKInboxViewController *)self recentlyDeletedCellDataArray];
+  if ([recentlyDeletedCellDataArray count])
   {
     v14 = @"kCKInboxViewRecentlyDeletedSectionID";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
     [v3 appendSectionsWithIdentifiers:v11];
 
-    [v3 appendItemsWithIdentifiers:v10 intoSectionWithIdentifier:@"kCKInboxViewRecentlyDeletedSectionID"];
+    [v3 appendItemsWithIdentifiers:recentlyDeletedCellDataArray intoSectionWithIdentifier:@"kCKInboxViewRecentlyDeletedSectionID"];
   }
 
-  v12 = [(CKInboxViewController *)self collectionViewDataSource];
-  [v12 applySnapshot:v3 animatingDifferences:self->_isVisible];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  [collectionViewDataSource applySnapshot:v3 animatingDifferences:self->_isVisible];
 
-  v13 = [(CKInboxViewController *)self collectionView];
-  [v13 reloadData];
+  collectionView = [(CKInboxViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)updateBackButton
 {
   if (self->_shouldProcessBackButtonUpdates)
   {
-    v3 = [(CKInboxViewController *)self conversationListController];
-    v4 = [v3 filterMode];
+    conversationListController = [(CKInboxViewController *)self conversationListController];
+    filterMode = [conversationListController filterMode];
 
-    if (v4 == 1)
+    if (filterMode == 1)
     {
       goto LABEL_13;
     }
 
-    v5 = [(CKInboxViewController *)self _conversationList];
-    v6 = [v5 unreadCountForFilterMode:1];
+    _conversationList = [(CKInboxViewController *)self _conversationList];
+    v6 = [_conversationList unreadCountForFilterMode:1];
 
-    v7 = [(CKInboxViewController *)self conversationListController];
-    if ([v7 filterMode] == 6)
+    conversationListController2 = [(CKInboxViewController *)self conversationListController];
+    if ([conversationListController2 filterMode] == 6)
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [(CKInboxViewController *)self _conversationList];
-      v11 = [(CKInboxViewController *)self conversationListController];
-      v8 = [v10 unreadCountForFilterMode:{objc_msgSend(v11, "filterMode")}];
+      _conversationList2 = [(CKInboxViewController *)self _conversationList];
+      conversationListController3 = [(CKInboxViewController *)self conversationListController];
+      v8 = [_conversationList2 unreadCountForFilterMode:{objc_msgSend(conversationListController3, "filterMode")}];
     }
 
     v12 = v6 - v8;
@@ -1032,8 +1032,8 @@ LABEL_13:
       v17 = [[CKBackBarButtonItem alloc] initWithUnreadCount:v12];
     }
 
-    v16 = [(CKInboxViewController *)self navigationItem];
-    [v16 setBackBarButtonItem:v17];
+    navigationItem = [(CKInboxViewController *)self navigationItem];
+    [navigationItem setBackBarButtonItem:v17];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1049,52 +1049,52 @@ LABEL_13:
 
 - (int64_t)_primarySectionIndex
 {
-  v2 = [(CKInboxViewController *)self collectionViewDataSource];
-  v3 = [v2 indexForSectionIdentifier:@"CKInboxViewPrimarySectionID"];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  v3 = [collectionViewDataSource indexForSectionIdentifier:@"CKInboxViewPrimarySectionID"];
 
   return v3;
 }
 
 - (int64_t)_categoriesSectionIndex
 {
-  v2 = [(CKInboxViewController *)self collectionViewDataSource];
-  v3 = [v2 indexForSectionIdentifier:@"CKInboxViewCategoriesSectionID"];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  v3 = [collectionViewDataSource indexForSectionIdentifier:@"CKInboxViewCategoriesSectionID"];
 
   return v3;
 }
 
 - (int64_t)_junkSectionIndex
 {
-  v2 = [(CKInboxViewController *)self collectionViewDataSource];
-  v3 = [v2 indexForSectionIdentifier:@"CKInboxViewJunkSectionID"];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  v3 = [collectionViewDataSource indexForSectionIdentifier:@"CKInboxViewJunkSectionID"];
 
   return v3;
 }
 
 - (int64_t)_recentlyDeletedSectionIndex
 {
-  v2 = [(CKInboxViewController *)self collectionViewDataSource];
-  v3 = [v2 indexForSectionIdentifier:@"kCKInboxViewRecentlyDeletedSectionID"];
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  v3 = [collectionViewDataSource indexForSectionIdentifier:@"kCKInboxViewRecentlyDeletedSectionID"];
 
   return v3;
 }
 
 - (int64_t)_lastSectionIndex
 {
-  v3 = [(CKInboxViewController *)self collectionViewDataSource];
-  v4 = [(CKInboxViewController *)self collectionView];
-  v5 = [v3 numberOfSectionsInCollectionView:v4] - 1;
+  collectionViewDataSource = [(CKInboxViewController *)self collectionViewDataSource];
+  collectionView = [(CKInboxViewController *)self collectionView];
+  v5 = [collectionViewDataSource numberOfSectionsInCollectionView:collectionView] - 1;
 
   return v5;
 }
 
-- (void)_chatUnreadCountDidChange:(id)a3
+- (void)_chatUnreadCountDidChange:(id)change
 {
-  v3 = [(CKInboxViewController *)self _conversationList];
-  [v3 updateConversationListsAndSortIfEnabled];
+  _conversationList = [(CKInboxViewController *)self _conversationList];
+  [_conversationList updateConversationListsAndSortIfEnabled];
 }
 
-- (void)_conversationListDidFinishSorting:(id)a3
+- (void)_conversationListDidFinishSorting:(id)sorting
 {
   if (self->_isVisible)
   {
@@ -1107,9 +1107,9 @@ LABEL_13:
   }
 }
 
-- (void)_messageFilteringEnabledDidChange:(id)a3
+- (void)_messageFilteringEnabledDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   primaryCellsData = self->_primaryCellsData;
   self->_primaryCellsData = 0;
 
@@ -1167,15 +1167,15 @@ void __59__CKInboxViewController__messageFilteringEnabledDidChange___block_invok
   }
 
   [MEMORY[0x1E69A8210] updateSMSFilterExtensionParams];
-  v7 = [(CKInboxViewController *)self _updateCategoriesCellsDataArray];
-  v8 = [(CKInboxViewController *)self _conversationList];
-  [v8 updateConversationListsAndSortIfEnabled];
+  _updateCategoriesCellsDataArray = [(CKInboxViewController *)self _updateCategoriesCellsDataArray];
+  _conversationList = [(CKInboxViewController *)self _conversationList];
+  [_conversationList updateConversationListsAndSortIfEnabled];
 
-  v9 = [(CKInboxViewController *)self view];
-  [v9 setNeedsLayout];
+  view = [(CKInboxViewController *)self view];
+  [view setNeedsLayout];
 
-  v10 = [(CKInboxViewController *)self view];
-  [v10 layoutIfNeeded];
+  view2 = [(CKInboxViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
 - (id)_updateCategoriesCellsDataArray
@@ -1204,11 +1204,11 @@ void __59__CKInboxViewController__messageFilteringEnabledDidChange___block_invok
 
         v7 = *(*(&v21 + 1) + 8 * v6);
         v8 = [CKInboxCellData alloc];
-        v9 = [v7 iconName];
+        iconName = [v7 iconName];
         v10 = IMSharedUtilitiesFrameworkBundle();
-        v11 = [v7 folderName];
-        v12 = [v10 localizedStringForKey:v11 value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-        v13 = -[CKInboxCellData initWithImageName:title:filterMode:](v8, "initWithImageName:title:filterMode:", v9, v12, [v7 filterMode]);
+        folderName = [v7 folderName];
+        v12 = [v10 localizedStringForKey:folderName value:&stru_1F04268F8 table:@"IMSharedUtilities"];
+        v13 = -[CKInboxCellData initWithImageName:title:filterMode:](v8, "initWithImageName:title:filterMode:", iconName, v12, [v7 filterMode]);
 
         [v2 addObject:v13];
         ++v6;
@@ -1270,33 +1270,33 @@ void __52__CKInboxViewController__contentSizeCategoryChanged__block_invoke(uint6
 
 - (void)focusStateDidChange
 {
-  v3 = [(CKInboxViewController *)self _conversationList];
-  [v3 updateConversationListsAndSortIfEnabled];
+  _conversationList = [(CKInboxViewController *)self _conversationList];
+  [_conversationList updateConversationListsAndSortIfEnabled];
 
-  v4 = [(CKInboxViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(CKInboxViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(CKInboxViewController *)self view];
-  [v5 layoutIfNeeded];
+  view2 = [(CKInboxViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
-- (id)_setHeaderAttributedStringForFont:(id)a3
+- (id)_setHeaderAttributedStringForFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CKInboxViewController *)self _getSpamExtensionName];
-  if ([v5 length])
+  fontCopy = font;
+  _getSpamExtensionName = [(CKInboxViewController *)self _getSpamExtensionName];
+  if ([_getSpamExtensionName length])
   {
-    v6 = [(CKInboxViewController *)self _getHeaderStringForExtension:v5];
+    v6 = [(CKInboxViewController *)self _getHeaderStringForExtension:_getSpamExtensionName];
     v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v6];
-    v8 = [v7 string];
-    v9 = [v5 localizedUppercaseString];
-    v10 = [v8 rangeOfString:v9];
+    string = [v7 string];
+    localizedUppercaseString = [_getSpamExtensionName localizedUppercaseString];
+    v10 = [string rangeOfString:localizedUppercaseString];
     v12 = v11;
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = *MEMORY[0x1E69DB648];
-      v14 = [MEMORY[0x1E69DB878] __ck_emphasizedFontFromFont:v4];
+      v14 = [MEMORY[0x1E69DB878] __ck_emphasizedFontFromFont:fontCopy];
       [v7 addAttribute:v13 value:v14 range:{v10, v12}];
     }
   }
@@ -1309,18 +1309,18 @@ void __52__CKInboxViewController__contentSizeCategoryChanged__block_invoke(uint6
   return v7;
 }
 
-- (id)_getHeaderStringForExtension:(id)a3
+- (id)_getHeaderStringForExtension:(id)extension
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = CKFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"FILTERED_BY_APP_NAME" value:&stru_1F04268F8 table:@"ChatKit"];
-  v7 = [v3 stringWithFormat:v6, v4];
+  extensionCopy = [v3 stringWithFormat:v6, extensionCopy];
 
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  v9 = [v8 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v10 = @"\u200F";
   }
@@ -1330,23 +1330,23 @@ void __52__CKInboxViewController__contentSizeCategoryChanged__block_invoke(uint6
     v10 = @"\u200E";
   }
 
-  v11 = [(__CFString *)v10 stringByAppendingString:v7];
+  v11 = [(__CFString *)v10 stringByAppendingString:extensionCopy];
 
-  v12 = [v11 localizedUppercaseString];
+  localizedUppercaseString = [v11 localizedUppercaseString];
 
-  return v12;
+  return localizedUppercaseString;
 }
 
 - (BOOL)wantsCollapsedAppearance
 {
-  v3 = [(CKInboxViewController *)self _wantsThreeColumnLayout];
-  v4 = [(CKInboxViewController *)self splitViewController];
-  v5 = [v4 isCollapsed];
-  v6 = !v3 | v5;
-  if (!v3 && (v5 & 1) == 0)
+  _wantsThreeColumnLayout = [(CKInboxViewController *)self _wantsThreeColumnLayout];
+  splitViewController = [(CKInboxViewController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
+  v6 = !_wantsThreeColumnLayout | isCollapsed;
+  if (!_wantsThreeColumnLayout && (isCollapsed & 1) == 0)
   {
-    v7 = [(CKInboxViewController *)self splitViewController];
-    v6 = [v7 displayMode] == 2;
+    splitViewController2 = [(CKInboxViewController *)self splitViewController];
+    v6 = [splitViewController2 displayMode] == 2;
   }
 
   return v6 & 1;
@@ -1355,9 +1355,9 @@ void __52__CKInboxViewController__contentSizeCategoryChanged__block_invoke(uint6
 - (BOOL)_wantsThreeColumnLayout
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 wantsUniversalThreeColumn];
+  wantsUniversalThreeColumn = [v2 wantsUniversalThreeColumn];
 
-  return v3;
+  return wantsUniversalThreeColumn;
 }
 
 - (CKInboxViewControllerDelegate)delegate
@@ -1367,36 +1367,36 @@ void __52__CKInboxViewController__contentSizeCategoryChanged__block_invoke(uint6
   return WeakRetained;
 }
 
-- (void)_setCommonTextProperties:(uint64_t)a1
+- (void)_setCommonTextProperties:(uint64_t)properties
 {
   v10 = a2;
-  if (a1)
+  if (properties)
   {
-    v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v5 = [v10 textProperties];
-    v6 = v5;
+    textProperties = [v10 textProperties];
+    textProperties5 = textProperties;
     if (IsAccessibilityCategory)
     {
-      [v5 setNumberOfLines:0];
+      [textProperties setNumberOfLines:0];
     }
 
     else
     {
-      [v5 setNumberOfLines:1];
+      [textProperties setNumberOfLines:1];
 
-      v7 = [v10 textProperties];
-      [v7 setLineBreakMode:4];
+      textProperties2 = [v10 textProperties];
+      [textProperties2 setLineBreakMode:4];
 
-      v8 = [v10 textProperties];
-      [v8 setAdjustsFontSizeToFitWidth:1];
+      textProperties3 = [v10 textProperties];
+      [textProperties3 setAdjustsFontSizeToFitWidth:1];
 
-      v9 = [v10 textProperties];
-      [v9 setMinimumScaleFactor:0.949999988];
+      textProperties4 = [v10 textProperties];
+      [textProperties4 setMinimumScaleFactor:0.949999988];
 
-      v6 = [v10 textProperties];
-      [v6 setAllowsDefaultTighteningForTruncation:1];
+      textProperties5 = [v10 textProperties];
+      [textProperties5 setAllowsDefaultTighteningForTruncation:1];
     }
   }
 }

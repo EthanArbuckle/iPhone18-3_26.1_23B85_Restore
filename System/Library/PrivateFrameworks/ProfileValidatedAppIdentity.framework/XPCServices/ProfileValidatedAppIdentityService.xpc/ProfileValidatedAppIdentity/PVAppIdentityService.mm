@@ -1,19 +1,19 @@
 @interface PVAppIdentityService
 - (BOOL)isEntitled;
-- (PVAppIdentityService)initWithConnection:(id)a3;
-- (void)generateDigest:(id)a3 ppqAppId:(id)a4 withReply:(id)a5;
+- (PVAppIdentityService)initWithConnection:(id)connection;
+- (void)generateDigest:(id)digest ppqAppId:(id)id withReply:(id)reply;
 @end
 
 @implementation PVAppIdentityService
 
-- (PVAppIdentityService)initWithConnection:(id)a3
+- (PVAppIdentityService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(PVAppIdentityService *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -42,22 +42,22 @@
   return v6;
 }
 
-- (void)generateDigest:(id)a3 ppqAppId:(id)a4 withReply:(id)a5
+- (void)generateDigest:(id)digest ppqAppId:(id)id withReply:(id)reply
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  digestCopy = digest;
+  idCopy = id;
+  replyCopy = reply;
   if ([(PVAppIdentityService *)self isFeatureEnabled]&& [(PVAppIdentityService *)self isEntitled])
   {
-    v10 = [[PVAppIdentityGenerator alloc] initWithApplicationURL:v12 ppqAppId:v8];
-    v11 = [(PVAppIdentityGenerator *)v10 generateDigest];
-    v9[2](v9, v11);
+    v10 = [[PVAppIdentityGenerator alloc] initWithApplicationURL:digestCopy ppqAppId:idCopy];
+    generateDigest = [(PVAppIdentityGenerator *)v10 generateDigest];
+    replyCopy[2](replyCopy, generateDigest);
   }
 
   else
   {
     v10 = [PVAppIdentityDigest digestWithErrorCode:-10000];
-    v9[2](v9, v10);
+    replyCopy[2](replyCopy, v10);
   }
 }
 

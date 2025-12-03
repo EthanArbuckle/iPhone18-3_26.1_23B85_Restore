@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneCodecsDocValuesConsumer_$4
-- (OrgApacheLuceneCodecsDocValuesConsumer_$4)initWithInt:(int)a3 withOrgApacheLuceneIndexSortedNumericDocValuesArray:(id)a4 withOrgApacheLuceneIndexMergeState:(id)a5;
+- (OrgApacheLuceneCodecsDocValuesConsumer_$4)initWithInt:(int)int withOrgApacheLuceneIndexSortedNumericDocValuesArray:(id)array withOrgApacheLuceneIndexMergeState:(id)state;
 - (id)iterator;
 - (void)dealloc;
 @end
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (OrgApacheLuceneCodecsDocValuesConsumer_$4)initWithInt:(int)a3 withOrgApacheLuceneIndexSortedNumericDocValuesArray:(id)a4 withOrgApacheLuceneIndexMergeState:(id)a5
+- (OrgApacheLuceneCodecsDocValuesConsumer_$4)initWithInt:(int)int withOrgApacheLuceneIndexSortedNumericDocValuesArray:(id)array withOrgApacheLuceneIndexMergeState:(id)state
 {
-  self->val$numReaders_ = a3;
-  JreStrongAssign(&self->val$dvs_, a4);
-  JreStrongAssign(&self->val$mergeState_, a5);
+  self->val$numReaders_ = int;
+  JreStrongAssign(&self->val$dvs_, array);
+  JreStrongAssign(&self->val$mergeState_, state);
   return self;
 }
 

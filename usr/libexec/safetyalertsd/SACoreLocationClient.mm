@@ -1,26 +1,26 @@
 @interface SACoreLocationClient
 - (BOOL)startMonitoring;
 - (BOOL)stopMonitoring;
-- (SACoreLocationClient)initWithQueue:(id)a3;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (SACoreLocationClient)initWithQueue:(id)queue;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)requestSingleShotLocation;
 @end
 
 @implementation SACoreLocationClient
 
-- (SACoreLocationClient)initWithQueue:(id)a3
+- (SACoreLocationClient)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = SACoreLocationClient;
   v6 = [(SACoreLocationClient *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/SafetyAlerts.bundle" delegate:v7 onQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/SafetyAlerts.bundle" delegate:v7 onQueue:queueCopy];
     manager = v7->_manager;
     v7->_manager = v8;
 
@@ -174,10 +174,10 @@ LABEL_9:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v9 = objc_autoreleasePoolPush();
   v10 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEBUG))
@@ -187,20 +187,20 @@ LABEL_9:
     v36 = 2082;
     v37 = "";
     v38 = 2117;
-    v39 = v8;
+    v39 = locationsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#lm,didUpdateLocations, locations:%{sensitive, location:escape_only}@}", v35, 0x1Cu);
   }
 
-  if (v8)
+  if (locationsCopy)
   {
-    v11 = [v8 lastObject];
-    [(SACoreLocationClient *)self setLocation:v11];
+    lastObject = [locationsCopy lastObject];
+    [(SACoreLocationClient *)self setLocation:lastObject];
 
-    v12 = [(SACoreLocationClient *)self location];
-    if (v12)
+    location = [(SACoreLocationClient *)self location];
+    if (location)
     {
-      v13 = [(SACoreLocationClient *)self location];
-      [v13 coordinate];
+      location2 = [(SACoreLocationClient *)self location];
+      [location2 coordinate];
       if (!CLLocationCoordinate2DIsValid(v40))
       {
 LABEL_14:
@@ -208,13 +208,13 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v14 = [(SACoreLocationClient *)self location];
-      [v14 coordinate];
+      location3 = [(SACoreLocationClient *)self location];
+      [location3 coordinate];
       v16 = v15;
       if (v15 == 0.0)
       {
-        v4 = [(SACoreLocationClient *)self location];
-        [v4 coordinate];
+        location4 = [(SACoreLocationClient *)self location];
+        [location4 coordinate];
         if (v17 == 0.0)
         {
 
@@ -222,8 +222,8 @@ LABEL_14:
         }
       }
 
-      v18 = [(SACoreLocationClient *)self location];
-      [v18 horizontalAccuracy];
+      location5 = [(SACoreLocationClient *)self location];
+      [location5 horizontalAccuracy];
       v20 = v19;
 
       if (v16 == 0.0)
@@ -240,27 +240,27 @@ LABEL_14:
       if (v20 > 0.0)
       {
 LABEL_13:
-        v21 = [(SACoreLocationClient *)self location];
-        [v21 coordinate];
+        location6 = [(SACoreLocationClient *)self location];
+        [location6 coordinate];
         v23 = v22;
 
-        v24 = [(SACoreLocationClient *)self location];
-        [v24 coordinate];
+        location7 = [(SACoreLocationClient *)self location];
+        [location7 coordinate];
         v26 = v25;
 
-        v27 = [(SACoreLocationClient *)self location];
-        [v27 altitude];
+        location8 = [(SACoreLocationClient *)self location];
+        [location8 altitude];
         v29 = v28;
 
-        v30 = [(SACoreLocationClient *)self location];
-        [v30 horizontalAccuracy];
+        location9 = [(SACoreLocationClient *)self location];
+        [location9 horizontalAccuracy];
         v32 = v31;
 
-        v33 = [(SACoreLocationClient *)self clProxy];
-        v12 = [(SACoreLocationClient *)self location];
-        v13 = [v12 timestamp];
-        [v13 timeIntervalSinceReferenceDate];
-        (*(v33->var0 + 4))(v33, 0, v23, v26, v29, v32, v34);
+        clProxy = [(SACoreLocationClient *)self clProxy];
+        location = [(SACoreLocationClient *)self location];
+        location2 = [location timestamp];
+        [location2 timeIntervalSinceReferenceDate];
+        (*(clProxy->var0 + 4))(clProxy, 0, v23, v26, v29, v32, v34);
         goto LABEL_14;
       }
     }
@@ -270,9 +270,9 @@ LABEL_15:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
   v6 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -282,18 +282,18 @@ LABEL_15:
     v8 = 2082;
     v9 = "";
     v10 = 2114;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#lm,didFailWithError, error:%{public, location:escape_only}@}", v7, 0x1Cu);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = objc_autoreleasePoolPush();
-  self->_isLocationAuthorized = a4 == 3;
+  self->_isLocationAuthorized = status == 3;
   v8 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -302,14 +302,14 @@ LABEL_15:
     v11 = 2082;
     v12 = "";
     v13 = 1026;
-    v14 = a4;
+    statusCopy = status;
     v15 = 1026;
-    v16 = a4 == 3;
+    v16 = status == 3;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#lm,didChangeAuthorizationStatus, authStatus:%{public}d, isAuthorized:%{public}hhd}", v10, 0x1Eu);
   }
 
-  v9 = [(SACoreLocationClient *)self clProxy];
-  (*(v9->var0 + 5))(v9, self->_isLocationAuthorized);
+  clProxy = [(SACoreLocationClient *)self clProxy];
+  (*(clProxy->var0 + 5))(clProxy, self->_isLocationAuthorized);
   objc_autoreleasePoolPop(v7);
 }
 

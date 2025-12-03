@@ -1,36 +1,36 @@
 @interface WLDeviceDiscoverySocketHandler
-- (BOOL)_didReceiveHandshakeData:(id)a3;
-- (WLDeviceDiscoverySocketHandler)initWithSocket:(int)a3 srpPassword:(id)a4 delegate:(id)a5;
+- (BOOL)_didReceiveHandshakeData:(id)data;
+- (WLDeviceDiscoverySocketHandler)initWithSocket:(int)socket srpPassword:(id)password delegate:(id)delegate;
 - (WLDeviceDiscoverySocketHandlerDelegate)delegate;
-- (id)_commandStringWithData:(id)a3;
+- (id)_commandStringWithData:(id)data;
 - (id)_handshakeCommandData;
 - (id)_handshakeResponseData;
 - (id)_okResponseData;
 - (void)_performSRPAuthenticationAndHandshake;
-- (void)invalidateWithError:(id)a3;
+- (void)invalidateWithError:(id)error;
 - (void)resume;
-- (void)sendData:(id)a3 completion:(id)a4;
+- (void)sendData:(id)data completion:(id)completion;
 @end
 
 @implementation WLDeviceDiscoverySocketHandler
 
-- (WLDeviceDiscoverySocketHandler)initWithSocket:(int)a3 srpPassword:(id)a4 delegate:(id)a5
+- (WLDeviceDiscoverySocketHandler)initWithSocket:(int)socket srpPassword:(id)password delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  passwordCopy = password;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = WLDeviceDiscoverySocketHandler;
   v11 = [(WLSocketHandler *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_srpPassword, a4);
+    objc_storeStrong(&v11->_srpPassword, password);
     v13 = dispatch_queue_create("Socket Write Serialization Queue", 0);
     writeQueue = v12->_writeQueue;
     v12->_writeQueue = v13;
 
-    objc_storeWeak(&v12->_delegate, v10);
-    v12->_sockfd = a3;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v12->_sockfd = socket;
   }
 
   return v12;
@@ -47,13 +47,13 @@
   dispatch_async(v3, block);
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
   readSource = self->_readSource;
-  v5 = a3;
+  errorCopy = error;
   dispatch_source_cancel(readSource);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained deviceDiscoverySocketHandler:self didFailToHandshakeWithSourceDevice:self->_sourceDevice error:v5];
+  [WeakRetained deviceDiscoverySocketHandler:self didFailToHandshakeWithSourceDevice:self->_sourceDevice error:errorCopy];
 }
 
 - (void)_performSRPAuthenticationAndHandshake
@@ -77,7 +77,7 @@
   obj = v123[5];
   [(WLSocketHandler *)self waitForCommand:@"AUTHENTICATE" fromReadCacheReturningError:&obj, self];
   objc_storeStrong(v3, obj);
-  v84 = self;
+  selfCopy2 = self;
   v91 = v123[5];
   _WLLog();
   if (v123[5])
@@ -86,7 +86,7 @@
   }
 
   v108 = [[WLSRPServer alloc] initWithUsername:@"movetoios" password:self->_srpPassword, self, v91];
-  v84 = self;
+  selfCopy2 = self;
   _WLLog();
   if (!v108)
   {
@@ -108,24 +108,24 @@ LABEL_3:
   }
 
   v4 = MEMORY[0x277CBEA90];
-  v5 = [(WLSRPServer *)v108 salt_s];
-  v6 = [v5 wl_hexEncodedData];
-  v141[0] = v6;
-  v7 = [(WLSRPServer *)v108 serverPublicKey_B];
-  v8 = [v7 wl_hexEncodedData];
-  v141[1] = v8;
+  salt_s = [(WLSRPServer *)v108 salt_s];
+  wl_hexEncodedData = [salt_s wl_hexEncodedData];
+  v141[0] = wl_hexEncodedData;
+  serverPublicKey_B = [(WLSRPServer *)v108 serverPublicKey_B];
+  wl_hexEncodedData2 = [serverPublicKey_B wl_hexEncodedData];
+  v141[1] = wl_hexEncodedData2;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v141 count:2];
   v10 = [v4 wl_lengthPrefixedBlobSequenceFromDataArray:v9];
 
-  v11 = [(WLSRPServer *)v108 salt_s];
-  v85 = [v11 wl_hexEncodedString];
+  salt_s2 = [(WLSRPServer *)v108 salt_s];
+  wl_hexEncodedString = [salt_s2 wl_hexEncodedString];
   _WLLog();
 
-  v12 = [(WLSRPServer *)v108 serverPublicKey_B];
-  v86 = [v12 wl_hexEncodedString];
+  serverPublicKey_B2 = [(WLSRPServer *)v108 serverPublicKey_B];
+  wl_hexEncodedString2 = [serverPublicKey_B2 wl_hexEncodedString];
   _WLLog();
 
-  v92 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "length", v86)}];
+  v92 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "length", wl_hexEncodedString2)}];
   _WLLog();
 
   v118[0] = MEMORY[0x277D85DD0];
@@ -150,7 +150,7 @@ LABEL_3:
   v15 = [(WLSocketHandler *)self waitForBlobDataFromReadCacheReturningError:&v117, self];
   objc_storeStrong(v14, v117);
   [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "length")}];
-  v93 = v84 = self;
+  v93 = selfCopy2 = self;
   _WLLog();
 
   if (v123[5])
@@ -169,15 +169,15 @@ LABEL_3:
     if (v22)
     {
       v23 = [v22 objectAtIndexedSubscript:{0, self, v94}];
-      v87 = [v23 wl_utf8String];
+      wl_utf8String = [v23 wl_utf8String];
       _WLLog();
 
-      v24 = [v22 objectAtIndexedSubscript:{1, v87}];
-      v88 = [v24 wl_utf8String];
+      v24 = [v22 objectAtIndexedSubscript:{1, wl_utf8String}];
+      wl_utf8String2 = [v24 wl_utf8String];
       _WLLog();
 
       v25 = MEMORY[0x277CBEA90];
-      v26 = [v22 objectAtIndexedSubscript:{0, v88}];
+      v26 = [v22 objectAtIndexedSubscript:{0, wl_utf8String2}];
       v16 = [v25 wl_dataFromHexEncodedData:v26];
 
       v27 = MEMORY[0x277CBEA90];
@@ -204,7 +204,7 @@ LABEL_3:
       _WLLog();
       v32 = [(WLSRPServer *)v108 didReceiveClientPublicKey_A:v16 proofOfMatch_M:v17, self];
       [MEMORY[0x277CCABB0] numberWithBool:v32];
-      v95 = v84 = self;
+      v95 = selfCopy2 = self;
       _WLLog();
 
       if ((v32 & 1) == 0)
@@ -225,11 +225,11 @@ LABEL_3:
     goto LABEL_18;
   }
 
-  v37 = [(WLSRPServer *)v108 hashOfProofOfMatch_HAMK];
-  v38 = [v37 wl_hexEncodedData];
-  v39 = [v38 wl_lengthPrefixedBlob];
+  hashOfProofOfMatch_HAMK = [(WLSRPServer *)v108 hashOfProofOfMatch_HAMK];
+  wl_hexEncodedData3 = [hashOfProofOfMatch_HAMK wl_hexEncodedData];
+  wl_lengthPrefixedBlob = [wl_hexEncodedData3 wl_lengthPrefixedBlob];
 
-  v96 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v39, "length")}];
+  v96 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(wl_lengthPrefixedBlob, "length")}];
   _WLLog();
 
   v114[0] = MEMORY[0x277D85DD0];
@@ -240,7 +240,7 @@ LABEL_3:
   v116 = &v122;
   v40 = v13;
   v115 = v40;
-  [(WLDeviceDiscoverySocketHandler *)self sendData:v39 completion:v114, self, v96];
+  [(WLDeviceDiscoverySocketHandler *)self sendData:wl_lengthPrefixedBlob completion:v114, self, v96];
   dispatch_semaphore_wait(v40, 0xFFFFFFFFFFFFFFFFLL);
 
   if (v123[5])
@@ -254,7 +254,7 @@ LABEL_18:
     _WLLog();
     v106 = +[WLAuthenticationCredentials generateAuthenticationCredentialsContainingSelfSignedCertificate];
     [MEMORY[0x277CCABB0] numberWithInt:v106 != 0];
-    v99 = v84 = self;
+    v99 = selfCopy2 = self;
     _WLLog();
 
     if (!v123[5])
@@ -265,7 +265,7 @@ LABEL_18:
       v57 = [(WLSocketHandler *)self waitForBlobDataFromReadCacheReturningError:&v113, self, v99];
       objc_storeStrong(v56, v113);
       [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v57, "length")}];
-      v100 = v84 = self;
+      v100 = selfCopy2 = self;
       _WLLog();
 
       if (v123[5])
@@ -287,11 +287,11 @@ LABEL_18:
           v60 = [v61 objectAtIndex:{0, self, v101}];
           v59 = [v61 objectAtIndex:1];
           v62 = [v61 objectAtIndexedSubscript:2];
-          v90 = [v62 wl_utf8String];
+          wl_utf8String3 = [v62 wl_utf8String];
           _WLLog();
 
           v63 = MEMORY[0x277CBEA90];
-          v64 = [v61 objectAtIndexedSubscript:{2, v90}];
+          v64 = [v61 objectAtIndexedSubscript:{2, wl_utf8String3}];
           v58 = [v63 wl_dataFromHexEncodedData:v64];
         }
 
@@ -317,7 +317,7 @@ LABEL_18:
           [v68 appendData:v59];
           v69 = [(WLSRPServer *)v108 isHmacData:v58 validForData:v68];
           [MEMORY[0x277CCABB0] numberWithBool:v69];
-          v102 = v84 = self;
+          v102 = selfCopy2 = self;
           _WLLog();
 
           if ((v69 & 1) == 0)
@@ -357,7 +357,7 @@ LABEL_18:
         _WLLog();
         v79 = [(WLDeviceDiscoverySocketHandler *)self _didReceiveHandshakeData:v59, self];
         [MEMORY[0x277CCABB0] numberWithBool:v79];
-        v104 = v84 = self;
+        v104 = selfCopy2 = self;
         _WLLog();
 
         if (!v79)
@@ -384,18 +384,18 @@ LABEL_18:
   {
     v105 = SecCertificateCopyData([v106 localCertificate]);
     v42 = [WLAuthenticationUtilities pemFormattedCertificateData:?];
-    v43 = [(WLDeviceDiscoverySocketHandler *)self _handshakeResponseData];
+    _handshakeResponseData = [(WLDeviceDiscoverySocketHandler *)self _handshakeResponseData];
     v44 = [v42 mutableCopy];
-    [v44 appendData:v43];
+    [v44 appendData:_handshakeResponseData];
     v45 = [(WLSRPServer *)v108 hmacDataForData:v44];
-    v89 = [v45 wl_hexEncodedString];
+    wl_hexEncodedString3 = [v45 wl_hexEncodedString];
     _WLLog();
 
     v46 = MEMORY[0x277CBEA90];
     v128[0] = v42;
-    v128[1] = v43;
-    v47 = [v45 wl_hexEncodedData];
-    v128[2] = v47;
+    v128[1] = _handshakeResponseData;
+    wl_hexEncodedData4 = [v45 wl_hexEncodedData];
+    v128[2] = wl_hexEncodedData4;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v128 count:3];
     v49 = [v46 wl_lengthPrefixedBlobSequenceFromDataArray:v48];
 
@@ -492,19 +492,19 @@ void __71__WLDeviceDiscoverySocketHandler__performSRPAuthenticationAndHandshake_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_commandStringWithData:(id)a3
+- (id)_commandStringWithData:(id)data
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 alloc];
-  v6 = [v4 bytes];
-  v7 = [v4 length];
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  v8 = [v5 initWithBytesNoCopy:v6 length:v7 encoding:4 freeWhenDone:0];
+  v8 = [v5 initWithBytesNoCopy:bytes length:v7 encoding:4 freeWhenDone:0];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"\r\n"];
-  LODWORD(v6) = [v8 hasSuffix:v9];
+  LODWORD(bytes) = [v8 hasSuffix:v9];
 
-  if (v6)
+  if (bytes)
   {
     v10 = [v8 stringByReplacingCharactersInRange:objc_msgSend(v8 withString:{"length") - 2, 2, &stru_2882CBB40}];
 
@@ -530,15 +530,15 @@ void __71__WLDeviceDiscoverySocketHandler__performSRPAuthenticationAndHandshake_
   return v3;
 }
 
-- (BOOL)_didReceiveHandshakeData:(id)a3
+- (BOOL)_didReceiveHandshakeData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277D7B8B8]);
   sourceDevice = self->_sourceDevice;
   self->_sourceDevice = v5;
 
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   _WLLog();
 
   *&v15.sa_len = 0;
@@ -557,7 +557,7 @@ void __71__WLDeviceDiscoverySocketHandler__performSRPAuthenticationAndHandshake_
   }
 
   v9 = objc_alloc_init(WLSourceDeviceHandshakeParser);
-  v10 = [(WLSourceDeviceHandshakeParser *)v9 parseData:v4 modifyingSourceDevice:self->_sourceDevice completion:&__block_literal_global_1];
+  v10 = [(WLSourceDeviceHandshakeParser *)v9 parseData:dataCopy modifyingSourceDevice:self->_sourceDevice completion:&__block_literal_global_1];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10;
@@ -630,20 +630,20 @@ void __71__WLDeviceDiscoverySocketHandler__performSRPAuthenticationAndHandshake_
   return v7;
 }
 
-- (void)sendData:(id)a3 completion:(id)a4
+- (void)sendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__WLDeviceDiscoverySocketHandler_sendData_completion___block_invoke;
   block[3] = &unk_279EB5538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(writeQueue, block);
 }
 

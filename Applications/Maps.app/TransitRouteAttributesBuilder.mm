@@ -1,15 +1,15 @@
 @interface TransitRouteAttributesBuilder
-- (TransitRouteAttributesBuilder)initWithTransitPreferences:(id)a3 timing:(id)a4;
-- (void)fillRouteAttributes:(id)a3;
+- (TransitRouteAttributesBuilder)initWithTransitPreferences:(id)preferences timing:(id)timing;
+- (void)fillRouteAttributes:(id)attributes;
 @end
 
 @implementation TransitRouteAttributesBuilder
 
-- (void)fillRouteAttributes:(id)a3
+- (void)fillRouteAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 setMainTransportType:1];
-  [v4 setRoutePointTypeForTransportType:{objc_msgSend(v4, "mainTransportType")}];
+  attributesCopy = attributes;
+  [attributesCopy setMainTransportType:1];
+  [attributesCopy setRoutePointTypeForTransportType:{objc_msgSend(attributesCopy, "mainTransportType")}];
   v9 = 0uLL;
   v10 = 0;
   timing = self->_timing;
@@ -20,26 +20,26 @@
     {
       v7 = v9;
       v8 = v10;
-      [v4 setTimepoint:&v7];
+      [attributesCopy setTimepoint:&v7];
     }
   }
 
-  v6 = [(TransitPreferences *)self->_preferences transitOptions];
-  [v4 setTransitOptions:v6];
+  transitOptions = [(TransitPreferences *)self->_preferences transitOptions];
+  [attributesCopy setTransitOptions:transitOptions];
 }
 
-- (TransitRouteAttributesBuilder)initWithTransitPreferences:(id)a3 timing:(id)a4
+- (TransitRouteAttributesBuilder)initWithTransitPreferences:(id)preferences timing:(id)timing
 {
-  v7 = a3;
-  v8 = a4;
+  preferencesCopy = preferences;
+  timingCopy = timing;
   v12.receiver = self;
   v12.super_class = TransitRouteAttributesBuilder;
   v9 = [(TransitRouteAttributesBuilder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preferences, a3);
-    objc_storeStrong(&v10->_timing, a4);
+    objc_storeStrong(&v9->_preferences, preferences);
+    objc_storeStrong(&v10->_timing, timing);
   }
 
   return v10;

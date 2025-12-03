@@ -1,10 +1,10 @@
 @interface PXStoryBufferingStatusView
 - (CGRect)clippingRect;
-- (PXStoryBufferingStatusView)initWithFrame:(CGRect)a3;
+- (PXStoryBufferingStatusView)initWithFrame:(CGRect)frame;
 - (void)_updateAnimation;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXStoryBufferingStatusView
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   userData = self->_userData;
   self->_userData = v4;
 
@@ -41,10 +41,10 @@
 
 - (void)_updateAnimation
 {
-  v3 = [(PXStoryBufferingStatusView *)self window];
+  window = [(PXStoryBufferingStatusView *)self window];
 
   spinnerView = self->_spinnerView;
-  if (v3)
+  if (window)
   {
 
     [(UIActivityIndicatorView *)spinnerView startAnimating];
@@ -66,19 +66,19 @@
   PXRectGetCenter();
 }
 
-- (PXStoryBufferingStatusView)initWithFrame:(CGRect)a3
+- (PXStoryBufferingStatusView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXStoryBufferingStatusView;
-  v3 = [(PXStoryBufferingStatusView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXStoryBufferingStatusView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:9];
     spinnerView = v3->_spinnerView;
     v3->_spinnerView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)v3->_spinnerView setColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)v3->_spinnerView setColor:whiteColor];
 
     [(PXStoryBufferingStatusView *)v3 addSubview:v3->_spinnerView];
     [(PXStoryBufferingStatusView *)v3 setUserInteractionEnabled:0];

@@ -1,26 +1,26 @@
 @interface RFSchemaRFGVisualResponseShownTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFGVisualResponseShownTier1)initWithDictionary:(id)a3;
-- (RFSchemaRFGVisualResponseShownTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RFSchemaRFGVisualResponseShownTier1)initWithDictionary:(id)dictionary;
+- (RFSchemaRFGVisualResponseShownTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFGVisualResponseShownTier1
 
-- (RFSchemaRFGVisualResponseShownTier1)initWithDictionary:(id)a3
+- (RFSchemaRFGVisualResponseShownTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = RFSchemaRFGVisualResponseShownTier1;
   v5 = [(RFSchemaRFGVisualResponseShownTier1 *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"responseModel"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"responseModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(RFSchemaRFGVisualResponseShownTier1 *)v5 setResponseModel:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"patternId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"patternId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(RFSchemaRFGVisualResponseShownTier1 *)v5 setPatternId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"version"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(RFSchemaRFGVisualResponseShownTier1 *)v5 setVersion:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"responseViewId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"responseViewId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (RFSchemaRFGVisualResponseShownTier1)initWithJSON:(id)a3
+- (RFSchemaRFGVisualResponseShownTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFGVisualResponseShownTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFGVisualResponseShownTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFGVisualResponseShownTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,38 +94,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_patternId)
   {
-    v4 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"patternId"];
+    patternId = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
+    v5 = [patternId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"patternId"];
   }
 
   if (self->_responseModel)
   {
-    v6 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"responseModel"];
+    responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
+    v7 = [responseModel copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"responseModel"];
   }
 
   if (self->_responseViewId)
   {
-    v8 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"responseViewId"];
+    responseViewId = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
+    v9 = [responseViewId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"responseViewId"];
   }
 
   if (self->_version)
   {
-    v10 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"version"];
+    version = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
+    v11 = [version copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"version"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,28 +136,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_responseViewId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
-  v6 = [v4 responseModel];
-  if ((v5 != 0) == (v6 == 0))
+  responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
+  responseModel2 = [equalCopy responseModel];
+  if ((responseModel != 0) == (responseModel2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
-  if (v7)
+  responseModel3 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
+  if (responseModel3)
   {
-    v8 = v7;
-    v9 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
-    v10 = [v4 responseModel];
-    v11 = [v9 isEqual:v10];
+    v8 = responseModel3;
+    responseModel4 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
+    responseModel5 = [equalCopy responseModel];
+    v11 = [responseModel4 isEqual:responseModel5];
 
     if (!v11)
     {
@@ -169,20 +169,20 @@
   {
   }
 
-  v5 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
-  v6 = [v4 patternId];
-  if ((v5 != 0) == (v6 == 0))
+  responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
+  responseModel2 = [equalCopy patternId];
+  if ((responseModel != 0) == (responseModel2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
-  if (v12)
+  patternId = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
+  if (patternId)
   {
-    v13 = v12;
-    v14 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
-    v15 = [v4 patternId];
-    v16 = [v14 isEqual:v15];
+    v13 = patternId;
+    patternId2 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
+    patternId3 = [equalCopy patternId];
+    v16 = [patternId2 isEqual:patternId3];
 
     if (!v16)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v5 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
-  v6 = [v4 version];
-  if ((v5 != 0) == (v6 == 0))
+  responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
+  responseModel2 = [equalCopy version];
+  if ((responseModel != 0) == (responseModel2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
-  if (v17)
+  version = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
+  if (version)
   {
-    v18 = v17;
-    v19 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
-    v20 = [v4 version];
-    v21 = [v19 isEqual:v20];
+    v18 = version;
+    version2 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
+    version3 = [equalCopy version];
+    v21 = [version2 isEqual:version3];
 
     if (!v21)
     {
@@ -219,12 +219,12 @@
   {
   }
 
-  v5 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
-  v6 = [v4 responseViewId];
-  if ((v5 != 0) != (v6 == 0))
+  responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
+  responseModel2 = [equalCopy responseViewId];
+  if ((responseModel != 0) != (responseModel2 == 0))
   {
-    v22 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
-    if (!v22)
+    responseViewId = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
+    if (!responseViewId)
     {
 
 LABEL_25:
@@ -232,10 +232,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
-    v25 = [v4 responseViewId];
-    v26 = [v24 isEqual:v25];
+    v23 = responseViewId;
+    responseViewId2 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
+    responseViewId3 = [equalCopy responseViewId];
+    v26 = [responseViewId2 isEqual:responseViewId3];
 
     if (v26)
     {
@@ -255,67 +255,67 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
+  toCopy = to;
+  responseModel = [(RFSchemaRFGVisualResponseShownTier1 *)self responseModel];
 
-  if (v4)
+  if (responseModel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
+  patternId = [(RFSchemaRFGVisualResponseShownTier1 *)self patternId];
 
-  if (v5)
+  if (patternId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
+  version = [(RFSchemaRFGVisualResponseShownTier1 *)self version];
 
-  if (v6)
+  if (version)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
+  responseViewId = [(RFSchemaRFGVisualResponseShownTier1 *)self responseViewId];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (responseViewId)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = RFSchemaRFGVisualResponseShownTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(RFSchemaRFGVisualResponseShownTier1 *)self deleteResponseModel];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(RFSchemaRFGVisualResponseShownTier1 *)self deleteResponseModel];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(RFSchemaRFGVisualResponseShownTier1 *)self deleteResponseModel];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(RFSchemaRFGVisualResponseShownTier1 *)self deleteResponseModel];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(RFSchemaRFGVisualResponseShownTier1 *)self deleteResponseModel];
   }

@@ -1,14 +1,14 @@
 @interface AEAnnotationGenericTextActivityItemProvider
-- (BOOL)supportsActivityType:(id)a3;
+- (BOOL)supportsActivityType:(id)type;
 @end
 
 @implementation AEAnnotationGenericTextActivityItemProvider
 
-- (BOOL)supportsActivityType:(id)a3
+- (BOOL)supportsActivityType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[IMActivity activityTypes];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:typeCopy];
 
   return v5 ^ 1;
 }

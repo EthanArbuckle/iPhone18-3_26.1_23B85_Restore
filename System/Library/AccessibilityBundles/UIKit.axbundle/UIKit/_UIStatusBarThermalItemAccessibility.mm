@@ -1,19 +1,19 @@
 @interface _UIStatusBarThermalItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)imageForUpdate:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)imageForUpdate:(id)update;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarThermalItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIStatusBarItemUpdate";
   [location[0] validateClass:?];
   v5 = @"_UIStatusBarThermalItem";
@@ -30,16 +30,16 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20.receiver = self;
   v20.super_class = _UIStatusBarThermalItemAccessibility;
   [(_UIStatusBarThermalItemAccessibility *)&v20 _accessibilityLoadAccessibilityInformation];
-  v19 = [(_UIStatusBarThermalItemAccessibility *)v22 _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
+  v19 = [(_UIStatusBarThermalItemAccessibility *)selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
   NSClassFromString(&cfstr_Uistatusbarite_3.isa);
   if (objc_opt_isKindOfClass())
   {
-    v18 = [(_UIStatusBarThermalItemAccessibility *)v22 safeValueForKey:@"imageView"];
+    v18 = [(_UIStatusBarThermalItemAccessibility *)selfCopy safeValueForKey:@"imageView"];
     v15 = [v19 safeValueForKeyPath:@"data.thermalEntry"];
     v16 = [v15 safeIntegerForKey:@"color"];
     v2 = MEMORY[0x29EDC9740](v15).n128_u64[0];
@@ -105,17 +105,17 @@
   objc_storeStrong(&v19, 0);
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v8;
+  objc_storeStrong(location, update);
+  v5.receiver = selfCopy;
   v5.super_class = _UIStatusBarThermalItemAccessibility;
   v6 = [(_UIStatusBarThermalItemAccessibility *)&v5 imageForUpdate:location[0]];
-  [(_UIStatusBarThermalItemAccessibility *)v8 _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
-  [(_UIStatusBarThermalItemAccessibility *)v8 _accessibilityLoadAccessibilityInformation];
+  [(_UIStatusBarThermalItemAccessibility *)selfCopy _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
+  [(_UIStatusBarThermalItemAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v4 = MEMORY[0x29EDC9748](v6);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);

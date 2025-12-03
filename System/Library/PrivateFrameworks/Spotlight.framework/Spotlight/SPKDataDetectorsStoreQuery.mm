@@ -20,21 +20,21 @@
   [(SPKQuery *)&v10 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:6])
   {
-    v3 = [(SPKQuery *)self userQueryString];
-    v4 = [v3 mutableCopy];
+    userQueryString = [(SPKQuery *)self userQueryString];
+    v4 = [userQueryString mutableCopy];
 
     v5 = objc_alloc_init(MEMORY[0x277D658E0]);
     generator = self->_generator;
     self->_generator = v5;
 
     v7 = self->_generator;
-    v8 = [(SPKQuery *)self queryId];
+    queryId = [(SPKQuery *)self queryId];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __35__SPKDataDetectorsStoreQuery_start__block_invoke;
     v9[3] = &unk_279CFEB38;
     v9[4] = self;
-    [(SSDataDetectorResultGenerator *)v7 getResultSections:v4 queryId:v8 completion:v9];
+    [(SSDataDetectorResultGenerator *)v7 getResultSections:v4 queryId:queryId completion:v9];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface FBServiceClientAuthenticator
-+ (BOOL)_authenticateAuditToken:(id)a3 entitlement:(id)a4 credentials:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)authenticateAuditToken:(id *)a3 forEntitlement:(id)a4 error:(id *)a5;
-+ (id)_errorForCode:(int)a3 process:(id)a4 failedEntitlement:(id)a5;
++ (BOOL)_authenticateAuditToken:(id)token entitlement:(id)entitlement credentials:(unint64_t)credentials error:(id *)error;
++ (BOOL)authenticateAuditToken:(id *)token forEntitlement:(id)entitlement error:(id *)error;
++ (id)_errorForCode:(int)code process:(id)process failedEntitlement:(id)entitlement;
 + (id)sharedForegroundUIAppClientAuthenticator;
 + (id)sharedSystemClientAuthenticator;
 + (id)sharedUIAppClientAuthenticator;
-- (BOOL)authenticateAuditToken:(id)a3 forEntitlement:(id)a4 error:(id *)a5;
-- (BOOL)authenticateClient:(id)a3 error:(id *)a4;
+- (BOOL)authenticateAuditToken:(id)token forEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)authenticateClient:(id)client error:(id *)error;
 - (FBServiceClientAuthenticator)init;
-- (FBServiceClientAuthenticator)initWithCredentials:(unint64_t)a3;
-- (FBServiceClientAuthenticator)initWithEntitlement:(id)a3 additionalCredentials:(unint64_t)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBServiceClientAuthenticator)initWithCredentials:(unint64_t)credentials;
+- (FBServiceClientAuthenticator)initWithEntitlement:(id)entitlement additionalCredentials:(unint64_t)credentials;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -87,119 +87,119 @@ void __72__FBServiceClientAuthenticator_sharedForegroundUIAppClientAuthenticator
   return result;
 }
 
-- (FBServiceClientAuthenticator)initWithCredentials:(unint64_t)a3
+- (FBServiceClientAuthenticator)initWithCredentials:(unint64_t)credentials
 {
   result = [(FBServiceClientAuthenticator *)self init];
   if (result)
   {
-    result->_credentials = a3;
+    result->_credentials = credentials;
   }
 
   return result;
 }
 
-- (FBServiceClientAuthenticator)initWithEntitlement:(id)a3 additionalCredentials:(unint64_t)a4
+- (FBServiceClientAuthenticator)initWithEntitlement:(id)entitlement additionalCredentials:(unint64_t)credentials
 {
-  v6 = a3;
+  entitlementCopy = entitlement;
   v7 = [(FBServiceClientAuthenticator *)self init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [entitlementCopy copy];
     entitlement = v7->_entitlement;
     v7->_entitlement = v8;
 
-    v7->_credentials = a4;
+    v7->_credentials = credentials;
   }
 
   return v7;
 }
 
-+ (BOOL)authenticateAuditToken:(id *)a3 forEntitlement:(id)a4 error:(id *)a5
++ (BOOL)authenticateAuditToken:(id *)token forEntitlement:(id)entitlement error:(id *)error
 {
-  v9 = a4;
-  if (!v9)
+  entitlementCopy = entitlement;
+  if (!entitlementCopy)
   {
-    [FBServiceClientAuthenticator authenticateAuditToken:a2 forEntitlement:a1 error:?];
+    [FBServiceClientAuthenticator authenticateAuditToken:a2 forEntitlement:self error:?];
   }
 
-  v10 = v9;
+  v10 = entitlementCopy;
   v11 = objc_alloc(MEMORY[0x1E698E620]);
-  v12 = *&a3->var0[4];
-  v16[0] = *a3->var0;
+  v12 = *&token->var0[4];
+  v16[0] = *token->var0;
   v16[1] = v12;
   v13 = [v11 initWithAuditToken:v16];
-  v14 = [a1 _authenticateAuditToken:v13 entitlement:v10 credentials:0 error:a5];
+  v14 = [self _authenticateAuditToken:v13 entitlement:v10 credentials:0 error:error];
 
   return v14;
 }
 
-- (BOOL)authenticateClient:(id)a3 error:(id *)a4
+- (BOOL)authenticateClient:(id)client error:(id *)error
 {
-  v6 = [a3 processHandle];
-  v7 = [v6 auditToken];
+  processHandle = [client processHandle];
+  auditToken = [processHandle auditToken];
 
-  LOBYTE(a4) = [objc_opt_class() _authenticateAuditToken:v7 entitlement:self->_entitlement credentials:self->_credentials error:a4];
-  return a4;
+  LOBYTE(error) = [objc_opt_class() _authenticateAuditToken:auditToken entitlement:self->_entitlement credentials:self->_credentials error:error];
+  return error;
 }
 
-- (BOOL)authenticateAuditToken:(id)a3 forEntitlement:(id)a4 error:(id *)a5
+- (BOOL)authenticateAuditToken:(id)token forEntitlement:(id)entitlement error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [objc_opt_class() _authenticateAuditToken:v9 entitlement:v8 credentials:self->_credentials error:a5];
+  entitlementCopy = entitlement;
+  tokenCopy = token;
+  LOBYTE(error) = [objc_opt_class() _authenticateAuditToken:tokenCopy entitlement:entitlementCopy credentials:self->_credentials error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)_errorForCode:(int)a3 process:(id)a4 failedEntitlement:(id)a5
++ (id)_errorForCode:(int)code process:(id)process failedEntitlement:(id)entitlement
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 3)
+  processCopy = process;
+  entitlementCopy = entitlement;
+  v9 = entitlementCopy;
+  if (code == 3)
   {
-    v10 = @"No such process.";
+    entitlementCopy = @"No such process.";
   }
 
-  else if (a3 == 13 && v8)
+  else if (code == 13 && entitlementCopy)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Entitlement %@ is required to access this resource.", v8];
+    entitlementCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Entitlement %@ is required to access this resource.", entitlementCopy];
   }
 
   else
   {
-    v10 = @"Process lacks credentials to access this resource.";
+    entitlementCopy = @"Process lacks credentials to access this resource.";
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Authentication failed: %@", v10];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  [v12 setObject:v11 forKey:*MEMORY[0x1E696A578]];
-  [v12 setObject:v10 forKey:*MEMORY[0x1E696A588]];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Authentication failed: %@", entitlementCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v11 forKey:*MEMORY[0x1E696A578]];
+  [dictionary setObject:entitlementCopy forKey:*MEMORY[0x1E696A588]];
   if (v9)
   {
-    [v12 setObject:v9 forKey:@"Entitlement"];
+    [dictionary setObject:v9 forKey:@"Entitlement"];
   }
 
-  if (v7)
+  if (processCopy)
   {
     v13 = FBSProcessPrettyDescription();
-    [v12 setObject:v13 forKey:@"FBProcess"];
+    [dictionary setObject:v13 forKey:@"FBProcess"];
   }
 
-  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FBServiceClientAuthenticatorErrorDomain" code:a3 userInfo:v12];
+  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FBServiceClientAuthenticatorErrorDomain" code:code userInfo:dictionary];
 
   return v14;
 }
 
-+ (BOOL)_authenticateAuditToken:(id)a3 entitlement:(id)a4 credentials:(unint64_t)a5 error:(id *)a6
++ (BOOL)_authenticateAuditToken:(id)token entitlement:(id)entitlement credentials:(unint64_t)credentials error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  credentialsCopy = credentials;
+  tokenCopy = token;
+  entitlementCopy = entitlement;
   v11 = +[FBProcessManager sharedInstance];
-  if (v9)
+  if (tokenCopy)
   {
-    [v9 realToken];
+    [tokenCopy realToken];
   }
 
   else
@@ -213,7 +213,7 @@ void __72__FBServiceClientAuthenticator_sharedForegroundUIAppClientAuthenticator
   if (![v12 isRunning])
   {
     v13 = 3;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -221,18 +221,18 @@ void __72__FBServiceClientAuthenticator_sharedForegroundUIAppClientAuthenticator
     goto LABEL_32;
   }
 
-  if (v7)
+  if (credentialsCopy)
   {
-    v14 = [v9 pid];
+    v14 = [tokenCopy pid];
     v15 = v14 == getpid();
-    v16 = v15;
-    if (!v10 || v15)
+    isApplicationProcess = v15;
+    if (!entitlementCopy || v15)
     {
 LABEL_15:
-      if (v7 & 4) == 0 || (v16)
+      if (credentialsCopy & 4) == 0 || (isApplicationProcess)
       {
 LABEL_18:
-        if (v7 & 8) == 0 || (v16)
+        if (credentialsCopy & 8) == 0 || (isApplicationProcess)
         {
           goto LABEL_23;
         }
@@ -241,26 +241,26 @@ LABEL_18:
       }
 
 LABEL_17:
-      v16 = [v12 isApplicationProcess];
+      isApplicationProcess = [v12 isApplicationProcess];
       goto LABEL_18;
     }
 
 LABEL_14:
-    v16 = [v9 hasEntitlement:{v10, v19, v20}];
+    isApplicationProcess = [tokenCopy hasEntitlement:{entitlementCopy, v19, v20}];
     goto LABEL_15;
   }
 
-  if (v10)
+  if (entitlementCopy)
   {
     goto LABEL_14;
   }
 
-  if ((v7 & 4) != 0)
+  if ((credentialsCopy & 4) != 0)
   {
     goto LABEL_17;
   }
 
-  if ((v7 & 8) == 0)
+  if ((credentialsCopy & 8) == 0)
   {
     goto LABEL_22;
   }
@@ -269,27 +269,27 @@ LABEL_20:
   if (![v12 isApplicationProcess])
   {
 LABEL_22:
-    v16 = 0;
+    isApplicationProcess = 0;
     goto LABEL_23;
   }
 
-  v16 = [v12 isForeground];
+  isApplicationProcess = [v12 isForeground];
 LABEL_23:
-  if ((v7 & 2) != 0 && (v16 & 1) == 0)
+  if ((credentialsCopy & 2) != 0 && (isApplicationProcess & 1) == 0)
   {
     if ([v12 isApplicationProcess])
     {
-      v17 = [v12 applicationInfo];
-      v16 = [v17 type] != 2;
+      applicationInfo = [v12 applicationInfo];
+      isApplicationProcess = [applicationInfo type] != 2;
     }
 
     else
     {
-      v16 = [v12 executableLivesOnSystemPartition];
+      isApplicationProcess = [v12 executableLivesOnSystemPartition];
     }
   }
 
-  if (v16)
+  if (isApplicationProcess)
   {
     v13 = 0;
   }
@@ -299,12 +299,12 @@ LABEL_23:
     v13 = 13;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_32:
     if (v13)
     {
-      *a6 = [FBServiceClientAuthenticator _errorForCode:v13 process:v12 failedEntitlement:v10];
+      *error = [FBServiceClientAuthenticator _errorForCode:v13 process:v12 failedEntitlement:entitlementCopy];
     }
   }
 
@@ -315,29 +315,29 @@ LABEL_34:
 
 - (id)succinctDescription
 {
-  v2 = [(FBServiceClientAuthenticator *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBServiceClientAuthenticator *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(FBServiceClientAuthenticator *)self entitlement];
-  v5 = [v3 appendObject:v4 withName:@"entitlement" skipIfNil:1];
+  entitlement = [(FBServiceClientAuthenticator *)self entitlement];
+  v5 = [v3 appendObject:entitlement withName:@"entitlement" skipIfNil:1];
 
   v6 = [v3 appendUnsignedInteger:self->_credentials withName:@"credentials"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBServiceClientAuthenticator *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBServiceClientAuthenticator *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 + (void)authenticateAuditToken:(const char *)a1 forEntitlement:(uint64_t)a2 error:.cold.1(const char *a1, uint64_t a2)

@@ -1,23 +1,23 @@
 @interface CNiOSABContainersForAccountExternalIdentifierPredicate
-- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)a3;
-- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithCoder:(id)a3;
+- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)identifier;
+- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithCoder:(id)coder;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContainersForAccountExternalIdentifierPredicate
 
-- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)a3
+- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithAccountExternalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifierString == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifierString == %@", identifierCopy];
   v10.receiver = self;
   v10.super_class = CNiOSABContainersForAccountExternalIdentifierPredicate;
-  v6 = [(CNPredicate *)&v10 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v10 initWithPredicate:identifierCopy];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     accountExternalIdentifier = v6->_accountExternalIdentifier;
     v6->_accountExternalIdentifier = v7;
   }
@@ -25,15 +25,15 @@
   return v6;
 }
 
-- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithCoder:(id)a3
+- (CNiOSABContainersForAccountExternalIdentifierPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABContainersForAccountExternalIdentifierPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountExternalIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountExternalIdentifier"];
     v7 = [v6 copy];
     accountExternalIdentifier = v5->_accountExternalIdentifier;
     v5->_accountExternalIdentifier = v7;
@@ -44,32 +44,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContainersForAccountExternalIdentifierPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_accountExternalIdentifier forKey:{@"_accountExternalIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_accountExternalIdentifier forKey:{@"_accountExternalIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
-  v5 = [(CNiOSABContainersForAccountExternalIdentifierPredicate *)self accountExternalIdentifier:a3];
+  v5 = [(CNiOSABContainersForAccountExternalIdentifierPredicate *)self accountExternalIdentifier:book];
 
-  return MEMORY[0x1EEDEADC0](a3, v5);
+  return MEMORY[0x1EEDEADC0](book, v5);
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContainer predicateForContainersInAccountWithExternalIdentifier:]"];
-  v5 = [(CNiOSABContainersForAccountExternalIdentifierPredicate *)self accountExternalIdentifier];
-  v6 = [v3 appendName:@"externalIdentifier" object:v5];
+  accountExternalIdentifier = [(CNiOSABContainersForAccountExternalIdentifierPredicate *)self accountExternalIdentifier];
+  v6 = [v3 appendName:@"externalIdentifier" object:accountExternalIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface NUFillScalePolicy
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size;
 - (NUFillScalePolicy)init;
-- (NUFillScalePolicy)initWithTargetPixelSize:(id)a3;
+- (NUFillScalePolicy)initWithTargetPixelSize:(id)size;
 @end
 
 @implementation NUFillScalePolicy
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3.var0 || !a3.var1)
+  if (!size.var0 || !size.var1)
   {
     v9 = NUAssertLogger_27066();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,7 +52,7 @@
     _NUAssertFailHandler("[NUFillScalePolicy scaleForImageSize:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUScalePolicy.m", 186, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "!NUPixelSizeIsEmpty(imageSize)");
   }
 
-  v3 = NUScaleToFillSizeInSize(a3.var0, a3.var1, self->_size.width, self->_size.height);
+  v3 = NUScaleToFillSizeInSize(size.var0, size.var1, self->_size.width, self->_size.height);
   v5 = v4;
   v6 = NUScaleCompare(v3, v4, NUScaleOne, *(&NUScaleOne + 1));
   if (v6 >= 0)
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (NUFillScalePolicy)initWithTargetPixelSize:(id)a3
+- (NUFillScalePolicy)initWithTargetPixelSize:(id)size
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3.var0 || (var1 = a3.var1) == 0)
+  if (!size.var0 || (var1 = size.var1) == 0)
   {
     v6 = NUAssertLogger_27066();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -104,8 +104,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -116,8 +116,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -126,7 +126,7 @@
     _NUAssertFailHandler("[NUFillScalePolicy initWithTargetPixelSize:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUScalePolicy.m", 175, @"Invalid parameter not satisfying: %s", v18, v19, v20, v21, "!NUPixelSizeIsEmpty(size)");
   }
 
-  var0 = a3.var0;
+  var0 = size.var0;
   v22.receiver = self;
   v22.super_class = NUFillScalePolicy;
   result = [(NUFillScalePolicy *)&v22 init];
@@ -181,8 +181,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -198,8 +198,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

@@ -1,51 +1,51 @@
 @interface PXPlacesMapViewController
 - (PXPlacesMapViewController)init;
-- (PXPlacesMapViewController)initWithCoder:(id)a3;
-- (PXPlacesMapViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXPlacesMapViewController)initWithCoder:(id)coder;
+- (PXPlacesMapViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PXPlacesMapViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXPlacesMapViewController;
-  [(PXPlacesMapViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PXPlacesMapViewController *)self mapController];
-  [v4 mapContainerViewDidDisappear];
+  [(PXPlacesMapViewController *)&v5 viewDidDisappear:disappear];
+  mapController = [(PXPlacesMapViewController *)self mapController];
+  [mapController mapContainerViewDidDisappear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXPlacesMapViewController;
-  [(PXPlacesMapViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PXPlacesMapViewController *)self mapController];
-  [v4 mapContainerViewWillDisappear];
+  [(PXPlacesMapViewController *)&v5 viewWillDisappear:disappear];
+  mapController = [(PXPlacesMapViewController *)self mapController];
+  [mapController mapContainerViewWillDisappear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PXPlacesMapViewController;
-  [(PXPlacesMapViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PXPlacesMapViewController *)self mapController];
-  [v4 mapContainerViewDidAppear];
+  [(PXPlacesMapViewController *)&v5 viewDidAppear:appear];
+  mapController = [(PXPlacesMapViewController *)self mapController];
+  [mapController mapContainerViewDidAppear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PXPlacesMapViewController;
-  [(PXPlacesMapViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PXPlacesMapViewController *)self mapController];
-  [v4 mapContainerViewWillAppear];
+  [(PXPlacesMapViewController *)&v5 viewWillAppear:appear];
+  mapController = [(PXPlacesMapViewController *)self mapController];
+  [mapController mapContainerViewWillAppear];
 }
 
 - (void)viewDidLoad
@@ -57,9 +57,9 @@
 
 - (void)loadView
 {
-  v3 = [(PXPlacesMapViewController *)self nibName];
+  nibName = [(PXPlacesMapViewController *)self nibName];
 
-  if (v3)
+  if (nibName)
   {
     v10.receiver = self;
     v10.super_class = PXPlacesMapViewController;
@@ -69,12 +69,12 @@
   else
   {
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v4 = [(PXPlacesMapViewController *)self mapController];
-    v5 = [v4 mapView];
+    mapController = [(PXPlacesMapViewController *)self mapController];
+    mapView = [mapController mapView];
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 addSubview:v5];
-    v6 = _NSDictionaryOfVariableBindings(&cfstr_Mapview.isa, v5, 0);
+    [mapView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v9 addSubview:mapView];
+    v6 = _NSDictionaryOfVariableBindings(&cfstr_Mapview.isa, mapView, 0);
     v7 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[mapView]|" options:0 metrics:0 views:v6];
     [v9 addConstraints:v7];
 
@@ -85,21 +85,21 @@
   }
 }
 
-- (PXPlacesMapViewController)initWithCoder:(id)a3
+- (PXPlacesMapViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPlacesMapViewController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXPlacesMapViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapViewController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXPlacesMapViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXPlacesMapViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXPlacesMapViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXPlacesMapViewController.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXPlacesMapViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapViewController.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXPlacesMapViewController initWithNibName:bundle:]"}];
 
   abort();
 }

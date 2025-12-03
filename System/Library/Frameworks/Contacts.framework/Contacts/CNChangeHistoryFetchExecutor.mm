@@ -1,16 +1,16 @@
 @interface CNChangeHistoryFetchExecutor
 + (id)os_log;
 - (BOOL)validateFetchRequest;
-- (CNChangeHistoryFetchExecutor)initWithRequest:(id)a3 store:(id)a4;
-- (id)contactLinkingEventsForContacts:(id)a3 withFactory:(id)a4;
+- (CNChangeHistoryFetchExecutor)initWithRequest:(id)request store:(id)store;
+- (id)contactLinkingEventsForContacts:(id)contacts withFactory:(id)factory;
 - (id)countOfDeltaSync;
 - (id)deltaSync;
 - (id)description;
-- (id)fetchCount:(id *)a3;
-- (id)fetchEvents:(id *)a3;
+- (id)fetchCount:(id *)count;
+- (id)fetchEvents:(id *)events;
 - (id)fullSync;
 - (id)keysToFetch;
-- (id)run:(id *)a3;
+- (id)run:(id *)run;
 @end
 
 @implementation CNChangeHistoryFetchExecutor
@@ -36,18 +36,18 @@ uint64_t __38__CNChangeHistoryFetchExecutor_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNChangeHistoryFetchExecutor)initWithRequest:(id)a3 store:(id)a4
+- (CNChangeHistoryFetchExecutor)initWithRequest:(id)request store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNChangeHistoryFetchExecutor;
   v9 = [(CNChangeHistoryFetchExecutor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_store, store);
     v11 = v10;
   }
 
@@ -57,26 +57,26 @@ uint64_t __38__CNChangeHistoryFetchExecutor_os_log__block_invoke()
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryFetchExecutor *)self request];
-  v5 = [v3 appendName:@"request" object:v4];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  v5 = [v3 appendName:@"request" object:request];
 
-  v6 = [(CNChangeHistoryFetchExecutor *)self store];
-  v7 = [v3 appendName:@"store" object:v6];
+  store = [(CNChangeHistoryFetchExecutor *)self store];
+  v7 = [v3 appendName:@"store" object:store];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   if (!-[CNChangeHistoryFetchExecutor validateFetchRequest](self, "validateFetchRequest") || (-[CNChangeHistoryFetchExecutor request](self, "request"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 resultType], v5, v6 == 2))
   {
     v8 = [CNErrorFactory errorWithCode:605];
-    if (a3)
+    if (run)
     {
       v8 = v8;
-      *a3 = v8;
+      *run = v8;
     }
 
 LABEL_9:
@@ -88,23 +88,23 @@ LABEL_9:
   {
     if (!v6)
     {
-      v7 = [(CNChangeHistoryFetchExecutor *)self fetchEvents:a3];
+      v7 = [(CNChangeHistoryFetchExecutor *)self fetchEvents:run];
       goto LABEL_10;
     }
 
     goto LABEL_9;
   }
 
-  v7 = [(CNChangeHistoryFetchExecutor *)self fetchCount:a3];
+  v7 = [(CNChangeHistoryFetchExecutor *)self fetchCount:run];
 LABEL_10:
 
   return v7;
 }
 
-- (id)fetchEvents:(id *)a3
+- (id)fetchEvents:(id *)events
 {
-  v5 = [(CNChangeHistoryFetchExecutor *)self request];
-  v6 = [v5 startingToken];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  startingToken = [request startingToken];
 
   v7 = [CNContactStore isAccessLimitedForEntityType:0];
   if (v7)
@@ -112,21 +112,21 @@ LABEL_10:
 LABEL_4:
 
     v11 = 0;
-    v6 = 0;
+    startingToken = 0;
     goto LABEL_8;
   }
 
-  if (v6)
+  if (startingToken)
   {
     v8 = +[CNChangeHistoryAnchor limitedAccessHistoryAnchor];
-    v9 = [v8 historyToken];
-    v10 = [v9 isEqualToData:v6];
+    historyToken = [v8 historyToken];
+    v10 = [historyToken isEqualToData:startingToken];
 
     if ((v10 & 1) == 0)
     {
-      v12 = [(CNChangeHistoryFetchExecutor *)self deltaSync];
-      v11 = v12;
-      if (v12 && ([v12 isFailure] & 1) == 0)
+      deltaSync = [(CNChangeHistoryFetchExecutor *)self deltaSync];
+      v11 = deltaSync;
+      if (deltaSync && ([deltaSync isFailure] & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -139,58 +139,58 @@ LABEL_4:
 
   v11 = 0;
 LABEL_8:
-  v13 = [(CNChangeHistoryFetchExecutor *)self request];
-  v14 = [v13 shouldDeferFullSync];
+  request2 = [(CNChangeHistoryFetchExecutor *)self request];
+  shouldDeferFullSync = [request2 shouldDeferFullSync];
 
-  if ((v14 & 1) == 0)
+  if ((shouldDeferFullSync & 1) == 0)
   {
-    v15 = [(CNChangeHistoryFetchExecutor *)self fullSync];
+    fullSync = [(CNChangeHistoryFetchExecutor *)self fullSync];
 
-    v11 = v15;
+    v11 = fullSync;
   }
 
 LABEL_10:
   if ([v11 isSuccess])
   {
-    v16 = [v11 value];
-    v17 = [v16 events];
+    value = [v11 value];
+    events = [value events];
 
     if (v7)
     {
-      v18 = +[CNChangeHistoryAnchor limitedAccessHistoryAnchor];
-      [v18 historyToken];
+      value2 = +[CNChangeHistoryAnchor limitedAccessHistoryAnchor];
+      [value2 historyToken];
     }
 
     else
     {
-      v18 = [v11 value];
-      [v18 token];
+      value2 = [v11 value];
+      [value2 token];
     }
     v19 = ;
 
-    v21 = [[CNFetchResult alloc] initWithValue:v17 currentHistoryToken:v19];
+    v21 = [[CNFetchResult alloc] initWithValue:events currentHistoryToken:v19];
 LABEL_21:
 
     v22 = v21;
     goto LABEL_22;
   }
 
-  v17 = [v11 error];
-  v19 = v17;
-  if (!v17)
+  events = [v11 error];
+  v19 = events;
+  if (!events)
   {
     v19 = [CNErrorFactory errorWithCode:603];
   }
 
-  if (a3)
+  if (events)
   {
     v20 = v19;
-    *a3 = v19;
+    *events = v19;
   }
 
   v21 = 0;
   v22 = 0;
-  if (!v17)
+  if (!events)
   {
     goto LABEL_21;
   }
@@ -200,17 +200,17 @@ LABEL_22:
   return v22;
 }
 
-- (id)fetchCount:(id *)a3
+- (id)fetchCount:(id *)count
 {
   if ([CNContactStore isAccessLimitedForEntityType:0])
   {
     v5 = [CNErrorFactory errorWithCode:603];
-    v6 = v5;
-    if (a3)
+    countOfDeltaSync = v5;
+    if (count)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v6;
+      *count = countOfDeltaSync;
     }
 
     else
@@ -221,28 +221,28 @@ LABEL_22:
 
   else
   {
-    v6 = [(CNChangeHistoryFetchExecutor *)self countOfDeltaSync];
-    if ([v6 isSuccess])
+    countOfDeltaSync = [(CNChangeHistoryFetchExecutor *)self countOfDeltaSync];
+    if ([countOfDeltaSync isSuccess])
     {
       v9 = MEMORY[0x1E696AD98];
-      v10 = [v6 value];
-      v11 = [v9 numberWithInteger:{objc_msgSend(v10, "count")}];
+      value = [countOfDeltaSync value];
+      v11 = [v9 numberWithInteger:{objc_msgSend(value, "count")}];
 
-      v12 = [v6 value];
-      v13 = [v12 token];
+      value2 = [countOfDeltaSync value];
+      token = [value2 token];
 
-      v8 = [[CNFetchResult alloc] initWithValue:v11 currentHistoryToken:v13];
+      v8 = [[CNFetchResult alloc] initWithValue:v11 currentHistoryToken:token];
     }
 
     else
     {
-      v14 = [v6 error];
-      v11 = v14;
-      if (a3)
+      error = [countOfDeltaSync error];
+      v11 = error;
+      if (count)
       {
-        v15 = v14;
+        v15 = error;
         v8 = 0;
-        *a3 = v11;
+        *count = v11;
       }
 
       else
@@ -257,11 +257,11 @@ LABEL_22:
 
 - (BOOL)validateFetchRequest
 {
-  v3 = [(CNChangeHistoryFetchExecutor *)self request];
-  if ([v3 shouldUnifyResults])
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  if ([request shouldUnifyResults])
   {
-    v4 = [(CNChangeHistoryFetchExecutor *)self request];
-    v5 = [v4 includeLinkingChanges] ^ 1;
+    request2 = [(CNChangeHistoryFetchExecutor *)self request];
+    v5 = [request2 includeLinkingChanges] ^ 1;
   }
 
   else
@@ -275,27 +275,27 @@ LABEL_22:
 - (id)fullSync
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CNChangeHistoryFetchExecutor *)self keysToFetch];
-  v4 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v3];
-  v5 = [(CNChangeHistoryFetchExecutor *)self request];
-  -[CNContactFetchRequest setUnifyResults:](v4, "setUnifyResults:", [v5 shouldUnifyResults]);
+  keysToFetch = [(CNChangeHistoryFetchExecutor *)self keysToFetch];
+  v4 = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  -[CNContactFetchRequest setUnifyResults:](v4, "setUnifyResults:", [request shouldUnifyResults]);
 
-  v6 = [(CNChangeHistoryFetchExecutor *)self request];
-  -[CNContactFetchRequest setMutableObjects:](v4, "setMutableObjects:", [v6 mutableObjects]);
+  request2 = [(CNChangeHistoryFetchExecutor *)self request];
+  -[CNContactFetchRequest setMutableObjects:](v4, "setMutableObjects:", [request2 mutableObjects]);
 
-  v7 = [(CNChangeHistoryFetchExecutor *)self store];
+  store = [(CNChangeHistoryFetchExecutor *)self store];
   v35 = 0;
-  v8 = [v7 enumeratorForContactFetchRequest:v4 error:&v35];
+  v8 = [store enumeratorForContactFetchRequest:v4 error:&v35];
   v29 = v35;
 
-  v9 = [v8 value];
-  v10 = [v9 allObjects];
+  value = [v8 value];
+  allObjects = [value allObjects];
 
-  if (v10)
+  if (allObjects)
   {
-    v11 = [(CNChangeHistoryFetchExecutor *)self store];
+    store2 = [(CNChangeHistoryFetchExecutor *)self store];
     v34 = 0;
-    v12 = [v11 groupsMatchingPredicate:0 error:&v34];
+    v12 = [store2 groupsMatchingPredicate:0 error:&v34];
     v28 = v34;
 
     if (v12)
@@ -307,7 +307,7 @@ LABEL_22:
       v32[3] = &unk_1E7413A10;
       v14 = v13;
       v33 = v14;
-      v25 = [v10 _cn_map:v32];
+      v25 = [allObjects _cn_map:v32];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __40__CNChangeHistoryFetchExecutor_fullSync__block_invoke_2;
@@ -315,22 +315,22 @@ LABEL_22:
       v31 = v14;
       v26 = v14;
       v24 = [v12 _cn_map:v30];
-      v15 = [(CNChangeHistoryFetchExecutor *)self contactLinkingEventsForContacts:v10 withFactory:v26];
-      v16 = [(CNChangeHistoryEventFactory *)v26 dropEverythingEvent];
-      v36[0] = v16;
+      v15 = [(CNChangeHistoryFetchExecutor *)self contactLinkingEventsForContacts:allObjects withFactory:v26];
+      dropEverythingEvent = [(CNChangeHistoryEventFactory *)v26 dropEverythingEvent];
+      v36[0] = dropEverythingEvent;
       v36[1] = v25;
       v36[2] = v15;
       v36[3] = v24;
       v17 = v15;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
-      v18 = v27 = v3;
-      v19 = [v18 _cn_flatten];
+      v18 = v27 = keysToFetch;
+      _cn_flatten = [v18 _cn_flatten];
 
-      v20 = [v8 currentHistoryToken];
-      v21 = -[_CNChangeHistoryFetchExecutionResponse initWithEvents:count:token:]([_CNChangeHistoryFetchExecutionResponse alloc], "initWithEvents:count:token:", v19, [v19 count], v20);
+      currentHistoryToken = [v8 currentHistoryToken];
+      v21 = -[_CNChangeHistoryFetchExecutionResponse initWithEvents:count:token:]([_CNChangeHistoryFetchExecutionResponse alloc], "initWithEvents:count:token:", _cn_flatten, [_cn_flatten count], currentHistoryToken);
       v22 = [MEMORY[0x1E6996810] successWithValue:v21];
 
-      v3 = v27;
+      keysToFetch = v27;
     }
 
     else
@@ -349,30 +349,30 @@ LABEL_22:
 
 - (id)deltaSync
 {
-  v3 = [(CNChangeHistoryFetchExecutor *)self store];
-  v4 = [(CNChangeHistoryFetchExecutor *)self request];
+  store = [(CNChangeHistoryFetchExecutor *)self store];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
   v22 = 0;
-  v5 = [v3 changeHistoryWithFetchRequest:v4 error:&v22];
+  v5 = [store changeHistoryWithFetchRequest:request error:&v22];
   v6 = v22;
 
   if (v5)
   {
     v7 = [CNChangeHistoryLegacyResultConverter alloc];
-    v8 = [(CNChangeHistoryFetchExecutor *)self store];
-    v9 = [(CNChangeHistoryFetchExecutor *)self request];
-    v10 = [v9 additionalContactKeyDescriptors];
-    v11 = [(CNChangeHistoryLegacyResultConverter *)v7 initWithContactStore:v8 additionalContactKeyDescriptors:v10];
+    store2 = [(CNChangeHistoryFetchExecutor *)self store];
+    request2 = [(CNChangeHistoryFetchExecutor *)self request];
+    additionalContactKeyDescriptors = [request2 additionalContactKeyDescriptors];
+    v11 = [(CNChangeHistoryLegacyResultConverter *)v7 initWithContactStore:store2 additionalContactKeyDescriptors:additionalContactKeyDescriptors];
 
     v12 = [(CNChangeHistoryLegacyResultConverter *)v11 eventsFromResult:v5];
     if ([v12 isSuccess])
     {
-      v13 = [v5 latestChangeAnchor];
-      v14 = [v13 historyToken];
+      latestChangeAnchor = [v5 latestChangeAnchor];
+      historyToken = [latestChangeAnchor historyToken];
 
       v15 = [_CNChangeHistoryFetchExecutionResponse alloc];
-      v16 = [v12 value];
-      v17 = [v12 value];
-      v18 = -[_CNChangeHistoryFetchExecutionResponse initWithEvents:count:token:](v15, "initWithEvents:count:token:", v16, [v17 count], v14);
+      value = [v12 value];
+      value2 = [v12 value];
+      v18 = -[_CNChangeHistoryFetchExecutionResponse initWithEvents:count:token:](v15, "initWithEvents:count:token:", value, [value2 count], historyToken);
 
       v19 = [MEMORY[0x1E6996810] successWithValue:v18];
     }
@@ -380,8 +380,8 @@ LABEL_22:
     else
     {
       v20 = MEMORY[0x1E6996810];
-      v14 = [v12 error];
-      v19 = [v20 failureWithError:v14];
+      historyToken = [v12 error];
+      v19 = [v20 failureWithError:historyToken];
     }
   }
 
@@ -395,19 +395,19 @@ LABEL_22:
 
 - (id)countOfDeltaSync
 {
-  v3 = [(CNChangeHistoryFetchExecutor *)self store];
-  v4 = [(CNChangeHistoryFetchExecutor *)self request];
+  store = [(CNChangeHistoryFetchExecutor *)self store];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
   v13 = 0;
-  v5 = [v3 changeHistoryWithFetchRequest:v4 error:&v13];
+  v5 = [store changeHistoryWithFetchRequest:request error:&v13];
   v6 = v13;
 
   if (v5)
   {
-    v7 = [v5 changesCount];
-    v8 = [v5 latestChangeAnchor];
-    v9 = [v8 historyToken];
+    changesCount = [v5 changesCount];
+    latestChangeAnchor = [v5 latestChangeAnchor];
+    historyToken = [latestChangeAnchor historyToken];
 
-    v10 = [[_CNChangeHistoryFetchExecutionResponse alloc] initWithEvents:0 count:v7 token:v9];
+    v10 = [[_CNChangeHistoryFetchExecutionResponse alloc] initWithEvents:0 count:changesCount token:historyToken];
     v11 = [MEMORY[0x1E6996810] successWithValue:v10];
   }
 
@@ -424,21 +424,21 @@ LABEL_22:
   v14[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
   v4 = +[CNContact alwaysFetchedKeys];
-  v5 = [v4 allObjects];
-  v6 = [v3 arrayWithArray:v5];
+  allObjects = [v4 allObjects];
+  v6 = [v3 arrayWithArray:allObjects];
 
-  v7 = [(CNChangeHistoryFetchExecutor *)self request];
-  v8 = [v7 additionalContactKeyDescriptors];
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  additionalContactKeyDescriptors = [request additionalContactKeyDescriptors];
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    [v6 addObjectsFromArray:v8];
+    [v6 addObjectsFromArray:additionalContactKeyDescriptors];
   }
 
-  v9 = [(CNChangeHistoryFetchExecutor *)self request];
-  v10 = [v9 includeLinkingChanges];
+  request2 = [(CNChangeHistoryFetchExecutor *)self request];
+  includeLinkingChanges = [request2 includeLinkingChanges];
 
-  if (v10)
+  if (includeLinkingChanges)
   {
     v14[0] = @"linkIdentifier";
     v14[1] = @"preferredForName";
@@ -447,32 +447,32 @@ LABEL_22:
     [v6 addObjectsFromArray:v11];
   }
 
-  v12 = [v6 _cn_flatten];
+  _cn_flatten = [v6 _cn_flatten];
 
-  return v12;
+  return _cn_flatten;
 }
 
-- (id)contactLinkingEventsForContacts:(id)a3 withFactory:(id)a4
+- (id)contactLinkingEventsForContacts:(id)contacts withFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNChangeHistoryFetchExecutor *)self request];
-  if ([v8 includeLinkingChanges])
+  contactsCopy = contacts;
+  factoryCopy = factory;
+  request = [(CNChangeHistoryFetchExecutor *)self request];
+  if ([request includeLinkingChanges])
   {
-    v9 = [v6 count];
+    v9 = [contactsCopy count];
 
     if (v9 >= 2)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [v6 _cn_filter:&__block_literal_global_24];
+      array = [MEMORY[0x1E695DF70] array];
+      v11 = [contactsCopy _cn_filter:&__block_literal_global_24];
       v12 = [v11 _cn_groupBy:&__block_literal_global_27];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __76__CNChangeHistoryFetchExecutor_contactLinkingEventsForContacts_withFactory___block_invoke_3;
       v17[3] = &unk_1E7413A88;
-      v13 = v10;
+      v13 = array;
       v18 = v13;
-      v19 = v7;
+      v19 = factoryCopy;
       [v12 _cn_each:v17];
       v14 = v19;
       v15 = v13;

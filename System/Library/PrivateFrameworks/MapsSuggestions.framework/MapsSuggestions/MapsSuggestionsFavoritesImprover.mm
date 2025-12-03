@@ -1,15 +1,15 @@
 @interface MapsSuggestionsFavoritesImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsFavoritesImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -28,26 +28,26 @@
     goto LABEL_9;
   }
 
-  if ([v3 type] != 6)
+  if ([entryCopy type] != 6)
   {
 LABEL_9:
-    LOBYTE(v5) = 0;
+    LOBYTE(geoMapItem) = 0;
     goto LABEL_10;
   }
 
-  v5 = [v4 geoMapItem];
+  geoMapItem = [v4 geoMapItem];
 
-  if (v5)
+  if (geoMapItem)
   {
-    v6 = [v4 undecoratedSubtitle];
+    undecoratedSubtitle = [v4 undecoratedSubtitle];
 
-    if (!v6)
+    if (!undecoratedSubtitle)
     {
-      v5 = [v4 geoMapItem];
-      v7 = MapsSuggestionsMapItemShortAddress(v5);
+      geoMapItem = [v4 geoMapItem];
+      v7 = MapsSuggestionsMapItemShortAddress(geoMapItem);
       [v4 setUndecoratedSubtitle:v7];
 
-      LOBYTE(v5) = 1;
+      LOBYTE(geoMapItem) = 1;
       goto LABEL_10;
     }
 
@@ -56,7 +56,7 @@ LABEL_9:
 
 LABEL_10:
 
-  return v5;
+  return geoMapItem;
 }
 
 @end

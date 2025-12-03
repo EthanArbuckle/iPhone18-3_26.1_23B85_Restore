@@ -1,20 +1,20 @@
 @interface ATXTimeSectionRow
-- (ATXTimeSectionRow)initWithCoder:(id)a3;
-- (ATXTimeSectionRow)initWithEvents:(id)a3 accessories:(id)a4 dateComponents:(id)a5 isCurrent:(BOOL)a6 prominence:(int64_t)a7 identifier:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (ATXTimeSectionRow)initWithCoder:(id)coder;
+- (ATXTimeSectionRow)initWithEvents:(id)events accessories:(id)accessories dateComponents:(id)components isCurrent:(BOOL)current prominence:(int64_t)prominence identifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeSectionRow
 
-- (ATXTimeSectionRow)initWithEvents:(id)a3 accessories:(id)a4 dateComponents:(id)a5 isCurrent:(BOOL)a6 prominence:(int64_t)a7 identifier:(id)a8
+- (ATXTimeSectionRow)initWithEvents:(id)events accessories:(id)accessories dateComponents:(id)components isCurrent:(BOOL)current prominence:(int64_t)prominence identifier:(id)identifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (v15)
+  eventsCopy = events;
+  accessoriesCopy = accessories;
+  componentsCopy = components;
+  identifierCopy = identifier;
+  if (eventsCopy)
   {
-    if (v16)
+    if (accessoriesCopy)
     {
       goto LABEL_3;
     }
@@ -23,7 +23,7 @@
   else
   {
     [ATXTimeSectionRow initWithEvents:a2 accessories:self dateComponents:? isCurrent:? prominence:? identifier:?];
-    if (v16)
+    if (accessoriesCopy)
     {
       goto LABEL_3;
     }
@@ -36,21 +36,21 @@ LABEL_3:
   v19 = [(ATXTimeSectionRow *)&v30 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [eventsCopy copy];
     events = v19->_events;
     v19->_events = v20;
 
-    v22 = [v16 copy];
+    v22 = [accessoriesCopy copy];
     accessories = v19->_accessories;
     v19->_accessories = v22;
 
-    v24 = [v17 copy];
+    v24 = [componentsCopy copy];
     dateComponents = v19->_dateComponents;
     v19->_dateComponents = v24;
 
-    v19->_isCurrent = a6;
-    v19->_prominence = a7;
-    v26 = [v18 copy];
+    v19->_isCurrent = current;
+    v19->_prominence = prominence;
+    v26 = [identifierCopy copy];
     identifier = v19->_identifier;
     v19->_identifier = v26;
 
@@ -60,27 +60,27 @@ LABEL_3:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   events = self->_events;
-  v5 = a3;
-  [v5 encodeObject:events forKey:@"events"];
-  [v5 encodeObject:self->_accessories forKey:@"accessories"];
-  [v5 encodeObject:self->_dateComponents forKey:@"dateComponents"];
-  [v5 encodeBool:self->_isCurrent forKey:@"isCurrent"];
-  [v5 encodeInteger:self->_prominence forKey:@"prominence"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:events forKey:@"events"];
+  [coderCopy encodeObject:self->_accessories forKey:@"accessories"];
+  [coderCopy encodeObject:self->_dateComponents forKey:@"dateComponents"];
+  [coderCopy encodeBool:self->_isCurrent forKey:@"isCurrent"];
+  [coderCopy encodeInteger:self->_prominence forKey:@"prominence"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (ATXTimeSectionRow)initWithCoder:(id)a3
+- (ATXTimeSectionRow)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"events"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"accessories"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateComponents"];
-  v8 = [v4 decodeBoolForKey:@"isCurrent"];
-  v9 = [v4 decodeIntegerForKey:@"prominence"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"events"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"accessories"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateComponents"];
+  v8 = [coderCopy decodeBoolForKey:@"isCurrent"];
+  v9 = [coderCopy decodeIntegerForKey:@"prominence"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v11 = [(ATXTimeSectionRow *)self initWithEvents:v5 accessories:v6 dateComponents:v7 isCurrent:v8 prominence:v9 identifier:v10];
   return v11;

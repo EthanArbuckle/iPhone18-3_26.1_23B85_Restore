@@ -1,83 +1,83 @@
 @interface RAWReduceNoise
 + (id)customAttributes;
-+ (id)smartNoiseAdjustmentsForValue:(double)a3 andStatistics:(id)a4;
-+ (id)smartNoiseStatistics:(id)a3;
-- (BOOL)isBayerGreenAlignedforImage:(id)a3 andPattern:(int)a4;
++ (id)smartNoiseAdjustmentsForValue:(double)value andStatistics:(id)statistics;
++ (id)smartNoiseStatistics:(id)statistics;
+- (BOOL)isBayerGreenAlignedforImage:(id)image andPattern:(int)pattern;
 - (float)adjustedRNAmount;
 - (id)V8OutputImage;
-- (id)YAndRGBGather:(id)a3 cnrRGB:(id)a4 sushiFactors:(id)a5 crop:(CGRect)a6 lumFactors:(id)a7;
-- (id)YAndRGBGatherOpponentColor:(id)a3 cnrRGB:(id)a4 originalY:(id)a5 sushiFactors:(id)a6 crop:(CGRect)a7 lumFactors:(id)a8;
-- (id)addNoise:(id)a3 noise:(id)a4 amount:(float)a5;
-- (id)blurGradient:(id)a3 lothresh:(float)a4 factor:(float)a5;
-- (id)blurGradientPlusCurvature:(id)a3 lothresh:(float)a4 factor:(float)a5 cthresh:(float)a6 cfactor:(float)a7;
-- (id)compositeThroughGradientMask:(id)a3 fullSize:(id)a4 fullSizeMask:(id)a5;
+- (id)YAndRGBGather:(id)gather cnrRGB:(id)b sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)lumFactors;
+- (id)YAndRGBGatherOpponentColor:(id)color cnrRGB:(id)b originalY:(id)y sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)lumFactors;
+- (id)addNoise:(id)noise noise:(id)a4 amount:(float)amount;
+- (id)blurGradient:(id)gradient lothresh:(float)lothresh factor:(float)factor;
+- (id)blurGradientPlusCurvature:(id)curvature lothresh:(float)lothresh factor:(float)factor cthresh:(float)cthresh cfactor:(float)cfactor;
+- (id)compositeThroughGradientMask:(id)mask fullSize:(id)size fullSizeMask:(id)sizeMask;
 - (id)customAttributes;
-- (id)directionsToCurvature:(id)a3 threshold:(float)a4;
-- (id)expandAndAddDetailsThroughGradientMask2:(id)a3 halfSize:(id)a4 fullSizeDetails:(id)a5 soften:(float)a6 sharpen:(float)a7;
-- (id)expandAndAddDetailsThroughGradientMask3:(id)a3 fullSize:(id)a4 fullSizeDetails:(id)a5 fullSizeMask:(id)a6 amount:(float)a7 sharpen:(float)a8 interpolant:(float)a9;
-- (id)expandAndAddDetailsThroughGradientMask:(id)a3 fullSize:(id)a4 fullSizeDetails:(id)a5 fullSizeMask:(id)a6 amount:(float)a7 contrastOverdrive:(float)a8 interpolant:(float)a9;
-- (id)expandAndAddDetailsWithOverdrive:(id)a3 fullSize:(id)a4 contrast:(float)a5;
-- (id)expandAndMakeDetails:(id)a3 halfSize:(id)a4;
-- (id)expandAndSharpenDetailsThroughGradientMaskGather:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 sharpen:(float)a6 soften:(float)a7 floor:(float)a8 sushiFactors:(id)a9 crop:(CGRect)a10 lumFactors:(id)a11;
-- (id)expandAndSharpenDetailsThroughGradientMaskGatherOpponentColor:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 originalY:(id)a6 sharpen:(float)a7 soften:(float)a8 floor:(float)a9 sushiFactors:(id)a10 crop:(CGRect)a11 lumFactors:(id)a12;
-- (id)expandAndSharpenThroughGradientMask:(id)a3 fullSizeY:(id)a4 sharpen:(float)a5;
-- (id)expandAndSharpenThroughGradientMaskGather:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 sharpen:(float)a6 floor:(float)a7 sushiFactors:(id)a8 crop:(CGRect)a9 lumFactors:(id)a10;
-- (id)expandAndSharpenThroughGradientMaskGatherOpponentColor:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 originalY:(id)a6 sharpen:(float)a7 floor:(float)a8 sushiFactors:(id)a9 crop:(CGRect)a10 lumFactors:(id)a11;
-- (id)expandHalfSizeRGB:(id)a3;
-- (id)extractHalfSizeRGB:(id)a3 neutralFactors:(id)a4;
-- (id)extractHalfSizeRGBHF:(id)a3 neutralFactors:(id)a4 threshold:(float)a5;
-- (id)extractY:(id)a3 neutralFactors:(id)a4;
-- (id)extractYOpponentColor:(id)a3 neutralFactors:(id)a4 luminanceFactors:(id)a5 noiseVector:(id)a6;
-- (id)fineGrainNoise2:(id)a3 tinyBlurFactor:(float)a4;
-- (id)fineGrainNoise:(id)a3;
-- (id)gaborFiltersToLuminanceAndVectorField:(id)a3 thresh:(float)a4;
-- (id)gaborFiltersToSmoothedLuminanceAndGradient:(id)a3 smoothAmt:(float)a4 tinyBlurFactor:(float)a5;
-- (id)gaborFiltersToVectorField:(id)a3;
-- (id)highFrequencyIntoAlpha:(id)a3 threshold:(float)a4 neutralFactors:(id)a5;
-- (id)image:(id)a3 croppedTo:(CGRect)a4;
-- (id)kernelArrayWithResourceName:(id)a3;
-- (id)kernelWithName:(id)a3 inArray:(id)a4;
-- (id)mergeHalfSizeCurvature:(id)a3 intoFullSizeCurvature:(id)a4;
-- (id)multiply:(id)a3 byNeutralFactors:(id)a4;
-- (id)outputBoost:(id)a3;
-- (id)outputCNR:(id)a3 E0:(CGRect)a4 E1:(CGRect)a5;
-- (id)outputCNR:(id)a3 extent:(CGRect)a4 returningDebugProduct:(BOOL *)a5;
+- (id)directionsToCurvature:(id)curvature threshold:(float)threshold;
+- (id)expandAndAddDetailsThroughGradientMask2:(id)mask2 halfSize:(id)size fullSizeDetails:(id)details soften:(float)soften sharpen:(float)sharpen;
+- (id)expandAndAddDetailsThroughGradientMask3:(id)mask3 fullSize:(id)size fullSizeDetails:(id)details fullSizeMask:(id)mask amount:(float)amount sharpen:(float)sharpen interpolant:(float)interpolant;
+- (id)expandAndAddDetailsThroughGradientMask:(id)mask fullSize:(id)size fullSizeDetails:(id)details fullSizeMask:(id)sizeMask amount:(float)amount contrastOverdrive:(float)overdrive interpolant:(float)interpolant;
+- (id)expandAndAddDetailsWithOverdrive:(id)overdrive fullSize:(id)size contrast:(float)contrast;
+- (id)expandAndMakeDetails:(id)details halfSize:(id)size;
+- (id)expandAndSharpenDetailsThroughGradientMaskGather:(id)gather halfSizeY:(id)y cnrRGB:(id)b sharpen:(float)sharpen soften:(float)soften floor:(float)floor sushiFactors:(id)factors crop:(CGRect)self0 lumFactors:(id)self1;
+- (id)expandAndSharpenDetailsThroughGradientMaskGatherOpponentColor:(id)color halfSizeY:(id)y cnrRGB:(id)b originalY:(id)originalY sharpen:(float)sharpen soften:(float)soften floor:(float)floor sushiFactors:(id)self0 crop:(CGRect)self1 lumFactors:(id)self2;
+- (id)expandAndSharpenThroughGradientMask:(id)mask fullSizeY:(id)y sharpen:(float)sharpen;
+- (id)expandAndSharpenThroughGradientMaskGather:(id)gather halfSizeY:(id)y cnrRGB:(id)b sharpen:(float)sharpen floor:(float)floor sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)self0;
+- (id)expandAndSharpenThroughGradientMaskGatherOpponentColor:(id)color halfSizeY:(id)y cnrRGB:(id)b originalY:(id)originalY sharpen:(float)sharpen floor:(float)floor sushiFactors:(id)factors crop:(CGRect)self0 lumFactors:(id)self1;
+- (id)expandHalfSizeRGB:(id)b;
+- (id)extractHalfSizeRGB:(id)b neutralFactors:(id)factors;
+- (id)extractHalfSizeRGBHF:(id)f neutralFactors:(id)factors threshold:(float)threshold;
+- (id)extractY:(id)y neutralFactors:(id)factors;
+- (id)extractYOpponentColor:(id)color neutralFactors:(id)factors luminanceFactors:(id)luminanceFactors noiseVector:(id)vector;
+- (id)fineGrainNoise2:(id)noise2 tinyBlurFactor:(float)factor;
+- (id)fineGrainNoise:(id)noise;
+- (id)gaborFiltersToLuminanceAndVectorField:(id)field thresh:(float)thresh;
+- (id)gaborFiltersToSmoothedLuminanceAndGradient:(id)gradient smoothAmt:(float)amt tinyBlurFactor:(float)factor;
+- (id)gaborFiltersToVectorField:(id)field;
+- (id)highFrequencyIntoAlpha:(id)alpha threshold:(float)threshold neutralFactors:(id)factors;
+- (id)image:(id)image croppedTo:(CGRect)to;
+- (id)kernelArrayWithResourceName:(id)name;
+- (id)kernelWithName:(id)name inArray:(id)array;
+- (id)mergeHalfSizeCurvature:(id)curvature intoFullSizeCurvature:(id)sizeCurvature;
+- (id)multiply:(id)multiply byNeutralFactors:(id)factors;
+- (id)outputBoost:(id)boost;
+- (id)outputCNR:(id)r E0:(CGRect)e0 E1:(CGRect)e1;
+- (id)outputCNR:(id)r extent:(CGRect)extent returningDebugProduct:(BOOL *)product;
 - (id)outputImage;
-- (id)outputUnboost:(id)a3;
-- (id)perceptualToLinear:(id)a3;
-- (id)powerBlur:(id)a3 threshold:(float)a4 scale:(float)a5;
-- (id)powerBlurDespeckle:(id)a3 threshold:(float)a4 scale:(float)a5 countThreshold:(int)a6 luminanceThreshold:(float)a7 diffAmount:(float)a8;
-- (id)powerBlurDespeckleHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6 countThreshold:(int)a7 luminanceThreshold:(float)a8 diffAmount:(float)a9;
-- (id)powerBlurEarlyOut2:(id)a3 threshold:(float)a4 scale:(float)a5 neutralThreshold:(float)a6 thresholdScale:(float)a7;
-- (id)powerBlurEarlyOut2HF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6 neutralThreshold:(float)a7 thresholdScale:(float)a8;
-- (id)powerBlurEarlyOut:(id)a3 threshold:(float)a4 scale:(float)a5;
-- (id)powerBlurEarlyOutHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6;
-- (id)powerBlurFS:(id)a3 threshold:(float)a4 neutralFactors:(id)a5;
-- (id)powerBlurFSHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 neutralFactors:(id)a6;
-- (id)powerBlurHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6;
-- (id)powerBlurY:(id)a3 threshold:(float)a4;
-- (id)reduce:(id)a3;
-- (id)samplerForImage:(id)a3;
-- (id)smoothDetailsAlongDirections:(id)a3 directions:(id)a4 amount:(float)a5;
-- (id)smoothDetailsAlongDirectionsAtScale:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7;
-- (id)smoothDetailsAlongDirectionsAtScaleAntiBloom:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 maxContrast:(float)a8;
-- (id)smoothDetailsAlongDirectionsAtScaleWithSharpen:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 sharp:(float)a8 pscale:(float)a9 coringThreshold:(float)a10;
-- (id)smoothDetailsAlongDirectionsAtScaleWithSharpenAntiBloom:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 sharp:(float)a8 pscale:(float)a9 coringThreshold:(float)a10 maxContrast:(float)a11;
-- (id)smoothVectorFieldAlongVectors:(id)a3;
-- (id)vectorFieldToDirectionsAndGradients:(id)a3;
-- (id)viewBlend:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5;
-- (id)viewC:(id)a3 crop:(CGRect)a4;
-- (id)viewD:(id)a3 factor:(float)a4 crop:(CGRect)a5;
-- (id)viewDIR:(id)a3 do360:(BOOL)a4 crop:(CGRect)a5;
-- (id)viewG:(id)a3 scale:(float)a4 crop:(CGRect)a5;
-- (id)viewGDIR:(id)a3 do360:(BOOL)a4 crop:(CGRect)a5;
-- (id)viewHue:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5;
-- (id)viewRGB:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5;
-- (id)viewTG:(id)a3 lothresh:(float)a4 factor:(float)a5 crop:(CGRect)a6;
-- (id)viewTGDIR:(id)a3 lothresh:(float)a4 factor:(float)a5 do360:(BOOL)a6 crop:(CGRect)a7;
-- (id)viewVF:(id)a3 crop:(CGRect)a4;
-- (id)viewY:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5;
-- (void)computeLowThreshold:(float *)a3 andFactor:(float *)a4 withThreshold:(float)a5 andSoftness:(float)a6;
+- (id)outputUnboost:(id)unboost;
+- (id)perceptualToLinear:(id)linear;
+- (id)powerBlur:(id)blur threshold:(float)threshold scale:(float)scale;
+- (id)powerBlurDespeckle:(id)despeckle threshold:(float)threshold scale:(float)scale countThreshold:(int)countThreshold luminanceThreshold:(float)luminanceThreshold diffAmount:(float)amount;
+- (id)powerBlurDespeckleHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale countThreshold:(int)countThreshold luminanceThreshold:(float)luminanceThreshold diffAmount:(float)diffAmount;
+- (id)powerBlurEarlyOut2:(id)out2 threshold:(float)threshold scale:(float)scale neutralThreshold:(float)neutralThreshold thresholdScale:(float)thresholdScale;
+- (id)powerBlurEarlyOut2HF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale neutralThreshold:(float)neutralThreshold thresholdScale:(float)thresholdScale;
+- (id)powerBlurEarlyOut:(id)out threshold:(float)threshold scale:(float)scale;
+- (id)powerBlurEarlyOutHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale;
+- (id)powerBlurFS:(id)s threshold:(float)threshold neutralFactors:(id)factors;
+- (id)powerBlurFSHF:(id)f threshold:(float)threshold moireAmount:(float)amount neutralFactors:(id)factors;
+- (id)powerBlurHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale;
+- (id)powerBlurY:(id)y threshold:(float)threshold;
+- (id)reduce:(id)reduce;
+- (id)samplerForImage:(id)image;
+- (id)smoothDetailsAlongDirections:(id)directions directions:(id)a4 amount:(float)amount;
+- (id)smoothDetailsAlongDirectionsAtScale:(id)scale directions:(id)directions scale:(float)a5 thresh:(float)thresh smooth:(float)smooth;
+- (id)smoothDetailsAlongDirectionsAtScaleAntiBloom:(id)bloom directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth maxContrast:(float)contrast;
+- (id)smoothDetailsAlongDirectionsAtScaleWithSharpen:(id)sharpen directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth sharp:(float)sharp pscale:(float)pscale coringThreshold:(float)self0;
+- (id)smoothDetailsAlongDirectionsAtScaleWithSharpenAntiBloom:(id)bloom directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth sharp:(float)sharp pscale:(float)pscale coringThreshold:(float)self0 maxContrast:(float)self1;
+- (id)smoothVectorFieldAlongVectors:(id)vectors;
+- (id)vectorFieldToDirectionsAndGradients:(id)gradients;
+- (id)viewBlend:(id)blend sushiFactors:(id)factors crop:(CGRect)crop;
+- (id)viewC:(id)c crop:(CGRect)crop;
+- (id)viewD:(id)d factor:(float)factor crop:(CGRect)crop;
+- (id)viewDIR:(id)r do360:(BOOL)do360 crop:(CGRect)crop;
+- (id)viewG:(id)g scale:(float)scale crop:(CGRect)crop;
+- (id)viewGDIR:(id)r do360:(BOOL)do360 crop:(CGRect)crop;
+- (id)viewHue:(id)hue sushiFactors:(id)factors crop:(CGRect)crop;
+- (id)viewRGB:(id)b sushiFactors:(id)factors crop:(CGRect)crop;
+- (id)viewTG:(id)g lothresh:(float)lothresh factor:(float)factor crop:(CGRect)crop;
+- (id)viewTGDIR:(id)r lothresh:(float)lothresh factor:(float)factor do360:(BOOL)do360 crop:(CGRect)crop;
+- (id)viewVF:(id)f crop:(CGRect)crop;
+- (id)viewY:(id)y sushiFactors:(id)factors crop:(CGRect)crop;
+- (void)computeLowThreshold:(float *)threshold andFactor:(float *)factor withThreshold:(float)withThreshold andSoftness:(float)softness;
 @end
 
 @implementation RAWReduceNoise
@@ -318,15 +318,15 @@
   return MEMORY[0x2821F9670](v2, sel_customAttributes, v3, v4, v5);
 }
 
-+ (id)smartNoiseStatistics:(id)a3
++ (id)smartNoiseStatistics:(id)statistics
 {
   v28[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"kCGImageSourceLuminanceNoiseReductionAmount", v5, v6);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v3, v8, @"kCGImageSourceColorNoiseReductionAmount", v9, v10);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v3, v12, @"kCGImageSourceNoiseReductionSharpnessAmount", v13, v14);
-  v19 = objc_msgSend_objectForKeyedSubscript_(v3, v16, @"kCGImageSourceNoiseReductionContrastAmount", v17, v18);
-  v23 = objc_msgSend_objectForKeyedSubscript_(v3, v20, @"kCGImageSourceNoiseReductionDetailAmount", v21, v22);
+  statisticsCopy = statistics;
+  v7 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v4, @"kCGImageSourceLuminanceNoiseReductionAmount", v5, v6);
+  v11 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v8, @"kCGImageSourceColorNoiseReductionAmount", v9, v10);
+  v15 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v12, @"kCGImageSourceNoiseReductionSharpnessAmount", v13, v14);
+  v19 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v16, @"kCGImageSourceNoiseReductionContrastAmount", v17, v18);
+  v23 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v20, @"kCGImageSourceNoiseReductionDetailAmount", v21, v22);
   v27[0] = @"autoValue";
   v27[1] = @"lnramt";
   v28[0] = &unk_284958C68;
@@ -344,20 +344,20 @@
   return v25;
 }
 
-+ (id)smartNoiseAdjustmentsForValue:(double)a3 andStatistics:(id)a4
++ (id)smartNoiseAdjustmentsForValue:(double)value andStatistics:(id)statistics
 {
   v55[5] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"lnramt", v7, v8);
+  statisticsCopy = statistics;
+  v9 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v6, @"lnramt", v7, v8);
   objc_msgSend_doubleValue(v9, v10, v11, v12, v13);
   v15 = v14;
-  v19 = objc_msgSend_objectForKeyedSubscript_(v5, v16, @"cnramt", v17, v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v16, @"cnramt", v17, v18);
   objc_msgSend_doubleValue(v19, v20, v21, v22, v23);
   v25 = v24;
-  v29 = objc_msgSend_objectForKeyedSubscript_(v5, v26, @"sharpening", v27, v28);
-  v33 = objc_msgSend_objectForKeyedSubscript_(v5, v30, @"contrast", v31, v32);
-  v34 = a3 + -0.5;
-  v35 = fmax(v15 + (a3 + -0.5) * (1.0 - v15 + 1.0 - v15), 0.0);
+  v29 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v26, @"sharpening", v27, v28);
+  v33 = objc_msgSend_objectForKeyedSubscript_(statisticsCopy, v30, @"contrast", v31, v32);
+  v34 = value + -0.5;
+  v35 = fmax(v15 + (value + -0.5) * (1.0 - v15 + 1.0 - v15), 0.0);
   v54[0] = @"lnramt";
   v40 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v36, v37, v38, v39, v35);
   v55[0] = v40;
@@ -376,70 +376,70 @@
   return v52;
 }
 
-- (id)samplerForImage:(id)a3
+- (id)samplerForImage:(id)image
 {
-  v4 = objc_msgSend_samplerWithImage_keysAndValues_(MEMORY[0x277CBF780], a2, a3, *MEMORY[0x277CBFB58], v3, self->inputColorSpace, 0);
+  v4 = objc_msgSend_samplerWithImage_keysAndValues_(MEMORY[0x277CBF780], a2, image, *MEMORY[0x277CBFB58], v3, self->inputColorSpace, 0);
 
   return v4;
 }
 
-- (id)extractY:(id)a3 neutralFactors:(id)a4
+- (id)extractY:(id)y neutralFactors:(id)factors
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  yCopy = y;
+  factorsCopy = factors;
   v11 = objc_msgSend_kernelWithName_(NRKernels, v8, @"extractY", v9, v10);
-  v18[0] = v7;
+  v18[0] = factorsCopy;
   v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v12, v18, 1, v13);
-  v16 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_isAlphaOne_(self, v15, v11, v6, v14, self->inputColorSpace, 0, 1);
+  v16 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_isAlphaOne_(self, v15, v11, yCopy, v14, self->inputColorSpace, 0, 1);
 
   return v16;
 }
 
-- (id)extractYOpponentColor:(id)a3 neutralFactors:(id)a4 luminanceFactors:(id)a5 noiseVector:(id)a6
+- (id)extractYOpponentColor:(id)color neutralFactors:(id)factors luminanceFactors:(id)luminanceFactors noiseVector:(id)vector
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  colorCopy = color;
+  factorsCopy = factors;
+  luminanceFactorsCopy = luminanceFactors;
+  vectorCopy = vector;
   v17 = objc_msgSend_kernelWithName_(NRKernels, v14, @"extractYOpponentColor", v15, v16);
-  v24[0] = v11;
-  v24[1] = v12;
-  v24[2] = v13;
+  v24[0] = factorsCopy;
+  v24[1] = luminanceFactorsCopy;
+  v24[2] = vectorCopy;
   v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v18, v24, 3, v19);
-  v22 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v21, v17, v10, v20, self->inputColorSpace, 0);
+  v22 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v21, v17, colorCopy, v20, self->inputColorSpace, 0);
 
   return v22;
 }
 
-- (id)extractHalfSizeRGB:(id)a3 neutralFactors:(id)a4
+- (id)extractHalfSizeRGB:(id)b neutralFactors:(id)factors
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bCopy = b;
+  factorsCopy = factors;
   memset(&v27, 0, sizeof(v27));
   CGAffineTransformMakeScale(&v27, 0.5, 0.5);
   v11 = objc_msgSend_kernelWithName_(NRKernels, v8, @"extractHalfSizeRGB", v9, v10);
-  objc_msgSend_extent(v6, v12, v13, v14, v15);
+  objc_msgSend_extent(bCopy, v12, v13, v14, v15);
   v26 = v27;
   v31 = CGRectApplyAffineTransform(v30, &v26);
   x = v31.origin.x;
   y = v31.origin.y;
   width = v31.size.width;
   height = v31.size.height;
-  v28[0] = v7;
+  v28[0] = factorsCopy;
   v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v20, v28, 1, v21);
-  v24 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v23, v11, v6, &unk_28492DC90, v22, self->inputColorSpace, 1, x, y, width, height);
+  v24 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v23, v11, bCopy, &unk_28492DC90, v22, self->inputColorSpace, 1, x, y, width, height);
 
   return v24;
 }
 
-- (id)extractHalfSizeRGBHF:(id)a3 neutralFactors:(id)a4 threshold:(float)a5
+- (id)extractHalfSizeRGBHF:(id)f neutralFactors:(id)factors threshold:(float)threshold
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fCopy = f;
+  factorsCopy = factors;
   memset(&v44, 0, sizeof(v44));
   CGAffineTransformMakeScale(&v44, 0.5, 0.5);
   objc_msgSend_adjustedRNAmount(self, v10, v11, v12, v13);
@@ -455,7 +455,7 @@
   }
 
   v21 = objc_msgSend_kernelWithName_(NRKernels, v14, @"extractHalfSizeRGBHF", v16, v17);
-  objc_msgSend_extent(v8, v22, v23, v24, v25);
+  objc_msgSend_extent(fCopy, v22, v23, v24, v25);
   v26 = v19 * 0.5;
   v43 = v44;
   v27 = 1.0 / v19;
@@ -464,20 +464,20 @@
   y = v48.origin.y;
   width = v48.size.width;
   height = v48.size.height;
-  v45[0] = v9;
-  v36 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v32, v33, v34, v35, a5, v26, v27, 0.0);
+  v45[0] = factorsCopy;
+  v36 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v32, v33, v34, v35, threshold, v26, v27, 0.0);
   v45[1] = v36;
   v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v37, v45, 2, v38);
-  v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v21, v8, &unk_28492DCB0, v39, self->inputColorSpace, x, y, width, height);
+  v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v21, fCopy, &unk_28492DCB0, v39, self->inputColorSpace, x, y, width, height);
 
   return v41;
 }
 
-- (id)highFrequencyIntoAlpha:(id)a3 threshold:(float)a4 neutralFactors:(id)a5
+- (id)highFrequencyIntoAlpha:(id)alpha threshold:(float)threshold neutralFactors:(id)factors
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  alphaCopy = alpha;
+  factorsCopy = factors;
   objc_msgSend_adjustedRNAmount(self, v10, v11, v12, v13);
   if (v18 <= 2.0)
   {
@@ -491,41 +491,41 @@
   }
 
   v21 = objc_msgSend_kernelWithName_(NRKernels, v14, @"highFrequencyIntoAlpha", v16, v17);
-  objc_msgSend_extent(v8, v22, v23, v24, v25);
+  objc_msgSend_extent(alphaCopy, v22, v23, v24, v25);
   v44 = CGRectInset(v43, -1.0, -1.0);
   x = v44.origin.x;
   y = v44.origin.y;
   width = v44.size.width;
   height = v44.size.height;
-  v34 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v30, v31, v32, v33, a4, (v19 * 0.5), (1.0 / v19), 0.0);
+  v34 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v30, v31, v32, v33, threshold, (v19 * 0.5), (1.0 / v19), 0.0);
   v41[0] = v34;
-  v41[1] = v9;
+  v41[1] = factorsCopy;
   v37 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v35, v41, 2, v36);
-  v39 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v38, v21, v8, &unk_28492DCD0, v37, self->inputColorSpace, x, y, width, height);
+  v39 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v38, v21, alphaCopy, &unk_28492DCD0, v37, self->inputColorSpace, x, y, width, height);
 
   return v39;
 }
 
-- (id)multiply:(id)a3 byNeutralFactors:(id)a4
+- (id)multiply:(id)multiply byNeutralFactors:(id)factors
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  multiplyCopy = multiply;
+  factorsCopy = factors;
   v11 = objc_msgSend_kernelWithName_(NRKernels, v8, @"multiplyByNeutralFactors", v9, v10);
-  v18[0] = v7;
+  v18[0] = factorsCopy;
   v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v12, v18, 1, v13);
-  v16 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v15, v11, v6, v14, self->inputColorSpace, 0);
+  v16 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v15, v11, multiplyCopy, v14, self->inputColorSpace, 0);
 
   return v16;
 }
 
-- (id)powerBlur:(id)a3 threshold:(float)a4 scale:(float)a5
+- (id)powerBlur:(id)blur threshold:(float)threshold scale:(float)scale
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  blurCopy = blur;
   v12 = objc_msgSend_kernelWithName_(NRKernels, v9, @"powerBlur", v10, v11);
-  objc_msgSend_extent(v8, v13, v14, v15, v16);
-  v37 = CGRectInset(v36, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(blurCopy, v13, v14, v15, v16);
+  v37 = CGRectInset(v36, (scale * -2.0), (scale * -2.0));
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
@@ -534,44 +534,44 @@
   v32[1] = 3221225472;
   v32[2] = sub_233881E78;
   v32[3] = &unk_2789EE950;
-  v33 = a5;
-  v25 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v21, v22, v23, v24, a4, a5, 0.0, 0.0);
+  scaleCopy = scale;
+  v25 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v21, v22, v23, v24, threshold, scale, 0.0, 0.0);
   v34[0] = v25;
   v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v26, v34, 1, v27);
-  v30 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v29, v12, v8, v32, v28, self->inputColorSpace, 1, x, y, width, height);
+  v30 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v29, v12, blurCopy, v32, v28, self->inputColorSpace, 1, x, y, width, height);
 
   return v30;
 }
 
-- (id)powerBlurDespeckle:(id)a3 threshold:(float)a4 scale:(float)a5 countThreshold:(int)a6 luminanceThreshold:(float)a7 diffAmount:(float)a8
+- (id)powerBlurDespeckle:(id)despeckle threshold:(float)threshold scale:(float)scale countThreshold:(int)countThreshold luminanceThreshold:(float)luminanceThreshold diffAmount:(float)amount
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  despeckleCopy = despeckle;
   v18 = objc_msgSend_kernelWithName_(NRKernels, v15, @"powerBlurDespeckle", v16, v17);
-  objc_msgSend_extent(v14, v19, v20, v21, v22);
-  v48 = CGRectInset(v47, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(despeckleCopy, v19, v20, v21, v22);
+  v48 = CGRectInset(v47, (scale * -2.0), (scale * -2.0));
   x = v48.origin.x;
   y = v48.origin.y;
   width = v48.size.width;
   height = v48.size.height;
-  *&v44 = a5;
-  v31 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v27, v28, v29, v30, a4, a5, 0.0, 0.0, MEMORY[0x277D85DD0], 3221225472, sub_2338820D8, &unk_2789EE950, v44);
+  *&v44 = scale;
+  v31 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v27, v28, v29, v30, threshold, scale, 0.0, 0.0, MEMORY[0x277D85DD0], 3221225472, sub_2338820D8, &unk_2789EE950, v44);
   v45[0] = v31;
-  v36 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v32, v33, v34, v35, a6, a7, a8);
+  v36 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v32, v33, v34, v35, countThreshold, luminanceThreshold, amount);
   v45[1] = v36;
   v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v37, v45, 2, v38);
-  v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v18, v14, &v43, v39, self->inputColorSpace, x, y, width, height);
+  v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v18, despeckleCopy, &v43, v39, self->inputColorSpace, x, y, width, height);
 
   return v41;
 }
 
-- (id)powerBlurEarlyOut:(id)a3 threshold:(float)a4 scale:(float)a5
+- (id)powerBlurEarlyOut:(id)out threshold:(float)threshold scale:(float)scale
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  outCopy = out;
   v12 = objc_msgSend_kernelWithName_(NRKernels, v9, @"powerBlurEarlyOut", v10, v11);
-  objc_msgSend_extent(v8, v13, v14, v15, v16);
-  v37 = CGRectInset(v36, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(outCopy, v13, v14, v15, v16);
+  v37 = CGRectInset(v36, (scale * -2.0), (scale * -2.0));
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
@@ -580,22 +580,22 @@
   v32[1] = 3221225472;
   v32[2] = sub_2338822F0;
   v32[3] = &unk_2789EE950;
-  v33 = a5;
-  v25 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v21, v22, v23, v24, a4, a5, 0.0, 0.0);
+  scaleCopy = scale;
+  v25 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v21, v22, v23, v24, threshold, scale, 0.0, 0.0);
   v34[0] = v25;
   v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v26, v34, 1, v27);
-  v30 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v29, v12, v8, v32, v28, self->inputColorSpace, x, y, width, height);
+  v30 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v29, v12, outCopy, v32, v28, self->inputColorSpace, x, y, width, height);
 
   return v30;
 }
 
-- (id)powerBlurEarlyOut2:(id)a3 threshold:(float)a4 scale:(float)a5 neutralThreshold:(float)a6 thresholdScale:(float)a7
+- (id)powerBlurEarlyOut2:(id)out2 threshold:(float)threshold scale:(float)scale neutralThreshold:(float)neutralThreshold thresholdScale:(float)thresholdScale
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  out2Copy = out2;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"powerBlurEarlyOut2", v14, v15);
-  objc_msgSend_extent(v12, v17, v18, v19, v20);
-  v41 = CGRectInset(v40, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(out2Copy, v17, v18, v19, v20);
+  v41 = CGRectInset(v40, (scale * -2.0), (scale * -2.0));
   x = v41.origin.x;
   y = v41.origin.y;
   width = v41.size.width;
@@ -604,44 +604,44 @@
   v36[1] = 3221225472;
   v36[2] = sub_233882518;
   v36[3] = &unk_2789EE950;
-  v37 = a5;
-  v29 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v25, v26, v27, v28, a4, a5, a7, a6);
+  scaleCopy = scale;
+  v29 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v25, v26, v27, v28, threshold, scale, thresholdScale, neutralThreshold);
   v38[0] = v29;
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v30, v38, 1, v31);
-  v34 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v33, v16, v12, v36, v32, self->inputColorSpace, x, y, width, height);
+  v34 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v33, v16, out2Copy, v36, v32, self->inputColorSpace, x, y, width, height);
 
   return v34;
 }
 
-- (id)powerBlurFS:(id)a3 threshold:(float)a4 neutralFactors:(id)a5
+- (id)powerBlurFS:(id)s threshold:(float)threshold neutralFactors:(id)factors
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  sCopy = s;
+  factorsCopy = factors;
   v13 = objc_msgSend_kernelWithName_(NRKernels, v10, @"powerBlurFS", v11, v12);
-  objc_msgSend_extent(v8, v14, v15, v16, v17);
+  objc_msgSend_extent(sCopy, v14, v15, v16, v17);
   v36 = CGRectInset(v35, -4.0, -4.0);
   x = v36.origin.x;
   y = v36.origin.y;
   width = v36.size.width;
   height = v36.size.height;
-  *&v36.origin.x = a4;
+  *&v36.origin.x = threshold;
   v26 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v22, v23, v24, v25, v36.origin.x);
   v33[0] = v26;
-  v33[1] = v9;
+  v33[1] = factorsCopy;
   v29 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v27, v33, 2, v28);
-  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v13, v8, &unk_28492DCF0, v29, self->inputColorSpace, x, y, width, height);
+  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v13, sCopy, &unk_28492DCF0, v29, self->inputColorSpace, x, y, width, height);
 
   return v31;
 }
 
-- (id)powerBlurHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6
+- (id)powerBlurHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  fCopy = f;
   v14 = objc_msgSend_kernelWithName_(NRKernels, v11, @"powerBlurHF", v12, v13);
-  objc_msgSend_extent(v10, v15, v16, v17, v18);
-  v39 = CGRectInset(v38, (a6 * -2.0), (a6 * -2.0));
+  objc_msgSend_extent(fCopy, v15, v16, v17, v18);
+  v39 = CGRectInset(v38, (scale * -2.0), (scale * -2.0));
   x = v39.origin.x;
   y = v39.origin.y;
   width = v39.size.width;
@@ -650,22 +650,22 @@
   v34[1] = 3221225472;
   v34[2] = sub_2338828FC;
   v34[3] = &unk_2789EE950;
-  v35 = a6;
-  v27 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v23, v24, v25, v26, a4, a6, a5, 0.0);
+  scaleCopy = scale;
+  v27 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v23, v24, v25, v26, threshold, scale, amount, 0.0);
   v36[0] = v27;
   v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v28, v36, 1, v29);
-  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v14, v10, v34, v30, self->inputColorSpace, x, y, width, height);
+  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v14, fCopy, v34, v30, self->inputColorSpace, x, y, width, height);
 
   return v32;
 }
 
-- (id)powerBlurDespeckleHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6 countThreshold:(int)a7 luminanceThreshold:(float)a8 diffAmount:(float)a9
+- (id)powerBlurDespeckleHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale countThreshold:(int)countThreshold luminanceThreshold:(float)luminanceThreshold diffAmount:(float)diffAmount
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  fCopy = f;
   v19 = objc_msgSend_kernelWithName_(NRKernels, v16, @"powerBlurDespeckleHF", v17, v18);
-  objc_msgSend_extent(v15, v20, v21, v22, v23);
-  v50 = CGRectInset(v49, (a6 * -2.0), (a6 * -2.0));
+  objc_msgSend_extent(fCopy, v20, v21, v22, v23);
+  v50 = CGRectInset(v49, (scale * -2.0), (scale * -2.0));
   x = v50.origin.x;
   y = v50.origin.y;
   width = v50.size.width;
@@ -674,24 +674,24 @@
   v45[1] = 3221225472;
   v45[2] = sub_233882B64;
   v45[3] = &unk_2789EE950;
-  v46 = a6;
-  v32 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v28, v29, v30, v31, a4, a6, a5, 0.0);
+  scaleCopy = scale;
+  v32 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v28, v29, v30, v31, threshold, scale, amount, 0.0);
   v47[0] = v32;
-  v37 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v33, v34, v35, v36, a7, a8, a9);
+  v37 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v33, v34, v35, v36, countThreshold, luminanceThreshold, diffAmount);
   v47[1] = v37;
   v40 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v38, v47, 2, v39);
-  v42 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v41, v19, v15, v45, v40, self->inputColorSpace, x, y, width, height);
+  v42 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v41, v19, fCopy, v45, v40, self->inputColorSpace, x, y, width, height);
 
   return v42;
 }
 
-- (id)powerBlurEarlyOutHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6
+- (id)powerBlurEarlyOutHF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  fCopy = f;
   v14 = objc_msgSend_kernelWithName_(NRKernels, v11, @"powerBlurEarlyOutHF", v12, v13);
-  objc_msgSend_extent(v10, v15, v16, v17, v18);
-  v39 = CGRectInset(v38, (a6 * -2.0), (a6 * -2.0));
+  objc_msgSend_extent(fCopy, v15, v16, v17, v18);
+  v39 = CGRectInset(v38, (scale * -2.0), (scale * -2.0));
   x = v39.origin.x;
   y = v39.origin.y;
   width = v39.size.width;
@@ -700,22 +700,22 @@
   v34[1] = 3221225472;
   v34[2] = sub_233882D88;
   v34[3] = &unk_2789EE950;
-  v35 = a6;
-  v27 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v23, v24, v25, v26, a4, a6, a5, 0.0);
+  scaleCopy = scale;
+  v27 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v23, v24, v25, v26, threshold, scale, amount, 0.0);
   v36[0] = v27;
   v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v28, v36, 1, v29);
-  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v14, v10, v34, v30, self->inputColorSpace, x, y, width, height);
+  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v14, fCopy, v34, v30, self->inputColorSpace, x, y, width, height);
 
   return v32;
 }
 
-- (id)powerBlurEarlyOut2HF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 scale:(float)a6 neutralThreshold:(float)a7 thresholdScale:(float)a8
+- (id)powerBlurEarlyOut2HF:(id)f threshold:(float)threshold moireAmount:(float)amount scale:(float)scale neutralThreshold:(float)neutralThreshold thresholdScale:(float)thresholdScale
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  fCopy = f;
   v18 = objc_msgSend_kernelWithName_(NRKernels, v15, @"powerBlurEarlyOut2HF", v16, v17);
-  objc_msgSend_extent(v14, v19, v20, v21, v22);
-  v48 = CGRectInset(v47, (a6 * -2.0), (a6 * -2.0));
+  objc_msgSend_extent(fCopy, v19, v20, v21, v22);
+  v48 = CGRectInset(v47, (scale * -2.0), (scale * -2.0));
   x = v48.origin.x;
   y = v48.origin.y;
   width = v48.size.width;
@@ -724,97 +724,97 @@
   v43[1] = 3221225472;
   v43[2] = sub_233882FE8;
   v43[3] = &unk_2789EE950;
-  v44 = a6;
-  v30 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v26, v27, v28, v29, a4, a6, a8, a7);
+  scaleCopy = scale;
+  v30 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v26, v27, v28, v29, threshold, scale, thresholdScale, neutralThreshold);
   v45[0] = v30;
-  v35 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v31, v32, v33, v34, a5, 0.0, 0.0, 0.0);
+  v35 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v31, v32, v33, v34, amount, 0.0, 0.0, 0.0);
   v45[1] = v35;
   v38 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v36, v45, 2, v37);
-  v40 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v39, v18, v14, v43, v38, self->inputColorSpace, x, y, width, height);
+  v40 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v39, v18, fCopy, v43, v38, self->inputColorSpace, x, y, width, height);
 
   return v40;
 }
 
-- (id)powerBlurFSHF:(id)a3 threshold:(float)a4 moireAmount:(float)a5 neutralFactors:(id)a6
+- (id)powerBlurFSHF:(id)f threshold:(float)threshold moireAmount:(float)amount neutralFactors:(id)factors
 {
   v40[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  fCopy = f;
+  factorsCopy = factors;
   v15 = objc_msgSend_kernelWithName_(NRKernels, v12, @"powerBlurFSHF", v13, v14);
-  objc_msgSend_extent(v10, v16, v17, v18, v19);
+  objc_msgSend_extent(fCopy, v16, v17, v18, v19);
   v43 = CGRectInset(v42, -4.0, -4.0);
   x = v43.origin.x;
   y = v43.origin.y;
   width = v43.size.width;
   height = v43.size.height;
-  *&v43.origin.x = a4;
+  *&v43.origin.x = threshold;
   v28 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v24, v25, v26, v27, v43.origin.x);
-  v33 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v29, v30, v31, v32, a5, 0.0, 0.0, 0.0, v28, v11);
+  v33 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v29, v30, v31, v32, amount, 0.0, 0.0, 0.0, v28, factorsCopy);
   v40[2] = v33;
   v36 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v34, v40, 3, v35);
-  v38 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v37, v15, v10, &unk_28492DD10, v36, self->inputColorSpace, x, y, width, height);
+  v38 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v37, v15, fCopy, &unk_28492DD10, v36, self->inputColorSpace, x, y, width, height);
 
   return v38;
 }
 
-- (id)perceptualToLinear:(id)a3
+- (id)perceptualToLinear:(id)linear
 {
-  v4 = a3;
+  linearCopy = linear;
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"perceptualToLinear", v6, v7);
-  v10 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v9, v8, v4, MEMORY[0x277CBEBF8], self->inputColorSpace, 0);
+  v10 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_(self, v9, v8, linearCopy, MEMORY[0x277CBEBF8], self->inputColorSpace, 0);
 
   return v10;
 }
 
-- (id)expandHalfSizeRGB:(id)a3
+- (id)expandHalfSizeRGB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   memset(&v17, 0, sizeof(v17));
   CGAffineTransformMakeScale(&v17, 2.0, 2.0);
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"expandHalfSizeRGB", v6, v7);
-  objc_msgSend_extent(v4, v9, v10, v11, v12);
+  objc_msgSend_extent(bCopy, v9, v10, v11, v12);
   v16 = v17;
   v20 = CGRectApplyAffineTransform(v19, &v16);
   v21 = CGRectInset(v20, -1.0, -1.0);
-  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v13, v8, v4, &unk_28492DD30, 0, self->inputColorSpace, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height);
+  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v13, v8, bCopy, &unk_28492DD30, 0, self->inputColorSpace, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height);
 
   return v14;
 }
 
-- (id)powerBlurY:(id)a3 threshold:(float)a4
+- (id)powerBlurY:(id)y threshold:(float)threshold
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  yCopy = y;
   v10 = objc_msgSend_kernelWithName_(NRKernels, v7, @"powerBlurY", v8, v9);
-  objc_msgSend_extent(v6, v11, v12, v13, v14);
+  objc_msgSend_extent(yCopy, v11, v12, v13, v14);
   v33 = CGRectInset(v32, -2.0, -2.0);
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
   height = v33.size.height;
-  *&v33.origin.x = a4;
+  *&v33.origin.x = threshold;
   v23 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v19, v20, v21, v22, v33.origin.x);
   v30[0] = v23;
   v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v24, v30, 1, v25);
-  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v27, v10, v6, &unk_28492DD50, v26, self->inputColorSpace, 1, x, y, width, height);
+  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v27, v10, yCopy, &unk_28492DD50, v26, self->inputColorSpace, 1, x, y, width, height);
 
   return v28;
 }
 
-- (id)expandAndMakeDetails:(id)a3 halfSize:(id)a4
+- (id)expandAndMakeDetails:(id)details halfSize:(id)size
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  sizeCopy = size;
   memset(&v39, 0, sizeof(v39));
   CGAffineTransformMakeScale(&v39, 2.0, 2.0);
   v11 = objc_msgSend_kernelWithName_(NRKernels, v8, @"expandAndMakeDetails", v9, v10);
-  objc_msgSend_extent(v6, v12, v13, v14, v15);
+  objc_msgSend_extent(detailsCopy, v12, v13, v14, v15);
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  objc_msgSend_extent(v7, v24, v25, v26, v27);
+  objc_msgSend_extent(sizeCopy, v24, v25, v26, v27);
   v38 = v39;
   v43 = CGRectApplyAffineTransform(v42, &v38);
   v46 = CGRectInset(v43, -1.0, -1.0);
@@ -827,89 +827,89 @@
   y = v45.origin.y;
   width = v45.size.width;
   height = v45.size.height;
-  v40[0] = v7;
+  v40[0] = sizeCopy;
   v34 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v32, v40, 1, v33);
-  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v35, v11, v6, &unk_28492DD70, v34, self->inputColorSpace, 1, x, y, width, height);
+  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v35, v11, detailsCopy, &unk_28492DD70, v34, self->inputColorSpace, 1, x, y, width, height);
 
   return v36;
 }
 
-- (id)reduce:(id)a3
+- (id)reduce:(id)reduce
 {
-  v4 = a3;
+  reduceCopy = reduce;
   memset(&v17, 0, sizeof(v17));
   CGAffineTransformMakeScale(&v17, 0.5, 0.5);
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"reduce", v6, v7);
-  objc_msgSend_extent(v4, v9, v10, v11, v12);
+  objc_msgSend_extent(reduceCopy, v9, v10, v11, v12);
   v16 = v17;
   v20 = CGRectApplyAffineTransform(v19, &v16);
   v21 = CGRectInset(v20, -1.0, -1.0);
-  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, v4, &unk_28492DD90, 0, self->inputColorSpace, 1, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height);
+  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, reduceCopy, &unk_28492DD90, 0, self->inputColorSpace, 1, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height);
 
   return v14;
 }
 
-- (id)gaborFiltersToSmoothedLuminanceAndGradient:(id)a3 smoothAmt:(float)a4 tinyBlurFactor:(float)a5
+- (id)gaborFiltersToSmoothedLuminanceAndGradient:(id)gradient smoothAmt:(float)amt tinyBlurFactor:(float)factor
 {
   v42[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  gradientCopy = gradient;
   v12 = objc_msgSend_kernelWithName_(NRKernels, v9, @"gaborFiltersToSmoothedLuminanceAndGradient", v10, v11);
-  objc_msgSend_extent(v8, v13, v14, v15, v16);
+  objc_msgSend_extent(gradientCopy, v13, v14, v15, v16);
   v45 = CGRectInset(v44, -3.0, -3.0);
   x = v45.origin.x;
   y = v45.origin.y;
   width = v45.size.width;
   height = v45.size.height;
-  *&v45.origin.x = a4;
+  *&v45.origin.x = amt;
   v25 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v21, v22, v23, v24, v45.origin.x);
-  v30 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v26, v27, v28, v29, (((a5 * -4.0) + 1.0) + -0.14062), (a5 + -0.09375), -0.0625, -0.0234375, v25);
+  v30 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v26, v27, v28, v29, (((factor * -4.0) + 1.0) + -0.14062), (factor + -0.09375), -0.0625, -0.0234375, v25);
   v42[1] = v30;
   v35 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v31, v32, v33, v34, -0.015625, -0.00390625, 0.0, 0.0);
   v42[2] = v35;
   v38 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v36, v42, 3, v37);
-  v40 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v39, v12, v8, &unk_28492DDB0, v38, self->inputColorSpace, 1, x, y, width, height);
+  v40 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v39, v12, gradientCopy, &unk_28492DDB0, v38, self->inputColorSpace, 1, x, y, width, height);
 
   return v40;
 }
 
-- (id)gaborFiltersToLuminanceAndVectorField:(id)a3 thresh:(float)a4
+- (id)gaborFiltersToLuminanceAndVectorField:(id)field thresh:(float)thresh
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fieldCopy = field;
   v10 = objc_msgSend_kernelWithName_(NRKernels, v7, @"gaborFiltersToLuminanceAndVectorField", v8, v9);
-  objc_msgSend_extent(v6, v11, v12, v13, v14);
+  objc_msgSend_extent(fieldCopy, v11, v12, v13, v14);
   v33 = CGRectInset(v32, -3.0, -3.0);
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
   height = v33.size.height;
-  *&v33.origin.x = a4;
+  *&v33.origin.x = thresh;
   v23 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v19, v20, v21, v22, v33.origin.x);
   v30[0] = v23;
   v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v24, v30, 1, v25);
-  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v27, v10, v6, &unk_28492DDD0, v26, self->inputColorSpace, 1, x, y, width, height);
+  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v27, v10, fieldCopy, &unk_28492DDD0, v26, self->inputColorSpace, 1, x, y, width, height);
 
   return v28;
 }
 
-- (id)gaborFiltersToVectorField:(id)a3
+- (id)gaborFiltersToVectorField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"gaborFiltersToVectorField", v6, v7);
-  objc_msgSend_extent(v4, v9, v10, v11, v12);
+  objc_msgSend_extent(fieldCopy, v9, v10, v11, v12);
   v18 = CGRectInset(v17, -3.0, -3.0);
-  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, v4, &unk_28492DDF0, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
+  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, fieldCopy, &unk_28492DDF0, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
 
   return v14;
 }
 
-- (id)smoothDetailsAlongDirections:(id)a3 directions:(id)a4 amount:(float)a5
+- (id)smoothDetailsAlongDirections:(id)directions directions:(id)a4 amount:(float)amount
 {
   v55[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  directionsCopy = directions;
   v9 = a4;
   v54 = 0;
-  *&v10 = a5;
+  *&v10 = amount;
   objc_msgSend_computeScaleA_B_withSmoothingAmount_(self, v11, &v54 + 4, &v54, v12, v10);
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"smoothDetailsAlongDirections", v14, v15);
   objc_msgSend_extent(v9, v17, v18, v19, v20);
@@ -917,7 +917,7 @@
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  objc_msgSend_extent(v8, v29, v30, v31, v32);
+  objc_msgSend_extent(directionsCopy, v29, v30, v31, v32);
   v60 = CGRectInset(v57, -2.0, -2.0);
   v58.origin.x = v22;
   v58.origin.y = v24;
@@ -936,24 +936,24 @@
   v47 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v43, v44, v45, v46, v42);
   v55[2] = v47;
   v50 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v48, v55, 3, v49);
-  v52 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v51, v16, v8, &unk_28492DE10, v50, self->inputColorSpace, 1, x, y, width, height);
+  v52 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v51, v16, directionsCopy, &unk_28492DE10, v50, self->inputColorSpace, 1, x, y, width, height);
 
   return v52;
 }
 
-- (id)smoothDetailsAlongDirectionsAtScale:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7
+- (id)smoothDetailsAlongDirectionsAtScale:(id)scale directions:(id)directions scale:(float)a5 thresh:(float)thresh smooth:(float)smooth
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  scaleCopy = scale;
+  directionsCopy = directions;
   v17 = objc_msgSend_kernelWithName_(NRKernels, v14, @"smoothDetailsAlongDirectionsAtScale", v15, v16);
-  objc_msgSend_extent(v12, v18, v19, v20, v21);
+  objc_msgSend_extent(scaleCopy, v18, v19, v20, v21);
   v54 = CGRectInset(v53, -a5, -a5);
   x = v54.origin.x;
   y = v54.origin.y;
   width = v54.size.width;
   height = v54.size.height;
-  objc_msgSend_extent(v13, v26, v27, v28, v29);
+  objc_msgSend_extent(directionsCopy, v26, v27, v28, v29);
   v57.origin.x = v30;
   v57.origin.y = v31;
   v57.size.width = v32;
@@ -968,27 +968,27 @@
   v36 = v56.size.width;
   v37 = v56.size.height;
   *&v50 = a5;
-  v42 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v38, v39, v40, v41, a5, a6, a7, 0.0, MEMORY[0x277D85DD0], 3221225472, sub_233884324, &unk_2789EE950, v50, v13);
+  v42 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v38, v39, v40, v41, a5, thresh, smooth, 0.0, MEMORY[0x277D85DD0], 3221225472, sub_233884324, &unk_2789EE950, v50, directionsCopy);
   v51[1] = v42;
   v45 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, v51, 2, v44);
-  v47 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v46, v17, v12, &v49, v45, self->inputColorSpace, v34, v35, v36, v37);
+  v47 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v46, v17, scaleCopy, &v49, v45, self->inputColorSpace, v34, v35, v36, v37);
 
   return v47;
 }
 
-- (id)smoothDetailsAlongDirectionsAtScaleAntiBloom:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 maxContrast:(float)a8
+- (id)smoothDetailsAlongDirectionsAtScaleAntiBloom:(id)bloom directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth maxContrast:(float)contrast
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
+  bloomCopy = bloom;
+  directionsCopy = directions;
   v19 = objc_msgSend_kernelWithName_(NRKernels, v16, @"smoothDetailsAlongDirectionsAtScaleAntiBloom", v17, v18);
-  objc_msgSend_extent(v14, v20, v21, v22, v23);
-  v56 = CGRectInset(v55, -a5, -a5);
+  objc_msgSend_extent(bloomCopy, v20, v21, v22, v23);
+  v56 = CGRectInset(v55, -scale, -scale);
   x = v56.origin.x;
   y = v56.origin.y;
   width = v56.size.width;
   height = v56.size.height;
-  objc_msgSend_extent(v15, v28, v29, v30, v31);
+  objc_msgSend_extent(directionsCopy, v28, v29, v30, v31);
   v59.origin.x = v32;
   v59.origin.y = v33;
   v59.size.width = v34;
@@ -1002,28 +1002,28 @@
   v37 = v58.origin.y;
   v38 = v58.size.width;
   v39 = v58.size.height;
-  *&v52 = a5;
-  v44 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v40, v41, v42, v43, a5, a6, a7, a8, MEMORY[0x277D85DD0], 3221225472, sub_2338845B8, &unk_2789EE950, v52, v15);
+  *&v52 = scale;
+  v44 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v40, v41, v42, v43, scale, thresh, smooth, contrast, MEMORY[0x277D85DD0], 3221225472, sub_2338845B8, &unk_2789EE950, v52, directionsCopy);
   v53[1] = v44;
   v47 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v45, v53, 2, v46);
-  v49 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v48, v19, v14, &v51, v47, self->inputColorSpace, v36, v37, v38, v39);
+  v49 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v48, v19, bloomCopy, &v51, v47, self->inputColorSpace, v36, v37, v38, v39);
 
   return v49;
 }
 
-- (id)smoothDetailsAlongDirectionsAtScaleWithSharpen:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 sharp:(float)a8 pscale:(float)a9 coringThreshold:(float)a10
+- (id)smoothDetailsAlongDirectionsAtScaleWithSharpen:(id)sharpen directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth sharp:(float)sharp pscale:(float)pscale coringThreshold:(float)self0
 {
   v62[3] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
+  sharpenCopy = sharpen;
+  directionsCopy = directions;
   v21 = objc_msgSend_kernelWithName_(NRKernels, v18, @"smoothDetailsAlongDirectionsAtScaleWithSharpen", v19, v20);
-  objc_msgSend_extent(v16, v22, v23, v24, v25);
-  v65 = CGRectInset(v64, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(sharpenCopy, v22, v23, v24, v25);
+  v65 = CGRectInset(v64, (scale * -2.0), (scale * -2.0));
   x = v65.origin.x;
   y = v65.origin.y;
   width = v65.size.width;
   height = v65.size.height;
-  objc_msgSend_extent(v17, v30, v31, v32, v33);
+  objc_msgSend_extent(directionsCopy, v30, v31, v32, v33);
   v68.origin.x = v34;
   v68.origin.y = v35;
   v68.size.width = v36;
@@ -1041,31 +1041,31 @@
   v60[1] = 3221225472;
   v60[2] = sub_2338848A4;
   v60[3] = &unk_2789EE950;
-  v61 = a5;
-  v62[0] = v17;
-  v46 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v42, v43, v44, v45, a5, a6, a7, a8);
+  scaleCopy = scale;
+  v62[0] = directionsCopy;
+  v46 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v42, v43, v44, v45, scale, thresh, smooth, sharp);
   v62[1] = v46;
-  v51 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v47, v48, v49, v50, a9, (a10 * 0.75), (2.0 / a10));
+  v51 = objc_msgSend_vectorWithX_Y_Z_(MEMORY[0x277CBF788], v47, v48, v49, v50, pscale, (threshold * 0.75), (2.0 / threshold));
   v62[2] = v51;
   v54 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v52, v62, 3, v53);
-  v56 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v55, v21, v16, v60, v54, self->inputColorSpace, v38, v39, v40, v41);
+  v56 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v55, v21, sharpenCopy, v60, v54, self->inputColorSpace, v38, v39, v40, v41);
 
   return v56;
 }
 
-- (id)smoothDetailsAlongDirectionsAtScaleWithSharpenAntiBloom:(id)a3 directions:(id)a4 scale:(float)a5 thresh:(float)a6 smooth:(float)a7 sharp:(float)a8 pscale:(float)a9 coringThreshold:(float)a10 maxContrast:(float)a11
+- (id)smoothDetailsAlongDirectionsAtScaleWithSharpenAntiBloom:(id)bloom directions:(id)directions scale:(float)scale thresh:(float)thresh smooth:(float)smooth sharp:(float)sharp pscale:(float)pscale coringThreshold:(float)self0 maxContrast:(float)self1
 {
   v64[3] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
+  bloomCopy = bloom;
+  directionsCopy = directions;
   v22 = objc_msgSend_kernelWithName_(NRKernels, v19, @"smoothDetailsAlongDirectionsAtScaleWithSharpenAntiBloom", v20, v21);
-  objc_msgSend_extent(v17, v23, v24, v25, v26);
-  v67 = CGRectInset(v66, (a5 * -2.0), (a5 * -2.0));
+  objc_msgSend_extent(bloomCopy, v23, v24, v25, v26);
+  v67 = CGRectInset(v66, (scale * -2.0), (scale * -2.0));
   x = v67.origin.x;
   y = v67.origin.y;
   width = v67.size.width;
   height = v67.size.height;
-  objc_msgSend_extent(v18, v31, v32, v33, v34);
+  objc_msgSend_extent(directionsCopy, v31, v32, v33, v34);
   v70.origin.x = v35;
   v70.origin.y = v36;
   v70.size.width = v37;
@@ -1083,222 +1083,222 @@
   v62[1] = 3221225472;
   v62[2] = sub_233884B9C;
   v62[3] = &unk_2789EE950;
-  v63 = a5;
-  v64[0] = v18;
-  v47 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v43, v44, v45, v46, a5, a6, a7, a8);
+  scaleCopy = scale;
+  v64[0] = directionsCopy;
+  v47 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v43, v44, v45, v46, scale, thresh, smooth, sharp);
   v64[1] = v47;
-  v52 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v48, v49, v50, v51, a9, (a10 * 0.75), (2.0 / a10), a11);
+  v52 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v48, v49, v50, v51, pscale, (threshold * 0.75), (2.0 / threshold), contrast);
   v64[2] = v52;
   v55 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v53, v64, 3, v54);
-  v57 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v56, v22, v17, v62, v55, self->inputColorSpace, v39, v40, v41, v42);
+  v57 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v56, v22, bloomCopy, v62, v55, self->inputColorSpace, v39, v40, v41, v42);
 
   return v57;
 }
 
-- (id)blurGradient:(id)a3 lothresh:(float)a4 factor:(float)a5
+- (id)blurGradient:(id)gradient lothresh:(float)lothresh factor:(float)factor
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  gradientCopy = gradient;
   v12 = objc_msgSend_kernelWithName_(NRKernels, v9, @"blurGradient", v10, v11);
-  objc_msgSend_extent(v8, v13, v14, v15, v16);
+  objc_msgSend_extent(gradientCopy, v13, v14, v15, v16);
   v41 = CGRectInset(v40, -1.0, -1.0);
   x = v41.origin.x;
   y = v41.origin.y;
   width = v41.size.width;
   height = v41.size.height;
-  *&v41.origin.x = a4;
+  *&v41.origin.x = lothresh;
   v25 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v21, v22, v23, v24, v41.origin.x);
   v38[0] = v25;
-  *&v26 = a5;
+  *&v26 = factor;
   v31 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v27, v28, v29, v30, v26);
   v38[1] = v31;
   v34 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v32, v38, 2, v33);
-  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v35, v12, v8, &unk_28492DE30, v34, self->inputColorSpace, x, y, width, height);
+  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v35, v12, gradientCopy, &unk_28492DE30, v34, self->inputColorSpace, x, y, width, height);
 
   return v36;
 }
 
-- (id)blurGradientPlusCurvature:(id)a3 lothresh:(float)a4 factor:(float)a5 cthresh:(float)a6 cfactor:(float)a7
+- (id)blurGradientPlusCurvature:(id)curvature lothresh:(float)lothresh factor:(float)factor cthresh:(float)cthresh cfactor:(float)cfactor
 {
   v54[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  curvatureCopy = curvature;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"blurGradientPlusCurvature", v14, v15);
-  objc_msgSend_extent(v12, v17, v18, v19, v20);
+  objc_msgSend_extent(curvatureCopy, v17, v18, v19, v20);
   v57 = CGRectInset(v56, -1.0, -1.0);
   x = v57.origin.x;
   y = v57.origin.y;
   width = v57.size.width;
   height = v57.size.height;
-  *&v57.origin.x = a4;
+  *&v57.origin.x = lothresh;
   v29 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v25, v26, v27, v28, v57.origin.x);
   v54[0] = v29;
-  *&v30 = a5;
+  *&v30 = factor;
   v35 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v31, v32, v33, v34, v30);
   v54[1] = v35;
-  *&v36 = a6;
+  *&v36 = cthresh;
   v41 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v37, v38, v39, v40, v36);
   v54[2] = v41;
-  *&v42 = a7;
+  *&v42 = cfactor;
   v47 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v43, v44, v45, v46, v42);
   v54[3] = v47;
   v50 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v48, v54, 4, v49);
-  v52 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v51, v16, v12, &unk_28492DE50, v50, self->inputColorSpace, x, y, width, height);
+  v52 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v51, v16, curvatureCopy, &unk_28492DE50, v50, self->inputColorSpace, x, y, width, height);
 
   return v52;
 }
 
-- (id)expandAndSharpenDetailsThroughGradientMaskGather:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 sharpen:(float)a6 soften:(float)a7 floor:(float)a8 sushiFactors:(id)a9 crop:(CGRect)a10 lumFactors:(id)a11
+- (id)expandAndSharpenDetailsThroughGradientMaskGather:(id)gather halfSizeY:(id)y cnrRGB:(id)b sharpen:(float)sharpen soften:(float)soften floor:(float)floor sushiFactors:(id)factors crop:(CGRect)self0 lumFactors:(id)self1
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v62[8] = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a9;
-  v26 = a11;
-  v60 = v23;
+  gatherCopy = gather;
+  yCopy = y;
+  bCopy = b;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
+  v60 = yCopy;
   v30 = objc_msgSend_kernelWithName_(NRKernels, v27, @"expandAndSharpenDetailsThroughGradientMaskGather", v28, v29);
-  v62[0] = v23;
-  v62[1] = v24;
-  *&v31 = a6;
+  v62[0] = yCopy;
+  v62[1] = bCopy;
+  *&v31 = sharpen;
   v36 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v32, v33, v34, v35, v31);
   v62[2] = v36;
-  *&v37 = a7;
+  *&v37 = soften;
   v42 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v38, v39, v40, v41, v37);
   v62[3] = v42;
-  *&v43 = a8;
+  *&v43 = floor;
   v48 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v44, v45, v46, v47, v43);
   v62[4] = v48;
-  v62[5] = v25;
+  v62[5] = factorsCopy;
   v53 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v49, v50, v51, v52, x, y, width, height);
   v62[6] = v53;
-  v62[7] = v26;
+  v62[7] = lumFactorsCopy;
   v56 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v54, v62, 8, v55);
-  v58 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v57, v30, v61, &unk_28492DE70, v56, self->inputColorSpace, 1, x, y, width, height);
+  v58 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v57, v30, gatherCopy, &unk_28492DE70, v56, self->inputColorSpace, 1, x, y, width, height);
 
   return v58;
 }
 
-- (id)expandAndSharpenDetailsThroughGradientMaskGatherOpponentColor:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 originalY:(id)a6 sharpen:(float)a7 soften:(float)a8 floor:(float)a9 sushiFactors:(id)a10 crop:(CGRect)a11 lumFactors:(id)a12
+- (id)expandAndSharpenDetailsThroughGradientMaskGatherOpponentColor:(id)color halfSizeY:(id)y cnrRGB:(id)b originalY:(id)originalY sharpen:(float)sharpen soften:(float)soften floor:(float)floor sushiFactors:(id)self0 crop:(CGRect)self1 lumFactors:(id)self2
 {
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v66[9] = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a10;
-  v29 = a12;
-  v63 = v25;
-  v64 = v26;
+  colorCopy = color;
+  yCopy = y;
+  bCopy = b;
+  originalYCopy = originalY;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
+  v63 = yCopy;
+  v64 = bCopy;
   v33 = objc_msgSend_kernelWithName_(NRKernels, v30, @"expandAndSharpenDetailsThroughGradientMaskGatherOpponentColor", v31, v32);
-  v66[0] = v25;
-  v66[1] = v26;
-  v66[2] = v27;
-  *&v34 = a7;
+  v66[0] = yCopy;
+  v66[1] = bCopy;
+  v66[2] = originalYCopy;
+  *&v34 = sharpen;
   v39 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v35, v36, v37, v38, v34);
   v66[3] = v39;
-  *&v40 = a8;
+  *&v40 = soften;
   v45 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v41, v42, v43, v44, v40);
   v66[4] = v45;
-  *&v46 = a9;
+  *&v46 = floor;
   v51 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v47, v48, v49, v50, v46);
   v66[5] = v51;
-  v66[6] = v28;
+  v66[6] = factorsCopy;
   v56 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v52, v53, v54, v55, x, y, width, height);
   v66[7] = v56;
-  v66[8] = v29;
+  v66[8] = lumFactorsCopy;
   v59 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v57, v66, 9, v58);
-  v61 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v60, v33, v65, &unk_28492DE90, v59, self->inputColorSpace, 1, x, y, width, height);
+  v61 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v60, v33, colorCopy, &unk_28492DE90, v59, self->inputColorSpace, 1, x, y, width, height);
 
   return v61;
 }
 
-- (id)expandAndSharpenThroughGradientMaskGather:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 sharpen:(float)a6 floor:(float)a7 sushiFactors:(id)a8 crop:(CGRect)a9 lumFactors:(id)a10
+- (id)expandAndSharpenThroughGradientMaskGather:(id)gather halfSizeY:(id)y cnrRGB:(id)b sharpen:(float)sharpen floor:(float)floor sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v53[7] = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a8;
-  v24 = a10;
+  gatherCopy = gather;
+  yCopy = y;
+  bCopy = b;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
   v28 = objc_msgSend_kernelWithName_(NRKernels, v25, @"expandAndSharpenThroughGradientMaskGather", v26, v27);
-  v53[0] = v21;
-  v53[1] = v22;
-  *&v29 = a6;
+  v53[0] = yCopy;
+  v53[1] = bCopy;
+  *&v29 = sharpen;
   v34 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v30, v31, v32, v33, v29);
   v53[2] = v34;
-  *&v35 = a7;
+  *&v35 = floor;
   v40 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v36, v37, v38, v39, v35);
   v53[3] = v40;
-  v53[4] = v23;
+  v53[4] = factorsCopy;
   v45 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v41, v42, v43, v44, x, y, width, height);
   v53[5] = v45;
-  v53[6] = v24;
+  v53[6] = lumFactorsCopy;
   v48 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v46, v53, 7, v47);
-  v50 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v49, v28, v52, &unk_28492DEB0, v48, self->inputColorSpace, 1, x, y, width, height);
+  v50 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v49, v28, gatherCopy, &unk_28492DEB0, v48, self->inputColorSpace, 1, x, y, width, height);
 
   return v50;
 }
 
-- (id)expandAndSharpenThroughGradientMaskGatherOpponentColor:(id)a3 halfSizeY:(id)a4 cnrRGB:(id)a5 originalY:(id)a6 sharpen:(float)a7 floor:(float)a8 sushiFactors:(id)a9 crop:(CGRect)a10 lumFactors:(id)a11
+- (id)expandAndSharpenThroughGradientMaskGatherOpponentColor:(id)color halfSizeY:(id)y cnrRGB:(id)b originalY:(id)originalY sharpen:(float)sharpen floor:(float)floor sushiFactors:(id)factors crop:(CGRect)self0 lumFactors:(id)self1
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v57[8] = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a9;
-  v27 = a11;
-  v55 = v23;
+  colorCopy = color;
+  yCopy = y;
+  bCopy = b;
+  originalYCopy = originalY;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
+  v55 = yCopy;
   v31 = objc_msgSend_kernelWithName_(NRKernels, v28, @"expandAndSharpenThroughGradientMaskGatherOpponentColor", v29, v30);
-  v57[0] = v23;
-  v57[1] = v24;
-  v57[2] = v25;
-  *&v32 = a7;
+  v57[0] = yCopy;
+  v57[1] = bCopy;
+  v57[2] = originalYCopy;
+  *&v32 = sharpen;
   v37 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v33, v34, v35, v36, v32);
   v57[3] = v37;
-  *&v38 = a8;
+  *&v38 = floor;
   v43 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v39, v40, v41, v42, v38);
   v57[4] = v43;
-  v57[5] = v26;
+  v57[5] = factorsCopy;
   v48 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v44, v45, v46, v47, x, y, width, height);
   v57[6] = v48;
-  v57[7] = v27;
+  v57[7] = lumFactorsCopy;
   v51 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v49, v57, 8, v50);
-  v53 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v52, v31, v56, &unk_28492DED0, v51, self->inputColorSpace, 1, x, y, width, height);
+  v53 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v52, v31, colorCopy, &unk_28492DED0, v51, self->inputColorSpace, 1, x, y, width, height);
 
   return v53;
 }
 
-- (id)expandAndSharpenThroughGradientMask:(id)a3 fullSizeY:(id)a4 sharpen:(float)a5
+- (id)expandAndSharpenThroughGradientMask:(id)mask fullSizeY:(id)y sharpen:(float)sharpen
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  maskCopy = mask;
+  yCopy = y;
   memset(&v46, 0, sizeof(v46));
   CGAffineTransformMakeScale(&v46, 2.0, 2.0);
   v13 = objc_msgSend_kernelWithName_(NRKernels, v10, @"expandAndSharpenThroughGradientMask", v11, v12);
-  objc_msgSend_extent(v9, v14, v15, v16, v17);
+  objc_msgSend_extent(yCopy, v14, v15, v16, v17);
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  objc_msgSend_extent(v8, v26, v27, v28, v29);
+  objc_msgSend_extent(maskCopy, v26, v27, v28, v29);
   v45 = v46;
   v53 = CGRectApplyAffineTransform(v49, &v45);
   v50.origin.x = v19;
@@ -1311,27 +1311,27 @@
   y = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
-  v47[0] = v9;
-  *&v52.origin.x = a5;
+  v47[0] = yCopy;
+  *&v52.origin.x = sharpen;
   v38 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v34, v35, v36, v37, v52.origin.x);
   v47[1] = v38;
   v41 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v39, v47, 2, v40);
-  v43 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v42, v13, v8, &unk_28492DEF0, v41, self->inputColorSpace, 1, x, y, width, height);
+  v43 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v42, v13, maskCopy, &unk_28492DEF0, v41, self->inputColorSpace, 1, x, y, width, height);
 
   return v43;
 }
 
-- (id)YAndRGBGather:(id)a3 cnrRGB:(id)a4 sushiFactors:(id)a5 crop:(CGRect)a6 lumFactors:(id)a7
+- (id)YAndRGBGather:(id)gather cnrRGB:(id)b sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)lumFactors
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v35[4] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  gatherCopy = gather;
+  bCopy = b;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
   v22 = objc_msgSend_kernelWithName_(NRKernels, v19, @"YAndRGBGather", v20, v21);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -1341,53 +1341,53 @@
   *&v34[5] = y;
   *&v34[6] = width;
   *&v34[7] = height;
-  v35[0] = v16;
-  v35[1] = v17;
+  v35[0] = bCopy;
+  v35[1] = factorsCopy;
   v27 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v23, v24, v25, v26, x, y, width, height);
   v35[2] = v27;
-  v35[3] = v18;
+  v35[3] = lumFactorsCopy;
   v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v28, v35, 4, v29);
-  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v22, v15, v34, v30, self->inputColorSpace, x, y, width, height);
+  v32 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v31, v22, gatherCopy, v34, v30, self->inputColorSpace, x, y, width, height);
 
   return v32;
 }
 
-- (id)YAndRGBGatherOpponentColor:(id)a3 cnrRGB:(id)a4 originalY:(id)a5 sushiFactors:(id)a6 crop:(CGRect)a7 lumFactors:(id)a8
+- (id)YAndRGBGatherOpponentColor:(id)color cnrRGB:(id)b originalY:(id)y sushiFactors:(id)factors crop:(CGRect)crop lumFactors:(id)lumFactors
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v38[5] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
+  colorCopy = color;
+  bCopy = b;
+  yCopy = y;
+  factorsCopy = factors;
+  lumFactorsCopy = lumFactors;
   v25 = objc_msgSend_kernelWithName_(NRKernels, v22, @"YAndRGBGatherOpponentColor", v23, v24);
-  v30 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v26, v27, v28, v29, x, y, width, height, MEMORY[0x277D85DD0], 3221225472, sub_23388615C, &unk_2789EF848, *&x, *&y, *&width, *&height, v18, v19, v20);
+  v30 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v26, v27, v28, v29, x, y, width, height, MEMORY[0x277D85DD0], 3221225472, sub_23388615C, &unk_2789EF848, *&x, *&y, *&width, *&height, bCopy, yCopy, factorsCopy);
   v38[3] = v30;
-  v38[4] = v21;
+  v38[4] = lumFactorsCopy;
   v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v31, v38, 5, v32);
-  v35 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v34, v25, v17, &v37, v33, self->inputColorSpace, x, y, width, height);
+  v35 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v34, v25, colorCopy, &v37, v33, self->inputColorSpace, x, y, width, height);
 
   return v35;
 }
 
-- (id)expandAndAddDetailsWithOverdrive:(id)a3 fullSize:(id)a4 contrast:(float)a5
+- (id)expandAndAddDetailsWithOverdrive:(id)overdrive fullSize:(id)size contrast:(float)contrast
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  overdriveCopy = overdrive;
+  sizeCopy = size;
   memset(&v46, 0, sizeof(v46));
   CGAffineTransformMakeScale(&v46, 2.0, 2.0);
   v13 = objc_msgSend_kernelWithName_(NRKernels, v10, @"expandAndAddDetailsWithOverdrive", v11, v12);
-  objc_msgSend_extent(v9, v14, v15, v16, v17);
+  objc_msgSend_extent(sizeCopy, v14, v15, v16, v17);
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  objc_msgSend_extent(v8, v26, v27, v28, v29);
+  objc_msgSend_extent(overdriveCopy, v26, v27, v28, v29);
   v45 = v46;
   v50 = CGRectApplyAffineTransform(v49, &v45);
   v53 = CGRectInset(v50, -1.0, -1.0);
@@ -1400,74 +1400,74 @@
   y = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
-  v47[0] = v9;
-  *&v52.origin.x = a5;
+  v47[0] = sizeCopy;
+  *&v52.origin.x = contrast;
   v38 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v34, v35, v36, v37, v52.origin.x);
   v47[1] = v38;
   v41 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v39, v47, 2, v40);
-  v43 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v42, v13, v8, &unk_28492DF10, v41, self->inputColorSpace, 1, x, y, width, height);
+  v43 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v42, v13, overdriveCopy, &unk_28492DF10, v41, self->inputColorSpace, 1, x, y, width, height);
 
   return v43;
 }
 
-- (id)fineGrainNoise:(id)a3
+- (id)fineGrainNoise:(id)noise
 {
-  v4 = a3;
+  noiseCopy = noise;
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"FineGrainNoise", v6, v7);
-  objc_msgSend_extent(v4, v9, v10, v11, v12);
+  objc_msgSend_extent(noiseCopy, v9, v10, v11, v12);
   v18 = CGRectInset(v17, -1.0, -1.0);
-  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, v4, &unk_28492DF30, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
+  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, noiseCopy, &unk_28492DF30, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
 
   return v14;
 }
 
-- (id)fineGrainNoise2:(id)a3 tinyBlurFactor:(float)a4
+- (id)fineGrainNoise2:(id)noise2 tinyBlurFactor:(float)factor
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  noise2Copy = noise2;
   v10 = objc_msgSend_kernelWithName_(NRKernels, v7, @"FineGrainNoise2", v8, v9);
-  objc_msgSend_extent(v6, v11, v12, v13, v14);
+  objc_msgSend_extent(noise2Copy, v11, v12, v13, v14);
   v38 = CGRectInset(v37, -2.0, -2.0);
   x = v38.origin.x;
   y = v38.origin.y;
   width = v38.size.width;
   height = v38.size.height;
-  v23 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v19, v20, v21, v22, (((a4 * -4.0) + 1.0) + -0.14062), (a4 + -0.09375), -0.0625, -0.0234375);
+  v23 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v19, v20, v21, v22, (((factor * -4.0) + 1.0) + -0.14062), (factor + -0.09375), -0.0625, -0.0234375);
   v35[0] = v23;
   v28 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v24, v25, v26, v27, -0.015625, -0.00390625, 0.0, 0.0);
   v35[1] = v28;
   v31 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v29, v35, 2, v30);
-  v33 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v32, v10, v6, &unk_28492DF50, v31, self->inputColorSpace, 1, x, y, width, height);
+  v33 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v32, v10, noise2Copy, &unk_28492DF50, v31, self->inputColorSpace, 1, x, y, width, height);
 
   return v33;
 }
 
-- (id)expandAndAddDetailsThroughGradientMask:(id)a3 fullSize:(id)a4 fullSizeDetails:(id)a5 fullSizeMask:(id)a6 amount:(float)a7 contrastOverdrive:(float)a8 interpolant:(float)a9
+- (id)expandAndAddDetailsThroughGradientMask:(id)mask fullSize:(id)size fullSizeDetails:(id)details fullSizeMask:(id)sizeMask amount:(float)amount contrastOverdrive:(float)overdrive interpolant:(float)interpolant
 {
   v81[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  maskCopy = mask;
+  sizeCopy = size;
+  detailsCopy = details;
+  sizeMaskCopy = sizeMask;
   memset(&v80, 0, sizeof(v80));
   CGAffineTransformMakeScale(&v80, 2.0, 2.0);
   v20 = objc_msgSend_kernelWithName_(NRKernels, v17, @"expandAndAddDetailsThroughGradientMask", v18, v19);
-  objc_msgSend_extent(v14, v21, v22, v23, v24);
+  objc_msgSend_extent(sizeCopy, v21, v22, v23, v24);
   v74 = v26;
   v75 = v25;
   v72 = v28;
   v73 = v27;
-  objc_msgSend_extent(v15, v29, v30, v31, v32);
+  objc_msgSend_extent(detailsCopy, v29, v30, v31, v32);
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  objc_msgSend_extent(v16, v41, v42, v43, v44);
+  objc_msgSend_extent(sizeMaskCopy, v41, v42, v43, v44);
   v46 = v45;
   v48 = v47;
   v50 = v49;
   v52 = v51;
-  objc_msgSend_extent(v13, v53, v54, v55, v56);
+  objc_msgSend_extent(maskCopy, v53, v54, v55, v56);
   v79 = v80;
   v84 = CGRectApplyAffineTransform(v83, &v79);
   v89 = CGRectInset(v84, -1.0, -1.0);
@@ -1490,35 +1490,35 @@
   y = v88.origin.y;
   width = v88.size.width;
   height = v88.size.height;
-  v81[0] = v14;
-  v81[1] = v15;
-  v81[2] = v16;
-  v65 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v61, v62, v63, v64, a7, a8, a9, 0.0);
+  v81[0] = sizeCopy;
+  v81[1] = detailsCopy;
+  v81[2] = sizeMaskCopy;
+  v65 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v61, v62, v63, v64, amount, overdrive, interpolant, 0.0);
   v81[3] = v65;
   v68 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v66, v81, 4, v67);
-  v70 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v69, v20, v13, &unk_28492DF70, v68, self->inputColorSpace, 1, x, y, width, height);
+  v70 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v69, v20, maskCopy, &unk_28492DF70, v68, self->inputColorSpace, 1, x, y, width, height);
 
   return v70;
 }
 
-- (id)compositeThroughGradientMask:(id)a3 fullSize:(id)a4 fullSizeMask:(id)a5
+- (id)compositeThroughGradientMask:(id)mask fullSize:(id)size fullSizeMask:(id)sizeMask
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  maskCopy = mask;
+  sizeCopy = size;
+  sizeMaskCopy = sizeMask;
   v14 = objc_msgSend_kernelWithName_(NRKernels, v11, @"compositeThroughGradientMask", v12, v13);
-  objc_msgSend_extent(v9, v15, v16, v17, v18);
+  objc_msgSend_extent(sizeCopy, v15, v16, v17, v18);
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  objc_msgSend_extent(v10, v27, v28, v29, v30);
+  objc_msgSend_extent(sizeMaskCopy, v27, v28, v29, v30);
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  objc_msgSend_extent(v8, v39, v40, v41, v42);
+  objc_msgSend_extent(maskCopy, v39, v40, v41, v42);
   v62.origin.x = v43;
   v62.origin.y = v44;
   v62.size.width = v45;
@@ -1537,34 +1537,34 @@
   y = v61.origin.y;
   width = v61.size.width;
   height = v61.size.height;
-  v57[0] = v9;
-  v57[1] = v10;
+  v57[0] = sizeCopy;
+  v57[1] = sizeMaskCopy;
   v53 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v51, v57, 2, v52);
-  v55 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v54, v14, v8, 0, v53, self->inputColorSpace, 1, x, y, width, height);
+  v55 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v54, v14, maskCopy, 0, v53, self->inputColorSpace, 1, x, y, width, height);
 
   return v55;
 }
 
-- (id)expandAndAddDetailsThroughGradientMask2:(id)a3 halfSize:(id)a4 fullSizeDetails:(id)a5 soften:(float)a6 sharpen:(float)a7
+- (id)expandAndAddDetailsThroughGradientMask2:(id)mask2 halfSize:(id)size fullSizeDetails:(id)details soften:(float)soften sharpen:(float)sharpen
 {
   v70[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  mask2Copy = mask2;
+  sizeCopy = size;
+  detailsCopy = details;
   memset(&v69, 0, sizeof(v69));
   CGAffineTransformMakeScale(&v69, 2.0, 2.0);
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"expandAndAddDetailsThroughGradientMask2", v14, v15);
-  objc_msgSend_extent(v10, v17, v18, v19, v20);
+  objc_msgSend_extent(mask2Copy, v17, v18, v19, v20);
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  objc_msgSend_extent(v12, v29, v30, v31, v32);
+  objc_msgSend_extent(detailsCopy, v29, v30, v31, v32);
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  objc_msgSend_extent(v11, v41, v42, v43, v44);
+  objc_msgSend_extent(sizeCopy, v41, v42, v43, v44);
   v68 = v69;
   v73 = CGRectApplyAffineTransform(v72, &v68);
   v77 = CGRectInset(v73, -1.0, -1.0);
@@ -1582,46 +1582,46 @@
   y = v76.origin.y;
   width = v76.size.width;
   height = v76.size.height;
-  v70[0] = v11;
-  v70[1] = v12;
-  *&v76.origin.x = a6;
+  v70[0] = sizeCopy;
+  v70[1] = detailsCopy;
+  *&v76.origin.x = soften;
   v53 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v49, v50, v51, v52, v76.origin.x);
   v70[2] = v53;
-  *&v54 = a7;
+  *&v54 = sharpen;
   v59 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v55, v56, v57, v58, v54);
   v70[3] = v59;
   v62 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v60, v70, 4, v61);
-  v64 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v63, v16, v10, &unk_28492DF90, v62, self->inputColorSpace, 1, x, y, width, height);
+  v64 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v63, v16, mask2Copy, &unk_28492DF90, v62, self->inputColorSpace, 1, x, y, width, height);
 
   return v64;
 }
 
-- (id)expandAndAddDetailsThroughGradientMask3:(id)a3 fullSize:(id)a4 fullSizeDetails:(id)a5 fullSizeMask:(id)a6 amount:(float)a7 sharpen:(float)a8 interpolant:(float)a9
+- (id)expandAndAddDetailsThroughGradientMask3:(id)mask3 fullSize:(id)size fullSizeDetails:(id)details fullSizeMask:(id)mask amount:(float)amount sharpen:(float)sharpen interpolant:(float)interpolant
 {
   v81[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  mask3Copy = mask3;
+  sizeCopy = size;
+  detailsCopy = details;
+  maskCopy = mask;
   memset(&v80, 0, sizeof(v80));
   CGAffineTransformMakeScale(&v80, 2.0, 2.0);
   v20 = objc_msgSend_kernelWithName_(NRKernels, v17, @"expandAndAddDetailsThroughGradientMask3", v18, v19);
-  objc_msgSend_extent(v14, v21, v22, v23, v24);
+  objc_msgSend_extent(sizeCopy, v21, v22, v23, v24);
   v74 = v26;
   v75 = v25;
   v72 = v28;
   v73 = v27;
-  objc_msgSend_extent(v15, v29, v30, v31, v32);
+  objc_msgSend_extent(detailsCopy, v29, v30, v31, v32);
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  objc_msgSend_extent(v16, v41, v42, v43, v44);
+  objc_msgSend_extent(maskCopy, v41, v42, v43, v44);
   v46 = v45;
   v48 = v47;
   v50 = v49;
   v52 = v51;
-  objc_msgSend_extent(v13, v53, v54, v55, v56);
+  objc_msgSend_extent(mask3Copy, v53, v54, v55, v56);
   v79 = v80;
   v84 = CGRectApplyAffineTransform(v83, &v79);
   v89 = CGRectInset(v84, -1.0, -1.0);
@@ -1644,26 +1644,26 @@
   y = v88.origin.y;
   width = v88.size.width;
   height = v88.size.height;
-  v81[0] = v14;
-  v81[1] = v15;
-  v81[2] = v16;
-  v65 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v61, v62, v63, v64, a7, a8, a9, 0.0);
+  v81[0] = sizeCopy;
+  v81[1] = detailsCopy;
+  v81[2] = maskCopy;
+  v65 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v61, v62, v63, v64, amount, sharpen, interpolant, 0.0);
   v81[3] = v65;
   v68 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v66, v81, 4, v67);
-  v70 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v69, v20, v13, &unk_28492DFB0, v68, self->inputColorSpace, 1, x, y, width, height);
+  v70 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v69, v20, mask3Copy, &unk_28492DFB0, v68, self->inputColorSpace, 1, x, y, width, height);
 
   return v70;
 }
 
-- (id)addNoise:(id)a3 noise:(id)a4 amount:(float)a5
+- (id)addNoise:(id)noise noise:(id)a4 amount:(float)amount
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  noiseCopy = noise;
   v12 = a4;
-  if (v12 && a5 >= 0.001)
+  if (v12 && amount >= 0.001)
   {
-    v13 = objc_msgSend_kernelWithName_(NRKernels, v9, @"AddNoise", v10, v11, a5);
-    objc_msgSend_extent(v8, v14, v15, v16, v17);
+    v13 = objc_msgSend_kernelWithName_(NRKernels, v9, @"AddNoise", v10, v11, amount);
+    objc_msgSend_extent(noiseCopy, v14, v15, v16, v17);
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -1683,75 +1683,75 @@
     width = v52.size.width;
     height = v52.size.height;
     v49[0] = v12;
-    *&v52.origin.x = a5;
+    *&v52.origin.x = amount;
     v42 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v38, v39, v40, v41, v52.origin.x);
     v49[1] = v42;
     v45 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, v49, 2, v44);
-    v47 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v46, v13, v8, 0, v45, self->inputColorSpace, 1, x, y, width, height);
+    v47 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v46, v13, noiseCopy, 0, v45, self->inputColorSpace, 1, x, y, width, height);
   }
 
   else
   {
-    v47 = v8;
+    v47 = noiseCopy;
   }
 
   return v47;
 }
 
-- (id)vectorFieldToDirectionsAndGradients:(id)a3
+- (id)vectorFieldToDirectionsAndGradients:(id)gradients
 {
-  v4 = a3;
+  gradientsCopy = gradients;
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"vectorFieldToDirectionsAndGradients", v6, v7);
-  v10 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_isAlphaOne_(self, v9, v8, v4, 0, self->inputColorSpace, 0, 1);
+  v10 = objc_msgSend_apply_image_arguments_inoutSpace_isPremultiplied_isAlphaOne_(self, v9, v8, gradientsCopy, 0, self->inputColorSpace, 0, 1);
 
   return v10;
 }
 
-- (id)smoothVectorFieldAlongVectors:(id)a3
+- (id)smoothVectorFieldAlongVectors:(id)vectors
 {
-  v4 = a3;
+  vectorsCopy = vectors;
   v8 = objc_msgSend_kernelWithName_(NRKernels, v5, @"smoothVectorFieldAlongVectors", v6, v7);
-  objc_msgSend_extent(v4, v9, v10, v11, v12);
+  objc_msgSend_extent(vectorsCopy, v9, v10, v11, v12);
   v18 = CGRectInset(v17, -3.0, -3.0);
-  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, v4, &unk_28492DFD0, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
+  v14 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_isAlphaOne_(self, v13, v8, vectorsCopy, &unk_28492DFD0, 0, self->inputColorSpace, 1, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
 
   return v14;
 }
 
-- (id)directionsToCurvature:(id)a3 threshold:(float)a4
+- (id)directionsToCurvature:(id)curvature threshold:(float)threshold
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  curvatureCopy = curvature;
   v10 = objc_msgSend_kernelWithName_(NRKernels, v7, @"directionsToCurvature", v8, v9);
-  objc_msgSend_extent(v6, v11, v12, v13, v14);
+  objc_msgSend_extent(curvatureCopy, v11, v12, v13, v14);
   v33 = CGRectInset(v32, -4.0, -4.0);
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
   height = v33.size.height;
-  *&v33.origin.x = a4;
+  *&v33.origin.x = threshold;
   v23 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v19, v20, v21, v22, v33.origin.x);
   v30[0] = v23;
   v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v24, v30, 1, v25);
-  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v27, v10, v6, &unk_28492DFF0, v26, self->inputColorSpace, x, y, width, height);
+  v28 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v27, v10, curvatureCopy, &unk_28492DFF0, v26, self->inputColorSpace, x, y, width, height);
 
   return v28;
 }
 
-- (id)mergeHalfSizeCurvature:(id)a3 intoFullSizeCurvature:(id)a4
+- (id)mergeHalfSizeCurvature:(id)curvature intoFullSizeCurvature:(id)sizeCurvature
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  curvatureCopy = curvature;
+  sizeCurvatureCopy = sizeCurvature;
   memset(&v39, 0, sizeof(v39));
   CGAffineTransformMakeScale(&v39, 2.0, 2.0);
   v11 = objc_msgSend_kernelWithName_(NRKernels, v8, @"mergeHalfSizeCurvature", v9, v10);
-  objc_msgSend_extent(v7, v12, v13, v14, v15);
+  objc_msgSend_extent(sizeCurvatureCopy, v12, v13, v14, v15);
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  objc_msgSend_extent(v6, v24, v25, v26, v27);
+  objc_msgSend_extent(curvatureCopy, v24, v25, v26, v27);
   v38 = v39;
   v46 = CGRectApplyAffineTransform(v42, &v38);
   v43.origin.x = v17;
@@ -1764,146 +1764,146 @@
   y = v45.origin.y;
   width = v45.size.width;
   height = v45.size.height;
-  v40[0] = v6;
+  v40[0] = curvatureCopy;
   v34 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v32, v40, 1, v33);
-  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v35, v11, v7, &unk_28492E010, v34, self->inputColorSpace, x, y, width, height);
+  v36 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v35, v11, sizeCurvatureCopy, &unk_28492E010, v34, self->inputColorSpace, x, y, width, height);
 
   return v36;
 }
 
-- (id)viewY:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5
+- (id)viewY:(id)y sushiFactors:(id)factors crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v28[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  yCopy = y;
+  factorsCopy = factors;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"viewY", v14, v15);
-  v28[0] = v12;
+  v28[0] = factorsCopy;
   v21 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v17, v18, v19, v20, x, y, width, height);
   v28[1] = v21;
   v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v28, 2, v23);
-  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, v11, 0, v24, self->inputColorSpace, x, y, width, height);
+  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, yCopy, 0, v24, self->inputColorSpace, x, y, width, height);
 
   return v26;
 }
 
-- (id)viewBlend:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5
+- (id)viewBlend:(id)blend sushiFactors:(id)factors crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v28[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  blendCopy = blend;
+  factorsCopy = factors;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"viewBlend", v14, v15);
-  v28[0] = v12;
+  v28[0] = factorsCopy;
   v21 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v17, v18, v19, v20, x, y, width, height);
   v28[1] = v21;
   v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v28, 2, v23);
-  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, v11, 0, v24, self->inputColorSpace, x, y, width, height);
+  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, blendCopy, 0, v24, self->inputColorSpace, x, y, width, height);
 
   return v26;
 }
 
-- (id)viewD:(id)a3 factor:(float)a4 crop:(CGRect)a5
+- (id)viewD:(id)d factor:(float)factor crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v33[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  dCopy = d;
   v15 = objc_msgSend_kernelWithName_(NRKernels, v12, @"viewD", v13, v14);
-  *&v16 = a4;
+  *&v16 = factor;
   v21 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v17, v18, v19, v20, v16);
   v33[0] = v21;
   v26 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v22, v23, v24, v25, x, y, width, height);
   v33[1] = v26;
   v29 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v27, v33, 2, v28);
-  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v15, v11, 0, v29, self->inputColorSpace, x, y, width, height);
+  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v15, dCopy, 0, v29, self->inputColorSpace, x, y, width, height);
 
   return v31;
 }
 
-- (id)viewTG:(id)a3 lothresh:(float)a4 factor:(float)a5 crop:(CGRect)a6
+- (id)viewTG:(id)g lothresh:(float)lothresh factor:(float)factor crop:(CGRect)crop
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v41[3] = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  gCopy = g;
   v17 = objc_msgSend_kernelWithName_(NRKernels, v14, @"viewTG", v15, v16);
-  *&v18 = a4;
+  *&v18 = lothresh;
   v23 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v19, v20, v21, v22, v18);
-  *&v24 = a5;
+  *&v24 = factor;
   v29 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v25, v26, v27, v28, v24, v23);
   v41[1] = v29;
   v34 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v30, v31, v32, v33, x, y, width, height);
   v41[2] = v34;
   v37 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v35, v41, 3, v36);
-  v39 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v38, v17, v13, 0, v37, self->inputColorSpace, x, y, width, height);
+  v39 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v38, v17, gCopy, 0, v37, self->inputColorSpace, x, y, width, height);
 
   return v39;
 }
 
-- (id)viewVF:(id)a3 crop:(CGRect)a4
+- (id)viewVF:(id)f crop:(CGRect)crop
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v25[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  fCopy = f;
   v13 = objc_msgSend_kernelWithName_(NRKernels, v10, @"viewVF", v11, v12);
   v18 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v14, v15, v16, v17, x, y, width, height);
   v25[0] = v18;
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v25, 1, v20);
-  v23 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v22, v13, v9, 0, v21, self->inputColorSpace, x, y, width, height);
+  v23 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v22, v13, fCopy, 0, v21, self->inputColorSpace, x, y, width, height);
 
   return v23;
 }
 
-- (id)viewG:(id)a3 scale:(float)a4 crop:(CGRect)a5
+- (id)viewG:(id)g scale:(float)scale crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v33[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  gCopy = g;
   v15 = objc_msgSend_kernelWithName_(NRKernels, v12, @"viewG", v13, v14);
-  *&v16 = a4;
+  *&v16 = scale;
   v21 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v17, v18, v19, v20, v16);
   v33[0] = v21;
   v26 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v22, v23, v24, v25, x, y, width, height);
   v33[1] = v26;
   v29 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v27, v33, 2, v28);
-  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v15, v11, 0, v29, self->inputColorSpace, x, y, width, height);
+  v31 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v30, v15, gCopy, 0, v29, self->inputColorSpace, x, y, width, height);
 
   return v31;
 }
 
-- (id)viewDIR:(id)a3 do360:(BOOL)a4 crop:(CGRect)a5
+- (id)viewDIR:(id)r do360:(BOOL)do360 crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  do360Copy = do360;
   v36[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  if (v9)
+  rCopy = r;
+  if (do360Copy)
   {
     v15 = objc_msgSend_kernelWithName_(NRKernels, v11, @"viewDIR360", v12, v13);
     v20 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v16, v17, v18, v19, x, y, width, height);
     v36[0] = v20;
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v21, v36, 1, v22);
-    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v24, v15, v14, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
+    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v24, v15, rCopy, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   else
@@ -1912,7 +1912,7 @@
     v20 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v26, v27, v28, v29, x, y, width, height);
     v35 = v20;
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v30, &v35, 1, v31);
-    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v32, v15, v14, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
+    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v32, v15, rCopy, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   v33 = v25;
@@ -1920,39 +1920,39 @@
   return v33;
 }
 
-- (id)viewC:(id)a3 crop:(CGRect)a4
+- (id)viewC:(id)c crop:(CGRect)crop
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v25[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  cCopy = c;
   v13 = objc_msgSend_kernelWithName_(NRKernels, v10, @"viewC", v11, v12);
   v18 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v14, v15, v16, v17, x, y, width, height);
   v25[0] = v18;
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v25, 1, v20);
-  v23 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v22, v13, v9, 0, v21, self->inputColorSpace, 0.0, 0.0, width, height);
+  v23 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v22, v13, cCopy, 0, v21, self->inputColorSpace, 0.0, 0.0, width, height);
 
   return v23;
 }
 
-- (id)viewGDIR:(id)a3 do360:(BOOL)a4 crop:(CGRect)a5
+- (id)viewGDIR:(id)r do360:(BOOL)do360 crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  do360Copy = do360;
   v36[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  if (v9)
+  rCopy = r;
+  if (do360Copy)
   {
     v15 = objc_msgSend_kernelWithName_(NRKernels, v11, @"viewGDIR360", v12, v13);
     v20 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v16, v17, v18, v19, x, y, width, height);
     v36[0] = v20;
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v21, v36, 1, v22);
-    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v24, v15, v14, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
+    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v24, v15, rCopy, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   else
@@ -1961,7 +1961,7 @@
     v20 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v26, v27, v28, v29, x, y, width, height);
     v35 = v20;
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v30, &v35, 1, v31);
-    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v32, v15, v14, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
+    v25 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v32, v15, rCopy, 0, v23, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   v33 = v25;
@@ -1969,43 +1969,43 @@
   return v33;
 }
 
-- (id)viewTGDIR:(id)a3 lothresh:(float)a4 factor:(float)a5 do360:(BOOL)a6 crop:(CGRect)a7
+- (id)viewTGDIR:(id)r lothresh:(float)lothresh factor:(float)factor do360:(BOOL)do360 crop:(CGRect)crop
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v11 = a6;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  do360Copy = do360;
   v62[3] = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  if (v11)
+  rCopy = r;
+  if (do360Copy)
   {
     v19 = objc_msgSend_kernelWithName_(NRKernels, v15, @"viewTGDIR360", v16, v17);
-    *&v20 = a4;
+    *&v20 = lothresh;
     v25 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v21, v22, v23, v24, v20);
     v62[0] = v25;
-    *&v26 = a5;
+    *&v26 = factor;
     v31 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v27, v28, v29, v30, v26);
     v62[1] = v31;
     v36 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v32, v33, v34, v35, x, y, width, height);
     v62[2] = v36;
     v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v37, v62, 3, v38);
-    v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v19, v18, 0, v39, self->inputColorSpace, 0.0, 0.0, width, height);
+    v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v40, v19, rCopy, 0, v39, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   else
   {
     v19 = objc_msgSend_kernelWithName_(NRKernels, v15, @"viewTGDIR180", v16, v17);
-    *&v42 = a4;
+    *&v42 = lothresh;
     v25 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v43, v44, v45, v46, v42);
     v61[0] = v25;
-    *&v47 = a5;
+    *&v47 = factor;
     v31 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v48, v49, v50, v51, v47);
     v61[1] = v31;
     v36 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v52, v53, v54, v55, x, y, width, height);
     v61[2] = v36;
     v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v56, v61, 3, v57);
-    v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v58, v19, v18, 0, v39, self->inputColorSpace, 0.0, 0.0, width, height);
+    v41 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v58, v19, rCopy, 0, v39, self->inputColorSpace, 0.0, 0.0, width, height);
   }
 
   v59 = v41;
@@ -2013,61 +2013,61 @@
   return v59;
 }
 
-- (id)viewRGB:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5
+- (id)viewRGB:(id)b sushiFactors:(id)factors crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v28[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  bCopy = b;
+  factorsCopy = factors;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"viewRGB", v14, v15);
-  v28[0] = v12;
+  v28[0] = factorsCopy;
   v21 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v17, v18, v19, v20, x, y, width, height);
   v28[1] = v21;
   v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v28, 2, v23);
-  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, v11, 0, v24, self->inputColorSpace, 0.0, 0.0, width, height);
+  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, bCopy, 0, v24, self->inputColorSpace, 0.0, 0.0, width, height);
 
   return v26;
 }
 
-- (id)viewHue:(id)a3 sushiFactors:(id)a4 crop:(CGRect)a5
+- (id)viewHue:(id)hue sushiFactors:(id)factors crop:(CGRect)crop
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v28[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  hueCopy = hue;
+  factorsCopy = factors;
   v16 = objc_msgSend_kernelWithName_(NRKernels, v13, @"viewHue", v14, v15);
-  v28[0] = v12;
+  v28[0] = factorsCopy;
   v21 = objc_msgSend_vectorWithCGRect_(MEMORY[0x277CBF788], v17, v18, v19, v20, x, y, width, height);
   v28[1] = v21;
   v24 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v28, 2, v23);
-  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, v11, 0, v24, self->inputColorSpace, 0.0, 0.0, width, height);
+  v26 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(self, v25, v16, hueCopy, 0, v24, self->inputColorSpace, 0.0, 0.0, width, height);
 
   return v26;
 }
 
-- (void)computeLowThreshold:(float *)a3 andFactor:(float *)a4 withThreshold:(float)a5 andSoftness:(float)a6
+- (void)computeLowThreshold:(float *)threshold andFactor:(float *)factor withThreshold:(float)withThreshold andSoftness:(float)softness
 {
-  if (a5 < 0.00065)
+  if (withThreshold < 0.00065)
   {
-    a5 = 0.00065;
+    withThreshold = 0.00065;
   }
 
-  v6 = a5 * a6;
-  v7 = a5 - (v6 * 0.5);
-  *a3 = v7;
-  *a4 = 1.0 / ((a5 + (v6 * 0.5)) - v7);
+  v6 = withThreshold * softness;
+  v7 = withThreshold - (v6 * 0.5);
+  *threshold = v7;
+  *factor = 1.0 / ((withThreshold + (v6 * 0.5)) - v7);
 }
 
-- (id)outputUnboost:(id)a3
+- (id)outputUnboost:(id)unboost
 {
   v61[9] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unboostCopy = unboost;
   if (objc_msgSend_intValue(self->inputBoostMethod, v5, v6, v7, v8))
   {
     v60 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v9, v10, v11, v12, 0.0106899999, 0.0437199995, 0.146479994, 0.667469978);
@@ -2079,7 +2079,7 @@
     v40 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v36, v37, v38, v39, 232.470688, -640.049011, 589.582336, -181.004013);
     LODWORD(v41) = 1074885725;
     v46 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v42, v43, v44, v45, v41);
-    v47 = v4;
+    v47 = unboostCopy;
     v51 = objc_msgSend_kernelWithName_(NRKernels, v48, @"inverseBoost", v49, v50);
     v61[0] = v60;
     v61[1] = &unk_28495DB90;
@@ -2096,16 +2096,16 @@
 
   else
   {
-    v56 = v4;
+    v56 = unboostCopy;
   }
 
   return v56;
 }
 
-- (id)outputBoost:(id)a3
+- (id)outputBoost:(id)boost
 {
   v51[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  boostCopy = boost;
   if (objc_msgSend_intValue(self->inputBoostMethod, v5, v6, v7, v8))
   {
     v50 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v9, v10, v11, v12, 0.100000001, 0.200000003, 0.5, 1.0);
@@ -2115,7 +2115,7 @@
     v32 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v28, v29, v30, v31, 0.492000163, -1.72000039, 2.10900028, 0.118999943);
     LODWORD(v33) = 1054951342;
     v38 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v34, v35, v36, v37, v33);
-    v39 = v4;
+    v39 = boostCopy;
     v43 = objc_msgSend_kernelWithName_(NRKernels, v40, @"boost", v41, v42);
     v51[0] = v50;
     v51[1] = v17;
@@ -2129,7 +2129,7 @@
 
   else
   {
-    v48 = v4;
+    v48 = boostCopy;
   }
 
   return v48;
@@ -2143,12 +2143,12 @@
   return v7 * v12;
 }
 
-- (id)outputCNR:(id)a3 extent:(CGRect)a4 returningDebugProduct:(BOOL *)a5
+- (id)outputCNR:(id)r extent:(CGRect)extent returningDebugProduct:(BOOL *)product
 {
-  v11 = a3;
-  if (a5)
+  rCopy = r;
+  if (product)
   {
-    *a5 = 0;
+    *product = 0;
   }
 
   objc_msgSend_adjustedRNAmount(self, v7, v8, v9, v10);
@@ -2225,7 +2225,7 @@
 
   if (v56 == 0.0 && v62 == 0.0 && (objc_msgSend_BOOLValue(self->inputShowHF, v67, v68, v69, v70) & 1) == 0)
   {
-    v88 = objc_msgSend_multiply_byNeutralFactors_(self, v67, v11, v53, v70);
+    v88 = objc_msgSend_multiply_byNeutralFactors_(self, v67, rCopy, v53, v70);
     goto LABEL_80;
   }
 
@@ -2233,7 +2233,7 @@
   {
     if (v57 != 0.0)
     {
-      v96 = objc_msgSend_extractHalfSizeRGB_neutralFactors_(self, v67, v11, v53, v70);
+      v96 = objc_msgSend_extractHalfSizeRGB_neutralFactors_(self, v67, rCopy, v53, v70);
 
       if (v56 <= 0.0)
       {
@@ -2302,8 +2302,8 @@
     }
 
     *&v72 = v56;
-    v74 = objc_msgSend_powerBlurFS_threshold_neutralFactors_(self, v67, v11, v53, v70, v72);
-    v89 = v11;
+    v74 = objc_msgSend_powerBlurFS_threshold_neutralFactors_(self, v67, rCopy, v53, v70, v72);
+    v89 = rCopy;
 LABEL_78:
 
     goto LABEL_79;
@@ -2313,7 +2313,7 @@ LABEL_78:
   if (!v73 && (objc_msgSend_BOOLValue(self->inputShowHF, v67, v68, v69, v70) & 1) == 0)
   {
     *&v72 = v56;
-    v89 = objc_msgSend_highFrequencyIntoAlpha_threshold_neutralFactors_(self, v67, v11, v53, v70, v72);
+    v89 = objc_msgSend_highFrequencyIntoAlpha_threshold_neutralFactors_(self, v67, rCopy, v53, v70, v72);
     *&v90 = v56;
     *&v91 = v71;
     v74 = objc_msgSend_powerBlurFSHF_threshold_moireAmount_neutralFactors_(self, v92, v89, v53, v93, v90, v91);
@@ -2322,7 +2322,7 @@ LABEL_78:
   }
 
   *&v72 = v56;
-  v74 = objc_msgSend_extractHalfSizeRGBHF_neutralFactors_threshold_(self, v67, v11, v53, v70, v72);
+  v74 = objc_msgSend_extractHalfSizeRGBHF_neutralFactors_threshold_(self, v67, rCopy, v53, v70, v72);
 
   if ((objc_msgSend_BOOLValue(self->inputShowHF, v75, v76, v77, v78) & 1) == 0)
   {
@@ -2409,7 +2409,7 @@ LABEL_77:
 
 LABEL_79:
   v88 = v74;
-  v11 = v88;
+  rCopy = v88;
 LABEL_80:
   v116 = v88;
 
@@ -3740,41 +3740,41 @@ LABEL_211:
   return v32;
 }
 
-- (id)image:(id)a3 croppedTo:(CGRect)a4
+- (id)image:(id)image croppedTo:(CGRect)to
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  imageCopy = image;
   v9 = MEMORY[0x277CBF750];
   v14 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v10, v11, v12, v13, x, y, width, height);
-  v17 = objc_msgSend_filterWithName_keysAndValues_(v9, v15, @"CICrop", @"inputImage", v16, v8, @"inputRectangle", v14, 0);
+  v17 = objc_msgSend_filterWithName_keysAndValues_(v9, v15, @"CICrop", @"inputImage", v16, imageCopy, @"inputRectangle", v14, 0);
 
   v21 = objc_msgSend_valueForKey_(v17, v18, @"outputImage", v19, v20);
 
   return v21;
 }
 
-- (BOOL)isBayerGreenAlignedforImage:(id)a3 andPattern:(int)a4
+- (BOOL)isBayerGreenAlignedforImage:(id)image andPattern:(int)pattern
 {
-  v5 = a3;
-  objc_msgSend_extent(v5, v6, v7, v8, v9);
+  imageCopy = image;
+  objc_msgSend_extent(imageCopy, v6, v7, v8, v9);
   v15 = CGRectIntegral(v14);
-  v11 = a4 == 1633771873 || a4 == 1229539657;
+  v11 = pattern == 1633771873 || pattern == 1229539657;
   v12 = v11 ^ (v15.origin.x + v15.origin.y);
 
   return v12 & 1;
 }
 
-- (id)outputCNR:(id)a3 E0:(CGRect)a4 E1:(CGRect)a5
+- (id)outputCNR:(id)r E0:(CGRect)e0 E1:(CGRect)e1
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = e1.size.height;
+  width = e1.size.width;
+  y = e1.origin.y;
+  x = e1.origin.x;
   v1181[2] = *MEMORY[0x277D85DE8];
-  v1167 = a3;
+  rCopy = r;
   objc_msgSend_floatValue(self->inputScaleFactor, v10, v11, v12, v13);
   v1136 = v14;
   v19 = objc_msgSend_intValue(self->inputISO, v15, v16, v17, v18);
@@ -4318,12 +4318,12 @@ LABEL_12:
     if (!((v1162 >= 0.00001) | v730 & 1))
     {
       v880 = objc_msgSend_kernelWithName_(V8CNRKernels, v724, @"multiplyByNeutralFactors", v726, v727, v731);
-      objc_msgSend_extent(v1167, v881, v882, v883, v884);
+      objc_msgSend_extent(rCopy, v881, v882, v883, v884);
       v886 = v885;
       v888 = v887;
       v890 = v889;
       v892 = v891;
-      v1181[0] = v1167;
+      v1181[0] = rCopy;
       v1181[1] = v708;
       v895 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v893, v1181, 2, v894);
       v732 = v708;
@@ -4378,14 +4378,14 @@ LABEL_12:
     v745 = ;
     v749 = objc_msgSend_kernelWithName_(V8CNRKernels, v746, v745, v747, v748);
 
-    objc_msgSend_extent(v1167, v750, v751, v752, v753);
+    objc_msgSend_extent(rCopy, v750, v751, v752, v753);
     v1168 = v1170;
     v1184 = CGRectApplyAffineTransform(v1183, &v1168);
     v754 = v1184.origin.x;
     v755 = v1184.origin.y;
     v756 = v1184.size.width;
     v757 = v1184.size.height;
-    v1178[0] = v1167;
+    v1178[0] = rCopy;
     v1178[1] = v732;
     v758 = MEMORY[0x277CBF788];
     objc_msgSend_floatValue(self->inputHighFrequencyFactor, v759, v760, v761, v762);
@@ -4394,7 +4394,7 @@ LABEL_12:
     v771 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v769, v1178, 3, v770);
     v774 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v749, v772, &unk_28492E070, v771, v773, v754, v755, v756, v757);
 
-    v1167 = v774;
+    rCopy = v774;
     if (objc_msgSend_BOOLValue(self->inputShowHF, v775, v776, v777, v778))
     {
       v784 = sub_23388E6CC(v774, v1165, v1127, v1128, v1129, v1130);
@@ -4458,7 +4458,7 @@ LABEL_12:
       v823 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v793, v821, &unk_28492E090, v820, v822, v798, v799, v800, v801);
 
       v749 = v793;
-      v1167 = v823;
+      rCopy = v823;
     }
 
     if (((v729 < 1.0) & ~v1137) == 0)
@@ -4492,13 +4492,13 @@ LABEL_12:
         v832 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v779, @"%s%s%s", v780, v781, "powerBlurDespeckleL", v829, v831);
         v836 = objc_msgSend_kernelWithName_(V8CNRKernels, v833, v832, v834, v835);
 
-        objc_msgSend_extent(v1167, v837, v838, v839, v840);
+        objc_msgSend_extent(rCopy, v837, v838, v839, v840);
         v1188 = CGRectInset(v1187, -6.0, -6.0);
         v841 = v1188.origin.x;
         v842 = v1188.origin.y;
         v843 = v1188.size.width;
         v844 = v1188.size.height;
-        v1176[0] = v1167;
+        v1176[0] = rCopy;
         v1156 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v845, v846, v847, v848, v1160, 1.0, v1158, 3.0);
         v1176[1] = v1156;
         v853 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v849, v850, v851, v852, v824, v1122, v825, v1134);
@@ -4514,7 +4514,7 @@ LABEL_12:
         v876 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v874, v1176, 7, v875);
         v879 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v836, v877, &unk_28492E0B0, v876, v878, v841, v842, v843, v844);
 
-        v1167 = v879;
+        rCopy = v879;
       }
 
       else
@@ -4522,13 +4522,13 @@ LABEL_12:
         v956 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v779, @"%s%s%s", v780, v781, "powerBlurL", v829, v831);
         v836 = objc_msgSend_kernelWithName_(V8CNRKernels, v957, v956, v958, v959);
 
-        objc_msgSend_extent(v1167, v960, v961, v962, v963);
+        objc_msgSend_extent(rCopy, v960, v961, v962, v963);
         v1192 = CGRectInset(v1191, -6.0, -6.0);
         v964 = v1192.origin.x;
         v965 = v1192.origin.y;
         v966 = v1192.size.width;
         v967 = v1192.size.height;
-        v1175[0] = v1167;
+        v1175[0] = rCopy;
         v1156 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v968, v969, v970, v971, v1160, 1.0, v1158, 3.0);
         v1175[1] = v1156;
         v853 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v972, v973, v974, v975, v824, v1122, v825, v1134);
@@ -4538,7 +4538,7 @@ LABEL_12:
         v1175[3] = v858;
         v863 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v981, v1175, 4, v982);
         objc_msgSend_applyWithExtent_roiCallback_arguments_(v836, v983, &unk_28492E0D0, v863, v984, v964, v965, v966, v967);
-        v1167 = v868 = v1167;
+        rCopy = v868 = rCopy;
       }
 
       v749 = v836;
@@ -4565,13 +4565,13 @@ LABEL_12:
       v986 = ;
       v990 = objc_msgSend_kernelWithName_(V8CNRKernels, v987, v986, v988, v989);
 
-      objc_msgSend_extent(v1167, v991, v992, v993, v994);
+      objc_msgSend_extent(rCopy, v991, v992, v993, v994);
       v1194 = CGRectInset(v1193, -14.0, -14.0);
       v995 = v1194.origin.x;
       v996 = v1194.origin.y;
       v997 = v1194.size.width;
       v998 = v1194.size.height;
-      v1174[0] = v1167;
+      v1174[0] = rCopy;
       v1003 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v999, v1000, v1001, v1002, v1160, 1.0, v1158, 7.0);
       v1174[1] = v1003;
       v1008 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v1004, v1005, v1006, v1007, (v569 * (v1145 + (v1120 * v1143))), v1119, (v569 * (v1144 + (v1120 * v1142))), v1134);
@@ -4583,7 +4583,7 @@ LABEL_12:
       v1020 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v990, v1018, &unk_28492E0F0, v1017, v1019, v995, v996, v997, v998);
 
       v749 = v990;
-      v1167 = v1020;
+      rCopy = v1020;
     }
 
     if (((v729 < 7.0) & ~v1125) == 0)
@@ -4621,13 +4621,13 @@ LABEL_12:
         v1061 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v779, @"%s%s%s", v780, v781, v782, v1025, "powerBlurEarlyOutL", v1023, v1026);
         v1032 = objc_msgSend_kernelWithName_(V8CNRKernels, v1062, v1061, v1063, v1064);
 
-        objc_msgSend_extent(v1167, v1065, v1066, v1067, v1068);
+        objc_msgSend_extent(rCopy, v1065, v1066, v1067, v1068);
         v1198 = CGRectInset(v1197, -28.0, -28.0);
         v1069 = v1198.origin.x;
         v1070 = v1198.origin.y;
         v1071 = v1198.size.width;
         v1072 = v1198.size.height;
-        v1172[0] = v1167;
+        v1172[0] = rCopy;
         v1045 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v1073, v1074, v1075, v1076, v1160, 1.0, v1158, 14.0);
         v1172[1] = v1045;
         v1050 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v1077, v1078, v1079, v1080, v1021, v1118, v1022, v1134);
@@ -4644,13 +4644,13 @@ LABEL_12:
         v1028 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v779, @"%s%s%s", v780, v781, v782, v1025, "powerBlurEarlyOut2L", v1023, v1026);
         v1032 = objc_msgSend_kernelWithName_(V8CNRKernels, v1029, v1028, v1030, v1031);
 
-        objc_msgSend_extent(v1167, v1033, v1034, v1035, v1036);
+        objc_msgSend_extent(rCopy, v1033, v1034, v1035, v1036);
         v1196 = CGRectInset(v1195, -28.0, -28.0);
         v1037 = v1196.origin.x;
         v1038 = v1196.origin.y;
         v1039 = v1196.size.width;
         v1040 = v1196.size.height;
-        v1173[0] = v1167;
+        v1173[0] = rCopy;
         v1045 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v1041, v1042, v1043, v1044, v1160, 1.0, v1158, 14.0);
         v1173[1] = v1045;
         v1050 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v1046, v1047, v1048, v1049, v1021, v1118, v1022, v1134);
@@ -4663,19 +4663,19 @@ LABEL_12:
       v1090 = ;
 
       v749 = v1032;
-      v1167 = v1090;
+      rCopy = v1090;
     }
 
     v785 = objc_msgSend_kernelWithName_(V8CNRKernels, v779, @"expandHRGB", v780, v781);
 
-    objc_msgSend_extent(v1167, v1091, v1092, v1093, v1094);
+    objc_msgSend_extent(rCopy, v1091, v1092, v1093, v1094);
     v1168 = v1169;
     v1200 = CGRectApplyAffineTransform(v1199, &v1168);
     v1095 = v1200.origin.x;
     v1096 = v1200.origin.y;
     v1097 = v1200.size.width;
     v1098 = v1200.size.height;
-    v1171 = v1167;
+    v1171 = rCopy;
     v1101 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v1099, &v1171, 1, v1100);
     v1104 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v785, v1102, &unk_28492E150, v1101, v1103, v1095, v1096, v1097, v1098);
 
@@ -4687,12 +4687,12 @@ LABEL_12:
     if (v730)
     {
       v899 = objc_msgSend_kernelWithName_(V8CNRKernels, v738, @"highFrequencyIntoAlpha", v740, v741);
-      objc_msgSend_extent(v1167, v900, v901, v902, v903);
+      objc_msgSend_extent(rCopy, v900, v901, v902, v903);
       v905 = v904;
       v907 = v906;
       v909 = v908;
       v911 = v910;
-      v1180[0] = v1167;
+      v1180[0] = rCopy;
       v1180[1] = v708;
       v1180[2] = self->inputHighFrequencyFactor;
       *&v904 = v743;
@@ -4702,7 +4702,7 @@ LABEL_12:
       v922 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v899, v920, &unk_28492E030, v919, v921, v905, v907, v909, v911);
 
       v923 = v899;
-      v1167 = v922;
+      rCopy = v922;
       objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v924, @"%s%s", v925, v926, "powerBlurLFS", "HF");
     }
 
@@ -4714,13 +4714,13 @@ LABEL_12:
     v927 = ;
     v785 = objc_msgSend_kernelWithName_(V8CNRKernels, v928, v927, v929, v930);
 
-    objc_msgSend_extent(v1167, v931, v932, v933, v934);
+    objc_msgSend_extent(rCopy, v931, v932, v933, v934);
     v1190 = CGRectInset(v1189, -4.0, -4.0);
     v935 = v1190.origin.x;
     v936 = v1190.origin.y;
     v937 = v1190.size.width;
     v938 = v1190.size.height;
-    v1179[0] = v1167;
+    v1179[0] = rCopy;
     v943 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v939, v940, v941, v942, v1160, 1.0, v1158, 0.0);
     v1179[1] = v943;
     v948 = objc_msgSend_vectorWithX_Y_Z_W_(MEMORY[0x277CBF788], v944, v945, v946, v947, v1153, v1162, v1155, v1134);
@@ -4733,22 +4733,22 @@ LABEL_12:
   }
 
   v784 = v955;
-  v1167 = v955;
+  rCopy = v955;
 LABEL_135:
 
   return v784;
 }
 
-- (id)kernelWithName:(id)a3 inArray:(id)a4
+- (id)kernelWithName:(id)name inArray:(id)array
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = a4;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v26, v30, 16);
+  arrayCopy = array;
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v26, v30, 16);
   if (v8)
   {
     v9 = 0;
@@ -4761,13 +4761,13 @@ LABEL_135:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v26 + 1) + 8 * v11);
 
         v17 = objc_msgSend_name(v9, v13, v14, v15, v16);
-        isEqualToString = objc_msgSend_isEqualToString_(v17, v18, v5, v19, v20);
+        isEqualToString = objc_msgSend_isEqualToString_(v17, v18, nameCopy, v19, v20);
 
         if (isEqualToString)
         {
@@ -4781,7 +4781,7 @@ LABEL_135:
       }
 
       while (v8 != v11);
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v22, &v26, v30, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v22, &v26, v30, 16);
       if (v8)
       {
         continue;
@@ -4791,7 +4791,7 @@ LABEL_135:
     }
   }
 
-  objc_msgSend_getCString_maxLength_encoding_(v5, v23, v31, 256, 30);
+  objc_msgSend_getCString_maxLength_encoding_(nameCopy, v23, v31, 256, 30);
   printf("kernel %s not found\n", v31);
   v24 = 0;
 LABEL_12:
@@ -4799,11 +4799,11 @@ LABEL_12:
   return v24;
 }
 
-- (id)kernelArrayWithResourceName:(id)a3
+- (id)kernelArrayWithResourceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_mainBundle(MEMORY[0x277CCA8D8], v4, v5, v6, v7);
-  v11 = objc_msgSend_pathForResource_ofType_(v8, v9, v3, @"cikernel", v10);
+  v11 = objc_msgSend_pathForResource_ofType_(v8, v9, nameCopy, @"cikernel", v10);
 
   v15 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v12, v11, v13, v14);
   v20 = objc_msgSend_length(v15, v16, v17, v18, v19);
@@ -5818,7 +5818,7 @@ LABEL_12:
   v3078 = v1182;
   v3048 = sub_23389FB1C(flt_23390AB48, flt_23390AB6C, v3111);
   v3047 = sub_23389FB1C(flt_23390AB48, flt_23390AB90, v3111);
-  v3119 = self;
+  selfCopy = self;
   v1186 = objc_msgSend_objectAtIndexedSubscript_(self->inputLowCurvatureThreshold, v1183, 0, v1184, v1185);
   objc_msgSend_floatValue(v1186, v1187, v1188, v1189, v1190);
 
@@ -7508,11 +7508,11 @@ LABEL_12:
     v3232[1] = v3131;
     v3232[2] = v3140;
     v3232[3] = v3125;
-    v3232[4] = v3119->inputLumFactors;
+    v3232[4] = selfCopy->inputLumFactors;
     v3010 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v3008, v3232, 5, v3009);
     v3013 = objc_msgSend_applyWithExtent_roiCallback_arguments_(v1276, v3011, &unk_28492E770, v3010, v3012, v3004, v3005, v3006, v3007);
     v1277 = v3080;
-    v1274 = objc_msgSend_image_croppedTo_(v3119, v3014, v3013, v3015, v3016, v3033, v3032, v3031, v3030);
+    v1274 = objc_msgSend_image_croppedTo_(selfCopy, v3014, v3013, v3015, v3016, v3033, v3032, v3031, v3030);
   }
 
   return v1274;

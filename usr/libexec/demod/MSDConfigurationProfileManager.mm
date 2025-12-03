@@ -1,13 +1,13 @@
 @interface MSDConfigurationProfileManager
 + (id)sharedInstance;
-- (BOOL)installConfigurationProfile:(id)a3;
-- (BOOL)installConfigurationProfileWithData:(id)a3;
+- (BOOL)installConfigurationProfile:(id)profile;
+- (BOOL)installConfigurationProfileWithData:(id)data;
 - (BOOL)installDefaultConfigurationProfile;
 - (BOOL)installDemoModeConfigurationProfile;
-- (BOOL)installRestrictionsConfigurationProfile:(id)a3;
-- (BOOL)isConfigurationProfileInstalled:(id)a3;
-- (BOOL)uninstallConfigurationProfile:(id)a3;
-- (BOOL)uninstallConfigurationProfileIfNeeded:(id)a3;
+- (BOOL)installRestrictionsConfigurationProfile:(id)profile;
+- (BOOL)isConfigurationProfileInstalled:(id)installed;
+- (BOOL)uninstallConfigurationProfile:(id)profile;
+- (BOOL)uninstallConfigurationProfileIfNeeded:(id)needed;
 - (BOOL)uninstallRestrictionsConfigurationProfile;
 - (MSDConfigurationProfileManager)init;
 - (void)uninstallAllDemoBundleConfigurationProfiles;
@@ -37,14 +37,14 @@
     v3 = objc_alloc_init(NSMutableArray);
     [(MSDConfigurationProfileManager *)v2 setConfigurationProfilesSupported:v3];
 
-    v4 = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
-    [v4 addObject:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"];
+    configurationProfilesSupported = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
+    [configurationProfilesSupported addObject:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"];
 
-    v5 = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
-    [v5 addObject:@"com.apple.mobilestoredemo.demoMode"];
+    configurationProfilesSupported2 = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
+    [configurationProfilesSupported2 addObject:@"com.apple.mobilestoredemo.demoMode"];
 
-    v6 = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
-    [v6 addObject:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
+    configurationProfilesSupported3 = [(MSDConfigurationProfileManager *)v2 configurationProfilesSupported];
+    [configurationProfilesSupported3 addObject:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
   }
 
   return v2;
@@ -52,40 +52,40 @@
 
 - (BOOL)installDefaultConfigurationProfile
 {
-  v3 = [[MSDConfigurationProfile alloc] initWithDefaultProfile];
-  LOBYTE(self) = [(MSDConfigurationProfileManager *)self installConfigurationProfile:v3];
+  initWithDefaultProfile = [[MSDConfigurationProfile alloc] initWithDefaultProfile];
+  LOBYTE(self) = [(MSDConfigurationProfileManager *)self installConfigurationProfile:initWithDefaultProfile];
 
   return self;
 }
 
 - (BOOL)installDemoModeConfigurationProfile
 {
-  v3 = [[MSDConfigurationProfile alloc] initWithDemoModeProfile];
-  LOBYTE(self) = [(MSDConfigurationProfileManager *)self installConfigurationProfile:v3];
+  initWithDemoModeProfile = [[MSDConfigurationProfile alloc] initWithDemoModeProfile];
+  LOBYTE(self) = [(MSDConfigurationProfileManager *)self installConfigurationProfile:initWithDemoModeProfile];
 
   return self;
 }
 
-- (BOOL)installConfigurationProfile:(id)a3
+- (BOOL)installConfigurationProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 profileIdentifier];
-  if (([v5 isEqualToString:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"com.apple.mobilestoredemo.demoMode") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.mobilestoredemo.defaultProfile"))
+  profileCopy = profile;
+  profileIdentifier = [profileCopy profileIdentifier];
+  if (([profileIdentifier isEqualToString:@"com.apple.mobilestoredemo.demoProfile.standardPreferences"] & 1) != 0 || (objc_msgSend(profileIdentifier, "isEqualToString:", @"com.apple.mobilestoredemo.demoMode") & 1) != 0 || objc_msgSend(profileIdentifier, "isEqualToString:", @"com.apple.mobilestoredemo.defaultProfile"))
   {
     v6 = sub_100063A54();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v5;
+      v14 = profileIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Installing configuration profile: %{public}@", &v13, 0xCu);
     }
 
-    if ([(MSDConfigurationProfileManager *)self uninstallConfigurationProfileIfNeeded:v5])
+    if ([(MSDConfigurationProfileManager *)self uninstallConfigurationProfileIfNeeded:profileIdentifier])
     {
-      v7 = [v4 getProfileData];
-      if (v7)
+      getProfileData = [profileCopy getProfileData];
+      if (getProfileData)
       {
-        if ([(MSDConfigurationProfileManager *)self installConfigurationProfileWithData:v7])
+        if ([(MSDConfigurationProfileManager *)self installConfigurationProfileWithData:getProfileData])
         {
           v8 = 1;
           goto LABEL_10;
@@ -110,8 +110,8 @@
 
     else
     {
-      v7 = sub_100063A54();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      getProfileData = sub_100063A54();
+      if (os_log_type_enabled(getProfileData, OS_LOG_TYPE_ERROR))
       {
         sub_1000C5910();
       }
@@ -122,16 +122,16 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  v10 = [v5 isEqualToString:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
-  v7 = sub_100063A54();
-  v11 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  v10 = [profileIdentifier isEqualToString:@"com.apple.mobilestoredemo.demoProfile.supervisedRestrictions"];
+  getProfileData = sub_100063A54();
+  v11 = os_log_type_enabled(getProfileData, OS_LOG_TYPE_DEFAULT);
   if (!v10)
   {
     if (v11)
     {
       v13 = 138543362;
-      v14 = v5;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unknown profile type: %{public}@", &v13, 0xCu);
+      v14 = profileIdentifier;
+      _os_log_impl(&_mh_execute_header, getProfileData, OS_LOG_TYPE_DEFAULT, "Unknown profile type: %{public}@", &v13, 0xCu);
     }
 
     goto LABEL_17;
@@ -140,11 +140,11 @@ LABEL_17:
   if (v11)
   {
     LOWORD(v13) = 0;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Installing restrictions configuration profile.", &v13, 2u);
+    _os_log_impl(&_mh_execute_header, getProfileData, OS_LOG_TYPE_DEFAULT, "Installing restrictions configuration profile.", &v13, 2u);
   }
 
-  v7 = [v4 getSupervisedRestrictions];
-  v8 = [(MSDConfigurationProfileManager *)self installRestrictionsConfigurationProfile:v7];
+  getProfileData = [profileCopy getSupervisedRestrictions];
+  v8 = [(MSDConfigurationProfileManager *)self installRestrictionsConfigurationProfile:getProfileData];
 LABEL_10:
 
   return v8;
@@ -163,8 +163,8 @@ LABEL_10:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(MSDConfigurationProfileManager *)self configurationProfilesSupported];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  configurationProfilesSupported = [(MSDConfigurationProfileManager *)self configurationProfilesSupported];
+  v5 = [configurationProfilesSupported countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
   {
     v7 = v5;
@@ -177,7 +177,7 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(configurationProfilesSupported);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -220,17 +220,17 @@ LABEL_13:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [configurationProfilesSupported countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)uninstallConfigurationProfileIfNeeded:(id)a3
+- (BOOL)uninstallConfigurationProfileIfNeeded:(id)needed
 {
-  v4 = a3;
-  if ([(MSDConfigurationProfileManager *)self isConfigurationProfileInstalled:v4])
+  neededCopy = needed;
+  if ([(MSDConfigurationProfileManager *)self isConfigurationProfileInstalled:neededCopy])
   {
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -239,7 +239,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Uninstalling existing configuration profile.", v8, 2u);
     }
 
-    v6 = [(MSDConfigurationProfileManager *)self uninstallConfigurationProfile:v4];
+    v6 = [(MSDConfigurationProfileManager *)self uninstallConfigurationProfile:neededCopy];
   }
 
   else
@@ -250,12 +250,12 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)installConfigurationProfileWithData:(id)a3
+- (BOOL)installConfigurationProfileWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[MCProfileConnection sharedConnection];
   v11 = 0;
-  v5 = [v4 installProfileData:v3 outError:&v11];
+  v5 = [v4 installProfileData:dataCopy outError:&v11];
 
   v6 = v11;
   v7 = sub_100063A54();
@@ -277,13 +277,13 @@ LABEL_13:
   return v5 != 0;
 }
 
-- (BOOL)uninstallConfigurationProfile:(id)a3
+- (BOOL)uninstallConfigurationProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = +[MCProfileConnection sharedConnection];
-  [v5 removeProfileWithIdentifier:v4];
+  [v5 removeProfileWithIdentifier:profileCopy];
 
-  v6 = [(MSDConfigurationProfileManager *)self isConfigurationProfileInstalled:v4];
+  v6 = [(MSDConfigurationProfileManager *)self isConfigurationProfileInstalled:profileCopy];
   if (v6)
   {
     sub_1000C5A6C();
@@ -292,9 +292,9 @@ LABEL_13:
   return v6 ^ 1;
 }
 
-- (BOOL)isConfigurationProfileInstalled:(id)a3
+- (BOOL)isConfigurationProfileInstalled:(id)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -308,7 +308,7 @@ LABEL_13:
   v10 = &v11;
   v6 = v4;
   v9 = v6;
-  [v5 isProfileInstalledWithIdentifier:v3 completion:v8];
+  [v5 isProfileInstalledWithIdentifier:installedCopy completion:v8];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(v5) = *(v12 + 24);
@@ -317,14 +317,14 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)installRestrictionsConfigurationProfile:(id)a3
+- (BOOL)installRestrictionsConfigurationProfile:(id)profile
 {
   v3 = 1;
   v10 = 1;
-  v4 = a3;
+  profileCopy = profile;
   v5 = +[MCProfileConnection sharedConnection];
   v9 = 0;
-  [v5 applyRestrictionDictionary:v4 clientType:@"com.apple.mobilestoredemod" clientUUID:@"com.apple.mobilestoredemod" localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:&v10 outEffectiveSettingsChanged:0 outError:&v9];
+  [v5 applyRestrictionDictionary:profileCopy clientType:@"com.apple.mobilestoredemod" clientUUID:@"com.apple.mobilestoredemod" localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:&v10 outEffectiveSettingsChanged:0 outError:&v9];
 
   v6 = v9;
   if ((v10 & 1) == 0)

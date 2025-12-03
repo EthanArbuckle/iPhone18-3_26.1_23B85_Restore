@@ -1,24 +1,24 @@
 @interface _UIFeedbackGeneratorGestureRecognizerCompletedTouch
-+ (id)completedTouchFromTouch:(id)a3;
-- (CGPoint)locationInView:(id)a3;
++ (id)completedTouchFromTouch:(id)touch;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)locationInWindow;
 - (UIWindow)window;
 @end
 
 @implementation _UIFeedbackGeneratorGestureRecognizerCompletedTouch
 
-+ (id)completedTouchFromTouch:(id)a3
++ (id)completedTouchFromTouch:(id)touch
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  *(v5 + 2) = [v4 type];
-  *(v5 + 8) = [v4 _isPointerTouch];
-  *(v5 + 4) = [v4 _pointerSenderID];
-  *(v5 + 3) = [v4 _senderID];
-  v6 = [v4 window];
-  objc_storeWeak(v5 + 5, v6);
+  touchCopy = touch;
+  v5 = objc_alloc_init(self);
+  *(v5 + 2) = [touchCopy type];
+  *(v5 + 8) = [touchCopy _isPointerTouch];
+  *(v5 + 4) = [touchCopy _pointerSenderID];
+  *(v5 + 3) = [touchCopy _senderID];
+  window = [touchCopy window];
+  objc_storeWeak(v5 + 5, window);
 
-  v7 = [(UITouch *)v4 _locationInWindow:?];
+  v7 = [(UITouch *)touchCopy _locationInWindow:?];
   v9 = v8;
 
   *(v5 + 6) = v7;
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_window);
-  [v4 convertPoint:WeakRetained fromView:{self->_locationInWindow.x, self->_locationInWindow.y}];
+  [viewCopy convertPoint:WeakRetained fromView:{self->_locationInWindow.x, self->_locationInWindow.y}];
   v7 = v6;
   v9 = v8;
 

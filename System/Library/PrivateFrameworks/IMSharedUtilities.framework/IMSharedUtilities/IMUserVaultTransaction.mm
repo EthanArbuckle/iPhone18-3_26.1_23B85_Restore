@@ -67,14 +67,14 @@ LABEL_13:
 
 - (NSURL)url
 {
-  v3 = [(IMUserVaultTransaction *)self uvTransaction];
+  uvTransaction = [(IMUserVaultTransaction *)self uvTransaction];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(IMUserVaultTransaction *)self uvTransaction];
-  v6 = v5;
+  uvTransaction2 = [(IMUserVaultTransaction *)self uvTransaction];
+  v6 = uvTransaction2;
   if (v4)
   {
-    v7 = [v5 url];
+    v7 = [uvTransaction2 url];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

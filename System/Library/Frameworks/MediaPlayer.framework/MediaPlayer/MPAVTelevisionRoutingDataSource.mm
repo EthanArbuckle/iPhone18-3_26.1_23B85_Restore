@@ -2,27 +2,27 @@
 - (BOOL)devicePresenceDetected;
 - (MPAVTelevisionRoutingDataSource)init;
 - (id)_discoveredTelevisions;
-- (id)getRoutesForCategory:(id)a3;
-- (void)_onQueue_controllerDidDiscoverTelevision:(void *)a3;
-- (void)_onQueue_controllerDidRemoveTelevision:(void *)a3;
+- (id)getRoutesForCategory:(id)category;
+- (void)_onQueue_controllerDidDiscoverTelevision:(void *)television;
+- (void)_onQueue_controllerDidRemoveTelevision:(void *)television;
 - (void)dealloc;
-- (void)setDiscoveryMode:(int64_t)a3;
+- (void)setDiscoveryMode:(int64_t)mode;
 @end
 
 @implementation MPAVTelevisionRoutingDataSource
 
-- (void)_onQueue_controllerDidRemoveTelevision:(void *)a3
+- (void)_onQueue_controllerDidRemoveTelevision:(void *)television
 {
-  [(NSMutableArray *)self->_discoveredTelevisions removeObject:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  [(NSMutableArray *)self->_discoveredTelevisions removeObject:television];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
-- (void)_onQueue_controllerDidDiscoverTelevision:(void *)a3
+- (void)_onQueue_controllerDidDiscoverTelevision:(void *)television
 {
-  [(NSMutableArray *)self->_discoveredTelevisions addObject:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  [(NSMutableArray *)self->_discoveredTelevisions addObject:television];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
 - (id)_discoveredTelevisions
@@ -55,16 +55,16 @@ void __57__MPAVTelevisionRoutingDataSource__discoveredTelevisions__block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)getRoutesForCategory:(id)a3
+- (id)getRoutesForCategory:(id)category
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVTelevisionRoutingDataSource *)self _discoveredTelevisions];
+  _discoveredTelevisions = [(MPAVTelevisionRoutingDataSource *)self _discoveredTelevisions];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _discoveredTelevisions;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -96,20 +96,20 @@ void __57__MPAVTelevisionRoutingDataSource__discoveredTelevisions__block_invoke(
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(MPAVTelevisionRoutingDataSource *)self _discoveredTelevisions];
-  v3 = [v2 count] != 0;
+  _discoveredTelevisions = [(MPAVTelevisionRoutingDataSource *)self _discoveredTelevisions];
+  v3 = [_discoveredTelevisions count] != 0;
 
   return v3;
 }
 
-- (void)setDiscoveryMode:(int64_t)a3
+- (void)setDiscoveryMode:(int64_t)mode
 {
   v13 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = MPAVTelevisionRoutingDataSource;
   [(MPAVRoutingDataSource *)&v10 setDiscoveryMode:?];
   IsDiscoveringDevices = MRTelevisionControllerIsDiscoveringDevices();
-  if (!a3 || (IsDiscoveringDevices & 1) != 0)
+  if (!mode || (IsDiscoveringDevices & 1) != 0)
   {
     if (IsDiscoveringDevices)
     {

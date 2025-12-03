@@ -1,5 +1,5 @@
 @interface CCUIContinuousSliderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityPath;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CCUIContinuousSliderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"CCUIBaseSliderView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"setValue:animated:" withFullSignature:{"v", "f", "B", 0}];
-  [v3 validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "f", 0}];
-  [v3 validateClass:@"CCUIContinuousSliderView" hasInstanceVariable:@"_continuousSliderCornerRadius" withType:"d"];
-  [v3 validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"setValue:animated:" withFullSignature:{"v", "f", "B", 0}];
+  [validationsCopy validateClass:@"CCUIBaseSliderView" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "f", 0}];
+  [validationsCopy validateClass:@"CCUIContinuousSliderView" hasInstanceVariable:@"_continuousSliderCornerRadius" withType:"d"];
+  [validationsCopy validateClass:@"CCUIContinuousSliderView" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,15 +61,15 @@
 - (id)accessibilityPath
 {
   v2 = MEMORY[0x29EDC7948];
-  v3 = self;
-  [(CCUIContinuousSliderViewAccessibility *)v3 bounds];
+  selfCopy = self;
+  [(CCUIContinuousSliderViewAccessibility *)selfCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [(CCUIContinuousSliderViewAccessibility *)v3 safeCGFloatForKey:@"_continuousSliderCornerRadius"];
+  [(CCUIContinuousSliderViewAccessibility *)selfCopy safeCGFloatForKey:@"_continuousSliderCornerRadius"];
   v13 = [v2 _bezierPathWithPillRect:v5 cornerRadius:{v7, v9, v11, v12}];
-  v14 = UIAccessibilityConvertPathToScreenCoordinates(v13, v3);
+  v14 = UIAccessibilityConvertPathToScreenCoordinates(v13, selfCopy);
 
   return v14;
 }

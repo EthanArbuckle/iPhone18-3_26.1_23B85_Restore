@@ -3,27 +3,27 @@
 - (BOOL)isCloudSyncingEnabled;
 - (CKCloudSettingsViewController)init;
 - (UIImage)cachedAppIconUIImage;
-- (id)_fetchKeepMessagesPreference:(id)a3;
-- (id)_fetchStorageUsed:(id)a3;
-- (id)_fetchSyncStatusText:(id)a3;
+- (id)_fetchKeepMessagesPreference:(id)preference;
+- (id)_fetchStorageUsed:(id)used;
+- (id)_fetchSyncStatusText:(id)text;
 - (id)_headerGroupSpecifiers;
 - (id)_makePlacardTopCardSpecifier;
-- (id)_messagesInCloudCount:(id)a3;
+- (id)_messagesInCloudCount:(id)count;
 - (id)_syncDetailsSpecifiers;
 - (id)_syncSpecifiers;
 - (id)account;
 - (id)specifiers;
 - (void)_internalInit;
-- (void)_presentAlertForAccountMismatchFromSpecifier:(id)a3;
-- (void)_presentScreenForSpecifier:(id)a3;
+- (void)_presentAlertForAccountMismatchFromSpecifier:(id)specifier;
+- (void)_presentScreenForSpecifier:(id)specifier;
 - (void)_startObservingAccountStoreChanges;
 - (void)_stopObservingAccountStoreChanges;
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4;
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)navigateToSettingsWithURLString:(id)a3 forSpecifier:(id)a4;
-- (void)pushManageStorage:(id)a3;
-- (void)syncButtonPressed:(id)a3;
-- (void)updateAppIconForTraitCollection:(id)a3;
+- (void)navigateToSettingsWithURLString:(id)string forSpecifier:(id)specifier;
+- (void)pushManageStorage:(id)storage;
+- (void)syncButtonPressed:(id)pressed;
+- (void)updateAppIconForTraitCollection:(id)collection;
 - (void)viewDidLoad;
 @end
 
@@ -35,14 +35,14 @@
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HEADER_GROUP"];
   [v3 addObject:v4];
 
-  v5 = [(CKCloudSettingsViewController *)self _makePlacardTopCardSpecifier];
-  [v3 addObject:v5];
+  _makePlacardTopCardSpecifier = [(CKCloudSettingsViewController *)self _makePlacardTopCardSpecifier];
+  [v3 addObject:_makePlacardTopCardSpecifier];
   v6 = +[CKiCloudSettingsUtils iCloudSettingsSyncText];
   v7 = [(ACUIDataclassConfigurationViewController *)self specifierForDataclass:*MEMORY[0x277CB89D8]];
   [v7 setName:v6];
   [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-  v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v9 = [v8 applicationIsInstalled:@"com.apple.MobileSMS"];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v9 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
   [v7 setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
@@ -62,16 +62,16 @@
   v5 = [v4 localizedStringForKey:@"HEADING_TITLE" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
-  v7 = [(CKCloudSettingsViewController *)self traitCollection];
+  traitCollection = [(CKCloudSettingsViewController *)self traitCollection];
   LOBYTE(v5) = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(CKCloudSettingsViewController *)self traitCollection];
-    v9 = [v8 pe_isSettingsFeatureDescriptionCellSupported];
+    traitCollection2 = [(CKCloudSettingsViewController *)self traitCollection];
+    pe_isSettingsFeatureDescriptionCellSupported = [traitCollection2 pe_isSettingsFeatureDescriptionCellSupported];
 
     v10 = NSClassFromString(&cfstr_Pesettingsfeat.isa);
-    if (v10 && v9)
+    if (v10 && pe_isSettingsFeatureDescriptionCellSupported)
     {
       [v6 setProperty:v10 forKey:*MEMORY[0x277D3FE58]];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -80,11 +80,11 @@
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"LEARN_MORE" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
 
-      v15 = [(CKCloudSettingsViewController *)self viewModel];
-      v16 = [v15 messagesLearnMoreUrlString];
+      viewModel = [(CKCloudSettingsViewController *)self viewModel];
+      messagesLearnMoreUrlString = [viewModel messagesLearnMoreUrlString];
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ [%@](%@)", v12, v14, v16];
-      [v6 setProperty:v17 forKey:*MEMORY[0x277D40160]];
+      cachedAppIconUIImage = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ [%@](%@)", v12, v14, messagesLearnMoreUrlString];
+      [v6 setProperty:cachedAppIconUIImage forKey:*MEMORY[0x277D40160]];
       [v6 setProperty:@"com.apple.MobileSMS" forKey:*MEMORY[0x277D40008]];
       [v6 setIdentifier:@"MESSAGES_HEADING_PLACARD"];
       goto LABEL_7;
@@ -106,31 +106,31 @@
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %%@", v12];
   [v6 setProperty:v14 forKey:*MEMORY[0x277D40160]];
-  v21 = [(CKCloudSettingsViewController *)self viewModel];
-  v16 = [v21 messagesLearnMoreUrlString];
+  viewModel2 = [(CKCloudSettingsViewController *)self viewModel];
+  messagesLearnMoreUrlString = [viewModel2 messagesLearnMoreUrlString];
 
-  [v6 setProperty:v16 forKey:@"AAUIDataclassAttributedLink"];
+  [v6 setProperty:messagesLearnMoreUrlString forKey:@"AAUIDataclassAttributedLink"];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringForKey:@"LEARN_MORE" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   [v6 setProperty:v23 forKey:@"AAUIDataclassAttributedLinkText"];
 
-  v17 = [(CKCloudSettingsViewController *)self cachedAppIconUIImage];
-  [v6 setProperty:v17 forKey:*MEMORY[0x277D3FFC0]];
+  cachedAppIconUIImage = [(CKCloudSettingsViewController *)self cachedAppIconUIImage];
+  [v6 setProperty:cachedAppIconUIImage forKey:*MEMORY[0x277D3FFC0]];
 LABEL_7:
 
   return v6;
 }
 
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKCloudSettingsViewController *)self viewModel];
-  v9 = [v8 micAccountsMatch];
+  changeCopy = change;
+  specifierCopy = specifier;
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  micAccountsMatch = [viewModel micAccountsMatch];
 
   v10 = IMOSLoggingEnabled();
-  if (v9)
+  if (micAccountsMatch)
   {
     if (v10)
     {
@@ -138,14 +138,14 @@ LABEL_7:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v16 = v6;
+        v16 = changeCopy;
         _os_log_impl(&dword_258D24000, v11, OS_LOG_TYPE_INFO, "Toggled MiC switch newState={%@}, will call super.", buf, 0xCu);
       }
     }
 
     v14.receiver = self;
     v14.super_class = CKCloudSettingsViewController;
-    [(ACUIDataclassConfigurationViewController *)&v14 dataclassSwitchStateDidChange:v6 withSpecifier:v7];
+    [(ACUIDataclassConfigurationViewController *)&v14 dataclassSwitchStateDidChange:changeCopy withSpecifier:specifierCopy];
   }
 
   else
@@ -160,15 +160,15 @@ LABEL_7:
       }
     }
 
-    [(CKCloudSettingsViewController *)self _presentAlertForAccountMismatchFromSpecifier:v7];
+    [(CKCloudSettingsViewController *)self _presentAlertForAccountMismatchFromSpecifier:specifierCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentAlertForAccountMismatchFromSpecifier:(id)a3
+- (void)_presentAlertForAccountMismatchFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = [v5 localizedStringForKey:@"ACCOUNT_MISMATCH_ALERT_TITLE" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
 
@@ -184,7 +184,7 @@ LABEL_7:
   v23[2] = __96__CKCloudSettingsViewController_HeaderSpecifiers___presentAlertForAccountMismatchFromSpecifier___block_invoke;
   v23[3] = &unk_2798C4868;
   objc_copyWeak(&v25, &location);
-  v11 = v4;
+  v11 = specifierCopy;
   v24 = v11;
   v12 = [v8 actionWithTitle:v10 style:0 handler:v23];
 
@@ -251,8 +251,8 @@ void __96__CKCloudSettingsViewController_HeaderSpecifiers___presentAlertForAccou
 - (void)dealloc
 {
   [(CKCloudSettingsViewController *)self _stopObservingAccountStoreChanges];
-  v3 = [(CKCloudSettingsViewController *)self viewModel];
-  [v3 stopObservers];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  [viewModel stopObservers];
 
   v4.receiver = self;
   v4.super_class = CKCloudSettingsViewController;
@@ -307,16 +307,16 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(CKCloudSettingsViewController *)self _headerGroupSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    _headerGroupSpecifiers = [(CKCloudSettingsViewController *)self _headerGroupSpecifiers];
+    [v5 addObjectsFromArray:_headerGroupSpecifiers];
 
-    v7 = [(CKCloudSettingsViewController *)self _syncDetailsSpecifiers];
-    [v5 addObjectsFromArray:v7];
+    _syncDetailsSpecifiers = [(CKCloudSettingsViewController *)self _syncDetailsSpecifiers];
+    [v5 addObjectsFromArray:_syncDetailsSpecifiers];
 
     if ([(CKCloudSettingsViewController *)self isCloudSyncingEnabled]&& [(CKiCloudSettingsViewModel *)self->_viewModel isSyncAvailable])
     {
-      v8 = [(CKCloudSettingsViewController *)self _syncSpecifiers];
-      [v5 addObjectsFromArray:v8];
+      _syncSpecifiers = [(CKCloudSettingsViewController *)self _syncSpecifiers];
+      [v5 addObjectsFromArray:_syncSpecifiers];
     }
 
     v9 = [v5 copy];
@@ -334,16 +334,16 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SYNC_ACTION_GROUP_IDENTIFIER"];
   v4 = MEMORY[0x277D3FAD8];
-  v5 = [(CKCloudSettingsViewController *)self viewModel];
-  v6 = [v5 syncButtonText];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  syncButtonText = [viewModel syncButtonText];
+  v7 = [v4 preferenceSpecifierNamed:syncButtonText target:self set:0 get:0 detail:0 cell:13 edit:0];
 
-  v8 = [(CKCloudSettingsViewController *)self viewModel];
-  v9 = [v8 isSyncButtonEnabled];
+  viewModel2 = [(CKCloudSettingsViewController *)self viewModel];
+  isSyncButtonEnabled = [viewModel2 isSyncButtonEnabled];
 
   [v7 setIdentifier:@"SYNC_NOW_BUTTON"];
   [v7 setButtonAction:sel_syncButtonPressed_];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isSyncButtonEnabled];
   [v7 setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
 
   v14[0] = v3;
@@ -355,17 +355,17 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (void)syncButtonPressed:(id)a3
+- (void)syncButtonPressed:(id)pressed
 {
-  v3 = [(CKCloudSettingsViewController *)self viewModel];
-  [v3 syncButtonPressed];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  [viewModel syncButtonPressed];
 }
 
-- (void)navigateToSettingsWithURLString:(id)a3 forSpecifier:(id)a4
+- (void)navigateToSettingsWithURLString:(id)string forSpecifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  specifierCopy = specifier;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -382,16 +382,16 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = specifierCopy;
       _os_log_impl(&dword_258D24000, v8, OS_LOG_TYPE_INFO, "Attempting to present a screen for specifier={%@}", &v13, 0xCu);
     }
   }
 
-  if (v5)
+  if (stringCopy)
   {
-    v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v10 = [MEMORY[0x277CBEBC0] URLWithString:v5];
-    [v9 openSensitiveURL:v10 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v10 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
+    [defaultWorkspace openSensitiveURL:v10 withOptions:0];
   }
 
   else if (IMOSLoggingEnabled())
@@ -410,9 +410,9 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
 
 - (id)account
 {
-  v2 = [(CKCloudSettingsViewController *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accountManager = [(CKCloudSettingsViewController *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v4;
 }
@@ -422,12 +422,12 @@ void __44__CKCloudSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, 
   accountManager = self->_accountManager;
   if (!accountManager)
   {
-    v4 = [(CKCloudSettingsViewController *)self specifier];
+    specifier = [(CKCloudSettingsViewController *)self specifier];
 
-    if (v4)
+    if (specifier)
     {
-      v5 = [(CKCloudSettingsViewController *)self specifier];
-      v6 = [v5 objectForKeyedSubscript:@"icloudAccountManager"];
+      specifier2 = [(CKCloudSettingsViewController *)self specifier];
+      v6 = [specifier2 objectForKeyedSubscript:@"icloudAccountManager"];
 
       [(CKCloudSettingsViewController *)self setAccountManager:v6];
       [(CKCloudSettingsViewController *)self _startObservingAccountStoreChanges];
@@ -458,13 +458,13 @@ void __47__CKCloudSettingsViewController_accountManager__block_invoke(uint64_t a
 - (void)_startObservingAccountStoreChanges
 {
   objc_initWeak(&location, self);
-  v3 = [(CKCloudSettingsViewController *)self accountManager];
+  accountManager = [(CKCloudSettingsViewController *)self accountManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__block_invoke;
   v4[3] = &unk_2798C48E0;
   objc_copyWeak(&v5, &location);
-  [v3 addAccountChangeObserver:self handler:v4];
+  [accountManager addAccountChangeObserver:self handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -503,15 +503,15 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
 
 - (BOOL)isCloudSyncingEnabled
 {
-  v3 = [(CKCloudSettingsViewController *)self account];
+  account = [(CKCloudSettingsViewController *)self account];
 
-  if (!v3)
+  if (!account)
   {
     return 0;
   }
 
-  v4 = [(CKCloudSettingsViewController *)self account];
-  v5 = [v4 isEnabledForDataclass:*MEMORY[0x277CB89D8]];
+  account2 = [(CKCloudSettingsViewController *)self account];
+  v5 = [account2 isEnabledForDataclass:*MEMORY[0x277CB89D8]];
 
   return v5;
 }
@@ -521,8 +521,8 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
   cachedAppIconUIImage = self->_cachedAppIconUIImage;
   if (!cachedAppIconUIImage)
   {
-    v4 = [(CKCloudSettingsViewController *)self traitCollection];
-    [(CKCloudSettingsViewController *)self updateAppIconForTraitCollection:v4];
+    traitCollection = [(CKCloudSettingsViewController *)self traitCollection];
+    [(CKCloudSettingsViewController *)self updateAppIconForTraitCollection:traitCollection];
 
     cachedAppIconUIImage = self->_cachedAppIconUIImage;
   }
@@ -530,28 +530,28 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
   return cachedAppIconUIImage;
 }
 
-- (void)updateAppIconForTraitCollection:(id)a3
+- (void)updateAppIconForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D1B1A8];
-  v5 = a3;
+  collectionCopy = collection;
   v21 = [[v4 alloc] initWithBundleIdentifier:@"com.apple.MobileSMS"];
   v6 = objc_alloc(MEMORY[0x277D1B1C8]);
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = [v6 initWithSize:64.0 scale:{64.0, v8}];
 
-  v10 = [v5 userInterfaceStyle] == 2;
+  v10 = [collectionCopy userInterfaceStyle] == 2;
   gotLoadHelper_x8__OBJC_CLASS___SBSUITraitHomeScreenIconStyle(v11);
   v13 = *(v12 + 3152);
   v14 = objc_opt_self();
-  v15 = [v5 objectForTrait:v14];
+  v15 = [collectionCopy objectForTrait:v14];
 
   [v9 setAppearance:{objc_msgSend(v15, "iconServicesAppearanceUsingDarkInterfaceStyle:", v10)}];
   [v9 setAppearanceVariant:{objc_msgSend(v15, "iconServicesAppearanceVariantUsingDarkInterfaceStyle:", v10)}];
-  v16 = [v15 tintColor];
-  if (v16)
+  tintColor = [v15 tintColor];
+  if (tintColor)
   {
-    v17 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(v16, "CGColor")}];
+    v17 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(tintColor, "CGColor")}];
     [v9 setTintColor:v17];
   }
 
@@ -561,9 +561,9 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
   self->_cachedAppIconUIImage = v19;
 }
 
-- (void)pushManageStorage:(id)a3
+- (void)pushManageStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   manageStorageController = self->_manageStorageController;
   if (!manageStorageController)
   {
@@ -586,42 +586,42 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
     v7 = v6;
     _Block_object_dispose(&v13, 8);
     v8 = [v6 alloc];
-    v9 = [(CKCloudSettingsViewController *)self account];
-    v10 = [v8 initWithAppBundleID:@"com.apple.MobileSMS" account:v9 presentingController:self];
+    account = [(CKCloudSettingsViewController *)self account];
+    v10 = [v8 initWithAppBundleID:@"com.apple.MobileSMS" account:account presentingController:self];
     v11 = self->_manageStorageController;
     self->_manageStorageController = v10;
 
     manageStorageController = self->_manageStorageController;
   }
 
-  [(ICSManageStorageDrilldownController *)manageStorageController beginLoadingForSpecifier:v4];
+  [(ICSManageStorageDrilldownController *)manageStorageController beginLoadingForSpecifier:storageCopy];
 }
 
 - (id)_syncDetailsSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SYNC_DETAILS_GROUP"];
-  v5 = [(CKCloudSettingsViewController *)self viewModel];
-  v6 = [v5 syncStatusFooterText];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  syncStatusFooterText = [viewModel syncStatusFooterText];
 
-  v7 = [(CKCloudSettingsViewController *)self viewModel];
-  v8 = [v7 syncStatusFooterSubstringForHyperlink];
+  viewModel2 = [(CKCloudSettingsViewController *)self viewModel];
+  syncStatusFooterSubstringForHyperlink = [viewModel2 syncStatusFooterSubstringForHyperlink];
 
-  v30 = v6;
-  if (v8)
+  v30 = syncStatusFooterText;
+  if (syncStatusFooterSubstringForHyperlink)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     [v4 setProperty:v10 forKey:*MEMORY[0x277D3FF48]];
 
-    v11 = [(CKCloudSettingsViewController *)self viewModel];
-    v12 = [v11 syncStatusFooterSubstringForHyperlink];
+    viewModel3 = [(CKCloudSettingsViewController *)self viewModel];
+    syncStatusFooterSubstringForHyperlink2 = [viewModel3 syncStatusFooterSubstringForHyperlink];
 
-    v32.location = [v6 rangeOfString:v12];
+    v32.location = [syncStatusFooterText rangeOfString:syncStatusFooterSubstringForHyperlink2];
     v13 = NSStringFromRange(v32);
     [v4 setProperty:v13 forKey:*MEMORY[0x277D3FF58]];
 
-    [v4 setProperty:v6 forKey:*MEMORY[0x277D3FF70]];
+    [v4 setProperty:syncStatusFooterText forKey:*MEMORY[0x277D3FF70]];
     v14 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
     [v4 setProperty:v14 forKey:*MEMORY[0x277D3FF68]];
 
@@ -631,7 +631,7 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
 
   else
   {
-    [v4 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+    [v4 setProperty:syncStatusFooterText forKey:*MEMORY[0x277D3FF88]];
   }
 
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -655,41 +655,41 @@ void __67__CKCloudSettingsViewController__startObservingAccountStoreChanges__blo
   [v18 setButtonAction:sel_pushManageStorage_];
   [v21 setCellType:2];
   [v21 setDetailControllerClass:NSClassFromString(&cfstr_Ckkeepmessages.isa)];
-  [v3 addObject:v4];
-  [v3 addObject:v18];
+  [array addObject:v4];
+  [array addObject:v18];
   if ([(CKCloudSettingsViewController *)self isCloudSyncingEnabled])
   {
-    [v3 addObject:v21];
-    [v3 addObject:v24];
-    [v3 addObject:v27];
+    [array addObject:v21];
+    [array addObject:v24];
+    [array addObject:v27];
   }
 
-  v28 = [v3 copy];
+  v28 = [array copy];
 
   return v28;
 }
 
-- (void)_presentScreenForSpecifier:(id)a3
+- (void)_presentScreenForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(CKCloudSettingsViewController *)self viewModel];
-  v6 = [v5 syncState];
+  specifierCopy = specifier;
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  syncState = [viewModel syncState];
 
-  if (v6 <= 9)
+  if (syncState <= 9)
   {
-    if (((1 << v6) & 0x78) != 0)
+    if (((1 << syncState) & 0x78) != 0)
     {
-      v8 = [(CKCloudSettingsViewController *)self viewModel];
-      v9 = [v8 footerHyperlinkUrl];
-      [(CKCloudSettingsViewController *)self navigateToSettingsWithURLString:v9 forSpecifier:v4];
+      viewModel2 = [(CKCloudSettingsViewController *)self viewModel];
+      footerHyperlinkUrl = [viewModel2 footerHyperlinkUrl];
+      [(CKCloudSettingsViewController *)self navigateToSettingsWithURLString:footerHyperlinkUrl forSpecifier:specifierCopy];
     }
 
     else
     {
-      if (((1 << v6) & 7) == 0)
+      if (((1 << syncState) & 7) == 0)
       {
-        v7 = [(CKCloudSettingsViewController *)self viewModel];
-        [v7 showICloudUpsellIfAvailable];
+        viewModel3 = [(CKCloudSettingsViewController *)self viewModel];
+        [viewModel3 showICloudUpsellIfAvailable];
 LABEL_9:
 
         goto LABEL_10;
@@ -697,11 +697,11 @@ LABEL_9:
 
       if (IMOSLoggingEnabled())
       {
-        v7 = OSLogHandleForIMFoundationCategory();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        viewModel3 = OSLogHandleForIMFoundationCategory();
+        if (os_log_type_enabled(viewModel3, OS_LOG_TYPE_INFO))
         {
           *v10 = 0;
-          _os_log_impl(&dword_258D24000, v7, OS_LOG_TYPE_INFO, "Attempted to present a screen for a hyperlink for an unsupported sync state.", v10, 2u);
+          _os_log_impl(&dword_258D24000, viewModel3, OS_LOG_TYPE_INFO, "Attempted to present a screen for a hyperlink for an unsupported sync state.", v10, 2u);
         }
 
         goto LABEL_9;
@@ -712,16 +712,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_fetchStorageUsed:(id)a3
+- (id)_fetchStorageUsed:(id)used
 {
-  v4 = a3;
-  v5 = [(CKCloudSettingsViewController *)self appCloudStorage];
+  usedCopy = used;
+  appCloudStorage = [(CKCloudSettingsViewController *)self appCloudStorage];
 
-  if (v5)
+  if (appCloudStorage)
   {
-    v6 = [(CKCloudSettingsViewController *)self appCloudStorage];
-    v7 = [v6 storageUsed];
-    [v7 longLongValue];
+    appCloudStorage2 = [(CKCloudSettingsViewController *)self appCloudStorage];
+    storageUsed = [appCloudStorage2 storageUsed];
+    [storageUsed longLongValue];
 
     v8 = NSLocalizedFileSizeDescription();
   }
@@ -732,13 +732,13 @@ LABEL_10:
     {
       [(CKCloudSettingsViewController *)self setStorageUsedRequestInProgress:1];
       v9 = objc_alloc(NSClassFromString(&cfstr_Icqcloudstorag.isa));
-      v10 = [(CKCloudSettingsViewController *)self account];
-      v11 = [v9 initWithAccount:v10];
+      account = [(CKCloudSettingsViewController *)self account];
+      v11 = [v9 initWithAccount:account];
 
       [v11 setShouldIgnoreCache:1];
       objc_initWeak(&location, self);
-      v12 = [MEMORY[0x277CEC7A0] sharedManager];
-      v13 = [v12 appBundleIdentifierForDataclass:*MEMORY[0x277CB89D8]];
+      mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
+      v13 = [mEMORY[0x277CEC7A0] appBundleIdentifierForDataclass:*MEMORY[0x277CB89D8]];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -797,28 +797,28 @@ void __72__CKCloudSettingsViewController_SyncStateSpecifiers___fetchStorageUsed_
   }
 }
 
-- (id)_fetchKeepMessagesPreference:(id)a3
+- (id)_fetchKeepMessagesPreference:(id)preference
 {
-  v3 = [(CKCloudSettingsViewController *)self viewModel];
-  v4 = [v3 keepMessagesPreference];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  keepMessagesPreference = [viewModel keepMessagesPreference];
 
-  return v4;
+  return keepMessagesPreference;
 }
 
-- (id)_messagesInCloudCount:(id)a3
+- (id)_messagesInCloudCount:(id)count
 {
-  v3 = [(CKCloudSettingsViewController *)self viewModel];
-  v4 = [v3 messagesInCloudCount];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  messagesInCloudCount = [viewModel messagesInCloudCount];
 
-  return v4;
+  return messagesInCloudCount;
 }
 
-- (id)_fetchSyncStatusText:(id)a3
+- (id)_fetchSyncStatusText:(id)text
 {
-  v3 = [(CKCloudSettingsViewController *)self viewModel];
-  v4 = [v3 syncStatus];
+  viewModel = [(CKCloudSettingsViewController *)self viewModel];
+  syncStatus = [viewModel syncStatus];
 
-  return v4;
+  return syncStatus;
 }
 
 @end

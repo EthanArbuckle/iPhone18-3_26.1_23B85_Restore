@@ -2,7 +2,7 @@
 - (NSDate)date;
 - (NSString)playbackStateDescription;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unsigned)playbackState;
 @end
 
@@ -10,18 +10,18 @@
 
 - (unsigned)playbackState
 {
-  v2 = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self playerPlaybackState];
-  v3 = [v2 playbackState];
+  playerPlaybackState = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self playerPlaybackState];
+  playbackState = [playerPlaybackState playbackState];
 
-  return v3;
+  return playbackState;
 }
 
 - (NSDate)date
 {
-  v2 = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self playerPlaybackState];
-  v3 = [v2 date];
+  playerPlaybackState = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self playerPlaybackState];
+  date = [playerPlaybackState date];
 
-  return v3;
+  return date;
 }
 
 - (NSString)playbackStateDescription
@@ -39,13 +39,13 @@
   return v2;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self date];
-  v6 = [v4 date];
+  compareCopy = compare;
+  date = [(MRDNowPlayingPlayerClientPlaybackStateSnapshot *)self date];
+  date2 = [compareCopy date];
 
-  v7 = [v5 compare:v6];
+  v7 = [date compare:date2];
   return v7;
 }
 

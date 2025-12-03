@@ -1,8 +1,8 @@
 @interface RideBookingRideOptionStatus
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3;
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 error:(unint64_t)a4;
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 loadingRideOptions:(BOOL)a4;
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 rideOptions:(id)a4 expirationDate:(id)a5 userActivity:(id)a6 rideOptionStatusError:(unint64_t)a7;
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application;
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application error:(unint64_t)error;
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application loadingRideOptions:(BOOL)options;
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application rideOptions:(id)options expirationDate:(id)date userActivity:(id)activity rideOptionStatusError:(unint64_t)error;
 - (NSString)errorMessage;
 - (RideBookingApplication)application;
 - (id)_init;
@@ -13,13 +13,13 @@
 
 - (NSString)errorMessage
 {
-  v3 = [(RideBookingRideOptionStatus *)self rideOptionStatusError];
+  rideOptionStatusError = [(RideBookingRideOptionStatus *)self rideOptionStatusError];
   v4 = 0;
-  if (v3 > 6)
+  if (rideOptionStatusError > 6)
   {
-    if (v3 > 9)
+    if (rideOptionStatusError > 9)
     {
-      switch(v3)
+      switch(rideOptionStatusError)
       {
         case 10:
           v8 = +[NSBundle mainBundle];
@@ -41,14 +41,14 @@
       }
     }
 
-    else if (v3 == 7)
+    else if (rideOptionStatusError == 7)
     {
       v8 = +[NSBundle mainBundle];
       v6 = v8;
       v9 = @"Sign in to %@ to request a ride [Ridesharing]";
     }
 
-    else if (v3 == 8)
+    else if (rideOptionStatusError == 8)
     {
       v8 = +[NSBundle mainBundle];
       v6 = v8;
@@ -63,17 +63,17 @@
     }
 
     v12 = [v8 localizedStringForKey:v9 value:@"localized string not found" table:0];
-    v13 = [(RideBookingRideOptionStatus *)self application];
-    v14 = [v13 name];
-    v15 = [NSString localizedStringWithFormat:v12, v14];
+    application = [(RideBookingRideOptionStatus *)self application];
+    name = [application name];
+    v15 = [NSString localizedStringWithFormat:v12, name];
     goto LABEL_25;
   }
 
-  if (v3 > 3)
+  if (rideOptionStatusError > 3)
   {
-    if ((v3 - 4) >= 2)
+    if ((rideOptionStatusError - 4) >= 2)
     {
-      if (v3 != 6)
+      if (rideOptionStatusError != 6)
       {
         goto LABEL_29;
       }
@@ -87,7 +87,7 @@
     goto LABEL_12;
   }
 
-  if (v3 == 1)
+  if (rideOptionStatusError == 1)
   {
 LABEL_12:
     v10 = +[NSBundle mainBundle];
@@ -98,7 +98,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v3 == 2)
+  if (rideOptionStatusError == 2)
   {
     v10 = +[NSBundle mainBundle];
     v6 = v10;
@@ -106,7 +106,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (v3 != 3)
+  if (rideOptionStatusError != 3)
   {
     goto LABEL_29;
   }
@@ -116,9 +116,9 @@ LABEL_27:
   v7 = @"No rides are currently available from %@";
 LABEL_19:
   v12 = [v5 localizedStringForKey:v7 value:@"localized string not found" table:0];
-  v13 = [(RideBookingRideOptionStatus *)self application];
-  v14 = [v13 name];
-  v15 = [NSString stringWithFormat:v12, v14];
+  application = [(RideBookingRideOptionStatus *)self application];
+  name = [application name];
+  v15 = [NSString stringWithFormat:v12, name];
 LABEL_25:
   v4 = v15;
 
@@ -161,46 +161,46 @@ LABEL_29:
   return v3;
 }
 
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 rideOptions:(id)a4 expirationDate:(id)a5 userActivity:(id)a6 rideOptionStatusError:(unint64_t)a7
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application rideOptions:(id)options expirationDate:(id)date userActivity:(id)activity rideOptionStatusError:(unint64_t)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [RideBookingRideOptionStatus statusWithApplication:a3];
-  [v14 setRideOptions:v13];
+  activityCopy = activity;
+  dateCopy = date;
+  optionsCopy = options;
+  v14 = [RideBookingRideOptionStatus statusWithApplication:application];
+  [v14 setRideOptions:optionsCopy];
 
-  [v14 setExpirationDate:v12];
-  [v14 setUserActivity:v11];
+  [v14 setExpirationDate:dateCopy];
+  [v14 setUserActivity:activityCopy];
 
-  [v14 setRideOptionStatusError:a7];
+  [v14 setRideOptionStatusError:error];
 
   return v14;
 }
 
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 error:(unint64_t)a4
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application error:(unint64_t)error
 {
-  v5 = [RideBookingRideOptionStatus statusWithApplication:a3];
-  [v5 setRideOptionStatusError:a4];
+  v5 = [RideBookingRideOptionStatus statusWithApplication:application];
+  [v5 setRideOptionStatusError:error];
 
   return v5;
 }
 
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3 loadingRideOptions:(BOOL)a4
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application loadingRideOptions:(BOOL)options
 {
-  v4 = a4;
-  v5 = [RideBookingRideOptionStatus statusWithApplication:a3];
-  [v5 setLoadingRideOptions:v4];
+  optionsCopy = options;
+  v5 = [RideBookingRideOptionStatus statusWithApplication:application];
+  [v5 setLoadingRideOptions:optionsCopy];
 
   return v5;
 }
 
-+ (RideBookingRideOptionStatus)statusWithApplication:(id)a3
++ (RideBookingRideOptionStatus)statusWithApplication:(id)application
 {
-  v3 = a3;
-  v4 = [[RideBookingRideOptionStatus alloc] _init];
-  [v4 setApplication:v3];
+  applicationCopy = application;
+  _init = [[RideBookingRideOptionStatus alloc] _init];
+  [_init setApplication:applicationCopy];
 
-  return v4;
+  return _init;
 }
 
 @end

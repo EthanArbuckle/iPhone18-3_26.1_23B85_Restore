@@ -1,18 +1,18 @@
 @interface HLPURLSessionACAuthHandler
-+ (BOOL)canAuthenticateWithURLResponse:(id)a3;
-- (HLPURLSessionACAuthHandler)initWithAuthenticationContext:(id)a3;
++ (BOOL)canAuthenticateWithURLResponse:(id)response;
+- (HLPURLSessionACAuthHandler)initWithAuthenticationContext:(id)context;
 - (id)customHeaderFields;
-- (void)authenticateWithCompletion:(id)a3;
+- (void)authenticateWithCompletion:(id)completion;
 @end
 
 @implementation HLPURLSessionACAuthHandler
 
-+ (BOOL)canAuthenticateWithURLResponse:(id)a3
++ (BOOL)canAuthenticateWithURLResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (+[HLPCommonDefines isInternalBuild])
   {
-    v4 = v3;
+    v4 = responseCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -21,9 +21,9 @@
         +[HLPURLSessionACAuthHandler canAuthenticateWithURLResponse:];
       }
 
-      v5 = [v4 statusCode];
+      statusCode = [v4 statusCode];
       v6 = canAuthenticateWithURLResponse__supportedStatusCodes;
-      v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+      v7 = [MEMORY[0x277CCABB0] numberWithInteger:statusCode];
       v8 = [v6 containsObject:v7];
     }
 
@@ -48,16 +48,16 @@ uint64_t __61__HLPURLSessionACAuthHandler_canAuthenticateWithURLResponse___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (HLPURLSessionACAuthHandler)initWithAuthenticationContext:(id)a3
+- (HLPURLSessionACAuthHandler)initWithAuthenticationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HLPURLSessionACAuthHandler;
   v6 = [(HLPURLSessionACAuthHandler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authContext, a3);
+    objc_storeStrong(&v6->_authContext, context);
     v8 = dispatch_queue_create("com.apple.tips.ACAuthHandler.syncQueue", 0);
     syncQueue = v7->_syncQueue;
     v7->_syncQueue = v8;
@@ -66,35 +66,35 @@ uint64_t __61__HLPURLSessionACAuthHandler_canAuthenticateWithURLResponse___block
   return v7;
 }
 
-- (void)authenticateWithCompletion:(id)a3
+- (void)authenticateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HLPURLSessionACAuthHandler *)self syncQueue];
+  completionCopy = completion;
+  syncQueue = [(HLPURLSessionACAuthHandler *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HLPURLSessionACAuthHandler_authenticateWithCompletion___block_invoke;
   block[3] = &unk_279706B10;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(syncQueue, block);
 
-  v6 = [(HLPURLSessionACAuthHandler *)self ssoAuthenticator];
+  ssoAuthenticator = [(HLPURLSessionACAuthHandler *)self ssoAuthenticator];
 
-  if (v6)
+  if (ssoAuthenticator)
   {
-    v7 = [(HLPURLSessionACAuthHandler *)self ssoAuthenticator];
+    ssoAuthenticator2 = [(HLPURLSessionACAuthHandler *)self ssoAuthenticator];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__HLPURLSessionACAuthHandler_authenticateWithCompletion___block_invoke_2;
     v9[3] = &unk_279706B38;
     v9[4] = self;
-    v10 = v4;
-    [v7 authenticateWithCompletion:v9];
+    v10 = completionCopy;
+    [ssoAuthenticator2 authenticateWithCompletion:v9];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:13 userInfo:0];
-    (*(v4 + 2))(v4, 0, 0, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v8);
   }
 }
 
@@ -236,13 +236,13 @@ LABEL_15:
 - (id)customHeaderFields
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HLPURLSessionACAuthHandler *)self authContext];
-  v3 = [v2 clientIdentifier];
+  authContext = [(HLPURLSessionACAuthHandler *)self authContext];
+  clientIdentifier = [authContext clientIdentifier];
 
-  if ([v3 length])
+  if ([clientIdentifier length])
   {
     v7 = @"X-Client-Id";
-    v8[0] = v3;
+    v8[0] = clientIdentifier;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 

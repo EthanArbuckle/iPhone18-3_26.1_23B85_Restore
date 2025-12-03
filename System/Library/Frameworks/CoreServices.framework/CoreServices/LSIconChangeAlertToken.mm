@@ -1,23 +1,23 @@
 @interface LSIconChangeAlertToken
-- (LSIconChangeAlertToken)initWithIdentity:(id)a3 manager:(id)a4;
+- (LSIconChangeAlertToken)initWithIdentity:(id)identity manager:(id)manager;
 - (void)dealloc;
-- (void)presentWithCompletion:(id)a3;
+- (void)presentWithCompletion:(id)completion;
 @end
 
 @implementation LSIconChangeAlertToken
 
-- (LSIconChangeAlertToken)initWithIdentity:(id)a3 manager:(id)a4
+- (LSIconChangeAlertToken)initWithIdentity:(id)identity manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = LSIconChangeAlertToken;
   v9 = [(LSIconChangeAlertToken *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeWeak(&v10->_manager, v8);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeWeak(&v10->_manager, managerCopy);
     v10->_hasBeenPresented = 0;
   }
 
@@ -34,10 +34,10 @@
   [(LSIconChangeAlertToken *)&v4 dealloc];
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [(LSIconChangeAlertToken *)a2 presentWithCompletion:?];
   }
@@ -45,7 +45,7 @@
   if (self->_hasBeenPresented)
   {
     v6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 37, 0, "[LSIconChangeAlertToken presentWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSIconAlertManager.m", 51);
-    v5[2](v5, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 
   else
@@ -62,13 +62,13 @@
       v10[2] = __48__LSIconChangeAlertToken_presentWithCompletion___block_invoke;
       v10[3] = &unk_1E6A1DBF8;
       v10[4] = self;
-      v11 = v5;
+      v11 = completionCopy;
       [v7 showIconChangeAlertForApplicationWithIdentity:identity completion:v10];
     }
 
     else
     {
-      v5[2](v5, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 }

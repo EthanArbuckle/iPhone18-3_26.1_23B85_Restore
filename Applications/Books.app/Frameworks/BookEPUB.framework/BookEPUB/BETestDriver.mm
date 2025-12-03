@@ -1,7 +1,7 @@
 @interface BETestDriver
 + (id)shared;
 - (BETestDriverTestStateProvider)testStateProvider;
-- (void)postEvent:(id)a3 sender:(id)a4;
+- (void)postEvent:(id)event sender:(id)sender;
 @end
 
 @implementation BETestDriver
@@ -18,17 +18,17 @@
   return v3;
 }
 
-- (void)postEvent:(id)a3 sender:(id)a4
+- (void)postEvent:(id)event sender:(id)sender
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BETestDriver *)self testStateProvider];
-  v8 = [v7 testIsRunning];
+  eventCopy = event;
+  senderCopy = sender;
+  testStateProvider = [(BETestDriver *)self testStateProvider];
+  testIsRunning = [testStateProvider testIsRunning];
 
-  if (v8)
+  if (testIsRunning)
   {
     v9 = +[NSNotificationCenter defaultCenter];
-    [v9 postNotificationName:v10 object:v6];
+    [v9 postNotificationName:eventCopy object:senderCopy];
   }
 }
 

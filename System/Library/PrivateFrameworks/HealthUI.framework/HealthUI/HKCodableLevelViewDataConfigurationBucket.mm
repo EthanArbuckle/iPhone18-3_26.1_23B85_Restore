@@ -1,11 +1,11 @@
 @interface HKCodableLevelViewDataConfigurationBucket
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableLevelViewDataConfigurationBucket
@@ -16,53 +16,53 @@
   v8.receiver = self;
   v8.super_class = HKCodableLevelViewDataConfigurationBucket;
   v4 = [(HKCodableLevelViewDataConfigurationBucket *)&v8 description];
-  v5 = [(HKCodableLevelViewDataConfigurationBucket *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableLevelViewDataConfigurationBucket *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   range = self->_range;
   if (range)
   {
-    v5 = [(HKCodableClosedRange *)range dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"range"];
+    dictionaryRepresentation = [(HKCodableClosedRange *)range dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"range"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_highlighted];
-  [v3 setObject:v6 forKey:@"highlighted"];
+  [dictionary setObject:v6 forKey:@"highlighted"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_range)
   {
     [HKCodableLevelViewDataConfigurationBucket writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   range = self->_range;
-  v5 = a3;
-  [v5 setRange:range];
-  v5[16] = self->_highlighted;
+  toCopy = to;
+  [toCopy setRange:range];
+  toCopy[16] = self->_highlighted;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableClosedRange *)self->_range copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableClosedRange *)self->_range copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -70,19 +70,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((range = self->_range, !(range | *(v4 + 1))) || -[HKCodableClosedRange isEqual:](range, "isEqual:")) && self->_highlighted == v4[16];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((range = self->_range, !(range | *(equalCopy + 1))) || -[HKCodableClosedRange isEqual:](range, "isEqual:")) && self->_highlighted == equalCopy[16];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   range = self->_range;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (range)
   {
     if (!v6)
@@ -90,7 +90,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     range = [(HKCodableClosedRange *)range mergeFrom:?];
   }
 
@@ -101,15 +101,15 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     range = [(HKCodableLevelViewDataConfigurationBucket *)self setRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_highlighted = *(v4 + 16);
+  self->_highlighted = *(fromCopy + 16);
 
-  MEMORY[0x1EEE66BB8](range, v4);
+  MEMORY[0x1EEE66BB8](range, fromCopy);
 }
 
 @end

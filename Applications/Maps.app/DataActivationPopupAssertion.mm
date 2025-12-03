@@ -1,5 +1,5 @@
 @interface DataActivationPopupAssertion
-- (id)initAndTakeAssertion:(BOOL)a3;
+- (id)initAndTakeAssertion:(BOOL)assertion;
 - (void)_releaseAssertion;
 - (void)_takeAssertion;
 - (void)dealloc;
@@ -50,9 +50,9 @@
   [(DataActivationPopupAssertion *)&v3 dealloc];
 }
 
-- (id)initAndTakeAssertion:(BOOL)a3
+- (id)initAndTakeAssertion:(BOOL)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   v8.receiver = self;
   v8.super_class = DataActivationPopupAssertion;
   v4 = [(DataActivationPopupAssertion *)&v8 init];
@@ -60,7 +60,7 @@
   if (v4)
   {
     v4->_active = 1;
-    if (v3)
+    if (assertionCopy)
     {
       [(DataActivationPopupAssertion *)v4 _takeAssertion];
     }

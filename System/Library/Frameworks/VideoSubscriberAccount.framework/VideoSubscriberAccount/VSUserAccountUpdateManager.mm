@@ -1,12 +1,12 @@
 @interface VSUserAccountUpdateManager
-- (VSUserAccountUpdateManager)initWithUserAccountUpdateRequests:(id)a3;
+- (VSUserAccountUpdateManager)initWithUserAccountUpdateRequests:(id)requests;
 - (VSUserAccountUpdateManagerDelegate)delegate;
-- (id)_requestOptionsWithUserAccounts:(id)a3 callback:(id)a4;
-- (void)_configureWatchdogWithSeconds:(unint64_t)a3;
-- (void)app:(id)a3 didFailToStartWithError:(id)a4;
-- (void)app:(id)a3 prewarmWithContext:(id)a4;
-- (void)appDidStart:(id)a3;
-- (void)appDidStop:(id)a3;
+- (id)_requestOptionsWithUserAccounts:(id)accounts callback:(id)callback;
+- (void)_configureWatchdogWithSeconds:(unint64_t)seconds;
+- (void)app:(id)app didFailToStartWithError:(id)error;
+- (void)app:(id)app prewarmWithContext:(id)context;
+- (void)appDidStart:(id)start;
+- (void)appDidStop:(id)stop;
 - (void)transitionToBootingAppState;
 - (void)transitionToEnqueuingNextUserAccountSetState;
 - (void)transitionToInvokingOnRequestCallbackState;
@@ -19,15 +19,15 @@
 
 @implementation VSUserAccountUpdateManager
 
-- (VSUserAccountUpdateManager)initWithUserAccountUpdateRequests:(id)a3
+- (VSUserAccountUpdateManager)initWithUserAccountUpdateRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v16.receiver = self;
   v16.super_class = VSUserAccountUpdateManager;
   v5 = [(VSUserAccountUpdateManager *)&v16 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB58] setWithArray:v4];
+    v6 = [MEMORY[0x277CBEB58] setWithArray:requestsCopy];
     updateRequests = v5->_updateRequests;
     v5->_updateRequests = v6;
 
@@ -72,11 +72,11 @@
 
 - (void)updateUserAccounts
 {
-  v3 = [(VSUserAccountUpdateManager *)self updateRequests];
-  v4 = [v3 count];
+  updateRequests = [(VSUserAccountUpdateManager *)self updateRequests];
+  v4 = [updateRequests count];
 
-  v5 = [(VSUserAccountUpdateManager *)self stateMachine];
-  v7 = v5;
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  v7 = stateMachine;
   if (v4)
   {
     v6 = @"Start";
@@ -87,50 +87,50 @@
     v6 = @"Done";
   }
 
-  [v5 enqueueEvent:v6];
+  [stateMachine enqueueEvent:v6];
 }
 
-- (id)_requestOptionsWithUserAccounts:(id)a3 callback:(id)a4
+- (id)_requestOptionsWithUserAccounts:(id)accounts callback:(id)callback
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  accountsCopy = accounts;
   v8 = objc_alloc_init(v5);
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v9 setObject:@"refreshAccounts" forKeyedSubscript:@"requestType"];
-  v10 = [VSJSUserAccount jsUserAccountsFromUserAccounts:v7];
+  v10 = [VSJSUserAccount jsUserAccountsFromUserAccounts:accountsCopy];
 
   [v9 setObject:v10 forKeyedSubscript:@"currentUserAccounts"];
   [v8 setObject:v9 forKeyedSubscript:@"request"];
-  [v8 setObject:v6 forKeyedSubscript:@"callback"];
+  [v8 setObject:callbackCopy forKeyedSubscript:@"callback"];
 
   return v8;
 }
 
-- (void)_configureWatchdogWithSeconds:(unint64_t)a3
+- (void)_configureWatchdogWithSeconds:(unint64_t)seconds
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(VSUserAccountUpdateManager *)self watchdog];
+  watchdog = [(VSUserAccountUpdateManager *)self watchdog];
   v6 = VSDefaultLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (seconds)
   {
     if (v7)
     {
       *buf = 134217984;
-      v13 = a3;
+      secondsCopy = seconds;
       _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Configuring watchdog timer for %lu seconds", buf, 0xCu);
     }
 
-    if (v5)
+    if (watchdog)
     {
-      dispatch_source_cancel(v5);
+      dispatch_source_cancel(watchdog);
       [(VSUserAccountUpdateManager *)self setWatchdog:0];
     }
 
     v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
 
-    v9 = dispatch_time(0, 1000000000 * a3);
+    v9 = dispatch_time(0, 1000000000 * seconds);
     dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
     objc_initWeak(buf, self);
     handler[0] = MEMORY[0x277D85DD0];
@@ -152,11 +152,11 @@
     _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Cancelling watchdog timer", buf, 2u);
   }
 
-  if (v5)
+  if (watchdog)
   {
-    dispatch_source_cancel(v5);
+    dispatch_source_cancel(watchdog);
     [(VSUserAccountUpdateManager *)self setWatchdog:0];
-    v8 = v5;
+    v8 = watchdog;
 LABEL_11:
   }
 }
@@ -184,68 +184,68 @@ void __60__VSUserAccountUpdateManager__configureWatchdogWithSeconds___block_invo
   v13 = *MEMORY[0x277D85DE8];
   [(VSUserAccountUpdateManager *)self setCurrentApp:0];
   [(VSUserAccountUpdateManager *)self setCurrentUpdateRequest:0];
-  v3 = [(VSUserAccountUpdateManager *)self updateRequests];
-  v4 = [v3 allObjects];
-  v5 = [v4 firstObject];
+  updateRequests = [(VSUserAccountUpdateManager *)self updateRequests];
+  allObjects = [updateRequests allObjects];
+  firstObject = [allObjects firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v6 = VSDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = firstObject;
       _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Enqueuing update request: %@", &v11, 0xCu);
     }
 
-    v7 = [(VSUserAccountUpdateManager *)self updateRequests];
-    [v7 removeObject:v5];
+    updateRequests2 = [(VSUserAccountUpdateManager *)self updateRequests];
+    [updateRequests2 removeObject:firstObject];
 
-    [(VSUserAccountUpdateManager *)self setCurrentUpdateRequest:v5];
-    v8 = [(VSUserAccountUpdateManager *)self stateMachine];
-    v9 = v8;
+    [(VSUserAccountUpdateManager *)self setCurrentUpdateRequest:firstObject];
+    stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+    v9 = stateMachine;
     v10 = @"Done";
   }
 
   else
   {
-    v8 = [(VSUserAccountUpdateManager *)self stateMachine];
-    v9 = v8;
+    stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+    v9 = stateMachine;
     v10 = @"Stop";
   }
 
-  [v8 enqueueEvent:v10];
+  [stateMachine enqueueEvent:v10];
 }
 
 - (void)transitionToBootingAppState
 {
-  v8 = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
-  v3 = [v8 userAccount];
-  v4 = [v3 updateURL];
+  currentUpdateRequest = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
+  userAccount = [currentUpdateRequest userAccount];
+  updateURL = [userAccount updateURL];
 
-  v5 = [[VSJSApp alloc] initWithScriptURL:v4];
-  v6 = [v8 userAccount];
-  -[VSJSApp setEnforceSystemTrust:](v5, "setEnforceSystemTrust:", [v6 requiresSystemTrust]);
+  v5 = [[VSJSApp alloc] initWithScriptURL:updateURL];
+  userAccount2 = [currentUpdateRequest userAccount];
+  -[VSJSApp setEnforceSystemTrust:](v5, "setEnforceSystemTrust:", [userAccount2 requiresSystemTrust]);
 
   [(VSUserAccountUpdateManager *)self setCurrentApp:v5];
   [(VSJSApp *)v5 setDelegate:self];
   [(VSJSApp *)v5 start];
-  v7 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v7 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
 - (void)transitionToInvokingOnRequestCallbackState
 {
-  v3 = [(VSUserAccountUpdateManager *)self currentApp];
+  currentApp = [(VSUserAccountUpdateManager *)self currentApp];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __72__VSUserAccountUpdateManager_transitionToInvokingOnRequestCallbackState__block_invoke;
   v5[3] = &unk_278B74160;
   v5[4] = self;
-  [v3 evaluateWithBlock:v5];
+  [currentApp evaluateWithBlock:v5];
 
-  v4 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v4 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 
   [(VSUserAccountUpdateManager *)self _configureWatchdogWithSeconds:30];
 }
@@ -361,63 +361,63 @@ void __72__VSUserAccountUpdateManager_transitionToInvokingOnRequestCallbackState
 
 - (void)transitionToStoppingAppState
 {
-  v3 = [(VSUserAccountUpdateManager *)self currentApp];
-  [v3 stop];
+  currentApp = [(VSUserAccountUpdateManager *)self currentApp];
+  [currentApp stop];
 
-  v4 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v4 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
 - (void)transitionToWaitingForAppStopState
 {
-  v2 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v2 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
 - (void)transitionToNotifyingForUserAccountSetState
 {
-  v5 = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
-  v3 = [(VSUserAccountUpdateManager *)self delegate];
-  [v3 updateManager:self updateRequestDidFinish:v5];
-  v4 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v4 enqueueEvent:@"Done"];
+  currentUpdateRequest = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
+  delegate = [(VSUserAccountUpdateManager *)self delegate];
+  [delegate updateManager:self updateRequestDidFinish:currentUpdateRequest];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
 - (void)transitionToNotifyingFinishState
 {
-  v3 = [(VSUserAccountUpdateManager *)self delegate];
-  [v3 updateManagerDidFinish:self];
+  delegate = [(VSUserAccountUpdateManager *)self delegate];
+  [delegate updateManagerDidFinish:self];
 
-  v4 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v4 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
-- (void)app:(id)a3 prewarmWithContext:(id)a4
+- (void)app:(id)app prewarmWithContext:(id)context
 {
-  v4 = [a4 objectForKeyedSubscript:@"App"];
+  v4 = [context objectForKeyedSubscript:@"App"];
   VSAssertWithMessage(v4 != 0, @"App object undefined");
   [v4 setObject:objc_opt_class() forKeyedSubscript:@"UserAccount"];
   [v4 setObject:objc_opt_class() forKeyedSubscript:@"AppleSubscription"];
   [v4 setObject:objc_opt_class() forKeyedSubscript:@"ResponsePayload"];
 }
 
-- (void)app:(id)a3 didFailToStartWithError:(id)a4
+- (void)app:(id)app didFailToStartWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = VSErrorLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [VSUserAccountUpdateManager app:v5 didFailToStartWithError:v6];
+    [VSUserAccountUpdateManager app:errorCopy didFailToStartWithError:v6];
   }
 
-  v7 = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
-  [v7 setUpdateError:v5];
+  currentUpdateRequest = [(VSUserAccountUpdateManager *)self currentUpdateRequest];
+  [currentUpdateRequest setUpdateError:errorCopy];
 
-  v8 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v8 enqueueEvent:@"Error"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Error"];
 }
 
-- (void)appDidStart:(id)a3
+- (void)appDidStart:(id)start
 {
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -426,11 +426,11 @@ void __72__VSUserAccountUpdateManager_transitionToInvokingOnRequestCallbackState
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "JS app did finish starting.", v6, 2u);
   }
 
-  v5 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v5 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
-- (void)appDidStop:(id)a3
+- (void)appDidStop:(id)stop
 {
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -439,8 +439,8 @@ void __72__VSUserAccountUpdateManager_transitionToInvokingOnRequestCallbackState
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "JS app did stop.", v6, 2u);
   }
 
-  v5 = [(VSUserAccountUpdateManager *)self stateMachine];
-  [v5 enqueueEvent:@"Done"];
+  stateMachine = [(VSUserAccountUpdateManager *)self stateMachine];
+  [stateMachine enqueueEvent:@"Done"];
 }
 
 - (VSUserAccountUpdateManagerDelegate)delegate

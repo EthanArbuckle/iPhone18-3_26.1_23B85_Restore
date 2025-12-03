@@ -1,16 +1,16 @@
 @interface SKUIEditorialLinkLayout
-- (CGSize)sizeForLinkAtIndex:(int64_t)a3;
+- (CGSize)sizeForLinkAtIndex:(int64_t)index;
 - (CGSize)totalSize;
-- (SKUIEditorialLinkLayout)initWithLayoutRequest:(id)a3;
+- (SKUIEditorialLinkLayout)initWithLayoutRequest:(id)request;
 - (void)dealloc;
-- (void)enumerateLinesUsingBlock:(id)a3;
+- (void)enumerateLinesUsingBlock:(id)block;
 @end
 
 @implementation SKUIEditorialLinkLayout
 
-- (SKUIEditorialLinkLayout)initWithLayoutRequest:(id)a3
+- (SKUIEditorialLinkLayout)initWithLayoutRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialLinkLayout initWithLayoutRequest:];
@@ -21,10 +21,10 @@
   v5 = [(SKUIEditorialLinkLayout *)&v43 init];
   if (v5)
   {
-    [v4 width];
+    [requestCopy width];
     v5->_totalSize.width = v6;
-    v7 = [v4 links];
-    v8 = [v7 copy];
+    links = [requestCopy links];
+    v8 = [links copy];
     links = v5->_links;
     v5->_links = v8;
 
@@ -41,8 +41,8 @@
         [v13 setObject:v14 forKey:*MEMORY[0x277D740A8]];
 
         v15 = SKUIBundle();
-        v16 = [MEMORY[0x277D75348] blackColor];
-        v17 = SKUILinkArrowImage(v15, v16);
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        v17 = SKUILinkArrowImage(v15, blackColor);
 
         [v17 size];
         v19 = v18;
@@ -53,8 +53,8 @@
         do
         {
           v25 = [(NSArray *)v5->_links objectAtIndex:v23];
-          v26 = [v25 title];
-          [v26 sizeWithAttributes:v13];
+          title = [v25 title];
+          [title sizeWithAttributes:v13];
           v28 = v27;
           v30 = v29;
 
@@ -118,11 +118,11 @@
   [(SKUIEditorialLinkLayout *)&v4 dealloc];
 }
 
-- (void)enumerateLinesUsingBlock:(id)a3
+- (void)enumerateLinesUsingBlock:(id)block
 {
-  v14 = a3;
+  blockCopy = block;
   v4 = [(NSArray *)self->_links count];
-  v6 = v14;
+  v6 = blockCopy;
   if (v4 >= 1)
   {
     v7 = 0;
@@ -138,14 +138,14 @@
       {
         if (v9)
         {
-          (v6)[2](v14, v8, v9, v7, v5);
-          v6 = v14;
+          (v6)[2](blockCopy, v8, v9, v7, v5);
+          v6 = blockCopy;
           ++v7;
           v8 = v10;
         }
 
-        (v6)[2](v14, v8, 1, v7, v5);
-        v6 = v14;
+        (v6)[2](blockCopy, v8, 1, v7, v5);
+        v6 = blockCopy;
         v9 = 0;
         ++v10;
         ++v7;
@@ -158,8 +158,8 @@
         v13 = v5.n128_f64[0] + width;
         if (v5.n128_f64[0] + width >= v12)
         {
-          (v6[2])(v14, v8, v10 - v8, v7);
-          v6 = v14;
+          (v6[2])(blockCopy, v8, v10 - v8, v7);
+          v6 = blockCopy;
           v9 = 0;
           v13 = self->_sizes[v10].width;
           ++v7;
@@ -174,8 +174,8 @@
         if (v10 == v4 - 1)
         {
           v9 = v4 - v8;
-          (v6[2])(v14, v8, v4 - v8, v7);
-          v6 = v14;
+          (v6[2])(blockCopy, v8, v4 - v8, v7);
+          v6 = blockCopy;
         }
 
         v5.n128_f64[0] = v13 + 15.0;
@@ -187,14 +187,14 @@
   }
 }
 
-- (CGSize)sizeForLinkAtIndex:(int64_t)a3
+- (CGSize)sizeForLinkAtIndex:(int64_t)index
 {
-  if (!self->_sizes || [(NSArray *)self->_links count]<= a3)
+  if (!self->_sizes || [(NSArray *)self->_links count]<= index)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid index: %ld", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid index: %ld", index}];
   }
 
-  v5 = &self->_sizes[a3];
+  v5 = &self->_sizes[index];
   width = v5->width;
   height = v5->height;
   result.height = height;

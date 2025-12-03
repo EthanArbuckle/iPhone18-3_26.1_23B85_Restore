@@ -1,17 +1,17 @@
 @interface CSActivityContentView
 - (CGSize)iconImageSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CSActivityContentViewDelegate)delegate;
 - (id)_buttonGroupName;
 @end
 
 @implementation CSActivityContentView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(CSActivityContentView *)self delegate:a3.width];
+  width = fits.width;
+  v5 = [(CSActivityContentView *)self delegate:fits.width];
   [v5 contentSizeForContentView:self];
   v7 = v6;
 
@@ -24,8 +24,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CSActivityContentView *)self delegate];
-  [v3 contentSizeForContentView:self];
+  delegate = [(CSActivityContentView *)self delegate];
+  [delegate contentSizeForContentView:self];
   v5 = v4;
   v7 = v6;
 

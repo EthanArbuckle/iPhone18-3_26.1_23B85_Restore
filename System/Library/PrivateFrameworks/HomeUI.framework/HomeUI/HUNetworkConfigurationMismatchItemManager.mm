@@ -1,73 +1,73 @@
 @interface HUNetworkConfigurationMismatchItemManager
-- (BOOL)isItemNetworkConfigurationItem:(id)a3;
-- (HUNetworkConfigurationMismatchItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUNetworkConfigurationMismatchItemManager)initWithProfiles:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)isItemNetworkConfigurationItem:(id)item;
+- (HUNetworkConfigurationMismatchItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUNetworkConfigurationMismatchItemManager)initWithProfiles:(id)profiles delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)networkConfigurationItemForProfile:(id)a3;
+- (id)networkConfigurationItemForProfile:(id)profile;
 @end
 
 @implementation HUNetworkConfigurationMismatchItemManager
 
-- (HUNetworkConfigurationMismatchItemManager)initWithProfiles:(id)a3 delegate:(id)a4
+- (HUNetworkConfigurationMismatchItemManager)initWithProfiles:(id)profiles delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count])
+  profilesCopy = profiles;
+  delegateCopy = delegate;
+  if (![profilesCopy count])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationMismatchItemManager.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"profiles.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationMismatchItemManager.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"profiles.count"}];
   }
 
   v17.receiver = self;
   v17.super_class = HUNetworkConfigurationMismatchItemManager;
-  v10 = [(HFItemManager *)&v17 initWithDelegate:v9 sourceItem:0];
+  v10 = [(HFItemManager *)&v17 initWithDelegate:delegateCopy sourceItem:0];
   if (v10)
   {
-    v11 = [v8 anyObject];
-    v12 = [v11 accessory];
-    v13 = [v12 home];
+    anyObject = [profilesCopy anyObject];
+    accessory = [anyObject accessory];
+    home = [accessory home];
     overrideHome = v10->_overrideHome;
-    v10->_overrideHome = v13;
+    v10->_overrideHome = home;
 
-    objc_storeStrong(&v10->_profiles, a3);
+    objc_storeStrong(&v10->_profiles, profiles);
   }
 
   return v10;
 }
 
-- (HUNetworkConfigurationMismatchItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUNetworkConfigurationMismatchItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithProfiles_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationMismatchItemManager.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationMismatchItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationMismatchItemManager.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationMismatchItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (BOOL)isItemNetworkConfigurationItem:(id)a3
+- (BOOL)isItemNetworkConfigurationItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  networkConfigurationItemProvider = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (id)networkConfigurationItemForProfile:(id)a3
+- (id)networkConfigurationItemForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
-  v6 = [v5 items];
+  profileCopy = profile;
+  networkConfigurationItemProvider = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__HUNetworkConfigurationMismatchItemManager_networkConfigurationItemForProfile___block_invoke;
   v10[3] = &unk_277DB85D8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = profileCopy;
+  v7 = profileCopy;
+  v8 = [items na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -97,22 +97,22 @@ uint64_t __80__HUNetworkConfigurationMismatchItemManager_networkConfigurationIte
   return v10;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D148A0]) initWithHome:v4];
+  homeCopy = home;
+  v5 = [objc_alloc(MEMORY[0x277D148A0]) initWithHome:homeCopy];
   [(HUNetworkConfigurationMismatchItemManager *)self setNetworkConfigurationItemProvider:v5];
 
   objc_initWeak(&location, self);
   v11 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v12, &location);
   v6 = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider:v11];
-  v7 = [v6 filterOptions];
-  [v7 setByFilter:&v11];
+  filterOptions = [v6 filterOptions];
+  [filterOptions setByFilter:&v11];
 
-  v8 = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
-  v14[0] = v8;
+  networkConfigurationItemProvider = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
+  v14[0] = networkConfigurationItemProvider;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
   objc_destroyWeak(&v12);
@@ -139,20 +139,20 @@ uint64_t __72__HUNetworkConfigurationMismatchItemManager__buildItemProvidersForH
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUNetworkRouterMismatchSectionIdentifier"];
-  v7 = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [MEMORY[0x277D14898] defaultItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
-  [v6 setItems:v11 filteringToDisplayedItems:v4];
+  networkConfigurationItemProvider = [(HUNetworkConfigurationMismatchItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14898] defaultItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
+  [v6 setItems:v11 filteringToDisplayedItems:itemsCopy];
 
   [v5 addObject:v6];
-  v12 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v12 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v12;
 }
@@ -160,8 +160,8 @@ uint64_t __72__HUNetworkConfigurationMismatchItemManager__buildItemProvidersForH
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUNetworkConfigurationMismatchItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUNetworkConfigurationMismatchItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }

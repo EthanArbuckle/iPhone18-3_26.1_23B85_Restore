@@ -1,10 +1,10 @@
 @interface ShareMenuItemManager
-- (void)didBecomeKeyWindowScene:(id)a3;
+- (void)didBecomeKeyWindowScene:(id)scene;
 @end
 
 @implementation ShareMenuItemManager
 
-- (void)didBecomeKeyWindowScene:(id)a3
+- (void)didBecomeKeyWindowScene:(id)scene
 {
   v3 = sub_220884A6C();
   v4 = *(v3 - 8);

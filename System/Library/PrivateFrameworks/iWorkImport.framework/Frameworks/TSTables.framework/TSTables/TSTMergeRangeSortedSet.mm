@@ -1,8 +1,8 @@
 @interface TSTMergeRangeSortedSet
 - (TSTMergeRangeSortedSet)init;
 - (id).cxx_construct;
-- (void)addRange:(TSUCellRect)a3 height:(double)a4 paddingInsets:(UIEdgeInsets)a5 isCheckbox:(BOOL)a6;
-- (void)enumerateMergeRangesUsingBlock:(id)a3;
+- (void)addRange:(TSUCellRect)range height:(double)height paddingInsets:(UIEdgeInsets)insets isCheckbox:(BOOL)checkbox;
+- (void)enumerateMergeRangesUsingBlock:(id)block;
 @end
 
 @implementation TSTMergeRangeSortedSet
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (void)addRange:(TSUCellRect)a3 height:(double)a4 paddingInsets:(UIEdgeInsets)a5 isCheckbox:(BOOL)a6
+- (void)addRange:(TSUCellRect)range height:(double)height paddingInsets:(UIEdgeInsets)insets isCheckbox:(BOOL)checkbox
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a3.size.numberOfColumns)
+  rangeCopy = range;
+  heightCopy = height;
+  insetsCopy = insets;
+  if (range.size.numberOfColumns)
   {
-    v7 = (*&a3.origin & 0xFFFF00000000) == 0x7FFF00000000;
+    v7 = (*&range.origin & 0xFFFF00000000) == 0x7FFF00000000;
   }
 
   else
@@ -36,16 +36,16 @@
     v7 = 1;
   }
 
-  v8 = (*&a3.origin + (*&a3.size << 32) + 0xFFFF00000000) & 0xFFFF00000000;
+  v8 = (*&range.origin + (*&range.size << 32) + 0xFFFF00000000) & 0xFFFF00000000;
   if (v7)
   {
     v8 = 0x7FFF00000000;
   }
 
   v9 = 0x7FFFFFFFLL;
-  if (a3.size.numberOfRows)
+  if (range.size.numberOfRows)
   {
-    v10 = a3.origin.row == 0x7FFFFFFF;
+    v10 = range.origin.row == 0x7FFFFFFF;
   }
 
   else
@@ -55,19 +55,19 @@
 
   if (!v10)
   {
-    v9 = a3.origin.row + a3.size.numberOfRows - 1;
+    v9 = range.origin.row + range.size.numberOfRows - 1;
   }
 
   v14 = v8 | v9;
-  v15 = a6;
+  checkboxCopy = checkbox;
   os_unfair_lock_lock(&self->_lock);
-  sub_22141ED50(&self->_set, &v11);
+  sub_22141ED50(&self->_set, &rangeCopy);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)enumerateMergeRangesUsingBlock:(id)a3
+- (void)enumerateMergeRangesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   begin_node = self->_set.__tree_.__begin_node_;
   p_end_node = &self->_set.__tree_.__end_node_;
@@ -75,7 +75,7 @@
   {
     do
     {
-      v4[2](v4, begin_node[4].__left_, begin_node[5].__left_, begin_node[12].__left_ & 1, &v10, *&begin_node[6].__left_, *&begin_node[7].__left_, *&begin_node[8].__left_, *&begin_node[9].__left_, *&begin_node[10].__left_);
+      blockCopy[2](blockCopy, begin_node[4].__left_, begin_node[5].__left_, begin_node[12].__left_ & 1, &v10, *&begin_node[6].__left_, *&begin_node[7].__left_, *&begin_node[8].__left_, *&begin_node[9].__left_, *&begin_node[10].__left_);
       if (v10)
       {
         break;

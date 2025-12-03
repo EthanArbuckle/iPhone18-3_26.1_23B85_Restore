@@ -1,33 +1,33 @@
 @interface NTKBezierPathPointModel
-- (CGPoint)_computePointOnPathForHorizontalPercentage:(double)a3;
-- (CGPoint)pointOnPathForHorizontalPercentage:(double)a3;
-- (CGPoint)pointOnPathForHorizontalPercentage:(double)a3 withEndPadding:(double)a4;
-- (NTKBezierPathPointModel)initWithPath:(id)a3;
-- (double)_computeDistanceBetweenPointA:(CGPoint)a3 andPointB:(CGPoint)a4;
-- (double)_estimatePercentageForEndPadding:(double)a3;
+- (CGPoint)_computePointOnPathForHorizontalPercentage:(double)percentage;
+- (CGPoint)pointOnPathForHorizontalPercentage:(double)percentage;
+- (CGPoint)pointOnPathForHorizontalPercentage:(double)percentage withEndPadding:(double)padding;
+- (NTKBezierPathPointModel)initWithPath:(id)path;
+- (double)_computeDistanceBetweenPointA:(CGPoint)a andPointB:(CGPoint)b;
+- (double)_estimatePercentageForEndPadding:(double)padding;
 - (id)_buildHorizontalPercentageCache;
 @end
 
 @implementation NTKBezierPathPointModel
 
-- (NTKBezierPathPointModel)initWithPath:(id)a3
+- (NTKBezierPathPointModel)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = NTKBezierPathPointModel;
   v6 = [(NTKBezierPathPointModel *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_path, path);
+    array = [MEMORY[0x277CBEB18] array];
     pathElements = v7->_pathElements;
-    v7->_pathElements = v8;
+    v7->_pathElements = array;
 
-    CGPathApply([v5 CGPath], v7->_pathElements, NTKBuildPathElement);
-    v10 = [(NTKBezierPathPointModel *)v7 _buildHorizontalPercentageCache];
+    CGPathApply([pathCopy CGPath], v7->_pathElements, NTKBuildPathElement);
+    _buildHorizontalPercentageCache = [(NTKBezierPathPointModel *)v7 _buildHorizontalPercentageCache];
     horizontalPercentageCache = v7->_horizontalPercentageCache;
-    v7->_horizontalPercentageCache = v10;
+    v7->_horizontalPercentageCache = _buildHorizontalPercentageCache;
 
     v12 = v7;
   }
@@ -35,31 +35,31 @@
   return v7;
 }
 
-- (CGPoint)pointOnPathForHorizontalPercentage:(double)a3
+- (CGPoint)pointOnPathForHorizontalPercentage:(double)percentage
 {
-  [(NTKBezierPathPointModel *)self pointOnPathForHorizontalPercentage:a3 withEndPadding:0.0];
+  [(NTKBezierPathPointModel *)self pointOnPathForHorizontalPercentage:percentage withEndPadding:0.0];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)pointOnPathForHorizontalPercentage:(double)a3 withEndPadding:(double)a4
+- (CGPoint)pointOnPathForHorizontalPercentage:(double)percentage withEndPadding:(double)padding
 {
-  [(NTKBezierPathPointModel *)self _estimatePercentageForEndPadding:a4];
-  v7 = 1.0 - v6;
-  if (v6 < a3)
+  [(NTKBezierPathPointModel *)self _estimatePercentageForEndPadding:padding];
+  v7 = 1.0 - percentageCopy;
+  if (percentageCopy < percentage)
   {
-    v6 = a3;
+    percentageCopy = percentage;
   }
 
-  if (v7 <= v6)
+  if (v7 <= percentageCopy)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = v6;
+    v8 = percentageCopy;
   }
 
   v9 = floor(v8 * 100.0);
@@ -90,12 +90,12 @@
   {
     [v12 floatValue];
     [v15 floatValue];
-    v17 = [(NTKBezierPathPointModel *)self path];
-    [v17 bounds];
+    path = [(NTKBezierPathPointModel *)self path];
+    [path bounds];
     CGRectGetWidth(v26);
 
-    v18 = [(NTKBezierPathPointModel *)self path];
-    [v18 bounds];
+    path2 = [(NTKBezierPathPointModel *)self path];
+    [path2 bounds];
     CGRectGetWidth(v27);
 
     CLKInterpolateBetweenPoints();
@@ -113,25 +113,25 @@
 
 - (id)_buildHorizontalPercentageCache
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   for (i = 0; i != 101; ++i)
   {
     [(NTKBezierPathPointModel *)self _computePointOnPathForHorizontalPercentage:i * 0.01];
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
-    [v3 setObject:v6 forKeyedSubscript:v7];
+    [dictionary setObject:v6 forKeyedSubscript:v7];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (CGPoint)_computePointOnPathForHorizontalPercentage:(double)a3
+- (CGPoint)_computePointOnPathForHorizontalPercentage:(double)percentage
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = 0.0;
-  v5 = fmin(fmax(a3, 0.0), 1.0);
-  v6 = [(NTKBezierPathPointModel *)self path];
-  [v6 bounds];
+  v5 = fmin(fmax(percentage, 0.0), 1.0);
+  path = [(NTKBezierPathPointModel *)self path];
+  [path bounds];
   v7 = v5 * CGRectGetWidth(v27);
 
   v22 = 0u;
@@ -190,13 +190,13 @@ LABEL_13:
   return result;
 }
 
-- (double)_estimatePercentageForEndPadding:(double)a3
+- (double)_estimatePercentageForEndPadding:(double)padding
 {
   v5 = [(NSDictionary *)self->_horizontalPercentageCache objectForKeyedSubscript:&unk_284182B18];
   [v5 floatValue];
   v7 = v6;
-  v8 = [(NTKBezierPathPointModel *)self path];
-  [v8 bounds];
+  path = [(NTKBezierPathPointModel *)self path];
+  [path bounds];
   Width = CGRectGetWidth(v22);
 
   v9 = 0;
@@ -211,7 +211,7 @@ LABEL_13:
     [v13 floatValue];
     [(NTKBezierPathPointModel *)self _computeDistanceBetweenPointA:Width * v9 * v20 andPointB:v14, 0.0, v7];
     v16 = v15;
-    if (v10 <= a3 && v15 >= a3)
+    if (v10 <= padding && v15 >= padding)
     {
       break;
     }
@@ -232,10 +232,10 @@ LABEL_7:
   return v17;
 }
 
-- (double)_computeDistanceBetweenPointA:(CGPoint)a3 andPointB:(CGPoint)a4
+- (double)_computeDistanceBetweenPointA:(CGPoint)a andPointB:(CGPoint)b
 {
-  v4 = a3.x - a4.x;
-  v5 = a3.y - a4.y;
+  v4 = a.x - b.x;
+  v5 = a.y - b.y;
   return hypotf(v4, v5);
 }
 

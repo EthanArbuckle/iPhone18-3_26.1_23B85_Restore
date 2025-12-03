@@ -1,7 +1,7 @@
 @interface CASDFElementLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)hitTestsAsFill;
 - (NSString)mode;
 - (NSString)operation;
@@ -9,14 +9,14 @@
 - (double)contentsZeroValueDistance;
 - (double)gradientOvalization;
 - (unsigned)_renderImageCopyFlags;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setContentsOneValueDistance:(double)a3;
-- (void)setContentsZeroValueDistance:(double)a3;
-- (void)setGradientOvalization:(double)a3;
-- (void)setHitTestsAsFill:(BOOL)a3;
-- (void)setMode:(id)a3;
-- (void)setOperation:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)setContentsOneValueDistance:(double)distance;
+- (void)setContentsZeroValueDistance:(double)distance;
+- (void)setGradientOvalization:(double)ovalization;
+- (void)setHitTestsAsFill:(BOOL)fill;
+- (void)setMode:(id)mode;
+- (void)setOperation:(id)operation;
 @end
 
 @implementation CASDFElementLayer
@@ -77,68 +77,68 @@
   return [(CALayer *)&v3 _renderImageCopyFlags]| 0x408;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASDFElementLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setHitTestsAsFill:(BOOL)a3
+- (void)setHitTestsAsFill:(BOOL)fill
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x12D, 6, &v3);
+  fillCopy = fill;
+  CA::Layer::setter(self->super._attr.layer, 0x12D, 6, &fillCopy);
 }
 
-- (void)setGradientOvalization:(double)a3
+- (void)setGradientOvalization:(double)ovalization
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = ovalization;
   CA::Layer::setter(self->super._attr.layer, 0x120, 0x12, v3);
 }
 
-- (void)setContentsOneValueDistance:(double)a3
+- (void)setContentsOneValueDistance:(double)distance
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = distance;
   CA::Layer::setter(self->super._attr.layer, 0x94, 0x12, v3);
 }
 
-- (void)setContentsZeroValueDistance:(double)a3
+- (void)setContentsZeroValueDistance:(double)distance
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = distance;
   CA::Layer::setter(self->super._attr.layer, 0x9B, 0x12, v3);
 }
 
-- (void)setOperation:(id)a3
+- (void)setOperation:(id)operation
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = operation;
   CA::Layer::setter(self->super._attr.layer, 0x21E, 3, v3);
 }
 
-- (void)setMode:(id)a3
+- (void)setMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->super._attr.layer, 0x20A, 3, v3);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = CASDFElementLayer;
-  v7 = [(CALayer *)&v18 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v18 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
@@ -159,15 +159,15 @@
     v8[6] = 1065353216;
   }
 
-  v10 = [(CASDFElementLayer *)self mode];
-  if ([(NSString *)v10 isEqualToString:@"bounds"])
+  mode = [(CASDFElementLayer *)self mode];
+  if ([(NSString *)mode isEqualToString:@"bounds"])
   {
     v11 = 0;
   }
 
   else
   {
-    if (![(NSString *)v10 isEqualToString:@"contents"])
+    if (![(NSString *)mode isEqualToString:@"contents"])
     {
       goto LABEL_12;
     }
@@ -177,15 +177,15 @@
 
   *(v9 + 16) = v11;
 LABEL_12:
-  v12 = [(CASDFElementLayer *)self operation];
-  if ([(NSString *)v12 isEqualToString:@"union"])
+  operation = [(CASDFElementLayer *)self operation];
+  if ([(NSString *)operation isEqualToString:@"union"])
   {
     v13 = 0;
   }
 
   else
   {
-    if (![(NSString *)v12 isEqualToString:@"subtraction"])
+    if (![(NSString *)operation isEqualToString:@"subtraction"])
     {
       goto LABEL_17;
     }
@@ -214,11 +214,11 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while ([CASDFElementLayer _renderLayerDefinesProperty:]::atoms[v3] != a3)
+  while ([CASDFElementLayer _renderLayerDefinesProperty:]::atoms[v3] != property)
   {
     if (++v3 == 6)
     {
@@ -231,10 +231,10 @@ LABEL_17:
   return 1;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = 0;
   while (v5 != [CASDFElementLayer didChangeValueForKey:]::atoms[v6])
   {
@@ -249,40 +249,40 @@ LABEL_17:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = CASDFElementLayer;
-  [(CASDFElementLayer *)&v8 didChangeValueForKey:a3];
+  [(CASDFElementLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"operation"])
+  if ([key isEqualToString:@"operation"])
   {
     return @"union";
   }
 
-  if ([a3 isEqualToString:@"mode"])
+  if ([key isEqualToString:@"mode"])
   {
     return @"bounds";
   }
 
-  if ([a3 isEqualToString:@"contentsZeroValueDistance"])
+  if ([key isEqualToString:@"contentsZeroValueDistance"])
   {
     return &unk_1EF22B820;
   }
 
-  if ([a3 isEqualToString:@"contentsOneValueDistance"])
+  if ([key isEqualToString:@"contentsOneValueDistance"])
   {
     return &unk_1EF22B830;
   }
 
-  if ([a3 isEqualToString:@"gradientOvalization"])
+  if ([key isEqualToString:@"gradientOvalization"])
   {
     return &unk_1EF22B820;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASDFElementLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 @end

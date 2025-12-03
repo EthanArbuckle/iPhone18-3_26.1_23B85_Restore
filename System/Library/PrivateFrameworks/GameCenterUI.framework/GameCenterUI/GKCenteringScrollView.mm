@@ -43,14 +43,14 @@
     [(GKCenteringScrollView *)self contentSize];
     v22 = v21;
     v24 = v23;
-    v25 = [(GKCenteringScrollView *)self contentView];
-    [v25 frame];
+    contentView = [(GKCenteringScrollView *)self contentView];
+    [contentView frame];
     v27 = v26;
 
     if (v22 > v27)
     {
-      v28 = [(GKCenteringScrollView *)self contentView];
-      [v28 frame];
+      contentView2 = [(GKCenteringScrollView *)self contentView];
+      [contentView2 frame];
       v30 = v29;
 
       [(GKCenteringScrollView *)self setContentSize:v30, v24];

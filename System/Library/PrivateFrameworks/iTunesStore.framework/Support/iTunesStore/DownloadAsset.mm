@@ -1,9 +1,9 @@
 @interface DownloadAsset
-- (DownloadAsset)initWithClientXPCAsset:(id)a3;
-- (DownloadAsset)initWithExternalManifestDictionary:(id)a3 validateVariants:(BOOL)a4;
-- (DownloadAsset)initWithURLRequestProperties:(id)a3;
+- (DownloadAsset)initWithClientXPCAsset:(id)asset;
+- (DownloadAsset)initWithExternalManifestDictionary:(id)dictionary validateVariants:(BOOL)variants;
+- (DownloadAsset)initWithURLRequestProperties:(id)properties;
 - (id)copyJobAsset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -80,14 +80,14 @@
   return v3;
 }
 
-- (DownloadAsset)initWithClientXPCAsset:(id)a3
+- (DownloadAsset)initWithClientXPCAsset:(id)asset
 {
   v14.receiver = self;
   v14.super_class = DownloadAsset;
   v4 = [(DownloadAsset *)&v14 init];
   if (v4)
   {
-    [(DownloadAsset *)v4 setDatabaseID:xpc_dictionary_get_int64(a3, "0")];
+    [(DownloadAsset *)v4 setDatabaseID:xpc_dictionary_get_int64(asset, "0")];
     objc_opt_class();
     v5 = SSXPCDictionaryCopyCFObjectWithClass();
     if (v5)
@@ -97,7 +97,7 @@
       [(DownloadAsset *)v4 setValuesWithDictionary:v7];
     }
 
-    v8 = [[SSURLRequestProperties alloc] initWithXPCEncoding:{xpc_dictionary_get_value(a3, "2")}];
+    v8 = [[SSURLRequestProperties alloc] initWithXPCEncoding:{xpc_dictionary_get_value(asset, "2")}];
     if (v8)
     {
       v9 = v8;
@@ -117,9 +117,9 @@
   return v4;
 }
 
-- (DownloadAsset)initWithExternalManifestDictionary:(id)a3 validateVariants:(BOOL)a4
+- (DownloadAsset)initWithExternalManifestDictionary:(id)dictionary validateVariants:(BOOL)variants
 {
-  v4 = a4;
+  variantsCopy = variants;
   v33.receiver = self;
   v33.super_class = DownloadAsset;
   result = [(DownloadAsset *)&v33 init];
@@ -129,7 +129,7 @@
   }
 
   v7 = result;
-  v8 = [a3 objectForKey:@"kind"];
+  v8 = [dictionary objectForKey:@"kind"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -178,7 +178,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  v11 = [a3 objectForKey:@"url"];
+  v11 = [dictionary objectForKey:@"url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -209,7 +209,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v14 = [a3 objectForKey:@"variantIds"];
+  v14 = [dictionary objectForKey:@"variantIds"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -244,7 +244,7 @@ LABEL_23:
   result = 0;
   if (v10 && v11)
   {
-    v17 = v15 | !v4;
+    v17 = v15 | !variantsCopy;
     if (((v17 | v16) & 1) == 0)
     {
       return 0;
@@ -258,7 +258,7 @@ LABEL_23:
       [(DownloadAsset *)v7 setValue:v13 forProperty:@"variant_id"];
     }
 
-    v18 = [a3 objectForKey:@"md5"];
+    v18 = [dictionary objectForKey:@"md5"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -272,8 +272,8 @@ LABEL_23:
 
     else
     {
-      v19 = [a3 objectForKey:@"md5s"];
-      v20 = [a3 objectForKey:@"md5-size"];
+      v19 = [dictionary objectForKey:@"md5s"];
+      v20 = [dictionary objectForKey:@"md5-size"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -351,25 +351,25 @@ LABEL_23:
   return result;
 }
 
-- (DownloadAsset)initWithURLRequestProperties:(id)a3
+- (DownloadAsset)initWithURLRequestProperties:(id)properties
 {
   v7.receiver = self;
   v7.super_class = DownloadAsset;
   v4 = [(DownloadAsset *)&v7 init];
   if (v4)
   {
-    v5 = [DownloadAssetEntity copyDatabaseDictionaryWithRequestProperties:a3];
+    v5 = [DownloadAssetEntity copyDatabaseDictionaryWithRequestProperties:properties];
     [(DownloadAsset *)v4 setValuesWithDictionary:v5];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = DownloadAsset;
-  return [(DownloadAsset *)&v4 copyWithZone:a3];
+  return [(DownloadAsset *)&v4 copyWithZone:zone];
 }
 
 - (id)description

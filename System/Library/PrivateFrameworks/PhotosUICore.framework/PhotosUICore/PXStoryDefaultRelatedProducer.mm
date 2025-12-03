@@ -1,37 +1,37 @@
 @interface PXStoryDefaultRelatedProducer
-+ (id)_relatedResultFromUpNextResult:(id)a3 error:(id)a4;
-+ (id)_requestForConfiguration:(id)a3 targetUpNextMemoryCount:(unint64_t)a4 musicCurationParameters:(id)a5 error:(id *)a6;
-- (PXStoryDefaultRelatedProducer)initWithTargetUpNextCount:(unint64_t)a3;
-- (id)requestConfigurationsRelatedToConfiguration:(id)a3 withOptions:(unint64_t)a4 musicCurationParameters:(id)a5 resultHandler:(id)a6;
++ (id)_relatedResultFromUpNextResult:(id)result error:(id)error;
++ (id)_requestForConfiguration:(id)configuration targetUpNextMemoryCount:(unint64_t)count musicCurationParameters:(id)parameters error:(id *)error;
+- (PXStoryDefaultRelatedProducer)initWithTargetUpNextCount:(unint64_t)count;
+- (id)requestConfigurationsRelatedToConfiguration:(id)configuration withOptions:(unint64_t)options musicCurationParameters:(id)parameters resultHandler:(id)handler;
 @end
 
 @implementation PXStoryDefaultRelatedProducer
 
-- (id)requestConfigurationsRelatedToConfiguration:(id)a3 withOptions:(unint64_t)a4 musicCurationParameters:(id)a5 resultHandler:(id)a6
+- (id)requestConfigurationsRelatedToConfiguration:(id)configuration withOptions:(unint64_t)options musicCurationParameters:(id)parameters resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
-  v14 = [(PXStoryDefaultRelatedProducer *)self activeRequests];
-  v15 = [(PXStoryDefaultRelatedProducer *)self workQueue];
+  activeRequests = [(PXStoryDefaultRelatedProducer *)self activeRequests];
+  workQueue = [(PXStoryDefaultRelatedProducer *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfiguration_withOptions_musicCurationParameters_resultHandler___block_invoke;
   block[3] = &unk_1E7748800;
   v16 = v13;
   v25 = v16;
-  v26 = v10;
-  v27 = self;
-  v28 = v11;
-  v30 = v12;
-  v31 = a4;
-  v29 = v14;
-  v17 = v12;
-  v18 = v14;
-  v19 = v11;
-  v20 = v10;
-  dispatch_async(v15, block);
+  v26 = configurationCopy;
+  selfCopy = self;
+  v28 = parametersCopy;
+  v30 = handlerCopy;
+  optionsCopy = options;
+  v29 = activeRequests;
+  v17 = handlerCopy;
+  v18 = activeRequests;
+  v19 = parametersCopy;
+  v20 = configurationCopy;
+  dispatch_async(workQueue, block);
 
   v21 = v30;
   v22 = v16;
@@ -101,7 +101,7 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
   [*(a1 + 32) removeObject:*(a1 + 40)];
 }
 
-- (PXStoryDefaultRelatedProducer)initWithTargetUpNextCount:(unint64_t)a3
+- (PXStoryDefaultRelatedProducer)initWithTargetUpNextCount:(unint64_t)count
 {
   v16.receiver = self;
   v16.super_class = PXStoryDefaultRelatedProducer;
@@ -109,13 +109,13 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
   v5 = v4;
   if (v4)
   {
-    v4->_targetUpNextCount = a3;
+    v4->_targetUpNextCount = count;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_USER_INITIATED, 0);
-    v11 = dispatch_queue_create(v8, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     workQueue = v5->_workQueue;
     v5->_workQueue = v11;
 
@@ -127,16 +127,16 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
   return v5;
 }
 
-+ (id)_relatedResultFromUpNextResult:(id)a3 error:(id)a4
++ (id)_relatedResultFromUpNextResult:(id)result error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  resultCopy = result;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (resultCopy)
   {
-    v23 = v6;
-    v8 = [v5 memories];
-    v9 = [(PXStoryProducerResult *)v8 count];
+    v23 = errorCopy;
+    memories = [resultCopy memories];
+    v9 = [(PXStoryProducerResult *)memories count];
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
     if (v9 >= 1)
     {
@@ -144,7 +144,7 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
       {
         v12 = [PXStoryRelatedLayoutGenerator isExpectedKeyItemAtIndex:i];
         v13 = [PXStoryConfiguration alloc];
-        v14 = [(PXStoryProducerResult *)v8 objectAtIndexedSubscript:i];
+        v14 = [(PXStoryProducerResult *)memories objectAtIndexedSubscript:i];
         v15 = [(PXStoryConfiguration *)v13 initWithAssetCollection:v14];
 
         [(PXStoryConfiguration *)v15 setLaunchType:@"UpNext"];
@@ -165,8 +165,8 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
     }
 
     v18 = [PXStoryRelatedResult alloc];
-    v19 = [v5 debugInfo];
-    v20 = [(PXStoryRelatedResult *)v18 initWithStoryConfigurations:v10 debugInfo:v19];
+    debugInfo = [resultCopy debugInfo];
+    v20 = [(PXStoryRelatedResult *)v18 initWithStoryConfigurations:v10 debugInfo:debugInfo];
 
     v21 = [[PXStoryProducerResult alloc] initWithObject:v20];
     v7 = v23;
@@ -174,56 +174,56 @@ void __127__PXStoryDefaultRelatedProducer_requestConfigurationsRelatedToConfigur
 
   else
   {
-    v8 = objc_alloc_init(PXStoryProducerResult);
-    v21 = [(PXStoryProducerResult *)v8 error:v7];
+    memories = objc_alloc_init(PXStoryProducerResult);
+    v21 = [(PXStoryProducerResult *)memories error:v7];
   }
 
   return v21;
 }
 
-+ (id)_requestForConfiguration:(id)a3 targetUpNextMemoryCount:(unint64_t)a4 musicCurationParameters:(id)a5 error:(id *)a6
++ (id)_requestForConfiguration:(id)configuration targetUpNextMemoryCount:(unint64_t)count musicCurationParameters:(id)parameters error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 assetCollection];
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  assetCollection = [configurationCopy assetCollection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = a4;
-    v12 = v11;
+    countCopy = count;
+    v12 = assetCollection;
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v14 = [v9 parentConfiguration];
-    if (v14)
+    parentConfiguration = [configurationCopy parentConfiguration];
+    if (parentConfiguration)
     {
-      v15 = v14;
+      v15 = parentConfiguration;
       do
       {
-        v16 = [v15 assetCollection];
+        assetCollection2 = [v15 assetCollection];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 localIdentifier];
-          [v13 addObject:v17];
+          localIdentifier = [assetCollection2 localIdentifier];
+          [v13 addObject:localIdentifier];
         }
 
-        v18 = [v15 parentConfiguration];
+        parentConfiguration2 = [v15 parentConfiguration];
 
-        v15 = v18;
+        v15 = parentConfiguration2;
       }
 
-      while (v18);
+      while (parentConfiguration2);
     }
 
-    v19 = [[PXUpNextMemoriesGenerationRequest alloc] initWithRootMemory:v12 avoidMemoriesWithLocalIdentifiers:v13 targetUpNextMemoryCount:v22 musicCurationParameters:v10];
+    v19 = [[PXUpNextMemoriesGenerationRequest alloc] initWithRootMemory:v12 avoidMemoriesWithLocalIdentifiers:v13 targetUpNextMemoryCount:countCopy musicCurationParameters:parametersCopy];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    *a6 = 0;
+    *error = 0;
     goto LABEL_13;
   }
 
@@ -231,12 +231,12 @@ LABEL_12:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v11;
+    v24 = assetCollection;
     _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_INFO, "cannot produce related because asset collection isn't a PHMemory: %@", buf, 0xCu);
   }
 
   v19 = 0;
-  if (a6)
+  if (error)
   {
     goto LABEL_12;
   }

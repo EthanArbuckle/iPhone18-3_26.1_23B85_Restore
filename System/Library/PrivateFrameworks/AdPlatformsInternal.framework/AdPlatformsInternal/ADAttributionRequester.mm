@@ -1,28 +1,28 @@
 @interface ADAttributionRequester
-- (ADAttributionRequester)initWithConnection:(id)a3 bundleID:(id)a4 transactionID:(id)a5;
+- (ADAttributionRequester)initWithConnection:(id)connection bundleID:(id)d transactionID:(id)iD;
 - (BOOL)_isAppTrackingAuthorized;
-- (void)beginAttributionRequest:(id)a3 reason:(id)a4 completionHandler:(id)a5;
-- (void)requestAttributionDetails:(id)a3;
-- (void)requestAttributionDetailsWithBlock:(id)a3;
-- (void)setServerToTest:(int64_t)a3;
+- (void)beginAttributionRequest:(id)request reason:(id)reason completionHandler:(id)handler;
+- (void)requestAttributionDetails:(id)details;
+- (void)requestAttributionDetailsWithBlock:(id)block;
+- (void)setServerToTest:(int64_t)test;
 @end
 
 @implementation ADAttributionRequester
 
-- (ADAttributionRequester)initWithConnection:(id)a3 bundleID:(id)a4 transactionID:(id)a5
+- (ADAttributionRequester)initWithConnection:(id)connection bundleID:(id)d transactionID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  dCopy = d;
+  iDCopy = iD;
   v23.receiver = self;
   v23.super_class = ADAttributionRequester;
   v12 = [(ADAttributionRequester *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleID, a4);
-    objc_storeStrong(&v13->_transactionToken, a5);
-    objc_storeStrong(&v13->_connection, a3);
+    objc_storeStrong(&v12->_bundleID, d);
+    objc_storeStrong(&v13->_transactionToken, iD);
+    objc_storeStrong(&v13->_connection, connection);
     [(NSXPCConnection *)v13->_connection setExportedObject:v13];
     v14 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28510E9E0];
     [(NSXPCConnection *)v13->_connection setExportedInterface:v14];
@@ -96,11 +96,11 @@ void __68__ADAttributionRequester_initWithConnection_bundleID_transactionID___bl
 - (BOOL)_isAppTrackingAuthorized
 {
   v2 = *MEMORY[0x277D6C238];
-  v3 = [(ADAttributionRequester *)self connection];
-  v4 = v3;
-  if (v3)
+  connection = [(ADAttributionRequester *)self connection];
+  v4 = connection;
+  if (connection)
   {
-    [v3 auditToken];
+    [connection auditToken];
   }
 
   v5 = TCCAccessPreflightWithAuditToken();
@@ -108,21 +108,21 @@ void __68__ADAttributionRequester_initWithConnection_bundleID_transactionID___bl
   return v5 == 0;
 }
 
-- (void)requestAttributionDetails:(id)a3
+- (void)requestAttributionDetails:(id)details
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CE9638] sharedInstance];
-  v6 = [v5 isAccountRestricted];
+  detailsCopy = details;
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  isAccountRestricted = [mEMORY[0x277CE9638] isAccountRestricted];
 
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  v8 = [v7 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v8 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
 
-  if ((v6 & 1) != 0 || v8)
+  if ((isAccountRestricted & 1) != 0 || v8)
   {
     v24 = *MEMORY[0x277CCA450];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"The app is not authorized for ad tracking" value:&stru_28510D178 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle localizedStringForKey:@"The app is not authorized for ad tracking" value:&stru_28510D178 table:0];
     v25[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
@@ -135,22 +135,22 @@ void __68__ADAttributionRequester_initWithConnection_bundleID_transactionID___bl
   {
     if ([(ADAttributionRequester *)self _isAppTrackingAuthorized])
     {
-      if (v4)
+      if (detailsCopy)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = [&unk_28510DAD0 AD_jsonString];
-        v11 = [v9 stringWithFormat:@"Sanitized attribution response: %@", v10];
+        aD_jsonString = [&unk_28510DAD0 AD_jsonString];
+        v11 = [v9 stringWithFormat:@"Sanitized attribution response: %@", aD_jsonString];
         _ADLog();
 
-        v4[2](v4, &unk_28510DAD0, 0);
+        detailsCopy[2](detailsCopy, &unk_28510DAD0, 0);
       }
 
       goto LABEL_11;
     }
 
     v22 = *MEMORY[0x277CCA450];
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 localizedStringForKey:@"The app is not authorized for ad tracking" value:&stru_28510D178 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle2 localizedStringForKey:@"The app is not authorized for ad tracking" value:&stru_28510D178 table:0];
     v23 = v19;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
@@ -162,31 +162,31 @@ void __68__ADAttributionRequester_initWithConnection_bundleID_transactionID___bl
   v20 = [v16 stringWithFormat:v17];
   _ADLog();
 
-  if (v4)
+  if (detailsCopy)
   {
-    (v4)[2](v4, 0, v15);
+    (detailsCopy)[2](detailsCopy, 0, v15);
   }
 
 LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginAttributionRequest:(id)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)beginAttributionRequest:(id)request reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__ADAttributionRequester_beginAttributionRequest_reason_completionHandler___block_invoke;
   v14[3] = &unk_278C5A6B8;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = requestCopy;
+  v16 = reasonCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = reasonCopy;
+  v12 = handlerCopy;
+  v13 = requestCopy;
   [(ADAttributionRequester *)self requestAttributionDetails:v14];
 }
 
@@ -210,26 +210,26 @@ void __75__ADAttributionRequester_beginAttributionRequest_reason_completionHandl
   [v9 removeClientForToken:v10];
 }
 
-- (void)requestAttributionDetailsWithBlock:(id)a3
+- (void)requestAttributionDetailsWithBlock:(id)block
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Handling Attribution Request."];
   _ADLog();
 
   v17 = @"AttributingBundleID";
-  v6 = [(ADAttributionRequester *)self bundleID];
-  v18[0] = v6;
+  bundleID = [(ADAttributionRequester *)self bundleID];
+  v18[0] = bundleID;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   AnalyticsSendEvent();
 
-  if (v4)
+  if (blockCopy)
   {
     takeXPCTransaction();
-    v8 = [MEMORY[0x277CE96E8] sharedInstance];
-    v9 = [v8 createNewWatchdog:@"Attribution Request in progress" withTimer:1800];
+    mEMORY[0x277CE96E8] = [MEMORY[0x277CE96E8] sharedInstance];
+    v9 = [mEMORY[0x277CE96E8] createNewWatchdog:@"Attribution Request in progress" withTimer:1800];
 
-    v10 = [MEMORY[0x277CE96B8] workQueue];
+    workQueue = [MEMORY[0x277CE96B8] workQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__ADAttributionRequester_requestAttributionDetailsWithBlock___block_invoke;
@@ -237,9 +237,9 @@ void __75__ADAttributionRequester_beginAttributionRequest_reason_completionHandl
     v13[4] = self;
     v14 = v9;
     v15 = @"com.apple.adprivacyd Attribution Request in Progress";
-    v16 = v4;
+    v16 = blockCopy;
     v11 = v9;
-    [v10 addOperationWithBlock:v13];
+    [workQueue addOperationWithBlock:v13];
   }
 
   else
@@ -329,20 +329,20 @@ void __45__ADAttributionRequester_setStocksAdEnabled___block_invoke()
   _ADLog();
 }
 
-- (void)setServerToTest:(int64_t)a3
+- (void)setServerToTest:(int64_t)test
 {
   v4 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.private.iad.news-client"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Received request to change AdServer environment."];
     _ADLog();
 
-    v7 = [MEMORY[0x277CE9630] sharedInstance];
-    v8 = v7;
-    v9 = a3 - 1;
-    if ((a3 - 1) > 4)
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    v8 = mEMORY[0x277CE9630];
+    v9 = test - 1;
+    if ((test - 1) > 4)
     {
       v11 = @"https://cf.iadsdk.apple.com/adserver";
       v10 = @"https://iadsdk.apple.com/adserver";
@@ -354,24 +354,24 @@ void __45__ADAttributionRequester_setStocksAdEnabled___block_invoke()
       v11 = off_278C5A748[v9];
     }
 
-    [v7 setString:v10 forKey:@"AdServerURL"];
+    [mEMORY[0x277CE9630] setString:v10 forKey:@"AdServerURL"];
 
-    v12 = [MEMORY[0x277CE9630] sharedInstance];
-    [v12 setString:v11 forKey:@"ConfigurationAdServerURL"];
+    mEMORY[0x277CE9630]2 = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630]2 setString:v11 forKey:@"ConfigurationAdServerURL"];
 
-    v13 = [MEMORY[0x277CE9630] sharedInstance];
-    [v13 setBool:1 forKey:@"ForceExpireConfiguration"];
+    mEMORY[0x277CE9630]3 = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630]3 setBool:1 forKey:@"ForceExpireConfiguration"];
 
-    v14 = [MEMORY[0x277CE96B8] sharedInstance];
-    [v14 setConfigurationExpirationTime:0];
+    mEMORY[0x277CE96B8] = [MEMORY[0x277CE96B8] sharedInstance];
+    [mEMORY[0x277CE96B8] setConfigurationExpirationTime:0];
 
-    v15 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v15 postNotificationName:@"ForceExpireConfiguration" object:@"com.apple.AdLib" userInfo:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"ForceExpireConfiguration" object:@"com.apple.AdLib" userInfo:0];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: A request to change AdServer environment was made from a non-entitled caller."];
+    defaultCenter = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: A request to change AdServer environment was made from a non-entitled caller."];
     _ADLog();
   }
 }

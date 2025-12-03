@@ -1,15 +1,15 @@
 @interface WFNightShiftSettingsClient
-+ (void)createClientWithCompletionHandler:(id)a3;
-- (WFNightShiftSettingsClient)initWithBlueLightClient:(id)a3;
-- (void)getStateWithCompletionHandler:(id)a3;
++ (void)createClientWithCompletionHandler:(id)handler;
+- (WFNightShiftSettingsClient)initWithBlueLightClient:(id)client;
+- (void)getStateWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFNightShiftSettingsClient
 
-- (void)getStateWithCompletionHandler:(id)a3
+- (void)getStateWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(WFNightShiftSettingsClient *)self blueLightClient:0];
   v6 = [v5 getBlueLightStatus:&v11];
 
@@ -26,7 +26,7 @@
       _os_log_impl(&dword_23DE30000, v8, OS_LOG_TYPE_DEFAULT, "%s Current Night Shift State: %d", buf, 0x12u);
     }
 
-    (*(v4 + 2))(v4, BYTE1(v11), 0);
+    (*(handlerCopy + 2))(handlerCopy, BYTE1(v11), 0);
   }
 
   else
@@ -39,21 +39,21 @@
     }
 
     v9 = WFSettingsClientError();
-    (*(v4 + 2))(v4, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
 
-    v4 = v9;
+    handlerCopy = v9;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (WFNightShiftSettingsClient)initWithBlueLightClient:(id)a3
+- (WFNightShiftSettingsClient)initWithBlueLightClient:(id)client
 {
-  v6 = a3;
-  if (!v6)
+  clientCopy = client;
+  if (!clientCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFNightShiftSettingsClient.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"blueLightClient"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNightShiftSettingsClient.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"blueLightClient"}];
   }
 
   v11.receiver = self;
@@ -62,27 +62,27 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_blueLightClient, a3);
+    objc_storeStrong(&v7->_blueLightClient, client);
   }
 
   return v8;
 }
 
-+ (void)createClientWithCompletionHandler:(id)a3
++ (void)createClientWithCompletionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(getCBClientClass());
-  v5 = [v4 blueLightClient];
-  if (v5 && ([getCBClientClass() supportsBlueLightReduction] & 1) != 0)
+  blueLightClient = [v4 blueLightClient];
+  if (blueLightClient && ([getCBClientClass() supportsBlueLightReduction] & 1) != 0)
   {
-    v6 = [[a1 alloc] initWithBlueLightClient:v5];
-    v7 = v8[2];
+    v6 = [[self alloc] initWithBlueLightClient:blueLightClient];
+    v7 = handlerCopy[2];
   }
 
   else
   {
     v6 = WFSettingsClientError();
-    v7 = v8[2];
+    v7 = handlerCopy[2];
   }
 
   v7();

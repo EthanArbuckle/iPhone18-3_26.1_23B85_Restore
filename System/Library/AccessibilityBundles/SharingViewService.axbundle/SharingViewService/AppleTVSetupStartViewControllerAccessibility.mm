@@ -1,14 +1,14 @@
 @interface AppleTVSetupStartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation AppleTVSetupStartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppleTVSetupStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"AppleTVSetupStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppleTVSetupStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"AppleTVSetupStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
 }
 
 @end

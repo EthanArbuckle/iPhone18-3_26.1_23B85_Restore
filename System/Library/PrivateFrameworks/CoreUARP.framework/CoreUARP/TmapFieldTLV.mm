@@ -1,23 +1,23 @@
 @interface TmapFieldTLV
-- (BOOL)createFieldType:(id)a3;
-- (BOOL)expandEncodedString:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)expandFieldData:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)expandFieldData:(id)a3 withOffset:(unint64_t)a4 inCoreAnalytics:(id)a5;
-- (BOOL)expandFloat:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)expandInteger:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)expandString:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)expandUnsignedInteger:(id)a3 inCoreAnalytics:(id)a4;
-- (BOOL)getNextOffset:(unint64_t *)a3 fromStart:(unint64_t)a4;
+- (BOOL)createFieldType:(id)type;
+- (BOOL)expandEncodedString:(id)string inCoreAnalytics:(id)analytics;
+- (BOOL)expandFieldData:(id)data inCoreAnalytics:(id)analytics;
+- (BOOL)expandFieldData:(id)data withOffset:(unint64_t)offset inCoreAnalytics:(id)analytics;
+- (BOOL)expandFloat:(id)float inCoreAnalytics:(id)analytics;
+- (BOOL)expandInteger:(id)integer inCoreAnalytics:(id)analytics;
+- (BOOL)expandString:(id)string inCoreAnalytics:(id)analytics;
+- (BOOL)expandUnsignedInteger:(id)integer inCoreAnalytics:(id)analytics;
+- (BOOL)getNextOffset:(unint64_t *)offset fromStart:(unint64_t)start;
 - (TmapFieldTLV)init;
-- (TmapFieldTLV)initWithCoder:(id)a3;
-- (TmapFieldTLV)initWithDictionary:(id)a3 endian:(id)a4;
-- (id)bigEndianSwap:(id)a3;
+- (TmapFieldTLV)initWithCoder:(id)coder;
+- (TmapFieldTLV)initWithDictionary:(id)dictionary endian:(id)endian;
+- (id)bigEndianSwap:(id)swap;
 - (id)description;
-- (id)endianSwap:(id)a3;
+- (id)endianSwap:(id)swap;
 - (id)endianToString;
 - (id)fieldTypeToString;
-- (id)littleEndianSwap:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)littleEndianSwap:(id)swap;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TmapFieldTLV
@@ -29,10 +29,10 @@
   return 0;
 }
 
-- (TmapFieldTLV)initWithDictionary:(id)a3 endian:(id)a4
+- (TmapFieldTLV)initWithDictionary:(id)dictionary endian:(id)endian
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  endianCopy = endian;
   v28.receiver = self;
   v28.super_class = TmapFieldTLV;
   v8 = [(TmapFieldTLV *)&v28 init];
@@ -45,7 +45,7 @@
   v10 = *(v8 + 5);
   *(v8 + 5) = v9;
 
-  v11 = [v6 objectForKeyedSubscript:@"FieldName"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"FieldName"];
   v12 = [v11 copy];
   v13 = *(v8 + 1);
   *(v8 + 1) = v12;
@@ -71,7 +71,7 @@
     goto LABEL_28;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"FieldLength"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"FieldLength"];
   if (!v14)
   {
     if (os_log_type_enabled(*(v8 + 5), OS_LOG_TYPE_ERROR))
@@ -94,7 +94,7 @@
   }
 
   *(v8 + 2) = [v14 unsignedIntValue];
-  v15 = [v6 objectForKeyedSubscript:@"FieldType"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"FieldType"];
   v16 = [v15 copy];
 
   objc_opt_class();
@@ -119,7 +119,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"FieldPrivacyRestricted"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"FieldPrivacyRestricted"];
   if (!v17)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:0];
@@ -137,7 +137,7 @@ LABEL_28:
   }
 
   *(v8 + 28) = [v17 BOOLValue];
-  *(v8 + 8) = [v7 isEqualToString:@"LittleEndian"];
+  *(v8 + 8) = [endianCopy isEqualToString:@"LittleEndian"];
 
 LABEL_12:
   v18 = v8;
@@ -146,10 +146,10 @@ LABEL_29:
   return v18;
 }
 
-- (BOOL)createFieldType:(id)a3
+- (BOOL)createFieldType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Integer"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Integer"])
   {
     self->_fieldType = 0;
 LABEL_12:
@@ -157,14 +157,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"UnsignedInteger"])
+  if ([typeCopy isEqualToString:@"UnsignedInteger"])
   {
     v5 = 1;
     self->_fieldType = 1;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"UTF8String"])
+  if ([typeCopy isEqualToString:@"UTF8String"])
   {
     v6 = 2;
 LABEL_11:
@@ -172,13 +172,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"Base64EncodedString"])
+  if ([typeCopy isEqualToString:@"Base64EncodedString"])
   {
     v6 = 3;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Float"])
+  if ([typeCopy isEqualToString:@"Float"])
   {
     v6 = 4;
     goto LABEL_11;
@@ -195,22 +195,22 @@ LABEL_13:
   return v5;
 }
 
-- (TmapFieldTLV)initWithCoder:(id)a3
+- (TmapFieldTLV)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TmapFieldTLV;
   v5 = [(TmapFieldTLV *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FieldName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FieldName"];
     fieldName = v5->_fieldName;
     v5->_fieldName = v6;
 
-    v5->_fieldLength = [v4 decodeIntegerForKey:@"FieldLength"];
-    v5->_fieldType = [v4 decodeIntegerForKey:@"FieldType"];
-    v5->_fieldPrivacyRestricted = [v4 decodeBoolForKey:@"FieldPrivacyRestricted"];
-    v5->_endian = [v4 decodeIntegerForKey:@"Endian"];
+    v5->_fieldLength = [coderCopy decodeIntegerForKey:@"FieldLength"];
+    v5->_fieldType = [coderCopy decodeIntegerForKey:@"FieldType"];
+    v5->_fieldPrivacyRestricted = [coderCopy decodeBoolForKey:@"FieldPrivacyRestricted"];
+    v5->_endian = [coderCopy decodeIntegerForKey:@"Endian"];
     v8 = os_log_create("com.apple.accessoryupdater.uarp", "tmap");
     log = v5->_log;
     v5->_log = v8;
@@ -219,24 +219,24 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fieldName = self->_fieldName;
-  v5 = a3;
-  [v5 encodeObject:fieldName forKey:@"FieldName"];
-  [v5 encodeInteger:self->_fieldLength forKey:@"FieldLength"];
-  [v5 encodeInteger:self->_fieldType forKey:@"FieldType"];
-  [v5 encodeBool:self->_fieldPrivacyRestricted forKey:@"FieldPrivacyRestricted"];
-  [v5 encodeInteger:self->_endian forKey:@"Endian"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fieldName forKey:@"FieldName"];
+  [coderCopy encodeInteger:self->_fieldLength forKey:@"FieldLength"];
+  [coderCopy encodeInteger:self->_fieldType forKey:@"FieldType"];
+  [coderCopy encodeBool:self->_fieldPrivacyRestricted forKey:@"FieldPrivacyRestricted"];
+  [coderCopy encodeInteger:self->_endian forKey:@"Endian"];
 }
 
-- (BOOL)expandFieldData:(id)a3 withOffset:(unint64_t)a4 inCoreAnalytics:(id)a5
+- (BOOL)expandFieldData:(id)data withOffset:(unint64_t)offset inCoreAnalytics:(id)analytics
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  analyticsCopy = analytics;
   fieldLength = self->_fieldLength;
-  if (__CFADD__(a4, fieldLength))
+  if (__CFADD__(offset, fieldLength))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -246,14 +246,14 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (fieldLength + a4 > [v8 length])
+  if (fieldLength + offset > [dataCopy length])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v12 = log;
-      v13 = [v8 length];
-      v14 = self->_fieldLength + a4;
+      v13 = [dataCopy length];
+      v14 = self->_fieldLength + offset;
       v19 = 134218240;
       v20 = v13;
       v21 = 2048;
@@ -266,7 +266,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!analyticsCopy)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -286,34 +286,34 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v15 = [v8 subdataWithRange:{a4, self->_fieldLength}];
-  v16 = [(TmapFieldTLV *)self expandFieldData:v15 inCoreAnalytics:v9];
+  v15 = [dataCopy subdataWithRange:{offset, self->_fieldLength}];
+  v16 = [(TmapFieldTLV *)self expandFieldData:v15 inCoreAnalytics:analyticsCopy];
 
 LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (BOOL)expandFieldData:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandFieldData:(id)data inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  analyticsCopy = analytics;
   fieldType = self->_fieldType;
   if (fieldType == 3)
   {
-    v9 = [(TmapFieldTLV *)self expandEncodedString:v6 inCoreAnalytics:v7];
+    v9 = [(TmapFieldTLV *)self expandEncodedString:dataCopy inCoreAnalytics:analyticsCopy];
     goto LABEL_5;
   }
 
   if (fieldType == 2)
   {
-    v9 = [(TmapFieldTLV *)self expandString:v6 inCoreAnalytics:v7];
+    v9 = [(TmapFieldTLV *)self expandString:dataCopy inCoreAnalytics:analyticsCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_18;
   }
 
-  v11 = [(TmapFieldTLV *)self endianSwap:v6];
+  v11 = [(TmapFieldTLV *)self endianSwap:dataCopy];
   v12 = v11;
   if (!v11)
   {
@@ -330,13 +330,13 @@ LABEL_5:
   switch(v13)
   {
     case 4:
-      v14 = [(TmapFieldTLV *)self expandFloat:v11 inCoreAnalytics:v7];
+      v14 = [(TmapFieldTLV *)self expandFloat:v11 inCoreAnalytics:analyticsCopy];
       goto LABEL_16;
     case 1:
-      v14 = [(TmapFieldTLV *)self expandUnsignedInteger:v11 inCoreAnalytics:v7];
+      v14 = [(TmapFieldTLV *)self expandUnsignedInteger:v11 inCoreAnalytics:analyticsCopy];
       goto LABEL_16;
     case 0:
-      v14 = [(TmapFieldTLV *)self expandInteger:v11 inCoreAnalytics:v7];
+      v14 = [(TmapFieldTLV *)self expandInteger:v11 inCoreAnalytics:analyticsCopy];
 LABEL_16:
       v10 = v14;
 LABEL_17:
@@ -355,45 +355,45 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)getNextOffset:(unint64_t *)a3 fromStart:(unint64_t)a4
+- (BOOL)getNextOffset:(unint64_t *)offset fromStart:(unint64_t)start
 {
   fieldLength = self->_fieldLength;
-  v5 = __CFADD__(a4, fieldLength);
-  if (!__CFADD__(a4, fieldLength))
+  v5 = __CFADD__(start, fieldLength);
+  if (!__CFADD__(start, fieldLength))
   {
-    *a3 = fieldLength + a4;
+    *offset = fieldLength + start;
   }
 
   return !v5;
 }
 
-- (id)endianSwap:(id)a3
+- (id)endianSwap:(id)swap
 {
   if (self->_endian == 1)
   {
-    [(TmapFieldTLV *)self littleEndianSwap:a3];
+    [(TmapFieldTLV *)self littleEndianSwap:swap];
   }
 
   else
   {
-    [(TmapFieldTLV *)self bigEndianSwap:a3];
+    [(TmapFieldTLV *)self bigEndianSwap:swap];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)bigEndianSwap:(id)a3
+- (id)bigEndianSwap:(id)swap
 {
-  v4 = a3;
-  v5 = v4;
+  swapCopy = swap;
+  v5 = swapCopy;
   fieldLength = self->_fieldLength;
   if (fieldLength > 3)
   {
     if (fieldLength == 4)
     {
       LODWORD(v13) = 0;
-      [v4 getBytes:&v13 length:4];
+      [swapCopy getBytes:&v13 length:4];
       LODWORD(v12) = bswap32(v13);
       v7 = objc_alloc(MEMORY[0x277CBEA90]);
       v8 = 4;
@@ -403,7 +403,7 @@ LABEL_18:
     if (fieldLength == 8)
     {
       v13 = 0;
-      [v4 getBytes:&v13 length:8];
+      [swapCopy getBytes:&v13 length:8];
       v12 = bswap64(v13);
       v7 = objc_alloc(MEMORY[0x277CBEA90]);
       v8 = 8;
@@ -415,7 +415,7 @@ LABEL_18:
   {
     if (fieldLength == 1)
     {
-      v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:v4];
+      v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:swapCopy];
 LABEL_14:
       v9 = v10;
       goto LABEL_15;
@@ -424,7 +424,7 @@ LABEL_14:
     if (fieldLength == 2)
     {
       LOWORD(v13) = 0;
-      [v4 getBytes:&v13 length:2];
+      [swapCopy getBytes:&v13 length:2];
       LOWORD(v12) = bswap32(v13) >> 16;
       v7 = objc_alloc(MEMORY[0x277CBEA90]);
       v8 = 2;
@@ -445,17 +445,17 @@ LABEL_15:
   return v9;
 }
 
-- (id)littleEndianSwap:(id)a3
+- (id)littleEndianSwap:(id)swap
 {
-  v4 = a3;
-  v5 = v4;
+  swapCopy = swap;
+  v5 = swapCopy;
   fieldLength = self->_fieldLength;
   if (fieldLength > 3)
   {
     if (fieldLength == 4)
     {
       LODWORD(v11) = 0;
-      [v4 getBytes:&v11 length:4];
+      [swapCopy getBytes:&v11 length:4];
       LODWORD(v10) = v11;
       goto LABEL_13;
     }
@@ -463,7 +463,7 @@ LABEL_15:
     if (fieldLength == 8)
     {
       v11 = 0;
-      [v4 getBytes:&v11 length:8];
+      [swapCopy getBytes:&v11 length:8];
       v10 = v11;
       goto LABEL_13;
     }
@@ -473,7 +473,7 @@ LABEL_15:
   {
     if (fieldLength == 1)
     {
-      v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:v4];
+      v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithData:swapCopy];
 LABEL_14:
       v7 = v8;
       goto LABEL_15;
@@ -482,7 +482,7 @@ LABEL_14:
     if (fieldLength == 2)
     {
       LOWORD(v11) = 0;
-      [v4 getBytes:&v11 length:2];
+      [swapCopy getBytes:&v11 length:2];
       LOWORD(v10) = v11;
 LABEL_13:
       v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v10 length:self->_fieldLength];
@@ -501,10 +501,10 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)expandInteger:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandInteger:(id)integer inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  integerCopy = integer;
+  analyticsCopy = analytics;
   p_fieldLength = &self->_fieldLength;
   fieldLength = self->_fieldLength;
   if (fieldLength > 3)
@@ -512,7 +512,7 @@ LABEL_15:
     if (fieldLength == 4)
     {
       v23 = 0;
-      [v6 getBytes:&v23 length:4];
+      [integerCopy getBytes:&v23 length:4];
       v10 = [MEMORY[0x277CCABB0] numberWithInt:v23];
       goto LABEL_13;
     }
@@ -520,7 +520,7 @@ LABEL_15:
     if (fieldLength == 8)
     {
       v22 = 0;
-      [v6 getBytes:&v22 length:8];
+      [integerCopy getBytes:&v22 length:8];
       v10 = [MEMORY[0x277CCABB0] numberWithLongLong:v22];
       goto LABEL_13;
     }
@@ -532,9 +532,9 @@ LABEL_15:
     {
       v25 = 0;
       v18 = 1;
-      [v6 getBytes:&v25 length:1];
+      [integerCopy getBytes:&v25 length:1];
       v19 = [MEMORY[0x277CCABB0] numberWithChar:v25];
-      [v7 setObject:v19 forKeyedSubscript:self->_fieldName];
+      [analyticsCopy setObject:v19 forKeyedSubscript:self->_fieldName];
 
       goto LABEL_14;
     }
@@ -542,11 +542,11 @@ LABEL_15:
     if (fieldLength == 2)
     {
       v24 = 0;
-      [v6 getBytes:&v24 length:2];
+      [integerCopy getBytes:&v24 length:2];
       v10 = [MEMORY[0x277CCABB0] numberWithShort:v24];
 LABEL_13:
       v20 = v10;
-      [v7 setObject:v10 forKeyedSubscript:self->_fieldName];
+      [analyticsCopy setObject:v10 forKeyedSubscript:self->_fieldName];
 
       v18 = 1;
       goto LABEL_14;
@@ -565,10 +565,10 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)expandUnsignedInteger:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandUnsignedInteger:(id)integer inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  integerCopy = integer;
+  analyticsCopy = analytics;
   p_fieldLength = &self->_fieldLength;
   fieldLength = self->_fieldLength;
   if (fieldLength > 3)
@@ -576,7 +576,7 @@ LABEL_14:
     if (fieldLength == 4)
     {
       v23 = 0;
-      [v6 getBytes:&v23 length:4];
+      [integerCopy getBytes:&v23 length:4];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v23];
       goto LABEL_13;
     }
@@ -584,7 +584,7 @@ LABEL_14:
     if (fieldLength == 8)
     {
       v22 = 0;
-      [v6 getBytes:&v22 length:8];
+      [integerCopy getBytes:&v22 length:8];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v22];
       goto LABEL_13;
     }
@@ -596,9 +596,9 @@ LABEL_14:
     {
       v25 = 0;
       v18 = 1;
-      [v6 getBytes:&v25 length:1];
+      [integerCopy getBytes:&v25 length:1];
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v25];
-      [v7 setObject:v19 forKeyedSubscript:self->_fieldName];
+      [analyticsCopy setObject:v19 forKeyedSubscript:self->_fieldName];
 
       goto LABEL_14;
     }
@@ -606,11 +606,11 @@ LABEL_14:
     if (fieldLength == 2)
     {
       v24 = 0;
-      [v6 getBytes:&v24 length:2];
+      [integerCopy getBytes:&v24 length:2];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v24];
 LABEL_13:
       v20 = v10;
-      [v7 setObject:v10 forKeyedSubscript:self->_fieldName];
+      [analyticsCopy setObject:v10 forKeyedSubscript:self->_fieldName];
 
       v18 = 1;
       goto LABEL_14;
@@ -629,15 +629,15 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)expandFloat:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandFloat:(id)float inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  floatCopy = float;
+  analyticsCopy = analytics;
   fieldLength = self->_fieldLength;
   if (fieldLength == 8)
   {
     v14 = 0.0;
-    [v6 getBytes:&v14 length:8];
+    [floatCopy getBytes:&v14 length:8];
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
     goto LABEL_5;
   }
@@ -645,12 +645,12 @@ LABEL_14:
   if (fieldLength == 4)
   {
     v15 = 0;
-    [v6 getBytes:&v15 length:4];
+    [floatCopy getBytes:&v15 length:4];
     LODWORD(v9) = v15;
     v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
 LABEL_5:
     v11 = v10;
-    [v7 setObject:v10 forKeyedSubscript:self->_fieldName];
+    [analyticsCopy setObject:v10 forKeyedSubscript:self->_fieldName];
 
     v12 = 1;
     goto LABEL_9;
@@ -667,13 +667,13 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)expandString:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandString:(id)string inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  stringCopy = string;
+  analyticsCopy = analytics;
+  if (stringCopy && [stringCopy length])
   {
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
+    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:stringCopy encoding:4];
     v9 = v8;
     if (v8)
     {
@@ -681,7 +681,7 @@ LABEL_9:
       v11 = v10 != 0;
       if (v10)
       {
-        [v7 setObject:v10 forKeyedSubscript:self->_fieldName];
+        [analyticsCopy setObject:v10 forKeyedSubscript:self->_fieldName];
       }
 
       else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -709,17 +709,17 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)expandEncodedString:(id)a3 inCoreAnalytics:(id)a4
+- (BOOL)expandEncodedString:(id)string inCoreAnalytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  stringCopy = string;
+  analyticsCopy = analytics;
+  if (stringCopy && [stringCopy length])
   {
-    v8 = [v6 base64EncodedStringWithOptions:0];
+    v8 = [stringCopy base64EncodedStringWithOptions:0];
     v9 = v8 != 0;
     if (v8)
     {
-      [v7 setObject:v8 forKeyedSubscript:self->_fieldName];
+      [analyticsCopy setObject:v8 forKeyedSubscript:self->_fieldName];
     }
 
     else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -751,11 +751,11 @@ LABEL_9:
   }
 
   [v4 appendFormat:@"Event Field Length %lu\n", self->_fieldLength];
-  v5 = [(TmapFieldTLV *)self fieldTypeToString];
-  [v4 appendFormat:@"Event Field Type %@ \n", v5];
+  fieldTypeToString = [(TmapFieldTLV *)self fieldTypeToString];
+  [v4 appendFormat:@"Event Field Type %@ \n", fieldTypeToString];
 
-  v6 = [(TmapFieldTLV *)self endianToString];
-  [v4 appendFormat:@"Event Field Endian %@ \n", v6];
+  endianToString = [(TmapFieldTLV *)self endianToString];
+  [v4 appendFormat:@"Event Field Endian %@ \n", endianToString];
 
   return v4;
 }

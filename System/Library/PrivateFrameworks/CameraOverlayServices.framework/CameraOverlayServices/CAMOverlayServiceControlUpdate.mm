@@ -1,200 +1,200 @@
 @interface CAMOverlayServiceControlUpdate
-- (BOOL)isEqualToUpdate:(id)a3;
-- (CAMOverlayServiceControlUpdate)initWithCoder:(id)a3;
-- (id)_initWithControlIdentifier:(id)a3 BOOLeanValue:(BOOL)a4;
-- (id)_initWithControlIdentifier:(id)a3 floatValue:(float)a4;
-- (id)_initWithControlIdentifier:(id)a3 indexValue:(int64_t)a4;
-- (id)_initWithControlIdentifier:(id)a3 isEnabled:(BOOL)a4;
-- (id)_initWithControlIdentifier:(id)a3 isRecording:(BOOL)a4;
-- (id)_initWithControlIdentifier:(id)a3 styleDictionary:(id)a4;
+- (BOOL)isEqualToUpdate:(id)update;
+- (CAMOverlayServiceControlUpdate)initWithCoder:(id)coder;
+- (id)_initWithControlIdentifier:(id)identifier BOOLeanValue:(BOOL)value;
+- (id)_initWithControlIdentifier:(id)identifier floatValue:(float)value;
+- (id)_initWithControlIdentifier:(id)identifier indexValue:(int64_t)value;
+- (id)_initWithControlIdentifier:(id)identifier isEnabled:(BOOL)enabled;
+- (id)_initWithControlIdentifier:(id)identifier isRecording:(BOOL)recording;
+- (id)_initWithControlIdentifier:(id)identifier styleDictionary:(id)dictionary;
 - (id)_valueString;
 - (id)_valueTypeString;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMOverlayServiceControlUpdate
 
-- (id)_initWithControlIdentifier:(id)a3 floatValue:(float)a4
+- (id)_initWithControlIdentifier:(id)identifier floatValue:(float)value
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CAMOverlayServiceControlUpdate;
   v8 = [(CAMOverlayServiceControlUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlIdentifier, a3);
-    v9->_floatValue = a4;
+    objc_storeStrong(&v8->_controlIdentifier, identifier);
+    v9->_floatValue = value;
     v9->_valueType = 0;
   }
 
   return v9;
 }
 
-- (id)_initWithControlIdentifier:(id)a3 indexValue:(int64_t)a4
+- (id)_initWithControlIdentifier:(id)identifier indexValue:(int64_t)value
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CAMOverlayServiceControlUpdate;
   v8 = [(CAMOverlayServiceControlUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlIdentifier, a3);
+    objc_storeStrong(&v8->_controlIdentifier, identifier);
     v9->_valueType = 1;
-    v9->_indexValue = a4;
+    v9->_indexValue = value;
   }
 
   return v9;
 }
 
-- (id)_initWithControlIdentifier:(id)a3 styleDictionary:(id)a4
+- (id)_initWithControlIdentifier:(id)identifier styleDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CAMOverlayServiceControlUpdate;
   v9 = [(CAMOverlayServiceControlUpdate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controlIdentifier, a3);
-    objc_storeStrong(&v10->_styleDictionary, a4);
+    objc_storeStrong(&v9->_controlIdentifier, identifier);
+    objc_storeStrong(&v10->_styleDictionary, dictionary);
     v10->_valueType = 2;
   }
 
   return v10;
 }
 
-- (id)_initWithControlIdentifier:(id)a3 BOOLeanValue:(BOOL)a4
+- (id)_initWithControlIdentifier:(id)identifier BOOLeanValue:(BOOL)value
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CAMOverlayServiceControlUpdate;
   v8 = [(CAMOverlayServiceControlUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlIdentifier, a3);
-    v9->_BOOLeanValue = a4;
+    objc_storeStrong(&v8->_controlIdentifier, identifier);
+    v9->_BOOLeanValue = value;
     v9->_valueType = 3;
   }
 
   return v9;
 }
 
-- (id)_initWithControlIdentifier:(id)a3 isRecording:(BOOL)a4
+- (id)_initWithControlIdentifier:(id)identifier isRecording:(BOOL)recording
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CAMOverlayServiceControlUpdate;
   v8 = [(CAMOverlayServiceControlUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlIdentifier, a3);
-    v9->_recording = a4;
+    objc_storeStrong(&v8->_controlIdentifier, identifier);
+    v9->_recording = recording;
     v9->_valueType = 4;
   }
 
   return v9;
 }
 
-- (id)_initWithControlIdentifier:(id)a3 isEnabled:(BOOL)a4
+- (id)_initWithControlIdentifier:(id)identifier isEnabled:(BOOL)enabled
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CAMOverlayServiceControlUpdate;
   v8 = [(CAMOverlayServiceControlUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlIdentifier, a3);
-    v9->_enabled = a4;
+    objc_storeStrong(&v8->_controlIdentifier, identifier);
+    v9->_enabled = enabled;
     v9->_valueType = 5;
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToUpdate:(id)a3
+- (BOOL)isEqualToUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v4 == self)
+  if (updateCopy == self)
   {
     v7 = 1;
     goto LABEL_26;
   }
 
-  v5 = [(CAMOverlayServiceControlUpdate *)v4 valueType];
-  if (v5 != [(CAMOverlayServiceControlUpdate *)self valueType])
+  valueType = [(CAMOverlayServiceControlUpdate *)updateCopy valueType];
+  if (valueType != [(CAMOverlayServiceControlUpdate *)self valueType])
   {
 LABEL_10:
     v7 = 0;
     goto LABEL_26;
   }
 
-  v6 = [(CAMOverlayServiceControlUpdate *)self valueType];
+  valueType2 = [(CAMOverlayServiceControlUpdate *)self valueType];
   v7 = 0;
-  if (v6 > 2)
+  if (valueType2 > 2)
   {
-    switch(v6)
+    switch(valueType2)
     {
       case 3:
-        v12 = [(CAMOverlayServiceControlUpdate *)v4 BOOLeanValue];
-        v13 = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)updateCopy BOOLeanValue];
+        bOOLeanValue2 = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
         break;
       case 4:
-        v12 = [(CAMOverlayServiceControlUpdate *)v4 isRecording];
-        v13 = [(CAMOverlayServiceControlUpdate *)self isRecording];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)updateCopy isRecording];
+        bOOLeanValue2 = [(CAMOverlayServiceControlUpdate *)self isRecording];
         break;
       case 5:
-        v12 = [(CAMOverlayServiceControlUpdate *)v4 isEnabled];
-        v13 = [(CAMOverlayServiceControlUpdate *)self isEnabled];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)updateCopy isEnabled];
+        bOOLeanValue2 = [(CAMOverlayServiceControlUpdate *)self isEnabled];
         break;
       default:
         goto LABEL_26;
     }
 
-    v7 = v12 ^ v13 ^ 1;
+    v7 = bOOLeanValue ^ bOOLeanValue2 ^ 1;
     goto LABEL_26;
   }
 
-  switch(v6)
+  switch(valueType2)
   {
     case 0:
-      [(CAMOverlayServiceControlUpdate *)v4 floatValue];
+      [(CAMOverlayServiceControlUpdate *)updateCopy floatValue];
       v15 = v14;
       [(CAMOverlayServiceControlUpdate *)self floatValue];
       v17 = v15 == v16;
       goto LABEL_19;
     case 1:
-      v18 = [(CAMOverlayServiceControlUpdate *)v4 indexValue];
-      v17 = v18 == [(CAMOverlayServiceControlUpdate *)self indexValue];
+      indexValue = [(CAMOverlayServiceControlUpdate *)updateCopy indexValue];
+      v17 = indexValue == [(CAMOverlayServiceControlUpdate *)self indexValue];
 LABEL_19:
       v7 = v17;
       break;
     case 2:
-      v8 = [(CAMOverlayServiceControlUpdate *)v4 styleDictionary];
-      v9 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
-      if (v8 == v9)
+      styleDictionary = [(CAMOverlayServiceControlUpdate *)updateCopy styleDictionary];
+      styleDictionary2 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
+      if (styleDictionary == styleDictionary2)
       {
         v7 = 1;
       }
 
       else
       {
-        v10 = [(CAMOverlayServiceControlUpdate *)v4 styleDictionary];
-        v11 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
-        v7 = [v10 isEqualToDictionary:v11];
+        styleDictionary3 = [(CAMOverlayServiceControlUpdate *)updateCopy styleDictionary];
+        styleDictionary4 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
+        v7 = [styleDictionary3 isEqualToDictionary:styleDictionary4];
       }
 
       break;
@@ -207,41 +207,41 @@ LABEL_26:
 
 - (id)_valueTypeString
 {
-  v2 = [(CAMOverlayServiceControlUpdate *)self valueType];
-  if (v2 > 5)
+  valueType = [(CAMOverlayServiceControlUpdate *)self valueType];
+  if (valueType > 5)
   {
     return @"invalid";
   }
 
   else
   {
-    return off_278851C50[v2];
+    return off_278851C50[valueType];
   }
 }
 
 - (id)_valueString
 {
-  v3 = [(CAMOverlayServiceControlUpdate *)self valueType];
+  valueType = [(CAMOverlayServiceControlUpdate *)self valueType];
   v4 = &stru_28432BD98;
-  if (v3 > 2)
+  if (valueType > 2)
   {
-    switch(v3)
+    switch(valueType)
     {
       case 3:
-        v7 = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
         break;
       case 4:
-        v7 = [(CAMOverlayServiceControlUpdate *)self isRecording];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self isRecording];
         break;
       case 5:
-        v7 = [(CAMOverlayServiceControlUpdate *)self isEnabled];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self isEnabled];
         break;
       default:
         goto LABEL_19;
     }
 
     v11 = @"NO";
-    if (v7)
+    if (bOOLeanValue)
     {
       v11 = @"YES";
     }
@@ -250,7 +250,7 @@ LABEL_26:
     goto LABEL_18;
   }
 
-  switch(v3)
+  switch(valueType)
   {
     case 0:
       v8 = MEMORY[0x277CCACA8];
@@ -265,8 +265,8 @@ LABEL_18:
       goto LABEL_13;
     case 2:
       v5 = MEMORY[0x277CCACA8];
-      v6 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
-      v4 = [v5 stringWithFormat:@"%@", v6];
+      styleDictionary = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
+      v4 = [v5 stringWithFormat:@"%@", styleDictionary];
 
       break;
   }
@@ -281,9 +281,9 @@ LABEL_19:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMOverlayServiceControlUpdate *)self _valueTypeString];
-  v7 = [(CAMOverlayServiceControlUpdate *)self _valueString];
-  v8 = [v3 stringWithFormat:@"<%@: %p: %@ %@>", v5, self, v6, v7];
+  _valueTypeString = [(CAMOverlayServiceControlUpdate *)self _valueTypeString];
+  _valueString = [(CAMOverlayServiceControlUpdate *)self _valueString];
+  v8 = [v3 stringWithFormat:@"<%@: %p: %@ %@>", v5, self, _valueTypeString, _valueString];
 
   return v8;
 }
@@ -291,57 +291,57 @@ LABEL_19:
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CAMOverlayServiceControlUpdate *)self _valueTypeString];
-  v5 = [(CAMOverlayServiceControlUpdate *)self _valueString];
-  v6 = [v3 stringWithFormat:@"%@(%@)", v4, v5];
+  _valueTypeString = [(CAMOverlayServiceControlUpdate *)self _valueTypeString];
+  _valueString = [(CAMOverlayServiceControlUpdate *)self _valueString];
+  v6 = [v3 stringWithFormat:@"%@(%@)", _valueTypeString, _valueString];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v34 = a3;
-  v4 = [(CAMOverlayServiceControlUpdate *)self valueType];
+  coderCopy = coder;
+  valueType = [(CAMOverlayServiceControlUpdate *)self valueType];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@.%@", v7, @"valueType"];
-  [v34 encodeInteger:v4 forKey:v8];
+  [coderCopy encodeInteger:valueType forKey:v8];
 
-  v9 = [(CAMOverlayServiceControlUpdate *)self controlIdentifier];
+  controlIdentifier = [(CAMOverlayServiceControlUpdate *)self controlIdentifier];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [v10 stringWithFormat:@"%@.%@", v12, @"controlIdentifier"];
-  [v34 encodeObject:v9 forKey:v13];
+  [coderCopy encodeObject:controlIdentifier forKey:v13];
 
-  v14 = [(CAMOverlayServiceControlUpdate *)self valueType];
-  if (v14 > 2)
+  valueType2 = [(CAMOverlayServiceControlUpdate *)self valueType];
+  if (valueType2 > 2)
   {
-    switch(v14)
+    switch(valueType2)
     {
       case 3:
-        v20 = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self BOOLeanValue];
         v21 = MEMORY[0x277CCACA8];
         v29 = objc_opt_class();
         v23 = NSStringFromClass(v29);
-        v15 = v23;
+        styleDictionary = v23;
         v24 = @"BOOLeanValue";
         break;
       case 4:
-        v20 = [(CAMOverlayServiceControlUpdate *)self isRecording];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self isRecording];
         v21 = MEMORY[0x277CCACA8];
         v33 = objc_opt_class();
         v23 = NSStringFromClass(v33);
-        v15 = v23;
+        styleDictionary = v23;
         v24 = @"recording";
         break;
       case 5:
-        v20 = [(CAMOverlayServiceControlUpdate *)self isEnabled];
+        bOOLeanValue = [(CAMOverlayServiceControlUpdate *)self isEnabled];
         v21 = MEMORY[0x277CCACA8];
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
-        v15 = v23;
+        styleDictionary = v23;
         v24 = @"enabled";
         break;
       default:
@@ -349,34 +349,34 @@ LABEL_19:
     }
 
     v18 = [v21 stringWithFormat:@"%@.%@", v23, v24];
-    [v34 encodeBool:v20 forKey:v18];
+    [coderCopy encodeBool:bOOLeanValue forKey:v18];
   }
 
-  else if (v14)
+  else if (valueType2)
   {
-    if (v14 == 1)
+    if (valueType2 == 1)
     {
-      v30 = [(CAMOverlayServiceControlUpdate *)self indexValue];
+      indexValue = [(CAMOverlayServiceControlUpdate *)self indexValue];
       v31 = MEMORY[0x277CCACA8];
       v32 = objc_opt_class();
-      v15 = NSStringFromClass(v32);
-      v18 = [v31 stringWithFormat:@"%@.%@", v15, @"indexValue"];
-      [v34 encodeInteger:v30 forKey:v18];
+      styleDictionary = NSStringFromClass(v32);
+      v18 = [v31 stringWithFormat:@"%@.%@", styleDictionary, @"indexValue"];
+      [coderCopy encodeInteger:indexValue forKey:v18];
     }
 
     else
     {
-      if (v14 != 2)
+      if (valueType2 != 2)
       {
         goto LABEL_16;
       }
 
-      v15 = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
+      styleDictionary = [(CAMOverlayServiceControlUpdate *)self styleDictionary];
       v16 = MEMORY[0x277CCACA8];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = [v16 stringWithFormat:@"%@.%@", v18, @"styleDictionary"];
-      [v34 encodeObject:v15 forKey:v19];
+      [coderCopy encodeObject:styleDictionary forKey:v19];
     }
   }
 
@@ -386,29 +386,29 @@ LABEL_19:
     v26 = v25;
     v27 = MEMORY[0x277CCACA8];
     v28 = objc_opt_class();
-    v15 = NSStringFromClass(v28);
-    v18 = [v27 stringWithFormat:@"%@.%@", v15, @"floatValue"];
-    [v34 encodeDouble:v18 forKey:v26];
+    styleDictionary = NSStringFromClass(v28);
+    v18 = [v27 stringWithFormat:@"%@.%@", styleDictionary, @"floatValue"];
+    [coderCopy encodeDouble:v18 forKey:v26];
   }
 
 LABEL_16:
 }
 
-- (CAMOverlayServiceControlUpdate)initWithCoder:(id)a3
+- (CAMOverlayServiceControlUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@.%@", v7, @"valueType"];
-  v9 = [v4 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
 
   v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v11 stringWithFormat:@"%@.%@", v13, @"controlIdentifier"];
-  v15 = [v4 decodeObjectOfClasses:v10 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClasses:v10 forKey:v14];
 
   if (v9 > 2)
   {
@@ -420,7 +420,7 @@ LABEL_16:
         v34 = objc_opt_class();
         self = NSStringFromClass(v34);
         v29 = [v33 stringWithFormat:@"%@.%@", self, @"BOOLeanValue"];
-        v26->_BOOLeanValue = [v4 decodeBoolForKey:v29];
+        v26->_BOOLeanValue = [coderCopy decodeBoolForKey:v29];
         break;
       case 4:
         v26 = [(CAMOverlayServiceControlUpdate *)self _initWithControlIdentifier:v15 isRecording:0];
@@ -428,7 +428,7 @@ LABEL_16:
         v38 = objc_opt_class();
         self = NSStringFromClass(v38);
         v29 = [v37 stringWithFormat:@"%@.%@", self, @"recording"];
-        v26->_recording = [v4 decodeBoolForKey:v29];
+        v26->_recording = [coderCopy decodeBoolForKey:v29];
         break;
       case 5:
         v26 = [(CAMOverlayServiceControlUpdate *)self _initWithControlIdentifier:v15 isEnabled:0];
@@ -436,7 +436,7 @@ LABEL_16:
         v28 = objc_opt_class();
         self = NSStringFromClass(v28);
         v29 = [v27 stringWithFormat:@"%@.%@", self, @"enabled"];
-        v26->_enabled = [v4 decodeBoolForKey:v29];
+        v26->_enabled = [coderCopy decodeBoolForKey:v29];
         break;
       default:
         goto LABEL_17;
@@ -453,7 +453,7 @@ LABEL_16:
       v31 = objc_opt_class();
       self = NSStringFromClass(v31);
       v29 = [v30 stringWithFormat:@"%@.%@", self, @"floatValue"];
-      [v4 decodeDoubleForKey:v29];
+      [coderCopy decodeDoubleForKey:v29];
       *&v32 = v32;
       v26->_floatValue = *&v32;
 LABEL_15:
@@ -465,7 +465,7 @@ LABEL_15:
       v36 = objc_opt_class();
       self = NSStringFromClass(v36);
       v29 = [v35 stringWithFormat:@"%@.%@", self, @"indexValue"];
-      v26->_indexValue = [v4 decodeIntegerForKey:v29];
+      v26->_indexValue = [coderCopy decodeIntegerForKey:v29];
       goto LABEL_15;
     case 2:
       self = [(CAMOverlayServiceControlUpdate *)self _initWithControlIdentifier:v15 styleDictionary:0];
@@ -477,7 +477,7 @@ LABEL_15:
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       v23 = [v20 stringWithFormat:@"%@.%@", v22, @"styleDictionary"];
-      v24 = [v4 decodeObjectOfClasses:v19 forKey:v23];
+      v24 = [coderCopy decodeObjectOfClasses:v19 forKey:v23];
       styleDictionary = self->_styleDictionary;
       self->_styleDictionary = v24;
 

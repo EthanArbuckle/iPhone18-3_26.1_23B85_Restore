@@ -1,16 +1,16 @@
 @interface NTKVideoListingFactory
-- (id)_initLibraryForDevice:(id)a3;
-- (id)_listingWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5;
-- (id)_listingsWithTheme:(unint64_t)a3;
-- (id)_listingsWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4;
-- (id)_listingsWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4 matchingTag:(unint64_t)a5;
-- (id)_listingsWithTheme:(unint64_t)a3 variant:(int64_t)a4;
-- (id)_listingsWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5 notMatchingClip:(int64_t)a6;
-- (id)anyListingWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4 matchingTag:(unint64_t)a5;
-- (id)anyListingWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5 notMatchingClip:(int64_t)a6;
-- (id)defaultListingWithTheme:(unint64_t)a3;
-- (id)posterImageWithTheme:(unint64_t)a3;
-- (int64_t)behaviorForTheme:(unint64_t)a3;
+- (id)_initLibraryForDevice:(id)device;
+- (id)_listingWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag;
+- (id)_listingsWithTheme:(unint64_t)theme;
+- (id)_listingsWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant;
+- (id)_listingsWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant matchingTag:(unint64_t)tag;
+- (id)_listingsWithTheme:(unint64_t)theme variant:(int64_t)variant;
+- (id)_listingsWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag notMatchingClip:(int64_t)clip;
+- (id)anyListingWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant matchingTag:(unint64_t)tag;
+- (id)anyListingWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag notMatchingClip:(int64_t)clip;
+- (id)defaultListingWithTheme:(unint64_t)theme;
+- (id)posterImageWithTheme:(unint64_t)theme;
+- (int64_t)behaviorForTheme:(unint64_t)theme;
 - (void)discardAssets;
 @end
 
@@ -53,10 +53,10 @@ id __50__NTKVideoListingFactory_sharedInstanceForDevice___block_invoke_2(uint64_
   return v3;
 }
 
-- (id)defaultListingWithTheme:(unint64_t)a3
+- (id)defaultListingWithTheme:(unint64_t)theme
 {
   v14 = *MEMORY[0x277D85DE8];
-  [(NTKVideoListingFactory *)self _listingsWithTheme:a3];
+  [(NTKVideoListingFactory *)self _listingsWithTheme:theme];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -97,9 +97,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)anyListingWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5 notMatchingClip:(int64_t)a6
+- (id)anyListingWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag notMatchingClip:(int64_t)clip
 {
-  v6 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3 variant:a4 tag:a5 notMatchingClip:a6];
+  v6 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme variant:variant tag:tag notMatchingClip:clip];
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v6, "count"))}];
@@ -113,9 +113,9 @@ LABEL_11:
   return v7;
 }
 
-- (id)anyListingWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4 matchingTag:(unint64_t)a5
+- (id)anyListingWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant matchingTag:(unint64_t)tag
 {
-  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3 notMatchingVariant:a4 matchingTag:a5];
+  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme notMatchingVariant:variant matchingTag:tag];
   if ([v5 count])
   {
     v6 = [v5 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v5, "count"))}];
@@ -129,21 +129,21 @@ LABEL_11:
   return v6;
 }
 
-- (id)posterImageWithTheme:(unint64_t)a3
+- (id)posterImageWithTheme:(unint64_t)theme
 {
-  if (a3 <= 2)
+  if (theme <= 2)
   {
-    NTKImageNamedFromAssetsBundle(off_278784488[a3]);
+    NTKImageNamedFromAssetsBundle(off_278784488[theme]);
   }
 
   NTKImageNamedFromAssetsBundle(0);
 }
 
-- (int64_t)behaviorForTheme:(unint64_t)a3
+- (int64_t)behaviorForTheme:(unint64_t)theme
 {
-  if (a3 <= 2)
+  if (theme <= 2)
   {
-    return 4 - a3;
+    return 4 - theme;
   }
 
   else
@@ -152,23 +152,23 @@ LABEL_11:
   }
 }
 
-- (id)_initLibraryForDevice:(id)a3
+- (id)_initLibraryForDevice:(id)device
 {
   v331[52] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v326.receiver = self;
   v326.super_class = NTKVideoListingFactory;
   v6 = [(NTKVideoListingFactory *)&v326 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     assetListings = v7->_assetListings;
     v7->_assetListings = v8;
 
     v330[0] = &unk_2841836E8;
-    v322 = v5;
+    v322 = deviceCopy;
     v318 = [MEMORY[0x277D75348] colorWithRed:0.862745098 green:1.0 blue:0.980392157 alpha:1.0];
     v331[0] = v318;
     v330[1] = &unk_284183700;
@@ -847,59 +847,59 @@ LABEL_11:
     v7->_flowerListings = v162;
 
     v164 = v7;
-    v5 = v322;
+    deviceCopy = v322;
   }
 
   return v7;
 }
 
-- (id)_listingsWithTheme:(unint64_t)a3
+- (id)_listingsWithTheme:(unint64_t)theme
 {
-  if (a3 > 2)
+  if (theme > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = (&self->_butterflyListings)[a3];
+    v4 = (&self->_butterflyListings)[theme];
   }
 
   return v4;
 }
 
-- (id)_listingsWithTheme:(unint64_t)a3 variant:(int64_t)a4
+- (id)_listingsWithTheme:(unint64_t)theme variant:(int64_t)variant
 {
-  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3];
+  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__NTKVideoListingFactory__listingsWithTheme_variant___block_invoke;
   v9[3] = &__block_descriptor_40_e25_B24__0_8__NSDictionary_16l;
-  v9[4] = a4;
+  v9[4] = variant;
   v6 = [MEMORY[0x277CCAC30] predicateWithBlock:v9];
   v7 = [v5 filteredArrayUsingPredicate:v6];
 
   return v7;
 }
 
-- (id)_listingsWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4
+- (id)_listingsWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant
 {
-  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3];
+  v5 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__NTKVideoListingFactory__listingsWithTheme_notMatchingVariant___block_invoke;
   v9[3] = &__block_descriptor_40_e25_B24__0_8__NSDictionary_16l;
-  v9[4] = a4;
+  v9[4] = variant;
   v6 = [MEMORY[0x277CCAC30] predicateWithBlock:v9];
   v7 = [v5 filteredArrayUsingPredicate:v6];
 
   return v7;
 }
 
-- (id)_listingWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5
+- (id)_listingWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag
 {
   v19 = *MEMORY[0x277D85DE8];
-  [(NTKVideoListingFactory *)self _listingsWithTheme:a3 variant:a4];
+  [(NTKVideoListingFactory *)self _listingsWithTheme:theme variant:variant];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -919,7 +919,7 @@ LABEL_11:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 hasTag:{a5, v14}])
+        if ([v11 hasTag:{tag, v14}])
         {
           v12 = v11;
           goto LABEL_11;
@@ -942,16 +942,16 @@ LABEL_11:
   return v12;
 }
 
-- (id)_listingsWithTheme:(unint64_t)a3 variant:(int64_t)a4 tag:(unint64_t)a5 notMatchingClip:(int64_t)a6
+- (id)_listingsWithTheme:(unint64_t)theme variant:(int64_t)variant tag:(unint64_t)tag notMatchingClip:(int64_t)clip
 {
-  v9 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3];
+  v9 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__NTKVideoListingFactory__listingsWithTheme_variant_tag_notMatchingClip___block_invoke;
   v13[3] = &__block_descriptor_56_e25_B24__0_8__NSDictionary_16l;
-  v13[4] = a4;
-  v13[5] = a5;
-  v13[6] = a6;
+  v13[4] = variant;
+  v13[5] = tag;
+  v13[6] = clip;
   v10 = [MEMORY[0x277CCAC30] predicateWithBlock:v13];
   v11 = [v9 filteredArrayUsingPredicate:v10];
 
@@ -969,15 +969,15 @@ BOOL __73__NTKVideoListingFactory__listingsWithTheme_variant_tag_notMatchingClip
   return v9;
 }
 
-- (id)_listingsWithTheme:(unint64_t)a3 notMatchingVariant:(int64_t)a4 matchingTag:(unint64_t)a5
+- (id)_listingsWithTheme:(unint64_t)theme notMatchingVariant:(int64_t)variant matchingTag:(unint64_t)tag
 {
-  v7 = [(NTKVideoListingFactory *)self _listingsWithTheme:a3];
+  v7 = [(NTKVideoListingFactory *)self _listingsWithTheme:theme];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__NTKVideoListingFactory__listingsWithTheme_notMatchingVariant_matchingTag___block_invoke;
   v11[3] = &__block_descriptor_48_e25_B24__0_8__NSDictionary_16l;
-  v11[4] = a4;
-  v11[5] = a5;
+  v11[4] = variant;
+  v11[5] = tag;
   v8 = [MEMORY[0x277CCAC30] predicateWithBlock:v11];
   v9 = [v7 filteredArrayUsingPredicate:v8];
 

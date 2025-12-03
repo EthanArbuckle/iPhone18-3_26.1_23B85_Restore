@@ -25,8 +25,8 @@
   v3 = [NSMutableArray alloc];
   v13.receiver = self;
   v13.super_class = MapsSettingsRideBookingController;
-  v4 = [(MapsSettingsExtensionBaseController *)&v13 specifiers];
-  v5 = [v3 initWithArray:v4];
+  specifiers = [(MapsSettingsExtensionBaseController *)&v13 specifiers];
+  v5 = [v3 initWithArray:specifiers];
 
   v6 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
   v7 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];

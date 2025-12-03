@@ -7,34 +7,34 @@
 
 - (VSBinder)vs_binderCreatingIfNeeded:()VSBinderStorage
 {
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = objc_getAssociatedObject(v4, vs_binderCreatingIfNeeded__kVSBinderKey);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_getAssociatedObject(selfCopy, vs_binderCreatingIfNeeded__kVSBinderKey);
   v6 = v5;
   if (a3 && !v5)
   {
-    v6 = [[VSBinder alloc] initWithBoundObject:v4];
-    objc_setAssociatedObject(v4, vs_binderCreatingIfNeeded__kVSBinderKey, v6, 0x301);
+    v6 = [[VSBinder alloc] initWithBoundObject:selfCopy];
+    objc_setAssociatedObject(selfCopy, vs_binderCreatingIfNeeded__kVSBinderKey, v6, 0x301);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (VSUnbinder)vs_unbinderCreatingIfNeeded:()VSBinderStorage
 {
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = objc_getAssociatedObject(v4, vs_unbinderCreatingIfNeeded__kVSUnbinderKey);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_getAssociatedObject(selfCopy, vs_unbinderCreatingIfNeeded__kVSUnbinderKey);
   v6 = v5;
   if (a3 && !v5)
   {
     v6 = objc_alloc_init(VSUnbinder);
-    objc_setAssociatedObject(v4, vs_unbinderCreatingIfNeeded__kVSUnbinderKey, v6, 0x301);
+    objc_setAssociatedObject(selfCopy, vs_unbinderCreatingIfNeeded__kVSUnbinderKey, v6, 0x301);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

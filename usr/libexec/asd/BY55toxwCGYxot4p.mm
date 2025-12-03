@@ -1,6 +1,6 @@
 @interface BY55toxwCGYxot4p
 - (BY55toxwCGYxot4p)init;
-- (id)WnJ3gJFPRgsreXQi:(id)a3;
+- (id)WnJ3gJFPRgsreXQi:(id)qi;
 @end
 
 @implementation BY55toxwCGYxot4p
@@ -17,24 +17,24 @@
   return v2;
 }
 
-- (id)WnJ3gJFPRgsreXQi:(id)a3
+- (id)WnJ3gJFPRgsreXQi:(id)qi
 {
-  v4 = [a3 value];
+  value = [qi value];
   v5 = +[NSMutableDictionary dictionary];
-  if (!v4)
+  if (!value)
   {
     goto LABEL_9;
   }
 
-  v6 = [v4 firstName];
-  if (!v6)
+  firstName = [value firstName];
+  if (!firstName)
   {
-    v6 = [v4 lastName];
-    if (!v6)
+    firstName = [value lastName];
+    if (!firstName)
     {
-      v16 = [v4 fullName];
+      fullName = [value fullName];
 
-      if (v16)
+      if (fullName)
       {
         goto LABEL_5;
       }
@@ -59,7 +59,7 @@ LABEL_5:
   v22 = v9;
   v10 = v8;
   v23 = v10;
-  [v7 SKiIwgejuzELNOY0:v4 completion:v21];
+  [v7 SKiIwgejuzELNOY0:value completion:v21];
   dispatch_group_enter(v10);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -70,7 +70,7 @@ LABEL_5:
   v19 = v11;
   v12 = v10;
   v20 = v12;
-  [v7 b8mzIZQ1GCTnhVAP:v4 completion:v18];
+  [v7 b8mzIZQ1GCTnhVAP:value completion:v18];
   v13 = dispatch_time(0, 1800000000);
   if (dispatch_group_wait(v12, v13))
   {

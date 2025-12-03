@@ -1,28 +1,28 @@
 @interface NEKEventChangeSet
-- (void)_enumerateForChangeType:(int)a3 forEntitiesOfClass:(Class)a4 withBlock:(id)a5;
+- (void)_enumerateForChangeType:(int)type forEntitiesOfClass:(Class)class withBlock:(id)block;
 @end
 
 @implementation NEKEventChangeSet
 
-- (void)_enumerateForChangeType:(int)a3 forEntitiesOfClass:(Class)a4 withBlock:(id)a5
+- (void)_enumerateForChangeType:(int)type forEntitiesOfClass:(Class)class withBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
+  typeCopy = type;
+  blockCopy = block;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v21 = 0;
-  if (objc_opt_class() == a4)
+  if (objc_opt_class() == class)
   {
     v10 = &stru_1000B5798;
   }
 
-  else if (objc_opt_class() == a4)
+  else if (objc_opt_class() == class)
   {
     v10 = &stru_1000B57B8;
   }
 
-  else if (objc_opt_class() == a4)
+  else if (objc_opt_class() == class)
   {
     v10 = &stru_1000B57D8;
   }
@@ -31,7 +31,7 @@
   {
     v9 = objc_opt_class();
     v10 = &stru_1000B57F8;
-    if (v9 != a4)
+    if (v9 != class)
     {
       v10 = 0;
     }
@@ -43,25 +43,25 @@
   v16[3] = &unk_1000B5820;
   v19 = v20;
   v17 = v10;
-  v11 = v8;
+  v11 = blockCopy;
   v18 = v11;
   v12 = objc_retainBlock(v16);
-  if (v6)
+  if (typeCopy)
   {
-    v13 = [(NEKChangeSet *)self inserts];
-    (v12[2])(v12, v13, 1);
+    inserts = [(NEKChangeSet *)self inserts];
+    (v12[2])(v12, inserts, 1);
   }
 
-  if ((v6 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
-    v14 = [(NEKChangeSet *)self updates];
-    (v12[2])(v12, v14, 2);
+    updates = [(NEKChangeSet *)self updates];
+    (v12[2])(v12, updates, 2);
   }
 
-  if ((v6 & 4) != 0)
+  if ((typeCopy & 4) != 0)
   {
-    v15 = [(NEKChangeSet *)self deletes];
-    (v12[2])(v12, v15, 4);
+    deletes = [(NEKChangeSet *)self deletes];
+    (v12[2])(v12, deletes, 4);
   }
 
   _Block_object_dispose(v20, 8);

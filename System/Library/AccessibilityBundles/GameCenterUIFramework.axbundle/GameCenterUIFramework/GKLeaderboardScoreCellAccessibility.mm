@@ -1,16 +1,16 @@
 @interface GKLeaderboardScoreCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation GKLeaderboardScoreCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"rankLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"scoreLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"rankLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKLeaderboardScoreCell" hasInstanceMethod:@"scoreLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

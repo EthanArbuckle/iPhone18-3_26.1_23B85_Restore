@@ -31,9 +31,9 @@
         v10 = [v9 description];
         [v3 appendString:v10];
 
-        v11 = [(NSMutableArray *)self->super._childMessages lastObject];
+        lastObject = [(NSMutableArray *)self->super._childMessages lastObject];
 
-        if (v9 != v11)
+        if (v9 != lastObject)
         {
           [v3 appendString:@"\n"];
         }

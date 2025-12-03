@@ -3,14 +3,14 @@
 - (id)allYValues;
 - (id)minYValue;
 - (id)userInfo;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation MedicationChartPoint
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
-  v3 = self;
+  selfCopy = self;
   if (sub_2282325DC())
   {
     sub_2282329D8();
@@ -18,8 +18,8 @@
 
   else
   {
-    v4 = *(&v3->super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationChartPoint_takenCount);
-    v5 = *(&v3->super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationChartPoint_skippedCount);
+    v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationChartPoint_takenCount);
+    v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationChartPoint_skippedCount);
   }
 
   v6 = sub_228393480();
@@ -29,7 +29,7 @@
 
 - (id)allYValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_228232F18();
 
   v3 = sub_228392190();
@@ -39,7 +39,7 @@
 
 - (id)minYValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_228233054(v11);
 
   v3 = v12;
@@ -66,7 +66,7 @@
 
 - (id)userInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_228233294();
 
   return v3;

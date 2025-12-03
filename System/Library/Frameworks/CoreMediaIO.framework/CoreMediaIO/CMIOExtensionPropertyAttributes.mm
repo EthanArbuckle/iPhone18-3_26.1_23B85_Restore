@@ -1,34 +1,34 @@
 @interface CMIOExtensionPropertyAttributes
-+ (CMIOExtensionPropertyAttributes)propertyAttributesWithSharedStreamDefaultValue:(id)a3 minValue:(id)a4 maxValue:(id)a5 validValues:(id)a6;
++ (CMIOExtensionPropertyAttributes)propertyAttributesWithSharedStreamDefaultValue:(id)value minValue:(id)minValue maxValue:(id)maxValue validValues:(id)values;
 + (CMIOExtensionPropertyAttributes)readOnlyPropertyAttribute;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionPropertyAttributes)initWithCoder:(id)a3;
-- (CMIOExtensionPropertyAttributes)initWithMinValue:(id)a3 maxValue:(id)a4 validValues:(id)a5 sharedStreamDefaultValue:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionPropertyAttributes)initWithCoder:(id)coder;
 - (CMIOExtensionPropertyAttributes)initWithMinValue:(id)minValue maxValue:(id)maxValue validValues:(NSArray *)validValues readOnly:(BOOL)readOnly;
-- (CMIOExtensionPropertyAttributes)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIOExtensionPropertyAttributes)initWithMinValue:(id)value maxValue:(id)maxValue validValues:(id)values sharedStreamDefaultValue:(id)defaultValue;
+- (CMIOExtensionPropertyAttributes)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (void)copyXPCDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionPropertyAttributes
 
-+ (CMIOExtensionPropertyAttributes)propertyAttributesWithSharedStreamDefaultValue:(id)a3 minValue:(id)a4 maxValue:(id)a5 validValues:(id)a6
++ (CMIOExtensionPropertyAttributes)propertyAttributesWithSharedStreamDefaultValue:(id)value minValue:(id)minValue maxValue:(id)maxValue validValues:(id)values
 {
-  v6 = [objc_alloc(objc_opt_class()) initWithMinValue:a4 maxValue:a5 validValues:a6 sharedStreamDefaultValue:a3];
+  v6 = [objc_alloc(objc_opt_class()) initWithMinValue:minValue maxValue:maxValue validValues:values sharedStreamDefaultValue:value];
 
   return v6;
 }
 
-- (CMIOExtensionPropertyAttributes)initWithMinValue:(id)a3 maxValue:(id)a4 validValues:(id)a5 sharedStreamDefaultValue:(id)a6
+- (CMIOExtensionPropertyAttributes)initWithMinValue:(id)value maxValue:(id)maxValue validValues:(id)values sharedStreamDefaultValue:(id)defaultValue
 {
-  result = [(CMIOExtensionPropertyAttributes *)self initWithMinValue:a3 maxValue:a4 validValues:a5 readOnly:0];
+  result = [(CMIOExtensionPropertyAttributes *)self initWithMinValue:value maxValue:maxValue validValues:values readOnly:0];
   if (result)
   {
-    result->_sharedStreamDefaultValue = a6;
+    result->_sharedStreamDefaultValue = defaultValue;
   }
 
   return result;
@@ -327,9 +327,9 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -343,16 +343,16 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
     if (objc_opt_isKindOfClass())
     {
       minValue = self->_minValue;
-      if (minValue == [a3 minValue] || (v12 = objc_msgSend(self->_minValue, "isEqual:", objc_msgSend(a3, "minValue"))) != 0)
+      if (minValue == [equal minValue] || (v12 = objc_msgSend(self->_minValue, "isEqual:", objc_msgSend(equal, "minValue"))) != 0)
       {
         maxValue = self->_maxValue;
-        if (maxValue == [a3 maxValue] || (v12 = objc_msgSend(self->_maxValue, "isEqual:", objc_msgSend(a3, "maxValue"))) != 0)
+        if (maxValue == [equal maxValue] || (v12 = objc_msgSend(self->_maxValue, "isEqual:", objc_msgSend(equal, "maxValue"))) != 0)
         {
           validValues = self->_validValues;
-          if (validValues == [a3 validValues] || (v12 = -[NSArray isEqual:](self->_validValues, "isEqual:", objc_msgSend(a3, "validValues"))) != 0)
+          if (validValues == [equal validValues] || (v12 = -[NSArray isEqual:](self->_validValues, "isEqual:", objc_msgSend(equal, "validValues"))) != 0)
           {
             readOnly = self->_readOnly;
-            LOBYTE(v12) = readOnly == [a3 isReadOnly];
+            LOBYTE(v12) = readOnly == [equal isReadOnly];
           }
         }
       }
@@ -367,9 +367,9 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionPropertyAttributes allocWithZone:a3];
+  v4 = [CMIOExtensionPropertyAttributes allocWithZone:zone];
   minValue = self->_minValue;
   maxValue = self->_maxValue;
   validValues = self->_validValues;
@@ -378,32 +378,32 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
   return [(CMIOExtensionPropertyAttributes *)v4 initWithMinValue:minValue maxValue:maxValue validValues:validValues readOnly:readOnly];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minValue = self->_minValue;
   if (minValue)
   {
-    [a3 encodeObject:minValue forKey:@"min"];
+    [coder encodeObject:minValue forKey:@"min"];
   }
 
   maxValue = self->_maxValue;
   if (maxValue)
   {
-    [a3 encodeObject:maxValue forKey:@"max"];
+    [coder encodeObject:maxValue forKey:@"max"];
   }
 
   validValues = self->_validValues;
   if (validValues)
   {
-    [a3 encodeObject:validValues forKey:@"validValues"];
+    [coder encodeObject:validValues forKey:@"validValues"];
   }
 
   readOnly = self->_readOnly;
 
-  [a3 encodeBool:readOnly forKey:@"readonly"];
+  [coder encodeBool:readOnly forKey:@"readonly"];
 }
 
-- (CMIOExtensionPropertyAttributes)initWithCoder:(id)a3
+- (CMIOExtensionPropertyAttributes)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
@@ -412,10 +412,10 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v5 setWithObjects:{v6, v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [a3 decodeObjectOfClasses:v11 forKey:@"min"];
-  v13 = [a3 decodeObjectOfClasses:v11 forKey:@"max"];
-  v14 = [a3 decodeObjectOfClasses:v11 forKey:@"validValues"];
-  v15 = [a3 decodeBoolForKey:@"readonly"];
+  v12 = [coder decodeObjectOfClasses:v11 forKey:@"min"];
+  v13 = [coder decodeObjectOfClasses:v11 forKey:@"max"];
+  v14 = [coder decodeObjectOfClasses:v11 forKey:@"validValues"];
+  v15 = [coder decodeBoolForKey:@"readonly"];
 
   return [(CMIOExtensionPropertyAttributes *)self initWithMinValue:v12 maxValue:v13 validValues:v14 readOnly:v15];
 }
@@ -594,11 +594,11 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
       v11 = self->_minValue;
       if (v11)
       {
-        v12 = [v11 copyXPCDictionary];
-        if (v12)
+        copyXPCDictionary = [v11 copyXPCDictionary];
+        if (copyXPCDictionary)
         {
-          v13 = v12;
-          xpc_dictionary_set_value(v3, "min", v12);
+          v13 = copyXPCDictionary;
+          xpc_dictionary_set_value(v3, "min", copyXPCDictionary);
           xpc_release(v13);
         }
 
@@ -615,11 +615,11 @@ CMIOExtensionPropertyAttributes *__60__CMIOExtensionPropertyAttributes_readOnlyP
       v39 = self->_maxValue;
       if (v39)
       {
-        v40 = [v39 copyXPCDictionary];
-        if (v40)
+        copyXPCDictionary2 = [v39 copyXPCDictionary];
+        if (copyXPCDictionary2)
         {
-          v41 = v40;
-          xpc_dictionary_set_value(v3, "max", v40);
+          v41 = copyXPCDictionary2;
+          xpc_dictionary_set_value(v3, "max", copyXPCDictionary2);
           xpc_release(v41);
         }
 
@@ -765,33 +765,33 @@ LABEL_87:
   return v3;
 }
 
-- (CMIOExtensionPropertyAttributes)initWithXPCDictionary:(id)a3
+- (CMIOExtensionPropertyAttributes)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v28 = 0;
     v29 = 0;
     v27 = 0;
-    uint64 = xpc_dictionary_get_uint64(a3, "type");
-    v6 = xpc_dictionary_get_BOOL(a3, "readonly");
+    uint64 = xpc_dictionary_get_uint64(dictionary, "type");
+    v6 = xpc_dictionary_get_BOOL(dictionary, "readonly");
     if (uint64 > 4)
     {
       switch(uint64)
       {
         case 5:
-          value = xpc_dictionary_get_value(a3, "min");
+          value = xpc_dictionary_get_value(dictionary, "min");
           if (value)
           {
             v29 = [[CMIOExtensionStreamFormat alloc] initWithXPCDictionary:value];
           }
 
-          v18 = xpc_dictionary_get_value(a3, "max");
+          v18 = xpc_dictionary_get_value(dictionary, "max");
           if (v18)
           {
             v28 = [[CMIOExtensionStreamFormat alloc] initWithXPCDictionary:v18];
           }
 
-          v19 = xpc_dictionary_get_value(a3, "validValues");
+          v19 = xpc_dictionary_get_value(dictionary, "validValues");
           if (v19)
           {
             v27 = [CMIOExtensionStreamFormat copyFormatsFromXPCArray:v19];
@@ -799,7 +799,7 @@ LABEL_87:
 
           break;
         case 6:
-          if (cmio_XPCMessageCopyCFDictionary(a3, "min", &v29))
+          if (cmio_XPCMessageCopyCFDictionary(dictionary, "min", &v29))
           {
             v23 = CMIOLog();
             if (v23)
@@ -811,7 +811,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFDictionary(a3, "max", &v28))
+          if (cmio_XPCMessageCopyCFDictionary(dictionary, "max", &v28))
           {
             v24 = CMIOLog();
             if (v24)
@@ -823,7 +823,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "validValues", &v27))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "validValues", &v27))
           {
             v25 = CMIOLog();
             if (v25)
@@ -837,7 +837,7 @@ LABEL_87:
 
           break;
         case 7:
-          if (cmio_XPCMessageCopyCFArray(a3, "min", &v29))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "min", &v29))
           {
             v11 = CMIOLog();
             if (v11)
@@ -849,7 +849,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "max", &v28))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "max", &v28))
           {
             v12 = CMIOLog();
             if (v12)
@@ -861,7 +861,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "validValues", &v27))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "validValues", &v27))
           {
             v13 = CMIOLog();
             if (v13)
@@ -882,7 +882,7 @@ LABEL_87:
       switch(uint64)
       {
         case 2:
-          if (cmio_XPCMessageCopyCFData(a3, "min", &v29))
+          if (cmio_XPCMessageCopyCFData(dictionary, "min", &v29))
           {
             v14 = CMIOLog();
             if (v14)
@@ -894,7 +894,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFData(a3, "max", &v28))
+          if (cmio_XPCMessageCopyCFData(dictionary, "max", &v28))
           {
             v15 = CMIOLog();
             if (v15)
@@ -906,7 +906,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "validValues", &v27))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "validValues", &v27))
           {
             v16 = CMIOLog();
             if (v16)
@@ -920,7 +920,7 @@ LABEL_87:
 
           break;
         case 3:
-          if (cmio_XPCMessageCopyCFNumber(a3, "min", &v29))
+          if (cmio_XPCMessageCopyCFNumber(dictionary, "min", &v29))
           {
             v20 = CMIOLog();
             if (v20)
@@ -932,7 +932,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFNumber(a3, "max", &v28))
+          if (cmio_XPCMessageCopyCFNumber(dictionary, "max", &v28))
           {
             v21 = CMIOLog();
             if (v21)
@@ -944,7 +944,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "validValues", &v27))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "validValues", &v27))
           {
             v22 = CMIOLog();
             if (v22)
@@ -958,7 +958,7 @@ LABEL_87:
 
           break;
         case 4:
-          if (cmio_XPCMessageCopyCFString(a3, "min", &v29))
+          if (cmio_XPCMessageCopyCFString(dictionary, "min", &v29))
           {
             v7 = CMIOLog();
             if (v7)
@@ -970,7 +970,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFString(a3, "max", &v28))
+          if (cmio_XPCMessageCopyCFString(dictionary, "max", &v28))
           {
             v8 = CMIOLog();
             if (v8)
@@ -982,7 +982,7 @@ LABEL_87:
             }
           }
 
-          if (cmio_XPCMessageCopyCFArray(a3, "validValues", &v27))
+          if (cmio_XPCMessageCopyCFArray(dictionary, "validValues", &v27))
           {
             v9 = CMIOLog();
             if (v9)

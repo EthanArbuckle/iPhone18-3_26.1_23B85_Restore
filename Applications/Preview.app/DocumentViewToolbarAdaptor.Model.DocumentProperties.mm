@@ -1,11 +1,11 @@
 @interface DocumentViewToolbarAdaptor.Model.DocumentProperties
-- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithMetadata:(id)a3;
-- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithURL:(id)a3;
+- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithMetadata:(id)metadata;
+- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithURL:(id)l;
 @end
 
 @implementation DocumentViewToolbarAdaptor.Model.DocumentProperties
 
-- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithURL:(id)a3
+- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithURL:(id)l
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for URL();
@@ -33,7 +33,7 @@
   return v12;
 }
 
-- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithMetadata:(id)a3
+- (_TtCCC7Preview26DocumentViewToolbarAdaptor5Model18DocumentProperties)initWithMetadata:(id)metadata
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

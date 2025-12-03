@@ -1,6 +1,6 @@
 @interface _HDProcedureRecordEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -23,85 +23,85 @@
   v9[11] = @"follow_ups_coding_collections";
   v9[12] = @"body_sites_coding_collections";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:13];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD7B0]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD7B0]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     objc_opt_class();
     v43 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setProcedureCodingCollection:v43];
+    [objectCopy _setProcedureCodingCollection:v43];
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
     v42 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setPerformers:v42];
+    [objectCopy _setPerformers:v42];
     objc_opt_class();
     v41 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setExecutionStartDate:v41];
+    [objectCopy _setExecutionStartDate:v41];
     objc_opt_class();
     v40 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setExecutionEndDate:v40];
-    [v10 _setNotPerformed:HDSQLiteColumnWithNameAsBoolean()];
+    [objectCopy _setExecutionEndDate:v40];
+    [objectCopy _setNotPerformed:HDSQLiteColumnWithNameAsBoolean()];
     objc_opt_class();
     v39 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setStatusCoding:v39];
+    [objectCopy _setStatusCoding:v39];
     objc_opt_class();
     v38 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setCategoryCodingCollection:v38];
+    [objectCopy _setCategoryCodingCollection:v38];
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
     v37 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setReasonCodingCollections:v37];
+    [objectCopy _setReasonCodingCollections:v37];
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
     v22 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setReasonsNotPerformedCodingCollections:v22];
+    [objectCopy _setReasonsNotPerformedCodingCollections:v22];
     objc_opt_class();
     v23 = HDSQLiteColumnWithNameAsObject();
-    [v10 _setOutcomeCodingCollection:v23];
+    [objectCopy _setOutcomeCodingCollection:v23];
     v24 = MEMORY[0x277CBEB98];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
     v27 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setComplicationsCodingCollections:v27];
+    [objectCopy _setComplicationsCodingCollections:v27];
     v28 = MEMORY[0x277CBEB98];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
     v31 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setFollowUpsCodingCollections:v31];
+    [objectCopy _setFollowUpsCodingCollections:v31];
     v32 = MEMORY[0x277CBEB98];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
     v35 = HDSQLiteColumnWithNameAsObjectWithClasses();
 
-    [v10 _setBodySitesCodingCollections:v35];
+    [objectCopy _setBodySitesCodingCollections:v35];
   }
 
   return v12;

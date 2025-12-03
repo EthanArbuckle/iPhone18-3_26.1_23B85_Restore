@@ -1,13 +1,13 @@
 @interface CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
 @end
 
 @implementation CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"bottomLabel"])
+  if ([key isEqualToString:@"bottomLabel"])
   {
     return @"bottomLabelData";
   }
@@ -18,15 +18,15 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeImage alloc];
-  v6 = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge *)self gaugeProvider];
-  v7 = [v4 objectForKeyedSubscript:@"bottomLabelData"];
+  gaugeProvider = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge *)self gaugeProvider];
+  v7 = [providersCopy objectForKeyedSubscript:@"bottomLabelData"];
 
-  v8 = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge *)self centerTextProvider];
-  v9 = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeImage *)v5 initWithGaugeProvider:v6 bottomImageProvider:v7 centerTextProvider:v8];
+  centerTextProvider = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeViewBridge *)self centerTextProvider];
+  v9 = [(CLKComplicationTemplateGraphicExtraLargeCircularOpenGaugeImage *)v5 initWithGaugeProvider:gaugeProvider bottomImageProvider:v7 centerTextProvider:centerTextProvider];
 
   [(CLKComplicationTemplate *)v9 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 

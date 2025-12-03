@@ -1,22 +1,22 @@
 @interface FUPlaneTrackerAnnotationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityGeocodingGroup;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation FUPlaneTrackerAnnotationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceMethod:@"currentLocation" withFullSignature:{"{CLLocationCoordinate2D=dd}", 0}];
-  [v3 validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceVariable:@"_showsPlane" withType:"B"];
-  [v3 validateClass:@"FUPlaneTrackerAnnotationView" isKindOfClass:@"MKAnnotationView"];
-  [v3 validateClass:@"FUPlaneTrackerAnnotationView" conformsToProtocol:@"MKAnnotation"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceMethod:@"currentProgress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceMethod:@"currentLocation" withFullSignature:{"{CLLocationCoordinate2D=dd}", 0}];
+  [validationsCopy validateClass:@"FUPlaneTrackerAnnotationView" hasInstanceVariable:@"_showsPlane" withType:"B"];
+  [validationsCopy validateClass:@"FUPlaneTrackerAnnotationView" isKindOfClass:@"MKAnnotationView"];
+  [validationsCopy validateClass:@"FUPlaneTrackerAnnotationView" conformsToProtocol:@"MKAnnotation"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,19 +26,19 @@
   return *MEMORY[0x29EDC7FF0] | [(FUPlaneTrackerAnnotationViewAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
   v4.receiver = self;
   v4.super_class = FUPlaneTrackerAnnotationViewAccessibility;
-  [(FUPlaneTrackerAnnotationViewAccessibility *)&v4 setCoordinate:a3.latitude, a3.longitude];
+  [(FUPlaneTrackerAnnotationViewAccessibility *)&v4 setCoordinate:coordinate.latitude, coordinate.longitude];
   [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
 - (id)_accessibilityGeocodingGroup
 {
-  v3 = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityGetGeocodingGroup];
+  _accessibilityGetGeocodingGroup = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityGetGeocodingGroup];
 
-  if (!v3)
+  if (!_accessibilityGetGeocodingGroup)
   {
     v4 = dispatch_group_create();
     [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilitySetGeocodingGroup:v4];
@@ -72,14 +72,14 @@
   AXPerformSafeBlock();
   if (v6[3])
   {
-    v3 = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityGeocodingGroup];
+    _accessibilityGeocodingGroup = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityGeocodingGroup];
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __87__FUPlaneTrackerAnnotationViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;
     block[3] = &unk_29F2BF348;
     block[4] = self;
     block[5] = v9;
-    dispatch_group_notify(v3, MEMORY[0x29EDCA578], block);
+    dispatch_group_notify(_accessibilityGeocodingGroup, MEMORY[0x29EDCA578], block);
   }
 
   _Block_object_dispose(&v5, 8);
@@ -179,7 +179,7 @@ LABEL_17:
 - (id)accessibilityValue
 {
   [(FUPlaneTrackerAnnotationViewAccessibility *)self safeCGFloatForKey:@"currentProgress"];
-  v3 = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityNearbyLocationDescription];
+  _accessibilityNearbyLocationDescription = [(FUPlaneTrackerAnnotationViewAccessibility *)self _accessibilityNearbyLocationDescription];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = accessibilityLocalizedString(@"flight.percent.complete");
   v6 = AXFormatFloatWithPercentage();

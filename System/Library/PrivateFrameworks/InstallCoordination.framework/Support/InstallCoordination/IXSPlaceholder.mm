@@ -1,16 +1,16 @@
 @interface IXSPlaceholder
-+ (id)_metadataFromPromise:(id)a3;
-+ (id)_sanitizedFilesystemNameForName:(id)a3 fileExtension:(id)a4 fallingBackToName:(id)a5;
-- (BOOL)_checkLocationOfPromiseMatchesOurs:(id)a3 description:(id)a4 error:(id *)a5;
-- (BOOL)_internal_checkInitWithSeed:(id)a3 error:(id *)a4;
++ (id)_metadataFromPromise:(id)promise;
++ (id)_sanitizedFilesystemNameForName:(id)name fileExtension:(id)extension fallingBackToName:(id)toName;
+- (BOOL)_checkLocationOfPromiseMatchesOurs:(id)ours description:(id)description error:(id *)error;
+- (BOOL)_internal_checkInitWithSeed:(id)seed error:(id *)error;
 - (BOOL)_isReadyToMaterialize;
 - (BOOL)_materialize;
-- (BOOL)_validateClientEntitlements:(id *)a3;
-- (BOOL)awakeFromSerializationWithLookupBlock:(id)a3 error:(id *)a4;
-- (BOOL)cancelForReason:(id)a3 client:(unint64_t)a4 error:(id *)a5;
+- (BOOL)_validateClientEntitlements:(id *)entitlements;
+- (BOOL)awakeFromSerializationWithLookupBlock:(id)block error:(id *)error;
+- (BOOL)cancelForReason:(id)reason client:(unint64_t)client error:(id *)error;
 - (BOOL)isComplete;
-- (IXSPlaceholder)initWithCoder:(id)a3;
-- (IXSPlaceholder)initWithSeed:(id)a3 fromConnection:(id)a4 error:(id *)a5;
+- (IXSPlaceholder)initWithCoder:(id)coder;
+- (IXSPlaceholder)initWithSeed:(id)seed fromConnection:(id)connection error:(id *)error;
 - (MIStoreMetadata)metadata;
 - (NSData)sinfData;
 - (NSDictionary)localizationDictionary;
@@ -19,73 +19,73 @@
 - (NSString)bundleName;
 - (double)percentComplete;
 - (id)_preparedBundleDirectoryName;
-- (id)_promiseUUIDsForPromise:(id)a3;
+- (id)_promiseUUIDsForPromise:(id)promise;
 - (id)subPromiseUUIDs;
 - (unint64_t)installType;
 - (unint64_t)totalBytesNeededOnDisk;
-- (void)_cancelPromise:(id)a3 forReason:(id)a4 client:(unint64_t)a5;
-- (void)_decommissionPromise:(id)a3;
+- (void)_cancelPromise:(id)promise forReason:(id)reason client:(unint64_t)client;
+- (void)_decommissionPromise:(id)promise;
 - (void)_materializeIfReady;
-- (void)_remote_getAppExtensionPlaceholderPromises:(id)a3;
-- (void)_remote_getAttributesWithCompletion:(id)a3;
-- (void)_remote_getEntitlementsPromise:(id)a3;
-- (void)_remote_getIconPromise:(id)a3;
-- (void)_remote_getIconResourcesPromiseAndInfoPlistContent:(id)a3;
-- (void)_remote_getInfoPlistLoctablePromise:(id)a3;
-- (void)_remote_getLaunchProhibitedWithCompletion:(id)a3;
-- (void)_remote_getLocalizationDictionary:(id)a3;
-- (void)_remote_getMetadataWithCompletion:(id)a3;
-- (void)_remote_getSinfDataWithCompletion:(id)a3;
-- (void)_remote_hasAppExtensionPlaceholderPromises:(id)a3;
-- (void)_remote_hasEntitlementsPromise:(id)a3;
-- (void)_remote_hasIconPromise:(id)a3;
-- (void)_remote_hasIconResourcesPromise:(id)a3;
-- (void)_remote_hasInfoPlistLoctablePromise:(id)a3;
-- (void)_remote_setAppExtensionPlaceholderPromiseUUIDs:(id)a3 completion:(id)a4;
-- (void)_remote_setAttributes:(id)a3 completion:(id)a4;
-- (void)_remote_setConfigurationCompleteWithCompletion:(id)a3;
-- (void)_remote_setEntitlementsPromiseUUID:(id)a3 completion:(id)a4;
-- (void)_remote_setIconPromiseUUID:(id)a3 completion:(id)a4;
-- (void)_remote_setIconResourcesPromiseUUID:(id)a3 infoPlistIconContentPromiseUUID:(id)a4 completion:(id)a5;
-- (void)_remote_setInfoPlistLoctablePromiseUUID:(id)a3 completion:(id)a4;
-- (void)_remote_setLaunchProhibited:(BOOL)a3 completion:(id)a4;
-- (void)_remote_setLocalizationPromiseUUID:(id)a3 completion:(id)a4;
-- (void)_remote_setMetadataPromiseUUID:(id)a3 fromConnection:(id)a4 completion:(id)a5;
-- (void)_remote_setSinfPromiseUUID:(id)a3 completion:(id)a4;
+- (void)_remote_getAppExtensionPlaceholderPromises:(id)promises;
+- (void)_remote_getAttributesWithCompletion:(id)completion;
+- (void)_remote_getEntitlementsPromise:(id)promise;
+- (void)_remote_getIconPromise:(id)promise;
+- (void)_remote_getIconResourcesPromiseAndInfoPlistContent:(id)content;
+- (void)_remote_getInfoPlistLoctablePromise:(id)promise;
+- (void)_remote_getLaunchProhibitedWithCompletion:(id)completion;
+- (void)_remote_getLocalizationDictionary:(id)dictionary;
+- (void)_remote_getMetadataWithCompletion:(id)completion;
+- (void)_remote_getSinfDataWithCompletion:(id)completion;
+- (void)_remote_hasAppExtensionPlaceholderPromises:(id)promises;
+- (void)_remote_hasEntitlementsPromise:(id)promise;
+- (void)_remote_hasIconPromise:(id)promise;
+- (void)_remote_hasIconResourcesPromise:(id)promise;
+- (void)_remote_hasInfoPlistLoctablePromise:(id)promise;
+- (void)_remote_setAppExtensionPlaceholderPromiseUUIDs:(id)ds completion:(id)completion;
+- (void)_remote_setAttributes:(id)attributes completion:(id)completion;
+- (void)_remote_setConfigurationCompleteWithCompletion:(id)completion;
+- (void)_remote_setEntitlementsPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_setIconPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_setIconResourcesPromiseUUID:(id)d infoPlistIconContentPromiseUUID:(id)iD completion:(id)completion;
+- (void)_remote_setInfoPlistLoctablePromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_setLaunchProhibited:(BOOL)prohibited completion:(id)completion;
+- (void)_remote_setLocalizationPromiseUUID:(id)d completion:(id)completion;
+- (void)_remote_setMetadataPromiseUUID:(id)d fromConnection:(id)connection completion:(id)completion;
+- (void)_remote_setSinfPromiseUUID:(id)d completion:(id)completion;
 - (void)decommission;
-- (void)encodeWithCoder:(id)a3;
-- (void)promise:(id)a3 didCancelForReason:(id)a4 client:(unint64_t)a5;
-- (void)promise:(id)a3 didUpdateProgress:(double)a4;
-- (void)promiseDidBegin:(id)a3;
-- (void)promiseDidComplete:(id)a3;
-- (void)promiseDidReset:(id)a3;
-- (void)setAppExtensionPlaceholders:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setConfigurationComplete:(BOOL)a3;
-- (void)setEntitlements:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconResourcesPromise:(id)a3;
-- (void)setIconResourcesPromise:(id)a3 andInfoPlistIconContentPromise:(id)a4;
-- (void)setInfoPlistIconContentPromise:(id)a3;
-- (void)setInfoPlistLoctable:(id)a3;
-- (void)setLocalizationDictionaryPromise:(id)a3;
-- (void)setMetadataPromise:(id)a3;
-- (void)setPercentComplete:(double)a3;
-- (void)setSinfPromise:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)promise:(id)promise didCancelForReason:(id)reason client:(unint64_t)client;
+- (void)promise:(id)promise didUpdateProgress:(double)progress;
+- (void)promiseDidBegin:(id)begin;
+- (void)promiseDidComplete:(id)complete;
+- (void)promiseDidReset:(id)reset;
+- (void)setAppExtensionPlaceholders:(id)placeholders;
+- (void)setAttributes:(id)attributes;
+- (void)setConfigurationComplete:(BOOL)complete;
+- (void)setEntitlements:(id)entitlements;
+- (void)setIcon:(id)icon;
+- (void)setIconResourcesPromise:(id)promise;
+- (void)setIconResourcesPromise:(id)promise andInfoPlistIconContentPromise:(id)contentPromise;
+- (void)setInfoPlistIconContentPromise:(id)promise;
+- (void)setInfoPlistLoctable:(id)loctable;
+- (void)setLocalizationDictionaryPromise:(id)promise;
+- (void)setMetadataPromise:(id)promise;
+- (void)setPercentComplete:(double)complete;
+- (void)setSinfPromise:(id)promise;
 @end
 
 @implementation IXSPlaceholder
 
-- (BOOL)_internal_checkInitWithSeed:(id)a3 error:(id *)a4
+- (BOOL)_internal_checkInitWithSeed:(id)seed error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bundleName];
+  seedCopy = seed;
+  bundleName = [seedCopy bundleName];
 
-  if (v6)
+  if (bundleName)
   {
-    v7 = [v5 bundleID];
+    bundleID = [seedCopy bundleID];
 
-    if (v7)
+    if (bundleID)
     {
       v8 = 0;
       v9 = 1;
@@ -115,11 +115,11 @@
   }
 
   v8 = sub_1000405FC("[IXSPlaceholder _internal_checkInitWithSeed:error:]", v13, @"IXErrorDomain", 1uLL, 0, 0, v12, v11, v16);
-  if (a4)
+  if (error)
   {
     v8 = v8;
     v9 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -132,23 +132,23 @@ LABEL_13:
   return v9;
 }
 
-- (IXSPlaceholder)initWithSeed:(id)a3 fromConnection:(id)a4 error:(id *)a5
+- (IXSPlaceholder)initWithSeed:(id)seed fromConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  seedCopy = seed;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = IXSPlaceholder;
-  v10 = [(IXSOwnedDataPromise *)&v14 initWithSeed:v8 error:a5];
+  v10 = [(IXSOwnedDataPromise *)&v14 initWithSeed:seedCopy error:error];
   v11 = v10;
   if (v10)
   {
-    if (![(IXSPlaceholder *)v10 _internal_checkInitWithSeed:v8 error:a5])
+    if (![(IXSPlaceholder *)v10 _internal_checkInitWithSeed:seedCopy error:error])
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v11->_creatorHadWebPlaceholderInstallEntitlement = sub_10000D71C(v9, @"com.apple.private.appinstall.install-webkit-push-placeholder");
+    v11->_creatorHadWebPlaceholderInstallEntitlement = sub_10000D71C(connectionCopy, @"com.apple.private.appinstall.install-webkit-push-placeholder");
   }
 
   v12 = v11;
@@ -157,47 +157,47 @@ LABEL_6:
   return v12;
 }
 
-- (IXSPlaceholder)initWithCoder:(id)a3
+- (IXSPlaceholder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = IXSPlaceholder;
-  v5 = [(IXSOwnedDataPromise *)&v31 initWithCoder:v4];
+  v5 = [(IXSOwnedDataPromise *)&v31 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconPromiseUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconPromiseUUID"];
     iconPromiseUUID = v5->_iconPromiseUUID;
     v5->_iconPromiseUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconResourcesPromiseUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconResourcesPromiseUUID"];
     iconResourcesPromiseUUID = v5->_iconResourcesPromiseUUID;
     v5->_iconResourcesPromiseUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"infoPlistIconContentPromiseUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"infoPlistIconContentPromiseUUID"];
     infoPlistIconContentPromiseUUID = v5->_infoPlistIconContentPromiseUUID;
     v5->_infoPlistIconContentPromiseUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entitlementsPromiseUUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entitlementsPromiseUUID"];
     entitlementsPromiseUUID = v5->_entitlementsPromiseUUID;
     v5->_entitlementsPromiseUUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"infoPlistLoctablePromiseUUID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"infoPlistLoctablePromiseUUID"];
     infoPlistLoctablePromiseUUID = v5->_infoPlistLoctablePromiseUUID;
     v5->_infoPlistLoctablePromiseUUID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataPromiseUUID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataPromiseUUID"];
     metadataPromiseUUID = v5->_metadataPromiseUUID;
     v5->_metadataPromiseUUID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sinfPromiseUUID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sinfPromiseUUID"];
     sinfPromiseUUID = v5->_sinfPromiseUUID;
     v5->_sinfPromiseUUID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizationDictionaryPromiseUUID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizationDictionaryPromiseUUID"];
     localizationDictionaryPromiseUUID = v5->_localizationDictionaryPromiseUUID;
     v5->_localizationDictionaryPromiseUUID = v20;
 
-    v22 = [v4 containsValueForKey:@"appExtensionPlaceholdersPromiseUUIDs"];
+    v22 = [coderCopy containsValueForKey:@"appExtensionPlaceholdersPromiseUUIDs"];
     v23 = objc_opt_class();
     v24 = [NSSet setWithObjects:v23, objc_opt_class(), 0];
     if (v22)
@@ -210,87 +210,87 @@ LABEL_6:
       v25 = @"plugInPlaceholdersPromiseUUIDs";
     }
 
-    v26 = [v4 decodeObjectOfClasses:v24 forKey:v25];
+    v26 = [coderCopy decodeObjectOfClasses:v24 forKey:v25];
     appExtensionPlaceholdersPromiseUUIDs = v5->_appExtensionPlaceholdersPromiseUUIDs;
     v5->_appExtensionPlaceholdersPromiseUUIDs = v26;
 
-    v5->_sentDidBegin = [v4 decodeBoolForKey:@"sentDidBegin"];
-    v5->_configurationComplete = [v4 decodeBoolForKey:@"configurationComplete"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
+    v5->_sentDidBegin = [coderCopy decodeBoolForKey:@"sentDidBegin"];
+    v5->_configurationComplete = [coderCopy decodeBoolForKey:@"configurationComplete"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v28;
 
-    v5->_creatorHadWebPlaceholderInstallEntitlement = [v4 decodeBoolForKey:@"creatorHadWebPlaceholderInstallEntitlement"];
+    v5->_creatorHadWebPlaceholderInstallEntitlement = [coderCopy decodeBoolForKey:@"creatorHadWebPlaceholderInstallEntitlement"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  coderCopy = coder;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v16.receiver = self;
   v16.super_class = IXSPlaceholder;
-  [(IXSOwnedDataPromise *)&v16 encodeWithCoder:v4];
-  v6 = [(IXSPlaceholder *)self iconPromiseUUID];
-  [v4 encodeObject:v6 forKey:@"iconPromiseUUID"];
+  [(IXSOwnedDataPromise *)&v16 encodeWithCoder:coderCopy];
+  iconPromiseUUID = [(IXSPlaceholder *)self iconPromiseUUID];
+  [coderCopy encodeObject:iconPromiseUUID forKey:@"iconPromiseUUID"];
 
-  v7 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
-  [v4 encodeObject:v7 forKey:@"iconResourcesPromiseUUID"];
+  iconResourcesPromiseUUID = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
+  [coderCopy encodeObject:iconResourcesPromiseUUID forKey:@"iconResourcesPromiseUUID"];
 
-  v8 = [(IXSPlaceholder *)self infoPlistIconContentPromiseUUID];
-  [v4 encodeObject:v8 forKey:@"infoPlistIconContentPromiseUUID"];
+  infoPlistIconContentPromiseUUID = [(IXSPlaceholder *)self infoPlistIconContentPromiseUUID];
+  [coderCopy encodeObject:infoPlistIconContentPromiseUUID forKey:@"infoPlistIconContentPromiseUUID"];
 
-  v9 = [(IXSPlaceholder *)self entitlementsPromiseUUID];
-  [v4 encodeObject:v9 forKey:@"entitlementsPromiseUUID"];
+  entitlementsPromiseUUID = [(IXSPlaceholder *)self entitlementsPromiseUUID];
+  [coderCopy encodeObject:entitlementsPromiseUUID forKey:@"entitlementsPromiseUUID"];
 
-  v10 = [(IXSPlaceholder *)self infoPlistLoctablePromiseUUID];
-  [v4 encodeObject:v10 forKey:@"infoPlistLoctablePromiseUUID"];
+  infoPlistLoctablePromiseUUID = [(IXSPlaceholder *)self infoPlistLoctablePromiseUUID];
+  [coderCopy encodeObject:infoPlistLoctablePromiseUUID forKey:@"infoPlistLoctablePromiseUUID"];
 
-  v11 = [(IXSPlaceholder *)self metadataPromiseUUID];
-  [v4 encodeObject:v11 forKey:@"metadataPromiseUUID"];
+  metadataPromiseUUID = [(IXSPlaceholder *)self metadataPromiseUUID];
+  [coderCopy encodeObject:metadataPromiseUUID forKey:@"metadataPromiseUUID"];
 
-  v12 = [(IXSPlaceholder *)self sinfPromiseUUID];
-  [v4 encodeObject:v12 forKey:@"sinfPromiseUUID"];
+  sinfPromiseUUID = [(IXSPlaceholder *)self sinfPromiseUUID];
+  [coderCopy encodeObject:sinfPromiseUUID forKey:@"sinfPromiseUUID"];
 
-  v13 = [(IXSPlaceholder *)self localizationDictionaryPromiseUUID];
-  [v4 encodeObject:v13 forKey:@"localizationDictionaryPromiseUUID"];
+  localizationDictionaryPromiseUUID = [(IXSPlaceholder *)self localizationDictionaryPromiseUUID];
+  [coderCopy encodeObject:localizationDictionaryPromiseUUID forKey:@"localizationDictionaryPromiseUUID"];
 
-  v14 = [(IXSPlaceholder *)self appExtensionPlaceholdersPromiseUUIDs];
-  [v4 encodeObject:v14 forKey:@"appExtensionPlaceholdersPromiseUUIDs"];
+  appExtensionPlaceholdersPromiseUUIDs = [(IXSPlaceholder *)self appExtensionPlaceholdersPromiseUUIDs];
+  [coderCopy encodeObject:appExtensionPlaceholdersPromiseUUIDs forKey:@"appExtensionPlaceholdersPromiseUUIDs"];
 
-  [v4 encodeBool:-[IXSPlaceholder sentDidBegin](self forKey:{"sentDidBegin"), @"sentDidBegin"}];
-  [v4 encodeBool:-[IXSPlaceholder configurationComplete](self forKey:{"configurationComplete"), @"configurationComplete"}];
-  v15 = [(IXSPlaceholder *)self attributes];
-  [v4 encodeObject:v15 forKey:@"attributes"];
+  [coderCopy encodeBool:-[IXSPlaceholder sentDidBegin](self forKey:{"sentDidBegin"), @"sentDidBegin"}];
+  [coderCopy encodeBool:-[IXSPlaceholder configurationComplete](self forKey:{"configurationComplete"), @"configurationComplete"}];
+  attributes = [(IXSPlaceholder *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 
-  [v4 encodeBool:-[IXSPlaceholder creatorHadWebPlaceholderInstallEntitlement](self forKey:{"creatorHadWebPlaceholderInstallEntitlement"), @"creatorHadWebPlaceholderInstallEntitlement"}];
+  [coderCopy encodeBool:-[IXSPlaceholder creatorHadWebPlaceholderInstallEntitlement](self forKey:{"creatorHadWebPlaceholderInstallEntitlement"), @"creatorHadWebPlaceholderInstallEntitlement"}];
 }
 
-- (BOOL)awakeFromSerializationWithLookupBlock:(id)a3 error:(id *)a4
+- (BOOL)awakeFromSerializationWithLookupBlock:(id)block error:(id *)error
 {
-  v187 = a3;
+  blockCopy = block;
   v223 = 0;
   v224 = &v223;
   v225 = 0x3032000000;
   v226 = sub_10001F1AC;
   v227 = sub_10001F1BC;
   v228 = 0;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
-  v186 = self;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
+  selfCopy = self;
 
-  v6 = [(IXSPlaceholder *)self awakeningError];
+  awakeningError = [(IXSPlaceholder *)self awakeningError];
 
-  if (v6)
+  if (awakeningError)
   {
-    if (a4)
+    if (error)
     {
       [(IXSPlaceholder *)self awakeningError];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -308,8 +308,8 @@ LABEL_6:
   }
 
   [(IXSDataPromise *)self setDidAwake:1];
-  v182 = [(IXSPlaceholder *)self bundleID];
-  if ([v182 containsEmbeddedNULLCharacter])
+  bundleID = [(IXSPlaceholder *)self bundleID];
+  if ([bundleID containsEmbeddedNULLCharacter])
   {
     v8 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -319,15 +319,15 @@ LABEL_6:
       sub_10009AAE0();
     }
 
-    v9 = [(IXSDataPromise *)self name];
-    v11 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 191, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle identifier %@ contains an embedded NULL character, which is not allowed", v10, v9);
+    name = [(IXSDataPromise *)self name];
+    v11 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 191, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle identifier %@ contains an embedded NULL character, which is not allowed", v10, name);
 
     v12 = v224[5];
     v224[5] = v11;
   }
 
-  v180 = [(IXSPlaceholder *)self bundleDirectoryName];
-  if ([v180 containsEmbeddedNULLCharacter])
+  bundleDirectoryName = [(IXSPlaceholder *)self bundleDirectoryName];
+  if ([bundleDirectoryName containsEmbeddedNULLCharacter])
   {
     v13 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -335,13 +335,13 @@ LABEL_6:
       sub_10009AB30();
     }
 
-    v15 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 196, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle directory name %@ contains an embedded NULL character, which is not allowed", v14, v180);
+    v15 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 196, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle directory name %@ contains an embedded NULL character, which is not allowed", v14, bundleDirectoryName);
     v16 = v224[5];
     v224[5] = v15;
   }
 
-  v181 = [(IXSPlaceholder *)self bundleName];
-  if ([v181 containsEmbeddedNULLCharacter])
+  bundleName = [(IXSPlaceholder *)self bundleName];
+  if ([bundleName containsEmbeddedNULLCharacter])
   {
     v17 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -351,38 +351,38 @@ LABEL_6:
       sub_10009ABA8();
     }
 
-    v18 = [(IXSPlaceholder *)self bundleName];
-    v20 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 201, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle name %@ contains an embedded NULL character, which is not allowed", v19, v18);
+    bundleName2 = [(IXSPlaceholder *)self bundleName];
+    v20 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 201, @"IXErrorDomain", 0x2CuLL, 0, 0, @"%@: Bundle name %@ contains an embedded NULL character, which is not allowed", v19, bundleName2);
 
     v21 = v224[5];
     v224[5] = v20;
   }
 
-  v22 = [(IXSPlaceholder *)self iconPromiseUUID];
+  iconPromiseUUID = [(IXSPlaceholder *)self iconPromiseUUID];
 
-  v23 = self;
-  if (v22)
+  selfCopy4 = self;
+  if (iconPromiseUUID)
   {
-    v24 = [(IXSPlaceholder *)self iconPromiseUUID];
+    iconPromiseUUID2 = [(IXSPlaceholder *)self iconPromiseUUID];
     v25 = objc_opt_class();
-    v26 = v187[2](v187, v24, v25);
+    v26 = blockCopy[2](blockCopy, iconPromiseUUID2, v25);
     icon = self->_icon;
     self->_icon = v26;
 
     v28 = self->_icon;
     if (v28)
     {
-      v29 = [(IXSDataPromise *)v28 accessQueue];
+      accessQueue2 = [(IXSDataPromise *)v28 accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001F1C4;
       block[3] = &unk_100101830;
       block[4] = self;
-      v221 = v187;
+      v221 = blockCopy;
       v222 = &v223;
-      dispatch_sync(v29, block);
+      dispatch_sync(accessQueue2, block);
 
-      v23 = self;
+      selfCopy4 = self;
     }
 
     else
@@ -397,43 +397,43 @@ LABEL_6:
         sub_10009ABF8();
       }
 
-      v31 = [(IXSDataPromise *)self name];
-      v171 = [(IXSPlaceholder *)self iconPromiseUUID];
-      v33 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 210, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon promise with UUID %@", v32, v31);
+      name2 = [(IXSDataPromise *)self name];
+      iconPromiseUUID3 = [(IXSPlaceholder *)self iconPromiseUUID];
+      v33 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 210, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon promise with UUID %@", v32, name2);
 
       v34 = v224[5];
       v224[5] = v33;
 
-      v23 = self;
+      selfCopy4 = self;
       [(IXSPlaceholder *)self setIconPromiseUUID:0];
     }
   }
 
-  v35 = [(IXSPlaceholder *)v23 iconResourcesPromiseUUID];
+  iconResourcesPromiseUUID = [(IXSPlaceholder *)selfCopy4 iconResourcesPromiseUUID];
 
-  v36 = self;
-  if (v35)
+  selfCopy7 = self;
+  if (iconResourcesPromiseUUID)
   {
-    v37 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
+    iconResourcesPromiseUUID2 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
     v38 = objc_opt_class();
-    v39 = v187[2](v187, v37, v38);
+    v39 = blockCopy[2](blockCopy, iconResourcesPromiseUUID2, v38);
     iconResourcesPromise = self->_iconResourcesPromise;
     self->_iconResourcesPromise = v39;
 
     v41 = self->_iconResourcesPromise;
     if (v41)
     {
-      v42 = [(IXSDataPromise *)v41 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)v41 accessQueue];
       v217[0] = _NSConcreteStackBlock;
       v217[1] = 3221225472;
       v217[2] = sub_10001F270;
       v217[3] = &unk_100101830;
       v217[4] = self;
-      v218 = v187;
+      v218 = blockCopy;
       v219 = &v223;
-      dispatch_sync(v42, v217);
+      dispatch_sync(accessQueue3, v217);
 
-      v36 = self;
+      selfCopy7 = self;
     }
 
     else
@@ -448,43 +448,43 @@ LABEL_6:
         sub_10009AC4C();
       }
 
-      v44 = [(IXSDataPromise *)self name];
-      v172 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
-      v46 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 229, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon resources promise with UUID %@", v45, v44);
+      name3 = [(IXSDataPromise *)self name];
+      iconResourcesPromiseUUID3 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
+      v46 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 229, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon resources promise with UUID %@", v45, name3);
 
       v47 = v224[5];
       v224[5] = v46;
 
-      v36 = self;
+      selfCopy7 = self;
       [(IXSPlaceholder *)self setIconResourcesPromiseUUID:0];
     }
   }
 
-  v48 = [(IXSPlaceholder *)v36 infoPlistIconContentPromiseUUID];
+  infoPlistIconContentPromiseUUID = [(IXSPlaceholder *)selfCopy7 infoPlistIconContentPromiseUUID];
 
-  v49 = self;
-  if (v48)
+  selfCopy10 = self;
+  if (infoPlistIconContentPromiseUUID)
   {
-    v50 = [(IXSPlaceholder *)self infoPlistIconContentPromiseUUID];
+    infoPlistIconContentPromiseUUID2 = [(IXSPlaceholder *)self infoPlistIconContentPromiseUUID];
     v51 = objc_opt_class();
-    v52 = v187[2](v187, v50, v51);
+    v52 = blockCopy[2](blockCopy, infoPlistIconContentPromiseUUID2, v51);
     infoPlistIconContentPromise = self->_infoPlistIconContentPromise;
     self->_infoPlistIconContentPromise = v52;
 
     v54 = self->_infoPlistIconContentPromise;
     if (v54)
     {
-      v55 = [(IXSDataPromise *)v54 accessQueue];
+      accessQueue4 = [(IXSDataPromise *)v54 accessQueue];
       v214[0] = _NSConcreteStackBlock;
       v214[1] = 3221225472;
       v214[2] = sub_10001F31C;
       v214[3] = &unk_100101830;
       v214[4] = self;
-      v215 = v187;
+      v215 = blockCopy;
       v216 = &v223;
-      dispatch_sync(v55, v214);
+      dispatch_sync(accessQueue4, v214);
 
-      v49 = self;
+      selfCopy10 = self;
     }
 
     else
@@ -499,29 +499,29 @@ LABEL_6:
         sub_10009AC4C();
       }
 
-      v57 = [(IXSDataPromise *)self name];
-      v173 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
-      v59 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 248, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon resources promise with UUID %@", v58, v57);
+      name4 = [(IXSDataPromise *)self name];
+      iconResourcesPromiseUUID4 = [(IXSPlaceholder *)self iconResourcesPromiseUUID];
+      v59 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 248, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate icon resources promise with UUID %@", v58, name4);
 
       v60 = v224[5];
       v224[5] = v59;
 
-      v49 = self;
+      selfCopy10 = self;
       [(IXSPlaceholder *)self setInfoPlistIconContentPromiseUUID:0];
     }
   }
 
-  v61 = [(IXSPlaceholder *)v49 iconResourcesPromise];
-  if (v61)
+  iconResourcesPromise = [(IXSPlaceholder *)selfCopy10 iconResourcesPromise];
+  if (iconResourcesPromise)
   {
-    v62 = [(IXSPlaceholder *)v49 infoPlistIconContentPromise];
-    v63 = v62 == 0;
+    infoPlistIconContentPromise = [(IXSPlaceholder *)selfCopy10 infoPlistIconContentPromise];
+    v63 = infoPlistIconContentPromise == 0;
 
-    v49 = v186;
+    selfCopy10 = selfCopy;
     if (v63)
     {
-      [(IXSPlaceholder *)v186 setIconResourcesPromise:0];
-      [(IXSPlaceholder *)v186 setIconResourcesPromiseUUID:0];
+      [(IXSPlaceholder *)selfCopy setIconResourcesPromise:0];
+      [(IXSPlaceholder *)selfCopy setIconResourcesPromiseUUID:0];
       v67 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
       {
@@ -534,21 +534,21 @@ LABEL_6:
     }
   }
 
-  v64 = [(IXSPlaceholder *)v49 iconResourcesPromise];
-  if (v64)
+  iconResourcesPromise2 = [(IXSPlaceholder *)selfCopy10 iconResourcesPromise];
+  if (iconResourcesPromise2)
   {
 LABEL_49:
 
     goto LABEL_50;
   }
 
-  v65 = [(IXSPlaceholder *)v49 infoPlistIconContentPromise];
-  v66 = v65 == 0;
+  infoPlistIconContentPromise2 = [(IXSPlaceholder *)selfCopy10 infoPlistIconContentPromise];
+  v66 = infoPlistIconContentPromise2 == 0;
 
   if (!v66)
   {
-    [(IXSPlaceholder *)v186 setInfoPlistIconContentPromise:0];
-    [(IXSPlaceholder *)v186 setInfoPlistIconContentPromiseUUID:0];
+    [(IXSPlaceholder *)selfCopy setInfoPlistIconContentPromise:0];
+    [(IXSPlaceholder *)selfCopy setInfoPlistIconContentPromiseUUID:0];
     v67 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
@@ -559,38 +559,38 @@ LABEL_49:
     v69 = 271;
 LABEL_48:
 
-    v71 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", v69, @"IXErrorDomain", 3uLL, 0, 0, v68, v70, v186);
-    v64 = v224[5];
+    v71 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", v69, @"IXErrorDomain", 3uLL, 0, 0, v68, v70, selfCopy);
+    iconResourcesPromise2 = v224[5];
     v224[5] = v71;
     goto LABEL_49;
   }
 
 LABEL_50:
-  v72 = [(IXSPlaceholder *)v186 entitlementsPromiseUUID];
+  entitlementsPromiseUUID = [(IXSPlaceholder *)selfCopy entitlementsPromiseUUID];
 
-  v73 = v186;
-  if (v72)
+  v73 = selfCopy;
+  if (entitlementsPromiseUUID)
   {
-    v74 = [(IXSPlaceholder *)v186 entitlementsPromiseUUID];
+    entitlementsPromiseUUID2 = [(IXSPlaceholder *)selfCopy entitlementsPromiseUUID];
     v75 = objc_opt_class();
-    v76 = v187[2](v187, v74, v75);
-    entitlements = v186->_entitlements;
-    v186->_entitlements = v76;
+    v76 = blockCopy[2](blockCopy, entitlementsPromiseUUID2, v75);
+    entitlements = selfCopy->_entitlements;
+    selfCopy->_entitlements = v76;
 
-    v78 = v186->_entitlements;
+    v78 = selfCopy->_entitlements;
     if (v78)
     {
-      v79 = [(IXSDataPromise *)v78 accessQueue];
+      accessQueue5 = [(IXSDataPromise *)v78 accessQueue];
       v211[0] = _NSConcreteStackBlock;
       v211[1] = 3221225472;
       v211[2] = sub_10001F3C8;
       v211[3] = &unk_100101830;
-      v211[4] = v186;
-      v212 = v187;
+      v211[4] = selfCopy;
+      v212 = blockCopy;
       v213 = &v223;
-      dispatch_sync(v79, v211);
+      dispatch_sync(accessQueue5, v211);
 
-      v73 = v186;
+      v73 = selfCopy;
     }
 
     else
@@ -598,50 +598,50 @@ LABEL_50:
       v80 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 name];
+        [(IXSDataPromise *)selfCopy name];
         objc_claimAutoreleasedReturnValue();
-        [(IXSPlaceholder *)v186 entitlementsPromiseUUID];
+        [(IXSPlaceholder *)selfCopy entitlementsPromiseUUID];
         objc_claimAutoreleasedReturnValue();
         sub_10009AD88();
       }
 
-      v81 = [(IXSDataPromise *)v186 name];
-      v174 = [(IXSPlaceholder *)v186 entitlementsPromiseUUID];
-      v83 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 277, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate entitlements promise with UUID %@", v82, v81);
+      name5 = [(IXSDataPromise *)selfCopy name];
+      entitlementsPromiseUUID3 = [(IXSPlaceholder *)selfCopy entitlementsPromiseUUID];
+      v83 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 277, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate entitlements promise with UUID %@", v82, name5);
 
       v84 = v224[5];
       v224[5] = v83;
 
-      v73 = v186;
-      [(IXSPlaceholder *)v186 setEntitlementsPromiseUUID:0];
+      v73 = selfCopy;
+      [(IXSPlaceholder *)selfCopy setEntitlementsPromiseUUID:0];
     }
   }
 
-  v85 = [(IXSPlaceholder *)v73 infoPlistLoctablePromiseUUID];
+  infoPlistLoctablePromiseUUID = [(IXSPlaceholder *)v73 infoPlistLoctablePromiseUUID];
 
-  v86 = v186;
-  if (v85)
+  v86 = selfCopy;
+  if (infoPlistLoctablePromiseUUID)
   {
-    v87 = [(IXSPlaceholder *)v186 infoPlistLoctablePromiseUUID];
+    infoPlistLoctablePromiseUUID2 = [(IXSPlaceholder *)selfCopy infoPlistLoctablePromiseUUID];
     v88 = objc_opt_class();
-    v89 = v187[2](v187, v87, v88);
-    infoPlistLoctable = v186->_infoPlistLoctable;
-    v186->_infoPlistLoctable = v89;
+    v89 = blockCopy[2](blockCopy, infoPlistLoctablePromiseUUID2, v88);
+    infoPlistLoctable = selfCopy->_infoPlistLoctable;
+    selfCopy->_infoPlistLoctable = v89;
 
-    v91 = v186->_infoPlistLoctable;
+    v91 = selfCopy->_infoPlistLoctable;
     if (v91)
     {
-      v92 = [(IXSDataPromise *)v91 accessQueue];
+      accessQueue6 = [(IXSDataPromise *)v91 accessQueue];
       v208[0] = _NSConcreteStackBlock;
       v208[1] = 3221225472;
       v208[2] = sub_10001F474;
       v208[3] = &unk_100101830;
-      v208[4] = v186;
-      v209 = v187;
+      v208[4] = selfCopy;
+      v209 = blockCopy;
       v210 = &v223;
-      dispatch_sync(v92, v208);
+      dispatch_sync(accessQueue6, v208);
 
-      v86 = v186;
+      v86 = selfCopy;
     }
 
     else
@@ -649,50 +649,50 @@ LABEL_50:
       v93 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 name];
+        [(IXSDataPromise *)selfCopy name];
         objc_claimAutoreleasedReturnValue();
-        [(IXSPlaceholder *)v186 infoPlistLoctablePromiseUUID];
+        [(IXSPlaceholder *)selfCopy infoPlistLoctablePromiseUUID];
         objc_claimAutoreleasedReturnValue();
         sub_10009ADDC();
       }
 
-      v94 = [(IXSDataPromise *)v186 name];
-      v175 = [(IXSPlaceholder *)v186 infoPlistLoctablePromiseUUID];
-      v96 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 296, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate loctable promise with UUID %@", v95, v94);
+      name6 = [(IXSDataPromise *)selfCopy name];
+      infoPlistLoctablePromiseUUID3 = [(IXSPlaceholder *)selfCopy infoPlistLoctablePromiseUUID];
+      v96 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 296, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate loctable promise with UUID %@", v95, name6);
 
       v97 = v224[5];
       v224[5] = v96;
 
-      v86 = v186;
-      [(IXSPlaceholder *)v186 setInfoPlistLoctablePromiseUUID:0];
+      v86 = selfCopy;
+      [(IXSPlaceholder *)selfCopy setInfoPlistLoctablePromiseUUID:0];
     }
   }
 
-  v98 = [(IXSPlaceholder *)v86 metadataPromiseUUID];
+  metadataPromiseUUID = [(IXSPlaceholder *)v86 metadataPromiseUUID];
 
-  v99 = v186;
-  if (v98)
+  v99 = selfCopy;
+  if (metadataPromiseUUID)
   {
-    v100 = [(IXSPlaceholder *)v186 metadataPromiseUUID];
+    metadataPromiseUUID2 = [(IXSPlaceholder *)selfCopy metadataPromiseUUID];
     v101 = objc_opt_class();
-    v102 = v187[2](v187, v100, v101);
-    metadataPromise = v186->_metadataPromise;
-    v186->_metadataPromise = v102;
+    v102 = blockCopy[2](blockCopy, metadataPromiseUUID2, v101);
+    metadataPromise = selfCopy->_metadataPromise;
+    selfCopy->_metadataPromise = v102;
 
-    v104 = v186->_metadataPromise;
+    v104 = selfCopy->_metadataPromise;
     if (v104)
     {
-      v105 = [(IXSDataPromise *)v104 accessQueue];
+      accessQueue7 = [(IXSDataPromise *)v104 accessQueue];
       v205[0] = _NSConcreteStackBlock;
       v205[1] = 3221225472;
       v205[2] = sub_10001F520;
       v205[3] = &unk_100101830;
-      v205[4] = v186;
-      v206 = v187;
+      v205[4] = selfCopy;
+      v206 = blockCopy;
       v207 = &v223;
-      dispatch_sync(v105, v205);
+      dispatch_sync(accessQueue7, v205);
 
-      v99 = v186;
+      v99 = selfCopy;
     }
 
     else
@@ -700,50 +700,50 @@ LABEL_50:
       v106 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 name];
+        [(IXSDataPromise *)selfCopy name];
         objc_claimAutoreleasedReturnValue();
-        [(IXSPlaceholder *)v186 metadataPromiseUUID];
+        [(IXSPlaceholder *)selfCopy metadataPromiseUUID];
         objc_claimAutoreleasedReturnValue();
         sub_10009AE30();
       }
 
-      v107 = [(IXSDataPromise *)v186 name];
-      v176 = [(IXSPlaceholder *)v186 metadataPromiseUUID];
-      v109 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 315, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate metadata promise with UUID %@", v108, v107);
+      name7 = [(IXSDataPromise *)selfCopy name];
+      metadataPromiseUUID3 = [(IXSPlaceholder *)selfCopy metadataPromiseUUID];
+      v109 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 315, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate metadata promise with UUID %@", v108, name7);
 
       v110 = v224[5];
       v224[5] = v109;
 
-      v99 = v186;
-      [(IXSPlaceholder *)v186 setMetadataPromiseUUID:0];
+      v99 = selfCopy;
+      [(IXSPlaceholder *)selfCopy setMetadataPromiseUUID:0];
     }
   }
 
-  v111 = [(IXSPlaceholder *)v99 sinfPromiseUUID];
+  sinfPromiseUUID = [(IXSPlaceholder *)v99 sinfPromiseUUID];
 
-  v112 = v186;
-  if (v111)
+  v112 = selfCopy;
+  if (sinfPromiseUUID)
   {
-    v113 = [(IXSPlaceholder *)v186 sinfPromiseUUID];
+    sinfPromiseUUID2 = [(IXSPlaceholder *)selfCopy sinfPromiseUUID];
     v114 = objc_opt_class();
-    v115 = v187[2](v187, v113, v114);
-    sinfPromise = v186->_sinfPromise;
-    v186->_sinfPromise = v115;
+    v115 = blockCopy[2](blockCopy, sinfPromiseUUID2, v114);
+    sinfPromise = selfCopy->_sinfPromise;
+    selfCopy->_sinfPromise = v115;
 
-    v117 = v186->_sinfPromise;
+    v117 = selfCopy->_sinfPromise;
     if (v117)
     {
-      v118 = [(IXSDataPromise *)v117 accessQueue];
+      accessQueue8 = [(IXSDataPromise *)v117 accessQueue];
       v202[0] = _NSConcreteStackBlock;
       v202[1] = 3221225472;
       v202[2] = sub_10001F5CC;
       v202[3] = &unk_100101830;
-      v202[4] = v186;
-      v203 = v187;
+      v202[4] = selfCopy;
+      v203 = blockCopy;
       v204 = &v223;
-      dispatch_sync(v118, v202);
+      dispatch_sync(accessQueue8, v202);
 
-      v112 = v186;
+      v112 = selfCopy;
     }
 
     else
@@ -751,50 +751,50 @@ LABEL_50:
       v119 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 name];
+        [(IXSDataPromise *)selfCopy name];
         objc_claimAutoreleasedReturnValue();
-        [(IXSPlaceholder *)v186 sinfPromiseUUID];
+        [(IXSPlaceholder *)selfCopy sinfPromiseUUID];
         objc_claimAutoreleasedReturnValue();
         sub_10009AE30();
       }
 
-      v120 = [(IXSDataPromise *)v186 name];
-      v177 = [(IXSPlaceholder *)v186 sinfPromiseUUID];
-      v122 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 334, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate metadata promise with UUID %@", v121, v120);
+      name8 = [(IXSDataPromise *)selfCopy name];
+      sinfPromiseUUID3 = [(IXSPlaceholder *)selfCopy sinfPromiseUUID];
+      v122 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 334, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate metadata promise with UUID %@", v121, name8);
 
       v123 = v224[5];
       v224[5] = v122;
 
-      v112 = v186;
-      [(IXSPlaceholder *)v186 setSinfPromiseUUID:0];
+      v112 = selfCopy;
+      [(IXSPlaceholder *)selfCopy setSinfPromiseUUID:0];
     }
   }
 
-  v124 = [(IXSPlaceholder *)v112 localizationDictionaryPromiseUUID];
+  localizationDictionaryPromiseUUID = [(IXSPlaceholder *)v112 localizationDictionaryPromiseUUID];
 
-  v125 = v186;
-  if (v124)
+  v125 = selfCopy;
+  if (localizationDictionaryPromiseUUID)
   {
-    v126 = [(IXSPlaceholder *)v186 localizationDictionaryPromiseUUID];
+    localizationDictionaryPromiseUUID2 = [(IXSPlaceholder *)selfCopy localizationDictionaryPromiseUUID];
     v127 = objc_opt_class();
-    v128 = v187[2](v187, v126, v127);
-    localizationDictionaryPromise = v186->_localizationDictionaryPromise;
-    v186->_localizationDictionaryPromise = v128;
+    v128 = blockCopy[2](blockCopy, localizationDictionaryPromiseUUID2, v127);
+    localizationDictionaryPromise = selfCopy->_localizationDictionaryPromise;
+    selfCopy->_localizationDictionaryPromise = v128;
 
-    v130 = v186->_localizationDictionaryPromise;
+    v130 = selfCopy->_localizationDictionaryPromise;
     if (v130)
     {
-      v131 = [(IXSDataPromise *)v130 accessQueue];
+      accessQueue9 = [(IXSDataPromise *)v130 accessQueue];
       v199[0] = _NSConcreteStackBlock;
       v199[1] = 3221225472;
       v199[2] = sub_10001F678;
       v199[3] = &unk_100101830;
-      v199[4] = v186;
-      v200 = v187;
+      v199[4] = selfCopy;
+      v200 = blockCopy;
       v201 = &v223;
-      dispatch_sync(v131, v199);
+      dispatch_sync(accessQueue9, v199);
 
-      v125 = v186;
+      v125 = selfCopy;
     }
 
     else
@@ -802,28 +802,28 @@ LABEL_50:
       v132 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 name];
+        [(IXSDataPromise *)selfCopy name];
         objc_claimAutoreleasedReturnValue();
-        [(IXSPlaceholder *)v186 localizationDictionaryPromiseUUID];
+        [(IXSPlaceholder *)selfCopy localizationDictionaryPromiseUUID];
         objc_claimAutoreleasedReturnValue();
         sub_10009AE84();
       }
 
-      v133 = [(IXSDataPromise *)v186 name];
-      v178 = [(IXSPlaceholder *)v186 localizationDictionaryPromiseUUID];
-      v135 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 353, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate localization dictionary promise with UUID %@", v134, v133);
+      name9 = [(IXSDataPromise *)selfCopy name];
+      localizationDictionaryPromiseUUID3 = [(IXSPlaceholder *)selfCopy localizationDictionaryPromiseUUID];
+      v135 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 353, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate localization dictionary promise with UUID %@", v134, name9);
 
       v136 = v224[5];
       v224[5] = v135;
 
-      v125 = v186;
-      [(IXSPlaceholder *)v186 setLocalizationDictionaryPromiseUUID:0];
+      v125 = selfCopy;
+      [(IXSPlaceholder *)selfCopy setLocalizationDictionaryPromiseUUID:0];
     }
   }
 
-  v137 = [(IXSPlaceholder *)v125 appExtensionPlaceholdersPromiseUUIDs];
+  appExtensionPlaceholdersPromiseUUIDs = [(IXSPlaceholder *)v125 appExtensionPlaceholdersPromiseUUIDs];
 
-  if (v137)
+  if (appExtensionPlaceholdersPromiseUUIDs)
   {
     v185 = objc_opt_new();
     v138 = objc_opt_new();
@@ -831,12 +831,12 @@ LABEL_50:
     v198 = 0u;
     v195 = 0u;
     v196 = 0u;
-    v139 = [(IXSPlaceholder *)v186 appExtensionPlaceholdersPromiseUUIDs];
-    v140 = [v139 countByEnumeratingWithState:&v195 objects:v237 count:16];
+    appExtensionPlaceholdersPromiseUUIDs2 = [(IXSPlaceholder *)selfCopy appExtensionPlaceholdersPromiseUUIDs];
+    v140 = [appExtensionPlaceholdersPromiseUUIDs2 countByEnumeratingWithState:&v195 objects:v237 count:16];
     if (v140)
     {
       v141 = *v196;
-      obj = v139;
+      obj = appExtensionPlaceholdersPromiseUUIDs2;
       do
       {
         for (i = 0; i != v140; i = i + 1)
@@ -848,23 +848,23 @@ LABEL_50:
 
           v143 = *(*(&v195 + 1) + 8 * i);
           v144 = objc_opt_class();
-          v145 = v187[2](v187, v143, v144);
+          v145 = blockCopy[2](blockCopy, v143, v144);
           if (v145)
           {
             [v185 addObject:v145];
-            v146 = [v145 accessQueue];
+            accessQueue10 = [v145 accessQueue];
             v188[0] = _NSConcreteStackBlock;
             v188[1] = 3221225472;
             v188[2] = sub_10001F724;
             v188[3] = &unk_100101858;
             v189 = v145;
-            v147 = v187;
-            v190 = v186;
+            v147 = blockCopy;
+            v190 = selfCopy;
             v193 = v147;
             v194 = &v223;
             v191 = v138;
             v192 = v143;
-            dispatch_sync(v146, v188);
+            dispatch_sync(accessQueue10, v188);
           }
 
           else
@@ -872,11 +872,11 @@ LABEL_50:
             v148 = sub_1000031B0(off_100121958);
             if (os_log_type_enabled(v148, OS_LOG_TYPE_ERROR))
             {
-              v153 = [(IXSDataPromise *)v186 name];
+              name10 = [(IXSDataPromise *)selfCopy name];
               *buf = 136315906;
               v230 = "[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]";
               v231 = 2112;
-              v232 = v153;
+              v232 = name10;
               v233 = 2112;
               v234 = v143;
               v235 = 2112;
@@ -884,8 +884,8 @@ LABEL_50:
               _os_log_error_impl(&_mh_execute_header, v148, OS_LOG_TYPE_ERROR, "%s: %@: Failed to locate placeholder promise with UUID %@ : %@", buf, 0x2Au);
             }
 
-            v149 = [(IXSDataPromise *)v186 name];
-            v151 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 387, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate placeholder promise with UUID %@", v150, v149);
+            name11 = [(IXSDataPromise *)selfCopy name];
+            v151 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 387, @"IXErrorDomain", 3uLL, 0, 0, @"%@: Failed to locate placeholder promise with UUID %@", v150, name11);
 
             v152 = v224[5];
             v224[5] = v151;
@@ -894,79 +894,79 @@ LABEL_50:
           }
         }
 
-        v139 = obj;
+        appExtensionPlaceholdersPromiseUUIDs2 = obj;
         v140 = [obj countByEnumeratingWithState:&v195 objects:v237 count:16];
       }
 
       while (v140);
     }
 
-    v154 = [(IXSPlaceholder *)v186 appExtensionPlaceholdersPromiseUUIDs];
-    v155 = [v154 mutableCopy];
+    appExtensionPlaceholdersPromiseUUIDs3 = [(IXSPlaceholder *)selfCopy appExtensionPlaceholdersPromiseUUIDs];
+    v155 = [appExtensionPlaceholdersPromiseUUIDs3 mutableCopy];
 
     [v155 removeObjectsInArray:v138];
     if ([v155 count])
     {
       v156 = [v155 copy];
-      [(IXSPlaceholder *)v186 setAppExtensionPlaceholdersPromiseUUIDs:v156];
+      [(IXSPlaceholder *)selfCopy setAppExtensionPlaceholdersPromiseUUIDs:v156];
     }
 
     else
     {
-      [(IXSPlaceholder *)v186 setAppExtensionPlaceholdersPromiseUUIDs:0];
+      [(IXSPlaceholder *)selfCopy setAppExtensionPlaceholdersPromiseUUIDs:0];
     }
 
     if ([v185 count])
     {
-      objc_storeStrong(&v186->_appExtensionPlaceholders, v185);
+      objc_storeStrong(&selfCopy->_appExtensionPlaceholders, v185);
     }
   }
 
-  v157 = v186;
-  if (!v224[5] && [(IXSPlaceholder *)v186 isComplete]&& ![(IXSOwnedDataPromise *)v186 stagedPathMayNotExistWhenAwakening])
+  v157 = selfCopy;
+  if (!v224[5] && [(IXSPlaceholder *)selfCopy isComplete]&& ![(IXSOwnedDataPromise *)selfCopy stagedPathMayNotExistWhenAwakening])
   {
-    v158 = [(IXSOwnedDataPromise *)v186 stagedPath];
-    v159 = [(IXSOwnedDataPromise *)v186 targetLastPathComponent];
-    if (v159)
+    stagedPath = [(IXSOwnedDataPromise *)selfCopy stagedPath];
+    targetLastPathComponent = [(IXSOwnedDataPromise *)selfCopy targetLastPathComponent];
+    if (targetLastPathComponent)
     {
-      v160 = [v158 URLByAppendingPathComponent:v159 isDirectory:1];
+      v160 = [stagedPath URLByAppendingPathComponent:targetLastPathComponent isDirectory:1];
 
-      v158 = v160;
+      stagedPath = v160;
     }
 
     v161 = +[IXFileManager defaultManager];
-    v162 = [v161 itemExistsAtURL:v158];
+    v162 = [v161 itemExistsAtURL:stagedPath];
 
     if ((v162 & 1) == 0)
     {
       v163 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v163, OS_LOG_TYPE_ERROR))
       {
-        [(IXSDataPromise *)v186 uniqueIdentifier];
+        [(IXSDataPromise *)selfCopy uniqueIdentifier];
         objc_claimAutoreleasedReturnValue();
-        [v158 path];
+        [stagedPath path];
         objc_claimAutoreleasedReturnValue();
         sub_10009AED8();
       }
 
-      v164 = [(IXSDataPromise *)v186 uniqueIdentifier];
-      v179 = [v158 path];
-      v166 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 417, @"IXErrorDomain", 3uLL, 0, 0, @"IXSPlaceholderPromise with UUID %@ was complete but found nothing at %@", v165, v164);
+      uniqueIdentifier = [(IXSDataPromise *)selfCopy uniqueIdentifier];
+      path = [stagedPath path];
+      v166 = sub_1000405FC("[IXSPlaceholder awakeFromSerializationWithLookupBlock:error:]", 417, @"IXErrorDomain", 3uLL, 0, 0, @"IXSPlaceholderPromise with UUID %@ was complete but found nothing at %@", v165, uniqueIdentifier);
 
       v167 = v224[5];
       v224[5] = v166;
     }
 
-    v157 = v186;
+    v157 = selfCopy;
   }
 
   v168 = v224[5];
-  if (a4 && v168)
+  if (error && v168)
   {
     v169 = v168;
-    *a4 = v168;
+    *error = v168;
     v168 = v224[5];
-    v157 = v186;
+    v157 = selfCopy;
   }
 
   if (v168)
@@ -987,13 +987,13 @@ LABEL_116:
   return v7;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  iconCopy = icon;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_icon != v5)
+  if (self->_icon != iconCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1001,52 +1001,52 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setIcon:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = iconCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting icon promise to %@", buf, 0x20u);
     }
 
     icon = self->_icon;
     if (icon)
     {
-      v9 = [(IXSDataPromise *)icon accessQueue];
+      accessQueue2 = [(IXSDataPromise *)icon accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001F9D8;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_icon, a3);
-    if (v5)
+    objc_storeStrong(&self->_icon, icon);
+    if (iconCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)iconCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10001F9EC;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = iconCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setIconPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)iconCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setIconPromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
     [(IXSPlaceholder *)self _materializeIfReady];
   }
 }
 
-- (void)setIconResourcesPromise:(id)a3
+- (void)setIconResourcesPromise:(id)promise
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_iconResourcesPromise != v5)
+  if (self->_iconResourcesPromise != promiseCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1054,49 +1054,49 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setIconResourcesPromise:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = promiseCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting icon resources promise to %@", buf, 0x20u);
     }
 
     iconResourcesPromise = self->_iconResourcesPromise;
     if (iconResourcesPromise)
     {
-      v9 = [(IXSDataPromise *)iconResourcesPromise accessQueue];
+      accessQueue2 = [(IXSDataPromise *)iconResourcesPromise accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001FC4C;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_iconResourcesPromise, a3);
-    if (v5)
+    objc_storeStrong(&self->_iconResourcesPromise, promise);
+    if (promiseCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)promiseCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10001FC60;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = promiseCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setIconResourcesPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)promiseCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setIconResourcesPromiseUUID:uniqueIdentifier];
   }
 }
 
-- (void)setInfoPlistIconContentPromise:(id)a3
+- (void)setInfoPlistIconContentPromise:(id)promise
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_infoPlistIconContentPromise != v5)
+  if (self->_infoPlistIconContentPromise != promiseCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1104,64 +1104,64 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setInfoPlistIconContentPromise:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = promiseCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting Info.plist icon content promise to %@", buf, 0x20u);
     }
 
     infoPlistIconContentPromise = self->_infoPlistIconContentPromise;
     if (infoPlistIconContentPromise)
     {
-      v9 = [(IXSDataPromise *)infoPlistIconContentPromise accessQueue];
+      accessQueue2 = [(IXSDataPromise *)infoPlistIconContentPromise accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001FEC0;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_infoPlistIconContentPromise, a3);
-    if (v5)
+    objc_storeStrong(&self->_infoPlistIconContentPromise, promise);
+    if (promiseCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)promiseCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10001FED4;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = promiseCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setInfoPlistIconContentPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)promiseCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setInfoPlistIconContentPromiseUUID:uniqueIdentifier];
   }
 }
 
-- (void)setIconResourcesPromise:(id)a3 andInfoPlistIconContentPromise:(id)a4
+- (void)setIconResourcesPromise:(id)promise andInfoPlistIconContentPromise:(id)contentPromise
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v8);
+  contentPromiseCopy = contentPromise;
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  [(IXSPlaceholder *)self setIconResourcesPromise:v7];
-  [(IXSPlaceholder *)self setInfoPlistIconContentPromise:v6];
+  [(IXSPlaceholder *)self setIconResourcesPromise:promiseCopy];
+  [(IXSPlaceholder *)self setInfoPlistIconContentPromise:contentPromiseCopy];
 
   [(IXSDataPromise *)self saveState];
 
   [(IXSPlaceholder *)self _materializeIfReady];
 }
 
-- (void)setMetadataPromise:(id)a3
+- (void)setMetadataPromise:(id)promise
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_metadataPromise != v5)
+  if (self->_metadataPromise != promiseCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1169,51 +1169,51 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setMetadataPromise:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = promiseCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting metadata promise to %@", buf, 0x20u);
     }
 
     metadataPromise = self->_metadataPromise;
     if (metadataPromise)
     {
-      v9 = [(IXSDataPromise *)metadataPromise accessQueue];
+      accessQueue2 = [(IXSDataPromise *)metadataPromise accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000201CC;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_metadataPromise, a3);
-    if (v5)
+    objc_storeStrong(&self->_metadataPromise, promise);
+    if (promiseCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)promiseCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000201E0;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = promiseCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setMetadataPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)promiseCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setMetadataPromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
   }
 }
 
-- (void)setSinfPromise:(id)a3
+- (void)setSinfPromise:(id)promise
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_sinfPromise != v5)
+  if (self->_sinfPromise != promiseCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1221,51 +1221,51 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setSinfPromise:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = promiseCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting sinf promise to %@", buf, 0x20u);
     }
 
     sinfPromise = self->_sinfPromise;
     if (sinfPromise)
     {
-      v9 = [(IXSDataPromise *)sinfPromise accessQueue];
+      accessQueue2 = [(IXSDataPromise *)sinfPromise accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100020448;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_sinfPromise, a3);
-    if (v5)
+    objc_storeStrong(&self->_sinfPromise, promise);
+    if (promiseCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)promiseCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10002045C;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = promiseCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setSinfPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)promiseCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setSinfPromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
   }
 }
 
-- (void)setLocalizationDictionaryPromise:(id)a3
+- (void)setLocalizationDictionaryPromise:(id)promise
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_localizationDictionaryPromise != v5)
+  if (self->_localizationDictionaryPromise != promiseCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1273,51 +1273,51 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setLocalizationDictionaryPromise:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = promiseCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting localization dict promise to %@", buf, 0x20u);
     }
 
     localizationDictionaryPromise = self->_localizationDictionaryPromise;
     if (localizationDictionaryPromise)
     {
-      v9 = [(IXSDataPromise *)localizationDictionaryPromise accessQueue];
+      accessQueue2 = [(IXSDataPromise *)localizationDictionaryPromise accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000206C4;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_localizationDictionaryPromise, a3);
-    if (v5)
+    objc_storeStrong(&self->_localizationDictionaryPromise, promise);
+    if (promiseCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)promiseCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000206D8;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = promiseCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setLocalizationDictionaryPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)promiseCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setLocalizationDictionaryPromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
   }
 }
 
-- (void)setEntitlements:(id)a3
+- (void)setEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  entitlementsCopy = entitlements;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_entitlements != v5)
+  if (self->_entitlements != entitlementsCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1325,52 +1325,52 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setEntitlements:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = entitlementsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting entitlements promise to %@", buf, 0x20u);
     }
 
     entitlements = self->_entitlements;
     if (entitlements)
     {
-      v9 = [(IXSDataPromise *)entitlements accessQueue];
+      accessQueue2 = [(IXSDataPromise *)entitlements accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100020948;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_entitlements, a3);
-    if (v5)
+    objc_storeStrong(&self->_entitlements, entitlements);
+    if (entitlementsCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)entitlementsCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10002095C;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = entitlementsCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setEntitlementsPromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)entitlementsCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setEntitlementsPromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
     [(IXSPlaceholder *)self _materializeIfReady];
   }
 }
 
-- (void)setInfoPlistLoctable:(id)a3
+- (void)setInfoPlistLoctable:(id)loctable
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  loctableCopy = loctable;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_infoPlistLoctable != v5)
+  if (self->_infoPlistLoctable != loctableCopy)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1378,61 +1378,61 @@ LABEL_116:
       *buf = 136315650;
       v17 = "[IXSPlaceholder setInfoPlistLoctable:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v5;
+      v21 = loctableCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting loctable promise to %@", buf, 0x20u);
     }
 
     infoPlistLoctable = self->_infoPlistLoctable;
     if (infoPlistLoctable)
     {
-      v9 = [(IXSDataPromise *)infoPlistLoctable accessQueue];
+      accessQueue2 = [(IXSDataPromise *)infoPlistLoctable accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100020BCC;
       block[3] = &unk_1001010A0;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(accessQueue2, block);
     }
 
-    objc_storeStrong(&self->_infoPlistLoctable, a3);
-    if (v5)
+    objc_storeStrong(&self->_infoPlistLoctable, loctable);
+    if (loctableCopy)
     {
-      v10 = [(IXSDataPromise *)v5 accessQueue];
+      accessQueue3 = [(IXSDataPromise *)loctableCopy accessQueue];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100020BE0;
       v12[3] = &unk_100100ED8;
-      v13 = v5;
-      v14 = self;
-      dispatch_sync(v10, v12);
+      v13 = loctableCopy;
+      selfCopy2 = self;
+      dispatch_sync(accessQueue3, v12);
     }
 
-    v11 = [(IXSDataPromise *)v5 uniqueIdentifier];
-    [(IXSPlaceholder *)self setInfoPlistLoctablePromiseUUID:v11];
+    uniqueIdentifier = [(IXSDataPromise *)loctableCopy uniqueIdentifier];
+    [(IXSPlaceholder *)self setInfoPlistLoctablePromiseUUID:uniqueIdentifier];
 
     [(IXSDataPromise *)self saveState];
     [(IXSPlaceholder *)self _materializeIfReady];
   }
 }
 
-- (void)setAppExtensionPlaceholders:(id)a3
+- (void)setAppExtensionPlaceholders:(id)placeholders
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  placeholdersCopy = placeholders;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v25 = objc_opt_new();
-  v6 = self;
-  v7 = [(IXSPlaceholder *)self bundleID];
-  v24 = [NSString stringWithFormat:@"%@.", v7];
+  selfCopy = self;
+  bundleID = [(IXSPlaceholder *)self bundleID];
+  v24 = [NSString stringWithFormat:@"%@.", bundleID];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v4;
+  v8 = placeholdersCopy;
   v9 = [(NSArray *)v8 countByEnumeratingWithState:&v35 objects:v46 count:16];
   if (v9)
   {
@@ -1448,16 +1448,16 @@ LABEL_116:
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
-        v14 = [v13 accessQueue];
+        accessQueue2 = [v13 accessQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100020FE4;
         block[3] = &unk_1001014C0;
         block[4] = v13;
         v32 = v24;
-        v33 = self;
+        selfCopy2 = self;
         v34 = v25;
-        dispatch_sync(v14, block);
+        dispatch_sync(accessQueue2, block);
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v35 objects:v46 count:16];
@@ -1488,13 +1488,13 @@ LABEL_116:
         v20 = *(*(&v27 + 1) + 8 * j);
         if (![(NSArray *)v8 containsObject:v20])
         {
-          v21 = [v20 accessQueue];
+          accessQueue3 = [v20 accessQueue];
           v26[0] = _NSConcreteStackBlock;
           v26[1] = 3221225472;
           v26[2] = sub_1000211CC;
           v26[3] = &unk_1001010A0;
           v26[4] = v20;
-          dispatch_sync(v21, v26);
+          dispatch_sync(accessQueue3, v26);
         }
       }
 
@@ -1510,34 +1510,34 @@ LABEL_116:
     *buf = 136315650;
     v40 = "[IXSPlaceholder setAppExtensionPlaceholders:]";
     v41 = 2112;
-    v42 = v6;
+    v42 = selfCopy;
     v43 = 2112;
     v44 = v8;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s: %@: setting app extension placeholder promises to %@", buf, 0x20u);
   }
 
-  appExtensionPlaceholders = v6->_appExtensionPlaceholders;
-  v6->_appExtensionPlaceholders = v8;
+  appExtensionPlaceholders = selfCopy->_appExtensionPlaceholders;
+  selfCopy->_appExtensionPlaceholders = v8;
 
-  [(IXSPlaceholder *)v6 setAppExtensionPlaceholdersPromiseUUIDs:v25];
-  [(IXSDataPromise *)v6 saveState];
-  [(IXSPlaceholder *)v6 _materializeIfReady];
+  [(IXSPlaceholder *)selfCopy setAppExtensionPlaceholdersPromiseUUIDs:v25];
+  [(IXSDataPromise *)selfCopy saveState];
+  [(IXSPlaceholder *)selfCopy _materializeIfReady];
 }
 
-- (void)setConfigurationComplete:(BOOL)a3
+- (void)setConfigurationComplete:(BOOL)complete
 {
-  v3 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  completeCopy = complete;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (self->_configurationComplete != v3)
+  if (self->_configurationComplete != completeCopy)
   {
     v6 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136315650;
       v9 = "[IXSPlaceholder setConfigurationComplete:]";
-      if (v3)
+      if (completeCopy)
       {
         v7 = 89;
       }
@@ -1548,25 +1548,25 @@ LABEL_116:
       }
 
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
       v13 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: %@: setting configuration complete to %c", &v8, 0x1Cu);
     }
 
-    self->_configurationComplete = v3;
+    self->_configurationComplete = completeCopy;
     [(IXSDataPromise *)self saveState];
     [(IXSPlaceholder *)self _materializeIfReady];
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  attributesCopy = attributes;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (!self->_attributes || ([v5 isEqual:?] & 1) == 0)
+  if (!self->_attributes || ([attributesCopy isEqual:?] & 1) == 0)
   {
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1574,43 +1574,43 @@ LABEL_116:
       v8 = 136315650;
       v9 = "[IXSPlaceholder setAttributes:]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v5;
+      v13 = attributesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@: setting placeholder attributes to %@", &v8, 0x20u);
     }
 
-    objc_storeStrong(&self->_attributes, a3);
+    objc_storeStrong(&self->_attributes, attributes);
     [(IXSDataPromise *)self saveState];
   }
 }
 
-+ (id)_metadataFromPromise:(id)a3
++ (id)_metadataFromPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_10001F1AC;
   v26 = sub_10001F1BC;
   v27 = 0;
-  v4 = [v3 accessQueue];
+  accessQueue = [promiseCopy accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100021758;
   block[3] = &unk_100101268;
   v21 = &v22;
-  v5 = v3;
+  v5 = promiseCopy;
   v20 = v5;
-  dispatch_sync(v4, block);
+  dispatch_sync(accessQueue, block);
 
   if (!v23[5])
   {
     v13 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 uniqueIdentifier];
-      sub_10009AFE8(v14, buf, v13);
+      uniqueIdentifier = [v5 uniqueIdentifier];
+      sub_10009AFE8(uniqueIdentifier, buf, v13);
     }
 
     v6 = 0;
@@ -1667,13 +1667,13 @@ LABEL_14:
 
 - (MIStoreMetadata)metadata
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSPlaceholder *)self metadataPromise];
-  if (v4)
+  metadataPromise = [(IXSPlaceholder *)self metadataPromise];
+  if (metadataPromise)
   {
-    v5 = [objc_opt_class() _metadataFromPromise:v4];
+    v5 = [objc_opt_class() _metadataFromPromise:metadataPromise];
   }
 
   else
@@ -1686,8 +1686,8 @@ LABEL_14:
 
 - (NSData)sinfData
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -1695,31 +1695,31 @@ LABEL_14:
   v16 = sub_10001F1AC;
   v17 = sub_10001F1BC;
   v18 = 0;
-  v4 = [(IXSPlaceholder *)self sinfPromise];
+  sinfPromise = [(IXSPlaceholder *)self sinfPromise];
 
-  if (v4)
+  if (sinfPromise)
   {
-    v5 = [(IXSPlaceholder *)self sinfPromise];
-    v6 = [v5 accessQueue];
+    sinfPromise2 = [(IXSPlaceholder *)self sinfPromise];
+    accessQueue2 = [sinfPromise2 accessQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100021A60;
     v12[3] = &unk_100101268;
     v12[4] = self;
     v12[5] = &v13;
-    dispatch_sync(v6, v12);
+    dispatch_sync(accessQueue2, v12);
 
     if (!v14[5])
     {
       v7 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(IXSPlaceholder *)self sinfPromise];
-        v9 = [v8 uniqueIdentifier];
+        sinfPromise3 = [(IXSPlaceholder *)self sinfPromise];
+        uniqueIdentifier = [sinfPromise3 uniqueIdentifier];
         *buf = 136315394;
         v20 = "[IXSPlaceholder sinfData]";
         v21 = 2112;
-        v22 = v9;
+        v22 = uniqueIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: No data on the sinf promise %@", buf, 0x16u);
       }
     }
@@ -1733,8 +1733,8 @@ LABEL_14:
 
 - (NSDictionary)localizationDictionary
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -1742,31 +1742,31 @@ LABEL_14:
   v16 = sub_10001F1AC;
   v17 = sub_10001F1BC;
   v18 = 0;
-  v4 = [(IXSPlaceholder *)self localizationDictionaryPromise];
+  localizationDictionaryPromise = [(IXSPlaceholder *)self localizationDictionaryPromise];
 
-  if (v4)
+  if (localizationDictionaryPromise)
   {
-    v5 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-    v6 = [v5 accessQueue];
+    localizationDictionaryPromise2 = [(IXSPlaceholder *)self localizationDictionaryPromise];
+    accessQueue2 = [localizationDictionaryPromise2 accessQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100021D04;
     v12[3] = &unk_100101268;
     v12[4] = self;
     v12[5] = &v13;
-    dispatch_sync(v6, v12);
+    dispatch_sync(accessQueue2, v12);
 
     if (!v14[5])
     {
       v7 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-        v9 = [v8 uniqueIdentifier];
+        localizationDictionaryPromise3 = [(IXSPlaceholder *)self localizationDictionaryPromise];
+        uniqueIdentifier = [localizationDictionaryPromise3 uniqueIdentifier];
         *buf = 136315394;
         v20 = "[IXSPlaceholder localizationDictionary]";
         v21 = 2112;
-        v22 = v9;
+        v22 = uniqueIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: No dictionary on the localization dict promise %@", buf, 0x16u);
       }
     }
@@ -1780,12 +1780,12 @@ LABEL_14:
 
 - (BOOL)_isReadyToMaterialize
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSDataPromise *)self error];
+  error = [(IXSDataPromise *)self error];
 
-  if (v4)
+  if (error)
   {
     v5 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1809,9 +1809,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v6 = [(IXSPlaceholder *)self icon];
-  v5 = v6;
-  if (!v6)
+  icon = [(IXSPlaceholder *)self icon];
+  v5 = icon;
+  if (!icon)
   {
     goto LABEL_7;
   }
@@ -1820,20 +1820,20 @@ LABEL_25:
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v7 = [v6 accessQueue];
+  accessQueue2 = [icon accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100022314;
   block[3] = &unk_100101880;
   v8 = v5;
-  v42 = self;
+  selfCopy = self;
   v43 = &v44;
   v41 = v8;
-  dispatch_sync(v7, block);
+  dispatch_sync(accessQueue2, block);
 
-  LOBYTE(v7) = *(v45 + 24);
+  LOBYTE(accessQueue2) = *(v45 + 24);
   _Block_object_dispose(&v44, 8);
-  if ((v7 & 1) == 0)
+  if ((accessQueue2 & 1) == 0)
   {
     v25 = 0;
     v5 = v8;
@@ -1842,22 +1842,22 @@ LABEL_25:
   else
   {
 LABEL_7:
-    v28 = [(IXSPlaceholder *)self iconResourcesPromise];
-    if (v28)
+    iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+    if (iconResourcesPromise)
     {
       v44 = 0;
       v45 = &v44;
       v46 = 0x2020000000;
       v47 = 0;
-      v9 = [v28 accessQueue];
+      accessQueue3 = [iconResourcesPromise accessQueue];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_1000223A8;
       v36[3] = &unk_100101880;
-      v38 = self;
+      selfCopy2 = self;
       v39 = &v44;
-      v37 = v28;
-      dispatch_sync(v9, v36);
+      v37 = iconResourcesPromise;
+      dispatch_sync(accessQueue3, v36);
 
       v10 = *(v45 + 24);
       _Block_object_dispose(&v44, 8);
@@ -1867,23 +1867,23 @@ LABEL_7:
       }
     }
 
-    v11 = [(IXSPlaceholder *)self entitlements];
+    entitlements = [(IXSPlaceholder *)self entitlements];
 
-    if (v11)
+    if (entitlements)
     {
       v44 = 0;
       v45 = &v44;
       v46 = 0x2020000000;
       v47 = 0;
-      v12 = [(IXSPlaceholder *)self entitlements];
-      v13 = [v12 accessQueue];
+      entitlements2 = [(IXSPlaceholder *)self entitlements];
+      accessQueue4 = [entitlements2 accessQueue];
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_10002243C;
       v35[3] = &unk_1001013C8;
       v35[4] = self;
       v35[5] = &v44;
-      dispatch_sync(v13, v35);
+      dispatch_sync(accessQueue4, v35);
 
       v14 = *(v45 + 24);
       _Block_object_dispose(&v44, 8);
@@ -1893,9 +1893,9 @@ LABEL_7:
       }
     }
 
-    v15 = [(IXSPlaceholder *)self infoPlistLoctable];
+    infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
 
-    if (!v15)
+    if (!infoPlistLoctable)
     {
       goto LABEL_13;
     }
@@ -1904,15 +1904,15 @@ LABEL_7:
     v45 = &v44;
     v46 = 0x2020000000;
     v47 = 0;
-    v16 = [(IXSPlaceholder *)self infoPlistLoctable];
-    v17 = [v16 accessQueue];
+    infoPlistLoctable2 = [(IXSPlaceholder *)self infoPlistLoctable];
+    accessQueue5 = [infoPlistLoctable2 accessQueue];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1000224D8;
     v34[3] = &unk_1001013C8;
     v34[4] = self;
     v34[5] = &v44;
-    dispatch_sync(v17, v34);
+    dispatch_sync(accessQueue5, v34);
 
     v18 = *(v45 + 24);
     _Block_object_dispose(&v44, 8);
@@ -1925,9 +1925,9 @@ LABEL_27:
     else
     {
 LABEL_13:
-      v19 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+      appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
 
-      if (v19)
+      if (appExtensionPlaceholders)
       {
         v32 = 0u;
         v33 = 0u;
@@ -1952,7 +1952,7 @@ LABEL_13:
               v45 = &v44;
               v46 = 0x2020000000;
               v47 = 0;
-              v24 = [v23 accessQueue];
+              accessQueue6 = [v23 accessQueue];
               v29[0] = _NSConcreteStackBlock;
               v29[1] = 3221225472;
               v29[2] = sub_100022574;
@@ -1960,7 +1960,7 @@ LABEL_13:
               v29[5] = self;
               v29[6] = &v44;
               v29[4] = v23;
-              dispatch_sync(v24, v29);
+              dispatch_sync(accessQueue6, v29);
 
               LOBYTE(v23) = *(v45 + 24);
               _Block_object_dispose(&v44, 8);
@@ -1999,30 +1999,30 @@ LABEL_26:
 
 - (void)_materializeIfReady
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if ([(IXSPlaceholder *)self _isReadyToMaterialize])
   {
-    v4 = [(IXSOwnedDataPromise *)self stagedPath];
+    stagedPath = [(IXSOwnedDataPromise *)self stagedPath];
 
-    if (!v4)
+    if (!stagedPath)
     {
       if ([(IXSPlaceholder *)self _materialize])
       {
-        v5 = [(IXSDataPromise *)self delegate];
-        if (v5)
+        delegate = [(IXSDataPromise *)self delegate];
+        if (delegate)
         {
           if (objc_opt_respondsToSelector())
           {
-            v6 = [(IXSDataPromise *)self delegateDeliveryQueue];
+            delegateDeliveryQueue = [(IXSDataPromise *)self delegateDeliveryQueue];
             v7[0] = _NSConcreteStackBlock;
             v7[1] = 3221225472;
             v7[2] = sub_100022714;
             v7[3] = &unk_100100ED8;
-            v8 = v5;
-            v9 = self;
-            sub_100071134(v6, v7);
+            v8 = delegate;
+            selfCopy = self;
+            sub_100071134(delegateDeliveryQueue, v7);
           }
         }
       }
@@ -2032,41 +2032,41 @@ LABEL_26:
 
 - (BOOL)isComplete
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if (![(IXSPlaceholder *)self _isReadyToMaterialize])
   {
     return 0;
   }
 
-  v4 = [(IXSOwnedDataPromise *)self stagedPath];
-  v5 = v4 != 0;
+  stagedPath = [(IXSOwnedDataPromise *)self stagedPath];
+  v5 = stagedPath != 0;
 
   return v5;
 }
 
 - (double)percentComplete
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSDataPromise *)self error];
+  error = [(IXSDataPromise *)self error];
 
   v5 = 0.0;
-  if (!v4 && [(IXSPlaceholder *)self configurationComplete])
+  if (!error && [(IXSPlaceholder *)self configurationComplete])
   {
-    v27 = [(IXSPlaceholder *)self icon];
-    v26 = [(IXSPlaceholder *)self iconResourcesPromise];
-    v6 = v27;
-    if (v27 || (v6 = v26) != 0)
+    icon = [(IXSPlaceholder *)self icon];
+    iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+    v6 = icon;
+    if (icon || (v6 = iconResourcesPromise) != 0)
     {
       v7 = v6;
       v41 = 0;
       v42 = &v41;
       v43 = 0x2020000000;
       v44 = 0;
-      v8 = [v7 accessQueue];
+      accessQueue2 = [v7 accessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100022C1C;
@@ -2074,7 +2074,7 @@ LABEL_26:
       v40 = &v41;
       v24 = v7;
       v39 = v24;
-      dispatch_sync(v8, block);
+      dispatch_sync(accessQueue2, block);
 
       v9 = v42[3];
       v10 = v9 + 0.0;
@@ -2095,15 +2095,15 @@ LABEL_26:
       v42 = &v41;
       v43 = 0x2020000000;
       v44 = 0;
-      v12 = [(IXSPlaceholder *)self entitlements];
-      v13 = [v12 accessQueue];
+      entitlements = [(IXSPlaceholder *)self entitlements];
+      accessQueue3 = [entitlements accessQueue];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_100022C5C;
       v37[3] = &unk_100101268;
       v37[4] = self;
       v37[5] = &v41;
-      dispatch_sync(v13, v37);
+      dispatch_sync(accessQueue3, v37);
 
       v14 = v42[3];
       _Block_object_dispose(&v41, 8);
@@ -2114,9 +2114,9 @@ LABEL_26:
       v14 = 0.200000003;
     }
 
-    v15 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+    appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
 
-    if (v15)
+    if (appExtensionPlaceholders)
     {
       v41 = 0;
       v42 = &v41;
@@ -2130,8 +2130,8 @@ LABEL_26:
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v16 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-      v17 = [v16 countByEnumeratingWithState:&v29 objects:v45 count:16];
+      appExtensionPlaceholders2 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+      v17 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v29 objects:v45 count:16];
       if (v17)
       {
         v18 = *v30;
@@ -2141,11 +2141,11 @@ LABEL_26:
           {
             if (*v30 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(appExtensionPlaceholders2);
             }
 
             v20 = *(*(&v29 + 1) + 8 * i);
-            v21 = [v20 accessQueue];
+            accessQueue4 = [v20 accessQueue];
             v28[0] = _NSConcreteStackBlock;
             v28[1] = 3221225472;
             v28[2] = sub_100022CC4;
@@ -2153,10 +2153,10 @@ LABEL_26:
             v28[4] = v20;
             v28[5] = &v41;
             v28[6] = &v33;
-            dispatch_sync(v21, v28);
+            dispatch_sync(accessQueue4, v28);
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v29 objects:v45 count:16];
+          v17 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v29 objects:v45 count:16];
         }
 
         while (v17);
@@ -2186,37 +2186,37 @@ LABEL_26:
   return v5;
 }
 
-- (void)setPercentComplete:(double)a3
+- (void)setPercentComplete:(double)complete
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 }
 
-- (void)_cancelPromise:(id)a3 forReason:(id)a4 client:(unint64_t)a5
+- (void)_cancelPromise:(id)promise forReason:(id)reason client:(unint64_t)client
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  promiseCopy = promise;
+  reasonCopy = reason;
+  if (promiseCopy)
   {
-    v9 = [v7 accessQueue];
+    accessQueue = [promiseCopy accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100022E2C;
     block[3] = &unk_1001018D0;
-    v11 = v7;
-    v12 = v8;
-    v13 = a5;
-    dispatch_sync(v9, block);
+    v11 = promiseCopy;
+    v12 = reasonCopy;
+    clientCopy = client;
+    dispatch_sync(accessQueue, block);
   }
 }
 
-- (BOOL)cancelForReason:(id)a3 client:(unint64_t)a4 error:(id *)a5
+- (BOOL)cancelForReason:(id)reason client:(unint64_t)client error:(id *)error
 {
-  v8 = a3;
-  v9 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v9);
+  reasonCopy = reason;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  if (!v8)
+  if (!reasonCopy)
   {
     v26 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2229,7 +2229,7 @@ LABEL_26:
 LABEL_20:
     v25 = sub_1000405FC("[IXSPlaceholder cancelForReason:client:error:]", v29, @"IXErrorDomain", 0x35uLL, 0, 0, v28, v27, v32);
     v24 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -2237,7 +2237,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!client)
   {
     v30 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -2250,40 +2250,40 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v10 = [(IXSPlaceholder *)self icon];
-  [(IXSPlaceholder *)self _cancelPromise:v10 forReason:v8 client:a4];
+  icon = [(IXSPlaceholder *)self icon];
+  [(IXSPlaceholder *)self _cancelPromise:icon forReason:reasonCopy client:client];
 
-  v11 = [(IXSPlaceholder *)self iconResourcesPromise];
-  [(IXSPlaceholder *)self _cancelPromise:v11 forReason:v8 client:a4];
+  iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+  [(IXSPlaceholder *)self _cancelPromise:iconResourcesPromise forReason:reasonCopy client:client];
 
-  v12 = [(IXSPlaceholder *)self infoPlistIconContentPromise];
-  [(IXSPlaceholder *)self _cancelPromise:v12 forReason:v8 client:a4];
+  infoPlistIconContentPromise = [(IXSPlaceholder *)self infoPlistIconContentPromise];
+  [(IXSPlaceholder *)self _cancelPromise:infoPlistIconContentPromise forReason:reasonCopy client:client];
 
-  v13 = [(IXSPlaceholder *)self entitlements];
-  [(IXSPlaceholder *)self _cancelPromise:v13 forReason:v8 client:a4];
+  entitlements = [(IXSPlaceholder *)self entitlements];
+  [(IXSPlaceholder *)self _cancelPromise:entitlements forReason:reasonCopy client:client];
 
-  v14 = [(IXSPlaceholder *)self infoPlistLoctable];
-  [(IXSPlaceholder *)self _cancelPromise:v14 forReason:v8 client:a4];
+  infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
+  [(IXSPlaceholder *)self _cancelPromise:infoPlistLoctable forReason:reasonCopy client:client];
 
-  v15 = [(IXSPlaceholder *)self metadataPromise];
-  [(IXSPlaceholder *)self _cancelPromise:v15 forReason:v8 client:a4];
+  metadataPromise = [(IXSPlaceholder *)self metadataPromise];
+  [(IXSPlaceholder *)self _cancelPromise:metadataPromise forReason:reasonCopy client:client];
 
-  v16 = [(IXSPlaceholder *)self sinfPromise];
-  [(IXSPlaceholder *)self _cancelPromise:v16 forReason:v8 client:a4];
+  sinfPromise = [(IXSPlaceholder *)self sinfPromise];
+  [(IXSPlaceholder *)self _cancelPromise:sinfPromise forReason:reasonCopy client:client];
 
-  v17 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-  [(IXSPlaceholder *)self _cancelPromise:v17 forReason:v8 client:a4];
+  localizationDictionaryPromise = [(IXSPlaceholder *)self localizationDictionaryPromise];
+  [(IXSPlaceholder *)self _cancelPromise:localizationDictionaryPromise forReason:reasonCopy client:client];
 
-  v18 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+  appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
 
-  if (v18)
+  if (appExtensionPlaceholders)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v19 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-    v20 = [v19 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    appExtensionPlaceholders2 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+    v20 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2294,13 +2294,13 @@ LABEL_20:
         {
           if (*v36 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(appExtensionPlaceholders2);
           }
 
-          [(IXSPlaceholder *)self _cancelPromise:*(*(&v35 + 1) + 8 * i) forReason:v8 client:a4];
+          [(IXSPlaceholder *)self _cancelPromise:*(*(&v35 + 1) + 8 * i) forReason:reasonCopy client:client];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v21 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v21);
@@ -2310,15 +2310,15 @@ LABEL_20:
   v33.receiver = self;
   v33.super_class = IXSPlaceholder;
   v34 = 0;
-  v24 = [(IXSOwnedDataPromise *)&v33 cancelForReason:v8 client:a4 error:&v34];
+  v24 = [(IXSOwnedDataPromise *)&v33 cancelForReason:reasonCopy client:client error:&v34];
   v25 = v34;
-  if (a5)
+  if (error)
   {
 LABEL_21:
     if (!v24)
     {
       v25 = v25;
-      *a5 = v25;
+      *error = v25;
     }
   }
 
@@ -2329,76 +2329,76 @@ LABEL_23:
 
 - (NSString)bundleName
 {
-  v2 = [(IXSDataPromise *)self seed];
-  v3 = [v2 bundleName];
+  seed = [(IXSDataPromise *)self seed];
+  bundleName = [seed bundleName];
 
-  return v3;
+  return bundleName;
 }
 
 - (NSString)bundleDirectoryName
 {
-  v2 = [(IXSDataPromise *)self seed];
-  v3 = [v2 bundleDirectoryName];
+  seed = [(IXSDataPromise *)self seed];
+  bundleDirectoryName = [seed bundleDirectoryName];
 
-  return v3;
+  return bundleDirectoryName;
 }
 
 - (NSString)bundleID
 {
-  v2 = [(IXSDataPromise *)self seed];
-  v3 = [v2 bundleID];
+  seed = [(IXSDataPromise *)self seed];
+  bundleID = [seed bundleID];
 
-  return v3;
+  return bundleID;
 }
 
 - (unint64_t)installType
 {
-  v2 = [(IXSDataPromise *)self seed];
-  v3 = [v2 installType];
+  seed = [(IXSDataPromise *)self seed];
+  installType = [seed installType];
 
-  return v3;
+  return installType;
 }
 
 - (unint64_t)totalBytesNeededOnDisk
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v23 = 0;
-  v4 = [(IXSPlaceholder *)self icon];
-  sub_100023578(v4, &v23);
+  icon = [(IXSPlaceholder *)self icon];
+  sub_100023578(icon, &v23);
 
-  v5 = [(IXSPlaceholder *)self iconResourcesPromise];
-  sub_100023578(v5, &v23);
+  iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+  sub_100023578(iconResourcesPromise, &v23);
 
-  v6 = [(IXSPlaceholder *)self infoPlistIconContentPromise];
-  sub_100023578(v6, &v23);
+  infoPlistIconContentPromise = [(IXSPlaceholder *)self infoPlistIconContentPromise];
+  sub_100023578(infoPlistIconContentPromise, &v23);
 
-  v7 = [(IXSPlaceholder *)self entitlements];
-  sub_100023578(v7, &v23);
+  entitlements = [(IXSPlaceholder *)self entitlements];
+  sub_100023578(entitlements, &v23);
 
-  v8 = [(IXSPlaceholder *)self infoPlistLoctable];
-  sub_100023578(v8, &v23);
+  infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
+  sub_100023578(infoPlistLoctable, &v23);
 
-  v9 = [(IXSPlaceholder *)self metadataPromise];
-  sub_100023578(v9, &v23);
+  metadataPromise = [(IXSPlaceholder *)self metadataPromise];
+  sub_100023578(metadataPromise, &v23);
 
-  v10 = [(IXSPlaceholder *)self sinfPromise];
-  sub_100023578(v10, &v23);
+  sinfPromise = [(IXSPlaceholder *)self sinfPromise];
+  sub_100023578(sinfPromise, &v23);
 
-  v11 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-  sub_100023578(v11, &v23);
+  localizationDictionaryPromise = [(IXSPlaceholder *)self localizationDictionaryPromise];
+  sub_100023578(localizationDictionaryPromise, &v23);
 
-  v12 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+  appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
 
-  if (v12)
+  if (appExtensionPlaceholders)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-    v14 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    appExtensionPlaceholders2 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+    v14 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -2410,7 +2410,7 @@ LABEL_23:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(appExtensionPlaceholders2);
           }
 
           sub_100023578(*(*(&v19 + 1) + 8 * v17), &v23);
@@ -2418,7 +2418,7 @@ LABEL_23:
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v15 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v15);
@@ -2428,26 +2428,26 @@ LABEL_23:
   return v23;
 }
 
-- (id)_promiseUUIDsForPromise:(id)a3
+- (id)_promiseUUIDsForPromise:(id)promise
 {
-  v3 = a3;
-  v4 = v3;
+  promiseCopy = promise;
+  v4 = promiseCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10001F1AC;
   v17 = sub_10001F1BC;
   v18 = 0;
-  if (v3)
+  if (promiseCopy)
   {
-    v5 = [v3 accessQueue];
+    accessQueue = [promiseCopy accessQueue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10002378C;
     v10[3] = &unk_100101268;
     v12 = &v13;
     v11 = v4;
-    dispatch_sync(v5, v10);
+    dispatch_sync(accessQueue, v10);
 
     v6 = v11;
   }
@@ -2467,52 +2467,52 @@ LABEL_23:
 
 - (id)subPromiseUUIDs
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v4 = objc_opt_new();
-  v5 = [(IXSPlaceholder *)self icon];
-  v6 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v5];
+  icon = [(IXSPlaceholder *)self icon];
+  v6 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:icon];
   [v4 unionSet:v6];
 
-  v7 = [(IXSPlaceholder *)self iconResourcesPromise];
-  v8 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v7];
+  iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+  v8 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:iconResourcesPromise];
   [v4 unionSet:v8];
 
-  v9 = [(IXSPlaceholder *)self infoPlistIconContentPromise];
-  v10 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v9];
+  infoPlistIconContentPromise = [(IXSPlaceholder *)self infoPlistIconContentPromise];
+  v10 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:infoPlistIconContentPromise];
   [v4 unionSet:v10];
 
-  v11 = [(IXSPlaceholder *)self entitlements];
-  v12 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v11];
+  entitlements = [(IXSPlaceholder *)self entitlements];
+  v12 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:entitlements];
   [v4 unionSet:v12];
 
-  v13 = [(IXSPlaceholder *)self infoPlistLoctable];
-  v14 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v13];
+  infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
+  v14 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:infoPlistLoctable];
   [v4 unionSet:v14];
 
-  v15 = [(IXSPlaceholder *)self metadataPromise];
-  v16 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v15];
+  metadataPromise = [(IXSPlaceholder *)self metadataPromise];
+  v16 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:metadataPromise];
   [v4 unionSet:v16];
 
-  v17 = [(IXSPlaceholder *)self sinfPromise];
-  v18 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v17];
+  sinfPromise = [(IXSPlaceholder *)self sinfPromise];
+  v18 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:sinfPromise];
   [v4 unionSet:v18];
 
-  v19 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-  v20 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:v19];
+  localizationDictionaryPromise = [(IXSPlaceholder *)self localizationDictionaryPromise];
+  v20 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:localizationDictionaryPromise];
   [v4 unionSet:v20];
 
-  v21 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+  appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
 
-  if (v21)
+  if (appExtensionPlaceholders)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v22 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-    v23 = [v22 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    appExtensionPlaceholders2 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+    v23 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v23)
     {
       v24 = v23;
@@ -2523,14 +2523,14 @@ LABEL_23:
         {
           if (*v31 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(appExtensionPlaceholders2);
           }
 
           v27 = [(IXSPlaceholder *)self _promiseUUIDsForPromise:*(*(&v30 + 1) + 8 * i)];
           [v4 unionSet:v27];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v24 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v24);
@@ -2542,57 +2542,57 @@ LABEL_23:
   return v28;
 }
 
-- (void)_decommissionPromise:(id)a3
+- (void)_decommissionPromise:(id)promise
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  promiseCopy = promise;
+  v4 = promiseCopy;
+  if (promiseCopy)
   {
-    v5 = [v3 accessQueue];
+    accessQueue = [promiseCopy accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100023BF0;
     block[3] = &unk_1001010A0;
     v7 = v4;
-    dispatch_sync(v5, block);
+    dispatch_sync(accessQueue, block);
   }
 }
 
 - (void)decommission
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(IXSPlaceholder *)self icon];
-  [(IXSPlaceholder *)self _decommissionPromise:v4];
+  icon = [(IXSPlaceholder *)self icon];
+  [(IXSPlaceholder *)self _decommissionPromise:icon];
 
-  v5 = [(IXSPlaceholder *)self iconResourcesPromise];
-  [(IXSPlaceholder *)self _decommissionPromise:v5];
+  iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+  [(IXSPlaceholder *)self _decommissionPromise:iconResourcesPromise];
 
-  v6 = [(IXSPlaceholder *)self infoPlistIconContentPromise];
-  [(IXSPlaceholder *)self _decommissionPromise:v6];
+  infoPlistIconContentPromise = [(IXSPlaceholder *)self infoPlistIconContentPromise];
+  [(IXSPlaceholder *)self _decommissionPromise:infoPlistIconContentPromise];
 
-  v7 = [(IXSPlaceholder *)self entitlements];
-  [(IXSPlaceholder *)self _decommissionPromise:v7];
+  entitlements = [(IXSPlaceholder *)self entitlements];
+  [(IXSPlaceholder *)self _decommissionPromise:entitlements];
 
-  v8 = [(IXSPlaceholder *)self infoPlistLoctable];
-  [(IXSPlaceholder *)self _decommissionPromise:v8];
+  infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
+  [(IXSPlaceholder *)self _decommissionPromise:infoPlistLoctable];
 
-  v9 = [(IXSPlaceholder *)self metadataPromise];
-  [(IXSPlaceholder *)self _decommissionPromise:v9];
+  metadataPromise = [(IXSPlaceholder *)self metadataPromise];
+  [(IXSPlaceholder *)self _decommissionPromise:metadataPromise];
 
-  v10 = [(IXSPlaceholder *)self sinfPromise];
-  [(IXSPlaceholder *)self _decommissionPromise:v10];
+  sinfPromise = [(IXSPlaceholder *)self sinfPromise];
+  [(IXSPlaceholder *)self _decommissionPromise:sinfPromise];
 
-  v11 = [(IXSPlaceholder *)self localizationDictionaryPromise];
-  [(IXSPlaceholder *)self _decommissionPromise:v11];
+  localizationDictionaryPromise = [(IXSPlaceholder *)self localizationDictionaryPromise];
+  [(IXSPlaceholder *)self _decommissionPromise:localizationDictionaryPromise];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
+  v13 = [appExtensionPlaceholders countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2604,7 +2604,7 @@ LABEL_23:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(appExtensionPlaceholders);
         }
 
         [(IXSPlaceholder *)self _decommissionPromise:*(*(&v18 + 1) + 8 * v16)];
@@ -2612,7 +2612,7 @@ LABEL_23:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [appExtensionPlaceholders countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
@@ -2623,16 +2623,16 @@ LABEL_23:
   [(IXSOwnedDataPromise *)&v17 decommission];
 }
 
-- (BOOL)_validateClientEntitlements:(id *)a3
+- (BOOL)_validateClientEntitlements:(id *)entitlements
 {
-  v5 = [(IXSPlaceholder *)self entitlements];
-  v6 = [v5 accessQueue];
-  dispatch_assert_queue_V2(v6);
+  entitlements = [(IXSPlaceholder *)self entitlements];
+  accessQueue = [entitlements accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v7 = [(IXSPlaceholder *)self entitlements];
-  v8 = [v7 stagedPath];
+  entitlements2 = [(IXSPlaceholder *)self entitlements];
+  stagedPath = [entitlements2 stagedPath];
 
-  v9 = [NSDictionary dictionaryWithContentsOfURL:v8 error:0];
+  v9 = [NSDictionary dictionaryWithContentsOfURL:stagedPath error:0];
   v10 = v9;
   if (!v9)
   {
@@ -2673,11 +2673,11 @@ LABEL_9:
   v20 = IXStringForClientID([(IXSDataPromise *)self creatorIdentifier]);
   v16 = sub_1000405FC("[IXSPlaceholder _validateClientEntitlements:]", 1250, @"IXErrorDomain", 0x19uLL, 0, 0, @"The creator of placeholder %@ is missing the entitlement %@ = TRUE which is required to create a web notification placeholder.", v21, v20);
 
-  if (a3)
+  if (entitlements)
   {
     v22 = v16;
     v17 = 0;
-    *a3 = v16;
+    *entitlements = v16;
   }
 
   else
@@ -2690,25 +2690,25 @@ LABEL_10:
   return v17;
 }
 
-+ (id)_sanitizedFilesystemNameForName:(id)a3 fileExtension:(id)a4 fallingBackToName:(id)a5
++ (id)_sanitizedFilesystemNameForName:(id)name fileExtension:(id)extension fallingBackToName:(id)toName
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  toNameCopy = toName;
+  extensionCopy = extension;
+  nameCopy = name;
   v10 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  v11 = [nameCopy stringByTrimmingCharactersInSet:v10];
 
   if (![v11 length])
   {
-    v12 = v7;
+    v12 = toNameCopy;
 
     v11 = v12;
   }
 
   v13 = [v11 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
-  v14 = [v8 fileSystemRepresentation];
-  v15 = strlen(v14);
+  fileSystemRepresentation = [extensionCopy fileSystemRepresentation];
+  v15 = strlen(fileSystemRepresentation);
   if (v15 + strlen([(__CFString *)v13 fileSystemRepresentation]) + 1 >= 0xFF)
   {
     v16 = sub_1000031B0(off_100121958);
@@ -2721,7 +2721,7 @@ LABEL_10:
     v13 = v17;
     if (!v17)
     {
-      v13 = v7;
+      v13 = toNameCopy;
     }
   }
 
@@ -2730,16 +2730,16 @@ LABEL_10:
 
 - (id)_preparedBundleDirectoryName
 {
-  v3 = [(IXSPlaceholder *)self bundleDirectoryName];
-  v4 = [(IXSPlaceholder *)self bundleID];
-  v5 = [(IXSDataPromise *)self seed];
-  v6 = [v5 isAppExtension];
+  bundleDirectoryName = [(IXSPlaceholder *)self bundleDirectoryName];
+  bundleID = [(IXSPlaceholder *)self bundleID];
+  seed = [(IXSDataPromise *)self seed];
+  isAppExtension = [seed isAppExtension];
 
-  if (!v6)
+  if (!isAppExtension)
   {
-    if (!v3)
+    if (!bundleDirectoryName)
     {
-      v3 = [(IXSPlaceholder *)self bundleName];
+      bundleDirectoryName = [(IXSPlaceholder *)self bundleName];
     }
 
     v7 = objc_opt_class();
@@ -2747,18 +2747,18 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (v3)
+  if (bundleDirectoryName)
   {
     v7 = objc_opt_class();
     v8 = @"appex";
 LABEL_7:
-    v9 = [v7 _sanitizedFilesystemNameForName:v3 fileExtension:v8 fallingBackToName:v4];
+    v9 = [v7 _sanitizedFilesystemNameForName:bundleDirectoryName fileExtension:v8 fallingBackToName:bundleID];
     v10 = [NSString stringWithFormat:@"%@.%@", v9, v8];
 
     goto LABEL_8;
   }
 
-  v10 = [NSString stringWithFormat:@"%@.appex", v4];
+  v10 = [NSString stringWithFormat:@"%@.appex", bundleID];
 LABEL_8:
 
   return v10;
@@ -2766,29 +2766,29 @@ LABEL_8:
 
 - (BOOL)_materialize
 {
-  v3 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v73 = [(IXSPlaceholder *)self bundleName];
+  bundleName = [(IXSPlaceholder *)self bundleName];
   v4 = +[IXFileManager defaultManager];
-  v70 = [(IXSPlaceholder *)self icon];
-  v5 = [(IXSPlaceholder *)self iconResourcesPromise];
-  v71 = [(IXSPlaceholder *)self infoPlistIconContentPromise];
-  v6 = [(IXSOwnedDataPromise *)self stagingBaseDir];
-  v7 = [(IXSPlaceholder *)self _preparedBundleDirectoryName];
-  v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+  icon = [(IXSPlaceholder *)self icon];
+  iconResourcesPromise = [(IXSPlaceholder *)self iconResourcesPromise];
+  infoPlistIconContentPromise = [(IXSPlaceholder *)self infoPlistIconContentPromise];
+  stagingBaseDir = [(IXSOwnedDataPromise *)self stagingBaseDir];
+  _preparedBundleDirectoryName = [(IXSPlaceholder *)self _preparedBundleDirectoryName];
+  v8 = [stagingBaseDir URLByAppendingPathComponent:_preparedBundleDirectoryName isDirectory:1];
 
   v72 = [v8 URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
   v9 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 path];
+    path = [v8 path];
     *buf = 136315650;
     *&buf[4] = "[IXSPlaceholder _materialize]";
     *&buf[12] = 2112;
     *&buf[14] = self;
     *&buf[22] = 2112;
-    v133 = v10;
+    v133 = path;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: %@: Materializing placeholder at %@", buf, 0x20u);
   }
 
@@ -2803,13 +2803,13 @@ LABEL_8:
       sub_10009B708(v8);
     }
 
-    v18 = [v8 path];
-    v20 = sub_1000405FC("[IXSPlaceholder _materialize]", 1336, @"IXErrorDomain", 0x14uLL, v12, 0, @"Failed to create bundle directory at %@", v19, v18);
+    path2 = [v8 path];
+    v20 = sub_1000405FC("[IXSPlaceholder _materialize]", 1336, @"IXErrorDomain", 0x14uLL, v12, 0, @"Failed to create bundle directory at %@", v19, path2);
     v16 = 0;
     goto LABEL_27;
   }
 
-  if (v5)
+  if (iconResourcesPromise)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2817,14 +2817,14 @@ LABEL_8:
     v133 = sub_10001F1AC;
     v134 = sub_10001F1BC;
     v135 = 0;
-    v13 = [v71 accessQueue];
+    accessQueue2 = [infoPlistIconContentPromise accessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002530C;
     block[3] = &unk_100101268;
     v123 = buf;
-    v122 = v71;
-    dispatch_sync(v13, block);
+    v122 = infoPlistIconContentPromise;
+    dispatch_sync(accessQueue2, block);
 
     if (*(*&buf[8] + 40))
     {
@@ -2859,7 +2859,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v70)
+  if (icon)
   {
     v130 = _kCFBundleIconFileKey;
     v131 = @"Icon";
@@ -2872,19 +2872,19 @@ LABEL_16:
 LABEL_17:
   v16 = objc_opt_new();
 LABEL_18:
-  v22 = [(IXSPlaceholder *)self bundleID];
-  [v16 setObject:v22 forKeyedSubscript:kCFBundleIdentifierKey];
+  bundleID = [(IXSPlaceholder *)self bundleID];
+  [v16 setObject:bundleID forKeyedSubscript:kCFBundleIdentifierKey];
 
-  [v16 setObject:v73 forKeyedSubscript:kCFBundleNameKey];
+  [v16 setObject:bundleName forKeyedSubscript:kCFBundleNameKey];
   [v16 setObject:@"Executable" forKeyedSubscript:kCFBundleExecutableKey];
-  [v16 setObject:v73 forKeyedSubscript:_kCFBundleDisplayNameKey];
-  v23 = [(IXSPlaceholder *)self attributes];
+  [v16 setObject:bundleName forKeyedSubscript:_kCFBundleDisplayNameKey];
+  attributes = [(IXSPlaceholder *)self attributes];
 
-  if (v23)
+  if (attributes)
   {
-    v24 = [(IXSPlaceholder *)self attributes];
-    v25 = [v24 infoPlistContent];
-    [v16 addEntriesFromDictionary:v25];
+    attributes2 = [(IXSPlaceholder *)self attributes];
+    infoPlistContent = [attributes2 infoPlistContent];
+    [v16 addEntriesFromDictionary:infoPlistContent];
   }
 
   v120 = v12;
@@ -2899,15 +2899,15 @@ LABEL_18:
       sub_10009B7B4(v72);
     }
 
-    v18 = [v72 path];
-    v20 = sub_1000405FC("[IXSPlaceholder _materialize]", 1371, @"IXErrorDomain", 0x14uLL, v27, 0, @"Failed to write bundle Info.plist to %@", v31, v18);
+    path2 = [v72 path];
+    v20 = sub_1000405FC("[IXSPlaceholder _materialize]", 1371, @"IXErrorDomain", 0x14uLL, v27, 0, @"Failed to write bundle Info.plist to %@", v31, path2);
     v12 = v27;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  if (v5)
+  if (iconResourcesPromise)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2915,17 +2915,17 @@ LABEL_27:
     v133 = sub_10001F1AC;
     v134 = sub_10001F1BC;
     v135 = 0;
-    v28 = [v5 accessQueue];
+    accessQueue3 = [iconResourcesPromise accessQueue];
     v114[0] = _NSConcreteStackBlock;
     v114[1] = 3221225472;
     v114[2] = sub_100025358;
     v114[3] = &unk_1001018F8;
-    v115 = v5;
+    v115 = iconResourcesPromise;
     v116 = v4;
     v119 = buf;
     v117 = v8;
-    v118 = self;
-    dispatch_sync(v28, v114);
+    selfCopy = self;
+    dispatch_sync(accessQueue3, v114);
 
     v29 = *(*&buf[8] + 40);
     if (v29)
@@ -2949,7 +2949,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v70)
+  if (icon)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2957,17 +2957,17 @@ LABEL_28:
     v133 = sub_10001F1AC;
     v134 = sub_10001F1BC;
     v135 = 0;
-    v35 = [v70 accessQueue];
+    accessQueue4 = [icon accessQueue];
     v108[0] = _NSConcreteStackBlock;
     v108[1] = 3221225472;
     v108[2] = sub_100025818;
     v108[3] = &unk_100101920;
-    v109 = v70;
+    v109 = icon;
     v110 = v8;
     v111 = v4;
-    v112 = self;
+    selfCopy2 = self;
     v113 = buf;
-    dispatch_sync(v35, v108);
+    dispatch_sync(accessQueue4, v108);
 
     v36 = *(*&buf[8] + 40);
     if (v36)
@@ -2991,9 +2991,9 @@ LABEL_28:
 
   v20 = v27;
 LABEL_40:
-  v37 = [(IXSPlaceholder *)self entitlements];
+  entitlements = [(IXSPlaceholder *)self entitlements];
 
-  if (v37)
+  if (entitlements)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3001,8 +3001,8 @@ LABEL_40:
     v133 = sub_10001F1AC;
     v134 = sub_10001F1BC;
     v135 = 0;
-    v38 = [(IXSPlaceholder *)self entitlements];
-    v39 = [v38 accessQueue];
+    entitlements2 = [(IXSPlaceholder *)self entitlements];
+    accessQueue5 = [entitlements2 accessQueue];
     v103[0] = _NSConcreteStackBlock;
     v103[1] = 3221225472;
     v103[2] = sub_100025B80;
@@ -3013,7 +3013,7 @@ LABEL_40:
     v20 = v20;
     v106 = v20;
     v107 = buf;
-    dispatch_sync(v39, v103);
+    dispatch_sync(accessQueue5, v103);
 
     v40 = *(*&buf[8] + 40);
     if (v40)
@@ -3030,9 +3030,9 @@ LABEL_40:
     }
   }
 
-  v42 = [(IXSPlaceholder *)self infoPlistLoctable];
-  v32 = v42;
-  if (!v42)
+  infoPlistLoctable = [(IXSPlaceholder *)self infoPlistLoctable];
+  v32 = infoPlistLoctable;
+  if (!infoPlistLoctable)
   {
     goto LABEL_49;
   }
@@ -3043,7 +3043,7 @@ LABEL_40:
   v133 = sub_10001F1AC;
   v134 = sub_10001F1BC;
   v135 = 0;
-  v43 = [v42 accessQueue];
+  accessQueue6 = [infoPlistLoctable accessQueue];
   v97[0] = _NSConcreteStackBlock;
   v97[1] = 3221225472;
   v97[2] = sub_100025F64;
@@ -3052,9 +3052,9 @@ LABEL_40:
   v99 = v4;
   v44 = v32;
   v100 = v44;
-  v101 = self;
+  selfCopy3 = self;
   v102 = buf;
-  dispatch_sync(v43, v97);
+  dispatch_sync(accessQueue6, v97);
 
   v45 = *(*&buf[8] + 40);
   if (v45)
@@ -3079,21 +3079,21 @@ LABEL_49:
     v133 = sub_10001F1AC;
     v134 = sub_10001F1BC;
     v135 = 0;
-    v47 = [(IXSPlaceholder *)self localizationDictionary];
+    localizationDictionary = [(IXSPlaceholder *)self localizationDictionary];
     v48 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = v47;
-      v50 = [v47 allKeys];
+      v49 = localizationDictionary;
+      allKeys = [localizationDictionary allKeys];
       *v126 = 136315650;
       *&v126[4] = "[IXSPlaceholder _materialize]";
       *&v126[12] = 2112;
       *&v126[14] = self;
       *&v126[22] = 2112;
-      v127 = v50;
+      v127 = allKeys;
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "%s: %@: Including lproj localizations for %@", v126, 0x20u);
 
-      v47 = v49;
+      localizationDictionary = v49;
     }
 
     v92[0] = _NSConcreteStackBlock;
@@ -3106,7 +3106,7 @@ LABEL_49:
     v94 = v68;
     v95 = buf;
     v96 = v32 != 0;
-    [v47 enumerateKeysAndObjectsUsingBlock:v92];
+    [localizationDictionary enumerateKeysAndObjectsUsingBlock:v92];
     v51 = *(*&buf[8] + 40);
     if (v51)
     {
@@ -3118,15 +3118,15 @@ LABEL_49:
     _Block_object_dispose(buf, 8);
     if (!v51)
     {
-      v53 = [(IXSDataPromise *)self seed];
-      if ([v53 isAppExtension])
+      seed = [(IXSDataPromise *)self seed];
+      if ([seed isAppExtension])
       {
       }
 
       else
       {
-        v54 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-        v55 = [v54 count] == 0;
+        appExtensionPlaceholders = [(IXSPlaceholder *)self appExtensionPlaceholders];
+        v55 = [appExtensionPlaceholders count] == 0;
 
         if (!v55)
         {
@@ -3146,13 +3146,13 @@ LABEL_49:
           v89 = 0u;
           v90 = 0u;
           v91 = 0u;
-          v56 = [(IXSPlaceholder *)self appExtensionPlaceholders];
-          v57 = [v56 countByEnumeratingWithState:&v88 objects:v125 count:16];
+          appExtensionPlaceholders2 = [(IXSPlaceholder *)self appExtensionPlaceholders];
+          v57 = [appExtensionPlaceholders2 countByEnumeratingWithState:&v88 objects:v125 count:16];
           if (v57)
           {
-            obj = v56;
+            obj = appExtensionPlaceholders2;
             v66 = *v89;
-            v65 = v5;
+            v65 = iconResourcesPromise;
 LABEL_59:
             v58 = 0;
             v64 = v57;
@@ -3170,7 +3170,7 @@ LABEL_59:
               v85 = sub_10001F1AC;
               v86 = sub_10001F1BC;
               v87 = 0;
-              v60 = [v59 accessQueue];
+              accessQueue7 = [v59 accessQueue];
               v74[0] = _NSConcreteStackBlock;
               v74[1] = 3221225472;
               v74[2] = sub_100026524;
@@ -3181,12 +3181,12 @@ LABEL_59:
               v80 = buf;
               v81 = &v82;
               v76 = v68;
-              v77 = self;
+              selfCopy4 = self;
               v20 = v20;
               v78 = v20;
-              dispatch_sync(v60, v74);
+              dispatch_sync(accessQueue7, v74);
 
-              v5 = v65;
+              iconResourcesPromise = v65;
               v61 = v83[5];
               if (v61)
               {
@@ -3220,7 +3220,7 @@ LABEL_59:
               }
             }
 
-            v56 = obj;
+            appExtensionPlaceholders2 = obj;
           }
 
           else
@@ -3253,91 +3253,91 @@ LABEL_30:
   return v33 & 1;
 }
 
-- (void)promiseDidBegin:(id)a3
+- (void)promiseDidBegin:(id)begin
 {
-  v4 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v4);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v5 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100026B90;
   v6[3] = &unk_1001010A0;
   v6[4] = self;
-  sub_100071134(v5, v6);
+  sub_100071134(accessQueue2, v6);
 }
 
-- (void)promiseDidComplete:(id)a3
+- (void)promiseDidComplete:(id)complete
 {
-  v4 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v4);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v5 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100026D28;
   v6[3] = &unk_1001010A0;
   v6[4] = self;
-  sub_100071134(v5, v6);
+  sub_100071134(accessQueue2, v6);
 }
 
-- (void)promiseDidReset:(id)a3
+- (void)promiseDidReset:(id)reset
 {
-  v4 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v4);
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v5 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100026DD0;
   v6[3] = &unk_1001010A0;
   v6[4] = self;
-  sub_100071134(v5, v6);
+  sub_100071134(accessQueue2, v6);
 }
 
-- (void)promise:(id)a3 didUpdateProgress:(double)a4
+- (void)promise:(id)promise didUpdateProgress:(double)progress
 {
-  v5 = [(IXSDataPromise *)self accessQueue:a3];
+  v5 = [(IXSDataPromise *)self accessQueue:promise];
   dispatch_assert_queue_not_V2(v5);
 
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026F50;
   v7[3] = &unk_1001010A0;
   v7[4] = self;
-  sub_100071134(v6, v7);
+  sub_100071134(accessQueue, v7);
 }
 
-- (void)promise:(id)a3 didCancelForReason:(id)a4 client:(unint64_t)a5
+- (void)promise:(id)promise didCancelForReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v10);
+  promiseCopy = promise;
+  reasonCopy = reason;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v11 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100027148;
   v14[3] = &unk_1001015A0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v8;
-  sub_100071134(v11, v14);
+  v15 = promiseCopy;
+  v16 = reasonCopy;
+  clientCopy = client;
+  v12 = reasonCopy;
+  v13 = promiseCopy;
+  sub_100071134(accessQueue2, v14);
 }
 
-- (BOOL)_checkLocationOfPromiseMatchesOurs:(id)a3 description:(id)a4 error:(id *)a5
+- (BOOL)_checkLocationOfPromiseMatchesOurs:(id)ours description:(id)description error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(IXSOwnedDataPromise *)self location];
-  v11 = [v9 location];
+  descriptionCopy = description;
+  oursCopy = ours;
+  location = [(IXSOwnedDataPromise *)self location];
+  location2 = [oursCopy location];
 
-  v12 = [v10 isEqual:v11];
+  v12 = [location isEqual:location2];
   if (v12)
   {
     v13 = 0;
@@ -3351,44 +3351,44 @@ LABEL_30:
       *buf = 136316162;
       v20 = "[IXSPlaceholder(IXSPlaceholderIPCMethods) _checkLocationOfPromiseMatchesOurs:description:error:]";
       v21 = 2112;
-      v22 = v8;
+      v22 = descriptionCopy;
       v23 = 2112;
-      v24 = v11;
+      v24 = location2;
       v25 = 2112;
-      v26 = v10;
+      v26 = location;
       v27 = 2112;
       v28 = 0;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s: %@ promise being set has different location, %@, than this placeholder, %@. : %@", buf, 0x34u);
     }
 
-    v16 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _checkLocationOfPromiseMatchesOurs:description:error:]", 1691, @"IXErrorDomain", 0x3BuLL, 0, 0, @"%@ promise being set has different location, %@, than this placeholder, %@.", v15, v8);
+    v16 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _checkLocationOfPromiseMatchesOurs:description:error:]", 1691, @"IXErrorDomain", 0x3BuLL, 0, 0, @"%@ promise being set has different location, %@, than this placeholder, %@.", v15, descriptionCopy);
     v13 = v16;
-    if (a5)
+    if (error)
     {
       v17 = v16;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
   return v12;
 }
 
-- (void)_remote_setMetadataPromiseUUID:(id)a3 fromConnection:(id)a4 completion:(id)a5
+- (void)_remote_setMetadataPromiseUUID:(id)d fromConnection:(id)connection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v11);
+  dCopy = d;
+  connectionCopy = connection;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  if (v8)
+  if (dCopy)
   {
     v48 = 0;
     v49 = &v48;
     v50 = 0x2020000000;
     v51 = 0;
     v12 = +[IXSDataPromiseManager sharedInstance];
-    v13 = [v12 promiseForUUID:v8 ofType:objc_opt_class()];
+    v13 = [v12 promiseForUUID:dCopy ofType:objc_opt_class()];
 
     if (v13)
     {
@@ -3397,7 +3397,7 @@ LABEL_30:
       v15 = v47;
       if (v14)
       {
-        v16 = [v13 accessQueue];
+        accessQueue2 = [v13 accessQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100027ECC;
@@ -3405,7 +3405,7 @@ LABEL_30:
         v46 = &v48;
         v13 = v13;
         v45 = v13;
-        dispatch_sync(v16, block);
+        dispatch_sync(accessQueue2, block);
 
         if (v49[3])
         {
@@ -3414,7 +3414,7 @@ LABEL_30:
           if (v17)
           {
             v43 = v15;
-            v19 = sub_10000DB10(v17, v9, @"placeholder metadata", &v43);
+            v19 = sub_10000DB10(v17, connectionCopy, @"placeholder metadata", &v43);
             v20 = v43;
 
             if (v19)
@@ -3436,14 +3436,14 @@ LABEL_30:
                 }
 
                 v35 = v15;
-                v30 = [v13 accessQueue];
+                accessQueue3 = [v13 accessQueue];
                 v40[0] = _NSConcreteStackBlock;
                 v40[1] = 3221225472;
                 v40[2] = sub_100027F00;
                 v40[3] = &unk_1001010A0;
                 v31 = v13;
                 v41 = v31;
-                dispatch_sync(v30, v40);
+                dispatch_sync(accessQueue3, v40);
 
                 v32 = [IXSPromisedInMemoryData alloc];
                 v39 = v35;
@@ -3458,7 +3458,7 @@ LABEL_26:
                 }
               }
 
-              v33 = [(IXSDataPromise *)self accessQueue];
+              accessQueue4 = [(IXSDataPromise *)self accessQueue];
               v37[0] = _NSConcreteStackBlock;
               v37[1] = 3221225472;
               v37[2] = sub_100027F08;
@@ -3466,7 +3466,7 @@ LABEL_26:
               v37[4] = self;
               v13 = v13;
               v38 = v13;
-              dispatch_sync(v33, v37);
+              dispatch_sync(accessQueue4, v37);
 
               v34 = v38;
 LABEL_27:
@@ -3476,7 +3476,7 @@ LABEL_27:
 
             v15 = v20;
 LABEL_28:
-            v10[2](v10, v15);
+            completionCopy[2](completionCopy, v15);
 
             _Block_object_dispose(&v48, 8);
             goto LABEL_29;
@@ -3519,7 +3519,7 @@ LABEL_28:
         sub_10009BBA0();
       }
 
-      v15 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setMetadataPromiseUUID:fromConnection:completion:]", 1724, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find metadata promise with UUID %@", v23, v8);
+      v15 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setMetadataPromiseUUID:fromConnection:completion:]", 1724, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find metadata promise with UUID %@", v23, dCopy);
       v13 = 0;
     }
 
@@ -3528,23 +3528,23 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v21 = [(IXSDataPromise *)self accessQueue];
+  accessQueue5 = [(IXSDataPromise *)self accessQueue];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_100027EC0;
   v52[3] = &unk_1001010A0;
   v52[4] = self;
-  dispatch_sync(v21, v52);
+  dispatch_sync(accessQueue5, v52);
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_29:
 }
 
-- (void)_remote_getMetadataWithCompletion:(id)a3
+- (void)_remote_getMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -3552,34 +3552,34 @@ LABEL_29:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002804C;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  completionCopy[2](completionCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setSinfPromiseUUID:(id)a3 completion:(id)a4
+- (void)_remote_setSinfPromiseUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dCopy = d;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  if (!v6)
+  if (!dCopy)
   {
     v10 = 0;
     goto LABEL_6;
   }
 
   v9 = +[IXSDataPromiseManager sharedInstance];
-  v10 = [v9 promiseForUUID:v6 ofType:objc_opt_class()];
+  v10 = [v9 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (!v10)
   {
@@ -3589,7 +3589,7 @@ LABEL_29:
       sub_10009BC14();
     }
 
-    v13 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setSinfPromiseUUID:completion:]", 1806, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find sinf promise with UUID %@", v16, v6);
+    v13 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setSinfPromiseUUID:completion:]", 1806, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find sinf promise with UUID %@", v16, dCopy);
     goto LABEL_10;
   }
 
@@ -3600,13 +3600,13 @@ LABEL_29:
   if (!v11)
   {
 LABEL_10:
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
 
     goto LABEL_11;
   }
 
 LABEL_6:
-  v14 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000282A8;
@@ -3614,17 +3614,17 @@ LABEL_6:
   block[4] = self;
   v10 = v10;
   v18 = v10;
-  dispatch_sync(v14, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_11:
 }
 
-- (void)_remote_getSinfDataWithCompletion:(id)a3
+- (void)_remote_getSinfDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -3632,85 +3632,85 @@ LABEL_11:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000283EC;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  completionCopy[2](completionCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setLaunchProhibited:(BOOL)a3 completion:(id)a4
+- (void)_remote_setLaunchProhibited:(BOOL)prohibited completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v7);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v8 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002850C;
   v9[3] = &unk_100101998;
   v9[4] = self;
-  v10 = a3;
-  dispatch_sync(v8, v9);
+  prohibitedCopy = prohibited;
+  dispatch_sync(accessQueue2, v9);
 
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)_remote_getLaunchProhibitedWithCompletion:(id)a3
+- (void)_remote_getLaunchProhibitedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000286A4;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(completionCopy + 2))(completionCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setAttributes:(id)a3 completion:(id)a4
+- (void)_remote_setAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  attributesCopy = attributes;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v9 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000287F0;
   v11[3] = &unk_100100ED8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  dispatch_sync(v9, v11);
+  v12 = attributesCopy;
+  v10 = attributesCopy;
+  dispatch_sync(accessQueue2, v11);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)_remote_getAttributesWithCompletion:(id)a3
+- (void)_remote_getAttributesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -3718,28 +3718,28 @@ LABEL_11:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100028934;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  completionCopy[2](completionCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setIconPromiseUUID:(id)a3 completion:(id)a4
+- (void)_remote_setIconPromiseUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dCopy = d;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v9 = +[IXSDataPromiseManager sharedInstance];
-  v10 = [v9 promiseForUUID:v6 ofType:objc_opt_class()];
+  v10 = [v9 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (!v10)
   {
@@ -3749,7 +3749,7 @@ LABEL_11:
       sub_10009BC88();
     }
 
-    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconPromiseUUID:completion:]", 1895, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find icon promise with UUID %@", v15, v6);
+    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconPromiseUUID:completion:]", 1895, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find icon promise with UUID %@", v15, dCopy);
     goto LABEL_7;
   }
 
@@ -3759,51 +3759,51 @@ LABEL_11:
   if ((v11 & 1) == 0)
   {
 LABEL_7:
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_8;
   }
 
-  v13 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028B7C;
   block[3] = &unk_100100ED8;
   block[4] = self;
   v17 = v10;
-  dispatch_sync(v13, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_8:
 }
 
-- (void)_remote_hasIconPromise:(id)a3
+- (void)_remote_hasIconPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100028C94;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(promiseCopy + 2))(promiseCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_getIconPromise:(id)a3
+- (void)_remote_getIconPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -3811,29 +3811,29 @@ LABEL_8:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100028E20;
   v7[3] = &unk_1001013C8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  promiseCopy[2](promiseCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setIconResourcesPromiseUUID:(id)a3 infoPlistIconContentPromiseUUID:(id)a4 completion:(id)a5
+- (void)_remote_setIconResourcesPromiseUUID:(id)d infoPlistIconContentPromiseUUID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v11);
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v12 = +[IXSDataPromiseManager sharedInstance];
-  v13 = [v12 promiseForUUID:v8 ofType:objc_opt_class()];
+  v13 = [v12 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (v13)
   {
@@ -3843,7 +3843,7 @@ LABEL_8:
     if (v14)
     {
       v16 = +[IXSDataPromiseManager sharedInstance];
-      v17 = [v16 promiseForUUID:v9 ofType:objc_opt_class()];
+      v17 = [v16 promiseForUUID:iDCopy ofType:objc_opt_class()];
 
       if (v17)
       {
@@ -3853,7 +3853,7 @@ LABEL_8:
 
         if (v18)
         {
-          v20 = [(IXSDataPromise *)self accessQueue];
+          accessQueue2 = [(IXSDataPromise *)self accessQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_100029264;
@@ -3861,9 +3861,9 @@ LABEL_8:
           block[4] = self;
           v26 = v13;
           v27 = v17;
-          dispatch_sync(v20, block);
+          dispatch_sync(accessQueue2, block);
 
-          v10[2](v10, 0);
+          completionCopy[2](completionCopy, 0);
 LABEL_14:
 
           v15 = v19;
@@ -3879,10 +3879,10 @@ LABEL_14:
           sub_10009BCFC();
         }
 
-        v19 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconResourcesPromiseUUID:infoPlistIconContentPromiseUUID:completion:]", 1959, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find Info.plist icon content promise with UUID %@", v24, v9);
+        v19 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconResourcesPromiseUUID:infoPlistIconContentPromiseUUID:completion:]", 1959, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find Info.plist icon content promise with UUID %@", v24, iDCopy);
       }
 
-      (v10)[2](v10, v19);
+      (completionCopy)[2](completionCopy, v19);
       goto LABEL_14;
     }
   }
@@ -3895,41 +3895,41 @@ LABEL_14:
       sub_10009BD70();
     }
 
-    v15 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconResourcesPromiseUUID:infoPlistIconContentPromiseUUID:completion:]", 1947, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find icon resources promise with UUID %@", v22, v8);
+    v15 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setIconResourcesPromiseUUID:infoPlistIconContentPromiseUUID:completion:]", 1947, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find icon resources promise with UUID %@", v22, dCopy);
   }
 
-  (v10)[2](v10, v15);
+  (completionCopy)[2](completionCopy, v15);
 LABEL_15:
 }
 
-- (void)_remote_hasIconResourcesPromise:(id)a3
+- (void)_remote_hasIconResourcesPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029384;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(promiseCopy + 2))(promiseCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_getIconResourcesPromiseAndInfoPlistContent:(id)a3
+- (void)_remote_getIconResourcesPromiseAndInfoPlistContent:(id)content
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  contentCopy = content;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v14 = 0;
   v15 = &v14;
@@ -3943,7 +3943,7 @@ LABEL_15:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029578;
@@ -3951,23 +3951,23 @@ LABEL_15:
   block[4] = self;
   block[5] = &v14;
   block[6] = &v8;
-  dispatch_sync(v6, block);
+  dispatch_sync(accessQueue2, block);
 
-  v4[2](v4, v15[5], v9[5], 0);
+  contentCopy[2](contentCopy, v15[5], v9[5], 0);
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)_remote_setLocalizationPromiseUUID:(id)a3 completion:(id)a4
+- (void)_remote_setLocalizationPromiseUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dCopy = d;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v9 = +[IXSDataPromiseManager sharedInstance];
-  v10 = [v9 promiseForUUID:v6 ofType:objc_opt_class()];
+  v10 = [v9 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (!v10)
   {
@@ -3977,7 +3977,7 @@ LABEL_15:
       sub_10009BDE4();
     }
 
-    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setLocalizationPromiseUUID:completion:]", 2024, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find localization dictionary promise with UUID %@", v15, v6);
+    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setLocalizationPromiseUUID:completion:]", 2024, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find localization dictionary promise with UUID %@", v15, dCopy);
     goto LABEL_7;
   }
 
@@ -3987,28 +3987,28 @@ LABEL_15:
   if ((v11 & 1) == 0)
   {
 LABEL_7:
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_8;
   }
 
-  v13 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029988;
   block[3] = &unk_100100ED8;
   block[4] = self;
   v17 = v10;
-  dispatch_sync(v13, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_8:
 }
 
-- (void)_remote_getLocalizationDictionary:(id)a3
+- (void)_remote_getLocalizationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  dictionaryCopy = dictionary;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -4016,28 +4016,28 @@ LABEL_8:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029ACC;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  dictionaryCopy[2](dictionaryCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setEntitlementsPromiseUUID:(id)a3 completion:(id)a4
+- (void)_remote_setEntitlementsPromiseUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dCopy = d;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v9 = +[IXSDataPromiseManager sharedInstance];
-  v10 = [v9 promiseForUUID:v6 ofType:objc_opt_class()];
+  v10 = [v9 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (!v10)
   {
@@ -4047,7 +4047,7 @@ LABEL_8:
       sub_10009BE58();
     }
 
-    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setEntitlementsPromiseUUID:completion:]", 2061, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find entitlements promise with UUID %@", v15, v6);
+    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setEntitlementsPromiseUUID:completion:]", 2061, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find entitlements promise with UUID %@", v15, dCopy);
     goto LABEL_7;
   }
 
@@ -4057,51 +4057,51 @@ LABEL_8:
   if ((v11 & 1) == 0)
   {
 LABEL_7:
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_8;
   }
 
-  v13 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029D14;
   block[3] = &unk_100100ED8;
   block[4] = self;
   v17 = v10;
-  dispatch_sync(v13, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_8:
 }
 
-- (void)_remote_hasEntitlementsPromise:(id)a3
+- (void)_remote_hasEntitlementsPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029E2C;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(promiseCopy + 2))(promiseCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_getEntitlementsPromise:(id)a3
+- (void)_remote_getEntitlementsPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -4109,28 +4109,28 @@ LABEL_8:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029FB8;
   v7[3] = &unk_1001013C8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  promiseCopy[2](promiseCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setInfoPlistLoctablePromiseUUID:(id)a3 completion:(id)a4
+- (void)_remote_setInfoPlistLoctablePromiseUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dCopy = d;
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v9 = +[IXSDataPromiseManager sharedInstance];
-  v10 = [v9 promiseForUUID:v6 ofType:objc_opt_class()];
+  v10 = [v9 promiseForUUID:dCopy ofType:objc_opt_class()];
 
   if (!v10)
   {
@@ -4140,7 +4140,7 @@ LABEL_8:
       sub_10009BECC();
     }
 
-    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setInfoPlistLoctablePromiseUUID:completion:]", 2113, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find loctable promise with UUID %@", v15, v6);
+    v12 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setInfoPlistLoctablePromiseUUID:completion:]", 2113, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find loctable promise with UUID %@", v15, dCopy);
     goto LABEL_7;
   }
 
@@ -4150,51 +4150,51 @@ LABEL_8:
   if ((v11 & 1) == 0)
   {
 LABEL_7:
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
     goto LABEL_8;
   }
 
-  v13 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A2C4;
   block[3] = &unk_100100ED8;
   block[4] = self;
   v17 = v10;
-  dispatch_sync(v13, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_8:
 }
 
-- (void)_remote_hasInfoPlistLoctablePromise:(id)a3
+- (void)_remote_hasInfoPlistLoctablePromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002A3DC;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(promiseCopy + 2))(promiseCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_getInfoPlistLoctablePromise:(id)a3
+- (void)_remote_getInfoPlistLoctablePromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promiseCopy = promise;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -4202,26 +4202,26 @@ LABEL_8:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002A568;
   v7[3] = &unk_1001013C8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  promiseCopy[2](promiseCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setAppExtensionPlaceholderPromiseUUIDs:(id)a3 completion:(id)a4
+- (void)_remote_setAppExtensionPlaceholderPromiseUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v54 = self;
-  v8 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v8);
+  dsCopy = ds;
+  completionCopy = completion;
+  selfCopy = self;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v55 = objc_opt_new();
   v49 = objc_opt_new();
@@ -4231,13 +4231,13 @@ LABEL_8:
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v10 = v6;
+  v10 = dsCopy;
   v51 = [v10 countByEnumeratingWithState:&v59 objects:v75 count:16];
   if (v51)
   {
     v52 = v9;
     v53 = *v60;
-    v46 = v7;
+    v46 = completionCopy;
 LABEL_3:
     v11 = 0;
     while (1)
@@ -4260,40 +4260,40 @@ LABEL_3:
         }
 
         v14 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2170, @"IXErrorDomain", 3uLL, 0, 0, @"Could not find placeholder promise with UUID %@", v32, v12);
-        v7 = v46;
+        completionCopy = v46;
         v46[2](v46, v14);
         v23 = v55;
         goto LABEL_44;
       }
 
-      v15 = [(IXSPlaceholder *)v54 bundleID];
-      v16 = [v14 bundleID];
-      v56 = [v14 bundleDirectoryName];
-      v17 = [v14 seed];
-      v18 = [v17 placeholderType];
+      bundleID = [(IXSPlaceholder *)selfCopy bundleID];
+      bundleID2 = [v14 bundleID];
+      bundleDirectoryName = [v14 bundleDirectoryName];
+      seed = [v14 seed];
+      placeholderType = [seed placeholderType];
 
-      v19 = [(IXSDataPromise *)v54 seed];
-      v20 = [v19 location];
+      seed2 = [(IXSDataPromise *)selfCopy seed];
+      location = [seed2 location];
 
-      v21 = [v14 seed];
-      v22 = [v21 location];
+      seed3 = [v14 seed];
+      location2 = [seed3 location];
 
-      if (!IXIsAppExtensionForPlaceholderType(v18))
+      if (!IXIsAppExtensionForPlaceholderType(placeholderType))
       {
         v33 = sub_1000031B0(off_100121958);
-        v7 = v46;
+        completionCopy = v46;
         v23 = v55;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           sub_10009BF40();
         }
 
-        v35 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2183, @"IXErrorDomain", 0x35uLL, 0, 0, @"Placeholder with bundle ID %@ is not an app extension so cannot be set as an app extension placeholder on %@", v34, v16);
+        v35 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2183, @"IXErrorDomain", 0x35uLL, 0, 0, @"Placeholder with bundle ID %@ is not an app extension so cannot be set as an app extension placeholder on %@", v34, bundleID2);
         goto LABEL_32;
       }
 
       v23 = v55;
-      if (([v22 isEqual:v20] & 1) == 0)
+      if (([location2 isEqual:location] & 1) == 0)
       {
         v36 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -4301,30 +4301,30 @@ LABEL_3:
           *buf = 136316418;
           v64 = "[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]";
           v65 = 2112;
-          v66 = v16;
+          v66 = bundleID2;
           v67 = 2112;
-          v68 = v22;
+          v68 = location2;
           v69 = 2112;
-          v70 = v15;
+          v70 = bundleID;
           v71 = 2112;
-          v72 = v20;
+          v72 = location;
           v73 = 2112;
           v74 = 0;
           _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%s: App extension placeholders array has extension %@ with the location %@, but the parent %@ has the location %@. These locations must match. : %@", buf, 0x3Eu);
         }
 
-        v35 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2189, @"IXErrorDomain", 0x3BuLL, 0, 0, @"App extension placeholders array has extension %@ with the location %@, but the parent %@ has the location %@. These locations must match.", v37, v16);
-        v7 = v46;
+        v35 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2189, @"IXErrorDomain", 0x3BuLL, 0, 0, @"App extension placeholders array has extension %@ with the location %@, but the parent %@ has the location %@. These locations must match.", v37, bundleID2);
+        completionCopy = v46;
 LABEL_32:
         v9 = v52;
-        v7[2](v7, v35);
+        completionCopy[2](completionCopy, v35);
 
         goto LABEL_44;
       }
 
       v24 = v10;
-      v25 = [NSString stringWithFormat:@"%@.", v15];
-      if (([v16 hasPrefix:v25] & 1) == 0)
+      v25 = [NSString stringWithFormat:@"%@.", bundleID];
+      if (([bundleID2 hasPrefix:v25] & 1) == 0)
       {
         v38 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -4332,9 +4332,9 @@ LABEL_32:
           *buf = 136316162;
           v64 = "[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]";
           v65 = 2112;
-          v66 = v16;
+          v66 = bundleID2;
           v67 = 2112;
-          v68 = v15;
+          v68 = bundleID;
           v69 = 2112;
           v70 = v25;
           v71 = 2112;
@@ -4342,11 +4342,11 @@ LABEL_32:
           _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%s: Cannot set app extension placeholder with bundle ID %@ on parent app %@ because this extension's bundle ID does not have required bundle ID prefix of %@ : %@", buf, 0x34u);
         }
 
-        sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2196, @"IXErrorDomain", 8uLL, 0, 0, @"Cannot set app extension placeholder with bundle ID %@ on parent app %@ because this extension's bundle ID does not have required bundle ID prefix of %@", v39, v16);
+        sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2196, @"IXErrorDomain", 8uLL, 0, 0, @"Cannot set app extension placeholder with bundle ID %@ on parent app %@ because this extension's bundle ID does not have required bundle ID prefix of %@", v39, bundleID2);
         goto LABEL_39;
       }
 
-      if ([v55 containsObject:v16])
+      if ([v55 containsObject:bundleID2])
       {
         v40 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -4354,17 +4354,17 @@ LABEL_32:
           sub_10009C030();
         }
 
-        sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2203, @"IXErrorDomain", 9uLL, 0, 0, @"App extension placeholders array has multiple placeholders with the same bundle ID of %@", v41, v16);
+        sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2203, @"IXErrorDomain", 9uLL, 0, 0, @"App extension placeholders array has multiple placeholders with the same bundle ID of %@", v41, bundleID2);
         v42 = LABEL_39:;
-        v7 = v46;
+        completionCopy = v46;
         v46[2](v46, v42);
 
         goto LABEL_43;
       }
 
-      [v55 addObject:v16];
-      v26 = [v14 bundleDirectoryName];
-      if (v26)
+      [v55 addObject:bundleID2];
+      bundleDirectoryName2 = [v14 bundleDirectoryName];
+      if (bundleDirectoryName2)
       {
         break;
       }
@@ -4377,7 +4377,7 @@ LABEL_20:
       v10 = v24;
       if (v51 == v11)
       {
-        v7 = v46;
+        completionCopy = v46;
         v51 = [v24 countByEnumeratingWithState:&v59 objects:v75 count:16];
         if (v51)
         {
@@ -4388,8 +4388,8 @@ LABEL_20:
       }
     }
 
-    v50 = v20;
-    if (v18 == 2)
+    v50 = location;
+    if (placeholderType == 2)
     {
       v27 = v49;
       v28 = @"PlugInKit";
@@ -4397,7 +4397,7 @@ LABEL_20:
 
     else
     {
-      if (v18 != 3)
+      if (placeholderType != 3)
       {
         v47 = 0;
         v29 = 0;
@@ -4411,7 +4411,7 @@ LABEL_20:
     v47 = v28;
     v29 = v27;
 LABEL_18:
-    if ([v29 containsObject:v56])
+    if ([v29 containsObject:bundleDirectoryName])
     {
       v43 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -4420,7 +4420,7 @@ LABEL_18:
       }
 
       v45 = sub_1000405FC("[IXSPlaceholder(IXSPlaceholderIPCMethods) _remote_setAppExtensionPlaceholderPromiseUUIDs:completion:]", 2223, @"IXErrorDomain", 0x3CuLL, 0, 0, @"App extension placeholders array has multiple %@ placeholders with the same bundle directory name of %@", v44, v47);
-      v7 = v46;
+      completionCopy = v46;
       v46[2](v46, v45);
 
       v23 = v55;
@@ -4432,55 +4432,55 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    [v29 addObject:v56];
+    [v29 addObject:bundleDirectoryName];
 
     goto LABEL_20;
   }
 
 LABEL_22:
 
-  v30 = [(IXSDataPromise *)v54 accessQueue];
+  accessQueue2 = [(IXSDataPromise *)selfCopy accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AF14;
   block[3] = &unk_100100ED8;
-  block[4] = v54;
+  block[4] = selfCopy;
   v58 = v9;
-  dispatch_sync(v30, block);
+  dispatch_sync(accessQueue2, block);
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
   v23 = v55;
 LABEL_45:
 }
 
-- (void)_remote_hasAppExtensionPlaceholderPromises:(id)a3
+- (void)_remote_hasAppExtensionPlaceholderPromises:(id)promises
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promisesCopy = promises;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B02C;
   v7[3] = &unk_100101268;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  (*(v4 + 2))(v4, *(v9 + 24), 0);
+  (*(promisesCopy + 2))(promisesCopy, *(v9 + 24), 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_getAppExtensionPlaceholderPromises:(id)a3
+- (void)_remote_getAppExtensionPlaceholderPromises:(id)promises
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  promisesCopy = promises;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -4488,34 +4488,34 @@ LABEL_45:
   v11 = sub_10001F1AC;
   v12 = sub_10001F1BC;
   v13 = 0;
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B1B8;
   v7[3] = &unk_1001013C8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v6, v7);
+  dispatch_sync(accessQueue2, v7);
 
-  v4[2](v4, v9[5], 0);
+  promisesCopy[2](promisesCopy, v9[5], 0);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_remote_setConfigurationCompleteWithCompletion:(id)a3
+- (void)_remote_setConfigurationCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXSDataPromise *)self accessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(IXSDataPromise *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
-  v6 = [(IXSDataPromise *)self accessQueue];
+  accessQueue2 = [(IXSDataPromise *)self accessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B4A8;
   block[3] = &unk_1001010A0;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(accessQueue2, block);
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

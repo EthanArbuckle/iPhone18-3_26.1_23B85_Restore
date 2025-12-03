@@ -1,7 +1,7 @@
 @interface FLViewExtensionLoader
-- (BOOL)_setupSessionIfNeeded:(id *)a3;
+- (BOOL)_setupSessionIfNeeded:(id *)needed;
 - (id)remoteViewController;
-- (void)_setupSessionWithExtension:(id)a3 completion:(id)a4;
+- (void)_setupSessionWithExtension:(id)extension completion:(id)completion;
 @end
 
 @implementation FLViewExtensionLoader
@@ -18,12 +18,12 @@
   return extensionViewController;
 }
 
-- (BOOL)_setupSessionIfNeeded:(id *)a3
+- (BOOL)_setupSessionIfNeeded:(id *)needed
 {
-  v5 = [(FLHeadlessExtensionLoader *)self extension];
-  v6 = [(FLHeadlessExtensionLoader *)self sessionID];
+  extension = [(FLHeadlessExtensionLoader *)self extension];
+  sessionID = [(FLHeadlessExtensionLoader *)self sessionID];
 
-  if (!v6 && v5)
+  if (!sessionID && extension)
   {
     v32 = 0;
     v33 = &v32;
@@ -53,13 +53,13 @@
     v19 = &v32;
     v8 = v7;
     v16 = v8;
-    [(FLViewExtensionLoader *)self _setupSessionWithExtension:v5 completion:&v12];
+    [(FLViewExtensionLoader *)self _setupSessionWithExtension:extension completion:&v12];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     objc_storeStrong(&self->_extensionViewController, v27[5]);
     [(FLHeadlessExtensionLoader *)self setSessionID:v21[5], v12, v13, v14, v15];
-    if (a3)
+    if (needed)
     {
-      *a3 = v33[5];
+      *needed = v33[5];
     }
 
     _Block_object_dispose(&v20, 8);
@@ -68,8 +68,8 @@
     _Block_object_dispose(&v32, 8);
   }
 
-  v9 = [(FLHeadlessExtensionLoader *)self sessionID];
-  v10 = v9 != 0;
+  sessionID2 = [(FLHeadlessExtensionLoader *)self sessionID];
+  v10 = sessionID2 != 0;
 
   return v10;
 }
@@ -118,16 +118,16 @@ void __47__FLViewExtensionLoader__setupSessionIfNeeded___block_invoke(uint64_t a
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupSessionWithExtension:(id)a3 completion:(id)a4
+- (void)_setupSessionWithExtension:(id)extension completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__FLViewExtensionLoader__setupSessionWithExtension_completion___block_invoke;
   v7[3] = &unk_278E35A38;
-  v8 = v5;
-  v6 = v5;
-  [a3 instantiateViewControllerWithInputItems:MEMORY[0x277CBEBF8] listenerEndpoint:0 connectionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [extension instantiateViewControllerWithInputItems:MEMORY[0x277CBEBF8] listenerEndpoint:0 connectionHandler:v7];
 }
 
 void __63__FLViewExtensionLoader__setupSessionWithExtension_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)

@@ -1,47 +1,47 @@
 @interface FHSearchSuggestionController
 - (FHSearchSuggestionController)init;
-- (FHSearchSuggestionController)initWithDelegate:(id)a3;
+- (FHSearchSuggestionController)initWithDelegate:(id)delegate;
 - (FHSuggestionDelegate)delegate;
 - (id)_clientConnection;
 - (id)_newClientConnection;
 - (id)_remoteObjectInterface;
 - (id)_remoteObjectProxyWithErrorHandler;
-- (id)_validateInstrumentationRecord:(id)a3;
+- (id)_validateInstrumentationRecord:(id)record;
 - (void)_init;
-- (void)_updateOrRecordCacheEntries:(id)a3 instrumentationCacheSize:(unint64_t)a4;
-- (void)aggregateFeaturesWithHandler:(id)a3;
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4;
-- (void)allFeatureInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 completion:(id)a7;
-- (void)allPeerPaymentForecastingSignals:(id)a3;
+- (void)_updateOrRecordCacheEntries:(id)entries instrumentationCacheSize:(unint64_t)size;
+- (void)aggregateFeaturesWithHandler:(id)handler;
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion;
+- (void)allFeatureInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window completion:(id)completion;
+- (void)allPeerPaymentForecastingSignals:(id)signals;
 - (void)dealloc;
-- (void)deleteAllData:(id)a3;
-- (void)deleteDataForPassesWithSourceIdentifiers:(id)a3 completion:(id)a4;
-- (void)deleteTransactionByTransactionIdentifier:(id)a3 completion:(id)a4;
-- (void)featureResponsesForApplication:(id)a3 withCompletion:(id)a4;
-- (void)featuresForApplication:(id)a3 withCompletion:(id)a4;
-- (void)fetchUserProperties:(id)a3 withParameters:(id)a4 completion:(id)a5;
-- (void)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4 completion:(id)a5;
-- (void)getDisputeDocumentSuggestionsForTransactionId:(id)a3 completion:(id)a4;
-- (void)getTopTransactionCategoriesWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 minRegularTransactionRatio:(double)a5 discretizedTimeOfDay:(unint64_t)a6 completion:(id)a7;
-- (void)getTopTransactionCategoriesWithTimeWindow:(unint64_t)a3 completion:(id)a4;
-- (void)paymentRingSuggestionsFromSearchFeatures:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6;
-- (void)peerPaymentForecastingSignals:(id)a3 withCompletion:(id)a4;
-- (void)predictionsByModelName:(id)a3 modelVersion:(id)a4 completion:(id)a5;
-- (void)recordUserInteraction:(id)a3;
+- (void)deleteAllData:(id)data;
+- (void)deleteDataForPassesWithSourceIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteTransactionByTransactionIdentifier:(id)identifier completion:(id)completion;
+- (void)featureResponsesForApplication:(id)application withCompletion:(id)completion;
+- (void)featuresForApplication:(id)application withCompletion:(id)completion;
+- (void)fetchUserProperties:(id)properties withParameters:(id)parameters completion:(id)completion;
+- (void)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component completion:(id)completion;
+- (void)getDisputeDocumentSuggestionsForTransactionId:(id)id completion:(id)completion;
+- (void)getTopTransactionCategoriesWithCountryCode:(id)code timeWindow:(unint64_t)window minRegularTransactionRatio:(double)ratio discretizedTimeOfDay:(unint64_t)day completion:(id)completion;
+- (void)getTopTransactionCategoriesWithTimeWindow:(unint64_t)window completion:(id)completion;
+- (void)paymentRingSuggestionsFromSearchFeatures:(id)features startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)peerPaymentForecastingSignals:(id)signals withCompletion:(id)completion;
+- (void)predictionsByModelName:(id)name modelVersion:(id)version completion:(id)completion;
+- (void)recordUserInteraction:(id)interaction;
 - (void)reevaluateTransactionFeatures;
 - (void)sendAllTransactionFeatures;
-- (void)transactionsByGroupID:(id)a3 completion:(id)a4;
+- (void)transactionsByGroupID:(id)d completion:(id)completion;
 - (void)transactionsRequireSyncing;
-- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)a3 amount:(id)a4 currencyCode:(id)a5 completion:(id)a6;
-- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)a3 counterpartHandle:(id)a4 amount:(id)a5 completion:(id)a6;
+- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)id amount:(id)amount currencyCode:(id)code completion:(id)completion;
+- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)status counterpartHandle:(id)handle amount:(id)amount completion:(id)completion;
 @end
 
 @implementation FHSearchSuggestionController
 
-- (FHSearchSuggestionController)initWithDelegate:(id)a3
+- (FHSearchSuggestionController)initWithDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = *MEMORY[0x277D087B8];
   v6 = FinHealthLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -57,7 +57,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v4);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     [(FHSearchSuggestionController *)v8 _init];
   }
 
@@ -125,12 +125,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteDataForPassesWithSourceIdentifiers:(id)a3 completion:(id)a4
+- (void)deleteDataForPassesWithSourceIdentifiers:(id)identifiers completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D087B8];
-  v8 = a3;
+  identifiersCopy = identifiers;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -139,24 +139,24 @@
     _os_log_impl(&dword_24ABD8000, v9, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v10 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__FHSearchSuggestionController_deleteDataForPassesWithSourceIdentifiers_completion___block_invoke;
   v13[3] = &unk_278FFB288;
-  v14 = v6;
-  v11 = v6;
-  [v10 deleteDataForPasses:v8 completion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler deleteDataForPasses:identifiersCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteTransactionByTransactionIdentifier:(id)a3 completion:(id)a4
+- (void)deleteTransactionByTransactionIdentifier:(id)identifier completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D087B8];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -165,22 +165,22 @@
     _os_log_impl(&dword_24ABD8000, v9, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v10 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__FHSearchSuggestionController_deleteTransactionByTransactionIdentifier_completion___block_invoke;
   v13[3] = &unk_278FFB2B0;
-  v14 = v6;
-  v11 = v6;
-  [v10 deleteTransactionById:v8 completion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler deleteTransactionById:identifierCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllData:(id)a3
+- (void)deleteAllData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = *MEMORY[0x277D087B8];
   v6 = FinHealthLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -190,14 +190,14 @@
     _os_log_impl(&dword_24ABD8000, v6, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v7 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__FHSearchSuggestionController_deleteAllData___block_invoke;
   v10[3] = &unk_278FFB288;
-  v11 = v4;
-  v8 = v4;
-  [v7 deleteAllData:v10];
+  v11 = dataCopy;
+  v8 = dataCopy;
+  [_remoteObjectProxyWithErrorHandler deleteAllData:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -229,20 +229,20 @@ void __46__FHSearchSuggestionController_deleteAllData___block_invoke(uint64_t a1
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featuresForApplication:(id)a3 withCompletion:(id)a4
+- (void)featuresForApplication:(id)application withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  applicationCopy = application;
+  completionCopy = completion;
+  if (applicationCopy)
   {
-    v8 = v6;
+    processName = applicationCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v9 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
   }
 
   v10 = *MEMORY[0x277D087B8];
@@ -252,19 +252,19 @@ void __46__FHSearchSuggestionController_deleteAllData___block_invoke(uint64_t a1
     *buf = 136315394;
     v18 = "[FHSearchSuggestionController featuresForApplication:withCompletion:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = processName;
     _os_log_impl(&dword_24ABD8000, v11, OS_LOG_TYPE_DEBUG, "%s process/application name: %@", buf, 0x16u);
   }
 
-  v12 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__FHSearchSuggestionController_featuresForApplication_withCompletion___block_invoke;
   v15[3] = &unk_278FFB2D8;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
-  [v12 featuresForApplication:v8 withCompletion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler featuresForApplication:processName withCompletion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -280,19 +280,19 @@ uint64_t __70__FHSearchSuggestionController_featuresForApplication_withCompletio
   return result;
 }
 
-- (void)fetchUserProperties:(id)a3 withParameters:(id)a4 completion:(id)a5
+- (void)fetchUserProperties:(id)properties withParameters:(id)parameters completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__FHSearchSuggestionController_fetchUserProperties_withParameters_completion___block_invoke;
   v11[3] = &unk_278FFB300;
-  v13 = self;
-  v14 = v8;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = propertiesCopy;
+  v9 = completionCopy;
+  v10 = propertiesCopy;
   [(FHSearchSuggestionController *)self featuresForApplication:@"Messaging" withCompletion:v11];
 }
 
@@ -314,14 +314,14 @@ void __78__FHSearchSuggestionController_fetchUserProperties_withParameters_compl
   }
 }
 
-- (void)paymentRingSuggestionsFromSearchFeatures:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6
+- (void)paymentRingSuggestionsFromSearchFeatures:(id)features startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  featuresCopy = features;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
+  if (!featuresCopy)
   {
     v14 = *MEMORY[0x277D087B8];
     v15 = FinHealthLogObject();
@@ -333,17 +333,17 @@ void __78__FHSearchSuggestionController_fetchUserProperties_withParameters_compl
     }
 
     v16 = objc_opt_new();
-    v13[2](v13, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
-  v17 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __102__FHSearchSuggestionController_paymentRingSuggestionsFromSearchFeatures_startDate_endDate_completion___block_invoke;
   v20[3] = &unk_278FFB328;
-  v21 = v13;
-  v18 = v13;
-  [v17 paymentRingSuggestionsFromSearchFeatures:v10 startDate:v11 endDate:v12 completion:v20];
+  v21 = completionCopy;
+  v18 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler paymentRingSuggestionsFromSearchFeatures:featuresCopy startDate:dateCopy endDate:endDateCopy completion:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -359,20 +359,20 @@ uint64_t __102__FHSearchSuggestionController_paymentRingSuggestionsFromSearchFea
   return result;
 }
 
-- (void)featureResponsesForApplication:(id)a3 withCompletion:(id)a4
+- (void)featureResponsesForApplication:(id)application withCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  applicationCopy = application;
+  completionCopy = completion;
+  if (applicationCopy)
   {
-    v8 = v6;
+    processName = applicationCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v9 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
   }
 
   v10 = *MEMORY[0x277D087B8];
@@ -382,21 +382,21 @@ uint64_t __102__FHSearchSuggestionController_paymentRingSuggestionsFromSearchFea
     *buf = 136315394;
     v20 = "[FHSearchSuggestionController featureResponsesForApplication:withCompletion:]";
     v21 = 2112;
-    v22 = v8;
+    v22 = processName;
     _os_log_impl(&dword_24ABD8000, v11, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
-  v12 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__FHSearchSuggestionController_featureResponsesForApplication_withCompletion___block_invoke;
   v16[3] = &unk_278FFB350;
-  v17 = v6;
-  v18 = v7;
+  v17 = applicationCopy;
+  v18 = completionCopy;
   v16[4] = self;
-  v13 = v6;
-  v14 = v7;
-  [v12 featureResponsesForApplication:v8 completion:v16];
+  v13 = applicationCopy;
+  v14 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler featureResponsesForApplication:processName completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -429,18 +429,18 @@ void __78__FHSearchSuggestionController_featureResponsesForApplication_withCompl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getDisputeDocumentSuggestionsForTransactionId:(id)a3 completion:(id)a4
+- (void)getDisputeDocumentSuggestionsForTransactionId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  completionCopy = completion;
+  idCopy = id;
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __89__FHSearchSuggestionController_getDisputeDocumentSuggestionsForTransactionId_completion___block_invoke;
   v10[3] = &unk_278FFB378;
-  v11 = v6;
-  v9 = v6;
-  [v8 getDisputeDocumentSuggestionsForTransactionId:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler getDisputeDocumentSuggestionsForTransactionId:idCopy completion:v10];
 }
 
 - (void)sendAllTransactionFeatures
@@ -472,14 +472,14 @@ void __78__FHSearchSuggestionController_featureResponsesForApplication_withCompl
   }
 
   objc_initWeak(&location, self);
-  v5 = [(FHSearchSuggestionController *)self _clientConnection];
+  _clientConnection = [(FHSearchSuggestionController *)self _clientConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__FHSearchSuggestionController_reevaluateTransactionFeatures__block_invoke;
   v9[3] = &unk_278FFB3A0;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v6 = [_clientConnection remoteObjectProxyWithErrorHandler:v9];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v13 = 0x2020000000;
@@ -662,8 +662,8 @@ void __60__FHSearchSuggestionController__sendAllTransactionFeatures___block_invo
     _os_log_impl(&dword_24ABD8000, v4, OS_LOG_TYPE_DEBUG, "%s", &v7, 0xCu);
   }
 
-  v5 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
-  [v5 transactionsRequireSyncing:&__block_literal_global];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  [_remoteObjectProxyWithErrorHandler transactionsRequireSyncing:&__block_literal_global];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -685,12 +685,12 @@ void __58__FHSearchSuggestionController_transactionsRequireSyncing__block_invoke
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordUserInteraction:(id)a3
+- (void)recordUserInteraction:(id)interaction
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(FHSearchSuggestionController *)self _validateInstrumentationRecord:a3];
-  v5 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
-  [v5 recordUserInteraction:v4 completion:&__block_literal_global_104];
+  v4 = [(FHSearchSuggestionController *)self _validateInstrumentationRecord:interaction];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  [_remoteObjectProxyWithErrorHandler recordUserInteraction:v4 completion:&__block_literal_global_104];
   v6 = *MEMORY[0x277D087B8];
   v7 = FinHealthLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -703,16 +703,16 @@ void __58__FHSearchSuggestionController_transactionsRequireSyncing__block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_validateInstrumentationRecord:(id)a3
+- (id)_validateInstrumentationRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = recordCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -754,10 +754,10 @@ void __58__FHSearchSuggestionController_transactionsRequireSyncing__block_invoke
   return v14;
 }
 
-- (void)_updateOrRecordCacheEntries:(id)a3 instrumentationCacheSize:(unint64_t)a4
+- (void)_updateOrRecordCacheEntries:(id)entries instrumentationCacheSize:(unint64_t)size
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entriesCopy = entries;
   os_unfair_lock_lock(&self->_lockCache);
   v7 = *MEMORY[0x277D087B8];
   v8 = FinHealthLogObject();
@@ -768,17 +768,17 @@ void __58__FHSearchSuggestionController_transactionsRequireSyncing__block_invoke
     _os_log_impl(&dword_24ABD8000, v8, OS_LOG_TYPE_DEBUG, "Started %s", &v13, 0xCu);
   }
 
-  if (v6)
+  if (entriesCopy)
   {
-    [(NSMutableArray *)self->_instrumentationCache addObject:v6];
+    [(NSMutableArray *)self->_instrumentationCache addObject:entriesCopy];
   }
 
-  if ([(NSMutableArray *)self->_instrumentationCache count]== a4)
+  if ([(NSMutableArray *)self->_instrumentationCache count]== size)
   {
     self->_cacheConnectionInitiated = 1;
-    v9 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+    _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
     v10 = [(NSMutableArray *)self->_instrumentationCache copy];
-    [v9 recordUserInteractions:v10 completion:&__block_literal_global_109];
+    [_remoteObjectProxyWithErrorHandler recordUserInteractions:v10 completion:&__block_literal_global_109];
 
     v11 = FinHealthLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -811,12 +811,12 @@ void __85__FHSearchSuggestionController__updateOrRecordCacheEntries_instrumentat
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peerPaymentForecastingSignals:(id)a3 withCompletion:(id)a4
+- (void)peerPaymentForecastingSignals:(id)signals withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D087B8];
-  v8 = a3;
+  signalsCopy = signals;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -825,14 +825,14 @@ void __85__FHSearchSuggestionController__updateOrRecordCacheEntries_instrumentat
     _os_log_impl(&dword_24ABD8000, v9, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v10 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__FHSearchSuggestionController_peerPaymentForecastingSignals_withCompletion___block_invoke;
   v13[3] = &unk_278FFB378;
-  v14 = v6;
-  v11 = v6;
-  [v10 peerPaymentForecastingSignals:v8 withCompletion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler peerPaymentForecastingSignals:signalsCopy withCompletion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -848,10 +848,10 @@ uint64_t __77__FHSearchSuggestionController_peerPaymentForecastingSignals_withCo
   return result;
 }
 
-- (void)allPeerPaymentForecastingSignals:(id)a3
+- (void)allPeerPaymentForecastingSignals:(id)signals
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  signalsCopy = signals;
   v5 = *MEMORY[0x277D087B8];
   v6 = FinHealthLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -861,15 +861,15 @@ uint64_t __77__FHSearchSuggestionController_peerPaymentForecastingSignals_withCo
     _os_log_impl(&dword_24ABD8000, v6, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v7 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v8 = [MEMORY[0x277CBEAA8] now];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__FHSearchSuggestionController_allPeerPaymentForecastingSignals___block_invoke;
   v11[3] = &unk_278FFB378;
-  v12 = v4;
-  v9 = v4;
-  [v7 peerPaymentForecastingSignals:v8 withCompletion:v11];
+  v12 = signalsCopy;
+  v9 = signalsCopy;
+  [_remoteObjectProxyWithErrorHandler peerPaymentForecastingSignals:v8 withCompletion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -885,13 +885,13 @@ uint64_t __65__FHSearchSuggestionController_allPeerPaymentForecastingSignals___b
   return result;
 }
 
-- (void)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4 completion:(id)a5
+- (void)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = *MEMORY[0x277D087B8];
-  v10 = a4;
-  v11 = a3;
+  componentCopy = component;
+  typeCopy = type;
   v12 = FinHealthLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -900,14 +900,14 @@ uint64_t __65__FHSearchSuggestionController_allPeerPaymentForecastingSignals___b
     _os_log_impl(&dword_24ABD8000, v12, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v13 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __98__FHSearchSuggestionController_generatePredictionWithModelType_withModelPathComponent_completion___block_invoke;
   v16[3] = &unk_278FFB328;
-  v17 = v8;
-  v14 = v8;
-  [v13 generatePredictionWithModelType:v11 withModelPathComponent:v10 completion:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler generatePredictionWithModelType:typeCopy withModelPathComponent:componentCopy completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -923,13 +923,13 @@ uint64_t __98__FHSearchSuggestionController_generatePredictionWithModelType_with
   return (*(v2 + 16))(v2, a2);
 }
 
-- (void)predictionsByModelName:(id)a3 modelVersion:(id)a4 completion:(id)a5
+- (void)predictionsByModelName:(id)name modelVersion:(id)version completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  nameCopy = name;
+  versionCopy = version;
+  completionCopy = completion;
+  if (!nameCopy)
   {
     v11 = *MEMORY[0x277D087B8];
     v12 = FinHealthLogObject();
@@ -941,17 +941,17 @@ uint64_t __98__FHSearchSuggestionController_generatePredictionWithModelType_with
     }
 
     v13 = objc_opt_new();
-    v10[2](v10, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  v14 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__FHSearchSuggestionController_predictionsByModelName_modelVersion_completion___block_invoke;
   v17[3] = &unk_278FFB328;
-  v18 = v10;
-  v15 = v10;
-  [v14 predictionsByModelName:v8 modelVersion:v9 completion:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler predictionsByModelName:nameCopy modelVersion:versionCopy completion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -967,13 +967,13 @@ uint64_t __79__FHSearchSuggestionController_predictionsByModelName_modelVersion_
   return result;
 }
 
-- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)a3 counterpartHandle:(id)a4 amount:(id)a5 completion:(id)a6
+- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)status counterpartHandle:(id)handle amount:(id)amount completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v11 = *MEMORY[0x277D087B8];
-  v12 = a5;
-  v13 = a4;
+  amountCopy = amount;
+  handleCopy = handle;
   v14 = FinHealthLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -982,26 +982,26 @@ uint64_t __79__FHSearchSuggestionController_predictionsByModelName_modelVersion_
     _os_log_impl(&dword_24ABD8000, v14, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v15 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __113__FHSearchSuggestionController_updatePeerPaymentForecastingSuggestionStatus_counterpartHandle_amount_completion___block_invoke;
   v18[3] = &unk_278FFB288;
-  v19 = v10;
-  v16 = v10;
-  [v15 updatePeerPaymentForecastingSuggestionStatus:a3 counterpartHandle:v13 amount:v12 completion:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler updatePeerPaymentForecastingSuggestionStatus:status counterpartHandle:handleCopy amount:amountCopy completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)a3 amount:(id)a4 currencyCode:(id)a5 completion:(id)a6
+- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)id amount:(id)amount currencyCode:(id)code completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v11 = *MEMORY[0x277D087B8];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  codeCopy = code;
+  amountCopy = amount;
+  idCopy = id;
   v15 = FinHealthLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -1010,26 +1010,26 @@ uint64_t __79__FHSearchSuggestionController_predictionsByModelName_modelVersion_
     _os_log_impl(&dword_24ABD8000, v15, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v16 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __118__FHSearchSuggestionController_updatePeerPaymentAccountBalanceWithTransactionSourceId_amount_currencyCode_completion___block_invoke;
   v19[3] = &unk_278FFB288;
-  v20 = v10;
-  v17 = v10;
-  [v16 updatePeerPaymentAccountBalanceWithTransactionSourceId:v14 amount:v13 currencyCode:v12 completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler updatePeerPaymentAccountBalanceWithTransactionSourceId:idCopy amount:amountCopy currencyCode:codeCopy completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allFeatureInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 completion:(id)a7
+- (void)allFeatureInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  completionCopy = completion;
   v13 = *MEMORY[0x277D087B8];
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  itemsCopy = items;
+  endDateCopy = endDate;
+  dateCopy = date;
   v17 = FinHealthLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -1038,14 +1038,14 @@ uint64_t __79__FHSearchSuggestionController_predictionsByModelName_modelVersion_
     _os_log_impl(&dword_24ABD8000, v17, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v18 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __112__FHSearchSuggestionController_allFeatureInsightsWithStartDate_endDate_insightTypeItems_trendWindow_completion___block_invoke;
   v21[3] = &unk_278FFB328;
-  v22 = v12;
-  v19 = v12;
-  [v18 allInsightsForDateRange:v16 endDate:v15 insightTypeItems:v14 trendWindow:a6 sourceId:0 accountType:2 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler allInsightsForDateRange:dateCopy endDate:endDateCopy insightTypeItems:itemsCopy trendWindow:window sourceId:0 accountType:2 completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1061,24 +1061,24 @@ uint64_t __112__FHSearchSuggestionController_allFeatureInsightsWithStartDate_end
   return result;
 }
 
-- (void)getTopTransactionCategoriesWithTimeWindow:(unint64_t)a3 completion:(id)a4
+- (void)getTopTransactionCategoriesWithTimeWindow:(unint64_t)window completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__FHSearchSuggestionController_getTopTransactionCategoriesWithTimeWindow_completion___block_invoke;
   v8[3] = &unk_278FFB458;
-  v9 = v6;
-  v7 = v6;
-  [(FHSearchSuggestionController *)self getTopTransactionCategoriesWithCountryCode:0 timeWindow:a3 minRegularTransactionRatio:0 discretizedTimeOfDay:v8 completion:0.0];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(FHSearchSuggestionController *)self getTopTransactionCategoriesWithCountryCode:0 timeWindow:window minRegularTransactionRatio:0 discretizedTimeOfDay:v8 completion:0.0];
 }
 
-- (void)transactionsByGroupID:(id)a3 completion:(id)a4
+- (void)transactionsByGroupID:(id)d completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (!dCopy)
   {
     v8 = *MEMORY[0x277D087B8];
     v9 = FinHealthLogObject();
@@ -1090,17 +1090,17 @@ uint64_t __112__FHSearchSuggestionController_allFeatureInsightsWithStartDate_end
     }
 
     v10 = objc_opt_new();
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
-  v11 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__FHSearchSuggestionController_transactionsByGroupID_completion___block_invoke;
   v14[3] = &unk_278FFB328;
-  v15 = v7;
-  v12 = v7;
-  [v11 transactionsByGroupID:v6 completion:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler transactionsByGroupID:dCopy completion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1116,18 +1116,18 @@ uint64_t __65__FHSearchSuggestionController_transactionsByGroupID_completion___b
   return result;
 }
 
-- (void)getTopTransactionCategoriesWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 minRegularTransactionRatio:(double)a5 discretizedTimeOfDay:(unint64_t)a6 completion:(id)a7
+- (void)getTopTransactionCategoriesWithCountryCode:(id)code timeWindow:(unint64_t)window minRegularTransactionRatio:(double)ratio discretizedTimeOfDay:(unint64_t)day completion:(id)completion
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  completionCopy = completion;
+  codeCopy = code;
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __145__FHSearchSuggestionController_getTopTransactionCategoriesWithCountryCode_timeWindow_minRegularTransactionRatio_discretizedTimeOfDay_completion___block_invoke;
   v16[3] = &unk_278FFB458;
-  v17 = v12;
-  v15 = v12;
-  [v14 getTopTransactionCategoriesWithCountryCode:v13 timeWindow:a4 minRegularTransactionRatio:a6 discretizedTimeOfDay:v16 completion:a5];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler getTopTransactionCategoriesWithCountryCode:codeCopy timeWindow:window minRegularTransactionRatio:day discretizedTimeOfDay:v16 completion:ratio];
 }
 
 - (id)_clientConnection
@@ -1143,17 +1143,17 @@ uint64_t __65__FHSearchSuggestionController_transactionsByGroupID_completion___b
   }
 
   os_unfair_lock_lock(&self->_lockConnection);
-  v5 = [(FHSearchSuggestionController *)self connection];
+  connection = [(FHSearchSuggestionController *)self connection];
 
-  v6 = FinHealthLogObject();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  _newClientConnection = FinHealthLogObject();
+  v7 = os_log_type_enabled(_newClientConnection, OS_LOG_TYPE_DEBUG);
+  if (connection)
   {
     if (v7)
     {
       v11 = 136315138;
       v12 = "[FHSearchSuggestionController _clientConnection]";
-      _os_log_impl(&dword_24ABD8000, v6, OS_LOG_TYPE_DEBUG, "%s, reusing _clientConnection", &v11, 0xCu);
+      _os_log_impl(&dword_24ABD8000, _newClientConnection, OS_LOG_TYPE_DEBUG, "%s, reusing _clientConnection", &v11, 0xCu);
     }
   }
 
@@ -1163,18 +1163,18 @@ uint64_t __65__FHSearchSuggestionController_transactionsByGroupID_completion___b
     {
       v11 = 136315138;
       v12 = "[FHSearchSuggestionController _clientConnection]";
-      _os_log_impl(&dword_24ABD8000, v6, OS_LOG_TYPE_DEBUG, "%s, _clientConnection nil", &v11, 0xCu);
+      _os_log_impl(&dword_24ABD8000, _newClientConnection, OS_LOG_TYPE_DEBUG, "%s, _clientConnection nil", &v11, 0xCu);
     }
 
-    v6 = [(FHSearchSuggestionController *)self _newClientConnection];
-    [(FHSearchSuggestionController *)self setConnection:v6];
+    _newClientConnection = [(FHSearchSuggestionController *)self _newClientConnection];
+    [(FHSearchSuggestionController *)self setConnection:_newClientConnection];
   }
 
   os_unfair_lock_unlock(&self->_lockConnection);
-  v8 = [(FHSearchSuggestionController *)self connection];
+  connection2 = [(FHSearchSuggestionController *)self connection];
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return connection2;
 }
 
 - (id)_newClientConnection
@@ -1190,8 +1190,8 @@ uint64_t __65__FHSearchSuggestionController_transactionsByGroupID_completion___b
   }
 
   v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.FinHealth.FinHealthXPCServices"];
-  v6 = [(FHSearchSuggestionController *)self _remoteObjectInterface];
-  [v5 setRemoteObjectInterface:v6];
+  _remoteObjectInterface = [(FHSearchSuggestionController *)self _remoteObjectInterface];
+  [v5 setRemoteObjectInterface:_remoteObjectInterface];
 
   objc_initWeak(buf, self);
   v14[0] = MEMORY[0x277D85DD0];
@@ -1385,27 +1385,27 @@ void __52__FHSearchSuggestionController__newClientConnection__block_invoke_116(u
   return v108;
 }
 
-- (void)aggregateFeaturesWithHandler:(id)a3
+- (void)aggregateFeaturesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__FHSearchSuggestionController_aggregateFeaturesWithHandler___block_invoke;
     v6[3] = &unk_278FFB4A8;
-    v7 = v4;
+    v7 = handlerCopy;
     [(FHSearchSuggestionController *)self aggregateFeaturesWithProcessSource:0 completion:v6];
   }
 }
 
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D087B8];
-  v8 = a3;
+  sourceCopy = source;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1414,14 +1414,14 @@ void __52__FHSearchSuggestionController__newClientConnection__block_invoke_116(u
     _os_log_impl(&dword_24ABD8000, v9, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v10 = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FHSearchSuggestionController *)self _remoteObjectProxyWithErrorHandler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__FHSearchSuggestionController_aggregateFeaturesWithProcessSource_completion___block_invoke;
   v13[3] = &unk_278FFB4A8;
-  v14 = v6;
-  v11 = v6;
-  [v10 aggregateFeaturesWithProcessSource:v8 completion:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler aggregateFeaturesWithProcessSource:sourceCopy completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1440,13 +1440,13 @@ uint64_t __78__FHSearchSuggestionController_aggregateFeaturesWithProcessSource_c
 - (id)_remoteObjectProxyWithErrorHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(FHSearchSuggestionController *)self _clientConnection];
+  _clientConnection = [(FHSearchSuggestionController *)self _clientConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__FHSearchSuggestionController__remoteObjectProxyWithErrorHandler__block_invoke;
   v6[3] = &unk_278FFB4D0;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [_clientConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);

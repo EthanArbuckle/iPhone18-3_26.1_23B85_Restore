@@ -1,14 +1,14 @@
 @interface SKGPersonNode
-+ (id)personWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGPersonNode)initWithIdentifier:(id)a3;
++ (id)personWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGPersonNode)initWithIdentifier:(id)identifier;
 @end
 
 @implementation SKGPersonNode
 
-+ (id)personWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)personWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGPersonNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGPersonNode)initWithIdentifier:(id)a3
+- (SKGPersonNode)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SKGPersonNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:identifier];
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface CKChatSceneDelegate
 - (BOOL)hasDetailsNavigationController;
 - (BOOL)isDetailsNavigationControllerDetached;
-- (BOOL)sendMenuPresentationShouldUseKeyboardSnapshot:(id)a3;
+- (BOOL)sendMenuPresentationShouldUseKeyboardSnapshot:(id)snapshot;
 - (CKChatSceneDelegate)init;
 - (CKDetailsNavigationController)detailsNavigationController;
 - (CKMessagesSplitViewCoordinator)splitViewCoordinator;
 - (NSSet)alertSuppressionContexts;
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3;
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3;
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller;
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller;
 - (id)conversation;
 - (id)newInputSnapshotView;
 - (id)prefersToActivatePredicate;
-- (id)stateRestorationActivityForScene:(id)a3;
+- (id)stateRestorationActivityForScene:(id)scene;
 - (id)viewToSizeEffectPreviewOverlay;
 - (void)__updateAppSnapshot;
-- (void)_chatItemsDidChange:(id)a3;
-- (void)_handleChatDisplayNameChangedNotification:(id)a3;
-- (void)_handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:(id)a3;
-- (void)_handleRegistryWillUnregisterChatNotification:(id)a3;
-- (void)_scene:(id)a3 openItemProviders:(id)a4;
+- (void)_chatItemsDidChange:(id)change;
+- (void)_handleChatDisplayNameChangedNotification:(id)notification;
+- (void)_handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:(id)notification;
+- (void)_handleRegistryWillUnregisterChatNotification:(id)notification;
+- (void)_scene:(id)_scene openItemProviders:(id)providers;
 - (void)_updateAppSnapshot;
-- (void)chatController:(id)a3 didDetachDetailsNavigationController:(id)a4;
-- (void)chatController:(id)a3 didFinishDismissAnimationForSendMenuViewController:(id)a4;
-- (void)chatController:(id)a3 didStartTextSelectionInView:(id)a4;
-- (void)chatController:(id)a3 presentViewControllerInInspector:(id)a4;
-- (void)chatController:(id)a3 requestDeleteJunkConversation:(id)a4;
-- (void)chatController:(id)a3 requestPresentSendMenu:(id)a4 currentlyPresentedViewController:(id)a5;
-- (void)chatController:(id)a3 requestRecoverJunkConversation:(id)a4;
-- (void)chatControllerDidChangeBackground:(id)a3;
+- (void)chatController:(id)controller didDetachDetailsNavigationController:(id)navigationController;
+- (void)chatController:(id)controller didFinishDismissAnimationForSendMenuViewController:(id)viewController;
+- (void)chatController:(id)controller didStartTextSelectionInView:(id)view;
+- (void)chatController:(id)controller presentViewControllerInInspector:(id)inspector;
+- (void)chatController:(id)controller requestDeleteJunkConversation:(id)conversation;
+- (void)chatController:(id)controller requestPresentSendMenu:(id)menu currentlyPresentedViewController:(id)viewController;
+- (void)chatController:(id)controller requestRecoverJunkConversation:(id)conversation;
+- (void)chatControllerDidChangeBackground:(id)background;
 - (void)cleanUpInteractionViews;
 - (void)dismissAndReopenDetailsNavigationController;
 - (void)dismissDetailsNavigationController;
-- (void)dismissDetailsNavigationControllerWithCompletion:(id)a3;
+- (void)dismissDetailsNavigationControllerWithCompletion:(id)completion;
 - (void)dismissDetailsViewAndShowConversationList;
-- (void)doneButtonPressedForChatController:(id)a3;
-- (void)loadAndShowConversationWithMessageGUID:(id)a3 withInlineReplyOverlay:(BOOL)a4;
-- (void)presentDetailsNavigationController:(id)a3;
+- (void)doneButtonPressedForChatController:(id)controller;
+- (void)loadAndShowConversationWithMessageGUID:(id)d withInlineReplyOverlay:(BOOL)overlay;
+- (void)presentDetailsNavigationController:(id)controller;
 - (void)requestDismissKeyboardSnapshotForSendMenu;
 - (void)requestShowKeyboardSnapshotForSendMenu;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setChatController:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setChatController:(id)controller;
 - (void)setupCKDismissOnInteractionView;
-- (void)showConversation:(id)a3 scrollToMessage:(id)a4 withInlineReplyOverlay:(BOOL)a5;
-- (void)showConversationAndMessageForChatGUID:(id)a3 messageGUID:(id)a4 withInlineReplyOverlay:(BOOL)a5 animate:(BOOL)a6;
-- (void)windowSceneDidBecomeVisible:(id)a3;
+- (void)showConversation:(id)conversation scrollToMessage:(id)message withInlineReplyOverlay:(BOOL)overlay;
+- (void)showConversationAndMessageForChatGUID:(id)d messageGUID:(id)iD withInlineReplyOverlay:(BOOL)overlay animate:(BOOL)animate;
+- (void)windowSceneDidBecomeVisible:(id)visible;
 @end
 
 @implementation CKChatSceneDelegate
@@ -60,10 +60,10 @@
   v2 = [(CKSceneDelegate *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v4 = [v3 isModernSplitViewControllerEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-    if (v4)
+    if (isModernSplitViewControllerEnabled)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DCF78]) initWithStyle:1];
       splitViewController = v2->_splitViewController;
@@ -77,37 +77,37 @@
     navigationController = v2->_navigationController;
     v2->_navigationController = v7;
 
-    v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v11 = [v10 isModernSplitViewControllerEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isModernSplitViewControllerEnabled2 = [mEMORY[0x1E69A8070]2 isModernSplitViewControllerEnabled];
 
-    if (v11)
+    if (isModernSplitViewControllerEnabled2)
     {
-      v12 = [(CKChatSceneDelegate *)v2 splitViewController];
-      v13 = [(CKChatSceneDelegate *)v2 navigationController];
-      [v12 setViewController:v13 forColumn:2];
+      splitViewController = [(CKChatSceneDelegate *)v2 splitViewController];
+      navigationController = [(CKChatSceneDelegate *)v2 navigationController];
+      [splitViewController setViewController:navigationController forColumn:2];
 
-      v14 = [(CKSceneDelegate *)v2 window];
+      window = [(CKSceneDelegate *)v2 window];
       p_navigationController = &v2->_splitViewController;
     }
 
     else
     {
-      v14 = [(CKSceneDelegate *)v2 window];
+      window = [(CKSceneDelegate *)v2 window];
     }
 
-    [v14 setRootViewController:*p_navigationController];
+    [window setRootViewController:*p_navigationController];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v2 selector:sel__chatItemsDidChange_ name:*MEMORY[0x1E69A5748] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__chatItemsDidChange_ name:*MEMORY[0x1E69A5748] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v2 selector:sel__handleRegistryWillUnregisterChatNotification_ name:*MEMORY[0x1E69A5900] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleRegistryWillUnregisterChatNotification_ name:*MEMORY[0x1E69A5900] object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel__handleChatDisplayNameChangedNotification_ name:*MEMORY[0x1E69A5700] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__handleChatDisplayNameChangedNotification_ name:*MEMORY[0x1E69A5700] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v2 selector:sel__handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification_ name:*MEMORY[0x1E69A58A8] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification_ name:*MEMORY[0x1E69A58A8] object:0];
   }
 
   return v2;
@@ -118,8 +118,8 @@
   splitViewCoordinator = self->_splitViewCoordinator;
   if (!splitViewCoordinator)
   {
-    v4 = [(CKChatSceneDelegate *)self splitViewController];
-    v5 = [CKMessagesSplitViewCoordinator newWithSplitViewController:v4];
+    splitViewController = [(CKChatSceneDelegate *)self splitViewController];
+    v5 = [CKMessagesSplitViewCoordinator newWithSplitViewController:splitViewController];
     v6 = self->_splitViewCoordinator;
     self->_splitViewCoordinator = v5;
 
@@ -132,44 +132,44 @@
   return v7;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke;
   v29 = &unk_1E72EBEF8;
-  v11 = v8;
+  v11 = sceneCopy;
   v30 = v11;
-  v12 = v9;
+  v12 = sessionCopy;
   v31 = v12;
-  v13 = v10;
+  v13 = optionsCopy;
   v32 = v13;
-  v33 = self;
+  selfCopy = self;
   v14 = _Block_copy(&v26);
   v14[2](v14, v15, v16, v17);
   [(CKChatSceneDelegate *)self showConversation:0, v26, v27, v28, v29];
   v18 = +[CKUIBehavior sharedBehaviors];
-  v19 = [v18 useMacToolbar];
+  useMacToolbar = [v18 useMacToolbar];
 
-  if (v19)
+  if (useMacToolbar)
   {
     v20 = [[CKMacToolbarController alloc] initWithScene:v11 connectingToSession:v12 inStandaloneWindow:1];
     [(CKSceneDelegate *)self setToolbarController:v20];
 
-    v21 = [(CKChatSceneDelegate *)self chatController];
-    v22 = [(CKSceneDelegate *)self toolbarController];
-    [v21 configureWithToolbarController:v22];
+    chatController = [(CKChatSceneDelegate *)self chatController];
+    toolbarController = [(CKSceneDelegate *)self toolbarController];
+    [chatController configureWithToolbarController:toolbarController];
 
-    v23 = [(CKChatSceneDelegate *)self chatController];
-    [v23 presentMacToolbarController];
+    chatController2 = [(CKChatSceneDelegate *)self chatController];
+    [chatController2 presentMacToolbarController];
   }
 
-  v24 = [v13 userActivities];
-  v25 = [v13 URLContexts];
-  [CKUserActivityHandler chatScene:v11 willConnectToSession:v12 userActivities:v24 urlContexts:v25 windowSceneDelegate:self];
+  userActivities = [v13 userActivities];
+  uRLContexts = [v13 URLContexts];
+  [CKUserActivityHandler chatScene:v11 willConnectToSession:v12 userActivities:userActivities urlContexts:uRLContexts windowSceneDelegate:self];
 }
 
 id __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke(uint64_t a1)
@@ -182,58 +182,58 @@ id __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke(u
   return objc_msgSendSuper2(&v5, sel_scene_willConnectToSession_options_, v1, v2, v3);
 }
 
-- (void)windowSceneDidBecomeVisible:(id)a3
+- (void)windowSceneDidBecomeVisible:(id)visible
 {
   v3.receiver = self;
   v3.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v3 windowSceneDidBecomeVisible:a3];
+  [(CKSceneDelegate *)&v3 windowSceneDidBecomeVisible:visible];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v5.receiver = self;
   v5.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v5 sceneWillEnterForeground:a3];
-  v4 = [(CKChatSceneDelegate *)self chatController];
-  [v4 prepareForResume];
+  [(CKSceneDelegate *)&v5 sceneWillEnterForeground:foreground];
+  chatController = [(CKChatSceneDelegate *)self chatController];
+  [chatController prepareForResume];
 
   [(CKSceneDelegate *)self updateSceneActivationConditions];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v5.receiver = self;
   v5.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v5 sceneDidEnterBackground:a3];
-  v4 = [(CKChatSceneDelegate *)self chatController];
-  [v4 prepareForSuspend];
+  [(CKSceneDelegate *)&v5 sceneDidEnterBackground:background];
+  chatController = [(CKChatSceneDelegate *)self chatController];
+  [chatController prepareForSuspend];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(CKSceneDelegate *)self window];
-  [v5 setRootViewController:0];
+  disconnectCopy = disconnect;
+  window = [(CKSceneDelegate *)self window];
+  [window setRootViewController:0];
 
   v9.receiver = self;
   v9.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v9 sceneDidDisconnect:v4];
+  [(CKSceneDelegate *)&v9 sceneDidDisconnect:disconnectCopy];
 
-  v6 = [(CKChatSceneDelegate *)self conversation];
+  conversation = [(CKChatSceneDelegate *)self conversation];
 
-  if (v6)
+  if (conversation)
   {
     v7 = +[CKCurrentConversationsManager sharedInstance];
-    v8 = [(CKChatSceneDelegate *)self conversation];
-    [v7 removeConversation:v8];
+    conversation2 = [(CKChatSceneDelegate *)self conversation];
+    [v7 removeConversation:conversation2];
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextsCopy = contexts;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -247,15 +247,15 @@ id __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke(u
 
   v9.receiver = self;
   v9.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v9 scene:v6 openURLContexts:v7];
-  [CKUserActivityHandler chatScene:v6 openURLContexts:v7];
+  [(CKSceneDelegate *)&v9 scene:sceneCopy openURLContexts:contextsCopy];
+  [CKUserActivityHandler chatScene:sceneCopy openURLContexts:contextsCopy];
 }
 
-- (void)_scene:(id)a3 openItemProviders:(id)a4
+- (void)_scene:(id)_scene openItemProviders:(id)providers
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  _sceneCopy = _scene;
+  providersCopy = providers;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -269,29 +269,29 @@ id __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke(u
 
   v9.receiver = self;
   v9.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v9 _scene:v6 openItemProviders:v7];
+  [(CKSceneDelegate *)&v9 _scene:_sceneCopy openItemProviders:providersCopy];
 }
 
-- (void)setChatController:(id)a3
+- (void)setChatController:(id)controller
 {
-  v5 = a3;
-  if (self->_chatController != v5)
+  controllerCopy = controller;
+  if (self->_chatController != controllerCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_chatController, a3);
+    v9 = controllerCopy;
+    objc_storeStrong(&self->_chatController, controller);
     v6 = +[CKUIBehavior sharedBehaviors];
     if ([v6 useMacToolbar])
     {
-      v7 = [(CKSceneDelegate *)self toolbarController];
+      toolbarController = [(CKSceneDelegate *)self toolbarController];
 
-      v5 = v9;
-      if (!v7)
+      controllerCopy = v9;
+      if (!toolbarController)
       {
         goto LABEL_7;
       }
 
-      v8 = [(CKSceneDelegate *)self toolbarController];
-      [(CKCoreChatController *)v9 configureWithToolbarController:v8];
+      toolbarController2 = [(CKSceneDelegate *)self toolbarController];
+      [(CKCoreChatController *)v9 configureWithToolbarController:toolbarController2];
 
       [(CKCoreChatController *)v9 presentMacToolbarController];
     }
@@ -300,7 +300,7 @@ id __58__CKChatSceneDelegate_scene_willConnectToSession_options___block_invoke(u
     {
     }
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 
 LABEL_7:
@@ -308,16 +308,16 @@ LABEL_7:
 
 - (id)conversation
 {
-  v2 = [(CKChatSceneDelegate *)self chatController];
-  v3 = [v2 conversation];
+  chatController = [(CKChatSceneDelegate *)self chatController];
+  conversation = [chatController conversation];
 
-  return v3;
+  return conversation;
 }
 
-- (void)loadAndShowConversationWithMessageGUID:(id)a3 withInlineReplyOverlay:(BOOL)a4
+- (void)loadAndShowConversationWithMessageGUID:(id)d withInlineReplyOverlay:(BOOL)overlay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -329,16 +329,16 @@ LABEL_7:
     }
   }
 
-  v8 = [MEMORY[0x1E69A5AE8] sharedInstance];
+  mEMORY[0x1E69A5AE8] = [MEMORY[0x1E69A5AE8] sharedInstance];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInlineReplyOverlay___block_invoke;
   v10[3] = &unk_1E72EC268;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
-  [v8 loadMessageWithGUID:v9 completionBlock:v10];
+  v11 = dCopy;
+  overlayCopy = overlay;
+  v9 = dCopy;
+  [mEMORY[0x1E69A5AE8] loadMessageWithGUID:v9 completionBlock:v10];
 }
 
 void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInlineReplyOverlay___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -355,11 +355,11 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
   }
 }
 
-- (void)showConversationAndMessageForChatGUID:(id)a3 messageGUID:(id)a4 withInlineReplyOverlay:(BOOL)a5 animate:(BOOL)a6
+- (void)showConversationAndMessageForChatGUID:(id)d messageGUID:(id)iD withInlineReplyOverlay:(BOOL)overlay animate:(BOOL)animate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -372,11 +372,11 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
   }
 
   v11 = +[CKConversationList sharedConversationList];
-  v12 = [v11 conversationForExistingChatWithGUID:v8];
+  v12 = [v11 conversationForExistingChatWithGUID:dCopy];
 
   if (v12)
   {
-    if (v9 && ([v12 ensureMessageWithGUIDIsLoaded:v9], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (iDCopy && ([v12 ensureMessageWithGUIDIsLoaded:iDCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       [(CKChatSceneDelegate *)self showConversation:v12 scrollToMessage:v13 withInlineReplyOverlay:1];
     }
@@ -388,12 +388,12 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
   }
 }
 
-- (void)showConversation:(id)a3 scrollToMessage:(id)a4 withInlineReplyOverlay:(BOOL)a5
+- (void)showConversation:(id)conversation scrollToMessage:(id)message withInlineReplyOverlay:(BOOL)overlay
 {
-  v5 = a5;
+  overlayCopy = overlay;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  conversationCopy = conversation;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -405,25 +405,25 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
     }
   }
 
-  v11 = [(CKChatSceneDelegate *)self conversation];
+  conversation = [(CKChatSceneDelegate *)self conversation];
 
-  if (v11)
+  if (conversation)
   {
     v12 = +[CKCurrentConversationsManager sharedInstance];
-    v13 = [(CKChatSceneDelegate *)self conversation];
-    [v12 removeConversation:v13];
+    conversation2 = [(CKChatSceneDelegate *)self conversation];
+    [v12 removeConversation:conversation2];
   }
 
-  if (v8)
+  if (conversationCopy)
   {
     v14 = +[CKCurrentConversationsManager sharedInstance];
-    [v14 addConversation:v8];
+    [v14 addConversation:conversationCopy];
 
     v15 = +[CKCurrentConversationsManager sharedInstance];
-    [v15 loadHistoryForConversation:v8 keepAllCurrentlyLoadedMessages:0];
+    [v15 loadHistoryForConversation:conversationCopy keepAllCurrentlyLoadedMessages:0];
 
-    [v8 isBusinessConversation];
-    v16 = [objc_alloc(objc_opt_class()) initWithConversation:v8];
+    [conversationCopy isBusinessConversation];
+    v16 = [objc_alloc(objc_opt_class()) initWithConversation:conversationCopy];
     [v16 setDelegate:self];
     [v16 setSendMenuDelegate:self];
     [v16 setShouldShowDoneButton:CKIsRunningInMacCatalyst() == 0];
@@ -440,44 +440,44 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
     v17 = 0;
   }
 
-  v19 = [(CKChatSceneDelegate *)self navigationController];
+  navigationController = [(CKChatSceneDelegate *)self navigationController];
   v30 = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  [v19 setViewControllers:v20];
+  [navigationController setViewControllers:v20];
 
   v21 = +[CKUIBehavior sharedBehaviors];
   LODWORD(v20) = [v21 useMacToolbar];
 
   if (v20)
   {
-    v22 = [(CKChatSceneDelegate *)self navigationController];
-    [v22 setNavigationBarHidden:1];
+    navigationController2 = [(CKChatSceneDelegate *)self navigationController];
+    [navigationController2 setNavigationBarHidden:1];
   }
 
-  v23 = [(CKChatSceneDelegate *)self navigationController];
-  v24 = [v23 view];
-  [v24 setNeedsLayout];
+  navigationController3 = [(CKChatSceneDelegate *)self navigationController];
+  view = [navigationController3 view];
+  [view setNeedsLayout];
 
-  v25 = [(CKChatSceneDelegate *)self navigationController];
-  v26 = [v25 view];
-  [v26 layoutIfNeeded];
+  navigationController4 = [(CKChatSceneDelegate *)self navigationController];
+  view2 = [navigationController4 view];
+  [view2 layoutIfNeeded];
 
   [(CKSceneDelegate *)self updateSceneActivationConditions];
-  [(CKSceneDelegate *)self updateSceneTitleForConversation:v8];
-  if (v9 && v5)
+  [(CKSceneDelegate *)self updateSceneTitleForConversation:conversationCopy];
+  if (messageCopy && overlayCopy)
   {
-    v27 = [(CKBlankTranscriptController *)v17 conversation];
-    v28 = [v9 guid];
-    v29 = [v27 ensureMessageWithGUIDIsLoaded:v28];
+    conversation3 = [(CKBlankTranscriptController *)v17 conversation];
+    guid = [messageCopy guid];
+    v29 = [conversation3 ensureMessageWithGUIDIsLoaded:guid];
 
-    [(CKBlankTranscriptController *)v17 scrollToMessage:v9 highlight:1 withInlineReplyOverlay:1];
+    [(CKBlankTranscriptController *)v17 scrollToMessage:messageCopy highlight:1 withInlineReplyOverlay:1];
   }
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -491,11 +491,11 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
 
   v13.receiver = self;
   v13.super_class = CKChatSceneDelegate;
-  v6 = [(CKSceneDelegate *)&v13 stateRestorationActivityForScene:v4];
+  v6 = [(CKSceneDelegate *)&v13 stateRestorationActivityForScene:sceneCopy];
   v7 = [CKSceneDelegateState alloc];
-  v8 = [(CKChatSceneDelegate *)self conversation];
-  v9 = [v8 groupID];
-  v10 = [(CKSceneDelegateState *)v7 initWithGroupID:v9];
+  conversation = [(CKChatSceneDelegate *)self conversation];
+  groupID = [conversation groupID];
+  v10 = [(CKSceneDelegateState *)v7 initWithGroupID:groupID];
 
   v11 = [CKSceneDelegate userInfoDictionaryForState:v10];
   if (v11)
@@ -506,11 +506,11 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
   return v6;
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -524,15 +524,15 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
 
   v18.receiver = self;
   v18.super_class = CKChatSceneDelegate;
-  [(CKSceneDelegate *)&v18 scene:v6 continueUserActivity:v7];
-  v9 = [v7 userInfo];
-  v10 = [CKSceneDelegate stateFromUserInfoDictionary:v9];
+  [(CKSceneDelegate *)&v18 scene:sceneCopy continueUserActivity:activityCopy];
+  userInfo = [activityCopy userInfo];
+  v10 = [CKSceneDelegate stateFromUserInfoDictionary:userInfo];
 
   if (v10)
   {
     v11 = +[CKConversationList sharedConversationList];
-    v12 = [v10 groupID];
-    v13 = [v11 conversationForExistingChatWithChatIdentifier:v12];
+    groupID = [v10 groupID];
+    v13 = [v11 conversationForExistingChatWithChatIdentifier:groupID];
     v14 = v13;
     if (v13)
     {
@@ -542,18 +542,18 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
     else
     {
       v16 = +[CKConversationList sharedConversationList];
-      v17 = [v10 groupID];
-      v15 = [v16 conversationForExistingChatWithGroupID:v17];
+      groupID2 = [v10 groupID];
+      v15 = [v16 conversationForExistingChatWithGroupID:groupID2];
     }
 
     [(CKChatSceneDelegate *)self showConversation:v15];
   }
 }
 
-- (void)_chatItemsDidChange:(id)a3
+- (void)_chatItemsDidChange:(id)change
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -565,16 +565,16 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
     }
   }
 
-  v6 = [(CKSceneDelegate *)self scene];
-  v7 = [v6 activationState] == 2;
+  scene = [(CKSceneDelegate *)self scene];
+  v7 = [scene activationState] == 2;
 
   if (v7)
   {
-    v8 = [v4 userInfo];
-    v9 = [v4 object];
-    v10 = [(CKChatSceneDelegate *)self conversation];
-    v11 = [v10 chat];
-    v12 = v9 == v11;
+    userInfo = [changeCopy userInfo];
+    object = [changeCopy object];
+    conversation = [(CKChatSceneDelegate *)self conversation];
+    chat = [conversation chat];
+    v12 = object == chat;
 
     if (v12)
     {
@@ -582,12 +582,12 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v26 = 0;
-      v19 = [v8 objectForKey:*MEMORY[0x1E69A5750]];
+      v19 = [userInfo objectForKey:*MEMORY[0x1E69A5750]];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke;
       v22[3] = &unk_1E72EC290;
-      v23 = v9;
+      v23 = object;
       v24 = buf;
       [v19 enumerateIndexesWithOptions:2 usingBlock:v22];
       if (*(*&buf[8] + 24) == 1)
@@ -616,12 +616,12 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(CKChatSceneDelegate *)self conversation];
-        v15 = [v14 chat];
+        conversation2 = [(CKChatSceneDelegate *)self conversation];
+        chat2 = [conversation2 chat];
         *buf = 138412546;
-        *&buf[4] = v9;
+        *&buf[4] = object;
         *&buf[12] = 2112;
-        *&buf[14] = v15;
+        *&buf[14] = chat2;
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Not snapshotting, updated chat items for chat: %@ is not current chat: %@", buf, 0x16u);
       }
     }
@@ -632,10 +632,10 @@ void __85__CKChatSceneDelegate_loadAndShowConversationWithMessageGUID_withInline
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(CKSceneDelegate *)self scene];
-      v18 = [v17 activationState];
+      scene2 = [(CKSceneDelegate *)self scene];
+      activationState = [scene2 activationState];
       *buf = 134217984;
-      *&buf[4] = v18;
+      *&buf[4] = activationState;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Not snapshotting, updated chat items but scene state isn't background: %lu", buf, 0xCu);
     }
   }
@@ -654,11 +654,11 @@ void __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)_handleRegistryWillUnregisterChatNotification:(id)a3
+- (void)_handleRegistryWillUnregisterChatNotification:(id)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -687,7 +687,7 @@ void __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke(uint64_t a1, u
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v9 = objc_opt_class();
-        v10 = [v4 object];
+        object2 = [notificationCopy object];
         v11 = objc_opt_class();
         *buf = 136315650;
         v27 = "[CKChatSceneDelegate _handleRegistryWillUnregisterChatNotification:]";
@@ -702,7 +702,7 @@ void __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke(uint64_t a1, u
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
     {
       v13 = objc_opt_class();
-      v14 = [v4 object];
+      object3 = [notificationCopy object];
       v24 = v13;
       v25 = objc_opt_class();
       v23 = "[CKChatSceneDelegate _handleRegistryWillUnregisterChatNotification:]";
@@ -715,10 +715,10 @@ void __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke(uint64_t a1, u
     }
   }
 
-  v15 = [v4 object];
-  v16 = [(CKChatSceneDelegate *)self conversation];
-  v17 = [v16 chat];
-  v18 = v15 == v17;
+  object4 = [notificationCopy object];
+  conversation = [(CKChatSceneDelegate *)self conversation];
+  chat = [conversation chat];
+  v18 = object4 == chat;
 
   if (v18)
   {
@@ -733,10 +733,10 @@ void __43__CKChatSceneDelegate__chatItemsDidChange___block_invoke(uint64_t a1, u
     }
 
     [(CKChatSceneDelegate *)self showConversation:0];
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [(CKSceneDelegate *)self scene];
-    v22 = [v21 session];
-    [v20 requestSceneSessionDestruction:v22 options:0 errorHandler:&__block_literal_global_6];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    scene = [(CKSceneDelegate *)self scene];
+    session = [scene session];
+    [mEMORY[0x1E69DC668] requestSceneSessionDestruction:session options:0 errorHandler:&__block_literal_global_6];
   }
 }
 
@@ -756,11 +756,11 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
   }
 }
 
-- (void)_handleChatDisplayNameChangedNotification:(id)a3
+- (void)_handleChatDisplayNameChangedNotification:(id)notification
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -789,7 +789,7 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v9 = objc_opt_class();
-        v10 = [v4 object];
+        object2 = [notificationCopy object];
         v11 = objc_opt_class();
         *buf = 136315650;
         v25 = "[CKChatSceneDelegate _handleChatDisplayNameChangedNotification:]";
@@ -804,7 +804,7 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
     {
       v13 = objc_opt_class();
-      v14 = [v4 object];
+      object3 = [notificationCopy object];
       v22 = v13;
       v23 = objc_opt_class();
       v21 = "[CKChatSceneDelegate _handleChatDisplayNameChangedNotification:]";
@@ -817,10 +817,10 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
     }
   }
 
-  v15 = [v4 object];
-  v16 = [(CKChatSceneDelegate *)self conversation];
-  v17 = [v16 chat];
-  v18 = v15 == v17;
+  object4 = [notificationCopy object];
+  conversation = [(CKChatSceneDelegate *)self conversation];
+  chat = [conversation chat];
+  v18 = object4 == chat;
 
   if (v18)
   {
@@ -834,29 +834,29 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
       }
     }
 
-    v20 = [(CKChatSceneDelegate *)self conversation];
-    [(CKSceneDelegate *)self updateSceneTitleForConversation:v20];
+    conversation2 = [(CKChatSceneDelegate *)self conversation];
+    [(CKSceneDelegate *)self updateSceneTitleForConversation:conversation2];
   }
 }
 
-- (void)_handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:(id)a3
+- (void)_handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:(id)notification
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = notificationCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "_handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification with notification: %@", buf, 0xCu);
     }
   }
 
-  if (v4)
+  if (notificationCopy)
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -885,7 +885,7 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           v10 = objc_opt_class();
-          v11 = [v4 object];
+          object2 = [notificationCopy object];
           v12 = objc_opt_class();
           *buf = 136315650;
           v29 = "[CKChatSceneDelegate _handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:]";
@@ -900,7 +900,7 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
         v14 = objc_opt_class();
-        v15 = [v4 object];
+        object3 = [notificationCopy object];
         v26 = v14;
         v27 = objc_opt_class();
         v25 = "[CKChatSceneDelegate _handleMovedMessagesInChatsWithGUIDsToRecentlyDeletedNotification:]";
@@ -914,17 +914,17 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
     }
 
     v16 = [(CKChatSceneDelegate *)self conversation:v25];
-    v17 = [v16 chat];
-    v18 = [v17 guid];
+    chat = [v16 chat];
+    guid = [chat guid];
 
-    v19 = [v4 object];
-    if ([v19 containsObject:v18])
+    object4 = [notificationCopy object];
+    if ([object4 containsObject:guid])
     {
       [(CKChatSceneDelegate *)self showConversation:0];
-      v20 = [MEMORY[0x1E69DC668] sharedApplication];
-      v21 = [(CKSceneDelegate *)self scene];
-      v22 = [v21 session];
-      [v20 requestSceneSessionDestruction:v22 options:0 errorHandler:&__block_literal_global_266];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      scene = [(CKSceneDelegate *)self scene];
+      session = [scene session];
+      [mEMORY[0x1E69DC668] requestSceneSessionDestruction:session options:0 errorHandler:&__block_literal_global_266];
     }
 
     else if (IMOSLoggingEnabled())
@@ -933,7 +933,7 @@ void __69__CKChatSceneDelegate__handleRegistryWillUnregisterChatNotification___b
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v29 = v4;
+        v29 = notificationCopy;
         _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "Currently shown conversation is not deleted as apart of notification: %@", buf, 0xCu);
       }
     }
@@ -1008,10 +1008,10 @@ void __89__CKChatSceneDelegate__handleMovedMessagesInChatsWithGUIDsToRecentlyDel
     }
   }
 
-  v4 = [(CKSceneDelegate *)self scene];
-  v5 = [v4 activationState];
+  scene = [(CKSceneDelegate *)self scene];
+  activationState = [scene activationState];
 
-  if (v5 == 2)
+  if (activationState == 2)
   {
     if (CKIsScreenLocked())
     {
@@ -1037,10 +1037,10 @@ void __89__CKChatSceneDelegate__handleMovedMessagesInChatsWithGUIDsToRecentlyDel
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CKSceneDelegate *)self scene];
-      v9 = [v8 activationState];
+      scene2 = [(CKSceneDelegate *)self scene];
+      activationState2 = [scene2 activationState];
       *buf = 134217984;
-      v11 = v9;
+      v11 = activationState2;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Not snapshotting, scene state isn't background: %lu", buf, 0xCu);
     }
   }
@@ -1067,12 +1067,12 @@ void __42__CKChatSceneDelegate___updateAppSnapshot__block_invoke(uint64_t a1)
 - (NSSet)alertSuppressionContexts
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(CKChatSceneDelegate *)self conversation];
+  conversation = [(CKChatSceneDelegate *)self conversation];
 
-  if (v4)
+  if (conversation)
   {
-    v5 = [(CKChatSceneDelegate *)self conversation];
-    v6 = [CKAlertSuppressionContextHelper alertSuppressionContextsForVisibleChatControllerWithConversation:v5];
+    conversation2 = [(CKChatSceneDelegate *)self conversation];
+    v6 = [CKAlertSuppressionContextHelper alertSuppressionContextsForVisibleChatControllerWithConversation:conversation2];
 
     [v3 addObjectsFromArray:v6];
   }
@@ -1092,11 +1092,11 @@ void __42__CKChatSceneDelegate___updateAppSnapshot__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)chatController:(id)a3 requestPresentSendMenu:(id)a4 currentlyPresentedViewController:(id)a5
+- (void)chatController:(id)controller requestPresentSendMenu:(id)menu currentlyPresentedViewController:(id)viewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  menuCopy = menu;
+  viewControllerCopy = viewController;
   sendMenuPresentation = self->_sendMenuPresentation;
   if (sendMenuPresentation)
   {
@@ -1105,95 +1105,95 @@ void __42__CKChatSceneDelegate___updateAppSnapshot__block_invoke(uint64_t a1)
     self->_sendMenuPresentation = 0;
   }
 
-  v13 = [(CKSceneDelegate *)self window];
-  v14 = [v13 rootViewController];
+  window = [(CKSceneDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  if (v10)
+  if (viewControllerCopy)
   {
-    v15 = v10;
+    v15 = viewControllerCopy;
 
-    v14 = v15;
+    rootViewController = v15;
   }
 
-  v16 = [v9 newSendMenuPresentationWithPresentingViewController:v14 delegate:self];
+  v16 = [menuCopy newSendMenuPresentationWithPresentingViewController:rootViewController delegate:self];
   [(CKChatSceneDelegate *)self setSendMenuPresentation:v16];
 
-  v17 = [(CKChatSceneDelegate *)self sendMenuPresentation];
+  sendMenuPresentation = [(CKChatSceneDelegate *)self sendMenuPresentation];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__CKChatSceneDelegate_chatController_requestPresentSendMenu_currentlyPresentedViewController___block_invoke;
   v19[3] = &unk_1E72EBA18;
-  v20 = v9;
-  v18 = v9;
-  [v17 beginPresentationWithCompletion:v19];
+  v20 = menuCopy;
+  v18 = menuCopy;
+  [sendMenuPresentation beginPresentationWithCompletion:v19];
 }
 
-- (void)chatController:(id)a3 didFinishDismissAnimationForSendMenuViewController:(id)a4
+- (void)chatController:(id)controller didFinishDismissAnimationForSendMenuViewController:(id)viewController
 {
-  [(CKSendMenuPresentation *)self->_sendMenuPresentation removeSendMenuFromViewHierarchy:a3];
+  [(CKSendMenuPresentation *)self->_sendMenuPresentation removeSendMenuFromViewHierarchy:controller];
   sendMenuPresentation = self->_sendMenuPresentation;
   self->_sendMenuPresentation = 0;
 }
 
-- (void)chatControllerDidChangeBackground:(id)a3
+- (void)chatControllerDidChangeBackground:(id)background
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = backgroundCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Did change background on chat controller: %@", &v11, 0xCu);
   }
 
-  v6 = [v4 transcriptBackground];
-  v7 = [(CKSceneDelegate *)self window];
-  [v7 setOverrideUserInterfaceStyle:{objc_msgSend(v6, "contentDerivedUserInterfaceStyle")}];
-  v8 = [v7 traitOverrides];
-  if (v6)
+  transcriptBackground = [backgroundCopy transcriptBackground];
+  window = [(CKSceneDelegate *)self window];
+  [window setOverrideUserInterfaceStyle:{objc_msgSend(transcriptBackground, "contentDerivedUserInterfaceStyle")}];
+  traitOverrides = [window traitOverrides];
+  if (transcriptBackground)
   {
-    [v8 setNSIntegerValue:objc_msgSend(MEMORY[0x1E695E118] forTrait:{"integerValue"), objc_opt_class()}];
+    [traitOverrides setNSIntegerValue:objc_msgSend(MEMORY[0x1E695E118] forTrait:{"integerValue"), objc_opt_class()}];
 
-    v9 = [v7 traitOverrides];
-    [v6 luminance];
-    [v9 setCGFloatValue:objc_opt_class() forTrait:v10];
+    traitOverrides2 = [window traitOverrides];
+    [transcriptBackground luminance];
+    [traitOverrides2 setCGFloatValue:objc_opt_class() forTrait:v10];
   }
 
   else
   {
-    [v8 removeTrait:objc_opt_class()];
+    [traitOverrides removeTrait:objc_opt_class()];
 
-    v9 = [v7 traitOverrides];
-    [v9 removeTrait:objc_opt_class()];
+    traitOverrides2 = [window traitOverrides];
+    [traitOverrides2 removeTrait:objc_opt_class()];
   }
 }
 
-- (void)chatController:(id)a3 requestDeleteJunkConversation:(id)a4
+- (void)chatController:(id)controller requestDeleteJunkConversation:(id)conversation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  conversationCopy = conversation;
   v8 = +[CKConversationList sharedConversationList];
-  [v8 deleteConversation:v7];
+  [v8 deleteConversation:conversationCopy];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CKSceneDelegate *)self scene];
-      v11 = [v10 session];
-      v12 = [v11 persistentIdentifier];
+      scene = [(CKSceneDelegate *)self scene];
+      session = [scene session];
+      persistentIdentifier = [session persistentIdentifier];
       v16 = 138412290;
-      v17 = v12;
+      v17 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Junk conversation deleted, closing scene: %@", &v16, 0xCu);
     }
   }
 
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  v14 = [(CKSceneDelegate *)self scene];
-  v15 = [v14 session];
-  [v13 requestSceneSessionDestruction:v15 options:0 errorHandler:&__block_literal_global_277_0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  scene2 = [(CKSceneDelegate *)self scene];
+  session2 = [scene2 session];
+  [mEMORY[0x1E69DC668] requestSceneSessionDestruction:session2 options:0 errorHandler:&__block_literal_global_277_0];
 }
 
 void __68__CKChatSceneDelegate_chatController_requestDeleteJunkConversation___block_invoke(uint64_t a1, void *a2)
@@ -1212,29 +1212,29 @@ void __68__CKChatSceneDelegate_chatController_requestDeleteJunkConversation___bl
   }
 }
 
-- (void)chatController:(id)a3 requestRecoverJunkConversation:(id)a4
+- (void)chatController:(id)controller requestRecoverJunkConversation:(id)conversation
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  conversationCopy = conversation;
   v5 = +[CKConversationList sharedConversationList];
-  v7[0] = v4;
+  v7[0] = conversationCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   [v5 recoverJunkMessagesInConversations:v6];
 }
 
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller
 {
-  v3 = [(CKChatSceneDelegate *)self navigationController];
-  [v3 systemMinimumLayoutMargins];
+  navigationController = [(CKChatSceneDelegate *)self navigationController];
+  [navigationController systemMinimumLayoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 view];
-  v13 = [v12 effectiveUserInterfaceLayoutDirection];
+  view = [navigationController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v13)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v14 = v11;
   }
@@ -1244,7 +1244,7 @@ void __68__CKChatSceneDelegate_chatController_requestDeleteJunkConversation___bl
     v14 = v7;
   }
 
-  if (!v13)
+  if (!effectiveUserInterfaceLayoutDirection)
   {
     v7 = v11;
   }
@@ -1260,11 +1260,11 @@ void __68__CKChatSceneDelegate_chatController_requestDeleteJunkConversation___bl
   return result;
 }
 
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller
 {
-  v3 = [(CKChatSceneDelegate *)self navigationController];
-  v4 = [v3 view];
-  [v4 safeAreaInsets];
+  navigationController = [(CKChatSceneDelegate *)self navigationController];
+  view = [navigationController view];
+  [view safeAreaInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1281,28 +1281,28 @@ void __68__CKChatSceneDelegate_chatController_requestDeleteJunkConversation___bl
   return result;
 }
 
-- (void)doneButtonPressedForChatController:(id)a3
+- (void)doneButtonPressedForChatController:(id)controller
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CKSceneDelegate *)self scene];
-      v7 = [v6 session];
-      v8 = [v7 persistentIdentifier];
+      scene = [(CKSceneDelegate *)self scene];
+      session = [scene session];
+      persistentIdentifier = [session persistentIdentifier];
       v12 = 138412290;
-      v13 = v8;
+      v13 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Closing scene for doneButtonPressedForChatController: %@", &v12, 0xCu);
     }
   }
 
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [(CKSceneDelegate *)self scene];
-  v11 = [v10 session];
-  [v9 requestSceneSessionDestruction:v11 options:0 errorHandler:&__block_literal_global_279_0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  scene2 = [(CKSceneDelegate *)self scene];
+  session2 = [scene2 session];
+  [mEMORY[0x1E69DC668] requestSceneSessionDestruction:session2 options:0 errorHandler:&__block_literal_global_279_0];
 }
 
 void __58__CKChatSceneDelegate_doneButtonPressedForChatController___block_invoke(uint64_t a1, void *a2)
@@ -1329,19 +1329,19 @@ void __58__CKChatSceneDelegate_doneButtonPressedForChatController___block_invoke
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKSceneDelegate *)self scene];
-      v5 = [v4 session];
-      v6 = [v5 persistentIdentifier];
+      scene = [(CKSceneDelegate *)self scene];
+      session = [scene session];
+      persistentIdentifier = [session persistentIdentifier];
       v10 = 138412290;
-      v11 = v6;
+      v11 = persistentIdentifier;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Closing scene for dismissDetailsViewAndShowConversationList: %@", &v10, 0xCu);
     }
   }
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [(CKSceneDelegate *)self scene];
-  v9 = [v8 session];
-  [v7 requestSceneSessionDestruction:v9 options:0 errorHandler:&__block_literal_global_281];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  scene2 = [(CKSceneDelegate *)self scene];
+  session2 = [scene2 session];
+  [mEMORY[0x1E69DC668] requestSceneSessionDestruction:session2 options:0 errorHandler:&__block_literal_global_281];
 }
 
 void __64__CKChatSceneDelegate_dismissDetailsViewAndShowConversationList__block_invoke(uint64_t a1, void *a2)
@@ -1360,100 +1360,100 @@ void __64__CKChatSceneDelegate_dismissDetailsViewAndShowConversationList__block_
   }
 }
 
-- (void)chatController:(id)a3 presentViewControllerInInspector:(id)a4
+- (void)chatController:(id)controller presentViewControllerInInspector:(id)inspector
 {
-  v7 = a4;
-  v5 = [(CKChatSceneDelegate *)self splitViewCoordinator];
-  v6 = v5;
-  if (v5)
+  inspectorCopy = inspector;
+  splitViewCoordinator = [(CKChatSceneDelegate *)self splitViewCoordinator];
+  v6 = splitViewCoordinator;
+  if (splitViewCoordinator)
   {
-    [v5 presentViewControllerInInspector:v7];
+    [splitViewCoordinator presentViewControllerInInspector:inspectorCopy];
   }
 }
 
-- (void)chatController:(id)a3 didStartTextSelectionInView:(id)a4
+- (void)chatController:(id)controller didStartTextSelectionInView:(id)view
 {
-  v8 = a4;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isTextSelectionEnabled];
+  viewCopy = view;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v6)
+  if (isTextSelectionEnabled)
   {
     [(CKChatSceneDelegate *)self setupCKDismissOnInteractionView];
-    v7 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
-    [v7 isolatePassthroughView:v8];
+    dismissOnInteractionView = [(CKChatSceneDelegate *)self dismissOnInteractionView];
+    [dismissOnInteractionView isolatePassthroughView:viewCopy];
   }
 }
 
-- (void)chatController:(id)a3 didDetachDetailsNavigationController:(id)a4
+- (void)chatController:(id)controller didDetachDetailsNavigationController:(id)navigationController
 {
-  [(CKChatSceneDelegate *)self setDetailsNavigationController:a4];
-  v5 = [(CKChatSceneDelegate *)self detailsNavigationController];
-  [v5 setIsDetached:1];
+  [(CKChatSceneDelegate *)self setDetailsNavigationController:navigationController];
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
+  [detailsNavigationController setIsDetached:1];
 }
 
 - (BOOL)hasDetailsNavigationController
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-  v5 = [(CKChatSceneDelegate *)self detailsNavigationController];
-  v6 = v5;
-  if (v4)
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
+  v6 = detailsNavigationController;
+  if (isRedesignedDetailsViewEnabled)
   {
-    if (v5)
+    if (detailsNavigationController)
     {
-      v7 = 1;
+      isInspectorVisible = 1;
     }
 
     else
     {
-      v8 = [(CKChatSceneDelegate *)self splitViewCoordinator];
-      v7 = [v8 isInspectorVisible];
+      splitViewCoordinator = [(CKChatSceneDelegate *)self splitViewCoordinator];
+      isInspectorVisible = [splitViewCoordinator isInspectorVisible];
     }
   }
 
   else
   {
-    v7 = v5 != 0;
+    isInspectorVisible = detailsNavigationController != 0;
   }
 
-  return v7;
+  return isInspectorVisible;
 }
 
 - (BOOL)isDetailsNavigationControllerDetached
 {
-  v2 = [(CKChatSceneDelegate *)self detailsNavigationController];
-  v3 = [v2 isDetached];
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
+  isDetached = [detailsNavigationController isDetached];
 
-  return v3;
+  return isDetached;
 }
 
-- (void)presentDetailsNavigationController:(id)a3
+- (void)presentDetailsNavigationController:(id)controller
 {
-  v6 = a3;
-  v4 = [(CKChatSceneDelegate *)self detailsNavigationController];
+  controllerCopy = controller;
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = controllerCopy;
+  if (detailsNavigationController != controllerCopy)
   {
-    [(CKChatSceneDelegate *)self setDetailsNavigationController:v6];
-    v5 = v6;
+    [(CKChatSceneDelegate *)self setDetailsNavigationController:controllerCopy];
+    v5 = controllerCopy;
   }
 }
 
 - (void)dismissDetailsNavigationController
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v4)
+  if (isModernSplitViewControllerEnabled)
   {
-    v5 = [(CKChatSceneDelegate *)self splitViewCoordinator];
-    [v5 presentViewControllerInInspector:0];
+    splitViewCoordinator = [(CKChatSceneDelegate *)self splitViewCoordinator];
+    [splitViewCoordinator presentViewControllerInInspector:0];
 
-    v6 = [(CKSceneDelegate *)self toolbarController];
-    [v6 setIsShowingInspector:0];
+    toolbarController = [(CKSceneDelegate *)self toolbarController];
+    [toolbarController setIsShowingInspector:0];
   }
 
   else
@@ -1463,24 +1463,24 @@ void __64__CKChatSceneDelegate_dismissDetailsViewAndShowConversationList__block_
   }
 }
 
-- (void)dismissDetailsNavigationControllerWithCompletion:(id)a3
+- (void)dismissDetailsNavigationControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKChatSceneDelegate *)self detailsNavigationController];
-  [v5 dismissViewControllerAnimated:1 completion:v4];
+  completionCopy = completion;
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
+  [detailsNavigationController dismissViewControllerAnimated:1 completion:completionCopy];
 
   [(CKChatSceneDelegate *)self setDetailsNavigationController:0];
 }
 
 - (void)dismissAndReopenDetailsNavigationController
 {
-  v3 = [(CKChatSceneDelegate *)self detailsNavigationController];
+  detailsNavigationController = [(CKChatSceneDelegate *)self detailsNavigationController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__block_invoke;
   v4[3] = &unk_1E72EBA18;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [detailsNavigationController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__block_invoke(uint64_t a1)
@@ -1492,32 +1492,32 @@ void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__bloc
 - (void)setupCKDismissOnInteractionView
 {
   v3 = [_TtC7ChatKit29CKInteractionNotificationView alloc];
-  v4 = [(CKSceneDelegate *)self window];
-  [v4 bounds];
+  window = [(CKSceneDelegate *)self window];
+  [window bounds];
   v5 = [(CKInteractionNotificationView *)v3 initWithFrame:?];
   [(CKChatSceneDelegate *)self setDismissOnInteractionView:v5];
 
-  v6 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
-  [v6 setDelegate:self];
+  dismissOnInteractionView = [(CKChatSceneDelegate *)self dismissOnInteractionView];
+  [dismissOnInteractionView setDelegate:self];
 
-  v7 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
-  [v7 setAutoresizingMask:18];
+  dismissOnInteractionView2 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
+  [dismissOnInteractionView2 setAutoresizingMask:18];
 
-  v9 = [(CKSceneDelegate *)self window];
-  v8 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
-  [v9 addSubview:v8];
+  window2 = [(CKSceneDelegate *)self window];
+  dismissOnInteractionView3 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
+  [window2 addSubview:dismissOnInteractionView3];
 }
 
 - (void)cleanUpInteractionViews
 {
-  v2 = [(CKChatSceneDelegate *)self dismissOnInteractionView];
-  [v2 cleanUpTextSelectionInteractionListeners];
+  dismissOnInteractionView = [(CKChatSceneDelegate *)self dismissOnInteractionView];
+  [dismissOnInteractionView cleanUpTextSelectionInteractionListeners];
 }
 
 - (id)prefersToActivatePredicate
 {
-  v3 = [(CKChatSceneDelegate *)self conversation];
-  v4 = [(CKSceneDelegate *)self predicateMatchingConversation:v3];
+  conversation = [(CKChatSceneDelegate *)self conversation];
+  v4 = [(CKSceneDelegate *)self predicateMatchingConversation:conversation];
 
   if (v4)
   {
@@ -1554,7 +1554,7 @@ void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__bloc
 
 - (void)requestShowKeyboardSnapshotForSendMenu
 {
-  v3 = [(CKChatSceneDelegate *)self chatController];
+  chatController = [(CKChatSceneDelegate *)self chatController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1568,7 +1568,7 @@ void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__bloc
 
 - (void)requestDismissKeyboardSnapshotForSendMenu
 {
-  v3 = [(CKChatSceneDelegate *)self chatController];
+  chatController = [(CKChatSceneDelegate *)self chatController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1580,9 +1580,9 @@ void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__bloc
   }
 }
 
-- (BOOL)sendMenuPresentationShouldUseKeyboardSnapshot:(id)a3
+- (BOOL)sendMenuPresentationShouldUseKeyboardSnapshot:(id)snapshot
 {
-  v4 = [(CKChatSceneDelegate *)self chatController];
+  chatController = [(CKChatSceneDelegate *)self chatController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1598,11 +1598,11 @@ void __66__CKChatSceneDelegate_dismissAndReopenDetailsNavigationController__bloc
 
 - (id)viewToSizeEffectPreviewOverlay
 {
-  v2 = [(CKSceneDelegate *)self window];
-  v3 = [v2 rootViewController];
-  v4 = [v3 view];
+  window = [(CKSceneDelegate *)self window];
+  rootViewController = [window rootViewController];
+  view = [rootViewController view];
 
-  return v4;
+  return view;
 }
 
 - (CKDetailsNavigationController)detailsNavigationController

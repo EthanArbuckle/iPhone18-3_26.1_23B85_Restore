@@ -1,22 +1,22 @@
 @interface CADStatCollectionContext
 - (ACAccountStore)accountStore;
-- (CADStatCollectionContext)initWithDatabase:(CalDatabase *)a3 accountStore:(id)a4;
+- (CADStatCollectionContext)initWithDatabase:(CalDatabase *)database accountStore:(id)store;
 - (CalDatabase)database;
 - (void)dealloc;
 @end
 
 @implementation CADStatCollectionContext
 
-- (CADStatCollectionContext)initWithDatabase:(CalDatabase *)a3 accountStore:(id)a4
+- (CADStatCollectionContext)initWithDatabase:(CalDatabase *)database accountStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CADStatCollectionContext;
   v8 = [(CADStatCollectionContext *)&v10 init];
   if (v8)
   {
-    v8->_database = CFRetain(a3);
-    objc_storeStrong(&v8->_accountStore, a4);
+    v8->_database = CFRetain(database);
+    objc_storeStrong(&v8->_accountStore, store);
   }
 
   return v8;

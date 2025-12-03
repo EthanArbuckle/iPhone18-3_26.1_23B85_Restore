@@ -1,9 +1,9 @@
 @interface HKMedicationScheduleIncompatibilityResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationScheduleIncompatibilityResult)init;
-- (HKMedicationScheduleIncompatibilityResult)initWithCoder:(id)a3;
-- (HKMedicationScheduleIncompatibilityResult)initWithSchedule:(id)a3 incompatibleDevices:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKMedicationScheduleIncompatibilityResult)initWithCoder:(id)coder;
+- (HKMedicationScheduleIncompatibilityResult)initWithSchedule:(id)schedule incompatibleDevices:(id)devices;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationScheduleIncompatibilityResult
@@ -18,27 +18,27 @@
   return 0;
 }
 
-- (HKMedicationScheduleIncompatibilityResult)initWithSchedule:(id)a3 incompatibleDevices:(id)a4
+- (HKMedicationScheduleIncompatibilityResult)initWithSchedule:(id)schedule incompatibleDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  scheduleCopy = schedule;
+  devicesCopy = devices;
   v12.receiver = self;
   v12.super_class = HKMedicationScheduleIncompatibilityResult;
   v9 = [(HKMedicationScheduleIncompatibilityResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_schedule, a3);
-    objc_storeStrong(&v10->_incompatibleDevices, a4);
+    objc_storeStrong(&v9->_schedule, schedule);
+    objc_storeStrong(&v10->_incompatibleDevices, devices);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -48,10 +48,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationSchedule *)self->_schedule medicationIdentifier];
-      v7 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      medicationIdentifier = [(HKMedicationSchedule *)self->_schedule medicationIdentifier];
+      medicationIdentifier2 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
+      if (medicationIdentifier == medicationIdentifier2)
       {
         incompatibleDevices = self->_incompatibleDevices;
         v15 = v5->_incompatibleDevices;
@@ -64,12 +64,12 @@
 
       else
       {
-        v8 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
-        if (v8)
+        medicationIdentifier3 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
+        if (medicationIdentifier3)
         {
-          v9 = [(HKMedicationSchedule *)self->_schedule medicationIdentifier];
-          v10 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
-          if ([v9 isEqual:v10])
+          medicationIdentifier4 = [(HKMedicationSchedule *)self->_schedule medicationIdentifier];
+          medicationIdentifier5 = [(HKMedicationSchedule *)v5->_schedule medicationIdentifier];
+          if ([medicationIdentifier4 isEqual:medicationIdentifier5])
           {
             v11 = self->_incompatibleDevices;
             v12 = v5->_incompatibleDevices;
@@ -102,27 +102,27 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   schedule = self->_schedule;
-  v5 = a3;
-  [v5 encodeObject:schedule forKey:@"Schedule"];
-  [v5 encodeObject:self->_incompatibleDevices forKey:@"IncompatibleDevices"];
+  coderCopy = coder;
+  [coderCopy encodeObject:schedule forKey:@"Schedule"];
+  [coderCopy encodeObject:self->_incompatibleDevices forKey:@"IncompatibleDevices"];
 }
 
-- (HKMedicationScheduleIncompatibilityResult)initWithCoder:(id)a3
+- (HKMedicationScheduleIncompatibilityResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKMedicationScheduleIncompatibilityResult;
   v5 = [(HKMedicationScheduleIncompatibilityResult *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Schedule"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Schedule"];
     [(HKMedicationScheduleIncompatibilityResult *)v5 setSchedule:v6];
 
     v7 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"IncompatibleDevices"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"IncompatibleDevices"];
     [(HKMedicationScheduleIncompatibilityResult *)v5 setIncompatibleDevices:v8];
   }
 

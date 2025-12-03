@@ -1,39 +1,39 @@
 @interface SPUITestingHelper
-+ (id)indexPathsOfRowsForSectionTitle:(id)a3 needsCard:(BOOL)a4 forTestingViewController:(id)a5;
-- (BOOL)canPerformTest:(id)a3;
-- (SPUITestingHelper)initWithSearchViewController:(id)a3;
++ (id)indexPathsOfRowsForSectionTitle:(id)title needsCard:(BOOL)card forTestingViewController:(id)controller;
+- (BOOL)canPerformTest:(id)test;
+- (SPUITestingHelper)initWithSearchViewController:(id)controller;
 - (void)finishLaunchTestIfNeeded;
-- (void)performCardScrollTest:(id)a3 queryKind:(unint64_t)a4 completion:(id)a5;
-- (void)performScrollOnSearchViewWithTestName:(id)a3 completion:(id)a4;
-- (void)performTest:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)resultViewController:(id)a3 finishedGettingAllResults:(id)a4;
-- (void)runPushTest:(id)a3 sectionHeader:(id)a4 searchString:(id)a5 completion:(id)a6;
-- (void)scrollEntityForTest:(id)a3 forQuery:(id)a4 completion:(id)a5;
-- (void)scrollForSectionHeader:(id)a3 forSearchString:(id)a4 testName:(id)a5 queryKind:(unint64_t)a6 completion:(id)a7;
-- (void)scrollMainResultsForTest:(id)a3 forQuery:(id)a4 queryKind:(unint64_t)a5 completion:(id)a6;
-- (void)searchForSectionHeader:(id)a3 testName:(id)a4 forSearchString:(id)a5 queryKind:(unint64_t)a6 startPushHandler:(id)a7 finishHandler:(id)a8;
-- (void)searchForString:(id)a3 testName:(id)a4 event:(unint64_t)a5 queryKind:(unint64_t)a6 completion:(id)a7;
-- (void)searchManyStringsForTestName:(id)a3 options:(id)a4 event:(unint64_t)a5 queryKind:(unint64_t)a6 completion:(id)a7;
-- (void)searchString:(id)a3 andOpenResultsUnderSection:(id)a4 testName:(id)a5 needsCard:(BOOL)a6 queryKind:(unint64_t)a7 completion:(id)a8;
-- (void)searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:(id)a3;
-- (void)setDefaultsForSearchVCWithqueryType:(unint64_t)a3;
-- (void)tapIndexsPathsAndPopViewControllersAfter2Seconds:(id)a3 completion:(id)a4;
+- (void)performCardScrollTest:(id)test queryKind:(unint64_t)kind completion:(id)completion;
+- (void)performScrollOnSearchViewWithTestName:(id)name completion:(id)completion;
+- (void)performTest:(id)test options:(id)options completion:(id)completion;
+- (void)resultViewController:(id)controller finishedGettingAllResults:(id)results;
+- (void)runPushTest:(id)test sectionHeader:(id)header searchString:(id)string completion:(id)completion;
+- (void)scrollEntityForTest:(id)test forQuery:(id)query completion:(id)completion;
+- (void)scrollForSectionHeader:(id)header forSearchString:(id)string testName:(id)name queryKind:(unint64_t)kind completion:(id)completion;
+- (void)scrollMainResultsForTest:(id)test forQuery:(id)query queryKind:(unint64_t)kind completion:(id)completion;
+- (void)searchForSectionHeader:(id)header testName:(id)name forSearchString:(id)string queryKind:(unint64_t)kind startPushHandler:(id)handler finishHandler:(id)finishHandler;
+- (void)searchForString:(id)string testName:(id)name event:(unint64_t)event queryKind:(unint64_t)kind completion:(id)completion;
+- (void)searchManyStringsForTestName:(id)name options:(id)options event:(unint64_t)event queryKind:(unint64_t)kind completion:(id)completion;
+- (void)searchString:(id)string andOpenResultsUnderSection:(id)section testName:(id)name needsCard:(BOOL)card queryKind:(unint64_t)kind completion:(id)completion;
+- (void)searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:(id)completion;
+- (void)setDefaultsForSearchVCWithqueryType:(unint64_t)type;
+- (void)tapIndexsPathsAndPopViewControllersAfter2Seconds:(id)seconds completion:(id)completion;
 @end
 
 @implementation SPUITestingHelper
 
-- (SPUITestingHelper)initWithSearchViewController:(id)a3
+- (SPUITestingHelper)initWithSearchViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = SPUITestingHelper;
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [(SPUITestingHelper *)&v6 init];
-  [(SPUITestingHelper *)v4 setSearchViewController:v3, v6.receiver, v6.super_class];
+  [(SPUITestingHelper *)v4 setSearchViewController:controllerCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (BOOL)canPerformTest:(id)a3
+- (BOOL)canPerformTest:(id)test
 {
   v10[18] = *MEMORY[0x277D85DE8];
   v10[0] = @"ScrollResultsFPS";
@@ -56,68 +56,68 @@
   v10[16] = @"MapsPushTest";
   v10[17] = @"EntityScrollTest";
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  testCopy = test;
   v6 = [v4 arrayWithObjects:v10 count:18];
   v7 = [v3 setWithArray:v6];
 
-  LOBYTE(v3) = [v7 containsObject:v5];
+  LOBYTE(v3) = [v7 containsObject:testCopy];
   v8 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (void)performTest:(id)a3 options:(id)a4 completion:(id)a5
+- (void)performTest:(id)test options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"SpotlightExtendedLaunch"])
+  testCopy = test;
+  optionsCopy = options;
+  completionCopy = completion;
+  if ([testCopy isEqualToString:@"SpotlightExtendedLaunch"])
   {
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = *MEMORY[0x277D76C60];
-    v13 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __52__SPUITestingHelper_performTest_options_completion___block_invoke;
     v42[3] = &unk_279D07258;
     v42[4] = self;
-    v14 = [v11 addObserverForName:v12 object:0 queue:v13 usingBlock:v42];
+    v14 = [defaultCenter addObserverForName:v12 object:0 queue:mainQueue usingBlock:v42];
 
-    v15 = [(SPUITestingHelper *)self searchViewController];
-    v16 = [v15 proactiveResultsTestingObject];
+    searchViewController = [(SPUITestingHelper *)self searchViewController];
+    proactiveResultsTestingObject = [searchViewController proactiveResultsTestingObject];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __52__SPUITestingHelper_performTest_options_completion___block_invoke_2;
     v41[3] = &unk_279D06C78;
     v41[4] = self;
-    [v16 setViewDidUpdateHandler:v41];
+    [proactiveResultsTestingObject setViewDidUpdateHandler:v41];
   }
 
-  if ([v8 isEqualToString:@"ScrollResultsFPS"])
+  if ([testCopy isEqualToString:@"ScrollResultsFPS"])
   {
-    v17 = [v9 objectForKeyedSubscript:@"SearchText"];
-    [(SPUITestingHelper *)self scrollMainResultsForTest:v8 forQuery:v17 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], v10];
+    v17 = [optionsCopy objectForKeyedSubscript:@"SearchText"];
+    [(SPUITestingHelper *)self scrollMainResultsForTest:testCopy forQuery:v17 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], completionCopy];
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"ScrollCardsFPS"])
+  if ([testCopy isEqualToString:@"ScrollCardsFPS"])
   {
-    [(SPUITestingHelper *)self performCardScrollTest:v8 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], v10];
+    [(SPUITestingHelper *)self performCardScrollTest:testCopy queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], completionCopy];
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"QuerySearchButtonToResultsLatency"])
+  if ([testCopy isEqualToString:@"QuerySearchButtonToResultsLatency"])
   {
     v18 = +[SPUISearchHeader committedSearchQueryKind];
-    v19 = self;
-    v20 = v8;
-    v21 = v9;
+    selfCopy3 = self;
+    v20 = testCopy;
+    v21 = optionsCopy;
     v22 = 22;
 LABEL_15:
-    [(SPUITestingHelper *)v19 searchManyStringsForTestName:v20 options:v21 event:v22 queryKind:v18 completion:v10];
+    [(SPUITestingHelper *)selfCopy3 searchManyStringsForTestName:v20 options:v21 event:v22 queryKind:v18 completion:completionCopy];
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"QuerySearchButtonToResultsLatencyNoParsec"])
+  if ([testCopy isEqualToString:@"QuerySearchButtonToResultsLatencyNoParsec"])
   {
     SPSetInternetDomainsEnabled();
     v23 = +[SPUISearchHeader committedSearchQueryKind];
@@ -125,20 +125,20 @@ LABEL_15:
     v39[1] = 3221225472;
     v39[2] = __52__SPUITestingHelper_performTest_options_completion___block_invoke_3;
     v39[3] = &unk_279D06F38;
-    v40 = v10;
-    [(SPUITestingHelper *)self searchManyStringsForTestName:v8 options:v9 event:22 queryKind:v23 completion:v39];
+    v40 = completionCopy;
+    [(SPUITestingHelper *)self searchManyStringsForTestName:testCopy options:optionsCopy event:22 queryKind:v23 completion:v39];
     v24 = v40;
 LABEL_12:
 
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"QueryToSuggestionsMixedQueries"])
+  if ([testCopy isEqualToString:@"QueryToSuggestionsMixedQueries"])
   {
     goto LABEL_14;
   }
 
-  if ([v8 isEqualToString:@"QueryToSuggestionsMixedQueriesNoParsec"])
+  if ([testCopy isEqualToString:@"QueryToSuggestionsMixedQueriesNoParsec"])
   {
     SPSetInternetDomainsEnabled();
     v25 = +[SPUISearchHeader asYouTypeSearchQueryKind];
@@ -146,24 +146,24 @@ LABEL_12:
     v37[1] = 3221225472;
     v37[2] = __52__SPUITestingHelper_performTest_options_completion___block_invoke_4;
     v37[3] = &unk_279D06F38;
-    v38 = v10;
-    [(SPUITestingHelper *)self searchManyStringsForTestName:v8 options:v9 event:1 queryKind:v25 completion:v37];
+    v38 = completionCopy;
+    [(SPUITestingHelper *)self searchManyStringsForTestName:testCopy options:optionsCopy event:1 queryKind:v25 completion:v37];
     v24 = v38;
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:@"QueryToTopHitsLatency"])
+  if ([testCopy isEqualToString:@"QueryToTopHitsLatency"])
   {
 LABEL_14:
     v18 = +[SPUISearchHeader asYouTypeSearchQueryKind];
-    v19 = self;
-    v20 = v8;
-    v21 = v9;
+    selfCopy3 = self;
+    v20 = testCopy;
+    v21 = optionsCopy;
     v22 = 1;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:@"QueryToLocalSuggestionLatency"])
+  if ([testCopy isEqualToString:@"QueryToLocalSuggestionLatency"])
   {
     SPSetInternetDomainsEnabled();
     v26 = +[SPUISearchHeader asYouTypeSearchQueryKind];
@@ -171,94 +171,94 @@ LABEL_14:
     v35[1] = 3221225472;
     v35[2] = __52__SPUITestingHelper_performTest_options_completion___block_invoke_5;
     v35[3] = &unk_279D06F38;
-    v36 = v10;
-    [(SPUITestingHelper *)self searchManyStringsForTestName:v8 options:v9 event:1 queryKind:v26 completion:v35];
+    v36 = completionCopy;
+    [(SPUITestingHelper *)self searchManyStringsForTestName:testCopy options:optionsCopy event:1 queryKind:v26 completion:v35];
     v24 = v36;
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:@"QueryToParsecSuggestionLatency"])
+  if ([testCopy isEqualToString:@"QueryToParsecSuggestionLatency"])
   {
 LABEL_25:
     v18 = +[SPUISearchHeader asYouTypeSearchQueryKind];
-    v19 = self;
-    v20 = v8;
-    v21 = v9;
+    selfCopy3 = self;
+    v20 = testCopy;
+    v21 = optionsCopy;
     v22 = 8;
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:@"ParsecdLaunchTime"])
+  if ([testCopy isEqualToString:@"ParsecdLaunchTime"])
   {
     PS_PSKillProcessNamed();
     goto LABEL_25;
   }
 
-  if ([v8 isEqualToString:@"MemoryTestMapsCards"])
+  if ([testCopy isEqualToString:@"MemoryTestMapsCards"])
   {
     v27 = +[SPUISearchHeader asYouTypeSearchQueryKind];
-    v34 = v10;
+    v34 = completionCopy;
     v28 = @"MAPS";
-    v29 = self;
-    v30 = v8;
-    v31 = v9;
+    selfCopy5 = self;
+    v30 = testCopy;
+    v31 = optionsCopy;
     v32 = 1;
 LABEL_30:
-    [(SPUITestingHelper *)v29 performPushPopCardsOnTest:v30 options:v31 needsCard:v32 sectionHeader:v28 atDesk:0 queryKind:v27 completion:v34];
+    [(SPUITestingHelper *)selfCopy5 performPushPopCardsOnTest:v30 options:v31 needsCard:v32 sectionHeader:v28 atDesk:0 queryKind:v27 completion:v34];
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"MemoryTestContactsCards"])
+  if ([testCopy isEqualToString:@"MemoryTestContactsCards"])
   {
     v27 = +[SPUISearchHeader asYouTypeSearchQueryKind];
-    v34 = v10;
+    v34 = completionCopy;
     v28 = @"CONTACTS";
-    v29 = self;
-    v30 = v8;
-    v31 = v9;
+    selfCopy5 = self;
+    v30 = testCopy;
+    v31 = optionsCopy;
     v32 = 0;
     goto LABEL_30;
   }
 
-  if ([v8 isEqualToString:@"MemoryTestMapsCardsAtDesk"])
+  if ([testCopy isEqualToString:@"MemoryTestMapsCardsAtDesk"])
   {
-    [(SPUITestingHelper *)self performPushPopCardsOnTest:v8 options:v9 needsCard:1 sectionHeader:@"MAPS" atDesk:1 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], v10];
+    [(SPUITestingHelper *)self performPushPopCardsOnTest:testCopy options:optionsCopy needsCard:1 sectionHeader:@"MAPS" atDesk:1 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], completionCopy];
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"MapsCardsPushAndScrollTests"])
+  if ([testCopy isEqualToString:@"MapsCardsPushAndScrollTests"])
   {
-    v17 = [v9 objectForKey:@"queryString"];
-    [(SPUITestingHelper *)self testMapsCardsPushAndScrollForTestName:v8 string:v17 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], v10];
+    v17 = [optionsCopy objectForKey:@"queryString"];
+    [(SPUITestingHelper *)self testMapsCardsPushAndScrollForTestName:testCopy string:v17 queryKind:+[SPUISearchHeader completion:"asYouTypeSearchQueryKind"], completionCopy];
   }
 
   else
   {
-    if ([v8 isEqualToString:@"CardPushTest"])
+    if ([testCopy isEqualToString:@"CardPushTest"])
     {
-      v17 = [v9 objectForKey:@"queryString"];
+      v17 = [optionsCopy objectForKey:@"queryString"];
       v33 = @"SPORTS";
     }
 
     else
     {
-      if (![v8 isEqualToString:@"MapsPushTest"])
+      if (![testCopy isEqualToString:@"MapsPushTest"])
       {
-        if (![v8 isEqualToString:@"EntityScrollTest"])
+        if (![testCopy isEqualToString:@"EntityScrollTest"])
         {
           goto LABEL_16;
         }
 
-        v17 = [v9 objectForKey:@"queryString"];
-        [(SPUITestingHelper *)self scrollEntityForTest:v8 forQuery:v17 completion:v10];
+        v17 = [optionsCopy objectForKey:@"queryString"];
+        [(SPUITestingHelper *)self scrollEntityForTest:testCopy forQuery:v17 completion:completionCopy];
         goto LABEL_5;
       }
 
-      v17 = [v9 objectForKey:@"queryString"];
+      v17 = [optionsCopy objectForKey:@"queryString"];
       v33 = @"MAPS";
     }
 
-    [(SPUITestingHelper *)self runPushTest:v8 sectionHeader:v33 searchString:v17 completion:v10];
+    [(SPUITestingHelper *)self runPushTest:testCopy sectionHeader:v33 searchString:v17 completion:completionCopy];
   }
 
 LABEL_5:
@@ -324,29 +324,29 @@ uint64_t __52__SPUITestingHelper_performTest_options_completion___block_invoke_5
   return result;
 }
 
-- (void)runPushTest:(id)a3 sectionHeader:(id)a4 searchString:(id)a5 completion:(id)a6
+- (void)runPushTest:(id)test sectionHeader:(id)header searchString:(id)string completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  testCopy = test;
+  completionCopy = completion;
+  stringCopy = string;
+  headerCopy = header;
   v14 = +[SPUISearchHeader asYouTypeSearchQueryKind];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __71__SPUITestingHelper_runPushTest_sectionHeader_searchString_completion___block_invoke;
   v20[3] = &unk_279D070B8;
   v20[4] = self;
-  v21 = v10;
+  v21 = testCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__SPUITestingHelper_runPushTest_sectionHeader_searchString_completion___block_invoke_2;
   v17[3] = &unk_279D07280;
   v17[4] = self;
   v18 = v21;
-  v19 = v11;
-  v15 = v11;
+  v19 = completionCopy;
+  v15 = completionCopy;
   v16 = v21;
-  [(SPUITestingHelper *)self searchForSectionHeader:v13 testName:v16 forSearchString:v12 queryKind:v14 startPushHandler:v20 finishHandler:v17];
+  [(SPUITestingHelper *)self searchForSectionHeader:headerCopy testName:v16 forSearchString:stringCopy queryKind:v14 startPushHandler:v20 finishHandler:v17];
 }
 
 void __71__SPUITestingHelper_runPushTest_sectionHeader_searchString_completion___block_invoke(uint64_t a1)
@@ -431,12 +431,12 @@ uint64_t __107__SPUITestingHelper_performPushPopCardsOnTest_options_needsCard_se
 {
   if ([(SPUITestingHelper *)self finishedKeyboardLaunch]&& [(SPUITestingHelper *)self finishedTableUpdate])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-    v4 = [(SPUITestingHelper *)self searchViewController];
-    v5 = [v4 proactiveResultsTestingObject];
-    [v5 setViewDidUpdateHandler:0];
+    searchViewController = [(SPUITestingHelper *)self searchViewController];
+    proactiveResultsTestingObject = [searchViewController proactiveResultsTestingObject];
+    [proactiveResultsTestingObject setViewDidUpdateHandler:0];
 
     v6 = *MEMORY[0x277D76620];
 
@@ -451,23 +451,23 @@ void __45__SPUITestingHelper_finishLaunchTestIfNeeded__block_invoke()
   [v0 finishedTest:v1];
 }
 
-- (void)performCardScrollTest:(id)a3 queryKind:(unint64_t)a4 completion:(id)a5
+- (void)performCardScrollTest:(id)test queryKind:(unint64_t)kind completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SPUITestingHelper *)self activeApp];
-  [v10 startedTest:v8];
+  testCopy = test;
+  completionCopy = completion;
+  activeApp = [(SPUITestingHelper *)self activeApp];
+  [activeApp startedTest:testCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__SPUITestingHelper_performCardScrollTest_queryKind_completion___block_invoke;
   v13[3] = &unk_279D07280;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [(SPUITestingHelper *)self scrollForSectionHeader:@"Sports" forSearchString:@"sf giants roster" testName:v12 queryKind:a4 completion:v13];
+  v14 = testCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = testCopy;
+  [(SPUITestingHelper *)self scrollForSectionHeader:@"Sports" forSearchString:@"sf giants roster" testName:v12 queryKind:kind completion:v13];
 }
 
 uint64_t __64__SPUITestingHelper_performCardScrollTest_queryKind_completion___block_invoke(uint64_t a1)
@@ -486,24 +486,24 @@ uint64_t __64__SPUITestingHelper_performCardScrollTest_queryKind_completion___bl
   return result;
 }
 
-- (void)searchString:(id)a3 andOpenResultsUnderSection:(id)a4 testName:(id)a5 needsCard:(BOOL)a6 queryKind:(unint64_t)a7 completion:(id)a8
+- (void)searchString:(id)string andOpenResultsUnderSection:(id)section testName:(id)name needsCard:(BOOL)card queryKind:(unint64_t)kind completion:(id)completion
 {
-  v13 = a4;
-  v14 = a8;
-  v15 = a3;
-  v16 = [(SPUITestingHelper *)self searchViewController];
-  [v16 performTestSearchWithQuery:v15 event:22 queryKind:a7];
+  sectionCopy = section;
+  completionCopy = completion;
+  stringCopy = string;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController performTestSearchWithQuery:stringCopy event:22 queryKind:kind];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __101__SPUITestingHelper_searchString_andOpenResultsUnderSection_testName_needsCard_queryKind_completion___block_invoke;
   v19[3] = &unk_279D072A8;
-  v23 = a6;
-  v20 = v13;
-  v21 = self;
-  v22 = v14;
-  v17 = v14;
-  v18 = v13;
+  cardCopy = card;
+  v20 = sectionCopy;
+  selfCopy = self;
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = sectionCopy;
   [(SPUITestingHelper *)self searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:v19];
 }
 
@@ -519,17 +519,17 @@ void __101__SPUITestingHelper_searchString_andOpenResultsUnderSection_testName_n
   [*(a1 + 40) tapIndexsPathsAndPopViewControllersAfter2Seconds:v7 completion:*(a1 + 48)];
 }
 
-- (void)tapIndexsPathsAndPopViewControllersAfter2Seconds:(id)a3 completion:(id)a4
+- (void)tapIndexsPathsAndPopViewControllersAfter2Seconds:(id)seconds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  secondsCopy = seconds;
+  completionCopy = completion;
+  if ([secondsCopy count])
   {
-    v8 = [v6 lastObject];
-    [v6 removeLastObject];
-    v9 = [(SPUITestingHelper *)self searchViewController];
-    v10 = [v9 searchResultsTestingObject];
-    [v10 tapAtIndexPath:v8];
+    lastObject = [secondsCopy lastObject];
+    [secondsCopy removeLastObject];
+    searchViewController = [(SPUITestingHelper *)self searchViewController];
+    searchResultsTestingObject = [searchViewController searchResultsTestingObject];
+    [searchResultsTestingObject tapAtIndexPath:lastObject];
 
     v11 = dispatch_time(0, 2000000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -537,14 +537,14 @@ void __101__SPUITestingHelper_searchString_andOpenResultsUnderSection_testName_n
     block[2] = __81__SPUITestingHelper_tapIndexsPathsAndPopViewControllersAfter2Seconds_completion___block_invoke;
     block[3] = &unk_279D07280;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = secondsCopy;
+    v14 = completionCopy;
     dispatch_after(v11, MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -571,19 +571,19 @@ uint64_t __81__SPUITestingHelper_tapIndexsPathsAndPopViewControllersAfter2Second
   return [v10 tapIndexsPathsAndPopViewControllersAfter2Seconds:v11 completion:v12];
 }
 
-- (void)resultViewController:(id)a3 finishedGettingAllResults:(id)a4
+- (void)resultViewController:(id)controller finishedGettingAllResults:(id)results
 {
-  v5 = a3;
-  v6 = a4;
-  objc_initWeak(&location, v5);
+  controllerCopy = controller;
+  resultsCopy = results;
+  objc_initWeak(&location, controllerCopy);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__SPUITestingHelper_resultViewController_finishedGettingAllResults___block_invoke;
   v8[3] = &unk_279D07320;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = resultsCopy;
   v9 = v7;
-  [v5 setDidFinishGettingAllResultsHandler:v8];
+  [controllerCopy setDidFinishGettingAllResultsHandler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -630,37 +630,37 @@ void __68__SPUITestingHelper_resultViewController_finishedGettingAllResults___bl
   [v3 installCACommitCompletionBlock:v4];
 }
 
-- (void)searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:(id)a3
+- (void)searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(SPUITestingHelper *)self searchViewController];
-  v5 = [v6 searchResultsTestingObject];
-  [(SPUITestingHelper *)self resultViewController:v5 finishedGettingAllResults:v4];
+  completionCopy = completion;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  searchResultsTestingObject = [searchViewController searchResultsTestingObject];
+  [(SPUITestingHelper *)self resultViewController:searchResultsTestingObject finishedGettingAllResults:completionCopy];
 }
 
-- (void)searchForSectionHeader:(id)a3 testName:(id)a4 forSearchString:(id)a5 queryKind:(unint64_t)a6 startPushHandler:(id)a7 finishHandler:(id)a8
+- (void)searchForSectionHeader:(id)header testName:(id)name forSearchString:(id)string queryKind:(unint64_t)kind startPushHandler:(id)handler finishHandler:(id)finishHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a5;
-  v19 = [(SPUITestingHelper *)self searchViewController];
-  [v19 performTestSearchWithQuery:v18 event:22 queryKind:a6];
+  headerCopy = header;
+  nameCopy = name;
+  handlerCopy = handler;
+  finishHandlerCopy = finishHandler;
+  stringCopy = string;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController performTestSearchWithQuery:stringCopy event:22 queryKind:kind];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __110__SPUITestingHelper_searchForSectionHeader_testName_forSearchString_queryKind_startPushHandler_finishHandler___block_invoke;
   v24[3] = &unk_279D073C0;
-  v25 = v14;
-  v26 = self;
-  v28 = v16;
-  v29 = v17;
-  v27 = v15;
-  v20 = v15;
-  v21 = v17;
-  v22 = v16;
-  v23 = v14;
+  v25 = headerCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v29 = finishHandlerCopy;
+  v27 = nameCopy;
+  v20 = nameCopy;
+  v21 = finishHandlerCopy;
+  v22 = handlerCopy;
+  v23 = headerCopy;
   [(SPUITestingHelper *)self searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:v24];
 }
 
@@ -769,20 +769,20 @@ void __110__SPUITestingHelper_searchForSectionHeader_testName_forSearchString_qu
   dispatch_after(v2, MEMORY[0x277D85CD0], block);
 }
 
-- (void)scrollForSectionHeader:(id)a3 forSearchString:(id)a4 testName:(id)a5 queryKind:(unint64_t)a6 completion:(id)a7
+- (void)scrollForSectionHeader:(id)header forSearchString:(id)string testName:(id)name queryKind:(unint64_t)kind completion:(id)completion
 {
-  v12 = a5;
-  v13 = a7;
+  nameCopy = name;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__SPUITestingHelper_scrollForSectionHeader_forSearchString_testName_queryKind_completion___block_invoke;
   v16[3] = &unk_279D07280;
   v16[4] = self;
-  v17 = v12;
-  v18 = v13;
-  v14 = v13;
-  v15 = v12;
-  [(SPUITestingHelper *)self searchForSectionHeader:a3 testName:v15 forSearchString:a4 queryKind:a6 startPushHandler:0 finishHandler:v16];
+  v17 = nameCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = nameCopy;
+  [(SPUITestingHelper *)self searchForSectionHeader:header testName:v15 forSearchString:string queryKind:kind startPushHandler:0 finishHandler:v16];
 }
 
 void __90__SPUITestingHelper_scrollForSectionHeader_forSearchString_testName_queryKind_completion___block_invoke(uint64_t a1)
@@ -869,10 +869,10 @@ uint64_t __90__SPUITestingHelper_scrollForSectionHeader_forSearchString_testName
   return result;
 }
 
-+ (id)indexPathsOfRowsForSectionTitle:(id)a3 needsCard:(BOOL)a4 forTestingViewController:(id)a5
++ (id)indexPathsOfRowsForSectionTitle:(id)title needsCard:(BOOL)card forTestingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a5;
+  titleCopy = title;
+  controllerCopy = controller;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -883,11 +883,11 @@ uint64_t __90__SPUITestingHelper_scrollForSectionHeader_forSearchString_testName
   v12[1] = 3221225472;
   v12[2] = __88__SPUITestingHelper_indexPathsOfRowsForSectionTitle_needsCard_forTestingViewController___block_invoke;
   v12[3] = &unk_279D07438;
-  v9 = v7;
-  v15 = a4;
+  v9 = titleCopy;
+  cardCopy = card;
   v13 = v9;
   v14 = &v16;
-  [v8 iterateIndexPaths:v12];
+  [controllerCopy iterateIndexPaths:v12];
   v10 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -932,13 +932,13 @@ void __88__SPUITestingHelper_indexPathsOfRowsForSectionTitle_needsCard_forTestin
 LABEL_7:
 }
 
-- (void)scrollEntityForTest:(id)a3 forQuery:(id)a4 completion:(id)a5
+- (void)scrollEntityForTest:(id)test forQuery:(id)query completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SPUITestingHelper *)self searchViewController];
-  [v11 performTestSearchWithQuery:v9 event:1 queryKind:2];
+  testCopy = test;
+  queryCopy = query;
+  completionCopy = completion;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController performTestSearchWithQuery:queryCopy event:1 queryKind:2];
 
   v20[0] = 0;
   v20[1] = v20;
@@ -950,11 +950,11 @@ LABEL_7:
   v15[3] = &unk_279D07460;
   v19 = v20;
   v15[4] = self;
-  v12 = v8;
+  v12 = testCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = queryCopy;
   v17 = v14;
   [(SPUITestingHelper *)self searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:v15];
 
@@ -1043,86 +1043,86 @@ void __61__SPUITestingHelper_scrollEntityForTest_forQuery_completion___block_inv
   [v5 resultViewController:v6 finishedGettingAllResults:v7];
 }
 
-- (void)scrollMainResultsForTest:(id)a3 forQuery:(id)a4 queryKind:(unint64_t)a5 completion:(id)a6
+- (void)scrollMainResultsForTest:(id)test forQuery:(id)query queryKind:(unint64_t)kind completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(SPUITestingHelper *)self searchViewController];
-  [v13 performTestSearchWithQuery:v12 event:22 queryKind:a5];
+  testCopy = test;
+  completionCopy = completion;
+  queryCopy = query;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController performTestSearchWithQuery:queryCopy event:22 queryKind:kind];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__SPUITestingHelper_scrollMainResultsForTest_forQuery_queryKind_completion___block_invoke;
   v16[3] = &unk_279D07280;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
+  v17 = testCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = testCopy;
   [(SPUITestingHelper *)self searchViewFinishedGettingAllResultsAndFinishedDrawsWithCompletion:v16];
 }
 
-- (void)performScrollOnSearchViewWithTestName:(id)a3 completion:(id)a4
+- (void)performScrollOnSearchViewWithTestName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SPUITestingHelper *)self searchViewController];
-  v8 = [v9 searchResultsTestingObject];
-  [(SPUITestingHelper *)self performScrollOnResultsView:v8 testName:v7 completion:v6];
+  completionCopy = completion;
+  nameCopy = name;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  searchResultsTestingObject = [searchViewController searchResultsTestingObject];
+  [(SPUITestingHelper *)self performScrollOnResultsView:searchResultsTestingObject testName:nameCopy completion:completionCopy];
 }
 
-- (void)searchManyStringsForTestName:(id)a3 options:(id)a4 event:(unint64_t)a5 queryKind:(unint64_t)a6 completion:(id)a7
+- (void)searchManyStringsForTestName:(id)name options:(id)options event:(unint64_t)event queryKind:(unint64_t)kind completion:(id)completion
 {
-  v12 = a7;
-  v13 = a3;
-  v17 = [a4 objectForKey:@"queryStrings"];
+  completionCopy = completion;
+  nameCopy = name;
+  v17 = [options objectForKey:@"queryStrings"];
   v14 = [v17 componentsSeparatedByString:{@", "}];
-  v15 = [(SPUITestingHelper *)self activeApp];
-  [v15 startedTest:v13];
+  activeApp = [(SPUITestingHelper *)self activeApp];
+  [activeApp startedTest:nameCopy];
 
   v16 = [v14 mutableCopy];
-  [(SPUITestingHelper *)self searchForString:v16 testName:v13 event:a5 queryKind:a6 completion:v12];
+  [(SPUITestingHelper *)self searchForString:v16 testName:nameCopy event:event queryKind:kind completion:completionCopy];
 }
 
-- (void)searchForString:(id)a3 testName:(id)a4 event:(unint64_t)a5 queryKind:(unint64_t)a6 completion:(id)a7
+- (void)searchForString:(id)string testName:(id)name event:(unint64_t)event queryKind:(unint64_t)kind completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(SPUITestingHelper *)self searchViewController];
-  v16 = [v15 searchResultsTestingObject];
-  [v16 setDidFinishGettingAllResultsHandler:0];
+  stringCopy = string;
+  nameCopy = name;
+  completionCopy = completion;
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  searchResultsTestingObject = [searchViewController searchResultsTestingObject];
+  [searchResultsTestingObject setDidFinishGettingAllResultsHandler:0];
 
-  v17 = [(SPUITestingHelper *)self searchViewController];
-  v18 = [v17 searchResultsTestingObject];
-  [v18 setViewWillUpdateHandler:0];
+  searchViewController2 = [(SPUITestingHelper *)self searchViewController];
+  searchResultsTestingObject2 = [searchViewController2 searchResultsTestingObject];
+  [searchResultsTestingObject2 setViewWillUpdateHandler:0];
 
-  v19 = [(SPUITestingHelper *)self searchViewController];
-  v20 = [v19 searchResultsTestingObject];
-  [v20 setViewDidUpdateHandler:0];
+  searchViewController3 = [(SPUITestingHelper *)self searchViewController];
+  searchResultsTestingObject3 = [searchViewController3 searchResultsTestingObject];
+  [searchResultsTestingObject3 setViewDidUpdateHandler:0];
 
-  if ([v12 count])
+  if ([stringCopy count])
   {
-    v41 = a5;
+    eventCopy = event;
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v12 lastObject];
-    [v21 stringWithFormat:@"Query To Draw Latency:%@", v22];
-    v42 = v14;
-    v23 = v13;
-    v25 = v24 = a6;
+    lastObject = [stringCopy lastObject];
+    [v21 stringWithFormat:@"Query To Draw Latency:%@", lastObject];
+    v42 = completionCopy;
+    v23 = nameCopy;
+    v25 = v24 = kind;
 
     v26 = MEMORY[0x277CCACA8];
-    v27 = [v12 lastObject];
-    v28 = [v26 stringWithFormat:@"Query To First Result:%@", v27];
+    lastObject2 = [stringCopy lastObject];
+    v28 = [v26 stringWithFormat:@"Query To First Result:%@", lastObject2];
 
     v29 = MEMORY[0x277CCACA8];
-    v30 = [v12 lastObject];
-    v31 = [v29 stringWithFormat:@"Query Latency:%@", v30];
+    lastObject3 = [stringCopy lastObject];
+    v31 = [v29 stringWithFormat:@"Query Latency:%@", lastObject3];
 
     v32 = [SPUIPPTTypingHelper alloc];
-    v33 = [v12 lastObject];
-    v34 = [(SPUITestingHelper *)self searchViewController];
+    lastObject4 = [stringCopy lastObject];
+    searchViewController4 = [(SPUITestingHelper *)self searchViewController];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __73__SPUITestingHelper_searchForString_testName_event_queryKind_completion___block_invoke;
@@ -1131,29 +1131,29 @@ void __61__SPUITestingHelper_scrollEntityForTest_forQuery_completion___block_inv
     v44 = v31;
     v45 = v23;
     v46 = v28;
-    v50 = v41;
+    v50 = eventCopy;
     v51 = v24;
-    v47 = v12;
+    v47 = stringCopy;
     v48 = v25;
     v49 = v42;
     v35 = v25;
     v36 = v28;
     v37 = v31;
     v38 = v24;
-    v13 = v23;
-    v14 = v42;
-    v39 = [(SPUIPPTTypingHelper *)v32 initWithString:v33 viewController:v34 queryKind:v38 completion:v43];
+    nameCopy = v23;
+    completionCopy = v42;
+    v39 = [(SPUIPPTTypingHelper *)v32 initWithString:lastObject4 viewController:searchViewController4 queryKind:v38 completion:v43];
     [(SPUITestingHelper *)self setTypingHelper:v39];
   }
 
   else
   {
-    v40 = [(SPUITestingHelper *)self activeApp];
-    [v40 finishedTest:v13];
+    activeApp = [(SPUITestingHelper *)self activeApp];
+    [activeApp finishedTest:nameCopy];
 
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1329,13 +1329,13 @@ void __73__SPUITestingHelper_searchForString_testName_event_queryKind_completion
   [v2 installCACommitCompletionBlock:v3];
 }
 
-- (void)setDefaultsForSearchVCWithqueryType:(unint64_t)a3
+- (void)setDefaultsForSearchVCWithqueryType:(unint64_t)type
 {
-  v5 = [(SPUITestingHelper *)self searchViewController];
-  [v5 performTestSearchWithQuery:&stru_287C49600 event:1 queryKind:a3];
+  searchViewController = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController performTestSearchWithQuery:&stru_287C49600 event:1 queryKind:type];
 
-  v6 = [(SPUITestingHelper *)self searchViewController];
-  [v6 setInternetOverrideToDisable:0];
+  searchViewController2 = [(SPUITestingHelper *)self searchViewController];
+  [searchViewController2 setInternetOverrideToDisable:0];
 }
 
 @end

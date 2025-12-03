@@ -1,42 +1,42 @@
 @interface AssistantVoiceController
-+ (BOOL)asset:(id)a3 matchesVoice:(id)a4;
++ (BOOL)asset:(id)asset matchesVoice:(id)voice;
 + (id)bundle;
 - (AssistantVoiceController)init;
-- (BOOL)isCellularDataPermissionAllowedForVoice:(id)a3;
-- (BOOL)isVoiceInstalled:(id)a3;
-- (id)_languageSpecifiersForLanguage:(id)a3;
-- (id)_voiceVariationSpecifiersForLanguage:(id)a3;
-- (id)deriveVoicesWithTargetVoice:(id)a3 currentVoice:(id)a4;
-- (id)dialectsForLanguageIdentifiers:(id)a3;
+- (BOOL)isCellularDataPermissionAllowedForVoice:(id)voice;
+- (BOOL)isVoiceInstalled:(id)installed;
+- (id)_languageSpecifiersForLanguage:(id)language;
+- (id)_voiceVariationSpecifiersForLanguage:(id)language;
+- (id)deriveVoicesWithTargetVoice:(id)voice currentVoice:(id)currentVoice;
+- (id)dialectsForLanguageIdentifiers:(id)identifiers;
 - (id)inProgressOutputVoice;
 - (id)outputVoice;
 - (id)specifiers;
-- (id)uniqueLocaleForLanguageWithDialect:(id)a3;
-- (id)viewModelWithInProgressVoice:(id)a3 currentVoice:(id)a4;
-- (id)voiceSettingsForLanguageCode:(id)a3 name:(id)a4 gender:(int64_t)a5;
+- (id)uniqueLocaleForLanguageWithDialect:(id)dialect;
+- (id)viewModelWithInProgressVoice:(id)voice currentVoice:(id)currentVoice;
+- (id)voiceSettingsForLanguageCode:(id)code name:(id)name gender:(int64_t)gender;
 - (void)_signalDidSelectVoice;
-- (void)applyViewModel:(id)a3;
-- (void)downloadVoice:(id)a3;
-- (void)grantCellularDataPermissionForVoice:(id)a3;
-- (void)languageCodeDidChange:(id)a3;
-- (void)outputVoiceDidChange:(id)a3;
-- (void)playVoicePreview:(id)a3;
-- (void)presentVoiceDownloadConfirmationNoWifiAlertForVoice:(id)a3 inProgressVoice:(id)a4;
+- (void)applyViewModel:(id)model;
+- (void)downloadVoice:(id)voice;
+- (void)grantCellularDataPermissionForVoice:(id)voice;
+- (void)languageCodeDidChange:(id)change;
+- (void)outputVoiceDidChange:(id)change;
+- (void)playVoicePreview:(id)preview;
+- (void)presentVoiceDownloadConfirmationNoWifiAlertForVoice:(id)voice inProgressVoice:(id)progressVoice;
 - (void)presentVoiceDownloadDisabledNoInternetAlert;
 - (void)presentVoiceDownloadDisabledNoWifiAlert;
-- (void)registerUndoActionWithKey:(id)a3 urlString:(id)a4 undoAction:(id)a5;
+- (void)registerUndoActionWithKey:(id)key urlString:(id)string undoAction:(id)action;
 - (void)resetMetrics;
-- (void)selectVoice:(id)a3 inProgressVoice:(id)a4;
-- (void)setAssistantInProgressVoice:(id)a3;
-- (void)setAssistantOutputVoice:(id)a3;
-- (void)setInProgressVoicePreference:(id)a3;
-- (void)setOutputVoicePreference:(id)a3;
-- (void)setParentController:(id)a3;
+- (void)selectVoice:(id)voice inProgressVoice:(id)progressVoice;
+- (void)setAssistantInProgressVoice:(id)voice;
+- (void)setAssistantOutputVoice:(id)voice;
+- (void)setInProgressVoicePreference:(id)preference;
+- (void)setOutputVoicePreference:(id)preference;
+- (void)setParentController:(id)controller;
 - (void)stopAllDownload;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateDownloadProgress:(float)a3;
-- (void)updateFooterText:(id)a3 forSpecifier:(id)a4;
-- (void)updateVoiceVariationGroupUI:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateDownloadProgress:(float)progress;
+- (void)updateFooterText:(id)text forSpecifier:(id)specifier;
+- (void)updateVoiceVariationGroupUI:(id)i;
 @end
 
 @implementation AssistantVoiceController
@@ -77,9 +77,9 @@ uint64_t __34__AssistantVoiceController_bundle__block_invoke()
 {
   if (self->_metrics)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D76770];
-    [v3 removeObserver:self->_metrics name:*MEMORY[0x277D76770] object:0];
+    [defaultCenter removeObserver:self->_metrics name:*MEMORY[0x277D76770] object:0];
   }
 
   else
@@ -91,23 +91,23 @@ uint64_t __34__AssistantVoiceController_bundle__block_invoke()
   metrics = self->_metrics;
   self->_metrics = v5;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self->_metrics selector:sel_sendAnalyticsEvent name:v4 object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self->_metrics selector:sel_sendAnalyticsEvent name:v4 object:0];
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AssistantVoiceController *)self parentController];
+  controllerCopy = controller;
+  parentController = [(AssistantVoiceController *)self parentController];
 
   v8.receiver = self;
   v8.super_class = AssistantVoiceController;
-  [(AssistantVoiceController *)&v8 setParentController:v4];
-  if (v4 && !v5)
+  [(AssistantVoiceController *)&v8 setParentController:controllerCopy];
+  if (controllerCopy && !parentController)
   {
-    v6 = [v4 settingsConnection];
+    settingsConnection = [controllerCopy settingsConnection];
     settingsConnection = self->_settingsConnection;
-    self->_settingsConnection = v6;
+    self->_settingsConnection = settingsConnection;
   }
 }
 
@@ -119,9 +119,9 @@ void __45__AssistantVoiceController_viewDidDisappear___block_invoke(uint64_t a1,
   }
 }
 
-- (void)languageCodeDidChange:(id)a3
+- (void)languageCodeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
@@ -131,14 +131,14 @@ void __45__AssistantVoiceController_viewDidDisappear___block_invoke(uint64_t a1,
   [(AssistantVoiceController *)self reloadSpecifiers];
   if ([(NSArray *)self->_voiceVariationSpecifiers count]<= 1 && [(NSArray *)self->_languageSpecifiers count]<= 1)
   {
-    v6 = [(AssistantVoiceController *)self navigationController];
-    v7 = [v6 popViewControllerAnimated:1];
+    navigationController = [(AssistantVoiceController *)self navigationController];
+    v7 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)outputVoiceDidChange:(id)a3
+- (void)outputVoiceDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (!self->_ignoreNextVoiceChangeNotification)
   {
     v5 = *MEMORY[0x277CEF098];
@@ -155,48 +155,48 @@ void __45__AssistantVoiceController_viewDidDisappear___block_invoke(uint64_t a1,
 
 - (id)outputVoice
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 outputVoice];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  outputVoice = [mEMORY[0x277CEF368] outputVoice];
 
-  v4 = [v3 name];
-  v5 = [v4 length];
+  name = [outputVoice name];
+  v5 = [name length];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v7 = [v3 languageCode];
-    v8 = [v6 voiceNamesForOutputLanguageCode:v7 gender:{objc_msgSend(v3, "gender")}];
-    v9 = [v8 firstObject];
+    mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+    languageCode = [outputVoice languageCode];
+    v8 = [mEMORY[0x277CEF2D8] voiceNamesForOutputLanguageCode:languageCode gender:{objc_msgSend(outputVoice, "gender")}];
+    firstObject = [v8 firstObject];
 
     v10 = objc_alloc(MEMORY[0x277CEF528]);
-    v11 = [v3 languageCode];
-    v12 = [v3 gender];
-    v13 = [v3 isCustom];
-    v14 = [v3 footprint];
-    v15 = [v3 contentVersion];
-    v16 = [v3 masteredVersion];
-    v17 = [v10 initWithLanguageCode:v11 gender:v12 isCustom:v13 name:v9 footprint:v14 contentVersion:v15 masteredVersion:v16];
+    languageCode2 = [outputVoice languageCode];
+    gender = [outputVoice gender];
+    isCustom = [outputVoice isCustom];
+    footprint = [outputVoice footprint];
+    contentVersion = [outputVoice contentVersion];
+    masteredVersion = [outputVoice masteredVersion];
+    v17 = [v10 initWithLanguageCode:languageCode2 gender:gender isCustom:isCustom name:firstObject footprint:footprint contentVersion:contentVersion masteredVersion:masteredVersion];
 
-    v3 = v17;
+    outputVoice = v17;
   }
 
-  return v3;
+  return outputVoice;
 }
 
 - (id)inProgressOutputVoice
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 inProgressOutputVoice];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  inProgressOutputVoice = [mEMORY[0x277CEF368] inProgressOutputVoice];
 
-  v4 = [v3 name];
-  if ([v4 length])
+  name = [inProgressOutputVoice name];
+  if ([name length])
   {
-    v5 = [v3 languageCode];
-    v6 = [v5 length];
+    languageCode = [inProgressOutputVoice languageCode];
+    v6 = [languageCode length];
 
     if (v6)
     {
-      v7 = v3;
+      v7 = inProgressOutputVoice;
       goto LABEL_6;
     }
   }
@@ -254,16 +254,16 @@ LABEL_6:
       [v5 removeObject:v15];
     }
 
-    v16 = [(AssistantVoiceController *)self inProgressOutputVoice];
-    v17 = [(AssistantVoiceController *)self outputVoice];
-    v18 = [(AssistantVoiceController *)self deriveVoicesWithTargetVoice:v16 currentVoice:v17];
+    inProgressOutputVoice = [(AssistantVoiceController *)self inProgressOutputVoice];
+    outputVoice = [(AssistantVoiceController *)self outputVoice];
+    v18 = [(AssistantVoiceController *)self deriveVoicesWithTargetVoice:inProgressOutputVoice currentVoice:outputVoice];
 
-    v19 = [v18 inProgressVoice];
-    v20 = [v18 currentVoice];
-    objc_storeStrong(&self->_currentVoice, v20);
-    v21 = [(AssistantVoiceController *)self viewModelWithInProgressVoice:v19 currentVoice:v20];
-    v22 = [v21 languageOptions];
-    v23 = [v22 count];
+    inProgressVoice = [v18 inProgressVoice];
+    currentVoice = [v18 currentVoice];
+    objc_storeStrong(&self->_currentVoice, currentVoice);
+    v21 = [(AssistantVoiceController *)self viewModelWithInProgressVoice:inProgressVoice currentVoice:currentVoice];
+    languageOptions = [v21 languageOptions];
+    v23 = [languageOptions count];
 
     languageSpecifiers = self->_languageSpecifiers;
     if (v23 < 2)
@@ -279,8 +279,8 @@ LABEL_6:
     {
       if (!languageSpecifiers)
       {
-        v25 = [v21 selectedLanguage];
-        v26 = [(AssistantVoiceController *)self _languageSpecifiersForLanguage:v25];
+        selectedLanguage = [v21 selectedLanguage];
+        v26 = [(AssistantVoiceController *)self _languageSpecifiersForLanguage:selectedLanguage];
         v27 = self->_languageSpecifiers;
         self->_languageSpecifiers = v26;
 
@@ -300,14 +300,14 @@ LABEL_6:
     v33 = [v31 localizedStringForKey:v32 value:&stru_285317CF0 table:@"AssistantSettings"];
     [(PSSpecifier *)self->_voiceVariationGroupSpecifier setName:v33];
 
-    v34 = [v21 selectedLanguage];
-    v35 = [(AssistantVoiceController *)self _voiceVariationSpecifiersForLanguage:v34];
+    selectedLanguage2 = [v21 selectedLanguage];
+    v35 = [(AssistantVoiceController *)self _voiceVariationSpecifiersForLanguage:selectedLanguage2];
     voiceVariationSpecifiers = self->_voiceVariationSpecifiers;
     self->_voiceVariationSpecifiers = v35;
 
     [v5 ps_insertObjectsFromArray:self->_voiceVariationSpecifiers afterObject:self->_voiceVariationGroupSpecifier];
     objc_storeStrong((&self->super.super.super.super.super.isa + v46), v5);
-    v37 = [(AssistantVoiceController *)self inProgressOutputVoice];
+    inProgressOutputVoice2 = [(AssistantVoiceController *)self inProgressOutputVoice];
     objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -316,11 +316,11 @@ LABEL_6:
     objc_copyWeak(&v54, location);
     v38 = v21;
     v50 = v38;
-    v39 = v19;
+    v39 = inProgressVoice;
     v51 = v39;
     v40 = v18;
     v52 = v40;
-    v41 = v37;
+    v41 = inProgressOutputVoice2;
     v53 = v41;
     v42 = _Block_copy(aBlock);
     v43 = v42;
@@ -387,106 +387,106 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)deriveVoicesWithTargetVoice:(id)a3 currentVoice:(id)a4
+- (id)deriveVoicesWithTargetVoice:(id)voice currentVoice:(id)currentVoice
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  voiceCopy = voice;
+  currentVoiceCopy = currentVoice;
+  if (!voiceCopy)
   {
-    if ([(AssistantVoiceController *)self isVoiceInstalled:v7])
+    if ([(AssistantVoiceController *)self isVoiceInstalled:currentVoiceCopy])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = currentVoiceCopy;
     }
 
     goto LABEL_10;
   }
 
-  if (![(AssistantVoiceController *)self isVoiceInstalled:v6])
+  if (![(AssistantVoiceController *)self isVoiceInstalled:voiceCopy])
   {
-    if (![(AssistantVoiceController *)self isVoiceInstalled:v7])
+    if (![(AssistantVoiceController *)self isVoiceInstalled:currentVoiceCopy])
     {
       goto LABEL_11;
     }
 
-    v9 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v10 = [v6 languageCode];
-    v11 = [v9 getBaseLocale:v10];
-    v12 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v13 = [v7 languageCode];
-    v14 = [v12 getBaseLocale:v13];
+    mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+    languageCode = [voiceCopy languageCode];
+    v11 = [mEMORY[0x277CEF2D8] getBaseLocale:languageCode];
+    mEMORY[0x277CEF2D8]2 = [MEMORY[0x277CEF2D8] sharedInstance];
+    languageCode2 = [currentVoiceCopy languageCode];
+    v14 = [mEMORY[0x277CEF2D8]2 getBaseLocale:languageCode2];
     v15 = [v11 isEqualToString:v14];
 
     if (!v15)
     {
 LABEL_11:
-      v8 = v6;
+      v8 = voiceCopy;
       goto LABEL_12;
     }
 
-    v8 = v6;
+    v8 = voiceCopy;
 LABEL_10:
-    v16 = v7;
+    v16 = currentVoiceCopy;
     goto LABEL_13;
   }
 
   v8 = 0;
 LABEL_12:
-  v16 = v6;
+  v16 = voiceCopy;
 LABEL_13:
   v17 = [AssistantVoiceControllerVoiceSettings settingsWithInProgressVoice:v8 currentVoice:v16];
 
   return v17;
 }
 
-- (id)viewModelWithInProgressVoice:(id)a3 currentVoice:(id)a4
+- (id)viewModelWithInProgressVoice:(id)voice currentVoice:(id)currentVoice
 {
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  currentVoiceCopy = currentVoice;
   v8 = objc_alloc_init(AssistantVoiceViewModel);
-  v9 = [MEMORY[0x277CEF368] sharedPreferences];
-  v10 = [MEMORY[0x277CEF368] sharedPreferences];
-  v11 = [v10 languageCode];
-  v12 = [v9 multilingualResponseEnabledForLanguage:v11];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368]2 languageCode];
+  v12 = [mEMORY[0x277CEF368] multilingualResponseEnabledForLanguage:languageCode];
 
-  [(AssistantVoiceViewModel *)v8 setInProgressVoice:v6];
-  [(AssistantVoiceViewModel *)v8 setCurrentVoice:v7];
-  if (!v6)
+  [(AssistantVoiceViewModel *)v8 setInProgressVoice:voiceCopy];
+  [(AssistantVoiceViewModel *)v8 setCurrentVoice:currentVoiceCopy];
+  if (!voiceCopy)
   {
-    v14 = [v7 languageCode];
-    [(AssistantVoiceViewModel *)v8 setSelectedLanguage:v14];
+    languageCode2 = [currentVoiceCopy languageCode];
+    [(AssistantVoiceViewModel *)v8 setSelectedLanguage:languageCode2];
 
     v15 = MEMORY[0x277CBEB98];
     if (v12)
     {
-      v16 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-      v17 = [v15 setWithObjects:{v16, 0}];
-      [(AssistantVoiceViewModel *)v8 setLanguageOptions:v17];
+      selectedLanguage = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+      selectedLanguage2 = [v15 setWithObjects:{selectedLanguage, 0}];
+      [(AssistantVoiceViewModel *)v8 setLanguageOptions:selectedLanguage2];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CEF2D8] sharedInstance];
-      v17 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-      v29 = [v16 allOutputVoiceIdentifiersForSiriLanguage:v17];
+      selectedLanguage = [MEMORY[0x277CEF2D8] sharedInstance];
+      selectedLanguage2 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+      v29 = [selectedLanguage allOutputVoiceIdentifiersForSiriLanguage:selectedLanguage2];
       v30 = [v15 setWithArray:v29];
       [(AssistantVoiceViewModel *)v8 setLanguageOptions:v30];
     }
 
     settingsConnection = self->_settingsConnection;
-    v32 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-    [(AssistantVoiceViewModel *)v8 setShouldShowVoiceVariationGroup:[(SUICAssistantVoiceSettingsConnection *)settingsConnection languageHasVoiceVariations:v32]];
+    selectedLanguage3 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+    [(AssistantVoiceViewModel *)v8 setShouldShowVoiceVariationGroup:[(SUICAssistantVoiceSettingsConnection *)settingsConnection languageHasVoiceVariations:selectedLanguage3]];
 
     [(AssistantVoiceViewModel *)v8 setVoiceVariationToSpin:0];
-    v33 = v7;
+    v33 = currentVoiceCopy;
     goto LABEL_29;
   }
 
-  if ([(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:v6])
+  if ([(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:voiceCopy])
   {
     v13 = 1;
   }
@@ -496,42 +496,42 @@ LABEL_13:
     v13 = !+[ASTNetworkReachability hasExpensiveCellOnlyNetworkConnection];
   }
 
-  v18 = [v6 languageCode];
-  [(AssistantVoiceViewModel *)v8 setSelectedLanguage:v18];
+  languageCode3 = [voiceCopy languageCode];
+  [(AssistantVoiceViewModel *)v8 setSelectedLanguage:languageCode3];
 
   v19 = MEMORY[0x277CBEB98];
   if (v12)
   {
-    v20 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-    v21 = [v19 setWithObjects:{v20, 0}];
-    [(AssistantVoiceViewModel *)v8 setLanguageOptions:v21];
+    selectedLanguage4 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+    selectedLanguage5 = [v19 setWithObjects:{selectedLanguage4, 0}];
+    [(AssistantVoiceViewModel *)v8 setLanguageOptions:selectedLanguage5];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v21 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-    v22 = [v20 allOutputVoiceIdentifiersForSiriLanguage:v21];
+    selectedLanguage4 = [MEMORY[0x277CEF2D8] sharedInstance];
+    selectedLanguage5 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+    v22 = [selectedLanguage4 allOutputVoiceIdentifiersForSiriLanguage:selectedLanguage5];
     v23 = [v19 setWithArray:v22];
     [(AssistantVoiceViewModel *)v8 setLanguageOptions:v23];
   }
 
   if (v13)
   {
-    v24 = [(AssistantVoiceViewModel *)v8 languageOptions];
-    if ([v24 count] <= 1)
+    languageOptions = [(AssistantVoiceViewModel *)v8 languageOptions];
+    if ([languageOptions count] <= 1)
     {
       [(AssistantVoiceViewModel *)v8 setSpinningOnLanguage:0];
     }
 
     else
     {
-      v25 = [v6 languageCode];
-      v26 = [v7 languageCode];
-      if ([v25 isEqualToString:v26])
+      languageCode4 = [voiceCopy languageCode];
+      languageCode5 = [currentVoiceCopy languageCode];
+      if ([languageCode4 isEqualToString:languageCode5])
       {
-        v27 = [v6 gender];
-        v28 = v27 == [v7 gender];
+        gender = [voiceCopy gender];
+        v28 = gender == [currentVoiceCopy gender];
       }
 
       else
@@ -549,8 +549,8 @@ LABEL_13:
   }
 
   v34 = self->_settingsConnection;
-  v35 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
-  [(AssistantVoiceViewModel *)v8 setShouldShowVoiceVariationGroup:[(SUICAssistantVoiceSettingsConnection *)v34 languageHasVoiceVariations:v35]];
+  selectedLanguage6 = [(AssistantVoiceViewModel *)v8 selectedLanguage];
+  [(AssistantVoiceViewModel *)v8 setShouldShowVoiceVariationGroup:[(SUICAssistantVoiceSettingsConnection *)v34 languageHasVoiceVariations:selectedLanguage6]];
 
   if ([(AssistantVoiceViewModel *)v8 shouldShowVoiceVariationGroup])
   {
@@ -573,31 +573,31 @@ LABEL_13:
   if (!v13)
   {
     [(AssistantVoiceViewModel *)v8 setVoiceVariationToSpin:0];
-    v33 = v6;
+    v33 = voiceCopy;
 LABEL_29:
-    v40 = [v33 name];
+    name = [v33 name];
     v43 = v8;
-    v44 = v40;
+    v44 = name;
     goto LABEL_30;
   }
 
-  v39 = [v6 name];
-  [(AssistantVoiceViewModel *)v8 setVoiceVariationToSpin:v39];
+  name2 = [voiceCopy name];
+  [(AssistantVoiceViewModel *)v8 setVoiceVariationToSpin:name2];
 
-  v40 = [v7 name];
-  if (v40)
+  name = [currentVoiceCopy name];
+  if (name)
   {
-    v41 = [v6 name];
-    v42 = [v7 name];
-    if ([v41 isEqualToString:v42])
+    name3 = [voiceCopy name];
+    name4 = [currentVoiceCopy name];
+    if ([name3 isEqualToString:name4])
     {
       [(AssistantVoiceViewModel *)v8 setVoiceVariationToCheckMark:0];
     }
 
     else
     {
-      v46 = [v7 name];
-      [(AssistantVoiceViewModel *)v8 setVoiceVariationToCheckMark:v46];
+      name5 = [currentVoiceCopy name];
+      [(AssistantVoiceViewModel *)v8 setVoiceVariationToCheckMark:name5];
     }
 
     goto LABEL_31;
@@ -612,16 +612,16 @@ LABEL_31:
   return v8;
 }
 
-- (void)applyViewModel:(id)a3
+- (void)applyViewModel:(id)model
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(AssistantVoiceController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  specifiers = [(AssistantVoiceController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -633,23 +633,23 @@ LABEL_31:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         [*(*(&v19 + 1) + 8 * i) setProperty:v9 forKey:@"IS_VOICE_DOWNLOADING"];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
   }
 
   languageSpecifiers = self->_languageSpecifiers;
-  v12 = [(AssistantVoiceViewModel *)v4 selectedLanguage];
-  v13 = [(NSArray *)languageSpecifiers specifierForID:v12];
+  selectedLanguage = [(AssistantVoiceViewModel *)modelCopy selectedLanguage];
+  v13 = [(NSArray *)languageSpecifiers specifierForID:selectedLanguage];
 
-  if ([(AssistantVoiceViewModel *)v4 spinningOnLanguage])
+  if ([(AssistantVoiceViewModel *)modelCopy spinningOnLanguage])
   {
     [v13 setProperty:MEMORY[0x277CBEC38] forKey:@"IS_VOICE_DOWNLOADING"];
     [(PSSpecifier *)self->_languageGroupSpecifier removePropertyForKey:*MEMORY[0x277D40090]];
@@ -660,13 +660,13 @@ LABEL_31:
     [(PSSpecifier *)self->_languageGroupSpecifier setProperty:v13 forKey:*MEMORY[0x277D40090]];
   }
 
-  v14 = [(AssistantVoiceViewModel *)v4 languageGroupFooterText];
+  languageGroupFooterText = [(AssistantVoiceViewModel *)modelCopy languageGroupFooterText];
 
   languageGroupSpecifier = self->_languageGroupSpecifier;
-  if (v14)
+  if (languageGroupFooterText)
   {
-    v16 = [(AssistantVoiceViewModel *)v4 languageGroupFooterText];
-    [(PSSpecifier *)languageGroupSpecifier setProperty:v16 forKey:*MEMORY[0x277D3FF88]];
+    languageGroupFooterText2 = [(AssistantVoiceViewModel *)modelCopy languageGroupFooterText];
+    [(PSSpecifier *)languageGroupSpecifier setProperty:languageGroupFooterText2 forKey:*MEMORY[0x277D3FF88]];
   }
 
   else
@@ -679,56 +679,56 @@ LABEL_31:
     [(AssistantVoiceController *)self reloadSpecifier:?];
   }
 
-  [(AssistantVoiceController *)self updateVoiceVariationGroupUI:v4];
+  [(AssistantVoiceController *)self updateVoiceVariationGroupUI:modelCopy];
   currentViewModel = self->_currentViewModel;
-  self->_currentViewModel = v4;
+  self->_currentViewModel = modelCopy;
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVoiceVariationGroupUI:(id)a3
+- (void)updateVoiceVariationGroupUI:(id)i
 {
-  v28 = a3;
-  v4 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v5 = [(AssistantVoiceViewModel *)self->_currentViewModel selectedLanguage];
-  v6 = [v4 getBaseLocale:v5];
-  v7 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v8 = [v28 selectedLanguage];
-  v9 = [v7 getBaseLocale:v8];
+  iCopy = i;
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  selectedLanguage = [(AssistantVoiceViewModel *)self->_currentViewModel selectedLanguage];
+  v6 = [mEMORY[0x277CEF2D8] getBaseLocale:selectedLanguage];
+  mEMORY[0x277CEF2D8]2 = [MEMORY[0x277CEF2D8] sharedInstance];
+  selectedLanguage2 = [iCopy selectedLanguage];
+  v9 = [mEMORY[0x277CEF2D8]2 getBaseLocale:selectedLanguage2];
   v10 = [v6 isEqualToString:v9];
 
   if ((v10 & 1) == 0)
   {
     [(AssistantVoiceController *)self removeContiguousSpecifiers:self->_voiceVariationSpecifiers animated:1];
-    v11 = [v28 selectedLanguage];
-    v12 = [(AssistantVoiceController *)self _voiceVariationSpecifiersForLanguage:v11];
+    selectedLanguage3 = [iCopy selectedLanguage];
+    v12 = [(AssistantVoiceController *)self _voiceVariationSpecifiersForLanguage:selectedLanguage3];
     voiceVariationSpecifiers = self->_voiceVariationSpecifiers;
     self->_voiceVariationSpecifiers = v12;
 
     v14 = self->_voiceVariationSpecifiers;
-    v15 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) lastObject];
-    [(AssistantVoiceController *)self insertContiguousSpecifiers:v14 afterSpecifier:v15 animated:1];
+    lastObject = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) lastObject];
+    [(AssistantVoiceController *)self insertContiguousSpecifiers:v14 afterSpecifier:lastObject animated:1];
   }
 
-  v16 = [v28 voiceVariationToSpin];
+  voiceVariationToSpin = [iCopy voiceVariationToSpin];
 
-  if (v16)
+  if (voiceVariationToSpin)
   {
     v17 = self->_voiceVariationSpecifiers;
-    v18 = [v28 voiceVariationToSpin];
-    v19 = [(NSArray *)v17 specifierForID:v18];
+    voiceVariationToSpin2 = [iCopy voiceVariationToSpin];
+    v19 = [(NSArray *)v17 specifierForID:voiceVariationToSpin2];
 
     [v19 setProperty:MEMORY[0x277CBEC38] forKey:@"IS_VOICE_DOWNLOADING"];
   }
 
-  v20 = [v28 voiceVariationToCheckMark];
+  voiceVariationToCheckMark = [iCopy voiceVariationToCheckMark];
 
   voiceVariationGroupSpecifier = self->_voiceVariationGroupSpecifier;
-  if (v20)
+  if (voiceVariationToCheckMark)
   {
     v22 = self->_voiceVariationSpecifiers;
-    v23 = [v28 voiceVariationToCheckMark];
-    v24 = [(NSArray *)v22 specifierForID:v23];
+    voiceVariationToCheckMark2 = [iCopy voiceVariationToCheckMark];
+    v24 = [(NSArray *)v22 specifierForID:voiceVariationToCheckMark2];
     [(PSSpecifier *)voiceVariationGroupSpecifier setProperty:v24 forKey:*MEMORY[0x277D40090]];
   }
 
@@ -737,13 +737,13 @@ LABEL_31:
     [(PSSpecifier *)self->_voiceVariationGroupSpecifier removePropertyForKey:*MEMORY[0x277D40090]];
   }
 
-  v25 = [v28 voiceVariationGroupFooterText];
+  voiceVariationGroupFooterText = [iCopy voiceVariationGroupFooterText];
 
   v26 = self->_voiceVariationGroupSpecifier;
-  if (v25)
+  if (voiceVariationGroupFooterText)
   {
-    v27 = [v28 voiceVariationGroupFooterText];
-    [(PSSpecifier *)v26 setProperty:v27 forKey:*MEMORY[0x277D3FF88]];
+    voiceVariationGroupFooterText2 = [iCopy voiceVariationGroupFooterText];
+    [(PSSpecifier *)v26 setProperty:voiceVariationGroupFooterText2 forKey:*MEMORY[0x277D3FF88]];
   }
 
   else
@@ -757,16 +757,16 @@ LABEL_31:
   }
 }
 
-- (void)updateDownloadProgress:(float)a3
+- (void)updateDownloadProgress:(float)progress
 {
-  if (a3 >= 0.0)
+  if (progress >= 0.0)
   {
     v7 = MEMORY[0x277CCACA8];
     v4 = +[AssistantVoiceController bundle];
     v5 = SFLocalizableWAPIStringKeyForKey();
     v8 = [v4 localizedStringForKey:v5 value:&stru_285317CF0 table:@"AssistantSettings"];
     v9 = MEMORY[0x277CCABB8];
-    *&v10 = a3;
+    *&v10 = progress;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
     v12 = [v9 localizedStringFromNumber:v11 numberStyle:3];
     v17 = [v7 stringWithFormat:v8, v12];
@@ -779,9 +779,9 @@ LABEL_31:
     v17 = [v4 localizedStringForKey:v5 value:&stru_285317CF0 table:@"AssistantSettings"];
   }
 
-  v13 = [(AssistantVoiceViewModel *)self->_currentViewModel languageGroupFooterText];
+  languageGroupFooterText = [(AssistantVoiceViewModel *)self->_currentViewModel languageGroupFooterText];
 
-  if (v13)
+  if (languageGroupFooterText)
   {
     v14 = &OBJC_IVAR___AssistantVoiceController__languageGroupSpecifier;
     v15 = v17;
@@ -789,10 +789,10 @@ LABEL_31:
 
   else
   {
-    v16 = [(AssistantVoiceViewModel *)self->_currentViewModel voiceVariationGroupFooterText];
+    voiceVariationGroupFooterText = [(AssistantVoiceViewModel *)self->_currentViewModel voiceVariationGroupFooterText];
 
     v15 = v17;
-    if (!v16)
+    if (!voiceVariationGroupFooterText)
     {
       goto LABEL_9;
     }
@@ -806,16 +806,16 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)dialectsForLanguageIdentifiers:(id)a3
+- (id)dialectsForLanguageIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -846,22 +846,22 @@ LABEL_9:
   return v5;
 }
 
-- (id)uniqueLocaleForLanguageWithDialect:(id)a3
+- (id)uniqueLocaleForLanguageWithDialect:(id)dialect
 {
   v3 = MEMORY[0x277CEF2D8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 baseLocaleToDialectMapForLanguage:v4];
+  dialectCopy = dialect;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance baseLocaleToDialectMapForLanguage:dialectCopy];
 
   return v6;
 }
 
-- (id)_languageSpecifiersForLanguage:(id)a3
+- (id)_languageSpecifiersForLanguage:(id)language
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v6 = [v5 allOutputVoiceIdentifiersForSiriLanguage:v4];
+  languageCopy = language;
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  v6 = [mEMORY[0x277CEF2D8] allOutputVoiceIdentifiersForSiriLanguage:languageCopy];
 
   if ([v6 count] < 2)
   {
@@ -873,8 +873,8 @@ LABEL_9:
     v7 = [MEMORY[0x277CBEB98] setWithArray:v6];
     v8 = [(AssistantVoiceController *)self dialectsForLanguageIdentifiers:v7];
 
-    v9 = [v8 allKeys];
-    v10 = [v9 mutableCopy];
+    allKeys = [v8 allKeys];
+    v10 = [allKeys mutableCopy];
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -935,20 +935,20 @@ uint64_t __59__AssistantVoiceController__languageSpecifiersForLanguage___block_i
   return v9;
 }
 
-- (id)_voiceVariationSpecifiersForLanguage:(id)a3
+- (id)_voiceVariationSpecifiersForLanguage:(id)language
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v5 = [v4 getBaseLocale:v3];
+  languageCopy = language;
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  v5 = [mEMORY[0x277CEF2D8] getBaseLocale:languageCopy];
 
-  v6 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v7 = [v6 baseLocaleToDialectMapForLanguage:v3];
+  mEMORY[0x277CEF2D8]2 = [MEMORY[0x277CEF2D8] sharedInstance];
+  v7 = [mEMORY[0x277CEF2D8]2 baseLocaleToDialectMapForLanguage:languageCopy];
   v35 = v5;
   v8 = [v7 objectForKey:v5];
 
-  v36 = v3;
-  v9 = [MEMORY[0x277CEF528] allVoicesForSiriSessionLanguage:v3];
+  v36 = languageCopy;
+  v9 = [MEMORY[0x277CEF528] allVoicesForSiriSessionLanguage:languageCopy];
   v10 = MEMORY[0x277CCAC30];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
@@ -964,10 +964,10 @@ uint64_t __59__AssistantVoiceController__languageSpecifiersForLanguage___block_i
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v15 = [v14 outputVoiceComparator];
+  mEMORY[0x277CEF2D8]3 = [MEMORY[0x277CEF2D8] sharedInstance];
+  outputVoiceComparator = [mEMORY[0x277CEF2D8]3 outputVoiceComparator];
   v33 = v12;
-  v16 = [v12 sortedArrayUsingComparator:v15];
+  v16 = [v12 sortedArrayUsingComparator:outputVoiceComparator];
 
   obj = v16;
   v17 = [v16 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -986,20 +986,20 @@ uint64_t __59__AssistantVoiceController__languageSpecifiersForLanguage___block_i
 
         v21 = *(*(&v39 + 1) + 8 * i);
         v22 = [MEMORY[0x277D3FAD8] specifierWithSpecifier:self->_voiceVariationProto];
-        v23 = [MEMORY[0x277CEF2D8] sharedInstance];
-        v24 = [v21 languageCode];
-        v25 = [v21 name];
-        v26 = [v23 outputVoiceDescriptorForOutputLanguageCode:v24 voiceName:v25];
+        mEMORY[0x277CEF2D8]4 = [MEMORY[0x277CEF2D8] sharedInstance];
+        languageCode = [v21 languageCode];
+        name = [v21 name];
+        v26 = [mEMORY[0x277CEF2D8]4 outputVoiceDescriptorForOutputLanguageCode:languageCode voiceName:name];
 
-        v27 = [v21 name];
-        [v22 setIdentifier:v27];
+        name2 = [v21 name];
+        [v22 setIdentifier:name2];
 
-        v28 = [v26 localizedDisplay];
-        [v22 setName:v28];
+        localizedDisplay = [v26 localizedDisplay];
+        [v22 setName:localizedDisplay];
 
         v45 = @"VOICE_LOCALE";
-        v29 = [v21 languageCode];
-        v46 = v29;
+        languageCode2 = [v21 languageCode];
+        v46 = languageCode2;
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         [v22 setTitleDictionary:v30];
 
@@ -1026,83 +1026,83 @@ uint64_t __65__AssistantVoiceController__voiceVariationSpecifiersForLanguage___b
   return v4;
 }
 
-- (void)setAssistantOutputVoice:(id)a3
+- (void)setAssistantOutputVoice:(id)voice
 {
-  v5 = a3;
-  if (self->_currentVoice != v5)
+  voiceCopy = voice;
+  if (self->_currentVoice != voiceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentVoice, a3);
+    v6 = voiceCopy;
+    objc_storeStrong(&self->_currentVoice, voice);
     [(AssistantVoiceController *)self setOutputVoicePreference:v6];
-    v5 = v6;
+    voiceCopy = v6;
   }
 }
 
-- (void)setOutputVoicePreference:(id)a3
+- (void)setOutputVoicePreference:(id)preference
 {
   v3 = MEMORY[0x277CEF368];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  [v5 setOutputVoice:v4];
+  preferenceCopy = preference;
+  sharedPreferences = [v3 sharedPreferences];
+  [sharedPreferences setOutputVoice:preferenceCopy];
 }
 
-- (void)setAssistantInProgressVoice:(id)a3
+- (void)setAssistantInProgressVoice:(id)voice
 {
-  v5 = a3;
-  if (self->_inProgressVoice != v5)
+  voiceCopy = voice;
+  if (self->_inProgressVoice != voiceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inProgressVoice, a3);
+    v6 = voiceCopy;
+    objc_storeStrong(&self->_inProgressVoice, voice);
     [(AssistantVoiceController *)self setInProgressVoicePreference:v6];
-    v5 = v6;
+    voiceCopy = v6;
   }
 }
 
-- (void)setInProgressVoicePreference:(id)a3
+- (void)setInProgressVoicePreference:(id)preference
 {
   v3 = MEMORY[0x277CEF368];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  [v5 setInProgressOutputVoice:v4];
+  preferenceCopy = preference;
+  sharedPreferences = [v3 sharedPreferences];
+  [sharedPreferences setInProgressOutputVoice:preferenceCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   ADClientAddValueForScalarKey();
   self->_ignoreNextVoiceChangeNotification = 1;
-  v8 = [(AssistantVoiceController *)self indexForIndexPath:v7];
+  v8 = [(AssistantVoiceController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v8];
-    v10 = [(AFVoiceInfo *)self->_currentVoice languageCode];
-    v11 = [(AFVoiceInfo *)self->_inProgressVoice name];
-    v12 = v11;
-    if (v11)
+    languageCode = [(AFVoiceInfo *)self->_currentVoice languageCode];
+    name = [(AFVoiceInfo *)self->_inProgressVoice name];
+    v12 = name;
+    if (name)
     {
-      v13 = v11;
+      name2 = name;
     }
 
     else
     {
-      v13 = [(AFVoiceInfo *)self->_currentVoice name];
+      name2 = [(AFVoiceInfo *)self->_currentVoice name];
     }
 
-    v50 = v13;
+    v50 = name2;
 
     v48 = v9;
-    v49 = v10;
+    v49 = languageCode;
     if ([(NSArray *)self->_voiceVariationSpecifiers indexOfObject:v9]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [v9 identifier];
-      v15 = [MEMORY[0x277CEF2D8] sharedInstance];
-      v51 = v14;
-      v16 = [v15 voiceSimilarToVoice:self->_currentVoice inSiriSessionLanguage:v14];
+      identifier = [v9 identifier];
+      mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+      v51 = identifier;
+      v16 = [mEMORY[0x277CEF2D8] voiceSimilarToVoice:self->_currentVoice inSiriSessionLanguage:identifier];
 
-      v22 = [v16 name];
-      v17 = [v16 gender];
+      name3 = [v16 name];
+      gender = [v16 gender];
       v18 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
@@ -1113,7 +1113,7 @@ uint64_t __65__AssistantVoiceController__voiceVariationSpecifiersForLanguage___b
         v60 = 2112;
         v61 = v51;
         v62 = 2112;
-        v63 = v22;
+        v63 = name3;
         v64 = 2112;
         v65 = v20;
         _os_log_impl(&dword_2413B9000, v19, OS_LOG_TYPE_DEFAULT, "%s #VoiceServices selecting language variety: %@ %@ %@", buf, 0x2Au);
@@ -1122,20 +1122,20 @@ uint64_t __65__AssistantVoiceController__voiceVariationSpecifiersForLanguage___b
 
     else
     {
-      v21 = [v9 titleDictionary];
-      v51 = [v21 objectForKey:@"VOICE_LOCALE"];
+      titleDictionary = [v9 titleDictionary];
+      v51 = [titleDictionary objectForKey:@"VOICE_LOCALE"];
 
-      v22 = [v9 identifier];
+      name3 = [v9 identifier];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v23 = [MEMORY[0x277CEF528] allVoicesForSiriSessionLanguage:v10];
+      v23 = [MEMORY[0x277CEF528] allVoicesForSiriSessionLanguage:languageCode];
       v24 = [v23 countByEnumeratingWithState:&v54 objects:v68 count:16];
       if (v24)
       {
         v25 = v24;
-        v47 = v6;
+        v47 = viewCopy;
         v26 = *v55;
         while (2)
         {
@@ -1147,12 +1147,12 @@ uint64_t __65__AssistantVoiceController__voiceVariationSpecifiersForLanguage___b
             }
 
             v28 = *(*(&v54 + 1) + 8 * i);
-            v29 = [v28 name];
-            v30 = [v29 isEqualToString:v22];
+            name4 = [v28 name];
+            v30 = [name4 isEqualToString:name3];
 
             if (v30)
             {
-              v17 = [v28 gender];
+              gender = [v28 gender];
               goto LABEL_20;
             }
           }
@@ -1166,19 +1166,19 @@ uint64_t __65__AssistantVoiceController__voiceVariationSpecifiersForLanguage___b
           break;
         }
 
-        v17 = 0;
+        gender = 0;
 LABEL_20:
-        v6 = v47;
+        viewCopy = v47;
         v9 = v48;
       }
 
       else
       {
-        v17 = 0;
+        gender = 0;
       }
 
       v31 = *MEMORY[0x277CEF098];
-      v10 = v49;
+      languageCode = v49;
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v32 = v31;
@@ -1190,7 +1190,7 @@ LABEL_20:
         v62 = 2112;
         v63 = v51;
         v64 = 2112;
-        v65 = v22;
+        v65 = name3;
         v66 = 2112;
         v67 = v33;
         _os_log_impl(&dword_2413B9000, v32, OS_LOG_TYPE_DEFAULT, "%s #VoiceServices selecting voice variation: %@ --> %@ %@ %@", buf, 0x34u);
@@ -1203,19 +1203,19 @@ LABEL_20:
       goto LABEL_46;
     }
 
-    v35 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v36 = [v35 getBaseLocale:v10];
-    v37 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v38 = [v37 getBaseLocale:v51];
+    mEMORY[0x277CEF2D8]2 = [MEMORY[0x277CEF2D8] sharedInstance];
+    v36 = [mEMORY[0x277CEF2D8]2 getBaseLocale:languageCode];
+    mEMORY[0x277CEF2D8]3 = [MEMORY[0x277CEF2D8] sharedInstance];
+    v38 = [mEMORY[0x277CEF2D8]3 getBaseLocale:v51];
     if ([v36 isEqualToString:v38])
     {
-      if (!v22)
+      if (!name3)
       {
 
 LABEL_39:
         v53.receiver = self;
         v53.super_class = AssistantVoiceController;
-        [(AssistantVoiceController *)&v53 tableView:v6 didSelectRowAtIndexPath:v7];
+        [(AssistantVoiceController *)&v53 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
         v43 = *MEMORY[0x277CEF098];
         v34 = v51;
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1225,14 +1225,14 @@ LABEL_39:
           _os_log_impl(&dword_2413B9000, v43, OS_LOG_TYPE_DEFAULT, "%s #SiriTTSService same voice selection", buf, 0xCu);
         }
 
-        v10 = v49;
+        languageCode = v49;
         v40 = [objc_alloc(MEMORY[0x277CEF528]) initWithLanguageCode:v49 gender:0 isCustom:1 name:v50 footprint:0 contentVersion:0 masteredVersion:0];
         [(AssistantVoiceController *)self playVoicePreview:v40];
         v9 = v48;
         goto LABEL_45;
       }
 
-      v39 = [v50 isEqualToString:v22];
+      v39 = [v50 isEqualToString:name3];
 
       if (v39)
       {
@@ -1245,39 +1245,39 @@ LABEL_39:
     }
 
     v34 = v51;
-    v40 = [(AssistantVoiceController *)self voiceSettingsForLanguageCode:v51 name:v22 gender:v17];
-    v41 = [v40 inProgressVoice];
-    if (v41 && !+[ASTNetworkReachability hasNetworkConnection])
+    v40 = [(AssistantVoiceController *)self voiceSettingsForLanguageCode:v51 name:name3 gender:gender];
+    inProgressVoice = [v40 inProgressVoice];
+    if (inProgressVoice && !+[ASTNetworkReachability hasNetworkConnection])
     {
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       [(AssistantVoiceController *)self presentVoiceDownloadDisabledNoInternetAlert];
-      [(AssistantVoiceController *)self playVoicePreview:v41];
+      [(AssistantVoiceController *)self playVoicePreview:inProgressVoice];
       v9 = v48;
-      v10 = v49;
+      languageCode = v49;
     }
 
     else
     {
-      v42 = [v41 name];
-      if (!v42 || [(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:v41])
+      name5 = [inProgressVoice name];
+      if (!name5 || [(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:inProgressVoice])
       {
 
-        v10 = v49;
+        languageCode = v49;
 LABEL_35:
         v52.receiver = self;
         v52.super_class = AssistantVoiceController;
-        [(AssistantVoiceController *)&v52 tableView:v6 didSelectRowAtIndexPath:v7];
-        [(AssistantVoiceController *)self selectVoice:v40 inProgressVoice:v41];
+        [(AssistantVoiceController *)&v52 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+        [(AssistantVoiceController *)self selectVoice:v40 inProgressVoice:inProgressVoice];
         v34 = v51;
-        if (v41)
+        if (inProgressVoice)
         {
-          [(AssistantVoiceController *)self playVoicePreview:v41];
+          [(AssistantVoiceController *)self playVoicePreview:inProgressVoice];
         }
 
         else
         {
-          v44 = [v40 currentVoice];
-          [(AssistantVoiceController *)self playVoicePreview:v44];
+          currentVoice = [v40 currentVoice];
+          [(AssistantVoiceController *)self playVoicePreview:currentVoice];
 
           v34 = v51;
         }
@@ -1288,14 +1288,14 @@ LABEL_35:
 
       v46 = +[ASTNetworkReachability hasExpensiveCellOnlyNetworkConnection];
 
-      v10 = v49;
+      languageCode = v49;
       if (!v46)
       {
         goto LABEL_35;
       }
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
-      [(AssistantVoiceController *)self presentVoiceDownloadConfirmationNoWifiAlertForVoice:v40 inProgressVoice:v41];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      [(AssistantVoiceController *)self presentVoiceDownloadConfirmationNoWifiAlertForVoice:v40 inProgressVoice:inProgressVoice];
       v9 = v48;
       v34 = v51;
     }
@@ -1309,11 +1309,11 @@ LABEL_46:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)selectVoice:(id)a3 inProgressVoice:(id)a4
+- (void)selectVoice:(id)voice inProgressVoice:(id)progressVoice
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  progressVoiceCopy = progressVoice;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -1322,13 +1322,13 @@ LABEL_46:
     _os_log_impl(&dword_2413B9000, v8, OS_LOG_TYPE_DEFAULT, "%s #VoiceServices applying voice selection", buf, 0xCu);
   }
 
-  v9 = [v6 currentVoice];
-  v10 = [(AssistantVoiceController *)self viewModelWithInProgressVoice:v7 currentVoice:v9];
+  currentVoice = [voiceCopy currentVoice];
+  v10 = [(AssistantVoiceController *)self viewModelWithInProgressVoice:progressVoiceCopy currentVoice:currentVoice];
   [(AssistantVoiceController *)self applyViewModel:v10];
-  if (v7)
+  if (progressVoiceCopy)
   {
-    v11 = [v10 inProgressVoice];
-    [(AssistantVoiceController *)self downloadVoice:v11];
+    inProgressVoice = [v10 inProgressVoice];
+    [(AssistantVoiceController *)self downloadVoice:inProgressVoice];
   }
 
   else
@@ -1348,8 +1348,8 @@ LABEL_46:
   v14 = v12;
   v15 = v13;
   [(AssistantVoiceController *)self registerUndoActionWithKey:@"VOICE" urlString:@"prefs:root=SIRI&path=VOICE_LANGUAGE_GROUP" undoAction:v17];
-  [(AssistantVoiceController *)self setAssistantInProgressVoice:v7];
-  [(AssistantVoiceController *)self setAssistantOutputVoice:v9];
+  [(AssistantVoiceController *)self setAssistantInProgressVoice:progressVoiceCopy];
+  [(AssistantVoiceController *)self setAssistantOutputVoice:currentVoice];
   [(AssistantVoiceController *)self _signalDidSelectVoice];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1364,15 +1364,15 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
   return [v2 reloadSpecifiers];
 }
 
-- (void)playVoicePreview:(id)a3
+- (void)playVoicePreview:(id)preview
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 languageCode];
+  previewCopy = preview;
+  languageCode = [previewCopy languageCode];
 
-  if (v5)
+  if (languageCode)
   {
-    v6 = [(AssistantVoiceController *)self metrics];
+    metrics = [(AssistantVoiceController *)self metrics];
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
@@ -1382,9 +1382,9 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
     }
 
     v8 = objc_alloc(MEMORY[0x277D61478]);
-    v9 = [v4 languageCode];
-    v10 = [v4 name];
-    v11 = [v8 initWithLanguage:v9 name:v10];
+    languageCode2 = [previewCopy languageCode];
+    name = [previewCopy name];
+    v11 = [v8 initWithLanguage:languageCode2 name:name];
 
     v12 = [objc_alloc(MEMORY[0x277D61438]) initWithVoice:v11 previewType:0];
     lastPreviewRequest = self->_lastPreviewRequest;
@@ -1396,23 +1396,23 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
     v20[1] = 3221225472;
     v20[2] = __45__AssistantVoiceController_playVoicePreview___block_invoke;
     v20[3] = &unk_278CD1950;
-    v21 = v6;
-    v16 = v6;
+    v21 = metrics;
+    v16 = metrics;
     [(SiriTTSDaemonSession *)session speakWithPreviewRequest:v14 didFinish:v20];
-    v17 = [v4 languageCode];
-    v18 = [v4 name];
-    [v16 setVoicePreviewedForLanguageCode:v17 name:v18];
+    languageCode3 = [previewCopy languageCode];
+    name2 = [previewCopy name];
+    [v16 setVoicePreviewedForLanguageCode:languageCode3 name:name2];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)voiceSettingsForLanguageCode:(id)a3 name:(id)a4 gender:(int64_t)a5
+- (id)voiceSettingsForLanguageCode:(id)code name:(id)name gender:(int64_t)gender
 {
   v8 = MEMORY[0x277CEF528];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithLanguageCode:v10 gender:a5 isCustom:1 name:v9 footprint:0 contentVersion:0 masteredVersion:0];
+  nameCopy = name;
+  codeCopy = code;
+  v11 = [[v8 alloc] initWithLanguageCode:codeCopy gender:gender isCustom:1 name:nameCopy footprint:0 contentVersion:0 masteredVersion:0];
 
   v12 = [(AssistantVoiceController *)self deriveVoicesWithTargetVoice:v11 currentVoice:self->_currentVoice];
 
@@ -1481,14 +1481,14 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentVoiceDownloadConfirmationNoWifiAlertForVoice:(id)a3 inProgressVoice:(id)a4
+- (void)presentVoiceDownloadConfirmationNoWifiAlertForVoice:(id)voice inProgressVoice:(id)progressVoice
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 languageCode];
+  voiceCopy = voice;
+  progressVoiceCopy = progressVoice;
+  languageCode = [progressVoiceCopy languageCode];
   v9 = MEMORY[0x277CEF098];
-  if (!v8 || (v10 = v8, [v7 name], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+  if (!languageCode || (v10 = languageCode, [progressVoiceCopy name], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
   {
     v12 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_FAULT))
@@ -1498,11 +1498,11 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
   }
 
   v61[0] = &unk_2853200A0;
-  v13 = [v7 languageCode];
-  v14 = v13;
-  if (v13)
+  languageCode2 = [progressVoiceCopy languageCode];
+  v14 = languageCode2;
+  if (languageCode2)
   {
-    v15 = v13;
+    v15 = languageCode2;
   }
 
   else
@@ -1512,11 +1512,11 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
 
   v62[0] = v15;
   v61[1] = &unk_2853200B8;
-  v16 = [v7 name];
-  v17 = v16;
-  if (v16)
+  name = [progressVoiceCopy name];
+  v17 = name;
+  if (name)
   {
-    v18 = v16;
+    v18 = name;
   }
 
   else
@@ -1528,8 +1528,8 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
 
   v20 = MEMORY[0x277D61480];
-  v21 = [MEMORY[0x277D61490] gryphonVoice];
-  v60 = v21;
+  gryphonVoice = [MEMORY[0x277D61490] gryphonVoice];
+  v60 = gryphonVoice;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
   v23 = [v20 bestAssetOfTypes:v22 matching:v19];
 
@@ -1541,13 +1541,13 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
       *buf = 136315394;
       v57 = "[AssistantVoiceController presentVoiceDownloadConfirmationNoWifiAlertForVoice:inProgressVoice:]";
       v58 = 2112;
-      v59 = v7;
+      v59 = progressVoiceCopy;
       _os_log_impl(&dword_2413B9000, v24, OS_LOG_TYPE_DEFAULT, "%s Unable to find a voice with voice predicate: %@", buf, 0x16u);
     }
   }
 
-  v25 = [v23 downloadSize];
-  [v25 floatValue];
+  downloadSize = [v23 downloadSize];
+  [downloadSize floatValue];
   v27 = v26;
 
   v28 = *v9;
@@ -1555,23 +1555,23 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
   {
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEBUG))
     {
-      [AssistantVoiceController presentVoiceDownloadConfirmationNoWifiAlertForVoice:v7 inProgressVoice:v28];
+      [AssistantVoiceController presentVoiceDownloadConfirmationNoWifiAlertForVoice:progressVoiceCopy inProgressVoice:v28];
     }
 
     [(AssistantVoiceController *)self presentVoiceDownloadDisabledNoWifiAlert];
-    [(AssistantVoiceController *)self playVoicePreview:v7];
+    [(AssistantVoiceController *)self playVoicePreview:progressVoiceCopy];
   }
 
   else
   {
-    v52 = v6;
-    v49 = self;
+    v52 = voiceCopy;
+    selfCopy = self;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v57 = "[AssistantVoiceController presentVoiceDownloadConfirmationNoWifiAlertForVoice:inProgressVoice:]";
       v58 = 2112;
-      v59 = v7;
+      v59 = progressVoiceCopy;
       _os_log_impl(&dword_2413B9000, v28, OS_LOG_TYPE_DEFAULT, "%s #VoiceDownload presenting no Wi-Fi -should confirm cellular- alert for voice: %@", buf, 0x16u);
     }
 
@@ -1595,8 +1595,8 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
     v53[1] = 3221225472;
     v53[2] = __96__AssistantVoiceController_presentVoiceDownloadConfirmationNoWifiAlertForVoice_inProgressVoice___block_invoke;
     v53[3] = &unk_278CD1978;
-    v53[4] = v49;
-    v41 = v7;
+    v53[4] = selfCopy;
+    v41 = progressVoiceCopy;
     v54 = v41;
     v55 = v52;
     v42 = [v37 actionWithTitle:v40 style:0 handler:v53];
@@ -1609,9 +1609,9 @@ uint64_t __56__AssistantVoiceController_selectVoice_inProgressVoice___block_invo
     v47 = [v43 actionWithTitle:v46 style:1 handler:0];
     [v36 addAction:v47];
 
-    v6 = v52;
-    [(AssistantVoiceController *)v49 presentViewController:v36 animated:1 completion:0];
-    [(AssistantVoiceController *)v49 playVoicePreview:v41];
+    voiceCopy = v52;
+    [(AssistantVoiceController *)selfCopy presentViewController:v36 animated:1 completion:0];
+    [(AssistantVoiceController *)selfCopy playVoicePreview:v41];
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -1627,17 +1627,17 @@ uint64_t __96__AssistantVoiceController_presentVoiceDownloadConfirmationNoWifiAl
   return [v4 selectVoice:v2 inProgressVoice:v3];
 }
 
-+ (BOOL)asset:(id)a3 matchesVoice:(id)a4
++ (BOOL)asset:(id)asset matchesVoice:(id)voice
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 primaryLanguage];
-  v8 = [v6 languageCode];
-  if ([v7 isEqualToString:v8])
+  assetCopy = asset;
+  voiceCopy = voice;
+  primaryLanguage = [assetCopy primaryLanguage];
+  languageCode = [voiceCopy languageCode];
+  if ([primaryLanguage isEqualToString:languageCode])
   {
-    v9 = [v5 name];
-    v10 = [v6 name];
-    v11 = [v9 isEqualToString:v10];
+    name = [assetCopy name];
+    name2 = [voiceCopy name];
+    v11 = [name isEqualToString:name2];
   }
 
   else
@@ -1648,27 +1648,27 @@ uint64_t __96__AssistantVoiceController_presentVoiceDownloadConfirmationNoWifiAl
   return v11;
 }
 
-- (void)downloadVoice:(id)a3
+- (void)downloadVoice:(id)voice
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 languageCode];
-  if (v5)
+  voiceCopy = voice;
+  languageCode = [voiceCopy languageCode];
+  if (languageCode)
   {
     downloadingAsset = self->_downloadingAsset;
-    if (!downloadingAsset || ![AssistantVoiceController asset:downloadingAsset matchesVoice:v4])
+    if (!downloadingAsset || ![AssistantVoiceController asset:downloadingAsset matchesVoice:voiceCopy])
     {
       v30[0] = &unk_2853200A0;
-      v7 = [v4 languageCode];
+      languageCode2 = [voiceCopy languageCode];
       v30[1] = &unk_2853200B8;
-      v31[0] = v7;
-      v8 = [v4 name];
-      v31[1] = v8;
+      v31[0] = languageCode2;
+      name = [voiceCopy name];
+      v31[1] = name;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
       v10 = MEMORY[0x277D61480];
-      v11 = [MEMORY[0x277D61490] gryphonVoice];
-      v29 = v11;
+      gryphonVoice = [MEMORY[0x277D61490] gryphonVoice];
+      v29 = gryphonVoice;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
       v13 = [v10 bestAssetOfTypes:v12 matching:v9];
 
@@ -1680,11 +1680,11 @@ uint64_t __96__AssistantVoiceController_presentVoiceDownloadConfirmationNoWifiAl
 
       objc_storeStrong(&self->_downloadingAsset, v13);
       objc_initWeak(&location, self);
-      v15 = [(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:v4];
+      v15 = [(AssistantVoiceController *)self isCellularDataPermissionAllowedForVoice:voiceCopy];
       metrics = self->_metrics;
-      v17 = [v13 primaryLanguage];
-      v18 = [v13 name];
-      [(AssistantVoiceMetrics *)metrics setVoiceDownloadForLanguageCode:v17 name:v18];
+      primaryLanguage = [v13 primaryLanguage];
+      name2 = [v13 name];
+      [(AssistantVoiceMetrics *)metrics setVoiceDownloadForLanguageCode:primaryLanguage name:name2];
 
       [(AssistantVoiceMetrics *)self->_metrics setIsCellularAllowed:v15];
       [(AssistantVoiceMetrics *)self->_metrics beginDownloadObservation];
@@ -1852,31 +1852,31 @@ void __42__AssistantVoiceController_downloadVoice___block_invoke_5(uint64_t a1)
   [(AssistantSettingsSignalEmitter *)signalEmitter emitDidSelectVoiceSignal];
 }
 
-- (void)updateFooterText:(id)a3 forSpecifier:(id)a4
+- (void)updateFooterText:(id)text forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  textCopy = text;
+  specifierCopy = specifier;
+  v8 = specifierCopy;
+  if (specifierCopy)
   {
     v9 = *MEMORY[0x277D3FF88];
-    v10 = [v7 propertyForKey:*MEMORY[0x277D3FF88]];
-    if (([v10 isEqualToString:v6] & 1) == 0)
+    v10 = [specifierCopy propertyForKey:*MEMORY[0x277D3FF88]];
+    if (([v10 isEqualToString:textCopy] & 1) == 0)
     {
-      [v8 setProperty:v6 forKey:v9];
+      [v8 setProperty:textCopy forKey:v9];
       v11 = [(AssistantVoiceController *)self indexPathForSpecifier:v8];
-      v12 = [(AssistantVoiceController *)self table];
-      v13 = [v12 footerViewForSection:{objc_msgSend(v11, "section")}];
+      table = [(AssistantVoiceController *)self table];
+      v13 = [table footerViewForSection:{objc_msgSend(v11, "section")}];
 
-      v14 = [(AssistantVoiceController *)self table];
+      table2 = [(AssistantVoiceController *)self table];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __58__AssistantVoiceController_updateFooterText_forSpecifier___block_invoke;
       v16[3] = &unk_278CD1708;
       v17 = v13;
-      v18 = v6;
+      v18 = textCopy;
       v15 = v13;
-      [v14 performBatchUpdates:v16 completion:0];
+      [table2 performBatchUpdates:v16 completion:0];
     }
   }
 }
@@ -1888,29 +1888,29 @@ void __58__AssistantVoiceController_updateFooterText_forSpecifier___block_invoke
   [v2 setText:v1];
 }
 
-- (BOOL)isVoiceInstalled:(id)a3
+- (BOOL)isVoiceInstalled:(id)installed
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 languageCode];
-  if (v4)
+  installedCopy = installed;
+  languageCode = [installedCopy languageCode];
+  if (languageCode)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [v3 languageCode];
-    [v5 setObject:v6 forKeyedSubscript:&unk_2853200A0];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    languageCode2 = [installedCopy languageCode];
+    [dictionary setObject:languageCode2 forKeyedSubscript:&unk_2853200A0];
 
-    v7 = [v3 name];
-    [v5 setObject:v7 forKeyedSubscript:&unk_2853200B8];
+    name = [installedCopy name];
+    [dictionary setObject:name forKeyedSubscript:&unk_2853200B8];
 
-    v8 = [MEMORY[0x277D61488] premium];
-    [v5 setObject:v8 forKeyedSubscript:&unk_2853200D0];
+    premium = [MEMORY[0x277D61488] premium];
+    [dictionary setObject:premium forKeyedSubscript:&unk_2853200D0];
 
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2853200E8];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:&unk_2853200E8];
     v9 = MEMORY[0x277D61480];
-    v10 = [MEMORY[0x277D61490] gryphonVoice];
-    v16[0] = v10;
+    gryphonVoice = [MEMORY[0x277D61490] gryphonVoice];
+    v16[0] = gryphonVoice;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    v12 = [v9 listAssetsOfTypes:v11 matching:v5];
+    v12 = [v9 listAssetsOfTypes:v11 matching:dictionary];
 
     v13 = [v12 count] != 0;
   }
@@ -1924,48 +1924,48 @@ void __58__AssistantVoiceController_updateFooterText_forSpecifier___block_invoke
   return v13;
 }
 
-- (void)grantCellularDataPermissionForVoice:(id)a3
+- (void)grantCellularDataPermissionForVoice:(id)voice
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  voiceCopy = voice;
   v4 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 languageCode];
-    v7 = [v3 name];
+    languageCode = [voiceCopy languageCode];
+    name = [voiceCopy name];
     v13 = 136315650;
     v14 = "[AssistantVoiceController grantCellularDataPermissionForVoice:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = languageCode;
     v17 = 2112;
-    v18 = v7;
+    v18 = name;
     _os_log_impl(&dword_2413B9000, v5, OS_LOG_TYPE_DEFAULT, "%s #VoiceServices allowing cellular for: %@ %@", &v13, 0x20u);
   }
 
-  v8 = [v3 languageCode];
+  languageCode2 = [voiceCopy languageCode];
   v9 = allowedCellularLanguage;
-  allowedCellularLanguage = v8;
+  allowedCellularLanguage = languageCode2;
 
-  v10 = [v3 name];
+  name2 = [voiceCopy name];
   v11 = allowedCellularVoiceName;
-  allowedCellularVoiceName = v10;
+  allowedCellularVoiceName = name2;
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCellularDataPermissionAllowedForVoice:(id)a3
+- (BOOL)isCellularDataPermissionAllowedForVoice:(id)voice
 {
-  v3 = a3;
+  voiceCopy = voice;
   v4 = allowedCellularLanguage;
-  v5 = [v3 languageCode];
-  if ([v4 isEqualToString:v5])
+  languageCode = [voiceCopy languageCode];
+  if ([v4 isEqualToString:languageCode])
   {
-    if (v3)
+    if (voiceCopy)
     {
       v6 = allowedCellularVoiceName;
-      v7 = [v3 name];
-      v8 = [v6 isEqualToString:v7];
+      name = [voiceCopy name];
+      v8 = [v6 isEqualToString:name];
     }
 
     else
@@ -1982,21 +1982,21 @@ void __58__AssistantVoiceController_updateFooterText_forSpecifier___block_invoke
   return v8;
 }
 
-- (void)registerUndoActionWithKey:(id)a3 urlString:(id)a4 undoAction:(id)a5
+- (void)registerUndoActionWithKey:(id)key urlString:(id)string undoAction:(id)action
 {
   v8 = MEMORY[0x277CCAEB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  actionCopy = action;
+  stringCopy = string;
+  keyCopy = key;
   v12 = [v8 alloc];
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v15 = [v14 bundleURL];
-  v17 = [v12 initWithKey:v11 table:@"AssistantSettings" locale:v13 bundleURL:v15];
+  bundleURL = [v14 bundleURL];
+  v17 = [v12 initWithKey:keyCopy table:@"AssistantSettings" locale:currentLocale bundleURL:bundleURL];
 
-  v16 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+  v16 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
 
-  [(AssistantVoiceController *)self pe_registerUndoActionName:v17 associatedDeepLink:v16 undoAction:v9];
+  [(AssistantVoiceController *)self pe_registerUndoActionName:v17 associatedDeepLink:v16 undoAction:actionCopy];
 }
 
 - (void)languageCodeDidChange:(os_log_t)log .cold.1(os_log_t log)

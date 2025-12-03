@@ -1,14 +1,14 @@
 @interface _DKUUIDIdentifier
-+ (id)withUUID:(id)a3;
++ (id)withUUID:(id)d;
 @end
 
 @implementation _DKUUIDIdentifier
 
-+ (id)withUUID:(id)a3
++ (id)withUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  uUIDString = [d UUIDString];
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:uUIDString type:type];
 
   return v6;
 }

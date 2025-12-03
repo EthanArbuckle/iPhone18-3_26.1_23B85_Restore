@@ -3,11 +3,11 @@
 - (UIActivityIndicatorView)indicatorView;
 - (UIImageView)imageView;
 - (UIImageView)selectedImageView;
-- (WFGiphyCell)initWithFrame:(CGRect)a3;
+- (WFGiphyCell)initWithFrame:(CGRect)frame;
 - (WFGiphyObject)object;
 - (void)layoutSubviews;
-- (void)setObject:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setObject:(id)object;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation WFGiphyCell
@@ -47,20 +47,20 @@
   return WeakRetained;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_object);
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:objectCopy];
 
-  objc_storeWeak(&self->_object, v4);
+  objc_storeWeak(&self->_object, objectCopy);
   if ((v6 & 1) == 0)
   {
-    v7 = [(WFGiphyCell *)self dataTask];
-    [v7 cancel];
+    dataTask = [(WFGiphyCell *)self dataTask];
+    [dataTask cancel];
 
-    v8 = [v4 images];
-    v9 = [v8 objectForKey:@"fixed_width_downsampled"];
+    images = [objectCopy images];
+    v9 = [images objectForKey:@"fixed_width_downsampled"];
     v10 = v9;
     if (v9)
     {
@@ -69,35 +69,35 @@
 
     else
     {
-      v12 = [v4 images];
-      v13 = [v12 objectForKey:@"fixed_width_downsampled"];
+      images2 = [objectCopy images];
+      v13 = [images2 objectForKey:@"fixed_width_downsampled"];
       v14 = v13;
       if (v13)
       {
-        v15 = v13;
+        originalImage = v13;
       }
 
       else
       {
-        v15 = [v4 originalImage];
+        originalImage = [objectCopy originalImage];
       }
 
-      v11 = v15;
+      v11 = originalImage;
     }
 
-    v16 = [v11 cachedImage];
-    v17 = [v16 UIImage];
-    v18 = [(WFGiphyCell *)self imageView];
-    [v18 setImage:v17];
+    cachedImage = [v11 cachedImage];
+    uIImage = [cachedImage UIImage];
+    imageView = [(WFGiphyCell *)self imageView];
+    [imageView setImage:uIImage];
 
-    v19 = [v11 cachedImage];
+    cachedImage2 = [v11 cachedImage];
 
-    if (!v19)
+    if (!cachedImage2)
     {
-      v20 = [(WFGiphyCell *)self indicatorView];
-      [v20 startAnimating];
+      indicatorView = [(WFGiphyCell *)self indicatorView];
+      [indicatorView startAnimating];
 
-      v21 = [MEMORY[0x277CCAD30] wf_sharedSession];
+      wf_sharedSession = [MEMORY[0x277CCAD30] wf_sharedSession];
       v22 = [v11 url];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -105,9 +105,9 @@
       v24[3] = &unk_278C376B8;
       v24[4] = self;
       v25 = v11;
-      v26 = v4;
+      v26 = objectCopy;
       v11 = v11;
-      v23 = [v21 dataTaskWithURL:v22 completionHandler:v24];
+      v23 = [wf_sharedSession dataTaskWithURL:v22 completionHandler:v24];
 
       [(WFGiphyCell *)self setDataTask:v23];
       [v23 resume];
@@ -148,14 +148,14 @@ void __25__WFGiphyCell_setObject___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = WFGiphyCell;
   [(WFGiphyCell *)&v6 setSelected:?];
-  v5 = [(WFGiphyCell *)self selectedImageView];
-  [v5 setHidden:!v3];
+  selectedImageView = [(WFGiphyCell *)self selectedImageView];
+  [selectedImageView setHidden:!selectedCopy];
 }
 
 - (void)layoutSubviews
@@ -163,27 +163,27 @@ void __25__WFGiphyCell_setObject___block_invoke_2(uint64_t a1)
   v25.receiver = self;
   v25.super_class = WFGiphyCell;
   [(WFGiphyCell *)&v25 layoutSubviews];
-  v3 = [(WFGiphyCell *)self contentView];
-  [v3 bounds];
+  contentView = [(WFGiphyCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(WFGiphyCell *)self imageView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  imageView = [(WFGiphyCell *)self imageView];
+  [imageView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(WFGiphyCell *)self selectedImageView];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  selectedImageView = [(WFGiphyCell *)self selectedImageView];
+  [selectedImageView setFrame:{v5, v7, v9, v11}];
 
   v14 = *MEMORY[0x277CBF348];
   v15 = *(MEMORY[0x277CBF348] + 8);
-  v16 = [(WFGiphyCell *)self indicatorView];
-  [v16 intrinsicContentSize];
+  indicatorView = [(WFGiphyCell *)self indicatorView];
+  [indicatorView intrinsicContentSize];
   v18 = v17;
   v20 = v19;
-  v21 = [(WFGiphyCell *)self indicatorView];
-  [v21 setBounds:{v14, v15, v18, v20}];
+  indicatorView2 = [(WFGiphyCell *)self indicatorView];
+  [indicatorView2 setBounds:{v14, v15, v18, v20}];
 
   v26.origin.x = v5;
   v26.origin.y = v7;
@@ -195,16 +195,16 @@ void __25__WFGiphyCell_setObject___block_invoke_2(uint64_t a1)
   v27.size.width = v9;
   v27.size.height = v11;
   MidY = CGRectGetMidY(v27);
-  v24 = [(WFGiphyCell *)self indicatorView];
-  [v24 setCenter:{MidX, MidY}];
+  indicatorView3 = [(WFGiphyCell *)self indicatorView];
+  [indicatorView3 setCenter:{MidX, MidY}];
 }
 
-- (WFGiphyCell)initWithFrame:(CGRect)a3
+- (WFGiphyCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = WFGiphyCell;
   v7 = [(WFGiphyCell *)&v15 initWithFrame:?];
@@ -216,20 +216,20 @@ void __25__WFGiphyCell_setObject___block_invoke_2(uint64_t a1)
     }
 
     v8 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    v9 = [(WFGiphyCell *)v7 contentView];
-    [v9 addSubview:v8];
+    contentView = [(WFGiphyCell *)v7 contentView];
+    [contentView addSubview:v8];
 
     [(WFGiphyCell *)v7 setIndicatorView:v8];
     v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{x, y, width, height}];
-    v11 = [(WFGiphyCell *)v7 contentView];
-    [v11 addSubview:v10];
+    contentView2 = [(WFGiphyCell *)v7 contentView];
+    [contentView2 addSubview:v10];
 
     [(WFGiphyCell *)v7 setImageView:v10];
     v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{x, y, width, height}];
     [v12 setHidden:1];
     [v12 setImage:initWithFrame__selectedImage];
-    v13 = [(WFGiphyCell *)v7 contentView];
-    [v13 addSubview:v12];
+    contentView3 = [(WFGiphyCell *)v7 contentView];
+    [contentView3 addSubview:v12];
 
     [(WFGiphyCell *)v7 setSelectedImageView:v12];
   }

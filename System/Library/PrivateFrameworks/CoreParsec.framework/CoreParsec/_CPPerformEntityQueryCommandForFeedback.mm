@@ -1,35 +1,35 @@
 @interface _CPPerformEntityQueryCommandForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPPerformEntityQueryCommandForFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPPerformEntityQueryCommandForFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPPerformEntityQueryCommandForFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
-    v6 = [v4 tokenString];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    tokenString = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
+    tokenString2 = [equalCopy tokenString];
+    v7 = tokenString2;
+    if ((tokenString != 0) != (tokenString2 == 0))
     {
-      v8 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
-      if (!v8)
+      tokenString3 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
+      if (!tokenString3)
       {
 
 LABEL_10:
         entityType = self->_entityType;
-        v13 = entityType == [v4 entityType];
+        v13 = entityType == [equalCopy entityType];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
-      v11 = [v4 tokenString];
-      v12 = [v10 isEqual:v11];
+      v9 = tokenString3;
+      tokenString4 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
+      tokenString5 = [equalCopy tokenString];
+      v12 = [tokenString4 isEqual:tokenString5];
 
       if (v12)
       {
@@ -48,12 +48,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
+  toCopy = to;
+  tokenString = [(_CPPerformEntityQueryCommandForFeedback *)self tokenString];
 
-  if (v4)
+  if (tokenString)
   {
     tokenString = self->_tokenString;
     PBDataWriterWriteStringField();
@@ -66,23 +66,23 @@ LABEL_8:
   }
 }
 
-- (_CPPerformEntityQueryCommandForFeedback)initWithFacade:(id)a3
+- (_CPPerformEntityQueryCommandForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v10.receiver = self;
   v10.super_class = _CPPerformEntityQueryCommandForFeedback;
   v5 = [(_CPPerformEntityQueryCommandForFeedback *)&v10 init];
   if (v5)
   {
-    v6 = [v4 tokenString];
+    tokenString = [facadeCopy tokenString];
 
-    if (v6)
+    if (tokenString)
     {
-      v7 = [v4 tokenString];
-      [(_CPPerformEntityQueryCommandForFeedback *)v5 setTokenString:v7];
+      tokenString2 = [facadeCopy tokenString];
+      [(_CPPerformEntityQueryCommandForFeedback *)v5 setTokenString:tokenString2];
     }
 
-    -[_CPPerformEntityQueryCommandForFeedback setEntityType:](v5, "setEntityType:", [v4 entityType]);
+    -[_CPPerformEntityQueryCommandForFeedback setEntityType:](v5, "setEntityType:", [facadeCopy entityType]);
     v8 = v5;
   }
 

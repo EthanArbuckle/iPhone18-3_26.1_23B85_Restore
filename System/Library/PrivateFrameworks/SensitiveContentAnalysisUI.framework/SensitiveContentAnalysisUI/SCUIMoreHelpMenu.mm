@@ -1,71 +1,71 @@
 @interface SCUIMoreHelpMenu
-+ (id)_menuWithAnalysis:(id)a3 options:(int64_t)a4 error:(id *)a5;
-+ (id)menuWithModel:(id)a3;
-+ (id)menuWithOptions:(int64_t)a3;
-+ (id)menuWithOptions:(int64_t)a3 interventionType:(int64_t)a4 locale:(id)a5;
++ (id)_menuWithAnalysis:(id)analysis options:(int64_t)options error:(id *)error;
++ (id)menuWithModel:(id)model;
++ (id)menuWithOptions:(int64_t)options;
++ (id)menuWithOptions:(int64_t)options interventionType:(int64_t)type locale:(id)locale;
 - (SCUIMoreHelpMenuDelegate)menuDelegate;
-- (void)addActionsFromModel:(id)a3;
+- (void)addActionsFromModel:(id)model;
 - (void)reportToAuthoritiesPressed;
 @end
 
 @implementation SCUIMoreHelpMenu
 
-+ (id)menuWithOptions:(int64_t)a3
++ (id)menuWithOptions:(int64_t)options
 {
   v4 = SCUICurrentInterventionType();
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [SCUIMoreHelpMenu menuWithOptions:a3 interventionType:v4 locale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v6 = [SCUIMoreHelpMenu menuWithOptions:options interventionType:v4 locale:currentLocale];
 
   return v6;
 }
 
-+ (id)menuWithOptions:(int64_t)a3 interventionType:(int64_t)a4 locale:(id)a5
++ (id)menuWithOptions:(int64_t)options interventionType:(int64_t)type locale:(id)locale
 {
-  v6 = [SCUIMoreHelpMenuModel modelWithOptions:a3 contextDictionary:0 interventionType:a4 locale:a5 menuType:2];
-  v7 = [a1 menuWithModel:v6];
+  v6 = [SCUIMoreHelpMenuModel modelWithOptions:options contextDictionary:0 interventionType:type locale:locale menuType:2];
+  v7 = [self menuWithModel:v6];
 
   return v7;
 }
 
-+ (id)menuWithModel:(id)a3
++ (id)menuWithModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 title];
+  modelCopy = model;
+  title = [modelCopy title];
   v6 = SCUIIsRunningInMacCatalyst();
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___SCUIMoreHelpMenu;
-  v7 = objc_msgSendSuper2(&v13, sel_alertControllerWithTitle_message_preferredStyle_, v5, 0, v6);
+  v7 = objc_msgSendSuper2(&v13, sel_alertControllerWithTitle_message_preferredStyle_, title, 0, v6);
 
-  [v7 setModel:v4];
-  [v7 addActionsFromModel:v4];
-  [v7 setInterventionType:{objc_msgSend(v4, "interventionType")}];
-  v8 = [v4 authority];
-  [v7 setAuthority:v8];
+  [v7 setModel:modelCopy];
+  [v7 addActionsFromModel:modelCopy];
+  [v7 setInterventionType:{objc_msgSend(modelCopy, "interventionType")}];
+  authority = [modelCopy authority];
+  [v7 setAuthority:authority];
 
-  v9 = [v4 options];
-  [v7 setOptions:v9];
+  options = [modelCopy options];
+  [v7 setOptions:options];
   v10 = +[SCUIAXIdentifiers actionMenu];
-  v11 = [v7 view];
-  [v11 setAccessibilityIdentifier:v10];
+  view = [v7 view];
+  [view setAccessibilityIdentifier:v10];
 
   return v7;
 }
 
-- (void)addActionsFromModel:(id)a3
+- (void)addActionsFromModel:(id)model
 {
   v37 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  modelCopy = model;
   objc_initWeak(&location, self);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [v20 actions];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  actions = [modelCopy actions];
+  v5 = [actions countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v5)
   {
     v6 = *v32;
-    obj = v4;
+    obj = actions;
     do
     {
       v7 = 0;
@@ -80,9 +80,9 @@
         v27 = 0;
         v28 = &v27;
         v29 = 0x2020000000;
-        v30 = [v8 actionID];
+        actionID = [v8 actionID];
         v9 = MEMORY[0x1E69DC648];
-        v10 = [v8 title];
+        title = [v8 title];
         if ([v8 destructive])
         {
           v11 = 2;
@@ -100,8 +100,8 @@
         v25 = &v27;
         v23[4] = self;
         objc_copyWeak(&v26, &location);
-        v24 = v20;
-        v12 = [v9 actionWithTitle:v10 style:v11 handler:v23];
+        v24 = modelCopy;
+        v12 = [v9 actionWithTitle:title style:v11 handler:v23];
 
         v13 = [SCUIAXIdentifiers helpMenuAction:v28[3]];
         [v12 setAccessibilityIdentifier:v13];
@@ -113,7 +113,7 @@
       }
 
       while (v5 != v7);
-      v4 = obj;
+      actions = obj;
       v5 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
@@ -386,12 +386,12 @@ void __40__SCUIMoreHelpMenu_addActionsFromModel___block_invoke_2(uint64_t a1)
 
 - (void)reportToAuthoritiesPressed
 {
-  v7 = [(SCUIMoreHelpMenu *)self viewControllerThatPresented];
-  v3 = [(SCUIMoreHelpMenu *)self authority];
-  v4 = [(SCUIMoreHelpMenu *)self interventionType];
-  v5 = [(SCUIMoreHelpMenu *)self menuDelegate];
-  v6 = [(SCUIMoreHelpMenu *)self contextDictionary];
-  [SCUIReportToAuthorities presentFlowFromController:v7 authority:v3 interventionType:v4 delegate:v5 contextDictionary:v6];
+  viewControllerThatPresented = [(SCUIMoreHelpMenu *)self viewControllerThatPresented];
+  authority = [(SCUIMoreHelpMenu *)self authority];
+  interventionType = [(SCUIMoreHelpMenu *)self interventionType];
+  menuDelegate = [(SCUIMoreHelpMenu *)self menuDelegate];
+  contextDictionary = [(SCUIMoreHelpMenu *)self contextDictionary];
+  [SCUIReportToAuthorities presentFlowFromController:viewControllerThatPresented authority:authority interventionType:interventionType delegate:menuDelegate contextDictionary:contextDictionary];
 }
 
 - (SCUIMoreHelpMenuDelegate)menuDelegate
@@ -401,9 +401,9 @@ void __40__SCUIMoreHelpMenu_addActionsFromModel___block_invoke_2(uint64_t a1)
   return WeakRetained;
 }
 
-+ (id)_menuWithAnalysis:(id)a3 options:(int64_t)a4 error:(id *)a5
++ (id)_menuWithAnalysis:(id)analysis options:(int64_t)options error:(id *)error
 {
-  v5 = sub_1BC67F5CC(a4);
+  v5 = sub_1BC67F5CC(options);
 
   return v5;
 }

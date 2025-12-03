@@ -1,16 +1,16 @@
 @interface PSUIPrivacyProxySpecifier
-- (PSUIPrivacyProxySpecifier)initWithDataCache:(id)a3 context:(id)a4;
+- (PSUIPrivacyProxySpecifier)initWithDataCache:(id)cache context:(id)context;
 - (id)groupSpecifier;
 - (id)isPrivacyProxyEnabled;
-- (void)setPrivacyProxyEnabled:(id)a3;
+- (void)setPrivacyProxyEnabled:(id)enabled;
 @end
 
 @implementation PSUIPrivacyProxySpecifier
 
-- (PSUIPrivacyProxySpecifier)initWithDataCache:(id)a3 context:(id)a4
+- (PSUIPrivacyProxySpecifier)initWithDataCache:(id)cache context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  contextCopy = context;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"PRIVACYPROXY" value:&stru_287733598 table:@"Cellular"];
   v13.receiver = self;
@@ -19,21 +19,21 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_dataCache, a3);
-    objc_storeStrong(&v11->_context, a4);
+    objc_storeStrong(&v11->_dataCache, cache);
+    objc_storeStrong(&v11->_context, context);
     [(PSUIPrivacyProxySpecifier *)v11 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   }
 
   return v11;
 }
 
-- (void)setPrivacyProxyEnabled:(id)a3
+- (void)setPrivacyProxyEnabled:(id)enabled
 {
   dataCache = self->_dataCache;
   context = self->_context;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(PSUICoreTelephonyDataCache *)dataCache setPrivacyProxy:context enabled:v5];
+  [(PSUICoreTelephonyDataCache *)dataCache setPrivacyProxy:context enabled:bOOLValue];
 }
 
 - (id)isPrivacyProxyEnabled

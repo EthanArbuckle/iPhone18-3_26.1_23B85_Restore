@@ -1,14 +1,14 @@
 @interface CCDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
 - (CCDevice)init;
-- (CCDevice)initWithCoder:(id)a3;
-- (CCDevice)initWithDeviceUUID:(id)a3 idsDeviceId:(id)a4 platform:(int64_t)a5 options:(unsigned __int8)a6;
+- (CCDevice)initWithCoder:(id)coder;
+- (CCDevice)initWithDeviceUUID:(id)d idsDeviceId:(id)id platform:(int64_t)platform options:(unsigned __int8)options;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCDevice
@@ -31,10 +31,10 @@
   objc_exception_throw(v2);
 }
 
-- (CCDevice)initWithDeviceUUID:(id)a3 idsDeviceId:(id)a4 platform:(int64_t)a5 options:(unsigned __int8)a6
+- (CCDevice)initWithDeviceUUID:(id)d idsDeviceId:(id)id platform:(int64_t)platform options:(unsigned __int8)options
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  idCopy = id;
   v21.receiver = self;
   v21.super_class = CCDevice;
   v13 = [(CCDevice *)&v21 init];
@@ -44,17 +44,17 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v13->_deviceUUID, a3);
+  objc_storeStrong(&v13->_deviceUUID, d);
   deviceUUID = v14->_deviceUUID;
   if (deviceUUID)
   {
-    v16 = [(NSUUID *)deviceUUID UUIDString];
+    uUIDString = [(NSUUID *)deviceUUID UUIDString];
     identifier = v14->_identifier;
-    v14->_identifier = v16;
+    v14->_identifier = uUIDString;
 
-    objc_storeStrong(&v14->_idsDeviceIdentifier, a4);
-    v14->_platform = a5;
-    v14->_options = a6;
+    objc_storeStrong(&v14->_idsDeviceIdentifier, id);
+    v14->_platform = platform;
+    v14->_options = options;
 LABEL_4:
     v18 = v14;
     goto LABEL_8;
@@ -77,8 +77,8 @@ LABEL_8:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CCDevice *)self identifier];
-  v7 = [(CCDevice *)self idsDeviceIdentifier];
+  identifier = [(CCDevice *)self identifier];
+  idsDeviceIdentifier = [(CCDevice *)self idsDeviceIdentifier];
   if ([(CCDevice *)self isLocal])
   {
     v8 = @"YES";
@@ -91,48 +91,48 @@ LABEL_8:
 
   platform = self->_platform;
   v10 = BMDevicePlatformToString();
-  v11 = [v3 initWithFormat:@"<%@> identifier: %@ idsIdentifier: %@ isLocal: %@ platform: %@", v5, v6, v7, v8, v10];
+  v11 = [v3 initWithFormat:@"<%@> identifier: %@ idsIdentifier: %@ isLocal: %@ platform: %@", v5, identifier, idsDeviceIdentifier, v8, v10];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDevice *)self isEqualToDevice:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDevice *)self isEqualToDevice:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   deviceUUID = self->_deviceUUID;
-  v6 = [v4 deviceUUID];
-  if ([(NSUUID *)deviceUUID isEqual:v6])
+  deviceUUID = [deviceCopy deviceUUID];
+  if ([(NSUUID *)deviceUUID isEqual:deviceUUID])
   {
     idsDeviceIdentifier = self->_idsDeviceIdentifier;
     v8 = idsDeviceIdentifier;
     if (!idsDeviceIdentifier)
     {
-      v9 = [v4 idsDeviceIdentifier];
-      if (!v9)
+      idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+      if (!idsDeviceIdentifier)
       {
         options = self->_options;
-        if (options == [v4 options])
+        if (options == [deviceCopy options])
         {
           platform = self->_platform;
           deviceUUID = 0;
-          v13 = platform == [v4 platform];
+          v13 = platform == [deviceCopy platform];
         }
 
         else
@@ -146,15 +146,15 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      deviceUUID = v9;
+      deviceUUID = idsDeviceIdentifier;
       v8 = self->_idsDeviceIdentifier;
     }
 
-    v10 = [v4 idsDeviceIdentifier];
-    if (-[NSString isEqual:](v8, "isEqual:", v10) && (v11 = self->_options, v11 == [v4 options]))
+    idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
+    if (-[NSString isEqual:](v8, "isEqual:", idsDeviceIdentifier2) && (v11 = self->_options, v11 == [deviceCopy options]))
     {
       v12 = self->_platform;
-      v13 = v12 == [v4 platform];
+      v13 = v12 == [deviceCopy platform];
     }
 
     else
@@ -178,59 +178,59 @@ LABEL_12:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceUUID = self->_deviceUUID;
-  v5 = a3;
-  [v5 encodeObject:deviceUUID forKey:@"deviceUUID"];
-  [v5 encodeObject:self->_idsDeviceIdentifier forKey:@"idsDeviceId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceUUID forKey:@"deviceUUID"];
+  [coderCopy encodeObject:self->_idsDeviceIdentifier forKey:@"idsDeviceId"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_platform];
-  [v5 encodeObject:v6 forKey:@"devicePlatform"];
+  [coderCopy encodeObject:v6 forKey:@"devicePlatform"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:self->_options];
-  [v5 encodeObject:v7 forKey:@"deviceOptions"];
+  [coderCopy encodeObject:v7 forKey:@"deviceOptions"];
 }
 
-- (CCDevice)initWithCoder:(id)a3
+- (CCDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUUID"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceOptions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceOptions"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"devicePlatform"];
-      v9 = [v8 integerValue];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"devicePlatform"];
+      integerValue = [v8 integerValue];
 
-      self = -[CCDevice initWithDeviceUUID:idsDeviceId:platform:options:](self, "initWithDeviceUUID:idsDeviceId:platform:options:", v5, v7, v9, [v6 unsignedIntValue]);
-      v10 = self;
+      self = -[CCDevice initWithDeviceUUID:idsDeviceId:platform:options:](self, "initWithDeviceUUID:idsDeviceId:platform:options:", v5, v7, integerValue, [v6 unsignedIntValue]);
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"deviceUUID"];
-  v6 = [v4 objectForKeyedSubscript:@"idsDeviceId"];
-  v7 = [v4 objectForKeyedSubscript:@"devicePlatform"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"deviceUUID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"idsDeviceId"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"devicePlatform"];
 
-  v8 = [v7 integerValue];
-  v9 = [(CCDevice *)self initWithDeviceUUID:v5 idsDeviceId:v6 platform:v8 options:0];
+  integerValue = [v7 integerValue];
+  v9 = [(CCDevice *)self initWithDeviceUUID:v5 idsDeviceId:v6 platform:integerValue options:0];
 
   return v9;
 }
@@ -239,19 +239,19 @@ LABEL_12:
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v4 = [(CCDevice *)self deviceUUID];
-  v12[0] = v4;
+  deviceUUID = [(CCDevice *)self deviceUUID];
+  v12[0] = deviceUUID;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CCDevice platform](self, "platform")}];
   v12[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v7 = [v3 initWithObjects:v6 forKeys:&unk_1F2EC96A8];
 
-  v8 = [(CCDevice *)self idsDeviceIdentifier];
+  idsDeviceIdentifier = [(CCDevice *)self idsDeviceIdentifier];
 
-  if (v8)
+  if (idsDeviceIdentifier)
   {
-    v9 = [(CCDevice *)self idsDeviceIdentifier];
-    [v7 setObject:v9 forKeyedSubscript:@"idsDeviceId"];
+    idsDeviceIdentifier2 = [(CCDevice *)self idsDeviceIdentifier];
+    [v7 setObject:idsDeviceIdentifier2 forKeyedSubscript:@"idsDeviceId"];
   }
 
   v10 = *MEMORY[0x1E69E9840];

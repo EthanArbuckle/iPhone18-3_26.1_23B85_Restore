@@ -1,6 +1,6 @@
 @interface MTRBindingClusterTargetStruct
 - (MTRBindingClusterTargetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBindingClusterTargetStruct);
-  v5 = [(MTRBindingClusterTargetStruct *)self node];
-  [(MTRBindingClusterTargetStruct *)v4 setNode:v5];
+  node = [(MTRBindingClusterTargetStruct *)self node];
+  [(MTRBindingClusterTargetStruct *)v4 setNode:node];
 
-  v6 = [(MTRBindingClusterTargetStruct *)self group];
-  [(MTRBindingClusterTargetStruct *)v4 setGroup:v6];
+  group = [(MTRBindingClusterTargetStruct *)self group];
+  [(MTRBindingClusterTargetStruct *)v4 setGroup:group];
 
-  v7 = [(MTRBindingClusterTargetStruct *)self endpoint];
-  [(MTRBindingClusterTargetStruct *)v4 setEndpoint:v7];
+  endpoint = [(MTRBindingClusterTargetStruct *)self endpoint];
+  [(MTRBindingClusterTargetStruct *)v4 setEndpoint:endpoint];
 
-  v8 = [(MTRBindingClusterTargetStruct *)self cluster];
-  [(MTRBindingClusterTargetStruct *)v4 setCluster:v8];
+  cluster = [(MTRBindingClusterTargetStruct *)self cluster];
+  [(MTRBindingClusterTargetStruct *)v4 setCluster:cluster];
 
-  v9 = [(MTRBindingClusterTargetStruct *)self fabricIndex];
-  [(MTRBindingClusterTargetStruct *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRBindingClusterTargetStruct *)self fabricIndex];
+  [(MTRBindingClusterTargetStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

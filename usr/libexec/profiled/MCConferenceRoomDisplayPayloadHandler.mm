@@ -6,10 +6,10 @@
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
 
     [(MCConferenceRoomDisplayPayloadHandler *)self _removeConferenceRoomDisplayConfiguration];

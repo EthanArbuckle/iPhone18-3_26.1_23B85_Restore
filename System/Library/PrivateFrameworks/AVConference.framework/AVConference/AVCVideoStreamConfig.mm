@@ -1,18 +1,18 @@
 @interface AVCVideoStreamConfig
-+ (BOOL)isPixelFormatValid:(unsigned int)a3 hdrMode:(unint64_t)a4;
-+ (int)videoCaptureSourceFromClientCaptureSource:(int64_t)a3;
-+ (int64_t)clientVideoCaptureSourceFromCaptureSource:(int)a3;
-+ (int64_t)clientVideoResolutionFromResolution:(int64_t)a3;
-+ (int64_t)clientVideoStreamModeFromVideoStreamType:(int64_t)a3;
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3;
-+ (int64_t)videoResolutionFromClientResolution:(int64_t)a3;
-+ (int64_t)videoStreamTypeFromClientVideoStreamMode:(int64_t)a3;
++ (BOOL)isPixelFormatValid:(unsigned int)valid hdrMode:(unint64_t)mode;
++ (int)videoCaptureSourceFromClientCaptureSource:(int64_t)source;
++ (int64_t)clientVideoCaptureSourceFromCaptureSource:(int)source;
++ (int64_t)clientVideoResolutionFromResolution:(int64_t)resolution;
++ (int64_t)clientVideoStreamModeFromVideoStreamType:(int64_t)type;
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type;
++ (int64_t)videoResolutionFromClientResolution:(int64_t)resolution;
++ (int64_t)videoStreamTypeFromClientVideoStreamMode:(int64_t)mode;
 - (AVCVideoStreamConfig)init;
-- (BOOL)isValidForDirection:(int64_t)a3;
+- (BOOL)isValidForDirection:(int64_t)direction;
 - (id)dictionary;
 - (void)dealloc;
-- (void)encodeVideoBufferDescription:(id *)a3;
-- (void)setUpWithDictionary:(id)a3;
+- (void)encodeVideoBufferDescription:(id *)description;
+- (void)setUpWithDictionary:(id)dictionary;
 @end
 
 @implementation AVCVideoStreamConfig
@@ -44,7 +44,7 @@
   [(AVCVideoStreamConfig *)&v3 dealloc];
 }
 
-- (BOOL)isValidForDirection:(int64_t)a3
+- (BOOL)isValidForDirection:(int64_t)direction
 {
   if ([(AVCVideoStreamConfig *)self txCodecType])
   {
@@ -66,7 +66,7 @@
     v6 = 0;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
     if (v5 || v6)
     {
@@ -79,51 +79,51 @@
     goto LABEL_17;
   }
 
-  v7 = [(AVCVideoStreamConfig *)self framerate];
-  if (!v7)
+  framerate = [(AVCVideoStreamConfig *)self framerate];
+  if (!framerate)
   {
-    return v7;
+    return framerate;
   }
 
-  v7 = [(AVCVideoStreamConfig *)self tilesPerFrame];
-  if (!v7)
+  framerate = [(AVCVideoStreamConfig *)self tilesPerFrame];
+  if (!framerate)
   {
-    return v7;
+    return framerate;
   }
 
   if ([(AVCVideoStreamConfig *)self tilesPerFrame]> 8)
   {
 LABEL_17:
-    LOBYTE(v7) = 0;
-    return v7;
+    LOBYTE(framerate) = 0;
+    return framerate;
   }
 
   if ([(AVCVideoStreamConfig *)self enableCVO])
   {
-    v7 = [(AVCVideoStreamConfig *)self cvoExtensionID];
-    if (v7)
+    framerate = [(AVCVideoStreamConfig *)self cvoExtensionID];
+    if (framerate)
     {
-      LOBYTE(v7) = [(AVCVideoStreamConfig *)self cvoExtensionID]< 0xF;
+      LOBYTE(framerate) = [(AVCVideoStreamConfig *)self cvoExtensionID]< 0xF;
     }
   }
 
   else
   {
-    LOBYTE(v7) = 1;
+    LOBYTE(framerate) = 1;
   }
 
-  return v7;
+  return framerate;
 }
 
-+ (int64_t)codecTypeWithClientCodecType:(int64_t)a3
++ (int64_t)codecTypeWithClientCodecType:(int64_t)type
 {
   v3 = 102;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -134,87 +134,87 @@ LABEL_17:
   }
 }
 
-+ (int64_t)videoResolutionFromClientResolution:(int64_t)a3
++ (int64_t)videoResolutionFromClientResolution:(int64_t)resolution
 {
-  if ((a3 - 1) > 0xC)
+  if ((resolution - 1) > 0xC)
   {
     return 7;
   }
 
   else
   {
-    return qword_1DBD51818[a3 - 1];
+    return qword_1DBD51818[resolution - 1];
   }
 }
 
-+ (int64_t)clientVideoResolutionFromResolution:(int64_t)a3
++ (int64_t)clientVideoResolutionFromResolution:(int64_t)resolution
 {
-  if ((a3 - 6) > 0x15)
+  if ((resolution - 6) > 0x15)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51880[a3 - 6];
+    return qword_1DBD51880[resolution - 6];
   }
 }
 
-+ (int64_t)clientVideoCaptureSourceFromCaptureSource:(int)a3
++ (int64_t)clientVideoCaptureSourceFromCaptureSource:(int)source
 {
-  if ((a3 - 1) > 5)
+  if ((source - 1) > 5)
   {
     return 2;
   }
 
   else
   {
-    return qword_1DBD51930[a3 - 1];
+    return qword_1DBD51930[source - 1];
   }
 }
 
-+ (int)videoCaptureSourceFromClientCaptureSource:(int64_t)a3
++ (int)videoCaptureSourceFromClientCaptureSource:(int64_t)source
 {
-  if (a3 > 3)
+  if (source > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD519D0[a3];
+    return dword_1DBD519D0[source];
   }
 }
 
-+ (int64_t)clientVideoStreamModeFromVideoStreamType:(int64_t)a3
++ (int64_t)clientVideoStreamModeFromVideoStreamType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51960[a3 - 1];
+    return qword_1DBD51960[type - 1];
   }
 }
 
-+ (int64_t)videoStreamTypeFromClientVideoStreamMode:(int64_t)a3
++ (int64_t)videoStreamTypeFromClientVideoStreamMode:(int64_t)mode
 {
-  if ((a3 - 1) > 5)
+  if ((mode - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DBD51998[a3 - 1];
+    return qword_1DBD51998[mode - 1];
   }
 }
 
-- (void)encodeVideoBufferDescription:(id *)a3
+- (void)encodeVideoBufferDescription:(id *)description
 {
-  if (a3)
+  if (description)
   {
     empty = xpc_array_create_empty();
     if (empty)
@@ -256,7 +256,7 @@ LABEL_17:
       else
       {
 LABEL_8:
-        xpc_dictionary_set_value(*a3, "vcMediaStreamVideoBufferDescriptionXPCArgs", v6);
+        xpc_dictionary_set_value(*description, "vcMediaStreamVideoBufferDescriptionXPCArgs", v6);
       }
 
 LABEL_9:
@@ -275,40 +275,40 @@ LABEL_9:
   }
 }
 
-- (void)setUpWithDictionary:(id)a3
+- (void)setUpWithDictionary:(id)dictionary
 {
-  self->_txCodecType = +[AVCVideoStreamConfig clientCodecTypeWithCodecType:](AVCVideoStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}]);
-  self->_rxCodecType = +[AVCVideoStreamConfig clientCodecTypeWithCodecType:](AVCVideoStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}]);
-  self->_videoResolution = +[AVCVideoStreamConfig clientVideoResolutionFromResolution:](AVCVideoStreamConfig, "clientVideoResolutionFromResolution:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamVideoResolution", "integerValue"}]);
-  self->_synchronizationSourceStreamToken = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSyncStreamToken", "integerValue"}];
-  self->_framerate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}];
-  self->_txMaxBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXMaxBitrate", "integerValue"}];
-  self->_txMinBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXMinBitrate", "integerValue"}];
-  self->_rxMaxBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXMaxBitrate", "integerValue"}];
-  self->_rxMinBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXMinBitrate", "integerValue"}];
-  self->_txCodecFeatureListString = [a3 objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"];
-  self->_rxCodecFeatureListString = [a3 objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"];
-  self->_keyFrameInterval = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamKeyFrameInterval", "integerValue"}];
-  self->_remoteVideoInitialOrientation = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRemoteVideoInitialOrientation", "integerValue"}];
-  self->_enableCVO = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEnableCVO", "BOOLValue"}];
-  self->_cvoExtensionID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCVOExtensionID", "unsignedIntegerValue"}];
-  self->_isVideoProtected = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsVideoProtected", "BOOLValue"}];
-  self->_videoStreamMode = +[AVCVideoStreamConfig clientVideoStreamModeFromVideoStreamType:](AVCVideoStreamConfig, "clientVideoStreamModeFromVideoStreamType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamVideoStreamMode", "integerValue"}]);
-  self->_captureSource = +[AVCVideoStreamConfig clientVideoCaptureSourceFromCaptureSource:](AVCVideoStreamConfig, "clientVideoCaptureSourceFromCaptureSource:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCaptureSource", "integerValue"}]);
-  self->_captureSourceID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCaptureSourceID", "integerValue"}];
-  self->_screenDisplayID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDisplayID", "unsignedIntegerValue"}];
-  self->_tilesPerFrame = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTilesPerFrame", "integerValue"}];
-  self->_enableInterleavedEncoding = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEnableInterleavedEncoding", "BOOLValue"}];
-  self->_pixelFormat = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
-  self->_ltrpEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsltrpEnabled", "BOOLValue"}];
+  self->_txCodecType = +[AVCVideoStreamConfig clientCodecTypeWithCodecType:](AVCVideoStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}]);
+  self->_rxCodecType = +[AVCVideoStreamConfig clientCodecTypeWithCodecType:](AVCVideoStreamConfig, "clientCodecTypeWithCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}]);
+  self->_videoResolution = +[AVCVideoStreamConfig clientVideoResolutionFromResolution:](AVCVideoStreamConfig, "clientVideoResolutionFromResolution:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamVideoResolution", "integerValue"}]);
+  self->_synchronizationSourceStreamToken = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSyncStreamToken", "integerValue"}];
+  self->_framerate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}];
+  self->_txMaxBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXMaxBitrate", "integerValue"}];
+  self->_txMinBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXMinBitrate", "integerValue"}];
+  self->_rxMaxBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXMaxBitrate", "integerValue"}];
+  self->_rxMinBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXMinBitrate", "integerValue"}];
+  self->_txCodecFeatureListString = [dictionary objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"];
+  self->_rxCodecFeatureListString = [dictionary objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"];
+  self->_keyFrameInterval = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamKeyFrameInterval", "integerValue"}];
+  self->_remoteVideoInitialOrientation = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRemoteVideoInitialOrientation", "integerValue"}];
+  self->_enableCVO = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEnableCVO", "BOOLValue"}];
+  self->_cvoExtensionID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCVOExtensionID", "unsignedIntegerValue"}];
+  self->_isVideoProtected = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsVideoProtected", "BOOLValue"}];
+  self->_videoStreamMode = +[AVCVideoStreamConfig clientVideoStreamModeFromVideoStreamType:](AVCVideoStreamConfig, "clientVideoStreamModeFromVideoStreamType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamVideoStreamMode", "integerValue"}]);
+  self->_captureSource = +[AVCVideoStreamConfig clientVideoCaptureSourceFromCaptureSource:](AVCVideoStreamConfig, "clientVideoCaptureSourceFromCaptureSource:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCaptureSource", "integerValue"}]);
+  self->_captureSourceID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCaptureSourceID", "integerValue"}];
+  self->_screenDisplayID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDisplayID", "unsignedIntegerValue"}];
+  self->_tilesPerFrame = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTilesPerFrame", "integerValue"}];
+  self->_enableInterleavedEncoding = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEnableInterleavedEncoding", "BOOLValue"}];
+  self->_pixelFormat = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
+  self->_ltrpEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsltrpEnabled", "BOOLValue"}];
   if (self->_videoResolution == 12)
   {
-    self->_customWidth = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCustomWidth", "integerValue"}];
-    self->_customHeight = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCustomHeight", "integerValue"}];
+    self->_customWidth = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCustomWidth", "integerValue"}];
+    self->_customHeight = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCustomHeight", "integerValue"}];
   }
 
-  self->_hdrMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
-  v5 = [a3 objectForKeyedSubscript:@"vcRemoteDeviceName"];
+  self->_hdrMode = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
+  v5 = [dictionary objectForKeyedSubscript:@"vcRemoteDeviceName"];
   if ([v5 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
   {
     v6 = 0;
@@ -316,12 +316,12 @@ LABEL_9:
 
   else
   {
-    v6 = [a3 objectForKeyedSubscript:@"vcRemoteDeviceName"];
+    v6 = [dictionary objectForKeyedSubscript:@"vcRemoteDeviceName"];
   }
 
   self->_remoteDeviceName = v6;
-  self->_latencySensitiveModeEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamLatencySensitiveMode", "BOOLValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
+  self->_latencySensitiveModeEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamLatencySensitiveMode", "BOOLValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
   if ([v7 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
   {
     v8 = 0;
@@ -329,16 +329,16 @@ LABEL_9:
 
   else
   {
-    v8 = [a3 objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
+    v8 = [dictionary objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
   }
 
   self->_profileLevel = v8;
-  self->_fecEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsFECEnabled", "BOOLValue"}];
-  self->_rtxEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsRTXEnabled", "BOOLValue"}];
-  self->_transportProtocolType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTransportProtocolType", "integerValue"}];
-  self->_shouldSendBlackFramesOnClearScreen = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
-  self->_foveationEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFoveationEnabled", "BOOLValue"}];
-  v9 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
+  self->_fecEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsFECEnabled", "BOOLValue"}];
+  self->_rtxEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsRTXEnabled", "BOOLValue"}];
+  self->_transportProtocolType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTransportProtocolType", "integerValue"}];
+  self->_shouldSendBlackFramesOnClearScreen = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
+  self->_foveationEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFoveationEnabled", "BOOLValue"}];
+  v9 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
   if ([v9 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
   {
     v10 = 0;
@@ -346,11 +346,11 @@ LABEL_9:
 
   else
   {
-    v10 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
+    v10 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
   }
 
   self->_pdEncryptionContext = v10;
-  v11 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
+  v11 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
   if ([v11 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
   {
     v12 = 0;
@@ -358,15 +358,15 @@ LABEL_9:
 
   else
   {
-    v12 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
+    v12 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
   }
 
   self->_pdDecryptionContext = v12;
-  [a3 objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
+  [dictionary objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [a3 objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
+    v13 = [dictionary objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
   }
 
   else
@@ -561,18 +561,18 @@ LABEL_17:
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:37];
 }
 
-+ (BOOL)isPixelFormatValid:(unsigned int)a3 hdrMode:(unint64_t)a4
++ (BOOL)isPixelFormatValid:(unsigned int)valid hdrMode:(unint64_t)mode
 {
-  if (a3 <= 875836533)
+  if (valid <= 875836533)
   {
-    if (a3 == 875704422 || a3 == 875704438)
+    if (valid == 875704422 || valid == 875704438)
     {
       goto LABEL_9;
     }
 
     v4 = 875836518;
 LABEL_8:
-    if (a3 == v4)
+    if (valid == v4)
     {
       goto LABEL_9;
     }
@@ -580,12 +580,12 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (a3 <= 2016686639)
+  if (valid <= 2016686639)
   {
-    if (a3 == 875836534)
+    if (valid == 875836534)
     {
 LABEL_9:
-      LOBYTE(v5) = a4 == 0;
+      LOBYTE(v5) = mode == 0;
       return v5;
     }
 
@@ -593,13 +593,13 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (a3 == 2016686640)
+  if (valid == 2016686640)
   {
-    LOBYTE(v5) = a4 - 1 < 2;
+    LOBYTE(v5) = mode - 1 < 2;
     return v5;
   }
 
-  if (a3 == 2019963956)
+  if (valid == 2019963956)
   {
     LOBYTE(v5) = 1;
     return v5;

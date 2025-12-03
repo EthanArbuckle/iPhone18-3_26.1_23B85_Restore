@@ -1,10 +1,10 @@
 @interface OTControlArguments
-- (OTControlArguments)initWithCoder:(id)a3;
-- (OTControlArguments)initWithConfiguration:(id)a3;
-- (OTControlArguments)initWithContainerName:(id)a3 contextID:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 canSendMetrics:(BOOL)a8;
+- (OTControlArguments)initWithCoder:(id)coder;
+- (OTControlArguments)initWithConfiguration:(id)configuration;
+- (OTControlArguments)initWithContainerName:(id)name contextID:(id)d altDSID:(id)iD flowID:(id)flowID deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics;
 - (id)description;
 - (id)makeConfigurationContext;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OTControlArguments
@@ -12,108 +12,108 @@
 - (id)makeConfigurationContext
 {
   v3 = objc_alloc_init(OTConfigurationContext);
-  v4 = [(OTControlArguments *)self containerName];
-  [(OTConfigurationContext *)v3 setContainerName:v4];
+  containerName = [(OTControlArguments *)self containerName];
+  [(OTConfigurationContext *)v3 setContainerName:containerName];
 
-  v5 = [(OTControlArguments *)self contextID];
-  [(OTConfigurationContext *)v3 setContext:v5];
+  contextID = [(OTControlArguments *)self contextID];
+  [(OTConfigurationContext *)v3 setContext:contextID];
 
-  v6 = [(OTControlArguments *)self altDSID];
-  [(OTConfigurationContext *)v3 setAltDSID:v6];
+  altDSID = [(OTControlArguments *)self altDSID];
+  [(OTConfigurationContext *)v3 setAltDSID:altDSID];
 
-  v7 = [(OTControlArguments *)self flowID];
-  [(OTConfigurationContext *)v3 setFlowID:v7];
+  flowID = [(OTControlArguments *)self flowID];
+  [(OTConfigurationContext *)v3 setFlowID:flowID];
 
-  v8 = [(OTControlArguments *)self deviceSessionID];
-  [(OTConfigurationContext *)v3 setDeviceSessionID:v8];
+  deviceSessionID = [(OTControlArguments *)self deviceSessionID];
+  [(OTConfigurationContext *)v3 setDeviceSessionID:deviceSessionID];
 
   return v3;
 }
 
-- (OTControlArguments)initWithCoder:(id)a3
+- (OTControlArguments)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = OTControlArguments;
   v5 = [(OTControlArguments *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextID"];
     contextID = v5->_contextID;
     v5->_contextID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerName"];
     containerName = v5->_containerName;
     v5->_containerName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flowID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flowID"];
     flowID = v5->_flowID;
     v5->_flowID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceSessionID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceSessionID"];
     deviceSessionID = v5->_deviceSessionID;
     v5->_deviceSessionID = v14;
 
-    v5->_canSendMetrics = [v4 decodeBoolForKey:@"canSendMetrics"];
+    v5->_canSendMetrics = [coderCopy decodeBoolForKey:@"canSendMetrics"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(OTControlArguments *)self contextID];
-  [v9 encodeObject:v4 forKey:@"contextID"];
+  coderCopy = coder;
+  contextID = [(OTControlArguments *)self contextID];
+  [coderCopy encodeObject:contextID forKey:@"contextID"];
 
-  v5 = [(OTControlArguments *)self containerName];
-  [v9 encodeObject:v5 forKey:@"containerName"];
+  containerName = [(OTControlArguments *)self containerName];
+  [coderCopy encodeObject:containerName forKey:@"containerName"];
 
-  v6 = [(OTControlArguments *)self altDSID];
-  [v9 encodeObject:v6 forKey:@"altDSID"];
+  altDSID = [(OTControlArguments *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
 
-  v7 = [(OTControlArguments *)self flowID];
-  [v9 encodeObject:v7 forKey:@"flowID"];
+  flowID = [(OTControlArguments *)self flowID];
+  [coderCopy encodeObject:flowID forKey:@"flowID"];
 
-  v8 = [(OTControlArguments *)self deviceSessionID];
-  [v9 encodeObject:v8 forKey:@"deviceSessionID"];
+  deviceSessionID = [(OTControlArguments *)self deviceSessionID];
+  [coderCopy encodeObject:deviceSessionID forKey:@"deviceSessionID"];
 
-  [v9 encodeBool:-[OTControlArguments canSendMetrics](self forKey:{"canSendMetrics"), @"canSendMetrics"}];
+  [coderCopy encodeBool:-[OTControlArguments canSendMetrics](self forKey:{"canSendMetrics"), @"canSendMetrics"}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(OTControlArguments *)self containerName];
-  v5 = [(OTControlArguments *)self contextID];
-  v6 = [(OTControlArguments *)self altDSID];
-  v7 = [(OTControlArguments *)self flowID];
-  v8 = [(OTControlArguments *)self deviceSessionID];
-  v9 = [v3 stringWithFormat:@"<OTControlArguments: container:%@, context:%@, altDSID:%@, flowID: %@, deviceSessionID: %@, canSendMetrics: %d>", v4, v5, v6, v7, v8, -[OTControlArguments canSendMetrics](self, "canSendMetrics")];
+  containerName = [(OTControlArguments *)self containerName];
+  contextID = [(OTControlArguments *)self contextID];
+  altDSID = [(OTControlArguments *)self altDSID];
+  flowID = [(OTControlArguments *)self flowID];
+  deviceSessionID = [(OTControlArguments *)self deviceSessionID];
+  v9 = [v3 stringWithFormat:@"<OTControlArguments: container:%@, context:%@, altDSID:%@, flowID: %@, deviceSessionID: %@, canSendMetrics: %d>", containerName, contextID, altDSID, flowID, deviceSessionID, -[OTControlArguments canSendMetrics](self, "canSendMetrics")];
 
   return v9;
 }
 
-- (OTControlArguments)initWithContainerName:(id)a3 contextID:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 canSendMetrics:(BOOL)a8
+- (OTControlArguments)initWithContainerName:(id)name contextID:(id)d altDSID:(id)iD flowID:(id)flowID deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  flowIDCopy = flowID;
+  sessionIDCopy = sessionID;
   v23.receiver = self;
   v23.super_class = OTControlArguments;
   v18 = [(OTControlArguments *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    if (v13)
+    if (nameCopy)
     {
-      v20 = v13;
+      v20 = nameCopy;
     }
 
     else
@@ -122,24 +122,24 @@
     }
 
     objc_storeStrong(&v18->_containerName, v20);
-    objc_storeStrong(&v19->_contextID, a4);
-    objc_storeStrong(&v19->_altDSID, a5);
-    objc_storeStrong(&v19->_flowID, a6);
-    objc_storeStrong(&v19->_deviceSessionID, a7);
-    v19->_canSendMetrics = a8;
+    objc_storeStrong(&v19->_contextID, d);
+    objc_storeStrong(&v19->_altDSID, iD);
+    objc_storeStrong(&v19->_flowID, flowID);
+    objc_storeStrong(&v19->_deviceSessionID, sessionID);
+    v19->_canSendMetrics = metrics;
   }
 
   return v19;
 }
 
-- (OTControlArguments)initWithConfiguration:(id)a3
+- (OTControlArguments)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 containerName];
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  containerName = [configurationCopy containerName];
+  v6 = containerName;
+  if (containerName)
   {
-    v7 = v5;
+    v7 = containerName;
   }
 
   else
@@ -147,11 +147,11 @@
     v7 = @"com.apple.security.keychain";
   }
 
-  v8 = [v4 context];
-  v9 = v8;
-  if (v8)
+  context = [configurationCopy context];
+  v9 = context;
+  if (context)
   {
-    v10 = v8;
+    v10 = context;
   }
 
   else
@@ -159,12 +159,12 @@
     v10 = OTDefaultContext;
   }
 
-  v11 = [v4 altDSID];
-  v12 = [v4 flowID];
-  v13 = [v4 deviceSessionID];
-  v14 = [v4 canSendMetrics];
+  altDSID = [configurationCopy altDSID];
+  flowID = [configurationCopy flowID];
+  deviceSessionID = [configurationCopy deviceSessionID];
+  canSendMetrics = [configurationCopy canSendMetrics];
 
-  v15 = [(OTControlArguments *)self initWithContainerName:v7 contextID:v10 altDSID:v11 flowID:v12 deviceSessionID:v13 canSendMetrics:v14];
+  v15 = [(OTControlArguments *)self initWithContainerName:v7 contextID:v10 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:canSendMetrics];
   return v15;
 }
 

@@ -1,17 +1,17 @@
 @interface EffectPickerViewHelper
-+ (id)viewControllerWithHandler:(id)a3 effectPickerExtensionDetails:(id)a4;
++ (id)viewControllerWithHandler:(id)handler effectPickerExtensionDetails:(id)details;
 - (_TtC7ChatKit22EffectPickerViewHelper)init;
 @end
 
 @implementation EffectPickerViewHelper
 
-+ (id)viewControllerWithHandler:(id)a3 effectPickerExtensionDetails:(id)a4
++ (id)viewControllerWithHandler:(id)handler effectPickerExtensionDetails:(id)details
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a4;
-  v8 = sub_190A7F09C(sub_190A7F3A8, v6, v7);
+  detailsCopy = details;
+  v8 = sub_190A7F09C(sub_190A7F3A8, v6, detailsCopy);
 
   return v8;
 }

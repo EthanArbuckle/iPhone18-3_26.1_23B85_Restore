@@ -1,6 +1,6 @@
 @interface ScoreController
 - (ScoreControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ScoreController
@@ -12,10 +12,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   ScoreController.delegate.setter();
 }
 

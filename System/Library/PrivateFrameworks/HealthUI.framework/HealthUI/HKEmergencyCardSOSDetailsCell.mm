@@ -1,20 +1,20 @@
 @interface HKEmergencyCardSOSDetailsCell
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HKEmergencyCardSOSDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HKEmergencyCardSOSDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateText;
-- (void)setFooterAttributedText:(id)a3;
+- (void)setFooterAttributedText:(id)text;
 - (void)tintColorDidChange;
 @end
 
 @implementation HKEmergencyCardSOSDetailsCell
 
-- (HKEmergencyCardSOSDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKEmergencyCardSOSDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKEmergencyCardSOSDetailsCell;
-  v4 = [(HKEmergencyCardSOSDetailsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKEmergencyCardSOSDetailsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (void)setFooterAttributedText:(id)a3
+- (void)setFooterAttributedText:(id)text
 {
   v4 = MEMORY[0x1E696AAB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithAttributedString:v5];
+  textCopy = text;
+  v6 = [[v4 alloc] initWithAttributedString:textCopy];
 
   footerAttributedText = self->_footerAttributedText;
   self->_footerAttributedText = v6;
@@ -43,85 +43,85 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(HKEmergencyCardSOSDetailsCell *)self setFooterTextView:v4];
 
-  v5 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  v6 = [v5 textContainer];
-  [v6 lineFragmentPadding];
+  footerTextView = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  textContainer = [footerTextView textContainer];
+  [textContainer lineFragmentPadding];
   v8 = v7;
 
-  v9 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v9 setTextContainerInset:{0.0, -v8, 0.0, -v8}];
+  footerTextView2 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView2 setTextContainerInset:{0.0, -v8, 0.0, -v8}];
 
-  v10 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerTextView3 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v11 setScrollEnabled:0];
+  footerTextView4 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView4 setScrollEnabled:0];
 
-  v12 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v12 setUserInteractionEnabled:1];
+  footerTextView5 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView5 setUserInteractionEnabled:1];
 
-  v13 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v13 setDelegate:self];
+  footerTextView6 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView6 setDelegate:self];
 
-  v14 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v14 setEditable:0];
+  footerTextView7 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView7 setEditable:0];
 
-  v15 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v15 _setInteractiveTextSelectionDisabled:1];
+  footerTextView8 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView8 _setInteractiveTextSelectionDisabled:1];
 
-  v16 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v16 setDataDetectorTypes:2];
+  footerTextView9 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView9 setDataDetectorTypes:2];
 
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  v18 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v18 setBackgroundColor:v17];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  footerTextView10 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView10 setBackgroundColor:clearColor];
 
-  v19 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v20 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  [v20 setBackgroundColor:v19];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  contentView = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  [contentView setBackgroundColor:systemGroupedBackgroundColor];
 
-  v22 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  v21 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v22 addSubview:v21];
+  contentView2 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  footerTextView11 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [contentView2 addSubview:footerTextView11];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  v4 = [v3 topAnchor];
-  v5 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToSystemSpacingBelowAnchor:v6 multiplier:1.0];
+  footerTextView = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  topAnchor = [footerTextView topAnchor];
+  contentView = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v7 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   [v7 setActive:1];
 
-  v8 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  v9 = [v8 leftAnchor];
-  v10 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  v11 = [v10 leftAnchor];
-  v12 = [v9 constraintEqualToSystemSpacingAfterAnchor:v11 multiplier:2.0];
+  footerTextView2 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  leftAnchor = [footerTextView2 leftAnchor];
+  contentView2 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  leftAnchor2 = [contentView2 leftAnchor];
+  v12 = [leftAnchor constraintEqualToSystemSpacingAfterAnchor:leftAnchor2 multiplier:2.0];
   [v12 setActive:1];
 
-  v13 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  v14 = [v13 rightAnchor];
-  v15 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  v16 = [v15 rightAnchor];
-  v17 = [v14 constraintEqualToSystemSpacingAfterAnchor:v16 multiplier:1.0];
+  contentView3 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  rightAnchor = [contentView3 rightAnchor];
+  footerTextView3 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  rightAnchor2 = [footerTextView3 rightAnchor];
+  v17 = [rightAnchor constraintEqualToSystemSpacingAfterAnchor:rightAnchor2 multiplier:1.0];
   [v17 setActive:1];
 
-  v22 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
-  v18 = [v22 bottomAnchor];
-  v19 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  contentView4 = [(HKEmergencyCardSOSDetailsCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  footerTextView4 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  bottomAnchor2 = [footerTextView4 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v6 = MEMORY[0x1E6963608];
-  v7 = a4;
-  v8 = [v6 defaultWorkspace];
-  [v8 openSensitiveURL:v7 withOptions:0];
+  lCopy = l;
+  defaultWorkspace = [v6 defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
 
   return 0;
 }
@@ -136,9 +136,9 @@
 
 - (void)_updateText
 {
-  v4 = [(HKEmergencyCardSOSDetailsCell *)self footerAttributedText];
-  v3 = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
-  [v3 setAttributedText:v4];
+  footerAttributedText = [(HKEmergencyCardSOSDetailsCell *)self footerAttributedText];
+  footerTextView = [(HKEmergencyCardSOSDetailsCell *)self footerTextView];
+  [footerTextView setAttributedText:footerAttributedText];
 }
 
 @end

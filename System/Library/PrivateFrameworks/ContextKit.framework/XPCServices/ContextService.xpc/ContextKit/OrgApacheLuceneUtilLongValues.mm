@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneUtilLongValues__1 alloc];
     OrgApacheLuceneIndexNumericDocValues_init(v2, v3);

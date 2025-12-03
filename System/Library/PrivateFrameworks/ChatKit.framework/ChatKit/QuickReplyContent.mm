@@ -1,5 +1,5 @@
 @interface QuickReplyContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (NSArray)rowHeights;
 - (NSArray)rows;
@@ -7,7 +7,7 @@
 - (NSDictionary)indicesForReply;
 - (NSString)debugDescription;
 - (_TtC7ChatKit17QuickReplyContent)init;
-- (int64_t)indexForReply:(id)a3;
+- (int64_t)indexForReply:(id)reply;
 @end
 
 @implementation QuickReplyContent
@@ -48,7 +48,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_190874624();
 
   v3 = sub_190D56ED0();
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (int64_t)indexForReply:(id)a3
+- (int64_t)indexForReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -70,7 +70,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1908752E4(v4, v6);
 
   return v8;
@@ -78,7 +78,7 @@
 
 - (NSArray)strings
 {
-  v2 = self;
+  selfCopy = self;
   sub_190875414();
 
   v3 = sub_190D57160();
@@ -86,11 +86,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_190D58140();
     swift_unknownObjectRelease();
@@ -99,7 +99,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_190875570(v8);

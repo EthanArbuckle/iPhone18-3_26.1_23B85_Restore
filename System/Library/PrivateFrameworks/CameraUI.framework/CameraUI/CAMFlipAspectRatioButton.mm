@@ -1,17 +1,17 @@
 @interface CAMFlipAspectRatioButton
-- (CAMFlipAspectRatioButton)initWithFrame:(CGRect)a3;
+- (CAMFlipAspectRatioButton)initWithFrame:(CGRect)frame;
 - (id)imageNameForCurrentState;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 @end
 
 @implementation CAMFlipAspectRatioButton
 
-- (CAMFlipAspectRatioButton)initWithFrame:(CGRect)a3
+- (CAMFlipAspectRatioButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMFlipAspectRatioButton;
-  v3 = [(CAMCircleButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMCircleButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,20 +36,20 @@
   }
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(CAMCircleButton *)self updateImage];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CAMFlipAspectRatioButton;
-  [(CAMCircleButton *)&v5 setOrientation:a3 animated:a4];
+  [(CAMCircleButton *)&v5 setOrientation:orientation animated:animated];
   [(CAMCircleButton *)self updateImage];
 }
 

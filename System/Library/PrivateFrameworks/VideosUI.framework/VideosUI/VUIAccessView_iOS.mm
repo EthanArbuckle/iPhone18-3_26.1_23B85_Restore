@@ -1,43 +1,43 @@
 @interface VUIAccessView_iOS
-+ (BOOL)tooManyIconsWithAppCount:(unint64_t)a3;
++ (BOOL)tooManyIconsWithAppCount:(unint64_t)count;
 + (CGSize)iconSize;
-- (VUIAccessView_iOS)initWithApps:(id)a3;
+- (VUIAccessView_iOS)initWithApps:(id)apps;
 - (id)_buildCarousel;
 - (id)_buildLogoStack;
-- (id)_imageViewForIndex:(unint64_t)a3;
-- (id)carouselView:(id)a3 cellForItemAtIndex:(unint64_t)a4;
+- (id)_imageViewForIndex:(unint64_t)index;
+- (id)carouselView:(id)view cellForItemAtIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBody:(id)a3;
-- (void)setSecondaryBody:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBody:(id)body;
+- (void)setSecondaryBody:(id)body;
+- (void)setTitle:(id)title;
 - (void)setupView;
 - (void)showNackScreen;
 @end
 
 @implementation VUIAccessView_iOS
 
-- (VUIAccessView_iOS)initWithApps:(id)a3
+- (VUIAccessView_iOS)initWithApps:(id)apps
 {
-  v5 = a3;
+  appsCopy = apps;
   v9.receiver = self;
   v9.super_class = VUIAccessView_iOS;
   v6 = [(VUIAccessView_iOS *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_apps, a3);
+    objc_storeStrong(&v6->_apps, apps);
     [(VUIAccessView_iOS *)v7 setupView];
   }
 
   return v7;
 }
 
-+ (BOOL)tooManyIconsWithAppCount:(unint64_t)a3
++ (BOOL)tooManyIconsWithAppCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v4 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v5 = 7;
   }
@@ -47,7 +47,7 @@
     v5 = 5;
   }
 
-  return v5 < a3;
+  return v5 < count;
 }
 
 - (void)setupView
@@ -67,8 +67,8 @@
 
   [(UIButton *)self->_allowButton setVuiAccessibilityIdentifier:@"UIA.TV.Button.access.connect"];
   [(VUIAccessView_iOS *)self setVuiAccessibilityIdentifier:@"UIA.TV.View.access.connect"];
-  v9 = [MEMORY[0x1E69DC888] vui_keyColor];
-  [(VUIAccessView_iOS *)self setTintColor:v9];
+  vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+  [(VUIAccessView_iOS *)self setTintColor:vui_keyColor];
 }
 
 - (void)dealloc
@@ -88,49 +88,49 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   titleLabel = self->_titleLabel;
-  v6 = v4;
+  v6 = titleCopy;
   if (!titleLabel)
   {
     [(VUIAccessView_iOS *)self layoutSubviews];
-    v4 = v6;
+    titleCopy = v6;
     titleLabel = self->_titleLabel;
   }
 
-  [(UILabel *)titleLabel setText:v4];
+  [(UILabel *)titleLabel setText:titleCopy];
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   bodyLabel = self->_bodyLabel;
-  v6 = v4;
+  v6 = bodyCopy;
   if (!bodyLabel)
   {
     [(VUIAccessView_iOS *)self layoutSubviews];
-    v4 = v6;
+    bodyCopy = v6;
     bodyLabel = self->_bodyLabel;
   }
 
-  [(UILabel *)bodyLabel setText:v4];
+  [(UILabel *)bodyLabel setText:bodyCopy];
 }
 
-- (void)setSecondaryBody:(id)a3
+- (void)setSecondaryBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   secondaryBodyLabel = self->_secondaryBodyLabel;
-  v6 = v4;
+  v6 = bodyCopy;
   if (!secondaryBodyLabel)
   {
     [(VUIAccessView_iOS *)self layoutSubviews];
-    v4 = v6;
+    bodyCopy = v6;
     secondaryBodyLabel = self->_secondaryBodyLabel;
   }
 
-  [(UILabel *)secondaryBodyLabel setText:v4];
+  [(UILabel *)secondaryBodyLabel setText:bodyCopy];
   [(UILabel *)self->_secondaryBodyLabel setHidden:0];
 }
 
@@ -138,8 +138,8 @@
 {
   if ([(NSArray *)self->_apps count]< 2)
   {
-    v9 = [(NSArray *)self->_apps firstObject];
-    v7 = [v9 objectForKeyedSubscript:@"appName"];
+    firstObject = [(NSArray *)self->_apps firstObject];
+    v7 = [firstObject objectForKeyedSubscript:@"appName"];
 
     v10 = +[VUILocalizationManager sharedInstance];
     v8 = [v10 localizedStringForKey:@"ACCESS_NACK_TITLE_FORMAT"];
@@ -185,14 +185,14 @@
   [(VUIAccessView_iOS *)&v194 layoutSubviews];
   if (!self->_didLayout)
   {
-    v3 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUIAccessView_iOS *)self setBackgroundColor:v3];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUIAccessView_iOS *)self setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v6 = 20.0;
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v6 = 74.0;
     }
@@ -203,24 +203,24 @@
     self->_titlePlacementGuide = v7;
 
     [(VUIAccessView_iOS *)self addLayoutGuide:self->_titlePlacementGuide];
-    v9 = [(UILayoutGuide *)self->_titlePlacementGuide centerXAnchor];
-    v10 = [(VUIAccessView_iOS *)self centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    centerXAnchor = [(UILayoutGuide *)self->_titlePlacementGuide centerXAnchor];
+    centerXAnchor2 = [(VUIAccessView_iOS *)self centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v11 setActive:1];
 
-    v12 = [(UILayoutGuide *)self->_titlePlacementGuide heightAnchor];
-    v13 = [(VUIAccessView_iOS *)self heightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 multiplier:0.25];
+    heightAnchor = [(UILayoutGuide *)self->_titlePlacementGuide heightAnchor];
+    heightAnchor2 = [(VUIAccessView_iOS *)self heightAnchor];
+    v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.25];
     [v14 setActive:1];
 
-    v15 = [(UILayoutGuide *)self->_titlePlacementGuide widthAnchor];
-    v16 = [(VUIAccessView_iOS *)self widthAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    widthAnchor = [(UILayoutGuide *)self->_titlePlacementGuide widthAnchor];
+    widthAnchor2 = [(VUIAccessView_iOS *)self widthAnchor];
+    v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v17 setActive:1];
 
-    v18 = [(UILayoutGuide *)self->_titlePlacementGuide topAnchor];
-    v19 = [(VUIAccessView_iOS *)self topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(UILayoutGuide *)self->_titlePlacementGuide topAnchor];
+    topAnchor2 = [(VUIAccessView_iOS *)self topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v20 setActive:1];
 
     v21 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -239,8 +239,8 @@
     [(UILabel *)self->_titleLabel setFont:v29];
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     v30 = self->_titleLabel;
-    v31 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(UILabel *)v30 setTextColor:v31];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(UILabel *)v30 setTextColor:vui_primaryTextColor];
 
     [(UILabel *)self->_titleLabel setVuiAccessibilityIdentifier:@"UIA.TV.Label.access.connect"];
     v189 = *MEMORY[0x1E69DDCF8];
@@ -256,8 +256,8 @@
     [(UILabel *)self->_bodyLabel setTextAlignment:1];
     [(UILabel *)self->_bodyLabel setVuiAccessibilityIdentifier:@"UIA.TV.Label.access.body"];
     v35 = self->_bodyLabel;
-    v36 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(UILabel *)v35 setTextColor:v36];
+    vui_primaryTextColor2 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(UILabel *)v35 setTextColor:vui_primaryTextColor2];
 
     v37 = v32;
     v38 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v22, v23, v24, v25}];
@@ -269,8 +269,8 @@
     [(UILabel *)self->_secondaryBodyLabel setNumberOfLines:0];
     [(UILabel *)self->_secondaryBodyLabel setTextAlignment:1];
     v40 = self->_secondaryBodyLabel;
-    v41 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(UILabel *)v40 setTextColor:v41];
+    vui_primaryTextColor3 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(UILabel *)v40 setTextColor:vui_primaryTextColor3];
 
     v42 = objc_alloc(MEMORY[0x1E69DCF90]);
     v43 = self->_bodyLabel;
@@ -313,35 +313,35 @@
     v58 = [VUIAccessView_iOS tooManyIconsWithAppCount:[(NSArray *)self->_apps count]];
     if (v58)
     {
-      v59 = [(VUIAccessView_iOS *)self _buildCarousel];
+      _buildCarousel = [(VUIAccessView_iOS *)self _buildCarousel];
       carouselView = self->_carouselView;
-      self->_carouselView = v59;
+      self->_carouselView = _buildCarousel;
 
       [(VUIAccessView_iOS *)self addSubview:self->_carouselView];
       [(_TVCarouselView *)self->_carouselView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v61 = [(_TVCarouselView *)self->_carouselView centerXAnchor];
-      v62 = [(VUIAccessView_iOS *)self centerXAnchor];
-      v63 = [v61 constraintEqualToAnchor:v62];
+      centerXAnchor3 = [(_TVCarouselView *)self->_carouselView centerXAnchor];
+      centerXAnchor4 = [(VUIAccessView_iOS *)self centerXAnchor];
+      v63 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       [v63 setActive:1];
 
-      v64 = [(_TVCarouselView *)self->_carouselView widthAnchor];
-      v65 = [(VUIAccessView_iOS *)self widthAnchor];
-      v66 = [v64 constraintEqualToAnchor:v65];
+      widthAnchor3 = [(_TVCarouselView *)self->_carouselView widthAnchor];
+      widthAnchor4 = [(VUIAccessView_iOS *)self widthAnchor];
+      v66 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       [v66 setActive:1];
 
-      v67 = [(_TVCarouselView *)self->_carouselView heightAnchor];
+      heightAnchor3 = [(_TVCarouselView *)self->_carouselView heightAnchor];
       +[VUIAccessView_iOS iconSize];
-      v69 = [v67 constraintEqualToConstant:v68];
+      v69 = [heightAnchor3 constraintEqualToConstant:v68];
       [v69 setActive:1];
 
-      v70 = [(_TVCarouselView *)self->_carouselView topAnchor];
-      v71 = [(VUIAccessView_iOS *)self topAnchor];
-      v72 = [v70 constraintGreaterThanOrEqualToAnchor:v71 constant:8.0];
+      topAnchor3 = [(_TVCarouselView *)self->_carouselView topAnchor];
+      topAnchor4 = [(VUIAccessView_iOS *)self topAnchor];
+      v72 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:8.0];
       [v72 setActive:1];
 
-      v73 = [(_TVCarouselView *)self->_carouselView bottomAnchor];
-      v74 = [(UIScrollView *)self->_bodyScroll firstBaselineAnchor];
-      v75 = [v73 constraintEqualToAnchor:v74 constant:-16.0];
+      bottomAnchor = [(_TVCarouselView *)self->_carouselView bottomAnchor];
+      firstBaselineAnchor = [(UIScrollView *)self->_bodyScroll firstBaselineAnchor];
+      v75 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor constant:-16.0];
       [v75 setActive:1];
 
       v76 = self->_seeAllButton;
@@ -349,8 +349,8 @@
       v78 = [v77 localizedStringForKey:@"ACCESS_SEE_ALL_BUTTON"];
       [(UIButton *)v76 setTitle:v78 forState:0];
 
-      v79 = [(UIButton *)self->_seeAllButton titleLabel];
-      [v79 setLineBreakMode:0];
+      titleLabel = [(UIButton *)self->_seeAllButton titleLabel];
+      [titleLabel setLineBreakMode:0];
 
       [(UIButton *)self->_seeAllButton setTranslatesAutoresizingMaskIntoConstraints:0];
       v80 = v193;
@@ -359,24 +359,24 @@
 
     else
     {
-      v81 = [(VUIAccessView_iOS *)self _buildLogoStack];
+      _buildLogoStack = [(VUIAccessView_iOS *)self _buildLogoStack];
       logoStack = self->_logoStack;
-      self->_logoStack = v81;
+      self->_logoStack = _buildLogoStack;
 
       [(VUIAccessView_iOS *)self addSubview:self->_logoStack];
-      v83 = [(UIStackView *)self->_logoStack centerXAnchor];
-      v84 = [(VUIAccessView_iOS *)self centerXAnchor];
-      v85 = [v83 constraintEqualToAnchor:v84];
+      centerXAnchor5 = [(UIStackView *)self->_logoStack centerXAnchor];
+      centerXAnchor6 = [(VUIAccessView_iOS *)self centerXAnchor];
+      v85 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       [v85 setActive:1];
 
-      v86 = [(UIStackView *)self->_logoStack topAnchor];
-      v87 = [(VUIAccessView_iOS *)self topAnchor];
-      v88 = [v86 constraintGreaterThanOrEqualToAnchor:v87 constant:8.0];
+      topAnchor5 = [(UIStackView *)self->_logoStack topAnchor];
+      topAnchor6 = [(VUIAccessView_iOS *)self topAnchor];
+      v88 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:8.0];
       [v88 setActive:1];
 
-      v89 = [(UIStackView *)self->_logoStack bottomAnchor];
-      v90 = [(UIScrollView *)self->_bodyScroll firstBaselineAnchor];
-      v91 = [v89 constraintEqualToAnchor:v90 constant:-16.0];
+      bottomAnchor2 = [(UIStackView *)self->_logoStack bottomAnchor];
+      firstBaselineAnchor2 = [(UIScrollView *)self->_bodyScroll firstBaselineAnchor];
+      v91 = [bottomAnchor2 constraintEqualToAnchor:firstBaselineAnchor2 constant:-16.0];
       [v91 setActive:1];
 
       v80 = v193;
@@ -390,25 +390,25 @@
     [(UIButton *)allowButton setTitle:v95 forState:0];
 
     v96 = self->_allowButton;
-    v97 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v96 setTitleColor:v97 forState:0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v96 setTitleColor:whiteColor forState:0];
 
     v98 = MEMORY[0x1E6913230]([(UIButton *)self->_allowButton _setFont:v92]);
     v99 = self->_allowButton;
     if (v98)
     {
-      v100 = [(UIButton *)v99 vuiLayer];
-      [v100 setCornerRadius:25.0];
+      vuiLayer = [(UIButton *)v99 vuiLayer];
+      [vuiLayer setCornerRadius:25.0];
 
       v101 = self->_allowButton;
-      v102 = [(VUIAccessView_iOS *)self tintColor];
-      [(UIButton *)v101 vuiEnableGlassBackgroundWithIsEnabled:1 tint:v102 type:4 flexible:0];
+      tintColor = [(VUIAccessView_iOS *)self tintColor];
+      [(UIButton *)v101 vuiEnableGlassBackgroundWithIsEnabled:1 tint:tintColor type:4 flexible:0];
     }
 
     else
     {
-      v103 = [(VUIAccessView_iOS *)self tintColor];
-      [(UIButton *)v99 setBackgroundColor:v103];
+      tintColor2 = [(VUIAccessView_iOS *)self tintColor];
+      [(UIButton *)v99 setBackgroundColor:tintColor2];
 
       [(UIButton *)self->_allowButton _setContinuousCornerRadius:8.0];
     }
@@ -420,25 +420,25 @@
     [(UIButton *)nackButton setTitle:v106 forState:0];
 
     v107 = self->_nackButton;
-    v108 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v107 setTitleColor:v108 forState:0];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v107 setTitleColor:whiteColor2 forState:0];
 
     v109 = MEMORY[0x1E6913230]([(UIButton *)self->_nackButton _setFont:v80]);
     v110 = self->_nackButton;
     if (v109)
     {
-      v111 = [(UIButton *)self->_nackButton vuiLayer];
-      [v111 setCornerRadius:25.0];
+      vuiLayer2 = [(UIButton *)self->_nackButton vuiLayer];
+      [vuiLayer2 setCornerRadius:25.0];
 
       v112 = self->_nackButton;
-      v113 = [(VUIAccessView_iOS *)self tintColor];
-      [(UIButton *)v112 vuiEnableGlassBackgroundWithIsEnabled:1 tint:v113 type:4 flexible:0];
+      tintColor3 = [(VUIAccessView_iOS *)self tintColor];
+      [(UIButton *)v112 vuiEnableGlassBackgroundWithIsEnabled:1 tint:tintColor3 type:4 flexible:0];
     }
 
     else
     {
-      v114 = [(VUIAccessView_iOS *)self tintColor];
-      [(UIButton *)v110 setBackgroundColor:v114];
+      tintColor4 = [(VUIAccessView_iOS *)self tintColor];
+      [(UIButton *)v110 setBackgroundColor:tintColor4];
 
       [(UIButton *)self->_nackButton _setContinuousCornerRadius:8.0];
     }
@@ -458,151 +458,151 @@
     [(UIStackView *)self->_bottomStack setDistribution:3];
     [(UIStackView *)self->_bottomStack setSpacing:0.0];
     [(VUIAccessView_iOS *)self addSubview:self->_bottomStack];
-    v119 = [(UIScrollView *)self->_bodyScroll leadingAnchor];
-    v120 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v121 = [v120 leadingAnchor];
-    v122 = [v119 constraintEqualToAnchor:v121];
+    leadingAnchor = [(UIScrollView *)self->_bodyScroll leadingAnchor];
+    readableContentGuide = [(VUIAccessView_iOS *)self readableContentGuide];
+    leadingAnchor2 = [readableContentGuide leadingAnchor];
+    v122 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v122 setActive:1];
 
-    v123 = [(UIScrollView *)self->_bodyScroll trailingAnchor];
-    v124 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v125 = [v124 trailingAnchor];
-    v126 = [v123 constraintEqualToAnchor:v125];
+    trailingAnchor = [(UIScrollView *)self->_bodyScroll trailingAnchor];
+    readableContentGuide2 = [(VUIAccessView_iOS *)self readableContentGuide];
+    trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+    v126 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v126 setActive:1];
 
-    v127 = [(UIScrollView *)self->_bodyScroll topAnchor];
-    v128 = [(UILayoutGuide *)self->_titlePlacementGuide bottomAnchor];
-    v129 = [v127 constraintEqualToAnchor:v128];
+    topAnchor7 = [(UIScrollView *)self->_bodyScroll topAnchor];
+    bottomAnchor3 = [(UILayoutGuide *)self->_titlePlacementGuide bottomAnchor];
+    v129 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3];
     [v129 setActive:1];
 
-    v130 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
-    v131 = [(UIStackView *)self->_bottomStack topAnchor];
-    v132 = [v130 constraintEqualToAnchor:v131 constant:-22.0];
+    bottomAnchor4 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
+    topAnchor8 = [(UIStackView *)self->_bottomStack topAnchor];
+    v132 = [bottomAnchor4 constraintEqualToAnchor:topAnchor8 constant:-22.0];
     [v132 setActive:1];
 
-    v133 = [(UIStackView *)self->_scrollStack leadingAnchor];
-    v134 = [(UIScrollView *)self->_bodyScroll leadingAnchor];
-    v135 = [v133 constraintEqualToAnchor:v134];
+    leadingAnchor3 = [(UIStackView *)self->_scrollStack leadingAnchor];
+    leadingAnchor4 = [(UIScrollView *)self->_bodyScroll leadingAnchor];
+    v135 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v135 setActive:1];
 
-    v136 = [(UIStackView *)self->_scrollStack trailingAnchor];
-    v137 = [(UIScrollView *)self->_bodyScroll trailingAnchor];
-    v138 = [v136 constraintEqualToAnchor:v137];
+    trailingAnchor3 = [(UIStackView *)self->_scrollStack trailingAnchor];
+    trailingAnchor4 = [(UIScrollView *)self->_bodyScroll trailingAnchor];
+    v138 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v138 setActive:1];
 
-    v139 = [(UIStackView *)self->_scrollStack topAnchor];
-    v140 = [(UIScrollView *)self->_bodyScroll topAnchor];
-    v141 = [v139 constraintEqualToAnchor:v140];
+    topAnchor9 = [(UIStackView *)self->_scrollStack topAnchor];
+    topAnchor10 = [(UIScrollView *)self->_bodyScroll topAnchor];
+    v141 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     [v141 setActive:1];
 
-    v142 = [(UIStackView *)self->_scrollStack bottomAnchor];
-    v143 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
-    v144 = [v142 constraintEqualToAnchor:v143];
+    bottomAnchor5 = [(UIStackView *)self->_scrollStack bottomAnchor];
+    bottomAnchor6 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
+    v144 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     [v144 setActive:1];
 
-    v145 = [(UIStackView *)self->_scrollStack widthAnchor];
-    v146 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v147 = [v146 widthAnchor];
-    v148 = [v145 constraintEqualToAnchor:v147];
+    widthAnchor5 = [(UIStackView *)self->_scrollStack widthAnchor];
+    readableContentGuide3 = [(VUIAccessView_iOS *)self readableContentGuide];
+    widthAnchor6 = [readableContentGuide3 widthAnchor];
+    v148 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     [v148 setActive:1];
 
-    v149 = [(UIStackView *)self->_bottomStack widthAnchor];
-    v150 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v151 = [v150 widthAnchor];
-    v152 = [v149 constraintEqualToAnchor:v151];
+    widthAnchor7 = [(UIStackView *)self->_bottomStack widthAnchor];
+    readableContentGuide4 = [(VUIAccessView_iOS *)self readableContentGuide];
+    widthAnchor8 = [readableContentGuide4 widthAnchor];
+    v152 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
     [v152 setActive:1];
 
-    v153 = [(UIButton *)self->_seeAllButton widthAnchor];
-    v154 = [v153 constraintEqualToConstant:288.0];
+    widthAnchor9 = [(UIButton *)self->_seeAllButton widthAnchor];
+    v154 = [widthAnchor9 constraintEqualToConstant:288.0];
     [v154 setActive:1];
 
-    v155 = [(UIButton *)self->_allowButton centerXAnchor];
-    v156 = [(VUIAccessView_iOS *)self centerXAnchor];
-    v157 = [v155 constraintEqualToAnchor:v156];
+    centerXAnchor7 = [(UIButton *)self->_allowButton centerXAnchor];
+    centerXAnchor8 = [(VUIAccessView_iOS *)self centerXAnchor];
+    v157 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v157 setActive:1];
 
-    v158 = [(UIButton *)self->_allowButton widthAnchor];
-    v159 = [v158 constraintEqualToConstant:288.0];
+    widthAnchor10 = [(UIButton *)self->_allowButton widthAnchor];
+    v159 = [widthAnchor10 constraintEqualToConstant:288.0];
     [v159 setActive:1];
 
-    v160 = [(UIButton *)self->_allowButton heightAnchor];
-    v161 = [v160 constraintEqualToConstant:50.0];
+    heightAnchor4 = [(UIButton *)self->_allowButton heightAnchor];
+    v161 = [heightAnchor4 constraintEqualToConstant:50.0];
     [v161 setActive:1];
 
-    v162 = [(UIStackView *)self->_bottomStack centerXAnchor];
-    v163 = [(VUIAccessView_iOS *)self centerXAnchor];
-    v164 = [v162 constraintEqualToAnchor:v163];
+    centerXAnchor9 = [(UIStackView *)self->_bottomStack centerXAnchor];
+    centerXAnchor10 = [(VUIAccessView_iOS *)self centerXAnchor];
+    v164 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     [v164 setActive:1];
 
-    v165 = [(UIStackView *)self->_bottomStack bottomAnchor];
-    v166 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v167 = [v166 bottomAnchor];
-    v168 = [v165 constraintEqualToAnchor:v167 constant:-22.0];
+    bottomAnchor7 = [(UIStackView *)self->_bottomStack bottomAnchor];
+    readableContentGuide5 = [(VUIAccessView_iOS *)self readableContentGuide];
+    bottomAnchor8 = [readableContentGuide5 bottomAnchor];
+    v168 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-22.0];
     [v168 setActive:1];
 
-    v169 = [MEMORY[0x1E69DC938] currentDevice];
-    v170 = [v169 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    v171 = v170 & 0xFFFFFFFFFFFFFFFBLL;
-    v172 = [(UIButton *)self->_nackButton bottomAnchor];
-    v173 = [(VUIAccessView_iOS *)self readableContentGuide];
-    v174 = [v173 bottomAnchor];
+    v171 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
+    bottomAnchor9 = [(UIButton *)self->_nackButton bottomAnchor];
+    readableContentGuide6 = [(VUIAccessView_iOS *)self readableContentGuide];
+    bottomAnchor10 = [readableContentGuide6 bottomAnchor];
     v175 = -44.0;
     if (v171 == 1)
     {
       v175 = -60.0;
     }
 
-    v176 = [v172 constraintEqualToAnchor:v174 constant:v175];
+    v176 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:v175];
     [v176 setActive:1];
 
-    v177 = [(UIButton *)self->_nackButton topAnchor];
-    v178 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
-    v179 = [v177 constraintGreaterThanOrEqualToAnchor:v178 constant:22.0];
+    topAnchor11 = [(UIButton *)self->_nackButton topAnchor];
+    bottomAnchor11 = [(UIScrollView *)self->_bodyScroll bottomAnchor];
+    v179 = [topAnchor11 constraintGreaterThanOrEqualToAnchor:bottomAnchor11 constant:22.0];
     [v179 setActive:1];
 
-    v180 = [(UIButton *)self->_nackButton centerXAnchor];
-    v181 = [(VUIAccessView_iOS *)self centerXAnchor];
-    v182 = [v180 constraintEqualToAnchor:v181];
+    centerXAnchor11 = [(UIButton *)self->_nackButton centerXAnchor];
+    centerXAnchor12 = [(VUIAccessView_iOS *)self centerXAnchor];
+    v182 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
     [v182 setActive:1];
 
-    v183 = [(UIButton *)self->_nackButton widthAnchor];
-    v184 = [(UIButton *)self->_allowButton widthAnchor];
-    v185 = [v183 constraintEqualToAnchor:v184];
+    widthAnchor11 = [(UIButton *)self->_nackButton widthAnchor];
+    widthAnchor12 = [(UIButton *)self->_allowButton widthAnchor];
+    v185 = [widthAnchor11 constraintEqualToAnchor:widthAnchor12];
     [v185 setActive:1];
 
-    v186 = [(UIButton *)self->_nackButton heightAnchor];
-    v187 = [(UIButton *)self->_allowButton heightAnchor];
-    v188 = [v186 constraintEqualToAnchor:v187];
+    heightAnchor5 = [(UIButton *)self->_nackButton heightAnchor];
+    heightAnchor6 = [(UIButton *)self->_allowButton heightAnchor];
+    v188 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
     [v188 setActive:1];
 
     self->_didLayout = 1;
   }
 }
 
-- (id)carouselView:(id)a3 cellForItemAtIndex:(unint64_t)a4
+- (id)carouselView:(id)view cellForItemAtIndex:(unint64_t)index
 {
-  v6 = [a3 dequeueReusableCellWithReuseIdentifier:@"cell" forIndex:?];
-  v7 = [v6 contentView];
-  v8 = [v7 subviews];
-  v9 = [v8 firstObject];
+  v6 = [view dequeueReusableCellWithReuseIdentifier:@"cell" forIndex:?];
+  contentView = [v6 contentView];
+  subviews = [contentView subviews];
+  firstObject = [subviews firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     apps = self->_apps;
-    v11 = v9;
-    v12 = [(NSArray *)apps objectAtIndexedSubscript:a4];
+    v11 = firstObject;
+    v12 = [(NSArray *)apps objectAtIndexedSubscript:index];
     v13 = [v12 objectForKeyedSubscript:@"appIcon"];
     [v11 setImage:v13];
   }
 
   else
   {
-    v12 = [(VUIAccessView_iOS *)self _imageViewForIndex:a4];
+    v12 = [(VUIAccessView_iOS *)self _imageViewForIndex:index];
     [v12 setAutoresizingMask:18];
-    [v9 removeFromSuperview];
-    [v7 addSubview:v12];
+    [firstObject removeFromSuperview];
+    [contentView addSubview:v12];
   }
 
   return v6;
@@ -626,14 +626,14 @@
 
 - (id)_buildLogoStack
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_apps count])
   {
     v4 = 0;
     do
     {
       v5 = [(VUIAccessView_iOS *)self _imageViewForIndex:v4];
-      [v3 addObject:v5];
+      [array addObject:v5];
 
       ++v4;
     }
@@ -641,7 +641,7 @@
     while (v4 < [(NSArray *)self->_apps count]);
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v3];
+  v6 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setAxis:0];
   [v6 setAlignment:3];
@@ -652,21 +652,21 @@
   return v6;
 }
 
-- (id)_imageViewForIndex:(unint64_t)a3
+- (id)_imageViewForIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_apps objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_apps objectAtIndexedSubscript:index];
   v4 = [v3 objectForKeyedSubscript:@"appIcon"];
   v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   +[VUIAccessView_iOS iconSize];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:v9];
+  heightAnchor = [v5 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:v9];
   [v11 setActive:1];
 
-  v12 = [v5 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:v7];
+  widthAnchor = [v5 widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:v7];
   [v13 setActive:1];
 
   [v5 setImage:v4];
@@ -674,17 +674,17 @@
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == @"__VUIAccessView_iOSObservationContext" && self->_allowButton == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"__VUIAccessView_iOSObservationContext" && self->_allowButton == objectCopy)
   {
-    v13 = [(VUIAccessView_iOS *)self tintColor];
-    v14 = [(UIButton *)self->_allowButton isHighlighted];
+    tintColor = [(VUIAccessView_iOS *)self tintColor];
+    isHighlighted = [(UIButton *)self->_allowButton isHighlighted];
     v15 = MEMORY[0x1E69DD250];
-    if (v14)
+    if (isHighlighted)
     {
       v16 = v21;
       v21[0] = MEMORY[0x1E69E9820];
@@ -703,8 +703,8 @@
     v16[2] = v17;
     v16[3] = &unk_1E872D990;
     v16[4] = self;
-    v16[5] = v13;
-    v18 = v13;
+    v16[5] = tintColor;
+    v18 = tintColor;
     [v15 animateWithDuration:v16 animations:0.25];
   }
 
@@ -712,7 +712,7 @@
   {
     v19.receiver = self;
     v19.super_class = VUIAccessView_iOS;
-    [(VUIAccessView_iOS *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VUIAccessView_iOS *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

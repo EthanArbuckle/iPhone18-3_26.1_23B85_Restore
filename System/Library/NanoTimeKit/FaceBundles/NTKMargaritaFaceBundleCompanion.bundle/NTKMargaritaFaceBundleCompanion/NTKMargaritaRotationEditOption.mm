@@ -1,15 +1,15 @@
 @interface NTKMargaritaRotationEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKMargaritaRotationEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3, a4];
-  v5 = [v4 description];
+  device = [NSNumber numberWithUnsignedInteger:value, device];
+  v5 = [device description];
 
   return v5;
 }

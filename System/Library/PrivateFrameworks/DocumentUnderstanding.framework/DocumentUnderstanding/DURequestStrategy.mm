@@ -1,7 +1,7 @@
 @interface DURequestStrategy
 - (_TtC21DocumentUnderstanding20DURequestContentType)contentType;
-- (void)setContentType:(id)a3;
-- (void)setModelIdentifier:(id)a3;
+- (void)setContentType:(id)type;
+- (void)setModelIdentifier:(id)identifier;
 @end
 
 @implementation DURequestStrategy
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B24528(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_232B24528(typeCopy);
 }
 
-- (void)setModelIdentifier:(id)a3
+- (void)setModelIdentifier:(id)identifier
 {
   v4 = sub_232CE9D50();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_232B2470C(v4, v6);
 }
 

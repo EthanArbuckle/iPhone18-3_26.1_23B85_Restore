@@ -1,10 +1,10 @@
 @interface MCDPlayableContentViewController
-- (MCDPlayableContentViewController)initWithBundleID:(id)a3 stack:(id)a4;
+- (MCDPlayableContentViewController)initWithBundleID:(id)d stack:(id)stack;
 - (id)_createRootViewController;
 - (id)_createSectionedRootViewController;
 - (id)currentStack;
-- (void)_modelDidInvalidate:(id)a3;
-- (void)_nowPlayingIdentifiersChanged:(id)a3;
+- (void)_modelDidInvalidate:(id)invalidate;
+- (void)_nowPlayingIdentifiersChanged:(id)changed;
 - (void)_populateStack;
 - (void)_setupView;
 - (void)refreshNavigationStackForLaunch;
@@ -12,17 +12,17 @@
 
 @implementation MCDPlayableContentViewController
 
-- (MCDPlayableContentViewController)initWithBundleID:(id)a3 stack:(id)a4
+- (MCDPlayableContentViewController)initWithBundleID:(id)d stack:(id)stack
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  stackCopy = stack;
   v19.receiver = self;
   v19.super_class = MCDPlayableContentViewController;
   v8 = [(MCDPlayableContentViewController *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     bundleID = v8->_bundleID;
     v8->_bundleID = v9;
 
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_25AD8E000, v11, OS_LOG_TYPE_DEFAULT, "Initializing a new view for bundle: %@", buf, 0xCu);
     }
 
@@ -45,25 +45,25 @@
     [(NSOperationQueue *)v8->_modelInvalidationQueue setQualityOfService:25];
     [(NSOperationQueue *)v8->_modelInvalidationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v8->_modelInvalidationQueue setName:@"com.apple.MusicCarDisplayUI.playableContent.invalidate"];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v8 selector:sel__modelDidInvalidate_ name:@"didInvalidate" object:0];
-    [v16 addObserver:v8 selector:sel__nowPlayingIdentifiersChanged_ name:*MEMORY[0x277D27A78] object:0];
-    objc_storeStrong(&v8->_stackToRebuild, a4);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__modelDidInvalidate_ name:@"didInvalidate" object:0];
+    [defaultCenter addObserver:v8 selector:sel__nowPlayingIdentifiersChanged_ name:*MEMORY[0x277D27A78] object:0];
+    objc_storeStrong(&v8->_stackToRebuild, stack);
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (void)_nowPlayingIdentifiersChanged:(id)a3
+- (void)_nowPlayingIdentifiersChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___block_invoke;
   block[3] = &unk_279923B08;
-  v6 = v3;
-  v4 = v3;
+  v6 = changedCopy;
+  v4 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -87,9 +87,9 @@ void __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___bloc
 {
   if (!self->_rootContainer)
   {
-    v3 = [(MCDPCModel *)self->_model containerForRoot];
+    containerForRoot = [(MCDPCModel *)self->_model containerForRoot];
     rootContainer = self->_rootContainer;
-    self->_rootContainer = v3;
+    self->_rootContainer = containerForRoot;
   }
 
   [(MCDPlayableContentViewController *)self setNavigationBarHidden:1];
@@ -102,9 +102,9 @@ void __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___bloc
 {
   if (!self->_rootContainer)
   {
-    v3 = [(MCDPCModel *)self->_model containerForRoot];
+    containerForRoot = [(MCDPCModel *)self->_model containerForRoot];
     rootContainer = self->_rootContainer;
-    self->_rootContainer = v3;
+    self->_rootContainer = containerForRoot;
   }
 
   v5 = [[MCDBrowsableContentTableViewController alloc] initWithContainer:self->_rootContainer tabbedBrowsing:0];
@@ -168,7 +168,7 @@ void __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___bloc
           _os_log_impl(&dword_25AD8E000, v16, OS_LOG_TYPE_DEFAULT, "Creating view controller for sectioned browsing", buf, 2u);
         }
 
-        v18 = [(MCDPlayableContentViewController *)self _createSectionedRootViewController];
+        _createSectionedRootViewController = [(MCDPlayableContentViewController *)self _createSectionedRootViewController];
       }
 
       else
@@ -179,11 +179,11 @@ void __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___bloc
           _os_log_impl(&dword_25AD8E000, v16, OS_LOG_TYPE_DEFAULT, "Creating view controller for table view browsing", buf, 2u);
         }
 
-        v18 = [(MCDPlayableContentViewController *)self _createRootViewController];
+        _createSectionedRootViewController = [(MCDPlayableContentViewController *)self _createRootViewController];
       }
 
-      v6 = v18;
-      v22[0] = v18;
+      v6 = _createSectionedRootViewController;
+      v22[0] = _createSectionedRootViewController;
       v11 = MEMORY[0x277CBEA60];
       v12 = v22;
     }
@@ -198,9 +198,9 @@ void __66__MCDPlayableContentViewController__nowPlayingIdentifiersChanged___bloc
       }
 
       v8 = [MCDNowPlayingViewController alloc];
-      v9 = [(MCDPCModel *)self->_model bundleID];
-      v10 = [(MCDPCModel *)self->_model appTitle];
-      v6 = [(MCDNowPlayingViewController *)v8 initWithPlayableBundleID:v9 appName:v10];
+      bundleID = [(MCDPCModel *)self->_model bundleID];
+      appTitle = [(MCDPCModel *)self->_model appTitle];
+      v6 = [(MCDNowPlayingViewController *)v8 initWithPlayableBundleID:bundleID appName:appTitle];
 
       v21 = v6;
       v11 = MEMORY[0x277CBEA60];
@@ -234,25 +234,25 @@ _BYTE *__46__MCDPlayableContentViewController__setupView__block_invoke(uint64_t 
 - (void)refreshNavigationStackForLaunch
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(MCDPCModel *)self->_model playableContentPlaybackManager];
-  v4 = [v3 currentPlayingSong];
-  if (v4)
+  playableContentPlaybackManager = [(MCDPCModel *)self->_model playableContentPlaybackManager];
+  currentPlayingSong = [playableContentPlaybackManager currentPlayingSong];
+  if (currentPlayingSong)
   {
-    v5 = [(MCDPCModel *)self->_model isCurrentPlayingApp];
+    isCurrentPlayingApp = [(MCDPCModel *)self->_model isCurrentPlayingApp];
   }
 
   else
   {
-    v5 = 0;
+    isCurrentPlayingApp = 0;
   }
 
   [(MCDPCModel *)self->_model bundleID];
   v6 = MRMediaRemoteApplicationSupportsImmediatePlayback();
-  v7 = [(MCDPlayableContentViewController *)self visibleViewController];
+  visibleViewController = [(MCDPlayableContentViewController *)self visibleViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && v5)
+  if ((isKindOfClass & 1) != 0 && isCurrentPlayingApp)
   {
     v9 = MCDGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -271,8 +271,8 @@ LABEL_29:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(MCDPlayableContentViewController *)self viewControllers];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  viewControllers = [(MCDPlayableContentViewController *)self viewControllers];
+  v11 = [viewControllers countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -283,7 +283,7 @@ LABEL_10:
     {
       if (*v26 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(viewControllers);
       }
 
       v15 = *(*(&v25 + 1) + 8 * v14);
@@ -295,7 +295,7 @@ LABEL_10:
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v12 = [viewControllers countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v12)
         {
           goto LABEL_10;
@@ -326,7 +326,7 @@ LABEL_10:
 LABEL_16:
 
 LABEL_21:
-  if (v24 != 0 || v5)
+  if (v24 != 0 || isCurrentPlayingApp)
   {
     if (v24)
     {
@@ -348,9 +348,9 @@ LABEL_21:
     }
 
     v20 = [MCDNowPlayingViewController alloc];
-    v21 = [(MCDPCModel *)self->_model bundleID];
-    v22 = [(MCDPCModel *)self->_model appTitle];
-    v9 = [(MCDNowPlayingViewController *)v20 initWithPlayableBundleID:v21 appName:v22];
+    bundleID = [(MCDPCModel *)self->_model bundleID];
+    appTitle = [(MCDPCModel *)self->_model appTitle];
+    v9 = [(MCDNowPlayingViewController *)v20 initWithPlayableBundleID:bundleID appName:appTitle];
 
     [v9 setShowNavigationBar:self->_hasSectionedContent];
     [(MCDPlayableContentViewController *)self pushViewController:v9 animated:0];
@@ -361,32 +361,32 @@ LABEL_30:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modelDidInvalidate:(id)a3
+- (void)_modelDidInvalidate:(id)invalidate
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(MCDPlayableContentViewController *)self modelInvalidationQueue];
-  v5 = [v4 operationCount];
+  modelInvalidationQueue = [(MCDPlayableContentViewController *)self modelInvalidationQueue];
+  operationCount = [modelInvalidationQueue operationCount];
 
-  if (v5 < 4)
+  if (operationCount < 4)
   {
-    v6 = [(MCDPlayableContentViewController *)self modelInvalidationQueue];
+    modelInvalidationQueue2 = [(MCDPlayableContentViewController *)self modelInvalidationQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __56__MCDPlayableContentViewController__modelDidInvalidate___block_invoke;
     v9[3] = &unk_279923B08;
     v9[4] = self;
-    [v6 addOperationWithBlock:v9];
+    [modelInvalidationQueue2 addOperationWithBlock:v9];
   }
 
   else
   {
-    v6 = MCDGeneralLogging();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    modelInvalidationQueue2 = MCDGeneralLogging();
+    if (os_log_type_enabled(modelInvalidationQueue2, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(MCDPlayableContentViewController *)self bundleID];
+      bundleID = [(MCDPlayableContentViewController *)self bundleID];
       *buf = 138543362;
-      v11 = v7;
-      _os_log_impl(&dword_25AD8E000, v6, OS_LOG_TYPE_DEFAULT, "Cancelling extra model invalidation for %{public}@.", buf, 0xCu);
+      v11 = bundleID;
+      _os_log_impl(&dword_25AD8E000, modelInvalidationQueue2, OS_LOG_TYPE_DEFAULT, "Cancelling extra model invalidation for %{public}@.", buf, 0xCu);
     }
   }
 
@@ -818,24 +818,24 @@ uint64_t __56__MCDPlayableContentViewController__modelDidInvalidate___block_invo
   v29 = __Block_byref_object_copy_;
   v30 = __Block_byref_object_dispose_;
   v31 = 0;
-  v3 = [(NSArray *)self->_stackToRebuild objectEnumerator];
-  v4 = [v3 nextObject];
-  v5 = [MEMORY[0x277CBEB18] array];
-  if (v4)
+  objectEnumerator = [(NSArray *)self->_stackToRebuild objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  array = [MEMORY[0x277CBEB18] array];
+  if (nextObject)
   {
     do
     {
-      v6 = [v4 indexPath];
-      v7 = [v6 length];
+      indexPath = [nextObject indexPath];
+      v7 = [indexPath length];
 
       if (!v7)
       {
         rootContainer = self->_rootContainer;
         if (!rootContainer)
         {
-          v9 = [(MCDPCModel *)self->_model containerForRoot];
+          containerForRoot = [(MCDPCModel *)self->_model containerForRoot];
           v10 = self->_rootContainer;
-          self->_rootContainer = v9;
+          self->_rootContainer = containerForRoot;
 
           rootContainer = self->_rootContainer;
         }
@@ -845,12 +845,12 @@ uint64_t __56__MCDPlayableContentViewController__modelDidInvalidate___block_invo
 
       if (v33[5])
       {
-        [v5 addObject:?];
+        [array addObject:?];
       }
 
-      v11 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
       v12 = v39[5];
-      v39[5] = v11;
+      v39[5] = nextObject2;
 
       v13 = dispatch_semaphore_create(0);
       v14 = v33[5];
@@ -868,7 +868,7 @@ uint64_t __56__MCDPlayableContentViewController__modelDidInvalidate___block_invo
       v16 = v39[5];
 
       objc_storeStrong(v33 + 5, v27[5]);
-      v4 = v16;
+      nextObject = v16;
     }
 
     while (v16);
@@ -878,9 +878,9 @@ uint64_t __56__MCDPlayableContentViewController__modelDidInvalidate___block_invo
   block[1] = 3221225472;
   block[2] = __50__MCDPlayableContentViewController__populateStack__block_invoke_2;
   block[3] = &unk_279923AB8;
-  v19 = v5;
-  v20 = self;
-  v17 = v5;
+  v19 = array;
+  selfCopy = self;
+  v17 = array;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(&v26, 8);
@@ -963,9 +963,9 @@ void __50__MCDPlayableContentViewController__populateStack__block_invoke_2(uint6
   v3 = MCDGeneralLogging();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MCDPlayableContentViewController *)self viewControllers];
+    viewControllers = [(MCDPlayableContentViewController *)self viewControllers];
     *buf = 138412290;
-    v23 = v4;
+    v23 = viewControllers;
     _os_log_impl(&dword_25AD8E000, v3, OS_LOG_TYPE_DEFAULT, "current stack: %@", buf, 0xCu);
   }
 
@@ -976,13 +976,13 @@ void __50__MCDPlayableContentViewController__populateStack__block_invoke_2(uint6
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(MCDPlayableContentViewController *)self viewControllers];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    viewControllers2 = [(MCDPlayableContentViewController *)self viewControllers];
+    v8 = [viewControllers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -993,33 +993,33 @@ void __50__MCDPlayableContentViewController__populateStack__block_invoke_2(uint6
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(viewControllers2);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v13 = [v12 container];
-            v14 = [_MCDStackItem stackItemWithContainer:v13];
+            container = [v12 container];
+            v14 = [_MCDStackItem stackItemWithContainer:container];
 
-            [v6 addObject:v14];
+            [array addObject:v14];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [viewControllers2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
     }
 
-    if ([v6 count] == 1)
+    if ([array count] == 1)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v6;
+      v5 = array;
     }
   }
 

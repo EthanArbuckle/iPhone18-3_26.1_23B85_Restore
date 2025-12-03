@@ -1,39 +1,39 @@
 @interface AMDCommandLineOption
-- (AMDCommandLineOption)initWithName:(id)a3 withDefaultValue:(id)a4 withHelpText:(id)a5 withShortName:(id)a6 andIsBoolFlag:(BOOL)a7;
+- (AMDCommandLineOption)initWithName:(id)name withDefaultValue:(id)value withHelpText:(id)text withShortName:(id)shortName andIsBoolFlag:(BOOL)flag;
 @end
 
 @implementation AMDCommandLineOption
 
-- (AMDCommandLineOption)initWithName:(id)a3 withDefaultValue:(id)a4 withHelpText:(id)a5 withShortName:(id)a6 andIsBoolFlag:(BOOL)a7
+- (AMDCommandLineOption)initWithName:(id)name withDefaultValue:(id)value withHelpText:(id)text withShortName:(id)shortName andIsBoolFlag:(BOOL)flag
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, value);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, text);
   v16 = 0;
-  objc_storeStrong(&v16, a6);
-  v15 = a7;
-  v7 = v20;
-  v20 = 0;
+  objc_storeStrong(&v16, shortName);
+  flagCopy = flag;
+  v7 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v7;
   v14.super_class = AMDCommandLineOption;
-  v20 = [(AMDCommandLineOption *)&v14 init];
-  objc_storeStrong(&v20, v20);
-  [(AMDCommandLineOption *)v20 setName:location[0]];
-  [(AMDCommandLineOption *)v20 setDefaultValue:v18];
-  [(AMDCommandLineOption *)v20 setHelpText:v17];
-  [(AMDCommandLineOption *)v20 setIsBool:v15];
-  [(AMDCommandLineOption *)v20 setShortName:v16];
-  v13 = MEMORY[0x277D82BE0](v20);
+  selfCopy = [(AMDCommandLineOption *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDCommandLineOption *)selfCopy setName:location[0]];
+  [(AMDCommandLineOption *)selfCopy setDefaultValue:v18];
+  [(AMDCommandLineOption *)selfCopy setHelpText:v17];
+  [(AMDCommandLineOption *)selfCopy setIsBool:flagCopy];
+  [(AMDCommandLineOption *)selfCopy setShortName:v16];
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 

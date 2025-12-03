@@ -1,11 +1,11 @@
 @interface INCodableAttributeRelationship
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)compareValue:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)compareValue:(id)value;
 - (Class)valueClass;
 - (INCodableAttribute)codableAttribute;
 - (INCodableAttribute)parentCodableAttribute;
-- (INCodableAttributeRelationship)initWithCodableAttribute:(id)a3;
-- (INCodableAttributeRelationship)initWithCoder:(id)a3;
+- (INCodableAttributeRelationship)initWithCodableAttribute:(id)attribute;
+- (INCodableAttributeRelationship)initWithCoder:(id)coder;
 - (INCodableDescription)_codableDescription;
 - (id)__INCodableDescriptionParentNameKey;
 - (id)__INCodableDescriptionPredicateNameKey;
@@ -19,11 +19,11 @@
 - (id)__INTypeCodableDescriptionPredicateNameKey;
 - (id)__INTypeCodableDescriptionPredicateValueKey;
 - (id)__INTypeCodableDescriptionPredicateValuesKey;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)dictionaryRepresentation;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (void)_establishRelationship;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCodableAttributeRelationship
@@ -33,20 +33,20 @@
   v53 = *MEMORY[0x1E69E9840];
   if (self->_originalDictionary)
   {
-    v3 = [(INCodableAttributeRelationship *)self codableAttribute];
+    codableAttribute = [(INCodableAttributeRelationship *)self codableAttribute];
     originalDictionary = self->_originalDictionary;
-    v5 = [(INCodableAttributeRelationship *)self __INCodableDescriptionParentNameKey];
-    v6 = [(NSDictionary *)originalDictionary objectForKeyedSubscript:v5];
+    __INCodableDescriptionParentNameKey = [(INCodableAttributeRelationship *)self __INCodableDescriptionParentNameKey];
+    v6 = [(NSDictionary *)originalDictionary objectForKeyedSubscript:__INCodableDescriptionParentNameKey];
 
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v7 = [v3 _codableDescription];
-    v8 = [v7 attributes];
-    v9 = [v8 allValues];
+    _codableDescription = [codableAttribute _codableDescription];
+    attributes = [_codableDescription attributes];
+    allValues = [attributes allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v47 objects:v52 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v10)
     {
       v11 = v10;
@@ -57,12 +57,12 @@ LABEL_4:
       {
         if (*v48 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v47 + 1) + 8 * v13);
-        v15 = [v14 propertyName];
-        v16 = [v15 isEqualToString:v6];
+        propertyName = [v14 propertyName];
+        v16 = [propertyName isEqualToString:v6];
 
         if (v16)
         {
@@ -71,7 +71,7 @@ LABEL_4:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v47 objects:v52 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
           if (v11)
           {
             goto LABEL_4;
@@ -90,13 +90,13 @@ LABEL_4:
       }
 
       v18 = self->_originalDictionary;
-      v19 = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateNameKey];
-      v20 = [(NSDictionary *)v18 objectForKeyedSubscript:v19];
+      __INCodableDescriptionPredicateNameKey = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateNameKey];
+      v20 = [(NSDictionary *)v18 objectForKeyedSubscript:__INCodableDescriptionPredicateNameKey];
 
-      v21 = [v17 _relationshipValueTransformerClass];
-      if (v21)
+      _relationshipValueTransformerClass = [v17 _relationshipValueTransformerClass];
+      if (_relationshipValueTransformerClass)
       {
-        v22 = [[v21 alloc] initWithCodableAttribute:v17];
+        v22 = [[_relationshipValueTransformerClass alloc] initWithCodableAttribute:v17];
       }
 
       else
@@ -163,8 +163,8 @@ LABEL_4:
       self->_relation = v24;
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v26 = self->_originalDictionary;
-      v27 = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateValuesKey];
-      v28 = [(NSDictionary *)v26 objectForKeyedSubscript:v27];
+      __INCodableDescriptionPredicateValuesKey = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateValuesKey];
+      v28 = [(NSDictionary *)v26 objectForKeyedSubscript:__INCodableDescriptionPredicateValuesKey];
 
       if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -178,7 +178,7 @@ LABEL_4:
         {
           v31 = v30;
           v41 = v23;
-          v42 = v3;
+          v42 = codableAttribute;
           v32 = *v44;
           do
           {
@@ -197,14 +197,14 @@ LABEL_4:
           }
 
           while (v31);
-          v35 = v29;
+          __INCodableDescriptionPredicateValueKey = v29;
           v23 = v41;
-          v3 = v42;
+          codableAttribute = v42;
         }
 
         else
         {
-          v35 = v29;
+          __INCodableDescriptionPredicateValueKey = v29;
         }
       }
 
@@ -212,13 +212,13 @@ LABEL_4:
       {
 
         v36 = self->_originalDictionary;
-        v35 = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateValueKey];
-        v29 = [(NSDictionary *)v36 objectForKeyedSubscript:v35];
+        __INCodableDescriptionPredicateValueKey = [(INCodableAttributeRelationship *)self __INCodableDescriptionPredicateValueKey];
+        v29 = [(NSDictionary *)v36 objectForKeyedSubscript:__INCodableDescriptionPredicateValueKey];
         [v22 transformedValue:v29];
-        v38 = v37 = v3;
+        v38 = v37 = codableAttribute;
         [(NSArray *)v25 if_addObjectIfNonNil:v38];
 
-        v3 = v37;
+        codableAttribute = v37;
       }
 
       values = self->_values;
@@ -228,7 +228,7 @@ LABEL_4:
     else
     {
 LABEL_10:
-      v17 = v9;
+      v17 = allValues;
     }
 
 LABEL_49:
@@ -239,10 +239,10 @@ LABEL_49:
 
 - (id)__INCodableDescriptionPredicateValueKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValueKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValueKey;
 }
 
 - (INCodableAttribute)codableAttribute
@@ -254,34 +254,34 @@ LABEL_49:
 
 - (id)__INCodableDescriptionParentNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipParentNameKey = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipParentNameKey;
 }
 
 - (INCodableDescription)_codableDescription
 {
-  v2 = [(INCodableAttributeRelationship *)self codableAttribute];
-  v3 = [v2 _codableDescription];
+  codableAttribute = [(INCodableAttributeRelationship *)self codableAttribute];
+  _codableDescription = [codableAttribute _codableDescription];
 
-  return v3;
+  return _codableDescription;
 }
 
 - (id)__INCodableDescriptionPredicateNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateNameKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateNameKey;
 }
 
 - (id)__INCodableDescriptionPredicateValuesKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValuesKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValuesKey;
 }
 
 - (INCodableAttribute)parentCodableAttribute
@@ -299,15 +299,15 @@ LABEL_49:
   return v4;
 }
 
-- (INCodableAttributeRelationship)initWithCoder:(id)a3
+- (INCodableAttributeRelationship)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (v4)
+  coderCopy = coder;
+  if (coderCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = coderCopy;
     }
 
     else
@@ -324,7 +324,7 @@ LABEL_49:
   v6 = v5;
   [v6 _allowDecodingCyclesInSecureMode];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableAttribute"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableAttribute"];
   v8 = [(INCodableAttributeRelationship *)self initWithCodableAttribute:v7];
 
   if (v8)
@@ -334,7 +334,7 @@ LABEL_49:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v9 setWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_originalDictionary"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_originalDictionary"];
     originalDictionary = v8->_originalDictionary;
     v8->_originalDictionary = v14;
   }
@@ -342,32 +342,32 @@ LABEL_49:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalDictionary = self->_originalDictionary;
-  v5 = a3;
-  [v5 encodeObject:originalDictionary forKey:@"_originalDictionary"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalDictionary forKey:@"_originalDictionary"];
   WeakRetained = objc_loadWeakRetained(&self->_codableAttribute);
-  [v5 encodeConditionalObject:WeakRetained forKey:@"codableAttribute"];
+  [coderCopy encodeConditionalObject:WeakRetained forKey:@"codableAttribute"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 intents_setPlistSafeObject:self->_originalDictionary forKey:@"_originalDictionary"];
-  v6 = [v5 copy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary intents_setPlistSafeObject:self->_originalDictionary forKey:@"_originalDictionary"];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCodableAttributeRelationship;
   v6 = [(INCodableAttributeRelationship *)&v11 description];
-  v7 = [(INCodableAttributeRelationship *)self dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  dictionaryRepresentation = [(INCodableAttributeRelationship *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
@@ -375,39 +375,39 @@ LABEL_49:
 
 - (Class)valueClass
 {
-  v2 = [(INCodableAttributeRelationship *)self parentCodableAttribute];
-  v3 = [objc_msgSend(v2 "_relationshipValueTransformerClass")];
+  parentCodableAttribute = [(INCodableAttributeRelationship *)self parentCodableAttribute];
+  v3 = [objc_msgSend(parentCodableAttribute "_relationshipValueTransformerClass")];
 
   return v3;
 }
 
-- (INCodableAttributeRelationship)initWithCodableAttribute:(id)a3
+- (INCodableAttributeRelationship)initWithCodableAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v8.receiver = self;
   v8.super_class = INCodableAttributeRelationship;
   v5 = [(INCodableAttributeRelationship *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_codableAttribute, v4);
+    objc_storeWeak(&v5->_codableAttribute, attributeCopy);
   }
 
   return v6;
 }
 
-- (BOOL)compareValue:(id)a3
+- (BOOL)compareValue:(id)value
 {
-  v4 = a3;
-  v5 = [(INCodableAttributeRelationship *)self relation];
-  v6 = v5;
-  if (v4 || v5 != 1)
+  valueCopy = value;
+  relation = [(INCodableAttributeRelationship *)self relation];
+  v6 = relation;
+  if (valueCopy || relation != 1)
   {
-    v8 = [(INCodableAttributeRelationship *)self parentCodableAttribute];
-    v9 = [v8 _relationshipValueTransformerClass];
-    if (v9)
+    parentCodableAttribute = [(INCodableAttributeRelationship *)self parentCodableAttribute];
+    _relationshipValueTransformerClass = [parentCodableAttribute _relationshipValueTransformerClass];
+    if (_relationshipValueTransformerClass)
     {
-      v10 = [[v9 alloc] initWithCodableAttribute:v8];
+      v10 = [[_relationshipValueTransformerClass alloc] initWithCodableAttribute:parentCodableAttribute];
     }
 
     else
@@ -418,8 +418,8 @@ LABEL_49:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v4;
-      if (v4)
+      v11 = valueCopy;
+      if (valueCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -450,9 +450,9 @@ LABEL_49:
 
     else
     {
-      v13 = [v10 transformedValue:v4];
+      v13 = [v10 transformedValue:valueCopy];
       v14 = v13;
-      if (v4 && !v13)
+      if (valueCopy && !v13)
       {
         if ((v6 | 2) == 3)
         {
@@ -466,19 +466,19 @@ LABEL_22:
       }
     }
 
-    v16 = [(INCodableAttributeRelationship *)self values];
-    v17 = [v16 count];
-    v18 = [(INCodableAttributeRelationship *)self values];
-    v19 = v18;
+    values = [(INCodableAttributeRelationship *)self values];
+    v17 = [values count];
+    values2 = [(INCodableAttributeRelationship *)self values];
+    v19 = values2;
     if (v17 > 1)
     {
-      v7 = [v14 _intents_compareValue:v18 relation:v6];
+      v7 = [v14 _intents_compareValue:values2 relation:v6];
     }
 
     else
     {
-      v20 = [v18 firstObject];
-      v7 = [v14 _intents_compareValue:v20 relation:v6];
+      firstObject = [values2 firstObject];
+      v7 = [v14 _intents_compareValue:firstObject relation:v6];
     }
 
     goto LABEL_22;
@@ -499,11 +499,11 @@ id __47__INCodableAttributeRelationship_compareValue___block_invoke(uint64_t a1,
   return v4;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(INCodableAttributeRelationship);
-  v6 = [v4 intents_safeObjectForKey:@"_originalDictionary" ofType:objc_opt_class()];
+  v6 = [representationCopy intents_safeObjectForKey:@"_originalDictionary" ofType:objc_opt_class()];
 
   originalDictionary = v5->_originalDictionary;
   v5->_originalDictionary = v6;
@@ -513,66 +513,66 @@ id __47__INCodableAttributeRelationship_compareValue___block_invoke(uint64_t a1,
 
 - (id)__INTypeCodableDescriptionPredicateValuesKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValuesKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValuesKey;
 }
 
 - (id)__INTypeCodableDescriptionPredicateValueKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValueKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValueKey;
 }
 
 - (id)__INTypeCodableDescriptionPredicateNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateNameKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateNameKey;
 }
 
 - (id)__INTypeCodableDescriptionParentNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipParentNameKey = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipParentNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPredicateValuesKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValuesKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValuesKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValuesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPredicateValueKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateValueKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateValueKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPredicateNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipPredicateNameKey = [objc_opt_class() __INCodableAttributeRelationshipPredicateNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipPredicateNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionParentNameKey
 {
-  v2 = [(INCodableAttributeRelationship *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
+  _codableDescription = [(INCodableAttributeRelationship *)self _codableDescription];
+  __INCodableAttributeRelationshipParentNameKey = [objc_opt_class() __INCodableAttributeRelationshipParentNameKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipParentNameKey;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface HMCharacteristicRequest
-- (HMCharacteristicRequest)initWithCharacteristic:(id)a3;
+- (HMCharacteristicRequest)initWithCharacteristic:(id)characteristic;
 @end
 
 @implementation HMCharacteristicRequest
 
-- (HMCharacteristicRequest)initWithCharacteristic:(id)a3
+- (HMCharacteristicRequest)initWithCharacteristic:(id)characteristic
 {
-  v5 = a3;
-  if (v5)
+  characteristicCopy = characteristic;
+  if (characteristicCopy)
   {
     v10.receiver = self;
     v10.super_class = HMCharacteristicRequest;
-    v6 = [(HMRequestBase *)&v10 _init];
-    v7 = v6;
-    if (v6)
+    _init = [(HMRequestBase *)&v10 _init];
+    v7 = _init;
+    if (_init)
     {
-      objc_storeStrong(v6 + 1, a3);
+      objc_storeStrong(_init + 1, characteristic);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

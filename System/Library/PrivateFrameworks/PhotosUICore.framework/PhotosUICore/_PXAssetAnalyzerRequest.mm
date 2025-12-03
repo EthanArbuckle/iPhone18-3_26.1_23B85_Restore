@@ -1,12 +1,12 @@
 @interface _PXAssetAnalyzerRequest
-- (_PXAssetAnalyzerRequest)initWithAsset:(id)a3 workerType:(int64_t)a4;
-- (void)_handleFinishWithSuccess:(BOOL)a3;
-- (void)runWithResultHandler:(id)a3;
+- (_PXAssetAnalyzerRequest)initWithAsset:(id)asset workerType:(int64_t)type;
+- (void)_handleFinishWithSuccess:(BOOL)success;
+- (void)runWithResultHandler:(id)handler;
 @end
 
 @implementation _PXAssetAnalyzerRequest
 
-- (void)_handleFinishWithSuccess:(BOOL)a3
+- (void)_handleFinishWithSuccess:(BOOL)success
 {
   if (!self->_finished)
   {
@@ -14,39 +14,39 @@
     resultHandler = self->_resultHandler;
     if (resultHandler)
     {
-      v5 = a3;
+      successCopy = success;
       v7 = _Block_copy(resultHandler);
       v6 = self->_resultHandler;
       self->_resultHandler = 0;
 
-      v7[2](v7, v5);
+      v7[2](v7, successCopy);
     }
   }
 }
 
-- (void)runWithResultHandler:(id)a3
+- (void)runWithResultHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXAssetAnalyzer.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetAnalyzer.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
   }
 
-  v6 = [v5 copy];
+  v6 = [handlerCopy copy];
   resultHandler = self->_resultHandler;
   self->_resultHandler = v6;
 
-  v8 = [(_PXAssetAnalyzerRequest *)self asset];
+  asset = [(_PXAssetAnalyzerRequest *)self asset];
   if (!self->_workerType)
   {
     objc_initWeak(&location, self);
-    v9 = [MEMORY[0x1E69AE230] sharedAnalysisService];
+    mEMORY[0x1E69AE230] = [MEMORY[0x1E69AE230] sharedAnalysisService];
     if (objc_opt_respondsToSelector())
     {
-      v10 = v9;
-      v21[0] = v8;
+      v10 = mEMORY[0x1E69AE230];
+      v21[0] = asset;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -87,13 +87,13 @@
   }
 }
 
-- (_PXAssetAnalyzerRequest)initWithAsset:(id)a3 workerType:(int64_t)a4
+- (_PXAssetAnalyzerRequest)initWithAsset:(id)asset workerType:(int64_t)type
 {
-  v8 = a3;
-  if (!v8)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXAssetAnalyzer.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetAnalyzer.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v13.receiver = self;
@@ -102,8 +102,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    v10->_workerType = a4;
+    objc_storeStrong(&v9->_asset, asset);
+    v10->_workerType = type;
   }
 
   return v10;

@@ -1,10 +1,10 @@
 @interface VSRecognitionResultHandlingRequest
-- (VSRecognitionResultHandlingRequest)initWithHandler:(id)a3 results:(id)a4;
+- (VSRecognitionResultHandlingRequest)initWithHandler:(id)handler results:(id)results;
 - (id)handler;
 - (id)nextAction;
 - (id)results;
 - (void)dealloc;
-- (void)setNextAction:(id)a3;
+- (void)setNextAction:(id)action;
 @end
 
 @implementation VSRecognitionResultHandlingRequest
@@ -16,13 +16,13 @@
   return v2;
 }
 
-- (void)setNextAction:(id)a3
+- (void)setNextAction:(id)action
 {
   action = self->_action;
-  if (action != a3)
+  if (action != action)
   {
-    v6 = action;
-    self->_action = a3;
+    actionCopy = action;
+    self->_action = action;
   }
 }
 
@@ -47,13 +47,13 @@
   [(VSRecognitionResultHandlingRequest *)&v3 dealloc];
 }
 
-- (VSRecognitionResultHandlingRequest)initWithHandler:(id)a3 results:(id)a4
+- (VSRecognitionResultHandlingRequest)initWithHandler:(id)handler results:(id)results
 {
   v6 = [(VSRecognitionResultHandlingRequest *)self init];
   if (v6)
   {
-    v6->_handler = a3;
-    v6->_results = a4;
+    v6->_handler = handler;
+    v6->_results = results;
   }
 
   return v6;

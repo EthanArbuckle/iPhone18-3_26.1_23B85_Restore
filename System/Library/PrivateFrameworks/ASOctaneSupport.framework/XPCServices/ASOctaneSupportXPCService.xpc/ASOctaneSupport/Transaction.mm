@@ -1,8 +1,8 @@
 @interface Transaction
 + (Class)databaseEntityClass;
 + (id)defaultProperties;
-- (_TtC25ASOctaneSupportXPCService11Transaction)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5;
-- (id)copyWithZone:(void *)a3;
+- (_TtC25ASOctaneSupportXPCService11Transaction)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation Transaction
@@ -22,10 +22,10 @@
   return v2.super.isa;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_1000C6BE8(a3, v7);
+  selfCopy = self;
+  sub_1000C6BE8(zone, v7);
 
   sub_10001AE68(v7, v7[3]);
   v5 = sub_1001F7E98();
@@ -33,7 +33,7 @@
   return v5;
 }
 
-- (_TtC25ASOctaneSupportXPCService11Transaction)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5
+- (_TtC25ASOctaneSupportXPCService11Transaction)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues
 {
   sub_1001F6998();
   sub_1001F6998();

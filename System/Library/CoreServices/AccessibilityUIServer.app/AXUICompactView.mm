@@ -1,8 +1,8 @@
 @interface AXUICompactView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)init;
-- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithCoder:(id)a3;
-- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithFrame:(CGRect)a3;
+- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithCoder:(id)coder;
+- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AXUICompactView
@@ -17,15 +17,15 @@
   return [(AXUICompactView *)&v8 initWithFrame:0.0, 0.0, 19.0, 19.0];
 }
 
-- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithCoder:(id)a3
+- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithCoder:(id)coder
 {
   __asm { FMOV            V0.2D, #19.0 }
 
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView_compressedElementSize) = _Q0;
   v12.receiver = self;
   v12.super_class = type metadata accessor for AXUICompactView();
-  v9 = a3;
-  v10 = [(AXUICompactView *)&v12 initWithCoder:v9];
+  coderCopy = coder;
+  v10 = [(AXUICompactView *)&v12 initWithCoder:coderCopy];
 
   if (v10)
   {
@@ -34,10 +34,10 @@
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  v5 = [(AXUICompactView *)v4 subviews];
+  selfCopy = self;
+  subviews = [(AXUICompactView *)selfCopy subviews];
   sub_100004268(0, &qword_100016230, UIView_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -53,8 +53,8 @@
 
   if (v7)
   {
-    v8 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView_compressedElementSize);
-    v9 = *&v4->compressedElementSize[OBJC_IVAR____TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView_compressedElementSize];
+    v8 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView_compressedElementSize);
+    v9 = *&selfCopy->compressedElementSize[OBJC_IVAR____TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView_compressedElementSize];
   }
 
   else
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithFrame:(CGRect)a3
+- (_TtC21AccessibilityUIServerP33_9F30D313BCA3C76AB736A376629F565A15AXUICompactView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

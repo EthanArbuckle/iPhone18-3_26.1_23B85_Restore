@@ -4,19 +4,19 @@
 - (AXAuditerDelegate)delegate;
 - (NSString)description;
 - (id)_allCategoriesDescription;
-- (id)_auditCategoryForClass:(Class)a3;
+- (id)_auditCategoryForClass:(Class)class;
 - (id)_currentTime;
 - (id)allSupportedAuditTypes;
-- (id)detectionResultsFromImageData:(id)a3;
+- (id)detectionResultsFromImageData:(id)data;
 - (void)_clearCurrentRunningCategories;
 - (void)_initializeAuditCategories;
-- (void)_runCategories:(id)a3;
-- (void)auditCategory:(id)a3 didEncounterIssue:(id)a4;
-- (void)auditCategoryResult:(id)a3 didAppendLogWithMessage:(id)a4;
-- (void)didCompleteCategory:(id)a3;
+- (void)_runCategories:(id)categories;
+- (void)auditCategory:(id)category didEncounterIssue:(id)issue;
+- (void)auditCategoryResult:(id)result didAppendLogWithMessage:(id)message;
+- (void)didCompleteCategory:(id)category;
 - (void)init;
-- (void)runCategories:(id)a3;
-- (void)startWithAuditTypes:(id)a3;
+- (void)runCategories:(id)categories;
+- (void)startWithAuditTypes:(id)types;
 @end
 
 @implementation AXAuditer
@@ -38,9 +38,9 @@
   v2 = [(AXAuditer *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     results = v2->__results;
-    v2->__results = v3;
+    v2->__results = array;
 
     [(AXAuditer *)v2 _initializeAuditCategories];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -60,11 +60,11 @@
 - (void)_initializeAuditCategories
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(AXAuditer *)self _auditCategories];
+  _auditCategories = [(AXAuditer *)self _auditCategories];
 
-  if (!v3)
+  if (!_auditCategories)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -88,7 +88,7 @@
           {
             v9 = objc_opt_new();
             [v9 setDelegate:self];
-            [v4 addObject:v9];
+            [array addObject:v9];
           }
 
           ++v8;
@@ -101,7 +101,7 @@
       while (v6);
     }
 
-    [(AXAuditer *)self set_auditCategories:v4];
+    [(AXAuditer *)self set_auditCategories:array];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -111,14 +111,14 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(AXAuditer *)self _auditCategories];
-  [v3 appendFormat:@"\nContains %i categories {\n", objc_msgSend(v4, "count")];
+  _auditCategories = [(AXAuditer *)self _auditCategories];
+  [v3 appendFormat:@"\nContains %i categories {\n", objc_msgSend(_auditCategories, "count")];
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = _auditCategories;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -160,13 +160,13 @@
   v4 = [(AXAuditer *)&v7 description];
   [v3 appendString:v4];
 
-  v5 = [(AXAuditer *)self _allCategoriesDescription];
-  [v3 appendString:v5];
+  _allCategoriesDescription = [(AXAuditer *)self _allCategoriesDescription];
+  [v3 appendString:_allCategoriesDescription];
 
   return v3;
 }
 
-- (id)_auditCategoryForClass:(Class)a3
+- (id)_auditCategoryForClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   [(AXAuditer *)self _auditCategories];
@@ -189,7 +189,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([objc_opt_class() isEqual:{a3, v13}])
+        if ([objc_opt_class() isEqual:{class, v13}])
         {
           v10 = v9;
           goto LABEL_11;
@@ -218,12 +218,12 @@ LABEL_11:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(AXAuditer *)self _auditCategories];
+  _auditCategories = [(AXAuditer *)self _auditCategories];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [_auditCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,17 +234,17 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_auditCategories);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) allSupportedAuditTypes];
-        if ([v9 count])
+        allSupportedAuditTypes = [*(*(&v13 + 1) + 8 * i) allSupportedAuditTypes];
+        if ([allSupportedAuditTypes count])
         {
-          [v3 unionSet:v9];
+          [v3 unionSet:allSupportedAuditTypes];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_auditCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -259,28 +259,28 @@ LABEL_11:
 
 - (void)_clearCurrentRunningCategories
 {
-  v3 = [(AXAuditer *)self currentRunningCategories];
+  currentRunningCategories = [(AXAuditer *)self currentRunningCategories];
 
-  if (v3)
+  if (currentRunningCategories)
   {
-    v4 = [(AXAuditer *)self currentRunningCategories];
-    [v4 removeAllObjects];
+    currentRunningCategories2 = [(AXAuditer *)self currentRunningCategories];
+    [currentRunningCategories2 removeAllObjects];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(AXAuditer *)self setCurrentRunningCategories:v4];
+    currentRunningCategories2 = [MEMORY[0x277CBEB18] array];
+    [(AXAuditer *)self setCurrentRunningCategories:currentRunningCategories2];
   }
 
-  v5 = [MEMORY[0x277CBEA60] array];
-  [(AXAuditer *)self set_currentTypesToAuditFor:v5];
+  array = [MEMORY[0x277CBEA60] array];
+  [(AXAuditer *)self set_currentTypesToAuditFor:array];
 }
 
-- (void)startWithAuditTypes:(id)a3
+- (void)startWithAuditTypes:(id)types
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v5 = log_signpost;
   v6 = v5;
   v7 = spid;
@@ -294,15 +294,15 @@ LABEL_11:
   v8 = +[AXAuditScreenshotManager sharedManager];
   [v8 clear];
 
-  if (!v4 || ![v4 count])
+  if (!typesCopy || ![typesCopy count])
   {
-    v9 = [(AXAuditer *)self allSupportedAuditTypes];
-    v10 = [v9 allObjects];
+    allSupportedAuditTypes = [(AXAuditer *)self allSupportedAuditTypes];
+    allObjects = [allSupportedAuditTypes allObjects];
 
-    v4 = v10;
+    typesCopy = allObjects;
   }
 
-  v11 = [v4 copy];
+  v11 = [typesCopy copy];
   [(AXAuditer *)self set_currentTypesToAuditFor:v11];
 
   v12 = objc_opt_new();
@@ -310,7 +310,7 @@ LABEL_11:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = self;
+  selfCopy = self;
   obj = [(AXAuditer *)self _auditCategories];
   v29 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v29)
@@ -326,13 +326,13 @@ LABEL_11:
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v16 = v4;
-        v17 = v4;
+        v16 = typesCopy;
+        v17 = typesCopy;
         v18 = [v17 countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v18)
         {
@@ -350,7 +350,7 @@ LABEL_11:
               v22 = *(*(&v30 + 1) + 8 * j);
               if ([v14 supportsAuditTestType:v22])
               {
-                [v15 addObject:v22];
+                [array addObject:v22];
                 if (([v12 containsObject:v14] & 1) == 0)
                 {
                   [v12 addObject:v14];
@@ -364,13 +364,13 @@ LABEL_11:
           while (v19);
         }
 
-        if ([v15 count])
+        if ([array count])
         {
-          v23 = [MEMORY[0x277CBEB98] setWithArray:v15];
+          v23 = [MEMORY[0x277CBEB98] setWithArray:array];
           [v14 setCurrentAuditTypesToTestFor:v23];
         }
 
-        v4 = v16;
+        typesCopy = v16;
       }
 
       v29 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
@@ -379,23 +379,23 @@ LABEL_11:
     while (v29);
   }
 
-  v24 = [v12 allObjects];
-  [(AXAuditer *)v26 runCategories:v24];
+  allObjects2 = [v12 allObjects];
+  [(AXAuditer *)selfCopy runCategories:allObjects2];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runCategories:(id)a3
+- (void)runCategories:(id)categories
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  categoriesCopy = categories;
+  v5 = [categoriesCopy mutableCopy];
   v6 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v4;
+  v7 = categoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
@@ -424,13 +424,13 @@ LABEL_11:
     while (v9);
   }
 
-  v13 = [(AXAuditer *)self currentRunningCategories];
-  [v13 addObjectsFromArray:v5];
+  currentRunningCategories = [(AXAuditer *)self currentRunningCategories];
+  [currentRunningCategories addObjectsFromArray:v5];
 
-  v14 = [(AXAuditer *)self currentRunningCategories];
-  [v14 addObjectsFromArray:v6];
+  currentRunningCategories2 = [(AXAuditer *)self currentRunningCategories];
+  [currentRunningCategories2 addObjectsFromArray:v6];
 
-  v15 = [(AXAuditer *)self auditQueue];
+  auditQueue = [(AXAuditer *)self auditQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__AXAuditer_runCategories___block_invoke;
@@ -438,25 +438,25 @@ LABEL_11:
   block[4] = self;
   v16 = v5;
   v26 = v16;
-  dispatch_async(v15, block);
+  dispatch_async(auditQueue, block);
 
   if ([v6 count])
   {
-    v17 = [(AXAuditer *)self delegate];
-    v18 = [v17 fetchScreenshot];
+    delegate = [(AXAuditer *)self delegate];
+    fetchScreenshot = [delegate fetchScreenshot];
 
-    v19 = [v18 objectForKey:@"imageData"];
+    v19 = [fetchScreenshot objectForKey:@"imageData"];
     if ([v19 length])
     {
       v20 = +[AXAuditScreenshotManager sharedManager];
-      v21 = [(AXAuditer *)self _currentTime];
+      _currentTime = [(AXAuditer *)self _currentTime];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __27__AXAuditer_runCategories___block_invoke_2;
       v23[3] = &unk_278BE2CA8;
       v23[4] = self;
       v24 = v6;
-      [v20 addScreenshotWithInfo:v18 timestamp:v21 completion:v23];
+      [v20 addScreenshotWithInfo:fetchScreenshot timestamp:_currentTime completion:v23];
     }
   }
 
@@ -476,11 +476,11 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
   dispatch_async(v2, v4);
 }
 
-- (void)_runCategories:(id)a3
+- (void)_runCategories:(id)categories
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  categoriesCopy = categories;
+  if (![categoriesCopy count])
   {
     [(AXAuditer *)self didCompleteCategory:0];
   }
@@ -489,7 +489,7 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v4;
+  v5 = categoriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
@@ -532,8 +532,8 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
 
         [v12 setTargetPid:{-[AXAuditer targetPid](self, "targetPid")}];
         [v12 setCategoryType:{-[AXAuditer categoryType](self, "categoryType")}];
-        v21 = [v12 result];
-        [v21 setDelegate:self];
+        result = [v12 result];
+        [result setDelegate:self];
         [v12 run];
 
         ++v11;
@@ -549,42 +549,42 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didCompleteCategory:(id)a3
+- (void)didCompleteCategory:(id)category
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AXAuditer *)self currentRunningCategories];
-  v6 = [v5 count];
+  categoryCopy = category;
+  currentRunningCategories = [(AXAuditer *)self currentRunningCategories];
+  v6 = [currentRunningCategories count];
 
   if (v6)
   {
-    if (v4)
+    if (categoryCopy)
     {
       v7 = log_signpost;
       v8 = v7;
       v9 = spid;
       if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
       {
-        v10 = [v4 title];
+        title = [categoryCopy title];
         v22 = 138543362;
-        v23 = v10;
+        v23 = title;
         _os_signpost_emit_with_name_impl(&dword_23D6FE000, v8, OS_SIGNPOST_INTERVAL_END, v9, "AXAuditCategory", "Completed audit category: %{public}@", &v22, 0xCu);
       }
     }
 
-    [v4 setCurrentAuditTypesToTestFor:0];
-    v11 = [v4 result];
-    if (v11)
+    [categoryCopy setCurrentAuditTypesToTestFor:0];
+    result = [categoryCopy result];
+    if (result)
     {
-      v12 = [(AXAuditer *)self _results];
-      [v12 addObject:v11];
+      _results = [(AXAuditer *)self _results];
+      [_results addObject:result];
     }
 
-    v13 = [(AXAuditer *)self currentRunningCategories];
-    [v13 removeObject:v4];
+    currentRunningCategories2 = [(AXAuditer *)self currentRunningCategories];
+    [currentRunningCategories2 removeObject:categoryCopy];
 
-    v14 = [(AXAuditer *)self currentRunningCategories];
-    v15 = [v14 count];
+    currentRunningCategories3 = [(AXAuditer *)self currentRunningCategories];
+    v15 = [currentRunningCategories3 count];
 
     if (!v15)
     {
@@ -597,39 +597,39 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
         _os_signpost_emit_with_name_impl(&dword_23D6FE000, v17, OS_SIGNPOST_INTERVAL_END, v18, "AXAuditRun", "Completed accessibility audit", &v22, 2u);
       }
 
-      v19 = [(AXAuditer *)self delegate];
-      v20 = [(AXAuditer *)self _results];
-      [v19 auditer:self didCompleteWithResults:v20];
+      delegate = [(AXAuditer *)self delegate];
+      _results2 = [(AXAuditer *)self _results];
+      [delegate auditer:self didCompleteWithResults:_results2];
     }
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [AXAuditer didCompleteCategory:v4];
+    [AXAuditer didCompleteCategory:categoryCopy];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)auditCategoryResult:(id)a3 didAppendLogWithMessage:(id)a4
+- (void)auditCategoryResult:(id)result didAppendLogWithMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(AXAuditer *)self delegate];
-  [v6 auditer:self didAppendLogWithMessage:v5];
+  messageCopy = message;
+  delegate = [(AXAuditer *)self delegate];
+  [delegate auditer:self didAppendLogWithMessage:messageCopy];
 }
 
-- (void)auditCategory:(id)a3 didEncounterIssue:(id)a4
+- (void)auditCategory:(id)category didEncounterIssue:(id)issue
 {
-  v5 = a4;
-  v6 = [(AXAuditer *)self delegate];
-  [v6 auditer:self didEncounterIssue:v5];
+  issueCopy = issue;
+  delegate = [(AXAuditer *)self delegate];
+  [delegate auditer:self didEncounterIssue:issueCopy];
 }
 
-- (id)detectionResultsFromImageData:(id)a3
+- (id)detectionResultsFromImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[AXAuditImageDetectionManager sharedManager];
-  v5 = [v4 detectionResultsFromImageData:v3];
+  v5 = [v4 detectionResultsFromImageData:dataCopy];
 
   return v5;
 }
@@ -638,8 +638,8 @@ void __27__AXAuditer_runCategories___block_invoke_2(uint64_t a1)
 {
   v2 = objc_opt_new();
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v2 setTimeZone:v4];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v2 setTimeZone:systemTimeZone];
 
   [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v5 = [v2 stringFromDate:v3];

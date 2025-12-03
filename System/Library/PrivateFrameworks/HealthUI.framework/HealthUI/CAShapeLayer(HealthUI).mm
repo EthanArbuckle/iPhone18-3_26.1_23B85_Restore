@@ -7,7 +7,7 @@
 
 + (id)horizontalLineLayerWithLength:()HealthUI lineWidth:
 {
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, 0.0, a3 * -0.5);
   CGPathAddLineToPoint(Mutable, 0, a2, a3 * -0.5);
@@ -20,7 +20,7 @@
 
 + (id)verticalLineLayerWithLength:()HealthUI lineWidth:
 {
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, a3 * -0.5, -a3);
   CGPathAddLineToPoint(Mutable, 0, a3 * -0.5, a2);

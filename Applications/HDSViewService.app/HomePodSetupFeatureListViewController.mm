@@ -1,5 +1,5 @@
 @interface HomePodSetupFeatureListViewController
-- (_TtC14HDSViewService37HomePodSetupFeatureListViewController)initWithContentView:(id)a3;
+- (_TtC14HDSViewService37HomePodSetupFeatureListViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005C520();
 }
 
-- (_TtC14HDSViewService37HomePodSetupFeatureListViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService37HomePodSetupFeatureListViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_10005D9E8(a3);
+  viewCopy = view;
+  v5 = sub_10005D9E8(view);
 
   return v5;
 }

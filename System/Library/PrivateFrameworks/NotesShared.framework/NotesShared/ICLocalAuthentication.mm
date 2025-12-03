@@ -11,9 +11,9 @@
 + (void)checkBiometricsPolicyState;
 + (void)refreshBiometricsContext;
 + (void)refreshHasPasscode;
-+ (void)setBiometricsContext:(id)a3;
-+ (void)setBiometricsContextError:(id)a3;
-+ (void)setHasPasscode:(BOOL)a3;
++ (void)setBiometricsContext:(id)context;
++ (void)setBiometricsContextError:(id)error;
++ (void)setHasPasscode:(BOOL)passcode;
 @end
 
 @implementation ICLocalAuthentication
@@ -22,18 +22,18 @@
 {
   if (([MEMORY[0x277D361D0] isRunningUnitTests] & 1) == 0)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v4 = objc_alloc_init(MEMORY[0x277CD4790]);
-    [v3 setBiometricsContext:v4];
+    [selfCopy setBiometricsContext:v4];
 
-    v5 = [v3 biometricsContext];
+    biometricsContext = [selfCopy biometricsContext];
     v7 = 0;
-    [v5 canEvaluatePolicy:objc_msgSend(v3 error:{"biometricsPolicy"), &v7}];
+    [biometricsContext canEvaluatePolicy:objc_msgSend(selfCopy error:{"biometricsPolicy"), &v7}];
     v6 = v7;
 
-    [v3 setBiometricsContextError:v6];
-    objc_sync_exit(v3);
+    [selfCopy setBiometricsContextError:v6];
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -52,62 +52,62 @@
 
 + (LAContext)biometricsContext
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _biometricsContext;
   if (!_biometricsContext)
   {
-    [v2 refreshBiometricsContext];
+    [selfCopy refreshBiometricsContext];
     v3 = _biometricsContext;
   }
 
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-+ (void)setBiometricsContext:(id)a3
++ (void)setBiometricsContext:(id)context
 {
-  v4 = a3;
-  obj = a1;
+  contextCopy = context;
+  obj = self;
   objc_sync_enter(obj);
   v5 = _biometricsContext;
-  _biometricsContext = v4;
+  _biometricsContext = contextCopy;
 
   objc_sync_exit(obj);
 }
 
 + (NSError)biometricsContextError
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _biometricsContextError;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (void)setBiometricsContextError:(id)a3
++ (void)setBiometricsContextError:(id)error
 {
-  v4 = a3;
-  obj = a1;
+  errorCopy = error;
+  obj = self;
   objc_sync_enter(obj);
   v5 = _biometricsContextError;
-  _biometricsContextError = v4;
+  _biometricsContextError = errorCopy;
 
   objc_sync_exit(obj);
 }
 
 + (BOOL)biometricsAvailable
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 biometricsContext];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  biometricsContext = [selfCopy biometricsContext];
+  if (biometricsContext)
   {
-    v4 = [v2 biometricsContextError];
-    v5 = [v4 code] != -6;
+    biometricsContextError = [selfCopy biometricsContextError];
+    v5 = [biometricsContextError code] != -6;
   }
 
   else
@@ -115,18 +115,18 @@
     v5 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
 + (BOOL)biometricsEnrolled
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  if ([v2 biometricsAvailable])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([selfCopy biometricsAvailable])
   {
-    v3 = [v2 biometricsContextError];
-    v4 = [v3 code] != -7;
+    biometricsContextError = [selfCopy biometricsContextError];
+    v4 = [biometricsContextError code] != -7;
   }
 
   else
@@ -134,19 +134,19 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 + (BOOL)biometricsLockedOut
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  if ([v2 biometricsAvailable])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([selfCopy biometricsAvailable])
   {
-    v3 = [v2 biometricsContextError];
-    v4 = [v3 code] == -8;
+    biometricsContextError = [selfCopy biometricsContextError];
+    v4 = [biometricsContextError code] == -8;
   }
 
   else
@@ -154,31 +154,31 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 + (int64_t)biometricsType
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 biometricsContext];
-  v4 = [v3 biometryType];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  biometricsContext = [selfCopy biometricsContext];
+  biometryType = [biometricsContext biometryType];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return biometryType;
 }
 
 + (NSData)biometricsPolicyState
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 biometricsContext];
-  v4 = [v3 evaluatedPolicyDomainState];
-  v5 = [v4 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  biometricsContext = [selfCopy biometricsContext];
+  evaluatedPolicyDomainState = [biometricsContext evaluatedPolicyDomainState];
+  v5 = [evaluatedPolicyDomainState copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -187,33 +187,33 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "Cannot save cached biometrics policy state {error: %@}", &v2, 0xCu);
 }
 
 + (BOOL)hasPasscode
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _hasPasscode;
   if (!_hasPasscode)
   {
-    [v2 refreshHasPasscode];
+    [selfCopy refreshHasPasscode];
     v3 = _hasPasscode;
   }
 
-  v4 = [v3 BOOLValue];
-  objc_sync_exit(v2);
+  bOOLValue = [v3 BOOLValue];
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setHasPasscode:(BOOL)a3
++ (void)setHasPasscode:(BOOL)passcode
 {
-  v3 = a3;
-  obj = a1;
+  passcodeCopy = passcode;
+  obj = self;
   objc_sync_enter(obj);
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:passcodeCopy];
   v5 = _hasPasscode;
   _hasPasscode = v4;
 

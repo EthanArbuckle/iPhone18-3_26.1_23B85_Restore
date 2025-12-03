@@ -1,14 +1,14 @@
 @interface AGXG18PFamilyIndirectRenderCommandEncoder
-- (AGXG18PFamilyIndirectRenderCommandEncoder)initWithBuffer:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (AGXG18PFamilyIndirectRenderCommandEncoder)initWithBuffer:(id)buffer;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
 @end
 
 @implementation AGXG18PFamilyIndirectRenderCommandEncoder
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  v3 = [[AGXG18PFamilyIndirectRenderCommand alloc] initWithEncoder:self->_impl withIndex:a3];
+  v3 = [[AGXG18PFamilyIndirectRenderCommand alloc] initWithEncoder:self->_impl withIndex:subscript];
 
   return v3;
 }
@@ -26,7 +26,7 @@
   [(AGXG18PFamilyIndirectRenderCommandEncoder *)&v4 dealloc];
 }
 
-- (AGXG18PFamilyIndirectRenderCommandEncoder)initWithBuffer:(id)a3
+- (AGXG18PFamilyIndirectRenderCommandEncoder)initWithBuffer:(id)buffer
 {
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyIndirectRenderCommandEncoder;

@@ -1,25 +1,25 @@
 @interface SGConversationTracker
-+ (id)getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4 maxPromptLength:(unint64_t)a5 maxPromptWindowSeconds:(double)a6 promptJoiningString:(id)a7;
++ (id)getMergedPromptForMessage:(id)message conversationTurns:(id)turns maxPromptLength:(unint64_t)length maxPromptWindowSeconds:(double)seconds promptJoiningString:(id)string;
 + (id)instance;
-+ (id)sgConversationTurnsForStrings:(id)a3;
++ (id)sgConversationTurnsForStrings:(id)strings;
 - (SGConversationTracker)init;
-- (id)addMessage:(id)a3;
-- (id)conversationForSenderID:(id)a3;
+- (id)addMessage:(id)message;
+- (id)conversationForSenderID:(id)d;
 @end
 
 @implementation SGConversationTracker
 
-- (id)addMessage:(id)a3
+- (id)addMessage:(id)message
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 senderID];
+  messageCopy = message;
+  senderID = [messageCopy senderID];
 
-  if (v5)
+  if (senderID)
   {
     conversations = self->_conversations;
-    v7 = [v4 senderID];
-    v8 = [(_PASLRUCache *)conversations objectForKey:v7];
+    senderID2 = [messageCopy senderID];
+    v8 = [(_PASLRUCache *)conversations objectForKey:senderID2];
 
     if (v8)
     {
@@ -33,7 +33,7 @@
       v15[1] = 3221225472;
       v15[2] = __36__SGConversationTracker_addMessage___block_invoke;
       v15[3] = &unk_278EB83A0;
-      v16 = v4;
+      v16 = messageCopy;
       v17 = &v18;
       [v8 runWithLockAcquired:v15];
       v9 = v19[5];
@@ -43,11 +43,11 @@
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v4, 0}];
+      v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{messageCopy, 0}];
       v8 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v10];
       v11 = self->_conversations;
-      v12 = [v4 senderID];
-      [(_PASLRUCache *)v11 setObject:v8 forKey:v12];
+      senderID3 = [messageCopy senderID];
+      [(_PASLRUCache *)v11 setObject:v8 forKey:senderID3];
 
       v9 = [v10 copy];
     }
@@ -55,7 +55,7 @@
 
   else
   {
-    v24[0] = v4;
+    v24[0] = messageCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   }
 
@@ -109,12 +109,12 @@ void __36__SGConversationTracker_addMessage___block_invoke(uint64_t a1, void *a2
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)conversationForSenderID:(id)a3
+- (id)conversationForSenderID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(_PASLRUCache *)self->_conversations objectForKey:v4];
+    v5 = [(_PASLRUCache *)self->_conversations objectForKey:dCopy];
     v6 = v5;
     if (v5)
     {
@@ -173,24 +173,24 @@ uint64_t __49__SGConversationTracker_conversationForSenderID___block_invoke(uint
   return v2;
 }
 
-+ (id)getMergedPromptForMessage:(id)a3 conversationTurns:(id)a4 maxPromptLength:(unint64_t)a5 maxPromptWindowSeconds:(double)a6 promptJoiningString:(id)a7
++ (id)getMergedPromptForMessage:(id)message conversationTurns:(id)turns maxPromptLength:(unint64_t)length maxPromptWindowSeconds:(double)seconds promptJoiningString:(id)string
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  if ([v12 count] <= 1)
+  messageCopy = message;
+  turnsCopy = turns;
+  stringCopy = string;
+  if ([turnsCopy count] <= 1)
   {
-    v14 = v11;
+    v14 = messageCopy;
     goto LABEL_25;
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = [v12 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_18];
+  v16 = [turnsCopy sortedArrayWithOptions:16 usingComparator:&__block_literal_global_18];
   objc_autoreleasePoolPop(v15);
-  v17 = [v16 lastObject];
-  v18 = [v17 text];
+  lastObject = [v16 lastObject];
+  text = [lastObject text];
   v19 = _PASRepairString();
-  v20 = [v11 isEqualToString:v19];
+  v20 = [messageCopy isEqualToString:v19];
 
   if ((v20 & 1) == 0)
   {
@@ -200,47 +200,47 @@ uint64_t __49__SGConversationTracker_conversationForSenderID___block_invoke(uint
       _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Most recent message in conversation turns does not match specified current message.", buf, 2u);
     }
 
-    v14 = v11;
+    v14 = messageCopy;
     goto LABEL_24;
   }
 
-  v40 = [v17 timestamp];
-  v38 = v17;
-  v21 = [v17 senderID];
-  v22 = [v13 length];
+  timestamp = [lastObject timestamp];
+  v38 = lastObject;
+  senderID = [lastObject senderID];
+  v22 = [stringCopy length];
   v23 = [v16 count];
-  v37 = v11;
+  v37 = messageCopy;
   if ((v23 - 1) < 0)
   {
-    v27 = v21;
+    v27 = senderID;
   }
 
   else
   {
     v24 = [v16 objectAtIndexedSubscript:v23 - 1];
-    if (v21)
+    if (senderID)
     {
-      v39 = a5;
+      lengthCopy = length;
       v25 = -v22;
       while (1)
       {
-        v26 = [v24 senderID];
-        v27 = v21;
-        v28 = [v26 isEqualToString:v21];
+        senderID2 = [v24 senderID];
+        v27 = senderID;
+        v28 = [senderID2 isEqualToString:senderID];
 
         if (!v28)
         {
           goto LABEL_16;
         }
 
-        v29 = [v24 timestamp];
-        [v40 timeIntervalSinceDate:v29];
+        timestamp2 = [v24 timestamp];
+        [timestamp timeIntervalSinceDate:timestamp2];
         v31 = v30;
 
-        if (v31 > a6 || ([v24 text], v32 = objc_claimAutoreleasedReturnValue(), v25 += v22 + objc_msgSend(v32, "length"), v32, v25 > v39))
+        if (v31 > seconds || ([v24 text], v32 = objc_claimAutoreleasedReturnValue(), v25 += v22 + objc_msgSend(v32, "length"), v32, v25 > lengthCopy))
         {
 LABEL_16:
-          a5 = v39;
+          length = lengthCopy;
           goto LABEL_18;
         }
 
@@ -251,12 +251,12 @@ LABEL_16:
 
         v24 = [v16 objectAtIndexedSubscript:v23 - 2];
         --v23;
-        v21 = v27;
+        senderID = v27;
       }
 
       v23 = 0;
-      v17 = v38;
-      a5 = v39;
+      lastObject = v38;
+      length = lengthCopy;
       goto LABEL_20;
     }
 
@@ -264,23 +264,23 @@ LABEL_16:
 LABEL_18:
   }
 
-  v17 = v38;
+  lastObject = v38;
 LABEL_20:
-  v33 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:a5];
+  v33 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:length];
   while (v23 < [v16 count] - 1)
   {
     v34 = [v16 objectAtIndexedSubscript:v23];
-    v35 = [v34 text];
-    [v33 appendString:v35];
+    text2 = [v34 text];
+    [v33 appendString:text2];
 
-    [v33 appendString:v13];
+    [v33 appendString:stringCopy];
     ++v23;
   }
 
   [v33 appendString:v37];
   v14 = _PASRepairString();
 
-  v11 = v37;
+  messageCopy = v37;
 LABEL_24:
 
 LABEL_25:
@@ -298,15 +298,15 @@ uint64_t __128__SGConversationTracker_getMergedPromptForMessage_conversationTurn
   return v7;
 }
 
-+ (id)sgConversationTurnsForStrings:(id)a3
++ (id)sgConversationTurnsForStrings:(id)strings
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSince1970];
+  stringsCopy = strings;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v6 = v5;
 
   v7 = objc_opt_new();
-  if ([v3 count])
+  if ([stringsCopy count])
   {
     v8 = 0;
     v9 = v6 + -0.1;
@@ -314,14 +314,14 @@ uint64_t __128__SGConversationTracker_getMergedPromptForMessage_conversationTurn
     {
       v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v9 + v8 * 0.0001];
       v11 = objc_alloc(MEMORY[0x277D01F70]);
-      v12 = [v3 objectAtIndexedSubscript:v8];
+      v12 = [stringsCopy objectAtIndexedSubscript:v8];
       v13 = [v11 initWithText:v12 senderID:@"sender" timestamp:v10];
 
       [v7 addObject:v13];
       ++v8;
     }
 
-    while (v8 < [v3 count]);
+    while (v8 < [stringsCopy count]);
   }
 
   return v7;

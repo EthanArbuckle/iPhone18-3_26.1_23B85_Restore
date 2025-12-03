@@ -1,24 +1,24 @@
 @interface LeakAgent
-- (LeakAgent)initWithTask:(unsigned int)a3 pid:(int)a4;
-- (id)getSerializedGraphWithFullDiskStackLogs:(id)a3 serializedGraph:(id)a4 error:(id *)a5;
-- (id)logAndGenerateReceiptForErrorWithFormat:(id)a3;
-- (id)mallocStackLogForAddress:(id)a3 size:(id)a4 isLiteZone:(id)a5;
-- (id)serializedGraphWithOptions:(id)a3;
-- (id)vmRegionStackLogForAddress:(id)a3 size:(id)a4;
+- (LeakAgent)initWithTask:(unsigned int)task pid:(int)pid;
+- (id)getSerializedGraphWithFullDiskStackLogs:(id)logs serializedGraph:(id)graph error:(id *)error;
+- (id)logAndGenerateReceiptForErrorWithFormat:(id)format;
+- (id)mallocStackLogForAddress:(id)address size:(id)size isLiteZone:(id)zone;
+- (id)serializedGraphWithOptions:(id)options;
+- (id)vmRegionStackLogForAddress:(id)address size:(id)size;
 - (void)dealloc;
 @end
 
 @implementation LeakAgent
 
-- (LeakAgent)initWithTask:(unsigned int)a3 pid:(int)a4
+- (LeakAgent)initWithTask:(unsigned int)task pid:(int)pid
 {
   v7.receiver = self;
   v7.super_class = LeakAgent;
   result = [(LeakAgent *)&v7 init];
   if (result)
   {
-    result->_targetTask = a3;
-    result->_targetPid = a4;
+    result->_targetTask = task;
+    result->_targetPid = pid;
   }
 
   return result;
@@ -38,31 +38,31 @@
   [(LeakAgent *)&v4 dealloc];
 }
 
-- (id)getSerializedGraphWithFullDiskStackLogs:(id)a3 serializedGraph:(id)a4 error:(id *)a5
+- (id)getSerializedGraphWithFullDiskStackLogs:(id)logs serializedGraph:(id)graph error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  logsCopy = logs;
+  graphCopy = graph;
   v46 = 0;
-  if (a5)
+  if (error)
   {
-    v9 = a5;
+    errorCopy = error;
   }
 
   else
   {
-    v9 = &v46;
+    errorCopy = &v46;
   }
 
-  v10 = [v7 stackLogReader];
+  stackLogReader = [logsCopy stackLogReader];
 
-  if (v10)
+  if (stackLogReader)
   {
     v11 = +[NSFileManager defaultManager];
-    v12 = [v11 temporaryDirectory];
+    temporaryDirectory = [v11 temporaryDirectory];
     v13 = +[NSUUID UUID];
-    v14 = [v13 UUIDString];
-    v15 = [NSString stringWithFormat:@"%@.memgraph", v14];
-    v16 = [v12 URLByAppendingPathComponent:v15];
+    uUIDString = [v13 UUIDString];
+    v15 = [NSString stringWithFormat:@"%@.memgraph", uUIDString];
+    v16 = [temporaryDirectory URLByAppendingPathComponent:v15];
 
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
@@ -81,14 +81,14 @@
     v43 = v20;
     v21 = objc_retainBlock(v41);
     v22 = +[NSFileManager defaultManager];
-    v23 = [v19 path];
-    [v22 createFileAtPath:v23 contents:0 attributes:0];
+    path = [v19 path];
+    [v22 createFileAtPath:path contents:0 attributes:0];
 
-    v24 = [NSFileHandle fileHandleForWritingToURL:v19 error:v9];
+    v24 = [NSFileHandle fileHandleForWritingToURL:v19 error:errorCopy];
     v25 = v24;
     if (!v24)
     {
-      (v20[2])(v20, "create", *v9);
+      (v20[2])(v20, "create", *errorCopy);
       v29 = 0;
 LABEL_21:
 
@@ -100,20 +100,20 @@ LABEL_21:
     v39[1] = 3221225472;
     v39[2] = sub_100001878;
     v39[3] = &unk_1000083B0;
-    v40 = v7;
-    v26 = [VMUDirectedGraph encapsulateData:v8 to:v25 withSupplementalDataTag:"DISKLOGS" error:v9 dataGeneratorBlock:v39];
+    v40 = logsCopy;
+    v26 = [VMUDirectedGraph encapsulateData:graphCopy to:v25 withSupplementalDataTag:"DISKLOGS" error:errorCopy dataGeneratorBlock:v39];
     [v25 closeFile];
     if ((v26 & 1) == 0)
     {
-      if (!*v9)
+      if (!*errorCopy)
       {
         v47 = NSLocalizedDescriptionKey;
         v33 = [NSString stringWithFormat:@"failed to write memgraph with full disk stack logs with unknown error"];
         v48 = v33;
         v34 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-        *v9 = [NSError errorWithDomain:@"LeakAgent" code:-1 userInfo:v34];
+        *errorCopy = [NSError errorWithDomain:@"LeakAgent" code:-1 userInfo:v34];
 
-        v35 = *v9;
+        v35 = *errorCopy;
       }
 
       (v20[2])(v20, "write to");
@@ -122,11 +122,11 @@ LABEL_21:
       goto LABEL_20;
     }
 
-    v27 = [NSData dataWithContentsOfURL:v19 options:1 error:v9];
+    v27 = [NSData dataWithContentsOfURL:v19 options:1 error:errorCopy];
     if (v27)
     {
       v28 = (v21[2])(v21);
-      *v9 = v28;
+      *errorCopy = v28;
       if (!v28)
       {
         v29 = v27;
@@ -139,7 +139,7 @@ LABEL_20:
 
     else
     {
-      (v20[2])(v20, "read from", *v9);
+      (v20[2])(v20, "read from", *errorCopy);
       v37 = (v21[2])(v21);
     }
 
@@ -151,7 +151,7 @@ LABEL_20:
   v30 = [NSString stringWithFormat:@"%@", @"stack log reader not present in memgraph, so can't save memgraph with full disk stack logs"];
   v52 = v30;
   v31 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-  *v9 = [NSError errorWithDomain:@"LeakAgent" code:-1 userInfo:v31];
+  *errorCopy = [NSError errorWithDomain:@"LeakAgent" code:-1 userInfo:v31];
 
   v19 = sub_100001674();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -168,10 +168,10 @@ LABEL_22:
   return v29;
 }
 
-- (id)logAndGenerateReceiptForErrorWithFormat:(id)a3
+- (id)logAndGenerateReceiptForErrorWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:v4 arguments:&v21];
+  formatCopy = format;
+  v5 = [[NSString alloc] initWithFormat:formatCopy arguments:&v21];
 
   v6 = sub_100001674();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -197,9 +197,9 @@ LABEL_22:
   return v9;
 }
 
-- (id)serializedGraphWithOptions:(id)a3
+- (id)serializedGraphWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = sub_100001674();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -210,7 +210,7 @@ LABEL_22:
     WORD4(buf) = 1024;
     *(&buf + 10) = targetTask;
     HIWORD(buf) = 2112;
-    *&v114 = v4;
+    *&v114 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "requested memgraph for %u (%#x) with options: %@", &buf, 0x18u);
   }
 
@@ -223,23 +223,23 @@ LABEL_22:
 
   if (self->_targetTask + 1 <= 1)
   {
-    v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"no valid task available"];
+    unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"no valid task available"];
     goto LABEL_119;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"LeakedCount"];
-  v87 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:@"LeakedCount"];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"LeakedAddresses"];
-  v91 = [v11 BOOLValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"LeakedAddresses"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  v12 = [v4 objectForKeyedSubscript:@"MarkedCount"];
-  v86 = [v12 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:@"MarkedCount"];
+  bOOLValue3 = [v12 BOOLValue];
 
-  v13 = [v4 objectForKeyedSubscript:@"MarkedAddresses"];
-  v88 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"MarkedAddresses"];
+  bOOLValue4 = [v13 BOOLValue];
 
-  v14 = [v4 objectForKeyedSubscript:@"AnalyzeCorpse"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"AnalyzeCorpse"];
   v94 = v14;
   if (v14)
   {
@@ -251,36 +251,36 @@ LABEL_22:
     v15 = 1;
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"LeakedGraphOnly"];
-  v89 = [v16 BOOLValue];
+  v16 = [optionsCopy objectForKeyedSubscript:@"LeakedGraphOnly"];
+  bOOLValue5 = [v16 BOOLValue];
 
-  v93 = [v4 objectForKeyedSubscript:@"CompressionOption"];
+  v93 = [optionsCopy objectForKeyedSubscript:@"CompressionOption"];
   v92 = 0;
   v108 = 0;
   v109 = &v108;
   v110 = 0x2020000000;
   v111 = 0;
-  if (v91)
+  if (bOOLValue2)
   {
     v92 = +[NSMutableArray array];
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"RegionDescriptionOptions"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"RegionDescriptionOptions"];
 
   if (v17)
   {
-    v18 = [v4 objectForKeyedSubscript:@"RegionDescriptionOptions"];
-    v9 = [v18 unsignedLongValue];
+    v18 = [optionsCopy objectForKeyedSubscript:@"RegionDescriptionOptions"];
+    unsignedLongValue = [v18 unsignedLongValue];
   }
 
-  else if (v89)
+  else if (bOOLValue5)
   {
-    v9 = 0;
+    unsignedLongValue = 0;
   }
 
   else
   {
-    v9 = (VMUGetFlagsForAllVMRegionStatistics() | 0xC000);
+    unsignedLongValue = (VMUGetFlagsForAllVMRegionStatistics() | 0xC000);
   }
 
   if (v93)
@@ -306,37 +306,37 @@ LABEL_22:
   if (v15)
   {
 LABEL_28:
-    v26 = [[VMUTaskMemoryScanner alloc] initWithTask:v20 options:v9];
+    v26 = [[VMUTaskMemoryScanner alloc] initWithTask:v20 options:unsignedLongValue];
     if (!v26)
     {
-      v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to create a VMUTaskMemoryScanner, probably because the target's libmalloc hasn't been initialized"];
+      unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to create a VMUTaskMemoryScanner, probably because the target's libmalloc hasn't been initialized"];
       v90 = 0;
 LABEL_117:
 
       goto LABEL_118;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"ScannerSettings"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"ScannerSettings"];
 
     if (v27)
     {
-      v9 = [v4 objectForKeyedSubscript:@"ScannerSettings"];
-      v28 = [v9 objectForKeyedSubscript:@"ScannerSettingExactScanningEnabled"];
+      unsignedLongValue = [optionsCopy objectForKeyedSubscript:@"ScannerSettings"];
+      v28 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingExactScanningEnabled"];
       [v26 setExactScanningEnabled:{objc_msgSend(v28, "BOOLValue")}];
 
-      v29 = [v9 objectForKeyedSubscript:@"ScannerSettingAbandonedMarkingEnabled"];
+      v29 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingAbandonedMarkingEnabled"];
       [v26 setAbandonedMarkingEnabled:{objc_msgSend(v29, "BOOLValue")}];
 
-      v30 = [v9 objectForKeyedSubscript:@"ScannerSettingShowRawClassNames"];
+      v30 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingShowRawClassNames"];
       [v26 setShowRawClassNames:{objc_msgSend(v30, "BOOLValue")}];
 
-      v31 = [v9 objectForKeyedSubscript:@"ScannerSettingObjectContentLevel"];
+      v31 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingObjectContentLevel"];
       [v26 setObjectContentLevel:{objc_msgSend(v31, "unsignedIntValue")}];
 
-      v32 = [v9 objectForKeyedSubscript:@"ScannerSettingScanningMask"];
+      v32 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingScanningMask"];
       [v26 setScanningMask:{objc_msgSend(v32, "unsignedIntValue")}];
 
-      v33 = [v9 objectForKeyedSubscript:@"ScannerSettingMaxInteriorOffset"];
+      v33 = [unsignedLongValue objectForKeyedSubscript:@"ScannerSettingMaxInteriorOffset"];
       v34 = v33;
       if (v33)
       {
@@ -364,8 +364,8 @@ LABEL_117:
     v39 = v38;
     if ((v37 & 1) == 0)
     {
-      v40 = [v38 localizedDescription];
-      v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to add nodes to VMUTaskMemoryScanner with the error %@", v40];
+      localizedDescription = [v38 localizedDescription];
+      unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to add nodes to VMUTaskMemoryScanner with the error %@", localizedDescription];
     }
 
     v41 = sub_100001674();
@@ -389,14 +389,14 @@ LABEL_117:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v42, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Process graph", &unk_1000066FB, &buf, 2u);
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"ProcessSnapshotGraphOptions"];
+    v43 = [optionsCopy objectForKeyedSubscript:@"ProcessSnapshotGraphOptions"];
 
     if (v43)
     {
-      v44 = [v4 objectForKeyedSubscript:@"ProcessSnapshotGraphOptions"];
-      v45 = [v44 unsignedLongValue];
+      v44 = [optionsCopy objectForKeyedSubscript:@"ProcessSnapshotGraphOptions"];
+      unsignedLongValue2 = [v44 unsignedLongValue];
 
-      [v26 processSnapshotGraphWithOptions:v45];
+      [v26 processSnapshotGraphWithOptions:unsignedLongValue2];
     }
 
     else
@@ -418,7 +418,7 @@ LABEL_117:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v48, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Find leaks", &unk_1000066FB, &buf, 2u);
     }
 
-    if (!v89)
+    if (!bOOLValue5)
     {
       v90 = v84;
 LABEL_63:
@@ -463,14 +463,14 @@ LABEL_66:
         task_info_outCnt = 10;
         if (task_info(v58, 0x12u, &buf, &task_info_outCnt))
         {
-          v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"target process no longer exists"];
+          unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"target process no longer exists"];
 LABEL_116:
 
           goto LABEL_117;
         }
       }
 
-      if (!(v89 & 1 | ((v87 & 1) == 0)))
+      if (!(bOOLValue5 & 1 | ((bOOLValue & 1) == 0)))
       {
         v60 = sub_100001674();
         if (os_signpost_enabled(v60))
@@ -495,7 +495,7 @@ LABEL_116:
         }
       }
 
-      if ((v86 | v88))
+      if ((bOOLValue3 | bOOLValue4))
       {
         v62 = sub_100001674();
         if (os_signpost_enabled(v62))
@@ -504,8 +504,8 @@ LABEL_116:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v62, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Count marked", &unk_1000066FB, &buf, 2u);
         }
 
-        v63 = [v90 copyUserMarked];
-        if (v88)
+        copyUserMarked = [v90 copyUserMarked];
+        if (bOOLValue4)
         {
           v64 = +[NSMutableArray array];
         }
@@ -515,15 +515,15 @@ LABEL_116:
           v64 = 0;
         }
 
-        if (v63)
+        if (copyUserMarked)
         {
           v96[0] = _NSConcreteStackBlock;
           v96[1] = 3221225472;
           v96[2] = sub_100002E54;
           v96[3] = &unk_1000083D8;
           v97 = v64;
-          v65 = [v90 enumerateMarkedObjects:v63 withBlock:v96];
-          free(v63);
+          v65 = [v90 enumerateMarkedObjects:copyUserMarked withBlock:v96];
+          free(copyUserMarked);
         }
 
         else
@@ -531,13 +531,13 @@ LABEL_116:
           v65 = 0;
         }
 
-        if (v86)
+        if (bOOLValue3)
         {
           v66 = [NSNumber numberWithUnsignedInt:v65];
           [v59 setObject:v66 forKeyedSubscript:@"MarkedCount"];
         }
 
-        if (v88)
+        if (bOOLValue4)
         {
           [v59 setObject:v64 forKeyedSubscript:@"MarkedAddresses"];
         }
@@ -565,10 +565,10 @@ LABEL_116:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v70, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "Serialize graph", &unk_1000066FB, &buf, 2u);
       }
 
-      v71 = [v4 objectForKeyedSubscript:@"CollectFullDiskStackLogs"];
-      v72 = [v71 BOOLValue];
+      v71 = [optionsCopy objectForKeyedSubscript:@"CollectFullDiskStackLogs"];
+      bOOLValue6 = [v71 BOOLValue];
 
-      if (v72)
+      if (bOOLValue6)
       {
         v95 = 0;
         v73 = [(LeakAgent *)self getSerializedGraphWithFullDiskStackLogs:v90 serializedGraph:v69 error:&v95];
@@ -576,8 +576,8 @@ LABEL_116:
 
         if (!v73)
         {
-          v83 = [v74 localizedDescription];
-          v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to collect full disk stack logs with the error %@", v83];
+          localizedDescription2 = [v74 localizedDescription];
+          unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to collect full disk stack logs with the error %@", localizedDescription2];
 
 LABEL_115:
           goto LABEL_116;
@@ -595,13 +595,13 @@ LABEL_115:
       [v59 setObject:v69 forKeyedSubscript:@"SerializedGraph"];
       v74 = v69;
 LABEL_106:
-      if (v87)
+      if (bOOLValue)
       {
         v75 = [NSNumber numberWithUnsignedInt:*(v109 + 6)];
         [v59 setObject:v75 forKeyedSubscript:@"LeakedCount"];
       }
 
-      if (v91)
+      if (bOOLValue2)
       {
         [v59 setObject:v92 forKeyedSubscript:@"LeakedAddresses"];
       }
@@ -610,14 +610,14 @@ LABEL_106:
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
         v77 = self->_targetPid;
-        v78 = [v90 nodeCount];
-        v79 = [v90 edgeCount];
+        nodeCount = [v90 nodeCount];
+        edgeCount = [v90 edgeCount];
         v80 = *(v109 + 6);
         *&buf = __PAIR64__(v77, 67109888);
         WORD4(buf) = 1024;
-        *(&buf + 10) = v78;
+        *(&buf + 10) = nodeCount;
         HIWORD(buf) = 1024;
-        LODWORD(v114) = v79;
+        LODWORD(v114) = edgeCount;
         WORD2(v114) = 1024;
         *(&v114 + 6) = v80;
         _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_INFO, "returning result for pid %u with %u nodes, %u edges (%u leaked)", &buf, 0x1Au);
@@ -630,7 +630,7 @@ LABEL_106:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v81, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "Request memgraph", &unk_1000066FB, &buf, 2u);
       }
 
-      v9 = v59;
+      unsignedLongValue = v59;
       goto LABEL_115;
     }
 
@@ -645,9 +645,9 @@ LABEL_106:
       v52 = sub_100001674();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v51 localizedDescription];
+        localizedDescription3 = [v51 localizedDescription];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v53;
+        *(&buf + 4) = localizedDescription3;
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "LeakDetector error: %@", &buf, 0xCu);
       }
 
@@ -662,10 +662,10 @@ LABEL_106:
         goto LABEL_62;
       }
 
-      v54 = [v49 graph];
-      v90 = -[NSObject subgraphWithMarkedNodes:](v54, "subgraphWithMarkedNodes:", [v49 leakedNodes]);
+      graph = [v49 graph];
+      v90 = -[NSObject subgraphWithMarkedNodes:](graph, "subgraphWithMarkedNodes:", [v49 leakedNodes]);
       v52 = v84;
-      v84 = v54;
+      v84 = graph;
     }
 
 LABEL_62:
@@ -693,20 +693,20 @@ LABEL_62:
     goto LABEL_28;
   }
 
-  v9 = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to generate corpse: %#x - %s", v22, mach_error_string(v22)];
+  unsignedLongValue = [(LeakAgent *)self logAndGenerateReceiptForErrorWithFormat:@"failed to generate corpse: %#x - %s", v22, mach_error_string(v22)];
 LABEL_118:
 
   _Block_object_dispose(&v108, 8);
 LABEL_119:
 
-  return v9;
+  return unsignedLongValue;
 }
 
-- (id)mallocStackLogForAddress:(id)a3 size:(id)a4 isLiteZone:(id)a5
+- (id)mallocStackLogForAddress:(id)address size:(id)size isLiteZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  sizeCopy = size;
+  zoneCopy = zone;
   if (self->_targetTask + 1 <= 1)
   {
     v29 = sub_100001674();
@@ -724,15 +724,15 @@ LABEL_119:
     exit(4);
   }
 
-  v11 = v10;
+  v11 = zoneCopy;
   if (self->_stackLogReader || (v12 = [[VMUTaskStackLogReader alloc] initWithTask:self->_targetTask], stackLogReader = self->_stackLogReader, self->_stackLogReader = v12, stackLogReader, self->_stackLogReader))
   {
-    v14 = [v8 unsignedLongLongValue];
-    v15 = [v9 unsignedLongLongValue];
-    v16 = [v11 BOOLValue];
+    unsignedLongLongValue = [addressCopy unsignedLongLongValue];
+    unsignedLongLongValue2 = [sizeCopy unsignedLongLongValue];
+    bOOLValue = [v11 BOOLValue];
     v17 = self->_targetTask;
     task_start_peeking();
-    v18 = [(VMUTaskStackLogReader *)self->_stackLogReader getFramesForAddress:v14 size:v15 inLiteZone:v16 stackFramesBuffer:buf];
+    v18 = [(VMUTaskStackLogReader *)self->_stackLogReader getFramesForAddress:unsignedLongLongValue size:unsignedLongLongValue2 inLiteZone:bOOLValue stackFramesBuffer:buf];
     v19 = self->_targetTask;
     task_stop_peeking();
     if (v18 == -1)
@@ -742,16 +742,16 @@ LABEL_119:
       {
         v27 = "NO";
         v32 = 134218754;
-        v33 = v14;
+        v33 = unsignedLongLongValue;
         v34 = 2048;
-        if (v16)
+        if (bOOLValue)
         {
           v27 = "YES";
         }
 
-        v35 = &v14[v15];
+        v35 = &unsignedLongLongValue[unsignedLongLongValue2];
         v36 = 2048;
-        v37 = v15;
+        v37 = unsignedLongLongValue2;
         v38 = 2080;
         v39 = v27;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "unable to get malloc stack log for %#llx-%#llx [%llu] (liteZone: %s)", &v32, 0x2Au);
@@ -789,9 +789,9 @@ LABEL_119:
   return v21;
 }
 
-- (id)vmRegionStackLogForAddress:(id)a3 size:(id)a4
+- (id)vmRegionStackLogForAddress:(id)address size:(id)size
 {
-  v4 = __chkstk_darwin(self, a2, a3, a4);
+  v4 = __chkstk_darwin(self, a2, address, size);
   v6 = v5;
   v7 = v4;
   v9 = v8;
@@ -816,23 +816,23 @@ LABEL_119:
   v11 = v10;
   if (*(v7 + 16) || (v12 = [[VMUTaskStackLogReader alloc] initWithTask:*(v7 + 8)], v13 = *(v7 + 16), *(v7 + 16) = v12, v13, *(v7 + 16)))
   {
-    v14 = [v9 unsignedLongLongValue];
-    v15 = [v11 unsignedLongLongValue];
-    v16 = [*(v7 + 16) usesLiteMode];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v11 unsignedLongLongValue];
+    usesLiteMode = [*(v7 + 16) usesLiteMode];
     v17 = *(v7 + 16);
-    if (v16)
+    if (usesLiteMode)
     {
-      [v17 liteMSLPayloadforVMregionAddress:v14];
+      [v17 liteMSLPayloadforVMregionAddress:unsignedLongLongValue];
       uniquing_table_index = msl_payload_get_uniquing_table_index();
     }
 
     else
     {
-      v19 = [v17 regionTracker];
-      v20 = v19;
-      if (v19)
+      regionTracker = [v17 regionTracker];
+      v20 = regionTracker;
+      if (regionTracker)
       {
-        v21 = [v19 vmRegionRangeInfoForRange:{v14, v15}];
+        v21 = [regionTracker vmRegionRangeInfoForRange:{unsignedLongLongValue, unsignedLongLongValue2}];
         uniquing_table_index = [v21 stackIdentifier];
       }
 
@@ -848,11 +848,11 @@ LABEL_119:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         v36 = 134218496;
-        v37 = v14;
+        v37 = unsignedLongLongValue;
         v38 = 2048;
-        v39 = &v14[v15];
+        v39 = &unsignedLongLongValue[unsignedLongLongValue2];
         v40 = 2048;
-        v41 = v15;
+        v41 = unsignedLongLongValue2;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "unable to get VM region stack log for %#llx-%#llx [%llu]", &v36, 0x20u);
       }
 

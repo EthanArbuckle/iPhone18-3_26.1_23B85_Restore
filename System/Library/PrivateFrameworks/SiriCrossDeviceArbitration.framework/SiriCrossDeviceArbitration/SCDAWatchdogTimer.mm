@@ -1,7 +1,7 @@
 @interface SCDAWatchdogTimer
 - (BOOL)cancelIfNotAlreadyCanceled;
-- (SCDAWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCDAWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)cancel;
 - (void)dealloc;
 - (void)reset;
@@ -57,8 +57,8 @@
     v4 = dispatch_time(0, (self->_remainingInterval * 1000000000.0));
     dispatch_source_set_timer(timerSource, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_timerSource);
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     self->_startTime = v6;
 
     self->_isStopped = 0;
@@ -81,8 +81,8 @@
   if (!self->_isStopped)
   {
     dispatch_suspend(self->_timerSource);
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4 - self->_startTime;
 
     v6 = self->_interval - v5;
@@ -98,9 +98,9 @@
   os_unfair_lock_unlock(&self->_timerLock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   interval = self->_interval;
   queue = self->_queue;
   timeoutHandler = self->_timeoutHandler;
@@ -108,20 +108,20 @@
   return [v4 initWithTimeoutInterval:queue onQueue:timeoutHandler timeoutHandler:interval];
 }
 
-- (SCDAWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5
+- (SCDAWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = SCDAWatchdogTimer;
   v11 = [(SCDAWatchdogTimer *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    v11->_interval = a3;
-    v11->_remainingInterval = a3;
-    objc_storeStrong(&v11->_queue, a4);
-    v13 = MEMORY[0x1E1270630](v10);
+    v11->_interval = interval;
+    v11->_remainingInterval = interval;
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = MEMORY[0x1E1270630](handlerCopy);
     timeoutHandler = v12->_timeoutHandler;
     v12->_timeoutHandler = v13;
 
@@ -137,7 +137,7 @@
     handler[2] = __68__SCDAWatchdogTimer_initWithTimeoutInterval_onQueue_timeoutHandler___block_invoke;
     handler[3] = &unk_1E85D3208;
     objc_copyWeak(&v21, &location);
-    v20 = v10;
+    v20 = handlerCopy;
     dispatch_source_set_event_handler(v17, handler);
     v12->_isStopped = 1;
 

@@ -1,34 +1,34 @@
 @interface TPSNRDeviceCapabilityValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSNRDeviceCapabilityValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  completionCopy = completion;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  v35 = v6;
-  if (v6)
+  v35 = getActivePairedDevice;
+  if (getActivePairedDevice)
   {
-    v7 = [(TPSDeviceCapabilityValidation *)self queries];
-    v8 = [v7 count];
+    queries = [(TPSDeviceCapabilityValidation *)self queries];
+    v8 = [queries count];
 
     if (v8)
     {
-      v33 = v4;
+      v33 = completionCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v9 = [(TPSDeviceCapabilityValidation *)self queries];
-      v10 = [v9 allKeys];
+      queries2 = [(TPSDeviceCapabilityValidation *)self queries];
+      allKeys = [queries2 allKeys];
 
-      obj = v10;
-      v11 = [v10 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      obj = allKeys;
+      v11 = [allKeys countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (v11)
       {
         v13 = v11;
@@ -51,11 +51,11 @@
             if (v18)
             {
               v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v35, "supportsCapability:", v18)}];
-              v20 = [(TPSDeviceCapabilityValidation *)self queries];
-              v21 = [v20 objectForKeyedSubscript:v17];
+              queries3 = [(TPSDeviceCapabilityValidation *)self queries];
+              v21 = [queries3 objectForKeyedSubscript:v17];
 
-              v22 = [MEMORY[0x277D71778] targeting];
-              if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+              targeting = [MEMORY[0x277D71778] targeting];
+              if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
               {
                 v25 = objc_opt_class();
                 *buf = 138413058;
@@ -67,7 +67,7 @@
                 v46 = 2112;
                 v47 = v21;
                 v26 = v25;
-                _os_log_debug_impl(&dword_232D6F000, v22, OS_LOG_TYPE_DEBUG, "%@ - checking %@...Answer: %@. Expected: %@", buf, 0x2Au);
+                _os_log_debug_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_DEBUG, "%@ - checking %@...Answer: %@. Expected: %@", buf, 0x2Au);
               }
 
               objc_opt_class();
@@ -106,8 +106,8 @@ LABEL_32:
 
             else
             {
-              v24 = [MEMORY[0x277D71778] targeting];
-              if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+              targeting2 = [MEMORY[0x277D71778] targeting];
+              if (os_log_type_enabled(targeting2, OS_LOG_TYPE_ERROR))
               {
                 v27 = objc_opt_class();
                 *buf = v32;
@@ -115,7 +115,7 @@ LABEL_32:
                 v42 = 2112;
                 v43 = v17;
                 v28 = v27;
-                _os_log_error_impl(&dword_232D6F000, v24, OS_LOG_TYPE_ERROR, "%@ - Invalid Key: %@", buf, 0x16u);
+                _os_log_error_impl(&dword_232D6F000, targeting2, OS_LOG_TYPE_ERROR, "%@ - Invalid Key: %@", buf, 0x16u);
               }
 
               v23 = 0;
@@ -144,25 +144,25 @@ LABEL_32:
 
 LABEL_33:
 
-      v4 = v33;
+      completionCopy = v33;
       v33[2](v33, v15, 0);
     }
 
     else
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v30 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+    targeting3 = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting3, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSNRDeviceCapabilityValidation *)self validateWithCompletion:v30];
+      [(TPSNRDeviceCapabilityValidation *)self validateWithCompletion:targeting3];
     }
 
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v31 = *MEMORY[0x277D85DE8];

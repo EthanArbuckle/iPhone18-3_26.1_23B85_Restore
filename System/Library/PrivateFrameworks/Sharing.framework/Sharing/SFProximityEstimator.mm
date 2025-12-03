@@ -1,16 +1,16 @@
 @interface SFProximityEstimator
-+ (SFProximityEstimator)proximityEstimatorWithProximityInfo:(id)a3;
-- (SFProximityEstimator)initWithProximityInfo:(id)a3;
++ (SFProximityEstimator)proximityEstimatorWithProximityInfo:(id)info;
+- (SFProximityEstimator)initWithProximityInfo:(id)info;
 - (id)description;
 - (id)descriptionParams;
-- (unsigned)updateWithSFBLEDevice:(id)a3;
+- (unsigned)updateWithSFBLEDevice:(id)device;
 @end
 
 @implementation SFProximityEstimator
 
-+ (SFProximityEstimator)proximityEstimatorWithProximityInfo:(id)a3
++ (SFProximityEstimator)proximityEstimatorWithProximityInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   v5 = off_1E78895B0;
   v6 = off_1E78895A8;
@@ -24,14 +24,14 @@
     v5 = v6;
   }
 
-  v7 = [objc_alloc(*v5) initWithProximityInfo:v3];
+  v7 = [objc_alloc(*v5) initWithProximityInfo:infoCopy];
 
   return v7;
 }
 
-- (SFProximityEstimator)initWithProximityInfo:(id)a3
+- (SFProximityEstimator)initWithProximityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = SFProximityEstimator;
   v5 = [(SFProximityEstimator *)&v8 init];
@@ -52,8 +52,8 @@
 {
   NSAppendPrintF();
   v3 = 0;
-  v4 = [(SFProximityEstimator *)self descriptionParams];
-  if (v4)
+  descriptionParams = [(SFProximityEstimator *)self descriptionParams];
+  if (descriptionParams)
   {
     NSAppendPrintF();
     v5 = v3;
@@ -117,28 +117,28 @@
   return v4;
 }
 
-- (unsigned)updateWithSFBLEDevice:(id)a3
+- (unsigned)updateWithSFBLEDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 closeProximityEstimatorMedium];
+  deviceCopy = device;
+  closeProximityEstimatorMedium = [deviceCopy closeProximityEstimatorMedium];
 
-  v6 = [v4 closeProximityEstimatorSmall];
+  closeProximityEstimatorSmall = [deviceCopy closeProximityEstimatorSmall];
 
-  v7 = [(SFProximityEstimator *)self _estimateRSSIForSFBLEDevice:v4];
+  v7 = [(SFProximityEstimator *)self _estimateRSSIForSFBLEDevice:deviceCopy];
   if ((v7 & 0x80000000) == 0 && !SFDeviceIsVirtualMachine())
   {
     v8 = 0;
     goto LABEL_62;
   }
 
-  if (v7 == [v4 rssiEstimate])
+  if (v7 == [deviceCopy rssiEstimate])
   {
     v8 = 0;
   }
 
   else
   {
-    [v4 setRssiEstimate:v7];
+    [deviceCopy setRssiEstimate:v7];
     v8 = 4;
   }
 
@@ -146,14 +146,14 @@
   rssiEnter = self->_rssiEnter;
   IsVirtualMachine = SFDeviceIsVirtualMachine();
   v12 = v7 >= rssiEnter || IsVirtualMachine;
-  [v4 setTriggered:v12];
+  [deviceCopy setTriggered:v12];
   if (v12 == 1)
   {
-    if (v6 == self)
+    if (closeProximityEstimatorSmall == self)
     {
-      if (([v4 insideSmallBubble] & 1) == 0)
+      if (([deviceCopy insideSmallBubble] & 1) == 0)
       {
-        [v4 setInsideSmallBubble:1];
+        [deviceCopy setInsideSmallBubble:1];
         v8 |= 0x10u;
         if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
         {
@@ -162,11 +162,11 @@
       }
     }
 
-    else if (v5 == self)
+    else if (closeProximityEstimatorMedium == self)
     {
-      if (([v4 insideMediumBubble] & 1) == 0)
+      if (([deviceCopy insideMediumBubble] & 1) == 0)
       {
-        [v4 setInsideMediumBubble:1];
+        [deviceCopy setInsideMediumBubble:1];
         v8 |= 0x10u;
         if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
         {
@@ -175,15 +175,15 @@
       }
     }
 
-    else if (([v4 insideBubble] & 1) == 0)
+    else if (([deviceCopy insideBubble] & 1) == 0)
     {
-      [v4 setInsideBubble:1];
+      [deviceCopy setInsideBubble:1];
       v8 |= 0x10u;
       if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
       {
 LABEL_39:
         v19 = *p_rssiEnter;
-        v20 = v4;
+        v20 = deviceCopy;
         LogPrintF();
       }
     }
@@ -197,11 +197,11 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    if (v6 == self)
+    if (closeProximityEstimatorSmall == self)
     {
-      if ([v4 insideSmallBubble])
+      if ([deviceCopy insideSmallBubble])
       {
-        [v4 setInsideSmallBubble:0];
+        [deviceCopy setInsideSmallBubble:0];
         v8 |= 0x10u;
         if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
         {
@@ -210,11 +210,11 @@ LABEL_39:
       }
     }
 
-    else if (v5 == self)
+    else if (closeProximityEstimatorMedium == self)
     {
-      if ([v4 insideMediumBubble])
+      if ([deviceCopy insideMediumBubble])
       {
-        [v4 setInsideMediumBubble:0];
+        [deviceCopy setInsideMediumBubble:0];
         v8 |= 0x10u;
         if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
         {
@@ -223,9 +223,9 @@ LABEL_39:
       }
     }
 
-    else if ([v4 insideBubble])
+    else if ([deviceCopy insideBubble])
     {
-      [v4 setInsideBubble:0];
+      [deviceCopy setInsideBubble:0];
       v8 |= 0x10u;
       if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
       {
@@ -235,10 +235,10 @@ LABEL_39:
   }
 
 LABEL_40:
-  v13 = [v4 distance];
-  if (v13 != 60)
+  distance = [deviceCopy distance];
+  if (distance != 60)
   {
-    if (v13 == 20)
+    if (distance == 20)
     {
       if (v7 < self->_rssiImmediate)
       {
@@ -264,7 +264,7 @@ LABEL_54:
       goto LABEL_56;
     }
 
-    if (v13 == 10)
+    if (distance == 10)
     {
       if (v7 <= self->_rssiFar)
       {
@@ -295,9 +295,9 @@ LABEL_54:
   }
 
 LABEL_56:
-  if (v17 != v13)
+  if (v17 != distance)
   {
-    [v4 setDistance:v17];
+    [deviceCopy setDistance:v17];
     if (gLogCategory_SFProximityEstimator <= 30 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();

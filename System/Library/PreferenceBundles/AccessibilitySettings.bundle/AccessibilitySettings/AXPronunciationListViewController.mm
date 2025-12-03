@@ -1,11 +1,11 @@
 @interface AXPronunciationListViewController
 - (AXPronunciationListViewController)init;
 - (id)_assetUpdaterClient;
-- (id)detailTextForItem:(id)a3;
+- (id)detailTextForItem:(id)item;
 - (id)items;
 - (void)addButtonTapped;
-- (void)deleteItem:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)deleteItem:(id)item;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -37,47 +37,47 @@
 - (id)items
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 customPronunciationSubstitutions];
+  customPronunciationSubstitutions = [v2 customPronunciationSubstitutions];
 
-  return v3;
+  return customPronunciationSubstitutions;
 }
 
-- (id)detailTextForItem:(id)a3
+- (id)detailTextForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 phonemes];
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  phonemes = [itemCopy phonemes];
+  v5 = phonemes;
+  if (phonemes)
   {
-    v6 = v4;
+    replacementString = phonemes;
   }
 
   else
   {
-    v6 = [v3 replacementString];
+    replacementString = [itemCopy replacementString];
   }
 
-  v7 = v6;
+  v7 = replacementString;
 
   return v7;
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 customPronunciationSubstitutions];
-  v7 = [v6 mutableCopy];
+  customPronunciationSubstitutions = [v5 customPronunciationSubstitutions];
+  v7 = [customPronunciationSubstitutions mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:itemCopy];
   v8 = +[AXSettings sharedInstance];
   [v8 setCustomPronunciationSubstitutions:v7];
 
-  if (v4)
+  if (itemCopy)
   {
     v26 = @"delete";
-    v9 = [v4 originalString];
-    v25 = v9;
+    originalString = [itemCopy originalString];
+    v25 = originalString;
     v10 = [NSArray arrayWithObjects:&v25 count:1];
     v27 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
@@ -89,9 +89,9 @@
   }
 
   v12 = +[AXSubsystemPronunciations sharedInstance];
-  v13 = [v12 ignoreLogging];
+  ignoreLogging = [v12 ignoreLogging];
 
-  if ((v13 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v14 = +[AXSubsystemPronunciations identifier];
     v15 = AXLoggerForFacility();
@@ -101,7 +101,7 @@
     {
       v17 = AXColorizeFormatLog();
       v18 = +[AXSettings sharedInstance];
-      v22 = [v18 customPronunciationSubstitutions];
+      customPronunciationSubstitutions2 = [v18 customPronunciationSubstitutions];
       v19 = _AXStringForArgs();
 
       if (os_log_type_enabled(v15, v16))
@@ -113,9 +113,9 @@
     }
   }
 
-  v20 = [(AXPronunciationListViewController *)self _assetUpdaterClient];
+  _assetUpdaterClient = [(AXPronunciationListViewController *)self _assetUpdaterClient];
   v21 = +[AXAccessQueue mainAccessQueue];
-  [v20 sendAsynchronousMessage:v11 withIdentifier:1 targetAccessQueue:v21 completion:0];
+  [_assetUpdaterClient sendAsynchronousMessage:v11 withIdentifier:1 targetAccessQueue:v21 completion:0];
 }
 
 - (void)addButtonTapped
@@ -150,14 +150,14 @@ void __56__AXPronunciationListViewController__assetUpdaterClient__block_invoke(i
   _assetUpdaterClient_Client_0 = v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = [a4 textLabel];
-  v5 = [v7 accessibilityLabel];
-  v6 = [AXAttributedString axAttributedStringWithString:v5];
+  textLabel = [cell textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
+  v6 = [AXAttributedString axAttributedStringWithString:accessibilityLabel];
 
   [v6 setAttribute:&__kCFBooleanTrue forKey:UIAccessibilityTokenIgnoreSubstitution];
-  [v7 setAccessibilityLabel:v6];
+  [textLabel setAccessibilityLabel:v6];
 }
 
 @end

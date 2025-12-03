@@ -1,14 +1,14 @@
 @interface VideoExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VideoExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  VideoExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  VideoExperience.encode(with:)(coderCopy);
 }
 
 @end

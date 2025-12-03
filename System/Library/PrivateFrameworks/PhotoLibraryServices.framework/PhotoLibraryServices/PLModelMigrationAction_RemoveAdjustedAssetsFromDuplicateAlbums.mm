@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemoveAdjustedAssetsFromDuplicateAlbums
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveAdjustedAssetsFromDuplicateAlbums
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLManagedAsset fetchRequest];
   v8 = MEMORY[0x1E696AB28];
   v9 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:0];
@@ -19,7 +19,7 @@
   [v7 setPredicate:v12];
 
   [v7 setFetchBatchSize:100];
-  v13 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:v6 fetchRequest:v7 requiresLibraryReprocessing:0 error:a4];
+  v13 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:self managedObjectContext:contextCopy fetchRequest:v7 requiresLibraryReprocessing:0 error:error];
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
   return v13;

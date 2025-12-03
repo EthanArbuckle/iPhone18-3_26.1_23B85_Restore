@@ -1,15 +1,15 @@
 @interface CRLCanvasKnob
 - (BOOL)i_userInteractionAllowed;
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5;
-- (BOOL)obscuresKnob:(id)a3;
-- (BOOL)overlapsWithKnob:(id)a3;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance;
+- (BOOL)obscuresKnob:(id)knob;
+- (BOOL)overlapsWithKnob:(id)knob;
 - (CGPoint)offset;
-- (CGPoint)pixelAlignedScaledCanvasCenterPositionFromKnobPosition:(CGPoint)a3;
+- (CGPoint)pixelAlignedScaledCanvasCenterPositionFromKnobPosition:(CGPoint)position;
 - (CGPoint)position;
 - (CGRect)cursorActiveScaledRect;
 - (CGRect)frameForIntersection;
-- (CGRect)unscaledBoundingBoxOfHitRegionWithAdditionalScale:(double)a3;
-- (CRLCanvasKnob)initWithType:(unint64_t)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7;
+- (CGRect)unscaledBoundingBoxOfHitRegionWithAdditionalScale:(double)scale;
+- (CRLCanvasKnob)initWithType:(unint64_t)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep;
 - (CRLCanvasRenderable)renderable;
 - (CRLCanvasRep)rep;
 - (CRLCursor)resizeCursor;
@@ -19,33 +19,33 @@
 - (id)_createImageOrCircleKnobRenderable;
 - (id)createKnobRenderable;
 - (id)description;
-- (id)p_scaledPreciseHitRegionForInputType:(int64_t)a3;
+- (id)p_scaledPreciseHitRegionForInputType:(int64_t)type;
 - (void)dealloc;
-- (void)setHitRegionPath:(id)a3;
+- (void)setHitRegionPath:(id)path;
 - (void)updateHitRegionPath;
 @end
 
 @implementation CRLCanvasKnob
 
-- (CRLCanvasKnob)initWithType:(unint64_t)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7
+- (CRLCanvasKnob)initWithType:(unint64_t)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a7;
+  y = position.y;
+  x = position.x;
+  repCopy = rep;
   v20.receiver = self;
   v20.super_class = CRLCanvasKnob;
   v14 = [(CRLCanvasKnob *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
+    v14->_type = type;
     v14->_position.x = x;
     v14->_position.y = y;
     v14->_offset = CGPointZero;
     v14->_offsetValid = 0;
-    v14->_radius = a5;
-    v14->_tag = a6;
-    if (!v13)
+    v14->_radius = radius;
+    v14->_tag = tag;
+    if (!repCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -74,8 +74,8 @@
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:313 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
     }
 
-    objc_storeWeak(&v15->_rep, v13);
-    v15->_worksWithStylus = (a6 < 0x11) & (0x1FFDEu >> a6);
+    objc_storeWeak(&v15->_rep, repCopy);
+    v15->_worksWithStylus = (tag < 0x11) & (0x1FFDEu >> tag);
   }
 
   return v15;
@@ -83,9 +83,9 @@
 
 - (void)dealloc
 {
-  v3 = [(CRLCanvasRenderable *)self->_renderable delegate];
+  delegate = [(CRLCanvasRenderable *)self->_renderable delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(CRLCanvasRenderable *)self->_renderable setDelegate:0];
   }
@@ -95,10 +95,10 @@
   [(CRLCanvasKnob *)&v4 dealloc];
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 inputType:(int64_t)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point inputType:(int64_t)type returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = [(CRLCanvasKnob *)self rep];
   if (![(CRLCanvasKnob *)self i_userInteractionAllowed])
   {
@@ -118,30 +118,30 @@
 
   v16 = sub_10011F31C(x, y, v12);
   v18 = v17;
-  v19 = [v10 interactiveCanvasController];
-  [v19 viewScale];
+  interactiveCanvasController = [v10 interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v21 = [(CRLBezierPath *)hitRegionPath containsPoint:sub_10011F340(v16, v18, v20)];
 
-  if (a5)
+  if (distance)
   {
-    *a5 = sub_10011F068(v12, v14, x, y);
+    *distance = sub_10011F068(v12, v14, x, y);
   }
 
   if (v21)
   {
     if ([(CRLCanvasKnob *)self shouldDisplayDirectlyOverRep])
     {
-      v22 = [v10 interactiveCanvasController];
-      v23 = [v22 hitRep:{x, y}];
+      interactiveCanvasController2 = [v10 interactiveCanvasController];
+      v23 = [interactiveCanvasController2 hitRep:{x, y}];
 
       v24 = 1;
       if (v23 && v23 != v10)
       {
-        v25 = [v10 canvas];
-        v26 = [v25 allRepsOrdered];
+        canvas = [v10 canvas];
+        allRepsOrdered = [canvas allRepsOrdered];
 
-        v27 = [v26 indexOfObject:v23];
-        v24 = v27 < [v26 indexOfObject:v10];
+        v27 = [allRepsOrdered indexOfObject:v23];
+        v24 = v27 < [allRepsOrdered indexOfObject:v10];
       }
     }
 
@@ -150,13 +150,13 @@
       v24 = 1;
     }
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0 && v24)
+    if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0 && v24)
     {
       if ([v10 canUseSpecializedHitRegionForKnob:self])
       {
-        v29 = [(CRLCanvasKnob *)self p_scaledPreciseHitRegionForInputType:a4];
-        v30 = [v10 interactiveCanvasController];
-        [v30 viewScale];
+        v29 = [(CRLCanvasKnob *)self p_scaledPreciseHitRegionForInputType:type];
+        interactiveCanvasController3 = [v10 interactiveCanvasController];
+        [interactiveCanvasController3 viewScale];
         LOBYTE(v24) = [v29 containsPoint:{sub_10011F340(v16, v18, v31)}];
       }
 
@@ -176,9 +176,9 @@ LABEL_12:
   return v24;
 }
 
-- (id)p_scaledPreciseHitRegionForInputType:(int64_t)a3
+- (id)p_scaledPreciseHitRegionForInputType:(int64_t)type
 {
-  [(CRLCanvasKnob *)self radiusForPreciseHitRegionWithInputType:a3];
+  [(CRLCanvasKnob *)self radiusForPreciseHitRegionWithInputType:type];
   v4 = -v3;
 
   return [CRLBezierPath bezierPathWithOvalInRect:v4];
@@ -241,9 +241,9 @@ LABEL_14:
   renderable = self->_renderable;
   if (!renderable)
   {
-    v4 = [(CRLCanvasKnob *)self createKnobRenderable];
+    createKnobRenderable = [(CRLCanvasKnob *)self createKnobRenderable];
     v5 = self->_renderable;
-    self->_renderable = v4;
+    self->_renderable = createKnobRenderable;
 
     [(CRLCanvasKnob *)self didCreateKnobRenderable];
     renderable = self->_renderable;
@@ -254,39 +254,39 @@ LABEL_14:
 
 - (id)_createImageOrCircleKnobRenderable
 {
-  v3 = [(CRLCanvasKnob *)self knobImage];
-  if (v3)
+  knobImage = [(CRLCanvasKnob *)self knobImage];
+  if (knobImage)
   {
     v4 = +[CRLCanvasRenderable renderable];
-    [v3 size];
+    [knobImage size];
     [v4 setBounds:sub_10011ECB4()];
     v5 = [(CRLCanvasKnob *)self rep];
-    v6 = [v5 canvas];
-    [v6 contentsScale];
-    [v4 setContents:{objc_msgSend(v3, "CGImageForContentsScale:")}];
+    canvas = [v5 canvas];
+    [canvas contentsScale];
+    [v4 setContents:{objc_msgSend(knobImage, "CGImageForContentsScale:")}];
   }
 
   else
   {
-    v6 = +[CRLCanvasShapeRenderable renderable];
+    canvas = +[CRLCanvasShapeRenderable renderable];
     Mutable = CGPathCreateMutable();
     [(CRLCanvasKnob *)self radius];
     v9 = v8 + v8;
     y = CGPointZero.y;
-    [v6 setBounds:{CGPointZero.x, y, v9, v9}];
+    [canvas setBounds:{CGPointZero.x, y, v9, v9}];
     v14.origin.x = CGPointZero.x;
     v14.origin.y = y;
     v14.size.width = v9;
     v14.size.height = v9;
     CGPathAddEllipseInRect(Mutable, 0, v14);
-    [v6 setPath:Mutable];
+    [canvas setPath:Mutable];
     CGPathRelease(Mutable);
     v11 = +[CRLColor whiteColor];
-    [v6 setFillColor:{objc_msgSend(v11, "CGColor")}];
+    [canvas setFillColor:{objc_msgSend(v11, "CGColor")}];
 
     v5 = +[CRLColor blackColor];
-    [v6 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
-    v4 = v6;
+    [canvas setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+    v4 = canvas;
   }
 
   return v4;
@@ -294,17 +294,17 @@ LABEL_14:
 
 - (id)createKnobRenderable
 {
-  v3 = [(CRLCanvasKnob *)self _createImageOrCircleKnobRenderable];
+  _createImageOrCircleKnobRenderable = [(CRLCanvasKnob *)self _createImageOrCircleKnobRenderable];
   if (self->_tag - 12 <= 4)
   {
     [(CRLCanvasRenderable *)self->_renderable zPosition];
-    [v3 setZPosition:v4 + 1.0];
+    [_createImageOrCircleKnobRenderable setZPosition:v4 + 1.0];
   }
 
-  return v3;
+  return _createImageOrCircleKnobRenderable;
 }
 
-- (CGRect)unscaledBoundingBoxOfHitRegionWithAdditionalScale:(double)a3
+- (CGRect)unscaledBoundingBoxOfHitRegionWithAdditionalScale:(double)scale
 {
   v5 = [(CRLCanvasKnob *)self rep];
   if (!self->_hitRegionPath)
@@ -316,9 +316,9 @@ LABEL_14:
   [v5 convertNaturalPointToUnscaledCanvas:?];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 canvas];
-  [v10 viewScale];
-  v12 = 1.0 / v11 * a3;
+  canvas = [v5 canvas];
+  [canvas viewScale];
+  v12 = 1.0 / v11 * scale;
 
   [(CRLBezierPath *)self->_hitRegionPath bounds];
   v14 = v13;
@@ -351,7 +351,7 @@ LABEL_14:
 - (BOOL)i_userInteractionAllowed
 {
   v3 = [(CRLCanvasKnob *)self rep];
-  v4 = [v3 interactiveCanvasController];
+  interactiveCanvasController = [v3 interactiveCanvasController];
   if (-[CRLCanvasKnob worksWhenRepLocked](self, "worksWhenRepLocked") || ([v3 isLocked] & 1) == 0)
   {
     if ([(CRLCanvasKnob *)self worksWhenDocumentIsSharedReadOnly])
@@ -361,7 +361,7 @@ LABEL_14:
 
     else
     {
-      v5 = [v4 documentIsSharedReadOnly] ^ 1;
+      v5 = [interactiveCanvasController documentIsSharedReadOnly] ^ 1;
     }
   }
 
@@ -370,8 +370,8 @@ LABEL_14:
     v5 = 0;
   }
 
-  v6 = [v4 layerHost];
-  v7 = [v6 asiOSCVC];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   if (v5)
   {
@@ -382,7 +382,7 @@ LABEL_14:
 
     else
     {
-      v8 = [v7 inMediaBrowsingMode] ^ 1;
+      v8 = [asiOSCVC inMediaBrowsingMode] ^ 1;
     }
   }
 
@@ -398,11 +398,11 @@ LABEL_14:
 {
   v3 = [(CRLCanvasKnob *)self rep];
   v4 = [(CRLCanvasKnob *)self tag];
-  v5 = [v3 layout];
-  v6 = v5;
-  if (v5)
+  layout = [v3 layout];
+  v6 = layout;
+  if (layout)
   {
-    [v5 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -448,12 +448,12 @@ LABEL_14:
   [v4 boundsForStandardKnobs];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 interactiveCanvasController];
-  [v11 viewScale];
+  interactiveCanvasController = [v4 interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v13 = v12;
 
-  v14 = [v4 interactiveCanvasController];
-  [v14 viewScale];
+  interactiveCanvasController2 = [v4 interactiveCanvasController];
+  [interactiveCanvasController2 viewScale];
   v16 = v6 / v15 * 10.0;
 
   if ([(CRLCanvasKnob *)self tag]>= 0xC && [(CRLCanvasKnob *)self tag]<= 0x10)
@@ -526,11 +526,11 @@ LABEL_28:
   self->_hitRegionPath = v24;
 }
 
-- (void)setHitRegionPath:(id)a3
+- (void)setHitRegionPath:(id)path
 {
-  if (self->_hitRegionPath != a3)
+  if (self->_hitRegionPath != path)
   {
-    v5 = [a3 copy];
+    v5 = [path copy];
     hitRegionPath = self->_hitRegionPath;
     self->_hitRegionPath = v5;
   }
@@ -558,8 +558,8 @@ LABEL_28:
 - (CGRect)cursorActiveScaledRect
 {
   v3 = [(CRLCanvasKnob *)self rep];
-  v4 = [(CRLCanvasKnob *)self hitRegionPath];
-  [v4 bounds];
+  hitRegionPath = [(CRLCanvasKnob *)self hitRegionPath];
+  [hitRegionPath bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -575,10 +575,10 @@ LABEL_28:
     v12 = v17;
   }
 
-  v18 = [v3 interactiveCanvasController];
+  interactiveCanvasController = [v3 interactiveCanvasController];
   [(CRLCanvasKnob *)self position];
   [v3 convertNaturalPointToUnscaledCanvas:?];
-  [v18 convertUnscaledToBoundsPoint:?];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v20 = sub_10011F334(v6, v8, v19);
   v22 = v21;
 
@@ -614,8 +614,8 @@ LABEL_28:
 
 - (CGRect)frameForIntersection
 {
-  v2 = [(CRLCanvasKnob *)self renderable];
-  [v2 frame];
+  renderable = [(CRLCanvasKnob *)self renderable];
+  [renderable frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -632,15 +632,15 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)overlapsWithKnob:(id)a3
+- (BOOL)overlapsWithKnob:(id)knob
 {
-  v4 = a3;
+  knobCopy = knob;
   [(CRLCanvasKnob *)self frameForIntersection];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 frameForIntersection];
+  [knobCopy frameForIntersection];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -658,18 +658,18 @@ LABEL_28:
   return CGRectIntersectsRect(*&v21, *&v25);
 }
 
-- (BOOL)obscuresKnob:(id)a3
+- (BOOL)obscuresKnob:(id)knob
 {
-  v4 = a3;
-  v5 = [v4 renderable];
+  knobCopy = knob;
+  renderable = [knobCopy renderable];
 
-  if (v5)
+  if (renderable)
   {
-    v6 = [(CRLCanvasKnob *)self renderable];
-    [v6 zPosition];
+    renderable2 = [(CRLCanvasKnob *)self renderable];
+    [renderable2 zPosition];
     v8 = v7;
-    v9 = [v4 renderable];
-    [v9 zPosition];
+    renderable3 = [knobCopy renderable];
+    [renderable3 zPosition];
     v11 = v8 > v10;
   }
 
@@ -692,32 +692,32 @@ LABEL_28:
   return v6;
 }
 
-- (CGPoint)pixelAlignedScaledCanvasCenterPositionFromKnobPosition:(CGPoint)a3
+- (CGPoint)pixelAlignedScaledCanvasCenterPositionFromKnobPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(CRLCanvasKnob *)self rep];
-  v7 = [v6 interactiveCanvasController];
+  interactiveCanvasController = [v6 interactiveCanvasController];
   [v6 convertKnobPositionToUnscaledCanvas:{x, y}];
-  [v7 convertUnscaledToBoundsPoint:?];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v9 = v8;
   v11 = v10;
   if ([(CRLCanvasKnob *)self shouldDisplayDirectlyOverRep])
   {
     v12 = [(CRLCanvasKnob *)self rep];
-    v13 = [v12 parentRep];
-    [v13 layerFrameInScaledCanvas];
+    parentRep = [v12 parentRep];
+    [parentRep layerFrameInScaledCanvas];
     v9 = sub_10011F31C(v9, v11, v14);
     v11 = v15;
   }
 
-  v16 = [(CRLCanvasKnob *)self renderable];
-  [v16 bounds];
+  renderable = [(CRLCanvasKnob *)self renderable];
+  [renderable bounds];
   v21 = sub_100120414(v17, v18, v19, v20);
   v22 = sub_10011F31C(v9, v11, v21);
   v24 = v23;
-  v25 = [v7 canvas];
-  [v25 contentsScale];
+  canvas = [interactiveCanvasController canvas];
+  [canvas contentsScale];
   v27 = sub_10012218C(v22, v24, v26);
   v29 = sub_10011F334(v27, v28, v21);
   v31 = v30;

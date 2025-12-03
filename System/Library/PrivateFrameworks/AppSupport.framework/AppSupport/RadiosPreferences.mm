@@ -1,21 +1,21 @@
 @interface RadiosPreferences
 + (BOOL)shouldMirrorAirplaneMode;
 - (BOOL)airplaneMode;
-- (BOOL)telephonyStateWithBundleIdentifierOut:(id *)a3;
-- (RadiosPreferences)initWithQueue:(id)a3;
+- (BOOL)telephonyStateWithBundleIdentifierOut:(id *)out;
+- (RadiosPreferences)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)getValueWithLockForKey:(id)a3;
-- (void)initializeSCPrefs:(id)a3;
-- (void)notifyTarget:(unsigned int)a3;
+- (void)getValueWithLockForKey:(id)key;
+- (void)initializeSCPrefs:(id)prefs;
+- (void)notifyTarget:(unsigned int)target;
 - (void)release;
-- (void)setAirplaneModeWithoutMirroring:(BOOL)a3;
-- (void)setTelephonyState:(BOOL)a3 fromBundleID:(id)a4;
-- (void)setValue:(void *)a3 forKey:(id)a4;
+- (void)setAirplaneModeWithoutMirroring:(BOOL)mirroring;
+- (void)setTelephonyState:(BOOL)state fromBundleID:(id)d;
+- (void)setValue:(void *)value forKey:(id)key;
 @end
 
 @implementation RadiosPreferences
 
-- (RadiosPreferences)initWithQueue:(id)a3
+- (RadiosPreferences)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = RadiosPreferences;
@@ -32,7 +32,7 @@
 
     CFSetAddValue(Mutable, v4);
     pthread_mutex_unlock(&__sValidObjectsLock);
-    v4->_dispatchQueue = a3;
+    v4->_dispatchQueue = queue;
     v4->radios_prefs_log = os_log_create("com.apple.AppSupport", "RadiosPreferences");
     [(RadiosPreferences *)v4 initializeSCPrefs:@"com.apple.radios.plist"];
     v4->_isCachedAirplaneModeValid = 0;
@@ -130,23 +130,23 @@ LABEL_7:
   return v6 & 1;
 }
 
-- (void)setAirplaneModeWithoutMirroring:(BOOL)a3
+- (void)setAirplaneModeWithoutMirroring:(BOOL)mirroring
 {
   v5 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!mirroring)
   {
     v5 = MEMORY[0x1E695E4C0];
   }
 
   [(RadiosPreferences *)self setValue:*v5 forKey:@"AirplaneMode"];
-  self->_cachedAirplaneMode = a3;
+  self->_cachedAirplaneMode = mirroring;
   self->_isCachedAirplaneModeValid = 1;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"RadiosPreferencesAirplaneModeDidChangeNotification", 0, 0, 1u);
 }
 
-- (BOOL)telephonyStateWithBundleIdentifierOut:(id *)a3
+- (BOOL)telephonyStateWithBundleIdentifierOut:(id *)out
 {
   v4 = [(RadiosPreferences *)self getValueWithLockForKey:@"TelephonyState"];
   if (v4)
@@ -161,22 +161,22 @@ LABEL_7:
     v6 = 1;
   }
 
-  *a3 = v4;
+  *out = v4;
   return v6;
 }
 
-- (void)setTelephonyState:(BOOL)a3 fromBundleID:(id)a4
+- (void)setTelephonyState:(BOOL)state fromBundleID:(id)d
 {
-  v5 = a3;
+  stateCopy = state;
   v18[2] = *MEMORY[0x1E69E9840];
   v17[0] = @"TelephonyEnabled";
   v17[1] = @"bundle_identifier";
   v18[0] = [MEMORY[0x1E696AD98] numberWithBool:?];
-  v18[1] = a4;
+  v18[1] = d;
   -[RadiosPreferences setValue:forKey:](self, "setValue:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2], @"TelephonyState");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"RadiosPreferencesAirplaneModeDidChangeNotification", 0, 0, 1u);
-  [a4 UTF8String];
+  [d UTF8String];
   ct_green_tea_logger_create();
   CTGreenTeaOsLogHandle = getCTGreenTeaOsLogHandle();
   if (CTGreenTeaOsLogHandle)
@@ -185,7 +185,7 @@ LABEL_7:
     if (os_log_type_enabled(CTGreenTeaOsLogHandle, OS_LOG_TYPE_INFO))
     {
       v10 = @"On";
-      if (v5)
+      if (stateCopy)
       {
         v11 = @"Off";
       }
@@ -195,7 +195,7 @@ LABEL_7:
         v11 = @"On";
       }
 
-      if (!v5)
+      if (!stateCopy)
       {
         v10 = @"Off";
       }
@@ -212,7 +212,7 @@ LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initializeSCPrefs:(id)a3
+- (void)initializeSCPrefs:(id)prefs
 {
   v5 = [objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
   if (!v5)
@@ -220,7 +220,7 @@ LABEL_7:
     v5 = [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
   }
 
-  self->_prefs = SCPreferencesCreateWithAuthorization(*MEMORY[0x1E695E480], v5, a3, 0);
+  self->_prefs = SCPreferencesCreateWithAuthorization(*MEMORY[0x1E695E480], v5, prefs, 0);
   v6[0] = 0;
   v7 = 0u;
   v8 = 0;
@@ -229,9 +229,9 @@ LABEL_7:
   SCPreferencesSetDispatchQueue(self->_prefs, self->_dispatchQueue);
 }
 
-- (void)notifyTarget:(unsigned int)a3
+- (void)notifyTarget:(unsigned int)target
 {
-  if ((a3 & 2) != 0)
+  if ((target & 2) != 0)
   {
     if (![(RadiosPreferences *)self notifyForExternalChangeOnly]|| !self->_applySkipCount)
     {
@@ -253,7 +253,7 @@ LABEL_7:
   }
 }
 
-- (void)getValueWithLockForKey:(id)a3
+- (void)getValueWithLockForKey:(id)key
 {
   if (!SCPreferencesLock(self->_prefs, 1u))
   {
@@ -269,16 +269,16 @@ LABEL_7:
     }
   }
 
-  Value = SCPreferencesGetValue(self->_prefs, a3);
+  Value = SCPreferencesGetValue(self->_prefs, key);
   SCPreferencesUnlock(self->_prefs);
   return Value;
 }
 
-- (void)setValue:(void *)a3 forKey:(id)a4
+- (void)setValue:(void *)value forKey:(id)key
 {
   if (SCPreferencesLock(self->_prefs, 1u) || SCError() == 3005 && (SCPreferencesSynchronize(self->_prefs), SCPreferencesLock(self->_prefs, 1u)))
   {
-    if (SCPreferencesSetValue(self->_prefs, a4, a3) && SCPreferencesCommitChanges(self->_prefs) && SCPreferencesApplyChanges(self->_prefs))
+    if (SCPreferencesSetValue(self->_prefs, key, value) && SCPreferencesCommitChanges(self->_prefs) && SCPreferencesApplyChanges(self->_prefs))
     {
       ++self->_applySkipCount;
       [(RadiosPreferences *)self synchronize];

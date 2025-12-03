@@ -1,37 +1,37 @@
 @interface IDSValidationQueue
-- (BOOL)isBuildingContextForSubsystem:(int64_t)a3;
-- (IDSValidationQueue)initWithPushHandler:(id)a3 validationMessageSendBlock:(id)a4;
-- (IDSValidationQueue)initWithValidationMessageSendBlock:(id)a3;
-- (id)_validationInfoForSubsystem:(int64_t)a3 createIfNil:(BOOL)a4;
-- (void)__cleanupValidationInfoForSubsystemMechanism:(int64_t)a3;
-- (void)__failValidationQueueWithErrorResponseCode:(int64_t)a3 forSubsystemMechanism:(int64_t)a4;
-- (void)__flushValidationQueueForSubsystemMechanism:(int64_t)a3;
-- (void)__purgeCachedCertsForSubsystemMechanism:(int64_t)a3;
-- (void)__queueValidationMessage:(id)a3 subsystem:(int64_t)a4 sendBlock:(id)a5;
-- (void)__removeFromQueue:(id)a3 subsystem:(int64_t)a4;
-- (void)_sendAbsintheValidationCertRequestIfNeededForSubsystem:(int64_t)a3;
-- (void)_sendBAAValidationRequestIfNeededForSubsystem:(int64_t)a3;
-- (void)_sendValidationRequestForSubsystem:(int64_t)a3;
-- (void)buildValidationCredentialsIfNeededForSubsystem:(int64_t)a3;
-- (void)clearQueueForSubsystem:(int64_t)a3;
-- (void)queueBuildingValidationDataIfNecessaryForMessage:(id)a3 subsystem:(int64_t)a4 withQueueCompletion:(id)a5 sendBlock:(id)a6;
+- (BOOL)isBuildingContextForSubsystem:(int64_t)subsystem;
+- (IDSValidationQueue)initWithPushHandler:(id)handler validationMessageSendBlock:(id)block;
+- (IDSValidationQueue)initWithValidationMessageSendBlock:(id)block;
+- (id)_validationInfoForSubsystem:(int64_t)subsystem createIfNil:(BOOL)nil;
+- (void)__cleanupValidationInfoForSubsystemMechanism:(int64_t)mechanism;
+- (void)__failValidationQueueWithErrorResponseCode:(int64_t)code forSubsystemMechanism:(int64_t)mechanism;
+- (void)__flushValidationQueueForSubsystemMechanism:(int64_t)mechanism;
+- (void)__purgeCachedCertsForSubsystemMechanism:(int64_t)mechanism;
+- (void)__queueValidationMessage:(id)message subsystem:(int64_t)subsystem sendBlock:(id)block;
+- (void)__removeFromQueue:(id)queue subsystem:(int64_t)subsystem;
+- (void)_sendAbsintheValidationCertRequestIfNeededForSubsystem:(int64_t)subsystem;
+- (void)_sendBAAValidationRequestIfNeededForSubsystem:(int64_t)subsystem;
+- (void)_sendValidationRequestForSubsystem:(int64_t)subsystem;
+- (void)buildValidationCredentialsIfNeededForSubsystem:(int64_t)subsystem;
+- (void)clearQueueForSubsystem:(int64_t)subsystem;
+- (void)queueBuildingValidationDataIfNecessaryForMessage:(id)message subsystem:(int64_t)subsystem withQueueCompletion:(id)completion sendBlock:(id)block;
 @end
 
 @implementation IDSValidationQueue
 
-- (IDSValidationQueue)initWithValidationMessageSendBlock:(id)a3
+- (IDSValidationQueue)initWithValidationMessageSendBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[IDSPushHandler sharedInstance];
-  v6 = [(IDSValidationQueue *)self initWithPushHandler:v5 validationMessageSendBlock:v4];
+  v6 = [(IDSValidationQueue *)self initWithPushHandler:v5 validationMessageSendBlock:blockCopy];
 
   return v6;
 }
 
-- (IDSValidationQueue)initWithPushHandler:(id)a3 validationMessageSendBlock:(id)a4
+- (IDSValidationQueue)initWithPushHandler:(id)handler validationMessageSendBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  handlerCopy = handler;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = IDSValidationQueue;
   v9 = [(IDSValidationQueue *)&v15 init];
@@ -41,49 +41,49 @@
     validationInfoByMechanism = v9->_validationInfoByMechanism;
     v9->_validationInfoByMechanism = v10;
 
-    v12 = objc_retainBlock(v8);
+    v12 = objc_retainBlock(blockCopy);
     validationMessageSendBlock = v9->_validationMessageSendBlock;
     v9->_validationMessageSendBlock = v12;
 
-    objc_storeStrong(&v9->_pushHandler, a3);
+    objc_storeStrong(&v9->_pushHandler, handler);
     v9->_shouldUseAbsinthe = 1;
   }
 
   return v9;
 }
 
-- (void)clearQueueForSubsystem:(int64_t)a3
+- (void)clearQueueForSubsystem:(int64_t)subsystem
 {
   v5 = [(IDSValidationQueue *)self _mechanismForSubsystem:?];
-  v6 = [(IDSValidationQueue *)self validationInfoByMechanism];
+  validationInfoByMechanism = [(IDSValidationQueue *)self validationInfoByMechanism];
   v7 = [NSNumber numberWithInteger:v5];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [validationInfoByMechanism objectForKeyedSubscript:v7];
 
-  v9 = [v8 validationContextQueue];
+  validationContextQueue = [v8 validationContextQueue];
 
-  if (v9)
+  if (validationContextQueue)
   {
-    v10 = [v8 validationContextQueue];
+    validationContextQueue2 = [v8 validationContextQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100610E0C;
     v13[3] = &unk_100BE2380;
-    v13[4] = a3;
-    v11 = [v10 __imArrayByFilteringWithBlock:v13];
+    v13[4] = subsystem;
+    v11 = [validationContextQueue2 __imArrayByFilteringWithBlock:v13];
     v12 = [v11 mutableCopy];
     [v8 setValidationContextQueue:v12];
   }
 }
 
-- (void)queueBuildingValidationDataIfNecessaryForMessage:(id)a3 subsystem:(int64_t)a4 withQueueCompletion:(id)a5 sendBlock:(id)a6
+- (void)queueBuildingValidationDataIfNecessaryForMessage:(id)message subsystem:(int64_t)subsystem withQueueCompletion:(id)completion sendBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  completionCopy = completion;
+  blockCopy = block;
   v13 = +[IMLockdownManager sharedInstance];
-  v14 = [v13 isExpired];
+  isExpired = [v13 isExpired];
 
-  if (v14)
+  if (isExpired)
   {
     v15 = +[IMRGLog registration];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -95,31 +95,31 @@
     goto LABEL_11;
   }
 
-  if (!v10 || ([v10 conformsToProtocol:&OBJC_PROTOCOL___IDSAbsintheSignedMessage] & 1) != 0)
+  if (!messageCopy || ([messageCopy conformsToProtocol:&OBJC_PROTOCOL___IDSAbsintheSignedMessage] & 1) != 0)
   {
     if (![(IDSValidationQueue *)self shouldUseAbsinthe])
     {
       v16 = [NSData __imDataWithRandomBytes:10];
-      [v10 setValidationData:v16];
-      if (v11)
+      [messageCopy setValidationData:v16];
+      if (completionCopy)
       {
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_49;
     }
 
-    v16 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a4 createIfNil:1];
-    v17 = [v16 validateContextDate];
+    v16 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:1];
+    validateContextDate = [v16 validateContextDate];
 
-    if (v17)
+    if (validateContextDate)
     {
-      v18 = [v16 validateContextDate];
-      [v18 timeIntervalSinceNow];
+      validateContextDate2 = [v16 validateContextDate];
+      [validateContextDate2 timeIntervalSinceNow];
       v20 = fabs(v19);
 
-      v21 = [v16 validateContextTTL];
-      [v21 doubleValue];
+      validateContextTTL = [v16 validateContextTTL];
+      [validateContextTTL doubleValue];
       if (v22 <= 30.0)
       {
         v25 = 120.0;
@@ -127,8 +127,8 @@
 
       else
       {
-        v23 = [v16 validateContextTTL];
-        [v23 doubleValue];
+        validateContextTTL2 = [v16 validateContextTTL];
+        [validateContextTTL2 doubleValue];
         v25 = v24 + -30.0;
       }
 
@@ -154,19 +154,19 @@
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "  Validation info is too old, removing it", buf, 2u);
         }
 
-        [(IDSValidationQueue *)self __cleanupValidationInfoForSubsystemMechanism:a4];
+        [(IDSValidationQueue *)self __cleanupValidationInfoForSubsystemMechanism:subsystem];
       }
     }
 
     if ([v16 validationContext] || objc_msgSend(v16, "validationContextDisabled"))
     {
-      if (v10)
+      if (messageCopy)
       {
         if ([v16 validationContextDisabled])
         {
           v28 = +[NSData data];
 LABEL_34:
-          [v10 setValidationData:v28];
+          [messageCopy setValidationData:v28];
           v32 = +[IMRGLog registration];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
@@ -179,28 +179,28 @@ LABEL_34:
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v10;
+            *&buf[4] = messageCopy;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "  Successfully signed: %@", buf, 0xCu);
           }
 
-          v34 = [v16 validationSession];
+          validationSession = [v16 validationSession];
 
-          if (v34)
+          if (validationSession)
           {
             if (+[IDSValidationSession isSigningSupported])
             {
-              v35 = [v16 validationSession];
-              v36 = [v35 isInitializedForSigning];
+              validationSession2 = [v16 validationSession];
+              isInitializedForSigning = [validationSession2 isInitializedForSigning];
 
-              if (v36)
+              if (isInitializedForSigning)
               {
-                v37 = [v16 validationSession];
-                [v10 setSigningSession:v37];
+                validationSession3 = [v16 validationSession];
+                [messageCopy setSigningSession:validationSession3];
               }
             }
           }
 
-          if (!v11)
+          if (!completionCopy)
           {
             goto LABEL_49;
           }
@@ -229,21 +229,21 @@ LABEL_34:
           sub_10092D2A0();
         }
 
-        [(IDSValidationQueue *)self __failValidationQueueForSubsystemMechanism:a4];
-        [(IDSValidationQueue *)self __cleanupValidationInfoForSubsystemMechanism:a4];
+        [(IDSValidationQueue *)self __failValidationQueueForSubsystemMechanism:subsystem];
+        [(IDSValidationQueue *)self __cleanupValidationInfoForSubsystemMechanism:subsystem];
 
         goto LABEL_45;
       }
     }
 
-    else if (v10)
+    else if (messageCopy)
     {
 LABEL_45:
-      [(IDSValidationQueue *)self __queueValidationMessage:v10 subsystem:a4 sendBlock:v12];
+      [(IDSValidationQueue *)self __queueValidationMessage:messageCopy subsystem:subsystem sendBlock:blockCopy];
     }
 
-    [(IDSValidationQueue *)self _sendValidationRequestForSubsystem:a4];
-    if (!v11)
+    [(IDSValidationQueue *)self _sendValidationRequestForSubsystem:subsystem];
+    if (!completionCopy)
     {
 LABEL_49:
 
@@ -252,22 +252,22 @@ LABEL_49:
 
     v38 = 1;
 LABEL_48:
-    v11[2](v11, v38);
+    completionCopy[2](completionCopy, v38);
     goto LABEL_49;
   }
 
 LABEL_11:
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_50:
 }
 
-- (void)buildValidationCredentialsIfNeededForSubsystem:(int64_t)a3
+- (void)buildValidationCredentialsIfNeededForSubsystem:(int64_t)subsystem
 {
-  v4 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:1];
+  v4 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:1];
   if (![v4 validationContext] && (objc_msgSend(v4, "isBuildingContext") & 1) == 0)
   {
     v5 = +[IMRGLog registration];
@@ -281,45 +281,45 @@ LABEL_50:
   }
 }
 
-- (BOOL)isBuildingContextForSubsystem:(int64_t)a3
+- (BOOL)isBuildingContextForSubsystem:(int64_t)subsystem
 {
-  v3 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:0];
-  v4 = [v3 isBuildingContext];
+  v3 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:0];
+  isBuildingContext = [v3 isBuildingContext];
 
-  return v4;
+  return isBuildingContext;
 }
 
-- (void)__removeFromQueue:(id)a3 subsystem:(int64_t)a4
+- (void)__removeFromQueue:(id)queue subsystem:(int64_t)subsystem
 {
-  v6 = a3;
-  v10 = [[IDSValidationQueueItem alloc] initWithMessage:v6 subsystem:a4 sendBlock:0];
+  queueCopy = queue;
+  v10 = [[IDSValidationQueueItem alloc] initWithMessage:queueCopy subsystem:subsystem sendBlock:0];
 
-  v7 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a4 createIfNil:0];
+  v7 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 validationContextQueue];
-    [v9 removeObject:v10];
+    validationContextQueue = [v7 validationContextQueue];
+    [validationContextQueue removeObject:v10];
   }
 }
 
-- (void)__queueValidationMessage:(id)a3 subsystem:(int64_t)a4 sendBlock:(id)a5
+- (void)__queueValidationMessage:(id)message subsystem:(int64_t)subsystem sendBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[IDSValidationQueueItem alloc] initWithMessage:v8 subsystem:a4 sendBlock:v9];
+  messageCopy = message;
+  blockCopy = block;
+  v10 = [[IDSValidationQueueItem alloc] initWithMessage:messageCopy subsystem:subsystem sendBlock:blockCopy];
 
-  v11 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a4 createIfNil:1];
-  v12 = [v11 validationContextQueue];
+  v11 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:1];
+  validationContextQueue = [v11 validationContextQueue];
 
-  if (!v12)
+  if (!validationContextQueue)
   {
     v13 = objc_alloc_init(NSMutableArray);
     [v11 setValidationContextQueue:v13];
   }
 
-  v14 = [v11 validationContextQueue];
-  v15 = [v14 containsObject:v10];
+  validationContextQueue2 = [v11 validationContextQueue];
+  v15 = [validationContextQueue2 containsObject:v10];
 
   if ((v15 & 1) == 0)
   {
@@ -327,38 +327,38 @@ LABEL_50:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v8;
+      v19 = messageCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Adding message to validate to the queue: %@", &v18, 0xCu);
     }
 
-    v17 = [v11 validationContextQueue];
-    [v17 addObject:v10];
+    validationContextQueue3 = [v11 validationContextQueue];
+    [validationContextQueue3 addObject:v10];
   }
 }
 
-- (void)__failValidationQueueWithErrorResponseCode:(int64_t)a3 forSubsystemMechanism:(int64_t)a4
+- (void)__failValidationQueueWithErrorResponseCode:(int64_t)code forSubsystemMechanism:(int64_t)mechanism
 {
-  v5 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a4 createIfNil:0];
+  v5 = [(IDSValidationQueue *)self _validationInfoForSubsystem:mechanism createIfNil:0];
   v6 = +[IMRGLog warning];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
     sub_10092D314(v5);
   }
 
-  v7 = [v5 validationContextQueue];
-  v8 = [v7 count];
+  validationContextQueue = [v5 validationContextQueue];
+  v8 = [validationContextQueue count];
 
   if (v8)
   {
     v19 = v5;
-    v9 = [v5 validationContextQueue];
-    v10 = [v9 _copyForEnumerating];
+    validationContextQueue2 = [v5 validationContextQueue];
+    _copyForEnumerating = [validationContextQueue2 _copyForEnumerating];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = v10;
+    v11 = _copyForEnumerating;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
@@ -374,12 +374,12 @@ LABEL_50:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * v15) message];
-          v17 = [v16 completionBlock];
-          if (v17)
+          message = [*(*(&v20 + 1) + 8 * v15) message];
+          completionBlock = [message completionBlock];
+          if (completionBlock)
           {
-            v18 = [NSError errorWithDomain:@"IDSAppleIDSRegistrationErrorDomain" code:a3 userInfo:0];
-            (v17)[2](v17, v16, v18, a3, 0);
+            v18 = [NSError errorWithDomain:@"IDSAppleIDSRegistrationErrorDomain" code:code userInfo:0];
+            (completionBlock)[2](completionBlock, message, v18, code, 0);
           }
 
           v15 = v15 + 1;
@@ -397,19 +397,19 @@ LABEL_50:
   }
 }
 
-- (void)__flushValidationQueueForSubsystemMechanism:(int64_t)a3
+- (void)__flushValidationQueueForSubsystemMechanism:(int64_t)mechanism
 {
-  v4 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:0];
+  v4 = [(IDSValidationQueue *)self _validationInfoForSubsystem:mechanism createIfNil:0];
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 validationContextQueue];
+    validationContextQueue = [v4 validationContextQueue];
     *buf = 138412290;
-    v31 = v6;
+    v31 = validationContextQueue;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Flushing validation queue: %@", buf, 0xCu);
   }
 
-  v7 = [v4 validationContextQueue];
+  validationContextQueue2 = [v4 validationContextQueue];
   v19 = v4;
   [v4 setValidationContextQueue:0];
   v8 = dispatch_group_create();
@@ -417,7 +417,7 @@ LABEL_50:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v7;
+  obj = validationContextQueue2;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -435,16 +435,16 @@ LABEL_50:
 
         v13 = *(*(&v25 + 1) + 8 * v12);
         dispatch_group_enter(v8);
-        v14 = [v13 message];
-        v15 = [v13 subsystem];
+        message = [v13 message];
+        subsystem = [v13 subsystem];
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_100611BB0;
         v23[3] = &unk_100BD9AA8;
         v23[4] = v13;
         v24 = v8;
-        v16 = [v13 sendBlock];
-        [(IDSValidationQueue *)self queueBuildingValidationDataIfNecessaryForMessage:v14 subsystem:v15 withQueueCompletion:v23 sendBlock:v16];
+        sendBlock = [v13 sendBlock];
+        [(IDSValidationQueue *)self queueBuildingValidationDataIfNecessaryForMessage:message subsystem:subsystem withQueueCompletion:v23 sendBlock:sendBlock];
 
         v12 = v12 + 1;
       }
@@ -466,9 +466,9 @@ LABEL_50:
   dispatch_group_notify(v8, v17, block);
 }
 
-- (void)__cleanupValidationInfoForSubsystemMechanism:(int64_t)a3
+- (void)__cleanupValidationInfoForSubsystemMechanism:(int64_t)mechanism
 {
-  v3 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:0];
+  v3 = [(IDSValidationQueue *)self _validationInfoForSubsystem:mechanism createIfNil:0];
   v4 = +[IMRGLog registration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -488,32 +488,32 @@ LABEL_50:
   [v3 setValidationSession:0];
 }
 
-- (void)__purgeCachedCertsForSubsystemMechanism:(int64_t)a3
+- (void)__purgeCachedCertsForSubsystemMechanism:(int64_t)mechanism
 {
-  v6 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:0];
-  v5 = [v6 validationSession];
-  [v5 purgeCachedCertsForSubsystemMechanism:{-[IDSValidationQueue _mechanismForSubsystem:](self, "_mechanismForSubsystem:", a3)}];
+  v6 = [(IDSValidationQueue *)self _validationInfoForSubsystem:mechanism createIfNil:0];
+  validationSession = [v6 validationSession];
+  [validationSession purgeCachedCertsForSubsystemMechanism:{-[IDSValidationQueue _mechanismForSubsystem:](self, "_mechanismForSubsystem:", mechanism)}];
 }
 
-- (void)_sendValidationRequestForSubsystem:(int64_t)a3
+- (void)_sendValidationRequestForSubsystem:(int64_t)subsystem
 {
   v5 = [(IDSValidationQueue *)self _mechanismForSubsystem:?];
   if (v5 == 1)
   {
 
-    [(IDSValidationQueue *)self _sendBAAValidationRequestIfNeededForSubsystem:a3];
+    [(IDSValidationQueue *)self _sendBAAValidationRequestIfNeededForSubsystem:subsystem];
   }
 
   else if (!v5)
   {
 
-    [(IDSValidationQueue *)self _sendAbsintheValidationCertRequestIfNeededForSubsystem:a3];
+    [(IDSValidationQueue *)self _sendAbsintheValidationCertRequestIfNeededForSubsystem:subsystem];
   }
 }
 
-- (void)_sendBAAValidationRequestIfNeededForSubsystem:(int64_t)a3
+- (void)_sendBAAValidationRequestIfNeededForSubsystem:(int64_t)subsystem
 {
-  v5 = [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:1];
+  v5 = [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:1];
   if ([v5 isBuildingContext])
   {
     v6 = +[IMRGLog registration];
@@ -533,24 +533,24 @@ LABEL_50:
     v9[2] = sub_100612014;
     v9[3] = &unk_100BE23A8;
     v10 = v5;
-    v11 = self;
-    v12 = a3;
+    selfCopy = self;
+    subsystemCopy = subsystem;
     [IDSValidationSession validationSessionOnQueue:v7 mechanism:1 withCompletion:v9];
 
     v6 = v10;
   }
 }
 
-- (void)_sendAbsintheValidationCertRequestIfNeededForSubsystem:(int64_t)a3
+- (void)_sendAbsintheValidationCertRequestIfNeededForSubsystem:(int64_t)subsystem
 {
-  [(IDSValidationQueue *)self _validationInfoForSubsystem:a3 createIfNil:1];
+  [(IDSValidationQueue *)self _validationInfoForSubsystem:subsystem createIfNil:1];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100612380;
   v5 = v12[3] = &unk_100BE2420;
   v13 = v5;
-  v14 = self;
-  v15 = a3;
+  selfCopy = self;
+  subsystemCopy = subsystem;
   v6 = objc_retainBlock(v12);
   if ([v5 isBuildingContext])
   {
@@ -569,30 +569,30 @@ LABEL_50:
     v7 = objc_alloc_init(IDSValidationCertificateMessage);
     [v7 setCompletionBlock:v6];
     [v7 setTimeout:86400.0];
-    v8 = [(IDSPushHandler *)self->_pushHandler pushToken];
-    [v7 setPushToken:v8];
+    pushToken = [(IDSPushHandler *)self->_pushHandler pushToken];
+    [v7 setPushToken:pushToken];
 
     v9 = +[IMRGLog registration];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IDSPushHandler *)self->_pushHandler pushToken];
+      pushToken2 = [(IDSPushHandler *)self->_pushHandler pushToken];
       *buf = 138412290;
-      v17 = v10;
+      v17 = pushToken2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Sending cert request request   push token: %@", buf, 0xCu);
     }
 
-    v11 = [(IDSValidationQueue *)self validationMessageSendBlock];
-    (v11)[2](v11, v7);
+    validationMessageSendBlock = [(IDSValidationQueue *)self validationMessageSendBlock];
+    (validationMessageSendBlock)[2](validationMessageSendBlock, v7);
   }
 }
 
-- (id)_validationInfoForSubsystem:(int64_t)a3 createIfNil:(BOOL)a4
+- (id)_validationInfoForSubsystem:(int64_t)subsystem createIfNil:(BOOL)nil
 {
-  v4 = a4;
-  v6 = [(IDSValidationQueue *)self _mechanismForSubsystem:a3];
-  v7 = [(IDSValidationQueue *)self validationInfoByMechanism];
+  nilCopy = nil;
+  v6 = [(IDSValidationQueue *)self _mechanismForSubsystem:subsystem];
+  validationInfoByMechanism = [(IDSValidationQueue *)self validationInfoByMechanism];
   v8 = [NSNumber numberWithInteger:v6];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [validationInfoByMechanism objectForKeyedSubscript:v8];
 
   if (v9)
   {
@@ -601,15 +601,15 @@ LABEL_50:
 
   else
   {
-    v10 = !v4;
+    v10 = !nilCopy;
   }
 
   if (!v10)
   {
     v9 = objc_alloc_init(IDSValidationInfo);
-    v11 = [(IDSValidationQueue *)self validationInfoByMechanism];
+    validationInfoByMechanism2 = [(IDSValidationQueue *)self validationInfoByMechanism];
     v12 = [NSNumber numberWithInteger:v6];
-    [v11 setObject:v9 forKeyedSubscript:v12];
+    [validationInfoByMechanism2 setObject:v9 forKeyedSubscript:v12];
   }
 
   return v9;

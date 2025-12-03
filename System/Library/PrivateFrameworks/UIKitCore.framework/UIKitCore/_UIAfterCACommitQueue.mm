@@ -1,7 +1,7 @@
 @interface _UIAfterCACommitQueue
 - (BOOL)flush;
 - (_UIAfterCACommitQueue)init;
-- (void)_enqueueCommitResponse:(uint64_t)a3 forPhase:;
+- (void)_enqueueCommitResponse:(uint64_t)response forPhase:;
 @end
 
 @implementation _UIAfterCACommitQueue
@@ -28,8 +28,8 @@
 {
   if (pthread_main_np() != 1)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIAfterCACommitQueue.m" lineNumber:212 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAfterCACommitQueue.m" lineNumber:212 description:@"Call must be made on main thread"];
   }
 
   p_first = &self->_first;
@@ -83,21 +83,21 @@ LABEL_9:
   return v10 & 1;
 }
 
-- (void)_enqueueCommitResponse:(uint64_t)a3 forPhase:
+- (void)_enqueueCommitResponse:(uint64_t)response forPhase:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
     if (pthread_main_np() != 1)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:a1 file:@"_UIAfterCACommitQueue.m" lineNumber:188 description:@"Call must be made on main thread"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:self file:@"_UIAfterCACommitQueue.m" lineNumber:188 description:@"Call must be made on main thread"];
     }
 
     v6 = [[_UIAfterCACommitBlock alloc] _initWithBlock:v5];
 
-    v8 = (a1 + 16);
-    v7 = *(a1 + 16);
+    v8 = (self + 16);
+    v7 = *(self + 16);
     if (v7)
     {
       v9 = (v7 + 8);
@@ -105,14 +105,14 @@ LABEL_9:
 
     else
     {
-      if (*(a1 + 8))
+      if (*(self + 8))
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:a1 file:@"_UIAfterCACommitQueue.m" lineNumber:195 description:@"if there's no _last then there can't be a _first either"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:self file:@"_UIAfterCACommitQueue.m" lineNumber:195 description:@"if there's no _last then there can't be a _first either"];
       }
 
-      v9 = (a1 + 16);
-      v8 = (a1 + 8);
+      v9 = (self + 16);
+      v8 = (self + 8);
     }
 
     objc_storeStrong(v9, v6);
@@ -125,12 +125,12 @@ LABEL_9:
     v19 = &unk_1E70F35B8;
     v11 = v6;
     v20 = v11;
-    v21 = a1;
-    if (([v10 addCommitHandler:&v16 forPhase:a3] & 1) == 0)
+    selfCopy = self;
+    if (([v10 addCommitHandler:&v16 forPhase:response] & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      v14 = [MEMORY[0x1E6979518] currentPhase];
-      [v13 handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:a1 file:@"_UIAfterCACommitQueue.m" lineNumber:208 description:{@"failed to register commit handler for phase = %i (current is %i)", a3, v14, v16, v17, v18, v19}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentPhase = [MEMORY[0x1E6979518] currentPhase];
+      [currentHandler3 handleFailureInMethod:sel__enqueueCommitResponse_forPhase_ object:self file:@"_UIAfterCACommitQueue.m" lineNumber:208 description:{@"failed to register commit handler for phase = %i (current is %i)", response, currentPhase, v16, v17, v18, v19}];
     }
   }
 }

@@ -1,12 +1,12 @@
 @interface HMAccessCodeConstraints
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessCodeConstraints)initWithAllowedCharacterSets:(unint64_t)a3 minimumLength:(int64_t)a4 maximumLength:(int64_t)a5 maximumAllowedAccessCodes:(int64_t)a6;
-- (HMAccessCodeConstraints)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessCodeConstraints)initWithAllowedCharacterSets:(unint64_t)sets minimumLength:(int64_t)length maximumLength:(int64_t)maximumLength maximumAllowedAccessCodes:(int64_t)codes;
+- (HMAccessCodeConstraints)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessCodeConstraints
@@ -44,24 +44,24 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessCodeConstraints)initWithCoder:(id)a3
+- (HMAccessCodeConstraints)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"];
-  v6 = [v4 decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMinimumLength"];
-  v7 = [v4 decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMaximumLength"];
-  v8 = [v4 decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes"];
-  if ([v4 containsValueForKey:@"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"] && objc_msgSend(v4, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMinimumLength") && objc_msgSend(v4, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMaximumLength") && (objc_msgSend(v4, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMinimumLength"];
+  v7 = [coderCopy decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMaximumLength"];
+  v8 = [coderCopy decodeIntegerForKey:@"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes"];
+  if ([coderCopy containsValueForKey:@"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"] && objc_msgSend(coderCopy, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMinimumLength") && objc_msgSend(coderCopy, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMaximumLength") && (objc_msgSend(coderCopy, "containsValueForKey:", @"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes") & 1) != 0)
   {
-    v9 = [(HMAccessCodeConstraints *)self initWithAllowedCharacterSets:v5 minimumLength:v6 maximumLength:v7 maximumAllowedAccessCodes:v8];
-    v10 = v9;
+    selfCopy = [(HMAccessCodeConstraints *)self initWithAllowedCharacterSets:v5 minimumLength:v6 maximumLength:v7 maximumAllowedAccessCodes:v8];
+    v10 = selfCopy;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -87,30 +87,30 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMAccessCodeConstraints allowedCharacterSets](self forKey:{"allowedCharacterSets"), @"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"}];
-  [v4 encodeInteger:-[HMAccessCodeConstraints minimumLength](self forKey:{"minimumLength"), @"HMAccessCodeConstraintsCodingKeyMinimumLength"}];
-  [v4 encodeInteger:-[HMAccessCodeConstraints maximumLength](self forKey:{"maximumLength"), @"HMAccessCodeConstraintsCodingKeyMaximumLength"}];
-  [v4 encodeInteger:-[HMAccessCodeConstraints maximumAllowedAccessCodes](self forKey:{"maximumAllowedAccessCodes"), @"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMAccessCodeConstraints allowedCharacterSets](self forKey:{"allowedCharacterSets"), @"HMAccessCodeConstraintsCodingKeyAllowedCharacterSets"}];
+  [coderCopy encodeInteger:-[HMAccessCodeConstraints minimumLength](self forKey:{"minimumLength"), @"HMAccessCodeConstraintsCodingKeyMinimumLength"}];
+  [coderCopy encodeInteger:-[HMAccessCodeConstraints maximumLength](self forKey:{"maximumLength"), @"HMAccessCodeConstraintsCodingKeyMaximumLength"}];
+  [coderCopy encodeInteger:-[HMAccessCodeConstraints maximumAllowedAccessCodes](self forKey:{"maximumAllowedAccessCodes"), @"HMAccessCodeConstraintsCodingKeyMaximumAllowedAccessCodes"}];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessCodeConstraints *)self allowedCharacterSets];
-  v4 = [(HMAccessCodeConstraints *)self minimumLength]^ v3;
-  v5 = [(HMAccessCodeConstraints *)self maximumLength];
-  return v4 ^ v5 ^ [(HMAccessCodeConstraints *)self maximumAllowedAccessCodes];
+  allowedCharacterSets = [(HMAccessCodeConstraints *)self allowedCharacterSets];
+  v4 = [(HMAccessCodeConstraints *)self minimumLength]^ allowedCharacterSets;
+  maximumLength = [(HMAccessCodeConstraints *)self maximumLength];
+  return v4 ^ maximumLength ^ [(HMAccessCodeConstraints *)self maximumAllowedAccessCodes];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -121,8 +121,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMAccessCodeConstraints allowedCharacterSets](self, "allowedCharacterSets"), v7 == [v6 allowedCharacterSets]) && (v8 = -[HMAccessCodeConstraints minimumLength](self, "minimumLength"), v8 == objc_msgSend(v6, "minimumLength")) && (v9 = -[HMAccessCodeConstraints maximumLength](self, "maximumLength"), v9 == objc_msgSend(v6, "maximumLength")))
   {
-    v10 = [(HMAccessCodeConstraints *)self maximumAllowedAccessCodes];
-    v11 = v10 == [v6 maximumAllowedAccessCodes];
+    maximumAllowedAccessCodes = [(HMAccessCodeConstraints *)self maximumAllowedAccessCodes];
+    v11 = maximumAllowedAccessCodes == [v6 maximumAllowedAccessCodes];
   }
 
   else
@@ -133,17 +133,17 @@
   return v11;
 }
 
-- (HMAccessCodeConstraints)initWithAllowedCharacterSets:(unint64_t)a3 minimumLength:(int64_t)a4 maximumLength:(int64_t)a5 maximumAllowedAccessCodes:(int64_t)a6
+- (HMAccessCodeConstraints)initWithAllowedCharacterSets:(unint64_t)sets minimumLength:(int64_t)length maximumLength:(int64_t)maximumLength maximumAllowedAccessCodes:(int64_t)codes
 {
   v11.receiver = self;
   v11.super_class = HMAccessCodeConstraints;
   result = [(HMAccessCodeConstraints *)&v11 init];
   if (result)
   {
-    result->_allowedCharacterSets = a3;
-    result->_minimumLength = a4;
-    result->_maximumLength = a5;
-    result->_maximumAllowedAccessCodes = a6;
+    result->_allowedCharacterSets = sets;
+    result->_minimumLength = length;
+    result->_maximumLength = maximumLength;
+    result->_maximumAllowedAccessCodes = codes;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface EncodedImageArray
-- (_NSRange)tokenRangeAt:(int)a3;
+- (_NSRange)tokenRangeAt:(int)at;
 - (int)imageCount;
-- (void)getEncodedImageAt:(int)a3 withHandler:(id)a4;
+- (void)getEncodedImageAt:(int)at withHandler:(id)handler;
 @end
 
 @implementation EncodedImageArray
@@ -18,24 +18,24 @@
   return v3;
 }
 
-- (_NSRange)tokenRangeAt:(int)a3
+- (_NSRange)tokenRangeAt:(int)at
 {
   v5 = swift_beginAccess();
-  if (a3 < 0)
+  if (at < 0)
   {
     __break(1u);
     goto LABEL_8;
   }
 
   v7 = *&self->encodedImages[7];
-  if (*(v7 + 16) <= a3)
+  if (*(v7 + 16) <= at)
   {
 LABEL_8:
     __break(1u);
     goto LABEL_9;
   }
 
-  v8 = v7 + 40 * a3;
+  v8 = v7 + 40 * at;
   v5 = *(v8 + 48);
   v9 = *(v8 + 56);
   v10 = __OFADD__(v5, v9);
@@ -68,12 +68,12 @@ LABEL_12:
   return result;
 }
 
-- (void)getEncodedImageAt:(int)a3 withHandler:(id)a4
+- (void)getEncodedImageAt:(int)at withHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
 
-  specialized EncodedImageArray.getEncodedImage(at:withHandler:)(a3, self);
+  specialized EncodedImageArray.getEncodedImage(at:withHandler:)(at, self);
   _Block_release(v6);
   _Block_release(v6);
 }

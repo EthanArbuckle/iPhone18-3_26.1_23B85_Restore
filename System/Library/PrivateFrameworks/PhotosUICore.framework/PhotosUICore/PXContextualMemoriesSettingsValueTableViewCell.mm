@@ -1,9 +1,9 @@
 @interface PXContextualMemoriesSettingsValueTableViewCell
-- (PXContextualMemoriesSettingsValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PXContextualMemoriesSettingsValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIButton)resetButton;
 - (UILabel)valueLabel;
 - (UIView)containerView;
-- (void)_didPressReset:(id)a3;
+- (void)_didPressReset:(id)reset;
 - (void)_setUpConstraints;
 - (void)layoutMarginsDidChange;
 @end
@@ -17,23 +17,23 @@
   [(PXContextualMemoriesSettingsValueTableViewCell *)&v15 layoutMarginsDidChange];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
   v4 = v3;
-  v5 = [(PXContextualMemoriesSettingsValueTableViewCell *)self topLayoutMarginConstraint];
-  [v5 setConstant:v4];
+  topLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self topLayoutMarginConstraint];
+  [topLayoutMarginConstraint setConstant:v4];
 
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
   v7 = v6;
-  v8 = [(PXContextualMemoriesSettingsValueTableViewCell *)self bottomLayoutMarginConstraint];
-  [v8 setConstant:v7];
+  bottomLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self bottomLayoutMarginConstraint];
+  [bottomLayoutMarginConstraint setConstant:v7];
 
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
   v10 = v9;
-  v11 = [(PXContextualMemoriesSettingsValueTableViewCell *)self leftLayoutMarginConstraint];
-  [v11 setConstant:v10];
+  leftLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self leftLayoutMarginConstraint];
+  [leftLayoutMarginConstraint setConstant:v10];
 
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
   v13 = v12;
-  v14 = [(PXContextualMemoriesSettingsValueTableViewCell *)self rightLayoutMarginConstraint];
-  [v14 setConstant:v13];
+  rightLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self rightLayoutMarginConstraint];
+  [rightLayoutMarginConstraint setConstant:v13];
 }
 
 - (UIView)containerView
@@ -47,10 +47,10 @@
     self->_containerView = v5;
 
     [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
+    contentView = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
     v8 = self->_containerView;
-    v9 = [(PXContextualMemoriesSettingsValueTableViewCell *)self textLabel];
-    [v7 insertSubview:v8 aboveSubview:v9];
+    textLabel = [(PXContextualMemoriesSettingsValueTableViewCell *)self textLabel];
+    [contentView insertSubview:v8 aboveSubview:textLabel];
 
     containerView = self->_containerView;
   }
@@ -69,8 +69,8 @@
     self->_valueLabel = v5;
 
     [(UILabel *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-    [v7 addSubview:self->_valueLabel];
+    containerView = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+    [containerView addSubview:self->_valueLabel];
 
     [(UILabel *)self->_valueLabel setNumberOfLines:0];
     valueLabel = self->_valueLabel;
@@ -89,12 +89,12 @@
     self->_resetButton = v4;
 
     [(UIButton *)self->_resetButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-    [v6 addSubview:self->_resetButton];
+    containerView = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+    [containerView addSubview:self->_resetButton];
 
     v7 = self->_resetButton;
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 localizedStringForKey:@"Reset" value:&stru_1F1741150 table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v9 = [mainBundle localizedStringForKey:@"Reset" value:&stru_1F1741150 table:0];
     [(UIButton *)v7 setTitle:v9 forState:0];
 
     [(UIButton *)self->_resetButton addTarget:self action:sel__didPressReset_ forControlEvents:64];
@@ -104,7 +104,7 @@
   return resetButton;
 }
 
-- (void)_didPressReset:(id)a3
+- (void)_didPressReset:(id)reset
 {
   resetHandler = self->_resetHandler;
   if (resetHandler)
@@ -117,102 +117,102 @@
 {
   v59[3] = *MEMORY[0x1E69E9840];
   v58[0] = @"label";
-  v3 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
-  v59[0] = v3;
+  valueLabel = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
+  v59[0] = valueLabel;
   v58[1] = @"reset";
-  v4 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
-  v59[1] = v4;
+  resetButton = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
+  v59[1] = resetButton;
   v58[2] = @"containerView";
-  v5 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v59[2] = v5;
+  containerView = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  v59[2] = containerView;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:3];
 
-  v7 = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
+  contentView = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
   v8 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[containerView]|" options:0 metrics:0 views:v6];
-  [v7 addConstraints:v8];
+  [contentView addConstraints:v8];
 
-  v9 = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
+  contentView2 = [(PXContextualMemoriesSettingsValueTableViewCell *)self contentView];
   v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-4-[containerView]-4-|" options:0 metrics:0 views:v6];
-  [v9 addConstraints:v10];
+  [contentView2 addConstraints:v10];
 
-  v11 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  containerView2 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
   v12 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:[label]-(>=4)-[reset]" options:0 metrics:0 views:v6];
-  [v11 addConstraints:v12];
+  [containerView2 addConstraints:v12];
 
-  v13 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v14 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v15 = [v14 centerYAnchor];
-  v16 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
-  v17 = [v16 centerYAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
-  [v13 addConstraint:v18];
+  containerView3 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  containerView4 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  centerYAnchor = [containerView4 centerYAnchor];
+  resetButton2 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
+  centerYAnchor2 = [resetButton2 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [containerView3 addConstraint:v18];
 
-  v19 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v20 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v21 = [v20 centerYAnchor];
-  v22 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
-  v23 = [v22 centerYAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
-  [v19 addConstraint:v24];
+  containerView5 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  containerView6 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  centerYAnchor3 = [containerView6 centerYAnchor];
+  valueLabel2 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
+  centerYAnchor4 = [valueLabel2 centerYAnchor];
+  v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [containerView5 addConstraint:v24];
 
-  v25 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
-  v26 = [v25 topAnchor];
-  v27 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v28 = [v27 topAnchor];
+  valueLabel3 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
+  topAnchor = [valueLabel3 topAnchor];
+  containerView7 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  topAnchor2 = [containerView7 topAnchor];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
-  v29 = [v26 constraintGreaterThanOrEqualToAnchor:v28 constant:?];
+  v29 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self setTopLayoutMarginConstraint:v29];
 
-  v30 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v31 = [v30 bottomAnchor];
-  v32 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
-  v33 = [v32 bottomAnchor];
+  containerView8 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  bottomAnchor = [containerView8 bottomAnchor];
+  valueLabel4 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
+  bottomAnchor2 = [valueLabel4 bottomAnchor];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
-  v35 = [v31 constraintGreaterThanOrEqualToAnchor:v33 constant:v34];
+  v35 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:v34];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self setBottomLayoutMarginConstraint:v35];
 
-  v36 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
-  v37 = [v36 leadingAnchor];
-  v38 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v39 = [v38 leadingAnchor];
+  valueLabel5 = [(PXContextualMemoriesSettingsValueTableViewCell *)self valueLabel];
+  leadingAnchor = [valueLabel5 leadingAnchor];
+  containerView9 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  leadingAnchor2 = [containerView9 leadingAnchor];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
-  v41 = [v37 constraintEqualToAnchor:v39 constant:v40];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v40];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self setLeftLayoutMarginConstraint:v41];
 
-  v42 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v43 = [v42 trailingAnchor];
-  v44 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
-  v45 = [v44 trailingAnchor];
+  containerView10 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  trailingAnchor = [containerView10 trailingAnchor];
+  resetButton3 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
+  trailingAnchor2 = [resetButton3 trailingAnchor];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self layoutMargins];
-  v47 = [v43 constraintEqualToAnchor:v45 constant:v46];
+  v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v46];
   [(PXContextualMemoriesSettingsValueTableViewCell *)self setRightLayoutMarginConstraint:v47];
 
-  v48 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v49 = [(PXContextualMemoriesSettingsValueTableViewCell *)self topLayoutMarginConstraint];
-  [v48 addConstraint:v49];
+  containerView11 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  topLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self topLayoutMarginConstraint];
+  [containerView11 addConstraint:topLayoutMarginConstraint];
 
-  v50 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v51 = [(PXContextualMemoriesSettingsValueTableViewCell *)self bottomLayoutMarginConstraint];
-  [v50 addConstraint:v51];
+  containerView12 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  bottomLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self bottomLayoutMarginConstraint];
+  [containerView12 addConstraint:bottomLayoutMarginConstraint];
 
-  v52 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v53 = [(PXContextualMemoriesSettingsValueTableViewCell *)self leftLayoutMarginConstraint];
-  [v52 addConstraint:v53];
+  containerView13 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  leftLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self leftLayoutMarginConstraint];
+  [containerView13 addConstraint:leftLayoutMarginConstraint];
 
-  v54 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
-  v55 = [(PXContextualMemoriesSettingsValueTableViewCell *)self rightLayoutMarginConstraint];
-  [v54 addConstraint:v55];
+  containerView14 = [(PXContextualMemoriesSettingsValueTableViewCell *)self containerView];
+  rightLayoutMarginConstraint = [(PXContextualMemoriesSettingsValueTableViewCell *)self rightLayoutMarginConstraint];
+  [containerView14 addConstraint:rightLayoutMarginConstraint];
 
-  v56 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
+  resetButton4 = [(PXContextualMemoriesSettingsValueTableViewCell *)self resetButton];
   LODWORD(v57) = 1144766464;
-  [v56 setContentHuggingPriority:0 forAxis:v57];
+  [resetButton4 setContentHuggingPriority:0 forAxis:v57];
 }
 
-- (PXContextualMemoriesSettingsValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PXContextualMemoriesSettingsValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PXContextualMemoriesSettingsValueTableViewCell;
-  v4 = [(PXContextualMemoriesSettingsValueTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PXContextualMemoriesSettingsValueTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

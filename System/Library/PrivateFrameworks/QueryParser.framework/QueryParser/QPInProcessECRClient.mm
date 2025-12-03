@@ -1,10 +1,10 @@
 @interface QPInProcessECRClient
 + (id)sharedClient;
-- (BOOL)coolDownECRClientSyncWithError:(id *)a3;
-- (BOOL)warmUpECRClientSyncWithError:(id *)a3;
-- (QPInProcessECRClient)ecrClientWithError:(id *)a3;
+- (BOOL)coolDownECRClientSyncWithError:(id *)error;
+- (BOOL)warmUpECRClientSyncWithError:(id *)error;
+- (QPInProcessECRClient)ecrClientWithError:(id *)error;
 - (QPInProcessECRClient)init;
-- (id)resolveEntitiesWithRequest:(id)a3 error:(id *)a4;
+- (id)resolveEntitiesWithRequest:(id)request error:(id *)error;
 @end
 
 @implementation QPInProcessECRClient
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __36__QPInProcessECRClient_sharedClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedClient_onceToken != -1)
   {
     dispatch_once(&sharedClient_onceToken, block);
@@ -56,10 +56,10 @@ void __36__QPInProcessECRClient_sharedClient__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)resolveEntitiesWithRequest:(id)a3 error:(id *)a4
+- (id)resolveEntitiesWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(QPInProcessECRClient *)self ecrClientWithError:a4];
+  requestCopy = request;
+  v7 = [(QPInProcessECRClient *)self ecrClientWithError:error];
   if (v7)
   {
     v8 = dispatch_semaphore_create(0);
@@ -83,11 +83,11 @@ void __36__QPInProcessECRClient_sharedClient__block_invoke(uint64_t a1)
     v15 = &v16;
     v9 = v8;
     v13 = v9;
-    [v7 resolveEntitiesForRequest:v6 completionHandler:v12];
+    [v7 resolveEntitiesForRequest:requestCopy completionHandler:v12];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
-      *a4 = v17[5];
+      *error = v17[5];
     }
 
     v10 = v23[5];
@@ -121,7 +121,7 @@ void __57__QPInProcessECRClient_resolveEntitiesWithRequest_error___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)warmUpECRClientSyncWithError:(id *)a3
+- (BOOL)warmUpECRClientSyncWithError:(id *)error
 {
   v4 = [(QPInProcessECRClient *)self ecrClientWithError:?];
   if (v4)
@@ -142,9 +142,9 @@ void __57__QPInProcessECRClient_resolveEntitiesWithRequest_error___block_invoke(
     v10 = v6;
     [v4 warmupForMode:3 completionHandler:v9];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-    if (a3)
+    if (error)
     {
-      *a3 = v13[5];
+      *error = v13[5];
     }
 
     v7 = v13[5] == 0;
@@ -167,7 +167,7 @@ void __53__QPInProcessECRClient_warmUpECRClientSyncWithError___block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)coolDownECRClientSyncWithError:(id *)a3
+- (BOOL)coolDownECRClientSyncWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_clientLock);
   client = self->_client;
@@ -182,13 +182,13 @@ void __53__QPInProcessECRClient_warmUpECRClientSyncWithError___block_invoke(uint
   return v6 == 0;
 }
 
-- (QPInProcessECRClient)ecrClientWithError:(id *)a3
+- (QPInProcessECRClient)ecrClientWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_clientLock);
   v5 = self->_client;
   if (!v5)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69A9E80]) initWithMode:3 warmup:0 error:a3];
+    v5 = [objc_alloc(MEMORY[0x1E69A9E80]) initWithMode:3 warmup:0 error:error];
     client = self->_client;
     self->_client = v5;
   }

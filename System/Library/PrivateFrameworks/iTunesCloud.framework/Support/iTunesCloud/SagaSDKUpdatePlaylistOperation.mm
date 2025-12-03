@@ -1,30 +1,30 @@
 @interface SagaSDKUpdatePlaylistOperation
-- (SagaSDKUpdatePlaylistOperation)initWithCoder:(id)a3;
-- (SagaSDKUpdatePlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 properties:(id)a6 trackList:(id)a7 requestingBundleID:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (SagaSDKUpdatePlaylistOperation)initWithCoder:(id)coder;
+- (SagaSDKUpdatePlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list requestingBundleID:(id)iD;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
 @implementation SagaSDKUpdatePlaylistOperation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaSDKUpdatePlaylistOperation;
-  v4 = a3;
-  [(SagaUpdatePlaylistOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*(&self->super._libraryUpdateRequired + 1) forKey:{@"SagaSDKUpdatePlaylistOperationRequestingBundleKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SagaUpdatePlaylistOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*(&self->super._libraryUpdateRequired + 1) forKey:{@"SagaSDKUpdatePlaylistOperationRequestingBundleKey", v5.receiver, v5.super_class}];
 }
 
-- (SagaSDKUpdatePlaylistOperation)initWithCoder:(id)a3
+- (SagaSDKUpdatePlaylistOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SagaSDKUpdatePlaylistOperation;
-  v5 = [(SagaUpdatePlaylistOperation *)&v9 initWithCoder:v4];
+  v5 = [(SagaUpdatePlaylistOperation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaSDKUpdatePlaylistOperationRequestingBundleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaSDKUpdatePlaylistOperationRequestingBundleKey"];
     v7 = *(v5 + 113);
     *(v5 + 113) = v6;
   }
@@ -38,12 +38,12 @@
   v3 = [NSString stringWithFormat:@"SagaUpdatePlaylistOperation - (playlist_persistent_id = %lld)", *(&self->_requestingBundleID + 1)];
   v4 = [[MSVXPCTransaction alloc] initWithName:v3];
   [v4 beginTransaction];
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v6 = [(CloudLibraryOperation *)self clientIdentity];
-  [v5 setClientIdentity:v6];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
-  v52 = [(CloudLibraryOperation *)self musicLibrary];
-  v7 = [ML3Container newWithPersistentID:*(&self->_requestingBundleID + 1) inLibrary:v52];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  v7 = [ML3Container newWithPersistentID:*(&self->_requestingBundleID + 1) inLibrary:musicLibrary2];
   v8 = [v7 valueForProperty:ML3ContainerPropertyExternalVendorIdentifier];
   v9 = v8;
   if (v8 && [v8 isEqualToString:*(&self->super._libraryUpdateRequired + 1)])
@@ -66,10 +66,10 @@
     v10 = ML3ContainerPropertyStoreCloudID;
     v11 = [v7 valueForProperty:ML3ContainerPropertyStoreCloudID];
     v12 = v3;
-    v13 = [v11 unsignedIntValue];
+    unsignedIntValue = [v11 unsignedIntValue];
 
-    v49 = v13;
-    if (!v13)
+    v49 = unsignedIntValue;
+    if (!unsignedIntValue)
     {
       v30 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -91,21 +91,21 @@
     if (!v50)
     {
 LABEL_26:
-      v34 = [(CloudLibraryOperation *)self musicLibrary];
-      v35 = [v34 sagaOnDiskDatabaseRevision];
+      musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+      sagaOnDiskDatabaseRevision = [musicLibrary3 sagaOnDiskDatabaseRevision];
 
-      if (v35 <= 1)
+      if (sagaOnDiskDatabaseRevision <= 1)
       {
         v36 = 1;
       }
 
       else
       {
-        v36 = v35;
+        v36 = sagaOnDiskDatabaseRevision;
       }
 
-      v37 = [(CloudLibraryOperation *)self connection];
-      v38 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [v37 databaseID], v36, v49, *(&self->_properties + 1), *(&self->_playlistPersistentID + 1));
+      connection = [(CloudLibraryOperation *)self connection];
+      v38 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [connection databaseID], v36, v49, *(&self->_properties + 1), *(&self->_playlistPersistentID + 1));
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
@@ -134,12 +134,12 @@ LABEL_26:
       v55 = buf;
       v43 = v39;
       v54 = v43;
-      [v37 sendRequest:v38 withResponseHandler:v53];
+      [connection sendRequest:v38 withResponseHandler:v53];
       dispatch_semaphore_wait(v43, 0xFFFFFFFFFFFFFFFFLL);
-      v44 = [*(*&buf[8] + 40) responseCode];
-      if (v44 > 399)
+      responseCode = [*(*&buf[8] + 40) responseCode];
+      if (responseCode > 399)
       {
-        if (v44 == 404 || v44 == 400)
+        if (responseCode == 404 || responseCode == 400)
         {
           v45 = 3;
 LABEL_39:
@@ -147,9 +147,9 @@ LABEL_39:
 
           _Block_object_dispose(buf, 8);
 LABEL_40:
-          v46 = [(CloudLibraryOperation *)self musicLibrary];
+          musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
           v47 = MSVTCCIdentityForCurrentProcess();
-          [v46 setClientIdentity:v47];
+          [musicLibrary4 setClientIdentity:v47];
 
           [v4 endTransaction];
           goto LABEL_41;
@@ -159,7 +159,7 @@ LABEL_40:
       else
       {
         v45 = 1;
-        if (v44 == 200 || v44 == 204)
+        if (responseCode == 200 || responseCode == 204)
         {
           goto LABEL_39;
         }
@@ -183,7 +183,7 @@ LABEL_40:
       goto LABEL_25;
     }
 
-    v48 = +[ML3Container newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [v50 longLongValue], v52);
+    v48 = +[ML3Container newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [v50 longLongValue], musicLibrary2);
     v16 = [v48 valueForProperty:v10];
     if ([v16 longLongValue] < 1)
     {
@@ -246,9 +246,9 @@ LABEL_25:
   v25 = [[NSError alloc] initWithDomain:@"ICPlaylistUpdateErrorDomain" code:-1 userInfo:v24];
   [(CloudLibraryOperation *)self setError:v25];
   [(CloudLibraryOperation *)self setStatus:2];
-  v26 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary5 = [(CloudLibraryOperation *)self musicLibrary];
   v27 = MSVTCCIdentityForCurrentProcess();
-  [v26 setClientIdentity:v27];
+  [musicLibrary5 setClientIdentity:v27];
 
   [v4 endTransaction];
 LABEL_41:
@@ -256,27 +256,27 @@ LABEL_41:
   objc_autoreleasePoolPop(context);
 }
 
-- (SagaSDKUpdatePlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 properties:(id)a6 trackList:(id)a7 requestingBundleID:(id)a8
+- (SagaSDKUpdatePlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list requestingBundleID:(id)iD
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  propertiesCopy = properties;
+  listCopy = list;
+  iDCopy = iD;
   v25.receiver = self;
   v25.super_class = SagaSDKUpdatePlaylistOperation;
-  v16 = [(SagaUpdatePlaylistOperation *)&v25 initWithClientIdentity:a4 playlistPersistentID:a5 properties:v13 trackList:v14];
+  v16 = [(SagaUpdatePlaylistOperation *)&v25 initWithClientIdentity:identity playlistPersistentID:d properties:propertiesCopy trackList:listCopy];
   v17 = v16;
   if (v16)
   {
-    *(v16 + 121) = a5;
-    v18 = [v13 copy];
+    *(v16 + 121) = d;
+    v18 = [propertiesCopy copy];
     v19 = *(v17 + 129);
     *(v17 + 129) = v18;
 
-    v20 = [v14 copy];
+    v20 = [listCopy copy];
     v21 = *(v17 + 137);
     *(v17 + 137) = v20;
 
-    v22 = [v15 copy];
+    v22 = [iDCopy copy];
     v23 = *(v17 + 113);
     *(v17 + 113) = v22;
   }

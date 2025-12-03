@@ -1,23 +1,23 @@
 @interface OKEmitterCell
 + (id)supportedSettings;
-- (OKEmitterCell)initWithSettings:(id)a3;
+- (OKEmitterCell)initWithSettings:(id)settings;
 - (id)settingColor;
 - (void)dealloc;
-- (void)parentLoaded:(id)a3;
-- (void)setSettingColor:(id)a3;
-- (void)setSettingContents:(id)a3;
+- (void)parentLoaded:(id)loaded;
+- (void)setSettingColor:(id)color;
+- (void)setSettingContents:(id)contents;
 @end
 
 @implementation OKEmitterCell
 
-- (OKEmitterCell)initWithSettings:(id)a3
+- (OKEmitterCell)initWithSettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = OKEmitterCell;
   v4 = [(OKEmitterCell *)&v6 init];
   if (v4)
   {
-    [OKSettings applySettings:a3 toObject:v4 withResolution:0];
+    [OKSettings applySettings:settings toObject:v4 withResolution:0];
   }
 
   return v4;
@@ -40,7 +40,7 @@
 + (id)supportedSettings
 {
   v73[34] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v72[0] = @"alphaRange";
   v70 = @"type";
   v71 = &unk_287AEFF60;
@@ -179,16 +179,16 @@
   v4 = @"type";
   v5 = &unk_287AEFFC0;
   v73[33] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v5 forKeys:&v4 count:1];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v73, v72, 34)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v73, v72, 34)}];
+  return dictionary;
 }
 
-- (void)parentLoaded:(id)a3
+- (void)parentLoaded:(id)loaded
 {
   contentURL = self->_contentURL;
   if (contentURL)
   {
-    v5 = [a3 mediaItemForURL:contentURL];
+    v5 = [loaded mediaItemForURL:contentURL];
     v6 = [objc_msgSend(MEMORY[0x277D755B8] imageWithContentsOfFile:{objc_msgSend(objc_msgSend(v5, "resourceURL"), "relativePath")), "CGImage"}];
 
     [(OKEmitterCell *)self setContents:v6];
@@ -198,19 +198,19 @@
 - (id)settingColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(OKEmitterCell *)self color];
+  color = [(OKEmitterCell *)self color];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:color];
 }
 
-- (void)setSettingColor:(id)a3
+- (void)setSettingColor:(id)color
 {
-  v4 = [a3 CGColor];
+  cGColor = [color CGColor];
 
-  [(OKEmitterCell *)self setColor:v4];
+  [(OKEmitterCell *)self setColor:cGColor];
 }
 
-- (void)setSettingContents:(id)a3
+- (void)setSettingContents:(id)contents
 {
   contentURL = self->_contentURL;
   if (contentURL)
@@ -219,7 +219,7 @@
     self->_contentURL = 0;
   }
 
-  self->_contentURL = a3;
+  self->_contentURL = contents;
 }
 
 @end

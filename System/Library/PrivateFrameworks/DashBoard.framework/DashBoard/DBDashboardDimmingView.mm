@@ -1,42 +1,42 @@
 @interface DBDashboardDimmingView
 - (CGRect)contentFrame;
-- (_TtC9DashBoard22DBDashboardDimmingView)initWithCoder:(id)a3;
+- (_TtC9DashBoard22DBDashboardDimmingView)initWithCoder:(id)coder;
 - (double)cornerRadius;
-- (void)setContentFrame:(CGRect)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentFrame:(CGRect)frame;
+- (void)setCornerRadius:(double)radius;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBDashboardDimmingView
 
-- (void)setContentFrame:(CGRect)a3
+- (void)setContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (self + OBJC_IVAR____TtC9DashBoard22DBDashboardDimmingView_contentFrame);
   swift_beginAccess();
   *v8 = x;
   v8[1] = y;
   v8[2] = width;
   v8[3] = height;
-  v9 = self;
+  selfCopy = self;
   sub_2481542AC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DBDashboardDimmingView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(DBDashboardDimmingView *)&v6 traitCollectionDidChange:v4];
+  [(DBDashboardDimmingView *)&v6 traitCollectionDidChange:changeCopy];
   sub_248159ED4();
   sub_2481542AC();
 }
 
-- (_TtC9DashBoard22DBDashboardDimmingView)initWithCoder:(id)a3
+- (_TtC9DashBoard22DBDashboardDimmingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBDashboardDimmingView_cornerRadius) = 0;
   v3 = (self + OBJC_IVAR____TtC9DashBoard22DBDashboardDimmingView_contentFrame);
@@ -54,12 +54,12 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard22DBDashboardDimmingView_cornerRadius;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + v5) = radius;
+  selfCopy = self;
   sub_248159ED4();
   sub_2481542AC();
 }

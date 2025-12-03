@@ -1,20 +1,20 @@
 @interface NPKProtoRemoteDevicePasscodeStateResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsPasscodeLocked:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsPasscodeLocked:(BOOL)locked;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemoteDevicePasscodeStateResponse
 
-- (void)setHasIsPasscodeLocked:(BOOL)a3
+- (void)setHasIsPasscodeLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemoteDevicePasscodeStateResponse;
   v4 = [(NPKProtoRemoteDevicePasscodeStateResponse *)&v8 description];
-  v5 = [(NPKProtoRemoteDevicePasscodeStateResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemoteDevicePasscodeStateResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasPasscodeSet];
-    [v3 setObject:v5 forKey:@"hasPasscodeSet"];
+    [dictionary setObject:v5 forKey:@"hasPasscodeSet"];
 
     has = self->_has;
   }
@@ -54,28 +54,28 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPasscodeLocked];
-    [v3 setObject:v6 forKey:@"isPasscodeLocked"];
+    [dictionary setObject:v6 forKey:@"isPasscodeLocked"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     hasPasscodeSet = self->_hasPasscodeSet;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,44 +83,44 @@
   {
     isPasscodeLocked = self->_isPasscodeLocked;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[16] = self->_hasPasscodeSet;
-    v4[20] |= 1u;
+    toCopy[16] = self->_hasPasscodeSet;
+    toCopy[20] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[17] = self->_isPasscodeLocked;
-    v4[20] |= 2u;
+    toCopy[17] = self->_isPasscodeLocked;
+    toCopy[20] |= 2u;
   }
 
   if (self->_errorData)
   {
-    v6 = v4;
-    [v4 setErrorData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setErrorData:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -136,52 +136,52 @@
     v5[20] |= 2u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
       goto LABEL_20;
     }
 
-    v8 = *(v4 + 16);
+    v8 = *(equalCopy + 16);
     if (self->_hasPasscodeSet)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_20;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 20) & 2) == 0)
+    if ((*(equalCopy + 20) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -191,28 +191,28 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 20) & 2) == 0)
+  if ((*(equalCopy + 20) & 2) == 0)
   {
     goto LABEL_20;
   }
 
-  v9 = *(v4 + 17);
+  v9 = *(equalCopy + 17);
   if (self->_isPasscodeLocked)
   {
-    if ((*(v4 + 17) & 1) == 0)
+    if ((*(equalCopy + 17) & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 17))
+  else if (*(equalCopy + 17))
   {
     goto LABEL_20;
   }
 
 LABEL_6:
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1))
+  if (errorData | *(equalCopy + 1))
   {
     v7 = [(NSData *)errorData isEqual:?];
   }
@@ -253,28 +253,28 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSData *)self->_errorData hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[20];
+  fromCopy = from;
+  v5 = fromCopy[20];
   if (v5)
   {
-    self->_hasPasscodeSet = v4[16];
+    self->_hasPasscodeSet = fromCopy[16];
     *&self->_has |= 1u;
-    v5 = v4[20];
+    v5 = fromCopy[20];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_isPasscodeLocked = v4[17];
+    self->_isPasscodeLocked = fromCopy[17];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NPKProtoRemoteDevicePasscodeStateResponse *)self setErrorData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

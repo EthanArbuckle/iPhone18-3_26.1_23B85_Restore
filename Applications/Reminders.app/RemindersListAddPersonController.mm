@@ -1,48 +1,48 @@
 @interface RemindersListAddPersonController
 - (RemindersContactEditorDelegate)delegate;
-- (RemindersListAddPersonController)initWithAllowsPhoneNumbers:(BOOL)a3;
+- (RemindersListAddPersonController)initWithAllowsPhoneNumbers:(BOOL)numbers;
 - (double)_maxScrollerHeight;
 - (id)_searchManager;
 - (id)_searchResultsView;
 - (id)_shadowView;
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4;
-- (id)recipientFromContact:(id)a3;
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address;
+- (id)recipientFromContact:(id)contact;
 - (int64_t)_interfaceIdiomToUse;
-- (void)_hideSearchFieldAndCancelOutstandingSearches:(BOOL)a3;
+- (void)_hideSearchFieldAndCancelOutstandingSearches:(BOOL)searches;
 - (void)_showSearchField;
-- (void)addContact:(id)a3;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
+- (void)addContact:(id)contact;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
 - (void)commit;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 - (void)finishedSearchingForAutocompleteResults;
-- (void)finishedTaskWithID:(id)a3;
+- (void)finishedTaskWithID:(id)d;
 - (void)loadView;
-- (void)searchWithText:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchWithText:(id)text;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
 @implementation RemindersListAddPersonController
 
-- (RemindersListAddPersonController)initWithAllowsPhoneNumbers:(BOOL)a3
+- (RemindersListAddPersonController)initWithAllowsPhoneNumbers:(BOOL)numbers
 {
   v13.receiver = self;
   v13.super_class = RemindersListAddPersonController;
   v4 = [(RemindersListAddPersonController *)&v13 init];
   if (v4)
   {
-    v5 = [objc_opt_class() titleString];
-    v6 = [(RemindersListAddPersonController *)v4 navigationItem];
-    [v6 setTitle:v5];
+    titleString = [objc_opt_class() titleString];
+    navigationItem = [(RemindersListAddPersonController *)v4 navigationItem];
+    [navigationItem setTitle:titleString];
 
     v7 = [[CNComposeRecipientTextView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     composeView = v4->_composeView;
@@ -56,7 +56,7 @@
     v4->_searchResultsViewController = v10;
 
     [(CNAutocompleteResultsTableViewController *)v4->_searchResultsViewController setDelegate:v4];
-    v4->_allowsPhoneNumbers = a3;
+    v4->_allowsPhoneNumbers = numbers;
   }
 
   return v4;
@@ -73,8 +73,8 @@
   v5 = v4;
   [(CNComposeRecipientTextView *)self->_composeView setFrame:0.0, 0.0, 0.0, v4];
   [(CNComposeRecipientTextView *)self->_composeView setAutoresizingMask:2];
-  v6 = [objc_opt_class() composeLabel];
-  [(CNComposeRecipientTextView *)self->_composeView setLabel:v6];
+  composeLabel = [objc_opt_class() composeLabel];
+  [(CNComposeRecipientTextView *)self->_composeView setLabel:composeLabel];
 
   [(CNComposeRecipientTextView *)self->_composeView setDelegate:self];
   v7 = [[UIScrollView alloc] initWithFrame:{0.0, 0.0, 0.0, v5}];
@@ -87,11 +87,11 @@
   [(RemindersListAddPersonController *)self setView:v9];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RemindersListAddPersonController;
-  [(RemindersListAddPersonController *)&v4 viewDidAppear:a3];
+  [(RemindersListAddPersonController *)&v4 viewDidAppear:appear];
   [(CNComposeRecipientTextView *)self->_composeView becomeFirstResponder];
 }
 
@@ -104,8 +104,8 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(RemindersListAddPersonController *)self view];
-  [v9 safeAreaInsets];
+  view = [(RemindersListAddPersonController *)self view];
+  [view safeAreaInsets];
   v11 = v10;
 
   [(UIScrollView *)self->_composeScrollView setFrame:v4, v11, v6, v8];
@@ -113,19 +113,19 @@
 
 - (int64_t)_interfaceIdiomToUse
 {
-  v2 = [(RemindersListAddPersonController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 traitCollection];
+  view = [(RemindersListAddPersonController *)self view];
+  window = [view window];
+  traitCollection = [window traitCollection];
 
-  v5 = [v4 horizontalSizeClass];
-  v6 = [v4 verticalSizeClass];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  verticalSizeClass = [traitCollection verticalSizeClass];
   v7 = 1;
-  if (v5 != 2)
+  if (horizontalSizeClass != 2)
   {
     v7 = -1;
   }
 
-  if (v6 == 2 && v5 == 1)
+  if (verticalSizeClass == 2 && horizontalSizeClass == 1)
   {
     v9 = 0;
   }
@@ -140,8 +140,8 @@
 
 - (id)_shadowView
 {
-  v3 = [(RemindersListAddPersonController *)self view];
-  [v3 bounds];
+  view = [(RemindersListAddPersonController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -173,8 +173,8 @@
 
 - (id)_searchResultsView
 {
-  v3 = [(RemindersListAddPersonController *)self view];
-  [v3 bounds];
+  view = [(RemindersListAddPersonController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -182,28 +182,28 @@
 
   if (!self->_searchResultsView)
   {
-    v12 = [(CNAutocompleteResultsTableViewController *)self->_searchResultsViewController tableView];
+    tableView = [(CNAutocompleteResultsTableViewController *)self->_searchResultsViewController tableView];
     searchResultsView = self->_searchResultsView;
-    self->_searchResultsView = v12;
+    self->_searchResultsView = tableView;
 
     [(UITableView *)self->_searchResultsView setAutoresizingMask:34];
   }
 
-  v14 = [(RemindersListAddPersonController *)self view];
-  v15 = [v14 window];
-  v16 = [(RemindersListAddPersonController *)self view];
+  view2 = [(RemindersListAddPersonController *)self view];
+  window = [view2 window];
+  view3 = [(RemindersListAddPersonController *)self view];
   v53 = v5;
   v54 = v9;
-  [v15 convertRect:v16 fromView:{v5, v7, v9, v11}];
+  [window convertRect:view3 fromView:{v5, v7, v9, v11}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [(RemindersListAddPersonController *)self view];
-  v26 = [v25 window];
+  view4 = [(RemindersListAddPersonController *)self view];
+  window2 = [view4 window];
   [(UIScrollView *)self->_composeScrollView bounds];
-  [v26 convertRect:self->_composeScrollView fromView:?];
+  [window2 convertRect:self->_composeScrollView fromView:?];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -223,9 +223,9 @@
   v38 = v37;
   if (v37)
   {
-    v39 = [v37 window];
+    window3 = [v37 window];
     [v38 bounds];
-    [v39 convertRect:v38 fromView:?];
+    [window3 convertRect:v38 fromView:?];
     v41 = v40;
     v43 = v42;
     v45 = v44;
@@ -260,30 +260,30 @@
 - (void)_showSearchField
 {
   self->_showingSearchField = 1;
-  v8 = [(RemindersListAddPersonController *)self _searchResultsView];
-  v3 = [v8 superview];
+  _searchResultsView = [(RemindersListAddPersonController *)self _searchResultsView];
+  superview = [_searchResultsView superview];
 
-  if (!v3)
+  if (!superview)
   {
-    v4 = [(RemindersListAddPersonController *)self view];
-    [v4 addSubview:self->_searchResultsView];
+    view = [(RemindersListAddPersonController *)self view];
+    [view addSubview:self->_searchResultsView];
   }
 
-  v5 = [(RemindersListAddPersonController *)self _shadowView];
-  v6 = [v5 superview];
+  _shadowView = [(RemindersListAddPersonController *)self _shadowView];
+  superview2 = [_shadowView superview];
 
-  if (!v6)
+  if (!superview2)
   {
-    v7 = [(RemindersListAddPersonController *)self view];
-    [v7 addSubview:self->_shadowView];
+    view2 = [(RemindersListAddPersonController *)self view];
+    [view2 addSubview:self->_shadowView];
   }
 
   [(CNComposeRecipientTextView *)self->_composeView setSeparatorHidden:1];
 }
 
-- (void)_hideSearchFieldAndCancelOutstandingSearches:(BOOL)a3
+- (void)_hideSearchFieldAndCancelOutstandingSearches:(BOOL)searches
 {
-  v3 = a3;
+  searchesCopy = searches;
   self->_showingSearchField = 0;
   searchResults = self->_searchResults;
   self->_searchResults = 0;
@@ -292,10 +292,10 @@
   self->_displayedResults = 0;
 
   [(CNAutocompleteResultsTableViewController *)self->_searchResultsViewController setRecipients:self->_displayedResults];
-  if (v3 && self->_lastSearchId)
+  if (searchesCopy && self->_lastSearchId)
   {
-    v7 = [(RemindersListAddPersonController *)self _searchManager];
-    [v7 cancelTaskWithID:self->_lastSearchId];
+    _searchManager = [(RemindersListAddPersonController *)self _searchManager];
+    [_searchManager cancelTaskWithID:self->_lastSearchId];
 
     lastSearchId = self->_lastSearchId;
     self->_lastSearchId = 0;
@@ -306,8 +306,8 @@
   v12 = v11;
   v14 = v13;
   v16 = -v15;
-  v17 = [(RemindersListAddPersonController *)self view];
-  [v17 safeAreaInsets];
+  view = [(RemindersListAddPersonController *)self view];
+  [view safeAreaInsets];
   v19 = v18;
 
   if (v16)
@@ -331,11 +331,11 @@
 
 - (double)_maxScrollerHeight
 {
-  v3 = [(RemindersListAddPersonController *)self _interfaceIdiomToUse];
-  v4 = [(RemindersListAddPersonController *)self view];
-  [v4 bounds];
+  _interfaceIdiomToUse = [(RemindersListAddPersonController *)self _interfaceIdiomToUse];
+  view = [(RemindersListAddPersonController *)self view];
+  [view bounds];
   v6 = v5;
-  if (v3 != 1)
+  if (_interfaceIdiomToUse != 1)
   {
     +[UIKeyboard defaultSize];
     v6 = v6 - v7;
@@ -372,26 +372,26 @@
   return v8;
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (self->_lastSearchId)
   {
-    v4 = [(RemindersListAddPersonController *)self _searchManager];
-    [v4 cancelTaskWithID:self->_lastSearchId];
+    _searchManager = [(RemindersListAddPersonController *)self _searchManager];
+    [_searchManager cancelTaskWithID:self->_lastSearchId];
   }
 
   [(NSMutableArray *)self->_searchResults removeAllObjects];
-  v5 = [(RemindersListAddPersonController *)self _searchManager];
-  v6 = [v5 searchForText:v8 withAutocompleteFetchContext:0 consumer:self];
+  _searchManager2 = [(RemindersListAddPersonController *)self _searchManager];
+  v6 = [_searchManager2 searchForText:textCopy withAutocompleteFetchContext:0 consumer:self];
   lastSearchId = self->_lastSearchId;
   self->_lastSearchId = v6;
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v9 = a3;
-  if ([a4 isEqual:self->_lastSearchId] && objc_msgSend(v9, "count"))
+  resultsCopy = results;
+  if ([d isEqual:self->_lastSearchId] && objc_msgSend(resultsCopy, "count"))
   {
     searchResults = self->_searchResults;
     if (!searchResults)
@@ -403,7 +403,7 @@
       searchResults = self->_searchResults;
     }
 
-    [(NSMutableArray *)searchResults addObjectsFromArray:v9];
+    [(NSMutableArray *)searchResults addObjectsFromArray:resultsCopy];
     if (!self->_showingSearchField)
     {
       [(RemindersListAddPersonController *)self _showSearchField];
@@ -426,16 +426,16 @@
   }
 }
 
-- (void)finishedTaskWithID:(id)a3
+- (void)finishedTaskWithID:(id)d
 {
-  if ([a3 isEqual:self->_lastSearchId])
+  if ([d isEqual:self->_lastSearchId])
   {
     lastSearchId = self->_lastSearchId;
     self->_lastSearchId = 0;
   }
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   v4 = objc_opt_new();
   v14 = CNContactEmailAddressesKey;
@@ -469,72 +469,72 @@
 
   [v4 setDisplayedPropertyKeys:v5];
   [v4 setModalPresentationStyle:18];
-  v13 = [(RemindersListAddPersonController *)self navigationController];
-  [v13 presentModalViewController:v4 withTransition:8];
+  navigationController = [(RemindersListAddPersonController *)self navigationController];
+  [navigationController presentModalViewController:v4 withTransition:8];
 }
 
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient
 {
-  v4 = [(RemindersListAddPersonController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(RemindersListAddPersonController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   composeView = self->_composeView;
 
   [(CNComposeRecipientTextView *)composeView becomeFirstResponder];
 }
 
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address
 {
-  v5 = a4;
+  addressCopy = address;
   if ([(RemindersListAddPersonController *)self allowPhoneNumbers])
   {
-    v6 = [v5 cal_isPhoneNumber];
+    cal_isPhoneNumber = [addressCopy cal_isPhoneNumber];
   }
 
   else
   {
-    v6 = 0;
+    cal_isPhoneNumber = 0;
   }
 
-  v7 = [[CNComposeRecipient alloc] initWithContact:0 address:v5 kind:v6];
+  v7 = [[CNComposeRecipient alloc] initWithContact:0 address:addressCopy kind:cal_isPhoneNumber];
 
   return v7;
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  [a3 removeRecipient:a4];
-  v6 = [(RemindersListAddPersonController *)self delegate];
-  v5 = [(CNComposeRecipientTextView *)self->_composeView recipients];
-  [v6 controller:self didUpdateRecipients:v5];
+  [view removeRecipient:recipient];
+  delegate = [(RemindersListAddPersonController *)self delegate];
+  recipients = [(CNComposeRecipientTextView *)self->_composeView recipients];
+  [delegate controller:self didUpdateRecipients:recipients];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
-  v7 = a3;
-  v6 = a4;
+  viewCopy = view;
+  addressCopy = address;
   if (([(UITableView *)self->_searchResultsView isDragging]& 1) == 0)
   {
-    [v7 clearText];
+    [viewCopy clearText];
     [(RemindersListAddPersonController *)self _hideSearchFieldAndCancelOutstandingSearches:1];
-    [v7 addAddress:v6];
+    [viewCopy addAddress:addressCopy];
   }
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
-  [a3 invalidateAtomPresentationOptionsForRecipient:a4];
-  v6 = [(RemindersListAddPersonController *)self delegate];
-  v5 = [(CNComposeRecipientTextView *)self->_composeView recipients];
-  [v6 controller:self didUpdateRecipients:v5];
+  [view invalidateAtomPresentationOptionsForRecipient:recipient];
+  delegate = [(RemindersListAddPersonController *)self delegate];
+  recipients = [(CNComposeRecipientTextView *)self->_composeView recipients];
+  [delegate controller:self didUpdateRecipients:recipients];
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v5 = a4;
-  if ([v5 length])
+  changeCopy = change;
+  if ([changeCopy length])
   {
-    [(RemindersListAddPersonController *)self searchWithText:v5];
+    [(RemindersListAddPersonController *)self searchWithText:changeCopy];
   }
 
   else
@@ -543,11 +543,11 @@
   }
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   if (!self->_showingSearchField)
   {
     [(CNComposeRecipientTextView *)self->_composeView frame];
@@ -556,8 +556,8 @@
       v12 = v8;
       v13 = v9;
       v14 = v10;
-      v15 = [(CNComposeRecipientTextView *)self->_composeView addButton];
-      [v15 setAlpha:0.0];
+      addButton = [(CNComposeRecipientTextView *)self->_composeView addButton];
+      [addButton setAlpha:0.0];
 
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -580,86 +580,86 @@
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  if (a4)
+  if (recipient)
   {
     composeView = self->_composeView;
-    v7 = a4;
+    recipientCopy = recipient;
     [(CNComposeRecipientTextView *)composeView clearText];
     [(RemindersListAddPersonController *)self _hideSearchFieldAndCancelOutstandingSearches:1];
-    [(CNComposeRecipientTextView *)self->_composeView addRecipient:v7];
+    [(CNComposeRecipientTextView *)self->_composeView addRecipient:recipientCopy];
   }
 }
 
-- (id)recipientFromContact:(id)a3
+- (id)recipientFromContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 emailAddresses];
-  v5 = [v4 count];
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  v5 = [emailAddresses count];
 
   if (v5)
   {
-    v6 = [v3 emailAddresses];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 value];
+    emailAddresses2 = [contactCopy emailAddresses];
+    v7 = [emailAddresses2 objectAtIndexedSubscript:0];
+    value = [v7 value];
   }
 
   else
   {
-    v9 = [v3 phoneNumbers];
-    v8 = [v9 count];
+    phoneNumbers = [contactCopy phoneNumbers];
+    value = [phoneNumbers count];
 
-    if (!v8)
+    if (!value)
     {
       goto LABEL_6;
     }
 
-    v10 = [v3 phoneNumbers];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v6 = [v11 value];
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    v11 = [phoneNumbers2 objectAtIndexedSubscript:0];
+    emailAddresses2 = [v11 value];
 
-    v8 = [v6 stringValue];
+    value = [emailAddresses2 stringValue];
   }
 
 LABEL_6:
-  v12 = [[CNComposeRecipient alloc] initWithContact:v3 address:v8 kind:v5 == 0];
+  v12 = [[CNComposeRecipient alloc] initWithContact:contactCopy address:value kind:v5 == 0];
 
   return v12;
 }
 
-- (void)addContact:(id)a3
+- (void)addContact:(id)contact
 {
-  v4 = [(RemindersListAddPersonController *)self recipientFromContact:a3];
+  v4 = [(RemindersListAddPersonController *)self recipientFromContact:contact];
   [(CNComposeRecipientTextView *)self->_composeView addRecipient:v4];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  [(RemindersListAddPersonController *)self addContact:a4];
+  [(RemindersListAddPersonController *)self addContact:contact];
   composeView = self->_composeView;
 
   [(RemindersListAddPersonController *)self composeRecipientViewDidFinishPickingRecipient:composeView];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v13 = a4;
-  v5 = [v13 key];
+  propertyCopy = property;
+  v5 = [propertyCopy key];
   v6 = [v5 isEqualToString:CNContactEmailAddressesKey];
 
-  v7 = [v13 value];
-  v8 = v7;
+  value = [propertyCopy value];
+  v8 = value;
   if ((v6 & 1) == 0)
   {
-    v9 = [v7 stringValue];
+    stringValue = [value stringValue];
 
-    v8 = v9;
+    v8 = stringValue;
   }
 
   v10 = [CNComposeRecipient alloc];
-  v11 = [v13 contact];
-  v12 = [v10 initWithContact:v11 address:v8 kind:v6 ^ 1];
+  contact = [propertyCopy contact];
+  v12 = [v10 initWithContact:contact address:v8 kind:v6 ^ 1];
 
   [(CNComposeRecipientTextView *)self->_composeView addRecipient:v12];
   [(RemindersListAddPersonController *)self composeRecipientViewDidFinishPickingRecipient:self->_composeView];

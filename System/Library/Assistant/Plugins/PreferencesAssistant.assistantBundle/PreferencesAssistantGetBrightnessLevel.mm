@@ -1,12 +1,12 @@
 @interface PreferencesAssistantGetBrightnessLevel
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantGetBrightnessLevel
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   +[PSBrightnessSettingsDetail currentValue];
   v5 = v4;
   v6 = objc_alloc_init(SASettingFloatEntity);
@@ -22,8 +22,8 @@
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "########## PreferencesAssistantGetBrightnessLevel (%f)", &v11, 0xCu);
   }
 
-  v10 = [v8 dictionary];
-  v3[2](v3, v10);
+  dictionary = [v8 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

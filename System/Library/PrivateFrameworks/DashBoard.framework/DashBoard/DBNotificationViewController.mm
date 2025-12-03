@@ -1,39 +1,39 @@
 @interface DBNotificationViewController
-- (BOOL)bannerSourceListener:(id)a3 recommendsSuspending:(BOOL)a4 forReason:(id)a5 revokingCurrent:(BOOL)a6 error:(id *)a7;
-- (BOOL)bannerSourceListener:(id)a3 requestsPostingPresentable:(id)a4 options:(unint64_t)a5 userInfo:(id)a6 error:(id *)a7;
+- (BOOL)bannerSourceListener:(id)listener recommendsSuspending:(BOOL)suspending forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error;
+- (BOOL)bannerSourceListener:(id)listener requestsPostingPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error;
 - (BOOL)handleHomeEvent;
-- (BOOL)presentableIsLiveActivityBanner:(id)a3;
-- (BOOL)presentableIsLiveActivityConfigurator:(id)a3;
-- (BOOL)presentableIsOEMNotification:(id)a3;
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 locationForTouch:(id)a5 inView:(id)a6;
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 translationInView:(id)a5;
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 velocityInView:(id)a5;
+- (BOOL)presentableIsLiveActivityBanner:(id)banner;
+- (BOOL)presentableIsLiveActivityConfigurator:(id)configurator;
+- (BOOL)presentableIsOEMNotification:(id)notification;
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer locationForTouch:(id)touch inView:(id)view;
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer translationInView:(id)view;
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer velocityInView:(id)view;
 - (DBEnvironment)environment;
-- (DBNotificationViewController)initWithEnvironment:(id)a3 layoutEngine:(id)a4 delegate:(id)a5;
+- (DBNotificationViewController)initWithEnvironment:(id)environment layoutEngine:(id)engine delegate:(id)delegate;
 - (DBNotificationViewControllerDelegate)delegate;
 - (FBScene)visibleNotificationScene;
-- (UIEdgeInsets)presenterMinimumPreferredEdgeInsets:(id)a3;
+- (UIEdgeInsets)presenterMinimumPreferredEdgeInsets:(id)insets;
 - (double)notificationHeight;
-- (id)_layoutDescriptionWithBounds:(CGRect)a3 preferredSize:(CGSize)a4 layoutManager:(id)a5;
-- (id)bannerSourceListener:(id)a3 layoutDescriptionWithError:(id *)a4;
-- (id)bannerSourceListener:(id)a3 requestsRevokingPresentablesWithIdentification:(id)a4 reason:(id)a5 animated:(BOOL)a6 userInfo:(id)a7 error:(id *)a8;
-- (id)defaultTransitioningDelegateForPresenter:(id)a3;
-- (void)_performCancelTapGesture:(id)a3;
+- (id)_layoutDescriptionWithBounds:(CGRect)bounds preferredSize:(CGSize)size layoutManager:(id)manager;
+- (id)bannerSourceListener:(id)listener layoutDescriptionWithError:(id *)error;
+- (id)bannerSourceListener:(id)listener requestsRevokingPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error;
+- (id)defaultTransitioningDelegateForPresenter:(id)presenter;
+- (void)_performCancelTapGesture:(id)gesture;
 - (void)_updateIconStyleConfigurationForVisibleNotificationScene;
-- (void)bannerSourceListener:(id)a3 addExtensionIfNeededForScene:(id)a4 userInfo:(id)a5;
+- (void)bannerSourceListener:(id)listener addExtensionIfNeededForScene:(id)scene userInfo:(id)info;
 - (void)dealloc;
 - (void)handleHomeEvent;
-- (void)handleTransitionFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
+- (void)handleTransitionFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
 - (void)invalidate;
-- (void)liveActivityRequestsDismissing:(id)a3;
-- (void)liveActivityRequestsPresenting:(id)a3;
+- (void)liveActivityRequestsDismissing:(id)dismissing;
+- (void)liveActivityRequestsPresenting:(id)presenting;
 - (void)loadView;
-- (void)presenter:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)presenter:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)presenter:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)presenterRelinquishesVisibility:(id)a3;
-- (void)presenterRequestsVisibility:(id)a3;
-- (void)setSuspended:(BOOL)a3 cancellingCurrent:(BOOL)a4 forReason:(id)a5;
+- (void)presenter:(id)presenter willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)presenter:(id)presenter willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)presenter:(id)presenter willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)presenterRelinquishesVisibility:(id)visibility;
+- (void)presenterRequestsVisibility:(id)visibility;
+- (void)setSuspended:(BOOL)suspended cancellingCurrent:(BOOL)current forReason:(id)reason;
 @end
 
 @implementation DBNotificationViewController
@@ -45,11 +45,11 @@
   return WeakRetained;
 }
 
-- (DBNotificationViewController)initWithEnvironment:(id)a3 layoutEngine:(id)a4 delegate:(id)a5
+- (DBNotificationViewController)initWithEnvironment:(id)environment layoutEngine:(id)engine delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  engineCopy = engine;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = DBNotificationViewController;
   v11 = [(DBNotificationViewController *)&v34 init];
@@ -62,22 +62,22 @@
       _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_INFO, "Initializing notification view controller...", buf, 2u);
     }
 
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeWeak(&v11->_environment, v8);
-    objc_storeStrong(&v11->_layoutEngine, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    objc_storeStrong(&v11->_layoutEngine, engine);
     v13 = [MEMORY[0x277CBEB98] setWithObjects:{@"com.apple.Maps", @"com.apple.CarPlayTemplateUIHost", @"com.apple.springboard", @"com.apple.AutoSettings", @"com.apple.InCallService", 0}];
     v14 = objc_alloc(MEMORY[0x277CF0A98]);
     WeakRetained = objc_loadWeakRetained(&v11->_environment);
-    v16 = [WeakRetained environmentConfiguration];
-    v17 = [v16 displayConfiguration];
-    v18 = [v14 initWithServiceDomain:@"com.apple.CarPlay" displayConfiguration:v17 authorizedBundleIDs:v13];
+    environmentConfiguration = [WeakRetained environmentConfiguration];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    v18 = [v14 initWithServiceDomain:@"com.apple.CarPlay" displayConfiguration:displayConfiguration authorizedBundleIDs:v13];
     bannerSourceListener = v11->_bannerSourceListener;
     v11->_bannerSourceListener = v18;
 
     [(BNBannerSourceListener *)v11->_bannerSourceListener setDelegate:v11];
     v20 = objc_alloc(MEMORY[0x277CF0A70]);
-    v21 = [MEMORY[0x277CF3288] defaultShellMachName];
-    v22 = [v20 initWithMachName:v21];
+    defaultShellMachName = [MEMORY[0x277CF3288] defaultShellMachName];
+    v22 = [v20 initWithMachName:defaultShellMachName];
     bannerHostMonitor = v11->_bannerHostMonitor;
     v11->_bannerHostMonitor = v22;
 
@@ -113,57 +113,57 @@
 
 - (FBScene)visibleNotificationScene
 {
-  v2 = [(DBNotificationViewController *)self bannerContentViewController];
-  v3 = [v2 topPresentables];
-  v4 = [v3 lastObject];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  lastObject = [topPresentables lastObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 scene];
+    scene = [lastObject scene];
   }
 
   else
   {
-    v5 = 0;
+    scene = 0;
   }
 
-  return v5;
+  return scene;
 }
 
-- (BOOL)presentableIsOEMNotification:(id)a3
+- (BOOL)presentableIsOEMNotification:(id)notification
 {
-  v3 = [a3 requesterIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.AutoSettings.banner"];
+  requesterIdentifier = [notification requesterIdentifier];
+  v4 = [requesterIdentifier isEqualToString:@"com.apple.AutoSettings.banner"];
 
   return v4;
 }
 
-- (BOOL)presentableIsLiveActivityConfigurator:(id)a3
+- (BOOL)presentableIsLiveActivityConfigurator:(id)configurator
 {
-  v3 = [a3 requesterIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.CarPlayApp.liveActivityConfigurator"];
+  requesterIdentifier = [configurator requesterIdentifier];
+  v4 = [requesterIdentifier isEqualToString:@"com.apple.CarPlayApp.liveActivityConfigurator"];
 
   return v4;
 }
 
-- (BOOL)presentableIsLiveActivityBanner:(id)a3
+- (BOOL)presentableIsLiveActivityBanner:(id)banner
 {
-  v3 = [a3 requesterIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.CarPlayApp.liveActivityBanner"];
+  requesterIdentifier = [banner requesterIdentifier];
+  v4 = [requesterIdentifier isEqualToString:@"com.apple.CarPlayApp.liveActivityBanner"];
 
   return v4;
 }
 
 - (double)notificationHeight
 {
-  v2 = [(DBNotificationViewController *)self bannerContentViewController];
-  v3 = [v2 topPresentables];
-  v4 = [v3 firstObject];
-  v5 = [v4 viewController];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  firstObject = [topPresentables firstObject];
+  viewController = [firstObject viewController];
 
-  if (v5)
+  if (viewController)
   {
-    [v5 preferredContentSize];
+    [viewController preferredContentSize];
     v7 = fmax(v6, 61.0);
   }
 
@@ -177,20 +177,20 @@
 
 - (BOOL)handleHomeEvent
 {
-  v3 = [(DBNotificationViewController *)self bannerContentViewController];
-  v4 = [v3 topPresentables];
-  v5 = [v4 count];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  v5 = [topPresentables count];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [(DBNotificationViewController *)self bannerContentViewController];
-  v7 = [v6 topPresentables];
-  v8 = [v7 lastObject];
+  bannerContentViewController2 = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables2 = [bannerContentViewController2 topPresentables];
+  lastObject = [topPresentables2 lastObject];
 
-  if (-[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", v8) && ([v8 isTouchOutsideDismissalEnabled] & 1) == 0)
+  if (-[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", lastObject) && ([lastObject isTouchOutsideDismissalEnabled] & 1) == 0)
   {
     v9 = DBLogForCategory(0x14uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -203,11 +203,11 @@
 
   else
   {
-    v9 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v8];
-    v10 = [(DBNotificationViewController *)self bannerController];
+    v9 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:lastObject];
+    bannerController = [(DBNotificationViewController *)self bannerController];
     v11 = *MEMORY[0x277CF91C0];
     v17 = 0;
-    v12 = [v10 revokePresentablesWithIdentification:v9 reason:v11 options:0 animated:1 userInfo:0 error:&v17];
+    v12 = [bannerController revokePresentablesWithIdentification:v9 reason:v11 options:0 animated:1 userInfo:0 error:&v17];
     v13 = v17;
 
     if (!v12)
@@ -225,37 +225,37 @@
   return v15;
 }
 
-- (void)handleTransitionFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)handleTransitionFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  y = toFrame.origin.y;
+  x = toFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13 = objc_alloc_init(MEMORY[0x277D76390]);
-  v14 = [(DBNotificationViewController *)self view];
-  [v13 _setContainerView:v14];
+  view = [(DBNotificationViewController *)self view];
+  [v13 _setContainerView:view];
 
-  v15 = [(DBNotificationViewController *)self bannerContentViewController];
-  [v13 _setToViewController:v15];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  [v13 _setToViewController:bannerContentViewController];
 
   [v13 _setToStartFrame:{v11, v10, v9, v8}];
   [v13 _setToEndFrame:{x, y, width, height}];
   [v13 _setIsAnimated:0];
-  v16 = [v13 _transitionCoordinator];
+  _transitionCoordinator = [v13 _transitionCoordinator];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___block_invoke;
   v19[3] = &unk_278F02D18;
   v19[4] = self;
-  [v16 animateAlongsideTransition:v19 completion:0];
+  [_transitionCoordinator animateAlongsideTransition:v19 completion:0];
 
-  v17 = [(DBNotificationViewController *)self bannerContentViewController];
-  v18 = [v13 _transitionCoordinator];
-  [v17 viewWillTransitionToSize:v18 withTransitionCoordinator:{width, height}];
+  bannerContentViewController2 = [(DBNotificationViewController *)self bannerContentViewController];
+  _transitionCoordinator2 = [v13 _transitionCoordinator];
+  [bannerContentViewController2 viewWillTransitionToSize:_transitionCoordinator2 withTransitionCoordinator:{width, height}];
 
   [v13 __runAlongsideAnimations];
 }
@@ -272,46 +272,46 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   v3 = [DBNotificationView alloc];
   v4 = [(DBNotificationView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(DBNotificationViewController *)self setView:v4];
-  v5 = [(DBNotificationViewController *)self bannerContentViewController];
-  [(DBNotificationViewController *)self addChildViewController:v5];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  [(DBNotificationViewController *)self addChildViewController:bannerContentViewController];
 
-  v6 = [(DBNotificationViewController *)self bannerContentViewController];
-  v7 = [v6 view];
-  [(DBNotificationView *)v4 addSubview:v7];
+  bannerContentViewController2 = [(DBNotificationViewController *)self bannerContentViewController];
+  view = [bannerContentViewController2 view];
+  [(DBNotificationView *)v4 addSubview:view];
 
-  v8 = [(DBNotificationViewController *)self bannerContentViewController];
-  [v8 didMoveToParentViewController:self];
+  bannerContentViewController3 = [(DBNotificationViewController *)self bannerContentViewController];
+  [bannerContentViewController3 didMoveToParentViewController:self];
 
-  v9 = [(DBNotificationViewController *)self bannerContentViewController];
-  v10 = [v9 view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bannerContentViewController4 = [(DBNotificationViewController *)self bannerContentViewController];
+  view2 = [bannerContentViewController4 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v31 = MEMORY[0x277CCAAD0];
-  v40 = [(DBNotificationViewController *)self bannerContentViewController];
-  v39 = [v40 view];
-  v38 = [v39 leadingAnchor];
+  bannerContentViewController5 = [(DBNotificationViewController *)self bannerContentViewController];
+  view3 = [bannerContentViewController5 view];
+  leadingAnchor = [view3 leadingAnchor];
   v11 = v4;
-  v37 = [(DBNotificationView *)v4 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor2 = [(DBNotificationView *)v4 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v36;
-  v35 = [(DBNotificationViewController *)self bannerContentViewController];
-  v34 = [v35 view];
-  v33 = [v34 trailingAnchor];
-  v32 = [(DBNotificationView *)v4 trailingAnchor];
-  v30 = [v33 constraintEqualToAnchor:v32];
+  bannerContentViewController6 = [(DBNotificationViewController *)self bannerContentViewController];
+  view4 = [bannerContentViewController6 view];
+  trailingAnchor = [view4 trailingAnchor];
+  trailingAnchor2 = [(DBNotificationView *)v4 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[1] = v30;
-  v29 = [(DBNotificationViewController *)self bannerContentViewController];
-  v28 = [v29 view];
-  v12 = [v28 topAnchor];
+  bannerContentViewController7 = [(DBNotificationViewController *)self bannerContentViewController];
+  view5 = [bannerContentViewController7 view];
+  topAnchor = [view5 topAnchor];
   v41 = v4;
-  v13 = [(DBNotificationView *)v4 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor2 = [(DBNotificationView *)v4 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v14;
-  v15 = [(DBNotificationViewController *)self bannerContentViewController];
-  v16 = [v15 view];
-  v17 = [v16 bottomAnchor];
-  v18 = [(DBNotificationView *)v11 bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  bannerContentViewController8 = [(DBNotificationViewController *)self bannerContentViewController];
+  view6 = [bannerContentViewController8 view];
+  bottomAnchor = [view6 bottomAnchor];
+  bottomAnchor2 = [(DBNotificationView *)v11 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
   [v31 activateConstraints:v20];
@@ -323,17 +323,17 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   [(UITapGestureRecognizer *)self->_tapDismissGestureRecognizer setCancelsTouchesInView:0];
   [(UITapGestureRecognizer *)self->_tapDismissGestureRecognizer setAllowedTouchTypes:&unk_285AA4A90];
   [(UITapGestureRecognizer *)self->_tapDismissGestureRecognizer setEnabled:0];
-  v23 = [MEMORY[0x277D76330] sharedInstance];
+  mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
   v24 = self->_tapDismissGestureRecognizer;
-  v25 = [(DBNotificationViewController *)self environment];
-  v26 = [v25 environmentConfiguration];
-  v27 = [v26 displayIdentity];
-  [v23 addGestureRecognizer:v24 toDisplayWithIdentity:v27];
+  environment = [(DBNotificationViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  displayIdentity = [environmentConfiguration displayIdentity];
+  [mEMORY[0x277D76330] addGestureRecognizer:v24 toDisplayWithIdentity:displayIdentity];
 }
 
-- (id)bannerSourceListener:(id)a3 layoutDescriptionWithError:(id *)a4
+- (id)bannerSourceListener:(id)listener layoutDescriptionWithError:(id *)error
 {
-  v5 = [(DBNotificationViewController *)self _layoutManager:a3];
+  v5 = [(DBNotificationViewController *)self _layoutManager:listener];
   v14 = 4;
   v15 = xmmword_24839BFA0;
   __asm { FMOV            V0.2D, #8.0 }
@@ -342,29 +342,29 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   v17 = xmmword_24839BFB0;
   v18 = 0;
   [v5 setLayoutInfoV2:&v14];
-  v11 = [(DBNotificationViewController *)self view];
-  [v11 bounds];
+  view = [(DBNotificationViewController *)self view];
+  [view bounds];
   v12 = [DBNotificationViewController _layoutDescriptionWithBounds:"_layoutDescriptionWithBounds:preferredSize:layoutManager:" preferredSize:v5 layoutManager:?];
 
   return v12;
 }
 
-- (BOOL)bannerSourceListener:(id)a3 requestsPostingPresentable:(id)a4 options:(unint64_t)a5 userInfo:(id)a6 error:(id *)a7
+- (BOOL)bannerSourceListener:(id)listener requestsPostingPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = [(DBNotificationViewController *)self bannerContentViewController];
-  v14 = [v13 topPresentables];
-  v15 = [v14 lastObject];
+  presentableCopy = presentable;
+  infoCopy = info;
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  lastObject = [topPresentables lastObject];
 
-  if (v15 && [(DBNotificationViewController *)self presentableIsOEMNotification:v11])
+  if (lastObject && [(DBNotificationViewController *)self presentableIsOEMNotification:presentableCopy])
   {
-    v16 = a7;
-    v17 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v15];
-    v18 = [(DBNotificationViewController *)self bannerController];
+    errorCopy = error;
+    v17 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:lastObject];
+    bannerController = [(DBNotificationViewController *)self bannerController];
     v19 = *MEMORY[0x277CF91C8];
     v47 = 0;
-    v20 = [v18 revokePresentablesWithIdentification:v17 reason:v19 options:0 animated:1 userInfo:0 error:&v47];
+    v20 = [bannerController revokePresentablesWithIdentification:v17 reason:v19 options:0 animated:1 userInfo:0 error:&v47];
     v21 = v47;
 
     if (!v20)
@@ -376,18 +376,18 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
       }
     }
 
-    a7 = v16;
+    error = errorCopy;
   }
 
-  if ([(DBNotificationViewController *)self presentableIsOEMNotification:v11])
+  if ([(DBNotificationViewController *)self presentableIsOEMNotification:presentableCopy])
   {
-    v23 = [v12 objectForKeyedSubscript:*MEMORY[0x277CF3940]];
+    v23 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CF3940]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v43 = a7;
+      errorCopy2 = error;
       v24 = v23;
-      v25 = [(DBNotificationViewController *)self _layoutManager];
+      _layoutManager = [(DBNotificationViewController *)self _layoutManager];
       [v24 doubleValue];
       v27 = v26;
       [v24 doubleValue];
@@ -400,21 +400,21 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
       v44[4] = v29;
       v45 = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
       v46 = 0;
-      [v25 setLayoutInfoV2:v44];
-      v30 = [(DBNotificationViewController *)self view];
-      [v30 bounds];
-      v31 = [DBNotificationViewController _layoutDescriptionWithBounds:"_layoutDescriptionWithBounds:preferredSize:layoutManager:" preferredSize:v25 layoutManager:?];
+      [_layoutManager setLayoutInfoV2:v44];
+      view = [(DBNotificationViewController *)self view];
+      [view bounds];
+      v31 = [DBNotificationViewController _layoutDescriptionWithBounds:"_layoutDescriptionWithBounds:preferredSize:layoutManager:" preferredSize:_layoutManager layoutManager:?];
 
-      v32 = [v11 viewController];
-      v33 = [v11 viewController];
+      viewController = [presentableCopy viewController];
+      viewController2 = [presentableCopy viewController];
       [v31 presentationSize];
       v35 = v34;
       v37 = v36;
       [v31 containerSize];
-      [v33 preferredContentSizeWithPresentationSize:v35 containerSize:{v37, v38, v39}];
-      [v32 setPreferredContentSize:?];
+      [viewController2 preferredContentSizeWithPresentationSize:v35 containerSize:{v37, v38, v39}];
+      [viewController setPreferredContentSize:?];
 
-      a7 = v43;
+      error = errorCopy2;
     }
 
     else
@@ -423,54 +423,54 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
     }
   }
 
-  v40 = [(DBNotificationViewController *)self bannerController];
-  v41 = [v40 postPresentable:v11 withOptions:a5 userInfo:v12 error:a7];
+  bannerController2 = [(DBNotificationViewController *)self bannerController];
+  v41 = [bannerController2 postPresentable:presentableCopy withOptions:options userInfo:infoCopy error:error];
 
   return v41;
 }
 
-- (id)bannerSourceListener:(id)a3 requestsRevokingPresentablesWithIdentification:(id)a4 reason:(id)a5 animated:(BOOL)a6 userInfo:(id)a7 error:(id *)a8
+- (id)bannerSourceListener:(id)listener requestsRevokingPresentablesWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error
 {
-  v9 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = [(DBNotificationViewController *)self bannerController];
-  v17 = [v16 revokePresentablesWithIdentification:v15 reason:v14 options:0 animated:v9 userInfo:v13 error:a8];
+  animatedCopy = animated;
+  infoCopy = info;
+  reasonCopy = reason;
+  identificationCopy = identification;
+  bannerController = [(DBNotificationViewController *)self bannerController];
+  v17 = [bannerController revokePresentablesWithIdentification:identificationCopy reason:reasonCopy options:0 animated:animatedCopy userInfo:infoCopy error:error];
 
   return v17;
 }
 
-- (BOOL)bannerSourceListener:(id)a3 recommendsSuspending:(BOOL)a4 forReason:(id)a5 revokingCurrent:(BOOL)a6 error:(id *)a7
+- (BOOL)bannerSourceListener:(id)listener recommendsSuspending:(BOOL)suspending forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error
 {
-  v8 = a6;
-  v9 = a4;
-  v11 = a5;
-  v12 = [(DBNotificationViewController *)self bannerController];
-  LOBYTE(a7) = [v12 setSuspended:v9 forReason:v11 revokingCurrent:v8 error:a7];
+  currentCopy = current;
+  suspendingCopy = suspending;
+  reasonCopy = reason;
+  bannerController = [(DBNotificationViewController *)self bannerController];
+  LOBYTE(error) = [bannerController setSuspended:suspendingCopy forReason:reasonCopy revokingCurrent:currentCopy error:error];
 
-  return a7;
+  return error;
 }
 
-- (void)bannerSourceListener:(id)a3 addExtensionIfNeededForScene:(id)a4 userInfo:(id)a5
+- (void)bannerSourceListener:(id)listener addExtensionIfNeededForScene:(id)scene userInfo:(id)info
 {
-  v7 = a4;
-  v5 = [v7 clientProcess];
-  if ([v5 hasEntitlement:@"com.apple.springboard.homeScreenIconStyle"])
+  sceneCopy = scene;
+  clientProcess = [sceneCopy clientProcess];
+  if ([clientProcess hasEntitlement:@"com.apple.springboard.homeScreenIconStyle"])
   {
     v6 = objc_opt_self();
-    [v7 addExtension:v6];
+    [sceneCopy addExtension:v6];
   }
 }
 
-- (id)defaultTransitioningDelegateForPresenter:(id)a3
+- (id)defaultTransitioningDelegateForPresenter:(id)presenter
 {
   v3 = objc_alloc_init(MEMORY[0x277CF90C8]);
 
   return v3;
 }
 
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 locationForTouch:(id)a5 inView:(id)a6
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer locationForTouch:(id)touch inView:(id)view
 {
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
@@ -479,7 +479,7 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   return result;
 }
 
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 velocityInView:(id)a5
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer velocityInView:(id)view
 {
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
@@ -488,7 +488,7 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   return result;
 }
 
-- (CGPoint)presenter:(id)a3 gestureRecognizer:(id)a4 translationInView:(id)a5
+- (CGPoint)presenter:(id)presenter gestureRecognizer:(id)recognizer translationInView:(id)view
 {
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
@@ -497,10 +497,10 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   return result;
 }
 
-- (UIEdgeInsets)presenterMinimumPreferredEdgeInsets:(id)a3
+- (UIEdgeInsets)presenterMinimumPreferredEdgeInsets:(id)insets
 {
-  v3 = [(DBNotificationViewController *)self layoutEngine];
-  [v3 statusBarInsets];
+  layoutEngine = [(DBNotificationViewController *)self layoutEngine];
+  [layoutEngine statusBarInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -517,41 +517,41 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   return result;
 }
 
-- (void)presenterRequestsVisibility:(id)a3
+- (void)presenterRequestsVisibility:(id)visibility
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = DBLogForCategory(0x14uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = visibilityCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Banner presenter %@ requests visibility. Enabling tap-dismiss gesture", &v7, 0xCu);
   }
 
-  v6 = [(DBNotificationViewController *)self tapDismissGestureRecognizer];
-  [v6 setEnabled:1];
+  tapDismissGestureRecognizer = [(DBNotificationViewController *)self tapDismissGestureRecognizer];
+  [tapDismissGestureRecognizer setEnabled:1];
 }
 
-- (void)presenterRelinquishesVisibility:(id)a3
+- (void)presenterRelinquishesVisibility:(id)visibility
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = DBLogForCategory(0x14uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = visibilityCopy;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Banner presenter %@ relinquishes visibility. Disabling tap-dismiss gesture", &v7, 0xCu);
   }
 
-  v6 = [(DBNotificationViewController *)self tapDismissGestureRecognizer];
-  [v6 setEnabled:0];
+  tapDismissGestureRecognizer = [(DBNotificationViewController *)self tapDismissGestureRecognizer];
+  [tapDismissGestureRecognizer setEnabled:0];
 }
 
-- (void)presenter:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)presenter:(id)presenter willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v6 = [(DBNotificationViewController *)self _layoutManager:a3];
+  v6 = [(DBNotificationViewController *)self _layoutManager:presenter];
   v14 = 4;
   v15 = xmmword_24839BFA0;
   __asm { FMOV            V0.2D, #8.0 }
@@ -560,53 +560,53 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   v17 = xmmword_24839BFB0;
   v18 = 0;
   [v6 setLayoutInfoV2:&v14];
-  v12 = [(DBNotificationViewController *)self bannerSourceListener];
+  bannerSourceListener = [(DBNotificationViewController *)self bannerSourceListener];
   BSRectWithSize();
   v13 = [DBNotificationViewController _layoutDescriptionWithBounds:"_layoutDescriptionWithBounds:preferredSize:layoutManager:" preferredSize:v6 layoutManager:?];
-  [v12 layoutDescriptionDidChange:v13];
+  [bannerSourceListener layoutDescriptionDidChange:v13];
 }
 
-- (void)presenter:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)presenter:(id)presenter willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  presentableCopy = presentable;
   v10 = *MEMORY[0x277D77240];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v12 viewControllerForKey:v10];
-  v14 = [v13 view];
-  [v14 setAccessibilityIdentifier:@"CPNotificationBannerView"];
+  infoCopy = info;
+  coordinatorCopy = coordinator;
+  v13 = [coordinatorCopy viewControllerForKey:v10];
+  view = [v13 view];
+  [view setAccessibilityIdentifier:@"CPNotificationBannerView"];
 
   [(DBNotificationViewController *)self _updateIconStyleConfigurationForVisibleNotificationScene];
-  v15 = [v11 objectForKey:*MEMORY[0x277CF91D8]];
+  v15 = [infoCopy objectForKey:*MEMORY[0x277CF91D8]];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v15 BOOLValue])
   {
     v16 = DBLogForCategory(0x14uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 requestIdentifier];
+      requestIdentifier = [presentableCopy requestIdentifier];
       *buf = 138543362;
-      v30 = v17;
+      v30 = requestIdentifier;
       _os_log_impl(&dword_248146000, v16, OS_LOG_TYPE_DEFAULT, "Borrowing screen for notification: %{public}@", buf, 0xCu);
     }
 
-    v18 = [(DBNotificationViewController *)self environment];
-    v19 = [v18 environmentConfiguration];
-    v20 = [v19 session];
-    v21 = [v20 borrowScreenForClient:@"CarPlayApp" reason:@"Notifications"];
+    environment = [(DBNotificationViewController *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    session = [environmentConfiguration session];
+    v21 = [session borrowScreenForClient:@"CarPlayApp" reason:@"Notifications"];
     [(DBNotificationViewController *)self setScreenBorrowToken:v21];
 
-    v22 = [v9 requestIdentifier];
-    [(DBNotificationViewController *)self setScreenBorrowingPresentableRequestID:v22];
+    requestIdentifier2 = [presentableCopy requestIdentifier];
+    [(DBNotificationViewController *)self setScreenBorrowingPresentableRequestID:requestIdentifier2];
   }
 
   v23 = DBLogForCategory(0x14uLL);
   if (os_signpost_enabled(v23))
   {
-    v24 = [v9 requestIdentifier];
+    requestIdentifier3 = [presentableCopy requestIdentifier];
     *buf = 138543362;
-    v30 = v24;
+    v30 = requestIdentifier3;
     _os_signpost_emit_with_name_impl(&dword_248146000, v23, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "DBNotificationPresentAnimation", "Start present animation for notification: %{public}@", buf, 0xCu);
   }
 
@@ -614,12 +614,12 @@ void __66__DBNotificationViewController_handleTransitionFromFrame_toFrame___bloc
   v27[1] = 3221225472;
   v27[2] = __100__DBNotificationViewController_presenter_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke;
   v27[3] = &unk_278F02D18;
-  v28 = v9;
-  v25 = v9;
-  [v12 animateAlongsideTransition:0 completion:v27];
+  v28 = presentableCopy;
+  v25 = presentableCopy;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v27];
 
-  v26 = [(DBNotificationViewController *)self delegate];
-  [v26 willPresentPresentable:v25 forNotificationViewController:self];
+  delegate = [(DBNotificationViewController *)self delegate];
+  [delegate willPresentPresentable:v25 forNotificationViewController:self];
 }
 
 void __100__DBNotificationViewController_presenter_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke(uint64_t a1)
@@ -635,17 +635,17 @@ void __100__DBNotificationViewController_presenter_willPresentPresentable_withTr
   }
 }
 
-- (void)presenter:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)presenter:(id)presenter willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
   v10 = DBLogForCategory(0x14uLL);
   if (os_signpost_enabled(v10))
   {
-    v11 = [v8 requestIdentifier];
+    requestIdentifier = [presentableCopy requestIdentifier];
     *buf = 138543362;
-    v21 = v11;
+    v21 = requestIdentifier;
     _os_signpost_emit_with_name_impl(&dword_248146000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "DBNotificationDismissAnimation", "Start dismiss animation for notification: %{public}@", buf, 0xCu);
   }
 
@@ -653,10 +653,10 @@ void __100__DBNotificationViewController_presenter_willPresentPresentable_withTr
   v15 = 3221225472;
   v16 = __100__DBNotificationViewController_presenter_willDismissPresentable_withTransitionCoordinator_userInfo___block_invoke;
   v17 = &unk_278F046C0;
-  v18 = self;
-  v19 = v8;
-  v12 = v8;
-  [v9 animateAlongsideTransition:0 completion:&v14];
+  selfCopy = self;
+  v19 = presentableCopy;
+  v12 = presentableCopy;
+  [coordinatorCopy animateAlongsideTransition:0 completion:&v14];
 
   v13 = [(DBNotificationViewController *)self delegate:v14];
   [v13 didDismissPresentable:v12 forNotificationViewController:self];
@@ -697,17 +697,17 @@ void __100__DBNotificationViewController_presenter_willDismissPresentable_withTr
 - (void)invalidate
 {
   [(DBNotificationViewController *)self setInvalidated:1];
-  v3 = [(DBNotificationViewController *)self bannerContentViewController];
-  v4 = [v3 allPresentables];
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  allPresentables = [bannerContentViewController allPresentables];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DBNotificationViewController_invalidate__block_invoke;
   v6[3] = &unk_278F046E8;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [allPresentables enumerateObjectsUsingBlock:v6];
 
-  v5 = [(DBNotificationViewController *)self bannerSourceListener];
-  [v5 invalidate];
+  bannerSourceListener = [(DBNotificationViewController *)self bannerSourceListener];
+  [bannerSourceListener invalidate];
 
   [(BNBannerHostMonitor *)self->_bannerHostMonitor deactivate];
 }
@@ -719,20 +719,20 @@ void __42__DBNotificationViewController_invalidate__block_invoke(uint64_t a1, ui
   v4 = [v3 dismissPresentablesWithIdentification:v5 reason:*MEMORY[0x277CF91C8] userInfo:0];
 }
 
-- (void)setSuspended:(BOOL)a3 cancellingCurrent:(BOOL)a4 forReason:(id)a5
+- (void)setSuspended:(BOOL)suspended cancellingCurrent:(BOOL)current forReason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
+  currentCopy = current;
+  suspendedCopy = suspended;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(DBNotificationViewController *)self bannerContentViewController];
-  v10 = [v9 topPresentables];
-  v11 = [v10 lastObject];
+  reasonCopy = reason;
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  lastObject = [topPresentables lastObject];
 
-  if (v11 && -[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", v11) && ([v11 isTouchOutsideDismissalEnabled] & 1) == 0)
+  if (lastObject && -[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", lastObject) && ([lastObject isTouchOutsideDismissalEnabled] & 1) == 0)
   {
-    v16 = DBLogForCategory(0x14uLL);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    bannerAuthority = DBLogForCategory(0x14uLL);
+    if (os_log_type_enabled(bannerAuthority, OS_LOG_TYPE_ERROR))
     {
       [DBNotificationViewController setSuspended:cancellingCurrent:forReason:];
     }
@@ -740,40 +740,40 @@ void __42__DBNotificationViewController_invalidate__block_invoke(uint64_t a1, ui
 
   else
   {
-    v12 = [(DBNotificationViewController *)self suspensionReasons];
-    v13 = v12;
-    if (v6)
+    suspensionReasons = [(DBNotificationViewController *)self suspensionReasons];
+    v13 = suspensionReasons;
+    if (suspendedCopy)
     {
-      [v12 addObject:v8];
+      [suspensionReasons addObject:reasonCopy];
     }
 
     else
     {
-      [v12 removeObject:v8];
+      [suspensionReasons removeObject:reasonCopy];
     }
 
     v14 = DBLogForCategory(0x14uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(DBNotificationViewController *)self suspensionReasons];
+      suspensionReasons2 = [(DBNotificationViewController *)self suspensionReasons];
       *buf = 138412290;
-      v21 = v15;
+      v21 = suspensionReasons2;
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[Notifications] Updating suspension reasons: %@", buf, 0xCu);
     }
 
-    if ([v8 isEqualToString:@"DBNotificationSuspensionReasonAssistant"])
+    if ([reasonCopy isEqualToString:@"DBNotificationSuspensionReasonAssistant"])
     {
-      v16 = [(DBNotificationViewController *)self bannerAuthority];
-      [v16 setSuspendedForAssistant:v6];
+      bannerAuthority = [(DBNotificationViewController *)self bannerAuthority];
+      [bannerAuthority setSuspendedForAssistant:suspendedCopy];
     }
 
     else
     {
       bannerController = self->_bannerController;
       v19 = 0;
-      [(BNBannerController *)bannerController setSuspended:v6 forReason:v8 revokingCurrent:v5 error:&v19];
-      v16 = v19;
-      if (v16)
+      [(BNBannerController *)bannerController setSuspended:suspendedCopy forReason:reasonCopy revokingCurrent:currentCopy error:&v19];
+      bannerAuthority = v19;
+      if (bannerAuthority)
       {
         v18 = DBLogForCategory(0x14uLL);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -785,26 +785,26 @@ void __42__DBNotificationViewController_invalidate__block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)_layoutDescriptionWithBounds:(CGRect)a3 preferredSize:(CGSize)a4 layoutManager:(id)a5
+- (id)_layoutDescriptionWithBounds:(CGRect)bounds preferredSize:(CGSize)size layoutManager:(id)manager
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [(DBNotificationViewController *)self view];
-  v12 = [v11 window];
-  v13 = [v12 windowScene];
-  v14 = [v13 screen];
-  [v10 useableContainerFrameInContainerBounds:v14 onScreen:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  managerCopy = manager;
+  view = [(DBNotificationViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [managerCopy useableContainerFrameInContainerBounds:screen onScreen:{x, y, width, height}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(DBNotificationViewController *)self traitCollection];
-  [v23 displayScale];
-  [v10 presentedFrameForContentWithPreferredSize:a4.width inUseableContainerFrame:a4.height containerBounds:v16 scale:{v18, v20, v22, *&x, *&y, *&width, *&height, v24}];
+  traitCollection = [(DBNotificationViewController *)self traitCollection];
+  [traitCollection displayScale];
+  [managerCopy presentedFrameForContentWithPreferredSize:size.width inUseableContainerFrame:size.height containerBounds:v16 scale:{v18, v20, v22, *&x, *&y, *&width, *&height, v24}];
   v26 = v25;
   v28 = v27;
 
@@ -813,19 +813,19 @@ void __42__DBNotificationViewController_invalidate__block_invoke(uint64_t a1, ui
   return [v29 bannerSourceLayoutDescriptionWithPresentationSize:v26 containerSize:{v28, width, height}];
 }
 
-- (void)_performCancelTapGesture:(id)a3
+- (void)_performCancelTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(DBNotificationViewController *)self bannerContentViewController];
-  v6 = [v5 topPresentables];
-  v7 = [v6 lastObject];
+  gestureCopy = gesture;
+  bannerContentViewController = [(DBNotificationViewController *)self bannerContentViewController];
+  topPresentables = [bannerContentViewController topPresentables];
+  lastObject = [topPresentables lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    if (-[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", v7) && ([v7 isTouchOutsideDismissalEnabled] & 1) == 0)
+    if (-[DBNotificationViewController presentableIsOEMNotification:](self, "presentableIsOEMNotification:", lastObject) && ([lastObject isTouchOutsideDismissalEnabled] & 1) == 0)
     {
-      v8 = DBLogForCategory(0x14uLL);
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      viewController = DBLogForCategory(0x14uLL);
+      if (os_log_type_enabled(viewController, OS_LOG_TYPE_ERROR))
       {
         [DBNotificationViewController handleHomeEvent];
       }
@@ -833,22 +833,22 @@ void __42__DBNotificationViewController_invalidate__block_invoke(uint64_t a1, ui
       goto LABEL_14;
     }
 
-    v8 = [v7 viewController];
-    v9 = [(DBNotificationViewController *)self view];
-    [v4 locationInView:v9];
+    viewController = [lastObject viewController];
+    view = [(DBNotificationViewController *)self view];
+    [gestureCopy locationInView:view];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v8 view];
-    [v4 locationInView:v14];
+    view2 = [viewController view];
+    [gestureCopy locationInView:view2];
     v16 = v15;
     v18 = v17;
 
-    v19 = [(DBNotificationViewController *)self view];
-    if ([v19 pointInside:0 withEvent:{v11, v13}])
+    view3 = [(DBNotificationViewController *)self view];
+    if ([view3 pointInside:0 withEvent:{v11, v13}])
     {
-      v20 = [v8 view];
-      v21 = [v20 pointInside:0 withEvent:{v16, v18}];
+      view4 = [viewController view];
+      v21 = [view4 pointInside:0 withEvent:{v16, v18}];
 
       if (v21)
       {
@@ -857,11 +857,11 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v19 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v7];
-      v22 = [(DBNotificationViewController *)self bannerController];
+      view3 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:lastObject];
+      bannerController = [(DBNotificationViewController *)self bannerController];
       v23 = *MEMORY[0x277CF91D0];
       v27 = 0;
-      v24 = [v22 revokePresentablesWithIdentification:v19 reason:v23 options:0 animated:1 userInfo:0 error:&v27];
+      v24 = [bannerController revokePresentablesWithIdentification:view3 reason:v23 options:0 animated:1 userInfo:0 error:&v27];
       v25 = v27;
 
       if (!v24)
@@ -882,18 +882,18 @@ LABEL_15:
 
 - (void)_updateIconStyleConfigurationForVisibleNotificationScene
 {
-  v3 = [(DBNotificationViewController *)self visibleNotificationScene];
-  v4 = v3;
-  if (v3)
+  visibleNotificationScene = [(DBNotificationViewController *)self visibleNotificationScene];
+  v4 = visibleNotificationScene;
+  if (visibleNotificationScene)
   {
-    v5 = [v3 clientProcess];
-    v6 = v5;
-    if (v5 && [v5 hasEntitlement:@"com.apple.springboard.homeScreenIconStyle"])
+    clientProcess = [visibleNotificationScene clientProcess];
+    v6 = clientProcess;
+    if (clientProcess && [clientProcess hasEntitlement:@"com.apple.springboard.homeScreenIconStyle"])
     {
-      v7 = [(DBNotificationViewController *)self traitCollection];
-      v8 = [v7 sbh_iconImageStyleConfiguration];
+      traitCollection = [(DBNotificationViewController *)self traitCollection];
+      sbh_iconImageStyleConfiguration = [traitCollection sbh_iconImageStyleConfiguration];
 
-      v9 = [v8 homeScreenIconStyleConfiguration];
+      homeScreenIconStyleConfiguration = [sbh_iconImageStyleConfiguration homeScreenIconStyleConfiguration];
       v10 = objc_opt_self();
       [v4 addExtension:v10];
 
@@ -901,8 +901,8 @@ LABEL_15:
       v12[1] = 3221225472;
       v12[2] = __88__DBNotificationViewController__updateIconStyleConfigurationForVisibleNotificationScene__block_invoke;
       v12[3] = &unk_278F04710;
-      v13 = v9;
-      v11 = v9;
+      v13 = homeScreenIconStyleConfiguration;
+      v11 = homeScreenIconStyleConfiguration;
       [v4 performUpdate:v12];
     }
   }
@@ -917,16 +917,16 @@ void __88__DBNotificationViewController__updateIconStyleConfigurationForVisibleN
   }
 }
 
-- (void)liveActivityRequestsDismissing:(id)a3
+- (void)liveActivityRequestsDismissing:(id)dismissing
 {
-  v4 = a3;
+  dismissingCopy = dismissing;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__DBNotificationViewController_liveActivityRequestsDismissing___block_invoke;
   v6[3] = &unk_278F014B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dismissingCopy;
+  selfCopy = self;
+  v5 = dismissingCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1005,17 +1005,17 @@ LABEL_17:
   }
 }
 
-- (void)liveActivityRequestsPresenting:(id)a3
+- (void)liveActivityRequestsPresenting:(id)presenting
 {
-  v4 = a3;
-  if ([_TtC9DashBoard24DBLiveActivityBannerView dataIsActivityDescriptor:v4])
+  presentingCopy = presenting;
+  if ([_TtC9DashBoard24DBLiveActivityBannerView dataIsActivityDescriptor:presentingCopy])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __63__DBNotificationViewController_liveActivityRequestsPresenting___block_invoke;
     v6[3] = &unk_278F014B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = presentingCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 

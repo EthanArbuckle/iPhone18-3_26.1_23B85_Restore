@@ -1,32 +1,32 @@
 @interface MRURoutingSeparatorHeaderView
-- (MRURoutingSeparatorHeaderView)initWithReuseIdentifier:(id)a3;
+- (MRURoutingSeparatorHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setStylingProvider:(id)a3;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRURoutingSeparatorHeaderView
 
-- (MRURoutingSeparatorHeaderView)initWithReuseIdentifier:(id)a3
+- (MRURoutingSeparatorHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = MRURoutingSeparatorHeaderView;
-  v3 = [(MRURoutingSeparatorHeaderView *)&v12 initWithReuseIdentifier:a3];
+  v3 = [(MRURoutingSeparatorHeaderView *)&v12 initWithReuseIdentifier:identifier];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(MRURoutingSeparatorHeaderView *)v3 setTintColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MRURoutingSeparatorHeaderView *)v3 setTintColor:clearColor];
 
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
     separatorView = v3->_separatorView;
     v3->_separatorView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v3->_separatorView setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v3->_separatorView setBackgroundColor:whiteColor];
 
-    v8 = [(MRURoutingSeparatorHeaderView *)v3 contentView];
-    [v8 addSubview:v3->_separatorView];
+    contentView = [(MRURoutingSeparatorHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_separatorView];
 
     v13[0] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -45,15 +45,15 @@
   [(UIView *)self->_separatorView setFrame:?];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRURoutingSeparatorHeaderView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -61,8 +61,8 @@
 {
   stylingProvider = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v4 = [(MRURoutingSeparatorHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:v4];
+  traitCollection = [(MRURoutingSeparatorHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:traitCollection];
 }
 
 @end

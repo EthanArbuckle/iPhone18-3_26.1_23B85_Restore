@@ -1,14 +1,14 @@
 @interface MTApplication
-+ (BOOL)handleTextViewURL:(id)a3 interaction:(int64_t)a4;
++ (BOOL)handleTextViewURL:(id)l interaction:(int64_t)interaction;
 + (BOOL)localLibraryUpdatesDisabled;
 + (id)appController;
 + (id)sharedApplication;
 - (MTApplication)init;
 - (id)delegate;
-- (void)completeOpenURLWithSuccess:(BOOL)a3 completionHandler:(id)a4;
+- (void)completeOpenURLWithSuccess:(BOOL)success completionHandler:(id)handler;
 - (void)dealloc;
-- (void)openURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)openURL:(id)l options:(id)options completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MTApplication
@@ -31,9 +31,9 @@
 {
   v4.receiver = self;
   v4.super_class = MTApplication;
-  v2 = [(MTApplication *)&v4 delegate];
+  delegate = [(MTApplication *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 + (BOOL)localLibraryUpdatesDisabled
@@ -52,7 +52,7 @@
 
 + (id)sharedApplication
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MTApplication;
   v2 = objc_msgSendSuper2(&v4, "sharedApplication");
 
@@ -61,23 +61,23 @@
 
 + (id)appController
 {
-  v2 = [a1 sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 appController];
+  sharedApplication = [self sharedApplication];
+  delegate = [sharedApplication delegate];
+  appController = [delegate appController];
 
-  return v4;
+  return appController;
 }
 
-+ (BOOL)handleTextViewURL:(id)a3 interaction:(int64_t)a4
++ (BOOL)handleTextViewURL:(id)l interaction:(int64_t)interaction
 {
-  if (!a4)
+  if (!interaction)
   {
-    v5 = a3;
+    lCopy = l;
     v6 = +[UIApplication sharedApplication];
-    [v6 openURL:v5 options:&__NSDictionary0__struct completionHandler:0];
+    [v6 openURL:lCopy options:&__NSDictionary0__struct completionHandler:0];
   }
 
-  return a4 != 0;
+  return interaction != 0;
 }
 
 - (void)dealloc
@@ -88,34 +88,34 @@
   [(MTApplication *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  [(MTApplication *)self setStrongDelegate:v4];
+  delegateCopy = delegate;
+  [(MTApplication *)self setStrongDelegate:delegateCopy];
   v5.receiver = self;
   v5.super_class = MTApplication;
-  [(MTApplication *)&v5 setDelegate:v4];
+  [(MTApplication *)&v5 setDelegate:delegateCopy];
 }
 
-- (void)openURL:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTApplication *)self delegate];
-  v12 = [v11 canOpenURL:v8];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  delegate = [(MTApplication *)self delegate];
+  v12 = [delegate canOpenURL:lCopy];
 
   if (v12)
   {
-    v13 = [v8 scheme];
-    if ([v13 isEqualToString:@"http"])
+    scheme = [lCopy scheme];
+    if ([scheme isEqualToString:@"http"])
     {
     }
 
     else
     {
-      v14 = [v8 scheme];
-      v15 = [v14 isEqualToString:@"https"];
+      scheme2 = [lCopy scheme];
+      v15 = [scheme2 isEqualToString:@"https"];
 
       if (!v15)
       {
@@ -127,17 +127,17 @@ LABEL_10:
         v21[3] = &unk_1004D9E08;
         v24 = v17;
         v21[4] = self;
-        v22 = v8;
-        v23 = v10;
+        v22 = lCopy;
+        v23 = handlerCopy;
         v20.receiver = self;
         v20.super_class = MTApplication;
-        [(MTApplication *)&v20 openURL:v22 options:v9 completionHandler:v21];
+        [(MTApplication *)&v20 openURL:v22 options:optionsCopy completionHandler:v21];
 
         goto LABEL_11;
       }
     }
 
-    v16 = [v9 objectForKeyedSubscript:UIApplicationOpenURLOptionUniversalLinksOnly];
+    v16 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionUniversalLinksOnly];
 
     if (v16)
     {
@@ -146,11 +146,11 @@ LABEL_10:
 
     else
     {
-      v18 = [v9 mutableCopy];
+      v18 = [optionsCopy mutableCopy];
       [v18 setObject:&__kCFBooleanTrue forKey:UIApplicationOpenURLOptionUniversalLinksOnly];
 
       v17 = 1;
-      v9 = v18;
+      optionsCopy = v18;
     }
 
     goto LABEL_10;
@@ -158,22 +158,22 @@ LABEL_10:
 
   v19.receiver = self;
   v19.super_class = MTApplication;
-  [(MTApplication *)&v19 openURL:v8 options:v9 completionHandler:v10];
+  [(MTApplication *)&v19 openURL:lCopy options:optionsCopy completionHandler:handlerCopy];
 LABEL_11:
 }
 
-- (void)completeOpenURLWithSuccess:(BOOL)a3 completionHandler:(id)a4
+- (void)completeOpenURLWithSuccess:(BOOL)success completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10008A11C;
     v7[3] = &unk_1004D9E30;
-    v8 = v5;
-    v9 = a3;
+    v8 = handlerCopy;
+    successCopy = success;
     [NSThread mainThread:v7];
   }
 }

@@ -6,19 +6,19 @@
 
 - (void)_controlCenterApplyPrimaryContentShadow
 {
-  v2 = [a1 layer];
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setShadowColor:{objc_msgSend(v3, "CGColor")}];
+  layer = [self layer];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v4 = [a1 layer];
+  layer2 = [self layer];
   LODWORD(v5) = 1045220557;
-  [v4 setShadowOpacity:v5];
+  [layer2 setShadowOpacity:v5];
 
-  v6 = [a1 layer];
-  [v6 setShadowRadius:20.0];
+  layer3 = [self layer];
+  [layer3 setShadowRadius:20.0];
 
-  v7 = [a1 layer];
-  [v7 setShadowOffset:{0.0, 2.0}];
+  layer4 = [self layer];
+  [layer4 setShadowOffset:{0.0, 2.0}];
 }
 
 @end

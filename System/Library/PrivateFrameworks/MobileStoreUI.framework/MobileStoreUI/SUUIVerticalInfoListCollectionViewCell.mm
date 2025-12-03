@@ -1,26 +1,26 @@
 @interface SUUIVerticalInfoListCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (SUUIVerticalInfoListCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_imageTapAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (SUUIVerticalInfoListCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)_buttonAction:(id)action;
+- (void)_imageTapAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)reloadWithViewElements:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)reloadWithViewElements:(id)elements width:(double)width context:(id)context;
 @end
 
 @implementation SUUIVerticalInfoListCollectionViewCell
 
-- (SUUIVerticalInfoListCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIVerticalInfoListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIVerticalInfoListCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:0];
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (void)reloadWithViewElements:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElements:(id)elements width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementsCopy = elements;
+  contextCopy = context;
   [(NSHashTable *)self->_titleViews removeAllObjects];
   [(NSMapTable *)self->_valueViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
@@ -46,12 +46,12 @@
   v12[1] = 3221225472;
   v12[2] = __79__SUUIVerticalInfoListCollectionViewCell_reloadWithViewElements_width_context___block_invoke;
   v12[3] = &unk_2798F5EF0;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementsCopy;
+  v14 = contextCopy;
+  selfCopy = self;
+  v10 = contextCopy;
+  v11 = elementsCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v12];
 }
 
@@ -268,16 +268,16 @@ LABEL_52:
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 valueElements];
+  contextCopy = context;
+  valueElements = [element valueElements];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [valueElements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -289,13 +289,13 @@ LABEL_52:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(valueElements);
         }
 
-        v11 |= [v7 prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:a4];
+        v11 |= [contextCopy prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:reason];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [valueElements countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -309,7 +309,7 @@ LABEL_52:
   return v11 & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -318,26 +318,26 @@ LABEL_52:
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 labelLayoutCache];
-  v11 = [v8 titleElement];
-  if (v11)
+  elementCopy = element;
+  contextCopy = context;
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  titleElement = [elementCopy titleElement];
+  if (titleElement)
   {
-    v12 = [a1 _attributedStringForLabel:v11 context:v9];
-    [v10 requestLayoutForLabel:v11 attributedString:v12 width:a4];
+    v12 = [self _attributedStringForLabel:titleElement context:contextCopy];
+    [labelLayoutCache requestLayoutForLabel:titleElement attributedString:v12 width:width];
   }
 
-  v23 = v8;
-  v13 = [v8 valueElements];
+  v23 = elementCopy;
+  valueElements = [elementCopy valueElements];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v14 = [valueElements countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -348,25 +348,25 @@ LABEL_52:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(valueElements);
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v18 elementType];
-        if (v19 <= 134)
+        elementType = [v18 elementType];
+        if (elementType <= 134)
         {
-          if (v19 == 8)
+          if (elementType == 8)
           {
-            [v10 requestLayoutForBadge:v18 width:a4];
+            [labelLayoutCache requestLayoutForBadge:v18 width:width];
             continue;
           }
 
-          if (v19 == 12)
+          if (elementType == 12)
           {
             goto LABEL_20;
           }
 
-          if (v19 != 62)
+          if (elementType != 62)
           {
             continue;
           }
@@ -374,19 +374,19 @@ LABEL_52:
           v21 = SUUIHorizontalListView;
         }
 
-        else if (v19 > 140)
+        else if (elementType > 140)
         {
-          if (v19 == 141)
+          if (elementType == 141)
           {
 LABEL_20:
-            v20 = [a1 _attributedStringForButton:v18 context:v9];
-            [v10 requestLayoutForButton:v18 attributedString:v20 width:a4];
+            v20 = [self _attributedStringForButton:v18 context:contextCopy];
+            [labelLayoutCache requestLayoutForButton:v18 attributedString:v20 width:width];
 LABEL_21:
 
             continue;
           }
 
-          if (v19 != 144)
+          if (elementType != 144)
           {
             continue;
           }
@@ -396,42 +396,42 @@ LABEL_21:
 
         else
         {
-          if (v19 != 135)
+          if (elementType != 135)
           {
-            if (v19 != 138)
+            if (elementType != 138)
             {
               continue;
             }
 
-            v20 = [a1 _attributedStringForLabel:v18 context:v9];
-            [v10 requestLayoutForLabel:v18 attributedString:v20 width:a4];
+            v20 = [self _attributedStringForLabel:v18 context:contextCopy];
+            [labelLayoutCache requestLayoutForLabel:v18 attributedString:v20 width:width];
             goto LABEL_21;
           }
 
           v21 = SUUIStarRatingViewElementView;
         }
 
-        [(__objc2_class *)v21 requestLayoutForViewElement:v18 width:v9 context:a4];
+        [(__objc2_class *)v21 requestLayoutForViewElement:v18 width:contextCopy context:width];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [valueElements countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v15);
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 valueElements];
-  v10 = [v9 count];
-  v11 = [v7 titleElement];
-  if (v11)
+  elementCopy = element;
+  contextCopy = context;
+  valueElements = [elementCopy valueElements];
+  v10 = [valueElements count];
+  titleElement = [elementCopy titleElement];
+  if (titleElement)
   {
-    [v8 sizeForViewElement:v11 width:a3];
+    [contextCopy sizeForViewElement:titleElement width:width];
     v13 = v12 + 0.0;
     ++v10;
   }
@@ -445,7 +445,7 @@ LABEL_21:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = v9;
+  v14 = valueElements;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -460,7 +460,7 @@ LABEL_21:
           objc_enumerationMutation(v14);
         }
 
-        [v8 sizeForViewElement:*(*(&v22 + 1) + 8 * i) width:{a3, v22}];
+        [contextCopy sizeForViewElement:*(*(&v22 + 1) + 8 * i) width:{width, v22}];
         v13 = v13 + v19;
       }
 
@@ -475,29 +475,29 @@ LABEL_21:
     v13 = v13 + 0.0;
   }
 
-  v20 = a3;
+  widthCopy = width;
   v21 = v13;
   result.height = v21;
-  result.width = v20;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithObjects:{v10, 0}];
+  contextCopy = context;
+  elementCopy = element;
+  v11 = [[v8 alloc] initWithObjects:{elementCopy, 0}];
 
-  [(SUUIVerticalInfoListCollectionViewCell *)self reloadWithViewElements:v11 width:v9 context:a4];
+  [(SUUIVerticalInfoListCollectionViewCell *)self reloadWithViewElements:v11 width:contextCopy context:width];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -507,7 +507,7 @@ LABEL_21:
   if (v11)
   {
     v12 = v11;
-    v22 = v8;
+    v22 = imageCopy;
     v13 = *v25;
     while (2)
     {
@@ -520,21 +520,21 @@ LABEL_21:
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15, v22];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v15 imageView];
-            v8 = v22;
-            [v20 setImage:v22];
+            imageView = [v15 imageView];
+            imageCopy = v22;
+            [imageView setImage:v22];
           }
 
           else
           {
-            v8 = v22;
+            imageCopy = v22;
             [v15 setImage:v22];
           }
 
@@ -553,7 +553,7 @@ LABEL_21:
     }
 
     v19 = 0;
-    v8 = v22;
+    imageCopy = v22;
   }
 
   else
@@ -571,8 +571,8 @@ LABEL_16:
   v22.receiver = self;
   v22.super_class = SUUIVerticalInfoListCollectionViewCell;
   [(SUUICollectionViewCell *)&v22 layoutSubviews];
-  v3 = [(SUUIVerticalInfoListCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIVerticalInfoListCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -593,7 +593,7 @@ LABEL_16:
   v21[3] = "";
   *&v21[4] = v15;
   v21[5] = v13;
-  v19 = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__SUUIVerticalInfoListCollectionViewCell_layoutSubviews__block_invoke;
@@ -601,7 +601,7 @@ LABEL_16:
   v20[4] = self;
   v20[5] = v21;
   *&v20[6] = Width - v15 - v17;
-  [v19 enumerateObjectsUsingBlock:v20];
+  [allExistingViews enumerateObjectsUsingBlock:v20];
 
   _Block_object_dispose(v21, 8);
 }
@@ -639,18 +639,18 @@ void __56__SUUIVerticalInfoListCollectionViewCell_layoutSubviews__block_invoke(u
   *(*(*(a1 + 40) + 8) + 40) = CGRectGetMaxY(v17) + 0.0;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [(NSMapTable *)self->_valueViews objectForKey:a3];
+  v4 = [(NSMapTable *)self->_valueViews objectForKey:action];
   if (v4)
   {
     v8 = v4;
     v5 = SUUICollectionViewForView(self);
-    v6 = [v5 delegate];
+    delegate = [v5 delegate];
     if (objc_opt_respondsToSelector())
     {
       v7 = [v5 indexPathForCell:self];
-      [v6 collectionView:v5 didConfirmButtonElement:v8 withClickInfo:0 forItemAtIndexPath:v7];
+      [delegate collectionView:v5 didConfirmButtonElement:v8 withClickInfo:0 forItemAtIndexPath:v7];
     }
 
     else
@@ -662,32 +662,32 @@ void __56__SUUIVerticalInfoListCollectionViewCell_layoutSubviews__block_invoke(u
   }
 }
 
-- (void)_imageTapAction:(id)a3
+- (void)_imageTapAction:(id)action
 {
   valueViews = self->_valueViews;
-  v4 = [a3 view];
-  v5 = [(NSMapTable *)valueViews objectForKey:v4];
+  view = [action view];
+  v5 = [(NSMapTable *)valueViews objectForKey:view];
 
   [v5 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SUUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -695,42 +695,42 @@ void __56__SUUIVerticalInfoListCollectionViewCell_layoutSubviews__block_invoke(u
     v11 = SUUIFontPreferredFontForTextStyle(5);
   }
 
-  v12 = [v6 tintColor];
-  v13 = SUUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SUUIViewElementPlainColorWithStyle(v10, tintColor);
 
   if (!v13)
   {
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
   }
 
-  v14 = [v5 buttonText];
-  v15 = [v14 attributedStringWithDefaultFont:v11 foregroundColor:v13 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v15 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:v13 style:v10];
 
   return v15;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(5);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
-    v11 = [v5 labelViewStyle] == 5;
+    v11 = [labelCopy labelViewStyle] == 5;
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:dbl_259FCB020[v11]];
   }
 
-  v12 = [v5 text];
-  v13 = [v12 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v13 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v13;
 }

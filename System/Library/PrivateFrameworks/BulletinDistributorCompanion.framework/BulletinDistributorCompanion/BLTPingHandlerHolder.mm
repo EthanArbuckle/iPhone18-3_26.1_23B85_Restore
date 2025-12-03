@@ -1,24 +1,24 @@
 @interface BLTPingHandlerHolder
-- (BLTPingHandlerHolder)initWithPingHandler:(id)a3;
-- (void)_performPingWithAckableForwardBlock:(id)a3 ackableNoParametersBlock:(id)a4 noAckBlock:(id)a5 clientAck:(id)a6;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithBulletin:(id)a3 notification:(id)a4 ack:(id)a5;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5;
+- (BLTPingHandlerHolder)initWithPingHandler:(id)handler;
+- (void)_performPingWithAckableForwardBlock:(id)block ackableNoParametersBlock:(id)parametersBlock noAckBlock:(id)ackBlock clientAck:(id)ack;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithBulletin:(id)bulletin notification:(id)notification ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack;
 @end
 
 @implementation BLTPingHandlerHolder
 
-- (BLTPingHandlerHolder)initWithPingHandler:(id)a3
+- (BLTPingHandlerHolder)initWithPingHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v9.receiver = self;
     v9.super_class = BLTPingHandlerHolder;
     v5 = [(BLTPingHandlerHolder *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [handlerCopy copy];
       pingHandler = v5->_pingHandler;
       v5->_pingHandler = v6;
     }
@@ -33,46 +33,46 @@
   return v5;
 }
 
-- (void)_performPingWithAckableForwardBlock:(id)a3 ackableNoParametersBlock:(id)a4 noAckBlock:(id)a5 clientAck:(id)a6
+- (void)_performPingWithAckableForwardBlock:(id)block ackableNoParametersBlock:(id)parametersBlock noAckBlock:(id)ackBlock clientAck:(id)ack
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  parametersBlockCopy = parametersBlock;
+  ackBlockCopy = ackBlock;
+  ackCopy = ack;
   if (![(BLTPingHandlerHolder *)self canAck])
   {
-    v14 = v11;
-    if (v12)
+    v14 = ackBlockCopy;
+    if (ackCopy)
     {
-      v12[2](v12, 1);
-      v14 = v11;
+      ackCopy[2](ackCopy, 1);
+      v14 = ackBlockCopy;
     }
 
     goto LABEL_7;
   }
 
   ackType = self->_ackType;
-  v14 = v15;
-  if (ackType - 2 < 2 || (v14 = v10, ackType == 1))
+  v14 = blockCopy;
+  if (ackType - 2 < 2 || (v14 = parametersBlockCopy, ackType == 1))
   {
 LABEL_7:
     v14[2]();
   }
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  ackCopy = ack;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __58__BLTPingHandlerHolder_pingWithRecordID_forSectionID_ack___block_invoke;
   v21[3] = &unk_278D316F0;
   v21[4] = self;
-  v22 = v9;
-  v23 = v8;
-  v24 = v10;
+  v22 = iDCopy;
+  v23 = dCopy;
+  v24 = ackCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__BLTPingHandlerHolder_pingWithRecordID_forSectionID_ack___block_invoke_2;
@@ -170,20 +170,20 @@ void __58__BLTPingHandlerHolder_pingWithRecordID_forSectionID_ack___block_invoke
   (*(v2 + 2))(v2, a1[5], a1[6]);
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  ackCopy = ack;
   v8 = BLTWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__BLTPingHandlerHolder_pingWithBulletin_ack___block_invoke;
   block[3] = &unk_278D316A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bulletinCopy;
+  v13 = ackCopy;
+  v9 = ackCopy;
+  v10 = bulletinCopy;
   dispatch_async(v8, block);
 }
 
@@ -205,19 +205,19 @@ void __45__BLTPingHandlerHolder_pingWithBulletin_ack___block_invoke(void *a1)
   [v2 pingWithBulletin:a1[5] notification:v3 ack:a1[6]];
 }
 
-- (void)pingWithBulletin:(id)a3 notification:(id)a4 ack:(id)a5
+- (void)pingWithBulletin:(id)bulletin notification:(id)notification ack:(id)ack
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bulletinCopy = bulletin;
+  notificationCopy = notification;
+  ackCopy = ack;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __58__BLTPingHandlerHolder_pingWithBulletin_notification_ack___block_invoke;
   v21[3] = &unk_278D31CF0;
   v21[4] = self;
-  v22 = v9;
-  v24 = v10;
-  v23 = v8;
+  v22 = notificationCopy;
+  v24 = ackCopy;
+  v23 = bulletinCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__BLTPingHandlerHolder_pingWithBulletin_notification_ack___block_invoke_4;

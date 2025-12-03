@@ -1,16 +1,16 @@
 @interface FPReachabilityMonitor
-+ (BOOL)isNetworkReachableForFlags:(unsigned int)a3;
++ (BOOL)isNetworkReachableForFlags:(unsigned int)flags;
 + (id)_notifAccountStore;
 + (id)sharedReachabilityMonitor;
 + (unsigned)getReachabilityFlagsByCheckingNetwork;
 - (BOOL)_isCellularAllowedForBR;
-- (BOOL)isNetworkReachableForBundle:(id)a3;
+- (BOOL)isNetworkReachableForBundle:(id)bundle;
 - (FPReachabilityMonitor)init;
 - (void)_accountDidChange;
 - (void)_isCellularAllowedForBR;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FPReachabilityMonitor
@@ -90,9 +90,9 @@ uint64_t __43__FPReachabilityMonitor__notifAccountStore__block_invoke()
       [(FPReachabilityMonitor *)section _isCellularAllowedForBR:v5];
     }
 
-    v12 = [MEMORY[0x1E6959A48] defaultStore];
-    v13 = [v12 aa_primaryAppleAccount];
-    v14 = [v13 aa_useCellularForDataclass:*MEMORY[0x1E6959B58]];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    v14 = [aa_primaryAppleAccount aa_useCellularForDataclass:*MEMORY[0x1E6959B58]];
     v15 = [MEMORY[0x1E696AD98] numberWithBool:v14];
     v16 = self->_isCellularEnabledForDocumentsAndData;
     self->_isCellularEnabledForDocumentsAndData = v15;
@@ -116,32 +116,32 @@ uint64_t __43__FPReachabilityMonitor__notifAccountStore__block_invoke()
   v27.receiver = self;
   v27.super_class = FPReachabilityMonitor;
   v3 = [(FPReachabilityMonitor *)&v27 init];
-  v4 = v3;
+  currentHandler2 = v3;
   if (v3)
   {
     context.version = 0;
     memset(&context.retain, 0, 24);
     context.info = v3;
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v6 = *(v4 + 8);
-    *(v4 + 8) = v5;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v6 = *(currentHandler2 + 8);
+    *(currentHandler2 + 8) = weakObjectsHashTable;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.reachability", v7);
-    v9 = *(v4 + 32);
-    *(v4 + 32) = v8;
+    v9 = *(currentHandler2 + 32);
+    *(currentHandler2 + 32) = v8;
 
-    *(v4 + 24) = [objc_opt_class() getReachabilityFlagsByCheckingNetwork];
+    *(currentHandler2 + 24) = [objc_opt_class() getReachabilityFlagsByCheckingNetwork];
     v10 = SCNetworkReachabilityCreateWithName(0, "apple.com");
-    *(v4 + 16) = v10;
-    if (!v10 || !SCNetworkReachabilitySetCallback(v10, fp_reachability_callback, &context) || !SCNetworkReachabilitySetDispatchQueue(*(v4 + 16), *(v4 + 32)))
+    *(currentHandler2 + 16) = v10;
+    if (!v10 || !SCNetworkReachabilitySetCallback(v10, fp_reachability_callback, &context) || !SCNetworkReachabilitySetDispatchQueue(*(currentHandler2 + 16), *(currentHandler2 + 32)))
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v4 file:@"FPReachabilityMonitor.m" lineNumber:147 description:@"UNREACHABLE: unable to hook into the reachability subsystem"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:currentHandler2 file:@"FPReachabilityMonitor.m" lineNumber:147 description:@"UNREACHABLE: unable to hook into the reachability subsystem"];
     }
 
-    v12 = [objc_opt_class() _notifAccountStore];
-    objc_initWeak(&location, v4);
+    _notifAccountStore = [objc_opt_class() _notifAccountStore];
+    objc_initWeak(&location, currentHandler2);
     v28[0] = 0;
     if (!AppleAccountLibraryCore_frameworkLibrary)
     {
@@ -161,23 +161,23 @@ uint64_t __43__FPReachabilityMonitor__notifAccountStore__block_invoke()
       if (!v28[0])
       {
 LABEL_10:
-        v14 = [MEMORY[0x1E696AD88] defaultCenter];
-        v15 = [MEMORY[0x1E696ADC8] mainQueue];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __29__FPReachabilityMonitor_init__block_invoke;
         v23[3] = &unk_1E793EA00;
         objc_copyWeak(&v24, &location);
-        v16 = [v14 addObserverForName:*MEMORY[0x1E6959968] object:v12 queue:v15 usingBlock:v23];
-        v17 = *(v4 + 40);
-        *(v4 + 40) = v16;
+        v16 = [defaultCenter addObserverForName:*MEMORY[0x1E6959968] object:_notifAccountStore queue:mainQueue usingBlock:v23];
+        v17 = *(currentHandler2 + 40);
+        *(currentHandler2 + 40) = v16;
 
-        v18 = *(v4 + 32);
+        v18 = *(currentHandler2 + 32);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __29__FPReachabilityMonitor_init__block_invoke_2;
         block[3] = &unk_1E79399B0;
-        v22 = v4;
+        v22 = currentHandler2;
         dispatch_async(v18, block);
 
         objc_destroyWeak(&v24);
@@ -189,9 +189,9 @@ LABEL_10:
 
     else
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *AppleAccountLibrary(void)"];
-      [v4 handleFailureInFunction:v12 file:@"FPReachabilityMonitor.m" lineNumber:17 description:{@"%s", v28[0]}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      _notifAccountStore = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *AppleAccountLibrary(void)"];
+      [currentHandler2 handleFailureInFunction:_notifAccountStore file:@"FPReachabilityMonitor.m" lineNumber:17 description:{@"%s", v28[0]}];
 
       __break(1u);
     }
@@ -202,16 +202,16 @@ LABEL_10:
 
 LABEL_11:
   v19 = *MEMORY[0x1E69E9840];
-  return v4;
+  return currentHandler2;
 }
 
-+ (BOOL)isNetworkReachableForFlags:(unsigned int)a3
++ (BOOL)isNetworkReachableForFlags:(unsigned int)flags
 {
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
-    if ((a3 & 4) != 0 && ((a3 & 0x28) == 0 || (a3 & 0x10) != 0))
+    if ((flags & 4) != 0 && ((flags & 0x28) == 0 || (flags & 0x10) != 0))
     {
-      return (a3 >> 18) & 1;
+      return (flags >> 18) & 1;
     }
 
     else
@@ -276,9 +276,9 @@ void __42__FPReachabilityMonitor__accountDidChange__block_invoke(uint64_t a1)
   __fp_leave_section_Debug(&v13);
 }
 
-- (BOOL)isNetworkReachableForBundle:(id)a3
+- (BOOL)isNetworkReachableForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -289,9 +289,9 @@ void __42__FPReachabilityMonitor__accountDidChange__block_invoke(uint64_t a1)
   block[2] = __53__FPReachabilityMonitor_isNetworkReachableForBundle___block_invoke;
   block[3] = &unk_1E793E0D0;
   block[4] = self;
-  v9 = v4;
+  v9 = bundleCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = bundleCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -312,17 +312,17 @@ uint64_t __53__FPReachabilityMonitor_isNetworkReachableForBundle___block_invoke(
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__FPReachabilityMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -343,17 +343,17 @@ uint64_t __37__FPReachabilityMonitor_addObserver___block_invoke(uint64_t a1)
   return [v5 reachabilityMonitor:v6 didChangeReachabilityStatusTo:v4];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__FPReachabilityMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 

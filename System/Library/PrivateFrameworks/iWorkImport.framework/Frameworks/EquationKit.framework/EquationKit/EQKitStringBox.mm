@@ -1,34 +1,34 @@
 @interface EQKitStringBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4;
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color;
 - (__CTLine)line;
 - (double)depth;
 - (double)height;
-- (double)positionOfCharacterAtIndex:(unint64_t)a3;
+- (double)positionOfCharacterAtIndex:(unint64_t)index;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)p_cacheDimensions;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitStringBox
 
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color
 {
   v12.receiver = self;
   v12.super_class = EQKitStringBox;
   v9 = [(EQKitStringBox *)&v12 init];
   if (v9)
   {
-    v9->mAttributedString = objc_msgSend_copy(a3, v6, v7, v8);
-    if (a4)
+    v9->mAttributedString = objc_msgSend_copy(string, v6, v7, v8);
+    if (color)
     {
-      v10 = CFRetain(a4);
+      v10 = CFRetain(color);
     }
 
     else
@@ -56,35 +56,35 @@
   [(EQKitStringBox *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v13 = objc_msgSend_attributedString(self, v9, v10, v11);
   mCGColor = self->mCGColor;
 
   return objc_msgSend_initWithAttributedString_cgColor_(v8, v12, v13, mCGColor);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        v12 = objc_msgSend_attributedString(v3, v9, v10, v11);
-        self = objc_msgSend_attributedString(a3, v13, v14, v15);
+        v12 = objc_msgSend_attributedString(selfCopy, v9, v10, v11);
+        self = objc_msgSend_attributedString(equal, v13, v14, v15);
         if (v12 == self || (v19 = self, LOBYTE(self) = 0, v12) && v19 && (LODWORD(self) = objc_msgSend_isEqualToAttributedString_(v12, v16, v19, v18), self))
         {
-          v20 = objc_msgSend_color(v3, v16, v17, v18);
-          v24 = objc_msgSend_color(a3, v21, v22, v23);
+          v20 = objc_msgSend_color(selfCopy, v16, v17, v18);
+          v24 = objc_msgSend_color(equal, v21, v22, v23);
 
           LOBYTE(self) = CGColorEqualToColor(v20, v24);
         }
@@ -171,14 +171,14 @@
   return result;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v17.receiver = self;
   v17.super_class = EQKitStringBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  if (a3)
+  if (context)
   {
     v11 = objc_msgSend_line(self, v8, v9, v10);
     if (v11)
@@ -186,12 +186,12 @@
       v12 = v11;
       if (self->mCGColor)
       {
-        CGContextSaveGState(a3);
-        CGContextSetFillColorWithColor(a3, self->mCGColor);
+        CGContextSaveGState(context);
+        CGContextSetFillColorWithColor(context, self->mCGColor);
       }
 
       memset(&v16, 0, sizeof(v16));
-      CGContextGetTextMatrix(&v16, a3);
+      CGContextGetTextMatrix(&v16, context);
       memset(&v15, 0, sizeof(v15));
       v13 = *(MEMORY[0x277CBF2C0] + 16);
       *&v14.a = *MEMORY[0x277CBF2C0];
@@ -199,22 +199,22 @@
       *&v14.tx = *(MEMORY[0x277CBF2C0] + 32);
       CGAffineTransformScale(&v15, &v14, 1.0, -1.0);
       v14 = v15;
-      CGContextSetTextMatrix(a3, &v14);
-      CGContextSetTextPosition(a3, x, y);
-      CTLineDraw(v12, a3);
+      CGContextSetTextMatrix(context, &v14);
+      CGContextSetTextPosition(context, x, y);
+      CTLineDraw(v12, context);
       v14 = v16;
-      CGContextSetTextMatrix(a3, &v14);
+      CGContextSetTextMatrix(context, &v14);
       if (self->mCGColor)
       {
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
     }
   }
 }
 
-- (double)positionOfCharacterAtIndex:(unint64_t)a3
+- (double)positionOfCharacterAtIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_line(self, a2, a3, v3);
+  v6 = objc_msgSend_line(self, a2, index, v3);
   if (!v6)
   {
     return 0.0;
@@ -222,19 +222,19 @@
 
   v10 = v6;
   v11 = objc_msgSend_attributedString(self, v7, v8, v9);
-  if (objc_msgSend_length(v11, v12, v13, v14) < a3)
+  if (objc_msgSend_length(v11, v12, v13, v14) < index)
   {
     return 0.0;
   }
 
-  return CTLineGetOffsetForStringIndex(v10, a3, 0);
+  return CTLineGetOffsetForStringIndex(v10, index, 0);
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  GlyphRuns = objc_msgSend_line(self, a2, a3, v4);
+  y = offset.y;
+  x = offset.x;
+  GlyphRuns = objc_msgSend_line(self, a2, spec, v4);
   if (GlyphRuns)
   {
     GlyphRuns = CTLineGetGlyphRuns(GlyphRuns);
@@ -250,7 +250,7 @@
     v9 = 0;
   }
 
-  v10 = *(a3 + 6);
+  v10 = *(spec + 6);
   if (v10 != 2)
   {
     if (!v10 && GlyphRuns >= 1)
@@ -276,10 +276,10 @@
             v16 = x + v28.x;
             v17 = y + v28.y;
             v18 = buffer;
-            v19 = a3;
+            specCopy2 = spec;
             v20 = Value;
 LABEL_17:
-            sub_275CD8418(v19, v20, v18, v16, v17);
+            sub_275CD8418(specCopy2, v20, v18, v16, v17);
             return v14;
           }
 
@@ -325,7 +325,7 @@ LABEL_17:
     v16 = x + v28.x;
     v17 = y + v28.y;
     v18 = buffer;
-    v19 = a3;
+    specCopy2 = spec;
     v20 = v26;
     goto LABEL_17;
   }

@@ -12,8 +12,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 interactions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  interactions = [v3 interactions];
+  v5 = [interactions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v5)
   {
 
@@ -35,7 +35,7 @@ LABEL_13:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(interactions);
       }
 
       v10 = *(*(&v14 + 1) + 8 * i);
@@ -48,7 +48,7 @@ LABEL_13:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [interactions countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v6);

@@ -1,8 +1,8 @@
 @interface THEmptyNoteCardInfo
-- (int64_t)compareToNoteCard:(id)a3;
+- (int64_t)compareToNoteCard:(id)card;
 - (void)dealloc;
-- (void)populateNoteCardBack:(id)a3;
-- (void)populateNoteCardFront:(id)a3;
+- (void)populateNoteCardBack:(id)back;
+- (void)populateNoteCardFront:(id)front;
 @end
 
 @implementation THEmptyNoteCardInfo
@@ -14,7 +14,7 @@
   [(THEmptyNoteCardInfo *)&v3 dealloc];
 }
 
-- (int64_t)compareToNoteCard:(id)a3
+- (int64_t)compareToNoteCard:(id)card
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -25,13 +25,13 @@
   return 0;
 }
 
-- (void)populateNoteCardFront:(id)a3
+- (void)populateNoteCardFront:(id)front
 {
   v4 = [[THNoteCardEmptyLayer alloc] initWithStudyOptions:[(THEmptyNoteCardInfo *)self studyOptions] unfilteredContentAvailable:[(THEmptyNoteCardInfo *)self isUnfilteredContentAvailable] darkMode:[(THEmptyNoteCardInfo *)self darkMode]];
-  [a3 setBodyLayer:v4];
+  [front setBodyLayer:v4];
 }
 
-- (void)populateNoteCardBack:(id)a3
+- (void)populateNoteCardBack:(id)back
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THEmptyNoteCardInfo populateNoteCardBack:]"];

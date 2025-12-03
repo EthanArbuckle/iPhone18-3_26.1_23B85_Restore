@@ -1,8 +1,8 @@
 @interface ABPhonePredicate
 - (id)homeCountryCode;
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
 - (void)dealloc;
-- (void)evaluateCallbackWithSqliteContext:(sqlite3_context *)a3 predicateContext:(id)a4 values:(sqlite3_value *)a5 count:(int)a6;
+- (void)evaluateCallbackWithSqliteContext:(sqlite3_context *)context predicateContext:(id)predicateContext values:(sqlite3_value *)values count:(int)count;
 @end
 
 @implementation ABPhonePredicate
@@ -26,21 +26,21 @@
   return result;
 }
 
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
-  sqlite3_bind_int(a3->var1, *a4, a5);
-  ++*a4;
-  [(ABPredicate *)self bindString:self->_phoneNumber toStatement:a3 withBindingOffset:a4];
-  sqlite3_bind_int(a3->var1, *a4, kABPersonPhoneProperty);
-  ++*a4;
+  sqlite3_bind_int(statement->var1, *offset, identifier);
+  ++*offset;
+  [(ABPredicate *)self bindString:self->_phoneNumber toStatement:statement withBindingOffset:offset];
+  sqlite3_bind_int(statement->var1, *offset, kABPersonPhoneProperty);
+  ++*offset;
 }
 
-- (void)evaluateCallbackWithSqliteContext:(sqlite3_context *)a3 predicateContext:(id)a4 values:(sqlite3_value *)a5 count:(int)a6
+- (void)evaluateCallbackWithSqliteContext:(sqlite3_context *)context predicateContext:(id)predicateContext values:(sqlite3_value *)values count:(int)count
 {
-  if (a6 == 3)
+  if (count == 3)
   {
-    v9 = sqlite3_value_text(a5[1]);
-    v10 = sqlite3_value_text(a5[2]);
+    v9 = sqlite3_value_text(values[1]);
+    v10 = sqlite3_value_text(values[2]);
     if (v9)
     {
       v11 = v10 == 0;
@@ -72,13 +72,13 @@
       v12 = CPPhoneNumbersEqualWithCountries();
     }
 
-    sqlite3_result_int(a3, v12);
+    sqlite3_result_int(context, v12);
   }
 
   else
   {
 
-    sqlite3_result_error(a3, "CPSqlitePhoneNumberContainsAlphaCharacters: wrong number of arguments", -1);
+    sqlite3_result_error(context, "CPSqlitePhoneNumberContainsAlphaCharacters: wrong number of arguments", -1);
   }
 }
 

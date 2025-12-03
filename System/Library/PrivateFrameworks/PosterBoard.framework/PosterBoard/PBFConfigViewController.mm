@@ -1,23 +1,23 @@
 @interface PBFConfigViewController
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
-- (id)_posterConfigurationAtIndexPath:(id)a3;
-- (id)_posterPathAtIndexPath:(id)a3;
-- (id)_previewForPathAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)_presentPath:(id)a3 mode:(int64_t)a4;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
+- (id)_posterConfigurationAtIndexPath:(id)path;
+- (id)_posterPathAtIndexPath:(id)path;
+- (id)_previewForPathAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (void)_presentPath:(id)path mode:(int64_t)mode;
 - (void)_reloadData;
-- (void)_selectConfiguration:(id)a3;
-- (void)_toggleEdit:(id)a3;
-- (void)_updateEditing:(BOOL)a3;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)posterExtensionDataStore:(id)a3 didUpdateSelectedConfiguration:(id)a4 associatedConfiguration:(id)a5 reason:(id)a6;
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)_selectConfiguration:(id)configuration;
+- (void)_toggleEdit:(id)edit;
+- (void)_updateEditing:(BOOL)editing;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)posterExtensionDataStore:(id)store didUpdateSelectedConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason;
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PBFConfigViewController
@@ -27,8 +27,8 @@
   v10.receiver = self;
   v10.super_class = PBFConfigViewController;
   [(PBFConfigViewController *)&v10 viewDidLoad];
-  v3 = [(PBFConfigViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"LOL"];
+  tableView = [(PBFConfigViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LOL"];
 
   if (!self->_glue)
   {
@@ -36,41 +36,41 @@
     glue = self->_glue;
     self->_glue = v4;
 
-    v6 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-    [v6 addObserver:self];
+    dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+    [dataStore addObserver:self];
 
-    v7 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-    v8 = [v7 switcherConfiguration];
+    dataStore2 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+    switcherConfiguration = [dataStore2 switcherConfiguration];
     switcherConfiguration = self->_switcherConfiguration;
-    self->_switcherConfiguration = v8;
+    self->_switcherConfiguration = switcherConfiguration;
   }
 
   [(PBFConfigViewController *)self _updateEditing:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PBFConfigViewController;
-  [(PBFConfigViewController *)&v4 viewWillAppear:a3];
+  [(PBFConfigViewController *)&v4 viewWillAppear:appear];
   [(PBFConfigViewController *)self _reloadData];
 }
 
-- (void)_toggleEdit:(id)a3
+- (void)_toggleEdit:(id)edit
 {
-  v4 = [(PBFConfigViewController *)self tableView];
-  v5 = [(PBFConfigViewController *)self tableView];
-  [v4 setEditing:{objc_msgSend(v5, "isEditing") ^ 1}];
+  tableView = [(PBFConfigViewController *)self tableView];
+  tableView2 = [(PBFConfigViewController *)self tableView];
+  [tableView setEditing:{objc_msgSend(tableView2, "isEditing") ^ 1}];
 
-  v6 = [(PBFConfigViewController *)self tableView];
-  -[PBFConfigViewController _updateEditing:](self, "_updateEditing:", [v6 isEditing]);
+  tableView3 = [(PBFConfigViewController *)self tableView];
+  -[PBFConfigViewController _updateEditing:](self, "_updateEditing:", [tableView3 isEditing]);
 }
 
-- (void)_updateEditing:(BOOL)a3
+- (void)_updateEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v5 = objc_alloc(MEMORY[0x277D751E0]);
-  if (v3)
+  if (editingCopy)
   {
     v6 = @"Done";
   }
@@ -81,48 +81,48 @@
   }
 
   v8 = [v5 initWithTitle:v6 style:2 target:self action:sel__toggleEdit_];
-  v7 = [(PBFConfigViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v8];
+  navigationItem = [(PBFConfigViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v5 = MEMORY[0x277D75B48];
-  v6 = a4;
+  pathCopy = path;
   v7 = [[v5 alloc] initWithStyle:3 reuseIdentifier:@"LOL"];
-  v8 = [(PBFConfigViewController *)self _posterPathAtIndexPath:v6];
-  v9 = [v8 identity];
-  v10 = [v9 posterUUID];
-  v11 = [v10 UUIDString];
+  v8 = [(PBFConfigViewController *)self _posterPathAtIndexPath:pathCopy];
+  identity = [v8 identity];
+  posterUUID = [identity posterUUID];
+  uUIDString = [posterUUID UUIDString];
 
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  textLabel = [v7 textLabel];
+  [textLabel setText:uUIDString];
 
-  v13 = [v7 detailTextLabel];
+  detailTextLabel = [v7 detailTextLabel];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v8 identity];
-  v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(v15, "version")}];
+  identity2 = [v8 identity];
+  v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(identity2, "version")}];
   v17 = [v16 description];
-  [v13 setText:v17];
+  [detailTextLabel setText:v17];
 
-  v18 = [(PBFConfigViewController *)self _posterConfigurationAtIndexPath:v6];
+  v18 = [(PBFConfigViewController *)self _posterConfigurationAtIndexPath:pathCopy];
 
-  v19 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  v20 = [(UIViewController *)self pbf_displayContext];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __59__PBFConfigViewController_tableView_cellForRowAtIndexPath___block_invoke;
   v31 = &unk_2782C8F58;
   v21 = v7;
   v32 = v21;
-  v22 = v11;
+  v22 = uUIDString;
   v33 = v22;
-  [v19 fetchSwitcherSnapshotForConfiguration:v18 context:v20 completion:&v28];
+  [dataStore fetchSwitcherSnapshotForConfiguration:v18 context:pbf_displayContext completion:&v28];
 
   v23 = [(PRSwitcherConfiguration *)self->_switcherConfiguration selectedConfiguration:v28];
-  LODWORD(v19) = [v18 isEqual:v23];
+  LODWORD(dataStore) = [v18 isEqual:v23];
 
-  if (v19)
+  if (dataStore)
   {
     v24 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v24 setText:@"⭐️"];
@@ -185,19 +185,19 @@ void __59__PBFConfigViewController_tableView_cellForRowAtIndexPath___block_invok
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PBFConfigViewController *)self _posterPathAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PBFConfigViewController *)self _posterPathAtIndexPath:pathCopy];
   [(PBFConfigViewController *)self _presentPath:v8 mode:2];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D753B0];
   v17[0] = MEMORY[0x277D85DD0];
@@ -205,7 +205,7 @@ void __59__PBFConfigViewController_tableView_cellForRowAtIndexPath___block_invok
   v17[2] = __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
   v17[3] = &unk_2782C8F80;
   objc_copyWeak(&v19, &location);
-  v10 = v8;
+  v10 = pathCopy;
   v18 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -304,72 +304,72 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   [v5 _selectConfiguration:v4];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v10 = [(PBFConfigViewController *)self _posterConfigurationAtIndexPath:a5];
+    v10 = [(PBFConfigViewController *)self _posterConfigurationAtIndexPath:path];
     v7 = [(PRSwitcherConfiguration *)self->_switcherConfiguration mutableCopy];
     [v7 removeConfiguration:v10];
-    v8 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-    v9 = [v8 updateDataStoreForSwitcherConfiguration:v7 reason:@"PBFConfigViewController commit editing style" error:0];
+    dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+    v9 = [dataStore updateDataStoreForSwitcherConfiguration:v7 reason:@"PBFConfigViewController commit editing style" error:0];
   }
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   switcherConfiguration = self->_switcherConfiguration;
-  v19 = a5;
-  v9 = a4;
-  v10 = a3;
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
   v11 = [(PRSwitcherConfiguration *)switcherConfiguration mutableCopy];
-  v12 = [v11 configurations];
-  v13 = [v12 mutableCopy];
+  configurations = [v11 configurations];
+  v13 = [configurations mutableCopy];
 
-  v20 = [v13 objectAtIndex:{objc_msgSend(v9, "row")}];
-  [v13 removeObjectAtIndex:{objc_msgSend(v9, "row")}];
-  [v13 insertObject:v20 atIndex:{objc_msgSend(v19, "row")}];
+  v20 = [v13 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  [v13 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  [v13 insertObject:v20 atIndex:{objc_msgSend(indexPathCopy, "row")}];
   [v11 setConfigurations:v13];
   v14 = self->_glue;
-  v15 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)v14 dataStore];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)v14 dataStore];
   v21 = 0;
-  v16 = [v15 updateDataStoreForSwitcherConfiguration:v11 reason:@"PBFConfigViewController moveRowAtIndexPath" error:&v21];
+  v16 = [dataStore updateDataStoreForSwitcherConfiguration:v11 reason:@"PBFConfigViewController moveRowAtIndexPath" error:&v21];
   v17 = v21;
 
   v18 = self->_switcherConfiguration;
   self->_switcherConfiguration = v16;
 
-  [v10 beginUpdates];
-  [v10 moveRowAtIndexPath:v9 toIndexPath:v19];
+  [viewCopy beginUpdates];
+  [viewCopy moveRowAtIndexPath:pathCopy toIndexPath:indexPathCopy];
 
-  [v10 endUpdates];
+  [viewCopy endUpdates];
 }
 
-- (void)_selectConfiguration:(id)a3
+- (void)_selectConfiguration:(id)configuration
 {
   switcherConfiguration = self->_switcherConfiguration;
-  v5 = a3;
+  configurationCopy = configuration;
   v8 = [(PRSwitcherConfiguration *)switcherConfiguration mutableCopy];
-  [v8 setSelectedConfiguration:v5];
+  [v8 setSelectedConfiguration:configurationCopy];
 
-  v6 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  v7 = [v6 updateDataStoreForSwitcherConfiguration:v8 reason:@"PBFConfigViewController selectConfiguration" error:0];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  v7 = [dataStore updateDataStoreForSwitcherConfiguration:v8 reason:@"PBFConfigViewController selectConfiguration" error:0];
 
   [(PBFConfigViewController *)self _reloadData];
 }
 
-- (id)_posterPathAtIndexPath:(id)a3
+- (id)_posterPathAtIndexPath:(id)path
 {
-  v3 = -[NSArray objectAtIndex:](self->_configurations, "objectAtIndex:", [a3 row]);
-  v4 = [v3 _path];
+  v3 = -[NSArray objectAtIndex:](self->_configurations, "objectAtIndex:", [path row]);
+  _path = [v3 _path];
 
-  return v4;
+  return _path;
 }
 
-- (id)_posterConfigurationAtIndexPath:(id)a3
+- (id)_posterConfigurationAtIndexPath:(id)path
 {
   configurations = self->_configurations;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(NSArray *)configurations objectAtIndex:v4];
 }
@@ -378,42 +378,42 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
 {
   if (MEMORY[0x21CEF7340]("[PBFConfigViewController _reloadData]", a2))
   {
-    v3 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-    v4 = [v3 switcherConfiguration];
+    dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+    switcherConfiguration = [dataStore switcherConfiguration];
     switcherConfiguration = self->_switcherConfiguration;
-    self->_switcherConfiguration = v4;
+    self->_switcherConfiguration = switcherConfiguration;
 
-    v6 = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
+    configurations = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
     configurations = self->_configurations;
-    self->_configurations = v6;
+    self->_configurations = configurations;
 
-    v8 = [(PBFConfigViewController *)self tableView];
-    [v8 reloadData];
+    tableView = [(PBFConfigViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)_presentPath:(id)a3 mode:(int64_t)a4
+- (void)_presentPath:(id)path mode:(int64_t)mode
 {
-  v13 = a3;
-  v6 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  v7 = [v6 providerForPath:v13];
+  pathCopy = path;
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  v7 = [dataStore providerForPath:pathCopy];
 
-  if (v13 && v7)
+  if (pathCopy && v7)
   {
     v8 = MEMORY[0x277D3EB78];
-    v9 = [v7 identity];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 extensionInstanceForIdentity:v9 instanceIdentifier:v10];
+    identity = [v7 identity];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 extensionInstanceForIdentity:identity instanceIdentifier:uUID];
 
-    if (a4 == 2)
+    if (mode == 2)
     {
-      v12 = [objc_alloc(MEMORY[0x277D3ECC0]) initWithProvider:v11 contents:v13];
+      v12 = [objc_alloc(MEMORY[0x277D3ECC0]) initWithProvider:v11 contents:pathCopy];
       [v12 setDelegate:self];
     }
 
     else
     {
-      v12 = [objc_alloc(MEMORY[0x277D3EE60]) initWithProvider:v11 contents:v13 previewing:a4 == 1];
+      v12 = [objc_alloc(MEMORY[0x277D3EE60]) initWithProvider:v11 contents:pathCopy previewing:mode == 1];
     }
 
     [v12 setModalPresentationStyle:0];
@@ -421,16 +421,16 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   }
 }
 
-- (id)_previewForPathAtIndexPath:(id)a3
+- (id)_previewForPathAtIndexPath:(id)path
 {
-  v4 = [(PBFConfigViewController *)self _posterPathAtIndexPath:a3];
-  v5 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  v6 = [v5 providerForPath:v4];
+  v4 = [(PBFConfigViewController *)self _posterPathAtIndexPath:path];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  v6 = [dataStore providerForPath:v4];
 
   v7 = MEMORY[0x277D3EB78];
-  v8 = [v6 identity];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v7 extensionInstanceForIdentity:v8 instanceIdentifier:v9];
+  identity = [v6 identity];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [v7 extensionInstanceForIdentity:identity instanceIdentifier:uUID];
 
   v11 = 0;
   if (v4 && v10)
@@ -441,7 +441,7 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   return v11;
 }
 
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -451,7 +451,7 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)posterExtensionDataStore:(id)a3 didUpdateSelectedConfiguration:(id)a4 associatedConfiguration:(id)a5 reason:(id)a6
+- (void)posterExtensionDataStore:(id)store didUpdateSelectedConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -461,20 +461,20 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
-  v5 = [(PBFConfigViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 _FBSScene];
-  v18 = [v8 settings];
+  view = [(PBFConfigViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  [v18 prui_leadingTopButtonFrame];
+  [settings prui_leadingTopButtonFrame];
   retstr->leadingTopButtonFrame.origin.x = v9;
   retstr->leadingTopButtonFrame.origin.y = v10;
   retstr->leadingTopButtonFrame.size.width = v11;
   retstr->leadingTopButtonFrame.size.height = v12;
-  [v18 prui_trailingTopButtonFrame];
+  [settings prui_trailingTopButtonFrame];
   retstr->trailingTopButtonFrame.origin.x = v13;
   retstr->trailingTopButtonFrame.origin.y = v14;
   retstr->trailingTopButtonFrame.size.width = v15;
@@ -483,42 +483,42 @@ void __85__PBFConfigViewController_tableView_contextMenuConfigurationForRowAtInd
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4 == 1)
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  if (action == 1)
   {
-    v16 = [v12 contentsIdentity];
-    v17 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+    contentsIdentity = [controllerCopy contentsIdentity];
+    dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
     v18 = objc_alloc(MEMORY[0x277D3ECE0]);
-    v19 = [v13 _path];
-    v20 = [v18 initWithNewPath:v19 destinationPosterUUID:0 sourceIdentity:v16 configuredProperties:v14 attributes:0];
+    _path = [configurationCopy _path];
+    v20 = [v18 initWithNewPath:_path destinationPosterUUID:0 sourceIdentity:contentsIdentity configuredProperties:propertiesCopy attributes:0];
 
-    v21 = [v17 switcherConfiguration];
-    v22 = [v21 mutableCopy];
+    switcherConfiguration = [dataStore switcherConfiguration];
+    v22 = [switcherConfiguration mutableCopy];
 
     [v22 ingestNewPosterConfiguration:v20];
     v30 = 0;
-    v23 = [v17 updateDataStoreForSwitcherConfiguration:v22 reason:@"PBFConfigViewController ingest new poster" error:&v30];
+    v23 = [dataStore updateDataStoreForSwitcherConfiguration:v22 reason:@"PBFConfigViewController ingest new poster" error:&v30];
     v24 = v30;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __139__PBFConfigViewController_editingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke;
     v26[3] = &unk_2782C8EB0;
-    v27 = v12;
+    v27 = controllerCopy;
     v28 = v24;
-    v29 = v15;
+    v29 = completionCopy;
     v25 = v24;
     dispatch_async(MEMORY[0x277D85CD0], v26);
   }
 
   else
   {
-    [v12 dismissViewControllerAnimated:1 completion:0];
-    (*(v15 + 2))(v15, 0);
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

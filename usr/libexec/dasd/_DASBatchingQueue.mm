@@ -1,8 +1,8 @@
 @interface _DASBatchingQueue
-+ (id)queueWithName:(id)a3 maxBatchingDelay:(double)a4 maxQueueDepth:(unint64_t)a5 queue:(id)a6 workItemsHandler:(id)a7;
-- (_DASBatchingQueue)initWithName:(id)a3 maxBatchingDelay:(double)a4 maxQueueDepth:(unint64_t)a5 queue:(id)a6 workItemsHandler:(id)a7;
-- (void)addWorkItem:(id)a3;
-- (void)addWorkItems:(id)a3;
++ (id)queueWithName:(id)name maxBatchingDelay:(double)delay maxQueueDepth:(unint64_t)depth queue:(id)queue workItemsHandler:(id)handler;
+- (_DASBatchingQueue)initWithName:(id)name maxBatchingDelay:(double)delay maxQueueDepth:(unint64_t)depth queue:(id)queue workItemsHandler:(id)handler;
+- (void)addWorkItem:(id)item;
+- (void)addWorkItems:(id)items;
 - (void)unprotectedExecuteWorkItems;
 @end
 
@@ -20,7 +20,7 @@
     block[2] = sub_100003C98;
     block[3] = &unk_1001B56B8;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     v9 = v4;
     dispatch_async(executionQueue, block);
     [(NSMutableArray *)self->_workItems removeAllObjects];
@@ -28,26 +28,26 @@
   }
 }
 
-- (_DASBatchingQueue)initWithName:(id)a3 maxBatchingDelay:(double)a4 maxQueueDepth:(unint64_t)a5 queue:(id)a6 workItemsHandler:(id)a7
+- (_DASBatchingQueue)initWithName:(id)name maxBatchingDelay:(double)delay maxQueueDepth:(unint64_t)depth queue:(id)queue workItemsHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  queueCopy = queue;
+  handlerCopy = handler;
   v40.receiver = self;
   v40.super_class = _DASBatchingQueue;
   v15 = [(_DASBatchingQueue *)&v40 init];
   v16 = v15;
   if (v15)
   {
-    v15->_maxDelay = a4;
-    v17 = 4;
-    if (a5)
+    v15->_maxDelay = delay;
+    depthCopy = 4;
+    if (depth)
     {
-      v17 = a5;
+      depthCopy = depth;
     }
 
-    v15->_maxQueueDepth = v17;
-    v18 = objc_retainBlock(v14);
+    v15->_maxQueueDepth = depthCopy;
+    v18 = objc_retainBlock(handlerCopy);
     workHandler = v16->_workHandler;
     v16->_workHandler = v18;
 
@@ -56,26 +56,26 @@
     v16->_workItems = v20;
 
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    if (v13)
+    if (queueCopy)
     {
-      v23 = v13;
+      v23 = queueCopy;
     }
 
     else
     {
-      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.dasbatchingqueue.executionqueue.%s", [v12 UTF8String]);
-      v25 = [v24 UTF8String];
+      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.dasbatchingqueue.executionqueue.%s", [nameCopy UTF8String]);
+      uTF8String = [v24 UTF8String];
 
-      v23 = dispatch_queue_create(v25, v22);
+      v23 = dispatch_queue_create(uTF8String, v22);
     }
 
     executionQueue = v16->_executionQueue;
     v16->_executionQueue = v23;
 
-    v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.dasbatchingqueue.syncqueue.%s", [v12 UTF8String]);
-    v28 = [v27 UTF8String];
+    v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.dasbatchingqueue.syncqueue.%s", [nameCopy UTF8String]);
+    uTF8String2 = [v27 UTF8String];
 
-    v29 = dispatch_queue_create(v28, v22);
+    v29 = dispatch_queue_create(uTF8String2, v22);
     syncQueue = v16->_syncQueue;
     v16->_syncQueue = v29;
 
@@ -93,48 +93,48 @@
     v39 = v16;
     dispatch_source_set_event_handler(v34, handler);
     v35 = v16->_timer;
-    v36 = dispatch_time(0, (a4 * 1000000000.0));
-    dispatch_source_set_timer(v35, v36, 0xFFFFFFFFFFFFFFFFLL, (a4 / 10.0 * 1000000000.0));
+    v36 = dispatch_time(0, (delay * 1000000000.0));
+    dispatch_source_set_timer(v35, v36, 0xFFFFFFFFFFFFFFFFLL, (delay / 10.0 * 1000000000.0));
   }
 
   return v16;
 }
 
-+ (id)queueWithName:(id)a3 maxBatchingDelay:(double)a4 maxQueueDepth:(unint64_t)a5 queue:(id)a6 workItemsHandler:(id)a7
++ (id)queueWithName:(id)name maxBatchingDelay:(double)delay maxQueueDepth:(unint64_t)depth queue:(id)queue workItemsHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  v14 = [objc_alloc(objc_opt_class()) initWithName:v13 maxBatchingDelay:a5 maxQueueDepth:v12 queue:v11 workItemsHandler:a4];
+  handlerCopy = handler;
+  queueCopy = queue;
+  nameCopy = name;
+  v14 = [objc_alloc(objc_opt_class()) initWithName:nameCopy maxBatchingDelay:depth maxQueueDepth:queueCopy queue:handlerCopy workItemsHandler:delay];
 
   return v14;
 }
 
-- (void)addWorkItem:(id)a3
+- (void)addWorkItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   syncQueue = self->_syncQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002AE9C;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_sync(syncQueue, v7);
 }
 
-- (void)addWorkItems:(id)a3
+- (void)addWorkItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   syncQueue = self->_syncQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B020;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_sync(syncQueue, v7);
 }
 

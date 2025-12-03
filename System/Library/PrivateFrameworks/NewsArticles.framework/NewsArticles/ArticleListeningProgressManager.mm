@@ -1,6 +1,6 @@
 @interface ArticleListeningProgressManager
 - (_TtC12NewsArticles31ArticleListeningProgressManager)init;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
 @end
 
 @implementation ArticleListeningProgressManager
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   sub_1D79A4870();
   v6 = sub_1D7D3028C();
-  v7 = a3;
-  v8 = self;
+  historyCopy = history;
+  selfCopy = self;
   sub_1D7D1089C(v6);
 }
 

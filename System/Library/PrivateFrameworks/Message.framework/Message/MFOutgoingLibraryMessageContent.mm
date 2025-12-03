@@ -16,9 +16,9 @@
 
 - (id)headers
 {
-  v2 = [(MFOutgoingLibraryMessageContent *)self libraryMessage];
-  v3 = [v2 headers];
-  v4 = [v3 mutableCopy];
+  libraryMessage = [(MFOutgoingLibraryMessageContent *)self libraryMessage];
+  headers = [libraryMessage headers];
+  v4 = [headers mutableCopy];
 
   return v4;
 }

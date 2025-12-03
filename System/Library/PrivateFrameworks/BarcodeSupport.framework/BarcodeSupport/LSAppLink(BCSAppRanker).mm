@@ -6,10 +6,10 @@
 
 - (id)bundleIdentifier
 {
-  v1 = [a1 targetApplicationProxy];
-  v2 = [v1 bundleIdentifier];
+  targetApplicationProxy = [self targetApplicationProxy];
+  bundleIdentifier = [targetApplicationProxy bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 @end

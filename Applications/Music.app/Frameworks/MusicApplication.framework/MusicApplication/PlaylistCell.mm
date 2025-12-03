@@ -1,13 +1,13 @@
 @interface PlaylistCell
-- (_TtC16MusicApplication12PlaylistCell)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)setIsDisabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication12PlaylistCell)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)setIsDisabled:(BOOL)disabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlaylistCell
 
-- (_TtC16MusicApplication12PlaylistCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication12PlaylistCell)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC16MusicApplication12PlaylistCell_title);
   *v3 = 0;
@@ -24,26 +24,26 @@
   return result;
 }
 
-- (void)setIsDisabled:(BOOL)a3
+- (void)setIsDisabled:(BOOL)disabled
 {
-  v4 = self;
-  sub_1AC36C(a3);
+  selfCopy = self;
+  sub_1AC36C(disabled);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1ACDCC(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_1ACDCC(attributesCopy);
 
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1AC654(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1AC654(change);
 }
 
 @end

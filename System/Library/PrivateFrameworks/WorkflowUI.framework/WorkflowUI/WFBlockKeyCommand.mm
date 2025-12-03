@@ -1,26 +1,26 @@
 @interface WFBlockKeyCommand
-+ (id)commandWithTitle:(id)a3 input:(id)a4 modifierFlags:(int64_t)a5 block:(id)a6;
++ (id)commandWithTitle:(id)title input:(id)input modifierFlags:(int64_t)flags block:(id)block;
 @end
 
 @implementation WFBlockKeyCommand
 
-+ (id)commandWithTitle:(id)a3 input:(id)a4 modifierFlags:(int64_t)a5 block:(id)a6
++ (id)commandWithTitle:(id)title input:(id)input modifierFlags:(int64_t)flags block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  titleCopy = title;
+  inputCopy = input;
+  blockCopy = block;
+  if (titleCopy)
   {
-    if (v12)
+    if (inputCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"WFBlockKeyCommand.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"input"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFBlockKeyCommand.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"input"}];
 
-    if (v13)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -28,29 +28,29 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"WFBlockKeyCommand.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFBlockKeyCommand.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-  if (!v12)
+  if (!inputCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v13)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:a1 file:@"WFBlockKeyCommand.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFBlockKeyCommand.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_4:
-  v14 = [a1 commandWithTitle:v11 image:0 action:sel_wf_handleBlockKeyCommand_ input:v12 modifierFlags:a5 propertyList:0];
+  v14 = [self commandWithTitle:titleCopy image:0 action:sel_wf_handleBlockKeyCommand_ input:inputCopy modifierFlags:flags propertyList:0];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [blockCopy copy];
     v16 = v14[26];
     v14[26] = v15;
 

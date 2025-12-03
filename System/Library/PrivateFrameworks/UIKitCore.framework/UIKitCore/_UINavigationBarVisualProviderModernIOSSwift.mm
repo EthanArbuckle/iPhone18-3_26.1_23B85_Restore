@@ -1,8 +1,8 @@
 @interface _UINavigationBarVisualProviderModernIOSSwift
-+ (id)valueForUndefinedKey:(id)a3;
-+ (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)a3;
-- (BOOL)_accessibility_shouldBeginHUDGestureAtPoint:(CGPoint)a3;
++ (id)valueForUndefinedKey:(id)key;
++ (void)setValue:(id)value forUndefinedKey:(id)key;
+- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)width;
+- (BOOL)_accessibility_shouldBeginHUDGestureAtPoint:(CGPoint)point;
 - (BOOL)_shim_disableBlurTinting;
 - (BOOL)_supportsCustomization;
 - (BOOL)allowsUserInteractionDuringTransitions;
@@ -10,104 +10,104 @@
 - (BOOL)isInCustomization;
 - (BOOL)permitsSearchBarPlacementIntegratedCentered;
 - (BOOL)scrollEdgeAppearanceHasChromelessBehavior;
-- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)a3;
-- (BOOL)titleRenamer:(id)a3 session:(id)a4 shouldEndRenamingWithTitle:(id)a5;
+- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)item;
+- (BOOL)titleRenamer:(id)renamer session:(id)session shouldEndRenamingWithTitle:(id)title;
 - (BOOL)topItemHasVariableHeight;
 - (BOOL)wantsLargeTitleDisplayed;
-- (CGRect)barCustomizer:(id)a3 customizationAreaBoundsForSession:(id)a4;
-- (CGRect)barCustomizer:(id)a3 overflowControlBoundsForSession:(id)a4;
+- (CGRect)barCustomizer:(id)customizer customizationAreaBoundsForSession:(id)session;
+- (CGRect)barCustomizer:(id)customizer overflowControlBoundsForSession:(id)session;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)resolvedLargeTitleMargins;
 - (NSDirectionalEdgeInsets)resolvedSearchBarMargins;
 - (UIBarButtonItem)nullableStaticNavBarButtonItem;
 - (_TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift)init;
 - (double)heightForRestoringFromCancelledTransition;
-- (double)minimumTopPaddingWithTraitCollection:(id)a3;
-- (id)_accessibility_HUDItemForPoint:(CGPoint)a3;
-- (id)_accessibility_controlToActivateForHUDGestureLiftAtPoint:(CGPoint)a3;
+- (double)minimumTopPaddingWithTraitCollection:(id)collection;
+- (id)_accessibility_HUDItemForPoint:(CGPoint)point;
+- (id)_accessibility_controlToActivateForHUDGestureLiftAtPoint:(CGPoint)point;
 - (id)_immediatelyFinishRunningTransition;
 - (id)_shim_compatibilityBackgroundView;
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4;
-- (id)barCustomizer:(id)a3 containerViewForSession:(id)a4;
-- (id)hitTest:(CGPoint)a3 defaultViewHit:(id)a4;
-- (id)presentationSourceForContent:(int64_t)a3 navigationItem:(id)a4;
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path;
+- (id)barCustomizer:(id)customizer containerViewForSession:(id)session;
+- (id)hitTest:(CGPoint)test defaultViewHit:(id)hit;
+- (id)presentationSourceForContent:(int64_t)content navigationItem:(id)item;
 - (id)restingHeights;
-- (id)titleRenamer:(id)a3 session:(id)a4 willBeginRenamingWithTitle:(id)a5 selectedRange:(_NSRange *)a6;
-- (id)traitCollectionForChild:(id)a3 baseTraitCollection:(id)a4;
+- (id)titleRenamer:(id)renamer session:(id)session willBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range;
+- (id)traitCollectionForChild:(id)child baseTraitCollection:(id)collection;
 - (int64_t)glassUserInterfaceStyle;
 - (int64_t)statusBarStyle;
 - (void)_beginCustomization;
 - (void)_beginRenaming;
-- (void)_didEncounterFirstTitleWithExcessiveHeightChanged:(id)a3;
+- (void)_didEncounterFirstTitleWithExcessiveHeightChanged:(id)changed;
 - (void)_endRenaming;
-- (void)_installContentClippingView:(id)a3;
+- (void)_installContentClippingView:(id)view;
 - (void)_observedScrollViewDidScroll;
 - (void)_refreshBackButtonMenu;
 - (void)_removeContentClippingView;
-- (void)_shim_setCustomBackgroundView:(id)a3;
-- (void)_shim_setDisableBlurTinting:(BOOL)a3;
-- (void)_shim_setShadowAlpha:(double)a3;
-- (void)animateForSearchPresentation:(BOOL)a3;
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4;
-- (void)barCustomizer:(id)a3 willEndSession:(id)a4 didReset:(BOOL)a5;
-- (void)barDidAddSubview:(id)a3;
+- (void)_shim_setCustomBackgroundView:(id)view;
+- (void)_shim_setDisableBlurTinting:(BOOL)tinting;
+- (void)_shim_setShadowAlpha:(double)alpha;
+- (void)animateForSearchPresentation:(BOOL)presentation;
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed;
+- (void)barCustomizer:(id)customizer willEndSession:(id)session didReset:(BOOL)reset;
+- (void)barDidAddSubview:(id)subview;
 - (void)barDidMoveToWindow;
 - (void)changeAppearance;
 - (void)changeLayout;
 - (void)deferSearchSuggestionsMenuRefreshForGeometryChange;
 - (void)layoutSubviews;
 - (void)navigationBarInvalidatedResolvedLayoutMargins;
-- (void)navigationControllerRefreshControlHostDidUpdateLayout:(id)a3;
-- (void)navigationItem:(id)a3 appearance:(id)a4 categoriesChanged:(int64_t)a5;
-- (void)navigationItem:(id)a3 updatedPalettePart:(int64_t)a4 oldPalette:(id)a5;
-- (void)navigationItemSearchControllerReadyForDeferredAutomaticShowsScopeBar:(id)a3;
-- (void)navigationItemUpdatedAdditionalOverflowItems:(id)a3;
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedBackgroundAppearance:(id)a3;
-- (void)navigationItemUpdatedBottomPalette:(id)a3 oldPalette:(id)a4;
-- (void)navigationItemUpdatedCenterBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedLargeTitleContent:(id)a3;
-- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)a3;
-- (void)navigationItemUpdatedLeftBarButtonItems:(void *)a3 animated:(char)a4;
-- (void)navigationItemUpdatedMinimumContentMargins:(id)a3;
-- (void)navigationItemUpdatedNavigationBarVisibility:(id)a3;
-- (void)navigationItemUpdatedPromptContent:(id)a3;
-- (void)navigationItemUpdatedScrollEdgeProgress:(id)a3;
-- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)a3;
-- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)a3;
-- (void)navigationItemUpdatedSearchController:(id)a3 oldSearchController:(id)a4;
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedToolbarAvoidsKeyboard:(id)a3;
+- (void)navigationControllerRefreshControlHostDidUpdateLayout:(id)layout;
+- (void)navigationItem:(id)item appearance:(id)appearance categoriesChanged:(int64_t)changed;
+- (void)navigationItem:(id)item updatedPalettePart:(int64_t)part oldPalette:(id)palette;
+- (void)navigationItemSearchControllerReadyForDeferredAutomaticShowsScopeBar:(id)bar;
+- (void)navigationItemUpdatedAdditionalOverflowItems:(id)items;
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated;
+- (void)navigationItemUpdatedBackgroundAppearance:(id)appearance;
+- (void)navigationItemUpdatedBottomPalette:(id)palette oldPalette:(id)oldPalette;
+- (void)navigationItemUpdatedCenterBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated;
+- (void)navigationItemUpdatedLargeTitleContent:(id)content;
+- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)mode;
+- (void)navigationItemUpdatedLeftBarButtonItems:(void *)items animated:(char)animated;
+- (void)navigationItemUpdatedMinimumContentMargins:(id)margins;
+- (void)navigationItemUpdatedNavigationBarVisibility:(id)visibility;
+- (void)navigationItemUpdatedPromptContent:(id)content;
+- (void)navigationItemUpdatedScrollEdgeProgress:(id)progress;
+- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)integration;
+- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)integration;
+- (void)navigationItemUpdatedSearchController:(id)controller oldSearchController:(id)searchController;
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated;
+- (void)navigationItemUpdatedToolbarAvoidsKeyboard:(id)keyboard;
 - (void)prepare;
 - (void)prepareForStackChange;
-- (void)provideViewsForContents:(id)a3 topItem:(id)a4 backItem:(id)a5;
+- (void)provideViewsForContents:(id)contents topItem:(id)item backItem:(id)backItem;
 - (void)refreshSearchSuggestionsMenuAfterGeometryChange;
-- (void)removeContentForItem:(id)a3;
+- (void)removeContentForItem:(id)item;
 - (void)safeAreaInsetsDidChange;
-- (void)searchScopeBarWillManuallyShowOrHideForNavigationItem:(id)a3;
-- (void)setActiveTabBarHost:(BOOL)a3;
-- (void)setAppearanceAPIVersion:(int64_t)a3;
-- (void)setForceScrollEdgeAppearance:(BOOL)a3;
+- (void)searchScopeBarWillManuallyShowOrHideForNavigationItem:(id)item;
+- (void)setActiveTabBarHost:(BOOL)host;
+- (void)setAppearanceAPIVersion:(int64_t)version;
+- (void)setForceScrollEdgeAppearance:(BOOL)appearance;
 - (void)setNeedsStaticNavBarButtonUpdate;
-- (void)setNullableStaticNavBarButtonItem:(id)a3;
-- (void)setRefreshControlHost:(id)a3;
-- (void)setStaticLeadingItemGroups:(id)a3 trailingItemGroups:(id)a4 animated:(BOOL)a5;
-- (void)setStaticNavBarButtonItem:(id)a3 trailingPosition:(BOOL)a4;
-- (void)setTabBarHostedView:(id)a3;
-- (void)setUseInlineBackgroundHeightWhenLarge:(BOOL)a3;
-- (void)setWantsHostedTabBarMetrics:(BOOL)a3;
-- (void)stackDidChangeFrom:(id)a3;
-- (void)tabBarContainerDidLayoutFloatingTabBar:(id)a3;
-- (void)tabBarContainerWillChangeFloatingTabBarVisibility:(id)a3;
+- (void)setNullableStaticNavBarButtonItem:(id)item;
+- (void)setRefreshControlHost:(id)host;
+- (void)setStaticLeadingItemGroups:(id)groups trailingItemGroups:(id)itemGroups animated:(BOOL)animated;
+- (void)setStaticNavBarButtonItem:(id)item trailingPosition:(BOOL)position;
+- (void)setTabBarHostedView:(id)view;
+- (void)setUseInlineBackgroundHeightWhenLarge:(BOOL)large;
+- (void)setWantsHostedTabBarMetrics:(BOOL)metrics;
+- (void)stackDidChangeFrom:(id)from;
+- (void)tabBarContainerDidLayoutFloatingTabBar:(id)bar;
+- (void)tabBarContainerWillChangeFloatingTabBarVisibility:(id)visibility;
 - (void)teardown;
-- (void)titleRenamer:(id)a3 didCancelSession:(id)a4;
-- (void)titleRenamer:(id)a3 session:(id)a4 didEndRenamingWithTitle:(id)a5;
-- (void)titleRenamer:(id)a3 session:(id)a4 fileRenameDidEnd:(id)a5;
-- (void)titleRenamer:(id)a3 session:(id)a4 fileRenameDidFail:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)traitCollectionDidChangeOnSubtree:(id)a3;
+- (void)titleRenamer:(id)renamer didCancelSession:(id)session;
+- (void)titleRenamer:(id)renamer session:(id)session didEndRenamingWithTitle:(id)title;
+- (void)titleRenamer:(id)renamer session:(id)session fileRenameDidEnd:(id)end;
+- (void)titleRenamer:(id)renamer session:(id)session fileRenameDidFail:(id)fail;
+- (void)traitCollectionDidChange:(id)change;
+- (void)traitCollectionDidChangeOnSubtree:(id)subtree;
 - (void)updateBackgroundGroupName;
 - (void)updateBarVisibilityForTopItem;
 - (void)updateSearchBarForPlacementChangeIfApplicable;
@@ -115,10 +115,10 @@
 
 @implementation _UINavigationBarVisualProviderModernIOSSwift
 
-- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)a3
+- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)width
 {
-  v4 = self;
-  sub_188AE5E30(a3);
+  selfCopy = self;
+  sub_188AE5E30(width);
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -134,36 +134,36 @@
 
 - (BOOL)topItemHasVariableHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188AE6530();
 
   return v3 & 1;
 }
 
-- (void)stackDidChangeFrom:(id)a3
+- (void)stackDidChangeFrom:(id)from
 {
-  v4 = self;
-  v3 = [(_UINavigationBarVisualProvider *)v4 stack];
-  [(_UINavigationBarItemStack *)v3 setChangeObserver:v4];
+  selfCopy = self;
+  stack = [(_UINavigationBarVisualProvider *)selfCopy stack];
+  [(_UINavigationBarItemStack *)stack setChangeObserver:selfCopy];
 }
 
 - (void)prepare
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AEB944();
 }
 
-- (void)setAppearanceAPIVersion:(int64_t)a3
+- (void)setAppearanceAPIVersion:(int64_t)version
 {
-  v4 = self;
-  sub_188AECCA0(a3);
+  selfCopy = self;
+  sub_188AECCA0(version);
 }
 
-- (double)minimumTopPaddingWithTraitCollection:(id)a3
+- (double)minimumTopPaddingWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  sub_188AEC7A4(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_188AEC7A4(collectionCopy);
   v7 = v6;
 
   return v7;
@@ -171,77 +171,77 @@
 
 - (void)navigationBarInvalidatedResolvedLayoutMargins
 {
-  v6 = self;
-  v2 = [(_UINavigationBarVisualProvider *)v6 stack];
-  v3 = [(_UINavigationBarItemStack *)v2 topItem];
+  selfCopy = self;
+  stack = [(_UINavigationBarVisualProvider *)selfCopy stack];
+  topItem = [(_UINavigationBarItemStack *)stack topItem];
 
-  v4 = sub_1890C958C(v3);
+  v4 = sub_1890C958C(topItem);
   if (v4)
   {
-    v5 = [v4 searchBar];
+    searchBar = [v4 searchBar];
 
-    [v5 _updateEffectiveContentInset];
+    [searchBar _updateEffectiveContentInset];
   }
 }
 
 - (void)updateBarVisibilityForTopItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AEDB34();
 }
 
-- (void)removeContentForItem:(id)a3
+- (void)removeContentForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_188AED1A0(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_188AED1A0(itemCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188AEE120();
 }
 
 - (void)changeLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B29AE8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_188B36BE8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_188B36BE8(changeCopy);
 }
 
 - (void)barDidMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B37218();
 }
 
-- (void)traitCollectionDidChangeOnSubtree:(id)a3
+- (void)traitCollectionDidChangeOnSubtree:(id)subtree
 {
-  v4 = a3;
-  v5 = self;
-  sub_188B3B498(v4);
+  subtreeCopy = subtree;
+  selfCopy = self;
+  sub_188B3B498(subtreeCopy);
 }
 
-- (void)barDidAddSubview:(id)a3
+- (void)barDidAddSubview:(id)subview
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B4E6A0(a3);
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_188B4E6A0(subview);
 }
 
-- (id)traitCollectionForChild:(id)a3 baseTraitCollection:(id)a4
+- (id)traitCollectionForChild:(id)child baseTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  v8 = sub_188B4EC10(v6);
+  collectionCopy = collection;
+  selfCopy = self;
+  v8 = sub_188B4EC10(collectionCopy);
   swift_unknownObjectRelease();
 
   return v8;
@@ -249,17 +249,17 @@
 
 - (void)changeAppearance
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B52FC8();
 }
 
 - (void)safeAreaInsetsDidChange
 {
-  v5 = self;
-  v2 = [(_UINavigationBarVisualProvider *)v5 navigationBar];
-  [(UINavigationBar *)v2 setNeedsLayout];
+  selfCopy = self;
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  [(UINavigationBar *)navigationBar setNeedsLayout];
 
-  v3 = *(&v5->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_largeTitleView);
+  v3 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_largeTitleView);
   if (v3)
   {
     v4 = v3;
@@ -267,84 +267,84 @@
   }
 }
 
-- (void)navigationItemUpdatedLargeTitleContent:(id)a3
+- (void)navigationItemUpdatedLargeTitleContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  sub_188B9D39C(v4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_188B9D39C(contentCopy);
 }
 
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_188B9E668(v6, a4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_188B9E668(contentCopy, animated);
 }
 
-- (void)navigationItemUpdatedLeftBarButtonItems:(void *)a3 animated:(char)a4
+- (void)navigationItemUpdatedLeftBarButtonItems:(void *)items animated:(char)animated
 {
-  v6 = a3;
-  v7 = a1;
-  sub_188B9E8DC(v6, a4);
+  itemsCopy = items;
+  selfCopy = self;
+  sub_188B9E8DC(itemsCopy, animated);
 }
 
-- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)a3
+- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)mode
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BA1244(v4);
+  modeCopy = mode;
+  selfCopy = self;
+  sub_188BA1244(modeCopy);
 }
 
-- (void)navigationItemUpdatedScrollEdgeProgress:(id)a3
+- (void)navigationItemUpdatedScrollEdgeProgress:(id)progress
 {
-  v4 = a3;
-  v5 = self;
-  sub_188BAA4F0(v4);
+  progressCopy = progress;
+  selfCopy = self;
+  sub_188BAA4F0(progressCopy);
 }
 
 - (void)_observedScrollViewDidScroll
 {
-  v2 = self;
+  selfCopy = self;
   sub_188BAA3EC();
 }
 
-- (void)setRefreshControlHost:(id)a3
+- (void)setRefreshControlHost:(id)host
 {
-  v5 = a3;
-  v6 = self;
-  sub_188BABBE4(a3);
+  hostCopy = host;
+  selfCopy = self;
+  sub_188BABBE4(host);
 }
 
-- (void)setStaticLeadingItemGroups:(id)a3 trailingItemGroups:(id)a4 animated:(BOOL)a5
+- (void)setStaticLeadingItemGroups:(id)groups trailingItemGroups:(id)itemGroups animated:(BOOL)animated
 {
-  v7 = a3;
-  if (a3)
+  groupsCopy = groups;
+  if (groups)
   {
     sub_188A34624(0, &unk_1ED48DBD0);
-    v7 = sub_18A4A7548();
+    groupsCopy = sub_18A4A7548();
   }
 
-  if (a4)
+  if (itemGroups)
   {
     sub_188A34624(0, &unk_1ED48DBD0);
-    a4 = sub_18A4A7548();
+    itemGroups = sub_18A4A7548();
   }
 
-  v9 = self;
-  sub_188BB458C(v7, a4, a5);
+  selfCopy = self;
+  sub_188BB458C(groupsCopy, itemGroups, animated);
 }
 
-- (void)navigationItemUpdatedSearchController:(id)a3 oldSearchController:(id)a4
+- (void)navigationItemUpdatedSearchController:(id)controller oldSearchController:(id)searchController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_188BE3534(v6, a4);
+  controllerCopy = controller;
+  searchControllerCopy = searchController;
+  selfCopy = self;
+  sub_188BE3534(controllerCopy, searchController);
 }
 
 - (NSDirectionalEdgeInsets)resolvedSearchBarMargins
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_188B2941C())
   {
     v3 = sub_188B297A0(1);
@@ -355,8 +355,8 @@
 
   else
   {
-    v10 = [(_UINavigationBarVisualProvider *)v2 navigationBar];
-    [(UINavigationBar *)v10 _resolvedLayoutMargins];
+    navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+    [(UINavigationBar *)navigationBar _resolvedLayoutMargins];
     v3 = v11;
     v5 = v12;
     v7 = v13;
@@ -376,7 +376,7 @@
 
 - (id)_shim_compatibilityBackgroundView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188BF8244();
 
   return v3;
@@ -384,102 +384,102 @@
 
 - (void)prepareForStackChange
 {
-  v1 = a1;
+  selfCopy = self;
   sub_188AED02C();
 }
 
-- (void)navigationItemUpdatedAdditionalOverflowItems:(id)a3
+- (void)navigationItemUpdatedAdditionalOverflowItems:(id)items
 {
-  v4 = a3;
-  v5 = self;
-  sub_188C047BC(v4);
+  itemsCopy = items;
+  selfCopy = self;
+  sub_188C047BC(itemsCopy);
 }
 
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v5 = self;
+  selfCopy = self;
   sub_188AECCA0(2);
-  v4 = [(_UINavigationBarVisualProvider *)v5 navigationBar];
-  [(UINavigationBar *)v4 setNeedsLayout];
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  [(UINavigationBar *)navigationBar setNeedsLayout];
 }
 
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_1890D5D8C(v6, a4);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_1890D5D8C(layoutCopy, animated);
 }
 
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_188C18BE4(v6, a4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_188C18BE4(contentCopy, animated);
 }
 
-- (void)navigationItem:(id)a3 updatedPalettePart:(int64_t)a4 oldPalette:(id)a5
+- (void)navigationItem:(id)item updatedPalettePart:(int64_t)part oldPalette:(id)palette
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_188C1A378(v8, a4, v9);
+  itemCopy = item;
+  paletteCopy = palette;
+  selfCopy = self;
+  sub_188C1A378(itemCopy, part, paletteCopy);
 }
 
-- (void)navigationItem:(id)a3 appearance:(id)a4 categoriesChanged:(int64_t)a5
+- (void)navigationItem:(id)item appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_188C32944(v7);
+  itemCopy = item;
+  appearanceCopy = appearance;
+  selfCopy = self;
+  sub_188C32944(itemCopy);
 }
 
 - (BOOL)wantsLargeTitleDisplayed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B3761C();
 
   return v3 & 1;
 }
 
-- (void)navigationItemUpdatedCenterBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedCenterBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_188C6707C(v6, a4);
+  itemsCopy = items;
+  selfCopy = self;
+  sub_188C6707C(itemsCopy, animated);
 }
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   sub_188CAD2EC();
 }
 
-- (void)navigationItemUpdatedNavigationBarVisibility:(id)a3
+- (void)navigationItemUpdatedNavigationBarVisibility:(id)visibility
 {
-  v4 = a3;
-  v5 = self;
-  sub_188CB8E40(v4, sub_188AEDB34);
+  visibilityCopy = visibility;
+  selfCopy = self;
+  sub_188CB8E40(visibilityCopy, sub_188AEDB34);
 }
 
 - (BOOL)scrollEdgeAppearanceHasChromelessBehavior
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188CBA3DC();
 
   return v3 & 1;
 }
 
-- (void)_shim_setCustomBackgroundView:(id)a3
+- (void)_shim_setCustomBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188D675B0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188D675B0(view);
 }
 
 - (BOOL)permitsSearchBarPlacementIntegratedCentered
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_contentView);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   v5 = sub_188B3461C();
 
@@ -488,52 +488,52 @@
 
 - (double)heightForRestoringFromCancelledTransition
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890C8878();
   v4 = v3;
 
   return v4;
 }
 
-- (void)provideViewsForContents:(id)a3 topItem:(id)a4 backItem:(id)a5
+- (void)provideViewsForContents:(id)contents topItem:(id)item backItem:(id)backItem
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1890D7F48(v8, v9);
+  contentsCopy = contents;
+  itemCopy = item;
+  backItemCopy = backItem;
+  selfCopy = self;
+  sub_1890D7F48(contentsCopy, itemCopy);
 }
 
-- (void)setUseInlineBackgroundHeightWhenLarge:(BOOL)a3
+- (void)setUseInlineBackgroundHeightWhenLarge:(BOOL)large
 {
-  if (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__useInlineBackgroundHeightWhenLarge) != a3)
+  if (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__useInlineBackgroundHeightWhenLarge) != large)
   {
-    *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__useInlineBackgroundHeightWhenLarge) = a3;
-    v5 = self;
-    v4 = [(_UINavigationBarVisualProvider *)v5 navigationBar];
-    [(UINavigationBar *)v4 setNeedsLayout];
+    *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__useInlineBackgroundHeightWhenLarge) = large;
+    selfCopy = self;
+    navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+    [(UINavigationBar *)navigationBar setNeedsLayout];
   }
 }
 
-- (void)setForceScrollEdgeAppearance:(BOOL)a3
+- (void)setForceScrollEdgeAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v4 = self;
-  sub_1890C8EF0(v3);
+  appearanceCopy = appearance;
+  selfCopy = self;
+  sub_1890C8EF0(appearanceCopy);
 }
 
 - (BOOL)allowsUserInteractionDuringTransitions
 {
-  v2 = self;
-  v3 = [(_UINavigationBarVisualProvider *)v2 navigationBar];
-  v4 = [(UINavigationBar *)v3 _canPreemptTransition];
+  selfCopy = self;
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  _canPreemptTransition = [(UINavigationBar *)navigationBar _canPreemptTransition];
 
-  return v4;
+  return _canPreemptTransition;
 }
 
 - (void)_refreshBackButtonMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890C91D0();
 }
 
@@ -550,53 +550,53 @@
 
 - (void)_beginRenaming
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890C969C();
 }
 
 - (void)_endRenaming
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CA560();
 }
 
 - (void)updateSearchBarForPlacementChangeIfApplicable
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CA850();
 }
 
 - (void)deferSearchSuggestionsMenuRefreshForGeometryChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CAB48();
 }
 
-- (void)searchScopeBarWillManuallyShowOrHideForNavigationItem:(id)a3
+- (void)searchScopeBarWillManuallyShowOrHideForNavigationItem:(id)item
 {
-  v5 = a3;
-  v6 = self;
-  sub_1890CAC28(a3);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1890CAC28(item);
 }
 
 - (void)refreshSearchSuggestionsMenuAfterGeometryChange
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_contentView);
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_188B49B18();
 }
 
 - (void)updateBackgroundGroupName
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B2DF14();
 }
 
 - (NSDirectionalEdgeInsets)resolvedLargeTitleMargins
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   if (sub_188B2941C())
   {
     v5 = sub_188B297A0(0);
@@ -604,7 +604,7 @@
 
   else
   {
-    v17.receiver = v4;
+    v17.receiver = selfCopy;
     v17.super_class = ObjectType;
     [(_UINavigationBarVisualProvider *)&v17 resolvedLargeTitleMargins];
   }
@@ -625,26 +625,26 @@
   return result;
 }
 
-- (void)animateForSearchPresentation:(BOOL)a3
+- (void)animateForSearchPresentation:(BOOL)presentation
 {
-  v4 = self;
-  sub_1890CDC44(a3);
+  selfCopy = self;
+  sub_1890CDC44(presentation);
 }
 
-- (id)hitTest:(CGPoint)a3 defaultViewHit:(id)a4
+- (id)hitTest:(CGPoint)test defaultViewHit:(id)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1890CE6DC(v7, x, y);
+  y = test.y;
+  x = test.x;
+  hitCopy = hit;
+  selfCopy = self;
+  v9 = sub_1890CE6DC(hitCopy, x, y);
 
   return v9;
 }
 
 - (int64_t)statusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890CE9B0();
 
   return v3;
@@ -652,19 +652,19 @@
 
 - (int64_t)glassUserInterfaceStyle
 {
-  v2 = self;
-  v3 = [(_UINavigationBarVisualProvider *)v2 navigationBar];
-  v4 = [(UIView *)v3 traitCollection];
+  selfCopy = self;
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  traitCollection = [(UIView *)navigationBar traitCollection];
 
-  v5 = [(UITraitCollection *)v4 glassUserInterfaceStyle];
-  return v5;
+  glassUserInterfaceStyle = [(UITraitCollection *)traitCollection glassUserInterfaceStyle];
+  return glassUserInterfaceStyle;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(_UINavigationBarVisualProvider *)v2 navigationBar];
-  [(UIView *)v3 bounds];
+  selfCopy = self;
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  [(UIView *)navigationBar bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -685,19 +685,19 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = v4;
+  width = fits.width;
+  selfCopy = self;
+  v5 = selfCopy;
   if (width == 0.0)
   {
-    v6 = [(_UINavigationBarVisualProvider *)v4 navigationBar];
-    v7 = [(UIView *)v6 superview];
+    navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+    superview = [(UIView *)navigationBar superview];
 
-    if (v7)
+    if (superview)
     {
-      [(UIView *)v7 bounds];
+      [(UIView *)superview bounds];
       width = v8;
     }
   }
@@ -714,7 +714,7 @@
 
 - (id)restingHeights
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CED0C();
 
   sub_188A34624(0, &qword_1ED48FD80);
@@ -723,27 +723,27 @@
   return v3;
 }
 
-- (void)setActiveTabBarHost:(BOOL)a3
+- (void)setActiveTabBarHost:(BOOL)host
 {
-  if (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__isActiveTabBarHost) != a3)
+  if (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__isActiveTabBarHost) != host)
   {
-    *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__isActiveTabBarHost) = a3;
-    v4 = self;
+    *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift__isActiveTabBarHost) = host;
+    selfCopy = self;
     sub_1890CEFCC();
   }
 }
 
-- (void)setWantsHostedTabBarMetrics:(BOOL)a3
+- (void)setWantsHostedTabBarMetrics:(BOOL)metrics
 {
-  v4 = self;
-  sub_1890CF104(a3);
+  selfCopy = self;
+  sub_1890CF104(metrics);
 }
 
 - (UIBarButtonItem)nullableStaticNavBarButtonItem
 {
   v3 = OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_contentView;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_contentView);
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
   sub_188EBDD94();
   v8 = v7;
@@ -758,23 +758,23 @@
   return v8;
 }
 
-- (void)setNullableStaticNavBarButtonItem:(id)a3
+- (void)setNullableStaticNavBarButtonItem:(id)item
 {
-  v6 = a3;
-  v5 = self;
-  sub_1890D8080(a3);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1890D8080(item);
 }
 
-- (void)setStaticNavBarButtonItem:(id)a3 trailingPosition:(BOOL)a4
+- (void)setStaticNavBarButtonItem:(id)item trailingPosition:(BOOL)position
 {
-  v7 = a3;
-  v8 = self;
-  sub_1890CF2BC(a3, a4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1890CF2BC(item, position);
 }
 
 - (BOOL)isContentViewHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890CF424();
 
   return v3 & 1;
@@ -782,76 +782,76 @@
 
 - (void)setNeedsStaticNavBarButtonUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CF4FC();
 }
 
 - (void)_removeContentClippingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890CF87C();
 }
 
-- (void)_installContentClippingView:(id)a3
+- (void)_installContentClippingView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890CFB2C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1890CFB2C(viewCopy);
 }
 
-- (void)_shim_setShadowAlpha:(double)a3
+- (void)_shim_setShadowAlpha:(double)alpha
 {
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_shadowAlpha) = a3;
-  v4 = self;
-  v3 = [(_UINavigationBarVisualProvider *)v4 navigationBar];
-  [(UINavigationBar *)v3 setNeedsLayout];
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_shadowAlpha) = alpha;
+  selfCopy = self;
+  navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+  [(UINavigationBar *)navigationBar setNeedsLayout];
 }
 
 - (BOOL)_shim_disableBlurTinting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890CFE14();
 
   return v3 & 1;
 }
 
-- (void)_shim_setDisableBlurTinting:(BOOL)a3
+- (void)_shim_setDisableBlurTinting:(BOOL)tinting
 {
-  v4 = self;
-  sub_1890CFEC4(a3);
+  selfCopy = self;
+  sub_1890CFEC4(tinting);
 }
 
-- (BOOL)_accessibility_shouldBeginHUDGestureAtPoint:(CGPoint)a3
+- (BOOL)_accessibility_shouldBeginHUDGestureAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_1890CFFA4(x, y);
 
   return v6 & 1;
 }
 
-- (id)_accessibility_HUDItemForPoint:(CGPoint)a3
+- (id)_accessibility_HUDItemForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_1890D01BC(x, y);
 
   return v6;
 }
 
-- (id)_accessibility_controlToActivateForHUDGestureLiftAtPoint:(CGPoint)a3
+- (id)_accessibility_controlToActivateForHUDGestureLiftAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_1890D08AC(x, y);
 
   return v6;
 }
 
-+ (id)valueForUndefinedKey:(id)a3
++ (id)valueForUndefinedKey:(id)key
 {
   v3 = sub_18A4A7288();
   v5 = v4;
@@ -879,11 +879,11 @@
   return v12;
 }
 
-+ (void)setValue:(id)a3 forUndefinedKey:(id)a4
++ (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if (a3)
+  if (value)
   {
-    v5 = a4;
+    keyCopy = key;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -892,7 +892,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v6 = a4;
+    keyCopy2 = key;
   }
 
   v7 = sub_18A4A7288();
@@ -906,7 +906,7 @@
 
 - (id)_immediatelyFinishRunningTransition
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890D1070();
   v5 = v4;
 
@@ -921,16 +921,16 @@
   return v6;
 }
 
-- (void)setTabBarHostedView:(id)a3
+- (void)setTabBarHostedView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1890D17F4(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1890D17F4(view);
 }
 
 - (BOOL)_supportsCustomization
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890D2A68();
 
   return v3;
@@ -938,16 +938,16 @@
 
 - (void)_beginCustomization
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890D2B7C();
 }
 
-- (void)_didEncounterFirstTitleWithExcessiveHeightChanged:(id)a3
+- (void)_didEncounterFirstTitleWithExcessiveHeightChanged:(id)changed
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA93C6E8);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (changed)
   {
     sub_18A4A2418();
     v8 = sub_18A4A2458();
@@ -960,7 +960,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_1890D58E0();
 
   sub_188A3F5FC(v7, &unk_1EA93C6E8);
@@ -973,84 +973,84 @@
   return result;
 }
 
-- (id)presentationSourceForContent:(int64_t)a3 navigationItem:(id)a4
+- (id)presentationSourceForContent:(int64_t)content navigationItem:(id)item
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_1890D5BB0(a3, v6);
+  itemCopy = item;
+  selfCopy = self;
+  v8 = sub_1890D5BB0(content, itemCopy);
 
   return v8;
 }
 
-- (void)navigationItemUpdatedPromptContent:(id)a3
+- (void)navigationItemUpdatedPromptContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890D6048(v4);
+  contentCopy = content;
+  selfCopy = self;
+  sub_1890D6048(contentCopy);
 }
 
-- (void)navigationItemUpdatedBackgroundAppearance:(id)a3
+- (void)navigationItemUpdatedBackgroundAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = self;
-  sub_188CB8E40(v4, sub_188B2CDC8);
+  appearanceCopy = appearance;
+  selfCopy = self;
+  sub_188CB8E40(appearanceCopy, sub_188B2CDC8);
 }
 
-- (void)navigationItemUpdatedToolbarAvoidsKeyboard:(id)a3
+- (void)navigationItemUpdatedToolbarAvoidsKeyboard:(id)keyboard
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890D640C(v4);
+  keyboardCopy = keyboard;
+  selfCopy = self;
+  sub_1890D640C(keyboardCopy);
 }
 
-- (void)navigationItemSearchControllerReadyForDeferredAutomaticShowsScopeBar:(id)a3
+- (void)navigationItemSearchControllerReadyForDeferredAutomaticShowsScopeBar:(id)bar
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890D65D4(v4);
+  barCopy = bar;
+  selfCopy = self;
+  sub_1890D65D4(barCopy);
 }
 
-- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)a3
+- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1890D67AC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  LOBYTE(self) = sub_1890D67AC(itemCopy);
 
   return self & 1;
 }
 
-- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)a3
+- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)integration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890D6938(v4);
+  integrationCopy = integration;
+  selfCopy = self;
+  sub_1890D6938(integrationCopy);
 }
 
-- (void)navigationItemUpdatedBottomPalette:(id)a3 oldPalette:(id)a4
+- (void)navigationItemUpdatedBottomPalette:(id)palette oldPalette:(id)oldPalette
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1890D8A58(v7);
+  paletteCopy = palette;
+  oldPaletteCopy = oldPalette;
+  selfCopy = self;
+  sub_1890D8A58(oldPaletteCopy);
 }
 
-- (void)navigationItemUpdatedMinimumContentMargins:(id)a3
+- (void)navigationItemUpdatedMinimumContentMargins:(id)margins
 {
-  v4 = a3;
-  v5 = self;
+  marginsCopy = margins;
+  selfCopy = self;
   sub_1890D6B88();
 }
 
-- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)a3
+- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)integration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890D6D5C(v4);
+  integrationCopy = integration;
+  selfCopy = self;
+  sub_1890D6D5C(integrationCopy);
 }
 
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path
 {
-  if (a4)
+  if (path)
   {
     v6 = sub_18A4A7288();
     v8 = v7;
@@ -1062,50 +1062,50 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  v11 = sub_1890D7064(a3, v6, v8);
+  viewCopy = view;
+  selfCopy = self;
+  v11 = sub_1890D7064(view, v6, v8);
 
   return v11;
 }
 
-- (void)tabBarContainerWillChangeFloatingTabBarVisibility:(id)a3
+- (void)tabBarContainerWillChangeFloatingTabBarVisibility:(id)visibility
 {
   if (!*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit44_UINavigationBarVisualProviderModernIOSSwift_transitionContext))
   {
-    v5 = self;
-    v4 = [(_UINavigationBarVisualProvider *)v5 navigationBar];
-    [(UINavigationBar *)v4 setNeedsLayout];
+    selfCopy = self;
+    navigationBar = [(_UINavigationBarVisualProvider *)selfCopy navigationBar];
+    [(UINavigationBar *)navigationBar setNeedsLayout];
   }
 }
 
-- (void)tabBarContainerDidLayoutFloatingTabBar:(id)a3
+- (void)tabBarContainerDidLayoutFloatingTabBar:(id)bar
 {
-  v4 = a3;
-  v5 = self;
+  barCopy = bar;
+  selfCopy = self;
   sub_1890D8BE0();
 }
 
-- (void)navigationControllerRefreshControlHostDidUpdateLayout:(id)a3
+- (void)navigationControllerRefreshControlHostDidUpdateLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   sub_1890D8CCC();
 }
 
-- (id)barCustomizer:(id)a3 containerViewForSession:(id)a4
+- (id)barCustomizer:(id)customizer containerViewForSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  customizerCopy = customizer;
+  sessionCopy = session;
+  selfCopy = self;
   v9 = sub_1890D8F70();
 
   return v9;
 }
 
-- (CGRect)barCustomizer:(id)a3 overflowControlBoundsForSession:(id)a4
+- (CGRect)barCustomizer:(id)customizer overflowControlBoundsForSession:(id)session
 {
-  v4 = sub_1890D7694(self, a2, a3, a4, sub_1890D9200);
+  v4 = sub_1890D7694(self, a2, customizer, session, sub_1890D9200);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1113,9 +1113,9 @@
   return result;
 }
 
-- (CGRect)barCustomizer:(id)a3 customizationAreaBoundsForSession:(id)a4
+- (CGRect)barCustomizer:(id)customizer customizationAreaBoundsForSession:(id)session
 {
-  v4 = sub_1890D7694(self, a2, a3, a4, sub_1890D9324);
+  v4 = sub_1890D7694(self, a2, customizer, session, sub_1890D9324);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1123,77 +1123,77 @@
   return result;
 }
 
-- (void)barCustomizer:(id)a3 willEndSession:(id)a4 didReset:(BOOL)a5
+- (void)barCustomizer:(id)customizer willEndSession:(id)session didReset:(BOOL)reset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_1890D94C8(v9, a5);
+  customizerCopy = customizer;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1890D94C8(sessionCopy, reset);
 }
 
-- (id)titleRenamer:(id)a3 session:(id)a4 willBeginRenamingWithTitle:(id)a5 selectedRange:(_NSRange *)a6
+- (id)titleRenamer:(id)renamer session:(id)session willBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range
 {
   v10 = sub_18A4A7288();
   v12 = v11;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_1890DA218(v14, v10, v12, a6);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1890DA218(sessionCopy, v10, v12, range);
 
   v16 = sub_18A4A7258();
 
   return v16;
 }
 
-- (BOOL)titleRenamer:(id)a3 session:(id)a4 shouldEndRenamingWithTitle:(id)a5
+- (BOOL)titleRenamer:(id)renamer session:(id)session shouldEndRenamingWithTitle:(id)title
 {
   sub_18A4A7288();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  LOBYTE(self) = sub_1890DA2E8(v9);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  selfCopy = self;
+  LOBYTE(self) = sub_1890DA2E8(sessionCopy);
 
   return self & 1;
 }
 
-- (void)titleRenamer:(id)a3 session:(id)a4 didEndRenamingWithTitle:(id)a5
+- (void)titleRenamer:(id)renamer session:(id)session didEndRenamingWithTitle:(id)title
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1890DA37C(v8);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1890DA37C(sessionCopy);
 }
 
-- (void)titleRenamer:(id)a3 didCancelSession:(id)a4
+- (void)titleRenamer:(id)renamer didCancelSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1890DA53C(v7);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1890DA53C(sessionCopy);
 }
 
-- (void)titleRenamer:(id)a3 session:(id)a4 fileRenameDidEnd:(id)a5
+- (void)titleRenamer:(id)renamer session:(id)session fileRenameDidEnd:(id)end
 {
   v8 = sub_18A4A28E8();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A28D8();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_1890DA7CC(v13);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1890DA7CC(sessionCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)titleRenamer:(id)a3 session:(id)a4 fileRenameDidFail:(id)a5
+- (void)titleRenamer:(id)renamer session:(id)session fileRenameDidFail:(id)fail
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_1890DA970(v9);
+  renamerCopy = renamer;
+  sessionCopy = session;
+  failCopy = fail;
+  selfCopy = self;
+  sub_1890DA970(sessionCopy);
 }
 
 @end

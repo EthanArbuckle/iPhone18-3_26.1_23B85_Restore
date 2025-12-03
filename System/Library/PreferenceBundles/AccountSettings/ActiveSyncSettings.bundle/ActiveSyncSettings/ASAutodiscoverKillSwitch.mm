@@ -1,13 +1,13 @@
 @interface ASAutodiscoverKillSwitch
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)sendRequestForRedirectWithCompletionHandler:(id)a3;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)sendRequestForRedirectWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASAutodiscoverKillSwitch
 
-- (void)sendRequestForRedirectWithCompletionHandler:(id)a3
+- (void)sendRequestForRedirectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSURL URLWithString:@"https://newaccountredirectdomain.apple.com/outlook.office365.com/autodiscover/autodiscover_v2.json"];
   v6 = [NSMutableURLRequest requestWithURL:v5];
 
@@ -16,15 +16,15 @@
   v8 = [NSURLSession sessionWithConfiguration:v7 delegate:self delegateQueue:0];
   [(ASAutodiscoverKillSwitch *)self setAutoDV2RedirectSession:v8];
 
-  v9 = [(ASAutodiscoverKillSwitch *)self autoDV2RedirectSession];
+  autoDV2RedirectSession = [(ASAutodiscoverKillSwitch *)self autoDV2RedirectSession];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_DBFC;
   v15[3] = &unk_30910;
   v15[4] = self;
-  v16 = v4;
-  v10 = v4;
-  v11 = [v9 dataTaskWithRequest:v6 completionHandler:v15];
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [autoDV2RedirectSession dataTaskWithRequest:v6 completionHandler:v15];
 
   v12 = DALoggingwithCategory();
   v13 = _CPLog_to_os_log_type[6];
@@ -37,13 +37,13 @@
   [v11 resume];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a7;
-  v11 = v9;
+  requestCopy = request;
+  handlerCopy = handler;
+  v11 = requestCopy;
   v12 = v11;
-  if (a5)
+  if (redirection)
   {
     v13 = DALoggingwithCategory();
     v14 = _CPLog_to_os_log_type[6];
@@ -56,7 +56,7 @@
     v12 = 0;
   }
 
-  v10[2](v10, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
 @end

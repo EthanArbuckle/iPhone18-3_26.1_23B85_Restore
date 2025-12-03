@@ -1,34 +1,34 @@
 @interface SYIncomingSyncAllObjectsSession
-- (SYIncomingSyncAllObjectsSession)initWithService:(id)a3 message:(id)a4 completion:(id)a5;
+- (SYIncomingSyncAllObjectsSession)initWithService:(id)service message:(id)message completion:(id)completion;
 - (void)_continueProcessing;
-- (void)_sendEndSessionResponse:(id)a3;
+- (void)_sendEndSessionResponse:(id)response;
 @end
 
 @implementation SYIncomingSyncAllObjectsSession
 
-- (SYIncomingSyncAllObjectsSession)initWithService:(id)a3 message:(id)a4 completion:(id)a5
+- (SYIncomingSyncAllObjectsSession)initWithService:(id)service message:(id)message completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = SYIncomingSyncAllObjectsSession;
-  v10 = [(SYIncomingFullSyncSession *)&v19 initWithService:a3];
+  v10 = [(SYIncomingFullSyncSession *)&v19 initWithService:service];
   if (v10)
   {
-    v11 = [v8 allObjects];
+    allObjects = [messageCopy allObjects];
     allObjectsAsData = v10->_allObjectsAsData;
-    v10->_allObjectsAsData = v11;
+    v10->_allObjectsAsData = allObjects;
 
-    v13 = [v9 copy];
+    v13 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v13;
 
-    v15 = [v8 header];
-    [v15 timestamp];
+    header = [messageCopy header];
+    [header timestamp];
     [(SYSession *)v10 setBirthDate:?];
 
-    v16 = [v8 syncID];
-    [(SYSession *)v10 setIdentifier:v16];
+    syncID = [messageCopy syncID];
+    [(SYSession *)v10 setIdentifier:syncID];
 
     v17 = v10;
   }
@@ -36,18 +36,18 @@
   return v10;
 }
 
-- (void)_sendEndSessionResponse:(id)a3
+- (void)_sendEndSessionResponse:(id)response
 {
   completion = self->_completion;
-  v5 = a3;
-  v6 = [(SYSession *)self wrappedUserContext];
-  completion[2](completion, v5, v6);
+  responseCopy = response;
+  wrappedUserContext = [(SYSession *)self wrappedUserContext];
+  completion[2](completion, responseCopy, wrappedUserContext);
 }
 
 - (void)_continueProcessing
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_fault_impl(&dword_1DF835000, log, OS_LOG_TYPE_FAULT, "Unable to create an _SYLazyChangeArray object for %{public}@", buf, 0xCu);
 }
 

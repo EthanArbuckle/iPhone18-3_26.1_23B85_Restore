@@ -8,7 +8,7 @@
 {
   v16.receiver = self;
   v16.super_class = UITableViewCellAccessibility__MediaPlayer__UIKit;
-  v2 = [(UITableViewCellAccessibility__MediaPlayer__UIKit *)&v16 accessibilityTraits];
+  accessibilityTraits = [(UITableViewCellAccessibility__MediaPlayer__UIKit *)&v16 accessibilityTraits];
   v15 = 0;
   objc_opt_class();
   v9 = 0;
@@ -28,10 +28,10 @@
     abort();
   }
 
-  v5 = [v4 image];
-  v6 = [v5 accessibilityIdentifier];
+  image = [v4 image];
+  accessibilityIdentifier = [image accessibilityIdentifier];
 
-  if ([v6 hasPrefix:@"AlternateTrackCheckmark"])
+  if ([accessibilityIdentifier hasPrefix:@"AlternateTrackCheckmark"])
   {
     v7 = *MEMORY[0x29EDC7FC0];
   }
@@ -41,7 +41,7 @@
     v7 = 0;
   }
 
-  return v7 | v2;
+  return v7 | accessibilityTraits;
 }
 
 @end

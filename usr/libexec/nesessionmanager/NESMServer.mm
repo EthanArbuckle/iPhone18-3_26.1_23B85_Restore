@@ -1,23 +1,23 @@
 @interface NESMServer
 - (BOOL)canSleep;
 - (BOOL)handleSleep;
-- (BOOL)requestInstallForSession:(id)a3 withParentSession:(id)a4 exclusive:(BOOL)a5;
+- (BOOL)requestInstallForSession:(id)session withParentSession:(id)parentSession exclusive:(BOOL)exclusive;
 - (void)dealloc;
-- (void)deregisterSession:(id)a3;
-- (void)handleSleepTime:(double)a3;
+- (void)deregisterSession:(id)session;
+- (void)handleSleepTime:(double)time;
 - (void)handleWakeup;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerSession:(id)a3 withCompletionHandler:(id)a4;
-- (void)requestUninstallForSession:(id)a3;
-- (void)satisfyCellularPathForSession:(id)a3;
-- (void)satisfyPathForSession:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerSession:(id)session withCompletionHandler:(id)handler;
+- (void)requestUninstallForSession:(id)session;
+- (void)satisfyCellularPathForSession:(id)session;
+- (void)satisfyPathForSession:(id)session;
 @end
 
 @implementation NESMServer
 
 - (void)handleWakeup
 {
-  v2 = self;
+  selfCopy = self;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -48,9 +48,9 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        if (v2)
+        if (selfCopy)
         {
-          Property = objc_getProperty(v2, v4, 120, 1);
+          Property = objc_getProperty(selfCopy, v4, 120, 1);
         }
 
         else
@@ -75,9 +75,9 @@
               }
 
               v15 = *(*(&v23 + 1) + 8 * v14);
-              if (v2)
+              if (selfCopy)
               {
-                v16 = objc_getProperty(v2, v11, 120, 1);
+                v16 = objc_getProperty(selfCopy, v11, 120, 1);
               }
 
               else
@@ -112,31 +112,31 @@
   }
 }
 
-- (void)requestUninstallForSession:(id)a3
+- (void)requestUninstallForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
-    v45 = v4;
+    v45 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Request to uninstall session: %@", buf, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(NESMServer *)v4 type]== 1)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if ([(NESMServer *)sessionCopy type]== 1)
   {
-    v7 = [(NESMServer *)v4 configuration];
-    v8 = [v7 grade] == 1;
+    configuration = [(NESMServer *)sessionCopy configuration];
+    v8 = [configuration grade] == 1;
 
     if (v8)
     {
-      if (v6)
+      if (selfCopy2)
       {
-        Property = objc_getProperty(v6, v9, 192, 1);
+        Property = objc_getProperty(selfCopy2, v9, 192, 1);
       }
 
       else
@@ -144,25 +144,25 @@
         Property = 0;
       }
 
-      if (Property == v4 || [(NESMServer *)v4 isDeregisteredEnterpriseVPNSession])
+      if (Property == sessionCopy || [(NESMServer *)sessionCopy isDeregisteredEnterpriseVPNSession])
       {
-        if (v6)
+        if (selfCopy2)
         {
-          v6->_enterpriseVPNSessionInstallState = 1;
+          selfCopy2->_enterpriseVPNSessionInstallState = 1;
         }
 
-        [(NESMServer *)v4 setIsDeregisteredEnterpriseVPNSession:0];
-        if (v6)
+        [(NESMServer *)sessionCopy setIsDeregisteredEnterpriseVPNSession:0];
+        if (selfCopy2)
         {
-          v12 = objc_getProperty(v6, v11, 208, 1);
+          v12 = objc_getProperty(selfCopy2, v11, 208, 1);
           if (v12)
           {
-            v13 = v6->_personalVPNSessionInstallState == 2;
+            v13 = selfCopy2->_personalVPNSessionInstallState == 2;
 
             if (v13)
             {
-              v6->_personalVPNSessionInstallState = 3;
-              v15 = objc_getProperty(v6, v14, 208, 1);
+              selfCopy2->_personalVPNSessionInstallState = 3;
+              v15 = objc_getProperty(selfCopy2, v14, 208, 1);
               if (v15)
               {
                 v16 = v15;
@@ -170,7 +170,7 @@
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v43 = v6;
+                  selfCopy = selfCopy2;
                   v44 = 2112;
                   v45 = v16;
                   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: Installing personal session because enterprise session is being uninstalled: %@", buf, 0x16u);
@@ -180,7 +180,7 @@
                 v40[1] = 3221225472;
                 v40[2] = sub_10004FAE4;
                 v40[3] = &unk_1000EB1C0;
-                v41 = v4;
+                v41 = sessionCopy;
                 [(NESMServer *)v16 installWithCompletionHandler:v40];
 
                 goto LABEL_36;
@@ -193,14 +193,14 @@
 
     else
     {
-      v36 = [(NESMServer *)v4 configuration];
-      if ([v36 grade] == 2 && v6)
+      configuration2 = [(NESMServer *)sessionCopy configuration];
+      if ([configuration2 grade] == 2 && selfCopy2)
       {
-        v38 = objc_getProperty(v6, v37, 208, 1) == v4;
+        v38 = objc_getProperty(selfCopy2, v37, 208, 1) == sessionCopy;
 
         if (v38)
         {
-          v6->_personalVPNSessionInstallState = 1;
+          selfCopy2->_personalVPNSessionInstallState = 1;
         }
       }
 
@@ -210,48 +210,48 @@
     }
   }
 
-  else if ([(NESMServer *)v4 type]== 6)
+  else if ([(NESMServer *)sessionCopy type]== 6)
   {
-    if (v6)
+    if (selfCopy2)
     {
-      v6->_dnsProxySessionInstallState = 1;
+      selfCopy2->_dnsProxySessionInstallState = 1;
     }
   }
 
-  else if ([(NESMServer *)v4 type]== 8)
+  else if ([(NESMServer *)sessionCopy type]== 8)
   {
     v18 = ne_log_obj();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(NESMServer *)v4 configuration];
-      v20 = [v19 appPush];
-      v21 = [v20 pluginType];
+      configuration3 = [(NESMServer *)sessionCopy configuration];
+      appPush = [configuration3 appPush];
+      pluginType = [appPush pluginType];
       *buf = 138412546;
-      v43 = v6;
+      selfCopy = selfCopy2;
       v44 = 2112;
-      v45 = v21;
+      v45 = pluginType;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: Received request to uninstall session for plugin type [%@]", buf, 0x16u);
     }
 
-    if (v6)
+    if (selfCopy2)
     {
-      v23 = objc_getProperty(v6, v22, 344, 1);
+      v23 = objc_getProperty(selfCopy2, v22, 344, 1);
       if (v23)
       {
         v25 = v23;
-        v26 = objc_getProperty(v6, v24, 344, 1);
-        v27 = [(NESMServer *)v4 configuration];
-        v28 = [v27 appPush];
-        v29 = [v28 pluginType];
-        v30 = [v26 containsObject:v29];
+        v26 = objc_getProperty(selfCopy2, v24, 344, 1);
+        configuration4 = [(NESMServer *)sessionCopy configuration];
+        appPush2 = [configuration4 appPush];
+        pluginType2 = [appPush2 pluginType];
+        v30 = [v26 containsObject:pluginType2];
 
         if (v30)
         {
-          v32 = objc_getProperty(v6, v31, 344, 1);
-          v33 = [(NESMServer *)v4 configuration];
-          v34 = [v33 appPush];
-          v35 = [v34 pluginType];
-          [v32 removeObject:v35];
+          v32 = objc_getProperty(selfCopy2, v31, 344, 1);
+          configuration5 = [(NESMServer *)sessionCopy configuration];
+          appPush3 = [configuration5 appPush];
+          pluginType3 = [appPush3 pluginType];
+          [v32 removeObject:pluginType3];
         }
       }
     }
@@ -261,55 +261,55 @@
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v4;
+    selfCopy = sessionCopy;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%@: uninstalling session", buf, 0xCu);
   }
 
-  [(NESMServer *)v4 uninstallOnQueue];
+  [(NESMServer *)sessionCopy uninstallOnQueue];
 LABEL_36:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
 }
 
-- (BOOL)requestInstallForSession:(id)a3 withParentSession:(id)a4 exclusive:(BOOL)a5
+- (BOOL)requestInstallForSession:(id)session withParentSession:(id)parentSession exclusive:(BOOL)exclusive
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  exclusiveCopy = exclusive;
+  sessionCopy = session;
+  parentSessionCopy = parentSession;
   v10 = ne_log_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = &stru_1000EBA68;
     *buf = 138412802;
-    v77 = self;
+    selfCopy = self;
     v78 = 2112;
-    if (v5)
+    if (exclusiveCopy)
     {
       v11 = @"(exclusive)";
     }
 
-    v79 = v8;
+    v79 = sessionCopy;
     v80 = 2112;
     v81 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: Request to install session: %@ %@", buf, 0x20u);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if (v9)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (parentSessionCopy)
   {
     v14 = 0;
-    if ([v9 type] != 3 || !v12)
+    if ([parentSessionCopy type] != 3 || !selfCopy2)
     {
       goto LABEL_10;
     }
 
-    if (objc_getProperty(v12, v13, 176, 1) != v9)
+    if (objc_getProperty(selfCopy2, v13, 176, 1) != parentSessionCopy)
     {
       goto LABEL_9;
     }
 
     v20 = 0;
-    v12->_alwaysOnVPNSessionInstallState = 3;
+    selfCopy2->_alwaysOnVPNSessionInstallState = 3;
 LABEL_47:
     v74[0] = _NSConcreteStackBlock;
     v74[1] = 3221225472;
@@ -317,25 +317,25 @@ LABEL_47:
     v74[3] = &unk_1000EB1C0;
     v41 = v20;
     v75 = v41;
-    [v8 installWithCompletionHandler:v74];
+    [sessionCopy installWithCompletionHandler:v74];
 
     v16 = 1;
     goto LABEL_48;
   }
 
-  if ([v8 type] == 4)
+  if ([sessionCopy type] == 4)
   {
-    v17 = [v8 configuration];
-    v18 = [v17 externalIdentifier];
-    if (v18)
+    configuration = [sessionCopy configuration];
+    externalIdentifier = [configuration externalIdentifier];
+    if (externalIdentifier)
     {
 
       goto LABEL_46;
     }
 
-    if (v12)
+    if (selfCopy2)
     {
-      Property = objc_getProperty(v12, v19, 224, 1);
+      Property = objc_getProperty(selfCopy2, v19, 224, 1);
     }
 
     else
@@ -343,7 +343,7 @@ LABEL_47:
       Property = 0;
     }
 
-    v22 = Property == v8;
+    v22 = Property == sessionCopy;
 
     if (v22)
     {
@@ -351,44 +351,44 @@ LABEL_47:
     }
   }
 
-  if ([v8 type] == 10)
+  if ([sessionCopy type] == 10)
   {
-    v24 = v12 ? objc_getProperty(v12, v23, 240, 1) : 0;
-    if (v24 == v8)
+    v24 = selfCopy2 ? objc_getProperty(selfCopy2, v23, 240, 1) : 0;
+    if (v24 == sessionCopy)
     {
       goto LABEL_46;
     }
   }
 
-  if ([v8 type] != 1)
+  if ([sessionCopy type] != 1)
   {
-    if ([v8 type] == 2 || objc_msgSend(v8, "type") == 5)
+    if ([sessionCopy type] == 2 || objc_msgSend(sessionCopy, "type") == 5)
     {
       goto LABEL_46;
     }
 
-    if ([v8 type] == 6)
+    if ([sessionCopy type] == 6)
     {
-      if (v12)
+      if (selfCopy2)
       {
         v20 = 0;
-        v12->_dnsProxySessionInstallState = 3;
+        selfCopy2->_dnsProxySessionInstallState = 3;
         goto LABEL_47;
       }
 
       goto LABEL_46;
     }
 
-    if ([v8 type] == 7)
+    if ([sessionCopy type] == 7)
     {
 LABEL_46:
       v20 = 0;
       goto LABEL_47;
     }
 
-    if ([v8 type] != 8)
+    if ([sessionCopy type] != 8)
     {
-      if ([v8 type] == 9 || objc_msgSend(v8, "type") == 11 || objc_msgSend(v8, "type") == 12)
+      if ([sessionCopy type] == 9 || objc_msgSend(sessionCopy, "type") == 11 || objc_msgSend(sessionCopy, "type") == 12)
       {
         goto LABEL_46;
       }
@@ -399,37 +399,37 @@ LABEL_46:
     v53 = ne_log_obj();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v8 configuration];
-      v55 = [v54 appPush];
-      v56 = [v55 pluginType];
+      configuration2 = [sessionCopy configuration];
+      appPush = [configuration2 appPush];
+      pluginType = [appPush pluginType];
       *buf = 138412546;
-      v77 = v12;
+      selfCopy = selfCopy2;
       v78 = 2112;
-      v79 = v56;
+      v79 = pluginType;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%@ Received request to install for NESessionTypeAppPush session type, plugin type [%@]", buf, 0x16u);
     }
 
-    if (!v12 || !objc_getProperty(v12, v57, 344, 1))
+    if (!selfCopy2 || !objc_getProperty(selfCopy2, v57, 344, 1))
     {
       v59 = [[NSMutableArray alloc] initWithCapacity:0];
       v61 = v59;
-      if (!v12)
+      if (!selfCopy2)
       {
 
         v62 = 0;
         goto LABEL_76;
       }
 
-      objc_setProperty_atomic(v12, v60, v59, 344);
+      objc_setProperty_atomic(selfCopy2, v60, v59, 344);
     }
 
-    v62 = objc_getProperty(v12, v58, 344, 1);
+    v62 = objc_getProperty(selfCopy2, v58, 344, 1);
 LABEL_76:
     v63 = v62;
-    v64 = [v8 configuration];
-    v65 = [v64 appPush];
-    v66 = [v65 pluginType];
-    v67 = [v63 containsObject:v66];
+    configuration3 = [sessionCopy configuration];
+    appPush2 = [configuration3 appPush];
+    pluginType2 = [appPush2 pluginType];
+    v67 = [v63 containsObject:pluginType2];
 
     if (v67)
     {
@@ -437,9 +437,9 @@ LABEL_76:
       goto LABEL_10;
     }
 
-    if (v12)
+    if (selfCopy2)
     {
-      v69 = objc_getProperty(v12, v68, 344, 1);
+      v69 = objc_getProperty(selfCopy2, v68, 344, 1);
     }
 
     else
@@ -448,33 +448,33 @@ LABEL_76:
     }
 
     v70 = v69;
-    v71 = [v8 configuration];
-    v72 = [v71 appPush];
-    v73 = [v72 pluginType];
-    [v70 addObject:v73];
+    configuration4 = [sessionCopy configuration];
+    appPush3 = [configuration4 appPush];
+    pluginType3 = [appPush3 pluginType];
+    [v70 addObject:pluginType3];
 
     goto LABEL_46;
   }
 
-  v25 = [v8 configuration];
-  v26 = [v25 VPN];
-  v27 = [v26 protocol];
-  v28 = [v27 includeAllNetworks];
+  configuration5 = [sessionCopy configuration];
+  v26 = [configuration5 VPN];
+  protocol = [v26 protocol];
+  includeAllNetworks = [protocol includeAllNetworks];
 
-  v29 = [v8 configuration];
-  LODWORD(v27) = [v29 grade] == 1;
+  configuration6 = [sessionCopy configuration];
+  LODWORD(protocol) = [configuration6 grade] == 1;
 
-  v30 = v28 | v5;
-  if (!v27)
+  v30 = includeAllNetworks | exclusiveCopy;
+  if (!protocol)
   {
-    v43 = [v8 configuration];
-    v44 = [v43 grade];
-    v14 = v44 == 2;
-    if (v44 == 2)
+    configuration7 = [sessionCopy configuration];
+    grade = [configuration7 grade];
+    v14 = grade == 2;
+    if (grade == 2)
     {
-      if (v12)
+      if (selfCopy2)
       {
-        v46 = objc_getProperty(v12, v45, 208, 1);
+        v46 = objc_getProperty(selfCopy2, v45, 208, 1);
       }
 
       else
@@ -482,7 +482,7 @@ LABEL_76:
         v46 = 0;
       }
 
-      v47 = v46 == v8;
+      v47 = v46 == sessionCopy;
 
       if (!v47)
       {
@@ -501,10 +501,10 @@ LABEL_76:
 
         *buf = 138413058;
         v78 = 2112;
-        v77 = v12;
-        v79 = v8;
+        selfCopy = selfCopy2;
+        v79 = sessionCopy;
         v80 = 2080;
-        if (v28)
+        if (includeAllNetworks)
         {
           v49 = " IncludeAllNetworks";
         }
@@ -515,30 +515,30 @@ LABEL_76:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "%@: Request to install Session %@ is Personal -%s%s", buf, 0x2Au);
       }
 
-      if (!v12)
+      if (!selfCopy2)
       {
         goto LABEL_46;
       }
 
-      if (v12->_enterpriseVPNSessionInstallState != 4)
+      if (selfCopy2->_enterpriseVPNSessionInstallState != 4)
       {
         v20 = 0;
-        v12->_personalVPNSessionInstallState = 3;
+        selfCopy2->_personalVPNSessionInstallState = 3;
         goto LABEL_47;
       }
 
-      v12->_personalVPNSessionInstallState = 2;
-      v43 = ne_log_obj();
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+      selfCopy2->_personalVPNSessionInstallState = 2;
+      configuration7 = ne_log_obj();
+      if (os_log_type_enabled(configuration7, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = objc_getProperty(v12, v51, 192, 1);
+        v52 = objc_getProperty(selfCopy2, v51, 192, 1);
         *buf = 138412802;
-        v77 = v12;
+        selfCopy = selfCopy2;
         v78 = 2112;
-        v79 = v8;
+        v79 = sessionCopy;
         v80 = 2112;
         v81 = v52;
-        _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%@: Request to install personal session (%@) delayed due to exclusive enterprise session (%@)", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, configuration7, OS_LOG_TYPE_DEFAULT, "%@: Request to install personal session (%@) delayed due to exclusive enterprise session (%@)", buf, 0x20u);
       }
     }
 
@@ -557,10 +557,10 @@ LABEL_76:
 
     *buf = 138413058;
     v78 = 2112;
-    v77 = v12;
-    v79 = v8;
+    selfCopy = selfCopy2;
+    v79 = sessionCopy;
     v80 = 2080;
-    if (v28)
+    if (includeAllNetworks)
     {
       v32 = " IncludeAllNetworks";
     }
@@ -571,9 +571,9 @@ LABEL_76:
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%@: Request to install Session %@ is Enterprise -%s%s", buf, 0x2Au);
   }
 
-  if (v12)
+  if (selfCopy2)
   {
-    v35 = objc_getProperty(v12, v34, 192, 1);
+    v35 = objc_getProperty(selfCopy2, v34, 192, 1);
   }
 
   else
@@ -581,47 +581,47 @@ LABEL_76:
     v35 = 0;
   }
 
-  if (v35 == v8)
+  if (v35 == sessionCopy)
   {
     if (v30)
     {
-      if (v12)
+      if (selfCopy2)
       {
-        v12->_enterpriseVPNSessionInstallState = 4;
-        v20 = objc_getProperty(v12, v34, 208, 1);
+        selfCopy2->_enterpriseVPNSessionInstallState = 4;
+        v20 = objc_getProperty(selfCopy2, v34, 208, 1);
         if (!v20)
         {
           goto LABEL_47;
         }
 
-        v36 = v12->_personalVPNSessionInstallState == 3;
+        v36 = selfCopy2->_personalVPNSessionInstallState == 3;
 
         if (v36)
         {
-          v12->_personalVPNSessionInstallState = 2;
+          selfCopy2->_personalVPNSessionInstallState = 2;
           v37 = ne_log_obj();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = objc_getProperty(v12, v38, 208, 1);
+            v39 = objc_getProperty(selfCopy2, v38, 208, 1);
             *buf = 138412802;
-            v77 = v12;
+            selfCopy = selfCopy2;
             v78 = 2112;
             v79 = v39;
             v80 = 2112;
-            v81 = v8;
+            v81 = sessionCopy;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@: Personal session %@ superceded by exclusive enterprise session %@, will uninstall personal session", buf, 0x20u);
           }
 
-          v20 = objc_getProperty(v12, v40, 208, 1);
+          v20 = objc_getProperty(selfCopy2, v40, 208, 1);
           goto LABEL_47;
         }
       }
     }
 
-    else if (v12)
+    else if (selfCopy2)
     {
       v20 = 0;
-      v12->_enterpriseVPNSessionInstallState = 3;
+      selfCopy2->_enterpriseVPNSessionInstallState = 3;
       goto LABEL_47;
     }
 
@@ -635,46 +635,46 @@ LABEL_10:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v77 = v12;
+    selfCopy = selfCopy2;
     v78 = 2112;
-    v79 = v8;
+    v79 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: Request to install session is superceded by registered sessions: %@", buf, 0x16u);
   }
 
   if (v14)
   {
-    [v8 installPendedOnQueue];
+    [sessionCopy installPendedOnQueue];
   }
 
   v16 = 0;
 LABEL_48:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy2);
 
   return v16;
 }
 
-- (void)deregisterSession:(id)a3
+- (void)deregisterSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 type] != 3)
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([sessionCopy type] != 3)
   {
-    if ([v4 type] == 4)
+    if ([sessionCopy type] == 4)
     {
-      if (v5)
+      if (selfCopy)
       {
-        if (objc_getProperty(v5, v10, 224, 1) != v4)
+        if (objc_getProperty(selfCopy, v10, 224, 1) != sessionCopy)
         {
           goto LABEL_14;
         }
 
-        objc_setProperty_atomic(v5, v11, 0, 224);
+        objc_setProperty_atomic(selfCopy, v11, 0, 224);
       }
 
-      else if (v4)
+      else if (sessionCopy)
       {
-        v26 = v4;
+        v26 = sessionCopy;
         goto LABEL_15;
       }
 
@@ -682,21 +682,21 @@ LABEL_48:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v27 = 138412546;
-        v28 = v5;
+        v28 = selfCopy;
         v29 = 2112;
-        v30 = v4;
+        v30 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: Deregister Filter Session: %@", &v27, 0x16u);
       }
 
 LABEL_14:
-      if (!v4)
+      if (!sessionCopy)
       {
         v8 = 0;
         goto LABEL_30;
       }
 
 LABEL_15:
-      v8 = v4;
+      v8 = sessionCopy;
       objc_sync_enter(v8);
       if (HIDWORD(v8[44].isa))
       {
@@ -722,13 +722,13 @@ LABEL_15:
       goto LABEL_30;
     }
 
-    if ([v4 type] != 10)
+    if ([sessionCopy type] != 10)
     {
-      if ([v4 type] != 1)
+      if ([sessionCopy type] != 1)
       {
-        if ([v4 type] == 2)
+        if ([sessionCopy type] == 2)
         {
-          [v4 setIsDeregisteredAppVPNSession:1];
+          [sessionCopy setIsDeregisteredAppVPNSession:1];
           v8 = ne_log_obj();
           if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
@@ -736,13 +736,13 @@ LABEL_15:
           }
 
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           v9 = "%@: Deregister App VPN Session: %@";
         }
 
-        else if ([v4 type] == 5)
+        else if ([sessionCopy type] == 5)
         {
           v8 = ne_log_obj();
           if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -751,25 +751,25 @@ LABEL_15:
           }
 
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           v9 = "%@: Deregister Path Controller Session: %@";
         }
 
-        else if ([v4 type] == 6)
+        else if ([sessionCopy type] == 6)
         {
-          if (v5)
+          if (selfCopy)
           {
-            if (objc_getProperty(v5, v24, 232, 1) != v4)
+            if (objc_getProperty(selfCopy, v24, 232, 1) != sessionCopy)
             {
               goto LABEL_31;
             }
 
-            objc_setProperty_atomic(v5, v25, 0, 232);
+            objc_setProperty_atomic(selfCopy, v25, 0, 232);
           }
 
-          else if (v4)
+          else if (sessionCopy)
           {
             goto LABEL_31;
           }
@@ -781,13 +781,13 @@ LABEL_15:
           }
 
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           v9 = "%@: Deregister DNS Proxy Session: %@";
         }
 
-        else if ([v4 type] == 7)
+        else if ([sessionCopy type] == 7)
         {
           v8 = ne_log_obj();
           if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -796,15 +796,15 @@ LABEL_15:
           }
 
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           v9 = "%@: Deregister DNS Settings Session: %@";
         }
 
         else
         {
-          if ([v4 type] != 9)
+          if ([sessionCopy type] != 9)
           {
             goto LABEL_31;
           }
@@ -816,60 +816,60 @@ LABEL_15:
           }
 
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           v9 = "%@: Deregister Relay Session: %@";
         }
 
         goto LABEL_29;
       }
 
-      v19 = [v4 configuration];
-      v20 = [v19 grade];
+      configuration = [sessionCopy configuration];
+      grade = [configuration grade];
 
-      if (v20 == 1)
+      if (grade == 1)
       {
-        if (v5)
+        if (selfCopy)
         {
-          if (objc_getProperty(v5, v21, 192, 1) != v4)
+          if (objc_getProperty(selfCopy, v21, 192, 1) != sessionCopy)
           {
             goto LABEL_31;
           }
 
-          objc_setProperty_atomic(v5, v22, 0, 192);
+          objc_setProperty_atomic(selfCopy, v22, 0, 192);
         }
 
-        else if (v4)
+        else if (sessionCopy)
         {
           goto LABEL_31;
         }
 
-        [v4 setIsDeregisteredEnterpriseVPNSession:1];
+        [sessionCopy setIsDeregisteredEnterpriseVPNSession:1];
         v8 = ne_log_obj();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
           v27 = 138412546;
-          v28 = v5;
+          v28 = selfCopy;
           v29 = 2112;
-          v30 = v4;
+          v30 = sessionCopy;
           _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@: Deregister Enterprise VPN Session: %@", &v27, 0x16u);
         }
 
         goto LABEL_30;
       }
 
-      if (v5)
+      if (selfCopy)
       {
-        if (objc_getProperty(v5, v21, 208, 1) != v4)
+        if (objc_getProperty(selfCopy, v21, 208, 1) != sessionCopy)
         {
           goto LABEL_31;
         }
 
-        objc_setProperty_atomic(v5, v23, 0, 208);
+        objc_setProperty_atomic(selfCopy, v23, 0, 208);
       }
 
-      else if (v4)
+      else if (sessionCopy)
       {
         goto LABEL_31;
       }
@@ -878,9 +878,9 @@ LABEL_15:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v27 = 138412546;
-        v28 = v5;
+        v28 = selfCopy;
         v29 = 2112;
-        v30 = v4;
+        v30 = sessionCopy;
         v9 = "%@: Deregister Personal VPN Session: %@";
         goto LABEL_29;
       }
@@ -888,17 +888,17 @@ LABEL_15:
       goto LABEL_30;
     }
 
-    if (v5)
+    if (selfCopy)
     {
-      if (objc_getProperty(v5, v16, 240, 1) != v4)
+      if (objc_getProperty(selfCopy, v16, 240, 1) != sessionCopy)
       {
         goto LABEL_27;
       }
 
-      objc_setProperty_atomic(v5, v17, 0, 240);
+      objc_setProperty_atomic(selfCopy, v17, 0, 240);
     }
 
-    else if (v4)
+    else if (sessionCopy)
     {
       goto LABEL_27;
     }
@@ -907,9 +907,9 @@ LABEL_15:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138412546;
-      v28 = v5;
+      v28 = selfCopy;
       v29 = 2112;
-      v30 = v4;
+      v30 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: Deregister URL Filter Session: %@", &v27, 0x16u);
     }
 
@@ -918,9 +918,9 @@ LABEL_27:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138412546;
-      v28 = v5;
+      v28 = selfCopy;
       v29 = 2112;
-      v30 = v4;
+      v30 = sessionCopy;
       v9 = "%@: Deregister URL Filter Session: %@";
       goto LABEL_29;
     }
@@ -930,9 +930,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v5)
+  if (!selfCopy)
   {
-    if (v4)
+    if (sessionCopy)
     {
       goto LABEL_31;
     }
@@ -942,9 +942,9 @@ LABEL_5:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138412546;
-      v28 = v5;
+      v28 = selfCopy;
       v29 = 2112;
-      v30 = v4;
+      v30 = sessionCopy;
       v9 = "%@: Deregister Always-On VPN Session: %@";
 LABEL_29:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v27, 0x16u);
@@ -954,34 +954,34 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (objc_getProperty(v5, v6, 176, 1) == v4)
+  if (objc_getProperty(selfCopy, v6, 176, 1) == sessionCopy)
   {
-    objc_setProperty_atomic(v5, v7, 0, 176);
+    objc_setProperty_atomic(selfCopy, v7, 0, 176);
     goto LABEL_5;
   }
 
 LABEL_31:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerSession:(id)a3 withCompletionHandler:(id)a4
+- (void)registerSession:(id)session withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Registering session %@", buf, 0xCu);
   }
 
-  v9 = [v6 configuration];
-  v10 = [v9 identifier];
+  configuration = [sessionCopy configuration];
+  identifier = [configuration identifier];
 
   v11 = +[NEConfigurationManager sharedManagerForAllUsers];
-  v12 = [v6 configuration];
-  v14 = [v12 identifier];
+  configuration2 = [sessionCopy configuration];
+  identifier2 = [configuration2 identifier];
   if (self)
   {
     Property = objc_getProperty(self, v13, 88, 1);
@@ -997,13 +997,13 @@ LABEL_31:
   v19[2] = sub_100050D2C;
   v19[3] = &unk_1000EA408;
   v19[4] = self;
-  v20 = v10;
-  v21 = v6;
-  v22 = v7;
-  v16 = v7;
-  v17 = v6;
-  v18 = v10;
-  [v11 loadConfigurationWithID:v14 withCompletionQueue:Property handler:v19];
+  v20 = identifier;
+  v21 = sessionCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = sessionCopy;
+  v18 = identifier;
+  [v11 loadConfigurationWithID:identifier2 withCompletionQueue:Property handler:v19];
 }
 
 - (void)dealloc
@@ -1016,10 +1016,10 @@ LABEL_31:
   [(NESMServer *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v10 = a4;
+  pathCopy = path;
+  objectCopy = object;
   if (self)
   {
     Property = objc_getProperty(self, v9, 88, 1);
@@ -1035,16 +1035,16 @@ LABEL_31:
   block[2] = sub_100052E3C;
   block[3] = &unk_1000EABC8;
   block[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v12 = v10;
-  v13 = v8;
+  v15 = pathCopy;
+  v16 = objectCopy;
+  v12 = objectCopy;
+  v13 = pathCopy;
   dispatch_async(Property, block);
 }
 
-- (void)satisfyCellularPathForSession:(id)a3
+- (void)satisfyCellularPathForSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (self)
   {
     Property = objc_getProperty(self, v4, 88, 1);
@@ -1060,14 +1060,14 @@ LABEL_31:
   v8[2] = sub_1000546E8;
   v8[3] = &unk_1000EB198;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)satisfyPathForSession:(id)a3
+- (void)satisfyPathForSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (self)
   {
     Property = objc_getProperty(self, v4, 88, 1);
@@ -1083,14 +1083,14 @@ LABEL_31:
   v8[2] = sub_100054920;
   v8[3] = &unk_1000EB198;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)handleSleepTime:(double)a3
+- (void)handleSleepTime:(double)time
 {
-  v4 = self;
+  selfCopy = self;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1121,9 +1121,9 @@ LABEL_31:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        if (v4)
+        if (selfCopy)
         {
-          Property = objc_getProperty(v4, v6, 120, 1);
+          Property = objc_getProperty(selfCopy, v6, 120, 1);
         }
 
         else
@@ -1148,9 +1148,9 @@ LABEL_31:
               }
 
               v17 = *(*(&v25 + 1) + 8 * v16);
-              if (v4)
+              if (selfCopy)
               {
-                v18 = objc_getProperty(v4, v13, 120, 1);
+                v18 = objc_getProperty(selfCopy, v13, 120, 1);
               }
 
               else
@@ -1160,7 +1160,7 @@ LABEL_31:
 
               v19 = [v18 objectForKeyedSubscript:v9];
               v20 = [v19 objectForKeyedSubscript:v17];
-              [v20 handleSleepTime:a3];
+              [v20 handleSleepTime:time];
 
               v16 = v16 + 1;
             }
@@ -1187,7 +1187,7 @@ LABEL_31:
 
 - (BOOL)handleSleep
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self->_sleepAckCount = 0;
@@ -1226,9 +1226,9 @@ LABEL_31:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        if (v2)
+        if (selfCopy)
         {
-          Property = objc_getProperty(v2, v3, 120, 1);
+          Property = objc_getProperty(selfCopy, v3, 120, 1);
         }
 
         else
@@ -1253,9 +1253,9 @@ LABEL_31:
               }
 
               v13 = *(*(&v24 + 1) + 8 * v12);
-              if (v2)
+              if (selfCopy)
               {
-                v14 = objc_getProperty(v2, v9, 120, 1);
+                v14 = objc_getProperty(selfCopy, v9, 120, 1);
               }
 
               else
@@ -1265,11 +1265,11 @@ LABEL_31:
 
               v15 = [v14 objectForKeyedSubscript:v5];
               v16 = [v15 objectForKeyedSubscript:v13];
-              v17 = [v16 handleSleep];
+              handleSleep = [v16 handleSleep];
 
-              if (v2 && v17)
+              if (selfCopy && handleSleep)
               {
-                ++v2->_sleepAckCount;
+                ++selfCopy->_sleepAckCount;
               }
 
               v12 = v12 + 1;
@@ -1294,12 +1294,12 @@ LABEL_31:
     while (v19);
   }
 
-  return v2 && v2->_sleepAckCount > 0;
+  return selfCopy && selfCopy->_sleepAckCount > 0;
 }
 
 - (BOOL)canSleep
 {
-  v2 = self;
+  selfCopy = self;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -1330,9 +1330,9 @@ LABEL_31:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        if (v2)
+        if (selfCopy)
         {
-          Property = objc_getProperty(v2, v3, 120, 1);
+          Property = objc_getProperty(selfCopy, v3, 120, 1);
         }
 
         else
@@ -1358,9 +1358,9 @@ LABEL_31:
               }
 
               v14 = *(*(&v26 + 1) + 8 * v13);
-              if (v2)
+              if (selfCopy)
               {
-                v15 = objc_getProperty(v2, v10, 120, 1);
+                v15 = objc_getProperty(selfCopy, v10, 120, 1);
               }
 
               else
@@ -1370,9 +1370,9 @@ LABEL_31:
 
               v16 = [v15 objectForKeyedSubscript:v6];
               v17 = [v16 objectForKeyedSubscript:v14];
-              v18 = [v17 canSleep];
+              canSleep = [v17 canSleep];
 
-              v4 &= v18;
+              v4 &= canSleep;
               v13 = v13 + 1;
             }
 

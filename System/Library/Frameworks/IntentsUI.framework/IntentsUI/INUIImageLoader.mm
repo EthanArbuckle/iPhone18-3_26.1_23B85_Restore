@@ -1,14 +1,14 @@
 @interface INUIImageLoader
 + (id)registeredImageLoaderWithScreenDelegate;
-- (BOOL)loadImage:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)loadImage:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
+- (BOOL)loadImage:(id)image withCompletionHandler:(id)handler;
+- (BOOL)loadImage:(id)image withContext:(id)context completionHandler:(id)handler;
 - (INUIImageLoaderDelegate)delegate;
 - (NSString)serviceIdentifier;
 - (void)dealloc;
 - (void)deregisterWithIntents;
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6;
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion;
 - (void)registerWithIntents;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation INUIImageLoader
@@ -20,28 +20,28 @@
   return WeakRetained;
 }
 
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v13)
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v12)
+    if (!loaderCopy)
     {
-      v12 = objc_alloc_init(MEMORY[0x277CD3F00]);
+      loaderCopy = objc_alloc_init(MEMORY[0x277CD3F00]);
     }
 
-    v14 = [v12 helper];
+    helper = [loaderCopy helper];
     v15 = MEMORY[0x277CD38C8];
-    if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (helper && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v16 = [(INUIImageLoader *)self delegate];
-      v17 = [v16 traitCollectionForImageLoader:self];
-      [v14 setTraitCollection:v17];
+      delegate = [(INUIImageLoader *)self delegate];
+      v17 = [delegate traitCollectionForImageLoader:self];
+      [helper setTraitCollection:v17];
     }
 
     else
@@ -51,7 +51,7 @@
       if (os_log_type_enabled(*v15, OS_LOG_TYPE_ERROR))
       {
         v41 = v18;
-        v42 = [v12 helper];
+        helper2 = [loaderCopy helper];
         *buf = 136315394;
         v61 = "[INUIImageLoader loadDataImageFromImage:usingPortableImageLoader:scaledSize:completion:]";
         v62 = 2112;
@@ -60,23 +60,23 @@
         _os_log_error_impl(&dword_22CA36000, v41, OS_LOG_TYPE_ERROR, "%s The helper on INPortableImageLoader was of an expected class (expected INUIPortableImageLoaderHelper, got %@)", buf, 0x16u);
       }
 
-      v14 = 0;
+      helper = 0;
     }
 
-    v19 = [MEMORY[0x277CD3D28] sharedInstance];
-    v20 = [v19 imageLoaders];
+    mEMORY[0x277CD3D28] = [MEMORY[0x277CD3D28] sharedInstance];
+    imageLoaders = [mEMORY[0x277CD3D28] imageLoaders];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v21 = v20;
+    v21 = imageLoaders;
     v22 = [v21 countByEnumeratingWithState:&v54 objects:v70 count:16];
     if (v22)
     {
-      v48 = v14;
-      v49 = v13;
-      v50 = v12;
+      v48 = helper;
+      v49 = completionCopy;
+      v50 = loaderCopy;
       v23 = *v55;
       v24 = &off_27872C000;
       v25 = &off_27872C000;
@@ -94,7 +94,7 @@
           }
 
           v30 = *(*(&v54 + 1) + 8 * v26);
-          if (((objc_opt_respondsToSelector() & 1) == 0 || [(INUIImageLoader *)v30 canLoadImageDataForImage:v11]) && (objc_opt_respondsToSelector() & 1) != 0 && v30 != self)
+          if (((objc_opt_respondsToSelector() & 1) == 0 || [(INUIImageLoader *)v30 canLoadImageDataForImage:imageCopy]) && (objc_opt_respondsToSelector() & 1) != 0 && v30 != self)
           {
             v22 = v30;
             goto LABEL_23;
@@ -116,15 +116,15 @@
       }
 
 LABEL_23:
-      v13 = v49;
-      v12 = v50;
+      completionCopy = v49;
+      loaderCopy = v50;
       v15 = MEMORY[0x277CD38C8];
-      v14 = v48;
+      helper = v48;
     }
 
-    v31 = [(INUIImageLoader *)self delegate];
+    delegate2 = [(INUIImageLoader *)self delegate];
 
-    if (!v31)
+    if (!delegate2)
     {
       v32 = *v15;
       if (os_log_type_enabled(*v15, OS_LOG_TYPE_ERROR))
@@ -135,9 +135,9 @@ LABEL_23:
       }
     }
 
-    v33 = [v14 traitCollection];
+    traitCollection = [helper traitCollection];
 
-    if (!v33 && (v34 = *v15, os_log_type_enabled(*v15, OS_LOG_TYPE_ERROR)))
+    if (!traitCollection && (v34 = *v15, os_log_type_enabled(*v15, OS_LOG_TYPE_ERROR)))
     {
       *buf = 136315138;
       v61 = "[INUIImageLoader loadDataImageFromImage:usingPortableImageLoader:scaledSize:completion:]";
@@ -163,7 +163,7 @@ LABEL_30:
         v62 = 2112;
         v63 = v22;
         v64 = 2112;
-        v65 = self;
+        selfCopy = self;
         v66 = 2112;
         v67 = v38;
         v68 = 2112;
@@ -175,9 +175,9 @@ LABEL_30:
       v51[1] = 3221225472;
       v51[2] = __89__INUIImageLoader_loadDataImageFromImage_usingPortableImageLoader_scaledSize_completion___block_invoke;
       v51[3] = &unk_27872BAB8;
-      v53 = v13;
-      v52 = v11;
-      [(INUIImageLoader *)v22 loadDataImageFromImage:v52 usingPortableImageLoader:v12 scaledSize:v51 completion:var0, var1];
+      v53 = completionCopy;
+      v52 = imageCopy;
+      [(INUIImageLoader *)v22 loadDataImageFromImage:v52 usingPortableImageLoader:loaderCopy scaledSize:v51 completion:var0, var1];
 
       v40 = v53;
       goto LABEL_35;
@@ -189,7 +189,7 @@ LABEL_30:
     v59 = @"No preferred image loader available for image: %@";
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v46 = [v44 errorWithDomain:v45 code:6001 userInfo:v40];
-    (*(v13 + 2))(v13, 0, v46);
+    (*(completionCopy + 2))(completionCopy, 0, v46);
 
 LABEL_35:
   }
@@ -286,36 +286,36 @@ void __36__INUIImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
   serviceIdentifier_sServiceIdentifier = v6;
 }
 
-- (BOOL)loadImage:(id)a3 withContext:(id)a4 completionHandler:(id)a5
+- (BOOL)loadImage:(id)image withContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  imageCopy = image;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 intentsImage];
-    v10 = v9;
-    if (v9)
+    v8 = imageCopy;
+    intentsImage = [v8 intentsImage];
+    v10 = intentsImage;
+    if (intentsImage)
     {
-      v11 = [v9 _imageData];
-      v12 = [v10 _uri];
-      v13 = v12;
-      if (v11)
+      _imageData = [intentsImage _imageData];
+      _uri = [v10 _uri];
+      v13 = _uri;
+      if (_imageData)
       {
-        v14 = [MEMORY[0x277D4C3B0] imageWithData:v11];
-        v7[2](v7, v14, 0);
+        v14 = [MEMORY[0x277D4C3B0] imageWithData:_imageData];
+        handlerCopy[2](handlerCopy, v14, 0);
       }
 
       else
       {
-        if (!v12 || ![v12 isFileURL])
+        if (!_uri || ![_uri isFileURL])
         {
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __59__INUIImageLoader_loadImage_withContext_completionHandler___block_invoke_2;
           v23[3] = &unk_27872BA90;
-          v24 = v7;
+          v24 = handlerCopy;
           [v10 _retrieveImageDataWithReply:v23];
 
           goto LABEL_15;
@@ -325,11 +325,11 @@ void __36__INUIImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
         [v14 setType:52];
         v16 = objc_alloc_init(MEMORY[0x277D4C7F0]);
         v17 = objc_alloc_init(MEMORY[0x277D4C7E8]);
-        v18 = [v13 absoluteString];
-        v19 = v18;
-        if (v18)
+        absoluteString = [v13 absoluteString];
+        v19 = absoluteString;
+        if (absoluteString)
         {
-          v20 = v18;
+          v20 = absoluteString;
         }
 
         else
@@ -346,7 +346,7 @@ void __36__INUIImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
         v25[1] = 3221225472;
         v25[2] = __59__INUIImageLoader_loadImage_withContext_completionHandler___block_invoke;
         v25[3] = &unk_27872BA68;
-        v26 = v7;
+        v26 = handlerCopy;
         [v21 loadImageDataWithCompletionAndErrorHandler:v25];
       }
 
@@ -395,19 +395,19 @@ void __59__INUIImageLoader_loadImage_withContext_completionHandler___block_invok
   }
 }
 
-- (BOOL)loadImage:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)loadImage:(id)image withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  imageCopy = image;
   v8 = objc_opt_new();
-  LOBYTE(self) = [(INUIImageLoader *)self loadImage:v7 withContext:v8 completionHandler:v6];
+  LOBYTE(self) = [(INUIImageLoader *)self loadImage:imageCopy withContext:v8 completionHandler:handlerCopy];
 
   return self;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -429,23 +429,23 @@ void __59__INUIImageLoader_loadImage_withContext_completionHandler___block_invok
 
 - (void)deregisterWithIntents
 {
-  v3 = [MEMORY[0x277CD3D28] sharedInstance];
-  [v3 unregisterImageService:self];
+  mEMORY[0x277CD3D28] = [MEMORY[0x277CD3D28] sharedInstance];
+  [mEMORY[0x277CD3D28] unregisterImageService:self];
 }
 
 - (void)registerWithIntents
 {
-  v3 = [MEMORY[0x277CD3D28] sharedInstance];
-  [v3 registerImageService:self];
+  mEMORY[0x277CD3D28] = [MEMORY[0x277CD3D28] sharedInstance];
+  [mEMORY[0x277CD3D28] registerImageService:self];
 }
 
 + (id)registeredImageLoaderWithScreenDelegate
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 registerWithIntents];
   [v2 registerWithSearchFoundation];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 setDelegate:v3];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [v2 setDelegate:mainScreen];
 
   return v2;
 }

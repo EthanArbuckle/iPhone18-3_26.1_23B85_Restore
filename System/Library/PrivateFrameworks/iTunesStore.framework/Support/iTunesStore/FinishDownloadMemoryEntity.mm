@@ -11,14 +11,14 @@
 - (BOOL)isStoreDownload;
 - (BOOL)isTvTemplate;
 - (NSString)ITunesMetadataDestinationPath;
-- (id)destinationDirectoryPathForAsset:(id)a3;
+- (id)destinationDirectoryPathForAsset:(id)asset;
 - (id)newITunesMetadataDictionary;
-- (id)secondaryAssetForType:(id)a3;
+- (id)secondaryAssetForType:(id)type;
 - (int64_t)automaticType;
 - (int64_t)priority;
 - (int64_t)restoreState;
 - (int64_t)transactionID;
-- (void)loadAssetsUsingSession:(id)a3;
+- (void)loadAssetsUsingSession:(id)session;
 @end
 
 @implementation FinishDownloadMemoryEntity
@@ -26,65 +26,65 @@
 - (int64_t)automaticType
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_automatic"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)priority
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"priority"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)destinationDirectoryPathForAsset:(id)a3
+- (id)destinationDirectoryPathForAsset:(id)asset
 {
-  v4 = [a3 destinationURLString];
-  if (v4)
+  destinationURLString = [asset destinationURLString];
+  if (destinationURLString)
   {
-    v5 = [[NSURL alloc] initWithString:v4];
-    v6 = [v5 path];
-    v7 = [v6 stringByDeletingLastPathComponent];
+    downloadKind = [[NSURL alloc] initWithString:destinationURLString];
+    path = [downloadKind path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
   }
 
   else
   {
-    v5 = [(FinishDownloadMemoryEntity *)self downloadKind];
-    v7 = sub_10020F36C(v5);
+    downloadKind = [(FinishDownloadMemoryEntity *)self downloadKind];
+    stringByDeletingLastPathComponent = sub_10020F36C(downloadKind);
   }
 
-  return v7;
+  return stringByDeletingLastPathComponent;
 }
 
 - (BOOL)hasRestoreData
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"download_state.has_restore_data"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isDeviceBasedVPP
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_device_based_vpp"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isHLS
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_hls"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPodcastDownload
 {
-  v2 = [(FinishDownloadMemoryEntity *)self downloadKind];
+  downloadKind = [(FinishDownloadMemoryEntity *)self downloadKind];
   IsPodcastKind = SSDownloadKindIsPodcastKind();
 
   return IsPodcastKind;
@@ -93,55 +93,55 @@
 - (BOOL)isRentalDownload
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_rental"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isRestoreDownload
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_restore"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSampleDownload
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_sample"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSharedDownload
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_shared"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isStoreDownload
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_from_store"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isTvTemplate
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_tv_template"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)ITunesMetadataDestinationPath
 {
-  v3 = [(FinishDownloadMemoryEntity *)self downloadKind];
-  v4 = sub_10020F36C(v3);
+  downloadKind = [(FinishDownloadMemoryEntity *)self downloadKind];
+  v4 = sub_10020F36C(downloadKind);
   v5 = [NSString stringWithFormat:@"%lld", [(FinishDownloadMemoryEntity *)self databaseID]];
   v6 = [v4 stringByAppendingPathComponent:v5];
 
@@ -150,9 +150,9 @@
   return v7;
 }
 
-- (void)loadAssetsUsingSession:(id)a3
+- (void)loadAssetsUsingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -173,10 +173,10 @@
   v8 = [NSArray arrayWithObjects:v38 count:2];
   v9 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
 
-  v10 = [v4 database];
+  database = [sessionCopy database];
   v37 = @"asset_order";
   v11 = [NSArray arrayWithObjects:&v37 count:1];
-  v12 = [FinishDownloadAssetMemoryEntity queryWithDatabase:v10 predicate:v9 orderingProperties:v11];
+  v12 = [FinishDownloadAssetMemoryEntity queryWithDatabase:database predicate:v9 orderingProperties:v11];
 
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
@@ -186,7 +186,7 @@
   v24 = &v31;
   v13 = v5;
   v21 = v13;
-  v22 = self;
+  selfCopy = self;
   [v12 enumerateMemoryEntitiesUsingBlock:&v17];
   v14 = v32[5];
   if (!v14)
@@ -205,7 +205,7 @@
 
 - (id)newITunesMetadataDictionary
 {
-  v3 = [(StoreDownload *)self->_storeMetadata copyWritableMetadata];
+  copyWritableMetadata = [(StoreDownload *)self->_storeMetadata copyWritableMetadata];
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = SSDownloadMetadataKeyPurchaseDate;
   v6 = [(StoreDownload *)self->_storeMetadata valueForMetadataKey:SSDownloadMetadataKeyPurchaseDate];
@@ -215,18 +215,18 @@
   }
 
   v7 = [DownloadDRM alloc];
-  v8 = [(StoreDownload *)self->_storeMetadata sinfs];
-  v9 = [(DownloadDRM *)v7 initWithSinfArray:v8];
+  sinfs = [(StoreDownload *)self->_storeMetadata sinfs];
+  v9 = [(DownloadDRM *)v7 initWithSinfArray:sinfs];
 
-  v10 = [(DownloadDRM *)v9 sinfsArray];
-  v11 = [v10 copyValueForProperty:@"SinfPropertyAccountIdentifier" error:0];
+  sinfsArray = [(DownloadDRM *)v9 sinfsArray];
+  v11 = [sinfsArray copyValueForProperty:@"SinfPropertyAccountIdentifier" error:0];
 
   v43 = v9;
   v44 = v4;
   if (!v11)
   {
-    v12 = [(DownloadDRM *)v9 pinfsArray];
-    v11 = [v12 copyValueForProperty:@"SinfPropertyAccountIdentifier" error:0];
+    pinfsArray = [(DownloadDRM *)v9 pinfsArray];
+    v11 = [pinfsArray copyValueForProperty:@"SinfPropertyAccountIdentifier" error:0];
 
     if (!v11)
     {
@@ -240,21 +240,21 @@
     }
   }
 
-  v42 = v3;
+  v42 = copyWritableMetadata;
   v14 = +[SSAccountStore defaultStore];
   v15 = [v14 accountWithUniqueIdentifier:v11];
 
-  v16 = [v15 copyLockdownRepresentation];
-  if (!v16)
+  copyLockdownRepresentation = [v15 copyLockdownRepresentation];
+  if (!copyLockdownRepresentation)
   {
-    v16 = objc_alloc_init(NSMutableDictionary);
-    [v16 setObject:v11 forKey:kSSLockdownKeyAccountDSPersonID];
+    copyLockdownRepresentation = objc_alloc_init(NSMutableDictionary);
+    [copyLockdownRepresentation setObject:v11 forKey:kSSLockdownKeyAccountDSPersonID];
   }
 
   v17 = v6;
   v18 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"store_account_name"];
   v19 = kSSLockdownKeyAccountID;
-  v20 = [v16 objectForKey:kSSLockdownKeyAccountID];
+  v20 = [copyLockdownRepresentation objectForKey:kSSLockdownKeyAccountID];
 
   if (v20)
   {
@@ -268,35 +268,35 @@
 
   if (!v21)
   {
-    [v16 setObject:v18 forKey:v19];
+    [copyLockdownRepresentation setObject:v18 forKey:v19];
   }
 
-  v22 = [(StoreDownload *)self->_storeMetadata downloaderAccountIdentifier];
-  if (v22)
+  downloaderAccountIdentifier = [(StoreDownload *)self->_storeMetadata downloaderAccountIdentifier];
+  if (downloaderAccountIdentifier)
   {
-    [v16 setObject:v22 forKey:@"DownloaderID"];
+    [copyLockdownRepresentation setObject:downloaderAccountIdentifier forKey:@"DownloaderID"];
   }
 
-  v23 = [(StoreDownload *)self->_storeMetadata familyAccountIdentifier];
-  if (v23)
+  familyAccountIdentifier = [(StoreDownload *)self->_storeMetadata familyAccountIdentifier];
+  if (familyAccountIdentifier)
   {
-    [v16 setObject:v23 forKey:@"FamilyID"];
+    [copyLockdownRepresentation setObject:familyAccountIdentifier forKey:@"FamilyID"];
   }
 
-  v24 = [(StoreDownload *)self->_storeMetadata purchaserAccountIdentifier];
-  if (v24)
+  purchaserAccountIdentifier = [(StoreDownload *)self->_storeMetadata purchaserAccountIdentifier];
+  if (purchaserAccountIdentifier)
   {
-    [v16 setObject:v24 forKey:@"PurchaserID"];
+    [copyLockdownRepresentation setObject:purchaserAccountIdentifier forKey:@"PurchaserID"];
   }
 
-  [v44 setObject:v16 forKey:SSDownloadMetadataKeyAccountInfo];
+  [v44 setObject:copyLockdownRepresentation forKey:SSDownloadMetadataKeyAccountInfo];
 
   v4 = v44;
   v6 = v17;
-  v3 = v42;
+  copyWritableMetadata = v42;
   v9 = v43;
 LABEL_21:
-  v25 = [(FinishDownloadMemoryEntity *)self downloadKind];
+  downloadKind = [(FinishDownloadMemoryEntity *)self downloadKind];
   IsToneKind = SSDownloadKindIsToneKind();
 
   if (IsToneKind)
@@ -306,16 +306,16 @@ LABEL_21:
   }
 
   v28 = SSDownloadMetadataKeyIsPurchaseRedownload;
-  v29 = [v3 objectForKey:SSDownloadMetadataKeyIsPurchaseRedownload];
+  v29 = [copyWritableMetadata objectForKey:SSDownloadMetadataKeyIsPurchaseRedownload];
 
   if (!v29)
   {
     v30 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"is_redownload"];
-    v31 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
 
-    if (v31)
+    if (bOOLValue)
     {
-      [v3 setObject:&__kCFBooleanTrue forKey:v28];
+      [copyWritableMetadata setObject:&__kCFBooleanTrue forKey:v28];
     }
   }
 
@@ -333,25 +333,25 @@ LABEL_21:
     [v4 setObject:v33 forKey:SSDownloadMetadataKeyReferrerURL];
   }
 
-  v34 = [v3 objectForKey:@"sourceApp"];
+  v34 = [copyWritableMetadata objectForKey:@"sourceApp"];
 
   if (!v34)
   {
-    v35 = [(FinishDownloadMemoryEntity *)self clientIdentifier];
-    if (v35)
+    clientIdentifier = [(FinishDownloadMemoryEntity *)self clientIdentifier];
+    if (clientIdentifier)
     {
-      [v3 setObject:v35 forKey:@"sourceApp"];
+      [copyWritableMetadata setObject:clientIdentifier forKey:@"sourceApp"];
     }
   }
 
-  v36 = [v3 objectForKey:SSDownloadMetadataKeyVariantIdentifier];
+  v36 = [copyWritableMetadata objectForKey:SSDownloadMetadataKeyVariantIdentifier];
 
   if (!v36)
   {
-    v37 = [(FinishDownloadMemoryEntity *)self mediaAsset];
-    v38 = [v37 variantIdentifier];
+    mediaAsset = [(FinishDownloadMemoryEntity *)self mediaAsset];
+    variantIdentifier = [mediaAsset variantIdentifier];
 
-    if (!v38)
+    if (!variantIdentifier)
     {
       v39 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"variant_id"];
       if (!v39)
@@ -359,35 +359,35 @@ LABEL_21:
         goto LABEL_39;
       }
 
-      v38 = v39;
+      variantIdentifier = v39;
     }
 
-    [v3 setObject:v38 forKey:@"variantID"];
+    [copyWritableMetadata setObject:variantIdentifier forKey:@"variantID"];
   }
 
 LABEL_39:
   v40 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"beta_external_version_identifier"];
   if (v40)
   {
-    [v3 setObject:v40 forKey:SSDownloadMetadataKeyBetaExternalVersionIdentifier];
+    [copyWritableMetadata setObject:v40 forKey:SSDownloadMetadataKeyBetaExternalVersionIdentifier];
   }
 
-  [v3 setObject:v4 forKey:SSDownloadMetadataKeyAdditionalInfo];
+  [copyWritableMetadata setObject:v4 forKey:SSDownloadMetadataKeyAdditionalInfo];
 
-  return v3;
+  return copyWritableMetadata;
 }
 
 - (int64_t)restoreState
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"IFNULL(download_state.restore_state, 0)"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)secondaryAssetForType:(id)a3
+- (id)secondaryAssetForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -407,8 +407,8 @@ LABEL_39:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 assetType];
-        v11 = [v10 isEqualToString:v4];
+        assetType = [v9 assetType];
+        v11 = [assetType isEqualToString:typeCopy];
 
         if (v11)
         {
@@ -435,9 +435,9 @@ LABEL_11:
 - (int64_t)transactionID
 {
   v2 = [(FinishDownloadMemoryEntity *)self valueForProperty:@"transaction_id"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 + (id)defaultProperties

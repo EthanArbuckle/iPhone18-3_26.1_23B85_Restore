@@ -1,13 +1,13 @@
 @interface CentralManager
 - (_TtC12searchpartyd14CentralManager)init;
-- (void)centralManager:(id)a3 canSendDataToPeripheral:(id)a4;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didReceiveData:(id)a4 fromPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didSendBytes:(id)a4 toPeripheral:(id)a5 withError:(id)a6;
-- (void)centralManager:(id)a3 didUpdateFindMyPeripherals:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager canSendDataToPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didReceiveData:(id)data fromPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didSendBytes:(id)bytes toPeripheral:(id)peripheral withError:(id)error;
+- (void)centralManager:(id)manager didUpdateFindMyPeripherals:(id)peripherals;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation CentralManager
@@ -19,72 +19,72 @@
   return result;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1013233E0(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1013233E0(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_1013286F8(v12, v10, v13);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_1013286F8(peripheralCopy, v10, iCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10132909C(v7);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_10132909C(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_10132A3D0(a4, v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_10132A3D0(occur, peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didUpdateFindMyPeripherals:(id)a4
+- (void)centralManager:(id)manager didUpdateFindMyPeripherals:(id)peripherals
 {
   sub_100008BB8(0, &qword_1016CDD08, CBPeripheral_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC12searchpartyd14CentralManager_lock);
-  v6 = self;
+  selfCopy = self;
   Lock.callAsFunction<A>(_:)();
 }
 
-- (void)centralManager:(id)a3 canSendDataToPeripheral:(id)a4
+- (void)centralManager:(id)manager canSendDataToPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
   sub_10132A9C8();
 }
 
-- (void)centralManager:(id)a3 didSendBytes:(id)a4 toPeripheral:(id)a5 withError:(id)a6
+- (void)centralManager:(id)manager didSendBytes:(id)bytes toPeripheral:(id)peripheral withError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v14 = a6;
-  v13 = self;
-  sub_10132AD94(v11);
+  managerCopy = manager;
+  bytesCopy = bytes;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10132AD94(bytesCopy);
 }
 
-- (void)centralManager:(id)a3 didReceiveData:(id)a4 fromPeripheral:(id)a5
+- (void)centralManager:(id)manager didReceiveData:(id)data fromPeripheral:(id)peripheral
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = self;
+  managerCopy = manager;
+  dataCopy = data;
+  peripheralCopy = peripheral;
+  selfCopy = self;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 

@@ -1,40 +1,40 @@
 @interface CBDevice
-- (CBDevice)initWithBTStackDevice:(void *)a3 error:(id *)a4;
-- (unint64_t)updateWithBLEDevice:(id)a3 btAddr:(unint64_t)a4;
-- (unint64_t)updateWithClassicDevice:(void *)a3 deviceUUID:(id)a4;
+- (CBDevice)initWithBTStackDevice:(void *)device error:(id *)error;
+- (unint64_t)updateWithBLEDevice:(id)device btAddr:(unint64_t)addr;
+- (unint64_t)updateWithClassicDevice:(void *)device deviceUUID:(id)d;
 @end
 
 @implementation CBDevice
 
-- (CBDevice)initWithBTStackDevice:(void *)a3 error:(id *)a4
+- (CBDevice)initWithBTStackDevice:(void *)device error:(id *)error
 {
   v21.receiver = self;
   v21.super_class = CBDevice;
   v6 = [(CBDevice *)&v21 init];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v19 = [objc_opt_class() description];
-      *a4 = CBErrorF();
+      *error = CBErrorF();
     }
 
     goto LABEL_13;
   }
 
-  v7 = *(a3 + 128);
-  v8 = *(a3 + 129);
-  v9 = *(a3 + 130);
-  v10 = *(a3 + 131);
-  v11 = *(a3 + 133);
-  v12 = (v7 << 40) | (v8 << 32) | (v9 << 24) | (v10 << 16) | (*(a3 + 132) << 8);
+  v7 = *(device + 128);
+  v8 = *(device + 129);
+  v9 = *(device + 130);
+  v10 = *(device + 131);
+  v11 = *(device + 133);
+  v12 = (v7 << 40) | (v8 << 32) | (v9 << 24) | (v10 << 16) | (*(device + 132) << 8);
   v13 = v12 | v11;
   if (!(v12 | v11))
   {
-    if (a4)
+    if (error)
     {
       CBErrorF();
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_8;
     }
 
@@ -61,17 +61,17 @@ LABEL_13:
 
   sub_1000498D4(off_100B508C8, v13, 1u, 1u, 0, 0, v22);
   v15 = sub_10004DF60(v22);
-  v16 = [v15 UUIDString];
-  if (v16)
+  uUIDString = [v15 UUIDString];
+  if (uUIDString)
   {
-    [(CBDevice *)v6 setIdentifier:v16];
+    [(CBDevice *)v6 setIdentifier:uUIDString];
     v17 = v6;
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF();
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -83,9 +83,9 @@ LABEL_8:
   return v17;
 }
 
-- (unint64_t)updateWithBLEDevice:(id)a3 btAddr:(unint64_t)a4
+- (unint64_t)updateWithBLEDevice:(id)device btAddr:(unint64_t)addr
 {
-  v6 = a3;
+  deviceCopy = device;
   v197 = 0;
   v198 = &v197;
   v199 = 0x2020000000;
@@ -202,7 +202,7 @@ LABEL_8:
   v95 = &v151;
   v96 = &v145;
   v97 = &v141;
-  v85 = v6;
+  v85 = deviceCopy;
   v98 = &v193;
   v99 = &v135;
   v100 = &v129;
@@ -230,7 +230,7 @@ LABEL_8:
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    if (!a4)
+    if (!addr)
     {
       goto LABEL_18;
     }
@@ -238,24 +238,24 @@ LABEL_8:
 
   else
   {
-    v10 = [v120[5] bytes];
-    v11 = *v10;
-    v12 = *(v10 + 1);
-    v13 = *(v10 + 3);
-    if (!a4)
+    bytes = [v120[5] bytes];
+    v11 = *bytes;
+    v12 = *(bytes + 1);
+    v13 = *(bytes + 3);
+    if (!addr)
     {
       goto LABEL_18;
     }
   }
 
-  LOBYTE(v82) = BYTE5(a4);
-  BYTE1(v82) = BYTE4(a4);
-  BYTE2(v82) = BYTE3(a4);
-  HIBYTE(v82) = BYTE2(a4);
-  LOBYTE(v83) = BYTE1(a4);
-  HIBYTE(v83) = a4;
-  v14 = [(CBDevice *)self btAddressData];
-  if ([v14 length] != 6 || ((v15 = objc_msgSend(v14, "bytes"), v82 == *v15) ? (v16 = v83 == v15[2]) : (v16 = 0), !v16))
+  LOBYTE(v82) = BYTE5(addr);
+  BYTE1(v82) = BYTE4(addr);
+  BYTE2(v82) = BYTE3(addr);
+  HIBYTE(v82) = BYTE2(addr);
+  LOBYTE(v83) = BYTE1(addr);
+  HIBYTE(v83) = addr;
+  btAddressData = [(CBDevice *)self btAddressData];
+  if ([btAddressData length] != 6 || ((v15 = objc_msgSend(btAddressData, "bytes"), v82 == *v15) ? (v16 = v83 == v15[2]) : (v16 = 0), !v16))
   {
     v17 = [[NSData alloc] initWithBytes:&v82 length:6];
     [(CBDevice *)self setBtAddressData:v17];
@@ -281,9 +281,9 @@ LABEL_18:
   }
 
   v20 = [NSString stringWithFormat:@"%s", v19, v81];
-  v21 = [(CBDevice *)self btVersion];
+  btVersion = [(CBDevice *)self btVersion];
   v22 = v20;
-  v23 = v21;
+  v23 = btVersion;
   v24 = v23;
   if (v22 == v23)
   {
@@ -312,7 +312,7 @@ LABEL_18:
 LABEL_29:
 
 LABEL_30:
-  v26 = [(CBDevice *)self connectedServices];
+  connectedServices = [(CBDevice *)self connectedServices];
   if (*(v182 + 24))
   {
     v27 = 0x400000;
@@ -331,12 +331,12 @@ LABEL_30:
   v28 = sub_1000E3EC8(qword_100B50918, v81);
   if (v28 && *(v152 + 24) == 1)
   {
-    v29 = v27 | v26 & 0xFFBFFFFF | 0x10000;
+    v29 = v27 | connectedServices & 0xFFBFFFFF | 0x10000;
   }
 
   else
   {
-    v29 = v27 & 0xFFFEFFFF | v26 & 0xFFBEFFFF;
+    v29 = v27 & 0xFFFEFFFF | connectedServices & 0xFFBEFFFF;
   }
 
   v30 = v29 & 0xFDFFFFFF;
@@ -350,7 +350,7 @@ LABEL_30:
     v31 = 0;
   }
 
-  if ((v31 | v30) != v26)
+  if ((v31 | v30) != connectedServices)
   {
     [(CBDevice *)self setConnectedServices:?];
     v9 |= 0x80000200000uLL;
@@ -366,7 +366,7 @@ LABEL_30:
     }
   }
 
-  v33 = [(CBDevice *)self deviceFlags];
+  deviceFlags = [(CBDevice *)self deviceFlags];
   v34 = 0x20000000000;
   if (!*(v164 + 24))
   {
@@ -393,7 +393,7 @@ LABEL_30:
     v35 |= 0x8000uLL;
   }
 
-  if (!*(v126 + 24) || (v108[3] & 1) != 0 || (v33 & 0x4000) != 0)
+  if (!*(v126 + 24) || (v108[3] & 1) != 0 || (deviceFlags & 0x4000) != 0)
   {
     v36 = v35 | 0x40000000000;
     if (v186[3])
@@ -437,7 +437,7 @@ LABEL_66:
     v37 = v38 | v39 | v37 & 0xFFFFFFFFFFFCFFFFLL;
   }
 
-  if (v37 != v33)
+  if (v37 != deviceFlags)
   {
     [(CBDevice *)self setDeviceFlags:?];
     v9 |= 0x80000000000uLL;
@@ -456,9 +456,9 @@ LABEL_66:
   v41 = v168[5];
   if (v41)
   {
-    v42 = [(CBDevice *)self idsDeviceID];
+    idsDeviceID = [(CBDevice *)self idsDeviceID];
 
-    if (v41 != v42)
+    if (v41 != idsDeviceID)
     {
       [(CBDevice *)self setIdsDeviceID:v168[5]];
       v9 |= 0x80000000000uLL;
@@ -468,9 +468,9 @@ LABEL_66:
   if ([v146[5] length])
   {
     v43 = v146[5];
-    v44 = [(CBDevice *)self firmwareVersion];
+    firmwareVersion = [(CBDevice *)self firmwareVersion];
     v45 = v43;
-    v46 = v44;
+    v46 = firmwareVersion;
     v47 = v46;
     if (v45 == v46)
     {
@@ -503,9 +503,9 @@ LABEL_88:
   }
 
   v49 = v136[5];
-  v50 = [(CBDevice *)self modelUser];
+  modelUser = [(CBDevice *)self modelUser];
   v51 = v49;
-  v52 = v50;
+  v52 = modelUser;
   v53 = v52;
   if (v51 == v52)
   {
@@ -532,9 +532,9 @@ LABEL_96:
   if ([v130[5] length])
   {
     v55 = v130[5];
-    v56 = [(CBDevice *)self name];
+    name = [(CBDevice *)self name];
     v57 = v55;
-    v58 = v56;
+    v58 = name;
     v59 = v58;
     if (v57 == v58)
     {
@@ -585,7 +585,7 @@ LABEL_108:
     v9 |= 0x200000000uLL;
   }
 
-  v62 = [(CBDevice *)self supportedServices];
+  supportedServices = [(CBDevice *)self supportedServices];
   if (v28)
   {
     v63 = 0x10000;
@@ -606,7 +606,7 @@ LABEL_108:
     v64 = 0;
   }
 
-  if ((v62 & 0xFDFEFFFF | v63 | v64) != [(CBDevice *)self supportedServices])
+  if ((supportedServices & 0xFDFEFFFF | v63 | v64) != [(CBDevice *)self supportedServices])
   {
     [(CBDevice *)self setSupportedServices:?];
   }
@@ -639,31 +639,31 @@ LABEL_128:
     v65 = v11 == 2 && v12 == 1452;
   }
 
-  v67 = [(CBDevice *)self productID];
-  if (!v67)
+  productID = [(CBDevice *)self productID];
+  if (!productID)
   {
-    v67 = [(CBDevice *)self proximityPairingProductID];
+    productID = [(CBDevice *)self proximityPairingProductID];
   }
 
-  if (v67 != 0 && v65)
+  if (productID != 0 && v65)
   {
-    v68 = [CBProductInfo productInfoWithProductID:v67];
-    v69 = [v68 productName];
+    v68 = [CBProductInfo productInfoWithProductID:productID];
+    productName = [v68 productName];
 
-    if (v69)
+    if (productName)
     {
-      v70 = [(CBDevice *)self productName];
-      v71 = v69;
+      productName2 = [(CBDevice *)self productName];
+      v71 = productName;
       v72 = v71;
-      if (v70 == v71)
+      if (productName2 == v71)
       {
       }
 
       else
       {
-        if (v70)
+        if (productName2)
         {
-          v73 = [v70 isEqual:v71];
+          v73 = [productName2 isEqual:v71];
 
           if (v73)
           {
@@ -687,10 +687,10 @@ LABEL_145:
   v74 = CBDeviceTypeToNSLocalizedString();
   if (v65)
   {
-    v75 = [(CBDevice *)self name];
-    if (!v75 || (-[CBDevice name](self, "name"), v76 = objc_claimAutoreleasedReturnValue(), v77 = [v76 isEqualToString:v74], v76, v75, (v77 & 1) != 0))
+    name2 = [(CBDevice *)self name];
+    if (!name2 || (-[CBDevice name](self, "name"), v76 = objc_claimAutoreleasedReturnValue(), v77 = [v76 isEqualToString:v74], v76, name2, (v77 & 1) != 0))
     {
-      v78 = sub_100106320(v67);
+      v78 = sub_100106320(productID);
       if (v78)
       {
         [(CBDevice *)self setName:v78];
@@ -699,9 +699,9 @@ LABEL_145:
     }
   }
 
-  v79 = [(CBDevice *)self name];
+  name3 = [(CBDevice *)self name];
 
-  if (!v79)
+  if (!name3)
   {
     [(CBDevice *)self setName:v74];
     v9 |= 0x80000000000uLL;
@@ -736,9 +736,9 @@ LABEL_145:
   return v9;
 }
 
-- (unint64_t)updateWithClassicDevice:(void *)a3 deviceUUID:(id)a4
+- (unint64_t)updateWithClassicDevice:(void *)device deviceUUID:(id)d
 {
-  v247 = a4;
+  dCopy = d;
   if (qword_100B508D0 != -1)
   {
     sub_10080578C();
@@ -757,12 +757,12 @@ LABEL_145:
   }
 
   v8 = off_100B50AB8;
-  v243 = sub_1000DFA00(off_100B50AB8, a3);
+  v243 = sub_1000DFA00(off_100B50AB8, device);
   v236 = v7;
   v264 = 0;
   v265 = 0;
   v266 = 0;
-  sub_1000DFC04(a3, &v264);
+  sub_1000DFC04(device, &v264);
   if (0xAAAAAAAAAAAAAAABLL * ((v265 - v264) >> 3) < 4)
   {
     v246 = 0;
@@ -847,9 +847,9 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v17 = [v14 UUIDString];
+  uUIDString = [v14 UUIDString];
 
-  if (!v17)
+  if (!uUIDString)
   {
     v237 = 0;
 LABEL_36:
@@ -857,9 +857,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v18 = [(CBDevice *)self findMyCaseIdentifier];
-  v19 = v17;
-  v20 = v18;
+  findMyCaseIdentifier = [(CBDevice *)self findMyCaseIdentifier];
+  v19 = uUIDString;
+  v20 = findMyCaseIdentifier;
   v14 = v20;
   v237 = v19;
   if (v19 == v20)
@@ -886,15 +886,15 @@ LABEL_506:
   v22 = 0x80000000000;
 LABEL_38:
   v238 = v13;
-  v242 = [v13 UUIDString];
-  if (!v242)
+  uUIDString2 = [v13 UUIDString];
+  if (!uUIDString2)
   {
     goto LABEL_46;
   }
 
-  v23 = [(CBDevice *)self findMyGroupIdentifier];
-  v24 = v242;
-  v25 = v23;
+  findMyGroupIdentifier = [(CBDevice *)self findMyGroupIdentifier];
+  v24 = uUIDString2;
+  v25 = findMyGroupIdentifier;
   v26 = v25;
   if (v24 == v25)
   {
@@ -920,22 +920,22 @@ LABEL_45:
 LABEL_46:
   v262 = 0;
   v263 = 0;
-  v240 = sub_1000C2364(a3, &v263 + 1, &v263, &v262 + 1, &v262);
-  v28 = *(a3 + 1570);
+  v240 = sub_1000C2364(device, &v263 + 1, &v263, &v262 + 1, &v262);
+  v28 = *(device + 1570);
   if (v28 != [(CBDevice *)self aclLinkState])
   {
     [(CBDevice *)self setAclLinkState:v28];
     v22 = 0x80000000000;
   }
 
-  v29 = sub_1000E00E4(a3);
+  v29 = sub_1000E00E4(device);
   if (v29 != [(CBDevice *)self adaptiveVolumeConfig])
   {
     [(CBDevice *)self setAdaptiveVolumeConfig:v29];
     v22 = 0x80000000000;
   }
 
-  v30 = sub_1000E012C(a3, 144);
+  v30 = sub_1000E012C(device, 144);
   v31 = sub_10000C7D0();
   v32 = v30 & sub_1000E01B4(v31, 0);
   if (v32 == 1 && [(CBDevice *)self adaptiveVolumeCapability]!= 1)
@@ -949,7 +949,7 @@ LABEL_46:
     sub_1008057C8();
   }
 
-  v33 = sub_1000E0264(off_100B50948, a3);
+  v33 = sub_1000E0264(off_100B50948, device);
   if (v33 >= 3)
   {
     if (qword_100B50AD0 != -1)
@@ -957,7 +957,7 @@ LABEL_46:
       sub_1008057F0();
     }
 
-    if (sub_1000E02E0(off_100B50AC8) == a3)
+    if (sub_1000E02E0(off_100B50AC8) == device)
     {
       v34 = 3;
     }
@@ -969,7 +969,7 @@ LABEL_46:
         sub_100805818();
       }
 
-      if (sub_1000E03B0(qword_100B50AD8, a3))
+      if (sub_1000E03B0(qword_100B50AD8, device))
       {
         v34 = 2;
       }
@@ -992,7 +992,7 @@ LABEL_46:
     v22 |= 0x80000000000uLL;
   }
 
-  v35 = sub_1000E012C(a3, 176);
+  v35 = sub_1000E012C(device, 176);
   v36 = sub_10000C7D0();
   v37 = v35 & sub_1000E01B4(v36, 3u);
   if (v37 == 1 && [(CBDevice *)self autoAncCapability]!= 1)
@@ -1003,10 +1003,10 @@ LABEL_46:
 
   v260 = 0u;
   v261 = 0u;
-  v241 = sub_1000C0348(a3);
-  if (v241 || *(a3 + 1360) == 1)
+  v241 = sub_1000C0348(device);
+  if (v241 || *(device + 1360) == 1)
   {
-    sub_1000DEB5C(a3, &v260);
+    sub_1000DEB5C(device, &v260);
     v38 = v260;
     v39 = BYTE4(v260) << 8;
   }
@@ -1084,15 +1084,15 @@ LABEL_46:
     v22 |= 0x80000000000uLL;
   }
 
-  *v259 = *(a3 + 32);
-  *&v259[4] = *(a3 + 66);
+  *v259 = *(device + 32);
+  *&v259[4] = *(device + 66);
   if ((v259[0] << 40) | (v259[1] << 32) | (v259[2] << 24) | (v259[3] << 16) | (v259[4] << 8) | v259[5])
   {
     LOBYTE(v255) = v259[0];
     *(&v255 + 1) = *&v259[1];
     BYTE5(v255) = v259[5];
-    v47 = [(CBDevice *)self btAddressData];
-    if ([v47 length] != 6 || ((v48 = objc_msgSend(v47, "bytes"), v255 == *v48) ? (v49 = WORD2(v255) == v48[2]) : (v49 = 0), !v49))
+    btAddressData = [(CBDevice *)self btAddressData];
+    if ([btAddressData length] != 6 || ((v48 = objc_msgSend(btAddressData, "bytes"), v255 == *v48) ? (v49 = WORD2(v255) == v48[2]) : (v49 = 0), !v49))
     {
       v50 = [[NSData alloc] initWithBytes:&v255 length:6];
       [(CBDevice *)self setBtAddressData:v50];
@@ -1106,7 +1106,7 @@ LABEL_46:
   *v257 = 0u;
   v255 = 0u;
   sub_100007E30(v257, "");
-  if (sub_1000E0610(a3, &v255))
+  if (sub_1000E0610(device, &v255))
   {
     v51 = v256;
     if (v256)
@@ -1153,8 +1153,8 @@ LABEL_46:
       v57 = [v55 copy];
       if (v57)
       {
-        v58 = [(CBDevice *)self caseVersion];
-        v59 = [v57 isEqualToString:v58];
+        caseVersion = [(CBDevice *)self caseVersion];
+        v59 = [v57 isEqualToString:caseVersion];
 
         if ((v59 & 1) == 0)
         {
@@ -1165,14 +1165,14 @@ LABEL_46:
     }
   }
 
-  v60 = sub_1000E06A4(a3);
+  v60 = sub_1000E06A4(device);
   if (v60 != [(CBDevice *)self classicRSSI])
   {
     [(CBDevice *)self setClassicRSSI:v60];
     v22 |= 0x200000000uLL;
   }
 
-  v61 = sub_1000E06EC(a3);
+  v61 = sub_1000E06EC(device);
   if ([(CBDevice *)self clickHoldModeLeft]!= HIBYTE(v61))
   {
     [(CBDevice *)self setClickHoldModeLeft:HIBYTE(v61)];
@@ -1185,7 +1185,7 @@ LABEL_46:
     v22 |= 0x80000000000uLL;
   }
 
-  v62 = sub_1000E0734(a3);
+  v62 = sub_1000E0734(device);
   v63 = v62;
   v64 = v62 & 0xF;
   v244 = v10;
@@ -1214,7 +1214,7 @@ LABEL_46:
     }
   }
 
-  if (sub_1000E012C(a3, 80))
+  if (sub_1000E012C(device, 80))
   {
     if (v63)
     {
@@ -1250,16 +1250,16 @@ LABEL_46:
     }
   }
 
-  v70 = a3 + 392;
-  if (*(a3 + 415) < 0)
+  v70 = device + 392;
+  if (*(device + 415) < 0)
   {
-    sub_100008904(__p, *(a3 + 49), *(a3 + 50));
+    sub_100008904(__p, *(device + 49), *(device + 50));
   }
 
   else
   {
     *__p = *v70;
-    v254 = *(a3 + 51);
+    v254 = *(device + 51);
   }
 
   if (SHIBYTE(v254) < 0)
@@ -1277,15 +1277,15 @@ LABEL_46:
     goto LABEL_162;
   }
 
-  if (*(a3 + 415) < 0)
+  if (*(device + 415) < 0)
   {
-    sub_100008904(__p, *(a3 + 49), *(a3 + 50));
+    sub_100008904(__p, *(device + 49), *(device + 50));
   }
 
   else
   {
     *__p = *v70;
-    v254 = *(a3 + 51);
+    v254 = *(device + 51);
   }
 
   if (v254 >= 0)
@@ -1304,16 +1304,16 @@ LABEL_46:
     operator delete(__p[0]);
   }
 
-  v74 = [(CBDevice *)self model];
+  model = [(CBDevice *)self model];
 
-  if (v73 != v74)
+  if (v73 != model)
   {
     [(CBDevice *)self setModel:v73];
     v22 |= 0x80000000000uLL;
   }
 
 LABEL_162:
-  v75 = sub_1000E077C(v8, a3);
+  v75 = sub_1000E077C(v8, device);
   if (qword_100B50AA0 != -1)
   {
     sub_100805840();
@@ -1350,14 +1350,14 @@ LABEL_162:
     v22 |= 0x80000200000uLL;
   }
 
-  v78 = sub_1000E20B0(a3);
+  v78 = sub_1000E20B0(device);
   if (v78 != [(CBDevice *)self conversationDetectConfig])
   {
     [(CBDevice *)self setConversationDetectConfig:v78];
     v22 |= 0x80000000000uLL;
   }
 
-  v79 = sub_1000E012C(a3, 160);
+  v79 = sub_1000E012C(device, 160);
   v80 = sub_10000C7D0();
   v81 = v79 & sub_1000E01B4(v80, 2u);
   if (v81 == 1 && [(CBDevice *)self conversationDetectCapability]!= 1)
@@ -1366,21 +1366,21 @@ LABEL_162:
     v22 |= 0x80000000000uLL;
   }
 
-  v82 = sub_1000E20F8(a3);
+  v82 = sub_1000E20F8(device);
   if (v82 != [(CBDevice *)self crownRotationDirection])
   {
     [(CBDevice *)self setCrownRotationDirection:v82];
     v22 |= 0x80000000000uLL;
   }
 
-  v83 = [(CBDevice *)self deviceFlags];
-  v84 = sub_1000E2140(a3, 12);
-  v85 = sub_1000E2140(a3, 16);
-  v86 = *(a3 + 1016);
-  v87 = *(a3 + 1032);
-  v88 = sub_1000E2570(v236, a3);
-  v89 = sub_1000E2140(a3, 27);
-  v90 = sub_1000E2140(a3, 26);
+  deviceFlags = [(CBDevice *)self deviceFlags];
+  v84 = sub_1000E2140(device, 12);
+  v85 = sub_1000E2140(device, 16);
+  v86 = *(device + 1016);
+  v87 = *(device + 1032);
+  v88 = sub_1000E2570(v236, device);
+  v89 = sub_1000E2140(device, 27);
+  v90 = sub_1000E2140(device, 26);
   v91 = (v243 >> 19) & 1;
   if (v84)
   {
@@ -1443,7 +1443,7 @@ LABEL_162:
   }
 
   v97 = v92 & 0xFFFFFFFFCF7FFFF1 | v93 | v94 | v95 | v96;
-  if (!sub_1000E012C(a3, 64) || (v98 = sub_10000C798(), !(*(*v98 + 840))(v98, 1)))
+  if (!sub_1000E012C(device, 64) || (v98 = sub_10000C798(), !(*(*v98 + 840))(v98, 1)))
   {
     v252 = 0;
 LABEL_209:
@@ -1457,14 +1457,14 @@ LABEL_209:
     sub_100805868();
   }
 
-  sub_10056C0AC(off_100B508E8, a3, &v252);
+  sub_10056C0AC(off_100B508E8, device, &v252);
   v99 = v252 == 1;
   if (qword_100B50940 != -1)
   {
     sub_100805890();
   }
 
-  v100 = sub_100639958(off_100B50938, a3);
+  v100 = sub_100639958(off_100B50938, device);
   v101 = v97 | (v99 << 28);
   if (!v100)
   {
@@ -1474,7 +1474,7 @@ LABEL_209:
 
   v102 = v101 | 0x40800000;
 LABEL_210:
-  if (sub_1000E2140(a3, 32) && sub_1000E5DB8(a3) == 1)
+  if (sub_1000E2140(device, 32) && sub_1000E5DB8(device) == 1)
   {
     v103 = v102 | 0x10;
   }
@@ -1484,17 +1484,17 @@ LABEL_210:
     v103 = v102 & 0xFFFFFFFFFFFFFFEFLL;
   }
 
-  v104 = sub_1000E2140(a3, 17);
-  v105 = sub_1000E2140(a3, 33);
-  v106 = sub_1000E2B78(a3);
+  v104 = sub_1000E2140(device, 17);
+  v105 = sub_1000E2140(device, 33);
+  v106 = sub_1000E2B78(device);
   if (qword_100B508C0 != -1)
   {
     sub_1008058B8();
   }
 
-  v107 = sub_10004EE74(off_100B508B8, v247);
-  v108 = sub_1000295DC(a3);
-  sub_1000B006C(v239, v247, __p);
+  v107 = sub_10004EE74(off_100B508B8, dCopy);
+  v108 = sub_1000295DC(device);
+  sub_1000B006C(v239, dCopy, __p);
   v109 = 0x8000000;
   if (!v104)
   {
@@ -1550,14 +1550,14 @@ LABEL_210:
   }
 
   v119 = 0x40000;
-  if (!*(a3 + 1499))
+  if (!*(device + 1499))
   {
     v119 = 0;
   }
 
   v120 = v118 | v119;
   v121 = 0x100000;
-  if (!*(a3 + 1360))
+  if (!*(device + 1360))
   {
     v121 = 0;
   }
@@ -1565,7 +1565,7 @@ LABEL_210:
   v122 = v115 | v116 | v120 | v121;
   if (v241)
   {
-    v123 = sub_10054F768(a3);
+    v123 = sub_10054F768(device);
     v124 = 0x200000;
     if (!v123)
     {
@@ -1573,7 +1573,7 @@ LABEL_210:
     }
 
     v125 = v124 | v122 & 0xFFFFFFFFFFDFFFFFLL;
-    if (*(a3 + 1500))
+    if (*(device + 1500))
     {
       v126 = v125 | 0x400000;
       goto LABEL_243;
@@ -1587,7 +1587,7 @@ LABEL_210:
 
   v126 = v125 & 0xFFFFFFFFFFBFFFFFLL;
 LABEL_243:
-  v127 = sub_1000E2BC0(a3);
+  v127 = sub_1000E2BC0(device);
   if ((v117 | v108))
   {
     v128 = v126 & 0xFFFFFBFF7FFFEFFFLL | ((v127 == 1) << 31) | 0x40000000000;
@@ -1598,9 +1598,9 @@ LABEL_243:
     v128 = v126 & 0xFFFFFBFF7FFFFFFFLL | ((v127 == 1) << 31) | 0x40000001000;
   }
 
-  if (sub_1000E2C08(a3))
+  if (sub_1000E2C08(device))
   {
-    v129 = sub_10054E104(a3);
+    v129 = sub_10054E104(device);
     v130 = 0x20000;
     if (!v129)
     {
@@ -1616,8 +1616,8 @@ LABEL_243:
     v128 = v130 | v131 | v128 & 0xFFFFFFFFFFFCFFFFLL;
   }
 
-  v132 = sub_1000E2C2C(a3);
-  v133 = sub_1000E2E8C(a3);
+  v132 = sub_1000E2C2C(device);
+  v133 = sub_1000E2E8C(device);
   v134 = 0x80000;
   if (!v132)
   {
@@ -1641,7 +1641,7 @@ LABEL_243:
     v137 = v136;
   }
 
-  if (v137 != v83)
+  if (v137 != deviceFlags)
   {
     [(CBDevice *)self setDeviceFlags:?];
     v22 |= 0x80000000000uLL;
@@ -1657,7 +1657,7 @@ LABEL_243:
     LOBYTE(v248) = 0;
     LOWORD(__p[0]) = 0;
     LOWORD(v249) = 0;
-    sub_1000E2FE4(a3, __p, &v248, &v249);
+    sub_1000E2FE4(device, __p, &v248, &v249);
     if (v248)
     {
       if (v248 > 0xEu)
@@ -1670,10 +1670,10 @@ LABEL_243:
         v138 = off_100AE0778[v248 - 1];
       }
 
-      v139 = [NSString stringWithFormat:@"%s", v138];
-      v140 = [(CBDevice *)self btVersion];
-      v141 = v139;
-      v142 = v140;
+      v138 = [NSString stringWithFormat:@"%s", v138];
+      btVersion = [(CBDevice *)self btVersion];
+      v141 = v138;
+      v142 = btVersion;
       v143 = v142;
       if (v141 == v142)
       {
@@ -1703,14 +1703,14 @@ LABEL_276:
     }
   }
 
-  v145 = sub_1000C2398(a3);
+  v145 = sub_1000C2398(device);
   if (![(CBDevice *)self colorInfo]&& [(CBDevice *)self colorInfo]!= v145)
   {
     [(CBDevice *)self setColorInfo:v145];
     v22 |= 0x80000000000uLL;
   }
 
-  v146 = sub_1000DEB14(a3);
+  v146 = sub_1000DEB14(device);
   if ([(CBDevice *)self deviceType]!= v146)
   {
     [(CBDevice *)self setDeviceType:v146];
@@ -1719,7 +1719,7 @@ LABEL_276:
 
   if (![(CBDevice *)self appearanceValue]&& ([(CBDevice *)self deviceType]== 20 || [(CBDevice *)self deviceType]== 16))
   {
-    v161 = sub_1000E30FC(v239, v247);
+    v161 = sub_1000E30FC(v239, dCopy);
     if (v161)
     {
       if ([(CBDevice *)self appearanceValue]!= v161)
@@ -1730,7 +1730,7 @@ LABEL_276:
     }
   }
 
-  v147 = sub_1000E3188(a3);
+  v147 = sub_1000E3188(device);
   if (HIBYTE(v147) < 5u)
   {
     v148 = HIBYTE(v147) + 1;
@@ -1763,18 +1763,18 @@ LABEL_276:
     v22 |= 0x80000000000uLL;
   }
 
-  v150 = [(CBDevice *)self doubleTapCapability];
-  if (sub_1000DFB74(a3, 0x80000u) == 4)
+  doubleTapCapability = [(CBDevice *)self doubleTapCapability];
+  if (sub_1000DFB74(device, 0x80000u) == 4)
   {
-    v151 = sub_1000E2140(a3, 14) ? 2 : 1;
-    if (v151 != v150)
+    v151 = sub_1000E2140(device, 14) ? 2 : 1;
+    if (v151 != doubleTapCapability)
     {
       [(CBDevice *)self setDoubleTapCapability:v151];
       v22 |= 0x80000000000uLL;
     }
   }
 
-  v152 = sub_1000E31D0(a3);
+  v152 = sub_1000E31D0(device);
   if (v152 != [(CBDevice *)self gapaFlags])
   {
     [(CBDevice *)self setGapaFlags:v152];
@@ -1813,9 +1813,9 @@ LABEL_320:
     v154 = [NSString stringWithUTF8String:v153];
     if ([v154 length])
     {
-      v155 = [(CBDevice *)self firmwareVersion];
+      firmwareVersion = [(CBDevice *)self firmwareVersion];
       v156 = v154;
-      v157 = v155;
+      v157 = firmwareVersion;
       v158 = v157;
       if (v156 != v157)
       {
@@ -1846,7 +1846,7 @@ LABEL_320:
 LABEL_321:
 
 LABEL_322:
-  if (*(a3 + 1437))
+  if (*(device + 1437))
   {
     v162 = 2;
   }
@@ -1862,7 +1862,7 @@ LABEL_322:
     v22 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0xC0u) == 2)
+  if (sub_1000E3218(device, 0xC0u) == 2)
   {
     v163 = 1;
   }
@@ -1878,7 +1878,7 @@ LABEL_322:
     v22 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E3218(a3, 0xD0u) == 2)
+  if (sub_1000E3218(device, 0xD0u) == 2)
   {
     v164 = 1;
   }
@@ -1894,21 +1894,21 @@ LABEL_322:
     v22 |= 0x80000000000uLL;
   }
 
-  v165 = sub_1000E3284(a3);
+  v165 = sub_1000E3284(device);
   if (v165 != [(CBDevice *)self listeningMode])
   {
     [(CBDevice *)self setListeningMode:v165];
     v22 |= 0x80000000000uLL;
   }
 
-  v166 = sub_1000E32CC(a3);
+  v166 = sub_1000E32CC(device);
   if (v166 != [(CBDevice *)self listeningModeConfigs])
   {
     [(CBDevice *)self setListeningModeConfigs:v166];
     v22 |= 0x80000000000uLL;
   }
 
-  v167 = sub_1000E3314(a3);
+  v167 = sub_1000E3314(device);
   if (v167 >= 3)
   {
     v168 = 0;
@@ -1939,9 +1939,9 @@ LABEL_322:
       goto LABEL_357;
     }
 
-    v171 = [(CBDevice *)self modelUser];
+    modelUser = [(CBDevice *)self modelUser];
     v172 = v170;
-    v173 = v171;
+    v173 = modelUser;
     v174 = v173;
     if (v172 == v173)
     {
@@ -1970,7 +1970,7 @@ LABEL_322:
 LABEL_357:
   }
 
-  sub_1000C23E0(a3, __p);
+  sub_1000C23E0(device, __p);
   if (v254 >= 0)
   {
     v176 = __p;
@@ -1989,9 +1989,9 @@ LABEL_357:
 
   if ([v177 length])
   {
-    v178 = [(CBDevice *)self name];
+    name = [(CBDevice *)self name];
     v179 = v177;
-    v180 = v178;
+    v180 = name;
     v181 = v180;
     if (v179 == v180)
     {
@@ -2026,18 +2026,18 @@ LABEL_371:
     }
 
     v183 = off_100B508C8;
-    sub_1000C23E0(a3, v250);
-    sub_1000E335C(v183, v247, v250);
+    sub_1000C23E0(device, v250);
+    sub_1000E335C(v183, dCopy, v250);
     if (v251 < 0)
     {
       operator delete(v250[0]);
     }
   }
 
-  v184 = [(CBDevice *)self primaryPlacement];
-  v185 = [(CBDevice *)self secondaryPlacement];
-  v186 = [(CBDevice *)self primaryBudSide];
-  if (sub_1000DFB74(a3, 0x80000u) != 4)
+  primaryPlacement = [(CBDevice *)self primaryPlacement];
+  secondaryPlacement = [(CBDevice *)self secondaryPlacement];
+  primaryBudSide = [(CBDevice *)self primaryBudSide];
+  if (sub_1000DFB74(device, 0x80000u) != 4)
   {
     v188 = 0;
     v189 = 0;
@@ -2045,7 +2045,7 @@ LABEL_371:
     goto LABEL_394;
   }
 
-  v187 = sub_1000E356C(a3);
+  v187 = sub_1000E356C(device);
   LODWORD(__p[0]) = 3;
   v248 = 3;
   v249 = 3;
@@ -2056,13 +2056,13 @@ LABEL_371:
       sub_1008057C8();
     }
 
-    sub_10033C1E4(off_100B50948, a3, __p, &v249);
+    sub_10033C1E4(off_100B50948, device, __p, &v249);
     if (qword_100B50950 != -1)
     {
       sub_1008057C8();
     }
 
-    sub_10033C47C(off_100B50948, a3, &v248);
+    sub_10033C47C(off_100B50948, device, &v248);
   }
 
   if (v187)
@@ -2137,25 +2137,25 @@ LABEL_388:
   }
 
 LABEL_394:
-  if (v188 != v184)
+  if (v188 != primaryPlacement)
   {
     [(CBDevice *)self setPrimaryPlacement:?];
     v22 |= 0x80000000000uLL;
   }
 
-  if (v189 != v185)
+  if (v189 != secondaryPlacement)
   {
     [(CBDevice *)self setSecondaryPlacement:v189];
     v22 |= 0x80000000000uLL;
   }
 
-  if (v186 != v190)
+  if (primaryBudSide != v190)
   {
     [(CBDevice *)self setPrimaryBudSide:v190];
     v22 |= 0x80000000000uLL;
   }
 
-  if (sub_1000E356C(a3))
+  if (sub_1000E356C(device))
   {
     v192 = 1;
   }
@@ -2171,14 +2171,14 @@ LABEL_394:
     v22 |= 0x80000000000uLL;
   }
 
-  v193 = sub_1000E35B4(a3);
+  v193 = sub_1000E35B4(device);
   if (v193 != [(CBDevice *)self selectiveSpeechListeningConfig])
   {
     [(CBDevice *)self setSelectiveSpeechListeningConfig:v193];
     v22 |= 0x80000000000uLL;
   }
 
-  v194 = sub_1000E3218(a3, 6u);
+  v194 = sub_1000E3218(device, 6u);
   v195 = sub_10000C7D0();
   v196 = sub_1000E01B4(v195, 4u);
   if (v194 > 2)
@@ -2199,9 +2199,9 @@ LABEL_394:
 
   if ([v244 length])
   {
-    v198 = [(CBDevice *)self serialNumber];
+    serialNumber = [(CBDevice *)self serialNumber];
     v199 = v244;
-    v200 = v198;
+    v200 = serialNumber;
     v201 = v200;
     if (v199 == v200)
     {
@@ -2233,9 +2233,9 @@ LABEL_421:
     goto LABEL_429;
   }
 
-  v203 = [(CBDevice *)self serialNumberLeft];
+  serialNumberLeft = [(CBDevice *)self serialNumberLeft];
   v204 = v246;
-  v205 = v203;
+  v205 = serialNumberLeft;
   v206 = v205;
   if (v204 == v205)
   {
@@ -2264,9 +2264,9 @@ LABEL_429:
     goto LABEL_437;
   }
 
-  v208 = [(CBDevice *)self serialNumberRight];
+  serialNumberRight = [(CBDevice *)self serialNumberRight];
   v209 = v245;
-  v210 = v208;
+  v210 = serialNumberRight;
   v211 = v210;
   if (v209 == v210)
   {
@@ -2290,7 +2290,7 @@ LABEL_436:
   }
 
 LABEL_437:
-  v213 = sub_1000E5DB8(a3);
+  v213 = sub_1000E5DB8(device);
   if (v213 == 1)
   {
     v214 = 1;
@@ -2307,7 +2307,7 @@ LABEL_437:
     v22 |= 0x80000000000uLL;
   }
 
-  v215 = sub_1000E35FC(a3);
+  v215 = sub_1000E35FC(device);
   if (v215 && v215 != [(CBDevice *)self interval])
   {
     [(CBDevice *)self setInterval:v215];
@@ -2321,7 +2321,7 @@ LABEL_437:
     sub_100805868();
   }
 
-  sub_1000E6A78(off_100B508E8, a3, @"global", __p, &v249);
+  sub_1000E6A78(off_100B508E8, device, @"global", __p, &v249);
   v216 = __p[0];
   if (v216 != [(CBDevice *)self spatialAudioMode])
   {
@@ -2363,31 +2363,31 @@ LABEL_437:
     v217 = [(CBDevice *)self vendorIDSource]== 2 && [(CBDevice *)self vendorID]== 1452;
   }
 
-  v218 = [(CBDevice *)self productID];
-  if (!v218)
+  productID = [(CBDevice *)self productID];
+  if (!productID)
   {
-    v218 = [(CBDevice *)self proximityPairingProductID];
+    productID = [(CBDevice *)self proximityPairingProductID];
   }
 
-  if (v218 != 0 && v217)
+  if (productID != 0 && v217)
   {
-    v219 = [CBProductInfo productInfoWithProductID:v218];
-    v220 = [v219 productName];
+    v219 = [CBProductInfo productInfoWithProductID:productID];
+    productName = [v219 productName];
 
-    if (v220)
+    if (productName)
     {
-      v221 = [(CBDevice *)self productName];
-      v222 = v220;
+      productName2 = [(CBDevice *)self productName];
+      v222 = productName;
       v223 = v222;
-      if (v221 == v222)
+      if (productName2 == v222)
       {
       }
 
       else
       {
-        if (v221)
+        if (productName2)
         {
-          v224 = [v221 isEqual:v222];
+          v224 = [productName2 isEqual:v222];
 
           if (v224)
           {
@@ -2411,10 +2411,10 @@ LABEL_487:
   v225 = CBDeviceTypeToNSLocalizedString();
   if (v217)
   {
-    v226 = [(CBDevice *)self name];
-    if (!v226 || (-[CBDevice name](self, "name"), v227 = objc_claimAutoreleasedReturnValue(), v228 = [v227 isEqualToString:v225], v227, v226, (v228 & 1) != 0))
+    name2 = [(CBDevice *)self name];
+    if (!name2 || (-[CBDevice name](self, "name"), v227 = objc_claimAutoreleasedReturnValue(), v228 = [v227 isEqualToString:v225], v227, name2, (v228 & 1) != 0))
     {
-      v229 = sub_100106320(v218);
+      v229 = sub_100106320(productID);
       if (v229)
       {
         [(CBDevice *)self setName:v229];
@@ -2423,9 +2423,9 @@ LABEL_487:
     }
   }
 
-  v230 = [(CBDevice *)self name];
+  name3 = [(CBDevice *)self name];
 
-  if (!v230)
+  if (!name3)
   {
     [(CBDevice *)self setName:v225];
     v22 |= 0x80000000000uLL;

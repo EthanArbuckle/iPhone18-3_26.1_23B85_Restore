@@ -1,44 +1,44 @@
 @interface HKChartOverlaySelectedAnalyticsEvent
-- (HKChartOverlaySelectedAnalyticsEvent)initWithConfiguration:(id)a3 previousItem:(id)a4 currentItem:(id)a5;
-- (id)determineFeatureVersionWithHealthDataSource:(id)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (HKChartOverlaySelectedAnalyticsEvent)initWithConfiguration:(id)configuration previousItem:(id)item currentItem:(id)currentItem;
+- (id)determineFeatureVersionWithHealthDataSource:(id)source;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HKChartOverlaySelectedAnalyticsEvent
 
-- (HKChartOverlaySelectedAnalyticsEvent)initWithConfiguration:(id)a3 previousItem:(id)a4 currentItem:(id)a5
+- (HKChartOverlaySelectedAnalyticsEvent)initWithConfiguration:(id)configuration previousItem:(id)item currentItem:(id)currentItem
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  itemCopy = item;
+  currentItemCopy = currentItem;
   v15.receiver = self;
   v15.super_class = HKChartOverlaySelectedAnalyticsEvent;
   v12 = [(HKChartOverlaySelectedAnalyticsEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a3);
-    objc_storeStrong(&v13->_previousItem, a4);
-    objc_storeStrong(&v13->_currentItem, a5);
+    objc_storeStrong(&v12->_configuration, configuration);
+    objc_storeStrong(&v13->_previousItem, item);
+    objc_storeStrong(&v13->_currentItem, currentItem);
   }
 
   return v13;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v5 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
   v56 = 0;
-  v8 = [v7 biologicalSexWithError:&v56];
-  v9 = v56;
+  v8 = [healthDataSource biologicalSexWithError:&v56];
+  loggingCategory2 = v56;
 
-  if (v9)
+  if (loggingCategory2)
   {
     _HKInitializeLogging();
-    v10 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    loggingCategory = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
+    if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_ERROR))
     {
       [HKAFibBurdenLifeFactorLoggingInitiatedAnalyticsEvent makeIHAGatedEventPayloadWithDataSource:error:];
     }
@@ -51,36 +51,36 @@
 
   if (v8)
   {
-    v9 = HKAnalyticsPropertyValueForBiologicalSex();
+    loggingCategory2 = HKAnalyticsPropertyValueForBiologicalSex();
     v12 = *MEMORY[0x1E696B4D8];
     v13 = v6;
-    v11 = v9;
+    v11 = loggingCategory2;
 LABEL_7:
     [v13 setObject:v11 forKeyedSubscript:v12];
     goto LABEL_8;
   }
 
   _HKInitializeLogging();
-  v9 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  loggingCategory2 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
+  if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_FAULT))
   {
-    [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:v9 error:v49, v50, v51, v52, v53, v54];
+    [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:loggingCategory2 error:v49, v50, v51, v52, v53, v54];
   }
 
 LABEL_8:
 
-  v14 = [v5 healthDataSource];
-  v15 = [v5 environmentDataSource];
-  v16 = [v15 currentDate];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
   v55 = 0;
-  v17 = [v14 ageWithCurrentDate:v16 error:&v55];
+  v17 = [healthDataSource2 ageWithCurrentDate:currentDate error:&v55];
   v18 = v55;
 
   if (v18)
   {
     _HKInitializeLogging();
-    v19 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    loggingCategory3 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
+    if (os_log_type_enabled(loggingCategory3, OS_LOG_TYPE_ERROR))
     {
       [HKAFibBurdenLifeFactorLoggingInitiatedAnalyticsEvent makeIHAGatedEventPayloadWithDataSource:error:];
     }
@@ -90,7 +90,7 @@ LABEL_8:
 
   else
   {
-    v21 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration minimumAge];
+    minimumAge = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration minimumAge];
     v20 = HKAnalyticsDecadeBucketedAgeForAgeWithMinimumAge();
 
     v18 = v20;
@@ -104,8 +104,8 @@ LABEL_8:
   v20 = v18;
 LABEL_14:
 
-  v22 = [v5 healthDataSource];
-  v23 = [(HKChartOverlaySelectedAnalyticsEvent *)self determineFeatureVersionWithHealthDataSource:v22];
+  healthDataSource3 = [sourceCopy healthDataSource];
+  v23 = [(HKChartOverlaySelectedAnalyticsEvent *)self determineFeatureVersionWithHealthDataSource:healthDataSource3];
 
   if (v23)
   {
@@ -115,70 +115,70 @@ LABEL_14:
   previousItem = self->_previousItem;
   if (previousItem)
   {
-    v25 = [(HKDisplayTypeContextItem *)previousItem analyticsIdentifier];
+    analyticsIdentifier = [(HKDisplayTypeContextItem *)previousItem analyticsIdentifier];
 
-    if (v25)
+    if (analyticsIdentifier)
     {
-      v26 = [(HKDisplayTypeContextItem *)self->_previousItem analyticsIdentifier];
-      v27 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration previousContextItemPropertyName];
-      [v6 setObject:v26 forKeyedSubscript:v27];
+      analyticsIdentifier2 = [(HKDisplayTypeContextItem *)self->_previousItem analyticsIdentifier];
+      previousContextItemPropertyName = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration previousContextItemPropertyName];
+      [v6 setObject:analyticsIdentifier2 forKeyedSubscript:previousContextItemPropertyName];
     }
 
     else
     {
       _HKInitializeLogging();
-      v28 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
+      loggingCategory4 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
+      if (os_log_type_enabled(loggingCategory4, OS_LOG_TYPE_FAULT))
       {
-        [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:v28 error:v29, v30, v31, v32, v33, v34];
+        [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:loggingCategory4 error:v29, v30, v31, v32, v33, v34];
       }
 
       v35 = *MEMORY[0x1E696B508];
-      v26 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration previousContextItemPropertyName];
-      [v6 setObject:v35 forKeyedSubscript:v26];
+      analyticsIdentifier2 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration previousContextItemPropertyName];
+      [v6 setObject:v35 forKeyedSubscript:analyticsIdentifier2];
     }
   }
 
   currentItem = self->_currentItem;
   if (currentItem)
   {
-    v37 = [(HKDisplayTypeContextItem *)currentItem analyticsIdentifier];
+    analyticsIdentifier3 = [(HKDisplayTypeContextItem *)currentItem analyticsIdentifier];
 
-    if (v37)
+    if (analyticsIdentifier3)
     {
-      v38 = [(HKDisplayTypeContextItem *)self->_currentItem analyticsIdentifier];
-      v39 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration currentContextItemPropertyName];
-      [v6 setObject:v38 forKeyedSubscript:v39];
+      analyticsIdentifier4 = [(HKDisplayTypeContextItem *)self->_currentItem analyticsIdentifier];
+      currentContextItemPropertyName = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration currentContextItemPropertyName];
+      [v6 setObject:analyticsIdentifier4 forKeyedSubscript:currentContextItemPropertyName];
     }
 
     else
     {
       _HKInitializeLogging();
-      v40 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
+      loggingCategory5 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration loggingCategory];
+      if (os_log_type_enabled(loggingCategory5, OS_LOG_TYPE_FAULT))
       {
-        [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:v40 error:v41, v42, v43, v44, v45, v46];
+        [(HKChartOverlaySelectedAnalyticsEvent *)self makeIHAGatedEventPayloadWithDataSource:loggingCategory5 error:v41, v42, v43, v44, v45, v46];
       }
 
       v47 = *MEMORY[0x1E696B508];
-      v38 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration currentContextItemPropertyName];
-      [v6 setObject:v47 forKeyedSubscript:v38];
+      analyticsIdentifier4 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration currentContextItemPropertyName];
+      [v6 setObject:v47 forKeyedSubscript:analyticsIdentifier4];
     }
   }
 
   return v6;
 }
 
-- (id)determineFeatureVersionWithHealthDataSource:(id)a3
+- (id)determineFeatureVersionWithHealthDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   p_configuration = &self->_configuration;
-  v6 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration featureIdentifier];
+  featureIdentifier = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)self->_configuration featureIdentifier];
 
-  if (v6)
+  if (featureIdentifier)
   {
-    v7 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration featureIdentifier];
-    v8 = [v4 featureAvailabilityProviderForIdentifier:v7];
+    featureIdentifier2 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration featureIdentifier];
+    v8 = [sourceCopy featureAvailabilityProviderForIdentifier:featureIdentifier2];
 
     if (v8)
     {
@@ -187,52 +187,52 @@ LABEL_14:
       v10 = v19;
       if (v9)
       {
-        v11 = [v9 onboardingCompletion];
+        onboardingCompletion = [v9 onboardingCompletion];
 
-        if (v11)
+        if (onboardingCompletion)
         {
           v12 = objc_alloc_init(MEMORY[0x1E696ADA0]);
           [v12 setNumberStyle:1];
           [v12 setMinimumFractionDigits:1];
           v13 = MEMORY[0x1E696AD98];
-          v14 = [v9 onboardingCompletion];
-          v15 = [v13 numberWithInteger:{objc_msgSend(v14, "version")}];
-          v11 = [v12 stringFromNumber:v15];
+          onboardingCompletion2 = [v9 onboardingCompletion];
+          v15 = [v13 numberWithInteger:{objc_msgSend(onboardingCompletion2, "version")}];
+          onboardingCompletion = [v12 stringFromNumber:v15];
         }
       }
 
       else
       {
         _HKInitializeLogging();
-        v17 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration loggingCategory];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        loggingCategory = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration loggingCategory];
+        if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_ERROR))
         {
           [HKAFibBurdenLifeFactorLoggingInitiatedAnalyticsEvent determineFeatureVersionWithHealthDataSource:];
         }
 
-        v11 = *MEMORY[0x1E696B508];
+        onboardingCompletion = *MEMORY[0x1E696B508];
       }
     }
 
     else
     {
       _HKInitializeLogging();
-      v16 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration loggingCategory];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+      loggingCategory2 = [(HKChartOverlaySelectedAnalyticsEventConfiguration *)*p_configuration loggingCategory];
+      if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_FAULT))
       {
-        [(HKChartOverlaySelectedAnalyticsEvent *)self determineFeatureVersionWithHealthDataSource:v16];
+        [(HKChartOverlaySelectedAnalyticsEvent *)self determineFeatureVersionWithHealthDataSource:loggingCategory2];
       }
 
-      v11 = *MEMORY[0x1E696B508];
+      onboardingCompletion = *MEMORY[0x1E696B508];
     }
   }
 
   else
   {
-    v11 = 0;
+    onboardingCompletion = 0;
   }
 
-  return v11;
+  return onboardingCompletion;
 }
 
 - (void)determineFeatureVersionWithHealthDataSource:(NSObject *)a3 .cold.2(uint64_t a1, id *a2, NSObject *a3)

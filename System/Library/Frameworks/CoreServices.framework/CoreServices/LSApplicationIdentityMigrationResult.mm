@@ -1,22 +1,22 @@
 @interface LSApplicationIdentityMigrationResult
 - (LSApplicationIdentityMigrationResult)init;
-- (id)bestMigratedIdentityForIdentity:(id)a3;
-- (id)migratedIdentitiesForIdentity:(id)a3;
-- (void)noteIdentityDoesNotNeedMigration:(uint64_t)a1;
+- (id)bestMigratedIdentityForIdentity:(id)identity;
+- (id)migratedIdentitiesForIdentity:(id)identity;
+- (void)noteIdentityDoesNotNeedMigration:(uint64_t)migration;
 @end
 
 @implementation LSApplicationIdentityMigrationResult
 
-- (void)noteIdentityDoesNotNeedMigration:(uint64_t)a1
+- (void)noteIdentityDoesNotNeedMigration:(uint64_t)migration
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (migration)
   {
     v7[0] = v3;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-    [*(a1 + 8) setObject:v5 forKeyedSubscript:v4];
+    [*(migration + 8) setObject:v5 forKeyedSubscript:v4];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (id)migratedIdentitiesForIdentity:(id)a3
+- (id)migratedIdentitiesForIdentity:(id)identity
 {
-  v3 = [(NSMutableDictionary *)self->_migratedIdentities objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_migratedIdentities objectForKeyedSubscript:identity];
   if (v3)
   {
     [MEMORY[0x1E695DFD8] setWithArray:v3];
@@ -54,12 +54,12 @@
   return v4;
 }
 
-- (id)bestMigratedIdentityForIdentity:(id)a3
+- (id)bestMigratedIdentityForIdentity:(id)identity
 {
-  v3 = [(NSMutableDictionary *)self->_migratedIdentities objectForKeyedSubscript:a3];
-  v4 = [v3 firstObject];
+  v3 = [(NSMutableDictionary *)self->_migratedIdentities objectForKeyedSubscript:identity];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

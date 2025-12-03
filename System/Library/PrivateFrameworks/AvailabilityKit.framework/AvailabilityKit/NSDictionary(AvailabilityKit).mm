@@ -8,7 +8,7 @@
 
 - (uint64_t)availabilityKit_BOOLForKey:()AvailabilityKit defaultValue:
 {
-  v5 = [a1 objectForKeyedSubscript:?];
+  v5 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,7 +20,7 @@
 
 - (id)availabilityKit_stringForKey:()AvailabilityKit
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -38,7 +38,7 @@
 - (id)availabilityKit_stringArrayForKey:()AvailabilityKit allowEmptyString:
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [a1 objectForKeyedSubscript:?];
+  v5 = [self objectForKeyedSubscript:?];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -1,45 +1,45 @@
 @interface PKPassPosterEventTicketFaceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKPassPosterEventTicketFaceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_logoLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_primaryFieldLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_secnamLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_venueLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_logoLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_primaryFieldLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_secnamLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPosterEventTicketFaceView" hasInstanceVariable:@"_venueLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(PKPassPosterEventTicketFaceViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_0];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_logoLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_primaryFieldLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
   v9 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_dateLabel"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel4 = [v9 accessibilityLabel];
 
   v11 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_timeLabel"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel5 = [v11 accessibilityLabel];
 
   v13 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_secnamLabel"];
-  v14 = [v13 accessibilityLabel];
+  accessibilityLabel6 = [v13 accessibilityLabel];
 
   v15 = [(PKPassPosterEventTicketFaceViewAccessibility *)self safeUIViewForKey:@"_venueLabel"];
-  v16 = [v15 accessibilityLabel];
+  accessibilityLabel7 = [v15 accessibilityLabel];
 
-  v17 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{7, v4, v6, v8, v10, v12, v14, v16}];
+  v17 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{7, accessibilityLabel, accessibilityLabel2, accessibilityLabel3, accessibilityLabel4, accessibilityLabel5, accessibilityLabel6, accessibilityLabel7}];
   v18 = AXLabelForElements();
 
   return v18;

@@ -1,33 +1,33 @@
 @interface PBASimpleLockScreenView
-- (PBASimpleLockScreenView)initWithFrame:(CGRect)a3;
+- (PBASimpleLockScreenView)initWithFrame:(CGRect)frame;
 - (double)_contentHorizontalInset;
 - (void)_hideCallToAction;
 - (void)_layoutCallToActionLabel;
 - (void)_layoutContent;
 - (void)_layoutHomeAffordance;
 - (void)_layoutInternalUIWarningLabel;
-- (void)_screenDidBlank:(id)a3;
-- (void)_screenWillUnblank:(id)a3;
+- (void)_screenDidBlank:(id)blank;
+- (void)_screenWillUnblank:(id)unblank;
 - (void)_showCallToAction;
 - (void)_updateContentWidthConstraint;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setIconSystemName:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setShowInternalUIWarning:(BOOL)a3;
-- (void)setStackItems:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setIconSystemName:(id)name;
+- (void)setMessage:(id)message;
+- (void)setShowInternalUIWarning:(BOOL)warning;
+- (void)setStackItems:(id)items;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PBASimpleLockScreenView
 
-- (PBASimpleLockScreenView)initWithFrame:(CGRect)a3
+- (PBASimpleLockScreenView)initWithFrame:(CGRect)frame
 {
   v49.receiver = self;
   v49.super_class = PBASimpleLockScreenView;
-  v3 = [(PBASimpleLockScreenView *)&v49 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBASimpleLockScreenView *)&v49 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -64,21 +64,21 @@
 
     [(UIScrollView *)v3->_contentScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PBASimpleLockScreenView *)v3 addSubview:v3->_contentScrollView];
-    v46 = [(UIScrollView *)v3->_contentScrollView leadingAnchor];
-    v44 = [(PBASimpleLockScreenView *)v3 leadingAnchor];
-    v42 = [v46 constraintEqualToAnchor:v44];
+    leadingAnchor = [(UIScrollView *)v3->_contentScrollView leadingAnchor];
+    leadingAnchor2 = [(PBASimpleLockScreenView *)v3 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[0] = v42;
-    v40 = [(UIScrollView *)v3->_contentScrollView trailingAnchor];
-    v38 = [(PBASimpleLockScreenView *)v3 trailingAnchor];
-    v15 = [v40 constraintEqualToAnchor:v38];
+    trailingAnchor = [(UIScrollView *)v3->_contentScrollView trailingAnchor];
+    trailingAnchor2 = [(PBASimpleLockScreenView *)v3 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[1] = v15;
-    v16 = [(UIScrollView *)v3->_contentScrollView topAnchor];
-    v17 = [(PBASimpleLockScreenView *)v3 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    topAnchor = [(UIScrollView *)v3->_contentScrollView topAnchor];
+    topAnchor2 = [(PBASimpleLockScreenView *)v3 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[2] = v18;
-    v19 = [(UIScrollView *)v3->_contentScrollView bottomAnchor];
-    v20 = [(SBUICallToActionLabel *)v3->_callToAction topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:-24.0];
+    bottomAnchor = [(UIScrollView *)v3->_contentScrollView bottomAnchor];
+    topAnchor3 = [(SBUICallToActionLabel *)v3->_callToAction topAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-24.0];
     v51[3] = v21;
     v22 = [NSArray arrayWithObjects:v51 count:4];
     [NSLayoutConstraint activateConstraints:v22];
@@ -93,27 +93,27 @@
     [(UIStackView *)v3->_contentStackView setSpacing:16.0];
     [(UIStackView *)v3->_contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIScrollView *)v3->_contentScrollView addSubview:v3->_contentStackView];
-    v25 = [(UIStackView *)v3->_contentStackView widthAnchor];
-    v26 = [(UIScrollView *)v3->_contentScrollView widthAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    widthAnchor = [(UIStackView *)v3->_contentStackView widthAnchor];
+    widthAnchor2 = [(UIScrollView *)v3->_contentScrollView widthAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     contentStackViewWidth = v3->_contentStackViewWidth;
     v3->_contentStackViewWidth = v27;
 
-    v47 = [(UIStackView *)v3->_contentStackView leadingAnchor];
-    v45 = [(UIScrollView *)v3->_contentScrollView leadingAnchor];
-    v43 = [v47 constraintEqualToAnchor:v45];
+    leadingAnchor3 = [(UIStackView *)v3->_contentStackView leadingAnchor];
+    leadingAnchor4 = [(UIScrollView *)v3->_contentScrollView leadingAnchor];
+    v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v50[0] = v43;
-    v41 = [(UIStackView *)v3->_contentStackView trailingAnchor];
-    v39 = [(UIScrollView *)v3->_contentScrollView trailingAnchor];
-    v29 = [v41 constraintEqualToAnchor:v39];
+    trailingAnchor3 = [(UIStackView *)v3->_contentStackView trailingAnchor];
+    trailingAnchor4 = [(UIScrollView *)v3->_contentScrollView trailingAnchor];
+    v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v50[1] = v29;
-    v30 = [(UIStackView *)v3->_contentStackView topAnchor];
-    v31 = [(UIScrollView *)v3->_contentScrollView topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    topAnchor4 = [(UIStackView *)v3->_contentStackView topAnchor];
+    topAnchor5 = [(UIScrollView *)v3->_contentScrollView topAnchor];
+    v32 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v50[2] = v32;
-    v33 = [(UIStackView *)v3->_contentStackView bottomAnchor];
-    v34 = [(UIScrollView *)v3->_contentScrollView bottomAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    bottomAnchor2 = [(UIStackView *)v3->_contentStackView bottomAnchor];
+    bottomAnchor3 = [(UIScrollView *)v3->_contentScrollView bottomAnchor];
+    v35 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v50[3] = v35;
     v50[4] = v3->_contentStackViewWidth;
     v36 = [NSArray arrayWithObjects:v50 count:5];
@@ -123,14 +123,14 @@
   return v3;
 }
 
-- (void)setIconSystemName:(id)a3
+- (void)setIconSystemName:(id)name
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_iconSystemName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_iconSystemName] & 1) == 0)
   {
-    objc_storeStrong(&self->_iconSystemName, a3);
+    objc_storeStrong(&self->_iconSystemName, name);
     iconImageView = self->_iconImageView;
-    if (v5)
+    if (nameCopy)
     {
       if (!iconImageView)
       {
@@ -141,11 +141,11 @@
         [(UIImageView *)self->_iconImageView setContentMode:2];
         [(UIImageView *)self->_iconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UIStackView *)self->_contentStackView insertArrangedSubview:self->_iconImageView atIndex:0];
-        v9 = [(UIImageView *)self->_iconImageView heightAnchor];
-        v10 = [v9 constraintEqualToConstant:80.0];
+        heightAnchor = [(UIImageView *)self->_iconImageView heightAnchor];
+        v10 = [heightAnchor constraintEqualToConstant:80.0];
         v15[0] = v10;
-        v11 = [(UIImageView *)self->_iconImageView widthAnchor];
-        v12 = [v11 constraintEqualToConstant:80.0];
+        widthAnchor = [(UIImageView *)self->_iconImageView widthAnchor];
+        v12 = [widthAnchor constraintEqualToConstant:80.0];
         v15[1] = v12;
         v13 = [NSArray arrayWithObjects:v15 count:2];
         [NSLayoutConstraint activateConstraints:v13];
@@ -153,7 +153,7 @@
         iconImageView = self->_iconImageView;
       }
 
-      v14 = [UIImage _systemImageNamed:v5];
+      v14 = [UIImage _systemImageNamed:nameCopy];
       [(UIImageView *)iconImageView setImage:v14];
     }
 
@@ -166,17 +166,17 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v13 = a3;
-  v4 = [(PBASimpleLockScreenView *)self title];
-  v5 = [v4 isEqualToString:v13];
+  titleCopy = title;
+  title = [(PBASimpleLockScreenView *)self title];
+  v5 = [title isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    v7 = v13;
-    if (v13)
+    v7 = titleCopy;
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -191,7 +191,7 @@
         [(UILabel *)v10 setFont:v11];
 
         [(UIStackView *)self->_contentStackView insertArrangedSubview:self->_titleLabel atIndex:self->_iconImageView != 0];
-        v7 = v13;
+        v7 = titleCopy;
         titleLabel = self->_titleLabel;
       }
 
@@ -207,17 +207,17 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v14 = a3;
-  v4 = [(PBASimpleLockScreenView *)self message];
-  v5 = [v4 isEqualToString:v14];
+  messageCopy = message;
+  message = [(PBASimpleLockScreenView *)self message];
+  v5 = [message isEqualToString:messageCopy];
 
   if ((v5 & 1) == 0)
   {
     messageLabel = self->_messageLabel;
-    v7 = v14;
-    if (v14)
+    v7 = messageCopy;
+    if (messageCopy)
     {
       if (!messageLabel)
       {
@@ -242,7 +242,7 @@
         }
 
         [(UIStackView *)self->_contentStackView insertArrangedSubview:self->_messageLabel atIndex:v12];
-        v7 = v14;
+        v7 = messageCopy;
         messageLabel = self->_messageLabel;
       }
 
@@ -258,12 +258,12 @@
   }
 }
 
-- (void)setStackItems:(id)a3
+- (void)setStackItems:(id)items
 {
-  v4 = a3;
-  if (![(NSArray *)self->_stackItems isEqualToArray:v4])
+  itemsCopy = items;
+  if (![(NSArray *)self->_stackItems isEqualToArray:itemsCopy])
   {
-    v5 = [v4 copy];
+    v5 = [itemsCopy copy];
     stackItems = self->_stackItems;
     self->_stackItems = v5;
 
@@ -279,27 +279,27 @@
 
       [(UIStackView *)self->_itemStackView setAxis:1];
       [(UIStackView *)self->_itemStackView setDistribution:0];
-      v11 = [(UIStackView *)self->_itemStackView layer];
-      [v11 setCornerRadius:12.0];
+      layer = [(UIStackView *)self->_itemStackView layer];
+      [layer setCornerRadius:12.0];
 
-      v12 = [(UIStackView *)self->_contentStackView arrangedSubviews];
-      v13 = [v12 lastObject];
+      arrangedSubviews = [(UIStackView *)self->_contentStackView arrangedSubviews];
+      lastObject = [arrangedSubviews lastObject];
 
-      if (v13)
+      if (lastObject)
       {
-        [(UIStackView *)self->_contentStackView setCustomSpacing:v13 afterView:32.0];
+        [(UIStackView *)self->_contentStackView setCustomSpacing:lastObject afterView:32.0];
       }
 
       [(UIStackView *)self->_itemStackView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIStackView *)self->_contentStackView addArrangedSubview:self->_itemStackView];
-      v14 = [(UIStackView *)self->_itemStackView leadingAnchor];
-      v15 = [(UIStackView *)self->_contentStackView leadingAnchor];
-      [v14 constraintEqualToAnchor:v15 constant:-12.0];
-      v16 = v30 = v13;
+      leadingAnchor = [(UIStackView *)self->_itemStackView leadingAnchor];
+      leadingAnchor2 = [(UIStackView *)self->_contentStackView leadingAnchor];
+      [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-12.0];
+      v16 = v30 = lastObject;
       v36[0] = v16;
-      v17 = [(UIStackView *)self->_itemStackView trailingAnchor];
-      v18 = [(UIStackView *)self->_contentStackView trailingAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18 constant:12.0];
+      trailingAnchor = [(UIStackView *)self->_itemStackView trailingAnchor];
+      trailingAnchor2 = [(UIStackView *)self->_contentStackView trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:12.0];
       v36[1] = v19;
       v20 = [NSArray arrayWithObjects:v36 count:2];
       [NSLayoutConstraint activateConstraints:v20];
@@ -311,8 +311,8 @@
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v21 = [(UIStackView *)self->_itemStackView arrangedSubviews];
-      v22 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      arrangedSubviews2 = [(UIStackView *)self->_itemStackView arrangedSubviews];
+      v22 = [arrangedSubviews2 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v22)
       {
         v23 = v22;
@@ -323,13 +323,13 @@
           {
             if (*v32 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(arrangedSubviews2);
             }
 
             [(UIStackView *)self->_itemStackView removeArrangedSubview:*(*(&v31 + 1) + 8 * i)];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v23 = [arrangedSubviews2 countByEnumeratingWithState:&v31 objects:v35 count:16];
         }
 
         while (v23);
@@ -362,12 +362,12 @@
   }
 }
 
-- (void)setShowInternalUIWarning:(BOOL)a3
+- (void)setShowInternalUIWarning:(BOOL)warning
 {
-  if (self->_showInternalUIWarning != a3)
+  if (self->_showInternalUIWarning != warning)
   {
-    self->_showInternalUIWarning = a3;
-    if (a3)
+    self->_showInternalUIWarning = warning;
+    if (warning)
     {
       v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       internalUIWarningLabel = self->_internalUIWarningLabel;
@@ -532,9 +532,9 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     [(PBASimpleLockScreenView *)self _hideCallToAction];
   }
@@ -542,9 +542,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(PBASimpleLockScreenView *)self window];
+  window = [(PBASimpleLockScreenView *)self window];
 
-  if (v3)
+  if (window)
   {
     v5 = NSRunLoopCommonModes;
     v4 = [NSArray arrayWithObjects:&v5 count:1];
@@ -552,22 +552,22 @@
   }
 }
 
-- (void)_screenDidBlank:(id)a3
+- (void)_screenDidBlank:(id)blank
 {
-  v4 = [(PBASimpleLockScreenView *)self window];
+  window = [(PBASimpleLockScreenView *)self window];
 
-  if (v4)
+  if (window)
   {
 
     [(PBASimpleLockScreenView *)self _hideCallToAction];
   }
 }
 
-- (void)_screenWillUnblank:(id)a3
+- (void)_screenWillUnblank:(id)unblank
 {
-  v4 = [(PBASimpleLockScreenView *)self window];
+  window = [(PBASimpleLockScreenView *)self window];
 
-  if (v4)
+  if (window)
   {
 
     [(PBASimpleLockScreenView *)self _showCallToAction];

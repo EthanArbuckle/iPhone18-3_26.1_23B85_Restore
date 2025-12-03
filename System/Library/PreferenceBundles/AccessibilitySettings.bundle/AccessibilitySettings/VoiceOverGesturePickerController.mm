@@ -1,8 +1,8 @@
 @interface VoiceOverGesturePickerController
 - (VoiceOverGesturePickerPresenter)presenter;
 - (id)makeSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverGesturePickerController
@@ -11,9 +11,9 @@
 {
   v27 = objc_opt_new();
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v35 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
-  v32 = self;
-  v4 = [*&self->AXUISettingsSearchableBaseListController_opaque[v3] voCommandResolver];
+  voCommandManager = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+  selfCopy = self;
+  voCommandResolver = [*&self->AXUISettingsSearchableBaseListController_opaque[v3] voCommandResolver];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -26,7 +26,7 @@
     v30 = 0;
     v28 = *v42;
     v34 = PSEnabledKey;
-    v6 = v35;
+    v6 = voCommandManager;
     do
     {
       v7 = 0;
@@ -45,8 +45,8 @@
         v39 = 0u;
         v40 = 0u;
         v33 = v8;
-        v36 = [v8 gestures];
-        v10 = [v36 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        gestures = [v8 gestures];
+        v10 = [gestures countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v10)
         {
           v11 = v10;
@@ -57,19 +57,19 @@
             {
               if (*v38 != v12)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(gestures);
               }
 
               v14 = *(*(&v37 + 1) + 8 * i);
-              v15 = [v6 availabilityForGesture:v14 withResolver:v4];
+              v15 = [v6 availabilityForGesture:v14 withResolver:voCommandResolver];
               if (v15 != &dword_0 + 2)
               {
                 v16 = v15;
-                v17 = [PSSpecifier voGestureItem:v14 commandManager:v6 resolver:v4];
+                v17 = [PSSpecifier voGestureItem:v14 commandManager:v6 resolver:voCommandResolver];
 
                 v18 = [NSNumber numberWithUnsignedInteger:v16];
-                v19 = [v17 voCommandContext];
-                [v19 setBindingAvailability:v18];
+                voCommandContext = [v17 voCommandContext];
+                [voCommandContext setBindingAvailability:v18];
 
                 if (v16)
                 {
@@ -78,7 +78,7 @@
 
                 else
                 {
-                  v20 = [(VoiceOverGesturePickerController *)v32 _isCategoryEnabled:v33];
+                  v20 = [(VoiceOverGesturePickerController *)selfCopy _isCategoryEnabled:v33];
                 }
 
                 v21 = [NSNumber numberWithInt:v20];
@@ -86,11 +86,11 @@
 
                 [v9 addObject:v17];
                 v5 = v17;
-                v6 = v35;
+                v6 = voCommandManager;
               }
             }
 
-            v11 = [v36 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v11 = [gestures countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v11);
@@ -98,11 +98,11 @@
 
         if ([v9 count])
         {
-          v22 = [v33 localizedCategoryName];
-          v23 = [PSSpecifier groupSpecifierWithName:v22];
+          localizedCategoryName = [v33 localizedCategoryName];
+          v23 = [PSSpecifier groupSpecifierWithName:localizedCategoryName];
 
           [v27 addObject:v23];
-          v6 = v35;
+          v6 = voCommandManager;
           [v27 addObjectsFromArray:v9];
           v30 = v23;
         }
@@ -120,54 +120,54 @@
   else
   {
     v30 = 0;
-    v6 = v35;
+    v6 = voCommandManager;
   }
 
   v24 = v27;
   return v27;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v7 = *&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 voCommandContext];
-  v14 = [v10 gesture];
+  pathCopy = path;
+  cellCopy = cell;
+  voCommandContext = [v7 voCommandContext];
+  gesture = [voCommandContext gesture];
 
-  v11 = [(VoiceOverGesturePickerController *)self specifierForIndexPath:v8];
+  v11 = [(VoiceOverGesturePickerController *)self specifierForIndexPath:pathCopy];
 
-  v12 = [v11 voCommandContext];
-  v13 = [v12 gesture];
+  voCommandContext2 = [v11 voCommandContext];
+  gesture2 = [voCommandContext2 gesture];
 
-  [v9 setChecked:{objc_msgSend(v14, "isEqual:", v13)}];
+  [cellCopy setChecked:{objc_msgSend(gesture, "isEqual:", gesture2)}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   v7 = OBJC_IVAR___PSViewController__specifier;
-  v8 = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
-  v19 = [v8 gesture];
+  voCommandContext = [*&self->AXUISettingsSearchableBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandContext];
+  gesture = [voCommandContext gesture];
 
-  v9 = [*&self->AXUISettingsSearchableBaseListController_opaque[v7] voCommandContext];
-  v10 = [v9 command];
+  voCommandContext2 = [*&self->AXUISettingsSearchableBaseListController_opaque[v7] voCommandContext];
+  command = [voCommandContext2 command];
 
-  v11 = [(VoiceOverGesturePickerController *)self specifierForIndexPath:v6];
+  v11 = [(VoiceOverGesturePickerController *)self specifierForIndexPath:pathCopy];
 
-  v12 = [v11 voCommandContext];
-  v13 = [v12 gesture];
+  voCommandContext3 = [v11 voCommandContext];
+  gesture2 = [voCommandContext3 gesture];
 
-  v14 = [v13 isEqual:v19];
-  v15 = [(VoiceOverGesturePickerController *)self presenter];
-  v16 = [v15 userSelectedGestureBlock];
+  v14 = [gesture2 isEqual:gesture];
+  presenter = [(VoiceOverGesturePickerController *)self presenter];
+  userSelectedGestureBlock = [presenter userSelectedGestureBlock];
 
-  if (v16)
+  if (userSelectedGestureBlock)
   {
-    v17 = [(VoiceOverGesturePickerController *)self presenter];
-    v18 = [v17 userSelectedGestureBlock];
-    (v18)[2](v18, v13, v10, v14);
+    presenter2 = [(VoiceOverGesturePickerController *)self presenter];
+    userSelectedGestureBlock2 = [presenter2 userSelectedGestureBlock];
+    (userSelectedGestureBlock2)[2](userSelectedGestureBlock2, gesture2, command, v14);
   }
 }
 

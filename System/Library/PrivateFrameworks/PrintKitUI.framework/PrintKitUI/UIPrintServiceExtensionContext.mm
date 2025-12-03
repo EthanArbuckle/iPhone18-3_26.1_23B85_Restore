@@ -1,8 +1,8 @@
 @interface UIPrintServiceExtensionContext
 - (UIPrintServiceExtensionContext)init;
-- (void)_apOp:(id)a3 reply:(id)a4;
-- (void)_authenticatedRequestForRequest:(id)a3 challengeResponse:(id)a4 reply:(id)a5;
-- (void)_gatherPrintersForPrintInfo:(id)a3 reply:(id)a4;
+- (void)_apOp:(id)op reply:(id)reply;
+- (void)_authenticatedRequestForRequest:(id)request challengeResponse:(id)response reply:(id)reply;
+- (void)_gatherPrintersForPrintInfo:(id)info reply:(id)reply;
 - (void)dealloc;
 @end
 
@@ -22,11 +22,11 @@
   [(UIPrintServiceExtensionContext *)&v2 dealloc];
 }
 
-- (void)_gatherPrintersForPrintInfo:(id)a3 reply:(id)a4
+- (void)_gatherPrintersForPrintInfo:(id)info reply:(id)reply
 {
-  v6 = a4;
-  v7 = [UIPrintInfo printInfoWithDictionary:a3];
-  v8 = [(UIPrintServiceExtensionContext *)self _principalObject];
+  replyCopy = reply;
+  v7 = [UIPrintInfo printInfoWithDictionary:info];
+  _principalObject = [(UIPrintServiceExtensionContext *)self _principalObject];
   v9 = objc_opt_respondsToSelector();
 
   if ((v9 & 1) != 0 && (-[UIPrintServiceExtensionContext _principalObject](self, "_principalObject"), v10 = objc_claimAutoreleasedReturnValue(), [v10 printerDestinationsForPrintInfo:v7], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
@@ -39,12 +39,12 @@
     v15 = v12;
     v13 = v12;
     [v11 enumerateObjectsUsingBlock:v14];
-    v6[2](v6, v13);
+    replyCopy[2](replyCopy, v13);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x277CBEBF8]);
+    replyCopy[2](replyCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -55,36 +55,36 @@ void __68__UIPrintServiceExtensionContext__gatherPrintersForPrintInfo_reply___bl
   [v2 addObject:v3];
 }
 
-- (void)_authenticatedRequestForRequest:(id)a3 challengeResponse:(id)a4 reply:(id)a5
+- (void)_authenticatedRequestForRequest:(id)request challengeResponse:(id)response reply:(id)reply
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIPrintServiceExtensionContext *)self _principalObject];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  requestCopy = request;
+  responseCopy = response;
+  replyCopy = reply;
+  _principalObject = [(UIPrintServiceExtensionContext *)self _principalObject];
+  if (_principalObject && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 _authenticatedRequestForRequest:v11 challengeResponse:v8 reply:v9];
+    [_principalObject _authenticatedRequestForRequest:requestCopy challengeResponse:responseCopy reply:replyCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)_apOp:(id)a3 reply:(id)a4
+- (void)_apOp:(id)op reply:(id)reply
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(UIPrintServiceExtensionContext *)self _principalObject];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  opCopy = op;
+  replyCopy = reply;
+  _principalObject = [(UIPrintServiceExtensionContext *)self _principalObject];
+  if (_principalObject && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 _apOp:v8 reply:v6];
+    [_principalObject _apOp:opCopy reply:replyCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 

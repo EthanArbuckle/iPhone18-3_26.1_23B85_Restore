@@ -1,26 +1,26 @@
 @interface MUIMessageListPrioritySectionDataSource
-- (BOOL)hasSupplementaryViewOfKind:(id)a3;
-- (MUIMessageListPrioritySectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9;
-- (id)configuredReusableSupplementaryViewForCollectionView:(id)a3 elementKind:(id)a4 indexPath:(id)a5;
+- (BOOL)hasSupplementaryViewOfKind:(id)kind;
+- (MUIMessageListPrioritySectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type;
+- (id)configuredReusableSupplementaryViewForCollectionView:(id)view elementKind:(id)kind indexPath:(id)path;
 @end
 
 @implementation MUIMessageListPrioritySectionDataSource
 
-- (MUIMessageListPrioritySectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9
+- (MUIMessageListPrioritySectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (a9 != 1)
+  sectionCopy = section;
+  viewCopy = view;
+  promiseCopy = promise;
+  helperCopy = helper;
+  stateCopy = state;
+  if (type != 1)
   {
     [MUIMessageListPrioritySectionDataSource initWithSection:a2 collectionView:self messageList:? initialLoadCompletedPromise:? layoutValuesHelper:? state:? headerType:?];
   }
 
   v23.receiver = self;
   v23.super_class = MUIMessageListPrioritySectionDataSource;
-  v20 = [(MessageListSectionDataSource *)&v23 initWithSection:v15 collectionView:v16 messageList:0 initialLoadCompletedPromise:v17 layoutValuesHelper:v18 state:v19 headerType:1];
+  v20 = [(MessageListSectionDataSource *)&v23 initWithSection:sectionCopy collectionView:viewCopy messageList:0 initialLoadCompletedPromise:promiseCopy layoutValuesHelper:helperCopy state:stateCopy headerType:1];
   if (v20 && _os_feature_enabled_impl() && EMIsGreymatterSupported())
   {
     v21 = [MEMORY[0x277D75320] registrationWithSupplementaryClass:objc_opt_class() elementKind:*MEMORY[0x277D767D8] configurationHandler:&__block_literal_global_27];
@@ -30,10 +30,10 @@
   return v20;
 }
 
-- (BOOL)hasSupplementaryViewOfKind:(id)a3
+- (BOOL)hasSupplementaryViewOfKind:(id)kind
 {
-  v4 = a3;
-  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && ([v4 isEqualToString:*MEMORY[0x277D767D8]] & 1) != 0)
+  kindCopy = kind;
+  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && ([kindCopy isEqualToString:*MEMORY[0x277D767D8]] & 1) != 0)
   {
     v5 = 1;
   }
@@ -42,28 +42,28 @@
   {
     v7.receiver = self;
     v7.super_class = MUIMessageListPrioritySectionDataSource;
-    v5 = [(MessageListSectionDataSource *)&v7 hasSupplementaryViewOfKind:v4];
+    v5 = [(MessageListSectionDataSource *)&v7 hasSupplementaryViewOfKind:kindCopy];
   }
 
   return v5;
 }
 
-- (id)configuredReusableSupplementaryViewForCollectionView:(id)a3 elementKind:(id)a4 indexPath:(id)a5
+- (id)configuredReusableSupplementaryViewForCollectionView:(id)view elementKind:(id)kind indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && [v9 isEqualToString:*MEMORY[0x277D767D8]])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (_os_feature_enabled_impl() && EMIsGreymatterSupported() && [kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
-    v11 = [(MessageListSectionDataSource *)self headerRegistration];
-    v12 = [v8 dequeueConfiguredReusableSupplementaryViewWithRegistration:v11 forIndexPath:v10];
+    headerRegistration = [(MessageListSectionDataSource *)self headerRegistration];
+    v12 = [viewCopy dequeueConfiguredReusableSupplementaryViewWithRegistration:headerRegistration forIndexPath:pathCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = MUIMessageListPrioritySectionDataSource;
-    v12 = [(MessageListSectionDataSource *)&v14 configuredReusableSupplementaryViewForCollectionView:v8 elementKind:v9 indexPath:v10];
+    v12 = [(MessageListSectionDataSource *)&v14 configuredReusableSupplementaryViewForCollectionView:viewCopy elementKind:kindCopy indexPath:pathCopy];
   }
 
   return v12;

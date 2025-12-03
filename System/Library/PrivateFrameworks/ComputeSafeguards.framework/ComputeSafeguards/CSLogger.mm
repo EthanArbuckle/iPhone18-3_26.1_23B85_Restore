@@ -1,5 +1,5 @@
 @interface CSLogger
-+ (id)logForCategory:(id)a3;
++ (id)logForCategory:(id)category;
 + (void)initialize;
 @end
 
@@ -30,17 +30,17 @@ void __22__CSLogger_initialize__block_invoke()
   lock = 0;
 }
 
-+ (id)logForCategory:(id)a3
++ (id)logForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock(&lock);
-  v4 = [logCategories objectForKeyedSubscript:v3];
+  v4 = [logCategories objectForKeyedSubscript:categoryCopy];
   if (!v4)
   {
-    v4 = os_log_create("com.apple.powerexceptionsd", [v3 UTF8String]);
+    v4 = os_log_create("com.apple.powerexceptionsd", [categoryCopy UTF8String]);
   }
 
-  [logCategories setObject:v4 forKeyedSubscript:v3];
+  [logCategories setObject:v4 forKeyedSubscript:categoryCopy];
   os_unfair_lock_unlock(&lock);
 
   return v4;

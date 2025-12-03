@@ -1,13 +1,13 @@
 @interface AppStoreContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation AppStoreContentView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  CGSizeMake(self, a2, a3, *&a3.height);
+  CGSizeMake(self, a2, fits, *&fits.height);
   result.height = v4;
   result.width = v3;
   return result;
@@ -15,7 +15,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFC5D9C();
 }
 

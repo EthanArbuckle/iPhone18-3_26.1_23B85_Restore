@@ -1,21 +1,21 @@
 @interface SBIconLegibilityLabelAccessoryView
 - (BOOL)hasBaseline;
-- (SBIconLegibilityLabelAccessoryView)initWithFrame:(CGRect)a3;
+- (SBIconLegibilityLabelAccessoryView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (double)baselineOffsetFromBottom;
 - (id)firstBaselineAnchor;
 - (id)lastBaselineAnchor;
-- (void)updateWithBaseImage:(id)a3 legibilitySettings:(id)a4;
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4;
+- (void)updateWithBaseImage:(id)image legibilitySettings:(id)settings;
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font;
 @end
 
 @implementation SBIconLegibilityLabelAccessoryView
 
-- (SBIconLegibilityLabelAccessoryView)initWithFrame:(CGRect)a3
+- (SBIconLegibilityLabelAccessoryView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SBIconLegibilityLabelAccessoryView;
-  v3 = [(SBIconLegibilityLabelAccessoryView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconLegibilityLabelAccessoryView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -28,41 +28,41 @@
   return v3;
 }
 
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 primaryColor];
-  [(SBIconLegibilityLabelAccessoryView *)self setTintColor:v8];
+  fontCopy = font;
+  settingsCopy = settings;
+  primaryColor = [settingsCopy primaryColor];
+  [(SBIconLegibilityLabelAccessoryView *)self setTintColor:primaryColor];
 
   v9.receiver = self;
   v9.super_class = SBIconLegibilityLabelAccessoryView;
-  [(SBIconLabelAccessoryView *)&v9 updateWithLegibilitySettings:v7 labelFont:v6];
+  [(SBIconLabelAccessoryView *)&v9 updateWithLegibilitySettings:settingsCopy labelFont:fontCopy];
 }
 
-- (void)updateWithBaseImage:(id)a3 legibilitySettings:(id)a4
+- (void)updateWithBaseImage:(id)image legibilitySettings:(id)settings
 {
-  v5 = a3;
-  v6 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  [v6 setImage:v5];
+  imageCopy = image;
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  [iconImageView setImage:imageCopy];
 
-  [v6 sizeToFit];
+  [iconImageView sizeToFit];
 }
 
 - (BOOL)hasBaseline
 {
-  v2 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  v3 = [v2 image];
-  v4 = [v3 hasBaseline];
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  image = [iconImageView image];
+  hasBaseline = [image hasBaseline];
 
-  return v4;
+  return hasBaseline;
 }
 
 - (double)baselineOffsetFromBottom
 {
-  v2 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  v3 = [v2 image];
-  [v3 baselineOffsetFromBottom];
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  image = [iconImageView image];
+  [image baselineOffsetFromBottom];
   v5 = v4;
 
   return v5;
@@ -70,9 +70,9 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  v3 = [v2 image];
-  [v3 alignmentRectInsets];
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  image = [iconImageView image];
+  [image alignmentRectInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -91,18 +91,18 @@
 
 - (id)firstBaselineAnchor
 {
-  v2 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  v3 = [v2 firstBaselineAnchor];
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  firstBaselineAnchor = [iconImageView firstBaselineAnchor];
 
-  return v3;
+  return firstBaselineAnchor;
 }
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
-  v3 = [v2 lastBaselineAnchor];
+  iconImageView = [(SBIconLegibilityLabelAccessoryView *)self iconImageView];
+  lastBaselineAnchor = [iconImageView lastBaselineAnchor];
 
-  return v3;
+  return lastBaselineAnchor;
 }
 
 @end

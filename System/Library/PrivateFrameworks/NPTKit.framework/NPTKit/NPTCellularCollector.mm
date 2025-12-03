@@ -1,26 +1,26 @@
 @interface NPTCellularCollector
-+ (id)calculateMaxCellularTPutEstimates:(id)a3;
++ (id)calculateMaxCellularTPutEstimates:(id)estimates;
 + (id)getPreferredDataSlot;
 + (void)getPreferredDataSlot;
 - (NPTCellularCollector)init;
-- (NPTCellularCollector)initWithSlotID:(id)a3;
+- (NPTCellularCollector)initWithSlotID:(id)d;
 - (NSArray)cellChanges;
 - (NSArray)dataStatusChanges;
 - (NSDictionary)metadata;
 - (id)dualSimStatus;
 - (id)fetchCellularTPutEstimates;
-- (id)getCellInfoForSlot:(id)a3;
+- (id)getCellInfoForSlot:(id)slot;
 - (id)getCellularMNCMCCDE;
-- (id)getEstimateFromPath:(id)a3;
+- (id)getEstimateFromPath:(id)path;
 - (id)signalStrengthMeasurements;
 - (id)wrmBasebandMetrics;
-- (void)cellChanged:(id)a3 cell:(id)a4;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
-- (void)estimateDidChange:(id)a3;
+- (void)cellChanged:(id)changed cell:(id)cell;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
+- (void)estimateDidChange:(id)change;
 - (void)getCellularMNCMCCDE;
-- (void)setUpPathMonitor:(id)a3;
+- (void)setUpPathMonitor:(id)monitor;
 - (void)signalStrengthMeasurements;
-- (void)startCollectingWithCompletion:(id)a3;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (NPTCellularCollector)initWithSlotID:(id)a3
+- (NPTCellularCollector)initWithSlotID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = NPTCellularCollector;
   v6 = [(NPTCellularCollector *)&v25 init];
@@ -65,24 +65,24 @@
     v6->_ctClient = v17;
 
     [(CoreTelephonyClient *)v6->_ctClient setDelegate:v6];
-    objc_storeStrong(&v6->_slotID, a3);
+    objc_storeStrong(&v6->_slotID, d);
     v19 = objc_alloc_init(MEMORY[0x277CC3790]);
     networkInfo = v6->_networkInfo;
     v6->_networkInfo = v19;
 
-    if ([v5 isEqualToNumber:&unk_2848CF158])
+    if ([dCopy isEqualToNumber:&unk_2848CF158])
     {
       v21 = 1;
     }
 
-    else if ([v5 isEqualToNumber:&unk_2848CF170])
+    else if ([dCopy isEqualToNumber:&unk_2848CF170])
     {
       v21 = 2;
     }
 
     else
     {
-      NSLog(&cfstr_ExpectingSloti.isa, v5);
+      NSLog(&cfstr_ExpectingSloti.isa, dCopy);
       v21 = 0;
     }
 
@@ -97,24 +97,24 @@
 - (NSDictionary)metadata
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(NPTCellularCollector *)self mutableMetadata];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  mutableMetadata = [(NPTCellularCollector *)self mutableMetadata];
+  v4 = [v2 dictionaryWithDictionary:mutableMetadata];
 
   return v4;
 }
 
 - (id)dualSimStatus
 {
-  v3 = [(NPTCellularCollector *)self ctClient];
+  ctClient = [(NPTCellularCollector *)self ctClient];
 
-  if (!v3)
+  if (!ctClient)
   {
     return @"Unknown";
   }
 
-  v4 = [(NPTCellularCollector *)self ctClient];
+  ctClient2 = [(NPTCellularCollector *)self ctClient];
   v8 = 0;
-  v5 = [v4 getDualSimCapability:&v8];
+  v5 = [ctClient2 getDualSimCapability:&v8];
   v6 = v8;
 
   result = @"Unknown";
@@ -188,8 +188,8 @@
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = self;
-          objc_sync_enter(v13);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           v14 = [v39[5] valueForKey:v12];
           if (v14)
           {
@@ -201,7 +201,7 @@
             }
           }
 
-          objc_sync_exit(v13);
+          objc_sync_exit(selfCopy);
         }
 
         v9 = [&unk_2848CF440 countByEnumeratingWithState:&v27 objects:v46 count:16];
@@ -268,8 +268,8 @@ uint64_t __42__NPTCellularCollector_wrmBasebandMetrics__block_invoke_2(uint64_t 
 
 - (id)signalStrengthMeasurements
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NPTCellularCollector *)self ctClient];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  ctClient = [(NPTCellularCollector *)self ctClient];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -284,42 +284,42 @@ uint64_t __42__NPTCellularCollector_wrmBasebandMetrics__block_invoke_2(uint64_t 
   }
 
   v6 = MEMORY[0x277CC3718];
-  v7 = [(NPTCellularCollector *)self context];
-  v8 = [v6 descriptorWithSubscriptionContext:v7];
+  context = [(NPTCellularCollector *)self context];
+  v8 = [v6 descriptorWithSubscriptionContext:context];
 
-  v9 = [(NPTCellularCollector *)self ctClient];
+  ctClient2 = [(NPTCellularCollector *)self ctClient];
   v23 = 0;
-  v10 = [v9 getSignalStrengthMeasurements:v8 error:&v23];
+  v10 = [ctClient2 getSignalStrengthMeasurements:v8 error:&v23];
   v11 = v23;
 
   if (!v11)
   {
-    v14 = [v10 rssi];
-    [v3 setObject:v14 forKeyedSubscript:@"cellular_rssi"];
+    rssi = [v10 rssi];
+    [dictionary setObject:rssi forKeyedSubscript:@"cellular_rssi"];
 
-    v15 = [v10 rscp];
-    [v3 setObject:v15 forKeyedSubscript:@"cellular_rscp"];
+    rscp = [v10 rscp];
+    [dictionary setObject:rscp forKeyedSubscript:@"cellular_rscp"];
 
-    v16 = [v10 ecn0];
-    [v3 setObject:v16 forKeyedSubscript:@"cellular_ecn0"];
+    ecn0 = [v10 ecn0];
+    [dictionary setObject:ecn0 forKeyedSubscript:@"cellular_ecn0"];
 
-    v17 = [v10 rsrp];
-    [v3 setObject:v17 forKeyedSubscript:@"cellular_rsrp"];
+    rsrp = [v10 rsrp];
+    [dictionary setObject:rsrp forKeyedSubscript:@"cellular_rsrp"];
 
-    v18 = [v10 rsrq];
-    [v3 setObject:v18 forKeyedSubscript:@"cellular_rsrq"];
+    rsrq = [v10 rsrq];
+    [dictionary setObject:rsrq forKeyedSubscript:@"cellular_rsrq"];
 
     v19 = [v10 snr];
-    [v3 setObject:v19 forKeyedSubscript:@"cellular_snr"];
+    [dictionary setObject:v19 forKeyedSubscript:@"cellular_snr"];
 
-    v20 = [v10 ecio];
-    [v3 setObject:v20 forKeyedSubscript:@"cellular_ecio"];
+    ecio = [v10 ecio];
+    [dictionary setObject:ecio forKeyedSubscript:@"cellular_ecio"];
 
-    v21 = [v10 rxagc];
-    [v3 setObject:v21 forKeyedSubscript:@"cellular_rxagc"];
+    rxagc = [v10 rxagc];
+    [dictionary setObject:rxagc forKeyedSubscript:@"cellular_rxagc"];
 
 LABEL_9:
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+    v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
     goto LABEL_10;
   }
 
@@ -329,7 +329,7 @@ LABEL_9:
     [(NPTCellularCollector *)self signalStrengthMeasurements];
   }
 
-  v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
 LABEL_10:
 
@@ -391,9 +391,9 @@ LABEL_10:
   return v15;
 }
 
-- (id)getCellInfoForSlot:(id)a3
+- (id)getCellInfoForSlot:(id)slot
 {
-  v3 = a3;
+  slotCopy = slot;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -404,13 +404,13 @@ LABEL_10:
   v5 = dispatch_get_global_queue(2, 0);
   v6 = [v4 initWithQueue:v5];
 
-  if ([v3 isEqualToNumber:&unk_2848CF158])
+  if ([slotCopy isEqualToNumber:&unk_2848CF158])
   {
     v7 = objc_alloc(MEMORY[0x277CC3798]);
     v8 = 1;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2848CF170])
+  else if ([slotCopy isEqualToNumber:&unk_2848CF170])
   {
     v7 = objc_alloc(MEMORY[0x277CC3798]);
     v8 = 2;
@@ -491,9 +491,9 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
   return result;
 }
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v63 = a3;
+  completionCopy = completion;
   v62 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(NPTCellularCollector *)self setStopCollectingMetadata:0];
@@ -501,18 +501,18 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
   [(NPTCellularCollector *)self setCachedMetadata:v5];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(NPTCellularCollector *)self cachedMetadata];
-  [v7 setObject:v6 forKeyedSubscript:?];
+  cachedMetadata = [(NPTCellularCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v6 forKeyedSubscript:?];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(NPTCellularCollector *)self cachedMetadata];
-  [v9 setObject:v8 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTCellularCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v8 forKeyedSubscript:@"events"];
 
-  v10 = [(NPTCellularCollector *)self dualSimStatus];
-  [v4 setObject:v10 forKeyedSubscript:@"cellular_dual_sim_capability"];
+  dualSimStatus = [(NPTCellularCollector *)self dualSimStatus];
+  [v4 setObject:dualSimStatus forKeyedSubscript:@"cellular_dual_sim_capability"];
 
-  v11 = [(NPTCellularCollector *)self slotID];
-  v12 = [(NPTCellularCollector *)self getCellInfoForSlot:v11];
+  slotID = [(NPTCellularCollector *)self slotID];
+  v12 = [(NPTCellularCollector *)self getCellInfoForSlot:slotID];
 
   if (v12)
   {
@@ -526,16 +526,16 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
   }
 
   v61 = v12;
-  v13 = [(NPTCellularCollector *)self signalStrengthMeasurements];
-  [v4 addEntriesFromDictionary:v13];
+  signalStrengthMeasurements = [(NPTCellularCollector *)self signalStrengthMeasurements];
+  [v4 addEntriesFromDictionary:signalStrengthMeasurements];
 
-  v14 = [(NPTCellularCollector *)self networkInfo];
-  v15 = [v14 dataServiceIdentifier];
+  networkInfo = [(NPTCellularCollector *)self networkInfo];
+  dataServiceIdentifier = [networkInfo dataServiceIdentifier];
 
-  v16 = [(NPTCellularCollector *)self networkInfo];
-  v17 = [v16 serviceCurrentRadioAccessTechnology];
-  v60 = v15;
-  v18 = [v17 objectForKeyedSubscript:v15];
+  networkInfo2 = [(NPTCellularCollector *)self networkInfo];
+  serviceCurrentRadioAccessTechnology = [networkInfo2 serviceCurrentRadioAccessTechnology];
+  v60 = dataServiceIdentifier;
+  v18 = [serviceCurrentRadioAccessTechnology objectForKeyedSubscript:dataServiceIdentifier];
 
   if (v18)
   {
@@ -551,8 +551,8 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
   v24 = v23;
   if (v22 && !v23)
   {
-    v25 = [v22 uppercaseString];
-    [v4 setObject:v25 forKeyedSubscript:@"cellular_mobile_country_code"];
+    uppercaseString = [v22 uppercaseString];
+    [v4 setObject:uppercaseString forKeyedSubscript:@"cellular_mobile_country_code"];
 
     v26 = self->_ctClient;
     v71 = 0;
@@ -561,8 +561,8 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
     v24 = v28;
     if (v27 && !v28)
     {
-      v29 = [v27 uppercaseString];
-      [v4 setObject:v29 forKeyedSubscript:@"cellular_iso_country_code"];
+      uppercaseString2 = [v27 uppercaseString];
+      [v4 setObject:uppercaseString2 forKeyedSubscript:@"cellular_iso_country_code"];
     }
   }
 
@@ -574,8 +574,8 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
 
   if (v32 && !v33)
   {
-    v34 = [v32 uppercaseString];
-    [v4 setObject:v34 forKeyedSubscript:@"cellular_mobile_network_code"];
+    uppercaseString3 = [v32 uppercaseString];
+    [v4 setObject:uppercaseString3 forKeyedSubscript:@"cellular_mobile_network_code"];
   }
 
   v57 = v32;
@@ -614,10 +614,10 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
     [v4 setObject:v43 forKeyedSubscript:@"cellular_carrier_name"];
   }
 
-  v45 = [(NPTCellularCollector *)self ctClient];
-  v46 = [(NPTCellularCollector *)self context];
+  ctClient = [(NPTCellularCollector *)self ctClient];
+  context = [(NPTCellularCollector *)self context];
   v67 = 0;
-  v47 = [v45 getDataStatus:v46 error:&v67];
+  v47 = [ctClient getDataStatus:context error:&v67];
   v48 = v67;
 
   if (v48)
@@ -629,11 +629,11 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
     }
   }
 
-  v50 = [v47 dictionary];
-  [v4 addEntriesFromDictionary:v50];
+  dictionary = [v47 dictionary];
+  [v4 addEntriesFromDictionary:dictionary];
 
-  v51 = [(NPTCellularCollector *)self getCellularMNCMCCDE];
-  [v4 addEntriesFromDictionary:v51];
+  getCellularMNCMCCDE = [(NPTCellularCollector *)self getCellularMNCMCCDE];
+  [v4 addEntriesFromDictionary:getCellularMNCMCCDE];
 
   v65[0] = 0;
   v65[1] = v65;
@@ -652,20 +652,20 @@ intptr_t __43__NPTCellularCollector_getCellInfoForSlot___block_invoke(uint64_t a
     [v62 addObject:v48];
   }
 
-  if (v63)
+  if (completionCopy)
   {
     v52 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
     v53 = [v62 copy];
-    v63[2](v63, v52, v53);
+    completionCopy[2](completionCopy, v52, v53);
   }
 
-  v54 = self;
-  objc_sync_enter(v54);
-  v55 = [(NPTCellularCollector *)v54 cachedMetadata];
-  [v55 setObject:v4 forKeyedSubscript:@"initial_state"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedMetadata3 = [(NPTCellularCollector *)selfCopy cachedMetadata];
+  [cachedMetadata3 setObject:v4 forKeyedSubscript:@"initial_state"];
 
-  [(NPTCellularCollector *)v54 setMutableMetadata:v4];
-  objc_sync_exit(v54);
+  [(NPTCellularCollector *)selfCopy setMutableMetadata:v4];
+  objc_sync_exit(selfCopy);
 
   _Block_object_dispose(v65, 8);
   objc_destroyWeak(&v66);
@@ -757,8 +757,8 @@ BOOL __54__NPTCellularCollector_startCollectingWithCompletion___block_invoke_2(u
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v5 subscriptions];
-    v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    subscriptions = [v5 subscriptions];
+    v10 = [subscriptions countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -770,13 +770,13 @@ BOOL __54__NPTCellularCollector_startCollectingWithCompletion___block_invoke_2(u
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subscriptions);
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 uuid];
-          v16 = [v5 dataPreferred];
-          v17 = [v15 isEqual:v16];
+          uuid = [v14 uuid];
+          dataPreferred = [v5 dataPreferred];
+          v17 = [uuid isEqual:dataPreferred];
 
           if (v17)
           {
@@ -786,7 +786,7 @@ BOOL __54__NPTCellularCollector_startCollectingWithCompletion___block_invoke_2(u
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v11 = [subscriptions countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v11)
         {
           continue;
@@ -809,21 +809,21 @@ LABEL_16:
   return v8;
 }
 
-- (void)setUpPathMonitor:(id)a3
+- (void)setUpPathMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v5 = nw_path_monitor_create_with_type(nw_interface_type_cellular);
   [(NPTCellularCollector *)self setPathMonitor:v5];
 
-  v6 = [(NPTCellularCollector *)self pathMonitor];
+  pathMonitor = [(NPTCellularCollector *)self pathMonitor];
   v7 = dispatch_get_global_queue(2, 0);
-  nw_path_monitor_set_queue(v6, v7);
+  nw_path_monitor_set_queue(pathMonitor, v7);
 
-  v8 = [(NPTCellularCollector *)self pathMonitor];
-  nw_path_monitor_set_update_handler(v8, v4);
+  pathMonitor2 = [(NPTCellularCollector *)self pathMonitor];
+  nw_path_monitor_set_update_handler(pathMonitor2, monitorCopy);
 
-  v9 = [(NPTCellularCollector *)self pathMonitor];
-  nw_path_monitor_start(v9);
+  pathMonitor3 = [(NPTCellularCollector *)self pathMonitor];
+  nw_path_monitor_start(pathMonitor3);
 }
 
 - (id)fetchCellularTPutEstimates
@@ -892,10 +892,10 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
   return type != nw_interface_type_cellular;
 }
 
-- (id)getEstimateFromPath:(id)a3
+- (id)getEstimateFromPath:(id)path
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(v3);
   estimated_download_throughput = nw_path_get_estimated_download_throughput();
   estimated_upload_throughput = nw_path_get_estimated_upload_throughput();
@@ -909,11 +909,11 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
   return v5;
 }
 
-- (void)estimateDidChange:(id)a3
+- (void)estimateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(NPTCellularCollector *)self getEstimateFromPath:v4];
+  v6 = [(NPTCellularCollector *)self getEstimateFromPath:changeCopy];
   [v5 addEntriesFromDictionary:v6];
 
   v7 = +[NPTLogger cellular];
@@ -924,10 +924,10 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
 
   if ([v5 count])
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(NPTCellularCollector *)v8 mutableMetadata];
-    [v9 addEntriesFromDictionary:v5];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    mutableMetadata = [(NPTCellularCollector *)selfCopy mutableMetadata];
+    [mutableMetadata addEntriesFromDictionary:v5];
 
     v10 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v10 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"];
@@ -936,81 +936,81 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
     v13 = [MEMORY[0x277CBEAA8] now];
     v14 = [(NPTMetadataEvent *)v11 initWithType:v12 eventType:27 timeStamp:v13 data:v5];
 
-    v15 = [(NPTCellularCollector *)v8 cachedMetadata];
-    v16 = [v15 objectForKeyedSubscript:@"events"];
-    v17 = [(NPTMetadataEvent *)v14 asDictionary];
-    [v16 addObject:v17];
+    cachedMetadata = [(NPTCellularCollector *)selfCopy cachedMetadata];
+    v16 = [cachedMetadata objectForKeyedSubscript:@"events"];
+    asDictionary = [(NPTMetadataEvent *)v14 asDictionary];
+    [v16 addObject:asDictionary];
 
-    objc_sync_exit(v8);
-    v18 = [(NPTCellularCollector *)v8 metadataDidChangeHandler];
+    objc_sync_exit(selfCopy);
+    metadataDidChangeHandler = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
 
-    if (v18)
+    if (metadataDidChangeHandler)
     {
-      v19 = [(NPTCellularCollector *)v8 metadataDidChangeHandler];
-      (v19)[2](v19, v14, 0);
+      metadataDidChangeHandler2 = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
+      (metadataDidChangeHandler2)[2](metadataDidChangeHandler2, v14, 0);
     }
   }
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(NPTCellularCollector *)self context];
-  v10 = [v9 uuid];
-  if ([v8 isEqual:v10])
+  statusCopy = status;
+  infoCopy = info;
+  uuid = [statusCopy uuid];
+  context = [(NPTCellularCollector *)self context];
+  uuid2 = [context uuid];
+  if ([uuid isEqual:uuid2])
   {
-    v11 = [(NPTCellularCollector *)self stopCollectingMetadata];
+    stopCollectingMetadata = [(NPTCellularCollector *)self stopCollectingMetadata];
 
-    if (!v11)
+    if (!stopCollectingMetadata)
     {
       v12 = +[NPTLogger cellular];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [NPTCellularCollector dataStatus:v7 dataStatusInfo:v12];
+        [NPTCellularCollector dataStatus:infoCopy dataStatusInfo:v12];
       }
 
-      v13 = self;
-      objc_sync_enter(v13);
-      [(NPTCellularCollector *)v13 setDataStatus:v7];
-      v14 = [(NPTCellularCollector *)v13 mutableDataStatusChanges];
-      v15 = [(NPTCellularCollector *)v13 dataStatus];
-      v16 = [v15 dictionary];
-      [v14 addObject:v16];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(NPTCellularCollector *)selfCopy setDataStatus:infoCopy];
+      mutableDataStatusChanges = [(NPTCellularCollector *)selfCopy mutableDataStatusChanges];
+      dataStatus = [(NPTCellularCollector *)selfCopy dataStatus];
+      dictionary = [dataStatus dictionary];
+      [mutableDataStatusChanges addObject:dictionary];
 
-      v17 = [(NPTCellularCollector *)v13 mutableMetadata];
-      v18 = [(NPTCellularCollector *)v13 dataStatus];
-      v19 = [v18 dictionary];
-      [v17 addEntriesFromDictionary:v19];
+      mutableMetadata = [(NPTCellularCollector *)selfCopy mutableMetadata];
+      dataStatus2 = [(NPTCellularCollector *)selfCopy dataStatus];
+      dictionary2 = [dataStatus2 dictionary];
+      [mutableMetadata addEntriesFromDictionary:dictionary2];
 
       v20 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v20 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"];
       v21 = [NPTMetadataEvent alloc];
       v22 = objc_opt_class();
       v23 = [MEMORY[0x277CBEAA8] now];
-      v24 = [(NPTCellularCollector *)v13 dataStatus];
-      v25 = [v24 dictionary];
-      v26 = [(NPTMetadataEvent *)v21 initWithType:v22 eventType:1 timeStamp:v23 data:v25];
+      dataStatus3 = [(NPTCellularCollector *)selfCopy dataStatus];
+      dictionary3 = [dataStatus3 dictionary];
+      v26 = [(NPTMetadataEvent *)v21 initWithType:v22 eventType:1 timeStamp:v23 data:dictionary3];
 
-      v27 = [(NPTCellularCollector *)v13 cachedMetadata];
-      v28 = [v27 objectForKeyedSubscript:@"events"];
+      cachedMetadata = [(NPTCellularCollector *)selfCopy cachedMetadata];
+      v28 = [cachedMetadata objectForKeyedSubscript:@"events"];
 
       if (v28)
       {
-        v29 = [(NPTCellularCollector *)v13 cachedMetadata];
-        v30 = [v29 objectForKeyedSubscript:@"events"];
-        v31 = [(NPTMetadataEvent *)v26 asDictionary];
-        [v30 addObject:v31];
+        cachedMetadata2 = [(NPTCellularCollector *)selfCopy cachedMetadata];
+        v30 = [cachedMetadata2 objectForKeyedSubscript:@"events"];
+        asDictionary = [(NPTMetadataEvent *)v26 asDictionary];
+        [v30 addObject:asDictionary];
       }
 
-      objc_sync_exit(v13);
-      v32 = [(NPTCellularCollector *)v13 metadataDidChangeHandler];
+      objc_sync_exit(selfCopy);
+      metadataDidChangeHandler = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
 
-      if (v32)
+      if (metadataDidChangeHandler)
       {
-        v33 = [(NPTCellularCollector *)v13 metadataDidChangeHandler];
-        (v33)[2](v33, v26, 0);
+        metadataDidChangeHandler2 = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
+        (metadataDidChangeHandler2)[2](metadataDidChangeHandler2, v26, 0);
       }
     }
   }
@@ -1020,18 +1020,18 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
   }
 }
 
-- (void)cellChanged:(id)a3 cell:(id)a4
+- (void)cellChanged:(id)changed cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(NPTCellularCollector *)self context];
-  v10 = [v9 uuid];
-  if ([v8 isEqual:v10])
+  changedCopy = changed;
+  cellCopy = cell;
+  uuid = [changedCopy uuid];
+  context = [(NPTCellularCollector *)self context];
+  uuid2 = [context uuid];
+  if ([uuid isEqual:uuid2])
   {
-    v11 = [(NPTCellularCollector *)self stopCollectingMetadata];
+    stopCollectingMetadata = [(NPTCellularCollector *)self stopCollectingMetadata];
 
-    if (!v11)
+    if (!stopCollectingMetadata)
     {
       v12 = +[NPTLogger cellular];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1039,21 +1039,21 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
         [NPTCellularCollector cellChanged:cell:];
       }
 
-      v13 = self;
-      objc_sync_enter(v13);
-      v14 = [(NPTCellularCollector *)v13 servingCellInfo];
-      [v14 addEntriesFromDictionary:v7];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      servingCellInfo = [(NPTCellularCollector *)selfCopy servingCellInfo];
+      [servingCellInfo addEntriesFromDictionary:cellCopy];
 
-      v15 = [(NPTCellularCollector *)v13 servingCellInfo];
-      v16 = [(NPTCellularCollector *)v13 slotID];
-      v17 = [(NPTCellularCollector *)v13 getCellInfoForSlot:v16];
-      [v15 addEntriesFromDictionary:v17];
+      servingCellInfo2 = [(NPTCellularCollector *)selfCopy servingCellInfo];
+      slotID = [(NPTCellularCollector *)selfCopy slotID];
+      v17 = [(NPTCellularCollector *)selfCopy getCellInfoForSlot:slotID];
+      [servingCellInfo2 addEntriesFromDictionary:v17];
 
-      v18 = [(NPTCellularCollector *)v13 mutableCellChanges];
-      [v18 addObject:v7];
+      mutableCellChanges = [(NPTCellularCollector *)selfCopy mutableCellChanges];
+      [mutableCellChanges addObject:cellCopy];
 
-      v19 = [(NPTCellularCollector *)v13 mutableMetadata];
-      [v19 addEntriesFromDictionary:v7];
+      mutableMetadata = [(NPTCellularCollector *)selfCopy mutableMetadata];
+      [mutableMetadata addEntriesFromDictionary:cellCopy];
 
       v20 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v20 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"];
@@ -1061,28 +1061,28 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
       v22 = objc_opt_class();
       v23 = [MEMORY[0x277CBEAA8] now];
       v24 = MEMORY[0x277CBEAC0];
-      v25 = [(NPTCellularCollector *)v13 servingCellInfo];
-      v26 = [v24 dictionaryWithDictionary:v25];
+      servingCellInfo3 = [(NPTCellularCollector *)selfCopy servingCellInfo];
+      v26 = [v24 dictionaryWithDictionary:servingCellInfo3];
       v27 = [(NPTMetadataEvent *)v21 initWithType:v22 eventType:2 timeStamp:v23 data:v26];
 
-      v28 = [(NPTCellularCollector *)v13 cachedMetadata];
-      v29 = [v28 objectForKeyedSubscript:@"events"];
+      cachedMetadata = [(NPTCellularCollector *)selfCopy cachedMetadata];
+      v29 = [cachedMetadata objectForKeyedSubscript:@"events"];
 
       if (v29)
       {
-        v30 = [(NPTCellularCollector *)v13 cachedMetadata];
-        v31 = [v30 objectForKeyedSubscript:@"events"];
-        v32 = [(NPTMetadataEvent *)v27 asDictionary];
-        [v31 addObject:v32];
+        cachedMetadata2 = [(NPTCellularCollector *)selfCopy cachedMetadata];
+        v31 = [cachedMetadata2 objectForKeyedSubscript:@"events"];
+        asDictionary = [(NPTMetadataEvent *)v27 asDictionary];
+        [v31 addObject:asDictionary];
       }
 
-      objc_sync_exit(v13);
-      v33 = [(NPTCellularCollector *)v13 metadataDidChangeHandler];
+      objc_sync_exit(selfCopy);
+      metadataDidChangeHandler = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
 
-      if (v33)
+      if (metadataDidChangeHandler)
       {
-        v34 = [(NPTCellularCollector *)v13 metadataDidChangeHandler];
-        (v34)[2](v34, v27, 0);
+        metadataDidChangeHandler2 = [(NPTCellularCollector *)selfCopy metadataDidChangeHandler];
+        (metadataDidChangeHandler2)[2](metadataDidChangeHandler2, v27, 0);
       }
     }
   }
@@ -1095,8 +1095,8 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
 - (NSArray)cellChanges
 {
   v2 = MEMORY[0x277CBEA60];
-  v3 = [(NPTCellularCollector *)self mutableCellChanges];
-  v4 = [v2 arrayWithArray:v3];
+  mutableCellChanges = [(NPTCellularCollector *)self mutableCellChanges];
+  v4 = [v2 arrayWithArray:mutableCellChanges];
 
   return v4;
 }
@@ -1104,19 +1104,19 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
 - (NSArray)dataStatusChanges
 {
   v2 = MEMORY[0x277CBEA60];
-  v3 = [(NPTCellularCollector *)self mutableDataStatusChanges];
-  v4 = [v2 arrayWithArray:v3];
+  mutableDataStatusChanges = [(NPTCellularCollector *)self mutableDataStatusChanges];
+  v4 = [v2 arrayWithArray:mutableDataStatusChanges];
 
   return v4;
 }
 
-+ (id)calculateMaxCellularTPutEstimates:(id)a3
++ (id)calculateMaxCellularTPutEstimates:(id)estimates
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  estimatesCopy = estimates;
   v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v31 = v3;
-  [v3 objectForKeyedSubscript:@"events"];
+  v31 = estimatesCopy;
+  [estimatesCopy objectForKeyedSubscript:@"events"];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1197,8 +1197,8 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
 - (void)signalStrengthMeasurements
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a1 slotID];
-  v10 = [a2 localizedDescription];
+  slotID = [self slotID];
+  localizedDescription = [a2 localizedDescription];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v4, v5, v6, v7, v8, 0x16u);
 
@@ -1236,7 +1236,7 @@ BOOL __50__NPTCellularCollector_fetchCellularTPutEstimates__block_invoke_2(uint6
 + (void)getPreferredDataSlot
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

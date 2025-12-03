@@ -1,17 +1,17 @@
 @interface OutputServer
 - (_TtC11SessionCore12OutputServer)init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation OutputServer
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_22CEE68C4(v8);
+  selfCopy = self;
+  sub_22CEE68C4(connectionCopy);
 
   swift_unknownObjectRelease();
 }

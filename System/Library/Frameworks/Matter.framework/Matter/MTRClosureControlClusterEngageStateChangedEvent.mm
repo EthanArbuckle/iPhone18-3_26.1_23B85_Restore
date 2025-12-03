@@ -1,6 +1,6 @@
 @interface MTRClosureControlClusterEngageStateChangedEvent
 - (MTRClosureControlClusterEngageStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureControlClusterEngageStateChangedEvent);
-  v5 = [(MTRClosureControlClusterEngageStateChangedEvent *)self engageValue];
-  [(MTRClosureControlClusterEngageStateChangedEvent *)v4 setEngageValue:v5];
+  engageValue = [(MTRClosureControlClusterEngageStateChangedEvent *)self engageValue];
+  [(MTRClosureControlClusterEngageStateChangedEvent *)v4 setEngageValue:engageValue];
 
   return v4;
 }

@@ -21,7 +21,7 @@
   handler[1] = 3221225472;
   handler[2] = sub_1000C3F40;
   handler[3] = &unk_1001B54A0;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(qword_10020B770, handler);
   v7 = qword_10020B770;
   v8 = dispatch_walltime(0, 43200000000000);

@@ -1,29 +1,29 @@
 @interface ATXNotificationDigestApp
-- (ATXNotificationDigestApp)initWithBundleId:(id)a3 digestFeedback:(id)a4 digestConstants:(id)a5;
+- (ATXNotificationDigestApp)initWithBundleId:(id)id digestFeedback:(id)feedback digestConstants:(id)constants;
 - (BOOL)hasImage;
 - (NSArray)orderedGroups;
-- (double)logisticScoreForInput:(double)a3;
-- (void)addGroup:(id)a3;
+- (double)logisticScoreForInput:(double)input;
+- (void)addGroup:(id)group;
 - (void)populateScoresFromBundleId;
 - (void)refreshGroupOrder;
 @end
 
 @implementation ATXNotificationDigestApp
 
-- (ATXNotificationDigestApp)initWithBundleId:(id)a3 digestFeedback:(id)a4 digestConstants:(id)a5
+- (ATXNotificationDigestApp)initWithBundleId:(id)id digestFeedback:(id)feedback digestConstants:(id)constants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  feedbackCopy = feedback;
+  constantsCopy = constants;
   v17.receiver = self;
   v17.super_class = ATXNotificationDigestApp;
   v12 = [(ATXNotificationDigestApp *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleId, a3);
-    objc_storeStrong(&v13->_digestFeedback, a4);
-    objc_storeStrong(&v13->_c, a5);
+    objc_storeStrong(&v12->_bundleId, id);
+    objc_storeStrong(&v13->_digestFeedback, feedback);
+    objc_storeStrong(&v13->_c, constants);
     v14 = objc_opt_new();
     rawGroups = v13->_rawGroups;
     v13->_rawGroups = v14;
@@ -49,29 +49,29 @@
 
 - (BOOL)hasImage
 {
-  v3 = [(ATXNotificationDigestApp *)self orderedGroups];
-  v4 = [v3 firstObject];
-  if (v4)
+  orderedGroups = [(ATXNotificationDigestApp *)self orderedGroups];
+  firstObject = [orderedGroups firstObject];
+  if (firstObject)
   {
-    v5 = [(ATXNotificationDigestApp *)self orderedGroups];
-    v6 = [v5 firstObject];
-    v7 = [v6 hasPreviewableAttachment];
+    orderedGroups2 = [(ATXNotificationDigestApp *)self orderedGroups];
+    firstObject2 = [orderedGroups2 firstObject];
+    hasPreviewableAttachment = [firstObject2 hasPreviewableAttachment];
   }
 
   else
   {
-    v7 = 0;
+    hasPreviewableAttachment = 0;
   }
 
-  return v7;
+  return hasPreviewableAttachment;
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   [(ATXNotificationDigestApp *)self appScore];
-  [v4 setPriority:?];
-  [(NSMutableArray *)self->_rawGroups addObject:v4];
+  [groupCopy setPriority:?];
+  [(NSMutableArray *)self->_rawGroups addObject:groupCopy];
 }
 
 - (void)populateScoresFromBundleId
@@ -107,9 +107,9 @@
   self->_isEligibleForAutomaticMarquee = v28 < v29;
 }
 
-- (double)logisticScoreForInput:(double)a3
+- (double)logisticScoreForInput:(double)input
 {
-  v4 = fmin(a3, 25.0);
+  v4 = fmin(input, 25.0);
   if (v4 >= -25.0)
   {
     v5 = v4;

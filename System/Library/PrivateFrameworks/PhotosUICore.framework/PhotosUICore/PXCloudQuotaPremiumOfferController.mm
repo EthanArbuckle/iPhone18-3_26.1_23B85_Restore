@@ -1,51 +1,51 @@
 @interface PXCloudQuotaPremiumOfferController
 - (PXCloudQuotaPremiumOfferController)init;
-- (id)presentingViewControllerForTileView:(id)a3;
+- (id)presentingViewControllerForTileView:(id)view;
 - (void)_updateInformationView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCloudQuotaPremiumOfferController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXCloudQuotaOfferProviderObservationContext_33064 == a5)
+  if (PXCloudQuotaOfferProviderObservationContext_33064 == context)
   {
-    [(PXCloudQuotaPremiumOfferController *)self _updateInformationView:a3];
+    [(PXCloudQuotaPremiumOfferController *)self _updateInformationView:observable];
   }
 }
 
-- (id)presentingViewControllerForTileView:(id)a3
+- (id)presentingViewControllerForTileView:(id)view
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = PLUserStatusGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 offer];
-    v7 = PXCloudQuotaOfferDebugDescription(v6);
+    offer = [viewCopy offer];
+    v7 = PXCloudQuotaOfferDebugDescription(offer);
     v10 = 138543362;
     v11 = v7;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Presenting view controller for premium offer:%{public}@", &v10, 0xCu);
   }
 
-  v8 = [(PXCloudQuotaController *)self presentingViewControllerForInformationView];
+  presentingViewControllerForInformationView = [(PXCloudQuotaController *)self presentingViewControllerForInformationView];
 
-  return v8;
+  return presentingViewControllerForInformationView;
 }
 
 - (void)_updateInformationView
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCloudQuotaPremiumOfferProvider *)self->_premiumOfferProvider premiumOffer];
-  if (v3)
+  premiumOffer = [(PXCloudQuotaPremiumOfferProvider *)self->_premiumOfferProvider premiumOffer];
+  if (premiumOffer)
   {
     v4 = PLUserStatusGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
       v6 = v5;
-      v7 = PXCloudQuotaOfferDebugDescription(v3);
+      v7 = PXCloudQuotaOfferDebugDescription(premiumOffer);
       *buf = 138543874;
       *&buf[4] = v5;
       *&buf[12] = 2048;
@@ -74,7 +74,7 @@
     v9 = v8;
     _Block_object_dispose(&v13, 8);
     v10 = [v8 alloc];
-    v11 = [v10 initWithPremiumOffer:{v3, v13}];
+    v11 = [v10 initWithPremiumOffer:{premiumOffer, v13}];
     [v11 setDelegate:self];
     v12 = [[PXCloudQuotaTileView alloc] initWithTileView:v11];
   }

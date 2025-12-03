@@ -2,24 +2,24 @@
 + (id)instance;
 - (CattManager)init;
 - (id)centralManagerStateString;
-- (void)batteryServiceDeviceConnected:(id)a3;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)connectPeripheral:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)batteryServiceDeviceConnected:(id)connected;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)connectPeripheral:(id)peripheral;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)registerServices;
-- (void)removeOpportunisticConnection:(id)a3;
-- (void)setOpportunisticConnection:(id)a3;
+- (void)removeOpportunisticConnection:(id)connection;
+- (void)setOpportunisticConnection:(id)connection;
 @end
 
 @implementation CattManager
@@ -38,14 +38,14 @@
 
 - (void)registerServices
 {
-  v3 = [(CattManager *)self centralManager];
-  if (v3)
+  centralManager = [(CattManager *)self centralManager];
+  if (centralManager)
   {
-    v4 = v3;
-    v5 = [(CattManager *)self centralManager];
-    v6 = [v5 state];
+    v4 = centralManager;
+    centralManager2 = [(CattManager *)self centralManager];
+    state = [centralManager2 state];
 
-    if (v6 == 5)
+    if (state == 5)
     {
       v7 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -54,71 +54,71 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Register service for CATT", v10, 2u);
       }
 
-      v8 = [(CattManager *)self centralManager];
-      v9 = [(CattManager *)self options];
-      [v8 registerForConnectionEventsWithOptions:v9];
+      centralManager3 = [(CattManager *)self centralManager];
+      options = [(CattManager *)self options];
+      [centralManager3 registerForConnectionEventsWithOptions:options];
     }
   }
 }
 
-- (void)batteryServiceDeviceConnected:(id)a3
+- (void)batteryServiceDeviceConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(CattManager *)self centralManager];
-    v9 = v4;
+    centralManager = [(CattManager *)self centralManager];
+    v9 = connectedCopy;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000287CC;
     v7[3] = &unk_1000BDA48;
-    v8 = v4;
-    [v5 retrievePeripheralsWithIdentifiers:v6 completion:v7];
+    v8 = connectedCopy;
+    [centralManager retrievePeripheralsWithIdentifiers:v6 completion:v7];
   }
 }
 
-- (void)setOpportunisticConnection:(id)a3
+- (void)setOpportunisticConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [connectionCopy name];
     *buf = 138412290;
-    v13 = v7;
+    v13 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Updating connection option for %@ to be opportunistic", buf, 0xCu);
   }
 
-  v8 = [(CattManager *)self centralManager];
+  centralManager = [(CattManager *)self centralManager];
   v10 = CBConnectPeripheralOptionOpportunistic;
   v11 = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v8 updatePeripheral:v4 options:v9];
+  [centralManager updatePeripheral:connectionCopy options:v9];
 }
 
-- (void)removeOpportunisticConnection:(id)a3
+- (void)removeOpportunisticConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [connectionCopy name];
     *buf = 138412290;
-    v14 = v7;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removing opportunistic connection option for %@. Setting low connection latency", buf, 0xCu);
   }
 
-  v8 = [(CattManager *)self centralManager];
-  [v8 setDesiredConnectionLatency:0 forPeripheral:v4];
+  centralManager = [(CattManager *)self centralManager];
+  [centralManager setDesiredConnectionLatency:0 forPeripheral:connectionCopy];
 
-  v9 = [(CattManager *)self centralManager];
+  centralManager2 = [(CattManager *)self centralManager];
   v11 = CBConnectPeripheralOptionOpportunistic;
   v12 = &__kCFBooleanFalse;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v9 updatePeripheral:v4 options:v10];
+  [centralManager2 updatePeripheral:connectionCopy options:v10];
 }
 
 - (CattManager)init
@@ -175,68 +175,68 @@
   return v2;
 }
 
-- (void)connectPeripheral:(id)a3
+- (void)connectPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [(CattManager *)self centralManager];
-  v6 = [v5 state];
+  peripheralCopy = peripheral;
+  centralManager = [(CattManager *)self centralManager];
+  state = [centralManager state];
 
-  if (v6 == 5)
+  if (state == 5)
   {
     v7 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v4 name];
+      name = [peripheralCopy name];
       v11 = 138412290;
-      v12 = v9;
+      v12 = name;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Connecting CATT peripheral %@...", &v11, 0xCu);
     }
 
-    v10 = [(CattManager *)self centralManager];
-    [v10 connectPeripheral:v4 options:0];
+    centralManager2 = [(CattManager *)self centralManager];
+    [centralManager2 connectPeripheral:peripheralCopy options:0];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(CattManager *)self centralManagerStateString];
+    centralManagerStateString = [(CattManager *)self centralManagerStateString];
     v15 = 138412290;
-    v16 = v7;
+    v16 = centralManagerStateString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CentralManager state is now %@", &v15, 0xCu);
   }
 
-  v8 = [(CattManager *)self centralManager];
-  v9 = [v8 state];
+  centralManager = [(CattManager *)self centralManager];
+  state = [centralManager state];
 
-  if (v9 != 5)
+  if (state != 5)
   {
-    v10 = [(CattManager *)self centralManager];
-    if ([v10 state] == 4)
+    centralManager2 = [(CattManager *)self centralManager];
+    if ([centralManager2 state] == 4)
     {
     }
 
     else
     {
-      v11 = [(CattManager *)self centralManager];
-      v12 = [v11 state];
+      centralManager3 = [(CattManager *)self centralManager];
+      state2 = [centralManager3 state];
 
-      if (v12 != 1)
+      if (state2 != 1)
       {
         goto LABEL_9;
       }
     }
 
-    v13 = [(CattManager *)self cattPeripheral];
-    [v13 removeAllObjects];
+    cattPeripheral = [(CattManager *)self cattPeripheral];
+    [cattPeripheral removeAllObjects];
 
-    v14 = [(CattManager *)self clientServiceManagerMap];
-    [v14 removeAllObjects];
+    clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+    [clientServiceManagerMap removeAllObjects];
 
     goto LABEL_9;
   }
@@ -245,105 +245,105 @@
 LABEL_9:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 name];
+    name = [peripheralCopy name];
     v19 = 138412290;
-    v20 = v10;
+    v20 = name;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CATT Peripheral %@ is now connected", &v19, 0xCu);
   }
 
-  v11 = [(CattManager *)self cattPeripheral];
-  v12 = [v11 containsObject:v7];
+  cattPeripheral = [(CattManager *)self cattPeripheral];
+  v12 = [cattPeripheral containsObject:peripheralCopy];
 
   if (v12)
   {
-    [v7 setDelegate:self];
-    if ([v7 hasTag:@"FitnessClassic"] && (objc_msgSend(v7, "hasTag:", @"BlockCATTHRM") & 1) == 0)
+    [peripheralCopy setDelegate:self];
+    if ([peripheralCopy hasTag:@"FitnessClassic"] && (objc_msgSend(peripheralCopy, "hasTag:", @"BlockCATTHRM") & 1) == 0)
     {
-      v13 = [v7 customProperty:@"Fitness"];
+      v13 = [peripheralCopy customProperty:@"Fitness"];
 
       if (!v13)
       {
-        [v7 setCustomProperty:@"Fitness" value:@"1"];
+        [peripheralCopy setCustomProperty:@"Fitness" value:@"1"];
       }
 
-      v14 = [v7 customProperty:@"UpdateHealth"];
+      v14 = [peripheralCopy customProperty:@"UpdateHealth"];
 
       if (!v14)
       {
-        [v7 setCustomProperty:@"UpdateHealth" value:@"1"];
+        [peripheralCopy setCustomProperty:@"UpdateHealth" value:@"1"];
       }
     }
 
-    v15 = [(CattManager *)self clientServiceManagerMap];
-    v16 = [v15 objectForKeyedSubscript:v7];
+    clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+    v16 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
     if (!v16)
     {
-      v17 = [[ClientServiceManager alloc] initWithPeripheral:v7];
-      v18 = [(CattManager *)self clientServiceManagerMap];
-      [v18 setObject:v17 forKeyedSubscript:v7];
+      v17 = [[ClientServiceManager alloc] initWithPeripheral:peripheralCopy];
+      clientServiceManagerMap2 = [(CattManager *)self clientServiceManagerMap];
+      [clientServiceManagerMap2 setObject:v17 forKeyedSubscript:peripheralCopy];
     }
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 name];
+    name = [peripheralCopy name];
     v13 = 138412546;
-    v14 = v11;
+    v14 = name;
     v15 = 2112;
-    v16 = v8;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Peripheral %@ failed to connect: %@", &v13, 0x16u);
   }
 
-  v12 = [(CattManager *)self cattPeripheral];
-  [v12 removeObject:v7];
+  cattPeripheral = [(CattManager *)self cattPeripheral];
+  [cattPeripheral removeObject:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 name];
+    name = [peripheralCopy name];
     v14 = 138412546;
-    v15 = v11;
+    v15 = name;
     v16 = 2112;
-    v17 = v8;
+    v17 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Peripheral %@ is now disconnected: %@", &v14, 0x16u);
   }
 
-  v12 = [(CattManager *)self clientServiceManagerMap];
-  [v12 removeObjectForKey:v7];
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  [clientServiceManagerMap removeObjectForKey:peripheralCopy];
 
-  v13 = [(CattManager *)self cattPeripheral];
-  [v13 removeObject:v7];
+  cattPeripheral = [(CattManager *)self cattPeripheral];
+  [cattPeripheral removeObject:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v7 = a5;
+  peripheralCopy = peripheral;
   if (_os_feature_enabled_impl())
   {
-    v8 = [v7 getTags];
-    if (([v8 containsObject:@"_CATT_"] & 1) == 0 && !objc_msgSend(v8, "containsObject:", @"_UARP_"))
+    getTags = [peripheralCopy getTags];
+    if (([getTags containsObject:@"_CATT_"] & 1) == 0 && !objc_msgSend(getTags, "containsObject:", @"_UARP_"))
     {
 
       goto LABEL_11;
@@ -354,133 +354,133 @@ LABEL_9:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 name];
+    name = [peripheralCopy name];
     v15 = 138412546;
-    v16 = v11;
+    v16 = name;
     v17 = 2048;
-    v18 = a4;
+    occurCopy = occur;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Peripheral %@ connection event:%tu", &v15, 0x16u);
   }
 
-  if (a4 == 1)
+  if (occur == 1)
   {
-    v12 = [(CattManager *)self cattPeripheral];
-    [v12 addObject:v7];
+    cattPeripheral = [(CattManager *)self cattPeripheral];
+    [cattPeripheral addObject:peripheralCopy];
 
-    [(CattManager *)self connectPeripheral:v7];
+    [(CattManager *)self connectPeripheral:peripheralCopy];
   }
 
   else
   {
-    v13 = [(CattManager *)self clientServiceManagerMap];
-    [v13 removeObjectForKey:v7];
+    clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+    [clientServiceManagerMap removeObjectForKey:peripheralCopy];
 
-    v14 = [(CattManager *)self cattPeripheral];
-    [v14 removeObject:v7];
+    cattPeripheral2 = [(CattManager *)self cattPeripheral];
+    [cattPeripheral2 removeObject:peripheralCopy];
   }
 
 LABEL_11:
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CattManager *)self clientServiceManagerMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  servicesCopy = services;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v9 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v9 peripheral:v7 didModifyServices:v6];
+  [v9 peripheral:peripheralCopy didModifyServices:servicesCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CattManager *)self clientServiceManagerMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  servicesCopy = services;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v9 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v9 peripheral:v7 didDiscoverServices:v6];
+  [v9 peripheral:peripheralCopy didDiscoverServices:servicesCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  serviceCopy = service;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didDiscoverCharacteristicsForService:v9 error:v8];
+  [v12 peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateValueForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didWriteValueForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didWriteValueForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateNotificationStateForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateNotificationStateForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didDiscoverDescriptorsForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didDiscoverDescriptorsForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CattManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  descriptorCopy = descriptor;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(CattManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateValueForDescriptor:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateValueForDescriptor:descriptorCopy error:errorCopy];
 }
 
 - (id)centralManagerStateString
 {
-  v2 = [(CattManager *)self centralManager];
-  v3 = [v2 state];
+  centralManager = [(CattManager *)self centralManager];
+  state = [centralManager state];
 
-  if ((v3 - 1) > 9)
+  if ((state - 1) > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_1000BDA68 + (v3 - 1));
+    return *(&off_1000BDA68 + (state - 1));
   }
 }
 

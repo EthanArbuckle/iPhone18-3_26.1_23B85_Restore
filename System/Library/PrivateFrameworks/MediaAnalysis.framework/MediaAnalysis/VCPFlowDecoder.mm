@@ -1,18 +1,18 @@
 @interface VCPFlowDecoder
-- (id)initModule:(int)a3 config:(id)a4 cancel:(id)a5;
-- (int)bindWithBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6;
-- (int)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6 callback:(id)a7;
+- (id)initModule:(int)module config:(id)config cancel:(id)cancel;
+- (int)bindWithBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow;
+- (int)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)outputFlow callback:(id)callback;
 @end
 
 @implementation VCPFlowDecoder
 
-- (id)initModule:(int)a3 config:(id)a4 cancel:(id)a5
+- (id)initModule:(int)module config:(id)config cancel:(id)cancel
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&module;
+  configCopy = config;
+  cancelCopy = cancel;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"flow_estimation_%d", v6];
-  if (v9 && (v9[2](v9) & 1) != 0)
+  if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
   {
     v11 = 0;
   }
@@ -21,7 +21,7 @@
   {
     v17.receiver = self;
     v17.super_class = VCPFlowDecoder;
-    v12 = [(VCPEspressoModel *)&v17 initModelWithName:v10 andConfig:v8];
+    v12 = [(VCPEspressoModel *)&v17 initModelWithName:v10 andConfig:configCopy];
     v11 = v12;
     if (v12)
     {
@@ -45,7 +45,7 @@
   return v15;
 }
 
-- (int)bindWithBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6
+- (int)bindWithBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow
 {
   v7 = [(NSArray *)self->_inputBlobNames objectAtIndexedSubscript:0];
   [v7 UTF8String];
@@ -121,10 +121,10 @@ LABEL_17:
   return -108;
 }
 
-- (int)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6 callback:(id)a7
+- (int)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)outputFlow callback:(id)callback
 {
-  v12 = a7;
-  v13 = [(VCPFlowDecoder *)self bindWithBuffers:a3 correlation:a4 flow:a5 outputFlow:a6];
+  callbackCopy = callback;
+  v13 = [(VCPFlowDecoder *)self bindWithBuffers:flow correlation:correlation flow:a5 outputFlow:outputFlow];
   if (v13)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -133,12 +133,12 @@ LABEL_17:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Flow decoder: fail to bind buffers", buf, 2u);
     }
 
-    v12[2](v12);
+    callbackCopy[2](callbackCopy);
   }
 
   else
   {
-    v15 = v12;
+    v15 = callbackCopy;
     if (espresso_plan_submit())
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

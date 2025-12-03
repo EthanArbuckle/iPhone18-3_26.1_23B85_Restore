@@ -1,27 +1,27 @@
 @interface _PRIconListLayout
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses;
 - (SBHIconGridSizeClassSizeMap)iconGridSizeClassSizes;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
-- (_PRIconListLayout)initWithGridSize:(SBHIconGridSize)a3;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
+- (_PRIconListLayout)initWithGridSize:(SBHIconGridSize)size;
 @end
 
 @implementation _PRIconListLayout
 
-- (_PRIconListLayout)initWithGridSize:(SBHIconGridSize)a3
+- (_PRIconListLayout)initWithGridSize:(SBHIconGridSize)size
 {
   v5.receiver = self;
   v5.super_class = _PRIconListLayout;
   result = [(_PRIconListLayout *)&v5 init];
   if (result)
   {
-    result->_gridSize = a3;
+    result->_gridSize = size;
   }
 
   return result;
 }
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
   v3 = 20.0;
   v4 = 20.0;
@@ -49,7 +49,7 @@
   return v2;
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class
 {
   v4 = a4;
   [MEMORY[0x1E6999618] gridUnitSize];

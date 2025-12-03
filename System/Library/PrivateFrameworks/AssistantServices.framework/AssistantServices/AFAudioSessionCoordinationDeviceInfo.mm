@@ -1,14 +1,14 @@
 @interface AFAudioSessionCoordinationDeviceInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationDeviceInfo)initWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationDeviceInfo)initWithCoder:(id)a3;
-- (AFAudioSessionCoordinationDeviceInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFAudioSessionCoordinationDeviceInfo)initWithPeerInfo:(id)a3 systemInfo:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationDeviceInfo)initWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationDeviceInfo)initWithCoder:(id)coder;
+- (AFAudioSessionCoordinationDeviceInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFAudioSessionCoordinationDeviceInfo)initWithPeerInfo:(id)info systemInfo:(id)systemInfo;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAudioSessionCoordinationDeviceInfo
@@ -19,15 +19,15 @@
   peerInfo = self->_peerInfo;
   if (peerInfo)
   {
-    v5 = [(AFPeerInfo *)peerInfo buildDictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"peerInfo"];
+    buildDictionaryRepresentation = [(AFPeerInfo *)peerInfo buildDictionaryRepresentation];
+    [v3 setObject:buildDictionaryRepresentation forKey:@"peerInfo"];
   }
 
   systemInfo = self->_systemInfo;
   if (systemInfo)
   {
-    v7 = [(AFAudioSessionCoordinationSystemInfo *)systemInfo buildDictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"systemInfo"];
+    buildDictionaryRepresentation2 = [(AFAudioSessionCoordinationSystemInfo *)systemInfo buildDictionaryRepresentation];
+    [v3 setObject:buildDictionaryRepresentation2 forKey:@"systemInfo"];
   }
 
   v8 = [v3 copy];
@@ -35,12 +35,12 @@
   return v8;
 }
 
-- (AFAudioSessionCoordinationDeviceInfo)initWithDictionaryRepresentation:(id)a3
+- (AFAudioSessionCoordinationDeviceInfo)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"peerInfo"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"peerInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"systemInfo"];
+    v8 = [representationCopy objectForKey:@"systemInfo"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -66,39 +66,39 @@
     }
 
     self = [(AFAudioSessionCoordinationDeviceInfo *)self initWithPeerInfo:v6 systemInfo:v9];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   peerInfo = self->_peerInfo;
-  v5 = a3;
-  [v5 encodeObject:peerInfo forKey:@"AFAudioSessionCoordinationDeviceInfo::peerInfo"];
-  [v5 encodeObject:self->_systemInfo forKey:@"AFAudioSessionCoordinationDeviceInfo::systemInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:peerInfo forKey:@"AFAudioSessionCoordinationDeviceInfo::peerInfo"];
+  [coderCopy encodeObject:self->_systemInfo forKey:@"AFAudioSessionCoordinationDeviceInfo::systemInfo"];
 }
 
-- (AFAudioSessionCoordinationDeviceInfo)initWithCoder:(id)a3
+- (AFAudioSessionCoordinationDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationDeviceInfo::peerInfo"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationDeviceInfo::systemInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationDeviceInfo::peerInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationDeviceInfo::systemInfo"];
 
   v7 = [(AFAudioSessionCoordinationDeviceInfo *)self initWithPeerInfo:v5 systemInfo:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -108,14 +108,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFAudioSessionCoordinationDeviceInfo *)v5 peerInfo];
+      v5 = equalCopy;
+      peerInfo = [(AFAudioSessionCoordinationDeviceInfo *)v5 peerInfo];
       peerInfo = self->_peerInfo;
-      if (peerInfo == v6 || [(AFPeerInfo *)peerInfo isEqual:v6])
+      if (peerInfo == peerInfo || [(AFPeerInfo *)peerInfo isEqual:peerInfo])
       {
-        v8 = [(AFAudioSessionCoordinationDeviceInfo *)v5 systemInfo];
+        systemInfo = [(AFAudioSessionCoordinationDeviceInfo *)v5 systemInfo];
         systemInfo = self->_systemInfo;
-        v10 = systemInfo == v8 || [(AFAudioSessionCoordinationSystemInfo *)systemInfo isEqual:v8];
+        v10 = systemInfo == systemInfo || [(AFAudioSessionCoordinationSystemInfo *)systemInfo isEqual:systemInfo];
       }
 
       else
@@ -133,7 +133,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -144,18 +144,18 @@
   return v6;
 }
 
-- (AFAudioSessionCoordinationDeviceInfo)initWithPeerInfo:(id)a3 systemInfo:(id)a4
+- (AFAudioSessionCoordinationDeviceInfo)initWithPeerInfo:(id)info systemInfo:(id)systemInfo
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  systemInfoCopy = systemInfo;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__AFAudioSessionCoordinationDeviceInfo_initWithPeerInfo_systemInfo___block_invoke;
   v12[3] = &unk_1E7345758;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = infoCopy;
+  v14 = systemInfoCopy;
+  v8 = systemInfoCopy;
+  v9 = infoCopy;
   v10 = [(AFAudioSessionCoordinationDeviceInfo *)self initWithBuilder:v12];
 
   return v10;
@@ -169,26 +169,26 @@ void __68__AFAudioSessionCoordinationDeviceInfo_initWithPeerInfo_systemInfo___bl
   [v4 setSystemInfo:*(a1 + 40)];
 }
 
-- (AFAudioSessionCoordinationDeviceInfo)initWithBuilder:(id)a3
+- (AFAudioSessionCoordinationDeviceInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFAudioSessionCoordinationDeviceInfo;
   v5 = [(AFAudioSessionCoordinationDeviceInfo *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAudioSessionCoordinationDeviceInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAudioSessionCoordinationDeviceInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v7 getPeerInfo];
-      v9 = [v8 copy];
+      getPeerInfo = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v7 getPeerInfo];
+      v9 = [getPeerInfo copy];
       peerInfo = v6->_peerInfo;
       v6->_peerInfo = v9;
 
-      v11 = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v7 getSystemInfo];
-      v12 = [v11 copy];
+      getSystemInfo = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v7 getSystemInfo];
+      v12 = [getSystemInfo copy];
       systemInfo = v6->_systemInfo;
       v6->_systemInfo = v12;
     }
@@ -197,31 +197,31 @@ void __68__AFAudioSessionCoordinationDeviceInfo_initWithPeerInfo_systemInfo___bl
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAudioSessionCoordinationDeviceInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAudioSessionCoordinationDeviceInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAudioSessionCoordinationDeviceInfo);
-      v7 = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v5 getPeerInfo];
-      v8 = [v7 copy];
+      getPeerInfo = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v5 getPeerInfo];
+      v8 = [getPeerInfo copy];
       peerInfo = v6->_peerInfo;
       v6->_peerInfo = v8;
 
-      v10 = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v5 getSystemInfo];
-      v11 = [v10 copy];
+      getSystemInfo = [(_AFAudioSessionCoordinationDeviceInfoMutation *)v5 getSystemInfo];
+      v11 = [getSystemInfo copy];
       systemInfo = v6->_systemInfo;
       v6->_systemInfo = v11;
     }

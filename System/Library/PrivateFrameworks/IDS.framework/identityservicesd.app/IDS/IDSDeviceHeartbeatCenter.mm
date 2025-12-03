@@ -9,12 +9,12 @@
 - (void)_scheduleRescueHeartBeat;
 - (void)_updateDependentRegistrationTimerFiredOnMain;
 - (void)_updateDependentRegistrations;
-- (void)_updateExpiry:(double)a3 forUser:(id)a4;
+- (void)_updateExpiry:(double)expiry forUser:(id)user;
 - (void)accountsChanged;
 - (void)dealloc;
 - (void)invalidateTimer;
 - (void)printInfo;
-- (void)resetExpiryForUser:(id)a3;
+- (void)resetExpiryForUser:(id)user;
 - (void)setup;
 @end
 
@@ -53,11 +53,11 @@
 {
   v3 = objc_autoreleasePoolPush();
   [(IDSDeviceHeartbeatCenter *)self invalidateTimer];
-  v4 = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
-  v5 = v4;
-  if (v4)
+  _getNextExpirationDate = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
+  v5 = _getNextExpirationDate;
+  if (_getNextExpirationDate)
   {
-    [v4 timeIntervalSinceNow];
+    [_getNextExpirationDate timeIntervalSinceNow];
     v7 = v6;
     v8 = +[IMRGLog deviceHeartbeat];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -130,8 +130,8 @@ LABEL_8:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(NSMutableDictionary *)self->_usersToHeartbeatDatesMap allValues];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_usersToHeartbeatDatesMap allValues];
+  v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v8)
   {
 
@@ -151,7 +151,7 @@ LABEL_25:
     {
       if (*v22 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allValues);
       }
 
       v14 = *(*(&v21 + 1) + 8 * i);
@@ -165,7 +165,7 @@ LABEL_25:
       v11 = 1;
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v9 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v9);
@@ -246,8 +246,8 @@ LABEL_9:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(NSMutableDictionary *)self->_usersToHeartbeatDatesMap allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    allKeys = [(NSMutableDictionary *)self->_usersToHeartbeatDatesMap allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v5)
     {
       v7 = v5;
@@ -261,7 +261,7 @@ LABEL_9:
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v19 + 1) + 8 * v9);
@@ -282,7 +282,7 @@ LABEL_9:
         }
 
         while (v7 != v9);
-        v7 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v7);
@@ -291,11 +291,11 @@ LABEL_9:
     v14 = +[IMRGLog deviceHeartbeat];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
-      v16 = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
-      [v16 timeIntervalSinceNow];
+      _getNextExpirationDate = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
+      _getNextExpirationDate2 = [(IDSDeviceHeartbeatCenter *)self _getNextExpirationDate];
+      [_getNextExpirationDate2 timeIntervalSinceNow];
       *buf = 138412546;
-      v24 = v15;
+      v24 = _getNextExpirationDate;
       v25 = 2048;
       v26 = v17;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Next heartbeat date: %@ (in %.0f seconds)", buf, 0x16u);
@@ -376,24 +376,24 @@ LABEL_9:
   }
 }
 
-- (void)resetExpiryForUser:(id)a3
+- (void)resetExpiryForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[IMRGLog deviceHeartbeat];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = userCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Resetting expiry for %@", &v6, 0xCu);
   }
 
-  [(IDSDeviceHeartbeatCenter *)self _updateExpiry:v4 forUser:0.0];
+  [(IDSDeviceHeartbeatCenter *)self _updateExpiry:userCopy forUser:0.0];
 }
 
-- (void)_updateExpiry:(double)a3 forUser:(id)a4
+- (void)_updateExpiry:(double)expiry forUser:(id)user
 {
-  v6 = a4;
-  v7 = v6;
+  userCopy = user;
+  v7 = userCopy;
   if (!self->_isSetup)
   {
     v17 = +[IMRGLog deviceHeartbeat];
@@ -406,7 +406,7 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (![v6 length])
+  if (![userCopy length])
   {
     v17 = +[IMRGLog warning];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -425,9 +425,9 @@ LABEL_16:
   v11 = v10;
 
   objc_autoreleasePoolPop(v8);
-  if (v11 > a3)
+  if (v11 > expiry)
   {
-    if (a3 > 2.22044605e-16)
+    if (expiry > 2.22044605e-16)
     {
       v12 = +[IMRGLog warning];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -435,31 +435,31 @@ LABEL_16:
         v18 = 138412802;
         v19 = @"DeviceHeartbeat";
         v20 = 2048;
-        v21 = 60.0;
+        expiryCopy2 = 60.0;
         v22 = 2048;
-        v23 = a3;
+        expiryCopy = expiry;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ -  updateExpiry failed sanity check. Returning current date + %f seconds expiry was %f", &v18, 0x20u);
       }
     }
 
-    a3 = v11 + 60.0;
+    expiry = v11 + 60.0;
   }
 
   v13 = +[IMRGLog deviceHeartbeat];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [NSDate dateWithTimeIntervalSince1970:a3];
+    v14 = [NSDate dateWithTimeIntervalSince1970:expiry];
     v18 = 138412802;
     v19 = v14;
     v20 = 2048;
-    v21 = a3;
+    expiryCopy2 = expiry;
     v22 = 2112;
-    v23 = *&v7;
+    expiryCopy = *&v7;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setting new expiry %@ (seconds %f) for user %@", &v18, 0x20u);
   }
 
   usersToHeartbeatDatesMap = self->_usersToHeartbeatDatesMap;
-  v16 = [NSNumber numberWithDouble:a3];
+  v16 = [NSNumber numberWithDouble:expiry];
   [(NSMutableDictionary *)usersToHeartbeatDatesMap setObject:v16 forKey:v7];
 
   [(IDSDeviceHeartbeatCenter *)self _heartBeat];
@@ -482,15 +482,15 @@ LABEL_17:
     [(NSMutableDictionary *)self->_usersToHeartbeatDatesMap removeAllObjects];
     context = objc_autoreleasePoolPush();
     v6 = +[IDSDAccountController sharedInstance];
-    v7 = [v6 accounts];
-    v8 = [v7 _copyForEnumerating];
+    accounts = [v6 accounts];
+    _copyForEnumerating = [accounts _copyForEnumerating];
 
     v9 = objc_alloc_init(NSMutableSet);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v8;
+    v10 = _copyForEnumerating;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v11)
     {
@@ -508,21 +508,21 @@ LABEL_17:
           v15 = *(*(&v22 + 1) + 8 * i);
           if (([v15 isAdHocAccount] & 1) == 0 && objc_msgSend(v15, "isEnabled") && objc_msgSend(v15, "isRegistered"))
           {
-            v16 = [v15 registration];
-            v17 = [v16 idsUserID];
+            registration = [v15 registration];
+            idsUserID = [registration idsUserID];
 
-            if ([v17 length])
+            if ([idsUserID length])
             {
-              if (([v9 containsObject:v17] & 1) == 0)
+              if (([v9 containsObject:idsUserID] & 1) == 0)
               {
-                v18 = [v15 registration];
-                v19 = [v18 dependentRegistrationsTTL];
+                registration2 = [v15 registration];
+                dependentRegistrationsTTL = [registration2 dependentRegistrationsTTL];
 
-                if (v19)
+                if (dependentRegistrationsTTL)
                 {
-                  [v19 timeIntervalSince1970];
-                  [(IDSDeviceHeartbeatCenter *)self _updateExpiry:v17 forUser:?];
-                  [v9 addObject:v17];
+                  [dependentRegistrationsTTL timeIntervalSince1970];
+                  [(IDSDeviceHeartbeatCenter *)self _updateExpiry:idsUserID forUser:?];
+                  [v9 addObject:idsUserID];
                 }
 
                 else
@@ -531,7 +531,7 @@ LABEL_17:
                   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v27 = v17;
+                    v27 = idsUserID;
                     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Did not find existing expiry for user %@", buf, 0xCu);
                   }
                 }
@@ -542,12 +542,12 @@ LABEL_17:
 
             else
             {
-              v19 = +[IMRGLog deviceHeartbeat];
-              if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+              dependentRegistrationsTTL = +[IMRGLog deviceHeartbeat];
+              if (os_log_type_enabled(dependentRegistrationsTTL, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
                 v27 = v15;
-                _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Missing userID for account %@, ignoring...", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, dependentRegistrationsTTL, OS_LOG_TYPE_DEFAULT, "Missing userID for account %@, ignoring...", buf, 0xCu);
               }
 
 LABEL_21:
@@ -586,14 +586,14 @@ LABEL_21:
   if (self->_isSetup)
   {
     v2 = +[IDSDAccountController sharedInstance];
-    v3 = [v2 accounts];
-    v4 = [v3 _copyForEnumerating];
+    accounts = [v2 accounts];
+    _copyForEnumerating = [accounts _copyForEnumerating];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = v4;
+    v5 = _copyForEnumerating;
     v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (!v6)
     {
@@ -618,19 +618,19 @@ LABEL_33:
         v10 = *(*(&v21 + 1) + 8 * i);
         if (([v10 isAdHocAccount] & 1) == 0)
         {
-          v11 = [v10 registration];
-          v12 = [v11 dependentRegistrationResponseCode];
-          v13 = [v12 integerValue];
+          registration = [v10 registration];
+          dependentRegistrationResponseCode = [registration dependentRegistrationResponseCode];
+          integerValue = [dependentRegistrationResponseCode integerValue];
           if ([v10 isEnabled])
           {
-            v14 = !v12 || v13 == 0;
+            v14 = !dependentRegistrationResponseCode || integerValue == 0;
             v15 = v14;
             if ([v10 isRegistered] && v15)
             {
-              v17 = [v10 registration];
-              v18 = [v17 dependentRegistrationsTTL];
+              registration2 = [v10 registration];
+              dependentRegistrationsTTL = [registration2 dependentRegistrationsTTL];
 
-              if (v18)
+              if (dependentRegistrationsTTL)
               {
 
                 LOBYTE(v6) = 0;

@@ -1,8 +1,8 @@
 @interface SagaAddLibraryPinOperation
-- (SagaAddLibraryPinOperation)initWithCoder:(id)a3;
-- (id)_initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudID:(int64_t)a5 cloudAlbumID:(id)a6 cloudArtistID:(id)a7 type:(int64_t)a8 defaultAction:(int64_t)a9 completion:(id)a10;
+- (SagaAddLibraryPinOperation)initWithCoder:(id)coder;
+- (id)_initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudID:(int64_t)iD cloudAlbumID:(id)albumID cloudArtistID:(id)artistID type:(int64_t)type defaultAction:(int64_t)action completion:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -40,22 +40,22 @@
     if (CFPreferencesGetAppBooleanValue(@"AutomaticDownloadEnabledForLibraryPins", @"com.apple.mobileipod", 0))
     {
       v4 = +[ICDeviceInfo currentDeviceInfo];
-      v38 = [v4 isWatch];
+      isWatch = [v4 isWatch];
     }
 
     else
     {
-      v38 = 1;
+      isWatch = 1;
     }
 
     v39 = [NSString stringWithFormat:@"%@", objc_opt_class()];
     v10 = [[MSVXPCTransaction alloc] initWithName:v39];
     [v10 beginTransaction];
-    v11 = [(CloudLibraryOperation *)self musicLibrary];
-    v12 = [(CloudLibraryOperation *)self clientIdentity];
-    [v11 setClientIdentity:v12];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
-    v13 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_1000B00E8;
@@ -65,20 +65,20 @@
     v49 = 1032;
     v48[6] = v54;
     v48[7] = v56;
-    [v13 performDatabaseTransactionWithBlock:v48];
+    [musicLibrary2 performDatabaseTransactionWithBlock:v48];
 
     if (*(v51 + 24) == 1)
     {
-      v14 = [(CloudLibraryOperation *)self connection];
+      connection = [(CloudLibraryOperation *)self connection];
       v15 = [ICAddPinRequest alloc];
-      v16 = [(SagaLibraryPinBaseOperation *)self entityType];
-      v17 = [(SagaLibraryPinBaseOperation *)self action];
-      v18 = [(SagaLibraryPinBaseOperation *)self positionUUID];
-      v19 = [(SagaLibraryPinBaseOperation *)self sagaID];
-      v20 = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
-      v21 = [v14 databaseID];
+      entityType = [(SagaLibraryPinBaseOperation *)self entityType];
+      action = [(SagaLibraryPinBaseOperation *)self action];
+      positionUUID = [(SagaLibraryPinBaseOperation *)self positionUUID];
+      sagaID = [(SagaLibraryPinBaseOperation *)self sagaID];
+      cloudLibraryID = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
+      databaseID = [connection databaseID];
       LODWORD(v37) = [(SagaLibraryPinBaseOperation *)self currentDatabaseRevision];
-      v22 = [(ICAddPinRequest *)v15 initWithEntityType:v16 pinAction:v17 positionUUID:v18 cloudID:v19 cloudLibraryID:v20 databaseID:v21 databaseRevision:v37];
+      v22 = [(ICAddPinRequest *)v15 initWithEntityType:entityType pinAction:action positionUUID:positionUUID cloudID:sagaID cloudLibraryID:cloudLibraryID databaseID:databaseID databaseRevision:v37];
 
       [(ICDRequest *)v22 setVerificationInteractionLevel:2];
       v23 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -86,14 +86,14 @@
       {
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        v26 = [(ICDRequest *)v22 method];
-        v27 = [(ICDRequest *)v22 action];
-        v28 = v27;
+        method = [(ICDRequest *)v22 method];
+        action2 = [(ICDRequest *)v22 action];
+        v28 = action2;
         v29 = @"POST";
         *buf = 138544386;
         *&buf[4] = self;
         *&buf[12] = 2114;
-        if (!v26)
+        if (!method)
         {
           v29 = @"GET";
         }
@@ -104,7 +104,7 @@
         *v62 = 2114;
         *&v62[2] = v29;
         *&v62[10] = 2114;
-        *&v62[12] = v27;
+        *&v62[12] = action2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending add pin entity request <%{public}@: %p method=%{public}@ action=%{public}@>", buf, 0x34u);
       }
 
@@ -121,11 +121,11 @@
       v43[3] = &unk_1001DF970;
       v31 = v22;
       v44 = v31;
-      v45 = self;
+      selfCopy = self;
       v47 = buf;
       v32 = v30;
       v46 = v32;
-      [v14 sendRequest:v31 withResponseHandler:v43];
+      [connection sendRequest:v31 withResponseHandler:v43];
       dispatch_semaphore_wait(v32, 0xFFFFFFFFFFFFFFFFLL);
       v33 = *(*&buf[8] + 40);
       v42.receiver = self;
@@ -148,16 +148,16 @@
       [(CloudLibraryOperation *)self setStatus:3];
     }
 
-    if (!(([(CloudLibraryOperation *)self status]!= 1) | v38 & 1))
+    if (!(([(CloudLibraryOperation *)self status]!= 1) | isWatch & 1))
     {
       v41.receiver = self;
       v41.super_class = SagaAddLibraryPinOperation;
       [(SagaLibraryPinBaseOperation *)&v41 preparePinForAutomaticDownload];
     }
 
-    v35 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
     v36 = MSVTCCIdentityForCurrentProcess();
-    [v35 setClientIdentity:v36];
+    [musicLibrary3 setClientIdentity:v36];
 
     [v10 endTransaction];
     _Block_object_dispose(&v50, 8);
@@ -167,8 +167,8 @@
 
   else
   {
-    v5 = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
-    v6 = v5 == 0;
+    localDatabaseUpdateCompletionHandler = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
+    v6 = localDatabaseUpdateCompletionHandler == 0;
 
     if (!v6)
     {
@@ -184,11 +184,11 @@
     v8 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(CloudLibraryOperation *)self error];
+      error = [(CloudLibraryOperation *)self error];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v9;
+      *&buf[14] = error;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Not running %{public}@ - error=%{public}@", buf, 0x16u);
     }
   }
@@ -198,53 +198,53 @@
 
 - (id)description
 {
-  v3 = [(SagaLibraryPinBaseOperation *)self pinPersistentID];
-  v4 = [(SagaLibraryPinBaseOperation *)self persistentID];
-  v5 = [(SagaLibraryPinBaseOperation *)self sagaID];
-  v6 = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
+  pinPersistentID = [(SagaLibraryPinBaseOperation *)self pinPersistentID];
+  persistentID = [(SagaLibraryPinBaseOperation *)self persistentID];
+  sagaID = [(SagaLibraryPinBaseOperation *)self sagaID];
+  cloudLibraryID = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
   [(SagaLibraryPinBaseOperation *)self entityType];
   v7 = NSStringFromICLibraryPinEntityType();
   [(SagaLibraryPinBaseOperation *)self action];
   v8 = NSStringFromICLibraryPinAction();
-  v9 = [NSString stringWithFormat:@"<SagaAddLibraryPinOperation=%p, pinID=%lld, entityPID=%lld, sagaID=%lld, cloudLibraryID=%@, entityType=%@, defaultAction=%@, self.state=%d>", self, v3, v4, v5, v6, v7, v8, [(SagaLibraryPinBaseOperation *)self state]];
+  v9 = [NSString stringWithFormat:@"<SagaAddLibraryPinOperation=%p, pinID=%lld, entityPID=%lld, sagaID=%lld, cloudLibraryID=%@, entityType=%@, defaultAction=%@, self.state=%d>", self, pinPersistentID, persistentID, sagaID, cloudLibraryID, v7, v8, [(SagaLibraryPinBaseOperation *)self state]];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SagaAddLibraryPinOperation;
-  [(SagaLibraryPinBaseOperation *)&v3 encodeWithCoder:a3];
+  [(SagaLibraryPinBaseOperation *)&v3 encodeWithCoder:coder];
 }
 
-- (SagaAddLibraryPinOperation)initWithCoder:(id)a3
+- (SagaAddLibraryPinOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SagaAddLibraryPinOperation;
-  return [(SagaLibraryPinBaseOperation *)&v4 initWithCoder:a3];
+  return [(SagaLibraryPinBaseOperation *)&v4 initWithCoder:coder];
 }
 
-- (id)_initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudID:(int64_t)a5 cloudAlbumID:(id)a6 cloudArtistID:(id)a7 type:(int64_t)a8 defaultAction:(int64_t)a9 completion:(id)a10
+- (id)_initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudID:(int64_t)iD cloudAlbumID:(id)albumID cloudArtistID:(id)artistID type:(int64_t)type defaultAction:(int64_t)action completion:(id)self0
 {
-  if (a8 == 4)
+  if (type == 4)
   {
-    v16 = a6;
+    artistIDCopy = albumID;
   }
 
   else
   {
-    v16 = a7;
+    artistIDCopy = artistID;
   }
 
-  v17 = a10;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v21 = [v20 clientIdentity];
+  completionCopy = completion;
+  artistIDCopy2 = artistID;
+  albumIDCopy2 = albumID;
+  configurationCopy = configuration;
+  clientIdentity = [configurationCopy clientIdentity];
   v25.receiver = self;
   v25.super_class = SagaAddLibraryPinOperation;
-  v22 = [(SagaLibraryPinBaseOperation *)&v25 initWithConfiguration:v20 persistentID:a4 cloudID:a5 cloudLibraryID:v16 type:a8 defaultAction:a9 clientIdentity:v21 position:-1 completion:v17];
+  v22 = [(SagaLibraryPinBaseOperation *)&v25 initWithConfiguration:configurationCopy persistentID:d cloudID:iD cloudLibraryID:artistIDCopy type:type defaultAction:action clientIdentity:clientIdentity position:-1 completion:completionCopy];
 
   return v22;
 }

@@ -1,64 +1,64 @@
 @interface ARWeakReference
-+ (ARWeakReference)weakReferenceWithObject:(id)a3;
++ (ARWeakReference)weakReferenceWithObject:(id)object;
 + (void)_noOp;
-- (ARWeakReference)initWithObject:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (ARWeakReference)initWithObject:(id)object;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)object;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation ARWeakReference
 
-+ (ARWeakReference)weakReferenceWithObject:(id)a3
++ (ARWeakReference)weakReferenceWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-- (ARWeakReference)initWithObject:(id)a3
+- (ARWeakReference)initWithObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    objc_storeWeak(&self->_object, a3);
-    v4 = self;
+    objc_storeWeak(&self->_object, object);
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_object);
   if (WeakRetained)
   {
-    [v5 invokeWithTarget:WeakRetained];
+    [invocationCopy invokeWithTarget:WeakRetained];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_object);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
     WeakRetained = objc_opt_class();
-    v6 = sel__noOp;
+    selectorCopy = sel__noOp;
   }
 
-  v7 = [WeakRetained methodSignatureForSelector:v6];
+  v7 = [WeakRetained methodSignatureForSelector:selectorCopy];
 
   return v7;
 }

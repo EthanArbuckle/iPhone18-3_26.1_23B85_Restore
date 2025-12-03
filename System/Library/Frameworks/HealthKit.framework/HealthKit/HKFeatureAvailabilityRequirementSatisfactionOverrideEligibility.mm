@@ -1,63 +1,63 @@
 @interface HKFeatureAvailabilityRequirementSatisfactionOverrideEligibility
-- (BOOL)isRequirementOverridable:(id)a3 featureIdentifier:(id)a4 importExclusionDeviceDataSource:(id)a5 behavior:(id)a6;
+- (BOOL)isRequirementOverridable:(id)overridable featureIdentifier:(id)identifier importExclusionDeviceDataSource:(id)source behavior:(id)behavior;
 @end
 
 @implementation HKFeatureAvailabilityRequirementSatisfactionOverrideEligibility
 
-- (BOOL)isRequirementOverridable:(id)a3 featureIdentifier:(id)a4 importExclusionDeviceDataSource:(id)a5 behavior:(id)a6
+- (BOOL)isRequirementOverridable:(id)overridable featureIdentifier:(id)identifier importExclusionDeviceDataSource:(id)source behavior:(id)behavior
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (([v9 isEqualToString:@"ActiveWatchIsNotUnderInternalDevelopmentImportExclusion"] & 1) == 0)
+  overridableCopy = overridable;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  behaviorCopy = behavior;
+  if (([overridableCopy isEqualToString:@"ActiveWatchIsNotUnderInternalDevelopmentImportExclusion"] & 1) == 0)
   {
-    if (([v10 isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
+    if (([identifierCopy isEqualToString:@"OxygenSaturationRecording"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"OxygenSaturationRecordingCompanionAnalysis"))
     {
-      if ([v10 isEqualToString:@"OxygenSaturationRecordingCompanionAnalysis"])
+      if ([identifierCopy isEqualToString:@"OxygenSaturationRecordingCompanionAnalysis"])
       {
-        v14 = [v11 isImportAllowedForActiveWatchWithBehavior:v12 featureIdentifier:v10];
-        v13 = [v14 BOOLValue];
+        v14 = [sourceCopy isImportAllowedForActiveWatchWithBehavior:behaviorCopy featureIdentifier:identifierCopy];
+        bOOLValue = [v14 BOOLValue];
 LABEL_7:
 
         goto LABEL_13;
       }
 
-      if ([v9 isEqualToString:@"FeatureIsNotRemotelyDisabled"])
+      if ([overridableCopy isEqualToString:@"FeatureIsNotRemotelyDisabled"])
       {
-        v15 = [v11 isActiveWatchProdFusedWithBehavior:v12];
+        v15 = [sourceCopy isActiveWatchProdFusedWithBehavior:behaviorCopy];
         v14 = v15;
         if (v15)
         {
           if ([v15 BOOLValue])
           {
-            v16 = [v11 isImportAllowedForActiveWatchWithBehavior:v12 featureIdentifier:v10];
-            v13 = [v16 BOOLValue];
+            v16 = [sourceCopy isImportAllowedForActiveWatchWithBehavior:behaviorCopy featureIdentifier:identifierCopy];
+            bOOLValue = [v16 BOOLValue];
           }
 
           else
           {
-            v13 = 1;
+            bOOLValue = 1;
           }
         }
 
         else
         {
-          v13 = 0;
+          bOOLValue = 0;
         }
 
         goto LABEL_7;
       }
     }
 
-    v13 = 1;
+    bOOLValue = 1;
     goto LABEL_13;
   }
 
-  v13 = 0;
+  bOOLValue = 0;
 LABEL_13:
 
-  return v13;
+  return bOOLValue;
 }
 
 @end

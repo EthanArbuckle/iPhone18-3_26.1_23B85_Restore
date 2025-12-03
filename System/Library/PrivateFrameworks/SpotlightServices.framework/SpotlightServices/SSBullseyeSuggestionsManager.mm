@@ -1,21 +1,21 @@
 @interface SSBullseyeSuggestionsManager
 + (id)sharedSuggestionsManager;
-- (SSBullseyeSuggestionsManager)initWithOptions:(id)a3;
+- (SSBullseyeSuggestionsManager)initWithOptions:(id)options;
 - (SSCoreMLInterface)blendingModel;
-- (id)_getScoreForSuggestionResult:(id)a3 options:(id)a4;
-- (id)_rankedSuggestionsResultsWithQueryContext:(id)a3 serverSuggestionResults:(id)a4 localSuggestionResults:(id)a5 options:(id)a6;
-- (id)intentBasedSuggestionBlending:(id)a3 suggestions:(id)a4;
-- (id)orderedSuggestionsWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14;
-- (id)release2022_blendingByPolicyWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14;
-- (id)release2023_blendingByPolicyWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 actionSuggestionResults:(id)a9 contactSuggestionResults:(id)a10 serverSuggestionResults:(id)a11 localSuggestionResults:(id)a12 options:(id)a13;
-- (id)release2023_blendingWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14;
-- (id)suggestionKeyWithCompletion:(id)a3;
-- (void)_filterSuggestionResultsWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 contactSuggestionResults:(id)a7 localSuggestionResults:(id)a8 serverSuggestionResults:(id)a9 options:(id)a10;
+- (id)_getScoreForSuggestionResult:(id)result options:(id)options;
+- (id)_rankedSuggestionsResultsWithQueryContext:(id)context serverSuggestionResults:(id)results localSuggestionResults:(id)suggestionResults options:(id)options;
+- (id)intentBasedSuggestionBlending:(id)blending suggestions:(id)suggestions;
+- (id)orderedSuggestionsWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4;
+- (id)release2022_blendingByPolicyWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4;
+- (id)release2023_blendingByPolicyWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion actionSuggestionResults:(id)results contactSuggestionResults:(id)self0 serverSuggestionResults:(id)self1 localSuggestionResults:(id)self2 options:(id)self3;
+- (id)release2023_blendingWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4;
+- (id)suggestionKeyWithCompletion:(id)completion;
+- (void)_filterSuggestionResultsWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters contactSuggestionResults:(id)results localSuggestionResults:(id)suggestionResults serverSuggestionResults:(id)serverSuggestionResults options:(id)self0;
 - (void)clearBlendingModel;
-- (void)loadBlendingModelWithPath:(id)a3 forceLoad:(BOOL)a4;
-- (void)loadDefaultsWithOptions:(id)a3;
-- (void)setBlendingModel:(id)a3;
-- (void)updateDefaultsWithOptions:(id)a3;
+- (void)loadBlendingModelWithPath:(id)path forceLoad:(BOOL)load;
+- (void)loadDefaultsWithOptions:(id)options;
+- (void)setBlendingModel:(id)model;
+- (void)updateDefaultsWithOptions:(id)options;
 @end
 
 @implementation SSBullseyeSuggestionsManager
@@ -39,9 +39,9 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (SSBullseyeSuggestionsManager)initWithOptions:(id)a3
+- (SSBullseyeSuggestionsManager)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = SSBullseyeSuggestionsManager;
   v5 = [(SSBullseyeSuggestionsManager *)&v11 init];
@@ -54,31 +54,31 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
     queue = v5->_queue;
     v5->_queue = v8;
 
-    [(SSBullseyeSuggestionsManager *)v5 loadDefaultsWithOptions:v4];
+    [(SSBullseyeSuggestionsManager *)v5 loadDefaultsWithOptions:optionsCopy];
   }
 
   return v5;
 }
 
-- (void)loadDefaultsWithOptions:(id)a3
+- (void)loadDefaultsWithOptions:(id)options
 {
-  v50 = a3;
-  v4 = [v50 copy];
+  optionsCopy = options;
+  v4 = [optionsCopy copy];
   defaultOptions = self->_defaultOptions;
   self->_defaultOptions = v4;
 
-  v6 = [MEMORY[0x1E69D3E28] sharedResourcesManager];
-  v7 = [v6 resourcesForClient:@"Spotlight" options:&unk_1F55B7858];
+  mEMORY[0x1E69D3E28] = [MEMORY[0x1E69D3E28] sharedResourcesManager];
+  v7 = [mEMORY[0x1E69D3E28] resourcesForClient:@"Spotlight" options:&unk_1F55B7858];
   resources = self->_resources;
   self->_resources = v7;
 
   v49 = [(SRResources *)self->_resources objectForKey:@"EnableSuggestionsBlending"];
-  if (v50)
+  if (optionsCopy)
   {
-    v9 = [v50 objectForKeyedSubscript:@"EnableSuggestionsBlending"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"EnableSuggestionsBlending"];
     if (v9)
     {
-      v10 = [v50 objectForKeyedSubscript:@"EnableSuggestionsBlending"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"EnableSuggestionsBlending"];
     }
 
     else
@@ -91,27 +91,27 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   if (v49)
   {
-    v11 = [v49 BOOLValue];
+    bOOLValue = [v49 BOOLValue];
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
-  self->_enabledSuggestionsBlending = v11;
-  if (!v50 && [(SSBullseyeSuggestionsManager *)self enabledSuggestionsOverrides])
+  self->_enabledSuggestionsBlending = bOOLValue;
+  if (!optionsCopy && [(SSBullseyeSuggestionsManager *)self enabledSuggestionsOverrides])
   {
     self->_enabledSuggestionsBlending = _os_feature_enabled_impl();
   }
 
   v48 = [(SRResources *)self->_resources objectForKey:@"EnableFullSuggestionsBlending"];
-  if (v50)
+  if (optionsCopy)
   {
-    v12 = [v50 objectForKeyedSubscript:@"EnableFullSuggestionsBlending"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"EnableFullSuggestionsBlending"];
     if (v12)
     {
-      v13 = [v50 objectForKeyedSubscript:@"EnableFullSuggestionsBlending"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"EnableFullSuggestionsBlending"];
     }
 
     else
@@ -124,24 +124,24 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   if (v48)
   {
-    v14 = [v48 BOOLValue];
+    bOOLValue2 = [v48 BOOLValue];
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue2 = 0;
   }
 
-  self->_enabledFullSuggestionsBlending = v14;
-  if (!v50 && [(SSBullseyeSuggestionsManager *)self enabledSuggestionsOverrides])
+  self->_enabledFullSuggestionsBlending = bOOLValue2;
+  if (!optionsCopy && [(SSBullseyeSuggestionsManager *)self enabledSuggestionsOverrides])
   {
     self->_enabledFullSuggestionsBlending = _os_feature_enabled_impl();
   }
 
   v15 = [(SRResources *)self->_resources objectForKey:@"ServerSuggestionThreshold"];
-  if (v50)
+  if (optionsCopy)
   {
-    v16 = [v50 objectForKeyedSubscript:@"serverThreshold"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"serverThreshold"];
 
     v15 = v16;
   }
@@ -158,9 +158,9 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   objc_storeStrong(&self->_serverSuggestionThreshold, v19);
   v20 = [(SRResources *)self->_resources objectForKey:@"LocalSuggestionThreshold"];
-  if (v50)
+  if (optionsCopy)
   {
-    v21 = [v50 objectForKeyedSubscript:@"localThreshold"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"localThreshold"];
 
     v20 = v21;
   }
@@ -177,119 +177,119 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   objc_storeStrong(&self->_localSuggestionThreshold, v24);
   v25 = [(SRResources *)self->_resources objectForKey:@"MaxTotalSuggestions"];
-  if (v50)
+  if (optionsCopy)
   {
-    v26 = [v50 objectForKeyedSubscript:@"maxTotalSuggestions"];
+    v26 = [optionsCopy objectForKeyedSubscript:@"maxTotalSuggestions"];
 
     v25 = v26;
   }
 
   v27 = [(SRResources *)self->_resources objectForKey:@"MaxTotalSuggestionsForAboveFoldResults"];
-  if (v50)
+  if (optionsCopy)
   {
-    v28 = [v50 objectForKeyedSubscript:@"maxTotalSuggestionsForAboveFoldResults"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"maxTotalSuggestionsForAboveFoldResults"];
 
     v27 = v28;
   }
 
   v29 = [(SRResources *)self->_resources objectForKey:@"EnableForceAboveFoldResults"];
-  if (v50)
+  if (optionsCopy)
   {
-    v30 = [v50 objectForKeyedSubscript:@"EnableForceAboveFoldResults"];
+    v30 = [optionsCopy objectForKeyedSubscript:@"EnableForceAboveFoldResults"];
 
     v29 = v30;
   }
 
   if (v29)
   {
-    v31 = [v29 BOOLValue];
+    bOOLValue3 = [v29 BOOLValue];
   }
 
   else
   {
-    v31 = 0;
+    bOOLValue3 = 0;
   }
 
-  self->_enabledAboveFoldResults = v31;
+  self->_enabledAboveFoldResults = bOOLValue3;
   if (v25)
   {
-    v32 = [v25 integerValue];
+    integerValue = [v25 integerValue];
   }
 
   else
   {
-    v32 = 0x7FFFFFFFLL;
+    integerValue = 0x7FFFFFFFLL;
   }
 
-  self->_maxTotalSuggestionCount = v32;
+  self->_maxTotalSuggestionCount = integerValue;
   if (v27)
   {
-    v32 = [v27 integerValue];
+    integerValue = [v27 integerValue];
   }
 
-  self->_maxTotalSuggestionCountForAboveFoldResults = v32;
+  self->_maxTotalSuggestionCountForAboveFoldResults = integerValue;
   v33 = [(SRResources *)self->_resources objectForKey:@"MaxServerSuggestionCount"];
-  if (v50)
+  if (optionsCopy)
   {
-    v34 = [v50 objectForKeyedSubscript:@"maxServerSuggestions"];
+    v34 = [optionsCopy objectForKeyedSubscript:@"maxServerSuggestions"];
 
     v33 = v34;
   }
 
   if (!v33 || [v33 integerValue] < 0)
   {
-    v35 = 0x7FFFFFFFLL;
+    integerValue2 = 0x7FFFFFFFLL;
   }
 
   else
   {
-    v35 = [v33 integerValue];
+    integerValue2 = [v33 integerValue];
   }
 
-  self->_maxServerSuggestionCount = v35;
+  self->_maxServerSuggestionCount = integerValue2;
   v36 = [(SRResources *)self->_resources objectForKey:@"MaxSuggestionCount"];
-  if (v50)
+  if (optionsCopy)
   {
-    v37 = [v50 objectForKeyedSubscript:@"maxLocalSuggestions"];
+    v37 = [optionsCopy objectForKeyedSubscript:@"maxLocalSuggestions"];
 
     v36 = v37;
   }
 
   if (!v36 || [v36 integerValue] < 0)
   {
-    v38 = 0x7FFFFFFFLL;
+    integerValue3 = 0x7FFFFFFFLL;
   }
 
   else
   {
-    v38 = [v36 integerValue];
+    integerValue3 = [v36 integerValue];
   }
 
   v47 = v29;
-  self->_maxLocalSuggestionCount = v38;
+  self->_maxLocalSuggestionCount = integerValue3;
   v39 = [(SRResources *)self->_resources objectForKey:@"LocalDisplayPosition"];
-  if (v50)
+  if (optionsCopy)
   {
-    v40 = [v50 objectForKeyedSubscript:@"localDisplayPosition"];
+    v40 = [optionsCopy objectForKeyedSubscript:@"localDisplayPosition"];
 
     v39 = v40;
   }
 
   if (!v39 || [v39 integerValue] == 0x7FFFFFFF || objc_msgSend(v39, "integerValue") == -1)
   {
-    v41 = 0;
+    unsignedIntValue = 0;
   }
 
   else
   {
-    v41 = [v39 unsignedIntValue];
+    unsignedIntValue = [v39 unsignedIntValue];
   }
 
-  self->_localDisplayPosition = v41;
+  self->_localDisplayPosition = unsignedIntValue;
   v42 = [(SRResources *)self->_resources objectForKey:@"IgnoreMaxCountForSingleSuggestionsType"];
-  if (v50)
+  if (optionsCopy)
   {
-    [v50 objectForKeyedSubscript:@"ignoreMaxCountForSingleSuggestionsType"];
+    [optionsCopy objectForKeyedSubscript:@"ignoreMaxCountForSingleSuggestionsType"];
     v44 = v43 = v33;
 
     v42 = v44;
@@ -298,74 +298,74 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   if (v42)
   {
-    v45 = [v42 BOOLValue];
+    bOOLValue4 = [v42 BOOLValue];
   }
 
   else
   {
-    v45 = 0;
+    bOOLValue4 = 0;
   }
 
-  self->_ignoreMaxCount = v45;
+  self->_ignoreMaxCount = bOOLValue4;
   if ([(SSBullseyeSuggestionsManager *)self enabledSuggestionsBlending])
   {
     v46 = [(SRResources *)self->_resources filePathForKey:@"SuggestionsBlendingModel"];
-    [(SSBullseyeSuggestionsManager *)self loadBlendingModelWithPath:v46 forceLoad:v50 != 0];
+    [(SSBullseyeSuggestionsManager *)self loadBlendingModelWithPath:v46 forceLoad:optionsCopy != 0];
   }
 }
 
-- (void)updateDefaultsWithOptions:(id)a3
+- (void)updateDefaultsWithOptions:(id)options
 {
-  v18 = a3;
-  v4 = [(SSBullseyeSuggestionsManager *)self resources];
-  v5 = [v4 hasUpdates];
+  optionsCopy = options;
+  resources = [(SSBullseyeSuggestionsManager *)self resources];
+  hasUpdates = [resources hasUpdates];
 
-  if (v5)
+  if (hasUpdates)
   {
     [(SSBullseyeSuggestionsManager *)self loadDefaultsWithOptions:self->_defaultOptions];
   }
 
-  v6 = [v18 objectForKeyedSubscript:@"serverThreshold"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"serverThreshold"];
   if (v6)
   {
     objc_storeStrong(&self->_serverSuggestionThreshold, v6);
   }
 
-  v7 = [v18 objectForKeyedSubscript:@"localThreshold"];
+  v7 = [optionsCopy objectForKeyedSubscript:@"localThreshold"];
   if (v7)
   {
     objc_storeStrong(&self->_localSuggestionThreshold, v7);
   }
 
-  v8 = [v18 objectForKeyedSubscript:@"maxTotalSuggestions"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"maxTotalSuggestions"];
   v9 = v8;
   if (v8)
   {
     self->_maxTotalSuggestionCount = [v8 integerValue];
   }
 
-  v10 = [v18 objectForKeyedSubscript:@"maxServerSuggestions"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"maxServerSuggestions"];
   v11 = v10;
   if (v10)
   {
     self->_maxServerSuggestionCount = [v10 integerValue];
   }
 
-  v12 = [v18 objectForKeyedSubscript:@"maxLocalSuggestions"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"maxLocalSuggestions"];
   v13 = v12;
   if (v12)
   {
     self->_maxLocalSuggestionCount = [v12 integerValue];
   }
 
-  v14 = [v18 objectForKeyedSubscript:@"localDisplayPosition"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"localDisplayPosition"];
   v15 = v14;
   if (v14)
   {
     self->_localDisplayPosition = [v14 unsignedIntValue];
   }
 
-  v16 = [v18 objectForKeyedSubscript:@"ignoreMaxCountForSingleSuggestionsType"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"ignoreMaxCountForSingleSuggestionsType"];
   v17 = v16;
   if (v16)
   {
@@ -373,16 +373,16 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
   }
 }
 
-- (void)loadBlendingModelWithPath:(id)a3 forceLoad:(BOOL)a4
+- (void)loadBlendingModelWithPath:(id)path forceLoad:(BOOL)load
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
-  v8 = v7;
-  if (v6 && v7)
+  loadCopy = load;
+  pathCopy = path;
+  blendingModelPath = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
+  v8 = blendingModelPath;
+  if (pathCopy && blendingModelPath)
   {
-    v9 = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
-    v10 = [v9 isEqualToString:v6];
+    blendingModelPath2 = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
+    v10 = [blendingModelPath2 isEqualToString:pathCopy];
 
     if (v10)
     {
@@ -394,15 +394,15 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
   {
   }
 
-  v11 = [v6 copy];
+  v11 = [pathCopy copy];
   blendingModelPath = self->_blendingModelPath;
   self->_blendingModelPath = v11;
 
-  if (v4)
+  if (loadCopy)
   {
     v13 = MEMORY[0x1E695DFF8];
-    v14 = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
-    v15 = [v13 fileURLWithPath:v14 isDirectory:1];
+    blendingModelPath3 = [(SSBullseyeSuggestionsManager *)self blendingModelPath];
+    v15 = [v13 fileURLWithPath:blendingModelPath3 isDirectory:1];
 
     v20 = 0;
     v16 = [[SSCoreMLInterface alloc] initWithURL:v15 error:&v20];
@@ -425,13 +425,13 @@ uint64_t __56__SSBullseyeSuggestionsManager_sharedSuggestionsManager__block_invo
 
   else
   {
-    v18 = [(SSBullseyeSuggestionsManager *)self queue];
+    queue = [(SSBullseyeSuggestionsManager *)self queue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __68__SSBullseyeSuggestionsManager_loadBlendingModelWithPath_forceLoad___block_invoke;
     v19[3] = &unk_1E8595778;
     v19[4] = self;
-    dispatch_async(v18, v19);
+    dispatch_async(queue, v19);
   }
 
 LABEL_14:
@@ -476,25 +476,25 @@ LABEL_6:
 
 - (SSCoreMLInterface)blendingModel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_blendingModel;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_blendingModel;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setBlendingModel:(id)a3
+- (void)setBlendingModel:(id)model
 {
-  v8 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_blendingModel, a3);
-  v6 = [(SSCoreMLInterface *)v5->_blendingModel getInputDescriptionsByName];
-  modelFeatureNames = v5->_modelFeatureNames;
-  v5->_modelFeatureNames = v6;
+  modelCopy = model;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_blendingModel, model);
+  getInputDescriptionsByName = [(SSCoreMLInterface *)selfCopy->_blendingModel getInputDescriptionsByName];
+  modelFeatureNames = selfCopy->_modelFeatureNames;
+  selfCopy->_modelFeatureNames = getInputDescriptionsByName;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)clearBlendingModel
@@ -514,83 +514,83 @@ LABEL_6:
   objc_sync_exit(obj);
 }
 
-- (id)orderedSuggestionsWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14
+- (id)orderedSuggestionsWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4
 {
-  v46 = a3;
-  v54 = a4;
-  v45 = a5;
-  v52 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  [(SSBullseyeSuggestionsManager *)self updateDefaultsWithOptions:v26];
-  v27 = [(SSBullseyeSuggestionsManager *)self blendingModel];
+  contextCopy = context;
+  filtersCopy = filters;
+  entityFiltersCopy = entityFilters;
+  contactFiltersCopy = contactFilters;
+  suggestionCopy = suggestion;
+  webSuggestionCopy = webSuggestion;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  contactSuggestionResultsCopy = contactSuggestionResults;
+  serverSuggestionResultsCopy = serverSuggestionResults;
+  localSuggestionResultsCopy = localSuggestionResults;
+  optionsCopy = options;
+  [(SSBullseyeSuggestionsManager *)self updateDefaultsWithOptions:optionsCopy];
+  blendingModel = [(SSBullseyeSuggestionsManager *)self blendingModel];
 
-  v51 = v21;
-  v49 = v22;
-  v53 = v26;
-  if (v27)
+  v51 = resultsCopy;
+  v49 = suggestionResultsCopy;
+  v53 = optionsCopy;
+  if (blendingModel)
   {
-    v28 = v25;
-    v29 = v52;
-    v30 = v45;
+    v28 = localSuggestionResultsCopy;
+    v29 = contactFiltersCopy;
+    v30 = entityFiltersCopy;
     if ([(SSBullseyeSuggestionsManager *)self enabledFullSuggestionsBlending])
     {
-      v42 = v22;
-      v31 = v46;
-      [(SSBullseyeSuggestionsManager *)self release2023_blendingWithQueryContext:v46 filters:v54 entityFilters:v45 contactFilters:v52 userSuggestion:v19 userWebSuggestion:v20 shortcutSuggestionResults:v51 actionSuggestionResults:v42 contactSuggestionResults:v23 serverSuggestionResults:v24 localSuggestionResults:v25 options:v53];
+      v42 = suggestionResultsCopy;
+      v31 = contextCopy;
+      [(SSBullseyeSuggestionsManager *)self release2023_blendingWithQueryContext:contextCopy filters:filtersCopy entityFilters:entityFiltersCopy contactFilters:contactFiltersCopy userSuggestion:suggestionCopy userWebSuggestion:webSuggestionCopy shortcutSuggestionResults:v51 actionSuggestionResults:v42 contactSuggestionResults:contactSuggestionResultsCopy serverSuggestionResults:serverSuggestionResultsCopy localSuggestionResults:localSuggestionResultsCopy options:v53];
     }
 
     else
     {
-      v41 = v22;
-      v31 = v46;
-      [(SSBullseyeSuggestionsManager *)self release2023_blendingByPolicyWithQueryContext:v46 filters:v54 entityFilters:v45 contactFilters:v52 userSuggestion:v19 userWebSuggestion:v20 actionSuggestionResults:v41 contactSuggestionResults:v23 serverSuggestionResults:v24 localSuggestionResults:v25 options:v53];
+      v41 = suggestionResultsCopy;
+      v31 = contextCopy;
+      [(SSBullseyeSuggestionsManager *)self release2023_blendingByPolicyWithQueryContext:contextCopy filters:filtersCopy entityFilters:entityFiltersCopy contactFilters:contactFiltersCopy userSuggestion:suggestionCopy userWebSuggestion:webSuggestionCopy actionSuggestionResults:v41 contactSuggestionResults:contactSuggestionResultsCopy serverSuggestionResults:serverSuggestionResultsCopy localSuggestionResults:localSuggestionResultsCopy options:v53];
     }
     v48 = ;
   }
 
   else
   {
-    v44 = v26;
-    v40 = v21;
-    v43 = v22;
-    v30 = v45;
-    v31 = v46;
-    v29 = v52;
-    v48 = [(SSBullseyeSuggestionsManager *)self release2022_blendingByPolicyWithQueryContext:v46 filters:v54 entityFilters:v45 contactFilters:v52 userSuggestion:v19 userWebSuggestion:v20 shortcutSuggestionResults:v40 actionSuggestionResults:v43 contactSuggestionResults:v23 serverSuggestionResults:v24 localSuggestionResults:v25 options:v44];
-    v28 = v25;
+    v44 = optionsCopy;
+    v40 = resultsCopy;
+    v43 = suggestionResultsCopy;
+    v30 = entityFiltersCopy;
+    v31 = contextCopy;
+    v29 = contactFiltersCopy;
+    v48 = [(SSBullseyeSuggestionsManager *)self release2022_blendingByPolicyWithQueryContext:contextCopy filters:filtersCopy entityFilters:entityFiltersCopy contactFilters:contactFiltersCopy userSuggestion:suggestionCopy userWebSuggestion:webSuggestionCopy shortcutSuggestionResults:v40 actionSuggestionResults:v43 contactSuggestionResults:contactSuggestionResultsCopy serverSuggestionResults:serverSuggestionResultsCopy localSuggestionResults:localSuggestionResultsCopy options:v44];
+    v28 = localSuggestionResultsCopy;
   }
 
   if (+[SSQueryIntentManager isEnabled])
   {
     v47 = v28;
-    v32 = [v31 queryIntent];
-    if (v32)
+    queryIntent = [v31 queryIntent];
+    if (queryIntent)
     {
-      v33 = v32;
+      v33 = queryIntent;
       v34 = v30;
-      v35 = [v31 queryIntent];
-      v36 = [v35 intentType];
+      queryIntent2 = [v31 queryIntent];
+      intentType = [queryIntent2 intentType];
 
-      if (v36)
+      if (intentType)
       {
         v37 = [(SSBullseyeSuggestionsManager *)self intentBasedSuggestionBlending:v31 suggestions:v48];
 
         v30 = v34;
-        v29 = v52;
+        v29 = contactFiltersCopy;
         v38 = v53;
         v28 = v47;
         goto LABEL_14;
       }
 
       v30 = v34;
-      v29 = v52;
+      v29 = contactFiltersCopy;
     }
 
     v28 = v47;
@@ -609,19 +609,19 @@ LABEL_14:
   return v37;
 }
 
-- (id)_getScoreForSuggestionResult:(id)a3 options:(id)a4
+- (id)_getScoreForSuggestionResult:(id)result options:(id)options
 {
   v86 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_opt_new();
-  v7 = [v5 type];
-  v8 = [v5 query];
-  v9 = [v8 length];
+  type = [resultCopy type];
+  query = [resultCopy query];
+  v9 = [query length];
 
-  v10 = [v5 completion];
-  v11 = [v10 length];
+  completion = [resultCopy completion];
+  v11 = [completion length];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:type];
   [v6 setObject:v12 forKey:@"type"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
@@ -634,24 +634,24 @@ LABEL_14:
   [v6 setObject:v15 forKey:@"ratio"];
 
   v16 = MEMORY[0x1E696AD98];
-  [v5 rankingScore];
+  [resultCopy rankingScore];
   v17 = [v16 numberWithDouble:?];
   [v6 setObject:v17 forKey:@"score"];
 
-  v18 = [v5 spotlightSuggestion];
+  spotlightSuggestion = [resultCopy spotlightSuggestion];
 
-  if (v18)
+  if (spotlightSuggestion)
   {
-    v19 = [v5 spotlightSuggestion];
-    v20 = [v19 features];
+    spotlightSuggestion2 = [resultCopy spotlightSuggestion];
+    features = [spotlightSuggestion2 features];
 
     if (getFeaturesForSuggestionResult_onceToken == -1)
     {
-      if (v20)
+      if (features)
       {
 LABEL_4:
         v83 = 0;
-        v21 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:getFeaturesForSuggestionResult_sFeatureClasses fromData:v20 error:&v83];
+        v21 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:getFeaturesForSuggestionResult_sFeatureClasses fromData:features error:&v83];
         v22 = v83;
         if (!v22 && v21)
         {
@@ -676,7 +676,7 @@ LABEL_26:
     else
     {
       [SSBullseyeSuggestionsManager _getScoreForSuggestionResult:options:];
-      if (v20)
+      if (features)
       {
         goto LABEL_4;
       }
@@ -687,62 +687,62 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v23 = [v5 suggestion];
+  suggestion = [resultCopy suggestion];
 
-  if (v23)
+  if (suggestion)
   {
     v24 = MEMORY[0x1E696AD98];
-    v25 = [v5 suggestion];
-    [v25 score];
+    suggestion2 = [resultCopy suggestion];
+    [suggestion2 score];
     v26 = [v24 numberWithDouble:?];
     [v6 setObject:v26 forKey:@"score"];
 
     v27 = MEMORY[0x1E696AD98];
-    v28 = [v5 suggestion];
-    v29 = [v27 numberWithInt:{objc_msgSend(v28, "type")}];
+    suggestion3 = [resultCopy suggestion];
+    v29 = [v27 numberWithInt:{objc_msgSend(suggestion3, "type")}];
     [v6 setObject:v29 forKey:@"stype"];
 
     v30 = MEMORY[0x1E696AD98];
-    v31 = [v5 suggestion];
-    v32 = [v31 suggestion];
-    v33 = [v30 numberWithUnsignedInteger:{objc_msgSend(v32, "length")}];
+    suggestion4 = [resultCopy suggestion];
+    v31Suggestion = [suggestion4 suggestion];
+    v33 = [v30 numberWithUnsignedInteger:{objc_msgSend(v31Suggestion, "length")}];
     [v6 setObject:v33 forKey:@"sslen"];
 
-    v34 = [v5 suggestion];
+    suggestion5 = [resultCopy suggestion];
     objc_opt_class();
-    LOBYTE(v31) = objc_opt_isKindOfClass();
+    LOBYTE(suggestion4) = objc_opt_isKindOfClass();
 
-    if (v31)
+    if (suggestion4)
     {
-      v20 = [v5 suggestion];
-      v35 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v20, "queryLen")}];
+      features = [resultCopy suggestion];
+      v35 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(features, "queryLen")}];
       [v6 setObject:v35 forKey:@"queryLen"];
 
-      v36 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(v20, "fragments")}];
+      v36 = [MEMORY[0x1E696AD98] numberWithDouble:{objc_msgSend(features, "fragments")}];
       [v6 setObject:v36 forKey:@"fragments"];
 
       v37 = MEMORY[0x1E696AD98];
-      [v20 age];
+      [features age];
       v38 = [v37 numberWithDouble:?];
       [v6 setObject:v38 forKey:@"age"];
 
       v39 = MEMORY[0x1E696AD98];
-      [v20 prob];
+      [features prob];
       v40 = [v39 numberWithDouble:?];
       [v6 setObject:v40 forKey:@"prob"];
 
-      [v20 compositeScore];
+      [features compositeScore];
       v42 = v41;
       v43 = 0.0;
       if (v42 != 1.79769313e308)
       {
-        [v20 compositeScore];
+        [features compositeScore];
       }
 
       v44 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
       [v6 setObject:v44 forKey:@"compositeScore"];
 
-      if ([v20 isSingleThread])
+      if ([features isSingleThread])
       {
         v45 = &unk_1F55B6D68;
       }
@@ -753,7 +753,7 @@ LABEL_26:
       }
 
       [v6 setObject:v45 forKey:@"isSingleThread"];
-      if ([v20 hasUsedDate])
+      if ([features hasUsedDate])
       {
         v46 = &unk_1F55B6D68;
       }
@@ -764,7 +764,7 @@ LABEL_26:
       }
 
       [v6 setObject:v46 forKey:@"hasUsedDate"];
-      if ([v20 isShortcut])
+      if ([features isShortcut])
       {
         v47 = &unk_1F55B6D68;
       }
@@ -775,7 +775,7 @@ LABEL_26:
       }
 
       [v6 setObject:v47 forKey:@"isShortcut"];
-      if ([v20 hasMultipleResults])
+      if ([features hasMultipleResults])
       {
         v48 = &unk_1F55B6D68;
       }
@@ -791,12 +791,12 @@ LABEL_26:
   }
 
 LABEL_30:
-  v49 = [v5 serverFeatures];
+  serverFeatures = [resultCopy serverFeatures];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v50 = [v49 countByEnumeratingWithState:&v79 objects:v85 count:16];
+  v50 = [serverFeatures countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (v50)
   {
     v51 = v50;
@@ -807,15 +807,15 @@ LABEL_30:
       {
         if (*v80 != v52)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(serverFeatures);
         }
 
         v54 = *(*(&v79 + 1) + 8 * i);
-        v55 = [v49 objectForKeyedSubscript:v54];
+        v55 = [serverFeatures objectForKeyedSubscript:v54];
         [v6 setObject:v55 forKey:v54];
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v79 objects:v85 count:16];
+      v51 = [serverFeatures countByEnumeratingWithState:&v79 objects:v85 count:16];
     }
 
     while (v51);
@@ -832,9 +832,9 @@ LABEL_30:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v73 = self;
-  v57 = [(SSBullseyeSuggestionsManager *)self modelFeatureNames];
-  v58 = [v57 countByEnumeratingWithState:&v75 objects:v84 count:16];
+  selfCopy = self;
+  modelFeatureNames = [(SSBullseyeSuggestionsManager *)self modelFeatureNames];
+  v58 = [modelFeatureNames countByEnumeratingWithState:&v75 objects:v84 count:16];
   if (v58)
   {
     v59 = v58;
@@ -845,7 +845,7 @@ LABEL_30:
       {
         if (*v76 != v60)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(modelFeatureNames);
         }
 
         v62 = *(*(&v75 + 1) + 8 * j);
@@ -863,15 +863,15 @@ LABEL_30:
         }
       }
 
-      v59 = [v57 countByEnumeratingWithState:&v75 objects:v84 count:16];
+      v59 = [modelFeatureNames countByEnumeratingWithState:&v75 objects:v84 count:16];
     }
 
     while (v59);
   }
 
-  v65 = [(SSBullseyeSuggestionsManager *)v73 blendingModel];
+  blendingModel = [(SSBullseyeSuggestionsManager *)selfCopy blendingModel];
   v74 = 0;
-  [v65 predictFromDictionaryFeatures:v56 error:&v74];
+  [blendingModel predictFromDictionaryFeatures:v56 error:&v74];
   v67 = v66;
   v68 = v74;
 
@@ -904,38 +904,38 @@ LABEL_56:
   return v70;
 }
 
-- (id)suggestionKeyWithCompletion:(id)a3
+- (id)suggestionKeyWithCompletion:(id)completion
 {
-  v3 = SSNormalizedQueryString(a3);
-  v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  v3 = SSNormalizedQueryString(completion);
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v5 = [v3 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v5;
 }
 
-- (void)_filterSuggestionResultsWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 contactSuggestionResults:(id)a7 localSuggestionResults:(id)a8 serverSuggestionResults:(id)a9 options:(id)a10
+- (void)_filterSuggestionResultsWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters contactSuggestionResults:(id)results localSuggestionResults:(id)suggestionResults serverSuggestionResults:(id)serverSuggestionResults options:(id)self0
 {
   v132 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v89 = a4;
-  v17 = a5;
-  v97 = a6;
-  v18 = a7;
-  v19 = a8;
-  v87 = a9;
-  v88 = a10;
+  contextCopy = context;
+  filtersCopy = filters;
+  entityFiltersCopy = entityFilters;
+  contactFiltersCopy = contactFilters;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  serverSuggestionResultsCopy = serverSuggestionResults;
+  optionsCopy = options;
   v105 = objc_opt_new();
   v100 = objc_opt_new();
   v95 = objc_opt_new();
-  v90 = v16;
-  v20 = [v16 searchString];
-  v96 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v20];
+  v90 = contextCopy;
+  searchString = [contextCopy searchString];
+  v96 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:searchString];
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  obj = v18;
+  obj = resultsCopy;
   v21 = [obj countByEnumeratingWithState:&v123 objects:v131 count:16];
   if (v21)
   {
@@ -952,10 +952,10 @@ LABEL_56:
         }
 
         v25 = *(*(&v123 + 1) + 8 * i);
-        v26 = [v25 completion];
-        v27 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v26];
+        completion = [v25 completion];
+        v27 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion];
 
-        if ((!v97 || ([v97 containsObject:v27] & 1) == 0) && (objc_msgSend(v95, "containsObject:", v27) & 1) == 0 && objc_msgSend(v27, "containsString:", v96))
+        if ((!contactFiltersCopy || ([contactFiltersCopy containsObject:v27] & 1) == 0) && (objc_msgSend(v95, "containsObject:", v27) & 1) == 0 && objc_msgSend(v27, "containsString:", v96))
         {
           v28 = v92;
           if (!v92)
@@ -994,17 +994,17 @@ LABEL_56:
   }
 
 LABEL_19:
-  v99 = v17;
+  v99 = entityFiltersCopy;
 
   v98 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v30 = [v19 sortedArrayUsingComparator:&__block_literal_global_162];
+  v30 = [suggestionResultsCopy sortedArrayUsingComparator:&__block_literal_global_162];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v31 = v19;
+  v31 = suggestionResultsCopy;
   v32 = [v31 countByEnumeratingWithState:&v119 objects:v130 count:16];
-  v106 = self;
+  selfCopy = self;
   if (!v32)
   {
     v91 = 0;
@@ -1028,13 +1028,13 @@ LABEL_19:
       }
 
       v37 = *(*(&v119 + 1) + 8 * v36);
-      v38 = [v37 type];
-      v39 = [v37 completion];
-      v40 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v39];
+      type = [v37 type];
+      completion2 = [v37 completion];
+      v40 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion2];
 
-      if (v38 == 38 || v38 == 32)
+      if (type == 38 || type == 32)
       {
-        if ((!v97 || ([v97 containsObject:v40] & 1) == 0) && (objc_msgSend(v35, "containsObject:", v40) & 1) == 0)
+        if ((!contactFiltersCopy || ([contactFiltersCopy containsObject:v40] & 1) == 0) && (objc_msgSend(v35, "containsObject:", v40) & 1) == 0)
         {
           [v98 addObject:v37];
         }
@@ -1054,7 +1054,7 @@ LABEL_33:
       {
         if ([v40 isEqualToString:v96])
         {
-          if (v38 == 34)
+          if (type == 34)
           {
             v42 = v37;
 
@@ -1062,20 +1062,20 @@ LABEL_33:
           }
         }
 
-        else if (!v97 || ([v97 containsObject:v40] & 1) == 0)
+        else if (!contactFiltersCopy || ([contactFiltersCopy containsObject:v40] & 1) == 0)
         {
-          if (v38 != 31 && v38 != 16)
+          if (type != 31 && type != 16)
           {
             goto LABEL_46;
           }
 
-          v43 = [(SSBullseyeSuggestionsManager *)self localSuggestionThreshold];
-          if (!v43)
+          localSuggestionThreshold = [(SSBullseyeSuggestionsManager *)self localSuggestionThreshold];
+          if (!localSuggestionThreshold)
           {
             goto LABEL_46;
           }
 
-          v44 = v43;
+          v44 = localSuggestionThreshold;
           v45 = MEMORY[0x1E696AD98];
           [v37 rankingScore];
           v46 = [v45 numberWithDouble:?];
@@ -1084,7 +1084,7 @@ LABEL_33:
           v101 = [v46 compare:v48];
 
           v35 = v47;
-          self = v106;
+          self = selfCopy;
 
           if (v101 == -1)
           {
@@ -1142,8 +1142,8 @@ LABEL_53:
           }
 
           v56 = *(*(&v115 + 1) + 8 * j);
-          v57 = [v56 completion];
-          v58 = [(SSBullseyeSuggestionsManager *)v106 suggestionKeyWithCompletion:v57];
+          completion3 = [v56 completion];
+          v58 = [(SSBullseyeSuggestionsManager *)selfCopy suggestionKeyWithCompletion:completion3];
 
           v35 = v50;
           if (([v50 containsObject:v58] & 1) == 0)
@@ -1189,8 +1189,8 @@ LABEL_53:
 
           else
           {
-            v64 = [v63 completion];
-            v65 = [(SSBullseyeSuggestionsManager *)v106 suggestionKeyWithCompletion:v64];
+            completion4 = [v63 completion];
+            v65 = [(SSBullseyeSuggestionsManager *)selfCopy suggestionKeyWithCompletion:completion4];
 
             v35 = v50;
             if (([v50 containsObject:v65] & 1) == 0)
@@ -1214,7 +1214,7 @@ LABEL_53:
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v102 = v87;
+  v102 = serverSuggestionResultsCopy;
   v66 = [v102 countByEnumeratingWithState:&v107 objects:v127 count:16];
   if (v66)
   {
@@ -1241,27 +1241,27 @@ LABEL_53:
 
         else
         {
-          v74 = [(SSBullseyeSuggestionsManager *)v106 serverSuggestionThreshold];
-          if (!v74)
+          serverSuggestionThreshold = [(SSBullseyeSuggestionsManager *)selfCopy serverSuggestionThreshold];
+          if (!serverSuggestionThreshold)
           {
             goto LABEL_89;
           }
 
-          v75 = v74;
+          v75 = serverSuggestionThreshold;
           v76 = MEMORY[0x1E696AD98];
           [v72 rankingScore];
           v77 = [v76 numberWithDouble:?];
-          v78 = [(SSBullseyeSuggestionsManager *)v106 serverSuggestionThreshold];
-          v79 = [v77 compare:v78];
+          serverSuggestionThreshold2 = [(SSBullseyeSuggestionsManager *)selfCopy serverSuggestionThreshold];
+          v79 = [v77 compare:serverSuggestionThreshold2];
 
           v80 = v79 == 1;
           v70 = v99;
           if (!v80)
           {
 LABEL_89:
-            v81 = [v72 entityIdentifier];
+            entityIdentifier = [v72 entityIdentifier];
 
-            if (v81)
+            if (entityIdentifier)
             {
               if (![v70 count] || (objc_msgSend(v72, "entityIdentifier"), v82 = objc_claimAutoreleasedReturnValue(), v83 = objc_msgSend(v70, "containsObject:", v82), v82, (v83 & 1) == 0))
               {
@@ -1271,8 +1271,8 @@ LABEL_89:
 
             else
             {
-              v84 = [v72 completion];
-              v85 = [(SSBullseyeSuggestionsManager *)v106 suggestionKeyWithCompletion:v84];
+              completion5 = [v72 completion];
+              v85 = [(SSBullseyeSuggestionsManager *)selfCopy suggestionKeyWithCompletion:completion5];
 
               if (([v105 containsObject:v85] & 1) == 0)
               {
@@ -1307,18 +1307,18 @@ LABEL_89:
   v86 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_rankedSuggestionsResultsWithQueryContext:(id)a3 serverSuggestionResults:(id)a4 localSuggestionResults:(id)a5 options:(id)a6
+- (id)_rankedSuggestionsResultsWithQueryContext:(id)context serverSuggestionResults:(id)results localSuggestionResults:(id)suggestionResults options:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  optionsCopy = options;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v9;
+  v13 = resultsCopy;
   v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v14)
   {
@@ -1334,7 +1334,7 @@ LABEL_89:
         }
 
         v18 = *(*(&v34 + 1) + 8 * i);
-        v19 = [(SSBullseyeSuggestionsManager *)self _getScoreForSuggestionResult:v18 options:v11];
+        v19 = [(SSBullseyeSuggestionsManager *)self _getScoreForSuggestionResult:v18 options:optionsCopy];
         [v12 setObject:v19 forKey:v18];
       }
 
@@ -1348,7 +1348,7 @@ LABEL_89:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v20 = v10;
+  v20 = suggestionResultsCopy;
   v21 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v21)
   {
@@ -1364,7 +1364,7 @@ LABEL_89:
         }
 
         v25 = *(*(&v30 + 1) + 8 * j);
-        v26 = [(SSBullseyeSuggestionsManager *)self _getScoreForSuggestionResult:v25 options:v11, v30];
+        v26 = [(SSBullseyeSuggestionsManager *)self _getScoreForSuggestionResult:v25 options:optionsCopy, v30];
         [v12 setObject:v26 forKey:v25];
       }
 
@@ -1394,41 +1394,41 @@ uint64_t __129__SSBullseyeSuggestionsManager__rankedSuggestionsResultsWithQueryC
   }
 }
 
-- (id)release2023_blendingWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14
+- (id)release2023_blendingWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4
 {
   v89 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v76 = a4;
-  v75 = a5;
-  v74 = a6;
-  v19 = a7;
-  v20 = a8;
-  v70 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  filtersCopy = filters;
+  entityFiltersCopy = entityFilters;
+  contactFiltersCopy = contactFilters;
+  suggestionCopy = suggestion;
+  webSuggestionCopy = webSuggestion;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  contactSuggestionResultsCopy = contactSuggestionResults;
+  serverSuggestionResultsCopy = serverSuggestionResults;
+  localSuggestionResultsCopy = localSuggestionResults;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v27 = objc_autoreleasePoolPush();
-  v68 = v25;
-  if ([v22 count] || objc_msgSend(v24, "count") || objc_msgSend(v23, "count") || objc_msgSend(v70, "count") || objc_msgSend(v21, "count"))
+  v68 = optionsCopy;
+  if ([contactSuggestionResultsCopy count] || objc_msgSend(localSuggestionResultsCopy, "count") || objc_msgSend(serverSuggestionResultsCopy, "count") || objc_msgSend(resultsCopy, "count") || objc_msgSend(suggestionResultsCopy, "count"))
   {
     context = v27;
-    v66 = v20;
-    v67 = v19;
-    v28 = v20;
+    v66 = webSuggestionCopy;
+    v67 = suggestionCopy;
+    v28 = webSuggestionCopy;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v64 = v23;
-    v29 = v23;
+    v64 = serverSuggestionResultsCopy;
+    v29 = serverSuggestionResultsCopy;
     v30 = [v29 countByEnumeratingWithState:&v82 objects:v88 count:16];
     if (v30)
     {
       v31 = v30;
-      v32 = v24;
+      v32 = localSuggestionResultsCopy;
       v33 = *v83;
 LABEL_8:
       v34 = 0;
@@ -1468,29 +1468,29 @@ LABEL_8:
         v62 = v38;
         v28 = v38;
 LABEL_17:
-        v24 = v32;
-        v25 = v68;
-        v39 = v69;
+        localSuggestionResultsCopy = v32;
+        optionsCopy = v68;
+        v39 = contextCopy;
         goto LABEL_19;
       }
 
       v62 = 0;
-      v24 = v32;
-      v25 = v68;
-      v39 = v69;
+      localSuggestionResultsCopy = v32;
+      optionsCopy = v68;
+      v39 = contextCopy;
     }
 
     else
     {
       v62 = 0;
       v36 = v29;
-      v39 = v69;
+      v39 = contextCopy;
 LABEL_19:
     }
 
-    if ([v24 count])
+    if ([localSuggestionResultsCopy count])
     {
-      v40 = [v24 mutableCopy];
+      v40 = [localSuggestionResultsCopy mutableCopy];
     }
 
     else
@@ -1510,52 +1510,52 @@ LABEL_19:
     }
 
     v43 = v42;
-    v65 = v22;
-    [(SSBullseyeSuggestionsManager *)self _filterSuggestionResultsWithQueryContext:v39 filters:v76 entityFilters:v75 contactFilters:v74 contactSuggestionResults:v22 localSuggestionResults:v41 serverSuggestionResults:v42 options:v25];
+    v65 = contactSuggestionResultsCopy;
+    [(SSBullseyeSuggestionsManager *)self _filterSuggestionResultsWithQueryContext:v39 filters:filtersCopy entityFilters:entityFiltersCopy contactFilters:contactFiltersCopy contactSuggestionResults:contactSuggestionResultsCopy localSuggestionResults:v41 serverSuggestionResults:v42 options:optionsCopy];
     if (v28 && ([v43 containsObject:v28] & 1) == 0)
     {
       [v43 addObject:v28];
     }
 
-    v71 = [(SSBullseyeSuggestionsManager *)self _rankedSuggestionsResultsWithQueryContext:v39 serverSuggestionResults:v43 localSuggestionResults:v41 options:v25];
+    v71 = [(SSBullseyeSuggestionsManager *)self _rankedSuggestionsResultsWithQueryContext:v39 serverSuggestionResults:v43 localSuggestionResults:v41 options:optionsCopy];
     if (![(SSBullseyeSuggestionsManager *)self enabledAboveFoldResults])
     {
       goto LABEL_34;
     }
 
-    v44 = [v25 objectForKeyedSubscript:@"ForceAboveFoldResults"];
+    v44 = [optionsCopy objectForKeyedSubscript:@"ForceAboveFoldResults"];
     if (!v44)
     {
       goto LABEL_34;
     }
 
     v45 = v44;
-    [v25 objectForKeyedSubscript:@"ForceAboveFoldResults"];
-    v47 = v46 = v21;
-    v48 = [v47 BOOLValue];
+    [optionsCopy objectForKeyedSubscript:@"ForceAboveFoldResults"];
+    v47 = v46 = suggestionResultsCopy;
+    bOOLValue = [v47 BOOLValue];
 
-    v21 = v46;
-    if (v48)
+    suggestionResultsCopy = v46;
+    if (bOOLValue)
     {
-      v49 = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCountForAboveFoldResults];
+      maxTotalSuggestionCountForAboveFoldResults = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCountForAboveFoldResults];
     }
 
     else
     {
 LABEL_34:
-      v49 = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
+      maxTotalSuggestionCountForAboveFoldResults = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
     }
 
-    v50 = v49;
-    v51 = v70;
-    if ([v21 count])
+    v50 = maxTotalSuggestionCountForAboveFoldResults;
+    v51 = resultsCopy;
+    if ([suggestionResultsCopy count])
     {
       memset(v81, 0, sizeof(v81));
-      if ([v21 countByEnumeratingWithState:v81 objects:v87 count:16])
+      if ([suggestionResultsCopy countByEnumeratingWithState:v81 objects:v87 count:16])
       {
         if (v50)
         {
-          [v26 addObject:**(&v81[0] + 1)];
+          [array addObject:**(&v81[0] + 1)];
           if (v50 != 0x7FFFFFFF)
           {
             --v50;
@@ -1564,15 +1564,15 @@ LABEL_34:
       }
     }
 
-    if ([v70 count])
+    if ([resultsCopy count])
     {
-      v61 = v24;
-      v73 = v21;
+      v61 = localSuggestionResultsCopy;
+      v73 = suggestionResultsCopy;
       v79 = 0u;
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v52 = v70;
+      v52 = resultsCopy;
       v53 = [v52 countByEnumeratingWithState:&v77 objects:v86 count:16];
       if (v53)
       {
@@ -1592,7 +1592,7 @@ LABEL_43:
             break;
           }
 
-          [v26 addObject:*(*(&v77 + 1) + 8 * v56)];
+          [array addObject:*(*(&v77 + 1) + 8 * v56)];
           if (v50 != 0x7FFFFFFF)
           {
             --v50;
@@ -1611,87 +1611,87 @@ LABEL_43:
         }
       }
 
-      v39 = v69;
-      v51 = v70;
-      v21 = v73;
-      v24 = v61;
+      v39 = contextCopy;
+      v51 = resultsCopy;
+      suggestionResultsCopy = v73;
+      localSuggestionResultsCopy = v61;
     }
 
-    [v26 addObjectsFromArray:v71];
+    [array addObjectsFromArray:v71];
     if (v50 != 0x7FFFFFFF)
     {
-      while ([v26 count] > v50)
+      while ([array count] > v50)
       {
-        [v26 removeLastObject];
+        [array removeLastObject];
       }
     }
 
-    if (v28 && ([v26 containsObject:v28] & 1) == 0)
+    if (v28 && ([array containsObject:v28] & 1) == 0)
     {
-      if (v50 != 0x7FFFFFFF && [v26 count] >= v50)
+      if (v50 != 0x7FFFFFFF && [array count] >= v50)
       {
-        [v26 removeLastObject];
+        [array removeLastObject];
       }
 
-      [v26 insertObject:v28 atIndex:0];
+      [array insertObject:v28 atIndex:0];
     }
 
     objc_autoreleasePoolPop(context);
-    v57 = v26;
-    v20 = v66;
-    v19 = v67;
-    v23 = v64;
-    v22 = v65;
+    v57 = array;
+    webSuggestionCopy = v66;
+    suggestionCopy = v67;
+    serverSuggestionResultsCopy = v64;
+    contactSuggestionResultsCopy = v65;
   }
 
   else
   {
-    if (v19)
+    if (suggestionCopy)
     {
-      [v26 addObject:v19];
+      [array addObject:suggestionCopy];
     }
 
-    v39 = v69;
-    v51 = v70;
-    if (v20)
+    v39 = contextCopy;
+    v51 = resultsCopy;
+    if (webSuggestionCopy)
     {
-      [v26 addObject:v20];
+      [array addObject:webSuggestionCopy];
     }
 
-    v60 = v26;
+    v60 = array;
     objc_autoreleasePoolPop(v27);
   }
 
   v58 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return array;
 }
 
-- (id)release2023_blendingByPolicyWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 actionSuggestionResults:(id)a9 contactSuggestionResults:(id)a10 serverSuggestionResults:(id)a11 localSuggestionResults:(id)a12 options:(id)a13
+- (id)release2023_blendingByPolicyWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion actionSuggestionResults:(id)results contactSuggestionResults:(id)self0 serverSuggestionResults:(id)self1 localSuggestionResults:(id)self2 options:(id)self3
 {
   v153 = *MEMORY[0x1E69E9840];
-  v123 = a3;
-  v18 = a4;
-  v122 = a5;
-  v121 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  filtersCopy = filters;
+  entityFiltersCopy = entityFilters;
+  contactFiltersCopy = contactFilters;
+  suggestionCopy = suggestion;
+  webSuggestionCopy = webSuggestion;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  serverSuggestionResultsCopy = serverSuggestionResults;
+  localSuggestionResultsCopy = localSuggestionResults;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
   v27 = objc_autoreleasePoolPush();
-  v28 = v19;
-  v124 = v20;
-  if ([v22 count] || objc_msgSend(v24, "count") || objc_msgSend(v23, "count") || objc_msgSend(v21, "count"))
+  v28 = suggestionCopy;
+  v124 = webSuggestionCopy;
+  if ([suggestionResultsCopy count] || objc_msgSend(localSuggestionResultsCopy, "count") || objc_msgSend(serverSuggestionResultsCopy, "count") || objc_msgSend(resultsCopy, "count"))
   {
     context = v27;
     v111 = v28;
-    if ([v24 count])
+    if ([localSuggestionResultsCopy count])
     {
-      v29 = [v24 mutableCopy];
+      v29 = [localSuggestionResultsCopy mutableCopy];
     }
 
     else
@@ -1700,11 +1700,11 @@ LABEL_43:
     }
 
     v30 = v29;
-    v112 = v24;
-    v113 = v23;
-    if ([v23 count])
+    v112 = localSuggestionResultsCopy;
+    v113 = serverSuggestionResultsCopy;
+    if ([serverSuggestionResultsCopy count])
     {
-      v31 = [v23 mutableCopy];
+      v31 = [serverSuggestionResultsCopy mutableCopy];
     }
 
     else
@@ -1713,14 +1713,14 @@ LABEL_43:
     }
 
     v32 = v31;
-    [(SSBullseyeSuggestionsManager *)self _filterSuggestionResultsWithQueryContext:v123 filters:v18 entityFilters:v122 contactFilters:v121 contactSuggestionResults:v22 localSuggestionResults:v30 serverSuggestionResults:v31 options:v25];
-    v33 = [(SSBullseyeSuggestionsManager *)self _rankedSuggestionsResultsWithQueryContext:v123 serverSuggestionResults:v32 localSuggestionResults:v30 options:v25];
+    [(SSBullseyeSuggestionsManager *)self _filterSuggestionResultsWithQueryContext:contextCopy filters:filtersCopy entityFilters:entityFiltersCopy contactFilters:contactFiltersCopy contactSuggestionResults:suggestionResultsCopy localSuggestionResults:v30 serverSuggestionResults:v31 options:optionsCopy];
+    v33 = [(SSBullseyeSuggestionsManager *)self _rankedSuggestionsResultsWithQueryContext:contextCopy serverSuggestionResults:v32 localSuggestionResults:v30 options:optionsCopy];
     v118 = v33;
     if ([v33 count])
     {
-      v34 = [v33 firstObject];
+      firstObject = [v33 firstObject];
       v35 = v124;
-      v109 = [v34 type] == 28 || objc_msgSend(v34, "type") == 29 || objc_msgSend(v34, "type") == 17;
+      v109 = [firstObject type] == 28 || objc_msgSend(firstObject, "type") == 29 || objc_msgSend(firstObject, "type") == 17;
     }
 
     else
@@ -1730,8 +1730,8 @@ LABEL_43:
     }
 
     v36 = v35;
-    v119 = v25;
-    v120 = v21;
+    v119 = optionsCopy;
+    v120 = resultsCopy;
     if ([v32 count])
     {
       v146 = 0u;
@@ -1743,7 +1743,7 @@ LABEL_43:
       if (v38)
       {
         v39 = v38;
-        v40 = v18;
+        v40 = filtersCopy;
         v41 = *v145;
 LABEL_21:
         v42 = 0;
@@ -1769,9 +1769,9 @@ LABEL_21:
             }
 
             v44 = v124;
-            v18 = v40;
-            v25 = v119;
-            v21 = v120;
+            filtersCopy = v40;
+            optionsCopy = v119;
+            resultsCopy = v120;
             goto LABEL_31;
           }
         }
@@ -1779,9 +1779,9 @@ LABEL_21:
         v45 = v43;
 
         v36 = v124;
-        v18 = v40;
-        v25 = v119;
-        v21 = v120;
+        filtersCopy = v40;
+        optionsCopy = v119;
+        resultsCopy = v120;
         if (!v45)
         {
           goto LABEL_32;
@@ -1803,40 +1803,40 @@ LABEL_31:
     }
 
 LABEL_32:
-    v115 = v18;
+    v115 = filtersCopy;
     if (![(SSBullseyeSuggestionsManager *)self enabledAboveFoldResults])
     {
       goto LABEL_36;
     }
 
     v46 = v36;
-    v47 = [v25 objectForKeyedSubscript:@"ForceAboveFoldResults"];
+    v47 = [optionsCopy objectForKeyedSubscript:@"ForceAboveFoldResults"];
     if (!v47)
     {
       goto LABEL_36;
     }
 
     v48 = v47;
-    v49 = [v25 objectForKeyedSubscript:@"ForceAboveFoldResults"];
-    v50 = [v49 BOOLValue];
+    v49 = [optionsCopy objectForKeyedSubscript:@"ForceAboveFoldResults"];
+    bOOLValue = [v49 BOOLValue];
 
     v36 = v46;
-    if (v50)
+    if (bOOLValue)
     {
-      v51 = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCountForAboveFoldResults];
+      maxTotalSuggestionCountForAboveFoldResults = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCountForAboveFoldResults];
     }
 
     else
     {
 LABEL_36:
-      v51 = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
+      maxTotalSuggestionCountForAboveFoldResults = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
     }
 
-    v143 = v51;
+    v143 = maxTotalSuggestionCountForAboveFoldResults;
     if (v36)
     {
       [v32 removeObject:v36];
-      [v26 addObject:v36];
+      [array addObject:v36];
       if (v143 != 0x7FFFFFFF)
       {
         --v143;
@@ -1845,19 +1845,19 @@ LABEL_36:
 
     v117 = v36;
     v52 = [v30 count];
-    v53 = [v21 count];
+    v53 = [resultsCopy count];
     v54 = [v32 count];
-    v142 = [(SSBullseyeSuggestionsManager *)self maxLocalSuggestionCount];
-    v141 = [(SSBullseyeSuggestionsManager *)self maxServerSuggestionCount];
-    if ([v21 count])
+    maxLocalSuggestionCount = [(SSBullseyeSuggestionsManager *)self maxLocalSuggestionCount];
+    maxServerSuggestionCount = [(SSBullseyeSuggestionsManager *)self maxServerSuggestionCount];
+    if ([resultsCopy count])
     {
       memset(v140, 0, sizeof(v140));
-      v55 = v21;
+      v55 = resultsCopy;
       if ([v55 countByEnumeratingWithState:v140 objects:v151 count:16])
       {
         if (v143)
         {
-          [v26 addObject:**(&v140[0] + 1)];
+          [array addObject:**(&v140[0] + 1)];
           if (v143 != 0x7FFFFFFF)
           {
             --v143;
@@ -1866,9 +1866,9 @@ LABEL_36:
       }
     }
 
-    v114 = v22;
-    v127 = v26;
-    SSSplitCounts(v53 + v52, v142, 0, v54, v141, 0, v143, &v142, &v141, &v143);
+    v114 = suggestionResultsCopy;
+    v127 = array;
+    SSSplitCounts(v53 + v52, maxLocalSuggestionCount, 0, v54, maxServerSuggestionCount, 0, v143, &maxLocalSuggestionCount, &maxServerSuggestionCount, &v143);
     v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v125 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1893,7 +1893,7 @@ LABEL_48:
 
         v63 = *(*(&v136 + 1) + 8 * v62);
         v64 = [v56 count];
-        if (v64 >= v141)
+        if (v64 >= maxServerSuggestionCount)
         {
           break;
         }
@@ -1939,8 +1939,8 @@ LABEL_48:
           }
 
           v73 = *(*(&v132 + 1) + 8 * v72);
-          v74 = [v73 type];
-          if (v74 == 38 || v74 == 32)
+          type = [v73 type];
+          if (type == 38 || type == 32)
           {
             v75 = v57;
 LABEL_62:
@@ -1948,9 +1948,9 @@ LABEL_62:
             goto LABEL_63;
           }
 
-          if (v68 || v74 != 35)
+          if (v68 || type != 35)
           {
-            if (v69 || v74 != 34)
+            if (v69 || type != 34)
             {
               v75 = v125;
               goto LABEL_62;
@@ -1984,7 +1984,7 @@ LABEL_63:
 LABEL_75:
     v116 = v56;
 
-    v26 = v127;
+    array = v127;
     v77 = [v127 count];
     [v57 sortUsingComparator:&__block_literal_global_172];
     do
@@ -2001,17 +2001,17 @@ LABEL_75:
       }
 
       v79 = [v127 count] - v77;
-      if (v79 > v142)
+      if (v79 > maxLocalSuggestionCount)
       {
         break;
       }
 
-      v80 = [v57 firstObject];
-      [v127 addObject:v80];
-      [v57 removeObject:v80];
-      if (v142 != 0x7FFFFFFF)
+      firstObject2 = [v57 firstObject];
+      [v127 addObject:firstObject2];
+      [v57 removeObject:firstObject2];
+      if (maxLocalSuggestionCount != 0x7FFFFFFF)
       {
-        --v142;
+        --maxLocalSuggestionCount;
       }
 
       v81 = [v71 count];
@@ -2026,15 +2026,15 @@ LABEL_75:
     if (v68 && (v82 = [v127 count], v82 < v143))
     {
       v83 = [v127 count];
-      v84 = v142;
-      v85 = v83 - v77 < v142;
+      v84 = maxLocalSuggestionCount;
+      v85 = v83 - v77 < maxLocalSuggestionCount;
       v86 = v120;
       v87 = v117;
       if (v85)
       {
         [v127 addObject:v68];
         v88 = v125;
-        if (v142 == 0x7FFFFFFF)
+        if (maxLocalSuggestionCount == 0x7FFFFFFF)
         {
 LABEL_94:
           if (v69 && [v88 count] && (objc_msgSend(v88, "containsObject:", v69) & 1) == 0)
@@ -2076,9 +2076,9 @@ LABEL_94:
                   }
 
                   v98 = *(*(&v128 + 1) + 8 * i);
-                  v99 = [v98 type];
+                  type2 = [v98 type];
                   v100 = v92;
-                  if (v99 != 28)
+                  if (type2 != 28)
                   {
                     if ([v98 type] == 29)
                     {
@@ -2101,7 +2101,7 @@ LABEL_94:
             }
 
             v101 = v125;
-            v26 = v127;
+            array = v127;
             [v127 addObjectsFromArray:v125];
             [v127 addObjectsFromArray:v92];
 
@@ -2121,23 +2121,23 @@ LABEL_94:
 
           v28 = v111;
           objc_autoreleasePoolPop(context);
-          v104 = v26;
-          v22 = v114;
-          v18 = v115;
-          v24 = v112;
-          v23 = v113;
-          v21 = v102;
-          v25 = v119;
+          v104 = array;
+          suggestionResultsCopy = v114;
+          filtersCopy = v115;
+          localSuggestionResultsCopy = v112;
+          serverSuggestionResultsCopy = v113;
+          resultsCopy = v102;
+          optionsCopy = v119;
           goto LABEL_116;
         }
 
-        v84 = --v142;
+        v84 = --maxLocalSuggestionCount;
       }
     }
 
     else
     {
-      v84 = v142;
+      v84 = maxLocalSuggestionCount;
       v86 = v120;
       v87 = v117;
     }
@@ -2148,7 +2148,7 @@ LABEL_94:
       do
       {
         v89 = [v125 count];
-        if (v89 <= v142)
+        if (v89 <= maxLocalSuggestionCount)
         {
           break;
         }
@@ -2156,7 +2156,7 @@ LABEL_94:
         [v125 removeLastObject];
       }
 
-      while (v142 != 0x7FFFFFFF);
+      while (maxLocalSuggestionCount != 0x7FFFFFFF);
     }
 
     goto LABEL_94;
@@ -2164,49 +2164,49 @@ LABEL_94:
 
   if (v124)
   {
-    [v26 addObject:?];
+    [array addObject:?];
   }
 
   if (v28)
   {
-    [v26 addObject:v28];
+    [array addObject:v28];
   }
 
-  v107 = v26;
+  v107 = array;
 
   objc_autoreleasePoolPop(v27);
 LABEL_116:
 
   v105 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return array;
 }
 
-- (id)release2022_blendingByPolicyWithQueryContext:(id)a3 filters:(id)a4 entityFilters:(id)a5 contactFilters:(id)a6 userSuggestion:(id)a7 userWebSuggestion:(id)a8 shortcutSuggestionResults:(id)a9 actionSuggestionResults:(id)a10 contactSuggestionResults:(id)a11 serverSuggestionResults:(id)a12 localSuggestionResults:(id)a13 options:(id)a14
+- (id)release2022_blendingByPolicyWithQueryContext:(id)context filters:(id)filters entityFilters:(id)entityFilters contactFilters:(id)contactFilters userSuggestion:(id)suggestion userWebSuggestion:(id)webSuggestion shortcutSuggestionResults:(id)results actionSuggestionResults:(id)self0 contactSuggestionResults:(id)self1 serverSuggestionResults:(id)self2 localSuggestionResults:(id)self3 options:(id)self4
 {
   v266 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v217 = a5;
-  v230 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v204 = a10;
-  v25 = a11;
-  v201 = a12;
-  v202 = a13;
-  v205 = a14;
-  v26 = [MEMORY[0x1E695DF70] array];
-  v27 = [v20 searchString];
-  v224 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v27];
+  contextCopy = context;
+  filtersCopy = filters;
+  entityFiltersCopy = entityFilters;
+  contactFiltersCopy = contactFilters;
+  suggestionCopy = suggestion;
+  webSuggestionCopy = webSuggestion;
+  resultsCopy = results;
+  suggestionResultsCopy = suggestionResults;
+  contactSuggestionResultsCopy = contactSuggestionResults;
+  serverSuggestionResultsCopy = serverSuggestionResults;
+  localSuggestionResultsCopy = localSuggestionResults;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  searchString = [contextCopy searchString];
+  v224 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:searchString];
 
-  v28 = v22;
-  v199 = v23;
+  v28 = suggestionCopy;
+  v199 = webSuggestionCopy;
   v207 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v210 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v200 = v25;
-  if ([v25 count] || objc_msgSend(v202, "count") || objc_msgSend(v201, "count") || objc_msgSend(v24, "count") || objc_msgSend(v204, "count"))
+  v200 = contactSuggestionResultsCopy;
+  if ([contactSuggestionResultsCopy count] || objc_msgSend(localSuggestionResultsCopy, "count") || objc_msgSend(serverSuggestionResultsCopy, "count") || objc_msgSend(resultsCopy, "count") || objc_msgSend(suggestionResultsCopy, "count"))
   {
     v197 = v28;
     v215 = objc_opt_new();
@@ -2214,31 +2214,31 @@ LABEL_116:
     v209 = objc_opt_new();
     v208 = objc_opt_new();
     v213 = objc_opt_new();
-    v29 = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
-    v211 = [(SSBullseyeSuggestionsManager *)self maxLocalSuggestionCount];
-    v192 = [(SSBullseyeSuggestionsManager *)self maxServerSuggestionCount];
-    v30 = v205;
-    if (v205)
+    maxTotalSuggestionCount = [(SSBullseyeSuggestionsManager *)self maxTotalSuggestionCount];
+    maxLocalSuggestionCount = [(SSBullseyeSuggestionsManager *)self maxLocalSuggestionCount];
+    maxServerSuggestionCount = [(SSBullseyeSuggestionsManager *)self maxServerSuggestionCount];
+    v30 = optionsCopy;
+    if (optionsCopy)
     {
-      v31 = [v205 objectForKeyedSubscript:@"localDisplayPosition"];
+      v31 = [optionsCopy objectForKeyedSubscript:@"localDisplayPosition"];
       if (v31)
       {
-        v32 = [v205 objectForKeyedSubscript:@"localDisplayPosition"];
-        v191 = [v32 intValue];
+        v32 = [optionsCopy objectForKeyedSubscript:@"localDisplayPosition"];
+        intValue = [v32 intValue];
 
-        v30 = v205;
+        v30 = optionsCopy;
       }
 
       else
       {
-        v191 = [(SSBullseyeSuggestionsManager *)self localDisplayPosition];
+        intValue = [(SSBullseyeSuggestionsManager *)self localDisplayPosition];
       }
 
       v33 = [v30 objectForKeyedSubscript:@"localThreshold"];
       if (v33)
       {
         v34 = v33;
-        v35 = [v30 objectForKeyedSubscript:@"localThreshold"];
+        localSuggestionThreshold = [v30 objectForKeyedSubscript:@"localThreshold"];
 
 LABEL_14:
         v36 = [v30 objectForKeyedSubscript:@"serverThreshold"];
@@ -2251,34 +2251,34 @@ LABEL_14:
         }
 
 LABEL_16:
-        v38 = [(SSBullseyeSuggestionsManager *)self serverSuggestionThreshold];
+        serverSuggestionThreshold = [(SSBullseyeSuggestionsManager *)self serverSuggestionThreshold];
 
-        v216 = v38;
+        v216 = serverSuggestionThreshold;
         if (!v30)
         {
-          v189 = [(SSBullseyeSuggestionsManager *)self ignoreMaxCount];
-          v190 = 0;
+          ignoreMaxCount = [(SSBullseyeSuggestionsManager *)self ignoreMaxCount];
+          bOOLValue = 0;
           v203 = 0;
           v196 = 0;
           v188 = 0;
           LOBYTE(v185) = 1;
           v47 = v197;
 LABEL_39:
-          v214 = v35;
-          v193 = v21;
-          v194 = v26;
-          v195 = v20;
-          v198 = v24;
-          v52 = [v24 count];
-          v53 = v29 - v52;
-          if (v29 < v52)
+          v214 = localSuggestionThreshold;
+          v193 = filtersCopy;
+          v194 = array;
+          v195 = contextCopy;
+          v198 = resultsCopy;
+          v52 = [resultsCopy count];
+          v53 = maxTotalSuggestionCount - v52;
+          if (maxTotalSuggestionCount < v52)
           {
             v53 = 0;
           }
 
           if (v52)
           {
-            v54 = v29 == 0x7FFFFFFF;
+            v54 = maxTotalSuggestionCount == 0x7FFFFFFF;
           }
 
           else
@@ -2288,13 +2288,13 @@ LABEL_39:
 
           if (v54)
           {
-            v53 = v29;
+            v53 = maxTotalSuggestionCount;
           }
 
           v186 = v52;
           v187 = v53;
-          v212 = [MEMORY[0x1E695DF70] array];
-          v220 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
           v226 = objc_opt_new();
           v229 = objc_opt_new();
           v218 = objc_opt_new();
@@ -2303,7 +2303,7 @@ LABEL_39:
           v257 = 0u;
           v258 = 0u;
           v259 = 0u;
-          v55 = v201;
+          v55 = serverSuggestionResultsCopy;
           v56 = [v55 countByEnumeratingWithState:&v256 objects:v265 count:16];
           if (!v56)
           {
@@ -2330,13 +2330,13 @@ LABEL_39:
               }
 
               v61 = *(*(&v256 + 1) + 8 * i);
-              v62 = [v61 type];
-              v63 = [v61 completion];
-              v64 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v63];
+              type = [v61 type];
+              completion = [v61 completion];
+              v64 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion];
 
-              if (v62 > 27)
+              if (type > 27)
               {
-                switch(v62)
+                switch(type)
                 {
                   case 30:
                     v66 = v61;
@@ -2352,14 +2352,14 @@ LABEL_39:
 LABEL_58:
                       v65 = v61;
 
-                      [v220 addObject:v65];
+                      [array3 addObject:v65];
                       v227 |= [v59 count] == 0;
                       v225 = v65;
                     }
 
                     else
                     {
-                      [v220 addObject:v61];
+                      [array3 addObject:v61];
                       v227 |= [v59 count] == 0;
                     }
 
@@ -2371,9 +2371,9 @@ LABEL_74:
                 goto LABEL_75;
               }
 
-              if (v62 != 17)
+              if (type != 17)
               {
-                if (v62 == 27)
+                if (type == 27)
                 {
                   goto LABEL_75;
                 }
@@ -2383,12 +2383,12 @@ LABEL_74:
 
               if (!v216 || (v67 = MEMORY[0x1E696AD98], [v61 rankingScore], objc_msgSend(v67, "numberWithDouble:"), v68 = objc_claimAutoreleasedReturnValue(), v69 = objc_msgSend(v68, "compare:", v216), v68, v69 != -1))
               {
-                v70 = [v61 entityIdentifier];
-                v71 = v70;
-                if (v217 && v70)
+                entityIdentifier = [v61 entityIdentifier];
+                v71 = entityIdentifier;
+                if (entityFiltersCopy && entityIdentifier)
                 {
-                  v72 = [v61 entityIdentifier];
-                  v73 = [v217 containsObject:v72];
+                  entityIdentifier2 = [v61 entityIdentifier];
+                  v73 = [entityFiltersCopy containsObject:entityIdentifier2];
 
                   if (v73)
                   {
@@ -2401,15 +2401,15 @@ LABEL_74:
                 {
                 }
 
-                v74 = [v61 entityIdentifier];
+                entityIdentifier3 = [v61 entityIdentifier];
 
-                if (v74)
+                if (entityIdentifier3)
                 {
                   [v213 addObject:v64];
                 }
 
                 [v226 addObject:v64];
-                [v212 addObject:v61];
+                [array2 addObject:v61];
                 v59 = v215;
                 goto LABEL_74;
               }
@@ -2425,7 +2425,7 @@ LABEL_79:
               if (v225 && ([v59 containsObject:v225] & 1) == 0)
               {
                 [v59 addObject:v225];
-                [v220 addObject:v225];
+                [array3 addObject:v225];
               }
 
               v252 = 0u;
@@ -2449,16 +2449,16 @@ LABEL_79:
                     }
 
                     v80 = *(*(&v252 + 1) + 8 * j);
-                    v81 = [v80 completion];
-                    v82 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v81];
+                    completion2 = [v80 completion];
+                    v82 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion2];
 
-                    if ((!v230 || ([v230 containsObject:v82] & 1) == 0) && (objc_msgSend(v218, "containsObject:", v82) & 1) == 0)
+                    if ((!contactFiltersCopy || ([contactFiltersCopy containsObject:v82] & 1) == 0) && (objc_msgSend(v218, "containsObject:", v82) & 1) == 0)
                     {
                       if ([v82 containsString:v224])
                       {
                         [v208 addObject:v80];
                         [v218 addObject:v82];
-                        if (v211 != 0x7FFFFFFF && [v208 count] >= v211)
+                        if (maxLocalSuggestionCount != 0x7FFFFFFF && [v208 count] >= maxLocalSuggestionCount)
                         {
 
                           goto LABEL_97;
@@ -2479,7 +2479,7 @@ LABEL_97:
               v251 = 0u;
               v248 = 0u;
               v249 = 0u;
-              v83 = v202;
+              v83 = localSuggestionResultsCopy;
               v84 = [v83 countByEnumeratingWithState:&v248 objects:v263 count:16];
               if (!v84)
               {
@@ -2500,26 +2500,26 @@ LABEL_100:
                 }
 
                 v88 = *(*(&v248 + 1) + 8 * v87);
-                v89 = [v88 type];
-                v90 = [v88 completion];
-                v91 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v90];
+                type2 = [v88 type];
+                completion3 = [v88 completion];
+                v91 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion3];
 
-                if (v89 <= 34)
+                if (type2 <= 34)
                 {
-                  if (v89 == 32)
+                  if (type2 == 32)
                   {
                     goto LABEL_113;
                   }
 
-                  if (v89 != 34)
+                  if (type2 != 34)
                   {
                     goto LABEL_122;
                   }
 
-                  v92 = [v195 searchString];
-                  if (v92)
+                  searchString2 = [v195 searchString];
+                  if (searchString2)
                   {
-                    v93 = v92;
+                    v93 = searchString2;
                     v94 = [v91 isEqualToString:v224];
 
                     if (v94)
@@ -2538,7 +2538,7 @@ LABEL_100:
 
                 else
                 {
-                  if (v89 == 35)
+                  if (type2 == 35)
                   {
                     v98 = v88;
 
@@ -2547,12 +2547,12 @@ LABEL_100:
                     goto LABEL_134;
                   }
 
-                  if (v89 != 39)
+                  if (type2 != 39)
                   {
-                    if (v89 != 38)
+                    if (type2 != 38)
                     {
 LABEL_122:
-                      if (!v230 || ([v230 containsObject:v91] & 1) == 0)
+                      if (!contactFiltersCopy || ([contactFiltersCopy containsObject:v91] & 1) == 0)
                       {
                         if (!v214 || (v100 = MEMORY[0x1E696AD98], [v88 rankingScore], objc_msgSend(v100, "numberWithDouble:"), v101 = objc_claimAutoreleasedReturnValue(), v102 = objc_msgSend(v101, "compare:", v214), v101, v102 != -1))
                         {
@@ -2582,7 +2582,7 @@ LABEL_134:
                         {
 LABEL_138:
 
-                          v103 = v204;
+                          v103 = suggestionResultsCopy;
                           v105 = v214;
                           v104 = v215;
                           if (![v209 count])
@@ -2607,8 +2607,8 @@ LABEL_138:
                                   }
 
                                   v111 = *(*(&v244 + 1) + 8 * k);
-                                  v112 = [v111 completion];
-                                  v113 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:v112];
+                                  completion4 = [v111 completion];
+                                  v113 = [(SSBullseyeSuggestionsManager *)self suggestionKeyWithCompletion:completion4];
 
                                   if (([v229 containsObject:v113] & 1) == 0)
                                   {
@@ -2628,7 +2628,7 @@ LABEL_138:
                             v241 = 0u;
                             v114 = v206;
                             v115 = [v114 countByEnumeratingWithState:&v240 objects:v261 count:16];
-                            v103 = v204;
+                            v103 = suggestionResultsCopy;
                             v105 = v214;
                             if (v115)
                             {
@@ -2658,7 +2658,7 @@ LABEL_138:
                           v119 = [v222 sortedArrayUsingComparator:&__block_literal_global_186];
                           v120 = [v119 mutableCopy];
 
-                          v26 = v194;
+                          array = v194;
                           if (v209)
                           {
                             v121 = [v209 count];
@@ -2693,19 +2693,19 @@ LABEL_161:
                             v123 = [v104 count];
                           }
 
-                          v238 = v211;
+                          v238 = maxLocalSuggestionCount;
                           v239 = v187;
-                          v124 = v192;
-                          v237 = v192;
-                          if (v189)
+                          v124 = maxServerSuggestionCount;
+                          v237 = maxServerSuggestionCount;
+                          if (ignoreMaxCount)
                           {
-                            v125 = v211;
+                            v125 = maxLocalSuggestionCount;
                             if (v123 < 2)
                             {
                               v125 = v187;
                             }
 
-                            v211 = v125;
+                            maxLocalSuggestionCount = v125;
                             if (!(v121 | v122))
                             {
                               v124 = v187;
@@ -2716,7 +2716,7 @@ LABEL_161:
                           {
                             if (v221)
                             {
-                              v126 = v190;
+                              v126 = bOOLValue;
                             }
 
                             else
@@ -2724,11 +2724,11 @@ LABEL_161:
                               v126 = 0;
                             }
 
-                            SSSplitCounts(v122 + v121, v211, v126, v123, v124, 0, v187, &v238, &v237, &v239);
+                            SSSplitCounts(v122 + v121, maxLocalSuggestionCount, v126, v123, v124, 0, v187, &v238, &v237, &v239);
                           }
 
-                          v127 = v191;
-                          if (!v191)
+                          v127 = intValue;
+                          if (!intValue)
                           {
                             v127 = v188;
                           }
@@ -2736,7 +2736,7 @@ LABEL_161:
                           v223 = v127;
                           if (v221)
                           {
-                            v128 = v190;
+                            v128 = bOOLValue;
                           }
 
                           else
@@ -2749,11 +2749,11 @@ LABEL_161:
                             [v194 addObject:v221];
                           }
 
-                          v129 = [MEMORY[0x1E695DF70] array];
-                          v130 = v129;
+                          array4 = [MEMORY[0x1E695DF70] array];
+                          v130 = array4;
                           if (v239 == 0x7FFFFFFF)
                           {
-                            [v129 addObjectsFromArray:v215];
+                            [array4 addObjectsFromArray:v215];
                           }
 
                           else if ([v215 count])
@@ -2763,22 +2763,22 @@ LABEL_161:
                               v131 = v184 & v227;
                               v235 = 0;
                               v236 = 0;
-                              if ([v220 count] == 1)
+                              if ([array3 count] == 1)
                               {
-                                v132 = [v220 count];
-                                v133 = [v212 count];
+                                v132 = [array3 count];
+                                v133 = [array2 count];
                                 SSSplitCounts(v132, 0x7FFFFFFFLL, 0, v133, 0x7FFFFFFFLL, 0, v237, &v235, &v236, 0);
                               }
 
                               else
                               {
-                                v135 = [v212 count];
-                                v136 = [v220 count];
+                                v135 = [array2 count];
+                                v136 = [array3 count];
                                 SSSplitCounts(v135, 0x7FFFFFFFLL, 0, v136, 0x7FFFFFFFLL, 0, v237, &v236, &v235, 0);
                               }
 
-                              v134 = getFilteredSuggestionResults(v220, v235);
-                              v137 = getFilteredSuggestionResults(v212, v236);
+                              v134 = getFilteredSuggestionResults(array3, v235);
+                              v137 = getFilteredSuggestionResults(array2, v236);
                               v138 = v137;
                               v139 = v131 == 0;
                               if (v131)
@@ -2819,7 +2819,7 @@ LABEL_161:
                             }
                           }
 
-                          v143 = [MEMORY[0x1E695DF70] array];
+                          array5 = [MEMORY[0x1E695DF70] array];
                           if ([v209 count])
                           {
                             v233 = 0u;
@@ -2845,12 +2845,12 @@ LABEL_202:
                                 }
 
                                 v151 = *(*(&v231 + 1) + 8 * v149);
-                                if ((v211 & 0x8000000000000000) == 0 && ([v120 count] && v150 && v150 + 1 >= v238 || !objc_msgSend(v120, "count") && v150 >= v238))
+                                if ((maxLocalSuggestionCount & 0x8000000000000000) == 0 && ([v120 count] && v150 && v150 + 1 >= v238 || !objc_msgSend(v120, "count") && v150 >= v238))
                                 {
                                   break;
                                 }
 
-                                [v143 addObject:v151];
+                                [array5 addObject:v151];
                                 ++v150;
                                 if (v146 == ++v149)
                                 {
@@ -2865,34 +2865,34 @@ LABEL_202:
                               }
                             }
 
-                            v26 = v194;
-                            v103 = v204;
+                            array = v194;
+                            v103 = suggestionResultsCopy;
                             v105 = v214;
                           }
 
                           if (v120)
                           {
-                            [v143 addObjectsFromArray:v120];
+                            [array5 addObjectsFromArray:v120];
                           }
 
                           if ([v198 count])
                           {
-                            [v26 addObjectsFromArray:v198];
+                            [array addObjectsFromArray:v198];
                           }
 
                           if ([v103 count])
                           {
-                            [v26 addObjectsFromArray:v103];
+                            [array addObjectsFromArray:v103];
                           }
 
                           v152 = v223;
-                          if (v219 && ([v26 containsObject:v219] & 1) == 0)
+                          if (v219 && ([array containsObject:v219] & 1) == 0)
                           {
-                            [v26 removeLastObject];
-                            [v26 addObject:v219];
+                            [array removeLastObject];
+                            [array addObject:v219];
                           }
 
-                          v153 = v143;
+                          v153 = array5;
                           v154 = v238;
                           v155 = v130;
                           v228 = v155;
@@ -2915,21 +2915,21 @@ LABEL_202:
 
                           v159 = *v158;
                           v160 = getFilteredSuggestionResults(v156, v154);
-                          [v26 addObjectsFromArray:v160];
+                          [array addObjectsFromArray:v160];
                           if (v223)
                           {
-                            if (v225 && ([v26 containsObject:v225] & 1) == 0)
+                            if (v225 && ([array containsObject:v225] & 1) == 0)
                             {
-                              [v26 removeLastObject];
-                              [v26 addObject:v225];
+                              [array removeLastObject];
+                              [array addObject:v225];
                             }
                           }
 
-                          else if ([v207 count] && (objc_msgSend(v207, "firstObject"), v161 = objc_claimAutoreleasedReturnValue(), v162 = objc_msgSend(v26, "containsObject:", v161), v161, v152 = v223, (v162 & 1) == 0))
+                          else if ([v207 count] && (objc_msgSend(v207, "firstObject"), v161 = objc_claimAutoreleasedReturnValue(), v162 = objc_msgSend(array, "containsObject:", v161), v161, v152 = v223, (v162 & 1) == 0))
                           {
-                            [v26 removeLastObject];
-                            v167 = [v207 firstObject];
-                            [v26 addObject:v167];
+                            [array removeLastObject];
+                            firstObject = [v207 firstObject];
+                            [array addObject:firstObject];
 
                             v152 = v223;
                             v105 = v214;
@@ -2939,21 +2939,21 @@ LABEL_202:
                           {
                             v163 = [v210 count];
                             v105 = v214;
-                            if (!v204)
+                            if (!suggestionResultsCopy)
                             {
                               if (v163)
                               {
                                 if (!v186)
                                 {
-                                  v164 = [v210 firstObject];
-                                  v165 = [v26 containsObject:v164];
+                                  firstObject2 = [v210 firstObject];
+                                  v165 = [array containsObject:firstObject2];
 
                                   v152 = v223;
                                   if ((v165 & 1) == 0)
                                   {
-                                    [v26 removeLastObject];
-                                    v166 = [v210 firstObject];
-                                    [v26 addObject:v166];
+                                    [array removeLastObject];
+                                    firstObject3 = [v210 firstObject];
+                                    [array addObject:firstObject3];
 
                                     v152 = v223;
                                   }
@@ -2963,13 +2963,13 @@ LABEL_202:
                           }
 
                           v168 = getFilteredSuggestionResults(v157, v159);
-                          [v26 addObjectsFromArray:v168];
+                          [array addObjectsFromArray:v168];
                           if (v152)
                           {
                             if ([v207 count])
                             {
-                              v169 = [v207 firstObject];
-                              v170 = [v26 containsObject:v169];
+                              firstObject4 = [v207 firstObject];
+                              v170 = [array containsObject:firstObject4];
 
                               v171 = v207;
                               v105 = v214;
@@ -2980,23 +2980,23 @@ LABEL_202:
                             }
 
                             v172 = [v210 count];
-                            if (!v204)
+                            if (!suggestionResultsCopy)
                             {
                               if (v172)
                               {
                                 if (!v186)
                                 {
-                                  v173 = [v210 firstObject];
-                                  v174 = [v26 containsObject:v173];
+                                  firstObject5 = [v210 firstObject];
+                                  v174 = [array containsObject:firstObject5];
 
                                   v171 = v210;
                                   v105 = v214;
                                   if ((v174 & 1) == 0)
                                   {
 LABEL_245:
-                                    [v26 removeLastObject];
-                                    v175 = [v171 firstObject];
-                                    [v26 addObject:v175];
+                                    [array removeLastObject];
+                                    firstObject6 = [v171 firstObject];
+                                    [array addObject:firstObject6];
                                   }
                                 }
                               }
@@ -3006,14 +3006,14 @@ LABEL_245:
                             if (!v225)
                             {
 LABEL_252:
-                              v177 = v26;
+                              v177 = array;
 
-                              v20 = v195;
-                              v21 = v193;
-                              v178 = v230;
+                              contextCopy = v195;
+                              filtersCopy = v193;
+                              v178 = contactFiltersCopy;
                               v28 = v197;
-                              v24 = v198;
-                              v179 = v205;
+                              resultsCopy = v198;
+                              v179 = optionsCopy;
                               v180 = v199;
                               goto LABEL_253;
                             }
@@ -3027,15 +3027,15 @@ LABEL_252:
                               goto LABEL_252;
                             }
 
-                            if (([v26 containsObject:v225] & 1) == 0)
+                            if (([array containsObject:v225] & 1) == 0)
                             {
-                              [v26 removeLastObject];
-                              [v26 addObject:v225];
+                              [array removeLastObject];
+                              [array addObject:v225];
                             }
                           }
 
-                          [v26 removeObject:v176];
-                          [v26 insertObject:v176 atIndex:0];
+                          [array removeObject:v176];
+                          [array insertObject:v176 atIndex:0];
                           goto LABEL_252;
                         }
 
@@ -3047,7 +3047,7 @@ LABEL_252:
 
 LABEL_113:
                     [v88 rankingScore];
-                    if (v96 != 0.0 && (!v230 || ([v230 containsObject:v91] & 1) == 0) && (objc_msgSend(v229, "containsObject:", v91) & 1) == 0)
+                    if (v96 != 0.0 && (!contactFiltersCopy || ([contactFiltersCopy containsObject:v91] & 1) == 0) && (objc_msgSend(v229, "containsObject:", v91) & 1) == 0)
                     {
                       [v209 addObject:v88];
                       [v226 addObject:v91];
@@ -3104,28 +3104,28 @@ LABEL_17:
         if (v41)
         {
           v42 = [v30 objectForKeyedSubscript:@"ignoreMaxCountForSingleSuggestionsType"];
-          v189 = [v42 BOOLValue];
+          ignoreMaxCount = [v42 BOOLValue];
 
-          v30 = v205;
+          v30 = optionsCopy;
         }
 
         else
         {
-          v189 = [(SSBullseyeSuggestionsManager *)self ignoreMaxCount];
+          ignoreMaxCount = [(SSBullseyeSuggestionsManager *)self ignoreMaxCount];
         }
 
         v43 = [v30 objectForKeyedSubscript:@"prefersLocalUserTypedSuggestion"];
         if (v43)
         {
           v44 = [v30 objectForKeyedSubscript:@"prefersLocalUserTypedSuggestion"];
-          v190 = [v44 BOOLValue];
+          bOOLValue = [v44 BOOLValue];
 
-          v30 = v205;
+          v30 = optionsCopy;
         }
 
         else
         {
-          v190 = 0;
+          bOOLValue = 0;
         }
 
         v45 = [v30 objectForKeyedSubscript:@"suggestionsAreBlended"];
@@ -3173,10 +3173,10 @@ LABEL_17:
 
     else
     {
-      v191 = [(SSBullseyeSuggestionsManager *)self localDisplayPosition];
+      intValue = [(SSBullseyeSuggestionsManager *)self localDisplayPosition];
     }
 
-    v35 = [(SSBullseyeSuggestionsManager *)self localSuggestionThreshold];
+    localSuggestionThreshold = [(SSBullseyeSuggestionsManager *)self localSuggestionThreshold];
 
     if (!v30)
     {
@@ -3189,17 +3189,17 @@ LABEL_17:
   v180 = v199;
   if (v199)
   {
-    [v26 addObject:v199];
+    [array addObject:v199];
   }
 
-  v178 = v230;
-  v179 = v205;
+  v178 = contactFiltersCopy;
+  v179 = optionsCopy;
   if (v28)
   {
-    [v26 addObject:v28];
+    [array addObject:v28];
   }
 
-  v183 = v26;
+  v183 = array;
   v219 = 0;
   v225 = v199;
   v221 = v28;
@@ -3207,51 +3207,51 @@ LABEL_253:
 
   v181 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return array;
 }
 
-- (id)intentBasedSuggestionBlending:(id)a3 suggestions:(id)a4
+- (id)intentBasedSuggestionBlending:(id)blending suggestions:(id)suggestions
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 queryIntent];
-  if (!v7)
+  blendingCopy = blending;
+  suggestionsCopy = suggestions;
+  queryIntent = [blendingCopy queryIntent];
+  if (!queryIntent)
   {
     goto LABEL_24;
   }
 
-  v8 = v7;
-  v9 = [v5 queryIntent];
-  if (![v9 intentType])
+  v8 = queryIntent;
+  queryIntent2 = [blendingCopy queryIntent];
+  if (![queryIntent2 intentType])
   {
 
     goto LABEL_24;
   }
 
-  v10 = [v5 queryIntent];
-  v11 = [v10 suggestionConfig];
+  queryIntent3 = [blendingCopy queryIntent];
+  suggestionConfig = [queryIntent3 suggestionConfig];
 
-  if (!v11)
+  if (!suggestionConfig)
   {
 LABEL_24:
-    v12 = v6;
+    array = suggestionsCopy;
     goto LABEL_25;
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   context = objc_autoreleasePoolPush();
-  v28 = v5;
-  v13 = [v5 queryIntent];
-  v14 = [v13 suggestionConfig];
+  v28 = blendingCopy;
+  queryIntent4 = [blendingCopy queryIntent];
+  suggestionConfig2 = [queryIntent4 suggestionConfig];
 
-  v15 = [v14 localSuggestionQuota];
-  v16 = [v14 serverSuggestionQuota];
+  localSuggestionQuota = [suggestionConfig2 localSuggestionQuota];
+  serverSuggestionQuota = [suggestionConfig2 serverSuggestionQuota];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = v6;
+  v17 = suggestionsCopy;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v18)
   {
@@ -3268,30 +3268,30 @@ LABEL_24:
         }
 
         v22 = *(*(&v29 + 1) + 8 * v21);
-        v23 = [v22 type];
-        if (v23 <= 0x27)
+        type = [v22 type];
+        if (type <= 0x27)
         {
-          if (((1 << v23) & 0xCF80010000) != 0)
+          if (((1 << type) & 0xCF80010000) != 0)
           {
-            if (v15)
+            if (localSuggestionQuota)
             {
-              [v12 addObject:v22];
-              --v15;
+              [array addObject:v22];
+              --localSuggestionQuota;
             }
           }
 
-          else if (((1 << v23) & 0x10020000) != 0)
+          else if (((1 << type) & 0x10020000) != 0)
           {
-            if (v16)
+            if (serverSuggestionQuota)
             {
-              [v12 addObject:v22];
-              --v16;
+              [array addObject:v22];
+              --serverSuggestionQuota;
             }
           }
 
-          else if (v23 == 29 && [v14 showWebAsTypedSuggestion])
+          else if (type == 29 && [suggestionConfig2 showWebAsTypedSuggestion])
           {
-            [v12 addObject:v22];
+            [array addObject:v22];
           }
         }
 
@@ -3307,12 +3307,12 @@ LABEL_24:
   }
 
   objc_autoreleasePoolPop(context);
-  v5 = v28;
+  blendingCopy = v28;
 LABEL_25:
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return array;
 }
 
 @end

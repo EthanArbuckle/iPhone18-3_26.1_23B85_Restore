@@ -1,16 +1,16 @@
 @interface MPStoreLibraryPersonalizationResponse
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4;
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler;
 - (void)dealloc;
-- (void)setLibraryResponse:(id)a3;
+- (void)setLibraryResponse:(id)response;
 @end
 
 @implementation MPStoreLibraryPersonalizationResponse
 
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MPModelResponse *)self results];
+  handlerCopy = handler;
+  results = [(MPModelResponse *)self results];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -36,26 +36,26 @@
   v29 = v11;
   v30 = &v41;
   v31 = &v32;
-  [v7 enumerateItemsUsingBlock:v27];
-  v12 = [v7 sectionAtIndex:a3];
+  [results enumerateItemsUsingBlock:v27];
+  v12 = [results sectionAtIndex:index];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 keepLocalEnableState];
+    keepLocalEnableState = [v12 keepLocalEnableState];
   }
 
   else
   {
-    v13 = 0;
+    keepLocalEnableState = 0;
   }
 
   if (v33[7] != v33[6])
   {
     v14 = objc_alloc_init(MPModelLibraryKeepLocalStatusRequestOperation);
-    v15 = [MEMORY[0x1E69E4680] activeAccount];
-    v16 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v15];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v16 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:activeAccount];
 
     [(MPModelLibraryKeepLocalStatusRequestOperation *)v14 setLibraryView:v16];
-    [(MPModelLibraryKeepLocalStatusRequestOperation *)v14 setEnableState:v13];
+    [(MPModelLibraryKeepLocalStatusRequestOperation *)v14 setEnableState:keepLocalEnableState];
     v17 = [MEMORY[0x1E696AD98] numberWithInteger:v42[3]];
     [(MPModelLibraryKeepLocalStatusRequestOperation *)v14 setRedownloadableItemCount:v17];
 
@@ -69,9 +69,9 @@
   v22[1] = 3221225472;
   v22[2] = __126__MPStoreLibraryPersonalizationResponse_newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex_responseHandler___block_invoke_2;
   v22[3] = &unk_1E767B990;
-  v24 = v6;
+  v24 = handlerCopy;
   v25 = &v41;
-  v26 = v13;
+  v26 = keepLocalEnableState;
   v23 = v12;
   v19 = [v18 blockOperationWithBlock:v22];
 
@@ -266,24 +266,24 @@ void __126__MPStoreLibraryPersonalizationResponse_newOperationForDetailedKeepLoc
   }
 }
 
-- (void)setLibraryResponse:(id)a3
+- (void)setLibraryResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   libraryResponse = self->_libraryResponse;
-  v9 = v5;
-  if (libraryResponse != v5)
+  v9 = responseCopy;
+  if (libraryResponse != responseCopy)
   {
     if (libraryResponse)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 removeObserver:self name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
     }
 
-    objc_storeStrong(&self->_libraryResponse, a3);
+    objc_storeStrong(&self->_libraryResponse, response);
     if (self->_libraryResponse)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__libraryResponseDidInvalidateNotification_ name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__libraryResponseDidInvalidateNotification_ name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
     }
   }
 }
@@ -292,8 +292,8 @@ void __126__MPStoreLibraryPersonalizationResponse_newOperationForDetailedKeepLoc
 {
   if (self->_libraryResponse)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"MPModelResponseDidInvalidateNotification" object:self->_libraryResponse];
   }
 
   v4.receiver = self;

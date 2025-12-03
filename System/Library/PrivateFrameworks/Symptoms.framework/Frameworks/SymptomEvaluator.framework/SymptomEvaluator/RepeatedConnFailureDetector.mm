@@ -1,9 +1,9 @@
 @interface RepeatedConnFailureDetector
 - (RepeatedConnFailureDetector)init;
-- (void)_excessiveConnFailuresDetectedOn:(id)a3 owner:(id)a4;
+- (void)_excessiveConnFailuresDetectedOn:(id)on owner:(id)owner;
 - (void)_flush;
 - (void)dealloc;
-- (void)noteSuspectFlow:(id)a3 withOwner:(id)a4;
+- (void)noteSuspectFlow:(id)flow withOwner:(id)owner;
 @end
 
 @implementation RepeatedConnFailureDetector
@@ -11,10 +11,10 @@
 - (void)_flush
 {
   v57 = *MEMORY[0x277D85DE8];
-  v41 = [MEMORY[0x277CBEAA8] date];
-  [(NSDate *)v41 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSDate *)date timeIntervalSinceReferenceDate];
   v4 = v3;
-  v42 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = flowLogHandle;
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -67,7 +67,7 @@
             _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEBUG, "RCF: aged out failure tracker %@ -> %@", buf, 0x16u);
           }
 
-          [v42 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -77,7 +77,7 @@
     while (v11);
   }
 
-  [(NSMutableDictionary *)self->_flowRecords removeObjectsForKeys:v42];
+  [(NSMutableDictionary *)self->_flowRecords removeObjectsForKeys:array];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -99,15 +99,15 @@
 
         v23 = *(*(&v43 + 1) + 8 * j);
         v24 = [(NSMutableDictionary *)self->_reportDampeners objectForKeyedSubscript:v23];
-        v25 = [v24 suppressReportingUntil];
-        [v25 timeIntervalSinceNow];
+        suppressReportingUntil = [v24 suppressReportingUntil];
+        [suppressReportingUntil timeIntervalSinceNow];
         v27 = v26;
 
         if (v27 < 0.0)
         {
           v28 = objc_alloc(MEMORY[0x277CBEAA8]);
-          v29 = [v24 suppressReportingUntil];
-          v30 = [v28 initWithTimeInterval:v29 sinceDate:3600.0];
+          suppressReportingUntil2 = [v24 suppressReportingUntil];
+          v30 = [v28 initWithTimeInterval:suppressReportingUntil2 sinceDate:3600.0];
 
           if (![v24 numSuppressedReports] || (objc_msgSend(v30, "timeIntervalSinceNow"), v31 < 0.0))
           {
@@ -117,16 +117,16 @@
               if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
               {
                 v33 = v32;
-                v34 = [v24 numSuppressedReports];
+                numSuppressedReports = [v24 numSuppressedReports];
                 *buf = 138412546;
                 v53 = v23;
                 v54 = 2048;
-                v55 = v34;
+                v55 = numSuppressedReports;
                 _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_ERROR, "RCF: Process %@ had %lld connection failures unreported when flushing dampener cache", buf, 0x16u);
               }
             }
 
-            [v42 addObject:v23];
+            [array addObject:v23];
           }
         }
       }
@@ -137,7 +137,7 @@
     while (v20);
   }
 
-  [(NSMutableDictionary *)self->_reportDampeners removeObjectsForKeys:v42];
+  [(NSMutableDictionary *)self->_reportDampeners removeObjectsForKeys:array];
   v35 = flowLogHandle;
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -157,30 +157,30 @@
   }
 
   lastFlush = self->_lastFlush;
-  self->_lastFlush = v41;
+  self->_lastFlush = date;
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_excessiveConnFailuresDetectedOn:(id)a3 owner:(id)a4
+- (void)_excessiveConnFailuresDetectedOn:(id)on owner:(id)owner
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 processName];
-  v9 = [(NSMutableDictionary *)self->_reportDampeners objectForKeyedSubscript:v8];
+  onCopy = on;
+  ownerCopy = owner;
+  processName = [onCopy processName];
+  v9 = [(NSMutableDictionary *)self->_reportDampeners objectForKeyedSubscript:processName];
   if (!v9)
   {
     v9 = objc_alloc_init(ReportDampener);
-    v10 = [MEMORY[0x277CBEAA8] distantPast];
-    [(ReportDampener *)v9 setSuppressReportingUntil:v10];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [(ReportDampener *)v9 setSuppressReportingUntil:distantPast];
 
-    [(NSMutableDictionary *)self->_reportDampeners setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_reportDampeners setObject:v9 forKeyedSubscript:processName];
   }
 
-  [v6 _logFailure];
-  v11 = [(ReportDampener *)v9 suppressReportingUntil];
-  [v11 timeIntervalSinceNow];
+  [onCopy _logFailure];
+  suppressReportingUntil = [(ReportDampener *)v9 suppressReportingUntil];
+  [suppressReportingUntil timeIntervalSinceNow];
   v13 = v12;
 
   if (v13 >= 0.0)
@@ -189,7 +189,7 @@
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v8;
+      v20 = processName;
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "RCF: Repeated conn failure report suppressed for %@", &v19, 0xCu);
     }
 
@@ -199,7 +199,7 @@
 
   else
   {
-    [v6 _reportFailure:-[ReportDampener numSuppressedReports](v9 owner:{"numSuppressedReports"), v7}];
+    [onCopy _reportFailure:-[ReportDampener numSuppressedReports](v9 owner:{"numSuppressedReports"), ownerCopy}];
     v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:3600.0];
     [(ReportDampener *)v9 setSuppressReportingUntil:v14];
 
@@ -212,14 +212,14 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteSuspectFlow:(id)a3 withOwner:(id)a4
+- (void)noteSuspectFlow:(id)flow withOwner:(id)owner
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = COERCE_DOUBLE(a3);
-  v7 = a4;
+  v6 = COERCE_DOUBLE(flow);
+  ownerCopy = owner;
   v8 = objc_autoreleasePoolPush();
-  v9 = [*&v6 remoteAddress];
-  v10 = [*&v6 interfaceIndex];
+  remoteAddress = [*&v6 remoteAddress];
+  interfaceIndex = [*&v6 interfaceIndex];
   [*&v6 processName];
   v11 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   [(NSDate *)self->_lastFlush timeIntervalSinceNow];
@@ -239,7 +239,7 @@
 
   if (![(NSSet *)self->_whitelistedDaemons containsObject:*&v11])
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%d", *&v11, v9, v10];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%d", *&v11, remoteAddress, interfaceIndex];
     v17 = [(NSMutableDictionary *)self->_flowRecords objectForKeyedSubscript:v16];
     if (v17)
     {
@@ -282,16 +282,16 @@
         goto LABEL_41;
       }
 
-      v31 = [(ConnectionFailureTracker *)v18 failedFlows];
-      v32 = v31;
+      failedFlows = [(ConnectionFailureTracker *)v18 failedFlows];
+      v32 = failedFlows;
       if (v24 >= 0.0)
       {
-        v44 = [v31 count];
+        v44 = [failedFlows count];
 
         if (v44 >= 0xA)
         {
-          v45 = [(ConnectionFailureTracker *)v18 failedFlows];
-          [v45 removeObjectAtIndex:0];
+          failedFlows2 = [(ConnectionFailureTracker *)v18 failedFlows];
+          [failedFlows2 removeObjectAtIndex:0];
         }
 
         v46 = objc_alloc_init(ConnectionFailureInstance);
@@ -299,8 +299,8 @@
         [(ConnectionFailureInstance *)v46 setFlowStart:?];
         [*&v6 flowDuration];
         [(ConnectionFailureInstance *)v46 setFlowDuration:?];
-        v47 = [(ConnectionFailureTracker *)v18 failedFlows];
-        [v47 addObject:v46];
+        failedFlows3 = [(ConnectionFailureTracker *)v18 failedFlows];
+        [failedFlows3 addObject:v46];
 
         [(ConnectionFailureTracker *)v18 setLastConnectionFailTime:v22];
         [(ConnectionFailureTracker *)v18 setNumConsecutiveFailures:[(ConnectionFailureTracker *)v18 numConsecutiveFailures]+ 1];
@@ -308,15 +308,15 @@
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_INFO))
         {
           v49 = v48;
-          v58 = [(ConnectionFailureTracker *)v18 numConsecutiveFailures];
+          numConsecutiveFailures = [(ConnectionFailureTracker *)v18 numConsecutiveFailures];
           loga = [(ConnectionFailureTracker *)v18 failedFlows];
           v50 = [loga count];
           *buf = 138413058;
           v62 = v11;
           v63 = 2112;
-          v64 = *&v7;
+          v64 = *&ownerCopy;
           v65 = 1024;
-          *v66 = v58;
+          *v66 = numConsecutiveFailures;
           *&v66[4] = 1024;
           *&v66[6] = v50;
           _os_log_impl(&dword_23255B000, v49, OS_LOG_TYPE_INFO, "RCF: Existing failure tracker for %@ owner %@, count now %d, saved %d", buf, 0x22u);
@@ -337,7 +337,7 @@
               _os_log_impl(&dword_23255B000, v54, OS_LOG_TYPE_INFO, "RCF: Excessive failure detection triggered by snapshot %{private}@", buf, 0xCu);
             }
 
-            [(RepeatedConnFailureDetector *)self _excessiveConnFailuresDetectedOn:v18 owner:v7];
+            [(RepeatedConnFailureDetector *)self _excessiveConnFailuresDetectedOn:v18 owner:ownerCopy];
             [(NSMutableDictionary *)self->_flowRecords removeObjectForKey:v16];
           }
         }
@@ -345,7 +345,7 @@
         goto LABEL_41;
       }
 
-      v33 = [v31 lastObject];
+      lastObject = [failedFlows lastObject];
 
       v34 = flowLogHandle;
       if (!os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -354,9 +354,9 @@
       }
 
       log = v34;
-      [v33 flowStart];
+      [lastObject flowStart];
       v57 = timeStringMillisecondsFromReferenceInterval(v35);
-      [v33 flowDuration];
+      [lastObject flowDuration];
       v37 = v36;
       [*&v6 flowStartTimeIntervalSinceReferenceDate];
       v39 = timeStringMillisecondsFromReferenceInterval(v38);
@@ -372,7 +372,7 @@
       v68 = 2048;
       v69 = v40;
       v70 = 2113;
-      v71 = v9;
+      v71 = remoteAddress;
       v41 = log;
       _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_DEFAULT, "RCF: Apparently overlapping connection attempts from %@, %@ %.3f and %@ %.3f to %{private}@, ignore", buf, 0x3Eu);
     }
@@ -429,7 +429,7 @@ LABEL_41:
         goto LABEL_43;
       }
 
-      v33 = v42;
+      lastObject = v42;
       [(ConnectionFailureTracker *)v18 lastConnectionFailTime];
       v41 = timeStringMillisecondsFromReferenceInterval(v43);
       *buf = 138413059;
@@ -440,7 +440,7 @@ LABEL_41:
       *v66 = v16;
       *&v66[8] = 2112;
       v67 = v18;
-      _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEBUG, "RCF: For %@ connection failing at %@, create new tracker %{private}@ -> %@", buf, 0x2Au);
+      _os_log_impl(&dword_23255B000, lastObject, OS_LOG_TYPE_DEBUG, "RCF: For %@ connection failing at %@, create new tracker %{private}@ -> %@", buf, 0x2Au);
     }
 
 LABEL_30:
@@ -468,7 +468,7 @@ LABEL_44:
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEFAULT, "RCF: Deallocating handler %@", buf, 0xCu);
   }
 
@@ -486,17 +486,17 @@ LABEL_44:
   v2 = [(RepeatedConnFailureDetector *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     flowRecords = v2->_flowRecords;
-    v2->_flowRecords = v3;
+    v2->_flowRecords = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     reportDampeners = v2->_reportDampeners;
-    v2->_reportDampeners = v5;
+    v2->_reportDampeners = dictionary2;
 
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastFlush = v2->_lastFlush;
-    v2->_lastFlush = v7;
+    v2->_lastFlush = date;
 
     v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"nsurlsessiond", @"mediaserverd", @"mediaplaybackd", @"audiomxd", @"airplayd", @"avconferenced", @"com.apple.WebKit", @"assistantd", @"symptomsd", 0}];
     whitelistedDaemons = v2->_whitelistedDaemons;

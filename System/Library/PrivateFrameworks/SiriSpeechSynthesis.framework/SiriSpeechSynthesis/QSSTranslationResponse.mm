@@ -7,8 +7,8 @@
 - (NSString)return_string;
 - (NSString)sequence_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)a3;
-- (QSSTranslationResponse)initWithFlatbuffData:(id)a3 root:(const TranslationResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSTranslationResponse)initWithFlatbuffData:(id)data root:(const TranslationResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -44,53 +44,53 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TranslationResponse>)addObjectToBuffer:(void *)buffer
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSTranslationResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSTranslationResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSTranslationResponse *)self request_id];
-  v10 = v9;
-  if (!v9)
+  request_id = [(QSSTranslationResponse *)self request_id];
+  v10 = request_id;
+  if (!request_id)
   {
-    v9 = &stru_2879AE8E0;
+    request_id = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v51 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v51 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v50 = [(QSSTranslationResponse *)self return_code];
-  v13 = [(QSSTranslationResponse *)self return_string];
-  v14 = v13;
-  if (!v13)
+  return_code = [(QSSTranslationResponse *)self return_code];
+  return_string = [(QSSTranslationResponse *)self return_string];
+  v14 = return_string;
+  if (!return_string)
   {
-    v13 = &stru_2879AE8E0;
+    return_string = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v49 = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)return_string UTF8String];
+  v16 = strlen(uTF8String3);
+  v49 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
   memset(&v63, 0, sizeof(v63));
-  v17 = [(QSSTranslationResponse *)self n_best_translated_phrases];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v63, [v17 count]);
+  n_best_translated_phrases = [(QSSTranslationResponse *)self n_best_translated_phrases];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v63, [n_best_translated_phrases count]);
 
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v18 = [(QSSTranslationResponse *)self n_best_translated_phrases];
-  v19 = [v18 countByEnumeratingWithState:&v59 objects:v65 count:16];
+  n_best_translated_phrases2 = [(QSSTranslationResponse *)self n_best_translated_phrases];
+  v19 = [n_best_translated_phrases2 countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v19)
   {
     v20 = *v60;
@@ -100,14 +100,14 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
       {
         if (*v60 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(n_best_translated_phrases2);
         }
 
-        LODWORD(v58.__begin_) = [*(*(&v59 + 1) + 8 * i) addObjectToBuffer:a3];
+        LODWORD(v58.__begin_) = [*(*(&v59 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v63, &v58);
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v59 objects:v65 count:16];
+      v19 = [n_best_translated_phrases2 countByEnumeratingWithState:&v59 objects:v65 count:16];
     }
 
     while (v19);
@@ -124,28 +124,28 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
     v23 = v63.__begin_;
   }
 
-  v48 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v23, v63.__end_ - v63.__begin_);
-  v24 = [(QSSTranslationResponse *)self engine_input];
-  v25 = v24;
-  if (!v24)
+  v48 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v23, v63.__end_ - v63.__begin_);
+  engine_input = [(QSSTranslationResponse *)self engine_input];
+  v25 = engine_input;
+  if (!engine_input)
   {
-    v24 = &stru_2879AE8E0;
+    engine_input = &stru_2879AE8E0;
   }
 
-  v26 = [(__CFString *)v24 UTF8String];
-  v27 = strlen(v26);
-  v28 = flatbuffers::FlatBufferBuilder::CreateString(a3, v26, v27);
+  uTF8String4 = [(__CFString *)engine_input UTF8String];
+  v27 = strlen(uTF8String4);
+  v28 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v27);
 
   memset(&v58, 0, sizeof(v58));
-  v29 = [(QSSTranslationResponse *)self engine_output];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v58, [v29 count]);
+  engine_output = [(QSSTranslationResponse *)self engine_output];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v58, [engine_output count]);
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v30 = [(QSSTranslationResponse *)self engine_output];
-  v31 = [v30 countByEnumeratingWithState:&v54 objects:v64 count:16];
+  engine_output2 = [(QSSTranslationResponse *)self engine_output];
+  v31 = [engine_output2 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (v31)
   {
     v32 = *v55;
@@ -155,14 +155,14 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
       {
         if (*v55 != v32)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(engine_output2);
         }
 
-        v53 = [*(*(&v54 + 1) + 8 * j) addObjectToBuffer:a3];
+        v53 = [*(*(&v54 + 1) + 8 * j) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v58, &v53);
       }
 
-      v31 = [v30 countByEnumeratingWithState:&v54 objects:v64 count:16];
+      v31 = [engine_output2 countByEnumeratingWithState:&v54 objects:v64 count:16];
     }
 
     while (v31);
@@ -179,34 +179,34 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
     v35 = v58.__begin_;
   }
 
-  v36 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v35, v58.__end_ - v58.__begin_);
-  v37 = [(QSSTranslationResponse *)self sequence_id];
-  v38 = v37;
-  if (!v37)
+  v36 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v35, v58.__end_ - v58.__begin_);
+  sequence_id = [(QSSTranslationResponse *)self sequence_id];
+  v38 = sequence_id;
+  if (!sequence_id)
   {
-    v37 = &stru_2879AE8E0;
+    sequence_id = &stru_2879AE8E0;
   }
 
-  v39 = [(__CFString *)v37 UTF8String];
-  v40 = strlen(v39);
-  LODWORD(v39) = flatbuffers::FlatBufferBuilder::CreateString(a3, v39, v40);
+  uTF8String5 = [(__CFString *)sequence_id UTF8String];
+  v40 = strlen(uTF8String5);
+  LODWORD(uTF8String5) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v40);
 
-  v41 = [(QSSTranslationResponse *)self final_message];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v42 = *(a3 + 8);
-  v43 = *(a3 + 12);
-  v44 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v51);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v50);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v49);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v48);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 14, v28);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, v36);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v39);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 20, v41);
-  v45.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v42 - v43 + v44);
+  final_message = [(QSSTranslationResponse *)self final_message];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v42 = *(buffer + 8);
+  v43 = *(buffer + 12);
+  v44 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v51);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v49);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v48);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 14, v28);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, v36);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, uTF8String5);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 20, final_message);
+  v45.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v42 - v43 + v44);
   if (v34)
   {
     operator delete(v34);
@@ -253,10 +253,10 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
 
 - (NSArray)engine_output
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"engine_output"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"engine_output"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x11u)
@@ -273,7 +273,7 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
           do
           {
             v11 = [[QSSTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -284,10 +284,10 @@ flatbuffers::DetachedBuffer *__38__QSSTranslationResponse_flatbuffData__block_in
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"engine_output"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"engine_output"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__56__QSSTranslationResponse_TranslationPhrase_flatbuffData__block_invoke(uint64_t a1)
@@ -341,10 +341,10 @@ flatbuffers::DetachedBuffer *__55__QSSTranslationResponse_TranslationToken_flatb
 
 - (NSArray)n_best_translated_phrases
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"n_best_translated_phrases"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"n_best_translated_phrases"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xDu)
@@ -361,7 +361,7 @@ flatbuffers::DetachedBuffer *__55__QSSTranslationResponse_TranslationToken_flatb
           do
           {
             v11 = [[QSSTranslationResponse_TranslationPhrase alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -372,10 +372,10 @@ flatbuffers::DetachedBuffer *__55__QSSTranslationResponse_TranslationToken_flatb
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"n_best_translated_phrases"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"n_best_translated_phrases"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)return_string
@@ -462,42 +462,42 @@ flatbuffers::DetachedBuffer *__55__QSSTranslationResponse_TranslationToken_flatb
   return v6;
 }
 
-- (QSSTranslationResponse)initWithFlatbuffData:(id)a3 root:(const TranslationResponse *)a4 verify:(BOOL)a5
+- (QSSTranslationResponse)initWithFlatbuffData:(id)data root:(const TranslationResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTranslationResponse;
   v10 = [(QSSTranslationResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -519,9 +519,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

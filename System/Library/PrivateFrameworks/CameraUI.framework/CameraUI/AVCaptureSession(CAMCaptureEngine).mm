@@ -19,14 +19,14 @@
 - (BOOL)cam_hasAddedInput:()CAMCaptureEngine
 {
   v4 = a3;
-  v5 = [a1 inputs];
+  inputs = [self inputs];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__AVCaptureSession_CAMCaptureEngine__cam_hasAddedInput___block_invoke;
   v9[3] = &unk_1E76FEAB8;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
+  v7 = [inputs indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
 }
@@ -39,7 +39,7 @@
   v25 = 0x2020000000;
   v26 = 1;
   v9 = [v8 mutableCopy];
-  v10 = [a1 inputs];
+  inputs = [self inputs];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__AVCaptureSession_CAMCaptureEngine__cam_ensureInputs_exclusively_withConnections___block_invoke;
@@ -49,8 +49,8 @@
   v12 = v9;
   v22 = a4;
   v20 = v12;
-  v21 = a1;
-  [v10 enumerateObjectsUsingBlock:v18];
+  selfCopy = self;
+  [inputs enumerateObjectsUsingBlock:v18];
   if ([v12 count])
   {
     v13 = [v12 copy];
@@ -58,7 +58,7 @@
     v16[1] = 3221225472;
     v16[2] = __83__AVCaptureSession_CAMCaptureEngine__cam_ensureInputs_exclusively_withConnections___block_invoke_2;
     v16[3] = &unk_1E76FEB08;
-    v16[4] = a1;
+    v16[4] = self;
     v16[5] = &v23;
     v17 = a5;
     [v13 enumerateObjectsUsingBlock:v16];
@@ -72,40 +72,40 @@
 
 - (void)cam_removeAllInputs
 {
-  v2 = [a1 inputs];
+  inputs = [self inputs];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__AVCaptureSession_CAMCaptureEngine__cam_removeAllInputs__block_invoke;
   v3[3] = &unk_1E76FEB30;
-  v3[4] = a1;
-  [v2 enumerateObjectsUsingBlock:v3];
+  v3[4] = self;
+  [inputs enumerateObjectsUsingBlock:v3];
 }
 
 - (void)cam_removeInputs:()CAMCaptureEngine
 {
   v4 = a3;
-  v5 = [a1 inputs];
+  inputs = [self inputs];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__AVCaptureSession_CAMCaptureEngine__cam_removeInputs___block_invoke;
   v7[3] = &unk_1E76FD280;
   v8 = v4;
-  v9 = a1;
+  selfCopy = self;
   v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [inputs enumerateObjectsUsingBlock:v7];
 }
 
 - (BOOL)cam_hasAddedOutput:()CAMCaptureEngine
 {
   v4 = a3;
-  v5 = [a1 outputs];
+  outputs = [self outputs];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__AVCaptureSession_CAMCaptureEngine__cam_hasAddedOutput___block_invoke;
   v9[3] = &unk_1E76FD660;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
+  v7 = [outputs indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
 }
@@ -118,7 +118,7 @@
   v25 = 0x2020000000;
   v26 = 1;
   v9 = [v8 mutableCopy];
-  v10 = [a1 outputs];
+  outputs = [self outputs];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__AVCaptureSession_CAMCaptureEngine__cam_ensureOutputs_exclusively_withConnections___block_invoke;
@@ -128,8 +128,8 @@
   v12 = v9;
   v22 = a4;
   v20 = v12;
-  v21 = a1;
-  [v10 enumerateObjectsUsingBlock:v18];
+  selfCopy = self;
+  [outputs enumerateObjectsUsingBlock:v18];
   if ([v12 count])
   {
     v13 = [v12 copy];
@@ -137,7 +137,7 @@
     v16[1] = 3221225472;
     v16[2] = __84__AVCaptureSession_CAMCaptureEngine__cam_ensureOutputs_exclusively_withConnections___block_invoke_2;
     v16[3] = &unk_1E76FEB80;
-    v16[4] = a1;
+    v16[4] = self;
     v16[5] = &v23;
     v17 = a5;
     [v13 enumerateObjectsUsingBlock:v16];
@@ -158,7 +158,7 @@
   v24 = 0x2020000000;
   v25 = 1;
   v8 = [v6 mutableCopy];
-  v9 = [a1 outputs];
+  outputs = [self outputs];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__AVCaptureSession_CAMCaptureEngine__cam_ensureOutputs_whileRemoving___block_invoke;
@@ -169,8 +169,8 @@
   v19 = v11;
   v12 = v7;
   v20 = v12;
-  v21 = a1;
-  [v9 enumerateObjectsUsingBlock:v17];
+  selfCopy = self;
+  [outputs enumerateObjectsUsingBlock:v17];
   if ([v11 count])
   {
     v13 = [v11 copy];
@@ -178,7 +178,7 @@
     v16[1] = 3221225472;
     v16[2] = __70__AVCaptureSession_CAMCaptureEngine__cam_ensureOutputs_whileRemoving___block_invoke_2;
     v16[3] = &unk_1E76FEBD0;
-    v16[4] = a1;
+    v16[4] = self;
     v16[5] = &v22;
     [v13 enumerateObjectsUsingBlock:v16];
   }
@@ -191,13 +191,13 @@
 
 - (void)cam_removeAllOutputs
 {
-  v2 = [a1 outputs];
+  outputs = [self outputs];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58__AVCaptureSession_CAMCaptureEngine__cam_removeAllOutputs__block_invoke;
   v3[3] = &unk_1E76FEBF8;
-  v3[4] = a1;
-  [v2 enumerateObjectsUsingBlock:v3];
+  v3[4] = self;
+  [outputs enumerateObjectsUsingBlock:v3];
 }
 
 - (void)cam_ensureVideoPreviewLayers:()CAMCaptureEngine withConnections:whileRemoving:
@@ -209,7 +209,7 @@
   v15[1] = 3221225472;
   v15[2] = __97__AVCaptureSession_CAMCaptureEngine__cam_ensureVideoPreviewLayers_withConnections_whileRemoving___block_invoke;
   v15[3] = &unk_1E76FEC20;
-  v15[4] = a1;
+  v15[4] = self;
   v11 = v10;
   v16 = v11;
   [v9 enumerateObjectsUsingBlock:v15];
@@ -223,7 +223,7 @@
     v13[2] = __97__AVCaptureSession_CAMCaptureEngine__cam_ensureVideoPreviewLayers_withConnections_whileRemoving___block_invoke_3;
     v13[3] = &unk_1E76FEC68;
     v14 = a4;
-    v13[4] = a1;
+    v13[4] = self;
     [v12 enumerateObjectsUsingBlock:v13];
   }
 }
@@ -236,7 +236,7 @@
   v18 = 0x2020000000;
   v19 = 1;
   v5 = [v4 copy];
-  v6 = [a1 connections];
+  connections = [self connections];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__AVCaptureSession_CAMCaptureEngine__cam_ensureConnections___block_invoke;
@@ -245,7 +245,7 @@
   v14 = v7;
   v8 = v5;
   v15 = v8;
-  [v6 enumerateObjectsUsingBlock:v13];
+  [connections enumerateObjectsUsingBlock:v13];
   if ([v8 count])
   {
     v9 = [v8 copy];
@@ -253,7 +253,7 @@
     v12[1] = 3221225472;
     v12[2] = __60__AVCaptureSession_CAMCaptureEngine__cam_ensureConnections___block_invoke_2;
     v12[3] = &unk_1E76FECB8;
-    v12[4] = a1;
+    v12[4] = self;
     v12[5] = &v16;
     [v9 enumerateObjectsUsingBlock:v12];
   }
@@ -270,20 +270,20 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [v9 device];
-  v12 = [v11 deviceType];
-  v13 = [v9 portsWithMediaType:v10 sourceDeviceType:v12 sourceDevicePosition:{objc_msgSend(v11, "position")}];
+  device = [v9 device];
+  deviceType = [device deviceType];
+  v13 = [v9 portsWithMediaType:v10 sourceDeviceType:deviceType sourceDevicePosition:{objc_msgSend(device, "position")}];
 
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
   v15 = MEMORY[0x1E6987070];
-  v19[0] = v14;
+  v19[0] = firstObject;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v17 = [v15 connectionWithInputPorts:v16 output:v8];
 
-  if ([a1 canAddConnection:v17])
+  if ([self canAddConnection:v17])
   {
-    [a1 addConnection:v17];
+    [self addConnection:v17];
   }
 
   else
@@ -301,10 +301,10 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 inputs];
-  v12 = [v11 containsObject:v9];
+  inputs = [self inputs];
+  v12 = [inputs containsObject:v9];
 
-  if (v12 && ([a1 outputs], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "containsObject:", v10), v13, v14))
+  if (v12 && ([self outputs], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "containsObject:", v10), v13, v14))
   {
     v30 = v10;
     v31 = v8;
@@ -333,8 +333,8 @@
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v18 = [v17 inputPorts];
-          v19 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          inputPorts = [v17 inputPorts];
+          v19 = [inputPorts countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v19)
           {
             v20 = v19;
@@ -346,18 +346,18 @@
               {
                 if (*v38 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(inputPorts);
                 }
 
                 v23 = *(*(&v37 + 1) + 8 * j);
-                v24 = [v23 mediaType];
-                v25 = [v24 isEqualToString:v15];
+                mediaType = [v23 mediaType];
+                v25 = [mediaType isEqualToString:v15];
 
                 if (v25)
                 {
-                  v26 = [v23 input];
+                  input = [v23 input];
 
-                  if (v26 == v9)
+                  if (input == v9)
                   {
                     v27 = v36;
 
@@ -367,7 +367,7 @@
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v20 = [inputPorts countByEnumeratingWithState:&v37 objects:v45 count:16];
               if (v20)
               {
                 continue;
@@ -412,8 +412,8 @@ LABEL_19:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [a1 controls];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  controls = [self controls];
+  v6 = [controls countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -424,13 +424,13 @@ LABEL_19:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(controls);
         }
 
-        [a1 removeControl:*(*(&v25 + 1) + 8 * i)];
+        [self removeControl:*(*(&v25 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v7 = [controls countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v7);
@@ -459,9 +459,9 @@ LABEL_19:
         }
 
         v17 = *(*(&v21 + 1) + 8 * j);
-        if ([a1 canAddControl:{v17, v20, v21}])
+        if ([self canAddControl:{v17, v20, v21}])
         {
-          [a1 addControl:v17];
+          [self addControl:v17];
         }
 
         else

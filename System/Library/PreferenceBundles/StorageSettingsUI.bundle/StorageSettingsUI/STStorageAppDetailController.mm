@@ -1,36 +1,36 @@
 @interface STStorageAppDetailController
 - (BOOL)removeAllowed;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (id)appSizeString:(id)a3;
-- (id)dataSizeString:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (id)appSizeString:(id)string;
+- (id)dataSizeString:(id)string;
 - (id)editButton;
 - (id)fileProviderTips;
 - (id)hlsSpecifiers;
-- (id)specifierForDocument:(id)a3;
+- (id)specifierForDocument:(id)document;
 - (id)specifiers;
-- (id)usageIndexPathForSpecifier:(id)a3;
-- (id)valueForSpecifier:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_syncUI:(id)a3;
+- (id)usageIndexPathForSpecifier:(id)specifier;
+- (id)valueForSpecifier:(id)specifier;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_syncUI:(id)i;
 - (void)confirmDemoteApp;
 - (void)deleteApp;
-- (void)deleteAssets:(id)a3;
-- (void)deleteMediaItems:(id)a3;
-- (void)deleteURLItems:(id)a3;
+- (void)deleteAssets:(id)assets;
+- (void)deleteMediaItems:(id)items;
+- (void)deleteURLItems:(id)items;
 - (void)demoteApp;
 - (void)didLock;
 - (void)reinstallApp;
-- (void)reloadSpecs:(id)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setUIState:(int)a3;
+- (void)reloadSpecs:(id)specs;
+- (void)setEditable:(BOOL)editable;
+- (void)setUIState:(int)state;
 - (void)setupSpecifiers;
 - (void)showAlertForFailedInstallation;
 - (void)suspend;
 - (void)syncUI;
-- (void)syncUIState:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)syncUIState:(id)state;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateHLSSpecs;
 - (void)viewDidLoad;
 @end
@@ -42,25 +42,25 @@
   v9.receiver = self;
   v9.super_class = STStorageAppDetailController;
   [(STStorageAppDetailController *)&v9 viewDidLoad];
-  v3 = [(STStorageDetailViewController *)self storageApp];
-  v4 = [v3 name];
-  v5 = [(STStorageAppDetailController *)self navigationItem];
-  [v5 setTitle:v4];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  name = [storageApp name];
+  navigationItem = [(STStorageAppDetailController *)self navigationItem];
+  [navigationItem setTitle:name];
 
-  v6 = [(STStorageAppDetailController *)self navigationItem];
-  [v6 setRightBarButtonItems:&__NSArray0__struct];
+  navigationItem2 = [(STStorageAppDetailController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItems:&__NSArray0__struct];
 
-  v7 = [(STStorageAppDetailController *)self table];
-  [v7 setAllowsSelectionDuringEditing:1];
+  table = [(STStorageAppDetailController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
-  v8 = [(STStorageAppDetailController *)self table];
-  [v8 setAllowsMultipleSelectionDuringEditing:0];
+  table2 = [(STStorageAppDetailController *)self table];
+  [table2 setAllowsMultipleSelectionDuringEditing:0];
 }
 
-- (id)appSizeString:(id)a3
+- (id)appSizeString:(id)string
 {
-  v4 = [(STStorageDetailViewController *)self storageApp];
-  if (!v4 || (v5 = v4, -[STStorageDetailViewController storageApp](self, "storageApp"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isDemoted], v6, v5, v7))
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  if (!storageApp || (v5 = storageApp, -[STStorageDetailViewController storageApp](self, "storageApp"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isDemoted], v6, v5, v7))
   {
     *(&self->_childAppsGroup + 4) = 0;
 LABEL_4:
@@ -68,9 +68,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [(STStorageDetailViewController *)self storageApp];
-  v11 = [v10 externalSizes];
-  *(&self->_childAppsGroup + 4) = [v11 fixed];
+  storageApp2 = [(STStorageDetailViewController *)self storageApp];
+  externalSizes = [storageApp2 externalSizes];
+  *(&self->_childAppsGroup + 4) = [externalSizes fixed];
 
   if (!*(&self->_childAppsGroup + 4))
   {
@@ -83,27 +83,27 @@ LABEL_5:
   return v8;
 }
 
-- (id)dataSizeString:(id)a3
+- (id)dataSizeString:(id)string
 {
-  v4 = [(STStorageDetailViewController *)self storageApp];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
 
-  if (v4)
+  if (storageApp)
   {
-    v5 = [(STStorageDetailViewController *)self storageApp];
-    v6 = [v5 externalSizes];
+    storageApp2 = [(STStorageDetailViewController *)self storageApp];
+    externalSizes = [storageApp2 externalSizes];
 
-    v7 = [(STStorageDetailViewController *)self storageApp];
-    if ([v7 isDemoted])
+    storageApp3 = [(STStorageDetailViewController *)self storageApp];
+    if ([storageApp3 isDemoted])
     {
-      v8 = [v6 userTotal];
+      userTotal = [externalSizes userTotal];
     }
 
     else
     {
-      v8 = [v6 docsAndData];
+      userTotal = [externalSizes docsAndData];
     }
 
-    *(&self->_appSize + 4) = v8;
+    *(&self->_appSize + 4) = userTotal;
 
     if (*(&self->_appSize + 4) >= 1)
     {
@@ -123,23 +123,23 @@ LABEL_9:
   return v9;
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [specifier propertyForKey:PSValueKey];
   [v3 longLongValue];
   v4 = STFormattedSize();
 
   return v4;
 }
 
-- (void)setUIState:(int)a3
+- (void)setUIState:(int)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_59F8;
   v3[3] = &unk_AA6B0;
   v3[4] = self;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
@@ -147,27 +147,27 @@ LABEL_9:
 {
   if ((+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
-    v3 = [(STStorageDetailViewController *)self storageApp];
-    if ([v3 isDeletable])
+    storageApp = [(STStorageDetailViewController *)self storageApp];
+    if ([storageApp isDeletable])
     {
       BYTE4(self->_localTip) = 1;
       [(STStorageAppDetailController *)self setUIState:6];
-      v8 = [v3 name];
+      name = [storageApp name];
       STLog();
 
       v13 = NSLocalizedDescriptionKey;
       v14 = @"Canceling existing install coord because user has requested delete";
-      v4 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1, v8];
+      v4 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1, name];
       v5 = [NSError errorWithDomain:@"com.apple.settings.storage" code:0 userInfo:v4];
 
-      v6 = [v3 bundleIdentifier];
+      bundleIdentifier = [storageApp bundleIdentifier];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_5C1C;
       v9[3] = &unk_AA700;
-      v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v6];
-      v11 = v3;
-      v12 = self;
+      v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:bundleIdentifier];
+      v11 = storageApp;
+      selfCopy = self;
       v7 = v10;
       [IXAppInstallCoordinator cancelCoordinatorForAppWithIdentity:v7 withReason:v5 client:26 completion:v9];
     }
@@ -178,18 +178,18 @@ LABEL_9:
 {
   if ((+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
-    v3 = [(STStorageDetailViewController *)self storageApp];
-    if ([v3 isDemotable])
+    storageApp = [(STStorageDetailViewController *)self storageApp];
+    if ([storageApp isDemotable])
     {
-      v4 = [v3 appRecord];
-      v5 = [v4 applicationState];
-      v6 = [v5 isValid];
+      appRecord = [storageApp appRecord];
+      applicationState = [appRecord applicationState];
+      isValid = [applicationState isValid];
 
-      if (v6)
+      if (isValid)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
-          sub_8031C(v3);
+          sub_8031C(storageApp);
         }
 
         v17 = NSLocalizedDescriptionKey;
@@ -197,8 +197,8 @@ LABEL_9:
         v7 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
         v8 = [NSError errorWithDomain:@"com.apple.settings.storage" code:0 userInfo:v7];
 
-        v9 = [v3 bundleIdentifier];
-        v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v9];
+        bundleIdentifier = [storageApp bundleIdentifier];
+        v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:bundleIdentifier];
         v16 = 0;
         v11 = [IXAppInstallCoordinator cancelCoordinatorForAppWithIdentity:v10 withReason:v8 client:19 error:&v16];
         v12 = v16;
@@ -214,8 +214,8 @@ LABEL_9:
         v13[1] = 3221225472;
         v13[2] = sub_60C0;
         v13[3] = &unk_AA728;
-        v14 = v3;
-        v15 = self;
+        v14 = storageApp;
+        selfCopy = self;
         [IXAppInstallCoordinator demoteAppToPlaceholderWithApplicationIdentity:v10 forReason:2 waitForDeletion:1 ignoreRemovability:0 completion:v13];
       }
     }
@@ -225,9 +225,9 @@ LABEL_9:
 - (void)confirmDemoteApp
 {
   v3 = STLocalizedString(@"Offloading “%@” will delete the app but keep its documents and data.");
-  v4 = [(STStorageDetailViewController *)self storageApp];
-  v5 = [v4 name];
-  v15 = [NSString stringWithFormat:v3, v5];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  name = [storageApp name];
+  v15 = [NSString stringWithFormat:v3, name];
 
   v6 = objc_alloc_init(PSConfirmationSpecifier);
   v7 = STLocalizedString(@"Offload App");
@@ -249,18 +249,18 @@ LABEL_9:
 
 - (void)reinstallApp
 {
-  v3 = [(STStorageDetailViewController *)self storageApp];
-  v4 = [v3 bundleIdentifier];
-  v5 = [(STStorageDetailViewController *)self storageApp];
-  v6 = [v5 state];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  bundleIdentifier = [storageApp bundleIdentifier];
+  storageApp2 = [(STStorageDetailViewController *)self storageApp];
+  state = [storageApp2 state];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_6630;
   v16[3] = &unk_AA750;
   v16[4] = self;
-  v18 = v6;
-  v7 = v3;
+  v18 = state;
+  v7 = storageApp;
   v17 = v7;
   v8 = objc_retainBlock(v16);
   if ([v7 isDeleted])
@@ -272,7 +272,7 @@ LABEL_9:
 
     BYTE4(self->_localTip) = 1;
     [(STStorageAppDetailController *)self setUIState:2];
-    v9 = [[ASDSystemAppMetadata alloc] initWithBundleID:v4];
+    v9 = [[ASDSystemAppMetadata alloc] initWithBundleID:bundleIdentifier];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_670C;
@@ -295,7 +295,7 @@ LABEL_9:
     [(STStorageAppDetailController *)self setUIState:2];
     v10 = [ASDRestoreDemotedApplicationsRequest alloc];
     v11 = [ASDRestoreDemotedApplicationsRequestOptions alloc];
-    v19 = v4;
+    v19 = bundleIdentifier;
     v12 = [NSArray arrayWithObjects:&v19 count:1];
     v13 = [v11 initWithBundleIDs:v12];
     v9 = [v10 initWithOptions:v13];
@@ -319,10 +319,10 @@ LABEL_10:
 
 - (id)fileProviderTips
 {
-  v3 = [(STStorageDetailViewController *)self storageApp];
-  v4 = [v3 fpDomain];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  fpDomain = [storageApp fpDomain];
 
-  if (![v4 supportsEnumeration] || (objc_msgSend(v4, "providerID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", localFilesProviderID), v5, !v6))
+  if (![fpDomain supportsEnumeration] || (objc_msgSend(fpDomain, "providerID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", localFilesProviderID), v5, !v6))
   {
     v13 = &__NSArray0__struct;
     goto LABEL_14;
@@ -355,22 +355,22 @@ LABEL_12:
         v16 = *(&self->_quotaTip + 4);
         *(&self->_quotaTip + 4) = v15;
 
-        v17 = [v4 identifier];
-        v18 = [v17 stringByAppendingString:@"_local"];
+        identifier = [fpDomain identifier];
+        v18 = [identifier stringByAppendingString:@"_local"];
         [*(&self->_quotaTip + 4) setIdentifier:v18];
 
         [*(&self->_quotaTip + 4) setTitle:v9];
         [*(&self->_quotaTip + 4) setInfoText:v10];
-        v19 = [(STStorageDetailViewController *)self storageApp];
-        v20 = [v19 appIdentifier];
-        [*(&self->_quotaTip + 4) setRepresentedApp:v20];
+        storageApp2 = [(STStorageDetailViewController *)self storageApp];
+        appIdentifier = [storageApp2 appIdentifier];
+        [*(&self->_quotaTip + 4) setRepresentedApp:appIdentifier];
 
         [*(&self->_quotaTip + 4) setDetailControllerClass:NSClassFromString(@"STStorageLocalStorageController")];
         v21 = *(&self->_quotaTip + 4);
-        v22 = [(STStorageDetailViewController *)self storageApp];
-        [v21 setProperty:v22 forKey:STStorageAppKey];
+        storageApp3 = [(STStorageDetailViewController *)self storageApp];
+        [v21 setProperty:storageApp3 forKey:STStorageAppKey];
 
-        [*(&self->_quotaTip + 4) setProperty:v4 forKey:@"_stFPDomain"];
+        [*(&self->_quotaTip + 4) setProperty:fpDomain forKey:@"_stFPDomain"];
         v7 = *(&self->_quotaTip + 4);
         goto LABEL_13;
       }
@@ -398,10 +398,10 @@ LABEL_14:
 {
   v3 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
-  v5 = [(STStorageDetailViewController *)self storageApp];
-  v6 = [v5 bundleIdentifier];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  bundleIdentifier = [storageApp bundleIdentifier];
 
-  if ([v6 length])
+  if ([bundleIdentifier length])
   {
     v38 = _NSConcreteStackBlock;
     v39 = 3221225472;
@@ -417,7 +417,7 @@ LABEL_14:
   v9 = [NSMutableArray arrayWithCapacity:v8 + 2];
   if (v8)
   {
-    v29 = v6;
+    v29 = bundleIdentifier;
     v10 = STLocalizedString(@"Downloaded Videos");
     v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
@@ -509,7 +509,7 @@ LABEL_14:
     v25 = STLocalizedString(@"Content from this app may be automatically deleted when this device is running low on storage.");
     [v11 setProperty:v25 forKey:PSFooterTextGroupKey];
 
-    v6 = v29;
+    bundleIdentifier = v29;
   }
 
   return v9;
@@ -526,18 +526,18 @@ LABEL_14:
   dispatch_async(v3, block);
 }
 
-- (id)specifierForDocument:(id)a3
+- (id)specifierForDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v29 = 0;
-  [v3 getResourceValue:&v29 forKey:NSURLIsRegularFileKey error:0];
+  [documentCopy getResourceValue:&v29 forKey:NSURLIsRegularFileKey error:0];
   v4 = v29;
   v28 = 0;
-  [v3 getResourceValue:&v28 forKey:NSURLIsPackageKey error:0];
+  [documentCopy getResourceValue:&v28 forKey:NSURLIsPackageKey error:0];
   v5 = v28;
   if (([v4 BOOLValue] & 1) != 0 || objc_msgSend(v5, "BOOLValue"))
   {
-    v6 = [STStorageItemCell specifierForItemURL:v3];
+    v6 = [STStorageItemCell specifierForItemURL:documentCopy];
     if (v6)
     {
       v7 = dispatch_semaphore_create(0);
@@ -549,7 +549,7 @@ LABEL_14:
       v27 = 0;
       v8 = [QLThumbnailGenerationRequest alloc];
       ScreenScale();
-      v10 = [v8 initWithFileAtURL:v3 size:4 scale:29.0 representationTypes:{29.0, v9}];
+      v10 = [v8 initWithFileAtURL:documentCopy size:4 scale:29.0 representationTypes:{29.0, v9}];
       v11 = +[QLThumbnailGenerator sharedGenerator];
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
@@ -644,9 +644,9 @@ LABEL_7:
   v18 = v3;
   v55 = v6;
 LABEL_8:
-  v19 = [(STStorageAppDetailController *)self spinnerSpecifier];
+  spinnerSpecifier = [(STStorageAppDetailController *)self spinnerSpecifier];
   v20 = *(&self->_deleteClipGroupSpec + 4);
-  *(&self->_deleteClipGroupSpec + 4) = v19;
+  *(&self->_deleteClipGroupSpec + 4) = spinnerSpecifier;
 
   v21 = STLocalizedString(@"Offload App");
   v22 = [PSSpecifier deleteButtonSpecifierWithName:v21 target:self action:"confirmDemoteApp"];
@@ -726,10 +726,10 @@ LABEL_8:
 
 - (BOOL)removeAllowed
 {
-  v2 = [(STStorageDetailViewController *)self storageApp];
-  v3 = [v2 appRecord];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  appRecord = [storageApp appRecord];
 
-  if (v3)
+  if (appRecord)
   {
     v11 = 0;
     v12 = &v11;
@@ -742,7 +742,7 @@ LABEL_8:
     v10 = &v11;
     v4 = dispatch_semaphore_create(0);
     v9 = v4;
-    [_TtC17StorageSettingsUI15AppRemovability isAllowedAndPossibleWithApp:v3 completionHandler:v8];
+    [_TtC17StorageSettingsUI15AppRemovability isAllowedAndPossibleWithApp:appRecord completionHandler:v8];
     v5 = dispatch_walltime(0, 5000000000);
     dispatch_semaphore_wait(v4, v5);
     v6 = *(v12 + 24);
@@ -760,7 +760,7 @@ LABEL_8:
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->super.PSEditableListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
@@ -770,49 +770,49 @@ LABEL_8:
     v6 = objc_opt_class();
     v7 = PSCellClassKey;
     [v5 setProperty:v6 forKey:PSCellClassKey];
-    v8 = [(STStorageDetailViewController *)v2 storageApp];
+    storageApp = [(STStorageDetailViewController *)selfCopy storageApp];
     v9 = STStorageAppKey;
-    [v5 setProperty:v8 forKey:STStorageAppKey];
+    [v5 setProperty:storageApp forKey:STStorageAppKey];
 
     if (v5)
     {
       [v4 addObject:v5];
     }
 
-    v10 = [(STStorageDetailViewController *)v2 storageApp];
-    if ([v10 isDemoted])
+    storageApp2 = [(STStorageDetailViewController *)selfCopy storageApp];
+    if ([storageApp2 isDemoted])
     {
       v196 = 0;
     }
 
     else
     {
-      v11 = [(STStorageDetailViewController *)v2 storageApp];
-      v12 = [v11 externalSizes];
-      v13 = [v12 fixed];
+      storageApp3 = [(STStorageDetailViewController *)selfCopy storageApp];
+      externalSizes = [storageApp3 externalSizes];
+      fixed = [externalSizes fixed];
 
-      if (!v13)
+      if (!fixed)
       {
         v196 = 0;
         goto LABEL_11;
       }
 
-      v10 = STLocalizedString(@"App Size");
-      v14 = [(STStorageDetailViewController *)v2 storageApp];
-      v15 = [v14 isAppClip];
+      storageApp2 = STLocalizedString(@"App Size");
+      storageApp4 = [(STStorageDetailViewController *)selfCopy storageApp];
+      isAppClip = [storageApp4 isAppClip];
 
-      if (v15)
+      if (isAppClip)
       {
         v16 = STLocalizedString(@"App Clip Size");
 
-        v10 = v16;
+        storageApp2 = v16;
       }
 
-      v17 = [PSSpecifier preferenceSpecifierNamed:v10 target:v2 set:0 get:"appSizeString:" detail:0 cell:4 edit:0];
+      v17 = [PSSpecifier preferenceSpecifierNamed:storageApp2 target:selfCopy set:0 get:"appSizeString:" detail:0 cell:4 edit:0];
 
       [v17 setProperty:objc_opt_class() forKey:v7];
-      v18 = [(STStorageDetailViewController *)v2 storageApp];
-      [v17 setProperty:v18 forKey:v9];
+      storageApp5 = [(STStorageDetailViewController *)selfCopy storageApp];
+      [v17 setProperty:storageApp5 forKey:v9];
 
       [v4 addObject:v17];
       v5 = v17;
@@ -821,42 +821,42 @@ LABEL_8:
 
 LABEL_11:
     v19 = STLocalizedString(@"Documents & Data");
-    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v2 set:0 get:"dataSizeString:" detail:0 cell:4 edit:0];
+    v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:0 get:"dataSizeString:" detail:0 cell:4 edit:0];
 
     [v20 setProperty:objc_opt_class() forKey:v7];
-    v21 = [(STStorageDetailViewController *)v2 storageApp];
-    [v20 setProperty:v21 forKey:v9];
+    storageApp6 = [(STStorageDetailViewController *)selfCopy storageApp];
+    [v20 setProperty:storageApp6 forKey:v9];
 
     [v4 addObject:v20];
-    v22 = [(STStorageDetailViewController *)v2 storageApp];
-    v23 = [v22 bundleIdentifier];
+    storageApp7 = [(STStorageDetailViewController *)selfCopy storageApp];
+    bundleIdentifier = [storageApp7 bundleIdentifier];
 
     v200 = v20;
-    v203 = v2;
-    if (![(STStorageAppDetailController *)v2 removeAllowed])
+    v203 = selfCopy;
+    if (![(STStorageAppDetailController *)selfCopy removeAllowed])
     {
       goto LABEL_77;
     }
 
-    v24 = [(STStorageDetailViewController *)v2 storageApp];
-    v25 = [v24 isDeletable];
+    storageApp8 = [(STStorageDetailViewController *)selfCopy storageApp];
+    isDeletable = [storageApp8 isDeletable];
 
-    v26 = [(STStorageDetailViewController *)v2 storageApp];
-    v27 = [v26 isDemotable];
+    storageApp9 = [(STStorageDetailViewController *)selfCopy storageApp];
+    isDemotable = [storageApp9 isDemotable];
 
-    v28 = [(STStorageDetailViewController *)v2 storageApp];
-    v29 = [v28 isAppClip];
+    storageApp10 = [(STStorageDetailViewController *)selfCopy storageApp];
+    isAppClip2 = [storageApp10 isAppClip];
 
-    if ((v27 & 1) == 0 && !v25)
+    if ((isDemotable & 1) == 0 && !isDeletable)
     {
       goto LABEL_77;
     }
 
-    [(STStorageAppDetailController *)v2 setupSpecifiers];
-    if (!v27)
+    [(STStorageAppDetailController *)selfCopy setupSpecifiers];
+    if (!isDemotable)
     {
       v31 = 0;
-      if (!v25)
+      if (!isDeletable)
       {
         goto LABEL_74;
       }
@@ -864,9 +864,9 @@ LABEL_11:
       goto LABEL_45;
     }
 
-    v30 = *(&v2->_demoteSpec + 4);
+    v30 = *(&selfCopy->_demoteSpec + 4);
     v31 = 0;
-    uiState = v2->_uiState;
+    uiState = selfCopy->_uiState;
     if (uiState <= 3)
     {
       if (uiState <= 1)
@@ -885,7 +885,7 @@ LABEL_11:
 LABEL_41:
         v34 = &OBJC_IVAR___STStorageAppDetailController__demoteSpec;
 LABEL_42:
-        v37 = *&v2->super.PSEditableListController_opaque[*v34];
+        v37 = *&selfCopy->super.PSEditableListController_opaque[*v34];
         if (v37)
         {
           v38 = v37;
@@ -895,7 +895,7 @@ LABEL_42:
 
 LABEL_44:
 
-        if (!v25)
+        if (!isDeletable)
         {
 LABEL_74:
           v50 = &__kCFBooleanTrue;
@@ -904,38 +904,38 @@ LABEL_74:
             v50 = &__kCFBooleanFalse;
           }
 
-          v51 = *(&v2->_hlsSpecs + 4);
+          v51 = *(&selfCopy->_hlsSpecs + 4);
           v52 = PSEnabledKey;
           v53 = v50;
           [v51 setProperty:v53 forKey:v52];
-          [*(&v2->_demoteGroupSpec + 4) setProperty:v53 forKey:v52];
-          [*(&v2->_installHealthGroupSpec + 4) setProperty:v53 forKey:v52];
-          [*(&v2->_deleteDataGroupSpec + 4) setProperty:v53 forKey:v52];
-          [*(&v2->_deleteGroupSpec + 4) setProperty:v53 forKey:v52];
+          [*(&selfCopy->_demoteGroupSpec + 4) setProperty:v53 forKey:v52];
+          [*(&selfCopy->_installHealthGroupSpec + 4) setProperty:v53 forKey:v52];
+          [*(&selfCopy->_deleteDataGroupSpec + 4) setProperty:v53 forKey:v52];
+          [*(&selfCopy->_deleteGroupSpec + 4) setProperty:v53 forKey:v52];
 
 LABEL_77:
           obj = v9;
           v54 = +[StorageSettingsWrapper recommendationsShared];
-          v55 = [(STStorageDetailViewController *)v2 storageApp];
-          v56 = [v55 bundleIdentifier];
-          if ([v56 isEqualToString:comAppleTV])
+          storageApp11 = [(STStorageDetailViewController *)selfCopy storageApp];
+          bundleIdentifier2 = [storageApp11 bundleIdentifier];
+          if ([bundleIdentifier2 isEqualToString:comAppleTV])
           {
             v57 = 0;
           }
 
           else
           {
-            v58 = [(STStorageDetailViewController *)v2 storageApp];
-            v57 = [v54 tipsForApp:v58];
+            storageApp12 = [(STStorageDetailViewController *)selfCopy storageApp];
+            v57 = [v54 tipsForApp:storageApp12];
           }
 
-          v202 = [(STStorageAppDetailController *)v2 fileProviderTips];
-          v198 = v23;
+          fileProviderTips = [(STStorageAppDetailController *)selfCopy fileProviderTips];
+          v198 = bundleIdentifier;
           v199 = v54;
           v201 = v57;
-          if ([v57 count] || objc_msgSend(v202, "count"))
+          if ([v57 count] || objc_msgSend(fileProviderTips, "count"))
           {
-            v59 = [NSValue valueWithPointer:v2];
+            v59 = [NSValue valueWithPointer:selfCopy];
             v60 = STLocalizedString(@"Recommendations");
             v61 = [PSSpecifier preferenceSpecifierNamed:v60 target:0 set:0 get:0 detail:0 cell:0 edit:0];
             [v4 addObject:v61];
@@ -970,11 +970,11 @@ LABEL_77:
                     [v4 addObject:v70];
                   }
 
-                  v71 = [v69 specifier];
-                  [v4 addObject:v71];
+                  specifier = [v69 specifier];
+                  [v4 addObject:specifier];
 
-                  v72 = [v69 infoSpecifier];
-                  [v4 addObject:v72];
+                  infoSpecifier = [v69 infoSpecifier];
+                  [v4 addObject:infoSpecifier];
 
                   [v69 setProperty:v59 forKey:@"_stController"];
                   v67 = v67 + 1;
@@ -997,7 +997,7 @@ LABEL_77:
             v227 = 0u;
             v224 = 0u;
             v225 = 0u;
-            v73 = v202;
+            v73 = fileProviderTips;
             v74 = [v73 countByEnumeratingWithState:&v224 objects:v236 count:16];
             if (v74)
             {
@@ -1022,11 +1022,11 @@ LABEL_77:
                     [v4 addObject:v80];
                   }
 
-                  v81 = [v79 specifier];
-                  [v4 addObject:v81];
+                  specifier2 = [v79 specifier];
+                  [v4 addObject:specifier2];
 
-                  v82 = [v79 infoSpecifier];
-                  [v4 addObject:v82];
+                  infoSpecifier2 = [v79 infoSpecifier];
+                  [v4 addObject:infoSpecifier2];
 
                   [v79 setProperty:v59 forKey:@"_stController"];
                   v77 = v77 + 1;
@@ -1040,28 +1040,28 @@ LABEL_77:
               while (v75);
             }
 
-            v2 = v203;
-            v23 = v198;
+            selfCopy = v203;
+            bundleIdentifier = v198;
             v54 = v199;
             v57 = v201;
           }
 
           v194 = [v4 count];
-          v83 = [(STStorageDetailViewController *)v2 storageApp];
-          v84 = [v54 docPluginsForApp:v83];
+          storageApp13 = [(STStorageDetailViewController *)selfCopy storageApp];
+          v84 = [v54 docPluginsForApp:storageApp13];
 
-          v85 = [(STStorageDetailViewController *)v2 storageApp];
-          v86 = [v85 childApps];
+          storageApp14 = [(STStorageDetailViewController *)selfCopy storageApp];
+          childApps = [storageApp14 childApps];
 
           v206 = v84;
-          v195 = v86;
-          if ([v86 count])
+          v195 = childApps;
+          if ([childApps count])
           {
             v222 = 0u;
             v223 = 0u;
             v220 = 0u;
             v221 = 0u;
-            v87 = v86;
+            v87 = childApps;
             v88 = [v87 countByEnumeratingWithState:&v220 objects:v235 count:16];
             if (v88)
             {
@@ -1097,7 +1097,7 @@ LABEL_77:
             v105 = 0;
             v106 = v200;
             v107 = v200;
-            v2 = v203;
+            selfCopy = v203;
             goto LABEL_131;
           }
 
@@ -1124,9 +1124,9 @@ LABEL_77:
                   }
 
                   v99 = *(*(&v216 + 1) + 8 * j);
-                  v100 = [(STStorageDetailViewController *)v2 storageApp];
-                  v101 = [v100 appIdentifier];
-                  v102 = [v99 documentSpecifiersForApp:v101];
+                  storageApp15 = [(STStorageDetailViewController *)selfCopy storageApp];
+                  appIdentifier = [storageApp15 appIdentifier];
+                  v102 = [v99 documentSpecifiersForApp:appIdentifier];
 
                   if ([v102 count])
                   {
@@ -1157,11 +1157,11 @@ LABEL_77:
             v54 = v199;
             v106 = v200;
             v107 = v200;
-            v23 = v198;
+            bundleIdentifier = v198;
             goto LABEL_131;
           }
 
-          if ([v23 isEqualToString:comApplePhotos])
+          if ([bundleIdentifier isEqualToString:comApplePhotos])
           {
 LABEL_128:
             v104 = 0;
@@ -1170,8 +1170,8 @@ LABEL_142:
             v107 = v106;
 LABEL_143:
 
-            v115 = v2;
-            v116 = *&v2->super.PSEditableListController_opaque[v197];
+            v115 = selfCopy;
+            v116 = *&selfCopy->super.PSEditableListController_opaque[v197];
             *&v115->super.PSEditableListController_opaque[v197] = v4;
             v117 = v4;
 
@@ -1188,31 +1188,31 @@ LABEL_143:
           }
 
           v106 = v200;
-          if ([v23 isEqualToString:comAppleNews])
+          if ([bundleIdentifier isEqualToString:comAppleNews])
           {
             v104 = 0;
             goto LABEL_142;
           }
 
-          v123 = [STMediaCache mediaTypesForIdentifier:v23];
+          v123 = [STMediaCache mediaTypesForIdentifier:bundleIdentifier];
 
           if (v123)
           {
             v124 = +[STMediaCache sharedCache];
-            v125 = [(STStorageDetailViewController *)v203 storageApp];
-            v126 = [v124 mediaSpecifiersForApp:v125];
+            storageApp16 = [(STStorageDetailViewController *)v203 storageApp];
+            v126 = [v124 mediaSpecifiersForApp:storageApp16];
 
             v127 = [v126 count];
             v105 = v127 != 0;
             if (v127)
             {
               v106 = v200;
-              if ([v126 count] >= 2 && objc_msgSend(v23, "isEqualToString:", comApplePodcasts))
+              if ([v126 count] >= 2 && objc_msgSend(bundleIdentifier, "isEqualToString:", comApplePodcasts))
               {
                 +[STMediaCache sharedCache];
                 v128 = v188 = v105;
-                v129 = [(STStorageDetailViewController *)v203 storageApp];
-                v130 = [v128 totalSizeForApp:v129];
+                storageApp17 = [(STStorageDetailViewController *)v203 storageApp];
+                v130 = [v128 totalSizeForApp:storageApp17];
 
                 v131 = STLocalizedString(@"All Episodes");
                 v132 = [PSSpecifier preferenceSpecifierNamed:v131 target:v203 set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
@@ -1240,20 +1240,20 @@ LABEL_143:
               v106 = v200;
             }
 
-            v2 = v203;
-            if ([v23 isEqualToString:comApplePodcasts])
+            selfCopy = v203;
+            if ([bundleIdentifier isEqualToString:comApplePodcasts])
             {
               v146 = @"Podcasts";
             }
 
-            else if ([v23 isEqualToString:PSBundleIdentifieriBooks])
+            else if ([bundleIdentifier isEqualToString:PSBundleIdentifieriBooks])
             {
               v146 = @"Books";
             }
 
             else
             {
-              if (![v23 isEqualToString:PSBundleIdentifierTV])
+              if (![bundleIdentifier isEqualToString:PSBundleIdentifierTV])
               {
                 v104 = 0;
                 goto LABEL_179;
@@ -1269,27 +1269,27 @@ LABEL_179:
             goto LABEL_131;
           }
 
-          v2 = v203;
-          v136 = [(STStorageDetailViewController *)v203 storageApp];
-          v137 = [v136 isUsageApp];
+          selfCopy = v203;
+          storageApp18 = [(STStorageDetailViewController *)v203 storageApp];
+          isUsageApp = [storageApp18 isUsageApp];
 
-          v138 = [(STStorageDetailViewController *)v203 storageApp];
-          v139 = v138;
-          if (!v137)
+          storageApp19 = [(STStorageDetailViewController *)v203 storageApp];
+          v139 = storageApp19;
+          if (!isUsageApp)
           {
-            v147 = [v138 isDocumentApp];
+            isDocumentApp = [storageApp19 isDocumentApp];
 
-            if (v147)
+            if (isDocumentApp)
             {
-              v148 = [(STStorageDetailViewController *)v203 storageApp];
-              v149 = [v148 documents];
+              storageApp20 = [(STStorageDetailViewController *)v203 storageApp];
+              documents = [storageApp20 documents];
 
-              v150 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v149 count]);
+              v150 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [documents count]);
               v207 = 0u;
               v208 = 0u;
               v209 = 0u;
               v210 = 0u;
-              v151 = v149;
+              v151 = documents;
               v152 = [v151 countByEnumeratingWithState:&v207 objects:v232 count:16];
               v107 = v200;
               if (v152)
@@ -1341,7 +1341,7 @@ LABEL_179:
 
               v104 = STLocalizedString(@"Documents");
 
-              v2 = v203;
+              selfCopy = v203;
               v54 = v199;
               v106 = v200;
               goto LABEL_131;
@@ -1353,8 +1353,8 @@ LABEL_179:
               v183 = +[PSSpecifier emptyGroupSpecifier];
               [v4 addObject:v183];
 
-              v184 = [(STStorageAppDetailController *)v203 spinnerSpecifier];
-              [v4 addObject:v184];
+              spinnerSpecifier = [(STStorageAppDetailController *)v203 spinnerSpecifier];
+              [v4 addObject:spinnerSpecifier];
 
               [(STStorageAppDetailController *)v203 updateHLSSpecs];
               v104 = 0;
@@ -1368,39 +1368,39 @@ LABEL_179:
               v104 = 0;
               v106 = v200;
               v107 = v200;
-              v2 = v203;
+              selfCopy = v203;
               goto LABEL_143;
             }
 
-            v2 = v203;
+            selfCopy = v203;
             [v4 addObjectsFromArray:*(&v203->_skipTimer + 4)];
             goto LABEL_128;
           }
 
-          v140 = [v138 usageBundle];
+          usageBundle = [storageApp19 usageBundle];
 
-          v141 = [v140 usageBundleStorageReporter];
+          usageBundleStorageReporter = [usageBundle usageBundleStorageReporter];
           v142 = objc_opt_class();
-          v190 = v141;
+          v190 = usageBundleStorageReporter;
           if (objc_opt_respondsToSelector())
           {
-            v142 = [v141 usageDetailControllerClassForUsageBundleApp:v140];
+            v142 = [usageBundleStorageReporter usageDetailControllerClassForUsageBundleApp:usageBundle];
           }
 
           v143 = objc_alloc_init(v142);
           v144 = *(&v203->_uiState + 1);
           *(&v203->_uiState + 1) = v143;
 
-          v145 = [(STStorageAppDetailController *)v203 rootController];
-          if (v145)
+          rootController = [(STStorageAppDetailController *)v203 rootController];
+          if (rootController)
           {
-            [*(&v203->_uiState + 1) setRootController:v145];
+            [*(&v203->_uiState + 1) setRootController:rootController];
           }
 
           else
           {
-            v159 = [(STStorageAppDetailController *)v203 navigationController];
-            [*(&v203->_uiState + 1) setRootController:v159];
+            navigationController = [(STStorageAppDetailController *)v203 navigationController];
+            [*(&v203->_uiState + 1) setRootController:navigationController];
 
             v106 = v200;
           }
@@ -1408,25 +1408,25 @@ LABEL_179:
           [*(&v203->_uiState + 1) setParentController:v203];
           v107 = [PSSpecifier preferenceSpecifierNamed:&stru_AD3C8 target:0 set:0 get:0 detail:v142 cell:1 edit:0];
 
-          [v107 setProperty:v140 forKey:PSUsageBundleAppKey];
-          v160 = [(STStorageDetailViewController *)v203 storageApp];
-          [v107 setProperty:v160 forKey:obj];
+          [v107 setProperty:usageBundle forKey:PSUsageBundleAppKey];
+          storageApp21 = [(STStorageDetailViewController *)v203 storageApp];
+          [v107 setProperty:storageApp21 forKey:obj];
 
-          v161 = [(STStorageDetailViewController *)v203 storageApp];
-          [v107 setProperty:v161 forKey:@"USAGE_APP"];
+          storageApp22 = [(STStorageDetailViewController *)v203 storageApp];
+          [v107 setProperty:storageApp22 forKey:@"USAGE_APP"];
 
           [*(&v203->_uiState + 1) setSpecifier:v107];
-          v162 = [(objc_class *)v142 mediaGroups];
-          [(objc_class *)v142 setupSpecifier:v107 forMediaGroups:v162];
+          mediaGroups = [(objc_class *)v142 mediaGroups];
+          [(objc_class *)v142 setupSpecifier:v107 forMediaGroups:mediaGroups];
 
-          v163 = v140;
-          v187 = v140;
+          v163 = usageBundle;
+          v187 = usageBundle;
           if (objc_opt_respondsToSelector())
           {
             objb = [(STStorageDetailViewController *)v203 storageApp];
-            v164 = [objb usageBundle];
+            usageBundle2 = [objb usageBundle];
             v215 = v107;
-            [v190 usageBundleApp:v164 willDisplaySpecifier:&v215];
+            [v190 usageBundleApp:usageBundle2 willDisplaySpecifier:&v215];
             v165 = v215;
 
             v107 = v165;
@@ -1434,8 +1434,8 @@ LABEL_179:
 
           [*(&v203->_uiState + 1) viewDidLoad];
           [(STStorageAppDetailController *)v203 addChildViewController:*(&v203->_uiState + 1)];
-          v166 = [*(&v203->_uiState + 1) specifiers];
-          v167 = [v166 mutableCopy];
+          specifiers = [*(&v203->_uiState + 1) specifiers];
+          v167 = [specifiers mutableCopy];
 
           v186 = v167;
           if (![v167 count])
@@ -1451,28 +1451,28 @@ LABEL_206:
 LABEL_131:
             if (v90)
             {
-              v108 = *(&v2->_usageDetailController + 4);
+              v108 = *(&selfCopy->_usageDetailController + 4);
               v57 = v201;
               if (v108)
               {
                 goto LABEL_136;
               }
 
-              if (([v23 isEqualToString:@"com.apple.Health"] & 1) == 0)
+              if (([bundleIdentifier isEqualToString:@"com.apple.Health"] & 1) == 0)
               {
                 v109 = [PSSpecifier preferenceSpecifierNamed:v104 target:0 set:0 get:0 detail:0 cell:0 edit:0];
-                v110 = *(&v2->_usageDetailController + 4);
-                *(&v2->_usageDetailController + 4) = v109;
+                v110 = *(&selfCopy->_usageDetailController + 4);
+                *(&selfCopy->_usageDetailController + 4) = v109;
               }
 
-              v108 = *(&v2->_usageDetailController + 4);
+              v108 = *(&selfCopy->_usageDetailController + 4);
               if (v108)
               {
 LABEL_136:
                 if (v105)
                 {
                   [v108 setProperty:@"STStorageButtonHeader" forKey:PSHeaderCellClassGroupKey];
-                  v111 = *(&v2->_usageDetailController + 4);
+                  v111 = *(&selfCopy->_usageDetailController + 4);
                   STLocalizedString(@"Edit");
                   v113 = v112 = v104;
                   v114 = v111;
@@ -1480,9 +1480,9 @@ LABEL_136:
                   [v114 setProperty:v113 forKey:@"stButtonTitle"];
 
                   v104 = v112;
-                  [*(&v2->_usageDetailController + 4) setTarget:v2];
-                  [*(&v2->_usageDetailController + 4) setButtonAction:"toggleEdit"];
-                  v108 = *(&v2->_usageDetailController + 4);
+                  [*(&selfCopy->_usageDetailController + 4) setTarget:selfCopy];
+                  [*(&selfCopy->_usageDetailController + 4) setButtonAction:"toggleEdit"];
+                  v108 = *(&selfCopy->_usageDetailController + 4);
                 }
 
                 [v4 insertObject:v108 atIndex:v194];
@@ -1497,8 +1497,8 @@ LABEL_136:
             goto LABEL_143;
           }
 
-          v168 = [v167 firstObject];
-          v169 = [v168 propertyForKey:PSHeaderCellClassGroupKey];
+          firstObject = [v167 firstObject];
+          v169 = [firstObject propertyForKey:PSHeaderCellClassGroupKey];
           v170 = [v169 isEqualToString:@"PSUsageSizeHeader"];
 
           if (v170)
@@ -1506,7 +1506,7 @@ LABEL_136:
             [v167 removeObjectAtIndex:0];
           }
 
-          if ([v23 isEqualToString:comAppleMusic])
+          if ([bundleIdentifier isEqualToString:comAppleMusic])
           {
             v171 = [v167 count];
             if (v171)
@@ -1562,8 +1562,8 @@ LABEL_196:
                 v90 = 0;
               }
 
-              v2 = v203;
-              v23 = v198;
+              selfCopy = v203;
+              bundleIdentifier = v198;
               v54 = v199;
               v105 = v189;
               v173 = v187;
@@ -1583,11 +1583,11 @@ LABEL_196:
         }
 
 LABEL_45:
-        if (v29)
+        if (isAppClip2)
         {
-          v39 = v2;
-          v40 = *(&v2->_deleteClipSpec + 4);
-          v41 = v2->_uiState - 5;
+          v39 = selfCopy;
+          v40 = *(&selfCopy->_deleteClipSpec + 4);
+          v41 = selfCopy->_uiState - 5;
           if (v41 >= 2)
           {
             v42 = &OBJC_IVAR___STStorageAppDetailController__deleteClipSpec;
@@ -1606,8 +1606,8 @@ LABEL_45:
           goto LABEL_71;
         }
 
-        v40 = *(&v2->_deleteSpec + 4);
-        v43 = v2->_uiState;
+        v40 = *(&selfCopy->_deleteSpec + 4);
+        v43 = selfCopy->_uiState;
         v42 = &OBJC_IVAR___STStorageAppDetailController__deleteSpec;
         if (v43 <= 2)
         {
@@ -1636,7 +1636,7 @@ LABEL_59:
             v39 = v203;
 LABEL_71:
             v48 = *&v39->super.PSEditableListController_opaque[*v42];
-            v2 = v39;
+            selfCopy = v39;
             if (v48)
             {
               v49 = v48;
@@ -1651,8 +1651,8 @@ LABEL_71:
           {
 LABEL_63:
             v39 = v203;
-            v44 = [(STStorageDetailViewController *)v203 storageApp];
-            v45 = [v44 isDemoted];
+            storageApp23 = [(STStorageDetailViewController *)v203 storageApp];
+            isDemoted = [storageApp23 isDemoted];
 
             v46 = &OBJC_IVAR___STStorageAppDetailController__spinnerSpec;
             if (v31)
@@ -1670,7 +1670,7 @@ LABEL_63:
               v46 = &OBJC_IVAR___STStorageAppDetailController__deleteDataSpec;
             }
 
-            if (v45)
+            if (isDemoted)
             {
               v42 = v46;
             }
@@ -1690,7 +1690,7 @@ LABEL_63:
           }
         }
 
-        v2 = v203;
+        selfCopy = v203;
 LABEL_73:
 
         goto LABEL_74;
@@ -1699,16 +1699,16 @@ LABEL_73:
       if (uiState != 2)
       {
 LABEL_30:
-        if ([v23 isEqualToString:@"com.apple.Health"])
+        if ([bundleIdentifier isEqualToString:@"com.apple.Health"])
         {
-          v33 = *(&v2->_installHealthSpec + 4);
+          v33 = *(&selfCopy->_installHealthSpec + 4);
 
           v34 = &OBJC_IVAR___STStorageAppDetailController__installHealthSpec;
         }
 
         else
         {
-          v33 = *(&v2->_installSpec + 4);
+          v33 = *(&selfCopy->_installSpec + 4);
 
           v34 = &OBJC_IVAR___STStorageAppDetailController__installSpec;
         }
@@ -1747,12 +1747,12 @@ LABEL_32:
       goto LABEL_32;
     }
 
-    v35 = [(STStorageDetailViewController *)v2 storageApp];
-    v36 = [v35 isDemoted];
+    storageApp24 = [(STStorageDetailViewController *)selfCopy storageApp];
+    isDemoted2 = [storageApp24 isDemoted];
 
-    if (v36)
+    if (isDemoted2)
     {
-      v33 = *(&v2->_installSpec + 4);
+      v33 = *(&selfCopy->_installSpec + 4);
 
       v34 = &OBJC_IVAR___STStorageAppDetailController__installSpec;
 LABEL_40:
@@ -1768,10 +1768,10 @@ LABEL_144:
   return v3;
 }
 
-- (void)_syncUI:(id)a3
+- (void)_syncUI:(id)i
 {
-  v4 = [(STStorageDetailViewController *)self storageApp];
-  -[STStorageAppDetailController setUIState:](self, "setUIState:", [v4 state]);
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  -[STStorageAppDetailController setUIState:](self, "setUIState:", [storageApp state]);
 }
 
 - (void)syncUI
@@ -1784,10 +1784,10 @@ LABEL_144:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)reloadSpecs:(id)a3
+- (void)reloadSpecs:(id)specs
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"APPS"];
+  userInfo = [specs userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"APPS"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (-[STStorageDetailViewController storageApp](self, "storageApp"), v6 = objc_claimAutoreleasedReturnValue(), [v6 bundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "containsObject:", v7), v7, v6, v8))
@@ -1801,18 +1801,18 @@ LABEL_144:
   }
 }
 
-- (void)syncUIState:(id)a3
+- (void)syncUIState:(id)state
 {
-  v4 = a3;
-  v5 = [(STStorageDetailViewController *)self storageApp];
-  v6 = [v5 appRecord];
-  v7 = [v6 bundleIdentifier];
+  stateCopy = state;
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  appRecord = [storageApp appRecord];
+  bundleIdentifier = [appRecord bundleIdentifier];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v4;
+  v8 = stateCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -1827,13 +1827,13 @@ LABEL_144:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
-        v14 = [v13 isEqualToString:v7];
+        bundleIdentifier2 = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
+        v14 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
         if (v14)
         {
-          v15 = [(STStorageDetailViewController *)self storageApp];
-          [v15 refreshAppState];
+          storageApp2 = [(STStorageDetailViewController *)self storageApp];
+          [storageApp2 refreshAppState];
 
           [(STStorageAppDetailController *)self syncUI];
           goto LABEL_11;
@@ -1853,14 +1853,14 @@ LABEL_144:
 LABEL_11:
 }
 
-- (void)deleteAssets:(id)a3
+- (void)deleteAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [assetsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1871,39 +1871,39 @@ LABEL_11:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 propertyForKey:{@"stCacheAsset", v11, v12, v13, v14, v15, v16}];
+        v10 = [v9 propertyForKey:{@"stCacheAsset", v11, v12, v13, v14, selfCopy, v16}];
         if (v10)
         {
           v11 = _NSConcreteStackBlock;
           v12 = 3221225472;
           v13 = sub_9D0C;
           v14 = &unk_AA728;
-          v15 = self;
+          selfCopy = self;
           v16 = v9;
           CacheManagementRemove();
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [assetsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)deleteURLItems:(id)a3
+- (void)deleteURLItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[NSFileManager defaultManager];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -1930,7 +1930,7 @@ LABEL_11:
           block[3] = &unk_AA878;
           v16 = v4;
           v17 = v12;
-          v18 = self;
+          selfCopy = self;
           v19 = v11;
           dispatch_async(v13, block);
         }
@@ -1943,15 +1943,15 @@ LABEL_11:
   }
 }
 
-- (void)deleteMediaItems:(id)a3
+- (void)deleteMediaItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -1971,19 +1971,19 @@ LABEL_11:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 items];
-          if ([v14 count])
+          items = [v12 items];
+          if ([items count])
           {
-            [v5 addObjectsFromArray:v14];
+            [v5 addObjectsFromArray:items];
           }
         }
 
         else
         {
-          v14 = [v11 propertyForKey:@"stMediaItem"];
-          if (v14)
+          items = [v11 propertyForKey:@"stMediaItem"];
+          if (items)
           {
-            [v5 addObject:v14];
+            [v5 addObject:items];
           }
         }
       }
@@ -2003,52 +2003,52 @@ LABEL_11:
     block[3] = &unk_AA8A0;
     v17 = v5;
     v18 = v6;
-    v19 = self;
+    selfCopy = self;
     dispatch_async(v15, block);
   }
 }
 
-- (id)usageIndexPathForSpecifier:(id)a3
+- (id)usageIndexPathForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"_stUsageItemID"];
-  v6 = [v5 longValue];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"_stUsageItemID"];
+  longValue = [v5 longValue];
 
-  if (v6 < 1000)
+  if (longValue < 1000)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [*(&self->_uiState + 1) indexPathForSpecifier:v4];
+    v7 = [*(&self->_uiState + 1) indexPathForSpecifier:specifierCopy];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:pathCopy];
   v9 = [(STStorageAppDetailController *)self usageIndexPathForSpecifier:v8];
   if (!v9)
   {
     goto LABEL_3;
   }
 
-  v10 = [(STStorageDetailViewController *)self storageApp];
-  v11 = [v10 usageBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 isEqualToString:@"com.apple.mobilesafari"];
+  storageApp = [(STStorageDetailViewController *)self storageApp];
+  usageBundle = [storageApp usageBundle];
+  bundleIdentifier = [usageBundle bundleIdentifier];
+  v13 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   if ((v13 & 1) == 0)
   {
     v14 = *(&self->_uiState + 1);
     if (objc_opt_respondsToSelector())
     {
-      [*(&self->_uiState + 1) tableView:v6 didSelectRowAtIndexPath:v9];
+      [*(&self->_uiState + 1) tableView:viewCopy didSelectRowAtIndexPath:v9];
     }
   }
 
@@ -2057,22 +2057,22 @@ LABEL_11:
 LABEL_3:
     v15.receiver = self;
     v15.super_class = STStorageAppDetailController;
-    [(STStorageAppDetailController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(STStorageAppDetailController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:pathCopy];
   v9 = [(STStorageAppDetailController *)self usageIndexPathForSpecifier:v8];
   if (v9)
   {
     v10 = *(&self->_uiState + 1);
     if (objc_opt_respondsToSelector())
     {
-      [*(&self->_uiState + 1) tableView:v6 didDeselectRowAtIndexPath:v9];
+      [*(&self->_uiState + 1) tableView:viewCopy didDeselectRowAtIndexPath:v9];
     }
   }
 
@@ -2080,13 +2080,13 @@ LABEL_3:
   {
     v11.receiver = self;
     v11.super_class = STStorageAppDetailController;
-    [(STStorageAppDetailController *)&v11 tableView:v6 didDeselectRowAtIndexPath:v7];
+    [(STStorageAppDetailController *)&v11 tableView:viewCopy didDeselectRowAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = [(STStorageAppDetailController *)self specifierAtIndexPath:a4];
+  v5 = [(STStorageAppDetailController *)self specifierAtIndexPath:path];
   v6 = v5;
   if (!*(&self->_uiState + 1))
   {
@@ -2119,19 +2119,19 @@ LABEL_6:
   }
 
   v9 = *(&self->_uiState + 1);
-  v10 = [v9 table];
-  v11 = [v9 tableView:v10 canEditRowAtIndexPath:v7];
+  table = [v9 table];
+  v11 = [v9 tableView:table canEditRowAtIndexPath:v7];
 
 LABEL_12:
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = *(&self->_uiState + 1);
-  v9 = [(STStorageAppDetailController *)self specifierAtIndexPath:v7];
+  v9 = [(STStorageAppDetailController *)self specifierAtIndexPath:pathCopy];
   v10 = v9;
   if (!v8)
   {
@@ -2156,7 +2156,7 @@ LABEL_10:
   }
 
   v13 = *(&self->_uiState + 1);
-  v14 = [v13 table];
+  table = [v13 table];
   if (v11)
   {
     v15 = v11;
@@ -2164,21 +2164,21 @@ LABEL_10:
 
   else
   {
-    v15 = v7;
+    v15 = pathCopy;
   }
 
-  v16 = [v13 tableView:v14 editingStyleForRowAtIndexPath:v15];
+  v16 = [v13 tableView:table editingStyleForRowAtIndexPath:v15];
 
 LABEL_11:
   return v16;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
+  pathCopy = path;
   if ((+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
-    v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:v7];
+    v8 = [(STStorageAppDetailController *)self specifierAtIndexPath:pathCopy];
     v9 = v8;
     if (*(&self->_uiState + 1))
     {
@@ -2189,8 +2189,8 @@ LABEL_11:
         if (objc_opt_respondsToSelector())
         {
           v12 = *(&self->_uiState + 1);
-          v13 = [v12 table];
-          [v12 tableView:v13 commitEditingStyle:a4 forRowAtIndexPath:v10];
+          table = [v12 table];
+          [v12 tableView:table commitEditingStyle:style forRowAtIndexPath:v10];
 
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
@@ -2205,7 +2205,7 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    if (a4 == 1)
+    if (style == 1)
     {
       v14 = [v8 propertyForKey:@"stCacheAsset"];
 
@@ -2257,17 +2257,17 @@ LABEL_17:
 - (id)editButton
 {
   v2 = [*(&self->_usageDetailController + 4) propertyForKey:PSHeaderViewKey];
-  v3 = [v2 headerButton];
+  headerButton = [v2 headerButton];
 
-  return v3;
+  return headerButton;
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
   v3 = OBJC_IVAR___PSEditableListController__editable;
-  if (self->super.PSEditableListController_opaque[OBJC_IVAR___PSEditableListController__editable] != a3)
+  if (self->super.PSEditableListController_opaque[OBJC_IVAR___PSEditableListController__editable] != editable)
   {
-    self->super.PSEditableListController_opaque[OBJC_IVAR___PSEditableListController__editable] = a3;
+    self->super.PSEditableListController_opaque[OBJC_IVAR___PSEditableListController__editable] = editable;
     v7 = [*(&self->_usageDetailController + 4) propertyForKey:PSHeaderViewKey];
     v5 = STLocalizedString(@"Edit");
     if (self->super.PSEditableListController_opaque[v3] == 1)

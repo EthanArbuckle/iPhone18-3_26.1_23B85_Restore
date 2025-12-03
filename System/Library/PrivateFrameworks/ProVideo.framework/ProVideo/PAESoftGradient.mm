@@ -1,18 +1,18 @@
 @interface PAESoftGradient
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (PAESoftGradient)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAESoftGradient)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAESoftGradient
 
-- (PAESoftGradient)initWithAPIManager:(id)a3
+- (PAESoftGradient)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESoftGradient;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (BOOL)addParameters
@@ -65,7 +65,7 @@ uint64_t __29__PAESoftGradient_properties__block_invoke()
   return result;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -90,28 +90,28 @@ uint64_t __29__PAESoftGradient_properties__block_invoke()
     *&v20 = 1.0;
     v21 = 1.0;
     v19 = 300.0;
-    [a3 bounds];
+    [output bounds];
     v13 = v12;
     v15 = v14;
-    [v7 getXValue:&v25 YValue:&v24 fromParm:310 atFxTime:a4->var0.var1];
+    [v7 getXValue:&v25 YValue:&v24 fromParm:310 atFxTime:info->var0.var1];
     v24 = v15 * (v24 + -0.5);
     v25 = v13 * (v25 + -0.5);
     if ([v11 versionAtCreation] < 2)
     {
-      [v7 getRedValue:&v23 greenValue:&v22 blueValue:&v21 alphaValue:&v20 fromParm:311 atFxTime:a4->var0.var1];
+      [v7 getRedValue:&v23 greenValue:&v22 blueValue:&v21 alphaValue:&v20 fromParm:311 atFxTime:info->var0.var1];
       v16 = *&v20;
     }
 
     else
     {
-      [v7 getRedValue:&v23 greenValue:&v22 blueValue:&v21 fromParm:311 atFxTime:a4->var0.var1];
+      [v7 getRedValue:&v23 greenValue:&v22 blueValue:&v21 fromParm:311 atFxTime:info->var0.var1];
       v16 = 1.0;
     }
 
     v22 = v16 * v22;
     v23 = v16 * v23;
     v21 = v16 * v21;
-    [v7 getFloatValue:&v19 fromParm:312 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v19 fromParm:312 atFxTime:info->var0.var1];
     v19 = 1.0 / v19;
     v17 = HGObject::operator new(0x1A0uLL);
     HgcSoftGradient::HgcSoftGradient(v17);
@@ -120,14 +120,14 @@ uint64_t __29__PAESoftGradient_properties__block_invoke()
   return v10;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 1;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 1;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

@@ -1,23 +1,23 @@
 @interface MTLanguageChangeListener
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4;
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type;
 - (id)liveDarwinNotifications;
 - (void)_handleLanguageChanged;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation MTLanguageChangeListener
 
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [(MTLanguageChangeListener *)self liveDarwinNotifications];
+  notificationCopy = notification;
+  liveDarwinNotifications = [(MTLanguageChangeListener *)self liveDarwinNotifications];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__MTLanguageChangeListener_handlesNotification_ofType___block_invoke;
   v10[3] = &unk_1E7B0C848;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 na_any:v10];
+  v11 = notificationCopy;
+  v7 = notificationCopy;
+  v8 = [liveDarwinNotifications na_any:v10];
 
   return v8;
 }
@@ -34,31 +34,31 @@
   xpc_transaction_exit_clean();
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
-  v11 = a5;
-  v7 = a3;
-  v8 = [objc_opt_class() _languageChangeNotification];
-  v9 = [v7 isEqualToString:v8];
+  completionCopy = completion;
+  notificationCopy = notification;
+  _languageChangeNotification = [objc_opt_class() _languageChangeNotification];
+  v9 = [notificationCopy isEqualToString:_languageChangeNotification];
 
   if (v9)
   {
     [(MTLanguageChangeListener *)self _handleLanguageChanged];
   }
 
-  v10 = v11;
-  if (v11)
+  v10 = completionCopy;
+  if (completionCopy)
   {
-    (*(v11 + 2))(v11);
-    v10 = v11;
+    (*(completionCopy + 2))(completionCopy);
+    v10 = completionCopy;
   }
 }
 
 - (id)liveDarwinNotifications
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _languageChangeNotification];
-  v6[0] = v2;
+  _languageChangeNotification = [objc_opt_class() _languageChangeNotification];
+  v6[0] = _languageChangeNotification;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

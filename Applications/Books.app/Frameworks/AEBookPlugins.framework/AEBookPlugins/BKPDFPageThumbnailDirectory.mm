@@ -1,104 +1,104 @@
 @interface BKPDFPageThumbnailDirectory
 - (id)_noBookmarksView;
-- (id)locationAtIndex:(unint64_t)a3;
-- (int64_t)indexForPageNumber:(unint64_t)a3;
-- (int64_t)leftPageNumberAtIndex:(unint64_t)a3;
-- (int64_t)numberOfCellsInGridView:(id)a3;
-- (int64_t)pageNumberForCellIndex:(unint64_t)a3;
-- (int64_t)rightPageNumberAtIndex:(unint64_t)a3;
-- (unint64_t)indexForLocation:(id)a3;
+- (id)locationAtIndex:(unint64_t)index;
+- (int64_t)indexForPageNumber:(unint64_t)number;
+- (int64_t)leftPageNumberAtIndex:(unint64_t)index;
+- (int64_t)numberOfCellsInGridView:(id)view;
+- (int64_t)pageNumberForCellIndex:(unint64_t)index;
+- (int64_t)rightPageNumberAtIndex:(unint64_t)index;
+- (unint64_t)indexForLocation:(id)location;
 - (void)calculatePageCount;
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4;
+- (void)configureCell:(id)cell atIndex:(unint64_t)index;
 - (void)reloadData;
-- (void)setPdfDocument:(id)a3;
-- (void)setShowBookmarksOnly:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setPdfDocument:(id)document;
+- (void)setShowBookmarksOnly:(BOOL)only;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKPDFPageThumbnailDirectory
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(BKPDFPageThumbnailDirectory *)self calculatePageCount];
   v5.receiver = self;
   v5.super_class = BKPDFPageThumbnailDirectory;
-  [(BKThumbnailDirectory *)&v5 viewWillAppear:v3];
+  [(BKThumbnailDirectory *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = BKPDFPageThumbnailDirectory;
-  [(BKContentViewController *)&v3 viewDidDisappear:a3];
+  [(BKContentViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)setPdfDocument:(id)a3
+- (void)setPdfDocument:(id)document
 {
-  v5 = a3;
-  if (self->_pdfDocument != v5)
+  documentCopy = document;
+  if (self->_pdfDocument != documentCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pdfDocument, a3);
+    v6 = documentCopy;
+    objc_storeStrong(&self->_pdfDocument, document);
     [(BKPDFPageThumbnailDirectory *)self calculatePageCount];
-    v5 = v6;
+    documentCopy = v6;
   }
 }
 
-- (void)setShowBookmarksOnly:(BOOL)a3
+- (void)setShowBookmarksOnly:(BOOL)only
 {
-  if (self->_showBookmarksOnly != a3)
+  if (self->_showBookmarksOnly != only)
   {
-    self->_showBookmarksOnly = a3;
+    self->_showBookmarksOnly = only;
     [(BKPDFPageThumbnailDirectory *)self calculatePageCount];
   }
 }
 
 - (void)calculatePageCount
 {
-  v3 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+  pdfDocument = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
 
-  if (v3)
+  if (pdfDocument)
   {
-    v4 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
-    v5 = [v4 pageCount];
+    pdfDocument2 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+    pageCount = [pdfDocument2 pageCount];
 
-    if (v5 && [(BKPDFPageThumbnailDirectory *)self showBookmarksOnly])
+    if (pageCount && [(BKPDFPageThumbnailDirectory *)self showBookmarksOnly])
     {
-      v6 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
-      v7 = [v6 bookmarkedPages];
+      pdfDocument3 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+      bookmarkedPages = [pdfDocument3 bookmarkedPages];
 
-      +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+      +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [bookmarkedPages count]);
       v9 = _NSConcreteStackBlock;
       v10 = 3221225472;
       v11 = sub_C32A0;
       v12 = &unk_1E5220;
       v14 = v13 = self;
       v8 = v14;
-      [v7 enumerateIndexesUsingBlock:&v9];
+      [bookmarkedPages enumerateIndexesUsingBlock:&v9];
       [(BKPDFPageThumbnailDirectory *)self setBookmarkedPages:v8, v9, v10, v11, v12, v13];
-      v5 = [v8 count];
+      pageCount = [v8 count];
     }
   }
 
   else
   {
-    v5 = 0;
+    pageCount = 0;
   }
 
-  if (self->_pageCount != v5)
+  if (self->_pageCount != pageCount)
   {
-    self->_pageCount = v5;
+    self->_pageCount = pageCount;
     [(BKPDFPageThumbnailDirectory *)self reloadData];
   }
 }
 
-- (int64_t)numberOfCellsInGridView:(id)a3
+- (int64_t)numberOfCellsInGridView:(id)view
 {
-  v4 = [(BKThumbnailDirectory *)self showSpreads];
+  showSpreads = [(BKThumbnailDirectory *)self showSpreads];
   result = [(BKPDFPageThumbnailDirectory *)self pageCount];
-  if (v4)
+  if (showSpreads)
   {
     return vcvtps_s32_f32(vcvts_n_f32_u64(result + 1, 1uLL));
   }
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (int64_t)leftPageNumberAtIndex:(unint64_t)a3
+- (int64_t)leftPageNumberAtIndex:(unint64_t)index
 {
   if ([(BKViewController *)self layoutDirection])
   {
-    v5 = 2 * a3;
+    v5 = 2 * index;
     if (v5 < [(BKPDFPageThumbnailDirectory *)self pageCount])
     {
       return v5 + 1;
@@ -122,9 +122,9 @@
     }
   }
 
-  else if (a3)
+  else if (index)
   {
-    return 2 * a3;
+    return 2 * index;
   }
 
   else
@@ -133,13 +133,13 @@
   }
 }
 
-- (int64_t)rightPageNumberAtIndex:(unint64_t)a3
+- (int64_t)rightPageNumberAtIndex:(unint64_t)index
 {
   if ([(BKViewController *)self layoutDirection])
   {
-    if (a3)
+    if (index)
     {
-      return 2 * a3;
+      return 2 * index;
     }
 
     else
@@ -150,7 +150,7 @@
 
   else
   {
-    v6 = 2 * a3;
+    v6 = 2 * index;
     if (v6 < [(BKPDFPageThumbnailDirectory *)self pageCount])
     {
       return v6 + 1;
@@ -163,48 +163,48 @@
   }
 }
 
-- (int64_t)pageNumberForCellIndex:(unint64_t)a3
+- (int64_t)pageNumberForCellIndex:(unint64_t)index
 {
   if ([(BKThumbnailDirectory *)self showSpreads])
   {
     if ([(BKViewController *)self layoutDirection])
     {
-      result = [(BKPDFPageThumbnailDirectory *)self rightPageNumberAtIndex:a3];
+      result = [(BKPDFPageThumbnailDirectory *)self rightPageNumberAtIndex:index];
       if (result == 0x7FFFFFFFFFFFFFFFLL)
       {
 
-        return [(BKPDFPageThumbnailDirectory *)self leftPageNumberAtIndex:a3];
+        return [(BKPDFPageThumbnailDirectory *)self leftPageNumberAtIndex:index];
       }
     }
 
     else
     {
-      result = [(BKPDFPageThumbnailDirectory *)self leftPageNumberAtIndex:a3];
+      result = [(BKPDFPageThumbnailDirectory *)self leftPageNumberAtIndex:index];
       if (result == 0x7FFFFFFFFFFFFFFFLL)
       {
 
-        return [(BKPDFPageThumbnailDirectory *)self rightPageNumberAtIndex:a3];
+        return [(BKPDFPageThumbnailDirectory *)self rightPageNumberAtIndex:index];
       }
     }
   }
 
   else if ([(BKPDFPageThumbnailDirectory *)self showBookmarksOnly])
   {
-    v6 = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
-    v7 = [v6 count];
+    bookmarkedPages = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
+    v7 = [bookmarkedPages count];
 
-    if (v7 <= a3)
+    if (v7 <= index)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v8 = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
-      v9 = [v8 objectAtIndex:a3];
+      bookmarkedPages2 = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
+      v9 = [bookmarkedPages2 objectAtIndex:index];
 
-      v10 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
-      v11 = [v10 indexForPage:v9];
+      pdfDocument = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+      v11 = [pdfDocument indexForPage:v9];
 
       v12 = [BKPDFModernBookViewController pageNumberForPageIndex:v11];
       return v12;
@@ -214,22 +214,22 @@
   else
   {
 
-    return [BKPDFModernBookViewController pageNumberForPageIndex:a3];
+    return [BKPDFModernBookViewController pageNumberForPageIndex:index];
   }
 
   return result;
 }
 
-- (int64_t)indexForPageNumber:(unint64_t)a3
+- (int64_t)indexForPageNumber:(unint64_t)number
 {
   if ([(BKThumbnailDirectory *)self showSpreads])
   {
-    v5 = a3 >> 1;
+    v5 = number >> 1;
   }
 
   else
   {
-    v5 = a3 - 1;
+    v5 = number - 1;
   }
 
   if (v5 < 0 || v5 >= [(BKPDFPageThumbnailDirectory *)self numberOfCellsInGridView:self->super._gridView])
@@ -240,27 +240,27 @@
   return v5;
 }
 
-- (id)locationAtIndex:(unint64_t)a3
+- (id)locationAtIndex:(unint64_t)index
 {
-  v4 = [(BKPDFPageThumbnailDirectory *)self pageNumberForCellIndex:a3];
+  v4 = [(BKPDFPageThumbnailDirectory *)self pageNumberForCellIndex:index];
 
   return [(BKDirectoryContent *)self locationForPageNumber:v4];
 }
 
-- (unint64_t)indexForLocation:(id)a3
+- (unint64_t)indexForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0x7FFFFFFFFFFFFFFFLL;
   if ([(BKPDFPageThumbnailDirectory *)self showBookmarksOnly])
   {
-    v5 = [BKPDFModernBookViewController pageIndexForPageNumber:[(BKDirectoryContent *)self pageNumberForLocation:v4]];
-    v6 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
-    v7 = [v6 pageAtIndex:v5];
+    v5 = [BKPDFModernBookViewController pageIndexForPageNumber:[(BKDirectoryContent *)self pageNumberForLocation:locationCopy]];
+    pdfDocument = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+    v7 = [pdfDocument pageAtIndex:v5];
 
-    v8 = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
+    bookmarkedPages = [(BKPDFPageThumbnailDirectory *)self bookmarkedPages];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_C37BC;
@@ -268,14 +268,14 @@
     v9 = v7;
     v13 = v9;
     v14 = &v15;
-    [v8 enumerateObjectsUsingBlock:v12];
+    [bookmarkedPages enumerateObjectsUsingBlock:v12];
 
     v10 = v16[3];
   }
 
   else
   {
-    v10 = [(BKPDFPageThumbnailDirectory *)self indexForPageNumber:[(BKDirectoryContent *)self pageNumberForLocation:v4]];
+    v10 = [(BKPDFPageThumbnailDirectory *)self indexForPageNumber:[(BKDirectoryContent *)self pageNumberForLocation:locationCopy]];
     v16[3] = v10;
   }
 
@@ -284,27 +284,27 @@
   return v10;
 }
 
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4
+- (void)configureCell:(id)cell atIndex:(unint64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   v9.receiver = self;
   v9.super_class = BKPDFPageThumbnailDirectory;
-  [(BKThumbnailDirectory *)&v9 configureCell:v6 atIndex:a4];
+  [(BKThumbnailDirectory *)&v9 configureCell:cellCopy atIndex:index];
   if ([(BKPDFPageThumbnailDirectory *)self showBookmarks])
   {
     if ([(BKPDFPageThumbnailDirectory *)self showBookmarksOnly])
     {
-      [v6 setHasRibbon:1];
+      [cellCopy setHasRibbon:1];
     }
 
     else
     {
-      v7 = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
-      v8 = [v7 pageAtIndex:a4];
+      pdfDocument = [(BKPDFPageThumbnailDirectory *)self pdfDocument];
+      v8 = [pdfDocument pageAtIndex:index];
 
       if ([v8 isBookmarked])
       {
-        [v6 setHasRibbon:1];
+        [cellCopy setHasRibbon:1];
       }
     }
   }
@@ -331,8 +331,8 @@
     }
 
     v9 = [UIFont systemFontOfSize:v8];
-    v10 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
+    [titleLabel setFont:v9];
 
     v11 = isPad();
     v12 = 13.0;
@@ -342,26 +342,26 @@
     }
 
     v13 = [UIFont systemFontOfSize:v12];
-    v14 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
-    [v14 setFont:v13];
+    descriptionLabel = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
+    [descriptionLabel setFont:v13];
 
-    v15 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
+    titleLabel2 = [(BKTOCBookmarksDescription *)self->_noBookmarksView titleLabel];
     v16 = AEBundle();
     v17 = [v16 localizedStringForKey:@"Adding Bookmarks…" value:&stru_1E7188 table:0];
-    [v15 setText:v17];
+    [titleLabel2 setText:v17];
 
     v18 = +[UIColor bc_booksLabelColor];
-    [v15 setTextColor:v18];
+    [titleLabel2 setTextColor:v18];
 
     v19 = AEBundle();
     v20 = [v19 localizedStringForKey:@"When you’re reading a PDF value:\ntap the Bookmark button to\nmark the current page." table:{&stru_1E7188, 0}];
 
-    v21 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
-    [v21 setText:v20];
+    descriptionLabel2 = [(BKTOCBookmarksDescription *)self->_noBookmarksView descriptionLabel];
+    [descriptionLabel2 setText:v20];
     v22 = +[UIColor bc_booksLabelColor];
-    [v21 setTextColor:v22];
+    [descriptionLabel2 setTextColor:v22];
 
-    [v21 setNumberOfLines:0];
+    [descriptionLabel2 setNumberOfLines:0];
     noBookmarksView = self->_noBookmarksView;
   }
 
@@ -385,12 +385,12 @@
     else
     {
       noBookmarksView = [(BKPDFPageThumbnailDirectory *)self _noBookmarksView];
-      v8 = [(BKPDFPageThumbnailDirectory *)self view];
-      [v8 bounds];
+      view = [(BKPDFPageThumbnailDirectory *)self view];
+      [view bounds];
       [noBookmarksView setFrame:?];
 
-      v9 = [(BKPDFPageThumbnailDirectory *)self view];
-      [v9 addSubview:noBookmarksView];
+      view2 = [(BKPDFPageThumbnailDirectory *)self view];
+      [view2 addSubview:noBookmarksView];
     }
   }
 }

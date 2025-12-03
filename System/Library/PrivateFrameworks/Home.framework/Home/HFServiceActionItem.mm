@@ -4,35 +4,35 @@
 - (HFCharacteristicValueSource)valueSource;
 - (HFHomeKitObject)homeKitObject;
 - (HFServiceActionItem)init;
-- (HFServiceActionItem)initWithHome:(id)a3 containingItem:(id)a4;
+- (HFServiceActionItem)initWithHome:(id)home containingItem:(id)item;
 - (NSSet)services;
 - (NSString)description;
 - (id)_characteristicTypeToTargetValuesMap;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
-- (id)serviceActionItemForChildServiceItem:(id)a3;
-- (void)_getDesiredItemDescription:(id *)a3 controlDescription:(id *)a4 withSourceItemResults:(id)a5;
-- (void)addAction:(id)a3;
-- (void)addActionBuilder:(id)a3;
+- (id)serviceActionItemForChildServiceItem:(id)item;
+- (void)_getDesiredItemDescription:(id *)description controlDescription:(id *)controlDescription withSourceItemResults:(id)results;
+- (void)addAction:(id)action;
+- (void)addActionBuilder:(id)builder;
 @end
 
 @implementation HFServiceActionItem
 
-- (HFServiceActionItem)initWithHome:(id)a3 containingItem:(id)a4
+- (HFServiceActionItem)initWithHome:(id)home containingItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = HFServiceActionItem;
   v9 = [(HFServiceActionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_containingItem, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_containingItem, item);
   }
 
   return v10;
@@ -40,8 +40,8 @@
 
 - (HFServiceActionItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:50 description:@"Use -initWithHome:containingItem:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:50 description:@"Use -initWithHome:containingItem:"];
 
   return 0;
 }
@@ -51,37 +51,37 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFServiceActionItem *)self actions];
-  v7 = [v6 hf_prettyDescription];
-  v8 = [(HFServiceActionItem *)self actionBuilders];
-  v9 = [v8 hf_prettyDescription];
-  v10 = [(HFServiceActionItem *)self containingItem];
-  v11 = [(HFItem *)self latestResults];
-  v12 = [v3 stringWithFormat:@"<%@: %p, actions: %@ builders: %@ containined in: %@ %@>", v5, self, v7, v9, v10, v11];
+  actions = [(HFServiceActionItem *)self actions];
+  hf_prettyDescription = [actions hf_prettyDescription];
+  actionBuilders = [(HFServiceActionItem *)self actionBuilders];
+  hf_prettyDescription2 = [actionBuilders hf_prettyDescription];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  latestResults = [(HFItem *)self latestResults];
+  v12 = [v3 stringWithFormat:@"<%@: %p, actions: %@ builders: %@ containined in: %@ %@>", v5, self, hf_prettyDescription, hf_prettyDescription2, containingItem, latestResults];
 
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFServiceActionItem *)self containingItem];
+  optionsCopy = options;
+  containingItem = [(HFServiceActionItem *)self containingItem];
 
-  if (!v5)
+  if (!containingItem)
   {
     NSLog(&cfstr_MustHaveAConta.isa);
   }
 
-  v6 = [(HFServiceActionItem *)self containingItem];
+  containingItem2 = [(HFServiceActionItem *)self containingItem];
 
-  if (v6)
+  if (containingItem2)
   {
-    v7 = [v4 mutableCopy];
-    v8 = [(HFServiceActionItem *)self actionBuilders];
-    [v7 na_safeSetObject:v8 forKey:HFItemUpdateOptionActionBuilders];
+    v7 = [optionsCopy mutableCopy];
+    actionBuilders = [(HFServiceActionItem *)self actionBuilders];
+    [v7 na_safeSetObject:actionBuilders forKey:HFItemUpdateOptionActionBuilders];
 
-    v9 = [(HFServiceActionItem *)self containingItem];
-    v10 = [v9 updateWithOptions:v7];
+    containingItem3 = [(HFServiceActionItem *)self containingItem];
+    v10 = [containingItem3 updateWithOptions:v7];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __51__HFServiceActionItem__subclass_updateWithOptions___block_invoke;
@@ -145,85 +145,85 @@ void __51__HFServiceActionItem__subclass_updateWithOptions___block_invoke_3()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v9 = a3;
-  if (!v9)
+  actionCopy = action;
+  if (!actionCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
-  v5 = [(HFServiceActionItem *)self actions];
-  v6 = [v5 mutableCopy];
+  actions = [(HFServiceActionItem *)self actions];
+  v6 = [actions mutableCopy];
 
   if (!v6)
   {
     v6 = [MEMORY[0x277CBEB58] set];
   }
 
-  [v6 addObject:v9];
+  [v6 addObject:actionCopy];
   v7 = [v6 copy];
   [(HFServiceActionItem *)self setActions:v7];
 }
 
-- (void)addActionBuilder:(id)a3
+- (void)addActionBuilder:(id)builder
 {
-  v9 = a3;
-  if (!v9)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"actionBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItem.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"actionBuilder"}];
   }
 
-  v5 = [(HFServiceActionItem *)self actionBuilders];
-  v6 = [v5 mutableCopy];
+  actionBuilders = [(HFServiceActionItem *)self actionBuilders];
+  v6 = [actionBuilders mutableCopy];
 
   if (!v6)
   {
     v6 = [MEMORY[0x277CBEB58] set];
   }
 
-  [v6 addObject:v9];
+  [v6 addObject:builderCopy];
   v7 = [v6 copy];
   [(HFServiceActionItem *)self setActionBuilders:v7];
 }
 
-- (id)serviceActionItemForChildServiceItem:(id)a3
+- (id)serviceActionItemForChildServiceItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 service];
-  v6 = [(HFServiceActionItem *)self services];
-  v7 = [v6 containsObject:v5];
+  itemCopy = item;
+  service = [itemCopy service];
+  services = [(HFServiceActionItem *)self services];
+  v7 = [services containsObject:service];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v5 hf_prettyDescription];
-    NSLog(&cfstr_RequestToCreat.isa, v8, self);
+    hf_prettyDescription = [service hf_prettyDescription];
+    NSLog(&cfstr_RequestToCreat.isa, hf_prettyDescription, self);
   }
 
   v9 = [HFServiceActionItem alloc];
-  v10 = [(HFServiceActionItem *)self home];
-  v11 = [(HFServiceActionItem *)v9 initWithHome:v10 containingItem:v4];
+  home = [(HFServiceActionItem *)self home];
+  v11 = [(HFServiceActionItem *)v9 initWithHome:home containingItem:itemCopy];
 
-  v12 = [(HFServiceActionItem *)self actionBuilders];
+  actionBuilders = [(HFServiceActionItem *)self actionBuilders];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__HFServiceActionItem_serviceActionItemForChildServiceItem___block_invoke;
   v21[3] = &unk_277DF4998;
-  v13 = v5;
+  v13 = service;
   v22 = v13;
-  v14 = [v12 na_filter:v21];
+  v14 = [actionBuilders na_filter:v21];
   [(HFServiceActionItem *)v11 setActionBuilders:v14];
 
-  v15 = [(HFServiceActionItem *)self actions];
+  actions = [(HFServiceActionItem *)self actions];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __60__HFServiceActionItem_serviceActionItemForChildServiceItem___block_invoke_2;
   v19[3] = &unk_277DF6308;
   v20 = v13;
   v16 = v13;
-  v17 = [v15 na_filter:v19];
+  v17 = [actions na_filter:v19];
   [(HFServiceActionItem *)v11 setActions:v17];
 
   return v11;
@@ -273,62 +273,62 @@ uint64_t __60__HFServiceActionItem_serviceActionItemForChildServiceItem___block_
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  v3 = [v2 homeKitObject];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  homeKitObject = [containingItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
 - (NSSet)services
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  v3 = [v2 services];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  services = [containingItem services];
 
-  return v3;
+  return services;
 }
 
 - (id)accessories
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  v3 = [v2 accessories];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  accessories = [containingItem accessories];
 
-  return v3;
+  return accessories;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  v3 = [v2 valueSource];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  valueSource = [containingItem valueSource];
 
-  return v3;
+  return valueSource;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFServiceActionItem *)self home];
-  v7 = [(HFServiceActionItem *)self containingItem];
-  v8 = [v7 copyWithValueSource:v4];
+  home = [(HFServiceActionItem *)self home];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  v8 = [containingItem copyWithValueSource:sourceCopy];
 
-  v9 = [v5 initWithHome:v6 containingItem:v8];
+  v9 = [v5 initWithHome:home containingItem:v8];
   [v9 copyLatestResultsFromItem:self];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFServiceActionItem *)self valueSource];
-  v5 = [(HFServiceActionItem *)self copyWithValueSource:v4];
+  valueSource = [(HFServiceActionItem *)self valueSource];
+  v5 = [(HFServiceActionItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  v3 = [v2 homeKitObject];
-  v4 = [HFNamingComponents namingComponentFromHomeKitObject:v3];
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  homeKitObject = [containingItem homeKitObject];
+  v4 = [HFNamingComponents namingComponentFromHomeKitObject:homeKitObject];
 
   return v4;
 }
@@ -352,14 +352,14 @@ void __40__HFServiceActionItem__percentFormatter__block_invoke()
   qword_27C84C4E0 = v0;
 }
 
-- (void)_getDesiredItemDescription:(id *)a3 controlDescription:(id *)a4 withSourceItemResults:(id)a5
+- (void)_getDesiredItemDescription:(id *)description controlDescription:(id *)controlDescription withSourceItemResults:(id)results
 {
-  v8 = a5;
-  v9 = [v8 objectForKeyedSubscript:@"description"];
-  v10 = [v8 objectForKeyedSubscript:@"controlDescription"];
-  v11 = [v8 objectForKeyedSubscript:@"errorDescription"];
+  resultsCopy = results;
+  v9 = [resultsCopy objectForKeyedSubscript:@"description"];
+  v10 = [resultsCopy objectForKeyedSubscript:@"controlDescription"];
+  v11 = [resultsCopy objectForKeyedSubscript:@"errorDescription"];
   v12 = v11;
-  v52 = a3;
+  descriptionCopy = description;
   if (v11 && [v11 isEqualToString:v9])
   {
 
@@ -367,33 +367,33 @@ void __40__HFServiceActionItem__percentFormatter__block_invoke()
     v9 = 0;
   }
 
-  v13 = [(HFServiceActionItem *)self _characteristicTypeToTargetValuesMap];
-  v14 = [v8 objectForKeyedSubscript:@"childItems"];
+  _characteristicTypeToTargetValuesMap = [(HFServiceActionItem *)self _characteristicTypeToTargetValuesMap];
+  v14 = [resultsCopy objectForKeyedSubscript:@"childItems"];
   v15 = [v14 na_firstObjectPassingTest:&__block_literal_global_48_1];
 
-  v54 = [v15 incrementalCharacteristicType];
-  v16 = [v8 objectForKeyedSubscript:@"childItems"];
+  incrementalCharacteristicType = [v15 incrementalCharacteristicType];
+  v16 = [resultsCopy objectForKeyedSubscript:@"childItems"];
   v53 = [v16 na_firstObjectPassingTest:&__block_literal_global_51];
 
-  v17 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+  hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_withSourceItemResults___block_invoke_3;
   v57[3] = &unk_277DF3130;
-  v18 = v13;
+  v18 = _characteristicTypeToTargetValuesMap;
   v58 = v18;
-  LODWORD(v13) = [v17 na_any:v57];
+  LODWORD(_characteristicTypeToTargetValuesMap) = [hf_powerStateCharacteristicTypes na_any:v57];
 
-  if (v13)
+  if (_characteristicTypeToTargetValuesMap)
   {
-    v19 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+    hf_powerStateCharacteristicTypes2 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_withSourceItemResults___block_invoke_4;
     v55[3] = &unk_277DF2DD8;
     v20 = v18;
     v56 = v20;
-    v21 = [v19 na_flatMap:v55];
+    v21 = [hf_powerStateCharacteristicTypes2 na_flatMap:v55];
 
     if ([v21 count] != 1)
     {
@@ -403,13 +403,13 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v51 = a4;
-    v22 = [v21 anyObject];
-    v23 = [v22 BOOLValue];
+    controlDescriptionCopy = controlDescription;
+    anyObject = [v21 anyObject];
+    bOOLValue = [anyObject BOOLValue];
 
-    if (v23)
+    if (bOOLValue)
     {
-      if (v54)
+      if (incrementalCharacteristicType)
       {
         [v20 objectForKeyedSubscript:?];
       }
@@ -419,7 +419,7 @@ LABEL_31:
         [MEMORY[0x277CBEB98] set];
       }
       v39 = ;
-      a4 = v51;
+      controlDescription = controlDescriptionCopy;
       if ([v39 count] || v53)
       {
         goto LABEL_30;
@@ -441,7 +441,7 @@ LABEL_31:
     }
 
     v9 = v38;
-    a4 = v51;
+    controlDescription = controlDescriptionCopy;
 LABEL_30:
 
     goto LABEL_31;
@@ -455,11 +455,11 @@ LABEL_30:
     v26 = [v18 objectForKeyedSubscript:v24];
     if ([v26 count] == 1)
     {
-      v27 = a4;
-      v28 = [v26 anyObject];
-      v29 = [v28 integerValue];
+      controlDescriptionCopy2 = controlDescription;
+      anyObject2 = [v26 anyObject];
+      integerValue = [anyObject2 integerValue];
 
-      if (!v29)
+      if (!integerValue)
       {
         v30 = _HFLocalizedStringWithDefaultValue(@"HFSceneDescriptionValueClosed", @"HFSceneDescriptionValueClosed", 1);
 
@@ -469,13 +469,13 @@ LABEL_30:
         v9 = v30;
       }
 
-      a4 = v27;
+      controlDescription = controlDescriptionCopy2;
     }
 
 LABEL_32:
-    v48 = v52;
+    v48 = descriptionCopy;
 
-    if (!v52)
+    if (!descriptionCopy)
     {
       goto LABEL_34;
     }
@@ -494,12 +494,12 @@ LABEL_32:
       goto LABEL_32;
     }
 
-    v34 = [v26 anyObject];
-    v35 = [v34 integerValue];
+    anyObject3 = [v26 anyObject];
+    integerValue2 = [anyObject3 integerValue];
     v36 = @"HFSceneDescriptionValueOpen";
     v37 = @"HFSceneDescriptionValueClosed";
 LABEL_21:
-    if (v35 == 1)
+    if (integerValue2 == 1)
     {
       v42 = v37;
     }
@@ -510,10 +510,10 @@ LABEL_21:
     }
 
     _HFLocalizedStringWithDefaultValue(v42, v42, 1);
-    v44 = v43 = a4;
+    v44 = v43 = controlDescription;
 
     v45 = v44;
-    a4 = v43;
+    controlDescription = v43;
     v46 = v45;
 
     v10 = v46;
@@ -532,15 +532,15 @@ LABEL_21:
       goto LABEL_32;
     }
 
-    v34 = [v26 anyObject];
-    v35 = [v34 integerValue];
+    anyObject3 = [v26 anyObject];
+    integerValue2 = [anyObject3 integerValue];
     v36 = @"HFSceneDescriptionValueUnlocked";
     v37 = @"HFSceneDescriptionValueLocked";
     goto LABEL_21;
   }
 
-  v48 = v52;
-  if (v52)
+  v48 = descriptionCopy;
+  if (descriptionCopy)
   {
 LABEL_33:
     v49 = v9;
@@ -548,10 +548,10 @@ LABEL_33:
   }
 
 LABEL_34:
-  if (a4)
+  if (controlDescription)
   {
     v50 = v10;
-    *a4 = v10;
+    *controlDescription = v10;
   }
 }
 
@@ -584,21 +584,21 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
 - (id)_characteristicTypeToTargetValuesMap
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__HFServiceActionItem__characteristicTypeToTargetValuesMap__block_invoke;
   aBlock[3] = &unk_277DFAEB0;
   aBlock[4] = self;
-  v26 = v3;
+  v26 = dictionary;
   v36 = v26;
   v4 = _Block_copy(aBlock);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [(HFServiceActionItem *)self actions];
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  actions = [(HFServiceActionItem *)self actions];
+  v6 = [actions countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -609,7 +609,7 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
@@ -617,14 +617,14 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 characteristic];
-          v13 = [v11 targetValue];
+          characteristic = [v11 characteristic];
+          targetValue = [v11 targetValue];
 
-          v4[2](v4, v12, v13);
+          v4[2](v4, characteristic, targetValue);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v7 = [actions countByEnumeratingWithState:&v31 objects:v38 count:16];
     }
 
     while (v7);
@@ -634,8 +634,8 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [(HFServiceActionItem *)self actionBuilders];
-  v15 = [v14 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  actionBuilders = [(HFServiceActionItem *)self actionBuilders];
+  v15 = [actionBuilders countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v15)
   {
     v16 = v15;
@@ -646,7 +646,7 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(actionBuilders);
         }
 
         v19 = *(*(&v27 + 1) + 8 * j);
@@ -654,14 +654,14 @@ BOOL __91__HFServiceActionItem__getDesiredItemDescription_controlDescription_wit
         if (objc_opt_isKindOfClass())
         {
           v20 = v19;
-          v21 = [v20 characteristic];
-          v22 = [v20 targetValue];
+          characteristic2 = [v20 characteristic];
+          targetValue2 = [v20 targetValue];
 
-          v4[2](v4, v21, v22);
+          v4[2](v4, characteristic2, targetValue2);
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      v16 = [actionBuilders countByEnumeratingWithState:&v27 objects:v37 count:16];
     }
 
     while (v16);
@@ -700,10 +700,10 @@ void __59__HFServiceActionItem__characteristicTypeToTargetValuesMap__block_invok
 
 - (HFAccessoryRepresentable)accessoryRepresentableObject
 {
-  v2 = [(HFServiceActionItem *)self containingItem];
-  if ([v2 conformsToProtocol:&unk_28252AFF0])
+  containingItem = [(HFServiceActionItem *)self containingItem];
+  if ([containingItem conformsToProtocol:&unk_28252AFF0])
   {
-    v3 = v2;
+    v3 = containingItem;
   }
 
   else
@@ -712,9 +712,9 @@ void __59__HFServiceActionItem__characteristicTypeToTargetValuesMap__block_invok
   }
 
   v4 = v3;
-  v5 = [v4 accessoryRepresentableObject];
+  accessoryRepresentableObject = [v4 accessoryRepresentableObject];
 
-  return v5;
+  return accessoryRepresentableObject;
 }
 
 @end

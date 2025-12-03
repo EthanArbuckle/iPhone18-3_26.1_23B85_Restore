@@ -1,40 +1,40 @@
 @interface TFLaunchScreenBuilder
-+ (id)_lockupWithAppName:(id)a3 shortVersionString:(id)a4 bundleVersionString:(id)a5 expirationDate:(id)a6 iconUrlTemplate:(id)a7 iconNeedsMask:(BOOL)a8;
-+ (id)buildLaunchScreenFromBetaAppLaunchInfo:(id)a3;
-+ (id)buildLaunchScreenWithAppName:(id)a3 shortVersionString:(id)a4 bundleVersionString:(id)a5 expirationDate:(id)a6 iconUrlTemplate:(id)a7 testerNotes:(id)a8 iconNeedsMask:(BOOL)a9;
++ (id)_lockupWithAppName:(id)name shortVersionString:(id)string bundleVersionString:(id)versionString expirationDate:(id)date iconUrlTemplate:(id)template iconNeedsMask:(BOOL)mask;
++ (id)buildLaunchScreenFromBetaAppLaunchInfo:(id)info;
++ (id)buildLaunchScreenWithAppName:(id)name shortVersionString:(id)string bundleVersionString:(id)versionString expirationDate:(id)date iconUrlTemplate:(id)template testerNotes:(id)notes iconNeedsMask:(BOOL)mask;
 @end
 
 @implementation TFLaunchScreenBuilder
 
-+ (id)buildLaunchScreenWithAppName:(id)a3 shortVersionString:(id)a4 bundleVersionString:(id)a5 expirationDate:(id)a6 iconUrlTemplate:(id)a7 testerNotes:(id)a8 iconNeedsMask:(BOOL)a9
++ (id)buildLaunchScreenWithAppName:(id)name shortVersionString:(id)string bundleVersionString:(id)versionString expirationDate:(id)date iconUrlTemplate:(id)template testerNotes:(id)notes iconNeedsMask:(BOOL)mask
 {
-  v15 = a8;
-  v16 = [a1 _lockupWithAppName:a3 shortVersionString:a4 bundleVersionString:a5 expirationDate:a6 iconUrlTemplate:a7 iconNeedsMask:a9];
+  notesCopy = notes;
+  v16 = [self _lockupWithAppName:name shortVersionString:string bundleVersionString:versionString expirationDate:date iconUrlTemplate:template iconNeedsMask:mask];
   v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"https://developer.apple.com/go/?id=testflight-screenshot"];
-  v18 = [[TFLaunchScreen alloc] initWithLockup:v16 testerNotes:v15 howToScreenshotSupportUrl:v17];
+  v18 = [[TFLaunchScreen alloc] initWithLockup:v16 testerNotes:notesCopy howToScreenshotSupportUrl:v17];
 
   return v18;
 }
 
-+ (id)buildLaunchScreenFromBetaAppLaunchInfo:(id)a3
++ (id)buildLaunchScreenFromBetaAppLaunchInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 displayNames];
-  v25 = [TFLocale preferredLocalizedDisplayNameFromDisplayNames:v4];
+  infoCopy = info;
+  displayNames = [infoCopy displayNames];
+  v25 = [TFLocale preferredLocalizedDisplayNameFromDisplayNames:displayNames];
 
-  v5 = [v3 displayNames];
-  v6 = [v5 primaryLocale];
+  displayNames2 = [infoCopy displayNames];
+  primaryLocale = [displayNames2 primaryLocale];
 
-  v7 = [v3 localizedTestNotes];
-  v8 = [v7 allKeys];
-  v24 = v6;
-  v9 = [TFLocale preferredLocaleKeyFromAvailableKeys:v8 primaryLocaleKey:v6];
+  localizedTestNotes = [infoCopy localizedTestNotes];
+  allKeys = [localizedTestNotes allKeys];
+  v24 = primaryLocale;
+  v9 = [TFLocale preferredLocaleKeyFromAvailableKeys:allKeys primaryLocaleKey:primaryLocale];
 
   v22 = v9;
   if (v9)
   {
-    v10 = [v3 localizedTestNotes];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    localizedTestNotes2 = [infoCopy localizedTestNotes];
+    v11 = [localizedTestNotes2 objectForKeyedSubscript:v9];
   }
 
   else
@@ -42,57 +42,57 @@
     v11 = 0;
   }
 
-  v12 = [v3 iconNeedsMask];
-  v13 = [v3 version];
-  v14 = [v13 shortVersion];
-  v15 = [v3 version];
-  v16 = [v15 bundleVersion];
-  v17 = [v3 expirationDate];
-  v18 = [v3 iconURLTemplate];
-  LOBYTE(v21) = v12;
-  v19 = [a1 buildLaunchScreenWithAppName:v25 shortVersionString:v14 bundleVersionString:v16 expirationDate:v17 iconUrlTemplate:v18 testerNotes:v11 iconNeedsMask:v21];
+  iconNeedsMask = [infoCopy iconNeedsMask];
+  version = [infoCopy version];
+  shortVersion = [version shortVersion];
+  version2 = [infoCopy version];
+  bundleVersion = [version2 bundleVersion];
+  expirationDate = [infoCopy expirationDate];
+  iconURLTemplate = [infoCopy iconURLTemplate];
+  LOBYTE(v21) = iconNeedsMask;
+  v19 = [self buildLaunchScreenWithAppName:v25 shortVersionString:shortVersion bundleVersionString:bundleVersion expirationDate:expirationDate iconUrlTemplate:iconURLTemplate testerNotes:v11 iconNeedsMask:v21];
 
   return v19;
 }
 
-+ (id)_lockupWithAppName:(id)a3 shortVersionString:(id)a4 bundleVersionString:(id)a5 expirationDate:(id)a6 iconUrlTemplate:(id)a7 iconNeedsMask:(BOOL)a8
++ (id)_lockupWithAppName:(id)name shortVersionString:(id)string bundleVersionString:(id)versionString expirationDate:(id)date iconUrlTemplate:(id)template iconNeedsMask:(BOOL)mask
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  maskCopy = mask;
+  nameCopy = name;
+  dateCopy = date;
+  templateCopy = template;
   v16 = MEMORY[0x277CCACA8];
-  v17 = a5;
-  v18 = a4;
+  versionStringCopy = versionString;
+  stringCopy = string;
   v19 = TFLocalizedString(@"LOCKUP_SUBTITLE_VERSION_PREFIX");
-  v20 = [v16 stringWithFormat:@"%@ %@ (%@)", v19, v18, v17];
+  versionStringCopy = [v16 stringWithFormat:@"%@ %@ (%@)", v19, stringCopy, versionStringCopy];
 
-  [v14 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v21 >= 0.0)
   {
-    v23 = [v14 tf_timeFromNow];
-    if ([v23 day] < 1)
+    tf_timeFromNow = [dateCopy tf_timeFromNow];
+    if ([tf_timeFromNow day] < 1)
     {
       v22 = TFLocalizedString(@"LOCKUP_SUBTITLE_EXPIRATION_TODAY");
     }
 
     else
     {
-      v34 = v8;
-      v24 = [v23 minute];
-      if ([v23 hour] + v24 >= 1)
+      v34 = maskCopy;
+      minute = [tf_timeFromNow minute];
+      if ([tf_timeFromNow hour] + minute >= 1)
       {
-        [v23 setDay:{objc_msgSend(v23, "day") + 1}];
+        [tf_timeFromNow setDay:{objc_msgSend(tf_timeFromNow, "day") + 1}];
       }
 
       v25 = TFLocalizedString(@"LOCKUP_SUBTITLE_EXPIRATION_IN_X");
       v26 = MEMORY[0x277CCACA8];
       v27 = TFLocalizedString(@"NUMBER_OF_DAYS");
-      v28 = [v26 stringWithFormat:v27, objc_msgSend(v23, "day")];
+      v28 = [v26 stringWithFormat:v27, objc_msgSend(tf_timeFromNow, "day")];
 
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:v25, v28];
 
-      v8 = v34;
+      maskCopy = v34;
     }
   }
 
@@ -102,15 +102,15 @@
   }
 
   v29 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-  [v29 addObject:v20];
+  [v29 addObject:versionStringCopy];
   if (v22)
   {
     [v29 addObject:v22];
   }
 
-  if (v15)
+  if (templateCopy)
   {
-    v30 = [[TFIconArtwork alloc] initWithUrlTemplate:v15];
+    v30 = [[TFIconArtwork alloc] initWithUrlTemplate:templateCopy];
   }
 
   else
@@ -118,8 +118,8 @@
     v30 = 0;
   }
 
-  v31 = v13;
-  v32 = [[TFAppLockup alloc] initWithTitle:v31 subtitles:v29 iconArtwork:v30 iconNeedsMask:v8];
+  v31 = nameCopy;
+  v32 = [[TFAppLockup alloc] initWithTitle:v31 subtitles:v29 iconArtwork:v30 iconNeedsMask:maskCopy];
 
   return v32;
 }

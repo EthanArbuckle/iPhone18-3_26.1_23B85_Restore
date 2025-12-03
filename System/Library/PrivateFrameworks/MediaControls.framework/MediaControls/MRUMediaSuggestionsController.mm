@@ -1,11 +1,11 @@
 @interface MRUMediaSuggestionsController
-- (MRUMediaSuggestionsController)initWithEndpointController:(id)a3 metadataController:(id)a4 dataSource:(id)a5;
+- (MRUMediaSuggestionsController)initWithEndpointController:(id)controller metadataController:(id)metadataController dataSource:(id)source;
 - (MRUMediaSuggestionsControllerDelegate)delegate;
-- (void)metadataController:(id)a3 didChangeNowPlayingInfo:(id)a4;
-- (void)playSuggestion:(id)a3 completion:(id)a4;
-- (void)setContext:(id)a3;
-- (void)setIsQueueHandoffActive:(BOOL)a3;
-- (void)setMediaSuggestions:(id)a3;
+- (void)metadataController:(id)controller didChangeNowPlayingInfo:(id)info;
+- (void)playSuggestion:(id)suggestion completion:(id)completion;
+- (void)setContext:(id)context;
+- (void)setIsQueueHandoffActive:(BOOL)active;
+- (void)setMediaSuggestions:(id)suggestions;
 - (void)updateLastPlayedDate;
 - (void)updateMediaSuggestions;
 - (void)updatePlayingState;
@@ -13,26 +13,26 @@
 
 @implementation MRUMediaSuggestionsController
 
-- (MRUMediaSuggestionsController)initWithEndpointController:(id)a3 metadataController:(id)a4 dataSource:(id)a5
+- (MRUMediaSuggestionsController)initWithEndpointController:(id)controller metadataController:(id)metadataController dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  metadataControllerCopy = metadataController;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = MRUMediaSuggestionsController;
   v12 = [(MRUMediaSuggestionsController *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_endpointController, a3);
-    if ([v9 updatesActiveEndpointInPlace])
+    objc_storeStrong(&v12->_endpointController, controller);
+    if ([controllerCopy updatesActiveEndpointInPlace])
     {
       [(MRUEndpointController *)v13->_endpointController addObserver:v13];
     }
 
-    objc_storeStrong(&v13->_metadataController, a4);
+    objc_storeStrong(&v13->_metadataController, metadataController);
     [(MRUMetadataController *)v13->_metadataController addObserver:v13];
-    objc_storeStrong(&v13->_dataSource, a5);
+    objc_storeStrong(&v13->_dataSource, source);
     [(MRUMediaSuggestionsDataSource *)v13->_dataSource setDelegate:v13];
     v14 = dispatch_queue_create("com.apple.MediaControls.MRUMediaSuggestionsController/requestQueue", 0);
     requestQueue = v13->_requestQueue;
@@ -44,8 +44,8 @@
     v13->_lockscreenMonitor = v16;
 
     [(MRULockScreenMonitor *)v13->_lockscreenMonitor addObserver:v13];
-    v18 = [v10 nowPlayingInfo];
-    v13->_isPlaying = [v18 isPlaying];
+    nowPlayingInfo = [metadataControllerCopy nowPlayingInfo];
+    v13->_isPlaying = [nowPlayingInfo isPlaying];
 
     [(MRUMediaSuggestionsController *)v13 updateLastPlayedDate];
   }
@@ -53,53 +53,53 @@
   return v13;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (![(NSString *)self->_context isEqualToString:?])
   {
-    objc_storeStrong(&self->_context, a3);
+    objc_storeStrong(&self->_context, context);
     [(MRUMediaSuggestionsController *)self updateMediaSuggestions];
   }
 }
 
-- (void)setIsQueueHandoffActive:(BOOL)a3
+- (void)setIsQueueHandoffActive:(BOOL)active
 {
-  if (self->_isQueueHandoffActive != a3)
+  if (self->_isQueueHandoffActive != active)
   {
-    self->_isQueueHandoffActive = a3;
+    self->_isQueueHandoffActive = active;
     [(MRUMediaSuggestionsController *)self updateMediaSuggestions];
   }
 }
 
-- (void)setMediaSuggestions:(id)a3
+- (void)setMediaSuggestions:(id)suggestions
 {
-  v6 = a3;
+  suggestionsCopy = suggestions;
   if (![(NSArray *)self->_mediaSuggestions isEqualToArray:?])
   {
-    objc_storeStrong(&self->_mediaSuggestions, a3);
+    objc_storeStrong(&self->_mediaSuggestions, suggestions);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained mediaSuggestionsController:self didChangeMediaSuggestions:v6];
+    [WeakRetained mediaSuggestionsController:self didChangeMediaSuggestions:suggestionsCopy];
   }
 }
 
-- (void)playSuggestion:(id)a3 completion:(id)a4
+- (void)playSuggestion:(id)suggestion completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRUEndpointController *)self->_endpointController route];
-  v9 = [v8 endpoint];
+  suggestionCopy = suggestion;
+  completionCopy = completion;
+  route = [(MRUEndpointController *)self->_endpointController route];
+  endpoint = [route endpoint];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invoke;
   v12[3] = &unk_1E7666370;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v11 playOnEndpoint:v9 completion:v12];
+  v13 = suggestionCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = suggestionCopy;
+  [v11 playOnEndpoint:endpoint completion:v12];
 }
 
 void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invoke(uint64_t a1, void *a2)
@@ -135,23 +135,23 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
   }
 }
 
-- (void)metadataController:(id)a3 didChangeNowPlayingInfo:(id)a4
+- (void)metadataController:(id)controller didChangeNowPlayingInfo:(id)info
 {
-  [(MRUMediaSuggestionsController *)self updatePlayingState:a3];
+  [(MRUMediaSuggestionsController *)self updatePlayingState:controller];
 
   [(MRUMediaSuggestionsController *)self updateMediaSuggestions];
 }
 
 - (void)updatePlayingState
 {
-  v3 = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
-  v4 = v3;
-  v8 = v3;
+  nowPlayingInfo = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
+  v4 = nowPlayingInfo;
+  v8 = nowPlayingInfo;
   if (self->_isPlaying)
   {
-    v5 = [v3 isPlaying];
+    isPlaying = [nowPlayingInfo isPlaying];
     v4 = v8;
-    if ((v5 & 1) == 0)
+    if ((isPlaying & 1) == 0)
     {
       v6 = [MEMORY[0x1E695DF00] now];
       lastPlayingDate = self->_lastPlayingDate;
@@ -167,9 +167,9 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
 - (void)updateMediaSuggestions
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
-  v4 = [(MRUMediaSuggestionsDataSource *)self->_dataSource mediaSuggestions];
-  v5 = [v4 objectForKeyedSubscript:self->_context];
+  nowPlayingInfo = [(MRUMetadataController *)self->_metadataController nowPlayingInfo];
+  mediaSuggestions = [(MRUMediaSuggestionsDataSource *)self->_dataSource mediaSuggestions];
+  v5 = [mediaSuggestions objectForKeyedSubscript:self->_context];
   v6 = [v5 copy];
 
   v7 = [v6 count];
@@ -195,13 +195,13 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
     v30 = 0;
   }
 
-  v11 = [(MRULockScreenMonitor *)self->_lockscreenMonitor isDeviceLocked];
-  v12 = [v3 isPlaying];
-  v13 = [v3 showPlaceholder];
+  isDeviceLocked = [(MRULockScreenMonitor *)self->_lockscreenMonitor isDeviceLocked];
+  isPlaying = [nowPlayingInfo isPlaying];
+  showPlaceholder = [nowPlayingInfo showPlaceholder];
   isQueueHandoffActive = self->_isQueueHandoffActive;
   v15 = +[MRUFeatureFlagProvider isMediaSuggestionsDevEnabled];
   v29 = v7;
-  v16 = !v11;
+  v16 = !isDeviceLocked;
   v17 = v15 || v10;
   v18 = v7 >= 4 || v15;
   v19 = 0;
@@ -215,9 +215,9 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
     v20 = isQueueHandoffActive | ~MRUseInternalUI() | ~v18;
   }
 
-  if (((v20 | v12) & 1) == 0 && v30)
+  if (((v20 | isPlaying) & 1) == 0 && v30)
   {
-    if ((v17 | v13))
+    if ((v17 | showPlaceholder))
     {
       v19 = v6;
     }
@@ -238,8 +238,8 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
     {
       v23 = objc_opt_class();
       v24 = self->_isQueueHandoffActive;
-      v25 = [v3 isPlaying];
-      v26 = [v3 showPlaceholder];
+      isPlaying2 = [nowPlayingInfo isPlaying];
+      showPlaceholder2 = [nowPlayingInfo showPlaceholder];
       context = self->_context;
       *buf = 138545410;
       v32 = v23;
@@ -250,13 +250,13 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
       v37 = 1024;
       v38 = v24;
       v39 = 1024;
-      v40 = v25;
+      v40 = isPlaying2;
       v41 = 1024;
       v42 = v30;
       v43 = 1024;
       v44 = v17;
       v45 = 1024;
-      v46 = v26;
+      v46 = showPlaceholder2;
       v47 = 2114;
       v48 = context;
       _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ update media suggestions: #%lu | unlocked: %{BOOL}u | QHO: %{BOOL}u | playing: %{BOOL}u, connected: %{BOOL}u | elapsed: %{BOOL}u | placeholder: %{BOOL}u | context: %{public}@", buf, 0x44u);
@@ -269,8 +269,8 @@ void __59__MRUMediaSuggestionsController_playSuggestion_completion___block_invok
 
 - (void)updateLastPlayedDate
 {
-  v3 = [(MRUEndpointController *)self->_endpointController route];
-  v4 = [objc_msgSend(v3 "endpoint")];
+  route = [(MRUEndpointController *)self->_endpointController route];
+  v4 = [objc_msgSend(route "endpoint")];
 
   v5 = [objc_alloc(MEMORY[0x1E69B0A98]) initWithOrigin:v4];
   objc_initWeak(&location, self);

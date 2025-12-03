@@ -1,29 +1,29 @@
 @interface PXMessagesStackItemsLayout
 + (id)_sharedTemplateLayoutHelper;
-- ($9C403407A5B624E1CD2E2AFE16A3B680)tapbackConfigurationForProposedConfiguration:(SEL)a3 spriteIndex:(id *)a4;
-- (BOOL)getHorizontalOffsetForObjectReference:(id)a3 outOffset:(double *)a4;
+- ($9C403407A5B624E1CD2E2AFE16A3B680)tapbackConfigurationForProposedConfiguration:(SEL)configuration spriteIndex:(id *)index;
+- (BOOL)getHorizontalOffsetForObjectReference:(id)reference outOffset:(double *)offset;
 - (CGRect)desiredLayoutRect;
 - (PXMessagesStackItemsLayout)init;
 - (PXMessagesStackItemsLayoutPrimaryItemDelegate)primaryItemDelegate;
 - (_NSRange)itemsToLoad;
-- (double)closestPageOffsetForHorizontalOffset:(double)a3;
+- (double)closestPageOffsetForHorizontalOffset:(double)offset;
 - (double)horizontalContentMargin;
-- (double)horizontalContentMarginForSize:(CGSize)a3 normalizedVerticalContentInsets:(double)a4;
-- (double)overlayAlphaForSpriteIndex:(unsigned int)a3;
-- (double)pageOffsetGreaterThanOffset:(double)a3;
-- (double)pageOffsetLessThanOffset:(double)a3;
-- (double)selectionOverlayAlphaForSpriteIndex:(unsigned int)a3;
-- (id)itemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4;
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (double)horizontalContentMarginForSize:(CGSize)size normalizedVerticalContentInsets:(double)insets;
+- (double)overlayAlphaForSpriteIndex:(unsigned int)index;
+- (double)pageOffsetGreaterThanOffset:(double)offset;
+- (double)pageOffsetLessThanOffset:(double)offset;
+- (double)selectionOverlayAlphaForSpriteIndex:(unsigned int)index;
+- (id)itemsBetweenItem:(int64_t)item andItem:(int64_t)andItem;
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_clearLayoutProperties;
-- (void)_getItemsForXOffset:(double)a3 leadingItems:(_NSRange *)a4 primaryItemIndex:(unint64_t *)a5 trailingItems:(_NSRange *)a6 trailingHiddenItems:(_NSRange *)a7 pageFocus:(double *)a8;
+- (void)_getItemsForXOffset:(double)offset leadingItems:(_NSRange *)items primaryItemIndex:(unint64_t *)index trailingItems:(_NSRange *)trailingItems trailingHiddenItems:(_NSRange *)hiddenItems pageFocus:(double *)focus;
 - (void)_invalidateContentSize;
 - (void)_invalidateLayoutHelper;
 - (void)_invalidateSprites;
 - (void)_invalidateVisibleRect;
 - (void)_signalDelegatePostUpdate;
-- (void)_syncPropertiesToLayoutHelper:(id)a3;
+- (void)_syncPropertiesToLayoutHelper:(id)helper;
 - (void)_updateContentSize;
 - (void)_updateLayoutProperties;
 - (void)_updateSprites;
@@ -36,22 +36,22 @@
 - (void)loadedItemsDidChange;
 - (void)numberOfAccessoryItemsDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAccessoryMediaKind:(unsigned __int8)a3;
-- (void)setAccessoryPresentationType:(unsigned __int8)a3;
-- (void)setDesiredLayoutRect:(CGRect)a3;
-- (void)setIsSettling:(BOOL)a3;
-- (void)setLeftEdgeInternalHorizontalAlignment:(double)a3;
-- (void)setMediaKind:(unsigned __int8)a3;
-- (void)setNormalizedContentInsets:(double)a3;
-- (void)setNormalizedPageWidth:(double)a3;
-- (void)setNormalizedStackHorizontalOffsets:(id)a3;
-- (void)setNormalizedStackSizeTransform:(double)a3;
-- (void)setNormalizedStackVerticalOffset:(double)a3;
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5;
-- (void)setPresentationType:(unsigned __int8)a3;
-- (void)setRightEdgeInternalHorizontalAlignment:(double)a3;
-- (void)setRotationAngle:(double)a3;
-- (void)setStackedItemsCount:(unint64_t)a3;
+- (void)setAccessoryMediaKind:(unsigned __int8)kind;
+- (void)setAccessoryPresentationType:(unsigned __int8)type;
+- (void)setDesiredLayoutRect:(CGRect)rect;
+- (void)setIsSettling:(BOOL)settling;
+- (void)setLeftEdgeInternalHorizontalAlignment:(double)alignment;
+- (void)setMediaKind:(unsigned __int8)kind;
+- (void)setNormalizedContentInsets:(double)insets;
+- (void)setNormalizedPageWidth:(double)width;
+- (void)setNormalizedStackHorizontalOffsets:(id)offsets;
+- (void)setNormalizedStackSizeTransform:(double)transform;
+- (void)setNormalizedStackVerticalOffset:(double)offset;
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler;
+- (void)setPresentationType:(unsigned __int8)type;
+- (void)setRightEdgeInternalHorizontalAlignment:(double)alignment;
+- (void)setRotationAngle:(double)angle;
+- (void)setStackedItemsCount:(unint64_t)count;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
 - (void)visibleRectDidChange;
@@ -80,77 +80,77 @@
   return WeakRetained;
 }
 
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AC90]);
 
   return v4;
 }
 
-- (id)itemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4
+- (id)itemsBetweenItem:(int64_t)item andItem:(int64_t)andItem
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AC90]);
 
   return v4;
 }
 
-- (void)setAccessoryMediaKind:(unsigned __int8)a3
+- (void)setAccessoryMediaKind:(unsigned __int8)kind
 {
-  if (self->_accessoryMediaKind != a3)
+  if (self->_accessoryMediaKind != kind)
   {
-    self->_accessoryMediaKind = a3;
+    self->_accessoryMediaKind = kind;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setAccessoryPresentationType:(unsigned __int8)a3
+- (void)setAccessoryPresentationType:(unsigned __int8)type
 {
-  if (self->_accessoryPresentationType != a3)
+  if (self->_accessoryPresentationType != type)
   {
-    self->_accessoryPresentationType = a3;
+    self->_accessoryPresentationType = type;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setMediaKind:(unsigned __int8)a3
+- (void)setMediaKind:(unsigned __int8)kind
 {
-  if (self->_mediaKind != a3)
+  if (self->_mediaKind != kind)
   {
-    self->_mediaKind = a3;
+    self->_mediaKind = kind;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setPresentationType:(unsigned __int8)a3
+- (void)setPresentationType:(unsigned __int8)type
 {
-  if (self->_presentationType != a3)
+  if (self->_presentationType != type)
   {
-    self->_presentationType = a3;
+    self->_presentationType = type;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setRotationAngle:(double)a3
+- (void)setRotationAngle:(double)angle
 {
-  if (self->_rotationAngle != a3)
+  if (self->_rotationAngle != angle)
   {
-    if (a3 < 0.0 || a3 > 1.57079633)
+    if (angle < 0.0 || angle > 1.57079633)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1056 description:{@"Invalid parameter not satisfying: %@", @"rotationAngle >= 0.0 && rotationAngle <= (M_PI / 2.0)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1056 description:{@"Invalid parameter not satisfying: %@", @"rotationAngle >= 0.0 && rotationAngle <= (M_PI / 2.0)"}];
     }
 
-    self->_rotationAngle = a3;
+    self->_rotationAngle = angle;
 
     [(PXMessagesStackItemsLayout *)self _invalidateLayoutHelper];
   }
 }
 
-- (void)setNormalizedContentInsets:(double)a3
+- (void)setNormalizedContentInsets:(double)insets
 {
-  if (self->_normalizedContentInsets != a3)
+  if (self->_normalizedContentInsets != insets)
   {
-    if (a3 < 0.0 || a3 >= 1.0)
+    if (insets < 0.0 || insets >= 1.0)
     {
       PXAssertGetLog();
     }
@@ -159,30 +159,30 @@
   }
 }
 
-- (void)setNormalizedStackVerticalOffset:(double)a3
+- (void)setNormalizedStackVerticalOffset:(double)offset
 {
-  if (self->_normalizedStackVerticalOffset != a3)
+  if (self->_normalizedStackVerticalOffset != offset)
   {
-    if (a3 < 0.0 || a3 > 1.0)
+    if (offset < 0.0 || offset > 1.0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1029 description:{@"Invalid parameter not satisfying: %@", @"normalizedStackVerticalOffset >= 0.0 && normalizedStackVerticalOffset <= 1.0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1029 description:{@"Invalid parameter not satisfying: %@", @"normalizedStackVerticalOffset >= 0.0 && normalizedStackVerticalOffset <= 1.0"}];
     }
 
-    self->_normalizedStackVerticalOffset = a3;
+    self->_normalizedStackVerticalOffset = offset;
 
     [(PXMessagesStackItemsLayout *)self _invalidateLayoutHelper];
   }
 }
 
-- (void)setNormalizedStackHorizontalOffsets:(id)a3
+- (void)setNormalizedStackHorizontalOffsets:(id)offsets
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_normalizedStackHorizontalOffsets != v4)
+  offsetsCopy = offsets;
+  v5 = offsetsCopy;
+  if (self->_normalizedStackHorizontalOffsets != offsetsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = offsetsCopy;
+    v6 = [(NSArray *)offsetsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -196,27 +196,27 @@
   }
 }
 
-- (void)setNormalizedStackSizeTransform:(double)a3
+- (void)setNormalizedStackSizeTransform:(double)transform
 {
-  if (self->_normalizedStackSizeTransform != a3)
+  if (self->_normalizedStackSizeTransform != transform)
   {
-    if (a3 <= 0.0 || a3 > 1.0)
+    if (transform <= 0.0 || transform > 1.0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1012 description:{@"Invalid parameter not satisfying: %@", @"normalizedStackSizeTransform > 0.0 && normalizedStackSizeTransform <= 1.0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:1012 description:{@"Invalid parameter not satisfying: %@", @"normalizedStackSizeTransform > 0.0 && normalizedStackSizeTransform <= 1.0"}];
     }
 
-    self->_normalizedStackSizeTransform = a3;
+    self->_normalizedStackSizeTransform = transform;
 
     [(PXMessagesStackItemsLayout *)self _invalidateLayoutHelper];
   }
 }
 
-- (void)setStackedItemsCount:(unint64_t)a3
+- (void)setStackedItemsCount:(unint64_t)count
 {
-  if (self->_stackedItemsCount != a3)
+  if (self->_stackedItemsCount != count)
   {
-    self->_stackedItemsCount = a3;
+    self->_stackedItemsCount = count;
     [(PXGItemsLayout *)self invalidateLoadedItems];
     [(PXMessagesStackItemsLayout *)self _invalidateLayoutHelper];
 
@@ -224,11 +224,11 @@
   }
 }
 
-- (void)setNormalizedPageWidth:(double)a3
+- (void)setNormalizedPageWidth:(double)width
 {
-  if (self->_normalizedPageWidth != a3)
+  if (self->_normalizedPageWidth != width)
   {
-    self->_normalizedPageWidth = a3;
+    self->_normalizedPageWidth = width;
     [(PXGItemsLayout *)self invalidateLoadedItems];
     [(PXMessagesStackItemsLayout *)self _invalidateContentSize];
 
@@ -308,10 +308,10 @@
   [(PXMessagesStackItemsLayout *)self _invalidateContentSize];
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  v9 = [(PXGItemsLayout *)self itemForObjectReference:v8 options:a4];
+  referenceCopy = reference;
+  v9 = [(PXGItemsLayout *)self itemForObjectReference:referenceCopy options:options];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = -1;
@@ -322,27 +322,27 @@
     v10 = [(PXGItemsLayout *)self spriteIndexForItem:v9];
   }
 
-  v11 = v8;
-  *a5 = v8;
+  v11 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v10;
 }
 
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PXGItemsLayout *)self numberOfItems];
+  detailsCopy = details;
+  handlerCopy = handler;
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
   v11.receiver = self;
   v11.super_class = PXMessagesStackItemsLayout;
-  [(PXGItemsLayout *)&v11 setNumberOfItems:a3 withChangeDetails:v8 changeMediaVersionHandler:v9];
+  [(PXGItemsLayout *)&v11 setNumberOfItems:items withChangeDetails:detailsCopy changeMediaVersionHandler:handlerCopy];
 
-  if (v10 != a3)
+  if (numberOfItems != items)
   {
     [(PXMessagesStackItemsLayout *)self _clearLayoutProperties];
   }
 
-  if (!v8 || [v8 hasAnyChanges])
+  if (!detailsCopy || [detailsCopy hasAnyChanges])
   {
     [(PXMessagesStackItemsLayout *)self _invalidateContentSize];
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
@@ -395,7 +395,7 @@
   return v4;
 }
 
-- (void)_getItemsForXOffset:(double)a3 leadingItems:(_NSRange *)a4 primaryItemIndex:(unint64_t *)a5 trailingItems:(_NSRange *)a6 trailingHiddenItems:(_NSRange *)a7 pageFocus:(double *)a8
+- (void)_getItemsForXOffset:(double)offset leadingItems:(_NSRange *)items primaryItemIndex:(unint64_t *)index trailingItems:(_NSRange *)trailingItems trailingHiddenItems:(_NSRange *)hiddenItems pageFocus:(double *)focus
 {
   if ([(PXMessagesStackItemsLayout *)self numberOfPages])
   {
@@ -406,10 +406,10 @@
     PXClamp();
   }
 
-  *a4 = xmmword_1A5380D90;
-  *a5 = 0x7FFFFFFFFFFFFFFFLL;
-  *a6 = xmmword_1A5380D90;
-  *a8 = 0.0;
+  *items = xmmword_1A5380D90;
+  *index = 0x7FFFFFFFFFFFFFFFLL;
+  *trailingItems = xmmword_1A5380D90;
+  *focus = 0.0;
 }
 
 - (void)_signalDelegatePostUpdate
@@ -417,38 +417,38 @@
   if (self->_signalDelegateForPrimaryItemChange)
   {
     self->_signalDelegateForPrimaryItemChange = 0;
-    v4 = [(PXMessagesStackItemsLayout *)self primaryItemDelegate];
-    [v4 primaryItemDidChangeForStackItemsLayout:self];
+    primaryItemDelegate = [(PXMessagesStackItemsLayout *)self primaryItemDelegate];
+    [primaryItemDelegate primaryItemDidChangeForStackItemsLayout:self];
   }
 }
 
 - (void)_updateSprites
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = [(PXGItemsLayout *)self loadedItems];
+  loadedItems = [(PXGItemsLayout *)self loadedItems];
   v6 = v5;
-  v7 = [(PXGItemsLayout *)self numberOfAccessoryItems];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL && v6 != 0 || v7 != 0)
+  numberOfAccessoryItems = [(PXGItemsLayout *)self numberOfAccessoryItems];
+  if (loadedItems != 0x7FFFFFFFFFFFFFFFLL && v6 != 0 || numberOfAccessoryItems != 0)
   {
-    v76 = v4;
+    v76 = loadedItems;
     [(PXMessagesStackItemsLayout *)self visibleRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v80 = [(PXMessagesStackItemsLayout *)self stackedItemsCount];
-    v84 = 2 * v80;
-    v18 = 2 * v80 + 23;
+    stackedItemsCount = [(PXMessagesStackItemsLayout *)self stackedItemsCount];
+    v84 = 2 * stackedItemsCount;
+    v18 = 2 * stackedItemsCount + 23;
     v73 = v18 - v6;
     v71 = a2;
     if (v18 < v6)
     {
-      v67 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v67 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:581 description:@"We should never have more loaded item sprites than geometries"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:581 description:@"We should never have more loaded item sprites than geometries"];
     }
 
-    v19 = [(PXMessagesStackItemsLayout *)self userInterfaceDirection];
-    v77 = v19 == 1;
+    userInterfaceDirection = [(PXMessagesStackItemsLayout *)self userInterfaceDirection];
+    v77 = userInterfaceDirection == 1;
     if (v18 > self->_decorationInfoBySpriteIndexSize)
     {
       self->_decorationInfoBySpriteIndexSize = v18;
@@ -456,16 +456,16 @@
       self->_decorationInfoBySpriteIndex = v20;
       if (!v20)
       {
-        v69 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v69 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:587 description:@"Unable to reallocate memory for overlay alphas"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:587 description:@"Unable to reallocate memory for overlay alphas"];
       }
     }
 
     length = self->_leadingItemsRange.length;
     primaryItemIndex = self->_primaryItemIndex;
     pageFocus = self->_pageFocus;
-    v23 = [(PXMessagesStackItemsLayout *)self numberOfPages];
-    v24 = v23 - 1;
+    numberOfPages = [(PXMessagesStackItemsLayout *)self numberOfPages];
+    v24 = numberOfPages - 1;
     if (primaryItemIndex == 1)
     {
       v25 = pageFocus >= 0.0;
@@ -482,7 +482,7 @@
         }
       }
 
-      else if (primaryItemIndex == v23 - 2)
+      else if (primaryItemIndex == numberOfPages - 2)
       {
         v25 = 4 * (pageFocus < 0.0);
       }
@@ -502,9 +502,9 @@
       }
     }
 
-    v83 = v25;
-    v75 = [(PXMessagesStackItemsLayout *)self presentationType];
-    v74 = [(PXMessagesStackItemsLayout *)self mediaKind];
+    currentHandler5 = v25;
+    presentationType = [(PXMessagesStackItemsLayout *)self presentationType];
+    mediaKind = [(PXMessagesStackItemsLayout *)self mediaKind];
     [(PXMessagesStackItemsLayout *)self displayScale];
     v78 = v26;
     v81 = pageFocus;
@@ -567,7 +567,7 @@ LABEL_31:
           v27 = v27 + x;
         }
 
-        if (v19 == 1)
+        if (userInterfaceDirection == 1)
         {
           v43 = v24 - primaryItemIndex;
         }
@@ -577,7 +577,7 @@ LABEL_31:
           v43 = primaryItemIndex;
         }
 
-        if (v19 != 1)
+        if (userInterfaceDirection != 1)
         {
           primaryItemIndex = v24 - primaryItemIndex;
         }
@@ -595,17 +595,17 @@ LABEL_31:
           PXClamp();
         }
 
-        v47 = [(PXMessagesStackItemsLayout *)self rightEdgeInternalHorizontalAlignment];
-        v72 = &v70;
+        rightEdgeInternalHorizontalAlignment = [(PXMessagesStackItemsLayout *)self rightEdgeInternalHorizontalAlignment];
+        v72 = &currentHandler3;
         v49 = v46 + v48 * 0.0;
         self->_desiredVisibleRect.origin.x = v49;
         self->_desiredVisibleRect.origin.y = v42;
         self->_desiredVisibleRect.size.width = v41;
         self->_desiredVisibleRect.size.height = v40;
-        MEMORY[0x1EEE9AC00](v47);
-        v51 = &v70 - 2 * v50;
+        MEMORY[0x1EEE9AC00](rightEdgeInternalHorizontalAlignment);
+        v51 = &currentHandler3 - 2 * v50;
         v52 = v84 + 2;
-        if (v19 == 1)
+        if (userInterfaceDirection == 1)
         {
           v53 = 20;
         }
@@ -615,7 +615,7 @@ LABEL_31:
           v53 = v84 + 2;
         }
 
-        if (v19 == 1)
+        if (userInterfaceDirection == 1)
         {
           v54 = 20;
         }
@@ -625,7 +625,7 @@ LABEL_31:
           v54 = 0;
         }
 
-        if (v19 == 1)
+        if (userInterfaceDirection == 1)
         {
           v55 = 0;
         }
@@ -641,8 +641,8 @@ LABEL_31:
         v93.length = 20;
         if (NSIntersectionRange(v92, v93).length)
         {
-          v70 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v70 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"NSIntersectionRange(mainItemsGeometryRange, trailingHiddenItemGeometryRange).length == 0"}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"NSIntersectionRange(mainItemsGeometryRange, trailingHiddenItemGeometryRange).length == 0"}];
         }
 
         v56 = v54 + v33;
@@ -653,17 +653,17 @@ LABEL_31:
 
         if (v56 > v18)
         {
-          v70 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v70 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:664 description:{@"Invalid parameter not satisfying: %@", @"MAX(NSMaxRange(mainItemsGeometryRange), NSMaxRange(trailingHiddenItemGeometryRange)) <= geometriesCount"}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:664 description:{@"Invalid parameter not satisfying: %@", @"MAX(NSMaxRange(mainItemsGeometryRange), NSMaxRange(trailingHiddenItemGeometryRange)) <= geometriesCount"}];
         }
 
         if (v53 >= v18)
         {
-          v68 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v68 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:665 description:{@"Invalid parameter not satisfying: %@", @"mainItemToCopy < geometriesCount"}];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:665 description:{@"Invalid parameter not satisfying: %@", @"mainItemToCopy < geometriesCount"}];
         }
 
-        [(PXMessagesStackItemsLayoutHelper *)self->_layoutHelper getGeometries:&v51[10 * v54] count:v33 forVisibleRect:archSide focus:v83 archSide:v49 keyframeOverride:v42, v41, v40, v44];
+        [(PXMessagesStackItemsLayoutHelper *)self->_layoutHelper getGeometries:&v51[10 * v54] count:v33 forVisibleRect:archSide focus:currentHandler5 archSide:v49 keyframeOverride:v42, v41, v40, v44];
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
@@ -672,7 +672,7 @@ LABEL_31:
         layoutHelper = self->_layoutHelper;
         if (layoutHelper)
         {
-          if (v19 == 1)
+          if (userInterfaceDirection == 1)
           {
             v58 = 0;
           }
@@ -694,8 +694,8 @@ LABEL_31:
           {
             if (v55 >= v18)
             {
-              v83 = [*(v61 + 2728) currentHandler];
-              [v83 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:673 description:{@"Invalid parameter not satisfying: %@", @"i < geometriesCount"}];
+              currentHandler5 = [*(v61 + 2728) currentHandler];
+              [currentHandler5 handleFailureInMethod:v71 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:673 description:{@"Invalid parameter not satisfying: %@", @"i < geometriesCount"}];
 
               v61 = 0x1E696A000;
             }
@@ -715,10 +715,10 @@ LABEL_31:
           while (v59 != 200);
         }
 
-        v65 = v84 - (v80 - length) + 21;
-        if (v19 != 1)
+        v65 = v84 - (stackedItemsCount - length) + 21;
+        if (userInterfaceDirection != 1)
         {
-          v65 = v80 - length + 1;
+          v65 = stackedItemsCount - length + 1;
         }
 
         v85[0] = 0;
@@ -890,9 +890,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout _invalidateSprites]"];
-      [v6 handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:565 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:565 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -914,14 +914,14 @@ LABEL_5:
   }
 }
 
-- (void)_syncPropertiesToLayoutHelper:(id)a3
+- (void)_syncPropertiesToLayoutHelper:(id)helper
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__PXMessagesStackItemsLayout__syncPropertiesToLayoutHelper___block_invoke;
   v3[3] = &unk_1E772ED38;
   v3[4] = self;
-  [a3 performChanges:v3];
+  [helper performChanges:v3];
 }
 
 void __60__PXMessagesStackItemsLayout__syncPropertiesToLayoutHelper___block_invoke(uint64_t a1, void *a2)
@@ -958,9 +958,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout _invalidateLayoutHelper]"];
-      [v6 handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:542 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:542 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -1007,9 +1007,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_preItemLoadingFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout _invalidateVisibleRect]"];
-      [v6 handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -1036,10 +1036,10 @@ LABEL_5:
   [(PXMessagesStackItemsLayout *)self referenceSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXMessagesStackItemsLayout *)self numberOfPages];
-  if (v7)
+  numberOfPages = [(PXMessagesStackItemsLayout *)self numberOfPages];
+  if (numberOfPages)
   {
-    v8 = v7 - 1;
+    v8 = numberOfPages - 1;
     [(PXMessagesStackItemsLayout *)self normalizedPageWidth];
     v10 = v8 * (v4 * v9) + 0.0;
   }
@@ -1070,9 +1070,9 @@ LABEL_6:
 LABEL_5:
     if (self->_preItemLoadingFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout _invalidateContentSize]"];
-      [v6 handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:506 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXMessagesStackItemsLayout.m" lineNumber:506 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1178,9 +1178,9 @@ LABEL_27:
   [(PXGItemsLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXMessagesStackItemsLayout.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXMessagesStackItemsLayout.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -1193,9 +1193,9 @@ LABEL_27:
   {
     if (self->_preItemLoadingFlags.isPerformingUpdate)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-      [v9 handleFailureInFunction:v10 file:@"PXMessagesStackItemsLayout.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"!_preItemLoadingFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXMessagesStackItemsLayout.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"!_preItemLoadingFlags.isPerformingUpdate"}];
 
       needsUpdate = p_preItemLoadingFlags->needsUpdate;
     }
@@ -1208,9 +1208,9 @@ LABEL_27:
       [(PXMessagesStackItemsLayout *)self _updateContentSize];
       if (!p_preItemLoadingFlags->isPerformingUpdate)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-        [v11 handleFailureInFunction:v12 file:@"PXMessagesStackItemsLayout.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"_preItemLoadingFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v12 file:@"PXMessagesStackItemsLayout.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"_preItemLoadingFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1226,9 +1226,9 @@ LABEL_27:
     p_preItemLoadingFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXMessagesStackItemsLayout.m" lineNumber:426 description:{@"still needing to update %lu after update pass", p_preItemLoadingFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v14 file:@"PXMessagesStackItemsLayout.m" lineNumber:426 description:{@"still needing to update %lu after update pass", p_preItemLoadingFlags->needsUpdate}];
     }
   }
 
@@ -1241,9 +1241,9 @@ LABEL_27:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXMessagesStackItemsLayout.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v16 file:@"PXMessagesStackItemsLayout.m" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       v7 = p_updateFlags->needsUpdate;
     }
@@ -1256,9 +1256,9 @@ LABEL_27:
       [(PXMessagesStackItemsLayout *)self _updateLayoutHelper];
       if (!self->_updateFlags.isPerformingUpdate)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-        [v17 handleFailureInFunction:v18 file:@"PXMessagesStackItemsLayout.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler5 handleFailureInFunction:v18 file:@"PXMessagesStackItemsLayout.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1274,9 +1274,9 @@ LABEL_27:
     self->_updateFlags.isPerformingUpdate = 0;
     if (v8)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXMessagesStackItemsLayout.m" lineNumber:438 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v20 file:@"PXMessagesStackItemsLayout.m" lineNumber:438 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1294,32 +1294,32 @@ LABEL_27:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXMessagesStackItemsLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXMessagesStackItemsLayout.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXMessagesStackItemsLayout.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)setIsSettling:(BOOL)a3
+- (void)setIsSettling:(BOOL)settling
 {
-  if (self->_isSettling != a3)
+  if (self->_isSettling != settling)
   {
-    self->_isSettling = a3;
-    if (!a3)
+    self->_isSettling = settling;
+    if (!settling)
     {
       self->_higherPageDirectionTolerance = 1;
     }
   }
 }
 
-- (void)setDesiredLayoutRect:(CGRect)a3
+- (void)setDesiredLayoutRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_desiredLayoutRect = &self->_desiredLayoutRect;
-  if (!CGRectEqualToRect(self->_desiredLayoutRect, a3))
+  if (!CGRectEqualToRect(self->_desiredLayoutRect, rect))
   {
     p_desiredLayoutRect->origin.x = x;
     p_desiredLayoutRect->origin.y = y;
@@ -1330,37 +1330,37 @@ LABEL_27:
   }
 }
 
-- (void)setRightEdgeInternalHorizontalAlignment:(double)a3
+- (void)setRightEdgeInternalHorizontalAlignment:(double)alignment
 {
-  if (self->_rightEdgeInternalHorizontalAlignment != a3)
+  if (self->_rightEdgeInternalHorizontalAlignment != alignment)
   {
-    self->_rightEdgeInternalHorizontalAlignment = a3;
+    self->_rightEdgeInternalHorizontalAlignment = alignment;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (void)setLeftEdgeInternalHorizontalAlignment:(double)a3
+- (void)setLeftEdgeInternalHorizontalAlignment:(double)alignment
 {
-  if (self->_leftEdgeInternalHorizontalAlignment != a3)
+  if (self->_leftEdgeInternalHorizontalAlignment != alignment)
   {
-    self->_leftEdgeInternalHorizontalAlignment = a3;
+    self->_leftEdgeInternalHorizontalAlignment = alignment;
     [(PXMessagesStackItemsLayout *)self _invalidateSprites];
   }
 }
 
-- (double)horizontalContentMarginForSize:(CGSize)a3 normalizedVerticalContentInsets:(double)a4
+- (double)horizontalContentMarginForSize:(CGSize)size normalizedVerticalContentInsets:(double)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [objc_opt_class() _sharedTemplateLayoutHelper];
+  height = size.height;
+  width = size.width;
+  _sharedTemplateLayoutHelper = [objc_opt_class() _sharedTemplateLayoutHelper];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedVerticalContentInsets___block_invoke;
   v11[3] = &unk_1E772ED10;
   v11[4] = self;
-  v11[5] = v8;
-  *&v11[6] = a4;
-  v9 = v8;
+  v11[5] = _sharedTemplateLayoutHelper;
+  *&v11[6] = insets;
+  v9 = _sharedTemplateLayoutHelper;
   [v9 performChanges:v11];
   [v9 horizontalContentMarginForReferenceSize:width itemAspect:{height, self->_minItemAspectRatio}];
   [(PXMessagesStackItemsLayout *)self displayScale];
@@ -1386,7 +1386,7 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
   PXFloatRoundToPixel();
 }
 
-- ($9C403407A5B624E1CD2E2AFE16A3B680)tapbackConfigurationForProposedConfiguration:(SEL)a3 spriteIndex:(id *)a4
+- ($9C403407A5B624E1CD2E2AFE16A3B680)tapbackConfigurationForProposedConfiguration:(SEL)configuration spriteIndex:(id *)index
 {
   v6 = [(PXGItemsLayout *)self itemForSpriteIndex:?];
   [(PXMessagesStackItemsLayout *)self userInterfaceDirection];
@@ -1399,13 +1399,13 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
   PXFloatByLinearlyInterpolatingFloats();
 }
 
-- (double)selectionOverlayAlphaForSpriteIndex:(unsigned int)a3
+- (double)selectionOverlayAlphaForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if (self->_decorationInfoBySpriteIndexSize <= a3)
+  v3 = *&index;
+  if (self->_decorationInfoBySpriteIndexSize <= index)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"spriteIndex < _decorationInfoBySpriteIndexSize"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"spriteIndex < _decorationInfoBySpriteIndexSize"}];
   }
 
   if ([(PXGItemsLayout *)self itemForSpriteIndex:v3]== self->_primaryItemIndex)
@@ -1419,20 +1419,20 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
   }
 }
 
-- (double)overlayAlphaForSpriteIndex:(unsigned int)a3
+- (double)overlayAlphaForSpriteIndex:(unsigned int)index
 {
-  if (self->_decorationInfoBySpriteIndexSize <= a3)
+  if (self->_decorationInfoBySpriteIndexSize <= index)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"spriteIndex < _decorationInfoBySpriteIndexSize"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackItemsLayout.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"spriteIndex < _decorationInfoBySpriteIndexSize"}];
   }
 
-  return self->_decorationInfoBySpriteIndex[a3].var0;
+  return self->_decorationInfoBySpriteIndex[index].var0;
 }
 
-- (BOOL)getHorizontalOffsetForObjectReference:(id)a3 outOffset:(double *)a4
+- (BOOL)getHorizontalOffsetForObjectReference:(id)reference outOffset:(double *)offset
 {
-  v6 = [(PXGItemsLayout *)self itemForObjectReference:a3];
+  v6 = [(PXGItemsLayout *)self itemForObjectReference:reference];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(PXMessagesStackItemsLayout *)self referenceSize];
@@ -1442,20 +1442,20 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
     [(PXMessagesStackItemsLayout *)self contentSize];
     v12 = v11;
     v13 = v10 * v6;
-    v14 = [(PXMessagesStackItemsLayout *)self userInterfaceDirection];
+    userInterfaceDirection = [(PXMessagesStackItemsLayout *)self userInterfaceDirection];
     v15 = v12 - v13 - v8;
-    if (v14 != 1)
+    if (userInterfaceDirection != 1)
     {
       v15 = v13;
     }
 
-    *a4 = v15;
+    *offset = v15;
   }
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (double)pageOffsetLessThanOffset:(double)a3
+- (double)pageOffsetLessThanOffset:(double)offset
 {
   [(PXMessagesStackItemsLayout *)self referenceSize];
   v5 = v4;
@@ -1469,7 +1469,7 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
   PXAssertGetLog();
 }
 
-- (double)pageOffsetGreaterThanOffset:(double)a3
+- (double)pageOffsetGreaterThanOffset:(double)offset
 {
   [(PXMessagesStackItemsLayout *)self referenceSize];
   v5 = v4;
@@ -1483,7 +1483,7 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
   PXAssertGetLog();
 }
 
-- (double)closestPageOffsetForHorizontalOffset:(double)a3
+- (double)closestPageOffsetForHorizontalOffset:(double)offset
 {
   [(PXMessagesStackItemsLayout *)self referenceSize];
   v6 = v5;
@@ -1494,14 +1494,14 @@ void __93__PXMessagesStackItemsLayout_horizontalContentMarginForSize_normalizedV
     PXAssertGetLog();
   }
 
-  v9 = fmax(a3, 0.0);
+  v9 = fmax(offset, 0.0);
   v10 = floor(v9 / v8);
   v11 = v8 * v10;
   v12 = v8 + v8 * v10;
   v13 = v9 - v8 * v10;
   v14 = v12 - v9;
-  v15 = [(PXMessagesStackItemsLayout *)self numberOfPages];
-  if (v14 >= v13 || v10 + 1.0 >= v15)
+  numberOfPages = [(PXMessagesStackItemsLayout *)self numberOfPages];
+  if (v14 >= v13 || v10 + 1.0 >= numberOfPages)
   {
     return v11;
   }

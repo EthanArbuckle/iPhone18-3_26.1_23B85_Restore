@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueTransitionControl
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransitionControl)init;
-- (HAPCharacteristicValueTransitionControl)initWithTransitionFetch:(id)a3 transitionStart:(id)a4;
+- (HAPCharacteristicValueTransitionControl)initWithTransitionFetch:(id)fetch transitionStart:(id)start;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransitionControl
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransitionControl);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransitionControl *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransitionControl *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,28 +48,28 @@
   return [(HAPCharacteristicValueTransitionControl *)&v3 init];
 }
 
-- (HAPCharacteristicValueTransitionControl)initWithTransitionFetch:(id)a3 transitionStart:(id)a4
+- (HAPCharacteristicValueTransitionControl)initWithTransitionFetch:(id)fetch transitionStart:(id)start
 {
-  v7 = a3;
-  v8 = a4;
+  fetchCopy = fetch;
+  startCopy = start;
   v12.receiver = self;
   v12.super_class = HAPCharacteristicValueTransitionControl;
   v9 = [(HAPCharacteristicValueTransitionControl *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transitionFetch, a3);
-    objc_storeStrong(&v10->_transitionStart, a4);
+    objc_storeStrong(&v9->_transitionFetch, fetch);
+    objc_storeStrong(&v10->_transitionStart, start);
   }
 
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -85,7 +85,7 @@ LABEL_18:
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -95,10 +95,10 @@ LABEL_18:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (a4)
+      if (error)
       {
         sub_100041618(Next);
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_25;
       }
 
@@ -113,7 +113,7 @@ LABEL_18:
     if (v28 == 2)
     {
       v23 = v11;
-      v14 = sub_100021B74(2, v7, v12, v26, &v23);
+      v14 = sub_100021B74(2, bytes, v12, v26, &v23);
       v15 = v23;
 
       if (v15)
@@ -135,7 +135,7 @@ LABEL_13:
     if (v28 == 1)
     {
       v25 = v11;
-      v14 = sub_100021B74(1, v7, v12, v26, &v25);
+      v14 = sub_100021B74(1, bytes, v12, v26, &v25);
       v15 = v25;
 
       if (!v15)
@@ -153,7 +153,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v7 = v26[0];
+    bytes = v26[0];
     if (v26[0] >= v12)
     {
       if (!v11)
@@ -174,11 +174,11 @@ LABEL_14:
   }
 
 LABEL_22:
-  if (a4)
+  if (error)
   {
     v20 = v11;
     v18 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_25;
   }
 
@@ -189,7 +189,7 @@ LABEL_25:
   return v18;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = 0u;
   v47 = 0u;
@@ -213,18 +213,18 @@ LABEL_25:
   v29 = 0u;
   v27 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+  transitionFetch = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
 
-  if (!v5)
+  if (!transitionFetch)
   {
 LABEL_10:
-    v13 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+    transitionStart = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
 
-    if (v13)
+    if (transitionStart)
     {
-      v14 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+      transitionStart2 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
       v25 = 0;
-      v7 = [v14 serializeWithError:&v25];
+      v7 = [transitionStart2 serializeWithError:&v25];
       v8 = v25;
 
       if (v8)
@@ -232,18 +232,18 @@ LABEL_10:
         goto LABEL_12;
       }
 
-      v18 = [v7 bytes];
-      v19 = [v7 length] + v18;
+      bytes = [v7 bytes];
+      v19 = [v7 length] + bytes;
       do
       {
-        if (v19 - v18 >= 255)
+        if (v19 - bytes >= 255)
         {
           v20 = 255;
         }
 
         else
         {
-          v20 = v19 - v18;
+          v20 = v19 - bytes;
         }
 
         v21 = TLV8BufferAppend();
@@ -257,7 +257,7 @@ LABEL_10:
           v22 = v20;
         }
 
-        v18 += v22;
+        bytes += v22;
         if (v21)
         {
           v23 = 1;
@@ -265,7 +265,7 @@ LABEL_10:
 
         else
         {
-          v23 = v18 >= v19;
+          v23 = bytes >= v19;
         }
       }
 
@@ -275,11 +275,11 @@ LABEL_10:
       if (v17)
       {
 LABEL_28:
-        if (a3)
+        if (error)
         {
           sub_100041618(v17);
           v8 = 0;
-          *a3 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_33;
         }
 
@@ -293,26 +293,26 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  v6 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+  transitionFetch2 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
   v26 = 0;
-  v7 = [v6 serializeWithError:&v26];
+  v7 = [transitionFetch2 serializeWithError:&v26];
   v8 = v26;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = [v7 length] + v9;
+    bytes2 = [v7 bytes];
+    v10 = [v7 length] + bytes2;
     while (1)
     {
-      v11 = v10 - v9 >= 255 ? 255 : v10 - v9;
+      v11 = v10 - bytes2 >= 255 ? 255 : v10 - bytes2;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes2 += v11;
+      if (bytes2 >= v10)
       {
 
         goto LABEL_10;
@@ -326,11 +326,11 @@ LABEL_28:
 
 LABEL_12:
 
-  if (a3)
+  if (error)
   {
     v15 = v8;
     v16 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_33;
   }
 
@@ -342,20 +342,20 @@ LABEL_33:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransitionControl allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
-  v6 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
-  v7 = [(HAPCharacteristicValueTransitionControl *)v4 initWithTransitionFetch:v5 transitionStart:v6];
+  v4 = [HAPCharacteristicValueTransitionControl allocWithZone:zone];
+  transitionFetch = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+  transitionStart = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+  v7 = [(HAPCharacteristicValueTransitionControl *)v4 initWithTransitionFetch:transitionFetch transitionStart:transitionStart];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -365,14 +365,14 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
-      v8 = [(HAPCharacteristicValueTransitionControl *)v6 transitionFetch];
-      if (v7 != v8)
+      v6 = equalCopy;
+      transitionFetch = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+      transitionFetch2 = [(HAPCharacteristicValueTransitionControl *)v6 transitionFetch];
+      if (transitionFetch != transitionFetch2)
       {
-        v9 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
-        v3 = [(HAPCharacteristicValueTransitionControl *)v6 transitionFetch];
-        if (![v9 isEqual:v3])
+        transitionFetch3 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+        transitionFetch4 = [(HAPCharacteristicValueTransitionControl *)v6 transitionFetch];
+        if (![transitionFetch3 isEqual:transitionFetch4])
         {
           v10 = 0;
 LABEL_13:
@@ -381,25 +381,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = transitionFetch3;
       }
 
-      v11 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
-      v12 = [(HAPCharacteristicValueTransitionControl *)v6 transitionStart];
-      if (v11 == v12)
+      transitionStart = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+      transitionStart2 = [(HAPCharacteristicValueTransitionControl *)v6 transitionStart];
+      if (transitionStart == transitionStart2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
-        v14 = [(HAPCharacteristicValueTransitionControl *)v6 transitionStart];
-        v10 = [v13 isEqual:v14];
+        transitionStart3 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+        transitionStart4 = [(HAPCharacteristicValueTransitionControl *)v6 transitionStart];
+        v10 = [transitionStart3 isEqual:transitionStart4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      transitionFetch3 = v16;
+      if (transitionFetch == transitionFetch2)
       {
         goto LABEL_14;
       }
@@ -417,9 +417,9 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
-  v4 = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
-  v5 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransitionControl transitionFetch=%@, transitionStart=%@>", v3, v4];
+  transitionFetch = [(HAPCharacteristicValueTransitionControl *)self transitionFetch];
+  transitionStart = [(HAPCharacteristicValueTransitionControl *)self transitionStart];
+  v5 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransitionControl transitionFetch=%@, transitionStart=%@>", transitionFetch, transitionStart];
 
   return v5;
 }

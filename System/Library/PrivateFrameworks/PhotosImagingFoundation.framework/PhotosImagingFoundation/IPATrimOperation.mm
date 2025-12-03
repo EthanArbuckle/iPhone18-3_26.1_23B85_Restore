@@ -1,10 +1,10 @@
 @interface IPATrimOperation
 - ($222789CE95D16A76D31543149FD45E96)trimRange;
-- (BOOL)isEqualToOperation:(id)a3;
-- (IPATrimOperation)initWithOperation:(id)a3;
-- (IPATrimOperation)initWithSettingsDictionary:(id)a3;
-- (IPATrimOperation)initWithStartTime:(id *)a3 endTime:(id *)a4;
-- (IPATrimOperation)initWithTrimRange:(id *)a3;
+- (BOOL)isEqualToOperation:(id)operation;
+- (IPATrimOperation)initWithOperation:(id)operation;
+- (IPATrimOperation)initWithSettingsDictionary:(id)dictionary;
+- (IPATrimOperation)initWithStartTime:(id *)time endTime:(id *)endTime;
+- (IPATrimOperation)initWithTrimRange:(id *)range;
 - (id)debugDescription;
 - (id)settingsDictionary;
 - (id)trimRangeDictionary;
@@ -12,13 +12,13 @@
 
 @implementation IPATrimOperation
 
-- (BOOL)isEqualToOperation:(id)a3
+- (BOOL)isEqualToOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = operationCopy;
     time1 = self->_startTime;
     v6 = *(v5 + 8);
     v10.epoch = *(v5 + 3);
@@ -114,17 +114,17 @@
   return CMTimeRangeFromTimeToTime(retstr, &start, &endTime);
 }
 
-- (IPATrimOperation)initWithSettingsDictionary:(id)a3
+- (IPATrimOperation)initWithSettingsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = IPATrimOperation;
   v5 = [(IPAEditOperation *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startTime"];
 
-    v7 = [v4 objectForKeyedSubscript:@"endTime"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"endTime"];
 
     memset(&v14, 0, sizeof(v14));
     CMTimeMakeFromDictionary(&v14, v6);
@@ -150,31 +150,31 @@
   return v5;
 }
 
-- (IPATrimOperation)initWithOperation:(id)a3
+- (IPATrimOperation)initWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = IPATrimOperation;
-  v5 = [(IPAEditOperation *)&v10 initWithOperation:v4];
+  v5 = [(IPAEditOperation *)&v10 initWithOperation:operationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = *(v4 + 3);
-    *(v5 + 8) = *(v4 + 8);
+    v7 = *(operationCopy + 3);
+    *(v5 + 8) = *(operationCopy + 8);
     *(v5 + 3) = v7;
-    v8 = *(v4 + 6);
-    *(v5 + 2) = *(v4 + 2);
+    v8 = *(operationCopy + 6);
+    *(v5 + 2) = *(operationCopy + 2);
     *(v5 + 6) = v8;
   }
 
   return v6;
 }
 
-- (IPATrimOperation)initWithStartTime:(id *)a3 endTime:(id *)a4
+- (IPATrimOperation)initWithStartTime:(id *)time endTime:(id *)endTime
 {
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
-    time = *a3;
+    time = *time;
     v6 = CMTimeCopyDescription(*MEMORY[0x277CBECE8], &time);
 LABEL_5:
     _PFAssertContinueHandler();
@@ -183,15 +183,15 @@ LABEL_6:
     return 0;
   }
 
-  if ((a4->var2 & 1) == 0)
+  if ((endTime->var2 & 1) == 0)
   {
-    time = *a4;
+    time = *endTime;
     v6 = CMTimeCopyDescription(*MEMORY[0x277CBECE8], &time);
     goto LABEL_5;
   }
 
-  time = *a3;
-  time2 = *a4;
+  time = *time;
+  time2 = *endTime;
   if (CMTimeCompare(&time, &time2) >= 1)
   {
     _PFAssertContinueHandler();
@@ -203,26 +203,26 @@ LABEL_6:
   result = [(IPAEditOperation *)&v11 init];
   if (result)
   {
-    var3 = a3->var3;
-    *&result->_startTime.value = *&a3->var0;
+    var3 = time->var3;
+    *&result->_startTime.value = *&time->var0;
     result->_startTime.epoch = var3;
-    v10 = a4->var3;
-    *&result->_endTime.value = *&a4->var0;
+    v10 = endTime->var3;
+    *&result->_endTime.value = *&endTime->var0;
     result->_endTime.epoch = v10;
   }
 
   return result;
 }
 
-- (IPATrimOperation)initWithTrimRange:(id *)a3
+- (IPATrimOperation)initWithTrimRange:(id *)range
 {
-  v5 = *&a3->var0.var3;
-  *&v7.start.value = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  *&v7.start.value = *&range->var0.var0;
   *&v7.start.epoch = v5;
-  *&v7.duration.timescale = *&a3->var1.var1;
+  *&v7.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v8, &v7);
-  *&v7.start.value = *&a3->var0.var0;
-  v7.start.epoch = a3->var0.var3;
+  *&v7.start.value = *&range->var0.var0;
+  v7.start.epoch = range->var0.var3;
   return [(IPATrimOperation *)self initWithStartTime:&v7 endTime:&v8];
 }
 

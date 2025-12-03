@@ -1,51 +1,51 @@
 @interface _CarTitleAlternative
-+ (id)alternativeWithTitle:(id)a3 label:(id)a4;
++ (id)alternativeWithTitle:(id)title label:(id)label;
 - (id)description;
-- (void)updateWithLabel:(id)a3;
+- (void)updateWithLabel:(id)label;
 @end
 
 @implementation _CarTitleAlternative
 
-+ (id)alternativeWithTitle:(id)a3 label:(id)a4
++ (id)alternativeWithTitle:(id)title label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  v9 = [v7 copy];
+  labelCopy = label;
+  titleCopy = title;
+  v8 = objc_alloc_init(self);
+  v9 = [titleCopy copy];
 
   v10 = v8[1];
   v8[1] = v9;
 
-  [v8 updateWithLabel:v6];
+  [v8 updateWithLabel:labelCopy];
 
   return v8;
 }
 
-- (void)updateWithLabel:(id)a3
+- (void)updateWithLabel:(id)label
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 font];
+  labelCopy = label;
+  font = [labelCopy font];
   if (_AXSCarPlayEnhanceTextLegibilityEnabled())
   {
-    v6 = [v4 font];
-    v7 = [v6 fontDescriptor];
-    v8 = [v7 fontDescriptorWithSymbolicTraits:2];
-    v9 = [v4 font];
-    [v9 pointSize];
+    font2 = [labelCopy font];
+    fontDescriptor = [font2 fontDescriptor];
+    v8 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
+    font3 = [labelCopy font];
+    [font3 pointSize];
     v10 = [off_1E70ECC18 fontWithDescriptor:v8 size:?];
 
-    v5 = v10;
+    font = v10;
   }
 
   if ([(NSString *)self->_title length])
   {
-    v11 = [(_CarTitleAlternative *)self title];
+    title = [(_CarTitleAlternative *)self title];
     v14 = *off_1E70EC918;
-    v15[0] = v5;
+    v15[0] = font;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [v11 sizeWithAttributes:v12];
-    UICeilToViewScale(v4);
+    [title sizeWithAttributes:v12];
+    UICeilToViewScale(labelCopy);
     self->_width = v13;
   }
 

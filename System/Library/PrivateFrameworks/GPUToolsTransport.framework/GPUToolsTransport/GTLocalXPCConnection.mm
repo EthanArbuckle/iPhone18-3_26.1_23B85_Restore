@@ -1,57 +1,57 @@
 @interface GTLocalXPCConnection
-- (GTLocalXPCConnection)initWithTransactionScopedXPCConnection:(id)a3 messageQueue:(id)a4;
-- (GTLocalXPCConnection)initWithXPCConnection:(id)a3 messageQueue:(id)a4;
-- (id)sendMessageWithReplySync:(id)a3;
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4;
-- (unint64_t)registerDispatcher:(id)a3;
-- (void)activateWithMessageHandler:(id)a3 andErrorHandler:(id)a4;
+- (GTLocalXPCConnection)initWithTransactionScopedXPCConnection:(id)connection messageQueue:(id)queue;
+- (GTLocalXPCConnection)initWithXPCConnection:(id)connection messageQueue:(id)queue;
+- (id)sendMessageWithReplySync:(id)sync;
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error;
+- (unint64_t)registerDispatcher:(id)dispatcher;
+- (void)activateWithMessageHandler:(id)handler andErrorHandler:(id)errorHandler;
 - (void)cancel;
-- (void)deregisterDispatcher:(unint64_t)a3;
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4;
-- (void)registerDispatcher:(id)a3 forPort:(unint64_t)a4;
-- (void)sendMessage:(id)a3 replyHandler:(id)a4;
-- (void)sendMessageAndWaitForDelivery:(id)a3;
+- (void)deregisterDispatcher:(unint64_t)dispatcher;
+- (void)dispatchMessage:(id)message replyConnection:(id)connection;
+- (void)registerDispatcher:(id)dispatcher forPort:(unint64_t)port;
+- (void)sendMessage:(id)message replyHandler:(id)handler;
+- (void)sendMessageAndWaitForDelivery:(id)delivery;
 @end
 
 @implementation GTLocalXPCConnection
 
-- (GTLocalXPCConnection)initWithXPCConnection:(id)a3 messageQueue:(id)a4
+- (GTLocalXPCConnection)initWithXPCConnection:(id)connection messageQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = GTLocalXPCConnection;
   v9 = [(GTLocalXPCConnection *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     dispatchers = v10->_dispatchers;
     v10->_dispatchers = v11;
 
-    objc_storeStrong(&v10->_messageQueue, a4);
+    objc_storeStrong(&v10->_messageQueue, queue);
   }
 
   return v10;
 }
 
-- (GTLocalXPCConnection)initWithTransactionScopedXPCConnection:(id)a3 messageQueue:(id)a4
+- (GTLocalXPCConnection)initWithTransactionScopedXPCConnection:(id)connection messageQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = GTLocalXPCConnection;
   v9 = [(GTLocalXPCConnection *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     dispatchers = v10->_dispatchers;
     v10->_dispatchers = v11;
 
-    objc_storeStrong(&v10->_messageQueue, a4);
+    objc_storeStrong(&v10->_messageQueue, queue);
     v13 = os_transaction_create();
     transaction = v10->_transaction;
     v10->_transaction = v13;
@@ -60,18 +60,18 @@
   return v10;
 }
 
-- (void)registerDispatcher:(id)a3 forPort:(unint64_t)a4
+- (void)registerDispatcher:(id)dispatcher forPort:(unint64_t)port
 {
-  v6 = a3;
+  dispatcherCopy = dispatcher;
   messageQueue = self->_messageQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__GTLocalXPCConnection_registerDispatcher_forPort___block_invoke;
   block[3] = &unk_279661198;
-  v10 = v6;
-  v11 = a4;
+  v10 = dispatcherCopy;
+  portCopy = port;
   block[4] = self;
-  v8 = v6;
+  v8 = dispatcherCopy;
   dispatch_async(messageQueue, block);
 }
 
@@ -86,19 +86,19 @@ void __51__GTLocalXPCConnection_registerDispatcher_forPort___block_invoke(void *
   }
 }
 
-- (unint64_t)registerDispatcher:(id)a3
+- (unint64_t)registerDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   add = atomic_fetch_add(&registerDispatcher__nextStreamId, 1uLL);
   messageQueue = self->_messageQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__GTLocalXPCConnection_registerDispatcher___block_invoke;
   block[3] = &unk_279661198;
-  v10 = v4;
+  v10 = dispatcherCopy;
   v11 = add;
   block[4] = self;
-  v7 = v4;
+  v7 = dispatcherCopy;
   dispatch_async(messageQueue, block);
 
   return add;
@@ -115,7 +115,7 @@ void __43__GTLocalXPCConnection_registerDispatcher___block_invoke(void *a1)
   }
 }
 
-- (void)deregisterDispatcher:(unint64_t)a3
+- (void)deregisterDispatcher:(unint64_t)dispatcher
 {
   messageQueue = self->_messageQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -123,7 +123,7 @@ void __43__GTLocalXPCConnection_registerDispatcher___block_invoke(void *a1)
   v4[2] = __45__GTLocalXPCConnection_deregisterDispatcher___block_invoke;
   v4[3] = &unk_2796611C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = dispatcher;
   dispatch_async(messageQueue, v4);
 }
 
@@ -137,20 +137,20 @@ void __45__GTLocalXPCConnection_deregisterDispatcher___block_invoke(uint64_t a1)
   }
 }
 
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4
+- (void)dispatchMessage:(id)message replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   messageQueue = self->_messageQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__GTLocalXPCConnection_dispatchMessage_replyConnection___block_invoke;
   block[3] = &unk_2796611E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   dispatch_async(messageQueue, block);
 }
 
@@ -207,18 +207,18 @@ void __56__GTLocalXPCConnection_dispatchMessage_replyConnection___block_invoke(u
   }
 }
 
-- (void)sendMessage:(id)a3 replyHandler:(id)a4
+- (void)sendMessage:(id)message replyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(0, 0);
   connection = self->_connection;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke;
   handler[3] = &unk_279661210;
-  v11 = v6;
-  v9 = v6;
-  xpc_connection_send_message_with_reply(connection, a3, v7, handler);
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  xpc_connection_send_message_with_reply(connection, message, v7, handler);
 }
 
 void __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke(uint64_t a1, void *a2)
@@ -236,17 +236,17 @@ void __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)sendMessageWithReplySync:(id)a3
+- (id)sendMessageWithReplySync:(id)sync
 {
-  v3 = xpc_connection_send_message_with_reply_sync(self->_connection, a3);
+  v3 = xpc_connection_send_message_with_reply_sync(self->_connection, sync);
 
   return v3;
 }
 
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error
 {
-  v5 = [(GTLocalXPCConnection *)self sendMessageWithReplySync:a3];
-  if (MessageIsValid(v5, a4))
+  v5 = [(GTLocalXPCConnection *)self sendMessageWithReplySync:sync];
+  if (MessageIsValid(v5, error))
   {
     v6 = v5;
   }
@@ -259,9 +259,9 @@ void __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke(uint64_t
   return v6;
 }
 
-- (void)sendMessageAndWaitForDelivery:(id)a3
+- (void)sendMessageAndWaitForDelivery:(id)delivery
 {
-  [(GTLocalXPCConnection *)self sendMessage:a3];
+  [(GTLocalXPCConnection *)self sendMessage:delivery];
   v4 = dispatch_group_create();
   dispatch_group_enter(v4);
   connection = self->_connection;
@@ -276,10 +276,10 @@ void __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke(uint64_t
   dispatch_group_wait(v6, v7);
 }
 
-- (void)activateWithMessageHandler:(id)a3 andErrorHandler:(id)a4
+- (void)activateWithMessageHandler:(id)handler andErrorHandler:(id)errorHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
@@ -287,10 +287,10 @@ void __49__GTLocalXPCConnection_sendMessage_replyHandler___block_invoke(uint64_t
   v11[2] = __67__GTLocalXPCConnection_activateWithMessageHandler_andErrorHandler___block_invoke;
   v11[3] = &unk_279661260;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorHandlerCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = errorHandlerCopy;
   xpc_connection_set_event_handler(connection, v11);
   xpc_connection_activate(self->_connection);
 

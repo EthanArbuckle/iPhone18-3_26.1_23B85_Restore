@@ -1,10 +1,10 @@
 @interface DYNAMICRATSELECTIONDynamicRatSelectionTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DYNAMICRATSELECTIONDynamicRatSelectionTile
@@ -59,7 +59,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v9 = 0u;
   v10 = 0u;
@@ -91,9 +91,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -114,7 +114,7 @@
           objc_enumerationMutation(dratsTiles);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:zone];
         sub_10015D220(v5, v11);
 
         v10 = v10 + 1;
@@ -130,13 +130,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     dratsTiles = self->_dratsTiles;
-    if (dratsTiles | *(a3 + 1))
+    if (dratsTiles | *(equal + 1))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)dratsTiles isEqual:?];

@@ -1,13 +1,13 @@
 @interface NIServerKeychainManager
 + (id)sharedInstance;
 - (BOOL)_shouldLog;
-- (BOOL)deleteAllItemsWithService:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5;
-- (BOOL)deleteItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6;
-- (BOOL)writeItem:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5;
+- (BOOL)deleteAllItemsWithService:(id)service synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
+- (BOOL)deleteItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
+- (BOOL)writeItem:(id)item synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
 - (id)_initInternal;
-- (id)_internalReadItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6;
-- (id)readAllItemsWithService:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5;
-- (id)readItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6;
+- (id)_internalReadItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
+- (id)readAllItemsWithService:(id)service synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
+- (id)readItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain;
 - (void)_unitTest1;
 - (void)_unitTest2;
 - (void)_unitTest3;
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (BOOL)writeItem:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5
+- (BOOL)writeItem:(id)item synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v8 = a3;
+  itemCopy = item;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -40,11 +40,11 @@
   v13[2] = sub_100304438;
   v13[3] = &unk_1009A4738;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v17 = a5;
+  v14 = itemCopy;
+  synchronizableCopy = synchronizable;
+  keychainCopy = keychain;
   v15 = &v18;
-  v10 = v8;
+  v10 = itemCopy;
   dispatch_sync(queue, v13);
   v11 = *(v19 + 24);
 
@@ -52,10 +52,10 @@
   return v11;
 }
 
-- (id)readItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6
+- (id)readItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v10 = a3;
-  v11 = a4;
+  serviceCopy = service;
+  accountCopy = account;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -68,13 +68,13 @@
   block[2] = sub_100304A84;
   block[3] = &unk_1009A4760;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
+  v18 = serviceCopy;
+  v19 = accountCopy;
   v20 = &v23;
-  v21 = a5;
-  v22 = a6;
-  v13 = v11;
-  v14 = v10;
+  synchronizableCopy = synchronizable;
+  keychainCopy = keychain;
+  v13 = accountCopy;
+  v14 = serviceCopy;
   dispatch_sync(queue, block);
   v15 = v24[5];
 
@@ -83,9 +83,9 @@
   return v15;
 }
 
-- (id)readAllItemsWithService:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5
+- (id)readAllItemsWithService:(id)service synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v8 = a3;
+  serviceCopy = service;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -98,11 +98,11 @@
   v13[2] = sub_100304C30;
   v13[3] = &unk_1009A4738;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v17 = a5;
+  v14 = serviceCopy;
+  synchronizableCopy = synchronizable;
+  keychainCopy = keychain;
   v15 = &v18;
-  v10 = v8;
+  v10 = serviceCopy;
   dispatch_sync(queue, v13);
   v11 = v19[5];
 
@@ -111,10 +111,10 @@
   return v11;
 }
 
-- (BOOL)deleteItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6
+- (BOOL)deleteItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v10 = a3;
-  v11 = a4;
+  serviceCopy = service;
+  accountCopy = account;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -125,13 +125,13 @@
   block[2] = sub_1003051E0;
   block[3] = &unk_1009A47B0;
   block[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v21 = a6;
-  v18 = v11;
+  v17 = serviceCopy;
+  synchronizableCopy = synchronizable;
+  keychainCopy = keychain;
+  v18 = accountCopy;
   v19 = &v22;
-  v13 = v11;
-  v14 = v10;
+  v13 = accountCopy;
+  v14 = serviceCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v23 + 24);
 
@@ -139,9 +139,9 @@
   return queue;
 }
 
-- (BOOL)deleteAllItemsWithService:(id)a3 synchronizable:(BOOL)a4 systemKeychain:(BOOL)a5
+- (BOOL)deleteAllItemsWithService:(id)service synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v8 = a3;
+  serviceCopy = service;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -152,11 +152,11 @@
   v13[2] = sub_100305530;
   v13[3] = &unk_1009A4738;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v17 = a5;
+  v14 = serviceCopy;
+  synchronizableCopy = synchronizable;
+  keychainCopy = keychain;
   v15 = &v18;
-  v10 = v8;
+  v10 = serviceCopy;
   dispatch_sync(queue, v13);
   v11 = *(v19 + 24);
 
@@ -189,12 +189,12 @@
   return v4;
 }
 
-- (id)_internalReadItemWithService:(id)a3 account:(id)a4 synchronizable:(BOOL)a5 systemKeychain:(BOOL)a6
+- (id)_internalReadItemWithService:(id)service account:(id)account synchronizable:(BOOL)synchronizable systemKeychain:(BOOL)keychain
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  keychainCopy = keychain;
+  synchronizableCopy = synchronizable;
+  serviceCopy = service;
+  accountCopy = account;
   dispatch_assert_queue_V2(self->_queue);
   if ([(NIServerKeychainManager *)self _shouldLog])
   {
@@ -202,13 +202,13 @@
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478595;
-      *v28 = v10;
+      *v28 = serviceCopy;
       *&v28[8] = 2113;
-      *&v28[10] = v11;
+      *&v28[10] = accountCopy;
       v29 = 1024;
-      v30 = v7;
+      v30 = synchronizableCopy;
       v31 = 1024;
-      v32 = v6;
+      v32 = keychainCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#ni-km,Read: %{private}@, %{private}@, %d, %d", buf, 0x22u);
     }
   }
@@ -217,7 +217,7 @@
   v14 = CFAutorelease(Mutable);
   v15 = v14;
   result = 0;
-  if (v6)
+  if (keychainCopy)
   {
     v16 = kCFBooleanTrue;
   }
@@ -230,10 +230,10 @@
   CFDictionaryAddValue(v14, kSecUseSystemKeychain, v16);
   CFDictionaryAddValue(v15, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(v15, kSecUseDataProtectionKeychain, kCFBooleanTrue);
-  CFDictionaryAddValue(v15, kSecAttrAccount, v11);
-  CFDictionaryAddValue(v15, kSecAttrService, v10);
+  CFDictionaryAddValue(v15, kSecAttrAccount, accountCopy);
+  CFDictionaryAddValue(v15, kSecAttrService, serviceCopy);
   CFDictionaryAddValue(v15, kSecAttrAccessGroup, @"com.apple.nearbyd");
-  if (v7)
+  if (synchronizableCopy)
   {
     v17 = kCFBooleanTrue;
   }
@@ -280,7 +280,7 @@
   v23 = [v21 objectForKeyedSubscript:kSecValueData];
   if (v23)
   {
-    v24 = [[NIServerKeychainItem alloc] initWithService:v10 account:v11 data:v23];
+    v24 = [[NIServerKeychainItem alloc] initWithService:serviceCopy account:accountCopy data:v23];
   }
 
   else
@@ -946,25 +946,25 @@
     do
     {
       v32 = v31;
-      v33 = [v91 allObjects];
-      v34 = [v33 firstObject];
+      allObjects = [v91 allObjects];
+      firstObject = [allObjects firstObject];
 
-      v35 = [v34 service];
-      v36 = [v34 account];
-      v37 = [(NIServerKeychainManager *)self deleteItemWithService:v35 account:v36 synchronizable:0 systemKeychain:0];
+      service = [firstObject service];
+      account = [firstObject account];
+      v37 = [(NIServerKeychainManager *)self deleteItemWithService:service account:account synchronizable:0 systemKeychain:0];
 
       if ((v37 & 1) == 0)
       {
         v76 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
         {
-          sub_1004BD658(v34, v76, v77, v78, v79, v80, v81, v82);
+          sub_1004BD658(firstObject, v76, v77, v78, v79, v80, v81, v82);
         }
 
         goto LABEL_107;
       }
 
-      [v91 removeObject:v34];
+      [v91 removeObject:firstObject];
 
       v31 = 0;
     }

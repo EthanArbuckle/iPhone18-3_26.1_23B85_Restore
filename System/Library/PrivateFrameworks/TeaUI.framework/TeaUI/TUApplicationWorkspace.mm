@@ -1,7 +1,7 @@
 @interface TUApplicationWorkspace
 + (id)shared;
-- (TUApplicationWorkspace)initWithApplicationWorkspace:(id)a3;
-- (void)openSensitiveURL:(id)a3 options:(id)a4;
+- (TUApplicationWorkspace)initWithApplicationWorkspace:(id)workspace;
+- (void)openSensitiveURL:(id)l options:(id)options;
 @end
 
 @implementation TUApplicationWorkspace
@@ -27,27 +27,27 @@ void __32__TUApplicationWorkspace_shared__block_invoke()
   shared_instance = v1;
 }
 
-- (TUApplicationWorkspace)initWithApplicationWorkspace:(id)a3
+- (TUApplicationWorkspace)initWithApplicationWorkspace:(id)workspace
 {
-  v5 = a3;
+  workspaceCopy = workspace;
   v9.receiver = self;
   v9.super_class = TUApplicationWorkspace;
   v6 = [(TUApplicationWorkspace *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationWorkspace, a3);
+    objc_storeStrong(&v6->_applicationWorkspace, workspace);
   }
 
   return v7;
 }
 
-- (void)openSensitiveURL:(id)a3 options:(id)a4
+- (void)openSensitiveURL:(id)l options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUApplicationWorkspace *)self applicationWorkspace];
-  [v8 openSensitiveURL:v7 withOptions:v6];
+  optionsCopy = options;
+  lCopy = l;
+  applicationWorkspace = [(TUApplicationWorkspace *)self applicationWorkspace];
+  [applicationWorkspace openSensitiveURL:lCopy withOptions:optionsCopy];
 }
 
 @end

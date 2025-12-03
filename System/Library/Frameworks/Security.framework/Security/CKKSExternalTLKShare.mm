@@ -1,12 +1,12 @@
 @interface CKKSExternalTLKShare
-+ (id)parseFromJSONDict:(id)a3 error:(id *)a4;
-+ (id)unstringifyPeerID:(id)a3;
-- (CKKSExternalTLKShare)initWithCoder:(id)a3;
-- (CKKSExternalTLKShare)initWithView:(id)a3 tlkUUID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 wrappedTLK:(id)a7 signature:(id)a8;
++ (id)parseFromJSONDict:(id)dict error:(id *)error;
++ (id)unstringifyPeerID:(id)d;
+- (CKKSExternalTLKShare)initWithCoder:(id)coder;
+- (CKKSExternalTLKShare)initWithView:(id)view tlkUUID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID wrappedTLK:(id)k signature:(id)signature;
 - (id)description;
 - (id)jsonDictionary;
-- (id)stringifyPeerID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)stringifyPeerID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKKSExternalTLKShare
@@ -15,26 +15,26 @@
 {
   v17[6] = *MEMORY[0x1E69E9840];
   v16[0] = @"view";
-  v15 = [(CKKSExternalTLKShare *)self view];
-  v17[0] = v15;
+  view = [(CKKSExternalTLKShare *)self view];
+  v17[0] = view;
   v16[1] = @"tlkUUID";
-  v3 = [(CKKSExternalTLKShare *)self tlkUUID];
-  v17[1] = v3;
+  tlkUUID = [(CKKSExternalTLKShare *)self tlkUUID];
+  v17[1] = tlkUUID;
   v16[2] = @"receiverPeerID";
-  v4 = [(CKKSExternalTLKShare *)self receiverPeerID];
-  v5 = [(CKKSExternalTLKShare *)self stringifyPeerID:v4];
+  receiverPeerID = [(CKKSExternalTLKShare *)self receiverPeerID];
+  v5 = [(CKKSExternalTLKShare *)self stringifyPeerID:receiverPeerID];
   v17[2] = v5;
   v16[3] = @"senderPeerID";
-  v6 = [(CKKSExternalTLKShare *)self senderPeerID];
-  v7 = [(CKKSExternalTLKShare *)self stringifyPeerID:v6];
+  senderPeerID = [(CKKSExternalTLKShare *)self senderPeerID];
+  v7 = [(CKKSExternalTLKShare *)self stringifyPeerID:senderPeerID];
   v17[3] = v7;
   v16[4] = @"wrappedTLK";
-  v8 = [(CKKSExternalTLKShare *)self wrappedTLK];
-  v9 = [v8 base64EncodedStringWithOptions:0];
+  wrappedTLK = [(CKKSExternalTLKShare *)self wrappedTLK];
+  v9 = [wrappedTLK base64EncodedStringWithOptions:0];
   v17[4] = v9;
   v16[5] = @"signature";
-  v10 = [(CKKSExternalTLKShare *)self signature];
-  v11 = [v10 base64EncodedStringWithOptions:0];
+  signature = [(CKKSExternalTLKShare *)self signature];
+  v11 = [signature base64EncodedStringWithOptions:0];
   v17[5] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:6];
 
@@ -43,57 +43,57 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKKSExternalTLKShare *)self view];
-  [v4 encodeObject:v5 forKey:@"view"];
+  coderCopy = coder;
+  view = [(CKKSExternalTLKShare *)self view];
+  [coderCopy encodeObject:view forKey:@"view"];
 
-  v6 = [(CKKSExternalTLKShare *)self tlkUUID];
-  [v4 encodeObject:v6 forKey:@"tlkUUID"];
+  tlkUUID = [(CKKSExternalTLKShare *)self tlkUUID];
+  [coderCopy encodeObject:tlkUUID forKey:@"tlkUUID"];
 
-  v7 = [(CKKSExternalTLKShare *)self receiverPeerID];
-  [v4 encodeObject:v7 forKey:@"receiverPeerID"];
+  receiverPeerID = [(CKKSExternalTLKShare *)self receiverPeerID];
+  [coderCopy encodeObject:receiverPeerID forKey:@"receiverPeerID"];
 
-  v8 = [(CKKSExternalTLKShare *)self senderPeerID];
-  [v4 encodeObject:v8 forKey:@"senderPeerID"];
+  senderPeerID = [(CKKSExternalTLKShare *)self senderPeerID];
+  [coderCopy encodeObject:senderPeerID forKey:@"senderPeerID"];
 
-  v9 = [(CKKSExternalTLKShare *)self wrappedTLK];
-  [v4 encodeObject:v9 forKey:@"wrappedTLK"];
+  wrappedTLK = [(CKKSExternalTLKShare *)self wrappedTLK];
+  [coderCopy encodeObject:wrappedTLK forKey:@"wrappedTLK"];
 
-  v10 = [(CKKSExternalTLKShare *)self signature];
-  [v4 encodeObject:v10 forKey:@"signature"];
+  signature = [(CKKSExternalTLKShare *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 }
 
-- (CKKSExternalTLKShare)initWithCoder:(id)a3
+- (CKKSExternalTLKShare)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CKKSExternalTLKShare;
   v5 = [(CKKSExternalTLKShare *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"view"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"view"];
     view = v5->_view;
     v5->_view = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tlkUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tlkUUID"];
     tlkUUID = v5->_tlkUUID;
     v5->_tlkUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverPeerID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverPeerID"];
     receiverPeerID = v5->_receiverPeerID;
     v5->_receiverPeerID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderPeerID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderPeerID"];
     senderPeerID = v5->_senderPeerID;
     v5->_senderPeerID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wrappedTLK"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wrappedTLK"];
     wrappedTLK = v5->_wrappedTLK;
     v5->_wrappedTLK = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v16;
   }
@@ -104,68 +104,68 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKKSExternalTLKShare *)self tlkUUID];
-  v5 = [(CKKSExternalTLKShare *)self receiverPeerID];
-  v6 = [(CKKSExternalTLKShare *)self stringifyPeerID:v5];
-  v7 = [(CKKSExternalTLKShare *)self senderPeerID];
-  v8 = [(CKKSExternalTLKShare *)self stringifyPeerID:v7];
-  v9 = [v3 stringWithFormat:@"<CKKSExternalTLKShare(%@): recv:%@ send:%@@>", v4, v6, v8];
+  tlkUUID = [(CKKSExternalTLKShare *)self tlkUUID];
+  receiverPeerID = [(CKKSExternalTLKShare *)self receiverPeerID];
+  v6 = [(CKKSExternalTLKShare *)self stringifyPeerID:receiverPeerID];
+  senderPeerID = [(CKKSExternalTLKShare *)self senderPeerID];
+  v8 = [(CKKSExternalTLKShare *)self stringifyPeerID:senderPeerID];
+  v9 = [v3 stringWithFormat:@"<CKKSExternalTLKShare(%@): recv:%@ send:%@@>", tlkUUID, v6, v8];
 
   return v9;
 }
 
-- (id)stringifyPeerID:(id)a3
+- (id)stringifyPeerID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 base64EncodedStringWithOptions:0];
+  v4 = [d base64EncodedStringWithOptions:0];
   v5 = [v3 stringWithFormat:@"spid-%@", v4];
 
   return v5;
 }
 
-- (CKKSExternalTLKShare)initWithView:(id)a3 tlkUUID:(id)a4 receiverPeerID:(id)a5 senderPeerID:(id)a6 wrappedTLK:(id)a7 signature:(id)a8
+- (CKKSExternalTLKShare)initWithView:(id)view tlkUUID:(id)d receiverPeerID:(id)iD senderPeerID:(id)peerID wrappedTLK:(id)k signature:(id)signature
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  viewCopy = view;
+  dCopy = d;
+  iDCopy = iD;
+  peerIDCopy = peerID;
+  kCopy = k;
+  signatureCopy = signature;
   v24.receiver = self;
   v24.super_class = CKKSExternalTLKShare;
   v18 = [(CKKSExternalTLKShare *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_view, a3);
-    objc_storeStrong(&v19->_tlkUUID, a4);
-    objc_storeStrong(&v19->_receiverPeerID, a5);
-    objc_storeStrong(&v19->_senderPeerID, a6);
-    objc_storeStrong(&v19->_wrappedTLK, a7);
-    objc_storeStrong(&v19->_signature, a8);
+    objc_storeStrong(&v18->_view, view);
+    objc_storeStrong(&v19->_tlkUUID, d);
+    objc_storeStrong(&v19->_receiverPeerID, iD);
+    objc_storeStrong(&v19->_senderPeerID, peerID);
+    objc_storeStrong(&v19->_wrappedTLK, k);
+    objc_storeStrong(&v19->_signature, signature);
   }
 
   return v19;
 }
 
-+ (id)parseFromJSONDict:(id)a3 error:(id *)a4
++ (id)parseFromJSONDict:(id)dict error:(id *)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"view"];
-  v8 = [v6 objectForKeyedSubscript:@"tlkUUID"];
-  v9 = [v6 objectForKeyedSubscript:@"receiverPeerID"];
-  v10 = [a1 unstringifyPeerID:v9];
+  dictCopy = dict;
+  v7 = [dictCopy objectForKeyedSubscript:@"view"];
+  v8 = [dictCopy objectForKeyedSubscript:@"tlkUUID"];
+  v9 = [dictCopy objectForKeyedSubscript:@"receiverPeerID"];
+  v10 = [self unstringifyPeerID:v9];
 
-  v11 = [v6 objectForKeyedSubscript:@"senderPeerID"];
-  v12 = [a1 unstringifyPeerID:v11];
+  v11 = [dictCopy objectForKeyedSubscript:@"senderPeerID"];
+  v12 = [self unstringifyPeerID:v11];
 
   v13 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v14 = [v6 objectForKeyedSubscript:@"wrappedTLK"];
+  v14 = [dictCopy objectForKeyedSubscript:@"wrappedTLK"];
   v15 = [v13 initWithBase64EncodedString:v14 options:0];
 
   v16 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v17 = [v6 objectForKeyedSubscript:@"signature"];
+  v17 = [dictCopy objectForKeyedSubscript:@"signature"];
 
   v18 = [v16 initWithBase64EncodedString:v17 options:0];
   if (v7 && v8 && v10 && v12 && v15 && v18)
@@ -174,8 +174,8 @@
     goto LABEL_17;
   }
 
-  v20 = [MEMORY[0x1E695DF70] array];
-  v21 = v20;
+  array = [MEMORY[0x1E695DF70] array];
+  v21 = array;
   if (v7)
   {
     if (v8)
@@ -186,7 +186,7 @@
 
   else
   {
-    [v20 addObject:@"view"];
+    [array addObject:@"view"];
     if (v8)
     {
 LABEL_10:
@@ -236,7 +236,7 @@ LABEL_13:
 
 LABEL_25:
     [v21 addObject:@"signature"];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -252,17 +252,17 @@ LABEL_24:
   }
 
 LABEL_14:
-  if (a4)
+  if (error)
   {
 LABEL_15:
     v22 = MEMORY[0x1E696ABC0];
-    v27 = a4;
+    errorCopy = error;
     v23 = *MEMORY[0x1E696A768];
     v29[0] = *MEMORY[0x1E696A578];
     v29[1] = @"missingkeys";
     v30[0] = @"Missing some required field";
     v30[1] = v21;
-    v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:{2, v27}];
+    v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:{2, errorCopy}];
     *v28 = [v22 errorWithDomain:v23 code:-50 userInfo:v24];
   }
 
@@ -276,17 +276,17 @@ LABEL_17:
   return v19;
 }
 
-+ (id)unstringifyPeerID:(id)a3
++ (id)unstringifyPeerID:(id)d
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"spid-"])
+  dCopy = d;
+  if ([dCopy hasPrefix:@"spid-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"spid-", "length")}];
+    v4 = [dCopy substringFromIndex:{objc_msgSend(@"spid-", "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = dCopy;
   }
 
   v5 = v4;

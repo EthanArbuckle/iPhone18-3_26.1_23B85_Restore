@@ -1,18 +1,18 @@
 @interface MADPhotosDataStoreClient
-- (BOOL)_createDirectoryAtURL:(id)a3;
-- (BOOL)flushWALCheckpointForPersistentStoreAtURL:(id)a3 persistentStoreCoordinator:(id)a4;
-- (id)copyPersistentStoreForPhotoLibrary:(id)a3 toURL:(id)a4;
+- (BOOL)_createDirectoryAtURL:(id)l;
+- (BOOL)flushWALCheckpointForPersistentStoreAtURL:(id)l persistentStoreCoordinator:(id)coordinator;
+- (id)copyPersistentStoreForPhotoLibrary:(id)library toURL:(id)l;
 @end
 
 @implementation MADPhotosDataStoreClient
 
-- (BOOL)_createDirectoryAtURL:(id)a3
+- (BOOL)_createDirectoryAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v35 = v3;
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  v35 = lCopy;
+  path = [lCopy path];
+  v6 = [v4 fileExistsAtPath:path];
 
   v7 = MediaAnalysisLogLevel();
   if (v6)
@@ -22,15 +22,15 @@
       v8 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v8))
       {
-        v9 = [v3 path];
+        path2 = [lCopy path];
         *buf = 138412290;
-        v43 = v9;
+        v43 = path2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[MADPhotosDataStoreClient] Directory exists at %@. Removing its contents...", buf, 0xCu);
       }
     }
 
-    v10 = [v3 path];
-    v11 = [v4 contentsOfDirectoryAtPath:v10 error:0];
+    path3 = [lCopy path];
+    v11 = [v4 contentsOfDirectoryAtPath:path3 error:0];
 
     v39 = 0u;
     v40 = 0u;
@@ -53,8 +53,8 @@
           }
 
           v18 = *(*(&v37 + 1) + 8 * i);
-          v19 = [v35 path];
-          v20 = [NSString stringWithFormat:@"%@/%@", v19, v18];
+          path4 = [v35 path];
+          v20 = [NSString stringWithFormat:@"%@/%@", path4, v18];
 
           v36 = 0;
           [v4 removeItemAtPath:v20 error:&v36];
@@ -104,19 +104,19 @@
     v23 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v23))
     {
-      v24 = [v3 path];
+      path5 = [lCopy path];
       *buf = 138412290;
-      v43 = v24;
+      v43 = path5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[MADPhotosDataStoreClient] Directory does not exist at %@ yet. Creating it...", buf, 0xCu);
     }
   }
 
-  v25 = [v3 path];
+  path6 = [lCopy path];
   v47 = NSFilePosixPermissions;
   v48 = &off_1002946C8;
   v26 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
   v41 = 0;
-  v27 = [v4 createDirectoryAtPath:v25 withIntermediateDirectories:1 attributes:v26 error:&v41];
+  v27 = [v4 createDirectoryAtPath:path6 withIntermediateDirectories:1 attributes:v26 error:&v41];
   v12 = v41;
 
   v28 = MediaAnalysisLogLevel();
@@ -127,9 +127,9 @@
       v29 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v29))
       {
-        v30 = [v3 path];
+        path7 = [lCopy path];
         *buf = 138412290;
-        v43 = v30;
+        v43 = path7;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v29, "[MADPhotosDataStoreClient] Successfully created directory at %@", buf, 0xCu);
       }
     }
@@ -157,14 +157,14 @@ LABEL_33:
   return v31;
 }
 
-- (id)copyPersistentStoreForPhotoLibrary:(id)a3 toURL:(id)a4
+- (id)copyPersistentStoreForPhotoLibrary:(id)library toURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 URLByDeletingLastPathComponent];
-  if ([(MADPhotosDataStoreClient *)self _createDirectoryAtURL:v8])
+  libraryCopy = library;
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  if ([(MADPhotosDataStoreClient *)self _createDirectoryAtURL:uRLByDeletingLastPathComponent])
   {
-    v9 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:v6];
+    v9 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:libraryCopy];
     v10 = [NSURL fileURLWithPath:v9];
 
     v70[0] = NSPersistentHistoryTrackingKey;
@@ -176,8 +176,8 @@ LABEL_33:
     v71[2] = &__kCFBooleanTrue;
     v71[3] = &__kCFBooleanTrue;
     v11 = [NSDictionary dictionaryWithObjects:v71 forKeys:v70 count:4];
-    v12 = [objc_opt_class() sharedClient];
-    v13 = [v12 persistentStoreCoordinatorForPhotoLibrary:v6];
+    sharedClient = [objc_opt_class() sharedClient];
+    v13 = [sharedClient persistentStoreCoordinatorForPhotoLibrary:libraryCopy];
 
     *&v65 = 0;
     *(&v65 + 1) = &v65;
@@ -196,7 +196,7 @@ LABEL_33:
     v53 = &v55;
     v14 = v13;
     v49 = v14;
-    v46 = v7;
+    v46 = lCopy;
     v50 = v46;
     v15 = v11;
     v51 = v15;
@@ -212,14 +212,14 @@ LABEL_33:
         v18 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v18))
         {
-          v19 = [v16 path];
-          v45 = [v14 persistentStores];
-          v20 = [v45 firstObject];
-          v21 = [v20 options];
+          path = [v16 path];
+          persistentStores = [v14 persistentStores];
+          firstObject = [persistentStores firstObject];
+          options = [firstObject options];
           *buf = 138412546;
-          v60 = v19;
+          v60 = path;
           v61 = 2112;
-          v62 = v21;
+          v62 = options;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v18, "[MADPhotosDataStoreClient] Store options for persistent store at %@: %@", buf, 0x16u);
         }
       }
@@ -230,19 +230,19 @@ LABEL_33:
         v23 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v23))
         {
-          v24 = [v16 path];
-          v25 = [v46 path];
+          path2 = [v16 path];
+          path3 = [v46 path];
           *buf = 138412546;
-          v60 = v24;
+          v60 = path2;
           v61 = 2112;
-          v62 = v25;
+          v62 = path3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[MADPhotosDataStoreClient] Successfully copied persistent store from %@ to %@", buf, 0x16u);
         }
       }
 
       v26 = [NSPersistentStoreCoordinator alloc];
-      v27 = [v14 managedObjectModel];
-      v28 = [v26 initWithManagedObjectModel:v27];
+      managedObjectModel = [v14 managedObjectModel];
+      v28 = [v26 initWithManagedObjectModel:managedObjectModel];
 
       v47 = 0;
       v29 = [v28 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v46 options:v15 error:&v47];
@@ -255,9 +255,9 @@ LABEL_33:
           v32 = VCPLogToOSLogType[3];
           if (os_log_type_enabled(&_os_log_default, v32))
           {
-            v33 = [v46 path];
+            path4 = [v46 path];
             *buf = 138412290;
-            v60 = v33;
+            v60 = path4;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v32, "[MADPhotosDataStoreClient] Failed to add new persistent store at %@ to new PSC", buf, 0xCu);
           }
         }
@@ -273,9 +273,9 @@ LABEL_33:
           v42 = VCPLogToOSLogType[6];
           if (os_log_type_enabled(&_os_log_default, v42))
           {
-            v43 = [v46 path];
+            path5 = [v46 path];
             *buf = 138412290;
-            v60 = v43;
+            v60 = path5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "[MADPhotosDataStoreClient] Successfully added new persistent store at %@ to new PSC", buf, 0xCu);
           }
         }
@@ -302,13 +302,13 @@ LABEL_33:
       v37 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v37))
       {
-        v38 = [v16 path];
-        v39 = [v46 path];
+        path6 = [v16 path];
+        path7 = [v46 path];
         v40 = *(*(&v65 + 1) + 40);
         *buf = 138412802;
-        v60 = v38;
+        v60 = path6;
         v61 = 2112;
-        v62 = v39;
+        v62 = path7;
         v63 = 2112;
         v64 = v40;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v37, "[MADPhotosDataStoreClient] Failed to copy persistent store from %@ to %@ with error %@", buf, 0x20u);
@@ -332,7 +332,7 @@ LABEL_33:
     if (os_log_type_enabled(&_os_log_default, v35))
     {
       LODWORD(v65) = 138412290;
-      *(&v65 + 4) = v8;
+      *(&v65 + 4) = uRLByDeletingLastPathComponent;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v35, "Failed to create directory at %@", &v65, 0xCu);
     }
   }
@@ -343,17 +343,17 @@ LABEL_34:
   return v34;
 }
 
-- (BOOL)flushWALCheckpointForPersistentStoreAtURL:(id)a3 persistentStoreCoordinator:(id)a4
+- (BOOL)flushWALCheckpointForPersistentStoreAtURL:(id)l persistentStoreCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  coordinatorCopy = coordinator;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = lCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[MADPhotosDataStoreClient] Flushing WAL checkpoint for persistent store at %@", &buf, 0xCu);
     }
   }
@@ -366,9 +366,9 @@ LABEL_34:
   v12[1] = 3221225472;
   v12[2] = sub_10009F130;
   v12[3] = &unk_1002853B0;
-  v8 = v6;
+  v8 = coordinatorCopy;
   v13 = v8;
-  v9 = v5;
+  v9 = lCopy;
   v14 = v9;
   p_buf = &buf;
   [v8 performBlockAndWait:v12];

@@ -1,13 +1,13 @@
 @interface FigDisplayMirroringChangeObserver
 - (FigDisplayMirroringChangeObserver)init;
-- (FigDisplayMirroringChangeObserver)initWithCallback:(void *)a3 context:(void *)a4;
-- (FigDisplayMirroringChangeObserver)initWithPlayer:(OpaqueFigPlayer *)a3;
+- (FigDisplayMirroringChangeObserver)initWithCallback:(void *)callback context:(void *)context;
+- (FigDisplayMirroringChangeObserver)initWithPlayer:(OpaqueFigPlayer *)player;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeCallback;
 - (void)removeObserversOnCADisplays;
 - (void)removeReferenceToPlayer;
-- (void)setBaseDisplayList:(id)a3;
+- (void)setBaseDisplayList:(id)list;
 - (void)updatePlayerDisplayList;
 @end
 
@@ -78,25 +78,25 @@ uint64_t __41__FigDisplayMirroringChangeObserver_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (FigDisplayMirroringChangeObserver)initWithPlayer:(OpaqueFigPlayer *)a3
+- (FigDisplayMirroringChangeObserver)initWithPlayer:(OpaqueFigPlayer *)player
 {
   result = [(FigDisplayMirroringChangeObserver *)self init];
   if (result)
   {
-    result->_player = a3;
+    result->_player = player;
   }
 
   return result;
 }
 
-- (FigDisplayMirroringChangeObserver)initWithCallback:(void *)a3 context:(void *)a4
+- (FigDisplayMirroringChangeObserver)initWithCallback:(void *)callback context:(void *)context
 {
   v6 = [(FigDisplayMirroringChangeObserver *)self init];
   v7 = v6;
   if (v6)
   {
-    v6->_callback = a3;
-    if (a4)
+    v6->_callback = callback;
+    if (context)
     {
       v6->_weakCallbackContext = FigCFWeakReferenceHolderCreateWithReferencedObject();
     }
@@ -175,26 +175,26 @@ uint64_t __64__FigDisplayMirroringChangeObserver_removeObserversOnCADisplays__bl
   [(FigDisplayMirroringChangeObserver *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"cloned", a4, a5, a6}])
+  if ([path isEqualToString:{@"cloned", object, change, context}])
   {
     clonedDisplays = self->_clonedDisplays;
-    v10 = [a4 isCloned];
+    isCloned = [object isCloned];
   }
 
   else
   {
-    if (![a3 isEqualToString:@"cloningSupported"])
+    if (![path isEqualToString:@"cloningSupported"])
     {
       return;
     }
 
     clonedDisplays = self->_cloningSupportedDisplays;
-    v10 = [a4 isCloningSupported];
+    isCloned = [object isCloningSupported];
   }
 
-  v11 = v10;
+  v11 = isCloned;
   if (clonedDisplays)
   {
     if (FigDisplayMirroringGetAccessQueue_sFigDisplayMirroringOnce != -1)
@@ -208,7 +208,7 @@ uint64_t __64__FigDisplayMirroringChangeObserver_removeObserversOnCADisplays__bl
     v12[3] = &unk_1E7483FE0;
     v13 = v11;
     v12[4] = clonedDisplays;
-    v12[5] = a4;
+    v12[5] = object;
     v12[6] = self;
     dispatch_async(FigDisplayMirroringGetAccessQueue_sFigDisplayMirroringAccessQueue, v12);
   }
@@ -234,7 +234,7 @@ uint64_t __84__FigDisplayMirroringChangeObserver_observeValueForKeyPath_ofObject
   return [v5 updatePlayerDisplayList];
 }
 
-- (void)setBaseDisplayList:(id)a3
+- (void)setBaseDisplayList:(id)list
 {
   if (FigDisplayMirroringGetAccessQueue_sFigDisplayMirroringOnce != -1)
   {
@@ -245,7 +245,7 @@ uint64_t __84__FigDisplayMirroringChangeObserver_observeValueForKeyPath_ofObject
   v5[1] = 3221225472;
   v5[2] = __56__FigDisplayMirroringChangeObserver_setBaseDisplayList___block_invoke;
   v5[3] = &unk_1E7483A30;
-  v5[4] = a3;
+  v5[4] = list;
   v5[5] = self;
   dispatch_sync(FigDisplayMirroringGetAccessQueue_sFigDisplayMirroringAccessQueue, v5);
 }

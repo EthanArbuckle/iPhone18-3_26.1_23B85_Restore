@@ -7,8 +7,8 @@
 
 - (BOOL)_accessibilityServesAsFirstElement
 {
-  v3 = [(BKUISliderAccessibility *)self imaxIdentification];
-  v4 = [v3 isEqualToString:@"BrightnessSlider"];
+  imaxIdentification = [(BKUISliderAccessibility *)self imaxIdentification];
+  v4 = [imaxIdentification isEqualToString:@"BrightnessSlider"];
 
   if (v4)
   {
@@ -22,22 +22,22 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(BKUISliderAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"BrightnessSlider"];
+  accessibilityIdentifier = [(BKUISliderAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"BrightnessSlider"];
 
   if (v4)
   {
-    v5 = [(BKUISliderAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel = [(BKUISliderAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BKUISliderAccessibility;
-    v5 = [(BKUISliderAccessibility *)&v7 accessibilityLabel];
+    accessibilityUserDefinedLabel = [(BKUISliderAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityUserDefinedLabel;
 }
 
 @end

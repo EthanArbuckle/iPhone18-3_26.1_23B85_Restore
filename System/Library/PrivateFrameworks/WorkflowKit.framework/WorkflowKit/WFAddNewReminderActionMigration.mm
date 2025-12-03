@@ -1,16 +1,16 @@
 @interface WFAddNewReminderActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFAddNewReminderActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.addnewreminder", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.addnewreminder", migrationCopy);
   }
 
   else
@@ -46,14 +46,14 @@
         }
 
         v7 = *(*(&v33 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKey:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKey:actionIdentifierKey];
 
         if ([v9 isEqualToString:@"is.workflow.actions.addnewreminder"])
         {
           v10 = v4;
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v7 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v7 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKeyedSubscript:@"WFCalendarItemAlert"];
 
@@ -110,9 +110,9 @@ LABEL_16:
               {
                 v40[0] = @"Value";
                 v38[0] = @"Magnitude";
-                v29 = [v19 stringValue];
+                stringValue = [v19 stringValue];
                 v38[1] = @"Unit";
-                v39[0] = v29;
+                v39[0] = stringValue;
                 v39[1] = @"m";
                 [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
                 v20 = v30 = v16;

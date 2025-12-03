@@ -1,9 +1,9 @@
 @interface HRERecommendationEngine
 - (HRERecommendationEngine)init;
 - (NSArray)templates;
-- (id)_sourcesEnabledWithOptions:(unint64_t)a3;
-- (id)generateRecommendationsForServiceLikeItems:(id)a3 accessoryTypeGroup:(id)a4 inHome:(id)a5 options:(unint64_t)a6;
-- (void)setTemplates:(id)a3;
+- (id)_sourcesEnabledWithOptions:(unint64_t)options;
+- (id)generateRecommendationsForServiceLikeItems:(id)items accessoryTypeGroup:(id)group inHome:(id)home options:(unint64_t)options;
+- (void)setTemplates:(id)templates;
 @end
 
 @implementation HRERecommendationEngine
@@ -15,20 +15,20 @@
   v2 = [(HRERecommendationEngine *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    [(HRERecommendationEngine *)v2 setRecommendationSources:v3];
+    array = [MEMORY[0x277CBEB18] array];
+    [(HRERecommendationEngine *)v2 setRecommendationSources:array];
 
     v4 = +[HRETemplateRecommendationGenerator allAvailableTemplates];
     v5 = [[HRETemplateRecommendationGenerator alloc] initWithTemplates:v4];
     [(HRERecommendationEngine *)v2 setTemplateSource:v5];
 
-    v6 = [(HRERecommendationEngine *)v2 recommendationSources];
-    v7 = [(HRERecommendationEngine *)v2 templateSource];
-    [v6 addObject:v7];
+    recommendationSources = [(HRERecommendationEngine *)v2 recommendationSources];
+    templateSource = [(HRERecommendationEngine *)v2 templateSource];
+    [recommendationSources addObject:templateSource];
 
-    v8 = [(HRERecommendationEngine *)v2 recommendationSources];
+    recommendationSources2 = [(HRERecommendationEngine *)v2 recommendationSources];
     v9 = objc_alloc_init(HREActionSetDerivingRecommendationGenerator);
-    [v8 addObject:v9];
+    [recommendationSources2 addObject:v9];
 
     v10 = objc_alloc_init(HRERankConfidenceController);
     [(HRERecommendationEngine *)v2 setRankingController:v10];
@@ -37,39 +37,39 @@
   return v2;
 }
 
-- (id)generateRecommendationsForServiceLikeItems:(id)a3 accessoryTypeGroup:(id)a4 inHome:(id)a5 options:(unint64_t)a6
+- (id)generateRecommendationsForServiceLikeItems:(id)items accessoryTypeGroup:(id)group inHome:(id)home options:(unint64_t)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemsCopy = items;
+  groupCopy = group;
+  homeCopy = home;
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 name];
-    v15 = [v12 uniqueIdentifier];
+    name = [homeCopy name];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
     *buf = 138413058;
-    v39 = v14;
+    v39 = name;
     v40 = 2112;
-    v41 = v15;
+    v41 = uniqueIdentifier;
     v42 = 2048;
-    v43 = a6;
+    optionsCopy = options;
     v44 = 2112;
-    v45 = v10;
+    v45 = itemsCopy;
     _os_log_impl(&dword_2543E2000, v13, OS_LOG_TYPE_DEFAULT, "Generating recommendations in home: <%@, %@>, options: %lu, serviceLikeItems: %@", buf, 0x2Au);
   }
 
-  if ([v12 hf_currentUserIsRestrictedGuest])
+  if ([homeCopy hf_currentUserIsRestrictedGuest])
   {
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v12 currentUser];
-      v18 = [v17 hf_prettyDescription];
+      currentUser = [homeCopy currentUser];
+      hf_prettyDescription = [currentUser hf_prettyDescription];
       *buf = 136315394;
       v39 = "[HRERecommendationEngine generateRecommendationsForServiceLikeItems:accessoryTypeGroup:inHome:options:]";
       v40 = 2112;
-      v41 = v18;
+      v41 = hf_prettyDescription;
       _os_log_impl(&dword_2543E2000, v16, OS_LOG_TYPE_DEFAULT, "(%s) Restricted guest should NOT get any recommendations. currentUser = %@", buf, 0x16u);
     }
 
@@ -80,24 +80,24 @@
 
   else
   {
-    v22 = [(HRERecommendationEngine *)self _sourcesEnabledWithOptions:a6];
-    v23 = [(HRERecommendationEngine *)self recommendationSources];
+    v22 = [(HRERecommendationEngine *)self _sourcesEnabledWithOptions:options];
+    recommendationSources = [(HRERecommendationEngine *)self recommendationSources];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __104__HRERecommendationEngine_generateRecommendationsForServiceLikeItems_accessoryTypeGroup_inHome_options___block_invoke;
     v36[3] = &unk_279777098;
     v37 = v22;
     v20 = v22;
-    [v23 na_each:v36];
+    [recommendationSources na_each:v36];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __104__HRERecommendationEngine_generateRecommendationsForServiceLikeItems_accessoryTypeGroup_inHome_options___block_invoke_6;
     v31[3] = &unk_2797770C0;
-    v32 = v12;
-    v33 = v10;
-    v34 = v11;
-    v35 = a6;
+    v32 = homeCopy;
+    v33 = itemsCopy;
+    v34 = groupCopy;
+    optionsCopy2 = options;
     v24 = [v20 na_map:v31];
     v25 = [MEMORY[0x277D2C900] combineAllFutures:v24];
     v26 = [v25 flatMap:&__block_literal_global_11];
@@ -228,28 +228,28 @@ void __104__HRERecommendationEngine_generateRecommendationsForServiceLikeItems_a
 
 - (NSArray)templates
 {
-  v2 = [(HRERecommendationEngine *)self templateSource];
-  v3 = [v2 templates];
+  templateSource = [(HRERecommendationEngine *)self templateSource];
+  templates = [templateSource templates];
 
-  return v3;
+  return templates;
 }
 
-- (void)setTemplates:(id)a3
+- (void)setTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(HRERecommendationEngine *)self templateSource];
-  [v5 setTemplates:v4];
+  templatesCopy = templates;
+  templateSource = [(HRERecommendationEngine *)self templateSource];
+  [templateSource setTemplates:templatesCopy];
 }
 
-- (id)_sourcesEnabledWithOptions:(unint64_t)a3
+- (id)_sourcesEnabledWithOptions:(unint64_t)options
 {
-  v4 = [(HRERecommendationEngine *)self recommendationSources];
+  recommendationSources = [(HRERecommendationEngine *)self recommendationSources];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HRERecommendationEngine__sourcesEnabledWithOptions___block_invoke;
   v7[3] = &__block_descriptor_40_e35_B16__0___HRERecommendationSource__8l;
-  v7[4] = a3;
-  v5 = [v4 na_filter:v7];
+  v7[4] = options;
+  v5 = [recommendationSources na_filter:v7];
 
   return v5;
 }

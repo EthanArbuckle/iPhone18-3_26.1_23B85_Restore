@@ -1,12 +1,12 @@
 @interface CNContactPosterDataInitiallyUnknownAccess
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4;
+- (BOOL)executeCreateRequest:(id)request error:(id *)error;
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error;
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error;
 - (id)currentImpl;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
+- (id)executeFetchRequest:(id)request error:(id *)error;
 - (id)failImpl;
 - (id)remoteImpl;
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4;
+- (int64_t)countForFetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNContactPosterDataInitiallyUnknownAccess
@@ -60,10 +60,10 @@ id __55__CNContactPosterDataInitiallyUnknownAccess_remoteImpl__block_invoke(uint
 - (id)currentImpl
 {
   v3 = +[CNTCC sharedInstance];
-  v4 = [v3 accessPreflight];
+  accessPreflight = [v3 accessPreflight];
 
   v5 = 8;
-  if (!v4)
+  if (!accessPreflight)
   {
     v5 = 16;
   }
@@ -73,49 +73,49 @@ id __55__CNContactPosterDataInitiallyUnknownAccess_remoteImpl__block_invoke(uint
   return v6;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
-  v8 = [v7 executeFetchRequest:v6 error:a4];
+  requestCopy = request;
+  currentImpl = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
+  v8 = [currentImpl executeFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (int64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (int64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
-  v8 = [v7 countForFetchRequest:v6 error:a4];
+  requestCopy = request;
+  currentImpl = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
+  v8 = [currentImpl countForFetchRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (BOOL)executeCreateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeCreateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
-  LOBYTE(a4) = [v7 executeCreateRequest:v6 error:a4];
+  requestCopy = request;
+  currentImpl = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
+  LOBYTE(error) = [currentImpl executeCreateRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)executeUpdateRequest:(id)a3 error:(id *)a4
+- (BOOL)executeUpdateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
-  LOBYTE(a4) = [v7 executeUpdateRequest:v6 error:a4];
+  requestCopy = request;
+  currentImpl = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
+  LOBYTE(error) = [currentImpl executeUpdateRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)executeDeleteRequest:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
-  LOBYTE(a4) = [v7 executeDeleteRequest:v6 error:a4];
+  requestCopy = request;
+  currentImpl = [(CNContactPosterDataInitiallyUnknownAccess *)self currentImpl];
+  LOBYTE(error) = [currentImpl executeDeleteRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

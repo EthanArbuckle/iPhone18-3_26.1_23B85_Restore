@@ -1,12 +1,12 @@
 @interface MFMailComposeNavigationBarTitleView
 + (EFLazyCache)attributedStringsCache;
 - (BOOL)_needsToLayoutTitleLabel;
-- (MFMailComposeNavigationBarTitleView)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)_contentInsetsWithExclusionRects:(id)a3 wantsUniformHorizontalInsets:(BOOL)a4;
-- (double)_subtitleFontSizeWhenMini:(BOOL)a3;
-- (double)_titleFontSizeWhenMini:(BOOL)a3;
-- (double)_topPaddingForTitleWhenMini:(BOOL)a3;
-- (double)_verticalOffsetForSubtitleWhenMini:(BOOL)a3;
+- (MFMailComposeNavigationBarTitleView)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)_contentInsetsWithExclusionRects:(id)rects wantsUniformHorizontalInsets:(BOOL)insets;
+- (double)_subtitleFontSizeWhenMini:(BOOL)mini;
+- (double)_titleFontSizeWhenMini:(BOOL)mini;
+- (double)_topPaddingForTitleWhenMini:(BOOL)mini;
+- (double)_verticalOffsetForSubtitleWhenMini:(BOOL)mini;
 - (id)_subtitleTextColor;
 - (void)_updateHeightForCurrentTraits;
 - (void)_updateTrailingBarButtonItemsAlpha;
@@ -14,9 +14,9 @@
 - (void)didMoveToWindow;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setSubtitle:(id)a3 withStyle:(unint64_t)a4;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSubtitle:(id)subtitle withStyle:(unint64_t)style;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFMailComposeNavigationBarTitleView
@@ -40,11 +40,11 @@ void __61__MFMailComposeNavigationBarTitleView_attributedStringsCache__block_inv
   attributedStringsCache_sAttributedStringsCache_0 = v0;
 }
 
-- (MFMailComposeNavigationBarTitleView)initWithFrame:(CGRect)a3
+- (MFMailComposeNavigationBarTitleView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = MFMailComposeNavigationBarTitleView;
-  v3 = [(_UINavigationBarTitleView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UINavigationBarTitleView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,11 +62,11 @@ void __61__MFMailComposeNavigationBarTitleView_attributedStringsCache__block_inv
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v10;
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v4->_titleLabel setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v4->_titleLabel setBackgroundColor:clearColor];
 
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
     [(UILabel *)v4->_titleLabel setAlpha:0.0];
@@ -75,11 +75,11 @@ void __61__MFMailComposeNavigationBarTitleView_attributedStringsCache__block_inv
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v14;
 
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v4->_subtitleLabel setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v4->_subtitleLabel setBackgroundColor:clearColor2];
 
-    v17 = [(MFMailComposeNavigationBarTitleView *)v4 _subtitleTextColor];
-    [(UILabel *)v4->_subtitleLabel setTextColor:v17];
+    _subtitleTextColor = [(MFMailComposeNavigationBarTitleView *)v4 _subtitleTextColor];
+    [(UILabel *)v4->_subtitleLabel setTextColor:_subtitleTextColor];
 
     [(UILabel *)v4->_subtitleLabel setTextAlignment:1];
     [(MFMailComposeNavigationBarTitleView *)v4 addSubview:v4->_subtitleLabel];
@@ -88,38 +88,38 @@ void __61__MFMailComposeNavigationBarTitleView_attributedStringsCache__block_inv
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v6];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(MFMailComposeNavigationBarTitleView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3 withStyle:(unint64_t)a4
+- (void)setSubtitle:(id)subtitle withStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [(UILabel *)self->_subtitleLabel text];
-  v8 = [v7 isEqualToString:v6];
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
+  v8 = [text isEqualToString:subtitleCopy];
 
   if ((v8 & 1) == 0)
   {
     if (_os_feature_enabled_impl())
     {
-      v9 = [objc_opt_class() attributedStringsCache];
+      attributedStringsCache = [objc_opt_class() attributedStringsCache];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __61__MFMailComposeNavigationBarTitleView_setSubtitle_withStyle___block_invoke;
       v16 = &unk_1E806F7A8;
-      v18 = a4;
-      v10 = v6;
+      styleCopy = style;
+      v10 = subtitleCopy;
       v17 = v10;
-      v11 = [v9 objectForKey:v10 generator:&v13];
+      v11 = [attributedStringsCache objectForKey:v10 generator:&v13];
 
       subtitleLabel = self->_subtitleLabel;
       if (v11)
@@ -136,16 +136,16 @@ void __61__MFMailComposeNavigationBarTitleView_attributedStringsCache__block_inv
 
     else
     {
-      [(UILabel *)self->_subtitleLabel setText:v6];
+      [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
     }
 
     [(_UINavigationBarTitleView *)self setHideStandardTitle:[(MFMailComposeNavigationBarTitleView *)self _needsToLayoutTitleLabel]];
     [(MFMailComposeNavigationBarTitleView *)self setNeedsLayout];
   }
 
-  if (self->_style != a4)
+  if (self->_style != style)
   {
-    self->_style = a4;
+    self->_style = style;
     [(MFMailComposeNavigationBarTitleView *)self setNeedsLayout];
   }
 }
@@ -211,11 +211,11 @@ LABEL_8:
   [(MFMailComposeNavigationBarTitleView *)self setNeedsLayout];
 }
 
-- (UIEdgeInsets)_contentInsetsWithExclusionRects:(id)a3 wantsUniformHorizontalInsets:(BOOL)a4
+- (UIEdgeInsets)_contentInsetsWithExclusionRects:(id)rects wantsUniformHorizontalInsets:(BOOL)insets
 {
-  v4 = a4;
+  insetsCopy = insets;
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  rectsCopy = rects;
   [(MFMailComposeNavigationBarTitleView *)self bounds];
   MaxX = CGRectGetMaxX(v44);
   [(MFMailComposeNavigationBarTitleView *)self bounds];
@@ -225,7 +225,7 @@ LABEL_8:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v6;
+  v8 = rectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
   v10 = *MEMORY[0x1E695F058];
   v11 = *(MEMORY[0x1E695F058] + 8);
@@ -334,7 +334,7 @@ LABEL_8:
     v26 = v25;
   }
 
-  if (v4)
+  if (insetsCopy)
   {
     v27 = v26;
   }
@@ -344,7 +344,7 @@ LABEL_8:
     v27 = v24;
   }
 
-  if (v4)
+  if (insetsCopy)
   {
     v28 = v26;
   }
@@ -370,9 +370,9 @@ LABEL_8:
   v57.receiver = self;
   v57.super_class = MFMailComposeNavigationBarTitleView;
   [(MFMailComposeNavigationBarTitleView *)&v57 layoutSubviews];
-  v3 = [(MFMailComposeNavigationBarTitleView *)self _needsToLayoutTitleLabel];
-  v4 = [(_UINavigationBarTitleView *)self contentOverlayRects];
-  [(MFMailComposeNavigationBarTitleView *)self _contentInsetsWithExclusionRects:v4 wantsUniformHorizontalInsets:0];
+  _needsToLayoutTitleLabel = [(MFMailComposeNavigationBarTitleView *)self _needsToLayoutTitleLabel];
+  contentOverlayRects = [(_UINavigationBarTitleView *)self contentOverlayRects];
+  [(MFMailComposeNavigationBarTitleView *)self _contentInsetsWithExclusionRects:contentOverlayRects wantsUniformHorizontalInsets:0];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -383,7 +383,7 @@ LABEL_8:
   [(MFMailComposeNavigationBarTitleView *)self bounds];
   v15 = v14;
   v16 = v13;
-  if (v3)
+  if (_needsToLayoutTitleLabel)
   {
     v17 = MEMORY[0x1E69DB878];
     [(MFMailComposeNavigationBarTitleView *)self _titleFontSizeWhenMini:v13 <= 32.0];
@@ -403,8 +403,8 @@ LABEL_8:
   v20 = [v19 fontWithSize:?];
   [(UILabel *)self->_subtitleLabel setFont:v20];
 
-  v21 = [(MFMailComposeNavigationBarTitleView *)self _subtitleTextColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v21];
+  _subtitleTextColor = [(MFMailComposeNavigationBarTitleView *)self _subtitleTextColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:_subtitleTextColor];
 
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
@@ -416,7 +416,7 @@ LABEL_8:
   v23 = v22;
   [(UILabel *)self->_titleLabel layoutMargins];
   v25 = 0.0;
-  if (v3)
+  if (_needsToLayoutTitleLabel)
   {
     v26 = v24;
     v27 = v15;
@@ -462,7 +462,7 @@ LABEL_8:
   [(UILabel *)self->_subtitleLabel frame];
   v43 = v42;
   v45 = v44;
-  if (v3)
+  if (_needsToLayoutTitleLabel)
   {
     [(UILabel *)self->_titleLabel frame];
     MaxY = CGRectGetMaxY(v58);
@@ -527,12 +527,12 @@ LABEL_8:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFMailComposeNavigationBarTitleView;
-  [(MFMailComposeNavigationBarTitleView *)&v5 traitCollectionDidChange:v4];
+  [(MFMailComposeNavigationBarTitleView *)&v5 traitCollectionDidChange:changeCopy];
   [(MFMailComposeNavigationBarTitleView *)self _updateHeightForCurrentTraits];
 }
 
@@ -541,9 +541,9 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = MFMailComposeNavigationBarTitleView;
   [(MFMailComposeNavigationBarTitleView *)&v4 didMoveToWindow];
-  v3 = [(MFMailComposeNavigationBarTitleView *)self window];
+  window = [(MFMailComposeNavigationBarTitleView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MFMailComposeNavigationBarTitleView *)self _updateHeightForCurrentTraits];
   }
@@ -551,12 +551,12 @@ LABEL_8:
 
 - (void)_updateHeightForCurrentTraits
 {
-  v5 = [(MFMailComposeNavigationBarTitleView *)self traitCollection];
-  if ([v5 verticalSizeClass] == 1)
+  traitCollection = [(MFMailComposeNavigationBarTitleView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
-    v3 = [v5 horizontalSizeClass];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
     v4 = 56.0;
-    if (v3 == 1)
+    if (horizontalSizeClass == 1)
     {
       v4 = 32.0;
     }
@@ -570,14 +570,14 @@ LABEL_8:
   [(_UINavigationBarTitleView *)self setHeight:v4];
 }
 
-- (double)_verticalOffsetForSubtitleWhenMini:(BOOL)a3
+- (double)_verticalOffsetForSubtitleWhenMini:(BOOL)mini
 {
-  v3 = a3;
-  v4 = [(MFMailComposeNavigationBarTitleView *)self subtitle];
-  v5 = [v4 length];
+  miniCopy = mini;
+  subtitle = [(MFMailComposeNavigationBarTitleView *)self subtitle];
+  v5 = [subtitle length];
 
   result = 2.0;
-  if (v3)
+  if (miniCopy)
   {
     result = 1.0;
   }
@@ -590,13 +590,13 @@ LABEL_8:
   return result;
 }
 
-- (double)_topPaddingForTitleWhenMini:(BOOL)a3
+- (double)_topPaddingForTitleWhenMini:(BOOL)mini
 {
   v3 = 1.0;
-  if (a3)
+  if (mini)
   {
-    v4 = [(MFMailComposeNavigationBarTitleView *)self subtitle];
-    if ([v4 length])
+    subtitle = [(MFMailComposeNavigationBarTitleView *)self subtitle];
+    if ([subtitle length])
     {
       v3 = -1.0;
     }
@@ -610,13 +610,13 @@ LABEL_8:
   return v3;
 }
 
-- (double)_titleFontSizeWhenMini:(BOOL)a3
+- (double)_titleFontSizeWhenMini:(BOOL)mini
 {
   v3 = 17.0;
-  if (a3)
+  if (mini)
   {
-    v4 = [(MFMailComposeNavigationBarTitleView *)self subtitle];
-    if ([v4 length])
+    subtitle = [(MFMailComposeNavigationBarTitleView *)self subtitle];
+    if ([subtitle length])
     {
       v3 = 14.0;
     }
@@ -630,10 +630,10 @@ LABEL_8:
   return v3;
 }
 
-- (double)_subtitleFontSizeWhenMini:(BOOL)a3
+- (double)_subtitleFontSizeWhenMini:(BOOL)mini
 {
   result = 12.0;
-  if (a3)
+  if (mini)
   {
     return 9.0;
   }
@@ -674,8 +674,8 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(MFMailComposeNavigationBarTitleView *)self subtitle];
-  v4 = [v5 length] != 0;
+  subtitle = [(MFMailComposeNavigationBarTitleView *)self subtitle];
+  v4 = [subtitle length] != 0;
 
   return v4;
 }

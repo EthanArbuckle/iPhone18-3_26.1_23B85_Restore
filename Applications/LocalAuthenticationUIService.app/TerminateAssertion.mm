@@ -24,9 +24,9 @@
   if (v5)
   {
     v6 = v4[1];
-    v7 = self;
+    selfCopy = self;
     outlined copy of (@escaping @callee_guaranteed () -> ())?(v5);
-    v5(v7);
+    v5(selfCopy);
     outlined consume of (@escaping @callee_guaranteed () -> ())?(v5);
     v8 = *v4;
     v9 = v4[1];
@@ -37,7 +37,7 @@
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;

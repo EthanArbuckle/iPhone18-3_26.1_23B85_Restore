@@ -1,9 +1,9 @@
 @interface ABSValidationSyncObject
 + (BOOL)validationEnabled;
-+ (void)validateAgainst:(id)a3;
++ (void)validateAgainst:(id)against;
 - (ABSValidationSyncObject)init;
-- (BOOL)isEqual:(id)a3;
-- (id)createProtobufWithOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)createProtobufWithOptions:(id)options;
 - (id)description;
 @end
 
@@ -31,9 +31,9 @@
 + (BOOL)validationEnabled
 {
   v2 = +[SYDevice targetableDevice];
-  v3 = [v2 systemBuildVersion];
+  systemBuildVersion = [v2 systemBuildVersion];
 
-  v4 = [v3 substringToIndex:3];
+  v4 = [systemBuildVersion substringToIndex:3];
   if ([v4 compare:@"16R" options:64] == -1 || !+[NDTLog isInternalDevice](NDTLog, "isInternalDevice"))
   {
     v6 = 0;
@@ -58,7 +58,7 @@
   return v6;
 }
 
-- (id)createProtobufWithOptions:(id)a3
+- (id)createProtobufWithOptions:(id)options
 {
   v4 = [[ABSPBSyncObject alloc] initWithMemo:@"Validation"];
   v5 = objc_alloc_init(ABSPBCountValidationObject);
@@ -67,40 +67,40 @@
   rawContactCount = self->_rawContactCount;
   if ((rawContactCount & 0x8000000000000000) == 0)
   {
-    v7 = [(ABSPBSyncObject *)v4 countValidationObject];
-    [v7 setRawCount:rawContactCount];
+    countValidationObject = [(ABSPBSyncObject *)v4 countValidationObject];
+    [countValidationObject setRawCount:rawContactCount];
   }
 
   unifiedContactCount = self->_unifiedContactCount;
   if ((unifiedContactCount & 0x8000000000000000) == 0)
   {
-    v9 = [(ABSPBSyncObject *)v4 countValidationObject];
-    [v9 setUnifiedCount:unifiedContactCount];
+    countValidationObject2 = [(ABSPBSyncObject *)v4 countValidationObject];
+    [countValidationObject2 setUnifiedCount:unifiedContactCount];
   }
 
   favoritesCount = self->_favoritesCount;
   if ((favoritesCount & 0x8000000000000000) == 0)
   {
-    v11 = [(ABSPBSyncObject *)v4 countValidationObject];
-    [v11 setFavoritesCount:favoritesCount];
+    countValidationObject3 = [(ABSPBSyncObject *)v4 countValidationObject];
+    [countValidationObject3 setFavoritesCount:favoritesCount];
   }
 
   v12 = CFPreferencesGetAppBooleanValue(@"cvAlertEnabled", @"com.apple.Bridge.ContactsSyncDebug", 0) != 0;
-  v13 = [(ABSPBSyncObject *)v4 countValidationObject];
-  [v13 setShowAlert:v12];
+  countValidationObject4 = [(ABSPBSyncObject *)v4 countValidationObject];
+  [countValidationObject4 setShowAlert:v12];
 
-  v14 = [(ABSPBSyncObject *)v4 data];
+  data = [(ABSPBSyncObject *)v4 data];
 
-  return v14;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_rawContactCount == v5[2] && self->_unifiedContactCount == v5[3] && self->_favoritesCount == v5[4];
   }
 
@@ -122,13 +122,13 @@
   return v6;
 }
 
-+ (void)validateAgainst:(id)a3
++ (void)validateAgainst:(id)against
 {
-  v3 = a3;
+  againstCopy = against;
   v4 = objc_alloc_init(ABSValidationSyncObject);
-  if ([v3 hasRawCount])
+  if ([againstCopy hasRawCount])
   {
-    v5 = [v3 rawCount] != v4->_rawContactCount;
+    v5 = [againstCopy rawCount] != v4->_rawContactCount;
   }
 
   else
@@ -136,9 +136,9 @@
     v5 = 0;
   }
 
-  if ([v3 hasUnifiedCount])
+  if ([againstCopy hasUnifiedCount])
   {
-    v6 = [v3 unifiedCount] != v4->_unifiedContactCount;
+    v6 = [againstCopy unifiedCount] != v4->_unifiedContactCount;
   }
 
   else
@@ -147,9 +147,9 @@
   }
 
   v7 = v6 || v5;
-  if ([v3 hasFavoritesCount])
+  if ([againstCopy hasFavoritesCount])
   {
-    v8 = [v3 favoritesCount] != v4->_favoritesCount;
+    v8 = [againstCopy favoritesCount] != v4->_favoritesCount;
   }
 
   else
@@ -176,7 +176,7 @@
       }
 
       byte_100071CB4 = 1;
-      if ([v3 showAlert])
+      if ([againstCopy showAlert])
       {
         v11 = [NSString stringWithFormat:@"Contact count mismatch. Please file a radar against AddressBookSync | watchOS"];
         CFUserNotificationDisplayNotice(0.0, 0, 0, 0, 0, @"Sync validation failure", v11, @"OK");
@@ -190,7 +190,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = againstCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Census validation successful. Remote: %@", &v12, 0xCu);
     }
 

@@ -1,25 +1,25 @@
 @interface THThreadNetworkCredentialsActiveDataSetRecord
-+ (id)activeDataSetRecordFromKeychainDictionary:(id)a3;
-+ (id)computedUniqueIdentifierForBorderAgent:(id)a3 network:(id)a4 keychainAccessGroup:(id)a5;
-+ (id)computedUniqueIdentifierForNetwork:(id)a3 keychainAccessGroup:(id)a4;
-+ (id)keyChainQueryFetchForOneActiveDataSetOperationForThreadNetwork:(id)a3;
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForNetworkAndBorderAgent:(id)a3 borderAgent:(id)a4;
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgent:(id)a3;
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgentWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4;
-+ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifier:(id)a3;
-+ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4;
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetwork:(id)a3;
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetworkWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4;
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationWithKeychainAccessGroup:(id)a3;
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgent:(id)a3;
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgentWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4;
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForNetworkAndBorderAgent:(id)a3 borderAgent:(id)a4;
-+ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForClientKeychainAccessGroup:(id)a3;
-+ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForNetwork:(id)a3;
++ (id)activeDataSetRecordFromKeychainDictionary:(id)dictionary;
++ (id)computedUniqueIdentifierForBorderAgent:(id)agent network:(id)network keychainAccessGroup:(id)group;
++ (id)computedUniqueIdentifierForNetwork:(id)network keychainAccessGroup:(id)group;
++ (id)keyChainQueryFetchForOneActiveDataSetOperationForThreadNetwork:(id)network;
++ (id)keyChainQueryForDeleteActiveDataSetOperationForNetworkAndBorderAgent:(id)agent borderAgent:(id)borderAgent;
++ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgent:(id)agent;
++ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgentWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup;
++ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifier:(id)identifier;
++ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup;
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetwork:(id)network;
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetworkWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup;
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationWithKeychainAccessGroup:(id)group;
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgent:(id)agent;
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgentWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup;
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForNetworkAndBorderAgent:(id)agent borderAgent:(id)borderAgent;
++ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForClientKeychainAccessGroup:(id)group;
++ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForNetwork:(id)network;
 + (id)keyChainQueryForFetchAllActiveDataSetRecordsOperation;
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifier:(id)a3;
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4;
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForXPANId:(id)a3;
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifier:(id)identifier;
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup;
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForXPANId:(id)id;
 - (id)computedUniqueIdentifier;
 - (id)computedUniqueIdentifierWithBorderAgent;
 - (id)keyChainItemRepresentationForActiveDataSetRecordAddOperation;
@@ -29,28 +29,28 @@
 
 @implementation THThreadNetworkCredentialsActiveDataSetRecord
 
-+ (id)computedUniqueIdentifierForNetwork:(id)a3 keychainAccessGroup:(id)a4
++ (id)computedUniqueIdentifierForNetwork:(id)network keychainAccessGroup:(id)group
 {
   memset(&v18, 0, sizeof(v18));
-  v5 = a4;
-  v6 = a3;
+  groupCopy = group;
+  networkCopy = network;
   CC_SHA256_Init(&v18);
   CC_SHA256_Update(&v18, &THThreadNetworkBorderAgentUUIDNamespace, 0x10u);
-  v7 = v5;
-  v8 = [v7 UTF8String];
-  v9 = [v5 lengthOfBytesUsingEncoding:4];
+  v7 = groupCopy;
+  uTF8String = [v7 UTF8String];
+  v9 = [groupCopy lengthOfBytesUsingEncoding:4];
 
-  CC_SHA256_Update(&v18, v8, v9);
-  v10 = [v6 networkName];
-  v11 = [v10 UTF8String];
-  v12 = [v6 networkName];
-  CC_SHA256_Update(&v18, v11, [v12 lengthOfBytesUsingEncoding:4]);
+  CC_SHA256_Update(&v18, uTF8String, v9);
+  networkName = [networkCopy networkName];
+  uTF8String2 = [networkName UTF8String];
+  networkName2 = [networkCopy networkName];
+  CC_SHA256_Update(&v18, uTF8String2, [networkName2 lengthOfBytesUsingEncoding:4]);
 
-  v13 = [v6 extendedPANID];
-  v14 = [v13 bytes];
-  v15 = [v6 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
+  bytes = [extendedPANID bytes];
+  extendedPANID2 = [networkCopy extendedPANID];
 
-  CC_SHA256_Update(&v18, v14, [v15 length]);
+  CC_SHA256_Update(&v18, bytes, [extendedPANID2 length]);
   CC_SHA256_Final(md, &v18);
   v20 = *md;
   BYTE6(v20) = md[6] & 0xF | 0x50;
@@ -62,18 +62,18 @@
 
 - (id)computedUniqueIdentifier
 {
-  v3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  v4 = [v3 networkName];
-  if (v4)
+  network = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  networkName = [network networkName];
+  if (networkName)
   {
-    v5 = v4;
-    v6 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-    v7 = [v6 extendedPANID];
+    v5 = networkName;
+    network2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+    extendedPANID = [network2 extendedPANID];
 
-    if (v7)
+    if (extendedPANID)
     {
-      v8 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-      v9 = [THThreadNetworkCredentialsActiveDataSetRecord computedUniqueIdentifierForNetwork:v8 keychainAccessGroup:@"com.apple.thread.dataset"];
+      network3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+      v9 = [THThreadNetworkCredentialsActiveDataSetRecord computedUniqueIdentifierForNetwork:network3 keychainAccessGroup:@"com.apple.thread.dataset"];
 
       goto LABEL_8;
     }
@@ -95,34 +95,34 @@ LABEL_8:
   return v9;
 }
 
-+ (id)computedUniqueIdentifierForBorderAgent:(id)a3 network:(id)a4 keychainAccessGroup:(id)a5
++ (id)computedUniqueIdentifierForBorderAgent:(id)agent network:(id)network keychainAccessGroup:(id)group
 {
   memset(&v24, 0, sizeof(v24));
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  groupCopy = group;
+  networkCopy = network;
+  agentCopy = agent;
   CC_SHA256_Init(&v24);
   CC_SHA256_Update(&v24, &THThreadNetworkBorderAgentUUIDNamespace, 0x10u);
-  v10 = v7;
-  v11 = [v10 UTF8String];
-  v12 = [v7 lengthOfBytesUsingEncoding:4];
+  v10 = groupCopy;
+  uTF8String = [v10 UTF8String];
+  v12 = [groupCopy lengthOfBytesUsingEncoding:4];
 
-  CC_SHA256_Update(&v24, v11, v12);
-  v13 = [v8 networkName];
-  v14 = [v13 UTF8String];
-  v15 = [v8 networkName];
-  CC_SHA256_Update(&v24, v14, [v15 lengthOfBytesUsingEncoding:4]);
+  CC_SHA256_Update(&v24, uTF8String, v12);
+  networkName = [networkCopy networkName];
+  uTF8String2 = [networkName UTF8String];
+  networkName2 = [networkCopy networkName];
+  CC_SHA256_Update(&v24, uTF8String2, [networkName2 lengthOfBytesUsingEncoding:4]);
 
-  v16 = [v8 extendedPANID];
-  v17 = [v16 bytes];
-  v18 = [v8 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
+  bytes = [extendedPANID bytes];
+  extendedPANID2 = [networkCopy extendedPANID];
 
-  CC_SHA256_Update(&v24, v17, [v18 length]);
-  v19 = [v9 discriminatorId];
-  v20 = [v19 bytes];
-  v21 = [v9 discriminatorId];
+  CC_SHA256_Update(&v24, bytes, [extendedPANID2 length]);
+  discriminatorId = [agentCopy discriminatorId];
+  bytes2 = [discriminatorId bytes];
+  discriminatorId2 = [agentCopy discriminatorId];
 
-  CC_SHA256_Update(&v24, v20, [v21 length]);
+  CC_SHA256_Update(&v24, bytes2, [discriminatorId2 length]);
   CC_SHA256_Final(md, &v24);
   v26 = *md;
   BYTE6(v26) = md[6] & 0xF | 0x50;
@@ -134,17 +134,17 @@ LABEL_8:
 
 - (id)computedUniqueIdentifierWithBorderAgent
 {
-  v3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  v4 = [v3 networkName];
-  if (!v4)
+  network = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  networkName = [network networkName];
+  if (!networkName)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  v7 = [v6 extendedPANID];
-  if (!v7)
+  v5 = networkName;
+  network2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  extendedPANID = [network2 extendedPANID];
+  if (!extendedPANID)
   {
 LABEL_7:
 
@@ -152,24 +152,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = v7;
-  v9 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
-  v10 = [v9 discriminatorId];
-  if (!v10)
+  v8 = extendedPANID;
+  borderAgent = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
+  discriminatorId = [borderAgent discriminatorId];
+  if (!discriminatorId)
   {
 
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
+  v11 = discriminatorId;
+  keychainAccessGroup = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
 
-  if (v12)
+  if (keychainAccessGroup)
   {
-    v13 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
-    v14 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-    v15 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
-    v16 = [THThreadNetworkCredentialsActiveDataSetRecord computedUniqueIdentifierForBorderAgent:v13 network:v14 keychainAccessGroup:v15];
+    borderAgent2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
+    network3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+    keychainAccessGroup2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
+    v16 = [THThreadNetworkCredentialsActiveDataSetRecord computedUniqueIdentifierForBorderAgent:borderAgent2 network:network3 keychainAccessGroup:keychainAccessGroup2];
 
     goto LABEL_12;
   }
@@ -187,15 +187,15 @@ LABEL_12:
   return v16;
 }
 
-+ (id)activeDataSetRecordFromKeychainDictionary:(id)a3
++ (id)activeDataSetRecordFromKeychainDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 objectForKey:kSecAttrAccount];
+  v5 = [dictionaryCopy objectForKey:kSecAttrAccount];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 objectForKey:kSecAttrAccount];
+    v6 = [dictionaryCopy objectForKey:kSecAttrAccount];
   }
 
   else
@@ -203,11 +203,11 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = [v3 objectForKey:kSecAttrServer];
+  v7 = [dictionaryCopy objectForKey:kSecAttrServer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v3 objectForKey:kSecAttrServer];
+    v8 = [dictionaryCopy objectForKey:kSecAttrServer];
   }
 
   else
@@ -216,11 +216,11 @@ LABEL_12:
   }
 
   v9 = dataFromBase64String(v8);
-  v10 = [v3 objectForKey:kSecAttrProtocol];
+  v10 = [dictionaryCopy objectForKey:kSecAttrProtocol];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v3 objectForKey:kSecAttrProtocol];
+    v11 = [dictionaryCopy objectForKey:kSecAttrProtocol];
   }
 
   else
@@ -229,7 +229,7 @@ LABEL_12:
   }
 
   v46 = dataFromBase64String(v11);
-  v12 = [v3 objectForKey:kSecAttrSecurityDomain];
+  v12 = [dictionaryCopy objectForKey:kSecAttrSecurityDomain];
   objc_opt_class();
   v47 = v6;
   v48 = v9;
@@ -240,7 +240,7 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v13 = [v3 objectForKey:kSecAttrSecurityDomain];
+  v13 = [dictionaryCopy objectForKey:kSecAttrSecurityDomain];
 
   if (!v13)
   {
@@ -253,11 +253,11 @@ LABEL_18:
   v15 = v14;
   if (v6 && v9 && v14)
   {
-    v16 = [v3 objectForKey:kSecValueData];
+    v16 = [dictionaryCopy objectForKey:kSecValueData];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v3 objectForKey:kSecValueData];
+      v17 = [dictionaryCopy objectForKey:kSecValueData];
     }
 
     else
@@ -287,9 +287,9 @@ LABEL_18:
     v45 = v23;
     if (v24)
     {
-      v25 = [v23 credentialsDataSet];
+      credentialsDataSet = [v23 credentialsDataSet];
 
-      if (!v25)
+      if (!credentialsDataSet)
       {
         v26 = THCredentialsServerLogHandleForCategory(1);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -357,11 +357,11 @@ LABEL_69:
       goto LABEL_67;
     }
 
-    v29 = [v3 objectForKey:?];
+    v29 = [dictionaryCopy objectForKey:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v42 = [v3 objectForKey:kSecAttrCreationDate];
+      v42 = [dictionaryCopy objectForKey:kSecAttrCreationDate];
     }
 
     else
@@ -369,11 +369,11 @@ LABEL_69:
       v42 = 0;
     }
 
-    v31 = [v3 objectForKey:?];
+    v31 = [dictionaryCopy objectForKey:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [v3 objectForKey:kSecAttrModificationDate];
+      v39 = [dictionaryCopy objectForKey:kSecAttrModificationDate];
     }
 
     else
@@ -383,27 +383,27 @@ LABEL_69:
 
     v40 = v26;
 
-    v32 = [v3 objectForKey:kSecAttrPath];
+    v32 = [dictionaryCopy objectForKey:kSecAttrPath];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = [v3 objectForKey:kSecAttrPath];
+      v33 = [dictionaryCopy objectForKey:kSecAttrPath];
 
       v30 = v44;
       v41 = v33;
       if (v33)
       {
         v34 = [THThreadNetworkCredentialsActiveDataSetRecord alloc];
-        v37 = [v45 credentialsDataSet];
-        v18 = [v34 initWithBorderAgent:v43 credentialsDataSet:v37 network:v40 credentials:v45 uniqueIdentifier:v15 keychainAccessGroup:v33 creationDate:v42 lastModificationDate:v39];
+        credentialsDataSet2 = [v45 credentialsDataSet];
+        v18 = [v34 initWithBorderAgent:v43 credentialsDataSet:credentialsDataSet2 network:v40 credentials:v45 uniqueIdentifier:v15 keychainAccessGroup:v33 creationDate:v42 lastModificationDate:v39];
 
-        v35 = [v18 computedUniqueIdentifier];
-        if (([v35 isEqual:v15] & 1) == 0)
+        computedUniqueIdentifier = [v18 computedUniqueIdentifier];
+        if (([computedUniqueIdentifier isEqual:v15] & 1) == 0)
         {
           v38 = THCredentialsServerLogHandleForCategory(1);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            [(THThreadNetworkCredentialsActiveDataSetRecord(Keychain) *)v18 activeDataSetRecordFromKeychainDictionary:v35, v38];
+            [(THThreadNetworkCredentialsActiveDataSetRecord(Keychain) *)v18 activeDataSetRecordFromKeychainDictionary:computedUniqueIdentifier, v38];
           }
         }
 
@@ -460,12 +460,12 @@ LABEL_22:
 
 - (id)keyChainItemRepresentationForActiveDataSetRecordAddOperation
 {
-  v3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keyChainQueryForActiveDataSetRecordUpdateOperation];
-  v4 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keyChainItemRepresentationForActiveDataSetRecordUpdateOperation];
-  v5 = v4;
-  if (v3 && v4)
+  keyChainQueryForActiveDataSetRecordUpdateOperation = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keyChainQueryForActiveDataSetRecordUpdateOperation];
+  keyChainItemRepresentationForActiveDataSetRecordUpdateOperation = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keyChainItemRepresentationForActiveDataSetRecordUpdateOperation];
+  v5 = keyChainItemRepresentationForActiveDataSetRecordUpdateOperation;
+  if (keyChainQueryForActiveDataSetRecordUpdateOperation && keyChainItemRepresentationForActiveDataSetRecordUpdateOperation)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [keyChainQueryForActiveDataSetRecordUpdateOperation mutableCopy];
     [v6 addEntriesFromDictionary:v5];
     v11[0] = kSecAttrIsInvisible;
     v11[1] = kSecAttrSynchronizable;
@@ -480,8 +480,8 @@ LABEL_22:
     v12[4] = kSecAttrAccessibleAlways;
     v12[5] = @"Thread network credentials Active Data Set Record";
     v11[6] = kSecAttrPath;
-    v7 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
-    v12[6] = v7;
+    keychainAccessGroup = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
+    v12[6] = keychainAccessGroup;
     v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:7];
     [v6 addEntriesFromDictionary:v8];
 
@@ -504,29 +504,29 @@ LABEL_22:
 
 - (id)keyChainQueryForActiveDataSetRecordUpdateOperation
 {
-  v3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self computedUniqueIdentifier];
-  v4 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  v5 = [v4 networkName];
-  if (!v5)
+  computedUniqueIdentifier = [(THThreadNetworkCredentialsActiveDataSetRecord *)self computedUniqueIdentifier];
+  network = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  networkName = [network networkName];
+  if (!networkName)
   {
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  v8 = [v7 extendedPANID];
-  if (!v8)
+  v6 = networkName;
+  network2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  extendedPANID = [network2 extendedPANID];
+  if (!extendedPANID)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
-  v11 = [v10 discriminatorId];
+  v9 = extendedPANID;
+  borderAgent = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
+  discriminatorId = [borderAgent discriminatorId];
 
-  if (v11 && v3)
+  if (discriminatorId && computedUniqueIdentifier)
   {
     v23[0] = kSecClass;
     v23[1] = kSecAttrSynchronizable;
@@ -535,30 +535,30 @@ LABEL_7:
     v24[2] = kSecAttrViewHintHome;
     v23[2] = kSecAttrSyncViewHint;
     v23[3] = kSecAttrAccount;
-    v12 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-    v22 = [v12 networkName];
-    v24[3] = v22;
+    network3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+    networkName2 = [network3 networkName];
+    v24[3] = networkName2;
     v23[4] = kSecAttrServer;
-    v13 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-    v14 = [v13 extendedPANID];
-    v15 = base64StringFromData_0(v14);
+    network4 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+    extendedPANID2 = [network4 extendedPANID];
+    v15 = base64StringFromData_0(extendedPANID2);
     v24[4] = v15;
     v23[5] = kSecAttrProtocol;
-    v16 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
-    v17 = [v16 discriminatorId];
-    v18 = base64StringFromData_0(v17);
+    borderAgent2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
+    discriminatorId2 = [borderAgent2 discriminatorId];
+    v18 = base64StringFromData_0(discriminatorId2);
     v24[5] = v18;
     v23[6] = kSecAttrSecurityDomain;
-    v19 = [v3 UUIDString];
-    v24[6] = v19;
+    uUIDString = [computedUniqueIdentifier UUIDString];
+    v24[6] = uUIDString;
     v20 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:7];
 
     goto LABEL_11;
   }
 
 LABEL_8:
-  v12 = THCredentialsServerLogHandleForCategory(1);
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  network3 = THCredentialsServerLogHandleForCategory(1);
+  if (os_log_type_enabled(network3, OS_LOG_TYPE_ERROR))
   {
     [(THThreadNetworkCredentialsActiveDataSetRecord(Keychain) *)self keyChainQueryForActiveDataSetRecordUpdateOperation];
   }
@@ -571,9 +571,9 @@ LABEL_11:
 
 - (id)keyChainItemRepresentationForActiveDataSetRecordUpdateOperation
 {
-  v2 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentials];
+  credentials = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentials];
   v7 = 0;
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:1 error:&v7];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:credentials requiringSecureCoding:1 error:&v7];
   v4 = v7;
 
   v8 = kSecValueData;
@@ -604,11 +604,11 @@ LABEL_11:
   return v2;
 }
 
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifier:(id)a3
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifier:(id)identifier
 {
   v6[0] = kSecAttrSecurityDomain;
-  v3 = [a3 UUIDString];
-  v7[0] = v3;
+  uUIDString = [identifier UUIDString];
+  v7[0] = uUIDString;
   v7[1] = kSecClassInternetPassword;
   v6[1] = kSecClass;
   v6[2] = kSecAttrSynchronizable;
@@ -626,10 +626,10 @@ LABEL_11:
   return v4;
 }
 
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForXPANId:(id)a3
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForXPANId:(id)id
 {
   v6[0] = kSecAttrServer;
-  v3 = base64StringFromData_0(a3);
+  v3 = base64StringFromData_0(id);
   v7[0] = v3;
   v7[1] = kSecClassInternetPassword;
   v6[1] = kSecClass;
@@ -650,11 +650,11 @@ LABEL_11:
   return v4;
 }
 
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgent:(id)a3
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgent:(id)agent
 {
   v7[0] = kSecAttrProtocol;
-  v3 = [a3 discriminatorId];
-  v4 = base64StringFromData_0(v3);
+  discriminatorId = [agent discriminatorId];
+  v4 = base64StringFromData_0(discriminatorId);
   v8[0] = v4;
   v8[1] = kSecClassInternetPassword;
   v7[1] = kSecClass;
@@ -675,16 +675,16 @@ LABEL_11:
   return v5;
 }
 
-+ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForNetwork:(id)a3
++ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForNetwork:(id)network
 {
   v9[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 networkName];
-  v10[0] = v4;
+  networkCopy = network;
+  networkName = [networkCopy networkName];
+  v10[0] = networkName;
   v9[1] = kSecAttrServer;
-  v5 = [v3 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
 
-  v6 = base64StringFromData_0(v5);
+  v6 = base64StringFromData_0(extendedPANID);
   v10[1] = v6;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
@@ -705,20 +705,20 @@ LABEL_11:
   return v7;
 }
 
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForNetworkAndBorderAgent:(id)a3 borderAgent:(id)a4
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForNetworkAndBorderAgent:(id)agent borderAgent:(id)borderAgent
 {
   v13[0] = kSecAttrProtocol;
-  v5 = a3;
-  v6 = [a4 discriminatorId];
-  v7 = base64StringFromData_0(v6);
+  agentCopy = agent;
+  discriminatorId = [borderAgent discriminatorId];
+  v7 = base64StringFromData_0(discriminatorId);
   v14[0] = v7;
   v13[1] = kSecAttrAccount;
-  v8 = [v5 networkName];
-  v14[1] = v8;
+  networkName = [agentCopy networkName];
+  v14[1] = networkName;
   v13[2] = kSecAttrServer;
-  v9 = [v5 extendedPANID];
+  extendedPANID = [agentCopy extendedPANID];
 
-  v10 = base64StringFromData_0(v9);
+  v10 = base64StringFromData_0(extendedPANID);
   v14[2] = v10;
   v14[3] = kSecClassInternetPassword;
   v13[3] = kSecClass;
@@ -739,11 +739,11 @@ LABEL_11:
   return v11;
 }
 
-+ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForClientKeychainAccessGroup:(id)a3
++ (id)keyChainQueryForFetchActiveDataSetRecordsOperationForClientKeychainAccessGroup:(id)group
 {
   v6[0] = kSecAttrPath;
   v6[1] = kSecClass;
-  v7[0] = a3;
+  v7[0] = group;
   v7[1] = kSecClassInternetPassword;
   v6[2] = kSecAttrSynchronizable;
   v6[3] = kSecAttrSyncViewHint;
@@ -757,17 +757,17 @@ LABEL_11:
   v6[7] = kSecAttrAccessGroup;
   v7[6] = kSecMatchLimitAll;
   v7[7] = @"com.apple.thread.dataset";
-  v3 = a3;
+  groupCopy = group;
   v4 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:8];
 
   return v4;
 }
 
-+ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifier:(id)a3
++ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifier:(id)identifier
 {
   v6[0] = kSecAttrSecurityDomain;
-  v3 = [a3 UUIDString];
-  v7[0] = v3;
+  uUIDString = [identifier UUIDString];
+  v7[0] = uUIDString;
   v7[1] = kSecClassInternetPassword;
   v6[1] = kSecClass;
   v6[2] = kSecAttrSynchronizable;
@@ -779,11 +779,11 @@ LABEL_11:
   return v4;
 }
 
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgent:(id)a3
++ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgent:(id)agent
 {
   v7[0] = kSecAttrProtocol;
-  v3 = [a3 discriminatorId];
-  v4 = base64StringFromData_0(v3);
+  discriminatorId = [agent discriminatorId];
+  v4 = base64StringFromData_0(discriminatorId);
   v8[0] = v4;
   v8[1] = kSecClassInternetPassword;
   v7[1] = kSecClass;
@@ -796,20 +796,20 @@ LABEL_11:
   return v5;
 }
 
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForNetworkAndBorderAgent:(id)a3 borderAgent:(id)a4
++ (id)keyChainQueryForDeleteActiveDataSetOperationForNetworkAndBorderAgent:(id)agent borderAgent:(id)borderAgent
 {
   v13[0] = kSecAttrProtocol;
-  v5 = a3;
-  v6 = [a4 discriminatorId];
-  v7 = base64StringFromData_0(v6);
+  agentCopy = agent;
+  discriminatorId = [borderAgent discriminatorId];
+  v7 = base64StringFromData_0(discriminatorId);
   v14[0] = v7;
   v13[1] = kSecAttrAccount;
-  v8 = [v5 networkName];
-  v14[1] = v8;
+  networkName = [agentCopy networkName];
+  v14[1] = networkName;
   v13[2] = kSecAttrServer;
-  v9 = [v5 extendedPANID];
+  extendedPANID = [agentCopy extendedPANID];
 
-  v10 = base64StringFromData_0(v9);
+  v10 = base64StringFromData_0(extendedPANID);
   v14[2] = v10;
   v14[3] = kSecClassInternetPassword;
   v13[3] = kSecClass;
@@ -822,14 +822,14 @@ LABEL_11:
   return v11;
 }
 
-+ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4
++ (id)keyChainQueryForFetchOneActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup
 {
-  v10[0] = a4;
+  v10[0] = accessGroup;
   v9[0] = kSecAttrPath;
   v9[1] = kSecAttrSecurityDomain;
-  v5 = a4;
-  v6 = [a3 UUIDString];
-  v10[1] = v6;
+  accessGroupCopy = accessGroup;
+  uUIDString = [group UUIDString];
+  v10[1] = uUIDString;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
   v9[3] = kSecAttrSynchronizable;
@@ -847,14 +847,14 @@ LABEL_11:
   return v7;
 }
 
-+ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgentWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4
++ (id)keyChainQueryForFetchActiveDataSetRecordOperationForBorderAgentWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup
 {
-  v11[0] = a4;
+  v11[0] = accessGroup;
   v10[0] = kSecAttrPath;
   v10[1] = kSecAttrProtocol;
-  v5 = a4;
-  v6 = [a3 discriminatorId];
-  v7 = base64StringFromData_0(v6);
+  accessGroupCopy = accessGroup;
+  discriminatorId = [group discriminatorId];
+  v7 = base64StringFromData_0(discriminatorId);
   v11[1] = v7;
   v11[2] = kSecClassInternetPassword;
   v10[2] = kSecClass;
@@ -873,14 +873,14 @@ LABEL_11:
   return v8;
 }
 
-+ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4
++ (id)keyChainQueryForDeleteActiveDataSetRecordOperationForUniqueIdentifierWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup
 {
-  v10[0] = a4;
+  v10[0] = accessGroup;
   v9[0] = kSecAttrPath;
   v9[1] = kSecAttrSecurityDomain;
-  v5 = a4;
-  v6 = [a3 UUIDString];
-  v10[1] = v6;
+  accessGroupCopy = accessGroup;
+  uUIDString = [group UUIDString];
+  v10[1] = uUIDString;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
   v9[3] = kSecAttrSynchronizable;
@@ -892,14 +892,14 @@ LABEL_11:
   return v7;
 }
 
-+ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgentWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4
++ (id)keyChainQueryForDeleteActiveDataSetOperationForThreadNetworkBorderAgentWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup
 {
-  v11[0] = a4;
+  v11[0] = accessGroup;
   v10[0] = kSecAttrPath;
   v10[1] = kSecAttrProtocol;
-  v5 = a4;
-  v6 = [a3 discriminatorId];
-  v7 = base64StringFromData_0(v6);
+  accessGroupCopy = accessGroup;
+  discriminatorId = [group discriminatorId];
+  v7 = base64StringFromData_0(discriminatorId);
   v11[1] = v7;
   v11[2] = kSecClassInternetPassword;
   v10[2] = kSecClass;
@@ -912,16 +912,16 @@ LABEL_11:
   return v8;
 }
 
-+ (id)keyChainQueryFetchForOneActiveDataSetOperationForThreadNetwork:(id)a3
++ (id)keyChainQueryFetchForOneActiveDataSetOperationForThreadNetwork:(id)network
 {
   v9[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 networkName];
-  v10[0] = v4;
+  networkCopy = network;
+  networkName = [networkCopy networkName];
+  v10[0] = networkName;
   v9[1] = kSecAttrServer;
-  v5 = [v3 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
 
-  v6 = base64StringFromData_0(v5);
+  v6 = base64StringFromData_0(extendedPANID);
   v10[1] = v6;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
@@ -942,19 +942,19 @@ LABEL_11:
   return v7;
 }
 
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetworkWithKeychainAccessGroup:(id)a3 clientKeychainAccessGroup:(id)a4
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetworkWithKeychainAccessGroup:(id)group clientKeychainAccessGroup:(id)accessGroup
 {
   v12[0] = kSecAttrAccount;
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 networkName];
-  v13[0] = v7;
+  accessGroupCopy = accessGroup;
+  groupCopy = group;
+  networkName = [groupCopy networkName];
+  v13[0] = networkName;
   v12[1] = kSecAttrServer;
-  v8 = [v6 extendedPANID];
+  extendedPANID = [groupCopy extendedPANID];
 
-  v9 = base64StringFromData_0(v8);
+  v9 = base64StringFromData_0(extendedPANID);
   v13[1] = v9;
-  v13[2] = v5;
+  v13[2] = accessGroupCopy;
   v12[2] = kSecAttrPath;
   v12[3] = kSecClass;
   v13[3] = kSecClassInternetPassword;
@@ -969,16 +969,16 @@ LABEL_11:
   return v10;
 }
 
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetwork:(id)a3
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationForThreadNetwork:(id)network
 {
   v9[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 networkName];
-  v10[0] = v4;
+  networkCopy = network;
+  networkName = [networkCopy networkName];
+  v10[0] = networkName;
   v9[1] = kSecAttrServer;
-  v5 = [v3 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
 
-  v6 = base64StringFromData_0(v5);
+  v6 = base64StringFromData_0(extendedPANID);
   v10[1] = v6;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
@@ -993,11 +993,11 @@ LABEL_11:
   return v7;
 }
 
-+ (id)keyChainQueryForDeleteAllActiveDataSetOperationWithKeychainAccessGroup:(id)a3
++ (id)keyChainQueryForDeleteAllActiveDataSetOperationWithKeychainAccessGroup:(id)group
 {
   v6[0] = kSecAttrPath;
   v6[1] = kSecClass;
-  v7[0] = a3;
+  v7[0] = group;
   v7[1] = kSecClassInternetPassword;
   v6[2] = kSecAttrSynchronizable;
   v6[3] = kSecAttrSyncViewHint;
@@ -1005,7 +1005,7 @@ LABEL_11:
   v7[3] = kSecAttrViewHintHome;
   v6[4] = kSecAttrAccessGroup;
   v7[4] = @"com.apple.thread.dataset";
-  v3 = a3;
+  groupCopy = group;
   v4 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:5];
 
   return v4;

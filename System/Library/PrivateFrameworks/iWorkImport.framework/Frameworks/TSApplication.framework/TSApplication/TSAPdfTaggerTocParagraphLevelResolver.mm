@@ -1,12 +1,12 @@
 @interface TSAPdfTaggerTocParagraphLevelResolver
-- (int)levelOfCurrentParagraph:(id *)a3;
+- (int)levelOfCurrentParagraph:(id *)paragraph;
 @end
 
 @implementation TSAPdfTaggerTocParagraphLevelResolver
 
-- (int)levelOfCurrentParagraph:(id *)a3
+- (int)levelOfCurrentParagraph:(id *)paragraph
 {
-  v5 = objc_msgSend_tagger(self, a2, a3, v3);
+  v5 = objc_msgSend_tagger(self, a2, paragraph, v3);
   v9 = objc_msgSend_topmostTocChunkContext(v5, v6, v7, v8);
 
   if (!v9)

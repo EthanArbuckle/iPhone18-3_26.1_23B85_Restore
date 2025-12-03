@@ -1,24 +1,24 @@
 @interface SKPseudonyms
-- (SKPseudonyms)initWithIDSService:(id)a3;
-- (id)propertiesWithUpdatedServices:(id)a3;
-- (id)pseudonymsForMaskedURI:(id)a3 matchingProperties:(id)a4;
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 completion:(id)a5;
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 requestProperties:(id)a5 completion:(id)a6;
-- (void)provisionPseudonymWithProperties:(id)a3 completion:(id)a4;
-- (void)provisionPseudonymWithProperties:(id)a3 requestProperties:(id)a4 completion:(id)a5;
+- (SKPseudonyms)initWithIDSService:(id)service;
+- (id)propertiesWithUpdatedServices:(id)services;
+- (id)pseudonymsForMaskedURI:(id)i matchingProperties:(id)properties;
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties completion:(id)completion;
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion;
+- (void)provisionPseudonymWithProperties:(id)properties completion:(id)completion;
+- (void)provisionPseudonymWithProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion;
 @end
 
 @implementation SKPseudonyms
 
-- (SKPseudonyms)initWithIDSService:(id)a3
+- (SKPseudonyms)initWithIDSService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = SKPseudonyms;
   v5 = [(SKPseudonyms *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v4];
+    v6 = [objc_alloc(MEMORY[0x277D18778]) initWithService:serviceCopy];
     service = v5->_service;
     v5->_service = v6;
   }
@@ -26,62 +26,62 @@
   return v5;
 }
 
-- (id)pseudonymsForMaskedURI:(id)a3 matchingProperties:(id)a4
+- (id)pseudonymsForMaskedURI:(id)i matchingProperties:(id)properties
 {
   service = self->_service;
-  v7 = a3;
-  v8 = [(SKPseudonyms *)self propertiesWithUpdatedServices:a4];
-  v9 = [(IDSService *)service pseudonymsForMaskedURI:v7 matchingProperties:v8];
+  iCopy = i;
+  v8 = [(SKPseudonyms *)self propertiesWithUpdatedServices:properties];
+  v9 = [(IDSService *)service pseudonymsForMaskedURI:iCopy matchingProperties:v8];
 
   return v9;
 }
 
-- (void)provisionPseudonymWithProperties:(id)a3 completion:(id)a4
+- (void)provisionPseudonymWithProperties:(id)properties completion:(id)completion
 {
   service = self->_service;
-  v7 = a4;
-  v8 = [(SKPseudonyms *)self propertiesWithUpdatedServices:a3];
-  [(IDSService *)service provisionPseudonymWithProperties:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [(SKPseudonyms *)self propertiesWithUpdatedServices:properties];
+  [(IDSService *)service provisionPseudonymWithProperties:v8 completion:completionCopy];
 }
 
-- (void)provisionPseudonymWithProperties:(id)a3 requestProperties:(id)a4 completion:(id)a5
+- (void)provisionPseudonymWithProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion
 {
   service = self->_service;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(SKPseudonyms *)self propertiesWithUpdatedServices:a3];
-  [(IDSService *)service provisionPseudonymWithProperties:v11 requestProperties:v10 completion:v9];
+  completionCopy = completion;
+  requestPropertiesCopy = requestProperties;
+  v11 = [(SKPseudonyms *)self propertiesWithUpdatedServices:properties];
+  [(IDSService *)service provisionPseudonymWithProperties:v11 requestProperties:requestPropertiesCopy completion:completionCopy];
 }
 
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 completion:(id)a5
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties completion:(id)completion
 {
   service = self->_service;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SKPseudonyms *)self propertiesWithUpdatedServices:a4];
-  [(IDSService *)service provisionPseudonymForURI:v10 withProperties:v11 completion:v9];
+  completionCopy = completion;
+  iCopy = i;
+  v11 = [(SKPseudonyms *)self propertiesWithUpdatedServices:properties];
+  [(IDSService *)service provisionPseudonymForURI:iCopy withProperties:v11 completion:completionCopy];
 }
 
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 requestProperties:(id)a5 completion:(id)a6
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion
 {
   service = self->_service;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(SKPseudonyms *)self propertiesWithUpdatedServices:a4];
-  [(IDSService *)service provisionPseudonymForURI:v13 withProperties:v14 requestProperties:v12 completion:v11];
+  completionCopy = completion;
+  requestPropertiesCopy = requestProperties;
+  iCopy = i;
+  v14 = [(SKPseudonyms *)self propertiesWithUpdatedServices:properties];
+  [(IDSService *)service provisionPseudonymForURI:iCopy withProperties:v14 requestProperties:requestPropertiesCopy completion:completionCopy];
 }
 
-- (id)propertiesWithUpdatedServices:(id)a3
+- (id)propertiesWithUpdatedServices:(id)services
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  servicesCopy = services;
   v6 = [v4 alloc];
-  v7 = [v5 allowedServices];
-  v8 = v7;
-  if (v7)
+  allowedServices = [servicesCopy allowedServices];
+  v8 = allowedServices;
+  if (allowedServices)
   {
-    v9 = v7;
+    v9 = allowedServices;
   }
 
   else
@@ -91,12 +91,12 @@
 
   v10 = [v6 initWithArray:v9];
 
-  v11 = [(IDSService *)self->_service serviceIdentifier];
-  [v10 addObject:v11];
+  serviceIdentifier = [(IDSService *)self->_service serviceIdentifier];
+  [v10 addObject:serviceIdentifier];
 
   [v10 addObject:@"com.apple.private.alloy.status.keysharing"];
-  v12 = [v10 allObjects];
-  v13 = [v5 withUpdatedAllowedServices:v12];
+  allObjects = [v10 allObjects];
+  v13 = [servicesCopy withUpdatedAllowedServices:allObjects];
 
   return v13;
 }

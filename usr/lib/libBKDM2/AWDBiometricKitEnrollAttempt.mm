@@ -1,73 +1,73 @@
 @interface AWDBiometricKitEnrollAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAmbientLux:(BOOL)a3;
-- (void)setHasBioCaptureSequenceCount:(BOOL)a3;
-- (void)setHasCameraErr:(BOOL)a3;
-- (void)setHasDeviceOrientation:(BOOL)a3;
-- (void)setHasDoubleErrorCountsBinCovered:(BOOL)a3;
-- (void)setHasDoubleErrorCountsFaceOutOfFOV:(BOOL)a3;
-- (void)setHasDoubleErrorCountsFaceTooClose:(BOOL)a3;
-- (void)setHasDoubleErrorCountsFaceTooFar:(BOOL)a3;
-- (void)setHasDoubleErrorCountsLowerFaceOccluded:(BOOL)a3;
-- (void)setHasDoubleErrorCountsMoreFrames:(BOOL)a3;
-- (void)setHasDoubleErrorCountsMultipleFaces:(BOOL)a3;
-- (void)setHasDoubleErrorCountsNoFace:(BOOL)a3;
-- (void)setHasDoubleErrorCountsOK:(BOOL)a3;
-- (void)setHasDoubleErrorCountsOccluded:(BOOL)a3;
-- (void)setHasDoubleErrorCountsPoseOutRange:(BOOL)a3;
-- (void)setHasDoubleErrorCountsUpperFaceOccluded:(BOOL)a3;
-- (void)setHasEnrollFeatureVectorError:(BOOL)a3;
-- (void)setHasEnrollResult:(BOOL)a3;
-- (void)setHasEnrollType:(BOOL)a3;
-- (void)setHasEnrolledIdentityCount:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountTotal:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountType0:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountType1:(BOOL)a3;
-- (void)setHasFaceDistance:(BOOL)a3;
-- (void)setHasFailedNoFace:(BOOL)a3;
-- (void)setHasFeatureGenerationError:(BOOL)a3;
-- (void)setHasFrameCountBin00:(BOOL)a3;
-- (void)setHasFrameCountBin01:(BOOL)a3;
-- (void)setHasFrameCountBin02:(BOOL)a3;
-- (void)setHasFrameCountBin10:(BOOL)a3;
-- (void)setHasFrameCountBin11:(BOOL)a3;
-- (void)setHasFrameCountBin12:(BOOL)a3;
-- (void)setHasFrameCountBin20:(BOOL)a3;
-- (void)setHasFrameCountBin21:(BOOL)a3;
-- (void)setHasFrameCountBin22:(BOOL)a3;
-- (void)setHasFrameErrorCountsBinCovered:(BOOL)a3;
-- (void)setHasFrameErrorCountsFaceOutOfFOV:(BOOL)a3;
-- (void)setHasFrameErrorCountsFaceTooClose:(BOOL)a3;
-- (void)setHasFrameErrorCountsFaceTooFar:(BOOL)a3;
-- (void)setHasFrameErrorCountsLowerFaceOccluded:(BOOL)a3;
-- (void)setHasFrameErrorCountsMoreFrames:(BOOL)a3;
-- (void)setHasFrameErrorCountsMultipleFaces:(BOOL)a3;
-- (void)setHasFrameErrorCountsNoFace:(BOOL)a3;
-- (void)setHasFrameErrorCountsOK:(BOOL)a3;
-- (void)setHasFrameErrorCountsOccluded:(BOOL)a3;
-- (void)setHasFrameErrorCountsPoseOutRange:(BOOL)a3;
-- (void)setHasFrameErrorCountsUpperFaceOccluded:(BOOL)a3;
-- (void)setHasNoseAndMouthOccluded:(BOOL)a3;
-- (void)setHasOverallResult:(BOOL)a3;
-- (void)setHasRfcFrameIndex:(BOOL)a3;
-- (void)setHasRfcSetIndex:(BOOL)a3;
-- (void)setHasSensorTemperature:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAmbientLux:(BOOL)lux;
+- (void)setHasBioCaptureSequenceCount:(BOOL)count;
+- (void)setHasCameraErr:(BOOL)err;
+- (void)setHasDeviceOrientation:(BOOL)orientation;
+- (void)setHasDoubleErrorCountsBinCovered:(BOOL)covered;
+- (void)setHasDoubleErrorCountsFaceOutOfFOV:(BOOL)v;
+- (void)setHasDoubleErrorCountsFaceTooClose:(BOOL)close;
+- (void)setHasDoubleErrorCountsFaceTooFar:(BOOL)far;
+- (void)setHasDoubleErrorCountsLowerFaceOccluded:(BOOL)occluded;
+- (void)setHasDoubleErrorCountsMoreFrames:(BOOL)frames;
+- (void)setHasDoubleErrorCountsMultipleFaces:(BOOL)faces;
+- (void)setHasDoubleErrorCountsNoFace:(BOOL)face;
+- (void)setHasDoubleErrorCountsOK:(BOOL)k;
+- (void)setHasDoubleErrorCountsOccluded:(BOOL)occluded;
+- (void)setHasDoubleErrorCountsPoseOutRange:(BOOL)range;
+- (void)setHasDoubleErrorCountsUpperFaceOccluded:(BOOL)occluded;
+- (void)setHasEnrollFeatureVectorError:(BOOL)error;
+- (void)setHasEnrollResult:(BOOL)result;
+- (void)setHasEnrollType:(BOOL)type;
+- (void)setHasEnrolledIdentityCount:(BOOL)count;
+- (void)setHasEnrolledTemplateCountTotal:(BOOL)total;
+- (void)setHasEnrolledTemplateCountType0:(BOOL)type0;
+- (void)setHasEnrolledTemplateCountType1:(BOOL)type1;
+- (void)setHasFaceDistance:(BOOL)distance;
+- (void)setHasFailedNoFace:(BOOL)face;
+- (void)setHasFeatureGenerationError:(BOOL)error;
+- (void)setHasFrameCountBin00:(BOOL)bin00;
+- (void)setHasFrameCountBin01:(BOOL)bin01;
+- (void)setHasFrameCountBin02:(BOOL)bin02;
+- (void)setHasFrameCountBin10:(BOOL)bin10;
+- (void)setHasFrameCountBin11:(BOOL)bin11;
+- (void)setHasFrameCountBin12:(BOOL)bin12;
+- (void)setHasFrameCountBin20:(BOOL)bin20;
+- (void)setHasFrameCountBin21:(BOOL)bin21;
+- (void)setHasFrameCountBin22:(BOOL)bin22;
+- (void)setHasFrameErrorCountsBinCovered:(BOOL)covered;
+- (void)setHasFrameErrorCountsFaceOutOfFOV:(BOOL)v;
+- (void)setHasFrameErrorCountsFaceTooClose:(BOOL)close;
+- (void)setHasFrameErrorCountsFaceTooFar:(BOOL)far;
+- (void)setHasFrameErrorCountsLowerFaceOccluded:(BOOL)occluded;
+- (void)setHasFrameErrorCountsMoreFrames:(BOOL)frames;
+- (void)setHasFrameErrorCountsMultipleFaces:(BOOL)faces;
+- (void)setHasFrameErrorCountsNoFace:(BOOL)face;
+- (void)setHasFrameErrorCountsOK:(BOOL)k;
+- (void)setHasFrameErrorCountsOccluded:(BOOL)occluded;
+- (void)setHasFrameErrorCountsPoseOutRange:(BOOL)range;
+- (void)setHasFrameErrorCountsUpperFaceOccluded:(BOOL)occluded;
+- (void)setHasNoseAndMouthOccluded:(BOOL)occluded;
+- (void)setHasOverallResult:(BOOL)result;
+- (void)setHasRfcFrameIndex:(BOOL)index;
+- (void)setHasRfcSetIndex:(BOOL)index;
+- (void)setHasSensorTemperature:(BOOL)temperature;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBiometricKitEnrollAttempt
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 8;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -75,10 +75,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasOverallResult:(BOOL)a3
+- (void)setHasOverallResult:(BOOL)result
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!result)
   {
     v3 = 0;
   }
@@ -86,10 +86,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsOK:(BOOL)a3
+- (void)setHasDoubleErrorCountsOK:(BOOL)k
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!k)
   {
     v3 = 0;
   }
@@ -97,10 +97,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsMoreFrames:(BOOL)a3
+- (void)setHasDoubleErrorCountsMoreFrames:(BOOL)frames
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!frames)
   {
     v3 = 0;
   }
@@ -108,10 +108,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsNoFace:(BOOL)a3
+- (void)setHasDoubleErrorCountsNoFace:(BOOL)face
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!face)
   {
     v3 = 0;
   }
@@ -119,10 +119,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsFaceOutOfFOV:(BOOL)a3
+- (void)setHasDoubleErrorCountsFaceOutOfFOV:(BOOL)v
 {
   v3 = 512;
-  if (!a3)
+  if (!v)
   {
     v3 = 0;
   }
@@ -130,10 +130,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsMultipleFaces:(BOOL)a3
+- (void)setHasDoubleErrorCountsMultipleFaces:(BOOL)faces
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!faces)
   {
     v3 = 0;
   }
@@ -141,10 +141,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsFaceTooClose:(BOOL)a3
+- (void)setHasDoubleErrorCountsFaceTooClose:(BOOL)close
 {
   v3 = 1024;
-  if (!a3)
+  if (!close)
   {
     v3 = 0;
   }
@@ -152,10 +152,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsFaceTooFar:(BOOL)a3
+- (void)setHasDoubleErrorCountsFaceTooFar:(BOOL)far
 {
   v3 = 2048;
-  if (!a3)
+  if (!far)
   {
     v3 = 0;
   }
@@ -163,10 +163,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsPoseOutRange:(BOOL)a3
+- (void)setHasDoubleErrorCountsPoseOutRange:(BOOL)range
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!range)
   {
     v3 = 0;
   }
@@ -174,10 +174,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsBinCovered:(BOOL)a3
+- (void)setHasDoubleErrorCountsBinCovered:(BOOL)covered
 {
   v3 = 256;
-  if (!a3)
+  if (!covered)
   {
     v3 = 0;
   }
@@ -185,10 +185,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsOccluded:(BOOL)a3
+- (void)setHasDoubleErrorCountsOccluded:(BOOL)occluded
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -196,10 +196,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsOK:(BOOL)a3
+- (void)setHasFrameErrorCountsOK:(BOOL)k
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!k)
   {
     v3 = 0;
   }
@@ -207,10 +207,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsMoreFrames:(BOOL)a3
+- (void)setHasFrameErrorCountsMoreFrames:(BOOL)frames
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!frames)
   {
     v3 = 0;
   }
@@ -218,10 +218,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsNoFace:(BOOL)a3
+- (void)setHasFrameErrorCountsNoFace:(BOOL)face
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!face)
   {
     v3 = 0;
   }
@@ -229,10 +229,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsFaceOutOfFOV:(BOOL)a3
+- (void)setHasFrameErrorCountsFaceOutOfFOV:(BOOL)v
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!v)
   {
     v3 = 0;
   }
@@ -240,10 +240,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsMultipleFaces:(BOOL)a3
+- (void)setHasFrameErrorCountsMultipleFaces:(BOOL)faces
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!faces)
   {
     v3 = 0;
   }
@@ -251,10 +251,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsFaceTooClose:(BOOL)a3
+- (void)setHasFrameErrorCountsFaceTooClose:(BOOL)close
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!close)
   {
     v3 = 0;
   }
@@ -262,10 +262,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsFaceTooFar:(BOOL)a3
+- (void)setHasFrameErrorCountsFaceTooFar:(BOOL)far
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!far)
   {
     v3 = 0;
   }
@@ -273,10 +273,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsPoseOutRange:(BOOL)a3
+- (void)setHasFrameErrorCountsPoseOutRange:(BOOL)range
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!range)
   {
     v3 = 0;
   }
@@ -284,10 +284,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsBinCovered:(BOOL)a3
+- (void)setHasFrameErrorCountsBinCovered:(BOOL)covered
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!covered)
   {
     v3 = 0;
   }
@@ -295,10 +295,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsOccluded:(BOOL)a3
+- (void)setHasFrameErrorCountsOccluded:(BOOL)occluded
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -306,10 +306,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin00:(BOOL)a3
+- (void)setHasFrameCountBin00:(BOOL)bin00
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!bin00)
   {
     v3 = 0;
   }
@@ -317,10 +317,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin01:(BOOL)a3
+- (void)setHasFrameCountBin01:(BOOL)bin01
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!bin01)
   {
     v3 = 0;
   }
@@ -328,10 +328,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin02:(BOOL)a3
+- (void)setHasFrameCountBin02:(BOOL)bin02
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!bin02)
   {
     v3 = 0;
   }
@@ -339,10 +339,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin10:(BOOL)a3
+- (void)setHasFrameCountBin10:(BOOL)bin10
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!bin10)
   {
     v3 = 0;
   }
@@ -350,10 +350,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin11:(BOOL)a3
+- (void)setHasFrameCountBin11:(BOOL)bin11
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!bin11)
   {
     v3 = 0;
   }
@@ -361,10 +361,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin12:(BOOL)a3
+- (void)setHasFrameCountBin12:(BOOL)bin12
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!bin12)
   {
     v3 = 0;
   }
@@ -372,10 +372,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin20:(BOOL)a3
+- (void)setHasFrameCountBin20:(BOOL)bin20
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!bin20)
   {
     v3 = 0;
   }
@@ -383,10 +383,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin21:(BOOL)a3
+- (void)setHasFrameCountBin21:(BOOL)bin21
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!bin21)
   {
     v3 = 0;
   }
@@ -394,10 +394,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameCountBin22:(BOOL)a3
+- (void)setHasFrameCountBin22:(BOOL)bin22
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!bin22)
   {
     v3 = 0;
   }
@@ -405,10 +405,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasBioCaptureSequenceCount:(BOOL)a3
+- (void)setHasBioCaptureSequenceCount:(BOOL)count
 {
   v3 = 32;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -416,10 +416,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasAmbientLux:(BOOL)a3
+- (void)setHasAmbientLux:(BOOL)lux
 {
   v3 = 16;
-  if (!a3)
+  if (!lux)
   {
     v3 = 0;
   }
@@ -427,10 +427,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasFeatureGenerationError:(BOOL)a3
+- (void)setHasFeatureGenerationError:(BOOL)error
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
@@ -438,10 +438,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasEnrollFeatureVectorError:(BOOL)a3
+- (void)setHasEnrollFeatureVectorError:(BOOL)error
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
@@ -449,10 +449,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasCameraErr:(BOOL)a3
+- (void)setHasCameraErr:(BOOL)err
 {
   v3 = 64;
-  if (!a3)
+  if (!err)
   {
     v3 = 0;
   }
@@ -460,10 +460,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasEnrollResult:(BOOL)a3
+- (void)setHasEnrollResult:(BOOL)result
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!result)
   {
     v3 = 0;
   }
@@ -471,10 +471,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasFaceDistance:(BOOL)a3
+- (void)setHasFaceDistance:(BOOL)distance
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!distance)
   {
     v3 = 0;
   }
@@ -482,10 +482,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasSensorTemperature:(BOOL)a3
+- (void)setHasSensorTemperature:(BOOL)temperature
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!temperature)
   {
     v3 = 0;
   }
@@ -493,10 +493,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasRfcSetIndex:(BOOL)a3
+- (void)setHasRfcSetIndex:(BOOL)index
 {
   v3 = 4;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -504,10 +504,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasRfcFrameIndex:(BOOL)a3
+- (void)setHasRfcFrameIndex:(BOOL)index
 {
   v3 = 2;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -515,10 +515,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasFailedNoFace:(BOOL)a3
+- (void)setHasFailedNoFace:(BOOL)face
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!face)
   {
     v3 = 0;
   }
@@ -526,10 +526,10 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasDeviceOrientation:(BOOL)a3
+- (void)setHasDeviceOrientation:(BOOL)orientation
 {
   v3 = 128;
-  if (!a3)
+  if (!orientation)
   {
     v3 = 0;
   }
@@ -537,10 +537,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasEnrolledIdentityCount:(BOOL)a3
+- (void)setHasEnrolledIdentityCount:(BOOL)count
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -548,10 +548,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasNoseAndMouthOccluded:(BOOL)a3
+- (void)setHasNoseAndMouthOccluded:(BOOL)occluded
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -559,10 +559,10 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsUpperFaceOccluded:(BOOL)a3
+- (void)setHasDoubleErrorCountsUpperFaceOccluded:(BOOL)occluded
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -570,10 +570,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasDoubleErrorCountsLowerFaceOccluded:(BOOL)a3
+- (void)setHasDoubleErrorCountsLowerFaceOccluded:(BOOL)occluded
 {
   v3 = 4096;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -581,10 +581,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsUpperFaceOccluded:(BOOL)a3
+- (void)setHasFrameErrorCountsUpperFaceOccluded:(BOOL)occluded
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -592,10 +592,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFrameErrorCountsLowerFaceOccluded:(BOOL)a3
+- (void)setHasFrameErrorCountsLowerFaceOccluded:(BOOL)occluded
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!occluded)
   {
     v3 = 0;
   }
@@ -603,10 +603,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasEnrollType:(BOOL)a3
+- (void)setHasEnrollType:(BOOL)type
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -614,10 +614,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountType0:(BOOL)a3
+- (void)setHasEnrolledTemplateCountType0:(BOOL)type0
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -625,10 +625,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountType1:(BOOL)a3
+- (void)setHasEnrolledTemplateCountType1:(BOOL)type1
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -636,10 +636,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountTotal:(BOOL)a3
+- (void)setHasEnrolledTemplateCountTotal:(BOOL)total
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!total)
   {
     v3 = 0;
   }
@@ -653,20 +653,20 @@
   v8.receiver = self;
   v8.super_class = AWDBiometricKitEnrollAttempt;
   v4 = [(AWDBiometricKitEnrollAttempt *)&v8 description];
-  v5 = [(AWDBiometricKitEnrollAttempt *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDBiometricKitEnrollAttempt *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 8) != 0)
   {
     v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v8 forKey:@"timestamp"];
+    [dictionary setObject:v8 forKey:@"timestamp"];
 
     has = self->_has;
     if ((*&has & 0x20000000000000) == 0)
@@ -687,7 +687,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x29EDBA070] numberWithBool:self->_overallResult];
-  [v3 setObject:v9 forKey:@"overallResult"];
+  [dictionary setObject:v9 forKey:@"overallResult"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -703,7 +703,7 @@ LABEL_4:
 
 LABEL_59:
   v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_overallTime];
-  [v3 setObject:v10 forKey:@"overallTime"];
+  [dictionary setObject:v10 forKey:@"overallTime"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -719,7 +719,7 @@ LABEL_5:
 
 LABEL_60:
   v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsOK];
-  [v3 setObject:v11 forKey:@"doubleErrorCountsOK"];
+  [dictionary setObject:v11 forKey:@"doubleErrorCountsOK"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -735,7 +735,7 @@ LABEL_6:
 
 LABEL_61:
   v12 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsMoreFrames];
-  [v3 setObject:v12 forKey:@"doubleErrorCountsMoreFrames"];
+  [dictionary setObject:v12 forKey:@"doubleErrorCountsMoreFrames"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -751,7 +751,7 @@ LABEL_7:
 
 LABEL_62:
   v13 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsNoFace];
-  [v3 setObject:v13 forKey:@"doubleErrorCountsNoFace"];
+  [dictionary setObject:v13 forKey:@"doubleErrorCountsNoFace"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -767,7 +767,7 @@ LABEL_8:
 
 LABEL_63:
   v14 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsFaceOutOfFOV];
-  [v3 setObject:v14 forKey:@"doubleErrorCountsFaceOutOfFOV"];
+  [dictionary setObject:v14 forKey:@"doubleErrorCountsFaceOutOfFOV"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -783,7 +783,7 @@ LABEL_9:
 
 LABEL_64:
   v15 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsMultipleFaces];
-  [v3 setObject:v15 forKey:@"doubleErrorCountsMultipleFaces"];
+  [dictionary setObject:v15 forKey:@"doubleErrorCountsMultipleFaces"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -799,7 +799,7 @@ LABEL_10:
 
 LABEL_65:
   v16 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsFaceTooClose];
-  [v3 setObject:v16 forKey:@"doubleErrorCountsFaceTooClose"];
+  [dictionary setObject:v16 forKey:@"doubleErrorCountsFaceTooClose"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -815,7 +815,7 @@ LABEL_11:
 
 LABEL_66:
   v17 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsFaceTooFar];
-  [v3 setObject:v17 forKey:@"doubleErrorCountsFaceTooFar"];
+  [dictionary setObject:v17 forKey:@"doubleErrorCountsFaceTooFar"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -831,7 +831,7 @@ LABEL_12:
 
 LABEL_67:
   v18 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsPoseOutRange];
-  [v3 setObject:v18 forKey:@"doubleErrorCountsPoseOutRange"];
+  [dictionary setObject:v18 forKey:@"doubleErrorCountsPoseOutRange"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -847,7 +847,7 @@ LABEL_13:
 
 LABEL_68:
   v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsBinCovered];
-  [v3 setObject:v19 forKey:@"doubleErrorCountsBinCovered"];
+  [dictionary setObject:v19 forKey:@"doubleErrorCountsBinCovered"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -863,7 +863,7 @@ LABEL_14:
 
 LABEL_69:
   v20 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsOccluded];
-  [v3 setObject:v20 forKey:@"doubleErrorCountsOccluded"];
+  [dictionary setObject:v20 forKey:@"doubleErrorCountsOccluded"];
 
   has = self->_has;
   if ((*&has & 0x400000000000) == 0)
@@ -879,7 +879,7 @@ LABEL_15:
 
 LABEL_70:
   v21 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsOK];
-  [v3 setObject:v21 forKey:@"frameErrorCountsOK"];
+  [dictionary setObject:v21 forKey:@"frameErrorCountsOK"];
 
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
@@ -895,7 +895,7 @@ LABEL_16:
 
 LABEL_71:
   v22 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsMoreFrames];
-  [v3 setObject:v22 forKey:@"frameErrorCountsMoreFrames"];
+  [dictionary setObject:v22 forKey:@"frameErrorCountsMoreFrames"];
 
   has = self->_has;
   if ((*&has & 0x200000000000) == 0)
@@ -911,7 +911,7 @@ LABEL_17:
 
 LABEL_72:
   v23 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsNoFace];
-  [v3 setObject:v23 forKey:@"frameErrorCountsNoFace"];
+  [dictionary setObject:v23 forKey:@"frameErrorCountsNoFace"];
 
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
@@ -927,7 +927,7 @@ LABEL_18:
 
 LABEL_73:
   v24 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsFaceOutOfFOV];
-  [v3 setObject:v24 forKey:@"frameErrorCountsFaceOutOfFOV"];
+  [dictionary setObject:v24 forKey:@"frameErrorCountsFaceOutOfFOV"];
 
   has = self->_has;
   if ((*&has & 0x100000000000) == 0)
@@ -943,7 +943,7 @@ LABEL_19:
 
 LABEL_74:
   v25 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsMultipleFaces];
-  [v3 setObject:v25 forKey:@"frameErrorCountsMultipleFaces"];
+  [dictionary setObject:v25 forKey:@"frameErrorCountsMultipleFaces"];
 
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
@@ -959,7 +959,7 @@ LABEL_20:
 
 LABEL_75:
   v26 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsFaceTooClose];
-  [v3 setObject:v26 forKey:@"frameErrorCountsFaceTooClose"];
+  [dictionary setObject:v26 forKey:@"frameErrorCountsFaceTooClose"];
 
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
@@ -975,7 +975,7 @@ LABEL_21:
 
 LABEL_76:
   v27 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsFaceTooFar];
-  [v3 setObject:v27 forKey:@"frameErrorCountsFaceTooFar"];
+  [dictionary setObject:v27 forKey:@"frameErrorCountsFaceTooFar"];
 
   has = self->_has;
   if ((*&has & 0x1000000000000) == 0)
@@ -991,7 +991,7 @@ LABEL_22:
 
 LABEL_77:
   v28 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsPoseOutRange];
-  [v3 setObject:v28 forKey:@"frameErrorCountsPoseOutRange"];
+  [dictionary setObject:v28 forKey:@"frameErrorCountsPoseOutRange"];
 
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
@@ -1007,7 +1007,7 @@ LABEL_23:
 
 LABEL_78:
   v29 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsBinCovered];
-  [v3 setObject:v29 forKey:@"frameErrorCountsBinCovered"];
+  [dictionary setObject:v29 forKey:@"frameErrorCountsBinCovered"];
 
   has = self->_has;
   if ((*&has & 0x800000000000) == 0)
@@ -1023,7 +1023,7 @@ LABEL_24:
 
 LABEL_79:
   v30 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsOccluded];
-  [v3 setObject:v30 forKey:@"frameErrorCountsOccluded"];
+  [dictionary setObject:v30 forKey:@"frameErrorCountsOccluded"];
 
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
@@ -1039,7 +1039,7 @@ LABEL_25:
 
 LABEL_80:
   v31 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin00];
-  [v3 setObject:v31 forKey:@"frameCountBin00"];
+  [dictionary setObject:v31 forKey:@"frameCountBin00"];
 
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
@@ -1055,7 +1055,7 @@ LABEL_26:
 
 LABEL_81:
   v32 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin01];
-  [v3 setObject:v32 forKey:@"frameCountBin01"];
+  [dictionary setObject:v32 forKey:@"frameCountBin01"];
 
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -1071,7 +1071,7 @@ LABEL_27:
 
 LABEL_82:
   v33 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin02];
-  [v3 setObject:v33 forKey:@"frameCountBin02"];
+  [dictionary setObject:v33 forKey:@"frameCountBin02"];
 
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
@@ -1087,7 +1087,7 @@ LABEL_28:
 
 LABEL_83:
   v34 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin10];
-  [v3 setObject:v34 forKey:@"frameCountBin10"];
+  [dictionary setObject:v34 forKey:@"frameCountBin10"];
 
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
@@ -1103,7 +1103,7 @@ LABEL_29:
 
 LABEL_84:
   v35 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin11];
-  [v3 setObject:v35 forKey:@"frameCountBin11"];
+  [dictionary setObject:v35 forKey:@"frameCountBin11"];
 
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
@@ -1119,7 +1119,7 @@ LABEL_30:
 
 LABEL_85:
   v36 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin12];
-  [v3 setObject:v36 forKey:@"frameCountBin12"];
+  [dictionary setObject:v36 forKey:@"frameCountBin12"];
 
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
@@ -1135,7 +1135,7 @@ LABEL_31:
 
 LABEL_86:
   v37 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin20];
-  [v3 setObject:v37 forKey:@"frameCountBin20"];
+  [dictionary setObject:v37 forKey:@"frameCountBin20"];
 
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
@@ -1151,7 +1151,7 @@ LABEL_32:
 
 LABEL_87:
   v38 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin21];
-  [v3 setObject:v38 forKey:@"frameCountBin21"];
+  [dictionary setObject:v38 forKey:@"frameCountBin21"];
 
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
@@ -1167,7 +1167,7 @@ LABEL_33:
 
 LABEL_88:
   v39 = [MEMORY[0x29EDBA070] numberWithInt:self->_frameCountBin22];
-  [v3 setObject:v39 forKey:@"frameCountBin22"];
+  [dictionary setObject:v39 forKey:@"frameCountBin22"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -1183,7 +1183,7 @@ LABEL_34:
 
 LABEL_89:
   v40 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioCaptureSequenceCount];
-  [v3 setObject:v40 forKey:@"bioCaptureSequenceCount"];
+  [dictionary setObject:v40 forKey:@"bioCaptureSequenceCount"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -1199,7 +1199,7 @@ LABEL_35:
 
 LABEL_90:
   v41 = [MEMORY[0x29EDBA070] numberWithInt:self->_ambientLux];
-  [v3 setObject:v41 forKey:@"ambientLux"];
+  [dictionary setObject:v41 forKey:@"ambientLux"];
 
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
@@ -1215,7 +1215,7 @@ LABEL_36:
 
 LABEL_91:
   v42 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_featureGenerationError];
-  [v3 setObject:v42 forKey:@"featureGenerationError"];
+  [dictionary setObject:v42 forKey:@"featureGenerationError"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -1231,7 +1231,7 @@ LABEL_37:
 
 LABEL_92:
   v43 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrollFeatureVectorError];
-  [v3 setObject:v43 forKey:@"enrollFeatureVectorError"];
+  [dictionary setObject:v43 forKey:@"enrollFeatureVectorError"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -1247,7 +1247,7 @@ LABEL_38:
 
 LABEL_93:
   v44 = [MEMORY[0x29EDBA070] numberWithInt:self->_cameraErr];
-  [v3 setObject:v44 forKey:@"cameraErr"];
+  [dictionary setObject:v44 forKey:@"cameraErr"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -1263,7 +1263,7 @@ LABEL_39:
 
 LABEL_94:
   v45 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrollResult];
-  [v3 setObject:v45 forKey:@"enrollResult"];
+  [dictionary setObject:v45 forKey:@"enrollResult"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -1279,7 +1279,7 @@ LABEL_40:
 
 LABEL_95:
   v46 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_faceDistance];
-  [v3 setObject:v46 forKey:@"faceDistance"];
+  [dictionary setObject:v46 forKey:@"faceDistance"];
 
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
@@ -1295,7 +1295,7 @@ LABEL_41:
 
 LABEL_96:
   v47 = [MEMORY[0x29EDBA070] numberWithInt:self->_sensorTemperature];
-  [v3 setObject:v47 forKey:@"sensorTemperature"];
+  [dictionary setObject:v47 forKey:@"sensorTemperature"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -1311,7 +1311,7 @@ LABEL_42:
 
 LABEL_97:
   v48 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_rfcSetIndex];
-  [v3 setObject:v48 forKey:@"rfcSetIndex"];
+  [dictionary setObject:v48 forKey:@"rfcSetIndex"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -1327,7 +1327,7 @@ LABEL_43:
 
 LABEL_98:
   v49 = [MEMORY[0x29EDBA070] numberWithLongLong:self->_rfcFrameIndex];
-  [v3 setObject:v49 forKey:@"rfcFrameIndex"];
+  [dictionary setObject:v49 forKey:@"rfcFrameIndex"];
 
   has = self->_has;
   if ((*&has & 0x8000000000000) == 0)
@@ -1343,7 +1343,7 @@ LABEL_44:
 
 LABEL_99:
   v50 = [MEMORY[0x29EDBA070] numberWithBool:self->_failedNoFace];
-  [v3 setObject:v50 forKey:@"failedNoFace"];
+  [dictionary setObject:v50 forKey:@"failedNoFace"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -1359,7 +1359,7 @@ LABEL_45:
 
 LABEL_100:
   v51 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_deviceOrientation];
-  [v3 setObject:v51 forKey:@"deviceOrientation"];
+  [dictionary setObject:v51 forKey:@"deviceOrientation"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -1375,7 +1375,7 @@ LABEL_46:
 
 LABEL_101:
   v52 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledIdentityCount];
-  [v3 setObject:v52 forKey:@"enrolledIdentityCount"];
+  [dictionary setObject:v52 forKey:@"enrolledIdentityCount"];
 
   has = self->_has;
   if ((*&has & 0x10000000000000) == 0)
@@ -1391,7 +1391,7 @@ LABEL_47:
 
 LABEL_102:
   v53 = [MEMORY[0x29EDBA070] numberWithBool:self->_noseAndMouthOccluded];
-  [v3 setObject:v53 forKey:@"noseAndMouthOccluded"];
+  [dictionary setObject:v53 forKey:@"noseAndMouthOccluded"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -1407,7 +1407,7 @@ LABEL_48:
 
 LABEL_103:
   v54 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsUpperFaceOccluded];
-  [v3 setObject:v54 forKey:@"doubleErrorCountsUpperFaceOccluded"];
+  [dictionary setObject:v54 forKey:@"doubleErrorCountsUpperFaceOccluded"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -1423,7 +1423,7 @@ LABEL_49:
 
 LABEL_104:
   v55 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_doubleErrorCountsLowerFaceOccluded];
-  [v3 setObject:v55 forKey:@"doubleErrorCountsLowerFaceOccluded"];
+  [dictionary setObject:v55 forKey:@"doubleErrorCountsLowerFaceOccluded"];
 
   has = self->_has;
   if ((*&has & 0x2000000000000) == 0)
@@ -1439,7 +1439,7 @@ LABEL_50:
 
 LABEL_105:
   v56 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsUpperFaceOccluded];
-  [v3 setObject:v56 forKey:@"frameErrorCountsUpperFaceOccluded"];
+  [dictionary setObject:v56 forKey:@"frameErrorCountsUpperFaceOccluded"];
 
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
@@ -1455,7 +1455,7 @@ LABEL_51:
 
 LABEL_106:
   v57 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_frameErrorCountsLowerFaceOccluded];
-  [v3 setObject:v57 forKey:@"frameErrorCountsLowerFaceOccluded"];
+  [dictionary setObject:v57 forKey:@"frameErrorCountsLowerFaceOccluded"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -1471,7 +1471,7 @@ LABEL_52:
 
 LABEL_107:
   v58 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrollType];
-  [v3 setObject:v58 forKey:@"enrollType"];
+  [dictionary setObject:v58 forKey:@"enrollType"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -1484,7 +1484,7 @@ LABEL_53:
 
 LABEL_109:
     v60 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountType1];
-    [v3 setObject:v60 forKey:@"enrolledTemplateCountType1"];
+    [dictionary setObject:v60 forKey:@"enrolledTemplateCountType1"];
 
     if ((*&self->_has & 0x1000000) == 0)
     {
@@ -1496,7 +1496,7 @@ LABEL_109:
 
 LABEL_108:
   v59 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountType0];
-  [v3 setObject:v59 forKey:@"enrolledTemplateCountType0"];
+  [dictionary setObject:v59 forKey:@"enrolledTemplateCountType0"];
 
   has = self->_has;
   if ((*&has & 0x4000000) != 0)
@@ -1509,18 +1509,18 @@ LABEL_54:
   {
 LABEL_55:
     v5 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountTotal];
-    [v3 setObject:v5 forKey:@"enrolledTemplateCountTotal"];
+    [dictionary setObject:v5 forKey:@"enrolledTemplateCountTotal"];
   }
 
 LABEL_56:
-  v6 = v3;
+  v6 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v59 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 8) != 0)
   {
@@ -2321,14 +2321,14 @@ LABEL_55:
 LABEL_56:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 8) != 0)
   {
-    v4[4] = self->_timestamp;
-    v4[29] |= 8uLL;
+    toCopy[4] = self->_timestamp;
+    toCopy[29] |= 8uLL;
     has = self->_has;
     if ((*&has & 0x20000000000000) == 0)
     {
@@ -2347,8 +2347,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 230) = self->_overallResult;
-  v4[29] |= 0x20000000000000uLL;
+  *(toCopy + 230) = self->_overallResult;
+  toCopy[29] |= 0x20000000000000uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2362,8 +2362,8 @@ LABEL_4:
   }
 
 LABEL_61:
-  v4[1] = self->_overallTime;
-  v4[29] |= 1uLL;
+  toCopy[1] = self->_overallTime;
+  toCopy[29] |= 1uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2377,8 +2377,8 @@ LABEL_5:
   }
 
 LABEL_62:
-  *(v4 + 22) = self->_doubleErrorCountsOK;
-  v4[29] |= 0x10000uLL;
+  *(toCopy + 22) = self->_doubleErrorCountsOK;
+  toCopy[29] |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -2392,8 +2392,8 @@ LABEL_6:
   }
 
 LABEL_63:
-  *(v4 + 19) = self->_doubleErrorCountsMoreFrames;
-  v4[29] |= 0x2000uLL;
+  *(toCopy + 19) = self->_doubleErrorCountsMoreFrames;
+  toCopy[29] |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2407,8 +2407,8 @@ LABEL_7:
   }
 
 LABEL_64:
-  *(v4 + 21) = self->_doubleErrorCountsNoFace;
-  v4[29] |= 0x8000uLL;
+  *(toCopy + 21) = self->_doubleErrorCountsNoFace;
+  toCopy[29] |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2422,8 +2422,8 @@ LABEL_8:
   }
 
 LABEL_65:
-  *(v4 + 15) = self->_doubleErrorCountsFaceOutOfFOV;
-  v4[29] |= 0x200uLL;
+  *(toCopy + 15) = self->_doubleErrorCountsFaceOutOfFOV;
+  toCopy[29] |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2437,8 +2437,8 @@ LABEL_9:
   }
 
 LABEL_66:
-  *(v4 + 20) = self->_doubleErrorCountsMultipleFaces;
-  v4[29] |= 0x4000uLL;
+  *(toCopy + 20) = self->_doubleErrorCountsMultipleFaces;
+  toCopy[29] |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2452,8 +2452,8 @@ LABEL_10:
   }
 
 LABEL_67:
-  *(v4 + 16) = self->_doubleErrorCountsFaceTooClose;
-  v4[29] |= 0x400uLL;
+  *(toCopy + 16) = self->_doubleErrorCountsFaceTooClose;
+  toCopy[29] |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2467,8 +2467,8 @@ LABEL_11:
   }
 
 LABEL_68:
-  *(v4 + 17) = self->_doubleErrorCountsFaceTooFar;
-  v4[29] |= 0x800uLL;
+  *(toCopy + 17) = self->_doubleErrorCountsFaceTooFar;
+  toCopy[29] |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -2482,8 +2482,8 @@ LABEL_12:
   }
 
 LABEL_69:
-  *(v4 + 24) = self->_doubleErrorCountsPoseOutRange;
-  v4[29] |= 0x40000uLL;
+  *(toCopy + 24) = self->_doubleErrorCountsPoseOutRange;
+  toCopy[29] |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -2497,8 +2497,8 @@ LABEL_13:
   }
 
 LABEL_70:
-  *(v4 + 14) = self->_doubleErrorCountsBinCovered;
-  v4[29] |= 0x100uLL;
+  *(toCopy + 14) = self->_doubleErrorCountsBinCovered;
+  toCopy[29] |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2512,8 +2512,8 @@ LABEL_14:
   }
 
 LABEL_71:
-  *(v4 + 23) = self->_doubleErrorCountsOccluded;
-  v4[29] |= 0x20000uLL;
+  *(toCopy + 23) = self->_doubleErrorCountsOccluded;
+  toCopy[29] |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x400000000000) == 0)
   {
@@ -2527,8 +2527,8 @@ LABEL_15:
   }
 
 LABEL_72:
-  *(v4 + 52) = self->_frameErrorCountsOK;
-  v4[29] |= 0x400000000000uLL;
+  *(toCopy + 52) = self->_frameErrorCountsOK;
+  toCopy[29] |= 0x400000000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
   {
@@ -2542,8 +2542,8 @@ LABEL_16:
   }
 
 LABEL_73:
-  *(v4 + 49) = self->_frameErrorCountsMoreFrames;
-  v4[29] |= 0x80000000000uLL;
+  *(toCopy + 49) = self->_frameErrorCountsMoreFrames;
+  toCopy[29] |= 0x80000000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000000) == 0)
   {
@@ -2557,8 +2557,8 @@ LABEL_17:
   }
 
 LABEL_74:
-  *(v4 + 51) = self->_frameErrorCountsNoFace;
-  v4[29] |= 0x200000000000uLL;
+  *(toCopy + 51) = self->_frameErrorCountsNoFace;
+  toCopy[29] |= 0x200000000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -2572,8 +2572,8 @@ LABEL_18:
   }
 
 LABEL_75:
-  *(v4 + 45) = self->_frameErrorCountsFaceOutOfFOV;
-  v4[29] |= 0x8000000000uLL;
+  *(toCopy + 45) = self->_frameErrorCountsFaceOutOfFOV;
+  toCopy[29] |= 0x8000000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000000) == 0)
   {
@@ -2587,8 +2587,8 @@ LABEL_19:
   }
 
 LABEL_76:
-  *(v4 + 50) = self->_frameErrorCountsMultipleFaces;
-  v4[29] |= 0x100000000000uLL;
+  *(toCopy + 50) = self->_frameErrorCountsMultipleFaces;
+  toCopy[29] |= 0x100000000000uLL;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -2602,8 +2602,8 @@ LABEL_20:
   }
 
 LABEL_77:
-  *(v4 + 46) = self->_frameErrorCountsFaceTooClose;
-  v4[29] |= 0x10000000000uLL;
+  *(toCopy + 46) = self->_frameErrorCountsFaceTooClose;
+  toCopy[29] |= 0x10000000000uLL;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -2617,8 +2617,8 @@ LABEL_21:
   }
 
 LABEL_78:
-  *(v4 + 47) = self->_frameErrorCountsFaceTooFar;
-  v4[29] |= 0x20000000000uLL;
+  *(toCopy + 47) = self->_frameErrorCountsFaceTooFar;
+  toCopy[29] |= 0x20000000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000000) == 0)
   {
@@ -2632,8 +2632,8 @@ LABEL_22:
   }
 
 LABEL_79:
-  *(v4 + 54) = self->_frameErrorCountsPoseOutRange;
-  v4[29] |= 0x1000000000000uLL;
+  *(toCopy + 54) = self->_frameErrorCountsPoseOutRange;
+  toCopy[29] |= 0x1000000000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -2647,8 +2647,8 @@ LABEL_23:
   }
 
 LABEL_80:
-  *(v4 + 44) = self->_frameErrorCountsBinCovered;
-  v4[29] |= 0x4000000000uLL;
+  *(toCopy + 44) = self->_frameErrorCountsBinCovered;
+  toCopy[29] |= 0x4000000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000000) == 0)
   {
@@ -2662,8 +2662,8 @@ LABEL_24:
   }
 
 LABEL_81:
-  *(v4 + 53) = self->_frameErrorCountsOccluded;
-  v4[29] |= 0x800000000000uLL;
+  *(toCopy + 53) = self->_frameErrorCountsOccluded;
+  toCopy[29] |= 0x800000000000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -2677,8 +2677,8 @@ LABEL_25:
   }
 
 LABEL_82:
-  *(v4 + 35) = self->_frameCountBin00;
-  v4[29] |= 0x20000000uLL;
+  *(toCopy + 35) = self->_frameCountBin00;
+  toCopy[29] |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2692,8 +2692,8 @@ LABEL_26:
   }
 
 LABEL_83:
-  *(v4 + 36) = self->_frameCountBin01;
-  v4[29] |= 0x40000000uLL;
+  *(toCopy + 36) = self->_frameCountBin01;
+  toCopy[29] |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -2707,8 +2707,8 @@ LABEL_27:
   }
 
 LABEL_84:
-  *(v4 + 37) = self->_frameCountBin02;
-  v4[29] |= 0x80000000uLL;
+  *(toCopy + 37) = self->_frameCountBin02;
+  toCopy[29] |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -2722,8 +2722,8 @@ LABEL_28:
   }
 
 LABEL_85:
-  *(v4 + 38) = self->_frameCountBin10;
-  v4[29] |= 0x100000000uLL;
+  *(toCopy + 38) = self->_frameCountBin10;
+  toCopy[29] |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -2737,8 +2737,8 @@ LABEL_29:
   }
 
 LABEL_86:
-  *(v4 + 39) = self->_frameCountBin11;
-  v4[29] |= 0x200000000uLL;
+  *(toCopy + 39) = self->_frameCountBin11;
+  toCopy[29] |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2752,8 +2752,8 @@ LABEL_30:
   }
 
 LABEL_87:
-  *(v4 + 40) = self->_frameCountBin12;
-  v4[29] |= 0x400000000uLL;
+  *(toCopy + 40) = self->_frameCountBin12;
+  toCopy[29] |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -2767,8 +2767,8 @@ LABEL_31:
   }
 
 LABEL_88:
-  *(v4 + 41) = self->_frameCountBin20;
-  v4[29] |= 0x800000000uLL;
+  *(toCopy + 41) = self->_frameCountBin20;
+  toCopy[29] |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -2782,8 +2782,8 @@ LABEL_32:
   }
 
 LABEL_89:
-  *(v4 + 42) = self->_frameCountBin21;
-  v4[29] |= 0x1000000000uLL;
+  *(toCopy + 42) = self->_frameCountBin21;
+  toCopy[29] |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -2797,8 +2797,8 @@ LABEL_33:
   }
 
 LABEL_90:
-  *(v4 + 43) = self->_frameCountBin22;
-  v4[29] |= 0x2000000000uLL;
+  *(toCopy + 43) = self->_frameCountBin22;
+  toCopy[29] |= 0x2000000000uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2812,8 +2812,8 @@ LABEL_34:
   }
 
 LABEL_91:
-  *(v4 + 11) = self->_bioCaptureSequenceCount;
-  v4[29] |= 0x20uLL;
+  *(toCopy + 11) = self->_bioCaptureSequenceCount;
+  toCopy[29] |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2827,8 +2827,8 @@ LABEL_35:
   }
 
 LABEL_92:
-  *(v4 + 10) = self->_ambientLux;
-  v4[29] |= 0x10uLL;
+  *(toCopy + 10) = self->_ambientLux;
+  toCopy[29] |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -2842,8 +2842,8 @@ LABEL_36:
   }
 
 LABEL_93:
-  *(v4 + 34) = self->_featureGenerationError;
-  v4[29] |= 0x10000000uLL;
+  *(toCopy + 34) = self->_featureGenerationError;
+  toCopy[29] |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2857,8 +2857,8 @@ LABEL_37:
   }
 
 LABEL_94:
-  *(v4 + 26) = self->_enrollFeatureVectorError;
-  v4[29] |= 0x100000uLL;
+  *(toCopy + 26) = self->_enrollFeatureVectorError;
+  toCopy[29] |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2872,8 +2872,8 @@ LABEL_38:
   }
 
 LABEL_95:
-  *(v4 + 12) = self->_cameraErr;
-  v4[29] |= 0x40uLL;
+  *(toCopy + 12) = self->_cameraErr;
+  toCopy[29] |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2887,8 +2887,8 @@ LABEL_39:
   }
 
 LABEL_96:
-  *(v4 + 27) = self->_enrollResult;
-  v4[29] |= 0x200000uLL;
+  *(toCopy + 27) = self->_enrollResult;
+  toCopy[29] |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -2902,8 +2902,8 @@ LABEL_40:
   }
 
 LABEL_97:
-  *(v4 + 33) = self->_faceDistance;
-  v4[29] |= 0x8000000uLL;
+  *(toCopy + 33) = self->_faceDistance;
+  toCopy[29] |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
   {
@@ -2917,8 +2917,8 @@ LABEL_41:
   }
 
 LABEL_98:
-  *(v4 + 56) = self->_sensorTemperature;
-  v4[29] |= 0x4000000000000uLL;
+  *(toCopy + 56) = self->_sensorTemperature;
+  toCopy[29] |= 0x4000000000000uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2932,8 +2932,8 @@ LABEL_42:
   }
 
 LABEL_99:
-  v4[3] = self->_rfcSetIndex;
-  v4[29] |= 4uLL;
+  toCopy[3] = self->_rfcSetIndex;
+  toCopy[29] |= 4uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2947,8 +2947,8 @@ LABEL_43:
   }
 
 LABEL_100:
-  v4[2] = self->_rfcFrameIndex;
-  v4[29] |= 2uLL;
+  toCopy[2] = self->_rfcFrameIndex;
+  toCopy[29] |= 2uLL;
   has = self->_has;
   if ((*&has & 0x8000000000000) == 0)
   {
@@ -2962,8 +2962,8 @@ LABEL_44:
   }
 
 LABEL_101:
-  *(v4 + 228) = self->_failedNoFace;
-  v4[29] |= 0x8000000000000uLL;
+  *(toCopy + 228) = self->_failedNoFace;
+  toCopy[29] |= 0x8000000000000uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2977,8 +2977,8 @@ LABEL_45:
   }
 
 LABEL_102:
-  *(v4 + 13) = self->_deviceOrientation;
-  v4[29] |= 0x80uLL;
+  *(toCopy + 13) = self->_deviceOrientation;
+  toCopy[29] |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2992,8 +2992,8 @@ LABEL_46:
   }
 
 LABEL_103:
-  *(v4 + 29) = self->_enrolledIdentityCount;
-  v4[29] |= 0x800000uLL;
+  *(toCopy + 29) = self->_enrolledIdentityCount;
+  toCopy[29] |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x10000000000000) == 0)
   {
@@ -3007,8 +3007,8 @@ LABEL_47:
   }
 
 LABEL_104:
-  *(v4 + 229) = self->_noseAndMouthOccluded;
-  v4[29] |= 0x10000000000000uLL;
+  *(toCopy + 229) = self->_noseAndMouthOccluded;
+  toCopy[29] |= 0x10000000000000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -3022,8 +3022,8 @@ LABEL_48:
   }
 
 LABEL_105:
-  *(v4 + 25) = self->_doubleErrorCountsUpperFaceOccluded;
-  v4[29] |= 0x80000uLL;
+  *(toCopy + 25) = self->_doubleErrorCountsUpperFaceOccluded;
+  toCopy[29] |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -3037,8 +3037,8 @@ LABEL_49:
   }
 
 LABEL_106:
-  *(v4 + 18) = self->_doubleErrorCountsLowerFaceOccluded;
-  v4[29] |= 0x1000uLL;
+  *(toCopy + 18) = self->_doubleErrorCountsLowerFaceOccluded;
+  toCopy[29] |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000000) == 0)
   {
@@ -3052,8 +3052,8 @@ LABEL_50:
   }
 
 LABEL_107:
-  *(v4 + 55) = self->_frameErrorCountsUpperFaceOccluded;
-  v4[29] |= 0x2000000000000uLL;
+  *(toCopy + 55) = self->_frameErrorCountsUpperFaceOccluded;
+  toCopy[29] |= 0x2000000000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -3067,8 +3067,8 @@ LABEL_51:
   }
 
 LABEL_108:
-  *(v4 + 48) = self->_frameErrorCountsLowerFaceOccluded;
-  v4[29] |= 0x40000000000uLL;
+  *(toCopy + 48) = self->_frameErrorCountsLowerFaceOccluded;
+  toCopy[29] |= 0x40000000000uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -3082,8 +3082,8 @@ LABEL_52:
   }
 
 LABEL_109:
-  *(v4 + 28) = self->_enrollType;
-  v4[29] |= 0x400000uLL;
+  *(toCopy + 28) = self->_enrollType;
+  toCopy[29] |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -3097,8 +3097,8 @@ LABEL_53:
   }
 
 LABEL_110:
-  *(v4 + 31) = self->_enrolledTemplateCountType0;
-  v4[29] |= 0x2000000uLL;
+  *(toCopy + 31) = self->_enrolledTemplateCountType0;
+  toCopy[29] |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -3112,21 +3112,21 @@ LABEL_54:
   }
 
 LABEL_111:
-  *(v4 + 32) = self->_enrolledTemplateCountType1;
-  v4[29] |= 0x4000000uLL;
+  *(toCopy + 32) = self->_enrolledTemplateCountType1;
+  toCopy[29] |= 0x4000000uLL;
   if ((*&self->_has & 0x1000000) != 0)
   {
 LABEL_55:
-    *(v4 + 30) = self->_enrolledTemplateCountTotal;
-    v4[29] |= 0x1000000uLL;
+    *(toCopy + 30) = self->_enrolledTemplateCountTotal;
+    toCopy[29] |= 0x1000000uLL;
   }
 
 LABEL_56:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 8) != 0)
   {
@@ -3930,19 +3930,19 @@ LABEL_56:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_281;
   }
 
   has = self->_has;
-  v6 = *(v4 + 29);
+  v6 = *(equalCopy + 29);
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_timestamp != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_281;
     }
@@ -3960,16 +3960,16 @@ LABEL_56:
       goto LABEL_281;
     }
 
-    v7 = *(v4 + 230);
+    v7 = *(equalCopy + 230);
     if (self->_overallResult)
     {
-      if ((*(v4 + 230) & 1) == 0)
+      if ((*(equalCopy + 230) & 1) == 0)
       {
         goto LABEL_281;
       }
     }
 
-    else if (*(v4 + 230))
+    else if (*(equalCopy + 230))
     {
       goto LABEL_281;
     }
@@ -3982,7 +3982,7 @@ LABEL_56:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_overallTime != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_overallTime != *(equalCopy + 1))
     {
       goto LABEL_281;
     }
@@ -3995,7 +3995,7 @@ LABEL_56:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_doubleErrorCountsOK != *(v4 + 22))
+    if ((v6 & 0x10000) == 0 || self->_doubleErrorCountsOK != *(equalCopy + 22))
     {
       goto LABEL_281;
     }
@@ -4008,7 +4008,7 @@ LABEL_56:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_doubleErrorCountsMoreFrames != *(v4 + 19))
+    if ((v6 & 0x2000) == 0 || self->_doubleErrorCountsMoreFrames != *(equalCopy + 19))
     {
       goto LABEL_281;
     }
@@ -4021,7 +4021,7 @@ LABEL_56:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_doubleErrorCountsNoFace != *(v4 + 21))
+    if ((v6 & 0x8000) == 0 || self->_doubleErrorCountsNoFace != *(equalCopy + 21))
     {
       goto LABEL_281;
     }
@@ -4034,7 +4034,7 @@ LABEL_56:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_doubleErrorCountsFaceOutOfFOV != *(v4 + 15))
+    if ((v6 & 0x200) == 0 || self->_doubleErrorCountsFaceOutOfFOV != *(equalCopy + 15))
     {
       goto LABEL_281;
     }
@@ -4047,7 +4047,7 @@ LABEL_56:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_doubleErrorCountsMultipleFaces != *(v4 + 20))
+    if ((v6 & 0x4000) == 0 || self->_doubleErrorCountsMultipleFaces != *(equalCopy + 20))
     {
       goto LABEL_281;
     }
@@ -4060,7 +4060,7 @@ LABEL_56:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_doubleErrorCountsFaceTooClose != *(v4 + 16))
+    if ((v6 & 0x400) == 0 || self->_doubleErrorCountsFaceTooClose != *(equalCopy + 16))
     {
       goto LABEL_281;
     }
@@ -4073,7 +4073,7 @@ LABEL_56:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_doubleErrorCountsFaceTooFar != *(v4 + 17))
+    if ((v6 & 0x800) == 0 || self->_doubleErrorCountsFaceTooFar != *(equalCopy + 17))
     {
       goto LABEL_281;
     }
@@ -4086,7 +4086,7 @@ LABEL_56:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_doubleErrorCountsPoseOutRange != *(v4 + 24))
+    if ((v6 & 0x40000) == 0 || self->_doubleErrorCountsPoseOutRange != *(equalCopy + 24))
     {
       goto LABEL_281;
     }
@@ -4099,7 +4099,7 @@ LABEL_56:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_doubleErrorCountsBinCovered != *(v4 + 14))
+    if ((v6 & 0x100) == 0 || self->_doubleErrorCountsBinCovered != *(equalCopy + 14))
     {
       goto LABEL_281;
     }
@@ -4112,7 +4112,7 @@ LABEL_56:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_doubleErrorCountsOccluded != *(v4 + 23))
+    if ((v6 & 0x20000) == 0 || self->_doubleErrorCountsOccluded != *(equalCopy + 23))
     {
       goto LABEL_281;
     }
@@ -4125,7 +4125,7 @@ LABEL_56:
 
   if ((*&has & 0x400000000000) != 0)
   {
-    if ((v6 & 0x400000000000) == 0 || self->_frameErrorCountsOK != *(v4 + 52))
+    if ((v6 & 0x400000000000) == 0 || self->_frameErrorCountsOK != *(equalCopy + 52))
     {
       goto LABEL_281;
     }
@@ -4138,7 +4138,7 @@ LABEL_56:
 
   if ((*&has & 0x80000000000) != 0)
   {
-    if ((v6 & 0x80000000000) == 0 || self->_frameErrorCountsMoreFrames != *(v4 + 49))
+    if ((v6 & 0x80000000000) == 0 || self->_frameErrorCountsMoreFrames != *(equalCopy + 49))
     {
       goto LABEL_281;
     }
@@ -4151,7 +4151,7 @@ LABEL_56:
 
   if ((*&has & 0x200000000000) != 0)
   {
-    if ((v6 & 0x200000000000) == 0 || self->_frameErrorCountsNoFace != *(v4 + 51))
+    if ((v6 & 0x200000000000) == 0 || self->_frameErrorCountsNoFace != *(equalCopy + 51))
     {
       goto LABEL_281;
     }
@@ -4164,7 +4164,7 @@ LABEL_56:
 
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v6 & 0x8000000000) == 0 || self->_frameErrorCountsFaceOutOfFOV != *(v4 + 45))
+    if ((v6 & 0x8000000000) == 0 || self->_frameErrorCountsFaceOutOfFOV != *(equalCopy + 45))
     {
       goto LABEL_281;
     }
@@ -4177,7 +4177,7 @@ LABEL_56:
 
   if ((*&has & 0x100000000000) != 0)
   {
-    if ((v6 & 0x100000000000) == 0 || self->_frameErrorCountsMultipleFaces != *(v4 + 50))
+    if ((v6 & 0x100000000000) == 0 || self->_frameErrorCountsMultipleFaces != *(equalCopy + 50))
     {
       goto LABEL_281;
     }
@@ -4190,7 +4190,7 @@ LABEL_56:
 
   if ((*&has & 0x10000000000) != 0)
   {
-    if ((v6 & 0x10000000000) == 0 || self->_frameErrorCountsFaceTooClose != *(v4 + 46))
+    if ((v6 & 0x10000000000) == 0 || self->_frameErrorCountsFaceTooClose != *(equalCopy + 46))
     {
       goto LABEL_281;
     }
@@ -4203,7 +4203,7 @@ LABEL_56:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v6 & 0x20000000000) == 0 || self->_frameErrorCountsFaceTooFar != *(v4 + 47))
+    if ((v6 & 0x20000000000) == 0 || self->_frameErrorCountsFaceTooFar != *(equalCopy + 47))
     {
       goto LABEL_281;
     }
@@ -4216,7 +4216,7 @@ LABEL_56:
 
   if ((*&has & 0x1000000000000) != 0)
   {
-    if ((v6 & 0x1000000000000) == 0 || self->_frameErrorCountsPoseOutRange != *(v4 + 54))
+    if ((v6 & 0x1000000000000) == 0 || self->_frameErrorCountsPoseOutRange != *(equalCopy + 54))
     {
       goto LABEL_281;
     }
@@ -4229,7 +4229,7 @@ LABEL_56:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v6 & 0x4000000000) == 0 || self->_frameErrorCountsBinCovered != *(v4 + 44))
+    if ((v6 & 0x4000000000) == 0 || self->_frameErrorCountsBinCovered != *(equalCopy + 44))
     {
       goto LABEL_281;
     }
@@ -4242,7 +4242,7 @@ LABEL_56:
 
   if ((*&has & 0x800000000000) != 0)
   {
-    if ((v6 & 0x800000000000) == 0 || self->_frameErrorCountsOccluded != *(v4 + 53))
+    if ((v6 & 0x800000000000) == 0 || self->_frameErrorCountsOccluded != *(equalCopy + 53))
     {
       goto LABEL_281;
     }
@@ -4255,7 +4255,7 @@ LABEL_56:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_frameCountBin00 != *(v4 + 35))
+    if ((v6 & 0x20000000) == 0 || self->_frameCountBin00 != *(equalCopy + 35))
     {
       goto LABEL_281;
     }
@@ -4268,7 +4268,7 @@ LABEL_56:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v6 & 0x40000000) == 0 || self->_frameCountBin01 != *(v4 + 36))
+    if ((v6 & 0x40000000) == 0 || self->_frameCountBin01 != *(equalCopy + 36))
     {
       goto LABEL_281;
     }
@@ -4281,7 +4281,7 @@ LABEL_56:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v6 & 0x80000000) == 0 || self->_frameCountBin02 != *(v4 + 37))
+    if ((v6 & 0x80000000) == 0 || self->_frameCountBin02 != *(equalCopy + 37))
     {
       goto LABEL_281;
     }
@@ -4294,7 +4294,7 @@ LABEL_56:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v6 & 0x100000000) == 0 || self->_frameCountBin10 != *(v4 + 38))
+    if ((v6 & 0x100000000) == 0 || self->_frameCountBin10 != *(equalCopy + 38))
     {
       goto LABEL_281;
     }
@@ -4307,7 +4307,7 @@ LABEL_56:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v6 & 0x200000000) == 0 || self->_frameCountBin11 != *(v4 + 39))
+    if ((v6 & 0x200000000) == 0 || self->_frameCountBin11 != *(equalCopy + 39))
     {
       goto LABEL_281;
     }
@@ -4320,7 +4320,7 @@ LABEL_56:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v6 & 0x400000000) == 0 || self->_frameCountBin12 != *(v4 + 40))
+    if ((v6 & 0x400000000) == 0 || self->_frameCountBin12 != *(equalCopy + 40))
     {
       goto LABEL_281;
     }
@@ -4333,7 +4333,7 @@ LABEL_56:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v6 & 0x800000000) == 0 || self->_frameCountBin20 != *(v4 + 41))
+    if ((v6 & 0x800000000) == 0 || self->_frameCountBin20 != *(equalCopy + 41))
     {
       goto LABEL_281;
     }
@@ -4346,7 +4346,7 @@ LABEL_56:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v6 & 0x1000000000) == 0 || self->_frameCountBin21 != *(v4 + 42))
+    if ((v6 & 0x1000000000) == 0 || self->_frameCountBin21 != *(equalCopy + 42))
     {
       goto LABEL_281;
     }
@@ -4359,7 +4359,7 @@ LABEL_56:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v6 & 0x2000000000) == 0 || self->_frameCountBin22 != *(v4 + 43))
+    if ((v6 & 0x2000000000) == 0 || self->_frameCountBin22 != *(equalCopy + 43))
     {
       goto LABEL_281;
     }
@@ -4372,7 +4372,7 @@ LABEL_56:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_bioCaptureSequenceCount != *(v4 + 11))
+    if ((v6 & 0x20) == 0 || self->_bioCaptureSequenceCount != *(equalCopy + 11))
     {
       goto LABEL_281;
     }
@@ -4385,7 +4385,7 @@ LABEL_56:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_ambientLux != *(v4 + 10))
+    if ((v6 & 0x10) == 0 || self->_ambientLux != *(equalCopy + 10))
     {
       goto LABEL_281;
     }
@@ -4398,7 +4398,7 @@ LABEL_56:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_featureGenerationError != *(v4 + 34))
+    if ((v6 & 0x10000000) == 0 || self->_featureGenerationError != *(equalCopy + 34))
     {
       goto LABEL_281;
     }
@@ -4411,7 +4411,7 @@ LABEL_56:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_enrollFeatureVectorError != *(v4 + 26))
+    if ((v6 & 0x100000) == 0 || self->_enrollFeatureVectorError != *(equalCopy + 26))
     {
       goto LABEL_281;
     }
@@ -4424,7 +4424,7 @@ LABEL_56:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_cameraErr != *(v4 + 12))
+    if ((v6 & 0x40) == 0 || self->_cameraErr != *(equalCopy + 12))
     {
       goto LABEL_281;
     }
@@ -4437,7 +4437,7 @@ LABEL_56:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_enrollResult != *(v4 + 27))
+    if ((v6 & 0x200000) == 0 || self->_enrollResult != *(equalCopy + 27))
     {
       goto LABEL_281;
     }
@@ -4450,7 +4450,7 @@ LABEL_56:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_faceDistance != *(v4 + 33))
+    if ((v6 & 0x8000000) == 0 || self->_faceDistance != *(equalCopy + 33))
     {
       goto LABEL_281;
     }
@@ -4463,7 +4463,7 @@ LABEL_56:
 
   if ((*&has & 0x4000000000000) != 0)
   {
-    if ((v6 & 0x4000000000000) == 0 || self->_sensorTemperature != *(v4 + 56))
+    if ((v6 & 0x4000000000000) == 0 || self->_sensorTemperature != *(equalCopy + 56))
     {
       goto LABEL_281;
     }
@@ -4476,7 +4476,7 @@ LABEL_56:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_rfcSetIndex != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_rfcSetIndex != *(equalCopy + 3))
     {
       goto LABEL_281;
     }
@@ -4489,7 +4489,7 @@ LABEL_56:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_rfcFrameIndex != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_rfcFrameIndex != *(equalCopy + 2))
     {
       goto LABEL_281;
     }
@@ -4507,16 +4507,16 @@ LABEL_56:
       goto LABEL_281;
     }
 
-    v8 = *(v4 + 228);
+    v8 = *(equalCopy + 228);
     if (self->_failedNoFace)
     {
-      if ((*(v4 + 228) & 1) == 0)
+      if ((*(equalCopy + 228) & 1) == 0)
       {
         goto LABEL_281;
       }
     }
 
-    else if (*(v4 + 228))
+    else if (*(equalCopy + 228))
     {
       goto LABEL_281;
     }
@@ -4529,7 +4529,7 @@ LABEL_56:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_deviceOrientation != *(v4 + 13))
+    if ((v6 & 0x80) == 0 || self->_deviceOrientation != *(equalCopy + 13))
     {
       goto LABEL_281;
     }
@@ -4542,7 +4542,7 @@ LABEL_56:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_enrolledIdentityCount != *(v4 + 29))
+    if ((v6 & 0x800000) == 0 || self->_enrolledIdentityCount != *(equalCopy + 29))
     {
       goto LABEL_281;
     }
@@ -4557,10 +4557,10 @@ LABEL_56:
   {
     if ((v6 & 0x10000000000000) != 0)
     {
-      v9 = *(v4 + 229);
+      v9 = *(equalCopy + 229);
       if (self->_noseAndMouthOccluded)
       {
-        if ((*(v4 + 229) & 1) == 0)
+        if ((*(equalCopy + 229) & 1) == 0)
         {
           goto LABEL_281;
         }
@@ -4568,7 +4568,7 @@ LABEL_56:
         goto LABEL_241;
       }
 
-      if ((*(v4 + 229) & 1) == 0)
+      if ((*(equalCopy + 229) & 1) == 0)
       {
         goto LABEL_241;
       }
@@ -4587,7 +4587,7 @@ LABEL_281:
 LABEL_241:
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_doubleErrorCountsUpperFaceOccluded != *(v4 + 25))
+    if ((v6 & 0x80000) == 0 || self->_doubleErrorCountsUpperFaceOccluded != *(equalCopy + 25))
     {
       goto LABEL_281;
     }
@@ -4600,7 +4600,7 @@ LABEL_241:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_doubleErrorCountsLowerFaceOccluded != *(v4 + 18))
+    if ((v6 & 0x1000) == 0 || self->_doubleErrorCountsLowerFaceOccluded != *(equalCopy + 18))
     {
       goto LABEL_281;
     }
@@ -4613,7 +4613,7 @@ LABEL_241:
 
   if ((*&has & 0x2000000000000) != 0)
   {
-    if ((v6 & 0x2000000000000) == 0 || self->_frameErrorCountsUpperFaceOccluded != *(v4 + 55))
+    if ((v6 & 0x2000000000000) == 0 || self->_frameErrorCountsUpperFaceOccluded != *(equalCopy + 55))
     {
       goto LABEL_281;
     }
@@ -4624,10 +4624,10 @@ LABEL_241:
     goto LABEL_281;
   }
 
-  v10 = *(v4 + 29);
+  v10 = *(equalCopy + 29);
   if ((*&has & 0x40000000000) != 0)
   {
-    if ((v10 & 0x40000000000) == 0 || self->_frameErrorCountsLowerFaceOccluded != *(v4 + 48))
+    if ((v10 & 0x40000000000) == 0 || self->_frameErrorCountsLowerFaceOccluded != *(equalCopy + 48))
     {
       goto LABEL_281;
     }
@@ -4640,7 +4640,7 @@ LABEL_241:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v10 & 0x400000) == 0 || self->_enrollType != *(v4 + 28))
+    if ((v10 & 0x400000) == 0 || self->_enrollType != *(equalCopy + 28))
     {
       goto LABEL_281;
     }
@@ -4653,7 +4653,7 @@ LABEL_241:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v10 & 0x2000000) == 0 || self->_enrolledTemplateCountType0 != *(v4 + 31))
+    if ((v10 & 0x2000000) == 0 || self->_enrolledTemplateCountType0 != *(equalCopy + 31))
     {
       goto LABEL_281;
     }
@@ -4666,7 +4666,7 @@ LABEL_241:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v10 & 0x4000000) == 0 || self->_enrolledTemplateCountType1 != *(v4 + 32))
+    if ((v10 & 0x4000000) == 0 || self->_enrolledTemplateCountType1 != *(equalCopy + 32))
     {
       goto LABEL_281;
     }
@@ -4679,7 +4679,7 @@ LABEL_241:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v10 & 0x1000000) == 0 || self->_enrolledTemplateCountTotal != *(v4 + 30))
+    if ((v10 & 0x1000000) == 0 || self->_enrolledTemplateCountTotal != *(equalCopy + 30))
     {
       goto LABEL_281;
     }
@@ -4689,7 +4689,7 @@ LABEL_241:
 
   else
   {
-    v11 = (*(v4 + 29) & 0x1000000) == 0;
+    v11 = (*(equalCopy + 29) & 0x1000000) == 0;
   }
 
 LABEL_282:
@@ -5452,15 +5452,15 @@ LABEL_55:
   return v56 ^ v57 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 29);
+  fromCopy = from;
+  v5 = *(fromCopy + 29);
   if ((v5 & 8) != 0)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 8uLL;
-    v5 = *(v4 + 29);
+    v5 = *(fromCopy + 29);
     if ((v5 & 0x20000000000000) == 0)
     {
 LABEL_3:
@@ -5478,9 +5478,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_overallResult = *(v4 + 230);
+  self->_overallResult = *(fromCopy + 230);
   *&self->_has |= 0x20000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -5493,9 +5493,9 @@ LABEL_4:
   }
 
 LABEL_61:
-  self->_overallTime = *(v4 + 1);
+  self->_overallTime = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_5:
@@ -5508,9 +5508,9 @@ LABEL_5:
   }
 
 LABEL_62:
-  self->_doubleErrorCountsOK = *(v4 + 22);
+  self->_doubleErrorCountsOK = *(fromCopy + 22);
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -5523,9 +5523,9 @@ LABEL_6:
   }
 
 LABEL_63:
-  self->_doubleErrorCountsMoreFrames = *(v4 + 19);
+  self->_doubleErrorCountsMoreFrames = *(fromCopy + 19);
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_7:
@@ -5538,9 +5538,9 @@ LABEL_7:
   }
 
 LABEL_64:
-  self->_doubleErrorCountsNoFace = *(v4 + 21);
+  self->_doubleErrorCountsNoFace = *(fromCopy + 21);
   *&self->_has |= 0x8000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x200) == 0)
   {
 LABEL_8:
@@ -5553,9 +5553,9 @@ LABEL_8:
   }
 
 LABEL_65:
-  self->_doubleErrorCountsFaceOutOfFOV = *(v4 + 15);
+  self->_doubleErrorCountsFaceOutOfFOV = *(fromCopy + 15);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_9:
@@ -5568,9 +5568,9 @@ LABEL_9:
   }
 
 LABEL_66:
-  self->_doubleErrorCountsMultipleFaces = *(v4 + 20);
+  self->_doubleErrorCountsMultipleFaces = *(fromCopy + 20);
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x400) == 0)
   {
 LABEL_10:
@@ -5583,9 +5583,9 @@ LABEL_10:
   }
 
 LABEL_67:
-  self->_doubleErrorCountsFaceTooClose = *(v4 + 16);
+  self->_doubleErrorCountsFaceTooClose = *(fromCopy + 16);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x800) == 0)
   {
 LABEL_11:
@@ -5598,9 +5598,9 @@ LABEL_11:
   }
 
 LABEL_68:
-  self->_doubleErrorCountsFaceTooFar = *(v4 + 17);
+  self->_doubleErrorCountsFaceTooFar = *(fromCopy + 17);
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_12:
@@ -5613,9 +5613,9 @@ LABEL_12:
   }
 
 LABEL_69:
-  self->_doubleErrorCountsPoseOutRange = *(v4 + 24);
+  self->_doubleErrorCountsPoseOutRange = *(fromCopy + 24);
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x100) == 0)
   {
 LABEL_13:
@@ -5628,9 +5628,9 @@ LABEL_13:
   }
 
 LABEL_70:
-  self->_doubleErrorCountsBinCovered = *(v4 + 14);
+  self->_doubleErrorCountsBinCovered = *(fromCopy + 14);
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_14:
@@ -5643,9 +5643,9 @@ LABEL_14:
   }
 
 LABEL_71:
-  self->_doubleErrorCountsOccluded = *(v4 + 23);
+  self->_doubleErrorCountsOccluded = *(fromCopy + 23);
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x400000000000) == 0)
   {
 LABEL_15:
@@ -5658,9 +5658,9 @@ LABEL_15:
   }
 
 LABEL_72:
-  self->_frameErrorCountsOK = *(v4 + 52);
+  self->_frameErrorCountsOK = *(fromCopy + 52);
   *&self->_has |= 0x400000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x80000000000) == 0)
   {
 LABEL_16:
@@ -5673,9 +5673,9 @@ LABEL_16:
   }
 
 LABEL_73:
-  self->_frameErrorCountsMoreFrames = *(v4 + 49);
+  self->_frameErrorCountsMoreFrames = *(fromCopy + 49);
   *&self->_has |= 0x80000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x200000000000) == 0)
   {
 LABEL_17:
@@ -5688,9 +5688,9 @@ LABEL_17:
   }
 
 LABEL_74:
-  self->_frameErrorCountsNoFace = *(v4 + 51);
+  self->_frameErrorCountsNoFace = *(fromCopy + 51);
   *&self->_has |= 0x200000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x8000000000) == 0)
   {
 LABEL_18:
@@ -5703,9 +5703,9 @@ LABEL_18:
   }
 
 LABEL_75:
-  self->_frameErrorCountsFaceOutOfFOV = *(v4 + 45);
+  self->_frameErrorCountsFaceOutOfFOV = *(fromCopy + 45);
   *&self->_has |= 0x8000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x100000000000) == 0)
   {
 LABEL_19:
@@ -5718,9 +5718,9 @@ LABEL_19:
   }
 
 LABEL_76:
-  self->_frameErrorCountsMultipleFaces = *(v4 + 50);
+  self->_frameErrorCountsMultipleFaces = *(fromCopy + 50);
   *&self->_has |= 0x100000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x10000000000) == 0)
   {
 LABEL_20:
@@ -5733,9 +5733,9 @@ LABEL_20:
   }
 
 LABEL_77:
-  self->_frameErrorCountsFaceTooClose = *(v4 + 46);
+  self->_frameErrorCountsFaceTooClose = *(fromCopy + 46);
   *&self->_has |= 0x10000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x20000000000) == 0)
   {
 LABEL_21:
@@ -5748,9 +5748,9 @@ LABEL_21:
   }
 
 LABEL_78:
-  self->_frameErrorCountsFaceTooFar = *(v4 + 47);
+  self->_frameErrorCountsFaceTooFar = *(fromCopy + 47);
   *&self->_has |= 0x20000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x1000000000000) == 0)
   {
 LABEL_22:
@@ -5763,9 +5763,9 @@ LABEL_22:
   }
 
 LABEL_79:
-  self->_frameErrorCountsPoseOutRange = *(v4 + 54);
+  self->_frameErrorCountsPoseOutRange = *(fromCopy + 54);
   *&self->_has |= 0x1000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x4000000000) == 0)
   {
 LABEL_23:
@@ -5778,9 +5778,9 @@ LABEL_23:
   }
 
 LABEL_80:
-  self->_frameErrorCountsBinCovered = *(v4 + 44);
+  self->_frameErrorCountsBinCovered = *(fromCopy + 44);
   *&self->_has |= 0x4000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x800000000000) == 0)
   {
 LABEL_24:
@@ -5793,9 +5793,9 @@ LABEL_24:
   }
 
 LABEL_81:
-  self->_frameErrorCountsOccluded = *(v4 + 53);
+  self->_frameErrorCountsOccluded = *(fromCopy + 53);
   *&self->_has |= 0x800000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_25:
@@ -5808,9 +5808,9 @@ LABEL_25:
   }
 
 LABEL_82:
-  self->_frameCountBin00 = *(v4 + 35);
+  self->_frameCountBin00 = *(fromCopy + 35);
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_26:
@@ -5823,9 +5823,9 @@ LABEL_26:
   }
 
 LABEL_83:
-  self->_frameCountBin01 = *(v4 + 36);
+  self->_frameCountBin01 = *(fromCopy + 36);
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_27:
@@ -5838,9 +5838,9 @@ LABEL_27:
   }
 
 LABEL_84:
-  self->_frameCountBin02 = *(v4 + 37);
+  self->_frameCountBin02 = *(fromCopy + 37);
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_28:
@@ -5853,9 +5853,9 @@ LABEL_28:
   }
 
 LABEL_85:
-  self->_frameCountBin10 = *(v4 + 38);
+  self->_frameCountBin10 = *(fromCopy + 38);
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_29:
@@ -5868,9 +5868,9 @@ LABEL_29:
   }
 
 LABEL_86:
-  self->_frameCountBin11 = *(v4 + 39);
+  self->_frameCountBin11 = *(fromCopy + 39);
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_30:
@@ -5883,9 +5883,9 @@ LABEL_30:
   }
 
 LABEL_87:
-  self->_frameCountBin12 = *(v4 + 40);
+  self->_frameCountBin12 = *(fromCopy + 40);
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_31:
@@ -5898,9 +5898,9 @@ LABEL_31:
   }
 
 LABEL_88:
-  self->_frameCountBin20 = *(v4 + 41);
+  self->_frameCountBin20 = *(fromCopy + 41);
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x1000000000) == 0)
   {
 LABEL_32:
@@ -5913,9 +5913,9 @@ LABEL_32:
   }
 
 LABEL_89:
-  self->_frameCountBin21 = *(v4 + 42);
+  self->_frameCountBin21 = *(fromCopy + 42);
   *&self->_has |= 0x1000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x2000000000) == 0)
   {
 LABEL_33:
@@ -5928,9 +5928,9 @@ LABEL_33:
   }
 
 LABEL_90:
-  self->_frameCountBin22 = *(v4 + 43);
+  self->_frameCountBin22 = *(fromCopy + 43);
   *&self->_has |= 0x2000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x20) == 0)
   {
 LABEL_34:
@@ -5943,9 +5943,9 @@ LABEL_34:
   }
 
 LABEL_91:
-  self->_bioCaptureSequenceCount = *(v4 + 11);
+  self->_bioCaptureSequenceCount = *(fromCopy + 11);
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x10) == 0)
   {
 LABEL_35:
@@ -5958,9 +5958,9 @@ LABEL_35:
   }
 
 LABEL_92:
-  self->_ambientLux = *(v4 + 10);
+  self->_ambientLux = *(fromCopy + 10);
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_36:
@@ -5973,9 +5973,9 @@ LABEL_36:
   }
 
 LABEL_93:
-  self->_featureGenerationError = *(v4 + 34);
+  self->_featureGenerationError = *(fromCopy + 34);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_37:
@@ -5988,9 +5988,9 @@ LABEL_37:
   }
 
 LABEL_94:
-  self->_enrollFeatureVectorError = *(v4 + 26);
+  self->_enrollFeatureVectorError = *(fromCopy + 26);
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x40) == 0)
   {
 LABEL_38:
@@ -6003,9 +6003,9 @@ LABEL_38:
   }
 
 LABEL_95:
-  self->_cameraErr = *(v4 + 12);
+  self->_cameraErr = *(fromCopy + 12);
   *&self->_has |= 0x40uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_39:
@@ -6018,9 +6018,9 @@ LABEL_39:
   }
 
 LABEL_96:
-  self->_enrollResult = *(v4 + 27);
+  self->_enrollResult = *(fromCopy + 27);
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_40:
@@ -6033,9 +6033,9 @@ LABEL_40:
   }
 
 LABEL_97:
-  self->_faceDistance = *(v4 + 33);
+  self->_faceDistance = *(fromCopy + 33);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x4000000000000) == 0)
   {
 LABEL_41:
@@ -6048,9 +6048,9 @@ LABEL_41:
   }
 
 LABEL_98:
-  self->_sensorTemperature = *(v4 + 56);
+  self->_sensorTemperature = *(fromCopy + 56);
   *&self->_has |= 0x4000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 4) == 0)
   {
 LABEL_42:
@@ -6063,9 +6063,9 @@ LABEL_42:
   }
 
 LABEL_99:
-  self->_rfcSetIndex = *(v4 + 3);
+  self->_rfcSetIndex = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 2) == 0)
   {
 LABEL_43:
@@ -6078,9 +6078,9 @@ LABEL_43:
   }
 
 LABEL_100:
-  self->_rfcFrameIndex = *(v4 + 2);
+  self->_rfcFrameIndex = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x8000000000000) == 0)
   {
 LABEL_44:
@@ -6093,9 +6093,9 @@ LABEL_44:
   }
 
 LABEL_101:
-  self->_failedNoFace = *(v4 + 228);
+  self->_failedNoFace = *(fromCopy + 228);
   *&self->_has |= 0x8000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x80) == 0)
   {
 LABEL_45:
@@ -6108,9 +6108,9 @@ LABEL_45:
   }
 
 LABEL_102:
-  self->_deviceOrientation = *(v4 + 13);
+  self->_deviceOrientation = *(fromCopy + 13);
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_46:
@@ -6123,9 +6123,9 @@ LABEL_46:
   }
 
 LABEL_103:
-  self->_enrolledIdentityCount = *(v4 + 29);
+  self->_enrolledIdentityCount = *(fromCopy + 29);
   *&self->_has |= 0x800000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x10000000000000) == 0)
   {
 LABEL_47:
@@ -6138,9 +6138,9 @@ LABEL_47:
   }
 
 LABEL_104:
-  self->_noseAndMouthOccluded = *(v4 + 229);
+  self->_noseAndMouthOccluded = *(fromCopy + 229);
   *&self->_has |= 0x10000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_48:
@@ -6153,9 +6153,9 @@ LABEL_48:
   }
 
 LABEL_105:
-  self->_doubleErrorCountsUpperFaceOccluded = *(v4 + 25);
+  self->_doubleErrorCountsUpperFaceOccluded = *(fromCopy + 25);
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_49:
@@ -6168,9 +6168,9 @@ LABEL_49:
   }
 
 LABEL_106:
-  self->_doubleErrorCountsLowerFaceOccluded = *(v4 + 18);
+  self->_doubleErrorCountsLowerFaceOccluded = *(fromCopy + 18);
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x2000000000000) == 0)
   {
 LABEL_50:
@@ -6183,9 +6183,9 @@ LABEL_50:
   }
 
 LABEL_107:
-  self->_frameErrorCountsUpperFaceOccluded = *(v4 + 55);
+  self->_frameErrorCountsUpperFaceOccluded = *(fromCopy + 55);
   *&self->_has |= 0x2000000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x40000000000) == 0)
   {
 LABEL_51:
@@ -6198,9 +6198,9 @@ LABEL_51:
   }
 
 LABEL_108:
-  self->_frameErrorCountsLowerFaceOccluded = *(v4 + 48);
+  self->_frameErrorCountsLowerFaceOccluded = *(fromCopy + 48);
   *&self->_has |= 0x40000000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_52:
@@ -6213,9 +6213,9 @@ LABEL_52:
   }
 
 LABEL_109:
-  self->_enrollType = *(v4 + 28);
+  self->_enrollType = *(fromCopy + 28);
   *&self->_has |= 0x400000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_53:
@@ -6228,9 +6228,9 @@ LABEL_53:
   }
 
 LABEL_110:
-  self->_enrolledTemplateCountType0 = *(v4 + 31);
+  self->_enrolledTemplateCountType0 = *(fromCopy + 31);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_54:
@@ -6243,12 +6243,12 @@ LABEL_54:
   }
 
 LABEL_111:
-  self->_enrolledTemplateCountType1 = *(v4 + 32);
+  self->_enrolledTemplateCountType1 = *(fromCopy + 32);
   *&self->_has |= 0x4000000uLL;
-  if ((*(v4 + 29) & 0x1000000) != 0)
+  if ((*(fromCopy + 29) & 0x1000000) != 0)
   {
 LABEL_55:
-    self->_enrolledTemplateCountTotal = *(v4 + 30);
+    self->_enrolledTemplateCountTotal = *(fromCopy + 30);
     *&self->_has |= 0x1000000uLL;
   }
 

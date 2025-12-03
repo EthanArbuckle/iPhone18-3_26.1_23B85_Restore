@@ -1,22 +1,22 @@
 @interface PLAssetsdPrivacySupportService
-- (PLAssetsdPrivacySupportService)initWithConnectionAuthorization:(id)a3;
-- (void)presentLimitedLibraryPickerReprompt:(id)a3;
-- (void)setClientPrivacyOptions:(id)a3 reply:(id)a4;
+- (PLAssetsdPrivacySupportService)initWithConnectionAuthorization:(id)authorization;
+- (void)presentLimitedLibraryPickerReprompt:(id)reprompt;
+- (void)setClientPrivacyOptions:(id)options reply:(id)reply;
 @end
 
 @implementation PLAssetsdPrivacySupportService
 
-- (void)setClientPrivacyOptions:(id)a3 reply:(id)a4
+- (void)setClientPrivacyOptions:(id)options reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v17 = 0u;
   *sel = 0u;
   v15 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v15) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v15) = enabled;
+  if (enabled)
   {
     *(&v15 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: setClientPrivacyOptions:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -24,15 +24,15 @@
   }
 
   v9 = *MEMORY[0x1E69BFEF0];
-  v10 = [v6 objectForKeyedSubscript:{*MEMORY[0x1E69BFEF0], v15}];
+  v10 = [optionsCopy objectForKeyedSubscript:{*MEMORY[0x1E69BFEF0], v15}];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:v9];
+    v11 = [optionsCopy objectForKeyedSubscript:v9];
     -[PLAssetsdConnectionAuthorization setClientLimitedLibraryCapable:](self->_connectionAuthorization, "setClientLimitedLibraryCapable:", [v11 BOOLValue]);
   }
 
-  v7[2](v7, 0);
+  replyCopy[2](replyCopy, 0);
   if (v16 == 1)
   {
     os_activity_scope_leave((&v17 + 8));
@@ -52,26 +52,26 @@
   }
 }
 
-- (void)presentLimitedLibraryPickerReprompt:(id)a3
+- (void)presentLimitedLibraryPickerReprompt:(id)reprompt
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  repromptCopy = reprompt;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: presentLimitedLibraryPickerReprompt:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerDisplayName];
-  v7 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerPhotoLibraryUsageDescription];
+  trustedCallerDisplayName = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerDisplayName];
+  trustedCallerPhotoLibraryUsageDescription = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerPhotoLibraryUsageDescription];
   v8 = PLPresentLimitedLibraryPickerRepromptForApplication();
-  v4[2](v4, v8);
+  repromptCopy[2](repromptCopy, v8);
 
   if (v13 == 1)
   {
@@ -92,16 +92,16 @@
   }
 }
 
-- (PLAssetsdPrivacySupportService)initWithConnectionAuthorization:(id)a3
+- (PLAssetsdPrivacySupportService)initWithConnectionAuthorization:(id)authorization
 {
-  v5 = a3;
+  authorizationCopy = authorization;
   v9.receiver = self;
   v9.super_class = PLAssetsdPrivacySupportService;
   v6 = [(PLAssetsdPrivacySupportService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionAuthorization, a3);
+    objc_storeStrong(&v6->_connectionAuthorization, authorization);
   }
 
   return v7;

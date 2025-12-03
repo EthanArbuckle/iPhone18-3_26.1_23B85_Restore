@@ -1,56 +1,56 @@
 @interface _TVMLShelfView
-- (UIEdgeInsets)_selectionMarginsForCell:(id)a3;
-- (_TVMLShelfView)initWithCoder:(id)a3;
-- (_TVMLShelfView)initWithFrame:(CGRect)a3;
-- (_TVMLShelfView)initWithFrame:(CGRect)a3 _shelfViewLayout:(id)a4;
-- (_TVMLShelfView)initWithFrame:(CGRect)a3 shelfViewLayout:(id)a4;
-- (id)_rowMetricsForExpectedWidth:(double)a3 withContentInset:(UIEdgeInsets)a4 firstItemRowIndex:(int64_t *)a5 forShowcase:(BOOL)a6;
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4;
-- (id)showcaseRowMetricsForExpectedWidth:(double)a3;
+- (UIEdgeInsets)_selectionMarginsForCell:(id)cell;
+- (_TVMLShelfView)initWithCoder:(id)coder;
+- (_TVMLShelfView)initWithFrame:(CGRect)frame;
+- (_TVMLShelfView)initWithFrame:(CGRect)frame _shelfViewLayout:(id)layout;
+- (_TVMLShelfView)initWithFrame:(CGRect)frame shelfViewLayout:(id)layout;
+- (id)_rowMetricsForExpectedWidth:(double)width withContentInset:(UIEdgeInsets)inset firstItemRowIndex:(int64_t *)index forShowcase:(BOOL)showcase;
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index;
+- (id)showcaseRowMetricsForExpectedWidth:(double)width;
 - (void)layoutSubviews;
-- (void)tv_setShowcaseFactor:(double)a3;
+- (void)tv_setShowcaseFactor:(double)factor;
 @end
 
 @implementation _TVMLShelfView
 
-- (_TVMLShelfView)initWithFrame:(CGRect)a3 shelfViewLayout:(id)a4
+- (_TVMLShelfView)initWithFrame:(CGRect)frame shelfViewLayout:(id)layout
 {
-  [(_TVMLShelfView *)self doesNotRecognizeSelector:a2, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_TVMLShelfView *)self doesNotRecognizeSelector:a2, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return 0;
 }
 
-- (_TVMLShelfView)initWithFrame:(CGRect)a3 _shelfViewLayout:(id)a4
+- (_TVMLShelfView)initWithFrame:(CGRect)frame _shelfViewLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = _TVMLShelfView;
-  return [(_TVShelfView *)&v5 initWithFrame:a4 shelfViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_TVShelfView *)&v5 initWithFrame:layout shelfViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (_TVMLShelfView)initWithCoder:(id)a3
+- (_TVMLShelfView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _TVMLShelfView;
-  return [(_TVShelfView *)&v4 initWithCoder:a3];
+  return [(_TVShelfView *)&v4 initWithCoder:coder];
 }
 
-- (_TVMLShelfView)initWithFrame:(CGRect)a3
+- (_TVMLShelfView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_alloc_init(_TVMLShelfViewLayout);
-  v9 = [(_TVMLShelfView *)self initWithFrame:v8 _shelfViewLayout:x, y, width, height];
+  height = [(_TVMLShelfView *)self initWithFrame:v8 _shelfViewLayout:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (void)tv_setShowcaseFactor:(double)a3
+- (void)tv_setShowcaseFactor:(double)factor
 {
-  self->_showcaseFactor = a3;
-  v5 = [(_TVMLShelfView *)self collectionViewLayout];
-  [v5 setShowcaseFactor:a3];
+  self->_showcaseFactor = factor;
+  collectionViewLayout = [(_TVMLShelfView *)self collectionViewLayout];
+  [collectionViewLayout setShowcaseFactor:factor];
 
   [(_TVMLShelfView *)self setNeedsLayout];
 }
@@ -68,41 +68,41 @@
   v12.receiver = self;
   v12.super_class = _TVMLShelfView;
   [(_TVMLShelfView *)&v12 layoutSubviews];
-  v6 = [(_TVMLShelfView *)self collectionViewLayout];
-  [v6 headerAllowance];
+  collectionViewLayout = [(_TVMLShelfView *)self collectionViewLayout];
+  [collectionViewLayout headerAllowance];
   v8 = v7;
 
   v9 = -(v8 * self->_showcaseFactor);
-  v10 = [(_TVMLShelfView *)self layer];
+  layer = [(_TVMLShelfView *)self layer];
   CATransform3DMakeTranslation(&v11, 0.0, v9, 0.0);
-  [v10 setSublayerTransform:&v11];
+  [layer setSublayerTransform:&v11];
 }
 
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index
 {
   [(_TVMLShelfView *)self contentInset];
 
-  return [(_TVMLShelfView *)self rowMetricsForExpectedWidth:a4 withContentInset:a3 firstItemRowIndex:v7, v8, v9, v10];
+  return [(_TVMLShelfView *)self rowMetricsForExpectedWidth:index withContentInset:width firstItemRowIndex:v7, v8, v9, v10];
 }
 
-- (id)showcaseRowMetricsForExpectedWidth:(double)a3
+- (id)showcaseRowMetricsForExpectedWidth:(double)width
 {
   [(_TVMLShelfView *)self contentInset];
 
-  return [(_TVMLShelfView *)self showcaseRowMetricsForExpectedWidth:a3 withContentInset:v5, v6, v7, v8];
+  return [(_TVMLShelfView *)self showcaseRowMetricsForExpectedWidth:width withContentInset:v5, v6, v7, v8];
 }
 
-- (id)_rowMetricsForExpectedWidth:(double)a3 withContentInset:(UIEdgeInsets)a4 firstItemRowIndex:(int64_t *)a5 forShowcase:(BOOL)a6
+- (id)_rowMetricsForExpectedWidth:(double)width withContentInset:(UIEdgeInsets)inset firstItemRowIndex:(int64_t *)index forShowcase:(BOOL)showcase
 {
-  v6 = a6;
-  bottom = a4.bottom;
-  top = a4.top;
-  v10 = [(_TVShelfView *)self shelfFlowLayout:a3];
-  v11 = [v10 contentRowMetricsForShowcase:v6];
+  showcaseCopy = showcase;
+  bottom = inset.bottom;
+  top = inset.top;
+  v10 = [(_TVShelfView *)self shelfFlowLayout:width];
+  v11 = [v10 contentRowMetricsForShowcase:showcaseCopy];
   [v10 minimumLineSpacing];
   v13 = v12;
-  v14 = [v10 computedRowCount];
-  if (v14 < 1)
+  computedRowCount = [v10 computedRowCount];
+  if (computedRowCount < 1)
   {
     v16 = 0;
   }
@@ -110,11 +110,11 @@
   else
   {
     v27 = v10;
-    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:2 * v14 - 1];
+    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:2 * computedRowCount - 1];
     v17 = 0;
     v28 = vdupq_lane_s64(*&top, 0);
     v15 = 0uLL;
-    v18 = v14;
+    v18 = computedRowCount;
     do
     {
       if (v17)
@@ -181,12 +181,12 @@
     v10 = v27;
   }
 
-  v23 = [(_TVMLShelfView *)self delegate];
-  v24 = [v23 indexPathForPreferredFocusedViewInCollectionView:self];
+  delegate = [(_TVMLShelfView *)self delegate];
+  v24 = [delegate indexPathForPreferredFocusedViewInCollectionView:self];
 
-  if (a5)
+  if (index)
   {
-    *a5 = 2 * ([v24 item] % v14);
+    *index = 2 * ([v24 item] % computedRowCount);
   }
 
   v25 = [v16 copy];
@@ -194,19 +194,19 @@
   return v25;
 }
 
-- (UIEdgeInsets)_selectionMarginsForCell:(id)a3
+- (UIEdgeInsets)_selectionMarginsForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v19.receiver = self;
   v19.super_class = _TVMLShelfView;
-  [(_TVShelfView *)&v19 _selectionMarginsForCell:v4];
+  [(_TVShelfView *)&v19 _selectionMarginsForCell:cellCopy];
   v9.f64[0] = v5;
   v9.f64[1] = v6;
   v10.f64[0] = v7;
   v10.f64[1] = v8;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v9, *MEMORY[0x277D768C8]), vceqq_f64(v10, *(MEMORY[0x277D768C8] + 16))))))
   {
-    [v4 tv_focusMargin];
+    [cellCopy tv_focusMargin];
   }
 
   v17 = v6;

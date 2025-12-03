@@ -1,6 +1,6 @@
 @interface HotspotFamilyMember
 - (HotspotFamilyMember)init;
-- (HotspotFamilyMember)initWithAltDSID:(id)a3 displayName:(id)a4 shareOption:(int)a5;
+- (HotspotFamilyMember)initWithAltDSID:(id)d displayName:(id)name shareOption:(int)option;
 @end
 
 @implementation HotspotFamilyMember
@@ -21,19 +21,19 @@
   return v3;
 }
 
-- (HotspotFamilyMember)initWithAltDSID:(id)a3 displayName:(id)a4 shareOption:(int)a5
+- (HotspotFamilyMember)initWithAltDSID:(id)d displayName:(id)name shareOption:(int)option
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&option;
+  dCopy = d;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = HotspotFamilyMember;
   v10 = [(HotspotFamilyMember *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(HotspotFamilyMember *)v10 setAltDSID:v8];
-    [(HotspotFamilyMember *)v11 setDisplayName:v9];
+    [(HotspotFamilyMember *)v10 setAltDSID:dCopy];
+    [(HotspotFamilyMember *)v11 setDisplayName:nameCopy];
     [(HotspotFamilyMember *)v11 setShareOption:v5];
   }
 

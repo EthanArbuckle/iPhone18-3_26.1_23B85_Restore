@@ -1,11 +1,11 @@
 @interface WFWorkflow
-+ (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
-+ (BOOL)checkClientVersion:(id)a3 currentVersion:(id)a4 error:(id *)a5;
-+ (id)effectiveInputClassesFromInputClasses:(id)a3 workflowTypes:(id)a4;
-+ (id)localizedSubtitleWithActionCount:(unint64_t)a3;
++ (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
++ (BOOL)checkClientVersion:(id)version currentVersion:(id)currentVersion error:(id *)error;
++ (id)effectiveInputClassesFromInputClasses:(id)classes workflowTypes:(id)types;
++ (id)localizedSubtitleWithActionCount:(unint64_t)count;
 + (id)supportedInputClasses;
 - (BOOL)addWatchWorkflowTypeIfEligible;
-- (BOOL)createReferenceIfNecessaryWithName:(id)a3 nameCollisionBehavior:(unint64_t)a4 allowEmpty:(BOOL)a5 error:(id *)a6;
+- (BOOL)createReferenceIfNecessaryWithName:(id)name nameCollisionBehavior:(unint64_t)behavior allowEmpty:(BOOL)empty error:(id *)error;
 - (BOOL)disabledOnLockScreen;
 - (BOOL)hasActions;
 - (BOOL)hasOutputAction;
@@ -18,9 +18,9 @@
 - (BOOL)isResidentCompatible;
 - (BOOL)isUntitled;
 - (BOOL)queue_reloadReferenceFromStorage;
-- (BOOL)record:(id)a3 isEquivalentToRecord:(id)a4;
+- (BOOL)record:(id)record isEquivalentToRecord:(id)toRecord;
 - (BOOL)reloadReferenceFromStorage;
-- (BOOL)renameWorkflowTo:(id)a3 error:(id *)a4;
+- (BOOL)renameWorkflowTo:(id)to error:(id *)error;
 - (BOOL)shouldAutoUpdateAssociatedAppBundleIdentifier;
 - (BOOL)shouldShowInputAction;
 - (NSArray)actions;
@@ -42,79 +42,79 @@
 - (WFDatabase)database;
 - (WFIcon)attributionIcon;
 - (WFWorkflow)init;
-- (WFWorkflow)initWithActionDonation:(id)a3 error:(id *)a4;
-- (WFWorkflow)initWithCreationOptions:(id)a3 database:(id)a4 error:(id *)a5;
-- (WFWorkflow)initWithName:(id)a3 description:(id)a4 associatedAppBundleIdentifier:(id)a5 actions:(id)a6;
-- (WFWorkflow)initWithRecord:(id)a3 reference:(id)a4 storageProvider:(id)a5 migrateIfNecessary:(BOOL)a6 environment:(int64_t)a7 error:(id *)a8;
-- (WFWorkflow)initWithShortcut:(id)a3 error:(id *)a4;
+- (WFWorkflow)initWithActionDonation:(id)donation error:(id *)error;
+- (WFWorkflow)initWithCreationOptions:(id)options database:(id)database error:(id *)error;
+- (WFWorkflow)initWithName:(id)name description:(id)description associatedAppBundleIdentifier:(id)identifier actions:(id)actions;
+- (WFWorkflow)initWithRecord:(id)record reference:(id)reference storageProvider:(id)provider migrateIfNecessary:(BOOL)necessary environment:(int64_t)environment error:(id *)error;
+- (WFWorkflow)initWithShortcut:(id)shortcut error:(id *)error;
 - (WFWorkflowActionTree)actionTree;
 - (WFWorkflowEditingDelegate)editingDelegate;
 - (WFWorkflowIcon)icon;
 - (WFWorkflowQuarantine)quarantine;
-- (id)actionsGroupedWithAction:(id)a3;
-- (id)actionsNestedInsideAction:(id)a3;
-- (id)additionalEffectiveInputClassesForTriggers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)actionsGroupedWithAction:(id)action;
+- (id)actionsNestedInsideAction:(id)action;
+- (id)additionalEffectiveInputClassesForTriggers:(id)triggers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createUserActivityForViewing;
 - (id)effectiveInputClasses;
-- (id)inferOutputTypesWithHasOutputFallback:(BOOL *)a3;
+- (id)inferOutputTypesWithHasOutputFallback:(BOOL *)fallback;
 - (id)loadTriggers;
 - (id)localizedActionsSummary;
 - (id)localizedSubtitle;
-- (id)prepareForSharingWithOptions:(id)a3;
-- (id)userVisibleStringsForUseCase:(unint64_t)a3;
+- (id)prepareForSharingWithOptions:(id)options;
+- (id)userVisibleStringsForUseCase:(unint64_t)case;
 - (id)validImportQuestions;
-- (int64_t)indexOfAction:(id)a3;
+- (int64_t)indexOfAction:(id)action;
 - (int64_t)remoteQuarantineStatus;
 - (void)_actionsDidChange;
 - (void)_actionsWillChange;
 - (void)_triggersDidChange;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)action:(id)a3 supplementalParameterValueDidChangeForKey:(id)a4;
-- (void)actionNameDidChange:(id)a3;
-- (void)actionOutputDetailsDidChange:(id)a3;
-- (void)actionTreeDidChangeConnectorState:(id)a3;
-- (void)addAction:(id)a3;
-- (void)addEditingObserver:(id)a3;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)action:(id)action supplementalParameterValueDidChangeForKey:(id)key;
+- (void)actionNameDidChange:(id)change;
+- (void)actionOutputDetailsDidChange:(id)change;
+- (void)actionTreeDidChangeConnectorState:(id)state;
+- (void)addAction:(id)action;
+- (void)addEditingObserver:(id)observer;
 - (void)addWatchWorkflowType;
 - (void)clearOutReference;
-- (void)configureAsSingleStepShortcutIfNecessary:(id)a3;
-- (void)configureWithStandaloneShortcutRepresentation:(id)a3 homeSummaryText:(id)a4;
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6;
+- (void)configureAsSingleStepShortcutIfNecessary:(id)necessary;
+- (void)configureWithStandaloneShortcutRepresentation:(id)representation homeSummaryText:(id)text;
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed;
 - (void)dealloc;
 - (void)deleteReference;
-- (void)generateShortcutRepresentation:(id)a3;
-- (void)generateStandaloneShortcutRepresentation:(id)a3;
-- (void)getHomeSummaryTextWithCompletion:(id)a3;
-- (void)insertAction:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertActions:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertActions:(id)a3 atIndexes:(id)a4;
+- (void)generateShortcutRepresentation:(id)representation;
+- (void)generateStandaloneShortcutRepresentation:(id)representation;
+- (void)getHomeSummaryTextWithCompletion:(id)completion;
+- (void)insertAction:(id)action atIndex:(unint64_t)index;
+- (void)insertActions:(id)actions atIndex:(unint64_t)index;
+- (void)insertActions:(id)actions atIndexes:(id)indexes;
 - (void)loadFromRecord;
-- (void)moveActionsAtIndexes:(id)a3 toIndexes:(id)a4;
-- (void)performBatchOperation:(id)a3;
+- (void)moveActionsAtIndexes:(id)indexes toIndexes:(id)toIndexes;
+- (void)performBatchOperation:(id)operation;
 - (void)reloadFromRecord;
 - (void)reloadTriggers;
-- (void)reloadTriggersIfNecessaryForDatabaseChangeWithModified:(id)a3 inserted:(id)a4 removed:(id)a5;
-- (void)removeAction:(id)a3;
-- (void)removeActions:(id)a3;
-- (void)removeEditingObserver:(id)a3;
-- (void)requestToRunScriptsOnDomain:(id)a3 withUserInterface:(id)a4 database:(id)a5 completionHandler:(id)a6;
-- (void)rewriteWithStrings:(id)a3;
+- (void)reloadTriggersIfNecessaryForDatabaseChangeWithModified:(id)modified inserted:(id)inserted removed:(id)removed;
+- (void)removeAction:(id)action;
+- (void)removeActions:(id)actions;
+- (void)removeEditingObserver:(id)observer;
+- (void)requestToRunScriptsOnDomain:(id)domain withUserInterface:(id)interface database:(id)database completionHandler:(id)handler;
+- (void)rewriteWithStrings:(id)strings;
 - (void)save;
-- (void)saveFromDebouncer:(id)a3;
-- (void)saveWithCompletionBlock:(id)a3;
-- (void)setActions:(id)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setImportQuestions:(id)a3;
-- (void)setInputClasses:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNoInputBehavior:(id)a3;
-- (void)setOutputClasses:(id)a3;
-- (void)setRemoteQuarantineHash:(id)a3;
-- (void)setRemoteQuarantineStatus:(int64_t)a3;
-- (void)setTriggers:(id)a3;
-- (void)setWorkflowTypes:(id)a3;
+- (void)saveFromDebouncer:(id)debouncer;
+- (void)saveWithCompletionBlock:(id)block;
+- (void)setActions:(id)actions;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setIcon:(id)icon;
+- (void)setImportQuestions:(id)questions;
+- (void)setInputClasses:(id)classes;
+- (void)setName:(id)name;
+- (void)setNoInputBehavior:(id)behavior;
+- (void)setOutputClasses:(id)classes;
+- (void)setRemoteQuarantineHash:(id)hash;
+- (void)setRemoteQuarantineStatus:(int64_t)status;
+- (void)setTriggers:(id)triggers;
+- (void)setWorkflowTypes:(id)types;
 - (void)updateInputAction;
 - (void)updateMinimumClientVersion;
 - (void)updateSearchAttribution;
@@ -126,14 +126,14 @@
 - (void)loadFromRecord
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self record];
+  record = [(WFWorkflow *)self record];
   v4 = getWFWorkflowLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v29 = "[WFWorkflow loadFromRecord]";
     v30 = 2114;
-    v31 = v3;
+    v31 = record;
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_DEFAULT, "%s Loading workflow from record: %{public}@", buf, 0x16u);
   }
 
@@ -149,29 +149,29 @@
   }
 
   [(WFWorkflow *)self willChangeValueForKey:@"inputClasses"];
-  v9 = [v3 inputClasses];
-  v10 = [v9 if_compactMap:&__block_literal_global_428];
+  inputClasses = [record inputClasses];
+  v10 = [inputClasses if_compactMap:&__block_literal_global_428];
   inputClasses = self->_inputClasses;
   self->_inputClasses = v10;
 
   [(WFWorkflow *)self didChangeValueForKey:@"inputClasses"];
   [(WFWorkflow *)self willChangeValueForKey:@"noInputBehavior"];
-  v12 = [v3 noInputBehavior];
-  v13 = WFWorkflowNoInputBehaviorFromSerializedRepresentation(v12);
+  noInputBehavior = [record noInputBehavior];
+  v13 = WFWorkflowNoInputBehaviorFromSerializedRepresentation(noInputBehavior);
   noInputBehavior = self->_noInputBehavior;
   self->_noInputBehavior = v13;
 
   [(WFWorkflow *)self didChangeValueForKey:@"noInputBehavior"];
   [(WFWorkflow *)self willChangeValueForKey:@"outputClasses"];
-  v15 = [v3 outputClasses];
-  v16 = [v15 if_compactMap:&__block_literal_global_430];
+  outputClasses = [record outputClasses];
+  v16 = [outputClasses if_compactMap:&__block_literal_global_430];
   outputClasses = self->_outputClasses;
   self->_outputClasses = v16;
 
   [(WFWorkflow *)self didChangeValueForKey:@"outputClasses"];
-  v18 = [v3 actions];
+  actions = [record actions];
   v19 = +[WFActionRegistry sharedRegistry];
-  v20 = [WFAction actionsFromSerializedRepresentations:v18 actionRegistry:v19];
+  v20 = [WFAction actionsFromSerializedRepresentations:actions actionRegistry:v19];
 
   [(WFWorkflow *)self setSaveDisabled:1];
   [(WFWorkflow *)self setActions:v20];
@@ -180,13 +180,13 @@
   [(WFWorkflow *)self willChangeValueForKey:@"triggers"];
   [(WFWorkflow *)self didChangeValueForKey:@"triggers"];
   [(WFWorkflow *)self willChangeValueForKey:@"importQuestions"];
-  v21 = [v3 importQuestions];
+  importQuestions = [record importQuestions];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __28__WFWorkflow_loadFromRecord__block_invoke_3;
   v27[3] = &unk_1E8379580;
   v27[4] = self;
-  v22 = [v21 if_compactMap:v27];
+  v22 = [importQuestions if_compactMap:v27];
   importQuestions = self->_importQuestions;
   self->_importQuestions = v22;
 
@@ -206,18 +206,18 @@
 
 - (BOOL)hiddenFromLibraryAndSync
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 hiddenFromLibraryAndSync];
+  record = [(WFWorkflow *)self record];
+  hiddenFromLibraryAndSync = [record hiddenFromLibraryAndSync];
 
-  return v3;
+  return hiddenFromLibraryAndSync;
 }
 
 - (NSArray)actions
 {
-  v2 = [(WFWorkflow *)self actionTree];
-  v3 = [v2 actions];
+  actionTree = [(WFWorkflow *)self actionTree];
+  actions = [actionTree actions];
 
-  return v3;
+  return actions;
 }
 
 - (NSString)description
@@ -225,19 +225,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWorkflow *)self name];
-  v7 = [(WFWorkflow *)self actions];
-  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, actions: %lu>", v5, self, v6, objc_msgSend(v7, "count")];
+  name = [(WFWorkflow *)self name];
+  actions = [(WFWorkflow *)self actions];
+  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, actions: %lu>", v5, self, name, objc_msgSend(actions, "count")];
 
   return v8;
 }
 
 - (NSString)name
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 name];
+  record = [(WFWorkflow *)self record];
+  name = [record name];
 
-  return v3;
+  return name;
 }
 
 - (WFWorkflowActionTree)actionTree
@@ -264,8 +264,8 @@
   if (actionTree)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v6 = [(WFWorkflowActionTree *)actionTree actions];
-    v5 = [v4 setWithArray:v6];
+    actions = [(WFWorkflowActionTree *)actionTree actions];
+    v5 = [v4 setWithArray:actions];
     [(WFWorkflow *)self setLastActionTreeActions:v5];
   }
 
@@ -279,29 +279,29 @@
 - (NSString)resolvedAssociatedAppBundleIdentifier
 {
   v2 = MEMORY[0x1E695DFB8];
-  v3 = [(WFWorkflow *)self actions];
-  v4 = [v3 if_compactMap:&__block_literal_global_347];
+  actions = [(WFWorkflow *)self actions];
+  v4 = [actions if_compactMap:&__block_literal_global_347];
   v5 = [v2 orderedSetWithArray:v4];
 
   if ([v5 count] == 1)
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (NSString)workflowID
 {
-  v2 = [(WFWorkflow *)self reference];
-  v3 = [v2 identifier];
+  reference = [(WFWorkflow *)self reference];
+  identifier = [reference identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (WFIcon)attributionIcon
@@ -309,45 +309,45 @@
   if ([(WFWorkflow *)self hiddenFromLibraryAndSync])
   {
     v3 = objc_alloc(MEMORY[0x1E69E0960]);
-    v4 = [v3 initWithBundleIdentifier:*MEMORY[0x1E69E0FB0]];
+    v9Icon = [v3 initWithBundleIdentifier:*MEMORY[0x1E69E0FB0]];
   }
 
   else
   {
-    v5 = [(WFWorkflow *)self associatedAppBundleIdentifier];
-    v6 = [v5 length];
+    associatedAppBundleIdentifier = [(WFWorkflow *)self associatedAppBundleIdentifier];
+    v6 = [associatedAppBundleIdentifier length];
 
     if (v6)
     {
       v7 = objc_alloc(MEMORY[0x1E69E0960]);
-      v8 = [(WFWorkflow *)self associatedAppBundleIdentifier];
-      v4 = [v7 initWithBundleIdentifier:v8];
+      associatedAppBundleIdentifier2 = [(WFWorkflow *)self associatedAppBundleIdentifier];
+      v9Icon = [v7 initWithBundleIdentifier:associatedAppBundleIdentifier2];
     }
 
     else
     {
-      v9 = [(WFWorkflow *)self icon];
-      v4 = [v9 icon];
+      icon = [(WFWorkflow *)self icon];
+      v9Icon = [icon icon];
     }
   }
 
-  return v4;
+  return v9Icon;
 }
 
 - (NSString)associatedAppBundleIdentifier
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 associatedAppBundleIdentifier];
+  record = [(WFWorkflow *)self record];
+  associatedAppBundleIdentifier = [record associatedAppBundleIdentifier];
 
-  return v3;
+  return associatedAppBundleIdentifier;
 }
 
 - (WFWorkflowIcon)icon
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 icon];
+  record = [(WFWorkflow *)self record];
+  icon = [record icon];
 
-  return v3;
+  return icon;
 }
 
 - (NSString)attributionTitle
@@ -371,9 +371,9 @@
   editingObservers = self->_editingObservers;
   if (!editingObservers)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_editingObservers;
-    self->_editingObservers = v4;
+    self->_editingObservers = weakObjectsHashTable;
 
     editingObservers = self->_editingObservers;
   }
@@ -384,15 +384,15 @@
 - (void)_actionsDidChange
 {
   v73 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self lastActionTreeActions];
+  lastActionTreeActions = [(WFWorkflow *)self lastActionTreeActions];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [(WFWorkflow *)self actions];
-  v6 = [v4 setWithArray:v5];
+  actions = [(WFWorkflow *)self actions];
+  v6 = [v4 setWithArray:actions];
 
   v7 = [MEMORY[0x1E695DFA8] setWithSet:v6];
-  [v7 minusSet:v3];
-  v47 = v3;
-  v8 = [MEMORY[0x1E695DFA8] setWithSet:v3];
+  [v7 minusSet:lastActionTreeActions];
+  v47 = lastActionTreeActions;
+  v8 = [MEMORY[0x1E695DFA8] setWithSet:lastActionTreeActions];
   v46 = v6;
   [v8 minusSet:v6];
   v66 = 0u;
@@ -489,8 +489,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v26 = [(WFWorkflow *)self importQuestions];
-  v27 = [v26 countByEnumeratingWithState:&v52 objects:v69 count:16];
+  importQuestions = [(WFWorkflow *)self importQuestions];
+  v27 = [importQuestions countByEnumeratingWithState:&v52 objects:v69 count:16];
   if (v27)
   {
     v28 = v27;
@@ -501,22 +501,22 @@
       {
         if (*v53 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(importQuestions);
         }
 
         v31 = *(*(&v52 + 1) + 8 * m);
-        v32 = [v31 action];
-        if (v32)
+        action = [v31 action];
+        if (action)
         {
-          v33 = v32;
-          v34 = [v31 action];
-          v35 = [v20 containsObject:v34];
+          v33 = action;
+          action2 = [v31 action];
+          v35 = [v20 containsObject:action2];
 
           if (v35)
           {
             [(WFWorkflow *)self willChangeValueForKey:@"importQuestions"];
-            v36 = [(WFWorkflow *)self importQuestions];
-            v37 = [v36 if_arrayByRemovingObject:v31];
+            importQuestions2 = [(WFWorkflow *)self importQuestions];
+            v37 = [importQuestions2 if_arrayByRemovingObject:v31];
             [(WFWorkflow *)self setImportQuestions:v37];
 
             [(WFWorkflow *)self didChangeValueForKey:@"importQuestions"];
@@ -524,7 +524,7 @@
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v52 objects:v69 count:16];
+      v28 = [importQuestions countByEnumeratingWithState:&v52 objects:v69 count:16];
     }
 
     while (v28);
@@ -535,8 +535,8 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v38 = [(WFWorkflow *)self editingObservers];
-  v39 = [v38 copy];
+  editingObservers = [(WFWorkflow *)self editingObservers];
+  v39 = [editingObservers copy];
 
   v40 = [v39 countByEnumeratingWithState:&v48 objects:v68 count:16];
   if (v40)
@@ -573,17 +573,17 @@
 - (void)updateInputAction
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self shouldShowInputAction];
+  shouldShowInputAction = [(WFWorkflow *)self shouldShowInputAction];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [(WFWorkflow *)self workflowTypes];
-  v6 = [v4 setWithArray:v5];
+  workflowTypes = [(WFWorkflow *)self workflowTypes];
+  v6 = [v4 setWithArray:workflowTypes];
 
   p_inputAction = &self->_inputAction;
-  v8 = [(WFInputAction *)self->_inputAction inputSurfaces];
-  v9 = v8;
-  if (v8)
+  inputSurfaces = [(WFInputAction *)self->_inputAction inputSurfaces];
+  v9 = inputSurfaces;
+  if (inputSurfaces)
   {
-    v10 = v8;
+    v10 = inputSurfaces;
   }
 
   else
@@ -594,7 +594,7 @@
   v11 = v10;
 
   v12 = *p_inputAction;
-  if (!v3)
+  if (!shouldShowInputAction)
   {
     if (v12)
     {
@@ -609,7 +609,7 @@ LABEL_9:
     }
 
     v13 = *p_inputAction;
-    if (v3)
+    if (shouldShowInputAction)
     {
       goto LABEL_11;
     }
@@ -635,8 +635,8 @@ LABEL_13:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [(WFWorkflow *)self editingObservers];
-  v16 = [v15 copy];
+  editingObservers = [(WFWorkflow *)self editingObservers];
+  v16 = [editingObservers copy];
 
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v17)
@@ -672,60 +672,60 @@ LABEL_24:
 
 - (BOOL)shouldShowInputAction
 {
-  v3 = [(WFWorkflow *)self workflowTypes];
-  if (WFWorkflowTypesContainsInputType(v3))
+  workflowTypes = [(WFWorkflow *)self workflowTypes];
+  if (WFWorkflowTypesContainsInputType(workflowTypes))
   {
-    v4 = 1;
+    isShortcutInputVariableUsed = 1;
   }
 
   else
   {
-    v5 = [(WFWorkflow *)self actionTree];
-    v4 = [v5 isShortcutInputVariableUsed];
+    actionTree = [(WFWorkflow *)self actionTree];
+    isShortcutInputVariableUsed = [actionTree isShortcutInputVariableUsed];
   }
 
-  return v4;
+  return isShortcutInputVariableUsed;
 }
 
 - (NSArray)workflowTypes
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 workflowTypes];
+  record = [(WFWorkflow *)self record];
+  workflowTypes = [record workflowTypes];
 
-  return v3;
+  return workflowTypes;
 }
 
 - (void)updateSuggestedNameIfPossible
 {
   if ([(WFWorkflow *)self storageState]== 2 && ![(WFWorkflow *)self userProvidedName])
   {
-    v3 = [(WFWorkflow *)self actions];
-    v13 = [v3 lastObject];
+    actions = [(WFWorkflow *)self actions];
+    lastObject = [actions lastObject];
 
-    v4 = [(WFWorkflow *)self actionsGroupedWithAction:v13];
-    v5 = [v4 firstObject];
-    if (v13 && v4 && v5)
+    v4 = [(WFWorkflow *)self actionsGroupedWithAction:lastObject];
+    firstObject = [v4 firstObject];
+    if (lastObject && v4 && firstObject)
     {
-      v6 = [v5 localizedName];
+      localizedName = [firstObject localizedName];
     }
 
     else
     {
-      v6 = +[WFWorkflow defaultName];
+      localizedName = +[WFWorkflow defaultName];
     }
 
-    v7 = v6;
-    v8 = [(WFWorkflow *)self name];
-    v9 = [v8 containsString:v7];
+    v7 = localizedName;
+    name = [(WFWorkflow *)self name];
+    v9 = [name containsString:v7];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(WFWorkflow *)self database];
+      database = [(WFWorkflow *)self database];
 
-      if (v10)
+      if (database)
       {
-        v11 = [(WFWorkflow *)self database];
-        v12 = [v11 suggestedWorkflowNameForName:v7];
+        database2 = [(WFWorkflow *)self database];
+        v12 = [database2 suggestedWorkflowNameForName:v7];
       }
 
       else
@@ -748,9 +748,9 @@ LABEL_7:
     return;
   }
 
-  v3 = [(WFWorkflow *)self database];
+  database = [(WFWorkflow *)self database];
 
-  if (v3)
+  if (database)
   {
     v4 = getWFWorkflowLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -758,14 +758,14 @@ LABEL_7:
       v8 = 136315394;
       v9 = "[WFWorkflow save]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_INFO, "%s Poking the save debouncer for workflow: %@", &v8, 0x16u);
     }
 
     [(WFWorkflow *)self createReferenceIfNecessaryWithName:0 nameCollisionBehavior:0 allowEmpty:0 error:0];
     [(WFWorkflow *)self setRetainedSelf:self];
-    v5 = [(WFWorkflow *)self saveDebouncer];
-    [v5 poke];
+    saveDebouncer = [(WFWorkflow *)self saveDebouncer];
+    [saveDebouncer poke];
 
     goto LABEL_7;
   }
@@ -777,13 +777,13 @@ LABEL_7:
 
 - (WFDatabase)database
 {
-  v2 = [(WFWorkflow *)self storageProvider];
-  if (v2)
+  storageProvider = [(WFWorkflow *)self storageProvider];
+  if (storageProvider)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = storageProvider;
     }
 
     else
@@ -799,25 +799,25 @@ LABEL_7:
 
   v4 = v3;
 
-  v5 = [v4 database];
+  database = [v4 database];
 
-  return v5;
+  return database;
 }
 
 - (BOOL)hasActions
 {
-  v2 = [(WFWorkflow *)self actions];
-  v3 = [v2 count] != 0;
+  actions = [(WFWorkflow *)self actions];
+  v3 = [actions count] != 0;
 
   return v3;
 }
 
 - (BOOL)disabledOnLockScreen
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 disabledOnLockScreen];
+  record = [(WFWorkflow *)self record];
+  disabledOnLockScreen = [record disabledOnLockScreen];
 
-  return v3;
+  return disabledOnLockScreen;
 }
 
 - (NSString)source
@@ -825,33 +825,33 @@ LABEL_7:
   source = self->_source;
   if (source)
   {
-    v3 = source;
+    source2 = source;
   }
 
   else
   {
-    v5 = [(WFWorkflow *)self record];
-    v6 = [v5 source];
-    v7 = v6;
-    if (v6)
+    record = [(WFWorkflow *)self record];
+    source = [record source];
+    v7 = source;
+    if (source)
     {
-      v3 = v6;
+      source2 = source;
     }
 
     else
     {
-      v8 = [(WFWorkflow *)self reference];
-      v3 = [v8 source];
+      reference = [(WFWorkflow *)self reference];
+      source2 = [reference source];
     }
   }
 
-  return v3;
+  return source2;
 }
 
-- (id)userVisibleStringsForUseCase:(unint64_t)a3
+- (id)userVisibleStringsForUseCase:(unint64_t)case
 {
-  v4 = self;
-  sub_1CA5B8094(a3);
+  selfCopy = self;
+  sub_1CA5B8094(case);
 
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
@@ -860,26 +860,26 @@ LABEL_7:
   return v5;
 }
 
-- (void)rewriteWithStrings:(id)a3
+- (void)rewriteWithStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   sub_1CA94C1C8();
-  v4 = self;
+  selfCopy = self;
   sub_1CA5B8260();
 }
 
-- (void)generateShortcutRepresentation:(id)a3
+- (void)generateShortcutRepresentation:(id)representation
 {
-  v9 = a3;
-  v4 = [(WFWorkflow *)self actions];
-  if ([v4 count] == 1)
+  representationCopy = representation;
+  actions = [(WFWorkflow *)self actions];
+  if ([actions count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = v5;
-    if (v5)
+    firstObject = [actions firstObject];
+    v6 = firstObject;
+    if (firstObject)
     {
-      if ([v5 conformsToProtocol:&unk_1F4A9F640])
+      if ([firstObject conformsToProtocol:&unk_1F4A9F640])
       {
         v7 = v6;
       }
@@ -905,22 +905,22 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 generateShortcutRepresentation:v9];
+    [v8 generateShortcutRepresentation:representationCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(representationCopy + 2))(representationCopy, 0, 0);
   }
 }
 
-- (WFWorkflow)initWithShortcut:(id)a3 error:(id *)a4
+- (WFWorkflow)initWithShortcut:(id)shortcut error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  shortcutCopy = shortcut;
+  if (!shortcutCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFWorkflow+INShortcut.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow+INShortcut.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
   }
 
   v8 = [(WFWorkflow *)self init];
@@ -930,44 +930,44 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  v9 = [v7 intent];
-  v10 = [v9 suggestedInvocationPhrase];
+  intent = [shortcutCopy intent];
+  suggestedInvocationPhrase = [intent suggestedInvocationPhrase];
 
-  if (v10)
+  if (suggestedInvocationPhrase)
   {
-    v11 = [v7 intent];
+    intent2 = [shortcutCopy intent];
   }
 
   else
   {
-    v13 = [v7 userActivity];
-    v14 = [v13 suggestedInvocationPhrase];
+    userActivity = [shortcutCopy userActivity];
+    suggestedInvocationPhrase2 = [userActivity suggestedInvocationPhrase];
 
-    if (!v14)
+    if (!suggestedInvocationPhrase2)
     {
-      v16 = 0;
+      suggestedInvocationPhrase3 = 0;
       goto LABEL_10;
     }
 
-    v11 = [v7 userActivity];
+    intent2 = [shortcutCopy userActivity];
   }
 
-  v15 = v11;
-  v16 = [v11 suggestedInvocationPhrase];
+  v15 = intent2;
+  suggestedInvocationPhrase3 = [intent2 suggestedInvocationPhrase];
 
 LABEL_10:
-  if ([v16 length])
+  if ([suggestedInvocationPhrase3 length])
   {
-    [(WFWorkflow *)v8 setName:v16];
+    [(WFWorkflow *)v8 setName:suggestedInvocationPhrase3];
   }
 
   v17 = +[WFActionRegistry sharedRegistry];
-  v18 = [v17 createActionWithShortcut:v7 error:a4];
+  v18 = [v17 createActionWithShortcut:shortcutCopy error:error];
 
   if (v18)
   {
     [(WFWorkflow *)v8 addAction:v18];
-    v19 = [[WFStandaloneShortcutRepresentation alloc] initWithINShortcut:v7];
+    v19 = [[WFStandaloneShortcutRepresentation alloc] initWithINShortcut:shortcutCopy];
     [(WFWorkflow *)v8 configureWithStandaloneShortcutRepresentation:v19 homeSummaryText:0];
     v12 = v8;
   }
@@ -981,27 +981,27 @@ LABEL_16:
   return v12;
 }
 
-- (WFWorkflow)initWithActionDonation:(id)a3 error:(id *)a4
+- (WFWorkflow)initWithActionDonation:(id)donation error:(id *)error
 {
-  v6 = [a3 shortcut];
-  v7 = [(WFWorkflow *)self initWithShortcut:v6 error:a4];
+  shortcut = [donation shortcut];
+  v7 = [(WFWorkflow *)self initWithShortcut:shortcut error:error];
 
   return v7;
 }
 
-- (WFWorkflow)initWithName:(id)a3 description:(id)a4 associatedAppBundleIdentifier:(id)a5 actions:(id)a6
+- (WFWorkflow)initWithName:(id)name description:(id)description associatedAppBundleIdentifier:(id)identifier actions:(id)actions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  actionsCopy = actions;
   v14 = [(WFWorkflow *)self init];
   v15 = v14;
   if (v14)
   {
-    if (v10)
+    if (nameCopy)
     {
-      [(WFWorkflow *)v14 setName:v10];
+      [(WFWorkflow *)v14 setName:nameCopy];
     }
 
     else
@@ -1010,17 +1010,17 @@ LABEL_16:
       [(WFWorkflow *)v15 setName:v16];
     }
 
-    v17 = [(WFWorkflow *)v15 record];
-    [v17 setWorkflowSubtitle:v11];
+    record = [(WFWorkflow *)v15 record];
+    [record setWorkflowSubtitle:descriptionCopy];
 
-    v18 = [(WFWorkflow *)v15 record];
-    [v18 setAssociatedAppBundleIdentifier:v12];
+    record2 = [(WFWorkflow *)v15 record];
+    [record2 setAssociatedAppBundleIdentifier:identifierCopy];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __95__WFWorkflow_WFLCompatibility__initWithName_description_associatedAppBundleIdentifier_actions___block_invoke;
     v22[3] = &unk_1E837F870;
-    v23 = v13;
+    v23 = actionsCopy;
     v19 = v15;
     v24 = v19;
     [(WFWorkflow *)v19 performBatchOperation:v22];
@@ -1068,8 +1068,8 @@ void __95__WFWorkflow_WFLCompatibility__initWithName_description_associatedAppBu
 
 - (BOOL)isEligibleForWatch
 {
-  v2 = [(WFWorkflow *)self actions];
-  v3 = [v2 if_firstObjectPassingTest:&__block_literal_global_19345];
+  actions = [(WFWorkflow *)self actions];
+  v3 = [actions if_firstObjectPassingTest:&__block_literal_global_19345];
   v4 = v3 == 0;
 
   return v4;
@@ -1086,8 +1086,8 @@ uint64_t __50__WFWorkflow_WatchEligibility__isEligibleForWatch__block_invoke(uin
 - (BOOL)addWatchWorkflowTypeIfEligible
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] addEligibleShortcutToWatchFolderEnabled];
-  if (v3)
+  addEligibleShortcutToWatchFolderEnabled = [MEMORY[0x1E695E000] addEligibleShortcutToWatchFolderEnabled];
+  if (addEligibleShortcutToWatchFolderEnabled)
   {
     v4 = getWFGeneralLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1095,36 +1095,36 @@ uint64_t __50__WFWorkflow_WatchEligibility__isEligibleForWatch__block_invoke(uin
       v9 = 136315394;
       v10 = "[WFWorkflow(WatchEligibility) addWatchWorkflowTypeIfEligible]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_INFO, "%s Adding watch workflow type to workflow %@", &v9, 0x16u);
     }
 
-    v5 = [(WFWorkflow *)self workflowTypes];
-    v6 = [v5 containsObject:*MEMORY[0x1E69E1470]];
+    workflowTypes = [(WFWorkflow *)self workflowTypes];
+    v6 = [workflowTypes containsObject:*MEMORY[0x1E69E1470]];
 
     if (v6)
     {
       goto LABEL_7;
     }
 
-    v3 = [(WFWorkflow *)self isEligibleForWatch];
-    if (v3)
+    addEligibleShortcutToWatchFolderEnabled = [(WFWorkflow *)self isEligibleForWatch];
+    if (addEligibleShortcutToWatchFolderEnabled)
     {
       [(WFWorkflow *)self addWatchWorkflowType];
 LABEL_7:
-      LOBYTE(v3) = 1;
+      LOBYTE(addEligibleShortcutToWatchFolderEnabled) = 1;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v3;
+  return addEligibleShortcutToWatchFolderEnabled;
 }
 
 - (void)addWatchWorkflowType
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self workflowTypes];
-  v4 = [v3 arrayByAddingObject:*MEMORY[0x1E69E1470]];
+  workflowTypes = [(WFWorkflow *)self workflowTypes];
+  v4 = [workflowTypes arrayByAddingObject:*MEMORY[0x1E69E1470]];
   [(WFWorkflow *)self setWorkflowTypes:v4];
 
   v5 = getWFGeneralLogObject();
@@ -1133,7 +1133,7 @@ LABEL_7:
     v7 = 136315394;
     v8 = "[WFWorkflow(WatchEligibility) addWatchWorkflowType]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Added watch workflow type to workflow %@", &v7, 0x16u);
   }
 
@@ -1147,14 +1147,14 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (BOOL)record:(id)a3 isEquivalentToRecord:(id)a4
+- (BOOL)record:(id)record isEquivalentToRecord:(id)toRecord
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 name];
-  v8 = [v6 name];
-  v9 = v7;
-  v10 = v8;
+  recordCopy = record;
+  toRecordCopy = toRecord;
+  name = [recordCopy name];
+  name2 = [toRecordCopy name];
+  v9 = name;
+  v10 = name2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -1175,10 +1175,10 @@ LABEL_7:
   if (v15)
   {
 LABEL_7:
-    v16 = [v5 legacyName];
-    v17 = [v6 legacyName];
-    v14 = v16;
-    v18 = v17;
+    legacyName = [recordCopy legacyName];
+    legacyName2 = [toRecordCopy legacyName];
+    v14 = legacyName;
+    v18 = legacyName2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -1213,10 +1213,10 @@ LABEL_119:
       }
     }
 
-    v21 = [v5 workflowSubtitle];
-    v22 = [v6 workflowSubtitle];
-    v23 = v21;
-    v24 = v22;
+    workflowSubtitle = [recordCopy workflowSubtitle];
+    workflowSubtitle2 = [toRecordCopy workflowSubtitle];
+    v23 = workflowSubtitle;
+    v24 = workflowSubtitle2;
     v19 = v24;
     v130 = v23;
     if (v23 != v24)
@@ -1236,10 +1236,10 @@ LABEL_119:
           }
 
 LABEL_19:
-          v27 = [v5 actionsDescription];
-          v28 = [v6 actionsDescription];
-          v23 = v27;
-          v29 = v28;
+          actionsDescription = [recordCopy actionsDescription];
+          actionsDescription2 = [toRecordCopy actionsDescription];
+          v23 = actionsDescription;
+          v29 = actionsDescription2;
           v129 = v29;
           if (v23 != v29)
           {
@@ -1259,10 +1259,10 @@ LABEL_19:
 
 LABEL_26:
                 v128 = v23;
-                v32 = [v5 associatedAppBundleIdentifier];
-                v33 = [v6 associatedAppBundleIdentifier];
-                v34 = v32;
-                v35 = v33;
+                associatedAppBundleIdentifier = [recordCopy associatedAppBundleIdentifier];
+                associatedAppBundleIdentifier2 = [toRecordCopy associatedAppBundleIdentifier];
+                v34 = associatedAppBundleIdentifier;
+                v35 = associatedAppBundleIdentifier2;
                 v126 = v35;
                 v127 = v34;
                 if (v34 != v35)
@@ -1288,10 +1288,10 @@ LABEL_114:
                       }
 
 LABEL_33:
-                      v39 = [v5 icon];
-                      v40 = [v6 icon];
-                      v41 = v39;
-                      v42 = v40;
+                      icon = [recordCopy icon];
+                      icon2 = [toRecordCopy icon];
+                      v41 = icon;
+                      v42 = icon2;
                       v124 = v42;
                       v125 = v41;
                       if (v41 != v42)
@@ -1317,10 +1317,10 @@ LABEL_112:
 
 LABEL_40:
                             v45 = MEMORY[0x1E695DFD8];
-                            v121 = [v5 workflowTypes];
-                            v46 = [v45 setWithArray:v121];
+                            workflowTypes = [recordCopy workflowTypes];
+                            v46 = [v45 setWithArray:workflowTypes];
                             v47 = MEMORY[0x1E695DFD8];
-                            v120 = [v6 workflowTypes];
+                            workflowTypes2 = [toRecordCopy workflowTypes];
                             v48 = [v47 setWithArray:?];
                             v49 = v46;
                             v50 = v48;
@@ -1344,17 +1344,17 @@ LABEL_40:
                                     v23 = v128;
 LABEL_110:
 
-                                    v41 = v121;
+                                    v41 = workflowTypes;
                                     v43 = v123;
                                     goto LABEL_111;
                                   }
 
 LABEL_47:
                                   v54 = MEMORY[0x1E695DFD8];
-                                  v117 = [v5 inputClasses];
-                                  v55 = [v54 setWithArray:v117];
+                                  inputClasses = [recordCopy inputClasses];
+                                  v55 = [v54 setWithArray:inputClasses];
                                   v56 = MEMORY[0x1E695DFD8];
-                                  v116 = [v6 inputClasses];
+                                  inputClasses2 = [toRecordCopy inputClasses];
                                   v57 = [v56 setWithArray:?];
                                   v58 = v55;
                                   v59 = v57;
@@ -1378,16 +1378,16 @@ LABEL_47:
                                           v23 = v128;
 LABEL_108:
 
-                                          v52 = v117;
+                                          v52 = inputClasses;
                                           v51 = v119;
                                           goto LABEL_109;
                                         }
 
 LABEL_54:
-                                        v63 = [v5 noInputBehavior];
-                                        v64 = [v6 noInputBehavior];
-                                        v65 = v63;
-                                        v66 = v64;
+                                        noInputBehavior = [recordCopy noInputBehavior];
+                                        noInputBehavior2 = [toRecordCopy noInputBehavior];
+                                        v65 = noInputBehavior;
+                                        v66 = noInputBehavior2;
                                         v114 = v66;
                                         v115 = v65;
                                         if (v65 != v66)
@@ -1413,10 +1413,10 @@ LABEL_106:
 
 LABEL_61:
                                               v69 = MEMORY[0x1E695DFD8];
-                                              v111 = [v5 outputClasses];
+                                              outputClasses = [recordCopy outputClasses];
                                               v70 = [v69 setWithArray:?];
                                               v71 = MEMORY[0x1E695DFD8];
-                                              v110 = [v6 outputClasses];
+                                              outputClasses2 = [toRecordCopy outputClasses];
                                               v72 = [v71 setWithArray:?];
                                               v73 = v70;
                                               v74 = v72;
@@ -1441,15 +1441,15 @@ LABEL_61:
 LABEL_104:
 
                                                       v67 = v113;
-                                                      v65 = v111;
+                                                      v65 = outputClasses;
                                                       goto LABEL_105;
                                                     }
 
 LABEL_68:
-                                                    v78 = [v5 actions];
-                                                    v79 = [v6 actions];
-                                                    v80 = v78;
-                                                    v81 = v79;
+                                                    actions = [recordCopy actions];
+                                                    actions2 = [toRecordCopy actions];
+                                                    v80 = actions;
+                                                    v81 = actions2;
                                                     v108 = v81;
                                                     v109 = v80;
                                                     if (v80 != v81)
@@ -1474,10 +1474,10 @@ LABEL_102:
                                                           }
 
 LABEL_75:
-                                                          v84 = [v5 importQuestions];
-                                                          v85 = [v6 importQuestions];
-                                                          v80 = v84;
-                                                          v86 = v85;
+                                                          importQuestions = [recordCopy importQuestions];
+                                                          importQuestions2 = [toRecordCopy importQuestions];
+                                                          v80 = importQuestions;
+                                                          v86 = importQuestions2;
                                                           v107 = v86;
                                                           if (v80 == v86)
                                                           {
@@ -1522,24 +1522,24 @@ LABEL_100:
                                                             }
                                                           }
 
-                                                          v91 = [v5 quarantine];
-                                                          v92 = [v6 quarantine];
-                                                          v93 = v91;
-                                                          v94 = v92;
+                                                          quarantine = [recordCopy quarantine];
+                                                          quarantine2 = [toRecordCopy quarantine];
+                                                          v93 = quarantine;
+                                                          v94 = quarantine2;
                                                           if (v93 == v94)
                                                           {
                                                             v103 = v94;
 
 LABEL_89:
-                                                            v97 = [v5 isDeleted];
-                                                            if (v97 == [v6 isDeleted])
+                                                            isDeleted = [recordCopy isDeleted];
+                                                            if (isDeleted == [toRecordCopy isDeleted])
                                                             {
                                                               v105 = v93;
-                                                              v99 = [v5 remoteQuarantineStatus];
-                                                              if (v99 == [v6 remoteQuarantineStatus] && (v100 = objc_msgSend(v5, "disabledOnLockScreen"), v100 == objc_msgSend(v6, "disabledOnLockScreen")))
+                                                              remoteQuarantineStatus = [recordCopy remoteQuarantineStatus];
+                                                              if (remoteQuarantineStatus == [toRecordCopy remoteQuarantineStatus] && (v100 = objc_msgSend(recordCopy, "disabledOnLockScreen"), v100 == objc_msgSend(toRecordCopy, "disabledOnLockScreen")))
                                                               {
-                                                                v101 = [v5 hiddenFromLibraryAndSync];
-                                                                v12 = v101 ^ [v6 hiddenFromLibraryAndSync] ^ 1;
+                                                                hiddenFromLibraryAndSync = [recordCopy hiddenFromLibraryAndSync];
+                                                                v12 = hiddenFromLibraryAndSync ^ [toRecordCopy hiddenFromLibraryAndSync] ^ 1;
                                                               }
 
                                                               else
@@ -1734,25 +1734,25 @@ LABEL_120:
   return v12;
 }
 
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  modifiedCopy = modified;
+  insertedCopy = inserted;
+  removedCopy = removed;
   v12 = getWFFilesystemEventsLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v48 = "[WFWorkflow databaseDidChange:modified:inserted:removed:]";
     v49 = 2112;
-    v50 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_DEFAULT, "%s databaseDidChange on %@", buf, 0x16u);
   }
 
   if (![(WFWorkflow *)self ignoreModifications])
   {
-    [(WFWorkflow *)self reloadTriggersIfNecessaryForDatabaseChangeWithModified:v9 inserted:v10 removed:v11];
+    [(WFWorkflow *)self reloadTriggersIfNecessaryForDatabaseChangeWithModified:modifiedCopy inserted:insertedCopy removed:removedCopy];
   }
 
   if ([(WFWorkflow *)self isSaving])
@@ -1762,15 +1762,15 @@ LABEL_120:
 
   else if (![(WFWorkflow *)self ignoreModifications])
   {
-    v34 = v10;
-    v13 = [(WFWorkflow *)self reference];
-    v14 = [v13 identifier];
+    v34 = insertedCopy;
+    reference = [(WFWorkflow *)self reference];
+    identifier = [reference identifier];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v15 = v11;
+    v15 = removedCopy;
     v16 = [v15 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v16)
     {
@@ -1788,8 +1788,8 @@ LABEL_120:
           v20 = *(*(&v41 + 1) + 8 * i);
           if (!-[WFWorkflow lazyEmptyWorkflowDeleted](self, "lazyEmptyWorkflowDeleted") && ![v20 objectType])
           {
-            v21 = [v20 identifier];
-            v22 = [v21 isEqualToString:v14];
+            identifier2 = [v20 identifier];
+            v22 = [identifier2 isEqualToString:identifier];
 
             if (v22)
             {
@@ -1818,13 +1818,13 @@ LABEL_120:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = v9;
+    v15 = modifiedCopy;
     v23 = [v15 countByEnumeratingWithState:&v36 objects:v45 count:16];
     if (v23)
     {
       v24 = v23;
-      v32 = v11;
-      v33 = v9;
+      v32 = removedCopy;
+      v33 = modifiedCopy;
       v25 = *v37;
       v26 = MEMORY[0x1E69E96A0];
       do
@@ -1839,8 +1839,8 @@ LABEL_120:
           v28 = *(*(&v36 + 1) + 8 * j);
           if (![v28 objectType])
           {
-            v29 = [v28 identifier];
-            v30 = [v29 isEqualToString:v14];
+            identifier3 = [v28 identifier];
+            v30 = [identifier3 isEqualToString:identifier];
 
             if (v30)
             {
@@ -1858,13 +1858,13 @@ LABEL_120:
       }
 
       while (v24);
-      v11 = v32;
-      v9 = v33;
+      removedCopy = v32;
+      modifiedCopy = v33;
     }
 
 LABEL_30:
 
-    v10 = v34;
+    insertedCopy = v34;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1888,20 +1888,20 @@ uint64_t __58__WFWorkflow_databaseDidChange_modified_inserted_removed___block_in
   return [v2 reloadFromRecord];
 }
 
-- (void)reloadTriggersIfNecessaryForDatabaseChangeWithModified:(id)a3 inserted:(id)a4 removed:(id)a5
+- (void)reloadTriggersIfNecessaryForDatabaseChangeWithModified:(id)modified inserted:(id)inserted removed:(id)removed
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWorkflow *)self reference];
-  v47 = [v11 identifier];
+  modifiedCopy = modified;
+  insertedCopy = inserted;
+  removedCopy = removed;
+  reference = [(WFWorkflow *)self reference];
+  identifier = [reference identifier];
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v12 = v9;
+  v12 = insertedCopy;
   v13 = [v12 countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v13)
   {
@@ -1919,15 +1919,15 @@ uint64_t __58__WFWorkflow_databaseDidChange_modified_inserted_removed___block_in
         v17 = *(*(&v61 + 1) + 8 * i);
         if ([v17 objectType] == 1)
         {
-          v39 = [(WFWorkflow *)self database];
-          v40 = [v17 identifier];
-          v41 = [v39 configuredTriggerForTriggerID:v40];
+          database = [(WFWorkflow *)self database];
+          identifier2 = [v17 identifier];
+          v41 = [database configuredTriggerForTriggerID:identifier2];
 
-          v42 = [v41 workflowID];
-          v20 = v47;
-          LODWORD(v39) = [v42 isEqualToString:v47];
+          workflowID = [v41 workflowID];
+          v20 = identifier;
+          LODWORD(database) = [workflowID isEqualToString:identifier];
 
-          if (v39)
+          if (database)
           {
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
@@ -1952,20 +1952,20 @@ uint64_t __58__WFWorkflow_databaseDidChange_modified_inserted_removed___block_in
     }
   }
 
-  v18 = [(WFWorkflow *)self triggers];
-  v19 = [v18 count];
+  triggers = [(WFWorkflow *)self triggers];
+  v19 = [triggers count];
 
-  v20 = v47;
+  v20 = identifier;
   if (v19)
   {
-    v46 = v8;
+    v46 = modifiedCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v21 = v10;
+    v21 = removedCopy;
     v22 = [v21 countByEnumeratingWithState:&v56 objects:v66 count:16];
-    v23 = self;
+    selfCopy = self;
     if (v22)
     {
       v24 = v22;
@@ -1982,13 +1982,13 @@ uint64_t __58__WFWorkflow_databaseDidChange_modified_inserted_removed___block_in
           v27 = *(*(&v56 + 1) + 8 * j);
           if ([v27 objectType] == 1)
           {
-            v28 = [(WFWorkflow *)self triggers];
+            triggers2 = [(WFWorkflow *)self triggers];
             v55[0] = MEMORY[0x1E69E9820];
             v55[1] = 3221225472;
             v55[2] = __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified_inserted_removed___block_invoke_2;
             v55[3] = &unk_1E8379628;
             v55[4] = v27;
-            v29 = [v28 if_objectsPassingTest:v55];
+            v29 = [triggers2 if_objectsPassingTest:v55];
             v30 = [v29 count];
 
             if (v30)
@@ -1997,7 +1997,7 @@ uint64_t __58__WFWorkflow_databaseDidChange_modified_inserted_removed___block_in
               v54[1] = 3221225472;
               v54[2] = __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified_inserted_removed___block_invoke_3;
               v54[3] = &unk_1E837FA70;
-              v54[4] = v23;
+              v54[4] = selfCopy;
               v43 = MEMORY[0x1E69E96A0];
               v44 = v54;
 LABEL_36:
@@ -2005,7 +2005,7 @@ LABEL_36:
               goto LABEL_37;
             }
 
-            self = v23;
+            self = selfCopy;
           }
         }
 
@@ -2023,7 +2023,7 @@ LABEL_36:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v8 = v46;
+    modifiedCopy = v46;
     v21 = v46;
     v31 = [v21 countByEnumeratingWithState:&v50 objects:v65 count:16];
     if (v31)
@@ -2042,13 +2042,13 @@ LABEL_36:
           v35 = *(*(&v50 + 1) + 8 * k);
           if ([v35 objectType] == 1)
           {
-            v36 = [(WFWorkflow *)self triggers];
+            triggers3 = [(WFWorkflow *)self triggers];
             v49[0] = MEMORY[0x1E69E9820];
             v49[1] = 3221225472;
             v49[2] = __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified_inserted_removed___block_invoke_4;
             v49[3] = &unk_1E8379628;
             v49[4] = v35;
-            v37 = [v36 if_objectsPassingTest:v49];
+            v37 = [triggers3 if_objectsPassingTest:v49];
             v38 = [v37 count];
 
             if (v38)
@@ -2057,13 +2057,13 @@ LABEL_36:
               v48[1] = 3221225472;
               v48[2] = __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified_inserted_removed___block_invoke_5;
               v48[3] = &unk_1E837FA70;
-              v48[4] = v23;
+              v48[4] = selfCopy;
               v43 = MEMORY[0x1E69E96A0];
               v44 = v48;
               goto LABEL_36;
             }
 
-            self = v23;
+            self = selfCopy;
           }
         }
 
@@ -2077,10 +2077,10 @@ LABEL_36:
       }
 
 LABEL_37:
-      v8 = v46;
+      modifiedCopy = v46;
     }
 
-    v20 = v47;
+    v20 = identifier;
 LABEL_39:
   }
 
@@ -2105,15 +2105,15 @@ uint64_t __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified
   return v5;
 }
 
-- (id)inferOutputTypesWithHasOutputFallback:(BOOL *)a3
+- (id)inferOutputTypesWithHasOutputFallback:(BOOL *)fallback
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [(WFWorkflow *)self actions];
-  v5 = [v4 if_compactMap:&__block_literal_global_625];
+  actions = [(WFWorkflow *)self actions];
+  v5 = [actions if_compactMap:&__block_literal_global_625];
 
   if ([v5 count])
   {
-    v24 = a3;
+    fallbackCopy = fallback;
     v6 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
@@ -2126,7 +2126,7 @@ uint64_t __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified
     {
       v8 = v7;
       v9 = *v32;
-      v10 = 1;
+      hasOutputFallback = 1;
       do
       {
         for (i = 0; i != v8; ++i)
@@ -2137,19 +2137,19 @@ uint64_t __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified
           }
 
           v12 = *(*(&v31 + 1) + 8 * i);
-          if (v10)
+          if (hasOutputFallback)
           {
-            v10 = [*(*(&v31 + 1) + 8 * i) hasOutputFallback];
+            hasOutputFallback = [*(*(&v31 + 1) + 8 * i) hasOutputFallback];
           }
 
           else
           {
-            v10 = 0;
+            hasOutputFallback = 0;
           }
 
           v13 = MEMORY[0x1E695DFD8];
-          v14 = [v12 outputContentClasses];
-          v15 = [v13 setWithArray:v14];
+          outputContentClasses = [v12 outputContentClasses];
+          v15 = [v13 setWithArray:outputContentClasses];
 
           v29 = 0u;
           v30 = 0u;
@@ -2188,12 +2188,12 @@ uint64_t __86__WFWorkflow_reloadTriggersIfNecessaryForDatabaseChangeWithModified
 
     else
     {
-      v10 = 1;
+      hasOutputFallback = 1;
     }
 
-    if (v24)
+    if (fallbackCopy)
     {
-      *v24 = v10;
+      *fallbackCopy = hasOutputFallback;
     }
 
     v21 = [v6 copy];
@@ -2240,34 +2240,34 @@ void *__52__WFWorkflow_inferOutputTypesWithHasOutputFallback___block_invoke(uint
 
 - (void)updateSearchAttribution
 {
-  v4 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
-  v3 = [(WFWorkflow *)self record];
-  [v3 setSearchAttributionAppBundleIdentifier:v4];
+  resolvedAssociatedAppBundleIdentifier = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
+  record = [(WFWorkflow *)self record];
+  [record setSearchAttributionAppBundleIdentifier:resolvedAssociatedAppBundleIdentifier];
 }
 
 - (BOOL)isUntitled
 {
-  v2 = [(WFWorkflow *)self name];
+  name = [(WFWorkflow *)self name];
   v3 = +[WFWorkflow defaultName];
-  v4 = [v2 hasPrefix:v3];
+  v4 = [name hasPrefix:v3];
 
   return v4;
 }
 
-- (void)setImportQuestions:(id)a3
+- (void)setImportQuestions:(id)questions
 {
-  v5 = a3;
-  v6 = [v5 objectsNotMatchingClass:objc_opt_class()];
+  questionsCopy = questions;
+  v6 = [questionsCopy objectsNotMatchingClass:objc_opt_class()];
   v7 = [v6 count];
 
   if (v7)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:1442 description:{@"Invalid parameter not satisfying: %@", @"![[importQuestions objectsNotMatchingClass:[WFWorkflowImportQuestion class]] count]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:1442 description:{@"Invalid parameter not satisfying: %@", @"![[importQuestions objectsNotMatchingClass:[WFWorkflowImportQuestion class]] count]"}];
   }
 
   importQuestions = self->_importQuestions;
-  v9 = v5;
+  v9 = questionsCopy;
   v10 = importQuestions;
   v11 = v10;
   if (v10 == v9)
@@ -2295,13 +2295,13 @@ void *__52__WFWorkflow_inferOutputTypesWithHasOutputFallback___block_invoke(uint
     v14 = self->_importQuestions;
     self->_importQuestions = v13;
 
-    v15 = [(WFWorkflow *)self importQuestions];
+    importQuestions = [(WFWorkflow *)self importQuestions];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __33__WFWorkflow_setImportQuestions___block_invoke;
     v21[3] = &unk_1E83795F8;
     v21[4] = self;
-    v16 = [v15 if_compactMap:v21];
+    v16 = [importQuestions if_compactMap:v21];
     v17 = v16;
     if (v16)
     {
@@ -2313,8 +2313,8 @@ void *__52__WFWorkflow_inferOutputTypesWithHasOutputFallback___block_invoke(uint
       v18 = MEMORY[0x1E695E0F0];
     }
 
-    v19 = [(WFWorkflow *)self record];
-    [v19 setImportQuestions:v18];
+    record = [(WFWorkflow *)self record];
+    [record setImportQuestions:v18];
 
     [(WFWorkflow *)self didChangeValueForKey:@"importQuestions"];
   }
@@ -2334,8 +2334,8 @@ id __33__WFWorkflow_setImportQuestions___block_invoke(uint64_t a1, void *a2)
 
 - (id)localizedSubtitle
 {
-  v2 = [(WFWorkflow *)self actions];
-  v3 = +[WFWorkflow localizedSubtitleWithActionCount:](WFWorkflow, "localizedSubtitleWithActionCount:", [v2 count]);
+  actions = [(WFWorkflow *)self actions];
+  v3 = +[WFWorkflow localizedSubtitleWithActionCount:](WFWorkflow, "localizedSubtitleWithActionCount:", [actions count]);
 
   return v3;
 }
@@ -2343,8 +2343,8 @@ id __33__WFWorkflow_setImportQuestions___block_invoke(uint64_t a1, void *a2)
 - (id)localizedActionsSummary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self actions];
-  v4 = [v3 count];
+  actions = [(WFWorkflow *)self actions];
+  v4 = [actions count];
 
   if (v4)
   {
@@ -2353,8 +2353,8 @@ id __33__WFWorkflow_setImportQuestions___block_invoke(uint64_t a1, void *a2)
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(WFWorkflow *)self actions];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    actions2 = [(WFWorkflow *)self actions];
+    v7 = [actions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2365,17 +2365,17 @@ LABEL_4:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actions2);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         if (WFActionShouldBeIncludedInSummary(v11))
         {
-          v12 = [v11 parameterSummaryString];
-          if (v12 || ([v11 localizedName], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+          parameterSummaryString = [v11 parameterSummaryString];
+          if (parameterSummaryString || ([v11 localizedName], (parameterSummaryString = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v13 = v12;
-            [v5 addObject:v12];
+            v13 = parameterSummaryString;
+            [v5 addObject:parameterSummaryString];
           }
 
           if ([v5 count] > 9)
@@ -2386,7 +2386,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v8 = [actions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -2400,35 +2400,35 @@ LABEL_4:
     if ([v5 count])
     {
       v14 = objc_opt_new();
-      v15 = [v14 stringForObjectValue:v5];
+      localizedSubtitle = [v14 stringForObjectValue:v5];
     }
 
     else
     {
-      v15 = [(WFWorkflow *)self localizedSubtitle];
+      localizedSubtitle = [(WFWorkflow *)self localizedSubtitle];
     }
   }
 
   else
   {
-    v15 = WFLocalizedString(@"No actions");
+    localizedSubtitle = WFLocalizedString(@"No actions");
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return localizedSubtitle;
 }
 
-- (id)additionalEffectiveInputClassesForTriggers:(id)a3
+- (id)additionalEffectiveInputClassesForTriggers:(id)triggers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  triggersCopy = triggers;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = triggersCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2443,12 +2443,12 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) trigger];
-        v11 = [objc_opt_class() shortcutInputContentItemClass];
+        trigger = [*(*(&v14 + 1) + 8 * i) trigger];
+        shortcutInputContentItemClass = [objc_opt_class() shortcutInputContentItemClass];
 
-        if (v11)
+        if (shortcutInputContentItemClass)
         {
-          [v4 addObject:v11];
+          [v4 addObject:shortcutInputContentItemClass];
         }
       }
 
@@ -2465,23 +2465,23 @@ LABEL_4:
 
 - (id)effectiveInputClasses
 {
-  v3 = [(WFWorkflow *)self inputClasses];
-  v4 = [(WFWorkflow *)self workflowTypes];
-  v5 = [WFWorkflow effectiveInputClassesFromInputClasses:v3 workflowTypes:v4];
+  inputClasses = [(WFWorkflow *)self inputClasses];
+  workflowTypes = [(WFWorkflow *)self workflowTypes];
+  v5 = [WFWorkflow effectiveInputClassesFromInputClasses:inputClasses workflowTypes:workflowTypes];
   v6 = [v5 mutableCopy];
 
-  v7 = [(WFWorkflow *)self triggers];
-  v8 = [v7 count];
+  triggers = [(WFWorkflow *)self triggers];
+  v8 = [triggers count];
 
   if (v8)
   {
-    v9 = [(WFWorkflow *)self triggers];
-    v10 = [(WFWorkflow *)self additionalEffectiveInputClassesForTriggers:v9];
+    triggers2 = [(WFWorkflow *)self triggers];
+    v10 = [(WFWorkflow *)self additionalEffectiveInputClassesForTriggers:triggers2];
 
-    v11 = [(WFWorkflow *)self workflowTypes];
-    LOBYTE(v9) = WFWorkflowTypesContainsInputType(v11);
+    workflowTypes2 = [(WFWorkflow *)self workflowTypes];
+    LOBYTE(triggers2) = WFWorkflowTypesContainsInputType(workflowTypes2);
 
-    if (v9)
+    if (triggers2)
     {
       v12 = [v10 arrayByAddingObjectsFromArray:v6];
     }
@@ -2502,11 +2502,11 @@ LABEL_4:
   return v13;
 }
 
-- (void)actionOutputDetailsDidChange:(id)a3
+- (void)actionOutputDetailsDidChange:(id)change
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [a3 UUID];
-  if (v4)
+  uUID = [change UUID];
+  if (uUID)
   {
     v26 = 0u;
     v27 = 0u;
@@ -2532,8 +2532,8 @@ LABEL_4:
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v7 = [v6 containedVariables];
-          v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          containedVariables = [v6 containedVariables];
+          v8 = [containedVariables countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v8)
           {
             v9 = v8;
@@ -2545,20 +2545,20 @@ LABEL_4:
               {
                 if (*v21 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(containedVariables);
                 }
 
                 v12 = *(*(&v20 + 1) + 8 * v11);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v13 = [v12 outputUUID];
-                  v14 = [v13 isEqualToString:v4];
+                  outputUUID = [v12 outputUUID];
+                  v14 = [outputUUID isEqualToString:uUID];
 
                   if (v14)
                   {
-                    v15 = [v12 variableProvider];
-                    [v12 variableProviderDidInvalidateOutputDetails:v15];
+                    variableProvider = [v12 variableProvider];
+                    [v12 variableProviderDidInvalidateOutputDetails:variableProvider];
                   }
                 }
 
@@ -2566,7 +2566,7 @@ LABEL_4:
               }
 
               while (v9 != v11);
-              v9 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v9 = [containedVariables countByEnumeratingWithState:&v20 objects:v28 count:16];
             }
 
             while (v9);
@@ -2586,12 +2586,12 @@ LABEL_4:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)actionNameDidChange:(id)a3
+- (void)actionNameDidChange:(id)change
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 UUID];
-  if (v5)
+  changeCopy = change;
+  uUID = [changeCopy UUID];
+  if (uUID)
   {
     v29 = 0u;
     v30 = 0u;
@@ -2618,8 +2618,8 @@ LABEL_4:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v8 = [v7 containedVariables];
-          v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          containedVariables = [v7 containedVariables];
+          v9 = [containedVariables countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v9)
           {
             v10 = v9;
@@ -2631,21 +2631,21 @@ LABEL_4:
               {
                 if (*v24 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(containedVariables);
                 }
 
                 v13 = *(*(&v23 + 1) + 8 * v12);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v14 = [v13 outputUUID];
-                  v15 = [v14 isEqualToString:v5];
+                  outputUUID = [v13 outputUUID];
+                  v15 = [outputUUID isEqualToString:uUID];
 
                   if (v15)
                   {
-                    v16 = [v13 variableProvider];
-                    v17 = [v4 outputName];
-                    [v13 variableProvider:v16 variableNameDidChangeTo:v17];
+                    variableProvider = [v13 variableProvider];
+                    outputName = [changeCopy outputName];
+                    [v13 variableProvider:variableProvider variableNameDidChangeTo:outputName];
                   }
                 }
 
@@ -2653,7 +2653,7 @@ LABEL_4:
               }
 
               while (v10 != v12);
-              v10 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v10 = [containedVariables countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v10);
@@ -2673,44 +2673,44 @@ LABEL_4:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)action:(id)a3 supplementalParameterValueDidChangeForKey:(id)a4
+- (void)action:(id)action supplementalParameterValueDidChangeForKey:(id)key
 {
-  [(WFWorkflow *)self setSerializeActionsWhenSaving:1, a4];
+  [(WFWorkflow *)self setSerializeActionsWhenSaving:1, key];
 
   [(WFWorkflow *)self save];
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  [(WFWorkflow *)self setSerializeActionsWhenSaving:1, a4];
+  [(WFWorkflow *)self setSerializeActionsWhenSaving:1, key];
 
   [(WFWorkflow *)self save];
 }
 
-- (id)actionsNestedInsideAction:(id)a3
+- (id)actionsNestedInsideAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self actionTree];
-  v6 = [v5 actionsNestedInsideAction:v4];
+  actionCopy = action;
+  actionTree = [(WFWorkflow *)self actionTree];
+  v6 = [actionTree actionsNestedInsideAction:actionCopy];
 
   return v6;
 }
 
-- (id)actionsGroupedWithAction:(id)a3
+- (id)actionsGroupedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self actionTree];
-  v6 = [v5 actionsGroupedWithAction:v4];
+  actionCopy = action;
+  actionTree = [(WFWorkflow *)self actionTree];
+  v6 = [actionTree actionsGroupedWithAction:actionCopy];
 
   return v6;
 }
 
-- (void)moveActionsAtIndexes:(id)a3 toIndexes:(id)a4
+- (void)moveActionsAtIndexes:(id)indexes toIndexes:(id)toIndexes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqual:v7] & 1) == 0)
+  indexesCopy = indexes;
+  toIndexesCopy = toIndexes;
+  if (([indexesCopy isEqual:toIndexesCopy] & 1) == 0)
   {
     v8 = getWFWorkflowLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2718,87 +2718,87 @@ LABEL_4:
       v13 = 136315906;
       v14 = "[WFWorkflow moveActionsAtIndexes:toIndexes:]";
       v15 = 2114;
-      v16 = v6;
+      v16 = indexesCopy;
       v17 = 2114;
-      v18 = v7;
+      v18 = toIndexesCopy;
       v19 = 2114;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s Moving actions from indexes: %{public}@ to indexes: %{public}@ in workflow: %{public}@", &v13, 0x2Au);
     }
 
-    v9 = [(WFWorkflow *)self actions];
-    v10 = [v9 mutableCopy];
+    actions = [(WFWorkflow *)self actions];
+    v10 = [actions mutableCopy];
 
-    v11 = [v10 objectsAtIndexes:v6];
+    v11 = [v10 objectsAtIndexes:indexesCopy];
     [v10 removeObjectsInArray:v11];
-    [v10 insertObjects:v11 atIndexes:v7];
+    [v10 insertObjects:v11 atIndexes:toIndexesCopy];
     [(WFWorkflow *)self setActions:v10];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertActions:(id)a3 atIndexes:(id)a4
+- (void)insertActions:(id)actions atIndexes:(id)indexes
 {
-  v12 = a4;
-  v7 = a3;
-  v8 = [v7 count];
-  if (v8 != [v12 count])
+  indexesCopy = indexes;
+  actionsCopy = actions;
+  v8 = [actionsCopy count];
+  if (v8 != [indexesCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:1179 description:{@"Invalid parameter not satisfying: %@", @"actions.count == indexes.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:1179 description:{@"Invalid parameter not satisfying: %@", @"actions.count == indexes.count"}];
   }
 
-  v9 = [(WFWorkflow *)self actions];
-  v10 = [v9 mutableCopy];
+  actions = [(WFWorkflow *)self actions];
+  v10 = [actions mutableCopy];
 
-  [v10 insertObjects:v7 atIndexes:v12];
+  [v10 insertObjects:actionsCopy atIndexes:indexesCopy];
   [(WFWorkflow *)self setActions:v10];
 }
 
-- (void)insertActions:(id)a3 atIndex:(unint64_t)a4
+- (void)insertActions:(id)actions atIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  actionsCopy = actions;
   v7 = getWFWorkflowLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315906;
     v11 = "[WFWorkflow insertActions:atIndex:]";
     v12 = 2114;
-    v13 = v6;
+    v13 = actionsCopy;
     v14 = 2048;
-    v15 = a4;
+    indexCopy = index;
     v16 = 2114;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEFAULT, "%s Inserting actions: %{public}@ at index: %lu to workflow: %{public}@", &v10, 0x2Au);
   }
 
-  v8 = [(WFWorkflow *)self actionTree];
-  [v8 insertActions:v6 atIndex:a4];
+  actionTree = [(WFWorkflow *)self actionTree];
+  [actionTree insertActions:actionsCopy atIndex:index];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertAction:(id)a3 atIndex:(unint64_t)a4
+- (void)insertAction:(id)action atIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  actionCopy = action;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v10 count:1];
+  actionCopy2 = action;
+  v8 = [v6 arrayWithObjects:&actionCopy count:1];
 
-  [(WFWorkflow *)self insertActions:v8 atIndex:a4, v10, v11];
+  [(WFWorkflow *)self insertActions:v8 atIndex:index, actionCopy, v11];
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (void)deleteReference
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self database];
-  v4 = [(WFWorkflow *)self reference];
+  database = [(WFWorkflow *)self database];
+  reference = [(WFWorkflow *)self reference];
   v16 = 0;
-  v5 = [v3 deleteReference:v4 error:&v16];
+  v5 = [database deleteReference:reference error:&v16];
   v6 = v16;
 
   if (v5)
@@ -2813,20 +2813,20 @@ LABEL_4:
     self->_reference = 0;
 
     [(WFWorkflow *)self didChangeValueForKey:@"reference"];
-    v8 = [(WFWorkflow *)self database];
+    database2 = [(WFWorkflow *)self database];
     v9 = +[WFWorkflow defaultName];
-    v10 = [v8 suggestedWorkflowNameForName:v9];
+    v10 = [database2 suggestedWorkflowNameForName:v9];
 
     [(WFWorkflow *)self setName:v10];
     v11 = objc_alloc_init(WFDeleteShortcutEvent);
-    v12 = [(WFWorkflow *)self associatedAppBundleIdentifier];
-    [(WFDeleteShortcutEvent *)v11 setAddToSiriBundleIdentifier:v12];
+    associatedAppBundleIdentifier = [(WFWorkflow *)self associatedAppBundleIdentifier];
+    [(WFDeleteShortcutEvent *)v11 setAddToSiriBundleIdentifier:associatedAppBundleIdentifier];
 
-    v13 = [(WFWorkflow *)self galleryIdentifier];
-    [(WFDeleteShortcutEvent *)v11 setGalleryIdentifier:v13];
+    galleryIdentifier = [(WFWorkflow *)self galleryIdentifier];
+    [(WFDeleteShortcutEvent *)v11 setGalleryIdentifier:galleryIdentifier];
 
-    v14 = [(WFWorkflow *)self source];
-    [(WFDeleteShortcutEvent *)v11 setShortcutSource:v14];
+    source = [(WFWorkflow *)self source];
+    [(WFDeleteShortcutEvent *)v11 setShortcutSource:source];
 
     [(WFEvent *)v11 track];
   }
@@ -2839,7 +2839,7 @@ LABEL_4:
       *buf = 136315394;
       v18 = "[WFWorkflow deleteReference]";
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_DEFAULT, "%s Database deletion failed for workflow: %@", buf, 0x16u);
     }
   }
@@ -2847,19 +2847,19 @@ LABEL_4:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = getWFWorkflowLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v12 = "[WFWorkflow removeActions:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = actionsCopy;
     v15 = 2114;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Removing actions: %{public}@ to workflow: %{public}@", buf, 0x20u);
   }
 
@@ -2867,9 +2867,9 @@ LABEL_4:
   v8[1] = 3221225472;
   v8[2] = __28__WFWorkflow_removeActions___block_invoke;
   v8[3] = &unk_1E837F870;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = actionsCopy;
+  selfCopy2 = self;
+  v6 = actionsCopy;
   [(WFWorkflow *)self performBatchOperation:v8];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -2949,23 +2949,23 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  actionCopy = action;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  actionCopy2 = action;
+  v6 = [v4 arrayWithObjects:&actionCopy count:1];
 
-  [(WFWorkflow *)self removeActions:v6, v8, v9];
+  [(WFWorkflow *)self removeActions:v6, actionCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self actions];
-  -[WFWorkflow insertAction:atIndex:](self, "insertAction:atIndex:", v4, [v5 count]);
+  actionCopy = action;
+  actions = [(WFWorkflow *)self actions];
+  -[WFWorkflow insertAction:atIndex:](self, "insertAction:atIndex:", actionCopy, [actions count]);
 }
 
 - (void)_triggersDidChange
@@ -2976,8 +2976,8 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(WFWorkflow *)self editingObservers];
-  v4 = [v3 copy];
+  editingObservers = [(WFWorkflow *)self editingObservers];
+  v4 = [editingObservers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -3007,14 +3007,14 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)actionTreeDidChangeConnectorState:(id)a3
+- (void)actionTreeDidChangeConnectorState:(id)state
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(WFWorkflow *)self editingObservers:a3];
+  v4 = [(WFWorkflow *)self editingObservers:state];
   v5 = [v4 copy];
 
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -3045,54 +3045,54 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEditingObserver:(id)a3
+- (void)removeEditingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self editingObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  editingObservers = [(WFWorkflow *)self editingObservers];
+  [editingObservers removeObject:observerCopy];
 }
 
-- (void)addEditingObserver:(id)a3
+- (void)addEditingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self editingObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  editingObservers = [(WFWorkflow *)self editingObservers];
+  [editingObservers addObject:observerCopy];
 }
 
 - (void)reloadTriggers
 {
-  v3 = [(WFWorkflow *)self loadTriggers];
-  [(WFWorkflow *)self setTriggers:v3];
+  loadTriggers = [(WFWorkflow *)self loadTriggers];
+  [(WFWorkflow *)self setTriggers:loadTriggers];
 }
 
 - (id)loadTriggers
 {
-  v3 = [(WFWorkflow *)self database];
+  database = [(WFWorkflow *)self database];
 
-  if (v3)
+  if (database)
   {
-    v4 = [(WFWorkflow *)self database];
-    v5 = [(WFWorkflow *)self workflowID];
-    v6 = [v4 configuredTriggersForWorkflowID:v5];
-    v7 = [v6 descriptors];
+    database2 = [(WFWorkflow *)self database];
+    workflowID = [(WFWorkflow *)self workflowID];
+    v6 = [database2 configuredTriggersForWorkflowID:workflowID];
+    descriptors = [v6 descriptors];
   }
 
   else
   {
-    v4 = +[WFDatabaseProxy defaultDatabase];
-    v5 = [(WFWorkflow *)self workflowID];
-    v7 = [v4 configuredTriggersForWorkflowID:v5 error:0];
+    database2 = +[WFDatabaseProxy defaultDatabase];
+    workflowID = [(WFWorkflow *)self workflowID];
+    descriptors = [database2 configuredTriggersForWorkflowID:workflowID error:0];
   }
 
-  return v7;
+  return descriptors;
 }
 
-- (void)setTriggers:(id)a3
+- (void)setTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   [(WFWorkflow *)self _triggersWillChange];
   triggers = self->_triggers;
-  self->_triggers = v4;
+  self->_triggers = triggersCopy;
 
   [(WFWorkflow *)self _triggersDidChange];
 }
@@ -3102,9 +3102,9 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   triggers = self->_triggers;
   if (!triggers)
   {
-    v4 = [(WFWorkflow *)self loadTriggers];
+    loadTriggers = [(WFWorkflow *)self loadTriggers];
     v5 = self->_triggers;
-    self->_triggers = v4;
+    self->_triggers = loadTriggers;
 
     triggers = self->_triggers;
   }
@@ -3112,34 +3112,34 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
   return triggers;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self actionTree];
-  [v5 setActions:v4];
+  actionsCopy = actions;
+  actionTree = [(WFWorkflow *)self actionTree];
+  [actionTree setActions:actionsCopy];
 }
 
-- (int64_t)indexOfAction:(id)a3
+- (int64_t)indexOfAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self actionTree];
-  v6 = [v5 indexOfAction:v4];
+  actionCopy = action;
+  actionTree = [(WFWorkflow *)self actionTree];
+  v6 = [actionTree indexOfAction:actionCopy];
 
   return v6;
 }
 
-- (void)getHomeSummaryTextWithCompletion:(id)a3
+- (void)getHomeSummaryTextWithCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = [(WFWorkflow *)self actions];
-  v5 = [v4 firstObject];
+  completionCopy = completion;
+  actions = [(WFWorkflow *)self actions];
+  firstObject = [actions firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = firstObject;
     }
 
     else
@@ -3155,38 +3155,38 @@ void __28__WFWorkflow_removeActions___block_invoke(uint64_t a1)
 
   v7 = v6;
 
-  v8 = [(WFWorkflow *)self actions];
-  v9 = [v8 count];
+  actions2 = [(WFWorkflow *)self actions];
+  v9 = [actions2 count];
 
   if (v9 == 1 && v7)
   {
-    [v7 localizedParameterSummaryWithCompletion:v10];
+    [v7 localizedParameterSummaryWithCompletion:completionCopy];
   }
 
   else
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)configureWithStandaloneShortcutRepresentation:(id)a3 homeSummaryText:(id)a4
+- (void)configureWithStandaloneShortcutRepresentation:(id)representation homeSummaryText:(id)text
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflow *)self record];
+  representationCopy = representation;
+  textCopy = text;
+  record = [(WFWorkflow *)self record];
   v9 = getWFWorkflowLogObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (representationCopy)
   {
     if (v10)
     {
       *buf = 136315650;
       v43 = "[WFWorkflow configureWithStandaloneShortcutRepresentation:homeSummaryText:]";
       v44 = 2114;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2114;
-      v47 = v6;
+      v47 = representationCopy;
       v11 = "%s Configuring workflow %{public}@ as single step shortcut with representation: %{public}@";
       v12 = v9;
       v13 = 32;
@@ -3200,7 +3200,7 @@ LABEL_6:
     *buf = 136315394;
     v43 = "[WFWorkflow configureWithStandaloneShortcutRepresentation:homeSummaryText:]";
     v44 = 2114;
-    v45 = self;
+    selfCopy2 = self;
     v11 = "%s Updating subtitle and actions summary of workflow: %{public}@";
     v12 = v9;
     v13 = 22;
@@ -3211,24 +3211,24 @@ LABEL_6:
   aBlock[1] = 3221225472;
   aBlock[2] = __76__WFWorkflow_configureWithStandaloneShortcutRepresentation_homeSummaryText___block_invoke;
   aBlock[3] = &unk_1E837C1E8;
-  v14 = v6;
+  v14 = representationCopy;
   v39 = v14;
-  v40 = self;
-  v15 = v8;
+  selfCopy3 = self;
+  v15 = record;
   v41 = v15;
   v16 = _Block_copy(aBlock);
-  v17 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
-  if (v17 || (-[WFWorkflow associatedAppBundleIdentifier](self, "associatedAppBundleIdentifier"), (v17 = objc_claimAutoreleasedReturnValue()) != 0) || ([v14 associatedAppBundleIdentifier], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  resolvedAssociatedAppBundleIdentifier = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
+  if (resolvedAssociatedAppBundleIdentifier || (-[WFWorkflow associatedAppBundleIdentifier](self, "associatedAppBundleIdentifier"), (resolvedAssociatedAppBundleIdentifier = objc_claimAutoreleasedReturnValue()) != 0) || ([v14 associatedAppBundleIdentifier], (resolvedAssociatedAppBundleIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = v17;
-    v19 = [MEMORY[0x1E696E878] sharedConnection];
+    v18 = resolvedAssociatedAppBundleIdentifier;
+    mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
     v20 = [MEMORY[0x1E695DFD8] setWithObject:v18];
-    [v19 wf_accessBundleContentForBundleIdentifiers:v20 withBlock:v16];
+    [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v20 withBlock:v16];
 
-    if (v7)
+    if (textCopy)
     {
 LABEL_11:
-      v21 = v7;
+      localizedActionsSummary = textCopy;
       goto LABEL_14;
     }
   }
@@ -3236,25 +3236,25 @@ LABEL_11:
   else
   {
     v16[2](v16);
-    if (v7)
+    if (textCopy)
     {
       goto LABEL_11;
     }
   }
 
-  v21 = [(WFWorkflow *)self localizedActionsSummary];
+  localizedActionsSummary = [(WFWorkflow *)self localizedActionsSummary];
 LABEL_14:
-  v22 = v21;
-  v23 = [v15 actionsDescription];
-  v24 = v23;
-  if (v23 == v22)
+  v22 = localizedActionsSummary;
+  actionsDescription = [v15 actionsDescription];
+  v24 = actionsDescription;
+  if (actionsDescription == v22)
   {
   }
 
   else
   {
-    v25 = [v15 actionsDescription];
-    v26 = [v25 isEqualToString:v22];
+    actionsDescription2 = [v15 actionsDescription];
+    v26 = [actionsDescription2 isEqualToString:v22];
 
     if ((v26 & 1) == 0)
     {
@@ -3264,32 +3264,32 @@ LABEL_14:
     }
   }
 
-  v27 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
-  v28 = v27;
-  if (v6 && !v27)
+  resolvedAssociatedAppBundleIdentifier2 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
+  v28 = resolvedAssociatedAppBundleIdentifier2;
+  if (representationCopy && !resolvedAssociatedAppBundleIdentifier2)
   {
-    v29 = [v14 associatedAppBundleIdentifier];
-    v30 = v29;
-    if (v29)
+    associatedAppBundleIdentifier = [v14 associatedAppBundleIdentifier];
+    v30 = associatedAppBundleIdentifier;
+    if (associatedAppBundleIdentifier)
     {
-      v31 = v29;
+      v31 = associatedAppBundleIdentifier;
     }
 
     else
     {
-      v32 = [v14 launchIdForCurrentPlatform];
-      v33 = v32;
-      if (v32)
+      launchIdForCurrentPlatform = [v14 launchIdForCurrentPlatform];
+      v33 = launchIdForCurrentPlatform;
+      if (launchIdForCurrentPlatform)
       {
-        v34 = v32;
+        activityBundleIdentifier = launchIdForCurrentPlatform;
       }
 
       else
       {
-        v34 = [v14 activityBundleIdentifier];
+        activityBundleIdentifier = [v14 activityBundleIdentifier];
       }
 
-      v31 = v34;
+      v31 = activityBundleIdentifier;
     }
 
     if (VCIsShortcutsAppBundleIdentifier())
@@ -3305,17 +3305,17 @@ LABEL_14:
 
   if (!v28)
   {
-    v35 = self;
+    selfCopy5 = self;
     v36 = 0;
     goto LABEL_34;
   }
 
   if ([(WFWorkflow *)self shouldAutoUpdateAssociatedAppBundleIdentifier])
   {
-    v35 = self;
+    selfCopy5 = self;
     v36 = v28;
 LABEL_34:
-    [(WFWorkflow *)v35 setAssociatedAppBundleIdentifier:v36];
+    [(WFWorkflow *)selfCopy5 setAssociatedAppBundleIdentifier:v36];
   }
 
   v37 = *MEMORY[0x1E69E9840];
@@ -3387,9 +3387,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)configureAsSingleStepShortcutIfNecessary:(id)a3
+- (void)configureAsSingleStepShortcutIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = getWFWorkflowLogObject();
   v6 = os_signpost_id_generate(v5);
 
@@ -3405,10 +3405,10 @@ LABEL_20:
   v10[1] = 3221225472;
   v10[2] = __55__WFWorkflow_configureAsSingleStepShortcutIfNecessary___block_invoke;
   v10[3] = &unk_1E83795D0;
-  v11 = v4;
+  v11 = necessaryCopy;
   v12 = v6;
   v10[4] = self;
-  v9 = v4;
+  v9 = necessaryCopy;
   [(WFWorkflow *)self generateStandaloneShortcutRepresentation:v10];
 }
 
@@ -3470,24 +3470,24 @@ uint64_t __55__WFWorkflow_configureAsSingleStepShortcutIfNecessary___block_invok
   return result;
 }
 
-- (void)generateStandaloneShortcutRepresentation:(id)a3
+- (void)generateStandaloneShortcutRepresentation:(id)representation
 {
-  v8 = a3;
-  v4 = [(WFWorkflow *)self actions];
-  if ([v4 count] == 1)
+  representationCopy = representation;
+  actions = [(WFWorkflow *)self actions];
+  if ([actions count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = v5;
-    if (v5 && ([v5 conformsToProtocol:&unk_1F4A9F640] & 1) != 0)
+    firstObject = [actions firstObject];
+    v6 = firstObject;
+    if (firstObject && ([firstObject conformsToProtocol:&unk_1F4A9F640] & 1) != 0)
     {
       v7 = v6;
 
-      [v7 generateStandaloneShortcutRepresentation:v8];
+      [v7 generateStandaloneShortcutRepresentation:representationCopy];
       goto LABEL_7;
     }
   }
 
-  v8[2](v8, 0);
+  representationCopy[2](representationCopy, 0);
 LABEL_7:
 }
 
@@ -3500,13 +3500,13 @@ LABEL_7:
 - (BOOL)queue_reloadReferenceFromStorage
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self storageProvider];
-  if (v3)
+  storageProvider = [(WFWorkflow *)self storageProvider];
+  if (storageProvider)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = storageProvider;
     }
 
     else
@@ -3522,12 +3522,12 @@ LABEL_7:
 
   v5 = v4;
 
-  v6 = [(WFWorkflow *)self reference];
-  v7 = [v6 identifier];
+  reference = [(WFWorkflow *)self reference];
+  identifier = [reference identifier];
 
   if (v5)
   {
-    v8 = v7 == 0;
+    v8 = identifier == 0;
   }
 
   else
@@ -3539,8 +3539,8 @@ LABEL_7:
   if (!v8)
   {
     [(WFWorkflow *)self willChangeValueForKey:@"reference"];
-    v10 = [v5 database];
-    v11 = [v10 referenceForWorkflowID:v7];
+    database = [v5 database];
+    v11 = [database referenceForWorkflowID:identifier];
     reference = self->_reference;
     self->_reference = v11;
 
@@ -3550,7 +3550,7 @@ LABEL_7:
 
   if (v5)
   {
-    if (v7)
+    if (identifier)
     {
       goto LABEL_23;
     }
@@ -3564,11 +3564,11 @@ LABEL_7:
     v17 = 136315394;
     v18 = "[WFWorkflow queue_reloadReferenceFromStorage]";
     v19 = 2112;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_DEBUG, "%s Asked to reload reference from storage, but missing storage: %@", &v17, 0x16u);
   }
 
-  if (!v7)
+  if (!identifier)
   {
 LABEL_20:
     v14 = getWFWorkflowLogObject();
@@ -3577,7 +3577,7 @@ LABEL_20:
       v17 = 136315394;
       v18 = "[WFWorkflow queue_reloadReferenceFromStorage]";
       v19 = 2112;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_DEBUG, "%s Asked to reload reference from storage, but missing identifier: %@", &v17, 0x16u);
     }
   }
@@ -3631,8 +3631,8 @@ uint64_t __40__WFWorkflow_reloadReferenceFromStorage__block_invoke(uint64_t a1)
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(WFWorkflow *)self actions];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  actions = [(WFWorkflow *)self actions];
+  v6 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3645,52 +3645,52 @@ uint64_t __40__WFWorkflow_reloadReferenceFromStorage__block_invoke(uint64_t a1)
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * v9) minimumSupportedClientVersion];
-        v3 = WFMaximumBundleVersion(v11, v10);
+        minimumSupportedClientVersion = [*(*(&v21 + 1) + 8 * v9) minimumSupportedClientVersion];
+        v3 = WFMaximumBundleVersion(minimumSupportedClientVersion, v10);
 
         ++v9;
         v10 = v3;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(WFWorkflow *)self inputAction];
+  inputAction = [(WFWorkflow *)self inputAction];
 
-  if (v12)
+  if (inputAction)
   {
-    v13 = [(WFWorkflow *)self inputAction];
-    v14 = [v13 minimumSupportedClientVersion];
-    v15 = WFMaximumBundleVersion(v3, v14);
+    inputAction2 = [(WFWorkflow *)self inputAction];
+    minimumSupportedClientVersion2 = [inputAction2 minimumSupportedClientVersion];
+    v15 = WFMaximumBundleVersion(v3, minimumSupportedClientVersion2);
 
     v3 = v15;
   }
 
-  v16 = [(WFWorkflow *)self record];
-  v17 = [v16 minimumClientVersion];
-  v18 = WFCompareBundleVersions(v3, v17);
+  record = [(WFWorkflow *)self record];
+  minimumClientVersion = [record minimumClientVersion];
+  v18 = WFCompareBundleVersions(v3, minimumClientVersion);
 
   if (v18 != 1)
   {
-    v19 = [(WFWorkflow *)self record];
-    [v19 setMinimumClientVersion:v3];
+    record2 = [(WFWorkflow *)self record];
+    [record2 setMinimumClientVersion:v3];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBatchOperation:(id)a3
+- (void)performBatchOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(WFWorkflow *)self setSaveDisabled:1];
-  v4[2](v4);
+  operationCopy[2](operationCopy);
 
   [(WFWorkflow *)self setSaveDisabled:0];
 
@@ -3710,33 +3710,33 @@ WFWorkflowImportQuestion *__28__WFWorkflow_loadFromRecord__block_invoke_3(uint64
 - (void)reloadFromRecord
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWorkflow *)self storageProvider];
-  if (!v3)
+  storageProvider = [(WFWorkflow *)self storageProvider];
+  if (!storageProvider)
   {
 LABEL_27:
     v29 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v31 = v3;
-  v4 = [(WFWorkflow *)self reference];
-  if (v4)
+  v31 = storageProvider;
+  reference = [(WFWorkflow *)self reference];
+  if (reference)
   {
-    v5 = v4;
-    v6 = [(WFWorkflow *)self serializeActionsWhenSaving];
+    v5 = reference;
+    serializeActionsWhenSaving = [(WFWorkflow *)self serializeActionsWhenSaving];
 
-    if (!v6)
+    if (!serializeActionsWhenSaving)
     {
       v7 = getWFWorkflowLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(WFWorkflow *)self storageProvider];
+        storageProvider2 = [(WFWorkflow *)self storageProvider];
         *buf = 136315650;
         v45 = "[WFWorkflow reloadFromRecord]";
         v46 = 2114;
-        v47 = self;
+        selfCopy = self;
         v48 = 2114;
-        v49 = v8;
+        v49 = storageProvider2;
         _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEFAULT, "%s Reloading workflow: %{public}@ from storage provider: %{public}@", buf, 0x20u);
       }
 
@@ -3778,14 +3778,14 @@ LABEL_27:
         while (v11);
       }
 
-      v14 = [(WFWorkflow *)self record];
-      v15 = [v14 copy];
+      record = [(WFWorkflow *)self record];
+      v15 = [record copy];
 
-      v16 = [(WFWorkflow *)self storageProvider];
-      v17 = [(WFWorkflow *)self record];
-      v18 = [(WFWorkflow *)self reference];
+      storageProvider3 = [(WFWorkflow *)self storageProvider];
+      record2 = [(WFWorkflow *)self record];
+      reference2 = [(WFWorkflow *)self reference];
       v36 = 0;
-      v19 = [v16 reloadRecord:v17 withReference:v18 error:&v36];
+      v19 = [storageProvider3 reloadRecord:record2 withReference:reference2 error:&v36];
       v20 = v36;
 
       if ((v19 & 1) == 0)
@@ -3796,7 +3796,7 @@ LABEL_27:
           *buf = 136315394;
           v45 = "[WFWorkflow reloadFromRecord]";
           v46 = 2114;
-          v47 = v20;
+          selfCopy = v20;
           _os_log_impl(&dword_1CA256000, v21, OS_LOG_TYPE_ERROR, "%s Failed to reload workflow from record. Error: %{public}@", buf, 0x16u);
         }
       }
@@ -3829,8 +3829,8 @@ LABEL_27:
         while (v24);
       }
 
-      v27 = [(WFWorkflow *)self record];
-      v28 = [(WFWorkflow *)self record:v27 isEquivalentToRecord:v15];
+      record3 = [(WFWorkflow *)self record];
+      v28 = [(WFWorkflow *)self record:record3 isEquivalentToRecord:v15];
 
       if (!v28)
       {
@@ -3844,28 +3844,28 @@ LABEL_27:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveFromDebouncer:(id)a3
+- (void)saveFromDebouncer:(id)debouncer
 {
-  if (!a3)
+  if (!debouncer)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:706 description:{@"Invalid parameter not satisfying: %@", @"debouncer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:706 description:{@"Invalid parameter not satisfying: %@", @"debouncer"}];
   }
 
   [(WFWorkflow *)self saveWithCompletionBlock:0];
 }
 
-- (void)saveWithCompletionBlock:(id)a3
+- (void)saveWithCompletionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = getWFWorkflowLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v35 = "[WFWorkflow saveWithCompletionBlock:]";
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Saving workflow: %@", buf, 0x16u);
   }
 
@@ -3893,22 +3893,22 @@ LABEL_27:
       _os_signpost_emit_with_name_impl(&dword_1CA256000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "SerializeActions", "", buf, 2u);
     }
 
-    v14 = [(WFWorkflow *)self actions];
-    v15 = [v14 if_map:&__block_literal_global_400];
+    actions = [(WFWorkflow *)self actions];
+    v15 = [actions if_map:&__block_literal_global_400];
 
-    v16 = [(WFWorkflow *)self record];
-    v17 = [v16 actions];
-    v18 = [v17 isEqualToArray:v15];
+    record = [(WFWorkflow *)self record];
+    actions2 = [record actions];
+    v18 = [actions2 isEqualToArray:v15];
 
     if ((v18 & 1) == 0)
     {
-      v19 = [(WFWorkflow *)self record];
-      [v19 setActions:v15];
+      record2 = [(WFWorkflow *)self record];
+      [record2 setActions:v15];
     }
 
-    v20 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
-    v21 = [(WFWorkflow *)self record];
-    [v21 setSearchAttributionAppBundleIdentifier:v20];
+    resolvedAssociatedAppBundleIdentifier = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
+    record3 = [(WFWorkflow *)self record];
+    [record3 setSearchAttributionAppBundleIdentifier:resolvedAssociatedAppBundleIdentifier];
 
     [(WFWorkflow *)self setSerializeActionsWhenSaving:0];
     v22 = getWFWorkflowLogObject();
@@ -3922,15 +3922,15 @@ LABEL_27:
 
   buf[0] = 0;
   v24 = [(WFWorkflow *)self inferOutputTypesWithHasOutputFallback:buf];
-  v25 = [v24 allObjects];
-  [(WFWorkflow *)self setOutputClasses:v25];
+  allObjects = [v24 allObjects];
+  [(WFWorkflow *)self setOutputClasses:allObjects];
 
-  v26 = [(WFWorkflow *)self actionTree];
-  -[WFWorkflow setHasShortcutInputVariables:](self, "setHasShortcutInputVariables:", [v26 isShortcutInputVariableUsed]);
+  actionTree = [(WFWorkflow *)self actionTree];
+  -[WFWorkflow setHasShortcutInputVariables:](self, "setHasShortcutInputVariables:", [actionTree isShortcutInputVariableUsed]);
 
   [(WFWorkflow *)self setHasOutputFallback:buf[0]];
-  v27 = [(WFWorkflow *)self actions];
-  v28 = [v27 if_compactMap:&__block_literal_global_404];
+  actions3 = [(WFWorkflow *)self actions];
+  v28 = [actions3 if_compactMap:&__block_literal_global_404];
 
   -[WFWorkflow setHasOutputAction:](self, "setHasOutputAction:", [v28 count] != 0);
   [(WFWorkflow *)self updateMinimumClientVersion];
@@ -3939,9 +3939,9 @@ LABEL_27:
   v31[2] = __38__WFWorkflow_saveWithCompletionBlock___block_invoke_2;
   v31[3] = &unk_1E8379538;
   v31[4] = self;
-  v32 = v4;
+  v32 = blockCopy;
   v33 = v7;
-  v29 = v4;
+  v29 = blockCopy;
   [(WFWorkflow *)self configureAsSingleStepShortcutIfNecessary:v31];
 
   v30 = *MEMORY[0x1E69E9840];
@@ -4047,10 +4047,10 @@ void *__38__WFWorkflow_saveWithCompletionBlock___block_invoke_401(uint64_t a1, v
   return v3;
 }
 
-- (BOOL)createReferenceIfNecessaryWithName:(id)a3 nameCollisionBehavior:(unint64_t)a4 allowEmpty:(BOOL)a5 error:(id *)a6
+- (BOOL)createReferenceIfNecessaryWithName:(id)name nameCollisionBehavior:(unint64_t)behavior allowEmpty:(BOOL)empty error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  nameCopy = name;
   if ([(WFWorkflow *)self storageState]!= 2)
   {
     goto LABEL_9;
@@ -4058,24 +4058,24 @@ void *__38__WFWorkflow_saveWithCompletionBlock___block_invoke_401(uint64_t a1, v
 
   if ([(WFWorkflow *)self storageState]== 2)
   {
-    v11 = [(WFWorkflow *)self actions];
-    if ([v11 count])
+    actions = [(WFWorkflow *)self actions];
+    if ([actions count])
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v12 = [(WFWorkflow *)self triggers];
-    if ([v12 count] || -[WFWorkflow userProvidedName](self, "userProvidedName"))
+    triggers = [(WFWorkflow *)self triggers];
+    if ([triggers count] || -[WFWorkflow userProvidedName](self, "userProvidedName"))
     {
 
       goto LABEL_7;
     }
 
-    v25 = [(WFWorkflow *)self inputAction];
+    inputAction = [(WFWorkflow *)self inputAction];
 
-    if (!v25 && !a5)
+    if (!inputAction && !empty)
     {
       [(WFWorkflow *)self deleteReference];
       goto LABEL_9;
@@ -4083,9 +4083,9 @@ LABEL_7:
   }
 
 LABEL_8:
-  v13 = [(WFWorkflow *)self reference];
+  reference = [(WFWorkflow *)self reference];
 
-  if (v13)
+  if (reference)
   {
 LABEL_9:
     v14 = 1;
@@ -4098,24 +4098,24 @@ LABEL_9:
     v26 = 136315394;
     v27 = "[WFWorkflow createReferenceIfNecessaryWithName:nameCollisionBehavior:allowEmpty:error:]";
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_DEBUG, "%s Creating database reference for workflow: %@", &v26, 0x16u);
   }
 
-  v18 = [(WFWorkflow *)self record];
-  v19 = [v18 copy];
+  record = [(WFWorkflow *)self record];
+  v19 = [record copy];
 
-  if (v10)
+  if (nameCopy)
   {
-    [v19 setName:v10];
+    [v19 setName:nameCopy];
   }
 
   v20 = [[WFWorkflowCreationOptions alloc] initWithRecord:v19];
-  v21 = [(WFWorkflowCreationOptions *)self->_creationOptions folderIdentifier];
-  [(WFWorkflowCreationOptions *)v20 setFolderIdentifier:v21];
+  folderIdentifier = [(WFWorkflowCreationOptions *)self->_creationOptions folderIdentifier];
+  [(WFWorkflowCreationOptions *)v20 setFolderIdentifier:folderIdentifier];
 
-  v22 = [(WFWorkflow *)self database];
-  v23 = [v22 createWorkflowWithOptions:v20 nameCollisionBehavior:a4 error:a6];
+  database = [(WFWorkflow *)self database];
+  v23 = [database createWorkflowWithOptions:v20 nameCollisionBehavior:behavior error:error];
 
   v14 = v23 != 0;
   if (v23)
@@ -4123,10 +4123,10 @@ LABEL_9:
     [(WFWorkflow *)self willChangeValueForKey:@"reference"];
     objc_storeStrong(&self->_reference, v23);
     [(WFWorkflow *)self didChangeValueForKey:@"reference"];
-    if (v10)
+    if (nameCopy)
     {
-      v24 = [v23 name];
-      [(WFWorkflow *)self setName:v24];
+      name = [v23 name];
+      [(WFWorkflow *)self setName:name];
     }
 
     [(WFWorkflow *)self saveWithCompletionBlock:0];
@@ -4137,32 +4137,32 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WFWorkflow allocWithZone:a3];
-  v5 = [(WFWorkflow *)self record];
-  v6 = [v5 copy];
-  v7 = [(WFWorkflow *)self reference];
-  v8 = [(WFWorkflow *)self storageProvider];
-  v9 = [(WFWorkflow *)v4 initWithRecord:v6 reference:v7 storageProvider:v8 error:0];
+  v4 = [WFWorkflow allocWithZone:zone];
+  record = [(WFWorkflow *)self record];
+  v6 = [record copy];
+  reference = [(WFWorkflow *)self reference];
+  storageProvider = [(WFWorkflow *)self storageProvider];
+  v9 = [(WFWorkflow *)v4 initWithRecord:v6 reference:reference storageProvider:storageProvider error:0];
 
   return v9;
 }
 
-- (id)prepareForSharingWithOptions:(id)a3
+- (id)prepareForSharingWithOptions:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(WFWorkflow *)self copy];
   [v5 setStorageProvider:0];
-  if ([v4 clearsImportQuestionData])
+  if ([optionsCopy clearsImportQuestionData])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = [v5 importQuestions];
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    importQuestions = [v5 importQuestions];
+    v7 = [importQuestions countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -4173,46 +4173,46 @@ LABEL_10:
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(importQuestions);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 action];
-          v13 = [v11 defaultState];
-          v14 = [v11 parameter];
-          v15 = [v14 key];
-          [v12 setParameterState:v13 forKey:v15];
+          action = [v11 action];
+          defaultState = [v11 defaultState];
+          parameter = [v11 parameter];
+          v15 = [parameter key];
+          [action setParameterState:defaultState forKey:v15];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v8 = [importQuestions countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v8);
     }
   }
 
-  v16 = [v5 record];
-  v17 = [v4 quickActionSurfaces];
-  if ([v17 count])
+  record = [v5 record];
+  quickActionSurfaces = [optionsCopy quickActionSurfaces];
+  if ([quickActionSurfaces count])
   {
-    v18 = [v17 allObjects];
-    [v16 setQuickActionSurfacesForSharing:v18];
+    allObjects = [quickActionSurfaces allObjects];
+    [record setQuickActionSurfacesForSharing:allObjects];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return record;
 }
 
 - (id)validImportQuestions
 {
-  v3 = [(WFWorkflow *)self importQuestions];
+  importQuestions = [(WFWorkflow *)self importQuestions];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__WFWorkflow_validImportQuestions__block_invoke;
   v6[3] = &unk_1E83794D0;
   v6[4] = self;
-  v4 = [v3 if_objectsPassingTest:v6];
+  v4 = [importQuestions if_objectsPassingTest:v6];
 
   return v4;
 }
@@ -4238,38 +4238,38 @@ uint64_t __34__WFWorkflow_validImportQuestions__block_invoke(uint64_t a1, void *
 
 - (BOOL)isDeleted
 {
-  v3 = [(WFWorkflow *)self record];
-  v4 = ([v3 isDeleted] & 1) != 0 || -[WFWorkflow deletedFromDatabase](self, "deletedFromDatabase");
+  record = [(WFWorkflow *)self record];
+  v4 = ([record isDeleted] & 1) != 0 || -[WFWorkflow deletedFromDatabase](self, "deletedFromDatabase");
 
   return v4;
 }
 
-- (void)setRemoteQuarantineHash:(id)a3
+- (void)setRemoteQuarantineHash:(id)hash
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self remoteQuarantineHash];
-  v6 = v4;
+  hashCopy = hash;
+  remoteQuarantineHash = [(WFWorkflow *)self remoteQuarantineHash];
+  v6 = hashCopy;
   v9 = v6;
-  if (v5 == v6)
+  if (remoteQuarantineHash == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !remoteQuarantineHash)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [remoteQuarantineHash isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
 LABEL_8:
     [(WFWorkflow *)self willChangeValueForKey:@"remoteQuarantineStatus"];
-    v8 = [(WFWorkflow *)self record];
-    [v8 setRemoteQuarantineHash:v9];
+    record = [(WFWorkflow *)self record];
+    [record setRemoteQuarantineHash:v9];
 
     [(WFWorkflow *)self didChangeValueForKey:@"remoteQuarantineStatus"];
   }
@@ -4279,22 +4279,22 @@ LABEL_9:
 
 - (NSData)remoteQuarantineHash
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 remoteQuarantineHash];
+  record = [(WFWorkflow *)self record];
+  remoteQuarantineHash = [record remoteQuarantineHash];
 
-  return v3;
+  return remoteQuarantineHash;
 }
 
-- (void)setRemoteQuarantineStatus:(int64_t)a3
+- (void)setRemoteQuarantineStatus:(int64_t)status
 {
-  v5 = [(WFWorkflow *)self record];
-  v6 = [v5 remoteQuarantineStatus];
+  record = [(WFWorkflow *)self record];
+  remoteQuarantineStatus = [record remoteQuarantineStatus];
 
-  if (v6 != a3)
+  if (remoteQuarantineStatus != status)
   {
     [(WFWorkflow *)self willChangeValueForKey:@"remoteQuarantineStatus"];
-    v7 = [(WFWorkflow *)self record];
-    [v7 setRemoteQuarantineStatus:a3];
+    record2 = [(WFWorkflow *)self record];
+    [record2 setRemoteQuarantineStatus:status];
 
     [(WFWorkflow *)self didChangeValueForKey:@"remoteQuarantineStatus"];
   }
@@ -4302,49 +4302,49 @@ LABEL_9:
 
 - (int64_t)remoteQuarantineStatus
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 remoteQuarantineStatus];
+  record = [(WFWorkflow *)self record];
+  remoteQuarantineStatus = [record remoteQuarantineStatus];
 
-  return v3;
+  return remoteQuarantineStatus;
 }
 
 - (WFWorkflowQuarantine)quarantine
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 quarantine];
+  record = [(WFWorkflow *)self record];
+  quarantine = [record quarantine];
 
-  return v3;
+  return quarantine;
 }
 
 - (BOOL)hasOutputAction
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 hasOutputAction];
+  record = [(WFWorkflow *)self record];
+  hasOutputAction = [record hasOutputAction];
 
-  return v3;
+  return hasOutputAction;
 }
 
 - (BOOL)hasOutputFallback
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 hasOutputFallback];
+  record = [(WFWorkflow *)self record];
+  hasOutputFallback = [record hasOutputFallback];
 
-  return v3;
+  return hasOutputFallback;
 }
 
 - (BOOL)hasShortcutInputVariables
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 hasShortcutInputVariables];
+  record = [(WFWorkflow *)self record];
+  hasShortcutInputVariables = [record hasShortcutInputVariables];
 
-  return v3;
+  return hasShortcutInputVariables;
 }
 
-- (void)setOutputClasses:(id)a3
+- (void)setOutputClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   outputClasses = self->_outputClasses;
-  v13 = v4;
+  v13 = classesCopy;
   v6 = outputClasses;
   if (v6 == v13)
   {
@@ -4368,10 +4368,10 @@ LABEL_8:
     v9 = self->_outputClasses;
     self->_outputClasses = v8;
 
-    v10 = [(WFWorkflow *)self outputClasses];
-    v11 = [v10 if_map:&__block_literal_global_380];
-    v12 = [(WFWorkflow *)self record];
-    [v12 setOutputClasses:v11];
+    outputClasses = [(WFWorkflow *)self outputClasses];
+    v11 = [outputClasses if_map:&__block_literal_global_380];
+    record = [(WFWorkflow *)self record];
+    [record setOutputClasses:v11];
 
     [(WFWorkflow *)self didChangeValueForKey:@"outputClasses"];
   }
@@ -4379,27 +4379,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setNoInputBehavior:(id)a3
+- (void)setNoInputBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   [(WFWorkflow *)self willChangeValueForKey:@"noInputBehavior"];
   noInputBehavior = self->_noInputBehavior;
-  self->_noInputBehavior = v4;
-  v6 = v4;
+  self->_noInputBehavior = behaviorCopy;
+  v6 = behaviorCopy;
 
-  v7 = [(WFWorkflowNoInputBehavior *)v6 serializedRepresentation];
+  serializedRepresentation = [(WFWorkflowNoInputBehavior *)v6 serializedRepresentation];
 
-  v8 = [(WFWorkflow *)self record];
-  [v8 setNoInputBehavior:v7];
+  record = [(WFWorkflow *)self record];
+  [record setNoInputBehavior:serializedRepresentation];
 
   [(WFWorkflow *)self didChangeValueForKey:@"noInputBehavior"];
 }
 
-- (void)setInputClasses:(id)a3
+- (void)setInputClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   inputClasses = self->_inputClasses;
-  v13 = v4;
+  v13 = classesCopy;
   v6 = inputClasses;
   if (v6 == v13)
   {
@@ -4423,10 +4423,10 @@ LABEL_8:
     v9 = self->_inputClasses;
     self->_inputClasses = v8;
 
-    v10 = [(WFWorkflow *)self inputClasses];
-    v11 = [v10 if_map:&__block_literal_global_372];
-    v12 = [(WFWorkflow *)self record];
-    [v12 setInputClasses:v11];
+    inputClasses = [(WFWorkflow *)self inputClasses];
+    v11 = [inputClasses if_map:&__block_literal_global_372];
+    record = [(WFWorkflow *)self record];
+    [record setInputClasses:v11];
 
     [(WFWorkflow *)self didChangeValueForKey:@"inputClasses"];
   }
@@ -4434,12 +4434,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setWorkflowTypes:(id)a3
+- (void)setWorkflowTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self workflowTypes];
-  v13 = v4;
-  v6 = v5;
+  typesCopy = types;
+  workflowTypes = [(WFWorkflow *)self workflowTypes];
+  v13 = typesCopy;
+  v6 = workflowTypes;
   if (v6 == v13)
   {
 
@@ -4460,19 +4460,19 @@ LABEL_9:
   {
   }
 
-  v8 = [(WFWorkflow *)self database];
-  v9 = [v8 coherenceSyncEnabled];
+  database = [(WFWorkflow *)self database];
+  coherenceSyncEnabled = [database coherenceSyncEnabled];
 
-  if (v9)
+  if (coherenceSyncEnabled)
   {
-    v10 = [(WFWorkflow *)self workflowID];
-    v11 = [(WFWorkflow *)self database];
-    [WFWorkflowRecord updateCoherenceLibraryWithTypesForWorkflow:v10 workflowTypes:v13 existingWorkflowTypes:v6 database:v11];
+    workflowID = [(WFWorkflow *)self workflowID];
+    database2 = [(WFWorkflow *)self database];
+    [WFWorkflowRecord updateCoherenceLibraryWithTypesForWorkflow:workflowID workflowTypes:v13 existingWorkflowTypes:v6 database:database2];
   }
 
   [(WFWorkflow *)self willChangeValueForKey:@"workflowTypes"];
-  v12 = [(WFWorkflow *)self record];
-  [v12 setWorkflowTypes:v13];
+  record = [(WFWorkflow *)self record];
+  [record setWorkflowTypes:v13];
 
   [(WFWorkflow *)self didChangeValueForKey:@"workflowTypes"];
   [(WFWorkflow *)self updateInputAction];
@@ -4481,10 +4481,10 @@ LABEL_11:
 
 - (NSString)galleryIdentifier
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 galleryIdentifier];
+  record = [(WFWorkflow *)self record];
+  galleryIdentifier = [record galleryIdentifier];
 
-  return v3;
+  return galleryIdentifier;
 }
 
 id __51__WFWorkflow_resolvedAssociatedAppBundleIdentifier__block_invoke(uint64_t a1, void *a2)
@@ -4543,22 +4543,22 @@ LABEL_12:
 
 - (BOOL)shouldAutoUpdateAssociatedAppBundleIdentifier
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 shouldAutoUpdateAssociatedAppBundleIdentifier];
+  record = [(WFWorkflow *)self record];
+  shouldAutoUpdateAssociatedAppBundleIdentifier = [record shouldAutoUpdateAssociatedAppBundleIdentifier];
 
-  return v3;
+  return shouldAutoUpdateAssociatedAppBundleIdentifier;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [(WFWorkflow *)self willChangeValueForKey:@"associatedAppBundleIdentifier"];
-  v5 = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
-  v6 = v5;
-  if (v4)
+  resolvedAssociatedAppBundleIdentifier = [(WFWorkflow *)self resolvedAssociatedAppBundleIdentifier];
+  v6 = resolvedAssociatedAppBundleIdentifier;
+  if (identifierCopy)
   {
-    if (([v4 isEqualToString:v5] & 1) == 0)
+    if (([identifierCopy isEqualToString:resolvedAssociatedAppBundleIdentifier] & 1) == 0)
     {
       v7 = getWFWorkflowLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -4566,28 +4566,28 @@ LABEL_12:
         v12 = 136315650;
         v13 = "[WFWorkflow setAssociatedAppBundleIdentifier:]";
         v14 = 2112;
-        v15 = v4;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s Mismatch associated app bundle identifier %@ with resolved associated app bundle identifier %@", &v12, 0x20u);
       }
     }
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
     goto LABEL_9;
   }
 
-  if (v5)
+  if (resolvedAssociatedAppBundleIdentifier)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_9:
-    [(WFWorkflow *)v8 setShouldAutoUpdateAssociatedAppBundleIdentifier:v9];
+    [(WFWorkflow *)selfCopy2 setShouldAutoUpdateAssociatedAppBundleIdentifier:v9];
   }
 
-  v10 = [(WFWorkflow *)self record];
-  [v10 setAssociatedAppBundleIdentifier:v4];
+  record = [(WFWorkflow *)self record];
+  [record setAssociatedAppBundleIdentifier:identifierCopy];
 
   [(WFWorkflow *)self didChangeValueForKey:@"associatedAppBundleIdentifier"];
   v11 = *MEMORY[0x1E69E9840];
@@ -4595,54 +4595,54 @@ LABEL_9:
 
 - (NSString)actionsDescription
 {
-  v3 = [(WFWorkflow *)self record];
-  v4 = [v3 actionsDescription];
-  v5 = v4;
-  if (v4)
+  record = [(WFWorkflow *)self record];
+  actionsDescription = [record actionsDescription];
+  v5 = actionsDescription;
+  if (actionsDescription)
   {
-    v6 = v4;
+    localizedActionsSummary = actionsDescription;
   }
 
   else
   {
-    v6 = [(WFWorkflow *)self localizedActionsSummary];
+    localizedActionsSummary = [(WFWorkflow *)self localizedActionsSummary];
   }
 
-  v7 = v6;
+  v7 = localizedActionsSummary;
 
   return v7;
 }
 
 - (NSString)workflowSubtitle
 {
-  v3 = [(WFWorkflow *)self record];
-  v4 = [v3 actionCount];
-  v5 = [(WFWorkflow *)self record];
-  v6 = [v5 workflowSubtitle];
-  v7 = [WFWorkflowRecord workflowSubtitleForActionCount:v4 savedSubtitle:v6];
+  record = [(WFWorkflow *)self record];
+  actionCount = [record actionCount];
+  record2 = [(WFWorkflow *)self record];
+  workflowSubtitle = [record2 workflowSubtitle];
+  v7 = [WFWorkflowRecord workflowSubtitleForActionCount:actionCount savedSubtitle:workflowSubtitle];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    localizedSubtitle = v7;
   }
 
   else
   {
-    v9 = [(WFWorkflow *)self localizedSubtitle];
+    localizedSubtitle = [(WFWorkflow *)self localizedSubtitle];
   }
 
-  v10 = v9;
+  v10 = localizedSubtitle;
 
   return v10;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self record];
-  v6 = [v5 icon];
-  v10 = v4;
-  v7 = v6;
+  iconCopy = icon;
+  record = [(WFWorkflow *)self record];
+  icon = [record icon];
+  v10 = iconCopy;
+  v7 = icon;
   if (v7 == v10)
   {
 
@@ -4661,8 +4661,8 @@ LABEL_9:
   {
 LABEL_8:
     [(WFWorkflow *)self willChangeValueForKey:@"icon"];
-    v9 = [(WFWorkflow *)self record];
-    [v9 setIcon:v10];
+    record2 = [(WFWorkflow *)self record];
+    [record2 setIcon:v10];
 
     [(WFWorkflow *)self didChangeValueForKey:@"icon"];
   }
@@ -4672,17 +4672,17 @@ LABEL_9:
 
 - (NSString)legacyName
 {
-  v2 = [(WFWorkflow *)self record];
-  v3 = [v2 legacyName];
+  record = [(WFWorkflow *)self record];
+  legacyName = [record legacyName];
 
-  return v3;
+  return legacyName;
 }
 
-- (BOOL)renameWorkflowTo:(id)a3 error:(id *)a4
+- (BOOL)renameWorkflowTo:(id)to error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFWorkflow *)self name];
-  v8 = [v6 isEqualToString:v7];
+  toCopy = to;
+  name = [(WFWorkflow *)self name];
+  v8 = [toCopy isEqualToString:name];
 
   if (v8)
   {
@@ -4696,8 +4696,8 @@ LABEL_12:
     [(WFWorkflow *)self setUserProvidedName:1];
   }
 
-  v9 = [(WFWorkflow *)self reference];
-  if (v9)
+  reference = [(WFWorkflow *)self reference];
+  if (reference)
   {
 
     goto LABEL_8;
@@ -4706,17 +4706,17 @@ LABEL_12:
   if ([(WFWorkflow *)self storageState]!= 2)
   {
 LABEL_8:
-    v11 = [(WFWorkflow *)self reference];
-    if (v11)
+    reference2 = [(WFWorkflow *)self reference];
+    if (reference2)
     {
-      v12 = v11;
-      v13 = [(WFWorkflow *)self database];
+      v12 = reference2;
+      database = [(WFWorkflow *)self database];
 
-      if (v13)
+      if (database)
       {
-        v14 = [(WFWorkflow *)self database];
-        v15 = [(WFWorkflow *)self reference];
-        v16 = [v14 renameReference:v15 to:v6 error:a4];
+        database2 = [(WFWorkflow *)self database];
+        reference3 = [(WFWorkflow *)self reference];
+        v16 = [database2 renameReference:reference3 to:toCopy error:error];
 
         if (!v16)
         {
@@ -4726,24 +4726,24 @@ LABEL_8:
       }
     }
 
-    [(WFWorkflow *)self setName:v6];
+    [(WFWorkflow *)self setName:toCopy];
     [(WFWorkflow *)self save];
     goto LABEL_12;
   }
 
-  v10 = [(WFWorkflow *)self createReferenceIfNecessaryWithName:v6 nameCollisionBehavior:2 allowEmpty:1 error:a4];
+  v10 = [(WFWorkflow *)self createReferenceIfNecessaryWithName:toCopy nameCollisionBehavior:2 allowEmpty:1 error:error];
 LABEL_13:
 
   return v10;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFWorkflow *)self record];
-  v6 = [v5 name];
-  v10 = v4;
-  v7 = v6;
+  nameCopy = name;
+  record = [(WFWorkflow *)self record];
+  name = [record name];
+  v10 = nameCopy;
+  v7 = name;
   if (v7 == v10)
   {
 
@@ -4762,8 +4762,8 @@ LABEL_13:
   {
 LABEL_8:
     [(WFWorkflow *)self willChangeValueForKey:@"name"];
-    v9 = [(WFWorkflow *)self record];
-    [v9 setName:v10];
+    record2 = [(WFWorkflow *)self record];
+    [record2 setName:v10];
 
     [(WFWorkflow *)self didChangeValueForKey:@"name"];
   }
@@ -4773,8 +4773,8 @@ LABEL_9:
 
 - (BOOL)hasStorageProvider
 {
-  v2 = [(WFWorkflow *)self storageProvider];
-  v3 = v2 != 0;
+  storageProvider = [(WFWorkflow *)self storageProvider];
+  v3 = storageProvider != 0;
 
   return v3;
 }
@@ -4786,8 +4786,8 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(WFWorkflow *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  actions = [(WFWorkflow *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4798,7 +4798,7 @@ LABEL_9:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -4806,17 +4806,17 @@ LABEL_9:
         [v8 wasRemovedFromWorkflow:self];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(WFWorkflow *)self database];
-  v10 = v9;
-  if (v9)
+  database = [(WFWorkflow *)self database];
+  v10 = database;
+  if (database)
   {
-    [v9 removeObjectObserver:self];
+    [database removeObjectObserver:self];
   }
 
   v12.receiver = self;
@@ -4825,48 +4825,48 @@ LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (WFWorkflow)initWithRecord:(id)a3 reference:(id)a4 storageProvider:(id)a5 migrateIfNecessary:(BOOL)a6 environment:(int64_t)a7 error:(id *)a8
+- (WFWorkflow)initWithRecord:(id)record reference:(id)reference storageProvider:(id)provider migrateIfNecessary:(BOOL)necessary environment:(int64_t)environment error:(id *)error
 {
-  v9 = a6;
+  necessaryCopy = necessary;
   v63 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  obj = a5;
-  v55 = a5;
-  if (!v14)
+  recordCopy = record;
+  referenceCopy = reference;
+  obj = provider;
+  providerCopy = provider;
+  if (!recordCopy)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v50 handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"record"}];
   }
 
   v16 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v17 = [v16 objectForInfoDictionaryKey:*MEMORY[0x1E695E500]];
-  v18 = [v14 minimumClientVersion];
-  v19 = [WFWorkflow checkClientVersion:v18 currentVersion:v17 error:a8];
+  minimumClientVersion = [recordCopy minimumClientVersion];
+  v19 = [WFWorkflow checkClientVersion:minimumClientVersion currentVersion:v17 error:error];
 
   if (v19)
   {
-    v20 = [v14 lastMigratedClientVersion];
-    v21 = WFCompareBundleVersions(v17, v20);
-    v22 = WFCompareBundleVersions(@"985", v20);
-    if (!v20 || v22 == 2 || (v23 = (v21 & 1) == 0, [v20 isEqualToString:@"0"]))
+    lastMigratedClientVersion = [recordCopy lastMigratedClientVersion];
+    v21 = WFCompareBundleVersions(v17, lastMigratedClientVersion);
+    v22 = WFCompareBundleVersions(@"985", lastMigratedClientVersion);
+    if (!lastMigratedClientVersion || v22 == 2 || (v23 = (v21 & 1) == 0, [lastMigratedClientVersion isEqualToString:@"0"]))
     {
-      [v14 setLastMigratedClientVersion:@"899"];
+      [recordCopy setLastMigratedClientVersion:@"899"];
       v23 = 1;
     }
 
     v24 = 0;
-    if (v9 && v23)
+    if (necessaryCopy && v23)
     {
-      v52 = v15;
+      v52 = referenceCopy;
       v25 = getWFGeneralLogObject();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v14 lastMigratedClientVersion];
+        lastMigratedClientVersion2 = [recordCopy lastMigratedClientVersion];
         *buf = 136315650;
         v58 = "[WFWorkflow initWithRecord:reference:storageProvider:migrateIfNecessary:environment:error:]";
         v59 = 2114;
-        v60 = v26;
+        v60 = lastMigratedClientVersion2;
         v61 = 2114;
         v62 = v17;
         _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_DEFAULT, "%s Migrating workflow before opening, since it's last migrated version is %{public}@ and the current version is %{public}@", buf, 0x20u);
@@ -4880,8 +4880,8 @@ LABEL_9:
       v31 = v28 - 1;
       if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
       {
-        v32 = [v14 actions];
-        v33 = [v32 count];
+        actions = [recordCopy actions];
+        v33 = [actions count];
         *buf = 134349056;
         v58 = v33;
         _os_signpost_emit_with_name_impl(&dword_1CA256000, v30, OS_SIGNPOST_INTERVAL_BEGIN, v28, "WorkflowMigration", " enableTelemetry=YES actionCount=%{public,signpost.telemetry:number1}lu", buf, 0xCu);
@@ -4889,12 +4889,12 @@ LABEL_9:
 
       spid = v28;
 
-      v34 = [v14 fileRepresentation];
-      v35 = [v34 migrateRootObject];
-      v24 = v35;
-      if (v35)
+      fileRepresentation = [recordCopy fileRepresentation];
+      migrateRootObject = [fileRepresentation migrateRootObject];
+      v24 = migrateRootObject;
+      if (migrateRootObject)
       {
-        [v14 loadFromStorage:v34];
+        [recordCopy loadFromStorage:fileRepresentation];
       }
 
       v36 = getWFWorkflowLogObject();
@@ -4905,22 +4905,22 @@ LABEL_9:
         _os_signpost_emit_with_name_impl(&dword_1CA256000, v37, OS_SIGNPOST_INTERVAL_END, spid, "WorkflowMigration", " enableTelemetry=YES ", buf, 2u);
       }
 
-      v15 = v52;
+      referenceCopy = v52;
     }
 
     v56.receiver = self;
     v56.super_class = WFWorkflow;
     self = [(WFWorkflow *)&v56 init];
-    v38 = v55;
+    v38 = providerCopy;
     if (self)
     {
-      v39 = [v14 copy];
+      v39 = [recordCopy copy];
       record = self->_record;
       self->_record = v39;
 
-      objc_storeStrong(&self->_reference, a4);
+      objc_storeStrong(&self->_reference, reference);
       objc_storeStrong(&self->_storageProvider, obj);
-      self->_environment = a7;
+      self->_environment = environment;
       v41 = objc_alloc(MEMORY[0x1E69E0A80]);
       v42 = [v41 initWithDelay:MEMORY[0x1E69E96A0] maximumDelay:0.5 queue:2.0];
       saveDebouncer = self->_saveDebouncer;
@@ -4929,47 +4929,47 @@ LABEL_9:
       [(WFDebouncer *)self->_saveDebouncer addTarget:self action:sel_saveFromDebouncer_];
       self->_userProvidedName = 0;
       self->_serializeActionsWhenSaving = v24;
-      self->_storageState = v55 == 0;
+      self->_storageState = providerCopy == 0;
       [(WFWorkflow *)self loadFromRecord];
-      v44 = [(WFWorkflow *)self database];
-      v45 = v44;
-      if (v44)
+      database = [(WFWorkflow *)self database];
+      v45 = database;
+      if (database)
       {
-        [v44 addObjectObserver:self];
+        [database addObjectObserver:self];
       }
 
-      v46 = self;
+      selfCopy = self;
     }
 
-    v47 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v47 = 0;
-    v38 = v55;
+    selfCopy2 = 0;
+    v38 = providerCopy;
   }
 
   v48 = *MEMORY[0x1E69E9840];
-  return v47;
+  return selfCopy2;
 }
 
-- (WFWorkflow)initWithCreationOptions:(id)a3 database:(id)a4 error:(id *)a5
+- (WFWorkflow)initWithCreationOptions:(id)options database:(id)database error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [[WFDatabaseWorkflowStorage alloc] initWithDatabase:v10];
+  optionsCopy = options;
+  databaseCopy = database;
+  v11 = [[WFDatabaseWorkflowStorage alloc] initWithDatabase:databaseCopy];
   v12 = objc_alloc_init(WFWorkflowRecord);
-  v13 = [(WFWorkflow *)self initWithRecord:v12 reference:0 storageProvider:v11 error:a5];
+  v13 = [(WFWorkflow *)self initWithRecord:v12 reference:0 storageProvider:v11 error:error];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_creationOptions, a3);
+    objc_storeStrong(&v13->_creationOptions, options);
     v13->_storageState = 2;
     v14 = +[WFWorkflow defaultName];
-    v15 = [v10 suggestedWorkflowNameForName:v14];
-    v16 = [(WFWorkflow *)v13 record];
-    [v16 setName:v15];
+    v15 = [databaseCopy suggestedWorkflowNameForName:v14];
+    record = [(WFWorkflow *)v13 record];
+    [record setName:v15];
 
     v17 = v13;
   }
@@ -4985,12 +4985,12 @@ LABEL_9:
   return v4;
 }
 
-+ (BOOL)checkClientVersion:(id)a3 currentVersion:(id)a4 error:(id *)a5
++ (BOOL)checkClientVersion:(id)version currentVersion:(id)currentVersion error:(id *)error
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v7 = WFCompareBundleVersions(a3, a4);
+  v7 = WFCompareBundleVersions(version, currentVersion);
   v8 = v7;
-  if (a5 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v18[0] = *MEMORY[0x1E696A588];
     v9 = WFLocalizedString(@"Shortcut Format Too New");
@@ -5006,29 +5006,29 @@ LABEL_9:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v18[3] = *MEMORY[0x1E696A8A8];
     v19[2] = v13;
-    v19[3] = a1;
+    v19[3] = self;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFWorkflowErrorDomain" code:2 userInfo:v14];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFWorkflowErrorDomain" code:2 userInfo:v14];
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v8 & 1;
 }
 
-+ (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
++ (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  if (!a4)
+  if (!index)
   {
-    v4 = [MEMORY[0x1E6996CA8] sharedContext];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
     v5 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=General&path=SOFTWARE_UPDATE_LINK"];
-    [v4 openURL:v5 withBundleIdentifier:@"com.apple.Preferences" userInterface:0 completionHandler:0];
+    [mEMORY[0x1E6996CA8] openURL:v5 withBundleIdentifier:@"com.apple.Preferences" userInterface:0 completionHandler:0];
   }
 
   return 1;
 }
 
-+ (id)localizedSubtitleWithActionCount:(unint64_t)a3
++ (id)localizedSubtitleWithActionCount:(unint64_t)count
 {
   v4 = localizedSubtitleActionCountCache;
   if (!localizedSubtitleActionCountCache)
@@ -5040,16 +5040,16 @@ LABEL_9:
     v4 = localizedSubtitleActionCountCache;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v8 = [v4 objectForKey:v7];
 
   if (!v8)
   {
-    if (a3)
+    if (count)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = WFLocalizedPluralString(@"%lu actions");
-      v8 = [v9 localizedStringWithFormat:v10, a3];
+      v8 = [v9 localizedStringWithFormat:v10, count];
     }
 
     else
@@ -5058,7 +5058,7 @@ LABEL_9:
     }
 
     v11 = localizedSubtitleActionCountCache;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
     [v11 setObject:v8 forKey:v12];
   }
 
@@ -5067,18 +5067,18 @@ LABEL_9:
   return v13;
 }
 
-+ (id)effectiveInputClassesFromInputClasses:(id)a3 workflowTypes:(id)a4
++ (id)effectiveInputClassesFromInputClasses:(id)classes workflowTypes:(id)types
 {
-  v5 = a3;
-  v6 = WFWorkflowTypesContainsInputType(a4);
-  v7 = v5;
+  classesCopy = classes;
+  v6 = WFWorkflowTypesContainsInputType(types);
+  array = classesCopy;
   if ((v6 & 1) == 0)
   {
     v8 = +[WFWorkflow supportedInputClasses];
-    v7 = [v8 array];
+    array = [v8 array];
   }
 
-  v9 = [v7 mutableCopy];
+  v9 = [array mutableCopy];
   if ([v9 containsObject:objc_opt_class()])
   {
     v10 = objc_opt_class();
@@ -5096,8 +5096,8 @@ LABEL_9:
 
 + (id)supportedInputClasses
 {
-  v2 = [a1 supportedInputClassNames];
-  v3 = [v2 if_compactMap:&__block_literal_global_271];
+  supportedInputClassNames = [self supportedInputClassNames];
+  v3 = [supportedInputClassNames if_compactMap:&__block_literal_global_271];
 
   return v3;
 }
@@ -5105,15 +5105,15 @@ LABEL_9:
 - (id)createUserActivityForViewing
 {
   v3 = objc_opt_new();
-  v4 = [(WFWorkflow *)self workflowID];
-  [v3 setObject:v4 forKeyedSubscript:@"workflowID"];
+  workflowID = [(WFWorkflow *)self workflowID];
+  [v3 setObject:workflowID forKeyedSubscript:@"workflowID"];
 
-  v5 = [(WFWorkflow *)self name];
-  [v3 setObject:v5 forKeyedSubscript:@"workflowName"];
+  name = [(WFWorkflow *)self name];
+  [v3 setObject:name forKeyedSubscript:@"workflowName"];
 
   v6 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:@"is.workflow.my.app.viewworkflow"];
-  v7 = [(WFWorkflow *)self name];
-  [v6 setTitle:v7];
+  name2 = [(WFWorkflow *)self name];
+  [v6 setTitle:name2];
 
   [v6 setUserInfo:v3];
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{@"workflowID", @"workflowName", 0}];
@@ -5132,8 +5132,8 @@ LABEL_9:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(WFWorkflow *)self actions];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actions = [(WFWorkflow *)self actions];
+  v3 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -5144,7 +5144,7 @@ LABEL_9:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(actions);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -5155,7 +5155,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 1;
       if (v4)
       {
@@ -5177,40 +5177,40 @@ LABEL_13:
   return v8;
 }
 
-- (void)requestToRunScriptsOnDomain:(id)a3 withUserInterface:(id)a4 database:(id)a5 completionHandler:(id)a6
+- (void)requestToRunScriptsOnDomain:(id)domain withUserInterface:(id)interface database:(id)database completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  domainCopy = domain;
+  interfaceCopy = interface;
+  databaseCopy = database;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"WFWorkflow+TrustedDomains.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflow+TrustedDomains.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v15 = [(WFWorkflow *)self reference];
-  if (v15)
+  reference = [(WFWorkflow *)self reference];
+  if (reference)
   {
-    if ([v13 isReference:v15 allowedToRunOnDomain:v11])
+    if ([databaseCopy isReference:reference allowedToRunOnDomain:domainCopy])
     {
-      v14[2](v14, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     else
     {
       v16 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:0];
-      v17 = [(WFWorkflow *)self name];
-      v18 = [v11 lowercaseString];
-      v32 = v12;
+      name = [(WFWorkflow *)self name];
+      lowercaseString = [domainCopy lowercaseString];
+      v32 = interfaceCopy;
       v19 = MEMORY[0x1E696AEC0];
       v20 = WFLocalizedString(@"Do you want to give “%1$@” access to “%2$@”?");
-      v21 = [v19 localizedStringWithFormat:v20, v17, v18];
+      v21 = [v19 localizedStringWithFormat:v20, name, lowercaseString];
       [v16 setTitle:v21];
 
       v22 = MEMORY[0x1E696AEC0];
       v23 = WFLocalizedString(@"Whenever you run this shortcut, “%1$@” will be able to interact with the current web page, including reading sensitive information such as passwords, phone numbers, and credit cards.");
-      v24 = [v22 localizedStringWithFormat:v23, v17, v18];
+      v24 = [v22 localizedStringWithFormat:v23, name, lowercaseString];
       [v16 setMessage:v24];
 
       v25 = MEMORY[0x1E6996C78];
@@ -5218,7 +5218,7 @@ LABEL_13:
       v38[1] = 3221225472;
       v38[2] = __103__WFWorkflow_TrustedDomains__requestToRunScriptsOnDomain_withUserInterface_database_completionHandler___block_invoke;
       v38[3] = &unk_1E837F4E8;
-      v26 = v14;
+      v26 = handlerCopy;
       v39 = v26;
       v27 = [v25 cancelButtonWithHandler:v38];
       [v16 addButton:v27];
@@ -5229,21 +5229,21 @@ LABEL_13:
       v33[1] = 3221225472;
       v33[2] = __103__WFWorkflow_TrustedDomains__requestToRunScriptsOnDomain_withUserInterface_database_completionHandler___block_invoke_2;
       v33[3] = &unk_1E837F510;
-      v34 = v13;
-      v35 = v15;
-      v36 = v11;
+      v34 = databaseCopy;
+      v35 = reference;
+      v36 = domainCopy;
       v37 = v26;
       v30 = [v28 buttonWithTitle:v29 style:0 preferred:1 handler:v33];
       [v16 addButton:v30];
 
-      v12 = v32;
+      interfaceCopy = v32;
       [v32 presentAlert:v16];
     }
   }
 
   else
   {
-    v14[2](v14, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

@@ -1,11 +1,11 @@
 @interface HDUserNotificationSystemApertureContentDefinitionWrapper
 - (_TtC12HealthDaemon56HDUserNotificationSystemApertureContentDefinitionWrapper)init;
-- (_TtC12HealthDaemon56HDUserNotificationSystemApertureContentDefinitionWrapper)initWithSystemColorName:(id)a3 systemImageName:(id)a4 preventAutomaticDismissal:(BOOL)a5;
+- (_TtC12HealthDaemon56HDUserNotificationSystemApertureContentDefinitionWrapper)initWithSystemColorName:(id)name systemImageName:(id)imageName preventAutomaticDismissal:(BOOL)dismissal;
 @end
 
 @implementation HDUserNotificationSystemApertureContentDefinitionWrapper
 
-- (_TtC12HealthDaemon56HDUserNotificationSystemApertureContentDefinitionWrapper)initWithSystemColorName:(id)a3 systemImageName:(id)a4 preventAutomaticDismissal:(BOOL)a5
+- (_TtC12HealthDaemon56HDUserNotificationSystemApertureContentDefinitionWrapper)initWithSystemColorName:(id)name systemImageName:(id)imageName preventAutomaticDismissal:(BOOL)dismissal
 {
   sub_22911C35C();
   sub_22911C35C();

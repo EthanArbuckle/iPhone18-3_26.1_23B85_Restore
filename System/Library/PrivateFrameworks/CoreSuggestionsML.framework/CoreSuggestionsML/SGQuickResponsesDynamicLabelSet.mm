@@ -1,15 +1,15 @@
 @interface SGQuickResponsesDynamicLabelSet
-+ (BOOL)isDynamicLabel:(id)a3;
++ (BOOL)isDynamicLabel:(id)label;
 + (id)dynamicLabelSet;
 @end
 
 @implementation SGQuickResponsesDynamicLabelSet
 
-+ (BOOL)isDynamicLabel:(id)a3
++ (BOOL)isDynamicLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 dynamicLabelSet];
-  v6 = [v5 containsObject:v4];
+  labelCopy = label;
+  dynamicLabelSet = [self dynamicLabelSet];
+  v6 = [dynamicLabelSet containsObject:labelCopy];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface EMKTextEnumerator
-- (EMKTextEnumerator)initWithEmojiPreferences:(id)a3;
-- (id)emojiDataForLanguage:(id)a3;
-- (void)enumerateEmojiSignifiersInString:(id)a3 touchingRange:(_NSRange)a4 language:(id)a5 usingBlock:(id)a6;
+- (EMKTextEnumerator)initWithEmojiPreferences:(id)preferences;
+- (id)emojiDataForLanguage:(id)language;
+- (void)enumerateEmojiSignifiersInString:(id)string touchingRange:(_NSRange)range language:(id)language usingBlock:(id)block;
 @end
 
 @implementation EMKTextEnumerator
 
-- (EMKTextEnumerator)initWithEmojiPreferences:(id)a3
+- (EMKTextEnumerator)initWithEmojiPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v10.receiver = self;
   v10.super_class = EMKTextEnumerator;
   v6 = [(EMKTextEnumerator *)&v10 init];
@@ -18,55 +18,55 @@
     emojiDatasByLanguage = v6->_emojiDatasByLanguage;
     v6->_emojiDatasByLanguage = v7;
 
-    objc_storeStrong(&v6->_emojiPreferences, a3);
+    objc_storeStrong(&v6->_emojiPreferences, preferences);
   }
 
   return v6;
 }
 
-- (id)emojiDataForLanguage:(id)a3
+- (id)emojiDataForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_emojiDatasByLanguage objectForKey:v4];
+  languageCopy = language;
+  v5 = [(NSMutableDictionary *)self->_emojiDatasByLanguage objectForKey:languageCopy];
   if (!v5)
   {
-    v9 = [MEMORY[0x277D072F8] emojiLocaleDataWithLocaleIdentifier:v4];
+    v9 = [MEMORY[0x277D072F8] emojiLocaleDataWithLocaleIdentifier:languageCopy];
     emojiDatasByLanguage = self->_emojiDatasByLanguage;
     if (v9)
     {
-      v6 = v9;
-      [(NSMutableDictionary *)emojiDatasByLanguage setObject:v9 forKey:v4];
+      null = v9;
+      [(NSMutableDictionary *)emojiDatasByLanguage setObject:v9 forKey:languageCopy];
       goto LABEL_8;
     }
 
-    v6 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableDictionary *)emojiDatasByLanguage setObject:v6 forKey:v4];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableDictionary *)emojiDatasByLanguage setObject:null forKey:languageCopy];
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x277CBEB68] null];
-  v8 = [v6 isEqual:v7];
+  null = v5;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v8 = [null isEqual:null2];
 
   if (v8)
   {
 LABEL_7:
 
-    v6 = 0;
+    null = 0;
   }
 
 LABEL_8:
 
-  return v6;
+  return null;
 }
 
-- (void)enumerateEmojiSignifiersInString:(id)a3 touchingRange:(_NSRange)a4 language:(id)a5 usingBlock:(id)a6
+- (void)enumerateEmojiSignifiersInString:(id)string touchingRange:(_NSRange)range language:(id)language usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languageCopy = language;
+  blockCopy = block;
   if (enumerateEmojiSignifiersInString_touchingRange_language_usingBlock__onceToken != -1)
   {
     [EMKTextEnumerator enumerateEmojiSignifiersInString:touchingRange:language:usingBlock:];
@@ -87,7 +87,7 @@ LABEL_8:
     ++length;
   }
 
-  if (length + v14 >= [v11 length])
+  if (length + v14 >= [stringCopy length])
   {
     v15 = length;
   }
@@ -97,12 +97,12 @@ LABEL_8:
     v15 = length + 1;
   }
 
-  v16 = [v11 paragraphRangeForRange:{v14, v15}];
+  v16 = [stringCopy paragraphRangeForRange:{v14, v15}];
   v18 = v17;
-  [v11 rangeOfCharacterFromSet:enumerateEmojiSignifiersInString_touchingRange_language_usingBlock__searchableCharacterSet options:0 range:{v16, v17}];
+  [stringCopy rangeOfCharacterFromSet:enumerateEmojiSignifiersInString_touchingRange_language_usingBlock__searchableCharacterSet options:0 range:{v16, v17}];
   if (v19)
   {
-    v20 = [(EMKTextEnumerator *)self emojiDataForLanguage:v12];
+    v20 = [(EMKTextEnumerator *)self emojiDataForLanguage:languageCopy];
     if (v20 && v18)
     {
       v21[0] = MEMORY[0x277D85DD0];
@@ -112,9 +112,9 @@ LABEL_8:
       v25 = v14;
       v26 = v15;
       v21[4] = self;
-      v22 = v11;
-      v23 = v12;
-      v24 = v13;
+      v22 = stringCopy;
+      v23 = languageCopy;
+      v24 = blockCopy;
       [v20 enumerateSearchResultsInText:v22 range:v16 options:v18 searchType:17 usingBlock:{1, v21}];
     }
   }

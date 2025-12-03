@@ -1,8 +1,8 @@
 @interface DRSDampeningEnforcementSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DRSDampeningEnforcementSettings)init;
-- (DRSDampeningEnforcementSettings)initWithMO:(id)a3;
-- (id)_moRepresentation:(id)a3;
+- (DRSDampeningEnforcementSettings)initWithMO:(id)o;
+- (id)_moRepresentation:(id)representation;
 - (id)debugDescription;
 - (id)jsonCompatibleDictRepresentation;
 @end
@@ -132,10 +132,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
@@ -145,12 +145,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DRSDampeningEnforcementSettings *)self enforcesResourceHysteresis];
-      if (v6 == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceHysteresis]&& (v7 = [(DRSDampeningEnforcementSettings *)self enforcesResourceCap], v7 == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceCap]) && (v8 = [(DRSDampeningEnforcementSettings *)self enforcesResourceDownsampling], v8 == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceDownsampling]) && (v9 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureHysteresis], v9 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureHysteresis]) && (v10 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureCap], v10 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureCap]) && (v11 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureDownsampling], v11 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureDownsampling]))
+      v5 = equalCopy;
+      enforcesResourceHysteresis = [(DRSDampeningEnforcementSettings *)self enforcesResourceHysteresis];
+      if (enforcesResourceHysteresis == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceHysteresis]&& (v7 = [(DRSDampeningEnforcementSettings *)self enforcesResourceCap], v7 == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceCap]) && (v8 = [(DRSDampeningEnforcementSettings *)self enforcesResourceDownsampling], v8 == [(DRSDampeningEnforcementSettings *)v5 enforcesResourceDownsampling]) && (v9 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureHysteresis], v9 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureHysteresis]) && (v10 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureCap], v10 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureCap]) && (v11 = [(DRSDampeningEnforcementSettings *)self enforcesSignatureDownsampling], v11 == [(DRSDampeningEnforcementSettings *)v5 enforcesSignatureDownsampling]))
       {
-        v14 = [(DRSDampeningEnforcementSettings *)self enforcesTotalCap];
-        v12 = v14 ^ [(DRSDampeningEnforcementSettings *)v5 enforcesTotalCap]^ 1;
+        enforcesTotalCap = [(DRSDampeningEnforcementSettings *)self enforcesTotalCap];
+        v12 = enforcesTotalCap ^ [(DRSDampeningEnforcementSettings *)v5 enforcesTotalCap]^ 1;
       }
 
       else
@@ -168,30 +168,30 @@
   return v12;
 }
 
-- (DRSDampeningEnforcementSettings)initWithMO:(id)a3
+- (DRSDampeningEnforcementSettings)initWithMO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v7.receiver = self;
   v7.super_class = DRSDampeningEnforcementSettings;
   v5 = [(DRSDampeningEnforcementSettings *)&v7 init];
   if (v5)
   {
-    v5->_enforcesResourceHysteresis = [v4 enforcesResourceHysteresis];
-    v5->_enforcesResourceCap = [v4 enforcesResourceCap];
-    v5->_enforcesResourceDownsampling = [v4 enforcesResourceDownsampling];
-    v5->_enforcesSignatureHysteresis = [v4 enforcesSignatureHysteresis];
-    v5->_enforcesSignatureCap = [v4 enforcesSignatureCap];
-    v5->_enforcesSignatureDownsampling = [v4 enforcesSignatureDownsampling];
-    v5->_enforcesTotalCap = [v4 enforcesTotalCap];
+    v5->_enforcesResourceHysteresis = [oCopy enforcesResourceHysteresis];
+    v5->_enforcesResourceCap = [oCopy enforcesResourceCap];
+    v5->_enforcesResourceDownsampling = [oCopy enforcesResourceDownsampling];
+    v5->_enforcesSignatureHysteresis = [oCopy enforcesSignatureHysteresis];
+    v5->_enforcesSignatureCap = [oCopy enforcesSignatureCap];
+    v5->_enforcesSignatureDownsampling = [oCopy enforcesSignatureDownsampling];
+    v5->_enforcesTotalCap = [oCopy enforcesTotalCap];
   }
 
   return v5;
 }
 
-- (id)_moRepresentation:(id)a3
+- (id)_moRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[DRSDampeningEnforcementSettingsMO alloc] initWithContext:v4];
+  representationCopy = representation;
+  v5 = [[DRSDampeningEnforcementSettingsMO alloc] initWithContext:representationCopy];
 
   [(DRSDampeningEnforcementSettingsMO *)v5 setEnforcesResourceHysteresis:[(DRSDampeningEnforcementSettings *)self enforcesResourceHysteresis]];
   [(DRSDampeningEnforcementSettingsMO *)v5 setEnforcesResourceCap:[(DRSDampeningEnforcementSettings *)self enforcesResourceCap]];

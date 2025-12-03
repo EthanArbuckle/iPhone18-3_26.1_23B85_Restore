@@ -1,24 +1,24 @@
 @interface SSRentalSyncRequest
-- (SSRentalSyncRequest)initWithAccountIdentifier:(id)a3;
-- (SSRentalSyncRequest)initWithSinfs:(id)a3;
-- (SSRentalSyncRequest)initWithXPCEncoding:(id)a3;
+- (SSRentalSyncRequest)initWithAccountIdentifier:(id)identifier;
+- (SSRentalSyncRequest)initWithSinfs:(id)sinfs;
+- (SSRentalSyncRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SSRentalSyncRequest
 
-- (SSRentalSyncRequest)initWithSinfs:(id)a3
+- (SSRentalSyncRequest)initWithSinfs:(id)sinfs
 {
-  v4 = a3;
-  if ([v4 count])
+  sinfsCopy = sinfs;
+  if ([sinfsCopy count])
   {
     v9.receiver = self;
     v9.super_class = SSRentalSyncRequest;
     v5 = [(SSRequest *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [sinfsCopy copy];
       sinfs = v5->_sinfs;
       v5->_sinfs = v6;
     }
@@ -34,17 +34,17 @@
   return v5;
 }
 
-- (SSRentalSyncRequest)initWithAccountIdentifier:(id)a3
+- (SSRentalSyncRequest)initWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 unsignedLongLongValue])
+  identifierCopy = identifier;
+  if ([identifierCopy unsignedLongLongValue])
   {
     v9.receiver = self;
     v9.super_class = SSRentalSyncRequest;
     v5 = [(SSRequest *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       accountIdentifier = v5->_accountIdentifier;
       v5->_accountIdentifier = v6;
     }
@@ -60,10 +60,10 @@
   return v5;
 }
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -72,19 +72,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -108,9 +108,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -122,8 +122,8 @@ LABEL_16:
   v19[2] = __56__SSRentalSyncRequest_startWithConnectionResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:1016 messageBlock:v19];
 }
 
@@ -175,11 +175,11 @@ void __56__SSRentalSyncRequest_startWithConnectionResponseBlock___block_invoke(u
   return v3;
 }
 
-- (SSRentalSyncRequest)initWithXPCEncoding:(id)a3
+- (SSRentalSyncRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     objc_opt_class();
     v7 = SSXPCDictionaryCopyCFObjectWithClass(v5, "50");

@@ -1,10 +1,10 @@
 @interface CCAppIntentsExtractedEntityContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCAppIntentsExtractedEntityAppointment)appointment;
 - (CCAppIntentsExtractedEntityBusinessMembershipCard)businessMembershipCard;
-- (CCAppIntentsExtractedEntityContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5;
-- (CCAppIntentsExtractedEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCAppIntentsExtractedEntityContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error;
+- (CCAppIntentsExtractedEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCAppIntentsExtractedEntityFlightReservation)flightReservation;
 - (CCAppIntentsExtractedEntityHotelReservation)hotelReservation;
 - (CCAppIntentsExtractedEntityMedicalInsuranceCard)medicalInsuranceCard;
@@ -16,21 +16,21 @@
 - (CCAppIntentsExtractedEntityTicketedTransportation)ticketedTransportation;
 - (CCAppIntentsExtractedEntityTransitCard)transitCard;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityContent
 
-- (CCAppIntentsExtractedEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v109[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"flightReservation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"flightReservation"];
     if (v9)
     {
       v109[0] = 0;
@@ -49,7 +49,7 @@ LABEL_106:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"hotelReservation"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"hotelReservation"];
     if (v12)
     {
       v13 = [CCAppIntentsExtractedEntityHotelReservation alloc];
@@ -69,7 +69,7 @@ LABEL_105:
       v12 = v14;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"restaurantReservation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"restaurantReservation"];
     if (v10)
     {
       v16 = [CCAppIntentsExtractedEntityRestaurantReservation alloc];
@@ -89,7 +89,7 @@ LABEL_104:
       v10 = v17;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"rentalCarReservation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"rentalCarReservation"];
     if (v14)
     {
       v19 = [CCAppIntentsExtractedEntityRentalCarReservation alloc];
@@ -109,11 +109,11 @@ LABEL_103:
       v14 = v20;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"ticketedTransportation"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"ticketedTransportation"];
     if (v17)
     {
       v95 = v14;
-      v22 = self;
+      selfCopy = self;
       v23 = [CCAppIntentsExtractedEntityTicketedTransportation alloc];
       v105 = 0;
       v24 = v17;
@@ -127,19 +127,19 @@ LABEL_103:
         v38 = 0;
         v20 = v27;
         v17 = v24;
-        self = v22;
+        self = selfCopy;
         v14 = v95;
 LABEL_102:
 
         goto LABEL_103;
       }
 
-      self = v22;
+      self = selfCopy;
       v14 = v95;
       v17 = v25;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"ticketedShow"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"ticketedShow"];
     v94 = v17;
     if (v28)
     {
@@ -162,12 +162,12 @@ LABEL_102:
       v17 = v94;
     }
 
-    v32 = [v6 objectForKeyedSubscript:@"appointment"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"appointment"];
     if (!v32)
     {
       v97 = 0;
 LABEL_38:
-      v39 = [v6 objectForKeyedSubscript:@"party"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"party"];
       v82 = v28;
       if (v39)
       {
@@ -197,7 +197,7 @@ LABEL_100:
         v96 = 0;
       }
 
-      v44 = [v6 objectForKeyedSubscript:@"personalId"];
+      v44 = [dictionaryCopy objectForKeyedSubscript:@"personalId"];
       if (v44)
       {
         v45 = v44;
@@ -226,7 +226,7 @@ LABEL_99:
         v93 = 0;
       }
 
-      v49 = [v6 objectForKeyedSubscript:@"medicalInsuranceCard"];
+      v49 = [dictionaryCopy objectForKeyedSubscript:@"medicalInsuranceCard"];
       if (v49)
       {
         v50 = v49;
@@ -254,7 +254,7 @@ LABEL_99:
       }
 
       v20 = v82;
-      v54 = [v6 objectForKeyedSubscript:@"businessMembershipCard"];
+      v54 = [dictionaryCopy objectForKeyedSubscript:@"businessMembershipCard"];
       if (v54)
       {
         v81 = v54;
@@ -279,7 +279,7 @@ LABEL_99:
         v81 = 0;
       }
 
-      v57 = [v6 objectForKeyedSubscript:@"transitCard"];
+      v57 = [dictionaryCopy objectForKeyedSubscript:@"transitCard"];
       if (!v57)
       {
         v60 = 0;
@@ -406,7 +406,7 @@ LABEL_68:
           v78 = v63;
         }
 
-        v66 = [[CCAppIntentsExtractedEntityContent alloc] initWithEntity:v91 entityType:v78 error:a4];
+        v66 = [[CCAppIntentsExtractedEntityContent alloc] initWithEntity:v91 entityType:v78 error:error];
         v61 = v91;
         v38 = v66;
         goto LABEL_96;
@@ -468,9 +468,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v5 = [(CCAppIntentsExtractedEntityContent *)self flightReservation];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"flightReservation"];
+    flightReservation = [(CCAppIntentsExtractedEntityContent *)self flightReservation];
+    jsonDictionary = [flightReservation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"flightReservation"];
 
     entityType = self->_entityType;
   }
@@ -482,9 +482,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v7 = [(CCAppIntentsExtractedEntityContent *)self hotelReservation];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"hotelReservation"];
+    hotelReservation = [(CCAppIntentsExtractedEntityContent *)self hotelReservation];
+    jsonDictionary2 = [hotelReservation jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"hotelReservation"];
 
     entityType = self->_entityType;
   }
@@ -496,9 +496,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v9 = [(CCAppIntentsExtractedEntityContent *)self restaurantReservation];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"restaurantReservation"];
+    restaurantReservation = [(CCAppIntentsExtractedEntityContent *)self restaurantReservation];
+    jsonDictionary3 = [restaurantReservation jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"restaurantReservation"];
 
     entityType = self->_entityType;
   }
@@ -510,9 +510,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v11 = [(CCAppIntentsExtractedEntityContent *)self rentalCarReservation];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"rentalCarReservation"];
+    rentalCarReservation = [(CCAppIntentsExtractedEntityContent *)self rentalCarReservation];
+    jsonDictionary4 = [rentalCarReservation jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"rentalCarReservation"];
 
     entityType = self->_entityType;
   }
@@ -524,9 +524,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v13 = [(CCAppIntentsExtractedEntityContent *)self ticketedTransportation];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"ticketedTransportation"];
+    ticketedTransportation = [(CCAppIntentsExtractedEntityContent *)self ticketedTransportation];
+    jsonDictionary5 = [ticketedTransportation jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"ticketedTransportation"];
 
     entityType = self->_entityType;
   }
@@ -538,9 +538,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v15 = [(CCAppIntentsExtractedEntityContent *)self ticketedShow];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"ticketedShow"];
+    ticketedShow = [(CCAppIntentsExtractedEntityContent *)self ticketedShow];
+    jsonDictionary6 = [ticketedShow jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"ticketedShow"];
 
     entityType = self->_entityType;
   }
@@ -552,9 +552,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v17 = [(CCAppIntentsExtractedEntityContent *)self appointment];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"appointment"];
+    appointment = [(CCAppIntentsExtractedEntityContent *)self appointment];
+    jsonDictionary7 = [appointment jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"appointment"];
 
     entityType = self->_entityType;
   }
@@ -566,9 +566,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v19 = [(CCAppIntentsExtractedEntityContent *)self party];
-    v20 = [v19 jsonDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"party"];
+    party = [(CCAppIntentsExtractedEntityContent *)self party];
+    jsonDictionary8 = [party jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"party"];
 
     entityType = self->_entityType;
   }
@@ -580,9 +580,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v21 = [(CCAppIntentsExtractedEntityContent *)self personalId];
-    v22 = [v21 jsonDictionary];
-    [v3 setObject:v22 forKeyedSubscript:@"personalId"];
+    personalId = [(CCAppIntentsExtractedEntityContent *)self personalId];
+    jsonDictionary9 = [personalId jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"personalId"];
 
     entityType = self->_entityType;
   }
@@ -594,9 +594,9 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v23 = [(CCAppIntentsExtractedEntityContent *)self medicalInsuranceCard];
-    v24 = [v23 jsonDictionary];
-    [v3 setObject:v24 forKeyedSubscript:@"medicalInsuranceCard"];
+    medicalInsuranceCard = [(CCAppIntentsExtractedEntityContent *)self medicalInsuranceCard];
+    jsonDictionary10 = [medicalInsuranceCard jsonDictionary];
+    [v3 setObject:jsonDictionary10 forKeyedSubscript:@"medicalInsuranceCard"];
 
     entityType = self->_entityType;
   }
@@ -608,18 +608,18 @@ LABEL_107:
       goto LABEL_37;
     }
 
-    v25 = [(CCAppIntentsExtractedEntityContent *)self businessMembershipCard];
-    v26 = [v25 jsonDictionary];
-    [v3 setObject:v26 forKeyedSubscript:@"businessMembershipCard"];
+    businessMembershipCard = [(CCAppIntentsExtractedEntityContent *)self businessMembershipCard];
+    jsonDictionary11 = [businessMembershipCard jsonDictionary];
+    [v3 setObject:jsonDictionary11 forKeyedSubscript:@"businessMembershipCard"];
 
     entityType = self->_entityType;
   }
 
   if (entityType == 12 && self->_transitCard)
   {
-    v27 = [(CCAppIntentsExtractedEntityContent *)self transitCard];
-    v28 = [v27 jsonDictionary];
-    [v3 setObject:v28 forKeyedSubscript:@"transitCard"];
+    transitCard = [(CCAppIntentsExtractedEntityContent *)self transitCard];
+    jsonDictionary12 = [transitCard jsonDictionary];
+    [v3 setObject:jsonDictionary12 forKeyedSubscript:@"transitCard"];
   }
 
 LABEL_37:
@@ -628,82 +628,82 @@ LABEL_37:
   return v29;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v18 = a3;
+  blockCopy = block;
   if (self->_flightReservation)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27326 subMessageValue:self->_flightReservation];
-    v18[2](v18, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hotelReservation)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27363 subMessageValue:self->_hotelReservation];
-    v18[2](v18, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_restaurantReservation)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27381 subMessageValue:self->_restaurantReservation];
-    v18[2](v18, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_rentalCarReservation)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27393 subMessageValue:self->_rentalCarReservation];
-    v18[2](v18, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_ticketedTransportation)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27413 subMessageValue:self->_ticketedTransportation];
-    v18[2](v18, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_ticketedShow)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27427 subMessageValue:self->_ticketedShow];
-    v18[2](v18, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_appointment)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27445 subMessageValue:self->_appointment];
-    v18[2](v18, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_party)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27458 subMessageValue:self->_party];
-    v18[2](v18, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_personalId)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27468 subMessageValue:self->_personalId];
-    v18[2](v18, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_medicalInsuranceCard)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27483 subMessageValue:self->_medicalInsuranceCard];
-    v18[2](v18, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_businessMembershipCard)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27493 subMessageValue:self->_businessMembershipCard];
-    v18[2](v18, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
-  v16 = v18;
+  v16 = blockCopy;
   if (self->_transitCard)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27502 subMessageValue:self->_transitCard];
-    v18[2](v18, v17);
+    blockCopy[2](blockCopy, v17);
 
-    v16 = v18;
+    v16 = blockCopy;
   }
 }
 
@@ -791,10 +791,10 @@ LABEL_37:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -1398,11 +1398,11 @@ LABEL_81:
   return v156;
 }
 
-- (CCAppIntentsExtractedEntityContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5
+- (CCAppIntentsExtractedEntityContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  entityCopy = entity;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (entityCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -1414,11 +1414,11 @@ LABEL_81:
 
 LABEL_50:
     CCSetError();
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_51;
   }
 
-  if (v8 && a4 == 2)
+  if (entityCopy && type == 2)
   {
     objc_opt_class();
     v12 = CCValidateIsInstanceOfExpectedClass();
@@ -1431,7 +1431,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 3)
+  if (entityCopy && type == 3)
   {
     objc_opt_class();
     v13 = CCValidateIsInstanceOfExpectedClass();
@@ -1444,7 +1444,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 4)
+  if (entityCopy && type == 4)
   {
     objc_opt_class();
     v14 = CCValidateIsInstanceOfExpectedClass();
@@ -1457,7 +1457,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 5)
+  if (entityCopy && type == 5)
   {
     objc_opt_class();
     v15 = CCValidateIsInstanceOfExpectedClass();
@@ -1470,7 +1470,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 6)
+  if (entityCopy && type == 6)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -1483,7 +1483,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 7)
+  if (entityCopy && type == 7)
   {
     objc_opt_class();
     v17 = CCValidateIsInstanceOfExpectedClass();
@@ -1496,7 +1496,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 8)
+  if (entityCopy && type == 8)
   {
     objc_opt_class();
     v18 = CCValidateIsInstanceOfExpectedClass();
@@ -1509,7 +1509,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 9)
+  if (entityCopy && type == 9)
   {
     objc_opt_class();
     v19 = CCValidateIsInstanceOfExpectedClass();
@@ -1522,7 +1522,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 10)
+  if (entityCopy && type == 10)
   {
     objc_opt_class();
     v20 = CCValidateIsInstanceOfExpectedClass();
@@ -1535,7 +1535,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v8 && a4 == 11)
+  if (entityCopy && type == 11)
   {
     objc_opt_class();
     v21 = CCValidateIsInstanceOfExpectedClass();
@@ -1549,7 +1549,7 @@ LABEL_50:
   }
 
   v11 = 0;
-  if (!v8 || a4 != 12)
+  if (!entityCopy || type != 12)
   {
     goto LABEL_49;
   }
@@ -1564,29 +1564,29 @@ LABEL_50:
   }
 
 LABEL_48:
-  v23 = [v8 data];
+  data = [entityCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_49:
-  v24 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v24 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v25 = self;
+  selfCopy = self;
 LABEL_51:
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 27325) > 0xB8)
+  if ((identifier - 27325) > 0xB8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7E98[(a3 - 27325)];
+    return off_1E73E7E98[(identifier - 27325)];
   }
 }
 

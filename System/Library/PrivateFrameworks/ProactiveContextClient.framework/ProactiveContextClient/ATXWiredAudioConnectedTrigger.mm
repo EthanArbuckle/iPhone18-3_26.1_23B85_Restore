@@ -1,30 +1,30 @@
 @interface ATXWiredAudioConnectedTrigger
-- (ATXWiredAudioConnectedTrigger)initWithCoder:(id)a3;
-- (ATXWiredAudioConnectedTrigger)initWithDeviceIdentifier:(id)a3;
+- (ATXWiredAudioConnectedTrigger)initWithCoder:(id)coder;
+- (ATXWiredAudioConnectedTrigger)initWithDeviceIdentifier:(id)identifier;
 @end
 
 @implementation ATXWiredAudioConnectedTrigger
 
-- (ATXWiredAudioConnectedTrigger)initWithDeviceIdentifier:(id)a3
+- (ATXWiredAudioConnectedTrigger)initWithDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = ATXWiredAudioConnectedTrigger;
   v6 = [(ATXWiredAudioConnectedTrigger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceIdentifier, a3);
+    objc_storeStrong(&v6->_deviceIdentifier, identifier);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ATXWiredAudioConnectedTrigger)initWithCoder:(id)a3
+- (ATXWiredAudioConnectedTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioDeviceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioDeviceIdentifier"];
 
   v6 = [(ATXWiredAudioConnectedTrigger *)self initWithDeviceIdentifier:v5];
   return v6;

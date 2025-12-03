@@ -1,21 +1,21 @@
 @interface PPSourceMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSourceMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSourceMetadata:(id)metadata;
 - (NSSet)featureNames;
-- (PPSourceMetadata)initWithCoder:(id)a3;
-- (PPSourceMetadata)initWithDwellTimeSeconds:(unsigned int)a3 lengthSeconds:(unsigned int)a4 lengthCharacters:(unsigned int)a5 donationCount:(unsigned __int16)a6 contactHandleCount:(unsigned __int16)a7 flags:(unsigned __int8)a8;
+- (PPSourceMetadata)initWithCoder:(id)coder;
+- (PPSourceMetadata)initWithDwellTimeSeconds:(unsigned int)seconds lengthSeconds:(unsigned int)lengthSeconds lengthCharacters:(unsigned int)characters donationCount:(unsigned __int16)count contactHandleCount:(unsigned __int16)handleCount flags:(unsigned __int8)flags;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSourceMetadata
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"dwellTimeSeconds"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"dwellTimeSeconds"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_dwellTimeSeconds;
@@ -26,42 +26,42 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"lengthSeconds"])
+  if ([nameCopy isEqualToString:@"lengthSeconds"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_lengthSeconds;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"lengthCharacters"])
+  if ([nameCopy isEqualToString:@"lengthCharacters"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_lengthCharacters;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"donationCount"])
+  if ([nameCopy isEqualToString:@"donationCount"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_donationCount;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"contactHandleCount"])
+  if ([nameCopy isEqualToString:@"contactHandleCount"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_contactHandleCount;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"flags"])
+  if ([nameCopy isEqualToString:@"flags"])
   {
     v5 = MEMORY[0x1E695FE60];
     dwellTimeSeconds = self->_flags;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"userCreated"])
+  if ([nameCopy isEqualToString:@"userCreated"])
   {
     v10 = 1.0;
     if ((self->_flags & 1) == 0)
@@ -103,10 +103,10 @@ void __32__PPSourceMetadata_featureNames__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -114,22 +114,22 @@ void __32__PPSourceMetadata_featureNames__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSourceMetadata *)self isEqualToSourceMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSourceMetadata *)self isEqualToSourceMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSourceMetadata:(id)a3
+- (BOOL)isEqualToSourceMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (dwellTimeSeconds = self->_dwellTimeSeconds, dwellTimeSeconds == [(PPSourceMetadata *)v4 dwellTimeSeconds]) && (lengthSeconds = self->_lengthSeconds, lengthSeconds == [(PPSourceMetadata *)v5 lengthSeconds]) && (lengthCharacters = self->_lengthCharacters, lengthCharacters == [(PPSourceMetadata *)v5 lengthCharacters]) && (donationCount = self->_donationCount, donationCount == [(PPSourceMetadata *)v5 donationCount]) && (contactHandleCount = self->_contactHandleCount, contactHandleCount == [(PPSourceMetadata *)v5 contactHandleCount]))
+  else if (metadataCopy && (dwellTimeSeconds = self->_dwellTimeSeconds, dwellTimeSeconds == [(PPSourceMetadata *)metadataCopy dwellTimeSeconds]) && (lengthSeconds = self->_lengthSeconds, lengthSeconds == [(PPSourceMetadata *)v5 lengthSeconds]) && (lengthCharacters = self->_lengthCharacters, lengthCharacters == [(PPSourceMetadata *)v5 lengthCharacters]) && (donationCount = self->_donationCount, donationCount == [(PPSourceMetadata *)v5 donationCount]) && (contactHandleCount = self->_contactHandleCount, contactHandleCount == [(PPSourceMetadata *)v5 contactHandleCount]))
   {
     flags = self->_flags;
     v12 = flags == [(PPSourceMetadata *)v5 flags];
@@ -151,37 +151,37 @@ void __32__PPSourceMetadata_featureNames__block_invoke()
   return self->_flags - v4 + 32 * v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dwellTimeSeconds = self->_dwellTimeSeconds;
-  v5 = a3;
-  [v5 encodeInt32:dwellTimeSeconds forKey:@"dts"];
-  [v5 encodeInt32:self->_lengthSeconds forKey:@"lns"];
-  [v5 encodeInt32:self->_lengthCharacters forKey:@"lnc"];
-  [v5 encodeInt32:self->_donationCount forKey:@"dct"];
-  [v5 encodeInt32:self->_contactHandleCount forKey:@"chc"];
-  [v5 encodeInt32:self->_flags forKey:@"flg"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:dwellTimeSeconds forKey:@"dts"];
+  [coderCopy encodeInt32:self->_lengthSeconds forKey:@"lns"];
+  [coderCopy encodeInt32:self->_lengthCharacters forKey:@"lnc"];
+  [coderCopy encodeInt32:self->_donationCount forKey:@"dct"];
+  [coderCopy encodeInt32:self->_contactHandleCount forKey:@"chc"];
+  [coderCopy encodeInt32:self->_flags forKey:@"flg"];
 }
 
-- (PPSourceMetadata)initWithCoder:(id)a3
+- (PPSourceMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"dts"];
-  v6 = [v4 decodeInt32ForKey:@"lns"];
-  v7 = [v4 decodeInt32ForKey:@"lnc"];
-  v8 = [v4 decodeInt32ForKey:@"dct"];
-  if (HIWORD(v8) || (v9 = v8, v10 = [v4 decodeInt32ForKey:@"chc"], HIWORD(v10)) || (v11 = v10, v12 = objc_msgSend(v4, "decodeInt32ForKey:", @"flg"), v12 > 0xFF))
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"dts"];
+  v6 = [coderCopy decodeInt32ForKey:@"lns"];
+  v7 = [coderCopy decodeInt32ForKey:@"lnc"];
+  v8 = [coderCopy decodeInt32ForKey:@"dct"];
+  if (HIWORD(v8) || (v9 = v8, v10 = [coderCopy decodeInt32ForKey:@"chc"], HIWORD(v10)) || (v11 = v10, v12 = objc_msgSend(coderCopy, "decodeInt32ForKey:", @"flg"), v12 > 0xFF))
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PPSourceMetadata *)self initWithDwellTimeSeconds:v5 lengthSeconds:v6 lengthCharacters:v7 donationCount:v9 contactHandleCount:v11 flags:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
@@ -191,19 +191,19 @@ void __32__PPSourceMetadata_featureNames__block_invoke()
   return v2;
 }
 
-- (PPSourceMetadata)initWithDwellTimeSeconds:(unsigned int)a3 lengthSeconds:(unsigned int)a4 lengthCharacters:(unsigned int)a5 donationCount:(unsigned __int16)a6 contactHandleCount:(unsigned __int16)a7 flags:(unsigned __int8)a8
+- (PPSourceMetadata)initWithDwellTimeSeconds:(unsigned int)seconds lengthSeconds:(unsigned int)lengthSeconds lengthCharacters:(unsigned int)characters donationCount:(unsigned __int16)count contactHandleCount:(unsigned __int16)handleCount flags:(unsigned __int8)flags
 {
   v15.receiver = self;
   v15.super_class = PPSourceMetadata;
   result = [(PPSourceMetadata *)&v15 init];
   if (result)
   {
-    result->_dwellTimeSeconds = a3;
-    result->_lengthSeconds = a4;
-    result->_lengthCharacters = a5;
-    result->_donationCount = a6;
-    result->_contactHandleCount = a7;
-    result->_flags = a8;
+    result->_dwellTimeSeconds = seconds;
+    result->_lengthSeconds = lengthSeconds;
+    result->_lengthCharacters = characters;
+    result->_donationCount = count;
+    result->_contactHandleCount = handleCount;
+    result->_flags = flags;
   }
 
   return result;

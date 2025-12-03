@@ -1,15 +1,15 @@
 @interface AuthenticationWithOnboardingViewController
 - (CGSize)preferredContentSize;
-- (_TtC12GameCenterUI42AuthenticationWithOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)onboardingFlowFinishedWithAction:(unint64_t)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (_TtC12GameCenterUI42AuthenticationWithOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)onboardingFlowFinishedWithAction:(unint64_t)action;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation AuthenticationWithOnboardingViewController
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0034FC();
   v4 = v3;
   v6 = v5;
@@ -21,29 +21,29 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_24E003608(width, height);
 }
 
-- (_TtC12GameCenterUI42AuthenticationWithOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI42AuthenticationWithOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_24E00463C();
 }
 
-- (void)onboardingFlowFinishedWithAction:(unint64_t)a3
+- (void)onboardingFlowFinishedWithAction:(unint64_t)action
 {
-  v4 = self;
-  sub_24E004708(a3);
+  selfCopy = self;
+  sub_24E004708(action);
 }
 
 @end

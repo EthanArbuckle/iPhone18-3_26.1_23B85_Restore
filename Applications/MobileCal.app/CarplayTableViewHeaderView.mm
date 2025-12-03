@@ -1,30 +1,30 @@
 @interface CarplayTableViewHeaderView
-- (CarplayTableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (CarplayTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setAnyCalendarsHiddenByFocus:(BOOL)a3;
-- (void)setFloating:(BOOL)a3;
-- (void)setHeaderText:(id)a3;
+- (void)setAnyCalendarsHiddenByFocus:(BOOL)focus;
+- (void)setFloating:(BOOL)floating;
+- (void)setHeaderText:(id)text;
 @end
 
 @implementation CarplayTableViewHeaderView
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
-  objc_storeStrong(&self->_headerText, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_headerText, text);
+  textCopy = text;
   headerText = self->_headerText;
-  v7 = [(CarplayTableViewHeaderContentView *)self->_contentView label];
-  [v7 setText:headerText];
+  label = [(CarplayTableViewHeaderContentView *)self->_contentView label];
+  [label setText:headerText];
 }
 
-- (void)setAnyCalendarsHiddenByFocus:(BOOL)a3
+- (void)setAnyCalendarsHiddenByFocus:(BOOL)focus
 {
-  self->_anyCalendarsHiddenByFocus = a3;
-  v3 = a3 && self->_headerFloatingOrAtTop;
+  self->_anyCalendarsHiddenByFocus = focus;
+  v3 = focus && self->_headerFloatingOrAtTop;
   [(CarplayTableViewHeaderContentView *)self->_contentView setAnyCalendarsHiddenByFocus:v3];
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
   v25.receiver = self;
   v25.super_class = CarplayTableViewHeaderView;
@@ -34,14 +34,14 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CarplayTableViewHeaderView *)self superview];
-  [(CarplayTableViewHeaderView *)self convertRect:v13 toView:v6, v8, v10, v12];
+  superview = [(CarplayTableViewHeaderView *)self superview];
+  [(CarplayTableViewHeaderView *)self convertRect:superview toView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  if (a3)
+  if (floating)
   {
     v22 = 1;
   }
@@ -56,8 +56,8 @@
   }
 
   self->_headerFloatingOrAtTop = v22;
-  v23 = [(CarplayTableViewHeaderContentView *)self->_contentView separator];
-  [v23 setHidden:v22];
+  separator = [(CarplayTableViewHeaderContentView *)self->_contentView separator];
+  [separator setHidden:v22];
 
   v24 = self->_anyCalendarsHiddenByFocus && self->_headerFloatingOrAtTop;
   [(CarplayTableViewHeaderContentView *)self->_contentView setAnyCalendarsHiddenByFocus:v24];
@@ -70,41 +70,41 @@
   [(CarplayTableViewHeaderView *)&v32 layoutSubviews];
   if ((CalSystemSolariumEnabled() & 1) == 0)
   {
-    v3 = [(CarplayTableViewHeaderView *)self tableView];
-    v4 = [(CarplayTableViewHeaderView *)self backgroundView];
-    [v4 bounds];
+    tableView = [(CarplayTableViewHeaderView *)self tableView];
+    backgroundView = [(CarplayTableViewHeaderView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CarplayTableViewHeaderView *)self backgroundView];
-    [v3 convertRect:v13 fromView:{v6, v8, v10, v12}];
+    backgroundView2 = [(CarplayTableViewHeaderView *)self backgroundView];
+    [tableView convertRect:backgroundView2 fromView:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
 
-    v18 = [(CarplayTableViewHeaderView *)self tableView];
-    [v18 bounds];
+    tableView2 = [(CarplayTableViewHeaderView *)self tableView];
+    [tableView2 bounds];
     Width = CGRectGetWidth(v33);
 
-    v20 = [(CarplayTableViewHeaderView *)self backgroundView];
-    v21 = [v20 superview];
-    v22 = [(CarplayTableViewHeaderView *)self tableView];
-    [v21 convertRect:v22 fromView:{0.0, v15, Width, v17}];
+    backgroundView3 = [(CarplayTableViewHeaderView *)self backgroundView];
+    superview = [backgroundView3 superview];
+    tableView3 = [(CarplayTableViewHeaderView *)self tableView];
+    [superview convertRect:tableView3 fromView:{0.0, v15, Width, v17}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(CarplayTableViewHeaderView *)self backgroundView];
-    [v31 setFrame:{v24, v26, v28, v30}];
+    backgroundView4 = [(CarplayTableViewHeaderView *)self backgroundView];
+    [backgroundView4 setFrame:{v24, v26, v28, v30}];
   }
 }
 
-- (CarplayTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (CarplayTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = CarplayTableViewHeaderView;
-  v3 = [(CarplayTableViewHeaderView *)&v16 initWithReuseIdentifier:a3];
+  v3 = [(CarplayTableViewHeaderView *)&v16 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -118,8 +118,8 @@
     if (CalSystemSolariumEnabled())
     {
       v7 = +[UIColor clearColor];
-      v8 = [(CarplayTableViewHeaderView *)v3 backgroundView];
-      [v8 setBackgroundColor:v7];
+      backgroundView = [(CarplayTableViewHeaderView *)v3 backgroundView];
+      [backgroundView setBackgroundColor:v7];
 
       v9 = +[UIColor clearColor];
       [(CarplayTableViewHeaderContentView *)v3->_contentView setBackgroundColor:v9];

@@ -1,13 +1,13 @@
 @interface CDOpensAppIntentDispatcherProvider
-+ (id)dispatcherWithRequestTypeData:(id)a3 error:(id *)a4;
++ (id)dispatcherWithRequestTypeData:(id)data error:(id *)error;
 - (_TtC10companiond34CDOpensAppIntentDispatcherProvider)init;
 @end
 
 @implementation CDOpensAppIntentDispatcherProvider
 
-+ (id)dispatcherWithRequestTypeData:(id)a3 error:(id *)a4
++ (id)dispatcherWithRequestTypeData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 

@@ -1,9 +1,9 @@
 @interface SCATModernMenuAutoscrollSheet
-- (BOOL)shouldUpdateMenuItem:(id)a3;
+- (BOOL)shouldUpdateMenuItem:(id)item;
 - (id)makeMenuItemsIfNeeded;
 - (void)dealloc;
-- (void)menuItemWasActivated:(id)a3;
-- (void)sheetWillDisappear:(BOOL)a3;
+- (void)menuItemWasActivated:(id)activated;
+- (void)sheetWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SCATModernMenuAutoscrollSheet
@@ -11,11 +11,11 @@
 - (void)dealloc
 {
   v3 = +[SCATScannerManager sharedManager];
-  v4 = [v3 autoscroller];
+  autoscroller = [v3 autoscroller];
 
-  if ([v4 isAutoscrolling])
+  if ([autoscroller isAutoscrolling])
   {
-    [v4 stop];
+    [autoscroller stop];
   }
 
   v5.receiver = self;
@@ -48,36 +48,36 @@
   return v3;
 }
 
-- (void)sheetWillDisappear:(BOOL)a3
+- (void)sheetWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SCATModernMenuAutoscrollSheet;
-  [(SCATModernMenuSheet *)&v6 sheetWillDisappear:a3];
+  [(SCATModernMenuSheet *)&v6 sheetWillDisappear:disappear];
   v3 = +[SCATScannerManager sharedManager];
-  v4 = [v3 autoscroller];
+  autoscroller = [v3 autoscroller];
 
-  if ([v4 isAutoscrolling])
+  if ([autoscroller isAutoscrolling])
   {
-    [v4 stop];
+    [autoscroller stop];
   }
 
-  [v4 setScrollElement:0];
+  [autoscroller setScrollElement:0];
   v5 = +[HNDAccessibilityManager sharedManager];
   [v5 refreshElements];
 }
 
-- (BOOL)shouldUpdateMenuItem:(id)a3
+- (BOOL)shouldUpdateMenuItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if ([v4 isEqualToString:@"autoscroll_pause"])
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  if ([identifier isEqualToString:@"autoscroll_pause"])
   {
     v5 = +[SCATScannerManager sharedManager];
-    v6 = [v5 autoscroller];
+    autoscroller = [v5 autoscroller];
 
-    v7 = [v6 isAutoscrolling];
-    v8 = v7 == 0;
-    if (v7)
+    isAutoscrolling = [autoscroller isAutoscrolling];
+    v8 = isAutoscrolling == 0;
+    if (isAutoscrolling)
     {
       v9 = @"PAUSE";
     }
@@ -98,66 +98,66 @@
     }
 
     v11 = sub_100042B24(v9);
-    [v3 setTitle:v11];
+    [itemCopy setTitle:v11];
 
-    [v3 setImageName:v10];
+    [itemCopy setImageName:v10];
   }
 
   return 1;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"autoscroll_pause"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"autoscroll_pause"])
   {
     v6 = +[SCATScannerManager sharedManager];
-    v7 = [v6 autoscroller];
+    autoscroller = [v6 autoscroller];
 
-    if ([v7 isAutoscrolling])
+    if ([autoscroller isAutoscrolling])
     {
-      [v7 pause];
+      [autoscroller pause];
     }
 
     else
     {
-      [v7 resume];
+      [autoscroller resume];
     }
   }
 
   else
   {
-    if ([v5 isEqualToString:@"autoscroll_increaseSpeed"])
+    if ([identifier isEqualToString:@"autoscroll_increaseSpeed"])
     {
       v8 = +[SCATScannerManager sharedManager];
-      v9 = [v8 autoscroller];
+      autoscroller2 = [v8 autoscroller];
 
-      [v9 increaseAutoscrollSpeed];
+      [autoscroller2 increaseAutoscrollSpeed];
     }
 
-    else if ([v5 isEqualToString:@"autoscroll_decreaseSpeed"])
+    else if ([identifier isEqualToString:@"autoscroll_decreaseSpeed"])
     {
       v10 = +[SCATScannerManager sharedManager];
-      v9 = [v10 autoscroller];
+      autoscroller2 = [v10 autoscroller];
 
-      [v9 decreaseAutoscrollSpeed];
+      [autoscroller2 decreaseAutoscrollSpeed];
     }
 
     else
     {
-      if (![v5 isEqualToString:@"autoscroll_scrollToTop"])
+      if (![identifier isEqualToString:@"autoscroll_scrollToTop"])
       {
         v12.receiver = self;
         v12.super_class = SCATModernMenuAutoscrollSheet;
-        [(SCATModernMenuSheet *)&v12 menuItemWasActivated:v4];
+        [(SCATModernMenuSheet *)&v12 menuItemWasActivated:activatedCopy];
         goto LABEL_13;
       }
 
       v11 = +[SCATScannerManager sharedManager];
-      v9 = [v11 autoscroller];
+      autoscroller2 = [v11 autoscroller];
 
-      [v9 scrollToTop];
+      [autoscroller2 scrollToTop];
     }
   }
 

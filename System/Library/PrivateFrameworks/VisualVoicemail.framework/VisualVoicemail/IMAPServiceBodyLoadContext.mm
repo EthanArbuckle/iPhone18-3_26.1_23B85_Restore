@@ -1,19 +1,19 @@
 @interface IMAPServiceBodyLoadContext
 - (BOOL)loadHasStarted;
-- (IMAPServiceBodyLoadContext)initWithMambaID:(const char *)a3;
-- (id)parseWithDelegate:(id)a3;
+- (IMAPServiceBodyLoadContext)initWithMambaID:(const char *)d;
+- (id)parseWithDelegate:(id)delegate;
 - (unsigned)currentOffset;
 - (unsigned)expectedLength;
-- (void)_postNotification:(id)a3 withLengthNumber:(id)a4;
+- (void)_postNotification:(id)notification withLengthNumber:(id)number;
 - (void)cleanUpErroredFile;
 - (void)dealloc;
-- (void)setExpectedLength:(unsigned int)a3;
+- (void)setExpectedLength:(unsigned int)length;
 - (void)writeDataIfNeeded;
 @end
 
 @implementation IMAPServiceBodyLoadContext
 
-- (IMAPServiceBodyLoadContext)initWithMambaID:(const char *)a3
+- (IMAPServiceBodyLoadContext)initWithMambaID:(const char *)d
 {
   v11.receiver = self;
   v11.super_class = IMAPServiceBodyLoadContext;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mambaID = a3;
+    v4->mambaID = d;
     v6 = sub_100015F94();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -56,7 +56,7 @@
     v11 = 2112;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v5 = v12;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p deleted", buf, 0x2Au);
   }
@@ -77,15 +77,15 @@
     v6 = WeakRetained;
     if (recordLibraryId == 0x7FFFFFFF)
     {
-      v7 = [WeakRetained accountDir];
-      v9 = sub_1000856A8(v7, v8);
-      v10 = [v9 path];
+      accountDir = [WeakRetained accountDir];
+      v9 = sub_1000856A8(accountDir, v8);
+      path = [v9 path];
     }
 
     else
     {
-      v11 = [WeakRetained getAccountStore];
-      v12 = sub_1000931E8(v11, self->_recordLibraryId);
+      getAccountStore = [WeakRetained getAccountStore];
+      v12 = sub_1000931E8(getAccountStore, self->_recordLibraryId);
 
       if (!v12)
       {
@@ -95,15 +95,15 @@ LABEL_8:
       }
 
       v13 = objc_loadWeakRetained(&self->_service);
-      v14 = [v13 getAccountStore];
-      v10 = sub_100092DDC(v14, v12);
+      getAccountStore2 = [v13 getAccountStore];
+      path = sub_100092DDC(getAccountStore2, v12);
 
       CFRelease(v12);
     }
 
-    if (v10)
+    if (path)
     {
-      unlink([v10 fileSystemRepresentation]);
+      unlink([path fileSystemRepresentation]);
     }
 
     goto LABEL_8;
@@ -115,9 +115,9 @@ LABEL_8:
   v3 = objc_autoreleasePoolPush();
   if ((self->_fd & 0x80000000) == 0)
   {
-    v4 = [(MFProgressiveMimeParser *)self->_parser currentPart];
-    v5 = v4;
-    if (!v4 || (v6 = [v4 range], v8 = v7, lastOffset = self->_lastOffset, v7 <= lastOffset))
+    currentPart = [(MFProgressiveMimeParser *)self->_parser currentPart];
+    v5 = currentPart;
+    if (!currentPart || (v6 = [currentPart range], v8 = v7, lastOffset = self->_lastOffset, v7 <= lastOffset))
     {
 LABEL_24:
 
@@ -128,19 +128,19 @@ LABEL_24:
     if (*(self + 64))
     {
       v26 = v7 - lastOffset;
-      v15 = [(MFProgressiveMimeParser *)self->_parser data];
-      v16 = [v15 mf_decodeBase64InRange:&v25];
+      data = [(MFProgressiveMimeParser *)self->_parser data];
+      v16 = [data mf_decodeBase64InRange:&v25];
 
       if (v26)
       {
-        v12 = [v16 bytes];
+        bytes = [v16 bytes];
         v14 = v26;
         v13 = [v16 length];
       }
 
       else
       {
-        v12 = 0;
+        bytes = 0;
         v13 = 0;
         v14 = 0;
       }
@@ -153,8 +153,8 @@ LABEL_24:
 
     else
     {
-      v11 = [(MFProgressiveMimeParser *)self->_parser data];
-      v12 = &v10[[v11 bytes] + self->_lastOffset];
+      data2 = [(MFProgressiveMimeParser *)self->_parser data];
+      bytes = &v10[[data2 bytes] + self->_lastOffset];
 
       v13 = (v8 - self->_lastOffset);
       v14 = v13;
@@ -194,13 +194,13 @@ LABEL_12:
       }
     }
 
-    if (write(self->_fd, v12, v13) < 0)
+    if (write(self->_fd, bytes, v13) < 0)
     {
       [(IMAPServiceBodyLoadContext *)self cleanUpErroredFile];
       v22 = +[MFActivityMonitor currentTracebleMonitor];
-      v23 = [v22 error];
+      error = [v22 error];
 
-      if (!v23)
+      if (!error)
       {
         v24 = [NSError errorWithDomain:kVVErrorDomain code:1010 localizedDescription:@"Unable to write to file."];
         [v22 setError:v24];
@@ -216,14 +216,14 @@ LABEL_25:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_postNotification:(id)a3 withLengthNumber:(id)a4
+- (void)_postNotification:(id)notification withLengthNumber:(id)number
 {
-  v9 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_notificationDict setObject:v6 forKey:@"VVCurrentDataLength"];
+  notificationCopy = notification;
+  numberCopy = number;
+  [(NSMutableDictionary *)self->_notificationDict setObject:numberCopy forKey:@"VVCurrentDataLength"];
   v7 = +[NSNotificationCenter defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  [v7 postNotificationName:v9 object:WeakRetained userInfo:self->_notificationDict];
+  [v7 postNotificationName:notificationCopy object:WeakRetained userInfo:self->_notificationDict];
 }
 
 - (BOOL)loadHasStarted
@@ -234,10 +234,10 @@ LABEL_25:
   return v3;
 }
 
-- (void)setExpectedLength:(unsigned int)a3
+- (void)setExpectedLength:(unsigned int)length
 {
   [(IMAPServiceBodyLoadContext *)self mf_lock];
-  self->_expectedLength = a3;
+  self->_expectedLength = length;
 
   [(IMAPServiceBodyLoadContext *)self mf_unlock];
 }
@@ -258,9 +258,9 @@ LABEL_25:
   return lengthWritten;
 }
 
-- (id)parseWithDelegate:(id)a3
+- (id)parseWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (!self->_parser && self->_headersDict && [(NSMutableData *)self->_bodyData length])
   {
     v8 = [MFProgressiveMimeParser alloc];
@@ -271,7 +271,7 @@ LABEL_25:
     parser = self->_parser;
     self->_parser = v12;
 
-    [(MFProgressiveMimeParser *)self->_parser setDelegate:v4];
+    [(MFProgressiveMimeParser *)self->_parser setDelegate:delegateCopy];
     [(MFProgressiveMimeParser *)self->_parser setContext:self];
     [(MFProgressiveMimeParser *)self->_parser start];
   }

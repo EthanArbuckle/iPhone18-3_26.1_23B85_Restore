@@ -1,31 +1,31 @@
 @interface WFNetworkScanRecord
-- (BOOL)_isEqualToHotspotDevice:(id)a3;
-- (BOOL)_isEqualToNetwork:(id)a3;
+- (BOOL)_isEqualToHotspotDevice:(id)device;
+- (BOOL)_isEqualToNetwork:(id)network;
 - (BOOL)iOSHotspot;
 - (BOOL)isCloudSyncable;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentRecord:(id)a3;
-- (BOOL)isNetworkSecurityModeMatch:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentRecord:(id)record;
+- (BOOL)isNetworkSecurityModeMatch:(int64_t)match;
 - (BOOL)shouldShowInKnownNetworkList;
 - (BOOL)shouldShowInMyNetworkList;
 - (BOOL)supportsJoinFailureDiagnostics;
 - (BOOL)supportsWiFiHealth;
 - (NSString)description;
 - (WFNetworkScanRecord)init;
-- (WFNetworkScanRecord)initWithCoreWiFiProfile:(id)a3;
-- (WFNetworkScanRecord)initWithNetworkRef:(__WiFiNetwork *)a3;
-- (WFNetworkScanRecord)initWithScanResults:(id)a3;
+- (WFNetworkScanRecord)initWithCoreWiFiProfile:(id)profile;
+- (WFNetworkScanRecord)initWithNetworkRef:(__WiFiNetwork *)ref;
+- (WFNetworkScanRecord)initWithScanResults:(id)results;
 - (id)configurationIssues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)securityIssue;
 - (id)subtitle;
 - (id)title;
 - (int64_t)carPlayType;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)type;
 - (unint64_t)hash;
 - (unint64_t)signalBars;
-- (void)populatePrivateAddressConfig:(id)a3;
+- (void)populatePrivateAddressConfig:(id)config;
 @end
 
 @implementation WFNetworkScanRecord
@@ -36,7 +36,7 @@
   objc_exception_throw(v2);
 }
 
-- (WFNetworkScanRecord)initWithCoreWiFiProfile:(id)a3
+- (WFNetworkScanRecord)initWithCoreWiFiProfile:(id)profile
 {
   v4 = WiFiNetworkCreateFromCoreWiFiNetworkProfile();
   v5 = v4;
@@ -46,10 +46,10 @@
 
 - (BOOL)iOSHotspot
 {
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  v4 = [v3 NANServiceID];
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  nANServiceID = [matchingKnownNetworkProfile NANServiceID];
 
-  return v4 || self->_iOSHotspot;
+  return nANServiceID || self->_iOSHotspot;
 }
 
 - (int64_t)carPlayType
@@ -59,18 +59,18 @@
     return 0;
   }
 
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  v4 = [v3 lastJoinedByUserAt];
-  if (v4)
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  lastJoinedByUserAt = [matchingKnownNetworkProfile lastJoinedByUserAt];
+  if (lastJoinedByUserAt)
   {
 
     return 2;
   }
 
-  v6 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  v7 = [v6 payloadUUID];
+  matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  payloadUUID = [matchingKnownNetworkProfile2 payloadUUID];
 
-  if (v7)
+  if (payloadUUID)
   {
     return 2;
   }
@@ -98,13 +98,13 @@
   return 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFNetworkScanRecord *)self _isEqualToHotspotDevice:v4];
+    v5 = [(WFNetworkScanRecord *)self _isEqualToHotspotDevice:equalCopy];
   }
 
   else
@@ -116,7 +116,7 @@
       goto LABEL_7;
     }
 
-    v5 = [(WFNetworkScanRecord *)self _isEqualToNetwork:v4];
+    v5 = [(WFNetworkScanRecord *)self _isEqualToNetwork:equalCopy];
   }
 
   v6 = v5;
@@ -125,45 +125,45 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isEqualToHotspotDevice:(id)a3
+- (BOOL)_isEqualToHotspotDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(WFNetworkScanRecord *)self ssid];
-  v6 = [v4 ssid];
+  deviceCopy = device;
+  ssid = [(WFNetworkScanRecord *)self ssid];
+  ssid2 = [deviceCopy ssid];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(deviceCopy) = [ssid isEqualToString:ssid2];
+  return deviceCopy;
 }
 
-- (BOOL)_isEqualToNetwork:(id)a3
+- (BOOL)_isEqualToNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(WFNetworkScanRecord *)self ssid];
-  v6 = [v4 ssid];
-  if (![v5 isEqualToString:v6] || !-[WFNetworkScanRecord isNetworkSecurityModeMatch:](self, "isNetworkSecurityModeMatch:", objc_msgSend(v4, "securityModeExt")))
+  networkCopy = network;
+  ssid = [(WFNetworkScanRecord *)self ssid];
+  ssid2 = [networkCopy ssid];
+  if (![ssid isEqualToString:ssid2] || !-[WFNetworkScanRecord isNetworkSecurityModeMatch:](self, "isNetworkSecurityModeMatch:", objc_msgSend(networkCopy, "securityModeExt")))
   {
 
     goto LABEL_9;
   }
 
-  v7 = [v4 isCarPlay];
-  v8 = [(WFNetworkScanRecord *)self isCarPlay];
+  isCarPlay = [networkCopy isCarPlay];
+  isCarPlay2 = [(WFNetworkScanRecord *)self isCarPlay];
 
-  if (v7 != v8)
+  if (isCarPlay != isCarPlay2)
   {
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
   }
 
-  v9 = [(WFNetworkScanRecord *)self randomMACAddress];
-  if (v9 || ([v4 randomMACAddress], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  randomMACAddress = [(WFNetworkScanRecord *)self randomMACAddress];
+  if (randomMACAddress || ([networkCopy randomMACAddress], (ssid2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = [(WFNetworkScanRecord *)self randomMACAddress];
-    v11 = [v4 randomMACAddress];
-    v12 = [v10 isEqualToString:v11];
+    randomMACAddress2 = [(WFNetworkScanRecord *)self randomMACAddress];
+    randomMACAddress3 = [networkCopy randomMACAddress];
+    v12 = [randomMACAddress2 isEqualToString:randomMACAddress3];
 
-    if (v9)
+    if (randomMACAddress)
     {
       goto LABEL_13;
     }
@@ -175,8 +175,8 @@ LABEL_9:
   }
 
 LABEL_13:
-  v15 = [(WFNetworkScanRecord *)self privateAddressMode];
-  if (v15 == [v4 privateAddressMode])
+  privateAddressMode = [(WFNetworkScanRecord *)self privateAddressMode];
+  if (privateAddressMode == [networkCopy privateAddressMode])
   {
     v13 = v12;
   }
@@ -193,11 +193,11 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(WFNetworkScanRecord *)self ssid];
-  v4 = [v3 hash];
-  v5 = [(WFNetworkScanRecord *)self securityMode];
+  ssid = [(WFNetworkScanRecord *)self ssid];
+  v4 = [ssid hash];
+  securityMode = [(WFNetworkScanRecord *)self securityMode];
 
-  return v5 ^ v4;
+  return securityMode ^ v4;
 }
 
 - (NSString)description
@@ -205,14 +205,14 @@ LABEL_10:
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFNetworkScanRecord *)self ssid];
-  v7 = [(WFNetworkScanRecord *)self bssid];
-  v8 = [(WFNetworkScanRecord *)self rssi];
-  v9 = [(WFNetworkScanRecord *)self isSecure];
-  v10 = [(WFNetworkScanRecord *)self isEnterprise];
+  ssid = [(WFNetworkScanRecord *)self ssid];
+  bssid = [(WFNetworkScanRecord *)self bssid];
+  rssi = [(WFNetworkScanRecord *)self rssi];
+  isSecure = [(WFNetworkScanRecord *)self isSecure];
+  isEnterprise = [(WFNetworkScanRecord *)self isEnterprise];
   v11 = WFStringFromWFSecurityMode([(WFNetworkScanRecord *)self securityMode]);
   v12 = WFStringFromWFSecurityModeExt([(WFNetworkScanRecord *)self securityModeExt]);
-  v13 = [v3 stringWithFormat:@"<%@ : %p ssid='%@' bssid='%@' rssi='%ld' secured=%d eap=%d mode='%@' modeExt=[%@]", v5, self, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@ : %p ssid='%@' bssid='%@' rssi='%ld' secured=%d eap=%d mode='%@' modeExt=[%@]", v5, self, ssid, bssid, rssi, isSecure, isEnterprise, v11, v12];
 
   if ([(WFNetworkScanRecord *)self obsoleteNetworkCipherType])
   {
@@ -223,9 +223,9 @@ LABEL_10:
   [v13 appendFormat:@" HS20=%d", -[WFNetworkScanRecord isHotspot20](self, "isHotspot20")];
   if ([(WFNetworkScanRecord *)self isCarPlay])
   {
-    v14 = [(WFNetworkScanRecord *)self carPlayType];
+    carPlayType = [(WFNetworkScanRecord *)self carPlayType];
     v15 = @"CarPlayUserConfigured";
-    if (v14 == 1)
+    if (carPlayType == 1)
     {
       v15 = @"CarPlayOnly";
     }
@@ -235,9 +235,9 @@ LABEL_10:
 
   if ([(WFNetworkScanRecord *)self isUnconfiguredAccessory])
   {
-    v16 = [(WFNetworkScanRecord *)self unconfiguredAccessoryType];
-    v17 = [(WFNetworkScanRecord *)self unconfiguredDeviceName];
-    [v13 appendFormat:@" MFIType=%d MFIName='%@'", v16, v17];
+    unconfiguredAccessoryType = [(WFNetworkScanRecord *)self unconfiguredAccessoryType];
+    unconfiguredDeviceName = [(WFNetworkScanRecord *)self unconfiguredDeviceName];
+    [v13 appendFormat:@" MFIType=%d MFIName='%@'", unconfiguredAccessoryType, unconfiguredDeviceName];
   }
 
   if ([(WFNetworkScanRecord *)self iOSHotspot])
@@ -248,33 +248,33 @@ LABEL_10:
   [v13 appendFormat:@" popular=%d", -[WFNetworkScanRecord isPopular](self, "isPopular")];
   [v13 appendFormat:@" known=%d", -[WFNetworkScanRecord isKnown](self, "isKnown")];
   [v13 appendFormat:@" privateAddressState=%d", -[WFNetworkScanRecord isRandomMACAddressEnabled](self, "isRandomMACAddressEnabled")];
-  v18 = [(WFNetworkScanRecord *)self randomMACAddress];
+  randomMACAddress = [(WFNetworkScanRecord *)self randomMACAddress];
 
-  if (v18)
+  if (randomMACAddress)
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(WFNetworkScanRecord *)self randomMACAddress];
-    v21 = [v19 stringWithFormat:@" privateAddress='%@'", v20];
+    randomMACAddress2 = [(WFNetworkScanRecord *)self randomMACAddress];
+    v21 = [v19 stringWithFormat:@" privateAddress='%@'", randomMACAddress2];
     [v13 appendString:v21];
   }
 
-  v22 = [(WFNetworkScanRecord *)self privateAddressConfig];
+  privateAddressConfig = [(WFNetworkScanRecord *)self privateAddressConfig];
 
-  if (v22)
+  if (privateAddressConfig)
   {
     v23 = MEMORY[0x277CCACA8];
-    v24 = [(WFNetworkScanRecord *)self privateAddressConfig];
-    v25 = WFPrivateAddressConfigDisableReasonToString([v24 disabledReason]);
+    privateAddressConfig2 = [(WFNetworkScanRecord *)self privateAddressConfig];
+    v25 = WFPrivateAddressConfigDisableReasonToString([privateAddressConfig2 disabledReason]);
     v26 = [v23 stringWithFormat:@" privateAddressDisabled='%@'", v25];
     [v13 appendString:v26];
   }
 
-  v27 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
 
-  if (v27)
+  if (matchingKnownNetworkProfile)
   {
-    v28 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    [v13 appendFormat:@" matchedProfile=[%@]", v28];
+    matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    [v13 appendFormat:@" matchedProfile=[%@]", matchingKnownNetworkProfile2];
   }
 
   [v13 appendString:@">"];
@@ -282,21 +282,21 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isNetworkSecurityModeMatch:(int64_t)a3
+- (BOOL)isNetworkSecurityModeMatch:(int64_t)match
 {
-  if (a3 == 512)
+  if (match == 512)
   {
-    return [(WFNetworkScanRecord *)self securityModeExt]== a3;
+    return [(WFNetworkScanRecord *)self securityModeExt]== match;
   }
 
-  if (a3)
+  if (match)
   {
     if ([(WFNetworkScanRecord *)self securityModeExt]!= 512)
     {
-      return ([(WFNetworkScanRecord *)self securityModeExt]& a3) != 0;
+      return ([(WFNetworkScanRecord *)self securityModeExt]& match) != 0;
     }
 
-    return [(WFNetworkScanRecord *)self securityModeExt]== a3;
+    return [(WFNetworkScanRecord *)self securityModeExt]== match;
   }
 
   if (![(WFNetworkScanRecord *)self securityModeExt])
@@ -307,10 +307,10 @@ LABEL_10:
   return [(WFNetworkScanRecord *)self securityModeExt]== 2048;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (!v4)
+  compareCopy = compare;
+  if (!compareCopy)
   {
     goto LABEL_25;
   }
@@ -318,23 +318,23 @@ LABEL_10:
   if (!_os_feature_enabled_impl())
   {
 LABEL_17:
-    if ([v4 isPopular] && !-[WFNetworkScanRecord isPopular](self, "isPopular"))
+    if ([compareCopy isPopular] && !-[WFNetworkScanRecord isPopular](self, "isPopular"))
     {
       goto LABEL_22;
     }
 
-    if (([v4 isPopular] & 1) != 0 || !-[WFNetworkScanRecord isPopular](self, "isPopular"))
+    if (([compareCopy isPopular] & 1) != 0 || !-[WFNetworkScanRecord isPopular](self, "isPopular"))
     {
-      v29 = [v4 rssi];
-      if (v29 > [(WFNetworkScanRecord *)self rssi])
+      rssi = [compareCopy rssi];
+      if (rssi > [(WFNetworkScanRecord *)self rssi])
       {
         goto LABEL_22;
       }
 
-      v31 = [v4 rssi];
-      if (v31 > [(WFNetworkScanRecord *)self rssi])
+      rssi2 = [compareCopy rssi];
+      if (rssi2 > [(WFNetworkScanRecord *)self rssi])
       {
-        v30 = [v4 isEqual:self] ^ 1;
+        v30 = [compareCopy isEqual:self] ^ 1;
         goto LABEL_26;
       }
     }
@@ -344,46 +344,46 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v5 = [v4 scanResult];
-  v6 = [v5 channel];
-  if ([v6 is6GHz])
+  scanResult = [compareCopy scanResult];
+  channel = [scanResult channel];
+  if ([channel is6GHz])
   {
 
     goto LABEL_6;
   }
 
-  v7 = [(WFNetworkScanRecord *)self scanResult];
-  v8 = [v7 channel];
-  v9 = [v8 is6GHz];
+  scanResult2 = [(WFNetworkScanRecord *)self scanResult];
+  channel2 = [scanResult2 channel];
+  is6GHz = [channel2 is6GHz];
 
-  if ((v9 & 1) == 0)
+  if ((is6GHz & 1) == 0)
   {
 LABEL_6:
-    v10 = [v4 scanResult];
-    v11 = [v10 BSSID];
-    if (v11)
+    scanResult3 = [compareCopy scanResult];
+    bSSID = [scanResult3 BSSID];
+    if (bSSID)
     {
-      v12 = v11;
-      v13 = [(WFNetworkScanRecord *)self scanResult];
-      v14 = [v13 BSSID];
-      if (v14)
+      v12 = bSSID;
+      scanResult4 = [(WFNetworkScanRecord *)self scanResult];
+      bSSID2 = [scanResult4 BSSID];
+      if (bSSID2)
       {
-        v15 = v14;
-        v16 = [v4 scanResult];
-        v17 = [v16 BSSID];
-        v18 = [(WFNetworkScanRecord *)self scanResult];
-        v19 = [v18 BSSID];
-        if ([v17 isEqual:v19])
+        v15 = bSSID2;
+        scanResult5 = [compareCopy scanResult];
+        bSSID3 = [scanResult5 BSSID];
+        scanResult6 = [(WFNetworkScanRecord *)self scanResult];
+        bSSID4 = [scanResult6 BSSID];
+        if ([bSSID3 isEqual:bSSID4])
         {
-          v53 = v18;
-          v20 = v17;
-          v21 = v16;
-          v55 = [v4 scanResult];
-          v22 = [v55 SSID];
-          v52 = [(WFNetworkScanRecord *)self scanResult];
-          v56 = [v52 SSID];
-          v57 = v22;
-          if (v22 == v56)
+          v53 = scanResult6;
+          v20 = bSSID3;
+          v21 = scanResult5;
+          scanResult7 = [compareCopy scanResult];
+          sSID = [scanResult7 SSID];
+          scanResult8 = [(WFNetworkScanRecord *)self scanResult];
+          sSID2 = [scanResult8 SSID];
+          v57 = sSID;
+          if (sSID == sSID2)
           {
             v48 = v20;
             v49 = v21;
@@ -391,9 +391,9 @@ LABEL_6:
 
           else
           {
-            v50 = [v4 scanResult];
-            v23 = [v50 SSID];
-            if (!v23)
+            scanResult9 = [compareCopy scanResult];
+            sSID3 = [scanResult9 SSID];
+            if (!sSID3)
             {
               LOBYTE(v51) = 0;
               v25 = v21;
@@ -404,11 +404,11 @@ LABEL_43:
               goto LABEL_44;
             }
 
-            v47 = v23;
-            v46 = [(WFNetworkScanRecord *)self scanResult];
-            v24 = [v46 SSID];
+            v47 = sSID3;
+            scanResult10 = [(WFNetworkScanRecord *)self scanResult];
+            sSID4 = [scanResult10 SSID];
             v25 = v21;
-            if (!v24)
+            if (!sSID4)
             {
               LOBYTE(v51) = 0;
               v28 = v20;
@@ -418,13 +418,13 @@ LABEL_42:
               goto LABEL_43;
             }
 
-            v45 = v24;
-            v44 = [v4 scanResult];
-            v26 = [v44 SSID];
-            v42 = [(WFNetworkScanRecord *)self scanResult];
-            [v42 SSID];
-            v41 = v43 = v26;
-            v27 = [v26 isEqual:?];
+            v45 = sSID4;
+            scanResult11 = [compareCopy scanResult];
+            sSID5 = [scanResult11 SSID];
+            scanResult12 = [(WFNetworkScanRecord *)self scanResult];
+            [scanResult12 SSID];
+            v41 = v43 = sSID5;
+            v27 = [sSID5 isEqual:?];
             v28 = v20;
             if (!v27)
             {
@@ -440,21 +440,21 @@ LABEL_41:
           }
 
           v33 = v53;
-          v34 = [v4 scanResult];
-          v35 = [v34 channel];
-          if ([v35 is6GHz])
+          scanResult13 = [compareCopy scanResult];
+          channel3 = [scanResult13 channel];
+          if ([channel3 is6GHz])
           {
-            v40 = v35;
-            v54 = v34;
-            v36 = [(WFNetworkScanRecord *)self scanResult];
-            v37 = [v36 channel];
-            if ([v37 is6GHz])
+            v40 = channel3;
+            v54 = scanResult13;
+            scanResult14 = [(WFNetworkScanRecord *)self scanResult];
+            channel4 = [scanResult14 channel];
+            if ([channel4 is6GHz])
             {
-              v39 = [v4 scanResult];
-              if ([v39 hasNon6GHzRNRChannel])
+              scanResult15 = [compareCopy scanResult];
+              if ([scanResult15 hasNon6GHzRNRChannel])
               {
-                v38 = [(WFNetworkScanRecord *)self scanResult];
-                v51 = [v38 hasNon6GHzRNRChannel] ^ 1;
+                scanResult16 = [(WFNetworkScanRecord *)self scanResult];
+                v51 = [scanResult16 hasNon6GHzRNRChannel] ^ 1;
               }
 
               else
@@ -477,7 +477,7 @@ LABEL_41:
 
           v28 = v48;
           v25 = v49;
-          if (v57 == v56)
+          if (v57 == sSID2)
           {
 LABEL_44:
 
@@ -504,16 +504,16 @@ LABEL_26:
   return v30;
 }
 
-- (void)populatePrivateAddressConfig:(id)a3
+- (void)populatePrivateAddressConfig:(id)config
 {
-  v15 = a3;
-  v4 = [v15 objectForKey:*MEMORY[0x277D298B8]];
+  configCopy = config;
+  v4 = [configCopy objectForKey:*MEMORY[0x277D298B8]];
   self->_supervised = [v4 BOOLValue];
 
-  v5 = [v15 objectForKey:*MEMORY[0x277D298E8]];
+  v5 = [configCopy objectForKey:*MEMORY[0x277D298E8]];
   self->_privateMACDisabledByProfile = [v5 BOOLValue];
 
-  v6 = [v15 objectForKey:@"PRIVATE_MAC_ADDRESS"];
+  v6 = [configCopy objectForKey:@"PRIVATE_MAC_ADDRESS"];
   v7 = v6;
   if (v6)
   {
@@ -526,9 +526,9 @@ LABEL_26:
     }
 
     v11 = [v7 objectForKey:@"PRIVATE_MAC_ADDRESS_TYPE"];
-    v12 = [v11 intValue];
-    self->_privateAddressMode = v12;
-    self->_randomMACAddressEnabled = (v12 & 0xFFFFFFFE) == 2;
+    intValue = [v11 intValue];
+    self->_privateAddressMode = intValue;
+    self->_randomMACAddressEnabled = (intValue & 0xFFFFFFFE) == 2;
   }
 
   else
@@ -536,7 +536,7 @@ LABEL_26:
     self->_randomMACAddressEnabled = 0;
   }
 
-  v13 = [[WFPrivateAddressConfig alloc] initWithPrivateAddressConfigDictionary:v15 ssid:self->_ssid];
+  v13 = [[WFPrivateAddressConfig alloc] initWithPrivateAddressConfigDictionary:configCopy ssid:self->_ssid];
   privateAddressConfig = self->_privateAddressConfig;
   self->_privateAddressConfig = v13;
 }
@@ -554,12 +554,12 @@ LABEL_26:
 - (id)configurationIssues
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(WFNetworkScanRecord *)self securityIssue];
+  securityIssue = [(WFNetworkScanRecord *)self securityIssue];
 
-  if (v4)
+  if (securityIssue)
   {
-    v5 = [(WFNetworkScanRecord *)self securityIssue];
-    [v3 addObject:v5];
+    securityIssue2 = [(WFNetworkScanRecord *)self securityIssue];
+    [v3 addObject:securityIssue2];
   }
 
   if ([(WFNetworkScanRecord *)self isAmbiguousSSID])
@@ -639,63 +639,63 @@ LABEL_8:
 
 - (id)title
 {
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  v4 = [v3 displayFriendlyName];
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  displayFriendlyName = [matchingKnownNetworkProfile displayFriendlyName];
 
-  if (v4)
+  if (displayFriendlyName)
   {
-    v5 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    v6 = [v5 displayFriendlyName];
+    matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    displayFriendlyName2 = [matchingKnownNetworkProfile2 displayFriendlyName];
   }
 
-  else if (![(WFNetworkScanRecord *)self isUnconfiguredAccessory]|| ([(WFNetworkScanRecord *)self unconfiguredDeviceName], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  else if (![(WFNetworkScanRecord *)self isUnconfiguredAccessory]|| ([(WFNetworkScanRecord *)self unconfiguredDeviceName], (displayFriendlyName2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(WFNetworkScanRecord *)self ssid];
+    displayFriendlyName2 = [(WFNetworkScanRecord *)self ssid];
   }
 
-  return v6;
+  return displayFriendlyName2;
 }
 
 - (id)subtitle
 {
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  if (v3)
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  if (matchingKnownNetworkProfile)
   {
-    v4 = v3;
-    v5 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    v6 = [v5 displayedOperatorName];
+    v4 = matchingKnownNetworkProfile;
+    matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    displayedOperatorName = [matchingKnownNetworkProfile2 displayedOperatorName];
 
-    if (v6)
+    if (displayedOperatorName)
     {
-      v7 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-      v8 = [v7 displayedOperatorName];
+      matchingKnownNetworkProfile3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+      displayedOperatorName2 = [matchingKnownNetworkProfile3 displayedOperatorName];
 
       goto LABEL_9;
     }
   }
 
-  v9 = [(WFNetworkScanRecord *)self hotspot20Name];
+  hotspot20Name = [(WFNetworkScanRecord *)self hotspot20Name];
 
-  if (v9)
+  if (hotspot20Name)
   {
-    v10 = [(WFNetworkScanRecord *)self hotspot20Name];
+    hotspot20Name2 = [(WFNetworkScanRecord *)self hotspot20Name];
 LABEL_8:
-    v8 = v10;
+    displayedOperatorName2 = hotspot20Name2;
     goto LABEL_9;
   }
 
-  v11 = [(WFNetworkScanRecord *)self hotspotPluginLabel];
+  hotspotPluginLabel = [(WFNetworkScanRecord *)self hotspotPluginLabel];
 
-  if (v11)
+  if (hotspotPluginLabel)
   {
-    v10 = [(WFNetworkScanRecord *)self hotspotPluginLabel];
+    hotspot20Name2 = [(WFNetworkScanRecord *)self hotspotPluginLabel];
     goto LABEL_8;
   }
 
-  v8 = 0;
+  displayedOperatorName2 = 0;
 LABEL_9:
 
-  return v8;
+  return displayedOperatorName2;
 }
 
 - (unint64_t)signalBars
@@ -705,16 +705,16 @@ LABEL_9:
   return WFSignalBarsFromScaledRSSI();
 }
 
-- (BOOL)isEquivalentRecord:(id)a3
+- (BOOL)isEquivalentRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(WFNetworkScanRecord *)self ssid];
-    v7 = [v5 ssid];
-    if ([v6 isEqualToString:v7])
+    v5 = recordCopy;
+    ssid = [(WFNetworkScanRecord *)self ssid];
+    ssid2 = [v5 ssid];
+    if ([ssid isEqualToString:ssid2])
     {
       v8 = -[WFNetworkScanRecord isNetworkSecurityModeMatch:](self, "isNetworkSecurityModeMatch:", [v5 securityModeExt]);
     }
@@ -735,42 +735,42 @@ LABEL_9:
 
 - (BOOL)shouldShowInMyNetworkList
 {
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  if (v3)
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  if (matchingKnownNetworkProfile)
   {
-    v4 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    v5 = [v4 shouldShowInMyNetworkList];
+    matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    shouldShowInMyNetworkList = [matchingKnownNetworkProfile2 shouldShowInMyNetworkList];
   }
 
   else
   {
-    v5 = 0;
+    shouldShowInMyNetworkList = 0;
   }
 
-  return v5;
+  return shouldShowInMyNetworkList;
 }
 
 - (BOOL)shouldShowInKnownNetworkList
 {
-  v3 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-  if (v3)
+  matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+  if (matchingKnownNetworkProfile)
   {
-    v4 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    v5 = [v4 shouldShowInKnownNetworkList];
+    matchingKnownNetworkProfile2 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    shouldShowInKnownNetworkList = [matchingKnownNetworkProfile2 shouldShowInKnownNetworkList];
   }
 
   else
   {
-    v5 = 0;
+    shouldShowInKnownNetworkList = 0;
   }
 
-  return v5;
+  return shouldShowInKnownNetworkList;
 }
 
-- (WFNetworkScanRecord)initWithScanResults:(id)a3
+- (WFNetworkScanRecord)initWithScanResults:(id)results
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  resultsCopy = results;
   v67.receiver = self;
   v67.super_class = WFNetworkScanRecord;
   v9 = [(WFNetworkScanRecord *)&v67 init];
@@ -780,40 +780,40 @@ LABEL_9:
     goto LABEL_43;
   }
 
-  if (!v8)
+  if (!resultsCopy)
   {
-    v3 = WFLogForCategory(0);
+    scanRecord = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(1uLL);
-    if (WFCurrentLogLevel() && v3 && os_log_type_enabled(v3, v4))
+    if (WFCurrentLogLevel() && scanRecord && os_log_type_enabled(scanRecord, v4))
     {
       *buf = 136315138;
       v69 = "[WFNetworkScanRecord initWithScanResults:]";
-      _os_log_impl(&dword_273ECD000, v3, v4, "%s: nil scan result", buf, 0xCu);
+      _os_log_impl(&dword_273ECD000, scanRecord, v4, "%s: nil scan result", buf, 0xCu);
     }
 
     WFErrorLogCurrentCallStackThread(0, 3);
     goto LABEL_58;
   }
 
-  v10 = [v8 copy];
+  v10 = [resultsCopy copy];
   scanResult = v9->_scanResult;
   v9->_scanResult = v10;
 
-  v12 = [v8 networkName];
+  networkName = [resultsCopy networkName];
   ssid = v9->_ssid;
-  v9->_ssid = v12;
+  v9->_ssid = networkName;
 
   if (!v9->_ssid)
   {
-    v3 = WFLogForCategory(0);
+    scanRecord = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(1uLL);
-    if (WFCurrentLogLevel() && v3 && os_log_type_enabled(v3, v4))
+    if (WFCurrentLogLevel() && scanRecord && os_log_type_enabled(scanRecord, v4))
     {
       *buf = 136315394;
       v69 = "[WFNetworkScanRecord initWithScanResults:]";
       v70 = 2112;
-      v71 = v8;
-      _os_log_impl(&dword_273ECD000, v3, v4, "%s: nil SSID for %@", buf, 0x16u);
+      v71 = resultsCopy;
+      _os_log_impl(&dword_273ECD000, scanRecord, v4, "%s: nil SSID for %@", buf, 0x16u);
     }
 
 LABEL_58:
@@ -822,33 +822,33 @@ LABEL_58:
     goto LABEL_43;
   }
 
-  v9->_hidden = [v8 isHidden];
-  v14 = [v8 BSSID];
+  v9->_hidden = [resultsCopy isHidden];
+  bSSID = [resultsCopy BSSID];
   bssid = v9->_bssid;
-  v9->_bssid = v14;
+  v9->_bssid = bSSID;
 
-  v9->_requiresPassword = [v8 requiresPassword];
-  v9->_requiresUsername = [v8 requiresUsername];
-  v9->_iOSHotspot = [v8 isPersonalHotspot];
-  v9->_carPlay = [v8 isCarPlay];
-  v9->_adhoc = [v8 isIBSS];
-  v9->_enterprise = [v8 isEAP];
-  v9->_phyMode = [v8 phyMode];
-  v9->_ambiguousSSID = [v8 isSSIDAmbiguous];
+  v9->_requiresPassword = [resultsCopy requiresPassword];
+  v9->_requiresUsername = [resultsCopy requiresUsername];
+  v9->_iOSHotspot = [resultsCopy isPersonalHotspot];
+  v9->_carPlay = [resultsCopy isCarPlay];
+  v9->_adhoc = [resultsCopy isIBSS];
+  v9->_enterprise = [resultsCopy isEAP];
+  v9->_phyMode = [resultsCopy phyMode];
+  v9->_ambiguousSSID = [resultsCopy isSSIDAmbiguous];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v8 channel];
-  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "channel")}];
+  channel = [resultsCopy channel];
+  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(channel, "channel")}];
   channel = v9->_channel;
   v9->_channel = v18;
 
   v20 = MEMORY[0x277CCABB0];
-  v21 = [v8 channel];
-  v22 = [v20 numberWithUnsignedInt:{objc_msgSend(v21, "width")}];
+  channel2 = [resultsCopy channel];
+  v22 = [v20 numberWithUnsignedInt:{objc_msgSend(channel2, "width")}];
   channelWidth = v9->_channelWidth;
   v9->_channelWidth = v22;
 
-  v9->_hotspot20 = [v8 isPasspoint];
-  v3 = [v8 scanRecord];
+  v9->_hotspot20 = [resultsCopy isPasspoint];
+  scanRecord = [resultsCopy scanRecord];
   v24 = [OUTLINED_FUNCTION_3_0() isUnconfiguredDevice:?];
   v9->_unconfiguredAccessory = v24;
   if (v24)
@@ -903,21 +903,21 @@ LABEL_13:
 
   v9->_unconfiguredAccessoryType = 0;
 LABEL_14:
-  v5 = [v8 privateAddressConfigDictionary];
-  v31 = [v8 privateAddressInfoDictionary];
-  v4 = v31;
-  if (v31)
+  privateAddressConfigDictionary = [resultsCopy privateAddressConfigDictionary];
+  privateAddressInfoDictionary = [resultsCopy privateAddressInfoDictionary];
+  v4 = privateAddressInfoDictionary;
+  if (privateAddressInfoDictionary)
   {
-    v32 = [v31 objectForKey:*MEMORY[0x277D298B8]];
+    v32 = [privateAddressInfoDictionary objectForKey:*MEMORY[0x277D298B8]];
     v9->_supervised = [v32 BOOLValue];
 
     v33 = [v4 objectForKey:*MEMORY[0x277D298E8]];
     v9->_privateMACDisabledByProfile = [v33 BOOLValue];
   }
 
-  if (v5)
+  if (privateAddressConfigDictionary)
   {
-    v34 = [v5 objectForKey:@"PRIVATE_MAC_ADDRESS_VALUE"];
+    v34 = [privateAddressConfigDictionary objectForKey:@"PRIVATE_MAC_ADDRESS_VALUE"];
     if (v34)
     {
       v35 = WFConvertEthernetNetworkAddressToString(v34);
@@ -925,7 +925,7 @@ LABEL_14:
       v9->_randomMACAddress = v35;
     }
 
-    v37 = [objc_msgSend(v5 objectForKey:{@"PRIVATE_MAC_ADDRESS_TYPE", "intValue"}];
+    v37 = [objc_msgSend(privateAddressConfigDictionary objectForKey:{@"PRIVATE_MAC_ADDRESS_TYPE", "intValue"}];
     v9->_privateAddressMode = v37;
     v9->_randomMACAddressEnabled = v37 == 2;
   }
@@ -935,12 +935,12 @@ LABEL_14:
     v9->_randomMACAddressEnabled = 0;
   }
 
-  v9->_rssi = [v8 RSSI];
-  v38 = [v3 objectForKey:@"ScaledRSSI"];
+  v9->_rssi = [resultsCopy RSSI];
+  v38 = [scanRecord objectForKey:@"ScaledRSSI"];
 
   if (v38)
   {
-    v39 = [v3 objectForKey:@"ScaledRSSI"];
+    v39 = [scanRecord objectForKey:@"ScaledRSSI"];
     [v39 floatValue];
     v9->_scaledRSSI = v40;
   }
@@ -950,21 +950,21 @@ LABEL_14:
     v9->_scaledRSSI = WFScaleRSSI(v9->_rssi);
   }
 
-  v41 = WFSecurityModeFromScanDictionary(v3, &v9->_securityModeExt);
+  v41 = WFSecurityModeFromScanDictionary(scanRecord, &v9->_securityModeExt);
   v9->_securityMode = v41;
-  v42 = (v41 | 0x800) != 0x800 || [v8 WAPISubtype] == 2 || objc_msgSend(v8, "WAPISubtype") == 1;
+  v42 = (v41 | 0x800) != 0x800 || [resultsCopy WAPISubtype] == 2 || objc_msgSend(resultsCopy, "WAPISubtype") == 1;
   v9->_secure = v9->_iOSHotspot || v42;
-  v9->_obsoleteNetworkCipherType = WFDetermineNetworkCipherTypeObsolete(v3);
-  v9->_airPortBaseStation = [v8 airPortBaseStationModel] != 0;
+  v9->_obsoleteNetworkCipherType = WFDetermineNetworkCipherTypeObsolete(scanRecord);
+  v9->_airPortBaseStation = [resultsCopy airPortBaseStationModel] != 0;
   v9->_prominentDisplay = 1;
-  objc_storeStrong(&v9->_attributes, v3);
-  v43 = [v8 OSSpecificAttributes];
-  v44 = [v43 objectForKey:*MEMORY[0x277D29838]];
-  v45 = [v44 intValue];
+  objc_storeStrong(&v9->_attributes, scanRecord);
+  oSSpecificAttributes = [resultsCopy OSSpecificAttributes];
+  v44 = [oSSpecificAttributes objectForKey:*MEMORY[0x277D29838]];
+  intValue = [v44 intValue];
 
-  if (v45)
+  if (intValue)
   {
-    v46 = v45;
+    v46 = intValue;
     v47 = WFLogForCategory(0);
     v48 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v47)
@@ -972,9 +972,9 @@ LABEL_14:
       v49 = v47;
       if (os_log_type_enabled(v49, v48))
       {
-        v50 = [v8 networkName];
+        networkName2 = [resultsCopy networkName];
         *buf = 138412546;
-        v69 = v50;
+        v69 = networkName2;
         v70 = 2048;
         v71 = v46;
         _os_log_impl(&dword_273ECD000, v49, v48, "Popularity for network: %@ is %lu", buf, 0x16u);
@@ -992,8 +992,8 @@ LABEL_14:
   crowdsourceDescription = v9->_crowdsourceDescription;
   v9->_crowdsourceDescription = &v51->isa;
 
-  v53 = [v8 OSSpecificAttributes];
-  v54 = [v53 objectForKey:*MEMORY[0x277D29828]];
+  oSSpecificAttributes2 = [resultsCopy OSSpecificAttributes];
+  v54 = [oSSpecificAttributes2 objectForKey:*MEMORY[0x277D29828]];
   if ([v54 BOOLValue])
   {
     v9->_known = 1;
@@ -1001,12 +1001,12 @@ LABEL_14:
 
   else
   {
-    v55 = [v8 matchingKnownNetworkProfile];
-    v9->_known = v55 != 0;
+    matchingKnownNetworkProfile = [resultsCopy matchingKnownNetworkProfile];
+    v9->_known = matchingKnownNetworkProfile != 0;
   }
 
-  v56 = [v8 OSSpecificAttributes];
-  v57 = [v56 objectForKey:*MEMORY[0x277D29830]];
+  oSSpecificAttributes3 = [resultsCopy OSSpecificAttributes];
+  v57 = [oSSpecificAttributes3 objectForKey:*MEMORY[0x277D29830]];
   v9->_popular = [v57 BOOLValue];
 
   if (v9->_popular && v9->_enterprise)
@@ -1018,8 +1018,8 @@ LABEL_14:
   privateAddressConfig = v9->_privateAddressConfig;
   v9->_privateAddressConfig = v58;
 
-  v6 = [v8 matchingKnownNetworkProfile];
-  v60 = [v6 copy];
+  matchingKnownNetworkProfile2 = [resultsCopy matchingKnownNetworkProfile];
+  v60 = [matchingKnownNetworkProfile2 copy];
   matchingKnownNetworkProfile = v9->_matchingKnownNetworkProfile;
   v9->_matchingKnownNetworkProfile = v60;
 
@@ -1030,12 +1030,12 @@ LABEL_43:
   return v62;
 }
 
-- (WFNetworkScanRecord)initWithNetworkRef:(__WiFiNetwork *)a3
+- (WFNetworkScanRecord)initWithNetworkRef:(__WiFiNetwork *)ref
 {
   v64.receiver = self;
   v64.super_class = WFNetworkScanRecord;
   v4 = [(WFNetworkScanRecord *)&v64 init];
-  if (!v4 || !a3)
+  if (!v4 || !ref)
   {
     return v4;
   }
@@ -1247,7 +1247,7 @@ LABEL_22:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = [objc_alloc(objc_opt_class()) initWithNetworkRef:0];
   if (v7)
@@ -1290,58 +1290,58 @@ LABEL_22:
     [v7 setScaledRSSI:?];
     [(WFNetworkScanRecord *)self phyMode];
     [OUTLINED_FUNCTION_1_3() setPhyMode:?];
-    v8 = [(WFNetworkScanRecord *)self ssid];
-    OUTLINED_FUNCTION_6_1(v8, v9);
+    ssid = [(WFNetworkScanRecord *)self ssid];
+    OUTLINED_FUNCTION_6_1(ssid, v9);
     [OUTLINED_FUNCTION_0_4() setSsid:?];
 
-    v10 = [(WFNetworkScanRecord *)self bssid];
-    OUTLINED_FUNCTION_6_1(v10, v11);
+    bssid = [(WFNetworkScanRecord *)self bssid];
+    OUTLINED_FUNCTION_6_1(bssid, v11);
     [OUTLINED_FUNCTION_0_4() setBssid:?];
 
-    v12 = [(WFNetworkScanRecord *)self channel];
-    OUTLINED_FUNCTION_6_1(v12, v13);
+    channel = [(WFNetworkScanRecord *)self channel];
+    OUTLINED_FUNCTION_6_1(channel, v13);
     [OUTLINED_FUNCTION_0_4() setChannel:?];
 
-    v14 = [(WFNetworkScanRecord *)self eapProfile];
-    OUTLINED_FUNCTION_6_1(v14, v15);
+    eapProfile = [(WFNetworkScanRecord *)self eapProfile];
+    OUTLINED_FUNCTION_6_1(eapProfile, v15);
     [OUTLINED_FUNCTION_0_4() setEapProfile:?];
 
-    v16 = [(WFNetworkScanRecord *)self attributes];
-    OUTLINED_FUNCTION_6_1(v16, v17);
+    attributes = [(WFNetworkScanRecord *)self attributes];
+    OUTLINED_FUNCTION_6_1(attributes, v17);
     [OUTLINED_FUNCTION_0_4() setAttributes:?];
 
-    v18 = [(WFNetworkScanRecord *)self unconfiguredDeviceName];
-    OUTLINED_FUNCTION_6_1(v18, v19);
+    unconfiguredDeviceName = [(WFNetworkScanRecord *)self unconfiguredDeviceName];
+    OUTLINED_FUNCTION_6_1(unconfiguredDeviceName, v19);
     [OUTLINED_FUNCTION_0_4() setUnconfiguredDeviceName:?];
 
-    v20 = [(WFNetworkScanRecord *)self unconfiguredDeviceID];
-    OUTLINED_FUNCTION_6_1(v20, v21);
+    unconfiguredDeviceID = [(WFNetworkScanRecord *)self unconfiguredDeviceID];
+    OUTLINED_FUNCTION_6_1(unconfiguredDeviceID, v21);
     [OUTLINED_FUNCTION_0_4() setUnconfiguredDeviceID:?];
 
-    v22 = [(WFNetworkScanRecord *)self hotspotPluginLabel];
-    OUTLINED_FUNCTION_6_1(v22, v23);
+    hotspotPluginLabel = [(WFNetworkScanRecord *)self hotspotPluginLabel];
+    OUTLINED_FUNCTION_6_1(hotspotPluginLabel, v23);
     [OUTLINED_FUNCTION_0_4() setHotspotPluginLabel:?];
 
-    v24 = [(WFNetworkScanRecord *)self hotspot20Name];
-    OUTLINED_FUNCTION_6_1(v24, v25);
+    hotspot20Name = [(WFNetworkScanRecord *)self hotspot20Name];
+    OUTLINED_FUNCTION_6_1(hotspot20Name, v25);
     [OUTLINED_FUNCTION_0_4() setHotspot20Name:?];
 
     [(WFNetworkScanRecord *)self securityModeExt];
     [OUTLINED_FUNCTION_1_3() setSecurityModeExt:?];
-    v26 = [(WFNetworkScanRecord *)self randomMACAddress];
-    OUTLINED_FUNCTION_6_1(v26, v27);
+    randomMACAddress = [(WFNetworkScanRecord *)self randomMACAddress];
+    OUTLINED_FUNCTION_6_1(randomMACAddress, v27);
     [OUTLINED_FUNCTION_0_4() setRandomMACAddress:?];
 
     [(WFNetworkScanRecord *)self privateAddressMode];
     [OUTLINED_FUNCTION_1_3() setPrivateAddressMode:?];
     [(WFNetworkScanRecord *)self isRandomMACAddressEnabled];
     [OUTLINED_FUNCTION_1_3() setRandomMACAddressEnabled:?];
-    v28 = [(WFNetworkScanRecord *)self privateAddressConfig];
-    OUTLINED_FUNCTION_6_1(v28, v29);
+    privateAddressConfig = [(WFNetworkScanRecord *)self privateAddressConfig];
+    OUTLINED_FUNCTION_6_1(privateAddressConfig, v29);
     [OUTLINED_FUNCTION_0_4() setPrivateAddressConfig:?];
 
-    v30 = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
-    v31 = [v30 copyWithZone:a3];
+    matchingKnownNetworkProfile = [(WFNetworkScanRecord *)self matchingKnownNetworkProfile];
+    v31 = [matchingKnownNetworkProfile copyWithZone:zone];
     [v7 setMatchingKnownNetworkProfile:v31];
   }
 

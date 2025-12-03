@@ -1,15 +1,15 @@
 @interface AXRemoteViewServiceAdaptor
-+ (void)presentRemoteNearbyDevicesViewControllerWithPresentationHandler:(id)a3 dismissalHandler:(id)a4;
++ (void)presentRemoteNearbyDevicesViewControllerWithPresentationHandler:(id)handler dismissalHandler:(id)dismissalHandler;
 @end
 
 @implementation AXRemoteViewServiceAdaptor
 
-+ (void)presentRemoteNearbyDevicesViewControllerWithPresentationHandler:(id)a3 dismissalHandler:(id)a4
++ (void)presentRemoteNearbyDevicesViewControllerWithPresentationHandler:(id)handler dismissalHandler:(id)dismissalHandler
 {
-  v5 = a4;
-  v6 = a3;
+  dismissalHandlerCopy = dismissalHandler;
+  handlerCopy = handler;
   v7 = +[AXRemoteUIAlertManager sharedInstance];
-  [v7 presentRemoteUIAlertWithIdentifier:@"com.apple.AXRemoteViewService" viewControllerClassName:@"NearbyDevicesRemoteViewController" userInfo:MEMORY[0x277CBEC10] presentationHandler:v6 dismissalHandler:v5];
+  [v7 presentRemoteUIAlertWithIdentifier:@"com.apple.AXRemoteViewService" viewControllerClassName:@"NearbyDevicesRemoteViewController" userInfo:MEMORY[0x277CBEC10] presentationHandler:handlerCopy dismissalHandler:dismissalHandlerCopy];
 }
 
 @end

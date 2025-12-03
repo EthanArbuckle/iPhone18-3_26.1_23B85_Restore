@@ -1,24 +1,24 @@
 @interface _SBHStackConfigurationIconView
-+ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)a3;
++ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)type;
 - (BOOL)_cannotRemoveLastWidgetInWidgetSheet;
 - (BOOL)shouldShowCloseBox;
 - (id)_iconListView;
 - (id)_stackConfigurationViewController;
-- (void)_updateCloseBoxForAllIconsInListView:(id)a3 animated:(BOOL)a4;
-- (void)iconListView:(id)a3 didAddIconView:(id)a4;
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4;
+- (void)_updateCloseBoxForAllIconsInListView:(id)view animated:(BOOL)animated;
+- (void)iconListView:(id)view didAddIconView:(id)iconView;
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView;
 @end
 
 @implementation _SBHStackConfigurationIconView
 
-+ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)a3
++ (id)groupNameBaseForComponentBackgroundViewOfType:(int64_t)type
 {
   v6 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if ((a3 - 2) >= 2 && a3)
+    if ((type - 2) >= 2 && type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_5;
       }
@@ -29,16 +29,16 @@
 LABEL_19:
     v10 = v3;
     v11 = v4;
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____SBHStackConfigurationIconView;
     v6 = objc_msgSendSuper2(&v9, sel_groupNameBaseForComponentBackgroundViewOfType_);
 
     return v6;
   }
 
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
 LABEL_22:
       v6 = @"SBHStackConfigurationCloseBox";
@@ -46,7 +46,7 @@ LABEL_22:
       return v6;
     }
 
-    if (a3 != 7)
+    if (type != 7)
     {
 LABEL_5:
 
@@ -57,12 +57,12 @@ LABEL_5:
   }
 
   v8 = @"SBHStackConfigurationWidget";
-  if (a3 != 5)
+  if (type != 5)
   {
     v8 = 0;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v6 = @"SBHStackConfigurationWidget";
   }
@@ -75,21 +75,21 @@ LABEL_5:
   return v6;
 }
 
-- (void)iconListView:(id)a3 didAddIconView:(id)a4
+- (void)iconListView:(id)view didAddIconView:(id)iconView
 {
-  v5 = a3;
-  if (-[_SBHStackConfigurationIconView _cannotRemoveLastWidgetInWidgetSheet](self, "_cannotRemoveLastWidgetInWidgetSheet") && [v5 numberOfDisplayedIconViews] == 2)
+  viewCopy = view;
+  if (-[_SBHStackConfigurationIconView _cannotRemoveLastWidgetInWidgetSheet](self, "_cannotRemoveLastWidgetInWidgetSheet") && [viewCopy numberOfDisplayedIconViews] == 2)
   {
-    [(_SBHStackConfigurationIconView *)self _updateCloseBoxForAllIconsInListView:v5 animated:1];
+    [(_SBHStackConfigurationIconView *)self _updateCloseBoxForAllIconsInListView:viewCopy animated:1];
   }
 }
 
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView
 {
-  v5 = a3;
-  if (-[_SBHStackConfigurationIconView _cannotRemoveLastWidgetInWidgetSheet](self, "_cannotRemoveLastWidgetInWidgetSheet") && [v5 numberOfDisplayedIconViews] == 1)
+  viewCopy = view;
+  if (-[_SBHStackConfigurationIconView _cannotRemoveLastWidgetInWidgetSheet](self, "_cannotRemoveLastWidgetInWidgetSheet") && [viewCopy numberOfDisplayedIconViews] == 1)
   {
-    [(_SBHStackConfigurationIconView *)self _updateCloseBoxForAllIconsInListView:v5 animated:1];
+    [(_SBHStackConfigurationIconView *)self _updateCloseBoxForAllIconsInListView:viewCopy animated:1];
   }
 }
 
@@ -97,23 +97,23 @@ LABEL_5:
 {
   v14.receiver = self;
   v14.super_class = _SBHStackConfigurationIconView;
-  v3 = [(SBIconView *)&v14 shouldShowCloseBox];
-  v4 = [(_SBHStackConfigurationIconView *)self _iconListView];
-  v5 = [v4 model];
-  if ([v5 numberOfIcons] == 1)
+  shouldShowCloseBox = [(SBIconView *)&v14 shouldShowCloseBox];
+  _iconListView = [(_SBHStackConfigurationIconView *)self _iconListView];
+  model = [_iconListView model];
+  if ([model numberOfIcons] == 1)
   {
-    v6 = [(_SBHStackConfigurationIconView *)self _iconListView];
-    v7 = [v6 model];
-    v8 = [v7 firstIcon];
-    v9 = [(SBIconView *)self icon];
-    v10 = [v8 isEqual:v9];
+    _iconListView2 = [(_SBHStackConfigurationIconView *)self _iconListView];
+    model2 = [_iconListView2 model];
+    firstIcon = [model2 firstIcon];
+    icon = [(SBIconView *)self icon];
+    v10 = [firstIcon isEqual:icon];
 
-    v11 = (v10 ^ 1) & v3;
+    v11 = (v10 ^ 1) & shouldShowCloseBox;
   }
 
   else
   {
-    v11 = v3;
+    v11 = shouldShowCloseBox;
   }
 
   if ([(_SBHStackConfigurationIconView *)self _cannotRemoveLastWidgetInWidgetSheet])
@@ -123,7 +123,7 @@ LABEL_5:
 
   else
   {
-    v12 = v3;
+    v12 = shouldShowCloseBox;
   }
 
   return v12 & 1;
@@ -131,9 +131,9 @@ LABEL_5:
 
 - (id)_stackConfigurationViewController
 {
-  v2 = [(SBIconView *)self delegate];
+  delegate = [(SBIconView *)self delegate];
   v3 = objc_opt_self();
-  v4 = v2;
+  v4 = delegate;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -159,40 +159,40 @@ LABEL_5:
 
 - (id)_iconListView
 {
-  v2 = [(_SBHStackConfigurationIconView *)self _stackConfigurationViewController];
-  v3 = [v2 iconListView];
+  _stackConfigurationViewController = [(_SBHStackConfigurationIconView *)self _stackConfigurationViewController];
+  iconListView = [_stackConfigurationViewController iconListView];
 
-  return v3;
+  return iconListView;
 }
 
 - (BOOL)_cannotRemoveLastWidgetInWidgetSheet
 {
-  v2 = [(_SBHStackConfigurationIconView *)self _stackConfigurationViewController];
-  v3 = [v2 presenter];
+  _stackConfigurationViewController = [(_SBHStackConfigurationIconView *)self _stackConfigurationViewController];
+  presenter = [_stackConfigurationViewController presenter];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 cannotRemoveLastWidgetInWidgetSheet];
+    cannotRemoveLastWidgetInWidgetSheet = [presenter cannotRemoveLastWidgetInWidgetSheet];
   }
 
   else
   {
-    v4 = 0;
+    cannotRemoveLastWidgetInWidgetSheet = 0;
   }
 
-  return v4;
+  return cannotRemoveLastWidgetInWidgetSheet;
 }
 
-- (void)_updateCloseBoxForAllIconsInListView:(id)a3 animated:(BOOL)a4
+- (void)_updateCloseBoxForAllIconsInListView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 icons];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  icons = [viewCopy icons];
+  v7 = [icons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -204,17 +204,17 @@ LABEL_5:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(icons);
         }
 
-        v11 = [v5 displayedIconViewForIcon:*(*(&v12 + 1) + 8 * v10)];
-        [v11 _updateCloseBoxAnimated:v4];
+        v11 = [viewCopy displayedIconViewForIcon:*(*(&v12 + 1) + 8 * v10)];
+        [v11 _updateCloseBoxAnimated:animatedCopy];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [icons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

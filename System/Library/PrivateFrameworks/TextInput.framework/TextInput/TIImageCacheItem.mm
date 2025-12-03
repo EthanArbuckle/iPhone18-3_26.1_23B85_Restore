@@ -1,10 +1,10 @@
 @interface TIImageCacheItem
-+ (id)cacheItemWithSize:(CGSize)a3 format:(unsigned __int8)a4 formatColor:(CGColor *)a5 scale:(double)a6 data:(id)a7 dataReleaseHandler:(id)a8;
++ (id)cacheItemWithSize:(CGSize)size format:(unsigned __int8)format formatColor:(CGColor *)color scale:(double)scale data:(id)data dataReleaseHandler:(id)handler;
 - (CGSize)size;
-- (TIImageCacheItem)initWithCoder:(id)a3;
+- (TIImageCacheItem)initWithCoder:(id)coder;
 - (void)_callDataReleaseHandler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIImageCacheItem
@@ -18,36 +18,36 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696B098] valueWithBytes:&self->_size objCType:"{CGSize=dd}"];
-  [v6 encodeObject:v4 forKey:@"size"];
-  [v6 encodeDouble:@"scale" forKey:self->_scale];
-  [v6 encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeObject:v4 forKey:@"size"];
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
   if (self->_formatColor)
   {
-    [v6 encodeBool:1 forKey:@"hasFormatColor"];
+    [coderCopy encodeBool:1 forKey:@"hasFormatColor"];
     Components = CGColorGetComponents(self->_formatColor);
-    [v6 encodeDouble:@"formatColor_0" forKey:*Components];
-    [v6 encodeDouble:@"formatColor_1" forKey:Components[1]];
-    [v6 encodeDouble:@"formatColor_2" forKey:Components[2]];
-    [v6 encodeDouble:@"formatColor_3" forKey:Components[3]];
+    [coderCopy encodeDouble:@"formatColor_0" forKey:*Components];
+    [coderCopy encodeDouble:@"formatColor_1" forKey:Components[1]];
+    [coderCopy encodeDouble:@"formatColor_2" forKey:Components[2]];
+    [coderCopy encodeDouble:@"formatColor_3" forKey:Components[3]];
   }
 
-  [v6 encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
 }
 
-- (TIImageCacheItem)initWithCoder:(id)a3
+- (TIImageCacheItem)initWithCoder:(id)coder
 {
   components[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = TIImageCacheItem;
   v5 = [(TIImageCacheItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     v7 = v6;
     if (v6 && !strcmp([v6 objCType], "{CGSize=dd}"))
     {
@@ -59,25 +59,25 @@
       v5->_size = *MEMORY[0x1E695F060];
     }
 
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v5->_scale = v8;
-    v5->_format = [v4 decodeIntegerForKey:@"format"];
-    if ([v4 decodeBoolForKey:@"hasFormatColor"])
+    v5->_format = [coderCopy decodeIntegerForKey:@"format"];
+    if ([coderCopy decodeBoolForKey:@"hasFormatColor"])
     {
-      [v4 decodeDoubleForKey:@"formatColor_0"];
+      [coderCopy decodeDoubleForKey:@"formatColor_0"];
       components[0] = v9;
-      [v4 decodeDoubleForKey:@"formatColor_1"];
+      [coderCopy decodeDoubleForKey:@"formatColor_1"];
       components[1] = v10;
-      [v4 decodeDoubleForKey:@"formatColor_2"];
+      [coderCopy decodeDoubleForKey:@"formatColor_2"];
       components[2] = v11;
-      [v4 decodeDoubleForKey:@"formatColor_3"];
+      [coderCopy decodeDoubleForKey:@"formatColor_3"];
       components[3] = v12;
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       v5->_formatColor = CGColorCreate(DeviceRGB, components);
       CGColorSpaceRelease(DeviceRGB);
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v14;
   }
@@ -105,24 +105,24 @@
   [(TIImageCacheItem *)&v3 dealloc];
 }
 
-+ (id)cacheItemWithSize:(CGSize)a3 format:(unsigned __int8)a4 formatColor:(CGColor *)a5 scale:(double)a6 data:(id)a7 dataReleaseHandler:(id)a8
++ (id)cacheItemWithSize:(CGSize)size format:(unsigned __int8)format formatColor:(CGColor *)color scale:(double)scale data:(id)data dataReleaseHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v15 = a7;
-  v16 = a8;
-  v17 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  handlerCopy = handler;
+  v17 = objc_alloc_init(self);
   v17[6] = width;
   v17[7] = height;
-  *(v17 + 8) = a4;
-  v18 = CGColorRetain(a5);
-  v17[2] = a6;
+  *(v17 + 8) = format;
+  v18 = CGColorRetain(color);
+  v17[2] = scale;
   v19 = *(v17 + 4);
   *(v17 + 3) = v18;
-  *(v17 + 4) = v15;
-  v20 = v15;
+  *(v17 + 4) = dataCopy;
+  v20 = dataCopy;
 
-  v21 = [v16 copy];
+  v21 = [handlerCopy copy];
   v22 = *(v17 + 5);
   *(v17 + 5) = v21;
 

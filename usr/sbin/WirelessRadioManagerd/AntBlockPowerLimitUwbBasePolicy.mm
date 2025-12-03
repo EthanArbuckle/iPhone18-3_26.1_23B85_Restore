@@ -1,7 +1,7 @@
 @interface AntBlockPowerLimitUwbBasePolicy
 - (AntBlockPowerLimitUwbBasePolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
+- (void)extractPolicy:(id)policy;
 @end
 
 @implementation AntBlockPowerLimitUwbBasePolicy
@@ -16,28 +16,28 @@
   return result;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = AntBlockPowerLimitUwbBasePolicy;
-  v4 = a3;
-  [(AntBlockPowerLimitBasePolicy *)&v8 extractPolicy:v4];
-  v5 = [v4 objectForKey:{@"Uwb_Channel", v8.receiver, v8.super_class}];
-  v6 = [v5 integerValue];
-  v7 = [v4 objectForKey:@"Uwb_Ant_Bitmap"];
+  policyCopy = policy;
+  [(AntBlockPowerLimitBasePolicy *)&v8 extractPolicy:policyCopy];
+  v5 = [policyCopy objectForKey:{@"Uwb_Channel", v8.receiver, v8.super_class}];
+  integerValue = [v5 integerValue];
+  v7 = [policyCopy objectForKey:@"Uwb_Ant_Bitmap"];
 
-  -[AntBlockPowerLimitUwbBasePolicy setParameterUwbChannel:UwbAntBitmap:](self, "setParameterUwbChannel:UwbAntBitmap:", v6, [v7 integerValue]);
+  -[AntBlockPowerLimitUwbBasePolicy setParameterUwbChannel:UwbAntBitmap:](self, "setParameterUwbChannel:UwbAntBitmap:", integerValue, [v7 integerValue]);
 }
 
 - (id)constructXpcMessage
 {
   v6.receiver = self;
   v6.super_class = AntBlockPowerLimitUwbBasePolicy;
-  v3 = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
-  v4 = v3;
-  if (v3)
+  constructXpcMessage = [(AntBlockPowerLimitBasePolicy *)&v6 constructXpcMessage];
+  v4 = constructXpcMessage;
+  if (constructXpcMessage)
   {
-    xpc_dictionary_set_uint64(v3, "kWCMCellularSetAntBlocking_Policy_UwbChannel", self->_mUwbChannel);
+    xpc_dictionary_set_uint64(constructXpcMessage, "kWCMCellularSetAntBlocking_Policy_UwbChannel", self->_mUwbChannel);
     xpc_dictionary_set_uint64(v4, "kWCMCellularSetAntBlocking_Policy_UwbAntBitmap", self->_mUwbAntBitmap);
   }
 

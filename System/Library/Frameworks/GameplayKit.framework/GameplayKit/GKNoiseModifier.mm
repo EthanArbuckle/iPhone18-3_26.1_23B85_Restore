@@ -1,6 +1,6 @@
 @interface GKNoiseModifier
 - (GKNoiseModifier)init;
-- (GKNoiseModifier)initWithInputModuleCount:(unint64_t)a3;
+- (GKNoiseModifier)initWithInputModuleCount:(unint64_t)count;
 - (double)valueAt:(GKNoiseModifier *)self;
 - (id)cloneModule;
 - (int)requiredInputModuleCount;
@@ -21,14 +21,14 @@
   objc_exception_throw(v8);
 }
 
-- (GKNoiseModifier)initWithInputModuleCount:(unint64_t)a3
+- (GKNoiseModifier)initWithInputModuleCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = GKNoiseModifier;
   v4 = [(GKNoiseModifier *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
     inputModules = v4->_inputModules;
     v4->_inputModules = v5;
   }

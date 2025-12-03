@@ -1,16 +1,16 @@
 @interface _UICollectionViewListCellVisualProvider_tvOS
 - (id)accessoryManagerContainerView;
-- (void)configureFocusedFloatingContentView:(id)a3 useSidebarListStyle:(BOOL)a4;
+- (void)configureFocusedFloatingContentView:(id)view useSidebarListStyle:(BOOL)style;
 @end
 
 @implementation _UICollectionViewListCellVisualProvider_tvOS
 
 - (id)accessoryManagerContainerView
 {
-  v3 = [(UICollectionViewCell *)self->super._cell _focusedFloatingContentView];
-  v4 = [v3 contentView];
-  cell = v4;
-  if (!v4)
+  _focusedFloatingContentView = [(UICollectionViewCell *)self->super._cell _focusedFloatingContentView];
+  contentView = [_focusedFloatingContentView contentView];
+  cell = contentView;
+  if (!contentView)
   {
     cell = self->super._cell;
   }
@@ -20,30 +20,30 @@
   return cell;
 }
 
-- (void)configureFocusedFloatingContentView:(id)a3 useSidebarListStyle:(BOOL)a4
+- (void)configureFocusedFloatingContentView:(id)view useSidebarListStyle:(BOOL)style
 {
-  v15 = a3;
+  viewCopy = view;
   v6 = [_UIFocusAnimationConfiguration configurationWithStyle:2];
-  [v15 setFocusAnimationConfiguration:v6];
+  [viewCopy setFocusAnimationConfiguration:v6];
 
-  [v15 setBackgroundColor:0 forState:0];
-  [v15 setBackgroundColor:0 forState:2];
-  [v15 setRoundContentWhenDeselected:_UISolariumEnabled()];
-  [v15 setClipsContentToBounds:0];
-  [v15 setUnfocusedShadowVerticalOffset:10.0];
-  [v15 setContentMotionRotation:0.0 translation:{0.0, 0.0, 4.0}];
-  if (a4)
+  [viewCopy setBackgroundColor:0 forState:0];
+  [viewCopy setBackgroundColor:0 forState:2];
+  [viewCopy setRoundContentWhenDeselected:_UISolariumEnabled()];
+  [viewCopy setClipsContentToBounds:0];
+  [viewCopy setUnfocusedShadowVerticalOffset:10.0];
+  [viewCopy setContentMotionRotation:0.0 translation:{0.0, 0.0, 4.0}];
+  if (style)
   {
     v7 = [UIColor colorWithWhite:1.0 alpha:0.95];
-    [v15 setBackgroundColor:v7 forState:8];
+    [viewCopy setBackgroundColor:v7 forState:8];
 
     v8 = [UIColor colorWithWhite:1.0 alpha:0.95];
-    [v15 setBackgroundColor:v8 forState:1];
+    [viewCopy setBackgroundColor:v8 forState:1];
 
-    v9 = [v15 traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection = [viewCopy traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v10 == 2)
+    if (userInterfaceStyle == 2)
     {
       v11 = [UIColor colorWithRed:0.176470588 green:0.176470588 blue:0.176470588 alpha:0.4];
       v12 = 23;
@@ -55,22 +55,22 @@
       v12 = 24;
     }
 
-    [v15 setBackgroundColor:v11 forState:4];
-    [v15 setCompositingMode:v12];
-    [v15 setShadowExpansion:{30.0, 30.0}];
+    [viewCopy setBackgroundColor:v11 forState:4];
+    [viewCopy setCompositingMode:v12];
+    [viewCopy setShadowExpansion:{30.0, 30.0}];
   }
 
   else
   {
-    [v15 setBackgroundColor:0 forState:4];
-    [v15 setBackgroundColor:0 forState:8];
-    [v15 setBackgroundColor:0 forState:1];
-    [v15 setShadowExpansion:{45.0, 25.0}];
+    [viewCopy setBackgroundColor:0 forState:4];
+    [viewCopy setBackgroundColor:0 forState:8];
+    [viewCopy setBackgroundColor:0 forState:1];
+    [viewCopy setShadowExpansion:{45.0, 25.0}];
   }
 
-  v13 = [(UICollectionViewListCell *)self->super._cell _accessoryManager];
-  v14 = [(_UICollectionViewListCellVisualProvider_tvOS *)self accessoryManagerContainerView];
-  [v13 updateContainerView:v14];
+  _accessoryManager = [(UICollectionViewListCell *)self->super._cell _accessoryManager];
+  accessoryManagerContainerView = [(_UICollectionViewListCellVisualProvider_tvOS *)self accessoryManagerContainerView];
+  [_accessoryManager updateContainerView:accessoryManagerContainerView];
 }
 
 @end

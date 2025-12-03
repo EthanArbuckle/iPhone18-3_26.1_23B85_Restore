@@ -1,6 +1,6 @@
 @interface AVAssetPlaybackAssistant
 + (AVAssetPlaybackAssistant)assetPlaybackAssistantWithAsset:(AVAsset *)asset;
-- (AVAssetPlaybackAssistant)initWithAsset:(id)a3;
+- (AVAssetPlaybackAssistant)initWithAsset:(id)asset;
 - (id)_playbackConfigurationOptions;
 - (void)dealloc;
 - (void)loadPlaybackConfigurationOptionsWithCompletionHandler:(void *)completionHandler;
@@ -8,14 +8,14 @@
 
 @implementation AVAssetPlaybackAssistant
 
-- (AVAssetPlaybackAssistant)initWithAsset:(id)a3
+- (AVAssetPlaybackAssistant)initWithAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = AVAssetPlaybackAssistant;
   v4 = [(AVAssetPlaybackAssistant *)&v6 init];
   if (v4)
   {
-    v4->_asset = a3;
+    v4->_asset = asset;
   }
 
   return v4;
@@ -39,7 +39,7 @@
 {
   v115 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v61 = self;
+  selfCopy = self;
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v107 = 0u, v108 = 0u, v105 = 0u, v106 = 0u, obj = -[AVAsset variants](self->_asset, "variants"), (v81 = [obj countByEnumeratingWithState:&v105 objects:v114 count:16]) != 0))
   {
     v3 = 0;
@@ -156,7 +156,7 @@
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v62 = [(AVAsset *)v61->_asset tracksWithMediaType:@"vide"];
+  v62 = [(AVAsset *)selfCopy->_asset tracksWithMediaType:@"vide"];
   v64 = [(NSArray *)v62 countByEnumeratingWithState:&v93 objects:v111 count:16];
   v24 = 0;
   if (v64)
@@ -184,13 +184,13 @@
         }
 
         v65 = v27;
-        v28 = [*(*(&v93 + 1) + 8 * v27) formatDescriptions];
+        formatDescriptions = [*(*(&v93 + 1) + 8 * v27) formatDescriptions];
         v89 = 0u;
         v90 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v72 = v28;
-        v82 = [v28 countByEnumeratingWithState:&v89 objects:v110 count:16];
+        v72 = formatDescriptions;
+        v82 = [formatDescriptions countByEnumeratingWithState:&v89 objects:v110 count:16];
         if (v82)
         {
           v80 = *v90;
@@ -312,10 +312,10 @@ LABEL_57:
     while (v64);
   }
 
-  v50 = [(AVAsset *)v61->_asset metadata];
-  if ([(NSArray *)v50 count])
+  metadata = [(AVAsset *)selfCopy->_asset metadata];
+  if ([(NSArray *)metadata count])
   {
-    v51 = [AVMetadataItem metadataItemsFromArray:v50 filteredByIdentifier:@"mdta/com.apple.private.content-type"];
+    v51 = [AVMetadataItem metadataItemsFromArray:metadata filteredByIdentifier:@"mdta/com.apple.private.content-type"];
     if ([(NSArray *)v51 count]&& (v87 = 0u, v88 = 0u, v85 = 0u, v86 = 0u, (v52 = [(NSArray *)v51 countByEnumeratingWithState:&v85 objects:v109 count:16]) != 0))
     {
       v53 = v52;
@@ -369,11 +369,11 @@ LABEL_87:
     v57 = 0;
   }
 
-  v58 = [MEMORY[0x1E695DF70] array];
-  v59 = v58;
+  array = [MEMORY[0x1E695DF70] array];
+  v59 = array;
   if (v5)
   {
-    [v58 addObject:@"AVAssetPlaybackConfigurationOptionStereoVideo"];
+    [array addObject:@"AVAssetPlaybackConfigurationOptionStereoVideo"];
     if ((v4 & 1) == 0)
     {
 LABEL_92:

@@ -1,12 +1,12 @@
 @interface CrashlogDecoder
-+ (id)decoderForSubsystem:(id)a3;
++ (id)decoderForSubsystem:(id)subsystem;
 @end
 
 @implementation CrashlogDecoder
 
-+ (id)decoderForSubsystem:(id)a3
++ (id)decoderForSubsystem:(id)subsystem
 {
-  if ([a3 isEqualToString:@"BT"])
+  if ([subsystem isEqualToString:@"BT"])
   {
     v3 = objc_alloc_init(BTCrashlogDecoder);
   }

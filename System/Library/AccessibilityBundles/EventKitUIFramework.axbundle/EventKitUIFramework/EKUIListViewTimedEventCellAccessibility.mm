@@ -1,35 +1,35 @@
 @interface EKUIListViewTimedEventCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axSafeLabelForUILabelKey:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axSafeLabelForUILabelKey:(id)key;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation EKUIListViewTimedEventCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_travelTextLabel" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_travelDepartureTimeLabel" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_titleField" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_topTimeField" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_locationField" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_bottomTimeField" withType:"UILabel"];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasInstanceMethod:@"updateWithEvent:isMultiday:occurrenceStartDate:dimmed:" withFullSignature:{"v", "@", "B", "@", "B", 0}];
-  [v3 validateClass:@"EKUIListViewTimedEventCell" hasProperty:@"event" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_travelTextLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_travelDepartureTimeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_titleField" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_topTimeField" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_locationField" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceVariable:@"_bottomTimeField" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasInstanceMethod:@"updateWithEvent:isMultiday:occurrenceStartDate:dimmed:" withFullSignature:{"v", "@", "B", "@", "B", 0}];
+  [validationsCopy validateClass:@"EKUIListViewTimedEventCell" hasProperty:@"event" withType:"@"];
 }
 
-- (id)_axSafeLabelForUILabelKey:(id)a3
+- (id)_axSafeLabelForUILabelKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(EKUIListViewTimedEventCellAccessibility *)self safeUIViewForKey:v4];
+  v5 = [(EKUIListViewTimedEventCellAccessibility *)self safeUIViewForKey:keyCopy];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityLabel
@@ -42,25 +42,25 @@
   v8 = [(EKUIListViewTimedEventCellAccessibility *)self _axSafeLabelForUILabelKey:@"_bottomTimeField"];
   if ([(EKUIListViewTimedEventCellAccessibility *)self _axIsMultiDay])
   {
-    v9 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     if (([v6 isEqualToString:@" "] & 1) == 0)
     {
-      [v9 axSafelyAddObject:v6];
+      [array axSafelyAddObject:v6];
     }
 
     if (([v8 isEqualToString:@" "] & 1) == 0)
     {
-      [v9 axSafelyAddObject:v8];
+      [array axSafelyAddObject:v8];
     }
 
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    v10 = [array componentsJoinedByString:{@", "}];
   }
 
   else
   {
     v11 = MEMORY[0x29EDBA0F8];
-    v9 = accessibilityLocalizedString(@"event.duration");
-    v10 = [v11 localizedStringWithFormat:v9, v6, v8];
+    array = accessibilityLocalizedString(@"event.duration");
+    v10 = [v11 localizedStringWithFormat:array, v6, v8];
   }
 
   v12 = v10;
@@ -88,8 +88,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 event];
-  if ([v3 status] == 3)
+  event = [v2 event];
+  if ([event status] == 3)
   {
     v4 = accessibilityLocalizedString(@"AX_IS_CANCELED");
   }

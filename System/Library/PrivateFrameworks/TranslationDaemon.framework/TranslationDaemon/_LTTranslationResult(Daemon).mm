@@ -47,7 +47,7 @@
   v7 = a4;
   if ([v6 count] && objc_msgSend(v7, "count") && NSClassFromString(&cfstr_Emtprojection.isa))
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -68,8 +68,8 @@
           }
 
           v14 = *(*(&v29 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          [v8 setObject:v14 forKeyedSubscript:v15];
+          identifier = [v14 identifier];
+          [dictionary setObject:v14 forKeyedSubscript:identifier];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -78,20 +78,20 @@
       while (v11);
     }
 
-    v16 = [a1 translations];
-    v17 = [v16 firstObject];
-    v18 = [v17 formattedString];
+    translations = [self translations];
+    firstObject = [translations firstObject];
+    formattedString = [firstObject formattedString];
 
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __82___LTTranslationResult_Daemon__updateAlignmentWithSourceSpans_offlineTargetSpans___block_invoke;
     v26 = &unk_2789B7D98;
-    v27 = v8;
-    v28 = v18;
-    v19 = v18;
-    v20 = v8;
+    v27 = dictionary;
+    v28 = formattedString;
+    v19 = formattedString;
+    v20 = dictionary;
     v21 = [v7 _ltCompactMap:&v23];
-    [a1 setAlignments:{v21, v23, v24, v25, v26}];
+    [self setAlignments:{v21, v23, v24, v25, v26}];
   }
 
   v22 = *MEMORY[0x277D85DE8];

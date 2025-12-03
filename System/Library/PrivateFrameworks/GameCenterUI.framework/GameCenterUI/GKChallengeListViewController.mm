@@ -1,103 +1,103 @@
 @interface GKChallengeListViewController
-- (GKChallengeListViewController)initWithGameRecord:(id)a3;
+- (GKChallengeListViewController)initWithGameRecord:(id)record;
 - (int64_t)preferredLargeTitleDisplayMode;
 - (void)configureCloseButton;
 - (void)configureCollectionView;
-- (void)donePressed:(id)a3;
-- (void)setShouldShowPlayForChallenge:(BOOL)a3;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
-- (void)showNoContentPlaceholderForError:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)donePressed:(id)pressed;
+- (void)setShouldShowPlayForChallenge:(BOOL)challenge;
+- (void)setupNoContentView:(id)view withError:(id)error;
+- (void)showNoContentPlaceholderForError:(id)error;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLargeTitleInsets;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation GKChallengeListViewController
 
-- (GKChallengeListViewController)initWithGameRecord:(id)a3
+- (GKChallengeListViewController)initWithGameRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v8.receiver = self;
   v8.super_class = GKChallengeListViewController;
   v5 = [(GKDashboardCollectionViewController *)&v8 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [(GKDashboardChallengeDataSource *)[GKChallengeDataSource alloc] initWithGameRecord:v4];
+    v6 = [(GKDashboardChallengeDataSource *)[GKChallengeDataSource alloc] initWithGameRecord:recordCopy];
     [(GKDashboardCollectionViewController *)v5 setDataSource:v6];
   }
 
   return v5;
 }
 
-- (void)showNoContentPlaceholderForError:(id)a3
+- (void)showNoContentPlaceholderForError:(id)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self collectionView];
+  errorCopy = error;
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
 
-  if (v5)
+  if (collectionView)
   {
-    v6 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v6 setHidden:1];
+    collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView2 setHidden:1];
 
-    v7 = [(GKDashboardCollectionViewController *)self noContentView];
+    noContentView = [(GKDashboardCollectionViewController *)self noContentView];
 
-    if (!v7)
+    if (!noContentView)
     {
       v8 = [GKNoContentView alloc];
-      v9 = [(GKDashboardCollectionViewController *)self collectionView];
-      [v9 bounds];
+      collectionView3 = [(GKDashboardCollectionViewController *)self collectionView];
+      [collectionView3 bounds];
       v10 = [(GKNoContentView *)v8 initWithFrame:?];
       [(GKDashboardCollectionViewController *)self setNoContentView:v10];
 
-      v11 = [(GKDashboardCollectionViewController *)self noContentView];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      noContentView2 = [(GKDashboardCollectionViewController *)self noContentView];
+      [noContentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v12 = [(GKDashboardCollectionViewController *)self collectionView];
-      v13 = [v12 superview];
+      collectionView4 = [(GKDashboardCollectionViewController *)self collectionView];
+      superview = [collectionView4 superview];
 
-      v14 = [(GKDashboardCollectionViewController *)self noContentView];
-      v15 = [(GKDashboardCollectionViewController *)self collectionView];
-      [v13 insertSubview:v14 aboveSubview:v15];
+      noContentView3 = [(GKDashboardCollectionViewController *)self noContentView];
+      collectionView5 = [(GKDashboardCollectionViewController *)self collectionView];
+      [superview insertSubview:noContentView3 aboveSubview:collectionView5];
 
       v16 = MEMORY[0x277CCAAD0];
-      v17 = [(GKDashboardCollectionViewController *)self noContentView];
-      [v16 _gkInstallEdgeConstraintsForView:v17 containedWithinParentView:v13];
+      noContentView4 = [(GKDashboardCollectionViewController *)self noContentView];
+      [v16 _gkInstallEdgeConstraintsForView:noContentView4 containedWithinParentView:superview];
 
-      v18 = [(GKDashboardCollectionViewController *)self collectionView];
-      v23[0] = v18;
-      v19 = [(GKDashboardCollectionViewController *)self noContentView];
-      v23[1] = v19;
+      collectionView6 = [(GKDashboardCollectionViewController *)self collectionView];
+      v23[0] = collectionView6;
+      noContentView5 = [(GKDashboardCollectionViewController *)self noContentView];
+      v23[1] = noContentView5;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
       [(GKLoadingViewController *)self setViewsToHideWhileLoading:v20];
     }
 
-    v21 = [(GKDashboardCollectionViewController *)self noContentView];
-    [(GKChallengeListViewController *)self setupNoContentView:v21 withError:v4];
+    noContentView6 = [(GKDashboardCollectionViewController *)self noContentView];
+    [(GKChallengeListViewController *)self setupNoContentView:noContentView6 withError:errorCopy];
 
-    v22 = [(GKDashboardCollectionViewController *)self noContentView];
-    [v22 setHidden:0];
+    noContentView7 = [(GKDashboardCollectionViewController *)self noContentView];
+    [noContentView7 setHidden:0];
   }
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
-  [v4 setTitle:v6];
+  [viewCopy setTitle:v6];
 
   v7 = GKGameCenterUIFrameworkBundle();
   v8 = GKGetLocalizedStringFromTableInBundle();
-  [v4 setMessage:v8];
+  [viewCopy setMessage:v8];
 
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 }
 
 - (void)viewDidLoad
@@ -109,58 +109,58 @@
   v4 = GKGetLocalizedStringFromTableInBundle();
   [(GKChallengeListViewController *)self setTitle:v4];
 
-  v5 = [(GKChallengeListViewController *)self navigationItem];
-  [v5 _setAutoScrollEdgeTransitionDistance:40.0];
+  navigationItem = [(GKChallengeListViewController *)self navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:40.0];
 
-  v6 = [(GKChallengeListViewController *)self navigationItem];
-  [v6 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(GKChallengeListViewController *)self navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v7 = [(GKChallengeListViewController *)self title];
-  v8 = [(GKChallengeListViewController *)self navigationItem];
-  [v8 setTitle:v7];
+  title = [(GKChallengeListViewController *)self title];
+  navigationItem3 = [(GKChallengeListViewController *)self navigationItem];
+  [navigationItem3 setTitle:title];
 
-  v9 = [(GKChallengeListViewController *)self preferredLargeTitleDisplayMode];
-  v10 = [(GKChallengeListViewController *)self navigationItem];
-  [v10 setLargeTitleDisplayMode:v9];
+  preferredLargeTitleDisplayMode = [(GKChallengeListViewController *)self preferredLargeTitleDisplayMode];
+  navigationItem4 = [(GKChallengeListViewController *)self navigationItem];
+  [navigationItem4 setLargeTitleDisplayMode:preferredLargeTitleDisplayMode];
 
   [(GKChallengeListViewController *)self configureCloseButton];
   [(GKChallengeListViewController *)self configureCollectionView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GKChallengeListViewController;
-  [(GKDashboardCollectionViewController *)&v4 viewWillAppear:a3];
+  [(GKDashboardCollectionViewController *)&v4 viewWillAppear:appear];
   [(GKDashboardCollectionViewController *)self setNeedsRefresh];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GKChallengeListViewController;
-  [(GKDashboardCollectionViewController *)&v4 viewDidAppear:a3];
+  [(GKDashboardCollectionViewController *)&v4 viewDidAppear:appear];
   self->_startTime = CFAbsoluteTimeGetCurrent();
   [_TtC12GameCenterUI15GKMetricsBridge recordChallengePageEventWithReferrerData:[(GKChallengeListViewController *)self isDeeplinked]];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = GKChallengeListViewController;
-  [(GKChallengeListViewController *)&v6 viewWillDisappear:a3];
-  v4 = [MEMORY[0x277D0C1F8] reporter];
+  [(GKChallengeListViewController *)&v6 viewWillDisappear:disappear];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v5 = *MEMORY[0x277D0BB30];
   [(GKChallengeListViewController *)self startTime];
-  [v4 reportScreenTimeEventForType:v5 withStartTimestamp:?];
+  [reporter reportScreenTimeEventForType:v5 withStartTimestamp:?];
 }
 
 - (void)configureCloseButton
 {
   v5 = [MEMORY[0x277D75220] _gkXmarkedCloseButtonWithTarget:self action:sel_donePressed_];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(GKChallengeListViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(GKChallengeListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 }
 
 - (void)viewWillLayoutSubviews
@@ -168,23 +168,23 @@
   v18.receiver = self;
   v18.super_class = GKChallengeListViewController;
   [(GKChallengeListViewController *)&v18 viewWillLayoutSubviews];
-  v3 = [(GKChallengeListViewController *)self view];
-  v4 = [v3 readableContentGuide];
-  [v4 layoutFrame];
+  view = [(GKChallengeListViewController *)self view];
+  readableContentGuide = [view readableContentGuide];
+  [readableContentGuide layoutFrame];
   v6 = v5;
-  v7 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v7 frame];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView frame];
   v9 = v6 - v8;
 
-  v10 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v10 contentInset];
+  collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView2 contentInset];
   v12 = v11;
   v13 = fmax(v9, 16.0);
-  v14 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v14 contentInset];
+  collectionView3 = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView3 contentInset];
   v16 = v15;
-  v17 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v17 setContentInset:{v12, v13, v16, v13}];
+  collectionView4 = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView4 setContentInset:{v12, v13, v16, v13}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -197,46 +197,46 @@
 
 - (void)configureCollectionView
 {
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v4 setShowsVerticalScrollIndicator:0];
+  collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView2 setShowsVerticalScrollIndicator:0];
 
-  v5 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v5 _gkRemoveAllConstraints];
+  collectionView3 = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView3 _gkRemoveAllConstraints];
 
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(GKDashboardCollectionViewController *)self collectionView];
-  v8 = [(GKChallengeListViewController *)self view];
-  [v6 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:v8];
+  collectionView4 = [(GKDashboardCollectionViewController *)self collectionView];
+  view = [(GKChallengeListViewController *)self view];
+  [v6 _gkInstallEdgeConstraintsForView:collectionView4 containedWithinParentView:view];
 
-  v9 = [(GKDashboardCollectionViewController *)self collectionView];
-  v10 = [v9 collectionViewLayout];
+  collectionView5 = [(GKDashboardCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView5 collectionViewLayout];
 
-  [v10 setSectionInsetRelativeWithContentInset:1];
+  [collectionViewLayout setSectionInsetRelativeWithContentInset:1];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v3 = [(UIViewController *)self _gkExtensionViewController];
-  [v3 finish];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController finish];
 }
 
-- (void)setShouldShowPlayForChallenge:(BOOL)a3
+- (void)setShouldShowPlayForChallenge:(BOOL)challenge
 {
-  v3 = a3;
-  self->_shouldShowPlayForChallenge = a3;
-  v4 = [(GKDashboardCollectionViewController *)self dataSource];
-  [v4 setShouldShowPlay:v3];
+  challengeCopy = challenge;
+  self->_shouldShowPlayForChallenge = challenge;
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  [dataSource setShouldShowPlay:challengeCopy];
 
-  if (!v3)
+  if (!challengeCopy)
   {
-    v5 = [MEMORY[0x277D0C048] currentGame];
-    v6 = [v5 internal];
-    v7 = [v6 supportsChallenges];
+    currentGame = [MEMORY[0x277D0C048] currentGame];
+    internal = [currentGame internal];
+    supportsChallenges = [internal supportsChallenges];
 
-    if (v7)
+    if (supportsChallenges)
     {
       if (!*MEMORY[0x277D0C2A0])
       {
@@ -252,25 +252,25 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = GKChallengeListViewController;
-  [(GKDashboardCollectionViewController *)&v13 traitCollectionDidChange:v4];
-  v5 = [(GKChallengeListViewController *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
-  if (v6 == [v4 horizontalSizeClass])
+  [(GKDashboardCollectionViewController *)&v13 traitCollectionDidChange:changeCopy];
+  traitCollection = [(GKChallengeListViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass == [changeCopy horizontalSizeClass])
   {
-    v7 = [(GKChallengeListViewController *)self traitCollection];
-    v8 = [v7 layoutDirection];
-    if (v8 == [v4 layoutDirection])
+    traitCollection2 = [(GKChallengeListViewController *)self traitCollection];
+    layoutDirection = [traitCollection2 layoutDirection];
+    if (layoutDirection == [changeCopy layoutDirection])
     {
-      v9 = [(GKChallengeListViewController *)self traitCollection];
-      v10 = [v9 preferredContentSizeCategory];
-      v11 = [v4 preferredContentSizeCategory];
+      traitCollection3 = [(GKChallengeListViewController *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-      if (v10 == v11)
+      if (preferredContentSizeCategory == preferredContentSizeCategory2)
       {
         goto LABEL_8;
       }
@@ -310,25 +310,25 @@ void __58__GKChallengeListViewController_traitCollectionDidChange___block_invoke
 
 - (void)updateLargeTitleInsets
 {
-  v3 = [(GKChallengeListViewController *)self navigationController];
-  v13 = [v3 navigationBar];
+  navigationController = [(GKChallengeListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v4 = [(GKChallengeListViewController *)self navigationItem];
-  v5 = [v4 largeTitleDisplayMode];
+  navigationItem = [(GKChallengeListViewController *)self navigationItem];
+  largeTitleDisplayMode = [navigationItem largeTitleDisplayMode];
 
-  if (v5 != 2 && v13)
+  if (largeTitleDisplayMode != 2 && navigationBar)
   {
-    v6 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v6 contentInset];
+    collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView contentInset];
     v8 = v7;
-    v9 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v9 frame];
+    collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView2 frame];
     v11 = v8 + v10;
 
-    v12 = [(GKChallengeListViewController *)self navigationItem];
-    [v12 setLargeTitleInsets:{0.0, v11, 0.0, v11}];
+    navigationItem2 = [(GKChallengeListViewController *)self navigationItem];
+    [navigationItem2 setLargeTitleInsets:{0.0, v11, 0.0, v11}];
 
-    [v13 setNeedsLayout];
+    [navigationBar setNeedsLayout];
   }
 }
 

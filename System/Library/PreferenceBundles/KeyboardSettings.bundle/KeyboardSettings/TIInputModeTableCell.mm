@@ -1,25 +1,25 @@
 @interface TIInputModeTableCell
-- (TIInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (TIInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)subtitle;
 - (id)title;
 - (void)addDownloadIcon;
 - (void)dealloc;
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4;
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateLabels;
 @end
 
 @implementation TIInputModeTableCell
 
-- (TIInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TIInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = TIInputModeTableCell;
-  v6 = [(TIInputModeTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:?];
+  v6 = [(TIInputModeTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:?];
   if (v6)
   {
-    -[TIInputModeTableCell setInputMode:](v6, "setInputMode:", +[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [a5 propertyForKey:PSIDKey]));
+    -[TIInputModeTableCell setInputMode:](v6, "setInputMode:", +[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [specifier propertyForKey:PSIDKey]));
     [(TIInputModeTableCell *)v6 updateLabels];
   }
 
@@ -33,12 +33,12 @@
   [(TIInputModeTableCell *)&v3 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = TIInputModeTableCell;
   [(TIInputModeTableCell *)&v5 refreshCellContentsWithSpecifier:?];
-  -[TIInputModeTableCell setInputMode:](self, "setInputMode:", +[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [a3 propertyForKey:PSIDKey]));
+  -[TIInputModeTableCell setInputMode:](self, "setInputMode:", +[UIKeyboardInputMode keyboardInputModeWithIdentifier:](UIKeyboardInputMode, "keyboardInputModeWithIdentifier:", [specifier propertyForKey:PSIDKey]));
   [(TIInputModeTableCell *)self updateLabels];
 }
 
@@ -64,17 +64,17 @@
 
 - (id)title
 {
-  v3 = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] isExtensionInputMode];
-  v4 = [(TIInputModeTableCell *)self inputMode];
-  if (v3)
+  isExtensionInputMode = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] isExtensionInputMode];
+  inputMode = [(TIInputModeTableCell *)self inputMode];
+  if (isExtensionInputMode)
   {
 
-    return [(UIKeyboardInputMode *)v4 safe__extendedDisplayName];
+    return [(UIKeyboardInputMode *)inputMode safe__extendedDisplayName];
   }
 
   else
   {
-    [(UIKeyboardInputMode *)v4 identifier];
+    [(UIKeyboardInputMode *)inputMode identifier];
     v6 = [TIKeyboardListController keyboardDisplayNameForIdentifier:[(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] languageWithRegion]];
     if ([objc_msgSend(UIKeyboardInputModeGetComponentsFromIdentifier() objectForKey:{@"kCFLocaleVariantCodeKey", "length"}])
     {
@@ -103,14 +103,14 @@
   if ([(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] isExtensionInputMode])
   {
     v3 = +[NSLocale localeForBundleLanguage:](NSLocale, "localeForBundleLanguage:", +[NSBundle mainBundle]);
-    v4 = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] primaryLanguage];
+    primaryLanguage = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] primaryLanguage];
 
-    return [v3 displayNameForKey:NSLocaleLanguageCode value:v4];
+    return [v3 displayNameForKey:NSLocaleLanguageCode value:primaryLanguage];
   }
 
   else
   {
-    v5 = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] identifier];
+    identifier = [(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] identifier];
     NormalizedIdentifier = UIKeyboardInputModeGetNormalizedIdentifier();
     v7 = [TIKeyboardListController keyboardDisplayNameForIdentifier:[(UIKeyboardInputMode *)[(TIInputModeTableCell *)self inputMode] languageWithRegion]];
     ComponentsFromIdentifier = UIKeyboardInputModeGetComponentsFromIdentifier();
@@ -156,7 +156,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = identifier;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Showing downloading progress title for input mode %@", buf, 0xCu);
       }
 
@@ -178,13 +178,13 @@
   }
 }
 
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event
 {
   v5 = KeyboardSettingsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = [(TIInputModeTableCell *)self inputMode];
+    inputMode = [(TIInputModeTableCell *)self inputMode];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Download button pressed for %@", &v6, 0xCu);
   }
 

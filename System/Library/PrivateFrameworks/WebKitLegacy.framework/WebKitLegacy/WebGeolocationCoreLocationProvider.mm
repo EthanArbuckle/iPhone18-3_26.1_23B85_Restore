@@ -1,13 +1,13 @@
 @interface WebGeolocationCoreLocationProvider
-- (WebGeolocationCoreLocationProvider)initWithListener:(id)a3;
+- (WebGeolocationCoreLocationProvider)initWithListener:(id)listener;
 - (void)createLocationManager;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)requestGeolocationAuthorization;
-- (void)sendLocation:(id)a3;
-- (void)setEnableHighAccuracy:(BOOL)a3;
+- (void)sendLocation:(id)location;
+- (void)setEnableHighAccuracy:(BOOL)accuracy;
 - (void)start;
 @end
 
@@ -28,14 +28,14 @@
   [(CLLocationManager *)v5 setDelegate:self];
 }
 
-- (WebGeolocationCoreLocationProvider)initWithListener:(id)a3
+- (WebGeolocationCoreLocationProvider)initWithListener:(id)listener
 {
   v6.receiver = self;
   v6.super_class = WebGeolocationCoreLocationProvider;
   result = [(WebGeolocationCoreLocationProvider *)&v6 init];
   if (result)
   {
-    result->_positionListener = a3;
+    result->_positionListener = listener;
     v5 = result;
     [(WebGeolocationCoreLocationProvider *)result createLocationManager];
     return v5;
@@ -101,13 +101,13 @@
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
   if (self->_isWaitingForAuthorization)
   {
-    if ((a4 - 3) >= 2)
+    if ((status - 3) >= 2)
     {
-      if ((a4 - 1) <= 1)
+      if ((status - 1) <= 1)
       {
         self->_isWaitingForAuthorization = 0;
         [(WebGeolocationCoreLocationUpdateListener *)self->_positionListener geolocationAuthorizationDenied];
@@ -118,39 +118,39 @@
 
     self->_isWaitingForAuthorization = 0;
     [(WebGeolocationCoreLocationUpdateListener *)self->_positionListener geolocationAuthorizationGranted];
-    self->_lastAuthorizationStatus = a4;
+    self->_lastAuthorizationStatus = status;
   }
 
   else
   {
-    if (((self->_lastAuthorizationStatus - 3) | (a4 - 3)) < 2)
+    if (((self->_lastAuthorizationStatus - 3) | (status - 3)) < 2)
     {
 LABEL_5:
-      self->_lastAuthorizationStatus = a4;
+      self->_lastAuthorizationStatus = status;
       return;
     }
 
     [(CLLocationManager *)self->_locationManager.m_ptr stopUpdatingLocation];
     [(WebGeolocationCoreLocationUpdateListener *)self->_positionListener resetGeolocation];
-    self->_lastAuthorizationStatus = a4;
+    self->_lastAuthorizationStatus = status;
   }
 }
 
-- (void)sendLocation:(id)a3
+- (void)sendLocation:(id)location
 {
   positionListener = self->_positionListener;
-  MEMORY[0x1CCA66900](v4, a3);
+  MEMORY[0x1CCA66900](v4, location);
   [(WebGeolocationCoreLocationUpdateListener *)positionListener positionChanged:v4];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [locations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -162,36 +162,36 @@ LABEL_5:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(locations);
         }
 
         [(WebGeolocationCoreLocationProvider *)self sendLocation:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [a4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [locations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  if ([a4 code] != 1)
+  if ([error code] != 1)
   {
-    v6 = [a4 localizedDescription];
+    localizedDescription = [error localizedDescription];
     positionListener = self->_positionListener;
 
-    [(WebGeolocationCoreLocationUpdateListener *)positionListener errorOccurred:v6];
+    [(WebGeolocationCoreLocationUpdateListener *)positionListener errorOccurred:localizedDescription];
   }
 }
 
-- (void)setEnableHighAccuracy:(BOOL)a3
+- (void)setEnableHighAccuracy:(BOOL)accuracy
 {
   m_ptr = self->_locationManager.m_ptr;
   v4 = &_MergedGlobals_5;
-  if (!a3)
+  if (!accuracy)
   {
     v4 = &qword_1ED6A60A8;
   }

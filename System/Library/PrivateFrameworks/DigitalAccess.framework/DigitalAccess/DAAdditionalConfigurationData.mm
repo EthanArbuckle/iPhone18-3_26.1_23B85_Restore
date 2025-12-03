@@ -1,23 +1,23 @@
 @interface DAAdditionalConfigurationData
-- (DAAdditionalConfigurationData)initWithCoder:(id)a3;
-- (DAAdditionalConfigurationData)initWithKeyRole:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DAAdditionalConfigurationData)initWithCoder:(id)coder;
+- (DAAdditionalConfigurationData)initWithKeyRole:(id)role;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAAdditionalConfigurationData
 
-- (DAAdditionalConfigurationData)initWithKeyRole:(id)a3
+- (DAAdditionalConfigurationData)initWithKeyRole:(id)role
 {
-  v5 = a3;
+  roleCopy = role;
   v9.receiver = self;
   v9.super_class = DAAdditionalConfigurationData;
   v6 = [(DAAdditionalConfigurationData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyRole, a3);
+    objc_storeStrong(&v6->_keyRole, role);
   }
 
   return v7;
@@ -25,22 +25,22 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"AdditionalConfigurationData:\n"];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"\tKey Role          : 0x%04X\n", -[NSNumber unsignedShortValue](self->_keyRole, "unsignedShortValue")];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
-  return v3;
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[DAAdditionalConfigurationData allocWithZone:](DAAdditionalConfigurationData init];
   if (v5)
   {
-    v6 = [(NSNumber *)self->_keyRole copyWithZone:a3];
+    v6 = [(NSNumber *)self->_keyRole copyWithZone:zone];
     keyRole = v5->_keyRole;
     v5->_keyRole = v6;
   }
@@ -48,22 +48,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyRole = self->_keyRole;
-  v4 = a3;
-  [v4 encodeInteger:-[NSNumber unsignedShortValue](keyRole forKey:{"unsignedShortValue"), @"keyRole"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NSNumber unsignedShortValue](keyRole forKey:{"unsignedShortValue"), @"keyRole"}];
 }
 
-- (DAAdditionalConfigurationData)initWithCoder:(id)a3
+- (DAAdditionalConfigurationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DAAdditionalConfigurationData;
   v5 = [(DAAdditionalConfigurationData *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "decodeIntegerForKey:", @"keyRole"}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"keyRole"}];
     keyRole = v5->_keyRole;
     v5->_keyRole = v6;
   }

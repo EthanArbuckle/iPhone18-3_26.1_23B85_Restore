@@ -1,17 +1,17 @@
 @interface PGGraphAddressEdge
 + (id)filter;
-+ (void)setRelevance:(double)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-+ (void)setUniversalEndDate:(id)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-+ (void)setUniversalStartDate:(id)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-- (BOOL)hasProperties:(id)a3;
++ (void)setRelevance:(double)relevance onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (void)setUniversalEndDate:(id)date onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (void)setUniversalStartDate:(id)date onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (BOOL)hasProperties:(id)properties;
 - (CLLocation)photoLocation;
 - (CLLocationCoordinate2D)photoCoordinate;
 - (MAEdgeFilter)uniquelyIdentifyingFilter;
-- (PGGraphAddressEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphAddressEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (double)timestampUTCEnd;
 - (double)timestampUTCStart;
 - (id)edgeDescription;
-- (id)initFromMomentNode:(id)a3 toAddressNode:(id)a4 relevance:(double)a5 universalStartDate:(id)a6 universalEndDate:(id)a7 photoCoordinate:(CLLocationCoordinate2D)a8 numberOfAssets:(unint64_t)a9;
+- (id)initFromMomentNode:(id)node toAddressNode:(id)addressNode relevance:(double)relevance universalStartDate:(id)date universalEndDate:(id)endDate photoCoordinate:(CLLocationCoordinate2D)coordinate numberOfAssets:(unint64_t)assets;
 - (id)propertyDictionary;
 @end
 
@@ -81,8 +81,8 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = PGGraphAddressEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
-  v5 = [v3 stringWithFormat:@"%@ (%.2f, (%.3f, %.3f))", v4, *&self->_relevance, *&self->_photoCoordinate.latitude, *&self->_photoCoordinate.longitude];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
+  v5 = [v3 stringWithFormat:@"%@ (%.2f, (%.3f, %.3f))", edgeDescription, *&self->_relevance, *&self->_photoCoordinate.latitude, *&self->_photoCoordinate.longitude];
 
   return v5;
 }
@@ -119,11 +119,11 @@
   return v11;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"relevance"];
     v7 = v6;
@@ -206,12 +206,12 @@ LABEL_17:
   return v22;
 }
 
-- (PGGraphAddressEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphAddressEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
-  v13 = [v12 objectForKeyedSubscript:@"relevance"];
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
+  v13 = [propertiesCopy objectForKeyedSubscript:@"relevance"];
   v14 = v13;
   if (v13)
   {
@@ -224,19 +224,19 @@ LABEL_17:
     v16 = 1.0;
   }
 
-  v17 = [v12 objectForKeyedSubscript:@"utcs"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"utcs"];
   [v17 doubleValue];
   v19 = v18;
 
-  v20 = [v12 objectForKeyedSubscript:@"utce"];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"utce"];
   [v20 doubleValue];
   v22 = v21;
 
-  v23 = [v12 objectForKeyedSubscript:@"lat"];
-  v24 = [v12 objectForKeyedSubscript:@"lng"];
-  v25 = [v12 objectForKeyedSubscript:@"noa"];
+  v23 = [propertiesCopy objectForKeyedSubscript:@"lat"];
+  v24 = [propertiesCopy objectForKeyedSubscript:@"lng"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"noa"];
 
-  v26 = [v25 unsignedIntegerValue];
+  unsignedIntegerValue = [v25 unsignedIntegerValue];
   if (v23 && v24)
   {
     [v23 doubleValue];
@@ -273,56 +273,56 @@ LABEL_17:
     v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22];
   }
 
-  v35 = [(PGGraphAddressEdge *)self initFromMomentNode:v10 toAddressNode:v11 relevance:v33 universalStartDate:v34 universalEndDate:v26 photoCoordinate:v16 numberOfAssets:latitude, longitude];
+  longitude = [(PGGraphAddressEdge *)self initFromMomentNode:nodeCopy toAddressNode:targetNodeCopy relevance:v33 universalStartDate:v34 universalEndDate:unsignedIntegerValue photoCoordinate:v16 numberOfAssets:latitude, longitude];
 
-  return v35;
+  return longitude;
 }
 
-- (id)initFromMomentNode:(id)a3 toAddressNode:(id)a4 relevance:(double)a5 universalStartDate:(id)a6 universalEndDate:(id)a7 photoCoordinate:(CLLocationCoordinate2D)a8 numberOfAssets:(unint64_t)a9
+- (id)initFromMomentNode:(id)node toAddressNode:(id)addressNode relevance:(double)relevance universalStartDate:(id)date universalEndDate:(id)endDate photoCoordinate:(CLLocationCoordinate2D)coordinate numberOfAssets:(unint64_t)assets
 {
-  longitude = a8.longitude;
-  latitude = a8.latitude;
-  v18 = a6;
-  v19 = a7;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  dateCopy = date;
+  endDateCopy = endDate;
   v23.receiver = self;
   v23.super_class = PGGraphAddressEdge;
-  v20 = [(PGGraphEdge *)&v23 initWithSourceNode:a3 targetNode:a4];
+  v20 = [(PGGraphEdge *)&v23 initWithSourceNode:node targetNode:addressNode];
   v21 = v20;
   if (v20)
   {
-    v20->_relevance = a5;
-    objc_storeStrong(&v20->_universalStartDate, a6);
-    objc_storeStrong(&v21->_universalEndDate, a7);
+    v20->_relevance = relevance;
+    objc_storeStrong(&v20->_universalStartDate, date);
+    objc_storeStrong(&v21->_universalEndDate, endDate);
     v21->_photoCoordinate.latitude = latitude;
     v21->_photoCoordinate.longitude = longitude;
-    v21->_numberOfAssets = a9;
+    v21->_numberOfAssets = assets;
   }
 
   return v21;
 }
 
-+ (void)setUniversalEndDate:(id)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setUniversalEndDate:(id)date onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v7 = a5;
-  [a3 timeIntervalSince1970];
+  graphCopy = graph;
+  [date timeIntervalSince1970];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v7 persistModelProperty:v8 forKey:@"utce" forEdgeWithIdentifier:a4];
+  [graphCopy persistModelProperty:v8 forKey:@"utce" forEdgeWithIdentifier:identifier];
 }
 
-+ (void)setUniversalStartDate:(id)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setUniversalStartDate:(id)date onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v7 = a5;
-  [a3 timeIntervalSince1970];
+  graphCopy = graph;
+  [date timeIntervalSince1970];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v7 persistModelProperty:v8 forKey:@"utcs" forEdgeWithIdentifier:a4];
+  [graphCopy persistModelProperty:v8 forKey:@"utcs" forEdgeWithIdentifier:identifier];
 }
 
-+ (void)setRelevance:(double)a3 onAddressEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setRelevance:(double)relevance onAddressEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = [v7 numberWithDouble:a3];
-  [v8 persistModelProperty:v9 forKey:@"relevance" forEdgeWithIdentifier:a4];
+  graphCopy = graph;
+  v9 = [v7 numberWithDouble:relevance];
+  [graphCopy persistModelProperty:v9 forKey:@"relevance" forEdgeWithIdentifier:identifier];
 }
 
 + (id)filter

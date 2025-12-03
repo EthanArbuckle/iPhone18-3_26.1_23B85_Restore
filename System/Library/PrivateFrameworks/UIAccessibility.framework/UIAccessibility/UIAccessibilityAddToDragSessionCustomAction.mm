@@ -1,16 +1,16 @@
 @interface UIAccessibilityAddToDragSessionCustomAction
 - (BOOL)_accessibilityInvokeAddToSession;
-- (UIAccessibilityAddToDragSessionCustomAction)initWithPoint:(CGPoint)a3 inSourceView:(id)a4;
+- (UIAccessibilityAddToDragSessionCustomAction)initWithPoint:(CGPoint)point inSourceView:(id)view;
 - (id)_accessibilityCustomActionIdentifier;
 @end
 
 @implementation UIAccessibilityAddToDragSessionCustomAction
 
-- (UIAccessibilityAddToDragSessionCustomAction)initWithPoint:(CGPoint)a3 inSourceView:(id)a4
+- (UIAccessibilityAddToDragSessionCustomAction)initWithPoint:(CGPoint)point inSourceView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v8 = UIKitAccessibilityLocalizedString(@"add.to.session");
   v11.receiver = self;
   v11.super_class = UIAccessibilityAddToDragSessionCustomAction;
@@ -20,7 +20,7 @@
   {
     v9->_pt.x = x;
     v9->_pt.y = y;
-    objc_storeWeak(&v9->_view, v7);
+    objc_storeWeak(&v9->_view, viewCopy);
   }
 
   return v9;
@@ -28,11 +28,11 @@
 
 - (BOOL)_accessibilityInvokeAddToSession
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  LOBYTE(v2) = [WeakRetained _accessibilityAddItemsToDragSessionAtPoint:{v2->_pt.x, v2->_pt.y}];
+  LOBYTE(selfCopy) = [WeakRetained _accessibilityAddItemsToDragSessionAtPoint:{selfCopy->_pt.x, selfCopy->_pt.y}];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_accessibilityCustomActionIdentifier

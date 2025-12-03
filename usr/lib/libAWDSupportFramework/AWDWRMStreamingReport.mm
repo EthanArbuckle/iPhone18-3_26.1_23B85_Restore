@@ -1,24 +1,24 @@
 @interface AWDWRMStreamingReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInstValues:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addInstValues:(id)values;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCounter:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasDurationLPM:(BOOL)a3;
-- (void)setHasDurationOffline:(BOOL)a3;
-- (void)setHasIsEnd:(BOOL)a3;
-- (void)setHasLPM:(BOOL)a3;
-- (void)setHasNumStall:(BOOL)a3;
-- (void)setHasOffline:(BOOL)a3;
-- (void)setHasOnline:(BOOL)a3;
-- (void)setHasSamplePeriods:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCounter:(BOOL)counter;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasDurationLPM:(BOOL)m;
+- (void)setHasDurationOffline:(BOOL)offline;
+- (void)setHasIsEnd:(BOOL)end;
+- (void)setHasLPM:(BOOL)m;
+- (void)setHasNumStall:(BOOL)stall;
+- (void)setHasOffline:(BOOL)offline;
+- (void)setHasOnline:(BOOL)online;
+- (void)setHasSamplePeriods:(BOOL)periods;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMStreamingReport
@@ -31,9 +31,9 @@
   [(AWDWRMStreamingReport *)&v3 dealloc];
 }
 
-- (void)setHasSamplePeriods:(BOOL)a3
+- (void)setHasSamplePeriods:(BOOL)periods
 {
-  if (a3)
+  if (periods)
   {
     v3 = 64;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsEnd:(BOOL)a3
+- (void)setHasIsEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 128;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumStall:(BOOL)a3
+- (void)setHasNumStall:(BOOL)stall
 {
-  if (a3)
+  if (stall)
   {
     v3 = 32;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLPM:(BOOL)a3
+- (void)setHasLPM:(BOOL)m
 {
-  if (a3)
+  if (m)
   {
     v3 = 256;
   }
@@ -106,9 +106,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasOnline:(BOOL)a3
+- (void)setHasOnline:(BOOL)online
 {
-  if (a3)
+  if (online)
   {
     v3 = 1024;
   }
@@ -121,9 +121,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasOffline:(BOOL)a3
+- (void)setHasOffline:(BOOL)offline
 {
-  if (a3)
+  if (offline)
   {
     v3 = 512;
   }
@@ -136,9 +136,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDurationLPM:(BOOL)a3
+- (void)setHasDurationLPM:(BOOL)m
 {
-  if (a3)
+  if (m)
   {
     v3 = 8;
   }
@@ -151,9 +151,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDurationOffline:(BOOL)a3
+- (void)setHasDurationOffline:(BOOL)offline
 {
-  if (a3)
+  if (offline)
   {
     v3 = 16;
   }
@@ -166,7 +166,7 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)addInstValues:(id)a3
+- (void)addInstValues:(id)values
 {
   instValues = self->_instValues;
   if (!instValues)
@@ -175,12 +175,12 @@
     self->_instValues = instValues;
   }
 
-  [(NSMutableArray *)instValues addObject:a3];
+  [(NSMutableArray *)instValues addObject:values];
 }
 
-- (void)setHasCounter:(BOOL)a3
+- (void)setHasCounter:(BOOL)counter
 {
-  if (a3)
+  if (counter)
   {
     v3 = 2;
   }
@@ -203,11 +203,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -226,7 +226,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_samplePeriods), @"sample_periods"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_samplePeriods), @"sample_periods"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -240,7 +240,7 @@ LABEL_4:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -254,7 +254,7 @@ LABEL_5:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isEnd), @"isEnd"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isEnd), @"isEnd"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -268,7 +268,7 @@ LABEL_6:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numStall), @"num_stall"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numStall), @"num_stall"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -282,7 +282,7 @@ LABEL_7:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_lPM), @"LPM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_lPM), @"LPM"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -296,7 +296,7 @@ LABEL_8:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_online), @"online"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_online), @"online"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -310,7 +310,7 @@ LABEL_9:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_offline), @"offline"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_offline), @"offline"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -324,11 +324,11 @@ LABEL_10:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationLPM), @"duration_LPM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationLPM), @"duration_LPM"}];
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOffline), @"duration_offline"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationOffline), @"duration_offline"}];
   }
 
 LABEL_12:
@@ -363,19 +363,19 @@ LABEL_12:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"inst_values"];
+    [dictionary setObject:v5 forKey:@"inst_values"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_counter), @"counter"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_counter), @"counter"}];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -554,13 +554,13 @@ LABEL_12:
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 26) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -579,8 +579,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 11) = self->_samplePeriods;
-  *(a3 + 26) |= 0x40u;
+  *(to + 11) = self->_samplePeriods;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -594,8 +594,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  *(a3 + 5) = self->_duration;
-  *(a3 + 26) |= 4u;
+  *(to + 5) = self->_duration;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -609,8 +609,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(a3 + 48) = self->_isEnd;
-  *(a3 + 26) |= 0x80u;
+  *(to + 48) = self->_isEnd;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -624,8 +624,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(a3 + 10) = self->_numStall;
-  *(a3 + 26) |= 0x20u;
+  *(to + 10) = self->_numStall;
+  *(to + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -639,8 +639,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(a3 + 49) = self->_lPM;
-  *(a3 + 26) |= 0x100u;
+  *(to + 49) = self->_lPM;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -654,8 +654,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(a3 + 51) = self->_online;
-  *(a3 + 26) |= 0x400u;
+  *(to + 51) = self->_online;
+  *(to + 26) |= 0x400u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -666,8 +666,8 @@ LABEL_9:
     }
 
 LABEL_27:
-    *(a3 + 6) = self->_durationLPM;
-    *(a3 + 26) |= 8u;
+    *(to + 6) = self->_durationLPM;
+    *(to + 26) |= 8u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_12;
@@ -677,8 +677,8 @@ LABEL_27:
   }
 
 LABEL_26:
-  *(a3 + 50) = self->_offline;
-  *(a3 + 26) |= 0x200u;
+  *(to + 50) = self->_offline;
+  *(to + 26) |= 0x200u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -689,36 +689,36 @@ LABEL_10:
   if ((has & 0x10) != 0)
   {
 LABEL_11:
-    *(a3 + 7) = self->_durationOffline;
-    *(a3 + 26) |= 0x10u;
+    *(to + 7) = self->_durationOffline;
+    *(to + 26) |= 0x10u;
   }
 
 LABEL_12:
   if ([(AWDWRMStreamingReport *)self instValuesCount])
   {
-    [a3 clearInstValues];
-    v6 = [(AWDWRMStreamingReport *)self instValuesCount];
-    if (v6)
+    [to clearInstValues];
+    instValuesCount = [(AWDWRMStreamingReport *)self instValuesCount];
+    if (instValuesCount)
     {
-      v7 = v6;
+      v7 = instValuesCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addInstValues:{-[AWDWRMStreamingReport instValuesAtIndex:](self, "instValuesAtIndex:", i)}];
+        [to addInstValues:{-[AWDWRMStreamingReport instValuesAtIndex:](self, "instValuesAtIndex:", i)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_counter;
-    *(a3 + 26) |= 2u;
+    *(to + 4) = self->_counter;
+    *(to + 26) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -877,7 +877,7 @@ LABEL_12:
           objc_enumerationMutation(instValues);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addInstValues:v13];
       }
 
@@ -897,19 +897,19 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 26);
+  v7 = *(equal + 26);
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_71;
     }
@@ -922,7 +922,7 @@ LABEL_12:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_samplePeriods != *(a3 + 11))
+    if ((v7 & 0x40) == 0 || self->_samplePeriods != *(equal + 11))
     {
       goto LABEL_71;
     }
@@ -935,7 +935,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_duration != *(a3 + 5))
+    if ((v7 & 4) == 0 || self->_duration != *(equal + 5))
     {
       goto LABEL_71;
     }
@@ -953,16 +953,16 @@ LABEL_12:
       goto LABEL_71;
     }
 
-    v8 = *(a3 + 48);
+    v8 = *(equal + 48);
     if (self->_isEnd)
     {
-      if ((*(a3 + 48) & 1) == 0)
+      if ((*(equal + 48) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_71;
     }
@@ -975,7 +975,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_numStall != *(a3 + 10))
+    if ((v7 & 0x20) == 0 || self->_numStall != *(equal + 10))
     {
       goto LABEL_71;
     }
@@ -988,72 +988,72 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 26) & 0x100) == 0)
+    if ((*(equal + 26) & 0x100) == 0)
     {
       goto LABEL_71;
     }
 
-    v9 = *(a3 + 49);
+    v9 = *(equal + 49);
     if (self->_lPM)
     {
-      if ((*(a3 + 49) & 1) == 0)
+      if ((*(equal + 49) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 49))
+    else if (*(equal + 49))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(a3 + 26) & 0x100) != 0)
+  else if ((*(equal + 26) & 0x100) != 0)
   {
     goto LABEL_71;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 26) & 0x400) == 0)
+    if ((*(equal + 26) & 0x400) == 0)
     {
       goto LABEL_71;
     }
 
-    v10 = *(a3 + 51);
+    v10 = *(equal + 51);
     if (self->_online)
     {
-      if ((*(a3 + 51) & 1) == 0)
+      if ((*(equal + 51) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 51))
+    else if (*(equal + 51))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(a3 + 26) & 0x400) != 0)
+  else if ((*(equal + 26) & 0x400) != 0)
   {
     goto LABEL_71;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 26) & 0x200) != 0)
+    if ((*(equal + 26) & 0x200) != 0)
     {
-      v11 = *(a3 + 50);
+      v11 = *(equal + 50);
       if (self->_offline)
       {
-        if ((*(a3 + 50) & 1) == 0)
+        if ((*(equal + 50) & 1) == 0)
         {
           goto LABEL_71;
         }
       }
 
-      else if (*(a3 + 50))
+      else if (*(equal + 50))
       {
         goto LABEL_71;
       }
@@ -1066,7 +1066,7 @@ LABEL_71:
     return v5;
   }
 
-  if ((*(a3 + 26) & 0x200) != 0)
+  if ((*(equal + 26) & 0x200) != 0)
   {
     goto LABEL_71;
   }
@@ -1074,7 +1074,7 @@ LABEL_71:
 LABEL_34:
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_durationLPM != *(a3 + 6))
+    if ((v7 & 8) == 0 || self->_durationLPM != *(equal + 6))
     {
       goto LABEL_71;
     }
@@ -1087,7 +1087,7 @@ LABEL_34:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_durationOffline != *(a3 + 7))
+    if ((v7 & 0x10) == 0 || self->_durationOffline != *(equal + 7))
     {
       goto LABEL_71;
     }
@@ -1099,7 +1099,7 @@ LABEL_34:
   }
 
   instValues = self->_instValues;
-  if (instValues | *(a3 + 4))
+  if (instValues | *(equal + 4))
   {
     v5 = [(NSMutableArray *)instValues isEqual:?];
     if (!v5)
@@ -1110,11 +1110,11 @@ LABEL_34:
     has = self->_has;
   }
 
-  v13 = *(a3 + 26);
+  v13 = *(equal + 26);
   LOBYTE(v5) = (v13 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v13 & 2) == 0 || self->_counter != *(a3 + 4))
+    if ((v13 & 2) == 0 || self->_counter != *(equal + 4))
     {
       goto LABEL_71;
     }
@@ -1276,15 +1276,15 @@ LABEL_22:
   return v15 ^ v16 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 26);
+    v5 = *(from + 26);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1302,9 +1302,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_samplePeriods = *(a3 + 11);
+  self->_samplePeriods = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1317,9 +1317,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_duration = *(a3 + 5);
+  self->_duration = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 0x80) == 0)
   {
 LABEL_5:
@@ -1332,9 +1332,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_isEnd = *(a3 + 48);
+  self->_isEnd = *(from + 48);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1347,9 +1347,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_numStall = *(a3 + 10);
+  self->_numStall = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1362,9 +1362,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_lPM = *(a3 + 49);
+  self->_lPM = *(from + 49);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -1377,9 +1377,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_online = *(a3 + 51);
+  self->_online = *(from + 51);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -1392,9 +1392,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_offline = *(a3 + 50);
+  self->_offline = *(from + 50);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 26);
+  v5 = *(from + 26);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -1407,12 +1407,12 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_durationLPM = *(a3 + 6);
+  self->_durationLPM = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 26) & 0x10) != 0)
+  if ((*(from + 26) & 0x10) != 0)
   {
 LABEL_11:
-    self->_durationOffline = *(a3 + 7);
+    self->_durationOffline = *(from + 7);
     *&self->_has |= 0x10u;
   }
 
@@ -1421,7 +1421,7 @@ LABEL_12:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(a3 + 4);
+  v6 = *(from + 4);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -1445,9 +1445,9 @@ LABEL_12:
     while (v8);
   }
 
-  if ((*(a3 + 26) & 2) != 0)
+  if ((*(from + 26) & 2) != 0)
   {
-    self->_counter = *(a3 + 4);
+    self->_counter = *(from + 4);
     *&self->_has |= 2u;
   }
 

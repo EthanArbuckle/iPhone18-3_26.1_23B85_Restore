@@ -1,9 +1,9 @@
 @interface ISEventFilter
 + (ISEventFilter)everything;
-+ (id)allOf:(Class)a3;
-+ (id)someOf:(Class)a3 types:(id)a4;
++ (id)allOf:(Class)of;
++ (id)someOf:(Class)of types:(id)types;
 - (ISEventFilter)init;
-- (id)combine:(id)a3;
+- (id)combine:(id)combine;
 @end
 
 @implementation ISEventFilter
@@ -16,7 +16,7 @@
   return [(ISEventFilter *)&v4 init];
 }
 
-+ (id)allOf:(Class)a3
++ (id)allOf:(Class)of
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1F94B8, &unk_23C87AB80);
@@ -38,7 +38,7 @@
   return v9;
 }
 
-+ (id)someOf:(Class)a3 types:(id)a4
++ (id)someOf:(Class)of types:(id)types
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1FB3C8, &qword_23C87AB78);
@@ -60,11 +60,11 @@
   return v4;
 }
 
-- (id)combine:(id)a3
+- (id)combine:(id)combine
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _s26AIMLInstrumentationStreams11EventFilterC1poiyA2C_ACtFZ_0(v5, v4);
+  combineCopy = combine;
+  selfCopy = self;
+  v6 = _s26AIMLInstrumentationStreams11EventFilterC1poiyA2C_ACtFZ_0(selfCopy, combineCopy);
 
   return v6;
 }

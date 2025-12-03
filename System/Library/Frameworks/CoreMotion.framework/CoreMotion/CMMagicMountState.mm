@@ -1,52 +1,52 @@
 @interface CMMagicMountState
-- (CMMagicMountState)initWithCoder:(id)a3;
-- (CMMagicMountState)initWithMountStatus:(int64_t)a3 timestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMMagicMountState)initWithCoder:(id)coder;
+- (CMMagicMountState)initWithMountStatus:(int64_t)status timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMMagicMountState
 
-- (CMMagicMountState)initWithMountStatus:(int64_t)a3 timestamp:(double)a4
+- (CMMagicMountState)initWithMountStatus:(int64_t)status timestamp:(double)timestamp
 {
   v6.receiver = self;
   v6.super_class = CMMagicMountState;
-  result = [(CMLogItem *)&v6 initWithTimestamp:a4];
+  result = [(CMLogItem *)&v6 initWithTimestamp:timestamp];
   if (result)
   {
-    result->_mountStatus = a3;
+    result->_mountStatus = status;
   }
 
   return result;
 }
 
-- (CMMagicMountState)initWithCoder:(id)a3
+- (CMMagicMountState)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CMMagicMountState;
   v5 = [(CMLogItem *)&v7 initWithCoder:?];
   if (v5)
   {
-    v5->_mountStatus = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMMagicMountStateCodingKeyMountStatus");
+    v5->_mountStatus = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMMagicMountStateCodingKeyMountStatus");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMMagicMountState;
   [(CMLogItem *)&v6 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_mountStatus, @"kCMMagicMountStateCodingKeyMountStatus");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_mountStatus, @"kCMMagicMountStateCodingKeyMountStatus");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CMMagicMountState;
-  result = [(CMLogItem *)&v5 copyWithZone:a3];
+  result = [(CMLogItem *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 2) = self->_mountStatus;

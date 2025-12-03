@@ -1,20 +1,20 @@
 @interface ZoomUI_SBFluidSwitcherGestureManager
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 @end
 
 @implementation ZoomUI_SBFluidSwitcherGestureManager
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if (!+[ZoomServicesUI _shouldUnmapPointsForFluidGestures])
   {
     goto LABEL_11;
   }
 
-  v8 = [getAXSettingsClass() sharedInstance];
-  if ([v8 zoomInStandby])
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  if ([sharedInstance zoomInStandby])
   {
     goto LABEL_10;
   }
@@ -26,21 +26,21 @@
 LABEL_11:
     v36.receiver = self;
     v36.super_class = ZoomUI_SBFluidSwitcherGestureManager;
-    v34 = [(ZoomUI_SBFluidSwitcherGestureManager *)&v36 gestureRecognizer:v6 shouldReceiveTouch:v7];
+    v34 = [(ZoomUI_SBFluidSwitcherGestureManager *)&v36 gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
     goto LABEL_12;
   }
 
   v37 = 0;
   v10 = objc_opt_class();
   v11 = [(ZoomUI_SBFluidSwitcherGestureManager *)self safeValueForKey:@"activateReachabilityGestureRecognizer"];
-  v8 = soft___UIAccessibilityCastAsClass(v10, v11, &v37);
+  sharedInstance = soft___UIAccessibilityCastAsClass(v10, v11, &v37);
 
   if (v37 == 1)
   {
     goto LABEL_13;
   }
 
-  if (v8 != v6)
+  if (sharedInstance != recognizerCopy)
   {
 LABEL_10:
 
@@ -58,8 +58,8 @@ LABEL_13:
     abort();
   }
 
-  v15 = [v14 view];
-  [v15 bounds];
+  view = [v14 view];
+  [view bounds];
   v17 = v16;
   v18 = [(ZoomUI_SBFluidSwitcherGestureManager *)self safeValueForKey:@"reachabilitySettings"];
   soft_AXSafeClassFromString(@"SBReachabilitySettings");
@@ -71,15 +71,15 @@ LABEL_13:
 
   [v18 safeCGFloatForKey:@"homeGestureSwipeDownHeight"];
   v20 = v19;
-  v21 = [v6 view];
-  [v7 locationInView:v21];
+  view2 = [recognizerCopy view];
+  [touchCopy locationInView:view2];
   v23 = v22;
   v25 = v24;
 
-  v26 = [getZoomServicesClass() sharedInstance];
-  v27 = [MEMORY[0x29EDC7C40] mainScreen];
-  v28 = [v27 displayIdentity];
-  [v26 zoomFrameOnDisplay:{objc_msgSend(v28, "displayID")}];
+  sharedInstance2 = [getZoomServicesClass() sharedInstance];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  displayIdentity = [mainScreen displayIdentity];
+  [sharedInstance2 zoomFrameOnDisplay:{objc_msgSend(displayIdentity, "displayID")}];
   *zoomFrame = v29;
   *&zoomFrame[8] = v30;
   *&zoomFrame[16] = v31;

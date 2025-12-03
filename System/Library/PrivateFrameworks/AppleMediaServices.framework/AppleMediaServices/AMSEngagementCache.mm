@@ -1,8 +1,8 @@
 @interface AMSEngagementCache
 + (id)sharedInstance;
-- (AMSEngagementCache)initWithFileURL:(id)a3;
-- (id)cachedResponseForEvent:(id)a3;
-- (void)cacheResponse:(id)a3 filter:(id)a4 expiration:(id)a5;
+- (AMSEngagementCache)initWithFileURL:(id)l;
+- (id)cachedResponseForEvent:(id)event;
+- (void)cacheResponse:(id)response filter:(id)filter expiration:(id)expiration;
 - (void)dealloc;
 @end
 
@@ -38,8 +38,8 @@ void __36__AMSEngagementCache_sharedInstance__block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -47,7 +47,7 @@ void __36__AMSEngagementCache_sharedInstance__block_invoke()
     v20 = v5;
     v21 = 2114;
     v22 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Closing database", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Closing database", buf, 0x16u);
   }
 
   database = self->_database;
@@ -63,8 +63,8 @@ void __36__AMSEngagementCache_sharedInstance__block_invoke()
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -72,7 +72,7 @@ void __36__AMSEngagementCache_sharedInstance__block_invoke()
       v20 = v13;
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Database is closed", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Database is closed", buf, 0x16u);
 LABEL_14:
     }
   }
@@ -84,8 +84,8 @@ LABEL_14:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v14 = AMSLogKey();
@@ -96,7 +96,7 @@ LABEL_14:
       v22 = v14;
       v23 = 2114;
       v24 = v16;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to close database: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to close database: %{public}@", buf, 0x20u);
 
       goto LABEL_14;
     }
@@ -107,26 +107,26 @@ LABEL_14:
   [(AMSEngagementCache *)&v17 dealloc];
 }
 
-- (void)cacheResponse:(id)a3 filter:(id)a4 expiration:(id)a5
+- (void)cacheResponse:(id)response filter:(id)filter expiration:(id)expiration
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v39 = a5;
+  responseCopy = response;
+  filterCopy = filter;
+  expirationCopy = expiration;
   v10 = +[AMSLogConfig sharedEngagementConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
-    v14 = AMSHashIfNeeded(v8);
-    AMSHashIfNeeded(v9);
-    v16 = v15 = v9;
+    v14 = AMSHashIfNeeded(responseCopy);
+    AMSHashIfNeeded(filterCopy);
+    v16 = v15 = filterCopy;
     *buf = 138544130;
     v44 = v12;
     v45 = 2114;
@@ -135,31 +135,31 @@ LABEL_14:
     v48 = v14;
     v49 = 2114;
     v50 = v16;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching (response: %{public}@, filter: %{public}@)", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching (response: %{public}@, filter: %{public}@)", buf, 0x2Au);
 
-    v9 = v15;
+    filterCopy = v15;
   }
 
   v42 = 0;
-  v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v8 options:0 error:&v42];
+  v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:responseCopy options:0 error:&v42];
   v18 = v42;
   if (v17)
   {
     v41 = v18;
-    v38 = v9;
-    v19 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v9 options:0 error:&v41];
+    v38 = filterCopy;
+    v19 = [MEMORY[0x1E696ACB0] dataWithJSONObject:filterCopy options:0 error:&v41];
     v20 = v41;
 
     if (!v19)
     {
-      v25 = +[AMSLogConfig sharedEngagementConfig];
-      if (!v25)
+      oSLogObject3 = +[AMSLogConfig sharedEngagementConfig];
+      if (!oSLogObject3)
       {
-        v25 = +[AMSLogConfig sharedConfig];
+        oSLogObject3 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [oSLogObject3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v33 = objc_opt_class();
         v34 = AMSLogKey();
@@ -170,28 +170,28 @@ LABEL_14:
         v46 = v34;
         v47 = 2114;
         v48 = v35;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode filter: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode filter: %{public}@", buf, 0x20u);
       }
 
       goto LABEL_26;
     }
 
-    v21 = [(AMSEngagementCache *)self database];
+    database = [(AMSEngagementCache *)self database];
     v40 = v20;
-    v22 = [v21 insertResponseData:v17 filterData:v19 expiration:v39 error:&v40];
+    v22 = [database insertResponseData:v17 filterData:v19 expiration:expirationCopy error:&v40];
     v23 = v40;
 
     v24 = +[AMSLogConfig sharedEngagementConfig];
-    v25 = v24;
+    oSLogObject3 = v24;
     if (v22)
     {
       if (!v24)
       {
-        v25 = +[AMSLogConfig sharedConfig];
+        oSLogObject3 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [oSLogObject3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_25;
       }
@@ -202,18 +202,18 @@ LABEL_14:
       v44 = v27;
       v45 = 2114;
       v46 = v28;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching complete", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching complete", buf, 0x16u);
     }
 
     else
     {
       if (!v24)
       {
-        v25 = +[AMSLogConfig sharedConfig];
+        oSLogObject3 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [oSLogObject3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_25;
       }
@@ -227,7 +227,7 @@ LABEL_14:
       v46 = v28;
       v47 = 2114;
       v48 = v37;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to insert response: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to insert response: %{public}@", buf, 0x20u);
     }
 
 LABEL_25:
@@ -235,7 +235,7 @@ LABEL_25:
 LABEL_26:
 
     v18 = v20;
-    v9 = v38;
+    filterCopy = v38;
     goto LABEL_27;
   }
 
@@ -245,31 +245,31 @@ LABEL_26:
     v19 = +[AMSLogConfig sharedConfig];
   }
 
-  v25 = [v19 OSLogObject];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v29 = objc_opt_class();
     v30 = AMSLogKey();
     AMSHashIfNeeded(v18);
-    v32 = v31 = v9;
+    v32 = v31 = filterCopy;
     *buf = 138543874;
     v44 = v29;
     v45 = 2114;
     v46 = v30;
     v47 = 2114;
     v48 = v32;
-    _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode response: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode response: %{public}@", buf, 0x20u);
 
-    v9 = v31;
+    filterCopy = v31;
   }
 
 LABEL_27:
 }
 
-- (AMSEngagementCache)initWithFileURL:(id)a3
+- (AMSEngagementCache)initWithFileURL:(id)l
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = AMSEngagementCache;
   v5 = [(AMSEngagementCache *)&v27 init];
@@ -282,25 +282,25 @@ LABEL_27:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
-      v11 = [v4 path];
-      v12 = AMSHashIfNeeded(v11);
+      path = [lCopy path];
+      v12 = AMSHashIfNeeded(path);
       *buf = 138543874;
       v29 = v9;
       v30 = 2114;
       v31 = v10;
       v32 = 2114;
       v33 = v12;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Opening database (path: %{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Opening database (path: %{public}@)", buf, 0x20u);
     }
 
-    v13 = [v4 path];
+    path2 = [lCopy path];
     v26 = 0;
-    v14 = [(AMSEngagementCacheDatabase *)v6 openAtPath:v13 error:&v26];
+    v14 = [(AMSEngagementCacheDatabase *)v6 openAtPath:path2 error:&v26];
     v15 = v26;
 
     v16 = +[AMSLogConfig sharedEngagementConfig];
@@ -312,8 +312,8 @@ LABEL_27:
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v17 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v19 = objc_opt_class();
         v20 = AMSLogKey();
@@ -321,7 +321,7 @@ LABEL_27:
         v29 = v19;
         v30 = 2114;
         v31 = v20;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Database is open", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Database is open", buf, 0x16u);
       }
 
       objc_storeStrong(&v5->_database, v6);
@@ -334,8 +334,8 @@ LABEL_27:
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v21 = [v17 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v17 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v22 = objc_opt_class();
         v23 = AMSLogKey();
@@ -346,7 +346,7 @@ LABEL_27:
         v31 = v23;
         v32 = 2114;
         v33 = v24;
-        _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to open database: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to open database: %{public}@", buf, 0x20u);
       }
 
       v5 = 0;
@@ -356,18 +356,18 @@ LABEL_27:
   return v5;
 }
 
-- (id)cachedResponseForEvent:(id)a3
+- (id)cachedResponseForEvent:(id)event
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = +[AMSLogConfig sharedEngagementConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -375,12 +375,12 @@ LABEL_27:
     *&buf[4] = v7;
     *&buf[12] = 2114;
     *&buf[14] = v8;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Collecting garbage", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Collecting garbage", buf, 0x16u);
   }
 
-  v9 = [(AMSEngagementCache *)self database];
+  database = [(AMSEngagementCache *)self database];
   v35 = 0;
-  v10 = [v9 collectGarbageWithError:&v35];
+  v10 = [database collectGarbageWithError:&v35];
   v11 = v35;
 
   v12 = +[AMSLogConfig sharedEngagementConfig];
@@ -392,8 +392,8 @@ LABEL_27:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
@@ -401,7 +401,7 @@ LABEL_27:
       *&buf[4] = v15;
       *&buf[12] = 2114;
       *&buf[14] = v16;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Garbage collection is complete", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Garbage collection is complete", buf, 0x16u);
     }
   }
 
@@ -412,8 +412,8 @@ LABEL_27:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -424,7 +424,7 @@ LABEL_27:
       *&buf[14] = v18;
       *&buf[22] = 2114;
       v37 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Failed to collect garbage: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Failed to collect garbage: %{public}@", buf, 0x20u);
     }
   }
 
@@ -434,19 +434,19 @@ LABEL_27:
     v20 = +[AMSLogConfig sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v20 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v22 = objc_opt_class();
     v23 = AMSLogKey();
-    v24 = AMSHashIfNeeded(v4);
+    v24 = AMSHashIfNeeded(eventCopy);
     *buf = 138543874;
     *&buf[4] = v22;
     *&buf[12] = 2114;
     *&buf[14] = v23;
     *&buf[22] = 2114;
     v37 = v24;
-    _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching cached response (event: %{public}@)", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching cached response (event: %{public}@)", buf, 0x20u);
   }
 
   *buf = 0;
@@ -455,18 +455,18 @@ LABEL_27:
   v37 = __Block_byref_object_copy__25;
   v38 = __Block_byref_object_dispose__25;
   v39 = 0;
-  v25 = [(AMSEngagementCache *)self database];
+  database2 = [(AMSEngagementCache *)self database];
   v26 = [MEMORY[0x1E695DF00] now];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __54__AMSEngagementCache_Project__cachedResponseForEvent___block_invoke;
   v32[3] = &unk_1E73B73C8;
   v32[4] = self;
-  v27 = v4;
+  v27 = eventCopy;
   v33 = v27;
   v34 = buf;
   v31 = v11;
-  [v25 selectWithExpirationDate:v26 handler:v32 error:&v31];
+  [database2 selectWithExpirationDate:v26 handler:v32 error:&v31];
   v28 = v31;
 
   v29 = *(*&buf[8] + 40);

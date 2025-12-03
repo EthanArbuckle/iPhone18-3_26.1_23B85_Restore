@@ -1,37 +1,37 @@
 @interface NUVersion
-+ (BOOL)validateVersionString:(id)a3 major:(int64_t *)a4 minor:(int64_t *)a5;
-+ (NUVersion)versionWithPackedUInt32:(unsigned int)a3;
-+ (NUVersion)versionWithString:(id)a3;
++ (BOOL)validateVersionString:(id)string major:(int64_t *)major minor:(int64_t *)minor;
++ (NUVersion)versionWithPackedUInt32:(unsigned int)int32;
++ (NUVersion)versionWithString:(id)string;
 + (id)regularExpression;
 + (id)versionOne;
 + (id)versionZero;
-- (BOOL)atLeastMajor:(int64_t)a3 minor:(int64_t)a4;
-- (BOOL)isCompatibleWithVersion:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVersion:(id)a3;
-- (NUVersion)initWithMajor:(int64_t)a3 minor:(int64_t)a4;
-- (int64_t)compare:(id)a3;
+- (BOOL)atLeastMajor:(int64_t)major minor:(int64_t)minor;
+- (BOOL)isCompatibleWithVersion:(id)version;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVersion:(id)version;
+- (NUVersion)initWithMajor:(int64_t)major minor:(int64_t)minor;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation NUVersion
 
-- (BOOL)isCompatibleWithVersion:(id)a3
+- (BOOL)isCompatibleWithVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(NUVersion *)self major];
-  v6 = [v4 major];
+  versionCopy = version;
+  major = [(NUVersion *)self major];
+  major2 = [versionCopy major];
 
-  return v5 <= v6;
+  return major <= major2;
 }
 
-- (BOOL)isEqualToVersion:(id)a3
+- (BOOL)isEqualToVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(NUVersion *)self major];
-  if (v5 == [v4 major])
+  versionCopy = version;
+  major = [(NUVersion *)self major];
+  if (major == [versionCopy major])
   {
-    v6 = [(NUVersion *)self minor];
-    v7 = v6 == [v4 minor];
+    minor = [(NUVersion *)self minor];
+    v7 = minor == [versionCopy minor];
   }
 
   else
@@ -42,47 +42,47 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUVersion *)self isEqualToVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUVersion *)self isEqualToVersion:equalCopy];
 
   return v5;
 }
 
-- (BOOL)atLeastMajor:(int64_t)a3 minor:(int64_t)a4
+- (BOOL)atLeastMajor:(int64_t)major minor:(int64_t)minor
 {
-  v5 = [[NUVersion alloc] initWithMajor:a3 minor:a4];
+  v5 = [[NUVersion alloc] initWithMajor:major minor:minor];
   v6 = [(NUVersion *)self compare:v5]!= -1;
 
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   major = self->_major;
-  if (major == [v4 major])
+  if (major == [compareCopy major])
   {
     minor = self->_minor;
-    if (minor == [v4 minor])
+    if (minor == [compareCopy minor])
     {
       v7 = 0;
       goto LABEL_9;
     }
 
     v8 = self->_minor;
-    v9 = [v4 minor];
+    minor = [compareCopy minor];
   }
 
   else
   {
     v8 = self->_major;
-    v9 = [v4 major];
+    minor = [compareCopy major];
   }
 
-  if (v8 > v9)
+  if (v8 > minor)
   {
     v7 = 1;
   }
@@ -97,10 +97,10 @@ LABEL_9:
   return v7;
 }
 
-- (NUVersion)initWithMajor:(int64_t)a3 minor:(int64_t)a4
+- (NUVersion)initWithMajor:(int64_t)major minor:(int64_t)minor
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a3 > 0x3B9AC9FF)
+  if (major > 0x3B9AC9FF)
   {
     v4 = NUAssertLogger_31319();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -121,8 +121,8 @@ LABEL_9:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v18;
         v38 = 2114;
@@ -133,8 +133,8 @@ LABEL_9:
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -143,7 +143,7 @@ LABEL_9:
     _NUAssertFailHandler("[NUVersion initWithMajor:minor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUVersion.m", 32, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "major >= 0 && major <= kMajorVersionLimit");
   }
 
-  if (a4 > 0x3B9AC9FF)
+  if (minor > 0x3B9AC9FF)
   {
     v11 = NUAssertLogger_31319();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -164,8 +164,8 @@ LABEL_9:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v28 callStackSymbols];
+        v31 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v27;
         v38 = 2114;
@@ -176,8 +176,8 @@ LABEL_9:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -186,8 +186,8 @@ LABEL_9:
     _NUAssertFailHandler("[NUVersion initWithMajor:minor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUVersion.m", 33, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "minor >= 0 && minor <= kMinorVersionLimit");
   }
 
-  self->_major = a3;
-  self->_minor = a4;
+  self->_major = major;
+  self->_minor = minor;
   return self;
 }
 
@@ -256,26 +256,26 @@ void __30__NUVersion_regularExpression__block_invoke()
   }
 }
 
-+ (BOOL)validateVersionString:(id)a3 major:(int64_t *)a4 minor:(int64_t *)a5
++ (BOOL)validateVersionString:(id)string major:(int64_t *)major minor:(int64_t *)minor
 {
-  v7 = a3;
-  v8 = [v7 length];
+  stringCopy = string;
+  v8 = [stringCopy length];
   v9 = +[NUVersion regularExpression];
-  v10 = [v9 firstMatchInString:v7 options:0 range:{0, v8}];
+  v10 = [v9 firstMatchInString:stringCopy options:0 range:{0, v8}];
 
   if (v10 && ([v10 rangeAtIndex:0], v8 == v11))
   {
     v12 = 1;
-    if (a4 && a5)
+    if (major && minor)
     {
       v12 = 1;
       v13 = [v10 rangeAtIndex:1];
-      v15 = [v7 substringWithRange:{v13, v14}];
-      *a4 = [v15 integerValue];
+      v15 = [stringCopy substringWithRange:{v13, v14}];
+      *major = [v15 integerValue];
 
       v16 = [v10 rangeAtIndex:2];
-      v18 = [v7 substringWithRange:{v16, v17}];
-      *a5 = [v18 integerValue];
+      v18 = [stringCopy substringWithRange:{v16, v17}];
+      *minor = [v18 integerValue];
     }
   }
 
@@ -287,11 +287,11 @@ void __30__NUVersion_regularExpression__block_invoke()
   return v12;
 }
 
-+ (NUVersion)versionWithString:(id)a3
++ (NUVersion)versionWithString:(id)string
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v9 = NUAssertLogger_31319();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -312,8 +312,8 @@ void __30__NUVersion_regularExpression__block_invoke()
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v16;
         v27 = 2114;
@@ -324,8 +324,8 @@ void __30__NUVersion_regularExpression__block_invoke()
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -334,36 +334,36 @@ void __30__NUVersion_regularExpression__block_invoke()
     _NUAssertFailHandler("+[NUVersion versionWithString:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUVersion.m", 48, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "string != nil");
   }
 
-  v5 = v4;
+  v5 = stringCopy;
   v25 = 0;
   *buf = 0;
   v6 = 0;
-  if ([a1 validateVersionString:v4 major:buf minor:&v25])
+  if ([self validateVersionString:stringCopy major:buf minor:&v25])
   {
-    v7 = [a1 alloc];
+    v7 = [self alloc];
     v6 = [v7 initWithMajor:*buf minor:v25];
   }
 
   return v6;
 }
 
-+ (NUVersion)versionWithPackedUInt32:(unsigned int)a3
++ (NUVersion)versionWithPackedUInt32:(unsigned int)int32
 {
-  v3 = [[a1 alloc] initWithMajor:HIWORD(a3) minor:a3];
+  v3 = [[self alloc] initWithMajor:HIWORD(int32) minor:int32];
 
   return v3;
 }
 
 + (id)versionOne
 {
-  v2 = [[a1 alloc] initWithMajor:1 minor:0];
+  v2 = [[self alloc] initWithMajor:1 minor:0];
 
   return v2;
 }
 
 + (id)versionZero
 {
-  v2 = [[a1 alloc] initWithMajor:0 minor:0];
+  v2 = [[self alloc] initWithMajor:0 minor:0];
 
   return v2;
 }

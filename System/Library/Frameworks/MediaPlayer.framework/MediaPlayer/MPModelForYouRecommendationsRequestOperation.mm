@@ -1,35 +1,35 @@
 @interface MPModelForYouRecommendationsRequestOperation
-- (id)_missingContentIdentifiersInRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4;
-- (id)_personalizeRecommendationGroup:(id)a3 flatPersonalizedSectionedItems:(id)a4;
-- (id)_responseWithResults:(id)a3 personalizationResponse:(id)a4;
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4;
-- (void)_produceResponseWithRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4 completion:(id)a5;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (id)_missingContentIdentifiersInRecommendationsArray:(id)array storeItemMetadataResults:(id)results;
+- (id)_personalizeRecommendationGroup:(id)group flatPersonalizedSectionedItems:(id)items;
+- (id)_responseWithResults:(id)results personalizationResponse:(id)response;
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error;
+- (void)_produceResponseWithRecommendationsArray:(id)array storeItemMetadataResults:(id)results completion:(id)completion;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation MPModelForYouRecommendationsRequestOperation
 
-- (id)_responseWithResults:(id)a3 personalizationResponse:(id)a4
+- (id)_responseWithResults:(id)results personalizationResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  resultsCopy = results;
   v8 = objc_alloc_init(MPMutableSectionedCollection);
-  v9 = [v6 results];
+  results = [responseCopy results];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__MPModelForYouRecommendationsRequestOperation__responseWithResults_personalizationResponse___block_invoke;
   v16[3] = &unk_1E767D000;
   v16[4] = self;
-  v17 = v9;
+  v17 = results;
   v18 = v8;
   v10 = v8;
-  v11 = v9;
-  [v7 enumerateSectionsUsingBlock:v16];
+  v11 = results;
+  [resultsCopy enumerateSectionsUsingBlock:v16];
 
   v12 = [MPModelForYouRecommendationsResponse alloc];
-  v13 = [(MPStoreModelRequestOperation *)self request];
-  v14 = [(MPModelResponse *)v12 initWithRequest:v13];
+  request = [(MPStoreModelRequestOperation *)self request];
+  v14 = [(MPModelResponse *)v12 initWithRequest:request];
 
   [(MPModelResponse *)v14 setResults:v10];
 
@@ -47,21 +47,21 @@ void __93__MPModelForYouRecommendationsRequestOperation__responseWithResults_per
   }
 }
 
-- (id)_personalizeRecommendationGroup:(id)a3 flatPersonalizedSectionedItems:(id)a4
+- (id)_personalizeRecommendationGroup:(id)group flatPersonalizedSectionedItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifiers];
+  groupCopy = group;
+  itemsCopy = items;
+  identifiers = [groupCopy identifiers];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendationGroup_flatPersonalizedSectionedItems___block_invoke;
   v13[3] = &unk_1E767CFD8;
-  v14 = v7;
-  v15 = v6;
-  v16 = self;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v9 copyWithIdentifiers:v8 block:v13];
+  v14 = itemsCopy;
+  v15 = groupCopy;
+  selfCopy = self;
+  v9 = groupCopy;
+  v10 = itemsCopy;
+  v11 = [v9 copyWithIdentifiers:identifiers block:v13];
 
   return v11;
 }
@@ -115,24 +115,24 @@ void __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendat
   }
 }
 
-- (void)_produceResponseWithRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4 completion:(id)a5
+- (void)_produceResponseWithRecommendationsArray:(id)array storeItemMetadataResults:(id)results completion:(id)completion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v41 = a5;
+  arrayCopy = array;
+  resultsCopy = results;
+  completionCopy = completion;
   v48 = objc_alloc_init(MPMutableSectionedCollection);
   v46 = objc_alloc_init(MPMutableSectionedCollection);
-  v10 = [(MPStoreModelRequestOperation *)self request];
-  v11 = [v10 sectionProperties];
-  v12 = [v10 filteringPolicy];
-  v44 = v10;
-  v13 = [v10 itemProperties];
+  request = [(MPStoreModelRequestOperation *)self request];
+  sectionProperties = [request sectionProperties];
+  filteringPolicy = [request filteringPolicy];
+  v44 = request;
+  itemProperties = [request itemProperties];
   v14 = [MPMutablePropertySet alloc];
   v15 = [(MPMutablePropertySet *)v14 initWithProperties:MEMORY[0x1E695E0F0] relationships:0];
   [(MPMutablePropertySet *)v15 addProperty:@"MPModelForYouRecommendationItemPropertyBackedByStoreItemMetadata"];
-  v16 = [v13 relationships];
-  v17 = [v16 objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
+  relationships = [itemProperties relationships];
+  v17 = [relationships objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
 
   if (v17)
   {
@@ -141,12 +141,12 @@ void __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendat
   }
 
   v42 = v15;
-  v18 = [v13 propertySetByCombiningWithPropertySet:v15];
+  v18 = [itemProperties propertySetByCombiningWithPropertySet:v15];
 
-  v43 = v11;
+  v43 = sectionProperties;
   v40 = v18;
-  v45 = v9;
-  v19 = [[MPModelForYouRecommendationGroupBuilder alloc] initWithRequestedGroupPropertySet:v11 requestedItemPropertySet:v18 storeItemMetadataResults:v9 flatSectionedItems:v46];
+  v45 = resultsCopy;
+  v19 = [[MPModelForYouRecommendationGroupBuilder alloc] initWithRequestedGroupPropertySet:sectionProperties requestedItemPropertySet:v18 storeItemMetadataResults:resultsCopy flatSectionedItems:v46];
   v20 = objc_alloc_init(MEMORY[0x1E696AD50]);
   [v20 addIndex:3];
   v47 = v20;
@@ -155,7 +155,7 @@ void __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendat
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v21 = v8;
+  v21 = arrayCopy;
   v22 = [v21 countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v22)
   {
@@ -175,10 +175,10 @@ void __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendat
         if (_NSIsNSDictionary())
         {
           v27 = v26;
-          v28 = [(MPAsyncOperation *)self userIdentity];
-          v29 = [(MPModelForYouRecommendationGroupBuilder *)v19 modelObjectForRecommendationDictionary:v27 userIdentity:v28];
+          userIdentity = [(MPAsyncOperation *)self userIdentity];
+          v29 = [(MPModelForYouRecommendationGroupBuilder *)v19 modelObjectForRecommendationDictionary:v27 userIdentity:userIdentity];
 
-          if (v29 && (v12 != 1 || ([v47 containsIndex:{objc_msgSend(v29, "groupType")}] & 1) == 0))
+          if (v29 && (filteringPolicy != 1 || ([v47 containsIndex:{objc_msgSend(v29, "groupType")}] & 1) == 0))
           {
             [(MPMutableSectionedCollection *)v48 appendSection:v29];
           }
@@ -223,8 +223,8 @@ void __111__MPModelForYouRecommendationsRequestOperation__personalizeRecommendat
   v49[3] = &unk_1E767CFB0;
   v49[4] = self;
   v50 = v48;
-  v51 = v41;
-  v38 = v41;
+  v51 = completionCopy;
+  v38 = completionCopy;
   v39 = v48;
   [(MPModelRequest *)v37 performWithResponseHandler:v49];
 }
@@ -265,13 +265,13 @@ void __125__MPModelForYouRecommendationsRequestOperation__produceResponseWithRec
   [*(a1 + 32) appendItem:v4];
 }
 
-- (id)_missingContentIdentifiersInRecommendationsArray:(id)a3 storeItemMetadataResults:(id)a4
+- (id)_missingContentIdentifiersInRecommendationsArray:(id)array storeItemMetadataResults:(id)results
 {
-  v5 = a3;
-  v17 = a4;
-  v15 = v5;
+  arrayCopy = array;
+  resultsCopy = results;
+  v15 = arrayCopy;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v5 mutableCopy];
+  v6 = [arrayCopy mutableCopy];
   while ([v6 count])
   {
     v7 = [v6 objectAtIndex:0];
@@ -294,7 +294,7 @@ void __125__MPModelForYouRecommendationsRequestOperation__produceResponseWithRec
           v12 = [v8 objectForKey:@"isUnavailableInAppleMusic"];
           if ((objc_opt_respondsToSelector() & 1) == 0 || ([v12 BOOLValue] & 1) == 0)
           {
-            v13 = [v17 objectForKey:v11];
+            v13 = [resultsCopy objectForKey:v11];
 
             if (!v13)
             {
@@ -309,27 +309,27 @@ void __125__MPModelForYouRecommendationsRequestOperation__produceResponseWithRec
   return v16;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  completionCopy = completion;
   if (!_NSIsNSDictionary())
   {
     goto LABEL_12;
   }
 
-  v8 = [v6 objectForKey:@"recommendations"];
+  v8 = [outputCopy objectForKey:@"recommendations"];
   if (!_NSIsNSArray())
   {
 LABEL_11:
 
 LABEL_12:
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69E4198] code:-7102 userInfo:0];
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
     goto LABEL_13;
   }
 
-  v9 = [v6 objectForKey:@"storePlatformData"];
+  v9 = [outputCopy objectForKey:@"storePlatformData"];
   if (!_NSIsNSDictionary())
   {
 LABEL_10:
@@ -337,8 +337,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v9 allValues];
-  v11 = [v10 firstObject];
+  allValues = [v9 allValues];
+  firstObject = [allValues firstObject];
 
   if (!_NSIsNSDictionary())
   {
@@ -347,7 +347,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v11 objectForKey:@"results"];
+  v12 = [firstObject objectForKey:@"results"];
   if (!_NSIsNSDictionary())
   {
 
@@ -372,15 +372,15 @@ LABEL_9:
     v17[3] = &unk_1E767CF30;
     v18 = v15;
     v19 = v14;
-    v20 = self;
+    selfCopy = self;
     v21 = v8;
-    v22 = v7;
+    v22 = completionCopy;
     [v16 requestStoreItemMetadataForReason:1 withItemIdentifiers:v18 responseHandler:v17];
   }
 
   else
   {
-    [(MPModelForYouRecommendationsRequestOperation *)self _produceResponseWithRecommendationsArray:v8 storeItemMetadataResults:v14 completion:v7];
+    [(MPModelForYouRecommendationsRequestOperation *)self _produceResponseWithRecommendationsArray:v8 storeItemMetadataResults:v14 completion:completionCopy];
   }
 
 LABEL_13:
@@ -445,18 +445,18 @@ void __91__MPModelForYouRecommendationsRequestOperation_produceResponseWithLoade
   }
 }
 
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MPStoreModelRequestOperation *)self request];
-  v8 = [v7 customForYouURL];
+  bagCopy = bag;
+  request = [(MPStoreModelRequestOperation *)self request];
+  customForYouURL = [request customForYouURL];
 
-  if (v8)
+  if (customForYouURL)
   {
     goto LABEL_2;
   }
 
-  v23 = [v6 dictionaryForBagKey:*MEMORY[0x1E69E4320]];
+  v23 = [bagCopy dictionaryForBagKey:*MEMORY[0x1E69E4320]];
   if (!v23)
   {
     goto LABEL_19;
@@ -470,16 +470,16 @@ void __91__MPModelForYouRecommendationsRequestOperation_produceResponseWithLoade
     goto LABEL_19;
   }
 
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:v25];
+  customForYouURL = [MEMORY[0x1E695DFF8] URLWithString:v25];
 
-  if (!v8)
+  if (!customForYouURL)
   {
 LABEL_19:
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69E4198] code:-7201 userInfo:0];
       v20 = 0;
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -499,16 +499,16 @@ LABEL_2:
     [v9 setObject:@"true" forKey:@"isInternalInstall"];
   }
 
-  v10 = [(MPAsyncOperation *)self userIdentity];
-  v11 = [MPCloudController controllerWithUserIdentity:v10];
-  v12 = [v11 isCloudLibraryEnabled];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v11 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  isCloudLibraryEnabled = [v11 isCloudLibraryEnabled];
 
-  if (v12)
+  if (isCloudLibraryEnabled)
   {
     [v9 setObject:@"true" forKey:@"isIcloudLibraryEnabled"];
   }
 
-  v13 = [v6 dictionaryForBagKey:*MEMORY[0x1E69E4318]];
+  v13 = [bagCopy dictionaryForBagKey:*MEMORY[0x1E69E4318]];
   v14 = v13;
   if (v13)
   {
@@ -520,9 +520,9 @@ LABEL_2:
   }
 
   [v9 setObject:@"trackBadging" forKey:@"include"];
-  v16 = [MEMORY[0x1E696AF20] componentsWithURL:v8 resolvingAgainstBaseURL:0];
-  v17 = [v16 queryItems];
-  v18 = [v17 mutableCopy];
+  v16 = [MEMORY[0x1E696AF20] componentsWithURL:customForYouURL resolvingAgainstBaseURL:0];
+  queryItems = [v16 queryItems];
+  v18 = [queryItems mutableCopy];
 
   if (!v18)
   {

@@ -1,5 +1,5 @@
 @interface InCallControlsStatusCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityActivateActionButton;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -7,20 +7,20 @@
 
 @implementation InCallControlsStatusCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsStatusCell" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(InCallControlsStatusCellAccessibility *)self safeValueForKey:@"titleLabel"];
   v4 = [(InCallControlsStatusCellAccessibility *)self safeValueForKey:@"subtitleLabel"];
-  v5 = [v3 accessibilityLabel];
-  v8 = [v4 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
+  accessibilityLabel2 = [v4 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -33,8 +33,8 @@
   if ([v4 _accessibilityViewIsVisible])
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v6 = [v4 accessibilityLabel];
-    v7 = [v5 initWithName:v6 target:self selector:sel__accessibilityActivateActionButton];
+    accessibilityLabel = [v4 accessibilityLabel];
+    v7 = [v5 initWithName:accessibilityLabel target:self selector:sel__accessibilityActivateActionButton];
     [v3 addObject:v7];
   }
 

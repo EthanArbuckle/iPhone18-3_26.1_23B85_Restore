@@ -1,19 +1,19 @@
 @interface PXSharedAlbumSubscriberInfo
-+ (id)_allSubscribersForAlbum:(id)a3 includeMyself:(BOOL)a4;
-+ (id)allSubscribersForAlbumWithObjectID:(id)a3 includingCurrentUser:(BOOL)a4 managedObjectContext:(id)a5;
++ (id)_allSubscribersForAlbum:(id)album includeMyself:(BOOL)myself;
++ (id)allSubscribersForAlbumWithObjectID:(id)d includingCurrentUser:(BOOL)user managedObjectContext:(id)context;
 - (PXSharedAlbumSubscriberInfo)init;
-- (PXSharedAlbumSubscriberInfo)initWithInvitationRecord:(id)a3 identifier:(id)a4 email:(id)a5 phone:(id)a6 firstName:(id)a7 lastName:(id)a8 displayName:(id)a9 isOwner:(BOOL)a10;
-- (id)matchingContactWithKeysToFetch:(id)a3 outMatchingKey:(id *)a4 outMatchingIdentifier:(id *)a5;
+- (PXSharedAlbumSubscriberInfo)initWithInvitationRecord:(id)record identifier:(id)identifier email:(id)email phone:(id)phone firstName:(id)name lastName:(id)lastName displayName:(id)displayName isOwner:(BOOL)self0;
+- (id)matchingContactWithKeysToFetch:(id)fetch outMatchingKey:(id *)key outMatchingIdentifier:(id *)identifier;
 @end
 
 @implementation PXSharedAlbumSubscriberInfo
 
-- (id)matchingContactWithKeysToFetch:(id)a3 outMatchingKey:(id *)a4 outMatchingIdentifier:(id *)a5
+- (id)matchingContactWithKeysToFetch:(id)fetch outMatchingKey:(id *)key outMatchingIdentifier:(id *)identifier
 {
   v90[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fetchCopy = fetch;
   v7 = +[PXPeopleUtilities sharedContactStore];
-  v8 = [MEMORY[0x1E695DF70] arrayWithArray:v6];
+  v8 = [MEMORY[0x1E695DF70] arrayWithArray:fetchCopy];
   v59 = *MEMORY[0x1E695C330];
   v9 = *MEMORY[0x1E695C330];
   v61 = *MEMORY[0x1E695C208];
@@ -22,15 +22,15 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:2];
   [v8 addObjectsFromArray:v10];
 
-  v11 = [(PXSharedAlbumSubscriberInfo *)self firstName];
-  v12 = [(PXSharedAlbumSubscriberInfo *)self lastName];
-  v13 = [(PXSharedAlbumSubscriberInfo *)self email];
-  v14 = [(PXSharedAlbumSubscriberInfo *)self phone];
-  v15 = v14;
-  if (v11 | v12)
+  firstName = [(PXSharedAlbumSubscriberInfo *)self firstName];
+  lastName = [(PXSharedAlbumSubscriberInfo *)self lastName];
+  email = [(PXSharedAlbumSubscriberInfo *)self email];
+  phone = [(PXSharedAlbumSubscriberInfo *)self phone];
+  v15 = phone;
+  if (firstName | lastName)
   {
-    v16 = v6;
-    v17 = v14;
+    v16 = fetchCopy;
+    v17 = phone;
     v18 = objc_alloc_init(MEMORY[0x1E695CD80]);
     v19 = v18;
     if (v18)
@@ -40,23 +40,23 @@
       [v8 addObject:v20];
     }
 
-    v21 = a4;
+    keyCopy4 = key;
     v15 = v17;
-    v6 = v16;
+    fetchCopy = v16;
   }
 
   else
   {
     v19 = 0;
-    v21 = a4;
+    keyCopy4 = key;
   }
 
-  v71 = v12;
-  v72 = v11;
-  if (![v13 length])
+  v71 = lastName;
+  v72 = firstName;
+  if (![email length])
   {
     v28 = 0;
-    v30 = 0;
+    identifier2 = 0;
 LABEL_29:
     if ([v15 length])
     {
@@ -94,14 +94,14 @@ LABEL_29:
           v77 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v39 = [v27 phoneNumbers];
-          v40 = [v39 countByEnumeratingWithState:&v74 objects:v84 count:16];
+          phoneNumbers = [v27 phoneNumbers];
+          v40 = [phoneNumbers countByEnumeratingWithState:&v74 objects:v84 count:16];
           if (v40)
           {
             v41 = v40;
             v52 = v19;
             v54 = v7;
-            v56 = v6;
+            v56 = fetchCopy;
             v42 = *v75;
             while (2)
             {
@@ -109,21 +109,21 @@ LABEL_29:
               {
                 if (*v75 != v42)
                 {
-                  objc_enumerationMutation(v39);
+                  objc_enumerationMutation(phoneNumbers);
                 }
 
                 v44 = *(*(&v74 + 1) + 8 * i);
-                v45 = [v44 value];
-                if ([v45 isLikePhoneNumber:v36])
+                value = [v44 value];
+                if ([value isLikePhoneNumber:v36])
                 {
-                  v46 = [v44 identifier];
+                  identifier = [v44 identifier];
 
-                  v30 = v46;
+                  identifier2 = identifier;
                   goto LABEL_48;
                 }
               }
 
-              v41 = [v39 countByEnumeratingWithState:&v74 objects:v84 count:16];
+              v41 = [phoneNumbers countByEnumeratingWithState:&v74 objects:v84 count:16];
               if (v41)
               {
                 continue;
@@ -134,7 +134,7 @@ LABEL_29:
 
 LABEL_48:
             v7 = v54;
-            v6 = v56;
+            fetchCopy = v56;
             v19 = v52;
           }
 
@@ -149,7 +149,7 @@ LABEL_48:
         v27 = 0;
       }
 
-      v21 = a4;
+      keyCopy4 = key;
     }
 
     else
@@ -160,14 +160,14 @@ LABEL_48:
     goto LABEL_51;
   }
 
-  [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v13];
+  [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:email];
   v64 = v83 = 0;
   v22 = [v7 unifiedContactsMatchingPredicate:? keysToFetch:? error:?];
   v66 = 0;
   v68 = v22;
   if (v66)
   {
-    v23 = v6;
+    v23 = fetchCopy;
     v24 = v19;
     v25 = v15;
     v26 = PLUIGetLog();
@@ -182,13 +182,13 @@ LABEL_48:
 
     v15 = v25;
     v19 = v24;
-    v6 = v23;
+    fetchCopy = v23;
     v22 = v68;
   }
 
   if ([v22 count])
   {
-    v27 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v22 firstName:v11 lastName:v12 contactFormatter:v19];
+    v27 = [MEMORY[0x1E695CD58] pl_findBestMatchingContactFromMatchingContacts:v22 firstName:firstName lastName:lastName contactFormatter:v19];
     if (v27)
     {
       v57 = v8;
@@ -197,37 +197,37 @@ LABEL_48:
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v29 = [v27 emailAddresses];
-      v30 = [v29 countByEnumeratingWithState:&v79 objects:v85 count:16];
-      if (v30)
+      emailAddresses = [v27 emailAddresses];
+      identifier2 = [emailAddresses countByEnumeratingWithState:&v79 objects:v85 count:16];
+      if (identifier2)
       {
         v51 = v19;
         v53 = v7;
         v62 = v15;
-        v55 = v6;
+        v55 = fetchCopy;
         v31 = *v80;
         while (2)
         {
-          for (j = 0; j != v30; j = j + 1)
+          for (j = 0; j != identifier2; j = j + 1)
           {
             if (*v80 != v31)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(emailAddresses);
             }
 
             v33 = *(*(&v79 + 1) + 8 * j);
-            v34 = [v33 value];
-            v35 = [v34 isEqualToString:v13];
+            value2 = [v33 value];
+            v35 = [value2 isEqualToString:email];
 
             if (v35)
             {
-              v30 = [v33 identifier];
+              identifier2 = [v33 identifier];
               goto LABEL_25;
             }
           }
 
-          v30 = [v29 countByEnumeratingWithState:&v79 objects:v85 count:16];
-          if (v30)
+          identifier2 = [emailAddresses countByEnumeratingWithState:&v79 objects:v85 count:16];
+          if (identifier2)
           {
             continue;
           }
@@ -237,8 +237,8 @@ LABEL_48:
 
 LABEL_25:
         v7 = v53;
-        v6 = v55;
-        v21 = a4;
+        fetchCopy = v55;
+        keyCopy4 = key;
         v15 = v62;
         v19 = v51;
       }
@@ -248,14 +248,14 @@ LABEL_25:
 
     else
     {
-      v30 = 0;
+      identifier2 = 0;
       v28 = 0;
     }
   }
 
   else
   {
-    v30 = 0;
+    identifier2 = 0;
     v28 = 0;
     v27 = 0;
   }
@@ -266,16 +266,16 @@ LABEL_25:
   }
 
 LABEL_51:
-  if (v21)
+  if (keyCopy4)
   {
     v47 = v28;
-    *v21 = v28;
+    *keyCopy4 = v28;
   }
 
-  if (a5)
+  if (identifier)
   {
-    v48 = v30;
-    *a5 = v30;
+    v48 = identifier2;
+    *identifier = identifier2;
   }
 
   v49 = v27;
@@ -283,47 +283,47 @@ LABEL_51:
   return v27;
 }
 
-- (PXSharedAlbumSubscriberInfo)initWithInvitationRecord:(id)a3 identifier:(id)a4 email:(id)a5 phone:(id)a6 firstName:(id)a7 lastName:(id)a8 displayName:(id)a9 isOwner:(BOOL)a10
+- (PXSharedAlbumSubscriberInfo)initWithInvitationRecord:(id)record identifier:(id)identifier email:(id)email phone:(id)phone firstName:(id)name lastName:(id)lastName displayName:(id)displayName isOwner:(BOOL)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  recordCopy = record;
+  identifierCopy = identifier;
+  emailCopy = email;
+  phoneCopy = phone;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  displayNameCopy = displayName;
   v39.receiver = self;
   v39.super_class = PXSharedAlbumSubscriberInfo;
   v24 = [(PXSharedAlbumSubscriberInfo *)&v39 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_invitationRecord, a3);
-    v26 = [v18 copy];
+    objc_storeStrong(&v24->_invitationRecord, record);
+    v26 = [identifierCopy copy];
     identifier = v25->_identifier;
     v25->_identifier = v26;
 
-    v28 = [v19 copy];
+    v28 = [emailCopy copy];
     email = v25->_email;
     v25->_email = v28;
 
-    v30 = [v20 copy];
+    v30 = [phoneCopy copy];
     phone = v25->_phone;
     v25->_phone = v30;
 
-    v32 = [v21 copy];
+    v32 = [nameCopy copy];
     firstName = v25->_firstName;
     v25->_firstName = v32;
 
-    v34 = [v22 copy];
+    v34 = [lastNameCopy copy];
     lastName = v25->_lastName;
     v25->_lastName = v34;
 
-    v36 = [v23 copy];
+    v36 = [displayNameCopy copy];
     displayName = v25->_displayName;
     v25->_displayName = v36;
 
-    v25->_isOwner = a10;
+    v25->_isOwner = owner;
   }
 
   return v25;
@@ -331,25 +331,25 @@ LABEL_51:
 
 - (PXSharedAlbumSubscriberInfo)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumSubscriberInfo.m" lineNumber:90 description:{@"%s is not available as initializer", "-[PXSharedAlbumSubscriberInfo init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumSubscriberInfo.m" lineNumber:90 description:{@"%s is not available as initializer", "-[PXSharedAlbumSubscriberInfo init]"}];
 
   return 0;
 }
 
-+ (id)_allSubscribersForAlbum:(id)a3 includeMyself:(BOOL)a4
++ (id)_allSubscribersForAlbum:(id)album includeMyself:(BOOL)myself
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  albumCopy = album;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 isOwnedCloudSharedAlbum];
-  v37 = v5;
-  v8 = [v5 cloudAlbumSubscriberRecords];
+  isOwnedCloudSharedAlbum = [albumCopy isOwnedCloudSharedAlbum];
+  v37 = albumCopy;
+  cloudAlbumSubscriberRecords = [albumCopy cloudAlbumSubscriberRecords];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v9 = [cloudAlbumSubscriberRecords countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -360,18 +360,18 @@ LABEL_51:
       {
         if (*v39 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(cloudAlbumSubscriberRecords);
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
-        if (a4 || ([*(*(&v38 + 1) + 8 * i) isMine] & 1) == 0)
+        if (myself || ([*(*(&v38 + 1) + 8 * i) isMine] & 1) == 0)
         {
-          v14 = [v13 invitationState];
-          v15 = [v14 integerValue];
+          invitationState = [v13 invitationState];
+          integerValue = [invitationState integerValue];
 
-          if (!v7)
+          if (!isOwnedCloudSharedAlbum)
           {
-            if (v15 != 2)
+            if (integerValue != 2)
             {
               continue;
             }
@@ -381,14 +381,14 @@ LABEL_12:
             continue;
           }
 
-          if ((v15 - 1) < 4)
+          if ((integerValue - 1) < 4)
           {
             goto LABEL_12;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v10 = [cloudAlbumSubscriberRecords countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v10);
@@ -419,14 +419,14 @@ LABEL_12:
         if (!v21)
         {
           v27 = v22;
-          v28 = [v27 cloudOwnerEmail];
-          v29 = [v27 cloudOwnerFirstName];
-          v30 = [v27 cloudOwnerLastName];
+          cloudOwnerEmail = [v27 cloudOwnerEmail];
+          cloudOwnerFirstName = [v27 cloudOwnerFirstName];
+          cloudOwnerLastName = [v27 cloudOwnerLastName];
           v31 = [v27 cloudOwnerDisplayNameIncludingEmail:0 allowsEmail:1];
-          v32 = [v27 cloudOwnerHashedPersonID];
+          cloudOwnerHashedPersonID = [v27 cloudOwnerHashedPersonID];
 
           LOBYTE(v34) = 1;
-          v26 = [[PXSharedAlbumSubscriberInfo alloc] initWithInvitationRecord:0 identifier:v32 email:v28 phone:0 firstName:v29 lastName:v30 displayName:v31 isOwner:v34];
+          v26 = [[PXSharedAlbumSubscriberInfo alloc] initWithInvitationRecord:0 identifier:cloudOwnerHashedPersonID email:cloudOwnerEmail phone:0 firstName:cloudOwnerFirstName lastName:cloudOwnerLastName displayName:v31 isOwner:v34];
 
           v18 = v35;
           v20 = v36;
@@ -452,10 +452,10 @@ LABEL_22:
   return v20;
 }
 
-+ (id)allSubscribersForAlbumWithObjectID:(id)a3 includingCurrentUser:(BOOL)a4 managedObjectContext:(id)a5
++ (id)allSubscribersForAlbumWithObjectID:(id)d includingCurrentUser:(BOOL)user managedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -466,13 +466,13 @@ LABEL_22:
   v14[1] = 3221225472;
   v14[2] = __108__PXSharedAlbumSubscriberInfo_allSubscribersForAlbumWithObjectID_includingCurrentUser_managedObjectContext___block_invoke;
   v14[3] = &unk_1E772E930;
-  v10 = v8;
+  v10 = dCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = contextCopy;
   v16 = v11;
   v17 = &v20;
-  v18 = a1;
-  v19 = a4;
+  selfCopy = self;
+  userCopy = user;
   [v11 performBlockAndWait:v14];
   v12 = v21[5];
 

@@ -1,7 +1,7 @@
 @interface SHSDualSIMToneTitleView
 - (SHSDualSIMToneTitleView)init;
 - (void)loadConstraintsForTitleView;
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4;
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text;
 @end
 
 @implementation SHSDualSIMToneTitleView
@@ -20,8 +20,8 @@
 
     [(UILabel *)v2->_titleLabel setUserInteractionEnabled:0];
     v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v6 = [v5 fontDescriptor];
-    v7 = [v6 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v5 fontDescriptor];
+    v7 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
     v8 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
     [(UILabel *)v2->_titleLabel setFont:v8];
@@ -32,8 +32,8 @@
     v2->_badgeView = v9;
 
     v11 = objc_alloc(MEMORY[0x277D75A68]);
-    v12 = [(SHSDualSIMToneTitleView *)v2 badgeView];
-    v19[0] = v12;
+    badgeView = [(SHSDualSIMToneTitleView *)v2 badgeView];
+    v19[0] = badgeView;
     v19[1] = v2->_titleLabel;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v14 = [v11 initWithArrangedSubviews:v13];
@@ -57,76 +57,76 @@
 
 - (void)loadConstraintsForTitleView
 {
-  v3 = [(SHSDualSIMToneTitleView *)self badgeView];
-  [v3 frame];
+  badgeView = [(SHSDualSIMToneTitleView *)self badgeView];
+  [badgeView frame];
   v5 = v4;
-  v6 = [(SHSDualSIMToneTitleView *)self badgeView];
-  [v6 frame];
+  badgeView2 = [(SHSDualSIMToneTitleView *)self badgeView];
+  [badgeView2 frame];
   v8 = v7;
-  v9 = [(SHSDualSIMToneTitleView *)self badgeView];
-  [v9 size];
+  badgeView3 = [(SHSDualSIMToneTitleView *)self badgeView];
+  [badgeView3 size];
   v11 = v10;
-  v12 = [(SHSDualSIMToneTitleView *)self titleLabel];
-  v13 = [v12 font];
-  [v13 capHeight];
+  titleLabel = [(SHSDualSIMToneTitleView *)self titleLabel];
+  font = [titleLabel font];
+  [font capHeight];
   v15 = v14;
-  v16 = [(SHSDualSIMToneTitleView *)self badgeView];
-  [v16 setFrame:{v5, v8, v11, v15}];
+  badgeView4 = [(SHSDualSIMToneTitleView *)self badgeView];
+  [badgeView4 setFrame:{v5, v8, v11, v15}];
 
-  v17 = [(SHSDualSIMToneTitleView *)self stackView];
-  v18 = [v17 topAnchor];
-  v19 = [(SHSDualSIMToneTitleView *)self topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  stackView = [(SHSDualSIMToneTitleView *)self stackView];
+  topAnchor = [stackView topAnchor];
+  topAnchor2 = [(SHSDualSIMToneTitleView *)self topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v20 setActive:1];
 
-  v21 = [(SHSDualSIMToneTitleView *)self stackView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(SHSDualSIMToneTitleView *)self bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  stackView2 = [(SHSDualSIMToneTitleView *)self stackView];
+  bottomAnchor = [stackView2 bottomAnchor];
+  bottomAnchor2 = [(SHSDualSIMToneTitleView *)self bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v24 setActive:1];
 
-  v25 = [(SHSDualSIMToneTitleView *)self stackView];
-  v26 = [v25 leadingAnchor];
-  v27 = [(SHSDualSIMToneTitleView *)self leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  stackView3 = [(SHSDualSIMToneTitleView *)self stackView];
+  leadingAnchor = [stackView3 leadingAnchor];
+  leadingAnchor2 = [(SHSDualSIMToneTitleView *)self leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v28 setActive:1];
 
-  v29 = [(SHSDualSIMToneTitleView *)self stackView];
-  v30 = [v29 trailingAnchor];
-  v31 = [(SHSDualSIMToneTitleView *)self trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  stackView4 = [(SHSDualSIMToneTitleView *)self stackView];
+  trailingAnchor = [stackView4 trailingAnchor];
+  trailingAnchor2 = [(SHSDualSIMToneTitleView *)self trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v32 setActive:1];
 
-  v33 = [(SHSDualSIMToneTitleView *)self stackView];
-  v34 = [v33 centerYAnchor];
-  v35 = [(SHSDualSIMToneTitleView *)self centerYAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  stackView5 = [(SHSDualSIMToneTitleView *)self stackView];
+  centerYAnchor = [stackView5 centerYAnchor];
+  centerYAnchor2 = [(SHSDualSIMToneTitleView *)self centerYAnchor];
+  v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v36 setActive:1];
 
-  v37 = [(SHSDualSIMToneTitleView *)self badgeView];
-  v38 = [v37 centerYAnchor];
-  v39 = [(SHSDualSIMToneTitleView *)self stackView];
-  v40 = [v39 centerYAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  badgeView5 = [(SHSDualSIMToneTitleView *)self badgeView];
+  centerYAnchor3 = [badgeView5 centerYAnchor];
+  stackView6 = [(SHSDualSIMToneTitleView *)self stackView];
+  centerYAnchor4 = [stackView6 centerYAnchor];
+  v41 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v41 setActive:1];
 
-  v46 = [(SHSDualSIMToneTitleView *)self titleLabel];
-  v42 = [v46 centerYAnchor];
-  v43 = [(SHSDualSIMToneTitleView *)self stackView];
-  v44 = [v43 centerYAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  titleLabel2 = [(SHSDualSIMToneTitleView *)self titleLabel];
+  centerYAnchor5 = [titleLabel2 centerYAnchor];
+  stackView7 = [(SHSDualSIMToneTitleView *)self stackView];
+  centerYAnchor6 = [stackView7 centerYAnchor];
+  v45 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v45 setActive:1];
 }
 
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHSDualSIMToneTitleView *)self titleLabel];
-  [v8 setText:v7];
+  textCopy = text;
+  titleCopy = title;
+  titleLabel = [(SHSDualSIMToneTitleView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v9 = [(SHSDualSIMToneTitleView *)self badgeView];
-  [v9 setText:v6];
+  badgeView = [(SHSDualSIMToneTitleView *)self badgeView];
+  [badgeView setText:textCopy];
 }
 
 @end

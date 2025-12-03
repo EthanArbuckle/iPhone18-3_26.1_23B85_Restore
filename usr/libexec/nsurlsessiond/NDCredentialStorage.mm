@@ -1,14 +1,14 @@
 @interface NDCredentialStorage
-- (NDCredentialStorage)initWithDelegate:(id)a3 forBundleID:(id)a4;
+- (NDCredentialStorage)initWithDelegate:(id)delegate forBundleID:(id)d;
 - (NDCredentialStorageDelegate)delegate;
 - (id)allCredentials;
-- (id)credentialsForProtectionSpace:(id)a3;
-- (id)defaultCredentialForProtectionSpace:(id)a3;
+- (id)credentialsForProtectionSpace:(id)space;
+- (id)defaultCredentialForProtectionSpace:(id)space;
 - (void)populateWithInitialCredentials;
-- (void)removeCredential:(id)a3 forProtectionSpace:(id)a4;
+- (void)removeCredential:(id)credential forProtectionSpace:(id)space;
 - (void)reset;
-- (void)setCredential:(id)a3 forProtectionSpace:(id)a4;
-- (void)setDefaultCredential:(id)a3 forProtectionSpace:(id)a4;
+- (void)setCredential:(id)credential forProtectionSpace:(id)space;
+- (void)setDefaultCredential:(id)credential forProtectionSpace:(id)space;
 @end
 
 @implementation NDCredentialStorage
@@ -16,16 +16,16 @@
 - (void)populateWithInitialCredentials
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v4)
+  if (getClientProxy)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100004918;
     v5[3] = &unk_1000D5AD0;
     v5[4] = self;
-    [v4 credStorage_getInitialCredentialDictionariesWithReply:v5];
+    [getClientProxy credStorage_getInitialCredentialDictionariesWithReply:v5];
   }
 }
 
@@ -47,16 +47,16 @@
   dispatch_sync(queue, block);
 }
 
-- (void)setDefaultCredential:(id)a3 forProtectionSpace:(id)a4
+- (void)setDefaultCredential:(id)credential forProtectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v9)
+  if (getClientProxy)
   {
-    [v9 credStorage_setDefaultCredential:v6 forProtectionSpace:v7];
+    [getClientProxy credStorage_setDefaultCredential:credentialCopy forProtectionSpace:spaceCopy];
   }
 
   queue = self->_queue;
@@ -65,50 +65,50 @@
   block[2] = sub_10006171C;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = spaceCopy;
+  v15 = credentialCopy;
+  v11 = credentialCopy;
+  v12 = spaceCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)defaultCredentialForProtectionSpace:(id)a3
+- (id)defaultCredentialForProtectionSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v6)
+  if (getClientProxy)
   {
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5BC8];
+    v7 = [getClientProxy synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5BC8];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_100061CD8;
     v36[3] = &unk_1000D5BF0;
     v36[4] = self;
-    v37 = v4;
+    v37 = spaceCopy;
     [v7 credStorage_defaultCredentialForProtectionSpace:v37 reply:v36];
   }
 
   v8 = +[Daemon sharedDaemon];
   if ([v8 isInSyncBubble] && self->_bundleID)
   {
-    v9 = [(NSMutableDictionary *)self->_cachedCredentials objectForKeyedSubscript:v4];
+    v9 = [(NSMutableDictionary *)self->_cachedCredentials objectForKeyedSubscript:spaceCopy];
 
     if (v9)
     {
       goto LABEL_10;
     }
 
-    v10 = [v4 host];
-    v8 = [NSString stringWithFormat:@"%@%@%@", @"__com.apple.CFNetwork.prefix__", v10, self->_bundleID];
+    host = [spaceCopy host];
+    v8 = [NSString stringWithFormat:@"%@%@%@", @"__com.apple.CFNetwork.prefix__", host, self->_bundleID];
 
     v11 = [NSURLProtectionSpace alloc];
-    v12 = [v4 port];
-    v13 = [v4 protocol];
-    v14 = [v4 realm];
-    v15 = [v4 authenticationMethod];
-    v16 = [v11 initWithHost:v8 port:v12 protocol:v13 realm:v14 authenticationMethod:v15];
+    port = [spaceCopy port];
+    protocol = [spaceCopy protocol];
+    realm = [spaceCopy realm];
+    authenticationMethod = [spaceCopy authenticationMethod];
+    v16 = [v11 initWithHost:v8 port:port protocol:protocol realm:realm authenticationMethod:authenticationMethod];
 
     v17 = +[NSURLCredentialStorage sharedCredentialStorage];
     v18 = [v17 defaultCredentialForProtectionSpace:v16];
@@ -121,7 +121,7 @@
       block[2] = sub_100061D98;
       block[3] = &unk_1000D6130;
       block[4] = self;
-      v34 = v4;
+      v34 = spaceCopy;
       v35 = v18;
       dispatch_sync(queue, block);
     }
@@ -140,9 +140,9 @@ LABEL_10:
   v24[2] = sub_100061EDC;
   v24[3] = &unk_1000D6158;
   v24[4] = self;
-  v25 = v4;
+  v25 = spaceCopy;
   v26 = &v27;
-  v21 = v4;
+  v21 = spaceCopy;
   dispatch_sync(v20, v24);
   v22 = v28[5];
 
@@ -151,16 +151,16 @@ LABEL_10:
   return v22;
 }
 
-- (void)removeCredential:(id)a3 forProtectionSpace:(id)a4
+- (void)removeCredential:(id)credential forProtectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v9)
+  if (getClientProxy)
   {
-    [v9 credStorage_setCredential:v6 forProtectionSpace:v7];
+    [getClientProxy credStorage_setCredential:credentialCopy forProtectionSpace:spaceCopy];
   }
 
   queue = self->_queue;
@@ -169,23 +169,23 @@ LABEL_10:
   block[2] = sub_100062328;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = spaceCopy;
+  v15 = credentialCopy;
+  v11 = credentialCopy;
+  v12 = spaceCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)setCredential:(id)a3 forProtectionSpace:(id)a4
+- (void)setCredential:(id)credential forProtectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v9)
+  if (getClientProxy)
   {
-    [v9 credStorage_setCredential:v6 forProtectionSpace:v7];
+    [getClientProxy credStorage_setCredential:credentialCopy forProtectionSpace:spaceCopy];
   }
 
   queue = self->_queue;
@@ -194,21 +194,21 @@ LABEL_10:
   block[2] = sub_1000624F8;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = spaceCopy;
+  v15 = credentialCopy;
+  v11 = credentialCopy;
+  v12 = spaceCopy;
   dispatch_sync(queue, block);
 }
 
 - (id)allCredentials
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v4)
+  if (getClientProxy)
   {
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5B58];
+    v5 = [getClientProxy synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5B58];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000627C4;
@@ -237,21 +237,21 @@ LABEL_10:
   return v7;
 }
 
-- (id)credentialsForProtectionSpace:(id)a3
+- (id)credentialsForProtectionSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained getClientProxy];
+  getClientProxy = [WeakRetained getClientProxy];
 
-  if (v6)
+  if (getClientProxy)
   {
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5B10];
+    v7 = [getClientProxy synchronousRemoteObjectProxyWithErrorHandler:&stru_1000D5B10];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100062BCC;
     v21[3] = &unk_1000D5B38;
     v21[4] = self;
-    v22 = v4;
+    v22 = spaceCopy;
     [v7 credStorage_credentialsForProtectionSpace:v22 reply:v21];
   }
 
@@ -266,10 +266,10 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_100062C8C;
   block[3] = &unk_1000D6158;
-  v13 = v4;
+  v13 = spaceCopy;
   v14 = &v15;
   block[4] = self;
-  v9 = v4;
+  v9 = spaceCopy;
   dispatch_sync(queue, block);
   v10 = v16[5];
 
@@ -278,18 +278,18 @@ LABEL_10:
   return v10;
 }
 
-- (NDCredentialStorage)initWithDelegate:(id)a3 forBundleID:(id)a4
+- (NDCredentialStorage)initWithDelegate:(id)delegate forBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = NDCredentialStorage;
   v8 = [(NDCredentialStorage *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_bundleID, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_bundleID, d);
     v10 = +[NSMutableDictionary dictionary];
     cachedCredentials = v9->_cachedCredentials;
     v9->_cachedCredentials = v10;

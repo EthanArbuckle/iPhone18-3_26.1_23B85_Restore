@@ -1,54 +1,54 @@
 @interface MFGroupDetailViewController
-- (MFGroupDetailViewController)initWithStyle:(int64_t)a3;
+- (MFGroupDetailViewController)initWithStyle:(int64_t)style;
 - (MFGroupDetailViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_removeButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_removeButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MFGroupDetailViewController
 
-- (MFGroupDetailViewController)initWithStyle:(int64_t)a3
+- (MFGroupDetailViewController)initWithStyle:(int64_t)style
 {
   v16.receiver = self;
   v16.super_class = MFGroupDetailViewController;
-  v3 = [(MFGroupDetailViewController *)&v16 initWithStyle:a3];
+  v3 = [(MFGroupDetailViewController *)&v16 initWithStyle:style];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"RECENT_TITLE" value:&stru_1F3CF3758 table:@"Main"];
-    v6 = [(MFGroupDetailViewController *)v3 navigationItem];
-    [v6 setTitle:v5];
+    navigationItem = [(MFGroupDetailViewController *)v3 navigationItem];
+    [navigationItem setTitle:v5];
 
-    v7 = [(MFGroupDetailViewController *)v3 tableView];
-    [v7 _setMarginWidth:16.0];
+    tableView = [(MFGroupDetailViewController *)v3 tableView];
+    [tableView _setMarginWidth:16.0];
 
-    v8 = [(MFGroupDetailViewController *)v3 tableView];
+    tableView2 = [(MFGroupDetailViewController *)v3 tableView];
     +[MFRecipientTableViewCell height];
-    [v8 setEstimatedRowHeight:?];
+    [tableView2 setEstimatedRowHeight:?];
 
-    v9 = [(MFGroupDetailViewController *)v3 tableView];
-    [v9 setRowHeight:*MEMORY[0x1E69DE3D0]];
+    tableView3 = [(MFGroupDetailViewController *)v3 tableView];
+    [tableView3 setRowHeight:*MEMORY[0x1E69DE3D0]];
 
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
     v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"REMOVE_TITLE" value:&stru_1F3CF3758 table:@"Main"];
     v13 = [v10 initWithTitle:v12 style:0 target:v3 action:sel__removeButtonTapped_];
 
-    v14 = [(MFGroupDetailViewController *)v3 navigationItem];
-    [v14 setRightBarButtonItem:v13];
+    navigationItem2 = [(MFGroupDetailViewController *)v3 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v13];
   }
 
   return v3;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MFGroupDetailViewController;
-  [(MFGroupDetailViewController *)&v5 viewWillDisappear:a3];
+  [(MFGroupDetailViewController *)&v5 viewWillDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -56,7 +56,7 @@
   }
 }
 
-- (void)_removeButtonTapped:(id)a3
+- (void)_removeButtonTapped:(id)tapped
 {
   v4 = MEMORY[0x1E69DC650];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -74,7 +74,7 @@
   v24 = &unk_1E806E1F0;
   v12 = WeakRetained;
   v25 = v12;
-  v26 = self;
+  selfCopy = self;
   v13 = [v9 actionWithTitle:v11 style:2 handler:&v21];
   [v7 addAction:{v13, v21, v22, v23, v24}];
 
@@ -84,12 +84,12 @@
   v17 = [v14 actionWithTitle:v16 style:1 handler:0];
   [v7 addAction:v17];
 
-  v18 = [v7 popoverPresentationController];
-  v19 = [(MFGroupDetailViewController *)self navigationItem];
-  v20 = [v19 rightBarButtonItem];
-  [v18 setBarButtonItem:v20];
+  popoverPresentationController = [v7 popoverPresentationController];
+  navigationItem = [(MFGroupDetailViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [popoverPresentationController setBarButtonItem:rightBarButtonItem];
 
-  [v18 setPermittedArrowDirections:3];
+  [popoverPresentationController setPermittedArrowDirections:3];
   [(MFGroupDetailViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
@@ -104,22 +104,22 @@ void __51__MFGroupDetailViewController__removeButtonTapped___block_invoke(uint64
   v2 = [v3 popViewControllerAnimated:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MFComposeRecipientGroup *)self->_group children:a3];
+  v4 = [(MFComposeRecipientGroup *)self->_group children:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[MFRecipientTableViewCell identifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
-  v10 = [(MFComposeRecipientGroup *)self->_group children];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
+  children = [(MFComposeRecipientGroup *)self->_group children];
+  v11 = [children objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (!v9)
   {
@@ -129,9 +129,9 @@ void __51__MFGroupDetailViewController__removeButtonTapped___block_invoke(uint64
     [(MFRecipientTableViewCell *)v12 setShouldHighlightCompleteMatches:0];
   }
 
-  v13 = [v9 recipient];
+  recipient = [v9 recipient];
 
-  if (v13 != v11)
+  if (recipient != v11)
   {
     [v9 setRecipient:v11];
   }
@@ -139,14 +139,14 @@ void __51__MFGroupDetailViewController__removeButtonTapped___block_invoke(uint64
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(MFComposeRecipientGroup *)self->_group children];
-    v7 = [v6 objectAtIndex:{objc_msgSend(v8, "row")}];
+    children = [(MFComposeRecipientGroup *)self->_group children];
+    v7 = [children objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     [WeakRetained groupDetailViewController:self didTapComposeRecipient:v7];
   }
 }

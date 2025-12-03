@@ -1,32 +1,32 @@
 @interface SUIAEdgeEmanatingSiriShockwaveStyle
-- (SUIAEdgeEmanatingSiriShockwaveStyle)initWithEdge:(unint64_t)a3 shockwaveViewBounds:(CGRect)a4;
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3;
-- (id)fillLightConfigurationForState:(int64_t)a3;
-- (id)meshConfigurationForState:(int64_t)a3;
+- (SUIAEdgeEmanatingSiriShockwaveStyle)initWithEdge:(unint64_t)edge shockwaveViewBounds:(CGRect)bounds;
+- (id)chromaticAberrationConfigurationForState:(int64_t)state;
+- (id)fillLightConfigurationForState:(int64_t)state;
+- (id)meshConfigurationForState:(int64_t)state;
 @end
 
 @implementation SUIAEdgeEmanatingSiriShockwaveStyle
 
-- (SUIAEdgeEmanatingSiriShockwaveStyle)initWithEdge:(unint64_t)a3 shockwaveViewBounds:(CGRect)a4
+- (SUIAEdgeEmanatingSiriShockwaveStyle)initWithEdge:(unint64_t)edge shockwaveViewBounds:(CGRect)bounds
 {
   v6.receiver = self;
   v6.super_class = SUIAEdgeEmanatingSiriShockwaveStyle;
-  result = [(SUIAAbstractShockwaveStyle *)&v6 initWithShockwaveViewBounds:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  result = [(SUIAAbstractShockwaveStyle *)&v6 initWithShockwaveViewBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
-    result->_edge = a3;
+    result->_edge = edge;
   }
 
   return result;
 }
 
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3
+- (id)chromaticAberrationConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 siriEdgeChromaticAberrationEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings siriEdgeChromaticAberrationEnabled])
   {
     v6 = +[_SUIAShockwaveChromaticAberrationConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       v8 = SUIANormalizedRectSpanningRectEdge(self->_edge);
@@ -34,8 +34,8 @@
       v12 = v11;
       v14 = v13;
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:a3 variant:2 buttonEmanating:0 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:state variant:2 buttonEmanating:0 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 
@@ -47,12 +47,12 @@
   return v7;
 }
 
-- (id)meshConfigurationForState:(int64_t)a3
+- (id)meshConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 shouldBehaveLikeLargeScreenIdiom:{-[SUIAAbstractShockwaveStyle userInterfaceIdiom](self, "userInterfaceIdiom")}])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings shouldBehaveLikeLargeScreenIdiom:{-[SUIAAbstractShockwaveStyle userInterfaceIdiom](self, "userInterfaceIdiom")}])
   {
-    if (([v5 siriEdgeMeshEnabledLargeScreen] & 1) == 0)
+    if (([_shockwaveSettings siriEdgeMeshEnabledLargeScreen] & 1) == 0)
     {
 LABEL_3:
       v6 = 0;
@@ -60,13 +60,13 @@ LABEL_3:
     }
   }
 
-  else if (![v5 siriEdgeMeshEnabled])
+  else if (![_shockwaveSettings siriEdgeMeshEnabled])
   {
     goto LABEL_3;
   }
 
   v7 = +[_SUIAShockwaveMeshConfiguration configurationType];
-  v6 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:a3];
+  v6 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:state];
   if (!v6)
   {
     v8 = SUIANormalizedRectSpanningRectEdge(self->_edge);
@@ -74,8 +74,8 @@ LABEL_3:
     v12 = v11;
     v14 = v13;
     [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-    v6 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:a3 variant:2 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
-    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v6 forType:v7 state:a3];
+    v6 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:state variant:2 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
+    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v6 forType:v7 state:state];
   }
 
 LABEL_7:
@@ -83,13 +83,13 @@ LABEL_7:
   return v6;
 }
 
-- (id)fillLightConfigurationForState:(int64_t)a3
+- (id)fillLightConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 siriEdgeFillLightEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings siriEdgeFillLightEnabled])
   {
     v6 = +[_SUIAShockwaveFillLightConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       v8 = SUIANormalizedRectSpanningRectEdge(self->_edge);
@@ -97,8 +97,8 @@ LABEL_7:
       v12 = v11;
       v14 = v13;
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:a3 variant:2 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:state variant:2 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:v8 usesIntelligentFillLight:v10, v12, v14, v15, v16, v17, v18];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 

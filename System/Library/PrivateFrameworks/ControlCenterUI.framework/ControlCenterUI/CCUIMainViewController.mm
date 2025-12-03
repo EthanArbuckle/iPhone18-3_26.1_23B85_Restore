@@ -2,138 +2,138 @@
 + (id)_controlCenterBringupEventStream;
 + (id)_controlCenterDismissOrbActionsEventStream;
 + (id)_presentationProviderForDevice;
-+ (void)_addBlockForSignpost:(unint64_t)a3 block:(id)a4;
++ (void)_addBlockForSignpost:(unint64_t)signpost block:(id)block;
 + (void)_executeAndCleanupBlocksForAllSignposts;
-+ (void)_executeBlocksForSignpost:(unint64_t)a3;
-+ (void)_playEventStream:(id)a3 withCompletion:(id)a4;
-- (BOOL)_dismissalFlickGestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)_dismissalFlickGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)_dismissalPanGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)_dismissalTapGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)_editingLongPressGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)_forceModuleEnabled:(id)a3;
-- (BOOL)_includesModuleWithIdentifier:(id)a3 consideringObscureness:(BOOL)a4;
-- (BOOL)_interpretsGestureLocationAsContent:(id)a3;
-- (BOOL)_isSensorActivityData:(id)a3 relevantForSensorType:(unint64_t)a4;
-- (BOOL)_scrollPanGestureRecognizerCanBeginForGestureVelocity:(CGPoint)a3;
-- (BOOL)_scrollPanGestureRecognizerShouldBegin:(id)a3;
++ (void)_executeBlocksForSignpost:(unint64_t)signpost;
++ (void)_playEventStream:(id)stream withCompletion:(id)completion;
+- (BOOL)_dismissalFlickGestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)_dismissalFlickGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)_dismissalPanGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)_dismissalTapGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)_editingLongPressGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)_forceModuleEnabled:(id)enabled;
+- (BOOL)_includesModuleWithIdentifier:(id)identifier consideringObscureness:(BOOL)obscureness;
+- (BOOL)_interpretsGestureLocationAsContent:(id)content;
+- (BOOL)_isSensorActivityData:(id)data relevantForSensorType:(unint64_t)type;
+- (BOOL)_scrollPanGestureRecognizerCanBeginForGestureVelocity:(CGPoint)velocity;
+- (BOOL)_scrollPanGestureRecognizerShouldBegin:(id)begin;
 - (BOOL)_scrollViewCanAcceptDownwardsPan;
 - (BOOL)_scrollViewIsScrollable;
 - (BOOL)canDismissPresentedContent;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)context;
 - (BOOL)isEditing;
-- (BOOL)isSystemRestoringForPagingViewController:(id)a3;
-- (BOOL)pagingViewController:(id)a3 shouldPauseCheckingInvalidControlsForApplicationIdentifier:(id)a4;
-- (BOOL)runTest:(id)a3 options:(id)a4 delegate:(id)a5;
+- (BOOL)isSystemRestoringForPagingViewController:(id)controller;
+- (BOOL)pagingViewController:(id)controller shouldPauseCheckingInvalidControlsForApplicationIdentifier:(id)identifier;
+- (BOOL)runTest:(id)test options:(id)options delegate:(id)delegate;
 - (CCUIControlCenterSystemAgent)systemAgent;
 - (CCUIHostStatusBarStyleProvider)hostStatusBarStyleProvider;
-- (CCUILayoutRect)_layoutRectForIconCoordinate:(SEL)a3 gridSize:(SBIconCoordinate)a4;
-- (CCUIMainViewController)initWithSystemAgent:(id)a3 moduleInstanceManager:(id)a4 moduleSettingsManager:(id)a5 sensorActivityDataProvider:(id)a6 gameModeActivityDataProvider:(id)a7 presentationProvider:(id)a8;
+- (CCUILayoutRect)_layoutRectForIconCoordinate:(SEL)coordinate gridSize:(SBIconCoordinate)size;
+- (CCUIMainViewController)initWithSystemAgent:(id)agent moduleInstanceManager:(id)manager moduleSettingsManager:(id)settingsManager sensorActivityDataProvider:(id)provider gameModeActivityDataProvider:(id)dataProvider presentationProvider:(id)presentationProvider;
 - (CCUIMainViewControllerDelegate)delegate;
-- (CGPoint)_centerPointOfModuleWithIdentifier:(id)a3;
-- (CGRect)compactAvoidanceFrameForStatusBar:(id)a3;
-- (CGRect)expandedAvoidanceFrameForStatusBar:(id)a3;
+- (CGPoint)_centerPointOfModuleWithIdentifier:(id)identifier;
+- (CGRect)compactAvoidanceFrameForStatusBar:(id)bar;
+- (CGRect)expandedAvoidanceFrameForStatusBar:(id)bar;
 - (CGRect)overlayBackgroundFrame;
 - (CGRect)overlayContainerFrame;
 - (CGSize)overlayContentSize;
 - (UIEdgeInsets)overlayAdditionalEdgeInsets;
 - (UIEdgeInsets)overlayContentLayoutInset;
 - (double)overlayReachabilityHeight;
-- (id)_beginDismissalAnimated:(BOOL)a3 interactive:(BOOL)a4;
-- (id)_beginPresentationAnimated:(BOOL)a3 interactive:(BOOL)a4;
+- (id)_beginDismissalAnimated:(BOOL)animated interactive:(BOOL)interactive;
+- (id)_beginPresentationAnimated:(BOOL)animated interactive:(BOOL)interactive;
 - (id)_controlCenterEnterEditModeEventStream;
-- (id)_controlCenterShowOrbActionsEventStream:(id)a3;
+- (id)_controlCenterShowOrbActionsEventStream:(id)stream;
 - (id)_safePagingViewContainerView;
 - (id)_safeStatusLabelViewContainerView;
 - (id)_statusLabelViewContainerView;
-- (id)compactTrailingStyleRequestForStatusBar:(id)a3;
-- (id)contentModuleContext:(id)a3 requestsSensorActivityDataForActiveSensorType:(unint64_t)a4;
-- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)a3;
-- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)a3;
-- (id)existingControlKindFromWidgetExtension:(id)a3;
-- (id)fallbackDragHitTestViewForScrollView:(id)a3;
-- (id)pagingViewControllerDidAddModuleView:(id)a3;
-- (id)reasonToDisallowEditing:(id)a3;
+- (id)compactTrailingStyleRequestForStatusBar:(id)bar;
+- (id)contentModuleContext:(id)context requestsSensorActivityDataForActiveSensorType:(unint64_t)type;
+- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)data;
+- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)selection;
+- (id)existingControlKindFromWidgetExtension:(id)extension;
+- (id)fallbackDragHitTestViewForScrollView:(id)view;
+- (id)pagingViewControllerDidAddModuleView:(id)view;
+- (id)reasonToDisallowEditing:(id)editing;
 - (int64_t)_interfaceOrientation;
-- (unint64_t)_fetchModuleEnabledState:(id)a3;
+- (unint64_t)_fetchModuleEnabledState:(id)state;
 - (void)_askToAirDropPendingOrActiveConnectionsDidChange;
 - (void)_becomeActive;
 - (void)_cancelDismissalPanGestures;
-- (void)_disableModule:(id)a3;
-- (void)_dismissalPanGestureRecognizerBegan:(id)a3;
-- (void)_dismissalPanGestureRecognizerChanged:(id)a3;
-- (void)_dismissalPanGestureRecognizerEnded:(id)a3;
-- (void)_endDismissalWithUUID:(id)a3 animated:(BOOL)a4;
-- (void)_endPresentationWithUUID:(id)a3;
-- (void)_evaluatePresentationContinuationIntoPagingWithLocation:(CGPoint)a3;
-- (void)_getCameraSensorActivityData:(id *)a3 micSensorActivityData:(id *)a4 isMutedMic:(BOOL *)a5 isInactiveMicModeSelection:(BOOL *)a6;
-- (void)_handleDismissalFlickGestureRecognizer:(id)a3;
-- (void)_handleDismissalPanGestureRecognizer:(id)a3;
-- (void)_handleDismissalTapGestureRecognizer:(id)a3;
-- (void)_handleEditingLongPressGestureRecognizer:(id)a3;
-- (void)_presentAnimated:(BOOL)a3 withInitialVelocity:(CGPoint)a4 completionHandler:(id)a5;
+- (void)_disableModule:(id)module;
+- (void)_dismissalPanGestureRecognizerBegan:(id)began;
+- (void)_dismissalPanGestureRecognizerChanged:(id)changed;
+- (void)_dismissalPanGestureRecognizerEnded:(id)ended;
+- (void)_endDismissalWithUUID:(id)d animated:(BOOL)animated;
+- (void)_endPresentationWithUUID:(id)d;
+- (void)_evaluatePresentationContinuationIntoPagingWithLocation:(CGPoint)location;
+- (void)_getCameraSensorActivityData:(id *)data micSensorActivityData:(id *)activityData isMutedMic:(BOOL *)mic isInactiveMicModeSelection:(BOOL *)selection;
+- (void)_handleDismissalFlickGestureRecognizer:(id)recognizer;
+- (void)_handleDismissalPanGestureRecognizer:(id)recognizer;
+- (void)_handleDismissalTapGestureRecognizer:(id)recognizer;
+- (void)_handleEditingLongPressGestureRecognizer:(id)recognizer;
+- (void)_presentAnimated:(BOOL)animated withInitialVelocity:(CGPoint)velocity completionHandler:(id)handler;
 - (void)_resignActive;
 - (void)_safePagingViewContainerView;
 - (void)_safeStatusLabelViewContainerView;
 - (void)_setupPanGestureFailureRequirements;
 - (void)_updateAskToAirDropModuleVisibility;
-- (void)_updateChevronStateForTransitionState:(id)a3;
-- (void)_updateHotPocket:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateHotPocketAnimated:(BOOL)a3;
-- (void)_updatePresentationForTransitionState:(id)a3 gestureVelocity:(CGPoint)a4 withCompletionHander:(id)a5;
-- (void)_updatePresentationForTransitionType:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5 interactive:(BOOL)a6;
+- (void)_updateChevronStateForTransitionState:(id)state;
+- (void)_updateHotPocket:(BOOL)pocket animated:(BOOL)animated;
+- (void)_updateHotPocketAnimated:(BOOL)animated;
+- (void)_updatePresentationForTransitionState:(id)state gestureVelocity:(CGPoint)velocity withCompletionHander:(id)hander;
+- (void)_updatePresentationForTransitionType:(unint64_t)type translation:(CGPoint)translation velocity:(CGPoint)velocity interactive:(BOOL)interactive;
 - (void)_updateSensorActivityStatusForHeaderPocketView;
 - (void)_willPresentViewControllerContainedInPages;
-- (void)beginPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5 touches:(id)a6;
-- (void)cancelPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5;
-- (void)contentModuleContext:(id)a3 enqueueStatusUpdate:(id)a4;
+- (void)beginPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity touches:(id)touches;
+- (void)cancelPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (void)contentModuleContext:(id)context enqueueStatusUpdate:(id)update;
 - (void)dealloc;
 - (void)didCloseExpandedSensorAttributionViewController;
-- (void)didReceiveSignpost:(unint64_t)a3;
+- (void)didReceiveSignpost:(unint64_t)signpost;
 - (void)didTriggerPowerButtonPrimaryAction;
-- (void)dismissAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)dismissControlCenterForContentModuleContext:(id)a3;
-- (void)dismissExpandedModuleAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissExpandedViewForContentModuleContext:(id)a3;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissAnimated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)dismissControlCenterForContentModuleContext:(id)context;
+- (void)dismissExpandedModuleAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissExpandedViewForContentModuleContext:(id)context;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)displayWillTurnOff;
-- (void)endPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5;
-- (void)enumerateOverlayModuleViewsWithBlock:(id)a3;
-- (void)expandModuleWithIdentifier:(id)a3;
+- (void)endPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (void)enumerateOverlayModuleViewsWithBlock:(id)block;
+- (void)expandModuleWithIdentifier:(id)identifier;
 - (void)gameModeActivitiesDidChange;
-- (void)gameModeStateDidChange:(unint64_t)a3;
-- (void)handleControlCenterOperationTypeWithOperationService:(id)a3 operationType:(int64_t)a4 completionHandler:(id)a5;
-- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)a3;
+- (void)gameModeStateDidChange:(unint64_t)change;
+- (void)handleControlCenterOperationTypeWithOperationService:(id)service operationType:(int64_t)type completionHandler:(id)handler;
+- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)context;
 - (void)loadView;
-- (void)moduleInstancesChangedForModuleInstanceManager:(id)a3;
-- (void)overlayBackgroundViewTapped:(id)a3;
-- (void)pagingViewController:(id)a3 didAdd:(id)a4;
-- (void)pagingViewController:(id)a3 didClose:(id)a4;
-- (void)pagingViewController:(id)a3 editingDidChange:(BOOL)a4;
-- (void)pagingViewController:(id)a3 willExpand:(id)a4;
-- (void)pagingViewController:(id)a3 willRemove:(id)a4;
-- (void)performIfDisplayingModuleView:(id)a3 subview:(id)a4 block:(id)a5;
-- (void)requestExpandModuleForContentModuleContext:(id)a3;
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3;
-- (void)runTest:(id)a3 subtests:(id)a4 eventStream:(id)a5 completionHandler:(id)a6;
-- (void)setCurrentTransitionUUID:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setOverlayPageContentAlpha:(double)a3;
-- (void)setOverlayPageContentScale:(CGPoint)a3;
-- (void)setOverlayPageContentTranslation:(CGPoint)a3;
-- (void)setOverlayStatusBarHidden:(BOOL)a3;
-- (void)setPresentationState:(unint64_t)a3;
-- (void)setReachabilityActive:(BOOL)a3;
-- (void)setSensorActivityDataProvider:(id)a3;
-- (void)setTransitionState:(unint64_t)a3;
-- (void)updatePresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)moduleInstancesChangedForModuleInstanceManager:(id)manager;
+- (void)overlayBackgroundViewTapped:(id)tapped;
+- (void)pagingViewController:(id)controller didAdd:(id)add;
+- (void)pagingViewController:(id)controller didClose:(id)close;
+- (void)pagingViewController:(id)controller editingDidChange:(BOOL)change;
+- (void)pagingViewController:(id)controller willExpand:(id)expand;
+- (void)pagingViewController:(id)controller willRemove:(id)remove;
+- (void)performIfDisplayingModuleView:(id)view subview:(id)subview block:(id)block;
+- (void)requestExpandModuleForContentModuleContext:(id)context;
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler;
+- (void)runTest:(id)test subtests:(id)subtests eventStream:(id)stream completionHandler:(id)handler;
+- (void)setCurrentTransitionUUID:(id)d;
+- (void)setEditing:(BOOL)editing;
+- (void)setOverlayPageContentAlpha:(double)alpha;
+- (void)setOverlayPageContentScale:(CGPoint)scale;
+- (void)setOverlayPageContentTranslation:(CGPoint)translation;
+- (void)setOverlayStatusBarHidden:(BOOL)hidden;
+- (void)setPresentationState:(unint64_t)state;
+- (void)setReachabilityActive:(BOOL)active;
+- (void)setSensorActivityDataProvider:(id)provider;
+- (void)setTransitionState:(unint64_t)state;
+- (void)updatePresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willOpenExpandedSensorAttributionViewController;
 @end
 
@@ -188,7 +188,7 @@
     v10 = 0;
   }
 
-  v15 = [v10 bundleIdentifier];
+  bundleIdentifier = [v10 bundleIdentifier];
   v16 = *v6;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -197,17 +197,17 @@
     *&v31[4] = 1024;
     *&v31[6] = v3 != 0;
     v32 = 2114;
-    v33 = v15;
+    v33 = bundleIdentifier;
     _os_log_impl(&dword_21E9F5000, v16, OS_LOG_TYPE_DEFAULT, "[AV Modules] Setting visibility of AV modules (audio: %{BOOL}d, video: %{BOOL}d) for bundle identifier %{public}@", buf, 0x18u);
   }
 
-  v17 = [MEMORY[0x277CFC830] sharedInstance];
-  [v17 setVisibility:v11 forModuleWithIdentifier:@"com.apple.replaykit.AudioConferenceControlCenterModule" completionHandler:0];
+  mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
+  [mEMORY[0x277CFC830] setVisibility:v11 forModuleWithIdentifier:@"com.apple.replaykit.AudioConferenceControlCenterModule" completionHandler:0];
 
-  v18 = [MEMORY[0x277CFC830] sharedInstance];
-  [v18 setVisibility:v3 != 0 forModuleWithIdentifier:@"com.apple.replaykit.VideoConferenceControlCenterModule" completionHandler:0];
+  mEMORY[0x277CFC830]2 = [MEMORY[0x277CFC830] sharedInstance];
+  [mEMORY[0x277CFC830]2 setVisibility:v3 != 0 forModuleWithIdentifier:@"com.apple.replaykit.VideoConferenceControlCenterModule" completionHandler:0];
 
-  [(CCUIHeaderPocketView *)self->_headerPocketView setAudioControlsEnabled:v11 videoControlsEnabled:v3 != 0 forBundleIdentifier:v15];
+  [(CCUIHeaderPocketView *)self->_headerPocketView setAudioControlsEnabled:v11 videoControlsEnabled:v3 != 0 forBundleIdentifier:bundleIdentifier];
   [(CCUIHeaderPocketView *)self->_headerPocketView setAudioVideoModeSelectionAttribution:v10];
   if ((v29 & 0x100) != 0 || v29 == 1)
   {
@@ -225,11 +225,11 @@
   [(CCUIHeaderPocketView *)self->_headerPocketView setGameModeActivityDataProvider:self->_gameModeActivityDataProvider];
   [(CCUIHeaderPocketView *)self->_headerPocketView gameModeStateDidChange:[(CCUIGameModeActivityDataProvider *)self->_gameModeActivityDataProvider gameModeState]];
   v22 = objc_alloc_init(MEMORY[0x277CBEB98]);
-  v23 = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
-  v24 = [v22 setByAddingObjectsFromSet:v23];
+  activeSensorActivityData = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
+  v24 = [v22 setByAddingObjectsFromSet:activeSensorActivityData];
 
-  v25 = [(CCUIGameModeActivityDataProvider *)self->_gameModeActivityDataProvider activityData];
-  v26 = [v24 setByAddingObjectsFromSet:v25];
+  activityData = [(CCUIGameModeActivityDataProvider *)self->_gameModeActivityDataProvider activityData];
+  v26 = [v24 setByAddingObjectsFromSet:activityData];
 
   [(CCUIHeaderPocketView *)self->_headerPocketView sensorAttributionsChanged:v26];
   [(CCUIHeaderPocketView *)self->_headerPocketView layoutIfNeeded];
@@ -245,18 +245,18 @@
 
 - (int64_t)_interfaceOrientation
 {
-  v2 = [(CCUIMainViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 interfaceOrientation];
+  view = [(CCUIMainViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  if (v4 <= 1)
+  if (interfaceOrientation <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v4;
+    return interfaceOrientation;
   }
 }
 
@@ -267,8 +267,8 @@
     return 0.0;
   }
 
-  v3 = [(CCUIMainViewController *)self delegate];
-  [v3 reachabilityOffsetForControlCenterViewController:self];
+  delegate = [(CCUIMainViewController *)self delegate];
+  [delegate reachabilityOffsetForControlCenterViewController:self];
   v5 = v4;
 
   return v5;
@@ -276,8 +276,8 @@
 
 - (CGRect)overlayContainerFrame
 {
-  v2 = [(CCUIMainViewController *)self view];
-  [v2 bounds];
+  view = [(CCUIMainViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -304,16 +304,16 @@
 
 - (BOOL)isEditing
 {
-  v2 = [(CCUIMainViewController *)self pagingViewController];
-  v3 = [v2 isEditing];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  isEditing = [pagingViewController isEditing];
 
-  return v3;
+  return isEditing;
 }
 
 - (CGRect)overlayBackgroundFrame
 {
-  v2 = [(CCUIMainViewController *)self view];
-  [v2 bounds];
+  view = [(CCUIMainViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -330,28 +330,28 @@
   return result;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4 delegate:(id)a5
+- (BOOL)runTest:(id)test options:(id)options delegate:(id)delegate
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v36 = a5;
+  testCopy = test;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy_;
   v57 = __Block_byref_object_dispose_;
   v58 = 0;
-  v35 = v8;
-  if ([v7 isEqualToString:@"ControlCenterBringup"])
+  v35 = optionsCopy;
+  if ([testCopy isEqualToString:@"ControlCenterBringup"])
   {
     v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:1 endSignpost:2];
-    v10 = [CCUIPPTRootTest testWithName:v7];
+    v10 = [CCUIPPTRootTest testWithName:testCopy];
     v65[0] = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:1];
-    v12 = [objc_opt_class() _controlCenterBringupEventStream];
+    _controlCenterBringupEventStream = [objc_opt_class() _controlCenterBringupEventStream];
     v13 = v54[5];
-    v54[5] = v12;
+    v54[5] = _controlCenterBringupEventStream;
 
     v14 = 0;
     v15 = 0;
@@ -363,15 +363,15 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"ControlCenterBringupOverSafari"])
+  if ([testCopy isEqualToString:@"ControlCenterBringupOverSafari"])
   {
     v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:1 endSignpost:2];
-    v10 = [CCUIPPTRootTest testWithName:v7];
+    v10 = [CCUIPPTRootTest testWithName:testCopy];
     v64 = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
-    v20 = [objc_opt_class() _controlCenterBringupEventStream];
+    _controlCenterBringupEventStream2 = [objc_opt_class() _controlCenterBringupEventStream];
     v21 = v54[5];
-    v54[5] = v20;
+    v54[5] = _controlCenterBringupEventStream2;
 
     v14 = 0;
     v15 = 0;
@@ -381,15 +381,15 @@ LABEL_3:
     v19 = 2;
   }
 
-  else if ([v7 isEqualToString:@"ControlCenterBringupOnLockScreen"])
+  else if ([testCopy isEqualToString:@"ControlCenterBringupOnLockScreen"])
   {
     v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:1 endSignpost:2];
-    v10 = [CCUIPPTRootTest testWithName:v7];
+    v10 = [CCUIPPTRootTest testWithName:testCopy];
     v63 = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-    v22 = [objc_opt_class() _controlCenterBringupEventStream];
+    _controlCenterBringupEventStream3 = [objc_opt_class() _controlCenterBringupEventStream];
     v23 = v54[5];
-    v54[5] = v22;
+    v54[5] = _controlCenterBringupEventStream3;
 
     v14 = 0;
     v15 = 0;
@@ -401,15 +401,15 @@ LABEL_3:
 
   else
   {
-    if ([v7 isEqualToString:@"ControlCenterDismiss"])
+    if ([testCopy isEqualToString:@"ControlCenterDismiss"])
     {
       v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:3 endSignpost:4];
-      v10 = [CCUIPPTRootTest testWithName:v7];
+      v10 = [CCUIPPTRootTest testWithName:testCopy];
       v62 = v9;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
-      v30 = [objc_opt_class() _controlCenterDismissEventStream];
+      _controlCenterDismissEventStream = [objc_opt_class() _controlCenterDismissEventStream];
       v31 = v54[5];
-      v54[5] = v30;
+      v54[5] = _controlCenterDismissEventStream;
 
       v14 = 0;
       v15 = 0;
@@ -419,10 +419,10 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    if ([v7 isEqualToString:@"ControlCenterShowOrbActions"])
+    if ([testCopy isEqualToString:@"ControlCenterShowOrbActions"])
     {
       v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:5 endSignpost:6];
-      v10 = [CCUIPPTRootTest testWithName:v7];
+      v10 = [CCUIPPTRootTest testWithName:testCopy];
       v61 = v9;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
       v51[0] = MEMORY[0x277D85DD0];
@@ -440,15 +440,15 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    if ([v7 isEqualToString:@"ControlCenterDismissOrbActions"])
+    if ([testCopy isEqualToString:@"ControlCenterDismissOrbActions"])
     {
       v9 = [CCUIPPTTest testWithName:@"animation" beginSignpost:7 endSignpost:8];
-      v10 = [CCUIPPTRootTest testWithName:v7];
+      v10 = [CCUIPPTRootTest testWithName:testCopy];
       v60 = v9;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
-      v32 = [objc_opt_class() _controlCenterDismissOrbActionsEventStream];
+      _controlCenterDismissOrbActionsEventStream = [objc_opt_class() _controlCenterDismissOrbActionsEventStream];
       v33 = v54[5];
-      v54[5] = v32;
+      v54[5] = _controlCenterDismissOrbActionsEventStream;
 
       v14 = 0;
       v16 = @"com.apple.control-center.QuickNoteModule";
@@ -458,7 +458,7 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    if (![v7 isEqualToString:@"ControlCenterBringupAndEnterEditMode"])
+    if (![testCopy isEqualToString:@"ControlCenterBringupAndEnterEditMode"])
     {
       v25 = 0;
       v26 = 0;
@@ -469,7 +469,7 @@ LABEL_3:
 
     v9 = [CCUIPPTTest testWithName:@"editModeEnter" beginSignpost:11 endSignpost:12];
     v34 = [CCUIPPTTest testWithName:@"editModeExit" beginSignpost:13 endSignpost:14];
-    v10 = [CCUIPPTRootTest testWithName:v7];
+    v10 = [CCUIPPTRootTest testWithName:testCopy];
     v59[0] = v9;
     v59[1] = v34;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
@@ -530,7 +530,7 @@ LABEL_8:
     v40 = v14;
     v28 = v27;
     v41 = v28;
-    [v36 prepareForControlCenterPPTHostState:v19 completionHandler:v38];
+    [delegateCopy prepareForControlCenterPPTHostState:v19 completionHandler:v38];
 
     v25 = 1;
   }
@@ -699,9 +699,9 @@ void __56__CCUIMainViewController_PPT__runTest_options_delegate___block_invoke_1
 
 + (id)_controlCenterBringupEventStream
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v2 _keyWindowForScreen:v3];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v4 = [mEMORY[0x277D75128] _keyWindowForScreen:mainScreen];
 
   [v4 bounds];
   v6 = v5;
@@ -789,7 +789,7 @@ void __56__CCUIMainViewController_PPT__runTest_options_delegate___block_invoke_1
   return v33;
 }
 
-- (CGPoint)_centerPointOfModuleWithIdentifier:(id)a3
+- (CGPoint)_centerPointOfModuleWithIdentifier:(id)identifier
 {
   UIRectGetCenter();
   result.y = v4;
@@ -797,14 +797,14 @@ void __56__CCUIMainViewController_PPT__runTest_options_delegate___block_invoke_1
   return result;
 }
 
-- (id)_controlCenterShowOrbActionsEventStream:(id)a3
+- (id)_controlCenterShowOrbActionsEventStream:(id)stream
 {
-  [(CCUIMainViewController *)self _centerPointOfModuleWithIdentifier:a3];
+  [(CCUIMainViewController *)self _centerPointOfModuleWithIdentifier:stream];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  v9 = [v7 _keyWindowForScreen:v8];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v9 = [mEMORY[0x277D75128] _keyWindowForScreen:mainScreen];
 
   [v9 convertPoint:0 toView:{v4, v6}];
   [v9 _convertPointToSceneReferenceSpace:?];
@@ -831,9 +831,9 @@ void __71__CCUIMainViewController_PPT___controlCenterShowOrbActionsEventStream__
 
 + (id)_controlCenterDismissOrbActionsEventStream
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v2 _keyWindowForScreen:v3];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v4 = [mEMORY[0x277D75128] _keyWindowForScreen:mainScreen];
 
   [v4 bounds];
   x = v16.origin.x;
@@ -860,9 +860,9 @@ void __71__CCUIMainViewController_PPT___controlCenterShowOrbActionsEventStream__
 
 - (id)_controlCenterEnterEditModeEventStream
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v2 _keyWindowForScreen:v3];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v4 = [mEMORY[0x277D75128] _keyWindowForScreen:mainScreen];
 
   [v4 bounds];
   x = v20.origin.x;
@@ -905,20 +905,20 @@ void __69__CCUIMainViewController_PPT___controlCenterEnterEditModeEventStream__b
   [v5 tap:{a1[6], a1[7]}];
 }
 
-+ (void)_playEventStream:(id)a3 withCompletion:(id)a4
++ (void)_playEventStream:(id)stream withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277D44350];
-  v7 = a3;
+  streamCopy = stream;
   v8 = objc_alloc_init(v6);
   v9 = MEMORY[0x277D44348];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__CCUIMainViewController_PPT___playEventStream_withCompletion___block_invoke;
   v11[3] = &unk_2783821E0;
-  v12 = v5;
-  v10 = v5;
-  [v9 playEventStream:v7 options:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 playEventStream:streamCopy options:v8 completion:v11];
 }
 
 uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___block_invoke(uint64_t a1)
@@ -932,10 +932,10 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   return result;
 }
 
-- (unint64_t)_fetchModuleEnabledState:(id)a3
+- (unint64_t)_fetchModuleEnabledState:(id)state
 {
-  v3 = a3;
-  if (v3)
+  stateCopy = state;
+  if (stateCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -943,7 +943,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
     v16 = 0;
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
-    v5 = [MEMORY[0x277CFC830] sharedInstance];
+    mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __56__CCUIMainViewController_PPT___fetchModuleEnabledState___block_invoke;
@@ -951,7 +951,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
     v12 = &v13;
     v6 = v4;
     v11 = v6;
-    [v5 getEnabledStateOfModuleWithIdentifier:v3 completionHandler:v10];
+    [mEMORY[0x277CFC830] getEnabledStateOfModuleWithIdentifier:stateCopy completionHandler:v10];
 
     v7 = dispatch_time(0, 5000000000);
     v8 = 0;
@@ -971,16 +971,16 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   return v8;
 }
 
-- (BOOL)_forceModuleEnabled:(id)a3
+- (BOOL)_forceModuleEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v4 = dispatch_group_create();
   dispatch_group_enter(v4);
-  v5 = [MEMORY[0x277CFC830] sharedInstance];
+  mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__CCUIMainViewController_PPT___forceModuleEnabled___block_invoke;
@@ -988,7 +988,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   v12 = &v13;
   v6 = v4;
   v11 = v6;
-  [v5 requestEnableModuleWithIdentifier:v3 force:1 completionHandler:v10];
+  [mEMORY[0x277CFC830] requestEnableModuleWithIdentifier:enabledCopy force:1 completionHandler:v10];
 
   v7 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v6, v7))
@@ -1005,24 +1005,24 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   return v8 & 1;
 }
 
-- (void)_disableModule:(id)a3
+- (void)_disableModule:(id)module
 {
-  if (a3)
+  if (module)
   {
     v3 = MEMORY[0x277CFC830];
-    v4 = a3;
-    v5 = [v3 sharedInstance];
-    [v5 requestDisableModuleWithIdentifier:v4 completionHandler:0];
+    moduleCopy = module;
+    sharedInstance = [v3 sharedInstance];
+    [sharedInstance requestDisableModuleWithIdentifier:moduleCopy completionHandler:0];
   }
 }
 
-- (void)runTest:(id)a3 subtests:(id)a4 eventStream:(id)a5 completionHandler:(id)a6
+- (void)runTest:(id)test subtests:(id)subtests eventStream:(id)stream completionHandler:(id)handler
 {
   v61 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v33 = a5;
-  v32 = a6;
+  testCopy = test;
+  subtestsCopy = subtests;
+  streamCopy = stream;
+  handlerCopy = handler;
   [objc_opt_class() _executeAndCleanupBlocksForAllSignposts];
   if (gSignpostListener)
   {
@@ -1056,7 +1056,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   v53[2] = __86__CCUIMainViewController_PPTInternal__runTest_subtests_eventStream_completionHandler___block_invoke;
   v53[3] = &unk_278382440;
   v55 = v58;
-  v35 = v11;
+  v35 = testCopy;
   v54 = v35;
   v57 = [v14 scheduledTimerWithTimeInterval:0 repeats:v53 block:10.0];
   group = dispatch_group_create();
@@ -1064,7 +1064,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v12;
+  obj = subtestsCopy;
   v15 = [obj countByEnumeratingWithState:&v49 objects:v60 count:16];
   if (v15)
   {
@@ -1081,7 +1081,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
         v18 = *(*(&v49 + 1) + 8 * i);
         dispatch_group_enter(group);
         v19 = objc_opt_class();
-        v20 = [v18 beginSignpost];
+        beginSignpost = [v18 beginSignpost];
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __86__CCUIMainViewController_PPTInternal__runTest_subtests_eventStream_completionHandler___block_invoke_2;
@@ -1089,9 +1089,9 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
         v47[4] = v18;
         v21 = v35;
         v48 = v21;
-        [v19 _addBlockForSignpost:v20 block:v47];
+        [v19 _addBlockForSignpost:beginSignpost block:v47];
         v22 = objc_opt_class();
-        v23 = [v18 endSignpost];
+        endSignpost = [v18 endSignpost];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __86__CCUIMainViewController_PPTInternal__runTest_subtests_eventStream_completionHandler___block_invoke_3;
@@ -1099,7 +1099,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
         v44[4] = v18;
         v45 = v21;
         v46 = group;
-        [v22 _addBlockForSignpost:v23 block:v44];
+        [v22 _addBlockForSignpost:endSignpost block:v44];
       }
 
       v15 = [obj countByEnumeratingWithState:&v49 objects:v60 count:16];
@@ -1116,7 +1116,7 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   v43 = v56;
   v24 = v35;
   v40 = v24;
-  v25 = v32;
+  v25 = handlerCopy;
   v41 = v25;
   v26 = _Block_copy(aBlock);
   if ([v24 endSignpost])
@@ -1132,25 +1132,25 @@ uint64_t __63__CCUIMainViewController_PPT___playEventStream_withCompletion___blo
   if ([v24 beginSignpost])
   {
     v27 = objc_opt_class();
-    v28 = [v24 beginSignpost];
+    beginSignpost2 = [v24 beginSignpost];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __86__CCUIMainViewController_PPTInternal__runTest_subtests_eventStream_completionHandler___block_invoke_6;
     v37[3] = &unk_278381DF0;
     v38 = v24;
-    [v27 _addBlockForSignpost:v28 block:v37];
-    v29 = v38;
+    [v27 _addBlockForSignpost:beginSignpost2 block:v37];
+    mEMORY[0x277D75128] = v38;
   }
 
   else
   {
-    v29 = [MEMORY[0x277D75128] sharedApplication];
-    v30 = [v24 name];
-    [v29 startedTest:v30];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    name = [v24 name];
+    [mEMORY[0x277D75128] startedTest:name];
   }
 
   v31 = objc_alloc_init(MEMORY[0x277D44350]);
-  [MEMORY[0x277D44348] playEventStream:v33 options:v31 completion:&__block_literal_global_3];
+  [MEMORY[0x277D44348] playEventStream:streamCopy options:v31 completion:&__block_literal_global_3];
 
   _Block_object_dispose(v56, 8);
   _Block_object_dispose(v58, 8);
@@ -1239,16 +1239,16 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
   _blocksBySignpost_blocksBySignpost = v0;
 }
 
-+ (void)_addBlockForSignpost:(unint64_t)a3 block:(id)a4
++ (void)_addBlockForSignpost:(unint64_t)signpost block:(id)block
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a1 _blocksBySignpost];
-  objc_sync_enter(v7);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [v7 objectForKey:v8];
+  blockCopy = block;
+  _blocksBySignpost = [self _blocksBySignpost];
+  objc_sync_enter(_blocksBySignpost);
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signpost];
+  v9 = [_blocksBySignpost objectForKey:v8];
 
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(blockCopy);
   v11 = v10;
   if (v9)
   {
@@ -1261,22 +1261,22 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 setObject:v12 forKey:v13];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signpost];
+  [_blocksBySignpost setObject:v12 forKey:v13];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(_blocksBySignpost);
 }
 
 + (void)_executeAndCleanupBlocksForAllSignposts
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _blocksBySignpost];
-  objc_sync_enter(v2);
+  _blocksBySignpost = [self _blocksBySignpost];
+  objc_sync_enter(_blocksBySignpost);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = v2;
+  v3 = _blocksBySignpost;
   v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
@@ -1343,15 +1343,15 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
   }
 }
 
-+ (void)_executeBlocksForSignpost:(unint64_t)a3
++ (void)_executeBlocksForSignpost:(unint64_t)signpost
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a1 _blocksBySignpost];
-  objc_sync_enter(v4);
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 bs_takeObjectForKey:v5];
+  _blocksBySignpost = [self _blocksBySignpost];
+  objc_sync_enter(_blocksBySignpost);
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signpost];
+  v6 = [_blocksBySignpost bs_takeObjectForKey:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(_blocksBySignpost);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -1383,20 +1383,20 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
   }
 }
 
-- (void)didReceiveSignpost:(unint64_t)a3
+- (void)didReceiveSignpost:(unint64_t)signpost
 {
   v4 = objc_opt_class();
 
-  [v4 _executeBlocksForSignpost:a3];
+  [v4 _executeBlocksForSignpost:signpost];
 }
 
 + (id)_presentationProviderForDevice
 {
   v2 = objc_opt_class();
-  v3 = [MEMORY[0x277CFC820] standardDefaults];
-  v4 = [v3 presentationGesture];
+  standardDefaults = [MEMORY[0x277CFC820] standardDefaults];
+  presentationGesture = [standardDefaults presentationGesture];
 
-  if (v4 == 1)
+  if (presentationGesture == 1)
   {
     v2 = objc_opt_class();
   }
@@ -1406,30 +1406,30 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
   return v5;
 }
 
-- (CCUIMainViewController)initWithSystemAgent:(id)a3 moduleInstanceManager:(id)a4 moduleSettingsManager:(id)a5 sensorActivityDataProvider:(id)a6 gameModeActivityDataProvider:(id)a7 presentationProvider:(id)a8
+- (CCUIMainViewController)initWithSystemAgent:(id)agent moduleInstanceManager:(id)manager moduleSettingsManager:(id)settingsManager sensorActivityDataProvider:(id)provider gameModeActivityDataProvider:(id)dataProvider presentationProvider:(id)presentationProvider
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  agentCopy = agent;
+  managerCopy = manager;
+  settingsManagerCopy = settingsManager;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  presentationProviderCopy = presentationProvider;
   v43.receiver = self;
   v43.super_class = CCUIMainViewController;
   v20 = [(CCUIMainViewController *)&v43 initWithNibName:0 bundle:0];
   v21 = v20;
   if (v20)
   {
-    [(CCUIMainViewController *)v20 setModuleInstanceManager:v15];
-    [v15 setContextDelegate:v21];
-    [v15 addObserver:v21];
-    [(CCUIMainViewController *)v21 setModuleSettingsManager:v16];
+    [(CCUIMainViewController *)v20 setModuleInstanceManager:managerCopy];
+    [managerCopy setContextDelegate:v21];
+    [managerCopy addObserver:v21];
+    [(CCUIMainViewController *)v21 setModuleSettingsManager:settingsManagerCopy];
     v22 = objc_alloc_init(CCUIStatusLabelViewController);
     statusLabelViewController = v21->_statusLabelViewController;
     v21->_statusLabelViewController = v22;
 
     [(CCUIMainViewController *)v21 setDefinesPresentationContext:1];
-    objc_storeStrong(&v21->_presentationProvider, a8);
+    objc_storeStrong(&v21->_presentationProvider, presentationProvider);
     [(CCUIOverlayPresentationProvider *)v21->_presentationProvider setViewProvider:v21];
     [(CCUIOverlayPresentationProvider *)v21->_presentationProvider setMetricsProvider:v21];
     v24 = +[CCUIAnimationRunner runner];
@@ -1448,17 +1448,17 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
     blockingGestureRecognizers = v21->_blockingGestureRecognizers;
     v21->_blockingGestureRecognizers = v30;
 
-    v32 = [(CCUIMainViewController *)v21 statusLabelViewController];
-    [v32 setDelegate:v21];
+    statusLabelViewController = [(CCUIMainViewController *)v21 statusLabelViewController];
+    [statusLabelViewController setDelegate:v21];
 
-    v33 = [MEMORY[0x277CFC828] sharedService];
+    mEMORY[0x277CFC828] = [MEMORY[0x277CFC828] sharedService];
     controlCenterOperationService = v21->_controlCenterOperationService;
-    v21->_controlCenterOperationService = v33;
+    v21->_controlCenterOperationService = mEMORY[0x277CFC828];
 
     [(CCSControlCenterOperationService *)v21->_controlCenterOperationService setDelegate:v21];
-    objc_storeStrong(&v21->_sensorActivityDataProvider, a6);
-    objc_storeStrong(&v21->_gameModeActivityDataProvider, a7);
-    [v18 addObserver:v21];
+    objc_storeStrong(&v21->_sensorActivityDataProvider, provider);
+    objc_storeStrong(&v21->_gameModeActivityDataProvider, dataProvider);
+    [dataProviderCopy addObserver:v21];
     v21->_showingRootView = 1;
     if (_os_feature_enabled_impl())
     {
@@ -1477,7 +1477,7 @@ void __56__CCUIMainViewController_PPTInternal___blocksBySignpost__block_invoke()
       objc_destroyWeak(&location);
     }
 
-    objc_storeWeak(&v21->_systemAgent, v14);
+    objc_storeWeak(&v21->_systemAgent, agentCopy);
     v37 = objc_alloc_init(CCUIAnalyticsEventsController);
     analyticsEventsController = v21->_analyticsEventsController;
     v21->_analyticsEventsController = v37;
@@ -1502,21 +1502,21 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
 
 - (id)_safeStatusLabelViewContainerView
 {
-  v2 = [(CCUIMainViewController *)self _statusLabelViewContainerView];
-  if (!v2)
+  _statusLabelViewContainerView = [(CCUIMainViewController *)self _statusLabelViewContainerView];
+  if (!_statusLabelViewContainerView)
   {
     [CCUIMainViewController _safeStatusLabelViewContainerView];
   }
 
-  return v2;
+  return _statusLabelViewContainerView;
 }
 
 - (void)_becomeActive
 {
   if (!self->_active)
   {
-    v3 = [(CCUIMainViewController *)self pagingViewController];
-    [v3 willBecomeActive];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    [pagingViewController willBecomeActive];
   }
 
   self->_active = 1;
@@ -1537,19 +1537,19 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
 
 - (id)_safePagingViewContainerView
 {
-  v2 = [(CCUIMainViewController *)self _pagingViewContainerView];
-  if (!v2)
+  _pagingViewContainerView = [(CCUIMainViewController *)self _pagingViewContainerView];
+  if (!_pagingViewContainerView)
   {
     [CCUIMainViewController _safePagingViewContainerView];
   }
 
-  return v2;
+  return _pagingViewContainerView;
 }
 
-- (void)setPresentationState:(unint64_t)a3
+- (void)setPresentationState:(unint64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_presentationState != a3)
+  if (self->_presentationState != state)
   {
     v5 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -1565,14 +1565,14 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
         v7 = off_278382860[presentationState];
       }
 
-      if (a3 > 3)
+      if (state > 3)
       {
         v8 = @"<invalid>";
       }
 
       else
       {
-        v8 = off_278382860[a3];
+        v8 = off_278382860[state];
       }
 
       *v11 = 138543618;
@@ -1583,21 +1583,21 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
       _os_log_impl(&dword_21E9F5000, v9, OS_LOG_TYPE_DEFAULT, "Transitioning presentation state: fromState=%{public}@, toState=%{public}@", v11, 0x16u);
     }
 
-    self->_presentationState = a3;
+    self->_presentationState = state;
     v10 = [(CCUIMainViewController *)self delegate:*v11];
     if (objc_opt_respondsToSelector())
     {
       [v10 controlCenterViewController:self didChangePresentationState:self->_presentationState];
     }
 
-    [(CCUIHeaderPocketView *)self->_headerPocketView setPresentationState:a3];
+    [(CCUIHeaderPocketView *)self->_headerPocketView setPresentationState:state];
   }
 }
 
-- (void)setTransitionState:(unint64_t)a3
+- (void)setTransitionState:(unint64_t)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_transitionState != a3)
+  if (self->_transitionState != state)
   {
     v5 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -1613,14 +1613,14 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
         v7 = off_278382848[transitionState];
       }
 
-      if (a3 > 2)
+      if (state > 2)
       {
         v8 = @"<invalid>";
       }
 
       else
       {
-        v8 = off_278382848[a3];
+        v8 = off_278382848[state];
       }
 
       v10 = 138543618;
@@ -1631,16 +1631,16 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
       _os_log_impl(&dword_21E9F5000, v9, OS_LOG_TYPE_DEFAULT, "Transitioning transition state: fromState=%{public}@, toState=%{public}@", &v10, 0x16u);
     }
 
-    self->_transitionState = a3;
+    self->_transitionState = state;
   }
 }
 
-- (void)setReachabilityActive:(BOOL)a3
+- (void)setReachabilityActive:(BOOL)active
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_reachabilityActive != a3)
+  if (self->_reachabilityActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
@@ -1648,16 +1648,16 @@ void __167__CCUIMainViewController_initWithSystemAgent_moduleInstanceManager_mod
       *buf = 67109376;
       v12 = reachabilityActive;
       v13 = 1024;
-      v14 = v3;
+      v14 = activeCopy;
       _os_log_impl(&dword_21E9F5000, v5, OS_LOG_TYPE_DEFAULT, "Toggling reachability active: from=%{BOOL}d, to=%{BOOL}d", buf, 0xEu);
     }
 
-    self->_reachabilityActive = v3;
-    v7 = [(CCUIMainViewController *)self _scrollView];
-    [v7 setScrollEnabled:!v3];
+    self->_reachabilityActive = activeCopy;
+    _scrollView = [(CCUIMainViewController *)self _scrollView];
+    [_scrollView setScrollEnabled:!activeCopy];
 
-    v8 = [(CCUIMainViewController *)self delegate];
-    v9 = [v8 reachabilitySpringAnimationBehaviorForControlCenterViewController:self];
+    delegate = [(CCUIMainViewController *)self delegate];
+    v9 = [delegate reachabilitySpringAnimationBehaviorForControlCenterViewController:self];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -1681,10 +1681,10 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
   return [v4 _updateHotPocket:0 animated:0];
 }
 
-- (void)setCurrentTransitionUUID:(id)a3
+- (void)setCurrentTransitionUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
@@ -1692,18 +1692,18 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
     v9 = 138543618;
     v10 = currentTransitionUUID;
     v11 = 2114;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_21E9F5000, v5, OS_LOG_TYPE_DEFAULT, "Changed transition UUID: from=%{public}@, to=%{public}@", &v9, 0x16u);
   }
 
-  v7 = [v4 copy];
+  v7 = [dCopy copy];
   v8 = self->_currentTransitionUUID;
   self->_currentTransitionUUID = v7;
 }
 
-- (void)setSensorActivityDataProvider:(id)a3
+- (void)setSensorActivityDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
@@ -1712,7 +1712,7 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
   }
 
   sensorActivityDataProvider = self->_sensorActivityDataProvider;
-  self->_sensorActivityDataProvider = v4;
+  self->_sensorActivityDataProvider = providerCopy;
 
   if (![(CCUIMainViewController *)self presentationState])
   {
@@ -1722,75 +1722,75 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
 
 - (void)willOpenExpandedSensorAttributionViewController
 {
-  v3 = [(CCUIMainViewController *)self delegate];
+  delegate = [(CCUIMainViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 willOpenExpandedModuleForControlCenterViewController:self];
+    [delegate willOpenExpandedModuleForControlCenterViewController:self];
   }
 }
 
 - (void)didCloseExpandedSensorAttributionViewController
 {
-  v3 = [(CCUIMainViewController *)self delegate];
+  delegate = [(CCUIMainViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 didCloseExpandedModuleForControlCenterViewController:self];
+    [delegate didCloseExpandedModuleForControlCenterViewController:self];
   }
 }
 
 - (void)didTriggerPowerButtonPrimaryAction
 {
-  v3 = [(CCUIMainViewController *)self delegate];
+  delegate = [(CCUIMainViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 didRequestPowerDownTransientOverlayForControlCenterViewController:self];
+    [delegate didRequestPowerDownTransientOverlayForControlCenterViewController:self];
   }
 }
 
 - (BOOL)canDismissPresentedContent
 {
-  v3 = [(CCUIMainViewController *)self pagingViewController];
-  v4 = ([v3 canDismissPresentedContent] & 1) != 0 || -[CCUIMainViewController isSensorAttributionViewControllerExpanded](self, "isSensorAttributionViewControllerExpanded");
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  v4 = ([pagingViewController canDismissPresentedContent] & 1) != 0 || -[CCUIMainViewController isSensorAttributionViewControllerExpanded](self, "isSensorAttributionViewControllerExpanded");
 
   return v4;
 }
 
-- (void)expandModuleWithIdentifier:(id)a3
+- (void)expandModuleWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self pagingViewController];
-  [v5 expandModuleWithIdentifier:v4];
+  identifierCopy = identifier;
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  [pagingViewController expandModuleWithIdentifier:identifierCopy];
 }
 
-- (void)dismissExpandedModuleAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissExpandedModuleAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(CCUIMainViewController *)self isSensorAttributionViewControllerExpanded])
   {
-    [(CCUIHeaderPocketView *)self->_headerPocketView dismissSensorAttributionExpandedView:v4 completion:v7];
+    [(CCUIHeaderPocketView *)self->_headerPocketView dismissSensorAttributionExpandedView:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v6 = [(CCUIMainViewController *)self pagingViewController];
-    [v6 dismissExpandedModuleAnimated:v4 completion:v7];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    [pagingViewController dismissExpandedModuleAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(CCUIMainViewController *)self isSensorAttributionViewControllerExpanded])
   {
-    [(CCUIHeaderPocketView *)self->_headerPocketView dismissSensorAttributionExpandedView:v4 completion:v7];
+    [(CCUIHeaderPocketView *)self->_headerPocketView dismissSensorAttributionExpandedView:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v6 = [(CCUIMainViewController *)self pagingViewController];
-    [v6 dismissPresentedContentAnimated:v4 completion:v7];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    [pagingViewController dismissPresentedContentAnimated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -1798,51 +1798,51 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
 {
   if ([(CCUIMainViewController *)self _appearState]== 2)
   {
-    v3 = [(CCUIMainViewController *)self pagingViewController];
-    [v3 displayWillTurnOff];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    [pagingViewController displayWillTurnOff];
   }
 }
 
-- (void)_presentAnimated:(BOOL)a3 withInitialVelocity:(CGPoint)a4 completionHandler:(id)a5
+- (void)_presentAnimated:(BOOL)animated withInitialVelocity:(CGPoint)velocity completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [(CCUIMainViewController *)self presentationState];
+  handlerCopy = handler;
+  presentationState = [(CCUIMainViewController *)self presentationState];
   v11 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
-    if (v10 > 3)
+    if (presentationState > 3)
     {
       v12 = @"<invalid>";
     }
 
     else
     {
-      v12 = off_278382860[v10];
+      v12 = off_278382860[presentationState];
     }
 
     *buf = 67109378;
-    v24 = v7;
+    v24 = animatedCopy;
     v25 = 2114;
     v26 = v12;
     v13 = v11;
     _os_log_impl(&dword_21E9F5000, v13, OS_LOG_TYPE_DEFAULT, "Requested presentation: animated=%{BOOL}d, presentationState=%{public}@", buf, 0x12u);
   }
 
-  if (v10 == 2)
+  if (presentationState == 2)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v14 = [(CCUIMainViewController *)self _beginPresentationAnimated:v7 interactive:0];
+    v14 = [(CCUIMainViewController *)self _beginPresentationAnimated:animatedCopy interactive:0];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __81__CCUIMainViewController__presentAnimated_withInitialVelocity_completionHandler___block_invoke;
@@ -1852,10 +1852,10 @@ uint64_t __48__CCUIMainViewController_setReachabilityActive___block_invoke(uint6
     v22 = y;
     v15 = v14;
     v19 = v15;
-    v20 = v9;
+    v20 = handlerCopy;
     v16 = _Block_copy(aBlock);
     v17 = v16;
-    if (v7)
+    if (animatedCopy)
     {
       (*(v16 + 2))(v16);
     }
@@ -1909,10 +1909,10 @@ uint64_t __81__CCUIMainViewController__presentAnimated_withInitialVelocity_compl
   return result;
 }
 
-- (id)_beginPresentationAnimated:(BOOL)a3 interactive:(BOOL)a4
+- (id)_beginPresentationAnimated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v4 = a4;
-  v28 = a3;
+  interactiveCopy = interactive;
+  animatedCopy = animated;
   v44 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CFC8F8];
   v7 = *MEMORY[0x277CFC8F8];
@@ -1928,8 +1928,8 @@ uint64_t __81__CCUIMainViewController__presentAnimated_withInitialVelocity_compl
     [gSignpostListener didReceiveSignpost:1];
   }
 
-  v8 = [(CCUIMainViewController *)self presentationState];
-  if (v4)
+  presentationState = [(CCUIMainViewController *)self presentationState];
+  if (interactiveCopy)
   {
     v9 = 1;
   }
@@ -1939,77 +1939,77 @@ uint64_t __81__CCUIMainViewController__presentAnimated_withInitialVelocity_compl
     v9 = 2;
   }
 
-  v10 = [(CCUIMainViewController *)self transitionState];
+  transitionState = [(CCUIMainViewController *)self transitionState];
   v11 = *v6;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8 > 3)
+    if (presentationState > 3)
     {
       v12 = @"<invalid>";
     }
 
     else
     {
-      v12 = off_278382860[v8];
+      v12 = off_278382860[presentationState];
     }
 
     v13 = @"animating";
-    if (v4)
+    if (interactiveCopy)
     {
       v13 = @"interactive";
     }
 
     v14 = v13;
     *buf = 67110402;
-    v33 = v28;
+    v33 = animatedCopy;
     v34 = 1024;
-    v35 = v4;
+    v35 = interactiveCopy;
     v36 = 2114;
     v37 = v12;
     v38 = 2114;
     v39 = v14;
     v40 = 1024;
-    v41 = v8 != 1;
+    v41 = presentationState != 1;
     v42 = 1024;
-    v43 = v10 != v9;
+    v43 = transitionState != v9;
     v15 = v11;
     _os_log_impl(&dword_21E9F5000, v15, OS_LOG_TYPE_DEFAULT, "Begin presentation: animated=%{BOOL}d, interactive=%{BOOL}d, currentState=%{public}@, transitionState=%{public}@, presentationStateWillChange=%{BOOL}d, transitionStateWillChange=%{BOOL}d", buf, 0x2Eu);
   }
 
-  if (v8 != 1 || v10 != v9)
+  if (presentationState != 1 || transitionState != v9)
   {
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider headerMode];
+      headerMode = [(CCUIOverlayPresentationProvider *)self->_presentationProvider headerMode];
     }
 
     else
     {
-      v16 = 0;
+      headerMode = 0;
     }
 
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    [(CCUIMainViewController *)self setCurrentTransitionUUID:v17];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(CCUIMainViewController *)self setCurrentTransitionUUID:uUID];
 
     [(CCUIMainViewController *)self setTransitionState:v9];
     [(CCUIMainViewController *)self _updateAskToAirDropModuleVisibility];
-    if ((v16 - 1) > 1 || v8)
+    if ((headerMode - 1) > 1 || presentationState)
     {
       [(CCUIMainViewController *)self setPresentationState:1];
-      if (v8)
+      if (presentationState)
       {
-        if (v8 != 3)
+        if (presentationState != 3)
         {
 LABEL_28:
-          if (v8 != 1)
+          if (presentationState != 1)
           {
             if (objc_opt_respondsToSelector())
             {
-              v23 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider prepareForPresentation];
-              v24 = v23;
-              if (v28)
+              prepareForPresentation = [(CCUIOverlayPresentationProvider *)self->_presentationProvider prepareForPresentation];
+              v24 = prepareForPresentation;
+              if (animatedCopy)
               {
-                [(CCUIAnimationRunner *)self->_primaryAnimationRunner runAnimationBatch:v23 withCompletionBlock:0];
+                [(CCUIAnimationRunner *)self->_primaryAnimationRunner runAnimationBatch:prepareForPresentation withCompletionBlock:0];
               }
 
               else
@@ -2020,12 +2020,12 @@ LABEL_28:
                 v29[2] = __65__CCUIMainViewController__beginPresentationAnimated_interactive___block_invoke_3;
                 v29[3] = &unk_278381DC8;
                 v29[4] = self;
-                v30 = v23;
+                v30 = prepareForPresentation;
                 [v25 performWithoutAnimation:v29];
               }
             }
 
-            [(UIViewController *)self ccui_safelyBeginAppearanceTransitionForChildViewControllers:1 animated:v28];
+            [(UIViewController *)self ccui_safelyBeginAppearanceTransitionForChildViewControllers:1 animated:animatedCopy];
           }
 
           goto LABEL_35;
@@ -2039,9 +2039,9 @@ LABEL_27:
 
     else
     {
-      v18 = [(CCUIMainViewController *)self hostStatusBarStyleProvider];
-      v19 = [v18 hostStatusBarStyle];
-      v20 = [v19 copy];
+      hostStatusBarStyleProvider = [(CCUIMainViewController *)self hostStatusBarStyleProvider];
+      hostStatusBarStyle = [hostStatusBarStyleProvider hostStatusBarStyle];
+      v20 = [hostStatusBarStyle copy];
       hostStatusBarStyleSnapshot = self->_hostStatusBarStyleSnapshot;
       self->_hostStatusBarStyleSnapshot = v20;
 
@@ -2049,23 +2049,23 @@ LABEL_27:
     }
 
     [(CCUIMainViewController *)self _becomeActive];
-    v22 = [(CCUIMainViewController *)self view];
-    [v22 setHidden:0];
+    view = [(CCUIMainViewController *)self view];
+    [view setHidden:0];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __65__CCUIMainViewController__beginPresentationAnimated_interactive___block_invoke;
     v31[3] = &unk_278382060;
     v31[4] = self;
-    v31[5] = v16;
+    v31[5] = headerMode;
     [MEMORY[0x277D75D18] performWithoutAnimation:v31];
     goto LABEL_27;
   }
 
 LABEL_35:
-  v26 = [(CCUIMainViewController *)self currentTransitionUUID];
+  currentTransitionUUID = [(CCUIMainViewController *)self currentTransitionUUID];
 
-  return v26;
+  return currentTransitionUUID;
 }
 
 void __65__CCUIMainViewController__beginPresentationAnimated_interactive___block_invoke(uint64_t a1)
@@ -2171,32 +2171,32 @@ LABEL_14:
   [v31 _updatePresentationForTransitionState:v32 gestureVelocity:0 withCompletionHander:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 }
 
-- (void)_endPresentationWithUUID:(id)a3
+- (void)_endPresentationWithUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self currentTransitionUUID];
-  v6 = [(CCUIMainViewController *)self presentationState];
+  dCopy = d;
+  currentTransitionUUID = [(CCUIMainViewController *)self currentTransitionUUID];
+  presentationState = [(CCUIMainViewController *)self presentationState];
   v7 = MEMORY[0x277CFC8F8];
-  if (v4 && [v5 isEqual:v4])
+  if (dCopy && [currentTransitionUUID isEqual:dCopy])
   {
     v8 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v6 > 3)
+      if (presentationState > 3)
       {
         v9 = @"<invalid>";
       }
 
       else
       {
-        v9 = off_278382860[v6];
+        v9 = off_278382860[presentationState];
       }
 
       *v15 = 138543874;
-      *&v15[4] = v4;
+      *&v15[4] = dCopy;
       *&v15[12] = 2114;
-      *&v15[14] = v5;
+      *&v15[14] = currentTransitionUUID;
       *&v15[22] = 2114;
       v16 = v9;
       v13 = v8;
@@ -2206,7 +2206,7 @@ LABEL_14:
     [(CCUIMainViewController *)self setCurrentTransitionUUID:0, *v15, *&v15[16], v16];
     [(CCUIMainViewController *)self setTransitionState:0];
     [(CCUIMainViewController *)self setPresentationState:2];
-    if (v6 != 2)
+    if (presentationState != 2)
     {
       [(UIViewController *)self ccui_safelyEndAppearanceTransitionForChildViewControllers];
     }
@@ -2217,20 +2217,20 @@ LABEL_14:
     v10 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v6 > 3)
+      if (presentationState > 3)
       {
         v11 = @"<invalid>";
       }
 
       else
       {
-        v11 = off_278382860[v6];
+        v11 = off_278382860[presentationState];
       }
 
       *v15 = 138543874;
-      *&v15[4] = v4;
+      *&v15[4] = dCopy;
       *&v15[12] = 2114;
-      *&v15[14] = v5;
+      *&v15[14] = currentTransitionUUID;
       *&v15[22] = 2114;
       v16 = v11;
       v12 = v10;
@@ -2252,53 +2252,53 @@ LABEL_14:
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)dismissAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v4 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CCUIMainViewController *)self presentationState];
+  handlerCopy = handler;
+  presentationState = [(CCUIMainViewController *)self presentationState];
   v8 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
-    if (v7 > 3)
+    if (presentationState > 3)
     {
       v9 = @"<invalid>";
     }
 
     else
     {
-      v9 = off_278382860[v7];
+      v9 = off_278382860[presentationState];
     }
 
     *buf = 67109378;
-    v18 = v4;
+    v18 = animatedCopy;
     v19 = 2114;
     v20 = v9;
     v10 = v8;
     _os_log_impl(&dword_21E9F5000, v10, OS_LOG_TYPE_DEFAULT, "Requested dismissal: animated=%{BOOL}d, presentationState=%{public}@", buf, 0x12u);
   }
 
-  if (v7)
+  if (presentationState)
   {
     [(CCUIMainViewController *)self _cancelDismissalPanGestures];
     [(CCUIMainViewController *)self setEditing:0];
-    v11 = [(CCUIMainViewController *)self _beginDismissalAnimated:v4 interactive:0];
+    v11 = [(CCUIMainViewController *)self _beginDismissalAnimated:animatedCopy interactive:0];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64__CCUIMainViewController_dismissAnimated_withCompletionHandler___block_invoke;
     v13[3] = &unk_278382680;
     v13[4] = self;
     v14 = v11;
-    v16 = v4;
-    v15 = v6;
+    v16 = animatedCopy;
+    v15 = handlerCopy;
     v12 = v11;
-    [(CCUIMainViewController *)self dismissExpandedModuleAnimated:v4 completion:v13];
+    [(CCUIMainViewController *)self dismissExpandedModuleAnimated:animatedCopy completion:v13];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -2425,10 +2425,10 @@ uint64_t __64__CCUIMainViewController_dismissAnimated_withCompletionHandler___bl
   return result;
 }
 
-- (id)_beginDismissalAnimated:(BOOL)a3 interactive:(BOOL)a4
+- (id)_beginDismissalAnimated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v4 = a4;
-  v25 = a3;
+  interactiveCopy = interactive;
+  animatedCopy = animated;
   v39 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CFC8F8];
   v7 = *MEMORY[0x277CFC8F8];
@@ -2444,8 +2444,8 @@ uint64_t __64__CCUIMainViewController_dismissAnimated_withCompletionHandler___bl
     [gSignpostListener didReceiveSignpost:3];
   }
 
-  v8 = [(CCUIMainViewController *)self presentationState];
-  if (v4)
+  presentationState = [(CCUIMainViewController *)self presentationState];
+  if (interactiveCopy)
   {
     v9 = 1;
   }
@@ -2455,57 +2455,57 @@ uint64_t __64__CCUIMainViewController_dismissAnimated_withCompletionHandler___bl
     v9 = 2;
   }
 
-  v10 = [(CCUIMainViewController *)self transitionState];
+  transitionState = [(CCUIMainViewController *)self transitionState];
   v11 = *v6;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8 > 3)
+    if (presentationState > 3)
     {
       v12 = @"<invalid>";
     }
 
     else
     {
-      v12 = off_278382860[v8];
+      v12 = off_278382860[presentationState];
     }
 
     v13 = @"animating";
-    if (v4)
+    if (interactiveCopy)
     {
       v13 = @"interactive";
     }
 
     v14 = v13;
     *buf = 67110402;
-    v28 = v25;
+    v28 = animatedCopy;
     v29 = 1024;
-    v30 = v4;
+    v30 = interactiveCopy;
     v31 = 2114;
     v32 = v12;
     v33 = 2114;
     v34 = v14;
     v35 = 1024;
-    v36 = v8 != 3;
+    v36 = presentationState != 3;
     v37 = 1024;
-    v38 = v10 != v9;
+    v38 = transitionState != v9;
     v15 = v11;
     _os_log_impl(&dword_21E9F5000, v15, OS_LOG_TYPE_DEFAULT, "Begin dismissal: animated=%{BOOL}d, interactive=%{BOOL}d, currentState=%{public}@, transitionState=%{public}@, presentationStateWillChange=%{BOOL}d, transitionStateWillChange=%{BOOL}d", buf, 0x2Eu);
   }
 
-  if (v8 != 3 || v10 != v9)
+  if (presentationState != 3 || transitionState != v9)
   {
     if (objc_opt_respondsToSelector())
     {
       v16 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider headerMode]- 1;
-      v17 = [MEMORY[0x277CCAD78] UUID];
-      [(CCUIMainViewController *)self setCurrentTransitionUUID:v17];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      [(CCUIMainViewController *)self setCurrentTransitionUUID:uUID];
 
       [(CCUIMainViewController *)self setTransitionState:v9];
       if (v16 <= 1)
       {
-        v18 = [(CCUIMainViewController *)self hostStatusBarStyleProvider];
-        v19 = [v18 hostStatusBarStyle];
-        v20 = [v19 copy];
+        hostStatusBarStyleProvider = [(CCUIMainViewController *)self hostStatusBarStyleProvider];
+        hostStatusBarStyle = [hostStatusBarStyleProvider hostStatusBarStyle];
+        v20 = [hostStatusBarStyle copy];
         hostStatusBarStyleSnapshot = self->_hostStatusBarStyleSnapshot;
         self->_hostStatusBarStyleSnapshot = v20;
 
@@ -2520,22 +2520,22 @@ uint64_t __64__CCUIMainViewController_dismissAnimated_withCompletionHandler___bl
 
     else
     {
-      v22 = [MEMORY[0x277CCAD78] UUID];
-      [(CCUIMainViewController *)self setCurrentTransitionUUID:v22];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      [(CCUIMainViewController *)self setCurrentTransitionUUID:uUID2];
 
       [(CCUIMainViewController *)self setTransitionState:v9];
     }
 
     [(CCUIMainViewController *)self setPresentationState:3];
-    if (v8 != 3)
+    if (presentationState != 3)
     {
-      [(UIViewController *)self ccui_safelyBeginAppearanceTransitionForChildViewControllers:0 animated:v25];
+      [(UIViewController *)self ccui_safelyBeginAppearanceTransitionForChildViewControllers:0 animated:animatedCopy];
     }
   }
 
-  v23 = [(CCUIMainViewController *)self currentTransitionUUID];
+  currentTransitionUUID = [(CCUIMainViewController *)self currentTransitionUUID];
 
-  return v23;
+  return currentTransitionUUID;
 }
 
 void __62__CCUIMainViewController__beginDismissalAnimated_interactive___block_invoke(uint64_t a1)
@@ -2546,32 +2546,32 @@ void __62__CCUIMainViewController__beginDismissalAnimated_interactive___block_in
   [v2 setStyleRequest:v3];
 }
 
-- (void)_endDismissalWithUUID:(id)a3 animated:(BOOL)a4
+- (void)_endDismissalWithUUID:(id)d animated:(BOOL)animated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(CCUIMainViewController *)self currentTransitionUUID];
-  v7 = [(CCUIMainViewController *)self presentationState];
+  dCopy = d;
+  currentTransitionUUID = [(CCUIMainViewController *)self currentTransitionUUID];
+  presentationState = [(CCUIMainViewController *)self presentationState];
   v8 = MEMORY[0x277CFC8F8];
-  if (v5 && [v6 isEqual:v5])
+  if (dCopy && [currentTransitionUUID isEqual:dCopy])
   {
     v9 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7 > 3)
+      if (presentationState > 3)
       {
         v10 = @"<invalid>";
       }
 
       else
       {
-        v10 = off_278382860[v7];
+        v10 = off_278382860[presentationState];
       }
 
       *v19 = 138543874;
-      *&v19[4] = v5;
+      *&v19[4] = dCopy;
       *&v19[12] = 2114;
-      *&v19[14] = v6;
+      *&v19[14] = currentTransitionUUID;
       *&v19[22] = 2114;
       v20 = v10;
       v14 = v9;
@@ -2579,27 +2579,27 @@ void __62__CCUIMainViewController__beginDismissalAnimated_interactive___block_in
     }
 
     [(CCUIMainViewController *)self setCurrentTransitionUUID:0, *v19, *&v19[16], v20];
-    v15 = [(CCUIMainViewController *)self overlayHeaderView];
-    [v15 setMode:0 orientationHint:0];
+    overlayHeaderView = [(CCUIMainViewController *)self overlayHeaderView];
+    [overlayHeaderView setMode:0 orientationHint:0];
 
     [(UIStatusBar *)self->_compactLeadingStatusBar removeFromSuperview];
     compactLeadingStatusBar = self->_compactLeadingStatusBar;
     self->_compactLeadingStatusBar = 0;
 
     [(CCUIMainViewController *)self _resignActive];
-    v17 = [(CCUIMainViewController *)self view];
-    [v17 setHidden:1];
+    view = [(CCUIMainViewController *)self view];
+    [view setHidden:1];
 
     [(CCUIMainViewController *)self setTransitionState:0];
     [(CCUIMainViewController *)self setPresentationState:0];
     [(CCUIOverlayBackgroundPresenting *)self->_backgroundView bs_setHitTestingDisabled:1];
-    if (v7)
+    if (presentationState)
     {
       [(UIViewController *)self ccui_safelyEndAppearanceTransitionForChildViewControllers];
     }
 
-    v13 = [(CCUIMainViewController *)self pagingViewController];
-    [v13 scrollToDefaultPageAnimated:0 completion:0];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    [pagingViewController scrollToDefaultPageAnimated:0 completion:0];
   }
 
   else
@@ -2610,24 +2610,24 @@ void __62__CCUIMainViewController__beginDismissalAnimated_interactive___block_in
       goto LABEL_17;
     }
 
-    if (v7 > 3)
+    if (presentationState > 3)
     {
       v12 = @"<invalid>";
     }
 
     else
     {
-      v12 = off_278382860[v7];
+      v12 = off_278382860[presentationState];
     }
 
     *v19 = 138543874;
-    *&v19[4] = v5;
+    *&v19[4] = dCopy;
     *&v19[12] = 2114;
-    *&v19[14] = v6;
+    *&v19[14] = currentTransitionUUID;
     *&v19[22] = 2114;
     v20 = v12;
-    v13 = v11;
-    _os_log_impl(&dword_21E9F5000, v13, OS_LOG_TYPE_DEFAULT, "Ignoring end dismissal as UUID is stale: UUID=%{public}@ currentTransitionUUID=%{public}@, currentPresentationState=%{public}@", v19, 0x20u);
+    pagingViewController = v11;
+    _os_log_impl(&dword_21E9F5000, pagingViewController, OS_LOG_TYPE_DEFAULT, "Ignoring end dismissal as UUID is stale: UUID=%{public}@ currentTransitionUUID=%{public}@, currentPresentationState=%{public}@", v19, 0x20u);
   }
 
 LABEL_17:
@@ -2645,49 +2645,49 @@ LABEL_17:
   }
 }
 
-- (void)_updatePresentationForTransitionType:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5 interactive:(BOOL)a6
+- (void)_updatePresentationForTransitionType:(unint64_t)type translation:(CGPoint)translation velocity:(CGPoint)velocity interactive:(BOOL)interactive
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider transitionStateForType:a3 interactive:a6 translation:a4.x, a4.y];
+  y = velocity.y;
+  x = velocity.x;
+  v9 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider transitionStateForType:type interactive:interactive translation:translation.x, translation.y];
   [(CCUIMainViewController *)self _updatePresentationForTransitionState:v9 gestureVelocity:0 withCompletionHander:x, y];
 }
 
-- (void)_updatePresentationForTransitionState:(id)a3 gestureVelocity:(CGPoint)a4 withCompletionHander:(id)a5
+- (void)_updatePresentationForTransitionState:(id)state gestureVelocity:(CGPoint)velocity withCompletionHander:(id)hander
 {
-  y = a4.y;
-  x = a4.x;
-  v18 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  stateCopy = state;
   presentationProvider = self->_presentationProvider;
   previousTransitionState = self->_previousTransitionState;
-  v11 = a5;
-  v12 = [(CCUIOverlayPresentationProvider *)presentationProvider animationBatchForTransitionState:v18 previousTransitionState:previousTransitionState gestureVelocity:x, y];
-  [(CCUIAnimationRunner *)self->_primaryAnimationRunner additivelyRunAnimationBatch:v12 withCompletionBlock:v11];
+  handerCopy = hander;
+  v12 = [(CCUIOverlayPresentationProvider *)presentationProvider animationBatchForTransitionState:stateCopy previousTransitionState:previousTransitionState gestureVelocity:x, y];
+  [(CCUIAnimationRunner *)self->_primaryAnimationRunner additivelyRunAnimationBatch:v12 withCompletionBlock:handerCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider secondaryAnimationBatchForTransitionState:v18 previousTransitionState:self->_previousTransitionState gestureVelocity:x, y];
+    v13 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider secondaryAnimationBatchForTransitionState:stateCopy previousTransitionState:self->_previousTransitionState gestureVelocity:x, y];
     [(CCUIAnimationRunner *)self->_secondaryAnimationRunner additivelyRunAnimationBatch:v13 withCompletionBlock:0];
   }
 
-  [(CCUIMainViewController *)self _updateChevronStateForTransitionState:v18];
-  v14 = [CCUIOverlayTransitionState isSignificantTransitionFrom:self->_previousTransitionState to:v18];
-  v15 = [(CCUIMainViewController *)self delegate];
+  [(CCUIMainViewController *)self _updateChevronStateForTransitionState:stateCopy];
+  v14 = [CCUIOverlayTransitionState isSignificantTransitionFrom:self->_previousTransitionState to:stateCopy];
+  delegate = [(CCUIMainViewController *)self delegate];
   if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v18 presentationProgress];
-    [v15 controlCenterViewController:self significantPresentationProgressChange:?];
+    [stateCopy presentationProgress];
+    [delegate controlCenterViewController:self significantPresentationProgressChange:?];
   }
 
-  v16 = [v18 copyWithZone:0];
+  v16 = [stateCopy copyWithZone:0];
   v17 = self->_previousTransitionState;
   self->_previousTransitionState = v16;
 }
 
-- (void)_evaluatePresentationContinuationIntoPagingWithLocation:(CGPoint)a3
+- (void)_evaluatePresentationContinuationIntoPagingWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(CCUIOverlayTransitionState *)self->_previousTransitionState pagingProgress];
   v7 = v6;
   v8 = self->_presentationTouchIdentifiers;
@@ -2696,27 +2696,27 @@ LABEL_17:
   {
     [(CCUIOverlayTransitionState *)self->_previousTransitionState presentationProgress];
     v11 = v10;
-    v12 = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
+    interactivePagingCoordinator = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
     if (v11 > 1.0)
     {
-      v13 = [(CCUIMainViewController *)self view];
-      v14 = [v12 canBeginPagingAtLocation:v13 inView:{x, y}];
+      view = [(CCUIMainViewController *)self view];
+      v14 = [interactivePagingCoordinator canBeginPagingAtLocation:view inView:{x, y}];
 
       if (v14)
       {
-        [v12 willBeginPagingInteractively:1];
+        [interactivePagingCoordinator willBeginPagingInteractively:1];
         presentationTouchIdentifiers = self->_presentationTouchIdentifiers;
         self->_presentationTouchIdentifiers = 0;
 
-        v16 = [(CCUIMainViewController *)self delegate];
+        delegate = [(CCUIMainViewController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v16 controlCenterViewControllerWillContinuePresentationIntoPaging:self];
+          [delegate controlCenterViewControllerWillContinuePresentationIntoPaging:self];
         }
 
-        v17 = [(CCUIMainViewController *)self overlayPageControl];
-        v18 = [v17 window];
-        [v18 _contextId];
+        overlayPageControl = [(CCUIMainViewController *)self overlayPageControl];
+        window = [overlayPageControl window];
+        [window _contextId];
 
         v19 = *MEMORY[0x277CFC8F8];
         if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -2734,45 +2734,45 @@ LABEL_17:
 - (void)_resignActive
 {
   self->_active = 0;
-  v2 = [(CCUIMainViewController *)self pagingViewController];
-  [v2 willResignActive];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  [pagingViewController willResignActive];
 }
 
-- (BOOL)_includesModuleWithIdentifier:(id)a3 consideringObscureness:(BOOL)a4
+- (BOOL)_includesModuleWithIdentifier:(id)identifier consideringObscureness:(BOOL)obscureness
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CCUIMainViewController *)self pagingViewController];
-  v8 = [v7 moduleViewForIdentifier:v6];
+  obscurenessCopy = obscureness;
+  identifierCopy = identifier;
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  v8 = [pagingViewController moduleViewForIdentifier:identifierCopy];
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!obscurenessCopy)
   {
 LABEL_7:
-    LOBYTE(v9) = 1;
+    LOBYTE(window) = 1;
     goto LABEL_9;
   }
 
-  if ([v7 expandedModuleCount] >= 1 && !objc_msgSend(v7, "isModuleExpandedForIdentifier:", v6))
+  if ([pagingViewController expandedModuleCount] >= 1 && !objc_msgSend(pagingViewController, "isModuleExpandedForIdentifier:", identifierCopy))
   {
 LABEL_8:
-    LOBYTE(v9) = 0;
+    LOBYTE(window) = 0;
     goto LABEL_9;
   }
 
-  v9 = [v8 window];
-  if (v9)
+  window = [v8 window];
+  if (window)
   {
     [v8 bounds];
-    [v8 convertRect:v9 toView:?];
+    [v8 convertRect:window toView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v9 bounds];
+    [window bounds];
     v21.origin.x = v11;
     v21.origin.y = v13;
     v21.size.width = v15;
@@ -2789,21 +2789,21 @@ LABEL_8:
 
 LABEL_9:
 
-  return v9;
+  return window;
 }
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_4:
-    v20 = [(CCUIMainViewController *)self parentViewController];
-    if ([v20 isViewLoaded])
+    parentViewController = [(CCUIMainViewController *)self parentViewController];
+    if ([parentViewController isViewLoaded])
     {
-      v5 = [v20 view];
-      [v5 bounds];
+      view = [parentViewController view];
+      [view bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -2829,9 +2829,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v20 = [MEMORY[0x277D759A0] mainScreen];
+  parentViewController = [MEMORY[0x277D759A0] mainScreen];
   v14 = objc_alloc(MEMORY[0x277D75D18]);
-  [v20 bounds];
+  [parentViewController bounds];
   v7 = v16;
   v9 = v17;
   v11 = v18;
@@ -2858,61 +2858,61 @@ LABEL_8:
   [(CCUIOverlayBackgroundPresenting *)self->_backgroundView setAutoresizingMask:18];
   [(CCUIOverlayBackgroundPresenting *)self->_backgroundView setDelegate:self];
   v10 = self->_backgroundView;
-  v11 = [(CCUIMainViewController *)self view];
-  [v11 bounds];
+  view = [(CCUIMainViewController *)self view];
+  [view bounds];
   [(CCUIOverlayBackgroundPresenting *)v10 setFrame:?];
 
-  v12 = [(CCUIMainViewController *)self view];
-  [v12 addSubview:self->_backgroundView];
+  view2 = [(CCUIMainViewController *)self view];
+  [view2 addSubview:self->_backgroundView];
 
-  v13 = [(CCUIMainViewController *)self view];
-  [v13 setHidden:1];
+  view3 = [(CCUIMainViewController *)self view];
+  [view3 setHidden:1];
 
   v14 = objc_alloc_init(MEMORY[0x277CFC9D0]);
   containerView = self->_containerView;
   self->_containerView = v14;
 
-  v16 = [(CCUIMainViewController *)self view];
-  [v16 addSubview:self->_containerView];
+  view4 = [(CCUIMainViewController *)self view];
+  [view4 addSubview:self->_containerView];
 
-  v17 = [(CCUIMainViewController *)self view];
-  [v17 _setSafeAreaInsetsFrozen:1];
+  view5 = [(CCUIMainViewController *)self view];
+  [view5 _setSafeAreaInsetsFrozen:1];
 
-  v18 = [(CCUIMainViewController *)self moduleInstanceManager];
-  v19 = [(CCUIMainViewController *)self moduleSettingsManager];
+  moduleInstanceManager = [(CCUIMainViewController *)self moduleInstanceManager];
+  moduleSettingsManager = [(CCUIMainViewController *)self moduleSettingsManager];
   v20 = objc_alloc_init(CCUIControlIntentStore);
   v21 = objc_alloc(MEMORY[0x277CFA3B8]);
-  v22 = [MEMORY[0x277CFA3C0] visibleControls];
-  v23 = [v21 initWithOptions:v22];
+  visibleControls = [MEMORY[0x277CFA3C0] visibleControls];
+  v23 = [v21 initWithOptions:visibleControls];
 
-  v63 = v18;
+  v63 = moduleInstanceManager;
   v62 = v23;
   v61 = [[CCUIControlDescriptorProvider alloc] initWithWidgetExtensionProvider:v23];
-  v24 = [[CCUIPagingViewController alloc] initWithModuleInstanceManager:v18 moduleSettingsManager:v19 controlIntentStore:v20 controlDescriptorProvider:v61 controlExtensionProvider:v23];
+  v24 = [[CCUIPagingViewController alloc] initWithModuleInstanceManager:moduleInstanceManager moduleSettingsManager:moduleSettingsManager controlIntentStore:v20 controlDescriptorProvider:v61 controlExtensionProvider:v23];
   pagingViewController = self->_pagingViewController;
   self->_pagingViewController = v24;
 
   [(CCUIPagingViewController *)self->_pagingViewController setPagingDelegate:self];
   [(CCUIPagingViewController *)self->_pagingViewController setContextDelegate:self];
   v26 = self->_pagingViewController;
-  v27 = [(CCUIMainViewController *)self _safePagingViewContainerView];
-  [(CCUIMainViewController *)self bs_addChildViewController:v26 withSuperview:v27];
+  _safePagingViewContainerView = [(CCUIMainViewController *)self _safePagingViewContainerView];
+  [(CCUIMainViewController *)self bs_addChildViewController:v26 withSuperview:_safePagingViewContainerView];
 
-  v28 = [(CCUIPagingViewController *)self->_pagingViewController scrollView];
-  [v28 setHostingDelegate:self];
-  v29 = [v28 panGestureRecognizer];
+  scrollView = [(CCUIPagingViewController *)self->_pagingViewController scrollView];
+  [scrollView setHostingDelegate:self];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
   pagingViewScrollPanGesture = self->_pagingViewScrollPanGesture;
-  self->_pagingViewScrollPanGesture = v29;
+  self->_pagingViewScrollPanGesture = panGestureRecognizer;
 
-  v31 = [(CCUIPagingViewController *)self->_pagingViewController viewForInstallingDismissGestureRecognizers];
+  viewForInstallingDismissGestureRecognizers = [(CCUIPagingViewController *)self->_pagingViewController viewForInstallingDismissGestureRecognizers];
   objc_initWeak(&location, self);
-  v32 = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
+  interactivePagingCoordinator = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __37__CCUIMainViewController_viewDidLoad__block_invoke;
   v64[3] = &unk_2783826A8;
   objc_copyWeak(&v65, &location);
-  [v32 addPagingDidChangeHandler:v64];
+  [interactivePagingCoordinator addPagingDidChangeHandler:v64];
   if (objc_opt_respondsToSelector())
   {
     v33 = [[CCUIHeaderPocketView alloc] initWithFrame:v63 moduleInstanceManager:v4, v5, v6, v7];
@@ -2921,29 +2921,29 @@ LABEL_8:
 
     [(CCUIHeaderPocketView *)self->_headerPocketView setStatusBarDelegate:self];
     [(CCUIHeaderPocketView *)self->_headerPocketView setActionsDelegate:self];
-    v35 = [(CCUIMainViewController *)self view];
-    [v35 addSubview:self->_headerPocketView];
+    view6 = [(CCUIMainViewController *)self view];
+    [view6 addSubview:self->_headerPocketView];
 
     [(CCUIHeaderPocketView *)self->_headerPocketView addSensorAttributionViewControllerAsChildOfViewController:self];
     [(CCUIHeaderPocketView *)self->_headerPocketView addDynamicControlsViewControllerAsChildOfViewController:self];
     [(CCUIHeaderPocketView *)self->_headerPocketView setHeaderPocketViewDelegate:self];
   }
 
-  v36 = [(CCUIMainViewController *)self _safeStatusLabelViewContainerView];
-  [(CCUIMainViewController *)self bs_addChildViewController:self->_statusLabelViewController withSuperview:v36];
-  v37 = [(CCUIStatusLabelViewController *)self->_statusLabelViewController view];
-  [v37 setUserInteractionEnabled:0];
+  _safeStatusLabelViewContainerView = [(CCUIMainViewController *)self _safeStatusLabelViewContainerView];
+  [(CCUIMainViewController *)self bs_addChildViewController:self->_statusLabelViewController withSuperview:_safeStatusLabelViewContainerView];
+  view7 = [(CCUIStatusLabelViewController *)self->_statusLabelViewController view];
+  [view7 setUserInteractionEnabled:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = v36;
-    v39 = [(CCUIStatusLabelViewController *)self->_statusLabelViewController view];
-    [v38 setStatusLabelView:v39];
+    v38 = _safeStatusLabelViewContainerView;
+    view8 = [(CCUIStatusLabelViewController *)self->_statusLabelViewController view];
+    [v38 setStatusLabelView:view8];
   }
 
-  v40 = [(CCUIMainViewController *)self view];
-  [v40 _setIgnoreBackdropViewsWhenHiding:1];
+  view9 = [(CCUIMainViewController *)self view];
+  [view9 _setIgnoreBackdropViewsWhenHiding:1];
 
   if (self->_headerPocketView)
   {
@@ -2968,8 +2968,8 @@ LABEL_8:
 
   if (objc_opt_respondsToSelector())
   {
-    v45 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider flickGestureBehavior];
-    if (v45)
+    flickGestureBehavior = [(CCUIOverlayPresentationProvider *)self->_presentationProvider flickGestureBehavior];
+    if (flickGestureBehavior)
     {
       v46 = [[CCUIFlickGestureRecognizer alloc] initWithTarget:self action:sel__handleDismissalFlickGestureRecognizer_];
       pagingViewDismissalFlickGesture = self->_pagingViewDismissalFlickGesture;
@@ -2977,19 +2977,19 @@ LABEL_8:
 
       [(CCUIFlickGestureRecognizer *)self->_pagingViewDismissalFlickGesture setDelegate:self];
       v48 = self->_pagingViewDismissalFlickGesture;
-      [v45 dismissalFlickMaximumTime];
+      [flickGestureBehavior dismissalFlickMaximumTime];
       [(CCUIFlickGestureRecognizer *)v48 setMaximumFlickTime:?];
       v49 = self->_pagingViewDismissalFlickGesture;
-      [v45 dismissalFlickMinimumVelocity];
+      [flickGestureBehavior dismissalFlickMinimumVelocity];
       [(CCUIFlickGestureRecognizer *)v49 setMinimumFlickVelocity:?];
-      -[CCUIFlickGestureRecognizer setAllowedFlickDirections:](self->_pagingViewDismissalFlickGesture, "setAllowedFlickDirections:", [v45 dismissalFlickAllowedDirections]);
-      [v31 addGestureRecognizer:self->_pagingViewDismissalFlickGesture];
+      -[CCUIFlickGestureRecognizer setAllowedFlickDirections:](self->_pagingViewDismissalFlickGesture, "setAllowedFlickDirections:", [flickGestureBehavior dismissalFlickAllowedDirections]);
+      [viewForInstallingDismissGestureRecognizers addGestureRecognizer:self->_pagingViewDismissalFlickGesture];
     }
   }
 
   else
   {
-    v45 = 0;
+    flickGestureBehavior = 0;
   }
 
   if ([(CCUIOverlayPresentationProvider *)self->_presentationProvider isPanDismissalAvailable])
@@ -3000,7 +3000,7 @@ LABEL_8:
 
     [(UIPanGestureRecognizer *)self->_pagingViewDismissalPanGesture setMaximumNumberOfTouches:1];
     [(UIPanGestureRecognizer *)self->_pagingViewDismissalPanGesture setDelegate:self];
-    [v31 addGestureRecognizer:self->_pagingViewDismissalPanGesture];
+    [viewForInstallingDismissGestureRecognizers addGestureRecognizer:self->_pagingViewDismissalPanGesture];
   }
 
   v52 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleDismissalTapGestureRecognizer_];
@@ -3008,22 +3008,22 @@ LABEL_8:
   self->_pagingViewDismissalTapGesture = v52;
 
   [(UITapGestureRecognizer *)self->_pagingViewDismissalTapGesture setDelegate:self];
-  [v31 addGestureRecognizer:self->_pagingViewDismissalTapGesture];
+  [viewForInstallingDismissGestureRecognizers addGestureRecognizer:self->_pagingViewDismissalTapGesture];
   v54 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__handleEditingLongPressGestureRecognizer_];
   editingLongPressGesture = self->_editingLongPressGesture;
   self->_editingLongPressGesture = v54;
 
   [(UILongPressGestureRecognizer *)self->_editingLongPressGesture setDelegate:self];
   [(CCUIPagingViewController *)self->_pagingViewController setLongPressToEditGestureRecognizer:self->_editingLongPressGesture];
-  v56 = [(CCUIMainViewController *)self view];
-  [v56 addGestureRecognizer:self->_editingLongPressGesture];
+  view10 = [(CCUIMainViewController *)self view];
+  [view10 addGestureRecognizer:self->_editingLongPressGesture];
 
-  v57 = [(CCUIHeaderPocketView *)self->_headerPocketView headerBackgroundView];
+  headerBackgroundView = [(CCUIHeaderPocketView *)self->_headerPocketView headerBackgroundView];
 
-  if (v57)
+  if (headerBackgroundView)
   {
-    v58 = [(CCUIMainViewController *)self pagingView];
-    v59 = [MEMORY[0x277D65E58] configureGradientMaskForFeatherBlurRecipe:7 onContentView:v58];
+    pagingView = [(CCUIMainViewController *)self pagingView];
+    v59 = [MEMORY[0x277D65E58] configureGradientMaskForFeatherBlurRecipe:7 onContentView:pagingView];
     headerPocketGradientMaskLayers = self->_headerPocketGradientMaskLayers;
     self->_headerPocketGradientMaskLayers = v59;
   }
@@ -3046,39 +3046,39 @@ void __37__CCUIMainViewController_viewDidLoad__block_invoke(uint64_t a1, int a2)
   [v3 setAdditionalContentAlphaMultiplier:v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CCUIMainViewController;
-  [(CCUIMainViewController *)&v5 viewDidAppear:a3];
-  v4 = [(CCUIMainViewController *)self analyticsEventsController];
-  [v4 analyticsLogMainViewControllerPresent];
+  [(CCUIMainViewController *)&v5 viewDidAppear:appear];
+  analyticsEventsController = [(CCUIMainViewController *)self analyticsEventsController];
+  [analyticsEventsController analyticsLogMainViewControllerPresent];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CCUIMainViewController;
-  [(CCUIMainViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(CCUIMainViewController *)self analyticsEventsController];
-  [v4 analyticsLogMainViewControllerDismiss];
+  [(CCUIMainViewController *)&v5 viewDidDisappear:disappear];
+  analyticsEventsController = [(CCUIMainViewController *)self analyticsEventsController];
+  [analyticsEventsController analyticsLogMainViewControllerDismiss];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CCUIMainViewController;
-  v7 = a4;
-  [(CCUIMainViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CCUIMainViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(CCUIHeaderPocketView *)self->_headerPocketView dismissSensorAttributionExpandedView:1 completion:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__CCUIMainViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_2783826D0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 uint64_t __77__CCUIMainViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -3102,16 +3102,16 @@ void __77__CCUIMainViewController_viewWillTransitionToSize_withTransitionCoordin
   [v3 layoutIfNeeded];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(CCUIMainViewController *)self isEditing];
-  v6 = v5;
-  v7 = !v3 || v5;
+  editingCopy = editing;
+  isEditing = [(CCUIMainViewController *)self isEditing];
+  v6 = isEditing;
+  v7 = !editingCopy || isEditing;
   v8 = MEMORY[0x277CFC8F8];
   if (v7)
   {
-    if (!v3 && v5)
+    if (!editingCopy && isEditing)
     {
       v9 = *MEMORY[0x277CFC8F8];
       if (os_signpost_enabled(*MEMORY[0x277CFC8F8]))
@@ -3149,11 +3149,11 @@ LABEL_23:
     }
   }
 
-  v13 = [(CCUIMainViewController *)self pagingViewController];
-  [v13 setEditing:v3];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  [pagingViewController setEditing:editingCopy];
   if (v7)
   {
-    if (!v3 && v6)
+    if (!editingCopy && v6)
     {
       v14 = *v8;
       if (os_signpost_enabled(*v8))
@@ -3192,33 +3192,33 @@ LABEL_25:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_pagingViewDismissalFlickGesture == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_pagingViewDismissalFlickGesture == beginCopy)
   {
     v7 = [(CCUIMainViewController *)self _dismissalFlickGestureRecognizerShouldBegin:?];
     goto LABEL_11;
   }
 
-  if (self->_headerPocketViewDismissalTapGesture == v4 || self->_pagingViewDismissalTapGesture == v4)
+  if (self->_headerPocketViewDismissalTapGesture == beginCopy || self->_pagingViewDismissalTapGesture == beginCopy)
   {
-    v7 = [(CCUIMainViewController *)self _dismissalTapGestureRecognizerShouldBegin:v4];
+    v7 = [(CCUIMainViewController *)self _dismissalTapGestureRecognizerShouldBegin:beginCopy];
 LABEL_11:
     v6 = v7;
     goto LABEL_12;
   }
 
-  if (self->_headerPocketViewDismissalPanGesture == v4 || self->_pagingViewDismissalPanGesture == v4)
+  if (self->_headerPocketViewDismissalPanGesture == beginCopy || self->_pagingViewDismissalPanGesture == beginCopy)
   {
-    v7 = [(CCUIMainViewController *)self _dismissalPanGestureRecognizerShouldBegin:v4];
+    v7 = [(CCUIMainViewController *)self _dismissalPanGestureRecognizerShouldBegin:beginCopy];
     goto LABEL_11;
   }
 
-  if (self->_editingLongPressGesture == v4)
+  if (self->_editingLongPressGesture == beginCopy)
   {
-    v7 = [(CCUIMainViewController *)self _editingLongPressGestureRecognizerShouldBegin:v4];
+    v7 = [(CCUIMainViewController *)self _editingLongPressGestureRecognizerShouldBegin:beginCopy];
     goto LABEL_11;
   }
 
@@ -3228,16 +3228,16 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_headerPocketViewDismissalPanGesture == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
+  if (self->_headerPocketViewDismissalPanGesture == recognizerCopy)
   {
-    v10 = [v7 view];
-    v11 = [(CCUIHeaderPocketView *)self->_headerPocketView statusBar];
-    if ([v10 isDescendantOfView:v11])
+    view = [gestureRecognizerCopy view];
+    statusBar = [(CCUIHeaderPocketView *)self->_headerPocketView statusBar];
+    if ([view isDescendantOfView:statusBar])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -3254,18 +3254,18 @@ LABEL_12:
     isKindOfClass = 0;
   }
 
-  if (self->_pagingViewDismissalTapGesture == v6 && (-[CCUIMainViewController pagingViewController](self, "pagingViewController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEditing], v12, !v13))
+  if (self->_pagingViewDismissalTapGesture == recognizerCopy && (-[CCUIMainViewController pagingViewController](self, "pagingViewController"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEditing], v12, !v13))
   {
     isKindOfClass = 1;
   }
 
-  else if (self->_editingLongPressGesture == v6)
+  else if (self->_editingLongPressGesture == recognizerCopy)
   {
-    v14 = [v8 view];
+    view2 = [v8 view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v8 delegate];
+      delegate = [v8 delegate];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -3279,21 +3279,21 @@ LABEL_12:
   return isKindOfClass & 1;
 }
 
-- (id)fallbackDragHitTestViewForScrollView:(id)a3
+- (id)fallbackDragHitTestViewForScrollView:(id)view
 {
-  v3 = [(CCUIMainViewController *)self pagingViewController];
-  v4 = [v3 currentIconlistView];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  currentIconlistView = [pagingViewController currentIconlistView];
 
-  return v4;
+  return currentIconlistView;
 }
 
-- (void)pagingViewController:(id)a3 didAdd:(id)a4
+- (void)pagingViewController:(id)controller didAdd:(id)add
 {
-  v9 = a4;
+  addCopy = add;
   if (self->_active)
   {
     v5 = objc_opt_class();
-    v6 = v9;
+    v6 = addCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -3320,12 +3320,12 @@ LABEL_12:
   [(CCUIMainViewController *)self _setupPanGestureFailureRequirements];
 }
 
-- (void)pagingViewController:(id)a3 willRemove:(id)a4
+- (void)pagingViewController:(id)controller willRemove:(id)remove
 {
-  v5 = a4;
+  removeCopy = remove;
   if (self->_active)
   {
-    v10 = v5;
+    v10 = removeCopy;
     v6 = objc_opt_class();
     v7 = v10;
     if (v6)
@@ -3349,13 +3349,13 @@ LABEL_12:
     v9 = v8;
 
     [v9 willResignActive];
-    v5 = v10;
+    removeCopy = v10;
   }
 }
 
-- (void)pagingViewController:(id)a3 willExpand:(id)a4
+- (void)pagingViewController:(id)controller willExpand:(id)expand
 {
-  v5 = [(CCUIMainViewController *)self delegate:a3];
+  v5 = [(CCUIMainViewController *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v5 willOpenExpandedModuleForControlCenterViewController:self];
@@ -3365,9 +3365,9 @@ LABEL_12:
   self->_showingRootView = 0;
 }
 
-- (void)pagingViewController:(id)a3 didClose:(id)a4
+- (void)pagingViewController:(id)controller didClose:(id)close
 {
-  v5 = [(CCUIMainViewController *)self delegate:a3];
+  v5 = [(CCUIMainViewController *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v5 didCloseExpandedModuleForControlCenterViewController:self];
@@ -3385,14 +3385,14 @@ LABEL_12:
   [(CCUIHeaderPocketView *)headerPocketView setAlpha:0.0];
 }
 
-- (void)pagingViewController:(id)a3 editingDidChange:(BOOL)a4
+- (void)pagingViewController:(id)controller editingDidChange:(BOOL)change
 {
   v5 = objc_opt_respondsToSelector();
   presentationProvider = self->_presentationProvider;
   if (v5)
   {
-    v7 = [(CCUIOverlayPresentationProvider *)presentationProvider transitionBetweenEditing];
-    [(CCUIAnimationRunner *)self->_editingAnimationRunner runAnimationBatch:v7 withCompletionBlock:0];
+    transitionBetweenEditing = [(CCUIOverlayPresentationProvider *)presentationProvider transitionBetweenEditing];
+    [(CCUIAnimationRunner *)self->_editingAnimationRunner runAnimationBatch:transitionBetweenEditing withCompletionBlock:0];
   }
 
   else
@@ -3402,15 +3402,15 @@ LABEL_12:
   }
 }
 
-- (id)reasonToDisallowEditing:(id)a3
+- (id)reasonToDisallowEditing:(id)editing
 {
-  v3 = [(CCUIMainViewController *)self systemAgent];
-  v4 = [v3 reasonToDisallowEditing];
+  systemAgent = [(CCUIMainViewController *)self systemAgent];
+  reasonToDisallowEditing = [systemAgent reasonToDisallowEditing];
 
-  return v4;
+  return reasonToDisallowEditing;
 }
 
-- (id)pagingViewControllerDidAddModuleView:(id)a3
+- (id)pagingViewControllerDidAddModuleView:(id)view
 {
   if ([(CCUIMainViewController *)self presentationState]== 3)
   {
@@ -3445,39 +3445,39 @@ void __63__CCUIMainViewController_pagingViewControllerDidAddModuleView___block_i
   [*(*(a1 + 32) + 1008) additivelyRunAnimationBatch:v13 withCompletionBlock:0];
 }
 
-- (BOOL)isSystemRestoringForPagingViewController:(id)a3
+- (BOOL)isSystemRestoringForPagingViewController:(id)controller
 {
-  v3 = [(CCUIMainViewController *)self systemAgent];
-  v4 = [v3 isRestoring];
+  systemAgent = [(CCUIMainViewController *)self systemAgent];
+  isRestoring = [systemAgent isRestoring];
 
-  return v4;
+  return isRestoring;
 }
 
-- (BOOL)pagingViewController:(id)a3 shouldPauseCheckingInvalidControlsForApplicationIdentifier:(id)a4
+- (BOOL)pagingViewController:(id)controller shouldPauseCheckingInvalidControlsForApplicationIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CCUIMainViewController *)self systemAgent];
-  v7 = [v6 hasApplicationPlaceholderForDisplayID:v5];
+  identifierCopy = identifier;
+  systemAgent = [(CCUIMainViewController *)self systemAgent];
+  v7 = [systemAgent hasApplicationPlaceholderForDisplayID:identifierCopy];
 
-  v8 = [(CCUIMainViewController *)self systemAgent];
-  LOBYTE(v6) = [v8 hasApplicationForDisplayID:v5];
+  systemAgent2 = [(CCUIMainViewController *)self systemAgent];
+  LOBYTE(systemAgent) = [systemAgent2 hasApplicationForDisplayID:identifierCopy];
 
-  return (v7 | v6) & 1;
+  return (v7 | systemAgent) & 1;
 }
 
-- (void)handleControlCenterOperationTypeWithOperationService:(id)a3 operationType:(int64_t)a4 completionHandler:(id)a5
+- (void)handleControlCenterOperationTypeWithOperationService:(id)service operationType:(int64_t)type completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__CCUIMainViewController_handleControlCenterOperationTypeWithOperationService_operationType_completionHandler___block_invoke;
   block[3] = &unk_278382720;
-  v11[1] = a4;
+  v11[1] = type;
   objc_copyWeak(v11, &location);
   block[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(v11);
@@ -3555,16 +3555,16 @@ LABEL_16:
   return v10();
 }
 
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__CCUIMainViewController_resetToDefaultLayoutWithCompletionHandler___block_invoke;
   v6[3] = &unk_278382748;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -3578,19 +3578,19 @@ uint64_t __68__CCUIMainViewController_resetToDefaultLayoutWithCompletionHandler_
   return v3();
 }
 
-- (void)moduleInstancesChangedForModuleInstanceManager:(id)a3
+- (void)moduleInstancesChangedForModuleInstanceManager:(id)manager
 {
-  v3 = [(CCUIMainViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(CCUIMainViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setOverlayStatusBarHidden:(BOOL)a3
+- (void)setOverlayStatusBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CCUIMainViewController *)self delegate];
-  [v5 controlCenterViewController:self wantsHostStatusBarHidden:!v3];
+  hiddenCopy = hidden;
+  delegate = [(CCUIMainViewController *)self delegate];
+  [delegate controlCenterViewController:self wantsHostStatusBarHidden:!hiddenCopy];
 
-  if (v3)
+  if (hiddenCopy)
   {
     v6 = 0.0;
   }
@@ -3601,43 +3601,43 @@ uint64_t __68__CCUIMainViewController_resetToDefaultLayoutWithCompletionHandler_
   }
 
   [(UIStatusBar *)self->_compactLeadingStatusBar setAlpha:v6];
-  v7 = [(CCUIHeaderPocketView *)self->_headerPocketView statusBar];
-  [v7 setAlpha:v6];
+  statusBar = [(CCUIHeaderPocketView *)self->_headerPocketView statusBar];
+  [statusBar setAlpha:v6];
 }
 
-- (void)setOverlayPageContentAlpha:(double)a3
+- (void)setOverlayPageContentAlpha:(double)alpha
 {
-  v4 = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
-  [v4 setPageContentAlpha:a3];
+  interactivePagingCoordinator = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
+  [interactivePagingCoordinator setPageContentAlpha:alpha];
 }
 
-- (void)setOverlayPageContentScale:(CGPoint)a3
+- (void)setOverlayPageContentScale:(CGPoint)scale
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
-  [v5 setPageContentScale:{x, y}];
+  y = scale.y;
+  x = scale.x;
+  interactivePagingCoordinator = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
+  [interactivePagingCoordinator setPageContentScale:{x, y}];
 }
 
-- (void)setOverlayPageContentTranslation:(CGPoint)a3
+- (void)setOverlayPageContentTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
-  [v5 setPageContentTranslation:{x, y}];
+  y = translation.y;
+  x = translation.x;
+  interactivePagingCoordinator = [(CCUIPagingViewController *)self->_pagingViewController interactivePagingCoordinator];
+  [interactivePagingCoordinator setPageContentTranslation:{x, y}];
 }
 
-- (void)enumerateOverlayModuleViewsWithBlock:(id)a3
+- (void)enumerateOverlayModuleViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pagingViewController = self->_pagingViewController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__CCUIMainViewController_enumerateOverlayModuleViewsWithBlock___block_invoke;
   v7[3] = &unk_278382770;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(CCUIPagingViewController *)pagingViewController enumerateDisplayedModuleViewsWithBlock:v7];
 }
 
@@ -3659,21 +3659,21 @@ void __63__CCUIMainViewController_enumerateOverlayModuleViewsWithBlock___block_i
   v13(v12, v10, v14, v9);
 }
 
-- (void)performIfDisplayingModuleView:(id)a3 subview:(id)a4 block:(id)a5
+- (void)performIfDisplayingModuleView:(id)view subview:(id)subview block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  blockCopy = block;
   pagingViewController = self->_pagingViewController;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__CCUIMainViewController_performIfDisplayingModuleView_subview_block___block_invoke;
   v13[3] = &unk_278382798;
-  v14 = v8;
-  v15 = v9;
+  v14 = viewCopy;
+  v15 = blockCopy;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  [(CCUIPagingViewController *)pagingViewController performIfDisplayingModuleView:v11 subview:a4 block:v13];
+  v11 = viewCopy;
+  v12 = blockCopy;
+  [(CCUIPagingViewController *)pagingViewController performIfDisplayingModuleView:v11 subview:subview block:v13];
 }
 
 uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_block___block_invoke(void *a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -3694,10 +3694,10 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   return v8(v6, v7, v10, a4);
 }
 
-- (CCUILayoutRect)_layoutRectForIconCoordinate:(SEL)a3 gridSize:(SBIconCoordinate)a4
+- (CCUILayoutRect)_layoutRectForIconCoordinate:(SEL)coordinate gridSize:(SBIconCoordinate)size
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   if (SBIconCoordinateIsNotFound())
   {
     [CCUIMainViewController _layoutRectForIconCoordinate:gridSize:];
@@ -3724,8 +3724,8 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   v6 = *(MEMORY[0x277D768C8] + 24);
   if ([(CCUIMainViewController *)self isReachabilityActive])
   {
-    v7 = [(CCUIMainViewController *)self delegate];
-    [v7 reachabilityOffsetForControlCenterViewController:self];
+    delegate = [(CCUIMainViewController *)self delegate];
+    [delegate reachabilityOffsetForControlCenterViewController:self];
     v4 = v4 + v8;
   }
 
@@ -3750,20 +3750,20 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   return result;
 }
 
-- (id)compactTrailingStyleRequestForStatusBar:(id)a3
+- (id)compactTrailingStyleRequestForStatusBar:(id)bar
 {
-  v4 = [(CCUIStatusBarStyleSnapshot *)self->_hostStatusBarStyleSnapshot trailingStyleRequest];
+  trailingStyleRequest = [(CCUIStatusBarStyleSnapshot *)self->_hostStatusBarStyleSnapshot trailingStyleRequest];
   if ([(CCUIStatusBarStyleSnapshot *)self->_hostStatusBarStyleSnapshot isHidden])
   {
     v5 = [objc_alloc(MEMORY[0x277D75AA8]) initWithStyle:1 legacy:0 legibilityStyle:_UILegibilityStyleFromStatusBarStyle() foregroundColor:0];
 
-    v4 = v5;
+    trailingStyleRequest = v5;
   }
 
-  return v4;
+  return trailingStyleRequest;
 }
 
-- (CGRect)compactAvoidanceFrameForStatusBar:(id)a3
+- (CGRect)compactAvoidanceFrameForStatusBar:(id)bar
 {
   if (([(CCUIMainViewController *)self _interfaceOrientation]- 1) > 1)
   {
@@ -3785,11 +3785,11 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   return result;
 }
 
-- (CGRect)expandedAvoidanceFrameForStatusBar:(id)a3
+- (CGRect)expandedAvoidanceFrameForStatusBar:(id)bar
 {
   v4 = [(CCUIMainViewController *)self _interfaceOrientation]- 3;
-  v5 = [(CCUIHeaderPocketView *)self->_headerPocketView isDisplayingSensorStatus];
-  if (v4 <= 0xFFFFFFFFFFFFFFFDLL && v5)
+  isDisplayingSensorStatus = [(CCUIHeaderPocketView *)self->_headerPocketView isDisplayingSensorStatus];
+  if (v4 <= 0xFFFFFFFFFFFFFFFDLL && isDisplayingSensorStatus)
   {
     [(CCUIHeaderPocketView *)self->_headerPocketView sensorAttributionFrame];
   }
@@ -3809,56 +3809,56 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   return result;
 }
 
-- (void)contentModuleContext:(id)a3 enqueueStatusUpdate:(id)a4
+- (void)contentModuleContext:(id)context enqueueStatusUpdate:(id)update
 {
-  v11 = a3;
-  v6 = a4;
+  contextCopy = context;
+  updateCopy = update;
   if (self->_active)
   {
-    v7 = [(CCUIMainViewController *)self pagingViewController];
-    v8 = [v7 expandedModuleCount];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    expandedModuleCount = [pagingViewController expandedModuleCount];
 
-    if (!v8)
+    if (!expandedModuleCount)
     {
-      v9 = [(CCUIMainViewController *)self statusLabelViewController];
-      v10 = [v11 moduleIdentifier];
-      [v9 enqueueStatusUpdate:v6 forIdentifier:v10];
+      statusLabelViewController = [(CCUIMainViewController *)self statusLabelViewController];
+      moduleIdentifier = [contextCopy moduleIdentifier];
+      [statusLabelViewController enqueueStatusUpdate:updateCopy forIdentifier:moduleIdentifier];
     }
   }
 }
 
-- (void)requestExpandModuleForContentModuleContext:(id)a3
+- (void)requestExpandModuleForContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self->_active)
   {
-    v10 = v4;
-    v5 = [(CCUIMainViewController *)self pagingViewController];
-    v6 = [v5 expandedModuleCount];
+    v10 = contextCopy;
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    expandedModuleCount = [pagingViewController expandedModuleCount];
 
-    v4 = v10;
-    if (!v6)
+    contextCopy = v10;
+    if (!expandedModuleCount)
     {
-      v7 = [(CCUIMainViewController *)self pagingViewController];
-      v8 = [v10 moduleIdentifier];
-      v9 = [v10 uniqueIdentifier];
-      [v7 expandModuleWithIdentifier:v8 uniqueIdentifier:v9];
+      pagingViewController2 = [(CCUIMainViewController *)self pagingViewController];
+      moduleIdentifier = [v10 moduleIdentifier];
+      uniqueIdentifier = [v10 uniqueIdentifier];
+      [pagingViewController2 expandModuleWithIdentifier:moduleIdentifier uniqueIdentifier:uniqueIdentifier];
 
-      v4 = v10;
+      contextCopy = v10;
     }
   }
 }
 
-- (void)dismissExpandedViewForContentModuleContext:(id)a3
+- (void)dismissExpandedViewForContentModuleContext:(id)context
 {
   if (self->_active)
   {
-    v4 = a3;
-    v5 = [(CCUIMainViewController *)self pagingViewController];
-    v6 = [v4 moduleIdentifier];
+    contextCopy = context;
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    moduleIdentifier = [contextCopy moduleIdentifier];
 
-    LODWORD(v4) = [v5 isModuleExpandedForIdentifier:v6];
-    if (v4)
+    LODWORD(contextCopy) = [pagingViewController isModuleExpandedForIdentifier:moduleIdentifier];
+    if (contextCopy)
     {
 
       [(CCUIMainViewController *)self dismissPresentedContentAnimated:1 completion:0];
@@ -3866,7 +3866,7 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   }
 }
 
-- (void)dismissControlCenterForContentModuleContext:(id)a3
+- (void)dismissControlCenterForContentModuleContext:(id)context
 {
   if ([(CCUIMainViewController *)self isActive])
   {
@@ -3875,10 +3875,10 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   }
 }
 
-- (id)contentModuleContext:(id)a3 requestsSensorActivityDataForActiveSensorType:(unint64_t)a4
+- (id)contentModuleContext:(id)context requestsSensorActivityDataForActiveSensorType:(unint64_t)type
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x277CFC8F8];
   v8 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -3893,17 +3893,17 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   v27 = __Block_byref_object_copy__2;
   v28 = __Block_byref_object_dispose__2;
   v29 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    v14 = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
+    activeSensorActivityData = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDataForActiveSensorType___block_invoke;
     v20[3] = &unk_2783827C0;
     v20[4] = self;
     v20[5] = buf;
-    v20[6] = a4;
-    [v14 enumerateObjectsUsingBlock:v20];
+    v20[6] = type;
+    [activeSensorActivityData enumerateObjectsUsingBlock:v20];
   }
 
   else
@@ -3916,7 +3916,7 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
     v10 = v22;
     v11 = v21;
     v12 = v21;
-    if (a4)
+    if (type)
     {
       if (v23 & 0x100) != 0 || (v23)
       {
@@ -3943,7 +3943,7 @@ uint64_t __70__CCUIMainViewController_performIfDisplayingModuleView_subview_bloc
   v15 = *v7;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [MEMORY[0x277CFC9B8] stringFromSensorType:a4];
+    v16 = [MEMORY[0x277CFC9B8] stringFromSensorType:type];
     v17 = [*(v25 + 5) debugDescription];
     *v30 = 138543618;
     v31 = v16;
@@ -3985,10 +3985,10 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
   }
 }
 
-- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)a3
+- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x277CFC8F8];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -4021,10 +4021,10 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
   return v9;
 }
 
-- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)a3
+- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)selection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v5 = MEMORY[0x277CFC8F8];
   v6 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -4057,15 +4057,15 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
   return v9;
 }
 
-- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)a3
+- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)context
 {
-  v3 = [(CCUIMainViewController *)self systemAgent];
-  v4 = [v3 isPasscodeLocked];
+  systemAgent = [(CCUIMainViewController *)self systemAgent];
+  isPasscodeLocked = [systemAgent isPasscodeLocked];
 
-  return v4;
+  return isPasscodeLocked;
 }
 
-- (void)_getCameraSensorActivityData:(id *)a3 micSensorActivityData:(id *)a4 isMutedMic:(BOOL *)a5 isInactiveMicModeSelection:(BOOL *)a6
+- (void)_getCameraSensorActivityData:(id *)data micSensorActivityData:(id *)activityData isMutedMic:(BOOL *)mic isInactiveMicModeSelection:(BOOL *)selection
 {
   v46 = 0;
   v47 = &v46;
@@ -4073,8 +4073,8 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
   v49 = __Block_byref_object_copy__2;
   v50 = __Block_byref_object_dispose__2;
   v51 = 0;
-  v11 = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
-  v12 = [v11 bs_filter:&__block_literal_global_129];
+  activeSensorActivityData = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider activeSensorActivityData];
+  v12 = [activeSensorActivityData bs_filter:&__block_literal_global_129];
 
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -4086,7 +4086,7 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
   v13 = v47[5];
   if (v13)
   {
-    v14 = [v13 attributionGroup];
+    attributionGroup = [v13 attributionGroup];
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
@@ -4097,7 +4097,7 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
     v36[1] = 3221225472;
     v36[2] = __115__CCUIMainViewController__getCameraSensorActivityData_micSensorActivityData_isMutedMic_isInactiveMicModeSelection___block_invoke_130;
     v36[3] = &unk_278382808;
-    v15 = v14;
+    v15 = attributionGroup;
     v37 = v15;
     v38 = &v39;
     [v12 enumerateObjectsUsingBlock:v36];
@@ -4139,14 +4139,14 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
 
       else if (CCUIFeatureEnabled() && (-[CCUISensorActivityDataProvider inactiveSensorActivityDataEligibleForMicModeSelection](self->_sensorActivityDataProvider, "inactiveSensorActivityDataEligibleForMicModeSelection"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 copy], v25, v26))
       {
-        v27 = [v26 attributionGroup];
-        if (!v27)
+        attributionGroup2 = [v26 attributionGroup];
+        if (!attributionGroup2)
         {
-          v27 = [v26 bundleIdentifier];
+          attributionGroup2 = [v26 bundleIdentifier];
         }
 
-        v30 = v27;
-        v28 = [v27 isEqualToString:v22];
+        v30 = attributionGroup2;
+        v28 = [attributionGroup2 isEqualToString:v22];
         v18 = v28;
         if (v28)
         {
@@ -4167,7 +4167,7 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
     }
 
     _Block_object_dispose(&v39, 8);
-    if (a3)
+    if (data)
     {
       goto LABEL_30;
     }
@@ -4204,8 +4204,8 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
 
     else if (CCUIFeatureEnabled())
     {
-      v24 = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider inactiveSensorActivityDataEligibleForMicModeSelection];
-      v17 = [v24 copy];
+      inactiveSensorActivityDataEligibleForMicModeSelection = [(CCUISensorActivityDataProvider *)self->_sensorActivityDataProvider inactiveSensorActivityDataEligibleForMicModeSelection];
+      v17 = [inactiveSensorActivityDataEligibleForMicModeSelection copy];
 
       v19 = 0;
       v18 = v17 != 0;
@@ -4220,27 +4220,27 @@ void __93__CCUIMainViewController_contentModuleContext_requestsSensorActivityDat
 
     _Block_object_dispose(&v39, 8);
 
-    if (a3)
+    if (data)
     {
 LABEL_30:
-      *a3 = v47[5];
+      *data = v47[5];
     }
   }
 
-  if (a4)
+  if (activityData)
   {
     v29 = v17;
-    *a4 = v17;
+    *activityData = v17;
   }
 
-  if (a5)
+  if (mic)
   {
-    *a5 = v19;
+    *mic = v19;
   }
 
-  if (a6)
+  if (selection)
   {
-    *a6 = v18;
+    *selection = v18;
   }
 
   _Block_object_dispose(&v46, 8);
@@ -4335,11 +4335,11 @@ void __115__CCUIMainViewController__getCameraSensorActivityData_micSensorActivit
   }
 }
 
-- (BOOL)_isSensorActivityData:(id)a3 relevantForSensorType:(unint64_t)a4
+- (BOOL)_isSensorActivityData:(id)data relevantForSensorType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a3 bundleIdentifier];
-  if (!v5)
+  bundleIdentifier = [data bundleIdentifier];
+  if (!bundleIdentifier)
   {
     v9 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_ERROR))
@@ -4351,9 +4351,9 @@ void __115__CCUIMainViewController__getCameraSensorActivityData_micSensorActivit
     goto LABEL_12;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (!a4)
+    if (!type)
     {
       ShouldBeShownForBundleID = AVControlCenterVideoEffectsModuleShouldBeShownForBundleID();
       v7 = *MEMORY[0x277CFC8F8];
@@ -4390,18 +4390,18 @@ LABEL_13:
   return ShouldBeShownForBundleID;
 }
 
-- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)a3
+- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)context
 {
-  v4 = [a3 moduleIdentifier];
-  [(CCUIPagingViewController *)self->_pagingViewController invalidateContainerViewsForPlatterTreatmentWithIdentifier:v4];
+  moduleIdentifier = [context moduleIdentifier];
+  [(CCUIPagingViewController *)self->_pagingViewController invalidateContainerViewsForPlatterTreatmentWithIdentifier:moduleIdentifier];
 }
 
-- (id)existingControlKindFromWidgetExtension:(id)a3
+- (id)existingControlKindFromWidgetExtension:(id)extension
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CCUIPagingViewController *)self->_pagingViewController iconModel];
-  [v5 iconsOfClass:objc_opt_class()];
+  extensionCopy = extension;
+  iconModel = [(CCUIPagingViewController *)self->_pagingViewController iconModel];
+  [iconModel iconsOfClass:objc_opt_class()];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -4411,7 +4411,7 @@ LABEL_13:
   {
     v7 = *v28;
     v20 = *v28;
-    v21 = v5;
+    v21 = iconModel;
     do
     {
       for (i = 0; i != v22; ++i)
@@ -4442,14 +4442,14 @@ LABEL_13:
               }
 
               v15 = *(*(&v23 + 1) + 8 * j);
-              v16 = [v15 extensionBundleIdentifier];
-              v17 = [v16 isEqualToString:v4];
+              extensionBundleIdentifier = [v15 extensionBundleIdentifier];
+              v17 = [extensionBundleIdentifier isEqualToString:extensionCopy];
 
               if (v17)
               {
-                v18 = [v15 kind];
+                kind = [v15 kind];
 
-                v5 = v21;
+                iconModel = v21;
                 goto LABEL_19;
               }
             }
@@ -4467,8 +4467,8 @@ LABEL_13:
         v7 = v20;
       }
 
-      v18 = 0;
-      v5 = v21;
+      kind = 0;
+      iconModel = v21;
       v22 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
@@ -4477,20 +4477,20 @@ LABEL_13:
 
   else
   {
-    v18 = 0;
+    kind = 0;
   }
 
 LABEL_19:
 
-  return v18;
+  return kind;
 }
 
-- (void)overlayBackgroundViewTapped:(id)a3
+- (void)overlayBackgroundViewTapped:(id)tapped
 {
-  v4 = [(CCUIMainViewController *)self pagingViewController];
-  v5 = [v4 isEditing];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  isEditing = [pagingViewController isEditing];
 
-  if (v5)
+  if (isEditing)
   {
 
     [(CCUIMainViewController *)self setEditing:0];
@@ -4503,19 +4503,19 @@ LABEL_19:
   }
 }
 
-- (void)beginPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5 touches:(id)a6
+- (void)beginPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity touches:(id)touches
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4.y;
-  v9 = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v16 = a6;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = translation.y;
+  v9 = translation.x;
+  v10 = location.y;
+  v11 = location.x;
+  touchesCopy = touches;
   if ([(CCUIMainViewController *)self presentationState]!= 1 && [(CCUIMainViewController *)self presentationState]!= 2)
   {
     [(CCUIMainViewController *)self _setPresentationPanGestureActive:1];
-    v13 = [v16 bs_compactMap:&__block_literal_global_140];
+    v13 = [touchesCopy bs_compactMap:&__block_literal_global_140];
     presentationTouchIdentifiers = self->_presentationTouchIdentifiers;
     self->_presentationTouchIdentifiers = v13;
 
@@ -4534,14 +4534,14 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   return [v2 numberWithUnsignedInt:v3];
 }
 
-- (void)updatePresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5
+- (void)updatePresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v7 = translation.y;
+  v8 = translation.x;
+  v9 = location.y;
+  v10 = location.x;
   if ([(CCUIMainViewController *)self presentationState]== 1 && [(CCUIMainViewController *)self transitionState]== 1)
   {
     [(CCUIMainViewController *)self _updatePresentationForTransitionType:1 translation:1 velocity:v8 interactive:v7, x, y];
@@ -4550,13 +4550,13 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   }
 }
 
-- (void)endPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5
+- (void)endPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  [(CCUIMainViewController *)self _setPresentationPanGestureActive:0, a3.x, a3.y];
+  y = velocity.y;
+  x = velocity.x;
+  v7 = translation.y;
+  v8 = translation.x;
+  [(CCUIMainViewController *)self _setPresentationPanGestureActive:0, location.x, location.y];
   if ([(CCUIMainViewController *)self presentationState]== 1 && [(CCUIMainViewController *)self transitionState]== 1)
   {
     v12 = [(CCUIOverlayPresentationProvider *)self->_presentationProvider transitionStateForType:1 interactive:1 translation:v8, v7];
@@ -4583,9 +4583,9 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   }
 }
 
-- (void)cancelPresentationWithLocation:(CGPoint)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5
+- (void)cancelPresentationWithLocation:(CGPoint)location translation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  [(CCUIMainViewController *)self _setPresentationPanGestureActive:0, a3.x, a3.y, a4.x, a4.y, a5.x, a5.y];
+  [(CCUIMainViewController *)self _setPresentationPanGestureActive:0, location.x, location.y, translation.x, translation.y, velocity.x, velocity.y];
   if ([(CCUIMainViewController *)self presentationState]== 1)
   {
 
@@ -4593,13 +4593,13 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   }
 }
 
-- (BOOL)_interpretsGestureLocationAsContent:(id)a3
+- (BOOL)_interpretsGestureLocationAsContent:(id)content
 {
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self view];
+  contentCopy = content;
+  view = [(CCUIMainViewController *)self view];
   pagingViewController = self->_pagingViewController;
-  [v4 locationInView:v5];
-  if ([(CCUIPagingViewController *)pagingViewController interpretsLocationAsContent:v5 in:?])
+  [contentCopy locationInView:view];
+  if ([(CCUIPagingViewController *)pagingViewController interpretsLocationAsContent:view in:?])
   {
     v7 = 1;
   }
@@ -4607,7 +4607,7 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   else
   {
     headerPocketView = self->_headerPocketView;
-    [v4 locationInView:headerPocketView];
+    [contentCopy locationInView:headerPocketView];
     v9 = [(CCUIHeaderPocketView *)headerPocketView hitTest:0 withEvent:?];
     if (v9)
     {
@@ -4623,9 +4623,9 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   return v7;
 }
 
-- (BOOL)_dismissalTapGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_dismissalTapGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(CCUIMainViewController *)self presentationState]== 3 || ![(CCUIMainViewController *)self presentationState])
   {
     LOBYTE(v5) = 0;
@@ -4633,20 +4633,20 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
 
   else
   {
-    v5 = ![(CCUIMainViewController *)self _interpretsGestureLocationAsContent:v4];
+    v5 = ![(CCUIMainViewController *)self _interpretsGestureLocationAsContent:beginCopy];
   }
 
   return v5;
 }
 
-- (void)_handleDismissalTapGestureRecognizer:(id)a3
+- (void)_handleDismissalTapGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
-    v4 = [(CCUIMainViewController *)self pagingViewController];
-    v5 = [v4 isEditing];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    isEditing = [pagingViewController isEditing];
 
-    if (v5)
+    if (isEditing)
     {
 
       [(CCUIMainViewController *)self setEditing:0];
@@ -4660,12 +4660,12 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   }
 }
 
-- (BOOL)_dismissalFlickGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_dismissalFlickGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(CCUIMainViewController *)self _scrollViewIsScrollable])
   {
-    [v4 minimumFlickVelocity];
+    [beginCopy minimumFlickVelocity];
     v6 = ![(CCUIMainViewController *)self _scrollPanGestureRecognizerCanBeginForGestureVelocity:0.0, v5];
   }
 
@@ -4677,10 +4677,10 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
   return v6;
 }
 
-- (BOOL)_dismissalFlickGestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)_dismissalFlickGestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  touchCopy = touch;
   if ([(CCUIMainViewController *)self _scrollViewCanAcceptDownwardsPan])
   {
     v6 = 0;
@@ -4692,8 +4692,8 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v5 gestureRecognizers];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    gestureRecognizers = [touchCopy gestureRecognizers];
+    v8 = [gestureRecognizers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4704,7 +4704,7 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           if ([(NSHashTable *)self->_blockingGestureRecognizers containsObject:*(*(&v13 + 1) + 8 * i)])
@@ -4714,7 +4714,7 @@ uint64_t __85__CCUIMainViewController_beginPresentationWithLocation_translation_
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [gestureRecognizers countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v9)
         {
           continue;
@@ -4731,14 +4731,14 @@ LABEL_13:
   return v6;
 }
 
-- (void)_handleDismissalFlickGestureRecognizer:(id)a3
+- (void)_handleDismissalFlickGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
-    v4 = [(CCUIMainViewController *)self pagingViewController];
-    v5 = [v4 isEditing];
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    isEditing = [pagingViewController isEditing];
 
-    if (v5)
+    if (isEditing)
     {
 
       [(CCUIMainViewController *)self setEditing:0];
@@ -4762,21 +4762,21 @@ LABEL_13:
   [(UIPanGestureRecognizer *)headerPocketViewDismissalPanGesture setEnabled:1];
 }
 
-- (BOOL)_dismissalPanGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_dismissalPanGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self presentationState];
+  beginCopy = begin;
+  presentationState = [(CCUIMainViewController *)self presentationState];
   LOBYTE(v6) = 0;
-  if (v5 && v5 != 3)
+  if (presentationState && presentationState != 3)
   {
     if (!self->_presentationPanGestureActive)
     {
-      if (self->_pagingViewDismissalPanGesture == v4)
+      if (self->_pagingViewDismissalPanGesture == beginCopy)
       {
         if (![(CCUIMainViewController *)self _gestureRecognizerIsActive:self->_headerPocketViewDismissalPanGesture]&& ![(CCUIMainViewController *)self isEditing])
         {
-          v8 = [(CCUIMainViewController *)self view];
-          [(UIPanGestureRecognizer *)v4 velocityInView:v8];
+          view = [(CCUIMainViewController *)self view];
+          [(UIPanGestureRecognizer *)beginCopy velocityInView:view];
           v10 = v9;
           v12 = v11;
 
@@ -4787,7 +4787,7 @@ LABEL_13:
 
       else
       {
-        if (self->_headerPocketViewDismissalPanGesture != v4)
+        if (self->_headerPocketViewDismissalPanGesture != beginCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_8;
@@ -4809,93 +4809,93 @@ LABEL_8:
   return v6;
 }
 
-- (void)_handleDismissalPanGestureRecognizer:(id)a3
+- (void)_handleDismissalPanGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v4 = [v6 state];
-  if (v4 <= 2)
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerBegan:v6];
+      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerBegan:recognizerCopy];
     }
 
     else
     {
-      v5 = v6;
-      if (v4 != 2)
+      v5 = recognizerCopy;
+      if (state != 2)
       {
         goto LABEL_13;
       }
 
-      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerChanged:v6];
+      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerChanged:recognizerCopy];
     }
   }
 
-  else if (v4 == 3)
+  else if (state == 3)
   {
-    [(CCUIMainViewController *)self _dismissalPanGestureRecognizerEnded:v6];
+    [(CCUIMainViewController *)self _dismissalPanGestureRecognizerEnded:recognizerCopy];
   }
 
   else
   {
-    v5 = v6;
-    if (v4 == 4)
+    v5 = recognizerCopy;
+    if (state == 4)
     {
-      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerCancelled:v6];
+      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerCancelled:recognizerCopy];
     }
 
     else
     {
-      if (v4 != 5)
+      if (state != 5)
       {
         goto LABEL_13;
       }
 
-      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerFailed:v6];
+      [(CCUIMainViewController *)self _dismissalPanGestureRecognizerFailed:recognizerCopy];
     }
   }
 
-  v5 = v6;
+  v5 = recognizerCopy;
 LABEL_13:
 }
 
-- (void)_dismissalPanGestureRecognizerBegan:(id)a3
+- (void)_dismissalPanGestureRecognizerBegan:(id)began
 {
-  v6 = a3;
+  beganCopy = began;
   v4 = [(CCUIMainViewController *)self _beginDismissalAnimated:1 interactive:1];
-  v5 = [(CCUIMainViewController *)self view];
-  [v6 setTranslation:v5 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  view = [(CCUIMainViewController *)self view];
+  [beganCopy setTranslation:view inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-  [(CCUIMainViewController *)self _dismissalPanGestureRecognizerChanged:v6];
+  [(CCUIMainViewController *)self _dismissalPanGestureRecognizerChanged:beganCopy];
 }
 
-- (void)_dismissalPanGestureRecognizerChanged:(id)a3
+- (void)_dismissalPanGestureRecognizerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self view];
-  [v4 translationInView:v5];
+  changedCopy = changed;
+  view = [(CCUIMainViewController *)self view];
+  [changedCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CCUIMainViewController *)self view];
-  [v4 velocityInView:v10];
+  view2 = [(CCUIMainViewController *)self view];
+  [changedCopy velocityInView:view2];
   v12 = v11;
   v14 = v13;
 
   [(CCUIMainViewController *)self _updatePresentationForTransitionType:2 translation:1 velocity:v7 interactive:v9, v12, v14];
 }
 
-- (void)_dismissalPanGestureRecognizerEnded:(id)a3
+- (void)_dismissalPanGestureRecognizerEnded:(id)ended
 {
-  v4 = a3;
-  v5 = [(CCUIMainViewController *)self view];
-  [v4 translationInView:v5];
+  endedCopy = ended;
+  view = [(CCUIMainViewController *)self view];
+  [endedCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CCUIMainViewController *)self view];
-  [v4 velocityInView:v10];
+  view2 = [(CCUIMainViewController *)self view];
+  [endedCopy velocityInView:view2];
   v12 = v11;
   v14 = v13;
 
@@ -4915,9 +4915,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)_editingLongPressGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_editingLongPressGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(CCUIMainViewController *)self isEditing]|| [(CCUIMainViewController *)self isSensorAttributionViewControllerExpanded]|| [(CCUIPagingViewController *)self->_pagingViewController expandedModuleCount]> 0)
   {
     LOBYTE(v5) = 0;
@@ -4925,31 +4925,31 @@ LABEL_13:
 
   else
   {
-    v7 = [(CCUIMainViewController *)self presentationState];
+    presentationState = [(CCUIMainViewController *)self presentationState];
     LOBYTE(v5) = 0;
-    if (v7 && v7 != 3)
+    if (presentationState && presentationState != 3)
     {
-      v5 = ![(CCUIMainViewController *)self _interpretsGestureLocationAsContent:v4];
+      v5 = ![(CCUIMainViewController *)self _interpretsGestureLocationAsContent:beginCopy];
     }
   }
 
   return v5;
 }
 
-- (void)_handleEditingLongPressGestureRecognizer:(id)a3
+- (void)_handleEditingLongPressGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     [(CCUIMainViewController *)self setEditing:1];
-    [v4 setEnabled:0];
-    [v4 setEnabled:1];
+    [recognizerCopy setEnabled:0];
+    [recognizerCopy setEnabled:1];
   }
 }
 
-- (BOOL)_scrollPanGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_scrollPanGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(CCUIMainViewController *)self presentationState]== 3 || self->_presentationPanGestureActive || [(CCUIMainViewController *)self _gestureRecognizerIsActive:self->_headerPocketViewDismissalPanGesture]|| [(CCUIMainViewController *)self _gestureRecognizerIsActive:self->_pagingViewDismissalPanGesture])
   {
     v5 = 0;
@@ -4957,8 +4957,8 @@ LABEL_13:
 
   else
   {
-    v7 = [(CCUIMainViewController *)self view];
-    [v4 velocityInView:v7];
+    view = [(CCUIMainViewController *)self view];
+    [beginCopy velocityInView:view];
     v9 = v8;
     v11 = v10;
 
@@ -4968,34 +4968,34 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_scrollPanGestureRecognizerCanBeginForGestureVelocity:(CGPoint)a3
+- (BOOL)_scrollPanGestureRecognizerCanBeginForGestureVelocity:(CGPoint)velocity
 {
   if (BSFloatGreaterThanFloat() && ![(CCUIMainViewController *)self _scrollViewCanAcceptDownwardsPan])
   {
-    v4 = [(CCUIMainViewController *)self _scrollViewIsScrollable];
-    if (v4)
+    _scrollViewIsScrollable = [(CCUIMainViewController *)self _scrollViewIsScrollable];
+    if (_scrollViewIsScrollable)
     {
-      LOBYTE(v4) = BSFloatGreaterThanFloat() ^ 1;
+      LOBYTE(_scrollViewIsScrollable) = BSFloatGreaterThanFloat() ^ 1;
     }
   }
 
   else
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(_scrollViewIsScrollable) = 1;
   }
 
-  return v4;
+  return _scrollViewIsScrollable;
 }
 
 - (BOOL)_scrollViewIsScrollable
 {
-  v2 = [(CCUIMainViewController *)self _scrollView];
-  if ([v2 isScrollEnabled])
+  _scrollView = [(CCUIMainViewController *)self _scrollView];
+  if ([_scrollView isScrollEnabled])
   {
-    [v2 contentSize];
-    [v2 contentInset];
-    [v2 contentInset];
-    [v2 bounds];
+    [_scrollView contentSize];
+    [_scrollView contentInset];
+    [_scrollView contentInset];
+    [_scrollView bounds];
     v3 = BSFloatGreaterThanFloat();
   }
 
@@ -5009,42 +5009,42 @@ LABEL_13:
 
 - (BOOL)_scrollViewCanAcceptDownwardsPan
 {
-  v3 = [(CCUIMainViewController *)self _scrollViewIsScrollable];
-  if (v3)
+  _scrollViewIsScrollable = [(CCUIMainViewController *)self _scrollViewIsScrollable];
+  if (_scrollViewIsScrollable)
   {
-    v4 = [(CCUIMainViewController *)self _scrollView];
-    [v4 ccui_relativeContentOffset];
+    _scrollView = [(CCUIMainViewController *)self _scrollView];
+    [_scrollView ccui_relativeContentOffset];
 
-    LOBYTE(v3) = BSFloatLessThanOrEqualToFloat() ^ 1;
+    LOBYTE(_scrollViewIsScrollable) = BSFloatLessThanOrEqualToFloat() ^ 1;
   }
 
-  return v3;
+  return _scrollViewIsScrollable;
 }
 
-- (void)_updateChevronStateForTransitionState:(id)a3
+- (void)_updateChevronStateForTransitionState:(id)state
 {
-  [a3 presentationProgress];
+  [state presentationProgress];
   v4 = BSFloatGreaterThanOrEqualToFloat();
   headerPocketView = self->_headerPocketView;
 
   [(CCUIHeaderPocketView *)headerPocketView setChevronState:v4];
 }
 
-- (void)_updateHotPocketAnimated:(BOOL)a3
+- (void)_updateHotPocketAnimated:(BOOL)animated
 {
   if (self->_headerPocketView)
   {
-    v3 = a3;
-    v5 = [(CCUIMainViewController *)self pagingViewController];
-    v26 = [v5 topmostContentView];
+    animatedCopy = animated;
+    pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+    topmostContentView = [pagingViewController topmostContentView];
 
     [(CCUIHeaderPocketView *)self->_headerPocketView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v26 bounds];
-    [v26 convertRect:self->_headerPocketView toView:?];
+    [topmostContentView bounds];
+    [topmostContentView convertRect:self->_headerPocketView toView:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -5061,26 +5061,26 @@ LABEL_13:
     MinY = CGRectGetMinY(v29);
     v24 = vabdd_f64(MinY, Height) > 0.05;
     v25 = MinY < Height && v24;
-    [(CCUIMainViewController *)self _updateHotPocket:v25 animated:v3];
+    [(CCUIMainViewController *)self _updateHotPocket:v25 animated:animatedCopy];
   }
 }
 
-- (void)_updateHotPocket:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateHotPocket:(BOOL)pocket animated:(BOOL)animated
 {
   v19 = *MEMORY[0x277D85DE8];
   if (self->_headerPocketView)
   {
-    v4 = a3;
-    if (self->_showHotPocket != a3)
+    pocketCopy = pocket;
+    if (self->_showHotPocket != pocket)
     {
-      self->_showHotPocket = a3;
+      self->_showHotPocket = pocket;
       v6 = 0.0;
-      if (a3)
+      if (pocket)
       {
         v6 = 1.0;
       }
 
-      if (a4)
+      if (animated)
       {
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
@@ -5121,7 +5121,7 @@ LABEL_13:
               objc_enumerationMutation(v7);
             }
 
-            [*(*(&v12 + 1) + 8 * i) setHidden:{!v4, v12}];
+            [*(*(&v12 + 1) + 8 * i) setHidden:{!pocketCopy, v12}];
           }
 
           v9 = [(NSArray *)v7 countByEnumeratingWithState:&v12 objects:v18 count:16];
@@ -5141,10 +5141,10 @@ LABEL_13:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CCUIMainViewController *)self pagingViewController];
-  v4 = [v3 queryAllTopLevelBlockingGestureRecognizers];
+  pagingViewController = [(CCUIMainViewController *)self pagingViewController];
+  queryAllTopLevelBlockingGestureRecognizers = [pagingViewController queryAllTopLevelBlockingGestureRecognizers];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [queryAllTopLevelBlockingGestureRecognizers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5155,7 +5155,7 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queryAllTopLevelBlockingGestureRecognizers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -5164,20 +5164,20 @@ LABEL_13:
         [(UIPanGestureRecognizer *)self->_pagingViewScrollPanGesture requireGestureRecognizerToFail:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [queryAllTopLevelBlockingGestureRecognizers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)gameModeStateDidChange:(unint64_t)a3
+- (void)gameModeStateDidChange:(unint64_t)change
 {
   if ([(CCUIMainViewController *)self presentationState]- 1 >= 2)
   {
     headerPocketView = self->_headerPocketView;
 
-    [(CCUIHeaderPocketView *)headerPocketView gameModeStateDidChange:a3];
+    [(CCUIHeaderPocketView *)headerPocketView gameModeStateDidChange:change];
   }
 }
 
@@ -5205,24 +5205,24 @@ LABEL_13:
 - (void)_updateAskToAirDropModuleVisibility
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(CCUIMainViewController *)self askToAirDropController];
-  v4 = [v3 hasPendingOrActiveConnections];
+  askToAirDropController = [(CCUIMainViewController *)self askToAirDropController];
+  hasPendingOrActiveConnections = [askToAirDropController hasPendingOrActiveConnections];
 
   if (([(CCUIMainViewController *)self _interfaceOrientation]- 1) >= 2)
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v4 = ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1) & v4;
+    hasPendingOrActiveConnections = ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1) & hasPendingOrActiveConnections;
   }
 
-  if ([(CCUIMainViewController *)self isShowingRootView]|| !v4)
+  if ([(CCUIMainViewController *)self isShowingRootView]|| !hasPendingOrActiveConnections)
   {
     v7 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v4)
+      if (hasPendingOrActiveConnections)
       {
         v8 = @"YES";
       }
@@ -5234,8 +5234,8 @@ LABEL_13:
       _os_log_impl(&dword_21E9F5000, v7, OS_LOG_TYPE_DEFAULT, "AskToAirDrop: update module visibility with identifier:%@ visible:%@", &v10, 0x16u);
     }
 
-    v9 = [MEMORY[0x277CFC830] sharedInstance];
-    [v9 setVisibility:v4 forModuleWithIdentifier:@"com.apple.sharing.AskToAirDropControlCenterModule" completionHandler:0];
+    mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
+    [mEMORY[0x277CFC830] setVisibility:hasPendingOrActiveConnections forModuleWithIdentifier:@"com.apple.sharing.AskToAirDropControlCenterModule" completionHandler:0];
   }
 }
 
@@ -5263,7 +5263,7 @@ LABEL_13:
 - (void)_safeStatusLabelViewContainerView
 {
   OUTLINED_FUNCTION_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_2();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -5271,7 +5271,7 @@ LABEL_13:
 - (void)_safePagingViewContainerView
 {
   OUTLINED_FUNCTION_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_2();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

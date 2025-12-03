@@ -4,39 +4,39 @@
 - (CGPoint)center;
 - (CGPoint)originalPosition;
 - (CGRect)boundingRect;
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4;
-- (CGRect)contentRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4;
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in;
+- (CGRect)contentRectForStage:(int64_t)stage isBuildIn:(BOOL)in;
 - (CGRect)frame;
 - (CGRect)textureContentRect;
 - (NSArray)visibleTextures;
 - (TSDTextureSet)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)finalTextureForStage:(int64_t)a3 reverse:(BOOL)a4;
-- (id)firstVisibleTextureForTextureType:(int)a3;
+- (id)finalTextureForStage:(int64_t)stage reverse:(BOOL)reverse;
+- (id)firstVisibleTextureForTextureType:(int)type;
 - (id)newFlattenedTexture;
-- (id)newFlattenedTextureFromTextures:(id)a3 newRect:(CGRect)a4;
-- (id)visibleTexturesForStage:(int64_t)a3 isBuildIn:(BOOL)a4 shouldFlatten:(BOOL)a5;
-- (int64_t)stageIndexForTexture:(id)a3;
-- (void)addFinalTexture:(id)a3 forStage:(int64_t)a4 reverse:(BOOL)a5;
-- (void)addPerspectiveLayerToTexture:(id)a3 withShowSize:(CGSize)a4;
-- (void)addRenderable:(id)a3 forStage:(int64_t)a4;
+- (id)newFlattenedTextureFromTextures:(id)textures newRect:(CGRect)rect;
+- (id)visibleTexturesForStage:(int64_t)stage isBuildIn:(BOOL)in shouldFlatten:(BOOL)flatten;
+- (int64_t)stageIndexForTexture:(id)texture;
+- (void)addFinalTexture:(id)texture forStage:(int64_t)stage reverse:(BOOL)reverse;
+- (void)addPerspectiveLayerToTexture:(id)texture withShowSize:(CGSize)size;
+- (void)addRenderable:(id)renderable forStage:(int64_t)stage;
 - (void)adjustAnchorPointRelativeToCenterOfRotation;
-- (void)applyActionEffect:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5 shouldBake:(BOOL)a6 applyScaleOnly:(BOOL)a7 ignoreScale:(BOOL)a8 shouldCheckActionKeys:(BOOL)a9;
+- (void)applyActionEffect:(id)effect viewScale:(double)scale isMagicMove:(BOOL)move shouldBake:(BOOL)bake applyScaleOnly:(BOOL)only ignoreScale:(BOOL)ignoreScale shouldCheckActionKeys:(BOOL)keys;
 - (void)dealloc;
 - (void)hideLayersOfFinalTextures;
-- (void)p_applyPositionFromAttributes:(id)a3 viewScale:(double)a4;
-- (void)p_resetAttributesWithViewScale:(double)a3;
+- (void)p_applyPositionFromAttributes:(id)attributes viewScale:(double)scale;
+- (void)p_resetAttributesWithViewScale:(double)scale;
 - (void)releaseSingleTextures;
-- (void)removeRenderable:(id)a3;
-- (void)renderIntoContext:(CGContext *)a3;
+- (void)removeRenderable:(id)renderable;
+- (void)renderIntoContext:(CGContext *)context;
 - (void)renderLayerContentsIfNeeded;
 - (void)resetAnchorPoint;
-- (void)setBoundingRect:(CGRect)a3;
-- (void)setBoundingRect:(CGRect)a3 forStage:(int64_t)a4;
-- (void)setContentRect:(CGRect)a3 forStage:(int64_t)a4;
-- (void)setIsBaked:(BOOL)a3;
-- (void)setLayerGeometryFromRep:(id)a3;
+- (void)setBoundingRect:(CGRect)rect;
+- (void)setBoundingRect:(CGRect)rect forStage:(int64_t)stage;
+- (void)setContentRect:(CGRect)rect forStage:(int64_t)stage;
+- (void)setIsBaked:(BOOL)baked;
+- (void)setLayerGeometryFromRep:(id)rep;
 - (void)teardown;
 @end
 
@@ -156,10 +156,10 @@
   [(TSDTextureSet *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -233,9 +233,9 @@
   return result;
 }
 
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v7 = -[NSMutableDictionary objectForKey:](self->mBoundingRectForStage, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:?]);
   if (v7 || (v7 = [(NSMutableDictionary *)self->mBoundingRectForStage objectForKey:&unk_287DDD4D0]) != 0)
   {
@@ -251,14 +251,14 @@
   y = v9;
   width = v10;
   height = v11;
-  if (a3 || !v4)
+  if (stage || !inCopy)
   {
-    if (v4)
+    if (inCopy)
     {
       goto LABEL_11;
     }
 
-    if (self->mMaxStageIndex != a3)
+    if (self->mMaxStageIndex != stage)
     {
       goto LABEL_17;
     }
@@ -283,10 +283,10 @@
     height = v32.size.height;
   }
 
-  if (!v4)
+  if (!inCopy)
   {
 LABEL_17:
-    if (a3 || v4)
+    if (stage || inCopy)
     {
       goto LABEL_21;
     }
@@ -295,13 +295,13 @@ LABEL_17:
   }
 
 LABEL_11:
-  v21 = !v4;
-  if (a3)
+  v21 = !inCopy;
+  if (stage)
   {
     v21 = 0;
   }
 
-  if (v21 || self->mMaxStageIndex == a3)
+  if (v21 || self->mMaxStageIndex == stage)
   {
 LABEL_19:
     v22 = [(NSMutableDictionary *)self->mBoundingRectForStage objectForKey:&unk_287DDD4E8];
@@ -336,9 +336,9 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)contentRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4
+- (CGRect)contentRectForStage:(int64_t)stage isBuildIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v7 = -[NSMutableDictionary objectForKey:](self->mContentRectForStage, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:?]);
   if (v7 || (v7 = [(NSMutableDictionary *)self->mContentRectForStage objectForKey:&unk_287DDD4D0]) != 0)
   {
@@ -354,14 +354,14 @@ LABEL_21:
   y = v9;
   width = v10;
   height = v11;
-  if (a3 || !v4)
+  if (stage || !inCopy)
   {
-    if (v4)
+    if (inCopy)
     {
       goto LABEL_11;
     }
 
-    if (self->mMaxStageIndex != a3)
+    if (self->mMaxStageIndex != stage)
     {
       goto LABEL_17;
     }
@@ -386,10 +386,10 @@ LABEL_21:
     height = v32.size.height;
   }
 
-  if (!v4)
+  if (!inCopy)
   {
 LABEL_17:
-    if (a3 || v4)
+    if (stage || inCopy)
     {
       goto LABEL_21;
     }
@@ -398,13 +398,13 @@ LABEL_17:
   }
 
 LABEL_11:
-  v21 = !v4;
-  if (a3)
+  v21 = !inCopy;
+  if (stage)
   {
     v21 = 0;
   }
 
-  if (v21 || self->mMaxStageIndex == a3)
+  if (v21 || self->mMaxStageIndex == stage)
   {
 LABEL_19:
     v22 = [(NSMutableDictionary *)self->mContentRectForStage objectForKey:&unk_287DDD4E8];
@@ -439,21 +439,21 @@ LABEL_21:
   return result;
 }
 
-- (void)addRenderable:(id)a3 forStage:(int64_t)a4
+- (void)addRenderable:(id)renderable forStage:(int64_t)stage
 {
-  if (![a3 textureType])
+  if (![renderable textureType])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextureSet addRenderable:forStage:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextureSet.m"), 277, @"Unknown texture type! Probably because it wasn't set! Go do that!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextureSet.m"), 277, @"Unknown texture type! Probably because it wasn't set! Go do that!"}];
   }
 
-  [(NSMutableArray *)self->mTextures addObject:a3];
-  [(NSMutableArray *)self->mAllTextures addObject:a3];
-  [a3 setParent:self];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(TSUNoCopyDictionary *)self->mStageIndexForTexture setObject:v9 forUncopiedKey:a3];
-  [a3 frame];
+  [(NSMutableArray *)self->mTextures addObject:renderable];
+  [(NSMutableArray *)self->mAllTextures addObject:renderable];
+  [renderable setParent:self];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:stage];
+  [(TSUNoCopyDictionary *)self->mStageIndexForTexture setObject:v9 forUncopiedKey:renderable];
+  [renderable frame];
   v62.origin.x = v10;
   v62.origin.y = v11;
   v62.size.width = v12;
@@ -478,7 +478,7 @@ LABEL_21:
     v19 = v26;
   }
 
-  [a3 frame];
+  [renderable frame];
   v63.origin.x = v27;
   v63.origin.y = v28;
   v63.size.width = v29;
@@ -500,17 +500,17 @@ LABEL_21:
   }
 
   r1 = v18;
-  [a3 contentRect];
+  [renderable contentRect];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  [a3 offset];
+  [renderable offset];
   v44 = v17;
   v45 = v16;
   v46 = v15;
   v48 = v47;
-  [a3 offset];
+  [renderable offset];
   v50 = v49;
   v59.origin.x = v37;
   v59.origin.y = v39;
@@ -523,14 +523,14 @@ LABEL_21:
   v60.size.height = r1;
   v61 = CGRectUnion(v60, v64);
   -[NSMutableDictionary setObject:forKey:](self->mContentRectForStage, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithCGRect:{v61.origin.x, v61.origin.y, v61.size.width, v61.size.height}], v9);
-  -[CALayer addSublayer:](self->mLayer, "addSublayer:", [a3 layer]);
+  -[CALayer addSublayer:](self->mLayer, "addSublayer:", [renderable layer]);
   MidX = CGRectGetMidX(self->mBounds);
   MidY = CGRectGetMidY(self->mBounds);
   self->mCenter.x = MidX;
   self->mCenter.y = MidY;
-  if (self->mMaxStageIndex < a4)
+  if (self->mMaxStageIndex < stage)
   {
-    self->mMaxStageIndex = a4;
+    self->mMaxStageIndex = stage;
   }
 
   ++self->mChunkCount;
@@ -557,22 +557,22 @@ uint64_t __40__TSDTextureSet_addRenderable_forStage___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)addFinalTexture:(id)a3 forStage:(int64_t)a4 reverse:(BOOL)a5
+- (void)addFinalTexture:(id)texture forStage:(int64_t)stage reverse:(BOOL)reverse
 {
-  v5 = a5;
+  reverseCopy = reverse;
   [(NSMutableArray *)self->mAllTextures addObject:?];
-  [a3 setParent:self];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  if (v5)
+  [texture setParent:self];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:stage];
+  if (reverseCopy)
   {
-    [(TSUNoCopyDictionary *)self->mReverseFinalTexturesToStageMap setObject:a3 forKey:v9];
+    [(TSUNoCopyDictionary *)self->mReverseFinalTexturesToStageMap setObject:texture forKey:v9];
     p_mReverseFinalTextureForStage = &self->mReverseFinalTextureForStage;
     mReverseFinalTextureForStage = self->mReverseFinalTextureForStage;
   }
 
   else
   {
-    [(TSUNoCopyDictionary *)self->mFinalTexturesToStageMap setObject:v9 forKey:a3];
+    [(TSUNoCopyDictionary *)self->mFinalTexturesToStageMap setObject:v9 forKey:texture];
     p_mReverseFinalTextureForStage = &self->mFinalTextureForStage;
     mReverseFinalTextureForStage = self->mFinalTextureForStage;
   }
@@ -589,22 +589,22 @@ uint64_t __40__TSDTextureSet_addRenderable_forStage___block_invoke(uint64_t a1, 
     [(NSMutableDictionary *)*p_mReverseFinalTextureForStage setObject:v13 forKey:v9];
   }
 
-  [v13 addObject:a3];
-  [a3 frame];
+  [v13 addObject:texture];
+  [texture frame];
   v22.origin.x = v14;
   v22.origin.y = v15;
   v22.size.width = v16;
   v22.size.height = v17;
   self->mBounds = CGRectUnion(self->mBounds, v22);
   [(CALayer *)self->mLayer setFrame:?];
-  -[CALayer addSublayer:](self->mLayer, "addSublayer:", [a3 layer]);
+  -[CALayer addSublayer:](self->mLayer, "addSublayer:", [texture layer]);
   MidX = CGRectGetMidX(self->mBounds);
   MidY = CGRectGetMidY(self->mBounds);
   self->mCenter.x = MidX;
   self->mCenter.y = MidY;
-  v20 = [a3 layer];
+  layer = [texture layer];
 
-  [v20 setHidden:1];
+  [layer setHidden:1];
 }
 
 - (void)renderLayerContentsIfNeeded
@@ -654,10 +654,10 @@ uint64_t __40__TSDTextureSet_addRenderable_forStage___block_invoke(uint64_t a1, 
   return *(&self->super.isa + v2);
 }
 
-- (id)visibleTexturesForStage:(int64_t)a3 isBuildIn:(BOOL)a4 shouldFlatten:(BOOL)a5
+- (id)visibleTexturesForStage:(int64_t)stage isBuildIn:(BOOL)in shouldFlatten:(BOOL)flatten
 {
-  LODWORD(v50) = a5;
-  v5 = a4;
+  LODWORD(v50) = flatten;
+  inCopy = in;
   v59 = *MEMORY[0x277D85DE8];
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->mTextures, "count")}];
   v9 = MEMORY[0x277CBF398];
@@ -716,8 +716,8 @@ uint64_t __40__TSDTextureSet_addRenderable_forStage___block_invoke(uint64_t a1, 
   {
     v22 = 0;
     v23 = 0;
-    v25 = v12 == a3 && v12 != -1;
-    v27 = v10 == a3 && v10 != -1;
+    v25 = v12 == stage && v12 != -1;
+    v27 = v10 == stage && v10 != -1;
     v52 = v27;
     v53 = v25;
     v28 = 1;
@@ -725,13 +725,13 @@ uint64_t __40__TSDTextureSet_addRenderable_forStage___block_invoke(uint64_t a1, 
     {
       v29 = [(NSMutableArray *)self->mTextures objectAtIndex:v22];
       v30 = [(TSDTextureSet *)self stageIndexForTexture:v29];
-      if (v30 == a3 || ((v37 = v30, v30 == -1) ? (v38 = !v5) : (v38 = 1), !v38 ? (v39 = v10 == a3) : (v39 = 0), v39 && [(NSMutableArray *)self->mTextures count]!= a3))
+      if (v30 == stage || ((v37 = v30, v30 == -1) ? (v38 = !inCopy) : (v38 = 1), !v38 ? (v39 = v10 == stage) : (v39 = 0), v39 && [(NSMutableArray *)self->mTextures count]!= stage))
       {
 LABEL_29:
-        v31 = [v29 textureType];
+        textureType = [v29 textureType];
         if (v23)
         {
-          v32 = v31 == 5;
+          v32 = textureType == 5;
         }
 
         else
@@ -762,7 +762,7 @@ LABEL_29:
         goto LABEL_35;
       }
 
-      if (v37 == -1 && !v5)
+      if (v37 == -1 && !inCopy)
       {
         break;
       }
@@ -773,9 +773,9 @@ LABEL_29:
       }
 
       v40 = v37 == -2;
-      if (v37 == -2 && v5 && v12 == a3)
+      if (v37 == -2 && inCopy && v12 == stage)
       {
-        if ([(NSMutableArray *)self->mTextures count]!= a3)
+        if ([(NSMutableArray *)self->mTextures count]!= stage)
         {
           goto LABEL_29;
         }
@@ -783,7 +783,7 @@ LABEL_29:
         v40 = 1;
       }
 
-      v43 = !v5;
+      v43 = !inCopy;
       if (v37 != -2)
       {
         v43 = 0;
@@ -826,12 +826,12 @@ LABEL_65:
 LABEL_68:
   if ((v51 & 1) != 0 && [v8 count] >= 2 && v23)
   {
-    v44 = [(TSDTextureSet *)self newFlattenedTextureFromTextures:v8 newRect:x, y, width, height];
-    [v44 setOffset:{x, y}];
-    [v44 setParent:self];
-    [v44 setIsFlattened:1];
-    -[TSUNoCopyDictionary setObject:forUncopiedKey:](self->mStageIndexForTexture, "setObject:forUncopiedKey:", [MEMORY[0x277CCABB0] numberWithInteger:a3], v44);
-    [v44 renderLayerContentsIfNeeded];
+    height = [(TSDTextureSet *)self newFlattenedTextureFromTextures:v8 newRect:x, y, width, height];
+    [height setOffset:{x, y}];
+    [height setParent:self];
+    [height setIsFlattened:1];
+    -[TSUNoCopyDictionary setObject:forUncopiedKey:](self->mStageIndexForTexture, "setObject:forUncopiedKey:", [MEMORY[0x277CCABB0] numberWithInteger:stage], height);
+    [height renderLayerContentsIfNeeded];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -859,26 +859,26 @@ LABEL_68:
       while (v46);
     }
 
-    -[CALayer insertSublayer:above:](self->mLayer, "insertSublayer:above:", [v44 layer], objc_msgSend(v23, "layer"));
-    [(NSMutableArray *)self->mAllTextures insertObject:v44 atIndex:[(NSMutableArray *)self->mAllTextures indexOfObject:v23]+ 1];
-    [(NSMutableArray *)self->mTextures insertObject:v44 atIndex:[(NSMutableArray *)self->mTextures indexOfObject:v23]+ 1];
+    -[CALayer insertSublayer:above:](self->mLayer, "insertSublayer:above:", [height layer], objc_msgSend(v23, "layer"));
+    [(NSMutableArray *)self->mAllTextures insertObject:height atIndex:[(NSMutableArray *)self->mAllTextures indexOfObject:v23]+ 1];
+    [(NSMutableArray *)self->mTextures insertObject:height atIndex:[(NSMutableArray *)self->mTextures indexOfObject:v23]+ 1];
     [v8 removeAllObjects];
-    [v8 addObject:v44];
+    [v8 addObject:height];
   }
 
   return v8;
 }
 
-- (void)removeRenderable:(id)a3
+- (void)removeRenderable:(id)renderable
 {
   [(NSMutableArray *)self->mAllTextures removeObject:?];
-  [(NSMutableArray *)self->mTextures removeObject:a3];
-  v5 = [a3 layer];
+  [(NSMutableArray *)self->mTextures removeObject:renderable];
+  layer = [renderable layer];
 
-  [v5 removeFromSuperlayer];
+  [layer removeFromSuperlayer];
 }
 
-- (id)firstVisibleTextureForTextureType:(int)a3
+- (id)firstVisibleTextureForTextureType:(int)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -904,7 +904,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 textureType] == a3)
+    if ([v9 textureType] == type)
     {
       return v9;
     }
@@ -922,13 +922,13 @@ LABEL_3:
   }
 }
 
-- (id)newFlattenedTextureFromTextures:(id)a3 newRect:(CGRect)a4
+- (id)newFlattenedTextureFromTextures:(id)textures newRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 copy];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [textures copy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__TSDTextureSet_newFlattenedTextureFromTextures_newRect___block_invoke;
@@ -1014,8 +1014,8 @@ uint64_t __57__TSDTextureSet_newFlattenedTextureFromTextures_newRect___block_inv
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(TSDTextureSet *)self visibleTextures];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  visibleTextures = [(TSDTextureSet *)self visibleTextures];
+  v8 = [(NSArray *)visibleTextures countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1027,7 +1027,7 @@ uint64_t __57__TSDTextureSet_newFlattenedTextureFromTextures_newRect___block_inv
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visibleTextures);
         }
 
         [objc_msgSend(*(*(&v20 + 1) + 8 * v11) "layer")];
@@ -1048,7 +1048,7 @@ uint64_t __57__TSDTextureSet_newFlattenedTextureFromTextures_newRect___block_inv
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [(NSArray *)visibleTextures countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -1112,9 +1112,9 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
   CGContextRestoreGState(c);
 }
 
-- (int64_t)stageIndexForTexture:(id)a3
+- (int64_t)stageIndexForTexture:(id)texture
 {
-  v3 = [(TSUNoCopyDictionary *)self->mStageIndexForTexture objectForKey:a3];
+  v3 = [(TSUNoCopyDictionary *)self->mStageIndexForTexture objectForKey:texture];
   if (!v3)
   {
     return -1;
@@ -1123,16 +1123,16 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
   return [v3 integerValue];
 }
 
-- (id)finalTextureForStage:(int64_t)a3 reverse:(BOOL)a4
+- (id)finalTextureForStage:(int64_t)stage reverse:(BOOL)reverse
 {
   v4 = 112;
-  if (a4)
+  if (reverse)
   {
     v4 = 136;
   }
 
   v5 = *(&self->super.isa + v4);
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:stage];
 
   return [v5 objectForKey:v6];
 }
@@ -1144,8 +1144,8 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = [(NSMutableDictionary *)self->mFinalTextureForStage objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mFinalTextureForStage objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1157,7 +1157,7 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v35 + 1) + 8 * v7);
@@ -1194,7 +1194,7 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v5);
@@ -1204,8 +1204,8 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [(NSMutableDictionary *)self->mReverseFinalTextureForStage objectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v40 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->mReverseFinalTextureForStage objectEnumerator];
+  v14 = [objectEnumerator2 countByEnumeratingWithState:&v27 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1217,7 +1217,7 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v18 = *(*(&v27 + 1) + 8 * v17);
@@ -1254,31 +1254,31 @@ void __36__TSDTextureSet_newFlattenedTexture__block_invoke(uint64_t a1, CGContex
       }
 
       while (v17 != v15);
-      v15 = [v13 countByEnumeratingWithState:&v27 objects:v40 count:16];
+      v15 = [objectEnumerator2 countByEnumeratingWithState:&v27 objects:v40 count:16];
     }
 
     while (v15);
   }
 }
 
-- (void)setLayerGeometryFromRep:(id)a3
+- (void)setLayerGeometryFromRep:(id)rep
 {
-  [objc_msgSend(a3 "canvas")];
+  [objc_msgSend(rep "canvas")];
   v6 = v5;
   if (self->mIsMagicMove)
   {
-    [a3 naturalBounds];
-    [a3 convertNaturalRectToUnscaledCanvas:?];
+    [rep naturalBounds];
+    [rep convertNaturalRectToUnscaledCanvas:?];
     v11 = TSDMultiplyRectScalar(v7, v8, v9, v10, v6);
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [a3 naturalBounds];
+    [rep naturalBounds];
     [(CALayer *)self->mLayer setBounds:TSDMultiplyRectScalar(v18, v19, v20, v21, v6)];
     [(CALayer *)self->mLayer setPosition:TSDCenterOfRect(v11, v13, v15, v17)];
     if (!self->mShouldTransformUsingTextureCenter)
     {
-      [a3 centerForRotation];
+      [rep centerForRotation];
       v24 = TSDMultiplyPointScalar(v22, v23, v6);
 LABEL_12:
       self->mCenter.x = v24;
@@ -1302,14 +1302,14 @@ LABEL_12:
     *&v66.tx = *(MEMORY[0x277CD9DE8] + 32);
     v67 = v30;
     [(CALayer *)mLayer setTransform:&v66];
-    [objc_msgSend(objc_msgSend(a3 "layout")];
+    [objc_msgSend(objc_msgSend(rep "layout")];
     x = TSDMultiplyRectScalar(v31, v32, v33, v34, v6);
     y = v36;
     width = v38;
     height = v40;
-    if ([a3 textureActionAttributes])
+    if ([rep textureActionAttributes])
     {
-      v42 = [objc_msgSend(a3 "textureActionAttributes")];
+      v42 = [objc_msgSend(rep "textureActionAttributes")];
       if (v42)
       {
         [v42 floatValue];
@@ -1339,13 +1339,13 @@ LABEL_12:
     [(CALayer *)self->mLayer setFrame:x, y, width, height];
     if (!self->mShouldTransformUsingTextureCenter)
     {
-      [a3 centerForRotation];
+      [rep centerForRotation];
       v62 = v49;
       v63 = v48;
-      v50 = [a3 layout];
-      if (v50)
+      layout = [rep layout];
+      if (layout)
       {
-        [v50 transformInRoot];
+        [layout transformInRoot];
         v51 = *&v66.a;
         v52 = *&v66.c;
         v53 = *&v66.tx;
@@ -1434,7 +1434,7 @@ LABEL_12:
   }
 }
 
-- (void)p_resetAttributesWithViewScale:(double)a3
+- (void)p_resetAttributesWithViewScale:(double)scale
 {
   v46 = *MEMORY[0x277D85DE8];
   [(CALayer *)self->mLayer setPosition:self->mOriginalPosition.x, self->mOriginalPosition.y];
@@ -1511,9 +1511,9 @@ LABEL_12:
         }
 
         v32 = v39;
-        v26 = [v15 layer];
+        layer = [v15 layer];
         v34 = v32;
-        [v26 setAffineTransform:&v34];
+        [layer setAffineTransform:&v34];
         [v15 originalPosition];
         [objc_msgSend(v15 "layer")];
       }
@@ -1525,13 +1525,13 @@ LABEL_12:
   }
 }
 
-- (void)p_applyPositionFromAttributes:(id)a3 viewScale:(double)a4
+- (void)p_applyPositionFromAttributes:(id)attributes viewScale:(double)scale
 {
-  v6 = [a3 valueForKey:@"New Position Delta"];
+  v6 = [attributes valueForKey:@"New Position Delta"];
   if (v6)
   {
     [v6 CGPointValue];
-    v9 = TSDMultiplyPointScalar(v7, v8, a4);
+    v9 = TSDMultiplyPointScalar(v7, v8, scale);
     [(CALayer *)self->mLayer setPosition:TSDAddPoints(self->mOriginalPosition.x, self->mOriginalPosition.y, v9)];
     if (self->mAlternateLayer)
     {
@@ -1543,30 +1543,30 @@ LABEL_12:
   }
 }
 
-- (void)applyActionEffect:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5 shouldBake:(BOOL)a6 applyScaleOnly:(BOOL)a7 ignoreScale:(BOOL)a8 shouldCheckActionKeys:(BOOL)a9
+- (void)applyActionEffect:(id)effect viewScale:(double)scale isMagicMove:(BOOL)move shouldBake:(BOOL)bake applyScaleOnly:(BOOL)only ignoreScale:(BOOL)ignoreScale shouldCheckActionKeys:(BOOL)keys
 {
-  v9 = a9;
-  v12 = a6;
-  v13 = a5;
-  v15 = a3;
+  keysCopy = keys;
+  bakeCopy = bake;
+  moveCopy = move;
+  effectCopy = effect;
   v90 = *MEMORY[0x277D85DE8];
-  if (!a6)
+  if (!bake)
   {
 LABEL_9:
     v17 = 0x277CD9000uLL;
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    if (!v15 && !self->mIsMagicMove)
+    if (!effectCopy && !self->mIsMagicMove)
     {
-      [(TSDTextureSet *)self p_resetAttributesWithViewScale:a4];
+      [(TSDTextureSet *)self p_resetAttributesWithViewScale:scale];
 LABEL_64:
       [*(v17 + 4080) commit];
       return;
     }
 
-    v18 = [v15 valueForKey:@"sfx-action-color-alpha"];
+    v18 = [effectCopy valueForKey:@"sfx-action-color-alpha"];
     v19 = v18;
-    v63 = v12;
+    v63 = bakeCopy;
     if (v18)
     {
       [v18 floatValue];
@@ -1578,8 +1578,8 @@ LABEL_64:
       v21 = 1.0;
     }
 
-    v22 = [v15 valueForKey:@"sfx-action-rotation-angle"];
-    v23 = [v15 valueForKey:@"sfx-action-rotation-direction"];
+    v22 = [effectCopy valueForKey:@"sfx-action-rotation-angle"];
+    v23 = [effectCopy valueForKey:@"sfx-action-rotation-direction"];
     if (v22)
     {
       v24 = v23;
@@ -1590,7 +1590,7 @@ LABEL_64:
         v26 = -v26;
       }
 
-      v27 = [v15 valueForKey:@"sfx-action-scale-size"];
+      v27 = [effectCopy valueForKey:@"sfx-action-scale-size"];
       if (!v27)
       {
         v28 = 1.0;
@@ -1600,7 +1600,7 @@ LABEL_64:
 
     else
     {
-      v29 = [v15 valueForKey:@"sfx-action-scale-size"];
+      v29 = [effectCopy valueForKey:@"sfx-action-scale-size"];
       if (!v29)
       {
         v28 = 1.0;
@@ -1624,17 +1624,17 @@ LABEL_28:
         v75[1] = 3221225472;
         v76 = __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake_applyScaleOnly_ignoreScale_shouldCheckActionKeys___block_invoke;
         v77 = &unk_279D48CA0;
-        v83 = a7;
-        v84 = v13;
-        v85 = v9;
+        onlyCopy = only;
+        v84 = moveCopy;
+        v85 = keysCopy;
         v81 = v28;
         v82 = v26;
-        v86 = a8;
+        ignoreScaleCopy = ignoreScale;
         v78 = v22;
         v79 = v27;
-        v32 = v12;
-        v87 = v12;
-        v80 = self;
+        v32 = bakeCopy;
+        v87 = bakeCopy;
+        selfCopy = self;
         mAlternateLayer = self->mAlternateLayer;
         if (mAlternateLayer)
         {
@@ -1652,11 +1652,11 @@ LABEL_28:
         if (v36)
         {
           v37 = v36;
-          v62 = v15;
+          v62 = effectCopy;
           v38 = *v72;
           if (!v22)
           {
-            v13 = 0;
+            moveCopy = 0;
           }
 
           v34 = 1;
@@ -1670,22 +1670,22 @@ LABEL_28:
               }
 
               v40 = *(*(&v71 + 1) + 8 * i);
-              v41 = [v40 layer];
-              v76(v75, v40, v41);
-              if (v9)
+              layer = [v40 layer];
+              v76(v75, v40, layer);
+              if (keysCopy)
               {
                 v34 &= [objc_msgSend(v40 "layer")] == 0;
               }
 
-              if (v13)
+              if (moveCopy)
               {
                 if (![v40 attributes])
                 {
                   [v40 setAttributes:{objc_msgSend(MEMORY[0x277CBEB38], "dictionaryWithCapacity:", 1)}];
                 }
 
-                v42 = [v40 attributes];
-                [v42 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", v26 * -57.2957795), @"kSFXAngle"}];
+                attributes = [v40 attributes];
+                [attributes setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", v26 * -57.2957795), @"kSFXAngle"}];
               }
             }
 
@@ -1693,9 +1693,9 @@ LABEL_28:
           }
 
           while (v37);
-          v15 = v62;
+          effectCopy = v62;
           v32 = v63;
-          if (!v13)
+          if (!moveCopy)
           {
 LABEL_50:
             self->mIsBaked = v32;
@@ -1705,7 +1705,7 @@ LABEL_50:
 LABEL_52:
               if (v34)
               {
-                [(TSDTextureSet *)self p_applyPositionFromAttributes:v15 viewScale:a4];
+                [(TSDTextureSet *)self p_applyPositionFromAttributes:effectCopy viewScale:scale];
               }
 
               if (v32)
@@ -1714,8 +1714,8 @@ LABEL_52:
                 v70 = 0u;
                 v67 = 0u;
                 v68 = 0u;
-                v43 = [(NSMutableDictionary *)self->mBoundingRectForStage allKeys];
-                v44 = [v43 countByEnumeratingWithState:&v67 objects:v88 count:16];
+                allKeys = [(NSMutableDictionary *)self->mBoundingRectForStage allKeys];
+                v44 = [allKeys countByEnumeratingWithState:&v67 objects:v88 count:16];
                 if (v44)
                 {
                   v45 = v44;
@@ -1727,7 +1727,7 @@ LABEL_52:
                     {
                       if (*v68 != v46)
                       {
-                        objc_enumerationMutation(v43);
+                        objc_enumerationMutation(allKeys);
                       }
 
                       v49 = *(*(&v67 + 1) + 8 * j);
@@ -1767,7 +1767,7 @@ LABEL_52:
                       }
                     }
 
-                    v45 = [v43 countByEnumeratingWithState:&v67 objects:v88 count:16];
+                    v45 = [allKeys countByEnumeratingWithState:&v67 objects:v88 count:16];
                   }
 
                   while (v45);
@@ -1788,7 +1788,7 @@ LABEL_51:
         else
         {
           v34 = 1;
-          if (!v22 || !v13)
+          if (!v22 || !moveCopy)
           {
             goto LABEL_50;
           }
@@ -1816,14 +1816,14 @@ LABEL_51:
     goto LABEL_28;
   }
 
-  if (!self->mIsBaked || !self->mBakedAttributes || ![a3 isEqualToDictionary:?])
+  if (!self->mIsBaked || !self->mBakedAttributes || ![effect isEqualToDictionary:?])
   {
 
-    self->mBakedAttributes = [v15 copy];
+    self->mBakedAttributes = [effectCopy copy];
     goto LABEL_9;
   }
 
-  [(TSDTextureSet *)self p_applyPositionFromAttributes:v15 viewScale:a4];
+  [(TSDTextureSet *)self p_applyPositionFromAttributes:effectCopy viewScale:scale];
 }
 
 uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake_applyScaleOnly_ignoreScale_shouldCheckActionKeys___block_invoke(uint64_t result, void *a2, void *a3)
@@ -1887,29 +1887,29 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
   return result;
 }
 
-- (void)setBoundingRect:(CGRect)a3
+- (void)setBoundingRect:(CGRect)rect
 {
-  self->mBounds = a3;
-  MidX = CGRectGetMidX(a3);
+  self->mBounds = rect;
+  MidX = CGRectGetMidX(rect);
   MidY = CGRectGetMidY(self->mBounds);
   self->mCenter.x = MidX;
   self->mCenter.y = MidY;
 }
 
-- (void)setBoundingRect:(CGRect)a3 forStage:(int64_t)a4
+- (void)setBoundingRect:(CGRect)rect forStage:(int64_t)stage
 {
   mBoundingRectForStage = self->mBoundingRectForStage;
-  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:stage];
 
   [(NSMutableDictionary *)mBoundingRectForStage setObject:v6 forKey:v7];
 }
 
-- (void)setContentRect:(CGRect)a3 forStage:(int64_t)a4
+- (void)setContentRect:(CGRect)rect forStage:(int64_t)stage
 {
   mContentRectForStage = self->mContentRectForStage;
-  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:stage];
 
   [(NSMutableDictionary *)mContentRectForStage setObject:v6 forKey:v7];
 }
@@ -1924,18 +1924,18 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
   return result;
 }
 
-- (void)setIsBaked:(BOOL)a3
+- (void)setIsBaked:(BOOL)baked
 {
-  if (self->mIsBaked && !a3)
+  if (self->mIsBaked && !baked)
   {
 
     self->mBakedAttributes = 0;
   }
 
-  self->mIsBaked = a3;
+  self->mIsBaked = baked;
 }
 
-- (void)renderIntoContext:(CGContext *)a3
+- (void)renderIntoContext:(CGContext *)context
 {
   v20 = *MEMORY[0x277D85DE8];
   if (![(CALayer *)self->mLayer isHidden])
@@ -1943,13 +1943,13 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
     [(CALayer *)self->mLayer frame];
     v6 = v5;
     v8 = v7;
-    CGContextSaveGState(a3);
-    CGContextTranslateCTM(a3, v6, v8);
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, v6, v8);
     mTextureOpacity = self->mTextureOpacity;
     if (mTextureOpacity != 1.0)
     {
-      CGContextSetAlpha(a3, mTextureOpacity);
-      CGContextBeginTransparencyLayer(a3, 0);
+      CGContextSetAlpha(context, mTextureOpacity);
+      CGContextBeginTransparencyLayer(context, 0);
     }
 
     v17 = 0u;
@@ -1971,7 +1971,7 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
             objc_enumerationMutation(mAllTextures);
           }
 
-          [*(*(&v15 + 1) + 8 * i) renderIntoContext:a3];
+          [*(*(&v15 + 1) + 8 * i) renderIntoContext:context];
         }
 
         v12 = [(NSMutableArray *)mAllTextures countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1982,10 +1982,10 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
 
     if (self->mTextureOpacity != 1.0)
     {
-      CGContextEndTransparencyLayer(a3);
+      CGContextEndTransparencyLayer(context);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
@@ -2037,14 +2037,14 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
   return v7;
 }
 
-- (void)addPerspectiveLayerToTexture:(id)a3 withShowSize:(CGSize)a4
+- (void)addPerspectiveLayerToTexture:(id)texture withShowSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [objc_msgSend(a3 "layer")];
+  height = size.height;
+  width = size.width;
+  v8 = [objc_msgSend(texture "layer")];
   if (v8 == [(TSDTextureSet *)self layer])
   {
-    v9 = [a3 layer];
+    layer = [texture layer];
     v17 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(CALayer *)[(TSDTextureSet *)self layer] frame];
     v11 = TSDSubtractPoints(width * 0.5, height * 0.5, v10);
@@ -2057,8 +2057,8 @@ uint64_t __117__TSDTextureSet_applyActionEffect_viewScale_isMagicMove_shouldBake
     [(CALayer *)[(TSDTextureSet *)self layer] bounds];
     [v17 setBounds:?];
     [v17 setName:@"Perspective layer"];
-    [(CALayer *)[(TSDTextureSet *)self layer] replaceSublayer:v9 with:v17];
-    [v17 addSublayer:v9];
+    [(CALayer *)[(TSDTextureSet *)self layer] replaceSublayer:layer with:v17];
+    [v17 addSublayer:layer];
     [v17 addPerspectiveSublayerProjectionUsingScreenSize:{width, height}];
   }
 }

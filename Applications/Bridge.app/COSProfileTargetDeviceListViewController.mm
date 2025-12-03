@@ -1,42 +1,42 @@
 @interface COSProfileTargetDeviceListViewController
-- (COSProfileTargetDeviceListViewController)initWithActiveDevice:(id)a3 otherDevices:(id)a4;
+- (COSProfileTargetDeviceListViewController)initWithActiveDevice:(id)device otherDevices:(id)devices;
 - (id)_lastActiveTraditionallyPairedDevices;
-- (id)specifierForDevice:(id)a3;
+- (id)specifierForDevice:(id)device;
 - (id)specifiers;
-- (void)cancelDeviceSelection:(id)a3;
-- (void)presentConnectFailedAlert:(id)a3;
+- (void)cancelDeviceSelection:(id)selection;
+- (void)presentConnectFailedAlert:(id)alert;
 - (void)removeSpinner;
-- (void)switchToDevice:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)switchToDevice:(id)device;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSProfileTargetDeviceListViewController
 
-- (COSProfileTargetDeviceListViewController)initWithActiveDevice:(id)a3 otherDevices:(id)a4
+- (COSProfileTargetDeviceListViewController)initWithActiveDevice:(id)device otherDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  devicesCopy = devices;
   v12.receiver = self;
   v12.super_class = COSProfileTargetDeviceListViewController;
   v9 = [(COSProfileTargetDeviceListViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_currentActiveDevice, a3);
-    objc_storeStrong(&v10->_otherDevices, a4);
+    objc_storeStrong(&v9->_currentActiveDevice, device);
+    objc_storeStrong(&v10->_otherDevices, devices);
   }
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = COSProfileTargetDeviceListViewController;
-  [(COSProfileTargetDeviceListViewController *)&v13 viewWillAppear:a3];
-  v4 = [(COSProfileTargetDeviceListViewController *)self navigationItem];
-  [v4 setHidesBackButton:1 animated:0];
+  [(COSProfileTargetDeviceListViewController *)&v13 viewWillAppear:appear];
+  navigationItem = [(COSProfileTargetDeviceListViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   if (!self->_cancelButton)
   {
@@ -47,8 +47,8 @@
     cancelButton = self->_cancelButton;
     self->_cancelButton = v8;
 
-    v10 = [(COSProfileTargetDeviceListViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:self->_cancelButton animated:0];
+    navigationItem2 = [(COSProfileTargetDeviceListViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:self->_cancelButton animated:0];
   }
 
   v11 = +[NSBundle mainBundle];
@@ -56,7 +56,7 @@
   [(COSProfileTargetDeviceListViewController *)self setTitle:v12];
 }
 
-- (void)cancelDeviceSelection:(id)a3
+- (void)cancelDeviceSelection:(id)selection
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -72,17 +72,17 @@
     [(COSProfileInstallDeviceSwitchTracker *)tracker rollback];
   }
 
-  v6 = [(COSProfileTargetDeviceListViewController *)self completionBlock];
-  v6[2](v6, 0);
+  completionBlock = [(COSProfileTargetDeviceListViewController *)self completionBlock];
+  completionBlock[2](completionBlock, 0);
 }
 
-- (id)specifierForDevice:(id)a3
+- (id)specifierForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = NRDevicePropertyName;
-  v6 = [v4 valueForProperty:NRDevicePropertyName];
+  v6 = [deviceCopy valueForProperty:NRDevicePropertyName];
   v7 = v6;
-  if (v4 && [v6 length])
+  if (deviceCopy && [v6 length])
   {
     v8 = pbb_bridge_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -92,10 +92,10 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding %@", buf, 0xCu);
     }
 
-    v9 = [v4 valueForProperty:v5];
+    v9 = [deviceCopy valueForProperty:v5];
     v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:objc_opt_class() cell:-1 edit:0];
 
-    [v10 setProperty:v4 forKey:@"COSAssociatedDevice"];
+    [v10 setProperty:deviceCopy forKey:@"COSAssociatedDevice"];
     [v10 setProperty:objc_opt_class() forKey:PSCellClassKey];
     [v10 setProperty:&__kCFBooleanTrue forKey:@"COSPairedDeviceListTableCellEnabled"];
     v11 = [NSNumber numberWithDouble:UITableViewAutomaticDimension];
@@ -112,7 +112,7 @@
       *buf = 136446466;
       v15 = "[COSProfileTargetDeviceListViewController specifierForDevice:]";
       v16 = 2112;
-      v17 = v4;
+      v17 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s: Device is not valid. (%@)", buf, 0x16u);
     }
 
@@ -127,9 +127,9 @@
   v2 = sub_100009350();
   v3 = [v2 sortedArrayUsingComparator:&stru_10026C108];
 
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (id)specifiers
@@ -139,9 +139,9 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(COSProfileTargetDeviceListViewController *)self _lastActiveTraditionallyPairedDevices];
+    _lastActiveTraditionallyPairedDevices = [(COSProfileTargetDeviceListViewController *)self _lastActiveTraditionallyPairedDevices];
     currentActiveDevice = self->_currentActiveDevice;
-    self->_currentActiveDevice = v6;
+    self->_currentActiveDevice = _lastActiveTraditionallyPairedDevices;
 
     v8 = sub_10002E3D0();
     v9 = [(COSProfileTargetDeviceListViewController *)self specifierForDevice:self->_currentActiveDevice];
@@ -219,13 +219,13 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = COSProfileTargetDeviceListViewController;
-  v6 = a4;
-  [(COSProfileTargetDeviceListViewController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(COSProfileTargetDeviceListViewController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(COSProfileTargetDeviceListViewController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(COSProfileTargetDeviceListViewController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v8 = [v7 propertyForKey:@"COSAssociatedDevice"];
   [(COSProfileTargetDeviceListViewController *)self switchToDevice:v8];
@@ -233,43 +233,43 @@
   spinner = self->_spinner;
   self->_spinner = v9;
 
-  v11 = [(COSProfileTargetDeviceListViewController *)self navigationItem];
-  [v11 setLeftBarButtonItem:self->_spinner animated:0];
+  navigationItem = [(COSProfileTargetDeviceListViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:self->_spinner animated:0];
 
   [(PSBarButtonSpinnerView *)self->_spinner startAnimating];
 }
 
-- (void)switchToDevice:(id)a3
+- (void)switchToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[COSProfileTargetDeviceListViewController switchToDevice:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
   }
 
   objc_initWeak(&location, self);
-  v6 = [v4 valueForProperty:NRDevicePropertyIsActive];
-  v7 = [v6 BOOLValue];
+  v6 = [deviceCopy valueForProperty:NRDevicePropertyIsActive];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = pbb_bridge_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 pairingID];
+      pairingID = [deviceCopy pairingID];
       *buf = 138412290;
-      v23 = v9;
+      v23 = pairingID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "User selected active watch (%@). No need to switch.", buf, 0xCu);
     }
 
     v10 = objc_loadWeakRetained(&location);
-    v11 = [v10 completionBlock];
-    v11[2](v11, 1);
+    completionBlock = [v10 completionBlock];
+    completionBlock[2](completionBlock, 1);
   }
 
   else
@@ -277,21 +277,21 @@
     v12 = pbb_bridge_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 pairingID];
+      pairingID2 = [deviceCopy pairingID];
       *buf = 138412290;
-      v23 = v13;
+      v23 = pairingID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "User selected inactive watch (%@). Starting switch.", buf, 0xCu);
     }
 
     v14 = objc_loadWeakRetained(&location);
-    v15 = [v14 currentActiveDevice];
+    currentActiveDevice = [v14 currentActiveDevice];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10010FB5C;
     v18[3] = &unk_10026A0A8;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
-    v16 = [COSProfileInstallDeviceSwitchTracker selectDevice:v19 currentDevice:v15 completionBlock:v18];
+    v19 = deviceCopy;
+    v16 = [COSProfileInstallDeviceSwitchTracker selectDevice:v19 currentDevice:currentActiveDevice completionBlock:v18];
     tracker = self->_tracker;
     self->_tracker = v16;
 
@@ -305,20 +305,20 @@
 - (void)removeSpinner
 {
   [(COSProfileTargetDeviceListViewController *)self setSpinner:0];
-  v3 = [(COSProfileTargetDeviceListViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0 animated:0];
+  navigationItem = [(COSProfileTargetDeviceListViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0 animated:0];
 }
 
-- (void)presentConnectFailedAlert:(id)a3
+- (void)presentConnectFailedAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v20 = "[COSProfileTargetDeviceListViewController presentConnectFailedAlert:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = alertCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: %@", buf, 0x16u);
   }
 
@@ -326,7 +326,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = alertCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Displaying alert for connection failed to %@.", buf, 0xCu);
   }
 
@@ -334,8 +334,8 @@
   v8 = [v7 localizedStringForKey:@"TINKER_SWITCH_TIMEOUT_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"TINKER_SWITCH_TIMEOUT_MESSAGE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v11 = [NSString stringWithFormat:v10, v4];
-  v12 = [UIAlertController alertControllerWithTitle:v8 message:v11 preferredStyle:1];
+  alertCopy = [NSString stringWithFormat:v10, alertCopy];
+  v12 = [UIAlertController alertControllerWithTitle:v8 message:alertCopy preferredStyle:1];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
@@ -344,8 +344,8 @@
   v17[2] = sub_100110110;
   v17[3] = &unk_10026BF58;
   v17[4] = self;
-  v18 = v4;
-  v15 = v4;
+  v18 = alertCopy;
+  v15 = alertCopy;
   v16 = [UIAlertAction actionWithTitle:v14 style:0 handler:v17];
   [v12 addAction:v16];
 

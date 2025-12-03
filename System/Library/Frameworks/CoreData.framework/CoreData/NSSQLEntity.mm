@@ -1,8 +1,8 @@
 @interface NSSQLEntity
 + (void)initialize;
-- (NSSQLEntity)initWithModel:(id)a3 entityDescription:(id)a4;
+- (NSSQLEntity)initWithModel:(id)model entityDescription:(id)description;
 - (NSSQLEntity_DerivedAttributesExtension)derivedAttributesExtension;
-- (NSSQLToOne)_addVirtualToOneForToMany:(NSSQLToOne *)a3 withInheritedProperty:;
+- (NSSQLToOne)_addVirtualToOneForToMany:(NSSQLToOne *)many withInheritedProperty:;
 - (id)_generateMulticolumnUniquenessConstraints;
 - (id)attributeColumns;
 - (id)attributes;
@@ -12,30 +12,30 @@
 - (id)foreignOrderKeyColumns;
 - (id)manyToManyRelationships;
 - (id)toManyRelationships;
-- (uint64_t)_addForeignOrderKeyForToOne:(void *)a3 entity:;
+- (uint64_t)_addForeignOrderKeyForToOne:(void *)one entity:;
 - (uint64_t)_addSubentity:(uint64_t)result;
-- (uint64_t)_collectFKSlots:(void *)a3 error:;
-- (uint64_t)_entityIsBroken:(uint64_t)a1;
+- (uint64_t)_collectFKSlots:(void *)slots error:;
+- (uint64_t)_entityIsBroken:(uint64_t)broken;
 - (uint64_t)_generateAttributeDerivations:(uint64_t)result;
-- (uint64_t)_generateIDWithSuperEntity:(int)a3 nextID:;
+- (uint64_t)_generateIDWithSuperEntity:(int)entity nextID:;
 - (uint64_t)_sqlPropertyWithRenamingIdentifier:(uint64_t)result;
 - (uint64_t)addDerivedAttribute:(uint64_t)result;
-- (uint64_t)addPropertiesForReadOnlyFetch:(uint64_t)a3 keys:(void *)a4 context:;
+- (uint64_t)addPropertiesForReadOnlyFetch:(uint64_t)fetch keys:(void *)keys context:;
 - (uint64_t)properties;
-- (uint64_t)rtreeIndexForIndexNamed:(uint64_t)a1;
-- (uint64_t)sqlAttributesForCompositeAttributeName:(uint64_t)a1;
+- (uint64_t)rtreeIndexForIndexNamed:(uint64_t)named;
+- (uint64_t)sqlAttributesForCompositeAttributeName:(uint64_t)name;
 - (uint64_t)tempTableName;
 - (unint64_t)virtualForeignKeyColumns;
 - (void)_addColumnToFetch:(void *)result;
 - (void)_generateInverseRelationshipsAndMore;
 - (void)_generateProperties;
 - (void)_organizeConstraints;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
-- (void)entitySpecificPropertiesPassing:(uint64_t)a1;
+- (void)entitySpecificPropertiesPassing:(uint64_t)passing;
 - (void)indexForIndexDescription:(void *)result;
 - (void)rtreeIndexes;
-- (void)subhierarchyColumnMatching:(uint64_t)a1;
+- (void)subhierarchyColumnMatching:(uint64_t)matching;
 @end
 
 @implementation NSSQLEntity
@@ -87,8 +87,8 @@
                 }
 
                 v11 = *(*(&v14 + 1) + 8 * i);
-                v12 = [v11 toOneRelationship];
-                if (v12 && *(v12 + 88) == 1)
+                toOneRelationship = [v11 toOneRelationship];
+                if (toOneRelationship && *(toOneRelationship + 88) == 1)
                 {
                   [v5 addObject:v11];
                 }
@@ -229,28 +229,28 @@
   {
     v1 = result;
     v2 = result[20];
-    v131 = [result entityDescription];
+    entityDescription = [result entityDescription];
     v3 = *(v1 + 16);
     if (v3 && (*(v3 + 57) & 1) != 0)
     {
-      v136 = 0;
-      v137 = 0;
+      _leopardStyleRelationshipsByName = 0;
+      _leopardStyleAttributesByName = 0;
       v130 = 1;
       v134 = 1;
     }
 
     else
     {
-      v137 = [v131 _leopardStyleAttributesByName];
-      v136 = [v131 _leopardStyleRelationshipsByName];
+      _leopardStyleAttributesByName = [entityDescription _leopardStyleAttributesByName];
+      _leopardStyleRelationshipsByName = [entityDescription _leopardStyleRelationshipsByName];
       v130 = 0;
       v134 = 0;
     }
 
-    v4 = [v1 model];
-    if (v4)
+    model = [v1 model];
+    if (model)
     {
-      v133 = (*(v4 + 48) >> 1) & 1;
+      v133 = (*(model + 48) >> 1) & 1;
     }
 
     else
@@ -481,7 +481,7 @@
 
     if (v133)
     {
-      v38 = [v131 _newSnowLeopardStyleDictionaryContainingPropertiesOfType:1];
+      v38 = [entityDescription _newSnowLeopardStyleDictionaryContainingPropertiesOfType:1];
       v132 = v38;
       v127 = &v126;
       v39 = *(v38 + 8);
@@ -497,7 +497,7 @@
 
     else
     {
-      v132 = [v131 _newMappingForPropertiesOfRange:1];
+      v132 = [entityDescription _newMappingForPropertiesOfRange:1];
       v39 = [v132 count];
       v127 = &v126;
       MEMORY[0x1EEE9AC00](v39);
@@ -538,13 +538,13 @@
               v150 = v130;
               v147 = v135;
               v154[1] = v142;
-              v48 = [v46 elements];
-              v49 = [v46 name];
-              v143(v142, v48, v49);
-              v50 = [v46 name];
-              if (v50)
+              elements = [v46 elements];
+              name = [v46 name];
+              v143(v142, elements, name);
+              name2 = [v46 name];
+              if (name2)
               {
-                v51 = [*(v1 + 272) objectForKey:v50];
+                v51 = [*(v1 + 272) objectForKey:name2];
                 if (v51)
                 {
                   [v51 addObjectsFromArray:v47];
@@ -553,7 +553,7 @@
                 else
                 {
                   v60 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v47];
-                  [*(v1 + 272) setObject:v60 forKey:v50];
+                  [*(v1 + 272) setObject:v60 forKey:name2];
                 }
               }
 
@@ -594,15 +594,15 @@
 
           else
           {
-            v52 = [v46 name];
-            if (![*(v1 + 40) objectForKey:v52])
+            name3 = [v46 name];
+            if (![*(v1 + 40) objectForKey:name3])
             {
               v53 = [[NSSQLAttribute alloc] initWithEntity:v1 propertyDescription:v46];
               [(NSSQLEntity *)v1 _addColumnToFetch:v53];
-              [*(v1 + 40) setObject:v53 forKey:v52];
+              [*(v1 + 40) setObject:v53 forKey:name3];
               if ((v134 & 1) == 0)
               {
-                [v135 setObject:v53 forKey:v52];
+                [v135 setObject:v53 forKey:name3];
               }
 
               if ([v46 _propertyType] == 6)
@@ -631,8 +631,8 @@
 
     if ((v134 & 1) == 0)
     {
-      v66 = *v137;
-      if (*v137 >= 1)
+      v66 = *_leopardStyleAttributesByName;
+      if (*_leopardStyleAttributesByName >= 1)
       {
         if (v66 >= 0x201)
         {
@@ -641,7 +641,7 @@
 
         else
         {
-          v67 = *v137;
+          v67 = *_leopardStyleAttributesByName;
         }
 
         v68 = 8 * v67;
@@ -668,16 +668,16 @@
           bzero(v70, v68);
         }
 
-        v72 = v137[1];
+        v72 = _leopardStyleAttributesByName[1];
         if (v72 > 0)
         {
           v73 = 0;
-          v74 = v137[9];
+          v74 = _leopardStyleAttributesByName[9];
           do
           {
             v76 = *v74++;
             v75 = v76;
-            v77 = v137[8];
+            v77 = _leopardStyleAttributesByName[8];
             v78 = v77 ^ v76;
             if (v77 != v76 && v78 != -1)
             {
@@ -693,14 +693,14 @@
         v80 = 0;
         do
         {
-          v81 = _PF_Leopard_CFDictionaryGetValue(v137, *&v70[8 * v80]);
+          v81 = _PF_Leopard_CFDictionaryGetValue(_leopardStyleAttributesByName, *&v70[8 * v80]);
           if (([v81 isTransient] & 1) == 0)
           {
-            v82 = [v81 name];
-            v83 = [v135 objectForKey:v82];
+            name4 = [v81 name];
+            v83 = [v135 objectForKey:name4];
             if (v83)
             {
-              _PF_Leopard_CFDictionarySetValue(*(v1 + 248), v82, v83);
+              _PF_Leopard_CFDictionarySetValue(*(v1 + 248), name4, v83);
             }
           }
 
@@ -719,7 +719,7 @@
 
     if (v133)
     {
-      v84 = [v131 _newSnowLeopardStyleDictionaryContainingPropertiesOfType:2];
+      v84 = [entityDescription _newSnowLeopardStyleDictionaryContainingPropertiesOfType:2];
       v85 = v84;
       v86 = *(v84 + 8);
       if (v86 > 1)
@@ -734,7 +734,7 @@
 
     else
     {
-      v85 = [v131 _newMappingForPropertiesOfRange:2];
+      v85 = [entityDescription _newMappingForPropertiesOfRange:2];
       v86 = [v85 count];
       MEMORY[0x1EEE9AC00](v86);
       v90 = (&v126 - v91);
@@ -746,21 +746,21 @@
       v92 = *v90;
       if (([*v90 isTransient] & 1) == 0)
       {
-        v93 = [v92 name];
-        if (![*(v1 + 40) objectForKey:v93])
+        name5 = [v92 name];
+        if (![*(v1 + 40) objectForKey:name5])
         {
           if ([v92 maxCount] == 1)
           {
             v94 = [[NSSQLToOne alloc] initWithEntity:v1 propertyDescription:v92];
-            v95 = [(NSSQLToOne *)v94 foreignKey];
-            [*(v1 + 40) setObject:v95 forKey:{objc_msgSend(v95, "name")}];
+            foreignKey = [(NSSQLToOne *)v94 foreignKey];
+            [*(v1 + 40) setObject:foreignKey forKey:{objc_msgSend(foreignKey, "name")}];
             if ((v134 & 1) == 0)
             {
-              v96 = [v95 name];
-              [v135 setObject:v95 forKey:v96];
+              name6 = [foreignKey name];
+              [v135 setObject:foreignKey forKey:name6];
             }
 
-            [(NSSQLEntity *)v1 _addColumnToFetch:v95];
+            [(NSSQLEntity *)v1 _addColumnToFetch:foreignKey];
             if (!v94)
             {
               goto LABEL_142;
@@ -772,8 +772,8 @@
               [*(v1 + 40) setObject:foreignEntityKey forKey:{-[NSSQLForeignEntityKey name](v94->_foreignEntityKey, "name")}];
               if ((v134 & 1) == 0)
               {
-                v98 = [(NSSQLForeignEntityKey *)foreignEntityKey name];
-                [v135 setObject:foreignEntityKey forKey:v98];
+                name7 = [(NSSQLForeignEntityKey *)foreignEntityKey name];
+                [v135 setObject:foreignEntityKey forKey:name7];
               }
 
               [(NSSQLEntity *)v1 _addColumnToFetch:?];
@@ -782,8 +782,8 @@
 
           else
           {
-            v99 = [v92 inverseRelationship];
-            if (!v99 || (v100 = [v99 maxCount], v101 = off_1E6EC0BA8, v100 == 1))
+            inverseRelationship = [v92 inverseRelationship];
+            if (!inverseRelationship || (v100 = [inverseRelationship maxCount], v101 = off_1E6EC0BA8, v100 == 1))
             {
               v101 = off_1E6EC0BB0;
             }
@@ -795,10 +795,10 @@
             }
           }
 
-          [*(v1 + 40) setObject:v94 forKey:v93];
+          [*(v1 + 40) setObject:v94 forKey:name5];
           if ((v134 & 1) == 0)
           {
-            [v135 setObject:v94 forKey:v93];
+            [v135 setObject:v94 forKey:name5];
           }
         }
       }
@@ -818,12 +818,12 @@ LABEL_142:
 
     if ((v134 & 1) == 0)
     {
-      v103 = *v136;
-      if (*v136 >= 1)
+      v103 = *_leopardStyleRelationshipsByName;
+      if (*_leopardStyleRelationshipsByName >= 1)
       {
         if (v103 < 0x201)
         {
-          v104 = *v136;
+          v104 = *_leopardStyleRelationshipsByName;
         }
 
         MEMORY[0x1EEE9AC00](v102);
@@ -838,16 +838,16 @@ LABEL_142:
           bzero(&v126 - v105, 8 * v103);
         }
 
-        v107 = v136[1];
+        v107 = _leopardStyleRelationshipsByName[1];
         if (v107 > 0)
         {
           v108 = 0;
-          v109 = v136[9];
+          v109 = _leopardStyleRelationshipsByName[9];
           do
           {
             v111 = *v109++;
             v110 = v111;
-            v112 = v136[8];
+            v112 = _leopardStyleRelationshipsByName[8];
             v113 = v112 ^ v111;
             if (v112 != v111 && v113 != -1)
             {
@@ -863,17 +863,17 @@ LABEL_142:
         v115 = 0;
         do
         {
-          v116 = _PF_Leopard_CFDictionaryGetValue(v136, *&v106[8 * v115]);
+          v116 = _PF_Leopard_CFDictionaryGetValue(_leopardStyleRelationshipsByName, *&v106[8 * v115]);
           if (([v116 isTransient] & 1) == 0)
           {
-            v117 = [v116 name];
-            v118 = [v135 objectForKey:v117];
+            name8 = [v116 name];
+            v118 = [v135 objectForKey:name8];
             if (v118)
             {
               if ([v116 maxCount] == 1)
               {
-                v119 = [v118 foreignKey];
-                _PF_Leopard_CFDictionarySetValue(*(v1 + 248), [v119 name], v119);
+                foreignKey2 = [v118 foreignKey];
+                _PF_Leopard_CFDictionarySetValue(*(v1 + 248), [foreignKey2 name], foreignKey2);
                 v120 = v118[9];
                 if (v120)
                 {
@@ -895,8 +895,8 @@ LABEL_142:
         }
       }
 
-      _PF_Leopard_CFDictionaryDestroy(v136);
-      _PF_Leopard_CFDictionaryDestroy(v137);
+      _PF_Leopard_CFDictionaryDestroy(_leopardStyleRelationshipsByName);
+      _PF_Leopard_CFDictionaryDestroy(_leopardStyleAttributesByName);
     }
 
     v140 = 0u;
@@ -942,11 +942,11 @@ LABEL_142:
   if (result)
   {
     v1 = result;
-    v2 = [result model];
-    if (v2 && (*(v2 + 48) & 1) != 0)
+    model = [result model];
+    if (model && (*(model + 48) & 1) != 0)
     {
-      v21 = [MEMORY[0x1E695DF70] array];
-      v22 = v21;
+      array = [MEMORY[0x1E695DF70] array];
+      v22 = array;
       v23 = *(v1 + 248);
       v24 = *v23;
       if (*v23 >= 1)
@@ -962,7 +962,7 @@ LABEL_142:
         }
 
         v26 = 8 * v25;
-        MEMORY[0x1EEE9AC00](v21);
+        MEMORY[0x1EEE9AC00](array);
         v28 = &v117 - v27;
         if (v26 >= 0x200)
         {
@@ -1024,8 +1024,8 @@ LABEL_142:
       goto LABEL_136;
     }
 
-    v3 = [v1 model];
-    if (v3 && (*(v3 + 48) & 2) != 0)
+    model2 = [v1 model];
+    if (model2 && (*(model2 + 48) & 2) != 0)
     {
       v30 = [*(v1 + 40) count];
       if (v30 >= 1)
@@ -1480,11 +1480,11 @@ LABEL_136:
                   goto LABEL_156;
                 }
 
-                v109 = [v106 destinationEntity];
-                v110 = [v108 name];
-                if (v109)
+                destinationEntity = [v106 destinationEntity];
+                name = [v108 name];
+                if (destinationEntity)
                 {
-                  v111 = [*(v109 + 40) objectForKey:v110];
+                  v111 = [*(destinationEntity + 40) objectForKey:name];
                 }
 
                 else
@@ -1518,11 +1518,11 @@ LABEL_152:
                 if (*(v106 + 24) == 9)
                 {
 LABEL_156:
-                  v113 = [v106 destinationEntity];
-                  v114 = [v108 name];
-                  if (v113)
+                  destinationEntity2 = [v106 destinationEntity];
+                  name2 = [v108 name];
+                  if (destinationEntity2)
                   {
-                    v115 = [*(v113 + 40) objectForKey:v114];
+                    v115 = [*(destinationEntity2 + 40) objectForKey:name2];
                   }
 
                   else
@@ -1560,10 +1560,10 @@ LABEL_166:
   if (result)
   {
     v1 = result;
-    v2 = [result rootEntity];
-    if (v2)
+    rootEntity = [result rootEntity];
+    if (rootEntity)
     {
-      v16 = *(v2 + 216);
+      v16 = *(rootEntity + 216);
     }
 
     else
@@ -1575,10 +1575,10 @@ LABEL_166:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v3 = [v1 entityDescription];
-    if (v3)
+    entityDescription = [v1 entityDescription];
+    if (entityDescription)
     {
-      v4 = *(v3 + 128);
+      v4 = *(entityDescription + 128);
       if (!v4 || (v5 = *(v4 + 24)) == 0)
       {
         v5 = NSArray_EmptyArray;
@@ -1662,11 +1662,11 @@ LABEL_166:
 {
   while (self)
   {
-    v2 = self;
+    selfCopy = self;
     self = *(self + 21);
-    if (self == v2)
+    if (self == selfCopy)
     {
-      return v2[9];
+      return selfCopy[9];
     }
   }
 
@@ -1676,10 +1676,10 @@ LABEL_166:
 - (void)_organizeConstraints
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 216) count];
-    if (!*(a1 + 160) && v2 != 0)
+    v2 = [*(self + 216) count];
+    if (!*(self + 160) && v2 != 0)
     {
       v4 = v2;
       v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v2];
@@ -1695,8 +1695,8 @@ LABEL_166:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v21 = a1;
-      obj = *(a1 + 216);
+      selfCopy = self;
+      obj = *(self + 216);
       v8 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
       if (v8)
       {
@@ -1752,7 +1752,7 @@ LABEL_166:
         while (v16);
       }
 
-      *(v21 + 216) = v14;
+      *(selfCopy + 216) = v14;
       CFRelease(v7);
     }
   }
@@ -1797,8 +1797,8 @@ LABEL_166:
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(NSSQLEntity *)self properties];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    properties = [(NSSQLEntity *)self properties];
+    v5 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1809,7 +1809,7 @@ LABEL_166:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(properties);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
@@ -1819,7 +1819,7 @@ LABEL_166:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -1843,8 +1843,8 @@ LABEL_166:
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(NSSQLEntity *)self properties];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    properties = [(NSSQLEntity *)self properties];
+    v5 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1856,7 +1856,7 @@ LABEL_166:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(properties);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -1869,7 +1869,7 @@ LABEL_166:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -1891,8 +1891,8 @@ LABEL_166:
     result = *(result + 48);
     if (!result)
     {
-      v2 = [*(v1 + 40) allValues];
-      v3 = [v2 count];
+      allValues = [*(v1 + 40) allValues];
+      v3 = [allValues count];
       v4 = MEMORY[0x1EEE9AC00](v3);
       v7 = (v10 - v6);
       if (v4 > 0x200)
@@ -1905,7 +1905,7 @@ LABEL_166:
         bzero(v10 - v6, 8 * v5);
       }
 
-      [v2 getObjects:v7 range:{0, v3}];
+      [allValues getObjects:v7 range:{0, v3}];
       v8 = CFArrayCreate(*MEMORY[0x1E695E480], v7, v3, 0);
       if (v3 >= 0x201)
       {
@@ -2003,7 +2003,7 @@ LABEL_11:
   return result;
 }
 
-- (NSSQLEntity)initWithModel:(id)a3 entityDescription:(id)a4
+- (NSSQLEntity)initWithModel:(id)model entityDescription:(id)description
 {
   v37 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -2012,9 +2012,9 @@ LABEL_11:
   if (v6)
   {
     v7 = +[NSSQLStoreMappingGenerator defaultMappingGenerator];
-    if (a3)
+    if (model)
     {
-      v8 = *(a3 + 15) >> 7 > 0x7Cu;
+      v8 = *(model + 15) >> 7 > 0x7Cu;
     }
 
     else
@@ -2022,13 +2022,13 @@ LABEL_11:
       v8 = 0;
     }
 
-    *(v6 + 4) = [(NSSQLStoreMappingGenerator *)v7 generateTableName:a4 isAncillary:v8];
-    *(v6 + 3) = a4;
-    *(v6 + 2) = a3;
+    *(v6 + 4) = [(NSSQLStoreMappingGenerator *)v7 generateTableName:description isAncillary:v8];
+    *(v6 + 3) = description;
+    *(v6 + 2) = model;
     atomic_store(0, v6 + 28);
-    *(v6 + 12) = *(*(a4 + 14) + 96);
-    *(v6 + 70) = *(v6 + 70) & 0xFFFFFFFE | [(NSEntityDescription *)a4 _hasAttributesWithExternalDataReferences];
-    if ([(NSEntityDescription *)a4 _hasAttributesWithFileBackedFutures])
+    *(v6 + 12) = *(*(description + 14) + 96);
+    *(v6 + 70) = *(v6 + 70) & 0xFFFFFFFE | [(NSEntityDescription *)description _hasAttributesWithExternalDataReferences];
+    if ([(NSEntityDescription *)description _hasAttributesWithFileBackedFutures])
     {
       v9 = 2;
     }
@@ -2039,13 +2039,13 @@ LABEL_11:
     }
 
     *(v6 + 70) = *(v6 + 70) & 0xFFFFFFFD | v9;
-    if (![a4 superentity])
+    if (![description superentity])
     {
       *(v6 + 27) = objc_alloc_init(MEMORY[0x1E695DF70]);
       *(v6 + 26) = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    if ([a4 indexes] && objc_msgSend(objc_msgSend(a4, "indexes"), "count"))
+    if ([description indexes] && objc_msgSend(objc_msgSend(description, "indexes"), "count"))
     {
       v25 = *(v6 + 29);
       if (!v25)
@@ -2059,8 +2059,8 @@ LABEL_11:
       v31 = 0u;
       v32 = 0u;
       v10 = v6;
-      v11 = [*(v6 + 3) indexes];
-      v12 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      indexes = [*(v6 + 3) indexes];
+      v12 = [indexes countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v12)
       {
         v13 = v12;
@@ -2071,7 +2071,7 @@ LABEL_11:
           {
             if (*v32 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(indexes);
             }
 
             v16 = *(*(&v31 + 1) + 8 * i);
@@ -2081,8 +2081,8 @@ LABEL_11:
               v30 = 0u;
               v27 = 0u;
               v28 = 0u;
-              v17 = [v16 elements];
-              v18 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              elements = [v16 elements];
+              v18 = [elements countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -2093,7 +2093,7 @@ LABEL_22:
                 {
                   if (*v28 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(elements);
                   }
 
                   if ([objc_msgSend(*(*(&v27 + 1) + 8 * v21) "property")])
@@ -2103,7 +2103,7 @@ LABEL_22:
 
                   if (v19 == ++v21)
                   {
-                    v19 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+                    v19 = [elements countByEnumeratingWithState:&v27 objects:v35 count:16];
                     if (v19)
                     {
                       goto LABEL_22;
@@ -2123,7 +2123,7 @@ LABEL_28:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
+          v13 = [indexes countByEnumeratingWithState:&v31 objects:v36 count:16];
         }
 
         while (v13);
@@ -2137,18 +2137,18 @@ LABEL_28:
   return v6;
 }
 
-- (void)entitySpecificPropertiesPassing:(uint64_t)a1
+- (void)entitySpecificPropertiesPassing:(uint64_t)passing
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (passing)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [*(a1 + 40) allValues];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allValues = [*(passing + 40) allValues];
+    v5 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2159,22 +2159,22 @@ LABEL_28:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
           if ((*(a2 + 16))(a2, [v9 propertyType]))
           {
-            v10 = *(a1 + 160);
-            v11 = [v9 name];
-            if (!v10 || ![*(v10 + 40) objectForKey:v11])
+            v10 = *(passing + 160);
+            name = [v9 name];
+            if (!v10 || ![*(v10 + 40) objectForKey:name])
             {
-              [v14 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -2183,31 +2183,31 @@ LABEL_28:
 
   else
   {
-    v14 = 0;
+    array = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v14;
+  return array;
 }
 
-- (void)subhierarchyColumnMatching:(uint64_t)a1
+- (void)subhierarchyColumnMatching:(uint64_t)matching
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!matching)
   {
 LABEL_14:
     v5 = 0;
     goto LABEL_16;
   }
 
-  v4 = [*(a1 + 40) objectForKey:{objc_msgSend(a2, "name")}];
+  v4 = [*(matching + 40) objectForKey:{objc_msgSend(a2, "name")}];
   if (!v4 || (v5 = v4, [v4 propertyType] != 1) || !objc_msgSend(objc_msgSend(a2, "propertyDescription"), "_isSchemaEqual:", objc_msgSend(v5, "propertyDescription")) || (objc_msgSend(objc_msgSend(a2, "columnName"), "isEqual:", objc_msgSend(v5, "columnName")) & 1) == 0)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = *(a1 + 152);
+    v6 = *(matching + 152);
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2281,15 +2281,15 @@ LABEL_16:
   }
 
   v3 = result;
-  v4 = [*(result + 24) propertiesByName];
-  if (![objc_msgSend(objc_msgSend(v4 objectForKey:{a2), "renamingIdentifier"), "isEqualToString:", a2}])
+  propertiesByName = [*(result + 24) propertiesByName];
+  if (![objc_msgSend(objc_msgSend(propertiesByName objectForKey:{a2), "renamingIdentifier"), "isEqualToString:", a2}])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v4 allValues];
-    result = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [propertiesByName allValues];
+    result = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (result)
     {
       v8 = result;
@@ -2301,7 +2301,7 @@ LABEL_16:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -2315,7 +2315,7 @@ LABEL_16:
         }
 
         while (v8 != v10);
-        result = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        result = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         v8 = result;
         if (result)
         {
@@ -2351,17 +2351,17 @@ LABEL_16:
     a2[13] = v5;
   }
 
-  v6 = [a2 propertyType];
-  if (v6 > 3)
+  propertyType = [a2 propertyType];
+  if (propertyType > 3)
   {
-    if (v6 == 4)
+    if (propertyType == 4)
     {
       v7 = &OBJC_IVAR___NSSQLEntity__ekColumns;
     }
 
     else
     {
-      if (v6 != 10)
+      if (propertyType != 10)
       {
         goto LABEL_18;
       }
@@ -2384,13 +2384,13 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (v6 == 1)
+  if (propertyType == 1)
   {
     v7 = &OBJC_IVAR___NSSQLEntity__attrColumns;
     goto LABEL_14;
   }
 
-  if (v6 == 3)
+  if (propertyType == 3)
   {
     v7 = &OBJC_IVAR___NSSQLEntity__fkColumns;
     goto LABEL_14;
@@ -2437,7 +2437,7 @@ LABEL_18:
   return result;
 }
 
-- (uint64_t)_addForeignOrderKeyForToOne:(void *)a3 entity:
+- (uint64_t)_addForeignOrderKeyForToOne:(void *)one entity:
 {
   v19 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -2472,7 +2472,7 @@ LABEL_18:
     _PF_Leopard_CFDictionarySetValue(v8, [v6 name], v6);
   }
 
-  if (v7 != a3)
+  if (v7 != one)
   {
     v9 = *(v5 + 104);
     if (!v9)
@@ -2482,7 +2482,7 @@ LABEL_18:
     }
 
     [v9 addObject:v6];
-    if (!a3)
+    if (!one)
     {
       goto LABEL_12;
     }
@@ -2491,10 +2491,10 @@ LABEL_18:
   }
 
   [(NSSQLEntity *)v5 _addColumnToFetch:v6];
-  if (a3)
+  if (one)
   {
 LABEL_11:
-    a3 = a3[19];
+    one = one[19];
   }
 
 LABEL_12:
@@ -2502,7 +2502,7 @@ LABEL_12:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  result = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  result = [one countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (result)
   {
     v10 = result;
@@ -2514,7 +2514,7 @@ LABEL_12:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(one);
         }
 
         [(NSSQLEntity *)*(*(&v14 + 1) + 8 * v12) _addForeignOrderKeyForToOne:a2 entity:*(*(&v14 + 1) + 8 * v12)];
@@ -2522,7 +2522,7 @@ LABEL_12:
       }
 
       while (v10 != v12);
-      result = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      result = [one countByEnumeratingWithState:&v14 objects:v18 count:16];
       v10 = result;
     }
 
@@ -2534,21 +2534,21 @@ LABEL_19:
   return result;
 }
 
-- (NSSQLToOne)_addVirtualToOneForToMany:(NSSQLToOne *)a3 withInheritedProperty:
+- (NSSQLToOne)_addVirtualToOneForToMany:(NSSQLToOne *)many withInheritedProperty:
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
-    v3 = 0;
+    manyCopy = 0;
     goto LABEL_44;
   }
 
-  v3 = a3;
-  v6 = *(a1 + 16);
+  manyCopy = many;
+  v6 = *(self + 16);
   if (v6)
   {
     v7 = *(v6 + 57);
-    if (a3)
+    if (many)
     {
       v8 = 0;
       goto LABEL_7;
@@ -2562,62 +2562,62 @@ LABEL_19:
   v9 = 0;
   v8 = 0;
   v7 = 0;
-  if (!a3)
+  if (!many)
   {
 LABEL_6:
-    v3 = [[NSSQLToOne alloc] initWithEntity:a1 inverseToMany:a2];
+    manyCopy = [[NSSQLToOne alloc] initWithEntity:self inverseToMany:a2];
     v8 = 1;
     v7 = v9;
   }
 
 LABEL_7:
-  v10 = [(NSSQLToOne *)v3 foreignKey];
-  [*(a1 + 40) setObject:v10 forKey:{objc_msgSend(v10, "name")}];
+  foreignKey = [(NSSQLToOne *)manyCopy foreignKey];
+  [*(self + 40) setObject:foreignKey forKey:{objc_msgSend(foreignKey, "name")}];
   if ((v7 & 1) == 0)
   {
-    _PF_Leopard_CFDictionarySetValue(*(a1 + 248), [v10 name], v10);
+    _PF_Leopard_CFDictionarySetValue(*(self + 248), [foreignKey name], foreignKey);
   }
 
   if (v8)
   {
-    [(NSSQLEntity *)a1 _addColumnToFetch:v10];
+    [(NSSQLEntity *)self _addColumnToFetch:foreignKey];
   }
 
   else
   {
-    v11 = *(a1 + 96);
+    v11 = *(self + 96);
     if (!v11)
     {
       v11 = objc_opt_new();
-      *(a1 + 96) = v11;
+      *(self + 96) = v11;
     }
 
-    [v11 addObject:v10];
+    [v11 addObject:foreignKey];
   }
 
-  if (v3)
+  if (manyCopy)
   {
-    foreignEntityKey = v3->_foreignEntityKey;
+    foreignEntityKey = manyCopy->_foreignEntityKey;
     if (foreignEntityKey)
     {
-      [*(a1 + 40) setObject:foreignEntityKey forKey:{-[NSSQLForeignEntityKey name](v3->_foreignEntityKey, "name")}];
+      [*(self + 40) setObject:foreignEntityKey forKey:{-[NSSQLForeignEntityKey name](manyCopy->_foreignEntityKey, "name")}];
       if ((v7 & 1) == 0)
       {
-        _PF_Leopard_CFDictionarySetValue(*(a1 + 248), [(NSSQLForeignEntityKey *)foreignEntityKey name], foreignEntityKey);
+        _PF_Leopard_CFDictionarySetValue(*(self + 248), [(NSSQLForeignEntityKey *)foreignEntityKey name], foreignEntityKey);
       }
 
       if (v8)
       {
-        [(NSSQLEntity *)a1 _addColumnToFetch:?];
+        [(NSSQLEntity *)self _addColumnToFetch:?];
       }
 
       else
       {
-        v13 = *(a1 + 88);
+        v13 = *(self + 88);
         if (!v13)
         {
           v13 = objc_opt_new();
-          *(a1 + 88) = v13;
+          *(self + 88) = v13;
         }
 
         [v13 addObject:foreignEntityKey];
@@ -2625,7 +2625,7 @@ LABEL_7:
     }
   }
 
-  [*(a1 + 40) setObject:v3 forKey:{-[NSSQLRelationship name](v3, "name")}];
+  [*(self + 40) setObject:manyCopy forKey:{-[NSSQLRelationship name](manyCopy, "name")}];
   if (v7)
   {
     if (!v8)
@@ -2634,19 +2634,19 @@ LABEL_7:
     }
 
 LABEL_28:
-    [(NSSQLRelationship *)v3 _setInverseRelationship:a2];
+    [(NSSQLRelationship *)manyCopy _setInverseRelationship:a2];
 
-    if (!v3)
+    if (!manyCopy)
     {
       goto LABEL_37;
     }
 
 LABEL_29:
-    foreignOrderKey = v3->_foreignOrderKey;
+    foreignOrderKey = manyCopy->_foreignOrderKey;
     if (foreignOrderKey)
     {
-      [*(a1 + 40) setObject:foreignOrderKey forKey:{-[NSSQLForeignOrderKey name](v3->_foreignOrderKey, "name")}];
-      v15 = *(a1 + 248);
+      [*(self + 40) setObject:foreignOrderKey forKey:{-[NSSQLForeignOrderKey name](manyCopy->_foreignOrderKey, "name")}];
+      v15 = *(self + 248);
       if (v15)
       {
         _PF_Leopard_CFDictionarySetValue(v15, [(NSSQLForeignOrderKey *)foreignOrderKey name], foreignOrderKey);
@@ -2654,16 +2654,16 @@ LABEL_29:
 
       if (v8)
       {
-        [(NSSQLEntity *)a1 _addColumnToFetch:?];
+        [(NSSQLEntity *)self _addColumnToFetch:?];
       }
 
       else
       {
-        v16 = *(a1 + 104);
+        v16 = *(self + 104);
         if (!v16)
         {
           v16 = objc_opt_new();
-          *(a1 + 104) = v16;
+          *(self + 104) = v16;
         }
 
         [v16 addObject:foreignOrderKey];
@@ -2673,20 +2673,20 @@ LABEL_29:
     goto LABEL_37;
   }
 
-  _PF_Leopard_CFDictionarySetValue(*(a1 + 248), [(NSSQLRelationship *)v3 name], v3);
+  _PF_Leopard_CFDictionarySetValue(*(self + 248), [(NSSQLRelationship *)manyCopy name], manyCopy);
   if (v8)
   {
     goto LABEL_28;
   }
 
 LABEL_25:
-  if (v3)
+  if (manyCopy)
   {
     goto LABEL_29;
   }
 
 LABEL_37:
-  v17 = *(a1 + 152);
+  v17 = *(self + 152);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -2705,7 +2705,7 @@ LABEL_37:
           objc_enumerationMutation(v17);
         }
 
-        [(NSSQLEntity *)*(*(&v24 + 1) + 8 * i) _addVirtualToOneForToMany:a2 withInheritedProperty:v3];
+        [(NSSQLEntity *)*(*(&v24 + 1) + 8 * i) _addVirtualToOneForToMany:a2 withInheritedProperty:manyCopy];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -2716,7 +2716,7 @@ LABEL_37:
 
 LABEL_44:
   v22 = *MEMORY[0x1E69E9840];
-  return v3;
+  return manyCopy;
 }
 
 - (uint64_t)addDerivedAttribute:(uint64_t)result
@@ -2737,39 +2737,39 @@ LABEL_44:
   return result;
 }
 
-- (uint64_t)_generateIDWithSuperEntity:(int)a3 nextID:
+- (uint64_t)_generateIDWithSuperEntity:(int)entity nextID:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = [a1 entityDescription];
+    entityDescription = [self entityDescription];
     if (a2)
     {
-      *(a1 + 168) = [a2 rootEntity];
-      *(a1 + 160) = a2;
-      [(NSSQLEntity *)a2 _addSubentity:a1];
+      *(self + 168) = [a2 rootEntity];
+      *(self + 160) = a2;
+      [(NSSQLEntity *)a2 _addSubentity:self];
     }
 
     else
     {
-      *(a1 + 168) = a1;
+      *(self + 168) = self;
     }
 
-    *(a1 + 184) = a3;
-    v7 = [a1 model];
-    if (v7)
+    *(self + 184) = entity;
+    model = [self model];
+    if (model)
     {
-      [*(v7 + 32) addObject:a1];
-      CFRetain(a1);
+      [*(model + 32) addObject:self];
+      CFRetain(self);
     }
 
-    v8 = (a3 + 1);
-    v9 = [(NSEntityDescription *)v6 _sortedSubentities];
+    v8 = (entity + 1);
+    _sortedSubentities = [(NSEntityDescription *)entityDescription _sortedSubentities];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [_sortedSubentities countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2781,20 +2781,20 @@ LABEL_44:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(_sortedSubentities);
           }
 
-          v8 = -[NSSQLEntity _generateIDWithSuperEntity:nextID:]([*(a1 + 16) entityNamed:{objc_msgSend(*(*(&v16 + 1) + 8 * v13++), "name")}], a1, v8);
+          v8 = -[NSSQLEntity _generateIDWithSuperEntity:nextID:]([*(self + 16) entityNamed:{objc_msgSend(*(*(&v16 + 1) + 8 * v13++), "name")}], self, v8);
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [_sortedSubentities countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
     }
 
-    *(a1 + 188) = v8 - 1;
+    *(self + 188) = v8 - 1;
   }
 
   else
@@ -2806,19 +2806,19 @@ LABEL_44:
   return v8;
 }
 
-- (uint64_t)_collectFKSlots:(void *)a3 error:
+- (uint64_t)_collectFKSlots:(void *)slots error:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v7 = [*(a1 + 160) foreignKeyColumns];
+    foreignKeyColumns = [*(self + 160) foreignKeyColumns];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v23 = a1;
-    v8 = *(a1 + 96);
+    selfCopy = self;
+    v8 = *(self + 96);
     v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v9)
     {
@@ -2834,18 +2834,18 @@ LABEL_44:
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
-          v14 = [v13 slot];
-          if ([a2 containsIndex:v14] && (objc_msgSend(v7, "containsObject:", v13) & 1) == 0)
+          slot = [v13 slot];
+          if ([a2 containsIndex:slot] && (objc_msgSend(foreignKeyColumns, "containsObject:", v13) & 1) == 0)
           {
-            if (a3)
+            if (slots)
             {
-              *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(objc_msgSend(v13, "toOneRelationship"), "propertyDescription"), @"relationship"}];
+              *slots = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(objc_msgSend(v13, "toOneRelationship"), "propertyDescription"), @"relationship"}];
             }
 
             goto LABEL_22;
           }
 
-          [v6 addIndex:v14];
+          [v6 addIndex:slot];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -2863,7 +2863,7 @@ LABEL_44:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = *(v23 + 152);
+    v15 = *(selfCopy + 152);
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v16)
     {
@@ -2878,7 +2878,7 @@ LABEL_13:
           objc_enumerationMutation(v15);
         }
 
-        if (([(NSSQLEntity *)*(*(&v24 + 1) + 8 * v19) _collectFKSlots:v6 error:a3]& 1) != 0)
+        if (([(NSSQLEntity *)*(*(&v24 + 1) + 8 * v19) _collectFKSlots:v6 error:slots]& 1) != 0)
         {
           break;
         }
@@ -2917,15 +2917,15 @@ LABEL_23:
   return v20;
 }
 
-- (uint64_t)_entityIsBroken:(uint64_t)a1
+- (uint64_t)_entityIsBroken:(uint64_t)broken
 {
-  if (!a1 || *(a1 + 168) != a1)
+  if (!broken || *(broken + 168) != broken)
   {
     return 0;
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v6 = [(NSSQLEntity *)a1 _collectFKSlots:v5 error:a2];
+  v6 = [(NSSQLEntity *)broken _collectFKSlots:v5 error:a2];
 
   return v6;
 }
@@ -2967,16 +2967,16 @@ LABEL_4:
     v69 = v10;
     v11 = *(*(&v75 + 1) + 8 * v10);
     v12 = [*(v9 + 4008) set];
-    v13 = [v11 propertyDescription];
+    propertyDescription = [v11 propertyDescription];
     v74 = 0;
-    v14 = [objc_msgSend(v13 "derivationExpression")];
+    v14 = [objc_msgSend(propertyDescription "derivationExpression")];
     if (!v14)
     {
       v41 = *MEMORY[0x1E695D940];
       v42 = *MEMORY[0x1E696AA08];
       v106[0] = @"derived attribute";
       v106[1] = v42;
-      v107[0] = v13;
+      v107[0] = propertyDescription;
       v107[1] = v74;
       v43 = [MEMORY[0x1E695DF30] exceptionWithName:v41 reason:@"Invalid keypaths found in derived attribute (derivationExpression)" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v107, v106, 2)}];
       v44 = *MEMORY[0x1E696A250];
@@ -3012,19 +3012,19 @@ LABEL_4:
     }
 
     [v12 addObjectsFromArray:{objc_msgSend(v14, "allObjects")}];
-    if (![v13 filteringPredicate])
+    if (![propertyDescription filteringPredicate])
     {
       goto LABEL_11;
     }
 
-    v15 = [objc_msgSend(v13 "filteringPredicate")];
+    v15 = [objc_msgSend(propertyDescription "filteringPredicate")];
     if (!v15)
     {
       v51 = *MEMORY[0x1E695D940];
       v52 = *MEMORY[0x1E696AA08];
       v98[0] = @"derived attribute";
       v98[1] = v52;
-      v99[0] = v13;
+      v99[0] = propertyDescription;
       v99[1] = v74;
       v53 = [MEMORY[0x1E695DF30] exceptionWithName:v51 reason:@"Invalid keypaths found in derived attribute (filteringPredicate)" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v99, v98, 2)}];
       v54 = *MEMORY[0x1E696A250];
@@ -3071,8 +3071,8 @@ LABEL_54:
 LABEL_11:
     if (![v12 count])
     {
-      v30 = [(NSSQLEntity *)v3 derivedAttributesExtension];
-      [(NSSQLEntity_DerivedAttributesExtension *)v30 addDerivationKeypath:v7 forAttribute:v11];
+      derivedAttributesExtension = [(NSSQLEntity *)v3 derivedAttributesExtension];
+      [(NSSQLEntity_DerivedAttributesExtension *)derivedAttributesExtension addDerivationKeypath:v7 forAttribute:v11];
       goto LABEL_38;
     }
 
@@ -3104,7 +3104,7 @@ LABEL_38:
   v68 = *v71;
   v63 = v4;
   v64 = a2;
-  v65 = v13;
+  v65 = propertyDescription;
   v66 = v3;
   v61 = v8;
   v62 = v6;
@@ -3150,7 +3150,7 @@ LABEL_34:
   v19 = v18;
   v20 = 0;
   v21 = v18 - 1;
-  v22 = v66;
+  destinationEntity = v66;
   while (1)
   {
     v23 = [v17 objectAtIndexedSubscript:v20];
@@ -3159,7 +3159,7 @@ LABEL_34:
       break;
     }
 
-    if (!v22 || (v24 = [(objc_class *)v22[1].super.isa objectForKey:v23]) == 0)
+    if (!destinationEntity || (v24 = [(objc_class *)destinationEntity[1].super.isa objectForKey:v23]) == 0)
     {
       v31 = *MEMORY[0x1E695D940];
       v89[0] = @"derived attribute";
@@ -3247,8 +3247,8 @@ LABEL_48:
 
     if (v21 == v20)
     {
-      v27 = [(NSSQLEntity *)v22 derivedAttributesExtension];
-      [(NSSQLEntity_DerivedAttributesExtension *)v27 addDerivationKeypath:v17 forAttribute:v11];
+      derivedAttributesExtension2 = [(NSSQLEntity *)destinationEntity derivedAttributesExtension];
+      [(NSSQLEntity_DerivedAttributesExtension *)derivedAttributesExtension2 addDerivationKeypath:v17 forAttribute:v11];
     }
 
     else if (v26 == 2)
@@ -3294,7 +3294,7 @@ LABEL_48:
 
     else if (v26 == 4)
     {
-      v22 = [v25 destinationEntity];
+      destinationEntity = [v25 destinationEntity];
     }
 
     if (v19 == ++v20)
@@ -3305,10 +3305,10 @@ LABEL_48:
 
   if ([@"@count" caseInsensitiveCompare:v23])
   {
-    if (v22)
+    if (destinationEntity)
     {
-      v28 = [(NSSQLEntity *)v22 derivedAttributesExtension];
-      [(NSSQLEntity_DerivedAttributesExtension *)v28 addDerivationKeypath:v17 forAttribute:v11];
+      derivedAttributesExtension3 = [(NSSQLEntity *)destinationEntity derivedAttributesExtension];
+      [(NSSQLEntity_DerivedAttributesExtension *)derivedAttributesExtension3 addDerivationKeypath:v17 forAttribute:v11];
     }
 
     goto LABEL_34;
@@ -3354,9 +3354,9 @@ LABEL_77:
   return result;
 }
 
-- (uint64_t)sqlAttributesForCompositeAttributeName:(uint64_t)a1
+- (uint64_t)sqlAttributesForCompositeAttributeName:(uint64_t)name
 {
-  if (!a1)
+  if (!name)
   {
     return 0;
   }
@@ -3366,7 +3366,7 @@ LABEL_77:
     return 0;
   }
 
-  v2 = [*(a1 + 272) objectForKey:a2];
+  v2 = [*(name + 272) objectForKey:a2];
   if (!v2)
   {
     return 0;
@@ -3382,7 +3382,7 @@ LABEL_77:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NSSQLEntity *)self name];
+  name = [(NSSQLEntity *)self name];
   if (self)
   {
     entityID = self->_entityID;
@@ -3393,22 +3393,22 @@ LABEL_77:
     entityID = 0;
   }
 
-  v7 = [v4 stringWithFormat:@"<NSSQLEntity %@ id=%d>", v5, entityID];
+  entityID = [v4 stringWithFormat:@"<NSSQLEntity %@ id=%d>", name, entityID];
   objc_autoreleasePoolPop(v3);
 
-  return v7;
+  return entityID;
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
-  self->_model = [a3 model];
-  self->_entityDescription = [a3 entityDescription];
-  self->_tableName = [objc_msgSend(a3 "tableName")];
+  self->_model = [fetch model];
+  self->_entityDescription = [fetch entityDescription];
+  self->_tableName = [objc_msgSend(fetch "tableName")];
   v5 = objc_alloc_init(NSSQLPrimaryKey);
   self->_primaryKey = v5;
-  if (a3)
+  if (fetch)
   {
-    v6 = *(a3 + 16);
+    v6 = *(fetch + 16);
   }
 
   else
@@ -3419,11 +3419,11 @@ LABEL_77:
   [(NSSQLPrimaryKey *)v5 copyValuesForReadOnlyFetch:v6];
   v7 = objc_alloc_init(NSSQLEntityKey);
   self->_entityKey = v7;
-  if (a3)
+  if (fetch)
   {
-    [(NSSQLColumn *)v7 copyValuesForReadOnlyFetch:*(a3 + 17)];
-    self->_entityID = *(a3 + 46);
-    v8 = *(a3 + 47);
+    [(NSSQLColumn *)v7 copyValuesForReadOnlyFetch:*(fetch + 17)];
+    self->_entityID = *(fetch + 46);
+    v8 = *(fetch + 47);
   }
 
   else
@@ -3444,7 +3444,7 @@ LABEL_77:
   self->_propertyMapping = [MEMORY[0x1E695DFB0] null];
 }
 
-- (uint64_t)addPropertiesForReadOnlyFetch:(uint64_t)a3 keys:(void *)a4 context:
+- (uint64_t)addPropertiesForReadOnlyFetch:(uint64_t)fetch keys:(void *)keys context:
 {
   v22 = *MEMORY[0x1E69E9840];
   if (result)
@@ -3474,8 +3474,8 @@ LABEL_77:
             v11[2] = v6;
           }
 
-          v12 = [v11 propertyType];
-          if (v12 == 7)
+          propertyType = [v11 propertyType];
+          if (propertyType == 7)
           {
             [*(v6 + 40) setObject:v11 forKey:{objc_msgSend(v11, "name")}];
             if (v11)
@@ -3488,20 +3488,20 @@ LABEL_77:
               }
             }
 
-            v14 = [v11 foreignKey];
-            if (v14)
+            foreignKey = [v11 foreignKey];
+            if (foreignKey)
             {
-              *(v14 + 16) = v6;
+              *(foreignKey + 16) = v6;
             }
 
-            [(NSSQLEntity *)v6 _addColumnToFetch:v14];
+            [(NSSQLEntity *)v6 _addColumnToFetch:foreignKey];
           }
 
           else
           {
-            if (v12 != 1)
+            if (propertyType != 1)
             {
-              [a4 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Trying to add a non-attribute, non-to-one property to an entity: %@", objc_msgSend(v11, "name")), 0), @"NSUnderlyingException"}];
+              [keys setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Trying to add a non-attribute, non-to-one property to an entity: %@", objc_msgSend(v11, "name")), 0), @"NSUnderlyingException"}];
               result = 0;
               goto LABEL_22;
             }
@@ -3521,7 +3521,7 @@ LABEL_77:
       }
     }
 
-    *(v6 + 240) = [[NSKnownKeysMappingStrategy alloc] initForKeys:a3];
+    *(v6 + 240) = [[NSKnownKeysMappingStrategy alloc] initForKeys:fetch];
     result = 1;
   }
 
@@ -3561,23 +3561,23 @@ LABEL_22:
     else
     {
       v4 = v3[29];
-      v5 = [a2 name];
+      name = [a2 name];
 
-      return [v4 objectForKey:v5];
+      return [v4 objectForKey:name];
     }
   }
 
   return result;
 }
 
-- (uint64_t)rtreeIndexForIndexNamed:(uint64_t)a1
+- (uint64_t)rtreeIndexForIndexNamed:(uint64_t)named
 {
-  if (!a1)
+  if (!named)
   {
     return 0;
   }
 
-  v3 = *(a1 + 232);
+  v3 = *(named + 232);
   if (a2)
   {
 
@@ -3589,9 +3589,9 @@ LABEL_22:
     return 0;
   }
 
-  v5 = [*(a1 + 232) allValues];
+  allValues = [*(named + 232) allValues];
 
-  return [v5 firstObject];
+  return [allValues firstObject];
 }
 
 uint64_t __61__NSSQLEntity_DerivedAttributesExtension__generateTriggerSQL__block_invoke(uint64_t a1, void *a2, void *a3)

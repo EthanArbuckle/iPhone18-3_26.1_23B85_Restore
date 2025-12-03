@@ -1,19 +1,19 @@
 @interface PXCMMGridController
-+ (BOOL)useGridZeroForCMMSession:(id)a3;
++ (BOOL)useGridZeroForCMMSession:(id)session;
 - (PXCMMGridController)init;
-- (PXCMMGridController)initWithCMMSession:(id)a3 enableDismissAction:(BOOL)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 performerDelegate:(id)a7 photosViewConfigurationBlock:(id)a8;
+- (PXCMMGridController)initWithCMMSession:(id)session enableDismissAction:(BOOL)action assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager performerDelegate:(id)delegate photosViewConfigurationBlock:(id)block;
 @end
 
 @implementation PXCMMGridController
 
-- (PXCMMGridController)initWithCMMSession:(id)a3 enableDismissAction:(BOOL)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 performerDelegate:(id)a7 photosViewConfigurationBlock:(id)a8
+- (PXCMMGridController)initWithCMMSession:(id)session enableDismissAction:(BOOL)action assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager performerDelegate:(id)delegate photosViewConfigurationBlock:(id)block
 {
-  v50 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  actionCopy = action;
+  sessionCopy = session;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
+  delegateCopy = delegate;
+  blockCopy = block;
   v52.receiver = self;
   v52.super_class = PXCMMGridController;
   v18 = [(PXCMMGridController *)&v52 init];
@@ -22,25 +22,25 @@
     goto LABEL_27;
   }
 
-  v19 = [v13 viewModel];
-  v51 = [v19 selectionManager];
+  viewModel = [sessionCopy viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  if (!v14)
+  if (!managerCopy)
   {
-    v20 = v13;
-    v21 = v51;
-    v22 = [v21 dataSourceManager];
+    v20 = sessionCopy;
+    v21 = selectionManager;
+    dataSourceManager = [v21 dataSourceManager];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [(PXPhotoKitAssetActionManager *)[PXPhotoKitMessagesAssetActionManager alloc] initWithSelectionManager:v21];
-      v24 = [v20 importStatusManager];
-      [(PXPhotoKitAssetActionManager *)v14 setImportStatusManager:v24];
+      managerCopy = [(PXPhotoKitAssetActionManager *)[PXPhotoKitMessagesAssetActionManager alloc] initWithSelectionManager:v21];
+      importStatusManager = [v20 importStatusManager];
+      [(PXPhotoKitAssetActionManager *)managerCopy setImportStatusManager:importStatusManager];
 
-      v25 = [v20 importSessionID];
-      [(PXPhotoKitAssetActionManager *)v14 setImportSessionID:v25];
+      importSessionID = [v20 importSessionID];
+      [(PXPhotoKitAssetActionManager *)managerCopy setImportSessionID:importSessionID];
 
       v26 = +[PXCompleteMyMomentSettings sharedInstance];
       v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -55,7 +55,7 @@
         [v27 addObject:*off_1E7721A58];
       }
 
-      [(PXActionManager *)v14 setAllowedActionTypes:v27];
+      [(PXActionManager *)managerCopy setAllowedActionTypes:v27];
     }
 
     else
@@ -67,64 +67,64 @@
         _os_log_impl(&dword_1A3C1C000, v26, OS_LOG_TYPE_ERROR, "Unable to provide action manager because data source manager is not of type PXPhotoKitAssetsDataSourceManager.", buf, 2u);
       }
 
-      v14 = 0;
+      managerCopy = 0;
     }
 
-    [(PXActionManager *)v14 setPerformerDelegate:v16];
-    if (v15)
+    [(PXActionManager *)managerCopy setPerformerDelegate:delegateCopy];
+    if (actionManagerCopy)
     {
       goto LABEL_18;
     }
 
 LABEL_15:
-    v28 = v13;
+    v28 = sessionCopy;
     if (v28)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_17:
-        v29 = [v28 momentShare];
-        v15 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v29 displayTitleInfo:0];
+        momentShare = [v28 momentShare];
+        actionManagerCopy = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:momentShare displayTitleInfo:0];
 
-        [(PXActionManager *)v15 setPerformerDelegate:v16];
+        [(PXActionManager *)actionManagerCopy setPerformerDelegate:delegateCopy];
         goto LABEL_18;
       }
 
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXPhotoKitAssetCollectionActionManager *_AssetCollectionActionManager(PXCMMSession *__strong)"];
       v48 = objc_opt_class();
       v47 = NSStringFromClass(v48);
-      v49 = [v28 px_descriptionForAssertionMessage];
-      [v44 handleFailureInFunction:v45 file:@"PXCMMGridController.m" lineNumber:147 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session", v47, v49}];
+      px_descriptionForAssertionMessage = [v28 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInFunction:v45 file:@"PXCMMGridController.m" lineNumber:147 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session", v47, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXPhotoKitAssetCollectionActionManager *_AssetCollectionActionManager(PXCMMSession *__strong)"];
       v46 = objc_opt_class();
       v47 = NSStringFromClass(v46);
-      [v44 handleFailureInFunction:v45 file:@"PXCMMGridController.m" lineNumber:147 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session", v47}];
+      [currentHandler handleFailureInFunction:v45 file:@"PXCMMGridController.m" lineNumber:147 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session", v47}];
     }
 
     goto LABEL_17;
   }
 
-  if (!v15)
+  if (!actionManagerCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_18:
   v30 = [off_1E7721830 alloc];
-  v31 = [v13 dataSourceManager];
-  v32 = [v13 mediaProvider];
-  v33 = [v30 initWithDataSourceManager:v31 mediaProvider:v32 selectionManager:v51 assetActionManager:v14 assetCollectionActionManager:v15];
+  dataSourceManager2 = [sessionCopy dataSourceManager];
+  mediaProvider = [sessionCopy mediaProvider];
+  v33 = [v30 initWithDataSourceManager:dataSourceManager2 mediaProvider:mediaProvider selectionManager:selectionManager assetActionManager:managerCopy assetCollectionActionManager:actionManagerCopy];
 
   [v33 setFooterVisibilityStyle:2];
   [v33 setAllowedActions:196769];
-  if (v50)
+  if (actionCopy)
   {
     [v33 setAllowedActions:{objc_msgSend(v33, "allowedActions") | 0x2000}];
   }
@@ -136,10 +136,10 @@ LABEL_18:
 
   [v33 setNavBarStyle:3];
   [v33 setPrefersActionsInToolbar:1];
-  v34 = [v13 importStatusManager];
-  [v33 setAssetImportStatusManager:v34];
+  importStatusManager2 = [sessionCopy importStatusManager];
+  [v33 setAssetImportStatusManager:importStatusManager2];
 
-  v35 = [v13 momentShareStatusPresentationWithPresentationStyle:2];
+  v35 = [sessionCopy momentShareStatusPresentationWithPresentationStyle:2];
   statusPresentation = v18->_statusPresentation;
   v18->_statusPresentation = v35;
 
@@ -155,9 +155,9 @@ LABEL_18:
     [v33 setEmptyPlaceholderStatusViewModel:v38];
   }
 
-  if (v17)
+  if (blockCopy)
   {
-    v17[2](v17, v33);
+    blockCopy[2](blockCopy, v33);
   }
 
   v41 = [[PXPhotosUIViewController alloc] initWithConfiguration:v33];
@@ -170,20 +170,20 @@ LABEL_27:
 
 - (PXCMMGridController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMGridController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXCMMGridController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMGridController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXCMMGridController init]"}];
 
   abort();
 }
 
-+ (BOOL)useGridZeroForCMMSession:(id)a3
++ (BOOL)useGridZeroForCMMSession:(id)session
 {
-  v3 = a3;
-  v4 = [off_1E7721810 sharedInstance];
-  v5 = [v4 enableInCMM];
+  sessionCopy = session;
+  sharedInstance = [off_1E7721810 sharedInstance];
+  enableInCMM = [sharedInstance enableInCMM];
 
-  v6 = [v3 activityType] == 3 || objc_msgSend(v3, "activityType") == 2;
-  return v5 & v6;
+  v6 = [sessionCopy activityType] == 3 || objc_msgSend(sessionCopy, "activityType") == 2;
+  return enableInCMM & v6;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface MOSuggestionMapSnapshotView
-- (_TtC16MomentsUIService27MOSuggestionMapSnapshotView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService27MOSuggestionMapSnapshotView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 - (void)layoutSubviews;
 @end
@@ -8,17 +8,17 @@
 
 - (void)handleTraitChange
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionMapSnapshotView.handleTraitChange()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionMapSnapshotView.layoutSubviews()();
 }
 
-- (_TtC16MomentsUIService27MOSuggestionMapSnapshotView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService27MOSuggestionMapSnapshotView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

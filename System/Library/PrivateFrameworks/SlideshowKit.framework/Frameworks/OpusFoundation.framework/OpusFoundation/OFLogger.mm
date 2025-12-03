@@ -1,14 +1,14 @@
 @interface OFLogger
 + (void)finalize;
 + (void)initialize;
-+ (void)logMessageWithLevel:(int64_t)a3 file:(const char *)a4 line:(unsigned int)a5 andFormat:(id)a6;
++ (void)logMessageWithLevel:(int64_t)level file:(const char *)file line:(unsigned int)line andFormat:(id)format;
 @end
 
 @implementation OFLogger
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ([objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")])
     {
@@ -38,13 +38,13 @@
   }
 }
 
-+ (void)logMessageWithLevel:(int64_t)a3 file:(const char *)a4 line:(unsigned int)a5 andFormat:(id)a6
++ (void)logMessageWithLevel:(int64_t)level file:(const char *)file line:(unsigned int)line andFormat:(id)format
 {
   v8 = objc_opt_class();
   objc_sync_enter(v8);
-  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a6 arguments:&v11];
+  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v11];
   v10 = asl_new(0);
-  asl_set(v10, "Level", _aslLogLevelStrings[a3]);
+  asl_set(v10, "Level", _aslLogLevelStrings[level]);
   asl_set(v10, "Message", [v9 UTF8String]);
   if (v9)
   {

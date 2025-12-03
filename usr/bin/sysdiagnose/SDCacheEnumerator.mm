@@ -1,9 +1,9 @@
 @interface SDCacheEnumerator
-+ (id)sysdiagnoseEnumerator:(id)a3 WithVolume:(id)a4 WithFlags:(unint64_t)a5;
++ (id)sysdiagnoseEnumerator:(id)enumerator WithVolume:(id)volume WithFlags:(unint64_t)flags;
 + (id)validFileSubstrings;
-- (BOOL)isSysdiagnoseFile:(id)a3;
+- (BOOL)isSysdiagnoseFile:(id)file;
 - (id)initCacheEnumerator;
-- (id)initCacheEnumeratorWithVolume:(id)a3 WithFlags:(unint64_t)a4;
+- (id)initCacheEnumeratorWithVolume:(id)volume WithFlags:(unint64_t)flags;
 - (id)nextSysdiagnoseFile;
 - (id)nextValidURL;
 @end
@@ -22,31 +22,31 @@
   return v3;
 }
 
-+ (id)sysdiagnoseEnumerator:(id)a3 WithVolume:(id)a4 WithFlags:(unint64_t)a5
++ (id)sysdiagnoseEnumerator:(id)enumerator WithVolume:(id)volume WithFlags:(unint64_t)flags
 {
-  v7 = a3;
-  v8 = [NSURL fileURLWithPath:a4 isDirectory:1];
-  v9 = [v8 path];
-  if ([v7 hasPrefix:v9])
+  enumeratorCopy = enumerator;
+  v8 = [NSURL fileURLWithPath:volume isDirectory:1];
+  path = [v8 path];
+  if ([enumeratorCopy hasPrefix:path])
   {
-    v10 = [v7 substringFromIndex:{objc_msgSend(v9, "length")}];
+    v10 = [enumeratorCopy substringFromIndex:{objc_msgSend(path, "length")}];
 
-    v7 = v10;
+    enumeratorCopy = v10;
   }
 
   v11 = +[SDCacheEnumerator sysdiagnoseInternalDirectory];
-  v12 = [v7 isEqualToString:v11];
+  v12 = [enumeratorCopy isEqualToString:v11];
 
   if (v12)
   {
-    v13 = [NSURL URLWithString:v7];
+    v13 = [NSURL URLWithString:enumeratorCopy];
   }
 
   else
   {
-    v14 = [v8 path];
-    v23[0] = v14;
-    v23[1] = v7;
+    path2 = [v8 path];
+    v23[0] = path2;
+    v23[1] = enumeratorCopy;
     v15 = [NSArray arrayWithObjects:v23 count:2];
     v13 = [NSURL fileURLWithPathComponents:v15];
   }
@@ -55,7 +55,7 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    v22 = [v13 fileSystemRepresentation];
+    fileSystemRepresentation = [v13 fileSystemRepresentation];
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Creating an enumerator at %{public}s", buf, 0xCu);
   }
 
@@ -63,7 +63,7 @@
   {
     v17 = +[NSFileManager defaultManager];
     v18 = [NSArray arrayWithObjects:NSURLIsDirectoryKey, NSURLNameKey, NSURLPathKey, NSURLCreationDateKey, 0];
-    v19 = [v17 enumeratorAtURL:v13 includingPropertiesForKeys:v18 options:a5 errorHandler:&stru_10000C770];
+    v19 = [v17 enumeratorAtURL:v13 includingPropertiesForKeys:v18 options:flags errorHandler:&stru_10000C770];
   }
 
   else
@@ -74,17 +74,17 @@
   return v19;
 }
 
-- (id)initCacheEnumeratorWithVolume:(id)a3 WithFlags:(unint64_t)a4
+- (id)initCacheEnumeratorWithVolume:(id)volume WithFlags:(unint64_t)flags
 {
-  v6 = a3;
+  volumeCopy = volume;
   v29.receiver = self;
   v29.super_class = SDCacheEnumerator;
   v7 = [(SDCacheEnumerator *)&v29 init];
   if (v7)
   {
-    if (!v6)
+    if (!volumeCopy)
     {
-      v6 = @"/";
+      volumeCopy = @"/";
     }
 
     v8 = +[SDCacheEnumerator sysdiagnoseDirectory];
@@ -114,7 +114,7 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [objc_opt_class() sysdiagnoseEnumerator:v16 WithVolume:v6 WithFlags:a4];
+          v17 = [objc_opt_class() sysdiagnoseEnumerator:v16 WithVolume:volumeCopy WithFlags:flags];
           if (v17)
           {
             [v11 addObject:v17];
@@ -125,9 +125,9 @@
             v18 = sub_100004398();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v16 UTF8String];
+              uTF8String = [v16 UTF8String];
               *buf = 136446210;
-              v31 = v19;
+              v31 = uTF8String;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "CacheEnumerator: got nil enumerator for dir '%{public}s'", buf, 0xCu);
             }
           }
@@ -156,9 +156,9 @@
   return v3;
 }
 
-- (BOOL)isSysdiagnoseFile:(id)a3
+- (BOOL)isSysdiagnoseFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 rangeOfString:*(*(&v9 + 1) + 8 * i)] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([fileCopy rangeOfString:*(*(&v9 + 1) + 8 * i)] != 0x7FFFFFFFFFFFFFFFLL)
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -224,14 +224,14 @@ LABEL_11:
         v6 = *(*(&v22 + 1) + 8 * i);
         while (1)
         {
-          v7 = [v6 nextObject];
+          nextObject = [v6 nextObject];
 
-          if (!v7)
+          if (!nextObject)
           {
             break;
           }
 
-          v5 = v7;
+          v5 = nextObject;
           while (1)
           {
             v8 = objc_autoreleasePoolPush();
@@ -244,20 +244,20 @@ LABEL_11:
             }
 
             objc_autoreleasePoolPop(v8);
-            v10 = [v6 nextObject];
+            nextObject2 = [v6 nextObject];
 
-            v5 = v10;
-            if (!v10)
+            v5 = nextObject2;
+            if (!nextObject2)
             {
               goto LABEL_17;
             }
           }
 
-          v11 = [v5 relativePath];
-          v12 = [v11 pathComponents];
-          v13 = [v12 firstObject];
+          relativePath = [v5 relativePath];
+          pathComponents = [relativePath pathComponents];
+          firstObject = [pathComponents firstObject];
 
-          v14 = [(SDCacheEnumerator *)self isSysdiagnoseFile:v13];
+          v14 = [(SDCacheEnumerator *)self isSysdiagnoseFile:firstObject];
           if (v14)
           {
             v17 = v5;
@@ -299,8 +299,8 @@ LABEL_20:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SDCacheEnumerator *)self enumerators];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  enumerators = [(SDCacheEnumerator *)self enumerators];
+  v4 = [enumerators countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -311,25 +311,25 @@ LABEL_20:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(enumerators);
         }
 
         v8 = 0;
         v9 = *(*(&v15 + 1) + 8 * i);
         while (1)
         {
-          v10 = [v9 nextObject];
+          nextObject = [v9 nextObject];
 
-          if (!v10)
+          if (!nextObject)
           {
             break;
           }
 
-          v11 = [v10 path];
-          v12 = [v11 lastPathComponent];
-          v13 = [(SDCacheEnumerator *)self isSysdiagnoseFile:v12];
+          path = [nextObject path];
+          lastPathComponent = [path lastPathComponent];
+          v13 = [(SDCacheEnumerator *)self isSysdiagnoseFile:lastPathComponent];
 
-          v8 = v10;
+          v8 = nextObject;
           if (v13)
           {
             goto LABEL_14;
@@ -337,8 +337,8 @@ LABEL_20:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      v10 = 0;
+      v5 = [enumerators countByEnumeratingWithState:&v15 objects:v19 count:16];
+      nextObject = 0;
     }
 
     while (v5);
@@ -346,12 +346,12 @@ LABEL_20:
 
   else
   {
-    v10 = 0;
+    nextObject = 0;
   }
 
 LABEL_14:
 
-  return v10;
+  return nextObject;
 }
 
 @end

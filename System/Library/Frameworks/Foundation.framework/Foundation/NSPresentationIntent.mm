@@ -11,14 +11,14 @@
 + (NSPresentationIntent)tableRowIntentWithIdentity:(NSInteger)identity row:(NSInteger)row nestedInsideIntent:(NSPresentationIntent *)parent;
 + (NSPresentationIntent)thematicBreakIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent;
 + (NSPresentationIntent)unorderedListIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEquivalentToPresentationIntent:(NSPresentationIntent *)other;
-- (NSPresentationIntent)initWithCoder:(id)a3;
+- (NSPresentationIntent)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPresentationIntent
@@ -49,9 +49,9 @@
   return v4 ^ v6 ^ [(NSArray *)columnAlignments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -62,13 +62,13 @@
     return 0;
   }
 
-  v5 = [a3 identity];
-  if (v5 != [(NSPresentationIntent *)self identity])
+  identity = [equal identity];
+  if (identity != [(NSPresentationIntent *)self identity])
   {
     return 0;
   }
 
-  return [(NSPresentationIntent *)self isEquivalentToPresentationIntent:a3];
+  return [(NSPresentationIntent *)self isEquivalentToPresentationIntent:equal];
 }
 
 - (BOOL)isEquivalentToPresentationIntent:(NSPresentationIntent *)other
@@ -84,46 +84,46 @@
     goto LABEL_18;
   }
 
-  v5 = [(NSPresentationIntent *)self languageHint];
-  v6 = [(NSPresentationIntent *)other languageHint];
-  v7 = [(NSPresentationIntent *)self parentIntent];
-  v8 = [(NSPresentationIntent *)other parentIntent];
-  v9 = [(NSPresentationIntent *)self columnAlignments];
-  v10 = [(NSPresentationIntent *)other columnAlignments];
-  v11 = [(NSPresentationIntent *)other intentKind];
-  if (v11 != [(NSPresentationIntent *)self intentKind])
+  languageHint = [(NSPresentationIntent *)self languageHint];
+  languageHint2 = [(NSPresentationIntent *)other languageHint];
+  parentIntent = [(NSPresentationIntent *)self parentIntent];
+  parentIntent2 = [(NSPresentationIntent *)other parentIntent];
+  columnAlignments = [(NSPresentationIntent *)self columnAlignments];
+  columnAlignments2 = [(NSPresentationIntent *)other columnAlignments];
+  intentKind = [(NSPresentationIntent *)other intentKind];
+  if (intentKind != [(NSPresentationIntent *)self intentKind])
   {
     goto LABEL_18;
   }
 
-  if (v5 != v6)
+  if (languageHint != languageHint2)
   {
-    v12 = [(NSString *)v5 isEqual:v6];
+    v12 = [(NSString *)languageHint isEqual:languageHint2];
     if (!v12)
     {
       return v12;
     }
   }
 
-  v13 = [(NSPresentationIntent *)other headerLevel];
-  if (v13 != [(NSPresentationIntent *)self headerLevel])
+  headerLevel = [(NSPresentationIntent *)other headerLevel];
+  if (headerLevel != [(NSPresentationIntent *)self headerLevel])
   {
     goto LABEL_18;
   }
 
-  v14 = [(NSPresentationIntent *)other ordinal];
-  if (v14 != [(NSPresentationIntent *)self ordinal])
+  ordinal = [(NSPresentationIntent *)other ordinal];
+  if (ordinal != [(NSPresentationIntent *)self ordinal])
   {
     goto LABEL_18;
   }
 
-  v15 = [(NSPresentationIntent *)other indentationLevel];
-  if (v15 != [(NSPresentationIntent *)self indentationLevel])
+  indentationLevel = [(NSPresentationIntent *)other indentationLevel];
+  if (indentationLevel != [(NSPresentationIntent *)self indentationLevel])
   {
     goto LABEL_18;
   }
 
-  if (v9 != v10)
+  if (columnAlignments != columnAlignments2)
   {
     v12 = [(NSArray *)[(NSPresentationIntent *)other columnAlignments] isEqual:[(NSPresentationIntent *)self columnAlignments]];
     if (!v12)
@@ -132,22 +132,22 @@
     }
   }
 
-  v16 = [(NSPresentationIntent *)other columnCount];
-  if (v16 != [(NSPresentationIntent *)self columnCount]|| (v17 = [(NSPresentationIntent *)other column], v17 != [(NSPresentationIntent *)self column]) || (v18 = [(NSPresentationIntent *)other row], v18 != [(NSPresentationIntent *)self row]))
+  columnCount = [(NSPresentationIntent *)other columnCount];
+  if (columnCount != [(NSPresentationIntent *)self columnCount]|| (v17 = [(NSPresentationIntent *)other column], v17 != [(NSPresentationIntent *)self column]) || (v18 = [(NSPresentationIntent *)other row], v18 != [(NSPresentationIntent *)self row]))
   {
 LABEL_18:
     LOBYTE(v12) = 0;
     return v12;
   }
 
-  if (v7 == v8)
+  if (parentIntent == parentIntent2)
   {
 LABEL_19:
     LOBYTE(v12) = 1;
     return v12;
   }
 
-  LOBYTE(v12) = [(NSPresentationIntent *)v7 isEquivalentToPresentationIntent:v8];
+  LOBYTE(v12) = [(NSPresentationIntent *)parentIntent isEquivalentToPresentationIntent:parentIntent2];
   return v12;
 }
 
@@ -211,7 +211,7 @@ LABEL_19:
       {
         v23 = columnCount;
         v24 = v3;
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -251,7 +251,7 @@ LABEL_19:
                 }
               }
 
-              [v9 addObject:v16];
+              [array addObject:v16];
             }
 
             v11 = [(NSArray *)columnAlignments countByEnumeratingWithState:&v26 objects:v25 count:16];
@@ -260,7 +260,7 @@ LABEL_19:
           while (v11);
         }
 
-        v18 = [v9 componentsJoinedByString:{@", "}];
+        v18 = [array componentsJoinedByString:{@", "}];
         v3 = v24;
         columnCount = v23;
       }
@@ -299,19 +299,19 @@ LABEL_39:
   return v3;
 }
 
-- (NSPresentationIntent)initWithCoder:(id)a3
+- (NSPresentationIntent)initWithCoder:(id)coder
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NSPresentationIntent *)self _init];
-  if (v4)
+  _init = [(NSPresentationIntent *)self _init];
+  if (_init)
   {
-    v4->_intentKind = [a3 decodeIntegerForKey:@"NS.intentKind"];
-    v4->_parentIntent = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.parentIntent"];
-    v4->_identity = [a3 decodeIntegerForKey:@"NS.identity"];
-    v4->_ordinal = [a3 decodeIntegerForKey:@"NS.ordinal"];
-    if ([a3 requiresSecureCoding])
+    _init->_intentKind = [coder decodeIntegerForKey:@"NS.intentKind"];
+    _init->_parentIntent = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.parentIntent"];
+    _init->_identity = [coder decodeIntegerForKey:@"NS.identity"];
+    _init->_ordinal = [coder decodeIntegerForKey:@"NS.ordinal"];
+    if ([coder requiresSecureCoding])
     {
-      v5 = [a3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"NS.columnAlignments"];
+      v5 = [coder decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"NS.columnAlignments"];
     }
 
     else
@@ -319,150 +319,150 @@ LABEL_39:
       v6 = MEMORY[0x1E695DFD8];
       v8[0] = objc_opt_class();
       v8[1] = objc_opt_class();
-      v5 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v8, 2)), @"NS.columnAlignments"}];
+      v5 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v8, 2)), @"NS.columnAlignments"}];
     }
 
-    v4->_columnAlignments = v5;
-    v4->_columnCount = [a3 decodeIntegerForKey:@"NS.columnCount"];
-    v4->_headerLevel = [a3 decodeIntegerForKey:@"NS.headerLevel"];
-    v4->_languageHint = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.languageHint"];
-    v4->_column = [a3 decodeIntegerForKey:@"NS.column"];
-    v4->_row = [a3 decodeIntegerForKey:@"NS.row"];
-    v4->_indentationLevel = [a3 decodeIntegerForKey:@"NS.indentationLevel"];
+    _init->_columnAlignments = v5;
+    _init->_columnCount = [coder decodeIntegerForKey:@"NS.columnCount"];
+    _init->_headerLevel = [coder decodeIntegerForKey:@"NS.headerLevel"];
+    _init->_languageHint = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.languageHint"];
+    _init->_column = [coder decodeIntegerForKey:@"NS.column"];
+    _init->_row = [coder decodeIntegerForKey:@"NS.row"];
+    _init->_indentationLevel = [coder decodeIntegerForKey:@"NS.indentationLevel"];
   }
 
-  return v4;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:-[NSPresentationIntent intentKind](self forKey:{"intentKind"), @"NS.intentKind"}];
-  [a3 encodeObject:-[NSPresentationIntent parentIntent](self forKey:{"parentIntent"), @"NS.parentIntent"}];
-  [a3 encodeInteger:-[NSPresentationIntent identity](self forKey:{"identity"), @"NS.identity"}];
-  [a3 encodeInteger:-[NSPresentationIntent ordinal](self forKey:{"ordinal"), @"NS.ordinal"}];
-  [a3 encodeObject:-[NSPresentationIntent columnAlignments](self forKey:{"columnAlignments"), @"NS.columnAlignments"}];
-  [a3 encodeInteger:-[NSPresentationIntent columnCount](self forKey:{"columnCount"), @"NS.columnCount"}];
-  [a3 encodeInteger:-[NSPresentationIntent headerLevel](self forKey:{"headerLevel"), @"NS.headerLevel"}];
-  [a3 encodeObject:-[NSPresentationIntent languageHint](self forKey:{"languageHint"), @"NS.languageHint"}];
-  [a3 encodeInteger:-[NSPresentationIntent column](self forKey:{"column"), @"NS.column"}];
-  [a3 encodeInteger:-[NSPresentationIntent row](self forKey:{"row"), @"NS.row"}];
-  v5 = [(NSPresentationIntent *)self indentationLevel];
+  [coder encodeInteger:-[NSPresentationIntent intentKind](self forKey:{"intentKind"), @"NS.intentKind"}];
+  [coder encodeObject:-[NSPresentationIntent parentIntent](self forKey:{"parentIntent"), @"NS.parentIntent"}];
+  [coder encodeInteger:-[NSPresentationIntent identity](self forKey:{"identity"), @"NS.identity"}];
+  [coder encodeInteger:-[NSPresentationIntent ordinal](self forKey:{"ordinal"), @"NS.ordinal"}];
+  [coder encodeObject:-[NSPresentationIntent columnAlignments](self forKey:{"columnAlignments"), @"NS.columnAlignments"}];
+  [coder encodeInteger:-[NSPresentationIntent columnCount](self forKey:{"columnCount"), @"NS.columnCount"}];
+  [coder encodeInteger:-[NSPresentationIntent headerLevel](self forKey:{"headerLevel"), @"NS.headerLevel"}];
+  [coder encodeObject:-[NSPresentationIntent languageHint](self forKey:{"languageHint"), @"NS.languageHint"}];
+  [coder encodeInteger:-[NSPresentationIntent column](self forKey:{"column"), @"NS.column"}];
+  [coder encodeInteger:-[NSPresentationIntent row](self forKey:{"row"), @"NS.row"}];
+  indentationLevel = [(NSPresentationIntent *)self indentationLevel];
 
-  [a3 encodeInteger:v5 forKey:@"NS.indentationLevel"];
+  [coder encodeInteger:indentationLevel forKey:@"NS.indentationLevel"];
 }
 
 + (NSPresentationIntent)paragraphIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 0;
-  v6[2] = parent;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 0;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)headerIntentWithIdentity:(NSInteger)identity level:(NSInteger)level nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v8 = [[NSPresentationIntent alloc] _init];
-  v8[3] = identity;
-  v8[1] = 1;
-  v8[7] = level;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 1;
+  _init[7] = level;
   if (parent)
   {
-    v9 = [(NSPresentationIntent *)parent indentationLevel];
+    indentationLevel = [(NSPresentationIntent *)parent indentationLevel];
   }
 
   else
   {
-    v9 = 0;
+    indentationLevel = 0;
   }
 
-  v8[11] = v9;
-  v8[2] = parent;
+  _init[11] = indentationLevel;
+  _init[2] = parent;
 
-  return v8;
+  return _init;
 }
 
 + (NSPresentationIntent)codeBlockIntentWithIdentity:(NSInteger)identity languageHint:(NSString *)languageHint nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v8 = [[NSPresentationIntent alloc] _init];
-  v8[3] = identity;
-  v8[1] = 5;
-  v8[8] = [(NSString *)languageHint copy];
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 5;
+  _init[8] = [(NSString *)languageHint copy];
   if (parent)
   {
-    v9 = [(NSPresentationIntent *)parent indentationLevel];
+    indentationLevel = [(NSPresentationIntent *)parent indentationLevel];
   }
 
   else
   {
-    v9 = 0;
+    indentationLevel = 0;
   }
 
-  v8[11] = v9;
-  v8[2] = parent;
+  _init[11] = indentationLevel;
+  _init[2] = parent;
 
-  return v8;
+  return _init;
 }
 
 + (NSPresentationIntent)thematicBreakIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 7;
-  v6[2] = parent;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 7;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)orderedListIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 2;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 2;
   if (parent)
   {
-    v7 = [(NSPresentationIntent *)parent indentationLevel];
+    indentationLevel = [(NSPresentationIntent *)parent indentationLevel];
   }
 
   else
   {
-    v7 = 0;
+    indentationLevel = 0;
   }
 
-  v6[11] = v7;
-  v6[2] = parent;
+  _init[11] = indentationLevel;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)unorderedListIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 3;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 3;
   if (parent)
   {
-    v7 = [(NSPresentationIntent *)parent indentationLevel];
+    indentationLevel = [(NSPresentationIntent *)parent indentationLevel];
   }
 
   else
   {
-    v7 = 0;
+    indentationLevel = 0;
   }
 
-  v6[11] = v7;
-  v6[2] = parent;
+  _init[11] = indentationLevel;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)listItemIntentWithIdentity:(NSInteger)identity ordinal:(NSInteger)ordinal nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v8 = [[NSPresentationIntent alloc] _init];
-  v8[1] = 4;
-  v8[3] = identity;
-  v8[4] = ordinal;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[1] = 4;
+  _init[3] = identity;
+  _init[4] = ordinal;
   if (parent)
   {
     v9 = [(NSPresentationIntent *)parent indentationLevel]+ 1;
@@ -473,17 +473,17 @@ LABEL_39:
     v9 = 0;
   }
 
-  v8[11] = v9;
-  v8[2] = parent;
+  _init[11] = v9;
+  _init[2] = parent;
 
-  return v8;
+  return _init;
 }
 
 + (NSPresentationIntent)blockQuoteIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 6;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 6;
   if (parent)
   {
     v7 = [(NSPresentationIntent *)parent indentationLevel]+ 1;
@@ -494,60 +494,60 @@ LABEL_39:
     v7 = 0;
   }
 
-  v6[11] = v7;
-  v6[2] = parent;
+  _init[11] = v7;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)tableIntentWithIdentity:(NSInteger)identity columnCount:(NSInteger)columnCount alignments:(NSArray *)alignments nestedInsideIntent:(NSPresentationIntent *)parent
 {
   if ([(NSArray *)alignments count]!= columnCount)
   {
-    v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: column count does not match count of alignments", _NSMethodExceptionProem(a1, a2)), 0}];
+    v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: column count does not match count of alignments", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v14);
   }
 
-  v12 = [[NSPresentationIntent alloc] _init];
-  v12[3] = identity;
-  v12[1] = 8;
-  v12[2] = parent;
-  v12[6] = columnCount;
-  v12[5] = [(NSArray *)alignments copy];
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 8;
+  _init[2] = parent;
+  _init[6] = columnCount;
+  _init[5] = [(NSArray *)alignments copy];
 
-  return v12;
+  return _init;
 }
 
 + (NSPresentationIntent)tableRowIntentWithIdentity:(NSInteger)identity row:(NSInteger)row nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v8 = [[NSPresentationIntent alloc] _init];
-  v8[3] = identity;
-  v8[1] = 10;
-  v8[10] = row;
-  v8[2] = parent;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 10;
+  _init[10] = row;
+  _init[2] = parent;
 
-  return v8;
+  return _init;
 }
 
 + (NSPresentationIntent)tableHeaderRowIntentWithIdentity:(NSInteger)identity nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v6 = [[NSPresentationIntent alloc] _init];
-  v6[3] = identity;
-  v6[1] = 9;
-  v6[2] = parent;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 9;
+  _init[2] = parent;
 
-  return v6;
+  return _init;
 }
 
 + (NSPresentationIntent)tableCellIntentWithIdentity:(NSInteger)identity column:(NSInteger)column nestedInsideIntent:(NSPresentationIntent *)parent
 {
-  v8 = [[NSPresentationIntent alloc] _init];
-  v8[3] = identity;
-  v8[1] = 11;
-  v8[9] = column;
-  v8[2] = parent;
+  _init = [[NSPresentationIntent alloc] _init];
+  _init[3] = identity;
+  _init[1] = 11;
+  _init[9] = column;
+  _init[2] = parent;
 
-  return v8;
+  return _init;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface CKAttributionViewAccessoryView
-- (CKAttributionViewAccessoryView)initWithFrame:(CGRect)a3 chatItem:(id)a4 layoutBounds:(CGRect)a5 windowSize:(CGSize)a6 saveStickerHandler:(id)a7;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)tapbackAttributionView:(id)a3 didTapToSaveSticker:(id)a4;
+- (CKAttributionViewAccessoryView)initWithFrame:(CGRect)frame chatItem:(id)item layoutBounds:(CGRect)bounds windowSize:(CGSize)size saveStickerHandler:(id)handler;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)tapbackAttributionView:(id)view didTapToSaveSticker:(id)sticker;
 @end
 
 @implementation CKAttributionViewAccessoryView
 
-- (CKAttributionViewAccessoryView)initWithFrame:(CGRect)a3 chatItem:(id)a4 layoutBounds:(CGRect)a5 windowSize:(CGSize)a6 saveStickerHandler:(id)a7
+- (CKAttributionViewAccessoryView)initWithFrame:(CGRect)frame chatItem:(id)item layoutBounds:(CGRect)bounds windowSize:(CGSize)size saveStickerHandler:(id)handler
 {
-  width = a6.width;
-  height = a5.size.height;
-  v9 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v30 = a3.origin.y;
-  v31 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.x;
-  v15 = a4;
+  width = size.width;
+  height = bounds.size.height;
+  v9 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v30 = frame.origin.y;
+  v31 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.x;
+  itemCopy = item;
   v16 = *&width;
   v17 = +[CKUIBehavior sharedBehaviors];
   [v17 attributionViewAdditionalTopOffset];
   v19 = v18;
 
   v20 = +[CKUIBehavior sharedBehaviors];
-  v21 = [v20 attributionViewShouldCenterInTranscript];
+  attributionViewShouldCenterInTranscript = [v20 attributionViewShouldCenterInTranscript];
 
   v22 = 0.0;
-  if (v21 && v41 > 0.0)
+  if (attributionViewShouldCenterInTranscript && v41 > 0.0)
   {
     v42.origin.x = x;
     v42.origin.y = y;
@@ -55,7 +55,7 @@
     saveStickerHandler = v24->_saveStickerHandler;
     v24->_saveStickerHandler = v25;
 
-    v27 = [[_TtC7ChatKit24CKTapbackAttributionView alloc] initWithMessagePartChatItem:v15];
+    v27 = [[_TtC7ChatKit24CKTapbackAttributionView alloc] initWithMessagePartChatItem:itemCopy];
     [(CKTapbackAttributionView *)v27 setFrame:0.0, 0.0, v12, v23];
     [(CKTapbackAttributionView *)v27 setDelegate:v24];
     [(CKAttributionViewAccessoryView *)v24 addSubview:v27];
@@ -66,46 +66,46 @@
   return v24;
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a3;
-  if ([(CKAttributionViewAccessoryView *)self isContentVisible:a3]!= a3)
+  visibleCopy = visible;
+  if ([(CKAttributionViewAccessoryView *)self isContentVisible:visible]!= visible)
   {
-    [(CKAttributionViewAccessoryView *)self setIsContentVisible:v4];
-    v6 = [(CKAttributionViewAccessoryView *)self attributionView];
-    v7 = v6;
-    if (v4)
+    [(CKAttributionViewAccessoryView *)self setIsContentVisible:visibleCopy];
+    attributionView = [(CKAttributionViewAccessoryView *)self attributionView];
+    v7 = attributionView;
+    if (visibleCopy)
     {
-      [v6 present];
+      [attributionView present];
     }
 
     else
     {
-      [v6 dismiss];
+      [attributionView dismiss];
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKAttributionViewAccessoryView *)self attributionView];
-  v9 = [v8 hitTest:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  attributionView = [(CKAttributionViewAccessoryView *)self attributionView];
+  v9 = [attributionView hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }
 
-- (void)tapbackAttributionView:(id)a3 didTapToSaveSticker:(id)a4
+- (void)tapbackAttributionView:(id)view didTapToSaveSticker:(id)sticker
 {
-  v7 = a4;
-  v5 = [(CKAttributionViewAccessoryView *)self saveStickerHandler];
+  stickerCopy = sticker;
+  saveStickerHandler = [(CKAttributionViewAccessoryView *)self saveStickerHandler];
 
-  if (v5)
+  if (saveStickerHandler)
   {
-    v6 = [(CKAttributionViewAccessoryView *)self saveStickerHandler];
-    (v6)[2](v6, v7);
+    saveStickerHandler2 = [(CKAttributionViewAccessoryView *)self saveStickerHandler];
+    (saveStickerHandler2)[2](saveStickerHandler2, stickerCopy);
   }
 }
 

@@ -1,46 +1,46 @@
 @interface TUIStaticIdentityManager
 - (NSString)sasCodeString;
-- (TUIStaticIdentityManager)initWithConversationMembers:(id)a3 options:(id)a4;
+- (TUIStaticIdentityManager)initWithConversationMembers:(id)members options:(id)options;
 - (TUIStaticIdentityManagerProtocol)delegate;
-- (id)localizedPeerAccountNameMessage:(id)a3;
-- (id)peerCNContact:(id)a3;
-- (int64_t)_sessionStateWithStateString:(id)a3;
+- (id)localizedPeerAccountNameMessage:(id)message;
+- (id)peerCNContact:(id)contact;
+- (int64_t)_sessionStateWithStateString:(id)string;
 - (void)_setupKTSession;
 - (void)_updateUI;
 - (void)dealloc;
 - (void)deleteKTSession;
-- (void)handleNotification:(id)a3;
-- (void)hideAccountKeys:(BOOL)a3;
-- (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5 deliverImmediately:(BOOL)a6;
-- (void)requestConversationVerificationState:(BOOL)a3 completionHandler:(id)a4;
+- (void)handleNotification:(id)notification;
+- (void)hideAccountKeys:(BOOL)keys;
+- (void)postNotificationName:(id)name object:(id)object userInfo:(id)info deliverImmediately:(BOOL)immediately;
+- (void)requestConversationVerificationState:(BOOL)state completionHandler:(id)handler;
 - (void)requestNewSasCode;
 - (void)requestNewSasCodeWithDelay;
 - (void)requestSelfAccountKey;
-- (void)sessionExpired:(id)a3;
-- (void)showAccountKeys:(BOOL)a3;
+- (void)sessionExpired:(id)expired;
+- (void)showAccountKeys:(BOOL)keys;
 - (void)verifyConversation;
-- (void)verifyConversationWithContact:(id)a3 completionHandler:(id)a4;
+- (void)verifyConversationWithContact:(id)contact completionHandler:(id)handler;
 @end
 
 @implementation TUIStaticIdentityManager
 
-- (TUIStaticIdentityManager)initWithConversationMembers:(id)a3 options:(id)a4
+- (TUIStaticIdentityManager)initWithConversationMembers:(id)members options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  membersCopy = members;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = TUIStaticIdentityManager;
   v9 = [(TUIStaticIdentityManager *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conversationMembers, a3);
-    objc_storeStrong(&v10->_options, a4);
-    v11 = [v8 objectForKeyedSubscript:@"contactIdentifier"];
+    objc_storeStrong(&v9->_conversationMembers, members);
+    objc_storeStrong(&v10->_options, options);
+    v11 = [optionsCopy objectForKeyedSubscript:@"contactIdentifier"];
     contactIdentifier = v10->_contactIdentifier;
     v10->_contactIdentifier = v11;
 
-    v13 = [v8 objectForKeyedSubscript:@"lastUsedIdentifier"];
+    v13 = [optionsCopy objectForKeyedSubscript:@"lastUsedIdentifier"];
     lastUsedAddress = v10->_lastUsedAddress;
     v10->_lastUsedAddress = v13;
 
@@ -72,8 +72,8 @@ uint64_t __64__TUIStaticIdentityManager_initWithConversationMembers_options___bl
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D73608] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D73608] object:0];
 
   [(TUIStaticIdentityManager *)self deleteKTSession];
   v4.receiver = self;
@@ -93,24 +93,24 @@ uint64_t __64__TUIStaticIdentityManager_initWithConversationMembers_options___bl
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_22, OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(TUIStaticIdentityManager *)self ktSession];
+    ktSession = [(TUIStaticIdentityManager *)self ktSession];
     v13 = 138412290;
-    v14 = v5;
+    v14 = ktSession;
     _os_log_impl(&dword_26F50B000, v4, OS_LOG_TYPE_DEBUG, "Deleting ktsession: %@", &v13, 0xCu);
   }
 
-  v6 = [(TUIStaticIdentityManager *)self staticKey];
-  if (v6)
+  staticKey = [(TUIStaticIdentityManager *)self staticKey];
+  if (staticKey)
   {
-    v7 = v6;
-    v8 = [(TUIStaticIdentityManager *)self ktSession];
+    v7 = staticKey;
+    ktSession2 = [(TUIStaticIdentityManager *)self ktSession];
 
-    if (v8)
+    if (ktSession2)
     {
-      v9 = [(TUIStaticIdentityManager *)self staticKey];
-      v10 = [(TUIStaticIdentityManager *)self ktSession];
-      v11 = [v10 sessionID];
-      [v9 deleteKTSession:v11 complete:&__block_literal_global_14_0];
+      staticKey2 = [(TUIStaticIdentityManager *)self staticKey];
+      ktSession3 = [(TUIStaticIdentityManager *)self ktSession];
+      sessionID = [ktSession3 sessionID];
+      [staticKey2 deleteKTSession:sessionID complete:&__block_literal_global_14_0];
 
       [(TUIStaticIdentityManager *)self setKtSession:0];
     }
@@ -358,11 +358,11 @@ uint64_t __45__TUIStaticIdentityManager_requestNewSasCode__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)requestConversationVerificationState:(BOOL)a3 completionHandler:(id)a4
+- (void)requestConversationVerificationState:(BOOL)state completionHandler:(id)handler
 {
-  v4 = a3;
+  stateCopy = state;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   self->_conversationVerified = 0;
   [(TUIStaticIdentityManager *)self _updateUI];
   if ([(NSArray *)self->_conversationMembers count])
@@ -385,8 +385,8 @@ uint64_t __45__TUIStaticIdentityManager_requestNewSasCode__block_invoke()
     block[2] = __83__TUIStaticIdentityManager_requestConversationVerificationState_completionHandler___block_invoke_60;
     block[3] = &unk_279DDB430;
     block[4] = self;
-    v18 = v4;
-    v17 = v6;
+    v18 = stateCopy;
+    v17 = handlerCopy;
     v15 = v7;
     v16 = v9;
     dispatch_async(v10, block);
@@ -411,7 +411,7 @@ uint64_t __45__TUIStaticIdentityManager_requestNewSasCode__block_invoke()
     }
 
     self->_conversationVerified = 0;
-    if (v4)
+    if (stateCopy)
     {
       [(TUIStaticIdentityManager *)self requestNewSasCode];
     }
@@ -421,7 +421,7 @@ uint64_t __45__TUIStaticIdentityManager_requestNewSasCode__block_invoke()
       [(TUIStaticIdentityManager *)self _updateUI];
     }
 
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -573,9 +573,9 @@ void __83__TUIStaticIdentityManager_requestConversationVerificationState_complet
       _os_log_impl(&dword_26F50B000, v5, OS_LOG_TYPE_DEBUG, "Updating contact %@ with public key: %@", &v13, 0x16u);
     }
 
-    v8 = [(TUIStaticIdentityManager *)self delegate];
-    v9 = [(TUIStaticIdentityManager *)self peerPublicAccountIdentity];
-    [v8 verifyContact:v3 peerPublicAccountIdentity:v9];
+    delegate = [(TUIStaticIdentityManager *)self delegate];
+    peerPublicAccountIdentity = [(TUIStaticIdentityManager *)self peerPublicAccountIdentity];
+    [delegate verifyContact:v3 peerPublicAccountIdentity:peerPublicAccountIdentity];
   }
 
   else
@@ -612,13 +612,13 @@ uint64_t __46__TUIStaticIdentityManager_verifyConversation__block_invoke_74()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)verifyConversationWithContact:(id)a3 completionHandler:(id)a4
+- (void)verifyConversationWithContact:(id)contact completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (contact)
   {
-    [(TUIStaticIdentityManager *)self requestConversationVerificationState:1 completionHandler:v6];
+    [(TUIStaticIdentityManager *)self requestConversationVerificationState:1 completionHandler:handlerCopy];
   }
 
   else
@@ -628,24 +628,24 @@ uint64_t __46__TUIStaticIdentityManager_verifyConversation__block_invoke_74()
   }
 }
 
-- (void)showAccountKeys:(BOOL)a3
+- (void)showAccountKeys:(BOOL)keys
 {
   if (!self->_accountKeysDisplayed)
   {
     self->_accountKeysDisplayed = 1;
-    if (a3)
+    if (keys)
     {
       [(TUIStaticIdentityManager *)self _updateUI];
     }
   }
 }
 
-- (void)hideAccountKeys:(BOOL)a3
+- (void)hideAccountKeys:(BOOL)keys
 {
   if (self->_accountKeysDisplayed)
   {
     self->_accountKeysDisplayed = 0;
-    if (a3)
+    if (keys)
     {
       [(TUIStaticIdentityManager *)self _updateUI];
     }
@@ -671,10 +671,10 @@ uint64_t __46__TUIStaticIdentityManager_verifyConversation__block_invoke_74()
   return v7;
 }
 
-- (id)localizedPeerAccountNameMessage:(id)a3
+- (id)localizedPeerAccountNameMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   personNameComponents = self->_personNameComponents;
   if (personNameComponents)
   {
@@ -701,23 +701,23 @@ uint64_t __46__TUIStaticIdentityManager_verifyConversation__block_invoke_74()
     v9 = self->_personNameComponents;
     self->_personNameComponents = v8;
 
-    v10 = [v6 namePrefix];
-    [(NSPersonNameComponents *)self->_personNameComponents setNamePrefix:v10];
+    namePrefix = [v6 namePrefix];
+    [(NSPersonNameComponents *)self->_personNameComponents setNamePrefix:namePrefix];
 
-    v11 = [v6 nameSuffix];
-    [(NSPersonNameComponents *)self->_personNameComponents setNameSuffix:v11];
+    nameSuffix = [v6 nameSuffix];
+    [(NSPersonNameComponents *)self->_personNameComponents setNameSuffix:nameSuffix];
 
-    v12 = [v6 middleName];
-    [(NSPersonNameComponents *)self->_personNameComponents setMiddleName:v12];
+    middleName = [v6 middleName];
+    [(NSPersonNameComponents *)self->_personNameComponents setMiddleName:middleName];
 
-    v13 = [v6 givenName];
-    [(NSPersonNameComponents *)self->_personNameComponents setGivenName:v13];
+    givenName = [v6 givenName];
+    [(NSPersonNameComponents *)self->_personNameComponents setGivenName:givenName];
 
-    v14 = [v6 familyName];
-    [(NSPersonNameComponents *)self->_personNameComponents setFamilyName:v14];
+    familyName = [v6 familyName];
+    [(NSPersonNameComponents *)self->_personNameComponents setFamilyName:familyName];
 
-    v15 = [v6 nickname];
-    [(NSPersonNameComponents *)self->_personNameComponents setNickname:v15];
+    nickname = [v6 nickname];
+    [(NSPersonNameComponents *)self->_personNameComponents setNickname:nickname];
   }
 
   else
@@ -751,14 +751,14 @@ LABEL_13:
   {
     v18 = MEMORY[0x277CCACA8];
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v20 = [v19 localizedStringForKey:v4 value:&stru_287F92480 table:@"Localizable"];
+    v20 = [v19 localizedStringForKey:messageCopy value:&stru_287F92480 table:@"Localizable"];
     [v18 localizedStringWithFormat:v20, v17];
   }
 
   else
   {
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v20 = [v4 stringByAppendingString:@"_UNKNOWN"];
+    v20 = [messageCopy stringByAppendingString:@"_UNKNOWN"];
     [v19 localizedStringForKey:v20 value:&stru_287F92480 table:@"Localizable"];
   }
   v21 = ;
@@ -782,26 +782,26 @@ uint64_t __60__TUIStaticIdentityManager_localizedPeerAccountNameMessage___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)peerCNContact:(id)a3
+- (id)peerCNContact:(id)contact
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__0;
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
-  if (v3)
+  if (contactCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CBDA70]);
-    v5 = [MEMORY[0x277CBDC08] descriptorForRequiredKeys];
-    v31[0] = v5;
+    descriptorForRequiredKeys = [MEMORY[0x277CBDC08] descriptorForRequiredKeys];
+    v31[0] = descriptorForRequiredKeys;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     v7 = [v4 initWithKeysToFetch:v6];
 
     v8 = MEMORY[0x277CBDA58];
-    v30 = v3;
+    v30 = contactCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
     v10 = [v8 predicateForContactsWithIdentifiers:v9];
     [v7 setPredicate:v10];
@@ -837,7 +837,7 @@ uint64_t __60__TUIStaticIdentityManager_localizedPeerAccountNameMessage___block_
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v27 = v3;
+    v27 = contactCopy;
     v28 = 2112;
     v29 = v12;
     _os_log_impl(&dword_26F50B000, v14, OS_LOG_TYPE_ERROR, "failed to fetch a contact for contactIdentifier = %@, error = %@", buf, 0x16u);
@@ -860,26 +860,26 @@ uint64_t __42__TUIStaticIdentityManager_peerCNContact___block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)_sessionStateWithStateString:(id)a3
+- (int64_t)_sessionStateWithStateString:(id)string
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D73638]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x277D73638]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D73630]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x277D73630]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D73620]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x277D73620]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D73628]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x277D73628]])
   {
     v4 = 4;
   }
@@ -895,7 +895,7 @@ uint64_t __42__TUIStaticIdentityManager_peerCNContact___block_invoke_2()
     if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_22, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = stringCopy;
       _os_log_impl(&dword_26F50B000, v5, OS_LOG_TYPE_ERROR, "invalid session state %@", &v8, 0xCu);
     }
 
@@ -926,8 +926,8 @@ uint64_t __57__TUIStaticIdentityManager__sessionStateWithStateString___block_inv
   v3 = objc_alloc_init(MEMORY[0x277D735A8]);
   [(TUIStaticIdentityManager *)self setStaticKey:v3];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 addObserver:self selector:sel_handleNotification_ name:*MEMORY[0x277D73608] object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleNotification_ name:*MEMORY[0x277D73608] object:0 suspensionBehavior:4];
 
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
@@ -1081,21 +1081,21 @@ uint64_t __43__TUIStaticIdentityManager__setupKTSession__block_invoke_114()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  v7 = [v4 name];
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  [(TUIStaticIdentityManager *)self postNotificationName:v7 object:v5 userInfo:v6 deliverImmediately:0];
+  [(TUIStaticIdentityManager *)self postNotificationName:name object:object userInfo:userInfo deliverImmediately:0];
 }
 
-- (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5 deliverImmediately:(BOOL)a6
+- (void)postNotificationName:(id)name object:(id)object userInfo:(id)info deliverImmediately:(BOOL)immediately
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D73618]];
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D73618]];
   v9 = [(TUIStaticIdentityManager *)self _sessionStateWithStateString:v8];
 
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_22 != -1)
@@ -1107,7 +1107,7 @@ uint64_t __43__TUIStaticIdentityManager__setupKTSession__block_invoke_114()
   if (os_log_type_enabled(TRANSPARENCYUI_DEFAULT_LOG_INTERNAL_22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v7;
+    v20 = infoCopy;
     v21 = 1024;
     v22 = v9;
     _os_log_impl(&dword_26F50B000, v10, OS_LOG_TYPE_DEFAULT, "postNotificationName: %@/%d", buf, 0x12u);
@@ -1121,14 +1121,14 @@ uint64_t __43__TUIStaticIdentityManager__setupKTSession__block_invoke_114()
 
   else if (v9 == 2)
   {
-    v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277D73610]];
+    v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D73610]];
     staticKey = self->_staticKey;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __84__TUIStaticIdentityManager_postNotificationName_object_userInfo_deliverImmediately___block_invoke_120;
     v15[3] = &unk_279DDB4A8;
     v16 = v11;
-    v17 = self;
+    selfCopy = self;
     v18 = 2;
     v13 = v11;
     [(TransparencyStaticKey *)staticKey getKTSessionByID:v13 complete:v15];
@@ -1245,10 +1245,10 @@ uint64_t __84__TUIStaticIdentityManager_postNotificationName_object_userInfo_del
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sessionExpired:(id)a3
+- (void)sessionExpired:(id)expired
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  expiredCopy = expired;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_22 != -1)
   {
     [TUIStaticIdentityManager sessionExpired:];
@@ -1259,10 +1259,10 @@ uint64_t __84__TUIStaticIdentityManager_postNotificationName_object_userInfo_del
   {
     ktSession = self->_ktSession;
     v7 = v5;
-    v8 = [(KTIDSSession *)ktSession sessionID];
+    sessionID = [(KTIDSSession *)ktSession sessionID];
     conversationVerified = self->_conversationVerified;
     v11 = 138412546;
-    v12 = v8;
+    v12 = sessionID;
     v13 = 1024;
     v14 = conversationVerified;
     _os_log_impl(&dword_26F50B000, v7, OS_LOG_TYPE_DEBUG, "session expired, sessionID = %@, conversationVerified = %d", &v11, 0x12u);

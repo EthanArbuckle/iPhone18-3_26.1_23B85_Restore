@@ -1,45 +1,45 @@
 @interface CKOperationGroup
 - (id)cplDebugDescription;
-- (void)setRoughCPLDownloadEstimatedSize:(unint64_t)a3;
-- (void)setRoughCPLDownloadEstimatedSizeWithEstimatedRecordCount:(unint64_t)a3;
-- (void)setRoughCPLUploadEstimatedSize:(unint64_t)a3;
+- (void)setRoughCPLDownloadEstimatedSize:(unint64_t)size;
+- (void)setRoughCPLDownloadEstimatedSizeWithEstimatedRecordCount:(unint64_t)count;
+- (void)setRoughCPLUploadEstimatedSize:(unint64_t)size;
 @end
 
 @implementation CKOperationGroup
 
-- (void)setRoughCPLUploadEstimatedSize:(unint64_t)a3
+- (void)setRoughCPLUploadEstimatedSize:(unint64_t)size
 {
   v3 = 2;
   v4 = 3;
   v5 = 4;
   v6 = 5;
   v7 = 6;
-  if (HIDWORD(a3) >= 0x19)
+  if (HIDWORD(size) >= 0x19)
   {
     v7 = 7;
   }
 
-  if (a3 >> 31 >= 5)
+  if (size >> 31 >= 5)
   {
     v6 = v7;
   }
 
-  if (a3 >> 30)
+  if (size >> 30)
   {
     v5 = v6;
   }
 
-  if (a3 >> 22 >= 0x19)
+  if (size >> 22 >= 0x19)
   {
     v4 = v5;
   }
 
-  if (a3 >= 0xA00000)
+  if (size >= 0xA00000)
   {
     v3 = v4;
   }
 
-  if (a3 >= 0x100000)
+  if (size >= 0x100000)
   {
     [(CKOperationGroup *)self setExpectedSendSize:v3];
   }
@@ -50,39 +50,39 @@
   }
 }
 
-- (void)setRoughCPLDownloadEstimatedSize:(unint64_t)a3
+- (void)setRoughCPLDownloadEstimatedSize:(unint64_t)size
 {
   v3 = 2;
   v4 = 3;
   v5 = 4;
   v6 = 5;
   v7 = 6;
-  if (HIDWORD(a3) >= 0x19)
+  if (HIDWORD(size) >= 0x19)
   {
     v7 = 7;
   }
 
-  if (a3 >> 31 >= 5)
+  if (size >> 31 >= 5)
   {
     v6 = v7;
   }
 
-  if (a3 >> 30)
+  if (size >> 30)
   {
     v5 = v6;
   }
 
-  if (a3 >> 22 >= 0x19)
+  if (size >> 22 >= 0x19)
   {
     v4 = v5;
   }
 
-  if (a3 >= 0xA00000)
+  if (size >= 0xA00000)
   {
     v3 = v4;
   }
 
-  if (a3 >= 0x100000)
+  if (size >= 0x100000)
   {
     [(CKOperationGroup *)self setExpectedReceiveSize:v3];
   }
@@ -93,30 +93,30 @@
   }
 }
 
-- (void)setRoughCPLDownloadEstimatedSizeWithEstimatedRecordCount:(unint64_t)a3
+- (void)setRoughCPLDownloadEstimatedSizeWithEstimatedRecordCount:(unint64_t)count
 {
-  v3 = a3 << 10;
+  v3 = count << 10;
   v4 = 2;
   v5 = 3;
   v6 = 4;
   v7 = 5;
   v8 = 6;
-  if (a3 << 10 >> 32 >= 0x19)
+  if (count << 10 >> 32 >= 0x19)
   {
     v8 = 7;
   }
 
-  if (a3 << 10 >> 31 >= 5)
+  if (count << 10 >> 31 >= 5)
   {
     v7 = v8;
   }
 
-  if (a3 << 10 >> 30)
+  if (count << 10 >> 30)
   {
     v6 = v7;
   }
 
-  if (a3 << 10 >> 22 >= 0x19)
+  if (count << 10 >> 22 >= 0x19)
   {
     v5 = v6;
   }
@@ -139,12 +139,12 @@
 
 - (id)cplDebugDescription
 {
-  v3 = [(CKOperationGroup *)self expectedSendSize];
+  expectedSendSize = [(CKOperationGroup *)self expectedSendSize];
   v4 = 0;
   v5 = 1;
-  if (v3 <= CKOperationGroupTransferSizeTensOfMegabytes)
+  if (expectedSendSize <= CKOperationGroupTransferSizeTensOfMegabytes)
   {
-    switch(v3)
+    switch(expectedSendSize)
     {
       case CKOperationGroupTransferSizeKilobytes:
         v5 = 0;
@@ -161,15 +161,15 @@
     }
   }
 
-  else if (v3 > CKOperationGroupTransferSizeGigabytes)
+  else if (expectedSendSize > CKOperationGroupTransferSizeGigabytes)
   {
-    if (v3 == CKOperationGroupTransferSizeTensOfGigabytes)
+    if (expectedSendSize == CKOperationGroupTransferSizeTensOfGigabytes)
     {
       v5 = 0;
       v4 = @"10s of Gigabytes";
     }
 
-    else if (v3 == CKOperationGroupTransferSizeHundredsOfGigabytes)
+    else if (expectedSendSize == CKOperationGroupTransferSizeHundredsOfGigabytes)
     {
       v5 = 0;
       v4 = @"100s of Gigabytes";
@@ -179,7 +179,7 @@
   else
   {
     v5 = 0;
-    if (v3 == CKOperationGroupTransferSizeHundredsOfMegabytes)
+    if (expectedSendSize == CKOperationGroupTransferSizeHundredsOfMegabytes)
     {
       v4 = @"100s of Megabytes";
     }
@@ -190,12 +190,12 @@
     }
   }
 
-  v6 = [(CKOperationGroup *)self expectedReceiveSize];
+  expectedReceiveSize = [(CKOperationGroup *)self expectedReceiveSize];
   v7 = 0;
   v8 = 1;
-  if (v6 <= CKOperationGroupTransferSizeTensOfMegabytes)
+  if (expectedReceiveSize <= CKOperationGroupTransferSizeTensOfMegabytes)
   {
-    switch(v6)
+    switch(expectedReceiveSize)
     {
       case CKOperationGroupTransferSizeKilobytes:
         v8 = 0;
@@ -212,15 +212,15 @@
     }
   }
 
-  else if (v6 > CKOperationGroupTransferSizeGigabytes)
+  else if (expectedReceiveSize > CKOperationGroupTransferSizeGigabytes)
   {
-    if (v6 == CKOperationGroupTransferSizeTensOfGigabytes)
+    if (expectedReceiveSize == CKOperationGroupTransferSizeTensOfGigabytes)
     {
       v8 = 0;
       v7 = @"10s of Gigabytes";
     }
 
-    else if (v6 == CKOperationGroupTransferSizeHundredsOfGigabytes)
+    else if (expectedReceiveSize == CKOperationGroupTransferSizeHundredsOfGigabytes)
     {
       v8 = 0;
       v7 = @"100s of Gigabytes";
@@ -230,7 +230,7 @@
   else
   {
     v8 = 0;
-    if (v6 == CKOperationGroupTransferSizeHundredsOfMegabytes)
+    if (expectedReceiveSize == CKOperationGroupTransferSizeHundredsOfMegabytes)
     {
       v7 = @"100s of Megabytes";
     }
@@ -241,8 +241,8 @@
     }
   }
 
-  v9 = [(CKOperationGroup *)self name];
-  v10 = [v9 mutableCopy];
+  name = [(CKOperationGroup *)self name];
+  v10 = [name mutableCopy];
 
   if ((v5 & 1) == 0)
   {

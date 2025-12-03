@@ -1,11 +1,11 @@
 @interface PLAssetResourceUploadWorkItem
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation PLAssetResourceUploadWorkItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   sub_19BF40534(v5);
   __swift_project_boxed_opaque_existential_1Tm(v5, v5[3]);
@@ -16,7 +16,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_19BF40684();
 
   v3 = sub_19C5C45CC();

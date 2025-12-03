@@ -17,8 +17,8 @@
   error = self->_error;
   if (error)
   {
-    v9 = [(NSError *)error tl_nonRedundantDescription];
-    [v6 appendFormat:@"; error = %@", v9];
+    tl_nonRedundantDescription = [(NSError *)error tl_nonRedundantDescription];
+    [v6 appendFormat:@"; error = %@", tl_nonRedundantDescription];
   }
 
   if (self->_completionHandler)

@@ -1,7 +1,7 @@
 @interface DeviceRecentLocations
 + (id)sharedInstance;
 - (DeviceRecentLocations)init;
-- (void)updateLocationsWithCompletionHandler:(id)a3;
+- (void)updateLocationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation DeviceRecentLocations
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (void)updateLocationsWithCompletionHandler:(id)a3
+- (void)updateLocationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->deviceLocations)
   {
     v5 = objc_alloc_init(GEORecentLocations);
@@ -54,8 +54,8 @@
   v9[2] = sub_100DEFFDC;
   v9[3] = &unk_101661090;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, v9);
 }
 

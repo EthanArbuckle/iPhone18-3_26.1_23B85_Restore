@@ -1,13 +1,13 @@
 @interface NFCTagReaderMainController
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated;
 - (void)dismissIfIdle;
-- (void)handleButtonActions:(id)a3;
-- (void)nfcTagScannedCount:(int64_t)a3;
-- (void)setPurpose:(id)a3;
+- (void)handleButtonActions:(id)actions;
+- (void)nfcTagScannedCount:(int64_t)count;
+- (void)setPurpose:(id)purpose;
 - (void)uiOperationEnd;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation NFCTagReaderMainController
@@ -29,28 +29,28 @@
   }
 }
 
-- (void)setPurpose:(id)a3
+- (void)setPurpose:(id)purpose
 {
-  v5 = a3;
-  objc_storeStrong(&self->_purpose, a3);
+  purposeCopy = purpose;
+  objc_storeStrong(&self->_purpose, purpose);
   if (self->_appeared)
   {
-    [(NFCTagReaderScanViewController *)self->_vcScan setSubtitle:v5];
+    [(NFCTagReaderScanViewController *)self->_vcScan setSubtitle:purposeCopy];
   }
 }
 
-- (void)nfcTagScannedCount:(int64_t)a3
+- (void)nfcTagScannedCount:(int64_t)count
 {
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  if (a3)
+  if (count)
   {
-    if (a3 >= 1)
+    if (count >= 1)
     {
-      self->_tagCount = a3;
+      self->_tagCount = count;
       if (self->_appeared)
       {
         vcScan = self->_vcScan;
@@ -74,14 +74,14 @@
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -92,7 +92,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -106,7 +106,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -145,14 +145,14 @@
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   if (!self->_dismissed)
   {
-    v3 = a3;
+    animatedCopy = animated;
     self->_dismissed = 1;
-    v5 = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
-    v6 = v5;
+    _remoteViewControllerProxy = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
+    v6 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -160,27 +160,27 @@
       v8[1] = 3221225472;
       v8[2] = sub_1000F9270;
       v8[3] = &unk_100195AC0;
-      v9 = v5;
-      [(UINavigationController *)vcNav dismissViewControllerAnimated:v3 completion:v8];
+      v9 = _remoteViewControllerProxy;
+      [(UINavigationController *)vcNav dismissViewControllerAnimated:animatedCopy completion:v8];
     }
 
     else
     {
-      [v5 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.NFCTagReader"];
+  _remoteViewControllerProxy = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.NFCTagReader"];
 
   if (!self->_dismissed)
   {
@@ -228,12 +228,12 @@
 
   v14.receiver = self;
   v14.super_class = NFCTagReaderMainController;
-  [(SVSBaseMainController *)&v14 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v14 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -241,7 +241,7 @@
 
   v12.receiver = self;
   v12.super_class = NFCTagReaderMainController;
-  [(NFCTagReaderMainController *)&v12 viewDidAppear:v3];
+  [(NFCTagReaderMainController *)&v12 viewDidAppear:appearCopy];
   v5 = objc_alloc_init(NFCTagReaderScanViewController);
   [(NFCTagReaderScanViewController *)v5 setMainController:self];
   vcScan = self->_vcScan;
@@ -252,20 +252,20 @@
   vcNav = self->_vcNav;
   self->_vcNav = v8;
 
-  v10 = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
-  [v10 setStatusBarHidden:1 withDuration:0.3];
+  _remoteViewControllerProxy = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.3];
 
-  v11 = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
-  [v11 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.NFCTagReader"];
+  _remoteViewControllerProxy2 = [(NFCTagReaderMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.NFCTagReader"];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
+  contextCopy = context;
+  completionCopy = completion;
+  userInfo = [contextCopy userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v8;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
@@ -277,9 +277,9 @@
   purpose = self->_purpose;
   self->_purpose = v10;
 
-  v12 = [v6 xpcEndpoint];
+  xpcEndpoint = [contextCopy xpcEndpoint];
 
-  if (v12 && (v13 = objc_alloc_init(NSXPCListenerEndpoint), [v6 xpcEndpoint], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "_setEndpoint:", v14), v14, v13))
+  if (xpcEndpoint && (v13 = objc_alloc_init(NSXPCListenerEndpoint), [contextCopy xpcEndpoint], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "_setEndpoint:", v14), v14, v13))
   {
     if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
     {
@@ -328,9 +328,9 @@
     LogPrintF();
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   out_token = 0;

@@ -1,38 +1,38 @@
 @interface TSCH3DSphericalEnvironmentShaderEffect
-+ (id)effectWithMaterials:(id)a3 pool:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DSphericalEnvironmentShaderEffect)initWithMaterials:(id)a3 pool:(id)a4;
++ (id)effectWithMaterials:(id)materials pool:(id)pool;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DSphericalEnvironmentShaderEffect)initWithMaterials:(id)materials pool:(id)pool;
 - (id)textureVariablesArray;
-- (void)addVariables:(id)a3;
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4;
-- (void)updateState:(id)a3 effectsStates:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
+- (void)addVariables:(id)variables;
+- (void)injectCommonShaderInto:(id)into context:(id)context;
+- (void)updateState:(id)state effectsStates:(id)states;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DSphericalEnvironmentShaderEffect
 
-+ (id)effectWithMaterials:(id)a3 pool:(id)a4
++ (id)effectWithMaterials:(id)materials pool:(id)pool
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithMaterials_pool_(v8, v9, v10, v11, v12, v6, v7);
+  materialsCopy = materials;
+  poolCopy = pool;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithMaterials_pool_(v8, v9, v10, v11, v12, materialsCopy, poolCopy);
 
   return v13;
 }
 
-- (TSCH3DSphericalEnvironmentShaderEffect)initWithMaterials:(id)a3 pool:(id)a4
+- (TSCH3DSphericalEnvironmentShaderEffect)initWithMaterials:(id)materials pool:(id)pool
 {
-  v7 = a3;
-  v8 = a4;
+  materialsCopy = materials;
+  poolCopy = pool;
   v36.receiver = self;
   v36.super_class = TSCH3DSphericalEnvironmentShaderEffect;
   v9 = [(TSCH3DSphericalEnvironmentShaderEffect *)&v36 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_materials, a3);
-    objc_storeStrong(&v10->_pool, a4);
+    objc_storeStrong(&v9->_materials, materials);
+    objc_storeStrong(&v10->_pool, pool);
     if (!objc_msgSend_count(v10->_materials, v11, v12, v13, v14))
     {
       v19 = MEMORY[0x277D81150];
@@ -48,10 +48,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToArray = 1;
   }
@@ -59,9 +59,9 @@
   else
   {
     v5 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v4, v6, v7, v8, v9, v5))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v7, v8, v9, v5))
     {
-      isEqualToArray = objc_msgSend_isEqualToArray_(self->_materials, v10, v11, v12, v13, v4->_materials);
+      isEqualToArray = objc_msgSend_isEqualToArray_(self->_materials, v10, v11, v12, v13, equalCopy->_materials);
     }
 
     else
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v83 = a3;
+  variablesCopy = variables;
   v8 = objc_msgSend_textureVariablesArray(self, v4, v5, v6, v7);
   v14 = objc_msgSend_count(self->_materials, v9, v10, v11, v12);
   if (!v14)
@@ -126,10 +126,10 @@
   {
     v64 = objc_msgSend_objectAtIndexedSubscript_(v8, v34, v35, v36, v37, v63);
     v69 = objc_msgSend_texture(v64, v65, v66, v67, v68);
-    objc_msgSend_addUniformVariable_(v83, v70, v71, v72, v73, v69);
+    objc_msgSend_addUniformVariable_(variablesCopy, v70, v71, v72, v73, v69);
 
     v78 = objc_msgSend_textureMatrix(v64, v74, v75, v76, v77);
-    objc_msgSend_addUniformVariable_(v83, v79, v80, v81, v82, v78);
+    objc_msgSend_addUniformVariable_(variablesCopy, v79, v80, v81, v82, v78);
 
     ++v63;
   }
@@ -138,10 +138,10 @@
 LABEL_8:
 }
 
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4
+- (void)injectCommonShaderInto:(id)into context:(id)context
 {
-  v119 = a3;
-  v118 = a4;
+  intoCopy = into;
+  contextCopy = context;
   if (!objc_msgSend_count(self->_materials, v6, v7, v8, v9))
   {
     v14 = MEMORY[0x277D81150];
@@ -153,8 +153,8 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  objc_msgSend_addFunctionString_name_(v119, v10, v11, v12, v13, @"tsch_mediump_vec2 SphereMap(tsch_mediump_vec3 normal, tsch_mediump_vec3 ecPosition3)\n{\n   tsch_mediump_vec3 u = normalize(ecPosition3);\n   tsch_mediump_vec3 r = reflect(u, normal);\n   tsch_mediump_float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));\n   return tsch_vec2(r.x / m + 0.5, r.y / m + 0.5);\n}\n", @"SphereMap");
-  objc_msgSend_addTemporary_statement_(v119, v30, v31, v32, v33, qword_280A46540, @"tsch_vec4(SphereMap(@@, @@), 0.0, 1.0)", qword_280A46500, qword_280A46498);
+  objc_msgSend_addFunctionString_name_(intoCopy, v10, v11, v12, v13, @"tsch_mediump_vec2 SphereMap(tsch_mediump_vec3 normal, tsch_mediump_vec3 ecPosition3)\n{\n   tsch_mediump_vec3 u = normalize(ecPosition3);\n   tsch_mediump_vec3 r = reflect(u, normal);\n   tsch_mediump_float m = 2.0 * sqrt(r.x * r.x + r.y * r.y + (r.z + 1.0) * (r.z + 1.0));\n   return tsch_vec2(r.x / m + 0.5, r.y / m + 0.5);\n}\n", @"SphereMap");
+  objc_msgSend_addTemporary_statement_(intoCopy, v30, v31, v32, v33, qword_280A46540, @"tsch_vec4(SphereMap(@@, @@), 0.0, 1.0)", qword_280A46500, qword_280A46498);
   v38 = objc_msgSend_textureVariablesArray(self, v34, v35, v36, v37);
   v44 = objc_msgSend_count(self->_materials, v39, v40, v41, v42);
   if (v44)
@@ -172,35 +172,35 @@ LABEL_8:
         v69 = objc_msgSend_objectAtIndexedSubscript_(v38, v65, v66, v67, v68, i);
         v74 = objc_msgSend_texcoords(v69, v70, v71, v72, v73);
 
-        v79 = objc_msgSend_textureFunctionNameForVariable_projective_(v118, v75, v76, v77, v78, v64, 0);
+        v79 = objc_msgSend_textureFunctionNameForVariable_projective_(contextCopy, v75, v76, v77, v78, v64, 0);
         v84 = objc_msgSend_objectAtIndexedSubscript_(v38, v80, v81, v82, v83, i);
         v89 = objc_msgSend_textureMatrix(v84, v85, v86, v87, v88);
-        objc_msgSend_addTemporary_statement_(v119, v90, v91, v92, v93, v74, @"@@ * @@", v89, qword_280A46540);
+        objc_msgSend_addTemporary_statement_(intoCopy, v90, v91, v92, v93, v74, @"@@ * @@", v89, qword_280A46540);
 
         if (objc_msgSend_decalMode(v49, v94, v95, v96, v97))
         {
           v102 = qword_280A46548;
           v103 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v98, v99, v100, v101, @"%@(@@, @@.xy)", v79);
-          objc_msgSend_addTemporary_statement_(v119, v104, v105, v106, v107, v102, v103, v64, v74);
+          objc_msgSend_addTemporary_statement_(intoCopy, v104, v105, v106, v107, v102, v103, v64, v74);
 
-          objc_msgSend_addStatement_statement_(v119, v108, v109, v110, v111, qword_280A465D0, qword_280A46548, qword_280A46548, qword_280A465D0);
+          objc_msgSend_addStatement_statement_(intoCopy, v108, v109, v110, v111, qword_280A465D0, qword_280A46548, qword_280A46548, qword_280A465D0);
         }
 
         else
         {
           v112 = qword_280A465D0;
           v113 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v98, v99, v100, v101, @"@@ * %@(@@, @@.xy)", v79);
-          objc_msgSend_addStatement_statement_(v119, v114, v115, v116, v117, v112, v113, qword_280A465D0, v64, v74);
+          objc_msgSend_addStatement_statement_(intoCopy, v114, v115, v116, v117, v112, v113, qword_280A465D0, v64, v74);
         }
       }
     }
   }
 }
 
-- (void)updateState:(id)a3 effectsStates:(id)a4
+- (void)updateState:(id)state effectsStates:(id)states
 {
-  v109 = a3;
-  v108 = objc_msgSend_stateForStateInfo_createIfNil_(a4, v6, v7, v8, v9, self, 1);
+  stateCopy = state;
+  v108 = objc_msgSend_stateForStateInfo_createIfNil_(states, v6, v7, v8, v9, self, 1);
   v110 = objc_msgSend_textureVariablesArray(self, v10, v11, v12, v13);
   if (!objc_msgSend_count(self->_materials, v14, v15, v16, v17))
   {
@@ -244,7 +244,7 @@ LABEL_8:
         v113 = 0;
         v114[0] = 0;
         *(v114 + 5) = 0;
-        v98 = objc_msgSend_texture_resource_attributes_(v109, v94, v95, v96, v97, v93, v84, &v111);
+        v98 = objc_msgSend_texture_resource_attributes_(stateCopy, v94, v95, v96, v97, v93, v84, &v111);
         v103 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v99, v100, v101, v102, v98);
         objc_msgSend_addObject_(v108, v104, v105, v106, v107, v103);
       }
@@ -256,10 +256,10 @@ LABEL_8:
   }
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v143 = a3;
-  v141 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v144 = objc_msgSend_textureVariablesArray(self, v6, v7, v8, v9);
   if (!objc_msgSend_count(self->_materials, v10, v11, v12, v13))
   {
@@ -285,7 +285,7 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65, v66, v67);
   }
 
-  v142 = objc_msgSend_stateForStateInfo_createIfNil_(v141, v39, v40, v41, v42, self, 1);
+  v142 = objc_msgSend_stateForStateInfo_createIfNil_(statesCopy, v39, v40, v41, v42, self, 1);
   v73 = objc_msgSend_count(self->_materials, v68, v69, v70, v71);
   if (v73)
   {
@@ -304,7 +304,7 @@ LABEL_8:
         v99 = objc_msgSend_objectAtIndexedSubscript_(v144, v95, v96, v97, v98, i);
         v104 = objc_msgSend_texture(v99, v100, v101, v102, v103);
         v155[0].i32[0] = v94;
-        objc_msgSend_uniform_ivec1_(v143, v105, v106, v107, v108, v104, v155);
+        objc_msgSend_uniform_ivec1_(dataCopy, v105, v106, v107, v108, v104, v155);
 
         objc_opt_class();
         v113 = objc_msgSend_firstTiling(v78, v109, v110, v111, v112);
@@ -365,7 +365,7 @@ LABEL_8:
         *&v154[16] = *v157;
         v131 = objc_msgSend_objectAtIndexedSubscript_(v144, v129, *&v156, v157[0], v130, i);
         v136 = objc_msgSend_textureMatrix(v131, v132, v133, v134, v135);
-        objc_msgSend_uniform_mat4_(v143, v137, v138, v139, v140, v136, &v152);
+        objc_msgSend_uniform_mat4_(dataCopy, v137, v138, v139, v140, v136, &v152);
       }
     }
   }

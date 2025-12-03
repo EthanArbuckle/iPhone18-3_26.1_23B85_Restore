@@ -1,39 +1,39 @@
 @interface BMWalletPaymentsCommerceOrderEmailAddress
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceOrderEmailAddress)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMWalletPaymentsCommerceOrderEmailAddress)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7 addressLines:(id)a8 locality:(id)a9 subLocality:(id)a10 administrativeArea:(id)a11 subAdministrativeArea:(id)a12 countryCode:(id)a13 rawAddress:(id)a14;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceOrderEmailAddress)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMWalletPaymentsCommerceOrderEmailAddress)initWithStreet:(id)street city:(id)city state:(id)state postalCode:(id)code country:(id)country addressLines:(id)lines locality:(id)locality subLocality:(id)self0 administrativeArea:(id)self1 subAdministrativeArea:(id)self2 countryCode:(id)self3 rawAddress:(id)self4;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_addressLinesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceOrderEmailAddress
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
-    v7 = [v5 street];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    street = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
+    street2 = [v5 street];
+    v8 = street2;
+    if (street == street2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
-      v10 = [v5 street];
-      v11 = [v9 isEqual:v10];
+      street3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
+      street4 = [v5 street];
+      v11 = [street3 isEqual:street4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
-    v14 = [v5 city];
-    v15 = v14;
-    if (v13 == v14)
+    city = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
+    city2 = [v5 city];
+    v15 = city2;
+    if (city == city2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
-      v17 = [v5 city];
-      v18 = [v16 isEqual:v17];
+      city3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
+      city4 = [v5 city];
+      v18 = [city3 isEqual:city4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
-    v20 = [v5 state];
-    v21 = v20;
-    if (v19 == v20)
+    state = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
+    state2 = [v5 state];
+    v21 = state2;
+    if (state == state2)
     {
     }
 
     else
     {
-      v22 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
-      v23 = [v5 state];
-      v24 = [v22 isEqual:v23];
+      state3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
+      state4 = [v5 state];
+      v24 = [state3 isEqual:state4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
-    v26 = [v5 postalCode];
-    v27 = v26;
-    if (v25 == v26)
+    postalCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
+    postalCode2 = [v5 postalCode];
+    v27 = postalCode2;
+    if (postalCode == postalCode2)
     {
     }
 
     else
     {
-      v28 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
-      v29 = [v5 postalCode];
-      v30 = [v28 isEqual:v29];
+      postalCode3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
+      postalCode4 = [v5 postalCode];
+      v30 = [postalCode3 isEqual:postalCode4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
-    v32 = [v5 country];
-    v33 = v32;
-    if (v31 == v32)
+    country = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
+    country2 = [v5 country];
+    v33 = country2;
+    if (country == country2)
     {
     }
 
     else
     {
-      v34 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
-      v35 = [v5 country];
-      v36 = [v34 isEqual:v35];
+      country3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
+      country4 = [v5 country];
+      v36 = [country3 isEqual:country4];
 
       if (!v36)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v37 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
-    v38 = [v5 addressLines];
-    v39 = v38;
-    if (v37 == v38)
+    addressLines = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
+    addressLines2 = [v5 addressLines];
+    v39 = addressLines2;
+    if (addressLines == addressLines2)
     {
     }
 
     else
     {
-      v40 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
-      v41 = [v5 addressLines];
-      v42 = [v40 isEqual:v41];
+      addressLines3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
+      addressLines4 = [v5 addressLines];
+      v42 = [addressLines3 isEqual:addressLines4];
 
       if (!v42)
       {
@@ -136,18 +136,18 @@
       }
     }
 
-    v43 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
-    v44 = [v5 locality];
-    v45 = v44;
-    if (v43 == v44)
+    locality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
+    locality2 = [v5 locality];
+    v45 = locality2;
+    if (locality == locality2)
     {
     }
 
     else
     {
-      v46 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
-      v47 = [v5 locality];
-      v48 = [v46 isEqual:v47];
+      locality3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
+      locality4 = [v5 locality];
+      v48 = [locality3 isEqual:locality4];
 
       if (!v48)
       {
@@ -155,18 +155,18 @@
       }
     }
 
-    v49 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
-    v50 = [v5 subLocality];
-    v51 = v50;
-    if (v49 == v50)
+    subLocality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
+    subLocality2 = [v5 subLocality];
+    v51 = subLocality2;
+    if (subLocality == subLocality2)
     {
     }
 
     else
     {
-      v52 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
-      v53 = [v5 subLocality];
-      v54 = [v52 isEqual:v53];
+      subLocality3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
+      subLocality4 = [v5 subLocality];
+      v54 = [subLocality3 isEqual:subLocality4];
 
       if (!v54)
       {
@@ -174,18 +174,18 @@
       }
     }
 
-    v55 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
-    v56 = [v5 administrativeArea];
-    v57 = v56;
-    if (v55 == v56)
+    administrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
+    administrativeArea2 = [v5 administrativeArea];
+    v57 = administrativeArea2;
+    if (administrativeArea == administrativeArea2)
     {
     }
 
     else
     {
-      v58 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
-      v59 = [v5 administrativeArea];
-      v60 = [v58 isEqual:v59];
+      administrativeArea3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
+      administrativeArea4 = [v5 administrativeArea];
+      v60 = [administrativeArea3 isEqual:administrativeArea4];
 
       if (!v60)
       {
@@ -193,18 +193,18 @@
       }
     }
 
-    v61 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
-    v62 = [v5 subAdministrativeArea];
-    v63 = v62;
-    if (v61 == v62)
+    subAdministrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
+    subAdministrativeArea2 = [v5 subAdministrativeArea];
+    v63 = subAdministrativeArea2;
+    if (subAdministrativeArea == subAdministrativeArea2)
     {
     }
 
     else
     {
-      v64 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
-      v65 = [v5 subAdministrativeArea];
-      v66 = [v64 isEqual:v65];
+      subAdministrativeArea3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
+      subAdministrativeArea4 = [v5 subAdministrativeArea];
+      v66 = [subAdministrativeArea3 isEqual:subAdministrativeArea4];
 
       if (!v66)
       {
@@ -212,18 +212,18 @@
       }
     }
 
-    v67 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
-    v68 = [v5 countryCode];
-    v69 = v68;
-    if (v67 == v68)
+    countryCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
+    countryCode2 = [v5 countryCode];
+    v69 = countryCode2;
+    if (countryCode == countryCode2)
     {
     }
 
     else
     {
-      v70 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
-      v71 = [v5 countryCode];
-      v72 = [v70 isEqual:v71];
+      countryCode3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
+      countryCode4 = [v5 countryCode];
+      v72 = [countryCode3 isEqual:countryCode4];
 
       if (!v72)
       {
@@ -235,18 +235,18 @@ LABEL_46:
       }
     }
 
-    v74 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
-    v75 = [v5 rawAddress];
-    if (v74 == v75)
+    rawAddress = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
+    rawAddress2 = [v5 rawAddress];
+    if (rawAddress == rawAddress2)
     {
       v12 = 1;
     }
 
     else
     {
-      v76 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
-      v77 = [v5 rawAddress];
-      v12 = [v76 isEqual:v77];
+      rawAddress3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
+      rawAddress4 = [v5 rawAddress];
+      v12 = [rawAddress3 isEqual:rawAddress4];
     }
 
     goto LABEL_46;
@@ -261,148 +261,148 @@ LABEL_47:
 - (id)jsonDictionary
 {
   v43[12] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
-  v4 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
-  v5 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
-  v6 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
-  v7 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
-  v8 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self _addressLinesJSONArray];
-  v9 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
-  v41 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
-  v40 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
-  v39 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
-  v38 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
-  v10 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
+  street = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
+  city = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
+  state = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
+  postalCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
+  country = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
+  _addressLinesJSONArray = [(BMWalletPaymentsCommerceOrderEmailAddress *)self _addressLinesJSONArray];
+  locality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
+  subLocality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
+  administrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
+  subAdministrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
+  countryCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
+  rawAddress = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
   v42[0] = @"street";
-  v11 = v3;
-  if (!v3)
+  null = street;
+  if (!street)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v11;
-  v43[0] = v11;
+  v32 = null;
+  v43[0] = null;
   v42[1] = @"city";
-  v12 = v4;
-  if (!v4)
+  null2 = city;
+  if (!city)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v12;
-  v43[1] = v12;
+  v31 = null2;
+  v43[1] = null2;
   v42[2] = @"state";
-  v13 = v5;
-  if (!v5)
+  null3 = state;
+  if (!state)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v13;
-  v43[2] = v13;
+  v30 = null3;
+  v43[2] = null3;
   v42[3] = @"postalCode";
-  v14 = v6;
-  if (!v6)
+  null4 = postalCode;
+  if (!postalCode)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v14;
-  v43[3] = v14;
+  v29 = null4;
+  v43[3] = null4;
   v42[4] = @"country";
-  v15 = v7;
-  if (!v7)
+  null5 = country;
+  if (!country)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v6;
-  v37 = v5;
-  v28 = v15;
-  v43[4] = v15;
+  v36 = postalCode;
+  v37 = state;
+  v28 = null5;
+  v43[4] = null5;
   v42[5] = @"addressLines";
-  v16 = v8;
-  if (!v8)
+  null6 = _addressLinesJSONArray;
+  if (!_addressLinesJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v7;
-  v27 = v16;
-  v43[5] = v16;
+  v35 = country;
+  v27 = null6;
+  v43[5] = null6;
   v42[6] = @"locality";
-  v17 = v9;
-  if (!v9)
+  null7 = locality;
+  if (!locality)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v8;
-  v43[6] = v17;
+  v34 = _addressLinesJSONArray;
+  v43[6] = null7;
   v42[7] = @"subLocality";
-  v18 = v41;
-  if (!v41)
+  null8 = subLocality;
+  if (!subLocality)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v4;
-  v43[7] = v18;
+  v19 = city;
+  v43[7] = null8;
   v42[8] = @"administrativeArea";
-  v20 = v40;
-  if (!v40)
+  null9 = administrativeArea;
+  if (!administrativeArea)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v3;
-  v43[8] = v20;
+  v21 = street;
+  v43[8] = null9;
   v42[9] = @"subAdministrativeArea";
-  v22 = v39;
-  if (!v39)
+  null10 = subAdministrativeArea;
+  if (!subAdministrativeArea)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[9] = v22;
+  v43[9] = null10;
   v42[10] = @"countryCode";
-  v23 = v38;
-  if (!v38)
+  null11 = countryCode;
+  if (!countryCode)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[10] = v23;
+  v43[10] = null11;
   v42[11] = @"rawAddress";
-  v24 = v10;
-  if (!v10)
+  null12 = rawAddress;
+  if (!rawAddress)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[11] = v24;
+  v43[11] = null12;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:12];
-  if (!v10)
+  if (!rawAddress)
   {
   }
 
-  if (!v38)
+  if (!countryCode)
   {
   }
 
-  if (!v39)
+  if (!subAdministrativeArea)
   {
   }
 
-  if (!v40)
+  if (!administrativeArea)
   {
   }
 
-  if (!v41)
+  if (!subLocality)
   {
   }
 
-  if (!v9)
+  if (!locality)
   {
   }
 
@@ -480,8 +480,8 @@ LABEL_44:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  addressLines = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
+  v5 = [addressLines countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -492,13 +492,13 @@ LABEL_44:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(addressLines);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [addressLines countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -509,11 +509,11 @@ LABEL_44:
   return v3;
 }
 
-- (BMWalletPaymentsCommerceOrderEmailAddress)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMWalletPaymentsCommerceOrderEmailAddress)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v181[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"street"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"street"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -549,7 +549,7 @@ LABEL_44:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"city"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"city"];
   v147 = v7;
   v148 = v8;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -560,7 +560,7 @@ LABEL_44:
       if (p_isa)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v34 = self;
+        selfCopy = self;
         v35 = p_isa;
         v36 = *MEMORY[0x1E698F240];
         v178 = *MEMORY[0x1E696A578];
@@ -573,7 +573,7 @@ LABEL_44:
         v31 = 0;
         p_isa = 0;
         *v35 = v40;
-        self = v34;
+        self = selfCopy;
         goto LABEL_96;
       }
 
@@ -589,7 +589,7 @@ LABEL_44:
     v146 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"state"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"state"];
   v145 = p_isa;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -600,7 +600,7 @@ LABEL_44:
       {
         v46 = v10;
         v47 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v48 = self;
+        selfCopy2 = self;
         v49 = p_isa;
         v50 = *MEMORY[0x1E698F240];
         v176 = *MEMORY[0x1E696A578];
@@ -619,7 +619,7 @@ LABEL_44:
         v37 = 0;
         p_isa = 0;
         *v49 = v57;
-        self = v48;
+        self = selfCopy2;
         v13 = v54;
         v31 = v146;
         goto LABEL_95;
@@ -638,7 +638,7 @@ LABEL_44:
     v143 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"postalCode"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
   v144 = v11;
   if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -686,7 +686,7 @@ LABEL_44:
     v13 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"country"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"country"];
   v140 = v10;
   v141 = v9;
   v142 = v14;
@@ -730,9 +730,9 @@ LABEL_44:
     v139 = 0;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"addressLines"];
-  v17 = [MEMORY[0x1E695DFB0] null];
-  v18 = [v16 isEqual:v17];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"addressLines"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v18 = [v16 isEqual:null];
 
   if (v18)
   {
@@ -758,14 +758,14 @@ LABEL_44:
         }
 
         v76 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v77 = self;
+        selfCopy3 = self;
         v78 = *MEMORY[0x1E698F240];
         v170 = *MEMORY[0x1E696A578];
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"addressLines"];
         v171 = v19;
         v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
         v80 = v78;
-        self = v77;
+        self = selfCopy3;
         p_isa = 0;
         *v145 = [v76 initWithDomain:v80 code:2 userInfo:v79];
         v70 = v79;
@@ -794,7 +794,7 @@ LABEL_61:
 
   v21 = v20;
   v22 = *v150;
-  v138 = self;
+  selfCopy4 = self;
   while (2)
   {
     for (i = 0; i != v21; ++i)
@@ -826,7 +826,7 @@ LABEL_53:
           p_isa = 0;
           *v145 = [v44 initWithDomain:v45 code:2 userInfo:?];
           v136 = v16;
-          self = v138;
+          self = selfCopy4;
           v9 = v141;
 
           goto LABEL_90;
@@ -855,7 +855,7 @@ LABEL_56:
         p_isa = 0;
         v70 = v16;
         v13 = v137;
-        self = v138;
+        self = selfCopy4;
         goto LABEL_61;
       }
 
@@ -863,7 +863,7 @@ LABEL_56:
     }
 
     v21 = [v16 countByEnumeratingWithState:&v149 objects:v169 count:16];
-    self = v138;
+    self = selfCopy4;
     if (v21)
     {
       continue;
@@ -874,7 +874,7 @@ LABEL_56:
 
 LABEL_36:
 
-  v25 = [v6 objectForKeyedSubscript:@"locality"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"locality"];
   v133 = v25;
   if (!v25)
   {
@@ -890,7 +890,7 @@ LABEL_36:
   {
     v136 = 0;
 LABEL_67:
-    v81 = [v6 objectForKeyedSubscript:@"subLocality"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"subLocality"];
     v13 = v137;
     v131 = v81;
     if (v81 && (v82 = v81, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -931,13 +931,13 @@ LABEL_67:
     {
       v135 = 0;
 LABEL_70:
-      v83 = [v6 objectForKeyedSubscript:@"administrativeArea"];
+      v83 = [dictionaryCopy objectForKeyedSubscript:@"administrativeArea"];
       v128 = v83;
       if (!v83 || (v84 = v83, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v130 = 0;
 LABEL_73:
-        v85 = [v6 objectForKeyedSubscript:@"subAdministrativeArea"];
+        v85 = [dictionaryCopy objectForKeyedSubscript:@"subAdministrativeArea"];
         v126 = v85;
         if (v85 && (v86 = v85, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -976,7 +976,7 @@ LABEL_73:
         {
           v129 = 0;
 LABEL_76:
-          v87 = [v6 objectForKeyedSubscript:@"countryCode"];
+          v87 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
           v125 = v87;
           if (v87 && (v88 = v87, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
@@ -1015,7 +1015,7 @@ LABEL_76:
           {
             v127 = 0;
 LABEL_79:
-            v89 = [v6 objectForKeyedSubscript:@"rawAddress"];
+            v89 = [dictionaryCopy objectForKeyedSubscript:@"rawAddress"];
             if (!v89 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v90 = 0;
@@ -1168,15 +1168,15 @@ LABEL_99:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceOrderEmailAddress *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_street)
   {
     PBDataWriterWriteStringField();
@@ -1267,9 +1267,9 @@ LABEL_99:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMWalletPaymentsCommerceOrderEmailAddress;
   v5 = [(BMEventBase *)&v27 init];
@@ -1279,12 +1279,12 @@ LABEL_99:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1295,18 +1295,18 @@ LABEL_99:
       while (1)
       {
         v28 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v28 & 0x7F) << v8;
@@ -1323,9 +1323,9 @@ LABEL_99:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -1429,18 +1429,18 @@ LABEL_51:
       }
 
 LABEL_48:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v22 = [v6 copy];
   addressLines = v5->_addressLines;
   v5->_addressLines = v22;
 
-  v24 = [v4 hasError];
-  if (v24)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_53:
     v25 = 0;
@@ -1458,57 +1458,57 @@ LABEL_54:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
-  v16 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
-  v3 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
-  v4 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
-  v5 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
-  v6 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
-  v7 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
-  v8 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
-  v9 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
-  v10 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
-  v11 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
-  v12 = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
-  v15 = [v14 initWithFormat:@"BMWalletPaymentsCommerceOrderEmailAddress with street: %@, city: %@, state: %@, postalCode: %@, country: %@, addressLines: %@, locality: %@, subLocality: %@, administrativeArea: %@, subAdministrativeArea: %@, countryCode: %@, rawAddress: %@", v17, v16, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  street = [(BMWalletPaymentsCommerceOrderEmailAddress *)self street];
+  city = [(BMWalletPaymentsCommerceOrderEmailAddress *)self city];
+  state = [(BMWalletPaymentsCommerceOrderEmailAddress *)self state];
+  postalCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self postalCode];
+  country = [(BMWalletPaymentsCommerceOrderEmailAddress *)self country];
+  addressLines = [(BMWalletPaymentsCommerceOrderEmailAddress *)self addressLines];
+  locality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self locality];
+  subLocality = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subLocality];
+  administrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self administrativeArea];
+  subAdministrativeArea = [(BMWalletPaymentsCommerceOrderEmailAddress *)self subAdministrativeArea];
+  countryCode = [(BMWalletPaymentsCommerceOrderEmailAddress *)self countryCode];
+  rawAddress = [(BMWalletPaymentsCommerceOrderEmailAddress *)self rawAddress];
+  v15 = [v14 initWithFormat:@"BMWalletPaymentsCommerceOrderEmailAddress with street: %@, city: %@, state: %@, postalCode: %@, country: %@, addressLines: %@, locality: %@, subLocality: %@, administrativeArea: %@, subAdministrativeArea: %@, countryCode: %@, rawAddress: %@", street, city, state, postalCode, country, addressLines, locality, subLocality, administrativeArea, subAdministrativeArea, countryCode, rawAddress];
 
   return v15;
 }
 
-- (BMWalletPaymentsCommerceOrderEmailAddress)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7 addressLines:(id)a8 locality:(id)a9 subLocality:(id)a10 administrativeArea:(id)a11 subAdministrativeArea:(id)a12 countryCode:(id)a13 rawAddress:(id)a14
+- (BMWalletPaymentsCommerceOrderEmailAddress)initWithStreet:(id)street city:(id)city state:(id)state postalCode:(id)code country:(id)country addressLines:(id)lines locality:(id)locality subLocality:(id)self0 administrativeArea:(id)self1 subAdministrativeArea:(id)self2 countryCode:(id)self3 rawAddress:(id)self4
 {
-  v36 = a3;
-  v26 = a4;
-  v35 = a4;
-  v27 = a5;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
-  v30 = a9;
-  v29 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
+  streetCopy = street;
+  cityCopy = city;
+  cityCopy2 = city;
+  stateCopy = state;
+  stateCopy2 = state;
+  codeCopy = code;
+  countryCopy = country;
+  linesCopy = lines;
+  localityCopy = locality;
+  subLocalityCopy = subLocality;
+  areaCopy = area;
+  administrativeAreaCopy = administrativeArea;
+  countryCodeCopy = countryCode;
+  addressCopy = address;
   v37.receiver = self;
   v37.super_class = BMWalletPaymentsCommerceOrderEmailAddress;
   v23 = [(BMEventBase *)&v37 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v23->_street, a3);
-    objc_storeStrong(&v23->_city, v26);
-    objc_storeStrong(&v23->_state, v27);
-    objc_storeStrong(&v23->_postalCode, a6);
-    objc_storeStrong(&v23->_country, a7);
-    objc_storeStrong(&v23->_addressLines, a8);
-    objc_storeStrong(&v23->_locality, a9);
-    objc_storeStrong(&v23->_subLocality, a10);
-    objc_storeStrong(&v23->_administrativeArea, a11);
-    objc_storeStrong(&v23->_subAdministrativeArea, a12);
-    objc_storeStrong(&v23->_countryCode, a13);
-    objc_storeStrong(&v23->_rawAddress, a14);
+    objc_storeStrong(&v23->_street, street);
+    objc_storeStrong(&v23->_city, cityCopy);
+    objc_storeStrong(&v23->_state, stateCopy);
+    objc_storeStrong(&v23->_postalCode, code);
+    objc_storeStrong(&v23->_country, country);
+    objc_storeStrong(&v23->_addressLines, lines);
+    objc_storeStrong(&v23->_locality, locality);
+    objc_storeStrong(&v23->_subLocality, subLocality);
+    objc_storeStrong(&v23->_administrativeArea, area);
+    objc_storeStrong(&v23->_subAdministrativeArea, administrativeArea);
+    objc_storeStrong(&v23->_countryCode, countryCode);
+    objc_storeStrong(&v23->_rawAddress, address);
   }
 
   return v23;
@@ -1591,9 +1591,9 @@ id __52__BMWalletPaymentsCommerceOrderEmailAddress_columns__block_invoke(uint64_
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1601,8 +1601,8 @@ id __52__BMWalletPaymentsCommerceOrderEmailAddress_columns__block_invoke(uint64_
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceOrderEmailAddress alloc] initByReadFrom:v7];
     v4 = v8;

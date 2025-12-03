@@ -1,22 +1,22 @@
 @interface UISSceneHostingExternalSettingsModifierService
 - (BSServiceConnectionEndpoint)endpoint;
 - (UISSceneHostingExternalSettingsModifierService)init;
-- (UISSceneHostingExternalSettingsModifierService)initWithCalloutQueue:(id)a3;
+- (UISSceneHostingExternalSettingsModifierService)initWithCalloutQueue:(id)queue;
 - (UISSceneHostingExternalSettingsModifierServiceDelegate)delegate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)requestSettingsModifiersForProcessIdentity:(id)a3 withCompletion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)requestSettingsModifiersForProcessIdentity:(id)identity withCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation UISSceneHostingExternalSettingsModifierService
 
-- (UISSceneHostingExternalSettingsModifierService)initWithCalloutQueue:(id)a3
+- (UISSceneHostingExternalSettingsModifierService)initWithCalloutQueue:(id)queue
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@
       v36 = 2114;
       v37 = v22;
       v38 = 2048;
-      v39 = self;
+      selfCopy = self;
       v40 = 2114;
       v41 = @"UISSceneHostingExternalSettingsModifierService.m";
       v42 = 1024;
@@ -45,7 +45,7 @@
     JUMPOUT(0x196009CB0);
   }
 
-  v7 = v6;
+  v7 = queueCopy;
   v33.receiver = self;
   v33.super_class = UISSceneHostingExternalSettingsModifierService;
   v8 = [(UISSceneHostingExternalSettingsModifierService *)&v33 init];
@@ -53,9 +53,9 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_calloutQueue, a3);
-    v10 = [MEMORY[0x1E698F508] bootstrapConfiguration];
-    v11 = [v10 domainsContainingServiceIdentifier:0x1F0A7DEB8];
+    objc_storeStrong(&v8->_calloutQueue, queue);
+    bootstrapConfiguration = [MEMORY[0x1E698F508] bootstrapConfiguration];
+    v11 = [bootstrapConfiguration domainsContainingServiceIdentifier:0x1F0A7DEB8];
     if ([(__CFString *)v11 count]!= 1)
     {
       v23 = MEMORY[0x1E696AEC0];
@@ -77,7 +77,7 @@
         v36 = 2114;
         v37 = v29;
         v38 = 2048;
-        v39 = v9;
+        selfCopy = v9;
         v40 = 2114;
         v41 = @"UISSceneHostingExternalSettingsModifierService.m";
         v42 = 1024;
@@ -93,16 +93,16 @@
       JUMPOUT(0x196009DBCLL);
     }
 
-    v12 = [(__CFString *)v11 anyObject];
+    anyObject = [(__CFString *)v11 anyObject];
     v13 = MEMORY[0x1E698F4B8];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue___block_invoke;
     v30[3] = &unk_1E7459468;
-    v31 = v12;
+    v31 = anyObject;
     v14 = v9;
     v32 = v14;
-    v15 = v12;
+    v15 = anyObject;
     v16 = [v13 listenerWithConfigurator:v30];
     v17 = v14[3];
     v14[3] = v16;
@@ -127,8 +127,8 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
 - (UISSceneHostingExternalSettingsModifierService)init
 {
   v3 = MEMORY[0x1E698F4D0];
-  v4 = [MEMORY[0x1E698F500] userInteractive];
-  v5 = [v3 queueWithName:@"com.apple.uis.scene-hosting-external-settings-modifier-service.server" serviceQuality:v4];
+  userInteractive = [MEMORY[0x1E698F500] userInteractive];
+  v5 = [v3 queueWithName:@"com.apple.uis.scene-hosting-external-settings-modifier-service.server" serviceQuality:userInteractive];
 
   v6 = [(UISSceneHostingExternalSettingsModifierService *)self initWithCalloutQueue:v5];
   return v6;
@@ -151,7 +151,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"UISSceneHostingExternalSettingsModifierService.m";
       v17 = 1024;
@@ -190,7 +190,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v12 = 2114;
       v13 = v9;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"UISSceneHostingExternalSettingsModifierService.m";
       v18 = 1024;
@@ -212,11 +212,11 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"delegate"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -229,7 +229,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v18 = 2114;
       v19 = v10;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = @"UISSceneHostingExternalSettingsModifierService.m";
       v24 = 1024;
@@ -245,7 +245,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
     JUMPOUT(0x19600A3A0);
   }
 
-  v15 = v6;
+  v15 = delegateCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
@@ -260,7 +260,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v18 = 2114;
       v19 = v14;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = @"UISSceneHostingExternalSettingsModifierService.m";
       v24 = 1024;
@@ -278,7 +278,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
 
   if (self->_lock_delegate != v15)
   {
-    objc_storeStrong(&self->_lock_delegate, a3);
+    objc_storeStrong(&self->_lock_delegate, delegate);
     *&self->_lock_delegateFlags = *&self->_lock_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   }
 
@@ -302,7 +302,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v12 = 2114;
       v13 = v9;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"UISSceneHostingExternalSettingsModifierService.m";
       v18 = 1024;
@@ -318,10 +318,10 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
     JUMPOUT(0x19600A630);
   }
 
-  v4 = [(BSServiceConnectionListener *)self->_lock_listener endpoint];
+  endpoint = [(BSServiceConnectionListener *)self->_lock_listener endpoint];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return endpoint;
 }
 
 - (void)invalidate
@@ -341,7 +341,7 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
       v11 = 2114;
       v12 = v8;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"UISSceneHostingExternalSettingsModifierService.m";
       v17 = 1024;
@@ -365,10 +365,10 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v6 = MEMORY[0x1E698F470];
-  v7 = a4;
+  connectionCopy = connection;
   v8 = [v6 interfaceWithIdentifier:0x1F0A7DEB8];
   v9 = [MEMORY[0x1E698E710] protocolForProtocol:&unk_1F0A8A580];
   [v8 setServer:v9];
@@ -378,10 +378,10 @@ void __71__UISSceneHostingExternalSettingsModifierService_initWithCalloutQueue__
   v13 = __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveConnection_withContext___block_invoke;
   v14 = &unk_1E7458E98;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v10 = v8;
-  [v7 configureConnection:&v11];
-  [v7 activate];
+  [connectionCopy configureConnection:&v11];
+  [connectionCopy activate];
 }
 
 void __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveConnection_withContext___block_invoke(uint64_t a1, void *a2)
@@ -395,10 +395,10 @@ void __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveCon
   [v4 setInvalidationHandler:&__block_literal_global_82];
 }
 
-- (void)requestSettingsModifiersForProcessIdentity:(id)a3 withCompletion:(id)a4
+- (void)requestSettingsModifiersForProcessIdentity:(id)identity withCompletion:(id)completion
 {
-  v19 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_lock_delegate;
@@ -413,17 +413,17 @@ void __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveCon
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [MEMORY[0x1E698F490] currentContext];
-  v10 = [v9 remoteToken];
-  if (v10)
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  remoteToken = [currentContext remoteToken];
+  if (remoteToken)
   {
-    if (v19)
+    if (identityCopy)
     {
       if (v8)
       {
-        v11 = [(UISSceneHostingExternalSettingsModifierServiceDelegate *)v7 settingsModifiersForClientProcessIdentity:v19 hostedBy:v10];
+        v11 = [(UISSceneHostingExternalSettingsModifierServiceDelegate *)v7 settingsModifiersForClientProcessIdentity:identityCopy hostedBy:remoteToken];
         v12 = [v11 count];
-        v13 = v6[2];
+        v13 = completionCopy[2];
         if (v12)
         {
           v14 = v11;
@@ -434,7 +434,7 @@ void __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveCon
           v14 = 0;
         }
 
-        v15 = v6;
+        v15 = completionCopy;
         v16 = 0;
         goto LABEL_15;
       }
@@ -457,8 +457,8 @@ void __92__UISSceneHostingExternalSettingsModifierService_listener_didReceiveCon
   }
 
   v11 = [v17 errorWithDomain:0x1F0A7DED8 code:v18 userInfo:0];
-  v13 = v6[2];
-  v15 = v6;
+  v13 = completionCopy[2];
+  v15 = completionCopy;
   v14 = 0;
   v16 = v11;
 LABEL_15:

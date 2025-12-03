@@ -1,6 +1,6 @@
 @interface MTStoreAMSBagDelegatePackage
 - (MTStoreAMSBagDelegatePackage)init;
-- (MTStoreAMSBagDelegatePackage)initWithAMSBag:(id)a3 containerId:(id)a4 pageURLBlock:(id)a5 resourceRevNumBlock:(id)a6 hostAppBlock:(id)a7;
+- (MTStoreAMSBagDelegatePackage)initWithAMSBag:(id)bag containerId:(id)id pageURLBlock:(id)block resourceRevNumBlock:(id)numBlock hostAppBlock:(id)appBlock;
 @end
 
 @implementation MTStoreAMSBagDelegatePackage
@@ -16,27 +16,27 @@
   objc_exception_throw(v6);
 }
 
-- (MTStoreAMSBagDelegatePackage)initWithAMSBag:(id)a3 containerId:(id)a4 pageURLBlock:(id)a5 resourceRevNumBlock:(id)a6 hostAppBlock:(id)a7
+- (MTStoreAMSBagDelegatePackage)initWithAMSBag:(id)bag containerId:(id)id pageURLBlock:(id)block resourceRevNumBlock:(id)numBlock hostAppBlock:(id)appBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  bagCopy = bag;
+  idCopy = id;
+  blockCopy = block;
+  numBlockCopy = numBlock;
+  appBlockCopy = appBlock;
   v25.receiver = self;
   v25.super_class = MTStoreAMSBagDelegatePackage;
   v17 = [(MTStoreAMSBagDelegatePackage *)&v25 init];
   if (v17)
   {
-    v18 = [[MTConfigAMSMetricsDelegate alloc] initWithAMSBag:v12];
+    v18 = [[MTConfigAMSMetricsDelegate alloc] initWithAMSBag:bagCopy];
     configDelegate = v17->_configDelegate;
     v17->_configDelegate = v18;
 
-    v20 = [[MTConvenienceEnvironmentDelegate alloc] initWithPageURLBlock:v14 resourceRevNumBlock:v15 hostAppBlock:v16];
+    v20 = [[MTConvenienceEnvironmentDelegate alloc] initWithPageURLBlock:blockCopy resourceRevNumBlock:numBlockCopy hostAppBlock:appBlockCopy];
     environmentDelegate = v17->_environmentDelegate;
     v17->_environmentDelegate = v20;
 
-    v22 = [[MTEventRecorderAMSMetricsDelegate alloc] initWithContainerId:v13 amsBag:v12];
+    v22 = [[MTEventRecorderAMSMetricsDelegate alloc] initWithContainerId:idCopy amsBag:bagCopy];
     eventRecorderDelegate = v17->_eventRecorderDelegate;
     v17->_eventRecorderDelegate = v22;
   }

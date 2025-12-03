@@ -42,8 +42,8 @@
   v7 = v6;
 
   v8 = objc_loadWeakRetained(&self->_rotatable);
-  v9 = [v8 scene];
-  [v9 offsetCoordinate];
+  scene = [v8 scene];
+  [scene offsetCoordinate];
   v11 = v10;
   v13 = v5 + v12;
 
@@ -89,12 +89,12 @@
   v47 = v7;
   v48 = v6;
 
-  v8 = [(NUNIAstronomyRotationModel *)self interactionSettings];
-  v9 = v8;
-  var1 = v8[1].var1;
+  interactionSettings = [(NUNIAstronomyRotationModel *)self interactionSettings];
+  v9 = interactionSettings;
+  var1 = interactionSettings[1].var1;
   if (var1 == 0.0)
   {
-    var0 = v8[1].var0;
+    var0 = interactionSettings[1].var0;
 LABEL_9:
     self->_effectivePushDeceleration = var0;
     goto LABEL_10;
@@ -108,11 +108,11 @@ LABEL_9:
 
   else
   {
-    v13 = v8[1].var1;
+    v13 = interactionSettings[1].var1;
   }
 
   var0 = self->_effectivePushDeceleration;
-  v14 = v8[1].var0;
+  v14 = interactionSettings[1].var0;
   if (var0 > v14 && v13 > 0.001)
   {
     var0 = 1.0 - powf(1.0 - v14, var1 / v13);
@@ -169,8 +169,8 @@ LABEL_20:
   v26 = v25;
 
   v27 = objc_loadWeakRetained(&self->_rotatable);
-  v28 = [v27 scene];
-  [v28 offsetCoordinate];
+  scene = [v27 scene];
+  [scene offsetCoordinate];
   v30 = v24 + v29;
   v32 = v26 + v31;
 
@@ -218,9 +218,9 @@ LABEL_20:
 - (void)push:(NUNIAstronomyRotationModel *)self
 {
   v3 = v2;
-  v5 = [(NUNIAstronomyRotationModel *)self interactionSettings];
+  interactionSettings = [(NUNIAstronomyRotationModel *)self interactionSettings];
   v6 = CACurrentMediaTime();
-  self->_effectivePullAcceleration = v5[1].var2 * 0.01;
+  self->_effectivePullAcceleration = interactionSettings[1].var2 * 0.01;
   *self->_accumulatedPushVector = vadd_f32(*self->_accumulatedPushVector, v3);
   self->_effectivePushDeceleration = 1.0;
   self->_pushStartTime = v6;
@@ -231,8 +231,8 @@ LABEL_20:
   v11 = v10;
 
   v12 = objc_loadWeakRetained(&self->_rotatable);
-  v13 = [v12 scene];
-  [v13 offsetCoordinate];
+  scene = [v12 scene];
+  [scene offsetCoordinate];
   v15 = v9 + v14;
   v17 = v11 + v16;
 
@@ -254,8 +254,8 @@ LABEL_20:
       self->_displayLink = v21;
 
       v23 = self->_displayLink;
-      v24 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [(CADisplayLink *)v23 addToRunLoop:v24 forMode:*MEMORY[0x1E695DA28]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [(CADisplayLink *)v23 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       self->_previousDisplayLinkCallbackTime = v6;
       self->_state = 1;

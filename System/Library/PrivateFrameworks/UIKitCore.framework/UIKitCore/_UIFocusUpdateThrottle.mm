@@ -1,7 +1,7 @@
 @interface _UIFocusUpdateThrottle
-- (_UIFocusUpdateThrottle)initWithUpdateHandler:(id)a3;
+- (_UIFocusUpdateThrottle)initWithUpdateHandler:(id)handler;
 - (void)_performScheduledUpdate;
-- (void)didCreateProgrammaticFocusUpdateContext:(id)a3;
+- (void)didCreateProgrammaticFocusUpdateContext:(id)context;
 - (void)reset;
 - (void)scheduleProgrammaticFocusUpdate;
 - (void)teardown;
@@ -9,13 +9,13 @@
 
 @implementation _UIFocusUpdateThrottle
 
-- (_UIFocusUpdateThrottle)initWithUpdateHandler:(id)a3
+- (_UIFocusUpdateThrottle)initWithUpdateHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateThrottle.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusUpdateThrottle.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
   }
 
   v12.receiver = self;
@@ -25,7 +25,7 @@
   if (v6)
   {
     v6->_currentTimeout = 0.0166666667;
-    v8 = _Block_copy(v5);
+    v8 = _Block_copy(handlerCopy);
     updateHandler = v7->_updateHandler;
     v7->_updateHandler = v8;
   }
@@ -93,14 +93,14 @@
   }
 }
 
-- (void)didCreateProgrammaticFocusUpdateContext:(id)a3
+- (void)didCreateProgrammaticFocusUpdateContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   self->_lastUpdate = CFAbsoluteTimeGetCurrent();
-  v5 = [v4 nextFocusedItem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v5)
+  if (nextFocusedItem)
   {
     self->_nilUpdateCount = 0;
     self->_currentTimeout = 0.0166666667;

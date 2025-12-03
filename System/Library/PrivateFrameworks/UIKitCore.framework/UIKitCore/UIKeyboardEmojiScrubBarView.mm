@@ -6,33 +6,33 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return;
   }
 
-  v4 = [(UIView *)self _inheritedRenderConfig];
-  v15 = v4;
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  v15 = _inheritedRenderConfig;
   if (!self || !self->_isFirstPartyStickers)
   {
-    if ([v4 lightKeyboard])
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       v6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979850]];
-      v7 = [(UIView *)self layer];
-      [v7 setCompositingFilter:v6];
+      layer = [(UIView *)self layer];
+      [layer setCompositingFilter:v6];
 
       if (+[UIKBRenderFactory _graphicsQuality]== 100)
       {
         v8 = [UIColor colorWithWhite:0.380392157 alpha:1.0];
         [(UIView *)self setBackgroundColor:v8];
 
-        v9 = [(UIView *)self layer];
-        v5 = v9;
+        layer2 = [(UIView *)self layer];
+        v5 = layer2;
         LODWORD(v10) = 1061779669;
 LABEL_12:
-        [v9 setOpacity:v10];
+        [layer2 setOpacity:v10];
         goto LABEL_13;
       }
 
@@ -42,8 +42,8 @@ LABEL_12:
     else
     {
       v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CD0]];
-      v12 = [(UIView *)self layer];
-      [v12 setCompositingFilter:v11];
+      layer3 = [(UIView *)self layer];
+      [layer3 setCompositingFilter:v11];
 
       v13 = +[UIColor whiteColor];
     }
@@ -51,8 +51,8 @@ LABEL_12:
     v14 = v13;
     [(UIView *)self setBackgroundColor:v13];
 
-    v9 = [(UIView *)self layer];
-    v5 = v9;
+    layer2 = [(UIView *)self layer];
+    v5 = layer2;
     LODWORD(v10) = 1058642330;
     goto LABEL_12;
   }

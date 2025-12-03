@@ -1,23 +1,23 @@
 @interface AXDefaultOnOffViewController
-+ (id)stringValueForNumber:(id)a3;
++ (id)stringValueForNumber:(id)number;
 - (id)getValueSelectedBlock;
 - (id)setValueSelectedBlock;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXDefaultOnOffViewController
 
-+ (id)stringValueForNumber:(id)a3
++ (id)stringValueForNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 integerValue] == -1)
+  numberCopy = number;
+  if ([numberCopy integerValue] == -1)
   {
     v4 = @"DEFAULT";
   }
 
-  else if ([v3 integerValue] == &dword_0 + 1)
+  else if ([numberCopy integerValue] == &dword_0 + 1)
   {
     v4 = @"ON";
   }
@@ -67,16 +67,16 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(AXDefaultOnOffViewController *)self getValueSelectedBlock];
-  v9 = v8;
-  if (v8)
+  cellCopy = cell;
+  pathCopy = path;
+  getValueSelectedBlock = [(AXDefaultOnOffViewController *)self getValueSelectedBlock];
+  v9 = getValueSelectedBlock;
+  if (getValueSelectedBlock)
   {
-    v10 = (*(v8 + 16))(v8);
-    v11 = [(AXDefaultOnOffViewController *)self specifierAtIndexPath:v7];
+    v10 = (*(getValueSelectedBlock + 16))(getValueSelectedBlock);
+    v11 = [(AXDefaultOnOffViewController *)self specifierAtIndexPath:pathCopy];
     v12 = [v11 propertyForKey:@"value"];
 
     if (v12 | v10)
@@ -89,39 +89,39 @@
       v13 = &dword_0 + 1;
     }
 
-    [v14 setChecked:v13];
+    [cellCopy setChecked:v13];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = AXDefaultOnOffViewController;
-  [(AXDefaultOnOffViewController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXDefaultOnOffViewController *)self setValueSelectedBlock];
-  if (v7)
+  [(AXDefaultOnOffViewController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  setValueSelectedBlock = [(AXDefaultOnOffViewController *)self setValueSelectedBlock];
+  if (setValueSelectedBlock)
   {
-    v8 = [(AXDefaultOnOffViewController *)self specifierAtIndexPath:v6];
+    v8 = [(AXDefaultOnOffViewController *)self specifierAtIndexPath:pathCopy];
     v9 = [v8 propertyForKey:@"value"];
-    (v7)[2](v7, v9);
+    (setValueSelectedBlock)[2](setValueSelectedBlock, v9);
 
-    [(AXDefaultOnOffViewController *)self updateTableCheckedSelection:v6];
+    [(AXDefaultOnOffViewController *)self updateTableCheckedSelection:pathCopy];
   }
 }
 
 - (id)getValueSelectedBlock
 {
-  v2 = [(AXDefaultOnOffViewController *)self specifier];
-  v3 = [v2 propertyForKey:@"getValueSelectedBlock"];
+  specifier = [(AXDefaultOnOffViewController *)self specifier];
+  v3 = [specifier propertyForKey:@"getValueSelectedBlock"];
 
   return v3;
 }
 
 - (id)setValueSelectedBlock
 {
-  v2 = [(AXDefaultOnOffViewController *)self specifier];
-  v3 = [v2 propertyForKey:@"setValueSelectedBlock"];
+  specifier = [(AXDefaultOnOffViewController *)self specifier];
+  v3 = [specifier propertyForKey:@"setValueSelectedBlock"];
 
   return v3;
 }

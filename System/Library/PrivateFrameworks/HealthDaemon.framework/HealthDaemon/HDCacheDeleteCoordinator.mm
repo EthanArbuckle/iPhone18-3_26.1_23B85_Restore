@@ -1,7 +1,7 @@
 @interface HDCacheDeleteCoordinator
 - (HDCacheDeleteCoordinator)init;
-- (id)purgeSpace:(int)a3 info:(id)a4;
-- (id)queryPurgeableSpace:(int)a3 info:(id)a4;
+- (id)purgeSpace:(int)space info:(id)info;
+- (id)queryPurgeableSpace:(int)space info:(id)info;
 - (void)activate;
 @end
 
@@ -101,22 +101,22 @@ uint64_t __36__HDCacheDeleteCoordinator_activate__block_invoke_299()
   return 0;
 }
 
-- (id)queryPurgeableSpace:(int)a3 info:(id)a4
+- (id)queryPurgeableSpace:(int)space info:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v7 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   providers = self->_providers;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__HDCacheDeleteCoordinator_queryPurgeableSpace_info___block_invoke;
   v16[3] = &unk_278624C40;
   v18 = &v20;
-  v19 = a3;
+  spaceCopy = space;
   v9 = v7;
   v17 = v9;
   [(HKSynchronousObserverSet *)providers notifyObservers:v16];
@@ -152,22 +152,22 @@ uint64_t __53__HDCacheDeleteCoordinator_queryPurgeableSpace_info___block_invoke(
   return result;
 }
 
-- (id)purgeSpace:(int)a3 info:(id)a4
+- (id)purgeSpace:(int)space info:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v7 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   providers = self->_providers;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __44__HDCacheDeleteCoordinator_purgeSpace_info___block_invoke;
   v16[3] = &unk_278624C40;
   v18 = &v20;
-  v19 = a3;
+  spaceCopy = space;
   v9 = v7;
   v17 = v9;
   [(HKSynchronousObserverSet *)providers notifyObservers:v16];

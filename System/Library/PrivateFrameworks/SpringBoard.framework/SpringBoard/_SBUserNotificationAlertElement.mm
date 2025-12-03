@@ -1,18 +1,18 @@
 @interface _SBUserNotificationAlertElement
 - (id)alertHost;
-- (void)setAlertHost:(id)a3;
+- (void)setAlertHost:(id)host;
 @end
 
 @implementation _SBUserNotificationAlertElement
 
-- (void)setAlertHost:(id)a3
+- (void)setAlertHost:(id)host
 {
-  obj = a3;
+  obj = host;
   if ([(_SBUserNotificationAlertElement *)self preventsAutomaticDismissal])
   {
     objc_storeWeak(&self->_alertHost, obj);
-    v4 = [obj alertAssertion];
-    [v4 setAutomaticallyInvalidatable:0 lockingWithKey:@"_SBUserNotificationAlertElement" reason:@"_SBUserNotificationAlertElement.preventsAutomaticDismissal is YES"];
+    alertAssertion = [obj alertAssertion];
+    [alertAssertion setAutomaticallyInvalidatable:0 lockingWithKey:@"_SBUserNotificationAlertElement" reason:@"_SBUserNotificationAlertElement.preventsAutomaticDismissal is YES"];
   }
 }
 

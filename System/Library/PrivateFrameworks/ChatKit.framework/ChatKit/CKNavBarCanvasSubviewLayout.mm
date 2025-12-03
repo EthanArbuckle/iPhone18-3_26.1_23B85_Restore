@@ -1,35 +1,35 @@
 @interface CKNavBarCanvasSubviewLayout
-+ (CKNavBarCanvasSubviewLayout)layoutWithTitleFrame:(double)a3 subtitleFrame:(double)a4 leftItemFrame:(double)a5 rightItemFrame:(double)a6 statusIndicatorFrame:(double)a7;
++ (CKNavBarCanvasSubviewLayout)layoutWithTitleFrame:(double)frame subtitleFrame:(double)subtitleFrame leftItemFrame:(double)itemFrame rightItemFrame:(double)rightItemFrame statusIndicatorFrame:(double)indicatorFrame;
 - (CGRect)leftItemFrame;
 - (CGRect)rightItemFrame;
 - (CGRect)statusIndicatorFrame;
 - (CGRect)subtitleFrame;
 - (CGRect)titleFrame;
-- (double)initWithTitleFrame:(double)a3 subtitleFrame:(double)a4 leftItemFrame:(double)a5 rightItemFrame:(double)a6 statusIndicatorFrame:(double)a7;
+- (double)initWithTitleFrame:(double)frame subtitleFrame:(double)subtitleFrame leftItemFrame:(double)itemFrame rightItemFrame:(double)rightItemFrame statusIndicatorFrame:(double)indicatorFrame;
 @end
 
 @implementation CKNavBarCanvasSubviewLayout
 
-+ (CKNavBarCanvasSubviewLayout)layoutWithTitleFrame:(double)a3 subtitleFrame:(double)a4 leftItemFrame:(double)a5 rightItemFrame:(double)a6 statusIndicatorFrame:(double)a7
++ (CKNavBarCanvasSubviewLayout)layoutWithTitleFrame:(double)frame subtitleFrame:(double)subtitleFrame leftItemFrame:(double)itemFrame rightItemFrame:(double)rightItemFrame statusIndicatorFrame:(double)indicatorFrame
 {
-  v25 = [[CKNavBarCanvasSubviewLayout alloc] initWithTitleFrame:a1 subtitleFrame:a2 leftItemFrame:a3 rightItemFrame:a4 statusIndicatorFrame:a5, a6, a7, a8, a17, a18, a19, a20, a21, a22, a23, a24, a25];
+  v25 = [[CKNavBarCanvasSubviewLayout alloc] initWithTitleFrame:self subtitleFrame:a2 leftItemFrame:frame rightItemFrame:subtitleFrame statusIndicatorFrame:itemFrame, rightItemFrame, indicatorFrame, a8, a17, a18, a19, a20, a21, a22, a23, a24, a25];
 
   return v25;
 }
 
-- (double)initWithTitleFrame:(double)a3 subtitleFrame:(double)a4 leftItemFrame:(double)a5 rightItemFrame:(double)a6 statusIndicatorFrame:(double)a7
+- (double)initWithTitleFrame:(double)frame subtitleFrame:(double)subtitleFrame leftItemFrame:(double)itemFrame rightItemFrame:(double)rightItemFrame statusIndicatorFrame:(double)indicatorFrame
 {
-  v37.receiver = a1;
+  v37.receiver = self;
   v37.super_class = CKNavBarCanvasSubviewLayout;
   result = objc_msgSendSuper2(&v37, sel_init);
   if (result)
   {
     result[9] = a2;
-    result[10] = a3;
-    result[11] = a4;
-    result[12] = a5;
-    result[13] = a6;
-    result[14] = a7;
+    result[10] = frame;
+    result[11] = subtitleFrame;
+    result[12] = itemFrame;
+    result[13] = rightItemFrame;
+    result[14] = indicatorFrame;
     result[15] = a8;
     result[16] = a9;
     *(result + 1) = a17;

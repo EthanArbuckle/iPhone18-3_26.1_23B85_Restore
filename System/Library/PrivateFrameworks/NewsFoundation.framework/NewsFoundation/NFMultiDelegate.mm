@@ -1,21 +1,21 @@
 @interface NFMultiDelegate
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (NFMultiDelegate)initWithDelegate:(id)a3 delegateProtocol:(id)a4 options:(unint64_t)a5;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addDelegate:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)replaceDelegate:(id)a3 withDelegate:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (NFMultiDelegate)initWithDelegate:(id)delegate delegateProtocol:(id)protocol options:(unint64_t)options;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addDelegate:(id)delegate;
+- (void)forwardInvocation:(id)invocation;
+- (void)removeDelegate:(id)delegate;
+- (void)replaceDelegate:(id)delegate withDelegate:(id)withDelegate;
 @end
 
 @implementation NFMultiDelegate
 
-- (NFMultiDelegate)initWithDelegate:(id)a3 delegateProtocol:(id)a4 options:(unint64_t)a5
+- (NFMultiDelegate)initWithDelegate:(id)delegate delegateProtocol:(id)protocol options:(unint64_t)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  protocolCopy = protocol;
   v16.receiver = self;
   v16.super_class = NFMultiDelegate;
   v10 = [(NFMultiDelegate *)&v16 init];
@@ -25,13 +25,13 @@
     children = v10->_children;
     v10->_children = v11;
 
-    if (v8)
+    if (delegateCopy)
     {
-      [(NSHashTable *)v10->_children addObject:v8];
+      [(NSHashTable *)v10->_children addObject:delegateCopy];
     }
 
-    objc_storeStrong(&v10->_delegateProtocol, a4);
-    if (v5)
+    objc_storeStrong(&v10->_delegateProtocol, protocol);
+    if (optionsCopy)
     {
       v13 = objc_alloc_init(NFUnfairLock);
       lock = v10->_lock;
@@ -42,15 +42,15 @@
   return v10;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     lock = self->_lock;
-    v5 = a3;
+    delegateCopy = delegate;
     [(NFUnfairLock *)lock lock];
-    v6 = [(NFMultiDelegate *)self children];
-    [v6 addObject:v5];
+    children = [(NFMultiDelegate *)self children];
+    [children addObject:delegateCopy];
 
     v7 = self->_lock;
 
@@ -58,15 +58,15 @@
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     lock = self->_lock;
-    v5 = a3;
+    delegateCopy = delegate;
     [(NFUnfairLock *)lock lock];
-    v6 = [(NFMultiDelegate *)self children];
-    [v6 removeObject:v5];
+    children = [(NFMultiDelegate *)self children];
+    [children removeObject:delegateCopy];
 
     v7 = self->_lock;
 
@@ -74,43 +74,43 @@
   }
 }
 
-- (void)replaceDelegate:(id)a3 withDelegate:(id)a4
+- (void)replaceDelegate:(id)delegate withDelegate:(id)withDelegate
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 != v6)
+  delegateCopy = delegate;
+  withDelegateCopy = withDelegate;
+  if (delegateCopy != withDelegateCopy)
   {
     [(NFUnfairLock *)self->_lock lock];
-    if (v9)
+    if (delegateCopy)
     {
-      v7 = [(NFMultiDelegate *)self children];
-      [v7 removeObject:v9];
+      children = [(NFMultiDelegate *)self children];
+      [children removeObject:delegateCopy];
     }
 
-    if (v6)
+    if (withDelegateCopy)
     {
-      v8 = [(NFMultiDelegate *)self children];
-      [v8 addObject:v6];
+      children2 = [(NFMultiDelegate *)self children];
+      [children2 addObject:withDelegateCopy];
     }
 
     [(NFUnfairLock *)self->_lock unlock];
   }
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v8.receiver = self;
   v8.super_class = NFMultiDelegate;
-  if ([(NFMultiDelegate *)&v8 conformsToProtocol:v4])
+  if ([(NFMultiDelegate *)&v8 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
-  else if (v4)
+  else if (protocolCopy)
   {
-    v6 = [(NFMultiDelegate *)self delegateProtocol];
-    v5 = v6 == v4;
+    delegateProtocol = [(NFMultiDelegate *)self delegateProtocol];
+    v5 = delegateProtocol == protocolCopy;
   }
 
   else
@@ -121,7 +121,7 @@
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -134,8 +134,8 @@
   else
   {
     [(NFUnfairLock *)self->_lock lock];
-    v5 = [(NFMultiDelegate *)self children];
-    v6 = [v5 copy];
+    children = [(NFMultiDelegate *)self children];
+    v6 = [children copy];
 
     [(NFUnfairLock *)self->_lock unlock];
     v16 = 0u;
@@ -182,7 +182,7 @@ LABEL_14:
   return v4;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v24 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
@@ -196,8 +196,8 @@ LABEL_14:
   else
   {
     [(NFUnfairLock *)self->_lock lock];
-    v7 = [(NFMultiDelegate *)self children];
-    v8 = [v7 copy];
+    children = [(NFMultiDelegate *)self children];
+    v8 = [children copy];
 
     [(NFUnfairLock *)self->_lock unlock];
     v20 = 0u;
@@ -222,7 +222,7 @@ LABEL_14:
           v14 = *(*(&v18 + 1) + 8 * i);
           if (v14)
           {
-            v15 = [v14 methodSignatureForSelector:{a3, v18}];
+            v15 = [v14 methodSignatureForSelector:{selector, v18}];
             if (v15)
             {
               v6 = v15;
@@ -250,13 +250,13 @@ LABEL_14:
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invocationCopy = invocation;
   [(NFUnfairLock *)self->_lock lock];
-  v5 = [(NFMultiDelegate *)self children];
-  v6 = [v5 copy];
+  children = [(NFMultiDelegate *)self children];
+  v6 = [children copy];
 
   [(NFUnfairLock *)self->_lock unlock];
   v16 = 0u;
@@ -282,10 +282,10 @@ LABEL_14:
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (v12)
         {
-          [v4 selector];
+          [invocationCopy selector];
           if (objc_opt_respondsToSelector())
           {
-            [v4 invokeWithTarget:v12];
+            [invocationCopy invokeWithTarget:v12];
           }
         }
 

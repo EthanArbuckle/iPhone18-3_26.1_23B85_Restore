@@ -10,8 +10,8 @@
   {
     v6.receiver = self;
     v6.super_class = NTKExplorerRichFaceBundle;
-    v3 = [(NTKExplorerFaceBundle *)&v6 galleryTitle];
-    v4 = [NSString stringWithFormat:@"%@ (Legacy)", v3];
+    galleryTitle = [(NTKExplorerFaceBundle *)&v6 galleryTitle];
+    v4 = [NSString stringWithFormat:@"%@ (Legacy)", galleryTitle];
   }
 
   else

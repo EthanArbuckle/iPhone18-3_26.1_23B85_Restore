@@ -1,18 +1,18 @@
 @interface MTL4DebugMachineLearningPipelineState
-- (MTL4DebugMachineLearningPipelineState)initWithMLPipelineState:(id)a3 parent:(id)a4 descriptor:(id)a5;
+- (MTL4DebugMachineLearningPipelineState)initWithMLPipelineState:(id)state parent:(id)parent descriptor:(id)descriptor;
 - (void)dealloc;
 @end
 
 @implementation MTL4DebugMachineLearningPipelineState
 
-- (MTL4DebugMachineLearningPipelineState)initWithMLPipelineState:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTL4DebugMachineLearningPipelineState)initWithMLPipelineState:(id)state parent:(id)parent descriptor:(id)descriptor
 {
   v8.receiver = self;
   v8.super_class = MTL4DebugMachineLearningPipelineState;
-  v6 = [(MTL4ToolsMachineLearningPipelineState *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTL4ToolsMachineLearningPipelineState *)&v8 initWithBaseObject:state parent:parent];
   if (v6)
   {
-    v6->_descriptor = [a5 copy];
+    v6->_descriptor = [descriptor copy];
   }
 
   return v6;

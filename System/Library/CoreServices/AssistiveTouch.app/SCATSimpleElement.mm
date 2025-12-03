@@ -58,8 +58,8 @@
 
 - (BOOL)scatIsMemberOfGroup
 {
-  v2 = [(SCATSimpleElement *)self parentGroup];
-  v3 = v2 != 0;
+  parentGroup = [(SCATSimpleElement *)self parentGroup];
+  v3 = parentGroup != 0;
 
   return v3;
 }
@@ -89,10 +89,10 @@
 
 - (id)highestAncestorGroup
 {
-  v2 = [(SCATSimpleElement *)self parentGroup];
-  v3 = [v2 highestAncestorGroup];
+  parentGroup = [(SCATSimpleElement *)self parentGroup];
+  highestAncestorGroup = [parentGroup highestAncestorGroup];
 
-  return v3;
+  return highestAncestorGroup;
 }
 
 @end

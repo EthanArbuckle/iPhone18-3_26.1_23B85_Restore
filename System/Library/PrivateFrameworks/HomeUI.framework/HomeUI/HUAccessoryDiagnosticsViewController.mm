@@ -1,20 +1,20 @@
 @interface HUAccessoryDiagnosticsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUAccessoryDiagnosticsItemManager)accessoryLogsItemManager;
-- (HUAccessoryDiagnosticsViewController)initWithSourceItem:(id)a3;
-- (void)generateNewLogs:(id)a3;
-- (void)showShareSheetForItem:(id)a3 withAnchorView:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (HUAccessoryDiagnosticsViewController)initWithSourceItem:(id)item;
+- (void)generateNewLogs:(id)logs;
+- (void)showShareSheetForItem:(id)item withAnchorView:(id)view;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUAccessoryDiagnosticsViewController
 
-- (HUAccessoryDiagnosticsViewController)initWithSourceItem:(id)a3
+- (HUAccessoryDiagnosticsViewController)initWithSourceItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUAccessoryDiagnosticsItemManager alloc] initWithDelegate:self sourceItem:v4];
+  itemCopy = item;
+  v5 = [[HUAccessoryDiagnosticsItemManager alloc] initWithDelegate:self sourceItem:itemCopy];
 
   v10.receiver = self;
   v10.super_class = HUAccessoryDiagnosticsViewController;
@@ -31,47 +31,47 @@
   return v7;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v7 = [v6 fetchManufacturerSnapshotButtonItem];
-  if ([v5 isEqual:v7])
+  itemCopy = item;
+  accessoryLogsItemManager = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchManufacturerSnapshotButtonItem = [accessoryLogsItemManager fetchManufacturerSnapshotButtonItem];
+  if ([itemCopy isEqual:fetchManufacturerSnapshotButtonItem])
   {
     goto LABEL_4;
   }
 
-  v8 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v9 = [v8 fetchADKSnapshotButtonItem];
-  if ([v5 isEqual:v9])
+  accessoryLogsItemManager2 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchADKSnapshotButtonItem = [accessoryLogsItemManager2 fetchADKSnapshotButtonItem];
+  if ([itemCopy isEqual:fetchADKSnapshotButtonItem])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v12 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v13 = [v12 fetchMatterSnapshotButtonItem];
-  v14 = [v5 isEqual:v13];
+  accessoryLogsItemManager3 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchMatterSnapshotButtonItem = [accessoryLogsItemManager3 fetchMatterSnapshotButtonItem];
+  v14 = [itemCopy isEqual:fetchMatterSnapshotButtonItem];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-    v16 = [v15 logCollectionFailedItem];
-    v17 = [v5 isEqual:v16];
+    accessoryLogsItemManager4 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+    logCollectionFailedItem = [accessoryLogsItemManager4 logCollectionFailedItem];
+    v17 = [itemCopy isEqual:logCollectionFailedItem];
 
     if ((v17 & 1) == 0)
     {
-      v6 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-      v7 = [v6 enableVerboseLoggingItem];
-      if ([v5 isEqual:v7])
+      accessoryLogsItemManager = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+      fetchManufacturerSnapshotButtonItem = [accessoryLogsItemManager enableVerboseLoggingItem];
+      if ([itemCopy isEqual:fetchManufacturerSnapshotButtonItem])
       {
         goto LABEL_4;
       }
 
-      v18 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-      v19 = [v18 enableAudioClipLoggingItem];
-      [v5 isEqual:v19];
+      accessoryLogsItemManager5 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+      enableAudioClipLoggingItem = [accessoryLogsItemManager5 enableAudioClipLoggingItem];
+      [itemCopy isEqual:enableAudioClipLoggingItem];
     }
   }
 
@@ -81,17 +81,17 @@ LABEL_5:
   return v10;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v13.receiver = self;
   v13.super_class = HUAccessoryDiagnosticsViewController;
-  [(HUItemTableViewController *)&v13 updateCell:v10 forItem:a4 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v13 updateCell:cellCopy forItem:item indexPath:path animated:animatedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 setHideIcon:1];
+    [cellCopy setHideIcon:1];
   }
 
   else
@@ -99,9 +99,9 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
-      v12 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-      [v11 setShowSpinner:{objc_msgSend(v12, "collectionInProgress")}];
+      v11 = cellCopy;
+      accessoryLogsItemManager = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+      [v11 setShowSpinner:{objc_msgSend(accessoryLogsItemManager, "collectionInProgress")}];
     }
 
     else
@@ -109,48 +109,48 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v10 setDelegate:self];
+        [cellCopy setDelegate:self];
       }
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v34.receiver = self;
   v34.super_class = HUAccessoryDiagnosticsViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v34 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:{1, v34.receiver, v34.super_class}];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v34 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v34.receiver, v34.super_class}];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v11 = [v10 fetchManufacturerSnapshotButtonItem];
-  if (v9 == v11)
+  accessoryLogsItemManager = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchManufacturerSnapshotButtonItem = [accessoryLogsItemManager fetchManufacturerSnapshotButtonItem];
+  if (v9 == fetchManufacturerSnapshotButtonItem)
   {
     goto LABEL_9;
   }
 
-  v12 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v13 = [v12 fetchADKSnapshotButtonItem];
-  v14 = v13;
-  if (v9 == v13)
+  accessoryLogsItemManager2 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchADKSnapshotButtonItem = [accessoryLogsItemManager2 fetchADKSnapshotButtonItem];
+  v14 = fetchADKSnapshotButtonItem;
+  if (v9 == fetchADKSnapshotButtonItem)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v16 = [v15 fetchMatterSnapshotButtonItem];
+  accessoryLogsItemManager3 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  fetchMatterSnapshotButtonItem = [accessoryLogsItemManager3 fetchMatterSnapshotButtonItem];
 
-  if (v9 != v16)
+  if (v9 != fetchMatterSnapshotButtonItem)
   {
-    v17 = [(HUAccessoryDiagnosticsViewController *)self tableView];
-    v18 = [v17 cellForRowAtIndexPath:v6];
+    tableView = [(HUAccessoryDiagnosticsViewController *)self tableView];
+    v18 = [tableView cellForRowAtIndexPath:pathCopy];
 
     objc_opt_class();
     v19 = v9;
@@ -172,10 +172,10 @@ LABEL_9:
 
 LABEL_10:
   objc_opt_class();
-  v22 = [(HUItemTableViewController *)self itemManager];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v23 = v22;
+    v23 = itemManager2;
   }
 
   else
@@ -185,16 +185,16 @@ LABEL_10:
 
   v18 = v23;
 
-  v24 = [v18 sourceAccessory];
-  if (![v24 hf_isDirectlyReachable])
+  sourceAccessory = [v18 sourceAccessory];
+  if (![sourceAccessory hf_isDirectlyReachable])
   {
-    v25 = [v18 sourceAccessory];
-    if ([v25 supportsCHIP])
+    sourceAccessory2 = [v18 sourceAccessory];
+    if ([sourceAccessory2 supportsCHIP])
     {
-      v26 = [v18 sourceAccessory];
-      v27 = [v26 isReachable];
+      sourceAccessory3 = [v18 sourceAccessory];
+      isReachable = [sourceAccessory3 isReachable];
 
-      if (v27)
+      if (isReachable)
       {
         goto LABEL_15;
       }
@@ -225,30 +225,30 @@ LABEL_15:
 LABEL_22:
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 item];
-  v8 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v9 = [v8 enableVerboseLoggingItem];
-  v10 = [v7 isEqual:v9];
+  onCopy = on;
+  cellCopy = cell;
+  item = [cellCopy item];
+  accessoryLogsItemManager = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  enableVerboseLoggingItem = [accessoryLogsItemManager enableVerboseLoggingItem];
+  v10 = [item isEqual:enableVerboseLoggingItem];
 
-  v11 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-  v12 = v11;
+  accessoryLogsItemManager2 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+  v12 = accessoryLogsItemManager2;
   if (v10)
   {
-    [v11 setVerboseLoggingEnabled:v4];
+    [accessoryLogsItemManager2 setVerboseLoggingEnabled:onCopy];
   }
 
   else
   {
-    v13 = [v11 enableAudioClipLoggingItem];
-    v14 = [v7 isEqual:v13];
+    enableAudioClipLoggingItem = [accessoryLogsItemManager2 enableAudioClipLoggingItem];
+    v14 = [item isEqual:enableAudioClipLoggingItem];
 
     if (v14)
     {
-      if (v4)
+      if (onCopy)
       {
         v15 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsAudioClipAlertTitle", @"HUAccessoryDiagnosticsAudioClipAlertTitle", 1);
         v16 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsAudioClipAlertMessage", @"HUAccessoryDiagnosticsAudioClipAlertMessage", 1);
@@ -261,7 +261,7 @@ LABEL_22:
         v27[2] = __61__HUAccessoryDiagnosticsViewController_switchCell_didTurnOn___block_invoke;
         v27[3] = &unk_277DC3B98;
         objc_copyWeak(&v28, &location);
-        v29 = v4;
+        v29 = onCopy;
         v20 = [v18 actionWithTitle:v19 style:0 handler:v27];
         [v17 addAction:v20];
 
@@ -271,7 +271,7 @@ LABEL_22:
         v25[1] = 3221225472;
         v25[2] = __61__HUAccessoryDiagnosticsViewController_switchCell_didTurnOn___block_invoke_2;
         v25[3] = &unk_277DB7600;
-        v26 = v6;
+        v26 = cellCopy;
         v23 = [v21 actionWithTitle:v22 style:1 handler:v25];
         [v17 addAction:v23];
 
@@ -282,8 +282,8 @@ LABEL_22:
 
       else
       {
-        v24 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
-        [v24 setAudioClipLoggingEnabled:0];
+        accessoryLogsItemManager3 = [(HUAccessoryDiagnosticsViewController *)self accessoryLogsItemManager];
+        [accessoryLogsItemManager3 setAudioClipLoggingEnabled:0];
       }
     }
   }
@@ -296,14 +296,14 @@ void __61__HUAccessoryDiagnosticsViewController_switchCell_didTurnOn___block_inv
   [v2 setAudioClipLoggingEnabled:*(a1 + 40)];
 }
 
-- (void)showShareSheetForItem:(id)a3 withAnchorView:(id)a4
+- (void)showShareSheetForItem:(id)item withAnchorView:(id)view
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEligibleForUpload])
+  itemCopy = item;
+  viewCopy = view;
+  if ([itemCopy isEligibleForUpload])
   {
-    v8 = [[HUSendDiagnosticsToManufacturerActivity alloc] initWithDiagnosticItem:v6];
+    v8 = [[HUSendDiagnosticsToManufacturerActivity alloc] initWithDiagnosticItem:itemCopy];
     v25[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   }
@@ -314,23 +314,23 @@ void __61__HUAccessoryDiagnosticsViewController_switchCell_didTurnOn___block_inv
   }
 
   v10 = objc_alloc(MEMORY[0x277D546D8]);
-  v11 = [v6 fileURL];
-  v24 = v11;
+  fileURL = [itemCopy fileURL];
+  v24 = fileURL;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
   v13 = [v10 initWithActivityItems:v12 applicationActivities:v9];
 
   [v13 setCompletionWithItemsHandler:&__block_literal_global_263];
-  v14 = [v13 popoverPresentationController];
-  [v14 setSourceView:v7];
+  popoverPresentationController = [v13 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v7 frame];
+  [viewCopy frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [v13 popoverPresentationController];
-  [v23 setSourceRect:{v16, v18, v20, v22}];
+  popoverPresentationController2 = [v13 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v16, v18, v20, v22}];
 
   [(HUAccessoryDiagnosticsViewController *)self presentViewController:v13 animated:1 completion:0];
 }
@@ -353,14 +353,14 @@ void __77__HUAccessoryDiagnosticsViewController_showShareSheetForItem_withAnchor
   }
 }
 
-- (void)generateNewLogs:(id)a3
+- (void)generateNewLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   objc_opt_class();
-  v5 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = itemManager;
   }
 
   else
@@ -370,7 +370,7 @@ void __77__HUAccessoryDiagnosticsViewController_showShareSheetForItem_withAnchor
 
   v14 = v6;
 
-  [v14 beginDiagnosticCollection:v4];
+  [v14 beginDiagnosticCollection:logsCopy];
   v7 = MEMORY[0x277D75110];
   v8 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsAlertTitle", @"HUAccessoryDiagnosticsAlertTitle", 1);
   v9 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsAlertMessage", @"HUAccessoryDiagnosticsAlertMessage", 1);

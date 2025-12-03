@@ -6,9 +6,9 @@
 - (BOOL)isDownloadAllowableForCellularRoaming;
 - (BOOL)isDownloadAllowableForWiFi;
 - (BOOL)isDownloadFreeForCellular;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUUIMobileDownloadPolicy)init;
-- (SUUIMobileDownloadPolicy)initWithPolicy:(id)a3;
+- (SUUIMobileDownloadPolicy)initWithPolicy:(id)policy;
 - (unint64_t)hash;
 @end
 
@@ -28,92 +28,92 @@
   objc_exception_throw(v8);
 }
 
-- (SUUIMobileDownloadPolicy)initWithPolicy:(id)a3
+- (SUUIMobileDownloadPolicy)initWithPolicy:(id)policy
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, policy);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = SUUIMobileDownloadPolicy;
-  v8 = [(SUUIMobileDownloadPolicy *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(SUUIMobileDownloadPolicy *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_underlyingPolicy, location[0]);
+    objc_storeStrong(&selfCopy->_underlyingPolicy, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (BOOL)isDownloadFreeForCellular
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 isDownloadFreeForCellular];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  isDownloadFreeForCellular = [(SUDownloadPolicy *)underlyingPolicy isDownloadFreeForCellular];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return isDownloadFreeForCellular;
 }
 
 - (BOOL)isDownloadAllowableForCellular
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 isDownloadAllowableForCellular];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  isDownloadAllowableForCellular = [(SUDownloadPolicy *)underlyingPolicy isDownloadAllowableForCellular];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return isDownloadAllowableForCellular;
 }
 
 - (BOOL)isDownloadAllowableForCellular2G
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 isDownloadAllowableForCellular2G];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  isDownloadAllowableForCellular2G = [(SUDownloadPolicy *)underlyingPolicy isDownloadAllowableForCellular2G];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return isDownloadAllowableForCellular2G;
 }
 
 - (BOOL)isDownloadAllowableForCellularRoaming
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 isDownloadAllowableForCellularRoaming];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  isDownloadAllowableForCellularRoaming = [(SUDownloadPolicy *)underlyingPolicy isDownloadAllowableForCellularRoaming];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return isDownloadAllowableForCellularRoaming;
 }
 
 - (BOOL)isDownloadAllowableForWiFi
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 isDownloadAllowableForWiFi];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  isDownloadAllowableForWiFi = [(SUDownloadPolicy *)underlyingPolicy isDownloadAllowableForWiFi];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return isDownloadAllowableForWiFi;
 }
 
 - (BOOL)allowExpensiveNetwork
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 allowExpensiveNetwork];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  allowExpensiveNetwork = [(SUDownloadPolicy *)underlyingPolicy allowExpensiveNetwork];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return allowExpensiveNetwork;
 }
 
 - (BOOL)is5GDownloadAllowed
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 is5GDownloadAllowed];
-  MEMORY[0x277D82BD8](v3);
-  return v4;
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  is5GDownloadAllowed = [(SUDownloadPolicy *)underlyingPolicy is5GDownloadAllowed];
+  MEMORY[0x277D82BD8](underlyingPolicy);
+  return is5GDownloadAllowed;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v9 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v10 = 1;
     v7 = 1;
@@ -125,11 +125,11 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x277D82BE0](location[0]);
-      v5 = [(SUUIMobileDownloadPolicy *)v9 underlyingPolicy];
-      v4 = [v6 underlyingPolicy];
-      v10 = [(SUDownloadPolicy *)v5 isEqual:?]& 1;
-      MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
+      underlyingPolicy = [(SUUIMobileDownloadPolicy *)selfCopy underlyingPolicy];
+      underlyingPolicy2 = [v6 underlyingPolicy];
+      v10 = [(SUDownloadPolicy *)underlyingPolicy isEqual:?]& 1;
+      MEMORY[0x277D82BD8](underlyingPolicy2);
+      MEMORY[0x277D82BD8](underlyingPolicy);
       v7 = 1;
       objc_storeStrong(&v6, 0);
     }
@@ -147,9 +147,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
-  v4 = [(SUDownloadPolicy *)v3 hash];
-  MEMORY[0x277D82BD8](v3);
+  underlyingPolicy = [(SUUIMobileDownloadPolicy *)self underlyingPolicy];
+  v4 = [(SUDownloadPolicy *)underlyingPolicy hash];
+  MEMORY[0x277D82BD8](underlyingPolicy);
   return v4;
 }
 

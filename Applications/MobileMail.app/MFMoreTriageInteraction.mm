@@ -1,11 +1,11 @@
 @interface MFMoreTriageInteraction
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 interactionStyle:(unint64_t)a7;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor interactionStyle:(unint64_t)style;
 + (id)log;
 - (id)_iconImageName;
 - (id)color;
 - (id)title;
-- (void)_dispatchInteractionWithCompletion:(id)a3;
+- (void)_dispatchInteractionWithCompletion:(id)completion;
 @end
 
 @implementation MFMoreTriageInteraction
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001FD960;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD5F0 != -1)
   {
     dispatch_once(&qword_1006DD5F0, block);
@@ -27,43 +27,43 @@
   return v2;
 }
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v6 = [MFMoreTriageInteraction interactionWithMessageListItems:a3 undoManager:a4 origin:a5 actor:a6 interactionStyle:0];
+  v6 = [MFMoreTriageInteraction interactionWithMessageListItems:items undoManager:manager origin:origin actor:actor interactionStyle:0];
 
   return v6;
 }
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 interactionStyle:(unint64_t)a7
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor interactionStyle:(unint64_t)style
 {
-  v11 = a3;
-  v16.receiver = a1;
+  itemsCopy = items;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___MFMoreTriageInteraction;
-  v12 = objc_msgSendSuper2(&v16, "interactionWithMessageListItems:undoManager:origin:actor:", v11, 0, a5, a6);
-  v13 = [v11 firstObject];
-  v14 = [v13 displayMessage];
-  [v12 setDisplayMessage:v14];
+  v12 = objc_msgSendSuper2(&v16, "interactionWithMessageListItems:undoManager:origin:actor:", itemsCopy, 0, origin, actor);
+  firstObject = [itemsCopy firstObject];
+  displayMessage = [firstObject displayMessage];
+  [v12 setDisplayMessage:displayMessage];
 
-  [v12 setStyle:a7];
+  [v12 setStyle:style];
 
   return v12;
 }
 
-- (void)_dispatchInteractionWithCompletion:(id)a3
+- (void)_dispatchInteractionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MFMoreTriageInteraction *)self displayMessage];
+  displayMessage = [(MFMoreTriageInteraction *)self displayMessage];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1001FDC4C;
   v10 = &unk_100655110;
   objc_copyWeak(&v13, &location);
-  v11 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = completionCopy;
   v12 = v6;
-  [v5 addSuccessBlock:&v7];
-  [v5 addFailureBlock:{&stru_100655130, v7, v8, v9, v10, v11}];
+  [displayMessage addSuccessBlock:&v7];
+  [displayMessage addFailureBlock:{&stru_100655130, v7, v8, v9, v10, selfCopy}];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -71,15 +71,15 @@
 
 - (id)title
 {
-  v2 = [(MFMoreTriageInteraction *)self style];
-  if (v2 == 1)
+  style = [(MFMoreTriageInteraction *)self style];
+  if (style == 1)
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"REPLY" value:&stru_100662A88 table:@"Main"];
     goto LABEL_5;
   }
 
-  if (!v2)
+  if (!style)
   {
     v3 = +[NSBundle mainBundle];
     v4 = [v3 localizedStringForKey:@"SWIPE_MORE" value:&stru_100662A88 table:@"Main"];
@@ -97,14 +97,14 @@ LABEL_7:
 
 - (id)_iconImageName
 {
-  v2 = [(MFMoreTriageInteraction *)self style];
-  if (!v2)
+  style = [(MFMoreTriageInteraction *)self style];
+  if (!style)
   {
     v3 = &MFImageGlyphMessageListMore;
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (style == 1)
   {
     v3 = &MFImageGlyphReplyFill;
 LABEL_5:
@@ -120,25 +120,25 @@ LABEL_7:
 
 - (id)color
 {
-  v3 = [(MFMoreTriageInteraction *)self style];
-  if (v3 == 1)
+  style = [(MFMoreTriageInteraction *)self style];
+  if (style == 1)
   {
     v6.receiver = self;
     v6.super_class = MFMoreTriageInteraction;
-    v4 = [(MFTriageInteraction *)&v6 color];
+    color = [(MFTriageInteraction *)&v6 color];
   }
 
-  else if (v3)
+  else if (style)
   {
-    v4 = 0;
+    color = 0;
   }
 
   else
   {
-    v4 = +[UIColor mailMoreButtonGrayColor];
+    color = +[UIColor mailMoreButtonGrayColor];
   }
 
-  return v4;
+  return color;
 }
 
 @end

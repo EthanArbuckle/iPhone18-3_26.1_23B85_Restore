@@ -1,39 +1,39 @@
 @interface ACXRemoteAppRemovabilityManager
-+ (id)remoteRemovabilityManagerForStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5;
-- (ACXRemoteAppRemovabilityManager)initWithCoder:(id)a3;
-- (ACXRemoteAppRemovabilityManager)initWithStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5;
++ (id)remoteRemovabilityManagerForStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue;
+- (ACXRemoteAppRemovabilityManager)initWithCoder:(id)coder;
+- (ACXRemoteAppRemovabilityManager)initWithStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue;
 - (ACXRemoteRemovabilityCommunications)delegate;
-- (BOOL)_onQueue_hasRemoteChangeClockUpdatedForUUID:(id)a3 sequenceNumber:(unint64_t)a4;
+- (BOOL)_onQueue_hasRemoteChangeClockUpdatedForUUID:(id)d sequenceNumber:(unint64_t)number;
 - (OS_dispatch_queue)queue;
 - (void)_onQueue_saveData;
-- (void)encodeWithCoder:(id)a3;
-- (void)removabilityUpdatedForApp:(id)a3 removability:(unint64_t)a4 dbUUID:(id)a5 sequenceNumber:(unint64_t)a6;
-- (void)removeDelegate:(id)a3;
-- (void)reportRemoteRemovabilityDBUUID:(id)a3 sequenceNumber:(unint64_t)a4;
-- (void)setRemoteRemovabilityData:(id)a3 withDBUUID:(id)a4 sequenceNumber:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)removabilityUpdatedForApp:(id)app removability:(unint64_t)removability dbUUID:(id)d sequenceNumber:(unint64_t)number;
+- (void)removeDelegate:(id)delegate;
+- (void)reportRemoteRemovabilityDBUUID:(id)d sequenceNumber:(unint64_t)number;
+- (void)setRemoteRemovabilityData:(id)data withDBUUID:(id)d sequenceNumber:(unint64_t)number;
 @end
 
 @implementation ACXRemoteAppRemovabilityManager
 
-+ (id)remoteRemovabilityManagerForStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5
++ (id)remoteRemovabilityManagerForStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 URLByAppendingPathComponent:@"ACXRemoteRemovability.plist" isDirectory:0];
-  v11 = [v10 path];
+  lCopy = l;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v10 = [lCopy URLByAppendingPathComponent:@"ACXRemoteRemovability.plist" isDirectory:0];
+  path = [v10 path];
   v26 = 0;
-  v12 = [NSData dataWithContentsOfFile:v11 options:1 error:&v26];
+  v12 = [NSData dataWithContentsOfFile:path options:1 error:&v26];
   v13 = v26;
 
   if (!v12)
   {
-    v18 = [v13 domain];
-    if ([v18 isEqualToString:NSCocoaErrorDomain])
+    domain = [v13 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v19 = [v13 code];
+      code = [v13 code];
 
-      if (v19 == 260)
+      if (code == 260)
       {
         goto LABEL_15;
       }
@@ -45,8 +45,8 @@
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v20 = [v10 path];
-      v23 = v20;
+      path2 = [v10 path];
+      v23 = path2;
       v24 = v13;
       MOLogWrite();
       v14 = 0;
@@ -70,17 +70,17 @@ LABEL_15:
     if (v16)
     {
       v17 = v16;
-      [v16 setDelegate:v8];
-      [v17 setDelegateQueue:v9];
-      [v17 setStorageBaseURL:v7];
+      [v16 setDelegate:delegateCopy];
+      [v17 setDelegateQueue:queueCopy];
+      [v17 setStorageBaseURL:lCopy];
       v13 = v15;
       goto LABEL_27;
     }
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v20 = [v10 path];
-      v23 = v20;
+      path2 = [v10 path];
+      v23 = path2;
       MOLogWrite();
       goto LABEL_19;
     }
@@ -90,8 +90,8 @@ LABEL_15:
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v20 = [v10 path];
-      v23 = v20;
+      path2 = [v10 path];
+      v23 = path2;
       v24 = v15;
       MOLogWrite();
       v14 = 0;
@@ -113,15 +113,15 @@ LABEL_23:
   v21 = [NSFileManager defaultManager:v23];
   [v21 removeItemAtURL:v10 error:0];
 
-  v17 = [objc_alloc(objc_opt_class()) initWithStorageBaseURL:v7 delegate:v8 queue:v9];
+  v17 = [objc_alloc(objc_opt_class()) initWithStorageBaseURL:lCopy delegate:delegateCopy queue:queueCopy];
 LABEL_27:
 
   return v17;
 }
 
-- (ACXRemoteAppRemovabilityManager)initWithCoder:(id)a3
+- (ACXRemoteAppRemovabilityManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ACXRemoteAppRemovabilityManager;
   v5 = [(ACXRemoteAppRemovabilityManager *)&v19 init];
@@ -133,18 +133,18 @@ LABEL_27:
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v6, v7, objc_opt_class(), 0];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"appRemovabilityMap"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"appRemovabilityMap"];
   appRemovabilityMap = v5->_appRemovabilityMap;
   v5->_appRemovabilityMap = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentClockUUID"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentClockUUID"];
   currentClockUUID = v5->_currentClockUUID;
   v5->_currentClockUUID = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSequenceNumber"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSequenceNumber"];
   v5->_lastSequenceNumber = [v13 unsignedIntegerValue];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteRemovabilityVersion"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteRemovabilityVersion"];
   v15 = v14;
   if (v14 && [v14 unsignedLongLongValue] != 1)
   {
@@ -161,9 +161,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v16 = [(ACXRemoteAppRemovabilityManager *)v5 appRemovabilityMap];
+  appRemovabilityMap = [(ACXRemoteAppRemovabilityManager *)v5 appRemovabilityMap];
 
-  if (!v16)
+  if (!appRemovabilityMap)
   {
     if (qword_1000A4878 && *(qword_1000A4878 + 44) < 3)
     {
@@ -180,54 +180,54 @@ LABEL_14:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appRemovabilityMap = self->_appRemovabilityMap;
-  v6 = a3;
-  [v6 encodeObject:appRemovabilityMap forKey:@"appRemovabilityMap"];
-  [v6 encodeObject:self->_currentClockUUID forKey:@"currentClockUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appRemovabilityMap forKey:@"appRemovabilityMap"];
+  [coderCopy encodeObject:self->_currentClockUUID forKey:@"currentClockUUID"];
   v5 = [NSNumber numberWithUnsignedInteger:self->_lastSequenceNumber];
-  [v6 encodeObject:v5 forKey:@"lastSequenceNumber"];
+  [coderCopy encodeObject:v5 forKey:@"lastSequenceNumber"];
 
-  [v6 encodeObject:&off_1000975D8 forKey:@"RemoteRemovabilityVersion"];
+  [coderCopy encodeObject:&off_1000975D8 forKey:@"RemoteRemovabilityVersion"];
 }
 
 - (void)_onQueue_saveData
 {
-  v3 = [(ACXRemoteAppRemovabilityManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v4 setOutputFormat:200];
   [v4 encodeObject:self forKey:NSKeyedArchiveRootObjectKey];
-  v5 = [v4 encodedData];
-  v6 = [(ACXRemoteAppRemovabilityManager *)self storageBaseURL];
-  v7 = [v6 URLByAppendingPathComponent:@"ACXRemoteRemovability.plist" isDirectory:0];
+  encodedData = [v4 encodedData];
+  storageBaseURL = [(ACXRemoteAppRemovabilityManager *)self storageBaseURL];
+  v7 = [storageBaseURL URLByAppendingPathComponent:@"ACXRemoteRemovability.plist" isDirectory:0];
 
   v11 = 0;
-  v8 = [v5 writeToURL:v7 options:268435457 error:&v11];
+  v8 = [encodedData writeToURL:v7 options:268435457 error:&v11];
   v9 = v11;
   if ((v8 & 1) == 0 && (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3))
   {
-    v10 = [v7 path];
+    path = [v7 path];
     MOLogWrite();
   }
 }
 
-- (ACXRemoteAppRemovabilityManager)initWithStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5
+- (ACXRemoteAppRemovabilityManager)initWithStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = ACXRemoteAppRemovabilityManager;
   v12 = [(ACXRemoteAppRemovabilityManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storageBaseURL, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_delegateQueue, a5);
+    objc_storeStrong(&v12->_storageBaseURL, l);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_delegateQueue, queue);
   }
 
   return v13;
@@ -245,26 +245,26 @@ LABEL_14:
   return v3;
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = [(ACXRemoteAppRemovabilityManager *)self queue];
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EA88;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 }
 
-- (BOOL)_onQueue_hasRemoteChangeClockUpdatedForUUID:(id)a3 sequenceNumber:(unint64_t)a4
+- (BOOL)_onQueue_hasRemoteChangeClockUpdatedForUUID:(id)d sequenceNumber:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [(ACXRemoteAppRemovabilityManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (([(NSUUID *)self->_currentClockUUID isEqual:v6]& 1) != 0)
+  if (([(NSUUID *)self->_currentClockUUID isEqual:dCopy]& 1) != 0)
   {
-    v8 = self->_lastSequenceNumber != a4;
+    v8 = self->_lastSequenceNumber != number;
   }
 
   else
@@ -281,56 +281,56 @@ LABEL_14:
   return v8;
 }
 
-- (void)reportRemoteRemovabilityDBUUID:(id)a3 sequenceNumber:(unint64_t)a4
+- (void)reportRemoteRemovabilityDBUUID:(id)d sequenceNumber:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [(ACXRemoteAppRemovabilityManager *)self queue];
+  dCopy = d;
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EC10;
   block[3] = &unk_10008CEC8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = dCopy;
+  numberCopy = number;
+  v8 = dCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removabilityUpdatedForApp:(id)a3 removability:(unint64_t)a4 dbUUID:(id)a5 sequenceNumber:(unint64_t)a6
+- (void)removabilityUpdatedForApp:(id)app removability:(unint64_t)removability dbUUID:(id)d sequenceNumber:(unint64_t)number
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(ACXRemoteAppRemovabilityManager *)self queue];
+  appCopy = app;
+  dCopy = d;
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EDE0;
   block[3] = &unk_10008CEF0;
   block[4] = self;
-  v16 = v11;
-  v17 = v10;
-  v18 = a6;
-  v19 = a4;
-  v13 = v10;
-  v14 = v11;
-  dispatch_sync(v12, block);
+  v16 = dCopy;
+  v17 = appCopy;
+  numberCopy = number;
+  removabilityCopy = removability;
+  v13 = appCopy;
+  v14 = dCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)setRemoteRemovabilityData:(id)a3 withDBUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (void)setRemoteRemovabilityData:(id)data withDBUUID:(id)d sequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ACXRemoteAppRemovabilityManager *)self queue];
+  dataCopy = data;
+  dCopy = d;
+  queue = [(ACXRemoteAppRemovabilityManager *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000F394;
   v13[3] = &unk_10008CF40;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dCopy;
+  v15 = dataCopy;
+  numberCopy = number;
+  v11 = dataCopy;
+  v12 = dCopy;
+  dispatch_sync(queue, v13);
 }
 
 - (ACXRemoteRemovabilityCommunications)delegate

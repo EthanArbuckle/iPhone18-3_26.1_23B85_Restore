@@ -1,18 +1,18 @@
 @interface SMWorkoutEventMO
-+ (id)getWorkoutEventMOFromWorkoutEvent:(id)a3 context:(id)a4;
-+ (id)getWorkoutEventMOFromWorkoutEvents:(id)a3 context:(id)a4;
-+ (id)managedObjectWithSMWorkoutEvent:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)getWorkoutEventMOFromWorkoutEvent:(id)event context:(id)context;
++ (id)getWorkoutEventMOFromWorkoutEvents:(id)events context:(id)context;
++ (id)managedObjectWithSMWorkoutEvent:(id)event managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation SMWorkoutEventMO
 
-+ (id)managedObjectWithSMWorkoutEvent:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithSMWorkoutEvent:(id)event managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  eventCopy = event;
+  objectCopy = object;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!eventCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v9)
+  if (contextCopy)
   {
     *buf = 0;
     v21 = buf;
@@ -40,9 +40,9 @@ LABEL_12:
     v15[2] = __89__SMWorkoutEventMO_managedObjectWithSMWorkoutEvent_managedObject_inManagedObjectContext___block_invoke;
     v15[3] = &unk_2788C5DA0;
     v19 = buf;
-    v16 = v8;
+    v16 = objectCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = eventCopy;
     [v17 performBlockAndWait:v15];
     v11 = *(v21 + 5);
 
@@ -128,17 +128,17 @@ void __89__SMWorkoutEventMO_managedObjectWithSMWorkoutEvent_managedObject_inMana
   [*(*(*(a1 + 56) + 8) + 40) setLocation:v18];
 }
 
-+ (id)getWorkoutEventMOFromWorkoutEvents:(id)a3 context:(id)a4
++ (id)getWorkoutEventMOFromWorkoutEvents:(id)events context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  eventsCopy = events;
+  contextCopy = context;
+  v7 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -153,7 +153,7 @@ void __89__SMWorkoutEventMO_managedObjectWithSMWorkoutEvent_managedObject_inMana
           objc_enumerationMutation(v8);
         }
 
-        v13 = [SMWorkoutEventMO getWorkoutEventMOFromWorkoutEvent:*(*(&v15 + 1) + 8 * i) context:v6, v15];
+        v13 = [SMWorkoutEventMO getWorkoutEventMOFromWorkoutEvent:*(*(&v15 + 1) + 8 * i) context:contextCopy, v15];
         if (v13)
         {
           [v7 addObject:v13];
@@ -169,20 +169,20 @@ void __89__SMWorkoutEventMO_managedObjectWithSMWorkoutEvent_managedObject_inMana
   return v7;
 }
 
-+ (id)getWorkoutEventMOFromWorkoutEvent:(id)a3 context:(id)a4
++ (id)getWorkoutEventMOFromWorkoutEvent:(id)event context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  eventCopy = event;
   v7 = +[SMWorkoutEventMO fetchRequest];
   v8 = MEMORY[0x277CCAC30];
-  v9 = [v6 identifier];
-  v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", v9];
+  identifier = [eventCopy identifier];
+  v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", identifier];
   [v7 setPredicate:v10];
 
   v15 = 0;
-  v11 = [v5 executeFetchRequest:v7 error:&v15];
-  v12 = [v11 firstObject];
-  v13 = [SMWorkoutEventMO managedObjectWithSMWorkoutEvent:v6 managedObject:v12 inManagedObjectContext:v5];
+  v11 = [contextCopy executeFetchRequest:v7 error:&v15];
+  firstObject = [v11 firstObject];
+  v13 = [SMWorkoutEventMO managedObjectWithSMWorkoutEvent:eventCopy managedObject:firstObject inManagedObjectContext:contextCopy];
 
   return v13;
 }

@@ -1,33 +1,33 @@
 @interface MTAAddClockViewController
-+ (void)addCityFromUserActivity:(id)a3 parentViewController:(id)a4;
++ (void)addCityFromUserActivity:(id)activity parentViewController:(id)controller;
 - (CGRect)keyboardFrame;
 - (MTAAddClockViewController)init;
 - (MTAUpdateClockViewControllerDelegate)delegate;
 - (double)_calculateVerticalMultiplierForKeyboard;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
 - (void)_addAutolayoutConstraintsForNoResultsFoundLabel;
 - (void)_dismiss;
 - (void)_dismissWithoutDefferingTransitions;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_keyboardWillDismiss:(id)a3;
-- (void)_keyboardWillResize:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_reloadNoResultsFoundLabelForKeyboardNotification:(id)a3;
+- (void)_keyboardDidShow:(id)show;
+- (void)_keyboardWillDismiss:(id)dismiss;
+- (void)_keyboardWillResize:(id)resize;
+- (void)_keyboardWillShow:(id)show;
+- (void)_reloadNoResultsFoundLabelForKeyboardNotification:(id)notification;
 - (void)_removeAutolayoutConstraintsForNoResultsFoundLabel;
-- (void)_showNoResultsFound:(BOOL)a3;
+- (void)_showNoResultsFound:(BOOL)found;
 - (void)contentSizeCategoryDidChange;
 - (void)prepopulateSuggestions;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAAddClockViewController
@@ -50,23 +50,23 @@
   v17.receiver = self;
   v17.super_class = MTAAddClockViewController;
   [(MTAAddClockViewController *)&v17 viewDidLoad];
-  v3 = [(MTAAddClockViewController *)self tableView];
+  tableView = [(MTAAddClockViewController *)self tableView];
   v4 = +[UIColor mtui_tintColor];
-  [v3 setTintColor:v4];
+  [tableView setTintColor:v4];
 
   v5 = +[UIColor mtui_tintColor];
-  [v3 setSectionIndexColor:v5];
+  [tableView setSectionIndexColor:v5];
 
   v6 = +[UIColor mtui_backgroundColor];
-  [v3 setBackgroundColor:v6];
+  [tableView setBackgroundColor:v6];
 
-  [v3 setEstimatedRowHeight:48.0];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
+  [tableView setEstimatedRowHeight:48.0];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
   v7 = +[UIColor clearColor];
-  [v3 setSectionIndexBackgroundColor:v7];
+  [tableView setSectionIndexBackgroundColor:v7];
 
   v8 = objc_opt_new();
-  [v3 setTableFooterView:v8];
+  [tableView setTableFooterView:v8];
 
   [(MTAAddClockViewController *)self prepopulateSuggestions];
   v9 = [[MTASecuredSearchController alloc] initWithSearchResultsController:0];
@@ -76,49 +76,49 @@
   [(MTASecuredSearchController *)self->_searchController setSearchResultsUpdater:self];
   [(MTASecuredSearchController *)self->_searchController setDelegate:self];
   [(MTASecuredSearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
-  v11 = [(MTASecuredSearchController *)self->_searchController searchBar];
-  [v11 setAutocapitalizationType:0];
-  [v11 setKeyboardType:0];
-  [v11 setAutocorrectionType:1];
-  [v11 setKeyboardAppearance:1];
-  [v11 setTextContentType:UITextContentTypeAddressCityAndState];
-  [v11 setBackgroundColor:0];
-  [v11 setBackgroundImage:0 forBarPosition:0 barMetrics:101];
-  v12 = [(MTAAddClockViewController *)self navigationItem];
+  searchBar = [(MTASecuredSearchController *)self->_searchController searchBar];
+  [searchBar setAutocapitalizationType:0];
+  [searchBar setKeyboardType:0];
+  [searchBar setAutocorrectionType:1];
+  [searchBar setKeyboardAppearance:1];
+  [searchBar setTextContentType:UITextContentTypeAddressCityAndState];
+  [searchBar setBackgroundColor:0];
+  [searchBar setBackgroundImage:0 forBarPosition:0 barMetrics:101];
+  navigationItem = [(MTAAddClockViewController *)self navigationItem];
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_dismiss"];
-  [v12 setLeftBarButtonItem:v13];
+  [navigationItem setLeftBarButtonItem:v13];
 
-  [v12 setSearchController:self->_searchController];
+  [navigationItem setSearchController:self->_searchController];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"CHOOSE_CITY_TITLE" value:&stru_1000AEF10 table:0];
-  [v12 setTitle:v15];
+  [navigationItem setTitle:v15];
 
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"contentSizeCategoryDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v11.receiver = self;
   v11.super_class = MTAAddClockViewController;
-  v6 = a3;
-  [(MTAAddClockViewController *)&v11 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
+  collectionCopy = collection;
+  [(MTAAddClockViewController *)&v11 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
   v7 = [(MTAAddClockViewController *)self traitCollection:v11.receiver];
-  v8 = [v7 horizontalSizeClass];
-  v9 = [v6 horizontalSizeClass];
+  horizontalSizeClass = [v7 horizontalSizeClass];
+  horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
 
-  if (v8 != v9)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
-    v10 = [(MTAAddClockViewController *)self delegate];
-    [v10 dismissAddViewController:self];
+    delegate = [(MTAAddClockViewController *)self delegate];
+    [delegate dismissAddViewController:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MTAAddClockViewController;
-  [(MTAAddClockViewController *)&v7 viewWillAppear:a3];
+  [(MTAAddClockViewController *)&v7 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_keyboardWillShow:" name:UIKeyboardWillShowNotification object:0];
 
@@ -129,11 +129,11 @@
   [v6 addObserver:self selector:"_keyboardDidShow:" name:UIKeyboardDidShowNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = MTAAddClockViewController;
-  [(MTAAddClockViewController *)&v7 viewWillDisappear:a3];
+  [(MTAAddClockViewController *)&v7 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIKeyboardWillShowNotification object:0];
 
@@ -146,8 +146,8 @@
 
 - (void)_dismiss
 {
-  v3 = [(MTAAddClockViewController *)self delegate];
-  [v3 dismissAddViewController:self];
+  delegate = [(MTAAddClockViewController *)self delegate];
+  [delegate dismissAddViewController:self];
 }
 
 - (void)_dismissWithoutDefferingTransitions
@@ -160,25 +160,25 @@
   [UIViewController _performWithoutDeferringTransitions:v2];
 }
 
-- (void)_showNoResultsFound:(BOOL)a3
+- (void)_showNoResultsFound:(BOOL)found
 {
-  v3 = a3;
-  v12 = [(MTAAddClockViewController *)self tableView];
-  v5 = [(MTAAddClockViewController *)self noResultsFoundLabel];
-  v6 = v5;
-  v7 = !v3;
-  if (!v3 || v5)
+  foundCopy = found;
+  tableView = [(MTAAddClockViewController *)self tableView];
+  noResultsFoundLabel = [(MTAAddClockViewController *)self noResultsFoundLabel];
+  v6 = noResultsFoundLabel;
+  v7 = !foundCopy;
+  if (!foundCopy || noResultsFoundLabel)
   {
-    if (!v5)
+    if (!noResultsFoundLabel)
     {
       v7 = 0;
     }
 
     if (v7 == 1)
     {
-      [v5 removeFromSuperview];
+      [noResultsFoundLabel removeFromSuperview];
       [(MTAAddClockViewController *)self setNoResultsFoundLabel:0];
-      [v12 setSeparatorStyle:1];
+      [tableView setSeparatorStyle:1];
       [(MTAAddClockViewController *)self _removeAutolayoutConstraintsForNoResultsFoundLabel];
     }
   }
@@ -203,26 +203,26 @@
 
     [v6 setAdjustsFontForContentSizeCategory:1];
     [v6 sizeToFit];
-    [v12 addSubview:v6];
+    [tableView addSubview:v6];
     [(MTAAddClockViewController *)self _addAutolayoutConstraintsForNoResultsFoundLabel];
-    [v12 setSeparatorStyle:0];
+    [tableView setSeparatorStyle:0];
   }
 }
 
 - (void)prepopulateSuggestions
 {
   v2 = +[ALCityManager sharedManager];
-  v3 = [v2 allCities];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  allCities = [v2 allCities];
+  v4 = [NSMutableArray arrayWithArray:allCities];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
   v5 = +[WorldClockManager sharedManager];
-  v6 = [v5 cities];
+  cities = [v5 cities];
 
-  v7 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+  v7 = [cities countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v7)
   {
     v8 = v7;
@@ -233,14 +233,14 @@
       {
         if (*v52 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cities);
         }
 
-        v11 = [*(*(&v51 + 1) + 8 * i) alCity];
-        [v4 removeObject:v11];
+        alCity = [*(*(&v51 + 1) + 8 * i) alCity];
+        [v4 removeObject:alCity];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+      v8 = [cities countByEnumeratingWithState:&v51 objects:v57 count:16];
     }
 
     while (v8);
@@ -252,8 +252,8 @@
   self->_cities = v12;
 
   v14 = +[UILocalizedIndexedCollation currentCollation];
-  v15 = [v14 sectionTitles];
-  v16 = [v15 count];
+  sectionTitles = [v14 sectionTitles];
+  v16 = [sectionTitles count];
 
   v17 = [NSMutableArray arrayWithCapacity:v16];
   if (v16)
@@ -341,18 +341,18 @@
     while (v32);
   }
 
-  v37 = [v14 sectionIndexTitles];
+  sectionIndexTitles = [v14 sectionIndexTitles];
   sectionIndexTitles = self->_sectionIndexTitles;
-  self->_sectionIndexTitles = v37;
+  self->_sectionIndexTitles = sectionIndexTitles;
 
   partitionedCities = self->_partitionedCities;
   self->_partitionedCities = v27;
 
-  v40 = [(MTAAddClockViewController *)self tableView];
-  [v40 reloadData];
+  tableView = [(MTAAddClockViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if (self->_partitionedCities)
   {
@@ -365,16 +365,16 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_partitionedCities objectAtIndex:a4];
+  v5 = [(NSArray *)self->_partitionedCities objectAtIndex:section];
   v6 = [v5 count];
 
   if (v6)
   {
     v7 = +[UILocalizedIndexedCollation currentCollation];
-    v8 = [v7 sectionTitles];
-    v9 = [v8 objectAtIndex:a4];
+    sectionTitles = [v7 sectionTitles];
+    v9 = [sectionTitles objectAtIndex:section];
   }
 
   else
@@ -387,20 +387,20 @@
 
 - (void)contentSizeCategoryDidChange
 {
-  v6 = [(MTAAddClockViewController *)self tableView];
-  [v6 contentOffset];
+  tableView = [(MTAAddClockViewController *)self tableView];
+  [tableView contentOffset];
   v3 = v2;
   v5 = v4;
-  [v6 reloadData];
-  [v6 setContentOffset:0 animated:{v3, v5}];
+  [tableView reloadData];
+  [tableView setContentOffset:0 animated:{v3, v5}];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   result = [(NSArray *)self->_cities count];
   if (self->_partitionedCities)
   {
-    v7 = [(NSArray *)self->_partitionedCities objectAtIndex:a4];
+    v7 = [(NSArray *)self->_partitionedCities objectAtIndex:section];
     v8 = [v7 count];
 
     return v8;
@@ -409,7 +409,7 @@
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (!self->_partitionedCities)
   {
@@ -417,16 +417,16 @@
   }
 
   v3 = +[UILocalizedIndexedCollation currentCollation];
-  v4 = [v3 sectionTitles];
-  v5 = [v4 count];
+  sectionTitles = [v3 sectionTitles];
+  v5 = [sectionTitles count];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v7 = [UILocalizedIndexedCollation currentCollation:a3];
-  v8 = [v7 sectionForSectionIndexTitleAtIndex:a5];
+  v7 = [UILocalizedIndexedCollation currentCollation:view];
+  v8 = [v7 sectionForSectionIndexTitleAtIndex:index];
 
   v9 = [(NSMutableIndexSet *)self->_populatedIndexSet indexGreaterThanOrEqualToIndex:v8];
   result = [(NSMutableIndexSet *)self->_populatedIndexSet indexLessThanIndex:v8];
@@ -438,43 +438,43 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ClockSearchCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ClockSearchCellIdentifier"];
   if (!v7)
   {
     v7 = [[MTAClockSearchCell alloc] initWithStyle:0 reuseIdentifier:0];
     v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v9 = [(MTAClockSearchCell *)v7 textLabel];
-    [v9 setFont:v8];
+    textLabel = [(MTAClockSearchCell *)v7 textLabel];
+    [textLabel setFont:v8];
 
-    v10 = [(MTAClockSearchCell *)v7 textLabel];
-    [v10 setAdjustsFontForContentSizeCategory:1];
+    textLabel2 = [(MTAClockSearchCell *)v7 textLabel];
+    [textLabel2 setAdjustsFontForContentSizeCategory:1];
   }
 
-  if ([v6 row] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [v6 row]);
+    v11 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [pathCopy row]);
     partitionedCities = self->_partitionedCities;
     if (partitionedCities)
     {
-      v13 = -[NSArray objectAtIndex:](partitionedCities, "objectAtIndex:", [v6 section]);
-      v14 = [v13 objectAtIndex:{objc_msgSend(v6, "row")}];
+      v13 = -[NSArray objectAtIndex:](partitionedCities, "objectAtIndex:", [pathCopy section]);
+      v14 = [v13 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v11 = v14;
     }
 
     v15 = [v11 displayNameIncludingCountry:1];
-    v16 = [(MTAClockSearchCell *)v7 textLabel];
-    [v16 setText:v15];
+    textLabel3 = [(MTAClockSearchCell *)v7 textLabel];
+    [textLabel3 setText:v15];
 
     v17 = [v11 displayNameIncludingCountry:1 withFormat:@"%@\n%@"];
     [(MTAClockSearchCell *)v7 setContentString:v17];
 
     v18 = +[UIColor mtui_primaryTextColor];
-    v19 = [(MTAClockSearchCell *)v7 textLabel];
-    [v19 setTextColor:v18];
+    textLabel4 = [(MTAClockSearchCell *)v7 textLabel];
+    [textLabel4 setTextColor:v18];
 
     v20 = +[UIColor mtui_backgroundColor];
     [(MTAClockSearchCell *)v7 setBackgroundColor:v20];
@@ -486,46 +486,46 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  if ([v13 row] != 0x7FFFFFFFFFFFFFFFLL)
+  pathCopy = path;
+  if ([pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 removeObserver:self];
 
-    v6 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [v13 row]);
+    v6 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [pathCopy row]);
     partitionedCities = self->_partitionedCities;
     if (partitionedCities)
     {
-      v8 = -[NSArray objectAtIndex:](partitionedCities, "objectAtIndex:", [v13 section]);
-      v9 = [v8 objectAtIndex:{objc_msgSend(v13, "row")}];
+      v8 = -[NSArray objectAtIndex:](partitionedCities, "objectAtIndex:", [pathCopy section]);
+      v9 = [v8 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v6 = v9;
     }
 
     [(MTASecuredSearchController *)self->_searchController resignFirstResponder];
     v10 = [[WorldClockCity alloc] initWithALCity:v6];
-    v11 = [(MTAAddClockViewController *)self delegate];
-    [v11 addClockViewController:self addCity:v10];
+    delegate = [(MTAAddClockViewController *)self delegate];
+    [delegate addClockViewController:self addCity:v10];
 
-    v12 = [(MTAAddClockViewController *)self delegate];
-    [v12 dismissAddViewController:self];
+    delegate2 = [(MTAAddClockViewController *)self delegate];
+    [delegate2 dismissAddViewController:self];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v16 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
   partitionedCities = self->_partitionedCities;
   self->_partitionedCities = 0;
 
-  if ([v16 length])
+  if ([text length])
   {
     v6 = +[ALCityManager sharedManager];
-    v7 = [v6 citiesMatchingName:v16];
+    v7 = [v6 citiesMatchingName:text];
 
     v8 = [v7 sortedArrayUsingComparator:&stru_1000AE650];
     cities = self->_cities;
@@ -540,20 +540,20 @@
     [(MTAAddClockViewController *)self prepopulateSuggestions];
   }
 
-  v11 = [(MTAAddClockViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(MTAAddClockViewController *)self tableView];
+  [tableView reloadData];
 
   if ([(NSArray *)self->_cities count])
   {
-    v12 = [(MTAAddClockViewController *)self tableView];
-    v13 = [(MTAAddClockViewController *)self view];
-    [v13 safeAreaInsets];
-    [v12 setContentOffset:1 animated:{0.0, -v14}];
+    tableView2 = [(MTAAddClockViewController *)self tableView];
+    view = [(MTAAddClockViewController *)self view];
+    [view safeAreaInsets];
+    [tableView2 setContentOffset:1 animated:{0.0, -v14}];
   }
 
-  if ([v16 length] && !-[NSArray count](self->_cities, "count"))
+  if ([text length] && !-[NSArray count](self->_cities, "count"))
   {
-    v15 = [v16 isEqualToString:@"\n"] ^ 1;
+    v15 = [text isEqualToString:@"\n"] ^ 1;
   }
 
   else
@@ -566,36 +566,36 @@
 
 - (void)_addAutolayoutConstraintsForNoResultsFoundLabel
 {
-  v12 = [(MTAAddClockViewController *)self tableView];
-  v3 = [(MTAAddClockViewController *)self noResultsFoundLabel];
-  v4 = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
+  tableView = [(MTAAddClockViewController *)self tableView];
+  noResultsFoundLabel = [(MTAAddClockViewController *)self noResultsFoundLabel];
+  centerNoResultsFoundLabelConstraints = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
 
-  if (!v4)
+  if (!centerNoResultsFoundLabelConstraints)
   {
     v5 = objc_opt_new();
-    v6 = [v3 centerXAnchor];
-    v7 = [v12 centerXAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    centerXAnchor = [noResultsFoundLabel centerXAnchor];
+    centerXAnchor2 = [tableView centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v5 addObject:v8];
 
     [(MTAAddClockViewController *)self _calculateVerticalMultiplierForKeyboard];
     if (v9 > 0.0)
     {
-      v10 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v3 relatedBy:10 toItem:0 attribute:v12 multiplier:10 constant:?];
+      v10 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:noResultsFoundLabel relatedBy:10 toItem:0 attribute:tableView multiplier:10 constant:?];
       [v5 addObject:v10];
     }
 
     [(MTAAddClockViewController *)self setCenterNoResultsFoundLabelConstraints:v5];
   }
 
-  v11 = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
-  [v12 addConstraints:v11];
+  centerNoResultsFoundLabelConstraints2 = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
+  [tableView addConstraints:centerNoResultsFoundLabelConstraints2];
 }
 
 - (double)_calculateVerticalMultiplierForKeyboard
 {
-  v3 = [(MTAAddClockViewController *)self view];
-  [v3 frame];
+  view = [(MTAAddClockViewController *)self view];
+  [view frame];
   v5 = v4;
 
   [(MTAAddClockViewController *)self keyboardFrame];
@@ -620,146 +620,146 @@
 
 - (void)_removeAutolayoutConstraintsForNoResultsFoundLabel
 {
-  v3 = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
-  if (v3)
+  centerNoResultsFoundLabelConstraints = [(MTAAddClockViewController *)self centerNoResultsFoundLabelConstraints];
+  if (centerNoResultsFoundLabelConstraints)
   {
-    v5 = v3;
-    v4 = [(MTAAddClockViewController *)self tableView];
-    [v4 removeConstraints:v5];
+    v5 = centerNoResultsFoundLabelConstraints;
+    tableView = [(MTAAddClockViewController *)self tableView];
+    [tableView removeConstraints:v5];
 
     [(MTAAddClockViewController *)self setCenterNoResultsFoundLabelConstraints:0];
-    v3 = v5;
+    centerNoResultsFoundLabelConstraints = v5;
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v17 = [a3 userInfo];
-  v4 = [v17 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v4 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(MTAAddClockViewController *)self view];
-  [v13 convertRect:0 fromView:{v6, v8, v10, v12}];
+  view = [(MTAAddClockViewController *)self view];
+  [view convertRect:0 fromView:{v6, v8, v10, v12}];
   [(MTAAddClockViewController *)self setKeyboardFrame:?];
 
-  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:v17];
+  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:userInfo];
   v14 = +[UIColor clearColor];
-  v15 = [(MTASecuredSearchController *)self->_searchController searchBar];
-  [v15 setTintColor:v14];
+  searchBar = [(MTASecuredSearchController *)self->_searchController searchBar];
+  [searchBar setTintColor:v14];
 
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"_keyboardWillResize:" name:UIKeyboardWillChangeFrameNotification object:0];
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
   v6 = +[UISearchBar appearance];
-  v4 = [v6 tintColor];
-  v5 = [(MTASecuredSearchController *)self->_searchController searchBar];
-  [v5 setTintColor:v4];
+  tintColor = [v6 tintColor];
+  searchBar = [(MTASecuredSearchController *)self->_searchController searchBar];
+  [searchBar setTintColor:tintColor];
 }
 
-- (void)_keyboardWillDismiss:(id)a3
+- (void)_keyboardWillDismiss:(id)dismiss
 {
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = a3;
+  dismissCopy = dismiss;
   [(MTAAddClockViewController *)self setKeyboardFrame:CGRectZero.origin.x, y, width, height];
-  v8 = [v7 userInfo];
+  userInfo = [dismissCopy userInfo];
 
-  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:v8];
+  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:userInfo];
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 removeObserver:self name:UIKeyboardWillChangeFrameNotification object:0];
 }
 
-- (void)_keyboardWillResize:(id)a3
+- (void)_keyboardWillResize:(id)resize
 {
-  v14 = [a3 userInfo];
-  v4 = [v14 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [resize userInfo];
+  v4 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(MTAAddClockViewController *)self view];
-  [v13 convertRect:0 fromView:{v6, v8, v10, v12}];
+  view = [(MTAAddClockViewController *)self view];
+  [view convertRect:0 fromView:{v6, v8, v10, v12}];
   [(MTAAddClockViewController *)self setKeyboardFrame:?];
 
-  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:v14];
+  [(MTAAddClockViewController *)self _reloadNoResultsFoundLabelForKeyboardNotification:userInfo];
 }
 
-- (void)_reloadNoResultsFoundLabelForKeyboardNotification:(id)a3
+- (void)_reloadNoResultsFoundLabelForKeyboardNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [(MTAAddClockViewController *)self noResultsFoundLabel];
+  notificationCopy = notification;
+  noResultsFoundLabel = [(MTAAddClockViewController *)self noResultsFoundLabel];
 
-  if (v4)
+  if (noResultsFoundLabel)
   {
-    v5 = [v11 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+    v5 = [notificationCopy objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
     [v5 doubleValue];
     v7 = v6;
 
-    v8 = [v11 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-    v9 = [v8 integerValue];
+    v8 = [notificationCopy objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+    integerValue = [v8 integerValue];
 
     [UIView beginAnimations:0 context:0];
     [UIView setAnimationDuration:v7];
-    [UIView setAnimationCurve:v9];
+    [UIView setAnimationCurve:integerValue];
     [UIView setAnimationBeginsFromCurrentState:1];
     [(MTAAddClockViewController *)self _removeAutolayoutConstraintsForNoResultsFoundLabel];
     [(MTAAddClockViewController *)self _addAutolayoutConstraintsForNoResultsFoundLabel];
-    v10 = [(MTAAddClockViewController *)self view];
-    [v10 layoutIfNeeded];
+    view = [(MTAAddClockViewController *)self view];
+    [view layoutIfNeeded];
 
     +[UIView commitAnimations];
   }
 }
 
-+ (void)addCityFromUserActivity:(id)a3 parentViewController:(id)a4
++ (void)addCityFromUserActivity:(id)activity parentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"TimeZone"];
+  controllerCopy = controller;
+  userInfo = [activity userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"TimeZone"];
   v8 = [NSTimeZone timeZoneWithName:v7];
 
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Latitude"];
+    v9 = [userInfo objectForKeyedSubscript:@"Latitude"];
     [v9 doubleValue];
     v11 = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"Longitude"];
+    v12 = [userInfo objectForKeyedSubscript:@"Longitude"];
     [v12 doubleValue];
     v14 = v13;
 
     v15 = [[CLLocation alloc] initWithLatitude:v11 longitude:v14];
     v16 = +[WorldClockManager sharedManager];
     v17 = [v16 closestCityToLocation:v15 matchingTimeZone:v8];
-    v18 = [v16 cities];
+    cities = [v16 cities];
 
-    if (!v18)
+    if (!cities)
     {
       [v16 loadCities];
     }
 
-    v19 = [v16 cities];
-    v20 = [v19 indexOfObject:v17];
+    cities2 = [v16 cities];
+    v20 = [cities2 indexOfObject:v17];
 
     if (v20 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v21 = +[NSBundle mainBundle];
       v22 = [v21 localizedStringForKey:@"ADD_WORLD_CLOCK_FORMAT" value:&stru_1000AEF10 table:0];
-      v23 = [v17 name];
-      v24 = [NSString stringWithFormat:v22, v23];
+      name = [v17 name];
+      v24 = [NSString stringWithFormat:v22, name];
 
       v25 = [UIAlertController alertControllerWithTitle:v24 message:0 preferredStyle:1];
-      v35 = v5;
+      v35 = controllerCopy;
       v26 = +[NSBundle mainBundle];
       [v26 localizedStringForKey:@"CANCEL" value:&stru_1000AEF10 table:0];
       v27 = v34 = v15;
@@ -772,7 +772,7 @@
       v39[1] = 3221225472;
       v39[2] = sub_1000522C8;
       v39[3] = &unk_1000AE678;
-      v31 = v5;
+      v31 = controllerCopy;
       v40 = v31;
       v41 = v17;
       v32 = [UIAlertAction actionWithTitle:v30 style:0 handler:v39];
@@ -780,7 +780,7 @@
 
       v15 = v34;
       v33 = v31;
-      v5 = v35;
+      controllerCopy = v35;
       [v33 presentViewController:v25 animated:1 completion:0];
     }
 
@@ -790,7 +790,7 @@
       block[1] = 3221225472;
       block[2] = sub_100052310;
       block[3] = &unk_1000AE6A0;
-      v37 = v5;
+      v37 = controllerCopy;
       v38 = v20;
       dispatch_async(&_dispatch_main_q, block);
       v24 = v37;

@@ -1,8 +1,8 @@
 @interface CKAggregateAttachmentMessagePartChatItem
 - (BOOL)canExport;
 - (BOOL)canPerformQuickAction;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKAggregateAttachmentMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKAggregateAttachmentMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (CKMediaObjectAssetDataSource)dataSource;
 - (NSArray)mediaObjects;
 - (NSArray)transferGUIDs;
@@ -11,7 +11,7 @@
 - (id)pasteboardItemProviders;
 - (unint64_t)layoutType;
 - (void)_generateMediaObjects;
-- (void)setTranscriptTraitCollection:(id)a3;
+- (void)setTranscriptTraitCollection:(id)collection;
 @end
 
 @implementation CKAggregateAttachmentMessagePartChatItem
@@ -29,11 +29,11 @@
   }
 }
 
-- (CKAggregateAttachmentMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKAggregateAttachmentMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v7.receiver = self;
   v7.super_class = CKAggregateAttachmentMessagePartChatItem;
-  v4 = [(CKMessagePartChatItem *)&v7 initWithIMChatItem:a3 maxWidth:a4];
+  v4 = [(CKMessagePartChatItem *)&v7 initWithIMChatItem:item maxWidth:width];
   v5 = v4;
   if (v4)
   {
@@ -46,15 +46,15 @@
 - (void)_generateMediaObjects
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v18 = v3;
-  v5 = [v3 aggregateAttachmentParts];
+  v18 = iMChatItem;
+  aggregateAttachmentParts = [iMChatItem aggregateAttachmentParts];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [aggregateAttachmentParts countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,7 +66,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(aggregateAttachmentParts);
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
@@ -74,16 +74,16 @@
         v12 = v11;
         [(CKChatItem *)self maxWidth];
         v14 = v13;
-        v15 = [(CKAggregateAttachmentMessagePartChatItem *)self transcriptTraitCollection];
+        transcriptTraitCollection = [(CKAggregateAttachmentMessagePartChatItem *)self transcriptTraitCollection];
         [(CKChatItem *)self transcriptBackgroundLuminance];
-        v17 = [CKChatItem chatItemWithIMChatItem:v10 balloonMaxWidth:v15 fullMaxWidth:0 transcriptTraitCollection:v12 transcriptBackgroundLuminance:v14 overlayLayout:v16];
+        v17 = [CKChatItem chatItemWithIMChatItem:v10 balloonMaxWidth:transcriptTraitCollection fullMaxWidth:0 transcriptTraitCollection:v12 transcriptBackgroundLuminance:v14 overlayLayout:v16];
 
         [v4 addObject:v17];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [aggregateAttachmentParts countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -98,12 +98,12 @@
   if (!mediaObjects)
   {
     v4 = objc_alloc(MEMORY[0x1E695DF70]);
-    v5 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
-    v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    aggregateChatItems = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
+    v6 = [v4 initWithCapacity:{objc_msgSend(aggregateChatItems, "count")}];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
+    aggregateChatItems2 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __56__CKAggregateAttachmentMessagePartChatItem_mediaObjects__block_invoke;
@@ -114,7 +114,7 @@
     v10 = v8;
     v11 = v7;
     v12 = v6;
-    [v9 enumerateObjectsUsingBlock:v20];
+    [aggregateChatItems2 enumerateObjectsUsingBlock:v20];
 
     v13 = [v12 copy];
     v14 = self->_mediaObjects;
@@ -175,10 +175,10 @@ void __56__CKAggregateAttachmentMessagePartChatItem_mediaObjects__block_invoke(i
   }
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 previewBalloonSizeThatFits:{width, height}];
   v8 = v7;
@@ -198,8 +198,8 @@ void __56__CKAggregateAttachmentMessagePartChatItem_mediaObjects__block_invoke(i
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  mediaObjects = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
+  v3 = [mediaObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -209,7 +209,7 @@ void __56__CKAggregateAttachmentMessagePartChatItem_mediaObjects__block_invoke(i
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaObjects);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) canExport])
@@ -219,7 +219,7 @@ void __56__CKAggregateAttachmentMessagePartChatItem_mediaObjects__block_invoke(i
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [mediaObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -234,19 +234,19 @@ LABEL_11:
   return v3;
 }
 
-- (void)setTranscriptTraitCollection:(id)a3
+- (void)setTranscriptTraitCollection:(id)collection
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(UITraitCollection *)self->_transcriptTraitCollection isEqual:v5]& 1) == 0)
+  collectionCopy = collection;
+  if (([(UITraitCollection *)self->_transcriptTraitCollection isEqual:collectionCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_transcriptTraitCollection, a3);
+    objc_storeStrong(&self->_transcriptTraitCollection, collection);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    mediaObjects = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
+    v7 = [mediaObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -258,14 +258,14 @@ LABEL_11:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(mediaObjects);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setTranscriptTraitCollection:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setTranscriptTraitCollection:collectionCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [mediaObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -287,8 +287,8 @@ LABEL_11:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
-    v3 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    mediaObjects = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
+    v3 = [mediaObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v3)
     {
       v5 = *v9;
@@ -298,7 +298,7 @@ LABEL_11:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(mediaObjects);
           }
 
           if ([*(*(&v8 + 1) + 8 * i) canPerformQuickAction])
@@ -308,7 +308,7 @@ LABEL_11:
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v3 = [mediaObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (v3)
         {
           continue;
@@ -326,9 +326,9 @@ LABEL_13:
 
 - (UIEdgeInsets)stickerReactionInsets
 {
-  v2 = [(CKMessagePartChatItem *)self isFromMe];
+  isFromMe = [(CKMessagePartChatItem *)self isFromMe];
   v3 = 0.0;
-  if (v2)
+  if (isFromMe)
   {
     v4 = 0.0;
   }
@@ -338,7 +338,7 @@ LABEL_13:
     v4 = 90.0;
   }
 
-  if (v2)
+  if (isFromMe)
   {
     v3 = 90.0;
   }
@@ -354,10 +354,10 @@ LABEL_13:
 
 - (NSArray)transferGUIDs
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 transferGUIDs];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  transferGUIDs = [iMChatItem transferGUIDs];
 
-  return v3;
+  return transferGUIDs;
 }
 
 - (CKMediaObjectAssetDataSource)dataSource
@@ -366,10 +366,10 @@ LABEL_13:
   if (!dataSource)
   {
     v4 = [CKMediaObjectAssetDataSource alloc];
-    v5 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
-    v6 = [(CKChatItem *)self IMChatItem];
-    v7 = [v6 guid];
-    v8 = [(CKMediaObjectAssetDataSource *)v4 initWithChatItems:v5 parentChatItemGUID:v7];
+    aggregateChatItems = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    guid = [iMChatItem guid];
+    v8 = [(CKMediaObjectAssetDataSource *)v4 initWithChatItems:aggregateChatItems parentChatItemGUID:guid];
     v9 = self->_dataSource;
     self->_dataSource = v8;
 
@@ -392,8 +392,8 @@ LABEL_13:
     else
     {
       self->_hasCheckedForMomentShareURL = 1;
-      v4 = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
-      v5 = CKMomentShareURLForMediaObjects(v4);
+      mediaObjects = [(CKAggregateAttachmentMessagePartChatItem *)self mediaObjects];
+      v5 = CKMomentShareURLForMediaObjects(mediaObjects);
       v6 = self->_momentShareURL;
       self->_momentShareURL = v5;
 
@@ -407,17 +407,17 @@ LABEL_13:
 - (id)pasteboardItemProviders
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  aggregateChatItems = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(aggregateChatItems, "count")}];
 
-  v6 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
+  aggregateChatItems2 = [(CKAggregateAttachmentMessagePartChatItem *)self aggregateChatItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__CKAggregateAttachmentMessagePartChatItem_pasteboardItemProviders__block_invoke;
   v9[3] = &unk_1E72F2768;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [aggregateChatItems2 enumerateObjectsUsingBlock:v9];
 
   return v7;
 }

@@ -1,9 +1,9 @@
 @interface MXMetricServices
 - (BOOL)_isMetricSourceDataAvailable;
-- (MXMetricServices)initWithClientUtil:(id)a3 andSourcePathUtil:(id)a4;
+- (MXMetricServices)initWithClientUtil:(id)util andSourcePathUtil:(id)pathUtil;
 - (id)_clientMetricsFromServices;
-- (id)_metricPayloadsForClient:(id)a3;
-- (id)_metricsFromServicesForClient:(id)a3;
+- (id)_metricPayloadsForClient:(id)client;
+- (id)_metricsFromServicesForClient:(id)client;
 - (id)clientMetricPayloadsForAllClients;
 - (void)_cleanServiceMetricsDirectories;
 - (void)_createServices;
@@ -13,10 +13,10 @@
 
 @implementation MXMetricServices
 
-- (MXMetricServices)initWithClientUtil:(id)a3 andSourcePathUtil:(id)a4
+- (MXMetricServices)initWithClientUtil:(id)util andSourcePathUtil:(id)pathUtil
 {
-  v7 = a3;
-  v8 = a4;
+  utilCopy = util;
+  pathUtilCopy = pathUtil;
   v15.receiver = self;
   v15.super_class = MXMetricServices;
   v9 = [(MXMetricServices *)&v15 init];
@@ -26,8 +26,8 @@
     services = v9->_services;
     v9->_services = v10;
 
-    objc_storeStrong(&v9->_clientUtil, a3);
-    objc_storeStrong(&v9->_sourcePathUtil, a4);
+    objc_storeStrong(&v9->_clientUtil, util);
+    objc_storeStrong(&v9->_sourcePathUtil, pathUtil);
     v12 = os_log_create("com.apple.metrickit", "metric.service.manager");
     logHandle = v9->_logHandle;
     v9->_logHandle = v12;
@@ -47,7 +47,7 @@
   [(MXMetricServices *)self _startServices];
   if ([(MXMetricServices *)self _isMetricSourceDataAvailable])
   {
-    v3 = [(MXMetricServices *)self _clientMetricsFromServices];
+    _clientMetricsFromServices = [(MXMetricServices *)self _clientMetricsFromServices];
     [(MXMetricServices *)self _stopServices];
     [(MXMetricServices *)self _cleanServiceMetricsDirectories];
   }
@@ -62,17 +62,17 @@
     }
 
     [(MXMetricServices *)self _stopServices];
-    v3 = 0;
+    _clientMetricsFromServices = 0;
   }
 
-  return v3;
+  return _clientMetricsFromServices;
 }
 
 - (void)_createServices
 {
-  v3 = [(MXMetricServices *)self services];
+  services = [(MXMetricServices *)self services];
 
-  if (v3)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -81,13 +81,13 @@
       _os_log_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_DEFAULT, "Initializing MXCore Services\n", v9, 2u);
     }
 
-    v5 = [(MXMetricServices *)self services];
-    v6 = [MEMORY[0x277D286E8] sharedPowerlogService];
-    [v5 addObject:v6];
+    services2 = [(MXMetricServices *)self services];
+    mEMORY[0x277D286E8] = [MEMORY[0x277D286E8] sharedPowerlogService];
+    [services2 addObject:mEMORY[0x277D286E8]];
 
-    v7 = [(MXMetricServices *)self services];
-    v8 = [MEMORY[0x277D286F8] sharedSpaceAttributionService];
-    [v7 addObject:v8];
+    services3 = [(MXMetricServices *)self services];
+    mEMORY[0x277D286F8] = [MEMORY[0x277D286F8] sharedSpaceAttributionService];
+    [services3 addObject:mEMORY[0x277D286F8]];
   }
 }
 
@@ -98,10 +98,10 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(MXMetricServices *)self services];
-  v4 = [v3 allObjects];
+  services = [(MXMetricServices *)self services];
+  allObjects = [services allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
     v7 = v5;
@@ -114,7 +114,7 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -128,12 +128,12 @@
             _os_log_error_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_ERROR, "%@ service failed to start", buf, 0xCu);
           }
 
-          v12 = [(MXMetricServices *)self services];
-          [v12 removeObject:v10];
+          services2 = [(MXMetricServices *)self services];
+          [services2 removeObject:v10];
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);
@@ -143,9 +143,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [(MXMetricServices *)self services];
+    services3 = [(MXMetricServices *)self services];
     *buf = 138412290;
-    v23 = v15;
+    v23 = services3;
     _os_log_impl(&dword_258D6F000, v14, OS_LOG_TYPE_INFO, "Services started:%@", buf, 0xCu);
   }
 
@@ -155,9 +155,9 @@
 - (void)_stopServices
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(MXMetricServices *)self services];
+  services = [(MXMetricServices *)self services];
 
-  if (v3)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -170,10 +170,10 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(MXMetricServices *)self services];
-    v6 = [v5 allObjects];
+    services2 = [(MXMetricServices *)self services];
+    allObjects = [services2 allObjects];
 
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v7)
     {
       v9 = v7;
@@ -186,7 +186,7 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -200,12 +200,12 @@
               _os_log_error_impl(&dword_258D6F000, v13, OS_LOG_TYPE_ERROR, "%@ service failed to stop", buf, 0xCu);
             }
 
-            v14 = [(MXMetricServices *)self services];
-            [v14 removeObject:v12];
+            services3 = [(MXMetricServices *)self services];
+            [services3 removeObject:v12];
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v9);
@@ -218,9 +218,9 @@
 - (void)_cleanServiceMetricsDirectories
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(MXMetricServices *)self services];
+  services = [(MXMetricServices *)self services];
 
-  if (v3)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -233,10 +233,10 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(MXMetricServices *)self services];
-    v6 = [v5 allObjects];
+    services2 = [(MXMetricServices *)self services];
+    allObjects = [services2 allObjects];
 
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v7)
     {
       v9 = v7;
@@ -249,7 +249,7 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -270,7 +270,7 @@
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v16 objects:v22 count:16];
       }
 
       while (v9);
@@ -287,8 +287,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(MXMetricServices *)self services];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  services = [(MXMetricServices *)self services];
+  v4 = [services countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v4)
   {
     v6 = v4;
@@ -302,7 +302,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(services);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -331,7 +331,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v6 = [services countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v6);
@@ -346,32 +346,32 @@
   return v7 & 1;
 }
 
-- (id)_metricPayloadsForClient:(id)a3
+- (id)_metricPayloadsForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MXMetricServices *)self _metricsFromServicesForClient:v4];
+  clientCopy = client;
+  v5 = [(MXMetricServices *)self _metricsFromServicesForClient:clientCopy];
   logHandle = self->_logHandle;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     [(MXMetricServices *)v5 _metricPayloadsForClient:?];
   }
 
-  v7 = [MXCorePayloadConstructor buildMetricPayloadForClient:v4 fromClientMetricsDictionary:v5];
+  v7 = [MXCorePayloadConstructor buildMetricPayloadForClient:clientCopy fromClientMetricsDictionary:v5];
 
   return v7;
 }
 
-- (id)_metricsFromServicesForClient:(id)a3
+- (id)_metricsFromServicesForClient:(id)client
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(MXMetricServices *)self services];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  services = [(MXMetricServices *)self services];
+  v7 = [services countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
     v9 = v7;
@@ -384,11 +384,11 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(services);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 getMetricsForClient:{v4, v18}];
+        v13 = [v12 getMetricsForClient:{clientCopy, v18}];
         if (v13)
         {
           logHandle = self->_logHandle;
@@ -406,7 +406,7 @@
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v9 = [services countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v9);
@@ -425,8 +425,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(MXClientUtilProtocol *)self->_clientUtil allClients];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  allClients = [(MXClientUtilProtocol *)self->_clientUtil allClients];
+  v5 = [allClients countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v7 = v5;
@@ -439,7 +439,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allClients);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -461,7 +461,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [allClients countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v7);

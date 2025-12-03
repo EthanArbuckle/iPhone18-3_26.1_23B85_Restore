@@ -10,8 +10,8 @@
 - (id)_urlRequest
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentOfferWebServiceMerchandisingRequest *)self baseURL];
-  if (!v3)
+  baseURL = [(PKPaymentOfferWebServiceMerchandisingRequest *)self baseURL];
+  if (!baseURL)
   {
     v5 = PKLogFacilityTypeGetObject(7uLL);
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -69,13 +69,13 @@ LABEL_16:
 
   v23 = @"merchandising";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-  v5 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:v3 endpointComponents:v4 queryParameters:0 appleAccountInformation:0];
+  v5 = [(PKPaymentOfferWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v4 queryParameters:0 appleAccountInformation:0];
 
   [v5 setHTTPMethod:@"POST"];
   [v5 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(PKPaymentOfferWebServiceMerchandisingRequest *)self merchandisingBodyString];
-  [v6 setObject:v7 forKey:@"bodyData"];
+  merchandisingBodyString = [(PKPaymentOfferWebServiceMerchandisingRequest *)self merchandisingBodyString];
+  [v6 setObject:merchandisingBodyString forKey:@"bodyData"];
   certificates = self->_certificates;
   if (certificates)
   {
@@ -98,8 +98,8 @@ LABEL_16:
   v13 = [objc_opt_class() _HTTPBodyWithDictionary:v6];
   [v5 setHTTPBody:v13];
 
-  v14 = [objc_opt_class() merchandisingEphemeralDeviceIdentifier];
-  [v5 setValue:v14 forHTTPHeaderField:@"ephemeral-device-id"];
+  merchandisingEphemeralDeviceIdentifier = [objc_opt_class() merchandisingEphemeralDeviceIdentifier];
+  [v5 setValue:merchandisingEphemeralDeviceIdentifier forHTTPHeaderField:@"ephemeral-device-id"];
 
   v15 = [v5 copy];
 LABEL_17:
@@ -110,18 +110,18 @@ LABEL_17:
 - (id)merchandisingBodyDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSSet *)self->_merchandisingIdentifiers allObjects];
-  [v3 setObject:v4 forKeyedSubscript:@"merchandisingIdentifiers"];
+  allObjects = [(NSSet *)self->_merchandisingIdentifiers allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"merchandisingIdentifiers"];
 
   needsProvisioningMerchandisingIdentifiers = self->_needsProvisioningMerchandisingIdentifiers;
   if (needsProvisioningMerchandisingIdentifiers)
   {
-    v6 = [(NSSet *)needsProvisioningMerchandisingIdentifiers allObjects];
-    [v3 setObject:v6 forKeyedSubscript:@"needsProvisioningMerchandisingIdentifiers"];
+    allObjects2 = [(NSSet *)needsProvisioningMerchandisingIdentifiers allObjects];
+    [v3 setObject:allObjects2 forKeyedSubscript:@"needsProvisioningMerchandisingIdentifiers"];
   }
 
-  v7 = [(PKPaymentOffersSessionDetails *)self->_sessionDetails httpDictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"sessionDetails"];
+  httpDictionaryRepresentation = [(PKPaymentOffersSessionDetails *)self->_sessionDetails httpDictionaryRepresentation];
+  [v3 setObject:httpDictionaryRepresentation forKeyedSubscript:@"sessionDetails"];
 
   v8 = [v3 copy];
 
@@ -131,8 +131,8 @@ LABEL_17:
 - (id)merchandisingBodyString
 {
   v3 = objc_opt_class();
-  v4 = [(PKPaymentOfferWebServiceMerchandisingRequest *)self merchandisingBodyDictionary];
-  v5 = [v3 _HTTPBodyWithDictionary:v4];
+  merchandisingBodyDictionary = [(PKPaymentOfferWebServiceMerchandisingRequest *)self merchandisingBodyDictionary];
+  v5 = [v3 _HTTPBodyWithDictionary:merchandisingBodyDictionary];
 
   if (v5)
   {
@@ -194,8 +194,8 @@ LABEL_17:
 
   if (v23[5] && v17[5] || (v4[2](v4), v17[5]))
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v17[5]];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v17[5]];
     v9 = v8;
 
     if (v9 > 18000.0)

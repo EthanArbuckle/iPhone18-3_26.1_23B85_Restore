@@ -8,28 +8,28 @@
 {
   v9.receiver = self;
   v9.super_class = SAStartRequest;
-  v3 = [(SAStartRequest *)&v9 ad_deferredMetricsContext];
-  v4 = [(SAStartRequest *)self origin];
+  ad_deferredMetricsContext = [(SAStartRequest *)&v9 ad_deferredMetricsContext];
+  origin = [(SAStartRequest *)self origin];
 
-  if (v4)
+  if (origin)
   {
     v5 = [NSNumber numberWithBool:[(SAStartRequest *)self textToSpeechIsMuted]];
-    [v3 setObject:v5 forKey:SAStartRequestTextToSpeechIsMutedPListKey];
+    [ad_deferredMetricsContext setObject:v5 forKey:SAStartRequestTextToSpeechIsMutedPListKey];
 
-    v6 = [(SAStartRequest *)self origin];
-    if (v6)
+    origin2 = [(SAStartRequest *)self origin];
+    if (origin2)
     {
-      [v3 setObject:v6 forKey:SAStartRequestOriginPListKey];
+      [ad_deferredMetricsContext setObject:origin2 forKey:SAStartRequestOriginPListKey];
     }
 
-    v7 = [(SAStartRequest *)self utterance];
-    if (v7)
+    utterance = [(SAStartRequest *)self utterance];
+    if (utterance)
     {
-      [v3 setObject:v7 forKey:SAStartRequestUtterancePListKey];
+      [ad_deferredMetricsContext setObject:utterance forKey:SAStartRequestUtterancePListKey];
     }
   }
 
-  return v3;
+  return ad_deferredMetricsContext;
 }
 
 @end

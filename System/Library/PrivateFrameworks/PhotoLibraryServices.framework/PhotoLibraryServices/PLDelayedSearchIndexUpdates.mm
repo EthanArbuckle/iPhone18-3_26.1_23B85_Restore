@@ -1,59 +1,59 @@
 @interface PLDelayedSearchIndexUpdates
-+ (void)_insertWorkItemAndSignalIfNeededWithIdentifier:(id)a3 flags:(int64_t)a4 library:(id)a5;
-+ (void)_recordAssetIfNeededForRelationshipChange:(id)a3 flags:(int64_t)a4;
-+ (void)recordAdditionalAssetAttributesIfNeeded:(id)a3;
-+ (void)recordAlbumIfNeeded:(id)a3;
-+ (void)recordAssetDescriptionIfNeeded:(id)a3;
-+ (void)recordAssetIfNeeded:(id)a3;
-+ (void)recordCollectionShareIfNeeded:(id)a3;
-+ (void)recordDetectedFaceIfNeeded:(id)a3;
-+ (void)recordHighlightIfNeeded:(id)a3;
-+ (void)recordMediaAnalysisAssetAttributesIfNeeded:(id)a3;
-+ (void)recordMemoryIfNeeded:(id)a3;
-+ (void)recordPersonIfNeeded:(id)a3;
++ (void)_insertWorkItemAndSignalIfNeededWithIdentifier:(id)identifier flags:(int64_t)flags library:(id)library;
++ (void)_recordAssetIfNeededForRelationshipChange:(id)change flags:(int64_t)flags;
++ (void)recordAdditionalAssetAttributesIfNeeded:(id)needed;
++ (void)recordAlbumIfNeeded:(id)needed;
++ (void)recordAssetDescriptionIfNeeded:(id)needed;
++ (void)recordAssetIfNeeded:(id)needed;
++ (void)recordCollectionShareIfNeeded:(id)needed;
++ (void)recordDetectedFaceIfNeeded:(id)needed;
++ (void)recordHighlightIfNeeded:(id)needed;
++ (void)recordMediaAnalysisAssetAttributesIfNeeded:(id)needed;
++ (void)recordMemoryIfNeeded:(id)needed;
++ (void)recordPersonIfNeeded:(id)needed;
 @end
 
 @implementation PLDelayedSearchIndexUpdates
 
-+ (void)_insertWorkItemAndSignalIfNeededWithIdentifier:(id)a3 flags:(int64_t)a4 library:(id)a5
++ (void)_insertWorkItemAndSignalIfNeededWithIdentifier:(id)identifier flags:(int64_t)flags library:(id)library
 {
-  v10 = a5;
-  v7 = [PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:a3 flags:a4 inLibrary:?];
+  libraryCopy = library;
+  v7 = [PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:identifier flags:flags inLibrary:?];
   v8 = v7;
   if (v7)
   {
     v9 = +[PLBackgroundJobWorkerTypes workerTypesMaskForBackgroundJobType:](PLBackgroundJobWorkerTypes, "workerTypesMaskForBackgroundJobType:", [v7 jobType]);
-    [v10 signalBackgroundProcessingNeededForWorkerTypes:v9];
+    [libraryCopy signalBackgroundProcessingNeededForWorkerTypes:v9];
   }
 }
 
-+ (void)_recordAssetIfNeededForRelationshipChange:(id)a3 flags:(int64_t)a4
++ (void)_recordAssetIfNeededForRelationshipChange:(id)change flags:(int64_t)flags
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  v7 = changeCopy;
+  if (changeCopy)
   {
-    v16 = v6;
-    v8 = [v6 isDeleted];
+    v16 = changeCopy;
+    isDeleted = [changeCopy isDeleted];
     v7 = v16;
-    if ((v8 & 1) == 0)
+    if ((isDeleted & 1) == 0)
     {
-      v9 = [v16 uuid];
+      uuid = [v16 uuid];
 
       v7 = v16;
-      if (v9)
+      if (uuid)
       {
-        v10 = [v16 photoLibrary];
-        v11 = [v10 libraryServicesManager];
-        v12 = +[PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLManagedAsset, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", [v11 wellKnownPhotoLibraryIdentifier]);
+        photoLibrary = [v16 photoLibrary];
+        libraryServicesManager = [photoLibrary libraryServicesManager];
+        v12 = +[PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLManagedAsset, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", [libraryServicesManager wellKnownPhotoLibraryIdentifier]);
         v13 = [v12 evaluateWithObject:v16];
 
         v7 = v16;
         if (v13)
         {
-          v14 = [v16 uuid];
-          v15 = [v16 photoLibrary];
-          [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v14 flags:a4 library:v15];
+          uuid2 = [v16 uuid];
+          photoLibrary2 = [v16 photoLibrary];
+          [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid2 flags:flags library:photoLibrary2];
 
           v7 = v16;
         }
@@ -62,15 +62,15 @@
   }
 }
 
-+ (void)recordMediaAnalysisAssetAttributesIfNeeded:(id)a3
++ (void)recordMediaAnalysisAssetAttributesIfNeeded:(id)needed
 {
-  v18 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v4 = [v18 changedValues];
-    v5 = [v4 objectForKeyedSubscript:@"characterRecognitionAttributes"];
+    changedValues = [neededCopy changedValues];
+    v5 = [changedValues objectForKeyedSubscript:@"characterRecognitionAttributes"];
 
-    if (v5 || [v18 isDeleted])
+    if (v5 || [neededCopy isDeleted])
     {
       v6 = 8;
     }
@@ -80,9 +80,9 @@
       v6 = 0;
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"visualSearchAttributes"];
+    v7 = [changedValues objectForKeyedSubscript:@"visualSearchAttributes"];
 
-    v8 = [v18 isDeleted];
+    isDeleted = [neededCopy isDeleted];
     if (v7)
     {
       v9 = 1;
@@ -90,7 +90,7 @@
 
     else
     {
-      v9 = v8;
+      v9 = isDeleted;
     }
 
     if (v9)
@@ -103,13 +103,13 @@
       v10 = v6;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"mediaAnalysisVersion"];
+    v11 = [changedValues objectForKeyedSubscript:@"mediaAnalysisVersion"];
 
-    v12 = [v4 objectForKeyedSubscript:@"mediaAnalysisImageVersion"];
+    v12 = [changedValues objectForKeyedSubscript:@"mediaAnalysisImageVersion"];
 
-    v13 = [v4 objectForKeyedSubscript:@"imageEmbeddingVersion"];
+    v13 = [changedValues objectForKeyedSubscript:@"imageEmbeddingVersion"];
 
-    v14 = [v4 objectForKeyedSubscript:@"videoEmbeddingVersion"];
+    v14 = [changedValues objectForKeyedSubscript:@"videoEmbeddingVersion"];
     v15 = v13 | v14;
 
     if (v15 | v11 | v12)
@@ -124,21 +124,21 @@
 
     if (v16)
     {
-      v17 = [v18 asset];
-      [a1 _recordAssetIfNeededForRelationshipChange:v17 flags:v16];
+      asset = [neededCopy asset];
+      [self _recordAssetIfNeededForRelationshipChange:asset flags:v16];
     }
   }
 }
 
-+ (void)recordAdditionalAssetAttributesIfNeeded:(id)a3
++ (void)recordAdditionalAssetAttributesIfNeeded:(id)needed
 {
-  v18 = a3;
+  neededCopy = needed;
   v4 = PLPlatformSearchSupported();
-  v5 = v18;
+  v5 = neededCopy;
   if (v4)
   {
-    v6 = [v18 changedValues];
-    v7 = [v6 objectForKeyedSubscript:@"reverseLocationDataIsValid"];
+    changedValues = [neededCopy changedValues];
+    v7 = [changedValues objectForKeyedSubscript:@"reverseLocationDataIsValid"];
     if (v7)
     {
       v8 = 1;
@@ -146,92 +146,92 @@
 
     else
     {
-      v9 = [v6 objectForKeyedSubscript:@"reverseLocationData"];
+      v9 = [changedValues objectForKeyedSubscript:@"reverseLocationData"];
       v8 = v9 != 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"keywords"];
+    v10 = [changedValues objectForKeyedSubscript:@"keywords"];
 
-    v11 = [v6 objectForKeyedSubscript:@"title"];
+    v11 = [changedValues objectForKeyedSubscript:@"title"];
 
-    v12 = [v6 objectForKeyedSubscript:@"sceneClassifications"];
+    v12 = [changedValues objectForKeyedSubscript:@"sceneClassifications"];
 
-    v13 = [v6 objectForKeyedSubscript:@"temporalSceneClassifications"];
+    v13 = [changedValues objectForKeyedSubscript:@"temporalSceneClassifications"];
 
-    v14 = [v6 objectForKeyedSubscript:@"cameraCaptureDevice"];
+    v14 = [changedValues objectForKeyedSubscript:@"cameraCaptureDevice"];
 
-    v15 = [v6 objectForKeyedSubscript:@"assetDescription"];
+    v15 = [changedValues objectForKeyedSubscript:@"assetDescription"];
 
-    v16 = [v6 objectForKeyedSubscript:@"accessibilityDescription"];
+    v16 = [changedValues objectForKeyedSubscript:@"accessibilityDescription"];
 
     if (v8 || v10 || v11 || v12 || v13 || v14 || v15 || v16)
     {
-      v17 = [v18 asset];
-      [a1 _recordAssetIfNeededForRelationshipChange:v17 flags:4];
+      asset = [neededCopy asset];
+      [self _recordAssetIfNeededForRelationshipChange:asset flags:4];
     }
 
-    v5 = v18;
+    v5 = neededCopy;
   }
 }
 
-+ (void)recordAssetDescriptionIfNeeded:(id)a3
++ (void)recordAssetDescriptionIfNeeded:(id)needed
 {
-  v10 = a3;
+  neededCopy = needed;
   v4 = PLPlatformSearchSupported();
-  v5 = v10;
+  v5 = neededCopy;
   if (v4)
   {
-    v6 = [v10 changedValues];
-    v7 = [v6 objectForKeyedSubscript:@"longDescription"];
+    changedValues = [neededCopy changedValues];
+    v7 = [changedValues objectForKeyedSubscript:@"longDescription"];
 
-    if (([v10 isDeleted] & 1) != 0 || v7)
+    if (([neededCopy isDeleted] & 1) != 0 || v7)
     {
-      v8 = [v10 assetAttributes];
-      v9 = [v8 asset];
-      [a1 _recordAssetIfNeededForRelationshipChange:v9 flags:4];
+      assetAttributes = [neededCopy assetAttributes];
+      asset = [assetAttributes asset];
+      [self _recordAssetIfNeededForRelationshipChange:asset flags:4];
     }
 
-    v5 = v10;
+    v5 = neededCopy;
   }
 }
 
-+ (void)recordPersonIfNeeded:(id)a3
++ (void)recordPersonIfNeeded:(id)needed
 {
-  v13 = a3;
+  neededCopy = needed;
   v4 = PLPlatformSearchSupported();
-  v5 = v13;
+  v5 = neededCopy;
   if (v4)
   {
-    v6 = [v13 personUUID];
-    if (!v6 || ([v13 isNotYetEligibleForSearch] & 1) != 0)
+    personUUID = [neededCopy personUUID];
+    if (!personUUID || ([neededCopy isNotYetEligibleForSearch] & 1) != 0)
     {
       goto LABEL_14;
     }
 
-    v7 = [v13 changedValues];
-    if (([v13 isDeleted] & 1) == 0)
+    changedValues = [neededCopy changedValues];
+    if (([neededCopy isDeleted] & 1) == 0)
     {
-      v8 = [v7 objectForKeyedSubscript:@"displayName"];
-      if (v8 || ([v7 objectForKeyedSubscript:@"fullName"], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v7, "objectForKeyedSubscript:", @"verifiedType"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+      v8 = [changedValues objectForKeyedSubscript:@"displayName"];
+      if (v8 || ([changedValues objectForKeyedSubscript:@"fullName"], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"verifiedType"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v12 = [v7 objectForKeyedSubscript:@"detectionType"];
+        v12 = [changedValues objectForKeyedSubscript:@"detectionType"];
 
         if (!v12)
         {
 LABEL_13:
 
 LABEL_14:
-          v5 = v13;
+          v5 = neededCopy;
           goto LABEL_15;
         }
       }
     }
 
-    if ([v13 isEligibleForSearchIndexing])
+    if ([neededCopy isEligibleForSearchIndexing])
     {
       v9 = 8194;
     }
@@ -241,11 +241,11 @@ LABEL_14:
       v9 = 1;
     }
 
-    v10 = [v13 photoLibrary];
-    [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v6 flags:v9 library:v10];
+    photoLibrary = [neededCopy photoLibrary];
+    [self _insertWorkItemAndSignalIfNeededWithIdentifier:personUUID flags:v9 library:photoLibrary];
 
-    v11 = [v13 photoLibrary];
-    [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v6 flags:256 library:v11];
+    photoLibrary2 = [neededCopy photoLibrary];
+    [self _insertWorkItemAndSignalIfNeededWithIdentifier:personUUID flags:256 library:photoLibrary2];
 
     goto LABEL_13;
   }
@@ -253,14 +253,14 @@ LABEL_14:
 LABEL_15:
 }
 
-+ (void)recordDetectedFaceIfNeeded:(id)a3
++ (void)recordDetectedFaceIfNeeded:(id)needed
 {
-  v15 = a3;
+  neededCopy = needed;
   v4 = PLPlatformSearchSupported();
-  v5 = v15;
+  v5 = neededCopy;
   if (v4)
   {
-    v6 = [v15 associatedAssetForFaceOrTorso:1 orTemporal:1];
+    v6 = [neededCopy associatedAssetForFaceOrTorso:1 orTemporal:1];
     v7 = v6;
     if (!v6)
     {
@@ -272,34 +272,34 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v8 = [v15 associatedPersonForFaceOrTorso:1 orTemporal:1];
-    v9 = [v8 shouldIndexOnAssetsForSearch];
+    v8 = [neededCopy associatedPersonForFaceOrTorso:1 orTemporal:1];
+    shouldIndexOnAssetsForSearch = [v8 shouldIndexOnAssetsForSearch];
 
-    if (!v9)
+    if (!shouldIndexOnAssetsForSearch)
     {
       goto LABEL_13;
     }
 
-    if ([v15 isDeleted])
+    if ([neededCopy isDeleted])
     {
-      [a1 _recordAssetIfNeededForRelationshipChange:v7 flags:4];
+      [self _recordAssetIfNeededForRelationshipChange:v7 flags:4];
 LABEL_13:
 
-      v5 = v15;
+      v5 = neededCopy;
       goto LABEL_14;
     }
 
-    v10 = [v15 changedValues];
-    if (([v15 isInserted] & 1) == 0)
+    changedValues = [neededCopy changedValues];
+    if (([neededCopy isInserted] & 1) == 0)
     {
-      v11 = [v10 objectForKeyedSubscript:@"personForFace"];
-      if (v11 || ([v10 objectForKeyedSubscript:@"personForTemporalDetectedFaces"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+      v11 = [changedValues objectForKeyedSubscript:@"personForFace"];
+      if (v11 || ([changedValues objectForKeyedSubscript:@"personForTemporalDetectedFaces"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v14 = [v10 objectForKeyedSubscript:@"ageType"];
+        v14 = [changedValues objectForKeyedSubscript:@"ageType"];
 
         if (!v14)
         {
@@ -308,9 +308,9 @@ LABEL_13:
       }
     }
 
-    v12 = [v15 uuid];
-    v13 = [v15 photoLibrary];
-    [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v12 flags:16 library:v13];
+    uuid = [neededCopy uuid];
+    photoLibrary = [neededCopy photoLibrary];
+    [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid flags:16 library:photoLibrary];
 
 LABEL_12:
     goto LABEL_13;
@@ -319,27 +319,27 @@ LABEL_12:
 LABEL_14:
 }
 
-+ (void)recordCollectionShareIfNeeded:(id)a3
++ (void)recordCollectionShareIfNeeded:(id)needed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v5 = [v4 uuid];
+    uuid = [neededCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      v6 = [v4 changedValues];
-      if (([v4 isDeleted] & 1) == 0 && (objc_msgSend(v4, "isInserted") & 1) == 0)
+      changedValues = [neededCopy changedValues];
+      if (([neededCopy isDeleted] & 1) == 0 && (objc_msgSend(neededCopy, "isInserted") & 1) == 0)
       {
-        v7 = [v6 objectForKeyedSubscript:@"title"];
+        v7 = [changedValues objectForKeyedSubscript:@"title"];
         if (v7)
         {
         }
 
         else
         {
-          v8 = [v6 objectForKeyedSubscript:@"creationDate"];
+          v8 = [changedValues objectForKeyedSubscript:@"creationDate"];
 
           if (!v8)
           {
@@ -350,14 +350,14 @@ LABEL_15:
         }
       }
 
-      if (([v4 isDeleted] & 1) != 0 || (objc_msgSend(v4, "isEligibleForSearchIndexing") & 1) == 0)
+      if (([neededCopy isDeleted] & 1) != 0 || (objc_msgSend(neededCopy, "isEligibleForSearchIndexing") & 1) == 0)
       {
         v10 = PLSearchBackendIndexStatusGetLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [v4 uuid];
+          uuid2 = [neededCopy uuid];
           v14 = 138412290;
-          v15 = v11;
+          v15 = uuid2;
           _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "property changes to collection share: %@ indicate remove from index", &v14, 0xCu);
         }
 
@@ -369,9 +369,9 @@ LABEL_15:
         v9 = 4096;
       }
 
-      v12 = [v4 uuid];
-      v13 = [v4 photoLibrary];
-      [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v12 flags:v9 library:v13];
+      uuid3 = [neededCopy uuid];
+      photoLibrary = [neededCopy photoLibrary];
+      [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid3 flags:v9 library:photoLibrary];
 
       goto LABEL_15;
     }
@@ -380,24 +380,24 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (void)recordMemoryIfNeeded:(id)a3
++ (void)recordMemoryIfNeeded:(id)needed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v5 = [v4 uuid];
+    uuid = [neededCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      if (([v4 isDeleted] & 1) != 0 || (objc_msgSend(v4, "photoLibrary"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "libraryServicesManager"), v7 = objc_claimAutoreleasedReturnValue(), +[PLMemory isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLMemory, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", objc_msgSend(v7, "wellKnownPhotoLibraryIdentifier")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "evaluateWithObject:", v4), v8, v7, v6, (v9 & 1) == 0))
+      if (([neededCopy isDeleted] & 1) != 0 || (objc_msgSend(neededCopy, "photoLibrary"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "libraryServicesManager"), v7 = objc_claimAutoreleasedReturnValue(), +[PLMemory isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLMemory, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", objc_msgSend(v7, "wellKnownPhotoLibraryIdentifier")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "evaluateWithObject:", neededCopy), v8, v7, v6, (v9 & 1) == 0))
       {
         v11 = PLSearchBackendIndexStatusGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [v4 uuid];
+          uuid2 = [neededCopy uuid];
           v15 = 138412290;
-          v16 = v12;
+          v16 = uuid2;
           _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "property changes to memory: %@ indicate remove from index", &v15, 0xCu);
         }
 
@@ -409,75 +409,75 @@ LABEL_16:
         v10 = 128;
       }
 
-      v13 = [v4 uuid];
-      v14 = [v4 photoLibrary];
-      [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v13 flags:v10 library:v14];
+      uuid3 = [neededCopy uuid];
+      photoLibrary = [neededCopy photoLibrary];
+      [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid3 flags:v10 library:photoLibrary];
     }
   }
 }
 
-+ (void)recordHighlightIfNeeded:(id)a3
++ (void)recordHighlightIfNeeded:(id)needed
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v5 = [v4 uuid];
+    uuid = [neededCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      v6 = [v4 changedValues];
-      if ([v4 isDeleted] & 1) != 0 || (objc_msgSend(v4, "isInserted"))
+      changedValues = [neededCopy changedValues];
+      if ([neededCopy isDeleted] & 1) != 0 || (objc_msgSend(neededCopy, "isInserted"))
       {
         goto LABEL_30;
       }
 
-      v7 = [v6 objectForKeyedSubscript:@"verboseSmartDescription"];
+      v7 = [changedValues objectForKeyedSubscript:@"verboseSmartDescription"];
       if (!v7)
       {
-        v7 = [v6 objectForKeyedSubscript:@"subtitle"];
+        v7 = [changedValues objectForKeyedSubscript:@"subtitle"];
         if (!v7)
         {
-          v7 = [v6 objectForKeyedSubscript:@"title"];
+          v7 = [changedValues objectForKeyedSubscript:@"title"];
           if (!v7)
           {
-            v7 = [v6 objectForKeyedSubscript:@"startDate"];
+            v7 = [changedValues objectForKeyedSubscript:@"startDate"];
             if (!v7)
             {
-              v7 = [v6 objectForKeyedSubscript:@"endDate"];
+              v7 = [changedValues objectForKeyedSubscript:@"endDate"];
               if (!v7)
               {
-                v7 = [v6 objectForKeyedSubscript:@"startTimeZoneOffset"];
+                v7 = [changedValues objectForKeyedSubscript:@"startTimeZoneOffset"];
                 if (!v7)
                 {
-                  v8 = [v6 objectForKeyedSubscript:@"endTimeZoneOffset"];
+                  v8 = [changedValues objectForKeyedSubscript:@"endTimeZoneOffset"];
                   if (!v8)
                   {
-                    v9 = [v6 objectForKeyedSubscript:@"type"];
+                    v9 = [changedValues objectForKeyedSubscript:@"type"];
                     if (!v9)
                     {
-                      v10 = [v6 objectForKeyedSubscript:@"assets"];
+                      v10 = [changedValues objectForKeyedSubscript:@"assets"];
                       if (!v10)
                       {
-                        v11 = [v6 objectForKeyedSubscript:@"dayGroupAssets"];
+                        v11 = [changedValues objectForKeyedSubscript:@"dayGroupAssets"];
                         if (!v11)
                         {
-                          v12 = [v6 objectForKeyedSubscript:@"childDayGroupPhotosHighlights"];
+                          v12 = [changedValues objectForKeyedSubscript:@"childDayGroupPhotosHighlights"];
                           if (!v12)
                           {
-                            v13 = [v6 objectForKeyedSubscript:@"moments"];
+                            v13 = [changedValues objectForKeyedSubscript:@"moments"];
                             if (!v13)
                             {
-                              v14 = [v6 objectForKeyedSubscript:@"keyAssetPrivate"];
+                              v14 = [changedValues objectForKeyedSubscript:@"keyAssetPrivate"];
                               if (!v14)
                               {
-                                v15 = [v6 objectForKeyedSubscript:@"dayGroupKeyAssetPrivate"];
+                                v15 = [changedValues objectForKeyedSubscript:@"dayGroupKeyAssetPrivate"];
                                 if (!v15)
                                 {
-                                  v16 = [v6 objectForKeyedSubscript:@"keyAssetShared"];
+                                  v16 = [changedValues objectForKeyedSubscript:@"keyAssetShared"];
                                   if (!v16)
                                   {
-                                    v22 = [v6 objectForKeyedSubscript:@"dayGroupKeyAssetShared"];
+                                    v22 = [changedValues objectForKeyedSubscript:@"dayGroupKeyAssetShared"];
 
                                     if (!v22)
                                     {
@@ -487,14 +487,14 @@ LABEL_37:
                                     }
 
 LABEL_30:
-                                    if (([v4 isDeleted] & 1) != 0 || (objc_msgSend(v4, "isEligibleForSearchIndexing") & 1) == 0)
+                                    if (([neededCopy isDeleted] & 1) != 0 || (objc_msgSend(neededCopy, "isEligibleForSearchIndexing") & 1) == 0)
                                     {
                                       v18 = PLSearchBackendIndexStatusGetLog();
                                       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
                                       {
-                                        v19 = [v4 uuid];
+                                        uuid2 = [neededCopy uuid];
                                         v23 = 138412290;
-                                        v24 = v19;
+                                        v24 = uuid2;
                                         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "property changes to highlight: %@ indicate remove from index", &v23, 0xCu);
                                       }
 
@@ -506,9 +506,9 @@ LABEL_30:
                                       v17 = 64;
                                     }
 
-                                    v20 = [v4 uuid];
-                                    v21 = [v4 photoLibrary];
-                                    [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v20 flags:v17 library:v21];
+                                    uuid3 = [neededCopy uuid];
+                                    photoLibrary = [neededCopy photoLibrary];
+                                    [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid3 flags:v17 library:photoLibrary];
 
                                     goto LABEL_37;
                                   }
@@ -552,29 +552,29 @@ LABEL_30:
 LABEL_38:
 }
 
-+ (void)recordAlbumIfNeeded:(id)a3
++ (void)recordAlbumIfNeeded:(id)needed
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v5 = [v4 uuid];
+    uuid = [neededCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      if ([v4 isCandidateForSearchIndexing])
+      if ([neededCopy isCandidateForSearchIndexing])
       {
-        v6 = [v4 changedValues];
-        if (([v4 isDeleted] & 1) == 0 && (objc_msgSend(v4, "isInserted") & 1) == 0)
+        changedValues = [neededCopy changedValues];
+        if (([neededCopy isDeleted] & 1) == 0 && (objc_msgSend(neededCopy, "isInserted") & 1) == 0)
         {
-          v7 = [v6 objectForKeyedSubscript:@"trashedState"];
-          if (v7 || ([v6 objectForKeyedSubscript:@"startDate"], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v6, "objectForKeyedSubscript:", @"endDate"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v6, "objectForKeyedSubscript:", @"assets"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+          v7 = [changedValues objectForKeyedSubscript:@"trashedState"];
+          if (v7 || ([changedValues objectForKeyedSubscript:@"startDate"], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"endDate"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"assets"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
           {
           }
 
           else
           {
-            v18 = [v6 objectForKeyedSubscript:@"title"];
+            v18 = [changedValues objectForKeyedSubscript:@"title"];
 
             if (!v18)
             {
@@ -585,21 +585,21 @@ LABEL_20:
           }
         }
 
-        if (([v4 isDeleted] & 1) != 0 || (objc_msgSend(v4, "photoLibrary"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "libraryServicesManager"), v9 = objc_claimAutoreleasedReturnValue(), +[PLGenericAlbum isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLGenericAlbum, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", objc_msgSend(v9, "wellKnownPhotoLibraryIdentifier")), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "evaluateWithObject:", v4), v10, v9, v8, !v11))
+        if (([neededCopy isDeleted] & 1) != 0 || (objc_msgSend(neededCopy, "photoLibrary"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "libraryServicesManager"), v9 = objc_claimAutoreleasedReturnValue(), +[PLGenericAlbum isEligibleForSearchIndexingPredicateForLibraryIdentifier:](PLGenericAlbum, "isEligibleForSearchIndexingPredicateForLibraryIdentifier:", objc_msgSend(v9, "wellKnownPhotoLibraryIdentifier")), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "evaluateWithObject:", neededCopy), v10, v9, v8, !v11))
         {
           v14 = PLSearchBackendIndexStatusGetLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [v4 uuid];
+            uuid2 = [neededCopy uuid];
             v19 = 138412290;
-            v20 = v15;
+            v20 = uuid2;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "property changes to album: %@ indicate remove from index", &v19, 0xCu);
           }
 
           v13 = 1;
         }
 
-        else if (([v4 isInserted] & 1) != 0 || (objc_msgSend(v6, "objectForKeyedSubscript:", @"trashedState"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+        else if (([neededCopy isInserted] & 1) != 0 || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"trashedState"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
         {
           v13 = 34;
         }
@@ -609,9 +609,9 @@ LABEL_20:
           v13 = 32;
         }
 
-        v16 = [v4 uuid];
-        v17 = [v4 photoLibrary];
-        [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v16 flags:v13 library:v17];
+        uuid3 = [neededCopy uuid];
+        photoLibrary = [neededCopy photoLibrary];
+        [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid3 flags:v13 library:photoLibrary];
 
         goto LABEL_20;
       }
@@ -621,38 +621,38 @@ LABEL_20:
 LABEL_21:
 }
 
-+ (void)recordAssetIfNeeded:(id)a3
++ (void)recordAssetIfNeeded:(id)needed
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (PLPlatformSearchSupported())
   {
-    v5 = [v4 uuid];
+    uuid = [neededCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      v6 = [v4 isEligibleForSearchIndexing];
-      v7 = [v4 changedValues];
-      if (([v4 isDeleted] & 1) == 0)
+      isEligibleForSearchIndexing = [neededCopy isEligibleForSearchIndexing];
+      changedValues = [neededCopy changedValues];
+      if (([neededCopy isDeleted] & 1) == 0)
       {
-        if (v6)
+        if (isEligibleForSearchIndexing)
         {
           goto LABEL_8;
         }
 
-        if ([v4 isInserted])
+        if ([neededCopy isInserted])
         {
           goto LABEL_29;
         }
 
-        v31 = [v7 objectForKeyedSubscript:@"visibilityState"];
-        if (v31 || ([v7 objectForKeyedSubscript:@"savedAssetType"], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v7, "objectForKeyedSubscript:", @"hidden"), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+        v31 = [changedValues objectForKeyedSubscript:@"visibilityState"];
+        if (v31 || ([changedValues objectForKeyedSubscript:@"savedAssetType"], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"hidden"), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
         {
         }
 
         else
         {
-          v32 = [v7 objectForKeyedSubscript:@"trashedState"];
+          v32 = [changedValues objectForKeyedSubscript:@"trashedState"];
 
           if (!v32)
           {
@@ -661,29 +661,29 @@ LABEL_21:
         }
       }
 
-      v8 = [v4 photoLibrary];
-      v9 = [v8 libraryServicesManager];
-      v10 = [v9 wellKnownPhotoLibraryIdentifier];
+      photoLibrary = [neededCopy photoLibrary];
+      libraryServicesManager = [photoLibrary libraryServicesManager];
+      wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-      if (v10 != 3)
+      if (wellKnownPhotoLibraryIdentifier != 3)
       {
         v27 = PLSearchBackendIndexStatusGetLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v4 uuid];
+          uuid2 = [neededCopy uuid];
           *buf = 138412290;
-          v45 = v28;
+          v45 = uuid2;
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEBUG, "property changes to asset: %@ indicate remove from index", buf, 0xCu);
         }
 
-        v29 = [v4 uuid];
-        v30 = [v4 photoLibrary];
-        [a1 _insertWorkItemAndSignalIfNeededWithIdentifier:v29 flags:1 library:v30];
+        uuid3 = [neededCopy uuid];
+        photoLibrary2 = [neededCopy photoLibrary];
+        [self _insertWorkItemAndSignalIfNeededWithIdentifier:uuid3 flags:1 library:photoLibrary2];
 
         goto LABEL_29;
       }
 
-      if (!v6)
+      if (!isEligibleForSearchIndexing)
       {
 LABEL_29:
 
@@ -691,45 +691,45 @@ LABEL_29:
       }
 
 LABEL_8:
-      v11 = [v7 objectForKeyedSubscript:@"dateCreated"];
+      v11 = [changedValues objectForKeyedSubscript:@"dateCreated"];
 
-      v42 = [v7 objectForKeyedSubscript:@"favorite"];
+      v42 = [changedValues objectForKeyedSubscript:@"favorite"];
 
-      v41 = [v7 objectForKeyedSubscript:@"kind"];
+      v41 = [changedValues objectForKeyedSubscript:@"kind"];
 
-      v40 = [v7 objectForKeyedSubscript:@"kindSubtype"];
+      v40 = [changedValues objectForKeyedSubscript:@"kindSubtype"];
 
-      v39 = [v7 objectForKeyedSubscript:@"depthType"];
+      v39 = [changedValues objectForKeyedSubscript:@"depthType"];
 
-      v38 = [v7 objectForKeyedSubscript:@"avalanchePickType"];
+      v38 = [changedValues objectForKeyedSubscript:@"avalanchePickType"];
 
-      v37 = [v7 objectForKeyedSubscript:@"playbackVariation"];
+      v37 = [changedValues objectForKeyedSubscript:@"playbackVariation"];
 
-      v36 = [v7 objectForKeyedSubscript:@"playbackStyle"];
+      v36 = [changedValues objectForKeyedSubscript:@"playbackStyle"];
 
-      v34 = [v7 objectForKeyedSubscript:@"visibilityState"];
+      v34 = [changedValues objectForKeyedSubscript:@"visibilityState"];
       v35 = v11 | v34;
 
-      v12 = [v7 objectForKeyedSubscript:@"savedAssetType"];
+      v12 = [changedValues objectForKeyedSubscript:@"savedAssetType"];
 
-      v13 = [v7 objectForKeyedSubscript:@"hidden"];
+      v13 = [changedValues objectForKeyedSubscript:@"hidden"];
 
-      [v7 objectForKeyedSubscript:@"trashedState"];
-      v14 = v43 = a1;
+      [changedValues objectForKeyedSubscript:@"trashedState"];
+      v14 = v43 = self;
 
-      v33 = [v7 objectForKeyedSubscript:@"dayGroupHighlightBeingAssets"];
+      v33 = [changedValues objectForKeyedSubscript:@"dayGroupHighlightBeingAssets"];
 
-      v15 = [v7 objectForKeyedSubscript:@"albums"];
+      v15 = [changedValues objectForKeyedSubscript:@"albums"];
 
-      v16 = [v7 objectForKeyedSubscript:@"memoriesBeingCuratedAssets"];
+      v16 = [changedValues objectForKeyedSubscript:@"memoriesBeingCuratedAssets"];
 
-      v17 = [v7 objectForKeyedSubscript:@"moment"];
+      v17 = [changedValues objectForKeyedSubscript:@"moment"];
 
-      v18 = [v7 objectForKeyedSubscript:@"libraryScope"];
+      v18 = [changedValues objectForKeyedSubscript:@"libraryScope"];
 
-      v19 = [v7 objectForKeyedSubscript:@"libraryScopeContributors"];
+      v19 = [changedValues objectForKeyedSubscript:@"libraryScopeContributors"];
 
-      v20 = [v4 isInserted];
+      isInserted = [neededCopy isInserted];
       if (v13)
       {
         v21 = 1;
@@ -737,7 +737,7 @@ LABEL_8:
 
       else
       {
-        v21 = v20;
+        v21 = isInserted;
       }
 
       if (v14)
@@ -774,9 +774,9 @@ LABEL_8:
 
       if (v24)
       {
-        v25 = [v4 uuid];
-        v26 = [v4 photoLibrary];
-        [v43 _insertWorkItemAndSignalIfNeededWithIdentifier:v25 flags:v24 library:v26];
+        uuid4 = [neededCopy uuid];
+        photoLibrary3 = [neededCopy photoLibrary];
+        [v43 _insertWorkItemAndSignalIfNeededWithIdentifier:uuid4 flags:v24 library:photoLibrary3];
       }
 
       goto LABEL_29;

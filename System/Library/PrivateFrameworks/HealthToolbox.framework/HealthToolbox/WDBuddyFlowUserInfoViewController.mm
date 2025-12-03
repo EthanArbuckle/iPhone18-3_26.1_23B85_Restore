@@ -1,31 +1,31 @@
 @interface WDBuddyFlowUserInfoViewController
 - (NSArray)dataEntryItems;
 - (WDBuddyControllerUserInfoDelegate)delegate;
-- (WDBuddyFlowUserInfoViewController)initWithProfile:(id)a3 isLastScreen:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WDBuddyFlowUserInfoViewController)initWithProfile:(id)profile isLastScreen:(BOOL)screen;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_loadData;
-- (void)_saveDataWithCompletion:(id)a3;
+- (void)_saveDataWithCompletion:(id)completion;
 - (void)_setHeaderIcon;
 - (void)_setUpFooterView;
 - (void)_setUpTableView;
 - (void)_setupObservers;
-- (void)continueButtonTapped:(id)a3;
-- (void)dataEntryItemDonePressed:(id)a3;
-- (void)dataEntryItemNextPressed:(id)a3;
-- (void)dataEntryItemPrevPressed:(id)a3;
+- (void)continueButtonTapped:(id)tapped;
+- (void)dataEntryItemDonePressed:(id)pressed;
+- (void)dataEntryItemNextPressed:(id)pressed;
+- (void)dataEntryItemPrevPressed:(id)pressed;
 - (void)dealloc;
-- (void)focusItemAtIndex:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)focusItemAtIndex:(int64_t)index;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation WDBuddyFlowUserInfoViewController
 
-- (WDBuddyFlowUserInfoViewController)initWithProfile:(id)a3 isLastScreen:(BOOL)a4
+- (WDBuddyFlowUserInfoViewController)initWithProfile:(id)profile isLastScreen:(BOOL)screen
 {
-  v7 = a3;
+  profileCopy = profile;
   v8 = WDBundle();
   v9 = [v8 localizedStringForKey:@"HEALTH_DETAILS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
   v10 = WDBundle();
@@ -36,15 +36,15 @@
 
   if (v12)
   {
-    objc_storeStrong(&v12->_profile, a3);
-    v12->_isLastScreen = a4;
-    v13 = [(WDProfile *)v12->_profile healthStore];
+    objc_storeStrong(&v12->_profile, profile);
+    v12->_isLastScreen = screen;
+    healthStore = [(WDProfile *)v12->_profile healthStore];
     healthStore = v12->_healthStore;
-    v12->_healthStore = v13;
+    v12->_healthStore = healthStore;
 
-    v15 = [(WDProfile *)v12->_profile userDefaults];
+    userDefaults = [(WDProfile *)v12->_profile userDefaults];
     userDefaults = v12->_userDefaults;
-    v12->_userDefaults = v15;
+    v12->_userDefaults = userDefaults;
 
     baseAutomationIdentifier = v12->_baseAutomationIdentifier;
     v12->_baseAutomationIdentifier = @"UIA.Health.BuddyOnboarding.UserInfoScreen";
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = WDBuddyFlowUserInfoViewController;
@@ -68,8 +68,8 @@
 
 - (void)_setupObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
 }
 
 - (NSArray)dataEntryItems
@@ -81,9 +81,9 @@
     dataEntryItems = self->_userInfo;
     if (dataEntryItems)
     {
-      v4 = [dataEntryItems defaultDataEntryItems];
+      defaultDataEntryItems = [dataEntryItems defaultDataEntryItems];
       v5 = self->_dataEntryItems;
-      self->_dataEntryItems = v4;
+      self->_dataEntryItems = defaultDataEntryItems;
 
       v15 = 0u;
       v16 = 0u;
@@ -122,11 +122,11 @@
   return dataEntryItems;
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v5 endEditing:1];
+  tappedCopy = tapped;
+  view = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view endEditing:1];
 
   location = 0;
   objc_storeWeak(&location, 0);
@@ -192,12 +192,12 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
   v14.receiver = self;
   v14.super_class = WDBuddyFlowUserInfoViewController;
   [(OBTableWelcomeController *)&v14 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(WDBuddyFlowUserInfoViewController *)self headerView];
-  [v5 setAllowFullWidthIcon:1];
+  headerView = [(WDBuddyFlowUserInfoViewController *)self headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   v6 = [WDBuddyFlowUserInfo buddyFlowUserInfoWithDemographicsInformation:0];
   userInfo = self->_userInfo;
@@ -205,8 +205,8 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 
   [(WDBuddyFlowUserInfoViewController *)self _loadData];
   baseAutomationIdentifier = self->_baseAutomationIdentifier;
-  v9 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v9 setAccessibilityIdentifier:baseAutomationIdentifier];
+  view2 = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view2 setAccessibilityIdentifier:baseAutomationIdentifier];
 
   v15[0] = objc_opt_class();
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
@@ -214,8 +214,8 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 
   [(WDBuddyFlowUserInfoViewController *)self _setHeaderIcon];
   [(WDBuddyFlowUserInfoViewController *)self _setUpTableView];
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 _setSectionContentInsetFollowsLayoutMargins:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView _setSectionContentInsetFollowsLayoutMargins:1];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -225,14 +225,14 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
   v13.receiver = self;
   v13.super_class = WDBuddyFlowUserInfoViewController;
   [(OBTableWelcomeController *)&v13 viewDidLayoutSubviews];
-  v3 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v3 hk_onboardingListEdgeInsets];
+  view = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view hk_onboardingListEdgeInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 _setSectionContentInset:{v5, v7, v9, v11}];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView _setSectionContentInset:{v5, v7, v9, v11}];
 }
 
 - (void)_setUpTableView
@@ -241,15 +241,15 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDataSource:self];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
   v24 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918] symbolicTraits:2];
   [v24 _scaledValueForValue:60.0];
@@ -257,36 +257,36 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
   if (HKUIApplicationIsUsingAccessibilityContentSizeCategory())
   {
     v11 = *MEMORY[0x277D76F30];
-    v12 = [(OBTableWelcomeController *)self tableView];
-    [v12 setRowHeight:v11];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    [tableView4 setRowHeight:v11];
 
-    v13 = [(OBTableWelcomeController *)self tableView];
-    [v13 setEstimatedRowHeight:v10];
+    tableView5 = [(OBTableWelcomeController *)self tableView];
+    [tableView5 setEstimatedRowHeight:v10];
   }
 
   else
   {
-    v13 = [(OBTableWelcomeController *)self tableView];
-    [v13 setRowHeight:v10];
+    tableView5 = [(OBTableWelcomeController *)self tableView];
+    [tableView5 setRowHeight:v10];
   }
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 hk_onboardingListEdgeInsets];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 hk_onboardingListEdgeInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 _setSectionContentInset:{v16, v18, v20, v22}];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 _setSectionContentInset:{v16, v18, v20, v22}];
 }
 
 - (void)_setUpFooterView
 {
   if (!self->_hasSetUpFooterView)
   {
-    v3 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     continueButton = self->continueButton;
-    self->continueButton = v3;
+    self->continueButton = boldButton;
 
     isLastScreen = self->_isLastScreen;
     v6 = WDBundle();
@@ -305,8 +305,8 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 
     [(OBBoldTrayButton *)self->continueButton setTitle:v10 forState:0];
     [(OBBoldTrayButton *)self->continueButton addTarget:self action:sel_continueButtonTapped_ forControlEvents:64];
-    v9 = [(WDBuddyFlowUserInfoViewController *)self buttonTray];
-    [v9 addButton:self->continueButton];
+    buttonTray = [(WDBuddyFlowUserInfoViewController *)self buttonTray];
+    [buttonTray addButton:self->continueButton];
 
     self->_hasSetUpFooterView = 1;
   }
@@ -315,16 +315,16 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 - (void)_setHeaderIcon
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:1];
+  view = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
   v31 = objc_alloc_init(MEMORY[0x277CECA90]);
-  v35 = [v31 profilePictureForAccountOwnerWithoutMonogramFallback];
-  v36 = [v35 hk_resizedInterfaceImageWithSize:{82.0, 82.0}];
+  profilePictureForAccountOwnerWithoutMonogramFallback = [v31 profilePictureForAccountOwnerWithoutMonogramFallback];
+  v36 = [profilePictureForAccountOwnerWithoutMonogramFallback hk_resizedInterfaceImageWithSize:{82.0, 82.0}];
   if (!v36)
   {
-    v4 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-    v5 = [v4 effectiveUserInterfaceLayoutDirection];
+    _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+    effectiveUserInterfaceLayoutDirection = [_applicationKeyWindow effectiveUserInterfaceLayoutDirection];
 
     v42 = 0;
     v43 = &v42;
@@ -363,9 +363,9 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 
     v10 = v9;
     _Block_object_dispose(&v42, 8);
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
-    v13 = [v9 scopeWithPointSize:v5 == 1 scale:0 rightToLeft:82.0 style:{82.0, v12}];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v13 = [v9 scopeWithPointSize:effectiveUserInterfaceLayoutDirection == 1 scale:0 rightToLeft:82.0 style:{82.0, v12}];
 
     v14 = objc_alloc_init(MEMORY[0x277CBDA58]);
     v47[0] = v14;
@@ -375,27 +375,27 @@ void __58__WDBuddyFlowUserInfoViewController_continueButtonTapped___block_invoke
 
   v16 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v36];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(WDBuddyFlowUserInfoViewController *)self headerView];
-  v18 = [v17 customIconContainerView];
-  [v18 addSubview:v16];
+  headerView = [(WDBuddyFlowUserInfoViewController *)self headerView];
+  customIconContainerView = [headerView customIconContainerView];
+  [customIconContainerView addSubview:v16];
 
-  v19 = [(WDBuddyFlowUserInfoViewController *)self headerView];
-  v20 = [v19 customIconContainerView];
+  headerView2 = [(WDBuddyFlowUserInfoViewController *)self headerView];
+  customIconContainerView2 = [headerView2 customIconContainerView];
 
   v30 = MEMORY[0x277CCAAD0];
-  v34 = [v16 centerXAnchor];
-  v33 = [v20 centerXAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  centerXAnchor = [v16 centerXAnchor];
+  centerXAnchor2 = [customIconContainerView2 centerXAnchor];
+  v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v46[0] = v32;
-  v21 = [v16 centerYAnchor];
-  v22 = [v20 centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerYAnchor = [v16 centerYAnchor];
+  centerYAnchor2 = [customIconContainerView2 centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v46[1] = v23;
-  v24 = [v16 widthAnchor];
-  v25 = [v24 constraintEqualToConstant:82.0];
+  widthAnchor = [v16 widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:82.0];
   v46[2] = v25;
-  v26 = [v16 heightAnchor];
-  v27 = [v26 constraintEqualToConstant:82.0];
+  heightAnchor = [v16 heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:82.0];
   v46[3] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
   [v30 activateConstraints:v28];
@@ -442,9 +442,9 @@ void __46__WDBuddyFlowUserInfoViewController__loadData__block_invoke_2(uint64_t 
   [v7 reloadData];
 }
 
-- (void)_saveDataWithCompletion:(id)a3
+- (void)_saveDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   userInfo = self->_userInfo;
   healthStore = self->_healthStore;
   v10[0] = MEMORY[0x277D85DD0];
@@ -457,8 +457,8 @@ void __46__WDBuddyFlowUserInfoViewController__loadData__block_invoke_2(uint64_t 
   v8[2] = __61__WDBuddyFlowUserInfoViewController__saveDataWithCompletion___block_invoke_2;
   v8[3] = &unk_2796E7198;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(WDBuddyFlowUserInfo *)userInfo saveChangesToHealthStore:healthStore andSaveNameCompletion:v10 andOverallCompletion:v8];
 }
 
@@ -486,15 +486,15 @@ uint64_t __61__WDBuddyFlowUserInfoViewController__saveDataWithCompletion___block
   return result;
 }
 
-- (void)dataEntryItemDonePressed:(id)a3
+- (void)dataEntryItemDonePressed:(id)pressed
 {
-  v3 = [(WDBuddyFlowUserInfoViewController *)self view];
-  [v3 endEditing:0];
+  view = [(WDBuddyFlowUserInfoViewController *)self view];
+  [view endEditing:0];
 }
 
-- (void)dataEntryItemPrevPressed:(id)a3
+- (void)dataEntryItemPrevPressed:(id)pressed
 {
-  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:a3];
+  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:pressed];
   if (v4 <= 0)
   {
     v4 = [(NSArray *)self->_dataEntryItems count];
@@ -503,9 +503,9 @@ uint64_t __61__WDBuddyFlowUserInfoViewController__saveDataWithCompletion___block
   [(WDBuddyFlowUserInfoViewController *)self focusItemAtIndex:v4 - 1];
 }
 
-- (void)dataEntryItemNextPressed:(id)a3
+- (void)dataEntryItemNextPressed:(id)pressed
 {
-  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:a3];
+  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:pressed];
   if (v4 + 1 < [(NSArray *)self->_dataEntryItems count])
   {
     v5 = v4 + 1;
@@ -519,56 +519,56 @@ uint64_t __61__WDBuddyFlowUserInfoViewController__saveDataWithCompletion___block
   [(WDBuddyFlowUserInfoViewController *)self focusItemAtIndex:v5];
 }
 
-- (void)focusItemAtIndex:(int64_t)a3
+- (void)focusItemAtIndex:(int64_t)index
 {
   v7 = [(NSArray *)self->_dataEntryItems objectAtIndexedSubscript:?];
   [v7 beginEditing];
-  v5 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 scrollToRowAtIndexPath:v5 atScrollPosition:3 animated:1];
+  v5 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView scrollToRowAtIndexPath:v5 atScrollPosition:3 animated:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems:a3];
+  v4 = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems];
-  v7 = [v5 row];
+  pathCopy = path;
+  dataEntryItems = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [dataEntryItems objectAtIndex:v7];
 
-  v9 = [v8 cell];
-  v10 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v9 setBackgroundColor:v10];
+  cell = [v8 cell];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [cell setBackgroundColor:secondarySystemBackgroundColor];
 
   v16[0] = self->_baseAutomationIdentifier;
-  v11 = [v8 accessibilityIdentifier];
-  v16[1] = v11;
+  accessibilityIdentifier = [v8 accessibilityIdentifier];
+  v16[1] = accessibilityIdentifier;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v13 = HKUIJoinStringsForAutomationIdentifier();
-  [v9 setAccessibilityIdentifier:v13];
+  [cell setAccessibilityIdentifier:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return cell;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems];
-  v8 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  dataEntryItems = [(WDBuddyFlowUserInfoViewController *)self dataEntryItems];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [dataEntryItems objectAtIndex:v8];
 
   [v9 beginEditing];
 }

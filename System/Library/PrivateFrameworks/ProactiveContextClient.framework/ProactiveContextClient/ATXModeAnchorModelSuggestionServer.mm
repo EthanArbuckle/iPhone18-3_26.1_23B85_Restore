@@ -1,32 +1,32 @@
 @interface ATXModeAnchorModelSuggestionServer
-- (ATXModeAnchorModelSuggestionServer)initWithConfiguredModeService:(id)a3;
-- (ATXModeAnchorModelSuggestionServer)initWithXPCListener:(id)a3 configuredModeService:(id)a4;
+- (ATXModeAnchorModelSuggestionServer)initWithConfiguredModeService:(id)service;
+- (ATXModeAnchorModelSuggestionServer)initWithXPCListener:(id)listener configuredModeService:(id)service;
 - (ATXModeClassifierClientModelDelegate)delegate;
-- (BOOL)_shouldUpdateHighestConfidenceSuggestion:(id)a3 newSuggestion:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)anchorModelDidProvideModeSuggestions:(id)a3;
+- (BOOL)_shouldUpdateHighestConfidenceSuggestion:(id)suggestion newSuggestion:(id)newSuggestion;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)anchorModelDidProvideModeSuggestions:(id)suggestions;
 - (void)dealloc;
-- (void)fetchCombinedSuggestionScoreAndFlagsForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 completionHandler:(id)a11;
-- (void)fetchCombinedSuggestionScoreForModeEvent:(id)a3 completionHandler:(id)a4;
-- (void)fetchCombinedSuggestionScoreForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 completionHandler:(id)a11;
+- (void)fetchCombinedSuggestionScoreAndFlagsForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 completionHandler:(id)self1;
+- (void)fetchCombinedSuggestionScoreForModeEvent:(id)event completionHandler:(id)handler;
+- (void)fetchCombinedSuggestionScoreForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 completionHandler:(id)self1;
 @end
 
 @implementation ATXModeAnchorModelSuggestionServer
 
-- (ATXModeAnchorModelSuggestionServer)initWithConfiguredModeService:(id)a3
+- (ATXModeAnchorModelSuggestionServer)initWithConfiguredModeService:(id)service
 {
   v4 = MEMORY[0x277CCAE98];
-  v5 = a3;
+  serviceCopy = service;
   v6 = [[v4 alloc] initWithMachServiceName:@"com.apple.proactive.ModeAnchorModelSuggestion.xpc"];
-  v7 = [(ATXModeAnchorModelSuggestionServer *)self initWithXPCListener:v6 configuredModeService:v5];
+  v7 = [(ATXModeAnchorModelSuggestionServer *)self initWithXPCListener:v6 configuredModeService:serviceCopy];
 
   return v7;
 }
 
-- (ATXModeAnchorModelSuggestionServer)initWithXPCListener:(id)a3 configuredModeService:(id)a4
+- (ATXModeAnchorModelSuggestionServer)initWithXPCListener:(id)listener configuredModeService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = ATXModeAnchorModelSuggestionServer;
   v9 = [(ATXModeAnchorModelSuggestionServer *)&v15 init];
@@ -38,8 +38,8 @@
     lock = v9->_lock;
     v9->_lock = v12;
 
-    objc_storeStrong(&v9->_modeService, a4);
-    objc_storeStrong(&v9->_xpcListener, a3);
+    objc_storeStrong(&v9->_modeService, service);
+    objc_storeStrong(&v9->_xpcListener, listener);
     [(NSXPCListener *)v9->_xpcListener setDelegate:v9];
     [(NSXPCListener *)v9->_xpcListener resume];
   }
@@ -64,53 +64,53 @@ void __45__ATXModeAnchorModelSuggestionServer_dealloc__block_invoke(uint64_t a1,
   a2[1] = 0;
 }
 
-- (void)fetchCombinedSuggestionScoreForModeEvent:(id)a3 completionHandler:(id)a4
+- (void)fetchCombinedSuggestionScoreForModeEvent:(id)event completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v20 = [v7 modeIdentifier];
-  v8 = [v7 modeType];
-  v9 = [v7 origin];
-  v10 = [v7 originBundleID];
-  v11 = [v7 originAnchorType];
-  [v7 confidenceScore];
+  handlerCopy = handler;
+  eventCopy = event;
+  modeIdentifier = [eventCopy modeIdentifier];
+  modeType = [eventCopy modeType];
+  origin = [eventCopy origin];
+  originBundleID = [eventCopy originBundleID];
+  originAnchorType = [eventCopy originAnchorType];
+  [eventCopy confidenceScore];
   v13 = v12;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v15 = v14;
-  v16 = [v7 absoluteTimestamp];
-  [v16 timeIntervalSinceReferenceDate];
+  absoluteTimestamp = [eventCopy absoluteTimestamp];
+  [absoluteTimestamp timeIntervalSinceReferenceDate];
   v18 = v15 - v17;
-  v19 = [v7 serializedTriggers];
+  serializedTriggers = [eventCopy serializedTriggers];
 
-  [(ATXModeAnchorModelSuggestionServer *)self fetchCombinedSuggestionScoreForModeWithUUID:v20 modeType:v8 origin:v9 originBundleId:v10 originAnchorType:v11 confidenceScore:v19 secondsSinceSuggested:v13 serializedTriggers:v18 completionHandler:v6];
+  [(ATXModeAnchorModelSuggestionServer *)self fetchCombinedSuggestionScoreForModeWithUUID:modeIdentifier modeType:modeType origin:origin originBundleId:originBundleID originAnchorType:originAnchorType confidenceScore:serializedTriggers secondsSinceSuggested:v13 serializedTriggers:v18 completionHandler:handlerCopy];
 }
 
-- (void)fetchCombinedSuggestionScoreForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 completionHandler:(id)a11
+- (void)fetchCombinedSuggestionScoreForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 completionHandler:(id)self1
 {
-  v19 = a3;
-  v20 = a6;
-  v21 = a7;
-  v22 = a10;
-  v23 = a11;
+  dCopy = d;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  triggersCopy = triggers;
+  handlerCopy = handler;
   lock = self->_lock;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __205__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreForModeWithUUID_modeType_origin_originBundleId_originAnchorType_confidenceScore_secondsSinceSuggested_serializedTriggers_completionHandler___block_invoke;
   v30[3] = &unk_279AB7B48;
-  v34 = v22;
-  v35 = v23;
-  v38 = a4;
-  v39 = a5;
-  v31 = v19;
-  v32 = v20;
-  v36 = a8;
-  v37 = a9;
-  v33 = v21;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v23;
+  v34 = triggersCopy;
+  v35 = handlerCopy;
+  typeCopy = type;
+  originCopy = origin;
+  v31 = dCopy;
+  v32 = idCopy;
+  scoreCopy = score;
+  suggestedCopy = suggested;
+  v33 = anchorTypeCopy;
+  v25 = triggersCopy;
+  v26 = anchorTypeCopy;
+  v27 = idCopy;
+  v28 = dCopy;
+  v29 = handlerCopy;
   [(_PASLock *)lock runWithLockAcquired:v30];
 }
 
@@ -138,32 +138,32 @@ void __205__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreForMo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCombinedSuggestionScoreAndFlagsForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originBundleId:(id)a6 originAnchorType:(id)a7 confidenceScore:(double)a8 secondsSinceSuggested:(double)a9 serializedTriggers:(id)a10 completionHandler:(id)a11
+- (void)fetchCombinedSuggestionScoreAndFlagsForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score secondsSinceSuggested:(double)suggested serializedTriggers:(id)self0 completionHandler:(id)self1
 {
-  v19 = a3;
-  v20 = a6;
-  v21 = a7;
-  v22 = a10;
-  v23 = a11;
+  dCopy = d;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  triggersCopy = triggers;
+  handlerCopy = handler;
   lock = self->_lock;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFlagsForModeWithUUID_modeType_origin_originBundleId_originAnchorType_confidenceScore_secondsSinceSuggested_serializedTriggers_completionHandler___block_invoke;
   v30[3] = &unk_279AB7B48;
-  v34 = v22;
-  v35 = v23;
-  v38 = a4;
-  v39 = a5;
-  v31 = v19;
-  v32 = v20;
-  v36 = a8;
-  v37 = a9;
-  v33 = v21;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v23;
+  v34 = triggersCopy;
+  v35 = handlerCopy;
+  typeCopy = type;
+  originCopy = origin;
+  v31 = dCopy;
+  v32 = idCopy;
+  scoreCopy = score;
+  suggestedCopy = suggested;
+  v33 = anchorTypeCopy;
+  v25 = triggersCopy;
+  v26 = anchorTypeCopy;
+  v27 = idCopy;
+  v28 = dCopy;
+  v29 = handlerCopy;
   [(_PASLock *)lock runWithLockAcquired:v30];
 }
 
@@ -191,15 +191,15 @@ void __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)anchorModelDidProvideModeSuggestions:(id)a3
+- (void)anchorModelDidProvideModeSuggestions:(id)suggestions
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v54 = [v4 count];
+    v54 = [suggestionsCopy count];
     _os_log_impl(&dword_260C9F000, v5, OS_LOG_TYPE_DEFAULT, "ATXModeAnchorModelSuggestionServer: Received %{public}lu suggestions", buf, 0xCu);
   }
 
@@ -207,13 +207,13 @@ void __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFl
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = v4;
+  v6 = suggestionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (!v7)
   {
     v41 = 0;
     v40 = 0;
-    v31 = v6;
+    modeUUID5 = v6;
     goto LABEL_25;
   }
 
@@ -238,23 +238,23 @@ void __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFl
       v13 = __atxlog_handle_modes();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v12 modeUUID];
+        modeUUID = [v12 modeUUID];
         v15 = v10;
         v16 = v9;
-        v17 = self;
+        selfCopy = self;
         v18 = v6;
         v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "isStart")}];
-        v20 = [v12 anchorType];
+        anchorType = [v12 anchorType];
         *buf = 138543874;
-        v54 = v14;
+        v54 = modeUUID;
         v55 = 2114;
         v56 = v19;
         v57 = 2114;
-        v58 = v20;
+        v58 = anchorType;
         _os_log_impl(&dword_260C9F000, v13, OS_LOG_TYPE_DEFAULT, "ATXModeAnchorModelSuggestionServer: Suggestion modeId: %{public}@, isStart: %{public}@, anchorType: %{public}@", buf, 0x20u);
 
         v6 = v18;
-        self = v17;
+        self = selfCopy;
         v9 = v16;
         v10 = v15;
         v8 = v45;
@@ -262,9 +262,9 @@ void __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFl
 
       v48 = 0;
       modeService = self->_modeService;
-      v22 = [v12 modeUUID];
+      modeUUID2 = [v12 modeUUID];
       v47 = 0;
-      LOBYTE(modeService) = [(ATXConfiguredModeService *)modeService isActivityWithUUIDConfigured:v22 activityType:&v48 allowsSmartEntry:0 userModeName:&v47];
+      LOBYTE(modeService) = [(ATXConfiguredModeService *)modeService isActivityWithUUIDConfigured:modeUUID2 activityType:&v48 allowsSmartEntry:0 userModeName:&v47];
       v23 = v47;
 
       if (modeService)
@@ -287,9 +287,9 @@ void __213__ATXModeAnchorModelSuggestionServer_fetchCombinedSuggestionScoreAndFl
         v25 = __atxlog_handle_modes();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v12 modeUUID];
+          modeUUID3 = [v12 modeUUID];
           *buf = 138543362;
-          v54 = v26;
+          v54 = modeUUID3;
           _os_log_impl(&dword_260C9F000, v25, OS_LOG_TYPE_DEFAULT, "ATXModeAnchorModelSuggestionServer: Suggestion modeUUID: %{public}@ is not configured, skipping", buf, 0xCu);
         }
       }
@@ -310,36 +310,36 @@ LABEL_16:
     v27 = __atxlog_handle_modes();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v9 modeUUID];
+      modeUUID4 = [v9 modeUUID];
       v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "isStart")}];
-      v30 = [v9 anchorType];
+      anchorType2 = [v9 anchorType];
       *buf = 138543874;
-      v54 = v28;
+      v54 = modeUUID4;
       v55 = 2114;
       v56 = v29;
       v57 = 2114;
-      v58 = v30;
+      v58 = anchorType2;
       _os_log_impl(&dword_260C9F000, v27, OS_LOG_TYPE_DEFAULT, "ATXModeAnchorModelSuggestionServer: Updated suggestion to modeUUID: %{public}@, isStart: %{public}@, anchorType: %{public}@", buf, 0x20u);
     }
 
-    v31 = [v9 modeUUID];
+    modeUUID5 = [v9 modeUUID];
     v32 = ATXActivityTypeToBMUserFocusInferredModeType(v43);
     if (([v9 isStart] & 1) == 0)
     {
 
-      v31 = 0;
+      modeUUID5 = 0;
       v32 = 2;
     }
 
-    v33 = [(ATXModeAnchorModelSuggestionServer *)self delegate];
+    delegate = [(ATXModeAnchorModelSuggestionServer *)self delegate];
     [v9 score];
     v35 = v34;
-    v36 = [v9 anchorType];
+    anchorType3 = [v9 anchorType];
     [v9 serializedTriggers];
     v38 = v37 = v9;
-    v39 = self;
+    selfCopy2 = self;
     v40 = v44;
-    [v33 clientModel:v39 didUpdatePredictionWithUUID:v31 userModeName:v44 modeType:v32 confidenceScore:11 modeOrigin:0 originBundleId:v35 originAnchorType:v36 serializedTriggers:v38];
+    [delegate clientModel:selfCopy2 didUpdatePredictionWithUUID:modeUUID5 userModeName:v44 modeType:v32 confidenceScore:11 modeOrigin:0 originBundleId:v35 originAnchorType:anchorType3 serializedTriggers:v38];
 
     v41 = v37;
 LABEL_25:
@@ -354,17 +354,17 @@ LABEL_25:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldUpdateHighestConfidenceSuggestion:(id)a3 newSuggestion:(id)a4
+- (BOOL)_shouldUpdateHighestConfidenceSuggestion:(id)suggestion newSuggestion:(id)newSuggestion
 {
-  v5 = a3;
-  v6 = a4;
+  suggestionCopy = suggestion;
+  newSuggestionCopy = newSuggestion;
   v10 = 1;
-  if (v5)
+  if (suggestionCopy)
   {
-    [v5 score];
+    [suggestionCopy score];
     v8 = v7;
-    [v6 score];
-    if (v8 >= v9 && (vabdd_f64(v8, v9) >= 2.22044605e-16 || ([v5 isStart] & 1) != 0 || (objc_msgSend(v6, "isStart") & 1) == 0))
+    [newSuggestionCopy score];
+    if (v8 >= v9 && (vabdd_f64(v8, v9) >= 2.22044605e-16 || ([suggestionCopy isStart] & 1) != 0 || (objc_msgSend(newSuggestionCopy, "isStart") & 1) == 0))
     {
       v10 = 0;
     }
@@ -373,35 +373,35 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.proactive.ModeAnchorModelSuggestion.xpc"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.proactive.ModeAnchorModelSuggestion.xpc"];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 BOOLValue] & 1) != 0)
   {
     v9 = ATXModeAnchorModelSuggestionServerXPCInterface();
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 setExportedObject:self];
-    [v7 setInterruptionHandler:&__block_literal_global_21];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_21];
     objc_initWeak(&location, self);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __73__ATXModeAnchorModelSuggestionServer_listener_shouldAcceptNewConnection___block_invoke_22;
     v20[3] = &unk_279AB7B90;
     objc_copyWeak(&v21, &location);
-    [v7 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     v10 = ATXModeAnchorModelSuggestionClientXPCInterface();
-    [v7 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
     lock = self->_lock;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __73__ATXModeAnchorModelSuggestionServer_listener_shouldAcceptNewConnection___block_invoke_2;
     v18[3] = &unk_279AB7BB8;
-    v12 = v7;
+    v12 = connectionCopy;
     v19 = v12;
     [(_PASLock *)lock runWithLockAcquired:v18];
     [v12 resume];
@@ -423,7 +423,7 @@ LABEL_25:
     v15 = __atxlog_handle_modes();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(ATXModeAnchorModelSuggestionServer *)v7 listener:v15 shouldAcceptNewConnection:?];
+      [(ATXModeAnchorModelSuggestionServer *)connectionCopy listener:v15 shouldAcceptNewConnection:?];
     }
 
     v14 = 0;

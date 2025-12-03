@@ -1,6 +1,6 @@
 @interface VoiceOverBrailleKeyDebounceTimeoutViewController
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation VoiceOverBrailleKeyDebounceTimeoutViewController
@@ -14,10 +14,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setVoiceOverBrailleKeyDebounceTimeout:a3];
+  [v4 setVoiceOverBrailleKeyDebounceTimeout:user];
 }
 
 @end

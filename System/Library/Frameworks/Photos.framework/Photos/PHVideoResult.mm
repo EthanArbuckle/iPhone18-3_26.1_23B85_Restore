@@ -7,8 +7,8 @@
 
 - (id)videoAdjustmentData
 {
-  v2 = [(PHCompositeMediaResult *)self info];
-  v3 = [v2 objectForKeyedSubscript:@"PHAdjustmentDataKey"];
+  info = [(PHCompositeMediaResult *)self info];
+  v3 = [info objectForKeyedSubscript:@"PHAdjustmentDataKey"];
 
   return v3;
 }

@@ -1,5 +1,5 @@
 @interface BKSSimplerAssertion
-+ (id)assertionWithDescription:(id)a3 invalidationBlock:(id)a4;
++ (id)assertionWithDescription:(id)description invalidationBlock:(id)block;
 + (id)new;
 - (BKSSimplerAssertion)init;
 - (void)dealloc;
@@ -34,7 +34,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKSSimplerAssertion.m";
       v18 = 1024;
@@ -69,7 +69,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSSimplerAssertion.m";
     v17 = 1024;
@@ -85,14 +85,14 @@
   return result;
 }
 
-+ (id)assertionWithDescription:(id)a3 invalidationBlock:(id)a4
++ (id)assertionWithDescription:(id)description invalidationBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  descriptionCopy = description;
   v7 = [BKSSimplerAssertion alloc];
-  v8 = v6;
-  v9 = v5;
+  v8 = descriptionCopy;
+  v9 = blockCopy;
   if (v7)
   {
     v35.receiver = v7;
@@ -138,13 +138,13 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [v10 classForCoder];
-        if (!v23)
+        classForCoder = [v10 classForCoder];
+        if (!classForCoder)
         {
-          v23 = objc_opt_class();
+          classForCoder = objc_opt_class();
         }
 
-        v24 = NSStringFromClass(v23);
+        v24 = NSStringFromClass(classForCoder);
         objc_opt_class();
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
@@ -205,7 +205,7 @@
         JUMPOUT(0x1863892E0);
       }
 
-      objc_storeStrong(&v7->_identifier, a3);
+      objc_storeStrong(&v7->_identifier, description);
       v13 = [v9 copy];
       invalidationBlock = v7->_invalidationBlock;
       v7->_invalidationBlock = v13;
@@ -230,7 +230,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSSimplerAssertion.m";
     v17 = 1024;

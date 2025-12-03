@@ -1,11 +1,11 @@
 @interface CRLWPTextMagnifierTimeWeightedPoint
-- (BOOL)historyCovers:(double)a3;
+- (BOOL)historyCovers:(double)covers;
 - (CGPoint)weightedPoint;
-- (CGSize)displacementInInterval:(double)a3;
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4;
-- (double)distanceCoveredInInterval:(double)a3;
-- (double)distanceCoveredInInterval:(double)a3 priorTo:(double)a4;
-- (void)addPoint:(CGPoint)a3;
+- (CGSize)displacementInInterval:(double)interval;
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to;
+- (double)distanceCoveredInInterval:(double)interval;
+- (double)distanceCoveredInInterval:(double)interval priorTo:(double)to;
+- (void)addPoint:(CGPoint)point;
 - (void)clearHistory;
 @end
 
@@ -27,10 +27,10 @@
   while (v3);
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   m_index = self->m_index;
   v8 = (self + 24 * m_index);
@@ -101,7 +101,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)historyCovers:(double)a3
+- (BOOL)historyCovers:(double)covers
 {
   Current = CFAbsoluteTimeGetCurrent();
   m_index = self->m_index;
@@ -122,7 +122,7 @@ LABEL_13:
       return 0;
     }
 
-    if (Current - v11 > a3)
+    if (Current - v11 > covers)
     {
       break;
     }
@@ -138,25 +138,25 @@ LABEL_13:
   return 1;
 }
 
-- (double)distanceCoveredInInterval:(double)a3
+- (double)distanceCoveredInInterval:(double)interval
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(CRLWPTextMagnifierTimeWeightedPoint *)self distanceCoveredInInterval:a3 priorTo:Current];
+  [(CRLWPTextMagnifierTimeWeightedPoint *)self distanceCoveredInInterval:interval priorTo:Current];
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3
+- (CGSize)displacementInInterval:(double)interval
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  [(CRLWPTextMagnifierTimeWeightedPoint *)self displacementInInterval:a3 priorTo:Current];
+  [(CRLWPTextMagnifierTimeWeightedPoint *)self displacementInInterval:interval priorTo:Current];
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -177,8 +177,8 @@ LABEL_13:
 
     v16 = *(v14 - 1);
     v17 = *v14 == CGPointZero.y && v16 == CGPointZero.x;
-    v18 = a4 - v15;
-    if (v17 || v18 > a3)
+    v18 = to - v15;
+    if (v17 || v18 > interval)
     {
       break;
     }
@@ -208,7 +208,7 @@ LABEL_13:
   return result;
 }
 
-- (double)distanceCoveredInInterval:(double)a3 priorTo:(double)a4
+- (double)distanceCoveredInInterval:(double)interval priorTo:(double)to
 {
   y = CGPointZero.y;
   m_index = self->m_index;
@@ -230,8 +230,8 @@ LABEL_13:
     v16 = *(v14 - 1);
     v17 = *v14;
     v18 = *v14 == y && v16 == CGPointZero.x;
-    v19 = a4 - v15;
-    if (v18 || v19 > a3)
+    v19 = to - v15;
+    if (v18 || v19 > interval)
     {
       break;
     }

@@ -1,38 +1,38 @@
 @interface NCAppPickerViewController
-+ (id)appPickerViewControllerWithContentProvider:(id)a3;
++ (id)appPickerViewControllerWithContentProvider:(id)provider;
 - (NSArray)selectedBundleIdentifiers;
 - (NSSet)shownBundleIdentifiers;
 - (double)_availableContentWidth;
-- (id)_initWithContentProvider:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_cancelButtonPressed:(id)a3;
+- (id)_initWithContentProvider:(id)provider;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_refreshNextButton;
 - (void)_reloadFooter;
 - (void)_saveCellsSeen;
-- (void)_updateHeightConstraintAndLayoutIfNeeded:(BOOL)a3;
-- (void)appPickViewFooterShowMoreButtonPressed:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_updateHeightConstraintAndLayoutIfNeeded:(BOOL)needed;
+- (void)appPickViewFooterShowMoreButtonPressed:(id)pressed;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NCAppPickerViewController
 
-+ (id)appPickerViewControllerWithContentProvider:(id)a3
++ (id)appPickerViewControllerWithContentProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [[NCAppPickerViewController alloc] _initWithContentProvider:v3];
+  providerCopy = provider;
+  v4 = [[NCAppPickerViewController alloc] _initWithContentProvider:providerCopy];
 
   return v4;
 }
 
-- (id)_initWithContentProvider:(id)a3
+- (id)_initWithContentProvider:(id)provider
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = NCAppPickerViewController;
   v6 = [(NCOnboardingViewController *)&v16 initWithTitle:&stru_282FE84F8 detailText:&stru_282FE84F8 contentLayout:3];
@@ -47,15 +47,15 @@
     v7->_mutableShownBundleIdentifiers = v8;
 
     v7->_showMoreButtonWasPressed = 0;
-    objc_storeStrong(&v7->_contentProvider, a3);
-    v10 = [MEMORY[0x277D75128] sharedApplication];
-    v11 = [v10 preferredContentSizeCategory];
+    objc_storeStrong(&v7->_contentProvider, provider);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
     v12 = *MEMORY[0x277D76818];
     v17[0] = *MEMORY[0x277D76820];
     v17[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-    if ([v13 containsObject:v11])
+    if ([v13 containsObject:preferredContentSizeCategory])
     {
 
       IsAX = 1;
@@ -63,7 +63,7 @@
 
     else
     {
-      IsAX = _NCSizeCategoryIsAX(v11);
+      IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
     }
 
     v7->_largerTextSize = IsAX;
@@ -74,21 +74,21 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(NCAppPickerViewController *)self navigationController];
-  [v3 setNavigationBarHidden:0 animated:1];
+  navigationController = [(NCAppPickerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
   v54.receiver = self;
   v54.super_class = NCAppPickerViewController;
   [(NCOnboardingViewController *)&v54 viewDidLoad];
-  v4 = [(NCAppPickerViewController *)self scrollView];
-  [v4 setScrollEnabled:0];
+  scrollView = [(NCAppPickerViewController *)self scrollView];
+  [scrollView setScrollEnabled:0];
 
   v5 = objc_alloc_init(MEMORY[0x277D752F0]);
   [v5 setMinimumLineSpacing:8.0];
   [(NCAppPickerViewController *)self _availableContentWidth];
   v7 = v6;
-  v8 = [(NCAppPickerContentProvider *)self->_contentProvider longestAppName];
-  [NCAppPickerViewCell preferredHeightForText:v8 cellWidth:v7];
+  longestAppName = [(NCAppPickerContentProvider *)self->_contentProvider longestAppName];
+  [NCAppPickerViewCell preferredHeightForText:longestAppName cellWidth:v7];
   self->_cellHeight = v9;
 
   [v5 setItemSize:{v7, self->_cellHeight}];
@@ -126,71 +126,71 @@
   v25 = +[NCAppPickerViewFooter reuseIdentifier];
   [(UICollectionView *)v22 registerClass:v23 forSupplementaryViewOfKind:v24 withReuseIdentifier:v25];
 
-  v26 = [(NCAppPickerViewController *)self contentView];
-  [v26 addSubview:self->_collectionView];
+  contentView = [(NCAppPickerViewController *)self contentView];
+  [contentView addSubview:self->_collectionView];
 
-  v27 = [(OBBaseWelcomeController *)self navigationItem];
-  [v27 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v28 = objc_alloc(MEMORY[0x277D751E0]);
   v29 = NCUserNotificationsUIKitFrameworkBundle();
   v30 = [v29 localizedStringForKey:@"NOTIFICATION_DIGEST_ONBOARDING_APP_PICKER_CANCEL" value:&stru_282FE84F8 table:0];
   v31 = [v28 initWithTitle:v30 style:0 target:self action:sel__cancelButtonPressed_];
 
-  v32 = [(OBBaseWelcomeController *)self navigationItem];
-  [v32 setLeftBarButtonItem:v31];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v31];
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v34 = [(UICollectionView *)self->_collectionView heightAnchor];
-  v35 = [v34 constraintEqualToConstant:0.0];
+  heightAnchor = [(UICollectionView *)self->_collectionView heightAnchor];
+  v35 = [heightAnchor constraintEqualToConstant:0.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v35;
 
   [v33 addObject:self->_heightConstraint];
-  v37 = [(UICollectionView *)self->_collectionView leadingAnchor];
-  v38 = [(NCAppPickerViewController *)self contentView];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UICollectionView *)self->_collectionView leadingAnchor];
+  contentView2 = [(NCAppPickerViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v33 addObject:v40];
 
-  v41 = [(NCAppPickerViewController *)self contentView];
-  v42 = [v41 trailingAnchor];
-  v43 = [(UICollectionView *)self->_collectionView trailingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  contentView3 = [(NCAppPickerViewController *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  trailingAnchor2 = [(UICollectionView *)self->_collectionView trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v33 addObject:v44];
 
-  v45 = [(UICollectionView *)self->_collectionView topAnchor];
-  v46 = [(NCAppPickerViewController *)self contentView];
-  v47 = [v46 topAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+  contentView4 = [(NCAppPickerViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   topConstraint = self->_topConstraint;
   self->_topConstraint = v48;
 
   [v33 addObject:self->_topConstraint];
-  v50 = [(NCAppPickerViewController *)self contentView];
-  v51 = [v50 bottomAnchor];
-  v52 = [(UICollectionView *)self->_collectionView bottomAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  contentView5 = [(NCAppPickerViewController *)self contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  bottomAnchor2 = [(UICollectionView *)self->_collectionView bottomAnchor];
+  v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v33 addObject:v53];
 
   [(NCAppPickerViewController *)self _updateHeightConstraintAndLayoutIfNeeded:0];
   [MEMORY[0x277CCAAD0] activateConstraints:v33];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NCAppPickerViewController;
-  [(NCAppPickerViewController *)&v4 viewWillAppear:a3];
+  [(NCAppPickerViewController *)&v4 viewWillAppear:appear];
   [(NCAppPickerViewController *)self performSelector:sel__updateHeightConstraintAndLayout withObject:0 afterDelay:0.0];
   [(NCAppPickerViewController *)self _refreshNextButton];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NCAppPickerViewController;
-  [(OBBaseWelcomeController *)&v4 viewDidAppear:a3];
+  [(OBBaseWelcomeController *)&v4 viewDidAppear:appear];
   self->_viewHasAppeared = 1;
   [(NCAppPickerViewController *)self _saveCellsSeen];
 }
@@ -200,15 +200,15 @@
   contentProvider = self->_contentProvider;
   if (contentProvider)
   {
-    v3 = [(NCAppPickerContentProvider *)contentProvider selectedBundleIdentifiers];
+    selectedBundleIdentifiers = [(NCAppPickerContentProvider *)contentProvider selectedBundleIdentifiers];
   }
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x277CBEA60]);
+    selectedBundleIdentifiers = objc_alloc_init(MEMORY[0x277CBEA60]);
   }
 
-  return v3;
+  return selectedBundleIdentifiers;
 }
 
 - (NSSet)shownBundleIdentifiers
@@ -218,7 +218,7 @@
   return v2;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if (self->_contentCollapsable && self->_contentCollapsed)
   {
@@ -227,36 +227,36 @@
 
   else
   {
-    return [(NCAppPickerContentProvider *)self->_contentProvider totalCount:a3];
+    return [(NCAppPickerContentProvider *)self->_contentProvider totalCount:view];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[NCAppPickerViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v6 item];
-  v11 = [(NCAppPickerContentProvider *)self->_contentProvider nameForIndex:v10];
+  item = [pathCopy item];
+  v11 = [(NCAppPickerContentProvider *)self->_contentProvider nameForIndex:item];
   +[NCAppPickerViewCell preferredImageDimension];
-  v13 = [(NCAppPickerContentProvider *)self->_contentProvider imageForIndex:v10 size:v12, v12];
-  [v9 configureWithName:v11 image:v13 avgNumberOfNotificationsCount:-[NCAppPickerContentProvider avgNumberOfNotificationsForIndex:](self->_contentProvider maxAvgNumberOfNotificationsCount:"avgNumberOfNotificationsForIndex:" selected:{v10), -[NCAppPickerContentProvider maxAvgNumberOfNotifications](self->_contentProvider, "maxAvgNumberOfNotifications"), -[NCAppPickerContentProvider isSelectedForIndex:](self->_contentProvider, "isSelectedForIndex:", v10)}];
+  v13 = [(NCAppPickerContentProvider *)self->_contentProvider imageForIndex:item size:v12, v12];
+  [v9 configureWithName:v11 image:v13 avgNumberOfNotificationsCount:-[NCAppPickerContentProvider avgNumberOfNotificationsForIndex:](self->_contentProvider maxAvgNumberOfNotificationsCount:"avgNumberOfNotificationsForIndex:" selected:{item), -[NCAppPickerContentProvider maxAvgNumberOfNotifications](self->_contentProvider, "maxAvgNumberOfNotifications"), -[NCAppPickerContentProvider isSelectedForIndex:](self->_contentProvider, "isSelectedForIndex:", item)}];
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v11 = *MEMORY[0x277D767D8];
-  if ([v9 isEqualToString:*MEMORY[0x277D767D8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
     v12 = +[NCAppPickerViewHeader reuseIdentifier];
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:v12 forIndexPath:v10];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:v12 forIndexPath:pathCopy];
 
     [v13 configureSupportsSortByAvgNumberOfNotifications:{-[NCAppPickerContentProvider isAbleToSortByAvgNumberOfNotifications](self->_contentProvider, "isAbleToSortByAvgNumberOfNotifications")}];
   }
@@ -264,10 +264,10 @@
   else
   {
     v14 = *MEMORY[0x277D767D0];
-    if ([v9 isEqualToString:*MEMORY[0x277D767D0]])
+    if ([kindCopy isEqualToString:*MEMORY[0x277D767D0]])
     {
       v15 = +[NCAppPickerViewFooter reuseIdentifier];
-      v13 = [v8 dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:v15 forIndexPath:v10];
+      v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:v15 forIndexPath:pathCopy];
 
       [v13 configureWithShowMoreButton:self->_contentCollapsed delegate:self];
     }
@@ -281,20 +281,20 @@
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v9[1] = *MEMORY[0x277D85DE8];
   contentProvider = self->_contentProvider;
-  v6 = a4;
-  -[NCAppPickerContentProvider toggleSelectedForIndex:](contentProvider, "toggleSelectedForIndex:", [v6 item]);
+  pathCopy = path;
+  -[NCAppPickerContentProvider toggleSelectedForIndex:](contentProvider, "toggleSelectedForIndex:", [pathCopy item]);
   [(NCAppPickerViewController *)self _refreshNextButton];
   collectionView = self->_collectionView;
-  v9[0] = v6;
+  v9[0] = pathCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   [(UICollectionView *)collectionView reconfigureItemsAtIndexPaths:v8];
 }
 
-- (void)appPickViewFooterShowMoreButtonPressed:(id)a3
+- (void)appPickViewFooterShowMoreButtonPressed:(id)pressed
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   for (i = self->_contentCollapsedCellCount; i < [(NCAppPickerContentProvider *)self->_contentProvider totalCount]; ++i)
@@ -341,20 +341,20 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
 
 - (double)_availableContentWidth
 {
-  v3 = [(NCAppPickerViewController *)self navigationController];
-  v4 = [v3 view];
-  v5 = v4;
-  if (v4)
+  navigationController = [(NCAppPickerViewController *)self navigationController];
+  view = [navigationController view];
+  v5 = view;
+  if (view)
   {
-    v6 = v4;
+    contentView = view;
   }
 
   else
   {
-    v6 = [(NCAppPickerViewController *)self contentView];
+    contentView = [(NCAppPickerViewController *)self contentView];
   }
 
-  v7 = v6;
+  v7 = contentView;
 
   [v7 frame];
   v9 = v8 + -32.0;
@@ -366,18 +366,18 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
 {
   [(NCAppPickerViewController *)self _availableContentWidth];
   v4 = v3;
-  v8 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   [NCAppPickerViewFooter preferredHeightForWidth:self->_contentCollapsed showMoreButton:v4];
-  [v8 setFooterReferenceSize:{v4, v5}];
+  [collectionViewLayout setFooterReferenceSize:{v4, v5}];
   v6 = [(UICollectionView *)self->_collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D0]];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 configureWithShowMoreButton:self->_contentCollapsed delegate:self];
+      [firstObject configureWithShowMoreButton:self->_contentCollapsed delegate:self];
     }
   }
 }
@@ -468,29 +468,29 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v3 = [(NCAppPickerViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(NCAppPickerViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_updateHeightConstraintAndLayoutIfNeeded:(BOOL)a3
+- (void)_updateHeightConstraintAndLayoutIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(NCAppPickerViewController *)self contentView];
-  [v5 frame];
+  neededCopy = needed;
+  contentView = [(NCAppPickerViewController *)self contentView];
+  [contentView frame];
   v7 = v6;
 
   if ([(NCAppPickerViewController *)self _shouldInlineButtontray])
   {
-    v8 = [(NCAppPickerViewController *)self view];
-    [v8 bounds];
+    view = [(NCAppPickerViewController *)self view];
+    [view bounds];
     v10 = v9;
-    v11 = [(NCAppPickerViewController *)self view];
-    [v11 safeAreaInsets];
+    view2 = [(NCAppPickerViewController *)self view];
+    [view2 safeAreaInsets];
     v13 = v10 - v12;
-    v14 = [(NCAppPickerViewController *)self buttonTray];
-    [v14 bounds];
+    buttonTray = [(NCAppPickerViewController *)self buttonTray];
+    [buttonTray bounds];
     v16 = v13 - v15;
 
     v17 = 0.0;
@@ -498,18 +498,18 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
 
   else
   {
-    v18 = [(NCAppPickerViewController *)self buttonTray];
-    [v18 frame];
+    buttonTray2 = [(NCAppPickerViewController *)self buttonTray];
+    [buttonTray2 frame];
     v20 = v19;
-    v21 = [(NCAppPickerViewController *)self buttonTray];
-    [v21 frame];
+    buttonTray3 = [(NCAppPickerViewController *)self buttonTray];
+    [buttonTray3 frame];
     v23 = v20 + v22;
-    v24 = [(NCAppPickerViewController *)self view];
-    [v24 safeAreaInsets];
+    view3 = [(NCAppPickerViewController *)self view];
+    [view3 safeAreaInsets];
     v16 = v23 - v25;
 
-    v8 = [(NCAppPickerViewController *)self buttonTray];
-    [v8 frame];
+    view = [(NCAppPickerViewController *)self buttonTray];
+    [view frame];
     v17 = v26;
   }
 
@@ -541,9 +541,9 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
       v35 = v34 + 1;
     }
 
-    v36 = [(NCAppPickerContentProvider *)self->_contentProvider totalCount];
-    self->_contentCollapsable = v36 > v35;
-    if (v36 <= v35)
+    totalCount = [(NCAppPickerContentProvider *)self->_contentProvider totalCount];
+    self->_contentCollapsable = totalCount > v35;
+    if (totalCount <= v35)
     {
       v37 = 0;
     }
@@ -554,16 +554,16 @@ uint64_t __68__NCAppPickerViewController_appPickViewFooterShowMoreButtonPressed_
     }
 
     self->_contentCollapsedCellCount = v37;
-    if (v3)
+    if (neededCopy)
     {
-      v38 = [(NCAppPickerViewController *)self contentView];
-      [v38 needsUpdateConstraints];
+      contentView2 = [(NCAppPickerViewController *)self contentView];
+      [contentView2 needsUpdateConstraints];
 
-      v39 = [(NCAppPickerViewController *)self contentView];
-      [v39 setNeedsLayout];
+      contentView3 = [(NCAppPickerViewController *)self contentView];
+      [contentView3 setNeedsLayout];
 
-      v40 = [(NCAppPickerViewController *)self contentView];
-      [v40 layoutIfNeeded];
+      contentView4 = [(NCAppPickerViewController *)self contentView];
+      [contentView4 layoutIfNeeded];
 
       collectionView = self->_collectionView;
 

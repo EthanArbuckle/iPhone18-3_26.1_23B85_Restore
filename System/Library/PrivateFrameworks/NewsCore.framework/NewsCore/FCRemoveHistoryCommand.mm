@@ -1,13 +1,13 @@
 @interface FCRemoveHistoryCommand
-- (FCRemoveHistoryCommand)initWithHistoryItemIDs:(id)a3;
+- (FCRemoveHistoryCommand)initWithHistoryItemIDs:(id)ds;
 @end
 
 @implementation FCRemoveHistoryCommand
 
-- (FCRemoveHistoryCommand)initWithHistoryItemIDs:(id)a3
+- (FCRemoveHistoryCommand)initWithHistoryItemIDs:(id)ds
 {
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dsCopy = ds;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"ReadingHistory" ownerName:*MEMORY[0x1E695B728]];
   v13[0] = MEMORY[0x1E69E9820];
@@ -16,7 +16,7 @@
   v13[3] = &unk_1E7C38BD8;
   v14 = v7;
   v8 = v7;
-  v9 = [v5 fc_arrayByTransformingWithBlock:v13];
+  v9 = [dsCopy fc_arrayByTransformingWithBlock:v13];
 
   if (v9)
   {

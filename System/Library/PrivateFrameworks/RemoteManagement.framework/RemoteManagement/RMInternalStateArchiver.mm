@@ -3,11 +3,11 @@
 - (NSDictionary)deviceStatusByKeyPath;
 - (NSDictionary)pushTokenByEnvironmentName;
 - (NSPersistentHistoryToken)commandAndDeclarationStatusPersistentHistoryToken;
-- (RMInternalStateArchiver)initWithPersistentContainer:(id)a3;
+- (RMInternalStateArchiver)initWithPersistentContainer:(id)container;
 - (RMPersistentActiveIdentifiers)persistentActiveIdentifiers;
-- (id)_unarchiveObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)_unarchiveObjectOfClasses:(id)a3 forKey:(id)a4;
-- (void)_archiveObject:(id)a3 forKey:(id)a4;
+- (id)_unarchiveObjectOfClass:(Class)class forKey:(id)key;
+- (id)_unarchiveObjectOfClasses:(id)classes forKey:(id)key;
+- (void)_archiveObject:(id)object forKey:(id)key;
 @end
 
 @implementation RMInternalStateArchiver
@@ -63,53 +63,53 @@
   return v6;
 }
 
-- (RMInternalStateArchiver)initWithPersistentContainer:(id)a3
+- (RMInternalStateArchiver)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = RMInternalStateArchiver;
   v6 = [(RMInternalStateArchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
 }
 
-- (void)_archiveObject:(id)a3 forKey:(id)a4
+- (void)_archiveObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(RMInternalStateArchiver *)self persistentContainer];
-  v8 = [v11 persistentStoreCoordinator];
-  v9 = [v8 persistentStores];
-  v10 = [v9 firstObject];
-  [RMPersistentController archiveObject:v7 forKey:v6 intoMetadataForPersistentStore:v10];
+  keyCopy = key;
+  objectCopy = object;
+  persistentContainer = [(RMInternalStateArchiver *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
+  [RMPersistentController archiveObject:objectCopy forKey:keyCopy intoMetadataForPersistentStore:firstObject];
 }
 
-- (id)_unarchiveObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)_unarchiveObjectOfClass:(Class)class forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(RMInternalStateArchiver *)self persistentContainer];
-  v8 = [v7 persistentStoreCoordinator];
-  v9 = [v8 persistentStores];
-  v10 = [v9 firstObject];
-  v11 = [RMPersistentController unarchiveObjectOfClass:a3 forKey:v6 fromMetadataForPersistentStore:v10];
+  keyCopy = key;
+  persistentContainer = [(RMInternalStateArchiver *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
+  v11 = [RMPersistentController unarchiveObjectOfClass:class forKey:keyCopy fromMetadataForPersistentStore:firstObject];
 
   return v11;
 }
 
-- (id)_unarchiveObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)_unarchiveObjectOfClasses:(id)classes forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMInternalStateArchiver *)self persistentContainer];
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [v9 persistentStores];
-  v11 = [v10 firstObject];
-  v12 = [RMPersistentController unarchiveObjectOfClasses:v7 forKey:v6 fromMetadataForPersistentStore:v11];
+  keyCopy = key;
+  classesCopy = classes;
+  persistentContainer = [(RMInternalStateArchiver *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
+  v12 = [RMPersistentController unarchiveObjectOfClasses:classesCopy forKey:keyCopy fromMetadataForPersistentStore:firstObject];
 
   return v12;
 }

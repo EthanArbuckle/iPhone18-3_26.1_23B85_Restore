@@ -41,46 +41,46 @@
 - (double)rightEdgeHintDropletRadius;
 - (double)rightEdgeHintSize;
 - (void)setDefaultValues;
-- (void)setEdgeContentPresentedCenterXAnimationSettings:(id)a3;
-- (void)setEdgeContentPresentedCenterYAnimationSettings:(id)a3;
-- (void)setEdgeContentPresentedContainerHeightAnimationSettings:(id)a3;
-- (void)setEdgeContentPresentedContainerWidthAnimationSettings:(id)a3;
-- (void)setEdgeContentPresentedKeylineAdaptiveColorMatrix:(id)a3;
-- (void)setEdgeContentPresentedKeylineInnerWidth:(double)a3;
-- (void)setEdgeContentPresentedKeylineOuterWidth:(double)a3;
-- (void)setEdgeContentPresentedKeylineStyleAnimationSettings:(id)a3;
-- (void)setEdgeHintCenterXAnimationSettings:(id)a3;
-- (void)setEdgeHintCenterYAnimationSettings:(id)a3;
-- (void)setEdgeHintContainerHeightAnimationSettings:(id)a3;
-- (void)setEdgeHintContainerWidthAnimationSettings:(id)a3;
-- (void)setEdgeHintKeylineAdaptiveColorMatrix:(id)a3;
-- (void)setEdgeHintKeylineInnerWidth:(double)a3;
-- (void)setEdgeHintKeylineOuterWidth:(double)a3;
-- (void)setEdgeHintKeylineStyleAnimationSettings:(id)a3;
-- (void)setIntelligentEdgeLightEDRGainAmount:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleColorMatrix:(id)a3;
-- (void)setIntelligentEdgeLightKeylineStyleDefaultBehaviorSettings:(id)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardAlpha:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeAmount:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeBlurRadius:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeEnd:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeStart:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardRimIsSoft:(BOOL)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardScreenBlendMode:(BOOL)a3;
-- (void)setIntelligentEdgeLightKeylineStyleHardSmallWidth:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftAlpha:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeAmount:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeBlurRadius:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeEnd:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeStart:(double)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftRimIsSoft:(BOOL)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftScreenBlendMode:(BOOL)a3;
-- (void)setIntelligentEdgeLightKeylineStyleSoftSmallWidth:(double)a3;
-- (void)setRightEdgeHintDropletRadius:(double)a3;
-- (void)setRightEdgeHintSize:(double)a3;
-- (void)setSuppressCompositingFilterDestOut:(BOOL)a3;
-- (void)setSuppressCompositingFilterMultiply:(BOOL)a3;
-- (void)setSuppressDropletEffectFilters:(BOOL)a3;
+- (void)setEdgeContentPresentedCenterXAnimationSettings:(id)settings;
+- (void)setEdgeContentPresentedCenterYAnimationSettings:(id)settings;
+- (void)setEdgeContentPresentedContainerHeightAnimationSettings:(id)settings;
+- (void)setEdgeContentPresentedContainerWidthAnimationSettings:(id)settings;
+- (void)setEdgeContentPresentedKeylineAdaptiveColorMatrix:(id)matrix;
+- (void)setEdgeContentPresentedKeylineInnerWidth:(double)width;
+- (void)setEdgeContentPresentedKeylineOuterWidth:(double)width;
+- (void)setEdgeContentPresentedKeylineStyleAnimationSettings:(id)settings;
+- (void)setEdgeHintCenterXAnimationSettings:(id)settings;
+- (void)setEdgeHintCenterYAnimationSettings:(id)settings;
+- (void)setEdgeHintContainerHeightAnimationSettings:(id)settings;
+- (void)setEdgeHintContainerWidthAnimationSettings:(id)settings;
+- (void)setEdgeHintKeylineAdaptiveColorMatrix:(id)matrix;
+- (void)setEdgeHintKeylineInnerWidth:(double)width;
+- (void)setEdgeHintKeylineOuterWidth:(double)width;
+- (void)setEdgeHintKeylineStyleAnimationSettings:(id)settings;
+- (void)setIntelligentEdgeLightEDRGainAmount:(double)amount;
+- (void)setIntelligentEdgeLightKeylineStyleColorMatrix:(id)matrix;
+- (void)setIntelligentEdgeLightKeylineStyleDefaultBehaviorSettings:(id)settings;
+- (void)setIntelligentEdgeLightKeylineStyleHardAlpha:(double)alpha;
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeAmount:(double)amount;
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeBlurRadius:(double)radius;
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeEnd:(double)end;
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeStart:(double)start;
+- (void)setIntelligentEdgeLightKeylineStyleHardRimIsSoft:(BOOL)soft;
+- (void)setIntelligentEdgeLightKeylineStyleHardScreenBlendMode:(BOOL)mode;
+- (void)setIntelligentEdgeLightKeylineStyleHardSmallWidth:(double)width;
+- (void)setIntelligentEdgeLightKeylineStyleSoftAlpha:(double)alpha;
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeAmount:(double)amount;
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeBlurRadius:(double)radius;
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeEnd:(double)end;
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeStart:(double)start;
+- (void)setIntelligentEdgeLightKeylineStyleSoftRimIsSoft:(BOOL)soft;
+- (void)setIntelligentEdgeLightKeylineStyleSoftScreenBlendMode:(BOOL)mode;
+- (void)setIntelligentEdgeLightKeylineStyleSoftSmallWidth:(double)width;
+- (void)setRightEdgeHintDropletRadius:(double)radius;
+- (void)setRightEdgeHintSize:(double)size;
+- (void)setSuppressCompositingFilterDestOut:(BOOL)out;
+- (void)setSuppressCompositingFilterMultiply:(BOOL)multiply;
+- (void)setSuppressDropletEffectFilters:(BOOL)filters;
 @end
 
 @implementation DRPDropletPrototypeSettings
@@ -92,11 +92,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setSuppressCompositingFilterMultiply:(BOOL)a3
+- (void)setSuppressCompositingFilterMultiply:(BOOL)multiply
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_suppressCompositingFilterMultiply;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = multiply;
 }
 
 - (BOOL)suppressCompositingFilterDestOut
@@ -106,11 +106,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setSuppressCompositingFilterDestOut:(BOOL)a3
+- (void)setSuppressCompositingFilterDestOut:(BOOL)out
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_suppressCompositingFilterDestOut;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = out;
 }
 
 - (BOOL)suppressDropletEffectFilters
@@ -120,11 +120,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setSuppressDropletEffectFilters:(BOOL)a3
+- (void)setSuppressDropletEffectFilters:(BOOL)filters
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_suppressDropletEffectFilters;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = filters;
 }
 
 - (double)rightEdgeHintSize
@@ -134,11 +134,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setRightEdgeHintSize:(double)a3
+- (void)setRightEdgeHintSize:(double)size
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_rightEdgeHintSize;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = size;
 }
 
 - (double)rightEdgeHintDropletRadius
@@ -148,11 +148,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setRightEdgeHintDropletRadius:(double)a3
+- (void)setRightEdgeHintDropletRadius:(double)radius
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_rightEdgeHintDropletRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (double)edgeHintKeylineInnerWidth
@@ -162,11 +162,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintKeylineInnerWidth:(double)a3
+- (void)setEdgeHintKeylineInnerWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintKeylineInnerWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (double)edgeHintKeylineOuterWidth
@@ -176,11 +176,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintKeylineOuterWidth:(double)a3
+- (void)setEdgeHintKeylineOuterWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintKeylineOuterWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (SUIAColorMatrixPrototypeSettings)edgeHintKeylineAdaptiveColorMatrix
@@ -190,13 +190,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintKeylineAdaptiveColorMatrix:(id)a3
+- (void)setEdgeHintKeylineAdaptiveColorMatrix:(id)matrix
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintKeylineAdaptiveColorMatrix;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = matrix;
+  matrixCopy = matrix;
 }
 
 - (SUIAFluidBehaviorSettings)edgeHintCenterXAnimationSettings
@@ -206,13 +206,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintCenterXAnimationSettings:(id)a3
+- (void)setEdgeHintCenterXAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintCenterXAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeHintCenterYAnimationSettings
@@ -222,13 +222,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintCenterYAnimationSettings:(id)a3
+- (void)setEdgeHintCenterYAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintCenterYAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeHintContainerWidthAnimationSettings
@@ -238,13 +238,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintContainerWidthAnimationSettings:(id)a3
+- (void)setEdgeHintContainerWidthAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintContainerWidthAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeHintContainerHeightAnimationSettings
@@ -254,13 +254,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintContainerHeightAnimationSettings:(id)a3
+- (void)setEdgeHintContainerHeightAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintContainerHeightAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeHintKeylineStyleAnimationSettings
@@ -270,13 +270,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeHintKeylineStyleAnimationSettings:(id)a3
+- (void)setEdgeHintKeylineStyleAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeHintKeylineStyleAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (double)edgeContentPresentedKeylineInnerWidth
@@ -286,11 +286,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedKeylineInnerWidth:(double)a3
+- (void)setEdgeContentPresentedKeylineInnerWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedKeylineInnerWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (double)edgeContentPresentedKeylineOuterWidth
@@ -300,11 +300,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedKeylineOuterWidth:(double)a3
+- (void)setEdgeContentPresentedKeylineOuterWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedKeylineOuterWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (SUIAColorMatrixPrototypeSettings)edgeContentPresentedKeylineAdaptiveColorMatrix
@@ -314,13 +314,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedKeylineAdaptiveColorMatrix:(id)a3
+- (void)setEdgeContentPresentedKeylineAdaptiveColorMatrix:(id)matrix
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedKeylineAdaptiveColorMatrix;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = matrix;
+  matrixCopy = matrix;
 }
 
 - (SUIAFluidBehaviorSettings)edgeContentPresentedCenterXAnimationSettings
@@ -330,13 +330,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedCenterXAnimationSettings:(id)a3
+- (void)setEdgeContentPresentedCenterXAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedCenterXAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeContentPresentedCenterYAnimationSettings
@@ -346,13 +346,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedCenterYAnimationSettings:(id)a3
+- (void)setEdgeContentPresentedCenterYAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedCenterYAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeContentPresentedContainerWidthAnimationSettings
@@ -362,13 +362,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedContainerWidthAnimationSettings:(id)a3
+- (void)setEdgeContentPresentedContainerWidthAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedContainerWidthAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeContentPresentedContainerHeightAnimationSettings
@@ -378,13 +378,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedContainerHeightAnimationSettings:(id)a3
+- (void)setEdgeContentPresentedContainerHeightAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedContainerHeightAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (SUIAFluidBehaviorSettings)edgeContentPresentedKeylineStyleAnimationSettings
@@ -394,13 +394,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setEdgeContentPresentedKeylineStyleAnimationSettings:(id)a3
+- (void)setEdgeContentPresentedKeylineStyleAnimationSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_edgeContentPresentedKeylineStyleAnimationSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (BOOL)intelligentEdgeLightKeylineStyleSoftScreenBlendMode
@@ -410,11 +410,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftScreenBlendMode:(BOOL)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftScreenBlendMode:(BOOL)mode
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftScreenBlendMode;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = mode;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftAlpha
@@ -424,11 +424,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftAlpha:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftAlpha:(double)alpha
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftAlpha;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = alpha;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftLargeBlurRadius
@@ -438,11 +438,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeBlurRadius:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftLargeBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftLargeAmount
@@ -452,11 +452,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeAmount:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeAmount:(double)amount
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftLargeAmount;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = amount;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftLargeStart
@@ -466,11 +466,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeStart:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeStart:(double)start
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftLargeStart;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = start;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftLargeEnd
@@ -480,11 +480,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftLargeEnd:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftLargeEnd:(double)end
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftLargeEnd;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = end;
 }
 
 - (BOOL)intelligentEdgeLightKeylineStyleSoftRimIsSoft
@@ -494,11 +494,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftRimIsSoft:(BOOL)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftRimIsSoft:(BOOL)soft
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftRimIsSoft;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = soft;
 }
 
 - (double)intelligentEdgeLightKeylineStyleSoftSmallWidth
@@ -508,11 +508,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleSoftSmallWidth:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleSoftSmallWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleSoftSmallWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (BOOL)intelligentEdgeLightKeylineStyleHardScreenBlendMode
@@ -522,11 +522,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardScreenBlendMode:(BOOL)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardScreenBlendMode:(BOOL)mode
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardScreenBlendMode;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = mode;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardAlpha
@@ -536,11 +536,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardAlpha:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardAlpha:(double)alpha
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardAlpha;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = alpha;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardLargeBlurRadius
@@ -550,11 +550,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeBlurRadius:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardLargeBlurRadius;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = radius;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardLargeAmount
@@ -564,11 +564,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeAmount:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeAmount:(double)amount
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardLargeAmount;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = amount;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardLargeStart
@@ -578,11 +578,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeStart:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeStart:(double)start
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardLargeStart;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = start;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardLargeEnd
@@ -592,11 +592,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardLargeEnd:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardLargeEnd:(double)end
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardLargeEnd;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = end;
 }
 
 - (BOOL)intelligentEdgeLightKeylineStyleHardRimIsSoft
@@ -606,11 +606,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardRimIsSoft:(BOOL)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardRimIsSoft:(BOOL)soft
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardRimIsSoft;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = soft;
 }
 
 - (double)intelligentEdgeLightKeylineStyleHardSmallWidth
@@ -620,11 +620,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleHardSmallWidth:(double)a3
+- (void)setIntelligentEdgeLightKeylineStyleHardSmallWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleHardSmallWidth;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = width;
 }
 
 - (double)intelligentEdgeLightEDRGainAmount
@@ -634,11 +634,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightEDRGainAmount:(double)a3
+- (void)setIntelligentEdgeLightEDRGainAmount:(double)amount
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightEDRGainAmount;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = amount;
 }
 
 - (SUIAColorMatrixPrototypeSettings)intelligentEdgeLightKeylineStyleColorMatrix
@@ -648,13 +648,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleColorMatrix:(id)a3
+- (void)setIntelligentEdgeLightKeylineStyleColorMatrix:(id)matrix
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleColorMatrix;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = matrix;
+  matrixCopy = matrix;
 }
 
 - (SUIAFluidBehaviorSettings)intelligentEdgeLightKeylineStyleDefaultBehaviorSettings
@@ -664,18 +664,18 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIntelligentEdgeLightKeylineStyleDefaultBehaviorSettings:(id)a3
+- (void)setIntelligentEdgeLightKeylineStyleDefaultBehaviorSettings:(id)settings
 {
   v5 = OBJC_IVAR___DRPDropletPrototypeSettings_intelligentEdgeLightKeylineStyleDefaultBehaviorSettings;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = settings;
+  settingsCopy = settings;
 }
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   DRPDropletPrototypeSettings.setDefaultValues()();
 }
 

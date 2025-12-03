@@ -1,37 +1,37 @@
 @interface _SBContinuitySessionStateMachine
-- (_SBContinuitySessionStateMachine)initWithStoreDemoPrepState:(id)a3 blockedState:(id)a4 preparingForRemoteUnlockState:(id)a5 waitingForRemoteUnlockState:(id)a6 waitingForScenesState:(id)a7 waitingForHIDServicesState:(id)a8 activatingState:(id)a9 updatingActiveDisplayState:(id)a10 launchingState:(id)a11 flushingState:(id)a12 activeState:(id)a13;
-- (_SBContinuitySessionStateMachine)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4 inStoreDemoMode:(BOOL)a5;
+- (_SBContinuitySessionStateMachine)initWithStoreDemoPrepState:(id)state blockedState:(id)blockedState preparingForRemoteUnlockState:(id)unlockState waitingForRemoteUnlockState:(id)remoteUnlockState waitingForScenesState:(id)scenesState waitingForHIDServicesState:(id)servicesState activatingState:(id)activatingState updatingActiveDisplayState:(id)self0 launchingState:(id)self1 flushingState:(id)self2 activeState:(id)self3;
+- (_SBContinuitySessionStateMachine)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator inStoreDemoMode:(BOOL)mode;
 - (_SBContinuitySessionStateMachineClientExternallyBlockedReasonsProvider)clientExternallyBlockedReasonsProvider;
-- (id)_stateMachineStateForState:(unint64_t)a3;
+- (id)_stateMachineStateForState:(unint64_t)state;
 - (id)clientExternallyBlockedReasons;
 - (id)succinctDescription;
 - (void)_initializeStates;
-- (void)_moveToInvalidStateForReasons:(id)a3 postToDelegate:(BOOL)a4;
-- (void)_moveToState:(unint64_t)a3;
-- (void)_updateCurrentStateReasons:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)invalidateForReasons:(id)a3;
+- (void)_moveToInvalidStateForReasons:(id)reasons postToDelegate:(BOOL)delegate;
+- (void)_moveToState:(unint64_t)state;
+- (void)_updateCurrentStateReasons:(id)reasons;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)invalidateForReasons:(id)reasons;
 - (void)noteClientDidUpdateExternallyBlockedReasons;
 @end
 
 @implementation _SBContinuitySessionStateMachine
 
-- (_SBContinuitySessionStateMachine)initWithSystemEventMonitor:(id)a3 continuityDisplayAuthenticationCoordinator:(id)a4 inStoreDemoMode:(BOOL)a5
+- (_SBContinuitySessionStateMachine)initWithSystemEventMonitor:(id)monitor continuityDisplayAuthenticationCoordinator:(id)coordinator inStoreDemoMode:(BOOL)mode
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v35 = [[_SBContinuitySessionStateMachineStateBlocked alloc] initWithSystemEventMonitor:v7];
+  modeCopy = mode;
+  monitorCopy = monitor;
+  coordinatorCopy = coordinator;
+  v35 = [[_SBContinuitySessionStateMachineStateBlocked alloc] initWithSystemEventMonitor:monitorCopy];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __122___SBContinuitySessionStateMachine_initWithSystemEventMonitor_continuityDisplayAuthenticationCoordinator_inStoreDemoMode___block_invoke;
   v36[3] = &unk_2783C4380;
-  v34 = v7;
+  v34 = monitorCopy;
   v37 = v34;
-  v33 = v8;
+  v33 = coordinatorCopy;
   v38 = v33;
   v9 = MEMORY[0x223D6F7F0](v36);
-  if (v5)
+  if (modeCopy)
   {
     v10 = objc_opt_class();
     v29 = v9[2](v9, v10);
@@ -65,20 +65,20 @@
   return v32;
 }
 
-- (_SBContinuitySessionStateMachine)initWithStoreDemoPrepState:(id)a3 blockedState:(id)a4 preparingForRemoteUnlockState:(id)a5 waitingForRemoteUnlockState:(id)a6 waitingForScenesState:(id)a7 waitingForHIDServicesState:(id)a8 activatingState:(id)a9 updatingActiveDisplayState:(id)a10 launchingState:(id)a11 flushingState:(id)a12 activeState:(id)a13
+- (_SBContinuitySessionStateMachine)initWithStoreDemoPrepState:(id)state blockedState:(id)blockedState preparingForRemoteUnlockState:(id)unlockState waitingForRemoteUnlockState:(id)remoteUnlockState waitingForScenesState:(id)scenesState waitingForHIDServicesState:(id)servicesState activatingState:(id)activatingState updatingActiveDisplayState:(id)self0 launchingState:(id)self1 flushingState:(id)self2 activeState:(id)self3
 {
-  v37 = a3;
-  v29 = a4;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
-  v31 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
-  v21 = a13;
+  stateCopy = state;
+  blockedStateCopy = blockedState;
+  blockedStateCopy2 = blockedState;
+  unlockStateCopy = unlockState;
+  remoteUnlockStateCopy = remoteUnlockState;
+  scenesStateCopy = scenesState;
+  servicesStateCopy = servicesState;
+  activatingStateCopy = activatingState;
+  displayStateCopy = displayState;
+  launchingStateCopy = launchingState;
+  flushingStateCopy = flushingState;
+  activeStateCopy = activeState;
   v38.receiver = self;
   v38.super_class = _SBContinuitySessionStateMachine;
   v22 = [(_SBContinuitySessionStateMachine *)&v38 init];
@@ -92,17 +92,17 @@
     v23->_internalReasons = v24;
 
     objc_storeStrong(&v23->_observerReasons, v23->_internalReasons);
-    objc_storeStrong(&v23->_storeDemoPrepState, a3);
-    objc_storeStrong(&v23->_blockedState, v29);
-    objc_storeStrong(&v23->_preparingForRemoteUnlockState, a5);
-    objc_storeStrong(&v23->_waitingForRemoteUnlockState, a6);
-    objc_storeStrong(&v23->_waitingForScenesState, a7);
-    objc_storeStrong(&v23->_waitingForHIDServicesState, a8);
-    objc_storeStrong(&v23->_activatingState, a9);
-    objc_storeStrong(&v23->_updatingActiveDisplayState, a10);
-    objc_storeStrong(&v23->_launchingState, a11);
-    objc_storeStrong(&v23->_flushingState, a12);
-    objc_storeStrong(&v23->_activeState, a13);
+    objc_storeStrong(&v23->_storeDemoPrepState, state);
+    objc_storeStrong(&v23->_blockedState, blockedStateCopy);
+    objc_storeStrong(&v23->_preparingForRemoteUnlockState, unlockState);
+    objc_storeStrong(&v23->_waitingForRemoteUnlockState, remoteUnlockState);
+    objc_storeStrong(&v23->_waitingForScenesState, scenesState);
+    objc_storeStrong(&v23->_waitingForHIDServicesState, servicesState);
+    objc_storeStrong(&v23->_activatingState, activatingState);
+    objc_storeStrong(&v23->_updatingActiveDisplayState, displayState);
+    objc_storeStrong(&v23->_launchingState, launchingState);
+    objc_storeStrong(&v23->_flushingState, flushingState);
+    objc_storeStrong(&v23->_activeState, activeState);
     [(_SBContinuitySessionStateMachine *)v23 _initializeStates];
     if (v23->_storeDemoPrepState)
     {
@@ -126,10 +126,10 @@
   [v2 noteClientDidUpdateExternallyBlockedReasons];
 }
 
-- (void)invalidateForReasons:(id)a3
+- (void)invalidateForReasons:(id)reasons
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonsCopy = reasons;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (!self->_invalidated)
   {
@@ -138,11 +138,11 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v4;
+      v18 = reasonsCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[State Machine] invalidated for reasons: %{public}@", &v17, 0xCu);
     }
 
-    [(_SBContinuitySessionStateMachine *)self _moveToInvalidStateForReasons:v4 postToDelegate:0];
+    [(_SBContinuitySessionStateMachine *)self _moveToInvalidStateForReasons:reasonsCopy postToDelegate:0];
     [(_SBContinuitySessionStateMachineStateStoreDemoPrep *)self->_storeDemoPrepState invalidate];
     storeDemoPrepState = self->_storeDemoPrepState;
     self->_storeDemoPrepState = 0;
@@ -247,26 +247,26 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_stateMachineStateForState:(unint64_t)a3
+- (id)_stateMachineStateForState:(unint64_t)state
 {
-  if (a3 - 1 > 0xA)
+  if (state - 1 > 0xA)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->_authenticationCoordinator + a3);
+    v4 = *(&self->_authenticationCoordinator + state);
   }
 
   return v4;
 }
 
-- (void)_moveToInvalidStateForReasons:(id)a3 postToDelegate:(BOOL)a4
+- (void)_moveToInvalidStateForReasons:(id)reasons postToDelegate:(BOOL)delegate
 {
-  v4 = a4;
+  delegateCopy = delegate;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  reasonsCopy = reasons;
   internalState = self->_internalState;
   v9 = SBLogContinuityDisplay();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -274,9 +274,9 @@
   {
     if (v10)
     {
-      v11 = [v7 bs_array];
+      bs_array = [reasonsCopy bs_array];
       v19 = 138543362;
-      v20 = v11;
+      v20 = bs_array;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[State Machine] ignoring call to move to invalid for reasons %{public}@ because we are already in .invalid", &v19, 0xCu);
     }
   }
@@ -286,11 +286,11 @@
     if (v10)
     {
       v12 = NSStringFromSBContinuitySessionState(self->_internalState);
-      v13 = [v7 bs_array];
+      bs_array2 = [reasonsCopy bs_array];
       v19 = 138543618;
       v20 = v12;
       v21 = 2114;
-      v22 = v13;
+      v22 = bs_array2;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[State Machine] %{public}@ -> INVALID reasons: %{public}@", &v19, 0x16u);
     }
 
@@ -306,26 +306,26 @@
     observerState = self->_observerState;
     v17 = self->_internalState;
     self->_internalState = 12;
-    objc_storeStrong(&self->_internalReasons, a3);
+    objc_storeStrong(&self->_internalReasons, reasons);
     v9 = [(_SBContinuitySessionStateMachine *)self _stateMachineStateForState:v17];
     [v9 exitedStateTo:12];
     if (self->_observerState != 12)
     {
       self->_observerState = 12;
-      objc_storeStrong(&self->_observerReasons, a3);
-      if (v4)
+      objc_storeStrong(&self->_observerReasons, reasons);
+      if (delegateCopy)
       {
-        v18 = [(_SBContinuitySessionStateMachine *)self delegate];
-        [v18 continuitySessionStateMachineDidUpdateState:self oldState:observerState];
+        delegate = [(_SBContinuitySessionStateMachine *)self delegate];
+        [delegate continuitySessionStateMachineDidUpdateState:self oldState:observerState];
       }
     }
   }
 }
 
-- (void)_updateCurrentStateReasons:(id)a3
+- (void)_updateCurrentStateReasons:(id)reasons
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonsCopy = reasons;
   internalState = self->_internalState;
   v7 = SBLogContinuityDisplay();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -333,9 +333,9 @@
   {
     if (v8)
     {
-      v9 = [v5 bs_array];
+      bs_array = [reasonsCopy bs_array];
       *buf = 138543362;
-      v17 = v9;
+      v17 = bs_array;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[State Machine] ignoring call update reasons %{public}@ because we are already in .invalid", buf, 0xCu);
     }
   }
@@ -345,16 +345,16 @@
     if (v8)
     {
       v10 = NSStringFromSBContinuitySessionState(self->_internalState);
-      v11 = [v5 bs_array];
+      bs_array2 = [reasonsCopy bs_array];
       *buf = 138543618;
       v17 = v10;
       v18 = 2114;
-      v19 = v11;
+      v19 = bs_array2;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[State Machine] %{public}@ updated reasons: %{public}@", buf, 0x16u);
     }
 
     v12 = self->_internalState;
-    objc_storeStrong(&self->_internalReasons, a3);
+    objc_storeStrong(&self->_internalReasons, reasons);
     if (!self->_suppressReasonUpdateCallout)
     {
       objc_initWeak(buf, self);
@@ -363,7 +363,7 @@
       block[2] = __63___SBContinuitySessionStateMachine__updateCurrentStateReasons___block_invoke;
       block[3] = &unk_2783AB460;
       objc_copyWeak(v15, buf);
-      v14 = v5;
+      v14 = reasonsCopy;
       v15[1] = v12;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -373,10 +373,10 @@
   }
 }
 
-- (void)_moveToState:(unint64_t)a3
+- (void)_moveToState:(unint64_t)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 == 12)
+  if (state == 12)
   {
     [(_SBContinuitySessionStateMachine *)a2 _moveToState:?];
   }
@@ -388,7 +388,7 @@
   {
     if (v7)
     {
-      v8 = NSStringFromSBContinuitySessionState(a3);
+      v8 = NSStringFromSBContinuitySessionState(state);
       *buf = 138543362;
       v23 = v8;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[State Machine] ignoring call to move to %{public}@ because we are already in .invalid", buf, 0xCu);
@@ -400,7 +400,7 @@
     if (v7)
     {
       v9 = NSStringFromSBContinuitySessionState(self->_internalState);
-      v10 = NSStringFromSBContinuitySessionState(a3);
+      v10 = NSStringFromSBContinuitySessionState(state);
       *buf = 138543618;
       v23 = v9;
       v24 = 2114;
@@ -411,22 +411,22 @@
     v11 = SBLogContinuitySession();
     if (os_signpost_enabled(v11))
     {
-      v12 = NSStringFromSBContinuitySessionState(a3);
+      v12 = NSStringFromSBContinuitySessionState(state);
       *buf = 138543362;
       v23 = v12;
       _os_signpost_emit_with_name_impl(&dword_21ED4E000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SB_ONENESS_STATE_MACHINE_STATE_UPDATE", "%{public}@", buf, 0xCu);
     }
 
     v13 = self->_internalState;
-    self->_internalState = a3;
+    self->_internalState = state;
     v14 = [MEMORY[0x277CBEB98] set];
     internalReasons = self->_internalReasons;
     self->_internalReasons = v14;
 
     self->_suppressReasonUpdateCallout = 1;
     v6 = [(_SBContinuitySessionStateMachine *)self _stateMachineStateForState:v13];
-    v16 = [(_SBContinuitySessionStateMachine *)self _stateMachineStateForState:a3];
-    [v6 exitedStateTo:a3];
+    v16 = [(_SBContinuitySessionStateMachine *)self _stateMachineStateForState:state];
+    [v6 exitedStateTo:state];
     [v16 enteredStateFrom:v13];
     self->_suppressReasonUpdateCallout = 0;
     v17 = [(NSSet *)self->_internalReasons copy];
@@ -436,7 +436,7 @@
     v19[2] = __49___SBContinuitySessionStateMachine__moveToState___block_invoke;
     v19[3] = &unk_2783C4470;
     objc_copyWeak(v21, buf);
-    v21[1] = a3;
+    v21[1] = state;
     v21[2] = v13;
     v20 = v17;
     v18 = v17;
@@ -449,12 +449,12 @@
 
 - (id)clientExternallyBlockedReasons
 {
-  v2 = [(_SBContinuitySessionStateMachine *)self clientExternallyBlockedReasonsProvider];
-  v3 = [v2 clientExternallyBlockedReasons];
-  v4 = v3;
-  if (v3)
+  clientExternallyBlockedReasonsProvider = [(_SBContinuitySessionStateMachine *)self clientExternallyBlockedReasonsProvider];
+  clientExternallyBlockedReasons = [clientExternallyBlockedReasonsProvider clientExternallyBlockedReasons];
+  v4 = clientExternallyBlockedReasons;
+  if (clientExternallyBlockedReasons)
   {
-    v5 = v3;
+    v5 = clientExternallyBlockedReasons;
   }
 
   else
@@ -470,23 +470,23 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x277CF0C10] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __62___SBContinuitySessionStateMachine_appendDescriptionToStream___block_invoke;
   v24[3] = &unk_2783A92D8;
-  v6 = v4;
+  v6 = streamCopy;
   v25 = v6;
-  v26 = self;
+  selfCopy = self;
   [v6 appendProem:self block:v24];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -494,8 +494,8 @@
   v20[3] = &unk_2783A8ED8;
   v7 = v6;
   v21 = v7;
-  v22 = self;
-  v8 = v5;
+  selfCopy2 = self;
+  v8 = collectionLineBreakNoneStyle;
   v23 = v8;
   [v7 appendBodySectionWithName:@"observerState" block:v20];
   v13 = MEMORY[0x277D85DD0];
@@ -504,7 +504,7 @@
   v16 = &unk_2783A8ED8;
   v9 = v7;
   v17 = v9;
-  v18 = self;
+  selfCopy3 = self;
   v19 = v8;
   v10 = v8;
   [v9 appendBodySectionWithName:@"internalState" block:&v13];

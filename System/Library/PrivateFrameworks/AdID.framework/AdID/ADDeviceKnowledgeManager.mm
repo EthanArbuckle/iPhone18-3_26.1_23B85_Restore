@@ -1,11 +1,11 @@
 @interface ADDeviceKnowledgeManager
 + (id)sharedInstance;
 - (ADDeviceKnowledgeManager)init;
-- (BOOL)runTask:(id)a3;
+- (BOOL)runTask:(id)task;
 - (id)minimumRefreshInterval;
-- (void)checkOnTask:(id)a3 activity:(id)a4;
-- (void)processDeviceData:(id)a3;
-- (void)scheduleDeviceDataProcessing:(double)a3;
+- (void)checkOnTask:(id)task activity:(id)activity;
+- (void)processDeviceData:(id)data;
+- (void)scheduleDeviceDataProcessing:(double)processing;
 @end
 
 @implementation ADDeviceKnowledgeManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_4 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_4, block);
@@ -44,24 +44,24 @@ uint64_t __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke(uint64_t a1
   if (v2)
   {
     v2->_taskIsRunning = 0;
-    v4 = [(ADDeviceKnowledgeManager *)v2 minimumRefreshInterval];
+    minimumRefreshInterval = [(ADDeviceKnowledgeManager *)v2 minimumRefreshInterval];
     refreshInterval = v3->_refreshInterval;
-    v3->_refreshInterval = v4;
+    v3->_refreshInterval = minimumRefreshInterval;
 
     [MEMORY[0x277CE9600] registerTaskDelegate:v3 forRequestID:@"com.apple.ap.adprivacyd.deviceKnowledge"];
-    v6 = [MEMORY[0x277CE9638] sharedInstance];
-    v7 = [v6 unitTesting];
+    mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+    unitTesting = [mEMORY[0x277CE9638] unitTesting];
 
-    if (v7)
+    if (unitTesting)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] WARNING: Check On Task has been disabled. If you see this outside of unit tests, Please file a radar...", objc_opt_class()];
+      mEMORY[0x277CE9600] = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] WARNING: Check On Task has been disabled. If you see this outside of unit tests, Please file a radar...", objc_opt_class()];
       _ADLog();
     }
 
     else
     {
-      v8 = [MEMORY[0x277CE9600] sharedInstance];
-      [v8 checkOnTask:@"com.apple.ap.adprivacyd.deviceKnowledge"];
+      mEMORY[0x277CE9600] = [MEMORY[0x277CE9600] sharedInstance];
+      [mEMORY[0x277CE9600] checkOnTask:@"com.apple.ap.adprivacyd.deviceKnowledge"];
     }
   }
 
@@ -70,9 +70,9 @@ uint64_t __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke(uint64_t a1
 
 - (id)minimumRefreshInterval
 {
-  v2 = [MEMORY[0x277D42CB0] sharedAssetManagerCoordinator];
-  v3 = [v2 assetManagerForPlacementType:0 assetManagerType:0];
-  v4 = [v2 assetManagerForPlacementType:0 assetManagerType:1];
+  mEMORY[0x277D42CB0] = [MEMORY[0x277D42CB0] sharedAssetManagerCoordinator];
+  v3 = [mEMORY[0x277D42CB0] assetManagerForPlacementType:0 assetManagerType:0];
+  v4 = [mEMORY[0x277D42CB0] assetManagerForPlacementType:0 assetManagerType:1];
   v5 = *MEMORY[0x277D42D08];
   v6 = [v3 doubleValueForFactor:*MEMORY[0x277D42D08]];
   v7 = [v4 doubleValueForFactor:v5];
@@ -90,44 +90,44 @@ uint64_t __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke(uint64_t a1
   return v12;
 }
 
-- (BOOL)runTask:(id)a3
+- (BOOL)runTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
-  v8 = [v5 requestIdentifier];
-  v9 = [v6 stringWithFormat:@"[%@]: Received request to run background task %@", v7, v8];
+  requestIdentifier = [taskCopy requestIdentifier];
+  v9 = [v6 stringWithFormat:@"[%@]: Received request to run background task %@", v7, requestIdentifier];
   _ADLog();
 
-  v10 = [v5 requestIdentifier];
-  LODWORD(v7) = [v10 isEqualToString:@"com.apple.ap.adprivacyd.deviceKnowledge"];
+  requestIdentifier2 = [taskCopy requestIdentifier];
+  LODWORD(v7) = [requestIdentifier2 isEqualToString:@"com.apple.ap.adprivacyd.deviceKnowledge"];
 
   v11 = 0;
   if (v7)
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    if (v12->_taskIsRunning)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_taskIsRunning)
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] ERROR: We should not be running the task twice at the same time.", objc_opt_class()];
       _ADLog();
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
       v11 = 0;
     }
 
     else
     {
-      v12->_taskIsRunning = 1;
-      objc_sync_exit(v12);
+      selfCopy->_taskIsRunning = 1;
+      objc_sync_exit(selfCopy);
 
       v14 = +[ADAdTrackingSchedulingManager sharedInstance];
-      v15 = [v14 isAdEnabledLocality];
+      isAdEnabledLocality = [v14 isAdEnabledLocality];
 
-      if (v15)
+      if (isAdEnabledLocality)
       {
-        objc_storeStrong(&v12->_xpc_task, a3);
-        if (([(ADBackgroundTaskRequest *)v12->_xpc_task continueTask]& 1) == 0)
+        objc_storeStrong(&selfCopy->_xpc_task, task);
+        if (([(ADBackgroundTaskRequest *)selfCopy->_xpc_task continueTask]& 1) == 0)
         {
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] ERROR: Unable to inform the system we need to run Device Knowledge asynchronously. Please file a radar...", objc_opt_class()];
           _ADLog();
@@ -141,8 +141,8 @@ uint64_t __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke(uint64_t a1
         v21[1] = 3221225472;
         v21[2] = __36__ADDeviceKnowledgeManager_runTask___block_invoke;
         v21[3] = &unk_278C57E10;
-        v21[4] = v12;
-        [(ADDeviceKnowledgeManager *)v12 processDeviceData:v21];
+        v21[4] = selfCopy;
+        [(ADDeviceKnowledgeManager *)selfCopy processDeviceData:v21];
       }
 
       else
@@ -150,10 +150,10 @@ uint64_t __42__ADDeviceKnowledgeManager_sharedInstance__block_invoke(uint64_t a1
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: This is not an Ad enabled country. Skipping Device Knoweldge.", objc_opt_class()];
         _ADLog();
 
-        [(ADDeviceKnowledgeManager *)v12 scheduleDeviceDataProcessing:86400.0];
-        v19 = v12;
+        [(ADDeviceKnowledgeManager *)selfCopy scheduleDeviceDataProcessing:86400.0];
+        v19 = selfCopy;
         objc_sync_enter(v19);
-        v12->_taskIsRunning = 0;
+        selfCopy->_taskIsRunning = 0;
         objc_sync_exit(v19);
       }
 
@@ -205,17 +205,17 @@ uint64_t __36__ADDeviceKnowledgeManager_runTask___block_invoke(uint64_t a1)
   return releaseXPCTransaction();
 }
 
-- (void)checkOnTask:(id)a3 activity:(id)a4
+- (void)checkOnTask:(id)task activity:(id)activity
 {
-  activity = a4;
+  activity = activity;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = [v6 stringWithFormat:@"[%@]: Checking in on task: %@", objc_opt_class(), v7];
+  taskCopy = task;
+  taskCopy = [v6 stringWithFormat:@"[%@]: Checking in on task: %@", objc_opt_class(), taskCopy];
   _ADLog();
 
-  LODWORD(v8) = [v7 isEqualToString:@"com.apple.ap.adprivacyd.deviceKnowledge"];
-  v9 = activity;
-  if (v8)
+  LODWORD(taskCopy) = [taskCopy isEqualToString:@"com.apple.ap.adprivacyd.deviceKnowledge"];
+  activityCopy2 = activity;
+  if (taskCopy)
   {
     v10 = xpc_activity_copy_criteria(activity);
     v11 = MEMORY[0x277CCACA8];
@@ -234,28 +234,28 @@ uint64_t __36__ADDeviceKnowledgeManager_runTask___block_invoke(uint64_t a1)
       [(ADDeviceKnowledgeManager *)self scheduleDeviceDataProcessing:30.0];
     }
 
-    v9 = activity;
+    activityCopy2 = activity;
   }
 }
 
-- (void)scheduleDeviceDataProcessing:(double)a3
+- (void)scheduleDeviceDataProcessing:(double)processing
 {
   if (MGGetBoolAnswer())
   {
-    v4 = [MEMORY[0x277CE9630] sharedInstance];
-    v5 = [v4 stringForKey:@"DeviceKnowledgeScheduleOverride"];
+    mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+    v5 = [mEMORY[0x277CE9630] stringForKey:@"DeviceKnowledgeScheduleOverride"];
 
     if (v5 && ([v5 isEqualToString:&stru_285107440] & 1) == 0)
     {
       [v5 doubleValue];
-      a3 = v6;
+      processing = v6;
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Overriding reschedule period to %f seconds", objc_opt_class(), *&v6];
       _ADLog();
     }
   }
 
   v11 = [objc_alloc(MEMORY[0x277CE95F8]) initWithID:@"com.apple.ap.adprivacyd.deviceKnowledge"];
-  [v11 setDelay:a3];
+  [v11 setDelay:processing];
   [v11 setAllowBattery:0];
   [v11 setIsCPUIntensive:1];
   [v11 setRequiresNetworkConnectivity:0];
@@ -268,22 +268,22 @@ uint64_t __36__ADDeviceKnowledgeManager_runTask___block_invoke(uint64_t a1)
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Scheduling device knowledge update to run.", objc_opt_class()];
   _ADLog();
 
-  v10 = [MEMORY[0x277CE9600] sharedInstance];
-  [v10 addBackgroundTask:v11];
+  mEMORY[0x277CE9600] = [MEMORY[0x277CE9600] sharedInstance];
+  [mEMORY[0x277CE9600] addBackgroundTask:v11];
 }
 
-- (void)processDeviceData:(id)a3
+- (void)processDeviceData:(id)data
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE96B8] workQueue];
+  dataCopy = data;
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ADDeviceKnowledgeManager_processDeviceData___block_invoke;
   v7[3] = &unk_278C57E60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = dataCopy;
+  v6 = dataCopy;
+  [workQueue addOperationWithBlock:v7];
 }
 
 void __46__ADDeviceKnowledgeManager_processDeviceData___block_invoke(uint64_t a1)

@@ -12,11 +12,11 @@
   v2 = [(PVEffectDebugRect *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(PVEffectDebugRect *)v2 setFillColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PVEffectDebugRect *)v2 setFillColor:clearColor];
 
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(PVEffectDebugRect *)v2 setStrokeColor:v4];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(PVEffectDebugRect *)v2 setStrokeColor:clearColor2];
   }
 
   return v2;

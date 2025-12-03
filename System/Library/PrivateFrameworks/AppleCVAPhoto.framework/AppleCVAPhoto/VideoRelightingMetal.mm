@@ -1,30 +1,30 @@
 @interface VideoRelightingMetal
 - (CGRect)primaryCaptureRect;
-- (VideoRelightingMetal)initWithMetalContext:(void *)a3;
+- (VideoRelightingMetal)initWithMetalContext:(void *)context;
 - (id).cxx_construct;
-- (id)create3DTextureWithSize:(unint64_t)a3;
-- (id)getInternalColorCube:(int)a3;
-- (id)loadCube:(id)a3;
+- (id)create3DTextureWithSize:(unint64_t)size;
+- (id)getInternalColorCube:(int)cube;
+- (id)loadCube:(id)cube;
 - (void)configureRenderPipeline;
-- (void)createTexturesWith:(unint64_t)a3 imgHeight:(unint64_t)a4;
-- (void)encodeAlphaBlendRGBATextureArrayToCommandBuffer:(id)a3 inTexFirst:(id)a4 inTexSecond:(id)a5 outTex:(id)a6 alpha:(const float *)a7;
-- (void)encodeCountKernelToCommandBuffer:(id)a3;
-- (void)encodeLerpNearFarMapsToCommandBuffer:(id)a3;
-- (void)encodeRelightKernelToCommandBuffer:(id)a3 isAfterPreviewStitcher:(BOOL)a4 applyRotation:(BOOL)a5;
-- (void)encodeSlideKernelToCommandBuffer:(id)a3;
-- (void)encodeTCKernelToCommandBuffer:(id)a3;
-- (void)encodeVertCountKernelToCommandBuffer:(id)a3;
+- (void)createTexturesWith:(unint64_t)with imgHeight:(unint64_t)height;
+- (void)encodeAlphaBlendRGBATextureArrayToCommandBuffer:(id)buffer inTexFirst:(id)first inTexSecond:(id)second outTex:(id)tex alpha:(const float *)alpha;
+- (void)encodeCountKernelToCommandBuffer:(id)buffer;
+- (void)encodeLerpNearFarMapsToCommandBuffer:(id)buffer;
+- (void)encodeRelightKernelToCommandBuffer:(id)buffer isAfterPreviewStitcher:(BOOL)stitcher applyRotation:(BOOL)rotation;
+- (void)encodeSlideKernelToCommandBuffer:(id)buffer;
+- (void)encodeTCKernelToCommandBuffer:(id)buffer;
+- (void)encodeVertCountKernelToCommandBuffer:(id)buffer;
 - (void)generateModelNormals;
 - (void)initCommon;
 - (void)initKernelFunctions;
-- (void)loadRGBTransformMapsForEffectVersion:(BOOL)a3;
-- (void)loadRGBTransformMapsOnceTo:(id *)a3 namePrefix:(const void *)a4 forIntermediateResults:(BOOL)a5;
-- (void)renderWithSrcImage:(__CVBuffer *)a3 srcAlpha:(__CVBuffer *)a4 trustAlpha:(BOOL)a5 isAfterPreviewStitcher:(BOOL)a6 applyRotation:(BOOL)a7 yuvSourceDownsampled:(id)a8 skinSegmentation:(__CVBuffer *)a9 dstImage:(__CVBuffer *)a10 faceKitProcessOutput:(id)a11 portraitStyleStrength:(float)a12 colorSim:(id)a13 disparity:(id)a14 focusDistance:(float)a15 singleCubeData:(id)a16 properties:(id)a17 callbackQueue:(id)a18 callback:(id)a19;
-- (void)saveTexture:(id)a3 toImage:(id)a4;
+- (void)loadRGBTransformMapsForEffectVersion:(BOOL)version;
+- (void)loadRGBTransformMapsOnceTo:(id *)to namePrefix:(const void *)prefix forIntermediateResults:(BOOL)results;
+- (void)renderWithSrcImage:(__CVBuffer *)image srcAlpha:(__CVBuffer *)alpha trustAlpha:(BOOL)trustAlpha isAfterPreviewStitcher:(BOOL)stitcher applyRotation:(BOOL)rotation yuvSourceDownsampled:(id)downsampled skinSegmentation:(__CVBuffer *)segmentation dstImage:(__CVBuffer *)self0 faceKitProcessOutput:(id)self1 portraitStyleStrength:(float)self2 colorSim:(id)self3 disparity:(id)self4 focusDistance:(float)self5 singleCubeData:(id)self6 properties:(id)self7 callbackQueue:(id)self8 callback:(id)self9;
+- (void)saveTexture:(id)texture toImage:(id)image;
 - (void)setModelVertices;
-- (void)updateFaceKitStreamedDataFromProcessOutput:(id)a3;
-- (void)updateMatrixWithWidth:(int)a3 height:(int)a4 camera:(const void *)a5 pose:(const void *)a6;
-- (void)updateUniforms:(BOOL)a3;
+- (void)updateFaceKitStreamedDataFromProcessOutput:(id)output;
+- (void)updateMatrixWithWidth:(int)width height:(int)height camera:(const void *)camera pose:(const void *)pose;
+- (void)updateUniforms:(BOOL)uniforms;
 @end
 
 @implementation VideoRelightingMetal
@@ -81,20 +81,20 @@
   return result;
 }
 
-- (void)renderWithSrcImage:(__CVBuffer *)a3 srcAlpha:(__CVBuffer *)a4 trustAlpha:(BOOL)a5 isAfterPreviewStitcher:(BOOL)a6 applyRotation:(BOOL)a7 yuvSourceDownsampled:(id)a8 skinSegmentation:(__CVBuffer *)a9 dstImage:(__CVBuffer *)a10 faceKitProcessOutput:(id)a11 portraitStyleStrength:(float)a12 colorSim:(id)a13 disparity:(id)a14 focusDistance:(float)a15 singleCubeData:(id)a16 properties:(id)a17 callbackQueue:(id)a18 callback:(id)a19
+- (void)renderWithSrcImage:(__CVBuffer *)image srcAlpha:(__CVBuffer *)alpha trustAlpha:(BOOL)trustAlpha isAfterPreviewStitcher:(BOOL)stitcher applyRotation:(BOOL)rotation yuvSourceDownsampled:(id)downsampled skinSegmentation:(__CVBuffer *)segmentation dstImage:(__CVBuffer *)self0 faceKitProcessOutput:(id)self1 portraitStyleStrength:(float)self2 colorSim:(id)self3 disparity:(id)self4 focusDistance:(float)self5 singleCubeData:(id)self6 properties:(id)self7 callbackQueue:(id)self8 callback:(id)self9
 {
-  v110 = a6;
-  v111 = a7;
+  stitcherCopy = stitcher;
+  rotationCopy = rotation;
   v131[2] = *MEMORY[0x1E69E9840];
-  v129 = self;
-  v113 = a8;
-  v115 = a11;
-  v105 = a13;
-  v106 = a14;
-  v114 = a16;
-  v107 = a17;
-  v108 = a18;
-  v109 = a19;
+  selfCopy = self;
+  downsampledCopy = downsampled;
+  outputCopy = output;
+  simCopy = sim;
+  disparityCopy = disparity;
+  dataCopy = data;
+  propertiesCopy = properties;
+  queueCopy = queue;
+  callbackCopy = callback;
   if ((atomic_load_explicit(&qword_1ECDE1500, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1500))
   {
     v93 = +[CVAPreferenceManager defaults];
@@ -104,20 +104,20 @@
     __cxa_guard_release(&qword_1ECDE1500);
   }
 
-  if (a9)
+  if (segmentation)
   {
-    v22 = a12;
+    strengthCopy = strength;
   }
 
   else
   {
-    v22 = NAN;
+    strengthCopy = NAN;
   }
 
-  v23 = v129;
-  v129->_portraitStyleStrength = v22;
-  v24 = fminf(v22, 1.0);
-  if (v22 < 0.0)
+  v23 = selfCopy;
+  selfCopy->_portraitStyleStrength = strengthCopy;
+  v24 = fminf(strengthCopy, 1.0);
+  if (strengthCopy < 0.0)
   {
     v24 = 0.0;
   }
@@ -149,14 +149,14 @@
       goto LABEL_19;
     }
 
-    p_portraitStyleStrength = &v129->_portraitStyleStrength;
-    v26 = (v129->_portraitStyleStrength * 1.8) + ((v129->_portraitStyleStrength * -0.8) * v129->_portraitStyleStrength);
+    p_portraitStyleStrength = &selfCopy->_portraitStyleStrength;
+    v26 = (selfCopy->_portraitStyleStrength * 1.8) + ((selfCopy->_portraitStyleStrength * -0.8) * selfCopy->_portraitStyleStrength);
   }
 
   else
   {
-    p_portraitStyleStrength = &v129->_portraitStyleStrength;
-    v26 = powf(v129->_portraitStyleStrength, 0.75);
+    p_portraitStyleStrength = &selfCopy->_portraitStyleStrength;
+    v26 = powf(selfCopy->_portraitStyleStrength, 0.75);
   }
 
   v27 = fminf(v26, 1.0);
@@ -179,16 +179,16 @@ LABEL_19:
     __cxa_guard_release(&qword_1ECDE1520);
   }
 
-  v30 = v129;
+  v30 = selfCopy;
   if (*&dword_1ECDE151C != 0.0)
   {
-    v129->_portraitStyleStrength = *&dword_1ECDE151C * v129->_portraitStyleStrength;
+    selfCopy->_portraitStyleStrength = *&dword_1ECDE151C * selfCopy->_portraitStyleStrength;
   }
 
-  v30->_focusDistance = a15;
+  v30->_focusDistance = distance;
   if (byte_1ECDE14F8 == 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"portraitStyleStrength (API) = %f", a12];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"portraitStyleStrength (API) = %f", strength];
 
     LODWORD(v31) = dword_1ECDE151C;
     if (*&dword_1ECDE151C != 0.0)
@@ -197,7 +197,7 @@ LABEL_19:
     }
 
     v32 = "non-nil";
-    if (!a9)
+    if (!segmentation)
     {
       v32 = "nil";
     }
@@ -225,7 +225,7 @@ LABEL_19:
       __cxa_guard_release(&qword_1ECDE1540);
     }
 
-    if (a9)
+    if (segmentation)
     {
       if (byte_1ECDE1538 == 1)
       {
@@ -238,7 +238,7 @@ LABEL_19:
       NSLog(&cfstr_SSkinsegmentat.isa, "> > > CVAPhoto validation FAILED:");
     }
 
-    if (v115)
+    if (outputCopy)
     {
       if (byte_1ECDE1538 == 1)
       {
@@ -252,13 +252,13 @@ LABEL_19:
     }
   }
 
-  v33 = v129;
-  objc_storeStrong(&v129->_properties, a17);
+  v33 = selfCopy;
+  objc_storeStrong(&selfCopy->_properties, properties);
   ++v33->_frameIndex;
-  [(VideoRelightingMetal *)v33 updateFaceKitStreamedDataFromProcessOutput:v115];
-  if (v33->_colorCubeUserData != v114)
+  [(VideoRelightingMetal *)v33 updateFaceKitStreamedDataFromProcessOutput:outputCopy];
+  if (v33->_colorCubeUserData != dataCopy)
   {
-    objc_storeStrong(&v33->_colorCubeUserData, a16);
+    objc_storeStrong(&v33->_colorCubeUserData, data);
     colorCubeUserData = v33->_colorCubeUserData;
     if (colorCubeUserData)
     {
@@ -269,23 +269,23 @@ LABEL_19:
     }
   }
 
-  CVPixelBufferRetain(a3);
-  CVPixelBufferRetain(a4);
-  CVPixelBufferRetain(a10);
-  CVPixelBufferRetain(a9);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  sub_1DED6FBF4(__p, a3, a4, v33->_device);
+  CVPixelBufferRetain(image);
+  CVPixelBufferRetain(alpha);
+  CVPixelBufferRetain(dstImage);
+  CVPixelBufferRetain(segmentation);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  sub_1DED6FBF4(__p, image, alpha, v33->_device);
   srcTexture = v33->_srcTexture;
   v33->_srcTexture = __p[0];
 
   alphaTexture = v33->_alphaTexture;
   v33->_alphaTexture = __p[1];
 
-  v33->_trustAlpha = a5;
-  if (a9)
+  v33->_trustAlpha = trustAlpha;
+  if (segmentation)
   {
-    v41 = sub_1DED6FB5C(a9, v33->_device);
+    v41 = sub_1DED6FB5C(segmentation, v33->_device);
     texSkinSegmentationAlias = v33->_texSkinSegmentationAlias;
     v33->_texSkinSegmentationAlias = v41;
   }
@@ -311,27 +311,27 @@ LABEL_19:
 
   if (sub_1DED2E054("forceTrustAlpha") && [qword_1ECDE1548 BOOLValue])
   {
-    v129->_trustAlpha = 1;
+    selfCopy->_trustAlpha = 1;
   }
 
-  v43 = CVPixelBufferGetWidth(a10);
-  v44 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:v43 height:CVPixelBufferGetHeight(a10) mipmapped:0];
+  v43 = CVPixelBufferGetWidth(dstImage);
+  v44 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:v43 height:CVPixelBufferGetHeight(dstImage) mipmapped:0];
   v45 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v44];
 
   [v45 setUsage:3];
   v46 = MEMORY[0x1E69741C0];
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a10, 1uLL);
-  v48 = [v46 texture2DDescriptorWithPixelFormat:30 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(a10 mipmapped:1uLL), 0];
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(dstImage, 1uLL);
+  v48 = [v46 texture2DDescriptorWithPixelFormat:30 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(dstImage mipmapped:1uLL), 0];
   v49 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v48];
 
   [v49 setUsage:3];
-  v50 = v129;
-  v51 = [(MTLDeviceSPI *)v129->_device newTextureWithDescriptor:v45 iosurface:CVPixelBufferGetIOSurface(a10) plane:0];
+  v50 = selfCopy;
+  v51 = [(MTLDeviceSPI *)selfCopy->_device newTextureWithDescriptor:v45 iosurface:CVPixelBufferGetIOSurface(dstImage) plane:0];
   v52 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v51];
   dstTexture = v50->_dstTexture;
   v50->_dstTexture = v52;
 
-  v54 = [(MTLDeviceSPI *)v50->_device newTextureWithDescriptor:v49 iosurface:CVPixelBufferGetIOSurface(a10) plane:1];
+  v54 = [(MTLDeviceSPI *)v50->_device newTextureWithDescriptor:v49 iosurface:CVPixelBufferGetIOSurface(dstImage) plane:1];
   v55 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v54];
   dstUVTexture = v50->_dstUVTexture;
   v50->_dstUVTexture = v55;
@@ -356,19 +356,19 @@ LABEL_19:
   [(VideoRelightingMetal *)v50 loadRGBTransformMapsForEffectVersion:1];
   [(VideoRelightingMetal *)v50 updateUniforms:1];
   rgbTransformMapCurrentNearTexturePtr = v50->_rgbTransformMapCurrentNearTexturePtr;
-  v58 = [(MTLCommandQueue *)v50->_commandQueue commandBuffer];
-  v59 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v58];
+  commandBuffer = [(MTLCommandQueue *)v50->_commandQueue commandBuffer];
+  v59 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:commandBuffer];
 
   [v59 setLabel:@"video relighting"];
   if (rgbTransformMapCurrentNearTexturePtr)
   {
     x = v50->_primaryCaptureRect.origin.x;
-    v61 = CVPixelBufferGetWidth(a10);
+    v61 = CVPixelBufferGetWidth(dstImage);
     y = v50->_primaryCaptureRect.origin.y;
-    v63 = CVPixelBufferGetHeight(a10);
+    v63 = CVPixelBufferGetHeight(dstImage);
     v64 = v50->_primaryCaptureRect.size.width;
-    v65 = CVPixelBufferGetWidth(a10);
-    [(CVAFilterColorAlphaToFgBg *)v50->_colorAlphaToFgBg encodeToCommandBuffer:v59 srcColorTex:v113 srcAlphaTex:v50->_texSkinSegmentationAlias dstForegroundTex:v50->_texSkinRGBAPyramid normalizedPrimaryCaptureRect:v110 isAfterPreviewStitcher:v111 applyRotation:x / v61, y / v63, v64 / v65, v50->_primaryCaptureRect.size.height / CVPixelBufferGetHeight(a10)];
+    v65 = CVPixelBufferGetWidth(dstImage);
+    [(CVAFilterColorAlphaToFgBg *)v50->_colorAlphaToFgBg encodeToCommandBuffer:v59 srcColorTex:downsampledCopy srcAlphaTex:v50->_texSkinSegmentationAlias dstForegroundTex:v50->_texSkinRGBAPyramid normalizedPrimaryCaptureRect:stitcherCopy isAfterPreviewStitcher:rotationCopy applyRotation:x / v61, y / v63, v64 / v65, v50->_primaryCaptureRect.size.height / CVPixelBufferGetHeight(dstImage)];
     [(CVAFilterMaskedVariableBlur *)v50->_blurPyramidForSkinFg encodeBlurPyramidInPlaceToCommandBuffer:v59 inoutTexture:v50->_texSkinRGBAPyramid];
     [(VideoRelightingMetal *)v50 encodeLerpNearFarMapsToCommandBuffer:v59];
     if (v50->_faceDetected)
@@ -379,7 +379,7 @@ LABEL_19:
       [(VideoRelightingMetal *)v50 encodeSlideKernelToCommandBuffer:v59];
     }
 
-    [(VideoRelightingMetal *)v50 encodeRelightKernelToCommandBuffer:v59 isAfterPreviewStitcher:v110 applyRotation:v111];
+    [(VideoRelightingMetal *)v50 encodeRelightKernelToCommandBuffer:v59 isAfterPreviewStitcher:stitcherCopy applyRotation:rotationCopy];
   }
 
   if ((atomic_load_explicit(&qword_1ECDE1568, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1568))
@@ -401,8 +401,8 @@ LABEL_19:
     byte_1ECDE1570 = 1;
   }
 
-  v66 = v129;
-  if (v129->_debugFace && [(NSData *)v129->_faceKitStreamedData.landmarks length])
+  v66 = selfCopy;
+  if (selfCopy->_debugFace && [(NSData *)selfCopy->_faceKitStreamedData.landmarks length])
   {
     if ((atomic_load_explicit(&qword_1ECDE1580, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1580))
     {
@@ -426,11 +426,11 @@ LABEL_19:
       operator new();
     }
 
-    CVPixelBufferGetWidthOfPlane(a10, 0);
-    CVPixelBufferGetHeightOfPlane(a10, 0);
-    v67 = v129;
-    p_verticesPos = &v129->_faceKitStreamedData.verticesPos;
-    v112 = [(NSData *)v129->_faceKitStreamedData.landmarks length];
+    CVPixelBufferGetWidthOfPlane(dstImage, 0);
+    CVPixelBufferGetHeightOfPlane(dstImage, 0);
+    v67 = selfCopy;
+    p_verticesPos = &selfCopy->_faceKitStreamedData.verticesPos;
+    v112 = [(NSData *)selfCopy->_faceKitStreamedData.landmarks length];
     [p_verticesPos[6] bytes];
     [*p_verticesPos bytes];
     v69 = (([*p_verticesPos length] / 3) >> 2);
@@ -441,17 +441,17 @@ LABEL_19:
 
     if (v67->_debugFaceDraw && ([qword_1ECDE1578 intValue] & 0x80000000) == 0)
     {
-      v70 = [qword_1ECDE1578 intValue];
-      if (([qword_1ECDE1590 intValue] + v70) <= v69)
+      intValue = [qword_1ECDE1578 intValue];
+      if (([qword_1ECDE1590 intValue] + intValue) <= v69)
       {
         v71 = [qword_1ECDE1578 intValue] - 1;
         do
         {
-          v72 = [qword_1ECDE1578 intValue];
+          intValue2 = [qword_1ECDE1578 intValue];
           ++v71;
         }
 
-        while (v71 < ([qword_1ECDE1590 intValue] + v72));
+        while (v71 < ([qword_1ECDE1590 intValue] + intValue2));
       }
     }
 
@@ -476,8 +476,8 @@ LABEL_19:
       __cxa_guard_release(&qword_1ECDE15A8);
     }
 
-    v66 = v129;
-    if (v129->_debugFaceDraw && v112 >= 8)
+    v66 = selfCopy;
+    if (selfCopy->_debugFaceDraw && v112 >= 8)
     {
       v79 = 0;
       do
@@ -506,22 +506,22 @@ LABEL_19:
   v118[1] = 3221225472;
   v118[2] = sub_1DED4DE20;
   v118[3] = &unk_1E869ACA0;
-  v123 = a3;
-  v124 = a4;
-  v125 = a9;
-  v122 = &v129;
+  imageCopy = image;
+  alphaCopy = alpha;
+  segmentationCopy = segmentation;
+  v122 = &selfCopy;
   v118[4] = v66;
-  v82 = v108;
+  v82 = queueCopy;
   v119 = v82;
-  v83 = v109;
-  v126 = a10;
+  v83 = callbackCopy;
+  dstImageCopy = dstImage;
   v120 = v83;
   v121 = __p;
   [v59 addCompletedHandler:v118];
   [v59 commit];
-  p_faceKitStreamedData = &v129->_faceKitStreamedData;
-  verticesPos = v129->_faceKitStreamedData.verticesPos;
-  v129->_faceKitStreamedData.verticesPos = 0;
+  p_faceKitStreamedData = &selfCopy->_faceKitStreamedData;
+  verticesPos = selfCopy->_faceKitStreamedData.verticesPos;
+  selfCopy->_faceKitStreamedData.verticesPos = 0;
 
   intrinsics = p_faceKitStreamedData->intrinsics;
   p_faceKitStreamedData->intrinsics = 0;
@@ -547,11 +547,11 @@ LABEL_19:
   v92 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeLerpNearFarMapsToCommandBuffer:(id)a3
+- (void)encodeLerpNearFarMapsToCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   lightMapsNearFarLerp = self->_lightMapsNearFarLerp;
-  v8 = v4;
+  v8 = bufferCopy;
   if (lightMapsNearFarLerp <= 0.0)
   {
     v7 = &OBJC_IVAR___VideoRelightingMetal__rgbTransformMapCurrentNearTexturePtr;
@@ -562,7 +562,7 @@ LABEL_19:
     if (lightMapsNearFarLerp < 1.0)
     {
       p_rgbTransformMapCurrentTextureInterpolated = &self->_rgbTransformMapCurrentTextureInterpolated;
-      [(VideoRelightingMetal *)self encodeAlphaBlendRGBATextureArrayToCommandBuffer:v4 inTexFirst:self->_rgbTransformMapCurrentNearTexturePtr inTexSecond:self->_rgbTransformMapCurrentFarTexturePtr outTex:self->_rgbTransformMapCurrentTextureInterpolated alpha:?];
+      [(VideoRelightingMetal *)self encodeAlphaBlendRGBATextureArrayToCommandBuffer:bufferCopy inTexFirst:self->_rgbTransformMapCurrentNearTexturePtr inTexSecond:self->_rgbTransformMapCurrentFarTexturePtr outTex:self->_rgbTransformMapCurrentTextureInterpolated alpha:?];
       goto LABEL_7;
     }
 
@@ -574,25 +574,25 @@ LABEL_7:
   objc_storeStrong(&self->_rgbTransformMapTextureSelectedPtr, *p_rgbTransformMapCurrentTextureInterpolated);
 }
 
-- (void)encodeAlphaBlendRGBATextureArrayToCommandBuffer:(id)a3 inTexFirst:(id)a4 inTexSecond:(id)a5 outTex:(id)a6 alpha:(const float *)a7
+- (void)encodeAlphaBlendRGBATextureArrayToCommandBuffer:(id)buffer inTexFirst:(id)first inTexSecond:(id)second outTex:(id)tex alpha:(const float *)alpha
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [a3 computeCommandEncoder];
-  v16 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v15];
+  firstCopy = first;
+  secondCopy = second;
+  texCopy = tex;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v16 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:computeCommandEncoder];
 
   v20 = 0uLL;
   v21 = 0;
   sub_1DED6F850(&v20, self->_kernel_AlphaBlendRGBATextureArray);
   [v16 setLabel:@"_kernel_AlphaBlendRGBATextureArray"];
   [v16 setComputePipelineState:self->_kernel_AlphaBlendRGBATextureArray];
-  [v16 setTexture:v12 atIndex:0];
-  [v16 setTexture:v13 atIndex:1];
-  [v16 setBytes:a7 length:4 atIndex:0];
-  [v16 setTexture:v14 atIndex:2];
-  v19[0] = [v14 width];
-  v19[1] = [v14 height];
+  [v16 setTexture:firstCopy atIndex:0];
+  [v16 setTexture:secondCopy atIndex:1];
+  [v16 setBytes:alpha length:4 atIndex:0];
+  [v16 setTexture:texCopy atIndex:2];
+  v19[0] = [texCopy width];
+  v19[1] = [texCopy height];
   v19[2] = 1;
   v17 = v20;
   v18 = v21;
@@ -600,11 +600,11 @@ LABEL_7:
   [v16 endEncoding];
 }
 
-- (void)updateFaceKitStreamedDataFromProcessOutput:(id)a3
+- (void)updateFaceKitStreamedDataFromProcessOutput:(id)output
 {
   v46 = *MEMORY[0x1E69E9840];
-  v42 = self;
-  v4 = a3;
+  selfCopy = self;
+  outputCopy = output;
   verticesPos = self->_faceKitStreamedData.verticesPos;
   self->_faceKitStreamedData.verticesPos = 0;
 
@@ -630,14 +630,14 @@ LABEL_7:
   self->_faceDetectedReal = 0;
   self->_faceDetected = 0;
   v43[0] = &unk_1F59F9C68;
-  v43[1] = &v42;
+  v43[1] = &selfCopy;
   v43[3] = v43;
   v45 = v44;
   v44[0] = &unk_1F59F9C68;
-  v44[1] = &v42;
+  v44[1] = &selfCopy;
   if (qword_1ECDE1090 == -1)
   {
-    if (!v4)
+    if (!outputCopy)
     {
       goto LABEL_11;
     }
@@ -646,7 +646,7 @@ LABEL_7:
   else
   {
     dispatch_once(&qword_1ECDE1090, &unk_1F59F9C38);
-    if (!v4)
+    if (!outputCopy)
     {
       goto LABEL_11;
     }
@@ -654,53 +654,53 @@ LABEL_7:
 
   if (byte_1ECDE1098)
   {
-    v40 = v4;
+    v40 = outputCopy;
     v41 = [v40 objectForKeyedSubscript:qword_1ECDE10B0];
     if ([v41 count])
     {
       v12 = [v41 objectAtIndex:0];
       v39 = [v12 objectForKeyedSubscript:qword_1ECDE1100];
       v13 = [v39 objectForKeyedSubscript:qword_1ECDE1120];
-      v14 = v42->_faceKitStreamedData.intrinsics;
-      v42->_faceKitStreamedData.intrinsics = v13;
+      v14 = selfCopy->_faceKitStreamedData.intrinsics;
+      selfCopy->_faceKitStreamedData.intrinsics = v13;
 
       v38 = [v39 objectForKeyedSubscript:qword_1ECDE1128];
       v15 = [v38 objectForKeyedSubscript:qword_1ECDE1138];
-      v16 = v42->_faceKitStreamedData.camR;
-      v42->_faceKitStreamedData.camR = v15;
+      v16 = selfCopy->_faceKitStreamedData.camR;
+      selfCopy->_faceKitStreamedData.camR = v15;
 
       v17 = [v38 objectForKeyedSubscript:qword_1ECDE10F8];
-      v18 = v42->_faceKitStreamedData.camT;
-      v42->_faceKitStreamedData.camT = v17;
+      v18 = selfCopy->_faceKitStreamedData.camT;
+      selfCopy->_faceKitStreamedData.camT = v17;
 
       v19 = [v12 objectForKeyedSubscript:qword_1ECDE1118];
       v20 = [v19 objectForKeyedSubscript:qword_1ECDE1148];
 
       v21 = [v20 objectForKeyedSubscript:qword_1ECDE1138];
-      v22 = v42->_faceKitStreamedData.poseR;
-      v42->_faceKitStreamedData.poseR = v21;
+      v22 = selfCopy->_faceKitStreamedData.poseR;
+      selfCopy->_faceKitStreamedData.poseR = v21;
 
       v23 = [v20 objectForKeyedSubscript:qword_1ECDE10F8];
-      v24 = v42->_faceKitStreamedData.poseT;
-      v42->_faceKitStreamedData.poseT = v23;
+      v24 = selfCopy->_faceKitStreamedData.poseT;
+      selfCopy->_faceKitStreamedData.poseT = v23;
 
       v25 = [v12 objectForKeyedSubscript:qword_1ECDE1118];
       v26 = [v25 objectForKeyedSubscript:qword_1ECDE1140];
 
       v27 = [v26 objectForKeyedSubscript:qword_1ECDE10C8];
-      v28 = v42->_faceKitStreamedData.verticesPos;
-      v42->_faceKitStreamedData.verticesPos = v27;
+      v28 = selfCopy->_faceKitStreamedData.verticesPos;
+      selfCopy->_faceKitStreamedData.verticesPos = v27;
 
       v29 = [v26 objectForKeyedSubscript:qword_1ECDE10B8];
-      v30 = v42->_faceKitStreamedData.landmarks;
-      v42->_faceKitStreamedData.landmarks = v29;
+      v30 = selfCopy->_faceKitStreamedData.landmarks;
+      selfCopy->_faceKitStreamedData.landmarks = v29;
 
-      v31 = v42;
-      v32 = v42->_faceKitStreamedData.verticesPos;
-      if (v32 && (v33 = [(NSData *)v32 length], v31 = v42, v33))
+      v31 = selfCopy;
+      v32 = selfCopy->_faceKitStreamedData.verticesPos;
+      if (v32 && (v33 = [(NSData *)v32 length], v31 = selfCopy, v33))
       {
-        v34 = [(NSData *)v42->_faceKitStreamedData.landmarks length]!= 0;
-        v31 = v42;
+        v34 = [(NSData *)selfCopy->_faceKitStreamedData.landmarks length]!= 0;
+        v31 = selfCopy;
       }
 
       else
@@ -709,10 +709,10 @@ LABEL_7:
       }
 
       v31->_faceDetectedReal = v34;
-      v42->_faceDetected = v34;
+      selfCopy->_faceDetected = v34;
       v35 = [v12 objectForKeyedSubscript:qword_1ECDE1130];
       [v35 floatValue];
-      v42->_faceKitStreamedData.confidence = v36;
+      selfCopy->_faceKitStreamedData.confidence = v36;
     }
   }
 
@@ -736,24 +736,24 @@ LABEL_11:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeSlideKernelToCommandBuffer:(id)a3
+- (void)encodeSlideKernelToCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(MTLTexture *)self->_slideTexture width];
-  v6 = [(MTLTexture *)self->_slideTexture height];
+  bufferCopy = buffer;
+  width = [(MTLTexture *)self->_slideTexture width];
+  height = [(MTLTexture *)self->_slideTexture height];
   v12 = 0uLL;
   v13 = 0;
   sub_1DED6F850(&v12, self->_kernel_Slide);
-  v7 = [v4 computeCommandEncoder];
-  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v7];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:computeCommandEncoder];
 
   [v8 setLabel:@"_kernel_Slide"];
   [v8 setComputePipelineState:self->_kernel_Slide];
   [v8 setTexture:self->_tcTexture atIndex:0];
   [v8 setTexture:self->_slideTexture atIndex:1];
   [v8 setBytes:&self->_uniformBuffer_slide length:8 atIndex:0];
-  v11[0] = v5;
-  v11[1] = v6;
+  v11[0] = width;
+  v11[1] = height;
   v11[2] = 1;
   v9 = v12;
   v10 = v13;
@@ -761,23 +761,23 @@ LABEL_11:
   [v8 endEncoding];
 }
 
-- (void)encodeCountKernelToCommandBuffer:(id)a3
+- (void)encodeCountKernelToCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(MTLTexture *)self->_countTexture width];
-  v6 = [(MTLTexture *)self->_countTexture height];
+  bufferCopy = buffer;
+  width = [(MTLTexture *)self->_countTexture width];
+  height = [(MTLTexture *)self->_countTexture height];
   v12 = 0uLL;
   v13 = 0;
   sub_1DED6F850(&v12, self->_kernel_Count);
-  v7 = [v4 computeCommandEncoder];
-  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v7];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:computeCommandEncoder];
 
   [v8 setLabel:@"_kernel_Count"];
   [v8 setComputePipelineState:self->_kernel_Count];
   [v8 setTexture:self->_vertCountTexture atIndex:0];
   [v8 setTexture:self->_countTexture atIndex:1];
-  v11[0] = v5;
-  v11[1] = v6;
+  v11[0] = width;
+  v11[1] = height;
   v11[2] = 1;
   v9 = v12;
   v10 = v13;
@@ -785,23 +785,23 @@ LABEL_11:
   [v8 endEncoding];
 }
 
-- (void)encodeVertCountKernelToCommandBuffer:(id)a3
+- (void)encodeVertCountKernelToCommandBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(MTLTexture *)self->_vertCountTexture width];
-  v6 = [(MTLTexture *)self->_vertCountTexture height];
+  bufferCopy = buffer;
+  width = [(MTLTexture *)self->_vertCountTexture width];
+  height = [(MTLTexture *)self->_vertCountTexture height];
   v12 = 0uLL;
   v13 = 0;
   sub_1DED6F850(&v12, self->_kernel_CountVertical);
-  v7 = [v4 computeCommandEncoder];
-  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v7];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v8 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:computeCommandEncoder];
 
   [v8 setLabel:@"_kernel_CountVertical"];
   [v8 setComputePipelineState:self->_kernel_CountVertical];
   [v8 setTexture:self->_tcTexture atIndex:0];
   [v8 setTexture:self->_vertCountTexture atIndex:1];
-  v11[0] = v5;
-  v11[1] = v6;
+  v11[0] = width;
+  v11[1] = height;
   v11[2] = 1;
   v9 = v12;
   v10 = v13;
@@ -809,29 +809,29 @@ LABEL_11:
   [v8 endEncoding];
 }
 
-- (void)encodeRelightKernelToCommandBuffer:(id)a3 isAfterPreviewStitcher:(BOOL)a4 applyRotation:(BOOL)a5
+- (void)encodeRelightKernelToCommandBuffer:(id)buffer isAfterPreviewStitcher:(BOOL)stitcher applyRotation:(BOOL)rotation
 {
-  v8 = a3;
-  v34 = a4;
-  v33 = a5;
-  v9 = [(MTLTexture *)self->_dstTexture width];
-  v10 = [(MTLTexture *)self->_dstTexture height];
+  bufferCopy = buffer;
+  stitcherCopy = stitcher;
+  rotationCopy = rotation;
+  width = [(MTLTexture *)self->_dstTexture width];
+  height = [(MTLTexture *)self->_dstTexture height];
   x = self->_primaryCaptureRect.origin.x;
-  v12 = [(MTLTexture *)self->_dstTexture width];
+  width2 = [(MTLTexture *)self->_dstTexture width];
   v13 = x;
-  v32[0] = v13 / v12;
+  v32[0] = v13 / width2;
   y = self->_primaryCaptureRect.origin.y;
-  v15 = [(MTLTexture *)self->_dstTexture height];
+  height2 = [(MTLTexture *)self->_dstTexture height];
   v16 = y;
-  v32[1] = v16 / v15;
+  v32[1] = v16 / height2;
   width = self->_primaryCaptureRect.size.width;
-  v18 = [(MTLTexture *)self->_dstTexture width];
+  width3 = [(MTLTexture *)self->_dstTexture width];
   v19 = width;
-  v32[2] = v19 / v18;
+  v32[2] = v19 / width3;
   height = self->_primaryCaptureRect.size.height;
-  v21 = [(MTLTexture *)self->_dstTexture height];
+  height3 = [(MTLTexture *)self->_dstTexture height];
   v22 = height;
-  v32[3] = v22 / v21;
+  v32[3] = v22 / height3;
   trustAlpha = self->_trustAlpha;
   if ((atomic_load_explicit(&qword_1ECDE14E8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE14E8))
   {
@@ -854,8 +854,8 @@ LABEL_11:
 
   portraitStyleStrength = self->_portraitStyleStrength;
   v25 = self->_kernel_Relight[1][!trustAlpha][[qword_1ECDE14E0 intValue] == 1];
-  v26 = [v8 computeCommandEncoder];
-  v27 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v26];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v27 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:computeCommandEncoder];
 
   [v27 setLabel:@"krnRelight"];
   [v27 setComputePipelineState:v25];
@@ -872,10 +872,10 @@ LABEL_11:
   [v27 setTexture:self->_texSkinRGBAPyramid atIndex:28];
   [v27 setBytes:&self->_anon_220[4] length:88 atIndex:0];
   [v27 setBytes:v32 length:16 atIndex:1];
-  [v27 setBytes:&v34 length:1 atIndex:2];
-  [v27 setBytes:&v33 length:1 atIndex:3];
-  *&__p = (v9 >> 1);
-  *(&__p + 1) = (v10 >> 1);
+  [v27 setBytes:&stitcherCopy length:1 atIndex:2];
+  [v27 setBytes:&rotationCopy length:1 atIndex:3];
+  *&__p = (width >> 1);
+  *(&__p + 1) = (height >> 1);
   v31 = 1;
   v28 = xmmword_1DED747A8;
   v29 = 1;
@@ -883,13 +883,13 @@ LABEL_11:
   [v27 endEncoding];
 }
 
-- (void)encodeTCKernelToCommandBuffer:(id)a3
+- (void)encodeTCKernelToCommandBuffer:(id)buffer
 {
-  v4 = [a3 renderCommandEncoderWithDescriptor:self->_tcRenderDesc];
+  v4 = [buffer renderCommandEncoderWithDescriptor:self->_tcRenderDesc];
   v6 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v4];
 
-  v5 = [(CVAPhotoMTLRingBuffer *)self->_vertexBuffer currentBuffer];
-  [v6 setVertexBuffer:v5 offset:0 atIndex:0];
+  currentBuffer = [(CVAPhotoMTLRingBuffer *)self->_vertexBuffer currentBuffer];
+  [v6 setVertexBuffer:currentBuffer offset:0 atIndex:0];
 
   [v6 setVertexBytes:self->_anon_60 length:64 atIndex:1];
   [v6 setLabel:@"_tcKernel"];
@@ -901,9 +901,9 @@ LABEL_11:
   [v6 endEncoding];
 }
 
-- (void)loadRGBTransformMapsForEffectVersion:(BOOL)a3
+- (void)loadRGBTransformMapsForEffectVersion:(BOOL)version
 {
-  v3 = a3;
+  versionCopy = version;
   if ((atomic_load_explicit(&qword_1ECDE14D0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE14D0))
   {
     qword_1ECDE14C8 = [MEMORY[0x1E696AD98] numberWithInt:0xFFFFFFFFLL];
@@ -937,7 +937,7 @@ LABEL_11:
 
   else
   {
-    v5 = &self->_rgbTransformMapContourNearTexture[v3];
+    v5 = &self->_rgbTransformMapContourNearTexture[versionCopy];
     if (!*v5)
     {
       operator new();
@@ -945,32 +945,32 @@ LABEL_11:
 
     if ([qword_1ECDE14C8 intValue] != 1)
     {
-      v5 = &self->_rgbTransformMapStudioNearTexture[v3];
+      v5 = &self->_rgbTransformMapStudioNearTexture[versionCopy];
     }
 
     objc_storeStrong(&self->_rgbTransformMapCurrentNearTexturePtr, *v5);
-    v6 = [qword_1ECDE14C8 intValue];
+    intValue = [qword_1ECDE14C8 intValue];
     v7 = &OBJC_IVAR___VideoRelightingMetal__rgbTransformMapStudioFarTexture;
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v7 = &OBJC_IVAR___VideoRelightingMetal__rgbTransformMapContourFarTexture;
     }
 
-    objc_storeStrong(&self->_rgbTransformMapCurrentFarTexturePtr, *(&self->super.super.super.isa + 8 * v3 + *v7));
+    objc_storeStrong(&self->_rgbTransformMapCurrentFarTexturePtr, *(&self->super.super.super.isa + 8 * versionCopy + *v7));
     v8 = self->_rgbTransformMapCurrentTextureInterpolated;
     rgbTransformMapTextureSelectedPtr = self->_rgbTransformMapTextureSelectedPtr;
     self->_rgbTransformMapTextureSelectedPtr = v8;
   }
 }
 
-- (void)loadRGBTransformMapsOnceTo:(id *)a3 namePrefix:(const void *)a4 forIntermediateResults:(BOOL)a5
+- (void)loadRGBTransformMapsOnceTo:(id *)to namePrefix:(const void *)prefix forIntermediateResults:(BOOL)results
 {
-  v5 = a5;
+  resultsCopy = results;
   if ((byte_1ECDE14B9 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v21[0] = 0;
-    v9 = [v8 attributesOfItemAtPath:@"/System/Library/PrivateFrameworks/AppleCVAPhoto.framework/Resources/rgbTransformMap_Contour_NEAR_fp16_RGBAslice0" error:v21];
+    v9 = [defaultManager attributesOfItemAtPath:@"/System/Library/PrivateFrameworks/AppleCVAPhoto.framework/Resources/rgbTransformMap_Contour_NEAR_fp16_RGBAslice0" error:v21];
     v10 = v21[0];
     qword_1ECDE14C0 = [v9 fileSize];
 
@@ -982,7 +982,7 @@ LABEL_11:
     byte_1ECDE14B9 = 1;
   }
 
-  if (qword_1ECDE14C0 && !*a3)
+  if (qword_1ECDE14C0 && !*to)
   {
     v11 = sqrtf((qword_1ECDE14C0 >> 2) + 0.5);
     if (8 * v11 * v11 == 2 * qword_1ECDE14C0)
@@ -998,7 +998,7 @@ LABEL_11:
       [v13 setHeight:v11];
       [v13 setMipmapLevelCount:1];
       [v13 setArrayLength:12];
-      if (v5)
+      if (resultsCopy)
       {
         v15 = 3;
       }
@@ -1011,8 +1011,8 @@ LABEL_11:
       [v13 setUsage:v15];
       v16 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v13];
       v17 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v16];
-      v18 = *a3;
-      *a3 = v17;
+      v18 = *to;
+      *to = v17;
 
       v19 = 4 * v20 * v14;
       if (v19)
@@ -1025,7 +1025,7 @@ LABEL_11:
         sub_1DED35334();
       }
 
-      if (!v5)
+      if (!resultsCopy)
       {
         operator new();
       }
@@ -1033,15 +1033,15 @@ LABEL_11:
 
     else
     {
-      NSLog(&cfstr_CvaphotoErrorW.isa, a2, a3, a4);
+      NSLog(&cfstr_CvaphotoErrorW.isa, a2, to, prefix);
       qword_1ECDE14C0 = 0;
     }
   }
 }
 
-- (void)updateUniforms:(BOOL)a3
+- (void)updateUniforms:(BOOL)uniforms
 {
-  v3 = a3;
+  uniformsCopy = uniforms;
   LODWORD(self->_uniformBuffer_slide.center_x) = *&self->_faceModelCenterProjected[4];
   self->_uniformBuffer_slide.center_y = *&self->_faceModelCenterProjected[8];
   v5 = &self->_anon_220[4];
@@ -1107,9 +1107,9 @@ LABEL_11:
   {
     if ([qword_1ECDE0F68 isEqualToString:@"STAGE LIGHT CUSTOM MONO"])
     {
-      if (v3)
+      if (uniformsCopy)
       {
-        v17 = self;
+        selfCopy2 = self;
         v18 = 6;
         goto LABEL_16;
       }
@@ -1122,7 +1122,7 @@ LABEL_31:
 
     if ([qword_1ECDE0F68 isEqualToString:@"STUDIO LIGHT"])
     {
-      if (v3)
+      if (uniformsCopy)
       {
         v22 = 3;
       }
@@ -1140,7 +1140,7 @@ LABEL_31:
         goto LABEL_31;
       }
 
-      if (v3)
+      if (uniformsCopy)
       {
         v22 = 4;
       }
@@ -1158,7 +1158,7 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (!v3)
+  if (!uniformsCopy)
   {
     colorCubeUserData = self->_colorCubeUserData;
     if (colorCubeUserData)
@@ -1170,10 +1170,10 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v17 = self;
+  selfCopy2 = self;
   v18 = 5;
 LABEL_16:
-  v19 = [(VideoRelightingMetal *)v17 getInternalColorCube:v18];
+  v19 = [(VideoRelightingMetal *)selfCopy2 getInternalColorCube:v18];
   objc_storeStrong(&self->_texSelectedColorCube, v19);
 LABEL_32:
 
@@ -1238,7 +1238,7 @@ LABEL_32:
   }
 
   v23 = &qword_1ECDE1410;
-  if (v3)
+  if (uniformsCopy)
   {
     v23 = &qword_1ECDE1428;
   }
@@ -1304,7 +1304,7 @@ LABEL_32:
     v44 = vmulq_f32(v40, vmulq_n_f32(v41, vmul_f32(*v42.f32, vrsqrts_f32(v43, vmul_f32(*v42.f32, *v42.f32))).f32[0]));
     _S12 = acosf(v44.f32[2] + vaddv_f32(*v44.f32)) + -1.57079633;
     v46 = 1.0;
-    if (v3)
+    if (uniformsCopy)
     {
       v47 = (fabsf(_S12 * 57.296) + -15.0) / 30.0;
       v48 = 1.0 - fminf(v47, 1.0);
@@ -1320,24 +1320,24 @@ LABEL_32:
     }
 
     v214 = v46;
-    v49 = [(NSData *)self->_faceKitStreamedData.landmarks bytes];
-    v50 = [(MTLTexture *)self->_dstTexture width];
-    v51 = [(MTLTexture *)self->_dstTexture height];
+    bytes = [(NSData *)self->_faceKitStreamedData.landmarks bytes];
+    width = [(MTLTexture *)self->_dstTexture width];
+    height = [(MTLTexture *)self->_dstTexture height];
     if (!self->_trustAlpha)
     {
-      v53 = &v49[8 * self->_indexOfCheekLandmark_bottomRight];
-      v54.f32[0] = *v53 / v50;
-      v54.f32[1] = v53[1] / v51;
+      v53 = &bytes[8 * self->_indexOfCheekLandmark_bottomRight];
+      v54.f32[0] = *v53 / width;
+      v54.f32[1] = v53[1] / height;
       v206 = v54;
-      v55 = &v49[8 * self->_indexOfCheekLandmark_topRight];
-      v56.f32[0] = *v55 / v50;
-      v56.f32[1] = v55[1] / v51;
-      v57 = &v49[8 * self->_indexOfCheekLandmark_bottomLeft];
-      v58.f32[0] = *v57 / v50;
-      v58.f32[1] = v57[1] / v51;
-      v59 = &v49[8 * self->_indexOfCheekLandmark_topLeft];
-      v60.f32[0] = *v59 / v50;
-      v60.f32[1] = v59[1] / v51;
+      v55 = &bytes[8 * self->_indexOfCheekLandmark_topRight];
+      v56.f32[0] = *v55 / width;
+      v56.f32[1] = v55[1] / height;
+      v57 = &bytes[8 * self->_indexOfCheekLandmark_bottomLeft];
+      v58.f32[0] = *v57 / width;
+      v58.f32[1] = v57[1] / height;
+      v59 = &bytes[8 * self->_indexOfCheekLandmark_topLeft];
+      v60.f32[0] = *v59 / width;
+      v60.f32[1] = v59[1] / height;
       *_Q1.f32 = vadd_f32(v54, vadd_f32(v56, vadd_f32(v58, v60)));
       __asm { FMOV            V3.2S, #0.25 }
 
@@ -1562,8 +1562,8 @@ LABEL_32:
     v218 = *&self->_face3DCenter[4];
     v114 = *(self->_modelVertices.__begin_ + 12 * self->_closestLeftCheekVertexID.m_storage);
     v115 = *&self->_anon_300[24];
-    v116 = [(MTLTexture *)self->_dstTexture width];
-    if (v116 >= [(MTLTexture *)self->_dstTexture height])
+    width2 = [(MTLTexture *)self->_dstTexture width];
+    if (width2 >= [(MTLTexture *)self->_dstTexture height])
     {
       v117 = fabsf(v115);
     }
@@ -1980,26 +1980,26 @@ LABEL_201:
   *&self->_anon_60[16] = v192;
 }
 
-- (void)updateMatrixWithWidth:(int)a3 height:(int)a4 camera:(const void *)a5 pose:(const void *)a6
+- (void)updateMatrixWithWidth:(int)width height:(int)height camera:(const void *)camera pose:(const void *)pose
 {
-  v7 = **a6;
+  v7 = **pose;
   *&self->_anon_2c0[4] = v7;
-  v8 = *(*a6 + 16);
+  v8 = *(*pose + 16);
   *&self->_anon_2c0[20] = v8;
-  v9 = *(*a6 + 32);
+  v9 = *(*pose + 32);
   *&self->_anon_2c0[36] = v9;
-  v10 = *(*a6 + 48);
+  v10 = *(*pose + 48);
   *&self->_anon_2c0[52] = v10;
   v11 = vaddq_f32(vmlaq_f32(vmlaq_f32(vmulq_f32(v7, 0), 0, v8), 0, v9), v10);
   *&self->_face3DCenter[4] = v11;
   v12 = fmaxf((v11.f32[2] + 800.0) + -50.0, 1.0);
-  *v8.f32 = vdiv_f32(COERCE_FLOAT32X2_T(-2.00000048), vcvt_f32_s32(__PAIR64__(a4, a3)));
-  *&v13 = **a5 * v8.f32[0];
+  *v8.f32 = vdiv_f32(COERCE_FLOAT32X2_T(-2.00000048), vcvt_f32_s32(__PAIR64__(height, width)));
+  *&v13 = **camera * v8.f32[0];
   LODWORD(v14) = 0;
-  HIDWORD(v14) = vmuls_lane_f32(*(*a5 + 16), *v8.f32, 1);
+  HIDWORD(v14) = vmuls_lane_f32(*(*camera + 16), *v8.f32, 1);
   __asm { FMOV            V19.2S, #-1.0 }
 
-  *v20.f32 = vmla_f32(COERCE_FLOAT32X2_T(-_D19), vadd_f32(*(*a5 + 24), 0x3F0000003F000000), *v8.f32);
+  *v20.f32 = vmla_f32(COERCE_FLOAT32X2_T(-_D19), vadd_f32(*(*camera + 24), 0x3F0000003F000000), *v8.f32);
   v20.f32[2] = ((v11.f32[2] + 800.0) + 50.0) / v12;
   v20.i32[3] = 1.0;
   v9.i64[0] = 0;
@@ -2122,19 +2122,19 @@ LABEL_7:
 {
   p_modelVertices = &self->_modelVertices;
   self->_modelVertices.__end_ = self->_modelVertices.__begin_;
-  v4 = [(NSData *)self->_faceKitStreamedData.verticesPos bytes];
+  bytes = [(NSData *)self->_faceKitStreamedData.verticesPos bytes];
   v5 = [(NSData *)self->_faceKitStreamedData.verticesPos length];
-  v6 = [(NSData *)self->_faceKitMeshTexcoords bytes];
-  v35 = self;
+  bytes2 = [(NSData *)self->_faceKitMeshTexcoords bytes];
+  selfCopy = self;
   p_closestLeftCheekVertexID = &self->_closestLeftCheekVertexID;
   self->_closestLeftCheekVertexID.m_initialized = 0;
   if (v5 >= 0xC)
   {
-    v13 = v6;
+    v13 = bytes2;
     v14 = 0;
     v15 = v5 / 0xC;
     end = p_modelVertices->__end_;
-    v17 = v4 + 8;
+    v17 = bytes + 8;
     v18 = 3.4028e38;
     v19 = 1.0;
     v20 = xmmword_1DED740E0;
@@ -2229,21 +2229,21 @@ LABEL_7:
     while (v15 != v14);
   }
 
-  [(VideoRelightingMetal *)v35 generateModelNormals];
+  [(VideoRelightingMetal *)selfCopy generateModelNormals];
   v36 = [MEMORY[0x1E695DEF0] dataWithBytes:p_modelVertices->__begin_ length:p_modelVertices->__end_ - p_modelVertices->__begin_];
-  vertexBuffer = v35->_vertexBuffer;
+  vertexBuffer = selfCopy->_vertexBuffer;
   if (!vertexBuffer)
   {
-    v9 = -[CVAPhotoMTLRingBuffer initWithLength:options:device:]([CVAPhotoMTLRingBuffer alloc], "initWithLength:options:device:", [v36 length], 0, v35->_device);
+    v9 = -[CVAPhotoMTLRingBuffer initWithLength:options:device:]([CVAPhotoMTLRingBuffer alloc], "initWithLength:options:device:", [v36 length], 0, selfCopy->_device);
     v10 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v9];
-    v11 = v35->_vertexBuffer;
-    v35->_vertexBuffer = v10;
+    v11 = selfCopy->_vertexBuffer;
+    selfCopy->_vertexBuffer = v10;
 
-    vertexBuffer = v35->_vertexBuffer;
+    vertexBuffer = selfCopy->_vertexBuffer;
   }
 
-  v12 = [(CVAPhotoMTLRingBuffer *)vertexBuffer advancedBuffer];
-  memcpy([v12 contents], objc_msgSend(v36, "bytes"), objc_msgSend(v36, "length"));
+  advancedBuffer = [(CVAPhotoMTLRingBuffer *)vertexBuffer advancedBuffer];
+  memcpy([advancedBuffer contents], objc_msgSend(v36, "bytes"), objc_msgSend(v36, "length"));
 }
 
 - (void)configureRenderPipeline
@@ -2258,68 +2258,68 @@ LABEL_7:
   depthStencilState = self->_depthStencilState;
   self->_depthStencilState = v5;
 
-  v16 = [MEMORY[0x1E6974128] renderPassDescriptor];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
   v7 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:?];
   tcRenderDesc = self->_tcRenderDesc;
   self->_tcRenderDesc = v7;
 
   tcTexture = self->_tcTexture;
-  v17 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
-  v10 = [v17 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
+  v10 = [colorAttachments objectAtIndexedSubscript:0];
   [v10 setTexture:tcTexture];
 
-  v18 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
-  v11 = [v18 objectAtIndexedSubscript:0];
+  colorAttachments2 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
+  v11 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v11 setLoadAction:2];
 
-  v19 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
-  v12 = [v19 objectAtIndexedSubscript:0];
+  colorAttachments3 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
+  v12 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v12 setStoreAction:1];
 
-  v20 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
-  v13 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments4 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc colorAttachments];
+  v13 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v13 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
   tcDepthTexture = self->_tcDepthTexture;
-  v21 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
-  [v21 setTexture:tcDepthTexture];
+  depthAttachment = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
+  [depthAttachment setTexture:tcDepthTexture];
 
-  v22 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
-  [v22 setLoadAction:2];
+  depthAttachment2 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
+  [depthAttachment2 setLoadAction:2];
 
-  v23 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
-  [v23 setStoreAction:1];
+  depthAttachment3 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
+  [depthAttachment3 setStoreAction:1];
 
-  v24 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
-  [v24 setClearDepth:1.0];
+  depthAttachment4 = [(MTLRenderPassDescriptor *)self->_tcRenderDesc depthAttachment];
+  [depthAttachment4 setClearDepth:1.0];
 }
 
-- (void)saveTexture:(id)a3 toImage:(id)a4
+- (void)saveTexture:(id)texture toImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 pixelFormat] != 80 && objc_msgSend(v7, "pixelFormat") != 70 && objc_msgSend(v7, "pixelFormat") != 115)
+  textureCopy = texture;
+  imageCopy = image;
+  if ([textureCopy pixelFormat] != 80 && objc_msgSend(textureCopy, "pixelFormat") != 70 && objc_msgSend(textureCopy, "pixelFormat") != 115)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"VideoRelightingMetal.mm" lineNumber:703 description:@"unsupported pixel format!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoRelightingMetal.mm" lineNumber:703 description:@"unsupported pixel format!"];
   }
 
-  v9 = [v7 width];
-  v10 = [v7 height];
-  v11 = vcvtd_n_u64_f64(v9 * v10, 2uLL);
+  width = [textureCopy width];
+  height = [textureCopy height];
+  v11 = vcvtd_n_u64_f64(width * height, 2uLL);
   v12 = malloc_type_malloc(v11, 0x11E9040EuLL);
-  v13 = vcvtd_n_u64_f64(v9, 2uLL);
-  if ([v7 pixelFormat] == 115)
+  v13 = vcvtd_n_u64_f64(width, 2uLL);
+  if ([textureCopy pixelFormat] == 115)
   {
     operator new[]();
   }
 
   memset(v33, 0, 24);
-  v33[3] = v9;
-  v33[4] = v10;
+  v33[3] = width;
+  v33[4] = height;
   v33[5] = 1;
-  [v7 getBytes:v12 bytesPerRow:v13 fromRegion:v33 mipmapLevel:0];
-  if ([v7 pixelFormat] == 80 && v11)
+  [textureCopy getBytes:v12 bytesPerRow:v13 fromRegion:v33 mipmapLevel:0];
+  if ([textureCopy pixelFormat] == 80 && v11)
   {
     if (v11 < 5 || ((v14 = (v11 - 1) >> 2, (~v14 & 0x3FFFFFFF) != 0) ? (v15 = v14 >> 30 == 0) : (v15 = 0), v15 ? (v16 = (v11 - 1) >> 34 == 0) : (v16 = 0), !v16))
     {
@@ -2368,15 +2368,15 @@ LABEL_18:
 
   v22 = CGDataProviderCreateWithData(0, v12, v11, sub_1DED53FAC);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  v24 = CGImageCreate(v9, v10, 8uLL, 0x20uLL, v13, DeviceRGB, 0x4001u, v22, 0, 0, kCGRenderingIntentDefault);
-  [v8 UTF8String];
+  v24 = CGImageCreate(width, height, 8uLL, 0x20uLL, v13, DeviceRGB, 0x4001u, v22, 0, 0, kCGRenderingIntentDefault);
+  [imageCopy UTF8String];
   CGImageWriteToFile();
   CFRelease(v22);
   CFRelease(DeviceRGB);
   CFRelease(v24);
 }
 
-- (VideoRelightingMetal)initWithMetalContext:(void *)a3
+- (VideoRelightingMetal)initWithMetalContext:(void *)context
 {
   v8.receiver = self;
   v8.super_class = VideoRelightingMetal;
@@ -2384,11 +2384,11 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_device, *(a3 + 1));
-    objc_storeStrong(&v5->_commandQueue, *(a3 + 2));
-    objc_storeStrong(&v5->_library, *(a3 + 3));
-    objc_storeStrong(&v5->_pipelineLibrary, *(a3 + 4));
-    v5->_metalContext = a3;
+    objc_storeStrong(&v4->_device, *(context + 1));
+    objc_storeStrong(&v5->_commandQueue, *(context + 2));
+    objc_storeStrong(&v5->_library, *(context + 3));
+    objc_storeStrong(&v5->_pipelineLibrary, *(context + 4));
+    v5->_metalContext = context;
     [(VideoRelightingMetal *)v5 initCommon];
     v6 = v5;
   }
@@ -2429,9 +2429,9 @@ LABEL_18:
   blurPyramidForSkinFg = self->_blurPyramidForSkinFg;
   self->_blurPyramidForSkinFg = v10;
 
-  v12 = [MEMORY[0x1E695F610] blackColor];
+  blackColor = [MEMORY[0x1E695F610] blackColor];
   backgroundColor = self->_backgroundColor;
-  self->_backgroundColor = v12;
+  self->_backgroundColor = blackColor;
 
   self->_relightingStability = 1.0;
   self->_vignettingScale = 1.0;
@@ -2439,24 +2439,24 @@ LABEL_18:
   operator new();
 }
 
-- (id)getInternalColorCube:(int)a3
+- (id)getInternalColorCube:(int)cube
 {
   texColorCubeStaticArray = self->_texColorCubeStaticArray;
-  if (self->_texColorCubeStaticArray[a3])
+  if (self->_texColorCubeStaticArray[cube])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = a3 > 6;
+    v5 = cube > 6;
   }
 
-  if (!v5 && ((0x7Bu >> a3) & 1) != 0)
+  if (!v5 && ((0x7Bu >> cube) & 1) != 0)
   {
-    v6 = [(VideoRelightingMetal *)self loadCube:*(&off_1E869ACC0 + a3)];
-    v7 = texColorCubeStaticArray[a3];
-    texColorCubeStaticArray[a3] = v6;
+    v6 = [(VideoRelightingMetal *)self loadCube:*(&off_1E869ACC0 + cube)];
+    v7 = texColorCubeStaticArray[cube];
+    texColorCubeStaticArray[cube] = v6;
   }
 
   if ((atomic_load_explicit(&qword_1ECDE13D8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE13D8))
@@ -2472,17 +2472,17 @@ LABEL_18:
 
   if (byte_1ECDE13D0 == 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"ColorCube: %@", off_1E869AC38[a3]];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"ColorCube: %@", off_1E869AC38[cube]];
   }
 
-  v8 = texColorCubeStaticArray[a3];
+  v8 = texColorCubeStaticArray[cube];
 
   return v8;
 }
 
-- (id)loadCube:(id)a3
+- (id)loadCube:(id)cube
 {
-  v4 = [@"/System/Library/PrivateFrameworks/AppleCVAPhoto.framework/Resources/" stringByAppendingString:a3];
+  v4 = [@"/System/Library/PrivateFrameworks/AppleCVAPhoto.framework/Resources/" stringByAppendingString:cube];
   v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v4];
   v6 = sub_1DED6FF78(v5, self->_device);
   v7 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v6];
@@ -2508,53 +2508,53 @@ LABEL_18:
   operator new();
 }
 
-- (void)createTexturesWith:(unint64_t)a3 imgHeight:(unint64_t)a4
+- (void)createTexturesWith:(unint64_t)with imgHeight:(unint64_t)height
 {
   if ((atomic_load_explicit(&qword_1ECDE13C8, memory_order_acquire) & 1) == 0)
   {
-    v34 = a4;
-    v35 = a3;
+    heightCopy = height;
+    withCopy = with;
     v36 = __cxa_guard_acquire(&qword_1ECDE13C8);
-    a3 = v35;
-    a4 = v34;
+    with = withCopy;
+    height = heightCopy;
     if (v36)
     {
-      v37 = v35;
+      v37 = withCopy;
       v38 = +[CVAPreferenceManager defaults];
       v39 = [v38 BOOLForKey:@"CVAPhotoFullResTCMap"];
 
       byte_1ECDE13C2 = v39;
       __cxa_guard_release(&qword_1ECDE13C8);
-      a4 = v34;
-      a3 = v37;
+      height = heightCopy;
+      with = v37;
     }
   }
 
-  v40 = a3;
-  v41 = a4;
-  v42 = (a3 >> 2);
+  withCopy2 = with;
+  heightCopy2 = height;
+  v42 = (with >> 2);
   if (byte_1ECDE13C2)
   {
-    v5 = a3;
+    withCopy3 = with;
   }
 
   else
   {
-    v5 = a3 >> 2;
+    withCopy3 = with >> 2;
   }
 
-  v6 = a4 >> 2;
+  v6 = height >> 2;
   if (byte_1ECDE13C2)
   {
-    v7 = a4;
+    heightCopy3 = height;
   }
 
   else
   {
-    v7 = a4 >> 2;
+    heightCopy3 = height >> 2;
   }
 
-  v8 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:30 width:v5 height:v7 mipmapped:0];
+  v8 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:30 width:withCopy3 height:heightCopy3 mipmapped:0];
   v9 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v8];
 
   [v9 setUsage:7];
@@ -2564,7 +2564,7 @@ LABEL_18:
   self->_tcTexture = v11;
 
   objc_storeStrong(&self->_lightTexture, self->_tcTexture);
-  v13 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:252 width:v5 height:v7 mipmapped:0];
+  v13 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:252 width:withCopy3 height:heightCopy3 mipmapped:0];
   v14 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v13];
 
   [v14 setUsage:5];
@@ -2596,7 +2596,7 @@ LABEL_18:
   countTexture = self->_countTexture;
   self->_countTexture = v29;
 
-  v43 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:70 width:v40 >> 1 height:v41 >> 1 mipmapped:1];
+  v43 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:70 width:withCopy2 >> 1 height:heightCopy2 >> 1 mipmapped:1];
   [v43 setUsage:3];
   [v43 setMipmapLevelCount:3];
   v31 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v43];
@@ -2605,15 +2605,15 @@ LABEL_18:
   self->_texSkinRGBAPyramid = v32;
 }
 
-- (id)create3DTextureWithSize:(unint64_t)a3
+- (id)create3DTextureWithSize:(unint64_t)size
 {
   v5 = objc_opt_new();
   v6 = [CVAPhotoExceptionMetalResourceUnavailable throwIfNil:v5];
 
   [v6 setTextureType:7];
-  [v6 setHeight:a3];
-  [v6 setWidth:a3];
-  [v6 setDepth:a3];
+  [v6 setHeight:size];
+  [v6 setWidth:size];
+  [v6 setDepth:size];
   [v6 setPixelFormat:70];
   [v6 setArrayLength:1];
   [v6 setMipmapLevelCount:1];

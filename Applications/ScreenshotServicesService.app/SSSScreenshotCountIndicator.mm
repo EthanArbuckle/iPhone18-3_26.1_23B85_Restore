@@ -1,10 +1,10 @@
 @interface SSSScreenshotCountIndicator
 + (id)_labelFont;
 - (CGSize)intrinsicContentSize;
-- (SSSScreenshotCountIndicator)initWithFrame:(CGRect)a3;
+- (SSSScreenshotCountIndicator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCount:(int64_t)a3;
-- (void)setIndex:(int64_t)a3;
+- (void)setCount:(int64_t)count;
+- (void)setIndex:(int64_t)index;
 @end
 
 @implementation SSSScreenshotCountIndicator
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (SSSScreenshotCountIndicator)initWithFrame:(CGRect)a3
+- (SSSScreenshotCountIndicator)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SSSScreenshotCountIndicator;
-  v3 = [(SSSScreenshotCountIndicator *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSScreenshotCountIndicator *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(UIPageControl);
   pageControl = v3->_pageControl;
   v3->_pageControl = v4;
@@ -40,8 +40,8 @@
   [(UILabel *)v10 setTextColor:v11];
 
   v12 = v3->_label;
-  v13 = [objc_opt_class() _labelFont];
-  [(UILabel *)v12 setFont:v13];
+  _labelFont = [objc_opt_class() _labelFont];
+  [(UILabel *)v12 setFont:_labelFont];
 
   [(UILabel *)v3->_label setTextAlignment:1];
   [(SSSScreenshotCountIndicator *)v3 addSubview:v3->_pageControl];
@@ -127,22 +127,22 @@
   return result;
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     [(SSSScreenshotCountIndicator *)self setNeedsLayout];
 
     [(SSSScreenshotCountIndicator *)self layoutIfNeeded];
   }
 }
 
-- (void)setIndex:(int64_t)a3
+- (void)setIndex:(int64_t)index
 {
-  if (self->_index != a3)
+  if (self->_index != index)
   {
-    self->_index = a3;
+    self->_index = index;
     [(SSSScreenshotCountIndicator *)self setNeedsLayout];
 
     [(SSSScreenshotCountIndicator *)self layoutIfNeeded];

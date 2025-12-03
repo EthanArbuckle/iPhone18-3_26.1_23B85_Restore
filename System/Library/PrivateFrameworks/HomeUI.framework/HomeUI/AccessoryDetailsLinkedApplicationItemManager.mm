@@ -1,14 +1,14 @@
 @interface AccessoryDetailsLinkedApplicationItemManager
-- (_TtC6HomeUI44AccessoryDetailsLinkedApplicationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
+- (_TtC6HomeUI44AccessoryDetailsLinkedApplicationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
 @end
 
 @implementation AccessoryDetailsLinkedApplicationItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_20CF767A4();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81AF70);
@@ -17,7 +17,7 @@
   return v6;
 }
 
-- (_TtC6HomeUI44AccessoryDetailsLinkedApplicationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (_TtC6HomeUI44AccessoryDetailsLinkedApplicationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

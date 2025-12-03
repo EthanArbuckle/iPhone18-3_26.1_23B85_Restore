@@ -1,16 +1,16 @@
 @interface IDMSAuthenticator
 - (id)authKitSession;
 - (id)authKitSessionConfig;
-- (int64_t)_fetchGSTokenWithPassword:(id)a3 username:(id)a4 altDSID:(id *)a5 gsToken:(id *)a6;
-- (void)_appendAdditionalHeaders:(id)a3 altDSID:(id)a4 gsToken:(id)a5;
+- (int64_t)_fetchGSTokenWithPassword:(id)password username:(id)username altDSID:(id *)d gsToken:(id *)token;
+- (void)_appendAdditionalHeaders:(id)headers altDSID:(id)d gsToken:(id)token;
 @end
 
 @implementation IDMSAuthenticator
 
-- (int64_t)_fetchGSTokenWithPassword:(id)a3 username:(id)a4 altDSID:(id *)a5 gsToken:(id *)a6
+- (int64_t)_fetchGSTokenWithPassword:(id)password username:(id)username altDSID:(id *)d gsToken:(id *)token
 {
-  v9 = a3;
-  v10 = a4;
+  passwordCopy = password;
+  usernameCopy = username;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
   v37 = 0;
@@ -30,8 +30,8 @@
   v29 = 0x2020000000;
   v30 = -1;
   v13 = dispatch_semaphore_create(0);
-  [v11 setUsername:v10];
-  [v11 _setPassword:v9];
+  [v11 setUsername:usernameCopy];
+  [v11 _setPassword:passwordCopy];
   [v11 setShouldUpdatePersistentServiceTokens:0];
   [v11 setShouldPromptForPasswordOnly:1];
   [v11 setIsUsernameEditable:0];
@@ -75,14 +75,14 @@
     v28[3] = -200;
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = v38[5];
+    *d = v38[5];
   }
 
-  if (a6)
+  if (token)
   {
-    *a6 = v32[5];
+    *token = v32[5];
   }
 
   v19 = v28[3];
@@ -94,14 +94,14 @@
   return v19;
 }
 
-- (void)_appendAdditionalHeaders:(id)a3 altDSID:(id)a4 gsToken:(id)a5
+- (void)_appendAdditionalHeaders:(id)headers altDSID:(id)d gsToken:(id)token
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 ak_addDeviceUDIDHeader];
-  [v9 ak_addClientInfoHeader];
-  [v9 ak_addAuthorizationHeaderWithServiceToken:v7 forAltDSID:v8];
+  tokenCopy = token;
+  dCopy = d;
+  headersCopy = headers;
+  [headersCopy ak_addDeviceUDIDHeader];
+  [headersCopy ak_addClientInfoHeader];
+  [headersCopy ak_addAuthorizationHeaderWithServiceToken:tokenCopy forAltDSID:dCopy];
 }
 
 - (id)authKitSessionConfig
@@ -110,9 +110,9 @@
   [v2 setURLCache:0];
   [v2 setRequestCachePolicy:1];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
-  v5 = [[AKAppleIDSession alloc] initWithIdentifier:v4];
+  v5 = [[AKAppleIDSession alloc] initWithIdentifier:bundleIdentifier];
   [v2 set_appleIDContext:v5];
 
   return v2;
@@ -120,8 +120,8 @@
 
 - (id)authKitSession
 {
-  v2 = [(IDMSAuthenticator *)self authKitSessionConfig];
-  v3 = [NSURLSession sessionWithConfiguration:v2];
+  authKitSessionConfig = [(IDMSAuthenticator *)self authKitSessionConfig];
+  v3 = [NSURLSession sessionWithConfiguration:authKitSessionConfig];
 
   return v3;
 }

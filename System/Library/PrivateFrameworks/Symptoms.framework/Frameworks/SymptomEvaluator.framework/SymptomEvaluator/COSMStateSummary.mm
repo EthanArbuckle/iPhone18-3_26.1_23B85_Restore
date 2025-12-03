@@ -1,12 +1,12 @@
 @interface COSMStateSummary
-+ (id)summaryFromFlags:(unint64_t)a3;
-+ (int)primaryArmedReasonFromFlags:(unint64_t)a3;
-+ (int)primaryIdleReasonFromFlags:(unint64_t)a3;
-+ (int)primaryOutrankReasonFromFlags:(unint64_t)a3;
-+ (int)primaryReasonFromFlags:(unint64_t)a3 state:(int)a4;
-+ (unsigned)wifiPublicTypeFromFlags:(unint64_t)a3;
++ (id)summaryFromFlags:(unint64_t)flags;
++ (int)primaryArmedReasonFromFlags:(unint64_t)flags;
++ (int)primaryIdleReasonFromFlags:(unint64_t)flags;
++ (int)primaryOutrankReasonFromFlags:(unint64_t)flags;
++ (int)primaryReasonFromFlags:(unint64_t)flags state:(int)state;
++ (unsigned)wifiPublicTypeFromFlags:(unint64_t)flags;
 + (void)initialize;
-- (BOOL)applyDictionary:(id)a3;
+- (BOOL)applyDictionary:(id)dictionary;
 - (BOOL)armedEligible;
 - (BOOL)captivityFrictionEligible;
 - (BOOL)cellEligible;
@@ -17,10 +17,10 @@
 - (BOOL)wifiAmbientFrictionEligible;
 - (BOOL)wifiEligible;
 - (BOOL)wifiPublicEligible;
-- (id)_prettyJSONStringStarting:(unint64_t)a3 ending:(unint64_t)a4;
-- (id)_stringForKey:(id)a3 object:(id)a4;
+- (id)_prettyJSONStringStarting:(unint64_t)starting ending:(unint64_t)ending;
+- (id)_stringForKey:(id)key object:(id)object;
 - (id)arrayOfStringsDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryForm;
 - (id)jsonRepresentation;
@@ -29,7 +29,7 @@
 - (id)prettyJSONStringPart2;
 - (id)prettyJSONStringPart3;
 - (unint64_t)reasonFlags;
-- (void)mergeEvents:(id)a3;
+- (void)mergeEvents:(id)events;
 @end
 
 @implementation COSMStateSummary
@@ -162,9 +162,9 @@
     v4 = v3 | 0x400000000;
   }
 
-  v5 = [(COSMStateSummary *)self cellWRMStatusProlongedBad];
+  cellWRMStatusProlongedBad = [(COSMStateSummary *)self cellWRMStatusProlongedBad];
   v6 = v4 | 0x800000000;
-  if (!v5)
+  if (!cellWRMStatusProlongedBad)
   {
     v6 = v4;
   }
@@ -194,9 +194,9 @@
     v7 = v6 | 0x8000000000;
   }
 
-  v8 = [(COSMStateSummary *)self thermalStateAllowsContinuedOutrank];
+  thermalStateAllowsContinuedOutrank = [(COSMStateSummary *)self thermalStateAllowsContinuedOutrank];
   v9 = v7 | 0x10000000000;
-  if (v8)
+  if (thermalStateAllowsContinuedOutrank)
   {
     v9 = v7;
   }
@@ -221,9 +221,9 @@
     v10 = v9;
   }
 
-  v11 = [(COSMStateSummary *)self cellWRMStatusGood];
+  cellWRMStatusGood = [(COSMStateSummary *)self cellWRMStatusGood];
   v12 = v10 | 0x1000000000000;
-  if (v11)
+  if (cellWRMStatusGood)
   {
     v12 = v10;
   }
@@ -248,9 +248,9 @@
     v13 = v12;
   }
 
-  v14 = [(COSMStateSummary *)self thermalStateAllowsEntryToOutrank];
+  thermalStateAllowsEntryToOutrank = [(COSMStateSummary *)self thermalStateAllowsEntryToOutrank];
   v15 = v13 | 0x20000000000000;
-  if (v14)
+  if (thermalStateAllowsEntryToOutrank)
   {
     v15 = v13;
   }
@@ -275,9 +275,9 @@
     v16 |= 0x200000000000000uLL;
   }
 
-  v17 = [(COSMStateSummary *)self cellWRMStatusGood];
+  cellWRMStatusGood2 = [(COSMStateSummary *)self cellWRMStatusGood];
   v18 = v16 | 0x100000000000000;
-  if (!v17)
+  if (!cellWRMStatusGood2)
   {
     v18 = v16;
   }
@@ -361,14 +361,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler wifiEligiblePred];
-  if (!v4)
+  wifiEligiblePred = [(CellOutrankHandlerSTM *)targetHandler wifiEligiblePred];
+  if (!wifiEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = wifiEligiblePred;
+  v6 = [wifiEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -381,14 +381,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler cellEligiblePred];
-  if (!v4)
+  cellEligiblePred = [(CellOutrankHandlerSTM *)targetHandler cellEligiblePred];
+  if (!cellEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = cellEligiblePred;
+  v6 = [cellEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -401,14 +401,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler deviceEligiblePred];
-  if (!v4)
+  deviceEligiblePred = [(CellOutrankHandlerSTM *)targetHandler deviceEligiblePred];
+  if (!deviceEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = deviceEligiblePred;
+  v6 = [deviceEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -427,9 +427,9 @@
   dampeningTimerExpiryEvent = self->_dampeningTimerExpiryEvent;
   excessCertificateErrorsEvent = self->_excessCertificateErrorsEvent;
   rnfActivated = self->_rnfActivated;
-  v4 = [v3 initWithFormat:@"COSMStateSummary: trial %d force-profile %d forceSPI %d damp %d cell act %d const %d exp %d wexp %d pri %d wrm %d pbad %d prvnwact %d wifi act %d const %d exp %d goodsec %d pri %d dnsout %d pdnsout %d public %d hotspot20 %d managed %d always %d never %d sporadic %d known %d m-join %d flow-bad %d pbad %d tput-adv %d (lrg:%d/hi:%d) wrm %d home (auth:%d/known:%d)d/l act %d hyst %d end %d LPM %d notDark %d unlock %d thermal %d rnf act %d rnf outr %d ev exp %d certs %d dstall %d istall %d mstall %d ssidchg %d regret %d wifitputend %d prvnwoutrank %d secno %lld", self->_trialWaiveOutrankReason, self->_force5GPreferred, self->_forceCellPreferred, self->_inDampeningPeriod, self->_cellActive, self->_cellLowDataMode, self->_cellExpensive, self->_cellWRMExpensive, self->_cellPrimary, self->_cellWRMStatus, self->_cellWRMStatusProlongedBad, self->_cellPrivateNetworkActive, self->_wifiActive, self->_wifiLowDataMode, self->_wifiExpensive, self->_wifiGoodSecurity, self->_wifiPrimary, self->_wifiDnsOut, self->_wifiDnsProlongedOut, self->_wifiPublic, self->_wifiHotspot20, self->_wifiManaged, self->_wifiAlwaysOutrank, self->_wifiNeverOutrank, self->_wifiSporadic, self->_wifiKnowableSporadic, self->_wifiManuallyJoined, self->_wifiPolledFlowsCurrentlyBad, self->_wifiPolledFlowsProlongedBad, self->_wifiTputAdvice, self->_wifiTputLargeXfer, self->_wifiTputInterfaceUse, self->_wifiWRMStatus, self->_LOIUseAuthorized, self->_homeLocationIsKnown, self->_coremediaDownloadActive, self->_coremediaDownloadHysteresis, self->_coremediaDownloadPeriodEnd, self->_lowPowerModeEnabled, self->_screenNotDark, self->_screenUnlocked, self->_thermalPressure, rnfActivated, self->_rnfAskedOutrank, dampeningTimerExpiryEvent, excessCertificateErrorsEvent, dataStallThresholdEvent, imminentStallEvent, mediaPlaybackStallEvent, wifiChangedSSIDEvent, inRegretAvoidanceOutrank, wifiTputAdviceEnded, inCellPrivateNetworkOutrank, eventsInstanceNumber];
+  eventsInstanceNumber = [v3 initWithFormat:@"COSMStateSummary: trial %d force-profile %d forceSPI %d damp %d cell act %d const %d exp %d wexp %d pri %d wrm %d pbad %d prvnwact %d wifi act %d const %d exp %d goodsec %d pri %d dnsout %d pdnsout %d public %d hotspot20 %d managed %d always %d never %d sporadic %d known %d m-join %d flow-bad %d pbad %d tput-adv %d (lrg:%d/hi:%d) wrm %d home (auth:%d/known:%d)d/l act %d hyst %d end %d LPM %d notDark %d unlock %d thermal %d rnf act %d rnf outr %d ev exp %d certs %d dstall %d istall %d mstall %d ssidchg %d regret %d wifitputend %d prvnwoutrank %d secno %lld", self->_trialWaiveOutrankReason, self->_force5GPreferred, self->_forceCellPreferred, self->_inDampeningPeriod, self->_cellActive, self->_cellLowDataMode, self->_cellExpensive, self->_cellWRMExpensive, self->_cellPrimary, self->_cellWRMStatus, self->_cellWRMStatusProlongedBad, self->_cellPrivateNetworkActive, self->_wifiActive, self->_wifiLowDataMode, self->_wifiExpensive, self->_wifiGoodSecurity, self->_wifiPrimary, self->_wifiDnsOut, self->_wifiDnsProlongedOut, self->_wifiPublic, self->_wifiHotspot20, self->_wifiManaged, self->_wifiAlwaysOutrank, self->_wifiNeverOutrank, self->_wifiSporadic, self->_wifiKnowableSporadic, self->_wifiManuallyJoined, self->_wifiPolledFlowsCurrentlyBad, self->_wifiPolledFlowsProlongedBad, self->_wifiTputAdvice, self->_wifiTputLargeXfer, self->_wifiTputInterfaceUse, self->_wifiWRMStatus, self->_LOIUseAuthorized, self->_homeLocationIsKnown, self->_coremediaDownloadActive, self->_coremediaDownloadHysteresis, self->_coremediaDownloadPeriodEnd, self->_lowPowerModeEnabled, self->_screenNotDark, self->_screenUnlocked, self->_thermalPressure, rnfActivated, self->_rnfAskedOutrank, dampeningTimerExpiryEvent, excessCertificateErrorsEvent, dataStallThresholdEvent, imminentStallEvent, mediaPlaybackStallEvent, wifiChangedSSIDEvent, inRegretAvoidanceOutrank, wifiTputAdviceEnded, inCellPrivateNetworkOutrank, eventsInstanceNumber];
 
-  return v4;
+  return eventsInstanceNumber;
 }
 
 - (BOOL)forcedOutrankEligible
@@ -440,14 +440,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler forcedOutrankEligiblePred];
-  if (!v4)
+  forcedOutrankEligiblePred = [(CellOutrankHandlerSTM *)targetHandler forcedOutrankEligiblePred];
+  if (!forcedOutrankEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = forcedOutrankEligiblePred;
+  v6 = [forcedOutrankEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -460,14 +460,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler armedEligiblePred];
-  if (!v4)
+  armedEligiblePred = [(CellOutrankHandlerSTM *)targetHandler armedEligiblePred];
+  if (!armedEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = armedEligiblePred;
+  v6 = [armedEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -480,14 +480,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler captivityFrictionEligiblePred];
-  if (!v4)
+  captivityFrictionEligiblePred = [(CellOutrankHandlerSTM *)targetHandler captivityFrictionEligiblePred];
+  if (!captivityFrictionEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = captivityFrictionEligiblePred;
+  v6 = [captivityFrictionEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -500,14 +500,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler cellStatusOutrankExitEligiblePred];
-  if (!v4)
+  cellStatusOutrankExitEligiblePred = [(CellOutrankHandlerSTM *)targetHandler cellStatusOutrankExitEligiblePred];
+  if (!cellStatusOutrankExitEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = cellStatusOutrankExitEligiblePred;
+  v6 = [cellStatusOutrankExitEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -520,14 +520,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler userInitiatedFrictionEligiblePred];
-  if (!v4)
+  userInitiatedFrictionEligiblePred = [(CellOutrankHandlerSTM *)targetHandler userInitiatedFrictionEligiblePred];
+  if (!userInitiatedFrictionEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = userInitiatedFrictionEligiblePred;
+  v6 = [userInitiatedFrictionEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -540,14 +540,14 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler wifiAmbientFrictionEligiblePred];
-  if (!v4)
+  wifiAmbientFrictionEligiblePred = [(CellOutrankHandlerSTM *)targetHandler wifiAmbientFrictionEligiblePred];
+  if (!wifiAmbientFrictionEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = wifiAmbientFrictionEligiblePred;
+  v6 = [wifiAmbientFrictionEligiblePred evaluateWithObject:self];
 
   return v6;
 }
@@ -560,29 +560,29 @@
     return 0;
   }
 
-  v4 = [(CellOutrankHandlerSTM *)targetHandler wifiPublicEligiblePred];
-  if (!v4)
+  wifiPublicEligiblePred = [(CellOutrankHandlerSTM *)targetHandler wifiPublicEligiblePred];
+  if (!wifiPublicEligiblePred)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 evaluateWithObject:self];
+  v5 = wifiPublicEligiblePred;
+  v6 = [wifiPublicEligiblePred evaluateWithObject:self];
 
   return v6;
 }
 
-+ (id)summaryFromFlags:(unint64_t)a3
++ (id)summaryFromFlags:(unint64_t)flags
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v4 appendString:@"For Outrank entry:["];
-  if ((a3 & 0x800) != 0)
+  if ((flags & 0x800) != 0)
   {
     [v4 appendString:@" forceSPI"];
-    if ((a3 & 0x8000000) == 0)
+    if ((flags & 0x8000000) == 0)
     {
 LABEL_3:
-      if ((a3 & 0x2000) == 0)
+      if ((flags & 0x2000) == 0)
       {
         goto LABEL_4;
       }
@@ -591,16 +591,16 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 0x8000000) == 0)
+  else if ((flags & 0x8000000) == 0)
   {
     goto LABEL_3;
   }
 
   [v4 appendString:@" force"];
-  if ((a3 & 0x2000) == 0)
+  if ((flags & 0x2000) == 0)
   {
 LABEL_4:
-    if ((a3 & 0x40000000) == 0)
+    if ((flags & 0x40000000) == 0)
     {
       goto LABEL_5;
     }
@@ -610,10 +610,10 @@ LABEL_4:
 
 LABEL_50:
   [v4 appendString:@" trial"];
-  if ((a3 & 0x40000000) == 0)
+  if ((flags & 0x40000000) == 0)
   {
 LABEL_5:
-    if ((a3 & 0x2000000) == 0)
+    if ((flags & 0x2000000) == 0)
     {
       goto LABEL_6;
     }
@@ -623,10 +623,10 @@ LABEL_5:
 
 LABEL_51:
   [v4 appendString:@" privateNetworkActive"];
-  if ((a3 & 0x2000000) == 0)
+  if ((flags & 0x2000000) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x1000000) == 0)
+    if ((flags & 0x1000000) == 0)
     {
       goto LABEL_7;
     }
@@ -636,10 +636,10 @@ LABEL_6:
 
 LABEL_52:
   [v4 appendString:@" wifiBadSec"];
-  if ((a3 & 0x1000000) == 0)
+  if ((flags & 0x1000000) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x10000000) == 0)
+    if ((flags & 0x10000000) == 0)
     {
       goto LABEL_8;
     }
@@ -649,10 +649,10 @@ LABEL_7:
 
 LABEL_53:
   [v4 appendString:@" wifiLoDataMode"];
-  if ((a3 & 0x10000000) == 0)
+  if ((flags & 0x10000000) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x200) == 0)
+    if ((flags & 0x200) == 0)
     {
       goto LABEL_9;
     }
@@ -662,10 +662,10 @@ LABEL_8:
 
 LABEL_54:
   [v4 appendString:@" wifiFlowProlongedBad"];
-  if ((a3 & 0x200) == 0)
+  if ((flags & 0x200) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x400) == 0)
+    if ((flags & 0x400) == 0)
     {
       goto LABEL_10;
     }
@@ -675,10 +675,10 @@ LABEL_9:
 
 LABEL_55:
   [v4 appendString:@" wifiLargeTransfer"];
-  if ((a3 & 0x400) == 0)
+  if ((flags & 0x400) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x8000) == 0)
+    if ((flags & 0x8000) == 0)
     {
       goto LABEL_11;
     }
@@ -688,10 +688,10 @@ LABEL_10:
 
 LABEL_56:
   [v4 appendString:@" wifiInterfaceUse"];
-  if ((a3 & 0x8000) == 0)
+  if ((flags & 0x8000) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x4000) == 0)
+    if ((flags & 0x4000) == 0)
     {
       goto LABEL_12;
     }
@@ -701,10 +701,10 @@ LABEL_11:
 
 LABEL_57:
   [v4 appendString:@" d/l"];
-  if ((a3 & 0x4000) == 0)
+  if ((flags & 0x4000) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x4000000) == 0)
+    if ((flags & 0x4000000) == 0)
     {
       goto LABEL_13;
     }
@@ -714,10 +714,10 @@ LABEL_12:
 
 LABEL_58:
   [v4 appendString:@" captivity-issue"];
-  if ((a3 & 0x4000000) == 0)
+  if ((flags & 0x4000000) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x1000) == 0)
+    if ((flags & 0x1000) == 0)
     {
       goto LABEL_14;
     }
@@ -727,10 +727,10 @@ LABEL_13:
 
 LABEL_59:
   [v4 appendString:@" certs"];
-  if ((a3 & 0x1000) == 0)
+  if ((flags & 0x1000) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x200000) == 0)
+    if ((flags & 0x200000) == 0)
     {
       goto LABEL_15;
     }
@@ -740,10 +740,10 @@ LABEL_14:
 
 LABEL_60:
   [v4 appendString:@" ARP"];
-  if ((a3 & 0x200000) == 0)
+  if ((flags & 0x200000) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x10000) == 0)
+    if ((flags & 0x10000) == 0)
     {
       goto LABEL_17;
     }
@@ -753,37 +753,37 @@ LABEL_15:
 
 LABEL_61:
   [v4 appendString:@" ND6"];
-  if ((a3 & 0x10000) != 0)
+  if ((flags & 0x10000) != 0)
   {
 LABEL_16:
     [v4 appendString:@" dStalls"];
   }
 
 LABEL_17:
-  if ((a3 & 0x80000020000) == 0x20000)
+  if ((flags & 0x80000020000) == 0x20000)
   {
     [v4 appendString:@" wifiAlwaysOutrank"];
   }
 
-  if ((a3 & 0x840000) == 0x840000)
+  if ((flags & 0x840000) == 0x840000)
   {
     [v4 appendString:@" FrictionDNS"];
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((flags & 0x100) != 0)
   {
     [v4 appendString:@" RNFAskedOutrank"];
   }
 
   [v4 appendString:@" ] for Outrank exit:["];
-  if ((a3 & 0x400000000) != 0)
+  if ((flags & 0x400000000) != 0)
   {
     [v4 appendString:@" cellInActiv"];
   }
 
-  if ((~a3 & 0x80200000000) != 0)
+  if ((~flags & 0x80200000000) != 0)
   {
-    if ((a3 & 0x100000000) == 0)
+    if ((flags & 0x100000000) == 0)
     {
       goto LABEL_27;
     }
@@ -792,10 +792,10 @@ LABEL_17:
   else
   {
     [v4 appendString:@" cellExp-cellWRMExp"];
-    if ((a3 & 0x100000000) == 0)
+    if ((flags & 0x100000000) == 0)
     {
 LABEL_27:
-      if ((a3 & 0x800000000) == 0)
+      if ((flags & 0x800000000) == 0)
       {
         goto LABEL_28;
       }
@@ -805,10 +805,10 @@ LABEL_27:
   }
 
   [v4 appendString:@" cellLoDataMode"];
-  if ((a3 & 0x800000000) == 0)
+  if ((flags & 0x800000000) == 0)
   {
 LABEL_28:
-    if ((a3 & 0x40000000000) == 0)
+    if ((flags & 0x40000000000) == 0)
     {
       goto LABEL_29;
     }
@@ -818,10 +818,10 @@ LABEL_28:
 
 LABEL_65:
   [v4 appendString:@" cellWRMProlongBad"];
-  if ((a3 & 0x40000000000) == 0)
+  if ((flags & 0x40000000000) == 0)
   {
 LABEL_29:
-    if ((a3 & 0x20000000000) == 0)
+    if ((flags & 0x20000000000) == 0)
     {
       goto LABEL_30;
     }
@@ -831,10 +831,10 @@ LABEL_29:
 
 LABEL_66:
   [v4 appendString:@" SSIDchg"];
-  if ((a3 & 0x20000000000) == 0)
+  if ((flags & 0x20000000000) == 0)
   {
 LABEL_30:
-    if ((a3 & 0x10000000000000) == 0)
+    if ((flags & 0x10000000000000) == 0)
     {
       goto LABEL_31;
     }
@@ -844,10 +844,10 @@ LABEL_30:
 
 LABEL_67:
   [v4 appendString:@" wifiManJoin"];
-  if ((a3 & 0x10000000000000) == 0)
+  if ((flags & 0x10000000000000) == 0)
   {
 LABEL_31:
-    if ((a3 & 0x100) == 0)
+    if ((flags & 0x100) == 0)
     {
       goto LABEL_32;
     }
@@ -857,10 +857,10 @@ LABEL_31:
 
 LABEL_68:
   [v4 appendString:@" RNFActiv"];
-  if ((a3 & 0x100) == 0)
+  if ((flags & 0x100) == 0)
   {
 LABEL_32:
-    if ((a3 & 0x1000000000) == 0)
+    if ((flags & 0x1000000000) == 0)
     {
       goto LABEL_33;
     }
@@ -870,10 +870,10 @@ LABEL_32:
 
 LABEL_69:
   [v4 appendString:@" RNFAskedOutrank"];
-  if ((a3 & 0x1000000000) == 0)
+  if ((flags & 0x1000000000) == 0)
   {
 LABEL_33:
-    if ((a3 & 0x100000000000) == 0)
+    if ((flags & 0x100000000000) == 0)
     {
       goto LABEL_34;
     }
@@ -883,10 +883,10 @@ LABEL_33:
 
 LABEL_70:
   [v4 appendString:@" d/l-end"];
-  if ((a3 & 0x100000000000) == 0)
+  if ((flags & 0x100000000000) == 0)
   {
 LABEL_34:
-    if ((a3 & 0x2000000000) == 0)
+    if ((flags & 0x2000000000) == 0)
     {
       goto LABEL_35;
     }
@@ -896,10 +896,10 @@ LABEL_34:
 
 LABEL_71:
   [v4 appendString:@" tput-end"];
-  if ((a3 & 0x2000000000) == 0)
+  if ((flags & 0x2000000000) == 0)
   {
 LABEL_35:
-    if ((a3 & 0x10000000000) == 0)
+    if ((flags & 0x10000000000) == 0)
     {
       goto LABEL_37;
     }
@@ -909,34 +909,34 @@ LABEL_35:
 
 LABEL_72:
   [v4 appendString:@" LPM"];
-  if ((a3 & 0x10000000000) != 0)
+  if ((flags & 0x10000000000) != 0)
   {
 LABEL_36:
     [v4 appendString:@" thermHi"];
   }
 
 LABEL_37:
-  if ((a3 & 0x400000000008000) == 0)
+  if ((flags & 0x400000000008000) == 0)
   {
-    if ((a3 & 0x4000000000) != 0)
+    if ((flags & 0x4000000000) != 0)
     {
       [v4 appendString:@" scrLock"];
     }
 
-    if ((a3 & 0x8000000000) != 0)
+    if ((flags & 0x8000000000) != 0)
     {
       [v4 appendString:@" scrDark"];
     }
   }
 
   [v4 appendString:@" ] extra to stay in idle:["];
-  if ((a3 & 0x1000000000000) != 0)
+  if ((flags & 0x1000000000000) != 0)
   {
     [v4 appendString:@" cellWRMStayIdle"];
-    if ((a3 & 0x80000000000000) == 0)
+    if ((flags & 0x80000000000000) == 0)
     {
 LABEL_44:
-      if ((a3 & 0x800000000000) != 0)
+      if ((flags & 0x800000000000) != 0)
       {
         goto LABEL_45;
       }
@@ -945,16 +945,16 @@ LABEL_44:
     }
   }
 
-  else if ((a3 & 0x80000000000000) == 0)
+  else if ((flags & 0x80000000000000) == 0)
   {
     goto LABEL_44;
   }
 
   [v4 appendString:@" wifiInActiv"];
-  if ((a3 & 0x800000000000) != 0)
+  if ((flags & 0x800000000000) != 0)
   {
 LABEL_45:
-    if ((a3 & 0x400000000000) != 0)
+    if ((flags & 0x400000000000) != 0)
     {
       goto LABEL_46;
     }
@@ -964,10 +964,10 @@ LABEL_45:
 
 LABEL_76:
   [v4 appendString:@" wifiSporadicNOTKnown"];
-  if ((a3 & 0x400000000000) != 0)
+  if ((flags & 0x400000000000) != 0)
   {
 LABEL_46:
-    if ((a3 & 0x4000000000000000) == 0)
+    if ((flags & 0x4000000000000000) == 0)
     {
       goto LABEL_82;
     }
@@ -977,41 +977,41 @@ LABEL_46:
 
 LABEL_77:
   [v4 appendString:@" wifiNOTSporadic"];
-  if ((a3 & 0x4000000000000000) == 0)
+  if ((flags & 0x4000000000000000) == 0)
   {
     goto LABEL_82;
   }
 
 LABEL_78:
-  if ((a3 & 0x4000000000000) != 0)
+  if ((flags & 0x4000000000000) != 0)
   {
     [v4 appendString:@" wifiHotspot20"];
   }
 
-  if ((a3 & 0x8000000000000) != 0)
+  if ((flags & 0x8000000000000) != 0)
   {
     [v4 appendString:@" wifiManagedNetwork"];
   }
 
 LABEL_82:
-  if ((a3 & 0x400000) != 0)
+  if ((flags & 0x400000) != 0)
   {
     [v4 appendString:@" wifiNeverOutrank"];
   }
 
-  if ((a3 & 0x20000000000000) != 0)
+  if ((flags & 0x20000000000000) != 0)
   {
     [v4 appendString:@" thermalStayIdle"];
   }
 
   [v4 appendString:@" ] additional status:["];
-  if ((a3 & 0x200000000000000) != 0)
+  if ((flags & 0x200000000000000) != 0)
   {
     [v4 appendString:@" cellPri"];
-    if ((a3 & 0x100000000000000) == 0)
+    if ((flags & 0x100000000000000) == 0)
     {
 LABEL_88:
-      if ((a3 & 0x400000000000000) == 0)
+      if ((flags & 0x400000000000000) == 0)
       {
         goto LABEL_89;
       }
@@ -1020,16 +1020,16 @@ LABEL_88:
     }
   }
 
-  else if ((a3 & 0x100000000000000) == 0)
+  else if ((flags & 0x100000000000000) == 0)
   {
     goto LABEL_88;
   }
 
   [v4 appendString:@" cellWRMGd"];
-  if ((a3 & 0x400000000000000) == 0)
+  if ((flags & 0x400000000000000) == 0)
   {
 LABEL_89:
-    if ((a3 & 0x2000000000000000) == 0)
+    if ((flags & 0x2000000000000000) == 0)
     {
       goto LABEL_90;
     }
@@ -1039,10 +1039,10 @@ LABEL_89:
 
 LABEL_115:
   [v4 appendString:@" d/l-hyst"];
-  if ((a3 & 0x2000000000000000) == 0)
+  if ((flags & 0x2000000000000000) == 0)
   {
 LABEL_90:
-    if ((a3 & 0x4000000000000000) == 0)
+    if ((flags & 0x4000000000000000) == 0)
     {
       goto LABEL_91;
     }
@@ -1052,10 +1052,10 @@ LABEL_90:
 
 LABEL_116:
   [v4 appendString:@" wifiExp"];
-  if ((a3 & 0x4000000000000000) == 0)
+  if ((flags & 0x4000000000000000) == 0)
   {
 LABEL_91:
-    if ((a3 & 0x200000000) == 0)
+    if ((flags & 0x200000000) == 0)
     {
       goto LABEL_92;
     }
@@ -1065,10 +1065,10 @@ LABEL_91:
 
 LABEL_117:
   [v4 appendString:@" wifiPublic"];
-  if ((a3 & 0x200000000) == 0)
+  if ((flags & 0x200000000) == 0)
   {
 LABEL_92:
-    if ((a3 & 0x80000000000) == 0)
+    if ((flags & 0x80000000000) == 0)
     {
       goto LABEL_93;
     }
@@ -1078,10 +1078,10 @@ LABEL_92:
 
 LABEL_118:
   [v4 appendString:@" cellExp"];
-  if ((a3 & 0x80000000000) == 0)
+  if ((flags & 0x80000000000) == 0)
   {
 LABEL_93:
-    if ((a3 & 0x20000000) == 0)
+    if ((flags & 0x20000000) == 0)
     {
       goto LABEL_95;
     }
@@ -1091,38 +1091,38 @@ LABEL_93:
 
 LABEL_119:
   [v4 appendString:@" cellWRMExp"];
-  if ((a3 & 0x20000000) != 0)
+  if ((flags & 0x20000000) != 0)
   {
 LABEL_94:
     [v4 appendString:@" wifiFlowCurrentlyBad"];
   }
 
 LABEL_95:
-  if ((a3 & 0x840000) == 0x40000)
+  if ((flags & 0x840000) == 0x40000)
   {
     [v4 appendString:@" DNS"];
   }
 
-  if ((a3 & 0x400000000008000) != 0)
+  if ((flags & 0x400000000008000) != 0)
   {
-    if ((a3 & 0x4000000000) != 0)
+    if ((flags & 0x4000000000) != 0)
     {
       [v4 appendString:@" d/l-active-scrLock"];
     }
 
-    if ((a3 & 0x8000000000) != 0)
+    if ((flags & 0x8000000000) != 0)
     {
       [v4 appendString:@" d/l-active-scrDark"];
     }
   }
 
-  if ((a3 & 0x800000) != 0)
+  if ((flags & 0x800000) != 0)
   {
     [v4 appendString:@" usrActiv"];
-    if ((a3 & 0x800000000000) == 0)
+    if ((flags & 0x800000000000) == 0)
     {
 LABEL_104:
-      if ((a3 & 0x400000000000) == 0)
+      if ((flags & 0x400000000000) == 0)
       {
         goto LABEL_105;
       }
@@ -1131,16 +1131,16 @@ LABEL_104:
     }
   }
 
-  else if ((a3 & 0x800000000000) == 0)
+  else if ((flags & 0x800000000000) == 0)
   {
     goto LABEL_104;
   }
 
   [v4 appendString:@" wifiKnownSporadic"];
-  if ((a3 & 0x400000000000) == 0)
+  if ((flags & 0x400000000000) == 0)
   {
 LABEL_105:
-    if ((a3 & 0x1000000000000000) == 0)
+    if ((flags & 0x1000000000000000) == 0)
     {
       goto LABEL_106;
     }
@@ -1150,10 +1150,10 @@ LABEL_105:
 
 LABEL_123:
   [v4 appendString:@" wifiSporadic"];
-  if ((a3 & 0x1000000000000000) == 0)
+  if ((flags & 0x1000000000000000) == 0)
   {
 LABEL_106:
-    if ((a3 & 0x800000000000000) == 0)
+    if ((flags & 0x800000000000000) == 0)
     {
       goto LABEL_107;
     }
@@ -1163,10 +1163,10 @@ LABEL_106:
 
 LABEL_124:
   [v4 appendString:@" tmrRun"];
-  if ((a3 & 0x800000000000000) == 0)
+  if ((flags & 0x800000000000000) == 0)
   {
 LABEL_107:
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((flags & 0x8000000000000000) == 0)
     {
       goto LABEL_108;
     }
@@ -1176,10 +1176,10 @@ LABEL_107:
 
 LABEL_125:
   [v4 appendString:@" tmrExpiry"];
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((flags & 0x8000000000000000) == 0)
   {
 LABEL_108:
-    if ((a3 & 0x80000000) == 0)
+    if ((flags & 0x80000000) == 0)
     {
       goto LABEL_109;
     }
@@ -1189,17 +1189,17 @@ LABEL_108:
 
 LABEL_126:
   [v4 appendString:@" regretAvoidance"];
-  if ((a3 & 0x80000000) == 0)
+  if ((flags & 0x80000000) == 0)
   {
 LABEL_109:
-    if ((a3 & 0x80000) == 0)
+    if ((flags & 0x80000) == 0)
     {
       goto LABEL_110;
     }
 
 LABEL_128:
     [v4 appendString:@" iStalls"];
-    if ((a3 & 0x100000) == 0)
+    if ((flags & 0x100000) == 0)
     {
       goto LABEL_112;
     }
@@ -1209,13 +1209,13 @@ LABEL_128:
 
 LABEL_127:
   [v4 appendString:@" privateNetworkWasActive"];
-  if ((a3 & 0x80000) != 0)
+  if ((flags & 0x80000) != 0)
   {
     goto LABEL_128;
   }
 
 LABEL_110:
-  if ((a3 & 0x100000) != 0)
+  if ((flags & 0x100000) != 0)
   {
 LABEL_111:
     [v4 appendString:@" pStalls"];
@@ -1228,28 +1228,28 @@ LABEL_112:
   return v4;
 }
 
-- (id)_stringForKey:(id)a3 object:(id)a4
+- (id)_stringForKey:(id)key object:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  objectCopy = object;
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (v6)
+  if (objectCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"   %@: ", v5];
-    if ([v8 length] > 0x21)
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"   %@: ", keyCopy];
+    if ([keyCopy length] > 0x21)
     {
-      [v7 appendString:v8];
+      [v7 appendString:keyCopy];
     }
 
     else
     {
-      v9 = [v8 stringByPaddingToLength:34 withString:@" " startingAtIndex:0];
+      v9 = [keyCopy stringByPaddingToLength:34 withString:@" " startingAtIndex:0];
       [v7 appendString:v9];
     }
 
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 BOOLValue])
+      if ([objectCopy BOOLValue])
       {
         v10 = @"true";
       }
@@ -1264,128 +1264,128 @@ LABEL_112:
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v6];
-      [v7 appendString:v11];
+      objectCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objectCopy];
+      [v7 appendString:objectCopy];
     }
   }
 
   return v7;
 }
 
-+ (int)primaryIdleReasonFromFlags:(unint64_t)a3
++ (int)primaryIdleReasonFromFlags:(unint64_t)flags
 {
-  if ((a3 & 0x400000000) != 0)
+  if ((flags & 0x400000000) != 0)
   {
     return 34;
   }
 
-  if ((a3 & 0xC0000000) == 0x80000000)
+  if ((flags & 0xC0000000) == 0x80000000)
   {
     return 71;
   }
 
-  if ((~a3 & 0x80200000000) == 0)
+  if ((~flags & 0x80200000000) == 0)
   {
     return 66;
   }
 
-  if ((a3 & 0x100000000) != 0)
+  if ((flags & 0x100000000) != 0)
   {
     return 32;
   }
 
-  if ((a3 & 0x800000000) != 0)
+  if ((flags & 0x800000000) != 0)
   {
     return 35;
   }
 
-  if ((a3 & 0x20000000000) != 0)
+  if ((flags & 0x20000000000) != 0)
   {
     return 41;
   }
 
-  if ((a3 & 0x800000000000) == 0)
+  if ((flags & 0x800000000000) == 0)
   {
     return 70;
   }
 
-  if ((a3 & 0x400000000000) == 0)
+  if ((flags & 0x400000000000) == 0)
   {
     return 65;
   }
 
-  if ((a3 & 0x40000000000) != 0)
+  if ((flags & 0x40000000000) != 0)
   {
     return 42;
   }
 
-  if ((a3 & 0x10000000000000) != 0)
+  if ((flags & 0x10000000000000) != 0)
   {
     return 52;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((flags & 0x100) != 0)
   {
     return 8;
   }
 
-  if ((a3 & 0x1000000000) != 0)
+  if ((flags & 0x1000000000) != 0)
   {
     return 36;
   }
 
-  if ((a3 & 0x2000000000) != 0)
+  if ((flags & 0x2000000000) != 0)
   {
     return 37;
   }
 
-  if ((a3 & 0x10000000000) != 0)
+  if ((flags & 0x10000000000) != 0)
   {
     return 40;
   }
 
-  if ((a3 & 0x400000000008000) == 0)
+  if ((flags & 0x400000000008000) == 0)
   {
-    if ((a3 & 0x4000000000) != 0)
+    if ((flags & 0x4000000000) != 0)
     {
       return 38;
     }
 
-    if ((a3 & 0x8000000000) != 0)
+    if ((flags & 0x8000000000) != 0)
     {
       return 39;
     }
   }
 
-  if ((a3 & 0x1000000000000) != 0)
+  if ((flags & 0x1000000000000) != 0)
   {
     return 48;
   }
 
-  if ((a3 & 0x80000000000000) != 0)
+  if ((flags & 0x80000000000000) != 0)
   {
     return 55;
   }
 
-  if ((a3 & 0x4000000000000000) != 0)
+  if ((flags & 0x4000000000000000) != 0)
   {
-    if ((a3 & 0x4000000000000) != 0)
+    if ((flags & 0x4000000000000) != 0)
     {
       return 50;
     }
 
-    if ((a3 & 0x8000000000000) != 0)
+    if ((flags & 0x8000000000000) != 0)
     {
       return 51;
     }
   }
 
-  if ((a3 & 0x400000) != 0)
+  if ((flags & 0x400000) != 0)
   {
     return 22;
   }
 
-  if ((a3 & 0x100000000000) != 0)
+  if ((flags & 0x100000000000) != 0)
   {
     return 44;
   }
@@ -1393,9 +1393,9 @@ LABEL_112:
   return -1;
 }
 
-+ (int)primaryArmedReasonFromFlags:(unint64_t)a3
++ (int)primaryArmedReasonFromFlags:(unint64_t)flags
 {
-  if ((a3 & 0x80000000000) != 0)
+  if ((flags & 0x80000000000) != 0)
   {
     v3 = -1;
   }
@@ -1405,7 +1405,7 @@ LABEL_112:
     v3 = 69;
   }
 
-  if ((a3 & 0x200000000) != 0)
+  if ((flags & 0x200000000) != 0)
   {
     v4 = v3;
   }
@@ -1415,7 +1415,7 @@ LABEL_112:
     v4 = 68;
   }
 
-  if ((a3 & 0x80200000000) != 0)
+  if ((flags & 0x80200000000) != 0)
   {
     return v4;
   }
@@ -1426,92 +1426,92 @@ LABEL_112:
   }
 }
 
-+ (int)primaryOutrankReasonFromFlags:(unint64_t)a3
++ (int)primaryOutrankReasonFromFlags:(unint64_t)flags
 {
-  if ((a3 & 0x800) != 0)
+  if ((flags & 0x800) != 0)
   {
     return 11;
   }
 
-  if ((a3 & 0x8000000) != 0)
+  if ((flags & 0x8000000) != 0)
   {
     return 27;
   }
 
-  if ((a3 & 0x2000) != 0)
+  if ((flags & 0x2000) != 0)
   {
     return 13;
   }
 
-  if ((a3 & 0x40000000) != 0)
+  if ((flags & 0x40000000) != 0)
   {
     return 30;
   }
 
-  if ((a3 & 0x1000000) != 0)
+  if ((flags & 0x1000000) != 0)
   {
     return 24;
   }
 
-  if ((a3 & 0x2000000) != 0)
+  if ((flags & 0x2000000) != 0)
   {
     return 25;
   }
 
-  if ((a3 & 0x200) != 0)
+  if ((flags & 0x200) != 0)
   {
     return 9;
   }
 
-  if ((a3 & 0x400) != 0)
+  if ((flags & 0x400) != 0)
   {
     return 10;
   }
 
-  if ((a3 & 0x8000) != 0)
+  if ((flags & 0x8000) != 0)
   {
     return 15;
   }
 
-  if ((a3 & 0x4000) != 0)
+  if ((flags & 0x4000) != 0)
   {
     return 14;
   }
 
-  if ((a3 & 0x4000000) != 0)
+  if ((flags & 0x4000000) != 0)
   {
     return 26;
   }
 
-  if ((a3 & 0x1000) != 0)
+  if ((flags & 0x1000) != 0)
   {
     return 12;
   }
 
-  if ((a3 & 0x200000) != 0)
+  if ((flags & 0x200000) != 0)
   {
     return 21;
   }
 
-  if ((a3 & 0x10000) != 0)
+  if ((flags & 0x10000) != 0)
   {
     return 16;
   }
 
-  if ((a3 & 0x800000) != 0)
+  if ((flags & 0x800000) != 0)
   {
-    if ((a3 & 0x40000) != 0)
+    if ((flags & 0x40000) != 0)
     {
       return 18;
     }
 
-    if ((a3 & 0x10000000) != 0)
+    if ((flags & 0x10000000) != 0)
     {
       return 28;
     }
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((flags & 0x100) != 0)
   {
     return 8;
   }
@@ -1522,47 +1522,47 @@ LABEL_112:
   }
 }
 
-+ (int)primaryReasonFromFlags:(unint64_t)a3 state:(int)a4
++ (int)primaryReasonFromFlags:(unint64_t)flags state:(int)state
 {
-  if (a4 == 3)
+  if (state == 3)
   {
-    return [a1 primaryOutrankReasonFromFlags:a3];
+    return [self primaryOutrankReasonFromFlags:flags];
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
-    return [a1 primaryArmedReasonFromFlags:a3];
+    return [self primaryArmedReasonFromFlags:flags];
   }
 
-  if (a4)
+  if (state)
   {
     return -1;
   }
 
-  return [a1 primaryIdleReasonFromFlags:a3];
+  return [self primaryIdleReasonFromFlags:flags];
 }
 
-+ (unsigned)wifiPublicTypeFromFlags:(unint64_t)a3
++ (unsigned)wifiPublicTypeFromFlags:(unint64_t)flags
 {
-  v3 = (a3 >> 62) | 2;
-  if ((a3 & 0x4000000000000) == 0)
+  v3 = (flags >> 62) | 2;
+  if ((flags & 0x4000000000000) == 0)
   {
-    v3 = (a3 & 0x4000000000000000) != 0;
+    v3 = (flags & 0x4000000000000000) != 0;
   }
 
-  return v3 | (a3 >> 49) & 4;
+  return v3 | (flags >> 49) & 4;
 }
 
-- (id)_prettyJSONStringStarting:(unint64_t)a3 ending:(unint64_t)a4
+- (id)_prettyJSONStringStarting:(unint64_t)starting ending:(unint64_t)ending
 {
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([gSortedKeys count] >= a4)
+  if ([gSortedKeys count] >= ending)
   {
-    if (a3 < a4)
+    if (starting < ending)
     {
       do
       {
-        if (a3)
+        if (starting)
         {
           v8 = @",\n";
         }
@@ -1573,15 +1573,15 @@ LABEL_112:
         }
 
         [v7 appendString:v8];
-        v9 = [gSortedKeys objectAtIndexedSubscript:a3];
+        v9 = [gSortedKeys objectAtIndexedSubscript:starting];
         v10 = [(COSMStateSummary *)self valueForKey:v9];
         v11 = [(COSMStateSummary *)self _stringForKey:v9 object:v10];
         [v7 appendString:v11];
 
-        ++a3;
+        ++starting;
       }
 
-      while (a4 != a3);
+      while (ending != starting);
     }
 
     [v7 appendString:@"\n}"];
@@ -1757,8 +1757,8 @@ LABEL_112:
 - (id)jsonRepresentation
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(COSMStateSummary *)self dictionaryForm];
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:3 error:0];
+  dictionaryForm = [(COSMStateSummary *)self dictionaryForm];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryForm options:3 error:0];
   v4 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -1772,15 +1772,15 @@ LABEL_112:
   return v3;
 }
 
-- (BOOL)applyDictionary:(id)a3
+- (BOOL)applyDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v5)
   {
     v7 = v5;
@@ -1794,11 +1794,11 @@ LABEL_112:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v4 objectForKeyedSubscript:{v11, v23}];
+        v12 = [dictionaryCopy objectForKeyedSubscript:{v11, v23}];
         v13 = *v8;
         if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEBUG))
         {
@@ -1833,7 +1833,7 @@ LABEL_112:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v7 = [dictionaryCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v7);
@@ -1843,24 +1843,24 @@ LABEL_112:
   return 1;
 }
 
-- (void)mergeEvents:(id)a3
+- (void)mergeEvents:(id)events
 {
-  v4 = a3;
-  self->_arpFailureEvent = [v4 arpFailureEvent];
-  self->_captivityIndeterminateEvent = [v4 captivityIndeterminateEvent];
-  self->_dampeningTimerExpiryEvent = [v4 dampeningTimerExpiryEvent];
-  self->_dataStallThresholdEvent = [v4 dataStallThresholdEvent];
-  self->_excessCertificateErrorsEvent = [v4 excessCertificateErrorsEvent];
-  self->_imminentStallEvent = [v4 imminentStallEvent];
-  self->_mediaPlaybackStallEvent = [v4 mediaPlaybackStallEvent];
-  self->_nd6FailureEvent = [v4 nd6FailureEvent];
-  self->_wifiChangedSSIDEvent = [v4 wifiChangedSSIDEvent];
-  v5 = [v4 eventsInstanceNumber];
+  eventsCopy = events;
+  self->_arpFailureEvent = [eventsCopy arpFailureEvent];
+  self->_captivityIndeterminateEvent = [eventsCopy captivityIndeterminateEvent];
+  self->_dampeningTimerExpiryEvent = [eventsCopy dampeningTimerExpiryEvent];
+  self->_dataStallThresholdEvent = [eventsCopy dataStallThresholdEvent];
+  self->_excessCertificateErrorsEvent = [eventsCopy excessCertificateErrorsEvent];
+  self->_imminentStallEvent = [eventsCopy imminentStallEvent];
+  self->_mediaPlaybackStallEvent = [eventsCopy mediaPlaybackStallEvent];
+  self->_nd6FailureEvent = [eventsCopy nd6FailureEvent];
+  self->_wifiChangedSSIDEvent = [eventsCopy wifiChangedSSIDEvent];
+  eventsInstanceNumber = [eventsCopy eventsInstanceNumber];
 
-  self->_eventsInstanceNumber = v5;
+  self->_eventsInstanceNumber = eventsInstanceNumber;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(COSMStateSummary);
   if ([gSortedKeys count] && objc_msgSend(gSortedKeys, "count"))
@@ -1885,7 +1885,7 @@ LABEL_112:
 {
   outCount = 0;
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = class_copyPropertyList(a1, &outCount);
+  v4 = class_copyPropertyList(self, &outCount);
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)

@@ -1,5 +1,5 @@
 @interface _HVNSStringEncodingEnumerator
-- (_HVNSStringEncodingEnumerator)initWithString:(id)a3 encoding:(unint64_t)a4 nullTerminated:(BOOL)a5;
+- (_HVNSStringEncodingEnumerator)initWithString:(id)string encoding:(unint64_t)encoding nullTerminated:(BOOL)terminated;
 - (id)nextObject;
 - (id)nullTerminationIfNeeded;
 @end
@@ -14,9 +14,9 @@
   v4 = (v2 + 24);
   if (!*(v2 + 32))
   {
-    v5 = [v2 nullTerminationIfNeeded];
+    nullTerminationIfNeeded = [v2 nullTerminationIfNeeded];
 LABEL_7:
-    v6 = v5;
+    v6 = nullTerminationIfNeeded;
     goto LABEL_16;
   }
 
@@ -28,7 +28,7 @@ LABEL_7:
       dispatch_once(&bomData__pasOnceToken3, &__block_literal_global_44);
     }
 
-    v5 = bomData__pasExprOnceResult;
+    nullTerminationIfNeeded = bomData__pasExprOnceResult;
     goto LABEL_7;
   }
 
@@ -51,15 +51,15 @@ LABEL_7:
 
     *v4 = v13;
     v9 = objc_alloc(MEMORY[0x277CBEA90]);
-    v10 = [v9 initWithBytes:v15 length:v14];
+    nullTerminationIfNeeded2 = [v9 initWithBytes:v15 length:v14];
   }
 
   else
   {
-    v10 = [v3 nullTerminationIfNeeded];
+    nullTerminationIfNeeded2 = [v3 nullTerminationIfNeeded];
   }
 
-  v6 = v10;
+  v6 = nullTerminationIfNeeded2;
   objc_autoreleasePoolPop(v7);
 LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
@@ -83,22 +83,22 @@ LABEL_16:
   return v3;
 }
 
-- (_HVNSStringEncodingEnumerator)initWithString:(id)a3 encoding:(unint64_t)a4 nullTerminated:(BOOL)a5
+- (_HVNSStringEncodingEnumerator)initWithString:(id)string encoding:(unint64_t)encoding nullTerminated:(BOOL)terminated
 {
-  v9 = a3;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = _HVNSStringEncodingEnumerator;
   v10 = [(_HVNSStringEncodingEnumerator *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_string, a3);
-    v11->_encoding = a4;
-    v12 = [v9 length];
+    objc_storeStrong(&v10->_string, string);
+    v11->_encoding = encoding;
+    v12 = [stringCopy length];
     v11->_remaining.location = 0;
     v11->_remaining.length = v12;
-    v11->_needsBOM = a4 == 10;
-    v11->_needsNullTermination = a5;
+    v11->_needsBOM = encoding == 10;
+    v11->_needsNullTermination = terminated;
   }
 
   return v11;

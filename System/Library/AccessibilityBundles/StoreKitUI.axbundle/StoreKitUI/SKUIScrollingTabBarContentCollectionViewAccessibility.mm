@@ -1,32 +1,32 @@
 @interface SKUIScrollingTabBarContentCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityScrollStatus;
 @end
 
 @implementation SKUIScrollingTabBarContentCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIScrollingTabBarContentCollectionView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"SKUIScrollingTabBarContentCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"SKUIScrollingTabBarController" hasInstanceVariable:@"_focusedViewController" withType:"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIScrollingTabBarContentCollectionView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"SKUIScrollingTabBarContentCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"SKUIScrollingTabBarController" hasInstanceVariable:@"_focusedViewController" withType:"UIViewController"];
 }
 
 - (id)_accessibilityScrollStatus
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
   objc_opt_class();
-  v4 = [v3 safeValueForKey:@"_focusedViewController"];
+  v4 = [delegate safeValueForKey:@"_focusedViewController"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 tabBarItem];
-  v7 = [v6 title];
+  tabBarItem = [v5 tabBarItem];
+  title = [tabBarItem title];
 
-  return v7;
+  return title;
 }
 
 @end

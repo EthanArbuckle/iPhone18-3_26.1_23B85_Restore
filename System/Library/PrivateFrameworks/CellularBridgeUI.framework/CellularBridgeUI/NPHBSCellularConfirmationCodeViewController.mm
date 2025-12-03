@@ -1,11 +1,11 @@
 @interface NPHBSCellularConfirmationCodeViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NPHBSCellularConfirmationCodeViewController)init;
 - (NPHBSCellularConfirmationCodeViewControllerDelegate)delegate;
 - (NSLayoutConstraint)infoTableViewHeightConstraint;
 - (UILabel)confirmationCodeTitleLabel;
 - (UITableView)infoTableView;
-- (void)confirm:(id)a3;
+- (void)confirm:(id)confirm;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -36,11 +36,11 @@
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"NPHCELLULAR_CARD_INFO_CONFIRMATION_CODE_LABEL" value:&stru_285611AE0 table:0];
-    v10 = [(NPHSetupTableViewCell *)v5->_confirmationCodeCell textLabel];
-    [v10 setText:v9];
+    textLabel = [(NPHSetupTableViewCell *)v5->_confirmationCodeCell textLabel];
+    [textLabel setText:v9];
 
-    v11 = [(NPHSetupTableViewCell *)v5->_confirmationCodeCell editableTextField];
-    [v11 setKeyboardType:2];
+    editableTextField = [(NPHSetupTableViewCell *)v5->_confirmationCodeCell editableTextField];
+    [editableTextField setKeyboardType:2];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -82,35 +82,35 @@
   [v6 setConstant:v5 + -0.5];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  [a3 resignFirstResponder];
+  [return resignFirstResponder];
   [(NPHBSCellularConfirmationCodeViewController *)self confirm:0];
   return 1;
 }
 
-- (void)confirm:(id)a3
+- (void)confirm:(id)confirm
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = nph_general_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(NPHSetupTableViewCell *)self->_confirmationCodeCell editableTextField];
-    v6 = [v5 text];
+    editableTextField = [(NPHSetupTableViewCell *)self->_confirmationCodeCell editableTextField];
+    text = [editableTextField text];
     v12 = 136315394;
     v13 = "[NPHBSCellularConfirmationCodeViewController confirm:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = text;
     _os_log_impl(&dword_243333000, v4, OS_LOG_TYPE_DEFAULT, "%s confirmation code:%@", &v12, 0x16u);
   }
 
-  v7 = [(NPHBSCellularConfirmationCodeViewController *)self presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NPHBSCellularConfirmationCodeViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v8 = [(NPHBSCellularConfirmationCodeViewController *)self delegate];
-  v9 = [(NPHSetupTableViewCell *)self->_confirmationCodeCell editableTextField];
-  v10 = [v9 text];
-  [v8 cellularConfirmationCodeViewController:self confirmedWithCode:v10];
+  delegate = [(NPHBSCellularConfirmationCodeViewController *)self delegate];
+  editableTextField2 = [(NPHSetupTableViewCell *)self->_confirmationCodeCell editableTextField];
+  text2 = [editableTextField2 text];
+  [delegate cellularConfirmationCodeViewController:self confirmedWithCode:text2];
 
   v11 = *MEMORY[0x277D85DE8];
 }

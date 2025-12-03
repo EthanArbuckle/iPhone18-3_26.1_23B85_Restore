@@ -9,7 +9,7 @@
 
 - (__CFString)wf_localizedString
 {
-  v1 = [a1 localizedStringWithPluralizationNumber:&unk_1F4A9A360 forLocaleIdentifier:0];
+  v1 = [self localizedStringWithPluralizationNumber:&unk_1F4A9A360 forLocaleIdentifier:0];
   v2 = v1;
   if (v1)
   {
@@ -35,7 +35,7 @@
   if (!v6)
   {
 LABEL_10:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -81,20 +81,20 @@ LABEL_10:
 
   v12 = v8;
 
-  v13 = [a1 initWithKey:v12 table:0 bundleURL:0];
-  a1 = v13;
+  v13 = [self initWithKey:v12 table:0 bundleURL:0];
+  self = v13;
 
-  v11 = a1;
+  selfCopy = self;
 LABEL_13:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serializedRepresentation
 {
   v2 = objc_opt_new();
-  v3 = [a1 localizedStringWithPluralizationNumber:&unk_1F4A9A360 forLocaleIdentifier:0];
+  v3 = [self localizedStringWithPluralizationNumber:&unk_1F4A9A360 forLocaleIdentifier:0];
   [v2 if_setObjectIfNonNil:v3 forKey:@"key"];
 
   return v2;
@@ -103,8 +103,8 @@ LABEL_13:
 - (void)wf_getLocalizedStringWithCompletionHandler:()Workflow
 {
   v5 = a3;
-  v6 = [a1 wf_localizedString];
-  (a3)[2](v5, v6, 0);
+  wf_localizedString = [self wf_localizedString];
+  (a3)[2](v5, wf_localizedString, 0);
 }
 
 @end

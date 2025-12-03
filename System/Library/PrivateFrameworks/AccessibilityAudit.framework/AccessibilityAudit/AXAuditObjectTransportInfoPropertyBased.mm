@@ -1,22 +1,22 @@
 @interface AXAuditObjectTransportInfoPropertyBased
 - (AXAuditObjectTransportInfoPropertyBased)init;
-- (AXAuditObjectTransportInfoPropertyBased)initWithClass:(Class)a3 transportKey:(id)a4;
+- (AXAuditObjectTransportInfoPropertyBased)initWithClass:(Class)class transportKey:(id)key;
 - (NSArray)propertyEntries;
 - (void)_initializeBlocks;
-- (void)addPropertyEntry:(id)a3;
+- (void)addPropertyEntry:(id)entry;
 @end
 
 @implementation AXAuditObjectTransportInfoPropertyBased
 
-- (AXAuditObjectTransportInfoPropertyBased)initWithClass:(Class)a3 transportKey:(id)a4
+- (AXAuditObjectTransportInfoPropertyBased)initWithClass:(Class)class transportKey:(id)key
 {
   v8.receiver = self;
   v8.super_class = AXAuditObjectTransportInfoPropertyBased;
-  v5 = [(AXAuditObjectTransportInfo *)&v8 initWithTransportKey:a4];
+  v5 = [(AXAuditObjectTransportInfo *)&v8 initWithTransportKey:key];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_entryClass, a3);
+    objc_storeStrong(&v5->_entryClass, class);
     [(AXAuditObjectTransportInfoPropertyBased *)v6 _initializeBlocks];
   }
 
@@ -25,8 +25,8 @@
 
 - (NSArray)propertyEntries
 {
-  v2 = [(AXAuditObjectTransportInfoPropertyBased *)self _propertyEntries];
-  v3 = [v2 copy];
+  _propertyEntries = [(AXAuditObjectTransportInfoPropertyBased *)self _propertyEntries];
+  v3 = [_propertyEntries copy];
 
   return v3;
 }
@@ -188,13 +188,13 @@ id __60__AXAuditObjectTransportInfoPropertyBased__initializeBlocks__block_invoke
   return v4;
 }
 
-- (void)addPropertyEntry:(id)a3
+- (void)addPropertyEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v4 = a3;
-    v5 = [(AXAuditObjectTransportInfoPropertyBased *)self _propertyEntries];
-    [v5 addObject:v4];
+    entryCopy = entry;
+    _propertyEntries = [(AXAuditObjectTransportInfoPropertyBased *)self _propertyEntries];
+    [_propertyEntries addObject:entryCopy];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface IDSActivityMonitorStateManager
 + (id)sharedInstance;
-- (BOOL)startListeningOnActivity:(id)a3;
-- (BOOL)stopListeningOnActivity:(id)a3;
-- (IDSActivityMonitorStateManager)initWithStateProvider:(id)a3 messageDelivery:(id)a4 peerIDManager:(id)a5 accountController:(id)a6 serviceController:(id)a7 pushListener:(id)a8;
-- (IDSActivityMonitorStateManager)initWithStateProvider:(id)a3 messageDelivery:(id)a4 peerIDManager:(id)a5 accountController:(id)a6 serviceController:(id)a7 queue:(id)a8;
+- (BOOL)startListeningOnActivity:(id)activity;
+- (BOOL)stopListeningOnActivity:(id)activity;
+- (IDSActivityMonitorStateManager)initWithStateProvider:(id)provider messageDelivery:(id)delivery peerIDManager:(id)manager accountController:(id)controller serviceController:(id)serviceController pushListener:(id)listener;
+- (IDSActivityMonitorStateManager)initWithStateProvider:(id)provider messageDelivery:(id)delivery peerIDManager:(id)manager accountController:(id)controller serviceController:(id)serviceController queue:(id)queue;
 - (NSMutableSet)listeningOnActivities;
-- (id)currentSubscriptionsForActivity:(id)a3;
-- (id)storedUpdatesForActivity:(id)a3;
-- (void)_subscribeForInfo:(id)a3 withDescription:(id)a4 resolvedTokens:(id)a5 withCompletion:(id)a6;
+- (id)currentSubscriptionsForActivity:(id)activity;
+- (id)storedUpdatesForActivity:(id)activity;
+- (void)_subscribeForInfo:(id)info withDescription:(id)description resolvedTokens:(id)tokens withCompletion:(id)completion;
 - (void)_updateListener;
-- (void)ackUpdatesForActivity:(id)a3;
-- (void)addListener:(id)a3 forActivity:(id)a4;
-- (void)pushListener:(id)a3 receivedUpdatePush:(id)a4;
-- (void)removeListener:(id)a3 forActivity:(id)a4;
-- (void)removeSubscriptionForActivity:(id)a3 subActivity:(id)a4;
+- (void)ackUpdatesForActivity:(id)activity;
+- (void)addListener:(id)listener forActivity:(id)activity;
+- (void)pushListener:(id)listener receivedUpdatePush:(id)push;
+- (void)removeListener:(id)listener forActivity:(id)activity;
+- (void)removeSubscriptionForActivity:(id)activity subActivity:(id)subActivity;
 - (void)setup;
-- (void)storeSubscription:(id)a3 forActivity:(id)a4;
-- (void)subscribeForInfo:(id)a3 onActivity:(id)a4 withCompletion:(id)a5;
-- (void)unsubscribeForActivity:(id)a3 subActivity:(id)a4 withCompletion:(id)a5;
+- (void)storeSubscription:(id)subscription forActivity:(id)activity;
+- (void)subscribeForInfo:(id)info onActivity:(id)activity withCompletion:(id)completion;
+- (void)unsubscribeForActivity:(id)activity subActivity:(id)subActivity withCompletion:(id)completion;
 @end
 
 @implementation IDSActivityMonitorStateManager
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_10032A9FC;
   block[3] = &unk_100BD75B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100CBCE08 != -1)
   {
     dispatch_once(&qword_100CBCE08, block);
@@ -39,48 +39,48 @@
   return v2;
 }
 
-- (IDSActivityMonitorStateManager)initWithStateProvider:(id)a3 messageDelivery:(id)a4 peerIDManager:(id)a5 accountController:(id)a6 serviceController:(id)a7 pushListener:(id)a8
+- (IDSActivityMonitorStateManager)initWithStateProvider:(id)provider messageDelivery:(id)delivery peerIDManager:(id)manager accountController:(id)controller serviceController:(id)serviceController pushListener:(id)listener
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  listenerCopy = listener;
+  serviceControllerCopy = serviceController;
+  controllerCopy = controller;
+  managerCopy = manager;
+  deliveryCopy = delivery;
+  providerCopy = provider;
   v20 = im_primary_queue();
-  v21 = [(IDSActivityMonitorStateManager *)self initWithStateProvider:v19 messageDelivery:v18 peerIDManager:v17 accountController:v16 serviceController:v15 queue:v20];
+  v21 = [(IDSActivityMonitorStateManager *)self initWithStateProvider:providerCopy messageDelivery:deliveryCopy peerIDManager:managerCopy accountController:controllerCopy serviceController:serviceControllerCopy queue:v20];
 
   pushListener = v21->_pushListener;
-  v21->_pushListener = v14;
-  v23 = v14;
+  v21->_pushListener = listenerCopy;
+  v23 = listenerCopy;
 
   [(IDSActivityPushListener *)v21->_pushListener setDelegate:v21];
   return v21;
 }
 
-- (IDSActivityMonitorStateManager)initWithStateProvider:(id)a3 messageDelivery:(id)a4 peerIDManager:(id)a5 accountController:(id)a6 serviceController:(id)a7 queue:(id)a8
+- (IDSActivityMonitorStateManager)initWithStateProvider:(id)provider messageDelivery:(id)delivery peerIDManager:(id)manager accountController:(id)controller serviceController:(id)serviceController queue:(id)queue
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  providerCopy = provider;
+  deliveryCopy = delivery;
+  managerCopy = manager;
+  controllerCopy = controller;
+  serviceControllerCopy = serviceController;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = IDSActivityMonitorStateManager;
   v18 = [(IDSActivityMonitorStateManager *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_stateProvider, a3);
-    v20 = [[IDSActivityPushListener alloc] initWithQueue:v17 shouldDowngradeOnLock:0];
+    objc_storeStrong(&v18->_stateProvider, provider);
+    v20 = [[IDSActivityPushListener alloc] initWithQueue:queueCopy shouldDowngradeOnLock:0];
     pushListener = v19->_pushListener;
     v19->_pushListener = v20;
 
-    objc_storeStrong(&v19->_messageDelivery, a4);
-    objc_storeStrong(&v19->_peerIDManager, a5);
-    objc_storeStrong(&v19->_accountController, a6);
-    objc_storeStrong(&v19->_serviceController, a7);
+    objc_storeStrong(&v19->_messageDelivery, delivery);
+    objc_storeStrong(&v19->_peerIDManager, manager);
+    objc_storeStrong(&v19->_accountController, controller);
+    objc_storeStrong(&v19->_serviceController, serviceController);
     v22 = +[NSMutableDictionary dictionary];
     topicStringToSubscribedInfo = v19->_topicStringToSubscribedInfo;
     v19->_topicStringToSubscribedInfo = v22;
@@ -93,10 +93,10 @@
 
 - (void)setup
 {
-  v5 = [(IDSActivityStateProvider *)self->_stateProvider storedActivityTopics];
-  if ([v5 count])
+  storedActivityTopics = [(IDSActivityStateProvider *)self->_stateProvider storedActivityTopics];
+  if ([storedActivityTopics count])
   {
-    v3 = [v5 mutableCopy];
+    v3 = [storedActivityTopics mutableCopy];
     listeningOnActivities = self->_listeningOnActivities;
     self->_listeningOnActivities = v3;
   }
@@ -104,12 +104,12 @@
   [(IDSActivityMonitorStateManager *)self _updateListener];
 }
 
-- (void)addListener:(id)a3 forActivity:(id)a4
+- (void)addListener:(id)listener forActivity:(id)activity
 {
-  v12 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  activityCopy = activity;
   v7 = +[IDSDXPCActivityMonitor isActivityMonitorSupported];
-  if (v6 && v7)
+  if (activityCopy && v7)
   {
     listenersByActivity = self->_listenersByActivity;
     if (!listenersByActivity)
@@ -121,34 +121,34 @@
       listenersByActivity = self->_listenersByActivity;
     }
 
-    v11 = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:activityCopy];
     if (!v11)
     {
       v11 = +[NSHashTable weakObjectsHashTable];
-      [(NSMutableDictionary *)self->_listenersByActivity setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_listenersByActivity setObject:v11 forKeyedSubscript:activityCopy];
     }
 
-    [v11 addObject:v12];
+    [v11 addObject:listenerCopy];
   }
 }
 
-- (void)removeListener:(id)a3 forActivity:(id)a4
+- (void)removeListener:(id)listener forActivity:(id)activity
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  listenerCopy = listener;
+  activityCopy = activity;
+  if (activityCopy)
   {
     listenersByActivity = self->_listenersByActivity;
     if (listenersByActivity)
     {
-      v8 = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:v6];
+      v8 = [(NSMutableDictionary *)listenersByActivity objectForKeyedSubscript:activityCopy];
       v9 = v8;
       if (v8)
       {
-        [v8 removeObject:v11];
+        [v8 removeObject:listenerCopy];
         if (![v9 count])
         {
-          [(NSMutableDictionary *)self->_listenersByActivity setObject:0 forKeyedSubscript:v6];
+          [(NSMutableDictionary *)self->_listenersByActivity setObject:0 forKeyedSubscript:activityCopy];
         }
 
         if (![(NSMutableDictionary *)self->_listenersByActivity count])
@@ -177,10 +177,10 @@
   return v3;
 }
 
-- (BOOL)startListeningOnActivity:(id)a3
+- (BOOL)startListeningOnActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_listeningOnActivities containsObject:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableSet *)self->_listeningOnActivities containsObject:activityCopy];
   if ((v5 & 1) == 0)
   {
     listeningOnActivities = self->_listeningOnActivities;
@@ -193,14 +193,14 @@
       listeningOnActivities = self->_listeningOnActivities;
     }
 
-    [(NSMutableSet *)listeningOnActivities addObject:v4];
-    v9 = [(IDSActivityMonitorStateManager *)self stateProvider];
-    v10 = [v9 storedActivityTopics];
-    v11 = [NSMutableSet setWithSet:v10];
+    [(NSMutableSet *)listeningOnActivities addObject:activityCopy];
+    stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+    storedActivityTopics = [stateProvider storedActivityTopics];
+    v11 = [NSMutableSet setWithSet:storedActivityTopics];
 
-    [v11 addObject:v4];
-    v12 = [(IDSActivityMonitorStateManager *)self stateProvider];
-    [v12 setStoredActivityTopics:v11];
+    [v11 addObject:activityCopy];
+    stateProvider2 = [(IDSActivityMonitorStateManager *)self stateProvider];
+    [stateProvider2 setStoredActivityTopics:v11];
 
     [(IDSActivityMonitorStateManager *)self _updateListener];
   }
@@ -208,23 +208,23 @@
   return v5 ^ 1;
 }
 
-- (BOOL)stopListeningOnActivity:(id)a3
+- (BOOL)stopListeningOnActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   listeningOnActivities = self->_listeningOnActivities;
-  if (listeningOnActivities && [(NSMutableSet *)listeningOnActivities containsObject:v4])
+  if (listeningOnActivities && [(NSMutableSet *)listeningOnActivities containsObject:activityCopy])
   {
-    [(NSMutableSet *)self->_listeningOnActivities removeObject:v4];
-    v6 = [(IDSActivityMonitorStateManager *)self stateProvider];
-    v7 = [v6 storedActivityTopics];
-    v8 = [NSMutableSet setWithSet:v7];
+    [(NSMutableSet *)self->_listeningOnActivities removeObject:activityCopy];
+    stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+    storedActivityTopics = [stateProvider storedActivityTopics];
+    v8 = [NSMutableSet setWithSet:storedActivityTopics];
 
-    [v8 removeObject:v4];
-    v9 = [(IDSActivityMonitorStateManager *)self stateProvider];
-    [v9 setStoredActivityTopics:v8];
+    [v8 removeObject:activityCopy];
+    stateProvider2 = [(IDSActivityMonitorStateManager *)self stateProvider];
+    [stateProvider2 setStoredActivityTopics:v8];
 
     [(IDSActivityMonitorStateManager *)self _updateListener];
-    [(IDSActivityMonitorStateManager *)self ackUpdatesForActivity:v4];
+    [(IDSActivityMonitorStateManager *)self ackUpdatesForActivity:activityCopy];
 
     v10 = 1;
   }
@@ -237,11 +237,11 @@
   return v10;
 }
 
-- (id)storedUpdatesForActivity:(id)a3
+- (id)storedUpdatesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(IDSActivityMonitorStateManager *)self stateProvider];
-  v6 = [v5 storedUpdatesForActivity:v4];
+  activityCopy = activity;
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+  v6 = [stateProvider storedUpdatesForActivity:activityCopy];
 
   if (v6)
   {
@@ -258,122 +258,122 @@
   return v7;
 }
 
-- (void)storeSubscription:(id)a3 forActivity:(id)a4
+- (void)storeSubscription:(id)subscription forActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSActivityMonitorStateManager *)self stateProvider];
-  [v8 storeSubscription:v7 forActivity:v6];
+  activityCopy = activity;
+  subscriptionCopy = subscription;
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+  [stateProvider storeSubscription:subscriptionCopy forActivity:activityCopy];
 }
 
-- (void)removeSubscriptionForActivity:(id)a3 subActivity:(id)a4
+- (void)removeSubscriptionForActivity:(id)activity subActivity:(id)subActivity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSActivityMonitorStateManager *)self stateProvider];
-  [v8 removeSubscriptionForActivity:v7 subActivity:v6];
+  subActivityCopy = subActivity;
+  activityCopy = activity;
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+  [stateProvider removeSubscriptionForActivity:activityCopy subActivity:subActivityCopy];
 }
 
-- (id)currentSubscriptionsForActivity:(id)a3
+- (id)currentSubscriptionsForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(IDSActivityMonitorStateManager *)self stateProvider];
-  v6 = [v5 storedSubscriptionsForActivity:v4];
+  activityCopy = activity;
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+  v6 = [stateProvider storedSubscriptionsForActivity:activityCopy];
 
   return v6;
 }
 
-- (void)ackUpdatesForActivity:(id)a3
+- (void)ackUpdatesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(IDSActivityMonitorStateManager *)self stateProvider];
-  [v5 storeUpdates:0 forActivity:v4];
+  activityCopy = activity;
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
+  [stateProvider storeUpdates:0 forActivity:activityCopy];
 }
 
-- (void)subscribeForInfo:(id)a3 onActivity:(id)a4 withCompletion:(id)a5
+- (void)subscribeForInfo:(id)info onActivity:(id)activity withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IDSActivityMonitorStateManager *)self topicStringToSubscribedInfo];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  infoCopy = info;
+  activityCopy = activity;
+  completionCopy = completion;
+  topicStringToSubscribedInfo = [(IDSActivityMonitorStateManager *)self topicStringToSubscribedInfo];
+  v12 = [topicStringToSubscribedInfo objectForKeyedSubscript:activityCopy];
 
   v13 = +[NSDate date];
-  v14 = [v12 expirationDate];
-  v15 = [v13 compare:v14];
+  expirationDate = [v12 expirationDate];
+  v15 = [v13 compare:expirationDate];
 
-  if (![v12 isIdentical:v8] || v15 == 1)
+  if (![v12 isIdentical:infoCopy] || v15 == 1)
   {
     v17 = objc_alloc_init(IDSActivityDescription);
-    [(IDSActivityDescription *)v17 setActivity:v9];
+    [(IDSActivityDescription *)v17 setActivity:activityCopy];
     +[NSDate timeIntervalSinceReferenceDate];
     [(IDSActivityDescription *)v17 setTimeSubscribed:?];
-    v18 = [v8 tokens];
-    v19 = [v18 count];
+    tokens = [infoCopy tokens];
+    v19 = [tokens count];
 
     if (v19)
     {
-      v20 = [v8 tokens];
-      [(IDSActivityMonitorStateManager *)self _subscribeForInfo:v8 withDescription:v17 resolvedTokens:v20 withCompletion:v10];
+      tokens2 = [infoCopy tokens];
+      [(IDSActivityMonitorStateManager *)self _subscribeForInfo:infoCopy withDescription:v17 resolvedTokens:tokens2 withCompletion:completionCopy];
     }
 
     else
     {
-      v21 = [v8 URIs];
-      v22 = [v21 count];
+      uRIs = [infoCopy URIs];
+      v22 = [uRIs count];
 
       if (v22)
       {
-        v23 = [(IDSActivityMonitorStateManager *)self serviceController];
-        v24 = [v23 serviceWithIdentifier:v9];
+        serviceController = [(IDSActivityMonitorStateManager *)self serviceController];
+        v24 = [serviceController serviceWithIdentifier:activityCopy];
 
-        v25 = [(IDSActivityMonitorStateManager *)self accountController];
+        accountController = [(IDSActivityMonitorStateManager *)self accountController];
         v46 = v24;
-        v26 = [v25 accountsOnService:v24 withType:1];
-        v27 = [v26 firstObject];
+        v26 = [accountController accountsOnService:v24 withType:1];
+        firstObject = [v26 firstObject];
 
-        if ([v27 isRegistered])
+        if ([firstObject isRegistered])
         {
-          v28 = [v27 unprefixedURIStringsFromRegistration];
+          unprefixedURIStringsFromRegistration = [firstObject unprefixedURIStringsFromRegistration];
           v44 = _IDSCopyCallerIDWithSelfMessagingHint();
 
-          v29 = [v44 _bestGuessURI];
-          [v27 service];
-          v30 = v45 = v27;
-          v31 = [v30 identifier];
-          v43 = [IDSURI URIWithPrefixedURI:v29 withServiceLoggingHint:v31];
+          _bestGuessURI = [v44 _bestGuessURI];
+          [firstObject service];
+          v30 = v45 = firstObject;
+          identifier = [v30 identifier];
+          v43 = [IDSURI URIWithPrefixedURI:_bestGuessURI withServiceLoggingHint:identifier];
 
-          v32 = [v45 primaryRegistration];
-          v42 = [v32 registrationCert];
+          primaryRegistration = [v45 primaryRegistration];
+          registrationCert = [primaryRegistration registrationCert];
 
-          v33 = [(IDSActivityMonitorStateManager *)self peerIDManager];
-          v34 = [v8 URIs];
-          v41 = [v46 identifier];
+          peerIDManager = [(IDSActivityMonitorStateManager *)self peerIDManager];
+          uRIs2 = [infoCopy URIs];
+          identifier2 = [v46 identifier];
           v47[0] = _NSConcreteStackBlock;
           v47[1] = 3221225472;
           v47[2] = sub_10032B938;
           v47[3] = &unk_100BD7658;
           v47[4] = self;
-          v48 = v8;
+          v48 = infoCopy;
           v49 = v17;
-          v50 = v10;
+          v50 = completionCopy;
           LOBYTE(v40) = 0;
-          [v33 startQueryForURIs:v34 fromIdentity:v42 fromURI:v43 fromService:v41 forSending:0 forceToServer:0 clientRequestedForceQuery:v40 reason:@"ActivityMonitorSubscription" completionBlock:v47];
+          [peerIDManager startQueryForURIs:uRIs2 fromIdentity:registrationCert fromURI:v43 fromService:identifier2 forSending:0 forceToServer:0 clientRequestedForceQuery:v40 reason:@"ActivityMonitorSubscription" completionBlock:v47];
 
-          v27 = v45;
+          firstObject = v45;
         }
 
         else
         {
           v38 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:-200 userInfo:0];
-          (*(v10 + 2))(v10, v38);
+          (*(completionCopy + 2))(completionCopy, v38);
         }
       }
 
       else
       {
-        v35 = [v8 deviceUniqueIDs];
-        v36 = [v35 count];
+        deviceUniqueIDs = [infoCopy deviceUniqueIDs];
+        v36 = [deviceUniqueIDs count];
 
         if (v36)
         {
@@ -386,7 +386,7 @@
         }
 
         v39 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:v37 userInfo:0];
-        (*(v10 + 2))(v10, v39);
+        (*(completionCopy + 2))(completionCopy, v39);
       }
     }
   }
@@ -397,25 +397,25 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v52 = v9;
+      v52 = activityCopy;
       v53 = 2112;
-      v54 = v8;
+      v54 = infoCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Found existing identical subscription for topic %@ with info %@.", buf, 0x16u);
     }
 
     v17 = [NSError errorWithDomain:IDSActivityMonitorErrorDomain code:666 userInfo:0];
-    (*(v10 + 2))(v10, v17);
+    (*(completionCopy + 2))(completionCopy, v17);
   }
 }
 
-- (void)unsubscribeForActivity:(id)a3 subActivity:(id)a4 withCompletion:(id)a5
+- (void)unsubscribeForActivity:(id)activity subActivity:(id)subActivity withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  subActivityCopy = subActivity;
+  completionCopy = completion;
   v11 = objc_alloc_init(IDSActivityScribeMessage);
-  v12 = [NSString stringWithFormat:@"%@%@", @"com.apple.icloud.presence.", v8];
-  [(IDSActivityScribeMessage *)v11 setActivityTopic:v12];
+  activityCopy = [NSString stringWithFormat:@"%@%@", @"com.apple.icloud.presence.", activityCopy];
+  [(IDSActivityScribeMessage *)v11 setActivityTopic:activityCopy];
 
   [(IDSActivityScribeMessage *)v11 setVersion:1];
   v13 = +[NSString stringGUID];
@@ -424,45 +424,45 @@
   v14 = +[NSData data];
   [(IDSActivityScribeMessage *)v11 setMetadataBlob:v14];
 
-  [(IDSActivityScribeMessage *)v11 setSubActivity:v9];
+  [(IDSActivityScribeMessage *)v11 setSubActivity:subActivityCopy];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10032BD24;
   v19[3] = &unk_100BD7680;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v20 = activityCopy;
+  v21 = subActivityCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = subActivityCopy;
+  v17 = activityCopy;
   [(IDSActivityScribeMessage *)v11 setCompletionBlock:v19];
-  v18 = [(IDSActivityMonitorStateManager *)self messageDelivery];
-  [v18 sendMessage:v11];
+  messageDelivery = [(IDSActivityMonitorStateManager *)self messageDelivery];
+  [messageDelivery sendMessage:v11];
 }
 
-- (void)_subscribeForInfo:(id)a3 withDescription:(id)a4 resolvedTokens:(id)a5 withCompletion:(id)a6
+- (void)_subscribeForInfo:(id)info withDescription:(id)description resolvedTokens:(id)tokens withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(IDSActivityMonitorStateManager *)self topicStringToSubscribedInfo];
-  v15 = [v11 activity];
-  [v14 setObject:v10 forKeyedSubscript:v15];
+  infoCopy = info;
+  descriptionCopy = description;
+  completionCopy = completion;
+  tokensCopy = tokens;
+  topicStringToSubscribedInfo = [(IDSActivityMonitorStateManager *)self topicStringToSubscribedInfo];
+  activity = [descriptionCopy activity];
+  [topicStringToSubscribedInfo setObject:infoCopy forKeyedSubscript:activity];
 
   v16 = objc_alloc_init(IDSActivityScribeMessage);
-  [(IDSActivityScribeMessage *)v16 setTokens:v13];
+  [(IDSActivityScribeMessage *)v16 setTokens:tokensCopy];
 
-  v17 = [v11 activity];
-  v18 = [NSString stringWithFormat:@"%@%@", @"com.apple.icloud.presence.", v17];
+  activity2 = [descriptionCopy activity];
+  v18 = [NSString stringWithFormat:@"%@%@", @"com.apple.icloud.presence.", activity2];
   [(IDSActivityScribeMessage *)v16 setActivityTopic:v18];
 
-  v19 = [v10 subActivity];
-  [(IDSActivityScribeMessage *)v16 setSubActivity:v19];
+  subActivity = [infoCopy subActivity];
+  [(IDSActivityScribeMessage *)v16 setSubActivity:subActivity];
 
-  v20 = [v10 appContext];
-  [(IDSActivityScribeMessage *)v16 setMetadataBlob:v20];
+  appContext = [infoCopy appContext];
+  [(IDSActivityScribeMessage *)v16 setMetadataBlob:appContext];
 
   [(IDSActivityScribeMessage *)v16 setPushPriority:10];
   [(IDSActivityScribeMessage *)v16 setActivityPolicy:0];
@@ -470,8 +470,8 @@
   v21 = +[NSString stringGUID];
   [(IDSActivityScribeMessage *)v16 setMessageID:v21];
 
-  v22 = [v10 expirationDate];
-  [v22 timeIntervalSinceNow];
+  expirationDate = [infoCopy expirationDate];
+  [expirationDate timeIntervalSinceNow];
   [(IDSActivityScribeMessage *)v16 setTtl:vcvtpd_s64_f64(v23)];
 
   v28[0] = _NSConcreteStackBlock;
@@ -479,43 +479,43 @@
   v28[2] = sub_10032C1F8;
   v28[3] = &unk_100BD7680;
   v28[4] = self;
-  v29 = v11;
-  v30 = v10;
-  v31 = v12;
-  v24 = v12;
-  v25 = v10;
-  v26 = v11;
+  v29 = descriptionCopy;
+  v30 = infoCopy;
+  v31 = completionCopy;
+  v24 = completionCopy;
+  v25 = infoCopy;
+  v26 = descriptionCopy;
   [(IDSActivityScribeMessage *)v16 setCompletionBlock:v28];
-  v27 = [(IDSActivityMonitorStateManager *)self messageDelivery];
-  [v27 sendMessage:v16];
+  messageDelivery = [(IDSActivityMonitorStateManager *)self messageDelivery];
+  [messageDelivery sendMessage:v16];
 }
 
 - (void)_updateListener
 {
-  v3 = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
-  v4 = [v3 __imSetByApplyingBlock:&stru_100BD76C0];
-  v5 = [(IDSActivityMonitorStateManager *)self pushListener];
-  [v5 setTopicsToListenOn:v4];
+  listeningOnActivities = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
+  v4 = [listeningOnActivities __imSetByApplyingBlock:&stru_100BD76C0];
+  pushListener = [(IDSActivityMonitorStateManager *)self pushListener];
+  [pushListener setTopicsToListenOn:v4];
 
-  v8 = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
-  v6 = [v8 count] != 0;
-  v7 = [(IDSActivityMonitorStateManager *)self pushListener];
-  [v7 setShouldListen:v6];
+  listeningOnActivities2 = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
+  v6 = [listeningOnActivities2 count] != 0;
+  pushListener2 = [(IDSActivityMonitorStateManager *)self pushListener];
+  [pushListener2 setShouldListen:v6];
 }
 
-- (void)pushListener:(id)a3 receivedUpdatePush:(id)a4
+- (void)pushListener:(id)listener receivedUpdatePush:(id)push
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 activityTopic];
-  if ([v7 rangeOfString:@"com.apple.icloud.presence."])
+  listenerCopy = listener;
+  pushCopy = push;
+  activityTopic = [pushCopy activityTopic];
+  if ([activityTopic rangeOfString:@"com.apple.icloud.presence."])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v7 substringFromIndex:v8];
+    v9 = [activityTopic substringFromIndex:v8];
   }
 
   if (!v9)
@@ -523,37 +523,37 @@
     goto LABEL_38;
   }
 
-  v10 = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
-  v11 = [v10 containsObject:v9];
+  listeningOnActivities = [(IDSActivityMonitorStateManager *)self listeningOnActivities];
+  v11 = [listeningOnActivities containsObject:v9];
 
   if (!v11)
   {
     goto LABEL_38;
   }
 
-  v52 = v5;
-  v12 = [(IDSActivityMonitorStateManager *)self serviceController];
-  v13 = [v12 serviceWithIdentifier:v9];
+  v52 = listenerCopy;
+  serviceController = [(IDSActivityMonitorStateManager *)self serviceController];
+  v13 = [serviceController serviceWithIdentifier:v9];
 
-  v14 = [(IDSActivityMonitorStateManager *)self accountController];
-  v15 = [v14 accountsOnService:v13 withType:1];
-  v16 = [v15 firstObject];
+  accountController = [(IDSActivityMonitorStateManager *)self accountController];
+  v15 = [accountController accountsOnService:v13 withType:1];
+  firstObject = [v15 firstObject];
 
   v17 = 0;
   v53 = v13;
-  v54 = v6;
+  v54 = pushCopy;
   v56 = v9;
-  v51 = v16;
-  if (v13 && v16)
+  v51 = firstObject;
+  if (v13 && firstObject)
   {
-    if ([v16 isRegistered])
+    if ([firstObject isRegistered])
     {
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v18 = [v16 registeredDevices];
-      v19 = [v18 countByEnumeratingWithState:&v62 objects:v72 count:16];
+      registeredDevices = [firstObject registeredDevices];
+      v19 = [registeredDevices countByEnumeratingWithState:&v62 objects:v72 count:16];
       if (v19)
       {
         v20 = v19;
@@ -565,13 +565,13 @@
           {
             if (*v63 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(registeredDevices);
             }
 
             v23 = *(*(&v62 + 1) + 8 * i);
-            v24 = [v23 pushToken];
-            v25 = [v6 token];
-            v26 = [v24 isEqualToData:v25];
+            pushToken = [v23 pushToken];
+            token = [pushCopy token];
+            v26 = [pushToken isEqualToData:token];
 
             if (v26)
             {
@@ -581,7 +581,7 @@
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v62 objects:v72 count:16];
+          v20 = [registeredDevices countByEnumeratingWithState:&v62 objects:v72 count:16];
         }
 
         while (v20);
@@ -596,14 +596,14 @@
       {
       }
 
-      v28 = [(IDSActivityMonitorStateManager *)self peerIDManager];
-      v29 = [v6 token];
-      v30 = [IDSPushToken pushTokenWithData:v29];
-      v31 = [v53 identifier];
-      v32 = [v28 urisMatchingPushToken:v30 service:v31];
+      peerIDManager = [(IDSActivityMonitorStateManager *)self peerIDManager];
+      token2 = [pushCopy token];
+      v30 = [IDSPushToken pushTokenWithData:token2];
+      identifier = [v53 identifier];
+      v32 = [peerIDManager urisMatchingPushToken:v30 service:identifier];
 
       [0 addObjectsFromArray:v32];
-      v6 = v54;
+      pushCopy = v54;
     }
 
     v17 = 0;
@@ -613,21 +613,21 @@ LABEL_23:
   v55 = v17;
   v33 = [IDSActivityUpdate alloc];
   v34 = IDSActivityMonitorPresenceSubActivity;
-  v35 = [v6 token];
-  v36 = [v6 activityTimestamp];
-  v37 = [v6 metadataBlob];
-  v38 = [v33 initWithSubActivity:v34 pushToken:v35 serverTimestamp:v36 clientContext:v37 isDeviceOnline:{objc_msgSend(v6, "activityStatus")}];
+  token3 = [pushCopy token];
+  activityTimestamp = [pushCopy activityTimestamp];
+  metadataBlob = [pushCopy metadataBlob];
+  v38 = [v33 initWithSubActivity:v34 pushToken:token3 serverTimestamp:activityTimestamp clientContext:metadataBlob isDeviceOnline:{objc_msgSend(pushCopy, "activityStatus")}];
 
-  v39 = [0 allObjects];
-  if (v39)
+  allObjects = [0 allObjects];
+  if (allObjects)
   {
-    [v38 setURIs:v39];
+    [v38 setURIs:allObjects];
   }
 
   else
   {
-    v40 = [v17 URIs];
-    [v38 setURIs:v40];
+    uRIs = [v17 URIs];
+    [v38 setURIs:uRIs];
   }
 
   v41 = +[IMRGLog registration];
@@ -638,10 +638,10 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Looking up for listeners for update: %@", buf, 0xCu);
   }
 
-  v42 = [(IDSActivityMonitorStateManager *)self stateProvider];
+  stateProvider = [(IDSActivityMonitorStateManager *)self stateProvider];
   v71 = v38;
   v43 = [NSArray arrayWithObjects:&v71 count:1];
-  [v42 storeUpdates:v43 forActivity:v56];
+  [stateProvider storeUpdates:v43 forActivity:v56];
 
   v60 = 0u;
   v61 = 0u;
@@ -682,8 +682,8 @@ LABEL_23:
     while (v46);
   }
 
-  v5 = v52;
-  v6 = v54;
+  listenerCopy = v52;
+  pushCopy = v54;
   v9 = v56;
 LABEL_38:
 }

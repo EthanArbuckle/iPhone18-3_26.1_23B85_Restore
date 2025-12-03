@@ -1,8 +1,8 @@
 @interface AKTSDLineEnd
-+ (AKTSDLineEnd)lineEndWithIdentifier:(id)a3;
-+ (AKTSDLineEnd)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6;
-+ (AKTSDLineEnd)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7;
-+ (AKTSDLineEnd)lineEndWithType:(int)a3;
++ (AKTSDLineEnd)lineEndWithIdentifier:(id)identifier;
++ (AKTSDLineEnd)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (AKTSDLineEnd)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier;
++ (AKTSDLineEnd)lineEndWithType:(int)type;
 + (id)filledArrow;
 + (id)filledCircle;
 + (id)filledDiamond;
@@ -13,12 +13,12 @@
 + (id)openCircle;
 + (id)openSquare;
 + (id)simpleArrow;
-- (AKTSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (AKTSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNone;
 - (CGPath)wrapPath;
 - (CGPoint)endPoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -232,16 +232,16 @@
   return v3;
 }
 
-+ (AKTSDLineEnd)lineEndWithType:(int)a3
++ (AKTSDLineEnd)lineEndWithType:(int)type
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           v3 = +[AKTSDLineEnd filledCircle];
         }
@@ -255,9 +255,9 @@
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           +[AKTSDLineEnd openArrow];
         }
@@ -274,9 +274,9 @@
     }
   }
 
-  else if (a3 > 7)
+  else if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
         v3 = +[AKTSDLineEnd invertedArrow];
@@ -292,9 +292,9 @@
 
   else
   {
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         +[AKTSDLineEnd openSquare];
       }
@@ -316,10 +316,10 @@ LABEL_25:
   return v3;
 }
 
-+ (AKTSDLineEnd)lineEndWithIdentifier:(id)a3
++ (AKTSDLineEnd)lineEndWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"simple arrow"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"simple arrow"])
   {
     v4 = +[AKTSDLineEnd simpleArrow];
 LABEL_23:
@@ -327,61 +327,61 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v3 isEqualToString:@"filled circle"])
+  if ([identifierCopy isEqualToString:@"filled circle"])
   {
     v4 = +[AKTSDLineEnd filledCircle];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled diamond"])
+  if ([identifierCopy isEqualToString:@"filled diamond"])
   {
     v4 = +[AKTSDLineEnd filledDiamond];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open arrow"])
+  if ([identifierCopy isEqualToString:@"open arrow"])
   {
     v4 = +[AKTSDLineEnd openArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled arrow"])
+  if ([identifierCopy isEqualToString:@"filled arrow"])
   {
     v4 = +[AKTSDLineEnd filledArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"filled square"])
+  if ([identifierCopy isEqualToString:@"filled square"])
   {
     v4 = +[AKTSDLineEnd filledSquare];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open square"])
+  if ([identifierCopy isEqualToString:@"open square"])
   {
     v4 = +[AKTSDLineEnd openSquare];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"open circle"])
+  if ([identifierCopy isEqualToString:@"open circle"])
   {
     v4 = +[AKTSDLineEnd openCircle];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"inverted arrow"])
+  if ([identifierCopy isEqualToString:@"inverted arrow"])
   {
     v4 = +[AKTSDLineEnd invertedArrow];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"line"])
+  if ([identifierCopy isEqualToString:@"line"])
   {
     v4 = +[AKTSDLineEnd line];
     goto LABEL_23;
   }
 
-  if ([v3 isEqualToString:@"none"])
+  if ([identifierCopy isEqualToString:@"none"])
   {
     v4 = +[AKTSDLineEnd none];
     goto LABEL_23;
@@ -393,48 +393,48 @@ LABEL_24:
   return v5;
 }
 
-+ (AKTSDLineEnd)lineEndWithPath:(CGPath *)a3 endPoint:(CGPoint)a4 isFilled:(BOOL)a5 identifier:(id)a6
++ (AKTSDLineEnd)lineEndWithPath:(CGPath *)path endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v6 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a6;
-  v11 = [objc_alloc(objc_opt_class()) initWithPath:a3 endPoint:v6 isFilled:v10 identifier:{x, y}];
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  v11 = [objc_alloc(objc_opt_class()) initWithPath:path endPoint:filledCopy isFilled:identifierCopy identifier:{x, y}];
 
   return v11;
 }
 
-+ (AKTSDLineEnd)lineEndWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7
++ (AKTSDLineEnd)lineEndWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier
 {
-  v7 = a6;
-  y = a5.y;
-  x = a5.x;
-  v12 = a7;
-  v13 = [objc_alloc(objc_opt_class()) initWithPath:a3 wrapPath:a4 endPoint:v7 isFilled:v12 identifier:0 lineJoin:{x, y}];
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
+  v13 = [objc_alloc(objc_opt_class()) initWithPath:path wrapPath:wrapPath endPoint:filledCopy isFilled:identifierCopy identifier:0 lineJoin:{x, y}];
 
   return v13;
 }
 
-- (AKTSDLineEnd)initWithPath:(CGPath *)a3 wrapPath:(CGPath *)a4 endPoint:(CGPoint)a5 isFilled:(BOOL)a6 identifier:(id)a7 lineJoin:(int)a8
+- (AKTSDLineEnd)initWithPath:(CGPath *)path wrapPath:(CGPath *)wrapPath endPoint:(CGPoint)point isFilled:(BOOL)filled identifier:(id)identifier lineJoin:(int)join
 {
-  y = a5.y;
-  x = a5.x;
-  v15 = a7;
+  y = point.y;
+  x = point.x;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = AKTSDLineEnd;
   v16 = [(AKTSDLineEnd *)&v20 init];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [identifierCopy copy];
     mIdentifier = v16->mIdentifier;
     v16->mIdentifier = v17;
 
-    v16->mLineJoin = a8;
-    v16->mPath = CGPathCreateMutableCopy(a3);
-    v16->mWrapPath = CGPathCreateMutableCopy(a4);
+    v16->mLineJoin = join;
+    v16->mPath = CGPathCreateMutableCopy(path);
+    v16->mWrapPath = CGPathCreateMutableCopy(wrapPath);
     v16->mEndPoint.x = x;
     v16->mEndPoint.y = y;
-    v16->mIsFilled = a6;
+    v16->mIsFilled = filled;
   }
 
   return v16;
@@ -449,20 +449,20 @@ LABEL_24:
   [(AKTSDLineEnd *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(AKTSDLineEnd *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(AKTSDLineEnd *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     mIdentifier = self->mIdentifier;
-    v6 = v4;
-    v7 = [(AKTSDLineEnd *)v6 identifier];
-    v8 = [(NSString *)mIdentifier isEqualToString:v7];
+    v6 = equalCopy;
+    identifier = [(AKTSDLineEnd *)v6 identifier];
+    v8 = [(NSString *)mIdentifier isEqualToString:identifier];
   }
 
   else
@@ -473,9 +473,9 @@ LABEL_24:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mPath = self->mPath;
   mWrapPath = self->mWrapPath;
   mIsFilled = self->mIsFilled;
@@ -500,8 +500,8 @@ LABEL_24:
 
 - (BOOL)isNone
 {
-  v2 = [(AKTSDLineEnd *)self identifier];
-  v3 = [v2 isEqualToString:@"none"];
+  identifier = [(AKTSDLineEnd *)self identifier];
+  v3 = [identifier isEqualToString:@"none"];
 
   return v3;
 }
@@ -511,8 +511,8 @@ LABEL_24:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AKTSDLineEnd *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p %@>", v5, self, v6];
+  identifier = [(AKTSDLineEnd *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p %@>", v5, self, identifier];
 
   return v7;
 }

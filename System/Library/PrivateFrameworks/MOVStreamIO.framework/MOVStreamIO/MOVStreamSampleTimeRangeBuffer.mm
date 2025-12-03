@@ -1,13 +1,13 @@
 @interface MOVStreamSampleTimeRangeBuffer
-- (MOVStreamSampleTimeRangeBuffer)initWithCapacity:(unint64_t)a3;
+- (MOVStreamSampleTimeRangeBuffer)initWithCapacity:(unint64_t)capacity;
 - (id).cxx_construct;
 - (id)timeRangeList;
-- (void)appendTimeRange:(id *)a3;
+- (void)appendTimeRange:(id *)range;
 @end
 
 @implementation MOVStreamSampleTimeRangeBuffer
 
-- (MOVStreamSampleTimeRangeBuffer)initWithCapacity:(unint64_t)a3
+- (MOVStreamSampleTimeRangeBuffer)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MOVStreamSampleTimeRangeBuffer;
@@ -15,13 +15,13 @@
   v5 = v4;
   if (v4)
   {
-    std::vector<CMTimeRange>::reserve(&v4->_ranges.__begin_, 100 * (a3 / 0x64) + 100);
+    std::vector<CMTimeRange>::reserve(&v4->_ranges.__begin_, 100 * (capacity / 0x64) + 100);
   }
 
   return v5;
 }
 
-- (void)appendTimeRange:(id *)a3
+- (void)appendTimeRange:(id *)range
 {
   end = self->_ranges.__end_;
   cap = self->_ranges.__cap_;
@@ -57,9 +57,9 @@
     }
 
     v14 = 48 * v10;
-    v15 = *&a3->var0.var0;
-    v16 = *&a3->var1.var1;
-    *(v14 + 16) = *&a3->var0.var3;
+    v15 = *&range->var0.var0;
+    v16 = *&range->var1.var1;
+    *(v14 + 16) = *&range->var0.var3;
     *(v14 + 32) = v16;
     *v14 = v15;
     v8 = (48 * v10 + 48);
@@ -79,9 +79,9 @@
 
   else
   {
-    v6 = *&a3->var0.var0;
-    v7 = *&a3->var1.var1;
-    *(end + 1) = *&a3->var0.var3;
+    v6 = *&range->var0.var0;
+    v7 = *&range->var1.var1;
+    *(end + 1) = *&range->var0.var3;
     *(end + 2) = v7;
     *end = v6;
     v8 = (end + 48);

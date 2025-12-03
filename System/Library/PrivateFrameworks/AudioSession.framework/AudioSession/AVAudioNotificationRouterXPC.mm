@@ -3,16 +3,16 @@
 - (AVAudioNotificationRouterXPC)init;
 - (BOOL)isAudioServiceTerminated;
 - (id).cxx_construct;
-- (unint64_t)addNotificationDelegate:(id)a3 error:(id *)a4;
+- (unint64_t)addNotificationDelegate:(id)delegate error:(id *)error;
 - (unint64_t)createRemoteNotificationCenter;
-- (void)destroyRemoteNotificationCenter:(unint64_t)a3;
+- (void)destroyRemoteNotificationCenter:(unint64_t)center;
 - (void)handleAudiomxdReset;
 - (void)handleAudiomxdTermination;
-- (void)handleNotification:(id)a3 payload:(id)a4;
-- (void)removeNotificationDelegate:(unint64_t)a3;
-- (void)setAudioServiceTerminated:(BOOL)a3;
-- (void)startObservingNotifications:(id)a3 forDelegate:(unint64_t)a4;
-- (void)stopObservingNotifications:(id)a3 forDelegate:(unint64_t)a4;
+- (void)handleNotification:(id)notification payload:(id)payload;
+- (void)removeNotificationDelegate:(unint64_t)delegate;
+- (void)setAudioServiceTerminated:(BOOL)terminated;
+- (void)startObservingNotifications:(id)notifications forDelegate:(unint64_t)delegate;
+- (void)stopObservingNotifications:(id)notifications forDelegate:(unint64_t)delegate;
 @end
 
 @implementation AVAudioNotificationRouterXPC
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[AVAudioNotificationRouterXPC sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[AVAudioNotificationRouterXPC sharedInstance]::onceToken, block);
@@ -50,36 +50,36 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
   return [(AVAudioNotificationRouterXPC *)&v3 init];
 }
 
-- (unint64_t)addNotificationDelegate:(id)a3 error:(id *)a4
+- (unint64_t)addNotificationDelegate:(id)delegate error:(id *)error
 {
-  v5 = a3;
-  v6 = [(AVAudioNotificationRouterXPC *)self createRemoteNotificationCenter];
-  if (v6)
+  delegateCopy = delegate;
+  createRemoteNotificationCenter = [(AVAudioNotificationRouterXPC *)self createRemoteNotificationCenter];
+  if (createRemoteNotificationCenter)
   {
     os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-    NotificationDelegateCollectionXPC::AddDelegate(&self->_delegates.mObject.mDelegates.__table_.__bucket_list_.__ptr_, v5, v6);
+    NotificationDelegateCollectionXPC::AddDelegate(&self->_delegates.mObject.mDelegates.__table_.__bucket_list_.__ptr_, delegateCopy, createRemoteNotificationCenter);
     os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
   }
 
-  return v6;
+  return createRemoteNotificationCenter;
 }
 
-- (void)removeNotificationDelegate:(unint64_t)a3
+- (void)removeNotificationDelegate:(unint64_t)delegate
 {
   [(AVAudioNotificationRouterXPC *)self destroyRemoteNotificationCenter:?];
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-  v5 = a3;
-  std::__hash_table<std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>>>::__erase_unique<unsigned long long>(&self->_delegates.mObject.mDelegates.__table_.__bucket_list_.__ptr_, &v5);
+  delegateCopy = delegate;
+  std::__hash_table<std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NotificationDelegateCollectionXPC::NotificationDelegates>>>::__erase_unique<unsigned long long>(&self->_delegates.mObject.mDelegates.__table_.__bucket_list_.__ptr_, &delegateCopy);
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
 }
 
 - (unint64_t)createRemoteNotificationCenter
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
-  if (v2)
+  isAudioServiceTerminated = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
+  if (isAudioServiceTerminated)
   {
-    v3 = *avas::client::gSessionClientLog(v2);
+    v3 = *avas::client::gSessionClientLog(isAudioServiceTerminated);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v8 = 136315394;
@@ -89,36 +89,36 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
       _os_log_impl(&dword_1AC8A4000, v3, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to create remote notification center, mediaserver has not been reset", &v8, 0x12u);
     }
 
-    v4 = 0;
+    privateCreateRemoteNotificationCenter = 0;
   }
 
   else
   {
     v5 = +[AVAudioSession sharedInstance];
-    v4 = [v5 privateCreateRemoteNotificationCenter];
+    privateCreateRemoteNotificationCenter = [v5 privateCreateRemoteNotificationCenter];
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return privateCreateRemoteNotificationCenter;
 }
 
-- (void)destroyRemoteNotificationCenter:(unint64_t)a3
+- (void)destroyRemoteNotificationCenter:(unint64_t)center
 {
   if (![(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated])
   {
     v4 = +[AVAudioSession sharedInstance];
-    [v4 privateDestroyRemoteNotificationCenter:a3];
+    [v4 privateDestroyRemoteNotificationCenter:center];
   }
 }
 
-- (void)startObservingNotifications:(id)a3 forDelegate:(unint64_t)a4
+- (void)startObservingNotifications:(id)notifications forDelegate:(unint64_t)delegate
 {
   v28 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
-  if (v6)
+  notificationsCopy = notifications;
+  isAudioServiceTerminated = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
+  if (isAudioServiceTerminated)
   {
-    v7 = *avas::client::gSessionClientLog(v6);
+    v7 = *avas::client::gSessionClientLog(isAudioServiceTerminated);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
@@ -136,7 +136,7 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v18;
+    v9 = notificationsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -153,8 +153,8 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
 
           v13 = *(*(&v19 + 1) + 8 * v12);
           v14 = objc_alloc_init(MEMORY[0x1E698D740]);
-          v15 = [v13 propertyName];
-          [v14 setPropertyName:v15];
+          propertyName = [v13 propertyName];
+          [v14 setPropertyName:propertyName];
 
           [v14 setType:{objc_msgSend(v13, "type")}];
           [v8 addObject:v14];
@@ -170,20 +170,20 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
     }
 
     v16 = +[AVAudioSession sharedInstance];
-    [v16 privateStartOrStopObserving:1 remoteNotifications:v8 forDelegate:a4];
+    [v16 privateStartOrStopObserving:1 remoteNotifications:v8 forDelegate:delegate];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopObservingNotifications:(id)a3 forDelegate:(unint64_t)a4
+- (void)stopObservingNotifications:(id)notifications forDelegate:(unint64_t)delegate
 {
   v28 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
-  if (v6)
+  notificationsCopy = notifications;
+  isAudioServiceTerminated = [(AVAudioNotificationRouterXPC *)self isAudioServiceTerminated];
+  if (isAudioServiceTerminated)
   {
-    v7 = *avas::client::gSessionClientLog(v6);
+    v7 = *avas::client::gSessionClientLog(isAudioServiceTerminated);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
@@ -201,7 +201,7 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v18;
+    v9 = notificationsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -218,8 +218,8 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
 
           v13 = *(*(&v19 + 1) + 8 * v12);
           v14 = objc_alloc_init(MEMORY[0x1E698D740]);
-          v15 = [v13 propertyName];
-          [v14 setPropertyName:v15];
+          propertyName = [v13 propertyName];
+          [v14 setPropertyName:propertyName];
 
           [v14 setType:{objc_msgSend(v13, "type")}];
           [v8 addObject:v14];
@@ -235,36 +235,36 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
     }
 
     v16 = +[AVAudioSession sharedInstance];
-    [v16 privateStartOrStopObserving:0 remoteNotifications:v8 forDelegate:a4];
+    [v16 privateStartOrStopObserving:0 remoteNotifications:v8 forDelegate:delegate];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNotification:(id)a3 payload:(id)a4
+- (void)handleNotification:(id)notification payload:(id)payload
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:v6];
+  notificationCopy = notification;
+  payloadCopy = payload;
+  v8 = [payloadCopy objectForKey:notificationCopy];
 
-  if (v8 && ([v7 objectForKeyedSubscript:v6], v9 = objc_claimAutoreleasedReturnValue(), (v8 = v9) != 0))
+  if (v8 && ([payloadCopy objectForKeyedSubscript:notificationCopy], v9 = objc_claimAutoreleasedReturnValue(), (v8 = v9) != 0))
   {
-    v10 = [v9 delegatePayload];
-    v11 = [v8 subscribedDelegates];
+    delegatePayload = [v9 delegatePayload];
+    subscribedDelegates = [v8 subscribedDelegates];
   }
 
   else
   {
-    v10 = 0;
-    v11 = 0;
+    delegatePayload = 0;
+    subscribedDelegates = 0;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E698D748]) initWithPropertyName:v6 sourceSessionID:0 nodeSessionID:0 propertyData:v10];
+  v12 = [objc_alloc(MEMORY[0x1E698D748]) initWithPropertyName:notificationCopy sourceSessionID:0 nodeSessionID:0 propertyData:delegatePayload];
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  NotificationDelegateCollectionXPC::HandleNotifications(&self->_delegates.mObject, v13, v11);
+  NotificationDelegateCollectionXPC::HandleNotifications(&self->_delegates.mObject, v13, subscribedDelegates);
 
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
   v14 = *MEMORY[0x1E69E9840];
@@ -315,10 +315,10 @@ void __46__AVAudioNotificationRouterXPC_sharedInstance__block_invoke(uint64_t a1
   return mIsAudioServiceTerminated;
 }
 
-- (void)setAudioServiceTerminated:(BOOL)a3
+- (void)setAudioServiceTerminated:(BOOL)terminated
 {
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-  self->_delegates.mObject.mIsAudioServiceTerminated = a3;
+  self->_delegates.mObject.mIsAudioServiceTerminated = terminated;
 
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
 }

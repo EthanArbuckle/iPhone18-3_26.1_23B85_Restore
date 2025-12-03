@@ -32,7 +32,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if (![a1 _navigation_isEquivalentToTimeZone:v6 forDate:{*(*(&v16 + 1) + 8 * v12), v16}])
+          if (![self _navigation_isEquivalentToTimeZone:v6 forDate:{*(*(&v16 + 1) + 8 * v12), v16}])
           {
             v13 = 0;
             goto LABEL_12;
@@ -58,7 +58,7 @@ LABEL_12:
 
   else
   {
-    v13 = [a1 _navigation_isEquivalentToTimeZone:v6 forDate:0];
+    v13 = [self _navigation_isEquivalentToTimeZone:v6 forDate:0];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -73,17 +73,17 @@ LABEL_12:
   {
     if (v7)
     {
-      v8 = [a1 secondsFromGMTForDate:v7];
-      v9 = [v6 secondsFromGMTForDate:v7];
+      secondsFromGMT = [self secondsFromGMTForDate:v7];
+      secondsFromGMT2 = [v6 secondsFromGMTForDate:v7];
     }
 
     else
     {
-      v8 = [a1 secondsFromGMT];
-      v9 = [v6 secondsFromGMT];
+      secondsFromGMT = [self secondsFromGMT];
+      secondsFromGMT2 = [v6 secondsFromGMT];
     }
 
-    v10 = v8 == v9;
+    v10 = secondsFromGMT == secondsFromGMT2;
   }
 
   else

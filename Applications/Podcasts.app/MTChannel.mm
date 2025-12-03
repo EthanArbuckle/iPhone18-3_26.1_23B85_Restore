@@ -1,17 +1,17 @@
 @interface MTChannel
-- (void)setSubscriptionActive:(BOOL)a3;
+- (void)setSubscriptionActive:(BOOL)active;
 @end
 
 @implementation MTChannel
 
-- (void)setSubscriptionActive:(BOOL)a3
+- (void)setSubscriptionActive:(BOOL)active
 {
-  v3 = a3;
-  if ([(MTChannel *)self subscriptionActive]!= a3)
+  activeCopy = active;
+  if ([(MTChannel *)self subscriptionActive]!= active)
   {
     v5 = kChannelSubscriptionActive;
     [(MTChannel *)self willChangeValueForKey:kChannelSubscriptionActive];
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:activeCopy];
     [(MTChannel *)self setPrimitiveValue:v6 forKey:v5];
 
     [(MTChannel *)self didChangeValueForKey:v5];

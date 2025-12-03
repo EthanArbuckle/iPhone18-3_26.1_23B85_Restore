@@ -1,11 +1,11 @@
 @interface MedicalRecordTimelinePanelHeaderItemCell
-- (_TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell)initWithCoder:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell)initWithCoder:(id)coder;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MedicalRecordTimelinePanelHeaderItemCell
 
-- (_TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI40MedicalRecordTimelinePanelHeaderItemCell____lazy_storage___subtitleLabel) = 0;
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D1302E04(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D1302E04(change);
 }
 
 @end

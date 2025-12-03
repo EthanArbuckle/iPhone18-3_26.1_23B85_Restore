@@ -1,17 +1,17 @@
 @interface FindMyLocateSession
 - (_TtC15HomeDeviceSetup19FindMyLocateSession)init;
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3;
-- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)a3;
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler;
+- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)handler;
 @end
 
 @implementation FindMyLocateSession
 
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F57FA68, &qword_252FEE2D0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,16 +27,16 @@
   v12[3] = 0;
   v12[4] = &unk_252FEE330;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_252FD7008(0, 0, v7, &unk_252FEE338, v12);
 }
 
-- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)a3
+- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F57FA68, &qword_252FEE2D0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -52,7 +52,7 @@
   v12[3] = 0;
   v12[4] = &unk_252FEE2F0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_252FD7008(0, 0, v7, &unk_252FEE300, v12);
 }
 

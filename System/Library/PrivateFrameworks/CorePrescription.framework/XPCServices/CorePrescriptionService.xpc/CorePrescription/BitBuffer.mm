@@ -1,34 +1,34 @@
 @interface BitBuffer
-- (BOOL)readBool:(BOOL *)a3;
-- (BOOL)readData:(id)a3 bitWidth:(unint64_t)a4;
-- (BOOL)readUInteger:(unint64_t *)a3 bitWidth:(unint64_t)a4;
-- (BOOL)skipBits:(unint64_t)a3;
-- (BOOL)writeBool:(BOOL)a3;
-- (BOOL)writeData:(id)a3 bitWidth:(unint64_t)a4;
-- (BOOL)writeUInteger:(unint64_t)a3 bitWidth:(unint64_t)a4;
-- (BitBuffer)initWithData:(id)a3;
-- (BitBuffer)initWithMutableData:(id)a3;
+- (BOOL)readBool:(BOOL *)bool;
+- (BOOL)readData:(id)data bitWidth:(unint64_t)width;
+- (BOOL)readUInteger:(unint64_t *)integer bitWidth:(unint64_t)width;
+- (BOOL)skipBits:(unint64_t)bits;
+- (BOOL)writeBool:(BOOL)bool;
+- (BOOL)writeData:(id)data bitWidth:(unint64_t)width;
+- (BOOL)writeUInteger:(unint64_t)integer bitWidth:(unint64_t)width;
+- (BitBuffer)initWithData:(id)data;
+- (BitBuffer)initWithMutableData:(id)data;
 - (void)nextByte;
 - (void)rewind;
 @end
 
 @implementation BitBuffer
 
-- (BitBuffer)initWithData:(id)a3
+- (BitBuffer)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = BitBuffer;
   v6 = [(BitBuffer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputData, a3);
+    objc_storeStrong(&v6->_inputData, data);
     v7->_byteCount = [(NSData *)v7->_inputData length];
     v7->_bitCount = 8 * [(NSData *)v7->_inputData length];
-    v8 = [(NSData *)v7->_inputData bytes];
-    v7->_inputPtr = v8;
-    v7->_inputEndPtr = [(NSData *)v7->_inputData length]+ v8;
+    bytes = [(NSData *)v7->_inputData bytes];
+    v7->_inputPtr = bytes;
+    v7->_inputEndPtr = [(NSData *)v7->_inputData length]+ bytes;
     v7->_curInputByte = *v7->_inputPtr;
     v7->_bitOffset = 0;
     v7->_bitOffsetInByte = 0;
@@ -37,23 +37,23 @@
   return v7;
 }
 
-- (BitBuffer)initWithMutableData:(id)a3
+- (BitBuffer)initWithMutableData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = BitBuffer;
   v6 = [(BitBuffer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputData, a3);
+    objc_storeStrong(&v6->_outputData, data);
     v7->_byteCount = [(NSMutableData *)v7->_outputData length];
     v7->_bitCount = 8 * [(NSMutableData *)v7->_outputData length];
-    v8 = [(NSMutableData *)v7->_outputData mutableBytes];
-    v7->_outputPtr = v8;
+    mutableBytes = [(NSMutableData *)v7->_outputData mutableBytes];
+    v7->_outputPtr = mutableBytes;
     v7->_bitOffset = 0;
     v7->_bitOffsetInByte = 0;
-    bzero(v8, [(NSMutableData *)v7->_outputData length]);
+    bzero(mutableBytes, [(NSMutableData *)v7->_outputData length]);
   }
 
   return v7;
@@ -64,34 +64,34 @@
   inputData = self->_inputData;
   if (inputData)
   {
-    v4 = [(NSData *)inputData bytes];
-    self->_inputPtr = v4;
-    self->_curInputByte = *v4;
+    bytes = [(NSData *)inputData bytes];
+    self->_inputPtr = bytes;
+    self->_curInputByte = *bytes;
   }
 
   else
   {
-    v5 = [(NSMutableData *)self->_outputData mutableBytes];
-    self->_outputPtr = v5;
-    bzero(v5, [(NSMutableData *)self->_outputData length]);
+    mutableBytes = [(NSMutableData *)self->_outputData mutableBytes];
+    self->_outputPtr = mutableBytes;
+    bzero(mutableBytes, [(NSMutableData *)self->_outputData length]);
   }
 
   self->_bitOffset = 0;
   self->_bitOffsetInByte = 0;
 }
 
-- (BOOL)skipBits:(unint64_t)a3
+- (BOOL)skipBits:(unint64_t)bits
 {
   v4 = self->_bitCount - self->_bitOffset;
-  if (a3 - 1 < v4)
+  if (bits - 1 < v4)
   {
-    v6 = a3;
+    bitsCopy = bits;
     do
     {
       bitOffsetInByte = self->_bitOffsetInByte;
-      if (8 - bitOffsetInByte >= v6)
+      if (8 - bitOffsetInByte >= bitsCopy)
       {
-        v8 = v6;
+        v8 = bitsCopy;
       }
 
       else
@@ -105,16 +105,16 @@
       }
 
       self->_bitOffset += v8;
-      v6 -= v8;
+      bitsCopy -= v8;
     }
 
-    while (v6);
+    while (bitsCopy);
   }
 
-  return v4 >= a3;
+  return v4 >= bits;
 }
 
-- (BOOL)readBool:(BOOL *)a3
+- (BOOL)readBool:(BOOL *)bool
 {
   if (!self->_inputData)
   {
@@ -127,7 +127,7 @@
     return 0;
   }
 
-  *a3 = self->_curInputByte >> 7;
+  *bool = self->_curInputByte >> 7;
   self->_curInputByte *= 2;
   v7 = self->_bitOffsetInByte + 1;
   self->_bitOffset = bitOffset + 1;
@@ -140,7 +140,7 @@
   return 1;
 }
 
-- (BOOL)writeBool:(BOOL)a3
+- (BOOL)writeBool:(BOOL)bool
 {
   outputData = self->_outputData;
   if (outputData)
@@ -153,7 +153,7 @@
     else
     {
       *self->_outputPtr *= 2;
-      *self->_outputPtr |= a3;
+      *self->_outputPtr |= bool;
       LOBYTE(outputData) = 1;
       v6 = vaddq_s64(*&self->_bitOffset, vdupq_n_s64(1uLL));
       *&self->_bitOffset = v6;
@@ -168,22 +168,22 @@
   return outputData;
 }
 
-- (BOOL)readUInteger:(unint64_t *)a3 bitWidth:(unint64_t)a4
+- (BOOL)readUInteger:(unint64_t *)integer bitWidth:(unint64_t)width
 {
   result = 0;
-  if (a4 <= 0x40 && self->_inputData)
+  if (width <= 0x40 && self->_inputData)
   {
-    v6 = a4;
-    if (self->_bitCount - self->_bitOffset >= a4)
+    widthCopy = width;
+    if (self->_bitCount - self->_bitOffset >= width)
     {
-      *a3 = 0;
-      if (a4)
+      *integer = 0;
+      if (width)
       {
         do
         {
-          if (8 - self->_bitOffsetInByte >= v6)
+          if (8 - self->_bitOffsetInByte >= widthCopy)
           {
-            v8 = v6;
+            v8 = widthCopy;
           }
 
           else
@@ -191,9 +191,9 @@
             v8 = 8 - self->_bitOffsetInByte;
           }
 
-          v9 = *a3 << v8;
-          *a3 = v9;
-          *a3 = v9 | (self->_curInputByte >> (8 - v8));
+          v9 = *integer << v8;
+          *integer = v9;
+          *integer = v9 | (self->_curInputByte >> (8 - v8));
           self->_curInputByte <<= v8;
           v10 = self->_bitOffsetInByte + v8;
           self->_bitOffset += v8;
@@ -203,10 +203,10 @@
             [(BitBuffer *)self nextByte];
           }
 
-          v6 -= v8;
+          widthCopy -= v8;
         }
 
-        while (v6);
+        while (widthCopy);
       }
 
       return 1;
@@ -221,23 +221,23 @@
   return result;
 }
 
-- (BOOL)writeUInteger:(unint64_t)a3 bitWidth:(unint64_t)a4
+- (BOOL)writeUInteger:(unint64_t)integer bitWidth:(unint64_t)width
 {
   result = 0;
-  if (a4 <= 0x40 && self->_outputData)
+  if (width <= 0x40 && self->_outputData)
   {
-    v6 = a4;
-    if (self->_bitCount - self->_bitOffset >= a4)
+    widthCopy = width;
+    if (self->_bitCount - self->_bitOffset >= width)
     {
-      if (a4)
+      if (width)
       {
-        v7 = (0xFFFFFFFFFFFFFFFFLL >> -a4) & a3;
-        v8 = a4;
+        v7 = (0xFFFFFFFFFFFFFFFFLL >> -width) & integer;
+        widthCopy2 = width;
         do
         {
-          if (8 - self->_bitOffsetInByte >= v6)
+          if (8 - self->_bitOffsetInByte >= widthCopy)
           {
-            v9 = v6;
+            v9 = widthCopy;
           }
 
           else
@@ -246,8 +246,8 @@
           }
 
           *self->_outputPtr = *self->_outputPtr << v9;
-          v8 -= v9;
-          *self->_outputPtr |= v7 >> v8;
+          widthCopy2 -= v9;
+          *self->_outputPtr |= v7 >> widthCopy2;
           v10 = self->_bitOffsetInByte + v9;
           self->_bitOffsetInByte = v10;
           if (v10 == 8)
@@ -256,10 +256,10 @@
           }
 
           self->_bitOffset += v9;
-          v6 -= v9;
+          widthCopy -= v9;
         }
 
-        while (v6);
+        while (widthCopy);
       }
 
       return 1;
@@ -274,18 +274,18 @@
   return result;
 }
 
-- (BOOL)readData:(id)a3 bitWidth:(unint64_t)a4
+- (BOOL)readData:(id)data bitWidth:(unint64_t)width
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_inputData && ((bitCount = self->_bitCount, bitOffset = self->_bitOffset, v10 = 8 * [v6 length], v10 >= a4) ? (v11 = bitCount - bitOffset >= a4) : (v11 = 0), v11))
+  dataCopy = data;
+  v7 = dataCopy;
+  if (self->_inputData && ((bitCount = self->_bitCount, bitOffset = self->_bitOffset, v10 = 8 * [dataCopy length], v10 >= width) ? (v11 = bitCount - bitOffset >= width) : (v11 = 0), v11))
   {
-    v13 = [v7 mutableBytes];
-    if (a4)
+    mutableBytes = [v7 mutableBytes];
+    if (width)
     {
-      v14 = v13;
-      v15 = v10 - a4;
-      if (v10 < a4)
+      v14 = mutableBytes;
+      v15 = v10 - width;
+      if (v10 < width)
       {
         v15 = 0;
       }
@@ -295,30 +295,30 @@
         v21 = 0;
         if (v15 <= 7)
         {
-          if (a4 >= 8)
+          if (width >= 8)
           {
-            v18 = 8;
+            widthCopy = 8;
           }
 
           else
           {
-            v18 = a4;
+            widthCopy = width;
           }
 
-          v19 = 8 - v15;
-          if (8 - v15 >= a4)
+          widthCopy2 = 8 - v15;
+          if (8 - v15 >= width)
           {
-            v19 = a4;
+            widthCopy2 = width;
           }
 
           if (v15)
           {
-            v17 = v19;
+            v17 = widthCopy2;
           }
 
           else
           {
-            v17 = v18;
+            v17 = widthCopy;
           }
 
           [(BitBuffer *)self readUInteger:&v21 bitWidth:v17];
@@ -334,10 +334,10 @@
         }
 
         *v14++ = v16;
-        a4 -= v17;
+        width -= v17;
       }
 
-      while (a4);
+      while (width);
     }
 
     v12 = 1;
@@ -351,24 +351,24 @@
   return v12;
 }
 
-- (BOOL)writeData:(id)a3 bitWidth:(unint64_t)a4
+- (BOOL)writeData:(id)data bitWidth:(unint64_t)width
 {
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   if (self->_outputData)
   {
     bitCount = self->_bitCount;
     bitOffset = self->_bitOffset;
     v10 = 0;
-    if (a4 <= 8 * [v6 length] && bitCount - bitOffset >= a4)
+    if (width <= 8 * [dataCopy length] && bitCount - bitOffset >= width)
     {
-      v11 = [v7 bytes];
-      if (a4)
+      bytes = [v7 bytes];
+      if (width)
       {
-        v12 = v11;
-        if ((a4 & 7) != 0)
+        v12 = bytes;
+        if ((width & 7) != 0)
         {
-          v13 = a4 & 7;
+          v13 = width & 7;
         }
 
         else
@@ -380,11 +380,11 @@
         {
           v14 = *v12++;
           [(BitBuffer *)self writeUInteger:v14 bitWidth:v13];
-          a4 -= v13;
+          width -= v13;
           v13 = 8;
         }
 
-        while (a4);
+        while (width);
       }
 
       v10 = 1;

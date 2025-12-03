@@ -1,8 +1,8 @@
 @interface PowerMgr
 + (id)sharedInstance;
-- (void)_disableAssertion:(unsigned int)a3 withName:(id)a4;
-- (void)powerAssertionDisableWithReason:(id)a3;
-- (void)powerAssertionEnableWithReason:(id)a3 type:(id)a4 timeout:(int64_t)a5;
+- (void)_disableAssertion:(unsigned int)assertion withName:(id)name;
+- (void)powerAssertionDisableWithReason:(id)reason;
+- (void)powerAssertionEnableWithReason:(id)reason type:(id)type timeout:(int64_t)timeout;
 @end
 
 @implementation PowerMgr
@@ -19,35 +19,35 @@
   return v3;
 }
 
-- (void)powerAssertionEnableWithReason:(id)a3 type:(id)a4 timeout:(int64_t)a5
+- (void)powerAssertionEnableWithReason:(id)reason type:(id)type timeout:(int64_t)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  typeCopy = type;
   context = objc_autoreleasePoolPush();
   v10 = +[NSBundle mainBundle];
-  v11 = [v10 bundleIdentifier];
+  bundleIdentifier = [v10 bundleIdentifier];
 
-  v12 = [NSString stringWithFormat:@"%@-%@", v11, v8];
-  v13 = [(PowerMgr *)self assertionsDict];
-  if (![v13 count])
+  reasonCopy = [NSString stringWithFormat:@"%@-%@", bundleIdentifier, reasonCopy];
+  assertionsDict = [(PowerMgr *)self assertionsDict];
+  if (![assertionsDict count])
   {
 
     v15 = 0;
     goto LABEL_7;
   }
 
-  v14 = [(PowerMgr *)self assertionsDict];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  assertionsDict2 = [(PowerMgr *)self assertionsDict];
+  v15 = [assertionsDict2 objectForKeyedSubscript:reasonCopy];
 
   if (!v15)
   {
 LABEL_7:
     v18 = 0;
-    v16 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
     goto LABEL_8;
   }
 
-  v16 = [v15 intValue];
+  intValue = [v15 intValue];
   v17 = sub_100002830();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -60,25 +60,25 @@ LABEL_8:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v32 = v12;
+    v32 = reasonCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = typeCopy;
     v35 = 2048;
-    v36 = a5;
+    timeoutCopy = timeout;
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Enable power assertion %@ with type %@ & timeout %ld", buf, 0x20u);
   }
 
   v20 = +[NSMutableDictionary dictionary];
-  if ([v9 isEqualToString:@"ApplePushServiceTask"])
+  if ([typeCopy isEqualToString:@"ApplePushServiceTask"])
   {
-    [v20 setObject:v12 forKeyedSubscript:@"AssertName"];
-    v21 = [NSNumber numberWithInteger:a5];
+    [v20 setObject:reasonCopy forKeyedSubscript:@"AssertName"];
+    v21 = [NSNumber numberWithInteger:timeout];
     [v20 setObject:v21 forKeyedSubscript:@"TimeoutSeconds"];
 
     [v20 setObject:@"TimeoutActionTurnOff" forKeyedSubscript:@"TimeoutAction"];
-    if (v9)
+    if (typeCopy)
     {
-      [v20 setObject:v9 forKeyedSubscript:@"AssertType"];
+      [v20 setObject:typeCopy forKeyedSubscript:@"AssertType"];
     }
 
     [v20 setObject:&off_100062F58 forKeyedSubscript:@"AssertLevel"];
@@ -86,14 +86,14 @@ LABEL_8:
 
   else
   {
-    [v20 setObject:v12 forKeyedSubscript:@"AssertName"];
-    v22 = [NSNumber numberWithInteger:a5];
+    [v20 setObject:reasonCopy forKeyedSubscript:@"AssertName"];
+    v22 = [NSNumber numberWithInteger:timeout];
     [v20 setObject:v22 forKeyedSubscript:@"TimeoutSeconds"];
 
     [v20 setObject:@"TimeoutActionTurnOff" forKeyedSubscript:@"TimeoutAction"];
-    if (v9)
+    if (typeCopy)
     {
-      [v20 setObject:v9 forKeyedSubscript:@"AssertType"];
+      [v20 setObject:typeCopy forKeyedSubscript:@"AssertType"];
     }
 
     [v20 setObject:&off_100062F58 forKeyedSubscript:@"AssertLevel"];
@@ -113,7 +113,7 @@ LABEL_8:
       v33 = 2080;
       v34 = v25;
       v35 = 1024;
-      LODWORD(v36) = v23;
+      LODWORD(timeoutCopy) = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "IOPMAssertionCreateWithProperties %@ failed with error: %s (%d)", buf, 0x1Cu);
     }
   }
@@ -123,7 +123,7 @@ LABEL_8:
     v26 = sub_100002830();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      sub_100037108(v12, &AssertionID, v26);
+      sub_100037108(reasonCopy, &AssertionID, v26);
     }
 
     if (v18)
@@ -134,33 +134,33 @@ LABEL_8:
         sub_100037184();
       }
 
-      [(PowerMgr *)self _disableAssertion:v16 withName:v12];
+      [(PowerMgr *)self _disableAssertion:intValue withName:reasonCopy];
     }
 
     v24 = [NSNumber numberWithUnsignedInt:AssertionID];
-    v28 = [(PowerMgr *)self assertionsDict];
-    [v28 setObject:v24 forKeyedSubscript:v12];
+    assertionsDict3 = [(PowerMgr *)self assertionsDict];
+    [assertionsDict3 setObject:v24 forKeyedSubscript:reasonCopy];
   }
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)powerAssertionDisableWithReason:(id)a3
+- (void)powerAssertionDisableWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 bundleIdentifier];
+  bundleIdentifier = [v5 bundleIdentifier];
 
-  v7 = [NSString stringWithFormat:@"%@-%@", v6, v4];
-  v8 = [(PowerMgr *)self assertionsDict];
-  if ([v8 count])
+  reasonCopy = [NSString stringWithFormat:@"%@-%@", bundleIdentifier, reasonCopy];
+  assertionsDict = [(PowerMgr *)self assertionsDict];
+  if ([assertionsDict count])
   {
-    v9 = [(PowerMgr *)self assertionsDict];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    assertionsDict2 = [(PowerMgr *)self assertionsDict];
+    v10 = [assertionsDict2 objectForKeyedSubscript:reasonCopy];
 
     if (v10)
     {
-      -[PowerMgr _disableAssertion:withName:](self, "_disableAssertion:withName:", [v10 intValue], v7);
+      -[PowerMgr _disableAssertion:withName:](self, "_disableAssertion:withName:", [v10 intValue], reasonCopy);
       goto LABEL_8;
     }
   }
@@ -173,7 +173,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Did not find any existing assertion with name %@ when trying to disable it", buf, 0xCu);
   }
 
@@ -181,22 +181,22 @@ LABEL_8:
 LABEL_8:
 }
 
-- (void)_disableAssertion:(unsigned int)a3 withName:(id)a4
+- (void)_disableAssertion:(unsigned int)assertion withName:(id)name
 {
-  v6 = a4;
-  v7 = [(PowerMgr *)self assertionsDict];
-  [v7 removeObjectForKey:v6];
+  nameCopy = name;
+  assertionsDict = [(PowerMgr *)self assertionsDict];
+  [assertionsDict removeObjectForKey:nameCopy];
 
   v8 = sub_100002830();
   v9 = v8;
-  if (a3)
+  if (assertion)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       sub_1000371EC();
     }
 
-    v10 = IOPMAssertionRelease(a3);
+    v10 = IOPMAssertionRelease(assertion);
     v11 = sub_100002830();
     v9 = v11;
     if (v10)
@@ -204,9 +204,9 @@ LABEL_8:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138413058;
-        v16 = v6;
+        v16 = nameCopy;
         v17 = 1024;
-        v18 = a3;
+        assertionCopy = assertion;
         v19 = 2080;
         v20 = SCErrorString(v10);
         v21 = 1024;
@@ -228,7 +228,7 @@ LABEL_9:
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = nameCopy;
     v12 = "Found Null assertionID for assertion with name %@ when trying to disable it";
     v13 = v9;
     v14 = 12;

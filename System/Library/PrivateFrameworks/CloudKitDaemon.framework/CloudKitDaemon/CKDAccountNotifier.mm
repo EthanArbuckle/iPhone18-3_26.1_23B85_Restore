@@ -1,15 +1,15 @@
 @interface CKDAccountNotifier
 + (id)sharedNotifier;
 - (CKDAccountNotifier)init;
-- (id)_accountChangeNotificationOperation:(BOOL)a3;
+- (id)_accountChangeNotificationOperation:(BOOL)operation;
 - (void)dealloc;
-- (void)notifyAuthTokenRenewalInProgress:(BOOL)a3 forAccountID:(id)a4;
+- (void)notifyAuthTokenRenewalInProgress:(BOOL)progress forAccountID:(id)d;
 - (void)postAccountChangedNotificationToClients;
-- (void)postAccountChangedNotificationWithAccountID:(id)a3 changeType:(int64_t)a4;
-- (void)registerObserver:(id)a3 forAccountChangeNotification:(id)a4;
-- (void)registerObserver:(id)a3 forAccountID:(id)a4 authTokenRenewalInProgressNotifications:(id)a5;
-- (void)unregisterObserver:(id)a3 forAuthTokenRenewalInProgressNotificationsForAccountID:(id)a4;
-- (void)unregisterObserverForAccountChangeNotification:(id)a3;
+- (void)postAccountChangedNotificationWithAccountID:(id)d changeType:(int64_t)type;
+- (void)registerObserver:(id)observer forAccountChangeNotification:(id)notification;
+- (void)registerObserver:(id)observer forAccountID:(id)d authTokenRenewalInProgressNotifications:(id)notifications;
+- (void)unregisterObserver:(id)observer forAuthTokenRenewalInProgressNotificationsForAccountID:(id)d;
+- (void)unregisterObserverForAccountChangeNotification:(id)notification;
 @end
 
 @implementation CKDAccountNotifier
@@ -60,10 +60,10 @@
   [(CKDAccountNotifier *)&v7 dealloc];
 }
 
-- (void)postAccountChangedNotificationWithAccountID:(id)a3 changeType:(int64_t)a4
+- (void)postAccountChangedNotificationWithAccountID:(id)d changeType:(int64_t)type
 {
   v85 = *MEMORY[0x277D85DE8];
-  v70 = a3;
+  dCopy = d;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -75,15 +75,15 @@
     v9 = v6;
     v10 = CKStringFromAccountChangeType();
     *buf = 138412546;
-    v82 = v70;
+    v82 = dCopy;
     v83 = 2114;
     v84 = v10;
     _os_log_impl(&dword_22506F000, v9, OS_LOG_TYPE_INFO, "Account with ID %@ changed with type: %{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (type)
   {
-    isWarmingUp = a4 == 5;
+    isWarmingUp = type == 5;
     objc_msgSend_setWarmingUp_(self, v7, isWarmingUp);
   }
 
@@ -93,7 +93,7 @@
   }
 
   v71 = objc_msgSend__accountChangeNotificationOperation_(self, v12, isWarmingUp);
-  v13 = a4 == 3;
+  v13 = type == 3;
   obj = objc_msgSend_notificationHandlers(self, v14, v15);
   objc_sync_enter(obj);
   v16 = MEMORY[0x277CBEB18];
@@ -125,7 +125,7 @@
     v76[3] = &unk_2785456F0;
     v42 = v40;
     v78 = v42;
-    v77 = v70;
+    v77 = dCopy;
     v79 = v13;
     v44 = objc_msgSend_blockOperationWithBlock_(v41, v43, v76);
     objc_msgSend_addDependency_(v71, v45, v44);
@@ -217,29 +217,29 @@
   objc_msgSend_addOperation_(v11, v12, v8);
 }
 
-- (id)_accountChangeNotificationOperation:(BOOL)a3
+- (id)_accountChangeNotificationOperation:(BOOL)operation
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_225111AE0;
   v5[3] = &unk_278545A38;
-  v6 = a3;
+  operationCopy = operation;
   v3 = objc_msgSend_blockOperationWithBlock_(MEMORY[0x277CCA8C8], a2, v5);
 
   return v3;
 }
 
-- (void)registerObserver:(id)a3 forAccountChangeNotification:(id)a4
+- (void)registerObserver:(id)observer forAccountChangeNotification:(id)notification
 {
-  v7 = a3;
-  v10 = a4;
-  if (!v7)
+  observerCopy = observer;
+  notificationCopy = notification;
+  if (!observerCopy)
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDAccountNotifier.m", 144, @"Observer cannot be nil");
   }
 
-  objc_msgSend_unregisterObserverForAccountChangeNotification_(self, v8, v7);
+  objc_msgSend_unregisterObserverForAccountChangeNotification_(self, v8, observerCopy);
   v13 = objc_msgSend_notificationHandlers(self, v11, v12);
   objc_sync_enter(v13);
   v16 = objc_msgSend_currentPersona(MEMORY[0x277CBC558], v14, v15);
@@ -249,38 +249,38 @@
   v32 = &unk_278545A88;
   v17 = v16;
   v33 = v17;
-  v18 = v10;
+  v18 = notificationCopy;
   v34 = v18;
   v19 = _Block_copy(&v29);
   v22 = objc_msgSend_notificationHandlers(self, v20, v21, v29, v30, v31, v32);
   v25 = objc_msgSend_copy(v19, v23, v24);
-  objc_msgSend_setObject_forKey_(v22, v26, v25, v7);
+  objc_msgSend_setObject_forKey_(v22, v26, v25, observerCopy);
 
   objc_sync_exit(v13);
 }
 
-- (void)unregisterObserverForAccountChangeNotification:(id)a3
+- (void)unregisterObserverForAccountChangeNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v12 = v4;
+    v12 = notificationCopy;
     v7 = objc_msgSend_notificationHandlers(self, v5, v6);
     objc_sync_enter(v7);
     v10 = objc_msgSend_notificationHandlers(self, v8, v9);
     objc_msgSend_removeObjectForKey_(v10, v11, v12);
 
     objc_sync_exit(v7);
-    v4 = v12;
+    notificationCopy = v12;
   }
 }
 
-- (void)registerObserver:(id)a3 forAccountID:(id)a4 authTokenRenewalInProgressNotifications:(id)a5
+- (void)registerObserver:(id)observer forAccountID:(id)d authTokenRenewalInProgressNotifications:(id)notifications
 {
-  v29 = a3;
-  v9 = a4;
-  v12 = a5;
-  if (!v29)
+  observerCopy = observer;
+  dCopy = d;
+  notificationsCopy = notifications;
+  if (!observerCopy)
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDAccountNotifier.m", 170, @"Observer must not be nil");
@@ -289,39 +289,39 @@
   v13 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v10, v11);
   objc_sync_enter(v13);
   v16 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v14, v15);
-  v18 = objc_msgSend_objectForKey_(v16, v17, v9);
+  v18 = objc_msgSend_objectForKey_(v16, v17, dCopy);
 
   if (!v18)
   {
     v18 = objc_msgSend_weakToStrongObjectsMapTable(MEMORY[0x277CCAB00], v19, v20);
     v23 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v21, v22);
-    objc_msgSend_setObject_forKey_(v23, v24, v18, v9);
+    objc_msgSend_setObject_forKey_(v23, v24, v18, dCopy);
   }
 
-  v25 = _Block_copy(v12);
-  objc_msgSend_setObject_forKey_(v18, v26, v25, v29);
+  v25 = _Block_copy(notificationsCopy);
+  objc_msgSend_setObject_forKey_(v18, v26, v25, observerCopy);
 
   objc_sync_exit(v13);
 }
 
-- (void)unregisterObserver:(id)a3 forAuthTokenRenewalInProgressNotificationsForAccountID:(id)a4
+- (void)unregisterObserver:(id)observer forAuthTokenRenewalInProgressNotificationsForAccountID:(id)d
 {
-  v22 = a3;
-  v8 = a4;
-  if (v22)
+  observerCopy = observer;
+  dCopy = d;
+  if (observerCopy)
   {
     v9 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v6, v7);
     objc_sync_enter(v9);
     v12 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v10, v11);
-    v14 = objc_msgSend_objectForKey_(v12, v13, v8);
+    v14 = objc_msgSend_objectForKey_(v12, v13, dCopy);
 
     if (v14)
     {
-      objc_msgSend_removeObjectForKey_(v14, v15, v22);
+      objc_msgSend_removeObjectForKey_(v14, v15, observerCopy);
       if (!objc_msgSend_count(v14, v16, v17))
       {
         v20 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v18, v19);
-        objc_msgSend_removeObjectForKey_(v20, v21, v8);
+        objc_msgSend_removeObjectForKey_(v20, v21, dCopy);
       }
     }
 
@@ -329,10 +329,10 @@
   }
 }
 
-- (void)notifyAuthTokenRenewalInProgress:(BOOL)a3 forAccountID:(id)a4
+- (void)notifyAuthTokenRenewalInProgress:(BOOL)progress forAccountID:(id)d
 {
-  v7 = a4;
-  if (!objc_msgSend_length(v7, v8, v9))
+  dCopy = d;
+  if (!objc_msgSend_length(dCopy, v8, v9))
   {
     v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v34, a2, self, @"CKDAccountNotifier.m", 200, @"Account ID cannot be empty");
@@ -341,7 +341,7 @@
   v12 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v10, v11);
   objc_sync_enter(v12);
   v15 = objc_msgSend_authTokenRenewalHandlersByAccountID(self, v13, v14);
-  v17 = objc_msgSend_objectForKey_(v15, v16, v7);
+  v17 = objc_msgSend_objectForKey_(v15, v16, dCopy);
   v20 = objc_msgSend_dictionaryRepresentation(v17, v18, v19);
   v23 = objc_msgSend_allValues(v20, v21, v22);
 
@@ -351,10 +351,10 @@
   v35[1] = 3221225472;
   v35[2] = sub_225112434;
   v35[3] = &unk_278545AB0;
-  v38 = a3;
+  progressCopy = progress;
   v36 = v23;
-  v37 = v7;
-  v25 = v7;
+  v37 = dCopy;
+  v25 = dCopy;
   v26 = v23;
   v28 = objc_msgSend_blockOperationWithBlock_(v24, v27, v35);
   v31 = objc_msgSend_accountChangeHandlerQueue(self, v29, v30);

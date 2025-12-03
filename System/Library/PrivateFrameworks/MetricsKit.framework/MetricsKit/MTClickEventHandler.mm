@@ -1,6 +1,6 @@
 @interface MTClickEventHandler
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 - (id)knownFields;
 @end
 
@@ -9,20 +9,20 @@
 - (id)knownFields
 {
   v11[9] = *MEMORY[0x277D85DE8];
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MTClickEventHandler;
-    v5 = [(MTImpressionableEventHandler *)&v10 knownFields];
+    delegate2 = [(MTImpressionableEventHandler *)&v10 knownFields];
     v11[0] = @"actionContext";
     v11[1] = @"actionDetails";
     v11[2] = @"actionType";
@@ -33,23 +33,23 @@
     v11[7] = @"positionX";
     v11[8] = @"positionY";
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:9];
-    v6 = [v5 arrayByAddingObjectsFromArray:v7];
+    knownFields = [delegate2 arrayByAddingObjectsFromArray:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return knownFields;
 }
 
 - (id)eventType
 {
   v7.receiver = self;
   v7.super_class = MTClickEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTClickEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {

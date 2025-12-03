@@ -1,12 +1,12 @@
 @interface PDDPMultipleChoiceOptionItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPMultipleChoiceOptionItem
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPMultipleChoiceOptionItem;
   v3 = [(PDDPMultipleChoiceOptionItem *)&v7 description];
-  v4 = [(PDDPMultipleChoiceOptionItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPMultipleChoiceOptionItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -35,15 +35,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v7 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v9 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   text = self->_text;
@@ -61,93 +61,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dateCreated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dateLastModified)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_text)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     displayOrder = self->_displayOrder;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v5;
+    [toCopy setObjectId:?];
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     [v5 setDateCreated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateLastModified)
   {
     [v5 setDateLastModified:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_text)
   {
     [v5 setText:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_displayOrder;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 6) = self->_displayOrder;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v8 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_text copyWithZone:a3];
+  v12 = [(NSString *)self->_text copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -160,16 +160,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 4))
+  if (objectId | *(equalCopy + 4))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -178,7 +178,7 @@
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 1))
+  if (dateCreated | *(equalCopy + 1))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -187,7 +187,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 2))
+  if (dateLastModified | *(equalCopy + 2))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -196,7 +196,7 @@
   }
 
   text = self->_text;
-  if (text | *(v4 + 5))
+  if (text | *(equalCopy + 5))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -204,10 +204,10 @@
     }
   }
 
-  v9 = (*(v4 + 48) & 1) == 0;
+  v9 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) != 0 && self->_displayOrder == *(v4 + 6))
+    if ((*(equalCopy + 48) & 1) != 0 && self->_displayOrder == *(equalCopy + 6))
     {
       v9 = 1;
       goto LABEL_15;
@@ -241,18 +241,18 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PDDPMultipleChoiceOptionItem *)self setObjectId:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dateCreated)
   {
     if (!v6)
@@ -273,10 +273,10 @@ LABEL_15:
     [(PDDPMultipleChoiceOptionItem *)self setDateCreated:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_9:
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (dateLastModified)
   {
     if (!v8)
@@ -297,21 +297,21 @@ LABEL_9:
     dateLastModified = [(PDDPMultipleChoiceOptionItem *)self setDateLastModified:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     dateLastModified = [(PDDPMultipleChoiceOptionItem *)self setText:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[12])
+  if (fromCopy[12])
   {
-    self->_displayOrder = v4[6];
+    self->_displayOrder = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  _objc_release_x1(dateLastModified, v4);
+  _objc_release_x1(dateLastModified, fromCopy);
 }
 
 @end

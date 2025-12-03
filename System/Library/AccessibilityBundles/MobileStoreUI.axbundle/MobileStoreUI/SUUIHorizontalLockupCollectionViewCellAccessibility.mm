@@ -1,20 +1,20 @@
 @interface SUUIHorizontalLockupCollectionViewCellAccessibility
 - (BOOL)accessibilityScrollToVisible;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityScrollParentForComparingByXAxis;
 - (void)layoutSubviews;
 @end
 
 @implementation SUUIHorizontalLockupCollectionViewCellAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(SUUIHorizontalLockupCollectionViewCellAccessibility *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(SUUIHorizontalLockupCollectionViewCellAccessibility *)self pointInside:eventCopy withEvent:x, y])
   {
-    v8 = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)self _accessibilityParentView];
+    _accessibilityParentView = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)self _accessibilityParentView];
     UIAccessibilityPointForPoint();
     v10 = v9;
     v12 = v11;
@@ -48,7 +48,7 @@
     {
       v17.receiver = self;
       v17.super_class = SUUIHorizontalLockupCollectionViewCellAccessibility;
-      v14 = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:x, y];
+      v14 = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:x, y];
     }
 
     v15 = v14;
@@ -97,18 +97,18 @@ void __87__SUUIHorizontalLockupCollectionViewCellAccessibility__accessibilityHit
 {
   v10.receiver = self;
   v10.super_class = SUUIHorizontalLockupCollectionViewCellAccessibility;
-  v3 = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)&v10 accessibilityScrollToVisible];
+  accessibilityScrollToVisible = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)&v10 accessibilityScrollToVisible];
   v4 = [(SUUIHorizontalLockupCollectionViewCellAccessibility *)self _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Suuicollection.isa)];
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
   [v4 contentOffset];
   v9[0] = v6;
   v9[1] = v7;
   if (objc_opt_respondsToSelector())
   {
-    [v5 scrollViewWillEndDragging:v4 withVelocity:v9 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
+    [delegate scrollViewWillEndDragging:v4 withVelocity:v9 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
   }
 
-  return v3;
+  return accessibilityScrollToVisible;
 }
 
 - (void)layoutSubviews

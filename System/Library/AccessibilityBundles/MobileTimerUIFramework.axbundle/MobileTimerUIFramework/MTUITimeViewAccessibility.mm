@@ -8,7 +8,7 @@
 {
   v5.receiver = self;
   v5.super_class = MTUITimeViewAccessibility;
-  v2 = [(MTUITimeViewAccessibility *)&v5 accessibilityLabel];
+  accessibilityLabel = [(MTUITimeViewAccessibility *)&v5 accessibilityLabel];
   v3 = AXLocalizeDurationTime();
 
   return v3;

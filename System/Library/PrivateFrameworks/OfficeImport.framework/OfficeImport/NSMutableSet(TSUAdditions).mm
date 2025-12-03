@@ -31,14 +31,14 @@
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if ([a1 containsObject:v9])
+        if ([self containsObject:v9])
         {
-          [a1 removeObject:v9];
+          [self removeObject:v9];
         }
 
         else
         {
-          [a1 addObject:v9];
+          [self addObject:v9];
         }
 
         ++v8;
@@ -59,31 +59,31 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)tsu_addObjectsFromNonNilArray:()TSUAdditions
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)tsu_removeEqualObject:()TSUAdditions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [a1 allObjects];
+  allObjects = [self allObjects];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  result = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  result = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (result)
   {
     v7 = result;
@@ -95,20 +95,20 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if ([v10 isEqual:a3])
         {
-          [a1 removeObject:v10];
+          [self removeObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      result = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      result = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = result;
     }
 

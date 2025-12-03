@@ -1,17 +1,17 @@
 @interface DOCErrorViewController
-- (_TtC26DocumentManagerExecutables22DOCErrorViewController)initWithCoder:(id)a3;
-- (void)actionController:(id)a3 presentError:(id)a4 completion:(id)a5;
-- (void)actionControllerDidFinishAction:(id)a3 error:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)docUpdateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables22DOCErrorViewController)initWithCoder:(id)coder;
+- (void)actionController:(id)controller presentError:(id)error completion:(id)completion;
+- (void)actionControllerDidFinishAction:(id)action error:(id)error;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)docUpdateContentUnavailableConfigurationUsingState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation DOCErrorViewController
 
-- (_TtC26DocumentManagerExecutables22DOCErrorViewController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables22DOCErrorViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -20,57 +20,57 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCErrorViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCErrorViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  DOCErrorViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   ObjectType = swift_getObjectType();
-  v6 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!controller)
   {
     DOCErrorViewController.updateDisableableBarButtonItems(enabled:)(1);
   }
 
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
-  v7 = a3;
-  [(DOCErrorViewController *)&v8 willMoveToParentViewController:v7];
+  controllerCopy = controller;
+  [(DOCErrorViewController *)&v8 willMoveToParentViewController:controllerCopy];
 }
 
-- (void)docUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)docUpdateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   specialized DOCErrorViewController.docUpdateContentUnavailableConfiguration(using:)();
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   specialized DOCErrorViewController.applicationDidBecomeActive(_:)();
 }
 
-- (void)actionControllerDidFinishAction:(id)a3 error:(id)a4
+- (void)actionControllerDidFinishAction:(id)action error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized DOCErrorViewController.actionControllerDidFinishAction(_:error:)(a4);
+  actionCopy = action;
+  selfCopy = self;
+  errorCopy = error;
+  specialized DOCErrorViewController.actionControllerDidFinishAction(_:error:)(error);
 }
 
-- (void)actionController:(id)a3 presentError:(id)a4 completion:(id)a5
+- (void)actionController:(id)controller presentError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v7 = _convertErrorToNSError(_:)();
   DOCPresentAlertForError();
 }

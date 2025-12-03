@@ -1,8 +1,8 @@
 @interface SBWalletPrearmRecognizer
-- (SBWalletPrearmRecognizer)initWithDelegate:(id)a3;
+- (SBWalletPrearmRecognizer)initWithDelegate:(id)delegate;
 - (double)_computeDoubleTapTimeout;
 - (void)_invalidate;
-- (void)_invalidateForFailureReason:(unint64_t)a3;
+- (void)_invalidateForFailureReason:(unint64_t)reason;
 - (void)_invalidateForSuccess;
 - (void)dealloc;
 - (void)invalidate;
@@ -13,9 +13,9 @@
 
 @implementation SBWalletPrearmRecognizer
 
-- (SBWalletPrearmRecognizer)initWithDelegate:(id)a3
+- (SBWalletPrearmRecognizer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = SBWalletPrearmRecognizer;
   v5 = [(SBWalletPrearmRecognizer *)&v9 init];
@@ -24,7 +24,7 @@
   {
     [(SBWalletPrearmRecognizer *)v5 _computeDoubleTapTimeout];
     v6->_timeout = v7;
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
   }
 
   return v6;
@@ -52,8 +52,8 @@
 
 - (void)startRecognizing
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBWalletPrearmRecognizer.m" lineNumber:59 description:@"Cannot start recognizing an invalidated recognizer."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBWalletPrearmRecognizer.m" lineNumber:59 description:@"Cannot start recognizing an invalidated recognizer."];
 }
 
 void __44__SBWalletPrearmRecognizer_startRecognizing__block_invoke(uint64_t a1)
@@ -119,17 +119,17 @@ void __44__SBWalletPrearmRecognizer_startRecognizing__block_invoke(uint64_t a1)
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Recognized", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"SBBiometricEventTimestampNotificationPrearmMatch" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBBiometricEventTimestampNotificationPrearmMatch" object:0 userInfo:0];
 
     [(SBWalletPrearmRecognizer *)self _invalidateForSuccess];
   }
 }
 
-- (void)_invalidateForFailureReason:(unint64_t)a3
+- (void)_invalidateForFailureReason:(unint64_t)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (reason)
   {
     v5 = @"SinglePress";
   }
@@ -152,7 +152,7 @@ void __44__SBWalletPrearmRecognizer_startRecognizing__block_invoke(uint64_t a1)
 
   [(SBWalletPrearmRecognizer *)self _invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained walletPrearmRecognizer:self didFailToRecognizeForReason:a3];
+  [WeakRetained walletPrearmRecognizer:self didFailToRecognizeForReason:reason];
 }
 
 - (void)_invalidateForSuccess

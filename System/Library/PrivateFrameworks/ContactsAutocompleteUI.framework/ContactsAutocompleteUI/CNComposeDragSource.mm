@@ -1,30 +1,30 @@
 @interface CNComposeDragSource
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4;
-- (CNComposeDragSource)initWithView:(id)a3 delegate:(id)a4;
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation;
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application;
+- (CNComposeDragSource)initWithView:(id)view delegate:(id)delegate;
 - (CNComposeDragSourceDelegate)delegate;
 - (UIView)sourceView;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)setAllowsDragOverridingMasterSwitch:(BOOL)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)setAllowsDragOverridingMasterSwitch:(BOOL)switch;
 @end
 
 @implementation CNComposeDragSource
 
-- (CNComposeDragSource)initWithView:(id)a3 delegate:(id)a4
+- (CNComposeDragSource)initWithView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = CNComposeDragSource;
   v8 = [(CNComposeDragSource *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sourceView, v6);
-    [(CNComposeDragSource *)v9 setDelegate:v7];
+    objc_storeWeak(&v8->_sourceView, viewCopy);
+    [(CNComposeDragSource *)v9 setDelegate:delegateCopy];
     v9->_delegateFlags.respondsToTeamDataForItem = objc_opt_respondsToSelector() & 1;
     v9->_delegateFlags.respondsToLocalObjectForItem = objc_opt_respondsToSelector() & 1;
     v9->_delegateFlags.respondsToTargetedPreviewForItem = objc_opt_respondsToSelector() & 1;
@@ -37,9 +37,9 @@
     v10 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v9];
     [(CNComposeDragSource *)v9 setDragInteraction:v10];
 
-    v11 = [(CNComposeDragSource *)v9 sourceView];
-    v12 = [(CNComposeDragSource *)v9 dragInteraction];
-    [v11 addInteraction:v12];
+    sourceView = [(CNComposeDragSource *)v9 sourceView];
+    dragInteraction = [(CNComposeDragSource *)v9 dragInteraction];
+    [sourceView addInteraction:dragInteraction];
 
     [(CNComposeDragSource *)v9 setAllowsDragOverridingMasterSwitch:0];
   }
@@ -47,35 +47,35 @@
   return v9;
 }
 
-- (void)setAllowsDragOverridingMasterSwitch:(BOOL)a3
+- (void)setAllowsDragOverridingMasterSwitch:(BOOL)switch
 {
-  if (self->_allowsDragOverridingMasterSwitch != a3)
+  if (self->_allowsDragOverridingMasterSwitch != switch)
   {
-    v4 = a3;
-    self->_allowsDragOverridingMasterSwitch = a3;
-    v6 = [MEMORY[0x1E69DC988] isEnabledByDefault];
-    v7 = [(CNComposeDragSource *)self dragInteraction];
-    [v7 setEnabled:v6 | v4];
+    switchCopy = switch;
+    self->_allowsDragOverridingMasterSwitch = switch;
+    isEnabledByDefault = [MEMORY[0x1E69DC988] isEnabledByDefault];
+    dragInteraction = [(CNComposeDragSource *)self dragInteraction];
+    [dragInteraction setEnabled:isEnabledByDefault | switchCopy];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = [a3 view];
-  [v6 locationInView:v7];
+  sessionCopy = session;
+  view = [interaction view];
+  [sessionCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CNComposeDragSource *)self delegate];
-  v13 = [v12 dragSource:self draggableItemsAtPoint:{v9, v11}];
+  delegate = [(CNComposeDragSource *)self delegate];
+  v13 = [delegate dragSource:self draggableItemsAtPoint:{v9, v11}];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__CNComposeDragSource_dragInteraction_itemsForBeginningSession___block_invoke;
   v17[3] = &unk_1E7CD1C08;
   v17[4] = self;
-  v18 = v12;
-  v14 = v12;
+  v18 = delegate;
+  v14 = delegate;
   v15 = [v13 _cn_map:v17];
 
   return v15;
@@ -114,27 +114,27 @@ id __64__CNComposeDragSource_dragInteraction_itemsForBeginningSession___block_in
   return v5;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
   if (self->_delegateFlags.respondsToTargetedPreviewForItem)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v9 localObject];
-    v13 = [WeakRetained dragSource:self targetedPreviewForDraggableItem:v12];
+    localObject = [itemCopy localObject];
+    v13 = [WeakRetained dragSource:self targetedPreviewForDraggableItem:localObject];
   }
 
   else if (self->_delegateFlags.respondsToPreviewForItem)
   {
-    v14 = [(CNComposeDragSource *)self delegate];
-    v15 = [v9 localObject];
-    v16 = [v14 dragSource:self previewForDraggableItem:v15];
+    delegate = [(CNComposeDragSource *)self delegate];
+    localObject2 = [itemCopy localObject];
+    v16 = [delegate dragSource:self previewForDraggableItem:localObject2];
 
-    v17 = [v16 window];
+    window = [v16 window];
 
-    if (v17)
+    if (window)
     {
       v13 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v16];
     }
@@ -142,7 +142,7 @@ id __64__CNComposeDragSource_dragInteraction_itemsForBeginningSession___block_in
     else
     {
       v18 = objc_alloc(MEMORY[0x1E69DC9A8]);
-      v19 = [v8 view];
+      view = [interactionCopy view];
       [v16 center];
       v21 = v20;
       v23 = v22;
@@ -156,11 +156,11 @@ id __64__CNComposeDragSource_dragInteraction_itemsForBeginningSession___block_in
         memset(v28, 0, sizeof(v28));
       }
 
-      v24 = [v18 initWithContainer:v19 center:v28 transform:{v21, v23}];
+      v24 = [v18 initWithContainer:view center:v28 transform:{v21, v23}];
 
       v25 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-      v26 = [MEMORY[0x1E69DC888] clearColor];
-      [v25 setBackgroundColor:v26];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v25 setBackgroundColor:clearColor];
 
       v13 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v16 parameters:v25 target:v24];
     }
@@ -174,58 +174,58 @@ id __64__CNComposeDragSource_dragInteraction_itemsForBeginningSession___block_in
   return v13;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
   if (self->_delegateFlags.respondsToDragWillEnd)
   {
-    v8 = a4;
+    sessionCopy = session;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 items];
+    items = [sessionCopy items];
 
-    [WeakRetained dragSource:self willEndInteractionWithItems:v9 dropOperation:a5];
+    [WeakRetained dragSource:self willEndInteractionWithItems:items dropOperation:operation];
   }
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation
 {
   if (!self->_delegateFlags.respondsToAllowsMoveOperation)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = a4;
-  v6 = [(CNComposeDragSource *)v4 delegate];
-  LOBYTE(v4) = [v6 dragSource:v4 sessionAllowsMoveOperation:v5];
+  selfCopy = self;
+  operationCopy = operation;
+  delegate = [(CNComposeDragSource *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate dragSource:selfCopy sessionAllowsMoveOperation:operationCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application
 {
   if (!self->_delegateFlags.respondsToIsRestrictedToMail)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = a4;
-  v6 = [(CNComposeDragSource *)v4 delegate];
-  LOBYTE(v4) = [v6 dragSource:v4 sessionIsRestrictedToMail:v5];
+  selfCopy = self;
+  applicationCopy = application;
+  delegate = [(CNComposeDragSource *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate dragSource:selfCopy sessionIsRestrictedToMail:applicationCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   if (!self->_delegateFlags.respondsToDataOwner)
   {
     return 3;
   }
 
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained dragSource:self dataOwnerForSession:v5];
+  v7 = [WeakRetained dragSource:self dataOwnerForSession:sessionCopy];
 
   return v7;
 }

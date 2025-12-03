@@ -1,8 +1,8 @@
 @interface CDMEmbeddingServiceGraph
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4;
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale;
 + (id)requiredDAGServices;
 + (id)responseFeatureStoreStreamId;
-+ (id)serializeFeatureStoreWithResponseCmd:(id)a3;
++ (id)serializeFeatureStoreWithResponseCmd:(id)cmd;
 - (void)buildGraph;
 @end
 
@@ -26,15 +26,15 @@
   return v8;
 }
 
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
     v5 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:name];
       v10 = 136315394;
       v11 = "+[CDMEmbeddingServiceGraph getUsageForAssetSetName:withLocale:]";
       v12 = 2112;
@@ -47,7 +47,7 @@
 
   else
   {
-    v6 = [CDMAssetsUtils getNLUsages:a4];
+    v6 = [CDMAssetsUtils getNLUsages:locale];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -55,10 +55,10 @@
   return v6;
 }
 
-+ (id)serializeFeatureStoreWithResponseCmd:(id)a3
++ (id)serializeFeatureStoreWithResponseCmd:(id)cmd
 {
-  v3 = [a3 convertResponseToSubwordResponse];
-  v4 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalSubwordEmbeddingResponseWithResponse:v3 formatType:@"json"];
+  convertResponseToSubwordResponse = [cmd convertResponseToSubwordResponse];
+  v4 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalSubwordEmbeddingResponseWithResponse:convertResponseToSubwordResponse formatType:@"json"];
 
   return v4;
 }
@@ -124,28 +124,28 @@ LABEL_8:
   v30[3] = __Block_byref_object_copy__10302;
   v30[4] = __Block_byref_object_dispose__10303;
   v31 = 0;
-  v5 = [(CDMServiceGraph *)self getGraphInput];
-  v6 = [(CDMServiceGraph *)self getLanguage];
+  getGraphInput = [(CDMServiceGraph *)self getGraphInput];
+  getLanguage = [(CDMServiceGraph *)self getLanguage];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__10302;
   v28[4] = __Block_byref_object_dispose__10303;
-  v29 = [v5 text];
-  v7 = [v5 requestId];
+  text = [getGraphInput text];
+  requestId = [getGraphInput requestId];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __38__CDMEmbeddingServiceGraph_buildGraph__block_invoke;
   v23[3] = &unk_1E862FA78;
   v26 = v28;
-  v8 = v6;
+  v8 = getLanguage;
   v24 = v8;
   v27 = v32;
   v9 = v3;
   v25 = v9;
-  v10 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v9 requestId:v7 block:v23];
+  v10 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v9 requestId:requestId block:v23];
 
-  v11 = [v5 requestId];
+  requestId2 = [getGraphInput requestId];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __38__CDMEmbeddingServiceGraph_buildGraph__block_invoke_515;
@@ -156,7 +156,7 @@ LABEL_8:
   v12 = v4;
   v18 = v12;
   objc_copyWeak(&v22, &location);
-  v13 = [(CDMServiceGraph *)self addNodeWithName:@"doEmbedding" bindService:v12 requestId:v11 block:&v14];
+  v13 = [(CDMServiceGraph *)self addNodeWithName:@"doEmbedding" bindService:v12 requestId:requestId2 block:&v14];
 
   [v13 addDependency:{v10, v14, v15, v16, v17}];
   objc_destroyWeak(&v22);

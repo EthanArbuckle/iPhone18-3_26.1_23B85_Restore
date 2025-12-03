@@ -1,100 +1,100 @@
 @interface HDMCDaySummaryBuilder
-- (HDMCDaySummaryBuilder)initWithProfile:(id)a3 dayIndex:(int64_t)a4 orderedWatchSources:(id)a5 calendarCache:(id)a6;
+- (HDMCDaySummaryBuilder)initWithProfile:(id)profile dayIndex:(int64_t)index orderedWatchSources:(id)sources calendarCache:(id)cache;
 - (id)_basalBodyTemperature;
 - (id)_endedCycleFactors;
 - (id)_startedCycleFactors;
 - (id)_wristTemperature;
-- (id)createDaySummaryWithDevice:(id)a3;
+- (id)createDaySummaryWithDevice:(id)device;
 - (int64_t)_bleedingAfterPregnancyFlow;
 - (int64_t)_bleedingInPregnancyFlow;
 - (int64_t)_cervicalMucusQuality;
-- (int64_t)_menstrualFlowWithModificationDay:(int64_t *)a3 startOfCycleFromCycleTracking:(id *)a4;
+- (int64_t)_menstrualFlowWithModificationDay:(int64_t *)day startOfCycleFromCycleTracking:(id *)tracking;
 - (int64_t)_ovulationTestResult;
 - (int64_t)_pregnancyTestResult;
 - (int64_t)_progesteroneTestResult;
 - (int64_t)_sexualActivity;
 - (unint64_t)_symptoms;
-- (void)addCycleTrackingSample:(id)a3;
+- (void)addCycleTrackingSample:(id)sample;
 @end
 
 @implementation HDMCDaySummaryBuilder
 
-- (HDMCDaySummaryBuilder)initWithProfile:(id)a3 dayIndex:(int64_t)a4 orderedWatchSources:(id)a5 calendarCache:(id)a6
+- (HDMCDaySummaryBuilder)initWithProfile:(id)profile dayIndex:(int64_t)index orderedWatchSources:(id)sources calendarCache:(id)cache
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  profileCopy = profile;
+  sourcesCopy = sources;
+  cacheCopy = cache;
   v18.receiver = self;
   v18.super_class = HDMCDaySummaryBuilder;
   v13 = [(HDMCDaySummaryBuilder *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_profile, v10);
-    v14->_dayIndex = a4;
-    v15 = [v11 copy];
+    objc_storeWeak(&v13->_profile, profileCopy);
+    v14->_dayIndex = index;
+    v15 = [sourcesCopy copy];
     orderedWatchSources = v14->_orderedWatchSources;
     v14->_orderedWatchSources = v15;
 
-    objc_storeStrong(&v14->_calendarCache, a6);
+    objc_storeStrong(&v14->_calendarCache, cache);
   }
 
   return v14;
 }
 
-- (void)addCycleTrackingSample:(id)a3
+- (void)addCycleTrackingSample:(id)sample
 {
-  v70 = a3;
-  v5 = [v70 sampleType];
-  v6 = [v5 code];
+  sampleCopy = sample;
+  sampleType = [sampleCopy sampleType];
+  code = [sampleType code];
 
-  if (v6 <= 190)
+  if (code <= 190)
   {
-    if (v6 > 95)
+    if (code > 95)
     {
-      if ((v6 - 157) >= 0xF)
+      if ((code - 157) >= 0xF)
       {
-        if (v6 == 96)
+        if (code == 96)
         {
           intermenstrualBleedingSamples = self->_intermenstrualBleedingSamples;
           if (intermenstrualBleedingSamples)
           {
-            v50 = intermenstrualBleedingSamples;
+            array = intermenstrualBleedingSamples;
           }
 
           else
           {
-            v50 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
           v69 = self->_intermenstrualBleedingSamples;
-          self->_intermenstrualBleedingSamples = v50;
+          self->_intermenstrualBleedingSamples = array;
 
           v12 = self->_intermenstrualBleedingSamples;
           goto LABEL_14;
         }
 
-        if (v6 == 97)
+        if (code == 97)
         {
           sexualActivitySamples = self->_sexualActivitySamples;
           if (sexualActivitySamples)
           {
-            v8 = sexualActivitySamples;
+            array2 = sexualActivitySamples;
           }
 
           else
           {
-            v8 = [MEMORY[0x277CBEB18] array];
+            array2 = [MEMORY[0x277CBEB18] array];
           }
 
           v68 = self->_sexualActivitySamples;
-          self->_sexualActivitySamples = v8;
+          self->_sexualActivitySamples = array2;
 
           v12 = self->_sexualActivitySamples;
 LABEL_14:
-          [(NSMutableArray *)v12 addObject:v70];
+          [(NSMutableArray *)v12 addObject:sampleCopy];
 LABEL_15:
-          v13 = v70;
+          v13 = sampleCopy;
           goto LABEL_16;
         }
 
@@ -105,58 +105,58 @@ LABEL_10:
       symptomsSamples = self->_symptomsSamples;
       if (symptomsSamples)
       {
-        v10 = symptomsSamples;
+        array3 = symptomsSamples;
       }
 
       else
       {
-        v10 = [MEMORY[0x277CBEB18] array];
+        array3 = [MEMORY[0x277CBEB18] array];
       }
 
       v11 = self->_symptomsSamples;
-      self->_symptomsSamples = v10;
+      self->_symptomsSamples = array3;
 
       v12 = self->_symptomsSamples;
       goto LABEL_14;
     }
 
-    if (v6 > 91)
+    if (code > 91)
     {
-      if (v6 == 92)
+      if (code == 92)
       {
         ovulationTestResultSamples = self->_ovulationTestResultSamples;
         if (ovulationTestResultSamples)
         {
-          v41 = ovulationTestResultSamples;
+          array4 = ovulationTestResultSamples;
         }
 
         else
         {
-          v41 = [MEMORY[0x277CBEB18] array];
+          array4 = [MEMORY[0x277CBEB18] array];
         }
 
         v62 = self->_ovulationTestResultSamples;
-        self->_ovulationTestResultSamples = v41;
+        self->_ovulationTestResultSamples = array4;
 
         v12 = self->_ovulationTestResultSamples;
         goto LABEL_14;
       }
 
-      if (v6 == 95)
+      if (code == 95)
       {
         menstrualFlowSamples = self->_menstrualFlowSamples;
         if (menstrualFlowSamples)
         {
-          v35 = menstrualFlowSamples;
+          array5 = menstrualFlowSamples;
         }
 
         else
         {
-          v35 = [MEMORY[0x277CBEB18] array];
+          array5 = [MEMORY[0x277CBEB18] array];
         }
 
         v60 = self->_menstrualFlowSamples;
-        self->_menstrualFlowSamples = v35;
+        self->_menstrualFlowSamples = array5;
 
         v12 = self->_menstrualFlowSamples;
         goto LABEL_14;
@@ -165,41 +165,41 @@ LABEL_10:
 
     else
     {
-      if (v6 == 90)
+      if (code == 90)
       {
         basalBodyTemperatureSamples = self->_basalBodyTemperatureSamples;
         if (basalBodyTemperatureSamples)
         {
-          v39 = basalBodyTemperatureSamples;
+          array6 = basalBodyTemperatureSamples;
         }
 
         else
         {
-          v39 = [MEMORY[0x277CBEB18] array];
+          array6 = [MEMORY[0x277CBEB18] array];
         }
 
         v61 = self->_basalBodyTemperatureSamples;
-        self->_basalBodyTemperatureSamples = v39;
+        self->_basalBodyTemperatureSamples = array6;
 
         v12 = self->_basalBodyTemperatureSamples;
         goto LABEL_14;
       }
 
-      if (v6 == 91)
+      if (code == 91)
       {
         cervicalMucusQualitySamples = self->_cervicalMucusQualitySamples;
         if (cervicalMucusQualitySamples)
         {
-          v22 = cervicalMucusQualitySamples;
+          array7 = cervicalMucusQualitySamples;
         }
 
         else
         {
-          v22 = [MEMORY[0x277CBEB18] array];
+          array7 = [MEMORY[0x277CBEB18] array];
         }
 
         v59 = self->_cervicalMucusQualitySamples;
-        self->_cervicalMucusQualitySamples = v22;
+        self->_cervicalMucusQualitySamples = array7;
 
         v12 = self->_cervicalMucusQualitySamples;
         goto LABEL_14;
@@ -209,45 +209,45 @@ LABEL_10:
     goto LABEL_51;
   }
 
-  if (v6 > 242)
+  if (code > 242)
   {
-    if (v6 <= 255)
+    if (code <= 255)
     {
-      if (v6 == 243)
+      if (code == 243)
       {
         pregnancyTestResultSamples = self->_pregnancyTestResultSamples;
         if (pregnancyTestResultSamples)
         {
-          v48 = pregnancyTestResultSamples;
+          array8 = pregnancyTestResultSamples;
         }
 
         else
         {
-          v48 = [MEMORY[0x277CBEB18] array];
+          array8 = [MEMORY[0x277CBEB18] array];
         }
 
         v67 = self->_pregnancyTestResultSamples;
-        self->_pregnancyTestResultSamples = v48;
+        self->_pregnancyTestResultSamples = array8;
 
         v12 = self->_pregnancyTestResultSamples;
         goto LABEL_14;
       }
 
-      if (v6 == 244)
+      if (code == 244)
       {
         progesteroneTestResultSamples = self->_progesteroneTestResultSamples;
         if (progesteroneTestResultSamples)
         {
-          v37 = progesteroneTestResultSamples;
+          array9 = progesteroneTestResultSamples;
         }
 
         else
         {
-          v37 = [MEMORY[0x277CBEB18] array];
+          array9 = [MEMORY[0x277CBEB18] array];
         }
 
         v65 = self->_progesteroneTestResultSamples;
-        self->_progesteroneTestResultSamples = v37;
+        self->_progesteroneTestResultSamples = array9;
 
         v12 = self->_progesteroneTestResultSamples;
         goto LABEL_14;
@@ -256,22 +256,22 @@ LABEL_10:
 
     else
     {
-      switch(v6)
+      switch(code)
       {
         case 256:
           wristTemperatureSamples = self->_wristTemperatureSamples;
           if (wristTemperatureSamples)
           {
-            v44 = wristTemperatureSamples;
+            array10 = wristTemperatureSamples;
           }
 
           else
           {
-            v44 = [MEMORY[0x277CBEB18] array];
+            array10 = [MEMORY[0x277CBEB18] array];
           }
 
           v63 = self->_wristTemperatureSamples;
-          self->_wristTemperatureSamples = v44;
+          self->_wristTemperatureSamples = array10;
 
           v12 = self->_wristTemperatureSamples;
           goto LABEL_14;
@@ -279,16 +279,16 @@ LABEL_10:
           bleedingInPregnancyFlowSamples = self->_bleedingInPregnancyFlowSamples;
           if (bleedingInPregnancyFlowSamples)
           {
-            v46 = bleedingInPregnancyFlowSamples;
+            array11 = bleedingInPregnancyFlowSamples;
           }
 
           else
           {
-            v46 = [MEMORY[0x277CBEB18] array];
+            array11 = [MEMORY[0x277CBEB18] array];
           }
 
           v66 = self->_bleedingInPregnancyFlowSamples;
-          self->_bleedingInPregnancyFlowSamples = v46;
+          self->_bleedingInPregnancyFlowSamples = array11;
 
           v12 = self->_bleedingInPregnancyFlowSamples;
           goto LABEL_14;
@@ -296,16 +296,16 @@ LABEL_10:
           bleedingAfterPregnancyFlowSamples = self->_bleedingAfterPregnancyFlowSamples;
           if (bleedingAfterPregnancyFlowSamples)
           {
-            v24 = bleedingAfterPregnancyFlowSamples;
+            array12 = bleedingAfterPregnancyFlowSamples;
           }
 
           else
           {
-            v24 = [MEMORY[0x277CBEB18] array];
+            array12 = [MEMORY[0x277CBEB18] array];
           }
 
           v64 = self->_bleedingAfterPregnancyFlowSamples;
-          self->_bleedingAfterPregnancyFlowSamples = v24;
+          self->_bleedingAfterPregnancyFlowSamples = array12;
 
           v12 = self->_bleedingAfterPregnancyFlowSamples;
           goto LABEL_14;
@@ -315,25 +315,25 @@ LABEL_10:
     goto LABEL_51;
   }
 
-  if ((v6 - 229) < 7)
+  if ((code - 229) < 7)
   {
     goto LABEL_10;
   }
 
-  if ((v6 - 191) >= 3)
+  if ((code - 191) >= 3)
   {
 LABEL_51:
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"HDMCDaySummaryBuilder.m" lineNumber:144 description:{@"%@: Invalid data type", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDMCDaySummaryBuilder.m" lineNumber:144 description:{@"%@: Invalid data type", objc_opt_class()}];
 LABEL_69:
 
     goto LABEL_15;
   }
 
   calendarCache = self->_calendarCache;
-  v26 = [v70 _timeZone];
-  v27 = [(HKCalendarCache *)calendarCache calendarForTimeZone:v26];
-  v28 = [v70 hk_dayIndexRangeWithCalendar:v27];
+  _timeZone = [sampleCopy _timeZone];
+  v27 = [(HKCalendarCache *)calendarCache calendarForTimeZone:_timeZone];
+  v28 = [sampleCopy hk_dayIndexRangeWithCalendar:v27];
   v30 = v29;
 
   dayIndex = self->_dayIndex;
@@ -342,19 +342,19 @@ LABEL_69:
     startedCycleFactors = self->_startedCycleFactors;
     if (startedCycleFactors)
     {
-      v33 = startedCycleFactors;
+      array13 = startedCycleFactors;
     }
 
     else
     {
-      v33 = [MEMORY[0x277CBEB18] array];
+      array13 = [MEMORY[0x277CBEB18] array];
     }
 
     v51 = self->_startedCycleFactors;
-    self->_startedCycleFactors = v33;
+    self->_startedCycleFactors = array13;
 
     v52 = self->_startedCycleFactors;
-    v53 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v70, "hkmc_cycleFactor")}];
+    v53 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sampleCopy, "hkmc_cycleFactor")}];
     [(NSMutableArray *)v52 addObject:v53];
 
     dayIndex = self->_dayIndex;
@@ -366,32 +366,32 @@ LABEL_69:
     v54 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v13 = v70;
+  v13 = sampleCopy;
   if (v54 == dayIndex)
   {
     endedCycleFactors = self->_endedCycleFactors;
     if (endedCycleFactors)
     {
-      v56 = endedCycleFactors;
+      array14 = endedCycleFactors;
     }
 
     else
     {
-      v56 = [MEMORY[0x277CBEB18] array];
+      array14 = [MEMORY[0x277CBEB18] array];
     }
 
     v57 = self->_endedCycleFactors;
-    self->_endedCycleFactors = v56;
+    self->_endedCycleFactors = array14;
 
     v58 = self->_endedCycleFactors;
-    v42 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v70, "hkmc_cycleFactor")}];
-    [(NSMutableArray *)v58 addObject:v42];
+    currentHandler = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sampleCopy, "hkmc_cycleFactor")}];
+    [(NSMutableArray *)v58 addObject:currentHandler];
     goto LABEL_69;
   }
 
 LABEL_16:
-  v14 = [v13 sampleType];
-  if ([v14 hkmc_requiresMultipleReplaceConfirmation])
+  sampleType2 = [v13 sampleType];
+  if ([sampleType2 hkmc_requiresMultipleReplaceConfirmation])
   {
     sampleCountByType = self->_sampleCountByType;
     if (sampleCountByType)
@@ -408,38 +408,38 @@ LABEL_16:
     self->_sampleCountByType = v16;
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [(NSMutableDictionary *)self->_sampleCountByType objectForKeyedSubscript:v14];
+    v19 = [(NSMutableDictionary *)self->_sampleCountByType objectForKeyedSubscript:sampleType2];
     v20 = [v18 numberWithInteger:{objc_msgSend(v19, "integerValue") + 1}];
-    [(NSMutableDictionary *)self->_sampleCountByType setObject:v20 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_sampleCountByType setObject:v20 forKeyedSubscript:sampleType2];
   }
 }
 
-- (int64_t)_menstrualFlowWithModificationDay:(int64_t *)a3 startOfCycleFromCycleTracking:(id *)a4
+- (int64_t)_menstrualFlowWithModificationDay:(int64_t *)day startOfCycleFromCycleTracking:(id *)tracking
 {
   [(NSMutableArray *)self->_menstrualFlowSamples sortUsingComparator:&__block_literal_global_6];
-  v7 = [(NSMutableArray *)self->_menstrualFlowSamples lastObject];
-  v8 = v7;
-  if (v7)
+  lastObject = [(NSMutableArray *)self->_menstrualFlowSamples lastObject];
+  v8 = lastObject;
+  if (lastObject)
   {
-    v9 = [v7 _creationDate];
+    _creationDate = [lastObject _creationDate];
     calendarCache = self->_calendarCache;
-    v11 = [v8 _timeZone];
-    v12 = [(HKCalendarCache *)calendarCache calendarForTimeZone:v11];
-    *a3 = [v9 hk_dayIndexWithCalendar:v12];
+    _timeZone = [v8 _timeZone];
+    v12 = [(HKCalendarCache *)calendarCache calendarForTimeZone:_timeZone];
+    *day = [_creationDate hk_dayIndexWithCalendar:v12];
 
     if ([v8 hkmc_wasEnteredFromCycleTracking])
     {
-      v13 = [v8 metadata];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCC4F0]];
-      v15 = [v14 BOOLValue];
+      metadata = [v8 metadata];
+      v14 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC4F0]];
+      bOOLValue = [v14 BOOLValue];
 
-      *a4 = [MEMORY[0x277CCABB0] numberWithBool:v15];
+      *tracking = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     }
   }
 
-  v16 = [v8 hkmc_daySummaryMenstrualFlow];
+  hkmc_daySummaryMenstrualFlow = [v8 hkmc_daySummaryMenstrualFlow];
 
-  return v16;
+  return hkmc_daySummaryMenstrualFlow;
 }
 
 uint64_t __89__HDMCDaySummaryBuilder__menstrualFlowWithModificationDay_startOfCycleFromCycleTracking___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -459,10 +459,10 @@ uint64_t __89__HDMCDaySummaryBuilder__menstrualFlowWithModificationDay_startOfCy
 - (int64_t)_bleedingInPregnancyFlow
 {
   [(NSMutableArray *)self->_bleedingInPregnancyFlowSamples sortUsingComparator:&__block_literal_global_306];
-  v3 = [(NSMutableArray *)self->_bleedingInPregnancyFlowSamples lastObject];
-  v4 = [v3 hkmc_daySummaryBleedingInPregnancyFlow];
+  lastObject = [(NSMutableArray *)self->_bleedingInPregnancyFlowSamples lastObject];
+  hkmc_daySummaryBleedingInPregnancyFlow = [lastObject hkmc_daySummaryBleedingInPregnancyFlow];
 
-  return v4;
+  return hkmc_daySummaryBleedingInPregnancyFlow;
 }
 
 uint64_t __49__HDMCDaySummaryBuilder__bleedingInPregnancyFlow__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -482,10 +482,10 @@ uint64_t __49__HDMCDaySummaryBuilder__bleedingInPregnancyFlow__block_invoke(uint
 - (int64_t)_bleedingAfterPregnancyFlow
 {
   [(NSMutableArray *)self->_bleedingAfterPregnancyFlowSamples sortUsingComparator:&__block_literal_global_308];
-  v3 = [(NSMutableArray *)self->_bleedingAfterPregnancyFlowSamples lastObject];
-  v4 = [v3 hkmc_daySummaryBleedingAfterPregnancyFlow];
+  lastObject = [(NSMutableArray *)self->_bleedingAfterPregnancyFlowSamples lastObject];
+  hkmc_daySummaryBleedingAfterPregnancyFlow = [lastObject hkmc_daySummaryBleedingAfterPregnancyFlow];
 
-  return v4;
+  return hkmc_daySummaryBleedingAfterPregnancyFlow;
 }
 
 uint64_t __52__HDMCDaySummaryBuilder__bleedingAfterPregnancyFlow__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -546,10 +546,10 @@ uint64_t __52__HDMCDaySummaryBuilder__bleedingAfterPregnancyFlow__block_invoke(u
 - (int64_t)_sexualActivity
 {
   [(NSMutableArray *)self->_sexualActivitySamples sortUsingComparator:&__block_literal_global_310];
-  v3 = [(NSMutableArray *)self->_sexualActivitySamples lastObject];
-  v4 = [v3 hkmc_daySummarySexualActivity];
+  lastObject = [(NSMutableArray *)self->_sexualActivitySamples lastObject];
+  hkmc_daySummarySexualActivity = [lastObject hkmc_daySummarySexualActivity];
 
-  return v4;
+  return hkmc_daySummarySexualActivity;
 }
 
 uint64_t __40__HDMCDaySummaryBuilder__sexualActivity__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -569,10 +569,10 @@ uint64_t __40__HDMCDaySummaryBuilder__sexualActivity__block_invoke(uint64_t a1, 
 - (int64_t)_ovulationTestResult
 {
   [(NSMutableArray *)self->_ovulationTestResultSamples sortUsingComparator:&__block_literal_global_312];
-  v3 = [(NSMutableArray *)self->_ovulationTestResultSamples lastObject];
-  v4 = [v3 hkmc_daySummaryOvulationTestResult];
+  lastObject = [(NSMutableArray *)self->_ovulationTestResultSamples lastObject];
+  hkmc_daySummaryOvulationTestResult = [lastObject hkmc_daySummaryOvulationTestResult];
 
-  return v4;
+  return hkmc_daySummaryOvulationTestResult;
 }
 
 uint64_t __45__HDMCDaySummaryBuilder__ovulationTestResult__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -592,10 +592,10 @@ uint64_t __45__HDMCDaySummaryBuilder__ovulationTestResult__block_invoke(uint64_t
 - (int64_t)_pregnancyTestResult
 {
   [(NSMutableArray *)self->_pregnancyTestResultSamples sortUsingComparator:&__block_literal_global_314];
-  v3 = [(NSMutableArray *)self->_pregnancyTestResultSamples lastObject];
-  v4 = [v3 hkmc_daySummaryPregnancyTestResult];
+  lastObject = [(NSMutableArray *)self->_pregnancyTestResultSamples lastObject];
+  hkmc_daySummaryPregnancyTestResult = [lastObject hkmc_daySummaryPregnancyTestResult];
 
-  return v4;
+  return hkmc_daySummaryPregnancyTestResult;
 }
 
 uint64_t __45__HDMCDaySummaryBuilder__pregnancyTestResult__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -615,10 +615,10 @@ uint64_t __45__HDMCDaySummaryBuilder__pregnancyTestResult__block_invoke(uint64_t
 - (int64_t)_progesteroneTestResult
 {
   [(NSMutableArray *)self->_progesteroneTestResultSamples sortUsingComparator:&__block_literal_global_316];
-  v3 = [(NSMutableArray *)self->_progesteroneTestResultSamples lastObject];
-  v4 = [v3 hkmc_daySummaryProgesteroneTestResult];
+  lastObject = [(NSMutableArray *)self->_progesteroneTestResultSamples lastObject];
+  hkmc_daySummaryProgesteroneTestResult = [lastObject hkmc_daySummaryProgesteroneTestResult];
 
-  return v4;
+  return hkmc_daySummaryProgesteroneTestResult;
 }
 
 uint64_t __48__HDMCDaySummaryBuilder__progesteroneTestResult__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -638,10 +638,10 @@ uint64_t __48__HDMCDaySummaryBuilder__progesteroneTestResult__block_invoke(uint6
 - (int64_t)_cervicalMucusQuality
 {
   [(NSMutableArray *)self->_cervicalMucusQualitySamples sortUsingComparator:&__block_literal_global_318];
-  v3 = [(NSMutableArray *)self->_cervicalMucusQualitySamples lastObject];
-  v4 = [v3 hkmc_daySummaryCervicalMucusQuality];
+  lastObject = [(NSMutableArray *)self->_cervicalMucusQualitySamples lastObject];
+  hkmc_daySummaryCervicalMucusQuality = [lastObject hkmc_daySummaryCervicalMucusQuality];
 
-  return v4;
+  return hkmc_daySummaryCervicalMucusQuality;
 }
 
 uint64_t __46__HDMCDaySummaryBuilder__cervicalMucusQuality__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -661,10 +661,10 @@ uint64_t __46__HDMCDaySummaryBuilder__cervicalMucusQuality__block_invoke(uint64_
 - (id)_basalBodyTemperature
 {
   [(NSMutableArray *)self->_basalBodyTemperatureSamples sortUsingComparator:&__block_literal_global_321];
-  v3 = [(NSMutableArray *)self->_basalBodyTemperatureSamples lastObject];
-  v4 = [v3 quantity];
+  lastObject = [(NSMutableArray *)self->_basalBodyTemperatureSamples lastObject];
+  quantity = [lastObject quantity];
 
-  return v4;
+  return quantity;
 }
 
 uint64_t __46__HDMCDaySummaryBuilder__basalBodyTemperature__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -686,13 +686,13 @@ uint64_t __46__HDMCDaySummaryBuilder__basalBodyTemperature__block_invoke(uint64_
   v9[3] = &unk_27865B480;
   v9[4] = self;
   [(NSMutableArray *)wristTemperatureSamples sortUsingComparator:v9];
-  v4 = [(NSMutableArray *)self->_wristTemperatureSamples firstObject];
+  firstObject = [(NSMutableArray *)self->_wristTemperatureSamples firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = MEMORY[0x277D11A08];
-    v6 = [(NSMutableArray *)self->_wristTemperatureSamples firstObject];
-    v7 = [v5 wristTemperatureFromWristTemperatureSample:v6];
+    firstObject2 = [(NSMutableArray *)self->_wristTemperatureSamples firstObject];
+    v7 = [v5 wristTemperatureFromWristTemperatureSample:firstObject2];
   }
 
   else
@@ -762,7 +762,7 @@ uint64_t __42__HDMCDaySummaryBuilder__wristTemperature__block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)createDaySummaryWithDevice:(id)a3
+- (id)createDaySummaryWithDevice:(id)device
 {
   v24 = 0;
   v25 = 0;
@@ -770,21 +770,21 @@ uint64_t __42__HDMCDaySummaryBuilder__wristTemperature__block_invoke(uint64_t a1
   v18 = v24;
   dayIndex = self->_dayIndex;
   v22 = MEMORY[0x277D11988];
-  v20 = [(HDMCDaySummaryBuilder *)self _bleedingInPregnancyFlow];
-  v19 = [(HDMCDaySummaryBuilder *)self _bleedingAfterPregnancyFlow];
-  v17 = [(HDMCDaySummaryBuilder *)self _intermenstrualBleeding];
-  v16 = [(HDMCDaySummaryBuilder *)self _symptoms];
-  v15 = [(HDMCDaySummaryBuilder *)self _sexualActivity];
-  v4 = [(HDMCDaySummaryBuilder *)self _ovulationTestResult];
-  v5 = [(HDMCDaySummaryBuilder *)self _pregnancyTestResult];
-  v6 = [(HDMCDaySummaryBuilder *)self _progesteroneTestResult];
-  v7 = [(HDMCDaySummaryBuilder *)self _cervicalMucusQuality];
-  v8 = [(HDMCDaySummaryBuilder *)self _basalBodyTemperature];
-  v9 = [(HDMCDaySummaryBuilder *)self _wristTemperature];
+  _bleedingInPregnancyFlow = [(HDMCDaySummaryBuilder *)self _bleedingInPregnancyFlow];
+  _bleedingAfterPregnancyFlow = [(HDMCDaySummaryBuilder *)self _bleedingAfterPregnancyFlow];
+  _intermenstrualBleeding = [(HDMCDaySummaryBuilder *)self _intermenstrualBleeding];
+  _symptoms = [(HDMCDaySummaryBuilder *)self _symptoms];
+  _sexualActivity = [(HDMCDaySummaryBuilder *)self _sexualActivity];
+  _ovulationTestResult = [(HDMCDaySummaryBuilder *)self _ovulationTestResult];
+  _pregnancyTestResult = [(HDMCDaySummaryBuilder *)self _pregnancyTestResult];
+  _progesteroneTestResult = [(HDMCDaySummaryBuilder *)self _progesteroneTestResult];
+  _cervicalMucusQuality = [(HDMCDaySummaryBuilder *)self _cervicalMucusQuality];
+  _basalBodyTemperature = [(HDMCDaySummaryBuilder *)self _basalBodyTemperature];
+  _wristTemperature = [(HDMCDaySummaryBuilder *)self _wristTemperature];
   v10 = v25;
-  v11 = [(HDMCDaySummaryBuilder *)self _startedCycleFactors];
-  v12 = [(HDMCDaySummaryBuilder *)self _endedCycleFactors];
-  v13 = [v22 daySummaryWithDayIndex:dayIndex menstrualFlow:v23 bleedingInPregnancyFlow:v20 bleedingAfterPregnancyFlow:v19 intermenstrualBleeding:v17 symptoms:v16 sexualActivity:v15 ovulationTestResult:v4 pregnancyTestResult:v5 progesteroneTestResult:v6 cervicalMucusQuality:v7 basalBodyTemperature:v8 wristTemperature:v9 menstrualFlowModificationDayIndex:v10 startOfCycleFromCycleTracking:v18 startedCycleFactors:v11 endedCycleFactors:v12 sampleCountByType:self->_sampleCountByType];
+  _startedCycleFactors = [(HDMCDaySummaryBuilder *)self _startedCycleFactors];
+  _endedCycleFactors = [(HDMCDaySummaryBuilder *)self _endedCycleFactors];
+  v13 = [v22 daySummaryWithDayIndex:dayIndex menstrualFlow:v23 bleedingInPregnancyFlow:_bleedingInPregnancyFlow bleedingAfterPregnancyFlow:_bleedingAfterPregnancyFlow intermenstrualBleeding:_intermenstrualBleeding symptoms:_symptoms sexualActivity:_sexualActivity ovulationTestResult:_ovulationTestResult pregnancyTestResult:_pregnancyTestResult progesteroneTestResult:_progesteroneTestResult cervicalMucusQuality:_cervicalMucusQuality basalBodyTemperature:_basalBodyTemperature wristTemperature:_wristTemperature menstrualFlowModificationDayIndex:v10 startOfCycleFromCycleTracking:v18 startedCycleFactors:_startedCycleFactors endedCycleFactors:_endedCycleFactors sampleCountByType:self->_sampleCountByType];
 
   return v13;
 }

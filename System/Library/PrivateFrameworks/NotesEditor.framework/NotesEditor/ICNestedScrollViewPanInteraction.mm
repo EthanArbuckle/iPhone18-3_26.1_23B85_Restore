@@ -1,12 +1,12 @@
 @interface ICNestedScrollViewPanInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (ICNestedScrollViewPanInteraction)init;
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation ICNestedScrollViewPanInteraction
@@ -18,18 +18,18 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_21542EBD4(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21542EBD4(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_21542EE30(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21542EE30(view);
 }
 
 - (ICNestedScrollViewPanInteraction)init
@@ -39,44 +39,44 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_215430E18(v6, v7);
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  selfCopy = self;
+  sub_215430E18(recognizerCopy, eventCopy);
 
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_215431010(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_215431010(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_21543134C(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_21543134C(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   v6 = sub_21542F188();
   if (*(v7 + 56))
   {
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     sub_215431618(v8);
   }
 

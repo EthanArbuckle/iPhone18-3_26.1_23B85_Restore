@@ -1,90 +1,90 @@
 @interface ASCodableFriend
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAchievements:(id)a3;
-- (void)addCompetitions:(id)a3;
-- (void)addSnapshots:(id)a3;
-- (void)addWorkouts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAchievements:(id)achievements;
+- (void)addCompetitions:(id)competitions;
+- (void)addSnapshots:(id)snapshots;
+- (void)addWorkouts:(id)workouts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableFriend
 
-- (void)addSnapshots:(id)a3
+- (void)addSnapshots:(id)snapshots
 {
-  v4 = a3;
+  snapshotsCopy = snapshots;
   snapshots = self->_snapshots;
-  v8 = v4;
+  v8 = snapshotsCopy;
   if (!snapshots)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_snapshots;
     self->_snapshots = v6;
 
-    v4 = v8;
+    snapshotsCopy = v8;
     snapshots = self->_snapshots;
   }
 
-  [(NSMutableArray *)snapshots addObject:v4];
+  [(NSMutableArray *)snapshots addObject:snapshotsCopy];
 }
 
-- (void)addWorkouts:(id)a3
+- (void)addWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   workouts = self->_workouts;
-  v8 = v4;
+  v8 = workoutsCopy;
   if (!workouts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_workouts;
     self->_workouts = v6;
 
-    v4 = v8;
+    workoutsCopy = v8;
     workouts = self->_workouts;
   }
 
-  [(NSMutableArray *)workouts addObject:v4];
+  [(NSMutableArray *)workouts addObject:workoutsCopy];
 }
 
-- (void)addAchievements:(id)a3
+- (void)addAchievements:(id)achievements
 {
-  v4 = a3;
+  achievementsCopy = achievements;
   achievements = self->_achievements;
-  v8 = v4;
+  v8 = achievementsCopy;
   if (!achievements)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_achievements;
     self->_achievements = v6;
 
-    v4 = v8;
+    achievementsCopy = v8;
     achievements = self->_achievements;
   }
 
-  [(NSMutableArray *)achievements addObject:v4];
+  [(NSMutableArray *)achievements addObject:achievementsCopy];
 }
 
-- (void)addCompetitions:(id)a3
+- (void)addCompetitions:(id)competitions
 {
-  v4 = a3;
+  competitionsCopy = competitions;
   competitions = self->_competitions;
-  v8 = v4;
+  v8 = competitionsCopy;
   if (!competitions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_competitions;
     self->_competitions = v6;
 
-    v4 = v8;
+    competitionsCopy = v8;
     competitions = self->_competitions;
   }
 
-  [(NSMutableArray *)competitions addObject:v4];
+  [(NSMutableArray *)competitions addObject:competitionsCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = ASCodableFriend;
   v4 = [(ASCodableFriend *)&v8 description];
-  v5 = [(ASCodableFriend *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableFriend *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,12 +102,12 @@
 - (id)dictionaryRepresentation
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   contact = self->_contact;
   if (contact)
   {
-    v5 = [(ASCodableContact *)contact dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"contact"];
+    dictionaryRepresentation = [(ASCodableContact *)contact dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"contact"];
   }
 
   if ([(NSMutableArray *)self->_snapshots count])
@@ -132,8 +132,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -142,7 +142,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"snapshots"];
+    [dictionary setObject:v6 forKey:@"snapshots"];
   }
 
   if ([(NSMutableArray *)self->_workouts count])
@@ -167,8 +167,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v44 objects:v54 count:16];
@@ -177,7 +177,7 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"workouts"];
+    [dictionary setObject:v13 forKey:@"workouts"];
   }
 
   if ([(NSMutableArray *)self->_achievements count])
@@ -202,8 +202,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation4 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation4];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v40 objects:v53 count:16];
@@ -212,7 +212,7 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKey:@"achievements"];
+    [dictionary setObject:v20 forKey:@"achievements"];
   }
 
   if ([(NSMutableArray *)self->_competitions count])
@@ -237,8 +237,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation5 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation5];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v36 objects:v52 count:16];
@@ -247,18 +247,18 @@
       while (v30);
     }
 
-    [v3 setObject:v27 forKey:@"competitions"];
+    [dictionary setObject:v27 forKey:@"competitions"];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_contact)
   {
     PBDataWriterWriteSubmessage();
@@ -395,80 +395,80 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if (self->_contact)
   {
-    [v20 setContact:?];
+    [toCopy setContact:?];
   }
 
   if ([(ASCodableFriend *)self snapshotsCount])
   {
-    [v20 clearSnapshots];
-    v4 = [(ASCodableFriend *)self snapshotsCount];
-    if (v4)
+    [toCopy clearSnapshots];
+    snapshotsCount = [(ASCodableFriend *)self snapshotsCount];
+    if (snapshotsCount)
     {
-      v5 = v4;
+      v5 = snapshotsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ASCodableFriend *)self snapshotsAtIndex:i];
-        [v20 addSnapshots:v7];
+        [toCopy addSnapshots:v7];
       }
     }
   }
 
   if ([(ASCodableFriend *)self workoutsCount])
   {
-    [v20 clearWorkouts];
-    v8 = [(ASCodableFriend *)self workoutsCount];
-    if (v8)
+    [toCopy clearWorkouts];
+    workoutsCount = [(ASCodableFriend *)self workoutsCount];
+    if (workoutsCount)
     {
-      v9 = v8;
+      v9 = workoutsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ASCodableFriend *)self workoutsAtIndex:j];
-        [v20 addWorkouts:v11];
+        [toCopy addWorkouts:v11];
       }
     }
   }
 
   if ([(ASCodableFriend *)self achievementsCount])
   {
-    [v20 clearAchievements];
-    v12 = [(ASCodableFriend *)self achievementsCount];
-    if (v12)
+    [toCopy clearAchievements];
+    achievementsCount = [(ASCodableFriend *)self achievementsCount];
+    if (achievementsCount)
     {
-      v13 = v12;
+      v13 = achievementsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ASCodableFriend *)self achievementsAtIndex:k];
-        [v20 addAchievements:v15];
+        [toCopy addAchievements:v15];
       }
     }
   }
 
   if ([(ASCodableFriend *)self competitionsCount])
   {
-    [v20 clearCompetitions];
-    v16 = [(ASCodableFriend *)self competitionsCount];
-    if (v16)
+    [toCopy clearCompetitions];
+    competitionsCount = [(ASCodableFriend *)self competitionsCount];
+    if (competitionsCount)
     {
-      v17 = v16;
+      v17 = competitionsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(ASCodableFriend *)self competitionsAtIndex:m];
-        [v20 addCompetitions:v19];
+        [toCopy addCompetitions:v19];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ASCodableContact *)self->_contact copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ASCodableContact *)self->_contact copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -492,7 +492,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v46 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v46 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addSnapshots:v13];
 
         ++v12;
@@ -525,7 +525,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v42 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v42 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addWorkouts:v19];
 
         ++v18;
@@ -558,7 +558,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v38 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v38 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addAchievements:v25];
 
         ++v24;
@@ -591,7 +591,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v34 + 1) + 8 * v30) copyWithZone:{a3, v34}];
+        v31 = [*(*(&v34 + 1) + 8 * v30) copyWithZone:{zone, v34}];
         [v5 addCompetitions:v31];
 
         ++v30;
@@ -608,13 +608,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((contact = self->_contact, !(contact | v4[3])) || -[ASCodableContact isEqual:](contact, "isEqual:")) && ((snapshots = self->_snapshots, !(snapshots | v4[4])) || -[NSMutableArray isEqual:](snapshots, "isEqual:")) && ((workouts = self->_workouts, !(workouts | v4[5])) || -[NSMutableArray isEqual:](workouts, "isEqual:")) && ((achievements = self->_achievements, !(achievements | v4[1])) || -[NSMutableArray isEqual:](achievements, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((contact = self->_contact, !(contact | equalCopy[3])) || -[ASCodableContact isEqual:](contact, "isEqual:")) && ((snapshots = self->_snapshots, !(snapshots | equalCopy[4])) || -[NSMutableArray isEqual:](snapshots, "isEqual:")) && ((workouts = self->_workouts, !(workouts | equalCopy[5])) || -[NSMutableArray isEqual:](workouts, "isEqual:")) && ((achievements = self->_achievements, !(achievements | equalCopy[1])) || -[NSMutableArray isEqual:](achievements, "isEqual:")))
   {
     competitions = self->_competitions;
-    if (competitions | v4[2])
+    if (competitions | equalCopy[2])
     {
       v10 = [(NSMutableArray *)competitions isEqual:?];
     }
@@ -642,12 +642,12 @@
   return v6 ^ [(NSMutableArray *)self->_competitions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   contact = self->_contact;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (contact)
   {
     if (v6)
@@ -665,7 +665,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v8)
   {
@@ -693,7 +693,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v13)
   {
@@ -721,7 +721,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = *(v4 + 1);
+  v17 = *(fromCopy + 1);
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v45 count:16];
   if (v18)
   {
@@ -749,7 +749,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = *(v4 + 2);
+  v22 = *(fromCopy + 2);
   v23 = [v22 countByEnumeratingWithState:&v28 objects:v44 count:16];
   if (v23)
   {

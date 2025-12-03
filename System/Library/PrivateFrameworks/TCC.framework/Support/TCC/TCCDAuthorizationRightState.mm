@@ -26,38 +26,38 @@
 - (NSString)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(TCCDAuthorizationRightState *)self rightDescription];
-  v5 = [(TCCDAuthorizationRightState *)self reasonDescription];
-  [v3 appendFormat:@"%@ (%@)", v4, v5];
+  rightDescription = [(TCCDAuthorizationRightState *)self rightDescription];
+  reasonDescription = [(TCCDAuthorizationRightState *)self reasonDescription];
+  [v3 appendFormat:@"%@ (%@)", rightDescription, reasonDescription];
 
   return v3;
 }
 
 - (NSString)rightDescription
 {
-  v2 = [(TCCDAuthorizationRightState *)self right];
-  if (v2 > 7)
+  right = [(TCCDAuthorizationRightState *)self right];
+  if (right > 7)
   {
     return @"<Unspported Authorization Right value>";
   }
 
   else
   {
-    return *(&off_1000A5FE8 + v2);
+    return *(&off_1000A5FE8 + right);
   }
 }
 
 - (NSString)reasonDescription
 {
-  v2 = [(TCCDAuthorizationRightState *)self reason];
-  if (v2 > 0xF)
+  reason = [(TCCDAuthorizationRightState *)self reason];
+  if (reason > 0xF)
   {
     return @"<Unspported Authorization Reason value>";
   }
 
   else
   {
-    return *(&off_1000A6028 + v2);
+    return *(&off_1000A6028 + reason);
   }
 }
 

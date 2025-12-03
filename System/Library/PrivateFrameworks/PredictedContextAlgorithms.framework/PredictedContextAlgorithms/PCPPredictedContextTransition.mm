@@ -1,32 +1,32 @@
 @interface PCPPredictedContextTransition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPredictedContextTransport:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPredictedContextTransport:(id)transport;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPPredictedContextTransition
 
-- (void)addPredictedContextTransport:(id)a3
+- (void)addPredictedContextTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   predictedContextTransports = self->_predictedContextTransports;
-  v8 = v4;
+  v8 = transportCopy;
   if (!predictedContextTransports)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predictedContextTransports;
     self->_predictedContextTransports = v6;
 
-    v4 = v8;
+    transportCopy = v8;
     predictedContextTransports = self->_predictedContextTransports;
   }
 
-  [(NSMutableArray *)predictedContextTransports addObject:v4];
+  [(NSMutableArray *)predictedContextTransports addObject:transportCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = PCPPredictedContextTransition;
   v4 = [(PCPPredictedContextTransition *)&v8 description];
-  v5 = [(PCPPredictedContextTransition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPPredictedContextTransition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   predictedContext = self->_predictedContext;
   if (predictedContext)
   {
-    v5 = [(PCPPredictedContext *)predictedContext dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"predictedContext"];
+    dictionaryRepresentation = [(PCPPredictedContext *)predictedContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"predictedContext"];
   }
 
   if ([(NSMutableArray *)self->_predictedContextTransports count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,18 +84,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"predictedContextTransport"];
+    [dictionary setObject:v6 forKey:@"predictedContextTransport"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_predictedContext)
   {
     PBDataWriterWriteSubmessage();
@@ -136,35 +136,35 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_predictedContext)
   {
-    [v8 setPredictedContext:?];
+    [toCopy setPredictedContext:?];
   }
 
   if ([(PCPPredictedContextTransition *)self predictedContextTransportsCount])
   {
-    [v8 clearPredictedContextTransports];
-    v4 = [(PCPPredictedContextTransition *)self predictedContextTransportsCount];
-    if (v4)
+    [toCopy clearPredictedContextTransports];
+    predictedContextTransportsCount = [(PCPPredictedContextTransition *)self predictedContextTransportsCount];
+    if (predictedContextTransportsCount)
     {
-      v5 = v4;
+      v5 = predictedContextTransportsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PCPPredictedContextTransition *)self predictedContextTransportAtIndex:i];
-        [v8 addPredictedContextTransport:v7];
+        [toCopy addPredictedContextTransport:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PCPPredictedContext *)self->_predictedContext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PCPPredictedContext *)self->_predictedContext copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addPredictedContextTransport:v13];
 
         ++v12;
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((predictedContext = self->_predictedContext, !(predictedContext | v4[1])) || -[PCPPredictedContext isEqual:](predictedContext, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((predictedContext = self->_predictedContext, !(predictedContext | equalCopy[1])) || -[PCPPredictedContext isEqual:](predictedContext, "isEqual:")))
   {
     predictedContextTransports = self->_predictedContextTransports;
-    if (predictedContextTransports | v4[2])
+    if (predictedContextTransports | equalCopy[2])
     {
       v7 = [(NSMutableArray *)predictedContextTransports isEqual:?];
     }
@@ -230,12 +230,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   predictedContext = self->_predictedContext;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (predictedContext)
   {
     if (v6)
@@ -253,7 +253,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

@@ -1,6 +1,6 @@
 @interface VSViewServiceRequest
 - (BOOL)allowsAuthenticationUI;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPreAuthRequest;
 - (NSArray)applicationAccountProviders;
 - (NSArray)featuredIdentityProviderIdentifiers;
@@ -9,11 +9,11 @@
 - (NSString)accountProviderAuthenticationToken;
 - (NSString)localizedVideoTitle;
 - (VSViewServiceRequest)init;
-- (VSViewServiceRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSViewServiceRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSViewServiceRequest
@@ -32,32 +32,32 @@
   return v2;
 }
 
-- (VSViewServiceRequest)initWithCoder:(id)a3
+- (VSViewServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSViewServiceRequest;
   v5 = [(VSViewServiceRequest *)&v8 init];
   if (v5)
   {
     v6 = VSViewServiceRequestValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSViewServiceRequestValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSViewServiceRequestValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -70,11 +70,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSViewServiceRequestValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }
@@ -89,57 +89,57 @@
 
 - (BOOL)allowsAuthenticationUI
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = [v2 isInterruptionAllowed];
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  isInterruptionAllowed = [accountMetadataRequest isInterruptionAllowed];
 
-  return v3;
+  return isInterruptionAllowed;
 }
 
 - (NSArray)supportedIdentityProviderIdentifiers
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 supportedAccountProviderIdentifiers];
+    supportedAccountProviderIdentifiers = [accountMetadataRequest supportedAccountProviderIdentifiers];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    supportedAccountProviderIdentifiers = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return supportedAccountProviderIdentifiers;
 }
 
 - (NSArray)featuredIdentityProviderIdentifiers
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 featuredAccountProviderIdentifiers];
+    featuredAccountProviderIdentifiers = [accountMetadataRequest featuredAccountProviderIdentifiers];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    featuredAccountProviderIdentifiers = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return featuredAccountProviderIdentifiers;
 }
 
 - (NSArray)applicationAccountProviders
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 applicationAccountProviders];
-    v5 = v4;
-    if (v4)
+    applicationAccountProviders = [accountMetadataRequest applicationAccountProviders];
+    v5 = applicationAccountProviders;
+    if (applicationAccountProviders)
     {
-      v6 = v4;
+      v6 = applicationAccountProviders;
     }
 
     else
@@ -158,60 +158,60 @@
 
 - (NSArray)supportedAccountProviderAuthenticationSchemes
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 supportedAuthenticationSchemes];
+    supportedAuthenticationSchemes = [accountMetadataRequest supportedAuthenticationSchemes];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    supportedAuthenticationSchemes = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return supportedAuthenticationSchemes;
 }
 
 - (NSString)localizedVideoTitle
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 localizedVideoTitle];
+    localizedVideoTitle = [accountMetadataRequest localizedVideoTitle];
   }
 
   else
   {
-    v4 = 0;
+    localizedVideoTitle = 0;
   }
 
-  return v4;
+  return localizedVideoTitle;
 }
 
 - (NSString)accountProviderAuthenticationToken
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = v2;
-  if (v2)
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  v3 = accountMetadataRequest;
+  if (accountMetadataRequest)
   {
-    v4 = [v2 accountProviderAuthenticationToken];
+    accountProviderAuthenticationToken = [accountMetadataRequest accountProviderAuthenticationToken];
   }
 
   else
   {
-    v4 = 0;
+    accountProviderAuthenticationToken = 0;
   }
 
-  return v4;
+  return accountProviderAuthenticationToken;
 }
 
 - (BOOL)isPreAuthRequest
 {
-  v2 = [(VSViewServiceRequest *)self accountMetadataRequest];
-  v3 = [v2 accountProviderAuthenticationToken];
-  v4 = v3 != 0;
+  accountMetadataRequest = [(VSViewServiceRequest *)self accountMetadataRequest];
+  accountProviderAuthenticationToken = [accountMetadataRequest accountProviderAuthenticationToken];
+  v4 = accountProviderAuthenticationToken != 0;
 
   return v4;
 }

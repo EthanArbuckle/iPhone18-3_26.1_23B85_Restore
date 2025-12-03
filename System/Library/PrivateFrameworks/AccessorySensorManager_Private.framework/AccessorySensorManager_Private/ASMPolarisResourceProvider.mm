@@ -1,14 +1,14 @@
 @interface ASMPolarisResourceProvider
 - (ASMPolarisResourceProvider)init;
-- (void)_activateWithExecutionSession:(id)a3;
-- (void)_publishResource:(id)a3 completion:(id)a4;
-- (void)_removeResource:(id)a3;
-- (void)activateWithExecutionSession:(id)a3;
+- (void)_activateWithExecutionSession:(id)session;
+- (void)_publishResource:(id)resource completion:(id)completion;
+- (void)_removeResource:(id)resource;
+- (void)activateWithExecutionSession:(id)session;
 - (void)invalidate;
-- (void)publishResource:(id)a3 completion:(id)a4;
-- (void)removeResource:(id)a3;
-- (void)resourcesNoLongerWanted:(id)a3;
-- (void)resourcesRequested:(id)a3;
+- (void)publishResource:(id)resource completion:(id)completion;
+- (void)removeResource:(id)resource;
+- (void)resourcesNoLongerWanted:(id)wanted;
+- (void)resourcesRequested:(id)requested;
 @end
 
 @implementation ASMPolarisResourceProvider
@@ -31,28 +31,28 @@
   return v2;
 }
 
-- (void)activateWithExecutionSession:(id)a3
+- (void)activateWithExecutionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ASMPolarisResourceProvider_activateWithExecutionSession___block_invoke;
   v7[3] = &unk_278BF7830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithExecutionSession:(id)a3
+- (void)_activateWithExecutionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
-    v8 = v4;
-    v5 = v4;
+    v8 = sessionCopy;
+    v5 = sessionCopy;
     if (!v5)
     {
       v5 = [MEMORY[0x277D3E660] uniqueSessionWithName:@"ASMResourceProvider"];
@@ -63,31 +63,31 @@
     v7 = v5;
 
     [(PSExecutionSession *)v7 setDelegate:self delegateQueue:self->_dispatchQueue];
-    v4 = v8;
+    sessionCopy = v8;
   }
 }
 
-- (void)publishResource:(id)a3 completion:(id)a4
+- (void)publishResource:(id)resource completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ASMPolarisResourceProvider_publishResource_completion___block_invoke;
   block[3] = &unk_278BF7858;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resourceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = resourceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_publishResource:(id)a3 completion:(id)a4
+- (void)_publishResource:(id)resource completion:(id)completion
 {
-  v7 = a4;
-  [a3 type];
+  completionCopy = completion;
+  [resource type];
   v5 = *MEMORY[0x277CCA590];
   v6 = NSErrorF();
   if (gLogCategory_ASMPolarisResourceProvider <= 90 && (gLogCategory_ASMPolarisResourceProvider != -1 || _LogCategory_Initialize()))
@@ -95,49 +95,49 @@
     [ASMPolarisResourceProvider _publishResource:completion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, v6);
   }
 }
 
-- (void)removeResource:(id)a3
+- (void)removeResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ASMPolarisResourceProvider_removeResource___block_invoke;
   v7[3] = &unk_278BF7830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resourceCopy;
+  v6 = resourceCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_removeResource:(id)a3
+- (void)_removeResource:(id)resource
 {
-  v5 = [a3 resourceKey];
+  resourceKey = [resource resourceKey];
   v4 = [(NSMutableDictionary *)self->_currentResourcesMap objectForKeyedSubscript:?];
 
   if (v4)
   {
-    [(NSMutableDictionary *)self->_currentResourcesMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_currentResourcesMap removeObjectForKey:resourceKey];
   }
 }
 
-- (void)resourcesRequested:(id)a3
+- (void)resourcesRequested:(id)requested
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestedCopy = requested;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v22 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = requestedCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -155,15 +155,15 @@
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         currentResourcesMap = self->_currentResourcesMap;
-        v13 = [v11 resourceKey];
-        v14 = [(NSMutableDictionary *)currentResourcesMap objectForKeyedSubscript:v13];
+        resourceKey = [v11 resourceKey];
+        v14 = [(NSMutableDictionary *)currentResourcesMap objectForKeyedSubscript:resourceKey];
 
         if (v14)
         {
-          v15 = [v11 stride];
+          stride = [v11 stride];
           v16 = self->_currentResourcesMap;
-          v17 = [v11 resourceKey];
-          v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v17];
+          resourceKey2 = [v11 resourceKey];
+          v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:resourceKey2];
 
           if (v18)
           {
@@ -172,8 +172,8 @@
               [ASMPolarisResourceProvider resourcesRequested:v18];
             }
 
-            [v22 addObject:v11];
-            [v5 addObject:v18];
+            [array addObject:v11];
+            [array2 addObject:v18];
           }
         }
 
@@ -188,16 +188,16 @@
     while (v19);
   }
 
-  if ([v22 count])
+  if ([array count])
   {
-    [(PSExecutionSession *)self->_session resourceRequestsAreComplete:v22];
+    [(PSExecutionSession *)self->_session resourceRequestsAreComplete:array];
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__ASMPolarisResourceProvider_resourcesRequested___block_invoke;
     block[3] = &unk_278BF7830;
     block[4] = self;
-    v24 = v5;
+    v24 = array2;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -215,17 +215,17 @@ uint64_t __49__ASMPolarisResourceProvider_resourcesRequested___block_invoke(uint
   return result;
 }
 
-- (void)resourcesNoLongerWanted:(id)a3
+- (void)resourcesNoLongerWanted:(id)wanted
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wantedCopy = wanted;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = wantedCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -244,7 +244,7 @@ uint64_t __49__ASMPolarisResourceProvider_resourcesRequested___block_invoke(uint
         v11 = [(NSMutableDictionary *)self->_currentResourcesMap objectForKeyedSubscript:*(*(&v18 + 1) + 8 * v10)];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
           if (gLogCategory_ASMPolarisResourceProvider <= 30 && (gLogCategory_ASMPolarisResourceProvider != -1 || _LogCategory_Initialize()))
           {
             [ASMPolarisResourceProvider resourcesNoLongerWanted:v11];
@@ -268,8 +268,8 @@ uint64_t __49__ASMPolarisResourceProvider_resourcesRequested___block_invoke(uint
   v16[2] = __54__ASMPolarisResourceProvider_resourcesNoLongerWanted___block_invoke;
   v16[3] = &unk_278BF7830;
   v16[4] = self;
-  v17 = v5;
-  v14 = v5;
+  v17 = array;
+  v14 = array;
   dispatch_async(dispatchQueue, v16);
 
   v15 = *MEMORY[0x277D85DE8];

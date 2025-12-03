@@ -1,14 +1,14 @@
 @interface FTNewsAnalyticsWidgetEventTracker
 - (FTNewsAnalyticsWidgetEventTracker)init;
-- (FTNewsAnalyticsWidgetEventTracker)initWithUserIDProvider:(id)a3;
-- (int)_pbDisplayModeWithDisplayMode:(unint64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)submitEventsIfNeededWithCompletion:(id)a3;
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5;
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5;
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6;
+- (FTNewsAnalyticsWidgetEventTracker)initWithUserIDProvider:(id)provider;
+- (int)_pbDisplayModeWithDisplayMode:(unint64_t)mode;
+- (void)addObserver:(id)observer;
+- (void)submitEventsIfNeededWithCompletion:(id)completion;
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state;
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state;
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration;
 @end
 
 @implementation FTNewsAnalyticsWidgetEventTracker
@@ -36,10 +36,10 @@
   objc_exception_throw(v4);
 }
 
-- (FTNewsAnalyticsWidgetEventTracker)initWithUserIDProvider:(id)a3
+- (FTNewsAnalyticsWidgetEventTracker)initWithUserIDProvider:(id)provider
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  providerCopy = provider;
+  if (!providerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C7110();
   }
@@ -53,7 +53,7 @@
     sessionAnnotator = v5->_sessionAnnotator;
     v5->_sessionAnnotator = v6;
 
-    v8 = [[FTNewsAnalyticsNonVideoContentTypeWidgetEventTracker alloc] initWithSessionManager:v5 userIDProvider:v4];
+    v8 = [[FTNewsAnalyticsNonVideoContentTypeWidgetEventTracker alloc] initWithSessionManager:v5 userIDProvider:providerCopy];
     v9 = [FTAggregateWidgetEventTracker alloc];
     v26 = v8;
     v10 = [NSArray arrayWithObjects:&v26 count:1];
@@ -63,8 +63,8 @@
     eventTrackersProxy = v5->_eventTrackersProxy;
     v5->_eventTrackersProxy = v12;
 
-    v14 = [(FTNewsAnalyticsNonVideoContentTypeWidgetEventTracker *)v8 accumulator];
-    v25 = v14;
+    accumulator = [(FTNewsAnalyticsNonVideoContentTypeWidgetEventTracker *)v8 accumulator];
+    v25 = accumulator;
     v15 = [NSArray arrayWithObjects:&v25 count:1];
     eventAccumulators = v5->_eventAccumulators;
     v5->_eventAccumulators = v15;
@@ -85,62 +85,62 @@
   return v5;
 }
 
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
+  stateCopy = state;
+  dateCopy = date;
   v18 = objc_opt_new();
-  v8 = [(FTNewsAnalyticsWidgetEventTracker *)self sessionAnnotator];
-  [v8 annotateSession:v18 withOptions:30719];
+  sessionAnnotator = [(FTNewsAnalyticsWidgetEventTracker *)self sessionAnnotator];
+  [sessionAnnotator annotateSession:v18 withOptions:30719];
 
-  v9 = [v6 fetchInfoForVisibleResults];
+  fetchInfoForVisibleResults = [stateCopy fetchInfoForVisibleResults];
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v12 = [v9 appConfigTreatmentID];
-  [v18 setAppConfigTreatmentId:{objc_msgSend(v12, "integerValue")}];
+  appConfigTreatmentID = [fetchInfoForVisibleResults appConfigTreatmentID];
+  [v18 setAppConfigTreatmentId:{objc_msgSend(appConfigTreatmentID, "integerValue")}];
 
-  v13 = [v9 userID];
-  [v18 setUserId:v13];
+  userID = [fetchInfoForVisibleResults userID];
+  [v18 setUserId:userID];
 
-  [v18 setWidgetDisplayMode:{-[FTNewsAnalyticsWidgetEventTracker _pbDisplayModeWithDisplayMode:](self, "_pbDisplayModeWithDisplayMode:", objc_msgSend(v6, "activeDisplayMode"))}];
+  [v18 setWidgetDisplayMode:{-[FTNewsAnalyticsWidgetEventTracker _pbDisplayModeWithDisplayMode:](self, "_pbDisplayModeWithDisplayMode:", objc_msgSend(stateCopy, "activeDisplayMode"))}];
   v14 = FCUUIDStringToUUIDBytes();
   [v18 setWidgetSessionId:v14];
 
   [v18 setRunningObsolete:0];
-  [v18 setUserSegmentationSegmentSetIds:objc_msgSend(v9 count:{"userSegmentationSegmentSetIds"), objc_msgSend(v9, "userSegmentationSegmentSetIdsCount")}];
-  [v18 setUserSegmentationTreatmentIds:objc_msgSend(v9 count:{"userSegmentationTreatmentIds"), objc_msgSend(v9, "userSegmentationTreatmentIdsCount")}];
+  [v18 setUserSegmentationSegmentSetIds:objc_msgSend(fetchInfoForVisibleResults count:{"userSegmentationSegmentSetIds"), objc_msgSend(fetchInfoForVisibleResults, "userSegmentationSegmentSetIdsCount")}];
+  [v18 setUserSegmentationTreatmentIds:objc_msgSend(fetchInfoForVisibleResults count:{"userSegmentationTreatmentIds"), objc_msgSend(fetchInfoForVisibleResults, "userSegmentationTreatmentIdsCount")}];
   [(FTNewsAnalyticsWidgetEventTracker *)self setCurrentSession:v18];
-  v15 = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
-  v16 = [v15 allObjects];
-  [v16 makeObjectsPerformSelector:"sessionDidStartWithSessionID:" withObject:v11];
+  observers = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
+  allObjects = [observers allObjects];
+  [allObjects makeObjectsPerformSelector:"sessionDidStartWithSessionID:" withObject:uUIDString];
 
-  v17 = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
-  [v17 widgetDidAppearAtDate:v7 withTrackableWidgetState:v6];
+  eventTrackersProxy = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
+  [eventTrackersProxy widgetDidAppearAtDate:dateCopy withTrackableWidgetState:stateCopy];
 }
 
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[FTNewsAnalyticsWidgetEventTracker _pbDisplayModeWithDisplayMode:](self, "_pbDisplayModeWithDisplayMode:", [v6 activeDisplayMode]);
-  v9 = [(FTNewsAnalyticsWidgetEventTracker *)self currentSession];
-  [v9 setWidgetDisplayModeSessionEnd:v8];
+  stateCopy = state;
+  dateCopy = date;
+  v8 = -[FTNewsAnalyticsWidgetEventTracker _pbDisplayModeWithDisplayMode:](self, "_pbDisplayModeWithDisplayMode:", [stateCopy activeDisplayMode]);
+  currentSession = [(FTNewsAnalyticsWidgetEventTracker *)self currentSession];
+  [currentSession setWidgetDisplayModeSessionEnd:v8];
 
-  v10 = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
-  [v10 widgetDidDisappearAtDate:v7 withTrackableWidgetState:v6];
+  eventTrackersProxy = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
+  [eventTrackersProxy widgetDidDisappearAtDate:dateCopy withTrackableWidgetState:stateCopy];
 
-  v11 = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
-  v12 = [v11 allObjects];
-  [v12 makeObjectsPerformSelector:"sessionWillEnd"];
+  observers = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
+  allObjects = [observers allObjects];
+  [allObjects makeObjectsPerformSelector:"sessionWillEnd"];
 
-  v13 = [(FTNewsAnalyticsWidgetEventTracker *)self eventAccumulators];
-  v14 = [v13 fc_arrayByTransformingWithBlock:&stru_10010BDD8];
+  eventAccumulators = [(FTNewsAnalyticsWidgetEventTracker *)self eventAccumulators];
+  v14 = [eventAccumulators fc_arrayByTransformingWithBlock:&stru_10010BDD8];
 
   if ([v14 count])
   {
-    v15 = [(FTNewsAnalyticsWidgetEventTracker *)self submissionGroup];
-    dispatch_group_enter(v15);
+    submissionGroup = [(FTNewsAnalyticsWidgetEventTracker *)self submissionGroup];
+    dispatch_group_enter(submissionGroup);
 
     v16 = objc_opt_new();
     [v16 setEnvelopes:v14];
@@ -156,52 +156,52 @@
   [(FTNewsAnalyticsWidgetEventTracker *)self setCurrentSession:0];
 }
 
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
-  [v13 widgetPerformedUpdateWithTodayResults:v12 fetchInfo:v11 error:v10 updateFetchDuration:a6];
+  errorCopy = error;
+  infoCopy = info;
+  resultsCopy = results;
+  eventTrackersProxy = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
+  [eventTrackersProxy widgetPerformedUpdateWithTodayResults:resultsCopy fetchInfo:infoCopy error:errorCopy updateFetchDuration:duration];
 }
 
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
-  [v10 visibleItemsDidChangeAtDate:v9 withTriggerEvent:a4 trackableWidgetState:v8];
+  stateCopy = state;
+  dateCopy = date;
+  eventTrackersProxy = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
+  [eventTrackersProxy visibleItemsDidChangeAtDate:dateCopy withTriggerEvent:event trackableWidgetState:stateCopy];
 }
 
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
-  [v11 userEngagedWithWidgetAtDate:v10 actionURL:v9 trackableWidgetState:v8];
+  stateCopy = state;
+  lCopy = l;
+  dateCopy = date;
+  eventTrackersProxy = [(FTNewsAnalyticsWidgetEventTracker *)self eventTrackersProxy];
+  [eventTrackersProxy userEngagedWithWidgetAtDate:dateCopy actionURL:lCopy trackableWidgetState:stateCopy];
 }
 
-- (void)submitEventsIfNeededWithCompletion:(id)a3
+- (void)submitEventsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FTNewsAnalyticsWidgetEventTracker *)self submissionGroup];
-  dispatch_group_notify(v5, &_dispatch_main_q, v4);
+  completionCopy = completion;
+  submissionGroup = [(FTNewsAnalyticsWidgetEventTracker *)self submissionGroup];
+  dispatch_group_notify(submissionGroup, &_dispatch_main_q, completionCopy);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   +[NSThread isMainThread];
-  v5 = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
-  [v5 addObject:v4];
+  observers = [(FTNewsAnalyticsWidgetEventTracker *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (int)_pbDisplayModeWithDisplayMode:(unint64_t)a3
+- (int)_pbDisplayModeWithDisplayMode:(unint64_t)mode
 {
-  if (a3 - 1 < 7)
+  if (mode - 1 < 7)
   {
-    return a3;
+    return mode;
   }
 
   else

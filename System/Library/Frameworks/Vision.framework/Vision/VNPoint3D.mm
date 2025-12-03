@@ -1,6 +1,6 @@
 @interface VNPoint3D
-- (BOOL)isEqual:(id)a3;
-- (VNPoint3D)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNPoint3D)initWithCoder:(id)coder;
 - (VNPoint3D)initWithPosition:(simd_float4x4)position;
 - (simd_float4x4)position;
 @end
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNPoint3D *)v4 position];
+      [(VNPoint3D *)equalCopy position];
       v9 = vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v5, self[1]), vceqq_f32(v6, self[2])), vandq_s8(vceqq_f32(v7, self[3]), vceqq_f32(v8, self[4])))) >> 31;
     }
 
@@ -47,9 +47,9 @@
   return v9;
 }
 
-- (VNPoint3D)initWithCoder:(id)a3
+- (VNPoint3D)initWithCoder:(id)coder
 {
-  [a3 vn_decode4x4MatrixForKey:@"positionMatrix"];
+  [coder vn_decode4x4MatrixForKey:@"positionMatrix"];
 
   return [(VNPoint3D *)self initWithPosition:?];
 }

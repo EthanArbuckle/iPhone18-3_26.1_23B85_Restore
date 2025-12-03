@@ -1,8 +1,8 @@
 @interface SBAppClipOverlayCoordinator
 - (SBAppClipOverlayCoordinator)init;
-- (id)_existingOverlayViewControllerForWebClipIdentifier:(id)a3;
-- (id)overlayViewControllerForBundleIdentifier:(id)a3 webClipIdentifier:(id)a4 participant:(id)a5;
-- (void)participant:(id)a3 didSurrenderViewController:(id)a4;
+- (id)_existingOverlayViewControllerForWebClipIdentifier:(id)identifier;
+- (id)overlayViewControllerForBundleIdentifier:(id)identifier webClipIdentifier:(id)clipIdentifier participant:(id)participant;
+- (void)participant:(id)participant didSurrenderViewController:(id)controller;
 @end
 
 @implementation SBAppClipOverlayCoordinator
@@ -26,14 +26,14 @@
   return v2;
 }
 
-- (id)overlayViewControllerForBundleIdentifier:(id)a3 webClipIdentifier:(id)a4 participant:(id)a5
+- (id)overlayViewControllerForBundleIdentifier:(id)identifier webClipIdentifier:(id)clipIdentifier participant:(id)participant
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 participantName];
-  v13 = [(SBAppClipOverlayCoordinator *)self _existingOverlayViewControllerForWebClipIdentifier:v10];
+  identifierCopy = identifier;
+  clipIdentifierCopy = clipIdentifier;
+  participantCopy = participant;
+  participantName = [participantCopy participantName];
+  v13 = [(SBAppClipOverlayCoordinator *)self _existingOverlayViewControllerForWebClipIdentifier:clipIdentifierCopy];
   if (v13)
   {
     v14 = v13;
@@ -49,7 +49,7 @@
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       [v15 participantName];
-      v25 = v9;
+      v25 = identifierCopy;
       v20 = v19 = a2;
       *buf = 138544130;
       v27 = v18;
@@ -58,11 +58,11 @@
       v30 = 2050;
       v31 = v14;
       v32 = 2114;
-      v33 = v12;
+      v33 = participantName;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "%{public}@ asking participant %{public}@ to relinquish ownership of %{public}p to give to participant: %{public}@", buf, 0x2Au);
 
       a2 = v19;
-      v9 = v25;
+      identifierCopy = v25;
     }
 
     [v15 appClipOverlayCoordinator:self requestsSurrenderOfViewController:v14];
@@ -74,11 +74,11 @@
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x277CFA6F8]) initWithAppClipBundleID:v9 webClipID:v10];
+    v14 = [objc_alloc(MEMORY[0x277CFA6F8]) initWithAppClipBundleID:identifierCopy webClipID:clipIdentifierCopy];
   }
 
   [(NSMutableSet *)self->_overlayViewControllers addObject:v14];
-  [(NSMapTable *)self->_participantForViewController setObject:v11 forKey:v14];
+  [(NSMapTable *)self->_participantForViewController setObject:participantCopy forKey:v14];
 
   v21 = SBLogCommon();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -90,34 +90,34 @@
     v28 = 2050;
     v29 = v14;
     v30 = 2114;
-    v31 = v12;
+    v31 = participantName;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "%{public}@ handing ownership of %{public}p to participant: %{public}@", buf, 0x20u);
   }
 
   return v14;
 }
 
-- (void)participant:(id)a3 didSurrenderViewController:(id)a4
+- (void)participant:(id)participant didSurrenderViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 participantName];
-  if (([(NSMutableSet *)self->_overlayViewControllers containsObject:v6]& 1) == 0)
+  controllerCopy = controller;
+  participantCopy = participant;
+  participantName = [participantCopy participantName];
+  if (([(NSMutableSet *)self->_overlayViewControllers containsObject:controllerCopy]& 1) == 0)
   {
     [SBAppClipOverlayCoordinator participant:didSurrenderViewController:];
   }
 
-  v9 = [(NSMapTable *)self->_participantForViewController objectForKey:v6];
-  v10 = [v9 isEqual:v7];
+  v9 = [(NSMapTable *)self->_participantForViewController objectForKey:controllerCopy];
+  v10 = [v9 isEqual:participantCopy];
 
   if ((v10 & 1) == 0)
   {
     [SBAppClipOverlayCoordinator participant:didSurrenderViewController:];
   }
 
-  [(NSMutableSet *)self->_overlayViewControllers removeObject:v6];
-  [(NSMapTable *)self->_participantForViewController removeObjectForKey:v6];
+  [(NSMutableSet *)self->_overlayViewControllers removeObject:controllerCopy];
+  [(NSMapTable *)self->_participantForViewController removeObjectForKey:controllerCopy];
   v11 = SBLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -126,17 +126,17 @@
     v14 = 138543874;
     v15 = v13;
     v16 = 2114;
-    v17 = v8;
+    v17 = participantName;
     v18 = 2050;
-    v19 = v6;
+    v19 = controllerCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "%{public}@ participant: %{public}@ relinquished view controller: %{public}p", &v14, 0x20u);
   }
 }
 
-- (id)_existingOverlayViewControllerForWebClipIdentifier:(id)a3
+- (id)_existingOverlayViewControllerForWebClipIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -156,8 +156,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 webClipID];
-        v11 = [v10 isEqualToString:v4];
+        webClipID = [v9 webClipID];
+        v11 = [webClipID isEqualToString:identifierCopy];
 
         if (v11)
         {

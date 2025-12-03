@@ -1,30 +1,30 @@
 @interface SMMGeometry
-+ (CGPoint)getCenter:(CGRect)a3;
-+ (double)ceilValue:(double)a3 toScaleOfScreen:(id)a4;
-+ (double)floorValue:(double)a3 toScaleOfScreen:(id)a4;
++ (CGPoint)getCenter:(CGRect)center;
++ (double)ceilValue:(double)value toScaleOfScreen:(id)screen;
++ (double)floorValue:(double)value toScaleOfScreen:(id)screen;
 @end
 
 @implementation SMMGeometry
 
-+ (double)floorValue:(double)a3 toScaleOfScreen:(id)a4
++ (double)floorValue:(double)value toScaleOfScreen:(id)screen
 {
-  v5 = [a4 scale];
+  scale = [screen scale];
 
-  MEMORY[0x2821DE4E8](v5, v6, a3, v7);
+  MEMORY[0x2821DE4E8](scale, v6, value, v7);
   return result;
 }
 
-+ (double)ceilValue:(double)a3 toScaleOfScreen:(id)a4
++ (double)ceilValue:(double)value toScaleOfScreen:(id)screen
 {
-  v5 = [a4 scale];
+  scale = [screen scale];
 
-  MEMORY[0x2821DE450](v5, v6, a3, v7);
+  MEMORY[0x2821DE450](scale, v6, value, v7);
   return result;
 }
 
-+ (CGPoint)getCenter:(CGRect)a3
++ (CGPoint)getCenter:(CGRect)center
 {
-  MEMORY[0x2821DE7B8](a1, a2, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+  MEMORY[0x2821DE7B8](self, a2, center.origin, *&center.origin.y, center.size, *&center.size.height);
   result.y = v4;
   result.x = v3;
   return result;

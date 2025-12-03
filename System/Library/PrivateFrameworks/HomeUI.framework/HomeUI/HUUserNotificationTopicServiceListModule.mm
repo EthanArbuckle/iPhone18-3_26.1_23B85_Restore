@@ -1,11 +1,11 @@
 @interface HUUserNotificationTopicServiceListModule
-+ (id)_createTransformItemForItem:(id)a3 notificationSettingsProvider:(id)a4;
-- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)a3;
-- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)a3 home:(id)a4 topic:(id)a5;
++ (id)_createTransformItemForItem:(id)item notificationSettingsProvider:(id)provider;
+- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)updater;
+- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)updater home:(id)home topic:(id)topic;
 - (id)buildNativeMatterAccessoryItemProvider;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
-- (id)serviceLikeItemForItem:(id)a3;
+- (id)serviceLikeItemForItem:(id)item;
 - (void)_buildItemProviders;
 @end
 
@@ -13,52 +13,52 @@
 
 - (id)buildNativeMatterAccessoryItemProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HUUserNotificationTopicServiceListModule.buildNativeMatterAccessoryItemProvider()();
 
   return v3;
 }
 
-- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)a3
+- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_topic_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUUserNotificationTopicServiceListModule.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HUUserNotificationTopicServiceListModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserNotificationTopicServiceListModule.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HUUserNotificationTopicServiceListModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)a3 home:(id)a4 topic:(id)a5
+- (HUUserNotificationTopicServiceListModule)initWithItemUpdater:(id)updater home:(id)home topic:(id)topic
 {
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  topicCopy = topic;
   v14.receiver = self;
   v14.super_class = HUUserNotificationTopicServiceListModule;
-  v11 = [(HFItemModule *)&v14 initWithItemUpdater:a3];
+  v11 = [(HFItemModule *)&v14 initWithItemUpdater:updater];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a4);
-    objc_storeStrong(&v12->_topic, a5);
+    objc_storeStrong(&v11->_home, home);
+    objc_storeStrong(&v12->_topic, topic);
     [(HUUserNotificationTopicServiceListModule *)v12 _buildItemProviders];
   }
 
   return v12;
 }
 
-+ (id)_createTransformItemForItem:(id)a3 notificationSettingsProvider:(id)a4
++ (id)_createTransformItemForItem:(id)item notificationSettingsProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  providerCopy = provider;
   v7 = objc_alloc(MEMORY[0x277D14C30]);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__HUUserNotificationTopicServiceListModule__createTransformItemForItem_notificationSettingsProvider___block_invoke;
   v12[3] = &unk_277DBDC00;
-  v13 = v6;
-  v14 = v5;
-  v8 = v5;
-  v9 = v6;
+  v13 = providerCopy;
+  v14 = itemCopy;
+  v8 = itemCopy;
+  v9 = providerCopy;
   v10 = [v7 initWithSourceItem:v8 transformationBlock:v12];
 
   return v10;
@@ -140,10 +140,10 @@ id __101__HUUserNotificationTopicServiceListModule__createTransformItemForItem_n
 - (void)_buildItemProviders
 {
   objc_initWeak(&location, self);
-  v3 = [(HUUserNotificationTopicServiceListModule *)self topic];
+  topic = [(HUUserNotificationTopicServiceListModule *)self topic];
   v4 = objc_alloc(MEMORY[0x277D14AD0]);
-  v5 = [(HUUserNotificationTopicServiceListModule *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUUserNotificationTopicServiceListModule *)self home];
+  v6 = [v4 initWithHome:home];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -155,7 +155,7 @@ id __101__HUUserNotificationTopicServiceListModule__createTransformItemForItem_n
   v28[1] = 3221225472;
   v28[2] = __63__HUUserNotificationTopicServiceListModule__buildItemProviders__block_invoke_2;
   v28[3] = &unk_277DB9780;
-  v7 = v3;
+  v7 = topic;
   v29 = v7;
   [v6 setSourceServiceGenerator:v28];
   v8 = objc_alloc(MEMORY[0x277D14C38]);
@@ -170,19 +170,19 @@ id __101__HUUserNotificationTopicServiceListModule__createTransformItemForItem_n
 
   if ([v7 isMatter])
   {
-    v11 = [(HUUserNotificationTopicServiceListModule *)self buildNativeMatterAccessoryItemProvider];
+    buildNativeMatterAccessoryItemProvider = [(HUUserNotificationTopicServiceListModule *)self buildNativeMatterAccessoryItemProvider];
     nativeMatterAccessoryItemProvider = self->_nativeMatterAccessoryItemProvider;
-    self->_nativeMatterAccessoryItemProvider = v11;
+    self->_nativeMatterAccessoryItemProvider = buildNativeMatterAccessoryItemProvider;
   }
 
-  v13 = [v7 accessoryCategoryTypes];
-  v14 = [v13 containsObject:*MEMORY[0x277CCE8B8]];
+  accessoryCategoryTypes = [v7 accessoryCategoryTypes];
+  v14 = [accessoryCategoryTypes containsObject:*MEMORY[0x277CCE8B8]];
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x277D144A8]);
-    v16 = [(HUUserNotificationTopicServiceListModule *)self home];
-    v17 = [v15 initWithHome:v16];
+    home2 = [(HUUserNotificationTopicServiceListModule *)self home];
+    v17 = [v15 initWithHome:home2];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -314,46 +314,46 @@ id __63__HUUserNotificationTopicServiceListModule__buildItemProviders__block_inv
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(HUUserNotificationTopicServiceListModule *)self transformServiceItemProvider];
-  v5 = [v3 setWithObject:v4];
+  transformServiceItemProvider = [(HUUserNotificationTopicServiceListModule *)self transformServiceItemProvider];
+  v5 = [v3 setWithObject:transformServiceItemProvider];
 
-  v6 = [(HUUserNotificationTopicServiceListModule *)self nativeMatterAccessoryItemProvider];
-  [v5 na_safeAddObject:v6];
+  nativeMatterAccessoryItemProvider = [(HUUserNotificationTopicServiceListModule *)self nativeMatterAccessoryItemProvider];
+  [v5 na_safeAddObject:nativeMatterAccessoryItemProvider];
 
-  v7 = [(HUUserNotificationTopicServiceListModule *)self transformCameraItemProvider];
-  [v5 na_safeAddObject:v7];
+  transformCameraItemProvider = [(HUUserNotificationTopicServiceListModule *)self transformCameraItemProvider];
+  [v5 na_safeAddObject:transformCameraItemProvider];
 
   return v5;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"NotificationSettings"];
   v7 = _HULocalizedStringWithDefaultValue(@"HUNotificationTopicServiceListSectionHeaderTitle", @"HUNotificationTopicServiceListSectionHeaderTitle", 1);
   [v6 setHeaderTitle:v7];
 
-  v8 = [(HFItemModule *)self allItems];
-  v9 = [v8 allObjects];
-  v10 = [MEMORY[0x277D14778] defaultItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  allItems = [(HFItemModule *)self allItems];
+  allObjects = [allItems allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   [v6 setItems:v11];
 
   v12 = MEMORY[0x277D14778];
   v16[0] = v6;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [v12 filterSections:v13 toDisplayedItems:v5];
+  v14 = [v12 filterSections:v13 toDisplayedItems:itemsCopy];
 
   return v14;
 }
 
-- (id)serviceLikeItemForItem:(id)a3
+- (id)serviceLikeItemForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -366,10 +366,10 @@ id __63__HUUserNotificationTopicServiceListModule__buildItemProviders__block_inv
 
   v6 = v5;
 
-  v7 = [v6 sourceItem];
-  if ([v7 conformsToProtocol:&unk_28251B0C8])
+  sourceItem = [v6 sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_28251B0C8])
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else

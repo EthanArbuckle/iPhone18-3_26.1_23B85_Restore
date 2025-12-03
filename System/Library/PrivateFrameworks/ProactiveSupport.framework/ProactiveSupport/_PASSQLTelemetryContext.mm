@@ -1,14 +1,14 @@
 @interface _PASSQLTelemetryContext
-- (BOOL)filterLog:(id)a3;
+- (BOOL)filterLog:(id)log;
 - (BOOL)isTargetProcess;
-- (_PASSQLTelemetryContext)initWithConnectionAndSettings:(sqlite3 *)a3 sqlQuery:(id)a4 filterPii:(BOOL)a5 bloomFilter:(id)a6 bloomHashes:(id)a7 targetProcess:(id)a8;
+- (_PASSQLTelemetryContext)initWithConnectionAndSettings:(sqlite3 *)settings sqlQuery:(id)query filterPii:(BOOL)pii bloomFilter:(id)filter bloomHashes:(id)hashes targetProcess:(id)process;
 - (id)currentProcessName;
 - (id)sqlEventLogForTelemetry;
 - (id)sqlEventLogRaw;
-- (void)applyCallbackWithCompletion:(id)a3;
+- (void)applyCallbackWithCompletion:(id)completion;
 - (void)removeCallback;
 - (void)resetLog;
-- (void)sendTelemetry:(id)a3;
+- (void)sendTelemetry:(id)telemetry;
 @end
 
 @implementation _PASSQLTelemetryContext
@@ -37,9 +37,9 @@
     v3 = [(NSString *)self->_targetProcess length];
     if (v3)
     {
-      v4 = [MEMORY[0x1E696AE30] processInfo];
-      v5 = [v4 processName];
-      v6 = [v5 isEqualToString:self->_targetProcess];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v6 = [processName isEqualToString:self->_targetProcess];
 
       LOBYTE(v3) = v6;
     }
@@ -53,9 +53,9 @@
   return v3;
 }
 
-- (BOOL)filterLog:(id)a3
+- (BOOL)filterLog:(id)log
 {
-  v4 = [(_PASBloomFilter *)self->_bloomFilter computeHashesForString:a3 reuse:self->_bloomHashes];
+  v4 = [(_PASBloomFilter *)self->_bloomFilter computeHashesForString:log reuse:self->_bloomHashes];
   bloomHashes = self->_bloomHashes;
   self->_bloomHashes = v4;
 
@@ -84,9 +84,9 @@
   return v3;
 }
 
-- (void)applyCallbackWithCompletion:(id)a3
+- (void)applyCallbackWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(NSString *)self->_sql length])
   {
     if (![(_PASSQLTelemetryContext *)self isSqlConst])
@@ -97,7 +97,7 @@
         if (dbConnection)
         {
           self->_shouldSendTelemetry = 1;
-          if (v5)
+          if (completionCopy)
           {
             [(_PASSQLTelemetryContext *)self setAuthorizerStatusBlock:?];
             dbConnection = self->_dbConnection;
@@ -112,15 +112,15 @@
 
 - (id)currentProcessName
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  return v3;
+  return processName;
 }
 
-- (void)sendTelemetry:(id)a3
+- (void)sendTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   if ([(_PASSQLTelemetryContext *)self filterLog:self->_sqlEventsLog])
   {
     self->_shouldSendTelemetry = 0;
@@ -128,9 +128,9 @@
     self->_sqlEventsLog = &stru_1F1B24B60;
   }
 
-  if (self->_shouldSendTelemetry && [v4 length])
+  if (self->_shouldSendTelemetry && [telemetryCopy length])
   {
-    if ([v4 isEqualToString:@"SqlEventLog"] && -[NSString length](self->_sqlEventsLog, "length"))
+    if ([telemetryCopy isEqualToString:@"SqlEventLog"] && -[NSString length](self->_sqlEventsLog, "length"))
     {
       v6 = AnalyticsSendEventLazy();
     }
@@ -140,45 +140,45 @@
       v6 = 0;
     }
 
-    v7 = [(_PASSQLTelemetryContext *)self authorizerStatusBlock];
+    authorizerStatusBlock = [(_PASSQLTelemetryContext *)self authorizerStatusBlock];
 
-    if (v7)
+    if (authorizerStatusBlock)
     {
-      v8 = [(_PASSQLTelemetryContext *)self authorizerStatusBlock];
-      v8[2](v8, v6);
+      authorizerStatusBlock2 = [(_PASSQLTelemetryContext *)self authorizerStatusBlock];
+      authorizerStatusBlock2[2](authorizerStatusBlock2, v6);
     }
   }
 }
 
-- (_PASSQLTelemetryContext)initWithConnectionAndSettings:(sqlite3 *)a3 sqlQuery:(id)a4 filterPii:(BOOL)a5 bloomFilter:(id)a6 bloomHashes:(id)a7 targetProcess:(id)a8
+- (_PASSQLTelemetryContext)initWithConnectionAndSettings:(sqlite3 *)settings sqlQuery:(id)query filterPii:(BOOL)pii bloomFilter:(id)filter bloomHashes:(id)hashes targetProcess:(id)process
 {
   v31[32] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  queryCopy = query;
+  filterCopy = filter;
+  hashesCopy = hashes;
+  processCopy = process;
   v29.receiver = self;
   v29.super_class = _PASSQLTelemetryContext;
   v18 = [(_PASSQLTelemetryContext *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    v18->_dbConnection = a3;
-    v20 = [v17 copy];
+    v18->_dbConnection = settings;
+    v20 = [processCopy copy];
     targetProcess = v19->_targetProcess;
     v19->_targetProcess = v20;
 
-    v22 = [v14 copy];
+    v22 = [queryCopy copy];
     sql = v19->_sql;
     v19->_sql = v22;
 
     sqlEventsLog = v19->_sqlEventsLog;
     v19->_sqlEventsLog = &stru_1F1B24B60;
 
-    v19->_filterPii = a5;
+    v19->_filterPii = pii;
     v19->_shouldSendTelemetry = 0;
-    objc_storeStrong(&v19->_bloomFilter, a6);
-    objc_storeStrong(&v19->_bloomHashes, a7);
+    objc_storeStrong(&v19->_bloomFilter, filter);
+    objc_storeStrong(&v19->_bloomHashes, hashes);
     v30[0] = &unk_1F1B2FF28;
     v30[1] = &unk_1F1B2FF40;
     v31[0] = @"CREATE INDEX";

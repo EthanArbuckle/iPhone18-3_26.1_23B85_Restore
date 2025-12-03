@@ -1,32 +1,32 @@
 @interface CKComparisonPredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKComparisonPredicateValidator
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v108[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696ABC0];
     v107[0] = *MEMORY[0x1E696A578];
-    v18 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"%@ is not a comparison predicate", v6);
+    v18 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"%@ is not a comparison predicate", validateCopy);
     v107[1] = @"ck_isComparisonError";
     v108[0] = v18;
     v108[1] = MEMORY[0x1E695E118];
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v19, v108, v107, 2);
     v16 = objc_msgSend_errorWithDomain_code_userInfo_(v17, v21, @"CKErrorDomain", 12, v20);
 
-    if (a4)
+    if (error)
     {
 LABEL_25:
       v79 = v16;
       v71 = 0;
-      *a4 = v16;
+      *error = v16;
       goto LABEL_26;
     }
 
@@ -35,10 +35,10 @@ LABEL_25:
 
   v9 = objc_msgSend_modifierValidator(self, v7, v8);
   v11 = v9;
-  if (a4)
+  if (error)
   {
     v96 = 0;
-    v12 = objc_msgSend_validate_error_(v9, v10, v6, &v96);
+    v12 = objc_msgSend_validate_error_(v9, v10, validateCopy, &v96);
     v13 = v96;
 
     if ((v12 & 1) == 0)
@@ -47,7 +47,7 @@ LABEL_25:
       v105[0] = *MEMORY[0x1E696A578];
       v48 = MEMORY[0x1E696AEC0];
       v43 = objc_msgSend_localizedDescription(v13, v14, v15);
-      v45 = objc_msgSend_stringWithFormat_(v48, v49, @"Invalid modifier in <%@>: %@", v6, v43);
+      v45 = objc_msgSend_stringWithFormat_(v48, v49, @"Invalid modifier in <%@>: %@", validateCopy, v43);
       v50 = *MEMORY[0x1E696AA08];
       v106[0] = v45;
       v106[1] = v13;
@@ -63,7 +63,7 @@ LABEL_25:
 
   else
   {
-    v22 = objc_msgSend_validate_error_(v9, v10, v6, 0);
+    v22 = objc_msgSend_validate_error_(v9, v10, validateCopy, 0);
 
     v16 = 0;
     if ((v22 & 1) == 0)
@@ -73,20 +73,20 @@ LABEL_25:
   }
 
   v23 = objc_msgSend_leftExpressionValidator(self, v14, v15);
-  v27 = objc_msgSend_leftExpression(v6, v24, v25);
-  if (!a4)
+  v27 = objc_msgSend_leftExpression(validateCopy, v24, v25);
+  if (!error)
   {
     v52 = objc_msgSend_validate_error_(v23, v26, v27, 0);
 
     if (v52)
     {
       v55 = objc_msgSend_operatorValidator(self, v53, v54);
-      v57 = objc_msgSend_validate_error_(v55, v56, v6, 0);
+      v57 = objc_msgSend_validate_error_(v55, v56, validateCopy, 0);
 
       if (v57)
       {
         v60 = objc_msgSend_optionsValidator(self, v58, v59);
-        v62 = objc_msgSend_validate_error_(v60, v61, v6, 0);
+        v62 = objc_msgSend_validate_error_(v60, v61, validateCopy, 0);
 
         if (v62)
         {
@@ -111,7 +111,7 @@ LABEL_21:
     v103[0] = *MEMORY[0x1E696A578];
     v72 = MEMORY[0x1E696AEC0];
     v43 = objc_msgSend_localizedDescription(v13, v29, v30);
-    v45 = objc_msgSend_stringWithFormat_(v72, v73, @"Invalid left expression in <%@>: %@", v6, v43);
+    v45 = objc_msgSend_stringWithFormat_(v72, v73, @"Invalid left expression in <%@>: %@", validateCopy, v43);
     v74 = *MEMORY[0x1E696AA08];
     v104[0] = v45;
     v104[1] = v13;
@@ -124,7 +124,7 @@ LABEL_21:
 
   v31 = objc_msgSend_operatorValidator(self, v29, v30);
   v94 = v13;
-  v33 = objc_msgSend_validate_error_(v31, v32, v6, &v94);
+  v33 = objc_msgSend_validate_error_(v31, v32, validateCopy, &v94);
   v16 = v94;
 
   if ((v33 & 1) == 0)
@@ -133,7 +133,7 @@ LABEL_21:
     v101[0] = *MEMORY[0x1E696A578];
     v83 = MEMORY[0x1E696AEC0];
     v43 = objc_msgSend_localizedDescription(v16, v34, v35);
-    v45 = objc_msgSend_stringWithFormat_(v83, v84, @"Invalid operator in <%@>: %@", v6, v43);
+    v45 = objc_msgSend_stringWithFormat_(v83, v84, @"Invalid operator in <%@>: %@", validateCopy, v43);
     v85 = *MEMORY[0x1E696AA08];
     v102[0] = v45;
     v102[1] = v16;
@@ -149,7 +149,7 @@ LABEL_21:
 
   v36 = objc_msgSend_optionsValidator(self, v34, v35);
   v93 = v16;
-  v38 = objc_msgSend_validate_error_(v36, v37, v6, &v93);
+  v38 = objc_msgSend_validate_error_(v36, v37, validateCopy, &v93);
   v13 = v93;
 
   if ((v38 & 1) == 0)
@@ -158,7 +158,7 @@ LABEL_21:
     v99[0] = *MEMORY[0x1E696A578];
     v42 = MEMORY[0x1E696AEC0];
     v43 = objc_msgSend_localizedDescription(v13, v39, v40);
-    v45 = objc_msgSend_stringWithFormat_(v42, v44, @"Invalid options in <%@>: %@", v6, v43);
+    v45 = objc_msgSend_stringWithFormat_(v42, v44, @"Invalid options in <%@>: %@", validateCopy, v43);
     v46 = *MEMORY[0x1E696AA08];
     v100[0] = v45;
     v100[1] = v13;
@@ -176,8 +176,8 @@ LABEL_24:
 
 LABEL_18:
   v63 = objc_msgSend_rightExpressionValidator(self, v39, v40);
-  v67 = objc_msgSend_rightExpression(v6, v64, v65);
-  if (!a4)
+  v67 = objc_msgSend_rightExpression(validateCopy, v64, v65);
+  if (!error)
   {
     v71 = objc_msgSend_validate_error_(v63, v66, v67, 0);
 
@@ -195,7 +195,7 @@ LABEL_18:
     v97[0] = *MEMORY[0x1E696A578];
     v88 = MEMORY[0x1E696AEC0];
     v43 = objc_msgSend_localizedDescription(v16, v69, v70);
-    v45 = objc_msgSend_stringWithFormat_(v88, v89, @"Invalid right expression in <%@>: %@", v6, v43);
+    v45 = objc_msgSend_stringWithFormat_(v88, v89, @"Invalid right expression in <%@>: %@", validateCopy, v43);
     v90 = *MEMORY[0x1E696AA08];
     v98[0] = v45;
     v98[1] = v16;

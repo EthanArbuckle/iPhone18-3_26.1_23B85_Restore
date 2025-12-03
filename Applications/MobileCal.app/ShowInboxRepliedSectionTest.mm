@@ -6,9 +6,9 @@
 
 - (void)runTest
 {
-  v3 = [(ApplicationTest *)self application];
-  v4 = [v3 rootNavigationController];
-  v5 = [v4 resetToYearView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToYearView = [rootNavigationController resetToYearView];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -21,9 +21,9 @@
   v9[3] = &unk_1002119A8;
   v9[4] = self;
   v11 = &v12;
-  v6 = v3;
+  v6 = application;
   v10 = v6;
-  v7 = [v4 showInboxAnimated:1 completion:v9];
+  v7 = [rootNavigationController showInboxAnimated:1 completion:v9];
   v8 = v13[5];
   v13[5] = v7;
 

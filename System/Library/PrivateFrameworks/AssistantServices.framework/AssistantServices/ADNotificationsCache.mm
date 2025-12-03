@@ -1,50 +1,50 @@
 @interface ADNotificationsCache
 - (ADNotificationsCache)init;
 - (id)allBulletins;
-- (id)appendItemWithBulletin:(id)a3;
-- (id)bulletinForInternalID:(id)a3;
-- (id)bulletinWithNotificationID:(id)a3;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)enumerateBulletinsAfterBulletinWithNotificationID:(id)a3 usingBlock:(id)a4;
-- (void)removeBulletinFromCacheWithInternalID:(id)a3;
-- (void)removeBulletinItem:(id)a3;
-- (void)removeBulletinWithInternalID:(id)a3;
-- (void)setBulletin:(id)a3 forInternalID:(id)a4;
+- (id)appendItemWithBulletin:(id)bulletin;
+- (id)bulletinForInternalID:(id)d;
+- (id)bulletinWithNotificationID:(id)d;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)enumerateBulletinsAfterBulletinWithNotificationID:(id)d usingBlock:(id)block;
+- (void)removeBulletinFromCacheWithInternalID:(id)d;
+- (void)removeBulletinItem:(id)item;
+- (void)removeBulletinWithInternalID:(id)d;
+- (void)setBulletin:(id)bulletin forInternalID:(id)d;
 @end
 
 @implementation ADNotificationsCache
 
-- (void)removeBulletinItem:(id)a3
+- (void)removeBulletinItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   orderedBulletinsHead = self->_orderedBulletinsHead;
-  v11 = v4;
-  if (orderedBulletinsHead == v4)
+  v11 = itemCopy;
+  if (orderedBulletinsHead == itemCopy)
   {
-    v6 = [(AFLinkedListItem *)orderedBulletinsHead nextItem];
+    nextItem = [(AFLinkedListItem *)orderedBulletinsHead nextItem];
     v7 = self->_orderedBulletinsHead;
-    self->_orderedBulletinsHead = v6;
+    self->_orderedBulletinsHead = nextItem;
 
-    v4 = v11;
+    itemCopy = v11;
   }
 
   orderedBulletinsTail = self->_orderedBulletinsTail;
-  if (orderedBulletinsTail == v4)
+  if (orderedBulletinsTail == itemCopy)
   {
-    v9 = [(AFLinkedListItem *)orderedBulletinsTail previousItem];
+    previousItem = [(AFLinkedListItem *)orderedBulletinsTail previousItem];
     v10 = self->_orderedBulletinsTail;
-    self->_orderedBulletinsTail = v9;
+    self->_orderedBulletinsTail = previousItem;
 
-    v4 = v11;
+    itemCopy = v11;
   }
 
-  [(AFLinkedListItem *)v4 removeFromList];
+  [(AFLinkedListItem *)itemCopy removeFromList];
 }
 
-- (id)appendItemWithBulletin:(id)a3
+- (id)appendItemWithBulletin:(id)bulletin
 {
-  v4 = a3;
-  v5 = [[AFLinkedListItem alloc] initWithObject:v4];
+  bulletinCopy = bulletin;
+  v5 = [[AFLinkedListItem alloc] initWithObject:bulletinCopy];
 
   if (self->_orderedBulletinsHead)
   {
@@ -61,11 +61,11 @@
   return v5;
 }
 
-- (void)enumerateBulletinsAfterBulletinWithNotificationID:(id)a3 usingBlock:(id)a4
+- (void)enumerateBulletinsAfterBulletinWithNotificationID:(id)d usingBlock:(id)block
 {
-  v14 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  blockCopy = block;
+  if (blockCopy)
   {
     v7 = self->_orderedBulletinsHead;
     if (v7)
@@ -74,40 +74,40 @@
       v9 = 0;
       do
       {
-        v10 = [v8 object];
-        v11 = v10;
+        object = [v8 object];
+        v11 = object;
         if (v9)
         {
-          v6[2](v6, v10);
+          blockCopy[2](blockCopy, object);
           v9 = 1;
         }
 
         else
         {
-          v12 = [v10 publisherBulletinID];
-          v9 = [v12 isEqualToString:v14];
+          publisherBulletinID = [object publisherBulletinID];
+          v9 = [publisherBulletinID isEqualToString:dCopy];
         }
 
-        v13 = [v8 nextItem];
+        nextItem = [v8 nextItem];
 
-        v8 = v13;
+        v8 = nextItem;
       }
 
-      while (v13);
+      while (nextItem);
     }
   }
 }
 
-- (void)removeBulletinWithInternalID:(id)a3
+- (void)removeBulletinWithInternalID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_allBulletins objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSCache *)self->_allBulletins objectForKey:dCopy];
   if (v5)
   {
     [(ADNotificationsCache *)self removeBulletinItem:v5];
   }
 
-  [(NSCache *)self->_allBulletins removeObjectForKey:v4];
+  [(NSCache *)self->_allBulletins removeObjectForKey:dCopy];
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -120,7 +120,7 @@
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s cachekeys count before = %lu", &v13, 0x16u);
   }
 
-  [(ADNotificationsCache *)self removeBulletinFromCacheWithInternalID:v4];
+  [(ADNotificationsCache *)self removeBulletinFromCacheWithInternalID:dCopy];
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -135,32 +135,32 @@
   }
 }
 
-- (void)removeBulletinFromCacheWithInternalID:(id)a3
+- (void)removeBulletinFromCacheWithInternalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->cacheKeysLock);
-  [(NSMutableArray *)self->cacheKeys removeObject:v4];
+  [(NSMutableArray *)self->cacheKeys removeObject:dCopy];
 
   os_unfair_lock_unlock(&self->cacheKeysLock);
 }
 
-- (void)setBulletin:(id)a3 forInternalID:(id)a4
+- (void)setBulletin:(id)bulletin forInternalID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ADNotificationsCache *)self bulletinForInternalID:v6];
+  bulletinCopy = bulletin;
+  dCopy = d;
+  v7 = [(ADNotificationsCache *)self bulletinForInternalID:dCopy];
 
   if (v7)
   {
-    [(ADNotificationsCache *)self removeBulletinWithInternalID:v6];
+    [(ADNotificationsCache *)self removeBulletinWithInternalID:dCopy];
   }
 
-  v8 = [(ADNotificationsCache *)self appendItemWithBulletin:v9];
-  [(NSCache *)self->_allBulletins setObject:v8 forKey:v6];
+  v8 = [(ADNotificationsCache *)self appendItemWithBulletin:bulletinCopy];
+  [(NSCache *)self->_allBulletins setObject:v8 forKey:dCopy];
   os_unfair_lock_lock(&self->cacheKeysLock);
-  if (([(NSMutableArray *)self->cacheKeys containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->cacheKeys containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->cacheKeys addObject:v6];
+    [(NSMutableArray *)self->cacheKeys addObject:dCopy];
   }
 
   os_unfair_lock_unlock(&self->cacheKeysLock);
@@ -192,12 +192,12 @@
         }
 
         v10 = [(NSCache *)self->_allBulletins objectForKey:*(*(&v18 + 1) + 8 * i), v18];
-        v11 = [v10 object];
+        object = [v10 object];
 
-        if (v11)
+        if (object)
         {
-          v12 = [v10 object];
-          [v3 addObject:v12];
+          object2 = [v10 object];
+          [v3 addObject:object2];
         }
       }
 
@@ -224,60 +224,60 @@
   return v14;
 }
 
-- (id)bulletinWithNotificationID:(id)a3
+- (id)bulletinWithNotificationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_orderedBulletinsHead;
   if (v5)
   {
     v6 = v5;
     while (1)
     {
-      v7 = [(AFLinkedListItem *)v6 object];
-      v8 = [v7 publisherBulletinID];
-      v9 = [v8 isEqualToString:v4];
+      object = [(AFLinkedListItem *)v6 object];
+      publisherBulletinID = [object publisherBulletinID];
+      v9 = [publisherBulletinID isEqualToString:dCopy];
 
       if (v9)
       {
         break;
       }
 
-      v10 = [(AFLinkedListItem *)v6 nextItem];
+      nextItem = [(AFLinkedListItem *)v6 nextItem];
 
-      v6 = v10;
-      if (!v10)
+      v6 = nextItem;
+      if (!nextItem)
       {
         goto LABEL_8;
       }
     }
 
-    v10 = [(AFLinkedListItem *)v6 object];
+    nextItem = [(AFLinkedListItem *)v6 object];
   }
 
   else
   {
-    v10 = 0;
+    nextItem = 0;
   }
 
 LABEL_8:
 
-  return v10;
+  return nextItem;
 }
 
-- (id)bulletinForInternalID:(id)a3
+- (id)bulletinForInternalID:(id)d
 {
-  v3 = [(NSCache *)self->_allBulletins objectForKey:a3];
-  v4 = [v3 object];
+  v3 = [(NSCache *)self->_allBulletins objectForKey:d];
+  object = [v3 object];
 
-  return v4;
+  return object;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a4;
-  v6 = [v5 object];
-  v7 = [v6 bulletinID];
-  v8 = [AFBulletin internalIDForBBBulletinID:v7];
+  objectCopy = object;
+  object = [objectCopy object];
+  bulletinID = [object bulletinID];
+  v8 = [AFBulletin internalIDForBBBulletinID:bulletinID];
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -291,9 +291,9 @@ LABEL_8:
   os_unfair_lock_lock(&self->cacheKeysLock);
   [(NSMutableArray *)self->cacheKeys removeObject:v8];
   os_unfair_lock_unlock(&self->cacheKeysLock);
-  if (v5)
+  if (objectCopy)
   {
-    [(ADNotificationsCache *)self removeBulletinItem:v5];
+    [(ADNotificationsCache *)self removeBulletinItem:objectCopy];
   }
 }
 

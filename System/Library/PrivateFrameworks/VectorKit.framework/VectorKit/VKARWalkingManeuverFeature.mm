@@ -1,8 +1,8 @@
 @interface VKARWalkingManeuverFeature
 - ($1AB5FA073B851C12C2339EC22442E995)position;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Coordinate3D<geo::Degrees,)coordinate;
-- (VKARWalkingManeuverFeature)initWithDisplayLocation:(id)a3 routeCoordinate:(PolylineCoordinate)a4 maneuverHeading:(double)a5 displayText:(id)a6 maneuverPriority:(unint64_t)a7 elevationModel:(int)a8;
+- (VKARWalkingManeuverFeature)initWithDisplayLocation:(id)location routeCoordinate:(PolylineCoordinate)coordinate maneuverHeading:(double)heading displayText:(id)text maneuverPriority:(unint64_t)priority elevationModel:(int)model;
 - (id).cxx_construct;
 - (id)description;
 @end
@@ -43,14 +43,14 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v20.receiver = self;
   v20.super_class = VKARWalkingManeuverFeature;
-  if ([(VKARWalkingFeature *)&v20 isEqual:v4]&& (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  if ([(VKARWalkingFeature *)&v20 isEqual:equalCopy]&& (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v8 = v4;
+    v8 = equalCopy;
     latitude = self->_position.latitude;
     longitude = self->_position.longitude;
     altitude = self->_position.altitude;
@@ -87,15 +87,15 @@
   return result;
 }
 
-- (VKARWalkingManeuverFeature)initWithDisplayLocation:(id)a3 routeCoordinate:(PolylineCoordinate)a4 maneuverHeading:(double)a5 displayText:(id)a6 maneuverPriority:(unint64_t)a7 elevationModel:(int)a8
+- (VKARWalkingManeuverFeature)initWithDisplayLocation:(id)location routeCoordinate:(PolylineCoordinate)coordinate maneuverHeading:(double)heading displayText:(id)text maneuverPriority:(unint64_t)priority elevationModel:(int)model
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v16 = a6;
+  var2 = location.var2;
+  var1 = location.var1;
+  var0 = location.var0;
+  textCopy = text;
   v26.receiver = self;
   v26.super_class = VKARWalkingManeuverFeature;
-  v17 = [(VKARWalkingFeature *)&v26 initWithType:0 intraFeaturePriority:a7];
+  v17 = [(VKARWalkingFeature *)&v26 initWithType:0 intraFeaturePriority:priority];
   v18 = v17;
   if (v17)
   {
@@ -103,16 +103,16 @@
     v17->_position.latitude = var0;
     v17->_position.longitude = var1;
     v17->_position.altitude = var2;
-    v17->_routeCoordinate = a4;
-    v17->_maneuverHeading = a5;
-    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v17->_displayText, v16);
-    v18->_elevationModel = a8;
-    if (a8 == 1)
+    v17->_routeCoordinate = coordinate;
+    v17->_maneuverHeading = heading;
+    geo::_retain_ptr<objc_object  {objcproto25VKCustomFeatureAnnotation}* {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(&v17->_displayText, textCopy);
+    v18->_elevationModel = model;
+    if (model == 1)
     {
       v20 = +[VKSharedResourcesManager sharedResources];
-      v21 = [v20 undulationModel];
+      undulationModel = [v20 undulationModel];
 
-      Undulation = md::GeoidModel::getUndulation(v21, *p_latitude, v18->_position.longitude);
+      Undulation = md::GeoidModel::getUndulation(undulationModel, *p_latitude, v18->_position.longitude);
       v23 = *&Undulation;
       if (!HIDWORD(Undulation))
       {

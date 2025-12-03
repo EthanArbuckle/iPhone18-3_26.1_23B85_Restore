@@ -1,32 +1,32 @@
 @interface HKGymKitMetricsDataSource
 + (id)clientInterface;
-- (HKGymKitMetricsDataSource)initWithHealthStore:(id)a3 workoutConfiguration:(id)a4 delegate:(id)a5;
+- (HKGymKitMetricsDataSource)initWithHealthStore:(id)store workoutConfiguration:(id)configuration delegate:(id)delegate;
 - (HKGymKitMetricsDataSourceDelegate)delegate;
-- (void)_startTaskServerIfNeededWithCompletion:(id)a3;
-- (void)clientRemote_didReceiveMetrics:(id)a3;
+- (void)_startTaskServerIfNeededWithCompletion:(id)completion;
+- (void)clientRemote_didReceiveMetrics:(id)metrics;
 - (void)connectionInterrupted;
 - (void)workoutBuilderDidFinish;
 @end
 
 @implementation HKGymKitMetricsDataSource
 
-- (HKGymKitMetricsDataSource)initWithHealthStore:(id)a3 workoutConfiguration:(id)a4 delegate:(id)a5
+- (HKGymKitMetricsDataSource)initWithHealthStore:(id)store workoutConfiguration:(id)configuration delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HKGymKitMetricsDataSource;
   v12 = [(HKGymKitMetricsDataSource *)&v20 init];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = uUID;
 
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v12->_workoutConfiguration, a4);
-    objc_storeWeak(&v12->_delegate, v11);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v12->_workoutConfiguration, configuration);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v15 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v12->_healthStore taskIdentifier:@"HKGymKitMetricsDataSourceServerIdentifier" exportedObject:v12 taskUUID:v12->_identifier];
     proxyProvider = v12->_proxyProvider;
     v12->_proxyProvider = v15;
@@ -63,20 +63,20 @@ void __79__HKGymKitMetricsDataSource_initWithHealthStore_workoutConfiguration_de
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clientRemote_didReceiveMetrics:(id)a3
+- (void)clientRemote_didReceiveMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   objc_copyWeak(&to, &self->_delegate);
-  v5 = [(HKHealthStore *)self->_healthStore clientQueue];
+  clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__HKGymKitMetricsDataSource_clientRemote_didReceiveMetrics___block_invoke;
   v7[3] = &unk_1E7385A90;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricsCopy;
+  v6 = metricsCopy;
   objc_copyWeak(&v10, &to);
-  v9 = self;
-  dispatch_async(v5, v7);
+  selfCopy = self;
+  dispatch_async(clientQueue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&to);
@@ -168,15 +168,15 @@ void __50__HKGymKitMetricsDataSource_connectionInterrupted__block_invoke(uint64_
   }
 }
 
-- (void)_startTaskServerIfNeededWithCompletion:(id)a3
+- (void)_startTaskServerIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__HKGymKitMetricsDataSource__startTaskServerIfNeededWithCompletion___block_invoke;
   v9[3] = &unk_1E7385AB8;
-  v10 = v4;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__HKGymKitMetricsDataSource__startTaskServerIfNeededWithCompletion___block_invoke_2;

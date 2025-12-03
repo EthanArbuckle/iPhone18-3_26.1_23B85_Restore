@@ -1,41 +1,41 @@
 @interface PDDeviceRegistrationService
-- (PDDeviceRegistrationService)initWithConnection:(id)a3 server:(id)a4;
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6;
-- (void)performRegistrationForMemberOfRegions:(id)a3 withReason:(id)a4 completion:(id)a5;
-- (void)performRegistrationForRegion:(id)a3 withReason:(id)a4 completion:(id)a5;
+- (PDDeviceRegistrationService)initWithConnection:(id)connection server:(id)server;
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion;
+- (void)performRegistrationForMemberOfRegions:(id)regions withReason:(id)reason completion:(id)completion;
+- (void)performRegistrationForRegion:(id)region withReason:(id)reason completion:(id)completion;
 @end
 
 @implementation PDDeviceRegistrationService
 
-- (PDDeviceRegistrationService)initWithConnection:(id)a3 server:(id)a4
+- (PDDeviceRegistrationService)initWithConnection:(id)connection server:(id)server
 {
-  v5 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = PDDeviceRegistrationService;
-  v6 = [(PDDeviceRegistrationService *)&v12 initWithConnection:v5];
+  v6 = [(PDDeviceRegistrationService *)&v12 initWithConnection:connectionCopy];
   if (v6)
   {
-    v7 = [[PKEntitlementWhitelist alloc] initWithConnection:v5];
+    v7 = [[PKEntitlementWhitelist alloc] initWithConnection:connectionCopy];
     whitelist = v6->_whitelist;
     v6->_whitelist = v7;
 
     v9 = PKDeviceRegistrationServiceInterface();
-    [v5 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
     v10 = PDDeviceRegistrationServiceInterface();
-    [v5 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v5 setExportedObject:v6];
+    [connectionCopy setExportedObject:v6];
   }
 
   return v6;
 }
 
-- (void)performRegistrationForMemberOfRegions:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)performRegistrationForMemberOfRegions:(id)regions withReason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionsCopy = regions;
+  reasonCopy = reason;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist paymentAllAccess])
   {
     v11 = PKLogFacilityTypeGetObject();
@@ -44,14 +44,14 @@
       v14 = 136315394;
       v15 = "[PDDeviceRegistrationService performRegistrationForMemberOfRegions:withReason:completion:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "RegistrationService: %s called with reason: %@", &v14, 0x16u);
     }
 
     deviceRegistrationServiceCoordinator = self->_deviceRegistrationServiceCoordinator;
     if (deviceRegistrationServiceCoordinator)
     {
-      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performRegistrationForMemberOfRegions:v8 force:0 withReason:v9 completion:v10];
+      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performRegistrationForMemberOfRegions:regionsCopy force:0 withReason:reasonCopy completion:completionCopy];
       goto LABEL_11;
     }
   }
@@ -67,19 +67,19 @@
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 
 LABEL_11:
 }
 
-- (void)performRegistrationForRegion:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)performRegistrationForRegion:(id)region withReason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  reasonCopy = reason;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist paymentAllAccess])
   {
     v11 = PKLogFacilityTypeGetObject();
@@ -88,14 +88,14 @@ LABEL_11:
       v14 = 136315394;
       v15 = "[PDDeviceRegistrationService performRegistrationForRegion:withReason:completion:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "RegistrationService: %s called with reason: %@", &v14, 0x16u);
     }
 
     deviceRegistrationServiceCoordinator = self->_deviceRegistrationServiceCoordinator;
     if (deviceRegistrationServiceCoordinator)
     {
-      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performRegistrationForRegion:v8 force:0 withReason:v9 completion:v10];
+      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performRegistrationForRegion:regionCopy force:0 withReason:reasonCopy completion:completionCopy];
       goto LABEL_11;
     }
   }
@@ -111,19 +111,19 @@ LABEL_11:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 
 LABEL_11:
 }
 
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  reasonCopy = reason;
+  lCopy = l;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist paymentAllAccess])
   {
     v13 = PKLogFacilityTypeGetObject();
@@ -132,16 +132,16 @@ LABEL_11:
       v16 = 136315650;
       v17 = "[PDDeviceRegistrationService performDeviceRegistrationReturningContextForReason:brokerURL:actionType:completion:]";
       v18 = 2112;
-      v19 = v10;
+      v19 = reasonCopy;
       v20 = 2048;
-      v21 = a5;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "RegistrationService: %s called with reason: %@ type: %lu", &v16, 0x20u);
     }
 
     deviceRegistrationServiceCoordinator = self->_deviceRegistrationServiceCoordinator;
     if (deviceRegistrationServiceCoordinator)
     {
-      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performDeviceRegistrationForReason:v10 brokerURL:v11 action:a5 forceApplePayRegister:v11 != 0 forcePeerPaymentRegister:0 completion:v12];
+      [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performDeviceRegistrationForReason:reasonCopy brokerURL:lCopy action:type forceApplePayRegister:lCopy != 0 forcePeerPaymentRegister:0 completion:completionCopy];
       goto LABEL_11;
     }
   }
@@ -157,9 +157,9 @@ LABEL_11:
     }
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    (*(v12 + 2))(v12, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 
 LABEL_11:

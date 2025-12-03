@@ -1,15 +1,15 @@
 @interface UserActivityController
-- (BOOL)continueUserActivity:(id)a3;
-- (BOOL)willContinueUserActivityWithType:(id)a3;
+- (BOOL)continueUserActivity:(id)activity;
+- (BOOL)willContinueUserActivityWithType:(id)type;
 - (BrowserController)browserController;
 - (TabDocument)tabDocumentPendingUserActivityPayload;
-- (UserActivityController)initWithBrowserController:(id)a3;
-- (id)_tabDocumentWithURL:(id)a3;
+- (UserActivityController)initWithBrowserController:(id)controller;
+- (id)_tabDocumentWithURL:(id)l;
 - (void)_invalidateTabCreationDelayTimer;
 - (void)_prepareTabDocumentForNewUserActivity;
-- (void)_prepareTabDocumentForNewUserActivityWithDelay:(double)a3;
-- (void)didFailToContinueUserActivityWithType:(id)a3 error:(id)a4;
-- (void)setTabDocumentPendingUserActivityPayload:(id)a3;
+- (void)_prepareTabDocumentForNewUserActivityWithDelay:(double)delay;
+- (void)didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)setTabDocumentPendingUserActivityPayload:(id)payload;
 @end
 
 @implementation UserActivityController
@@ -21,25 +21,25 @@
   return WeakRetained;
 }
 
-- (UserActivityController)initWithBrowserController:(id)a3
+- (UserActivityController)initWithBrowserController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = UserActivityController;
   v5 = [(UserActivityController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserController, v4);
+    objc_storeWeak(&v5->_browserController, controllerCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)setTabDocumentPendingUserActivityPayload:(id)a3
+- (void)setTabDocumentPendingUserActivityPayload:(id)payload
 {
-  obj = a3;
+  obj = payload;
   WeakRetained = objc_loadWeakRetained(&self->_tabDocumentPendingUserActivityPayload);
   if (WeakRetained != obj)
   {
@@ -50,15 +50,15 @@
   }
 }
 
-- (BOOL)willContinueUserActivityWithType:(id)a3
+- (BOOL)willContinueUserActivityWithType:(id)type
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = WBS_LOG_CHANNEL_PREFIXContinuity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = typeCopy;
     _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_INFO, "Will continue user activity with type: %{public}@", buf, 0xCu);
   }
 
@@ -69,8 +69,8 @@
   v11[2] = *MEMORY[0x277CDB978];
   v11[3] = @"OpenURLsIntent";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:4];
-  v9 = [v8 containsObject:v4];
-  if (v9 && [v4 isEqualToString:v6])
+  v9 = [v8 containsObject:typeCopy];
+  if (v9 && [typeCopy isEqualToString:v6])
   {
     [(UserActivityController *)self _prepareTabDocumentForNewUserActivityWithDelay:0.02];
   }
@@ -78,91 +78,91 @@
   return v9;
 }
 
-- (BOOL)continueUserActivity:(id)a3
+- (BOOL)continueUserActivity:(id)activity
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = WBS_LOG_CHANNEL_PREFIXContinuity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 activityType];
+    activityType = [activityCopy activityType];
     *buf = 138543362;
-    v43 = v7;
+    v43 = activityType;
     _os_log_impl(&dword_215819000, v6, OS_LOG_TYPE_INFO, "Continue user activity with type: %{public}@", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v9 = [v4 activityType];
-  if (![v9 isEqualToString:*MEMORY[0x277CDB9F8]])
+  activityType2 = [activityCopy activityType];
+  if (![activityType2 isEqualToString:*MEMORY[0x277CDB9F8]])
   {
-    if ([v9 isEqualToString:*MEMORY[0x277CDB978]])
+    if ([activityType2 isEqualToString:*MEMORY[0x277CDB978]])
     {
-      v14 = [MEMORY[0x277D499B8] sharedLogger];
-      [v14 didContinueUserActivityOfType:1];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] didContinueUserActivityOfType:1];
 
-      v11 = [WeakRetained shortcutController];
-      v12 = v11;
+      shortcutController = [WeakRetained shortcutController];
+      interaction = shortcutController;
       v13 = MEMORY[0x277CDBA00];
       goto LABEL_7;
     }
 
-    v12 = [v4 interaction];
-    v16 = [MEMORY[0x277D499B8] sharedLogger];
-    v17 = v16;
-    if (v12)
+    interaction = [activityCopy interaction];
+    mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+    v17 = mEMORY[0x277D499B8]2;
+    if (interaction)
     {
-      [v16 didContinueUserActivityOfType:2];
+      [mEMORY[0x277D499B8]2 didContinueUserActivityOfType:2];
 
-      v18 = [(_SFNavigationIntent *)MEMORY[0x277D28F38] safari_navigationIntentForUserActivityContainingInteraction:v4];
+      systemNoteTakingController = [(_SFNavigationIntent *)MEMORY[0x277D28F38] safari_navigationIntentForUserActivityContainingInteraction:activityCopy];
       v19 = WBS_LOG_CHANNEL_PREFIXContinuity();
       v20 = v19;
-      if (v18)
+      if (systemNoteTakingController)
       {
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v21 = v20;
-          v22 = [v18 privacyPreservingDescription];
+          privacyPreservingDescription = [systemNoteTakingController privacyPreservingDescription];
           *buf = 138543362;
-          v43 = v22;
+          v43 = privacyPreservingDescription;
           _os_log_impl(&dword_215819000, v21, OS_LOG_TYPE_DEFAULT, "Continuing user activity for OpenURLsIntent using intent: %{public}@", buf, 0xCu);
         }
 
-        [WeakRetained dispatchNavigationIntent:v18];
-        LOBYTE(v15) = 1;
+        [WeakRetained dispatchNavigationIntent:systemNoteTakingController];
+        LOBYTE(safari_isHTTPFamilyURL) = 1;
       }
 
       else
       {
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
         {
-          [(UserActivityController *)v9 continueUserActivity:v20, v12];
+          [(UserActivityController *)activityType2 continueUserActivity:v20, interaction];
         }
 
-        LOBYTE(v15) = 0;
+        LOBYTE(safari_isHTTPFamilyURL) = 0;
       }
 
       goto LABEL_39;
     }
 
-    [v16 didContinueUserActivityOfType:3];
+    [mEMORY[0x277D499B8]2 didContinueUserActivityOfType:3];
 
     v23 = +[Application sharedApplication];
-    v18 = [v23 systemNoteTakingController];
+    systemNoteTakingController = [v23 systemNoteTakingController];
 
-    v24 = [v18 userActivityForNoteTaking:v4];
+    v24 = [systemNoteTakingController userActivityForNoteTaking:activityCopy];
     if (v24)
     {
-      v25 = [v4 webpageURL];
-      if ([v25 safari_isHTTPFamilyURL])
+      webpageURL = [activityCopy webpageURL];
+      if ([webpageURL safari_isHTTPFamilyURL])
       {
-        v26 = [(UserActivityController *)self _tabDocumentWithURL:v25];
+        v26 = [(UserActivityController *)self _tabDocumentWithURL:webpageURL];
         if (v26)
         {
           v27 = v26;
           [v26 setUserActivityFromNotes:v24];
-          v28 = [WeakRetained tabController];
-          [v28 setActiveTabDocument:v27 animated:0];
+          tabController = [WeakRetained tabController];
+          [tabController setActiveTabDocument:v27 animated:0];
 
           [v27 applyHighlightFromNotesIfNeeded];
           [v27 restoreAllHighlightsData];
@@ -173,10 +173,10 @@
     }
 
     [(UserActivityController *)self _prepareTabDocumentForNewUserActivityWithDelay:0.0];
-    v25 = objc_loadWeakRetained(&self->_tabDocumentPendingUserActivityPayload);
-    if (!v25 || (-[UserActivityController setTabDocumentPendingUserActivityPayload:](self, "setTabDocumentPendingUserActivityPayload:", 0), ([v25 isClosed] & 1) != 0))
+    webpageURL = objc_loadWeakRetained(&self->_tabDocumentPendingUserActivityPayload);
+    if (!webpageURL || (-[UserActivityController setTabDocumentPendingUserActivityPayload:](self, "setTabDocumentPendingUserActivityPayload:", 0), ([webpageURL isClosed] & 1) != 0))
     {
-      LOBYTE(v15) = 1;
+      LOBYTE(safari_isHTTPFamilyURL) = 1;
 LABEL_38:
 
 LABEL_39:
@@ -184,28 +184,28 @@ LABEL_39:
     }
 
     v29 = objc_alloc(MEMORY[0x277D49EB8]);
-    v30 = [v4 userInfo];
-    v27 = [v29 initWithDictionaryFromUserActivityUserInfo:v30];
+    userInfo = [activityCopy userInfo];
+    v27 = [v29 initWithDictionaryFromUserActivityUserInfo:userInfo];
 
     if (!v27)
     {
-      v33 = [v4 webpageURL];
-      v15 = [v33 safari_isHTTPFamilyURL];
-      if (v15)
+      webpageURL2 = [activityCopy webpageURL];
+      safari_isHTTPFamilyURL = [webpageURL2 safari_isHTTPFamilyURL];
+      if (safari_isHTTPFamilyURL)
       {
-        [v25 setUserActivityFromNotes:v24];
-        if ([v25 isHibernated])
+        [webpageURL setUserActivityFromNotes:v24];
+        if ([webpageURL isHibernated])
         {
-          [v25 unhibernate];
+          [webpageURL unhibernate];
         }
 
-        logc = [v33 safari_originalDataAsString];
-        [v25 progressState];
-        v34 = v37 = v33;
+        logc = [webpageURL2 safari_originalDataAsString];
+        [webpageURL progressState];
+        v34 = v37 = webpageURL2;
         [v34 setLoadURL:logc];
 
-        v33 = v37;
-        v35 = [v25 loadURL:v37 userDriven:1];
+        webpageURL2 = v37;
+        v35 = [webpageURL loadURL:v37 userDriven:1];
       }
 
       else
@@ -219,49 +219,49 @@ LABEL_39:
         loga = WBS_LOG_CHANNEL_PREFIXContinuity();
         if (os_log_type_enabled(loga, OS_LOG_TYPE_DEBUG))
         {
-          [(UserActivityController *)loga continueUserActivity:v4];
+          [(UserActivityController *)loga continueUserActivity:activityCopy];
         }
 
-        [v25 didFailToContinueUserActivity];
+        [webpageURL didFailToContinueUserActivity];
       }
 
       goto LABEL_37;
     }
 
     logb = [v27 url];
-    v31 = [logb safari_originalDataAsString];
-    v32 = [v25 progressState];
-    [v32 setLoadURL:v31];
+    safari_originalDataAsString = [logb safari_originalDataAsString];
+    progressState = [webpageURL progressState];
+    [progressState setLoadURL:safari_originalDataAsString];
 
-    [v25 loadCloudTab:v27];
+    [webpageURL loadCloudTab:v27];
 LABEL_26:
-    LOBYTE(v15) = 1;
+    LOBYTE(safari_isHTTPFamilyURL) = 1;
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  v10 = [MEMORY[0x277D499B8] sharedLogger];
-  [v10 didContinueUserActivityOfType:0];
+  mEMORY[0x277D499B8]3 = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8]3 didContinueUserActivityOfType:0];
 
-  v11 = [WeakRetained shortcutController];
-  v12 = v11;
+  shortcutController = [WeakRetained shortcutController];
+  interaction = shortcutController;
   v13 = MEMORY[0x277CDBA18];
 LABEL_7:
-  LOBYTE(v15) = [v11 handleActionWithType:*v13];
+  LOBYTE(safari_isHTTPFamilyURL) = [shortcutController handleActionWithType:*v13];
 LABEL_40:
 
-  return v15;
+  return safari_isHTTPFamilyURL;
 }
 
-- (void)didFailToContinueUserActivityWithType:(id)a3 error:(id)a4
+- (void)didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = WBS_LOG_CHANNEL_PREFIXContinuity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(UserActivityController *)v6 didFailToContinueUserActivityWithType:v8 error:v7];
+    [(UserActivityController *)typeCopy didFailToContinueUserActivityWithType:v8 error:errorCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tabDocumentPendingUserActivityPayload);
@@ -271,12 +271,12 @@ LABEL_40:
   [(UserActivityController *)self _invalidateTabCreationDelayTimer];
 }
 
-- (id)_tabDocumentWithURL:(id)a3
+- (id)_tabDocumentWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 currentTabDocuments];
+  tabController = [WeakRetained tabController];
+  currentTabDocuments = [tabController currentTabDocuments];
 
   v14 = 0;
   v15 = &v14;
@@ -288,10 +288,10 @@ LABEL_40:
   v11[1] = 3221225472;
   v11[2] = __46__UserActivityController__tabDocumentWithURL___block_invoke;
   v11[3] = &unk_2781D8CE8;
-  v8 = v4;
+  v8 = lCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [currentTabDocuments enumerateObjectsUsingBlock:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -321,9 +321,9 @@ void __46__UserActivityController__tabDocumentWithURL___block_invoke(uint64_t a1
   self->_tabCreationDelayTimer = 0;
 }
 
-- (void)_prepareTabDocumentForNewUserActivityWithDelay:(double)a3
+- (void)_prepareTabDocumentForNewUserActivityWithDelay:(double)delay
 {
-  if (a3 == 0.0)
+  if (delay == 0.0)
   {
     [(UserActivityController *)self _prepareTabDocumentForNewUserActivity];
 
@@ -339,7 +339,7 @@ void __46__UserActivityController__tabDocumentWithURL___block_invoke(uint64_t a1
     v8[2] = __73__UserActivityController__prepareTabDocumentForNewUserActivityWithDelay___block_invoke;
     v8[3] = &unk_2781D8AF0;
     objc_copyWeak(&v9, &location);
-    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:a3];
+    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:delay];
     tabCreationDelayTimer = self->_tabCreationDelayTimer;
     self->_tabCreationDelayTimer = v6;
 
@@ -374,15 +374,15 @@ void __73__UserActivityController__prepareTabDocumentForNewUserActivityWithDelay
     }
 
     v5 = objc_loadWeakRetained(&self->_browserController);
-    v6 = [v5 tabController];
+    tabController = [v5 tabController];
     if (([v5 shouldStayInFocusedTabGroupForExternalLinks] & 1) == 0)
     {
-      [v6 switchOutOfSyncedTabGroup];
+      [tabController switchOutOfSyncedTabGroup];
     }
 
-    v7 = [v6 activeTabDocument];
-    v8 = v7;
-    if (v7 && ![(TabDocument *)v7 isLoading]&& [(TabDocument *)v8 isBlank])
+    activeTabDocument = [tabController activeTabDocument];
+    v8 = activeTabDocument;
+    if (activeTabDocument && ![(TabDocument *)activeTabDocument isLoading]&& [(TabDocument *)v8 isBlank])
     {
       [(TabDocument *)v8 setPreparingForNewUserActivity:1];
       v9 = v8;
@@ -394,13 +394,13 @@ void __73__UserActivityController__prepareTabDocumentForNewUserActivityWithDelay
 
       [(TabDocument *)v9 setIsBlank:1];
       [(TabDocument *)v9 setPreparingForNewUserActivity:1];
-      v10 = [(TabDocument *)v9 navigationBarItem];
-      [v10 setShowsStopReloadButtons:0];
+      navigationBarItem = [(TabDocument *)v9 navigationBarItem];
+      [navigationBarItem setShowsStopReloadButtons:0];
 
-      [v6 insertNewTabDocumentWithDefaultOrdering:v9 inBackground:0 animated:0];
-      v11 = [MEMORY[0x277D499B8] sharedLogger];
-      v12 = [v6 tabCollectionViewProvider];
-      [v11 didOpenNewTabWithURLWithTrigger:0 tabCollectionViewType:{objc_msgSend(v12, "visibleTabCollectionViewType")}];
+      [tabController insertNewTabDocumentWithDefaultOrdering:v9 inBackground:0 animated:0];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      tabCollectionViewProvider = [tabController tabCollectionViewProvider];
+      [mEMORY[0x277D499B8] didOpenNewTabWithURLWithTrigger:0 tabCollectionViewType:{objc_msgSend(tabCollectionViewProvider, "visibleTabCollectionViewType")}];
     }
 
     [v5 prepareToNavigateInTabDocument:v9];

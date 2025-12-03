@@ -5,27 +5,27 @@
 - (BOOL)analyticsSessionDataIsMainWindow;
 - (BOOL)analyticsSessionDataIsPriceDropNotificationEnabled;
 - (NSArray)additionalEventProcessors;
-- (id)analyticsControllerConfigurationForKey:(id)a3;
-- (id)analyticsSessionDataForKey:(id)a3;
+- (id)analyticsControllerConfigurationForKey:(id)key;
+- (id)analyticsSessionDataForKey:(id)key;
 - (id)mainLibrary;
 - (id)sceneManager;
 - (void)_mq_analyticsEndSession;
-- (void)analyticsController:(id)a3 resetSessionWithCompletion:(id)a4;
-- (void)analyticsControllerDidEndSession:(id)a3;
-- (void)analyticsControllerDidStartSession:(id)a3;
-- (void)analyticsControllerWillEndSession:(id)a3;
-- (void)analyticsControllerWillStartSession:(id)a3;
+- (void)analyticsController:(id)controller resetSessionWithCompletion:(id)completion;
+- (void)analyticsControllerDidEndSession:(id)session;
+- (void)analyticsControllerDidStartSession:(id)session;
+- (void)analyticsControllerWillEndSession:(id)session;
+- (void)analyticsControllerWillStartSession:(id)session;
 - (void)analyticsEndSession;
-- (void)analyticsSetReferralURL:(id)a3 app:(id)a4;
+- (void)analyticsSetReferralURL:(id)l app:(id)app;
 - (void)analyticsSetupTracking;
 - (void)analyticsStartSession;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEvaluateAfterSessionStart:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEvaluateAfterSessionStart:(id)start;
 - (void)setupSessionChangeNotifications;
-- (void)startInitialAppStateQueryWithSessionStartTime:(id)a3 analyticsController:(id)a4 libraryAssetProvider:(id)a5 analyticsSessionAssertion:(id)a6;
+- (void)startInitialAppStateQueryWithSessionStartTime:(id)time analyticsController:(id)controller libraryAssetProvider:(id)provider analyticsSessionAssertion:(id)assertion;
 - (void)updateTreatmentData;
-- (void)windowOcclusionStateDidChange:(id)a3;
+- (void)windowOcclusionStateDidChange:(id)change;
 @end
 
 @implementation BKAppAnalyticsManager
@@ -52,8 +52,8 @@
     v9 = +[NSUserDefaults standardUserDefaults];
     [v9 addObserver:v4 forKeyPath:kBAResetAnalyticsUserID options:1 context:off_100ACCEC0];
 
-    v10 = [objc_opt_class() resolver];
-    v11 = [v10 resolveClass:objc_opt_class()];
+    resolver = [objc_opt_class() resolver];
+    v11 = [resolver resolveClass:objc_opt_class()];
 
     v12 = [[BKPersonalizationEventProcessor alloc] initWithDonor:v11];
     personalizationEventProcessor = v4->_personalizationEventProcessor;
@@ -69,10 +69,10 @@
 + (id)resolver
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 containerHost];
-  v4 = [v3 bridgedResolver];
+  containerHost = [v2 containerHost];
+  bridgedResolver = [containerHost bridgedResolver];
 
-  return v4;
+  return bridgedResolver;
 }
 
 - (void)analyticsSetupTracking
@@ -80,19 +80,19 @@
   v3 = objc_alloc_init(BAAnalyticsController);
   [(BKAppAnalyticsManager *)self setAnalyticsController:v3];
 
-  v4 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v4 setDelegate:self];
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController setDelegate:self];
 
-  v5 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v5 setConfigurationProvider:self];
+  analyticsController2 = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController2 setConfigurationProvider:self];
 
-  v6 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v6 start];
+  analyticsController3 = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController3 start];
 
   [(BKAppAnalyticsManager *)self updateTreatmentData];
   v7 = +[BRCConfigurationManager sharedInstance];
-  v8 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v8 setUserConfiguration:v7];
+  analyticsController4 = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController4 setUserConfiguration:v7];
 
   [(BKAppAnalyticsManager *)self setupSessionChangeNotifications];
   [(BKAppAnalyticsManager *)self setupWindowNotification];
@@ -102,8 +102,8 @@
   v10 = dispatch_get_global_queue(25, 0);
   dispatch_async(v10, &stru_100A059B0);
 
-  v11 = [(BKAppAnalyticsManager *)self delegate];
-  v12 = [v11 appLaunchCoordinator:self];
+  delegate = [(BKAppAnalyticsManager *)self delegate];
+  v12 = [delegate appLaunchCoordinator:self];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -118,8 +118,8 @@
 
 - (NSArray)additionalEventProcessors
 {
-  v2 = [(BKAppAnalyticsManager *)self personalizationEventProcessor];
-  v5 = v2;
+  personalizationEventProcessor = [(BKAppAnalyticsManager *)self personalizationEventProcessor];
+  v5 = personalizationEventProcessor;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -142,18 +142,18 @@
 
 - (void)setupSessionChangeNotifications
 {
-  v3 = [(BKAppAnalyticsManager *)self analyticsController];
-  v4 = [v3 applicationTracker];
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  applicationTracker = [analyticsController applicationTracker];
 
-  v5 = [(BKAppAnalyticsManager *)self analyticsController];
-  v6 = [v5 applicationTracker];
+  analyticsController2 = [(BKAppAnalyticsManager *)self analyticsController];
+  applicationTracker2 = [analyticsController2 applicationTracker];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100025AB4;
   v8[3] = &unk_100A059D8;
-  v9 = v4;
-  v7 = v4;
-  [v6 onSessionChangeWithBlock:v8];
+  v9 = applicationTracker;
+  v7 = applicationTracker;
+  [applicationTracker2 onSessionChangeWithBlock:v8];
 }
 
 - (BKAppAnalyticsManagerDelegate)delegate
@@ -195,16 +195,16 @@
 
   if (v5)
   {
-    v6 = [(BKAppAnalyticsManager *)self delegate];
-    [v6 analyticsManagerForceEndSession:self];
+    delegate = [(BKAppAnalyticsManager *)self delegate];
+    [delegate analyticsManagerForceEndSession:self];
 
-    v7 = [(BKAppAnalyticsManager *)self analyticsController];
-    v8 = [v7 waitForSessionEnd:0.001];
+    analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+    v8 = [analyticsController waitForSessionEnd:0.001];
 
     if (v8)
     {
-      v9 = [(BKAppAnalyticsManager *)self analyticsController];
-      [v9 resetPrivateData:0];
+      analyticsController2 = [(BKAppAnalyticsManager *)self analyticsController];
+      [analyticsController2 resetPrivateData:0];
 
       v10 = +[NSUserDefaults standardUserDefaults];
       [v10 setBool:0 forKey:v4];
@@ -220,9 +220,9 @@
     }
   }
 
-  v12 = [(BKAppAnalyticsManager *)self analyticsController];
-  v13 = [v12 newSessionAssertion];
-  [(BKAppAnalyticsManager *)self setAnalyticsSessionAssertion:v13];
+  analyticsController3 = [(BKAppAnalyticsManager *)self analyticsController];
+  newSessionAssertion = [analyticsController3 newSessionAssertion];
+  [(BKAppAnalyticsManager *)self setAnalyticsSessionAssertion:newSessionAssertion];
 
   v14 = +[BCRCDataContainer defaultContainer];
   [v14 deployStagedDataIfNeeded];
@@ -230,8 +230,8 @@
 
 - (BOOL)analyticsSessionDataIsMainWindow
 {
-  v3 = [(BKAppAnalyticsManager *)self delegate];
-  v4 = [v3 analyticsManagerSceneController:self];
+  delegate = [(BKAppAnalyticsManager *)self delegate];
+  v4 = [delegate analyticsManagerSceneController:self];
 
   if (v4)
   {
@@ -272,34 +272,34 @@
 
 - (id)mainLibrary
 {
-  v3 = [(BKAppAnalyticsManager *)self delegate];
-  v4 = [v3 analyticsManagerLibrary:self];
+  delegate = [(BKAppAnalyticsManager *)self delegate];
+  v4 = [delegate analyticsManagerLibrary:self];
 
   return v4;
 }
 
 - (id)sceneManager
 {
-  v3 = [(BKAppAnalyticsManager *)self delegate];
-  v4 = [v3 analyticsManagerSceneManager:self];
+  delegate = [(BKAppAnalyticsManager *)self delegate];
+  v4 = [delegate analyticsManagerSceneManager:self];
 
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100ACCEC0 == a6)
+  if (off_100ACCEC0 == context)
   {
-    v11 = a5;
+    changeCopy = change;
     objc_opt_class();
-    v12 = [v11 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v12 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
     v14 = BUDynamicCast();
 
     if ([v14 BOOLValue])
     {
-      v13 = [(BKAppAnalyticsManager *)self delegate];
-      [v13 analyticsManagerForceEndSession:self];
+      delegate = [(BKAppAnalyticsManager *)self delegate];
+      [delegate analyticsManagerForceEndSession:self];
     }
   }
 
@@ -307,15 +307,15 @@
   {
     v15.receiver = self;
     v15.super_class = BKAppAnalyticsManager;
-    v10 = a5;
-    [(BKAppAnalyticsManager *)&v15 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(BKAppAnalyticsManager *)&v15 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 
-- (void)windowOcclusionStateDidChange:(id)a3
+- (void)windowOcclusionStateDidChange:(id)change
 {
-  v3 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v3 refreshSessionDataIfActive];
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController refreshSessionDataIfActive];
 }
 
 - (void)analyticsEndSession
@@ -328,21 +328,21 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)analyticsSetReferralURL:(id)a3 app:(id)a4
+- (void)analyticsSetReferralURL:(id)l app:(id)app
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppAnalyticsManager *)self analyticsController];
-  [v8 setReferralURL:v7 app:v6];
+  appCopy = app;
+  lCopy = l;
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  [analyticsController setReferralURL:lCopy app:appCopy];
 }
 
-- (void)setEvaluateAfterSessionStart:(id)a3
+- (void)setEvaluateAfterSessionStart:(id)start
 {
-  v4 = a3;
-  v5 = [(BKAppAnalyticsManager *)self isSessionActive];
-  v7 = objc_retainBlock(v4);
+  startCopy = start;
+  isSessionActive = [(BKAppAnalyticsManager *)self isSessionActive];
+  v7 = objc_retainBlock(startCopy);
 
-  if (v5)
+  if (isSessionActive)
   {
     evaluateAfterSessionStart = v7;
     if (v7)
@@ -359,7 +359,7 @@
   }
 }
 
-- (id)analyticsControllerConfigurationForKey:(id)a3
+- (id)analyticsControllerConfigurationForKey:(id)key
 {
   v16[0] = kBAJitterTimestampEnabled;
   v16[1] = kBAJitterTimestampLowerBound;
@@ -367,26 +367,26 @@
   v17[1] = BRCBooksDefaultsKeyAnalyticsJitterTimestampLowerBound;
   v16[2] = kBAJitterTimestampUpperBound;
   v17[2] = BRCBooksDefaultsKeyAnalyticsJitterTimestampUpperBound;
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   if (v5)
   {
     v6 = +[BCRCDataContainer defaultContainer];
-    v7 = [v6 configurationLoaded];
+    configurationLoaded = [v6 configurationLoaded];
 
-    if (v7)
+    if (configurationLoaded)
     {
       v8 = +[BCRCDataContainer defaultContainer];
-      v9 = [v8 configs];
-      v10 = [v9 count];
+      configs = [v8 configs];
+      v10 = [configs count];
 
       if (v10)
       {
         v11 = +[BCRCDataContainer defaultContainer];
-        v12 = [v11 configs];
-        v13 = [v12 valueForKeyPath:v5];
+        configs2 = [v11 configs];
+        v13 = [configs2 valueForKeyPath:v5];
 
         if (v13)
         {
@@ -426,7 +426,7 @@ LABEL_13:
   return v13;
 }
 
-- (void)analyticsControllerWillStartSession:(id)a3
+- (void)analyticsControllerWillStartSession:(id)session
 {
   v4 = BALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -451,9 +451,9 @@ LABEL_13:
   }
 }
 
-- (void)analyticsControllerDidStartSession:(id)a3
+- (void)analyticsControllerDidStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = BALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -463,30 +463,30 @@ LABEL_13:
 
   [(BKAppAnalyticsManager *)self setDidStartFirstSession:1];
   [(BKAppAnalyticsManager *)self setIsSessionActive:1];
-  v6 = [(BKAppAnalyticsManager *)self analyticsController];
-  v7 = [v6 applicationTracker];
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  applicationTracker = [analyticsController applicationTracker];
 
-  [v7 popOrientationData];
-  if ([v7 optedIn])
+  [applicationTracker popOrientationData];
+  if ([applicationTracker optedIn])
   {
-    [v7 pushOrientationDataFromFile:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:325];
+    [applicationTracker pushOrientationDataFromFile:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:325];
   }
 
-  [v7 submitAppSessionStartEvent];
-  [v7 timeAppSessionEndEvent];
+  [applicationTracker submitAppSessionStartEvent];
+  [applicationTracker timeAppSessionEndEvent];
   objc_initWeak(buf, self);
-  v8 = [(BKAppAnalyticsManager *)self analyticsController];
-  v9 = [v8 sessionStartTime];
+  analyticsController2 = [(BKAppAnalyticsManager *)self analyticsController];
+  sessionStartTime = [analyticsController2 sessionStartTime];
 
-  v10 = [(BKAppAnalyticsManager *)self delegate];
-  v11 = [v10 appLaunchCoordinator:self];
+  delegate = [(BKAppAnalyticsManager *)self delegate];
+  v11 = [delegate appLaunchCoordinator:self];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10009C538;
   v22[3] = &unk_100A05A00;
   objc_copyWeak(&v24, buf);
-  v12 = v9;
+  v12 = sessionStartTime;
   v23 = v12;
   [v11 appLaunchCoordinatorOnConditionMask:4097 blockID:@"analyticsControllerDidStartSession" performBlock:v22];
   v13 = +[NSNotificationCenter defaultCenter];
@@ -499,11 +499,11 @@ LABEL_13:
   v15 = [v13 addObserverForName:UIDeviceOrientationDidChangeNotification object:0 queue:v14 usingBlock:v20];
   [(BKAppAnalyticsManager *)self setDeviceOrentationDidChangeObserver:v15];
 
-  v16 = [(BKAppAnalyticsManager *)self evaluateAfterSessionStart];
+  evaluateAfterSessionStart = [(BKAppAnalyticsManager *)self evaluateAfterSessionStart];
   evaluateAfterSessionStart = self->_evaluateAfterSessionStart;
   self->_evaluateAfterSessionStart = 0;
 
-  v18 = objc_retainBlock(v16);
+  v18 = objc_retainBlock(evaluateAfterSessionStart);
   v19 = v18;
   if (v18)
   {
@@ -516,9 +516,9 @@ LABEL_13:
   objc_destroyWeak(buf);
 }
 
-- (void)analyticsControllerWillEndSession:(id)a3
+- (void)analyticsControllerWillEndSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = BALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -530,7 +530,7 @@ LABEL_13:
   *buf = 0;
   v33 = buf;
   v34 = 0x2020000000;
-  v35 = [(BKAppAnalyticsManager *)self analyticsBackgroundTaskIdentifier];
+  analyticsBackgroundTaskIdentifier = [(BKAppAnalyticsManager *)self analyticsBackgroundTaskIdentifier];
   if (*(v33 + 3) == UIBackgroundTaskInvalid)
   {
     objc_initWeak(&location, self);
@@ -559,51 +559,51 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_analyticsLock);
-  v10 = [(BKAppAnalyticsManager *)self analyticsController];
-  v11 = [v10 applicationTracker];
+  analyticsController = [(BKAppAnalyticsManager *)self analyticsController];
+  applicationTracker = [analyticsController applicationTracker];
 
   v12 = [BASessionReadingData alloc];
   [(BKAppAnalyticsManager *)self analyticsAccumulatedReadTime];
   v14 = v13;
-  v15 = [(BKAppAnalyticsManager *)self analyticsAccumulatedReadIDs];
-  [v15 count];
+  analyticsAccumulatedReadIDs = [(BKAppAnalyticsManager *)self analyticsAccumulatedReadIDs];
+  [analyticsAccumulatedReadIDs count];
   v16 = [v12 initWithTimeSpentReading:v14 uniqueBooksRead:BARoundIntegerToSignificantFigures()];
 
   [(BKAppAnalyticsManager *)self setAnalyticsAccumulatedReadTime:0.0];
-  v17 = [(BKAppAnalyticsManager *)self analyticsAccumulatedReadIDs];
-  [v17 removeAllObjects];
+  analyticsAccumulatedReadIDs2 = [(BKAppAnalyticsManager *)self analyticsAccumulatedReadIDs];
+  [analyticsAccumulatedReadIDs2 removeAllObjects];
 
-  [v11 popSessionReadingData];
-  [v11 pushSessionReadingData:v16 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:402];
+  [applicationTracker popSessionReadingData];
+  [applicationTracker pushSessionReadingData:v16 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:402];
   v18 = [BASessionListeningData alloc];
   [(BKAppAnalyticsManager *)self analyticsAccumulatedListenTime];
   v20 = v19;
-  v21 = [(BKAppAnalyticsManager *)self analyticsAccumulatedListenIDs];
-  [v21 count];
+  analyticsAccumulatedListenIDs = [(BKAppAnalyticsManager *)self analyticsAccumulatedListenIDs];
+  [analyticsAccumulatedListenIDs count];
   v22 = [v18 initWithTimeSpentListening:v20 uniqueAudiobooksListened:BARoundIntegerToSignificantFigures()];
 
   [(BKAppAnalyticsManager *)self setAnalyticsAccumulatedListenTime:0.0];
-  v23 = [(BKAppAnalyticsManager *)self analyticsAccumulatedListenIDs];
-  [v23 removeAllObjects];
+  analyticsAccumulatedListenIDs2 = [(BKAppAnalyticsManager *)self analyticsAccumulatedListenIDs];
+  [analyticsAccumulatedListenIDs2 removeAllObjects];
 
-  [v11 popSessionListeningData];
-  [v11 pushSessionListeningData:v22 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:408];
+  [applicationTracker popSessionListeningData];
+  [applicationTracker pushSessionListeningData:v22 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppAnalyticsManager.m" line:408];
   v24 = +[BKAppDelegate delegate];
-  v25 = [v24 engagementManager];
-  v26 = [v25 analyticsHelper];
-  [v26 collectLocalSignalsAnalyticsWithTracker:v11];
+  engagementManager = [v24 engagementManager];
+  analyticsHelper = [engagementManager analyticsHelper];
+  [analyticsHelper collectLocalSignalsAnalyticsWithTracker:applicationTracker];
 
   v27 = +[NSNotificationCenter defaultCenter];
-  v28 = [(BKAppAnalyticsManager *)self deviceOrentationDidChangeObserver];
-  [v27 removeObserver:v28 name:UIDeviceOrientationDidChangeNotification object:0];
+  deviceOrentationDidChangeObserver = [(BKAppAnalyticsManager *)self deviceOrentationDidChangeObserver];
+  [v27 removeObserver:deviceOrentationDidChangeObserver name:UIDeviceOrientationDidChangeNotification object:0];
 
   [(BKAppAnalyticsManager *)self setIsSessionActive:0];
   _Block_object_dispose(buf, 8);
 }
 
-- (void)analyticsControllerDidEndSession:(id)a3
+- (void)analyticsControllerDidEndSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = BALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -611,17 +611,17 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "analyticsControllerDidEndSession: start", &v10, 2u);
   }
 
-  [v4 unsetLaunchedFromShortcutItem];
+  [sessionCopy unsetLaunchedFromShortcutItem];
   if ([(BKAppAnalyticsManager *)self isColdLaunched])
   {
     [(BKAppAnalyticsManager *)self setColdLaunched:0];
   }
 
   os_unfair_lock_lock(&self->_analyticsLock);
-  v6 = [(BKAppAnalyticsManager *)self analyticsBackgroundTaskIdentifier];
-  if (v6 != UIBackgroundTaskInvalid)
+  analyticsBackgroundTaskIdentifier = [(BKAppAnalyticsManager *)self analyticsBackgroundTaskIdentifier];
+  if (analyticsBackgroundTaskIdentifier != UIBackgroundTaskInvalid)
   {
-    v7 = v6;
+    v7 = analyticsBackgroundTaskIdentifier;
     v8 = BALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -639,9 +639,9 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_analyticsLock);
 }
 
-- (void)analyticsController:(id)a3 resetSessionWithCompletion:(id)a4
+- (void)analyticsController:(id)controller resetSessionWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = BALog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -665,61 +665,61 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = sub_10009CF1C;
   v9[3] = &unk_100A05A78;
-  v10 = v5;
+  v10 = completionCopy;
   v11 = buf;
   v9[4] = self;
-  v8 = v5;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (id)analyticsSessionDataForKey:(id)a3
+- (id)analyticsSessionDataForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:BASessionDataKeyJSVersion])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:BASessionDataKeyJSVersion])
   {
     v5 = +[JSABridge sharedInstance];
-    v6 = [v5 environment];
-    v7 = [v6 appVersion];
+    environment = [v5 environment];
+    appVersion = [environment appVersion];
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyStoreFrontID])
+  if ([keyCopy isEqualToString:BASessionDataKeyStoreFrontID])
   {
     v5 = +[BUAccountsProvider sharedProvider];
-    v8 = [v5 currentStorefront];
+    currentStorefront = [v5 currentStorefront];
 LABEL_12:
-    v7 = v8;
+    appVersion = currentStorefront;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyiCloudLoggedIn])
+  if ([keyCopy isEqualToString:BASessionDataKeyiCloudLoggedIn])
   {
     v5 = +[BUAccountsProvider sharedProvider];
-    v9 = [v5 isUserSignedInToiCloud];
+    isUserSignedInToiCloud = [v5 isUserSignedInToiCloud];
 LABEL_11:
-    v8 = [NSNumber numberWithBool:v9];
+    currentStorefront = [NSNumber numberWithBool:isUserSignedInToiCloud];
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyiTunesLoggedIn])
+  if ([keyCopy isEqualToString:BASessionDataKeyiTunesLoggedIn])
   {
     v5 = +[BUAccountsProvider sharedProvider];
-    v9 = [v5 isUserSignedInToiTunes];
+    isUserSignedInToiCloud = [v5 isUserSignedInToiTunes];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyiCloudDriveOptIn])
+  if ([keyCopy isEqualToString:BASessionDataKeyiCloudDriveOptIn])
   {
     v5 = +[BUAccountsProvider sharedProvider];
-    v9 = [v5 isGlobalICloudDriveSyncOptedIn];
+    isUserSignedInToiCloud = [v5 isGlobalICloudDriveSyncOptedIn];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyLaunchType])
+  if ([keyCopy isEqualToString:BASessionDataKeyLaunchType])
   {
     if ([(BKAppAnalyticsManager *)self isColdLaunched])
     {
@@ -735,40 +735,40 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if ([v4 isEqualToString:BASessionDataKeyHasWidgets])
+  if ([keyCopy isEqualToString:BASessionDataKeyHasWidgets])
   {
     v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[BKWidgetService hasWidgetConfigurations]);
 LABEL_24:
-    v7 = v12;
+    appVersion = v12;
     goto LABEL_14;
   }
 
-  v7 = 0;
+  appVersion = 0;
 LABEL_14:
 
-  return v7;
+  return appVersion;
 }
 
 - (void)_mq_analyticsEndSession
 {
-  v3 = [(BKAppAnalyticsManager *)self analyticsSessionAssertion];
-  [v3 invalidate];
+  analyticsSessionAssertion = [(BKAppAnalyticsManager *)self analyticsSessionAssertion];
+  [analyticsSessionAssertion invalidate];
 
   [(BKAppAnalyticsManager *)self setAnalyticsSessionAssertion:0];
 }
 
-- (void)startInitialAppStateQueryWithSessionStartTime:(id)a3 analyticsController:(id)a4 libraryAssetProvider:(id)a5 analyticsSessionAssertion:(id)a6
+- (void)startInitialAppStateQueryWithSessionStartTime:(id)time analyticsController:(id)controller libraryAssetProvider:(id)provider analyticsSessionAssertion:(id)assertion
 {
   v10 = sub_100796BB4();
   v11 = *(v10 - 8);
   __chkstk_darwin(v10);
   v13 = &v16 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796B64();
-  v14 = a4;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v15 = self;
-  sub_1004681B0(v13, v14, a5, a6);
+  selfCopy = self;
+  sub_1004681B0(v13, controllerCopy, provider, assertion);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

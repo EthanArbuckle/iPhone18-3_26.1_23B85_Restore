@@ -4,29 +4,29 @@
 - (id)_powerLogLightLevelValue;
 - (id)_powerLogNavAppStateValue;
 - (id)_powerLogNavTransportTypeValue;
-- (void)_logCurrentNavState:(BOOL)a3;
+- (void)_logCurrentNavState:(BOOL)state;
 - (void)_navigationEnded;
 - (void)_navigationStarted;
 - (void)_resetLogEvent;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)screenLayoutDidChangeWithReason:(unint64_t)a3;
-- (void)setDisplayingNavOnLockScreen:(BOOL)a3;
-- (void)setMapType:(unint64_t)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)screenLayoutDidChangeWithReason:(unint64_t)reason;
+- (void)setDisplayingNavOnLockScreen:(BOOL)screen;
+- (void)setMapType:(unint64_t)type;
 - (void)startLogging;
 - (void)stopLogging;
 @end
 
 @implementation NavigationPowerLogger
 
-- (void)screenLayoutDidChangeWithReason:(unint64_t)a3
+- (void)screenLayoutDidChangeWithReason:(unint64_t)reason
 {
   v4 = +[MapsScreenLayoutMonitor sharedMonitor];
-  v5 = [v4 isLocked];
+  isLocked = [v4 isLocked];
 
-  if (self->_screenIsLocked != v5)
+  if (self->_screenIsLocked != isLocked)
   {
-    self->_screenIsLocked = v5;
+    self->_screenIsLocked = isLocked;
 
     [(NavigationPowerLogger *)self _logCurrentNavStateIfNeeded];
   }
@@ -88,14 +88,14 @@
 - (id)_currentNavStateDictionary
 {
   v9[0] = @"NavigationType";
-  v3 = [(NavigationPowerLogger *)self _powerLogNavTransportTypeValue];
-  v10[0] = v3;
+  _powerLogNavTransportTypeValue = [(NavigationPowerLogger *)self _powerLogNavTransportTypeValue];
+  v10[0] = _powerLogNavTransportTypeValue;
   v9[1] = @"NavigationAppState";
-  v4 = [(NavigationPowerLogger *)self _powerLogNavAppStateValue];
-  v10[1] = v4;
+  _powerLogNavAppStateValue = [(NavigationPowerLogger *)self _powerLogNavAppStateValue];
+  v10[1] = _powerLogNavAppStateValue;
   v9[2] = @"NightMode";
-  v5 = [(NavigationPowerLogger *)self _powerLogLightLevelValue];
-  v10[2] = v5;
+  _powerLogLightLevelValue = [(NavigationPowerLogger *)self _powerLogLightLevelValue];
+  v10[2] = _powerLogLightLevelValue;
   v9[3] = @"NavigationMapType";
   v6 = [NSNumber numberWithUnsignedInteger:[(NavigationPowerLogger *)self mapType]];
   v10[3] = v6;
@@ -104,13 +104,13 @@
   return v7;
 }
 
-- (void)_logCurrentNavState:(BOOL)a3
+- (void)_logCurrentNavState:(BOOL)state
 {
   if (self->_shouldLog)
   {
-    v6 = [(NavigationPowerLogger *)self _currentNavStateDictionary];
-    obj = v6;
-    if (a3 || (v8 = [(NSDictionary *)self->_trackedState isEqualToDictionary:v6], v7 = obj, (v8 & 1) == 0))
+    _currentNavStateDictionary = [(NavigationPowerLogger *)self _currentNavStateDictionary];
+    obj = _currentNavStateDictionary;
+    if (state || (v8 = [(NSDictionary *)self->_trackedState isEqualToDictionary:_currentNavStateDictionary], v7 = obj, (v8 & 1) == 0))
     {
       v9 = +[NSDate date];
       p_trackedState = &self->_trackedState;
@@ -205,25 +205,25 @@
   }
 }
 
-- (void)setMapType:(unint64_t)a3
+- (void)setMapType:(unint64_t)type
 {
-  if (self->_mapType != a3)
+  if (self->_mapType != type)
   {
-    self->_mapType = a3;
+    self->_mapType = type;
     [(NavigationPowerLogger *)self _logCurrentNavStateIfNeeded];
   }
 }
 
-- (void)setDisplayingNavOnLockScreen:(BOOL)a3
+- (void)setDisplayingNavOnLockScreen:(BOOL)screen
 {
-  if (self->_displayingNavOnLockScreen != a3)
+  if (self->_displayingNavOnLockScreen != screen)
   {
-    self->_displayingNavOnLockScreen = a3;
+    self->_displayingNavOnLockScreen = screen;
     [(NavigationPowerLogger *)self _logCurrentNavStateIfNeeded];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateChangedToNavigating())
   {
@@ -231,7 +231,7 @@
     [(NavigationPowerLogger *)self _navigationStarted];
   }
 
-  else if (!a5)
+  else if (!toState)
   {
 
     [(NavigationPowerLogger *)self _navigationEnded];
@@ -270,9 +270,9 @@
     [v4 startMonitoringWithObserver:v2];
 
     v5 = +[MNNavigationService sharedService];
-    v6 = [v5 isInNavigatingState];
+    isInNavigatingState = [v5 isInNavigatingState];
 
-    if (v6)
+    if (isInNavigatingState)
     {
       [(NavigationPowerLogger *)v2 _navigationStarted];
     }

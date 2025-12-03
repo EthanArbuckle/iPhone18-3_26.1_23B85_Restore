@@ -1,8 +1,8 @@
 @interface SceneDelegate
 - (UIWindow)window;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
@@ -14,31 +14,31 @@
   return v2;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000396C(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_10000396C(window);
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100003980(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100003980(sceneCopy);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   sub_100004700();
   sub_100004744();
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  selfCopy = self;
   sub_100004094(v10);
 
   v15.super.isa = Set._bridgeToObjectiveC()().super.isa;

@@ -1,14 +1,14 @@
 @interface PGCountryFeatureExtractor
-+ (id)_labelsForVersion:(int64_t)a3;
-- (PGCountryFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5;
++ (id)_labelsForVersion:(int64_t)version;
+- (PGCountryFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error;
 @end
 
 @implementation PGCountryFeatureExtractor
 
-- (PGCountryFeatureExtractor)initWithVersion:(int64_t)a3 graph:(id)a4 error:(id *)a5
+- (PGCountryFeatureExtractor)initWithVersion:(int64_t)version graph:(id)graph error:(id *)error
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = [objc_opt_class() _labelsForVersion:a3];
+  v6 = [objc_opt_class() _labelsForVersion:version];
   v7 = MEMORY[0x277D22C90];
   v8 = +[PGGraphMomentNode addressOfMoment];
   v16[0] = v8;
@@ -25,9 +25,9 @@
   return v12;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     return &unk_284486000;
   }

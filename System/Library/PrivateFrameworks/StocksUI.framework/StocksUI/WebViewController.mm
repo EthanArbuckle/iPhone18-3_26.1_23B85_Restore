@@ -1,9 +1,9 @@
 @interface WebViewController
-- (_TtC8StocksUI17WebViewController)initWithURL:(id)a3 configuration:(id)a4;
-- (_TtC8StocksUI17WebViewController)initWithURL:(id)a3 entersReaderIfAvailable:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8StocksUI17WebViewController)initWithURL:(id)l configuration:(id)configuration;
+- (_TtC8StocksUI17WebViewController)initWithURL:(id)l entersReaderIfAvailable:(BOOL)available;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -15,34 +15,34 @@
   v4.super_class = swift_getObjectType();
   v2 = v4.receiver;
   [(WebViewController *)&v4 viewDidLoad];
-  v3 = [v2 traitCollection];
-  sub_220739E48(v3);
+  traitCollection = [v2 traitCollection];
+  sub_220739E48(traitCollection);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_22073A080(a3);
+  selfCopy = self;
+  sub_22073A080(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_22073A47C(a3);
+  selfCopy = self;
+  sub_22073A47C(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(WebViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
-  sub_220739E48(v6);
+  [(WebViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
+  sub_220739E48(traitCollection);
 }
 
-- (_TtC8StocksUI17WebViewController)initWithURL:(id)a3 configuration:(id)a4
+- (_TtC8StocksUI17WebViewController)initWithURL:(id)l configuration:(id)configuration
 {
   v4 = sub_220884E9C();
   MEMORY[0x28223BE20](v4 - 8, v5);
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC8StocksUI17WebViewController)initWithURL:(id)a3 entersReaderIfAvailable:(BOOL)a4
+- (_TtC8StocksUI17WebViewController)initWithURL:(id)l entersReaderIfAvailable:(BOOL)available
 {
   v4 = sub_220884E9C();
   MEMORY[0x28223BE20](v4 - 8, v5);

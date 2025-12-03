@@ -15,8 +15,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a1 _regions];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _regions = [self _regions];
+  v6 = [_regions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,7 +28,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_regions);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -54,7 +54,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [_regions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);

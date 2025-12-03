@@ -1,59 +1,59 @@
 @interface CalDAVCalendarSyncOperation
-- (BOOL)setLocalETag:(id)a3 forItemWithURL:(id)a4 inFolderWithURL:(id)a5;
-- (BOOL)setLocalScheduleTag:(id)a3 forItemWithURL:(id)a4 inFolderWithURL:(id)a5;
-- (BOOL)syncDeleteTask:(id)a3 error:(id)a4;
-- (BOOL)syncPutTask:(id)a3 completedWithNewETag:(id)a4 error:(id)a5;
-- (CalDAVCalendarSyncOperation)initWithPrincipal:(id)a3 calendar:(id)a4 nextCtag:(id)a5 nextSyncToken:(id)a6;
+- (BOOL)setLocalETag:(id)tag forItemWithURL:(id)l inFolderWithURL:(id)rL;
+- (BOOL)setLocalScheduleTag:(id)tag forItemWithURL:(id)l inFolderWithURL:(id)rL;
+- (BOOL)syncDeleteTask:(id)task error:(id)error;
+- (BOOL)syncPutTask:(id)task completedWithNewETag:(id)tag error:(id)error;
+- (CalDAVCalendarSyncOperation)initWithPrincipal:(id)principal calendar:(id)calendar nextCtag:(id)ctag nextSyncToken:(id)token;
 - (id)_distantFutureEndDate;
-- (id)copyAllLocalURLsInFolderWithURL:(id)a3;
-- (id)copyLocalETagsForURLs:(id)a3 inFolderWithURL:(id)a4;
+- (id)copyAllLocalURLsInFolderWithURL:(id)l;
+- (id)copyLocalETagsForURLs:(id)ls inFolderWithURL:(id)l;
 - (void)_advanceStage;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)_performNextStage;
-- (void)_processAddedOrModified:(id)a3 removed:(id)a4;
-- (void)_reportJunk:(id)a3;
+- (void)_processAddedOrModified:(id)modified removed:(id)removed;
+- (void)_reportJunk:(id)junk;
 - (void)_splitRecurrences;
 - (void)_syncCalendar;
 - (void)_syncEventsForMerge;
-- (void)containerSyncTask:(id)a3 completedWithNewCTag:(id)a4 newSyncToken:(id)a5 addedOrModified:(id)a6 removed:(id)a7 error:(id)a8;
-- (void)recurrenceSplitAction:(id)a3 completedWithUpdatedETag:(id)a4 updatedScheduleTag:(id)a5 createdURL:(id)a6 createdETag:(id)a7 createdScheduleTag:(id)a8;
-- (void)recurrenceSplitAction:(id)a3 failedWithError:(id)a4;
-- (void)reportJunkAction:(id)a3 completedWithError:(id)a4;
+- (void)containerSyncTask:(id)task completedWithNewCTag:(id)tag newSyncToken:(id)token addedOrModified:(id)modified removed:(id)removed error:(id)error;
+- (void)recurrenceSplitAction:(id)action completedWithUpdatedETag:(id)tag updatedScheduleTag:(id)scheduleTag createdURL:(id)l createdETag:(id)eTag createdScheduleTag:(id)createdScheduleTag;
+- (void)recurrenceSplitAction:(id)action failedWithError:(id)error;
+- (void)reportJunkAction:(id)action completedWithError:(id)error;
 @end
 
 @implementation CalDAVCalendarSyncOperation
 
-- (CalDAVCalendarSyncOperation)initWithPrincipal:(id)a3 calendar:(id)a4 nextCtag:(id)a5 nextSyncToken:(id)a6
+- (CalDAVCalendarSyncOperation)initWithPrincipal:(id)principal calendar:(id)calendar nextCtag:(id)ctag nextSyncToken:(id)token
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  calendarCopy = calendar;
+  ctagCopy = ctag;
+  tokenCopy = token;
   v17.receiver = self;
   v17.super_class = CalDAVCalendarSyncOperation;
-  v14 = [(CalDAVOperation *)&v17 initWithPrincipal:a3];
+  v14 = [(CalDAVOperation *)&v17 initWithPrincipal:principal];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_calendar, a4);
-    objc_storeStrong(&v15->_nextCtag, a5);
-    objc_storeStrong(&v15->_nextSyncToken, a6);
+    objc_storeStrong(&v14->_calendar, calendar);
+    objc_storeStrong(&v15->_nextCtag, ctag);
+    objc_storeStrong(&v15->_nextSyncToken, token);
   }
 
   return v15;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v4 = self->_reportJunkError;
+    errorCopy = self->_reportJunkError;
   }
 
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
-    [(CalDAVCalendar *)self->_calendar syncDidFinishWithError:v4];
+    [(CalDAVCalendar *)self->_calendar syncDidFinishWithError:errorCopy];
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -61,8 +61,8 @@
   v7[2] = __48__CalDAVCalendarSyncOperation__finishWithError___block_invoke;
   v7[3] = &unk_278D66968;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v6 delegateCallbackBlock:v7];
 }
 
@@ -132,9 +132,9 @@ void __52__CalDAVCalendarSyncOperation__distantFutureEndDate__block_invoke()
 
   else
   {
-    v7 = [MEMORY[0x277CFDC18] sharedLogging];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
-    v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
+    v9 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
     if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -179,9 +179,9 @@ void __52__CalDAVCalendarSyncOperation__distantFutureEndDate__block_invoke()
 
   else if (currentStage == 1)
   {
-    v8 = [MEMORY[0x277CFDC18] sharedLogging];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
-    v10 = [v8 logHandleForAccountInfoProvider:WeakRetained];
+    v10 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
     if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -197,14 +197,14 @@ void __52__CalDAVCalendarSyncOperation__distantFutureEndDate__block_invoke()
 
     v5 = self->_calendar;
     v6 = objc_opt_respondsToSelector();
-    v7 = 0;
+    reportJunkActions = 0;
     if (v6)
     {
-      v7 = [(CalDAVCalendar *)self->_calendar reportJunkActions];
+      reportJunkActions = [(CalDAVCalendar *)self->_calendar reportJunkActions];
     }
 
-    v14 = v7;
-    if ([v7 count])
+    v14 = reportJunkActions;
+    if ([reportJunkActions count])
     {
       [(CalDAVCalendarSyncOperation *)self _reportJunk:v14];
     }
@@ -216,17 +216,17 @@ void __52__CalDAVCalendarSyncOperation__distantFutureEndDate__block_invoke()
   }
 }
 
-- (void)_reportJunk:(id)a3
+- (void)_reportJunk:(id)junk
 {
-  v4 = a3;
+  junkCopy = junk;
   v5 = [CalDAVReportJunkTaskGroup alloc];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
   v7 = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD60]));
-  v8 = [(CalDAVReportJunkTaskGroup *)v5 initWithReportJunkActions:v4 accountInfoProvider:WeakRetained taskManager:v7];
+  v8 = [(CalDAVReportJunkTaskGroup *)v5 initWithReportJunkActions:junkCopy accountInfoProvider:WeakRetained taskManager:v7];
 
   [(CoreDAVTaskGroup *)v8 setDelegate:self];
-  v9 = [(CalDAVOperation *)self outstandingTaskGroups];
-  [v9 addObject:v8];
+  outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+  [outstandingTaskGroups addObject:v8];
 
   objc_initWeak(&location, self);
   objc_initWeak(&from, v8);
@@ -270,8 +270,8 @@ void __43__CalDAVCalendarSyncOperation__reportJunk___block_invoke(uint64_t a1)
   v7 = [(CalDAVRecurrenceSplitTaskGroup *)v3 initWithCalendar:calendar accountInfoProvider:WeakRetained taskManager:v6];
 
   [(CoreDAVTaskGroup *)v7 setDelegate:self];
-  v8 = [(CalDAVOperation *)self outstandingTaskGroups];
-  [v8 addObject:v7];
+  outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+  [outstandingTaskGroups addObject:v7];
 
   objc_initWeak(&location, self);
   objc_initWeak(&from, v7);
@@ -326,13 +326,13 @@ void __48__CalDAVCalendarSyncOperation__splitRecurrences__block_invoke(uint64_t 
 - (void)_syncCalendar
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = 120;
+  ctag = 120;
   v4 = [(NSString *)self->_nextCtag length];
   if (v4)
   {
     nextCtag = self->_nextCtag;
-    v3 = [(CalDAVCalendar *)self->_calendar ctag];
-    if ([(NSString *)nextCtag isEqualToString:v3])
+    ctag = [(CalDAVCalendar *)self->_calendar ctag];
+    if ([(NSString *)nextCtag isEqualToString:ctag])
     {
       v6 = 1;
       goto LABEL_6;
@@ -352,8 +352,8 @@ void __48__CalDAVCalendarSyncOperation__splitRecurrences__block_invoke(uint64_t 
 
   v7 = v4 == 0;
   nextSyncToken = self->_nextSyncToken;
-  v9 = [(CalDAVCalendar *)self->_calendar syncToken];
-  v6 = [(NSString *)nextSyncToken isEqualToString:v9];
+  syncToken = [(CalDAVCalendar *)self->_calendar syncToken];
+  v6 = [(NSString *)nextSyncToken isEqualToString:syncToken];
 
   if (!v7)
   {
@@ -363,37 +363,37 @@ LABEL_6:
 LABEL_7:
   if ((-[CalDAVCalendar needsResync](self->_calendar, "needsResync") & 1) != 0 || !v6 || (-[CalDAVCalendar syncActions](self->_calendar, "syncActions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11))
   {
-    v12 = [(CalDAVOperation *)self principal];
-    if ([v12 isEnabledForEvents])
+    principal = [(CalDAVOperation *)self principal];
+    if ([principal isEnabledForEvents])
     {
-      v13 = [(CalDAVCalendar *)self->_calendar isEventContainer];
+      isEventContainer = [(CalDAVCalendar *)self->_calendar isEventContainer];
     }
 
     else
     {
-      v13 = 0;
+      isEventContainer = 0;
     }
 
-    if ([v12 isEnabledForTodos])
+    if ([principal isEnabledForTodos])
     {
-      v14 = [(CalDAVCalendar *)self->_calendar isTaskContainer];
+      isTaskContainer = [(CalDAVCalendar *)self->_calendar isTaskContainer];
     }
 
     else
     {
-      v14 = 0;
+      isTaskContainer = 0;
     }
 
-    if ((v13 | v14))
+    if ((isEventContainer | isTaskContainer))
     {
       v15 = [CalDAVContainerSyncTaskGroup alloc];
       calendar = self->_calendar;
-      v17 = [(CoreDAVTaskGroup *)self taskManager];
-      v18 = [(CalDAVContainerSyncTaskGroup *)v15 initWithCalendar:calendar accountInfoProvider:v12 taskManager:v17];
+      taskManager = [(CoreDAVTaskGroup *)self taskManager];
+      v18 = [(CalDAVContainerSyncTaskGroup *)v15 initWithCalendar:calendar accountInfoProvider:principal taskManager:taskManager];
 
       [(CoreDAVTaskGroup *)v18 setDelegate:self];
-      v19 = [(CalDAVOperation *)self outstandingTaskGroups];
-      [v19 addObject:v18];
+      outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+      [outstandingTaskGroups addObject:v18];
 
       objc_initWeak(location, v18);
       objc_initWeak(&from, self);
@@ -404,35 +404,35 @@ LABEL_7:
       objc_copyWeak(&v40, &from);
       objc_copyWeak(&v41, location);
       [(CoreDAVTaskGroup *)v18 setCompletionBlock:v39];
-      [(CalDAVContainerSyncTaskGroup *)v18 setSyncEvents:v13];
-      [(CalDAVContainerSyncTaskGroup *)v18 setSyncTodos:v14];
-      -[CalDAVContainerSyncTaskGroup setSupportsExtendedCalendarQuery:](v18, "setSupportsExtendedCalendarQuery:", [v12 supportsExtendedCalendarQuery]);
-      v20 = [v12 account];
-      v21 = [v20 serverVersion];
+      [(CalDAVContainerSyncTaskGroup *)v18 setSyncEvents:isEventContainer];
+      [(CalDAVContainerSyncTaskGroup *)v18 setSyncTodos:isTaskContainer];
+      -[CalDAVContainerSyncTaskGroup setSupportsExtendedCalendarQuery:](v18, "setSupportsExtendedCalendarQuery:", [principal supportsExtendedCalendarQuery]);
+      account = [principal account];
+      serverVersion = [account serverVersion];
 
-      if ([v21 supportsTimeRangeFilter] && (!-[CalDAVCalendar isScheduleInbox](self->_calendar, "isScheduleInbox") || (objc_msgSend(v21, "supportsTimeRangeFilterOnInbox") & 1) == 0))
+      if ([serverVersion supportsTimeRangeFilter] && (!-[CalDAVCalendar isScheduleInbox](self->_calendar, "isScheduleInbox") || (objc_msgSend(serverVersion, "supportsTimeRangeFilterOnInbox") & 1) == 0))
       {
-        v22 = [v12 eventFilterStartDate];
-        [(CalDAVContainerSyncTaskGroup *)v18 setEventFilterStartDate:v22];
+        eventFilterStartDate = [principal eventFilterStartDate];
+        [(CalDAVContainerSyncTaskGroup *)v18 setEventFilterStartDate:eventFilterStartDate];
 
-        v23 = [v12 eventFilterEndDate];
-        v24 = [v21 supportsTimeRangeFilterWithoutEndDate];
-        if (v23)
+        eventFilterEndDate = [principal eventFilterEndDate];
+        supportsTimeRangeFilterWithoutEndDate = [serverVersion supportsTimeRangeFilterWithoutEndDate];
+        if (eventFilterEndDate)
         {
           v25 = 1;
         }
 
         else
         {
-          v25 = v24;
+          v25 = supportsTimeRangeFilterWithoutEndDate;
         }
 
         if ((v25 & 1) == 0)
         {
-          v23 = [(CalDAVCalendarSyncOperation *)self _distantFutureEndDate];
+          eventFilterEndDate = [(CalDAVCalendarSyncOperation *)self _distantFutureEndDate];
         }
 
-        [(CalDAVContainerSyncTaskGroup *)v18 setEventFilterEndDate:v23];
+        [(CalDAVContainerSyncTaskGroup *)v18 setEventFilterEndDate:eventFilterEndDate];
       }
 
       [(CoreDAVContainerSyncTaskGroup *)v18 startTaskGroup];
@@ -445,18 +445,18 @@ LABEL_7:
 
     else
     {
-      v26 = [MEMORY[0x277CFDC18] sharedLogging];
+      mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
       WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
-      v28 = [v26 logHandleForAccountInfoProvider:WeakRetained];
+      v28 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
       if (v28)
       {
         v29 = v28;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(CalDAVCalendar *)self->_calendar title];
+          title = [(CalDAVCalendar *)self->_calendar title];
           *location = 138412290;
-          *&location[4] = v30;
+          *&location[4] = title;
           _os_log_impl(&dword_242742000, v29, OS_LOG_TYPE_DEFAULT, "Skipping refresh of calendar %@ because it isn't enabled to sync either events or todos", location, 0xCu);
         }
       }
@@ -467,24 +467,24 @@ LABEL_7:
 
   else
   {
-    v32 = [MEMORY[0x277CFDC18] sharedLogging];
+    mEMORY[0x277CFDC18]2 = [MEMORY[0x277CFDC18] sharedLogging];
     v33 = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
-    v34 = [v32 logHandleForAccountInfoProvider:v33];
+    v34 = [mEMORY[0x277CFDC18]2 logHandleForAccountInfoProvider:v33];
 
     if (v34)
     {
       v35 = v34;
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
-        v36 = [(CalDAVCalendar *)self->_calendar title];
-        v37 = [(CalDAVCalendar *)self->_calendar ctag];
-        v38 = [(CalDAVCalendar *)self->_calendar syncToken];
+        title2 = [(CalDAVCalendar *)self->_calendar title];
+        ctag2 = [(CalDAVCalendar *)self->_calendar ctag];
+        syncToken2 = [(CalDAVCalendar *)self->_calendar syncToken];
         *location = 138412802;
-        *&location[4] = v36;
+        *&location[4] = title2;
         v44 = 2114;
-        v45 = v37;
+        v45 = ctag2;
         v46 = 2114;
-        v47 = v38;
+        v47 = syncToken2;
         _os_log_impl(&dword_242742000, v35, OS_LOG_TYPE_INFO, "Skipping refresh of calendar %@ because the ctag matches and we have no local changes (ctag: %{public}@, syncToken: %{public}@)", location, 0x20u);
       }
     }
@@ -508,22 +508,22 @@ void __44__CalDAVCalendarSyncOperation__syncCalendar__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_processAddedOrModified:(id)a3 removed:(id)a4
+- (void)_processAddedOrModified:(id)modified removed:(id)removed
 {
   calendar = self->_calendar;
-  v7 = a4;
-  [(CalDAVCalendar *)calendar updateResourcesFromServer:a3];
-  [(CalDAVCalendar *)self->_calendar deleteResourcesAtURLs:v7];
+  removedCopy = removed;
+  [(CalDAVCalendar *)calendar updateResourcesFromServer:modified];
+  [(CalDAVCalendar *)self->_calendar deleteResourcesAtURLs:removedCopy];
 }
 
 - (void)_syncEventsForMerge
 {
   v3 = [CalDAVMergeUploadTaskGroup alloc];
   calendar = self->_calendar;
-  v5 = [(CalDAVOperation *)self principal];
-  v6 = [(CalDAVOperation *)self principal];
-  v7 = [(CoreDAVTaskGroup *)self taskManager];
-  v8 = [(CalDAVMergeUploadTaskGroup *)v3 initWithCalendar:calendar principal:v5 accountInfoProvider:v6 taskManager:v7];
+  principal = [(CalDAVOperation *)self principal];
+  principal2 = [(CalDAVOperation *)self principal];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  v8 = [(CalDAVMergeUploadTaskGroup *)v3 initWithCalendar:calendar principal:principal accountInfoProvider:principal2 taskManager:taskManager];
 
   objc_initWeak(&location, v8);
   v10[0] = MEMORY[0x277D85DD0];
@@ -533,8 +533,8 @@ void __44__CalDAVCalendarSyncOperation__syncCalendar__block_invoke(uint64_t a1)
   v10[4] = self;
   objc_copyWeak(&v11, &location);
   [(CoreDAVTaskGroup *)v8 setCompletionBlock:v10];
-  v9 = [(CalDAVOperation *)self outstandingTaskGroups];
-  [v9 addObject:v8];
+  outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+  [outstandingTaskGroups addObject:v8];
 
   [(CalDAVMergeUploadTaskGroup *)v8 startTaskGroup];
   objc_destroyWeak(&v11);
@@ -553,130 +553,130 @@ void __50__CalDAVCalendarSyncOperation__syncEventsForMerge__block_invoke(uint64_
   [v6 removeObject:v5];
 }
 
-- (id)copyLocalETagsForURLs:(id)a3 inFolderWithURL:(id)a4
+- (id)copyLocalETagsForURLs:(id)ls inFolderWithURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CalDAVCalendar *)self->_calendar calendarURL];
-  v9 = [v7 CDVIsEqualToURL:v8];
+  lsCopy = ls;
+  lCopy = l;
+  calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
+  v9 = [lCopy CDVIsEqualToURL:calendarURL];
 
   if ((v9 & 1) == 0)
   {
     [CalDAVCalendarSyncOperation copyLocalETagsForURLs:inFolderWithURL:];
   }
 
-  v10 = [(CalDAVCalendar *)self->_calendar etagsForItemURLs:v6];
+  v10 = [(CalDAVCalendar *)self->_calendar etagsForItemURLs:lsCopy];
 
   return v10;
 }
 
-- (id)copyAllLocalURLsInFolderWithURL:(id)a3
+- (id)copyAllLocalURLsInFolderWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendar *)self->_calendar calendarURL];
-  v6 = [v4 CDVIsEqualToURL:v5];
+  lCopy = l;
+  calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
+  v6 = [lCopy CDVIsEqualToURL:calendarURL];
 
   if ((v6 & 1) == 0)
   {
     [CalDAVCalendarSyncOperation copyAllLocalURLsInFolderWithURL:];
   }
 
-  v7 = [(CalDAVCalendar *)self->_calendar allItemURLs];
+  allItemURLs = [(CalDAVCalendar *)self->_calendar allItemURLs];
 
-  return v7;
+  return allItemURLs;
 }
 
-- (BOOL)setLocalETag:(id)a3 forItemWithURL:(id)a4 inFolderWithURL:(id)a5
+- (BOOL)setLocalETag:(id)tag forItemWithURL:(id)l inFolderWithURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CalDAVCalendar *)self->_calendar calendarURL];
-  v12 = [v10 CDVIsEqualToURL:v11];
+  tagCopy = tag;
+  lCopy = l;
+  rLCopy = rL;
+  calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
+  v12 = [rLCopy CDVIsEqualToURL:calendarURL];
 
   if ((v12 & 1) == 0)
   {
     [CalDAVCalendarSyncOperation setLocalETag:forItemWithURL:inFolderWithURL:];
   }
 
-  v13 = [(CalDAVCalendar *)self->_calendar setEtag:v8 forItemAtURL:v9];
+  v13 = [(CalDAVCalendar *)self->_calendar setEtag:tagCopy forItemAtURL:lCopy];
 
   return v13;
 }
 
-- (BOOL)setLocalScheduleTag:(id)a3 forItemWithURL:(id)a4 inFolderWithURL:(id)a5
+- (BOOL)setLocalScheduleTag:(id)tag forItemWithURL:(id)l inFolderWithURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CalDAVCalendar *)self->_calendar calendarURL];
-  v12 = [v10 CDVIsEqualToURL:v11];
+  tagCopy = tag;
+  lCopy = l;
+  rLCopy = rL;
+  calendarURL = [(CalDAVCalendar *)self->_calendar calendarURL];
+  v12 = [rLCopy CDVIsEqualToURL:calendarURL];
 
   if ((v12 & 1) == 0)
   {
     [CalDAVCalendarSyncOperation setLocalScheduleTag:forItemWithURL:inFolderWithURL:];
   }
 
-  v13 = [(CalDAVCalendar *)self->_calendar setScheduleTag:v8 forItemAtURL:v9];
+  v13 = [(CalDAVCalendar *)self->_calendar setScheduleTag:tagCopy forItemAtURL:lCopy];
 
   return v13;
 }
 
-- (BOOL)syncPutTask:(id)a3 completedWithNewETag:(id)a4 error:(id)a5
+- (BOOL)syncPutTask:(id)task completedWithNewETag:(id)tag error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
     v10 = self->_calendar;
-    v11 = [v7 backingAction];
-    [(CalDAVCalendar *)v10 putAction:v11 completedWithError:v8];
+    backingAction = [taskCopy backingAction];
+    [(CalDAVCalendar *)v10 putAction:backingAction completedWithError:errorCopy];
   }
 
-  return v8 == 0;
+  return errorCopy == 0;
 }
 
-- (BOOL)syncDeleteTask:(id)a3 error:(id)a4
+- (BOOL)syncDeleteTask:(id)task error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
     v9 = self->_calendar;
-    v10 = [v6 backingAction];
-    [(CalDAVCalendar *)v9 deleteAction:v10 completedWithError:v7];
+    backingAction = [taskCopy backingAction];
+    [(CalDAVCalendar *)v9 deleteAction:backingAction completedWithError:errorCopy];
   }
 
-  return v7 == 0;
+  return errorCopy == 0;
 }
 
-- (void)containerSyncTask:(id)a3 completedWithNewCTag:(id)a4 newSyncToken:(id)a5 addedOrModified:(id)a6 removed:(id)a7 error:(id)a8
+- (void)containerSyncTask:(id)task completedWithNewCTag:(id)tag newSyncToken:(id)token addedOrModified:(id)modified removed:(id)removed error:(id)error
 {
   v35 = a2;
   v43 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v38 = a4;
-  v39 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v37 = v14;
-  [(CalDAVCalendarSyncOperation *)self _processAddedOrModified:v14 removed:v15];
-  v17 = [MEMORY[0x277CFDC18] sharedLogging];
+  taskCopy = task;
+  tagCopy = tag;
+  tokenCopy = token;
+  modifiedCopy = modified;
+  removedCopy = removed;
+  errorCopy = error;
+  v37 = modifiedCopy;
+  [(CalDAVCalendarSyncOperation *)self _processAddedOrModified:modifiedCopy removed:removedCopy];
+  mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
   v18 = *MEMORY[0x277CFDD48];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + v18));
-  v20 = [v17 logHandleForAccountInfoProvider:WeakRetained];
+  v20 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
   if (v20)
   {
     v21 = v20;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [(CalDAVCalendar *)self->_calendar title];
+      title = [(CalDAVCalendar *)self->_calendar title];
       v23 = &stru_285505238;
-      if (v16)
+      if (errorCopy)
       {
         v24 = @" Error was: ";
       }
@@ -686,49 +686,49 @@ void __50__CalDAVCalendarSyncOperation__syncEventsForMerge__block_invoke(uint64_
         v24 = &stru_285505238;
       }
 
-      if (v16)
+      if (errorCopy)
       {
-        v23 = [v16 description];
+        v23 = [errorCopy description];
       }
 
       *buf = 138412802;
-      *&buf[4] = v22;
+      *&buf[4] = title;
       *&buf[12] = 2112;
       *&buf[14] = v24;
       *&buf[22] = 2112;
       v42 = v23;
       _os_log_impl(&dword_242742000, v21, OS_LOG_TYPE_INFO, "Finished syncing container %@.%@%@", buf, 0x20u);
-      if (v16)
+      if (errorCopy)
       {
       }
     }
   }
 
-  if (v16)
+  if (errorCopy)
   {
     goto LABEL_23;
   }
 
-  nextCtag = v38;
-  if (!v38)
+  nextCtag = tagCopy;
+  if (!tagCopy)
   {
     nextCtag = self->_nextCtag;
   }
 
-  [(CalDAVCalendar *)self->_calendar setCtag:nextCtag, v35, v36];
-  nextSyncToken = v39;
-  if (!v39)
+  [(CalDAVCalendar *)self->_calendar setCtag:nextCtag, v35, taskCopy];
+  nextSyncToken = tokenCopy;
+  if (!tokenCopy)
   {
     nextSyncToken = self->_nextSyncToken;
   }
 
   [(CalDAVCalendar *)self->_calendar setSyncToken:nextSyncToken];
-  v27 = [(CalDAVOperation *)self principal];
-  if (![v27 isMergeSync] || (-[CalDAVCalendar isNotification](self->_calendar, "isNotification") & 1) != 0 || (-[CalDAVCalendar isSubscribed](self->_calendar, "isSubscribed") & 1) != 0 || (-[CalDAVCalendar isScheduleInbox](self->_calendar, "isScheduleInbox") & 1) != 0 || -[CalDAVCalendar isScheduleOutbox](self->_calendar, "isScheduleOutbox"))
+  principal = [(CalDAVOperation *)self principal];
+  if (![principal isMergeSync] || (-[CalDAVCalendar isNotification](self->_calendar, "isNotification") & 1) != 0 || (-[CalDAVCalendar isSubscribed](self->_calendar, "isSubscribed") & 1) != 0 || (-[CalDAVCalendar isScheduleInbox](self->_calendar, "isScheduleInbox") & 1) != 0 || -[CalDAVCalendar isScheduleOutbox](self->_calendar, "isScheduleOutbox"))
   {
 
 LABEL_23:
-    [(CalDAVCalendarSyncOperation *)self _finishWithError:v16, v35];
+    [(CalDAVCalendarSyncOperation *)self _finishWithError:errorCopy, v35];
     goto LABEL_24;
   }
 
@@ -740,9 +740,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v31 = [MEMORY[0x277CFDC18] sharedLogging];
+  mEMORY[0x277CFDC18]2 = [MEMORY[0x277CFDC18] sharedLogging];
   v32 = objc_loadWeakRetained((&self->super.super.super.isa + v18));
-  v33 = [v31 logHandleForAccountInfoProvider:v32];
+  v33 = [mEMORY[0x277CFDC18]2 logHandleForAccountInfoProvider:v32];
 
   if (v33 && os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
@@ -793,40 +793,40 @@ uint64_t __113__CalDAVCalendarSyncOperation_containerSyncTask_completedWithNewCT
   return [*(a1 + 32) _syncEventsForMerge];
 }
 
-- (void)reportJunkAction:(id)a3 completedWithError:(id)a4
+- (void)reportJunkAction:(id)action completedWithError:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  actionCopy = action;
+  errorCopy = error;
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
-    [(CalDAVCalendar *)self->_calendar reportJunkAction:v8 completedWithError:v6];
+    [(CalDAVCalendar *)self->_calendar reportJunkAction:actionCopy completedWithError:errorCopy];
   }
 }
 
-- (void)recurrenceSplitAction:(id)a3 completedWithUpdatedETag:(id)a4 updatedScheduleTag:(id)a5 createdURL:(id)a6 createdETag:(id)a7 createdScheduleTag:(id)a8
+- (void)recurrenceSplitAction:(id)action completedWithUpdatedETag:(id)tag updatedScheduleTag:(id)scheduleTag createdURL:(id)l createdETag:(id)eTag createdScheduleTag:(id)createdScheduleTag
 {
-  v20 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  actionCopy = action;
+  tagCopy = tag;
+  scheduleTagCopy = scheduleTag;
+  lCopy = l;
+  eTagCopy = eTag;
+  createdScheduleTagCopy = createdScheduleTag;
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
-    [(CalDAVCalendar *)self->_calendar recurrenceSplitAction:v20 completedWithUpdatedETag:v14 updatedScheduleTag:v15 createdURL:v16 createdETag:v17 createdScheduleTag:v18];
+    [(CalDAVCalendar *)self->_calendar recurrenceSplitAction:actionCopy completedWithUpdatedETag:tagCopy updatedScheduleTag:scheduleTagCopy createdURL:lCopy createdETag:eTagCopy createdScheduleTag:createdScheduleTagCopy];
   }
 }
 
-- (void)recurrenceSplitAction:(id)a3 failedWithError:(id)a4
+- (void)recurrenceSplitAction:(id)action failedWithError:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  actionCopy = action;
+  errorCopy = error;
   calendar = self->_calendar;
   if (objc_opt_respondsToSelector())
   {
-    [(CalDAVCalendar *)self->_calendar recurrenceSplitAction:v8 failedWithError:v6];
+    [(CalDAVCalendar *)self->_calendar recurrenceSplitAction:actionCopy failedWithError:errorCopy];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface HMDHomePresenceBase
 + (id)logCategory;
-+ (id)messageTargetUUIDFromHomeUUID:(id)a3;
++ (id)messageTargetUUIDFromHomeUUID:(id)d;
 - (HMDHome)home;
-- (void)_initialize:(id)a3;
+- (void)_initialize:(id)_initialize;
 - (void)_registerForMessages;
-- (void)configure:(id)a3 messageDispatcher:(id)a4;
+- (void)configure:(id)configure messageDispatcher:(id)dispatcher;
 @end
 
 @implementation HMDHomePresenceBase
@@ -31,15 +31,15 @@ uint64_t __34__HMDHomePresenceBase_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)messageTargetUUIDFromHomeUUID:(id)a3
++ (id)messageTargetUUIDFromHomeUUID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAD78];
   v10 = @"kPresenceMonitorIdentifierSalt";
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [v3 hm_deriveUUIDFromBaseUUID:v5 withSalts:{v6, v10, v11}];
+  v7 = [v3 hm_deriveUUIDFromBaseUUID:dCopy withSalts:{v6, v10, v11}];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -55,36 +55,36 @@ uint64_t __34__HMDHomePresenceBase_logCategory__block_invoke()
 
 - (void)_registerForMessages
 {
-  v2 = [(HMDHomePresenceBase *)self notificationRegistration];
-  [v2 addObserver:sel_handleHomeDataLoadedNotification_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:0];
+  notificationRegistration = [(HMDHomePresenceBase *)self notificationRegistration];
+  [notificationRegistration addObserver:sel_handleHomeDataLoadedNotification_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:0];
 }
 
-- (void)configure:(id)a3 messageDispatcher:(id)a4
+- (void)configure:(id)configure messageDispatcher:(id)dispatcher
 {
-  v6 = a4;
-  [(HMDHomePresenceBase *)self _initialize:a3];
-  [(HMDHomePresenceBase *)self setMsgDispatcher:v6];
+  dispatcherCopy = dispatcher;
+  [(HMDHomePresenceBase *)self _initialize:configure];
+  [(HMDHomePresenceBase *)self setMsgDispatcher:dispatcherCopy];
 
   [(HMDHomePresenceBase *)self _registerForMessages];
 }
 
-- (void)_initialize:(id)a3
+- (void)_initialize:(id)_initialize
 {
-  v4 = a3;
-  objc_storeWeak(&self->_home, v4);
+  _initializeCopy = _initialize;
+  objc_storeWeak(&self->_home, _initializeCopy);
   v5 = objc_opt_class();
-  v6 = [v4 uuid];
-  v7 = [v5 messageTargetUUIDFromHomeUUID:v6];
+  uuid = [_initializeCopy uuid];
+  v7 = [v5 messageTargetUUIDFromHomeUUID:uuid];
   presenceMonitorMessageTargetUUID = self->_presenceMonitorMessageTargetUUID;
   self->_presenceMonitorMessageTargetUUID = v7;
 
-  v9 = [v4 workQueue];
+  workQueue = [_initializeCopy workQueue];
   workQueue = self->_workQueue;
-  self->_workQueue = v9;
+  self->_workQueue = workQueue;
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v4 name];
-  if ([v4 isOwnerUser])
+  name = [_initializeCopy name];
+  if ([_initializeCopy isOwnerUser])
   {
     v13 = @"owner";
   }
@@ -94,10 +94,10 @@ uint64_t __34__HMDHomePresenceBase_logCategory__block_invoke()
     v13 = @"shared";
   }
 
-  v14 = [v4 uuid];
+  uuid2 = [_initializeCopy uuid];
 
-  v15 = [v14 UUIDString];
-  v16 = [v11 stringWithFormat:@"%@/%@/%@", v12, v13, v15];
+  uUIDString = [uuid2 UUIDString];
+  v16 = [v11 stringWithFormat:@"%@/%@/%@", name, v13, uUIDString];
   logString = self->_logString;
   self->_logString = v16;
 

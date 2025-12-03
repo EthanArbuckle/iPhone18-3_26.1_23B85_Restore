@@ -1,23 +1,23 @@
 @interface AVTEditingModelBuilder
-+ (id)buildCoreModelFromPlistForPlatform:(unint64_t)a3;
-+ (id)buildCoreModelFromPlistForPlatform:(unint64_t)a3 withLogger:(id)a4;
++ (id)buildCoreModelFromPlistForPlatform:(unint64_t)platform;
++ (id)buildCoreModelFromPlistForPlatform:(unint64_t)platform withLogger:(id)logger;
 @end
 
 @implementation AVTEditingModelBuilder
 
-+ (id)buildCoreModelFromPlistForPlatform:(unint64_t)a3
++ (id)buildCoreModelFromPlistForPlatform:(unint64_t)platform
 {
   v5 = +[AVTUIEnvironment defaultEnvironment];
-  v6 = [v5 logger];
-  v7 = [a1 buildCoreModelFromPlistForPlatform:a3 withLogger:v6];
+  logger = [v5 logger];
+  v7 = [self buildCoreModelFromPlistForPlatform:platform withLogger:logger];
 
   return v7;
 }
 
-+ (id)buildCoreModelFromPlistForPlatform:(unint64_t)a3 withLogger:(id)a4
++ (id)buildCoreModelFromPlistForPlatform:(unint64_t)platform withLogger:(id)logger
 {
-  v5 = a4;
-  v6 = [[AVTEditingModelDefinitionsParser alloc] initForPlatform:a3 withLogger:v5];
+  loggerCopy = logger;
+  v6 = [[AVTEditingModelDefinitionsParser alloc] initForPlatform:platform withLogger:loggerCopy];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;

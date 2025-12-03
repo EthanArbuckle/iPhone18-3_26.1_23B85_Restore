@@ -1,42 +1,42 @@
 @interface SBHIconLibraryAbstractQueryEngine
-+ (id)_leafIdentifiersForBundleIdentifier:(id)a3;
++ (id)_leafIdentifiersForBundleIdentifier:(id)identifier;
 - (APSubjectMonitorSubscription)appPrototectionSubjectMonitorSubscription;
 - (BOOL)isShutdown;
-- (SBHIconLibraryAbstractQueryEngine)initWithIconModel:(id)a3;
-- (void)_addItemsWithBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_iconModelNeedsIconAdded:(id)a3;
-- (void)_iconModelNeedsIconRemoved:(id)a3;
-- (void)_iconModelNeedsIconReplaced:(id)a3;
-- (void)_iconModelVisibilityDidChange:(id)a3;
-- (void)_mapBundleIdentifiersToIcons:(id)a3 completion:(id)a4;
-- (void)_processingQueue_addIcons:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_processingQueue_noteQueryResultsWereUpdated:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_processingQueue_observerDispatchError:(id)a3 forQuery:(id)a4;
-- (void)_processingQueue_observerDispatchQueryResultsWereUpdated:(id)a3;
-- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)a3;
-- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_processingQueue_teardownQueryContext:(id)a3 removeContext:(BOOL)a4;
+- (SBHIconLibraryAbstractQueryEngine)initWithIconModel:(id)model;
+- (void)_addItemsWithBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_iconModelNeedsIconAdded:(id)added;
+- (void)_iconModelNeedsIconRemoved:(id)removed;
+- (void)_iconModelNeedsIconReplaced:(id)replaced;
+- (void)_iconModelVisibilityDidChange:(id)change;
+- (void)_mapBundleIdentifiersToIcons:(id)icons completion:(id)completion;
+- (void)_processingQueue_addIcons:(id)icons iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_processingQueue_noteQueryResultsWereUpdated:(id)updated iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_processingQueue_observerDispatchError:(id)error forQuery:(id)query;
+- (void)_processingQueue_observerDispatchQueryResultsWereUpdated:(id)updated;
+- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)identifiers;
+- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate;
+- (void)_processingQueue_teardownQueryContext:(id)context removeContext:(BOOL)removeContext;
 - (void)_setupNotifications;
 - (void)_teardownNotifications;
-- (void)addObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)shutdown;
 @end
 
 @implementation SBHIconLibraryAbstractQueryEngine
 
-- (SBHIconLibraryAbstractQueryEngine)initWithIconModel:(id)a3
+- (SBHIconLibraryAbstractQueryEngine)initWithIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = SBHIconLibraryAbstractQueryEngine;
   v6 = [(SBHIconLibraryAbstractQueryEngine *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconModel, a3);
+    objc_storeStrong(&v6->_iconModel, model);
     [(SBHIconLibraryAbstractQueryEngine *)v7 _setupNotifications];
     v8 = [MEMORY[0x1E696AC70] hashTableWithOptions:0];
     executingQueryContexts = v7->_executingQueryContexts;
@@ -50,8 +50,8 @@
     processingQueue = v7->_processingQueue;
     v7->_processingQueue = v13;
 
-    v15 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-    v16 = [v15 addMonitor:v7 subjectMask:1 subscriptionOptions:1];
+    subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+    v16 = [subjectMonitorRegistry addMonitor:v7 subjectMask:1 subscriptionOptions:1];
     objc_storeWeak(&v7->_appPrototectionSubjectMonitorSubscription, v16);
   }
 
@@ -105,9 +105,9 @@ void __59__SBHIconLibraryAbstractQueryEngine__teardownNotifications__block_invok
   [v2 removeObserver:*(a1 + 32)];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -115,8 +115,8 @@ void __59__SBHIconLibraryAbstractQueryEngine__teardownNotifications__block_invok
   block[2] = __49__SBHIconLibraryAbstractQueryEngine_addObserver___block_invoke;
   block[3] = &unk_1E808C628;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -144,9 +144,9 @@ void __49__SBHIconLibraryAbstractQueryEngine_addObserver___block_invoke(uint64_t
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -154,8 +154,8 @@ void __49__SBHIconLibraryAbstractQueryEngine_addObserver___block_invoke(uint64_t
   block[2] = __52__SBHIconLibraryAbstractQueryEngine_removeObserver___block_invoke;
   block[3] = &unk_1E808C628;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -221,10 +221,10 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_processingQueue_observerDispatchQueryResultsWereUpdated:(id)a3
+- (void)_processingQueue_observerDispatchQueryResultsWereUpdated:(id)updated
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -245,7 +245,7 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) engine:self queryResultsWereUpdated:v4];
+        [*(*(&v10 + 1) + 8 * v9++) engine:self queryResultsWereUpdated:updatedCopy];
       }
 
       while (v7 != v9);
@@ -256,11 +256,11 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_processingQueue_observerDispatchError:(id)a3 forQuery:(id)a4
+- (void)_processingQueue_observerDispatchError:(id)error forQuery:(id)query
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  queryCopy = query;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -281,7 +281,7 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) engine:self failedToExecuteQuery:v7 withError:v6];
+        [*(*(&v13 + 1) + 8 * v12++) engine:self failedToExecuteQuery:queryCopy withError:errorCopy];
       }
 
       while (v10 != v12);
@@ -292,11 +292,11 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addItemsWithBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_addItemsWithBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  if ([identifiersCopy count])
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -304,9 +304,9 @@ void __45__SBHIconLibraryAbstractQueryEngine_shutdown__block_invoke(uint64_t a1)
     v10[2] = __107__SBHIconLibraryAbstractQueryEngine__addItemsWithBundleIdentifiers_iconLibraryQueryContext_notifyDelegate___block_invoke;
     v10[3] = &unk_1E8090C70;
     objc_copyWeak(&v12, &location);
-    v11 = v9;
-    v13 = a5;
-    [(SBHIconLibraryAbstractQueryEngine *)self _mapBundleIdentifiersToIcons:v8 completion:v10];
+    v11 = contextCopy;
+    delegateCopy = delegate;
+    [(SBHIconLibraryAbstractQueryEngine *)self _mapBundleIdentifiersToIcons:identifiersCopy completion:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -346,14 +346,14 @@ void __107__SBHIconLibraryAbstractQueryEngine__addItemsWithBundleIdentifiers_ico
   }
 }
 
-- (void)_processingQueue_addIcons:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_processingQueue_addIcons:(id)icons iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v18 = a4;
-  v8 = a3;
-  v9 = [v18 objectForKeyedSubscript:@"kLastQueryResultKey"];
-  v10 = [v9 icons];
-  v11 = [v10 mutableCopy];
+  delegateCopy = delegate;
+  contextCopy = context;
+  iconsCopy = icons;
+  v9 = [contextCopy objectForKeyedSubscript:@"kLastQueryResultKey"];
+  icons = [v9 icons];
+  v11 = [icons mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -367,35 +367,35 @@ void __107__SBHIconLibraryAbstractQueryEngine__addItemsWithBundleIdentifiers_ico
 
   v14 = v13;
 
-  [v14 unionSet:v8];
-  if (([v10 isEqualToSet:v14] & 1) == 0)
+  [v14 unionSet:iconsCopy];
+  if (([icons isEqualToSet:v14] & 1) == 0)
   {
-    v15 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_sortComperatorForQueryContext:v18];
-    v16 = [v18 query];
-    v17 = [[SBHIconLibraryQueryResult alloc] initWithQuery:v16 icons:v14 sortComparator:v15];
-    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v17 iconLibraryQueryContext:v18 notifyDelegate:v5];
+    v15 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_sortComperatorForQueryContext:contextCopy];
+    query = [contextCopy query];
+    v17 = [[SBHIconLibraryQueryResult alloc] initWithQuery:query icons:v14 sortComparator:v15];
+    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v17 iconLibraryQueryContext:contextCopy notifyDelegate:delegateCopy];
   }
 }
 
-- (void)_processingQueue_noteQueryResultsWereUpdated:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_processingQueue_noteQueryResultsWereUpdated:(id)updated iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v8 = a3;
-  [a4 setObject:? forKeyedSubscript:?];
-  if (v5)
+  delegateCopy = delegate;
+  updatedCopy = updated;
+  [context setObject:? forKeyedSubscript:?];
+  if (delegateCopy)
   {
-    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_observerDispatchQueryResultsWereUpdated:v8];
+    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_observerDispatchQueryResultsWereUpdated:updatedCopy];
   }
 }
 
-- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)a3 iconLibraryQueryContext:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)identifiers iconLibraryQueryContext:(id)context notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  v10 = [v8 objectForKeyedSubscript:@"kLastQueryResultKey"];
-  v11 = [v10 icons];
-  v12 = [v11 mutableCopy];
+  delegateCopy = delegate;
+  contextCopy = context;
+  v9 = [MEMORY[0x1E695DFD8] setWithArray:identifiers];
+  v10 = [contextCopy objectForKeyedSubscript:@"kLastQueryResultKey"];
+  icons = [v10 icons];
+  v12 = [icons mutableCopy];
   v13 = v12;
   if (v12)
   {
@@ -419,12 +419,12 @@ void __107__SBHIconLibraryAbstractQueryEngine__addItemsWithBundleIdentifiers_ico
   v18 = [v16 predicateWithBlock:v22];
   [v15 filterUsingPredicate:v18];
 
-  if (([v11 isEqualToSet:v15] & 1) == 0)
+  if (([icons isEqualToSet:v15] & 1) == 0)
   {
-    v19 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_sortComperatorForQueryContext:v8];
-    v20 = [v8 query];
-    v21 = [[SBHIconLibraryQueryResult alloc] initWithQuery:v20 icons:v15 sortComparator:v19];
-    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v21 iconLibraryQueryContext:v8 notifyDelegate:v5];
+    v19 = [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_sortComperatorForQueryContext:contextCopy];
+    query = [contextCopy query];
+    v21 = [[SBHIconLibraryQueryResult alloc] initWithQuery:query icons:v15 sortComparator:v19];
+    [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_noteQueryResultsWereUpdated:v21 iconLibraryQueryContext:contextCopy notifyDelegate:delegateCopy];
   }
 }
 
@@ -437,31 +437,31 @@ uint64_t __126__SBHIconLibraryAbstractQueryEngine__processingQueue_removeItemsWi
   return v2 ^ 1;
 }
 
-+ (id)_leafIdentifiersForBundleIdentifier:(id)a3
++ (id)_leafIdentifiersForBundleIdentifier:(id)identifier
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v7[0] = a3;
+  v7[0] = identifier;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 arrayWithObjects:v7 count:1];
 
   return v5;
 }
 
-- (void)_mapBundleIdentifiersToIcons:(id)a3 completion:(id)a4
+- (void)_mapBundleIdentifiersToIcons:(id)icons completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  iconsCopy = icons;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__SBHIconLibraryAbstractQueryEngine__mapBundleIdentifiersToIcons_completion___block_invoke;
   v10[3] = &unk_1E8090CC0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = iconsCopy;
+  v12 = completionCopy;
+  v8 = iconsCopy;
+  v9 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -527,17 +527,17 @@ void __77__SBHIconLibraryAbstractQueryEngine__mapBundleIdentifiersToIcons_comple
   }
 }
 
-- (void)_processingQueue_teardownQueryContext:(id)a3 removeContext:(BOOL)a4
+- (void)_processingQueue_teardownQueryContext:(id)context removeContext:(BOOL)removeContext
 {
-  if (a4)
+  if (removeContext)
   {
-    [(NSHashTable *)self->_executingQueryContexts removeObject:a3];
+    [(NSHashTable *)self->_executingQueryContexts removeObject:context];
   }
 }
 
-- (void)_iconModelNeedsIconAdded:(id)a3
+- (void)_iconModelNeedsIconAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -545,8 +545,8 @@ void __77__SBHIconLibraryAbstractQueryEngine__mapBundleIdentifiersToIcons_comple
   block[2] = __62__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconAdded___block_invoke;
   block[3] = &unk_1E808C628;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = addedCopy;
+  v6 = addedCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -640,9 +640,9 @@ void __62__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconAdded___block_in
   }
 }
 
-- (void)_iconModelNeedsIconReplaced:(id)a3
+- (void)_iconModelNeedsIconReplaced:(id)replaced
 {
-  v4 = a3;
+  replacedCopy = replaced;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -650,8 +650,8 @@ void __62__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconAdded___block_in
   block[2] = __65__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconReplaced___block_invoke;
   block[3] = &unk_1E808C628;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = replacedCopy;
+  v6 = replacedCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -745,9 +745,9 @@ void __65__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconReplaced___block
   }
 }
 
-- (void)_iconModelNeedsIconRemoved:(id)a3
+- (void)_iconModelNeedsIconRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -755,8 +755,8 @@ void __65__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconReplaced___block
   block[2] = __64__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconRemoved___block_invoke;
   block[3] = &unk_1E808C628;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = removedCopy;
+  v6 = removedCopy;
   dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -782,7 +782,7 @@ void __64__SBHIconLibraryAbstractQueryEngine__iconModelNeedsIconRemoved___block_
   }
 }
 
-- (void)_iconModelVisibilityDidChange:(id)a3
+- (void)_iconModelVisibilityDidChange:(id)change
 {
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
@@ -837,16 +837,16 @@ void __67__SBHIconLibraryAbstractQueryEngine__iconModelVisibilityDidChange___blo
   }
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changedCopy = changed;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = changedCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -885,8 +885,8 @@ void __67__SBHIconLibraryAbstractQueryEngine__iconModelVisibilityDidChange___blo
 
         v16 = v15;
 
-        v17 = [v16 bundleIdentifier];
-        [v6 addObject:v17];
+        bundleIdentifier = [v16 bundleIdentifier];
+        [v6 addObject:bundleIdentifier];
 
         ++v11;
       }
@@ -924,10 +924,10 @@ void __82__SBHIconLibraryAbstractQueryEngine_appProtectionSubjectsChanged_forSub
   }
 }
 
-- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)a3
+- (void)_processingQueue_removeItemsWithBundleIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = self->_executingQueryContexts;
   if ([(NSHashTable *)v5 count])
   {
@@ -936,7 +936,7 @@ void __82__SBHIconLibraryAbstractQueryEngine_appProtectionSubjectsChanged_forSub
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v4;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
@@ -969,8 +969,8 @@ void __82__SBHIconLibraryAbstractQueryEngine_appProtectionSubjectsChanged_forSub
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [(NSHashTable *)v5 allObjects];
-    v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    allObjects = [(NSHashTable *)v5 allObjects];
+    v14 = [allObjects countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -982,14 +982,14 @@ void __82__SBHIconLibraryAbstractQueryEngine_appProtectionSubjectsChanged_forSub
         {
           if (*v19 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allObjects);
           }
 
           [(SBHIconLibraryAbstractQueryEngine *)self _processingQueue_removeItemsWithBundleIdentifiers:v6 iconLibraryQueryContext:*(*(&v18 + 1) + 8 * v17++) notifyDelegate:1];
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v15 = [allObjects countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v15);

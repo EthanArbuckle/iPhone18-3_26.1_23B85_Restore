@@ -1,8 +1,8 @@
 @interface HKMedicalUserDomainConceptSemanticIdentifier
-+ (id)semanticIdentifierWithComponents:(id)a3;
++ (id)semanticIdentifierWithComponents:(id)components;
 - (HKMedicalUserDomainConceptSemanticIdentifier)init;
-- (HKMedicalUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3;
-- (HKMedicalUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3 countryCode:(id)a4 medicalCoding:(id)a5;
+- (HKMedicalUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier;
+- (HKMedicalUserDomainConceptSemanticIdentifier)initWithUUID:(id)d countryCode:(id)code medicalCoding:(id)coding;
 - (id)stringValue;
 @end
 
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (HKMedicalUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3
+- (HKMedicalUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -28,12 +28,12 @@
   return 0;
 }
 
-- (HKMedicalUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3 countryCode:(id)a4 medicalCoding:(id)a5
+- (HKMedicalUserDomainConceptSemanticIdentifier)initWithUUID:(id)d countryCode:(id)code medicalCoding:(id)coding
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((v10 != 0) != (v12 == 0))
+  dCopy = d;
+  codeCopy = code;
+  codingCopy = coding;
+  if ((dCopy != 0) != (codingCopy == 0))
   {
     [HKMedicalUserDomainConceptSemanticIdentifier initWithUUID:a2 countryCode:self medicalCoding:?];
   }
@@ -45,24 +45,24 @@
 
   if (v14)
   {
-    objc_storeStrong(&v14->_UUID, a3);
-    objc_storeStrong(&v14->_countryCode, a4);
-    objc_storeStrong(&v14->_medicalCoding, a5);
+    objc_storeStrong(&v14->_UUID, d);
+    objc_storeStrong(&v14->_countryCode, code);
+    objc_storeStrong(&v14->_medicalCoding, coding);
   }
 
   return v14;
 }
 
-+ (id)semanticIdentifierWithComponents:(id)a3
++ (id)semanticIdentifierWithComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] != 3)
+  componentsCopy = components;
+  if ([componentsCopy count] != 3)
   {
     v18 = 0;
     goto LABEL_22;
   }
 
-  v4 = [v3 objectAtIndexedSubscript:0];
+  v4 = [componentsCopy objectAtIndexedSubscript:0];
   if ([v4 isEqualToString:@"(null)"])
   {
     v5 = 0;
@@ -74,7 +74,7 @@
   }
 
   v6 = v5;
-  v7 = [v3 objectAtIndexedSubscript:1];
+  v7 = [componentsCopy objectAtIndexedSubscript:1];
   if ([v7 isEqualToString:@"(null)"])
   {
     v8 = 0;
@@ -86,7 +86,7 @@
   }
 
   v9 = v8;
-  v10 = [v3 objectAtIndexedSubscript:2];
+  v10 = [componentsCopy objectAtIndexedSubscript:2];
   if ([v10 isEqualToString:@"(null)"])
   {
     v11 = 0;
@@ -149,14 +149,14 @@ LABEL_22:
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19.receiver = self;
   v19.super_class = HKMedicalUserDomainConceptSemanticIdentifier;
-  v4 = [(HKUserDomainConceptSemanticIdentifier *)&v19 stringValue];
-  [v3 addObject:v4];
+  stringValue = [(HKUserDomainConceptSemanticIdentifier *)&v19 stringValue];
+  [v3 addObject:stringValue];
 
-  v5 = [(NSString *)self->_countryCode uppercaseString];
-  v6 = v5;
-  if (v5)
+  uppercaseString = [(NSString *)self->_countryCode uppercaseString];
+  v6 = uppercaseString;
+  if (uppercaseString)
   {
-    v7 = v5;
+    v7 = uppercaseString;
   }
 
   else
@@ -169,12 +169,12 @@ LABEL_22:
   medicalCoding = self->_medicalCoding;
   if (medicalCoding)
   {
-    v9 = [(HKMedicalCoding *)medicalCoding codingSystem];
-    v10 = [v9 identifier];
-    v11 = v10;
-    if (v10)
+    codingSystem = [(HKMedicalCoding *)medicalCoding codingSystem];
+    identifier = [codingSystem identifier];
+    v11 = identifier;
+    if (identifier)
     {
-      v12 = v10;
+      v12 = identifier;
     }
 
     else
@@ -184,11 +184,11 @@ LABEL_22:
 
     [v3 addObject:v12];
 
-    v13 = [(HKMedicalCoding *)self->_medicalCoding code];
-    v14 = v13;
-    if (v13)
+    code = [(HKMedicalCoding *)self->_medicalCoding code];
+    uUID = code;
+    if (code)
     {
-      v15 = v13;
+      v15 = code;
     }
 
     else
@@ -202,9 +202,9 @@ LABEL_22:
   else
   {
     [v3 addObject:@"UUID"];
-    v14 = [(HKMedicalUserDomainConceptSemanticIdentifier *)self UUID];
-    v16 = [v14 UUIDString];
-    [v3 addObject:v16];
+    uUID = [(HKMedicalUserDomainConceptSemanticIdentifier *)self UUID];
+    uUIDString = [uUID UUIDString];
+    [v3 addObject:uUIDString];
   }
 
   v17 = [v3 componentsJoinedByString:@"|█|"];

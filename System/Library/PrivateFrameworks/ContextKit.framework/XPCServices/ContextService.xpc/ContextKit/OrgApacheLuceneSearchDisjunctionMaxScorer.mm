@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneSearchDisjunctionMaxScorer
-- (OrgApacheLuceneSearchDisjunctionMaxScorer)initWithOrgApacheLuceneSearchWeight:(id)a3 withFloat:(float)a4 withJavaUtilList:(id)a5 withBoolean:(BOOL)a6;
-- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)a3;
+- (OrgApacheLuceneSearchDisjunctionMaxScorer)initWithOrgApacheLuceneSearchWeight:(id)weight withFloat:(float)float withJavaUtilList:(id)list withBoolean:(BOOL)boolean;
+- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper;
 @end
 
 @implementation OrgApacheLuceneSearchDisjunctionMaxScorer
 
-- (OrgApacheLuceneSearchDisjunctionMaxScorer)initWithOrgApacheLuceneSearchWeight:(id)a3 withFloat:(float)a4 withJavaUtilList:(id)a5 withBoolean:(BOOL)a6
+- (OrgApacheLuceneSearchDisjunctionMaxScorer)initWithOrgApacheLuceneSearchWeight:(id)weight withFloat:(float)float withJavaUtilList:(id)list withBoolean:(BOOL)boolean
 {
-  OrgApacheLuceneSearchDisjunctionScorer_initWithOrgApacheLuceneSearchWeight_withJavaUtilList_withBoolean_(self, a3, a5, a6);
-  self->tieBreakerMultiplier_ = a4;
+  OrgApacheLuceneSearchDisjunctionScorer_initWithOrgApacheLuceneSearchWeight_withJavaUtilList_withBoolean_(self, weight, list, boolean);
+  self->tieBreakerMultiplier_ = float;
   return self;
 }
 
-- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)a3
+- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper
 {
-  if (a3)
+  if (wrapper)
   {
-    v4 = a3;
+    wrapperCopy = wrapper;
     v5 = 0.0;
     v6 = 0.0;
     do
     {
-      v7 = v4[1];
+      v7 = wrapperCopy[1];
       if (!v7)
       {
         JreThrowNullPointerException();
@@ -34,10 +34,10 @@
         v5 = v8;
       }
 
-      v4 = v4[4];
+      wrapperCopy = wrapperCopy[4];
     }
 
-    while (v4);
+    while (wrapperCopy);
   }
 
   else

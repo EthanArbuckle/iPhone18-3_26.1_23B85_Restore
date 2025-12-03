@@ -1,12 +1,12 @@
 @interface JavaNioShortArrayBuffer
 - (id)compact;
 - (id)protectedArray;
-- (id)putWithInt:(int)a3 withShort:(signed __int16)a4;
-- (id)putWithShort:(signed __int16)a3;
+- (id)putWithInt:(int)int withShort:(signed __int16)short;
+- (id)putWithShort:(signed __int16)short;
 - (id)slice;
 - (int)protectedArrayOffset;
 - (signed)get;
-- (signed)getWithInt:(int)a3;
+- (signed)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -83,7 +83,7 @@
   return *(&backingArray->super.size_ + v6 + 2);
 }
 
-- (signed)getWithInt:(int)a3
+- (signed)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   backingArray = self->backingArray_;
@@ -93,7 +93,7 @@
   }
 
   size = backingArray->super.size_;
-  v7 = (self->arrayOffset_ + a3);
+  v7 = (self->arrayOffset_ + int);
   if (v7 < 0 || v7 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
@@ -102,7 +102,7 @@
   return *(&backingArray->super.size_ + v7 + 2);
 }
 
-- (id)putWithShort:(signed __int16)a3
+- (id)putWithShort:(signed __int16)short
 {
   if (self->isReadOnly_)
   {
@@ -133,11 +133,11 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(size, (arrayOffset + position));
   }
 
-  *(&backingArray->super.size_ + v8 + 2) = a3;
+  *(&backingArray->super.size_ + v8 + 2) = short;
   return self;
 }
 
-- (id)putWithInt:(int)a3 withShort:(signed __int16)a4
+- (id)putWithInt:(int)int withShort:(signed __int16)short
 {
   if (self->isReadOnly_)
   {
@@ -153,13 +153,13 @@ LABEL_11:
   }
 
   size = backingArray->super.size_;
-  v9 = (self->arrayOffset_ + a3);
+  v9 = (self->arrayOffset_ + int);
   if (v9 < 0 || v9 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v9);
   }
 
-  *(&backingArray->super.size_ + v9 + 2) = a4;
+  *(&backingArray->super.size_ + v9 + 2) = short;
   return self;
 }
 

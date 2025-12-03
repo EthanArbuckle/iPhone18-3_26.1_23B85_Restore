@@ -1,46 +1,46 @@
 @interface AEAudiobookBookmarkTimeSnapshot
-- (AEAudiobookBookmarkTimeSnapshot)initWithBookmarkTime:(double)a3 bookmarkTimeTimestamp:(id)a4;
-- (AEAudiobookBookmarkTimeSnapshot)initWithCoder:(id)a3;
-- (double)newestBookmarkTimeFromBookmarkTime:(double)a3 bookmarkTimeTimestamp:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AEAudiobookBookmarkTimeSnapshot)initWithBookmarkTime:(double)time bookmarkTimeTimestamp:(id)timestamp;
+- (AEAudiobookBookmarkTimeSnapshot)initWithCoder:(id)coder;
+- (double)newestBookmarkTimeFromBookmarkTime:(double)time bookmarkTimeTimestamp:(id)timestamp;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AEAudiobookBookmarkTimeSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTime];
-  [v4 encodeDouble:@"AEAudiobookBookmarkTime" forKey:?];
-  v5 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
-  [v4 encodeObject:v5 forKey:@"AEAudiobookBookmarkTimestamp"];
+  [coderCopy encodeDouble:@"AEAudiobookBookmarkTime" forKey:?];
+  bookmarkTimeTimestamp = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
+  [coderCopy encodeObject:bookmarkTimeTimestamp forKey:@"AEAudiobookBookmarkTimestamp"];
 }
 
-- (AEAudiobookBookmarkTimeSnapshot)initWithBookmarkTime:(double)a3 bookmarkTimeTimestamp:(id)a4
+- (AEAudiobookBookmarkTimeSnapshot)initWithBookmarkTime:(double)time bookmarkTimeTimestamp:(id)timestamp
 {
-  v7 = a4;
+  timestampCopy = timestamp;
   v11.receiver = self;
   v11.super_class = AEAudiobookBookmarkTimeSnapshot;
   v8 = [(AEAudiobookBookmarkTimeSnapshot *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_bookmarkTime = a3;
-    objc_storeStrong(&v8->_bookmarkTimeTimestamp, a4);
+    v8->_bookmarkTime = time;
+    objc_storeStrong(&v8->_bookmarkTimeTimestamp, timestamp);
   }
 
   return v9;
 }
 
-- (AEAudiobookBookmarkTimeSnapshot)initWithCoder:(id)a3
+- (AEAudiobookBookmarkTimeSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AEAudiobookBookmarkTimeSnapshot *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"AEAudiobookBookmarkTime"];
+    [coderCopy decodeDoubleForKey:@"AEAudiobookBookmarkTime"];
     v5->_bookmarkTime = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AEAudiobookBookmarkTimestamp"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AEAudiobookBookmarkTimestamp"];
     bookmarkTimeTimestamp = v5->_bookmarkTimeTimestamp;
     v5->_bookmarkTimeTimestamp = v7;
   }
@@ -48,13 +48,13 @@
   return v5;
 }
 
-- (double)newestBookmarkTimeFromBookmarkTime:(double)a3 bookmarkTimeTimestamp:(id)a4
+- (double)newestBookmarkTimeFromBookmarkTime:(double)time bookmarkTimeTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
-  [v7 timeIntervalSinceReferenceDate];
+  timestampCopy = timestamp;
+  bookmarkTimeTimestamp = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
+  [bookmarkTimeTimestamp timeIntervalSinceReferenceDate];
   v9 = v8;
-  [v6 timeIntervalSinceReferenceDate];
+  [timestampCopy timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v12 = BDSCloudKitAudiobookLog();
@@ -63,16 +63,16 @@
   {
     if (v13)
     {
-      v17 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
+      bookmarkTimeTimestamp2 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
       [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTime];
       v20 = 138413058;
-      v21 = v17;
+      v21 = bookmarkTimeTimestamp2;
       v22 = 2048;
       v23 = v18;
       v24 = 2112;
-      v25 = v6;
+      v25 = timestampCopy;
       v26 = 2048;
-      v27 = a3;
+      timeCopy2 = time;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Audiobook Bookmark time snapshot date: %@ time:%lf < cloud date: %@ time: %lf.  Assuming Cloud time.", &v20, 0x2Au);
     }
   }
@@ -81,24 +81,24 @@
   {
     if (v13)
     {
-      v14 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
+      bookmarkTimeTimestamp3 = [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTimeTimestamp];
       [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTime];
       v20 = 138413058;
-      v21 = v14;
+      v21 = bookmarkTimeTimestamp3;
       v22 = 2048;
       v23 = v15;
       v24 = 2112;
-      v25 = v6;
+      v25 = timestampCopy;
       v26 = 2048;
-      v27 = a3;
+      timeCopy2 = time;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Audiobook Bookmark time snapshot date: %@ time:%lf > cloud date: %@ time: %lf.  Assuming snapshot time.", &v20, 0x2Au);
     }
 
     [(AEAudiobookBookmarkTimeSnapshot *)self bookmarkTime];
-    a3 = v16;
+    time = v16;
   }
 
-  return a3;
+  return time;
 }
 
 @end

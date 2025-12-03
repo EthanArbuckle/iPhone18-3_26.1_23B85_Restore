@@ -4,32 +4,32 @@
 + (id)intensities;
 - (BOOL)colorFiltersSwitchIsOn;
 - (BOOL)getColorFiltersPreferenceIsOn;
-- (CARColorFiltersPanel)initWithPanelController:(id)a3;
+- (CARColorFiltersPanel)initWithPanelController:(id)controller;
 - (double)selectedFilterIntensity;
-- (id)_getColorFilterTypePerVehiclePrefForIndex:(unint64_t)a3;
+- (id)_getColorFilterTypePerVehiclePrefForIndex:(unint64_t)index;
 - (id)cellSpecifier;
 - (id)getColorFiltersIntensityPerVehiclePreferenceDict;
 - (id)specifierSections;
-- (int64_t)_getColorFiltersIntensityPerVehiclePrefForIndex:(unint64_t)a3;
+- (int64_t)_getColorFiltersIntensityPerVehiclePrefForIndex:(unint64_t)index;
 - (int64_t)getColorFiltersPerVehiclePreferenceType;
-- (unint64_t)getColorFiltersIntensityPreferenceTypeForIndex:(unint64_t)a3;
+- (unint64_t)getColorFiltersIntensityPreferenceTypeForIndex:(unint64_t)index;
 - (unint64_t)getColorFiltersPreferenceType;
-- (unint64_t)selectedFilterIndexForType:(unint64_t)a3;
+- (unint64_t)selectedFilterIndexForType:(unint64_t)type;
 - (void)_updateSpecifiers;
 - (void)setColorFiltersIntensityPreference;
 - (void)setColorFiltersPreference;
-- (void)setColorFiltersPreference:(BOOL)a3;
-- (void)setSelectedFilterForType:(unint64_t)a3;
+- (void)setColorFiltersPreference:(BOOL)preference;
+- (void)setSelectedFilterForType:(unint64_t)type;
 @end
 
 @implementation CARColorFiltersPanel
 
-- (CARColorFiltersPanel)initWithPanelController:(id)a3
+- (CARColorFiltersPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v54.receiver = self;
   v54.super_class = CARColorFiltersPanel;
-  v5 = [(CARSettingsPanel *)&v54 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v54 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -46,24 +46,24 @@
     v5->_colorFilterSwitchSpecifier = v8;
 
     [(CARSettingsCellSpecifier *)v5->_colorFilterSwitchSpecifier setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterToggle"];
-    v10 = [(CARColorFiltersPanel *)v5 getColorFiltersPreferenceIsOn];
+    getColorFiltersPreferenceIsOn = [(CARColorFiltersPanel *)v5 getColorFiltersPreferenceIsOn];
     v11 = v5->_colorFilterSwitchSpecifier;
-    v12 = [NSNumber numberWithBool:v10];
+    v12 = [NSNumber numberWithBool:getColorFiltersPreferenceIsOn];
     [(CARSettingsCellSpecifier *)v11 setCellValue:v12];
 
     v13 = sub_10001C784();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      LODWORD(v56) = v10;
+      LODWORD(v56) = getColorFiltersPreferenceIsOn;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Settings] Saved color filter preference is on: %{public}d", buf, 8u);
     }
 
     v14 = [CARSettingsGroupCellSpecifier alloc];
-    v15 = [objc_opt_class() colorFilters];
-    v16 = [v15 valueForKey:@"name"];
-    v17 = [objc_opt_class() colorBlindnessTypes];
-    v18 = [v17 valueForKey:@"name"];
+    colorFilters = [objc_opt_class() colorFilters];
+    v16 = [colorFilters valueForKey:@"name"];
+    colorBlindnessTypes = [objc_opt_class() colorBlindnessTypes];
+    v18 = [colorBlindnessTypes valueForKey:@"name"];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_10002930C;
@@ -73,30 +73,30 @@
     colorFilterPickerGroupSpecifier = v5->_colorFilterPickerGroupSpecifier;
     v5->_colorFilterPickerGroupSpecifier = v19;
 
-    v21 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
-    v22 = [v21 objectAtIndexedSubscript:0];
+    groupSpecifiers = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
+    v22 = [groupSpecifiers objectAtIndexedSubscript:0];
     [v22 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterGrayscale"];
 
-    v23 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
-    v24 = [v23 objectAtIndexedSubscript:1];
+    groupSpecifiers2 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
+    v24 = [groupSpecifiers2 objectAtIndexedSubscript:1];
     [v24 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterRedGreen"];
 
-    v25 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
-    v26 = [v25 objectAtIndexedSubscript:2];
+    groupSpecifiers3 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
+    v26 = [groupSpecifiers3 objectAtIndexedSubscript:2];
     [v26 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterGreenRed"];
 
-    v27 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
-    v28 = [v27 objectAtIndexedSubscript:3];
+    groupSpecifiers4 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier groupSpecifiers];
+    v28 = [groupSpecifiers4 objectAtIndexedSubscript:3];
     [v28 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterBlueYellow"];
 
     v29 = [CARSettingsGroupCellSpecifier alloc];
-    v30 = [objc_opt_class() intensities];
+    intensities = [objc_opt_class() intensities];
     v44 = _NSConcreteStackBlock;
     v45 = 3221225472;
     v46 = sub_100029420;
     v47 = &unk_1000DB000;
     objc_copyWeak(&v48, &location);
-    v31 = [(CARSettingsGroupCellSpecifier *)v29 initWithTitles:v30 actionBlock:&v44];
+    v31 = [(CARSettingsGroupCellSpecifier *)v29 initWithTitles:intensities actionBlock:&v44];
     colorFilterIntensityPickerGroupSpecifier = v5->_colorFilterIntensityPickerGroupSpecifier;
     v5->_colorFilterIntensityPickerGroupSpecifier = v31;
 
@@ -104,21 +104,21 @@
     v34 = [v33 objectAtIndexedSubscript:0];
     [v34 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterLowIntensity"];
 
-    v35 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterIntensityPickerGroupSpecifier groupSpecifiers];
-    v36 = [v35 objectAtIndexedSubscript:1];
+    groupSpecifiers5 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterIntensityPickerGroupSpecifier groupSpecifiers];
+    v36 = [groupSpecifiers5 objectAtIndexedSubscript:1];
     [v36 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterMediumIntensity"];
 
-    v37 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterIntensityPickerGroupSpecifier groupSpecifiers];
-    v38 = [v37 objectAtIndexedSubscript:2];
+    groupSpecifiers6 = [(CARSettingsGroupCellSpecifier *)v5->_colorFilterIntensityPickerGroupSpecifier groupSpecifiers];
+    v38 = [groupSpecifiers6 objectAtIndexedSubscript:2];
     [v38 setAccessibilityIdentifier:@"CPSettingsAccessibilityColorFilterHighIntensity"];
 
-    v39 = [(CARColorFiltersPanel *)v5 getColorFiltersPreferenceType];
-    [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier setSelectedIndex:v39];
+    getColorFiltersPreferenceType = [(CARColorFiltersPanel *)v5 getColorFiltersPreferenceType];
+    [(CARSettingsGroupCellSpecifier *)v5->_colorFilterPickerGroupSpecifier setSelectedIndex:getColorFiltersPreferenceType];
     v40 = sub_10001C784();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v56 = v39;
+      v56 = getColorFiltersPreferenceType;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[Settings] Saved color filter selected index: %{public}lu", buf, 0xCu);
     }
 
@@ -170,8 +170,8 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
-  v25 = v3;
+  colorFilterSwitchSpecifier = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
+  v25 = colorFilterSwitchSpecifier;
   v4 = [NSArray arrayWithObjects:&v25 count:1];
 
   v5 = [CARSettingsCellSpecifierSection alloc];
@@ -179,15 +179,15 @@
   v7 = [(CARSettingsCellSpecifierSection *)v5 initWithTitle:0 footer:v6 specifiers:v4];
 
   v8 = [CARSettingsCellSpecifierSection alloc];
-  v9 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  v10 = [v9 groupSpecifiers];
-  v11 = [(CARSettingsCellSpecifierSection *)v8 initWithTitle:0 specifiers:v10];
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  groupSpecifiers = [colorFilterPickerGroupSpecifier groupSpecifiers];
+  v11 = [(CARSettingsCellSpecifierSection *)v8 initWithTitle:0 specifiers:groupSpecifiers];
 
   v12 = [CARSettingsCellSpecifierSection alloc];
   v13 = sub_10001C80C(@"ACCESSIBILITY_COLOR_FILTERS_INTENSITY");
-  v14 = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
-  v15 = [v14 groupSpecifiers];
-  v16 = [(CARSettingsCellSpecifierSection *)v12 initWithTitle:v13 specifiers:v15];
+  colorFilterIntensityPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
+  groupSpecifiers2 = [colorFilterIntensityPickerGroupSpecifier groupSpecifiers];
+  v16 = [(CARSettingsCellSpecifierSection *)v12 initWithTitle:v13 specifiers:groupSpecifiers2];
 
   if ([(CARColorFiltersPanel *)self colorFiltersSwitchIsOn])
   {
@@ -212,25 +212,25 @@
 
 - (BOOL)colorFiltersSwitchIsOn
 {
-  v2 = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
-  v3 = [v2 cellValue];
-  v4 = [v3 BOOLValue];
+  colorFilterSwitchSpecifier = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
+  cellValue = [colorFilterSwitchSpecifier cellValue];
+  bOOLValue = [cellValue BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)selectedFilterIntensity
 {
-  v2 = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
-  v3 = [v2 selectedIndex];
+  colorFilterIntensityPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
+  selectedIndex = [colorFilterIntensityPickerGroupSpecifier selectedIndex];
 
   result = 0.660000026;
-  if (v3 != 1)
+  if (selectedIndex != 1)
   {
     result = 1.0;
   }
 
-  if (!v3)
+  if (!selectedIndex)
   {
     return 0.330000013;
   }
@@ -238,106 +238,106 @@
   return result;
 }
 
-- (void)setSelectedFilterForType:(unint64_t)a3
+- (void)setSelectedFilterForType:(unint64_t)type
 {
-  v4 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  if (a3 - 2 > 6)
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  if (type - 2 > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1000A1C58[a3 - 2];
+    v5 = qword_1000A1C58[type - 2];
   }
 
-  v6 = v4;
-  [v4 setSelectedIndex:v5];
+  v6 = colorFilterPickerGroupSpecifier;
+  [colorFilterPickerGroupSpecifier setSelectedIndex:v5];
 }
 
-- (unint64_t)selectedFilterIndexForType:(unint64_t)a3
+- (unint64_t)selectedFilterIndexForType:(unint64_t)type
 {
-  if (a3 - 2 > 6)
+  if (type - 2 > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1000A1C58[a3 - 2];
+    return qword_1000A1C58[type - 2];
   }
 }
 
-- (void)setColorFiltersPreference:(BOOL)a3
+- (void)setColorFiltersPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = 1;
+  preferenceCopy = preference;
+  getColorFiltersPerVehiclePreferenceType = 1;
   MADisplayFilterPrefSetCategoryEnabled();
-  v6 = [(CARSettingsPanel *)self panelController];
-  v12 = [v6 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  if (v3)
+  if (preferenceCopy)
   {
-    v5 = [(CARColorFiltersPanel *)self getColorFiltersPerVehiclePreferenceType];
+    getColorFiltersPerVehiclePreferenceType = [(CARColorFiltersPanel *)self getColorFiltersPerVehiclePreferenceType];
   }
 
-  [v12 setColorFilterPreference:v5];
-  v7 = [(CARColorFiltersPanel *)self getColorFiltersIntensityPerVehiclePreferenceDict];
-  [v12 setColorFilterIntensityPreference:v7];
+  [vehicle setColorFilterPreference:getColorFiltersPerVehiclePreferenceType];
+  getColorFiltersIntensityPerVehiclePreferenceDict = [(CARColorFiltersPanel *)self getColorFiltersIntensityPerVehiclePreferenceDict];
+  [vehicle setColorFilterIntensityPreference:getColorFiltersIntensityPerVehiclePreferenceDict];
 
-  v8 = [(CARSettingsPanel *)self panelController];
-  [v8 saveVehicle:v12];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  [panelController2 saveVehicle:vehicle];
 
   v9 = +[CARSettingsAnalytics sharedInstance];
-  v10 = [(CARSettingsPanel *)self panelController];
-  v11 = [v10 carSession];
-  [v9 axColorFiltersPrefChangedForVehicle:v12 session:v11];
+  panelController3 = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController3 carSession];
+  [v9 axColorFiltersPrefChangedForVehicle:vehicle session:carSession];
 }
 
 - (void)setColorFiltersPreference
 {
-  v3 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  [v3 selectedIndex];
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  [colorFilterPickerGroupSpecifier selectedIndex];
   MADisplayFilterPrefSetType();
 
-  v4 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  v5 = -[CARColorFiltersPanel getColorFiltersIntensityPreferenceTypeForIndex:](self, "getColorFiltersIntensityPreferenceTypeForIndex:", [v4 selectedIndex]);
+  colorFilterPickerGroupSpecifier2 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  v5 = -[CARColorFiltersPanel getColorFiltersIntensityPreferenceTypeForIndex:](self, "getColorFiltersIntensityPreferenceTypeForIndex:", [colorFilterPickerGroupSpecifier2 selectedIndex]);
 
-  v6 = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
-  v7 = [v6 selectedIndex];
+  colorFilterIntensityPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
+  selectedIndex = [colorFilterIntensityPickerGroupSpecifier selectedIndex];
 
-  if (v7 != v5)
+  if (selectedIndex != v5)
   {
-    v8 = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
-    [v8 setSelectedIndex:v5];
+    colorFilterIntensityPickerGroupSpecifier2 = [(CARColorFiltersPanel *)self colorFilterIntensityPickerGroupSpecifier];
+    [colorFilterIntensityPickerGroupSpecifier2 setSelectedIndex:v5];
   }
 
-  v9 = [(CARSettingsPanel *)self panelController];
-  v15 = [v9 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v10 = [(CARColorFiltersPanel *)self getColorFiltersPerVehiclePreferenceType];
-  if ([v15 colorFilterPreference] != v10)
+  getColorFiltersPerVehiclePreferenceType = [(CARColorFiltersPanel *)self getColorFiltersPerVehiclePreferenceType];
+  if ([vehicle colorFilterPreference] != getColorFiltersPerVehiclePreferenceType)
   {
-    [v15 setColorFilterPreference:v10];
-    v11 = [(CARSettingsPanel *)self panelController];
-    [v11 saveVehicle:v15];
+    [vehicle setColorFilterPreference:getColorFiltersPerVehiclePreferenceType];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v12 = +[CARSettingsAnalytics sharedInstance];
-    v13 = [(CARSettingsPanel *)self panelController];
-    v14 = [v13 carSession];
-    [v12 axColorFiltersPrefChangedForVehicle:v15 session:v14];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v12 axColorFiltersPrefChangedForVehicle:vehicle session:carSession];
   }
 }
 
 - (void)setColorFiltersIntensityPreference
 {
-  v3 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  v4 = [v3 selectedIndex];
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  selectedIndex = [colorFilterPickerGroupSpecifier selectedIndex];
 
   [(CARColorFiltersPanel *)self selectedFilterIntensity];
-  if (v4 <= 1)
+  if (selectedIndex <= 1)
   {
-    if (v4 == 1)
+    if (selectedIndex == 1)
     {
       MADisplayFilterPrefSetRedColorCorrectionIntensity();
       v5 = @"CARColorFilterIntensityRedGreenKey";
@@ -350,9 +350,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v4 != 2)
+  if (selectedIndex != 2)
   {
-    if (v4 == 3)
+    if (selectedIndex == 3)
     {
       MADisplayFilterPrefSetBlueColorCorrectionIntensity();
       v5 = @"CARColorFilterIntensityBlueYellowKey";
@@ -365,11 +365,11 @@ LABEL_7:
   MADisplayFilterPrefSetGreenColorCorrectionIntensity();
   v5 = @"CARColorFilterIntensityGreenRedKey";
 LABEL_9:
-  v6 = [(CARSettingsPanel *)self panelController];
-  v19 = [v6 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v7 = [v19 colorFilterIntensityPreference];
-  v8 = [v7 mutableCopy];
+  colorFilterIntensityPreference = [vehicle colorFilterIntensityPreference];
+  v8 = [colorFilterIntensityPreference mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -384,20 +384,20 @@ LABEL_9:
   v11 = v10;
 
   v12 = [v11 objectForKeyedSubscript:v5];
-  v13 = [NSNumber numberWithInteger:[(CARColorFiltersPanel *)self _getColorFiltersIntensityPerVehiclePrefForIndex:v4]];
+  v13 = [NSNumber numberWithInteger:[(CARColorFiltersPanel *)self _getColorFiltersIntensityPerVehiclePrefForIndex:selectedIndex]];
   if (!v12 || ([v12 isEqualToNumber:v13] & 1) == 0)
   {
     [v11 setObject:v13 forKeyedSubscript:v5];
     v14 = [v11 copy];
-    [v19 setColorFilterIntensityPreference:v14];
+    [vehicle setColorFilterIntensityPreference:v14];
 
-    v15 = [(CARSettingsPanel *)self panelController];
-    [v15 saveVehicle:v19];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v16 = +[CARSettingsAnalytics sharedInstance];
-    v17 = [(CARSettingsPanel *)self panelController];
-    v18 = [v17 carSession];
-    [v16 axColorFiltersPrefChangedForVehicle:v19 session:v18];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v16 axColorFiltersPrefChangedForVehicle:vehicle session:carSession];
   }
 }
 
@@ -419,11 +419,11 @@ LABEL_9:
   return [(CARColorFiltersPanel *)self selectedFilterIndexForType:Type];
 }
 
-- (unint64_t)getColorFiltersIntensityPreferenceTypeForIndex:(unint64_t)a3
+- (unint64_t)getColorFiltersIntensityPreferenceTypeForIndex:(unint64_t)index
 {
-  if (a3 <= 1)
+  if (index <= 1)
   {
-    if (a3 == 1)
+    if (index == 1)
     {
       MADisplayFilterPrefGetRedColorCorrectionIntensity();
       goto LABEL_9;
@@ -434,9 +434,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3 != 2)
+  if (index != 2)
   {
-    if (a3 == 3)
+    if (index == 3)
     {
       MADisplayFilterPrefGetBlueColorCorrectionIntensity();
       goto LABEL_9;
@@ -504,42 +504,42 @@ LABEL_9:
 - (void)_updateSpecifiers
 {
   [(CARColorFiltersPanel *)self setSelectedFilterForType:[(CARColorFiltersPanel *)self getColorFiltersPreferenceType]];
-  v3 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  v4 = [v3 selectedTitle];
-  v5 = [(CARColorFiltersPanel *)self cellSpecifier];
-  [v5 setDetail:v4];
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  selectedTitle = [colorFilterPickerGroupSpecifier selectedTitle];
+  cellSpecifier = [(CARColorFiltersPanel *)self cellSpecifier];
+  [cellSpecifier setDetail:selectedTitle];
 
   v6 = [NSNumber numberWithBool:[(CARColorFiltersPanel *)self getColorFiltersPreferenceIsOn]];
-  v7 = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
-  [v7 setCellValue:v6];
+  colorFilterSwitchSpecifier = [(CARColorFiltersPanel *)self colorFilterSwitchSpecifier];
+  [colorFilterSwitchSpecifier setCellValue:v6];
 
-  v8 = [(CARColorFiltersPanel *)self getColorFiltersPreferenceType];
-  v9 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  [v9 setSelectedIndex:v8];
+  getColorFiltersPreferenceType = [(CARColorFiltersPanel *)self getColorFiltersPreferenceType];
+  colorFilterPickerGroupSpecifier2 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  [colorFilterPickerGroupSpecifier2 setSelectedIndex:getColorFiltersPreferenceType];
 
   [(CARSettingsTablePanel *)self reloadSpecifiers];
 }
 
 - (int64_t)getColorFiltersPerVehiclePreferenceType
 {
-  v2 = [(CARColorFiltersPanel *)self getColorFiltersPreferenceType];
-  if (v2 >= 4)
+  getColorFiltersPreferenceType = [(CARColorFiltersPanel *)self getColorFiltersPreferenceType];
+  if (getColorFiltersPreferenceType >= 4)
   {
     return 0;
   }
 
   else
   {
-    return v2 + 2;
+    return getColorFiltersPreferenceType + 2;
   }
 }
 
 - (id)getColorFiltersIntensityPerVehiclePreferenceDict
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-  v5 = [v4 groupSpecifiers];
-  v6 = [v5 count];
+  colorFilterPickerGroupSpecifier = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+  groupSpecifiers = [colorFilterPickerGroupSpecifier groupSpecifiers];
+  v6 = [groupSpecifiers count];
 
   if (v6)
   {
@@ -551,9 +551,9 @@ LABEL_9:
       [v3 setObject:v9 forKeyedSubscript:v8];
 
       ++v7;
-      v10 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
-      v11 = [v10 groupSpecifiers];
-      v12 = [v11 count];
+      colorFilterPickerGroupSpecifier2 = [(CARColorFiltersPanel *)self colorFilterPickerGroupSpecifier];
+      groupSpecifiers2 = [colorFilterPickerGroupSpecifier2 groupSpecifiers];
+      v12 = [groupSpecifiers2 count];
     }
 
     while (v7 < v12);
@@ -564,22 +564,22 @@ LABEL_9:
   return v13;
 }
 
-- (id)_getColorFilterTypePerVehiclePrefForIndex:(unint64_t)a3
+- (id)_getColorFilterTypePerVehiclePrefForIndex:(unint64_t)index
 {
-  if (a3 - 1 > 2)
+  if (index - 1 > 2)
   {
     return @"CARColorFilterIntensityGrayscaleKey";
   }
 
   else
   {
-    return off_1000DB780[a3 - 1];
+    return off_1000DB780[index - 1];
   }
 }
 
-- (int64_t)_getColorFiltersIntensityPerVehiclePrefForIndex:(unint64_t)a3
+- (int64_t)_getColorFiltersIntensityPerVehiclePrefForIndex:(unint64_t)index
 {
-  v3 = [(CARColorFiltersPanel *)self getColorFiltersIntensityPreferenceTypeForIndex:a3];
+  v3 = [(CARColorFiltersPanel *)self getColorFiltersIntensityPreferenceTypeForIndex:index];
   if (v3 < 3)
   {
     return v3 + 1;

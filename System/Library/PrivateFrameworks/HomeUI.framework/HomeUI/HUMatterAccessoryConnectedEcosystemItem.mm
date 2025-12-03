@@ -1,65 +1,65 @@
 @interface HUMatterAccessoryConnectedEcosystemItem
-- (HUMatterAccessoryConnectedEcosystemItem)initWithConnectedEcosystem:(id)a3 chipAccessoryPairings:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUMatterAccessoryConnectedEcosystemItem)initWithConnectedEcosystem:(id)ecosystem chipAccessoryPairings:(id)pairings;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUMatterAccessoryConnectedEcosystemItem
 
-- (HUMatterAccessoryConnectedEcosystemItem)initWithConnectedEcosystem:(id)a3 chipAccessoryPairings:(id)a4
+- (HUMatterAccessoryConnectedEcosystemItem)initWithConnectedEcosystem:(id)ecosystem chipAccessoryPairings:(id)pairings
 {
-  v7 = a3;
-  v8 = a4;
+  ecosystemCopy = ecosystem;
+  pairingsCopy = pairings;
   v12.receiver = self;
   v12.super_class = HUMatterAccessoryConnectedEcosystemItem;
   v9 = [(HUMatterAccessoryConnectedEcosystemItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connectedEcosystem, a3);
-    objc_storeStrong(&v10->_chipAccessoryPairings, a4);
+    objc_storeStrong(&v9->_connectedEcosystem, ecosystem);
+    objc_storeStrong(&v10->_chipAccessoryPairings, pairings);
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v4 = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
-  v5 = [v4 vendor];
-  v27 = [v5 isSystemCommissionerVendor];
+  connectedEcosystem = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
+  vendor = [connectedEcosystem vendor];
+  isSystemCommissionerVendor = [vendor isSystemCommissionerVendor];
 
   v30[0] = *MEMORY[0x277D13F60];
-  v28 = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
-  v6 = [v28 vendor];
-  v7 = [v6 name];
-  v31[0] = v7;
+  connectedEcosystem2 = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
+  vendor2 = [connectedEcosystem2 vendor];
+  name = [vendor2 name];
+  v31[0] = name;
   v30[1] = *MEMORY[0x277D13E30];
   v8 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
   v31[1] = v8;
   v30[2] = @"HUMatterAccessoryConnectedEcosystemItemIsAppleVendor";
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
-  v11 = [v10 vendor];
-  v12 = [v9 numberWithBool:{objc_msgSend(v11, "isAppleVendor")}];
+  connectedEcosystem3 = [(HUMatterAccessoryConnectedEcosystemItem *)self connectedEcosystem];
+  vendor3 = [connectedEcosystem3 vendor];
+  v12 = [v9 numberWithBool:{objc_msgSend(vendor3, "isAppleVendor")}];
   v31[2] = v12;
   v30[3] = @"HUMatterAccessoryConnectedEcosystemItemIsSystemCommissioner";
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:v27];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:isSystemCommissionerVendor];
   v31[3] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:4];
   v29 = [v14 mutableCopy];
 
-  if (v27)
+  if (isSystemCommissionerVendor)
   {
     v15 = 0;
   }
 
   else
   {
-    v16 = [(HUMatterAccessoryConnectedEcosystemItem *)self chipAccessoryPairings];
-    v17 = [v16 na_map:&__block_literal_global_175];
-    v18 = [v17 allObjects];
-    v15 = [v18 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+    chipAccessoryPairings = [(HUMatterAccessoryConnectedEcosystemItem *)self chipAccessoryPairings];
+    v17 = [chipAccessoryPairings na_map:&__block_literal_global_175];
+    allObjects = [v17 allObjects];
+    v15 = [allObjects sortedArrayUsingSelector:sel_localizedStandardCompare_];
   }
 
   if ([v15 count])

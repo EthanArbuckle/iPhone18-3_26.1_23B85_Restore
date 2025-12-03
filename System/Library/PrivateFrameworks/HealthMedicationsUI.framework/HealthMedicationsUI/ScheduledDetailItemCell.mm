@@ -1,12 +1,12 @@
 @interface ScheduledDetailItemCell
-- (_TtC19HealthMedicationsUI23ScheduledDetailItemCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)medicationDetailDidUpdate:(id)a3 for:(id)a4;
+- (_TtC19HealthMedicationsUI23ScheduledDetailItemCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)medicationDetailDidUpdate:(id)update for:(id)for;
 @end
 
 @implementation ScheduledDetailItemCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_228391350();
   v5 = *(v4 - 8);
@@ -14,13 +14,13 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_228391340();
-  v9 = self;
+  selfCopy = self;
   sub_228323B6C();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (_TtC19HealthMedicationsUI23ScheduledDetailItemCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI23ScheduledDetailItemCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI23ScheduledDetailItemCell____lazy_storage___medicationView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI23ScheduledDetailItemCell____lazy_storage___timeLabel) = 0;
@@ -36,13 +36,13 @@
   return result;
 }
 
-- (void)medicationDetailDidUpdate:(id)a3 for:(id)a4
+- (void)medicationDetailDidUpdate:(id)update for:(id)for
 {
   v6 = sub_228392000();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_228324254(v9, v6, v8);
+  updateCopy = update;
+  selfCopy = self;
+  sub_228324254(updateCopy, v6, v8);
 }
 
 @end

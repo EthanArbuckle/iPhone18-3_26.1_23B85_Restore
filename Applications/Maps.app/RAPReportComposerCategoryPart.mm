@@ -1,49 +1,49 @@
 @interface RAPReportComposerCategoryPart
-- (RAPReportComposerCategoryPart)initWithCategoryQuestion:(id)a3 selection:(id)a4;
-- (void)_createSectionsForQuestion:(id)a3 withSelection:(id)a4;
-- (void)_setTableView:(id)a3;
+- (RAPReportComposerCategoryPart)initWithCategoryQuestion:(id)question selection:(id)selection;
+- (void)_createSectionsForQuestion:(id)question withSelection:(id)selection;
+- (void)_setTableView:(id)view;
 @end
 
 @implementation RAPReportComposerCategoryPart
 
-- (void)_setTableView:(id)a3
+- (void)_setTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5.receiver = self;
   v5.super_class = RAPReportComposerCategoryPart;
-  [(RAPTablePart *)&v5 _setTableView:v4];
+  [(RAPTablePart *)&v5 _setTableView:viewCopy];
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
-    [v4 setSeparatorInset:{0.0, 58.0, 0.0, 0.0}];
+    [viewCopy setSeparatorInset:{0.0, 58.0, 0.0, 0.0}];
   }
 }
 
-- (void)_createSectionsForQuestion:(id)a3 withSelection:(id)a4
+- (void)_createSectionsForQuestion:(id)question withSelection:(id)selection
 {
-  v15 = a3;
-  v6 = a4;
+  questionCopy = question;
+  selectionCopy = selection;
   v7 = +[NSMutableArray array];
-  v8 = [v15 numberOfSections];
-  if (v8)
+  numberOfSections = [questionCopy numberOfSections];
+  if (numberOfSections)
   {
-    v9 = v8;
+    v9 = numberOfSections;
     v10 = 0;
     for (i = 0; i != v9; ++i)
     {
       if (i)
       {
-        v12 = 0;
+        localizedHeaderText = 0;
       }
 
       else
       {
-        v12 = [objc_opt_class() localizedHeaderText];
+        localizedHeaderText = [objc_opt_class() localizedHeaderText];
       }
 
-      v13 = [[RAPReportComposerMenuSection alloc] initWithMenu:v15 headerText:v12 menuSectionIndex:i selection:v6];
+      v13 = [[RAPReportComposerMenuSection alloc] initWithMenu:questionCopy headerText:localizedHeaderText menuSectionIndex:i selection:selectionCopy];
       [v7 addObject:v13];
 
-      v10 = v12;
+      v10 = localizedHeaderText;
     }
   }
 
@@ -51,17 +51,17 @@
   [(RAPTablePart *)self setSections:v14];
 }
 
-- (RAPReportComposerCategoryPart)initWithCategoryQuestion:(id)a3 selection:(id)a4
+- (RAPReportComposerCategoryPart)initWithCategoryQuestion:(id)question selection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
+  questionCopy = question;
+  selectionCopy = selection;
   v11.receiver = self;
   v11.super_class = RAPReportComposerCategoryPart;
   v8 = [(RAPTablePart *)&v11 initWithSections:&__NSArray0__struct];
   v9 = v8;
   if (v8)
   {
-    [(RAPReportComposerCategoryPart *)v8 _createSectionsForQuestion:v6 withSelection:v7];
+    [(RAPReportComposerCategoryPart *)v8 _createSectionsForQuestion:questionCopy withSelection:selectionCopy];
   }
 
   return v9;

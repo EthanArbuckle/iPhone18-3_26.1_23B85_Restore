@@ -1,24 +1,24 @@
 @interface IHKFilterSequence
-+ (id)breakPascalCaseIntoWords:(id)a3;
-+ (id)getScalarInputsForCIFilterNamed:(id)a3;
-+ (id)paramToInputName:(id)a3;
-+ (id)parseFilterSequenceSpec:(id)a3;
-+ (id)uiNameForCIFilter:(id)a3 paramName:(id)a4;
-+ (id)uiNameForCIFilterName:(id)a3;
-+ (id)uiNameForParamName:(id)a3;
-- (IHKFilterSequence)initWithFilterSpec:(id)a3;
-- (id)applySliders:(id)a3 image:(id)a4 error:(id *)a5;
-- (id)packageSliderValues:(id)a3;
++ (id)breakPascalCaseIntoWords:(id)words;
++ (id)getScalarInputsForCIFilterNamed:(id)named;
++ (id)paramToInputName:(id)name;
++ (id)parseFilterSequenceSpec:(id)spec;
++ (id)uiNameForCIFilter:(id)filter paramName:(id)name;
++ (id)uiNameForCIFilterName:(id)name;
++ (id)uiNameForParamName:(id)name;
+- (IHKFilterSequence)initWithFilterSpec:(id)spec;
+- (id)applySliders:(id)sliders image:(id)image error:(id *)error;
+- (id)packageSliderValues:(id)values;
 @end
 
 @implementation IHKFilterSequence
 
-+ (id)getScalarInputsForCIFilterNamed:(id)a3
++ (id)getScalarInputsForCIFilterNamed:(id)named
 {
   v48 = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  namedCopy = named;
   v41 = objc_opt_new();
-  v6 = objc_msgSend_filterWithName_(MEMORY[0x277CBF750], v3, v40, v4, v5);
+  v6 = objc_msgSend_filterWithName_(MEMORY[0x277CBF750], v3, namedCopy, v4, v5);
   v11 = v6;
   if (v6)
   {
@@ -62,7 +62,7 @@
 
   else
   {
-    NSLog(&cfstr_CouldNotFindFi.isa, v40);
+    NSLog(&cfstr_CouldNotFindFi.isa, namedCopy);
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -70,11 +70,11 @@
   return v41;
 }
 
-+ (id)paramToInputName:(id)a3
++ (id)paramToInputName:(id)name
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3 && objc_msgSend_length(v3, v4, v5, v6, v7))
+  nameCopy = name;
+  v8 = nameCopy;
+  if (nameCopy && objc_msgSend_length(nameCopy, v4, v5, v6, v7))
   {
     v13 = 0;
     v14 = @"input";
@@ -117,9 +117,9 @@
   return v41;
 }
 
-+ (id)breakPascalCaseIntoWords:(id)a3
++ (id)breakPascalCaseIntoWords:(id)words
 {
-  v7 = a3;
+  wordsCopy = words;
   v8 = 0;
   v9 = &stru_2866F5EB0;
   v10 = &stru_2866F5EB0;
@@ -129,22 +129,22 @@
     do
     {
       v12 = v11;
-      if (v8 + v11 + 1 >= objc_msgSend_length(v7, v3, v4, v5, v6))
+      if (v8 + v11 + 1 >= objc_msgSend_length(wordsCopy, v3, v4, v5, v6))
       {
         break;
       }
 
-      v13 = v7;
+      v13 = wordsCopy;
       v18 = *(objc_msgSend_UTF8String(v13, v14, v15, v16, v17) + v8 + v12 + 1);
       v19 = __toupper(v18);
-      v20 = v7;
+      v20 = wordsCopy;
       v25 = *(objc_msgSend_UTF8String(v20, v21, v22, v23, v24) + v8 + v12);
       v26 = __toupper(v25);
       v11 = v12 + 1;
     }
 
     while (v19 != v18 || v26 == v25);
-    v28 = objc_msgSend_substringWithRange_(v7, v3, v8, v12 + 1, v6);
+    v28 = objc_msgSend_substringWithRange_(wordsCopy, v3, v8, v12 + 1, v6);
     v32 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v29, @"%@%@%@", v30, v31, v10, v9, v28);
 
     v8 += v12 + 1;
@@ -152,31 +152,31 @@
     v10 = v32;
   }
 
-  while (v8 < objc_msgSend_length(v7, v33, v34, v35, v36));
+  while (v8 < objc_msgSend_length(wordsCopy, v33, v34, v35, v36));
 
   return v32;
 }
 
-+ (id)uiNameForParamName:(id)a3
++ (id)uiNameForParamName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_length(@"input", v4, v5, v6, v7);
-  v12 = objc_msgSend_substringFromIndex_(v3, v9, v8, v10, v11);
+  v12 = objc_msgSend_substringFromIndex_(nameCopy, v9, v8, v10, v11);
 
   v16 = objc_msgSend_breakPascalCaseIntoWords_(IHKFilterSequence, v13, v12, v14, v15);
 
   return v16;
 }
 
-+ (id)uiNameForCIFilterName:(id)a3
++ (id)uiNameForCIFilterName:(id)name
 {
-  v7 = a3;
-  for (i = 0; i < objc_msgSend_length(v7, v3, v4, v5, v6); ++i)
+  nameCopy = name;
+  for (i = 0; i < objc_msgSend_length(nameCopy, v3, v4, v5, v6); ++i)
   {
-    v9 = v7;
+    v9 = nameCopy;
     v14 = objc_msgSend_UTF8String(v9, v10, v11, v12, v13);
     v15 = __tolower(*(v14 + i));
-    v16 = v7;
+    v16 = nameCopy;
     if (v15 == *(objc_msgSend_UTF8String(v16, v17, v18, v19, v20) + i))
     {
       break;
@@ -188,36 +188,36 @@
     LODWORD(i) = 1;
   }
 
-  v21 = objc_msgSend_length(v7, v3, v4, v5, v6);
-  if (objc_msgSend_hasSuffix_(v7, v22, @"Filter", v23, v24))
+  v21 = objc_msgSend_length(nameCopy, v3, v4, v5, v6);
+  if (objc_msgSend_hasSuffix_(nameCopy, v22, @"Filter", v23, v24))
   {
     v21 -= objc_msgSend_length(@"Filter", v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_substringWithRange_(v7, v25, (i - 1), v21 - (i - 1), v28);
+  v29 = objc_msgSend_substringWithRange_(nameCopy, v25, (i - 1), v21 - (i - 1), v28);
 
   v33 = objc_msgSend_breakPascalCaseIntoWords_(IHKFilterSequence, v30, v29, v31, v32);
 
   return v33;
 }
 
-+ (id)uiNameForCIFilter:(id)a3 paramName:(id)a4
++ (id)uiNameForCIFilter:(id)filter paramName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@.%@", v8, v9, v5, v6);
+  filterCopy = filter;
+  nameCopy = name;
+  v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@.%@", v8, v9, filterCopy, nameCopy);
   v14 = objc_msgSend_objectForKeyedSubscript_(&unk_2866F8C50, v11, v10, v12, v13);
 
   if (!v14)
   {
-    if (objc_msgSend_isEqualToString_(v6, v15, @"inputStrength", v16, v17))
+    if (objc_msgSend_isEqualToString_(nameCopy, v15, @"inputStrength", v16, v17))
     {
-      objc_msgSend_uiNameForCIFilterName_(IHKFilterSequence, v18, v5, v19, v20);
+      objc_msgSend_uiNameForCIFilterName_(IHKFilterSequence, v18, filterCopy, v19, v20);
     }
 
     else
     {
-      objc_msgSend_uiNameForParamName_(IHKFilterSequence, v18, v6, v19, v20);
+      objc_msgSend_uiNameForParamName_(IHKFilterSequence, v18, nameCopy, v19, v20);
     }
     v14 = ;
   }
@@ -225,12 +225,12 @@
   return v14;
 }
 
-+ (id)parseFilterSequenceSpec:(id)a3
++ (id)parseFilterSequenceSpec:(id)spec
 {
   v82 = *MEMORY[0x277D85DE8];
-  v64 = a3;
+  specCopy = spec;
   v67 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  objc_msgSend_componentsSeparatedByString_(v64, v4, @"->", v5, v6);
+  objc_msgSend_componentsSeparatedByString_(specCopy, v4, @"->", v5, v6);
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
@@ -270,7 +270,7 @@
         v69 = v22;
         if (v27)
         {
-          v33 = objc_msgSend_getScalarInputsForCIFilterNamed_(a1, v23, v22, v24, v25);
+          v33 = objc_msgSend_getScalarInputsForCIFilterNamed_(self, v23, v22, v24, v25);
           v32 = v26;
           v26 = objc_msgSend_mutableCopy(v33, v28, v29, v30, v31);
         }
@@ -298,7 +298,7 @@
                   objc_enumerationMutation(v37);
                 }
 
-                v46 = objc_msgSend_paramToInputName_(a1, v40, *(*(&v70 + 1) + 8 * v45), v41, v42);
+                v46 = objc_msgSend_paramToInputName_(self, v40, *(*(&v70 + 1) + 8 * v45), v41, v42);
                 objc_msgSend_addObject_(v26, v47, v46, v48, v49);
 
                 ++v45;
@@ -338,16 +338,16 @@
   return v67;
 }
 
-- (IHKFilterSequence)initWithFilterSpec:(id)a3
+- (IHKFilterSequence)initWithFilterSpec:(id)spec
 {
   v135 = *MEMORY[0x277D85DE8];
-  v112 = a3;
+  specCopy = spec;
   v132.receiver = self;
   v132.super_class = IHKFilterSequence;
   v113 = [(IHKFilterSequence *)&v132 init];
   if (v113)
   {
-    v7 = objc_msgSend_parseFilterSequenceSpec_(IHKFilterSequence, v4, v112, v5, v6);
+    v7 = objc_msgSend_parseFilterSequenceSpec_(IHKFilterSequence, v4, specCopy, v5, v6);
     objc_msgSend_setFilterSeq_(v113, v8, v7, v9, v10);
 
     v122 = objc_opt_new();
@@ -441,10 +441,10 @@
   return v113;
 }
 
-- (id)packageSliderValues:(id)a3
+- (id)packageSliderValues:(id)values
 {
   v72 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  valuesCopy = values;
   v47 = objc_opt_new();
   v67 = 0u;
   v68 = 0u;
@@ -509,7 +509,7 @@
                     v30 = objc_msgSend_uiNameForCIFilter_paramName_(IHKFilterSequence, v24, v12, v29, v25);
                     if (objc_msgSend_isEqualToString_(v21, v31, v30, v32, v33))
                     {
-                      v37 = objc_msgSend_objectForKeyedSubscript_(v55, v34, v21, v35, v36);
+                      v37 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v34, v21, v35, v36);
                       objc_msgSend_setObject_forKeyedSubscript_(v56, v38, v37, v29, v39);
                     }
                   }
@@ -541,12 +541,12 @@
   return v47;
 }
 
-- (id)applySliders:(id)a3 image:(id)a4 error:(id *)a5
+- (id)applySliders:(id)sliders image:(id)image error:(id *)error
 {
   v120 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v14 = objc_msgSend_count(v8, v10, v11, v12, v13);
+  slidersCopy = sliders;
+  imageCopy = image;
+  v14 = objc_msgSend_count(slidersCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_sliderOrder(self, v15, v16, v17, v18);
   v24 = objc_msgSend_count(v19, v20, v21, v22, v23);
 
@@ -563,11 +563,11 @@
       v34 = 0;
       v101 = v30;
       v102 = *v115;
-      v103 = a5;
+      errorCopy = error;
       while (2)
       {
         v104 = 0;
-        v106 = v9;
+        v106 = imageCopy;
         do
         {
           if (*v115 != v102)
@@ -601,21 +601,21 @@
                 v50 = objc_msgSend_sliderOrder(self, v42, v43, v44, v45);
                 v54 = objc_msgSend_objectAtIndexedSubscript_(v50, v51, v34, v52, v53);
 
-                v58 = objc_msgSend_objectForKeyedSubscript_(v8, v55, v54, v56, v57);
+                v58 = objc_msgSend_objectForKeyedSubscript_(slidersCopy, v55, v54, v56, v57);
                 LODWORD(v50) = v58 == 0;
 
                 if (v50)
                 {
-                  if (v103)
+                  if (errorCopy)
                   {
                     v94 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v59, @"No value for slider named %@ in sliders dictionary.", v60, v61, v54);
-                    *v103 = objc_msgSend_errorWithCode_message_(IHKError, v95, 6, v94, v96);
+                    *errorCopy = objc_msgSend_errorWithCode_message_(IHKError, v95, 6, v94, v96);
                   }
 
                   goto LABEL_26;
                 }
 
-                v62 = objc_msgSend_objectForKeyedSubscript_(v8, v59, v54, v60, v61);
+                v62 = objc_msgSend_objectForKeyedSubscript_(slidersCopy, v59, v54, v60, v61);
                 objc_msgSend_setObject_forKeyedSubscript_(v36, v63, v62, v49, v64);
 
                 ++v34;
@@ -637,22 +637,22 @@
           v74 = v69;
           if (!v69)
           {
-            if (v103)
+            if (errorCopy)
             {
               v109 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v70, @"Could not find filter named %@.", v72, v73, v105);
-              *v103 = objc_msgSend_errorWithCode_message_(IHKError, v99, 5, v109, v100);
+              *errorCopy = objc_msgSend_errorWithCode_message_(IHKError, v99, 5, v109, v100);
             }
 
 LABEL_26:
 
             v75 = 0;
-            v9 = v106;
+            imageCopy = v106;
             goto LABEL_27;
           }
 
-          v9 = objc_msgSend_outputImage(v69, v70, v71, v72, v73);
+          imageCopy = objc_msgSend_outputImage(v69, v70, v71, v72, v73);
 
-          v106 = v9;
+          v106 = imageCopy;
           ++v104;
         }
 
@@ -667,21 +667,21 @@ LABEL_26:
       }
     }
 
-    v9 = v9;
-    v75 = v9;
+    imageCopy = imageCopy;
+    v75 = imageCopy;
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v76 = MEMORY[0x277CCACA8];
-      v77 = objc_msgSend_count(v8, v25, v26, v27, v28);
+      v77 = objc_msgSend_count(slidersCopy, v25, v26, v27, v28);
       v82 = objc_msgSend_sliderOrder(self, v78, v79, v80, v81);
       v87 = objc_msgSend_count(v82, v83, v84, v85, v86);
       v91 = objc_msgSend_stringWithFormat_(v76, v88, @"Number of sliders does not match number of sliders in filter sequence (given: %lu != expected: %lu).", v89, v90, v77, v87);
 
-      *a5 = objc_msgSend_errorWithCode_message_(IHKError, v92, 7, v91, v93);
+      *error = objc_msgSend_errorWithCode_message_(IHKError, v92, 7, v91, v93);
     }
 
     v75 = 0;

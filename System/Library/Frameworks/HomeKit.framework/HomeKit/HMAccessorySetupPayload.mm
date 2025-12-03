@@ -1,30 +1,30 @@
 @interface HMAccessorySetupPayload
-- (BOOL)isEqual:(id)a3;
-- (HMAccessorySetupPayload)initWithCoder:(id)a3;
-- (HMAccessorySetupPayload)initWithInternalSetupPayload:(id)a3 ownershipToken:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessorySetupPayload)initWithCoder:(id)coder;
+- (HMAccessorySetupPayload)initWithInternalSetupPayload:(id)payload ownershipToken:(id)token;
 - (HMAccessorySetupPayload)initWithURL:(NSURL *)setupPayloadURL;
 - (HMAccessorySetupPayload)initWithURL:(NSURL *)setupPayloadURL ownershipToken:(HMAccessoryOwnershipToken *)ownershipToken;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessorySetupPayload
 
-- (HMAccessorySetupPayload)initWithCoder:(id)a3
+- (HMAccessorySetupPayload)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASP.internalSetupPayload"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASP.ownershipToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASP.internalSetupPayload"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASP.ownershipToken"];
   if (v5)
   {
-    v7 = [(HMAccessorySetupPayload *)self initWithInternalSetupPayload:v5 ownershipToken:v6];
-    v8 = v7;
+    selfCopy = [(HMAccessorySetupPayload *)self initWithInternalSetupPayload:v5 ownershipToken:v6];
+    v8 = selfCopy;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -44,23 +44,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetupPayload *)self internalSetupPayload];
-  [v4 encodeObject:v5 forKey:@"HMASP.internalSetupPayload"];
+  coderCopy = coder;
+  internalSetupPayload = [(HMAccessorySetupPayload *)self internalSetupPayload];
+  [coderCopy encodeObject:internalSetupPayload forKey:@"HMASP.internalSetupPayload"];
 
-  v6 = [(HMAccessorySetupPayload *)self ownershipToken];
-  [v4 encodeObject:v6 forKey:@"HMASP.ownershipToken"];
+  ownershipToken = [(HMAccessorySetupPayload *)self ownershipToken];
+  [coderCopy encodeObject:ownershipToken forKey:@"HMASP.ownershipToken"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -71,12 +71,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessorySetupPayload *)self internalSetupPayload];
-    v8 = [v6 internalSetupPayload];
-    if ([v7 isEqual:v8])
+    internalSetupPayload = [(HMAccessorySetupPayload *)self internalSetupPayload];
+    internalSetupPayload2 = [v6 internalSetupPayload];
+    if ([internalSetupPayload isEqual:internalSetupPayload2])
     {
-      v9 = [(HMAccessorySetupPayload *)self ownershipToken];
-      v10 = [v6 ownershipToken];
+      ownershipToken = [(HMAccessorySetupPayload *)self ownershipToken];
+      ownershipToken2 = [v6 ownershipToken];
       v11 = HMFEqualObjects();
     }
 
@@ -94,18 +94,18 @@
   return v11;
 }
 
-- (HMAccessorySetupPayload)initWithInternalSetupPayload:(id)a3 ownershipToken:(id)a4
+- (HMAccessorySetupPayload)initWithInternalSetupPayload:(id)payload ownershipToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = HMAccessorySetupPayload;
   v9 = [(HMAccessorySetupPayload *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_internalSetupPayload, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_internalSetupPayload, payload);
+    v11 = [tokenCopy copy];
     ownershipToken = v10->_ownershipToken;
     v10->_ownershipToken = v11;
   }
@@ -123,14 +123,14 @@
   v9 = v17;
   if (v8)
   {
-    v10 = [(HMAccessorySetupPayload *)self initWithInternalSetupPayload:v8 ownershipToken:v7];
-    v11 = v10;
+    selfCopy = [(HMAccessorySetupPayload *)self initWithInternalSetupPayload:v8 ownershipToken:v7];
+    v11 = selfCopy;
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -157,15 +157,15 @@
   if (setupPayloadURL)
   {
     self = [(HMAccessorySetupPayload *)self initWithURL:setupPayloadURL ownershipToken:0];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

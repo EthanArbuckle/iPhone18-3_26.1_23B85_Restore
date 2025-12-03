@@ -1,41 +1,41 @@
 @interface IDSOpportunisticOptions
-- (IDSOpportunisticOptions)initWithBlocklistedDestinations:(id)a3 expiryDate:(id)a4 destinationsMustBeInContacts:(BOOL)a5;
-- (IDSOpportunisticOptions)initWithCoder:(id)a3;
-- (IDSOpportunisticOptions)initWithDictionary:(id)a3;
+- (IDSOpportunisticOptions)initWithBlocklistedDestinations:(id)destinations expiryDate:(id)date destinationsMustBeInContacts:(BOOL)contacts;
+- (IDSOpportunisticOptions)initWithCoder:(id)coder;
+- (IDSOpportunisticOptions)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOpportunisticOptions
 
-- (IDSOpportunisticOptions)initWithBlocklistedDestinations:(id)a3 expiryDate:(id)a4 destinationsMustBeInContacts:(BOOL)a5
+- (IDSOpportunisticOptions)initWithBlocklistedDestinations:(id)destinations expiryDate:(id)date destinationsMustBeInContacts:(BOOL)contacts
 {
-  v9 = a3;
-  v10 = a4;
+  destinationsCopy = destinations;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = IDSOpportunisticOptions;
   v11 = [(IDSOpportunisticOptions *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_blocklistedDestinations, a3);
-    objc_storeStrong(&v12->_expiryDate, a4);
-    v12->_destinationsMustBeInContacts = a5;
+    objc_storeStrong(&v11->_blocklistedDestinations, destinations);
+    objc_storeStrong(&v12->_expiryDate, date);
+    v12->_destinationsMustBeInContacts = contacts;
   }
 
   return v12;
 }
 
-- (IDSOpportunisticOptions)initWithDictionary:(id)a3
+- (IDSOpportunisticOptions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
-  v6 = [v4 objectForKeyedSubscript:@"IDSOpportunisticOptionsExpiryDateKey"];
-  v7 = [v4 objectForKeyedSubscript:@"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"IDSOpportunisticOptionsExpiryDateKey"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"];
 
-  v8 = [v7 BOOLValue];
-  v9 = [(IDSOpportunisticOptions *)self initWithBlocklistedDestinations:v5 expiryDate:v6 destinationsMustBeInContacts:v8];
+  bOOLValue = [v7 BOOLValue];
+  v9 = [(IDSOpportunisticOptions *)self initWithBlocklistedDestinations:v5 expiryDate:v6 destinationsMustBeInContacts:bOOLValue];
 
   return v9;
 }
@@ -43,11 +43,11 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSOpportunisticOptions *)self blocklistedDestinations];
-  [v3 setObject:v4 forKeyedSubscript:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
+  blocklistedDestinations = [(IDSOpportunisticOptions *)self blocklistedDestinations];
+  [v3 setObject:blocklistedDestinations forKeyedSubscript:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
 
-  v5 = [(IDSOpportunisticOptions *)self expiryDate];
-  [v3 setObject:v5 forKeyedSubscript:@"IDSOpportunisticOptionsExpiryDateKey"];
+  expiryDate = [(IDSOpportunisticOptions *)self expiryDate];
+  [v3 setObject:expiryDate forKeyedSubscript:@"IDSOpportunisticOptionsExpiryDateKey"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSOpportunisticOptions destinationsMustBeInContacts](self, "destinationsMustBeInContacts")}];
   [v3 setObject:v6 forKeyedSubscript:@"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"];
@@ -59,45 +59,45 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSOpportunisticOptions *)self blocklistedDestinations];
-  v6 = [(IDSOpportunisticOptions *)self expiryDate];
-  v7 = [(IDSOpportunisticOptions *)self destinationsMustBeInContacts];
+  blocklistedDestinations = [(IDSOpportunisticOptions *)self blocklistedDestinations];
+  expiryDate = [(IDSOpportunisticOptions *)self expiryDate];
+  destinationsMustBeInContacts = [(IDSOpportunisticOptions *)self destinationsMustBeInContacts];
   v8 = @"NO";
-  if (v7)
+  if (destinationsMustBeInContacts)
   {
     v8 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@:%p blocklist: %@, expiry: %@, mustBeContact: %@>", v4, self, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@:%p blocklist: %@, expiry: %@, mustBeContact: %@>", v4, self, blocklistedDestinations, expiryDate, v8];
 
   return v9;
 }
 
-- (IDSOpportunisticOptions)initWithCoder:(id)a3
+- (IDSOpportunisticOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"IDSOpportunisticOptionsExpiryDateKey"];
-  v10 = [v5 decodeBoolForKey:@"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSOpportunisticOptionsExpiryDateKey"];
+  v10 = [coderCopy decodeBoolForKey:@"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"];
 
   v11 = [(IDSOpportunisticOptions *)self initWithBlocklistedDestinations:v8 expiryDate:v9 destinationsMustBeInContacts:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(IDSOpportunisticOptions *)self blocklistedDestinations];
-  [v6 encodeObject:v4 forKey:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
+  coderCopy = coder;
+  blocklistedDestinations = [(IDSOpportunisticOptions *)self blocklistedDestinations];
+  [coderCopy encodeObject:blocklistedDestinations forKey:@"IDSOpportunisticOptionsBlocklistedDestinationsKey"];
 
-  v5 = [(IDSOpportunisticOptions *)self expiryDate];
-  [v6 encodeObject:v5 forKey:@"IDSOpportunisticOptionsExpiryDateKey"];
+  expiryDate = [(IDSOpportunisticOptions *)self expiryDate];
+  [coderCopy encodeObject:expiryDate forKey:@"IDSOpportunisticOptionsExpiryDateKey"];
 
-  [v6 encodeBool:-[IDSOpportunisticOptions destinationsMustBeInContacts](self forKey:{"destinationsMustBeInContacts"), @"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"}];
+  [coderCopy encodeBool:-[IDSOpportunisticOptions destinationsMustBeInContacts](self forKey:{"destinationsMustBeInContacts"), @"IDSOpportunisticOptionsDestinationsMustBeInContactsKey"}];
 }
 
 @end

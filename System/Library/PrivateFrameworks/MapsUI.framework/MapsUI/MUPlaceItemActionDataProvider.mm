@@ -7,20 +7,20 @@
 - (void)_placeItemDidUpdate
 {
   v3 = [MUPlaceDataAvailability alloc];
-  v4 = [(MKPlaceItemActionDataProvider *)self placeItem];
-  v5 = [v4 mapItem];
-  v6 = [(MUPlaceDataAvailability *)v3 initWithMapItem:v5 options:[(MKPlaceItemActionDataProvider *)self options]];
+  placeItem = [(MKPlaceItemActionDataProvider *)self placeItem];
+  mapItem = [placeItem mapItem];
+  v6 = [(MUPlaceDataAvailability *)v3 initWithMapItem:mapItem options:[(MKPlaceItemActionDataProvider *)self options]];
   availability = self->_availability;
   self->_availability = v6;
 
   if ([(MUPlaceDataAvailability *)self->_availability isRouteCreationAvailable])
   {
     v8 = objc_alloc(MEMORY[0x1E69A1E70]);
-    v9 = [(MKPlaceItemActionDataProvider *)self mapItem];
-    [v9 _coordinate];
+    mapItem2 = [(MKPlaceItemActionDataProvider *)self mapItem];
+    [mapItem2 _coordinate];
     v11 = v10;
-    v12 = [(MKPlaceItemActionDataProvider *)self mapItem];
-    [v12 _coordinate];
+    mapItem3 = [(MKPlaceItemActionDataProvider *)self mapItem];
+    [mapItem3 _coordinate];
     v13 = [v8 initWithLatitude:v11 longitude:?];
 
     objc_initWeak(&location, self);

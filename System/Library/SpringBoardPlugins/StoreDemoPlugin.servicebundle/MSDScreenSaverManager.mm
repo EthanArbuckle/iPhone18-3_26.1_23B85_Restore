@@ -3,7 +3,7 @@
 + (void)awakeFromBundle;
 - (BOOL)handleIdleTimerDidExpire;
 - (BOOL)handleIdleTimerDidWarn;
-- (BOOL)isInStandbyMode:(id)a3;
+- (BOOL)isInStandbyMode:(id)mode;
 - (BOOL)isRetailDeviceContentUpdating;
 - (BOOL)loadScreenSaverConfig;
 - (BOOL)shouldHandleIdleHandler;
@@ -18,17 +18,17 @@
 - (int)getDemoMode;
 - (int)readDemoMode;
 - (void)acquireDisableAlwaysOnTimeAssertion;
-- (void)applicationsDidInstall:(id)a3;
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4;
-- (void)assertionWasAcquired:(id)a3;
-- (void)handleAlwaysOnTimeToggleTimerFired:(id)a3;
-- (void)handleApplicationStateChanged:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error;
+- (void)assertionWasAcquired:(id)acquired;
+- (void)handleAlwaysOnTimeToggleTimerFired:(id)fired;
+- (void)handleApplicationStateChanged:(id)changed;
 - (void)handleSpringBoardLaunch;
-- (void)handleStoreHourSettingsChanged:(id)a3;
+- (void)handleStoreHourSettingsChanged:(id)changed;
 - (void)launchScreenSaver;
 - (void)launchScreenSaverTimerFired;
 - (void)launchSpringBoard;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout;
 - (void)releaseDisableAlwaysOnTimeAssertion;
 - (void)screenSaverStarted;
 - (void)screenSaverStopped;
@@ -83,14 +83,14 @@
       v3 = dispatch_queue_create("com.apple.StoreDemoPlugin", 0);
       [(MSDScreenSaverManager *)v2 setWorkQueue:v3];
 
-      v4 = [(MSDScreenSaverManager *)v2 workQueue];
+      workQueue = [(MSDScreenSaverManager *)v2 workQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_5668;
       block[3] = &unk_185D0;
       v5 = v2;
       v11 = v5;
-      dispatch_async(v4, block);
+      dispatch_async(workQueue, block);
 
       v6 = v5;
     }
@@ -155,12 +155,12 @@
     [(MSDScreenSaverManager *)self setBacklightLevel:-1];
     v13 = [FBSDisplayLayoutMonitor sharedMonitorForDisplayType:0];
     [v13 addObserver:self];
-    v14 = [(MSDScreenSaverManager *)self monitor];
+    monitor = [(MSDScreenSaverManager *)self monitor];
 
-    if (v14)
+    if (monitor)
     {
-      v15 = [(MSDScreenSaverManager *)self monitor];
-      [v15 invalidate];
+      monitor2 = [(MSDScreenSaverManager *)self monitor];
+      [monitor2 invalidate];
 
       [(MSDScreenSaverManager *)self setMonitor:0];
     }
@@ -223,36 +223,36 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%s get called.", buf, 0xCu);
   }
 
-  v4 = [(MSDScreenSaverManager *)self shouldHandleIdleHandler];
-  if (v4)
+  shouldHandleIdleHandler = [(MSDScreenSaverManager *)self shouldHandleIdleHandler];
+  if (shouldHandleIdleHandler)
   {
-    v5 = [(MSDScreenSaverManager *)self workQueue];
+    workQueue = [(MSDScreenSaverManager *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_62AC;
     block[3] = &unk_185D0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(workQueue, block);
   }
 
-  return v4;
+  return shouldHandleIdleHandler;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(MSDScreenSaverManager *)self workQueue];
+  layoutCopy = layout;
+  workQueue = [(MSDScreenSaverManager *)self workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_6368;
   v8[3] = &unk_187D0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = layoutCopy;
+  selfCopy = self;
+  v7 = layoutCopy;
+  dispatch_async(workQueue, v8);
 }
 
-- (void)assertionWasAcquired:(id)a3
+- (void)assertionWasAcquired:(id)acquired
 {
   v3 = screenSaverLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -262,24 +262,24 @@
   }
 }
 
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = screenSaverLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_C3D4(v4, v5);
+    sub_C3D4(errorCopy, v5);
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = [v4 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v22 = [installCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v22)
   {
     v6 = *v26;
@@ -293,25 +293,25 @@
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
         v8 = *(*(&v25 + 1) + 8 * v7);
-        v9 = [v8 bundleIdentifier];
-        if (([v9 isEqualToString:@"com.apple.ist.demoloop"] & 1) == 0)
+        bundleIdentifier = [v8 bundleIdentifier];
+        if (([bundleIdentifier isEqualToString:@"com.apple.ist.demoloop"] & 1) == 0)
         {
-          v10 = [v8 bundleIdentifier];
-          if (([v10 isEqualToString:@"com.apple.ist.windward"] & 1) == 0)
+          bundleIdentifier2 = [v8 bundleIdentifier];
+          if (([bundleIdentifier2 isEqualToString:@"com.apple.ist.windward"] & 1) == 0)
           {
-            v11 = [v8 bundleIdentifier];
-            if (![v11 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"])
+            bundleIdentifier3 = [v8 bundleIdentifier];
+            if (![bundleIdentifier3 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"])
             {
               [v8 bundleIdentifier];
               v15 = v6;
-              v17 = v16 = v4;
+              v17 = v16 = installCopy;
               v18 = [v17 isEqualToString:@"com.retailtech.arkenstone"];
 
-              v4 = v16;
+              installCopy = v16;
               v6 = v15;
 
               if ((v18 & 1) == 0)
@@ -328,27 +328,27 @@ LABEL_12:
         v12 = screenSaverLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v8 bundleIdentifier];
+          bundleIdentifier4 = [v8 bundleIdentifier];
           *buf = v20;
-          v30 = v13;
+          v30 = bundleIdentifier4;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "StoreDemo plugin: %{public}@ app installed", buf, 0xCu);
         }
 
-        v14 = [(MSDScreenSaverManager *)self workQueue];
+        workQueue = [(MSDScreenSaverManager *)self workQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         v24[0] = sub_6B6C;
         v24[1] = &unk_187D0;
         v24[2] = self;
         v24[3] = v8;
-        dispatch_async(v14, block);
+        dispatch_async(workQueue, block);
 
 LABEL_15:
         v7 = v7 + 1;
       }
 
       while (v22 != v7);
-      v19 = [v4 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v19 = [installCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
       v22 = v19;
     }
 
@@ -358,15 +358,15 @@ LABEL_15:
 
 - (BOOL)isRetailDeviceContentUpdating
 {
-  v3 = [(MSDScreenSaverManager *)self screenSaverAppID];
-  if ([v3 isEqualToString:@"com.apple.ist.windward"])
+  screenSaverAppID = [(MSDScreenSaverManager *)self screenSaverAppID];
+  if ([screenSaverAppID isEqualToString:@"com.apple.ist.windward"])
   {
   }
 
   else
   {
-    v4 = [(MSDScreenSaverManager *)self screenSaverAppID];
-    v5 = [v4 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"];
+    screenSaverAppID2 = [(MSDScreenSaverManager *)self screenSaverAppID];
+    v5 = [screenSaverAppID2 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"];
 
     if (!v5)
     {
@@ -374,8 +374,8 @@ LABEL_15:
     }
   }
 
-  v6 = [(MSDScreenSaverManager *)self getDemoMode];
-  return v6 == 2 || v6 == 4;
+  getDemoMode = [(MSDScreenSaverManager *)self getDemoMode];
+  return getDemoMode == 2 || getDemoMode == 4;
 }
 
 - (BOOL)shouldHandleIdleHandler
@@ -401,9 +401,9 @@ LABEL_15:
 
 - (BOOL)shouldSetupIdleHandler
 {
-  v3 = [(MSDScreenSaverManager *)self getDemoMode];
+  getDemoMode = [(MSDScreenSaverManager *)self getDemoMode];
   result = 1;
-  if (v3 && v3 != 5)
+  if (getDemoMode && getDemoMode != 5)
   {
     if ([(MSDScreenSaverManager *)self isRetailDeviceContentUpdating])
     {
@@ -415,11 +415,11 @@ LABEL_15:
       v5 = screenSaverLogHandle();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(MSDScreenSaverManager *)self screenSaverAppID];
+        screenSaverAppID = [(MSDScreenSaverManager *)self screenSaverAppID];
         v7[0] = 67109378;
-        v7[1] = v3;
+        v7[1] = getDemoMode;
         v8 = 2114;
-        v9 = v6;
+        v9 = screenSaverAppID;
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Device in mode %d, screensaver: %{public}@, will not launch screen saver.", v7, 0x12u);
       }
 
@@ -430,51 +430,51 @@ LABEL_15:
   return result;
 }
 
-- (void)handleApplicationStateChanged:(id)a3
+- (void)handleApplicationStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(MSDScreenSaverManager *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(MSDScreenSaverManager *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_6EA0;
   v7[3] = &unk_187D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)handleStoreHourSettingsChanged:(id)a3
+- (void)handleStoreHourSettingsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(MSDScreenSaverManager *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(MSDScreenSaverManager *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_70B8;
   v7[3] = &unk_187D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (BOOL)loadScreenSaverConfig
 {
-  v3 = [(MSDScreenSaverManager *)self getStoreHours];
-  v4 = [(MSDScreenSaverManager *)self getLastSettingsUpdatedTime];
-  v5 = [(MSDScreenSaverManager *)self storeHourSettings];
-  if (v5)
+  getStoreHours = [(MSDScreenSaverManager *)self getStoreHours];
+  getLastSettingsUpdatedTime = [(MSDScreenSaverManager *)self getLastSettingsUpdatedTime];
+  storeHourSettings = [(MSDScreenSaverManager *)self storeHourSettings];
+  if (storeHourSettings)
   {
-    v6 = v5;
-    v7 = [(MSDScreenSaverManager *)self lastSettingsUpdated];
-    if (v7)
+    v6 = storeHourSettings;
+    lastSettingsUpdated = [(MSDScreenSaverManager *)self lastSettingsUpdated];
+    if (lastSettingsUpdated)
     {
-      v8 = v7;
-      v9 = [(MSDScreenSaverManager *)self storeHourSettings];
-      if ([v9 isEqualToArray:v3])
+      v8 = lastSettingsUpdated;
+      storeHourSettings2 = [(MSDScreenSaverManager *)self storeHourSettings];
+      if ([storeHourSettings2 isEqualToArray:getStoreHours])
       {
-        v10 = [(MSDScreenSaverManager *)self lastSettingsUpdated];
-        v11 = [v10 isEqualToDate:v4];
+        lastSettingsUpdated2 = [(MSDScreenSaverManager *)self lastSettingsUpdated];
+        v11 = [lastSettingsUpdated2 isEqualToDate:getLastSettingsUpdatedTime];
 
         if (v11)
         {
@@ -487,33 +487,33 @@ LABEL_15:
   }
 
 LABEL_8:
-  v12 = [(MSDScreenSaverManager *)self storeHoursManager];
-  [v12 updateStoreHours:v3 lastSettingsUpdatedDate:v4];
+  storeHoursManager = [(MSDScreenSaverManager *)self storeHoursManager];
+  [storeHoursManager updateStoreHours:getStoreHours lastSettingsUpdatedDate:getLastSettingsUpdatedTime];
 
-  [(MSDScreenSaverManager *)self setStoreHourSettings:v3];
-  [(MSDScreenSaverManager *)self setLastSettingsUpdated:v4];
+  [(MSDScreenSaverManager *)self setStoreHourSettings:getStoreHours];
+  [(MSDScreenSaverManager *)self setLastSettingsUpdated:getLastSettingsUpdatedTime];
 LABEL_9:
-  v13 = [(MSDScreenSaverManager *)self storeHoursManager];
-  v14 = [v13 evaluateStoreStatusAgainstCurrentTime];
+  storeHoursManager2 = [(MSDScreenSaverManager *)self storeHoursManager];
+  evaluateStoreStatusAgainstCurrentTime = [storeHoursManager2 evaluateStoreStatusAgainstCurrentTime];
 
-  return v14;
+  return evaluateStoreStatusAgainstCurrentTime;
 }
 
 - (void)handleSpringBoardLaunch
 {
   if ([(MSDScreenSaverManager *)self turnOffDisplayAtNight])
   {
-    v3 = [(MSDScreenSaverManager *)self getLastAutoRebootTime];
+    getLastAutoRebootTime = [(MSDScreenSaverManager *)self getLastAutoRebootTime];
     [(MSDScreenSaverManager *)self loadScreenSaverConfig];
-    v4 = [(MSDScreenSaverManager *)self storeHoursManager];
-    if (([v4 isStoreOpenNow] & 1) != 0 || !v3 || (objc_msgSend(v3, "timeIntervalSinceNow"), v5 <= -180.0))
+    storeHoursManager = [(MSDScreenSaverManager *)self storeHoursManager];
+    if (([storeHoursManager isStoreOpenNow] & 1) != 0 || !getLastAutoRebootTime || (objc_msgSend(getLastAutoRebootTime, "timeIntervalSinceNow"), v5 <= -180.0))
     {
     }
 
     else
     {
-      v6 = [(MSDScreenSaverManager *)self screenSaverAppID];
-      v7 = [v6 isEqualToString:@"com.apple.ist.demoloop"];
+      screenSaverAppID = [(MSDScreenSaverManager *)self screenSaverAppID];
+      v7 = [screenSaverAppID isEqualToString:@"com.apple.ist.demoloop"];
 
       if (v7)
       {
@@ -582,13 +582,13 @@ LABEL_9:
   v6 = [NSMutableDictionary dictionaryWithDictionary:v5];
 
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if (v8 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v24[0] = SBSOpenApplicationOptionKeyLaunchBundleIdentifiers;
-    v9 = [(MSDScreenSaverManager *)self screenSaverAppID];
-    v23 = v9;
+    screenSaverAppID = [(MSDScreenSaverManager *)self screenSaverAppID];
+    v23 = screenSaverAppID;
     v10 = [NSArray arrayWithObjects:&v23 count:1];
     v25[0] = v10;
     v25[1] = @"[A<center,maximized>]";
@@ -599,8 +599,8 @@ LABEL_9:
     [v6 addEntriesFromDictionary:v11];
   }
 
-  v12 = [(MSDScreenSaverManager *)self screenSaverAppID];
-  if ([v12 isEqualToString:@"com.apple.ist.windward"])
+  screenSaverAppID2 = [(MSDScreenSaverManager *)self screenSaverAppID];
+  if ([screenSaverAppID2 isEqualToString:@"com.apple.ist.windward"])
   {
 
 LABEL_9:
@@ -613,8 +613,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [(MSDScreenSaverManager *)self screenSaverAppID];
-  v14 = [v13 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"];
+  screenSaverAppID3 = [(MSDScreenSaverManager *)self screenSaverAppID];
+  v14 = [screenSaverAppID3 isEqualToString:@"com.apple.ist.DemoDiscoveryApp"];
 
   if (v14)
   {
@@ -629,8 +629,8 @@ LABEL_10:
     sub_C46C(v6, v18);
   }
 
-  v19 = [(MSDScreenSaverManager *)self screenSaverAppID];
-  [v3 openApplication:v19 withOptions:v17 completion:&stru_18880];
+  screenSaverAppID4 = [(MSDScreenSaverManager *)self screenSaverAppID];
+  [v3 openApplication:screenSaverAppID4 withOptions:v17 completion:&stru_18880];
 
 LABEL_13:
 }
@@ -642,13 +642,13 @@ LABEL_13:
     v3 = +[NSDate now];
     [(MSDScreenSaverManager *)self setSessionStartTime:v3];
 
-    v4 = [(MSDScreenSaverManager *)self timer];
+    timer = [(MSDScreenSaverManager *)self timer];
 
-    if (v4)
+    if (timer)
     {
-      v5 = [(MSDScreenSaverManager *)self timer];
-      v6 = [v5 userInfo];
-      v7 = [v6 objectForKey:@"LaunchScreenSaver"];
+      timer2 = [(MSDScreenSaverManager *)self timer];
+      userInfo = [timer2 userInfo];
+      v7 = [userInfo objectForKey:@"LaunchScreenSaver"];
 
       if (v7 && [v7 BOOLValue])
       {
@@ -669,8 +669,8 @@ LABEL_13:
           _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Timer will be canceled because screen saver stopped.", v11, 2u);
         }
 
-        v10 = [(MSDScreenSaverManager *)self timer];
-        [v10 invalidate];
+        timer3 = [(MSDScreenSaverManager *)self timer];
+        [timer3 invalidate];
 
         [(MSDScreenSaverManager *)self setTimer:0];
       }
@@ -685,64 +685,64 @@ LABEL_13:
   if (![(MSDScreenSaverManager *)self screenSaverRunning])
   {
     [(MSDScreenSaverManager *)self setScreenSaverRunning:1];
-    v3 = [(MSDScreenSaverManager *)self sessionStartTime];
+    sessionStartTime = [(MSDScreenSaverManager *)self sessionStartTime];
 
-    if (v3)
+    if (sessionStartTime)
     {
       v4 = +[MSDKManagedDevice sharedInstance];
-      v5 = [(MSDScreenSaverManager *)self sessionStartTime];
+      sessionStartTime2 = [(MSDScreenSaverManager *)self sessionStartTime];
       v6 = +[NSDate now];
-      [v4 collectAppUsageWithSessionStart:v5 andEnd:v6];
+      [v4 collectAppUsageWithSessionStart:sessionStartTime2 andEnd:v6];
     }
 
     if ([(MSDScreenSaverManager *)self isRetailDeviceContentUpdating]|| ![(MSDScreenSaverManager *)self turnOffDisplayAtNight])
     {
-      v8 = screenSaverLogHandle();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      screenSaverShouldRunUntil = screenSaverLogHandle();
+      if (os_log_type_enabled(screenSaverShouldRunUntil, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "DemoUpdate on retail device, will run Pricing app till reboot (or it get killed).", buf, 2u);
+        _os_log_impl(&dword_0, screenSaverShouldRunUntil, OS_LOG_TYPE_DEFAULT, "DemoUpdate on retail device, will run Pricing app till reboot (or it get killed).", buf, 2u);
       }
     }
 
     else
     {
       [(MSDScreenSaverManager *)self loadScreenSaverConfig];
-      v7 = [(MSDScreenSaverManager *)self storeHoursManager];
-      v8 = [v7 screenSaverShouldRunUntil];
+      storeHoursManager = [(MSDScreenSaverManager *)self storeHoursManager];
+      screenSaverShouldRunUntil = [storeHoursManager screenSaverShouldRunUntil];
 
-      [v8 timeIntervalSinceNow];
+      [screenSaverShouldRunUntil timeIntervalSinceNow];
       v10 = v9;
       v11 = screenSaverLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v8 toString];
+        toString = [screenSaverShouldRunUntil toString];
         *buf = 134218242;
         v21 = v10;
         v22 = 2114;
-        v23 = v12;
+        v23 = toString;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "The app should run for %td seconds (till %{public}@).", buf, 0x16u);
       }
 
       v13 = [[PCPersistentTimer alloc] initWithTimeInterval:@"com.apple.StoreDemoPlugin.stopScreenSaver" serviceIdentifier:self target:"stopScreenSaverTimerFired" selector:0 userInfo:v10];
       [(MSDScreenSaverManager *)self setTimer:v13];
 
-      v14 = [(MSDScreenSaverManager *)self timer];
-      [v14 setMinimumEarlyFireProportion:1.0];
+      timer = [(MSDScreenSaverManager *)self timer];
+      [timer setMinimumEarlyFireProportion:1.0];
 
-      v15 = [(MSDScreenSaverManager *)self timer];
-      v16 = [(MSDScreenSaverManager *)self workQueue];
-      [v15 scheduleInQueue:v16];
+      timer2 = [(MSDScreenSaverManager *)self timer];
+      workQueue = [(MSDScreenSaverManager *)self workQueue];
+      [timer2 scheduleInQueue:workQueue];
     }
 
     v17 = dispatch_time(0, 5000000000);
-    v18 = [(MSDScreenSaverManager *)self workQueue];
+    workQueue2 = [(MSDScreenSaverManager *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_8118;
     block[3] = &unk_185D0;
     block[4] = self;
-    dispatch_after(v17, v18, block);
+    dispatch_after(v17, workQueue2, block);
   }
 }
 
@@ -761,35 +761,35 @@ LABEL_13:
 - (void)stopScreenSaver
 {
   [(MSDScreenSaverManager *)self loadScreenSaverConfig];
-  v3 = [(MSDScreenSaverManager *)self storeHoursManager];
-  v4 = [v3 screenSaverShouldLaunchAt];
+  storeHoursManager = [(MSDScreenSaverManager *)self storeHoursManager];
+  screenSaverShouldLaunchAt = [storeHoursManager screenSaverShouldLaunchAt];
 
-  [v4 timeIntervalSinceNow];
+  [screenSaverShouldLaunchAt timeIntervalSinceNow];
   v6 = v5;
-  v7 = [(MSDScreenSaverManager *)self timer];
+  timer = [(MSDScreenSaverManager *)self timer];
 
-  if (v7)
+  if (timer)
   {
-    v8 = [(MSDScreenSaverManager *)self timer];
-    [v8 invalidate];
+    timer2 = [(MSDScreenSaverManager *)self timer];
+    [timer2 invalidate];
   }
 
   v9 = [[PCPersistentTimer alloc] initWithTimeInterval:@"com.apple.StoreDemoPlugin.launchScreenSaver" serviceIdentifier:self target:"launchScreenSaverTimerFired" selector:&off_19448 userInfo:v6];
   [(MSDScreenSaverManager *)self setTimer:v9];
 
-  v10 = [(MSDScreenSaverManager *)self timer];
-  [v10 setMinimumEarlyFireProportion:1.0];
+  timer3 = [(MSDScreenSaverManager *)self timer];
+  [timer3 setMinimumEarlyFireProportion:1.0];
 
-  v11 = [(MSDScreenSaverManager *)self timer];
-  v12 = [(MSDScreenSaverManager *)self workQueue];
-  [v11 scheduleInQueue:v12];
+  timer4 = [(MSDScreenSaverManager *)self timer];
+  workQueue = [(MSDScreenSaverManager *)self workQueue];
+  [timer4 scheduleInQueue:workQueue];
 
   v13 = screenSaverLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v4 toString];
+    toString = [screenSaverShouldLaunchAt toString];
     v15 = 138543362;
-    v16 = v14;
+    v16 = toString;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Timer scheduled to run screen saver at %{public}@", &v15, 0xCu);
   }
 
@@ -811,18 +811,18 @@ LABEL_13:
 - (void)setupAlwaysOnTimeToggleTimer
 {
   [(MSDScreenSaverManager *)self loadScreenSaverConfig];
-  v3 = [(MSDScreenSaverManager *)self storeHoursManager];
-  v4 = [v3 isStoreOpenNow];
+  storeHoursManager = [(MSDScreenSaverManager *)self storeHoursManager];
+  isStoreOpenNow = [storeHoursManager isStoreOpenNow];
 
-  v5 = [(MSDScreenSaverManager *)self storeHoursManager];
-  v6 = [v5 nextStoreOpenDate];
+  storeHoursManager2 = [(MSDScreenSaverManager *)self storeHoursManager];
+  nextStoreOpenDate = [storeHoursManager2 nextStoreOpenDate];
 
-  v7 = [(MSDScreenSaverManager *)self storeHoursManager];
-  v8 = [v7 nextStoreClosedDate];
+  storeHoursManager3 = [(MSDScreenSaverManager *)self storeHoursManager];
+  nextStoreClosedDate = [storeHoursManager3 nextStoreClosedDate];
 
-  [v6 timeIntervalSinceNow];
+  [nextStoreOpenDate timeIntervalSinceNow];
   v10 = v9;
-  [v8 timeIntervalSinceNow];
+  [nextStoreClosedDate timeIntervalSinceNow];
   if (v10 <= 0.0 || v11 <= 0.0)
   {
     v14 = screenSaverLogHandle();
@@ -833,7 +833,7 @@ LABEL_13:
 
     v12 = 0;
     v13 = 0;
-    v4 = 1;
+    isStoreOpenNow = 1;
   }
 
   else
@@ -846,7 +846,7 @@ LABEL_13:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 67109632;
-    *v29 = v4;
+    *v29 = isStoreOpenNow;
     *&v29[4] = 1024;
     *&v29[6] = v12;
     LOWORD(v30) = 1024;
@@ -854,12 +854,12 @@ LABEL_13:
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Setting up AOT toggle timer: Store open=%{BOOL}d, Soon open=%{BOOL}d, Soon close=%{BOOL}d", &v28, 0x14u);
   }
 
-  if (v4)
+  if (isStoreOpenNow)
   {
     if (v13)
     {
 LABEL_11:
-      v16 = [v6 dateByAddingTimeInterval:-30.0];
+      v16 = [nextStoreOpenDate dateByAddingTimeInterval:-30.0];
       [(MSDScreenSaverManager *)self acquireDisableAlwaysOnTimeAssertion];
       goto LABEL_14;
     }
@@ -870,7 +870,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v16 = [v8 dateByAddingTimeInterval:-30.0];
+  v16 = [nextStoreClosedDate dateByAddingTimeInterval:-30.0];
   [(MSDScreenSaverManager *)self releaseDisableAlwaysOnTimeAssertion];
 LABEL_14:
   [v16 timeIntervalSinceNow];
@@ -890,20 +890,20 @@ LABEL_14:
   v20 = screenSaverLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v16 toString];
+    toString = [v16 toString];
     v28 = 134218242;
     *v29 = v18;
     *&v29[8] = 2114;
-    v30 = v21;
+    v30 = toString;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "AOT toggle timer will fire in %f seconds (at %{public}@).", &v28, 0x16u);
   }
 
-  v22 = [(MSDScreenSaverManager *)self aotTimer];
+  aotTimer = [(MSDScreenSaverManager *)self aotTimer];
 
-  if (v22)
+  if (aotTimer)
   {
-    v23 = [(MSDScreenSaverManager *)self aotTimer];
-    [v23 invalidate];
+    aotTimer2 = [(MSDScreenSaverManager *)self aotTimer];
+    [aotTimer2 invalidate];
 
     [(MSDScreenSaverManager *)self setAotTimer:0];
   }
@@ -911,15 +911,15 @@ LABEL_14:
   v24 = [[PCPersistentTimer alloc] initWithTimeInterval:@"com.apple.StoreDemoPlugin.AlwaysOnTimeToggle" serviceIdentifier:self target:"handleAlwaysOnTimeToggleTimerFired:" selector:0 userInfo:v18];
   [(MSDScreenSaverManager *)self setAotTimer:v24];
 
-  v25 = [(MSDScreenSaverManager *)self aotTimer];
-  [v25 setMinimumEarlyFireProportion:1.0];
+  aotTimer3 = [(MSDScreenSaverManager *)self aotTimer];
+  [aotTimer3 setMinimumEarlyFireProportion:1.0];
 
-  v26 = [(MSDScreenSaverManager *)self aotTimer];
-  v27 = [(MSDScreenSaverManager *)self workQueue];
-  [v26 scheduleInQueue:v27];
+  aotTimer4 = [(MSDScreenSaverManager *)self aotTimer];
+  workQueue = [(MSDScreenSaverManager *)self workQueue];
+  [aotTimer4 scheduleInQueue:workQueue];
 }
 
-- (void)handleAlwaysOnTimeToggleTimerFired:(id)a3
+- (void)handleAlwaysOnTimeToggleTimerFired:(id)fired
 {
   v4 = screenSaverLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -941,9 +941,9 @@ LABEL_14:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Acquiring backlight assertion for disabling always-on time.", v9, 2u);
   }
 
-  v4 = [(MSDScreenSaverManager *)self backlightAssertion];
+  backlightAssertion = [(MSDScreenSaverManager *)self backlightAssertion];
 
-  if (v4)
+  if (backlightAssertion)
   {
     v5 = screenSaverLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -975,12 +975,12 @@ LABEL_14:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Releasing backlight assertion for disabling always-on time.", buf, 2u);
   }
 
-  v4 = [(MSDScreenSaverManager *)self backlightAssertion];
+  backlightAssertion = [(MSDScreenSaverManager *)self backlightAssertion];
 
-  if (v4)
+  if (backlightAssertion)
   {
-    v5 = [(MSDScreenSaverManager *)self backlightAssertion];
-    [v5 invalidate];
+    backlightAssertion2 = [(MSDScreenSaverManager *)self backlightAssertion];
+    [backlightAssertion2 invalidate];
 
     [(MSDScreenSaverManager *)self setBacklightAssertion:0];
   }
@@ -999,9 +999,9 @@ LABEL_14:
 - (int)getDemoMode
 {
   v3 = +[MSDKManagedDevice sharedInstance];
-  v4 = [v3 preferencesFileExists];
+  preferencesFileExists = [v3 preferencesFileExists];
 
-  if (!v4)
+  if (!preferencesFileExists)
   {
     return 0;
   }
@@ -1012,15 +1012,15 @@ LABEL_14:
 - (id)getLastAutoRebootTime
 {
   v3 = +[MSDKManagedDevice sharedInstance];
-  v4 = [v3 preferencesFileExists];
+  preferencesFileExists = [v3 preferencesFileExists];
 
-  if (v4)
+  if (preferencesFileExists)
   {
-    v5 = [(MSDScreenSaverManager *)self readLastAutoReboot];
-    v6 = v5;
-    if (v5)
+    readLastAutoReboot = [(MSDScreenSaverManager *)self readLastAutoReboot];
+    v6 = readLastAutoReboot;
+    if (readLastAutoReboot)
     {
-      v7 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v5 integerValue]);
+      v7 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [readLastAutoReboot integerValue]);
     }
 
     else
@@ -1040,14 +1040,14 @@ LABEL_14:
 - (id)getLastSettingsUpdatedTime
 {
   v3 = +[MSDKManagedDevice sharedInstance];
-  v4 = [v3 preferencesFileExists];
+  preferencesFileExists = [v3 preferencesFileExists];
 
-  if (v4)
+  if (preferencesFileExists)
   {
-    v5 = [(MSDScreenSaverManager *)self readLastSettingsUpdated];
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    readLastSettingsUpdated = [(MSDScreenSaverManager *)self readLastSettingsUpdated];
+    if (readLastSettingsUpdated && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = v5;
+      v6 = readLastSettingsUpdated;
     }
 
     else
@@ -1069,14 +1069,14 @@ LABEL_14:
 - (id)getStoreHours
 {
   v3 = +[MSDKManagedDevice sharedInstance];
-  v4 = [v3 preferencesFileExists];
+  preferencesFileExists = [v3 preferencesFileExists];
 
-  if (v4)
+  if (preferencesFileExists)
   {
-    v5 = [(MSDScreenSaverManager *)self readHubSuppliedSettings];
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    readHubSuppliedSettings = [(MSDScreenSaverManager *)self readHubSuppliedSettings];
+    if (readHubSuppliedSettings && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 objectForKey:@"StoreHours"];
+      v6 = [readHubSuppliedSettings objectForKey:@"StoreHours"];
     }
 
     else
@@ -1096,9 +1096,9 @@ LABEL_14:
 - (int)readDemoMode
 {
   v2 = +[MSDKManagedDevice sharedInstance];
-  v3 = [v2 getDemoInstallState];
+  getDemoInstallState = [v2 getDemoInstallState];
 
-  return v3;
+  return getDemoInstallState;
 }
 
 - (id)readLastAutoReboot
@@ -1125,14 +1125,14 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isInStandbyMode:(id)a3
+- (BOOL)isInStandbyMode:(id)mode
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 elements];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [mode elements];
+  v4 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1144,11 +1144,11 @@ LABEL_14:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) identifier];
-        v10 = [v9 isEqualToString:v7];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        v10 = [identifier isEqualToString:v7];
 
         if (v10)
         {
@@ -1157,7 +1157,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;

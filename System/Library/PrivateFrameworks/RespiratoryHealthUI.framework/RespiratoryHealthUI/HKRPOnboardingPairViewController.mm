@@ -1,30 +1,30 @@
 @interface HKRPOnboardingPairViewController
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
-- (HKRPOnboardingPairViewController)initWithSettings:(id)a3 onboardingManager:(id)a4;
-- (id)_localizedStringForKey:(id)a3;
+- (HKRPOnboardingPairViewController)initWithSettings:(id)settings onboardingManager:(id)manager;
+- (id)_localizedStringForKey:(id)key;
 - (id)detailString;
 - (void)_makeHeroView;
-- (void)_onboardWithCompletion:(id)a3;
-- (void)_presentOnboardingError:(id)a3 completion:(id)a4;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_onboardWithCompletion:(id)completion;
+- (void)_presentOnboardingError:(id)error completion:(id)completion;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HKRPOnboardingPairViewController
 
-- (HKRPOnboardingPairViewController)initWithSettings:(id)a3 onboardingManager:(id)a4
+- (HKRPOnboardingPairViewController)initWithSettings:(id)settings onboardingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = HKRPOnboardingPairViewController;
   v9 = [(BPSWelcomeOptinViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settings, a3);
-    objc_storeStrong(&v10->_onboardingManager, a4);
+    objc_storeStrong(&v9->_settings, settings);
+    objc_storeStrong(&v10->_onboardingManager, manager);
     [(BPSWelcomeOptinViewController *)v10 setStyle:74];
   }
 
@@ -33,10 +33,10 @@
 
 - (id)detailString
 {
-  v2 = [(HKRPOnboardingPairViewController *)self settings];
-  v3 = [v2 recordingInactiveDescription];
+  settings = [(HKRPOnboardingPairViewController *)self settings];
+  recordingInactiveDescription = [settings recordingInactiveDescription];
 
-  return v3;
+  return recordingInactiveDescription;
 }
 
 - (void)viewDidLoad
@@ -58,17 +58,17 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_localizedStringForKey:(id)a3
+- (id)_localizedStringForKey:(id)key
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_28749E498 table:@"RespiratoryHealthUI"];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_28749E498 table:@"RespiratoryHealthUI"];
 
   return v6;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -98,18 +98,18 @@ void __59__HKRPOnboardingPairViewController_suggestedButtonPressed___block_invok
   }
 }
 
-- (void)_onboardWithCompletion:(id)a3
+- (void)_onboardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKRPOnboardingPairViewController *)self onboardingManager];
+  completionCopy = completion;
+  onboardingManager = [(HKRPOnboardingPairViewController *)self onboardingManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HKRPOnboardingPairViewController__onboardWithCompletion___block_invoke;
   v7[3] = &unk_279B0F098;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 onboardWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [onboardingManager onboardWithCompletion:v7];
 }
 
 void __59__HKRPOnboardingPairViewController__onboardWithCompletion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -146,25 +146,25 @@ void __59__HKRPOnboardingPairViewController__onboardWithCompletion___block_invok
   [v1 _presentOnboardingError:v2 completion:v3];
 }
 
-- (void)_presentOnboardingError:(id)a3 completion:(id)a4
+- (void)_presentOnboardingError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
-  v10 = [v8 domain];
+  errorCopy = error;
+  completionCopy = completion;
+  v8 = errorCopy;
+  v9 = completionCopy;
+  domain = [v8 domain];
   v11 = *MEMORY[0x277CCBDB0];
-  if (([v10 isEqualToString:*MEMORY[0x277CCBDB0]] & 1) == 0)
+  if (([domain isEqualToString:*MEMORY[0x277CCBDB0]] & 1) == 0)
   {
 
 LABEL_5:
     v16 = v8;
-    v17 = [v16 domain];
-    if ([v17 isEqualToString:v11])
+    domain2 = [v16 domain];
+    if ([domain2 isEqualToString:v11])
     {
-      v18 = [v16 code];
+      code = [v16 code];
 
-      if (v18 == 110)
+      if (code == 110)
       {
         v14 = 0;
         v15 = @"RESPIRATORY_HEALTH_ONBOARDING_ALERT_LOCATION_UNAPPROVED_ERROR";
@@ -181,9 +181,9 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v12 = [v8 code];
+  code2 = [v8 code];
 
-  if (v12 != 109)
+  if (code2 != 109)
   {
     goto LABEL_5;
   }
@@ -213,10 +213,10 @@ LABEL_10:
   [(HKRPOnboardingPairViewController *)self presentViewController:v23 animated:1 completion:0];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(HKRPOnboardingPairViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(HKRPOnboardingPairViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate

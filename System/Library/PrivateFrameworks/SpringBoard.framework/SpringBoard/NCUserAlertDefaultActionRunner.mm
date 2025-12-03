@@ -1,14 +1,14 @@
 @interface NCUserAlertDefaultActionRunner
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7;
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation NCUserAlertDefaultActionRunner
 
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion
 {
-  v8 = a7;
-  v9 = [(NCUserAlertActionRunner *)self alertItem];
-  if (v9)
+  completionCopy = completion;
+  alertItem = [(NCUserAlertActionRunner *)self alertItem];
+  if (alertItem)
   {
     v10 = objc_alloc_init(SBLockScreenUnlockRequest);
     [(SBLockScreenUnlockRequest *)v10 setSource:10];
@@ -19,8 +19,8 @@
     v12[1] = 3221225472;
     v12[2] = __94__NCUserAlertDefaultActionRunner_executeAction_fromOrigin_endpoint_withParameters_completion___block_invoke;
     v12[3] = &unk_2783A9C98;
-    v13 = v9;
-    v14 = v8;
+    v13 = alertItem;
+    v14 = completionCopy;
     [v11 unlockWithRequest:v10 completion:v12];
   }
 }

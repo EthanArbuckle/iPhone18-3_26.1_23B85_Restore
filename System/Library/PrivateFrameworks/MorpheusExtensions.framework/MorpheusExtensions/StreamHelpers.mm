@@ -1,7 +1,7 @@
 @interface StreamHelpers
-+ (id)eventOfType:(Class)a3 jsonDictionary:(id)a4 error:(id *)a5;
++ (id)eventOfType:(Class)type jsonDictionary:(id)dictionary error:(id *)error;
 + (id)logger;
-+ (id)lookupStream:(id)a3;
++ (id)lookupStream:(id)stream;
 @end
 
 @implementation StreamHelpers
@@ -25,16 +25,16 @@ uint64_t __23__StreamHelpers_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)lookupStream:(id)a3
++ (id)lookupStream:(id)stream
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@":"];
+  streamCopy = stream;
+  v4 = [streamCopy componentsSeparatedByString:@":"];
   if ([v4 count] < 3)
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v7 = MEMORY[0x25F853310]();
-    v6 = [v7 streamWithIdentifier:v5 error:0];
+    v6 = [v7 streamWithIdentifier:firstObject error:0];
 
     if (!v6)
     {
@@ -43,15 +43,15 @@ uint64_t __23__StreamHelpers_logger__block_invoke()
       v27 = 0u;
       v28 = 0u;
       v8 = MEMORY[0x25F853310]();
-      v9 = [v8 allStreams];
+      allStreams = [v8 allStreams];
 
-      obj = v9;
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      obj = allStreams;
+      v10 = [allStreams countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v10)
       {
         v11 = v10;
         v12 = *v28;
-        v25 = v3;
+        v25 = streamCopy;
         while (2)
         {
           for (i = 0; i != v11; ++i)
@@ -62,38 +62,38 @@ uint64_t __23__StreamHelpers_logger__block_invoke()
             }
 
             v14 = *(*(&v27 + 1) + 8 * i);
-            v15 = [v14 configuration];
-            v16 = [v15 streamUUID];
-            v17 = [v16 UUIDString];
-            v18 = [v17 isEqual:v5];
+            configuration = [v14 configuration];
+            streamUUID = [configuration streamUUID];
+            uUIDString = [streamUUID UUIDString];
+            v18 = [uUIDString isEqual:firstObject];
 
             if (v18)
             {
               goto LABEL_20;
             }
 
-            v19 = [v14 configuration];
-            v20 = [v19 legacyNames];
-            v21 = [v20 containsObject:v5];
+            configuration2 = [v14 configuration];
+            legacyNames = [configuration2 legacyNames];
+            v21 = [legacyNames containsObject:firstObject];
 
             if (v21)
             {
               v22 = +[StreamHelpers logger];
               if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
               {
-                [(StreamHelpers *)v5 lookupStream:v14, v22];
+                [(StreamHelpers *)firstObject lookupStream:v14, v22];
               }
 
 LABEL_20:
               v6 = v14;
-              v3 = v25;
+              streamCopy = v25;
               goto LABEL_21;
             }
           }
 
           v11 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
           v6 = 0;
-          v3 = v25;
+          streamCopy = v25;
           if (v11)
           {
             continue;
@@ -114,10 +114,10 @@ LABEL_21:
 
   else
   {
-    v5 = +[StreamHelpers logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    firstObject = +[StreamHelpers logger];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      [(StreamHelpers *)v3 lookupStream:v5];
+      [(StreamHelpers *)streamCopy lookupStream:firstObject];
     }
 
     v6 = 0;
@@ -128,10 +128,10 @@ LABEL_21:
   return v6;
 }
 
-+ (id)eventOfType:(Class)a3 jsonDictionary:(id)a4 error:(id *)a5
++ (id)eventOfType:(Class)type jsonDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a4;
-  v8 = [[a3 alloc] initWithJSONDictionary:v7 error:a5];
+  dictionaryCopy = dictionary;
+  v8 = [[type alloc] initWithJSONDictionary:dictionaryCopy error:error];
 
   return v8;
 }

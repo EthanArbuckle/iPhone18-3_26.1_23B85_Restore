@@ -7,16 +7,16 @@
 
 + (id)mainBundleID
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
 
-  return [v2 bundleIdentifier];
+  return [mainBundle bundleIdentifier];
 }
 
 + (id)processName
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
 
-  return [v2 processName];
+  return [processInfo processName];
 }
 
 @end

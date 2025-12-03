@@ -1,11 +1,11 @@
 @interface AppBundleGradientBackgroundView
-- (_TtC8AppStore31AppBundleGradientBackgroundView)initWithCoder:(id)a3;
+- (_TtC8AppStore31AppBundleGradientBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AppBundleGradientBackgroundView
 
-- (_TtC8AppStore31AppBundleGradientBackgroundView)initWithCoder:(id)a3
+- (_TtC8AppStore31AppBundleGradientBackgroundView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface HMIMemoryAVAsset
 - (BOOL)loadValuesSynchronously;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (HMIMemoryAVAsset)initWithData:(id)a3;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (HMIMemoryAVAsset)initWithData:(id)data;
 @end
 
 @implementation HMIMemoryAVAsset
 
-- (HMIMemoryAVAsset)initWithData:(id)a3
+- (HMIMemoryAVAsset)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [MEMORY[0x277CBEBC0] URLWithString:@"hmi://in-memory"];
   v12.receiver = self;
   v12.super_class = HMIMemoryAVAsset;
@@ -16,31 +16,31 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_data, a3);
+    objc_storeStrong(&v7->_data, data);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("HMIMemoryAVAsset", v8);
 
-    v10 = [(HMIMemoryAVAsset *)v7 resourceLoader];
-    [v10 setDelegate:v7 queue:v9];
+    resourceLoader = [(HMIMemoryAVAsset *)v7 resourceLoader];
+    [resourceLoader setDelegate:v7 queue:v9];
   }
 
   return v7;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 contentInformationRequest];
-  v9 = v8;
-  if (v8)
+  loaderCopy = loader;
+  resourceCopy = resource;
+  contentInformationRequest = [resourceCopy contentInformationRequest];
+  v9 = contentInformationRequest;
+  if (contentInformationRequest)
   {
-    [v8 setContentType:*MEMORY[0x277CE5D98]];
+    [contentInformationRequest setContentType:*MEMORY[0x277CE5D98]];
     [v9 setContentLength:{-[NSData length](self->_data, "length")}];
     [v9 setByteRangeAccessSupported:1];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -55,26 +55,26 @@
     objc_autoreleasePoolPop(v10);
   }
 
-  v14 = [v7 dataRequest];
-  v15 = v14;
-  if (!v14)
+  dataRequest = [resourceCopy dataRequest];
+  v15 = dataRequest;
+  if (!dataRequest)
   {
     goto LABEL_13;
   }
 
-  if (([v14 requestedOffset] & 0x8000000000000000) == 0 && (objc_msgSend(v15, "requestedLength") & 0x8000000000000000) == 0)
+  if (([dataRequest requestedOffset] & 0x8000000000000000) == 0 && (objc_msgSend(v15, "requestedLength") & 0x8000000000000000) == 0)
   {
-    v16 = [v15 requestedOffset];
-    v17 = [v15 requestedLength] + v16;
+    requestedOffset = [v15 requestedOffset];
+    v17 = [v15 requestedLength] + requestedOffset;
     if (v17 <= [(NSData *)self->_data length])
     {
-      v19 = [(NSData *)self->_data bytes];
-      v20 = [v15 requestedOffset];
-      v21 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&v19[v20] length:objc_msgSend(v15 freeWhenDone:{"requestedLength"), 0}];
+      bytes = [(NSData *)self->_data bytes];
+      requestedOffset2 = [v15 requestedOffset];
+      v21 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&bytes[requestedOffset2] length:objc_msgSend(v15 freeWhenDone:{"requestedLength"), 0}];
       [v15 respondWithData:v21];
 
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
@@ -88,7 +88,7 @@
 
       objc_autoreleasePoolPop(v22);
 LABEL_13:
-      [v7 finishLoading];
+      [resourceCopy finishLoading];
       v18 = 1;
       goto LABEL_14;
     }
@@ -116,7 +116,7 @@ LABEL_14:
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {

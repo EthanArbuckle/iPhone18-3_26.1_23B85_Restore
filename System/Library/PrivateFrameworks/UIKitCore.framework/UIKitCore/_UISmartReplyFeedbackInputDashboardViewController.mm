@@ -1,8 +1,8 @@
 @interface _UISmartReplyFeedbackInputDashboardViewController
 - (_UISmartReplyFeedbackInputDashboardViewController)init;
-- (void)setAssistantBarStyle:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAssistantBarStyle:(int64_t)style;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -29,22 +29,22 @@
     [(_UISmartReplyFeedbackInputDashboardViewController *)v2 setBackdropView:v6];
 
     v7 = +[UIColor tertiarySystemFillColor];
-    v8 = [(_UISmartReplyFeedbackInputDashboardViewController *)v2 backdropView];
-    [v8 setBackgroundColor:v7];
+    backdropView = [(_UISmartReplyFeedbackInputDashboardViewController *)v2 backdropView];
+    [backdropView setBackgroundColor:v7];
   }
 
   return v2;
 }
 
-- (void)setAssistantBarStyle:(int64_t)a3
+- (void)setAssistantBarStyle:(int64_t)style
 {
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v8 = [v5 systemInputAssistantViewController];
+  systemInputAssistantViewController = [v5 systemInputAssistantViewController];
 
-  v6 = [v8 styleFromAssistantBarStyle:a3];
+  v6 = [systemInputAssistantViewController styleFromAssistantBarStyle:style];
   LODWORD(v5) = [v6 drawsPredictionBackdropView];
-  v7 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  [v7 setHidden:v5 ^ 1];
+  backdropView = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  [backdropView setHidden:v5 ^ 1];
 }
 
 - (void)viewDidLoad
@@ -53,24 +53,24 @@
   v54.receiver = self;
   v54.super_class = _UISmartReplyFeedbackInputDashboardViewController;
   [(UIViewController *)&v54 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  v4 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  [v3 addSubview:v4];
+  view = [(UIViewController *)self view];
+  backdropView = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  [view addSubview:backdropView];
 
-  v5 = [(UIViewController *)self view];
-  v6 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  [v5 addSubview:v6];
+  view2 = [(UIViewController *)self view];
+  inputDashboardView = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  [view2 addSubview:inputDashboardView];
 
-  v7 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  backdropView2 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  [backdropView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  inputDashboardView2 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  [inputDashboardView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v11 = 0.0;
   }
@@ -81,63 +81,63 @@
   }
 
   v37 = MEMORY[0x1E69977A0];
-  v53 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  v51 = [v53 centerYAnchor];
-  v52 = [(UIViewController *)self view];
-  v50 = [v52 centerYAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  backdropView3 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  centerYAnchor = [backdropView3 centerYAnchor];
+  view3 = [(UIViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v55[0] = v49;
-  v48 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  v46 = [v48 centerXAnchor];
-  v47 = [(UIViewController *)self view];
-  v45 = [v47 centerXAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  backdropView4 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  centerXAnchor = [backdropView4 centerXAnchor];
+  view4 = [(UIViewController *)self view];
+  centerXAnchor2 = [view4 centerXAnchor];
+  v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v55[1] = v44;
-  v43 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  v41 = [v43 widthAnchor];
-  v42 = [(UIViewController *)self view];
-  v40 = [v42 widthAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  backdropView5 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  widthAnchor = [backdropView5 widthAnchor];
+  view5 = [(UIViewController *)self view];
+  widthAnchor2 = [view5 widthAnchor];
+  v39 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v55[2] = v39;
-  v38 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
-  v35 = [v38 heightAnchor];
-  v36 = [(UIViewController *)self view];
-  v34 = [v36 heightAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  backdropView6 = [(_UISmartReplyFeedbackInputDashboardViewController *)self backdropView];
+  heightAnchor = [backdropView6 heightAnchor];
+  view6 = [(UIViewController *)self view];
+  heightAnchor2 = [view6 heightAnchor];
+  v33 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v55[3] = v33;
-  v32 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  v30 = [v32 centerYAnchor];
-  v31 = [(UIViewController *)self view];
-  v29 = [v31 centerYAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:v11];
+  inputDashboardView3 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  centerYAnchor3 = [inputDashboardView3 centerYAnchor];
+  view7 = [(UIViewController *)self view];
+  centerYAnchor4 = [view7 centerYAnchor];
+  v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:v11];
   v55[4] = v28;
-  v27 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  v25 = [v27 centerXAnchor];
-  v26 = [(UIViewController *)self view];
-  v24 = [v26 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  inputDashboardView4 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  centerXAnchor3 = [inputDashboardView4 centerXAnchor];
+  view8 = [(UIViewController *)self view];
+  centerXAnchor4 = [view8 centerXAnchor];
+  v23 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v55[5] = v23;
-  v22 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  v12 = [v22 widthAnchor];
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 widthAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  inputDashboardView5 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  widthAnchor3 = [inputDashboardView5 widthAnchor];
+  view9 = [(UIViewController *)self view];
+  widthAnchor4 = [view9 widthAnchor];
+  v15 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v55[6] = v15;
-  v16 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
-  v17 = [v16 heightAnchor];
-  v18 = [(UIViewController *)self view];
-  v19 = [v18 heightAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  inputDashboardView6 = [(_UISmartReplyFeedbackInputDashboardViewController *)self inputDashboardView];
+  heightAnchor3 = [inputDashboardView6 heightAnchor];
+  view10 = [(UIViewController *)self view];
+  heightAnchor4 = [view10 heightAnchor];
+  v20 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   v55[7] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:8];
   [v37 activateConstraints:v21];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _UISmartReplyFeedbackInputDashboardViewController;
-  [(UIViewController *)&v6 viewDidAppear:a3];
+  [(UIViewController *)&v6 viewDidAppear:appear];
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 reportSmartReplyFeedbackUIWasPresented];
 
@@ -149,11 +149,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _UISmartReplyFeedbackInputDashboardViewController;
-  [(UIViewController *)&v5 viewDidDisappear:a3];
+  [(UIViewController *)&v5 viewDidDisappear:disappear];
   v3 = UIFeedbackServiceLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {

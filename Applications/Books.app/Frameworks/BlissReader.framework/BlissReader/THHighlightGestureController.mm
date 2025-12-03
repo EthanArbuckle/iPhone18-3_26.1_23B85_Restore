@@ -1,22 +1,22 @@
 @interface THHighlightGestureController
-- (BOOL)_shouldBeginImmediateHighlightForGesture:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)p_canHighlightAtPoint:(CGPoint)a3 inView:(id)a4;
-- (BOOL)p_isLikelyHighlightTouchAtPoint:(CGPoint)a3 inView:(id)a4;
-- (BOOL)p_shouldDragOwnInteraction:(CGPoint)a3 rep:(id)a4;
-- (CGPoint)dragGestureRecognizer:(id)a3 requiredMovementForTouch:(id)a4;
-- (CGPoint)p_clampPointToLine:(CGPoint)a3;
-- (id)p_marginNoteHitRep:(CGPoint)a3;
+- (BOOL)_shouldBeginImmediateHighlightForGesture:(id)gesture;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)p_canHighlightAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)p_isLikelyHighlightTouchAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)p_shouldDragOwnInteraction:(CGPoint)interaction rep:(id)rep;
+- (CGPoint)dragGestureRecognizer:(id)recognizer requiredMovementForTouch:(id)touch;
+- (CGPoint)p_clampPointToLine:(CGPoint)line;
+- (id)p_marginNoteHitRep:(CGPoint)rep;
 - (void)dealloc;
-- (void)handleHighlightState:(int64_t)a3 atPoint:(CGPoint)a4;
-- (void)p_beginMagnification:(id)a3 atPoint:(CGPoint)a4;
-- (void)p_catalystNoteGesture:(id)a3;
-- (void)p_highlightGesture:(id)a3;
-- (void)p_likelyHighlightGesture:(id)a3;
-- (void)p_marginNoteGesture:(id)a3;
-- (void)p_moveLoupe:(CGPoint)a3 inRep:(id)a4;
-- (void)p_stopMagnification:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)handleHighlightState:(int64_t)state atPoint:(CGPoint)point;
+- (void)p_beginMagnification:(id)magnification atPoint:(CGPoint)point;
+- (void)p_catalystNoteGesture:(id)gesture;
+- (void)p_highlightGesture:(id)gesture;
+- (void)p_likelyHighlightGesture:(id)gesture;
+- (void)p_marginNoteGesture:(id)gesture;
+- (void)p_moveLoupe:(CGPoint)loupe inRep:(id)rep;
+- (void)p_stopMagnification:(id)magnification;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setUpGestureRecognizers;
 @end
 
@@ -62,10 +62,10 @@
   [(UILongPressGestureRecognizer *)[(THHighlightGestureController *)self marginNotesGestureRecognizer] setDelegate:self];
   [(THTimeoutDragGestureRecognizer *)[(THHighlightGestureController *)self highlightGestureRecognizer] requireGestureRecognizerToFail:[(THHighlightGestureController *)self marginNotesGestureRecognizer]];
   [(THTimeoutDragGestureRecognizer *)[(THHighlightGestureController *)self stylusHighlightGestureRecognizer] requireGestureRecognizerToFail:[(THHighlightGestureController *)self marginNotesGestureRecognizer]];
-  v6 = [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] canvasView];
-  v7 = [(THHighlightGestureController *)self marginNotesGestureRecognizer];
+  canvasView = [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] canvasView];
+  marginNotesGestureRecognizer = [(THHighlightGestureController *)self marginNotesGestureRecognizer];
 
-  [v6 addGestureRecognizer:v7];
+  [canvasView addGestureRecognizer:marginNotesGestureRecognizer];
 }
 
 - (void)dealloc
@@ -96,32 +96,32 @@
   [(THHighlightGestureController *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  [(THTimeoutDragGestureRecognizer *)[(THHighlightGestureController *)self highlightGestureRecognizer] setEnabled:a3];
-  [(THTimeoutLongPressGestureRecognizer *)[(THHighlightGestureController *)self likelyHighlightGestureRecognizer] setEnabled:v3];
-  [(UILongPressGestureRecognizer *)[(THHighlightGestureController *)self marginNotesGestureRecognizer] setEnabled:v3];
-  v5 = [(THHighlightGestureController *)self catalystNotesGestureRecognizer];
+  enabledCopy = enabled;
+  [(THTimeoutDragGestureRecognizer *)[(THHighlightGestureController *)self highlightGestureRecognizer] setEnabled:enabled];
+  [(THTimeoutLongPressGestureRecognizer *)[(THHighlightGestureController *)self likelyHighlightGestureRecognizer] setEnabled:enabledCopy];
+  [(UILongPressGestureRecognizer *)[(THHighlightGestureController *)self marginNotesGestureRecognizer] setEnabled:enabledCopy];
+  catalystNotesGestureRecognizer = [(THHighlightGestureController *)self catalystNotesGestureRecognizer];
 
-  [(UILongPressGestureRecognizer *)v5 setEnabled:v3];
+  [(UILongPressGestureRecognizer *)catalystNotesGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (CGPoint)p_clampPointToLine:(CGPoint)a3
+- (CGPoint)p_clampPointToLine:(CGPoint)line
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(THHighlightGestureController *)self trackingRep];
+  y = line.y;
+  x = line.x;
+  trackingRep = [(THHighlightGestureController *)self trackingRep];
   [(THWPRep *)[(THHighlightGestureController *)self trackingRep] convertNaturalPointFromUnscaledCanvas:x, y];
-  [(THWPRep *)v6 pinToNaturalBounds:1 andLastLineFragment:?];
+  [(THWPRep *)trackingRep pinToNaturalBounds:1 andLastLineFragment:?];
   v8 = v7;
   v10 = v9;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(THHighlightGestureController *)self trackingRep];
-  if (v11)
+  trackingRep2 = [(THHighlightGestureController *)self trackingRep];
+  if (trackingRep2)
   {
-    [(THWPRep *)v11 lineMetricsAtPoint:v8, v10];
+    [(THWPRep *)trackingRep2 lineMetricsAtPoint:v8, v10];
     v13 = 0;
     v12 = 0;
     v15 = 0;
@@ -151,9 +151,9 @@
   return result;
 }
 
-- (void)p_beginMagnification:(id)a3 atPoint:(CGPoint)a4
+- (void)p_beginMagnification:(id)magnification atPoint:(CGPoint)point
 {
-  [(THHighlightGestureController *)self p_clampPointToLine:a4.x, a4.y];
+  [(THHighlightGestureController *)self p_clampPointToLine:point.x, point.y];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertUnscaledToBoundsPoint:v6, v7];
   self->mMagnifying = 1;
   [+[TSWPTextMagnifierHorizontalRanged sharedRangedMagnifier](TSWPTextMagnifierHorizontalRanged "sharedRangedMagnifier")];
@@ -162,9 +162,9 @@
   [v10 endUISession];
 }
 
-- (void)p_moveLoupe:(CGPoint)a3 inRep:(id)a4
+- (void)p_moveLoupe:(CGPoint)loupe inRep:(id)rep
 {
-  [(THHighlightGestureController *)self p_clampPointToLine:a4, a3.x, a3.y];
+  [(THHighlightGestureController *)self p_clampPointToLine:rep, loupe.x, loupe.y];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertUnscaledToBoundsPoint:v5, v6];
   v8 = v7;
   v10 = v9;
@@ -173,7 +173,7 @@
   [v11 setMagnificationPoint:{v8, v10}];
 }
 
-- (void)p_stopMagnification:(id)a3
+- (void)p_stopMagnification:(id)magnification
 {
   if (self->mMagnifying)
   {
@@ -185,17 +185,17 @@
   }
 }
 
-- (void)handleHighlightState:(int64_t)a3 atPoint:(CGPoint)a4
+- (void)handleHighlightState:(int64_t)state atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] endEditing];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:x, y];
   v10 = v8;
   v11 = v9;
-  if (a3 > 3)
+  if (state > 3)
   {
-    if ((a3 - 4) < 2)
+    if ((state - 4) < 2)
     {
       [(THHighlightGestureController *)self p_stopMagnification:[(THHighlightGestureController *)self trackingRep]];
       if (!self->mTrackingHighlight)
@@ -207,19 +207,19 @@ LABEL_11:
         return;
       }
 
-      v13 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+      highlightController = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
       v14 = v10;
       v15 = v11;
       v16 = 0;
 LABEL_10:
-      [(THWPHighlightController *)v13 endDragHighlightAtPoint:v16 accept:v14, v15];
+      [(THWPHighlightController *)highlightController endDragHighlightAtPoint:v16 accept:v14, v15];
       goto LABEL_11;
     }
 
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     self->mHighlighting = 1;
     self->mLongPressGestureStartPoint.x = v8;
@@ -243,17 +243,17 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       mTrackingHighlight = self->mTrackingHighlight;
-      v13 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+      highlightController = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
       v14 = v10;
       v15 = v11;
       if (!mTrackingHighlight)
       {
-        if ([(THWPHighlightController *)v13 isCanvasPointOnHighlight:v10, v11])
+        if ([(THWPHighlightController *)highlightController isCanvasPointOnHighlight:v10, v11])
         {
           objc_opt_class();
           [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] beginEditingRep:[(THHighlightGestureController *)self trackingRep]];
@@ -282,22 +282,22 @@ LABEL_18:
   }
 
 LABEL_26:
-  v20 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+  highlightController2 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
 
-  [(THWPHighlightController *)v20 moveDragHighlightToPoint:v10, v11];
+  [(THWPHighlightController *)highlightController2 moveDragHighlightToPoint:v10, v11];
 }
 
-- (void)p_highlightGesture:(id)a3
+- (void)p_highlightGesture:(id)gesture
 {
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] endEditing];
-  v5 = [a3 state];
-  [a3 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+  state = [gesture state];
+  [gesture locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v6, v7];
   v10 = v8;
   v11 = v9;
-  if (v5 > 3)
+  if (state > 3)
   {
-    if ((v5 - 4) < 2)
+    if ((state - 4) < 2)
     {
       [(THHighlightGestureController *)self p_stopMagnification:[(THHighlightGestureController *)self trackingRep]];
       if (!self->mTrackingHighlight)
@@ -309,19 +309,19 @@ LABEL_13:
         return;
       }
 
-      v13 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+      highlightController = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
       v14 = v10;
       v15 = v11;
       v16 = 0;
 LABEL_12:
-      [(THWPHighlightController *)v13 endDragHighlightAtPoint:v16 accept:v14, v15];
+      [(THWPHighlightController *)highlightController endDragHighlightAtPoint:v16 accept:v14, v15];
       goto LABEL_13;
     }
 
     goto LABEL_32;
   }
 
-  if (v5 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
     self->mHighlighting = 1;
     self->mLongPressGestureStartPoint.x = v8;
@@ -336,12 +336,12 @@ LABEL_12:
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:a3])
+      if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:gesture])
       {
         [(THHighlightGestureController *)self p_beginMagnification:[(THHighlightGestureController *)self trackingRep] atPoint:v10, v11];
       }
 
-      if ([(THHighlightGestureController *)self _shouldBeginImmediateHighlightForGesture:a3])
+      if ([(THHighlightGestureController *)self _shouldBeginImmediateHighlightForGesture:gesture])
       {
         goto LABEL_28;
       }
@@ -350,23 +350,23 @@ LABEL_12:
 
   else
   {
-    if (v5 != &dword_0 + 2)
+    if (state != &dword_0 + 2)
     {
-      if (v5 == &dword_0 + 3)
+      if (state == &dword_0 + 3)
       {
-        if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:a3])
+        if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:gesture])
         {
           [(THHighlightGestureController *)self p_stopMagnification:[(THHighlightGestureController *)self trackingRep]];
         }
 
         mTrackingHighlight = self->mTrackingHighlight;
-        v13 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+        highlightController = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
         if (!mTrackingHighlight)
         {
-          if ([(THWPHighlightController *)v13 isCanvasPointOnHighlight:v10, v11])
+          if ([(THWPHighlightController *)highlightController isCanvasPointOnHighlight:v10, v11])
           {
             objc_opt_class();
-            v21 = (objc_opt_isKindOfClass() & 1) != 0 ? [a3 isStylus] : 0;
+            v21 = (objc_opt_isKindOfClass() & 1) != 0 ? [gesture isStylus] : 0;
             objc_opt_class();
             [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] beginEditingRep:[(THHighlightGestureController *)self trackingRep]];
             v22 = TSUDynamicCast();
@@ -399,20 +399,20 @@ LABEL_32:
       return;
     }
 
-    if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:a3])
+    if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:gesture])
     {
       [(THHighlightGestureController *)self p_moveLoupe:[(THHighlightGestureController *)self trackingRep] inRep:v10, v11];
     }
 
     objc_opt_class();
-    if (([TSUDynamicCast() hasMovedDistance:{10.6400003, 16.0}] & 1) != 0 || -[THHighlightGestureController _shouldBeginImmediateHighlightForGesture:](self, "_shouldBeginImmediateHighlightForGesture:", a3))
+    if (([TSUDynamicCast() hasMovedDistance:{10.6400003, 16.0}] & 1) != 0 || -[THHighlightGestureController _shouldBeginImmediateHighlightForGesture:](self, "_shouldBeginImmediateHighlightForGesture:", gesture))
     {
       if (self->mTrackingHighlight)
       {
 LABEL_29:
-        v17 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
+        highlightController2 = [(THWPRep *)[(THHighlightGestureController *)self trackingRep] highlightController];
 
-        [(THWPHighlightController *)v17 moveDragHighlightToPoint:v10, v11];
+        [(THWPHighlightController *)highlightController2 moveDragHighlightToPoint:v10, v11];
         return;
       }
 
@@ -430,7 +430,7 @@ LABEL_28:
   }
 }
 
-- (BOOL)_shouldBeginImmediateHighlightForGesture:(id)a3
+- (BOOL)_shouldBeginImmediateHighlightForGesture:(id)gesture
 {
   objc_opt_class();
   v3 = TSUDynamicCast();
@@ -438,21 +438,21 @@ LABEL_28:
   return [v3 isStylus];
 }
 
-- (void)p_likelyHighlightGesture:(id)a3
+- (void)p_likelyHighlightGesture:(id)gesture
 {
-  v5 = [a3 state];
-  if ((v5 - 3) >= 3)
+  state = [gesture state];
+  if ((state - 3) >= 3)
   {
-    if (v5 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
-      [a3 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+      [gesture locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
       [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v6, v7];
       v9 = v8;
       v11 = v10;
       objc_opt_class();
       [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] hitRep:v9, v11];
       [(THHighlightGestureController *)self setTrackingRep:TSUDynamicCast()];
-      if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:a3])
+      if ([(THHighlightGestureController *)self _shouldShowMagnifierForGesture:gesture])
       {
         [(THHighlightGestureController *)self p_beginMagnification:[(THHighlightGestureController *)self trackingRep] atPoint:v9, v11];
       }
@@ -475,28 +475,28 @@ LABEL_28:
   }
 }
 
-- (id)p_marginNoteHitRep:(CGPoint)a3
+- (id)p_marginNoteHitRep:(CGPoint)rep
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(THHighlightGestureController *)self interactiveCanvasController];
+  y = rep.y;
+  x = rep.x;
+  interactiveCanvasController = [(THHighlightGestureController *)self interactiveCanvasController];
 
-  return [(THInteractiveCanvasController *)v5 hitRep:0 withGesture:&stru_45D040 passingTest:x, y];
+  return [(THInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:&stru_45D040 passingTest:x, y];
 }
 
-- (void)p_marginNoteGesture:(id)a3
+- (void)p_marginNoteGesture:(id)gesture
 {
-  [a3 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+  [gesture locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v5, v6];
   v8 = v7;
   v10 = v9;
-  v11 = [a3 state];
-  if ((v11 - 3) < 2)
+  state = [gesture state];
+  if ((state - 3) < 2)
   {
     [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] convertCanvasPointToOwnerPoint:v8, v10];
     v19 = [-[THMarginNotesOwner marginNotesController](-[THHighlightGestureController trackingNotesOwner](self "trackingNotesOwner")];
-    v20 = [v19 annotation];
-    if (v20 == [(AEMarginNote *)[(THHighlightGestureController *)self trackingMarginNote] annotation])
+    annotation = [v19 annotation];
+    if (annotation == [(AEMarginNote *)[(THHighlightGestureController *)self trackingMarginNote] annotation])
     {
       [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] delegate];
       [TSUProtocolCast() interactiveCanvasControllerWillShowNoteEditor:{-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController")}];
@@ -509,28 +509,28 @@ LABEL_28:
     [(THHighlightGestureController *)self setTrackingNotesOwner:0];
   }
 
-  else if (v11 == &dword_0 + 2)
+  else if (state == &dword_0 + 2)
   {
     [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] convertCanvasPointToOwnerPoint:v8, v10];
     v23 = [-[THMarginNotesOwner marginNotesController](-[THHighlightGestureController trackingNotesOwner](self "trackingNotesOwner")];
-    v24 = [v23 annotation];
-    v25 = [(AEMarginNote *)[(THHighlightGestureController *)self trackingMarginNote] annotation];
-    v16 = [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] marginNotesController];
-    if (v24 == v25)
+    annotation2 = [v23 annotation];
+    annotation3 = [(AEMarginNote *)[(THHighlightGestureController *)self trackingMarginNote] annotation];
+    marginNotesController = [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] marginNotesController];
+    if (annotation2 == annotation3)
     {
-      v15 = v23;
+      trackingMarginNote = v23;
 LABEL_20:
 
-      [v16 highlightMarginNote:v15];
+      [marginNotesController highlightMarginNote:trackingMarginNote];
       return;
     }
 
-    [v16 unhighlightAllMarginNotes];
+    [marginNotesController unhighlightAllMarginNotes];
   }
 
   else
   {
-    if (v11 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
       [(THHighlightGestureController *)self p_marginNoteHitRep:v8, v10];
       -[THHighlightGestureController setTrackingNotesOwner:](self, "setTrackingNotesOwner:", [TSUProtocolCast() marginNotesOwner]);
@@ -541,9 +541,9 @@ LABEL_20:
 
       [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] convertCanvasPointToOwnerPoint:v8, v10];
       -[THHighlightGestureController setTrackingMarginNote:](self, "setTrackingMarginNote:", [-[THMarginNotesOwner marginNotesController](-[THHighlightGestureController trackingNotesOwner](self "trackingNotesOwner")]);
-      v14 = [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] marginNotesController];
-      v15 = [(THHighlightGestureController *)self trackingMarginNote];
-      v16 = v14;
+      marginNotesController2 = [(THMarginNotesOwner *)[(THHighlightGestureController *)self trackingNotesOwner] marginNotesController];
+      trackingMarginNote = [(THHighlightGestureController *)self trackingMarginNote];
+      marginNotesController = marginNotesController2;
       goto LABEL_20;
     }
 
@@ -555,9 +555,9 @@ LABEL_20:
   }
 }
 
-- (void)p_catalystNoteGesture:(id)a3
+- (void)p_catalystNoteGesture:(id)gesture
 {
-  [a3 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+  [gesture locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
   v6 = v5;
   v8 = v7;
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v5, v7];
@@ -581,15 +581,15 @@ LABEL_20:
   if (!v16)
   {
     v17 = v15;
-    v18 = [a3 state];
-    if (v18 - 1 >= 2 && v18 != &dword_4)
+    state = [gesture state];
+    if (state - 1 >= 2 && state != &dword_4)
     {
-      if (v18 == (&dword_0 + 3))
+      if (state == (&dword_0 + 3))
       {
-        v19 = [(THHighlightGestureController *)self interactiveCanvasController];
-        v20 = [v17 annotationUuid];
+        interactiveCanvasController = [(THHighlightGestureController *)self interactiveCanvasController];
+        annotationUuid = [v17 annotationUuid];
 
-        [(THInteractiveCanvasController *)v19 presentMenuAtCanvasPoint:v20 forAnnotationUUID:v6, v8];
+        [(THInteractiveCanvasController *)interactiveCanvasController presentMenuAtCanvasPoint:annotationUuid forAnnotationUUID:v6, v8];
       }
 
       else
@@ -604,25 +604,25 @@ LABEL_20:
   }
 }
 
-- (BOOL)p_shouldDragOwnInteraction:(CGPoint)a3 rep:(id)a4
+- (BOOL)p_shouldDragOwnInteraction:(CGPoint)interaction rep:(id)rep
 {
-  [a4 convertNaturalPointFromUnscaledCanvas:{a3.x, a3.y}];
+  [rep convertNaturalPointFromUnscaledCanvas:{interaction.x, interaction.y}];
 
-  return [a4 isPointInSelectedArea:?];
+  return [rep isPointInSelectedArea:?];
 }
 
-- (BOOL)p_canHighlightAtPoint:(CGPoint)a3 inView:(id)a4
+- (BOOL)p_canHighlightAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(THHighlightGestureController *)self interactiveCanvasController];
-  if (![(THInteractiveCanvasController *)v8 supportsWritingHighlights])
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(THHighlightGestureController *)self interactiveCanvasController];
+  if (![(THInteractiveCanvasController *)interactiveCanvasController supportsWritingHighlights])
   {
     return 0;
   }
 
-  [a4 convertPoint:-[THInteractiveCanvasController canvasView](v8 toView:{"canvasView"), x, y}];
-  [(THInteractiveCanvasController *)v8 convertBoundsToUnscaledPoint:?];
+  [view convertPoint:-[THInteractiveCanvasController canvasView](interactiveCanvasController toView:{"canvasView"), x, y}];
+  [(THInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:?];
   v10 = v9;
   v12 = v11;
   objc_opt_class();
@@ -639,23 +639,23 @@ LABEL_20:
     return 0;
   }
 
-  v16 = [v14 highlightController];
+  highlightController = [v14 highlightController];
 
-  return [v16 shouldBeginDragHighlightAtPoint:{v10, v12}];
+  return [highlightController shouldBeginDragHighlightAtPoint:{v10, v12}];
 }
 
-- (BOOL)p_isLikelyHighlightTouchAtPoint:(CGPoint)a3 inView:(id)a4
+- (BOOL)p_isLikelyHighlightTouchAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(THHighlightGestureController *)self interactiveCanvasController];
-  [a4 convertPoint:-[THInteractiveCanvasController canvasView](v7 toView:{"canvasView"), x, y}];
-  [(THInteractiveCanvasController *)v7 convertBoundsToUnscaledPoint:?];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(THHighlightGestureController *)self interactiveCanvasController];
+  [view convertPoint:-[THInteractiveCanvasController canvasView](interactiveCanvasController toView:{"canvasView"), x, y}];
+  [(THInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:?];
   v10 = v8;
   v11 = v9;
-  if (v7)
+  if (interactiveCanvasController)
   {
-    [(THInteractiveCanvasController *)v7 wordMetricsAtPoint:v8, v9];
+    [(THInteractiveCanvasController *)interactiveCanvasController wordMetricsAtPoint:v8, v9];
     v13 = 0;
     v12 = 0;
     v15 = 0;
@@ -685,28 +685,28 @@ LABEL_20:
   return CGRectContainsPoint(v21, v19);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (![(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] supportsReadingHighlights]|| ([(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] currentlyScrolling]& 1) != 0 || ([(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] currentlyWaitingOnThreadedLayoutAndRender]& 1) != 0)
   {
     return 0;
   }
 
-  [a4 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+  [touch locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
   v9 = v8;
   v11 = v10;
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v8, v10];
   v13 = v12;
   v15 = v14;
-  if ([(THHighlightGestureController *)self highlightGestureRecognizer]== a3)
+  if ([(THHighlightGestureController *)self highlightGestureRecognizer]== recognizer)
   {
 LABEL_12:
-    v16 = [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] canvasView];
+    canvasView = [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] canvasView];
 
-    return [(THHighlightGestureController *)self p_canHighlightAtPoint:v16 inView:v9, v11];
+    return [(THHighlightGestureController *)self p_canHighlightAtPoint:canvasView inView:v9, v11];
   }
 
-  if ([(THHighlightGestureController *)self stylusHighlightGestureRecognizer]== a3)
+  if ([(THHighlightGestureController *)self stylusHighlightGestureRecognizer]== recognizer)
   {
     objc_opt_class();
     [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] hitRep:v9, v11];
@@ -718,11 +718,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([(THHighlightGestureController *)self likelyHighlightGestureRecognizer]!= a3)
+  if ([(THHighlightGestureController *)self likelyHighlightGestureRecognizer]!= recognizer)
   {
-    if ([(THHighlightGestureController *)self marginNotesGestureRecognizer]!= a3)
+    if ([(THHighlightGestureController *)self marginNotesGestureRecognizer]!= recognizer)
     {
-      if ([(THHighlightGestureController *)self catalystNotesGestureRecognizer]!= a3)
+      if ([(THHighlightGestureController *)self catalystNotesGestureRecognizer]!= recognizer)
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
@@ -731,15 +731,15 @@ LABEL_12:
     }
 
     [(THHighlightGestureController *)self p_marginNoteHitRep:v13, v15];
-    v17 = [TSUProtocolCast() marginNotesOwner];
-    [v17 convertCanvasPointToOwnerPoint:{v13, v15}];
-    if (v17)
+    marginNotesOwner = [TSUProtocolCast() marginNotesOwner];
+    [marginNotesOwner convertCanvasPointToOwnerPoint:{v13, v15}];
+    if (marginNotesOwner)
     {
       v20 = v18;
       v21 = v19;
-      v22 = [v17 marginNotesController];
+      marginNotesController = [marginNotesOwner marginNotesController];
 
-      return [v22 hasMarginNoteAtPoint:{v20, v21}];
+      return [marginNotesController hasMarginNoteAtPoint:{v20, v21}];
     }
 
     return 0;
@@ -755,15 +755,15 @@ LABEL_12:
   return [(THHighlightGestureController *)self p_isLikelyHighlightTouchAtPoint:v9 inView:v11];
 }
 
-- (CGPoint)dragGestureRecognizer:(id)a3 requiredMovementForTouch:(id)a4
+- (CGPoint)dragGestureRecognizer:(id)recognizer requiredMovementForTouch:(id)touch
 {
-  [a4 locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
+  [touch locationInView:{-[THInteractiveCanvasController canvasView](-[THHighlightGestureController interactiveCanvasController](self, "interactiveCanvasController"), "canvasView")}];
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] convertBoundsToUnscaledPoint:v6, v7];
   v9 = v8;
   v11 = v10;
   objc_opt_class();
   [(THInteractiveCanvasController *)[(THHighlightGestureController *)self interactiveCanvasController] hitRep:v9, v11];
-  if (([objc_msgSend(TSUDynamicCast() "highlightController")] & 1) != 0 || -[THHighlightGestureController _shouldBeginImmediateHighlightForGesture:](self, "_shouldBeginImmediateHighlightForGesture:", a3))
+  if (([objc_msgSend(TSUDynamicCast() "highlightController")] & 1) != 0 || -[THHighlightGestureController _shouldBeginImmediateHighlightForGesture:](self, "_shouldBeginImmediateHighlightForGesture:", recognizer))
   {
     x = CGPointZero.x;
     y = CGPointZero.y;

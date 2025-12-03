@@ -9,8 +9,8 @@
 + (id)hkmd_requestForNotification:()HKMedications
 {
   v4 = a3;
-  v5 = [(UNNotificationRequest *)a1 _requestIDForNotification:v4];
-  v6 = [(UNNotificationRequest *)a1 _contentForNotification:v4];
+  v5 = [(UNNotificationRequest *)self _requestIDForNotification:v4];
+  v6 = [(UNNotificationRequest *)self _contentForNotification:v4];
 
   v7 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v5 content:v6 trigger:0];
 

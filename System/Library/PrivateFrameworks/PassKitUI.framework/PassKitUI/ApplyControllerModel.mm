@@ -1,14 +1,14 @@
 @interface ApplyControllerModel
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation ApplyControllerModel
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD334178(a3);
+  flowCopy = flow;
+  selfCopy = self;
+  sub_1BD334178(flow);
 }
 
 @end

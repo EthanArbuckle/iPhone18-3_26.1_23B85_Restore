@@ -1,8 +1,8 @@
 @interface SDPommesSynonyms
-- (BOOL)_loadSynonymsFromFile:(id)a3 isFirstPass:(BOOL)a4 isDate:(BOOL)a5 error:(id *)a6;
+- (BOOL)_loadSynonymsFromFile:(id)file isFirstPass:(BOOL)pass isDate:(BOOL)date error:(id *)error;
 - (SDPommesSynonyms)init;
-- (id)_cleanWord:(id)a3 unacceptableCharSet:(id)a4;
-- (id)generateDateSynonymsFromToken:(id)a3 previousToken:(id)a4 isOrdinalToken:(BOOL *)a5;
+- (id)_cleanWord:(id)word unacceptableCharSet:(id)set;
+- (id)generateDateSynonymsFromToken:(id)token previousToken:(id)previousToken isOrdinalToken:(BOOL *)ordinalToken;
 - (void)loadDateSynonymDictionary;
 - (void)loadFirstPassSynonymDictionary;
 - (void)loadSecondPassSynonymDictionary;
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (id)_cleanWord:(id)a3 unacceptableCharSet:(id)a4
+- (id)_cleanWord:(id)word unacceptableCharSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v5, "rangeOfCharacterFromSet:", v6) == 0x7FFFFFFFFFFFFFFFLL)
+  wordCopy = word;
+  setCopy = set;
+  if ([wordCopy length] && objc_msgSend(wordCopy, "rangeOfCharacterFromSet:", setCopy) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 localizedLowercaseString];
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    localizedLowercaseString = [wordCopy localizedLowercaseString];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v9 = [localizedLowercaseString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   else
@@ -45,22 +45,22 @@
   return v9;
 }
 
-- (BOOL)_loadSynonymsFromFile:(id)a3 isFirstPass:(BOOL)a4 isDate:(BOOL)a5 error:(id *)a6
+- (BOOL)_loadSynonymsFromFile:(id)file isFirstPass:(BOOL)pass isDate:(BOOL)date error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  dateCopy = date;
+  passCopy = pass;
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  fileCopy = file;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v53 = 4;
-  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:v10 usedEncoding:&v53 error:a6];
+  v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:fileCopy usedEncoding:&v53 error:error];
   v13 = v12;
-  if (*a6)
+  if (*error)
   {
     v48 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
-      [SDPommesSynonyms _loadSynonymsFromFile:v10 isFirstPass:a6 isDate:? error:?];
+      [SDPommesSynonyms _loadSynonymsFromFile:fileCopy isFirstPass:error isDate:? error:?];
     }
 
 LABEL_4:
@@ -79,13 +79,13 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v40 = v7;
-  v41 = v8;
-  v48 = v43 = v10;
+  v40 = dateCopy;
+  v41 = passCopy;
+  v48 = v43 = fileCopy;
   v15 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", "}];
-  v16 = [MEMORY[0x277CCA900] newlineCharacterSet];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
   v42 = v13;
-  v17 = [v13 componentsSeparatedByCharactersInSet:v16];
+  v17 = [v13 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v51 = 0u;
   v52 = 0u;
@@ -190,7 +190,7 @@ LABEL_4:
   }
 
   v13 = v42;
-  v10 = v43;
+  fileCopy = v43;
   v36 = *p_firstPassSynonymDictionary;
   *p_firstPassSynonymDictionary = v11;
 
@@ -234,30 +234,30 @@ LABEL_35:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateDateSynonymsFromToken:(id)a3 previousToken:(id)a4 isOrdinalToken:(BOOL *)a5
+- (id)generateDateSynonymsFromToken:(id)token previousToken:(id)previousToken isOrdinalToken:(BOOL *)ordinalToken
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
+  tokenCopy = token;
+  previousTokenCopy = previousToken;
+  array = [MEMORY[0x277CBEB18] array];
   if (generateDateSynonymsFromToken_previousToken_isOrdinalToken__onceToken != -1)
   {
     [SDPommesSynonyms generateDateSynonymsFromToken:previousToken:isOrdinalToken:];
   }
 
-  v11 = [(SDPommesSynonyms *)self getDateSynonymsForWord:v8];
+  v11 = [(SDPommesSynonyms *)self getDateSynonymsForWord:tokenCopy];
   if (v11)
   {
-    [v10 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
   }
 
-  v12 = [generateDateSynonymsFromToken_previousToken_isOrdinalToken__ordinalIndicators containsObject:v8];
-  if (v9 && v12)
+  v12 = [generateDateSynonymsFromToken_previousToken_isOrdinalToken__ordinalIndicators containsObject:tokenCopy];
+  if (previousTokenCopy && v12)
   {
-    *a5 = 1;
-    [v10 addObject:v9];
+    *ordinalToken = 1;
+    [array addObject:previousTokenCopy];
   }
 
-  return v10;
+  return array;
 }
 
 uint64_t __79__SDPommesSynonyms_generateDateSynonymsFromToken_previousToken_isOrdinalToken___block_invoke()

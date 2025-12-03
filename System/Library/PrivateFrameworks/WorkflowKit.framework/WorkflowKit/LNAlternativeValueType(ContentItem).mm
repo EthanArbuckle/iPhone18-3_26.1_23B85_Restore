@@ -12,7 +12,7 @@
 
 - (id)memberTypeParametersFromParameterMetadata:()ContentItem
 {
-  v1 = [a1 memberTypeParameterDefinitionsFromParameterMetadata:?];
+  v1 = [self memberTypeParameterDefinitionsFromParameterMetadata:?];
   v2 = [v1 if_compactMap:&__block_literal_global_71979];
 
   return v2;
@@ -48,7 +48,7 @@
 
     v12 = v8;
 
-    v13 = [v12 identifier];
+    identifier = [v12 identifier];
     goto LABEL_28;
   }
 
@@ -77,7 +77,7 @@
 
     v12 = v10;
 
-    v13 = [v12 enumerationIdentifier];
+    identifier = [v12 enumerationIdentifier];
     goto LABEL_28;
   }
 
@@ -119,9 +119,9 @@ LABEL_26:
 LABEL_27:
     v12 = v14;
 
-    v13 = [v12 typeIdentifierAsString];
+    identifier = [v12 typeIdentifierAsString];
 LABEL_28:
-    v15 = v13;
+    v15 = identifier;
 
     v16 = [v6 stringByAppendingFormat:@"_%@", v15];
 
@@ -166,9 +166,9 @@ LABEL_28:
 
     v21 = v20;
 
-    v22 = [v21 memberValueType];
+    memberValueType = [v21 memberValueType];
 
-    v17 = [a1 uniqueTypeNameForValueType:v22];
+    v17 = [self uniqueTypeNameForValueType:memberValueType];
 
     goto LABEL_30;
   }
@@ -184,20 +184,20 @@ LABEL_30:
 - (id)memberTypeParameterDefinitionsFromParameterMetadata:()ContentItem
 {
   v4 = a3;
-  v5 = [v4 typeSpecificMetadata];
-  v6 = [v5 objectForKey:@"LNValueTypeSpecificMetadataKeyLinkUnionMetadata"];
+  typeSpecificMetadata = [v4 typeSpecificMetadata];
+  v6 = [typeSpecificMetadata objectForKey:@"LNValueTypeSpecificMetadataKeyLinkUnionMetadata"];
 
-  v7 = [a1 memberValueTypes];
+  memberValueTypes = [self memberValueTypes];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__LNAlternativeValueType_ContentItem__memberTypeParameterDefinitionsFromParameterMetadata___block_invoke;
   v12[3] = &unk_1E837F4A0;
   v13 = v6;
   v14 = v4;
-  v15 = a1;
+  selfCopy = self;
   v8 = v4;
   v9 = v6;
-  v10 = [v7 if_compactMap:v12];
+  v10 = [memberValueTypes if_compactMap:v12];
 
   return v10;
 }
@@ -210,15 +210,15 @@ LABEL_30:
     v4 = a3;
     v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
 
-    v6 = [v5 teamIdentifier];
+    teamIdentifier = [v5 teamIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    teamIdentifier = 0;
   }
 
-  return v6;
+  return teamIdentifier;
 }
 
 - (id)wf_contentCollectionFromLinkValue:()ContentItem appBundleIdentifier:displayedBundleIdentifier:
@@ -231,7 +231,7 @@ LABEL_30:
     v9 = 136315650;
     v10 = "[LNAlternativeValueType(ContentItem) wf_contentCollectionFromLinkValue:appBundleIdentifier:displayedBundleIdentifier:]";
     v11 = 2112;
-    v12 = a1;
+    selfCopy = self;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_FAULT, "%s [%@ %@] should not be reachable; there is no such thing as an LNAlternativeValue.", &v9, 0x20u);
@@ -246,14 +246,14 @@ LABEL_30:
 - (id)wf_contentItemClassesWithAppBundleIdentifier:()ContentItem
 {
   v4 = a3;
-  v5 = [a1 memberValueTypes];
+  memberValueTypes = [self memberValueTypes];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__LNAlternativeValueType_ContentItem__wf_contentItemClassesWithAppBundleIdentifier___block_invoke;
   v9[3] = &unk_1E837F478;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 if_flatMap:v9];
+  v7 = [memberValueTypes if_flatMap:v9];
 
   return v7;
 }
@@ -268,7 +268,7 @@ LABEL_30:
     v8 = 136315650;
     v9 = "[LNAlternativeValueType(ContentItem) wf_contentItemClassWithAppBundleIdentifier:]";
     v10 = 2112;
-    v11 = a1;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_FAULT, "%s [%@ %@] should not be called; use wf_contentItemClasses...", &v8, 0x20u);

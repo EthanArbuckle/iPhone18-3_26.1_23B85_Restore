@@ -1,77 +1,77 @@
 @interface WFDateFieldParameterState
 + (id)processingValueClasses;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFDateFieldParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableStringParameterState *)self variableString];
-  v12 = [v11 variablesOfType:@"Ask"];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variableString = [(WFVariableStringParameterState *)self variableString];
+  v12 = [variableString variablesOfType:@"Ask"];
   v13 = [v12 count];
 
-  v14 = [v8 parameter];
-  v15 = [v14 resultType];
+  parameter = [contextCopy parameter];
+  resultType = [parameter resultType];
 
-  if (([v15 isEqualToString:@"String"] & 1) != 0 || v13)
+  if (([resultType isEqualToString:@"String"] & 1) != 0 || v13)
   {
     v30.receiver = self;
     v30.super_class = WFDateFieldParameterState;
-    [(WFVariableStringParameterState *)&v30 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableStringParameterState *)&v30 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
   }
 
   else
   {
-    v16 = [v15 isEqualToString:@"WFDetectedDate"];
-    v17 = [(WFDateFieldParameterState *)self preprocessedDate];
+    v16 = [resultType isEqualToString:@"WFDetectedDate"];
+    preprocessedDate = [(WFDateFieldParameterState *)self preprocessedDate];
 
-    if (v17)
+    if (preprocessedDate)
     {
       if (v16)
       {
         v18 = objc_alloc(MEMORY[0x1E6996DD0]);
-        v19 = [(WFDateFieldParameterState *)self preprocessedDate];
-        v20 = [v18 initWithDate:v19 timeIsSignificant:1];
-        v10[2](v10, v20, 0);
+        preprocessedDate2 = [(WFDateFieldParameterState *)self preprocessedDate];
+        v20 = [v18 initWithDate:preprocessedDate2 timeIsSignificant:1];
+        valueHandlerCopy[2](valueHandlerCopy, v20, 0);
       }
 
       else
       {
-        v19 = [(WFDateFieldParameterState *)self preprocessedDate];
-        v10[2](v10, v19, 0);
+        preprocessedDate2 = [(WFDateFieldParameterState *)self preprocessedDate];
+        valueHandlerCopy[2](valueHandlerCopy, preprocessedDate2, 0);
       }
     }
 
     else
     {
-      v21 = [(WFVariableStringParameterState *)self variableString];
-      if ([v21 representsSingleContentVariable])
+      variableString2 = [(WFVariableStringParameterState *)self variableString];
+      if ([variableString2 representsSingleContentVariable])
       {
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __86__WFDateFieldParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
         v27[3] = &unk_1E8378C50;
         v22 = &v28;
-        v28 = v10;
+        v28 = valueHandlerCopy;
         v29 = v16;
-        [v21 processIntoContentItemsWithContext:v8 completionHandler:v27];
+        [variableString2 processIntoContentItemsWithContext:contextCopy completionHandler:v27];
       }
 
       else
       {
-        v23 = [(WFVariableStringParameterState *)self variableString];
+        variableString3 = [(WFVariableStringParameterState *)self variableString];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __86__WFDateFieldParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_3;
         v24[3] = &unk_1E8378C78;
         v26 = v16;
         v22 = &v25;
-        v25 = v10;
-        [v23 processWithContext:v8 completionHandler:v24];
+        v25 = valueHandlerCopy;
+        [variableString3 processWithContext:contextCopy completionHandler:v24];
       }
     }
   }

@@ -1,5 +1,5 @@
 @interface PXTilingLayout
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (BOOL)shouldFlipHorizontally;
 - (CGPoint)visibleOrigin;
 - (CGRect)contentBounds;
@@ -10,9 +10,9 @@
 - (PXTilingLayout)init;
 - (PXTilingLayoutObserver)observer;
 - (UIEdgeInsets)contentInset;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)invalidateLayout;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 @end
 
 @implementation PXTilingLayout
@@ -69,9 +69,9 @@
   if ([MEMORY[0x1E695DF58] px_currentCharacterDirection] != 2)
   {
     v3 = +[PXTilingSettings sharedInstance];
-    v4 = [v3 flipLayoutsHorizontally];
+    flipLayoutsHorizontally = [v3 flipLayoutsHorizontally];
 
-    if (!v4)
+    if (!flipLayoutsHorizontally)
     {
       return 0;
     }
@@ -80,11 +80,11 @@
   return [(PXTilingLayout *)self allowHorizontalFlip];
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PXTilingLayout *)self observer];
-  [v5 tilingLayout:self invalidatedWithContext:v4];
+  contextCopy = context;
+  observer = [(PXTilingLayout *)self observer];
+  [observer tilingLayout:self invalidatedWithContext:contextCopy];
 }
 
 - (void)invalidateLayout
@@ -95,18 +95,18 @@
   [(PXTilingLayout *)self invalidateLayoutWithContext:v3];
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:55 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:55 description:@"must be implemented by concrete subclass"];
 
   return 0;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:51 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:51 description:@"must be implemented by concrete subclass"];
 }
 
 - (CGRect)scrollBounds
@@ -118,8 +118,8 @@
 
 - (CGRect)contentBounds
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:39 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingLayout.m" lineNumber:39 description:@"must be implemented by concrete subclass"];
 
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);

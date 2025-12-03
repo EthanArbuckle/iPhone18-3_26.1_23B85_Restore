@@ -1,11 +1,11 @@
 @interface IMUrlToTransferMap
 - (IMUrlToTransferMap)init;
-- (IMUrlToTransferMap)initWithUrlToTransferGuids:(id)a3;
+- (IMUrlToTransferMap)initWithUrlToTransferGuids:(id)guids;
 - (NSDictionary)urlToTransferGuids;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)dictionaryRepresentation;
 - (id)relayDictionaryRepresentation;
-- (id)transferGuidFromUrl:(id)a3;
+- (id)transferGuidFromUrl:(id)url;
 @end
 
 @implementation IMUrlToTransferMap
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (IMUrlToTransferMap)initWithUrlToTransferGuids:(id)a3
+- (IMUrlToTransferMap)initWithUrlToTransferGuids:(id)guids
 {
   *(self + OBJC_IVAR___IMUrlToTransferMap_urlToTransferGuids) = sub_1A88C81A8();
   v5.receiver = self;
@@ -26,9 +26,9 @@
   return [(IMUrlToTransferMap *)&v5 init];
 }
 
-- (id)transferGuidFromUrl:(id)a3
+- (id)transferGuidFromUrl:(id)url
 {
-  if (a3)
+  if (url)
   {
     v4 = sub_1A88C82E8();
     v6 = v5;
@@ -40,7 +40,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1A87BD024(v4, v6);
   v9 = v8;
 
@@ -64,8 +64,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = sub_1A88C82E8();
   *(inited + 40) = v4;
-  v5 = self;
-  v6 = [(IMUrlToTransferMap *)v5 urlToTransferGuids];
+  selfCopy = self;
+  urlToTransferGuids = [(IMUrlToTransferMap *)selfCopy urlToTransferGuids];
   v7 = sub_1A88C81A8();
 
   *(inited + 72) = sub_1A870CCE0(&qword_1EB303B88);
@@ -86,8 +86,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 0xD000000000000012;
   *(inited + 40) = 0x80000001A891B1E0;
-  v4 = self;
-  v5 = [(IMUrlToTransferMap *)v4 urlToTransferGuids];
+  selfCopy = self;
+  urlToTransferGuids = [(IMUrlToTransferMap *)selfCopy urlToTransferGuids];
   v6 = sub_1A88C81A8();
 
   *(inited + 72) = sub_1A870CCE0(&qword_1EB303B88);
@@ -101,9 +101,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A87BD654(v6);
 
   sub_1A870C278(v6, v6[3]);

@@ -1,8 +1,8 @@
 @interface NSMergedPolicyLocalizationPolicy
 - (NSMergedPolicyLocalizationPolicy)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_ensureFullLocalizationDictionaryIsLoaded;
-- (void)addPolicy:(id)a3;
+- (void)addPolicy:(id)policy;
 - (void)dealloc;
 @end
 
@@ -28,11 +28,11 @@
   [(NSValidationErrorLocalizationPolicy *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSMergedPolicyLocalizationPolicy;
-  v4 = [(NSValidationErrorLocalizationPolicy *)&v6 copyWithZone:a3];
+  v4 = [(NSValidationErrorLocalizationPolicy *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[6] = [(NSSet *)self->_mergedPolicies copy];
@@ -41,7 +41,7 @@
   return v4;
 }
 
-- (void)addPolicy:(id)a3
+- (void)addPolicy:(id)policy
 {
   mergedPolicies = self->_mergedPolicies;
   if (!mergedPolicies)
@@ -50,7 +50,7 @@
     self->_mergedPolicies = mergedPolicies;
   }
 
-  [(NSSet *)mergedPolicies addObject:a3];
+  [(NSSet *)mergedPolicies addObject:policy];
 }
 
 - (void)_ensureFullLocalizationDictionaryIsLoaded

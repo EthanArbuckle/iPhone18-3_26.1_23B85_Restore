@@ -9,12 +9,12 @@
   v5.receiver = self;
   v5.super_class = _RoutePlanningCollectionView;
   [(_RoutePlanningCollectionView *)&v5 layoutSubviews];
-  v3 = [(_RoutePlanningCollectionView *)self layoutHandler];
+  layoutHandler = [(_RoutePlanningCollectionView *)self layoutHandler];
 
-  if (v3)
+  if (layoutHandler)
   {
-    v4 = [(_RoutePlanningCollectionView *)self layoutHandler];
-    v4[2]();
+    layoutHandler2 = [(_RoutePlanningCollectionView *)self layoutHandler];
+    layoutHandler2[2]();
   }
 }
 

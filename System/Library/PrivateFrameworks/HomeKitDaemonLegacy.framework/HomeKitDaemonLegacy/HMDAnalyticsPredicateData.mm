@@ -11,9 +11,9 @@
   v2 = [(HMDAnalyticsPredicateData *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     presenceEvents = v2->_presenceEvents;
-    v2->_presenceEvents = v3;
+    v2->_presenceEvents = array;
   }
 
   return v2;

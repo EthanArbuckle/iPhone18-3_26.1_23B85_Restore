@@ -114,19 +114,19 @@ void __46__PXContentSyndicationSettings_sharedInstance__block_invoke()
 + (id)settingsControllerModule
 {
   v215[5] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69D3818] isEnabled];
+  isEnabled = [MEMORY[0x1E69D3818] isEnabled];
   v196 = MEMORY[0x1E69C6670];
   v3 = MEMORY[0x1E69C65E8];
   v4 = MEMORY[0x1E696AEC0];
   v5 = @"NO";
-  if (v2)
+  if (isEnabled)
   {
     v5 = @"YES";
   }
 
   v194 = v5;
-  v191 = [v4 stringWithFormat:@"Messages->Shared With You on: %@", v194];
-  v188 = [v3 px_rowWithTitle:v191 action:&__block_literal_global_41710];
+  v194 = [v4 stringWithFormat:@"Messages->Shared With You on: %@", v194];
+  v188 = [v3 px_rowWithTitle:v194 action:&__block_literal_global_41710];
   v215[0] = v188;
   v6 = MEMORY[0x1E69C66A8];
   v7 = NSStringFromSelector(sel_contentSyndicationEnabled);
@@ -328,10 +328,10 @@ void __46__PXContentSyndicationSettings_sharedInstance__block_invoke()
   v96 = MEMORY[0x1E69C6668];
   v97 = NSStringFromSelector(sel_reviewProcessingValuesScope);
   v98 = [v96 rowWithTitle:@"Review UI Scope" valueKeyPath:v97];
-  v99 = [v94 allKeys];
+  allKeys = [v94 allKeys];
   v171 = v94;
-  v100 = [v94 allValues];
-  v101 = [v98 possibleValues:v99 titles:v100];
+  allValues = [v94 allValues];
+  v101 = [v98 possibleValues:allKeys titles:allValues];
   v206[0] = v101;
   v102 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Review All" action:&__block_literal_global_651];
   v206[1] = v102;

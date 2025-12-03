@@ -1,6 +1,6 @@
 @interface MTRClosureDimensionClusterDimensionStateStruct
 - (MTRClosureDimensionClusterDimensionStateStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureDimensionClusterDimensionStateStruct);
-  v5 = [(MTRClosureDimensionClusterDimensionStateStruct *)self position];
-  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setPosition:v5];
+  position = [(MTRClosureDimensionClusterDimensionStateStruct *)self position];
+  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setPosition:position];
 
-  v6 = [(MTRClosureDimensionClusterDimensionStateStruct *)self latch];
-  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setLatch:v6];
+  latch = [(MTRClosureDimensionClusterDimensionStateStruct *)self latch];
+  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setLatch:latch];
 
-  v7 = [(MTRClosureDimensionClusterDimensionStateStruct *)self speed];
-  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setSpeed:v7];
+  speed = [(MTRClosureDimensionClusterDimensionStateStruct *)self speed];
+  [(MTRClosureDimensionClusterDimensionStateStruct *)v4 setSpeed:speed];
 
   return v4;
 }

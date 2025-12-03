@@ -1,15 +1,15 @@
 @interface AWDSafariActivatedHomeScreenQuickActionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsQuickAction:(id)a3;
+- (int)StringAsQuickAction:(id)action;
 - (int)quickAction;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasQuickAction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasQuickAction:(BOOL)action;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariActivatedHomeScreenQuickActionEvent
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasQuickAction:(BOOL)a3
+- (void)setHasQuickAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -42,24 +42,24 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsQuickAction:(id)a3
+- (int)StringAsQuickAction:(id)action
 {
-  if ([a3 isEqualToString:@"NEW_TAB"])
+  if ([action isEqualToString:@"NEW_TAB"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NEW_PRIVATE_TAB"])
+  if ([action isEqualToString:@"NEW_PRIVATE_TAB"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"SHOW_BOOKMARKS"])
+  if ([action isEqualToString:@"SHOW_BOOKMARKS"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"SHOW_READING_LIST"])
+  if ([action isEqualToString:@"SHOW_READING_LIST"])
   {
     return 3;
   }
@@ -76,11 +76,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
@@ -97,13 +97,13 @@
       v6 = off_29EE32C20[quickAction];
     }
 
-    [v3 setObject:v6 forKey:@"quickAction"];
+    [dictionary setObject:v6 forKey:@"quickAction"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -121,7 +121,7 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 1) == 0)
   {
@@ -131,22 +131,22 @@
     }
 
 LABEL_5:
-    *(a3 + 4) = self->_quickAction;
-    *(a3 + 20) |= 2u;
+    *(to + 4) = self->_quickAction;
+    *(to + 20) |= 2u;
     return;
   }
 
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 20) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -164,30 +164,30 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 20) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_quickAction != *(a3 + 4))
+      if ((*(equal + 20) & 2) == 0 || self->_quickAction != *(equal + 4))
       {
         goto LABEL_11;
       }
@@ -225,24 +225,24 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 20) & 1) == 0)
+  if ((*(from + 20) & 1) == 0)
   {
-    if ((*(a3 + 20) & 2) == 0)
+    if ((*(from + 20) & 2) == 0)
     {
       return;
     }
 
 LABEL_5:
-    self->_quickAction = *(a3 + 4);
+    self->_quickAction = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
-  self->_timestamp = *(a3 + 1);
+  self->_timestamp = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 20) & 2) != 0)
+  if ((*(from + 20) & 2) != 0)
   {
     goto LABEL_5;
   }

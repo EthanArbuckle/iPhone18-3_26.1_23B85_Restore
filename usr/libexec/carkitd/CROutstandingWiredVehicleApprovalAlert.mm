@@ -6,13 +6,13 @@
 
 - (id)alertTitle
 {
-  v2 = [(CRMessagingVehicleAlert *)self messagingVehicle];
-  v3 = [v2 vehicleName];
+  messagingVehicle = [(CRMessagingVehicleAlert *)self messagingVehicle];
+  vehicleName = [messagingVehicle vehicleName];
 
   CRLocalizedStringForKey();
-  if (v3)
+  if (vehicleName)
     v4 = {;
-    v5 = [NSString stringWithFormat:v4, v3];
+    v5 = [NSString stringWithFormat:v4, vehicleName];
   }
 
   else

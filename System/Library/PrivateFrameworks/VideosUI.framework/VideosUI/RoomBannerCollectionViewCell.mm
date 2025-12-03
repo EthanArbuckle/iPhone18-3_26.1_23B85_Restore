@@ -1,14 +1,14 @@
 @interface RoomBannerCollectionViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation RoomBannerCollectionViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E4090620(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E4090620(only, width);
   v8 = v7;
   v10 = v9;
 

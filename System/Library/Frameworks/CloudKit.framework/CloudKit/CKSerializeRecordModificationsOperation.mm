@@ -1,18 +1,18 @@
 @interface CKSerializeRecordModificationsOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKSerializeRecordModificationsOperation)init;
-- (CKSerializeRecordModificationsOperation)initWithRecordsToSave:(id)a3 recordIDsToDelete:(id)a4;
+- (CKSerializeRecordModificationsOperation)initWithRecordsToSave:(id)save recordIDsToDelete:(id)delete;
 - (id)activityCreate;
 - (id)serializeCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleSerialization:(id)a3 error:(id)a4;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleSerialization:(id)serialization error:(id)error;
 - (void)performCKOperation;
-- (void)setSerializeCompletionBlock:(id)a3;
+- (void)setSerializeCompletionBlock:(id)block;
 @end
 
 @implementation CKSerializeRecordModificationsOperation
@@ -24,18 +24,18 @@
   return [(CKOperation *)&v3 init];
 }
 
-- (CKSerializeRecordModificationsOperation)initWithRecordsToSave:(id)a3 recordIDsToDelete:(id)a4
+- (CKSerializeRecordModificationsOperation)initWithRecordsToSave:(id)save recordIDsToDelete:(id)delete
 {
-  v6 = a3;
-  v7 = a4;
+  saveCopy = save;
+  deleteCopy = delete;
   v12 = objc_msgSend_init(self, v8, v9);
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v10, v11);
+    v13 = objc_msgSend_copy(saveCopy, v10, v11);
     recordsToSave = v12->_recordsToSave;
     v12->_recordsToSave = v13;
 
-    v17 = objc_msgSend_copy(v7, v15, v16);
+    v17 = objc_msgSend_copy(deleteCopy, v15, v16);
     recordIDsToDelete = v12->_recordIDsToDelete;
     v12->_recordIDsToDelete = v17;
   }
@@ -43,9 +43,9 @@
   return v12;
 }
 
-- (void)setSerializeCompletionBlock:(id)a3
+- (void)setSerializeCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -59,16 +59,16 @@
     v12[2] = sub_1885BD458;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     serializeCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_serializeCompletionBlock != v6)
+  if (self->_serializeCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     serializeCompletionBlock = self->_serializeCompletionBlock;
     self->_serializeCompletionBlock = v9;
 LABEL_9:
@@ -111,30 +111,30 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordsToSave(self, v5, v6);
-  objc_msgSend_setRecordsToSave_(v4, v8, v7);
+  objc_msgSend_setRecordsToSave_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_recordIDsToDelete(self, v9, v10);
-  objc_msgSend_setRecordIDsToDelete_(v4, v12, v11);
+  objc_msgSend_setRecordIDsToDelete_(infoCopy, v12, v11);
 
   v13.receiver = self;
   v13.super_class = CKSerializeRecordModificationsOperation;
-  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v13 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = CKSerializeRecordModificationsOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordsToSave(v4, v5, v6, v13.receiver, v13.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordsToSave(infoCopy, v5, v6, v13.receiver, v13.super_class);
   objc_msgSend_setRecordsToSave_(self, v8, v7);
 
-  v11 = objc_msgSend_recordIDsToDelete(v4, v9, v10);
+  v11 = objc_msgSend_recordIDsToDelete(infoCopy, v9, v10);
 
   objc_msgSend_setRecordIDsToDelete_(self, v12, v11);
 }
@@ -146,10 +146,10 @@ LABEL_9:
   return [(CKOperation *)&v4 hasCKOperationCallbacksSet]|| self->_serializeCompletionBlock != 0;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_recordsToSave(self, a2, a3);
+  v5 = objc_msgSend_recordsToSave(self, a2, run);
   if (v5)
   {
   }
@@ -175,24 +175,24 @@ LABEL_9:
         *buf = 138543874;
         v62 = v46;
         v63 = 2048;
-        v64 = self;
+        selfCopy = self;
         v65 = 2114;
         v66 = v49;
         _os_log_debug_impl(&dword_1883EA000, v44, OS_LOG_TYPE_DEBUG, "Not running operation <%{public}@: %p; %{public}@> due to nil inputs", buf, 0x20u);
 
-        if (!a3)
+        if (!run)
         {
           goto LABEL_22;
         }
       }
 
-      else if (!a3)
+      else if (!run)
       {
         goto LABEL_22;
       }
 
       v42 = objc_msgSend_operationID(self, v40, v41);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v43, @"CKErrorDomain", 12, @"There are no inputs for operation %@.", v42);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v43, @"CKErrorDomain", 12, @"There are no inputs for operation %@.", v42);
 
       goto LABEL_22;
     }
@@ -219,7 +219,7 @@ LABEL_6:
 
       v19 = objc_msgSend_recordID(*(*(&v55 + 1) + 8 * v18), v14, v15);
       v22 = objc_msgSend_zoneID(v19, v20, v21);
-      v24 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v23, v22, a3);
+      v24 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v23, v22, run);
 
       if (!v24)
       {
@@ -259,7 +259,7 @@ LABEL_14:
       }
 
       v34 = objc_msgSend_zoneID(*(*(&v51 + 1) + 8 * v33), v29, v30);
-      v36 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v35, v34, a3);
+      v36 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v35, v34, run);
 
       if (!v36)
       {
@@ -289,7 +289,7 @@ LABEL_20:
 
   v50.receiver = self;
   v50.super_class = CKSerializeRecordModificationsOperation;
-  result = [(CKDatabaseOperation *)&v50 CKOperationShouldRun:a3];
+  result = [(CKDatabaseOperation *)&v50 CKOperationShouldRun:run];
 LABEL_23:
   v38 = *MEMORY[0x1E69E9840];
   return result;
@@ -360,11 +360,11 @@ LABEL_13:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSerialization:(id)a3 error:(id)a4
+- (void)handleSerialization:(id)serialization error:(id)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  serializationCopy = serialization;
+  v9 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -410,7 +410,7 @@ LABEL_13:
       if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
       {
         v38 = 134218242;
-        v39 = objc_msgSend_length(v6, v23, v24);
+        v39 = objc_msgSend_length(serializationCopy, v23, v24);
         v40 = 2112;
         v41 = v9;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v17, OS_SIGNPOST_EVENT, v22, "CKSerializeRecordModificationsOperation", "Serialized results (%lu bytes) received with error: %@", &v38, 0x16u);
@@ -453,20 +453,20 @@ LABEL_13:
       if (v34 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
       {
         v38 = 134217984;
-        v39 = objc_msgSend_length(v6, v35, v36);
+        v39 = objc_msgSend_length(serializationCopy, v35, v36);
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v29, OS_SIGNPOST_EVENT, v34, "CKSerializeRecordModificationsOperation", "Serialized results (%lu bytes) received", &v38, 0xCu);
       }
     }
 
-    objc_msgSend_setSerializedModifications_(self, v12, v6);
+    objc_msgSend_setSerializedModifications_(self, v12, serializationCopy);
   }
 
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -520,7 +520,7 @@ LABEL_13:
   {
     v22 = objc_msgSend_serializeCompletionBlock(self, v20, v21);
     v25 = objc_msgSend_serializedModifications(self, v23, v24);
-    v28 = objc_msgSend_CKClientSuitableError(v4, v26, v27);
+    v28 = objc_msgSend_CKClientSuitableError(errorCopy, v26, v27);
     (v22)[2](v22, v25, v28);
 
     objc_msgSend_setSerializedModifications_(self, v29, 0);
@@ -529,7 +529,7 @@ LABEL_13:
 
   v31.receiver = self;
   v31.super_class = CKSerializeRecordModificationsOperation;
-  [(CKOperation *)&v31 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v31 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -606,10 +606,10 @@ LABEL_13:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -653,7 +653,7 @@ LABEL_13:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKSerializeRecordModificationsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }

@@ -1,56 +1,56 @@
 @interface MOClientRequest
-- (BOOL)isEqual:(id)a3;
-- (MOClientRequest)initWithClientRequestMO:(id)a3;
-- (MOClientRequest)initWithCoder:(id)a3;
-- (MOClientRequest)initWithRequestIdentifier:(id)a3 requestType:(unint64_t)a4 creationDate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOClientRequest)initWithClientRequestMO:(id)o;
+- (MOClientRequest)initWithCoder:(id)coder;
+- (MOClientRequest)initWithRequestIdentifier:(id)identifier requestType:(unint64_t)type creationDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOClientRequest
 
-- (MOClientRequest)initWithRequestIdentifier:(id)a3 requestType:(unint64_t)a4 creationDate:(id)a5
+- (MOClientRequest)initWithRequestIdentifier:(id)identifier requestType:(unint64_t)type creationDate:(id)date
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = MOClientRequest;
   v11 = [(MOClientRequest *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestIdentifier, a3);
-    v12->_requestType = a4;
-    objc_storeStrong(&v12->_creationDate, a5);
+    objc_storeStrong(&v11->_requestIdentifier, identifier);
+    v12->_requestType = type;
+    objc_storeStrong(&v12->_creationDate, date);
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestIdentifier = self->_requestIdentifier;
-  v5 = a3;
-  [v5 encodeObject:requestIdentifier forKey:@"requestIdentifier"];
-  [v5 encodeInteger:self->_requestType forKey:@"requestType"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestIdentifier forKey:@"requestIdentifier"];
+  [coderCopy encodeInteger:self->_requestType forKey:@"requestType"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
 }
 
-- (MOClientRequest)initWithCoder:(id)a3
+- (MOClientRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOClientRequest;
   v5 = [(MOClientRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v6;
 
-    v5->_requestType = [v4 decodeIntegerForKey:@"requestType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v5->_requestType = [coderCopy decodeIntegerForKey:@"requestType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v8;
   }
@@ -58,7 +58,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOClientRequest);
   objc_storeStrong(&v4->_requestIdentifier, self->_requestIdentifier);
@@ -74,28 +74,28 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_24;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
     goto LABEL_24;
   }
 
   v7 = v6;
-  v8 = [(MOClientRequest *)self requestIdentifier];
-  if (!v8)
+  requestIdentifier = [(MOClientRequest *)self requestIdentifier];
+  if (!requestIdentifier)
   {
-    v3 = [(MOClientRequest *)v7 requestIdentifier];
-    if (!v3)
+    requestIdentifier2 = [(MOClientRequest *)v7 requestIdentifier];
+    if (!requestIdentifier2)
     {
       v11 = 1;
 LABEL_11:
@@ -104,22 +104,22 @@ LABEL_11:
     }
   }
 
-  v9 = [(MOClientRequest *)self requestIdentifier];
-  v10 = [(MOClientRequest *)v7 requestIdentifier];
-  v11 = [v9 isEqual:v10];
+  requestIdentifier3 = [(MOClientRequest *)self requestIdentifier];
+  requestIdentifier4 = [(MOClientRequest *)v7 requestIdentifier];
+  v11 = [requestIdentifier3 isEqual:requestIdentifier4];
 
-  if (!v8)
+  if (!requestIdentifier)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  v13 = [(MOClientRequest *)self creationDate];
-  if (!v13)
+  creationDate = [(MOClientRequest *)self creationDate];
+  if (!creationDate)
   {
-    v3 = [(MOClientRequest *)v7 creationDate];
-    if (!v3)
+    requestIdentifier2 = [(MOClientRequest *)v7 creationDate];
+    if (!requestIdentifier2)
     {
       v16 = 1;
 LABEL_17:
@@ -128,22 +128,22 @@ LABEL_17:
     }
   }
 
-  v14 = [(MOClientRequest *)self creationDate];
-  v15 = [(MOClientRequest *)v7 creationDate];
-  v16 = [v14 isEqual:v15];
+  creationDate2 = [(MOClientRequest *)self creationDate];
+  creationDate3 = [(MOClientRequest *)v7 creationDate];
+  v16 = [creationDate2 isEqual:creationDate3];
 
-  if (!v13)
+  if (!creationDate)
   {
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  v17 = [(MOClientRequest *)self requestType];
-  v18 = [(MOClientRequest *)v7 requestType];
+  requestType = [(MOClientRequest *)self requestType];
+  requestType2 = [(MOClientRequest *)v7 requestType];
   if (v11)
   {
-    if (v17 == v18)
+    if (requestType == requestType2)
     {
       v12 = v16;
     }
@@ -163,25 +163,25 @@ LABEL_24:
   return v12;
 }
 
-- (MOClientRequest)initWithClientRequestMO:(id)a3
+- (MOClientRequest)initWithClientRequestMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 requestIdentifier];
-    v6 = [v4 requestType];
-    v7 = [v4 creationDate];
+    oCopy = o;
+    requestIdentifier = [oCopy requestIdentifier];
+    requestType = [oCopy requestType];
+    creationDate = [oCopy creationDate];
 
-    self = [(MOClientRequest *)self initWithRequestIdentifier:v5 requestType:v6 creationDate:v7];
-    v8 = self;
+    self = [(MOClientRequest *)self initWithRequestIdentifier:requestIdentifier requestType:requestType creationDate:creationDate];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

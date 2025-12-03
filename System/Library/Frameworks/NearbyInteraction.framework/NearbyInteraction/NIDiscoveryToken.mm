@@ -1,22 +1,22 @@
 @interface NIDiscoveryToken
-+ (id)_identifyingSequenceFromBytes:(id)a3;
-+ (id)deserialize:(id)a3;
-+ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)a3;
-+ (id)generateFindingTokenWithIRK:(id)a3;
-+ (id)generateTokenWithUUID:(id)a3;
-+ (id)serialize:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NIDiscoveryToken)initWithBytes:(id)a3;
-- (NIDiscoveryToken)initWithCoder:(id)a3;
-- (NIDiscoveryToken)initWithDeviceAddress:(unsigned __int16)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_identifyingSequenceFromBytes:(id)bytes;
++ (id)deserialize:(id)deserialize;
++ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)identifier;
++ (id)generateFindingTokenWithIRK:(id)k;
++ (id)generateTokenWithUUID:(id)d;
++ (id)serialize:(id)serialize;
+- (BOOL)isEqual:(id)equal;
+- (NIDiscoveryToken)initWithBytes:(id)bytes;
+- (NIDiscoveryToken)initWithCoder:(id)coder;
+- (NIDiscoveryToken)initWithDeviceAddress:(unsigned __int16)address;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)deviceCapabilities;
 - (id)getIRK;
 - (id)getSessionIdentifier;
-- (id)objectInRawTokenOPACKDictForKey:(id)a3;
+- (id)objectInRawTokenOPACKDictForKey:(id)key;
 - (int64_t)tokenVariant;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIDiscoveryToken
@@ -26,32 +26,32 @@
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIDiscoveryToken *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIDiscoveryToken *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
 
-+ (id)generateFindingTokenWithIRK:(id)a3
++ (id)generateFindingTokenWithIRK:(id)k
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  kCopy = k;
+  if (!kCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NIFindingSupport.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"IRK"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIFindingSupport.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"IRK"}];
   }
 
-  if ([v5 length] != 16)
+  if ([kCopy length] != 16)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"NIFindingSupport.mm" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"IRK.length == NIDiscoveryTokenIRKLengthBytes"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NIFindingSupport.mm" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"IRK.length == NIDiscoveryTokenIRKLengthBytes"}];
   }
 
   v15[0] = &unk_1F38D7A88;
   v15[1] = &unk_1F38D7AB8;
   v16[0] = &unk_1F38D7AA0;
-  v16[1] = v5;
+  v16[1] = kCopy;
   v15[2] = &unk_1F38D7AD0;
   v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&kFixedSessionIdentifierBytes length:3];
   v16[2] = v6;
@@ -60,8 +60,8 @@
   v8 = MEMORY[0x1BFAFF9B0](v7, 8, 0);
   if (!v8)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NIFindingSupport.mm" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"NIFindingSupport.mm" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
   }
 
   v9 = [[NIDiscoveryToken alloc] initWithBytes:v8];
@@ -71,18 +71,18 @@
   return v9;
 }
 
-+ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)a3
++ (id)generateDiscoveryTokenFromBeaconIdentifier:(id)identifier
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"NIFindingSupport.mm" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"beaconIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIFindingSupport.mm" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"beaconIdentifier"}];
   }
 
-  v6 = [v5 UUIDString];
-  v7 = [v6 dataUsingEncoding:4];
+  uUIDString = [identifierCopy UUIDString];
+  v7 = [uUIDString dataUsingEncoding:4];
 
   v15[0] = &unk_1F38D7A88;
   v15[1] = &unk_1F38D7B00;
@@ -92,8 +92,8 @@
   v9 = MEMORY[0x1BFAFF9B0](v8, 8, 0);
   if (!v9)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NIFindingSupport.mm" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NIFindingSupport.mm" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
   }
 
   v10 = [[NIDiscoveryToken alloc] initWithBytes:v9];
@@ -103,12 +103,12 @@
   return v10;
 }
 
-+ (id)generateTokenWithUUID:(id)a3
++ (id)generateTokenWithUUID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 UUIDString];
-  v7 = [v6 dataUsingEncoding:4];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
+  v7 = [uUIDString dataUsingEncoding:4];
 
   v14 = &unk_1F38D7B18;
   v15[0] = v7;
@@ -116,8 +116,8 @@
   v9 = MEMORY[0x1BFAFF9B0](v8, 8, 0);
   if (!v9)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"NIItemLocalizerSupport.mm" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIItemLocalizerSupport.mm" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"tokenData"}];
   }
 
   v10 = [[NIDiscoveryToken alloc] initWithBytes:v9];
@@ -127,13 +127,13 @@
   return v10;
 }
 
-- (NIDiscoveryToken)initWithBytes:(id)a3
+- (NIDiscoveryToken)initWithBytes:(id)bytes
 {
-  v6 = a3;
-  if (!v6)
+  bytesCopy = bytes;
+  if (!bytesCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"bytes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"bytes"}];
   }
 
   v13.receiver = self;
@@ -142,8 +142,8 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_rawToken, a3);
-    v9 = [NIDiscoveryToken _identifyingSequenceFromBytes:v6];
+    objc_storeStrong(&v7->_rawToken, bytes);
+    v9 = [NIDiscoveryToken _identifyingSequenceFromBytes:bytesCopy];
     identifyingSequence = v8->_identifyingSequence;
     v8->_identifyingSequence = v9;
   }
@@ -151,16 +151,16 @@
   return v8;
 }
 
-+ (id)_identifyingSequenceFromBytes:(id)a3
++ (id)_identifyingSequenceFromBytes:(id)bytes
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  bytesCopy = bytes;
+  v4 = bytesCopy;
+  if (!bytesCopy)
   {
     __assert_rtn("+[NIDiscoveryToken _identifyingSequenceFromBytes:]", "NIConfiguration.mm", 71, "bytes");
   }
 
-  v5 = [v3 copy];
+  v5 = [bytesCopy copy];
   v6 = OPACKDecodeData();
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -213,20 +213,20 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
   }
 }
 
-- (id)objectInRawTokenOPACKDictForKey:(id)a3
+- (id)objectInRawTokenOPACKDictForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   rawToken = self->_rawToken;
   v7 = OPACKDecodeData();
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 objectForKey:v5];
+    v8 = [v7 objectForKey:keyCopy];
   }
 
   else
@@ -242,15 +242,15 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
   v2 = [(NIDiscoveryToken *)self objectInRawTokenOPACKDictForKey:&unk_1F38D7BC0];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v2 integerValue] <= 3)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (id)deviceCapabilities
@@ -271,7 +271,7 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
 
 - (id)getIRK
 {
-  v2 = [(NIDiscoveryToken *)self rawToken];
+  rawToken = [(NIDiscoveryToken *)self rawToken];
   v3 = OPACKDecodeData();
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -299,7 +299,7 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
 
 - (id)getSessionIdentifier
 {
-  v2 = [(NIDiscoveryToken *)self rawToken];
+  rawToken = [(NIDiscoveryToken *)self rawToken];
   v3 = OPACKDecodeData();
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -325,10 +325,10 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
   return v6;
 }
 
-+ (id)serialize:(id)a3
++ (id)serialize:(id)serialize
 {
-  v3 = a3;
-  if ([v3 count] <= 0x3E8)
+  serializeCopy = serialize;
+  if ([serializeCopy count] <= 0x3E8)
   {
     v7 = 0;
     v8 = &v7;
@@ -341,7 +341,7 @@ void __50__NIDiscoveryToken__identifyingSequenceFromBytes___block_invoke(uint64_
     v6[2] = __30__NIDiscoveryToken_serialize___block_invoke;
     v6[3] = &unk_1E7F14058;
     v6[4] = &v7;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [serializeCopy enumerateObjectsUsingBlock:v6];
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
   }
@@ -372,31 +372,31 @@ void __30__NIDiscoveryToken_serialize___block_invoke(uint64_t a1, void *a2)
   [v6 appendData:v7];
 }
 
-+ (id)deserialize:(id)a3
++ (id)deserialize:(id)deserialize
 {
-  v3 = a3;
-  if ([v3 length] <= 0xF4240)
+  deserializeCopy = deserialize;
+  if ([deserializeCopy length] <= 0xF4240)
   {
     v4 = objc_opt_new();
     v5 = 0;
     do
     {
-      if (v5 >= [v3 length])
+      if (v5 >= [deserializeCopy length])
       {
         break;
       }
 
-      v6 = [v3 bytes];
-      v7 = *(v6 + v5);
+      bytes = [deserializeCopy bytes];
+      v7 = *(bytes + v5);
       v8 = v5 + 1;
-      if (*(v6 + v5))
+      if (*(bytes + v5))
       {
-        if (v5 + v7 >= [v3 length])
+        if (v5 + v7 >= [deserializeCopy length])
         {
           break;
         }
 
-        v9 = [v3 subdataWithRange:{v5 + 1, v7}];
+        v9 = [deserializeCopy subdataWithRange:{v5 + 1, v7}];
         v10 = [[NIDiscoveryToken alloc] initWithBytes:v9];
         [v4 addObject:v10];
         v8 += v7;
@@ -416,15 +416,15 @@ void __30__NIDiscoveryToken_serialize___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (NIDiscoveryToken)initWithDeviceAddress:(unsigned __int16)a3
+- (NIDiscoveryToken)initWithDeviceAddress:(unsigned __int16)address
 {
-  v9 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v9 length:2];
+  addressCopy = address;
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&addressCopy length:2];
   v5 = [[NIDiscoveryToken alloc] initWithBytes:v4];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v9];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:addressCopy];
     shortDeviceAddress = v5->_shortDeviceAddress;
     v5->_shortDeviceAddress = v6;
   }
@@ -432,16 +432,16 @@ void __30__NIDiscoveryToken_serialize___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   shortDeviceAddress = self->_shortDeviceAddress;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   v6 = v5;
   if (shortDeviceAddress)
   {
-    v7 = [(NSNumber *)self->_shortDeviceAddress intValue];
+    intValue = [(NSNumber *)self->_shortDeviceAddress intValue];
 
-    return [v6 initWithDeviceAddress:v7];
+    return [v6 initWithDeviceAddress:intValue];
   }
 
   else
@@ -452,29 +452,29 @@ void __30__NIDiscoveryToken_serialize___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_rawToken forKey:@"rawToken"];
-  [v4 encodeObject:self->_shortDeviceAddress forKey:@"shortDeviceAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_rawToken forKey:@"rawToken"];
+  [coderCopy encodeObject:self->_shortDeviceAddress forKey:@"shortDeviceAddress"];
 }
 
-- (NIDiscoveryToken)initWithCoder:(id)a3
+- (NIDiscoveryToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawToken"];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortDeviceAddress"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortDeviceAddress"];
       if (v6)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v8 = 0;
+          selfCopy = 0;
           goto LABEL_10;
         }
 
@@ -487,25 +487,25 @@ void __30__NIDiscoveryToken_serialize___block_invoke(uint64_t a1, void *a2)
       }
 
       self = v7;
-      v8 = self;
+      selfCopy = self;
 LABEL_10:
 
       goto LABEL_11;
     }
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4 == self || [(NSData *)self->_identifyingSequence isEqualToData:v4->_identifyingSequence];
+    v5 = equalCopy == self || [(NSData *)self->_identifyingSequence isEqualToData:equalCopy->_identifyingSequence];
   }
 
   else

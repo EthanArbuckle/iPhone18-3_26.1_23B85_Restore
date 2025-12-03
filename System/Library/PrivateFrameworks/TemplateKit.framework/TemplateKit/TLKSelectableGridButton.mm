@@ -1,13 +1,13 @@
 @interface TLKSelectableGridButton
 + (id)selectableGridButton;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3 subtitle:(id)a4;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTitle:(id)title subtitle:(id)subtitle;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKSelectableGridButton
@@ -16,8 +16,8 @@
 {
   v2 = [TLKSelectableGridButton buttonWithType:1];
   [v2 setCustomHighlight:0];
-  v3 = [v2 layer];
-  [v3 setCornerRadius:5.0];
+  layer = [v2 layer];
+  [layer setCornerRadius:5.0];
 
   v4 = objc_opt_new();
   [v4 setAxis:1];
@@ -45,14 +45,14 @@
   return v2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKSelectableGridButton;
-  [(TLKSelectableGridButton *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKSelectableGridButton *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKSelectableGridButton *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKSelectableGridButton *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -60,11 +60,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKSelectableGridButton *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKSelectableGridButton *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -80,16 +80,16 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = TLKSelectableGridButton;
-  v4 = a3;
-  [(UIView *)&v6 tlk_updateForAppearance:v4];
+  appearanceCopy = appearance;
+  [(UIView *)&v6 tlk_updateForAppearance:appearanceCopy];
   if (self->_customHighlight)
   {
-    v5 = [v4 quaternaryColor];
-    [(TLKSelectableGridButton *)self setBackgroundColor:v5];
+    quaternaryColor = [appearanceCopy quaternaryColor];
+    [(TLKSelectableGridButton *)self setBackgroundColor:quaternaryColor];
   }
 
   else
@@ -97,26 +97,26 @@ LABEL_5:
     [(TLKSelectableGridButton *)self setBackgroundColor:0, v6.receiver, v6.super_class];
   }
 
-  [v4 enableAppearanceForView:self];
+  [appearanceCopy enableAppearanceForView:self];
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4
+- (void)setTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TLKSelectableGridButton *)self topLabel];
-  [v8 setText:v7];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  topLabel = [(TLKSelectableGridButton *)self topLabel];
+  [topLabel setText:titleCopy];
 
-  v9 = [(TLKSelectableGridButton *)self bottomLabel];
-  [v9 setText:v6];
+  bottomLabel = [(TLKSelectableGridButton *)self bottomLabel];
+  [bottomLabel setText:subtitleCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKSelectableGridButton *)self stackView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  stackView = [(TLKSelectableGridButton *)self stackView];
+  [stackView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -127,12 +127,12 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKSelectableGridButton *)self stackView];
-  [v5 systemLayoutSizeFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  stackView = [(TLKSelectableGridButton *)self stackView];
+  [stackView systemLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -145,8 +145,8 @@ LABEL_5:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TLKSelectableGridButton *)self stackView];
-  [v2 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  stackView = [(TLKSelectableGridButton *)self stackView];
+  [stackView sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -167,8 +167,8 @@ LABEL_5:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKSelectableGridButton *)self stackView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  stackView = [(TLKSelectableGridButton *)self stackView];
+  [stackView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

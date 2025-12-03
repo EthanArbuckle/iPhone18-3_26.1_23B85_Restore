@@ -1,21 +1,21 @@
 @interface PKPaymentTransaction
-+ (BOOL)isPositiveBalanceAdjustmentForCurrencyAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 isBankConnectTransaction:(BOOL)a7 bankConnectCreditDebitIndicator:(int64_t)a8 featureIdentifier:(unint64_t)a9;
-+ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)a3;
-+ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)a3 dictionary:(id)a4 unitDictionary:(id)a5 balanceLabelDictionary:(id)a6 planLabelDictionary:(id)a7 hasNotificationServiceData:(BOOL)a8;
-+ (id)formattedBalanceAdjustmentForCurrencyAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 featureIdentifier:(unint64_t)a7 isBankConnectTransaction:(BOOL)a8 bankConnectCreditDebitIndicator:(int64_t)a9 pending:(BOOL)a10;
-+ (id)formattedBalanceAdjustmentForTransactionAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 isBankConnectTransaction:(BOOL)a7 bankConnectCreditDebitIndicator:(int64_t)a8 featureIdentifier:(unint64_t)a9;
-+ (id)recordTypesAndNamesForCodingType:(unint64_t)a3 serviceIdentifier:(id)a4;
-+ (id)transactionFromFKPaymentTransaction:(id)a3;
-+ (id)transactionFromFKPaymentTransaction:(id)a3 institution:(id)a4;
-+ (id)transactionNotificationStatusStringForTransaction:(id)a3 personContact:(id)a4;
-+ (void)augmentTransactionsIfNeeded:(id)a3 transactionSourceIdentifiers:(id)a4 passUniqueID:(id)a5 usingDataProvider:(id)a6 completion:(id)a7;
++ (BOOL)isPositiveBalanceAdjustmentForCurrencyAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator featureIdentifier:(unint64_t)identifier;
++ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)source;
++ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)source dictionary:(id)dictionary unitDictionary:(id)unitDictionary balanceLabelDictionary:(id)labelDictionary planLabelDictionary:(id)planLabelDictionary hasNotificationServiceData:(BOOL)data;
++ (id)formattedBalanceAdjustmentForCurrencyAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType featureIdentifier:(unint64_t)identifier isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator pending:(BOOL)self0;
++ (id)formattedBalanceAdjustmentForTransactionAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator featureIdentifier:(unint64_t)identifier;
++ (id)recordTypesAndNamesForCodingType:(unint64_t)type serviceIdentifier:(id)identifier;
++ (id)transactionFromFKPaymentTransaction:(id)transaction;
++ (id)transactionFromFKPaymentTransaction:(id)transaction institution:(id)institution;
++ (id)transactionNotificationStatusStringForTransaction:(id)transaction personContact:(id)contact;
++ (void)augmentTransactionsIfNeeded:(id)needed transactionSourceIdentifiers:(id)identifiers passUniqueID:(id)d usingDataProvider:(id)provider completion:(id)completion;
 - (BOOL)hasBackingData;
 - (BOOL)hasCloudArchivableDeviceData;
 - (BOOL)hasPendingAmounts;
 - (BOOL)impactsPromotionProgress;
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentTransaction:(id)a3;
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentTransaction:(id)transaction;
 - (BOOL)isZeroTransaction;
 - (BOOL)reviewed;
 - (BOOL)supportsFuzzyMatching;
@@ -44,9 +44,9 @@
 - (PKCurrencyAmount)secondaryFundingSourceCurrencyAmount;
 - (PKCurrencyAmount)subtotalCurrencyAmount;
 - (PKPaymentTransaction)init;
-- (PKPaymentTransaction)initWithCloudStoreCoder:(id)a3;
-- (PKPaymentTransaction)initWithCoder:(id)a3;
-- (id)_commutePlanInformationForPass:(id)a3;
+- (PKPaymentTransaction)initWithCloudStoreCoder:(id)coder;
+- (PKPaymentTransaction)initWithCoder:(id)coder;
+- (id)_commutePlanInformationForPass:(id)pass;
 - (id)_fkActions;
 - (id)_fkAmount;
 - (id)_fkApplePayTransactionInsight;
@@ -54,8 +54,8 @@
 - (id)_fkMapsTransactionInsight;
 - (id)_fkTransactionInsights;
 - (id)_fkUserTransactionInsight;
-- (id)_formatBalanceAdjustmentAmount:(id)a3;
-- (id)_formatBalanceAdjustmentTransactionAmount:(id)a3;
+- (id)_formatBalanceAdjustmentAmount:(id)amount;
+- (id)_formatBalanceAdjustmentTransactionAmount:(id)amount;
 - (id)_preformattedStringForMultipleAmounts;
 - (id)_preformattedStringForMultiplePlans;
 - (id)_transactionSourceString;
@@ -65,55 +65,55 @@
 - (id)dictionaryOfFormattedMultipleAmountTotalsByRealCurrency;
 - (id)dictionaryRepresentation;
 - (id)formattedAwards;
-- (id)formattedStringForMultipleAmountsForPass:(id)a3;
-- (id)formattedTransitTransactionMessageForPass:(id)a3 suppressNoChargeAmount:(BOOL)a4;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)formattedStringForMultipleAmountsForPass:(id)pass;
+- (id)formattedTransitTransactionMessageForPass:(id)pass suppressNoChargeAmount:(BOOL)amount;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (id)transactionAmountsForMultipleAmounts;
 - (id)updateReasonsDescription;
 - (int64_t)_fkPaymentTransactionCategory;
 - (int64_t)_fkPaymentTransactionStatus;
 - (int64_t)effectiveTransactionCategory;
 - (unint64_t)_fkCreditDebitIndicator;
-- (unint64_t)_fkMerchantCategoryFromPKMerchantCategory:(int64_t)a3;
+- (unint64_t)_fkMerchantCategoryFromPKMerchantCategory:(int64_t)category;
 - (unint64_t)_fkPaymentTransactionType;
 - (unint64_t)disputeStatus;
 - (unint64_t)disputeType;
 - (unint64_t)effectiveTransactionSource;
 - (unint64_t)featureIdentifier;
 - (unint64_t)hash;
-- (void)_applyTransactionCategoryFromRecord:(id)a3;
-- (void)_encodeDeviceDataWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)answeredQuestion:(unint64_t)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEndStationLocation:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setPaymentHash:(id)a3;
-- (void)setStartStationLocation:(id)a3;
+- (void)_applyTransactionCategoryFromRecord:(id)record;
+- (void)_encodeDeviceDataWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)answeredQuestion:(unint64_t)question;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEndStationLocation:(id)location;
+- (void)setLocation:(id)location;
+- (void)setPaymentHash:(id)hash;
+- (void)setStartStationLocation:(id)location;
 @end
 
 @implementation PKPaymentTransaction
 
-+ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)a3
++ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)source
 {
   v4 = objc_alloc_init(PKPaymentTransaction);
-  [(PKPaymentTransaction *)v4 setTransactionSource:a3];
+  [(PKPaymentTransaction *)v4 setTransactionSource:source];
 
   return v4;
 }
 
-+ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)a3 dictionary:(id)a4 unitDictionary:(id)a5 balanceLabelDictionary:(id)a6 planLabelDictionary:(id)a7 hasNotificationServiceData:(BOOL)a8
++ (PKPaymentTransaction)paymentTransactionWithSource:(unint64_t)source dictionary:(id)dictionary unitDictionary:(id)unitDictionary balanceLabelDictionary:(id)labelDictionary planLabelDictionary:(id)planLabelDictionary hasNotificationServiceData:(BOOL)data
 {
-  v8 = a8;
+  dataCopy = data;
   v144 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v124 = a5;
-  v121 = a6;
-  v123 = a7;
-  v119 = [a1 paymentTransactionWithSource:a3];
-  v15 = v14;
+  dictionaryCopy = dictionary;
+  unitDictionaryCopy = unitDictionary;
+  labelDictionaryCopy = labelDictionary;
+  planLabelDictionaryCopy = planLabelDictionary;
+  v119 = [self paymentTransactionWithSource:source];
+  v15 = dictionaryCopy;
   v16 = [v15 mutableCopy];
   v17 = [v15 valueForKey:@"identifier"];
   v18 = [v15 valueForKey:@"transactionIdentifier"];
@@ -156,8 +156,8 @@
   v22 = [v21 PKStringForKey:@"serviceIdentifier"];
   v23 = [v21 PKStringForKey:@"paymentHash"];
   v114 = v22;
-  v24 = [v22 uppercaseString];
-  [v19 setServiceIdentifier:v24];
+  uppercaseString = [v22 uppercaseString];
+  [v19 setServiceIdentifier:uppercaseString];
 
   v113 = v23;
   [v19 setPaymentHash:v23];
@@ -170,7 +170,7 @@
   v27 = [v21 PKDateForKey:@"transactionStatusChangedDate"];
   [v19 setTransactionStatusChangedDate:v27];
 
-  [v19 setHasNotificationServiceData:v8];
+  [v19 setHasNotificationServiceData:dataCopy];
   v28 = [v21 PKStringForKey:@"panIdentifier"];
   [v19 setPANIdentifier:v28];
 
@@ -220,12 +220,12 @@
     [v19 setCityCode:v36];
 
     v37 = [v21 PKStringForKey:@"startStationCode"];
-    v38 = [v37 pk_decodeHexadecimal];
-    [v19 setStartStationCode:v38];
+    pk_decodeHexadecimal = [v37 pk_decodeHexadecimal];
+    [v19 setStartStationCode:pk_decodeHexadecimal];
 
     v39 = [v21 PKStringForKey:@"endStationCode"];
-    v40 = [v39 pk_decodeHexadecimal];
-    [v19 setEndStationCode:v40];
+    pk_decodeHexadecimal2 = [v39 pk_decodeHexadecimal];
+    [v19 setEndStationCode:pk_decodeHexadecimal2];
 
     v41 = [v21 PKStringForKey:@"startStation"];
     [v19 setStartStation:v41];
@@ -233,43 +233,43 @@
     v42 = [v21 PKStringForKey:@"endStation"];
     [v19 setEndStation:v42];
 
-    v43 = [v19 startStation];
-    if (v43)
+    startStation = [v19 startStation];
+    if (startStation)
     {
-      v44 = [v19 endStation];
-      if (v44)
+      endStation = [v19 endStation];
+      if (endStation)
       {
         goto LABEL_26;
       }
 
-      v40 = [v19 endStationCode];
-      if (!v40)
+      pk_decodeHexadecimal2 = [v19 endStationCode];
+      if (!pk_decodeHexadecimal2)
       {
         goto LABEL_26;
       }
     }
 
-    v45 = [v19 endStation];
-    if (!v45)
+    endStation2 = [v19 endStation];
+    if (!endStation2)
     {
-      if (v43)
+      if (startStation)
       {
       }
 
       goto LABEL_29;
     }
 
-    v46 = v45;
-    v47 = [v19 startStation];
-    if (!v47)
+    v46 = endStation2;
+    startStation2 = [v19 startStation];
+    if (!startStation2)
     {
-      v108 = [v19 startStationCode];
+      startStationCode = [v19 startStationCode];
 
-      if (v43)
+      if (startStation)
       {
       }
 
-      if (v108)
+      if (startStationCode)
       {
         goto LABEL_29;
       }
@@ -277,8 +277,8 @@
       goto LABEL_28;
     }
 
-    v44 = v40;
-    if (v43)
+    endStation = pk_decodeHexadecimal2;
+    if (startStation)
     {
 LABEL_26:
     }
@@ -413,14 +413,14 @@ LABEL_60:
 
             else
             {
-              v68 = [v121 objectForKeyedSubscript:v66];
+              v68 = [labelDictionaryCopy objectForKeyedSubscript:v66];
               if (!v68)
               {
-                v68 = [v123 objectForKeyedSubscript:v66];
+                v68 = [planLabelDictionaryCopy objectForKeyedSubscript:v66];
               }
 
 LABEL_61:
-              v69 = [v124 objectForKeyedSubscript:v66];
+              v69 = [unitDictionaryCopy objectForKeyedSubscript:v66];
               if (v69)
               {
                 v70 = v69;
@@ -507,12 +507,12 @@ LABEL_73:
           if (objc_opt_isKindOfClass())
           {
             v86 = [[PKTransactionCommutePlanUnit alloc] initWithDictionary:v85];
-            v87 = [(PKTransactionCommutePlanUnit *)v86 label];
+            label = [(PKTransactionCommutePlanUnit *)v86 label];
 
-            if (!v87)
+            if (!label)
             {
-              v88 = [(PKTransactionCommutePlanUnit *)v86 identifier];
-              v89 = [v123 objectForKeyedSubscript:v88];
+              identifier = [(PKTransactionCommutePlanUnit *)v86 identifier];
+              v89 = [planLabelDictionaryCopy objectForKeyedSubscript:identifier];
 
               if (v89)
               {
@@ -610,10 +610,10 @@ void __149__PKPaymentTransaction_paymentTransactionWithSource_dictionary_unitDic
   v2 = [(PKPaymentTransaction *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
@@ -625,14 +625,14 @@ void __149__PKPaymentTransaction_paymentTransactionWithSource_dictionary_unitDic
   [v3 setObject:self->_identifier forKeyedSubscript:@"identifier"];
   [v3 setObject:self->_serviceIdentifier forKeyedSubscript:@"serviceIdentifier"];
   [v3 setObject:self->_paymentHash forKeyedSubscript:@"paymentHash"];
-  v4 = [(NSDecimalNumber *)self->_amount stringValue];
-  [v3 setObject:v4 forKeyedSubscript:@"amount"];
+  stringValue = [(NSDecimalNumber *)self->_amount stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"amount"];
 
-  v5 = [(NSDecimalNumber *)self->_subtotalAmount stringValue];
-  [v3 setObject:v5 forKeyedSubscript:@"subtotalAmount"];
+  stringValue2 = [(NSDecimalNumber *)self->_subtotalAmount stringValue];
+  [v3 setObject:stringValue2 forKeyedSubscript:@"subtotalAmount"];
 
-  v6 = [(NSDecimalNumber *)self->_amountAddedToAuth stringValue];
-  [v3 setObject:v6 forKeyedSubscript:@"amountAddedToAuth"];
+  stringValue3 = [(NSDecimalNumber *)self->_amountAddedToAuth stringValue];
+  [v3 setObject:stringValue3 forKeyedSubscript:@"amountAddedToAuth"];
 
   [v3 setObject:self->_currencyCode forKeyedSubscript:@"currencyCode"];
   v7 = [(NSArray *)self->_amounts pk_arrayByApplyingBlock:&__block_literal_global_211];
@@ -658,8 +658,8 @@ void __149__PKPaymentTransaction_paymentTransactionWithSource_dictionary_unitDic
   v13 = PKW3CDateStringFromDate(self->_expirationDate);
   [v3 setObject:v13 forKeyedSubscript:@"expirationDate"];
 
-  v14 = [(PKMerchant *)self->_merchant jsonDictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"merchant"];
+  jsonDictionaryRepresentation = [(PKMerchant *)self->_merchant jsonDictionaryRepresentation];
+  [v3 setObject:jsonDictionaryRepresentation forKeyedSubscript:@"merchant"];
 
   if (self->_transitType)
   {
@@ -686,8 +686,8 @@ void __149__PKPaymentTransaction_paymentTransactionWithSource_dictionary_unitDic
   }
 
   [v3 setObject:self->_stationCodeProvider forKeyedSubscript:@"stationCodeProvider"];
-  v19 = [(NSData *)self->_startStationCode hexEncoding];
-  [v3 setObject:v19 forKeyedSubscript:@"startStationCode"];
+  hexEncoding = [(NSData *)self->_startStationCode hexEncoding];
+  [v3 setObject:hexEncoding forKeyedSubscript:@"startStationCode"];
 
   [v3 setObject:self->_startStation forKeyedSubscript:@"startStation"];
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startStationLatitude];
@@ -696,8 +696,8 @@ void __149__PKPaymentTransaction_paymentTransactionWithSource_dictionary_unitDic
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startStationLongitude];
   [v3 setObject:v21 forKeyedSubscript:@"startStationLongitude"];
 
-  v22 = [(NSData *)self->_endStationCode hexEncoding];
-  [v3 setObject:v22 forKeyedSubscript:@"endStationCode"];
+  hexEncoding2 = [(NSData *)self->_endStationCode hexEncoding];
+  [v3 setObject:hexEncoding2 forKeyedSubscript:@"endStationCode"];
 
   [v3 setObject:self->_endStation forKeyedSubscript:@"endStation"];
   v23 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endStationLatitude];
@@ -804,18 +804,18 @@ LABEL_37:
       v31 = PKW3CDateStringFromDate(self->_peerPaymentMessageReceivedDate);
       [v3 setObject:v31 forKeyedSubscript:@"peerPaymentMessageReceivedDate"];
 
-      v32 = [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation jsonDictionaryRepresentation];
-      [v3 setObject:v32 forKeyedSubscript:@"foreignExchangeInformation"];
+      jsonDictionaryRepresentation2 = [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation jsonDictionaryRepresentation];
+      [v3 setObject:jsonDictionaryRepresentation2 forKeyedSubscript:@"foreignExchangeInformation"];
 
-      v33 = [(PKPaymentTransactionFees *)self->_fees jsonArrayRepresentation];
-      [v3 setObject:v33 forKeyedSubscript:@"fees"];
+      jsonArrayRepresentation = [(PKPaymentTransactionFees *)self->_fees jsonArrayRepresentation];
+      [v3 setObject:jsonArrayRepresentation forKeyedSubscript:@"fees"];
 
-      v34 = [(NSDecimalNumber *)self->_primaryFundingSourceAmount stringValue];
-      [v3 setObject:v34 forKeyedSubscript:@"primaryFundingSourceAmount"];
+      stringValue4 = [(NSDecimalNumber *)self->_primaryFundingSourceAmount stringValue];
+      [v3 setObject:stringValue4 forKeyedSubscript:@"primaryFundingSourceAmount"];
 
       [v3 setObject:self->_primaryFundingSourceCurrencyCode forKeyedSubscript:@"primaryFundingSourceCurrencyCode"];
-      v35 = [(NSDecimalNumber *)self->_secondaryFundingSourceAmount stringValue];
-      [v3 setObject:v35 forKeyedSubscript:@"secondaryFundingSourceAmount"];
+      stringValue5 = [(NSDecimalNumber *)self->_secondaryFundingSourceAmount stringValue];
+      [v3 setObject:stringValue5 forKeyedSubscript:@"secondaryFundingSourceAmount"];
 
       [v3 setObject:self->_secondaryFundingSourceCurrencyCode forKeyedSubscript:@"secondaryFundingSourceCurrencyCode"];
       v36 = PKPaymentNetworkNameForPaymentCredentialType(self->_secondaryFundingSourceNetwork);
@@ -842,11 +842,11 @@ LABEL_37:
       }
 
       [v3 setObject:v39 forKeyedSubscript:@"secondaryFundingSourceType"];
-      v40 = [(NSUUID *)self->_requestDeviceScoreIdentifier UUIDString];
-      [v3 setObject:v40 forKeyedSubscript:@"requestDeviceScoreIdentifier"];
+      uUIDString = [(NSUUID *)self->_requestDeviceScoreIdentifier UUIDString];
+      [v3 setObject:uUIDString forKeyedSubscript:@"requestDeviceScoreIdentifier"];
 
-      v41 = [(NSUUID *)self->_sendDeviceScoreIdentifier UUIDString];
-      [v3 setObject:v41 forKeyedSubscript:@"sendDeviceScoreIdentifier"];
+      uUIDString2 = [(NSUUID *)self->_sendDeviceScoreIdentifier UUIDString];
+      [v3 setObject:uUIDString2 forKeyedSubscript:@"sendDeviceScoreIdentifier"];
 
       if (self->_deviceScoreIdentifiersRequired)
       {
@@ -904,8 +904,8 @@ LABEL_37:
 
       if (self->_transactionSource)
       {
-        v56 = [(PKPaymentTransaction *)self _transactionSourceString];
-        [v3 setObject:v56 forKeyedSubscript:@"transactionSource"];
+        _transactionSourceString = [(PKPaymentTransaction *)self _transactionSourceString];
+        [v3 setObject:_transactionSourceString forKeyedSubscript:@"transactionSource"];
       }
 
       v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_updateReasons];
@@ -945,8 +945,8 @@ LABEL_37:
 
         [v60 setObject:self->_administrativeArea forKeyedSubscript:@"administrativeArea"];
         [v60 setObject:self->_locality forKeyedSubscript:@"locality"];
-        v68 = [(NSTimeZone *)self->_timeZone name];
-        [v60 setObject:v68 forKeyedSubscript:@"timeZone"];
+        name = [(NSTimeZone *)self->_timeZone name];
+        [v60 setObject:name forKeyedSubscript:@"timeZone"];
 
         v69 = [MEMORY[0x1E696AD98] numberWithBool:self->_coarseLocation];
         [v60 setObject:v69 forKeyedSubscript:@"isCoarseLocation"];
@@ -966,11 +966,11 @@ LABEL_37:
       }
 
       [v3 setObject:v71 forKeyedSubscript:@"requiresLocation"];
-      v72 = [(PKPaymentTransactionRewards *)self->_rewards jsonArrayRepresentation];
-      [v3 setObject:v72 forKeyedSubscript:@"rewards"];
+      jsonArrayRepresentation2 = [(PKPaymentTransactionRewards *)self->_rewards jsonArrayRepresentation];
+      [v3 setObject:jsonArrayRepresentation2 forKeyedSubscript:@"rewards"];
 
-      v73 = [(NSDecimalNumber *)self->_rewardsTotalAmount stringValue];
-      [v3 setObject:v73 forKeyedSubscript:@"rewardsTotalAmount"];
+      stringValue6 = [(NSDecimalNumber *)self->_rewardsTotalAmount stringValue];
+      [v3 setObject:stringValue6 forKeyedSubscript:@"rewardsTotalAmount"];
 
       [v3 setObject:self->_rewardsTotalCurrencyCode forKeyedSubscript:@"rewardsTotalCurrencyCode"];
       rewardsEligibilityReason = self->_rewardsEligibilityReason;
@@ -988,11 +988,11 @@ LABEL_37:
       v76 = PKAccountRewardRedemptionTypeToString(self->_redemptionType);
       [v3 setObject:v76 forKeyedSubscript:@"redemptionType"];
 
-      v77 = [(PKPaymentTransactionRewards *)self->_rewardsInProgress jsonArrayRepresentation];
-      v78 = v77;
-      if (v77)
+      jsonArrayRepresentation3 = [(PKPaymentTransactionRewards *)self->_rewardsInProgress jsonArrayRepresentation];
+      v78 = jsonArrayRepresentation3;
+      if (jsonArrayRepresentation3)
       {
-        v79 = v77;
+        v79 = jsonArrayRepresentation3;
       }
 
       else
@@ -1015,16 +1015,16 @@ LABEL_37:
 
       [v3 setObject:self->_receiptProviderIdentifier forKeyedSubscript:@"receiptProviderIdentifier"];
       [v3 setObject:self->_receiptIdentifier forKeyedSubscript:@"receiptIdentifier"];
-      v83 = [(NSURL *)self->_receiptProviderURL absoluteString];
-      [v3 setObject:v83 forKeyedSubscript:@"receiptProviderURL"];
+      absoluteString = [(NSURL *)self->_receiptProviderURL absoluteString];
+      [v3 setObject:absoluteString forKeyedSubscript:@"receiptProviderURL"];
 
       [v3 setObject:self->_issueReportIdentifier forKeyedSubscript:@"issueReportIdentifier"];
       [v3 setObject:self->_lifecycleIdentifier forKeyedSubscript:@"lifecycleIdentifier"];
       [v3 setObject:self->_authNetworkData forKeyedSubscript:@"authNetworkData"];
       [v3 setObject:self->_clearingNetworkData forKeyedSubscript:@"clearingNetworkData"];
       v84 = [(NSSet *)self->_questions pk_setByApplyingBlock:&__block_literal_global_1008];
-      v85 = [v84 allObjects];
-      [v3 setObject:v85 forKeyedSubscript:@"questions"];
+      allObjects = [v84 allObjects];
+      [v3 setObject:allObjects forKeyedSubscript:@"questions"];
 
       [v3 setObject:self->_cardIdentifier forKeyedSubscript:@"cardIdentifier"];
       [v3 setObject:self->_dpanIdentifier forKeyedSubscript:@"dpanIdentifier"];
@@ -1068,12 +1068,12 @@ LABEL_37:
       [v3 setObject:v91 forKeyedSubscript:@"recurring"];
       [v3 setObject:self->_transactionSourceIdentifier forKeyedSubscript:@"transactionSourceIdentifier"];
       [v3 setObject:self->_barcodeIdentifier forKeyedSubscript:@"barcodeIdentifier"];
-      v92 = [(PKTransactionAuthenticationContext *)self->_authenticationContext dictionaryRepresentation];
-      [v3 setObject:v92 forKeyedSubscript:@"authenticationContext"];
+      dictionaryRepresentation = [(PKTransactionAuthenticationContext *)self->_authenticationContext dictionaryRepresentation];
+      [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"authenticationContext"];
 
       [v3 setObject:self->_primaryFundingSourceDescription forKeyedSubscript:@"primaryFundingSourceDescription"];
-      v93 = [(NSDecimalNumber *)self->_nominalAmount stringValue];
-      [v3 setObject:v93 forKeyedSubscript:@"nominalAmount"];
+      stringValue7 = [(NSDecimalNumber *)self->_nominalAmount stringValue];
+      [v3 setObject:stringValue7 forKeyedSubscript:@"nominalAmount"];
 
       v94 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasAdditionalOffers];
       [v3 setObject:v94 forKeyedSubscript:@"hasAdditionalOffers"];
@@ -1091,8 +1091,8 @@ LABEL_37:
         [v3 setObject:v98 forKeyedSubscript:@"topUpType"];
       }
 
-      v99 = [(PKTransactionReleasedData *)self->_releasedData dictionaryRepresentation];
-      [v3 setObject:v99 forKeyedSubscript:@"releasedData"];
+      dictionaryRepresentation2 = [(PKTransactionReleasedData *)self->_releasedData dictionaryRepresentation];
+      [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"releasedData"];
 
       v100 = [(NSArray *)self->_transfers pk_arrayByApplyingBlock:&__block_literal_global_1035_0];
       [v3 setObject:v100 forKeyedSubscript:@"transfers"];
@@ -1106,15 +1106,15 @@ LABEL_37:
       issuerInstallmentManagementURL = self->_issuerInstallmentManagementURL;
       if (issuerInstallmentManagementURL)
       {
-        v104 = [(NSURL *)issuerInstallmentManagementURL absoluteString];
-        [v3 setObject:v104 forKeyedSubscript:@"issuerInstallmentManagementURL"];
+        absoluteString2 = [(NSURL *)issuerInstallmentManagementURL absoluteString];
+        [v3 setObject:absoluteString2 forKeyedSubscript:@"issuerInstallmentManagementURL"];
       }
 
       paymentRewardsRedemption = self->_paymentRewardsRedemption;
       if (paymentRewardsRedemption)
       {
-        v106 = [(PKPaymentRewardsRedemption *)paymentRewardsRedemption dictionaryRepresentation];
-        [v3 setObject:v106 forKeyedSubscript:@"paymentRewardsRedemption"];
+        dictionaryRepresentation3 = [(PKPaymentRewardsRedemption *)paymentRewardsRedemption dictionaryRepresentation];
+        [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"paymentRewardsRedemption"];
       }
 
       v107 = [MEMORY[0x1E696AD98] numberWithBool:self->_interestReassessment];
@@ -1152,83 +1152,83 @@ LABEL_37:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_serviceIdentifier];
-  [v3 safelyAddObject:self->_paymentHash];
-  [v3 safelyAddObject:self->_currencyCode];
-  [v3 safelyAddObject:self->_amount];
-  [v3 safelyAddObject:self->_subtotalAmount];
-  [v3 safelyAddObject:self->_amountAddedToAuth];
-  [v3 safelyAddObject:self->_amounts];
-  [v3 safelyAddObject:self->_plans];
-  [v3 safelyAddObject:self->_transactionDate];
-  [v3 safelyAddObject:self->_transactionStatusChangedDate];
-  [v3 safelyAddObject:self->_expirationDate];
-  [v3 safelyAddObject:self->_locationDate];
-  [v3 safelyAddObject:self->_merchant];
-  [v3 safelyAddObject:self->_locality];
-  [v3 safelyAddObject:self->_administrativeArea];
-  [v3 safelyAddObject:self->_timeZone];
-  [v3 safelyAddObject:self->_startStationCode];
-  [v3 safelyAddObject:self->_endStationCode];
-  [v3 safelyAddObject:self->_startStation];
-  [v3 safelyAddObject:self->_endStation];
-  [v3 safelyAddObject:self->_cityCode];
-  [v3 safelyAddObject:self->_peerPaymentCounterpartHandle];
-  [v3 safelyAddObject:self->_peerPaymentMemo];
-  [v3 safelyAddObject:self->_peerPaymentMessageReceivedDate];
-  [v3 safelyAddObject:self->_fees];
-  [v3 safelyAddObject:self->_foreignExchangeInformation];
-  [v3 safelyAddObject:self->_primaryFundingSourceAmount];
-  [v3 safelyAddObject:self->_primaryFundingSourceCurrencyCode];
-  [v3 safelyAddObject:self->_secondaryFundingSourceAmount];
-  [v3 safelyAddObject:self->_secondaryFundingSourceCurrencyCode];
-  [v3 safelyAddObject:self->_secondaryFundingSourceDPANSuffix];
-  [v3 safelyAddObject:self->_secondaryFundingSourceFPANIdentifier];
-  [v3 safelyAddObject:self->_secondaryFundingSourceDescription];
-  [v3 safelyAddObject:self->_requestDeviceScoreIdentifier];
-  [v3 safelyAddObject:self->_sendDeviceScoreIdentifier];
-  [v3 safelyAddObject:self->_merchantProvidedDescription];
-  [v3 safelyAddObject:self->_merchantProvidedTitle];
-  [v3 safelyAddObject:self->_metadata];
-  [v3 safelyAddObject:self->_lastMerchantReprocessingDate];
-  [v3 safelyAddObject:self->_issueReportIdentifier];
-  [v3 safelyAddObject:self->_rewards];
-  [v3 safelyAddObject:self->_rewardsTotalAmount];
-  [v3 safelyAddObject:self->_rewardsTotalCurrencyCode];
-  [v3 safelyAddObject:self->_rewardsInProgress];
-  [v3 safelyAddObject:self->_localizedTypeDescription];
-  [v3 safelyAddObject:self->_bankConnectMetadata];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  [v3 safelyAddObject:self->_altDSID];
-  [v3 safelyAddObject:self->_lifecycleIdentifier];
-  [v3 safelyAddObject:self->_transactionSourceIdentifier];
-  [v3 safelyAddObject:self->_authNetworkData];
-  [v3 safelyAddObject:self->_clearingNetworkData];
-  [v3 safelyAddObject:self->_questions];
-  [v3 safelyAddObject:self->_cardIdentifier];
-  [v3 safelyAddObject:self->_dpanIdentifier];
-  [v3 safelyAddObject:self->_panIdentifier];
-  [v3 safelyAddObject:self->_isMerchantTokenTransaction];
-  [v3 safelyAddObject:self->_cardNumberSuffix];
-  [v3 safelyAddObject:self->_referenceIdentifier];
-  [v3 safelyAddObject:self->_receiptProviderURL];
-  [v3 safelyAddObject:self->_receiptProviderIdentifier];
-  [v3 safelyAddObject:self->_receiptIdentifier];
-  [v3 safelyAddObject:self->_barcodeIdentifier];
-  [v3 safelyAddObject:self->_authenticationContext];
-  [v3 safelyAddObject:self->_primaryFundingSourceDescription];
-  [v3 safelyAddObject:self->_nominalAmount];
-  [v3 safelyAddObject:self->_awards];
-  [v3 safelyAddObject:self->_amountModifiers];
-  [v3 safelyAddObject:self->_releasedData];
-  [v3 safelyAddObject:self->_issuerInstallmentManagementURL];
-  [v3 safelyAddObject:self->_paymentRewardsRedemption];
-  [v3 safelyAddObject:self->_associatedStatementIdentifiers];
-  [v3 safelyAddObject:self->_peerPaymentCounterpartImageRecordIdentifier];
-  [v3 safelyAddObject:self->_peerPaymentRequestToken];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_serviceIdentifier];
+  [array safelyAddObject:self->_paymentHash];
+  [array safelyAddObject:self->_currencyCode];
+  [array safelyAddObject:self->_amount];
+  [array safelyAddObject:self->_subtotalAmount];
+  [array safelyAddObject:self->_amountAddedToAuth];
+  [array safelyAddObject:self->_amounts];
+  [array safelyAddObject:self->_plans];
+  [array safelyAddObject:self->_transactionDate];
+  [array safelyAddObject:self->_transactionStatusChangedDate];
+  [array safelyAddObject:self->_expirationDate];
+  [array safelyAddObject:self->_locationDate];
+  [array safelyAddObject:self->_merchant];
+  [array safelyAddObject:self->_locality];
+  [array safelyAddObject:self->_administrativeArea];
+  [array safelyAddObject:self->_timeZone];
+  [array safelyAddObject:self->_startStationCode];
+  [array safelyAddObject:self->_endStationCode];
+  [array safelyAddObject:self->_startStation];
+  [array safelyAddObject:self->_endStation];
+  [array safelyAddObject:self->_cityCode];
+  [array safelyAddObject:self->_peerPaymentCounterpartHandle];
+  [array safelyAddObject:self->_peerPaymentMemo];
+  [array safelyAddObject:self->_peerPaymentMessageReceivedDate];
+  [array safelyAddObject:self->_fees];
+  [array safelyAddObject:self->_foreignExchangeInformation];
+  [array safelyAddObject:self->_primaryFundingSourceAmount];
+  [array safelyAddObject:self->_primaryFundingSourceCurrencyCode];
+  [array safelyAddObject:self->_secondaryFundingSourceAmount];
+  [array safelyAddObject:self->_secondaryFundingSourceCurrencyCode];
+  [array safelyAddObject:self->_secondaryFundingSourceDPANSuffix];
+  [array safelyAddObject:self->_secondaryFundingSourceFPANIdentifier];
+  [array safelyAddObject:self->_secondaryFundingSourceDescription];
+  [array safelyAddObject:self->_requestDeviceScoreIdentifier];
+  [array safelyAddObject:self->_sendDeviceScoreIdentifier];
+  [array safelyAddObject:self->_merchantProvidedDescription];
+  [array safelyAddObject:self->_merchantProvidedTitle];
+  [array safelyAddObject:self->_metadata];
+  [array safelyAddObject:self->_lastMerchantReprocessingDate];
+  [array safelyAddObject:self->_issueReportIdentifier];
+  [array safelyAddObject:self->_rewards];
+  [array safelyAddObject:self->_rewardsTotalAmount];
+  [array safelyAddObject:self->_rewardsTotalCurrencyCode];
+  [array safelyAddObject:self->_rewardsInProgress];
+  [array safelyAddObject:self->_localizedTypeDescription];
+  [array safelyAddObject:self->_bankConnectMetadata];
+  [array safelyAddObject:self->_accountIdentifier];
+  [array safelyAddObject:self->_altDSID];
+  [array safelyAddObject:self->_lifecycleIdentifier];
+  [array safelyAddObject:self->_transactionSourceIdentifier];
+  [array safelyAddObject:self->_authNetworkData];
+  [array safelyAddObject:self->_clearingNetworkData];
+  [array safelyAddObject:self->_questions];
+  [array safelyAddObject:self->_cardIdentifier];
+  [array safelyAddObject:self->_dpanIdentifier];
+  [array safelyAddObject:self->_panIdentifier];
+  [array safelyAddObject:self->_isMerchantTokenTransaction];
+  [array safelyAddObject:self->_cardNumberSuffix];
+  [array safelyAddObject:self->_referenceIdentifier];
+  [array safelyAddObject:self->_receiptProviderURL];
+  [array safelyAddObject:self->_receiptProviderIdentifier];
+  [array safelyAddObject:self->_receiptIdentifier];
+  [array safelyAddObject:self->_barcodeIdentifier];
+  [array safelyAddObject:self->_authenticationContext];
+  [array safelyAddObject:self->_primaryFundingSourceDescription];
+  [array safelyAddObject:self->_nominalAmount];
+  [array safelyAddObject:self->_awards];
+  [array safelyAddObject:self->_amountModifiers];
+  [array safelyAddObject:self->_releasedData];
+  [array safelyAddObject:self->_issuerInstallmentManagementURL];
+  [array safelyAddObject:self->_paymentRewardsRedemption];
+  [array safelyAddObject:self->_associatedStatementIdentifiers];
+  [array safelyAddObject:self->_peerPaymentCounterpartImageRecordIdentifier];
+  [array safelyAddObject:self->_peerPaymentRequestToken];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_transactionType - v4 + 32 * v4;
   v6 = self->_transactionSource - v5 + 32 * v5;
   v7 = self->_transactionStatus - v6 + 32 * v6;
@@ -1274,28 +1274,28 @@ LABEL_37:
   return v45;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransaction *)self isEqualToPaymentTransaction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransaction *)self isEqualToPaymentTransaction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentTransaction:(id)a3
+- (BOOL)isEqualToPaymentTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   identifier = self->_identifier;
-  v6 = v4[4];
+  v6 = transactionCopy[4];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -1324,7 +1324,7 @@ LABEL_37:
   }
 
   serviceIdentifier = self->_serviceIdentifier;
-  v10 = v4[5];
+  v10 = transactionCopy[5];
   if (serviceIdentifier && v10)
   {
     if (([(NSString *)serviceIdentifier isEqual:?]& 1) == 0)
@@ -1339,7 +1339,7 @@ LABEL_37:
   }
 
   paymentHash = self->_paymentHash;
-  v12 = v4[6];
+  v12 = transactionCopy[6];
   if (paymentHash && v12)
   {
     if (([(NSString *)paymentHash isEqual:?]& 1) == 0)
@@ -1354,7 +1354,7 @@ LABEL_37:
   }
 
   amount = self->_amount;
-  v14 = v4[7];
+  v14 = transactionCopy[7];
   if (amount && v14)
   {
     if (([(NSDecimalNumber *)amount isEqual:?]& 1) == 0)
@@ -1369,7 +1369,7 @@ LABEL_37:
   }
 
   subtotalAmount = self->_subtotalAmount;
-  v16 = v4[8];
+  v16 = transactionCopy[8];
   if (subtotalAmount && v16)
   {
     if (([(NSDecimalNumber *)subtotalAmount isEqual:?]& 1) == 0)
@@ -1384,7 +1384,7 @@ LABEL_37:
   }
 
   amountAddedToAuth = self->_amountAddedToAuth;
-  v18 = v4[10];
+  v18 = transactionCopy[10];
   if (amountAddedToAuth && v18)
   {
     if (([(NSDecimalNumber *)amountAddedToAuth isEqual:?]& 1) == 0)
@@ -1399,7 +1399,7 @@ LABEL_37:
   }
 
   amounts = self->_amounts;
-  v20 = v4[11];
+  v20 = transactionCopy[11];
   if (amounts && v20)
   {
     if (([(NSArray *)amounts isEqual:?]& 1) == 0)
@@ -1414,7 +1414,7 @@ LABEL_37:
   }
 
   plans = self->_plans;
-  v22 = v4[12];
+  v22 = transactionCopy[12];
   if (plans && v22)
   {
     if (([(NSArray *)plans isEqual:?]& 1) == 0)
@@ -1429,7 +1429,7 @@ LABEL_37:
   }
 
   currencyCode = self->_currencyCode;
-  v24 = v4[9];
+  v24 = transactionCopy[9];
   if (currencyCode && v24)
   {
     if (([(NSString *)currencyCode isEqual:?]& 1) == 0)
@@ -1444,7 +1444,7 @@ LABEL_37:
   }
 
   transactionDate = self->_transactionDate;
-  v26 = v4[13];
+  v26 = transactionCopy[13];
   if (transactionDate && v26)
   {
     if (([(NSDate *)transactionDate isEqual:?]& 1) == 0)
@@ -1459,7 +1459,7 @@ LABEL_37:
   }
 
   transactionStatusChangedDate = self->_transactionStatusChangedDate;
-  v28 = v4[14];
+  v28 = transactionCopy[14];
   if (transactionStatusChangedDate && v28)
   {
     if (([(NSDate *)transactionStatusChangedDate isEqual:?]& 1) == 0)
@@ -1474,7 +1474,7 @@ LABEL_37:
   }
 
   expirationDate = self->_expirationDate;
-  v30 = v4[15];
+  v30 = transactionCopy[15];
   if (expirationDate && v30)
   {
     if (([(NSDate *)expirationDate isEqual:?]& 1) == 0)
@@ -1489,7 +1489,7 @@ LABEL_37:
   }
 
   merchant = self->_merchant;
-  v32 = v4[16];
+  v32 = transactionCopy[16];
   if (merchant && v32)
   {
     if (![(PKMerchant *)merchant isEqual:?])
@@ -1503,13 +1503,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_transactionStatus != v4[109] || self->_transactionDeclinedReason != v4[113] || self->_transactionType != v4[110] || self->_hasNotificationServiceData != *(v4 + 20) || self->_processedForStations != *(v4 + 18) || self->_transitType != v4[26] || self->_transitModifiers != v4[27] || self->_enRoute != *(v4 + 9) || self->_shouldSuppressDate != *(v4 + 10))
+  if (self->_transactionStatus != transactionCopy[109] || self->_transactionDeclinedReason != transactionCopy[113] || self->_transactionType != transactionCopy[110] || self->_hasNotificationServiceData != *(transactionCopy + 20) || self->_processedForStations != *(transactionCopy + 18) || self->_transitType != transactionCopy[26] || self->_transitModifiers != transactionCopy[27] || self->_enRoute != *(transactionCopy + 9) || self->_shouldSuppressDate != *(transactionCopy + 10))
   {
     goto LABEL_312;
   }
 
   startStationCode = self->_startStationCode;
-  v34 = v4[30];
+  v34 = transactionCopy[30];
   if (startStationCode && v34)
   {
     if (([(NSData *)startStationCode isEqual:?]& 1) == 0)
@@ -1524,7 +1524,7 @@ LABEL_37:
   }
 
   endStationCode = self->_endStationCode;
-  v36 = v4[34];
+  v36 = transactionCopy[34];
   if (endStationCode && v36)
   {
     if (([(NSData *)endStationCode isEqual:?]& 1) == 0)
@@ -1539,7 +1539,7 @@ LABEL_37:
   }
 
   startStation = self->_startStation;
-  v38 = v4[31];
+  v38 = transactionCopy[31];
   if (startStation && v38)
   {
     if (([(NSString *)startStation isEqual:?]& 1) == 0)
@@ -1554,7 +1554,7 @@ LABEL_37:
   }
 
   endStation = self->_endStation;
-  v40 = v4[35];
+  v40 = transactionCopy[35];
   if (endStation && v40)
   {
     if (([(NSString *)endStation isEqual:?]& 1) == 0)
@@ -1569,7 +1569,7 @@ LABEL_37:
   }
 
   cityCode = self->_cityCode;
-  v42 = v4[29];
+  v42 = transactionCopy[29];
   if (cityCode && v42)
   {
     if (([(NSNumber *)cityCode isEqual:?]& 1) == 0)
@@ -1583,13 +1583,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_peerPaymentType != v4[41])
+  if (self->_peerPaymentType != transactionCopy[41])
   {
     goto LABEL_312;
   }
 
   peerPaymentCounterpartHandle = self->_peerPaymentCounterpartHandle;
-  v44 = v4[43];
+  v44 = transactionCopy[43];
   if (peerPaymentCounterpartHandle && v44)
   {
     if (([(NSString *)peerPaymentCounterpartHandle isEqual:?]& 1) == 0)
@@ -1604,7 +1604,7 @@ LABEL_37:
   }
 
   peerPaymentMessageReceivedDate = self->_peerPaymentMessageReceivedDate;
-  v46 = v4[45];
+  v46 = transactionCopy[45];
   if (peerPaymentMessageReceivedDate && v46)
   {
     if (([(NSDate *)peerPaymentMessageReceivedDate isEqual:?]& 1) == 0)
@@ -1619,7 +1619,7 @@ LABEL_37:
   }
 
   foreignExchangeInformation = self->_foreignExchangeInformation;
-  v48 = v4[47];
+  v48 = transactionCopy[47];
   if (foreignExchangeInformation && v48)
   {
     if (![(PKPaymentTransactionForeignExchangeInformation *)foreignExchangeInformation isEqual:?])
@@ -1634,7 +1634,7 @@ LABEL_37:
   }
 
   fees = self->_fees;
-  v50 = v4[48];
+  v50 = transactionCopy[48];
   if (fees && v50)
   {
     if (![(PKPaymentTransactionFees *)fees isEqual:?])
@@ -1649,7 +1649,7 @@ LABEL_37:
   }
 
   primaryFundingSourceAmount = self->_primaryFundingSourceAmount;
-  v52 = v4[52];
+  v52 = transactionCopy[52];
   if (primaryFundingSourceAmount && v52)
   {
     if (([(NSDecimalNumber *)primaryFundingSourceAmount isEqual:?]& 1) == 0)
@@ -1664,7 +1664,7 @@ LABEL_37:
   }
 
   primaryFundingSourceCurrencyCode = self->_primaryFundingSourceCurrencyCode;
-  v54 = v4[53];
+  v54 = transactionCopy[53];
   if (primaryFundingSourceCurrencyCode && v54)
   {
     if (([(NSString *)primaryFundingSourceCurrencyCode isEqual:?]& 1) == 0)
@@ -1679,7 +1679,7 @@ LABEL_37:
   }
 
   secondaryFundingSourceAmount = self->_secondaryFundingSourceAmount;
-  v56 = v4[54];
+  v56 = transactionCopy[54];
   if (secondaryFundingSourceAmount && v56)
   {
     if (([(NSDecimalNumber *)secondaryFundingSourceAmount isEqual:?]& 1) == 0)
@@ -1694,7 +1694,7 @@ LABEL_37:
   }
 
   secondaryFundingSourceCurrencyCode = self->_secondaryFundingSourceCurrencyCode;
-  v58 = v4[55];
+  v58 = transactionCopy[55];
   if (secondaryFundingSourceCurrencyCode && v58)
   {
     if (([(NSString *)secondaryFundingSourceCurrencyCode isEqual:?]& 1) == 0)
@@ -1708,13 +1708,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_secondaryFundingSourceNetwork != v4[56])
+  if (self->_secondaryFundingSourceNetwork != transactionCopy[56])
   {
     goto LABEL_312;
   }
 
   secondaryFundingSourceDPANSuffix = self->_secondaryFundingSourceDPANSuffix;
-  v60 = v4[57];
+  v60 = transactionCopy[57];
   if (secondaryFundingSourceDPANSuffix && v60)
   {
     if (([(NSString *)secondaryFundingSourceDPANSuffix isEqual:?]& 1) == 0)
@@ -1729,7 +1729,7 @@ LABEL_37:
   }
 
   merchantProvidedDescription = self->_merchantProvidedDescription;
-  v62 = v4[64];
+  v62 = transactionCopy[64];
   if (merchantProvidedDescription && v62)
   {
     if (([(NSString *)merchantProvidedDescription isEqual:?]& 1) == 0)
@@ -1744,7 +1744,7 @@ LABEL_37:
   }
 
   merchantProvidedTitle = self->_merchantProvidedTitle;
-  v64 = v4[63];
+  v64 = transactionCopy[63];
   if (merchantProvidedTitle && v64)
   {
     if (([(NSString *)merchantProvidedTitle isEqual:?]& 1) == 0)
@@ -1758,12 +1758,12 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_originatedByDevice != *(v4 + 21) || self->_fuzzyMatched != *(v4 + 22))
+  if (self->_originatedByDevice != *(transactionCopy + 21) || self->_fuzzyMatched != *(transactionCopy + 22))
   {
     goto LABEL_312;
   }
 
-  v65 = v4[99];
+  v65 = transactionCopy[99];
   v66 = self->_receiptProviderIdentifier;
   v67 = v65;
   v68 = v67;
@@ -1786,7 +1786,7 @@ LABEL_37:
     }
   }
 
-  v70 = v4[100];
+  v70 = transactionCopy[100];
   v66 = self->_receiptIdentifier;
   v71 = v70;
   v68 = v71;
@@ -1810,7 +1810,7 @@ LABEL_37:
   }
 
   receiptProviderURL = self->_receiptProviderURL;
-  v74 = v4[101];
+  v74 = transactionCopy[101];
   if (receiptProviderURL && v74)
   {
     if (([(NSURL *)receiptProviderURL isEqual:?]& 1) == 0)
@@ -1825,7 +1825,7 @@ LABEL_37:
   }
 
   localizedTypeDescription = self->_localizedTypeDescription;
-  v76 = v4[49];
+  v76 = transactionCopy[49];
   if (localizedTypeDescription && v76)
   {
     if (([(NSString *)localizedTypeDescription isEqual:?]& 1) == 0)
@@ -1839,13 +1839,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_bankConnectRoundTransactionDate != *(v4 + 12))
+  if (self->_bankConnectRoundTransactionDate != *(transactionCopy + 12))
   {
     goto LABEL_312;
   }
 
   bankConnectMetadata = self->_bankConnectMetadata;
-  v78 = v4[50];
+  v78 = transactionCopy[50];
   if (bankConnectMetadata && v78)
   {
     if (![(PKPaymentTransactionBankConnectMetadata *)bankConnectMetadata isEqual:?])
@@ -1859,13 +1859,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_preferredTransactionCategory != v4[51])
+  if (self->_preferredTransactionCategory != transactionCopy[51])
   {
     goto LABEL_312;
   }
 
   issueReportIdentifier = self->_issueReportIdentifier;
-  v80 = v4[108];
+  v80 = transactionCopy[108];
   if (issueReportIdentifier && v80)
   {
     if (([(NSString *)issueReportIdentifier isEqual:?]& 1) == 0)
@@ -1880,7 +1880,7 @@ LABEL_37:
   }
 
   rewards = self->_rewards;
-  v82 = v4[68];
+  v82 = transactionCopy[68];
   if (rewards && v82)
   {
     if (![(PKPaymentTransactionRewards *)rewards isEqual:?])
@@ -1895,7 +1895,7 @@ LABEL_37:
   }
 
   rewardsTotalAmount = self->_rewardsTotalAmount;
-  v84 = v4[65];
+  v84 = transactionCopy[65];
   if (rewardsTotalAmount && v84)
   {
     if (([(NSDecimalNumber *)rewardsTotalAmount isEqual:?]& 1) == 0)
@@ -1910,7 +1910,7 @@ LABEL_37:
   }
 
   rewardsTotalCurrencyCode = self->_rewardsTotalCurrencyCode;
-  v86 = v4[66];
+  v86 = transactionCopy[66];
   if (rewardsTotalCurrencyCode && v86)
   {
     if (([(NSString *)rewardsTotalCurrencyCode isEqual:?]& 1) == 0)
@@ -1924,13 +1924,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_rewardsEligibilityReason != v4[67])
+  if (self->_rewardsEligibilityReason != transactionCopy[67])
   {
     goto LABEL_312;
   }
 
   rewardsInProgress = self->_rewardsInProgress;
-  v88 = v4[69];
+  v88 = transactionCopy[69];
   if (rewardsInProgress && v88)
   {
     if (![(PKPaymentTransactionRewards *)rewardsInProgress isEqual:?])
@@ -1944,13 +1944,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_cardType != v4[70])
+  if (self->_cardType != transactionCopy[70])
   {
     goto LABEL_312;
   }
 
   accountIdentifier = self->_accountIdentifier;
-  v90 = v4[71];
+  v90 = transactionCopy[71];
   if (accountIdentifier && v90)
   {
     if (([(NSString *)accountIdentifier isEqual:?]& 1) == 0)
@@ -1965,7 +1965,7 @@ LABEL_37:
   }
 
   altDSID = self->_altDSID;
-  v92 = v4[72];
+  v92 = transactionCopy[72];
   if (altDSID && v92)
   {
     if (([(NSString *)altDSID isEqual:?]& 1) == 0)
@@ -1980,7 +1980,7 @@ LABEL_37:
   }
 
   lifecycleIdentifier = self->_lifecycleIdentifier;
-  v94 = v4[73];
+  v94 = transactionCopy[73];
   if (lifecycleIdentifier && v94)
   {
     if (([(NSString *)lifecycleIdentifier isEqual:?]& 1) == 0)
@@ -1995,7 +1995,7 @@ LABEL_37:
   }
 
   authNetworkData = self->_authNetworkData;
-  v96 = v4[74];
+  v96 = transactionCopy[74];
   if (authNetworkData && v96)
   {
     if (([(NSString *)authNetworkData isEqual:?]& 1) == 0)
@@ -2010,7 +2010,7 @@ LABEL_37:
   }
 
   transactionSourceIdentifier = self->_transactionSourceIdentifier;
-  v98 = v4[115];
+  v98 = transactionCopy[115];
   if (transactionSourceIdentifier && v98)
   {
     if (([(NSString *)transactionSourceIdentifier isEqual:?]& 1) == 0)
@@ -2025,7 +2025,7 @@ LABEL_37:
   }
 
   clearingNetworkData = self->_clearingNetworkData;
-  v100 = v4[75];
+  v100 = transactionCopy[75];
   if (clearingNetworkData && v100)
   {
     if (([(NSString *)clearingNetworkData isEqual:?]& 1) == 0)
@@ -2040,7 +2040,7 @@ LABEL_37:
   }
 
   questions = self->_questions;
-  v102 = v4[86];
+  v102 = transactionCopy[86];
   if (questions && v102)
   {
     if (([(NSSet *)questions isEqual:?]& 1) == 0)
@@ -2055,7 +2055,7 @@ LABEL_37:
   }
 
   cardIdentifier = self->_cardIdentifier;
-  v104 = v4[76];
+  v104 = transactionCopy[76];
   if (cardIdentifier && v104)
   {
     if (([(NSString *)cardIdentifier isEqual:?]& 1) == 0)
@@ -2070,7 +2070,7 @@ LABEL_37:
   }
 
   dpanIdentifier = self->_dpanIdentifier;
-  v106 = v4[77];
+  v106 = transactionCopy[77];
   if (dpanIdentifier && v106)
   {
     if (([(NSString *)dpanIdentifier isEqual:?]& 1) == 0)
@@ -2085,7 +2085,7 @@ LABEL_37:
   }
 
   panIdentifier = self->_panIdentifier;
-  v108 = v4[79];
+  v108 = transactionCopy[79];
   if (panIdentifier && v108)
   {
     if (([(NSString *)panIdentifier isEqual:?]& 1) == 0)
@@ -2100,7 +2100,7 @@ LABEL_37:
   }
 
   isMerchantTokenTransaction = self->_isMerchantTokenTransaction;
-  v110 = v4[80];
+  v110 = transactionCopy[80];
   if (isMerchantTokenTransaction && v110)
   {
     if (([(NSNumber *)isMerchantTokenTransaction isEqual:?]& 1) == 0)
@@ -2115,7 +2115,7 @@ LABEL_37:
   }
 
   cardNumberSuffix = self->_cardNumberSuffix;
-  v112 = v4[81];
+  v112 = transactionCopy[81];
   if (cardNumberSuffix && v112)
   {
     if (([(NSString *)cardNumberSuffix isEqual:?]& 1) == 0)
@@ -2129,13 +2129,13 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_adjustmentTypeReason != v4[39] || self->_topUpType != v4[40])
+  if (self->_adjustmentTypeReason != transactionCopy[39] || self->_topUpType != transactionCopy[40])
   {
     goto LABEL_312;
   }
 
   referenceIdentifier = self->_referenceIdentifier;
-  v114 = v4[82];
+  v114 = transactionCopy[82];
   if (referenceIdentifier && v114)
   {
     if (([(NSString *)referenceIdentifier isEqual:?]& 1) == 0)
@@ -2149,7 +2149,7 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  if (self->_associatedFeatureIdentifier != v4[85] || self->_suppressBehavior != v4[83] || self->_accountType != v4[42] || ![(PKPaymentTransaction *)self isCloudArchivableDeviceDataEqual:v4])
+  if (self->_associatedFeatureIdentifier != transactionCopy[85] || self->_suppressBehavior != transactionCopy[83] || self->_accountType != transactionCopy[42] || ![(PKPaymentTransaction *)self isCloudArchivableDeviceDataEqual:transactionCopy])
   {
     goto LABEL_312;
   }
@@ -2157,7 +2157,7 @@ LABEL_37:
   if ([(PKPaymentTransaction *)self _supportsServerFundingDescription])
   {
     secondaryFundingSourceDescription = self->_secondaryFundingSourceDescription;
-    v116 = v4[59];
+    v116 = transactionCopy[59];
     if (secondaryFundingSourceDescription && v116)
     {
       if (([(NSString *)secondaryFundingSourceDescription isEqual:?]& 1) == 0)
@@ -2172,7 +2172,7 @@ LABEL_37:
     }
   }
 
-  v117 = v4[102];
+  v117 = transactionCopy[102];
   v66 = self->_barcodeIdentifier;
   v118 = v117;
   v68 = v118;
@@ -2196,7 +2196,7 @@ LABEL_37:
   }
 
   authenticationContext = self->_authenticationContext;
-  v121 = v4[103];
+  v121 = transactionCopy[103];
   if (authenticationContext && v121)
   {
     if (![(PKTransactionAuthenticationContext *)authenticationContext isEqual:?])
@@ -2210,7 +2210,7 @@ LABEL_37:
     goto LABEL_312;
   }
 
-  v122 = v4[104];
+  v122 = transactionCopy[104];
   v66 = self->_primaryFundingSourceDescription;
   v123 = v122;
   v68 = v123;
@@ -2235,7 +2235,7 @@ LABEL_311:
 
 LABEL_315:
   nominalAmount = self->_nominalAmount;
-  v128 = v4[105];
+  v128 = transactionCopy[105];
   if (nominalAmount && v128)
   {
     if (([(NSDecimalNumber *)nominalAmount isEqual:?]& 1) == 0)
@@ -2249,10 +2249,10 @@ LABEL_315:
     goto LABEL_312;
   }
 
-  if (self->_hasAdditionalOffers == *(v4 + 24))
+  if (self->_hasAdditionalOffers == *(transactionCopy + 24))
   {
     awards = self->_awards;
-    v130 = v4[106];
+    v130 = transactionCopy[106];
     if (awards && v130)
     {
       if (([(NSArray *)awards isEqual:?]& 1) == 0)
@@ -2267,7 +2267,7 @@ LABEL_315:
     }
 
     amountModifiers = self->_amountModifiers;
-    v132 = v4[107];
+    v132 = transactionCopy[107];
     if (amountModifiers && v132)
     {
       if (([(NSArray *)amountModifiers isEqual:?]& 1) == 0)
@@ -2282,7 +2282,7 @@ LABEL_315:
     }
 
     releasedData = self->_releasedData;
-    v134 = v4[116];
+    v134 = transactionCopy[116];
     if (releasedData && v134)
     {
       if (![(PKTransactionReleasedData *)releasedData isEqual:?])
@@ -2297,7 +2297,7 @@ LABEL_315:
     }
 
     issuerInstallmentManagementURL = self->_issuerInstallmentManagementURL;
-    v136 = v4[118];
+    v136 = transactionCopy[118];
     if (issuerInstallmentManagementURL && v136)
     {
       if (([(NSURL *)issuerInstallmentManagementURL isEqual:?]& 1) == 0)
@@ -2311,10 +2311,10 @@ LABEL_315:
       goto LABEL_312;
     }
 
-    if (self->_isIssuerInstallmentTransaction == *(v4 + 29))
+    if (self->_isIssuerInstallmentTransaction == *(transactionCopy + 29))
     {
       paymentRewardsRedemption = self->_paymentRewardsRedemption;
-      v138 = v4[119];
+      v138 = transactionCopy[119];
       if (paymentRewardsRedemption && v138)
       {
         if (![(PKPaymentRewardsRedemption *)paymentRewardsRedemption isEqual:?])
@@ -2328,10 +2328,10 @@ LABEL_315:
         goto LABEL_312;
       }
 
-      if (self->_recurring == *(v4 + 27))
+      if (self->_recurring == *(transactionCopy + 27))
       {
         associatedStatementIdentifiers = self->_associatedStatementIdentifiers;
-        v140 = v4[98];
+        v140 = transactionCopy[98];
         if (associatedStatementIdentifiers && v140)
         {
           if (([(NSArray *)associatedStatementIdentifiers isEqual:?]& 1) == 0)
@@ -2345,9 +2345,9 @@ LABEL_315:
           goto LABEL_312;
         }
 
-        if (self->_interestReassessment == *(v4 + 23))
+        if (self->_interestReassessment == *(transactionCopy + 23))
         {
-          v125 = self->_paymentNetworkIdentifier == v4[78];
+          v125 = self->_paymentNetworkIdentifier == transactionCopy[78];
           goto LABEL_313;
         }
       }
@@ -2361,11 +2361,11 @@ LABEL_313:
   return v125;
 }
 
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   locationDate = self->_locationDate;
-  v6 = *(v4 + 20);
+  v6 = *(equalCopy + 20);
   if (locationDate)
   {
     v7 = v6 == 0;
@@ -2393,13 +2393,13 @@ LABEL_313:
     }
   }
 
-  if (self->_locationLatitude != v4[21] || self->_locationLongitude != v4[22] || self->_locationAltitude != v4[23] || self->_locationHorizontalAccuracy != v4[24] || self->_locationVerticalAccuracy != v4[25] || self->_coarseLocation != *(v4 + 8))
+  if (self->_locationLatitude != equalCopy[21] || self->_locationLongitude != equalCopy[22] || self->_locationAltitude != equalCopy[23] || self->_locationHorizontalAccuracy != equalCopy[24] || self->_locationVerticalAccuracy != equalCopy[25] || self->_coarseLocation != *(equalCopy + 8))
   {
     goto LABEL_69;
   }
 
   locality = self->_locality;
-  v10 = *(v4 + 17);
+  v10 = *(equalCopy + 17);
   if (locality && v10)
   {
     if (([(NSString *)locality isEqual:?]& 1) == 0)
@@ -2414,7 +2414,7 @@ LABEL_313:
   }
 
   administrativeArea = self->_administrativeArea;
-  v12 = *(v4 + 18);
+  v12 = *(equalCopy + 18);
   if (administrativeArea && v12)
   {
     if (([(NSString *)administrativeArea isEqual:?]& 1) == 0)
@@ -2429,7 +2429,7 @@ LABEL_313:
   }
 
   timeZone = self->_timeZone;
-  v14 = *(v4 + 19);
+  v14 = *(equalCopy + 19);
   if (timeZone && v14)
   {
     if (([(NSTimeZone *)timeZone isEqual:?]& 1) == 0)
@@ -2443,10 +2443,10 @@ LABEL_313:
     goto LABEL_69;
   }
 
-  if (self->_technologyType == *(v4 + 111))
+  if (self->_technologyType == *(equalCopy + 111))
   {
     secondaryFundingSourceFPANIdentifier = self->_secondaryFundingSourceFPANIdentifier;
-    v16 = *(v4 + 58);
+    v16 = *(equalCopy + 58);
     if (secondaryFundingSourceFPANIdentifier && v16)
     {
       if (([(NSString *)secondaryFundingSourceFPANIdentifier isEqual:?]& 1) == 0)
@@ -2463,7 +2463,7 @@ LABEL_313:
     if (![(PKPaymentTransaction *)self _supportsServerFundingDescription])
     {
       secondaryFundingSourceDescription = self->_secondaryFundingSourceDescription;
-      v20 = *(v4 + 59);
+      v20 = *(equalCopy + 59);
       if (secondaryFundingSourceDescription && v20)
       {
         if (([(NSString *)secondaryFundingSourceDescription isEqual:?]& 1) == 0)
@@ -2478,10 +2478,10 @@ LABEL_313:
       }
     }
 
-    if (self->_transactionSource == *(v4 + 112))
+    if (self->_transactionSource == *(equalCopy + 112))
     {
       peerPaymentMemo = self->_peerPaymentMemo;
-      v18 = *(v4 + 44);
+      v18 = *(equalCopy + 44);
       if (peerPaymentMemo && v18)
       {
         if (([(NSString *)peerPaymentMemo isEqual:?]& 1) == 0)
@@ -2496,7 +2496,7 @@ LABEL_313:
       }
 
       requestDeviceScoreIdentifier = self->_requestDeviceScoreIdentifier;
-      v22 = *(v4 + 61);
+      v22 = *(equalCopy + 61);
       if (requestDeviceScoreIdentifier && v22)
       {
         if (([(NSUUID *)requestDeviceScoreIdentifier isEqual:?]& 1) == 0)
@@ -2511,7 +2511,7 @@ LABEL_313:
       }
 
       sendDeviceScoreIdentifier = self->_sendDeviceScoreIdentifier;
-      v24 = *(v4 + 62);
+      v24 = *(equalCopy + 62);
       if (sendDeviceScoreIdentifier && v24)
       {
         if (([(NSUUID *)sendDeviceScoreIdentifier isEqual:?]& 1) == 0)
@@ -2525,42 +2525,42 @@ LABEL_313:
         goto LABEL_69;
       }
 
-      if (self->_deviceScoreIdentifiersRequired != *(v4 + 13) || self->_deviceScoreIdentifiersSubmitted != *(v4 + 14))
+      if (self->_deviceScoreIdentifiersRequired != *(equalCopy + 13) || self->_deviceScoreIdentifiersSubmitted != *(equalCopy + 14))
       {
         goto LABEL_69;
       }
 
       metadata = self->_metadata;
-      v26 = *(v4 + 96);
+      v26 = *(equalCopy + 96);
       if (metadata && v26)
       {
         if (([(NSDictionary *)metadata isEqual:?]& 1) != 0)
         {
 LABEL_64:
-          v27 = [(PKPaymentTransaction *)self answeredQuestionsOnThisDevice];
-          v28 = [v4 answeredQuestionsOnThisDevice];
-          v29 = v28;
-          if (v27 && v28)
+          answeredQuestionsOnThisDevice = [(PKPaymentTransaction *)self answeredQuestionsOnThisDevice];
+          answeredQuestionsOnThisDevice2 = [equalCopy answeredQuestionsOnThisDevice];
+          v29 = answeredQuestionsOnThisDevice2;
+          if (answeredQuestionsOnThisDevice && answeredQuestionsOnThisDevice2)
           {
-            if (([v27 isEqual:v28] & 1) == 0)
+            if (([answeredQuestionsOnThisDevice isEqual:answeredQuestionsOnThisDevice2] & 1) == 0)
             {
               goto LABEL_92;
             }
           }
 
-          else if (v27 != v28)
+          else if (answeredQuestionsOnThisDevice != answeredQuestionsOnThisDevice2)
           {
             goto LABEL_92;
           }
 
           merchant = self->_merchant;
-          v33 = *(v4 + 16);
+          v33 = *(equalCopy + 16);
           if (merchant && v33)
           {
             if (![(PKMerchant *)merchant isEqual:?])
             {
               merchant = self->_merchant;
-              v33 = *(v4 + 16);
+              v33 = *(equalCopy + 16);
               goto LABEL_77;
             }
           }
@@ -2575,7 +2575,7 @@ LABEL_77:
           }
 
           peerPaymentCounterpartImageRecordIdentifier = self->_peerPaymentCounterpartImageRecordIdentifier;
-          v35 = *(v4 + 92);
+          v35 = *(equalCopy + 92);
           if (peerPaymentCounterpartImageRecordIdentifier && v35)
           {
             if (([(NSString *)peerPaymentCounterpartImageRecordIdentifier isEqual:?]& 1) == 0)
@@ -2589,7 +2589,7 @@ LABEL_77:
             goto LABEL_92;
           }
 
-          v36 = *(v4 + 46);
+          v36 = *(equalCopy + 46);
           v37 = self->_peerPaymentRequestToken;
           v38 = v36;
           v39 = v38;
@@ -2611,7 +2611,7 @@ LABEL_77:
 LABEL_89:
             if (_os_feature_enabled_impl())
             {
-              v30 = self->_preferredTransactionCategory == *(v4 + 51);
+              v30 = self->_preferredTransactionCategory == *(equalCopy + 51);
             }
 
             else
@@ -2656,8 +2656,8 @@ LABEL_70:
     return 1;
   }
 
-  v3 = [(PKPaymentTransaction *)self answeredQuestionsOnThisDevice];
-  if ([v3 count] || -[PKMerchant hasCloudArchivableDeviceData](self->_merchant, "hasCloudArchivableDeviceData") || self->_peerPaymentCounterpartImageRecordIdentifier || self->_peerPaymentRequestToken)
+  answeredQuestionsOnThisDevice = [(PKPaymentTransaction *)self answeredQuestionsOnThisDevice];
+  if ([answeredQuestionsOnThisDevice count] || -[PKMerchant hasCloudArchivableDeviceData](self->_merchant, "hasCloudArchivableDeviceData") || self->_peerPaymentCounterpartImageRecordIdentifier || self->_peerPaymentRequestToken)
   {
     v4 = 1;
   }
@@ -2675,211 +2675,211 @@ LABEL_70:
   return v4;
 }
 
-- (PKPaymentTransaction)initWithCoder:(id)a3
+- (PKPaymentTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v214.receiver = self;
   v214.super_class = PKPaymentTransaction;
   v5 = [(PKPaymentTransaction *)&v214 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtotalAmount"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtotalAmount"];
     subtotalAmount = v5->_subtotalAmount;
     v5->_subtotalAmount = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountAddedToAuth"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountAddedToAuth"];
     amountAddedToAuth = v5->_amountAddedToAuth;
     v5->_amountAddedToAuth = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
     paymentHash = v5->_paymentHash;
     v5->_paymentHash = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionDate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionDate"];
     transactionDate = v5->_transactionDate;
     v5->_transactionDate = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionStatusChangedDate"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionStatusChangedDate"];
     transactionStatusChangedDate = v5->_transactionStatusChangedDate;
     v5->_transactionStatusChangedDate = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationDate"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationDate"];
     locationDate = v5->_locationDate;
     v5->_locationDate = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
     merchant = v5->_merchant;
     v5->_merchant = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
     locality = v5->_locality;
     v5->_locality = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
     administrativeArea = v5->_administrativeArea;
     v5->_administrativeArea = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v35;
 
     v37 = MEMORY[0x1E695DFD8];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"amounts"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"amounts"];
     amounts = v5->_amounts;
     v5->_amounts = v40;
 
     v42 = MEMORY[0x1E695DFD8];
     v43 = objc_opt_class();
     v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"plans"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"plans"];
     plans = v5->_plans;
     v5->_plans = v45;
 
-    v5->_suppressNotifications = [v4 decodeBoolForKey:@"blockNotification"];
-    v5->_recurring = [v4 decodeBoolForKey:@"recurring"];
-    v5->_transactionStatus = [v4 decodeIntegerForKey:@"transactionStatus"];
-    v5->_transactionDeclinedReason = [v4 decodeIntegerForKey:@"transactionDeclinedReason"];
-    v5->_transactionType = [v4 decodeIntegerForKey:@"transactionType"];
-    v5->_technologyType = [v4 decodeIntegerForKey:@"technologyType"];
-    v5->_transactionSource = [v4 decodeIntegerForKey:@"transactionSource"];
-    v5->_hasNotificationServiceData = [v4 decodeBoolForKey:@"hasNotificationServiceData"];
-    v5->_hasAssociatedPaymentApplication = [v4 decodeBoolForKey:@"hasAssociatedPaymentApplication"];
-    v5->_processedForLocation = [v4 decodeBoolForKey:@"processedForLocation"];
-    v5->_processedForMerchantCleanup = [v4 decodeBoolForKey:@"processedForMerchantCleanup"];
-    v5->_requiresMerchantReprocessing = [v4 decodeBoolForKey:@"requiresClearingMerchantCleanup"];
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastMerchantReprocessingDate"];
+    v5->_suppressNotifications = [coderCopy decodeBoolForKey:@"blockNotification"];
+    v5->_recurring = [coderCopy decodeBoolForKey:@"recurring"];
+    v5->_transactionStatus = [coderCopy decodeIntegerForKey:@"transactionStatus"];
+    v5->_transactionDeclinedReason = [coderCopy decodeIntegerForKey:@"transactionDeclinedReason"];
+    v5->_transactionType = [coderCopy decodeIntegerForKey:@"transactionType"];
+    v5->_technologyType = [coderCopy decodeIntegerForKey:@"technologyType"];
+    v5->_transactionSource = [coderCopy decodeIntegerForKey:@"transactionSource"];
+    v5->_hasNotificationServiceData = [coderCopy decodeBoolForKey:@"hasNotificationServiceData"];
+    v5->_hasAssociatedPaymentApplication = [coderCopy decodeBoolForKey:@"hasAssociatedPaymentApplication"];
+    v5->_processedForLocation = [coderCopy decodeBoolForKey:@"processedForLocation"];
+    v5->_processedForMerchantCleanup = [coderCopy decodeBoolForKey:@"processedForMerchantCleanup"];
+    v5->_requiresMerchantReprocessing = [coderCopy decodeBoolForKey:@"requiresClearingMerchantCleanup"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastMerchantReprocessingDate"];
     lastMerchantReprocessingDate = v5->_lastMerchantReprocessingDate;
     v5->_lastMerchantReprocessingDate = v47;
 
-    v5->_processedForStations = [v4 decodeBoolForKey:@"processedForStations"];
-    [v4 decodeDoubleForKey:@"locationLatitude"];
+    v5->_processedForStations = [coderCopy decodeBoolForKey:@"processedForStations"];
+    [coderCopy decodeDoubleForKey:@"locationLatitude"];
     v5->_locationLatitude = v49;
-    [v4 decodeDoubleForKey:@"locationLongitude"];
+    [coderCopy decodeDoubleForKey:@"locationLongitude"];
     v5->_locationLongitude = v50;
-    [v4 decodeDoubleForKey:@"locationAltitude"];
+    [coderCopy decodeDoubleForKey:@"locationAltitude"];
     v5->_locationAltitude = v51;
-    [v4 decodeDoubleForKey:@"locationHorizontalAccuracy"];
+    [coderCopy decodeDoubleForKey:@"locationHorizontalAccuracy"];
     v5->_locationHorizontalAccuracy = v52;
-    [v4 decodeDoubleForKey:@"locationVerticalAccuracy"];
+    [coderCopy decodeDoubleForKey:@"locationVerticalAccuracy"];
     v5->_locationVerticalAccuracy = v53;
-    v5->_coarseLocation = [v4 decodeBoolForKey:@"isCoarseLocation"];
-    v5->_transitType = [v4 decodeIntegerForKey:@"transitType"];
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transitModifiers"];
+    v5->_coarseLocation = [coderCopy decodeBoolForKey:@"isCoarseLocation"];
+    v5->_transitType = [coderCopy decodeIntegerForKey:@"transitType"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transitModifiers"];
     v5->_transitModifiers = [v54 unsignedIntegerValue];
 
-    v5->_enRoute = [v4 decodeBoolForKey:@"enRoute"];
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stationCodeProvider"];
+    v5->_enRoute = [coderCopy decodeBoolForKey:@"enRoute"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stationCodeProvider"];
     stationCodeProvider = v5->_stationCodeProvider;
     v5->_stationCodeProvider = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cityCode"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cityCode"];
     cityCode = v5->_cityCode;
     v5->_cityCode = v57;
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startStationCode"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startStationCode"];
     startStationCode = v5->_startStationCode;
     v5->_startStationCode = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startStation"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startStation"];
     startStation = v5->_startStation;
     v5->_startStation = v61;
 
-    [v4 decodeDoubleForKey:@"startStationLatitude"];
+    [coderCopy decodeDoubleForKey:@"startStationLatitude"];
     v5->_startStationLatitude = v63;
-    [v4 decodeDoubleForKey:@"startStationLongitude"];
+    [coderCopy decodeDoubleForKey:@"startStationLongitude"];
     v5->_startStationLongitude = v64;
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endStationCode"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endStationCode"];
     endStationCode = v5->_endStationCode;
     v5->_endStationCode = v65;
 
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endStation"];
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endStation"];
     endStation = v5->_endStation;
     v5->_endStation = v67;
 
-    [v4 decodeDoubleForKey:@"endStationLatitude"];
+    [coderCopy decodeDoubleForKey:@"endStationLatitude"];
     v5->_endStationLatitude = v69;
-    [v4 decodeDoubleForKey:@"ednStationLongitude"];
+    [coderCopy decodeDoubleForKey:@"ednStationLongitude"];
     v5->_endStationLongitude = v70;
-    v5->_shouldSuppressDate = [v4 decodeBoolForKey:@"shouldSuppressDate"];
-    v5->_adjustmentType = [v4 decodeIntegerForKey:@"adjustmentType"];
-    v5->_peerPaymentType = [v4 decodeIntegerForKey:@"peerPaymentType"];
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartHandle"];
+    v5->_shouldSuppressDate = [coderCopy decodeBoolForKey:@"shouldSuppressDate"];
+    v5->_adjustmentType = [coderCopy decodeIntegerForKey:@"adjustmentType"];
+    v5->_peerPaymentType = [coderCopy decodeIntegerForKey:@"peerPaymentType"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartHandle"];
     peerPaymentCounterpartHandle = v5->_peerPaymentCounterpartHandle;
     v5->_peerPaymentCounterpartHandle = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentMemo"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentMemo"];
     peerPaymentMemo = v5->_peerPaymentMemo;
     v5->_peerPaymentMemo = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentMessageReceivedDate"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentMessageReceivedDate"];
     peerPaymentMessageReceivedDate = v5->_peerPaymentMessageReceivedDate;
     v5->_peerPaymentMessageReceivedDate = v75;
 
-    v5->_accountType = [v4 decodeIntegerForKey:@"feature"];
-    v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fees"];
+    v5->_accountType = [coderCopy decodeIntegerForKey:@"feature"];
+    v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fees"];
     fees = v5->_fees;
     v5->_fees = v77;
 
-    v79 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foreignExchangeInformation"];
+    v79 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foreignExchangeInformation"];
     foreignExchangeInformation = v5->_foreignExchangeInformation;
     v5->_foreignExchangeInformation = v79;
 
-    v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceAmount"];
+    v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceAmount"];
     primaryFundingSourceAmount = v5->_primaryFundingSourceAmount;
     v5->_primaryFundingSourceAmount = v81;
 
-    v83 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceCurrencyCode"];
+    v83 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceCurrencyCode"];
     primaryFundingSourceCurrencyCode = v5->_primaryFundingSourceCurrencyCode;
     v5->_primaryFundingSourceCurrencyCode = v83;
 
-    v85 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceAmount"];
+    v85 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceAmount"];
     secondaryFundingSourceAmount = v5->_secondaryFundingSourceAmount;
     v5->_secondaryFundingSourceAmount = v85;
 
-    v87 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceCurrencyCode"];
+    v87 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceCurrencyCode"];
     secondaryFundingSourceCurrencyCode = v5->_secondaryFundingSourceCurrencyCode;
     v5->_secondaryFundingSourceCurrencyCode = v87;
 
-    v5->_secondaryFundingSourceNetwork = [v4 decodeIntegerForKey:@"secondaryFundingSourceNetwork"];
-    v89 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceDPANSuffix"];
+    v5->_secondaryFundingSourceNetwork = [coderCopy decodeIntegerForKey:@"secondaryFundingSourceNetwork"];
+    v89 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceDPANSuffix"];
     secondaryFundingSourceDPANSuffix = v5->_secondaryFundingSourceDPANSuffix;
     v5->_secondaryFundingSourceDPANSuffix = v89;
 
-    v91 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceFPANIdentifier"];
+    v91 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceFPANIdentifier"];
     secondaryFundingSourceFPANIdentifier = v5->_secondaryFundingSourceFPANIdentifier;
     v5->_secondaryFundingSourceFPANIdentifier = v91;
 
-    v93 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceDescription"];
+    v93 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryFundingSourceDescription"];
     secondaryFundingSourceDescription = v5->_secondaryFundingSourceDescription;
     v5->_secondaryFundingSourceDescription = v93;
 
-    v95 = [v4 containsValueForKey:@"secondaryFundingSourceType"];
+    v95 = [coderCopy containsValueForKey:@"secondaryFundingSourceType"];
     if (v5->_transactionType != 5 || v95)
     {
-      v96 = [v4 decodeIntegerForKey:@"secondaryFundingSourceType"];
+      v96 = [coderCopy decodeIntegerForKey:@"secondaryFundingSourceType"];
     }
 
     else
@@ -2888,233 +2888,233 @@ LABEL_70:
     }
 
     v5->_secondaryFundingSourceType = v96;
-    v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestDeviceScoreIdentifier"];
+    v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestDeviceScoreIdentifier"];
     requestDeviceScoreIdentifier = v5->_requestDeviceScoreIdentifier;
     v5->_requestDeviceScoreIdentifier = v97;
 
-    v99 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sendDeviceScoreIdentifier"];
+    v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sendDeviceScoreIdentifier"];
     sendDeviceScoreIdentifier = v5->_sendDeviceScoreIdentifier;
     v5->_sendDeviceScoreIdentifier = v99;
 
-    v5->_deviceScoreIdentifiersRequired = [v4 decodeBoolForKey:@"deviceScoreIdentifiersRequired"];
-    v5->_deviceScoreIdentifiersSubmitted = [v4 decodeBoolForKey:@"deviceScoreIdentifiersSubmitted"];
-    v101 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantProvidedDescription"];
+    v5->_deviceScoreIdentifiersRequired = [coderCopy decodeBoolForKey:@"deviceScoreIdentifiersRequired"];
+    v5->_deviceScoreIdentifiersSubmitted = [coderCopy decodeBoolForKey:@"deviceScoreIdentifiersSubmitted"];
+    v101 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantProvidedDescription"];
     merchantProvidedDescription = v5->_merchantProvidedDescription;
     v5->_merchantProvidedDescription = v101;
 
-    v103 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantProvidedTitle"];
+    v103 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantProvidedTitle"];
     merchantProvidedTitle = v5->_merchantProvidedTitle;
     v5->_merchantProvidedTitle = v103;
 
-    v105 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
+    v105 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
     rewards = v5->_rewards;
     v5->_rewards = v105;
 
-    v107 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsTotalAmount"];
+    v107 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsTotalAmount"];
     rewardsTotalAmount = v5->_rewardsTotalAmount;
     v5->_rewardsTotalAmount = v107;
 
-    v109 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsTotalCurrencyCode"];
+    v109 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsTotalCurrencyCode"];
     rewardsTotalCurrencyCode = v5->_rewardsTotalCurrencyCode;
     v5->_rewardsTotalCurrencyCode = v109;
 
-    v5->_redemptionType = [v4 decodeIntegerForKey:@"redemptionType"];
-    v111 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsInProgress"];
+    v5->_redemptionType = [coderCopy decodeIntegerForKey:@"redemptionType"];
+    v111 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsInProgress"];
     rewardsInProgress = v5->_rewardsInProgress;
     v5->_rewardsInProgress = v111;
 
-    v5->_cardType = [v4 decodeIntegerForKey:@"cardType"];
-    v5->_rewardsEligibilityReason = [v4 decodeIntegerForKey:@"rewardsEligibilityReason"];
-    v113 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v5->_cardType = [coderCopy decodeIntegerForKey:@"cardType"];
+    v5->_rewardsEligibilityReason = [coderCopy decodeIntegerForKey:@"rewardsEligibilityReason"];
+    v113 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v113;
 
-    v115 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v115 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v115;
 
-    v117 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lifecycleIdentifier"];
+    v117 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lifecycleIdentifier"];
     lifecycleIdentifier = v5->_lifecycleIdentifier;
     v5->_lifecycleIdentifier = v117;
 
-    v119 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authNetworkData"];
+    v119 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authNetworkData"];
     authNetworkData = v5->_authNetworkData;
     v5->_authNetworkData = v119;
 
-    v121 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clearingNetworkData"];
+    v121 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clearingNetworkData"];
     clearingNetworkData = v5->_clearingNetworkData;
     v5->_clearingNetworkData = v121;
 
-    v123 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardIdentifier"];
+    v123 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardIdentifier"];
     cardIdentifier = v5->_cardIdentifier;
     v5->_cardIdentifier = v123;
 
-    v125 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
+    v125 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v125;
 
-    v127 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"panIdentifier"];
+    v127 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"panIdentifier"];
     panIdentifier = v5->_panIdentifier;
     v5->_panIdentifier = v127;
 
-    v129 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isMerchantTokenTransaction"];
+    v129 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isMerchantTokenTransaction"];
     isMerchantTokenTransaction = v5->_isMerchantTokenTransaction;
     v5->_isMerchantTokenTransaction = v129;
 
-    v131 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"last4Digits"];
+    v131 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"last4Digits"];
     cardNumberSuffix = v5->_cardNumberSuffix;
     v5->_cardNumberSuffix = v131;
 
-    v5->_adjustmentTypeReason = [v4 decodeIntegerForKey:@"adjustmentTypeReason"];
-    v5->_topUpType = [v4 decodeIntegerForKey:@"topUpType"];
+    v5->_adjustmentTypeReason = [coderCopy decodeIntegerForKey:@"adjustmentTypeReason"];
+    v5->_topUpType = [coderCopy decodeIntegerForKey:@"topUpType"];
     v133 = MEMORY[0x1E695DFD8];
     v134 = objc_opt_class();
     v135 = [v133 setWithObjects:{v134, objc_opt_class(), 0}];
-    v136 = [v4 decodeObjectOfClasses:v135 forKey:@"issuerQuestions"];
+    v136 = [coderCopy decodeObjectOfClasses:v135 forKey:@"issuerQuestions"];
     questions = v5->_questions;
     v5->_questions = v136;
 
-    v5->_associatedFeatureIdentifier = [v4 decodeIntegerForKey:@"associatedFeatureIdentifier"];
-    v138 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
+    v5->_associatedFeatureIdentifier = [coderCopy decodeIntegerForKey:@"associatedFeatureIdentifier"];
+    v138 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceIdentifier"];
     referenceIdentifier = v5->_referenceIdentifier;
     v5->_referenceIdentifier = v138;
 
-    v5->_suppressBehavior = [v4 decodeIntegerForKey:@"supressBehavior"];
+    v5->_suppressBehavior = [coderCopy decodeIntegerForKey:@"supressBehavior"];
     v140 = MEMORY[0x1E695DFD8];
     v141 = objc_opt_class();
     v142 = [v140 setWithObjects:{v141, objc_opt_class(), 0}];
-    v143 = [v4 decodeObjectOfClasses:v142 forKey:@"servicingEvents"];
+    v143 = [coderCopy decodeObjectOfClasses:v142 forKey:@"servicingEvents"];
     servicingEvents = v5->_servicingEvents;
     v5->_servicingEvents = v143;
 
     v145 = MEMORY[0x1E695DFD8];
     v146 = objc_opt_class();
     v147 = [v145 setWithObjects:{v146, objc_opt_class(), 0}];
-    v148 = [v4 decodeObjectOfClasses:v147 forKey:@"payments"];
+    v148 = [coderCopy decodeObjectOfClasses:v147 forKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v148;
 
     v150 = MEMORY[0x1E695DFD8];
     v151 = objc_opt_class();
     v152 = [v150 setWithObjects:{v151, objc_opt_class(), 0}];
-    v153 = [v4 decodeObjectOfClasses:v152 forKey:@"transfers"];
+    v153 = [coderCopy decodeObjectOfClasses:v152 forKey:@"transfers"];
     transfers = v5->_transfers;
     v5->_transfers = v153;
 
-    v155 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurringPeerPayment"];
+    v155 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recurringPeerPayment"];
     recurringPeerPayment = v5->_recurringPeerPayment;
     v5->_recurringPeerPayment = v155;
 
     v157 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v158 = [v4 decodeObjectOfClasses:v157 forKey:@"redemptionEvent"];
+    v158 = [coderCopy decodeObjectOfClasses:v157 forKey:@"redemptionEvent"];
     redemptionEvent = v5->_redemptionEvent;
     v5->_redemptionEvent = v158;
 
-    v160 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentPayment"];
+    v160 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentPayment"];
     installmentPayment = v5->_installmentPayment;
     v5->_installmentPayment = v160;
 
-    v162 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installment"];
+    v162 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installment"];
     installmentPlan = v5->_installmentPlan;
     v5->_installmentPlan = v162;
 
-    v164 = [v4 decodePropertyListForKey:@"metadata"];
+    v164 = [coderCopy decodePropertyListForKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v164;
 
-    v5->_updateReasons = [v4 decodeIntegerForKey:@"updateReasons"];
-    v166 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v5->_updateReasons = [coderCopy decodeIntegerForKey:@"updateReasons"];
+    v166 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v166;
 
-    v5->_originatedByDevice = [v4 decodeBoolForKey:@"originatedByDevice"];
-    v5->_fuzzyMatched = [v4 decodeBoolForKey:@"fuzzyMatched"];
-    v168 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderURL"];
+    v5->_originatedByDevice = [coderCopy decodeBoolForKey:@"originatedByDevice"];
+    v5->_fuzzyMatched = [coderCopy decodeBoolForKey:@"fuzzyMatched"];
+    v168 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderURL"];
     receiptProviderURL = v5->_receiptProviderURL;
     v5->_receiptProviderURL = v168;
 
-    v170 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderIdentifier"];
+    v170 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderIdentifier"];
     receiptProviderIdentifier = v5->_receiptProviderIdentifier;
     v5->_receiptProviderIdentifier = v170;
 
-    v172 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
+    v172 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
     receiptIdentifier = v5->_receiptIdentifier;
     v5->_receiptIdentifier = v172;
 
-    v174 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issueReportIdentifier"];
+    v174 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issueReportIdentifier"];
     issueReportIdentifier = v5->_issueReportIdentifier;
     v5->_issueReportIdentifier = v174;
 
-    v5->_requiresLocation = [v4 decodeBoolForKey:@"requiresLocation"];
-    v176 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTypeDescription"];
+    v5->_requiresLocation = [coderCopy decodeBoolForKey:@"requiresLocation"];
+    v176 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTypeDescription"];
     localizedTypeDescription = v5->_localizedTypeDescription;
     v5->_localizedTypeDescription = v176;
 
-    v5->_bankConnectRoundTransactionDate = [v4 decodeBoolForKey:@"bankConnectRoundTransactionDate"];
-    v178 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankConnectMetadata"];
+    v5->_bankConnectRoundTransactionDate = [coderCopy decodeBoolForKey:@"bankConnectRoundTransactionDate"];
+    v178 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankConnectMetadata"];
     bankConnectMetadata = v5->_bankConnectMetadata;
     v5->_bankConnectMetadata = v178;
 
-    v5->_preferredTransactionCategory = [v4 decodeIntegerForKey:@"preferredTransactionCategory"];
-    v180 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"barcodeIdentifier"];
+    v5->_preferredTransactionCategory = [coderCopy decodeIntegerForKey:@"preferredTransactionCategory"];
+    v180 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"barcodeIdentifier"];
     barcodeIdentifier = v5->_barcodeIdentifier;
     v5->_barcodeIdentifier = v180;
 
-    v182 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationDetails"];
+    v182 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationDetails"];
     authenticationContext = v5->_authenticationContext;
     v5->_authenticationContext = v182;
 
-    v184 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceDescription"];
+    v184 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryFundingSourceDescription"];
     primaryFundingSourceDescription = v5->_primaryFundingSourceDescription;
     v5->_primaryFundingSourceDescription = v184;
 
-    v186 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nominalAmount"];
+    v186 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nominalAmount"];
     nominalAmount = v5->_nominalAmount;
     v5->_nominalAmount = v186;
 
-    v5->_hasAdditionalOffers = [v4 decodeBoolForKey:@"hasAdditionalOffers"];
+    v5->_hasAdditionalOffers = [coderCopy decodeBoolForKey:@"hasAdditionalOffers"];
     v188 = MEMORY[0x1E695DFD8];
     v189 = objc_opt_class();
     v190 = [v188 setWithObjects:{v189, objc_opt_class(), 0}];
-    v191 = [v4 decodeObjectOfClasses:v190 forKey:@"awards"];
+    v191 = [coderCopy decodeObjectOfClasses:v190 forKey:@"awards"];
     awards = v5->_awards;
     v5->_awards = v191;
 
     v193 = MEMORY[0x1E695DFD8];
     v194 = objc_opt_class();
     v195 = [v193 setWithObjects:{v194, objc_opt_class(), 0}];
-    v196 = [v4 decodeObjectOfClasses:v195 forKey:@"amountModifiers"];
+    v196 = [coderCopy decodeObjectOfClasses:v195 forKey:@"amountModifiers"];
     amountModifiers = v5->_amountModifiers;
     v5->_amountModifiers = v196;
 
-    v198 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releasedData"];
+    v198 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releasedData"];
     releasedData = v5->_releasedData;
     v5->_releasedData = v198;
 
-    v5->_isIssuerInstallmentTransaction = [v4 decodeBoolForKey:@"isIssuerInstallmentTransaction"];
-    v200 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuerInstallmentManagementURL"];
+    v5->_isIssuerInstallmentTransaction = [coderCopy decodeBoolForKey:@"isIssuerInstallmentTransaction"];
+    v200 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuerInstallmentManagementURL"];
     issuerInstallmentManagementURL = v5->_issuerInstallmentManagementURL;
     v5->_issuerInstallmentManagementURL = v200;
 
-    v202 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentRewardsRedemption"];
+    v202 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentRewardsRedemption"];
     paymentRewardsRedemption = v5->_paymentRewardsRedemption;
     v5->_paymentRewardsRedemption = v202;
 
     v204 = MEMORY[0x1E695DFD8];
     v205 = objc_opt_class();
     v206 = [v204 setWithObjects:{v205, objc_opt_class(), 0}];
-    v207 = [v4 decodeObjectOfClasses:v206 forKey:@"associatedStatementIdentifiers"];
+    v207 = [coderCopy decodeObjectOfClasses:v206 forKey:@"associatedStatementIdentifiers"];
     associatedStatementIdentifiers = v5->_associatedStatementIdentifiers;
     v5->_associatedStatementIdentifiers = v207;
 
-    v5->_interestReassessment = [v4 decodeBoolForKey:@"interestReassessment"];
-    v5->_paymentNetworkIdentifier = [v4 decodeIntegerForKey:@"paymentNetworkIdentifier"];
-    v5->_peerPaymentPaymentMode = [v4 decodeIntegerForKey:@"peerPaymentPaymentMode"];
-    v209 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
+    v5->_interestReassessment = [coderCopy decodeBoolForKey:@"interestReassessment"];
+    v5->_paymentNetworkIdentifier = [coderCopy decodeIntegerForKey:@"paymentNetworkIdentifier"];
+    v5->_peerPaymentPaymentMode = [coderCopy decodeIntegerForKey:@"peerPaymentPaymentMode"];
+    v209 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
     peerPaymentCounterpartImageRecordIdentifier = v5->_peerPaymentCounterpartImageRecordIdentifier;
     v5->_peerPaymentCounterpartImageRecordIdentifier = v209;
 
-    v211 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentRequestToken"];
+    v211 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentRequestToken"];
     peerPaymentRequestToken = v5->_peerPaymentRequestToken;
     v5->_peerPaymentRequestToken = v211;
 
@@ -3124,194 +3124,194 @@ LABEL_70:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v6 = a3;
-  [v6 encodeObject:amount forKey:@"amount"];
-  [v6 encodeObject:self->_subtotalAmount forKey:@"subtotalAmount"];
-  [v6 encodeObject:self->_amountAddedToAuth forKey:@"amountAddedToAuth"];
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
-  [v6 encodeObject:self->_paymentHash forKey:@"paymentHash"];
-  [v6 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v6 encodeObject:self->_amounts forKey:@"amounts"];
-  [v6 encodeObject:self->_plans forKey:@"plans"];
-  [v6 encodeObject:self->_transactionDate forKey:@"transactionDate"];
-  [v6 encodeObject:self->_transactionStatusChangedDate forKey:@"transactionStatusChangedDate"];
-  [v6 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v6 encodeObject:self->_locationDate forKey:@"locationDate"];
-  [v6 encodeObject:self->_merchant forKey:@"merchant"];
-  [v6 encodeObject:self->_locality forKey:@"locality"];
-  [v6 encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
-  [v6 encodeObject:self->_timeZone forKey:@"timeZone"];
-  [v6 encodeBool:self->_suppressNotifications forKey:@"blockNotification"];
-  [v6 encodeBool:self->_recurring forKey:@"recurring"];
-  [v6 encodeInteger:self->_transactionStatus forKey:@"transactionStatus"];
-  [v6 encodeInteger:self->_transactionDeclinedReason forKey:@"transactionDeclinedReason"];
-  [v6 encodeInteger:self->_transactionType forKey:@"transactionType"];
-  [v6 encodeInteger:self->_technologyType forKey:@"technologyType"];
-  [v6 encodeInteger:self->_transactionSource forKey:@"transactionSource"];
-  [v6 encodeBool:self->_hasNotificationServiceData forKey:@"hasNotificationServiceData"];
-  [v6 encodeBool:self->_hasAssociatedPaymentApplication forKey:@"hasAssociatedPaymentApplication"];
-  [v6 encodeBool:self->_processedForLocation forKey:@"processedForLocation"];
-  [v6 encodeBool:self->_processedForMerchantCleanup forKey:@"processedForMerchantCleanup"];
-  [v6 encodeBool:self->_requiresMerchantReprocessing forKey:@"requiresClearingMerchantCleanup"];
-  [v6 encodeObject:self->_lastMerchantReprocessingDate forKey:@"lastMerchantReprocessingDate"];
-  [v6 encodeBool:self->_processedForStations forKey:@"processedForStations"];
-  [v6 encodeDouble:@"locationLatitude" forKey:self->_locationLatitude];
-  [v6 encodeDouble:@"locationLongitude" forKey:self->_locationLongitude];
-  [v6 encodeDouble:@"locationAltitude" forKey:self->_locationAltitude];
-  [v6 encodeDouble:@"locationHorizontalAccuracy" forKey:self->_locationHorizontalAccuracy];
-  [v6 encodeDouble:@"locationVerticalAccuracy" forKey:self->_locationVerticalAccuracy];
-  [v6 encodeBool:self->_coarseLocation forKey:@"isCoarseLocation"];
-  [v6 encodeInteger:self->_transitType forKey:@"transitType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_subtotalAmount forKey:@"subtotalAmount"];
+  [coderCopy encodeObject:self->_amountAddedToAuth forKey:@"amountAddedToAuth"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
+  [coderCopy encodeObject:self->_paymentHash forKey:@"paymentHash"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_amounts forKey:@"amounts"];
+  [coderCopy encodeObject:self->_plans forKey:@"plans"];
+  [coderCopy encodeObject:self->_transactionDate forKey:@"transactionDate"];
+  [coderCopy encodeObject:self->_transactionStatusChangedDate forKey:@"transactionStatusChangedDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_locationDate forKey:@"locationDate"];
+  [coderCopy encodeObject:self->_merchant forKey:@"merchant"];
+  [coderCopy encodeObject:self->_locality forKey:@"locality"];
+  [coderCopy encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
+  [coderCopy encodeBool:self->_suppressNotifications forKey:@"blockNotification"];
+  [coderCopy encodeBool:self->_recurring forKey:@"recurring"];
+  [coderCopy encodeInteger:self->_transactionStatus forKey:@"transactionStatus"];
+  [coderCopy encodeInteger:self->_transactionDeclinedReason forKey:@"transactionDeclinedReason"];
+  [coderCopy encodeInteger:self->_transactionType forKey:@"transactionType"];
+  [coderCopy encodeInteger:self->_technologyType forKey:@"technologyType"];
+  [coderCopy encodeInteger:self->_transactionSource forKey:@"transactionSource"];
+  [coderCopy encodeBool:self->_hasNotificationServiceData forKey:@"hasNotificationServiceData"];
+  [coderCopy encodeBool:self->_hasAssociatedPaymentApplication forKey:@"hasAssociatedPaymentApplication"];
+  [coderCopy encodeBool:self->_processedForLocation forKey:@"processedForLocation"];
+  [coderCopy encodeBool:self->_processedForMerchantCleanup forKey:@"processedForMerchantCleanup"];
+  [coderCopy encodeBool:self->_requiresMerchantReprocessing forKey:@"requiresClearingMerchantCleanup"];
+  [coderCopy encodeObject:self->_lastMerchantReprocessingDate forKey:@"lastMerchantReprocessingDate"];
+  [coderCopy encodeBool:self->_processedForStations forKey:@"processedForStations"];
+  [coderCopy encodeDouble:@"locationLatitude" forKey:self->_locationLatitude];
+  [coderCopy encodeDouble:@"locationLongitude" forKey:self->_locationLongitude];
+  [coderCopy encodeDouble:@"locationAltitude" forKey:self->_locationAltitude];
+  [coderCopy encodeDouble:@"locationHorizontalAccuracy" forKey:self->_locationHorizontalAccuracy];
+  [coderCopy encodeDouble:@"locationVerticalAccuracy" forKey:self->_locationVerticalAccuracy];
+  [coderCopy encodeBool:self->_coarseLocation forKey:@"isCoarseLocation"];
+  [coderCopy encodeInteger:self->_transitType forKey:@"transitType"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_transitModifiers];
-  [v6 encodeObject:v5 forKey:@"transitModifiers"];
+  [coderCopy encodeObject:v5 forKey:@"transitModifiers"];
 
-  [v6 encodeBool:self->_enRoute forKey:@"enRoute"];
-  [v6 encodeObject:self->_stationCodeProvider forKey:@"stationCodeProvider"];
-  [v6 encodeObject:self->_cityCode forKey:@"cityCode"];
-  [v6 encodeObject:self->_startStationCode forKey:@"startStationCode"];
-  [v6 encodeObject:self->_startStation forKey:@"startStation"];
-  [v6 encodeDouble:@"startStationLatitude" forKey:self->_startStationLatitude];
-  [v6 encodeDouble:@"startStationLongitude" forKey:self->_startStationLongitude];
-  [v6 encodeObject:self->_endStationCode forKey:@"endStationCode"];
-  [v6 encodeObject:self->_endStation forKey:@"endStation"];
-  [v6 encodeDouble:@"endStationLatitude" forKey:self->_endStationLatitude];
-  [v6 encodeDouble:@"ednStationLongitude" forKey:self->_endStationLongitude];
-  [v6 encodeBool:self->_shouldSuppressDate forKey:@"shouldSuppressDate"];
-  [v6 encodeInteger:self->_adjustmentType forKey:@"adjustmentType"];
-  [v6 encodeInteger:self->_accountType forKey:@"feature"];
-  [v6 encodeInteger:self->_peerPaymentType forKey:@"peerPaymentType"];
-  [v6 encodeObject:self->_peerPaymentCounterpartHandle forKey:@"peerPaymentCounterpartHandle"];
-  [v6 encodeObject:self->_peerPaymentMemo forKey:@"peerPaymentMemo"];
-  [v6 encodeObject:self->_peerPaymentMessageReceivedDate forKey:@"peerPaymentMessageReceivedDate"];
-  [v6 encodeObject:self->_fees forKey:@"fees"];
-  [v6 encodeObject:self->_foreignExchangeInformation forKey:@"foreignExchangeInformation"];
-  [v6 encodeObject:self->_primaryFundingSourceAmount forKey:@"primaryFundingSourceAmount"];
-  [v6 encodeObject:self->_primaryFundingSourceCurrencyCode forKey:@"primaryFundingSourceCurrencyCode"];
-  [v6 encodeObject:self->_secondaryFundingSourceAmount forKey:@"secondaryFundingSourceAmount"];
-  [v6 encodeObject:self->_secondaryFundingSourceCurrencyCode forKey:@"secondaryFundingSourceCurrencyCode"];
-  [v6 encodeInteger:self->_secondaryFundingSourceNetwork forKey:@"secondaryFundingSourceNetwork"];
-  [v6 encodeObject:self->_secondaryFundingSourceDPANSuffix forKey:@"secondaryFundingSourceDPANSuffix"];
-  [v6 encodeObject:self->_secondaryFundingSourceFPANIdentifier forKey:@"secondaryFundingSourceFPANIdentifier"];
-  [v6 encodeObject:self->_secondaryFundingSourceDescription forKey:@"secondaryFundingSourceDescription"];
-  [v6 encodeInteger:self->_secondaryFundingSourceType forKey:@"secondaryFundingSourceType"];
-  [v6 encodeObject:self->_requestDeviceScoreIdentifier forKey:@"requestDeviceScoreIdentifier"];
-  [v6 encodeObject:self->_sendDeviceScoreIdentifier forKey:@"sendDeviceScoreIdentifier"];
-  [v6 encodeBool:self->_deviceScoreIdentifiersRequired forKey:@"deviceScoreIdentifiersRequired"];
-  [v6 encodeBool:self->_deviceScoreIdentifiersSubmitted forKey:@"deviceScoreIdentifiersSubmitted"];
-  [v6 encodeObject:self->_merchantProvidedDescription forKey:@"merchantProvidedDescription"];
-  [v6 encodeObject:self->_merchantProvidedTitle forKey:@"merchantProvidedTitle"];
-  [v6 encodeObject:self->_rewards forKey:@"rewards"];
-  [v6 encodeObject:self->_rewardsTotalAmount forKey:@"rewardsTotalAmount"];
-  [v6 encodeObject:self->_rewardsTotalCurrencyCode forKey:@"rewardsTotalCurrencyCode"];
-  [v6 encodeInteger:self->_rewardsEligibilityReason forKey:@"rewardsEligibilityReason"];
-  [v6 encodeInteger:self->_redemptionType forKey:@"redemptionType"];
-  [v6 encodeObject:self->_rewardsInProgress forKey:@"rewardsInProgress"];
-  [v6 encodeInteger:self->_cardType forKey:@"cardType"];
-  [v6 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v6 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v6 encodeObject:self->_lifecycleIdentifier forKey:@"lifecycleIdentifier"];
-  [v6 encodeObject:self->_authNetworkData forKey:@"authNetworkData"];
-  [v6 encodeObject:self->_clearingNetworkData forKey:@"clearingNetworkData"];
-  [v6 encodeObject:self->_cardIdentifier forKey:@"cardIdentifier"];
-  [v6 encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
-  [v6 encodeObject:self->_panIdentifier forKey:@"panIdentifier"];
-  [v6 encodeObject:self->_isMerchantTokenTransaction forKey:@"isMerchantTokenTransaction"];
-  [v6 encodeInteger:self->_preferredTransactionCategory forKey:@"preferredTransactionCategory"];
-  [v6 encodeObject:self->_cardNumberSuffix forKey:@"last4Digits"];
-  [v6 encodeInteger:self->_adjustmentTypeReason forKey:@"adjustmentTypeReason"];
-  [v6 encodeInteger:self->_topUpType forKey:@"topUpType"];
-  [v6 encodeObject:self->_questions forKey:@"issuerQuestions"];
-  [v6 encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
-  [v6 encodeInteger:self->_associatedFeatureIdentifier forKey:@"associatedFeatureIdentifier"];
-  [v6 encodeInteger:self->_suppressBehavior forKey:@"supressBehavior"];
-  [v6 encodeObject:self->_servicingEvents forKey:@"servicingEvents"];
-  [v6 encodeObject:self->_redemptionEvent forKey:@"redemptionEvent"];
-  [v6 encodeObject:self->_payments forKey:@"payments"];
-  [v6 encodeObject:self->_transfers forKey:@"transfers"];
-  [v6 encodeObject:self->_recurringPeerPayment forKey:@"recurringPeerPayment"];
-  [v6 encodeObject:self->_installmentPayment forKey:@"installmentPayment"];
-  [v6 encodeObject:self->_installmentPlan forKey:@"installment"];
-  [v6 encodeObject:self->_metadata forKey:@"metadata"];
-  [v6 encodeInteger:self->_updateReasons forKey:@"updateReasons"];
-  [v6 encodeBool:self->_originatedByDevice forKey:@"originatedByDevice"];
-  [v6 encodeBool:self->_fuzzyMatched forKey:@"fuzzyMatched"];
-  [v6 encodeObject:self->_issueReportIdentifier forKey:@"issueReportIdentifier"];
-  [v6 encodeObject:self->_receiptProviderURL forKey:@"receiptProviderURL"];
-  [v6 encodeObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
-  [v6 encodeObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
-  [v6 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
-  [v6 encodeBool:self->_requiresLocation forKey:@"requiresLocation"];
-  [v6 encodeObject:self->_localizedTypeDescription forKey:@"localizedTypeDescription"];
-  [v6 encodeBool:self->_bankConnectRoundTransactionDate forKey:@"bankConnectRoundTransactionDate"];
-  [v6 encodeObject:self->_bankConnectMetadata forKey:@"bankConnectMetadata"];
-  [v6 encodeObject:self->_barcodeIdentifier forKey:@"barcodeIdentifier"];
-  [v6 encodeObject:self->_authenticationContext forKey:@"authenticationDetails"];
-  [v6 encodeObject:self->_primaryFundingSourceDescription forKey:@"primaryFundingSourceDescription"];
-  [v6 encodeObject:self->_nominalAmount forKey:@"nominalAmount"];
-  [v6 encodeBool:self->_hasAdditionalOffers forKey:@"hasAdditionalOffers"];
-  [v6 encodeObject:self->_awards forKey:@"awards"];
-  [v6 encodeObject:self->_amountModifiers forKey:@"amountModifiers"];
-  [v6 encodeObject:self->_releasedData forKey:@"releasedData"];
-  [v6 encodeObject:self->_issuerInstallmentManagementURL forKey:@"issuerInstallmentManagementURL"];
-  [v6 encodeBool:self->_isIssuerInstallmentTransaction forKey:@"isIssuerInstallmentTransaction"];
-  [v6 encodeObject:self->_paymentRewardsRedemption forKey:@"paymentRewardsRedemption"];
-  [v6 encodeObject:self->_associatedStatementIdentifiers forKey:@"associatedStatementIdentifiers"];
-  [v6 encodeBool:self->_interestReassessment forKey:@"interestReassessment"];
-  [v6 encodeInteger:self->_paymentNetworkIdentifier forKey:@"paymentNetworkIdentifier"];
-  [v6 encodeInteger:self->_peerPaymentPaymentMode forKey:@"peerPaymentPaymentMode"];
-  [v6 encodeObject:self->_peerPaymentCounterpartImageRecordIdentifier forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
-  [v6 encodeObject:self->_peerPaymentRequestToken forKey:@"peerPaymentRequestToken"];
+  [coderCopy encodeBool:self->_enRoute forKey:@"enRoute"];
+  [coderCopy encodeObject:self->_stationCodeProvider forKey:@"stationCodeProvider"];
+  [coderCopy encodeObject:self->_cityCode forKey:@"cityCode"];
+  [coderCopy encodeObject:self->_startStationCode forKey:@"startStationCode"];
+  [coderCopy encodeObject:self->_startStation forKey:@"startStation"];
+  [coderCopy encodeDouble:@"startStationLatitude" forKey:self->_startStationLatitude];
+  [coderCopy encodeDouble:@"startStationLongitude" forKey:self->_startStationLongitude];
+  [coderCopy encodeObject:self->_endStationCode forKey:@"endStationCode"];
+  [coderCopy encodeObject:self->_endStation forKey:@"endStation"];
+  [coderCopy encodeDouble:@"endStationLatitude" forKey:self->_endStationLatitude];
+  [coderCopy encodeDouble:@"ednStationLongitude" forKey:self->_endStationLongitude];
+  [coderCopy encodeBool:self->_shouldSuppressDate forKey:@"shouldSuppressDate"];
+  [coderCopy encodeInteger:self->_adjustmentType forKey:@"adjustmentType"];
+  [coderCopy encodeInteger:self->_accountType forKey:@"feature"];
+  [coderCopy encodeInteger:self->_peerPaymentType forKey:@"peerPaymentType"];
+  [coderCopy encodeObject:self->_peerPaymentCounterpartHandle forKey:@"peerPaymentCounterpartHandle"];
+  [coderCopy encodeObject:self->_peerPaymentMemo forKey:@"peerPaymentMemo"];
+  [coderCopy encodeObject:self->_peerPaymentMessageReceivedDate forKey:@"peerPaymentMessageReceivedDate"];
+  [coderCopy encodeObject:self->_fees forKey:@"fees"];
+  [coderCopy encodeObject:self->_foreignExchangeInformation forKey:@"foreignExchangeInformation"];
+  [coderCopy encodeObject:self->_primaryFundingSourceAmount forKey:@"primaryFundingSourceAmount"];
+  [coderCopy encodeObject:self->_primaryFundingSourceCurrencyCode forKey:@"primaryFundingSourceCurrencyCode"];
+  [coderCopy encodeObject:self->_secondaryFundingSourceAmount forKey:@"secondaryFundingSourceAmount"];
+  [coderCopy encodeObject:self->_secondaryFundingSourceCurrencyCode forKey:@"secondaryFundingSourceCurrencyCode"];
+  [coderCopy encodeInteger:self->_secondaryFundingSourceNetwork forKey:@"secondaryFundingSourceNetwork"];
+  [coderCopy encodeObject:self->_secondaryFundingSourceDPANSuffix forKey:@"secondaryFundingSourceDPANSuffix"];
+  [coderCopy encodeObject:self->_secondaryFundingSourceFPANIdentifier forKey:@"secondaryFundingSourceFPANIdentifier"];
+  [coderCopy encodeObject:self->_secondaryFundingSourceDescription forKey:@"secondaryFundingSourceDescription"];
+  [coderCopy encodeInteger:self->_secondaryFundingSourceType forKey:@"secondaryFundingSourceType"];
+  [coderCopy encodeObject:self->_requestDeviceScoreIdentifier forKey:@"requestDeviceScoreIdentifier"];
+  [coderCopy encodeObject:self->_sendDeviceScoreIdentifier forKey:@"sendDeviceScoreIdentifier"];
+  [coderCopy encodeBool:self->_deviceScoreIdentifiersRequired forKey:@"deviceScoreIdentifiersRequired"];
+  [coderCopy encodeBool:self->_deviceScoreIdentifiersSubmitted forKey:@"deviceScoreIdentifiersSubmitted"];
+  [coderCopy encodeObject:self->_merchantProvidedDescription forKey:@"merchantProvidedDescription"];
+  [coderCopy encodeObject:self->_merchantProvidedTitle forKey:@"merchantProvidedTitle"];
+  [coderCopy encodeObject:self->_rewards forKey:@"rewards"];
+  [coderCopy encodeObject:self->_rewardsTotalAmount forKey:@"rewardsTotalAmount"];
+  [coderCopy encodeObject:self->_rewardsTotalCurrencyCode forKey:@"rewardsTotalCurrencyCode"];
+  [coderCopy encodeInteger:self->_rewardsEligibilityReason forKey:@"rewardsEligibilityReason"];
+  [coderCopy encodeInteger:self->_redemptionType forKey:@"redemptionType"];
+  [coderCopy encodeObject:self->_rewardsInProgress forKey:@"rewardsInProgress"];
+  [coderCopy encodeInteger:self->_cardType forKey:@"cardType"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_lifecycleIdentifier forKey:@"lifecycleIdentifier"];
+  [coderCopy encodeObject:self->_authNetworkData forKey:@"authNetworkData"];
+  [coderCopy encodeObject:self->_clearingNetworkData forKey:@"clearingNetworkData"];
+  [coderCopy encodeObject:self->_cardIdentifier forKey:@"cardIdentifier"];
+  [coderCopy encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
+  [coderCopy encodeObject:self->_panIdentifier forKey:@"panIdentifier"];
+  [coderCopy encodeObject:self->_isMerchantTokenTransaction forKey:@"isMerchantTokenTransaction"];
+  [coderCopy encodeInteger:self->_preferredTransactionCategory forKey:@"preferredTransactionCategory"];
+  [coderCopy encodeObject:self->_cardNumberSuffix forKey:@"last4Digits"];
+  [coderCopy encodeInteger:self->_adjustmentTypeReason forKey:@"adjustmentTypeReason"];
+  [coderCopy encodeInteger:self->_topUpType forKey:@"topUpType"];
+  [coderCopy encodeObject:self->_questions forKey:@"issuerQuestions"];
+  [coderCopy encodeObject:self->_referenceIdentifier forKey:@"referenceIdentifier"];
+  [coderCopy encodeInteger:self->_associatedFeatureIdentifier forKey:@"associatedFeatureIdentifier"];
+  [coderCopy encodeInteger:self->_suppressBehavior forKey:@"supressBehavior"];
+  [coderCopy encodeObject:self->_servicingEvents forKey:@"servicingEvents"];
+  [coderCopy encodeObject:self->_redemptionEvent forKey:@"redemptionEvent"];
+  [coderCopy encodeObject:self->_payments forKey:@"payments"];
+  [coderCopy encodeObject:self->_transfers forKey:@"transfers"];
+  [coderCopy encodeObject:self->_recurringPeerPayment forKey:@"recurringPeerPayment"];
+  [coderCopy encodeObject:self->_installmentPayment forKey:@"installmentPayment"];
+  [coderCopy encodeObject:self->_installmentPlan forKey:@"installment"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeInteger:self->_updateReasons forKey:@"updateReasons"];
+  [coderCopy encodeBool:self->_originatedByDevice forKey:@"originatedByDevice"];
+  [coderCopy encodeBool:self->_fuzzyMatched forKey:@"fuzzyMatched"];
+  [coderCopy encodeObject:self->_issueReportIdentifier forKey:@"issueReportIdentifier"];
+  [coderCopy encodeObject:self->_receiptProviderURL forKey:@"receiptProviderURL"];
+  [coderCopy encodeObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
+  [coderCopy encodeObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeBool:self->_requiresLocation forKey:@"requiresLocation"];
+  [coderCopy encodeObject:self->_localizedTypeDescription forKey:@"localizedTypeDescription"];
+  [coderCopy encodeBool:self->_bankConnectRoundTransactionDate forKey:@"bankConnectRoundTransactionDate"];
+  [coderCopy encodeObject:self->_bankConnectMetadata forKey:@"bankConnectMetadata"];
+  [coderCopy encodeObject:self->_barcodeIdentifier forKey:@"barcodeIdentifier"];
+  [coderCopy encodeObject:self->_authenticationContext forKey:@"authenticationDetails"];
+  [coderCopy encodeObject:self->_primaryFundingSourceDescription forKey:@"primaryFundingSourceDescription"];
+  [coderCopy encodeObject:self->_nominalAmount forKey:@"nominalAmount"];
+  [coderCopy encodeBool:self->_hasAdditionalOffers forKey:@"hasAdditionalOffers"];
+  [coderCopy encodeObject:self->_awards forKey:@"awards"];
+  [coderCopy encodeObject:self->_amountModifiers forKey:@"amountModifiers"];
+  [coderCopy encodeObject:self->_releasedData forKey:@"releasedData"];
+  [coderCopy encodeObject:self->_issuerInstallmentManagementURL forKey:@"issuerInstallmentManagementURL"];
+  [coderCopy encodeBool:self->_isIssuerInstallmentTransaction forKey:@"isIssuerInstallmentTransaction"];
+  [coderCopy encodeObject:self->_paymentRewardsRedemption forKey:@"paymentRewardsRedemption"];
+  [coderCopy encodeObject:self->_associatedStatementIdentifiers forKey:@"associatedStatementIdentifiers"];
+  [coderCopy encodeBool:self->_interestReassessment forKey:@"interestReassessment"];
+  [coderCopy encodeInteger:self->_paymentNetworkIdentifier forKey:@"paymentNetworkIdentifier"];
+  [coderCopy encodeInteger:self->_peerPaymentPaymentMode forKey:@"peerPaymentPaymentMode"];
+  [coderCopy encodeObject:self->_peerPaymentCounterpartImageRecordIdentifier forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
+  [coderCopy encodeObject:self->_peerPaymentRequestToken forKey:@"peerPaymentRequestToken"];
 }
 
-- (PKPaymentTransaction)initWithCloudStoreCoder:(id)a3
+- (PKPaymentTransaction)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPaymentTransaction *)self init];
   if (v5)
   {
-    v6 = [[PKMerchant alloc] initWithCloudStoreCoder:v4];
+    v6 = [[PKMerchant alloc] initWithCloudStoreCoder:coderCopy];
     merchant = v5->_merchant;
     v5->_merchant = v6;
 
-    v8 = [[PKPaymentTransactionFees alloc] initWithCloudStoreCoder:v4];
+    v8 = [[PKPaymentTransactionFees alloc] initWithCloudStoreCoder:coderCopy];
     fees = v5->_fees;
     v5->_fees = v8;
 
-    v10 = [[PKPaymentTransactionForeignExchangeInformation alloc] initWithCloudStoreCoder:v4];
+    v10 = [[PKPaymentTransactionForeignExchangeInformation alloc] initWithCloudStoreCoder:coderCopy];
     foreignExchangeInformation = v5->_foreignExchangeInformation;
     v5->_foreignExchangeInformation = v10;
 
-    v12 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:v4 property:0];
+    v12 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:coderCopy property:0];
     rewards = v5->_rewards;
     v5->_rewards = v12;
 
-    v14 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:v4 property:1];
+    v14 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:coderCopy property:1];
     rewardsInProgress = v5->_rewardsInProgress;
     v5->_rewardsInProgress = v14;
 
-    [(PKPaymentTransaction *)v5 applyPropertiesFromCloudStoreRecord:v4];
+    [(PKPaymentTransaction *)v5 applyPropertiesFromCloudStoreRecord:coderCopy];
   }
 
   return v5;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
   v191 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   merchant = self->_merchant;
   if (merchant)
   {
-    [(PKMerchant *)merchant applyPropertiesFromCloudStoreRecord:v4];
+    [(PKMerchant *)merchant applyPropertiesFromCloudStoreRecord:recordCopy];
   }
 
   else
   {
-    v6 = [[PKMerchant alloc] initWithCloudStoreCoder:v4];
+    v6 = [[PKMerchant alloc] initWithCloudStoreCoder:recordCopy];
     v7 = self->_merchant;
     self->_merchant = v6;
   }
@@ -3319,12 +3319,12 @@ LABEL_70:
   fees = self->_fees;
   if (fees)
   {
-    [(PKPaymentTransactionFees *)fees applyPropertiesFromCloudStoreRecord:v4];
+    [(PKPaymentTransactionFees *)fees applyPropertiesFromCloudStoreRecord:recordCopy];
   }
 
   else
   {
-    v9 = [[PKPaymentTransactionFees alloc] initWithCloudStoreCoder:v4];
+    v9 = [[PKPaymentTransactionFees alloc] initWithCloudStoreCoder:recordCopy];
     v10 = self->_fees;
     self->_fees = v9;
   }
@@ -3332,12 +3332,12 @@ LABEL_70:
   foreignExchangeInformation = self->_foreignExchangeInformation;
   if (foreignExchangeInformation)
   {
-    [(PKPaymentTransactionForeignExchangeInformation *)foreignExchangeInformation applyPropertiesFromCloudStoreRecord:v4];
+    [(PKPaymentTransactionForeignExchangeInformation *)foreignExchangeInformation applyPropertiesFromCloudStoreRecord:recordCopy];
   }
 
   else
   {
-    v12 = [[PKPaymentTransactionForeignExchangeInformation alloc] initWithCloudStoreCoder:v4];
+    v12 = [[PKPaymentTransactionForeignExchangeInformation alloc] initWithCloudStoreCoder:recordCopy];
     v13 = self->_foreignExchangeInformation;
     self->_foreignExchangeInformation = v12;
   }
@@ -3345,12 +3345,12 @@ LABEL_70:
   rewards = self->_rewards;
   if (rewards)
   {
-    [(PKPaymentTransactionRewards *)rewards applyPropertiesFromCloudStoreRecord:v4 property:0];
+    [(PKPaymentTransactionRewards *)rewards applyPropertiesFromCloudStoreRecord:recordCopy property:0];
   }
 
   else
   {
-    v15 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:v4 property:0];
+    v15 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:recordCopy property:0];
     v16 = self->_rewards;
     self->_rewards = v15;
   }
@@ -3358,103 +3358,103 @@ LABEL_70:
   rewardsInProgress = self->_rewardsInProgress;
   if (rewardsInProgress)
   {
-    [(PKPaymentTransactionRewards *)rewardsInProgress applyPropertiesFromCloudStoreRecord:v4 property:1];
+    [(PKPaymentTransactionRewards *)rewardsInProgress applyPropertiesFromCloudStoreRecord:recordCopy property:1];
   }
 
   else
   {
-    v18 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:v4 property:1];
+    v18 = [[PKPaymentTransactionRewards alloc] initWithCloudStoreCoder:recordCopy property:1];
     v19 = self->_rewardsInProgress;
     self->_rewardsInProgress = v18;
   }
 
-  v20 = [v4 recordsWithRecordType:@"Transaction"];
-  v21 = [v20 firstObject];
+  v20 = [recordCopy recordsWithRecordType:@"Transaction"];
+  firstObject = [v20 firstObject];
 
-  if (v21)
+  if (firstObject)
   {
-    v22 = [v21 pk_encryptedStringForKey:@"identifier"];
+    v22 = [firstObject pk_encryptedStringForKey:@"identifier"];
     serviceIdentifier = self->_serviceIdentifier;
     self->_serviceIdentifier = v22;
 
-    v24 = [v21 pk_encryptedStringForKey:@"paymentHash"];
-    v25 = [v24 uppercaseString];
+    v24 = [firstObject pk_encryptedStringForKey:@"paymentHash"];
+    uppercaseString = [v24 uppercaseString];
     paymentHash = self->_paymentHash;
-    self->_paymentHash = v25;
+    self->_paymentHash = uppercaseString;
 
-    v27 = [v21 pk_encryptedDecimalNumberForKey:@"amount"];
+    v27 = [firstObject pk_encryptedDecimalNumberForKey:@"amount"];
     amount = self->_amount;
     self->_amount = v27;
 
-    v29 = [v21 pk_encryptedDecimalNumberForKey:@"subtotalAmount"];
+    v29 = [firstObject pk_encryptedDecimalNumberForKey:@"subtotalAmount"];
     subtotalAmount = self->_subtotalAmount;
     self->_subtotalAmount = v29;
 
-    v31 = [v21 pk_encryptedStringForKey:@"currencyCode"];
+    v31 = [firstObject pk_encryptedStringForKey:@"currencyCode"];
     currencyCode = self->_currencyCode;
     self->_currencyCode = v31;
 
-    v33 = [v21 pk_encryptedDateForKey:@"transactionDate"];
+    v33 = [firstObject pk_encryptedDateForKey:@"transactionDate"];
     transactionDate = self->_transactionDate;
     self->_transactionDate = v33;
 
-    v35 = [v21 pk_encryptedDateForKey:@"transactionStatusChangedDate"];
+    v35 = [firstObject pk_encryptedDateForKey:@"transactionStatusChangedDate"];
     transactionStatusChangedDate = self->_transactionStatusChangedDate;
     self->_transactionStatusChangedDate = v35;
 
-    v37 = [v21 pk_encryptedDateForKey:@"expirationDate"];
+    v37 = [firstObject pk_encryptedDateForKey:@"expirationDate"];
     expirationDate = self->_expirationDate;
     self->_expirationDate = v37;
 
-    v39 = [v21 pk_encryptedStringForKey:@"transactionStatus"];
+    v39 = [firstObject pk_encryptedStringForKey:@"transactionStatus"];
     self->_transactionStatus = PKPaymentTransactionStatusFromString(v39);
 
-    v40 = [v21 pk_encryptedStringForKey:@"transactionDeclinedReason"];
+    v40 = [firstObject pk_encryptedStringForKey:@"transactionDeclinedReason"];
     self->_transactionDeclinedReason = PKPaymentTransactionDeclinedReasonFromString(v40);
 
-    v41 = [v21 pk_encryptedStringForKey:@"transactionType"];
+    v41 = [firstObject pk_encryptedStringForKey:@"transactionType"];
     self->_transactionType = PKPaymentTransactionTypeFromString(v41);
 
-    v42 = [v21 pk_encryptedStringForKey:@"adjustmentType"];
+    v42 = [firstObject pk_encryptedStringForKey:@"adjustmentType"];
     self->_adjustmentType = PKPaymentTransactionAdjustmentSubtypeFromString(v42);
 
-    self->_suppressNotifications = [v21 pk_encryptedBoolForKey:@"blockNotification"];
-    self->_recurring = [v21 pk_encryptedBoolForKey:@"recurring"];
-    v43 = [v21 pk_stringForKey:@"feature"];
+    self->_suppressNotifications = [firstObject pk_encryptedBoolForKey:@"blockNotification"];
+    self->_recurring = [firstObject pk_encryptedBoolForKey:@"recurring"];
+    v43 = [firstObject pk_stringForKey:@"feature"];
     self->_accountType = PKPaymentTransactionAccountTypeFromString(v43);
 
-    v44 = [v21 pk_encryptedStringForKey:@"peerPaymentType"];
+    v44 = [firstObject pk_encryptedStringForKey:@"peerPaymentType"];
     self->_peerPaymentType = PKPaymentTransactionPeerPaymentSubtypeFromString(v44);
 
-    v45 = [v21 pk_encryptedStringForKey:@"peerPaymentCounterpartHandle"];
+    v45 = [firstObject pk_encryptedStringForKey:@"peerPaymentCounterpartHandle"];
     peerPaymentCounterpartHandle = self->_peerPaymentCounterpartHandle;
     self->_peerPaymentCounterpartHandle = v45;
 
-    v47 = [v21 pk_encryptedDecimalNumberForKey:@"primaryFundingSourceAmount"];
+    v47 = [firstObject pk_encryptedDecimalNumberForKey:@"primaryFundingSourceAmount"];
     primaryFundingSourceAmount = self->_primaryFundingSourceAmount;
     self->_primaryFundingSourceAmount = v47;
 
-    v49 = [v21 pk_encryptedStringForKey:@"primaryFundingSourceCurrencyCode"];
+    v49 = [firstObject pk_encryptedStringForKey:@"primaryFundingSourceCurrencyCode"];
     primaryFundingSourceCurrencyCode = self->_primaryFundingSourceCurrencyCode;
     self->_primaryFundingSourceCurrencyCode = v49;
 
-    v51 = [v21 pk_encryptedDecimalNumberForKey:@"secondaryFundingSourceAmount"];
+    v51 = [firstObject pk_encryptedDecimalNumberForKey:@"secondaryFundingSourceAmount"];
     secondaryFundingSourceAmount = self->_secondaryFundingSourceAmount;
     self->_secondaryFundingSourceAmount = v51;
 
-    v53 = [v21 pk_encryptedStringForKey:@"secondaryFundingSourceCurrencyCode"];
+    v53 = [firstObject pk_encryptedStringForKey:@"secondaryFundingSourceCurrencyCode"];
     secondaryFundingSourceCurrencyCode = self->_secondaryFundingSourceCurrencyCode;
     self->_secondaryFundingSourceCurrencyCode = v53;
 
-    v55 = [v21 pk_encryptedStringForKey:@"secondaryFundingSourceNetwork"];
+    v55 = [firstObject pk_encryptedStringForKey:@"secondaryFundingSourceNetwork"];
     self->_secondaryFundingSourceNetwork = PKPaymentCredentialTypeForPaymentNetworkName(v55);
 
-    v56 = [v21 pk_encryptedStringForKey:@"secondaryFundingSourceDPANSuffix"];
+    v56 = [firstObject pk_encryptedStringForKey:@"secondaryFundingSourceDPANSuffix"];
     secondaryFundingSourceDPANSuffix = self->_secondaryFundingSourceDPANSuffix;
     self->_secondaryFundingSourceDPANSuffix = v56;
 
-    self->_deviceScoreIdentifiersRequired = [v21 pk_BOOLForKey:@"deviceScoreIdentifiersRequired"];
-    v58 = [v21 pk_encryptedStringForKey:@"secondaryFundingSourceType"];
+    self->_deviceScoreIdentifiersRequired = [firstObject pk_BOOLForKey:@"deviceScoreIdentifiersRequired"];
+    v58 = [firstObject pk_encryptedStringForKey:@"secondaryFundingSourceType"];
     if ([@"bankAccount" isEqualToString:v58])
     {
       v59 = 1;
@@ -3478,7 +3478,7 @@ LABEL_70:
 
     if ([(PKPaymentTransaction *)self _supportsServerFundingDescription])
     {
-      v60 = [v21 pk_encryptedStringForKey:@"secondaryFundingSourceDescription"];
+      v60 = [firstObject pk_encryptedStringForKey:@"secondaryFundingSourceDescription"];
     }
 
     else
@@ -3486,110 +3486,110 @@ LABEL_70:
       v60 = 0;
     }
 
-    v63 = [v21 pk_encryptedDecimalNumberForKey:@"rewardsTotalAmount"];
+    v63 = [firstObject pk_encryptedDecimalNumberForKey:@"rewardsTotalAmount"];
     rewardsTotalAmount = self->_rewardsTotalAmount;
     self->_rewardsTotalAmount = v63;
 
-    v65 = [v21 pk_encryptedStringForKey:@"rewardsTotalCurrencyCode"];
+    v65 = [firstObject pk_encryptedStringForKey:@"rewardsTotalCurrencyCode"];
     rewardsTotalCurrencyCode = self->_rewardsTotalCurrencyCode;
     self->_rewardsTotalCurrencyCode = v65;
 
-    v67 = [v21 pk_encryptedStringForKey:@"cardType"];
+    v67 = [firstObject pk_encryptedStringForKey:@"cardType"];
     self->_cardType = PKPaymentTransactionSourceFromString(v67);
 
-    v68 = [v21 pk_encryptedStringForKey:@"merchantProvidedDescription"];
+    v68 = [firstObject pk_encryptedStringForKey:@"merchantProvidedDescription"];
     merchantProvidedDescription = self->_merchantProvidedDescription;
     self->_merchantProvidedDescription = v68;
 
-    v70 = [v21 pk_encryptedStringForKey:@"merchantProvidedTitle"];
+    v70 = [firstObject pk_encryptedStringForKey:@"merchantProvidedTitle"];
     merchantProvidedTitle = self->_merchantProvidedTitle;
     self->_merchantProvidedTitle = v70;
 
-    v72 = [v21 pk_encryptedStringForKey:@"altDSID"];
+    v72 = [firstObject pk_encryptedStringForKey:@"altDSID"];
     altDSID = self->_altDSID;
     self->_altDSID = v72;
 
-    v74 = [v21 pk_encryptedStringForKey:@"accountIdentifier"];
+    v74 = [firstObject pk_encryptedStringForKey:@"accountIdentifier"];
     accountIdentifier = self->_accountIdentifier;
     self->_accountIdentifier = v74;
 
     if (!self->_accountIdentifier)
     {
-      v76 = [v21 pk_encryptedStringForKey:@"peerPaymentAccountIdentifier"];
+      v76 = [firstObject pk_encryptedStringForKey:@"peerPaymentAccountIdentifier"];
       v77 = self->_accountIdentifier;
       self->_accountIdentifier = v76;
     }
 
-    v78 = [v21 pk_encryptedStringForKey:@"lifecycleIdentifier"];
+    v78 = [firstObject pk_encryptedStringForKey:@"lifecycleIdentifier"];
     lifecycleIdentifier = self->_lifecycleIdentifier;
     self->_lifecycleIdentifier = v78;
 
-    v80 = [v21 pk_encryptedStringForKey:@"authNetworkData"];
+    v80 = [firstObject pk_encryptedStringForKey:@"authNetworkData"];
     authNetworkData = self->_authNetworkData;
     self->_authNetworkData = v80;
 
-    v82 = [v21 pk_encryptedStringForKey:@"clearingNetworkData"];
+    v82 = [firstObject pk_encryptedStringForKey:@"clearingNetworkData"];
     clearingNetworkData = self->_clearingNetworkData;
     self->_clearingNetworkData = v82;
 
-    v84 = [v21 pk_encryptedStringForKey:@"cardIdentifier"];
+    v84 = [firstObject pk_encryptedStringForKey:@"cardIdentifier"];
     cardIdentifier = self->_cardIdentifier;
     self->_cardIdentifier = v84;
 
-    v86 = [v21 pk_encryptedStringForKey:@"dpanIdentifier"];
+    v86 = [firstObject pk_encryptedStringForKey:@"dpanIdentifier"];
     dpanIdentifier = self->_dpanIdentifier;
     self->_dpanIdentifier = v86;
 
-    v88 = [v21 pk_encryptedStringForKey:@"panIdentifier"];
+    v88 = [firstObject pk_encryptedStringForKey:@"panIdentifier"];
     panIdentifier = self->_panIdentifier;
     self->_panIdentifier = v88;
 
-    v90 = [v21 pk_encryptedObjectForKey:@"isMerchantTokenTransaction" ofClass:objc_opt_class()];
+    v90 = [firstObject pk_encryptedObjectForKey:@"isMerchantTokenTransaction" ofClass:objc_opt_class()];
     isMerchantTokenTransaction = self->_isMerchantTokenTransaction;
     self->_isMerchantTokenTransaction = v90;
 
-    v92 = [v21 pk_encryptedStringForKey:@"last4Digits"];
+    v92 = [firstObject pk_encryptedStringForKey:@"last4Digits"];
     cardNumberSuffix = self->_cardNumberSuffix;
     self->_cardNumberSuffix = v92;
 
-    v94 = [v21 pk_encryptedStringForKey:@"adjustmentTypeReason"];
+    v94 = [firstObject pk_encryptedStringForKey:@"adjustmentTypeReason"];
     self->_adjustmentTypeReason = PKPaymentTransactionAdjustmentSubtypeReasonFromString(v94);
 
-    v95 = [v21 pk_encryptedStringForKey:@"topUpType"];
+    v95 = [firstObject pk_encryptedStringForKey:@"topUpType"];
     self->_topUpType = PKPaymentTransactionTopUpSubtypeFromString(v95);
 
     v96 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v61 = [v21 pk_encryptedArrayOfClasses:v96 forKey:@"issuerQuestions"];
+    v61 = [firstObject pk_encryptedArrayOfClasses:v96 forKey:@"issuerQuestions"];
 
-    v97 = [v21 pk_encryptedStringForKey:@"referenceIdentifier"];
+    v97 = [firstObject pk_encryptedStringForKey:@"referenceIdentifier"];
     referenceIdentifier = self->_referenceIdentifier;
     self->_referenceIdentifier = v97;
 
-    v99 = [v21 pk_encryptedStringForKey:@"associatedFeatureIdentifier"];
+    v99 = [firstObject pk_encryptedStringForKey:@"associatedFeatureIdentifier"];
     self->_associatedFeatureIdentifier = PKFeatureIdentifierFromString(v99);
 
-    v100 = [v21 pk_encryptedUrlForKey:@"receiptProviderURL"];
+    v100 = [firstObject pk_encryptedUrlForKey:@"receiptProviderURL"];
     receiptProviderURL = self->_receiptProviderURL;
     self->_receiptProviderURL = v100;
 
-    v102 = [v21 pk_encryptedStringForKey:@"receiptProviderIdentifier"];
+    v102 = [firstObject pk_encryptedStringForKey:@"receiptProviderIdentifier"];
     receiptProviderIdentifier = self->_receiptProviderIdentifier;
     self->_receiptProviderIdentifier = v102;
 
-    v104 = [v21 pk_encryptedStringForKey:@"receiptIdentifier"];
+    v104 = [firstObject pk_encryptedStringForKey:@"receiptIdentifier"];
     receiptIdentifier = self->_receiptIdentifier;
     self->_receiptIdentifier = v104;
 
     v106 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v107 = [v21 pk_encryptedArrayOfClasses:v106 forKey:@"associatedStatementIdentifiers"];
+    v107 = [firstObject pk_encryptedArrayOfClasses:v106 forKey:@"associatedStatementIdentifiers"];
     associatedStatementIdentifiers = self->_associatedStatementIdentifiers;
     self->_associatedStatementIdentifiers = v107;
 
-    self->_interestReassessment = [v21 pk_encryptedBoolForKey:@"interestReassessment"];
-    v109 = [v21 pk_encryptedStringForKey:@"peerPaymentPaymentMode"];
+    self->_interestReassessment = [firstObject pk_encryptedBoolForKey:@"interestReassessment"];
+    v109 = [firstObject pk_encryptedStringForKey:@"peerPaymentPaymentMode"];
     self->_peerPaymentPaymentMode = PKPeerPaymentPaymentModeFromString(v109);
 
-    v110 = [v21 pk_encryptedStringForKey:@"peerPaymentRequestToken"];
+    v110 = [firstObject pk_encryptedStringForKey:@"peerPaymentRequestToken"];
     peerPaymentRequestToken = self->_peerPaymentRequestToken;
     self->_peerPaymentRequestToken = v110;
   }
@@ -3600,18 +3600,18 @@ LABEL_70:
     v61 = 0;
   }
 
-  v112 = [v4 recordsWithRecordType:@"TransactionDeviceData"];
-  v113 = [v112 firstObject];
+  v112 = [recordCopy recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject2 = [v112 firstObject];
 
-  v175 = self;
-  v172 = v113;
-  if (v113)
+  selfCopy = self;
+  v172 = firstObject2;
+  if (firstObject2)
   {
-    v114 = [v113 pk_encryptedDecimalNumberForKey:@"amountAddedToAuth"];
+    v114 = [firstObject2 pk_encryptedDecimalNumberForKey:@"amountAddedToAuth"];
     amountAddedToAuth = self->_amountAddedToAuth;
     self->_amountAddedToAuth = v114;
 
-    v116 = [v113 pk_encryptedLocationForKey:@"location"];
+    v116 = [firstObject2 pk_encryptedLocationForKey:@"location"];
     [v116 coordinate];
     self->_locationLatitude = v117;
     [v116 coordinate];
@@ -3622,20 +3622,20 @@ LABEL_70:
     self->_locationHorizontalAccuracy = v120;
     [v116 verticalAccuracy];
     self->_locationVerticalAccuracy = v121;
-    v122 = [v116 timestamp];
+    timestamp = [v116 timestamp];
     locationDate = self->_locationDate;
-    self->_locationDate = v122;
+    self->_locationDate = timestamp;
 
-    self->_coarseLocation = [v113 pk_encryptedBoolForKey:@"isCoarseLocation"];
-    v124 = [v113 pk_encryptedStringForKey:@"placemarkLocality"];
+    self->_coarseLocation = [firstObject2 pk_encryptedBoolForKey:@"isCoarseLocation"];
+    v124 = [firstObject2 pk_encryptedStringForKey:@"placemarkLocality"];
     locality = self->_locality;
     self->_locality = v124;
 
-    v126 = [v113 pk_encryptedStringForKey:@"placemarkAdministrativeArea"];
+    v126 = [firstObject2 pk_encryptedStringForKey:@"placemarkAdministrativeArea"];
     administrativeArea = self->_administrativeArea;
     self->_administrativeArea = v126;
 
-    [v113 pk_encryptedStringForKey:@"timeZone"];
+    [firstObject2 pk_encryptedStringForKey:@"timeZone"];
     v129 = v128 = self;
     if (v129)
     {
@@ -3644,56 +3644,56 @@ LABEL_70:
       v128->_timeZone = v130;
     }
 
-    v128->_processedForLocation = [v113 pk_encryptedBoolForKey:@"processedForLocation"];
-    v128->_processedForMerchantCleanup = [v113 pk_encryptedBoolForKey:@"processedForMerchantCleanup"];
-    v128->_technologyType = [v113 pk_encryptedUnsignedIntegerForKey:@"technologyType"];
-    v132 = [v113 pk_encryptedStringForKey:@"secondaryFundingSourceFPANIdentifier"];
+    v128->_processedForLocation = [firstObject2 pk_encryptedBoolForKey:@"processedForLocation"];
+    v128->_processedForMerchantCleanup = [firstObject2 pk_encryptedBoolForKey:@"processedForMerchantCleanup"];
+    v128->_technologyType = [firstObject2 pk_encryptedUnsignedIntegerForKey:@"technologyType"];
+    v132 = [firstObject2 pk_encryptedStringForKey:@"secondaryFundingSourceFPANIdentifier"];
     secondaryFundingSourceFPANIdentifier = v128->_secondaryFundingSourceFPANIdentifier;
     v128->_secondaryFundingSourceFPANIdentifier = v132;
 
     if (![v60 length])
     {
-      v134 = [v113 pk_encryptedStringForKey:@"secondaryFundingSourceDescription"];
+      v134 = [firstObject2 pk_encryptedStringForKey:@"secondaryFundingSourceDescription"];
 
       v60 = v134;
     }
 
-    v135 = [v113 pk_encryptedUnsignedIntegerForKey:@"transactionSource"];
-    v175->_transactionSource = v135;
+    v135 = [firstObject2 pk_encryptedUnsignedIntegerForKey:@"transactionSource"];
+    selfCopy->_transactionSource = v135;
     if (!v135)
     {
-      transactionType = v175->_transactionType;
+      transactionType = selfCopy->_transactionType;
       if (transactionType == 8 || transactionType == 1)
       {
-        v175->_transactionSource = 4;
+        selfCopy->_transactionSource = 4;
       }
     }
 
-    v137 = [v113 pk_encryptedStringForKey:@"peerPaymentMemo"];
-    peerPaymentMemo = v175->_peerPaymentMemo;
-    v175->_peerPaymentMemo = v137;
+    v137 = [firstObject2 pk_encryptedStringForKey:@"peerPaymentMemo"];
+    peerPaymentMemo = selfCopy->_peerPaymentMemo;
+    selfCopy->_peerPaymentMemo = v137;
 
-    v139 = [v113 pk_encryptedUUIDForKey:@"requestDeviceScoreIdentifier"];
-    requestDeviceScoreIdentifier = v175->_requestDeviceScoreIdentifier;
-    v175->_requestDeviceScoreIdentifier = v139;
+    v139 = [firstObject2 pk_encryptedUUIDForKey:@"requestDeviceScoreIdentifier"];
+    requestDeviceScoreIdentifier = selfCopy->_requestDeviceScoreIdentifier;
+    selfCopy->_requestDeviceScoreIdentifier = v139;
 
-    v141 = [v113 pk_encryptedUUIDForKey:@"sendDeviceScoreIdentifier"];
-    sendDeviceScoreIdentifier = v175->_sendDeviceScoreIdentifier;
-    v175->_sendDeviceScoreIdentifier = v141;
+    v141 = [firstObject2 pk_encryptedUUIDForKey:@"sendDeviceScoreIdentifier"];
+    sendDeviceScoreIdentifier = selfCopy->_sendDeviceScoreIdentifier;
+    selfCopy->_sendDeviceScoreIdentifier = v141;
 
-    v175->_deviceScoreIdentifiersSubmitted = [v113 pk_encryptedBoolForKey:@"deviceScoreIdentifiersSubmitted"];
-    v143 = [v113 pk_encryptedDictionaryForKey:@"metadata"];
-    metadata = v175->_metadata;
-    v175->_metadata = v143;
+    selfCopy->_deviceScoreIdentifiersSubmitted = [firstObject2 pk_encryptedBoolForKey:@"deviceScoreIdentifiersSubmitted"];
+    v143 = [firstObject2 pk_encryptedDictionaryForKey:@"metadata"];
+    metadata = selfCopy->_metadata;
+    selfCopy->_metadata = v143;
 
     v145 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v146 = [v113 pk_encryptedArrayOfClasses:v145 forKey:@"issuerQuestionsAnswered"];
+    v146 = [firstObject2 pk_encryptedArrayOfClasses:v145 forKey:@"issuerQuestionsAnswered"];
 
-    v147 = [v113 pk_encryptedStringForKey:@"peerPaymentCounterpartImageRecordIdentifier"];
-    peerPaymentCounterpartImageRecordIdentifier = v175->_peerPaymentCounterpartImageRecordIdentifier;
-    v175->_peerPaymentCounterpartImageRecordIdentifier = v147;
+    v147 = [firstObject2 pk_encryptedStringForKey:@"peerPaymentCounterpartImageRecordIdentifier"];
+    peerPaymentCounterpartImageRecordIdentifier = selfCopy->_peerPaymentCounterpartImageRecordIdentifier;
+    selfCopy->_peerPaymentCounterpartImageRecordIdentifier = v147;
 
-    [(PKPaymentTransaction *)v175 _applyTransactionCategoryFromRecord:v113];
+    [(PKPaymentTransaction *)selfCopy _applyTransactionCategoryFromRecord:firstObject2];
   }
 
   else
@@ -3703,10 +3703,10 @@ LABEL_70:
 
   if ([v60 length])
   {
-    objc_storeStrong(&v175->_secondaryFundingSourceDescription, v60);
+    objc_storeStrong(&selfCopy->_secondaryFundingSourceDescription, v60);
   }
 
-  v171 = v4;
+  v171 = recordCopy;
   v149 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v184 = 0u;
   v185 = 0u;
@@ -3739,12 +3739,12 @@ LABEL_70:
 
   v170 = v60;
 
-  v155 = v175;
+  v155 = selfCopy;
   if ([v149 count])
   {
     v156 = [v149 copy];
-    questions = v175->_questions;
-    v175->_questions = v156;
+    questions = selfCopy->_questions;
+    selfCopy->_questions = v156;
   }
 
   v182 = 0u;
@@ -3800,14 +3800,14 @@ LABEL_61:
                 goto LABEL_61;
               }
 
-              v155 = v175;
+              v155 = selfCopy;
               goto LABEL_70;
             }
           }
 
           v169 = v168;
 
-          v155 = v175;
+          v155 = selfCopy;
           if (!v169)
           {
             continue;
@@ -3827,13 +3827,13 @@ LABEL_70:
   }
 }
 
-- (void)_applyTransactionCategoryFromRecord:(id)a3
+- (void)_applyTransactionCategoryFromRecord:(id)record
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   if (_os_feature_enabled_impl())
   {
-    v5 = [v4 pk_encryptedStringForKey:@"preferredTransactionCategory"];
+    v5 = [recordCopy pk_encryptedStringForKey:@"preferredTransactionCategory"];
     v6 = v5;
     if (v5)
     {
@@ -3882,106 +3882,106 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  v6 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  coderCopy = coder;
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    v7 = v6;
-    [(PKPaymentTransaction *)self _encodeDeviceDataWithCloudStoreCoder:v6 codingType:a4];
-    v6 = v7;
+    v7 = coderCopy;
+    [(PKPaymentTransaction *)self _encodeDeviceDataWithCloudStoreCoder:coderCopy codingType:type];
+    coderCopy = v7;
   }
 
-  if (a4 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    v8 = v6;
-    [(PKPaymentTransaction *)self _encodeServerDataWithCloudStoreCoder:v6 codingType:a4];
-    v6 = v8;
+    v8 = coderCopy;
+    [(PKPaymentTransaction *)self _encodeServerDataWithCloudStoreCoder:coderCopy codingType:type];
+    coderCopy = v8;
   }
 }
 
-- (void)_encodeDeviceDataWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)_encodeDeviceDataWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(PKMerchant *)self->_merchant encodeWithCloudStoreCoder:v6 codingType:a4];
-  [(PKPaymentTransactionFees *)self->_fees encodeWithCloudStoreCoder:v6 codingType:a4];
-  [(PKPaymentTransactionRewards *)self->_rewards encodeWithCloudStoreCoder:v6 codingType:a4 property:0];
-  [(PKPaymentTransactionRewards *)self->_rewardsInProgress encodeWithCloudStoreCoder:v6 codingType:a4 property:1];
-  [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation encodeWithCloudStoreCoder:v6 codingType:a4];
-  v7 = [v6 recordsWithRecordType:@"TransactionDeviceData"];
-  v8 = [v7 firstObject];
+  coderCopy = coder;
+  [(PKMerchant *)self->_merchant encodeWithCloudStoreCoder:coderCopy codingType:type];
+  [(PKPaymentTransactionFees *)self->_fees encodeWithCloudStoreCoder:coderCopy codingType:type];
+  [(PKPaymentTransactionRewards *)self->_rewards encodeWithCloudStoreCoder:coderCopy codingType:type property:0];
+  [(PKPaymentTransactionRewards *)self->_rewardsInProgress encodeWithCloudStoreCoder:coderCopy codingType:type property:1];
+  [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation encodeWithCloudStoreCoder:coderCopy codingType:type];
+  v7 = [coderCopy recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v7 firstObject];
 
-  v9 = [v8 encryptedValues];
+  encryptedValues = [firstObject encryptedValues];
   v10 = objc_alloc(MEMORY[0x1E695BA70]);
   serviceIdentifier = self->_serviceIdentifier;
-  v12 = [v8 recordID];
-  v13 = [v12 zoneID];
-  v14 = [v10 initWithRecordName:serviceIdentifier zoneID:v13];
+  recordID = [firstObject recordID];
+  zoneID = [recordID zoneID];
+  v14 = [v10 initWithRecordName:serviceIdentifier zoneID:zoneID];
 
   v46 = v14;
   v45 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"Transaction" recordID:v14];
   v44 = [objc_alloc(MEMORY[0x1E695BAB0]) initWithRecord:v45 action:0];
-  [v8 setObject:v44 forKey:@"transactionRecord"];
+  [firstObject setObject:v44 forKey:@"transactionRecord"];
   v15 = [(NSDecimalNumber *)self->_amountAddedToAuth description];
-  [v9 setObject:v15 forKey:@"amountAddedToAuth"];
+  [encryptedValues setObject:v15 forKey:@"amountAddedToAuth"];
 
-  v16 = [(PKPaymentTransaction *)self location];
-  [v9 setObject:v16 forKey:@"location"];
+  location = [(PKPaymentTransaction *)self location];
+  [encryptedValues setObject:location forKey:@"location"];
 
-  [v9 setObject:self->_locality forKey:@"placemarkLocality"];
-  [v9 setObject:self->_administrativeArea forKey:@"placemarkAdministrativeArea"];
+  [encryptedValues setObject:self->_locality forKey:@"placemarkLocality"];
+  [encryptedValues setObject:self->_administrativeArea forKey:@"placemarkAdministrativeArea"];
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_processedForLocation];
-  [v9 setObject:v17 forKey:@"processedForLocation"];
+  [encryptedValues setObject:v17 forKey:@"processedForLocation"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_processedForMerchantCleanup];
-  [v9 setObject:v18 forKey:@"processedForMerchantCleanup"];
+  [encryptedValues setObject:v18 forKey:@"processedForMerchantCleanup"];
 
-  v19 = [(NSTimeZone *)self->_timeZone name];
-  [v9 setObject:v19 forKey:@"timeZone"];
+  name = [(NSTimeZone *)self->_timeZone name];
+  [encryptedValues setObject:name forKey:@"timeZone"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithInteger:self->_technologyType];
-  [v9 setObject:v20 forKey:@"technologyType"];
+  [encryptedValues setObject:v20 forKey:@"technologyType"];
 
-  [v9 setObject:self->_secondaryFundingSourceFPANIdentifier forKey:@"secondaryFundingSourceFPANIdentifier"];
+  [encryptedValues setObject:self->_secondaryFundingSourceFPANIdentifier forKey:@"secondaryFundingSourceFPANIdentifier"];
   if (![(PKPaymentTransaction *)self _supportsServerFundingDescription])
   {
-    [v9 setObject:self->_secondaryFundingSourceDescription forKey:@"secondaryFundingSourceDescription"];
+    [encryptedValues setObject:self->_secondaryFundingSourceDescription forKey:@"secondaryFundingSourceDescription"];
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_transactionSource];
-  [v9 setObject:v21 forKey:@"transactionSource"];
+  [encryptedValues setObject:v21 forKey:@"transactionSource"];
 
-  [v9 setObject:self->_peerPaymentMemo forKey:@"peerPaymentMemo"];
-  v22 = [(NSUUID *)self->_requestDeviceScoreIdentifier UUIDString];
-  [v9 setObject:v22 forKey:@"requestDeviceScoreIdentifier"];
+  [encryptedValues setObject:self->_peerPaymentMemo forKey:@"peerPaymentMemo"];
+  uUIDString = [(NSUUID *)self->_requestDeviceScoreIdentifier UUIDString];
+  [encryptedValues setObject:uUIDString forKey:@"requestDeviceScoreIdentifier"];
 
-  v23 = [(NSUUID *)self->_sendDeviceScoreIdentifier UUIDString];
-  [v9 setObject:v23 forKey:@"sendDeviceScoreIdentifier"];
+  uUIDString2 = [(NSUUID *)self->_sendDeviceScoreIdentifier UUIDString];
+  [encryptedValues setObject:uUIDString2 forKey:@"sendDeviceScoreIdentifier"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_deviceScoreIdentifiersSubmitted];
-  [v9 setObject:v24 forKey:@"deviceScoreIdentifiersSubmitted"];
+  [encryptedValues setObject:v24 forKey:@"deviceScoreIdentifiersSubmitted"];
 
-  v25 = [(NSTimeZone *)self->_timeZone name];
-  [v9 setObject:v25 forKey:@"timeZone"];
+  name2 = [(NSTimeZone *)self->_timeZone name];
+  [encryptedValues setObject:name2 forKey:@"timeZone"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:self->_coarseLocation];
-  [v9 setObject:v26 forKey:@"isCoarseLocation"];
+  [encryptedValues setObject:v26 forKey:@"isCoarseLocation"];
 
-  [v9 setObject:self->_peerPaymentCounterpartImageRecordIdentifier forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
+  [encryptedValues setObject:self->_peerPaymentCounterpartImageRecordIdentifier forKey:@"peerPaymentCounterpartImageRecordIdentifier"];
   if (_os_feature_enabled_impl())
   {
     preferredTransactionCategory = self->_preferredTransactionCategory;
     if (preferredTransactionCategory)
     {
       v28 = PKMerchantCategoryToString(preferredTransactionCategory);
-      [v9 setObject:v28 forKey:@"preferredTransactionCategory"];
+      [encryptedValues setObject:v28 forKey:@"preferredTransactionCategory"];
     }
   }
 
-  v29 = [v6 cloudStoreSpecificKeys];
-  v30 = [v29 objectForKey:@"originDeviceID"];
-  [v9 setObject:v30 forKey:@"originDeviceID"];
+  cloudStoreSpecificKeys = [coderCopy cloudStoreSpecificKeys];
+  v30 = [cloudStoreSpecificKeys objectForKey:@"originDeviceID"];
+  [encryptedValues setObject:v30 forKey:@"originDeviceID"];
 
   metadata = self->_metadata;
   if (metadata)
@@ -3995,7 +3995,7 @@ LABEL_11:
     v33 = 0;
   }
 
-  [v9 setObject:v33 forKey:@"metadata"];
+  [encryptedValues setObject:v33 forKey:@"metadata"];
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v47 = 0u;
   v48 = 0u;
@@ -4034,66 +4034,66 @@ LABEL_11:
   {
     v42 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v34 options:0 error:0];
     v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v42 encoding:4];
-    [v9 setObject:v43 forKey:@"issuerQuestionsAnswered"];
+    [encryptedValues setObject:v43 forKey:@"issuerQuestionsAnswered"];
   }
 }
 
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(PKMerchant *)self->_merchant encodeWithCloudStoreCoder:v6 codingType:a4];
-  [(PKPaymentTransactionFees *)self->_fees encodeWithCloudStoreCoder:v6 codingType:a4];
-  [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation encodeWithCloudStoreCoder:v6 codingType:a4];
-  [(PKPaymentTransactionRewards *)self->_rewards encodeWithCloudStoreCoder:v6 codingType:a4 property:0];
-  [(PKPaymentTransactionRewards *)self->_rewardsInProgress encodeWithCloudStoreCoder:v6 codingType:a4 property:1];
-  v7 = [v6 recordsWithRecordType:@"Transaction"];
-  v8 = [v7 firstObject];
+  coderCopy = coder;
+  [(PKMerchant *)self->_merchant encodeWithCloudStoreCoder:coderCopy codingType:type];
+  [(PKPaymentTransactionFees *)self->_fees encodeWithCloudStoreCoder:coderCopy codingType:type];
+  [(PKPaymentTransactionForeignExchangeInformation *)self->_foreignExchangeInformation encodeWithCloudStoreCoder:coderCopy codingType:type];
+  [(PKPaymentTransactionRewards *)self->_rewards encodeWithCloudStoreCoder:coderCopy codingType:type property:0];
+  [(PKPaymentTransactionRewards *)self->_rewardsInProgress encodeWithCloudStoreCoder:coderCopy codingType:type property:1];
+  v7 = [coderCopy recordsWithRecordType:@"Transaction"];
+  firstObject = [v7 firstObject];
 
-  v9 = [v8 encryptedValues];
-  [v9 setObject:self->_serviceIdentifier forKey:@"identifier"];
-  v10 = [(NSString *)self->_paymentHash uppercaseString];
-  [v9 setObject:v10 forKey:@"paymentHash"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:self->_serviceIdentifier forKey:@"identifier"];
+  uppercaseString = [(NSString *)self->_paymentHash uppercaseString];
+  [encryptedValues setObject:uppercaseString forKey:@"paymentHash"];
 
   v11 = PKPaymentTransactionTypeToString(self->_transactionType);
-  [v9 setObject:v11 forKey:@"transactionType"];
+  [encryptedValues setObject:v11 forKey:@"transactionType"];
 
   v12 = [(NSDecimalNumber *)self->_amount description];
-  [v9 setObject:v12 forKey:@"amount"];
+  [encryptedValues setObject:v12 forKey:@"amount"];
 
   v13 = [(NSDecimalNumber *)self->_subtotalAmount description];
-  [v9 setObject:v13 forKey:@"subtotalAmount"];
+  [encryptedValues setObject:v13 forKey:@"subtotalAmount"];
 
-  [v9 setObject:self->_currencyCode forKey:@"currencyCode"];
-  [v9 setObject:self->_transactionDate forKey:@"transactionDate"];
-  [v9 setObject:self->_transactionStatusChangedDate forKey:@"transactionStatusChangedDate"];
-  [v9 setObject:self->_expirationDate forKey:@"expirationDate"];
+  [encryptedValues setObject:self->_currencyCode forKey:@"currencyCode"];
+  [encryptedValues setObject:self->_transactionDate forKey:@"transactionDate"];
+  [encryptedValues setObject:self->_transactionStatusChangedDate forKey:@"transactionStatusChangedDate"];
+  [encryptedValues setObject:self->_expirationDate forKey:@"expirationDate"];
   v14 = PKPaymentTransactionStatusToString(self->_transactionStatus);
-  [v9 setObject:v14 forKey:@"transactionStatus"];
+  [encryptedValues setObject:v14 forKey:@"transactionStatus"];
 
   v15 = PKPaymentTransactionTypeToString(self->_transactionType);
-  [v9 setObject:v15 forKey:@"transactionType"];
+  [encryptedValues setObject:v15 forKey:@"transactionType"];
 
   v16 = PKPaymentTransactionPeerPaymentSubtypeToString(self->_peerPaymentType);
-  [v9 setObject:v16 forKey:@"peerPaymentType"];
+  [encryptedValues setObject:v16 forKey:@"peerPaymentType"];
 
-  [v9 setObject:self->_peerPaymentCounterpartHandle forKey:@"peerPaymentCounterpartHandle"];
+  [encryptedValues setObject:self->_peerPaymentCounterpartHandle forKey:@"peerPaymentCounterpartHandle"];
   v17 = [(NSDecimalNumber *)self->_primaryFundingSourceAmount description];
-  [v9 setObject:v17 forKey:@"primaryFundingSourceAmount"];
+  [encryptedValues setObject:v17 forKey:@"primaryFundingSourceAmount"];
 
-  [v9 setObject:self->_primaryFundingSourceCurrencyCode forKey:@"primaryFundingSourceCurrencyCode"];
+  [encryptedValues setObject:self->_primaryFundingSourceCurrencyCode forKey:@"primaryFundingSourceCurrencyCode"];
   v18 = [(NSDecimalNumber *)self->_secondaryFundingSourceAmount description];
-  [v9 setObject:v18 forKey:@"secondaryFundingSourceAmount"];
+  [encryptedValues setObject:v18 forKey:@"secondaryFundingSourceAmount"];
 
-  [v9 setObject:self->_secondaryFundingSourceCurrencyCode forKey:@"secondaryFundingSourceCurrencyCode"];
+  [encryptedValues setObject:self->_secondaryFundingSourceCurrencyCode forKey:@"secondaryFundingSourceCurrencyCode"];
   v19 = PKPaymentNetworkNameForPaymentCredentialType(self->_secondaryFundingSourceNetwork);
-  [v9 setObject:v19 forKey:@"secondaryFundingSourceNetwork"];
+  [encryptedValues setObject:v19 forKey:@"secondaryFundingSourceNetwork"];
 
-  [v9 setObject:self->_secondaryFundingSourceDPANSuffix forKey:@"secondaryFundingSourceDPANSuffix"];
-  [v9 setObject:self->_merchantProvidedDescription forKey:@"merchantProvidedDescription"];
-  [v9 setObject:self->_merchantProvidedTitle forKey:@"merchantProvidedTitle"];
+  [encryptedValues setObject:self->_secondaryFundingSourceDPANSuffix forKey:@"secondaryFundingSourceDPANSuffix"];
+  [encryptedValues setObject:self->_merchantProvidedDescription forKey:@"merchantProvidedDescription"];
+  [encryptedValues setObject:self->_merchantProvidedTitle forKey:@"merchantProvidedTitle"];
   v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_suppressNotifications];
-  [v9 setObject:v20 forKey:@"blockNotification"];
+  [encryptedValues setObject:v20 forKey:@"blockNotification"];
 
   secondaryFundingSourceType = self->_secondaryFundingSourceType;
   v22 = @"bankAccount";
@@ -4112,27 +4112,27 @@ LABEL_11:
     v23 = @"unknown";
   }
 
-  [v9 setObject:v23 forKey:@"secondaryFundingSourceType"];
-  [v9 setObject:self->_peerPaymentRequestToken forKey:@"peerPaymentRequestToken"];
+  [encryptedValues setObject:v23 forKey:@"secondaryFundingSourceType"];
+  [encryptedValues setObject:self->_peerPaymentRequestToken forKey:@"peerPaymentRequestToken"];
   v24 = [(NSDecimalNumber *)self->_rewardsTotalAmount description];
-  [v9 setObject:v24 forKey:@"rewardsTotalAmount"];
+  [encryptedValues setObject:v24 forKey:@"rewardsTotalAmount"];
 
-  [v9 setObject:self->_rewardsTotalCurrencyCode forKey:@"rewardsTotalCurrencyCode"];
+  [encryptedValues setObject:self->_rewardsTotalCurrencyCode forKey:@"rewardsTotalCurrencyCode"];
   v25 = PKPaymentTransactionSourceToString(self->_cardType);
-  [v9 setObject:v25 forKey:@"cardType"];
+  [encryptedValues setObject:v25 forKey:@"cardType"];
 
-  [v9 setObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v9 setObject:self->_altDSID forKey:@"altDSID"];
-  [v9 setObject:self->_lifecycleIdentifier forKey:@"lifecycleIdentifier"];
-  [v9 setObject:self->_authNetworkData forKey:@"authNetworkData"];
-  [v9 setObject:self->_clearingNetworkData forKey:@"clearingNetworkData"];
-  [v9 setObject:self->_cardIdentifier forKey:@"cardIdentifier"];
-  [v9 setObject:self->_cardNumberSuffix forKey:@"last4Digits"];
+  [encryptedValues setObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [encryptedValues setObject:self->_altDSID forKey:@"altDSID"];
+  [encryptedValues setObject:self->_lifecycleIdentifier forKey:@"lifecycleIdentifier"];
+  [encryptedValues setObject:self->_authNetworkData forKey:@"authNetworkData"];
+  [encryptedValues setObject:self->_clearingNetworkData forKey:@"clearingNetworkData"];
+  [encryptedValues setObject:self->_cardIdentifier forKey:@"cardIdentifier"];
+  [encryptedValues setObject:self->_cardNumberSuffix forKey:@"last4Digits"];
   v26 = PKPaymentTransactionAdjustmentSubtypeReasonToString(self->_adjustmentTypeReason);
-  [v9 setObject:v26 forKey:@"adjustmentTypeReason"];
+  [encryptedValues setObject:v26 forKey:@"adjustmentTypeReason"];
 
   v27 = PKPaymentTransactionTopUpSubtypeToString(self->_topUpType);
-  [v9 setObject:v27 forKey:@"topUpType"];
+  [encryptedValues setObject:v27 forKey:@"topUpType"];
 
   v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v61 = 0u;
@@ -4155,8 +4155,8 @@ LABEL_11:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v61 + 1) + 8 * v33) dictionaryRepresentation];
-        [v28 addObject:v34];
+        dictionaryRepresentation = [*(*(&v61 + 1) + 8 * v33) dictionaryRepresentation];
+        [v28 addObject:dictionaryRepresentation];
 
         ++v33;
       }
@@ -4172,20 +4172,20 @@ LABEL_11:
   {
     v35 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v28 options:0 error:0];
     v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v35 encoding:4];
-    [v9 setObject:v36 forKey:@"issuerQuestions"];
+    [encryptedValues setObject:v36 forKey:@"issuerQuestions"];
   }
 
-  [v9 setObject:self->_referenceIdentifier forKey:{@"referenceIdentifier", v61}];
+  [encryptedValues setObject:self->_referenceIdentifier forKey:{@"referenceIdentifier", v61}];
   v37 = PKFeatureIdentifierToString(self->_associatedFeatureIdentifier);
-  [v9 setObject:v37 forKey:@"associatedFeatureIdentifier"];
+  [encryptedValues setObject:v37 forKey:@"associatedFeatureIdentifier"];
 
-  v38 = [(NSURL *)self->_receiptProviderURL absoluteString];
-  [v9 setObject:v38 forKey:@"receiptProviderURL"];
+  absoluteString = [(NSURL *)self->_receiptProviderURL absoluteString];
+  [encryptedValues setObject:absoluteString forKey:@"receiptProviderURL"];
 
-  [v9 setObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
-  [v9 setObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
+  [encryptedValues setObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
+  [encryptedValues setObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
   v39 = [MEMORY[0x1E696AD98] numberWithBool:self->_deviceScoreIdentifiersRequired];
-  [v8 setObject:v39 forKey:@"deviceScoreIdentifiersRequired"];
+  [firstObject setObject:v39 forKey:@"deviceScoreIdentifiersRequired"];
 
   accountType = self->_accountType;
   if (accountType > 4)
@@ -4198,39 +4198,39 @@ LABEL_11:
     v41 = off_1E79E1C18[accountType];
   }
 
-  [v8 setObject:v41 forKey:@"feature"];
-  v42 = [v6 cloudStoreSpecificKeys];
-  v43 = [v42 objectForKey:@"cloudVersion"];
-  [v9 setObject:v43 forKey:@"cloudVersion"];
+  [firstObject setObject:v41 forKey:@"feature"];
+  cloudStoreSpecificKeys = [coderCopy cloudStoreSpecificKeys];
+  v43 = [cloudStoreSpecificKeys objectForKey:@"cloudVersion"];
+  [encryptedValues setObject:v43 forKey:@"cloudVersion"];
 
-  v44 = [v6 cloudStoreSpecificKeys];
-  v45 = [v44 objectForKey:@"dpanIdentifier"];
-  [v9 setObject:v45 forKey:@"dpanIdentifier"];
+  cloudStoreSpecificKeys2 = [coderCopy cloudStoreSpecificKeys];
+  v45 = [cloudStoreSpecificKeys2 objectForKey:@"dpanIdentifier"];
+  [encryptedValues setObject:v45 forKey:@"dpanIdentifier"];
 
-  v46 = [v6 cloudStoreSpecificKeys];
-  v47 = [v46 objectForKey:@"panIdentifier"];
-  [v9 setObject:v47 forKey:@"panIdentifier"];
+  cloudStoreSpecificKeys3 = [coderCopy cloudStoreSpecificKeys];
+  v47 = [cloudStoreSpecificKeys3 objectForKey:@"panIdentifier"];
+  [encryptedValues setObject:v47 forKey:@"panIdentifier"];
 
-  v48 = [v6 cloudStoreSpecificKeys];
-  v49 = [v48 objectForKey:@"isMerchantTokenTransaction"];
-  [v9 setObject:v49 forKey:@"isMerchantTokenTransaction"];
+  cloudStoreSpecificKeys4 = [coderCopy cloudStoreSpecificKeys];
+  v49 = [cloudStoreSpecificKeys4 objectForKey:@"isMerchantTokenTransaction"];
+  [encryptedValues setObject:v49 forKey:@"isMerchantTokenTransaction"];
 
-  v50 = [v6 cloudStoreSpecificKeys];
-  v51 = [v50 objectForKey:@"fpanIdentifier"];
-  [v9 setObject:v51 forKey:@"fpanIdentifier"];
+  cloudStoreSpecificKeys5 = [coderCopy cloudStoreSpecificKeys];
+  v51 = [cloudStoreSpecificKeys5 objectForKey:@"fpanIdentifier"];
+  [encryptedValues setObject:v51 forKey:@"fpanIdentifier"];
 
-  v52 = [v6 cloudStoreSpecificKeys];
-  v53 = [v52 objectForKey:@"passSerialNumber"];
-  [v9 setObject:v53 forKey:@"passSerialNumber"];
+  cloudStoreSpecificKeys6 = [coderCopy cloudStoreSpecificKeys];
+  v53 = [cloudStoreSpecificKeys6 objectForKey:@"passSerialNumber"];
+  [encryptedValues setObject:v53 forKey:@"passSerialNumber"];
 
-  v54 = [v6 cloudStoreSpecificKeys];
-  v55 = [v54 objectForKey:@"passTypeIdentifier"];
-  [v9 setObject:v55 forKey:@"passTypeIdentifier"];
+  cloudStoreSpecificKeys7 = [coderCopy cloudStoreSpecificKeys];
+  v55 = [cloudStoreSpecificKeys7 objectForKey:@"passTypeIdentifier"];
+  [encryptedValues setObject:v55 forKey:@"passTypeIdentifier"];
 
   if (PKApplePayContainerEnvironment() == 2)
   {
     v56 = [MEMORY[0x1E696AD98] numberWithBool:self->_recurring];
-    [v9 setObject:v56 forKey:@"recurring"];
+    [encryptedValues setObject:v56 forKey:@"recurring"];
   }
 
   if (self->_associatedStatementIdentifiers)
@@ -4239,40 +4239,40 @@ LABEL_11:
     v58 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self->_associatedStatementIdentifiers options:0 error:0];
     v59 = [v57 initWithData:v58 encoding:4];
 
-    [v9 setObject:v59 forKey:@"associatedStatementIdentifiers"];
+    [encryptedValues setObject:v59 forKey:@"associatedStatementIdentifiers"];
   }
 
   v60 = [MEMORY[0x1E696AD98] numberWithBool:self->_interestReassessment];
-  [v9 setObject:v60 forKey:@"interestReassessment"];
+  [encryptedValues setObject:v60 forKey:@"interestReassessment"];
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v5 = objc_opt_class();
   serviceIdentifier = self->_serviceIdentifier;
 
-  return [v5 recordTypesAndNamesForCodingType:a3 serviceIdentifier:serviceIdentifier];
+  return [v5 recordTypesAndNamesForCodingType:type serviceIdentifier:serviceIdentifier];
 }
 
-+ (id)recordTypesAndNamesForCodingType:(unint64_t)a3 serviceIdentifier:(id)a4
++ (id)recordTypesAndNamesForCodingType:(unint64_t)type serviceIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = v6;
-    if (a3 - 1 <= 1)
+    if (type - 1 <= 1)
     {
-      [v6 setObject:v5 forKeyedSubscript:@"Transaction"];
+      [v6 setObject:identifierCopy forKeyedSubscript:@"Transaction"];
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [objc_opt_class() recordNamePrefix];
-      v10 = [v8 stringWithFormat:@"%@%@", v9, v5];
-      [v7 setObject:v10 forKeyedSubscript:@"TransactionDeviceData"];
+      recordNamePrefix = [objc_opt_class() recordNamePrefix];
+      identifierCopy = [v8 stringWithFormat:@"%@%@", recordNamePrefix, identifierCopy];
+      [v7 setObject:identifierCopy forKeyedSubscript:@"TransactionDeviceData"];
     }
 
     v13[0] = v7;
@@ -4294,8 +4294,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PKPaymentTransaction *)self amounts];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  amounts = [(PKPaymentTransaction *)self amounts];
+  v3 = [amounts countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -4305,7 +4305,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(amounts);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isPending])
@@ -4315,7 +4315,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [amounts countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -4357,12 +4357,12 @@ LABEL_11:
         }
 
         v6 = *(*(&v58 + 1) + 8 * i);
-        v7 = [v6 amount];
-        v8 = [v7 currency];
-        v51 = [v7 amount];
-        v9 = [v7 exponent];
-        v10 = [v6 isPending];
-        v11 = v8;
+        amount = [v6 amount];
+        currency = [amount currency];
+        v7Amount = [amount amount];
+        exponent = [amount exponent];
+        isPending = [v6 isPending];
+        v11 = currency;
         v12 = v11;
         if (v11 == @"XXX")
         {
@@ -4381,10 +4381,10 @@ LABEL_11:
             if ([v49 containsObject:v12])
             {
               v14 = [v46 objectForKeyedSubscript:v12];
-              v15 = [v14 amount];
-              v16 = [v15 amount];
+              amount2 = [v14 amount];
+              v15Amount = [amount2 amount];
 
-              v17 = [v16 decimalNumberByAdding:v51];
+              v17 = [v15Amount decimalNumberByAdding:v7Amount];
               v18 = PKCurrencyAmountCreate(v17, &v12->isa, 0);
               v19 = [[PKTransactionAmount alloc] initWithCurrencyAmount:v18];
               [v46 setObject:v19 forKeyedSubscript:v12];
@@ -4404,31 +4404,31 @@ LABEL_11:
         }
 
         v20 = [PKCurrencyAmount alloc];
-        if (v10)
+        if (isPending)
         {
-          v21 = [v7 preformattedString];
-          v22 = [(PKCurrencyAmount *)v20 initWithAmount:v51 exponent:v9 preformattedString:v21];
+          preformattedString = [amount preformattedString];
+          v22 = [(PKCurrencyAmount *)v20 initWithAmount:v7Amount exponent:exponent preformattedString:preformattedString];
 
           v23 = [PKTransactionAmount alloc];
-          v24 = [v6 unitIdentifier];
-          v25 = [(PKTransactionAmount *)v23 initWithPendingCurrencyAmount:v22 unitIdentifier:v24];
+          unitIdentifier = [v6 unitIdentifier];
+          v25 = [(PKTransactionAmount *)v23 initWithPendingCurrencyAmount:v22 unitIdentifier:unitIdentifier];
         }
 
         else
         {
-          v26 = [v6 amount];
-          v27 = [v26 absoluteValue];
-          [v27 formattedStringValue];
+          amount3 = [v6 amount];
+          absoluteValue = [amount3 absoluteValue];
+          [absoluteValue formattedStringValue];
           v29 = v28 = v3;
-          v22 = [(PKCurrencyAmount *)v20 initWithAmount:v51 exponent:v9 preformattedString:v29];
+          v22 = [(PKCurrencyAmount *)v20 initWithAmount:v7Amount exponent:exponent preformattedString:v29];
 
           v3 = v28;
           v30 = [PKTransactionAmount alloc];
-          v24 = [v6 label];
-          v31 = [v6 unitIdentifier];
+          unitIdentifier = [v6 label];
+          unitIdentifier2 = [v6 unitIdentifier];
           v32 = v30;
           v4 = v47;
-          v25 = [(PKTransactionAmount *)v32 initWithCurrencyAmount:v22 label:v24 unitIdentifier:v31];
+          v25 = [(PKTransactionAmount *)v32 initWithCurrencyAmount:v22 label:unitIdentifier unitIdentifier:unitIdentifier2];
         }
 
         [v3 addObject:v25];
@@ -4441,14 +4441,14 @@ LABEL_21:
     while (v50);
   }
 
-  v33 = [v49 allObjects];
+  allObjects = [v49 allObjects];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_invoke;
   v56[3] = &unk_1E79D5FD8;
   v34 = v49;
   v57 = v34;
-  v35 = [v33 sortedArrayUsingComparator:v56];
+  v35 = [allObjects sortedArrayUsingComparator:v56];
 
   v54 = 0u;
   v55 = 0u;
@@ -4520,8 +4520,8 @@ uint64_t __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  transactionAmountsForMultipleAmounts = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
+  v5 = [transactionAmountsForMultipleAmounts countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4532,22 +4532,22 @@ uint64_t __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(transactionAmountsForMultipleAmounts);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
-        v10 = [v9 amount];
-        v11 = [v10 currency];
+        amount = [v9 amount];
+        currency = [amount currency];
 
-        if (([v11 isEqualToString:@"XXX"] & 1) == 0)
+        if (([currency isEqualToString:@"XXX"] & 1) == 0)
         {
-          v12 = [v9 amount];
-          v13 = [v12 amount];
-          [v3 setObject:v13 forKeyedSubscript:v11];
+          amount2 = [v9 amount];
+          v12Amount = [amount2 amount];
+          [v3 setObject:v12Amount forKeyedSubscript:currency];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v6 = [transactionAmountsForMultipleAmounts countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v6);
@@ -4574,8 +4574,8 @@ uint64_t __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = [v3 keyEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  keyEnumerator = [v3 keyEnumerator];
+  v19 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v19)
   {
     v20 = v19;
@@ -4586,30 +4586,30 @@ uint64_t __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_
       {
         if (*v35 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v23 = *(*(&v34 + 1) + 8 * j);
         v24 = [v3 objectForKeyedSubscript:v23];
         v25 = PKCurrencyAmountCreate(v24, v23, 0);
 
-        v26 = [v25 absoluteValue];
-        v27 = [v26 formattedStringValue];
+        absoluteValue = [v25 absoluteValue];
+        formattedStringValue = [absoluteValue formattedStringValue];
 
-        v28 = [v25 amount];
-        v29 = [v28 pk_isNegativeNumber];
+        amount3 = [v25 amount];
+        pk_isNegativeNumber = [amount3 pk_isNegativeNumber];
 
-        if (v29)
+        if (pk_isNegativeNumber)
         {
-          v30 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, v27);
+          v30 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, formattedStringValue);
 
-          v27 = v30;
+          formattedStringValue = v30;
         }
 
-        [v33 setObject:v27 forKeyedSubscript:v23];
+        [v33 setObject:formattedStringValue forKeyedSubscript:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v20 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v20);
@@ -4620,22 +4620,22 @@ uint64_t __60__PKPaymentTransaction_transactionAmountsForMultipleAmounts__block_
   return v31;
 }
 
-- (id)formattedStringForMultipleAmountsForPass:(id)a3
+- (id)formattedStringForMultipleAmountsForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
-  v6 = [v5 count];
+  passCopy = pass;
+  transactionAmountsForMultipleAmounts = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
+  v6 = [transactionAmountsForMultipleAmounts count];
   v7 = [(NSArray *)self->_plans count];
   if (v6 | v7)
   {
     v13 = v7;
     if (v6 >= 2)
     {
-      v14 = [(PKPaymentTransaction *)self _preformattedStringForMultipleAmounts];
-      v20 = PKPassLocalizedStringWithFormat(@"TRANSACTION_MULTIPLE_AMOUNTS_JOIN_STRING", v4, 0, v15, v16, v17, v18, v19, 0);
-      v21 = [v14 componentsJoinedByString:v20];
+      _preformattedStringForMultipleAmounts = [(PKPaymentTransaction *)self _preformattedStringForMultipleAmounts];
+      v20 = PKPassLocalizedStringWithFormat(@"TRANSACTION_MULTIPLE_AMOUNTS_JOIN_STRING", passCopy, 0, v15, v16, v17, v18, v19, 0);
+      v21 = [_preformattedStringForMultipleAmounts componentsJoinedByString:v20];
 
-      if (v14 && [v14 count] >= 2)
+      if (_preformattedStringForMultipleAmounts && [_preformattedStringForMultipleAmounts count] >= 2)
       {
         v27 = v21;
       }
@@ -4651,7 +4651,7 @@ LABEL_19:
           goto LABEL_24;
         }
 
-        v27 = PKPassLocalizedStringWithFormat(@"TRANSACTION_MULTIPLE_AMOUNTS_PLUS_OTHER", v4, @"%@", v22, v23, v24, v25, v26, v21);
+        v27 = PKPassLocalizedStringWithFormat(@"TRANSACTION_MULTIPLE_AMOUNTS_PLUS_OTHER", passCopy, @"%@", v22, v23, v24, v25, v26, v21);
       }
 
       v33 = v27;
@@ -4660,8 +4660,8 @@ LABEL_19:
 
     if (v6 == 1)
     {
-      v14 = [v5 firstObject];
-      v33 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentTransactionAmount:v14];
+      _preformattedStringForMultipleAmounts = [transactionAmountsForMultipleAmounts firstObject];
+      v33 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentTransactionAmount:_preformattedStringForMultipleAmounts];
       if (v13 <= 1)
       {
         if (v13 != 1)
@@ -4677,7 +4677,7 @@ LABEL_19:
         v34 = @"TRANSACTION_MULTIPLE_AMOUNTS_PLUS_COMMUTE_PLANS";
       }
 
-      v35 = PKPassLocalizedStringWithFormat(v34, v4, @"%@", v28, v29, v30, v31, v32, v33);
+      v35 = PKPassLocalizedStringWithFormat(v34, passCopy, @"%@", v28, v29, v30, v31, v32, v33);
 
       v33 = v35;
       goto LABEL_19;
@@ -4685,14 +4685,14 @@ LABEL_19:
 
     if (v7 >= 2)
     {
-      PKPassLocalizedStringWithFormat(@"TRANSACTION_COMMUTE_PLANS_USED", v4, 0, v8, v9, v10, v11, v12, 0);
+      PKPassLocalizedStringWithFormat(@"TRANSACTION_COMMUTE_PLANS_USED", passCopy, 0, v8, v9, v10, v11, v12, 0);
       v33 = LABEL_22:;
       goto LABEL_24;
     }
 
     if (v7 == 1)
     {
-      PKPassLocalizedStringWithFormat(@"TRANSACTION_COMMUTE_PLAN_USED", v4, 0, v8, v9, v10, v11, v12, 0);
+      PKPassLocalizedStringWithFormat(@"TRANSACTION_COMMUTE_PLAN_USED", passCopy, 0, v8, v9, v10, v11, v12, 0);
       goto LABEL_22;
     }
   }
@@ -4711,8 +4711,8 @@ LABEL_24:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PKPaymentTransaction *)self plans];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  plans = [(PKPaymentTransaction *)self plans];
+  v5 = [plans countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4723,14 +4723,14 @@ LABEL_24:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plans);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) label];
-        [v3 safelyAddObject:v9];
+        label = [*(*(&v12 + 1) + 8 * i) label];
+        [v3 safelyAddObject:label];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [plans countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4745,12 +4745,12 @@ LABEL_24:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
+  transactionAmountsForMultipleAmounts = [(PKPaymentTransaction *)self transactionAmountsForMultipleAmounts];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [transactionAmountsForMultipleAmounts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4761,15 +4761,15 @@ LABEL_24:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(transactionAmountsForMultipleAmounts);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) amount];
-        v10 = [v9 formattedStringValue];
+        amount = [*(*(&v16 + 1) + 8 * i) amount];
+        formattedStringValue = [amount formattedStringValue];
 
-        if (v10)
+        if (formattedStringValue)
         {
-          v11 = v10;
+          v11 = formattedStringValue;
           if (v11 != &stru_1F227FD28)
           {
             v12 = v11;
@@ -4783,7 +4783,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [transactionAmountsForMultipleAmounts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -4796,17 +4796,17 @@ LABEL_24:
 
 - (BOOL)isZeroTransaction
 {
-  v3 = [(PKPaymentTransaction *)self amount];
-  v4 = v3;
-  if (v3 && ![v3 pk_isZeroNumber])
+  amount = [(PKPaymentTransaction *)self amount];
+  v4 = amount;
+  if (amount && ![amount pk_isZeroNumber])
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(PKPaymentTransaction *)self amounts];
-    v6 = [v5 count] == 0;
+    amounts = [(PKPaymentTransaction *)self amounts];
+    v6 = [amounts count] == 0;
   }
 
   return v6;
@@ -4826,8 +4826,8 @@ LABEL_24:
 
 - (NSString)displayLocation
 {
-  v3 = [(PKPaymentTransaction *)self effectiveTransactionSource];
-  if (v3 <= 8 && (((1 << v3) & 0x1D8) != 0 || v3 == 2 && (!self->_releasedData || !self->_requiresLocation)))
+  effectiveTransactionSource = [(PKPaymentTransaction *)self effectiveTransactionSource];
+  if (effectiveTransactionSource <= 8 && (((1 << effectiveTransactionSource) & 0x1D8) != 0 || effectiveTransactionSource == 2 && (!self->_releasedData || !self->_requiresLocation)))
   {
     v4 = 0;
   }
@@ -4852,7 +4852,7 @@ LABEL_24:
   v10 = v9;
   [(PKPaymentTransaction *)self locationVerticalAccuracy];
   v12 = v11;
-  v13 = [(PKPaymentTransaction *)self locationDate];
+  locationDate = [(PKPaymentTransaction *)self locationDate];
   if (v6.latitude == 0.0 && v6.longitude == 0.0)
   {
     v14 = 0;
@@ -4861,46 +4861,46 @@ LABEL_24:
   else
   {
     v14 = 0;
-    if (CLLocationCoordinate2DIsValid(v6) && v10 > 0.0 && v13)
+    if (CLLocationCoordinate2DIsValid(v6) && v10 > 0.0 && locationDate)
     {
-      v14 = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:v13 altitude:v6.latitude horizontalAccuracy:v6.longitude verticalAccuracy:v8 timestamp:{v10, v12}];
+      v14 = [objc_alloc(MEMORY[0x1E6985C40]) initWithCoordinate:locationDate altitude:v6.latitude horizontalAccuracy:v6.longitude verticalAccuracy:v8 timestamp:{v10, v12}];
     }
   }
 
   return v14;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = v5;
   [(PKPaymentTransaction *)self setLocationLatitude:?];
   [(PKPaymentTransaction *)self setLocationLongitude:v6];
-  [v4 altitude];
+  [locationCopy altitude];
   [(PKPaymentTransaction *)self setLocationAltitude:?];
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   [(PKPaymentTransaction *)self setLocationHorizontalAccuracy:?];
-  [v4 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   [(PKPaymentTransaction *)self setLocationVerticalAccuracy:?];
-  v7 = [v4 timestamp];
+  timestamp = [locationCopy timestamp];
 
-  [(PKPaymentTransaction *)self setLocationDate:v7];
+  [(PKPaymentTransaction *)self setLocationDate:timestamp];
 }
 
 - (NSDecimalNumber)rewardsTotalAmount
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = self->_rewardsTotalAmount;
-  v4 = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
-  v5 = [v4 count] != 0;
+  rewardsItems = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
+  v5 = [rewardsItems count] != 0;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  rewardsItems2 = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
+  v7 = [rewardsItems2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4911,13 +4911,13 @@ LABEL_24:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(rewardsItems2);
         }
 
         v5 = ([*(*(&v15 + 1) + 8 * i) state] == 3) & v5;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [rewardsItems2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -4925,14 +4925,14 @@ LABEL_24:
 
   if (v5)
   {
-    v11 = [MEMORY[0x1E696AB90] zero];
-    v12 = [(NSDecimalNumber *)v3 compare:v11];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v12 = [(NSDecimalNumber *)v3 compare:zero];
 
     if (v12 == 1)
     {
-      v13 = [(NSDecimalNumber *)v3 pk_negativeValue];
+      pk_negativeValue = [(NSDecimalNumber *)v3 pk_negativeValue];
 
-      v3 = v13;
+      v3 = pk_negativeValue;
     }
   }
 
@@ -4943,41 +4943,41 @@ LABEL_24:
 {
   if ([(PKMerchant *)self->_merchant shouldIgnoreMapsMatches])
   {
-    v3 = [(PKPaymentTransaction *)self effectiveTransactionSource];
+    effectiveTransactionSource = [(PKPaymentTransaction *)self effectiveTransactionSource];
   }
 
   else
   {
-    v4 = [(PKMerchant *)self->_merchant mapsMerchant];
-    v5 = [v4 location];
+    mapsMerchant = [(PKMerchant *)self->_merchant mapsMerchant];
+    location = [mapsMerchant location];
 
-    v3 = [(PKPaymentTransaction *)self effectiveTransactionSource];
-    if (v5)
+    effectiveTransactionSource = [(PKPaymentTransaction *)self effectiveTransactionSource];
+    if (location)
     {
       goto LABEL_7;
     }
   }
 
-  if (v3 == 5)
+  if (effectiveTransactionSource == 5)
   {
-    v5 = 0;
+    location = 0;
   }
 
   else
   {
-    v5 = [(PKPaymentTransaction *)self location];
+    location = [(PKPaymentTransaction *)self location];
   }
 
 LABEL_7:
 
-  return v5;
+  return location;
 }
 
-- (void)setPaymentHash:(id)a3
+- (void)setPaymentHash:(id)hash
 {
-  v4 = [a3 uppercaseString];
+  uppercaseString = [hash uppercaseString];
   paymentHash = self->_paymentHash;
-  self->_paymentHash = v4;
+  self->_paymentHash = uppercaseString;
 }
 
 - (unint64_t)effectiveTransactionSource
@@ -5007,8 +5007,8 @@ LABEL_7:
 
 - (BOOL)supportsFuzzyMatching
 {
-  v3 = [(PKPaymentTransaction *)self effectiveTransactionSource];
-  if ((v3 == 7 || !v3) && (transactionType = self->_transactionType, transactionType - 3 >= 0x14) && (transactionType >= 3 ? (v7 = v3 == 7) : (v7 = 1), !v7 ? (v8 = v3 == 0) : (v8 = 1), v8))
+  effectiveTransactionSource = [(PKPaymentTransaction *)self effectiveTransactionSource];
+  if ((effectiveTransactionSource == 7 || !effectiveTransactionSource) && (transactionType = self->_transactionType, transactionType - 3 >= 0x14) && (transactionType >= 3 ? (v7 = effectiveTransactionSource == 7) : (v7 = 1), !v7 ? (v8 = effectiveTransactionSource == 0) : (v8 = 1), v8))
   {
     return self->_hasNotificationServiceData;
   }
@@ -5207,8 +5207,8 @@ LABEL_48:
 {
   if (PKTransactionDetailedLoggingEnabled())
   {
-    v3 = [(PKPaymentTransaction *)self dictionaryRepresentation];
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:2 error:0];
+    dictionaryRepresentation = [(PKPaymentTransaction *)self dictionaryRepresentation];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:2 error:0];
     if (v4)
     {
       v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
@@ -5227,67 +5227,67 @@ LABEL_48:
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
+    dictionaryRepresentation = objc_alloc_init(MEMORY[0x1E696AD60]);
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v3 appendFormat:@"<%@: %p; Identifier: %@, Service Identifier: %@, Payment Hash: %@", v8, self, self->_identifier, self->_serviceIdentifier, self->_paymentHash];
+    [dictionaryRepresentation appendFormat:@"<%@: %p; Identifier: %@, Service Identifier: %@, Payment Hash: %@", v8, self, self->_identifier, self->_serviceIdentifier, self->_paymentHash];
 
-    v9 = [(PKPaymentTransaction *)self _transactionTypeString];
-    v10 = v9;
-    if (v9)
+    _transactionTypeString = [(PKPaymentTransaction *)self _transactionTypeString];
+    v10 = _transactionTypeString;
+    if (_transactionTypeString)
     {
-      [v3 appendFormat:@", Type: %@", v9];
+      [dictionaryRepresentation appendFormat:@", Type: %@", _transactionTypeString];
     }
 
-    v11 = [(PKPaymentTransaction *)self _transitSubtypeString];
+    _transitSubtypeString = [(PKPaymentTransaction *)self _transitSubtypeString];
 
-    if (v11)
+    if (_transitSubtypeString)
     {
-      [v3 appendFormat:@", Subtype: %@", v11];
+      [dictionaryRepresentation appendFormat:@", Subtype: %@", _transitSubtypeString];
     }
 
     v12 = PKPaymentTransactionStatusToString([(PKPaymentTransaction *)self transactionStatus]);
 
     if (v12)
     {
-      [v3 appendFormat:@", Status: %@", v12];
+      [dictionaryRepresentation appendFormat:@", Status: %@", v12];
     }
 
-    v13 = [(PKPaymentTransaction *)self _transactionSourceString];
+    _transactionSourceString = [(PKPaymentTransaction *)self _transactionSourceString];
 
-    if (v13)
+    if (_transactionSourceString)
     {
-      [v3 appendFormat:@", Source: %@", v13];
+      [dictionaryRepresentation appendFormat:@", Source: %@", _transactionSourceString];
     }
 
     if (self->_currencyCode)
     {
-      [v3 appendFormat:@", Currency: %@", self->_currencyCode];
+      [dictionaryRepresentation appendFormat:@", Currency: %@", self->_currencyCode];
     }
 
     if (self->_requestDeviceScoreIdentifier)
     {
-      [v3 appendFormat:@", Request Device Score Identifier: %@", self->_requestDeviceScoreIdentifier];
+      [dictionaryRepresentation appendFormat:@", Request Device Score Identifier: %@", self->_requestDeviceScoreIdentifier];
     }
 
     if (self->_sendDeviceScoreIdentifier)
     {
-      [v3 appendFormat:@", Send Device Score Identifier: %@", self->_sendDeviceScoreIdentifier];
+      [dictionaryRepresentation appendFormat:@", Send Device Score Identifier: %@", self->_sendDeviceScoreIdentifier];
     }
 
-    v14 = [(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata transactionIdentifier];
+    transactionIdentifier = [(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata transactionIdentifier];
 
-    if (v14)
+    if (transactionIdentifier)
     {
-      v15 = [(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata transactionIdentifier];
-      [v3 appendFormat:@", Bank Connect Identifier: %@", v15];
+      transactionIdentifier2 = [(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata transactionIdentifier];
+      [dictionaryRepresentation appendFormat:@", Bank Connect Identifier: %@", transactionIdentifier2];
     }
 
-    [v3 appendString:@">"];
+    [dictionaryRepresentation appendString:@">"];
 
     objc_autoreleasePoolPop(v6);
-    v16 = [v3 copy];
+    v16 = [dictionaryRepresentation copy];
   }
 
   return v16;
@@ -5309,15 +5309,15 @@ LABEL_48:
 
 - (id)_transactionTypeString
 {
-  v2 = [(PKPaymentTransaction *)self transactionType];
-  if (v2 > 0x16)
+  transactionType = [(PKPaymentTransaction *)self transactionType];
+  if (transactionType > 0x16)
   {
     return 0;
   }
 
   else
   {
-    return off_1E79E1C88[v2];
+    return off_1E79E1C88[transactionType];
   }
 }
 
@@ -5328,42 +5328,42 @@ LABEL_48:
     return 0;
   }
 
-  v3 = [(PKPaymentTransaction *)self transitType];
-  if (v3 > 258)
+  transitType = [(PKPaymentTransaction *)self transitType];
+  if (transitType > 258)
   {
-    if (v3 <= 514)
+    if (transitType <= 514)
     {
       v4 = @"bike";
       v19 = @"deposit";
       v20 = @"refund";
-      if (v3 != 514)
+      if (transitType != 514)
       {
         v20 = 0;
       }
 
-      if (v3 != 513)
+      if (transitType != 513)
       {
         v19 = v20;
       }
 
-      if (v3 != 261)
+      if (transitType != 261)
       {
         v4 = v19;
       }
 
       v7 = @"taxi";
       v21 = @"ferry";
-      if (v3 != 260)
+      if (transitType != 260)
       {
         v21 = 0;
       }
 
-      if (v3 != 259)
+      if (transitType != 259)
       {
         v7 = v21;
       }
 
-      v10 = v3 <= 260;
+      v10 = transitType <= 260;
     }
 
     else
@@ -5371,17 +5371,17 @@ LABEL_48:
       v4 = @"renewal";
       v12 = @"greenCar";
       v13 = @"metroUpgrade";
-      if (v3 != 1026)
+      if (transitType != 1026)
       {
         v13 = 0;
       }
 
-      if (v3 != 1025)
+      if (transitType != 1025)
       {
         v12 = v13;
       }
 
-      if (v3 != 518)
+      if (transitType != 518)
       {
         v4 = v12;
       }
@@ -5389,58 +5389,58 @@ LABEL_48:
       v7 = @"purchase";
       v14 = @"withdrawal";
       v15 = @"cardRead";
-      if (v3 != 517)
+      if (transitType != 517)
       {
         v15 = 0;
       }
 
-      if (v3 != 516)
+      if (transitType != 516)
       {
         v14 = v15;
       }
 
-      if (v3 != 515)
+      if (transitType != 515)
       {
         v7 = v14;
       }
 
-      v10 = v3 <= 517;
+      v10 = transitType <= 517;
     }
   }
 
-  else if (v3 <= 4)
+  else if (transitType <= 4)
   {
     v4 = @"metro";
     v16 = @"bus";
     v17 = @"train";
-    if (v3 != 4)
+    if (transitType != 4)
     {
       v17 = 0;
     }
 
-    if (v3 != 3)
+    if (transitType != 3)
     {
       v16 = v17;
     }
 
-    if (v3 != 2)
+    if (transitType != 2)
     {
       v4 = v16;
     }
 
     v7 = @"unknown";
     v18 = @"transit";
-    if (v3 != 1)
+    if (transitType != 1)
     {
       v18 = 0;
     }
 
-    if (v3)
+    if (transitType)
     {
       v7 = v18;
     }
 
-    v10 = v3 <= 1;
+    v10 = transitType <= 1;
   }
 
   else
@@ -5448,17 +5448,17 @@ LABEL_48:
     v4 = @"cableCar";
     v5 = @"shinkansen";
     v6 = @"maglev";
-    if (v3 != 258)
+    if (transitType != 258)
     {
       v6 = 0;
     }
 
-    if (v3 != 257)
+    if (transitType != 257)
     {
       v5 = v6;
     }
 
-    if (v3 != 8)
+    if (transitType != 8)
     {
       v4 = v5;
     }
@@ -5466,22 +5466,22 @@ LABEL_48:
     v7 = @"other";
     v8 = @"special";
     v9 = @"lightrail";
-    if (v3 != 7)
+    if (transitType != 7)
     {
       v9 = 0;
     }
 
-    if (v3 != 6)
+    if (transitType != 6)
     {
       v8 = v9;
     }
 
-    if (v3 != 5)
+    if (transitType != 5)
     {
       v7 = v8;
     }
 
-    v10 = v3 <= 7;
+    v10 = transitType <= 7;
   }
 
   if (v10)
@@ -5495,32 +5495,32 @@ LABEL_48:
   }
 }
 
-+ (id)transactionNotificationStatusStringForTransaction:(id)a3 personContact:(id)a4
++ (id)transactionNotificationStatusStringForTransaction:(id)transaction personContact:(id)contact
 {
-  v5 = a3;
-  v6 = [a4 givenName];
-  v7 = [v5 transactionStatus];
-  if ((v7 + 1) <= 9)
+  transactionCopy = transaction;
+  givenName = [contact givenName];
+  transactionStatus = [transactionCopy transactionStatus];
+  if ((transactionStatus + 1) <= 9)
   {
-    if (((1 << (v7 + 1)) & 0x3E7) != 0)
+    if (((1 << (transactionStatus + 1)) & 0x3E7) != 0)
     {
-      v8 = [v5 transactionType];
+      transactionType = [transactionCopy transactionType];
       v9 = 0;
-      v10 = v8 == 13 || v8 == 0;
-      if (!v10 || !v6)
+      v10 = transactionType == 13 || transactionType == 0;
+      if (!v10 || !givenName)
       {
         goto LABEL_12;
       }
 
-      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_7.isa, &stru_1F2281668.isa, v6);
+      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_7.isa, &stru_1F2281668.isa, givenName);
       goto LABEL_10;
     }
 
-    if (v7 == 2)
+    if (transactionStatus == 2)
     {
-      if (v6)
+      if (givenName)
       {
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_8.isa, &stru_1F2281668.isa, v6);
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_8.isa, &stru_1F2281668.isa, givenName);
         v11 = LABEL_10:;
 LABEL_11:
         v9 = v11;
@@ -5532,9 +5532,9 @@ LABEL_11:
 
     else
     {
-      if (v6)
+      if (givenName)
       {
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_9.isa, &stru_1F2281668.isa, v6);
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_9.isa, &stru_1F2281668.isa, givenName);
         goto LABEL_10;
       }
 
@@ -5559,8 +5559,8 @@ LABEL_12:
     if (v4)
     {
       amount = self->_amount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(amount) = [(NSDecimalNumber *)amount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(amount) = [(NSDecimalNumber *)amount isEqualToNumber:notANumber];
 
       if (amount)
       {
@@ -5590,8 +5590,8 @@ LABEL_12:
     if (v4)
     {
       nominalAmount = self->_nominalAmount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(nominalAmount) = [(NSDecimalNumber *)nominalAmount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(nominalAmount) = [(NSDecimalNumber *)nominalAmount isEqualToNumber:notANumber];
 
       if (nominalAmount)
       {
@@ -5621,8 +5621,8 @@ LABEL_12:
     if (v4)
     {
       subtotalAmount = self->_subtotalAmount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(subtotalAmount) = [(NSDecimalNumber *)subtotalAmount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(subtotalAmount) = [(NSDecimalNumber *)subtotalAmount isEqualToNumber:notANumber];
 
       if (subtotalAmount)
       {
@@ -5652,8 +5652,8 @@ LABEL_12:
     if (v4)
     {
       primaryFundingSourceAmount = self->_primaryFundingSourceAmount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(primaryFundingSourceAmount) = [(NSDecimalNumber *)primaryFundingSourceAmount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(primaryFundingSourceAmount) = [(NSDecimalNumber *)primaryFundingSourceAmount isEqualToNumber:notANumber];
 
       if (primaryFundingSourceAmount)
       {
@@ -5683,8 +5683,8 @@ LABEL_12:
     if (v4)
     {
       secondaryFundingSourceAmount = self->_secondaryFundingSourceAmount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(secondaryFundingSourceAmount) = [(NSDecimalNumber *)secondaryFundingSourceAmount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(secondaryFundingSourceAmount) = [(NSDecimalNumber *)secondaryFundingSourceAmount isEqualToNumber:notANumber];
 
       if (secondaryFundingSourceAmount)
       {
@@ -5714,8 +5714,8 @@ LABEL_12:
     if (v4)
     {
       rewardsTotalAmount = self->_rewardsTotalAmount;
-      v6 = [MEMORY[0x1E696AB90] notANumber];
-      LOBYTE(rewardsTotalAmount) = [(NSDecimalNumber *)rewardsTotalAmount isEqualToNumber:v6];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      LOBYTE(rewardsTotalAmount) = [(NSDecimalNumber *)rewardsTotalAmount isEqualToNumber:notANumber];
 
       if (rewardsTotalAmount)
       {
@@ -5768,8 +5768,8 @@ LABEL_12:
             [v3 appendString:@"\n"];
           }
 
-          v10 = [v9 formattedStringValue];
-          [v3 appendString:v10];
+          formattedStringValue = [v9 formattedStringValue];
+          [v3 appendString:formattedStringValue];
         }
 
         v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -5796,97 +5796,97 @@ LABEL_12:
 
 - (NSString)formattedBalanceAdjustmentAmount
 {
-  v3 = [(PKPaymentTransaction *)self currencyAmount];
-  v4 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentAmount:v3];
+  currencyAmount = [(PKPaymentTransaction *)self currencyAmount];
+  v4 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentAmount:currencyAmount];
 
   return v4;
 }
 
 - (NSString)formattedBalanceAdjustmentSubtotalAmount
 {
-  v3 = [(PKPaymentTransaction *)self subtotalCurrencyAmount];
-  v4 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentAmount:v3];
+  subtotalCurrencyAmount = [(PKPaymentTransaction *)self subtotalCurrencyAmount];
+  v4 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentAmount:subtotalCurrencyAmount];
 
   return v4;
 }
 
 - (NSString)formattedBalanceAdjustmentAbsoluteAmount
 {
-  v3 = [(PKPaymentTransaction *)self currencyAmount];
-  v4 = [v3 amount];
-  v5 = [v4 pk_absoluteValue];
-  v6 = [v3 currency];
-  v7 = PKCurrencyAmountCreate(v5, v6, 0);
+  currencyAmount = [(PKPaymentTransaction *)self currencyAmount];
+  amount = [currencyAmount amount];
+  pk_absoluteValue = [amount pk_absoluteValue];
+  currency = [currencyAmount currency];
+  v7 = PKCurrencyAmountCreate(pk_absoluteValue, currency, 0);
 
   v8 = [(PKPaymentTransaction *)self _formatBalanceAdjustmentAmount:v7];
 
   return v8;
 }
 
-+ (id)formattedBalanceAdjustmentForTransactionAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 isBankConnectTransaction:(BOOL)a7 bankConnectCreditDebitIndicator:(int64_t)a8 featureIdentifier:(unint64_t)a9
++ (id)formattedBalanceAdjustmentForTransactionAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator featureIdentifier:(unint64_t)identifier
 {
-  v10 = a7;
-  v15 = a3;
-  v16 = [v15 amount];
-  v17 = [v15 isPending];
+  transactionCopy = transaction;
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  isPending = [amountCopy isPending];
 
-  LOBYTE(v20) = v17;
-  v18 = [a1 formattedBalanceAdjustmentForCurrencyAmount:v16 transactionType:a4 adjustmentType:a5 peerPaymentType:a6 featureIdentifier:a9 isBankConnectTransaction:v10 bankConnectCreditDebitIndicator:a8 pending:v20];
+  LOBYTE(v20) = isPending;
+  v18 = [self formattedBalanceAdjustmentForCurrencyAmount:amount transactionType:type adjustmentType:adjustmentType peerPaymentType:paymentType featureIdentifier:identifier isBankConnectTransaction:transactionCopy bankConnectCreditDebitIndicator:indicator pending:v20];
 
   return v18;
 }
 
-+ (BOOL)isPositiveBalanceAdjustmentForCurrencyAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 isBankConnectTransaction:(BOOL)a7 bankConnectCreditDebitIndicator:(int64_t)a8 featureIdentifier:(unint64_t)a9
++ (BOOL)isPositiveBalanceAdjustmentForCurrencyAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator featureIdentifier:(unint64_t)identifier
 {
-  v10 = a7;
-  v14 = a3;
-  v15 = v14;
-  if (v10)
+  transactionCopy = transaction;
+  amountCopy = amount;
+  v15 = amountCopy;
+  if (transactionCopy)
   {
-    v16 = a8 == 1;
+    v16 = indicator == 1;
     goto LABEL_3;
   }
 
-  v18 = [v14 amount];
-  v19 = [MEMORY[0x1E696AB90] zero];
-  v20 = [v18 compare:v19];
+  amount = [amountCopy amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v20 = [amount compare:zero];
 
-  if (v20 == -1 || a4 == 3 && a6 == 2)
+  if (v20 == -1 || type == 3 && paymentType == 2)
   {
     LOBYTE(v17) = 1;
     goto LABEL_10;
   }
 
   LOBYTE(v17) = 1;
-  if (a4 <= 7)
+  if (type <= 7)
   {
-    if (a4 == 6)
+    if (type == 6)
     {
       goto LABEL_10;
     }
 
-    if (a4 == 7 && a5 < 0x13)
+    if (type == 7 && adjustmentType < 0x13)
     {
-      v17 = 0x43A9Au >> a5;
+      v17 = 0x43A9Au >> adjustmentType;
       goto LABEL_10;
     }
 
     goto LABEL_19;
   }
 
-  if ((a4 - 8) < 3)
+  if ((type - 8) < 3)
   {
     goto LABEL_10;
   }
 
-  if (a4 != 11)
+  if (type != 11)
   {
 LABEL_19:
     LOBYTE(v17) = 0;
     goto LABEL_10;
   }
 
-  v16 = a9 == 5;
+  v16 = identifier == 5;
 LABEL_3:
   LOBYTE(v17) = v16;
 LABEL_10:
@@ -5894,50 +5894,50 @@ LABEL_10:
   return v17 & 1;
 }
 
-+ (id)formattedBalanceAdjustmentForCurrencyAmount:(id)a3 transactionType:(int64_t)a4 adjustmentType:(int64_t)a5 peerPaymentType:(int64_t)a6 featureIdentifier:(unint64_t)a7 isBankConnectTransaction:(BOOL)a8 bankConnectCreditDebitIndicator:(int64_t)a9 pending:(BOOL)a10
++ (id)formattedBalanceAdjustmentForCurrencyAmount:(id)amount transactionType:(int64_t)type adjustmentType:(int64_t)adjustmentType peerPaymentType:(int64_t)paymentType featureIdentifier:(unint64_t)identifier isBankConnectTransaction:(BOOL)transaction bankConnectCreditDebitIndicator:(int64_t)indicator pending:(BOOL)self0
 {
-  v10 = a8;
-  v15 = a3;
-  if (!v15)
+  transactionCopy = transaction;
+  amountCopy = amount;
+  if (!amountCopy)
   {
     v23 = 0;
     goto LABEL_13;
   }
 
-  v16 = v15;
-  v17 = [PKPaymentTransaction isPositiveBalanceAdjustmentForCurrencyAmount:v15 transactionType:a4 adjustmentType:a5 peerPaymentType:a6 isBankConnectTransaction:v10 bankConnectCreditDebitIndicator:a9 featureIdentifier:a7];
-  v18 = [v16 amount];
-  v19 = [MEMORY[0x1E696AB90] zero];
-  v20 = [v18 compare:v19];
+  v16 = amountCopy;
+  v17 = [PKPaymentTransaction isPositiveBalanceAdjustmentForCurrencyAmount:amountCopy transactionType:type adjustmentType:adjustmentType peerPaymentType:paymentType isBankConnectTransaction:transactionCopy bankConnectCreditDebitIndicator:indicator featureIdentifier:identifier];
+  amount = [v16 amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v20 = [amount compare:zero];
 
   if (v20 == -1)
   {
-    v21 = [v16 negativeValue];
+    negativeValue = [v16 negativeValue];
 
-    v16 = v21;
+    v16 = negativeValue;
   }
 
-  v22 = [v16 formattedStringValue];
-  v23 = v22;
-  if (!a10)
+  formattedStringValue = [v16 formattedStringValue];
+  v23 = formattedStringValue;
+  if (!pending)
   {
     if (v17)
     {
-      if (a7 != 5)
+      if (identifier != 5)
       {
-        v24 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, v22);
+        formattedStringValue2 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F2281668.isa, formattedStringValue);
 LABEL_11:
 
-        v23 = v24;
+        v23 = formattedStringValue2;
       }
     }
 
-    else if (a7 == 5)
+    else if (identifier == 5)
     {
-      v25 = [v16 negativeValue];
-      v24 = [v25 formattedStringValue];
+      negativeValue2 = [v16 negativeValue];
+      formattedStringValue2 = [negativeValue2 formattedStringValue];
 
-      v23 = v25;
+      v23 = negativeValue2;
       goto LABEL_11;
     }
   }
@@ -5947,25 +5947,25 @@ LABEL_13:
   return v23;
 }
 
-- (id)_formatBalanceAdjustmentTransactionAmount:(id)a3
+- (id)_formatBalanceAdjustmentTransactionAmount:(id)amount
 {
   transactionType = self->_transactionType;
   adjustmentType = self->_adjustmentType;
   peerPaymentType = self->_peerPaymentType;
-  v7 = a3;
-  v8 = [PKPaymentTransaction formattedBalanceAdjustmentForTransactionAmount:v7 transactionType:transactionType adjustmentType:adjustmentType peerPaymentType:peerPaymentType isBankConnectTransaction:[(PKPaymentTransaction *)self isBankConnectTransaction] bankConnectCreditDebitIndicator:[(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata creditDebitIndicator] featureIdentifier:[(PKPaymentTransaction *)self featureIdentifier]];
+  amountCopy = amount;
+  v8 = [PKPaymentTransaction formattedBalanceAdjustmentForTransactionAmount:amountCopy transactionType:transactionType adjustmentType:adjustmentType peerPaymentType:peerPaymentType isBankConnectTransaction:[(PKPaymentTransaction *)self isBankConnectTransaction] bankConnectCreditDebitIndicator:[(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata creditDebitIndicator] featureIdentifier:[(PKPaymentTransaction *)self featureIdentifier]];
 
   return v8;
 }
 
-- (id)_formatBalanceAdjustmentAmount:(id)a3
+- (id)_formatBalanceAdjustmentAmount:(id)amount
 {
   transactionType = self->_transactionType;
   adjustmentType = self->_adjustmentType;
   peerPaymentType = self->_peerPaymentType;
-  v7 = a3;
+  amountCopy = amount;
   LOBYTE(v10) = 0;
-  v8 = [PKPaymentTransaction formattedBalanceAdjustmentForCurrencyAmount:v7 transactionType:transactionType adjustmentType:adjustmentType peerPaymentType:peerPaymentType featureIdentifier:[(PKPaymentTransaction *)self featureIdentifier] isBankConnectTransaction:[(PKPaymentTransaction *)self isBankConnectTransaction] bankConnectCreditDebitIndicator:[(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata creditDebitIndicator] pending:v10];
+  v8 = [PKPaymentTransaction formattedBalanceAdjustmentForCurrencyAmount:amountCopy transactionType:transactionType adjustmentType:adjustmentType peerPaymentType:peerPaymentType featureIdentifier:[(PKPaymentTransaction *)self featureIdentifier] isBankConnectTransaction:[(PKPaymentTransaction *)self isBankConnectTransaction] bankConnectCreditDebitIndicator:[(PKPaymentTransactionBankConnectMetadata *)self->_bankConnectMetadata creditDebitIndicator] pending:v10];
 
   return v8;
 }
@@ -5993,9 +5993,9 @@ LABEL_13:
   return v3;
 }
 
-- (void)setStartStationLocation:(id)a3
+- (void)setStartStationLocation:(id)location
 {
-  [a3 coordinate];
+  [location coordinate];
   self->_startStationLatitude = v4;
   self->_startStationLongitude = v5;
 }
@@ -6023,17 +6023,17 @@ LABEL_13:
   return v3;
 }
 
-- (void)setEndStationLocation:(id)a3
+- (void)setEndStationLocation:(id)location
 {
-  [a3 coordinate];
+  [location coordinate];
   self->_endStationLatitude = v4;
   self->_endStationLongitude = v5;
 }
 
-- (id)_commutePlanInformationForPass:(id)a3
+- (id)_commutePlanInformationForPass:(id)pass
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   if (self->_plans)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -6056,10 +6056,10 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v30 + 1) + 8 * i) label];
-          if ([v11 length])
+          label = [*(*(&v30 + 1) + 8 * i) label];
+          if ([label length])
           {
-            [v5 addObject:v11];
+            [v5 addObject:label];
           }
         }
 
@@ -6086,7 +6086,7 @@ LABEL_13:
       v19 = @"TRANSACTION_COMMUTE_PLAN_USED";
     }
 
-    v20 = PKPassLocalizedStringWithFormat(v19, v4, 0, v13, v14, v15, v16, v17, 0);
+    v20 = PKPassLocalizedStringWithFormat(v19, passCopy, 0, v13, v14, v15, v16, v17, 0);
     v21 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v5];
     v28 = PKStringWithValidatedFormat(v20, @"%@", v22, v23, v24, v25, v26, v27, v21);
   }
@@ -6099,60 +6099,60 @@ LABEL_13:
   return v28;
 }
 
-- (id)formattedTransitTransactionMessageForPass:(id)a3 suppressNoChargeAmount:(BOOL)a4
+- (id)formattedTransitTransactionMessageForPass:(id)pass suppressNoChargeAmount:(BOOL)amount
 {
-  v6 = a3;
-  v7 = [(PKPaymentTransaction *)self isZeroTransaction];
-  v8 = [(PKPaymentTransaction *)self transitType];
-  v9 = [(PKPaymentTransaction *)self startStation];
-  v10 = [(PKPaymentTransaction *)self endStation];
-  v11 = v10;
-  if (v9 && v10)
+  passCopy = pass;
+  isZeroTransaction = [(PKPaymentTransaction *)self isZeroTransaction];
+  transitType = [(PKPaymentTransaction *)self transitType];
+  startStation = [(PKPaymentTransaction *)self startStation];
+  endStation = [(PKPaymentTransaction *)self endStation];
+  v11 = endStation;
+  if (startStation && endStation)
   {
-    PKLocalizedPaymentString(&cfstr_TransitTransac_28.isa, &cfstr_12_0.isa, v9, v10);
+    PKLocalizedPaymentString(&cfstr_TransitTransac_28.isa, &cfstr_12_0.isa, startStation, endStation);
     v12 = LABEL_4:;
 LABEL_10:
     v14 = v12;
     goto LABEL_11;
   }
 
-  if (v9 | v10)
+  if (startStation | endStation)
   {
-    if (v9)
+    if (startStation)
     {
-      v13 = v9;
+      v13 = startStation;
     }
 
     else
     {
-      v13 = v10;
+      v13 = endStation;
     }
 
     v12 = v13;
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!isZeroTransaction)
   {
     goto LABEL_27;
   }
 
   v14 = 0;
-  if (v8 <= 256)
+  if (transitType <= 256)
   {
-    if ((v8 - 1) >= 8)
+    if ((transitType - 1) >= 8)
     {
       goto LABEL_11;
     }
 
 LABEL_17:
-    v17 = [(PKPaymentTransaction *)self _commutePlanInformationForPass:v6];
+    v17 = [(PKPaymentTransaction *)self _commutePlanInformationForPass:passCopy];
     if ([(PKPaymentTransaction *)self enRoute]|| !v17)
     {
       if (self->_transactionStatus)
       {
         v14 = 0;
-        if ([(PKPaymentTransaction *)self enRoute]|| a4)
+        if ([(PKPaymentTransaction *)self enRoute]|| amount)
         {
           goto LABEL_31;
         }
@@ -6179,19 +6179,19 @@ LABEL_31:
     goto LABEL_11;
   }
 
-  if ((v8 - 257) < 5)
+  if ((transitType - 257) < 5)
   {
     goto LABEL_17;
   }
 
-  if (v8 != 515)
+  if (transitType != 515)
   {
-    if (v8 != 517)
+    if (transitType != 517)
     {
       goto LABEL_11;
     }
 
-    if (a4)
+    if (amount)
     {
 LABEL_27:
       v14 = 0;
@@ -6206,7 +6206,7 @@ LABEL_27:
   }
 
   v14 = 0;
-  if (![(PKPaymentTransaction *)self enRoute]&& !a4)
+  if (![(PKPaymentTransaction *)self enRoute]&& !amount)
   {
     v20 = @"TRANSIT_NOTIFICATION_NO_CHARGE";
 LABEL_37:
@@ -6273,7 +6273,7 @@ LABEL_11:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -6302,7 +6302,7 @@ LABEL_11:
         expirationDate = self->_expirationDate;
         if (expirationDate)
         {
-          [(NSDate *)expirationDate timeIntervalSinceDate:v4];
+          [(NSDate *)expirationDate timeIntervalSinceDate:date];
           if (v12 >= 0.0)
           {
             continue;
@@ -6314,7 +6314,7 @@ LABEL_11:
           }
         }
 
-        [v4 timeIntervalSinceDate:self->_transactionDate];
+        [date timeIntervalSinceDate:self->_transactionDate];
         if (v13 <= 259200.0)
         {
 LABEL_11:
@@ -6342,7 +6342,7 @@ LABEL_14:
   return v14;
 }
 
-- (void)answeredQuestion:(unint64_t)a3
+- (void)answeredQuestion:(unint64_t)question
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -6365,7 +6365,7 @@ LABEL_14:
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        if ([v10 type] == a3)
+        if ([v10 type] == question)
         {
           [v10 setAnswered:1];
           [v10 setAnsweredOnThisDevice:1];
@@ -6426,60 +6426,60 @@ LABEL_11:
 
 - (unint64_t)disputeStatus
 {
-  v2 = [(PKPaymentTransaction *)self latestDisputeEvent];
-  v3 = v2;
-  if (v2)
+  latestDisputeEvent = [(PKPaymentTransaction *)self latestDisputeEvent];
+  v3 = latestDisputeEvent;
+  if (latestDisputeEvent)
   {
-    v4 = [v2 status];
+    status = [latestDisputeEvent status];
   }
 
   else
   {
-    v4 = 0;
+    status = 0;
   }
 
-  return v4;
+  return status;
 }
 
 - (PKAccountServicingEventStatusDetails)disputeStatusDetails
 {
-  v2 = [(PKPaymentTransaction *)self latestDisputeEvent];
-  v3 = [v2 statusDetails];
+  latestDisputeEvent = [(PKPaymentTransaction *)self latestDisputeEvent];
+  statusDetails = [latestDisputeEvent statusDetails];
 
-  return v3;
+  return statusDetails;
 }
 
 - (unint64_t)disputeType
 {
-  v2 = [(PKPaymentTransaction *)self latestDisputeEvent];
-  v3 = v2;
-  if (v2)
+  latestDisputeEvent = [(PKPaymentTransaction *)self latestDisputeEvent];
+  v3 = latestDisputeEvent;
+  if (latestDisputeEvent)
   {
-    v4 = [v2 activityType];
+    activityType = [latestDisputeEvent activityType];
   }
 
   else
   {
-    v4 = 0;
+    activityType = 0;
   }
 
-  return v4;
+  return activityType;
 }
 
 - (NSDate)disputeOpenDate
 {
-  v2 = [(PKPaymentTransaction *)self latestDisputeEvent];
-  v3 = [v2 openDate];
+  latestDisputeEvent = [(PKPaymentTransaction *)self latestDisputeEvent];
+  openDate = [latestDisputeEvent openDate];
 
-  return v3;
+  return openDate;
 }
 
 - (NSDate)disputeLastUpdatedDate
 {
-  v2 = [(PKPaymentTransaction *)self latestDisputeEvent];
-  v3 = [v2 lastUpdatedDate];
+  latestDisputeEvent = [(PKPaymentTransaction *)self latestDisputeEvent];
+  lastUpdatedDate = [latestDisputeEvent lastUpdatedDate];
 
-  return v3;
+  return lastUpdatedDate;
 }
 
 - (PKAccountServicingEvent)latestDisputeEvent
@@ -6490,13 +6490,13 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_servicingEvents;
-  v3 = [(NSOrderedSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  anyObject = [(NSOrderedSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (anyObject)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != anyObject; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -6506,15 +6506,15 @@ LABEL_11:
         v6 = *(*(&v9 + 1) + 8 * i);
         if ([v6 type] == 4)
         {
-          v7 = [v6 items];
-          v3 = [v7 anyObject];
+          items = [v6 items];
+          anyObject = [items anyObject];
 
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSOrderedSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      anyObject = [(NSOrderedSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (anyObject)
       {
         continue;
       }
@@ -6525,7 +6525,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v3;
+  return anyObject;
 }
 
 - (BOOL)impactsPromotionProgress
@@ -6534,14 +6534,14 @@ LABEL_11:
   v4 = transactionType > 0xE;
   v5 = (1 << transactionType) & 0x4003;
   v7 = !v4 && v5 != 0 && (self->_transactionStatus & 0xFFFFFFFFFFFFFFFDLL) == 1;
-  v8 = [(PKPaymentTransactionRewards *)self->_rewards promotionalRewardsItems];
-  v9 = [v8 count];
+  promotionalRewardsItems = [(PKPaymentTransactionRewards *)self->_rewards promotionalRewardsItems];
+  v9 = [promotionalRewardsItems count];
 
-  v10 = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
-  v11 = [v10 pk_containsObjectPassingTest:&__block_literal_global_1258];
+  rewardsItems = [(PKPaymentTransactionRewards *)self->_rewards rewardsItems];
+  v11 = [rewardsItems pk_containsObjectPassingTest:&__block_literal_global_1258];
 
-  v12 = [(PKPaymentTransactionRewards *)self->_rewardsInProgress rewardsItems];
-  v13 = [v12 count];
+  rewardsItems2 = [(PKPaymentTransactionRewards *)self->_rewardsInProgress rewardsItems];
+  v13 = [rewardsItems2 count];
 
   if (v7)
   {
@@ -6570,21 +6570,21 @@ LABEL_11:
   }
 }
 
-+ (id)transactionFromFKPaymentTransaction:(id)a3 institution:(id)a4
++ (id)transactionFromFKPaymentTransaction:(id)transaction institution:(id)institution
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  transactionCopy = transaction;
+  institutionCopy = institution;
+  if (transactionCopy)
   {
-    v8 = [a1 transactionFromFKPaymentTransaction:v6];
-    if (v7)
+    v8 = [self transactionFromFKPaymentTransaction:transactionCopy];
+    if (institutionCopy)
     {
-      [v8 setBankConnectRoundTransactionDate:{objc_msgSend(v7, "timestampSuitableForUserDisplay") ^ 1}];
+      [v8 setBankConnectRoundTransactionDate:{objc_msgSend(institutionCopy, "timestampSuitableForUserDisplay") ^ 1}];
     }
 
-    if ([v6 isBankConnectTransaction])
+    if ([transactionCopy isBankConnectTransaction])
     {
-      v9 = PKPaymentTransactionBankConnectMetadataFromTransaction(v6, v7);
+      v9 = PKPaymentTransactionBankConnectMetadataFromTransaction(transactionCopy, institutionCopy);
       [v8 setBankConnectMetadata:v9];
     }
   }
@@ -6597,116 +6597,116 @@ LABEL_11:
   return v8;
 }
 
-+ (id)transactionFromFKPaymentTransaction:(id)a3
++ (id)transactionFromFKPaymentTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v4 = objc_alloc_init(PKPaymentTransaction);
-  v5 = [v3 transactionId];
-  [(PKPaymentTransaction *)v4 setIdentifier:v5];
+  transactionId = [transactionCopy transactionId];
+  [(PKPaymentTransaction *)v4 setIdentifier:transactionId];
 
-  v6 = [v3 paymentHash];
-  if (v6)
+  paymentHash = [transactionCopy paymentHash];
+  if (paymentHash)
   {
-    [(PKPaymentTransaction *)v4 setPaymentHash:v6];
+    [(PKPaymentTransaction *)v4 setPaymentHash:paymentHash];
   }
 
   else
   {
-    v7 = [v3 applePayInsight];
-    v8 = [v7 paymentHash];
-    [(PKPaymentTransaction *)v4 setPaymentHash:v8];
+    applePayInsight = [transactionCopy applePayInsight];
+    paymentHash2 = [applePayInsight paymentHash];
+    [(PKPaymentTransaction *)v4 setPaymentHash:paymentHash2];
   }
 
-  v9 = [v3 amount];
-  v10 = [v9 decimal];
-  [(PKPaymentTransaction *)v4 setAmount:v10];
+  amount = [transactionCopy amount];
+  decimal = [amount decimal];
+  [(PKPaymentTransaction *)v4 setAmount:decimal];
 
-  v11 = [v3 amount];
-  v12 = [v11 currency];
-  [(PKPaymentTransaction *)v4 setCurrencyCode:v12];
+  amount2 = [transactionCopy amount];
+  currency = [amount2 currency];
+  [(PKPaymentTransaction *)v4 setCurrencyCode:currency];
 
-  v13 = [v3 transactionDate];
-  [(PKPaymentTransaction *)v4 setTransactionDate:v13];
+  transactionDate = [transactionCopy transactionDate];
+  [(PKPaymentTransaction *)v4 setTransactionDate:transactionDate];
 
-  v14 = [v3 transactionStatusChangedDate];
-  [(PKPaymentTransaction *)v4 setTransactionStatusChangedDate:v14];
+  transactionStatusChangedDate = [transactionCopy transactionStatusChangedDate];
+  [(PKPaymentTransaction *)v4 setTransactionStatusChangedDate:transactionStatusChangedDate];
 
   [(PKPaymentTransaction *)v4 setTransactionSource:0];
-  v15 = [v3 status];
-  if (v15 >= 9)
+  status = [transactionCopy status];
+  if (status >= 9)
   {
     v16 = -1;
   }
 
   else
   {
-    v16 = v15;
+    v16 = status;
   }
 
   [(PKPaymentTransaction *)v4 setTransactionStatus:v16];
-  v17 = [v3 type];
-  if ((v17 - 1) >= 0x16)
+  type = [transactionCopy type];
+  if ((type - 1) >= 0x16)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v17;
+    v18 = type;
   }
 
   [(PKPaymentTransaction *)v4 setTransactionType:v18];
-  v19 = [v3 transactionDescription];
-  [(PKPaymentTransaction *)v4 setMerchantProvidedDescription:v19];
+  transactionDescription = [transactionCopy transactionDescription];
+  [(PKPaymentTransaction *)v4 setMerchantProvidedDescription:transactionDescription];
 
-  v20 = [v3 localizedTypeDescription];
-  [(PKPaymentTransaction *)v4 setLocalizedTypeDescription:v20];
+  localizedTypeDescription = [transactionCopy localizedTypeDescription];
+  [(PKPaymentTransaction *)v4 setLocalizedTypeDescription:localizedTypeDescription];
 
-  v21 = [v3 applePayInsight];
-  v22 = v21;
-  if (v21)
+  applePayInsight2 = [transactionCopy applePayInsight];
+  v22 = applePayInsight2;
+  if (applePayInsight2)
   {
-    v23 = [v21 location];
-    [(PKPaymentTransaction *)v4 setLocation:v23];
+    location = [applePayInsight2 location];
+    [(PKPaymentTransaction *)v4 setLocation:location];
 
-    v24 = [v22 isCoarseLocation];
-    -[PKPaymentTransaction setCoarseLocation:](v4, "setCoarseLocation:", [v24 BOOLValue]);
+    isCoarseLocation = [v22 isCoarseLocation];
+    -[PKPaymentTransaction setCoarseLocation:](v4, "setCoarseLocation:", [isCoarseLocation BOOLValue]);
 
-    v25 = [v22 isIssuerInstallmentTransaction];
-    -[PKPaymentTransaction setIsIssuerInstallmentTransaction:](v4, "setIsIssuerInstallmentTransaction:", [v25 BOOLValue]);
+    isIssuerInstallmentTransaction = [v22 isIssuerInstallmentTransaction];
+    -[PKPaymentTransaction setIsIssuerInstallmentTransaction:](v4, "setIsIssuerInstallmentTransaction:", [isIssuerInstallmentTransaction BOOLValue]);
 
-    v26 = [v22 issuerInstallmentManagementURL];
-    [(PKPaymentTransaction *)v4 setIssuerInstallmentManagementURL:v26];
+    issuerInstallmentManagementURL = [v22 issuerInstallmentManagementURL];
+    [(PKPaymentTransaction *)v4 setIssuerInstallmentManagementURL:issuerInstallmentManagementURL];
   }
 
-  v27 = [v3 foreignAmount];
-  if (v27)
+  foreignAmount = [transactionCopy foreignAmount];
+  if (foreignAmount)
   {
     v28 = objc_alloc_init(PKPaymentTransactionForeignExchangeInformation);
-    v29 = [v27 decimal];
-    v30 = [v27 currency];
-    v31 = PKCurrencyAmountCreate(v29, v30, 0);
+    decimal2 = [foreignAmount decimal];
+    currency2 = [foreignAmount currency];
+    v31 = PKCurrencyAmountCreate(decimal2, currency2, 0);
     [(PKPaymentTransactionForeignExchangeInformation *)v28 setDestinationCurrencyAmount:v31];
 
-    v32 = [v3 foreignCurrencyExchangeRate];
-    [(PKPaymentTransactionForeignExchangeInformation *)v28 setExchangeRate:v32];
+    foreignCurrencyExchangeRate = [transactionCopy foreignCurrencyExchangeRate];
+    [(PKPaymentTransactionForeignExchangeInformation *)v28 setExchangeRate:foreignCurrencyExchangeRate];
 
     [(PKPaymentTransaction *)v4 setForeignExchangeInformation:v28];
   }
 
-  v33 = v3;
+  v33 = transactionCopy;
   if (v33)
   {
     v34 = objc_alloc_init(PKMerchant);
-    v35 = [v33 transactionDescription];
-    [(PKMerchant *)v34 setName:v35];
+    transactionDescription2 = [v33 transactionDescription];
+    [(PKMerchant *)v34 setName:transactionDescription2];
 
     v36 = v33;
-    v37 = [v36 mapsInsight];
-    v38 = [v37 categoryAndSource];
-    v39 = [v38 category];
+    mapsInsight = [v36 mapsInsight];
+    categoryAndSource = [mapsInsight categoryAndSource];
+    category = [categoryAndSource category];
 
-    v40 = PKMerchantCategoryFromFKPaymentTransactionCategory(v39);
+    v40 = PKMerchantCategoryFromFKPaymentTransactionCategory(category);
     if (!v40)
     {
       if ([v36 merchantCategoryCode] < 1)
@@ -6723,54 +6723,54 @@ LABEL_11:
 
     [(PKMerchant *)v34 setFallbackcategory:v40];
     -[PKMerchant setIndustryCode:](v34, "setIndustryCode:", [v36 merchantCategoryCode]);
-    v42 = [v36 mapsInsight];
-    v43 = [v36 applePayInsight];
-    if (v42 | v43)
+    mapsInsight2 = [v36 mapsInsight];
+    applePayInsight3 = [v36 applePayInsight];
+    if (mapsInsight2 | applePayInsight3)
     {
-      if (v42)
+      if (mapsInsight2)
       {
-        v44 = [v42 merchant];
-        if (v44)
+        merchant = [mapsInsight2 merchant];
+        if (merchant)
         {
           v45 = objc_alloc_init(PKMapsMerchant);
-          -[PKMapsMerchant setIdentifier:](v45, "setIdentifier:", [v44 muid]);
-          -[PKMapsMerchant setResultProviderIdentifier:](v45, "setResultProviderIdentifier:", [v44 resultProviderIdentifier]);
-          v46 = [v44 name];
-          [(PKMapsMerchant *)v45 setName:v46];
+          -[PKMapsMerchant setIdentifier:](v45, "setIdentifier:", [merchant muid]);
+          -[PKMapsMerchant setResultProviderIdentifier:](v45, "setResultProviderIdentifier:", [merchant resultProviderIdentifier]);
+          name = [merchant name];
+          [(PKMapsMerchant *)v45 setName:name];
 
-          v47 = [v44 phoneNumber];
-          [(PKMapsMerchant *)v45 setPhoneNumber:v47];
+          phoneNumber = [merchant phoneNumber];
+          [(PKMapsMerchant *)v45 setPhoneNumber:phoneNumber];
 
-          v48 = [v44 url];
+          v48 = [merchant url];
           [(PKMapsMerchant *)v45 setURL:v48];
 
-          v49 = [v44 heroImageURL];
-          [(PKMapsMerchant *)v45 setHeroImageURL:v49];
+          heroImageURL = [merchant heroImageURL];
+          [(PKMapsMerchant *)v45 setHeroImageURL:heroImageURL];
 
-          v50 = [v44 heroImageAttributionName];
-          [(PKMapsMerchant *)v45 setHeroImageAttributionName:v50];
+          heroImageAttributionName = [merchant heroImageAttributionName];
+          [(PKMapsMerchant *)v45 setHeroImageAttributionName:heroImageAttributionName];
 
-          -[PKMapsMerchant setCategory:](v45, "setCategory:", PKMerchantCategoryFromFKMerchantCategory([v44 category]));
-          v51 = [v44 mapsCategoryIdentifier];
-          [(PKMapsMerchant *)v45 setDetailedCategory:v51];
+          -[PKMapsMerchant setCategory:](v45, "setCategory:", PKMerchantCategoryFromFKMerchantCategory([merchant category]));
+          mapsCategoryIdentifier = [merchant mapsCategoryIdentifier];
+          [(PKMapsMerchant *)v45 setDetailedCategory:mapsCategoryIdentifier];
 
-          v52 = [v44 encodedStylingInfo];
-          [(PKMapsMerchant *)v45 setStylingInfoData:v52];
+          encodedStylingInfo = [merchant encodedStylingInfo];
+          [(PKMapsMerchant *)v45 setStylingInfoData:encodedStylingInfo];
 
-          v53 = [v44 businessChatURL];
-          [(PKMapsMerchant *)v45 setBusinessChatURL:v53];
+          businessChatURL = [merchant businessChatURL];
+          [(PKMapsMerchant *)v45 setBusinessChatURL:businessChatURL];
 
-          v54 = [v44 lastProcessedDate];
-          [(PKMapsMerchant *)v45 setLastProcessedDate:v54];
+          lastProcessedDate = [merchant lastProcessedDate];
+          [(PKMapsMerchant *)v45 setLastProcessedDate:lastProcessedDate];
 
-          v55 = [v44 postalAddress];
-          [(PKMapsMerchant *)v45 setPostalAddress:v55];
+          postalAddress = [merchant postalAddress];
+          [(PKMapsMerchant *)v45 setPostalAddress:postalAddress];
 
-          v56 = [v44 location];
-          v57 = v56;
-          if (v56)
+          location2 = [merchant location];
+          v57 = location2;
+          if (location2)
           {
-            [v56 coordinate];
+            [location2 coordinate];
             [(PKMapsMerchant *)v45 setLocationLatitude:?];
             [v57 coordinate];
             [(PKMapsMerchant *)v45 setLocationLongitude:v58];
@@ -6783,49 +6783,49 @@ LABEL_11:
         }
 
         [(PKMerchant *)v34 setMapsMerchant:v45];
-        v62 = [v42 brand];
+        brand = [mapsInsight2 brand];
 
-        if (v62)
+        if (brand)
         {
-          v63 = [v42 brand];
-          if (v63)
+          brand2 = [mapsInsight2 brand];
+          if (brand2)
           {
             v64 = objc_alloc_init(PKMapsBrand);
-            -[PKMapsBrand setIdentifier:](v64, "setIdentifier:", [v63 muid]);
-            -[PKMapsBrand setResultProviderIdentifier:](v64, "setResultProviderIdentifier:", [v63 resultProviderIdentifier]);
-            [v63 name];
-            v65 = v97 = v42;
+            -[PKMapsBrand setIdentifier:](v64, "setIdentifier:", [brand2 muid]);
+            -[PKMapsBrand setResultProviderIdentifier:](v64, "setResultProviderIdentifier:", [brand2 resultProviderIdentifier]);
+            [brand2 name];
+            v65 = v97 = mapsInsight2;
             [(PKMapsBrand *)v64 setName:v65];
 
-            v66 = [v63 phoneNumber];
-            [(PKMapsBrand *)v64 setPhoneNumber:v66];
+            phoneNumber2 = [brand2 phoneNumber];
+            [(PKMapsBrand *)v64 setPhoneNumber:phoneNumber2];
 
-            v67 = [v63 url];
+            v67 = [brand2 url];
             [(PKMapsBrand *)v64 setURL:v67];
 
-            v68 = [v63 heroImageURL];
-            [(PKMapsBrand *)v64 setHeroImageURL:v68];
+            heroImageURL2 = [brand2 heroImageURL];
+            [(PKMapsBrand *)v64 setHeroImageURL:heroImageURL2];
 
-            v69 = [v63 heroImageAttributionName];
-            [(PKMapsBrand *)v64 setHeroImageAttributionName:v69];
+            heroImageAttributionName2 = [brand2 heroImageAttributionName];
+            [(PKMapsBrand *)v64 setHeroImageAttributionName:heroImageAttributionName2];
 
-            -[PKMapsBrand setCategory:](v64, "setCategory:", PKMerchantCategoryFromFKMerchantCategory([v63 category]));
-            v70 = [v63 mapsCategoryIdentifier];
-            [(PKMapsBrand *)v64 setDetailedCategory:v70];
+            -[PKMapsBrand setCategory:](v64, "setCategory:", PKMerchantCategoryFromFKMerchantCategory([brand2 category]));
+            mapsCategoryIdentifier2 = [brand2 mapsCategoryIdentifier];
+            [(PKMapsBrand *)v64 setDetailedCategory:mapsCategoryIdentifier2];
 
-            v71 = [v63 encodedStylingInfo];
-            [(PKMapsBrand *)v64 setStylingInfoData:v71];
+            encodedStylingInfo2 = [brand2 encodedStylingInfo];
+            [(PKMapsBrand *)v64 setStylingInfoData:encodedStylingInfo2];
 
-            v72 = [v63 businessChatURL];
-            [(PKMapsBrand *)v64 setBusinessChatURL:v72];
+            businessChatURL2 = [brand2 businessChatURL];
+            [(PKMapsBrand *)v64 setBusinessChatURL:businessChatURL2];
 
-            v73 = [v63 lastProcessedDate];
-            [(PKMapsBrand *)v64 setLastProcessedDate:v73];
+            lastProcessedDate2 = [brand2 lastProcessedDate];
+            [(PKMapsBrand *)v64 setLastProcessedDate:lastProcessedDate2];
 
-            v74 = [v63 logoURL];
-            [(PKMapsBrand *)v64 setLogoURL:v74];
+            logoURL = [brand2 logoURL];
+            [(PKMapsBrand *)v64 setLogoURL:logoURL];
 
-            v42 = v97;
+            mapsInsight2 = v97;
           }
 
           else
@@ -6837,63 +6837,63 @@ LABEL_11:
         }
       }
 
-      if (v43)
+      if (applePayInsight3)
       {
-        v75 = v42;
-        v76 = [v43 merchantRawName];
-        [(PKMerchant *)v34 setRawName:v76];
+        v75 = mapsInsight2;
+        merchantRawName = [applePayInsight3 merchantRawName];
+        [(PKMerchant *)v34 setRawName:merchantRawName];
 
-        v77 = [v43 industryCategory];
-        [(PKMerchant *)v34 setIndustryCategory:v77];
+        industryCategory = [applePayInsight3 industryCategory];
+        [(PKMerchant *)v34 setIndustryCategory:industryCategory];
 
-        v78 = [v43 merchantIdentifier];
-        [(PKMerchant *)v34 setMerchantIdentifier:v78];
+        merchantIdentifier = [applePayInsight3 merchantIdentifier];
+        [(PKMerchant *)v34 setMerchantIdentifier:merchantIdentifier];
 
-        v79 = [v43 merchantRawCANL];
-        [(PKMerchant *)v34 setRawCANL:v79];
+        merchantRawCANL = [applePayInsight3 merchantRawCANL];
+        [(PKMerchant *)v34 setRawCANL:merchantRawCANL];
 
-        v80 = [v43 merchantRawCity];
-        [(PKMerchant *)v34 setCity:v80];
+        merchantRawCity = [applePayInsight3 merchantRawCity];
+        [(PKMerchant *)v34 setCity:merchantRawCity];
 
-        v81 = [v43 merchantRawCity];
-        [(PKMerchant *)v34 setRawCity:v81];
+        merchantRawCity2 = [applePayInsight3 merchantRawCity];
+        [(PKMerchant *)v34 setRawCity:merchantRawCity2];
 
-        v82 = [v43 merchantState];
-        [(PKMerchant *)v34 setState:v82];
+        merchantState = [applePayInsight3 merchantState];
+        [(PKMerchant *)v34 setState:merchantState];
 
-        v83 = [v43 merchantRawState];
-        [(PKMerchant *)v34 setRawState:v83];
+        merchantRawState = [applePayInsight3 merchantRawState];
+        [(PKMerchant *)v34 setRawState:merchantRawState];
 
-        v84 = [v43 merchantZip];
-        [(PKMerchant *)v34 setZip:v84];
+        merchantZip = [applePayInsight3 merchantZip];
+        [(PKMerchant *)v34 setZip:merchantZip];
 
-        v85 = [v43 merchantRawCountry];
-        [(PKMerchant *)v34 setRawCountry:v85];
+        merchantRawCountry = [applePayInsight3 merchantRawCountry];
+        [(PKMerchant *)v34 setRawCountry:merchantRawCountry];
 
-        v86 = [v43 merchantCleanConfidenceLevel];
-        v87 = v86;
-        if (v86)
+        merchantCleanConfidenceLevel = [applePayInsight3 merchantCleanConfidenceLevel];
+        v87 = merchantCleanConfidenceLevel;
+        if (merchantCleanConfidenceLevel)
         {
-          -[PKMerchant setCleanConfidenceLevel:](v34, "setCleanConfidenceLevel:", [v86 integerValue]);
+          -[PKMerchant setCleanConfidenceLevel:](v34, "setCleanConfidenceLevel:", [merchantCleanConfidenceLevel integerValue]);
         }
 
-        v88 = [v43 adamIdentifier];
-        v89 = v88;
-        if (v88)
+        adamIdentifier = [applePayInsight3 adamIdentifier];
+        v89 = adamIdentifier;
+        if (adamIdentifier)
         {
-          -[PKMerchant setAdamIdentifier:](v34, "setAdamIdentifier:", [v88 integerValue]);
+          -[PKMerchant setAdamIdentifier:](v34, "setAdamIdentifier:", [adamIdentifier integerValue]);
         }
 
-        v90 = [v43 webURL];
-        [(PKMerchant *)v34 setOriginURL:v90];
+        webURL = [applePayInsight3 webURL];
+        [(PKMerchant *)v34 setOriginURL:webURL];
 
-        v91 = [v43 webMerchantIdentifier];
-        [(PKMerchant *)v34 setWebMerchantIdentifier:v91];
+        webMerchantIdentifier = [applePayInsight3 webMerchantIdentifier];
+        [(PKMerchant *)v34 setWebMerchantIdentifier:webMerchantIdentifier];
 
-        v92 = [v43 webMerchantName];
-        [(PKMerchant *)v34 setWebMerchantName:v92];
+        webMerchantName = [applePayInsight3 webMerchantName];
+        [(PKMerchant *)v34 setWebMerchantName:webMerchantName];
 
-        v42 = v75;
+        mapsInsight2 = v75;
       }
 
       [(PKMerchant *)v34 setMapsDataIsFromLocalMatch:0];
@@ -6901,12 +6901,12 @@ LABEL_11:
 
     else
     {
-      v59 = [v36 transactionDescription];
-      v60 = PKMerchantFormattedDisplayName(v59);
+      transactionDescription3 = [v36 transactionDescription];
+      v60 = PKMerchantFormattedDisplayName(transactionDescription3);
 
       [(PKMerchant *)v34 setRawName:v60];
-      v61 = [v36 transactionDescription];
-      [(PKMerchant *)v34 setRawCANL:v61];
+      transactionDescription4 = [v36 transactionDescription];
+      [(PKMerchant *)v34 setRawCANL:transactionDescription4];
 
       [(PKMerchant *)v34 setUseRawMerchantData:1];
     }
@@ -6921,11 +6921,11 @@ LABEL_11:
   v93 = PKPaymentTransactionBankConnectMetadataFromTransaction(v33, 0);
   [(PKPaymentTransaction *)v4 setBankConnectMetadata:v93];
 
-  v94 = [v33 userInsight];
-  v95 = v94;
-  if (v94)
+  userInsight = [v33 userInsight];
+  v95 = userInsight;
+  if (userInsight)
   {
-    -[PKPaymentTransaction setPreferredTransactionCategory:](v4, "setPreferredTransactionCategory:", PKMerchantCategoryFromFKPaymentTransactionCategory([v94 transactionCategory]));
+    -[PKPaymentTransaction setPreferredTransactionCategory:](v4, "setPreferredTransactionCategory:", PKMerchantCategoryFromFKPaymentTransactionCategory([userInsight transactionCategory]));
   }
 
   return v4;
@@ -6934,33 +6934,33 @@ LABEL_11:
 - (FKPaymentTransaction)fkPaymentTransaction
 {
   v25 = objc_alloc(MEMORY[0x1E6967E30]);
-  v30 = [(PKPaymentTransaction *)self identifier];
-  v31 = [(PKPaymentTransaction *)self _fkAmount];
-  v29 = [(PKPaymentTransaction *)self foreignExchangeInformation];
-  v24 = [v29 fkForeignAmount];
-  v28 = [(PKPaymentTransaction *)self foreignExchangeInformation];
-  v23 = [v28 exchangeRate];
-  v21 = [(PKPaymentTransaction *)self transactionDate];
-  v20 = [(PKPaymentTransaction *)self transactionStatusChangedDate];
-  v19 = [(PKPaymentTransaction *)self _fkPaymentTransactionType];
-  v18 = [(PKPaymentTransaction *)self _fkPaymentTransactionStatus];
-  v27 = [(PKPaymentTransaction *)self merchant];
-  v15 = [v27 displayName];
-  v22 = [(PKPaymentTransaction *)self merchant];
-  v14 = [v22 displayName];
-  v17 = [(PKPaymentTransaction *)self localizedTypeDescription];
-  v16 = [(PKPaymentTransaction *)self _fkCreditDebitIndicator];
-  v3 = [(PKPaymentTransaction *)self _fkActions];
-  v4 = [(PKPaymentTransaction *)self isBankConnectTransaction];
-  v5 = [(PKPaymentTransaction *)self merchant];
-  v6 = [v5 industryCode];
-  v7 = [(PKPaymentTransaction *)self hasNotificationServiceData];
-  v8 = [(PKPaymentTransaction *)self paymentHash];
-  v9 = [(PKPaymentTransaction *)self _fkTransactionInsights];
-  v10 = [(PKPaymentTransaction *)self serviceIdentifier];
-  LOBYTE(v13) = v7;
-  LOBYTE(v12) = v4;
-  v26 = [v25 initWithTransactionIdentifier:v30 amount:v31 foreignAmount:v24 foreignCurrencyExchangeRate:v23 transactionDate:v21 transactionStatusChangedDate:v20 type:v19 status:v18 transactionDescription:v15 originalTransactionDescription:v14 localizedTypeDescription:v17 creditDebitIndicator:v16 actions:v3 isBankConnectTransaction:v12 merchantCategoryCode:v6 hasNotificationServiceData:v13 paymentHash:v8 altDSID:0 insights:v9 serviceIdentifier:v10];
+  identifier = [(PKPaymentTransaction *)self identifier];
+  _fkAmount = [(PKPaymentTransaction *)self _fkAmount];
+  foreignExchangeInformation = [(PKPaymentTransaction *)self foreignExchangeInformation];
+  fkForeignAmount = [foreignExchangeInformation fkForeignAmount];
+  foreignExchangeInformation2 = [(PKPaymentTransaction *)self foreignExchangeInformation];
+  exchangeRate = [foreignExchangeInformation2 exchangeRate];
+  transactionDate = [(PKPaymentTransaction *)self transactionDate];
+  transactionStatusChangedDate = [(PKPaymentTransaction *)self transactionStatusChangedDate];
+  _fkPaymentTransactionType = [(PKPaymentTransaction *)self _fkPaymentTransactionType];
+  _fkPaymentTransactionStatus = [(PKPaymentTransaction *)self _fkPaymentTransactionStatus];
+  merchant = [(PKPaymentTransaction *)self merchant];
+  displayName = [merchant displayName];
+  merchant2 = [(PKPaymentTransaction *)self merchant];
+  displayName2 = [merchant2 displayName];
+  localizedTypeDescription = [(PKPaymentTransaction *)self localizedTypeDescription];
+  _fkCreditDebitIndicator = [(PKPaymentTransaction *)self _fkCreditDebitIndicator];
+  _fkActions = [(PKPaymentTransaction *)self _fkActions];
+  isBankConnectTransaction = [(PKPaymentTransaction *)self isBankConnectTransaction];
+  merchant3 = [(PKPaymentTransaction *)self merchant];
+  industryCode = [merchant3 industryCode];
+  hasNotificationServiceData = [(PKPaymentTransaction *)self hasNotificationServiceData];
+  paymentHash = [(PKPaymentTransaction *)self paymentHash];
+  _fkTransactionInsights = [(PKPaymentTransaction *)self _fkTransactionInsights];
+  serviceIdentifier = [(PKPaymentTransaction *)self serviceIdentifier];
+  LOBYTE(v13) = hasNotificationServiceData;
+  LOBYTE(v12) = isBankConnectTransaction;
+  v26 = [v25 initWithTransactionIdentifier:identifier amount:_fkAmount foreignAmount:fkForeignAmount foreignCurrencyExchangeRate:exchangeRate transactionDate:transactionDate transactionStatusChangedDate:transactionStatusChangedDate type:_fkPaymentTransactionType status:_fkPaymentTransactionStatus transactionDescription:displayName originalTransactionDescription:displayName2 localizedTypeDescription:localizedTypeDescription creditDebitIndicator:_fkCreditDebitIndicator actions:_fkActions isBankConnectTransaction:v12 merchantCategoryCode:industryCode hasNotificationServiceData:v13 paymentHash:paymentHash altDSID:0 insights:_fkTransactionInsights serviceIdentifier:serviceIdentifier];
 
   return v26;
 }
@@ -6968,10 +6968,10 @@ LABEL_11:
 - (id)_fkAmount
 {
   v3 = objc_alloc(MEMORY[0x1E6967D88]);
-  v4 = [(PKPaymentTransaction *)self amount];
-  v5 = [v4 pk_absoluteValue];
-  v6 = [(PKPaymentTransaction *)self currencyCode];
-  v7 = [v3 initWithDecimalNumber:v5 currency:v6];
+  amount = [(PKPaymentTransaction *)self amount];
+  pk_absoluteValue = [amount pk_absoluteValue];
+  currencyCode = [(PKPaymentTransaction *)self currencyCode];
+  v7 = [v3 initWithDecimalNumber:pk_absoluteValue currency:currencyCode];
 
   return v7;
 }
@@ -6979,84 +6979,84 @@ LABEL_11:
 - (id)_fkActions
 {
   v3 = objc_alloc(MEMORY[0x1E6967D80]);
-  v4 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v5 = [v4 digitalServicingURL];
-  v6 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v7 = [v6 payNowURL];
-  v8 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v9 = [v8 postInstallmentURL];
-  v10 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v11 = [v10 redeemRewardsURL];
-  v12 = [v3 initWithDigitalServicingURL:v5 payNowURL:v7 transferFundsURL:0 postInstallmentURL:v9 redeemRewardsURL:v11];
+  bankConnectMetadata = [(PKPaymentTransaction *)self bankConnectMetadata];
+  digitalServicingURL = [bankConnectMetadata digitalServicingURL];
+  bankConnectMetadata2 = [(PKPaymentTransaction *)self bankConnectMetadata];
+  payNowURL = [bankConnectMetadata2 payNowURL];
+  bankConnectMetadata3 = [(PKPaymentTransaction *)self bankConnectMetadata];
+  postInstallmentURL = [bankConnectMetadata3 postInstallmentURL];
+  bankConnectMetadata4 = [(PKPaymentTransaction *)self bankConnectMetadata];
+  redeemRewardsURL = [bankConnectMetadata4 redeemRewardsURL];
+  v12 = [v3 initWithDigitalServicingURL:digitalServicingURL payNowURL:payNowURL transferFundsURL:0 postInstallmentURL:postInstallmentURL redeemRewardsURL:redeemRewardsURL];
 
   return v12;
 }
 
 - (unint64_t)_fkCreditDebitIndicator
 {
-  v3 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v4 = [v3 creditDebitIndicator];
+  bankConnectMetadata = [(PKPaymentTransaction *)self bankConnectMetadata];
+  creditDebitIndicator = [bankConnectMetadata creditDebitIndicator];
 
-  if (v4)
+  if (creditDebitIndicator)
   {
-    return v4 == 2;
+    return creditDebitIndicator == 2;
   }
 
-  v6 = [(PKPaymentTransaction *)self currencyAmount];
-  v7 = [(PKPaymentTransaction *)self transactionType];
-  v8 = [(PKPaymentTransaction *)self adjustmentType];
-  v9 = [(PKPaymentTransaction *)self peerPaymentType];
-  v10 = [(PKPaymentTransaction *)self isBankConnectTransaction];
-  v11 = [(PKPaymentTransaction *)self bankConnectMetadata];
-  v12 = +[PKPaymentTransaction isPositiveBalanceAdjustmentForCurrencyAmount:transactionType:adjustmentType:peerPaymentType:isBankConnectTransaction:bankConnectCreditDebitIndicator:featureIdentifier:](PKPaymentTransaction, "isPositiveBalanceAdjustmentForCurrencyAmount:transactionType:adjustmentType:peerPaymentType:isBankConnectTransaction:bankConnectCreditDebitIndicator:featureIdentifier:", v6, v7, v8, v9, v10, [v11 creditDebitIndicator], -[PKPaymentTransaction featureIdentifier](self, "featureIdentifier"));
+  currencyAmount = [(PKPaymentTransaction *)self currencyAmount];
+  transactionType = [(PKPaymentTransaction *)self transactionType];
+  adjustmentType = [(PKPaymentTransaction *)self adjustmentType];
+  peerPaymentType = [(PKPaymentTransaction *)self peerPaymentType];
+  isBankConnectTransaction = [(PKPaymentTransaction *)self isBankConnectTransaction];
+  bankConnectMetadata2 = [(PKPaymentTransaction *)self bankConnectMetadata];
+  v12 = +[PKPaymentTransaction isPositiveBalanceAdjustmentForCurrencyAmount:transactionType:adjustmentType:peerPaymentType:isBankConnectTransaction:bankConnectCreditDebitIndicator:featureIdentifier:](PKPaymentTransaction, "isPositiveBalanceAdjustmentForCurrencyAmount:transactionType:adjustmentType:peerPaymentType:isBankConnectTransaction:bankConnectCreditDebitIndicator:featureIdentifier:", currencyAmount, transactionType, adjustmentType, peerPaymentType, isBankConnectTransaction, [bankConnectMetadata2 creditDebitIndicator], -[PKPaymentTransaction featureIdentifier](self, "featureIdentifier"));
 
   return !v12;
 }
 
-- (unint64_t)_fkMerchantCategoryFromPKMerchantCategory:(int64_t)a3
+- (unint64_t)_fkMerchantCategoryFromPKMerchantCategory:(int64_t)category
 {
-  if ((a3 - 1) >= 8)
+  if ((category - 1) >= 8)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return category;
   }
 }
 
 - (id)_fkMapsTransactionInsight
 {
-  v2 = self;
-  v3 = [(PKPaymentTransaction *)self merchant];
-  v4 = [v3 mapsMerchant];
+  selfCopy = self;
+  merchant = [(PKPaymentTransaction *)self merchant];
+  mapsMerchant = [merchant mapsMerchant];
 
-  if (v4)
+  if (mapsMerchant)
   {
     v38 = objc_alloc(MEMORY[0x1E6967E08]);
-    v36 = [v4 identifier];
-    v49 = [v4 resultProviderIdentifier];
-    v47 = [v4 name];
-    v44 = [v4 phoneNumber];
-    v42 = [v4 url];
-    v40 = [v4 heroImageURL];
-    v34 = [v4 heroImageAttributionName];
-    v5 = v2;
-    v6 = -[PKPaymentTransaction _fkMerchantCategoryFromPKMerchantCategory:](v2, "_fkMerchantCategoryFromPKMerchantCategory:", [v4 category]);
-    v7 = [v4 detailedCategory];
-    v32 = [v4 stylingInfoData];
-    v30 = [v4 businessChatURL];
-    v8 = [v4 lastProcessedDate];
+    identifier = [mapsMerchant identifier];
+    resultProviderIdentifier = [mapsMerchant resultProviderIdentifier];
+    name = [mapsMerchant name];
+    phoneNumber = [mapsMerchant phoneNumber];
+    v42 = [mapsMerchant url];
+    heroImageURL = [mapsMerchant heroImageURL];
+    heroImageAttributionName = [mapsMerchant heroImageAttributionName];
+    v5 = selfCopy;
+    v6 = -[PKPaymentTransaction _fkMerchantCategoryFromPKMerchantCategory:](selfCopy, "_fkMerchantCategoryFromPKMerchantCategory:", [mapsMerchant category]);
+    detailedCategory = [mapsMerchant detailedCategory];
+    stylingInfoData = [mapsMerchant stylingInfoData];
+    businessChatURL = [mapsMerchant businessChatURL];
+    lastProcessedDate = [mapsMerchant lastProcessedDate];
     v9 = objc_alloc(MEMORY[0x1E6985C40]);
-    [v4 locationLatitude];
+    [mapsMerchant locationLatitude];
     v11 = v10;
-    [v4 locationLongitude];
+    [mapsMerchant locationLongitude];
     v13 = [v9 initWithLatitude:v11 longitude:v12];
-    v14 = [v4 postalAddress];
+    postalAddress = [mapsMerchant postalAddress];
     v29 = v6;
-    v2 = v5;
-    v50 = [v38 initWithMUID:v36 resultProviderIdentifier:v49 name:v47 phoneNumber:v44 url:v42 heroImageURL:v40 heroImageAttributionName:v34 category:v29 mapsCategoryIdentifier:v7 encodedStylingInfo:v32 businessChatURL:v30 lastProcessedDate:v8 location:v13 postalAddress:v14];
+    selfCopy = v5;
+    v50 = [v38 initWithMUID:identifier resultProviderIdentifier:resultProviderIdentifier name:name phoneNumber:phoneNumber url:v42 heroImageURL:heroImageURL heroImageAttributionName:heroImageAttributionName category:v29 mapsCategoryIdentifier:detailedCategory encodedStylingInfo:stylingInfoData businessChatURL:businessChatURL lastProcessedDate:lastProcessedDate location:v13 postalAddress:postalAddress];
   }
 
   else
@@ -7064,29 +7064,29 @@ LABEL_11:
     v50 = 0;
   }
 
-  v15 = [(PKPaymentTransaction *)v2 merchant];
-  v16 = [v15 mapsBrand];
+  merchant2 = [(PKPaymentTransaction *)selfCopy merchant];
+  mapsBrand = [merchant2 mapsBrand];
 
-  if (v16)
+  if (mapsBrand)
   {
     v37 = objc_alloc(MEMORY[0x1E6967E00]);
-    v17 = [v16 identifier];
-    v45 = [v16 resultProviderIdentifier];
-    v43 = [v16 name];
-    v41 = [v16 phoneNumber];
-    v39 = [v16 url];
-    v35 = [v16 heroImageURL];
-    v33 = [v16 heroImageAttributionName];
-    v18 = -[PKPaymentTransaction _fkMerchantCategoryFromPKMerchantCategory:](v2, "_fkMerchantCategoryFromPKMerchantCategory:", [v16 category]);
-    v31 = [v16 detailedCategory];
-    [v16 stylingInfoData];
-    v19 = v48 = v2;
-    v20 = [v16 businessChatURL];
-    v21 = [v16 lastProcessedDate];
-    v22 = [v16 logoURL];
-    v46 = [v37 initWithMUID:v17 resultProviderIdentifier:v45 name:v43 phoneNumber:v41 url:v39 heroImageURL:v35 heroImageAttributionName:v33 category:v18 mapsCategoryIdentifier:v31 encodedStylingInfo:v19 businessChatURL:v20 lastProcessedDate:v21 logoURL:v22];
+    identifier2 = [mapsBrand identifier];
+    resultProviderIdentifier2 = [mapsBrand resultProviderIdentifier];
+    name2 = [mapsBrand name];
+    phoneNumber2 = [mapsBrand phoneNumber];
+    v39 = [mapsBrand url];
+    heroImageURL2 = [mapsBrand heroImageURL];
+    heroImageAttributionName2 = [mapsBrand heroImageAttributionName];
+    v18 = -[PKPaymentTransaction _fkMerchantCategoryFromPKMerchantCategory:](selfCopy, "_fkMerchantCategoryFromPKMerchantCategory:", [mapsBrand category]);
+    detailedCategory2 = [mapsBrand detailedCategory];
+    [mapsBrand stylingInfoData];
+    v19 = v48 = selfCopy;
+    businessChatURL2 = [mapsBrand businessChatURL];
+    lastProcessedDate2 = [mapsBrand lastProcessedDate];
+    logoURL = [mapsBrand logoURL];
+    v46 = [v37 initWithMUID:identifier2 resultProviderIdentifier:resultProviderIdentifier2 name:name2 phoneNumber:phoneNumber2 url:v39 heroImageURL:heroImageURL2 heroImageAttributionName:heroImageAttributionName2 category:v18 mapsCategoryIdentifier:detailedCategory2 encodedStylingInfo:v19 businessChatURL:businessChatURL2 lastProcessedDate:lastProcessedDate2 logoURL:logoURL];
 
-    v2 = v48;
+    selfCopy = v48;
     v23 = v46;
   }
 
@@ -7095,12 +7095,12 @@ LABEL_11:
     v23 = 0;
   }
 
-  v24 = [(PKPaymentTransaction *)v2 merchant];
-  v25 = [v24 fallbackcategory];
+  merchant3 = [(PKPaymentTransaction *)selfCopy merchant];
+  fallbackcategory = [merchant3 fallbackcategory];
 
-  if (v50 || v23 || v25)
+  if (v50 || v23 || fallbackcategory)
   {
-    v27 = [(PKPaymentTransaction *)v2 _fkMerchantCategoryFromPKMerchantCategory:v25];
+    v27 = [(PKPaymentTransaction *)selfCopy _fkMerchantCategoryFromPKMerchantCategory:fallbackcategory];
     v26 = [objc_alloc(MEMORY[0x1E6967E10]) initWithUpdatedAt:0 fallbackCategory:v27 merchant:v50 brand:v23];
   }
 
@@ -7115,42 +7115,42 @@ LABEL_11:
 - (id)_fkTransactionInsights
 {
   v3 = objc_alloc(MEMORY[0x1E6967E38]);
-  v4 = [(PKPaymentTransaction *)self _fkApplePayTransactionInsight];
-  v5 = [(PKPaymentTransaction *)self _fkMapsTransactionInsight];
-  v6 = [(PKPaymentTransaction *)self _fkContactTransactionInsight];
-  v7 = [(PKPaymentTransaction *)self _fkUserTransactionInsight];
-  v8 = [v3 initWithApplePayInsight:v4 bankMerchantInformationInsight:0 mapsInsight:v5 contactInsight:v6 userInsight:v7];
+  _fkApplePayTransactionInsight = [(PKPaymentTransaction *)self _fkApplePayTransactionInsight];
+  _fkMapsTransactionInsight = [(PKPaymentTransaction *)self _fkMapsTransactionInsight];
+  _fkContactTransactionInsight = [(PKPaymentTransaction *)self _fkContactTransactionInsight];
+  _fkUserTransactionInsight = [(PKPaymentTransaction *)self _fkUserTransactionInsight];
+  v8 = [v3 initWithApplePayInsight:_fkApplePayTransactionInsight bankMerchantInformationInsight:0 mapsInsight:_fkMapsTransactionInsight contactInsight:_fkContactTransactionInsight userInsight:_fkUserTransactionInsight];
 
   return v8;
 }
 
 - (id)_fkApplePayTransactionInsight
 {
-  v3 = [(PKPaymentTransaction *)self merchant];
-  v4 = [(PKPaymentTransaction *)self clearingNetworkData];
+  merchant = [(PKPaymentTransaction *)self merchant];
+  clearingNetworkData = [(PKPaymentTransaction *)self clearingNetworkData];
 
-  if (v4)
+  if (clearingNetworkData)
   {
     v5 = MEMORY[0x1E696ACB0];
-    v6 = [(PKPaymentTransaction *)self clearingNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)self clearingNetworkData];
   }
 
   else
   {
-    v7 = [(PKPaymentTransaction *)self authNetworkData];
+    authNetworkData = [(PKPaymentTransaction *)self authNetworkData];
 
-    if (!v7)
+    if (!authNetworkData)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
     v5 = MEMORY[0x1E696ACB0];
-    v6 = [(PKPaymentTransaction *)self authNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)self authNetworkData];
   }
 
-  v8 = v6;
-  v9 = [v6 dataUsingEncoding:4];
+  v8 = clearingNetworkData2;
+  v9 = [clearingNetworkData2 dataUsingEncoding:4];
   v10 = [v5 JSONObjectWithData:v9 options:0 error:0];
 
 LABEL_6:
@@ -7178,64 +7178,64 @@ LABEL_6:
   }
 
   v28 = objc_alloc(MEMORY[0x1E6967D98]);
-  v46 = [(PKPaymentTransaction *)self paymentHash];
-  v47 = [(PKPaymentTransaction *)self transactionDate];
-  v45 = [v3 name];
-  v44 = [v3 rawName];
-  v39 = [v3 industryCategory];
-  v38 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "industryCode")}];
+  paymentHash = [(PKPaymentTransaction *)self paymentHash];
+  transactionDate = [(PKPaymentTransaction *)self transactionDate];
+  name = [merchant name];
+  rawName = [merchant rawName];
+  industryCategory = [merchant industryCategory];
+  v38 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "industryCode")}];
   v43 = [v10 objectForKeyedSubscript:@"DE018"];
   v35 = [v10 objectForKeyedSubscript:@"DE019"];
   v42 = [v10 objectForKeyedSubscript:@"DE041"];
-  v41 = [(PKPaymentTransaction *)self isMerchantTokenTransaction];
+  isMerchantTokenTransaction = [(PKPaymentTransaction *)self isMerchantTokenTransaction];
   v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentTransaction isCoarseLocation](self, "isCoarseLocation")}];
-  v37 = [(PKPaymentTransaction *)self location];
-  v26 = [v3 merchantIdentifier];
-  v36 = [v3 rawCANL];
-  v25 = [v3 rawCity];
-  v34 = [v3 rawState];
-  v24 = [v3 rawCountry];
-  v33 = [v3 city];
-  v23 = [v3 zip];
-  v32 = [v3 state];
-  v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "cleanConfidenceLevel")}];
-  v22 = [(PKPaymentTransaction *)self rewardsTotalAmount];
+  location = [(PKPaymentTransaction *)self location];
+  merchantIdentifier = [merchant merchantIdentifier];
+  rawCANL = [merchant rawCANL];
+  rawCity = [merchant rawCity];
+  rawState = [merchant rawState];
+  rawCountry = [merchant rawCountry];
+  city = [merchant city];
+  v23 = [merchant zip];
+  state = [merchant state];
+  v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "cleanConfidenceLevel")}];
+  rewardsTotalAmount = [(PKPaymentTransaction *)self rewardsTotalAmount];
   [(PKPaymentTransaction *)self rewardsTotalCurrencyCode];
   v21 = v27 = v10;
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKPaymentTransaction rewardsEligibilityReason](self, "rewardsEligibilityReason")}];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "adamIdentifier")}];
-  v19 = [v3 originURL];
-  v14 = [v3 webMerchantIdentifier];
-  v15 = [v3 webMerchantName];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "adamIdentifier")}];
+  originURL = [merchant originURL];
+  webMerchantIdentifier = [merchant webMerchantIdentifier];
+  webMerchantName = [merchant webMerchantName];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentTransaction isIssuerInstallmentTransaction](self, "isIssuerInstallmentTransaction")}];
-  v17 = [(PKPaymentTransaction *)self issuerInstallmentManagementURL];
-  v29 = [v28 initWithPaymentHash:v46 transactionDate:v47 merchantName:v45 merchantRawName:v44 industryCategory:v39 industryCode:v38 merchantType:v43 merchantCountryCode:v35 terminalIdentifier:v42 merchantAdditionalData:v49 paymentNetwork:v48 isMerchantTokenTransaction:v41 isCoarseLocation:v40 location:v37 merchantIdentifier:v26 merchantRawCANL:v36 merchantRawCity:v25 merchantRawState:v34 merchantRawCountry:v24 merchantCity:v33 merchantZip:v23 merchantState:v32 merchantCleanConfidenceLevel:v31 rewardsAmount:v22 rewardsCurrency:v21 rewardsEligibilityReason:v20 adamIdentifier:v13 webURL:v19 webMerchantIdentifier:v14 webMerchantName:v15 isIssuerInstallmentTransaction:v16 issuerInstallmentManagementURL:v17];
+  issuerInstallmentManagementURL = [(PKPaymentTransaction *)self issuerInstallmentManagementURL];
+  v29 = [v28 initWithPaymentHash:paymentHash transactionDate:transactionDate merchantName:name merchantRawName:rawName industryCategory:industryCategory industryCode:v38 merchantType:v43 merchantCountryCode:v35 terminalIdentifier:v42 merchantAdditionalData:v49 paymentNetwork:v48 isMerchantTokenTransaction:isMerchantTokenTransaction isCoarseLocation:v40 location:location merchantIdentifier:merchantIdentifier merchantRawCANL:rawCANL merchantRawCity:rawCity merchantRawState:rawState merchantRawCountry:rawCountry merchantCity:city merchantZip:v23 merchantState:state merchantCleanConfidenceLevel:v31 rewardsAmount:rewardsTotalAmount rewardsCurrency:v21 rewardsEligibilityReason:v20 adamIdentifier:v13 webURL:originURL webMerchantIdentifier:webMerchantIdentifier webMerchantName:webMerchantName isIssuerInstallmentTransaction:v16 issuerInstallmentManagementURL:issuerInstallmentManagementURL];
 
   return v29;
 }
 
 - (unint64_t)_fkPaymentTransactionType
 {
-  v2 = [(PKPaymentTransaction *)self transactionType];
+  transactionType = [(PKPaymentTransaction *)self transactionType];
 
-  return FKPaymentTransactionTypeFromPKPaymentTransactionType(v2);
+  return FKPaymentTransactionTypeFromPKPaymentTransactionType(transactionType);
 }
 
 - (int64_t)_fkPaymentTransactionStatus
 {
-  v2 = [(PKPaymentTransaction *)self transactionStatus];
+  transactionStatus = [(PKPaymentTransaction *)self transactionStatus];
 
-  return FKPaymentTransactionStatusFromPKPaymentTransactionStatus(v2);
+  return FKPaymentTransactionStatusFromPKPaymentTransactionStatus(transactionStatus);
 }
 
 - (id)_fkContactTransactionInsight
 {
-  v3 = [(PKPaymentTransaction *)self peerPaymentCounterpartHandle];
-  if ([v3 length])
+  peerPaymentCounterpartHandle = [(PKPaymentTransaction *)self peerPaymentCounterpartHandle];
+  if ([peerPaymentCounterpartHandle length])
   {
     v4 = objc_alloc(MEMORY[0x1E6967DF0]);
-    v5 = [(PKPaymentTransaction *)self peerPaymentCounterpartHandle];
-    v6 = [v4 initWithPeerPaymentCounterpartHandle:v5];
+    peerPaymentCounterpartHandle2 = [(PKPaymentTransaction *)self peerPaymentCounterpartHandle];
+    v6 = [v4 initWithPeerPaymentCounterpartHandle:peerPaymentCounterpartHandle2];
   }
 
   else
@@ -7339,9 +7339,9 @@ LABEL_6:
   if ([(PKPaymentTransaction *)self preferredTransactionCategory])
   {
     v3 = objc_alloc(MEMORY[0x1E6967E58]);
-    v4 = [(PKPaymentTransaction *)self _fkPaymentTransactionCategory];
+    _fkPaymentTransactionCategory = [(PKPaymentTransaction *)self _fkPaymentTransactionCategory];
     v5 = [MEMORY[0x1E695DF00] now];
-    v6 = [v3 initWithTransactionCategory:v4 updatedAt:v5];
+    v6 = [v3 initWithTransactionCategory:_fkPaymentTransactionCategory updatedAt:v5];
   }
 
   else
@@ -7352,32 +7352,32 @@ LABEL_6:
   return v6;
 }
 
-+ (void)augmentTransactionsIfNeeded:(id)a3 transactionSourceIdentifiers:(id)a4 passUniqueID:(id)a5 usingDataProvider:(id)a6 completion:(id)a7
++ (void)augmentTransactionsIfNeeded:(id)needed transactionSourceIdentifiers:(id)identifiers passUniqueID:(id)d usingDataProvider:(id)provider completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  neededCopy = needed;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  providerCopy = provider;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v33 = v13;
-    v35 = v12;
-    if (!v14)
+    v33 = dCopy;
+    v35 = identifiersCopy;
+    if (!providerCopy)
     {
-      v14 = +[PKPaymentDefaultDataProvider defaultDataProvider];
+      providerCopy = +[PKPaymentDefaultDataProvider defaultDataProvider];
     }
 
-    v36 = v14;
+    v36 = providerCopy;
     v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v34 = v11;
-    v18 = v11;
+    v34 = neededCopy;
+    v18 = neededCopy;
     v19 = [v18 countByEnumeratingWithState:&v54 objects:v58 count:16];
     if (v19)
     {
@@ -7393,7 +7393,7 @@ LABEL_6:
           }
 
           v23 = *(*(&v54 + 1) + 8 * i);
-          v24 = [v23 paymentHash];
+          paymentHash = [v23 paymentHash];
           if ([v23 transactionType])
           {
             v25 = [v23 transactionType] != 16;
@@ -7405,9 +7405,9 @@ LABEL_6:
           }
 
           v26 = [v23 transactionStatus] && objc_msgSend(v23, "transactionStatus") != 1 && objc_msgSend(v23, "transactionStatus") != -1 && objc_msgSend(v23, "transactionStatus") != 8;
-          if (v24 != 0 && !v25 && !v26)
+          if (paymentHash != 0 && !v25 && !v26)
           {
-            [v16 addObject:v24];
+            [v16 addObject:paymentHash];
             [v17 addObject:v23];
           }
         }
@@ -7434,7 +7434,7 @@ LABEL_6:
       v51 = v27;
       v29 = _Block_copy(v50);
       v30 = objc_alloc_init(PKAsyncUnaryOperationComposer);
-      v13 = v33;
+      dCopy = v33;
       if (!PKHideCardBenefitPayLater())
       {
         v45[0] = MEMORY[0x1E69E9820];
@@ -7461,25 +7461,25 @@ LABEL_6:
         [(PKAsyncUnaryOperationComposer *)v30 addOperation:v40];
       }
 
-      v31 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __135__PKPaymentTransaction_FinanceKit__augmentTransactionsIfNeeded_transactionSourceIdentifiers_passUniqueID_usingDataProvider_completion___block_invoke_2_54;
       v37[3] = &unk_1E79E4800;
-      v39 = v15;
+      v39 = completionCopy;
       v38 = v18;
-      v32 = [(PKAsyncUnaryOperationComposer *)v30 evaluateWithInput:v31 completion:v37];
+      v32 = [(PKAsyncUnaryOperationComposer *)v30 evaluateWithInput:null completion:v37];
     }
 
     else
     {
-      (*(v15 + 2))(v15, v18);
-      v13 = v33;
+      (*(completionCopy + 2))(completionCopy, v18);
+      dCopy = v33;
     }
 
-    v11 = v34;
-    v12 = v35;
-    v14 = v36;
+    neededCopy = v34;
+    identifiersCopy = v35;
+    providerCopy = v36;
   }
 }
 

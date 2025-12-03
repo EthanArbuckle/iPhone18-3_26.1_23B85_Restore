@@ -1,5 +1,5 @@
 @interface NSPPrivateAccessTokenRequest
-- (NSObject)initWithChallenge:(void *)a3 tokenKey:(void *)a4 tokenKeyID:(void *)a5 originNameKey:(void *)a6 selectedOrigin:(void *)a7 blindedMessage:;
+- (NSObject)initWithChallenge:(void *)challenge tokenKey:(void *)key tokenKeyID:(void *)d originNameKey:(void *)nameKey selectedOrigin:(void *)origin blindedMessage:;
 - (void)dealloc;
 @end
 
@@ -29,23 +29,23 @@
   [(NSPPrivateAccessTokenRequest *)&v5 dealloc];
 }
 
-- (NSObject)initWithChallenge:(void *)a3 tokenKey:(void *)a4 tokenKeyID:(void *)a5 originNameKey:(void *)a6 selectedOrigin:(void *)a7 blindedMessage:
+- (NSObject)initWithChallenge:(void *)challenge tokenKey:(void *)key tokenKeyID:(void *)d originNameKey:(void *)nameKey selectedOrigin:(void *)origin blindedMessage:
 {
   v173 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = v18;
-  if (!a1)
+  challengeCopy = challenge;
+  keyCopy = key;
+  dCopy = d;
+  nameKeyCopy = nameKey;
+  originCopy = origin;
+  v19 = originCopy;
+  if (!self)
   {
     v22 = 0;
     goto LABEL_56;
   }
 
-  if (!v14)
+  if (!challengeCopy)
   {
     v136 = nplog_obj();
     if (!os_log_type_enabled(v136, OS_LOG_TYPE_FAULT))
@@ -61,7 +61,7 @@ LABEL_125:
     goto LABEL_126;
   }
 
-  if (!v18)
+  if (!originCopy)
   {
     v136 = nplog_obj();
     if (!os_log_type_enabled(v136, OS_LOG_TYPE_FAULT))
@@ -94,9 +94,9 @@ LABEL_125:
     goto LABEL_8;
   }
 
-  v20 = [v13 originName];
+  originName = [v13 originName];
 
-  if (!v20)
+  if (!originName)
   {
     v136 = nplog_obj();
     if (!os_log_type_enabled(v136, OS_LOG_TYPE_FAULT))
@@ -110,7 +110,7 @@ LABEL_125:
     goto LABEL_125;
   }
 
-  if (!v16)
+  if (!dCopy)
   {
     v136 = nplog_obj();
     if (os_log_type_enabled(v136, OS_LOG_TYPE_FAULT))
@@ -131,16 +131,16 @@ LABEL_55:
   }
 
 LABEL_8:
-  v162.receiver = a1;
+  v162.receiver = self;
   v162.super_class = NSPPrivateAccessTokenRequest;
   v21 = [&v162 init];
   if (!v21)
   {
-    a1 = nplog_obj();
-    if (os_log_type_enabled(a1, OS_LOG_TYPE_FAULT))
+    self = nplog_obj();
+    if (os_log_type_enabled(self, OS_LOG_TYPE_FAULT))
     {
       *md = 0;
-      _os_log_fault_impl(&dword_1AE7E2000, a1, OS_LOG_TYPE_FAULT, "[super init] failed", md, 2u);
+      _os_log_fault_impl(&dword_1AE7E2000, self, OS_LOG_TYPE_FAULT, "[super init] failed", md, 2u);
     }
 
     goto LABEL_28;
@@ -148,53 +148,53 @@ LABEL_8:
 
   v22 = v21;
   WORD1(v21[1].isa) = [v13 tokenType];
-  v23 = [v13 originNames];
-  v24 = [v23 count];
+  originNames = [v13 originNames];
+  v24 = [originNames count];
 
-  if (!v17 || v24 < 2)
+  if (!nameKeyCopy || v24 < 2)
   {
-    v30 = [v13 originName];
-    objc_setProperty_atomic(v22, v31, v30, 64);
+    originName2 = [v13 originName];
+    objc_setProperty_atomic(v22, v31, originName2, 64);
 
-    if (!v15)
+    if (!keyCopy)
     {
       goto LABEL_13;
     }
 
 LABEL_15:
-    v28 = [v15 subdataWithRange:{objc_msgSend(v15, "length") - 1, 1}];
+    v28 = [keyCopy subdataWithRange:{objc_msgSend(keyCopy, "length") - 1, 1}];
     goto LABEL_16;
   }
 
-  v25 = [v13 originNames];
-  v26 = [v25 containsObject:v17];
+  originNames2 = [v13 originNames];
+  v26 = [originNames2 containsObject:nameKeyCopy];
 
   if ((v26 & 1) == 0)
   {
     v46 = nplog_obj();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      v74 = [v13 originNames];
+      originNames3 = [v13 originNames];
       *md = 138412546;
-      *&md[4] = v17;
+      *&md[4] = nameKeyCopy;
       *&md[12] = 2112;
-      *&md[14] = v74;
+      *&md[14] = originNames3;
       _os_log_error_impl(&dword_1AE7E2000, v46, OS_LOG_TYPE_ERROR, "Failed to find origin name %@ in %@", md, 0x16u);
     }
 
-    a1 = v22;
+    self = v22;
     goto LABEL_28;
   }
 
-  objc_setProperty_atomic(v22, v27, v17, 64);
-  if (v15)
+  objc_setProperty_atomic(v22, v27, nameKeyCopy, 64);
+  if (keyCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_13:
   memset(md, 0, sizeof(md));
-  CC_SHA256([v14 bytes], objc_msgSend(v14, "length"), md);
+  CC_SHA256([challengeCopy bytes], objc_msgSend(challengeCopy, "length"), md);
   LOBYTE(buf) = md[31];
   v28 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&buf length:1];
 LABEL_16:
@@ -204,7 +204,7 @@ LABEL_16:
   if ([v13 tokenType] == 2 || objc_msgSend(v13, "tokenType") == 3)
   {
     v33 = v19;
-    v34 = v16;
+    v34 = dCopy;
     v35 = objc_alloc_init(MEMORY[0x1E695DF88]);
     v163 = __rev16(WORD1(v22[1].isa));
     [v35 appendBytes:&v163 length:2];
@@ -216,22 +216,22 @@ LABEL_16:
 LABEL_24:
       v44 = v35;
       v45 = v35;
-      a1 = v44;
+      self = v44;
 LABEL_53:
 
       goto LABEL_54;
     }
 
     v160 = v35;
-    v161 = v16;
+    v161 = dCopy;
     v159 = v34;
     v38 = v34;
     v39 = [v38 length];
-    v40 = [v38 bytes];
+    bytes = [v38 bytes];
     v158 = v19;
     if (v39 <= 0x26)
     {
-      v41 = v14;
+      v41 = challengeCopy;
       v42 = v33;
       v43 = nplog_obj();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -241,23 +241,23 @@ LABEL_53:
         _os_log_error_impl(&dword_1AE7E2000, v43, OS_LOG_TYPE_ERROR, "Config length is too short: %zu", md, 0xCu);
       }
 
-      v16 = v161;
+      dCopy = v161;
       goto LABEL_49;
     }
 
-    v49 = v40;
-    if (*(v40 + 1) == 0x2000)
+    v49 = bytes;
+    if (*(bytes + 1) == 0x2000)
     {
-      v16 = v161;
-      if (*(v40 + 35) == 256)
+      dCopy = v161;
+      if (*(bytes + 35) == 256)
       {
-        if (*(v40 + 37) == 256)
+        if (*(bytes + 37) == 256)
         {
-          LOBYTE(v22[1].isa) = *v40;
-          WORD2(v22[1].isa) = *(v40 + 1);
-          HIWORD(v22[1].isa) = *(v40 + 35);
-          LOWORD(v22[2].isa) = *(v40 + 37);
-          v50 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v40 + 3 length:32];
+          LOBYTE(v22[1].isa) = *bytes;
+          WORD2(v22[1].isa) = *(bytes + 1);
+          HIWORD(v22[1].isa) = *(bytes + 35);
+          LOWORD(v22[2].isa) = *(bytes + 37);
+          v50 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes + 3 length:32];
           objc_setProperty_atomic(v22, v51, v50, 40);
 
           if (objc_getProperty(v22, v52, 80, 1))
@@ -325,7 +325,7 @@ LABEL_36:
                       }
 
                       v65 = 0;
-                      v16 = v161;
+                      dCopy = v161;
                       goto LABEL_41;
                     }
 
@@ -354,7 +354,7 @@ LABEL_36:
                       }
 
                       free(cf);
-                      v16 = v161;
+                      dCopy = v161;
                       v65 = v147;
 LABEL_41:
 
@@ -381,8 +381,8 @@ LABEL_41:
                     [loga appendData:objc_getProperty(v22, v89, 48, 1)];
                     [loga appendData:objc_getProperty(v22, v90, 32, 1)];
                     v142 = objc_getProperty(v22, v91, 64, 1);
-                    v92 = [v142 UTF8String];
-                    v93 = strlen(v92);
+                    uTF8String = [v142 UTF8String];
+                    v93 = strlen(uTF8String);
                     v94 = v93;
                     v95 = -v93 & 0x1FLL;
                     if (!v93)
@@ -392,7 +392,7 @@ LABEL_41:
 
                     v96 = v95 + v93;
                     v97 = malloc_type_calloc(1uLL, v95 + v93, 0xC8CB9515uLL);
-                    memcpy(v97, v92, v94);
+                    memcpy(v97, uTF8String, v94);
                     v165 = bswap32(v96) >> 16;
                     [loga appendBytes:&v165 length:2];
                     [loga appendBytes:v97 length:v96];
@@ -422,7 +422,7 @@ LABEL_41:
                       free(v145);
                       free(v143);
                       v102 = 0;
-                      v16 = v161;
+                      dCopy = v161;
                       v103 = loga;
                     }
 
@@ -438,7 +438,7 @@ LABEL_41:
                       objc_setProperty_atomic(v22, v107, v105, 72);
                       Property = objc_getProperty(v22, v108, 72, 1);
                       v146 = Property != 0;
-                      v16 = v161;
+                      dCopy = v161;
                       v33 = v156;
                       if (!Property)
                       {
@@ -510,14 +510,14 @@ LABEL_120:
 
                                 v35 = v160;
                                 [v160 appendData:{objc_getProperty(v22, v129, 88, 1)}];
-                                v16 = v161;
+                                dCopy = v161;
                                 v33 = v156;
                                 v34 = v159;
                                 goto LABEL_24;
                               }
 
                               logb = nplog_obj();
-                              v16 = v161;
+                              dCopy = v161;
                               if (os_log_type_enabled(logb, OS_LOG_TYPE_ERROR))
                               {
                                 LODWORD(buf) = 138412290;
@@ -537,7 +537,7 @@ LABEL_105:
 
 LABEL_92:
 
-                              a1 = 0;
+                              self = 0;
 LABEL_52:
                               v34 = v159;
                               v45 = v160;
@@ -566,7 +566,7 @@ LABEL_98:
                           }
 
 LABEL_139:
-                          v16 = v161;
+                          dCopy = v161;
                           v33 = v156;
                           goto LABEL_98;
                         }
@@ -622,13 +622,13 @@ LABEL_138:
                     _os_log_error_impl(&dword_1AE7E2000, v135, OS_LOG_TYPE_ERROR, "generate key: compressedRepresentationFromSecKey failed", v171, 2u);
                   }
 
-                  v16 = v161;
+                  dCopy = v161;
                 }
 
                 else
                 {
                   v135 = nplog_obj();
-                  v16 = v161;
+                  dCopy = v161;
                   if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
                   {
                     *v171 = 138412290;
@@ -652,7 +652,7 @@ LABEL_138:
                   _os_log_error_impl(&dword_1AE7E2000, v133, OS_LOG_TYPE_ERROR, "generate key: SecKeyCreateRandomKey failed", v171, 2u);
                 }
 
-                v16 = v161;
+                dCopy = v161;
                 v33 = v157;
               }
 
@@ -670,7 +670,7 @@ LABEL_91:
             }
 
             v104 = nplog_obj();
-            v16 = v161;
+            dCopy = v161;
             if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
             {
               *v171 = 0;
@@ -687,13 +687,13 @@ LABEL_91:
               _os_log_error_impl(&dword_1AE7E2000, v104, OS_LOG_TYPE_ERROR, "generate key: Failed to access stored client key", v171, 2u);
             }
 
-            v16 = v161;
+            dCopy = v161;
           }
 
           goto LABEL_91;
         }
 
-        v41 = v14;
+        v41 = challengeCopy;
         v42 = v33;
         v43 = nplog_obj();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -714,14 +714,14 @@ LABEL_49:
           _os_log_error_impl(&dword_1AE7E2000, v70, OS_LOG_TYPE_ERROR, "Failed to parse origin name key", md, 2u);
         }
 
-        a1 = 0;
+        self = 0;
         v33 = v42;
-        v14 = v41;
+        challengeCopy = v41;
         v19 = v158;
         goto LABEL_52;
       }
 
-      v41 = v14;
+      v41 = challengeCopy;
       v42 = v33;
       v43 = nplog_obj();
       if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -737,10 +737,10 @@ LABEL_49:
 
     else
     {
-      v41 = v14;
+      v41 = challengeCopy;
       v42 = v33;
       v43 = nplog_obj();
-      v16 = v161;
+      dCopy = v161;
       if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_49;
@@ -761,14 +761,14 @@ LABEL_48:
   {
     v47 = MEMORY[0x1E695DF88];
     v33 = v19;
-    a1 = objc_alloc_init(v47);
+    self = objc_alloc_init(v47);
     *md = __rev16(WORD1(v22[1].isa));
-    [a1 appendBytes:md length:2];
-    [a1 appendData:objc_getProperty(v22, v48, 48, 1)];
-    [a1 appendData:v33];
+    [self appendBytes:md length:2];
+    [self appendData:objc_getProperty(v22, v48, 48, 1)];
+    [self appendData:v33];
 LABEL_54:
 
-    objc_setProperty_atomic(v22, v71, a1, 24);
+    objc_setProperty_atomic(v22, v71, self, 24);
     goto LABEL_55;
   }
 

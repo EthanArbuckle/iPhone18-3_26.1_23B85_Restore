@@ -11,9 +11,9 @@
   v2 = [(HMDHomePrimaryResidentMessagingHandlerDefaultDataSource *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v2->_notificationCenter;
-    v2->_notificationCenter = v3;
+    v2->_notificationCenter = defaultCenter;
 
     v5 = [objc_alloc(MEMORY[0x277D0F930]) initWithOptions:0];
     timerManager = v2->_timerManager;

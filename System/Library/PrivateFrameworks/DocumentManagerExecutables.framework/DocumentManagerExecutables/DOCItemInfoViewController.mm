@@ -1,48 +1,48 @@
 @interface DOCItemInfoViewController
-+ (CGSize)ensureNonZeroPreferredSize:(CGSize)a3 traits:(id)a4;
-- (DOCItemInfoViewController)initWithNodes:(id)a3 configuration:(id)a4 actionReporting:(id)a5;
-- (void)_updateNavigationBarVisibilityAnimated:(BOOL)a3;
++ (CGSize)ensureNonZeroPreferredSize:(CGSize)size traits:(id)traits;
+- (DOCItemInfoViewController)initWithNodes:(id)nodes configuration:(id)configuration actionReporting:(id)reporting;
+- (void)_updateNavigationBarVisibilityAnimated:(BOOL)animated;
 - (void)_updatePreferredContentSizeForFirstAppearance;
-- (void)displayAddTagsViewWithItems:(id)a3;
+- (void)displayAddTagsViewWithItems:(id)items;
 - (void)displayTagView;
 - (void)doc_startPreheatIfNecessary;
 - (void)forceUpdatePreferredContentSize;
-- (void)setIsInfoInPopoverMode:(BOOL)a3;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
-- (void)tagsCollectionItem:(id)a3 didDeleteTag:(id)a4;
-- (void)tagsCollectionView:(id)a3 didSelectAddTagButton:(id)a4;
+- (void)setIsInfoInPopoverMode:(BOOL)mode;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
+- (void)tagsCollectionItem:(id)item didDeleteTag:(id)tag;
+- (void)tagsCollectionView:(id)view didSelectAddTagButton:(id)button;
 - (void)updatePreferredContentSize;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DOCItemInfoViewController
 
-- (DOCItemInfoViewController)initWithNodes:(id)a3 configuration:(id)a4 actionReporting:(id)a5
+- (DOCItemInfoViewController)initWithNodes:(id)nodes configuration:(id)configuration actionReporting:(id)reporting
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodesCopy = nodes;
+  configurationCopy = configuration;
+  reportingCopy = reporting;
   v24.receiver = self;
   v24.super_class = DOCItemInfoViewController;
   v12 = [(DOCItemInfoViewController *)&v24 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_nodes, a3);
-    if ([v9 count] == 1)
+    objc_storeStrong(&v12->_nodes, nodes);
+    if ([nodesCopy count] == 1)
     {
-      v14 = [v9 firstObject];
-      if (v14 && [DOCItemInfoContentViewController itemTapDrillsIntoNode:v14])
+      firstObject = [nodesCopy firstObject];
+      if (firstObject && [DOCItemInfoContentViewController itemTapDrillsIntoNode:firstObject])
       {
-        v15 = [v11 isBrowserCurrentLocation:v14] ^ 1;
+        v15 = [reportingCopy isBrowserCurrentLocation:firstObject] ^ 1;
 LABEL_8:
-        objc_storeWeak(&v13->_actionReporting, v11);
-        v16 = [[DOCItemInfoContentViewController alloc] initWithConfiguration:v10 nodes:v9 allowOpenButton:v15 documentManager:0 actionManager:0 actionDelegate:0];
+        objc_storeWeak(&v13->_actionReporting, reportingCopy);
+        v16 = [[DOCItemInfoContentViewController alloc] initWithConfiguration:configurationCopy nodes:nodesCopy allowOpenButton:v15 documentManager:0 actionManager:0 actionDelegate:0];
         contentViewController = v13->_contentViewController;
         v13->_contentViewController = v16;
 
@@ -50,11 +50,11 @@ LABEL_8:
         [(DOCItemInfoContentViewController *)v13->_contentViewController setActionReporting:WeakRetained];
 
         [(DOCItemInfoContentViewController *)v13->_contentViewController setShowsShareButton:0];
-        v19 = [(DOCItemInfoContentViewController *)v13->_contentViewController scrollView];
-        [v19 setShowsVerticalScrollIndicator:0];
+        scrollView = [(DOCItemInfoContentViewController *)v13->_contentViewController scrollView];
+        [scrollView setShowsVerticalScrollIndicator:0];
 
-        v20 = [(DOCItemInfoContentViewController *)v13->_contentViewController view];
-        [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view = [(DOCItemInfoContentViewController *)v13->_contentViewController view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
         v21 = _DocumentManagerBundle();
         v22 = [v21 localizedStringForKey:@"Info [View Controller Title]" value:@"Info" table:@"Localizable"];
@@ -66,7 +66,7 @@ LABEL_8:
 
     else
     {
-      v14 = 0;
+      firstObject = 0;
     }
 
     v15 = 1;
@@ -85,52 +85,52 @@ LABEL_9:
   [(DOCItemInfoViewController *)&v17 viewDidLoad];
   self->_needsInitialPreferredContentSize = 1;
   self->_viewDidAppear = 0;
-  v3 = [(DOCItemInfoViewController *)self contentViewController];
-  [v3 setTagsWorkflowDelegate:self];
+  contentViewController = [(DOCItemInfoViewController *)self contentViewController];
+  [contentViewController setTagsWorkflowDelegate:self];
 
-  v4 = [(DOCItemInfoViewController *)self contentViewController];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentViewController2 = [(DOCItemInfoViewController *)self contentViewController];
+  view = [contentViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(DOCItemInfoViewController *)self contentViewController];
-  [(DOCItemInfoViewController *)self addChildViewController:v6];
+  contentViewController3 = [(DOCItemInfoViewController *)self contentViewController];
+  [(DOCItemInfoViewController *)self addChildViewController:contentViewController3];
 
-  v7 = [(DOCItemInfoViewController *)self view];
-  v8 = [(DOCItemInfoViewController *)self contentViewController];
-  v9 = [v8 view];
-  [v7 addSubview:v9];
+  view2 = [(DOCItemInfoViewController *)self view];
+  contentViewController4 = [(DOCItemInfoViewController *)self contentViewController];
+  view3 = [contentViewController4 view];
+  [view2 addSubview:view3];
 
   v10 = MEMORY[0x277CCAAD0];
-  v11 = [(DOCItemInfoViewController *)self contentViewController];
-  v12 = [v11 view];
+  contentViewController5 = [(DOCItemInfoViewController *)self contentViewController];
+  view4 = [contentViewController5 view];
   v13 = DOCConstraintsToResizeWithSuperview();
   [v10 activateConstraints:v13];
 
-  v14 = [(DOCItemInfoViewController *)self contentViewController];
-  [v14 didMoveToParentViewController:self];
+  contentViewController6 = [(DOCItemInfoViewController *)self contentViewController];
+  [contentViewController6 didMoveToParentViewController:self];
 
-  v15 = [(DOCItemInfoViewController *)self contentViewController];
-  v16 = [v15 scrollView];
-  [(DOCItemInfoViewController *)self setContentScrollView:v16 forEdge:15];
+  contentViewController7 = [(DOCItemInfoViewController *)self contentViewController];
+  scrollView = [contentViewController7 scrollView];
+  [(DOCItemInfoViewController *)self setContentScrollView:scrollView forEdge:15];
 }
 
 - (void)_updatePreferredContentSizeForFirstAppearance
 {
-  v3 = [(DOCItemInfoViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(DOCItemInfoViewController *)self view];
+  [view layoutIfNeeded];
 
   [(DOCItemInfoViewController *)self updatePreferredContentSize];
   self->_needsInitialPreferredContentSize = 0;
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = DOCItemInfoViewController;
-  [(DOCItemInfoViewController *)&v7 systemLayoutFittingSizeDidChangeForChildContentContainer:a3];
-  v4 = [(DOCItemInfoViewController *)self view];
-  v5 = [v4 window];
-  if (v5)
+  [(DOCItemInfoViewController *)&v7 systemLayoutFittingSizeDidChangeForChildContentContainer:container];
+  view = [(DOCItemInfoViewController *)self view];
+  window = [view window];
+  if (window)
   {
     viewDidAppear = self->_viewDidAppear;
 
@@ -145,24 +145,24 @@ LABEL_9:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = DOCItemInfoViewController;
-  [(DOCItemInfoViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(DOCItemInfoViewController *)self view];
-  v6 = [v5 window];
+  [(DOCItemInfoViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  view = [(DOCItemInfoViewController *)self view];
+  window = [view window];
 
-  if (v6)
+  if (window)
   {
     [(DOCItemInfoViewController *)self updatePreferredContentSize];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v5 = a3;
-  if (v5 && self->_needsInitialPreferredContentSize)
+  windowCopy = window;
+  if (windowCopy && self->_needsInitialPreferredContentSize)
   {
     [(DOCItemInfoViewController *)self _updatePreferredContentSizeForFirstAppearance];
   }
@@ -170,22 +170,22 @@ LABEL_9:
   [(DOCItemInfoViewController *)self _updateNavigationBarVisibilityAnimated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_viewDidAppear = 1;
   [(DOCItemInfoViewController *)self updatePreferredContentSize];
   v5.receiver = self;
   v5.super_class = DOCItemInfoViewController;
-  [(DOCItemInfoViewController *)&v5 viewDidAppear:v3];
+  [(DOCItemInfoViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_viewDidAppear = 0;
   v3.receiver = self;
   v3.super_class = DOCItemInfoViewController;
-  [(DOCItemInfoViewController *)&v3 viewWillDisappear:a3];
+  [(DOCItemInfoViewController *)&v3 viewWillDisappear:disappear];
 }
 
 - (void)viewDidLayoutSubviews
@@ -201,10 +201,10 @@ LABEL_9:
 
 - (void)updatePreferredContentSize
 {
-  v3 = [(DOCItemInfoViewController *)self view];
-  v4 = [v3 window];
+  view = [(DOCItemInfoViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
 
     [(DOCItemInfoViewController *)self forceUpdatePreferredContentSize];
@@ -218,49 +218,49 @@ LABEL_9:
   v4 = v3;
   if (v3 == 0.0)
   {
-    v5 = [(DOCItemInfoViewController *)self navigationController];
+    navigationController = [(DOCItemInfoViewController *)self navigationController];
 
-    if (v5)
+    if (navigationController)
     {
-      v6 = [(DOCItemInfoViewController *)self traitCollection];
-      v7 = [(DOCItemInfoViewController *)self navigationController];
-      [v7 preferredContentSize];
+      traitCollection = [(DOCItemInfoViewController *)self traitCollection];
+      navigationController2 = [(DOCItemInfoViewController *)self navigationController];
+      [navigationController2 preferredContentSize];
       v9 = v8;
       v11 = v10;
 
-      [DOCItemInfoViewController ensureNonZeroPreferredSize:v6 traits:v9, v11];
+      [DOCItemInfoViewController ensureNonZeroPreferredSize:traitCollection traits:v9, v11];
       v4 = v12;
     }
   }
 
   [(DOCItemInfoContentViewController *)self->_contentViewController layoutHeightForWidth:v4];
   v14 = v13;
-  v15 = [(DOCItemInfoViewController *)self presentationController];
-  v16 = [v15 presentedViewController];
+  presentationController = [(DOCItemInfoViewController *)self presentationController];
+  presentedViewController = [presentationController presentedViewController];
 
-  if (v16 == self)
+  if (presentedViewController == self)
   {
-    v17 = [(DOCItemInfoViewController *)self navigationController];
+    selfCopy = [(DOCItemInfoViewController *)self navigationController];
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
   }
 
-  v20 = v17;
-  [(DOCItemInfoViewController *)v17 preferredContentSize];
+  v20 = selfCopy;
+  [(DOCItemInfoViewController *)selfCopy preferredContentSize];
   if (v19 != v4 || v18 != v14)
   {
     [(DOCItemInfoViewController *)v20 setPreferredContentSize:v4, v14];
   }
 }
 
-- (void)_updateNavigationBarVisibilityAnimated:(BOOL)a3
+- (void)_updateNavigationBarVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(DOCItemInfoViewController *)self navigationController];
-  v8 = [v5 topViewController];
+  animatedCopy = animated;
+  navigationController = [(DOCItemInfoViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
   if ([(DOCItemInfoViewController *)self isInfoInPopoverMode])
   {
@@ -273,30 +273,30 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = [(DOCItemInfoViewController *)self navigationController];
-  [v7 setNavigationBarHidden:v6 & 1 animated:v3];
+  navigationController2 = [(DOCItemInfoViewController *)self navigationController];
+  [navigationController2 setNavigationBarHidden:v6 & 1 animated:animatedCopy];
 }
 
-- (void)setIsInfoInPopoverMode:(BOOL)a3
+- (void)setIsInfoInPopoverMode:(BOOL)mode
 {
-  v3 = a3;
-  self->_isInfoInPopoverMode = a3;
+  modeCopy = mode;
+  self->_isInfoInPopoverMode = mode;
   [(DOCItemInfoViewController *)self _updateNavigationBarVisibilityAnimated:0];
-  v5 = [(DOCItemInfoViewController *)self navigationController];
+  navigationController = [(DOCItemInfoViewController *)self navigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(DOCItemInfoViewController *)self navigationController];
-    v7 = [v8 topViewController];
-    [v7 setIsInfoInPopoverMode:v3];
+    navigationController2 = [(DOCItemInfoViewController *)self navigationController];
+    topViewController = [navigationController2 topViewController];
+    [topViewController setIsInfoInPopoverMode:modeCopy];
   }
 }
 
-- (void)tagsCollectionView:(id)a3 didSelectAddTagButton:(id)a4
+- (void)tagsCollectionView:(id)view didSelectAddTagButton:(id)button
 {
-  v5 = [(DOCItemInfoViewController *)self items:a3];
+  v5 = [(DOCItemInfoViewController *)self items:view];
   [(DOCItemInfoViewController *)self displayAddTagsViewWithItems:v5];
 }
 
@@ -305,55 +305,55 @@ LABEL_9:
   v11 = objc_alloc_init(DOCTagEditorViewController);
   [(DOCTagEditorViewController *)v11 setUseCompactColorPicker:1];
   [(DOCTagEditorViewController *)v11 setDelayResizingUntilAppeared:0];
-  v3 = [(DOCItemInfoViewController *)self items];
-  [(DOCTagEditorViewController *)v11 setItems:v3];
+  items = [(DOCItemInfoViewController *)self items];
+  [(DOCTagEditorViewController *)v11 setItems:items];
 
   [(DOCTagEditorViewController *)v11 setIsInfoInPopoverMode:[(DOCItemInfoViewController *)self isInfoInPopoverMode]];
   [(DOCTagEditorViewController *)v11 setInTagListMode:1];
   [(DOCTagEditorViewController *)v11 maxListPresentationHeight];
   v5 = v4;
-  v6 = [(DOCTagEditorViewController *)v11 view];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintLessThanOrEqualToConstant:v5];
+  view = [(DOCTagEditorViewController *)v11 view];
+  heightAnchor = [view heightAnchor];
+  v8 = [heightAnchor constraintLessThanOrEqualToConstant:v5];
 
   LODWORD(v9) = 1148829696;
   [v8 setPriority:v9];
   [v8 setActive:1];
-  v10 = [(DOCItemInfoViewController *)self navigationController];
-  [v10 pushViewController:v11 animated:0];
+  navigationController = [(DOCItemInfoViewController *)self navigationController];
+  [navigationController pushViewController:v11 animated:0];
 
   [(DOCItemInfoViewController *)self _updateNavigationBarVisibilityAnimated:1];
 }
 
-- (void)displayAddTagsViewWithItems:(id)a3
+- (void)displayAddTagsViewWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v12 = objc_alloc_init(DOCTagEditorViewController);
   [(DOCTagEditorViewController *)v12 setUseCompactColorPicker:1];
   [(DOCTagEditorViewController *)v12 setDelayResizingUntilAppeared:1];
-  [(DOCTagEditorViewController *)v12 setItems:v4];
+  [(DOCTagEditorViewController *)v12 setItems:itemsCopy];
 
   [(DOCTagEditorViewController *)v12 setIsInfoInPopoverMode:[(DOCItemInfoViewController *)self isInfoInPopoverMode]];
   [(DOCTagEditorViewController *)v12 setInTagListMode:0];
   [(DOCTagEditorViewController *)v12 maxListPresentationHeight];
   v6 = v5;
-  v7 = [(DOCTagEditorViewController *)v12 view];
-  v8 = [v7 heightAnchor];
-  v9 = [v8 constraintLessThanOrEqualToConstant:v6];
+  view = [(DOCTagEditorViewController *)v12 view];
+  heightAnchor = [view heightAnchor];
+  v9 = [heightAnchor constraintLessThanOrEqualToConstant:v6];
 
   LODWORD(v10) = 1148829696;
   [v9 setPriority:v10];
   [v9 setActive:1];
-  v11 = [(DOCItemInfoViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(DOCItemInfoViewController *)self navigationController];
+  [navigationController pushViewController:v12 animated:1];
 
   [(DOCItemInfoViewController *)self _updateNavigationBarVisibilityAnimated:1];
 }
 
-- (void)tagsCollectionItem:(id)a3 didDeleteTag:(id)a4
+- (void)tagsCollectionItem:(id)item didDeleteTag:(id)tag
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tagCopy = tag;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -374,8 +374,8 @@ LABEL_9:
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 tags];
-        v11 = [v10 mutableCopy];
+        tags = [v9 tags];
+        v11 = [tags mutableCopy];
 
         v12 = FPTagFromDOCTag();
         [v11 removeObject:v12];
@@ -385,18 +385,18 @@ LABEL_9:
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
         v28 = v11;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-        v16 = [MEMORY[0x277D06278] shared];
-        v17 = [v13 initWithItems:v14 tagsLists:v15 isUndoable:1 shouldClearUndoStack:0 undoManager:v16];
+        mEMORY[0x277D06278] = [MEMORY[0x277D06278] shared];
+        v17 = [v13 initWithItems:v14 tagsLists:v15 isUndoable:1 shouldClearUndoStack:0 undoManager:mEMORY[0x277D06278]];
 
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __61__DOCItemInfoViewController_tagsCollectionItem_didDeleteTag___block_invoke;
         v21[3] = &unk_278FA2380;
-        v22 = v5;
+        v22 = tagCopy;
         v23 = v9;
         [v17 setActionCompletionBlock:v21];
-        v18 = [MEMORY[0x277CC6408] defaultManager];
-        [v18 scheduleAction:v17];
+        defaultManager = [MEMORY[0x277CC6408] defaultManager];
+        [defaultManager scheduleAction:v17];
       }
 
       v7 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -459,10 +459,10 @@ uint64_t __84__DOCItemInfoViewController_DOCPresentationPreheatable__doc_startPr
   return [v2 objc_doc_preheatDidFinish];
 }
 
-+ (CGSize)ensureNonZeroPreferredSize:(CGSize)a3 traits:(id)a4
++ (CGSize)ensureNonZeroPreferredSize:(CGSize)size traits:(id)traits
 {
-  v4 = a4;
-  specialized static DOCItemInfoViewController.ensureNonZeroPreferredSize(for:traits:)(v4);
+  traitsCopy = traits;
+  specialized static DOCItemInfoViewController.ensureNonZeroPreferredSize(for:traits:)(traitsCopy);
   v6 = v5;
   v8 = v7;
 

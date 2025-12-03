@@ -1,33 +1,33 @@
 @interface DMFScheduleOSUpdateRequest
-+ (BOOL)_action:(unint64_t *)a3 fromString:(id)a4;
-+ (id)_descriptionForAction:(unint64_t)a3;
++ (BOOL)_action:(unint64_t *)_action fromString:(id)string;
++ (id)_descriptionForAction:(unint64_t)action;
 - (DMFScheduleOSUpdateRequest)init;
-- (DMFScheduleOSUpdateRequest)initWithCoder:(id)a3;
+- (DMFScheduleOSUpdateRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFScheduleOSUpdateRequest
 
-+ (BOOL)_action:(unint64_t *)a3 fromString:(id)a4
++ (BOOL)_action:(unint64_t *)_action fromString:(id)string
 {
   v4 = 0;
-  if (a3 && a4)
+  if (_action && string)
   {
-    v6 = [a4 lowercaseString];
-    if ([v6 isEqualToString:@"download"])
+    lowercaseString = [string lowercaseString];
+    if ([lowercaseString isEqualToString:@"download"])
     {
       v7 = 0;
     }
 
-    else if ([v6 isEqualToString:@"install"])
+    else if ([lowercaseString isEqualToString:@"install"])
     {
       v7 = 1;
     }
 
     else
     {
-      if (![v6 isEqualToString:@"default"])
+      if (![lowercaseString isEqualToString:@"default"])
       {
         v4 = 0;
         goto LABEL_10;
@@ -36,7 +36,7 @@
       v7 = 2;
     }
 
-    *a3 = v7;
+    *_action = v7;
     v4 = 1;
 LABEL_10:
   }
@@ -44,16 +44,16 @@ LABEL_10:
   return v4;
 }
 
-+ (id)_descriptionForAction:(unint64_t)a3
++ (id)_descriptionForAction:(unint64_t)action
 {
-  if (a3 > 2)
+  if (action > 2)
   {
     return @"Invalid Action";
   }
 
   else
   {
-    return off_1E8616C88[a3];
+    return off_1E8616C88[action];
   }
 }
 
@@ -63,11 +63,11 @@ LABEL_10:
   v4 = [DMFScheduleOSUpdateRequest _descriptionForAction:[(DMFScheduleOSUpdateRequest *)self action]];
   [v3 appendFormat:@"\tAction          : %@\n", v4];
 
-  v5 = [(DMFScheduleOSUpdateRequest *)self productKey];
-  v6 = v5;
-  if (v5)
+  productKey = [(DMFScheduleOSUpdateRequest *)self productKey];
+  v6 = productKey;
+  if (productKey)
   {
-    v7 = v5;
+    v7 = productKey;
   }
 
   else
@@ -77,11 +77,11 @@ LABEL_10:
 
   [v3 appendFormat:@"\tProduct Key     : %@\n", v7];
 
-  v8 = [(DMFScheduleOSUpdateRequest *)self productVersion];
-  v9 = v8;
-  if (v8)
+  productVersion = [(DMFScheduleOSUpdateRequest *)self productVersion];
+  v9 = productVersion;
+  if (productVersion)
   {
-    v10 = v8;
+    v10 = productVersion;
   }
 
   else
@@ -91,9 +91,9 @@ LABEL_10:
 
   [v3 appendFormat:@"\tProduct Version : %@\n", v10];
 
-  v11 = [(DMFScheduleOSUpdateRequest *)self useDelay];
+  useDelay = [(DMFScheduleOSUpdateRequest *)self useDelay];
   v12 = @"NO";
-  if (v11)
+  if (useDelay)
   {
     v12 = @"YES";
   }
@@ -119,51 +119,51 @@ LABEL_10:
   return result;
 }
 
-- (DMFScheduleOSUpdateRequest)initWithCoder:(id)a3
+- (DMFScheduleOSUpdateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DMFScheduleOSUpdateRequest;
-  v5 = [(CATTaskRequest *)&v15 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"productKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"productKey"];
     productKey = v5->_productKey;
     v5->_productKey = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"productVersion"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"productVersion"];
     productVersion = v5->_productVersion;
     v5->_productVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     v5->_action = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"useDelay"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useDelay"];
     v5->_useDelay = [v13 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = DMFScheduleOSUpdateRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v9 encodeWithCoder:coderCopy];
   v5 = [(DMFScheduleOSUpdateRequest *)self productKey:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"productKey"];
+  [coderCopy encodeObject:v5 forKey:@"productKey"];
 
-  v6 = [(DMFScheduleOSUpdateRequest *)self productVersion];
-  [v4 encodeObject:v6 forKey:@"productVersion"];
+  productVersion = [(DMFScheduleOSUpdateRequest *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"productVersion"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFScheduleOSUpdateRequest action](self, "action")}];
-  [v4 encodeObject:v7 forKey:@"action"];
+  [coderCopy encodeObject:v7 forKey:@"action"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFScheduleOSUpdateRequest useDelay](self, "useDelay")}];
-  [v4 encodeObject:v8 forKey:@"useDelay"];
+  [coderCopy encodeObject:v8 forKey:@"useDelay"];
 }
 
 @end

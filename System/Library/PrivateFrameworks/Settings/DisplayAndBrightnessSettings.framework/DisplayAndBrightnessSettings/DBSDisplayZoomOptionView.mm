@@ -1,26 +1,26 @@
 @interface DBSDisplayZoomOptionView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (DBSDisplayZoomOptionView)initWithFrame:(CGRect)a3 displayZoomOption:(unint64_t)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (DBSDisplayZoomOptionView)initWithFrame:(CGRect)frame displayZoomOption:(unint64_t)option;
 - (DBSDisplayZoomOptionViewDelegate)delegate;
 - (void)_configureView;
-- (void)_userDidTapOnView:(id)a3;
-- (void)setHighlight:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_userDidTapOnView:(id)view;
+- (void)setHighlight:(BOOL)highlight;
+- (void)setSelected:(BOOL)selected;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
 
 @implementation DBSDisplayZoomOptionView
 
-- (DBSDisplayZoomOptionView)initWithFrame:(CGRect)a3 displayZoomOption:(unint64_t)a4
+- (DBSDisplayZoomOptionView)initWithFrame:(CGRect)frame displayZoomOption:(unint64_t)option
 {
   v8.receiver = self;
   v8.super_class = DBSDisplayZoomOptionView;
-  v5 = [(DBSDisplayZoomOptionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(DBSDisplayZoomOptionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_displayZoomOption = a4;
+    v5->_displayZoomOption = option;
     [(DBSDisplayZoomOptionView *)v5 _configureView];
   }
 
@@ -33,14 +33,14 @@
   packageView = self->__packageView;
   self->__packageView = v4;
 
-  v6 = [(DBSDisplayZoomOptionView *)self _packageView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _packageView = [(DBSDisplayZoomOptionView *)self _packageView];
+  [_packageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(DBSDisplayZoomOptionView *)self _packageView];
-  [v7 setContentMode:1];
+  _packageView2 = [(DBSDisplayZoomOptionView *)self _packageView];
+  [_packageView2 setContentMode:1];
 
-  v8 = [(DBSDisplayZoomOptionView *)self _packageView];
-  [(DBSDisplayZoomOptionView *)self addSubview:v8];
+  _packageView3 = [(DBSDisplayZoomOptionView *)self _packageView];
+  [(DBSDisplayZoomOptionView *)self addSubview:_packageView3];
 
   v9 = objc_alloc(MEMORY[0x277D756B8]);
   v10 = *MEMORY[0x277CBF3A0];
@@ -51,43 +51,43 @@
   optionNameLabel = self->_optionNameLabel;
   self->_optionNameLabel = v14;
 
-  v16 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  optionNameLabel = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [optionNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v17 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v18 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [v18 setFont:v17];
+  optionNameLabel2 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [optionNameLabel2 setFont:v17];
 
-  v19 = [MEMORY[0x277D75348] labelColor];
-  v20 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [v20 setTextColor:v19];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  optionNameLabel3 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [optionNameLabel3 setTextColor:labelColor];
 
-  v21 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [v21 setAdjustsFontForContentSizeCategory:1];
+  optionNameLabel4 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [optionNameLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  v22 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [v22 setAdjustsFontSizeToFitWidth:1];
+  optionNameLabel5 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [optionNameLabel5 setAdjustsFontSizeToFitWidth:1];
 
-  v23 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  [(DBSDisplayZoomOptionView *)self addSubview:v23];
+  optionNameLabel6 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  [(DBSDisplayZoomOptionView *)self addSubview:optionNameLabel6];
 
-  v24 = [(DBSDisplayZoomOptionView *)self displayZoomOption];
-  if (v24 <= 3)
+  displayZoomOption = [(DBSDisplayZoomOptionView *)self displayZoomOption];
+  if (displayZoomOption <= 3)
   {
-    v25 = DBS_LocalizedStringForMagnify(off_278459950[v24]);
-    v26 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-    [v26 setText:v25];
+    v25 = DBS_LocalizedStringForMagnify(off_278459950[displayZoomOption]);
+    optionNameLabel7 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+    [optionNameLabel7 setText:v25];
   }
 
   v27 = [[DBSCheckmarkView alloc] initWithFrame:v10, v11, v12, v13];
   checkmarkView = self->__checkmarkView;
   self->__checkmarkView = v27;
 
-  v29 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _checkmarkView = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+  [_checkmarkView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-  [(DBSDisplayZoomOptionView *)self addSubview:v30];
+  _checkmarkView2 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+  [(DBSDisplayZoomOptionView *)self addSubview:_checkmarkView2];
 
   v31 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:0];
   feedbackGenerator = self->__feedbackGenerator;
@@ -98,24 +98,24 @@
   [v82 setCancelPastAllowableMovement:1];
   [v82 setDelegate:self];
   [(DBSDisplayZoomOptionView *)self addGestureRecognizer:v82];
-  v33 = [MEMORY[0x277CBEB18] array];
-  v34 = [(DBSDisplayZoomOptionView *)self _packageView];
-  v35 = [v34 topAnchor];
-  v36 = [(DBSDisplayZoomOptionView *)self topAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
-  [v33 addObject:v37];
+  array = [MEMORY[0x277CBEB18] array];
+  _packageView4 = [(DBSDisplayZoomOptionView *)self _packageView];
+  topAnchor = [_packageView4 topAnchor];
+  topAnchor2 = [(DBSDisplayZoomOptionView *)self topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v37];
 
-  v38 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  v39 = [v38 topAnchor];
-  v40 = [(DBSDisplayZoomOptionView *)self _packageView];
-  v41 = [v40 bottomAnchor];
+  optionNameLabel8 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  topAnchor3 = [optionNameLabel8 topAnchor];
+  _packageView5 = [(DBSDisplayZoomOptionView *)self _packageView];
+  bottomAnchor = [_packageView5 bottomAnchor];
   v42 = DBSReverseZoomEnabled();
   if (v42)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v43 = [v2 sf_isiPad];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
     v44 = 20.0;
-    if (v43)
+    if (sf_isiPad)
     {
       v44 = 12.0;
     }
@@ -126,24 +126,24 @@
     v44 = 20.0;
   }
 
-  v45 = [v39 constraintEqualToAnchor:v41 constant:v44];
-  [v33 addObject:v45];
+  v45 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v44];
+  [array addObject:v45];
 
   if (v42)
   {
   }
 
-  v46 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-  v47 = [v46 topAnchor];
-  v48 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  v49 = [v48 bottomAnchor];
+  _checkmarkView3 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+  topAnchor4 = [_checkmarkView3 topAnchor];
+  optionNameLabel9 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  bottomAnchor2 = [optionNameLabel9 bottomAnchor];
   v50 = DBSReverseZoomEnabled();
   if (v50)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v51 = [v2 sf_isiPad];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad2 = [currentDevice sf_isiPad];
     v52 = 8.0;
-    if (v51)
+    if (sf_isiPad2)
     {
       v52 = 6.0;
     }
@@ -154,67 +154,67 @@
     v52 = 8.0;
   }
 
-  v53 = [v47 constraintEqualToAnchor:v49 constant:v52];
-  [v33 addObject:v53];
+  v53 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:v52];
+  [array addObject:v53];
 
   if (v50)
   {
   }
 
-  v54 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-  v55 = [v54 bottomAnchor];
-  v56 = [(DBSDisplayZoomOptionView *)self bottomAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
-  [v33 addObject:v57];
+  _checkmarkView4 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+  bottomAnchor3 = [_checkmarkView4 bottomAnchor];
+  bottomAnchor4 = [(DBSDisplayZoomOptionView *)self bottomAnchor];
+  v57 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+  [array addObject:v57];
 
-  v58 = [(DBSDisplayZoomOptionView *)self _packageView];
-  v59 = [v58 leadingAnchor];
-  v60 = [(DBSDisplayZoomOptionView *)self leadingAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
-  [v33 addObject:v61];
+  _packageView6 = [(DBSDisplayZoomOptionView *)self _packageView];
+  leadingAnchor = [_packageView6 leadingAnchor];
+  leadingAnchor2 = [(DBSDisplayZoomOptionView *)self leadingAnchor];
+  v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v61];
 
-  v62 = [(DBSDisplayZoomOptionView *)self _packageView];
-  v63 = [v62 trailingAnchor];
-  v64 = [(DBSDisplayZoomOptionView *)self trailingAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
-  [v33 addObject:v65];
+  _packageView7 = [(DBSDisplayZoomOptionView *)self _packageView];
+  trailingAnchor = [_packageView7 trailingAnchor];
+  trailingAnchor2 = [(DBSDisplayZoomOptionView *)self trailingAnchor];
+  v65 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v65];
 
-  v66 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  v67 = [v66 centerXAnchor];
-  v68 = [(DBSDisplayZoomOptionView *)self centerXAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
-  [v33 addObject:v69];
+  optionNameLabel10 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  centerXAnchor = [optionNameLabel10 centerXAnchor];
+  centerXAnchor2 = [(DBSDisplayZoomOptionView *)self centerXAnchor];
+  v69 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v69];
 
-  v70 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  v71 = [v70 leadingAnchor];
-  v72 = [(DBSDisplayZoomOptionView *)self leadingAnchor];
-  v73 = [v71 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v72 multiplier:1.0];
-  [v33 addObject:v73];
+  optionNameLabel11 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  leadingAnchor3 = [optionNameLabel11 leadingAnchor];
+  leadingAnchor4 = [(DBSDisplayZoomOptionView *)self leadingAnchor];
+  v73 = [leadingAnchor3 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
+  [array addObject:v73];
 
-  v74 = [(DBSDisplayZoomOptionView *)self trailingAnchor];
-  v75 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
-  v76 = [v75 trailingAnchor];
-  v77 = [v74 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v76 multiplier:1.0];
-  [v33 addObject:v77];
+  trailingAnchor3 = [(DBSDisplayZoomOptionView *)self trailingAnchor];
+  optionNameLabel12 = [(DBSDisplayZoomOptionView *)self optionNameLabel];
+  trailingAnchor4 = [optionNameLabel12 trailingAnchor];
+  v77 = [trailingAnchor3 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
+  [array addObject:v77];
 
-  v78 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-  v79 = [v78 centerXAnchor];
-  v80 = [(DBSDisplayZoomOptionView *)self centerXAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
-  [v33 addObject:v81];
+  _checkmarkView5 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+  centerXAnchor3 = [_checkmarkView5 centerXAnchor];
+  centerXAnchor4 = [(DBSDisplayZoomOptionView *)self centerXAnchor];
+  v81 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [array addObject:v81];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v33];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
-- (void)_userDidTapOnView:(id)a3
+- (void)_userDidTapOnView:(id)view
 {
-  v4 = [a3 state];
-  [(DBSDisplayZoomOptionView *)self setHighlight:(v4 - 1) < 2];
+  state = [view state];
+  [(DBSDisplayZoomOptionView *)self setHighlight:(state - 1) < 2];
   if (![(DBSDisplayZoomOptionView *)self isSelected])
   {
-    if (v4 == 3)
+    if (state == 3)
     {
-      v5 = [(DBSDisplayZoomOptionView *)self delegate];
+      delegate = [(DBSDisplayZoomOptionView *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if ((v6 & 1) == 0)
@@ -222,33 +222,33 @@
         return;
       }
 
-      v7 = [(DBSDisplayZoomOptionView *)self delegate];
-      [v7 userDidTapOnDisplayZoomOptionView:self];
+      delegate2 = [(DBSDisplayZoomOptionView *)self delegate];
+      [delegate2 userDidTapOnDisplayZoomOptionView:self];
 
-      v8 = [(DBSDisplayZoomOptionView *)self _feedbackGenerator];
-      [v8 impactOccurred];
+      _feedbackGenerator = [(DBSDisplayZoomOptionView *)self _feedbackGenerator];
+      [_feedbackGenerator impactOccurred];
     }
 
     else
     {
-      if (v4 != 1)
+      if (state != 1)
       {
         return;
       }
 
-      v8 = [(DBSDisplayZoomOptionView *)self _feedbackGenerator];
-      [v8 prepare];
+      _feedbackGenerator = [(DBSDisplayZoomOptionView *)self _feedbackGenerator];
+      [_feedbackGenerator prepare];
     }
   }
 }
 
-- (void)setHighlight:(BOOL)a3
+- (void)setHighlight:(BOOL)highlight
 {
-  if (self->_highlight != a3)
+  if (self->_highlight != highlight)
   {
-    self->_highlight = a3;
+    self->_highlight = highlight;
     v3 = 1.0;
-    if (a3)
+    if (highlight)
     {
       v3 = 0.5;
     }
@@ -257,35 +257,35 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
-    v5 = [(DBSDisplayZoomOptionView *)self _checkmarkView];
-    [v5 setSelected:v4];
+    selectedCopy = selected;
+    self->_selected = selected;
+    _checkmarkView = [(DBSDisplayZoomOptionView *)self _checkmarkView];
+    [_checkmarkView setSelected:selectedCopy];
   }
 }
 
 - (void)startAnimation
 {
-  v2 = [(DBSDisplayZoomOptionView *)self _packageView];
-  [v2 startAnimation];
+  _packageView = [(DBSDisplayZoomOptionView *)self _packageView];
+  [_packageView startAnimation];
 }
 
 - (void)stopAnimation
 {
-  v2 = [(DBSDisplayZoomOptionView *)self _packageView];
-  [v2 stopAnimation];
+  _packageView = [(DBSDisplayZoomOptionView *)self _packageView];
+  [_packageView stopAnimation];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBSDisplayZoomOptionView *)self gestureRecognizers];
-  v9 = [v8 containsObject:v7];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  gestureRecognizers = [(DBSDisplayZoomOptionView *)self gestureRecognizers];
+  v9 = [gestureRecognizers containsObject:recognizerCopy];
 
   if (v9)
   {

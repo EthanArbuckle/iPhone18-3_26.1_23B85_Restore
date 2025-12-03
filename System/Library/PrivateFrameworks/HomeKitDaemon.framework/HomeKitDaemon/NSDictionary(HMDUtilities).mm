@@ -14,7 +14,7 @@
   v8[3] = &unk_278676838;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 na_firstKeyPassingTest:v8];
+  v6 = [self na_firstKeyPassingTest:v8];
 
   return v6;
 }
@@ -23,7 +23,7 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -43,7 +43,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 addEntriesFromDictionary:{*(*(&v12 + 1) + 8 * i), v12}];
+        [dictionary addEntriesFromDictionary:{*(*(&v12 + 1) + 8 * i), v12}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -54,7 +54,7 @@
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 @end

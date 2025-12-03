@@ -2,8 +2,8 @@
 - (HMDHAPAccessoryTaskTracker)init;
 - (id)pendingRemoteTasks;
 - (unint64_t)nextTaskIdentifier;
-- (void)executeTask:(id)a3;
-- (void)removePendingTaskWithIdentifier:(id)a3;
+- (void)executeTask:(id)task;
+- (void)removePendingTaskWithIdentifier:(id)identifier;
 @end
 
 @implementation HMDHAPAccessoryTaskTracker
@@ -11,19 +11,19 @@
 - (id)pendingRemoteTasks
 {
   v40 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [(NSMutableDictionary *)self->_pendingTasks allValues];
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  allValues = [(NSMutableDictionary *)self->_pendingTasks allValues];
+  v4 = [allValues countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v4)
   {
     v5 = *v35;
     v27 = *v35;
-    v28 = v3;
+    v28 = allValues;
     do
     {
       v6 = 0;
@@ -32,17 +32,17 @@
       {
         if (*v35 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v34 + 1) + 8 * v6);
         if ([v7 supportsMultiPartResponse])
         {
-          v8 = v7;
+          remoteTask = v7;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = v8;
+            v9 = remoteTask;
           }
 
           else
@@ -54,12 +54,12 @@
 
           if (v10)
           {
-            [v2 addObject:v10];
+            [array addObject:v10];
           }
 
           else
           {
-            v11 = v8;
+            v11 = remoteTask;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -73,11 +73,11 @@
 
             v13 = v12;
 
-            v8 = [v13 remoteTask];
+            remoteTask = [v13 remoteTask];
 
-            if (v8)
+            if (remoteTask)
             {
-              [v2 addObject:v8];
+              [array addObject:remoteTask];
             }
 
             else
@@ -100,10 +100,10 @@
 
               v16 = v15;
 
-              v17 = [v16 remoteFallbackTasks];
+              remoteFallbackTasks = [v16 remoteFallbackTasks];
 
-              v8 = 0;
-              v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              remoteTask = 0;
+              v18 = [remoteFallbackTasks countByEnumeratingWithState:&v30 objects:v38 count:16];
               if (v18)
               {
                 v19 = *v31;
@@ -113,14 +113,14 @@
                   {
                     if (*v31 != v19)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(remoteFallbackTasks);
                     }
 
-                    v21 = [*(*(&v30 + 1) + 8 * i) remoteTask];
+                    remoteTask2 = [*(*(&v30 + 1) + 8 * i) remoteTask];
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v22 = v21;
+                      v22 = remoteTask2;
                     }
 
                     else
@@ -130,14 +130,14 @@
 
                     v23 = v22;
 
-                    v8 = v23;
+                    remoteTask = v23;
                     if (v23)
                     {
-                      [v2 addObject:v23];
+                      [array addObject:v23];
                     }
                   }
 
-                  v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+                  v18 = [remoteFallbackTasks countByEnumeratingWithState:&v30 objects:v38 count:16];
                 }
 
                 while (v18);
@@ -146,7 +146,7 @@
           }
 
           v5 = v27;
-          v3 = v28;
+          allValues = v28;
           v4 = v29;
         }
 
@@ -154,7 +154,7 @@
       }
 
       while (v6 != v4);
-      v4 = [v3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v4);
@@ -163,7 +163,7 @@
   os_unfair_lock_unlock(&self->_lock);
   v24 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 - (unint64_t)nextTaskIdentifier
@@ -175,24 +175,24 @@
   return currentTaskIdentifier;
 }
 
-- (void)removePendingTaskWithIdentifier:(id)a3
+- (void)removePendingTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_pendingTasks removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingTasks removeObjectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)executeTask:(id)a3
+- (void)executeTask:(id)task
 {
-  v6 = a3;
+  taskCopy = task;
   os_unfair_lock_lock_with_options();
   pendingTasks = self->_pendingTasks;
-  v5 = [v6 identifier];
-  [(NSMutableDictionary *)pendingTasks setObject:v6 forKey:v5];
+  identifier = [taskCopy identifier];
+  [(NSMutableDictionary *)pendingTasks setObject:taskCopy forKey:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
-  [v6 execute];
+  [taskCopy execute];
 }
 
 - (HMDHAPAccessoryTaskTracker)init
@@ -202,9 +202,9 @@
   v2 = [(HMDHAPAccessoryTaskTracker *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingTasks = v2->_pendingTasks;
-    v2->_pendingTasks = v3;
+    v2->_pendingTasks = dictionary;
   }
 
   return v2;

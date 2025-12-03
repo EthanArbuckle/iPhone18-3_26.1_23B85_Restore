@@ -1,17 +1,17 @@
 @interface TDNamedColorRenditionSpec
-- (void)setColorPropertiesFromCGColor:(CGColor *)a3;
+- (void)setColorPropertiesFromCGColor:(CGColor *)color;
 @end
 
 @implementation TDNamedColorRenditionSpec
 
-- (void)setColorPropertiesFromCGColor:(CGColor *)a3
+- (void)setColorPropertiesFromCGColor:(CGColor *)color
 {
   if (TDColorSpaceGetExtendedRangeSRGB___once != -1)
   {
     TDColorSpaceGetExtendedRangeSRGB_cold_1();
   }
 
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(TDColorSpaceGetExtendedRangeSRGB_sExtendedRangeSRGBColorSpace, kCGRenderingIntentRelativeColorimetric, a3, 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(TDColorSpaceGetExtendedRangeSRGB_sExtendedRangeSRGBColorSpace, kCGRenderingIntentRelativeColorimetric, color, 0);
   [(TDNamedColorRenditionSpec *)self willChangeValueForKey:@"colorSpaceID"];
   [(TDNamedColorRenditionSpec *)self setColorSpaceID:4];
   [(TDNamedColorRenditionSpec *)self didChangeValueForKey:@"colorSpaceID"];

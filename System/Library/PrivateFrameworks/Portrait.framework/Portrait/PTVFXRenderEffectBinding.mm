@@ -1,17 +1,17 @@
 @interface PTVFXRenderEffectBinding
-- (PTVFXRenderEffectBinding)initWithHumanDetections:(id)a3;
+- (PTVFXRenderEffectBinding)initWithHumanDetections:(id)detections;
 - (id)singleDetectionGroupId;
-- (int)updateBackgroundDimming:(float)a3;
-- (int)updateWithEvent:(id)a3 renderRequest:(id)a4 videoRect:(CGRect)a5 time:(double)a6;
-- (uint64_t)screenSpaceToCameraSpace:(float64x2_t)a3 videoRect:(float64_t)a4;
-- (void)setInverseCameraProjection:(__n128)a3;
+- (int)updateBackgroundDimming:(float)dimming;
+- (int)updateWithEvent:(id)event renderRequest:(id)request videoRect:(CGRect)rect time:(double)time;
+- (uint64_t)screenSpaceToCameraSpace:(float64x2_t)space videoRect:(float64_t)rect;
+- (void)setInverseCameraProjection:(__n128)projection;
 @end
 
 @implementation PTVFXRenderEffectBinding
 
-- (PTVFXRenderEffectBinding)initWithHumanDetections:(id)a3
+- (PTVFXRenderEffectBinding)initWithHumanDetections:(id)detections
 {
-  v5 = a3;
+  detectionsCopy = detections;
   v12.receiver = self;
   v12.super_class = PTVFXRenderEffectBinding;
   v6 = [(PTVFXRenderEffectBinding *)&v12 init];
@@ -21,10 +21,10 @@
     v6->_duration = 7.0;
     v6->_forceFadeOutStart = 3.4028e38;
     v6->_active = 1;
-    objc_storeStrong(&v6->_humanDetections, a3);
-    v8 = [(PTVFXRenderEffectBinding *)v7 singleDetectionGroupId];
+    objc_storeStrong(&v6->_humanDetections, detections);
+    singleDetectionGroupId = [(PTVFXRenderEffectBinding *)v7 singleDetectionGroupId];
     faceDetectionGroupId = v7->_faceDetectionGroupId;
-    v7->_faceDetectionGroupId = v8;
+    v7->_faceDetectionGroupId = singleDetectionGroupId;
 
     v10 = v7;
   }
@@ -34,7 +34,7 @@
 
 - (id)singleDetectionGroupId
 {
-  v3 = [(PTHumanDetections *)self->_humanDetections detectionsFiltered];
+  detectionsFiltered = [(PTHumanDetections *)self->_humanDetections detectionsFiltered];
   v4 = [(PTHumanDetections *)self->_humanDetections faceDetectionsFilteredState:0];
   v5 = 0;
   v6 = 0;
@@ -48,19 +48,19 @@
     {
       if (v10 == 2)
       {
-        groupId = v3->groupId;
+        groupId = detectionsFiltered->groupId;
         ++v7;
       }
     }
 
     else
     {
-      v6 = v3->groupId;
+      v6 = detectionsFiltered->groupId;
       ++v8;
     }
 
     ++v5;
-    v3 += 36;
+    detectionsFiltered += 36;
   }
 
   while (v5 != 4);
@@ -72,50 +72,50 @@
   return v11;
 }
 
-- (uint64_t)screenSpaceToCameraSpace:(float64x2_t)a3 videoRect:(float64_t)a4
+- (uint64_t)screenSpaceToCameraSpace:(float64x2_t)space videoRect:(float64_t)rect
 {
   if (a5.f64[0] > 0.0 && a6 > 0.0)
   {
     a5.f64[1] = a6;
-    a3.f64[1] = a4;
-    *&a3.f64[0] = vcvt_f32_f64(a3);
-    a2 = vdiv_f32(vsub_f32(a2, *&a3.f64[0]), vcvt_f32_f64(a5));
+    space.f64[1] = rect;
+    *&space.f64[0] = vcvt_f32_f64(space);
+    a2 = vdiv_f32(vsub_f32(a2, *&space.f64[0]), vcvt_f32_f64(a5));
   }
 
-  LODWORD(a3.f64[0]) = *(a1 + 48);
-  return [PTEffectUtil screenSpaceToCameraSpace:*&a2 zValue:a3.f64[0] inverseProjection:*(a1 + 144), *(a1 + 160), *(a1 + 176), *(a1 + 192)];
+  LODWORD(space.f64[0]) = *(self + 48);
+  return [PTEffectUtil screenSpaceToCameraSpace:*&a2 zValue:space.f64[0] inverseProjection:*(self + 144), *(self + 160), *(self + 176), *(self + 192)];
 }
 
-- (int)updateWithEvent:(id)a3 renderRequest:(id)a4 videoRect:(CGRect)a5 time:(double)a6
+- (int)updateWithEvent:(id)event renderRequest:(id)request videoRect:(CGRect)rect time:(double)time
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v57 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
+  eventCopy = event;
+  requestCopy = request;
   if (!self->_active)
   {
     goto LABEL_37;
   }
 
-  v48 = v13;
+  v48 = eventCopy;
   headPositionBinding = self->_headPositionBinding;
   if (self->_faceDetectionGroupId)
   {
     if (headPositionBinding)
     {
-      v16 = [(PTHumanDetections *)self->_humanDetections detectionsFiltered];
+      detectionsFiltered = [(PTHumanDetections *)self->_humanDetections detectionsFiltered];
       v17 = [(PTHumanDetections *)self->_humanDetections faceDetectionsFilteredState:0];
       v18 = 0;
-      p_groupId = &v16[4].groupId;
+      p_groupId = &detectionsFiltered[4].groupId;
       do
       {
         v20 = *(p_groupId - 4);
         if (v20 == [(NSNumber *)self->_faceDetectionGroupId intValue]&& v17[v18] != 3)
         {
-          [PTVFXRenderEffect transformVideoRectToCropCoordinates:v14 effectRenderRequest:*p_groupId];
+          [PTVFXRenderEffect transformVideoRectToCropCoordinates:requestCopy effectRenderRequest:*p_groupId];
           v50 = *v21.i64;
           *v21.i8 = vmla_f32(*v21.i8, 0x3F0000003F000000, *&vextq_s8(v21, v21, 8uLL));
           *&v21.i32[1] = 1.0 - *&v21.i32[1];
@@ -149,22 +149,22 @@
   durationBinding = self->_durationBinding;
   if (durationBinding)
   {
-    v30 = [(VFXGraphBinding *)durationBinding rawValue];
-    self->_duration = *[v30 bytes];
+    rawValue = [(VFXGraphBinding *)durationBinding rawValue];
+    self->_duration = *[rawValue bytes];
   }
 
-  v13 = v48;
+  eventCopy = v48;
   if (v48 && self->_positionBinding)
   {
     [v48 position];
-    [PTVFXRenderEffect transformVideoPositionToCropCoordinates:v14 effectRenderRequest:1 flipYAxis:?];
+    [PTVFXRenderEffect transformVideoPositionToCropCoordinates:requestCopy effectRenderRequest:1 flipYAxis:?];
     [PTVFXRenderEffectBinding screenSpaceToCameraSpace:"screenSpaceToCameraSpace:videoRect:" videoRect:?];
     v55 = v31;
     v32 = [MEMORY[0x277CBEA90] dataWithBytes:&v55 length:16];
     [PTVFXRenderEffectBinding setRawValue:v32 onBinding:self->_positionBinding];
   }
 
-  v33 = a6 - self->_creationTimeSeconds;
+  v33 = time - self->_creationTimeSeconds;
   duration = self->_duration;
   self->_active = v33 < duration;
   v35 = 0.0;
@@ -192,9 +192,9 @@
 LABEL_24:
   self->_dimmingFactor = v35;
   forceFadeOutStart = self->_forceFadeOutStart;
-  if (forceFadeOutStart < a6)
+  if (forceFadeOutStart < time)
   {
-    v38 = a6 - forceFadeOutStart + a6 - forceFadeOutStart;
+    v38 = time - forceFadeOutStart + time - forceFadeOutStart;
     if (v38 <= 1.0)
     {
       v39 = 1.0 - v38;
@@ -251,25 +251,25 @@ LABEL_37:
   return 0;
 }
 
-- (int)updateBackgroundDimming:(float)a3
+- (int)updateBackgroundDimming:(float)dimming
 {
-  v6 = a3;
+  dimmingCopy = dimming;
   if (self->_backgroundDimmingBinding)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v6 length:4];
+    v4 = [MEMORY[0x277CBEA90] dataWithBytes:&dimmingCopy length:4];
     [PTVFXRenderEffectBinding setRawValue:v4 onBinding:self->_backgroundDimmingBinding];
   }
 
   return 0;
 }
 
-- (void)setInverseCameraProjection:(__n128)a3
+- (void)setInverseCameraProjection:(__n128)projection
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = projection;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 144), v5, 64, 1, 0);
+  objc_copyStruct((self + 144), v5, 64, 1, 0);
 }
 
 @end

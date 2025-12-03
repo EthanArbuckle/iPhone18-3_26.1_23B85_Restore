@@ -1,32 +1,32 @@
 @interface CMDyskineticSymptomResult
-- (CMDyskineticSymptomResult)initWithCoder:(id)a3;
-- (CMDyskineticSymptomResult)initWithParkinsonsResult:(const ParkinsonsResult *)a3;
-- (CMDyskineticSymptomResult)initWithStartDate:(id)a3 endDate:(id)a4 percentDyskinesiaUnlikely:(float)a5 percentDyskinesiaLikely:(float)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMDyskineticSymptomResult)initWithCoder:(id)coder;
+- (CMDyskineticSymptomResult)initWithParkinsonsResult:(const ParkinsonsResult *)result;
+- (CMDyskineticSymptomResult)initWithStartDate:(id)date endDate:(id)endDate percentDyskinesiaUnlikely:(float)unlikely percentDyskinesiaLikely:(float)likely;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMDyskineticSymptomResult
 
-- (CMDyskineticSymptomResult)initWithStartDate:(id)a3 endDate:(id)a4 percentDyskinesiaUnlikely:(float)a5 percentDyskinesiaLikely:(float)a6
+- (CMDyskineticSymptomResult)initWithStartDate:(id)date endDate:(id)endDate percentDyskinesiaUnlikely:(float)unlikely percentDyskinesiaLikely:(float)likely
 {
   v12.receiver = self;
   v12.super_class = CMDyskineticSymptomResult;
   v10 = [(CMDyskineticSymptomResult *)&v12 init];
   if (v10)
   {
-    v10->_startDate = a3;
-    v10->_endDate = a4;
-    v10->_percentUnlikely = a5;
-    v10->_percentLikely = a6;
+    v10->_startDate = date;
+    v10->_endDate = endDate;
+    v10->_percentUnlikely = unlikely;
+    v10->_percentLikely = likely;
   }
 
   return v10;
 }
 
-- (CMDyskineticSymptomResult)initWithParkinsonsResult:(const ParkinsonsResult *)a3
+- (CMDyskineticSymptomResult)initWithParkinsonsResult:(const ParkinsonsResult *)result
 {
   v12.receiver = self;
   v12.super_class = CMDyskineticSymptomResult;
@@ -34,11 +34,11 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E695DF00]);
-    v4->_startDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v5, v6, v7, a3->var0);
+    v4->_startDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v5, v6, v7, result->var0);
     v8 = objc_alloc(MEMORY[0x1E695DF00]);
-    v4->_endDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v8, v9, v10, a3->var1);
-    v4->_percentUnlikely = 1.0 - a3->var3;
-    v4->_percentLikely = a3->var3;
+    v4->_endDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v8, v9, v10, result->var1);
+    v4->_percentUnlikely = 1.0 - result->var3;
+    v4->_percentLikely = result->var3;
   }
 
   return v4;
@@ -51,7 +51,7 @@
   [(CMDyskineticSymptomResult *)&v3 dealloc];
 }
 
-- (CMDyskineticSymptomResult)initWithCoder:(id)a3
+- (CMDyskineticSymptomResult)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = CMDyskineticSymptomResult;
@@ -59,22 +59,22 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMMovementDisorderResultCodingKeyStartDate");
+    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMMovementDisorderResultCodingKeyStartDate");
     v7 = objc_opt_class();
-    v4->_endDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMMovementDisorderResultCodingKeyEndDate");
-    objc_msgSend_decodeFloatForKey_(a3, v9, @"kCMMovementDisorderResultCodingKeyNoObservation");
+    v4->_endDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMMovementDisorderResultCodingKeyEndDate");
+    objc_msgSend_decodeFloatForKey_(coder, v9, @"kCMMovementDisorderResultCodingKeyNoObservation");
     v4->_percentUnlikely = v10;
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"kCMMovementDisorderResultCodingKeyDyskinesiaLikely");
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"kCMMovementDisorderResultCodingKeyDyskinesiaLikely");
     v4->_percentLikely = v12;
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   startDate = self->_startDate;
   endDate = self->_endDate;
   percentUnlikely = self->_percentUnlikely;
@@ -83,15 +83,15 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_endDate_percentDyskinesiaUnlikely_percentDyskinesiaLikely_, startDate);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_startDate, @"kCMMovementDisorderResultCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_endDate, @"kCMMovementDisorderResultCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_startDate, @"kCMMovementDisorderResultCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_endDate, @"kCMMovementDisorderResultCodingKeyEndDate");
   *&v6 = self->_percentUnlikely;
-  objc_msgSend_encodeFloat_forKey_(a3, v7, @"kCMMovementDisorderResultCodingKeyNoObservation", v6);
+  objc_msgSend_encodeFloat_forKey_(coder, v7, @"kCMMovementDisorderResultCodingKeyNoObservation", v6);
   *&v9 = self->_percentLikely;
 
-  objc_msgSend_encodeFloat_forKey_(a3, v8, @"kCMMovementDisorderResultCodingKeyDyskinesiaLikely", v9);
+  objc_msgSend_encodeFloat_forKey_(coder, v8, @"kCMMovementDisorderResultCodingKeyDyskinesiaLikely", v9);
 }
 
 - (id)description

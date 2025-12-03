@@ -1,7 +1,7 @@
 @interface BKMainContentViewController
 - (BKDockableMiniPlayer)miniPlayerViewController;
-- (void)setContentNavigationController:(id)a3;
-- (void)syncLayoutControllerNeedsFlushing:(id)a3;
+- (void)setContentNavigationController:(id)controller;
+- (void)syncLayoutControllerNeedsFlushing:(id)flushing;
 - (void)undockMiniPlayer;
 - (void)viewDidLayoutSubviews;
 - (void)viewSafeAreaInsetsDidChange;
@@ -9,11 +9,11 @@
 
 @implementation BKMainContentViewController
 
-- (void)setContentNavigationController:(id)a3
+- (void)setContentNavigationController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  MainContentViewController.contentNavigationController.setter(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  MainContentViewController.contentNavigationController.setter(controller);
 }
 
 - (void)viewDidLayoutSubviews
@@ -34,7 +34,7 @@
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   MainContentViewController.viewSafeAreaInsetsDidChange()();
 }
 
@@ -44,15 +44,15 @@
   swift_beginAccess();
   v4 = *&self->BSUIRootBarWrapperViewController_opaque[v3];
   *&self->BSUIRootBarWrapperViewController_opaque[v3] = 0;
-  v5 = self;
+  selfCopy = self;
   sub_1005D9694(v4);
 }
 
-- (void)syncLayoutControllerNeedsFlushing:(id)a3
+- (void)syncLayoutControllerNeedsFlushing:(id)flushing
 {
-  v4 = self;
-  v3 = [(BKMainContentViewController *)v4 view];
-  [v3 setNeedsLayout];
+  selfCopy = self;
+  view = [(BKMainContentViewController *)selfCopy view];
+  [view setNeedsLayout];
 }
 
 @end

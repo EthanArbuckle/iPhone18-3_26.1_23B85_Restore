@@ -1,23 +1,23 @@
 @interface MSDTransactionTask
-+ (id)createTransactionWithIdentifier:(id)a3;
-- (MSDTransactionTask)initWithIdentifier:(id)a3;
++ (id)createTransactionWithIdentifier:(id)identifier;
+- (MSDTransactionTask)initWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)releaseTransaction;
 @end
 
 @implementation MSDTransactionTask
 
-- (MSDTransactionTask)initWithIdentifier:(id)a3
+- (MSDTransactionTask)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MSDTransactionTask;
   v6 = [(MSDTransactionTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transactionID, a3);
-    [v5 UTF8String];
+    objc_storeStrong(&v6->_transactionID, identifier);
+    [identifierCopy UTF8String];
     v8 = os_transaction_create();
     transaction = v7->_transaction;
     v7->_transaction = v8;
@@ -26,12 +26,12 @@
   return v7;
 }
 
-+ (id)createTransactionWithIdentifier:(id)a3
++ (id)createTransactionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [[a1 alloc] initWithIdentifier:v4];
+    v5 = [[self alloc] initWithIdentifier:identifierCopy];
   }
 
   else

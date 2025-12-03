@@ -2,15 +2,15 @@
 - (VUINowPlayingObservation)latestObservation;
 - (VUINowPlayingObserver)init;
 - (VUINowPlayingObserverDelegate)delegate;
-- (void)_handleNowPlayingAppDidChangeNotification:(id)a3;
-- (void)_handleNowPlayingAppIsPlayingDidChangeNotification:(id)a3;
-- (void)_notifyDelegateLatestObservationDidChange:(id)a3;
+- (void)_handleNowPlayingAppDidChangeNotification:(id)notification;
+- (void)_handleNowPlayingAppIsPlayingDidChangeNotification:(id)notification;
+- (void)_notifyDelegateLatestObservationDidChange:(id)change;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)_updateLatestObservation;
-- (void)_updateLatestObservationWithBundleIdentifier:(id)a3 playbackState:(unsigned int)a4;
+- (void)_updateLatestObservationWithBundleIdentifier:(id)identifier playbackState:(unsigned int)state;
 - (void)dealloc;
-- (void)setLatestObservation:(id)a3;
+- (void)setLatestObservation:(id)observation;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -43,13 +43,13 @@
 - (void)startObserving
 {
   objc_initWeak(&location, self);
-  v3 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __39__VUINowPlayingObserver_startObserving__block_invoke;
   v4[3] = &unk_1E872E4B8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialProcessingDispatchQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -76,13 +76,13 @@ void __39__VUINowPlayingObserver_startObserving__block_invoke(uint64_t a1)
 - (void)stopObserving
 {
   objc_initWeak(&location, self);
-  v3 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __38__VUINowPlayingObserver_stopObserving__block_invoke;
   v4[3] = &unk_1E872E4B8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialProcessingDispatchQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -114,14 +114,14 @@ void __38__VUINowPlayingObserver_stopObserving__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__24;
   v11 = __Block_byref_object_dispose__24;
   v12 = 0;
-  v3 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__VUINowPlayingObserver_latestObservation__block_invoke;
   v6[3] = &unk_1E872E5B0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialProcessingDispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -129,17 +129,17 @@ void __38__VUINowPlayingObserver_stopObserving__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_handleNowPlayingAppDidChangeNotification:(id)a3
+- (void)_handleNowPlayingAppDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v5 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__VUINowPlayingObserver__handleNowPlayingAppDidChangeNotification___block_invoke;
   v6[3] = &unk_1E872E4B8;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(serialProcessingDispatchQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -151,17 +151,17 @@ void __67__VUINowPlayingObserver__handleNowPlayingAppDidChangeNotification___blo
   [WeakRetained _updateLatestObservation];
 }
 
-- (void)_handleNowPlayingAppIsPlayingDidChangeNotification:(id)a3
+- (void)_handleNowPlayingAppIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
-  v5 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__VUINowPlayingObserver__handleNowPlayingAppIsPlayingDidChangeNotification___block_invoke;
   v6[3] = &unk_1E872E4B8;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(serialProcessingDispatchQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -173,11 +173,11 @@ void __76__VUINowPlayingObserver__handleNowPlayingAppIsPlayingDidChangeNotificat
   [WeakRetained _updateLatestObservation];
 }
 
-- (void)setLatestObservation:(id)a3
+- (void)setLatestObservation:(id)observation
 {
-  v5 = a3;
+  observationCopy = observation;
   v6 = self->_latestObservation;
-  v7 = v5;
+  v7 = observationCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -196,7 +196,7 @@ void __76__VUINowPlayingObserver__handleNowPlayingAppIsPlayingDidChangeNotificat
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_latestObservation, a3);
+    objc_storeStrong(&self->_latestObservation, observation);
     [(VUINowPlayingObserver *)self _notifyDelegateLatestObservationDidChange:v9];
   }
 
@@ -205,17 +205,17 @@ LABEL_9:
 
 - (void)_startObserving
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleNowPlayingAppDidChangeNotification_ name:*MEMORY[0x1E69B0E00] object:0];
-  [v3 addObserver:self selector:sel__handleNowPlayingAppIsPlayingDidChangeNotification_ name:*MEMORY[0x1E69B0E08] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleNowPlayingAppDidChangeNotification_ name:*MEMORY[0x1E69B0E00] object:0];
+  [defaultCenter addObserver:self selector:sel__handleNowPlayingAppIsPlayingDidChangeNotification_ name:*MEMORY[0x1E69B0E08] object:0];
   MRMediaRemoteSetWantsNowPlayingNotifications();
   [(VUINowPlayingObserver *)self _updateLatestObservation];
 }
 
 - (void)_stopObserving
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
 
@@ -234,7 +234,7 @@ LABEL_9:
   objc_copyWeak(v8, &location);
   v8[1] = v3;
   v4 = _Block_copy(aBlock);
-  v5 = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUINowPlayingObserver *)self serialProcessingDispatchQueue];
   v6 = v4;
   MRMediaRemoteGetNowPlayingClient();
 
@@ -275,14 +275,14 @@ void __49__VUINowPlayingObserver__updateLatestObservation__block_invoke_2(uint64
   }
 }
 
-- (void)_updateLatestObservationWithBundleIdentifier:(id)a3 playbackState:(unsigned int)a4
+- (void)_updateLatestObservationWithBundleIdentifier:(id)identifier playbackState:(unsigned int)state
 {
-  if (a3)
+  if (identifier)
   {
-    v5 = a4 < 6;
-    v6 = 0x26u >> a4;
-    v7 = a3;
-    v8 = [[VUINowPlayingObservation alloc] initWithBundleIdentifier:v7 isPlaying:v5 & v6];
+    v5 = state < 6;
+    v6 = 0x26u >> state;
+    identifierCopy = identifier;
+    v8 = [[VUINowPlayingObservation alloc] initWithBundleIdentifier:identifierCopy isPlaying:v5 & v6];
   }
 
   else
@@ -293,10 +293,10 @@ void __49__VUINowPlayingObserver__updateLatestObservation__block_invoke_2(uint64
   [(VUINowPlayingObserver *)self setLatestObservation:v8];
 }
 
-- (void)_notifyDelegateLatestObservationDidChange:(id)a3
+- (void)_notifyDelegateLatestObservationDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VUINowPlayingObserver *)self delegate];
+  changeCopy = change;
+  delegate = [(VUINowPlayingObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
@@ -305,9 +305,9 @@ void __49__VUINowPlayingObserver__updateLatestObservation__block_invoke_2(uint64
     v7[1] = 3221225472;
     v7[2] = __67__VUINowPlayingObserver__notifyDelegateLatestObservationDidChange___block_invoke;
     v7[3] = &unk_1E8730198;
-    v8 = v5;
+    v8 = delegate;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = changeCopy;
     dispatch_async(v6, v7);
 
     objc_destroyWeak(&v10);

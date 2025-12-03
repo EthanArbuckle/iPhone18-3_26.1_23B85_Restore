@@ -1,16 +1,16 @@
 @interface CHSWidgetRenderScheme
-- (BOOL)isEqual:(id)a3;
-- (CHSWidgetRenderScheme)initWithBSXPCCoder:(id)a3;
-- (CHSWidgetRenderScheme)initWithCoder:(id)a3;
-- (CHSWidgetRenderScheme)initWithRenderingMode:(unint64_t)a3 backgroundViewPolicy:(unint64_t)a4;
-- (CHSWidgetRenderScheme)initWithRenderingModes:(unint64_t)a3 backgroundViewPolicy:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (CHSWidgetRenderScheme)initWithBSXPCCoder:(id)coder;
+- (CHSWidgetRenderScheme)initWithCoder:(id)coder;
+- (CHSWidgetRenderScheme)initWithRenderingMode:(unint64_t)mode backgroundViewPolicy:(unint64_t)policy;
+- (CHSWidgetRenderScheme)initWithRenderingModes:(unint64_t)modes backgroundViewPolicy:(unint64_t)policy;
 - (NSString)description;
 - (id)_compatibilityRenderSchemesFromDeprecatedRenderingModes;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_initWithWidgetRenderScheme:(void *)a1;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithWidgetRenderScheme:(void *)scheme;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidgetRenderScheme
@@ -31,48 +31,48 @@
   v7 = NSStringFromCHSWidgetBackgroundViewPolicy(self->_backgroundViewPolicy);
   [v3 appendString:v7 withName:@"backgroundViewPolicy"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (CHSWidgetRenderScheme)initWithRenderingMode:(unint64_t)a3 backgroundViewPolicy:(unint64_t)a4
+- (CHSWidgetRenderScheme)initWithRenderingMode:(unint64_t)mode backgroundViewPolicy:(unint64_t)policy
 {
   v7.receiver = self;
   v7.super_class = CHSWidgetRenderScheme;
   result = [(CHSWidgetRenderScheme *)&v7 init];
   if (result)
   {
-    result->_renderingMode = a3;
-    result->_backgroundViewPolicy = a4;
+    result->_renderingMode = mode;
+    result->_backgroundViewPolicy = policy;
   }
 
   return result;
 }
 
-- (CHSWidgetRenderScheme)initWithRenderingModes:(unint64_t)a3 backgroundViewPolicy:(unint64_t)a4
+- (CHSWidgetRenderScheme)initWithRenderingModes:(unint64_t)modes backgroundViewPolicy:(unint64_t)policy
 {
   v7.receiver = self;
   v7.super_class = CHSWidgetRenderScheme;
   result = [(CHSWidgetRenderScheme *)&v7 init];
   if (result)
   {
-    result->_backgroundViewPolicy = a4;
-    result->_renderingModes = a3;
+    result->_backgroundViewPolicy = policy;
+    result->_renderingModes = modes;
   }
 
   return result;
 }
 
-- (void)_initWithWidgetRenderScheme:(void *)a1
+- (void)_initWithWidgetRenderScheme:(void *)scheme
 {
   v3 = a2;
-  if (a1)
+  if (scheme)
   {
-    v6.receiver = a1;
+    v6.receiver = scheme;
     v6.super_class = CHSWidgetRenderScheme;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    scheme = v4;
     if (v4)
     {
       v4[1] = v3[1];
@@ -81,33 +81,33 @@
     }
   }
 
-  return a1;
+  return scheme;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSMutableWidgetRenderScheme allocWithZone:a3];
+  v4 = [CHSMutableWidgetRenderScheme allocWithZone:zone];
 
   return [(CHSWidgetRenderScheme *)v4 _initWithWidgetRenderScheme:?];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:self->_renderingMode];
-  v5 = [v3 appendUnsignedInteger:self->_renderingModes];
-  v6 = [v3 appendUnsignedInteger:self->_backgroundViewPolicy];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:self->_renderingMode];
+  v5 = [builder appendUnsignedInteger:self->_renderingModes];
+  v6 = [builder appendUnsignedInteger:self->_backgroundViewPolicy];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -170,7 +170,7 @@
   v9[1] = 3221225472;
   v10 = __80__CHSWidgetRenderScheme__compatibilityRenderSchemesFromDeprecatedRenderingModes__block_invoke;
   v11 = &unk_1E7453920;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   v3 = v9;
   if (renderingModes)
@@ -234,24 +234,24 @@ void __80__CHSWidgetRenderScheme__compatibilityRenderSchemesFromDeprecatedRender
   [*(*(*(a1 + 40) + 8) + 40) addObject:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:LODWORD(self->_renderingMode) forKey:@"renderingMode"];
-  [v4 encodeInt32:LODWORD(self->_backgroundViewPolicy) forKey:@"backgroundViewPolicy"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:LODWORD(self->_renderingMode) forKey:@"renderingMode"];
+  [coderCopy encodeInt32:LODWORD(self->_backgroundViewPolicy) forKey:@"backgroundViewPolicy"];
 }
 
-- (CHSWidgetRenderScheme)initWithCoder:(id)a3
+- (CHSWidgetRenderScheme)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CHSWidgetRenderScheme;
   v5 = [(CHSWidgetRenderScheme *)&v19 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"renderingModes"])
+    if ([coderCopy containsValueForKey:@"renderingModes"])
     {
-      v6 = [v4 decodeInt32ForKey:@"renderingModes"];
+      v6 = [coderCopy decodeInt32ForKey:@"renderingModes"];
       v7 = v6;
       v5->_renderingModes = v6;
       v14 = MEMORY[0x1E69E9820];
@@ -292,19 +292,19 @@ void __80__CHSWidgetRenderScheme__compatibilityRenderSchemesFromDeprecatedRender
       }
     }
 
-    if ([v4 containsValueForKey:{@"renderingMode", v14, v15}])
+    if ([coderCopy containsValueForKey:{@"renderingMode", v14, v15}])
     {
-      v5->_renderingMode = [v4 decodeInt32ForKey:@"renderingMode"];
+      v5->_renderingMode = [coderCopy decodeInt32ForKey:@"renderingMode"];
     }
 
-    if ([v4 containsValueForKey:@"backgroundViewPolicy"])
+    if ([coderCopy containsValueForKey:@"backgroundViewPolicy"])
     {
-      v12 = [v4 decodeInt32ForKey:@"backgroundViewPolicy"];
+      v12 = [coderCopy decodeInt32ForKey:@"backgroundViewPolicy"];
     }
 
     else
     {
-      v12 = [v4 decodeBoolForKey:@"opaque"] ^ 1;
+      v12 = [coderCopy decodeBoolForKey:@"opaque"] ^ 1;
     }
 
     v5->_backgroundViewPolicy = v12;
@@ -324,17 +324,17 @@ uint64_t __39__CHSWidgetRenderScheme_initWithCoder___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeUInt64:self->_renderingMode forKey:@"renderingMode"];
-  [v4 encodeUInt64:self->_backgroundViewPolicy forKey:@"backgroundViewPolicy"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:self->_renderingMode forKey:@"renderingMode"];
+  [coderCopy encodeUInt64:self->_backgroundViewPolicy forKey:@"backgroundViewPolicy"];
 }
 
-- (CHSWidgetRenderScheme)initWithBSXPCCoder:(id)a3
+- (CHSWidgetRenderScheme)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CHSWidgetRenderScheme initWithRenderingMode:backgroundViewPolicy:](self, "initWithRenderingMode:backgroundViewPolicy:", [v4 decodeUInt64ForKey:@"renderingMode"], objc_msgSend(v4, "decodeUInt64ForKey:", @"backgroundViewPolicy"));
+  coderCopy = coder;
+  v5 = -[CHSWidgetRenderScheme initWithRenderingMode:backgroundViewPolicy:](self, "initWithRenderingMode:backgroundViewPolicy:", [coderCopy decodeUInt64ForKey:@"renderingMode"], objc_msgSend(coderCopy, "decodeUInt64ForKey:", @"backgroundViewPolicy"));
 
   return v5;
 }

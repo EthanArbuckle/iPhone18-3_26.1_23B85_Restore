@@ -1,14 +1,14 @@
 @interface PBUndoInteractionHUDIconPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBUndoInteractionHUDIconPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBUndoInteractionHUDIconPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 @end
 
 @implementation PBUndoInteractionHUDIconPasteButtonDrawing
 
-- (PBUndoInteractionHUDIconPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBUndoInteractionHUDIconPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v33.receiver = self;
   v33.super_class = PBUndoInteractionHUDIconPasteButtonDrawing;
   v8 = [(PBUndoInteractionHUDIconPasteButtonDrawing *)&v33 init];
@@ -18,10 +18,10 @@
   }
 
   v9 = [UISPasteVariant variantForSecureName:0x10000];
-  v10 = [v9 glyph];
-  v11 = [v6 assetGlyphWithName:v10 glyphSize:2 textStyle:_UISKBUndoInteractiveControlLabelTextStyle];
+  glyph = [v9 glyph];
+  v11 = [styleCopy assetGlyphWithName:glyph glyphSize:2 textStyle:_UISKBUndoInteractiveControlLabelTextStyle];
 
-  v12 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v11 tintColor:{objc_msgSend(v6, "tintColor")}];
+  v12 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v11 tintColor:{objc_msgSend(styleCopy, "tintColor")}];
   v13 = *(v8 + 1);
   *(v8 + 1) = v12;
 
@@ -29,7 +29,7 @@
   v30 = v15;
   v31 = v14;
   v16 = v14 + 32.0;
-  [v7 minWidth];
+  [tagCopy minWidth];
   v18.f64[0] = v31;
   if (v16 >= v17)
   {

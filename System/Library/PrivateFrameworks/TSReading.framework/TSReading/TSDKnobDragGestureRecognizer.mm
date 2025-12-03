@@ -1,39 +1,39 @@
 @interface TSDKnobDragGestureRecognizer
-- (BOOL)p_hitRepIsValid:(id)a3;
+- (BOOL)p_hitRepIsValid:(id)valid;
 - (CGPoint)autoscrollPoint;
 - (CGPoint)p_pointInUnscaledCanvas;
-- (TSDKnobDragGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (TSDKnobDragGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (void)cancelBecauseOfRotation;
 - (void)dealloc;
 - (void)operationDidEnd;
-- (void)p_triggerDelayedKnobTracking:(id)a3;
+- (void)p_triggerDelayedKnobTracking:(id)tracking;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation TSDKnobDragGestureRecognizer
 
-- (TSDKnobDragGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (TSDKnobDragGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = TSDKnobDragGestureRecognizer;
   v4 = [(TSDKnobDragGestureRecognizer *)&v8 initWithTarget:0 action:0];
   if (v4)
   {
-    if (!a3)
+    if (!controller)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer initWithInteractiveCanvasController:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 55, @"invalid nil value for '%s'", "icc"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 55, @"invalid nil value for '%s'", "icc"}];
     }
 
-    v4->mICC = a3;
-    v4->mCVC = [objc_msgSend(a3 "layerHost")];
+    v4->mICC = controller;
+    v4->mCVC = [objc_msgSend(controller "layerHost")];
   }
 
   return v4;
@@ -47,12 +47,12 @@
   [(TSDKnobDragGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   [(TSDKnobDragGestureRecognizer *)self state];
   v5.receiver = self;
   v5.super_class = TSDKnobDragGestureRecognizer;
-  [(TSDKnobDragGestureRecognizer *)&v5 setState:a3];
+  [(TSDKnobDragGestureRecognizer *)&v5 setState:state];
 }
 
 - (void)reset
@@ -74,7 +74,7 @@
   self->mTracker = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if (![(TSDKnobDragGestureRecognizer *)self state]&& [(TSDInteractiveCanvasController *)self->mICC currentlyScrolling]|| [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] isInOperation]&& ![(TSDKnobDragGestureRecognizer *)self state])
   {
@@ -86,7 +86,7 @@
   {
     v59.receiver = self;
     v59.super_class = TSDKnobDragGestureRecognizer;
-    [(TSDKnobDragGestureRecognizer *)&v59 touchesBegan:a3 withEvent:a4];
+    [(TSDKnobDragGestureRecognizer *)&v59 touchesBegan:began withEvent:event];
     self->mTouchesMoved = 0;
 
     self->mLastHitRep = 0;
@@ -103,7 +103,7 @@
       return;
     }
 
-    if ([a3 count] != 1)
+    if ([began count] != 1)
     {
       goto LABEL_24;
     }
@@ -113,9 +113,9 @@
       goto LABEL_24;
     }
 
-    v9 = [a3 anyObject];
-    self->mTouch = v9;
-    if ([(UITouch *)v9 tapCount]!= 1)
+    anyObject = [began anyObject];
+    self->mTouch = anyObject;
+    if ([(UITouch *)anyObject tapCount]!= 1)
     {
       goto LABEL_24;
     }
@@ -143,16 +143,16 @@
 
     v14 = [v58 newTrackerForKnob:v13];
     self->mTracker = v14;
-    v15 = [(TSDKnobTracker *)v14 knob];
+    knob = [(TSDKnobTracker *)v14 knob];
     if (!self->mTracker)
     {
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
-      [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 143, @"invalid nil value for '%s'", "mTracker"}];
+      [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 143, @"invalid nil value for '%s'", "mTracker"}];
     }
 
     v18 = v58;
-    [(TSDKnob *)v15 position];
+    [(TSDKnob *)knob position];
     [v18 convertNaturalPointToUnscaledCanvas:?];
     v20 = v19;
     v22 = v21;
@@ -183,24 +183,24 @@ LABEL_24:
     [(TSDKnobTracker *)self->mTracker setCurrentPosition:TSDAddPoints(v26, v27, p_mKnobToTouchOffset->x)];
     [(TSDKnobDragGestureRecognizer *)self addTarget:[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] action:sel_handleGestureRecognizer_];
     [(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] registerTrackerManipulator:self];
-    v28 = [[(TSDKnobTracker *)self->mTracker knob] dragType];
-    if (v28 <= 2)
+    dragType = [[(TSDKnobTracker *)self->mTracker knob] dragType];
+    if (dragType <= 2)
     {
-      if (v28)
+      if (dragType)
       {
-        if (v28 != 1)
+        if (dragType != 1)
         {
-          if (v28 == 2)
+          if (dragType == 2)
           {
             [(TSDKnobDragGestureRecognizer *)self setState:1];
             [(TSDKnobTracker *)self->mTracker delay];
             if (v29 != 0.0)
             {
-              v30 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
               v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
               v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
               [(TSDKnobTracker *)self->mTracker delay];
-              [v30 handleFailureInFunction:v31 file:v32 lineNumber:207 description:{@"requesting a delay of %f", v33}];
+              [currentHandler2 handleFailureInFunction:v31 file:v32 lineNumber:207 description:{@"requesting a delay of %f", v33}];
             }
 
             if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] takeControlWithTrackerManipulator:self])
@@ -211,8 +211,8 @@ LABEL_24:
               }
 
               [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] beginOperation];
-              v34 = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
-              -[TSDDynamicOperationController startTransformingReps:](v34, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:{-[TSDKnobTracker rep](self->mTracker, "rep")}]);
+              dynamicOperationController = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
+              -[TSDDynamicOperationController startTransformingReps:](dynamicOperationController, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:{-[TSDKnobTracker rep](self->mTracker, "rep")}]);
             }
           }
 
@@ -222,10 +222,10 @@ LABEL_24:
         [(TSDKnobTracker *)self->mTracker delay];
         if (v52 == 0.0)
         {
-          v53 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
           v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
-          v44 = v53;
+          v44 = currentHandler3;
           v45 = v54;
           v46 = 199;
           goto LABEL_49;
@@ -237,10 +237,10 @@ LABEL_24:
         [(TSDKnobTracker *)self->mTracker delay];
         if (v40 == 0.0)
         {
-          v41 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
           v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
           v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
-          v44 = v41;
+          v44 = currentHandler4;
           v45 = v42;
           v46 = 192;
 LABEL_49:
@@ -254,17 +254,17 @@ LABEL_50:
       return;
     }
 
-    switch(v28)
+    switch(dragType)
     {
       case 3:
         [(TSDKnobTracker *)self->mTracker delay];
         if (v47 != 0.0)
         {
-          v48 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
           v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
           v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
           [(TSDKnobTracker *)self->mTracker delay];
-          [v48 handleFailureInFunction:v49 file:v50 lineNumber:225 description:{@"requesting a delay of %f", v51}];
+          [currentHandler5 handleFailureInFunction:v49 file:v50 lineNumber:225 description:{@"requesting a delay of %f", v51}];
         }
 
         break;
@@ -272,10 +272,10 @@ LABEL_50:
         [(TSDKnobTracker *)self->mTracker delay];
         if (v55 == 0.0)
         {
-          v56 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler6 = [MEMORY[0x277D6C290] currentHandler];
           v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
           v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
-          v44 = v56;
+          v44 = currentHandler6;
           v45 = v57;
           v46 = 232;
           goto LABEL_49;
@@ -286,11 +286,11 @@ LABEL_50:
         [(TSDKnobTracker *)self->mTracker delay];
         if (v35 != 0.0)
         {
-          v36 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler7 = [MEMORY[0x277D6C290] currentHandler];
           v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer touchesBegan:withEvent:]"];
           v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
           [(TSDKnobTracker *)self->mTracker delay];
-          [v36 handleFailureInFunction:v37 file:v38 lineNumber:239 description:{@"requesting a delay of %f", v39}];
+          [currentHandler7 handleFailureInFunction:v37 file:v38 lineNumber:239 description:{@"requesting a delay of %f", v39}];
         }
 
         break;
@@ -298,7 +298,7 @@ LABEL_50:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   self->mTouchesMoved = 1;
   self->mKnobTouchHasMoved = 1;
@@ -314,17 +314,17 @@ LABEL_50:
 
   v14.receiver = self;
   v14.super_class = TSDKnobDragGestureRecognizer;
-  [(TSDKnobDragGestureRecognizer *)&v14 touchesMoved:a3 withEvent:a4];
-  if ([a3 containsObject:self->mTouch])
+  [(TSDKnobDragGestureRecognizer *)&v14 touchesMoved:moved withEvent:event];
+  if ([moved containsObject:self->mTouch])
   {
     if ([(TSDKnobDragGestureRecognizer *)self state])
     {
       if ([(TSDKnobDragGestureRecognizer *)self state]== 1)
       {
-        v9 = self;
+        selfCopy2 = self;
         v10 = 2;
 LABEL_16:
-        [(TSDKnobDragGestureRecognizer *)v9 setState:v10];
+        [(TSDKnobDragGestureRecognizer *)selfCopy2 setState:v10];
       }
     }
 
@@ -348,14 +348,14 @@ LABEL_16:
 
       if (![(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] takeControlWithTrackerManipulator:self])
       {
-        v9 = self;
+        selfCopy2 = self;
         v10 = 5;
         goto LABEL_16;
       }
 
       [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] beginOperation];
-      v11 = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
-      -[TSDDynamicOperationController startTransformingReps:](v11, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:self->mLastHitRep]);
+      dynamicOperationController = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
+      -[TSDDynamicOperationController startTransformingReps:](dynamicOperationController, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:self->mLastHitRep]);
     }
 
 LABEL_17:
@@ -373,12 +373,12 @@ LABEL_17:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = TSDKnobDragGestureRecognizer;
-  [(TSDKnobDragGestureRecognizer *)&v12 touchesEnded:a3 withEvent:a4];
-  if ([a3 containsObject:self->mTouch])
+  [(TSDKnobDragGestureRecognizer *)&v12 touchesEnded:ended withEvent:event];
+  if ([ended containsObject:self->mTouch])
   {
     if ([(TSDKnobDragGestureRecognizer *)self state]|| [[(TSDKnobTracker *)self->mTracker knob] dragType]&& [[(TSDKnobTracker *)self->mTracker knob] dragType]!= 3)
     {
@@ -402,8 +402,8 @@ LABEL_17:
           if ([(TSDTrackerManipulatorCoordinator *)[(TSDInteractiveCanvasController *)self->mICC tmCoordinator] takeControlWithTrackerManipulator:self])
           {
             [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] beginOperation];
-            v8 = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
-            -[TSDDynamicOperationController startTransformingReps:](v8, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:self->mLastHitRep]);
+            dynamicOperationController = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
+            -[TSDDynamicOperationController startTransformingReps:](dynamicOperationController, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:self->mLastHitRep]);
           }
         }
       }
@@ -421,7 +421,7 @@ LABEL_17:
     }
   }
 
-  if (self->mSecondTouch && [a3 containsObject:?])
+  if (self->mSecondTouch && [ended containsObject:?])
   {
 
     self->mSecondTouch = 0;
@@ -442,31 +442,31 @@ LABEL_17:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   [(TSDKnobDragGestureRecognizer *)self p_cancelDelayedKnobTracking];
   v9.receiver = self;
   v9.super_class = TSDKnobDragGestureRecognizer;
-  [(TSDKnobDragGestureRecognizer *)&v9 touchesCancelled:a3 withEvent:a4];
-  if ([a3 containsObject:self->mTouch])
+  [(TSDKnobDragGestureRecognizer *)&v9 touchesCancelled:cancelled withEvent:event];
+  if ([cancelled containsObject:self->mTouch])
   {
     if (![(TSDKnobDragGestureRecognizer *)self state])
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 5;
       goto LABEL_9;
     }
 
     if ([(TSDKnobDragGestureRecognizer *)self state]== 1 || [(TSDKnobDragGestureRecognizer *)self state]== 2)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 4;
 LABEL_9:
-      [(TSDKnobDragGestureRecognizer *)v7 setState:v8];
+      [(TSDKnobDragGestureRecognizer *)selfCopy2 setState:v8];
     }
   }
 
-  else if ([a3 containsObject:self->mSecondTouch])
+  else if ([cancelled containsObject:self->mSecondTouch])
   {
 
     self->mSecondTouch = 0;
@@ -515,32 +515,32 @@ LABEL_9:
   }
 }
 
-- (void)p_triggerDelayedKnobTracking:(id)a3
+- (void)p_triggerDelayedKnobTracking:(id)tracking
 {
   v21 = *MEMORY[0x277D85DE8];
   self->mDelayHasElapsed = 1;
   if ([(TSDKnobDragGestureRecognizer *)self state])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer p_triggerDelayedKnobTracking:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"];
     [(TSDKnobDragGestureRecognizer *)self state];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:511 description:{@"delay fired when knob GR in state %@", NSStringFromUIGestureRecognizerState()}];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:511 description:{@"delay fired when knob GR in state %@", NSStringFromUIGestureRecognizerState()}];
   }
 
   else
   {
-    v7 = [[(TSDKnobTracker *)self->mTracker knob] dragType];
-    if (v7 <= 5)
+    dragType = [[(TSDKnobTracker *)self->mTracker knob] dragType];
+    if (dragType <= 5)
     {
-      if (((1 << v7) & 0x2C) != 0)
+      if (((1 << dragType) & 0x2C) != 0)
       {
-        v8 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnobDragGestureRecognizer p_triggerDelayedKnobTracking:]"];
-        [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 520, @"shouldn't have delayed knob tracking!"}];
+        [currentHandler2 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnobDragGestureRecognizer.m"), 520, @"shouldn't have delayed knob tracking!"}];
       }
 
-      else if (((1 << v7) & 0x12) != 0 || self->mKnobTouchHasMoved)
+      else if (((1 << dragType) & 0x12) != 0 || self->mKnobTouchHasMoved)
       {
         [(TSDKnobDragGestureRecognizer *)self setState:1];
       }
@@ -554,8 +554,8 @@ LABEL_9:
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v10 = [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] currentlyTransformingReps];
-        v11 = [(NSSet *)v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        currentlyTransformingReps = [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] currentlyTransformingReps];
+        v11 = [(NSSet *)currentlyTransformingReps countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v11)
         {
           v12 = v11;
@@ -566,13 +566,13 @@ LABEL_9:
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(currentlyTransformingReps);
               }
 
               [*(*(&v16 + 1) + 8 * i) showKnobsDuringManipulation:0];
             }
 
-            v12 = [(NSSet *)v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v12 = [(NSSet *)currentlyTransformingReps countByEnumeratingWithState:&v16 objects:v20 count:16];
           }
 
           while (v12);
@@ -582,29 +582,29 @@ LABEL_9:
       }
 
       [(TSDDynamicOperationController *)[(TSDInteractiveCanvasController *)self->mICC dynamicOperationController] beginOperation];
-      v15 = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
-      -[TSDDynamicOperationController startTransformingReps:](v15, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:{-[TSDKnobTracker rep](self->mTracker, "rep")}]);
+      dynamicOperationController = [(TSDInteractiveCanvasController *)self->mICC dynamicOperationController];
+      -[TSDDynamicOperationController startTransformingReps:](dynamicOperationController, "startTransformingReps:", [MEMORY[0x277CBEB98] setWithObject:{-[TSDKnobTracker rep](self->mTracker, "rep")}]);
     }
   }
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   [(TSDKnobDragGestureRecognizer *)self p_pointInUnscaledCanvas];
   [(TSDKnobTracker *)self->mTracker setCurrentPosition:TSDAddPoints(v5, v6, self->mKnobToTouchOffset.x)];
-  [(TSDKnobTracker *)self->mTracker updateAfterAutoscroll:a3];
+  [(TSDKnobTracker *)self->mTracker updateAfterAutoscroll:autoscroll];
 
   [(TSDKnobDragGestureRecognizer *)self setState:2];
 }
 
-- (BOOL)p_hitRepIsValid:(id)a3
+- (BOOL)p_hitRepIsValid:(id)valid
 {
-  if (!a3)
+  if (!valid)
   {
     return 0;
   }
 
-  [a3 boundsForStandardKnobs];
+  [valid boundsForStandardKnobs];
   return v4 > 1.0 && v3 > 1.0;
 }
 

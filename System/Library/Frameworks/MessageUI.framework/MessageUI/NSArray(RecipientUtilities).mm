@@ -8,7 +8,7 @@
 
 - (id)mf_commaSeparatedRecipientListWithWidth:()RecipientUtilities forFont:
 {
-  v3 = [a1 mf_commaSeparatedRecipientListWithWidth:a3 forFont:&__block_literal_global_30 usingBlock:?];
+  v3 = [self mf_commaSeparatedRecipientListWithWidth:a3 forFont:&__block_literal_global_30 usingBlock:?];
 
   return v3;
 }
@@ -18,13 +18,13 @@
   v8 = a4;
   v9 = a5;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [a1 count];
+  v11 = [self count];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__NSArray_RecipientUtilities__mf_commaSeparatedRecipientListWithWidth_forFont_usingBlock___block_invoke;
   v19[3] = &unk_1E8070768;
   v12 = v9;
-  v19[4] = a1;
+  v19[4] = self;
   v20 = v12;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -52,7 +52,7 @@
   v9 = v4;
   v10 = &v11;
   v5 = v4;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);

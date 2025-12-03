@@ -1,22 +1,22 @@
 @interface SFKeySearchFilter
 - (NSArray)domains;
 - (NSArray)specifiers;
-- (SFKeySearchFilter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDomains:(id)a3;
-- (void)setSpecifiers:(id)a3;
+- (SFKeySearchFilter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDomains:(id)domains;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation SFKeySearchFilter
 
-- (SFKeySearchFilter)initWithCoder:(id)a3
+- (SFKeySearchFilter)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFKeySearchFilter;
   return [(SFKeySearchFilter *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSpecifiers:*(self->_keySearchFilterInternal + 1)];
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v4 = [a3 copy];
+  v4 = [specifiers copy];
   keySearchFilterInternal = self->_keySearchFilterInternal;
   v6 = keySearchFilterInternal[1];
   keySearchFilterInternal[1] = v4;
@@ -48,9 +48,9 @@
   return v2;
 }
 
-- (void)setDomains:(id)a3
+- (void)setDomains:(id)domains
 {
-  v4 = [a3 copy];
+  v4 = [domains copy];
   keySearchFilterInternal = self->_keySearchFilterInternal;
   v6 = keySearchFilterInternal[2];
   keySearchFilterInternal[2] = v4;

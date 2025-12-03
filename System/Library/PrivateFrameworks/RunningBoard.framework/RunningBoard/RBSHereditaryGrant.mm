@@ -1,5 +1,5 @@
 @interface RBSHereditaryGrant
-- (void)_withEndowmentFromContext:(void *)a3 block:;
+- (void)_withEndowmentFromContext:(void *)context block:;
 @end
 
 @implementation RBSHereditaryGrant
@@ -162,38 +162,38 @@ void __69__RBSHereditaryGrant_RBProcessState__effectiveAttributesWithContext___b
   [v2 unionSet:v3];
 }
 
-- (void)_withEndowmentFromContext:(void *)a3 block:
+- (void)_withEndowmentFromContext:(void *)context block:
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [a1 encodedEndowment];
-    v9 = [v5 assertionID];
-    if (!v8)
+    encodedEndowment = [self encodedEndowment];
+    assertionID = [v5 assertionID];
+    if (!encodedEndowment)
     {
-      v10 = [a1 endowmentNamespace];
-      v11 = [v5 availableInheritances];
-      v12 = [v11 allNamespaces];
-      v13 = [v12 containsObject:v10];
+      endowmentNamespace = [self endowmentNamespace];
+      availableInheritances = [v5 availableInheritances];
+      allNamespaces = [availableInheritances allNamespaces];
+      v13 = [allNamespaces containsObject:endowmentNamespace];
 
       if (v13)
       {
-        v14 = [a1 sourceEnvironment];
-        v15 = [v11 inheritancesForEnvironment:v14];
+        sourceEnvironment = [self sourceEnvironment];
+        v15 = [availableInheritances inheritancesForEnvironment:sourceEnvironment];
 
-        v8 = OUTLINED_FUNCTION_1_14(v16, v17, v18, v19);
-        if (v8)
+        encodedEndowment = OUTLINED_FUNCTION_1_14(v16, v17, v18, v19);
+        if (encodedEndowment)
         {
-          v31 = v11;
+          v31 = availableInheritances;
           v32 = v7;
           v33 = v5;
           v20 = MEMORY[0];
           while (2)
           {
-            for (i = 0; i != v8; i = i + 1)
+            for (i = 0; i != encodedEndowment; i = i + 1)
             {
               if (MEMORY[0] != v20)
               {
@@ -201,21 +201,21 @@ void __69__RBSHereditaryGrant_RBProcessState__effectiveAttributesWithContext___b
               }
 
               v22 = *(8 * i);
-              v23 = [v22 endowmentNamespace];
-              v24 = [v23 isEqual:v10];
+              endowmentNamespace2 = [v22 endowmentNamespace];
+              v24 = [endowmentNamespace2 isEqual:endowmentNamespace];
 
               if (v24)
               {
-                v8 = [v22 encodedEndowment];
-                v29 = [v22 originatingIdentifier];
+                encodedEndowment = [v22 encodedEndowment];
+                originatingIdentifier = [v22 originatingIdentifier];
 
-                v9 = v29;
+                assertionID = originatingIdentifier;
                 goto LABEL_15;
               }
             }
 
-            v8 = OUTLINED_FUNCTION_1_14(v25, v26, v27, v28);
-            if (v8)
+            encodedEndowment = OUTLINED_FUNCTION_1_14(v25, v26, v27, v28);
+            if (encodedEndowment)
             {
               continue;
             }
@@ -226,17 +226,17 @@ void __69__RBSHereditaryGrant_RBProcessState__effectiveAttributesWithContext___b
 LABEL_15:
           v7 = v32;
           v5 = v33;
-          v11 = v31;
+          availableInheritances = v31;
         }
       }
 
       else
       {
-        v8 = 0;
+        encodedEndowment = 0;
       }
     }
 
-    v6[2](v6, v8, v9);
+    contextCopy[2](contextCopy, encodedEndowment, assertionID);
 
     objc_autoreleasePoolPop(v7);
   }

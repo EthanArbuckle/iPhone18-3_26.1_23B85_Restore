@@ -1,47 +1,47 @@
 @interface PKSavingsAccountFeatureDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSavingsAccountFeatureDescriptor:(id)a3;
-- (PKSavingsAccountFeatureDescriptor)initWithCoder:(id)a3;
-- (PKSavingsAccountFeatureDescriptor)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSavingsAccountFeatureDescriptor:(id)descriptor;
+- (PKSavingsAccountFeatureDescriptor)initWithCoder:(id)coder;
+- (PKSavingsAccountFeatureDescriptor)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSavingsAccountFeatureDescriptor
 
-- (PKSavingsAccountFeatureDescriptor)initWithDictionary:(id)a3
+- (PKSavingsAccountFeatureDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKSavingsAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v17 initWithDictionary:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v17 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKArrayContaining:objc_opt_class() forKey:@"fundingSourceTypes"];
+    v6 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"fundingSourceTypes"];
     v5->_fundingSourceTypes = PKAccountFundingSourceTypeFromStrings(v6);
 
-    v7 = [v4 PKArrayContaining:objc_opt_class() forKey:@"transferFrequencies"];
+    v7 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"transferFrequencies"];
     v5->_transferFrequencies = PKAccountTransferFrequencyFromStrings(v7);
 
-    v8 = [v4 PKStringForKey:@"transferTermsIdentifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"transferTermsIdentifier"];
     transferTermsIdentifier = v5->_transferTermsIdentifier;
     v5->_transferTermsIdentifier = v8;
 
-    v10 = [v4 PKArrayContaining:objc_opt_class() forKey:@"supportedFileFormatsForTransactionData"];
+    v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedFileFormatsForTransactionData"];
     supportedFileFormatsForTransactionData = v5->_supportedFileFormatsForTransactionData;
     v5->_supportedFileFormatsForTransactionData = v10;
 
-    v12 = [v4 PKStringForKey:@"contactMethod"];
+    v12 = [dictionaryCopy PKStringForKey:@"contactMethod"];
     v5->_contactMethod = PKAccountAddBeneficiariesContactMethodFromString(v12);
 
-    v5->_showCreditRewardsHubBalance = [v4 PKBoolForKey:@"showCreditRewardsHubBalance"];
-    v5->_showCreditDashboardBalance = [v4 PKBoolForKey:@"showCreditDashboardBalance"];
-    v5->_showSettingsBalance = [v4 PKBoolForKey:@"showSettingsBalance"];
-    v5->_hideCreditRewardsHubSignage = [v4 PKBoolForKey:@"hideCreditRewardsHubSignage"];
-    v5->_hideAuthenticationInterstitial = [v4 PKBoolForKey:@"hideAuthenticationInterstitial"];
-    v13 = [v4 PKArrayForKey:@"accountLocations"];
+    v5->_showCreditRewardsHubBalance = [dictionaryCopy PKBoolForKey:@"showCreditRewardsHubBalance"];
+    v5->_showCreditDashboardBalance = [dictionaryCopy PKBoolForKey:@"showCreditDashboardBalance"];
+    v5->_showSettingsBalance = [dictionaryCopy PKBoolForKey:@"showSettingsBalance"];
+    v5->_hideCreditRewardsHubSignage = [dictionaryCopy PKBoolForKey:@"hideCreditRewardsHubSignage"];
+    v5->_hideAuthenticationInterstitial = [dictionaryCopy PKBoolForKey:@"hideAuthenticationInterstitial"];
+    v13 = [dictionaryCopy PKArrayForKey:@"accountLocations"];
     v14 = [v13 pk_createSetByApplyingBlock:&__block_literal_global_43];
     accountLocations = v5->_accountLocations;
     v5->_accountLocations = v14;
@@ -58,18 +58,18 @@ PKAccountLocation *__56__PKSavingsAccountFeatureDescriptor_initWithDictionary___
   return v3;
 }
 
-- (PKSavingsAccountFeatureDescriptor)initWithCoder:(id)a3
+- (PKSavingsAccountFeatureDescriptor)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKSavingsAccountFeatureDescriptor;
-  v5 = [(PKAccountFeatureDescriptor *)&v19 initWithCoder:v4];
+  v5 = [(PKAccountFeatureDescriptor *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_fundingSourceTypes = [v4 decodeIntegerForKey:@"fundingSourceTypes"];
-    v5->_transferFrequencies = [v4 decodeIntegerForKey:@"transferFrequencies"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferTermsIdentifier"];
+    v5->_fundingSourceTypes = [coderCopy decodeIntegerForKey:@"fundingSourceTypes"];
+    v5->_transferFrequencies = [coderCopy decodeIntegerForKey:@"transferFrequencies"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferTermsIdentifier"];
     transferTermsIdentifier = v5->_transferTermsIdentifier;
     v5->_transferTermsIdentifier = v6;
 
@@ -78,22 +78,22 @@ PKAccountLocation *__56__PKSavingsAccountFeatureDescriptor_initWithDictionary___
     v21[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedFileFormatsForTransactionData"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedFileFormatsForTransactionData"];
     supportedFileFormatsForTransactionData = v5->_supportedFileFormatsForTransactionData;
     v5->_supportedFileFormatsForTransactionData = v11;
 
-    v5->_contactMethod = [v4 decodeIntegerForKey:@"contactMethod"];
-    v5->_showCreditRewardsHubBalance = [v4 decodeBoolForKey:@"showCreditRewardsHubBalance"];
-    v5->_showCreditDashboardBalance = [v4 decodeBoolForKey:@"showCreditDashboardBalance"];
-    v5->_showSettingsBalance = [v4 decodeBoolForKey:@"showSettingsBalance"];
-    v5->_hideCreditRewardsHubSignage = [v4 decodeBoolForKey:@"hideCreditRewardsHubSignage"];
-    v5->_hideAuthenticationInterstitial = [v4 decodeBoolForKey:@"hideAuthenticationInterstitial"];
+    v5->_contactMethod = [coderCopy decodeIntegerForKey:@"contactMethod"];
+    v5->_showCreditRewardsHubBalance = [coderCopy decodeBoolForKey:@"showCreditRewardsHubBalance"];
+    v5->_showCreditDashboardBalance = [coderCopy decodeBoolForKey:@"showCreditDashboardBalance"];
+    v5->_showSettingsBalance = [coderCopy decodeBoolForKey:@"showSettingsBalance"];
+    v5->_hideCreditRewardsHubSignage = [coderCopy decodeBoolForKey:@"hideCreditRewardsHubSignage"];
+    v5->_hideAuthenticationInterstitial = [coderCopy decodeBoolForKey:@"hideAuthenticationInterstitial"];
     v13 = MEMORY[0x1E695DFD8];
     v20[0] = objc_opt_class();
     v20[1] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v15 = [v13 setWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"accountLocations"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"accountLocations"];
     accountLocations = v5->_accountLocations;
     v5->_accountLocations = v16;
   }
@@ -101,43 +101,43 @@ PKAccountLocation *__56__PKSavingsAccountFeatureDescriptor_initWithDictionary___
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKSavingsAccountFeatureDescriptor;
-  v4 = a3;
-  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_fundingSourceTypes forKey:{@"fundingSourceTypes", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_transferFrequencies forKey:@"transferFrequencies"];
-  [v4 encodeObject:self->_transferTermsIdentifier forKey:@"transferTermsIdentifier"];
-  [v4 encodeObject:self->_supportedFileFormatsForTransactionData forKey:@"supportedFileFormatsForTransactionData"];
-  [v4 encodeInteger:self->_contactMethod forKey:@"contactMethod"];
-  [v4 encodeBool:self->_showCreditRewardsHubBalance forKey:@"showCreditRewardsHubBalance"];
-  [v4 encodeBool:self->_showCreditDashboardBalance forKey:@"showCreditDashboardBalance"];
-  [v4 encodeBool:self->_showSettingsBalance forKey:@"showSettingsBalance"];
-  [v4 encodeBool:self->_hideCreditRewardsHubSignage forKey:@"hideCreditRewardsHubSignage"];
-  [v4 encodeBool:self->_hideAuthenticationInterstitial forKey:@"hideAuthenticationInterstitial"];
-  [v4 encodeObject:self->_accountLocations forKey:@"accountLocations"];
+  coderCopy = coder;
+  [(PKAccountFeatureDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_fundingSourceTypes forKey:{@"fundingSourceTypes", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_transferFrequencies forKey:@"transferFrequencies"];
+  [coderCopy encodeObject:self->_transferTermsIdentifier forKey:@"transferTermsIdentifier"];
+  [coderCopy encodeObject:self->_supportedFileFormatsForTransactionData forKey:@"supportedFileFormatsForTransactionData"];
+  [coderCopy encodeInteger:self->_contactMethod forKey:@"contactMethod"];
+  [coderCopy encodeBool:self->_showCreditRewardsHubBalance forKey:@"showCreditRewardsHubBalance"];
+  [coderCopy encodeBool:self->_showCreditDashboardBalance forKey:@"showCreditDashboardBalance"];
+  [coderCopy encodeBool:self->_showSettingsBalance forKey:@"showSettingsBalance"];
+  [coderCopy encodeBool:self->_hideCreditRewardsHubSignage forKey:@"hideCreditRewardsHubSignage"];
+  [coderCopy encodeBool:self->_hideAuthenticationInterstitial forKey:@"hideAuthenticationInterstitial"];
+  [coderCopy encodeObject:self->_accountLocations forKey:@"accountLocations"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKAccountFeatureDescriptor *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
-  if (([v4 isEqualToString:@"scheduleOneTimeDeposit"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"scheduleOneTimeWithdrawal"))
+  identifier = [(PKAccountFeatureDescriptor *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
+  if (([identifier isEqualToString:@"scheduleOneTimeDeposit"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"scheduleOneTimeWithdrawal"))
   {
-    v5 = [(PKAccountFeatureDescriptor *)self minimumAmount];
-    [v3 appendFormat:@"minimumAmount: '%@'; ", v5];
+    minimumAmount = [(PKAccountFeatureDescriptor *)self minimumAmount];
+    [v3 appendFormat:@"minimumAmount: '%@'; ", minimumAmount];
 
-    v6 = [(PKAccountFeatureDescriptor *)self maximumAmount];
-    [v3 appendFormat:@"maximumAmount: '%@'; ", v6];
+    maximumAmount = [(PKAccountFeatureDescriptor *)self maximumAmount];
+    [v3 appendFormat:@"maximumAmount: '%@'; ", maximumAmount];
 
-    v7 = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
-    [v3 appendFormat:@"merchantIdentifier: '%@'; ", v7];
+    merchantIdentifier = [(PKAccountFeatureDescriptor *)self merchantIdentifier];
+    [v3 appendFormat:@"merchantIdentifier: '%@'; ", merchantIdentifier];
 
-    v8 = [(PKAccountFeatureDescriptor *)self supportedNetworks];
-    [v3 appendFormat:@"supportedNetworks: '%@'; ", v8];
+    supportedNetworks = [(PKAccountFeatureDescriptor *)self supportedNetworks];
+    [v3 appendFormat:@"supportedNetworks: '%@'; ", supportedNetworks];
 
     v9 = PKAccountFundingSourceTypeToStrings(self->_fundingSourceTypes);
     [v3 appendFormat:@"fundingSourceTypes: '%@'; ", v9];
@@ -149,30 +149,30 @@ PKAccountLocation *__56__PKSavingsAccountFeatureDescriptor_initWithDictionary___
     goto LABEL_4;
   }
 
-  if ([v4 isEqualToString:@"addFundingSource"])
+  if ([identifier isEqualToString:@"addFundingSource"])
   {
-    v12 = [(PKAccountFeatureDescriptor *)self fundingSourceTermsIdentifier];
-    [v3 appendFormat:@"fundingSourceTermsIdentifier: '%@'; ", v12];
+    fundingSourceTermsIdentifier = [(PKAccountFeatureDescriptor *)self fundingSourceTermsIdentifier];
+    [v3 appendFormat:@"fundingSourceTermsIdentifier: '%@'; ", fundingSourceTermsIdentifier];
 LABEL_9:
 
     goto LABEL_4;
   }
 
-  if ([v4 isEqualToString:@"exportTransactionData"])
+  if ([identifier isEqualToString:@"exportTransactionData"])
   {
     [v3 appendFormat:@"supportedFileFormatsForTransactionData: '%@'; ", self->_supportedFileFormatsForTransactionData];
   }
 
   else
   {
-    if ([v4 isEqualToString:@"addBeneficiaries"])
+    if ([identifier isEqualToString:@"addBeneficiaries"])
     {
-      v12 = PKAccountAddBeneficiariesContactMethodToString(self->_contactMethod);
-      [v3 appendFormat:@"contactMethod: '%@'", v12];
+      fundingSourceTermsIdentifier = PKAccountAddBeneficiariesContactMethodToString(self->_contactMethod);
+      [v3 appendFormat:@"contactMethod: '%@'", fundingSourceTermsIdentifier];
       goto LABEL_9;
     }
 
-    if ([v4 isEqualToString:@"FDICBehaviors"])
+    if ([identifier isEqualToString:@"FDICBehaviors"])
     {
       if (self->_showCreditRewardsHubBalance)
       {
@@ -232,10 +232,10 @@ LABEL_9:
       goto LABEL_4;
     }
 
-    if ([v4 isEqualToString:@"accountBalanceEventReporting"])
+    if ([identifier isEqualToString:@"accountBalanceEventReporting"])
     {
-      v12 = [(PKSavingsAccountFeatureDescriptor *)self accountLocations];
-      [v3 appendFormat:@"accountLocations: '%@'", v12];
+      fundingSourceTermsIdentifier = [(PKSavingsAccountFeatureDescriptor *)self accountLocations];
+      [v3 appendFormat:@"accountLocations: '%@'", fundingSourceTermsIdentifier];
       goto LABEL_9;
     }
   }
@@ -268,33 +268,33 @@ LABEL_4:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSavingsAccountFeatureDescriptor *)self isEqualToSavingsAccountFeatureDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSavingsAccountFeatureDescriptor *)self isEqualToSavingsAccountFeatureDescriptor:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSavingsAccountFeatureDescriptor:(id)a3
+- (BOOL)isEqualToSavingsAccountFeatureDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:v4]|| self->_fundingSourceTypes != v4[10] || self->_transferFrequencies != v4[11])
+  descriptorCopy = descriptor;
+  if (![(PKAccountFeatureDescriptor *)self isEqualToAccountFeatureDescriptor:descriptorCopy]|| self->_fundingSourceTypes != descriptorCopy[10] || self->_transferFrequencies != descriptorCopy[11])
   {
     goto LABEL_29;
   }
 
   transferTermsIdentifier = self->_transferTermsIdentifier;
-  v6 = v4[12];
+  v6 = descriptorCopy[12];
   if (transferTermsIdentifier)
   {
     v7 = v6 == 0;
@@ -319,7 +319,7 @@ LABEL_4:
   }
 
   supportedFileFormatsForTransactionData = self->_supportedFileFormatsForTransactionData;
-  v9 = v4[13];
+  v9 = descriptorCopy[13];
   if (supportedFileFormatsForTransactionData)
   {
     v10 = v9 == 0;
@@ -348,13 +348,13 @@ LABEL_29:
   }
 
 LABEL_20:
-  if (self->_contactMethod != v4[14] || self->_showCreditRewardsHubBalance != *(v4 + 72) || self->_showCreditDashboardBalance != *(v4 + 73) || self->_showSettingsBalance != *(v4 + 74) || self->_hideCreditRewardsHubSignage != *(v4 + 75) || self->_hideAuthenticationInterstitial != *(v4 + 76))
+  if (self->_contactMethod != descriptorCopy[14] || self->_showCreditRewardsHubBalance != *(descriptorCopy + 72) || self->_showCreditDashboardBalance != *(descriptorCopy + 73) || self->_showSettingsBalance != *(descriptorCopy + 74) || self->_hideCreditRewardsHubSignage != *(descriptorCopy + 75) || self->_hideAuthenticationInterstitial != *(descriptorCopy + 76))
   {
     goto LABEL_29;
   }
 
   accountLocations = self->_accountLocations;
-  v12 = v4[15];
+  v12 = descriptorCopy[15];
   if (accountLocations && v12)
   {
     v13 = [(NSSet *)accountLocations isEqual:?];
@@ -370,18 +370,18 @@ LABEL_30:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = PKSavingsAccountFeatureDescriptor;
   v5 = [(PKAccountFeatureDescriptor *)&v13 copyWithZone:?];
   v5[10] = self->_fundingSourceTypes;
   v5[11] = self->_transferFrequencies;
-  v6 = [(NSString *)self->_transferTermsIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_transferTermsIdentifier copyWithZone:zone];
   v7 = v5[12];
   v5[12] = v6;
 
-  v8 = [(NSArray *)self->_supportedFileFormatsForTransactionData copyWithZone:a3];
+  v8 = [(NSArray *)self->_supportedFileFormatsForTransactionData copyWithZone:zone];
   v9 = v5[13];
   v5[13] = v8;
 
@@ -391,7 +391,7 @@ LABEL_30:
   *(v5 + 74) = self->_showSettingsBalance;
   *(v5 + 75) = self->_hideCreditRewardsHubSignage;
   *(v5 + 76) = self->_hideAuthenticationInterstitial;
-  v10 = [(NSSet *)self->_accountLocations copyWithZone:a3];
+  v10 = [(NSSet *)self->_accountLocations copyWithZone:zone];
   v11 = v5[15];
   v5[15] = v10;
 

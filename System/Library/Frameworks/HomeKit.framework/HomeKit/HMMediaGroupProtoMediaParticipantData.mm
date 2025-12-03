@@ -1,23 +1,23 @@
 @interface HMMediaGroupProtoMediaParticipantData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBackupGroups:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBackupGroups:(id)groups;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMMediaGroupProtoMediaParticipantData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   destination = self->_destination;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (destination)
   {
     if (v6)
@@ -32,7 +32,7 @@
   }
 
   destinationController = self->_destinationController;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (destinationController)
   {
     if (v8)
@@ -50,7 +50,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 1);
+  v9 = *(fromCopy + 1);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -84,13 +84,13 @@
   return v4 ^ [(NSMutableArray *)self->_backupGroups hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((destination = self->_destination, !(destination | v4[2])) || -[HMMediaGroupProtoMediaDestination isEqual:](destination, "isEqual:")) && ((destinationController = self->_destinationController, !(destinationController | v4[3])) || -[HMMediaGroupProtoMediaDestinationControllerData isEqual:](destinationController, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((destination = self->_destination, !(destination | equalCopy[2])) || -[HMMediaGroupProtoMediaDestination isEqual:](destination, "isEqual:")) && ((destinationController = self->_destinationController, !(destinationController | equalCopy[3])) || -[HMMediaGroupProtoMediaDestinationControllerData isEqual:](destinationController, "isEqual:")))
   {
     backupGroups = self->_backupGroups;
-    if (backupGroups | v4[1])
+    if (backupGroups | equalCopy[1])
     {
       v8 = [(NSMutableArray *)backupGroups isEqual:?];
     }
@@ -109,15 +109,15 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HMMediaGroupProtoMediaDestination *)self->_destination copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HMMediaGroupProtoMediaDestination *)self->_destination copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(HMMediaGroupProtoMediaDestinationControllerData *)self->_destinationController copyWithZone:a3];
+  v8 = [(HMMediaGroupProtoMediaDestinationControllerData *)self->_destinationController copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -141,7 +141,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addBackupGroups:v15];
 
         ++v14;
@@ -158,39 +158,39 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_destination)
   {
-    [v8 setDestination:?];
+    [toCopy setDestination:?];
   }
 
   if (self->_destinationController)
   {
-    [v8 setDestinationController:?];
+    [toCopy setDestinationController:?];
   }
 
   if ([(HMMediaGroupProtoMediaParticipantData *)self backupGroupsCount])
   {
-    [v8 clearBackupGroups];
-    v4 = [(HMMediaGroupProtoMediaParticipantData *)self backupGroupsCount];
-    if (v4)
+    [toCopy clearBackupGroups];
+    backupGroupsCount = [(HMMediaGroupProtoMediaParticipantData *)self backupGroupsCount];
+    if (backupGroupsCount)
     {
-      v5 = v4;
+      v5 = backupGroupsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMMediaGroupProtoMediaParticipantData *)self backupGroupsAtIndex:i];
-        [v8 addBackupGroups:v7];
+        [toCopy addBackupGroups:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_destination)
   {
     PBDataWriterWriteSubmessage();
@@ -238,28 +238,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   destination = self->_destination;
   if (destination)
   {
-    v5 = [(HMMediaGroupProtoMediaDestination *)destination dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"destination"];
+    dictionaryRepresentation = [(HMMediaGroupProtoMediaDestination *)destination dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"destination"];
   }
 
   destinationController = self->_destinationController;
   if (destinationController)
   {
-    v7 = [(HMMediaGroupProtoMediaDestinationControllerData *)destinationController dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"destinationController"];
+    dictionaryRepresentation2 = [(HMMediaGroupProtoMediaDestinationControllerData *)destinationController dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"destinationController"];
   }
 
   backupGroups = self->_backupGroups;
   if (backupGroups)
   {
-    [v3 setObject:backupGroups forKey:@"backupGroups"];
+    [dictionary setObject:backupGroups forKey:@"backupGroups"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -268,28 +268,28 @@
   v8.receiver = self;
   v8.super_class = HMMediaGroupProtoMediaParticipantData;
   v4 = [(HMMediaGroupProtoMediaParticipantData *)&v8 description];
-  v5 = [(HMMediaGroupProtoMediaParticipantData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMMediaGroupProtoMediaParticipantData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addBackupGroups:(id)a3
+- (void)addBackupGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   backupGroups = self->_backupGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!backupGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_backupGroups;
     self->_backupGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     backupGroups = self->_backupGroups;
   }
 
-  [(NSMutableArray *)backupGroups addObject:v4];
+  [(NSMutableArray *)backupGroups addObject:groupsCopy];
 }
 
 @end

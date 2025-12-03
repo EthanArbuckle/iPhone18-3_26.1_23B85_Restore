@@ -1,12 +1,12 @@
 @interface NetworkQualityDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation NetworkQualityDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (objc_opt_class())
   {
     v4 = objc_alloc_init(NSOperationQueue);
@@ -40,14 +40,14 @@
     v11 = dispatch_time(0, 15000000000);
     dispatch_semaphore_wait(v10, v11);
     v12 = +[NSFileManager defaultManager];
-    v13 = [v12 temporaryDirectory];
+    temporaryDirectory = [v12 temporaryDirectory];
 
-    v14 = [v13 path];
-    v15 = [v14 stringByAppendingString:@"/networkQuality.json"];
-    v32 = v3;
+    path = [temporaryDirectory path];
+    v15 = [path stringByAppendingString:@"/networkQuality.json"];
+    v32 = parametersCopy;
 
-    v16 = [v13 path];
-    v17 = [v16 stringByAppendingString:@"/networkQuality.txt"];
+    path2 = [temporaryDirectory path];
+    v17 = [path2 stringByAppendingString:@"/networkQuality.txt"];
 
     v34 = v8;
     v18 = sub_100002A6C(v8, v43[5], v9, 1, 0);
@@ -108,7 +108,7 @@ LABEL_19:
         }
 
         _Block_object_dispose(&v42, 8);
-        v3 = v32;
+        parametersCopy = v32;
         goto LABEL_24;
       }
 

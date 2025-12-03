@@ -1,8 +1,8 @@
 @interface RTWiFiScanMetrics
 + (id)binsForWiFiAPsCount;
-+ (unint64_t)bucketForWiFiAPsCount:(unint64_t)a3;
-+ (void)submitWiFiScanMetricsWithErrorCode:(unint64_t)a3 accessPointsscanResultsCount:(unint64_t)a4 isScanIssuedByOtherClient:(BOOL)a5 isCacheQuery:(BOOL)a6;
-- (RTWiFiScanMetrics)initWithAccessPointsscanResultsCount:(unint64_t)a3 errorCode:(unint64_t)a4 isCacheQuery:(BOOL)a5 isScanIssuedByOtherClient:(BOOL)a6;
++ (unint64_t)bucketForWiFiAPsCount:(unint64_t)count;
++ (void)submitWiFiScanMetricsWithErrorCode:(unint64_t)code accessPointsscanResultsCount:(unint64_t)count isScanIssuedByOtherClient:(BOOL)client isCacheQuery:(BOOL)query;
+- (RTWiFiScanMetrics)initWithAccessPointsscanResultsCount:(unint64_t)count errorCode:(unint64_t)code isCacheQuery:(BOOL)query isScanIssuedByOtherClient:(BOOL)client;
 @end
 
 @implementation RTWiFiScanMetrics
@@ -34,9 +34,9 @@
   return v2;
 }
 
-+ (void)submitWiFiScanMetricsWithErrorCode:(unint64_t)a3 accessPointsscanResultsCount:(unint64_t)a4 isScanIssuedByOtherClient:(BOOL)a5 isCacheQuery:(BOOL)a6
++ (void)submitWiFiScanMetricsWithErrorCode:(unint64_t)code accessPointsscanResultsCount:(unint64_t)count isScanIssuedByOtherClient:(BOOL)client isCacheQuery:(BOOL)query
 {
-  v6 = [[RTWiFiScanMetrics alloc] initWithAccessPointsscanResultsCount:a4 errorCode:a3 isCacheQuery:a6 isScanIssuedByOtherClient:a5];
+  v6 = [[RTWiFiScanMetrics alloc] initWithAccessPointsscanResultsCount:count errorCode:code isCacheQuery:query isScanIssuedByOtherClient:client];
   v7 = v6;
   if (v6)
   {
@@ -45,45 +45,45 @@
   }
 }
 
-- (RTWiFiScanMetrics)initWithAccessPointsscanResultsCount:(unint64_t)a3 errorCode:(unint64_t)a4 isCacheQuery:(BOOL)a5 isScanIssuedByOtherClient:(BOOL)a6
+- (RTWiFiScanMetrics)initWithAccessPointsscanResultsCount:(unint64_t)count errorCode:(unint64_t)code isCacheQuery:(BOOL)query isScanIssuedByOtherClient:(BOOL)client
 {
-  v6 = a6;
-  v7 = a5;
+  clientCopy = client;
+  queryCopy = query;
   v22.receiver = self;
   v22.super_class = RTWiFiScanMetrics;
   v10 = [(RTMetric *)&v22 init];
   if (v10)
   {
     v11 = +[RTWiFiScanMetrics binsForWiFiAPsCount];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
     v13 = [RTMetric binForNumber:v12 bins:v11];
-    v14 = [(RTMetric *)v10 metrics];
-    [v14 setObject:v13 forKeyedSubscript:@"wifiScanTotalAccessPointsCount"];
+    metrics = [(RTMetric *)v10 metrics];
+    [metrics setObject:v13 forKeyedSubscript:@"wifiScanTotalAccessPointsCount"];
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a4];
-    v16 = [(RTMetric *)v10 metrics];
-    [v16 setObject:v15 forKeyedSubscript:@"errorCode"];
+    code = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", code];
+    metrics2 = [(RTMetric *)v10 metrics];
+    [metrics2 setObject:code forKeyedSubscript:@"errorCode"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-    v18 = [(RTMetric *)v10 metrics];
-    [v18 setObject:v17 forKeyedSubscript:@"isCacheQuery"];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:queryCopy];
+    metrics3 = [(RTMetric *)v10 metrics];
+    [metrics3 setObject:v17 forKeyedSubscript:@"isCacheQuery"];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:v6];
-    v20 = [(RTMetric *)v10 metrics];
-    [v20 setObject:v19 forKeyedSubscript:@"isScanIssuedByAnotherClient"];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:clientCopy];
+    metrics4 = [(RTMetric *)v10 metrics];
+    [metrics4 setObject:v19 forKeyedSubscript:@"isScanIssuedByAnotherClient"];
   }
 
   return v10;
 }
 
-+ (unint64_t)bucketForWiFiAPsCount:(unint64_t)a3
++ (unint64_t)bucketForWiFiAPsCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v5 = [a1 binsForWiFiAPsCount];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  binsForWiFiAPsCount = [self binsForWiFiAPsCount];
+  v6 = [self binForNumber:v4 bins:binsForWiFiAPsCount];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 @end

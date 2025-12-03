@@ -1,20 +1,20 @@
 @interface MBDatabaseIndex
 + (id)databaseIndex;
-+ (unint64_t)flagsForMode:(unsigned __int16)a3;
-- (BOOL)containsFileID:(id)a3;
++ (unint64_t)flagsForMode:(unsigned __int16)mode;
+- (BOOL)containsFileID:(id)d;
 - (MBDatabaseIndex)init;
 - (NSString)description;
-- (id)setFlags:(unint64_t)a3 forFileID:(id)a4;
-- (int64_t)offsetForFileID:(id)a3;
-- (unint64_t)flagsForFileID:(id)a3;
-- (void)setOffset:(unint64_t)a3 flags:(unint64_t)a4 forFileID:(id)a5;
+- (id)setFlags:(unint64_t)flags forFileID:(id)d;
+- (int64_t)offsetForFileID:(id)d;
+- (unint64_t)flagsForFileID:(id)d;
+- (void)setOffset:(unint64_t)offset flags:(unint64_t)flags forFileID:(id)d;
 @end
 
 @implementation MBDatabaseIndex
 
-+ (unint64_t)flagsForMode:(unsigned __int16)a3
++ (unint64_t)flagsForMode:(unsigned __int16)mode
 {
-  v3 = a3 & 0xF000;
+  v3 = mode & 0xF000;
   v4 = 1;
   v5 = 2;
   if (v3 != 0x4000)
@@ -60,66 +60,66 @@
   return v2;
 }
 
-- (BOOL)containsFileID:(id)a3
+- (BOOL)containsFileID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (int64_t)offsetForFileID:(id)a3
+- (int64_t)offsetForFileID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 offset];
+    offset = [v3 offset];
   }
 
   else
   {
-    v5 = -1;
+    offset = -1;
   }
 
-  return v5;
+  return offset;
 }
 
-- (unint64_t)flagsForFileID:(id)a3
+- (unint64_t)flagsForFileID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 flags];
+    flags = [v3 flags];
   }
 
   else
   {
-    v5 = 0;
+    flags = 0;
   }
 
-  return v5;
+  return flags;
 }
 
-- (id)setFlags:(unint64_t)a3 forFileID:(id)a4
+- (id)setFlags:(unint64_t)flags forFileID:(id)d
 {
-  v5 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:a4];
-  [v5 setFlags:{objc_msgSend(v5, "flags") | a3}];
+  v5 = [(NSMutableDictionary *)self->_entriesByFileID objectForKeyedSubscript:d];
+  [v5 setFlags:{objc_msgSend(v5, "flags") | flags}];
 
   return 0;
 }
 
-- (void)setOffset:(unint64_t)a3 flags:(unint64_t)a4 forFileID:(id)a5
+- (void)setOffset:(unint64_t)offset flags:(unint64_t)flags forFileID:(id)d
 {
-  v10 = a5;
+  dCopy = d;
   if ([(MBDatabaseIndex *)self offsetForFileID:?]!= -1)
   {
-    sub_10009E244(a2, self, v10);
+    sub_10009E244(a2, self, dCopy);
   }
 
-  v9 = [[MBDatabaseIndexEntry alloc] initWithOffset:a3 flags:a4];
-  [(NSMutableDictionary *)self->_entriesByFileID setObject:v9 forKeyedSubscript:v10];
+  v9 = [[MBDatabaseIndexEntry alloc] initWithOffset:offset flags:flags];
+  [(NSMutableDictionary *)self->_entriesByFileID setObject:v9 forKeyedSubscript:dCopy];
 }
 
 - (NSString)description

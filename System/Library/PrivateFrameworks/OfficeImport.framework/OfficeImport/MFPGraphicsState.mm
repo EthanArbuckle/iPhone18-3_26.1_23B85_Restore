@@ -2,11 +2,11 @@
 - (CGAffineTransform)pageTransform;
 - (CGAffineTransform)worldTransform;
 - (MFPGraphicsState)initWithDefaults;
-- (MFPGraphicsState)initWithGraphicsState:(id)a3;
-- (void)multiplyWorldTransformBy:(CGAffineTransform *)a3 order:(int)a4;
-- (void)removeTransform:(CGAffineTransform *)a3;
-- (void)setPageTransform:(CGAffineTransform *)a3;
-- (void)setWorldTransform:(CGAffineTransform *)a3;
+- (MFPGraphicsState)initWithGraphicsState:(id)state;
+- (void)multiplyWorldTransformBy:(CGAffineTransform *)by order:(int)order;
+- (void)removeTransform:(CGAffineTransform *)transform;
+- (void)setPageTransform:(CGAffineTransform *)transform;
+- (void)setWorldTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation MFPGraphicsState
@@ -33,23 +33,23 @@
   return result;
 }
 
-- (MFPGraphicsState)initWithGraphicsState:(id)a3
+- (MFPGraphicsState)initWithGraphicsState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = MFPGraphicsState;
   v5 = [(MFPGraphicsState *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v7 = *(v4 + 8);
-    v8 = *(v4 + 24);
-    *(v5 + 40) = *(v4 + 40);
+    v7 = *(stateCopy + 8);
+    v8 = *(stateCopy + 24);
+    *(v5 + 40) = *(stateCopy + 40);
     *(v5 + 24) = v8;
     *(v5 + 8) = v7;
-    v9 = *(v4 + 56);
-    v10 = *(v4 + 72);
-    *(v5 + 88) = *(v4 + 88);
+    v9 = *(stateCopy + 56);
+    v10 = *(stateCopy + 72);
+    *(v5 + 88) = *(stateCopy + 88);
     *(v5 + 72) = v10;
     *(v5 + 56) = v9;
   }
@@ -57,13 +57,13 @@
   return v6;
 }
 
-- (void)removeTransform:(CGAffineTransform *)a3
+- (void)removeTransform:(CGAffineTransform *)transform
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = *&a3->c;
-  *&v6.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v6.a = *&transform->a;
   *&v6.c = v5;
-  *&v6.tx = *&a3->tx;
+  *&v6.tx = *&transform->tx;
   CGAffineTransformInvert(&transform, &v6);
   CGContextConcatCTM(CurrentContext, &transform);
 }
@@ -77,7 +77,7 @@
   return self;
 }
 
-- (void)setPageTransform:(CGAffineTransform *)a3
+- (void)setPageTransform:(CGAffineTransform *)transform
 {
   v5 = *&self->mWorldTransform.c;
   *&v13.a = *&self->mWorldTransform.a;
@@ -89,9 +89,9 @@
   *&v13.c = v6;
   *&v13.tx = *&self->mPageTransform.tx;
   [(MFPGraphicsState *)self removeTransform:&v13];
-  v7 = *&a3->a;
-  v8 = *&a3->c;
-  *&self->mPageTransform.tx = *&a3->tx;
+  v7 = *&transform->a;
+  v8 = *&transform->c;
+  *&self->mPageTransform.tx = *&transform->tx;
   *&self->mPageTransform.c = v8;
   *&self->mPageTransform.a = v7;
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -117,16 +117,16 @@
   return self;
 }
 
-- (void)setWorldTransform:(CGAffineTransform *)a3
+- (void)setWorldTransform:(CGAffineTransform *)transform
 {
   v5 = *&self->mWorldTransform.c;
   *&v10.a = *&self->mWorldTransform.a;
   *&v10.c = v5;
   *&v10.tx = *&self->mWorldTransform.tx;
   [(MFPGraphicsState *)self removeTransform:&v10];
-  v6 = *&a3->a;
-  v7 = *&a3->c;
-  *&self->mWorldTransform.tx = *&a3->tx;
+  v6 = *&transform->a;
+  v7 = *&transform->c;
+  *&self->mWorldTransform.tx = *&transform->tx;
   *&self->mWorldTransform.c = v7;
   *&self->mWorldTransform.a = v6;
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -137,31 +137,31 @@
   CGContextConcatCTM(CurrentContext, &v10);
 }
 
-- (void)multiplyWorldTransformBy:(CGAffineTransform *)a3 order:(int)a4
+- (void)multiplyWorldTransformBy:(CGAffineTransform *)by order:(int)order
 {
   v7 = *&self->mWorldTransform.c;
   *&transform.a = *&self->mWorldTransform.a;
   *&transform.c = v7;
   *&transform.tx = *&self->mWorldTransform.tx;
   [(MFPGraphicsState *)self removeTransform:&transform];
-  if (a4)
+  if (order)
   {
     v8 = *&self->mWorldTransform.c;
     *&t1.a = *&self->mWorldTransform.a;
     *&t1.c = v8;
     *&t1.tx = *&self->mWorldTransform.tx;
-    v9 = *&a3->c;
-    *&v16.a = *&a3->a;
+    v9 = *&by->c;
+    *&v16.a = *&by->a;
     *&v16.c = v9;
-    v10 = *&a3->tx;
+    v10 = *&by->tx;
   }
 
   else
   {
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&by->c;
+    *&t1.a = *&by->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&by->tx;
     v12 = *&self->mWorldTransform.c;
     *&v16.a = *&self->mWorldTransform.a;
     *&v16.c = v12;

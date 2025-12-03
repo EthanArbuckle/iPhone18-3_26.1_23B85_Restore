@@ -1,12 +1,12 @@
 @interface _PASSqliteRowIdIndexSetCursor
-+ (id)planningInfoForRowIdConstraint:(int)a3;
++ (id)planningInfoForRowIdConstraint:(int)constraint;
 - (NSMutableIndexSet)mutableIndexSet;
 - (_PASSqliteRowIdIndexSetCursor)init;
-- (void)applyRowIdConstraint:(int)a3 withArgument:(id)a4;
+- (void)applyRowIdConstraint:(int)constraint withArgument:(id)argument;
 - (void)finalizeConstraints;
 - (void)matchNoRows;
-- (void)matchOneRow:(unint64_t)a3;
-- (void)setIndexSet:(id)a3;
+- (void)matchOneRow:(unint64_t)row;
+- (void)setIndexSet:(id)set;
 - (void)stepIndexedRow;
 @end
 
@@ -21,9 +21,9 @@
   if (v2)
   {
     v2->_currentIndex = 0;
-    v4 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     indexSet = v3->_indexSet;
-    v3->_indexSet = v4;
+    v3->_indexSet = indexSet;
 
     v3->_isDescending = 0;
   }
@@ -39,41 +39,41 @@
   indexSet = self->_indexSet;
   if (self->_isDescending)
   {
-    v4 = [(NSIndexSet *)indexSet lastIndex];
+    lastIndex = [(NSIndexSet *)indexSet lastIndex];
   }
 
   else
   {
-    v4 = [(NSIndexSet *)indexSet firstIndex];
+    lastIndex = [(NSIndexSet *)indexSet firstIndex];
   }
 
-  self->_currentIndex = v4;
+  self->_currentIndex = lastIndex;
 }
 
 - (void)stepIndexedRow
 {
   isDescending = self->_isDescending;
   indexSet = self->_indexSet;
-  v5 = [(_PASSqliteRowIdIndexSetCursor *)self currentIndexedRowId];
+  currentIndexedRowId = [(_PASSqliteRowIdIndexSetCursor *)self currentIndexedRowId];
   if (isDescending)
   {
-    v6 = [(NSIndexSet *)indexSet indexLessThanIndex:v5];
+    v6 = [(NSIndexSet *)indexSet indexLessThanIndex:currentIndexedRowId];
   }
 
   else
   {
-    v6 = [(NSIndexSet *)indexSet indexGreaterThanIndex:v5];
+    v6 = [(NSIndexSet *)indexSet indexGreaterThanIndex:currentIndexedRowId];
   }
 
   self->_currentIndex = v6;
 }
 
-- (void)applyRowIdConstraint:(int)a3 withArgument:(id)a4
+- (void)applyRowIdConstraint:(int)constraint withArgument:(id)argument
 {
-  v13 = a4;
-  if (a3 <= 0x20)
+  argumentCopy = argument;
+  if (constraint <= 0x20)
   {
-    if (((1 << a3) & 0x100010110) != 0)
+    if (((1 << constraint) & 0x100010110) != 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -83,25 +83,25 @@
           goto LABEL_30;
         }
 
-        v6 = [v13 unsignedIntegerValue];
-        HIDWORD(v8) = a3 - 4;
-        LODWORD(v8) = a3 - 4;
+        unsignedIntegerValue = [argumentCopy unsignedIntegerValue];
+        HIDWORD(v8) = constraint - 4;
+        LODWORD(v8) = constraint - 4;
         v7 = v8 >> 2;
         if (v7 > 2)
         {
           if (v7 == 3)
           {
-            if ([(NSIndexSet *)self->_indexSet firstIndex]< v6)
+            if ([(NSIndexSet *)self->_indexSet firstIndex]< unsignedIntegerValue)
             {
-              if ([(NSIndexSet *)self->_indexSet lastIndex]< v6)
+              if ([(NSIndexSet *)self->_indexSet lastIndex]< unsignedIntegerValue)
               {
                 goto LABEL_30;
               }
 
-              v9 = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
-              v10 = v9;
-              v11 = 0x7FFFFFFFFFFFFFFELL - v6;
-              v12 = v6;
+              mutableIndexSet = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
+              v10 = mutableIndexSet;
+              v11 = 0x7FFFFFFFFFFFFFFELL - unsignedIntegerValue;
+              v12 = unsignedIntegerValue;
               goto LABEL_28;
             }
           }
@@ -113,17 +113,17 @@
               goto LABEL_30;
             }
 
-            if ([(NSIndexSet *)self->_indexSet lastIndex]>= v6)
+            if ([(NSIndexSet *)self->_indexSet lastIndex]>= unsignedIntegerValue)
             {
-              if ([(NSIndexSet *)self->_indexSet firstIndex]>= v6)
+              if ([(NSIndexSet *)self->_indexSet firstIndex]>= unsignedIntegerValue)
               {
                 goto LABEL_30;
               }
 
-              v9 = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
-              v10 = v9;
+              mutableIndexSet = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
+              v10 = mutableIndexSet;
               v12 = 0;
-              v11 = v6;
+              v11 = unsignedIntegerValue;
               goto LABEL_28;
             }
           }
@@ -136,34 +136,34 @@
             goto LABEL_30;
           }
 
-          if ([(NSIndexSet *)self->_indexSet firstIndex]<= v6)
+          if ([(NSIndexSet *)self->_indexSet firstIndex]<= unsignedIntegerValue)
           {
-            if ([(NSIndexSet *)self->_indexSet lastIndex]<= v6)
+            if ([(NSIndexSet *)self->_indexSet lastIndex]<= unsignedIntegerValue)
             {
               goto LABEL_30;
             }
 
-            v9 = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
-            v10 = v9;
-            v11 = 0x7FFFFFFFFFFFFFFDLL - v6;
-            v12 = v6 + 1;
+            mutableIndexSet = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
+            v10 = mutableIndexSet;
+            v11 = 0x7FFFFFFFFFFFFFFDLL - unsignedIntegerValue;
+            v12 = unsignedIntegerValue + 1;
 LABEL_28:
-            [v9 removeIndexesInRange:{v12, v11}];
+            [mutableIndexSet removeIndexesInRange:{v12, v11}];
 
             goto LABEL_30;
           }
         }
 
-        else if ([(NSIndexSet *)self->_indexSet lastIndex]> v6)
+        else if ([(NSIndexSet *)self->_indexSet lastIndex]> unsignedIntegerValue)
         {
-          if ([(NSIndexSet *)self->_indexSet firstIndex]> v6)
+          if ([(NSIndexSet *)self->_indexSet firstIndex]> unsignedIntegerValue)
           {
             goto LABEL_30;
           }
 
-          v9 = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
-          v10 = v9;
-          v11 = v6 + 1;
+          mutableIndexSet = [(_PASSqliteRowIdIndexSetCursor *)self mutableIndexSet];
+          v10 = mutableIndexSet;
+          v11 = unsignedIntegerValue + 1;
           v12 = 0;
           goto LABEL_28;
         }
@@ -172,26 +172,26 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (a3 == 2)
+    if (constraint == 2)
     {
       goto LABEL_15;
     }
   }
 
-  if (a3 == 72)
+  if (constraint == 72)
   {
 LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[_PASSqliteRowIdIndexSetCursor matchOneRow:](self, "matchOneRow:", [v13 unsignedIntegerValue]);
+      -[_PASSqliteRowIdIndexSetCursor matchOneRow:](self, "matchOneRow:", [argumentCopy unsignedIntegerValue]);
       goto LABEL_30;
     }
 
     goto LABEL_29;
   }
 
-  if (a3 == 71)
+  if (constraint == 71)
   {
 LABEL_29:
     [(_PASSqliteRowIdIndexSetCursor *)self matchNoRows];
@@ -200,13 +200,13 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)matchOneRow:(unint64_t)a3
+- (void)matchOneRow:(unint64_t)row
 {
   if ([(NSIndexSet *)self->_indexSet containsIndex:?])
   {
     if ([(NSIndexSet *)self->_indexSet count]>= 2)
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:a3];
+      v5 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:row];
       indexSet = self->_indexSet;
       self->_indexSet = v5;
 
@@ -223,17 +223,17 @@ LABEL_30:
 
 - (void)matchNoRows
 {
-  v3 = [MEMORY[0x1E696AC90] indexSet];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
   indexSet = self->_indexSet;
-  self->_indexSet = v3;
+  self->_indexSet = indexSet;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIndexSet:(id)a3
+- (void)setIndexSet:(id)set
 {
-  objc_storeStrong(&self->_indexSet, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_indexSet, set);
+  setCopy = set;
   mutableIndexSet = self->_mutableIndexSet;
   self->_mutableIndexSet = 0;
 }
@@ -254,16 +254,16 @@ LABEL_30:
   return mutableIndexSet;
 }
 
-+ (id)planningInfoForRowIdConstraint:(int)a3
++ (id)planningInfoForRowIdConstraint:(int)constraint
 {
   v4 = 0;
-  if (a3 > 69)
+  if (constraint > 69)
   {
-    if (a3 != 72)
+    if (constraint != 72)
     {
-      if (a3 != 71)
+      if (constraint != 71)
       {
-        if (a3 != 70)
+        if (constraint != 70)
         {
           goto LABEL_15;
         }
@@ -284,21 +284,21 @@ LABEL_13:
 
 LABEL_11:
     v9 = [_PASSqliteCollectionsConstraintPlanInfo alloc];
-    [a1 costFactorForRandomAccess];
+    [self costFactorForRandomAccess];
     v7 = v10;
     v6 = 0.00001;
     v5 = v9;
     goto LABEL_13;
   }
 
-  if (a3 > 0x20)
+  if (constraint > 0x20)
   {
     goto LABEL_15;
   }
 
-  if (((1 << a3) & 0x100010110) == 0)
+  if (((1 << constraint) & 0x100010110) == 0)
   {
-    if (a3 != 2)
+    if (constraint != 2)
     {
       goto LABEL_15;
     }

@@ -7,13 +7,13 @@
 
 - (uint64_t)_is_canProvideIconResources
 {
-  v2 = [a1 extensionPointRecord];
-  v3 = [v2 _IS_extensionsCanProvideIcon];
+  extensionPointRecord = [self extensionPointRecord];
+  _IS_extensionsCanProvideIcon = [extensionPointRecord _IS_extensionsCanProvideIcon];
 
-  if (v3)
+  if (_IS_extensionsCanProvideIcon)
   {
-    v4 = [a1 iconDictionary];
-    v5 = [v4 count];
+    iconDictionary = [self iconDictionary];
+    v5 = [iconDictionary count];
 
     if (v5)
     {
@@ -21,11 +21,11 @@
     }
   }
 
-  v7 = [a1 containingBundleRecord];
-  if (v7)
+  containingBundleRecord = [self containingBundleRecord];
+  if (containingBundleRecord)
   {
-    v8 = [a1 extensionPointRecord];
-    v6 = [v8 _IS_extensionsShouldFallbackToContainerIcon] ^ 1;
+    extensionPointRecord2 = [self extensionPointRecord];
+    v6 = [extensionPointRecord2 _IS_extensionsShouldFallbackToContainerIcon] ^ 1;
   }
 
   else
@@ -38,9 +38,9 @@
 
 - (uint64_t)_IS_isMessagesExtension
 {
-  v1 = [a1 extensionPointRecord];
-  v2 = [v1 identifier];
-  v3 = [v2 hasPrefix:@"com.apple.message-payload-provider"];
+  extensionPointRecord = [self extensionPointRecord];
+  identifier = [extensionPointRecord identifier];
+  v3 = [identifier hasPrefix:@"com.apple.message-payload-provider"];
 
   return v3;
 }

@@ -1,23 +1,23 @@
 @interface SPBeaconLocationShareContext
-- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)a3;
-- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)a3 andBundleIdentifier:(id)a4;
-- (SPBeaconLocationShareContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)identifier;
+- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)identifier andBundleIdentifier:(id)bundleIdentifier;
+- (SPBeaconLocationShareContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconLocationShareContext
 
-- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)a3
+- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SPBeaconLocationShareContext;
   v6 = [(SPBeaconLocationShareContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_beaconIdentifier, a3);
+    objc_storeStrong(&v6->_beaconIdentifier, identifier);
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = 0;
   }
@@ -25,39 +25,39 @@
   return v7;
 }
 
-- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)a3 andBundleIdentifier:(id)a4
+- (SPBeaconLocationShareContext)initWithBeaconIdentifier:(id)identifier andBundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v12.receiver = self;
   v12.super_class = SPBeaconLocationShareContext;
   v9 = [(SPBeaconLocationShareContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_beaconIdentifier, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(&v9->_beaconIdentifier, identifier);
+    objc_storeStrong(&v10->_bundleIdentifier, bundleIdentifier);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   beaconIdentifier = self->_beaconIdentifier;
-  v5 = a3;
-  [v5 encodeObject:beaconIdentifier forKey:@"beaconIdentifier"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:beaconIdentifier forKey:@"beaconIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (SPBeaconLocationShareContext)initWithCoder:(id)a3
+- (SPBeaconLocationShareContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
   beaconIdentifier = self->_beaconIdentifier;
   self->_beaconIdentifier = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v7;
@@ -65,7 +65,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBeaconLocationShareContext alloc];
   beaconIdentifier = self->_beaconIdentifier;

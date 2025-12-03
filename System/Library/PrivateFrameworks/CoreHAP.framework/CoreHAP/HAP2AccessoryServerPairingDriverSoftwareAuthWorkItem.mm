@@ -1,18 +1,18 @@
 @interface HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem
 + (id)doSoftwareAuth;
-- (BOOL)_isProtocolInfoValid:(id)a3;
-- (void)_handleAuthCompleteWithError:(id)a3;
-- (void)_sendSoftwareAuthMessageWithData:(id)a3 completion:(id)a4;
+- (BOOL)_isProtocolInfoValid:(id)valid;
+- (void)_handleAuthCompleteWithError:(id)error;
+- (void)_sendSoftwareAuthMessageWithData:(id)data completion:(id)completion;
 - (void)_softwareAuthFinished;
 - (void)_startSoftwareAuth;
-- (void)_validateAccessoryInfoWithCompletion:(id)a3;
-- (void)authSession:(id)a3 authComplete:(id)a4;
-- (void)authSession:(id)a3 authenticateUUID:(id)a4 token:(id)a5;
-- (void)authSession:(id)a3 confirmUUID:(id)a4 token:(id)a5;
-- (void)authSession:(id)a3 sendAuthExchangeData:(id)a4;
-- (void)authSession:(id)a3 validateUUID:(id)a4 token:(id)a5;
-- (void)cancelWithError:(id)a3;
-- (void)runForPairingDriver:(id)a3;
+- (void)_validateAccessoryInfoWithCompletion:(id)completion;
+- (void)authSession:(id)session authComplete:(id)complete;
+- (void)authSession:(id)session authenticateUUID:(id)d token:(id)token;
+- (void)authSession:(id)session confirmUUID:(id)d token:(id)token;
+- (void)authSession:(id)session sendAuthExchangeData:(id)data;
+- (void)authSession:(id)session validateUUID:(id)d token:(id)token;
+- (void)cancelWithError:(id)error;
+- (void)runForPairingDriver:(id)driver;
 @end
 
 @implementation HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem
@@ -24,23 +24,23 @@
   return v2;
 }
 
-- (void)authSession:(id)a3 validateUUID:(id)a4 token:(id)a5
+- (void)authSession:(id)session validateUUID:(id)d token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  dCopy = d;
+  tokenCopy = token;
   objc_initWeak(&location, self);
-  v11 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_validateUUID_token___block_invoke;
   v14[3] = &unk_2786D6F50;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = dCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = tokenCopy;
   v16 = v13;
-  [v11 addBlock:v14];
+  [operationQueue addBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -115,20 +115,20 @@ void __87__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_vali
   }
 }
 
-- (void)authSession:(id)a3 sendAuthExchangeData:(id)a4
+- (void)authSession:(id)session sendAuthExchangeData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __89__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_sendAuthExchangeData___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = dataCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -178,23 +178,23 @@ void __89__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_send
   }
 }
 
-- (void)authSession:(id)a3 confirmUUID:(id)a4 token:(id)a5
+- (void)authSession:(id)session confirmUUID:(id)d token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  dCopy = d;
+  tokenCopy = token;
   objc_initWeak(&location, self);
-  v11 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_confirmUUID_token___block_invoke;
   v14[3] = &unk_2786D6F50;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = dCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = tokenCopy;
   v16 = v13;
-  [v11 addBlock:v14];
+  [operationQueue addBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -263,23 +263,23 @@ void __86__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_conf
   [WeakRetained _softwareAuthFinished];
 }
 
-- (void)authSession:(id)a3 authenticateUUID:(id)a4 token:(id)a5
+- (void)authSession:(id)session authenticateUUID:(id)d token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  dCopy = d;
+  tokenCopy = token;
   objc_initWeak(&location, self);
-  v11 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_authenticateUUID_token___block_invoke;
   v14[3] = &unk_2786D6F50;
   objc_copyWeak(&v17, &location);
-  v12 = v9;
+  v12 = dCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = tokenCopy;
   v16 = v13;
-  [v11 addBlock:v14];
+  [operationQueue addBlock:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -327,20 +327,20 @@ void __91__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
   }
 }
 
-- (void)authSession:(id)a3 authComplete:(id)a4
+- (void)authSession:(id)session authComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   objc_initWeak(&location, self);
-  v8 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_authComplete___block_invoke;
   v10[3] = &unk_2786D6EB0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = completeCopy;
   v11 = v9;
-  [v8 addBlock:v10];
+  [operationQueue addBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -352,33 +352,33 @@ void __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
   [WeakRetained _handleAuthCompleteWithError:*(a1 + 32)];
 }
 
-- (void)_handleAuthCompleteWithError:(id)a3
+- (void)_handleAuthCompleteWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v4 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self setAuthSession:0];
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
-  v6 = [v5 delegate];
-  v7 = v6;
-  if (v6)
+  pairingDriver = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+  delegate = [pairingDriver delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 pairingDriver:v5 didFinishAuthWithError:v8];
+    [delegate pairingDriver:pairingDriver didFinishAuthWithError:errorCopy];
   }
 }
 
-- (BOOL)_isProtocolInfoValid:(id)a3
+- (BOOL)_isProtocolInfoValid:(id)valid
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v5 assertCurrentQueue];
+  validCopy = valid;
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
-  v7 = [v6 accessoryServer];
+  pairingDriver = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+  accessoryServer = [pairingDriver accessoryServer];
 
-  if (v7)
+  if (accessoryServer)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -389,47 +389,47 @@ void __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       log = v8;
-      v9 = [v7 deviceID];
-      v10 = [v4 deviceIdentifier];
-      v27 = [v7 category];
-      v11 = [v4 categoryIdentifier];
-      v12 = [v7 protocolVersion];
-      v13 = [v4 protocolVersion];
-      v14 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+      deviceID = [accessoryServer deviceID];
+      deviceIdentifier = [validCopy deviceIdentifier];
+      category = [accessoryServer category];
+      categoryIdentifier = [validCopy categoryIdentifier];
+      protocolVersion = [accessoryServer protocolVersion];
+      protocolVersion2 = [validCopy protocolVersion];
+      pairingDriver2 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
       *buf = 138414338;
-      v30 = self;
+      selfCopy = self;
       v31 = 2112;
-      v32 = v9;
+      v32 = deviceID;
       v33 = 2112;
-      v34 = v10;
+      v34 = deviceIdentifier;
       v35 = 1024;
-      v36 = v27;
+      v36 = category;
       v37 = 1024;
-      v38 = v11;
+      v38 = categoryIdentifier;
       v39 = 2112;
-      v40 = v12;
+      v40 = protocolVersion;
       v41 = 2112;
-      v42 = v13;
+      v42 = protocolVersion2;
       v43 = 1024;
-      v44 = [v14 featureFlags];
+      featureFlags = [pairingDriver2 featureFlags];
       v45 = 1024;
-      v46 = [v4 featureFlags];
+      featureFlags2 = [validCopy featureFlags];
       _os_log_impl(&dword_22AADC000, log, OS_LOG_TYPE_INFO, "%@ Matching device ID: %@/%@ category: %d/%d protocol version: %@/%@ feature flags: %x/%x", buf, 0x4Cu);
     }
 
-    v15 = [v7 deviceID];
-    v16 = [v15 deviceIDString];
-    v17 = [v4 deviceIdentifier];
-    if ([v16 isEqualToString:v17] && (v18 = objc_msgSend(v7, "category"), v18 == objc_msgSend(v4, "categoryIdentifier")))
+    deviceID2 = [accessoryServer deviceID];
+    deviceIDString = [deviceID2 deviceIDString];
+    deviceIdentifier2 = [validCopy deviceIdentifier];
+    if ([deviceIDString isEqualToString:deviceIdentifier2] && (v18 = objc_msgSend(accessoryServer, "category"), v18 == objc_msgSend(validCopy, "categoryIdentifier")))
     {
-      v19 = [v7 protocolVersion];
-      v20 = [v19 majorVersion];
-      v21 = [v4 protocolVersion];
-      if (v20 == [v21 majorVersion])
+      protocolVersion3 = [accessoryServer protocolVersion];
+      majorVersion = [protocolVersion3 majorVersion];
+      protocolVersion4 = [validCopy protocolVersion];
+      if (majorVersion == [protocolVersion4 majorVersion])
       {
-        v22 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
-        v23 = [v22 featureFlags];
-        v24 = v23 == [v4 featureFlags];
+        pairingDriver3 = [(HAP2AccessoryServerPairingDriverWorkItem *)self pairingDriver];
+        featureFlags3 = [pairingDriver3 featureFlags];
+        v24 = featureFlags3 == [validCopy featureFlags];
       }
 
       else
@@ -453,12 +453,12 @@ void __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
   return v24;
 }
 
-- (void)_validateAccessoryInfoWithCompletion:(id)a3
+- (void)_validateAccessoryInfoWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v5 assertCurrentQueue];
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   v16 = 0;
   v6 = [HAPProtocolMessages constructInfoRequest:&unk_283EA9A88 outTID:&v16];
@@ -473,20 +473,20 @@ void __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%@ Attempting to validate accessory info", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     objc_initWeak(buf, self);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __93__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem__validateAccessoryInfoWithCompletion___block_invoke;
     v11[3] = &unk_2786D6D40;
     objc_copyWeak(&v14, buf);
-    v9 = v8;
+    v9 = date;
     v12 = v9;
-    v13 = v4;
+    v13 = completionCopy;
     v15 = v16;
     [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self _sendSoftwareAuthMessageWithData:v6 completion:v11];
 
@@ -497,7 +497,7 @@ void __81__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_authSession_auth
   else
   {
     v9 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
-    (*(v4 + 2))(v4, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -593,42 +593,42 @@ LABEL_6:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSoftwareAuthMessageWithData:(id)a3 completion:(id)a4
+- (void)_sendSoftwareAuthMessageWithData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
-  v13 = [v8 wellKnownEndpoint:4];
+  completionCopy = completion;
+  dataCopy = data;
+  transport = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
+  v13 = [transport wellKnownEndpoint:4];
 
-  v9 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
-  v10 = [v9 mimeTypeForWellKnownEndpoint:4];
+  transport2 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
+  v10 = [transport2 mimeTypeForWellKnownEndpoint:4];
 
-  v11 = [[HAP2AccessoryServerTransportRequest alloc] initForWritingWithEndpoint:v13 data:v7 encrypted:1 mimeType:v10 dscpPriority:0];
-  v12 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
-  [v12 sendRequest:v11 completion:v6];
+  v11 = [[HAP2AccessoryServerTransportRequest alloc] initForWritingWithEndpoint:v13 data:dataCopy encrypted:1 mimeType:v10 dscpPriority:0];
+  transport3 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
+  [transport3 sendRequest:v11 completion:completionCopy];
 }
 
 - (void)_softwareAuthFinished
 {
-  v3 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   [(HAP2AccessoryServerPairingDriverWorkItem *)self finishWithError:0];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_cancelWithError___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -652,8 +652,8 @@ void __72__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_cancelWithError_
 
 - (void)_startSoftwareAuth
 {
-  v3 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -710,55 +710,55 @@ void __74__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem__startSoftwareAu
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runForPairingDriver:(id)a3
+- (void)runForPairingDriver:(id)driver
 {
-  v4 = a3;
-  v5 = [v4 encoding];
+  driverCopy = driver;
+  encoding = [driverCopy encoding];
   encoding = self->_encoding;
-  self->_encoding = v5;
+  self->_encoding = encoding;
 
-  v7 = [v4 pairingSession];
+  pairingSession = [driverCopy pairingSession];
   pairingSession = self->_pairingSession;
-  self->_pairingSession = v7;
+  self->_pairingSession = pairingSession;
 
-  v9 = [v4 encoding];
-  self->_sendPDUHeader = ([v9 encodingFeatures] & 8) != 0;
+  encoding2 = [driverCopy encoding];
+  self->_sendPDUHeader = ([encoding2 encodingFeatures] & 8) != 0;
 
-  v10 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v10 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v11 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self pairingSession];
-  [v11 generateSessionKeys];
+  pairingSession2 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self pairingSession];
+  [pairingSession2 generateSessionKeys];
 
-  v12 = [v4 secureTransportFactory];
-  v13 = [v4 transport];
+  secureTransportFactory = [driverCopy secureTransportFactory];
+  transport = [driverCopy transport];
 
-  v14 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self pairingSession];
-  v15 = [v12 createSecureTransportWithTransport:v13 isPaired:0 encryptedSession:v14];
+  pairingSession3 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self pairingSession];
+  v15 = [secureTransportFactory createSecureTransportWithTransport:transport isPaired:0 encryptedSession:pairingSession3];
   transport = self->_transport;
   self->_transport = v15;
 
-  v17 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self authSession];
+  authSession = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self authSession];
 
-  if (v17)
+  if (authSession)
   {
-    v18 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self authSession];
-    [(HAPAuthSession *)v18 resetSession];
+    authSession2 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self authSession];
+    [(HAPAuthSession *)authSession2 resetSession];
   }
 
   else
   {
-    v18 = [[HAPAuthSession alloc] initWithRole:0 instanceId:&unk_283EA9A88 delegate:self];
-    [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self setAuthSession:v18];
+    authSession2 = [[HAPAuthSession alloc] initWithRole:0 instanceId:&unk_283EA9A88 delegate:self];
+    [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self setAuthSession:authSession2];
   }
 
-  v19 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
+  transport2 = [(HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem *)self transport];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_runForPairingDriver___block_invoke;
   v20[3] = &unk_2786D6CC8;
   v20[4] = self;
-  [v19 openWithCompletion:v20];
+  [transport2 openWithCompletion:v20];
 }
 
 void __76__HAP2AccessoryServerPairingDriverSoftwareAuthWorkItem_runForPairingDriver___block_invoke(uint64_t a1)

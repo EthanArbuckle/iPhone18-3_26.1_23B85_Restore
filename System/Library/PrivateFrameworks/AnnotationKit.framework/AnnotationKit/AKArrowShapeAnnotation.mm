@@ -1,15 +1,15 @@
 @interface AKArrowShapeAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
 - (AKArrowShapeAnnotation)init;
-- (AKArrowShapeAnnotation)initWithCoder:(id)a3;
+- (AKArrowShapeAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (id)displayName;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKArrowShapeAnnotation
@@ -17,7 +17,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKArrowShapeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -30,7 +30,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKArrowShapeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -40,14 +40,14 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"arrowHeadLength"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"arrowLineWidth") & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"arrowHeadWidth") || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Arrow Shape", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"arrowHeadLength"] & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"arrowLineWidth") & 1) == 0 && !objc_msgSend(keyCopy, "isEqualToString:", @"arrowHeadWidth") || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Arrow Shape", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___AKArrowShapeAnnotation;
-    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
   }
 
   return v6;
@@ -81,8 +81,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowShapeAnnotation;
-  v3 = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BB148];
 
@@ -94,8 +94,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowShapeAnnotation;
-  v3 = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BB160];
 
@@ -107,8 +107,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowShapeAnnotation;
-  v3 = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKArrowAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BB178];
 
@@ -134,33 +134,33 @@
   return CGRectInset(v15, v12, v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AKArrowShapeAnnotation;
-  v4 = a3;
-  [(AKArrowAnnotation *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKArrowAnnotation *)&v5 encodeWithCoder:coderCopy];
   [(AKArrowShapeAnnotation *)self arrowHeadLength:v5.receiver];
-  [v4 encodeDouble:@"arrowHeadLength" forKey:?];
+  [coderCopy encodeDouble:@"arrowHeadLength" forKey:?];
   [(AKArrowShapeAnnotation *)self arrowHeadWidth];
-  [v4 encodeDouble:@"arrowHeadWidth" forKey:?];
+  [coderCopy encodeDouble:@"arrowHeadWidth" forKey:?];
   [(AKArrowShapeAnnotation *)self arrowLineWidth];
-  [v4 encodeDouble:@"arrowLineWidth" forKey:?];
+  [coderCopy encodeDouble:@"arrowLineWidth" forKey:?];
 }
 
-- (AKArrowShapeAnnotation)initWithCoder:(id)a3
+- (AKArrowShapeAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AKArrowShapeAnnotation;
-  v5 = [(AKArrowAnnotation *)&v7 initWithCoder:v4];
+  v5 = [(AKArrowAnnotation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"arrowHeadLength"];
+    [coderCopy decodeDoubleForKey:@"arrowHeadLength"];
     [(AKArrowShapeAnnotation *)v5 setArrowHeadLength:?];
-    [v4 decodeDoubleForKey:@"arrowHeadWidth"];
+    [coderCopy decodeDoubleForKey:@"arrowHeadWidth"];
     [(AKArrowShapeAnnotation *)v5 setArrowHeadWidth:?];
-    [v4 decodeDoubleForKey:@"arrowLineWidth"];
+    [coderCopy decodeDoubleForKey:@"arrowLineWidth"];
     [(AKArrowShapeAnnotation *)v5 setArrowLineWidth:?];
   }
 

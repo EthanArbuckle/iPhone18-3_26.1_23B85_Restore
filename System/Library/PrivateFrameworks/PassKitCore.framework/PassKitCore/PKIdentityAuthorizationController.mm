@@ -73,7 +73,7 @@
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKIdentityAuthorizationController requestDocumemnt", buf, 2u);
   }
 
-  v9 = [(PKIdentityRequest *)v6 asDIIdentityRequest];
+  asDIIdentityRequest = [(PKIdentityRequest *)v6 asDIIdentityRequest];
   wrapped = self->_wrapped;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -82,7 +82,7 @@
   v12[4] = self;
   v13 = v7;
   v11 = v7;
-  [(DIIdentityAuthorizationController *)wrapped requestDocument:v9 completion:v12];
+  [(DIIdentityAuthorizationController *)wrapped requestDocument:asDIIdentityRequest completion:v12];
 }
 
 void __64__PKIdentityAuthorizationController_requestDocument_completion___block_invoke(uint64_t a1, void *a2, void *a3)

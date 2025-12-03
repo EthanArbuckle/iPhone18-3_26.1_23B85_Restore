@@ -1,36 +1,36 @@
 @interface PKTextInputUtilities
-+ (BOOL)isMagicCanvasGenerationView:(id)a3;
-+ (BOOL)isResponderSupportedTextInput:(id)a3 checkForNotes:(BOOL)a4 outTextInputTraits:(id *)a5;
-+ (BOOL)isTextInputResponder:(id)a3;
-+ (BOOL)isUnderMagicView:(id)a3;
-+ (BOOL)isValidReachableInteraction:(id)a3;
-+ (BOOL)shouldAvoidNonEditableView:(id)a3;
-+ (BOOL)textInputTraitsAreSecure:(id)a3;
-+ (CGRect)selectionClipRectForTextInput:(id)a3;
++ (BOOL)isMagicCanvasGenerationView:(id)view;
++ (BOOL)isResponderSupportedTextInput:(id)input checkForNotes:(BOOL)notes outTextInputTraits:(id *)traits;
++ (BOOL)isTextInputResponder:(id)responder;
++ (BOOL)isUnderMagicView:(id)view;
++ (BOOL)isValidReachableInteraction:(id)interaction;
++ (BOOL)shouldAvoidNonEditableView:(id)view;
++ (BOOL)textInputTraitsAreSecure:(id)secure;
++ (CGRect)selectionClipRectForTextInput:(id)input;
 + (Class)notesTextViewClass;
-+ (id)_notesTextViewFromResponder:(id)a3;
-+ (id)nonEditableTextInputForView:(id)a3;
-+ (id)textInputTraitsFromTextInput:(id)a3;
-+ (int64_t)responderTextInputSource:(id)a3;
-+ (void)adjustSelectionWithDelta:(_NSRange)a3 forWebDocumentSourceView:(id)a4 completionHandler:(id)a5;
-+ (void)markAnalyticsForDeletionCount:(unint64_t)a3 rangeToReplace:(_NSRange)a4;
-+ (void)markAnalyticsForInsertionWithTexts:(id)a3 rangeToReplace:(_NSRange)a4;
-+ (void)markAnalyticsForInsertionWithTexts:(id)a3 rangeToReplace:(_NSRange)a4 withAlternatives:(int64_t)a5;
++ (id)_notesTextViewFromResponder:(id)responder;
++ (id)nonEditableTextInputForView:(id)view;
++ (id)textInputTraitsFromTextInput:(id)input;
++ (int64_t)responderTextInputSource:(id)source;
++ (void)adjustSelectionWithDelta:(_NSRange)delta forWebDocumentSourceView:(id)view completionHandler:(id)handler;
++ (void)markAnalyticsForDeletionCount:(unint64_t)count rangeToReplace:(_NSRange)replace;
++ (void)markAnalyticsForInsertionWithTexts:(id)texts rangeToReplace:(_NSRange)replace;
++ (void)markAnalyticsForInsertionWithTexts:(id)texts rangeToReplace:(_NSRange)replace withAlternatives:(int64_t)alternatives;
 + (void)markAnalyticsForRedo;
-+ (void)markAnalyticsForSelectionChange:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4;
++ (void)markAnalyticsForSelectionChange:(_NSRange)change relativeRangeBefore:(_NSRange)before;
 + (void)markAnalyticsForUndo;
-+ (void)removeTextAlternativesForTextInput:(id)a3;
-+ (void)requestDocumentContext:(id)a3 forWebDocumentSourceView:(id)a4 completionHandler:(id)a5;
++ (void)removeTextAlternativesForTextInput:(id)input;
++ (void)requestDocumentContext:(id)context forWebDocumentSourceView:(id)view completionHandler:(id)handler;
 @end
 
 @implementation PKTextInputUtilities
 
-+ (BOOL)isTextInputResponder:(id)a3
++ (BOOL)isTextInputResponder:(id)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 conformsToProtocol:&unk_1F4840D28];
+    v4 = [responderCopy conformsToProtocol:&unk_1F4840D28];
   }
 
   else
@@ -41,28 +41,28 @@
   return v4;
 }
 
-+ (id)textInputTraitsFromTextInput:(id)a3
++ (id)textInputTraitsFromTextInput:(id)input
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v3 conformsToProtocol:&unk_1F485D388] & 1) == 0)
+  inputCopy = input;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([inputCopy conformsToProtocol:&unk_1F485D388] & 1) == 0)
   {
     v5 = MEMORY[0x1E69DD108];
-    v6 = [v3 textInputTraits];
-    v4 = [v5 traitsByAdoptingTraits:v6 lightweight:1];
+    textInputTraits = [inputCopy textInputTraits];
+    v4 = [v5 traitsByAdoptingTraits:textInputTraits lightweight:1];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DD108] traitsByAdoptingTraits:v3 lightweight:1];
+    v4 = [MEMORY[0x1E69DD108] traitsByAdoptingTraits:inputCopy lightweight:1];
   }
 
   return v4;
 }
 
-+ (BOOL)textInputTraitsAreSecure:(id)a3
++ (BOOL)textInputTraitsAreSecure:(id)secure
 {
-  v3 = a3;
-  if ([v3 isSecureTextEntry])
+  secureCopy = secure;
+  if ([secureCopy isSecureTextEntry])
   {
     v4 = 1;
   }
@@ -70,8 +70,8 @@
   else
   {
     v5 = *MEMORY[0x1E69DE528];
-    v6 = [v3 textContentType];
-    if ([v5 isEqualToString:v6])
+    textContentType = [secureCopy textContentType];
+    if ([v5 isEqualToString:textContentType])
     {
       v4 = 1;
     }
@@ -79,8 +79,8 @@
     else
     {
       v7 = *MEMORY[0x1E69DE500];
-      v8 = [v3 textContentType];
-      v4 = [v7 isEqualToString:v8];
+      textContentType2 = [secureCopy textContentType];
+      v4 = [v7 isEqualToString:textContentType2];
     }
   }
 
@@ -106,17 +106,17 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
   return result;
 }
 
-+ (id)_notesTextViewFromResponder:(id)a3
++ (id)_notesTextViewFromResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqual:@"com.apple.mobilenotes"];
+  responderCopy = responder;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqual:@"com.apple.mobilenotes"];
 
   if (v7)
   {
-    [a1 notesTextViewClass];
-    v8 = v4;
+    [self notesTextViewClass];
+    v8 = responderCopy;
     if (v8)
     {
       do
@@ -126,12 +126,12 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
           break;
         }
 
-        v9 = [v8 nextResponder];
+        nextResponder = [v8 nextResponder];
 
-        v8 = v9;
+        v8 = nextResponder;
       }
 
-      while (v9);
+      while (nextResponder);
     }
   }
 
@@ -143,33 +143,33 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
   return v8;
 }
 
-+ (BOOL)isValidReachableInteraction:(id)a3
++ (BOOL)isValidReachableInteraction:(id)interaction
 {
-  v3 = [a1 _notesTextViewFromResponder:a3];
+  v3 = [self _notesTextViewFromResponder:interaction];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 ink];
-    v6 = [v5 _isHandwritingInk];
+    _isHandwritingInk = [v5 _isHandwritingInk];
   }
 
   else
   {
-    v6 = 1;
+    _isHandwritingInk = 1;
   }
 
-  return v6;
+  return _isHandwritingInk;
 }
 
-+ (BOOL)isUnderMagicView:(id)a3
++ (BOOL)isUnderMagicView:(id)view
 {
-  v3 = [a3 superview];
-  if (!v3)
+  superview = [view superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = superview;
   do
   {
     v5 = [PKTextInputUtilities isMagicCanvasGenerationView:v4];
@@ -178,23 +178,23 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
       break;
     }
 
-    v6 = [v4 superview];
+    superview2 = [v4 superview];
 
-    v4 = v6;
+    v4 = superview2;
   }
 
-  while (v6);
+  while (superview2);
 
   return v5;
 }
 
-+ (BOOL)isMagicCanvasGenerationView:(id)a3
++ (BOOL)isMagicCanvasGenerationView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 magicGenerativeViewForHitTesting];
-    v5 = v4 != 0;
+    magicGenerativeViewForHitTesting = [viewCopy magicGenerativeViewForHitTesting];
+    v5 = magicGenerativeViewForHitTesting != 0;
   }
 
   else
@@ -205,43 +205,43 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
   return v5;
 }
 
-+ (BOOL)isResponderSupportedTextInput:(id)a3 checkForNotes:(BOOL)a4 outTextInputTraits:(id *)a5
++ (BOOL)isResponderSupportedTextInput:(id)input checkForNotes:(BOOL)notes outTextInputTraits:(id *)traits
 {
-  v7 = a3;
+  inputCopy = input;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [a1 textInputTraitsFromTextInput:v7];
+  v8 = [self textInputTraitsFromTextInput:inputCopy];
   v9 = v8;
-  if (a5)
+  if (traits)
   {
     v10 = v8;
-    *a5 = v9;
+    *traits = v9;
   }
 
-  v11 = [a1 textInputTraitsAreSecure:v9];
+  v11 = [self textInputTraitsAreSecure:v9];
 
-  if ((v11 & 1) == 0 && [PKTextInputUtilities isTextInputResponder:v7])
+  if ((v11 & 1) == 0 && [PKTextInputUtilities isTextInputResponder:inputCopy])
   {
-    v12 = [a1 _notesTextViewFromResponder:v7];
+    v12 = [self _notesTextViewFromResponder:inputCopy];
     v13 = v12;
     if (v12)
     {
       v14 = [v12 ink];
-      v15 = [v14 _isHandwritingInk];
+      _isHandwritingInk = [v14 _isHandwritingInk];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 |= [PKTextInputUtilities isUnderMagicView:v7];
+        _isHandwritingInk |= [PKTextInputUtilities isUnderMagicView:inputCopy];
       }
     }
 
     else
     {
-      LOBYTE(v15) = 1;
+      LOBYTE(_isHandwritingInk) = 1;
     }
   }
 
@@ -249,31 +249,31 @@ Class __42__PKTextInputUtilities_notesTextViewClass__block_invoke()
   {
 LABEL_9:
     v13 = 0;
-    LOBYTE(v15) = 0;
+    LOBYTE(_isHandwritingInk) = 0;
   }
 
-  return v15;
+  return _isHandwritingInk;
 }
 
-+ (int64_t)responderTextInputSource:(id)a3
++ (int64_t)responderTextInputSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _textInputSource];
+    _textInputSource = [sourceCopy _textInputSource];
   }
 
   else
   {
-    v4 = 0;
+    _textInputSource = 0;
   }
 
-  return v4;
+  return _textInputSource;
 }
 
-+ (BOOL)shouldAvoidNonEditableView:(id)a3
++ (BOOL)shouldAvoidNonEditableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (qword_1ED6A4F28 != -1)
   {
     dispatch_once(&qword_1ED6A4F28, &__block_literal_global_457);
@@ -282,7 +282,7 @@ LABEL_9:
   if (qword_1ED6A4F20 && (objc_opt_isKindOfClass() & 1) != 0)
   {
 LABEL_5:
-    LOBYTE(v4) = 1;
+    LOBYTE(superview) = 1;
     goto LABEL_16;
   }
 
@@ -298,19 +298,19 @@ LABEL_5:
 
   if (v5 || (objc_opt_isKindOfClass() & 1) == 0)
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(superview) = 0;
     goto LABEL_16;
   }
 
-  v4 = [v3 superview];
-  if (v4)
+  superview = [viewCopy superview];
+  if (superview)
   {
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [v4 superview];
+      v4Superview = [superview superview];
 
-      v4 = v6;
-      if (!v6)
+      superview = v4Superview;
+      if (!v4Superview)
       {
         goto LABEL_16;
       }
@@ -321,7 +321,7 @@ LABEL_5:
 
 LABEL_16:
 
-  return v4;
+  return superview;
 }
 
 Class __51__PKTextInputUtilities_shouldAvoidNonEditableView___block_invoke()
@@ -333,33 +333,33 @@ Class __51__PKTextInputUtilities_shouldAvoidNonEditableView___block_invoke()
   return result;
 }
 
-+ (id)nonEditableTextInputForView:(id)a3
++ (id)nonEditableTextInputForView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && ([a1 shouldAvoidNonEditableView:v4] & 1) != 0)
+  viewCopy = view;
+  if (viewCopy && ([self shouldAvoidNonEditableView:viewCopy] & 1) != 0)
   {
     goto LABEL_7;
   }
 
-  if ([a1 isResponderSupportedTextInput:v4 checkForNotes:0 outTextInputTraits:0])
+  if ([self isResponderSupportedTextInput:viewCopy checkForNotes:0 outTextInputTraits:0])
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 isEditable] & 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([viewCopy isEditable] & 1) == 0)
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ![v4 isSelectable])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ![viewCopy isSelectable])
       {
         goto LABEL_7;
       }
     }
 
-    else if ([v4 canBecomeFirstResponder])
+    else if ([viewCopy canBecomeFirstResponder])
     {
 LABEL_7:
       v5 = 0;
       goto LABEL_28;
     }
 
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -368,8 +368,8 @@ LABEL_7:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 interactions];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    interactions = [viewCopy interactions];
+    v7 = [interactions countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = *v17;
@@ -379,7 +379,7 @@ LABEL_7:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(interactions);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -391,7 +391,7 @@ LABEL_7:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [interactions countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           continue;
@@ -403,14 +403,14 @@ LABEL_7:
 
 LABEL_18:
 
-    v12 = [v7 textInput];
-    if ([v12 conformsToProtocol:&unk_1F4840D28] && (objc_opt_respondsToSelector() & 1) != 0)
+    textInput = [v7 textInput];
+    if ([textInput conformsToProtocol:&unk_1F4840D28] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v13 = [v12 interactionAssistant];
+      interactionAssistant = [textInput interactionAssistant];
 
-      if (v13)
+      if (interactionAssistant)
       {
-        v14 = v12;
+        v14 = textInput;
       }
 
       else
@@ -432,14 +432,14 @@ LABEL_28:
   return v5;
 }
 
-+ (void)requestDocumentContext:(id)a3 forWebDocumentSourceView:(id)a4 completionHandler:(id)a5
++ (void)requestDocumentContext:(id)context forWebDocumentSourceView:(id)view completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 conformsToProtocol:&unk_1F485D388])
+  contextCopy = context;
+  viewCopy = view;
+  handlerCopy = handler;
+  if ([viewCopy conformsToProtocol:&unk_1F485D388])
   {
-    v10 = v8;
+    v10 = viewCopy;
     v20 = 0;
     v21 = &v20;
     v22 = 0x2050000000;
@@ -458,13 +458,13 @@ LABEL_28:
 
     v12 = v11;
     _Block_object_dispose(&v20, 8);
-    v13 = [[v11 alloc] _initWithUIKitDocumentRequest:v7];
+    v13 = [[v11 alloc] _initWithUIKitDocumentRequest:contextCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __90__PKTextInputUtilities_requestDocumentContext_forWebDocumentSourceView_completionHandler___block_invoke;
     v17[3] = &unk_1E82D6448;
-    v18 = v9;
-    v14 = v9;
+    v18 = handlerCopy;
+    v14 = handlerCopy;
     [v10 requestDocumentContext:v13 completionHandler:v17];
   }
 
@@ -474,9 +474,9 @@ LABEL_28:
     v15[1] = 3221225472;
     v15[2] = __90__PKTextInputUtilities_requestDocumentContext_forWebDocumentSourceView_completionHandler___block_invoke_2;
     v15[3] = &unk_1E82D6470;
-    v16 = v9;
-    v10 = v9;
-    [v8 requestDocumentContext:v7 completionHandler:v15];
+    v16 = handlerCopy;
+    v10 = handlerCopy;
+    [viewCopy requestDocumentContext:contextCopy completionHandler:v15];
     v13 = v16;
   }
 }
@@ -487,29 +487,29 @@ void __90__PKTextInputUtilities_requestDocumentContext_forWebDocumentSourceView_
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)adjustSelectionWithDelta:(_NSRange)a3 forWebDocumentSourceView:(id)a4 completionHandler:(id)a5
++ (void)adjustSelectionWithDelta:(_NSRange)delta forWebDocumentSourceView:(id)view completionHandler:(id)handler
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v8 = a5;
-  if ([v9 conformsToProtocol:&unk_1F485D388])
+  length = delta.length;
+  location = delta.location;
+  viewCopy = view;
+  handlerCopy = handler;
+  if ([viewCopy conformsToProtocol:&unk_1F485D388])
   {
-    [v9 adjustSelectionByRange:location completionHandler:{length, v8}];
+    [viewCopy adjustSelectionByRange:location completionHandler:{length, handlerCopy}];
   }
 
   else
   {
-    [v9 adjustSelectionWithDelta:location completionHandler:{length, v8}];
+    [viewCopy adjustSelectionWithDelta:location completionHandler:{length, handlerCopy}];
   }
 }
 
-+ (CGRect)selectionClipRectForTextInput:(id)a3
++ (CGRect)selectionClipRectForTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    [v3 selectionClipRect];
+    [inputCopy selectionClipRect];
   }
 
   else
@@ -523,7 +523,7 @@ void __90__PKTextInputUtilities_requestDocumentContext_forWebDocumentSourceView_
       goto LABEL_7;
     }
 
-    [v3 _selectionClipRect];
+    [inputCopy _selectionClipRect];
   }
 
   v8 = v4;
@@ -543,81 +543,81 @@ LABEL_7:
   return result;
 }
 
-+ (void)removeTextAlternativesForTextInput:(id)a3
++ (void)removeTextAlternativesForTextInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    [v3 removeTextAlternatives];
+    [inputCopy removeTextAlternatives];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 removeEmojiAlternatives];
+    [inputCopy removeEmojiAlternatives];
   }
 }
 
-+ (void)markAnalyticsForInsertionWithTexts:(id)a3 rangeToReplace:(_NSRange)a4
++ (void)markAnalyticsForInsertionWithTexts:(id)texts rangeToReplace:(_NSRange)replace
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [a3 componentsJoinedByString:&stru_1F476BD20];
-  v6 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v7 = [v6 _textInputSessionAnalytics];
-  [v7 didInsertText:v8 relativeRangeBefore:{location, length}];
+  length = replace.length;
+  location = replace.location;
+  v8 = [texts componentsJoinedByString:&stru_1F476BD20];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didInsertText:v8 relativeRangeBefore:{location, length}];
 }
 
-+ (void)markAnalyticsForInsertionWithTexts:(id)a3 rangeToReplace:(_NSRange)a4 withAlternatives:(int64_t)a5
++ (void)markAnalyticsForInsertionWithTexts:(id)texts rangeToReplace:(_NSRange)replace withAlternatives:(int64_t)alternatives
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = [a3 componentsJoinedByString:&stru_1F476BD20];
-  v8 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v9 = [v8 _textInputSessionAnalytics];
-  [v9 didInsertText:v10 relativeRangeBefore:location withNumAlternatives:{length, a5}];
+  length = replace.length;
+  location = replace.location;
+  v10 = [texts componentsJoinedByString:&stru_1F476BD20];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didInsertText:v10 relativeRangeBefore:location withNumAlternatives:{length, alternatives}];
 }
 
-+ (void)markAnalyticsForDeletionCount:(unint64_t)a3 rangeToReplace:(_NSRange)a4
++ (void)markAnalyticsForDeletionCount:(unint64_t)count rangeToReplace:(_NSRange)replace
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v8 = [v7 _textInputSessionAnalytics];
+  length = replace.length;
+  location = replace.location;
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 didDeleteBackwardCount:a3];
+    [_textInputSessionAnalytics didDeleteBackwardCount:count];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v8 didDeleteBackward:a3 relativeRangeBefore:{location, length}];
+    [_textInputSessionAnalytics didDeleteBackward:count relativeRangeBefore:{location, length}];
   }
 }
 
-+ (void)markAnalyticsForSelectionChange:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4
++ (void)markAnalyticsForSelectionChange:(_NSRange)change relativeRangeBefore:(_NSRange)before
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
-  v9 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v8 = [v9 _textInputSessionAnalytics];
-  [v8 didChangeToSelection:v7 relativeRangeBefore:{v6, location, length}];
+  length = before.length;
+  location = before.location;
+  v6 = change.length;
+  v7 = change.location;
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didChangeToSelection:v7 relativeRangeBefore:{v6, location, length}];
 }
 
 + (void)markAnalyticsForUndo
 {
-  v3 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 didUndo];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didUndo];
 }
 
 + (void)markAnalyticsForRedo
 {
-  v3 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 didRedo];
+  activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+  _textInputSessionAnalytics = [activeKeyboardSceneDelegate _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didRedo];
 }
 
 @end

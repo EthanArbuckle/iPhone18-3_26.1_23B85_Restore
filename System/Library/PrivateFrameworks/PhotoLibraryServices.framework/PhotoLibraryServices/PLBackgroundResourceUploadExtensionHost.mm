@@ -1,25 +1,25 @@
 @interface PLBackgroundResourceUploadExtensionHost
 - (BOOL)_isCancelled;
-- (BOOL)_lock_setupProxyIfNeededWithError:(id *)a3;
-- (PLBackgroundResourceUploadExtensionHost)initWithClientBundleIdentifier:(id)a3;
+- (BOOL)_lock_setupProxyIfNeededWithError:(id *)error;
+- (PLBackgroundResourceUploadExtensionHost)initWithClientBundleIdentifier:(id)identifier;
 - (id)_connection;
 - (id)_proxy;
 - (id)_timer;
-- (void)_cancelWithResult:(unint64_t)a3 force:(BOOL)a4;
-- (void)_disableTimer:(id)a3;
-- (void)_performTaskOnWorkBlock:(id)a3;
-- (void)_setupWithContinuationHandler:(id)a3 completionHandler:(id)a4;
+- (void)_cancelWithResult:(unint64_t)result force:(BOOL)force;
+- (void)_disableTimer:(id)timer;
+- (void)_performTaskOnWorkBlock:(id)block;
+- (void)_setupWithContinuationHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)dealloc;
-- (void)processWithContinuationHandler:(id)a3 completionHandler:(id)a4;
+- (void)processWithContinuationHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation PLBackgroundResourceUploadExtensionHost
 
-- (void)_disableTimer:(id)a3
+- (void)_disableTimer:(id)timer
 {
-  if (a3)
+  if (timer)
   {
-    dispatch_source_cancel(a3);
+    dispatch_source_cancel(timer);
   }
 }
 
@@ -99,13 +99,13 @@ uint64_t __49__PLBackgroundResourceUploadExtensionHost__timer__block_invoke(uint
   return v2;
 }
 
-- (void)_cancelWithResult:(unint64_t)a3 force:(BOOL)a4
+- (void)_cancelWithResult:(unint64_t)result force:(BOOL)force
 {
-  if (a4 || ![(PLBackgroundResourceUploadExtensionHost *)self _isCancelled])
+  if (force || ![(PLBackgroundResourceUploadExtensionHost *)self _isCancelled])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [(PLBackgroundResourceUploadExtensionHost *)self _connection];
-    [v7 invalidate];
+    _connection = [(PLBackgroundResourceUploadExtensionHost *)self _connection];
+    [_connection invalidate];
 
     objc_autoreleasePoolPop(v6);
     v10 = MEMORY[0x1E69E9820];
@@ -114,8 +114,8 @@ uint64_t __49__PLBackgroundResourceUploadExtensionHost__timer__block_invoke(uint
 
     if (v8)
     {
-      v9 = [(PLBackgroundResourceUploadExtensionHost *)self completionHandler];
-      v9[2](v9, a3);
+      completionHandler = [(PLBackgroundResourceUploadExtensionHost *)self completionHandler];
+      completionHandler[2](completionHandler, result);
     }
 
     [(PLXPCTransaction *)self->_transaction stillAlive];
@@ -154,7 +154,7 @@ void __67__PLBackgroundResourceUploadExtensionHost__cancelWithResult_force___blo
   return v2;
 }
 
-- (BOOL)_lock_setupProxyIfNeededWithError:(id *)a3
+- (BOOL)_lock_setupProxyIfNeededWithError:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
@@ -166,16 +166,16 @@ void __67__PLBackgroundResourceUploadExtensionHost__cancelWithResult_force___blo
   v6 = [objc_alloc(MEMORY[0x1E6966CE0]) initWithExtensionPointIdentifier:@"com.apple.photos.background-upload"];
   v7 = [MEMORY[0x1E6966CF8] executeQuery:v6];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [(PLBackgroundResourceUploadExtensionHost *)self clientBundleIdentifier];
-  v10 = [v8 predicateWithFormat:@"bundleIdentifier BEGINSWITH[c] %@", v9];
+  clientBundleIdentifier = [(PLBackgroundResourceUploadExtensionHost *)self clientBundleIdentifier];
+  v10 = [v8 predicateWithFormat:@"bundleIdentifier BEGINSWITH[c] %@", clientBundleIdentifier];
 
   v11 = [v7 filteredArrayUsingPredicate:v10];
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  if (v12)
+  if (firstObject)
   {
     objc_initWeak(&location, self);
-    v13 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:v12];
+    v13 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:firstObject];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __77__PLBackgroundResourceUploadExtensionHost__lock_setupProxyIfNeededWithError___block_invoke;
@@ -231,11 +231,11 @@ void __67__PLBackgroundResourceUploadExtensionHost__cancelWithResult_force___blo
         v5 = 1;
       }
 
-      else if (a3)
+      else if (error)
       {
         v29 = v19;
         v5 = 0;
-        *a3 = v19;
+        *error = v19;
       }
 
       else
@@ -246,11 +246,11 @@ void __67__PLBackgroundResourceUploadExtensionHost__cancelWithResult_force___blo
       v15 = v19;
     }
 
-    else if (a3)
+    else if (error)
     {
       v28 = v15;
       v5 = 0;
-      *a3 = v15;
+      *error = v15;
     }
 
     else
@@ -271,11 +271,11 @@ void __67__PLBackgroundResourceUploadExtensionHost__cancelWithResult_force___blo
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
     v15 = [v25 errorWithDomain:*MEMORY[0x1E69BFF48] code:45700 userInfo:v26];
 
-    if (a3)
+    if (error)
     {
       v27 = v15;
       v5 = 0;
-      *a3 = v15;
+      *error = v15;
     }
 
     else
@@ -354,13 +354,13 @@ void __77__PLBackgroundResourceUploadExtensionHost__lock_setupProxyIfNeededWithE
   }
 }
 
-- (void)_performTaskOnWorkBlock:(id)a3
+- (void)_performTaskOnWorkBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLBackgroundResourceUploadExtensionHost.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"workBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundResourceUploadExtensionHost.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"workBlock"}];
   }
 
   v6 = [MEMORY[0x1E69BF360] transaction:"-[PLBackgroundResourceUploadExtensionHost _performTaskOnWorkBlock:]"];
@@ -373,8 +373,8 @@ void __77__PLBackgroundResourceUploadExtensionHost__lock_setupProxyIfNeededWithE
   block[2] = __67__PLBackgroundResourceUploadExtensionHost__performTaskOnWorkBlock___block_invoke;
   block[3] = &unk_1E7577C08;
   block[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = blockCopy;
+  v9 = blockCopy;
   dispatch_async(queue, block);
 }
 
@@ -455,9 +455,9 @@ void __67__PLBackgroundResourceUploadExtensionHost__performTaskOnWorkBlock___blo
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (void)processWithContinuationHandler:(id)a3 completionHandler:(id)a4
+- (void)processWithContinuationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  [(PLBackgroundResourceUploadExtensionHost *)self _setupWithContinuationHandler:a3 completionHandler:a4];
+  [(PLBackgroundResourceUploadExtensionHost *)self _setupWithContinuationHandler:handler completionHandler:completionHandler];
 
   [(PLBackgroundResourceUploadExtensionHost *)self _performTaskOnWorkBlock:&__block_literal_global_29308];
 }
@@ -481,11 +481,11 @@ uint64_t __92__PLBackgroundResourceUploadExtensionHost_processWithContinuationHa
   return v3;
 }
 
-- (void)_setupWithContinuationHandler:(id)a3 completionHandler:(id)a4
+- (void)_setupWithContinuationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a4;
-  [(PLBackgroundResourceUploadExtensionHost *)self setContinuationHandler:a3];
-  [(PLBackgroundResourceUploadExtensionHost *)self setCompletionHandler:v6];
+  completionHandlerCopy = completionHandler;
+  [(PLBackgroundResourceUploadExtensionHost *)self setContinuationHandler:handler];
+  [(PLBackgroundResourceUploadExtensionHost *)self setCompletionHandler:completionHandlerCopy];
 }
 
 - (void)dealloc
@@ -496,13 +496,13 @@ uint64_t __92__PLBackgroundResourceUploadExtensionHost_processWithContinuationHa
   [(PLBackgroundResourceUploadExtensionHost *)&v3 dealloc];
 }
 
-- (PLBackgroundResourceUploadExtensionHost)initWithClientBundleIdentifier:(id)a3
+- (PLBackgroundResourceUploadExtensionHost)initWithClientBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLBackgroundResourceUploadExtensionHost.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"clientBundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundResourceUploadExtensionHost.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"clientBundleIdentifier"}];
   }
 
   v21.receiver = self;
@@ -511,18 +511,18 @@ uint64_t __92__PLBackgroundResourceUploadExtensionHost_processWithContinuationHa
   v7 = v6;
   if (v6)
   {
-    [(PLBackgroundResourceUploadExtensionHost *)v6 setClientBundleIdentifier:v5];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photolibraryd.extensionhost.%@", v5];
-    [v8 UTF8String];
+    [(PLBackgroundResourceUploadExtensionHost *)v6 setClientBundleIdentifier:identifierCopy];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photolibraryd.extensionhost.%@", identifierCopy];
+    [identifierCopy UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = pl_dispatch_queue_create_with_fallback_qos();
     queue = v7->_queue;
     v7->_queue = v10;
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photolibraryd.extensionhost.timer.%@", v5];
-    v13 = [v12 UTF8String];
+    identifierCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.photolibraryd.extensionhost.timer.%@", identifierCopy];
+    uTF8String = [identifierCopy2 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     timerQueue = v7->_timerQueue;
     v7->_timerQueue = v15;
 
@@ -532,8 +532,8 @@ uint64_t __92__PLBackgroundResourceUploadExtensionHost_processWithContinuationHa
 
     if (MEMORY[0x19EAEE230]())
     {
-      v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v7->_isTimerDisabled = [v18 BOOLForKey:@"DisableBackgroundUploadHostTimer"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v7->_isTimerDisabled = [standardUserDefaults BOOLForKey:@"DisableBackgroundUploadHostTimer"];
     }
   }
 

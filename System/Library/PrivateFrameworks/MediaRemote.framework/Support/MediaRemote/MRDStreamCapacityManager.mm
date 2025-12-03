@@ -1,19 +1,19 @@
 @interface MRDStreamCapacityManager
 + (id)sharedManager;
-- (BOOL)willStartingPlaybackToOutputDevicesInterrupt:(id)a3;
+- (BOOL)willStartingPlaybackToOutputDevicesInterrupt:(id)interrupt;
 - (MRDNowPlayingPlayerClient)bestStreamToInterrupt;
 - (MRDStreamCapacityManager)init;
-- (id)_willStartingPlaybackToOutputDevicesInterrupt:(id)a3;
+- (id)_willStartingPlaybackToOutputDevicesInterrupt:(id)interrupt;
 - (id)allStreams;
 - (id)allStreamsExcludingLocal;
-- (id)canActivateStreamWithPlayerPath:(id)a3;
+- (id)canActivateStreamWithPlayerPath:(id)path;
 - (id)description;
 - (id)streamsActivelyUsingSlot;
 - (id)streamsThatCountTowardsCapacity;
 - (int64_t)activeStreamCount;
 - (int64_t)maxStreamCapacity;
-- (void)_handlePlaybackStateDidChange:(id)a3;
-- (void)interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath:(id)a3 reason:(id)a4 completion:(id)a5;
+- (void)_handlePlaybackStateDidChange:(id)change;
+- (void)interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath:(id)path reason:(id)reason completion:(id)completion;
 @end
 
 @implementation MRDStreamCapacityManager
@@ -46,9 +46,9 @@
 
 - (id)description
 {
-  v3 = [(MRDStreamCapacityManager *)self streamsActivelyUsingSlot];
+  streamsActivelyUsingSlot = [(MRDStreamCapacityManager *)self streamsActivelyUsingSlot];
   v4 = [NSMutableString alloc];
-  v5 = [v3 count];
+  v5 = [streamsActivelyUsingSlot count];
   v6 = +[MRUserSettings currentSettings];
   if ([v6 reserveSlotForLocal])
   {
@@ -66,7 +66,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = streamsActivelyUsingSlot;
   v31 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v31)
   {
@@ -81,16 +81,16 @@
         }
 
         v9 = *(*(&v37 + 1) + 8 * i);
-        v10 = [v9 deviceInfo];
+        deviceInfo = [v9 deviceInfo];
         v11 = [NSMutableString alloc];
         v32 = v9;
-        v12 = [v9 origin];
-        v13 = [v10 name];
-        v14 = [v10 deviceUID];
-        v15 = [v11 initWithFormat:@"origin %@ %@ (%@)", v12, v13, v14];
+        origin = [v9 origin];
+        name = [deviceInfo name];
+        deviceUID = [deviceInfo deviceUID];
+        v15 = [v11 initWithFormat:@"origin %@ %@ (%@)", origin, name, deviceUID];
 
-        v16 = [v10 groupedDevices];
-        v17 = [v16 count];
+        groupedDevices = [deviceInfo groupedDevices];
+        v17 = [groupedDevices count];
 
         if (v17)
         {
@@ -101,8 +101,8 @@
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v18 = [v10 groupedDevices];
-        v19 = [v18 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        groupedDevices2 = [deviceInfo groupedDevices];
+        v19 = [groupedDevices2 countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v19)
         {
           v20 = v19;
@@ -113,23 +113,23 @@
             {
               if (*v34 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(groupedDevices2);
               }
 
               v23 = *(*(&v33 + 1) + 8 * j);
-              v24 = [v23 name];
-              v25 = [v23 deviceUID];
-              [v15 appendFormat:@"%@ (%@) + ", v24, v25];
+              name2 = [v23 name];
+              deviceUID2 = [v23 deviceUID];
+              [v15 appendFormat:@"%@ (%@) + ", name2, deviceUID2];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v20 = [groupedDevices2 countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v20);
         }
 
-        v26 = [v32 activeContent];
-        [v30 appendFormat:@"%@ on %@\n", v26, v15];
+        activeContent = [v32 activeContent];
+        [v30 appendFormat:@"%@ on %@\n", activeContent, v15];
       }
 
       v31 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -141,18 +141,18 @@
   return v30;
 }
 
-- (id)canActivateStreamWithPlayerPath:(id)a3
+- (id)canActivateStreamWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSDate now];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
-  v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"canActivateStreamWithPlayerPath", v7];
+  v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"canActivateStreamWithPlayerPath", uUIDString];
   v9 = v8;
-  if (v4)
+  if (pathCopy)
   {
-    [(__CFString *)v8 appendFormat:@" for %@", v4];
+    [(__CFString *)v8 appendFormat:@" for %@", pathCopy];
   }
 
   v10 = _MRLogForCategory();
@@ -177,11 +177,11 @@
   v58[4] = self;
   v59 = &stru_1004B83C0;
   v12 = objc_retainBlock(v58);
-  if (((v11[2])(v11, v4) & 1) == 0)
+  if (((v11[2])(v11, pathCopy) & 1) == 0)
   {
     v16 = _MRLogForCategory();
     v21 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (pathCopy)
     {
       if (v21)
       {
@@ -190,11 +190,11 @@
         *buf = 138544386;
         v63 = @"canActivateStreamWithPlayerPath";
         v64 = 2114;
-        v65 = v7;
+        v65 = uUIDString;
         v66 = 2112;
         v67 = @"PlayerPath does not take up a slot thus is always allowed to activate";
         v68 = 2114;
-        v69 = v4;
+        v69 = pathCopy;
         v70 = 2048;
         v71 = v22;
         v20 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -216,7 +216,7 @@ LABEL_35:
     *buf = 138544130;
     v63 = @"canActivateStreamWithPlayerPath";
     v64 = 2114;
-    v65 = v7;
+    v65 = uUIDString;
     v66 = 2112;
     v67 = @"PlayerPath does not take up a slot thus is always allowed to activate";
     v68 = 2048;
@@ -228,16 +228,16 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v13 = [(MRDStreamCapacityManager *)self remainingStreamCapacity];
-  v14 = (v12[2])(v12, v4);
+  remainingStreamCapacity = [(MRDStreamCapacityManager *)self remainingStreamCapacity];
+  v14 = (v12[2])(v12, pathCopy);
   v15 = v14;
-  if (v13 >= 1)
+  if (remainingStreamCapacity >= 1)
   {
     if (v14)
     {
       v16 = _MRLogForCategory();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (pathCopy)
       {
         if (v17)
         {
@@ -246,11 +246,11 @@ LABEL_32:
           *buf = 138544386;
           v63 = @"canActivateStreamWithPlayerPath";
           v64 = 2114;
-          v65 = v7;
+          v65 = uUIDString;
           v66 = 2112;
           v67 = @"PlayerPath is already active";
           v68 = 2114;
-          v69 = v4;
+          v69 = pathCopy;
           v70 = 2048;
           v71 = v19;
           v20 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -275,7 +275,7 @@ LABEL_33:
       *buf = 138544130;
       v63 = @"canActivateStreamWithPlayerPath";
       v64 = 2114;
-      v65 = v7;
+      v65 = uUIDString;
       v66 = 2112;
       v67 = @"PlayerPath is already active";
       v68 = 2048;
@@ -289,7 +289,7 @@ LABEL_33:
     v32 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v16)
     {
-      if (v4)
+      if (pathCopy)
       {
         if (!v32)
         {
@@ -303,11 +303,11 @@ LABEL_34:
         *buf = 138544386;
         v63 = @"canActivateStreamWithPlayerPath";
         v64 = 2114;
-        v65 = v7;
+        v65 = uUIDString;
         v66 = 2112;
         v67 = v16;
         v68 = 2114;
-        v69 = v4;
+        v69 = pathCopy;
         v70 = 2048;
         v71 = v34;
         v35 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -329,7 +329,7 @@ LABEL_58:
       *buf = 138544130;
       v63 = @"canActivateStreamWithPlayerPath";
       v64 = 2114;
-      v65 = v7;
+      v65 = uUIDString;
       v66 = 2112;
       v67 = v16;
       v68 = 2048;
@@ -339,7 +339,7 @@ LABEL_58:
 
     else
     {
-      if (!v4)
+      if (!pathCopy)
       {
         if (!v32)
         {
@@ -351,7 +351,7 @@ LABEL_58:
         *buf = 138543874;
         v63 = @"canActivateStreamWithPlayerPath";
         v64 = 2114;
-        v65 = v7;
+        v65 = uUIDString;
         v66 = 2048;
         v67 = v56;
         v35 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -370,9 +370,9 @@ LABEL_58:
       *buf = 138544130;
       v63 = @"canActivateStreamWithPlayerPath";
       v64 = 2114;
-      v65 = v7;
+      v65 = uUIDString;
       v66 = 2114;
-      v67 = v4;
+      v67 = pathCopy;
       v68 = 2048;
       v69 = v47;
       v35 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -395,7 +395,7 @@ LABEL_58:
     if (v28)
     {
       v39 = os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
-      if (v4)
+      if (pathCopy)
       {
         if (!v39)
         {
@@ -416,7 +416,7 @@ LABEL_54:
       *buf = 138544130;
       v63 = @"canActivateStreamWithPlayerPath";
       v64 = 2114;
-      v65 = v7;
+      v65 = uUIDString;
       v66 = 2114;
       v67 = v28;
       v68 = 2048;
@@ -428,7 +428,7 @@ LABEL_54:
     }
 
     v50 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (pathCopy)
     {
       if (!v50)
       {
@@ -449,7 +449,7 @@ LABEL_62:
     *buf = 138543874;
     v63 = @"canActivateStreamWithPlayerPath";
     v64 = 2114;
-    v65 = v7;
+    v65 = uUIDString;
     v66 = 2048;
     v67 = v57;
     v52 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -465,7 +465,7 @@ LABEL_62:
   if (!v28)
   {
     v49 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (pathCopy)
     {
       if (!v49)
       {
@@ -478,9 +478,9 @@ LABEL_50:
       *buf = 138544130;
       v63 = @"canActivateStreamWithPlayerPath";
       v64 = 2114;
-      v65 = v7;
+      v65 = uUIDString;
       v66 = 2114;
-      v67 = v4;
+      v67 = pathCopy;
       v68 = 2048;
       v69 = v51;
       v52 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -500,7 +500,7 @@ LABEL_63:
   }
 
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
-  if (!v4)
+  if (!pathCopy)
   {
     if (!v30)
     {
@@ -521,11 +521,11 @@ LABEL_29:
   *buf = 138544386;
   v63 = @"canActivateStreamWithPlayerPath";
   v64 = 2114;
-  v65 = v7;
+  v65 = uUIDString;
   v66 = 2114;
   v67 = v28;
   v68 = 2114;
-  v69 = v4;
+  v69 = pathCopy;
   v70 = 2048;
   v71 = v41;
   v42 = "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds";
@@ -540,25 +540,25 @@ LABEL_36:
   return v28;
 }
 
-- (void)interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath:(id)path reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  reasonCopy = reason;
+  completionCopy = completion;
   v11 = +[NSDate date];
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
+  uUIDString = [v12 UUIDString];
 
-  v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath", v13];
+  v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath", uUIDString];
   v15 = v14;
-  if (v8)
+  if (pathCopy)
   {
-    [v14 appendFormat:@" for %@", v8];
+    [v14 appendFormat:@" for %@", pathCopy];
   }
 
-  if (v9)
+  if (reasonCopy)
   {
-    [v15 appendFormat:@" because %@", v9];
+    [v15 appendFormat:@" because %@", reasonCopy];
   }
 
   v16 = _MRLogForCategory();
@@ -573,27 +573,27 @@ LABEL_36:
   v42[1] = 3221225472;
   v42[2] = sub_100072898;
   v42[3] = &unk_1004B8438;
-  v17 = v8;
+  v17 = pathCopy;
   v43 = v17;
   v44 = @"interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath";
-  v18 = v13;
+  v18 = uUIDString;
   v45 = v18;
   v19 = v11;
   v46 = v19;
-  v20 = v10;
+  v20 = completionCopy;
   v47 = v20;
   v21 = objc_retainBlock(v42);
   v22 = [(MRDStreamCapacityManager *)self canActivateStreamWithPlayerPath:v17];
   if (v22)
   {
-    v23 = [(MRDStreamCapacityManager *)self bestStreamToInterrupt];
-    if (v23)
+    bestStreamToInterrupt = [(MRDStreamCapacityManager *)self bestStreamToInterrupt];
+    if (bestStreamToInterrupt)
     {
       v35 = v19;
       v36 = v18;
       v24 = [MRNowPlayingRequest alloc];
-      [v23 playerPath];
-      v26 = v25 = v9;
+      [bestStreamToInterrupt playerPath];
+      v26 = v25 = reasonCopy;
       v27 = [v24 initWithPlayerPath:v26];
 
       v28 = objc_alloc_init(NSMutableDictionary);
@@ -602,8 +602,8 @@ LABEL_36:
       [v28 setObject:v29 forKeyedSubscript:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
 
       v30 = +[NSThread currentThread];
-      v31 = [v30 threadDictionary];
-      v32 = [v31 objectForKeyedSubscript:@"migrateRequest"];
+      threadDictionary = [v30 threadDictionary];
+      v32 = [threadDictionary objectForKeyedSubscript:@"migrateRequest"];
 
       if (v32)
       {
@@ -626,7 +626,7 @@ LABEL_36:
       [v27 sendCommand:1 options:v28 queue:&_dispatch_main_q completion:v38];
 
       v18 = v36;
-      v9 = v37;
+      reasonCopy = v37;
       v19 = v35;
     }
 
@@ -647,9 +647,9 @@ LABEL_36:
 {
   v3 = +[NSDate date];
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
-  v6 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"bestStreamToInterrupt", v5];
+  v6 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"bestStreamToInterrupt", uUIDString];
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -658,32 +658,32 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v8 = [(MRDStreamCapacityManager *)self allStreamsExcludingLocal];
-  v9 = [v8 msv_compactMap:&stru_1004B84A0];
+  allStreamsExcludingLocal = [(MRDStreamCapacityManager *)self allStreamsExcludingLocal];
+  v9 = [allStreamsExcludingLocal msv_compactMap:&stru_1004B84A0];
 
   v10 = [v9 sortedArrayUsingComparator:&stru_1004B84E0];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 playerPath];
+  playerPath = [firstObject playerPath];
 
   v13 = _MRLogForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (playerPath)
   {
     if (!v14)
     {
       goto LABEL_9;
     }
 
-    v15 = [v11 playerPath];
+    playerPath2 = [firstObject playerPath];
     v16 = +[NSDate date];
     [v16 timeIntervalSinceDate:v3];
     *buf = 138544130;
     v21 = @"bestStreamToInterrupt";
     v22 = 2114;
-    v23 = v5;
+    v23 = uUIDString;
     v24 = 2112;
-    v25 = v15;
+    v25 = playerPath2;
     v26 = 2048;
     v27 = v17;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds", buf, 0x2Au);
@@ -696,12 +696,12 @@ LABEL_36:
       goto LABEL_9;
     }
 
-    v15 = +[NSDate date];
-    [v15 timeIntervalSinceDate:v3];
+    playerPath2 = +[NSDate date];
+    [playerPath2 timeIntervalSinceDate:v3];
     *buf = 138543874;
     v21 = @"bestStreamToInterrupt";
     v22 = 2114;
-    v23 = v5;
+    v23 = uUIDString;
     v24 = 2048;
     v25 = v18;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -709,26 +709,26 @@ LABEL_36:
 
 LABEL_9:
 
-  return v11;
+  return firstObject;
 }
 
-- (id)_willStartingPlaybackToOutputDevicesInterrupt:(id)a3
+- (id)_willStartingPlaybackToOutputDevicesInterrupt:(id)interrupt
 {
-  v4 = a3;
+  interruptCopy = interrupt;
   if ([(MRDStreamCapacityManager *)self remainingStreamCapacity]< 1)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [(MRDStreamCapacityManager *)self streamsThatCountTowardsCapacity];
-    v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    streamsThatCountTowardsCapacity = [(MRDStreamCapacityManager *)self streamsThatCountTowardsCapacity];
+    v10 = [streamsThatCountTowardsCapacity countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v10)
     {
       v11 = v10;
       v12 = *v34;
-      v27 = v9;
-      v28 = v4;
+      v27 = streamsThatCountTowardsCapacity;
+      v28 = interruptCopy;
       v26 = *v34;
       do
       {
@@ -736,18 +736,18 @@ LABEL_9:
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(streamsThatCountTowardsCapacity);
           }
 
           v14 = *(*(&v33 + 1) + 8 * i);
           if ([v14 containsActiveStream])
           {
-            v15 = [v14 deviceInfo];
+            deviceInfo = [v14 deviceInfo];
             v29 = 0u;
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v16 = v4;
+            v16 = interruptCopy;
             v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v17)
             {
@@ -763,14 +763,14 @@ LABEL_9:
                   }
 
                   v21 = *(*(&v29 + 1) + 8 * j);
-                  if ([v15 containsDevice:v21])
+                  if ([deviceInfo containsDevice:v21])
                   {
                     v22 = [NSString alloc];
-                    v23 = [v14 activeContent];
-                    v24 = [v22 initWithFormat:@"Already playing <%@> to specified device <%@>", v23, v21];
+                    activeContent = [v14 activeContent];
+                    v24 = [v22 initWithFormat:@"Already playing <%@> to specified device <%@>", activeContent, v21];
 
                     v8 = [[MSVPair alloc] initWithFirst:&__kCFBooleanFalse second:v24];
-                    v4 = v28;
+                    interruptCopy = v28;
                     goto LABEL_23;
                   }
                 }
@@ -785,13 +785,13 @@ LABEL_9:
               }
             }
 
-            v9 = v27;
-            v4 = v28;
+            streamsThatCountTowardsCapacity = v27;
+            interruptCopy = v28;
             v12 = v26;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v11 = [streamsThatCountTowardsCapacity countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v11);
@@ -816,18 +816,18 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)willStartingPlaybackToOutputDevicesInterrupt:(id)a3
+- (BOOL)willStartingPlaybackToOutputDevicesInterrupt:(id)interrupt
 {
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = +[NSDate date];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
-  v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDevicesInterrupt", v7];
+  v8 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"willStartingPlaybackToOutputDevicesInterrupt", uUIDString];
   v9 = v8;
-  if (v4)
+  if (interruptCopy)
   {
-    [(__CFString *)v8 appendFormat:@" for %@", v4];
+    [(__CFString *)v8 appendFormat:@" for %@", interruptCopy];
   }
 
   v10 = _MRLogForCategory();
@@ -838,42 +838,42 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v11 = [(MRDStreamCapacityManager *)self _willStartingPlaybackToOutputDevicesInterrupt:v4];
+  v11 = [(MRDStreamCapacityManager *)self _willStartingPlaybackToOutputDevicesInterrupt:interruptCopy];
   v12 = _MRLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 second];
+    second = [v11 second];
     *buf = 138543874;
     v35 = @"willStartingPlaybackToOutputDevicesInterrupt";
     v36 = 2114;
-    v37 = v7;
+    v37 = uUIDString;
     v38 = 2112;
-    v39 = v13;
+    v39 = second;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
   }
 
-  v14 = [v11 first];
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 BOOLValue]);
+  first = [v11 first];
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [first BOOLValue]);
 
   v16 = _MRLogForCategory();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
   if (!v15)
   {
-    if (v4)
+    if (interruptCopy)
     {
       if (!v17)
       {
         goto LABEL_21;
       }
 
-      v18 = +[NSDate date];
-      [v18 timeIntervalSinceDate:v5];
+      first2 = +[NSDate date];
+      [first2 timeIntervalSinceDate:v5];
       *buf = 138544130;
       v35 = @"willStartingPlaybackToOutputDevicesInterrupt";
       v36 = 2114;
-      v37 = v7;
+      v37 = uUIDString;
       v38 = 2114;
-      v39 = v4;
+      v39 = interruptCopy;
       v40 = 2048;
       v41 = v25;
       v26 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -888,12 +888,12 @@ LABEL_23:
         goto LABEL_21;
       }
 
-      v18 = +[NSDate date];
-      [v18 timeIntervalSinceDate:v5];
+      first2 = +[NSDate date];
+      [first2 timeIntervalSinceDate:v5];
       *buf = 138543874;
       v35 = @"willStartingPlaybackToOutputDevicesInterrupt";
       v36 = 2114;
-      v37 = v7;
+      v37 = uUIDString;
       v38 = 2048;
       v39 = v30;
       v26 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -905,22 +905,22 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (v4)
+  if (interruptCopy)
   {
     if (v17)
     {
-      v18 = [v11 first];
-      v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 BOOLValue]);
+      first2 = [v11 first];
+      v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [first2 BOOLValue]);
       v20 = +[NSDate date];
       [v20 timeIntervalSinceDate:v5];
       *buf = 138544386;
       v35 = @"willStartingPlaybackToOutputDevicesInterrupt";
       v36 = 2114;
-      v37 = v7;
+      v37 = uUIDString;
       v38 = 2112;
       v39 = v19;
       v40 = 2114;
-      v41 = v4;
+      v41 = interruptCopy;
       v42 = 2048;
       v43 = v21;
       v22 = "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds";
@@ -935,14 +935,14 @@ LABEL_20:
 
   else if (v17)
   {
-    v18 = [v11 first];
-    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 BOOLValue]);
+    first2 = [v11 first];
+    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [first2 BOOLValue]);
     v20 = +[NSDate date];
     [v20 timeIntervalSinceDate:v5];
     *buf = 138544130;
     v35 = @"willStartingPlaybackToOutputDevicesInterrupt";
     v36 = 2114;
-    v37 = v7;
+    v37 = uUIDString;
     v38 = 2112;
     v39 = v19;
     v40 = 2048;
@@ -955,16 +955,16 @@ LABEL_20:
 
 LABEL_21:
 
-  v31 = [v11 first];
-  v32 = [v31 BOOLValue];
+  first3 = [v11 first];
+  bOOLValue = [first3 BOOLValue];
 
-  return v32;
+  return bOOLValue;
 }
 
 - (int64_t)activeStreamCount
 {
-  v2 = [(MRDStreamCapacityManager *)self streamsActivelyUsingSlot];
-  v3 = [v2 count];
+  streamsActivelyUsingSlot = [(MRDStreamCapacityManager *)self streamsActivelyUsingSlot];
+  v3 = [streamsActivelyUsingSlot count];
 
   return v3;
 }
@@ -972,25 +972,25 @@ LABEL_21:
 - (int64_t)maxStreamCapacity
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 maxStreamCapacity];
+  maxStreamCapacity = [v2 maxStreamCapacity];
 
-  return v3;
+  return maxStreamCapacity;
 }
 
 - (id)allStreams
 {
   v2 = +[MRDMediaRemoteServer server];
-  v3 = [v2 nowPlayingServer];
-  v4 = [v3 originClients];
-  v5 = [v4 msv_filter:&stru_1004B8520];
+  nowPlayingServer = [v2 nowPlayingServer];
+  originClients = [nowPlayingServer originClients];
+  v5 = [originClients msv_filter:&stru_1004B8520];
 
   return v5;
 }
 
 - (id)allStreamsExcludingLocal
 {
-  v2 = [(MRDStreamCapacityManager *)self allStreams];
-  v3 = [v2 msv_filter:&stru_1004B8540];
+  allStreams = [(MRDStreamCapacityManager *)self allStreams];
+  v3 = [allStreams msv_filter:&stru_1004B8540];
 
   return v3;
 }
@@ -998,63 +998,63 @@ LABEL_21:
 - (id)streamsThatCountTowardsCapacity
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 reserveSlotForLocal];
+  reserveSlotForLocal = [v3 reserveSlotForLocal];
 
-  if (v4)
+  if (reserveSlotForLocal)
   {
-    v5 = [(MRDStreamCapacityManager *)self allStreamsExcludingLocal];
+    allStreamsExcludingLocal = [(MRDStreamCapacityManager *)self allStreamsExcludingLocal];
   }
 
   else
   {
-    v5 = [(MRDStreamCapacityManager *)self allStreams];
-    v6 = [v5 msv_firstWhere:&stru_1004B8560];
+    allStreamsExcludingLocal = [(MRDStreamCapacityManager *)self allStreams];
+    v6 = [allStreamsExcludingLocal msv_firstWhere:&stru_1004B8560];
 
     if (!v6)
     {
       v7 = +[MRDMediaRemoteServer server];
-      v8 = [v7 nowPlayingServer];
-      v9 = [v8 localOriginClient];
-      v10 = [v5 arrayByAddingObject:v9];
+      nowPlayingServer = [v7 nowPlayingServer];
+      localOriginClient = [nowPlayingServer localOriginClient];
+      v10 = [allStreamsExcludingLocal arrayByAddingObject:localOriginClient];
 
-      v5 = v10;
+      allStreamsExcludingLocal = v10;
     }
   }
 
-  return v5;
+  return allStreamsExcludingLocal;
 }
 
 - (id)streamsActivelyUsingSlot
 {
-  v2 = [(MRDStreamCapacityManager *)self streamsThatCountTowardsCapacity];
-  v3 = [v2 msv_filter:&stru_1004B8580];
+  streamsThatCountTowardsCapacity = [(MRDStreamCapacityManager *)self streamsThatCountTowardsCapacity];
+  v3 = [streamsThatCountTowardsCapacity msv_filter:&stru_1004B8580];
 
   return v3;
 }
 
-- (void)_handlePlaybackStateDidChange:(id)a3
+- (void)_handlePlaybackStateDidChange:(id)change
 {
-  v16 = a3;
-  v4 = [v16 userInfo];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
   v5 = MRGetPlayerPathFromUserInfo();
 
-  v6 = [v5 origin];
-  v7 = [v6 isLocallyHosted];
+  origin = [v5 origin];
+  isLocallyHosted = [origin isLocallyHosted];
 
-  if (v7)
+  if (isLocallyHosted)
   {
-    v8 = [v5 client];
-    v9 = [v8 bundleIdentifier];
+    client = [v5 client];
+    bundleIdentifier = [client bundleIdentifier];
     v10 = MRMediaRemoteCopyLocalDeviceAirPlayReceiverBundleID();
-    v11 = [v9 isEqualToString:v10];
+    v11 = [bundleIdentifier isEqualToString:v10];
 
     if (v11)
     {
-      v12 = [v16 userInfo];
-      v13 = [v12 objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
-      v14 = [v13 BOOLValue];
+      userInfo2 = [changeCopy userInfo];
+      v13 = [userInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
+      bOOLValue = [v13 BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
         v15 = [[NSString alloc] initWithFormat:@"%@ just started playing", v5];
         [(MRDStreamCapacityManager *)self interruptBestStreamIfNecessaryToActivateStreamWithPlayerPath:v5 reason:v15 completion:0];

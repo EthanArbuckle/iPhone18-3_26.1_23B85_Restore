@@ -1,5 +1,5 @@
 @interface SPQueryResponse
-- (SPQueryResponse)initWithTask:(id)a3;
+- (SPQueryResponse)initWithTask:(id)task;
 - (id)copy;
 - (id)description;
 @end
@@ -9,11 +9,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SPQueryResponse *)self kind];
-  v5 = [(SPQueryResponse *)self state];
-  v6 = [(SPQueryResponse *)self task];
-  v7 = [(SPQueryResponse *)self resultSections];
-  v8 = [v3 stringWithFormat:@"kind:%lu state:%luu task:%@ sections:%@", v4, v5, v6, v7];
+  kind = [(SPQueryResponse *)self kind];
+  state = [(SPQueryResponse *)self state];
+  task = [(SPQueryResponse *)self task];
+  resultSections = [(SPQueryResponse *)self resultSections];
+  v8 = [v3 stringWithFormat:@"kind:%lu state:%luu task:%@ sections:%@", kind, state, task, resultSections];
 
   return v8;
 }
@@ -21,36 +21,36 @@
 - (id)copy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(SPQueryResponse *)self task];
-  v5 = [v3 initWithTask:v4];
+  task = [(SPQueryResponse *)self task];
+  v5 = [v3 initWithTask:task];
 
-  v6 = [(SPQueryResponse *)self resultSections];
-  [v5 setResultSections:v6];
+  resultSections = [(SPQueryResponse *)self resultSections];
+  [v5 setResultSections:resultSections];
 
-  v7 = [(SPQueryResponse *)self sessionEntityString];
-  [v5 setSessionEntityString:v7];
+  sessionEntityString = [(SPQueryResponse *)self sessionEntityString];
+  [v5 setSessionEntityString:sessionEntityString];
 
   [v5 setState:{-[SPQueryResponse state](self, "state")}];
   [v5 setKind:{-[SPQueryResponse kind](self, "kind")}];
-  v8 = [(SPQueryResponse *)self ecrGroundedOutput];
-  [v5 setEcrGroundedOutput:v8];
+  ecrGroundedOutput = [(SPQueryResponse *)self ecrGroundedOutput];
+  [v5 setEcrGroundedOutput:ecrGroundedOutput];
 
-  v9 = [(SPQueryResponse *)self ecrGroundedPersons];
-  [v5 setEcrGroundedPersons:v9];
+  ecrGroundedPersons = [(SPQueryResponse *)self ecrGroundedPersons];
+  [v5 setEcrGroundedPersons:ecrGroundedPersons];
 
   return v5;
 }
 
-- (SPQueryResponse)initWithTask:(id)a3
+- (SPQueryResponse)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v8.receiver = self;
   v8.super_class = SPQueryResponse;
   v5 = [(SPQueryResponse *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SPQueryResponse *)v5 setTask:v4];
+    [(SPQueryResponse *)v5 setTask:taskCopy];
   }
 
   return v6;

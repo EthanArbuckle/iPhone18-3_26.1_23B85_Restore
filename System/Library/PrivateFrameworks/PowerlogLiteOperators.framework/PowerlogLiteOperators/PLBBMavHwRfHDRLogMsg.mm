@@ -2,11 +2,11 @@
 + (id)entryEventBackwardDefinitionBBMavHwRfHDR;
 - (PLBBMavHwRfHDRLogMsg)init;
 - (id)logEventBackwardBBMavHwRfHDR;
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4;
-- (void)populateEntry:(id)a3;
+- (void)addPairWithKey:(id)key andWithVal:(id)val;
+- (void)populateEntry:(id)entry;
 - (void)refreshRequest;
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5;
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5;
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type;
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal;
 @end
 
 @implementation PLBBMavHwRfHDRLogMsg
@@ -32,9 +32,9 @@
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavHwRfHDRLogMsg init]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg init]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:39];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:39];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -73,13 +73,13 @@ uint64_t __28__PLBBMavHwRfHDRLogMsg_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  typeCopy = type;
   v10 = MEMORY[0x277D3F180];
-  v11 = a3;
+  entryCopy = entry;
   if ([v10 debugEnabled])
   {
     v12 = objc_opt_class();
@@ -95,13 +95,13 @@ uint64_t __28__PLBBMavHwRfHDRLogMsg_init__block_invoke(uint64_t a1)
 
     if (byte_2811F61C9 == 1)
     {
-      v34 = v9;
+      v34 = typeCopy;
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavHwRfHDRLogMsg sendAndLogPLEntry:withName:withType:]"];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg sendAndLogPLEntry:withName:withType:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:58];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:58];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -111,7 +111,7 @@ uint64_t __28__PLBBMavHwRfHDRLogMsg_init__block_invoke(uint64_t a1)
         _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v34;
+      typeCopy = v34;
     }
   }
 
@@ -130,41 +130,41 @@ uint64_t __28__PLBBMavHwRfHDRLogMsg_init__block_invoke(uint64_t a1)
 
     if (byte_2811F61CA == 1)
     {
-      v20 = v9;
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", v8, v9];
+      v20 = typeCopy;
+      typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", nameCopy, typeCopy];
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent2 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg sendAndLogPLEntry:withName:withType:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:59];
+      [v22 logMessage:typeCopy fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:59];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v38 = v21;
+        v38 = typeCopy;
         _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v20;
+      typeCopy = v20;
     }
   }
 
   v27 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"SeqNum"];
-  [v11 setObject:v27 forKeyedSubscript:@"SeqNum"];
+  [entryCopy setObject:v27 forKeyedSubscript:@"SeqNum"];
 
   v28 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"BBDate"];
-  [v11 setObject:v28 forKeyedSubscript:@"BBDate"];
+  [entryCopy setObject:v28 forKeyedSubscript:@"BBDate"];
 
   v29 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"TimeCal"];
-  [v11 setObject:v29 forKeyedSubscript:@"TimeCal"];
+  [entryCopy setObject:v29 forKeyedSubscript:@"TimeCal"];
 
   v30 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"BBDate"];
-  v31 = [v30 convertFromBasebandToMonotonic];
-  [v11 setEntryDate:v31];
+  convertFromBasebandToMonotonic = [v30 convertFromBasebandToMonotonic];
+  [entryCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v32 = [(PLBasebandMessage *)self agent];
-  [v32 logEntry:v11];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:entryCopy];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -183,11 +183,11 @@ uint64_t __60__PLBBMavHwRfHDRLogMsg_sendAndLogPLEntry_withName_withType___block_
   return result;
 }
 
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  numCopy = num;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v10 = objc_opt_class();
@@ -206,9 +206,9 @@ uint64_t __60__PLBBMavHwRfHDRLogMsg_sendAndLogPLEntry_withName_withType___block_
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavHwRfHDRLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:76];
+      [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:76];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -220,12 +220,12 @@ uint64_t __60__PLBBMavHwRfHDRLogMsg_sendAndLogPLEntry_withName_withType___block_
     }
   }
 
-  if (v8 && v9)
+  if (numCopy && dateCopy)
   {
-    [(NSMutableDictionary *)self->_commonInfo setObject:v8 forKey:@"SeqNum"];
-    [(NSMutableDictionary *)self->_commonInfo setObject:v9 forKey:@"BBDate"];
+    [(NSMutableDictionary *)self->_commonInfo setObject:numCopy forKey:@"SeqNum"];
+    [(NSMutableDictionary *)self->_commonInfo setObject:dateCopy forKey:@"BBDate"];
     commonInfo = self->_commonInfo;
-    v18 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v18 = [MEMORY[0x277CCABB0] numberWithDouble:cal];
     [(NSMutableDictionary *)commonInfo setValue:v18 forKey:@"TimeCal"];
 LABEL_11:
 
@@ -250,9 +250,9 @@ LABEL_11:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to set seqNum, date, timeCal"];
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent2 = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-      [v20 logMessage:v18 fromFile:v22 fromFunction:v23 fromLineNumber:78];
+      [v20 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:78];
 
       v24 = PLLogCommon();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -285,11 +285,11 @@ uint64_t __63__PLBBMavHwRfHDRLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___blo
   return result;
 }
 
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4
+- (void)addPairWithKey:(id)key andWithVal:(id)val
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valCopy = val;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -308,9 +308,9 @@ uint64_t __63__PLBBMavHwRfHDRLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___blo
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavHwRfHDRLogMsg addPairWithKey:andWithVal:]"];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg addPairWithKey:andWithVal:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:94];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:94];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -322,10 +322,10 @@ uint64_t __63__PLBBMavHwRfHDRLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___blo
     }
   }
 
-  v15 = [MEMORY[0x277D3F180] debugEnabled];
-  if (v6)
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
+  if (keyCopy)
   {
-    if (v15)
+    if (debugEnabled)
     {
       v16 = objc_opt_class();
       v31[0] = MEMORY[0x277D85DD0];
@@ -340,31 +340,31 @@ uint64_t __63__PLBBMavHwRfHDRLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___blo
 
       if (byte_2811F61CF == 1)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", v6, v7];
+        valCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", keyCopy, valCopy];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent2 = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg addPairWithKey:andWithVal:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:100];
+        [v18 logMessage:valCopy fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:100];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v35 = v17;
+          v35 = valCopy;
           _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
       }
     }
 
-    v23 = [(PLBBMavHwRfHDRLogMsg *)self kvPairs];
-    [v23 setObject:v7 forKey:v6];
+    kvPairs = [(PLBBMavHwRfHDRLogMsg *)self kvPairs];
+    [kvPairs setObject:valCopy forKey:keyCopy];
 LABEL_17:
 
     goto LABEL_25;
   }
 
-  if (v15)
+  if (debugEnabled)
   {
     v24 = objc_opt_class();
     v32[0] = MEMORY[0x277D85DD0];
@@ -379,18 +379,18 @@ LABEL_17:
 
     if (byte_2811F61CE == 1)
     {
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: nil key for kvPair not expected, return"];
+      kvPairs = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: nil key for kvPair not expected, return"];
       v25 = MEMORY[0x277D3F178];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavHwRfHDRLogMsg.m"];
-      v27 = [v26 lastPathComponent];
+      lastPathComponent3 = [v26 lastPathComponent];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavHwRfHDRLogMsg addPairWithKey:andWithVal:]"];
-      [v25 logMessage:v23 fromFile:v27 fromFunction:v28 fromLineNumber:97];
+      [v25 logMessage:kvPairs fromFile:lastPathComponent3 fromFunction:v28 fromLineNumber:97];
 
       v29 = PLLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v35 = v23;
+        v35 = kvPairs;
         _os_log_debug_impl(&dword_21A4C6000, v29, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
@@ -442,41 +442,41 @@ uint64_t __50__PLBBMavHwRfHDRLogMsg_addPairWithKey_andWithVal___block_invoke_391
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"SeqNum";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"BBDate";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_DateFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]2 commonTypeDict_DateFormat];
+  v28[1] = commonTypeDict_DateFormat;
   v27[2] = @"LogDuration";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_RealFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v28[2] = commonTypeDict_RealFormat;
   v27[3] = @"SDTXOnFrames";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_RealFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v28[3] = commonTypeDict_RealFormat2;
   v27[4] = @"SDTXOffFrames";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_RealFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v28[4] = commonTypeDict_RealFormat3;
   v27[5] = @"LTXOnFrames";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v28[5] = commonTypeDict_RealFormat4;
   v27[6] = @"LDTXOffFrames";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v28[6] = commonTypeDict_RealFormat5;
   v27[7] = @"TTXOnFrames";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RealFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
+  v28[7] = commonTypeDict_RealFormat6;
   v27[8] = @"TDTXOffFrames";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_RealFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_RealFormat];
+  v28[8] = commonTypeDict_RealFormat7;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -510,40 +510,40 @@ uint64_t __50__PLBBMavHwRfHDRLogMsg_addPairWithKey_andWithVal___block_invoke_391
   return v5;
 }
 
-- (void)populateEntry:(id)a3
+- (void)populateEntry:(id)entry
 {
   commonInfo = self->_commonInfo;
-  v5 = a3;
+  entryCopy = entry;
   v6 = [(NSMutableDictionary *)commonInfo objectForKey:@"BBDate"];
-  v7 = [v6 convertFromBasebandToMonotonic];
-  [v5 setEntryDate:v7];
+  convertFromBasebandToMonotonic = [v6 convertFromBasebandToMonotonic];
+  [entryCopy setEntryDate:convertFromBasebandToMonotonic];
 
   v8 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"BBDate"];
-  [v5 setObject:v8 forKeyedSubscript:@"BBDate"];
+  [entryCopy setObject:v8 forKeyedSubscript:@"BBDate"];
 
   v9 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"SeqNum"];
-  [v5 setObject:v9 forKeyedSubscript:@"SeqNum"];
+  [entryCopy setObject:v9 forKeyedSubscript:@"SeqNum"];
 
-  v10 = [(PLBBMavHwRfHDRLogMsg *)self logDuration];
-  [v5 setObject:v10 forKeyedSubscript:@"LogDuration"];
+  logDuration = [(PLBBMavHwRfHDRLogMsg *)self logDuration];
+  [entryCopy setObject:logDuration forKeyedSubscript:@"LogDuration"];
 
-  v11 = [(PLBBMavHwRfHDRLogMsg *)self sDTXOnFrame];
-  [v5 setObject:v11 forKeyedSubscript:@"SDTXOnFrames"];
+  sDTXOnFrame = [(PLBBMavHwRfHDRLogMsg *)self sDTXOnFrame];
+  [entryCopy setObject:sDTXOnFrame forKeyedSubscript:@"SDTXOnFrames"];
 
-  v12 = [(PLBBMavHwRfHDRLogMsg *)self sDTXOffFrame];
-  [v5 setObject:v12 forKeyedSubscript:@"SDTXOffFrames"];
+  sDTXOffFrame = [(PLBBMavHwRfHDRLogMsg *)self sDTXOffFrame];
+  [entryCopy setObject:sDTXOffFrame forKeyedSubscript:@"SDTXOffFrames"];
 
-  v13 = [(PLBBMavHwRfHDRLogMsg *)self lDTXOnFrame];
-  [v5 setObject:v13 forKeyedSubscript:@"LTXOnFrames"];
+  lDTXOnFrame = [(PLBBMavHwRfHDRLogMsg *)self lDTXOnFrame];
+  [entryCopy setObject:lDTXOnFrame forKeyedSubscript:@"LTXOnFrames"];
 
-  v14 = [(PLBBMavHwRfHDRLogMsg *)self lDTXOffFrame];
-  [v5 setObject:v14 forKeyedSubscript:@"LDTXOffFrames"];
+  lDTXOffFrame = [(PLBBMavHwRfHDRLogMsg *)self lDTXOffFrame];
+  [entryCopy setObject:lDTXOffFrame forKeyedSubscript:@"LDTXOffFrames"];
 
-  v15 = [(PLBBMavHwRfHDRLogMsg *)self tDTXOnFrame];
-  [v5 setObject:v15 forKeyedSubscript:@"TTXOnFrames"];
+  tDTXOnFrame = [(PLBBMavHwRfHDRLogMsg *)self tDTXOnFrame];
+  [entryCopy setObject:tDTXOnFrame forKeyedSubscript:@"TTXOnFrames"];
 
-  v16 = [(PLBBMavHwRfHDRLogMsg *)self tDTXOffFrame];
-  [v5 setObject:v16 forKeyedSubscript:@"TDTXOffFrames"];
+  tDTXOffFrame = [(PLBBMavHwRfHDRLogMsg *)self tDTXOffFrame];
+  [entryCopy setObject:tDTXOffFrame forKeyedSubscript:@"TDTXOffFrames"];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface DMCProfileKeyValueView
 + (double)defaultPreferredValueLabelOriginX;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DMCProfileKeyValueView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DMCProfileKeyValueView)initWithFrame:(CGRect)frame;
 - (UILabel)verifiedLabel;
-- (double)desiredValueLabelOriginXForSize:(CGSize)a3;
-- (id)_captionFontBold:(BOOL)a3;
+- (double)desiredValueLabelOriginXForSize:(CGSize)size;
+- (id)_captionFontBold:(BOOL)bold;
 - (void)layoutSubviews;
-- (void)setItemDetail:(id)a3;
-- (void)setKey:(id)a3 value:(id)a4;
-- (void)setPreferredValueLabelOriginX:(double)a3;
+- (void)setItemDetail:(id)detail;
+- (void)setKey:(id)key value:(id)value;
+- (void)setPreferredValueLabelOriginX:(double)x;
 @end
 
 @implementation DMCProfileKeyValueView
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (DMCProfileKeyValueView)initWithFrame:(CGRect)a3
+- (DMCProfileKeyValueView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = DMCProfileKeyValueView;
-  v3 = [(DMCProfileKeyValueView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DMCProfileKeyValueView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -49,8 +49,8 @@
     v3->_keyLabel = v9;
 
     [(UILabel *)v3->_keyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
-    [(UILabel *)v3->_keyLabel setTextColor:v11];
+    dMCProfileSecondaryLabelColor = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
+    [(UILabel *)v3->_keyLabel setTextColor:dMCProfileSecondaryLabelColor];
 
     [(UILabel *)v3->_keyLabel setTextAlignment:2];
     v12 = [(DMCProfileKeyValueView *)v3 _captionFontBold:0];
@@ -86,8 +86,8 @@
   v6 = v4 - v5;
   [(DMCProfileKeyValueView *)self frame];
   v8 = v7 - v6 + -10.0;
-  v9 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v9 sizeThatFits:{v8, 3.40282347e38}];
+  keyLabel = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel sizeThatFits:{v8, 3.40282347e38}];
   v11 = v10;
   v13 = v12;
 
@@ -111,11 +111,11 @@
   y = v90.origin.y;
   width = v90.size.width;
   height = v90.size.height;
-  v24 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v24 setFrame:{x, y, width, height}];
+  keyLabel2 = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel2 setFrame:{x, y, width, height}];
 
-  v25 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v25 sizeThatFits:{v6, 3.40282347e38}];
+  valueLabel = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel sizeThatFits:{v6, 3.40282347e38}];
   v27 = v26;
   v29 = v28;
 
@@ -143,14 +143,14 @@
   v36 = v92.origin.y;
   v37 = v92.size.width;
   v38 = v92.size.height;
-  v39 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v39 setFrame:{v35, v36, v37, v38}];
+  valueLabel2 = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel2 setFrame:{v35, v36, v37, v38}];
 
-  v40 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v40 _firstLineBaselineFrameOriginY];
+  keyLabel3 = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel3 _firstLineBaselineFrameOriginY];
   v42 = v41;
-  v43 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v43 _firstLineBaselineOffsetFromBoundsTop];
+  valueLabel3 = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel3 _firstLineBaselineOffsetFromBoundsTop];
   v45 = v42 - v44;
 
   v93.origin.x = v33;
@@ -162,16 +162,16 @@
   v47 = v94.origin.y;
   v48 = v94.size.width;
   v49 = v94.size.height;
-  v50 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v50 setFrame:{v46, v47, v48, v49}];
+  valueLabel4 = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel4 setFrame:{v46, v47, v48, v49}];
 
-  v51 = [(DMCProfileKeyValueView *)self keyLabel];
-  v52 = [v51 text];
-  v53 = [v52 length];
+  keyLabel4 = [(DMCProfileKeyValueView *)self keyLabel];
+  text = [keyLabel4 text];
+  v53 = [text length];
 
-  v54 = [(DMCProfileKeyValueView *)self valueLabel];
-  v55 = [v54 text];
-  v56 = [v55 length];
+  valueLabel5 = [(DMCProfileKeyValueView *)self valueLabel];
+  text2 = [valueLabel5 text];
+  v56 = [text2 length];
 
   v95.origin.x = v33;
   v95.origin.y = v45;
@@ -192,8 +192,8 @@
 
   if (v59)
   {
-    v60 = [(DMCProfileKeyValueView *)self verifiedLabel];
-    [v60 sizeThatFits:{v88, v86}];
+    verifiedLabel = [(DMCProfileKeyValueView *)self verifiedLabel];
+    [verifiedLabel sizeThatFits:{v88, v86}];
     v62 = v61;
     v64 = v63;
 
@@ -220,18 +220,18 @@
     v71 = v97.origin.y;
     v72 = v97.size.width;
     v73 = v97.size.height;
-    v74 = [(DMCProfileKeyValueView *)self verifiedLabel];
-    [v74 setFrame:{v70, v71, v72, v73}];
+    verifiedLabel2 = [(DMCProfileKeyValueView *)self verifiedLabel];
+    [verifiedLabel2 setFrame:{v70, v71, v72, v73}];
 
     if (!v56)
     {
       if (v53)
       {
-        v75 = [(DMCProfileKeyValueView *)self keyLabel];
-        [v75 _firstLineBaselineFrameOriginY];
+        keyLabel5 = [(DMCProfileKeyValueView *)self keyLabel];
+        [keyLabel5 _firstLineBaselineFrameOriginY];
         v77 = v76;
-        v78 = [(DMCProfileKeyValueView *)self verifiedLabel];
-        [v78 _firstLineBaselineOffsetFromBoundsTop];
+        verifiedLabel3 = [(DMCProfileKeyValueView *)self verifiedLabel];
+        [verifiedLabel3 _firstLineBaselineOffsetFromBoundsTop];
         v80 = v77 - v79;
 
         v98.origin.x = v68;
@@ -243,8 +243,8 @@
         v82 = v99.origin.y;
         v83 = v99.size.width;
         v84 = v99.size.height;
-        v85 = [(DMCProfileKeyValueView *)self verifiedLabel];
-        [v85 setFrame:{v81, v82, v83, v84}];
+        verifiedLabel4 = [(DMCProfileKeyValueView *)self verifiedLabel];
+        [verifiedLabel4 setFrame:{v81, v82, v83, v84}];
       }
     }
   }
@@ -271,14 +271,14 @@
   return verifiedLabel;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(DMCProfileKeyValueView *)self preferredValueLabelOriginX:a3.width];
+  width = fits.width;
+  [(DMCProfileKeyValueView *)self preferredValueLabelOriginX:fits.width];
   v6 = width - v5;
   v7 = width - (width - v5) + -10.0;
-  v8 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v8 sizeThatFits:{v7, 3.40282347e38}];
+  keyLabel = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel sizeThatFits:{v7, 3.40282347e38}];
   v10 = v9;
   v12 = v11;
 
@@ -301,8 +301,8 @@
     MaxY = CGRectGetMaxY(v46);
   }
 
-  v18 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v18 sizeThatFits:{v6, 3.40282347e38}];
+  valueLabel = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel sizeThatFits:{v6, 3.40282347e38}];
   v20 = v19;
   v22 = v21;
 
@@ -329,21 +329,21 @@
   v50.size.width = v25;
   v50.size.height = v26;
   v27 = CGRectGetMaxY(v50);
-  v28 = [(DMCProfileKeyValueView *)self valueLabel];
-  v29 = [v28 text];
-  v30 = [v29 length];
+  valueLabel2 = [(DMCProfileKeyValueView *)self valueLabel];
+  text = [valueLabel2 text];
+  v30 = [text length];
 
-  v31 = [(DMCProfileKeyValueView *)self verifiedLabel];
+  verifiedLabel = [(DMCProfileKeyValueView *)self verifiedLabel];
 
-  if (v31)
+  if (verifiedLabel)
   {
     if (v30)
     {
       v27 = v27 + 5.0;
     }
 
-    v32 = [(DMCProfileKeyValueView *)self verifiedLabel];
-    [v32 sizeThatFits:{v6, 3.40282347e38}];
+    verifiedLabel2 = [(DMCProfileKeyValueView *)self verifiedLabel];
+    [verifiedLabel2 sizeThatFits:{v6, 3.40282347e38}];
     v34 = v33;
     v36 = v35;
 
@@ -373,64 +373,64 @@
   return result;
 }
 
-- (double)desiredValueLabelOriginXForSize:(CGSize)a3
+- (double)desiredValueLabelOriginXForSize:(CGSize)size
 {
-  v3 = (a3.width + -10.0) * 0.65;
-  v4 = a3.width - roundf(v3) + -10.0;
-  v5 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v5 sizeThatFits:{v4, 3.40282347e38}];
+  v3 = (size.width + -10.0) * 0.65;
+  v4 = size.width - roundf(v3) + -10.0;
+  keyLabel = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel sizeThatFits:{v4, 3.40282347e38}];
   v7 = v6;
 
   return v7 + 10.0;
 }
 
-- (void)setKey:(id)a3 value:(id)a4
+- (void)setKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v8 setText:v7];
+  valueCopy = value;
+  keyCopy = key;
+  keyLabel = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel setText:keyCopy];
 
-  v9 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v9 setText:v6];
+  valueLabel = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel setText:valueCopy];
 
   [(DMCProfileKeyValueView *)self setNeedsLayout];
 }
 
-- (void)setItemDetail:(id)a3
+- (void)setItemDetail:(id)detail
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [(DMCProfileKeyValueView *)self keyLabel];
-  [v6 setText:v5];
+  detailCopy = detail;
+  title = [detailCopy title];
+  keyLabel = [(DMCProfileKeyValueView *)self keyLabel];
+  [keyLabel setText:title];
 
-  v7 = [v4 detail];
-  v8 = [(DMCProfileKeyValueView *)self valueLabel];
-  [v8 setText:v7];
+  detail = [detailCopy detail];
+  valueLabel = [(DMCProfileKeyValueView *)self valueLabel];
+  [valueLabel setText:detail];
 
-  v9 = [v4 trustText];
+  trustText = [detailCopy trustText];
 
-  v10 = [(DMCProfileKeyValueView *)self verifiedLabel];
-  [v10 setAttributedText:v9];
+  verifiedLabel = [(DMCProfileKeyValueView *)self verifiedLabel];
+  [verifiedLabel setAttributedText:trustText];
 
   [(DMCProfileKeyValueView *)self setNeedsLayout];
 }
 
-- (void)setPreferredValueLabelOriginX:(double)a3
+- (void)setPreferredValueLabelOriginX:(double)x
 {
-  if (a3 >= 0.0 && self->_preferredValueLabelOriginX != a3)
+  if (x >= 0.0 && self->_preferredValueLabelOriginX != x)
   {
-    self->_preferredValueLabelOriginX = a3;
+    self->_preferredValueLabelOriginX = x;
     [(DMCProfileKeyValueView *)self setNeedsLayout];
   }
 }
 
-- (id)_captionFontBold:(BOOL)a3
+- (id)_captionFontBold:(BOOL)bold
 {
-  v3 = a3;
+  boldCopy = bold;
   v4 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76938]];
   v5 = v4;
-  if (v3)
+  if (boldCopy)
   {
     v6 = [v4 fontDescriptorWithSymbolicTraits:2];
 

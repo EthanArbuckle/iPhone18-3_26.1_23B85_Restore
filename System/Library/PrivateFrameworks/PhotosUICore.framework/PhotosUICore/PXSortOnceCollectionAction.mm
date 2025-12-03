@@ -1,24 +1,24 @@
 @interface PXSortOnceCollectionAction
-+ (id)assetDateIntervalOfCollection:(id)a3;
-+ (id)collections:(id)a3 sortedByTag:(int64_t)a4;
-+ (id)makeFetchOptionsWithPhotoLibrary:(id)a3;
++ (id)assetDateIntervalOfCollection:(id)collection;
++ (id)collections:(id)collections sortedByTag:(int64_t)tag;
++ (id)makeFetchOptionsWithPhotoLibrary:(id)library;
 - (NSArray)sortedChildCollections;
-- (PXSortOnceCollectionAction)initWithCollection:(id)a3 sortType:(int64_t)a4;
+- (PXSortOnceCollectionAction)initWithCollection:(id)collection sortType:(int64_t)type;
 - (id)makeFetchOptions;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXSortOnceCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PXSortOnceCollectionAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 void __42__PXSortOnceCollectionAction_performUndo___block_invoke(uint64_t a1)
@@ -38,14 +38,14 @@ void __42__PXSortOnceCollectionAction_performUndo___block_invoke(uint64_t a1)
   [v7 insertChildCollections:v8 atIndexes:v9];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__PXSortOnceCollectionAction_performAction___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:action];
 }
 
 void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
@@ -67,8 +67,8 @@ void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
   if (!sortedChildCollections)
   {
     v4 = objc_opt_class();
-    v5 = [(PHFetchResult *)self->_initialFetchResult fetchedObjects];
-    v6 = [v4 collections:v5 sortedByTag:{-[PXSortOnceCollectionAction sortType](self, "sortType")}];
+    fetchedObjects = [(PHFetchResult *)self->_initialFetchResult fetchedObjects];
+    v6 = [v4 collections:fetchedObjects sortedByTag:{-[PXSortOnceCollectionAction sortType](self, "sortType")}];
     v7 = self->_sortedChildCollections;
     self->_sortedChildCollections = v6;
 
@@ -78,22 +78,22 @@ void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
   return sortedChildCollections;
 }
 
-- (PXSortOnceCollectionAction)initWithCollection:(id)a3 sortType:(int64_t)a4
+- (PXSortOnceCollectionAction)initWithCollection:(id)collection sortType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [v7 photoLibrary];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
   v16.receiver = self;
   v16.super_class = PXSortOnceCollectionAction;
-  v9 = [(PXPhotosAction *)&v16 initWithPhotoLibrary:v8];
+  v9 = [(PXPhotosAction *)&v16 initWithPhotoLibrary:photoLibrary];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    v9->_sortType = a4;
+    objc_storeStrong(&v9->_collection, collection);
+    v9->_sortType = type;
     v10 = MEMORY[0x1E6978758];
-    v11 = [(PXSortOnceCollectionAction *)v9 collection];
-    v12 = [(PXSortOnceCollectionAction *)v9 makeFetchOptions];
-    v13 = [v10 fetchCollectionsInCollectionList:v11 options:v12];
+    collection = [(PXSortOnceCollectionAction *)v9 collection];
+    makeFetchOptions = [(PXSortOnceCollectionAction *)v9 makeFetchOptions];
+    v13 = [v10 fetchCollectionsInCollectionList:collection options:makeFetchOptions];
     initialFetchResult = v9->_initialFetchResult;
     v9->_initialFetchResult = v13;
   }
@@ -104,25 +104,25 @@ void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
 - (id)makeFetchOptions
 {
   v3 = objc_opt_class();
-  v4 = [(PXPhotosAction *)self photoLibrary];
-  v5 = [v3 makeFetchOptionsWithPhotoLibrary:v4];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
+  v5 = [v3 makeFetchOptionsWithPhotoLibrary:photoLibrary];
 
   return v5;
 }
 
-+ (id)collections:(id)a3 sortedByTag:(int64_t)a4
++ (id)collections:(id)collections sortedByTag:(int64_t)tag
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  collectionsCopy = collections;
   v7 = objc_opt_new();
-  if ((a4 - 1) <= 1)
+  if ((tag - 1) <= 1)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v19 = v6;
-    v8 = v6;
+    v19 = collectionsCopy;
+    v8 = collectionsCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -138,9 +138,9 @@ void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [a1 assetDateIntervalOfCollection:v13];
-          v15 = [v13 uuid];
-          [v7 setObject:v14 forKeyedSubscript:v15];
+          v14 = [self assetDateIntervalOfCollection:v13];
+          uuid = [v13 uuid];
+          [v7 setObject:v14 forKeyedSubscript:uuid];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -149,18 +149,18 @@ void __44__PXSortOnceCollectionAction_performAction___block_invoke(uint64_t a1)
       while (v10);
     }
 
-    v6 = v19;
+    collectionsCopy = v19;
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __54__PXSortOnceCollectionAction_collections_sortedByTag___block_invoke;
   v20[3] = &unk_1E7736CD8;
-  v22 = (a4 - 1) < 2;
+  v22 = (tag - 1) < 2;
   v21 = v7;
-  v23 = a4 != 2;
+  v23 = tag != 2;
   v16 = v7;
-  v17 = [v6 sortedArrayUsingComparator:v20];
+  v17 = [collectionsCopy sortedArrayUsingComparator:v20];
 
   return v17;
 }
@@ -332,18 +332,18 @@ LABEL_49:
   return v28;
 }
 
-+ (id)assetDateIntervalOfCollection:(id)a3
++ (id)assetDateIntervalOfCollection:(id)collection
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [a1 makeFetchOptionsWithPhotoLibrary:v5];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  v6 = [self makeFetchOptionsWithPhotoLibrary:photoLibrary];
 
-  if (![v4 canContainAssets])
+  if (![collectionCopy canContainAssets])
   {
-    if ([v4 canContainCollections])
+    if ([collectionCopy canContainCollections])
     {
-      v12 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v4 options:v6];
+      v12 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:collectionCopy options:v6];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -353,9 +353,9 @@ LABEL_49:
       {
         v16 = v15;
         v38 = v6;
-        v39 = v4;
-        v14 = 0;
-        v11 = 0;
+        v39 = collectionCopy;
+        creationDate2 = 0;
+        creationDate = 0;
         v17 = *v41;
         do
         {
@@ -366,39 +366,39 @@ LABEL_49:
               objc_enumerationMutation(v12);
             }
 
-            v19 = [a1 assetDateIntervalOfCollection:{*(*(&v40 + 1) + 8 * i), v38, v39}];
+            v19 = [self assetDateIntervalOfCollection:{*(*(&v40 + 1) + 8 * i), v38, v39}];
             v20 = v19;
             if (v19)
             {
-              v21 = [v19 startDate];
-              v22 = v21;
-              if (!v11 || [v21 compare:v11] == -1)
+              startDate = [v19 startDate];
+              v22 = startDate;
+              if (!creationDate || [startDate compare:creationDate] == -1)
               {
                 v23 = v22;
 
-                v11 = v23;
+                creationDate = v23;
               }
 
-              v24 = [v20 endDate];
-              v25 = v24;
-              if (!v14 || [v24 compare:v14] == 1)
+              endDate = [v20 endDate];
+              v25 = endDate;
+              if (!creationDate2 || [endDate compare:creationDate2] == 1)
               {
                 v26 = v25;
-                v27 = v14;
+                v27 = creationDate2;
                 v28 = v16;
-                v29 = v11;
+                v29 = creationDate;
                 v30 = v17;
-                v31 = a1;
+                selfCopy = self;
                 v32 = v12;
                 v33 = v26;
 
                 v34 = v33;
                 v12 = v32;
-                a1 = v31;
+                self = selfCopy;
                 v17 = v30;
-                v11 = v29;
+                creationDate = v29;
                 v16 = v28;
-                v14 = v34;
+                creationDate2 = v34;
               }
             }
           }
@@ -408,13 +408,13 @@ LABEL_49:
 
         while (v16);
         v6 = v38;
-        v4 = v39;
+        collectionCopy = v39;
         goto LABEL_20;
       }
     }
 
-    v11 = 0;
-    v14 = 0;
+    creationDate = 0;
+    creationDate2 = 0;
     goto LABEL_30;
   }
 
@@ -423,37 +423,37 @@ LABEL_49:
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
   [v6 setSortDescriptors:v8];
 
-  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v4 options:v6];
-  v10 = [v9 firstObject];
-  v11 = [v10 creationDate];
+  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:v6];
+  firstObject = [v9 firstObject];
+  creationDate = [firstObject creationDate];
 
   v12 = v9;
-  v13 = [v9 lastObject];
-  v14 = [v13 creationDate];
+  lastObject = [v9 lastObject];
+  creationDate2 = [lastObject creationDate];
 
 LABEL_20:
-  if (v11 && v14)
+  if (creationDate && creationDate2)
   {
-    v35 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v11 endDate:v14];
+    v35 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:creationDate endDate:creationDate2];
 LABEL_25:
     v36 = v35;
     goto LABEL_31;
   }
 
-  if (v11)
+  if (creationDate)
   {
-    v35 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v11 duration:0.0];
+    v35 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:creationDate duration:0.0];
     goto LABEL_25;
   }
 
-  if (v14)
+  if (creationDate2)
   {
-    v36 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v14 duration:0.0];
-    v11 = 0;
+    v36 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:creationDate2 duration:0.0];
+    creationDate = 0;
     goto LABEL_31;
   }
 
-  v11 = 0;
+  creationDate = 0;
 LABEL_30:
   v36 = 0;
 LABEL_31:
@@ -461,13 +461,13 @@ LABEL_31:
   return v36;
 }
 
-+ (id)makeFetchOptionsWithPhotoLibrary:(id)a3
++ (id)makeFetchOptionsWithPhotoLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  [v3 setIncludeUserSmartAlbums:1];
-  [v3 setWantsIncrementalChangeDetails:0];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeUserSmartAlbums:1];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface DADClientSubscribedCalendarJunkReportDelegate
-- (id)_createURLRequestForSubscriptionCalendarURL:(id)a3;
-- (id)_findCalendarURLFromAccount:(id)a3;
-- (id)_generateBodyWithURL:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)reportSubscribedCalendarAsJunk:(id)a3;
+- (id)_createURLRequestForSubscriptionCalendarURL:(id)l;
+- (id)_findCalendarURLFromAccount:(id)account;
+- (id)_generateBodyWithURL:(id)l;
+- (void)finishWithError:(id)error;
+- (void)reportSubscribedCalendarAsJunk:(id)junk;
 @end
 
 @implementation DADClientSubscribedCalendarJunkReportDelegate
 
-- (void)reportSubscribedCalendarAsJunk:(id)a3
+- (void)reportSubscribedCalendarAsJunk:(id)junk
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _createURLRequestForSubscriptionCalendarURL:v4];
+  junkCopy = junk;
+  v5 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _createURLRequestForSubscriptionCalendarURL:junkCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD30] sharedSession];
-    v7 = [v5 HTTPBody];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
+    hTTPBody = [v5 HTTPBody];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __80__DADClientSubscribedCalendarJunkReportDelegate_reportSubscribedCalendarAsJunk___block_invoke;
     v11[3] = &unk_278F1D340;
-    v12 = v4;
-    v8 = [v6 uploadTaskWithRequest:v5 fromData:v7 completionHandler:v11];
+    v12 = junkCopy;
+    v8 = [mEMORY[0x277CCAD30] uploadTaskWithRequest:v5 fromData:hTTPBody completionHandler:v11];
 
     [v8 resume];
   }
 
   else
   {
-    v6 = DALoggingwithCategory();
+    mEMORY[0x277CCAD30] = DALoggingwithCategory();
     v9 = *(MEMORY[0x277D03988] + 4);
-    if (os_log_type_enabled(v6, v9))
+    if (os_log_type_enabled(mEMORY[0x277CCAD30], v9))
     {
       *buf = 138412290;
-      v14 = v4;
-      _os_log_impl(&dword_248524000, v6, v9, "Report subscribed calendar as junk failed. Unable to create a URL request. Calendar URL = %@", buf, 0xCu);
+      v14 = junkCopy;
+      _os_log_impl(&dword_248524000, mEMORY[0x277CCAD30], v9, "Report subscribed calendar as junk failed. Unable to create a URL request. Calendar URL = %@", buf, 0xCu);
     }
   }
 
@@ -116,31 +116,31 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 4);
   if (os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = errorCopy;
     _os_log_impl(&dword_248524000, v4, v5, "Report subscribed calendar as junk -finishWithError: called with error %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createURLRequestForSubscriptionCalendarURL:(id)a3
+- (id)_createURLRequestForSubscriptionCalendarURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sharedDAAccountStore();
-  v6 = [v5 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
 
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
-    v7 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _findCalendarURLFromAccount:v6];
+    v7 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _findCalendarURLFromAccount:aa_primaryAppleAccount];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v7];
@@ -179,10 +179,10 @@ LABEL_6:
 
   [v14 aa_addDeviceIDHeader];
   [v14 addValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"content-type"];
-  v16 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _generateBodyWithURL:v4];
+  v16 = [(DADClientSubscribedCalendarJunkReportDelegate *)self _generateBodyWithURL:lCopy];
 
   [v14 setHTTPBody:v16];
-  if (v9 && ([v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:v6 preferUsingPassword:0] & 1) == 0)
+  if (v9 && ([v14 aa_addAuthTokenOrBasicAuthHeaderWithAccount:aa_primaryAppleAccount preferUsingPassword:0] & 1) == 0)
   {
     [v14 setURL:v11];
     v17 = DALoggingwithCategory();
@@ -197,33 +197,33 @@ LABEL_6:
   return v14;
 }
 
-- (id)_generateBodyWithURL:(id)a3
+- (id)_generateBodyWithURL:(id)l
 {
   v3 = MEMORY[0x277CFDCA0];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
   v6 = *MEMORY[0x277CFDE60];
   v7 = *MEMORY[0x277CFDE90];
   [v5 startElement:*MEMORY[0x277CFDE60] inNamespace:*MEMORY[0x277CFDE90] withAttributes:0];
   v8 = *MEMORY[0x277CFDF38];
   v9 = *MEMORY[0x277CFDEF8];
-  v10 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v5 appendElement:v8 inNamespace:v9 withStringContent:v10 withAttributeNamesAndValues:0];
+  [v5 appendElement:v8 inNamespace:v9 withStringContent:absoluteString withAttributeNamesAndValues:0];
   [v5 endElement:v6 inNamespace:v7];
-  v11 = [v5 data];
+  data = [v5 data];
 
-  return v11;
+  return data;
 }
 
-- (id)_findCalendarURLFromAccount:(id)a3
+- (id)_findCalendarURLFromAccount:(id)account
 {
-  v3 = [a3 calSyncingAccountUsingChildAccounts:0];
+  v3 = [account calSyncingAccountUsingChildAccounts:0];
   v4 = [objc_alloc(MEMORY[0x277D03720]) initWithBackingAccountInfo:v3];
   v5 = [v4 urlFromDataclassPropertiesForDataclass:*MEMORY[0x277CB8958]];
-  v6 = [v5 absoluteString];
+  absoluteString = [v5 absoluteString];
 
-  return v6;
+  return absoluteString;
 }
 
 @end

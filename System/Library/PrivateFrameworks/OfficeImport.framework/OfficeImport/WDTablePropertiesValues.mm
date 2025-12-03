@@ -1,69 +1,69 @@
 @interface WDTablePropertiesValues
 - (WDStyle)baseStyle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAlignmentOverridden:(BOOL)a3;
-- (void)setBiDirectionalOverridden:(BOOL)a3;
-- (void)setBottomBorderOverridden:(BOOL)a3;
-- (void)setCellSpacingOverridden:(BOOL)a3;
-- (void)setDeletedOverridden:(BOOL)a3;
-- (void)setEditDateOverridden:(BOOL)a3;
-- (void)setEditedOverridden:(BOOL)a3;
-- (void)setFormattingChangeDateOverridden:(BOOL)a3;
-- (void)setFormattingChangedOverridden:(BOOL)a3;
-- (void)setHorizontalAnchorOverridden:(BOOL)a3;
-- (void)setHorizontalPositionOverridden:(BOOL)a3;
-- (void)setIndentOverridden:(BOOL)a3;
-- (void)setIndentTypeOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3;
-- (void)setInsideHorizontalBorderOverridden:(BOOL)a3;
-- (void)setJustificationOverridden:(BOOL)a3;
-- (void)setLeftBorderOverridden:(BOOL)a3;
-- (void)setLeftDistanceFromTextOverridden:(BOOL)a3;
-- (void)setLookOverridden:(BOOL)a3;
-- (void)setRightBorderOverridden:(BOOL)a3;
-- (void)setRightDistanceFromTextOverridden:(BOOL)a3;
-- (void)setShadingOverridden:(BOOL)a3;
-- (void)setTopBorderOverridden:(BOOL)a3;
-- (void)setTopDistanceFromTextOverridden:(BOOL)a3;
-- (void)setVerticalAnchorOverridden:(BOOL)a3;
-- (void)setVerticalPositionOverridden:(BOOL)a3;
-- (void)setWidthOverridden:(BOOL)a3;
-- (void)setWidthTypeOverridden:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAlignmentOverridden:(BOOL)overridden;
+- (void)setBiDirectionalOverridden:(BOOL)overridden;
+- (void)setBottomBorderOverridden:(BOOL)overridden;
+- (void)setCellSpacingOverridden:(BOOL)overridden;
+- (void)setDeletedOverridden:(BOOL)overridden;
+- (void)setEditDateOverridden:(BOOL)overridden;
+- (void)setEditedOverridden:(BOOL)overridden;
+- (void)setFormattingChangeDateOverridden:(BOOL)overridden;
+- (void)setFormattingChangedOverridden:(BOOL)overridden;
+- (void)setHorizontalAnchorOverridden:(BOOL)overridden;
+- (void)setHorizontalPositionOverridden:(BOOL)overridden;
+- (void)setIndentOverridden:(BOOL)overridden;
+- (void)setIndentTypeOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden;
+- (void)setInsideHorizontalBorderOverridden:(BOOL)overridden;
+- (void)setJustificationOverridden:(BOOL)overridden;
+- (void)setLeftBorderOverridden:(BOOL)overridden;
+- (void)setLeftDistanceFromTextOverridden:(BOOL)overridden;
+- (void)setLookOverridden:(BOOL)overridden;
+- (void)setRightBorderOverridden:(BOOL)overridden;
+- (void)setRightDistanceFromTextOverridden:(BOOL)overridden;
+- (void)setShadingOverridden:(BOOL)overridden;
+- (void)setTopBorderOverridden:(BOOL)overridden;
+- (void)setTopDistanceFromTextOverridden:(BOOL)overridden;
+- (void)setVerticalAnchorOverridden:(BOOL)overridden;
+- (void)setVerticalPositionOverridden:(BOOL)overridden;
+- (void)setWidthOverridden:(BOOL)overridden;
+- (void)setWidthTypeOverridden:(BOOL)overridden;
 @end
 
 @implementation WDTablePropertiesValues
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDTablePropertiesValues allocWithZone:?]];
   if (v4)
   {
-    v5 = [(WDTablePropertiesValues *)self baseStyle];
-    [(WDTablePropertiesValues *)v4 setBaseStyle:v5];
+    baseStyle = [(WDTablePropertiesValues *)self baseStyle];
+    [(WDTablePropertiesValues *)v4 setBaseStyle:baseStyle];
 
     [(WDTablePropertiesValues *)v4 setLook:[(WDTablePropertiesValues *)self look]];
-    v6 = [(WDTablePropertiesValues *)self shading];
-    [(WDTablePropertiesValues *)v4 setShading:v6];
+    shading = [(WDTablePropertiesValues *)self shading];
+    [(WDTablePropertiesValues *)v4 setShading:shading];
 
-    v7 = [(WDTablePropertiesValues *)self topBorder];
-    [(WDTablePropertiesValues *)v4 setTopBorder:v7];
+    topBorder = [(WDTablePropertiesValues *)self topBorder];
+    [(WDTablePropertiesValues *)v4 setTopBorder:topBorder];
 
-    v8 = [(WDTablePropertiesValues *)self leftBorder];
-    [(WDTablePropertiesValues *)v4 setLeftBorder:v8];
+    leftBorder = [(WDTablePropertiesValues *)self leftBorder];
+    [(WDTablePropertiesValues *)v4 setLeftBorder:leftBorder];
 
-    v9 = [(WDTablePropertiesValues *)self bottomBorder];
-    [(WDTablePropertiesValues *)v4 setBottomBorder:v9];
+    bottomBorder = [(WDTablePropertiesValues *)self bottomBorder];
+    [(WDTablePropertiesValues *)v4 setBottomBorder:bottomBorder];
 
-    v10 = [(WDTablePropertiesValues *)self rightBorder];
-    [(WDTablePropertiesValues *)v4 setRightBorder:v10];
+    rightBorder = [(WDTablePropertiesValues *)self rightBorder];
+    [(WDTablePropertiesValues *)v4 setRightBorder:rightBorder];
 
-    v11 = [(WDTablePropertiesValues *)self insideHorizontalBorder];
-    [(WDTablePropertiesValues *)v4 setInsideHorizontalBorder:v11];
+    insideHorizontalBorder = [(WDTablePropertiesValues *)self insideHorizontalBorder];
+    [(WDTablePropertiesValues *)v4 setInsideHorizontalBorder:insideHorizontalBorder];
 
-    v12 = [(WDTablePropertiesValues *)self insideVerticalBorder];
-    [(WDTablePropertiesValues *)v4 setInsideVerticalBorder:v12];
+    insideVerticalBorder = [(WDTablePropertiesValues *)self insideVerticalBorder];
+    [(WDTablePropertiesValues *)v4 setInsideVerticalBorder:insideVerticalBorder];
 
     [(WDTablePropertiesValues *)v4 setJustification:[(WDTablePropertiesValues *)self justification]];
     [(WDTablePropertiesValues *)v4 setAlignment:[(WDTablePropertiesValues *)self alignment]];
@@ -88,14 +88,14 @@
     [(WDTablePropertiesValues *)v4 setIndexToAuthorIDOfDeletion:[(WDTablePropertiesValues *)self indexToAuthorIDOfDeletion]];
     [(WDTablePropertiesValues *)v4 setIndexToAuthorIDOfEdit:[(WDTablePropertiesValues *)self indexToAuthorIDOfEdit]];
     [(WDTablePropertiesValues *)v4 setIndexToAuthorIDOfFormattingChange:[(WDTablePropertiesValues *)self indexToAuthorIDOfFormattingChange]];
-    v13 = [(WDTablePropertiesValues *)self deletionDate];
-    [(WDTablePropertiesValues *)v4 setDeletionDate:v13];
+    deletionDate = [(WDTablePropertiesValues *)self deletionDate];
+    [(WDTablePropertiesValues *)v4 setDeletionDate:deletionDate];
 
-    v14 = [(WDTablePropertiesValues *)self editDate];
-    [(WDTablePropertiesValues *)v4 setEditDate:v14];
+    editDate = [(WDTablePropertiesValues *)self editDate];
+    [(WDTablePropertiesValues *)v4 setEditDate:editDate];
 
-    v15 = [(WDTablePropertiesValues *)self formattingChangeDate];
-    [(WDTablePropertiesValues *)v4 setFormattingChangeDate:v15];
+    formattingChangeDate = [(WDTablePropertiesValues *)self formattingChangeDate];
+    [(WDTablePropertiesValues *)v4 setFormattingChangeDate:formattingChangeDate];
 
     [(WDTablePropertiesValues *)v4 setBaseStyleOverridden:[(WDTablePropertiesValues *)self baseStyleOverridden]];
     [(WDTablePropertiesValues *)v4 setLookOverridden:[(WDTablePropertiesValues *)self lookOverridden]];
@@ -137,9 +137,9 @@
   return v4;
 }
 
-- (void)setLookOverridden:(BOOL)a3
+- (void)setLookOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -152,9 +152,9 @@
   *(self + 8) = *(self + 8) & 0xFD | v3;
 }
 
-- (void)setShadingOverridden:(BOOL)a3
+- (void)setShadingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -167,9 +167,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setTopBorderOverridden:(BOOL)a3
+- (void)setTopBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -182,9 +182,9 @@
   *(self + 8) = *(self + 8) & 0xF7 | v3;
 }
 
-- (void)setLeftBorderOverridden:(BOOL)a3
+- (void)setLeftBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -197,9 +197,9 @@
   *(self + 8) = *(self + 8) & 0xEF | v3;
 }
 
-- (void)setBottomBorderOverridden:(BOOL)a3
+- (void)setBottomBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -212,9 +212,9 @@
   *(self + 8) = *(self + 8) & 0xDF | v3;
 }
 
-- (void)setRightBorderOverridden:(BOOL)a3
+- (void)setRightBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -227,9 +227,9 @@
   *(self + 8) = *(self + 8) & 0xBF | v3;
 }
 
-- (void)setInsideHorizontalBorderOverridden:(BOOL)a3
+- (void)setInsideHorizontalBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -242,9 +242,9 @@
   *(self + 8) = v3 & 0x80 | *(self + 8) & 0x7F;
 }
 
-- (void)setJustificationOverridden:(BOOL)a3
+- (void)setJustificationOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -257,9 +257,9 @@
   *(self + 9) = *(self + 9) & 0xFD | v3;
 }
 
-- (void)setAlignmentOverridden:(BOOL)a3
+- (void)setAlignmentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -272,9 +272,9 @@
   *(self + 9) = *(self + 9) & 0xFB | v3;
 }
 
-- (void)setWidthOverridden:(BOOL)a3
+- (void)setWidthOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -287,9 +287,9 @@
   *(self + 9) = *(self + 9) & 0xF7 | v3;
 }
 
-- (void)setWidthTypeOverridden:(BOOL)a3
+- (void)setWidthTypeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -302,9 +302,9 @@
   *(self + 9) = *(self + 9) & 0xEF | v3;
 }
 
-- (void)setIndentOverridden:(BOOL)a3
+- (void)setIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -317,9 +317,9 @@
   *(self + 9) = *(self + 9) & 0xDF | v3;
 }
 
-- (void)setIndentTypeOverridden:(BOOL)a3
+- (void)setIndentTypeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -332,9 +332,9 @@
   *(self + 9) = *(self + 9) & 0xBF | v3;
 }
 
-- (void)setCellSpacingOverridden:(BOOL)a3
+- (void)setCellSpacingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -347,9 +347,9 @@
   *(self + 9) = v3 & 0x80 | *(self + 9) & 0x7F;
 }
 
-- (void)setVerticalAnchorOverridden:(BOOL)a3
+- (void)setVerticalAnchorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -362,9 +362,9 @@
   *(self + 10) = *(self + 10) & 0xFD | v3;
 }
 
-- (void)setHorizontalAnchorOverridden:(BOOL)a3
+- (void)setHorizontalAnchorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -377,9 +377,9 @@
   *(self + 10) = *(self + 10) & 0xFB | v3;
 }
 
-- (void)setVerticalPositionOverridden:(BOOL)a3
+- (void)setVerticalPositionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -392,9 +392,9 @@
   *(self + 10) = *(self + 10) & 0xF7 | v3;
 }
 
-- (void)setHorizontalPositionOverridden:(BOOL)a3
+- (void)setHorizontalPositionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -407,9 +407,9 @@
   *(self + 10) = *(self + 10) & 0xEF | v3;
 }
 
-- (void)setLeftDistanceFromTextOverridden:(BOOL)a3
+- (void)setLeftDistanceFromTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -422,9 +422,9 @@
   *(self + 10) = *(self + 10) & 0xDF | v3;
 }
 
-- (void)setTopDistanceFromTextOverridden:(BOOL)a3
+- (void)setTopDistanceFromTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -437,9 +437,9 @@
   *(self + 10) = *(self + 10) & 0xBF | v3;
 }
 
-- (void)setRightDistanceFromTextOverridden:(BOOL)a3
+- (void)setRightDistanceFromTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -452,9 +452,9 @@
   *(self + 10) = v3 & 0x80 | *(self + 10) & 0x7F;
 }
 
-- (void)setDeletedOverridden:(BOOL)a3
+- (void)setDeletedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -467,9 +467,9 @@
   *(self + 11) = *(self + 11) & 0xFD | v3;
 }
 
-- (void)setEditedOverridden:(BOOL)a3
+- (void)setEditedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -482,9 +482,9 @@
   *(self + 11) = *(self + 11) & 0xFB | v3;
 }
 
-- (void)setFormattingChangedOverridden:(BOOL)a3
+- (void)setFormattingChangedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -497,9 +497,9 @@
   *(self + 11) = *(self + 11) & 0xF7 | v3;
 }
 
-- (void)setBiDirectionalOverridden:(BOOL)a3
+- (void)setBiDirectionalOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -512,9 +512,9 @@
   *(self + 11) = *(self + 11) & 0xEF | v3;
 }
 
-- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -527,9 +527,9 @@
   *(self + 11) = *(self + 11) & 0xDF | v3;
 }
 
-- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -542,9 +542,9 @@
   *(self + 11) = *(self + 11) & 0xBF | v3;
 }
 
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -557,9 +557,9 @@
   *(self + 11) = v3 & 0x80 | *(self + 11) & 0x7F;
 }
 
-- (void)setEditDateOverridden:(BOOL)a3
+- (void)setEditDateOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -572,9 +572,9 @@
   *(self + 12) = *(self + 12) & 0xFD | v3;
 }
 
-- (void)setFormattingChangeDateOverridden:(BOOL)a3
+- (void)setFormattingChangeDateOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }

@@ -1,18 +1,18 @@
 @interface HPSBatteryStatusView
 - ($FFD8FFF7A5D2C2666551BEB14716E99F)status;
 - (BOOL)isProductOfDifferentColors;
-- (HPSBatteryStatusView)initWithFrame:(CGRect)a3 device:(id)a4 darkMode:(BOOL)a5;
+- (HPSBatteryStatusView)initWithFrame:(CGRect)frame device:(id)device darkMode:(BOOL)mode;
 - (id)batteryIconViewInstance;
-- (id)combinedBatteryValue:(id)a3;
-- (id)getAssetsDictionary:(unsigned int)a3;
-- (id)getDeviceCaseIcon:(unsigned int)a3;
+- (id)combinedBatteryValue:(id)value;
+- (id)getAssetsDictionary:(unsigned int)dictionary;
+- (id)getDeviceCaseIcon:(unsigned int)icon;
 - (unsigned)_batteryLevelCombined;
-- (unsigned)bestDeviceColor:(unsigned int)a3 productID:(unsigned int)a4;
+- (unsigned)bestDeviceColor:(unsigned int)color productID:(unsigned int)d;
 - (unsigned)defaultFiltersID;
-- (void)applyFilters:(id)a3 imageView:(id)a4;
-- (void)applyFiltersForMode:(BOOL)a3;
+- (void)applyFilters:(id)filters imageView:(id)view;
+- (void)applyFiltersForMode:(BOOL)mode;
 - (void)getBatteryStatus;
-- (void)setStatus:(id *)a3;
+- (void)setStatus:(id *)status;
 - (void)setupViews;
 @end
 
@@ -27,12 +27,12 @@
   return self;
 }
 
-- (void)setStatus:(id *)a3
+- (void)setStatus:(id *)status
 {
   p_status = &self->status;
-  v5 = *&a3->var8;
-  v6 = *&a3->var4;
-  *&self->status.battLevelSingle = *&a3->var0;
+  v5 = *&status->var8;
+  v6 = *&status->var4;
+  *&self->status.battLevelSingle = *&status->var0;
   *&self->status.battLevelLeft = v6;
   *&self->status.battLevelCombined = v5;
   if (self->untethered)
@@ -47,8 +47,8 @@
 
   [(HPSBatteryGroupView *)self->_deviceBatteryLevelSingleView setChargePercent:battLevelSingle];
   untethered = self->untethered;
-  v9 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelSingleView batteryIconView];
-  v10 = v9;
+  batteryIconView = [(HPSBatteryGroupView *)self->_deviceBatteryLevelSingleView batteryIconView];
+  v10 = batteryIconView;
   if (untethered)
   {
     if (p_status->battIsChargingLeft)
@@ -67,43 +67,43 @@
 
   v11 = *(&p_status->battLevelSingle + v12) != 0;
 LABEL_10:
-  [v9 setIsCharging:v11];
+  [batteryIconView setIsCharging:v11];
 
   [(HPSBatteryGroupView *)self->_deviceBatteryLevelLeftView setChargePercent:p_status->battLevelLeft];
-  v13 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelLeftView batteryIconView];
-  [v13 setIsCharging:p_status->battIsChargingLeft != 0];
+  batteryIconView2 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelLeftView batteryIconView];
+  [batteryIconView2 setIsCharging:p_status->battIsChargingLeft != 0];
 
   [(HPSBatteryGroupView *)self->_deviceBatteryLevelRightView setChargePercent:p_status->battLevelRight];
-  v14 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelRightView batteryIconView];
-  [v14 setIsCharging:p_status->battIsChargingRight != 0];
+  batteryIconView3 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelRightView batteryIconView];
+  [batteryIconView3 setIsCharging:p_status->battIsChargingRight != 0];
 
   [(HPSBatteryGroupView *)self->_deviceBatteryLevelCaseView setChargePercent:p_status->battLevelCase];
-  v15 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelCaseView batteryIconView];
-  [v15 setIsCharging:p_status->battIsChargingCase != 0];
+  batteryIconView4 = [(HPSBatteryGroupView *)self->_deviceBatteryLevelCaseView batteryIconView];
+  [batteryIconView4 setIsCharging:p_status->battIsChargingCase != 0];
 }
 
-- (HPSBatteryStatusView)initWithFrame:(CGRect)a3 device:(id)a4 darkMode:(BOOL)a5
+- (HPSBatteryStatusView)initWithFrame:(CGRect)frame device:(id)device darkMode:(BOOL)mode
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a4;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = HPSBatteryStatusView;
-  v13 = [(HPSBatteryStatusView *)&v29 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(HPSBatteryStatusView *)&v29 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->currentDevice, a4);
+    objc_storeStrong(&height->currentDevice, device);
     v15 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(BluetoothDeviceProtocol *)v14->currentDevice classicDevice];
-      v17 = [v16 address];
+      classicDevice = [(BluetoothDeviceProtocol *)v14->currentDevice classicDevice];
+      address = [classicDevice address];
       *buf = 138412290;
-      v31 = v17;
+      v31 = address;
       _os_log_impl(&dword_251143000, v15, OS_LOG_TYPE_DEFAULT, "Battery Status: Classic device address %@", buf, 0xCu);
     }
 
@@ -122,7 +122,7 @@ LABEL_10:
       [(HPSEngravingService *)v20 getEngravedCaseView:v27];
     }
 
-    v14->darkMode = a5;
+    v14->darkMode = mode;
     deviceImageView = v14->deviceImageView;
     v14->deviceImageView = 0;
 
@@ -156,8 +156,8 @@ void __54__HPSBatteryStatusView_initWithFrame_device_darkMode___block_invoke(uin
 - (void)getBatteryStatus
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  [v3 batteryStatus:&self->status];
+  classicDevice = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  [classicDevice batteryStatus:&self->status];
 
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -180,19 +180,19 @@ void __54__HPSBatteryStatusView_initWithFrame_device_darkMode___block_invoke(uin
     _os_log_impl(&dword_251143000, v4, OS_LOG_TYPE_DEFAULT, "Battery Status: battLevelSingle %d, battLevelRight %d, battLevelLeft %d, battLevelCase %d, battLevelCombined %d", v16, 0x20u);
   }
 
-  v10 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  v11 = +[HPSProductUtils getProductIDString:](HPSProductUtils, "getProductIDString:", [v10 productId]);
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  v11 = +[HPSProductUtils getProductIDString:](HPSProductUtils, "getProductIDString:", [classicDevice2 productId]);
   productIdString = self->productIdString;
   self->productIdString = v11;
 
-  v13 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  LOWORD(v10) = [v13 accessorySettingFeatureBitMask];
+  classicDevice3 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  LOWORD(classicDevice2) = [classicDevice3 accessorySettingFeatureBitMask];
 
-  self->untethered = (v10 & 0x400) != 0;
-  v14 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  LODWORD(v13) = [HPSProductUtils isBeatsNonWx:v14];
+  self->untethered = (classicDevice2 & 0x400) != 0;
+  classicDevice4 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  LODWORD(classicDevice3) = [HPSProductUtils isBeatsNonWx:classicDevice4];
 
-  if (v13)
+  if (classicDevice3)
   {
     self->untethered = 1;
   }
@@ -200,13 +200,13 @@ void __54__HPSBatteryStatusView_initWithFrame_device_darkMode___block_invoke(uin
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyFiltersForMode:(BOOL)a3
+- (void)applyFiltersForMode:(BOOL)mode
 {
-  self->darkMode = a3;
-  v4 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  v5 = [v4 productId];
+  self->darkMode = mode;
+  classicDevice = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  productId = [classicDevice productId];
 
-  v6 = [(HPSBatteryStatusView *)self getAssetsDictionary:v5];
+  v6 = [(HPSBatteryStatusView *)self getAssetsDictionary:productId];
   v7 = v6;
   if (!self->untethered)
   {
@@ -216,7 +216,7 @@ void __54__HPSBatteryStatusView_initWithFrame_device_darkMode___block_invoke(uin
       goto LABEL_10;
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = v7;
     goto LABEL_9;
   }
@@ -234,9 +234,9 @@ void __54__HPSBatteryStatusView_initWithFrame_device_darkMode___block_invoke(uin
         if (!self->caseEngravingView)
         {
           deviceImageView = self->caseImageView;
-          v9 = self;
+          selfCopy2 = self;
 LABEL_9:
-          v6 = [(HPSBatteryStatusView *)v9 applyFilters:v10 imageView:deviceImageView];
+          v6 = [(HPSBatteryStatusView *)selfCopy2 applyFilters:v10 imageView:deviceImageView];
           v7 = v10;
         }
       }
@@ -248,11 +248,11 @@ LABEL_10:
   MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (void)applyFilters:(id)a3 imageView:(id)a4
+- (void)applyFilters:(id)filters imageView:(id)view
 {
-  v6 = a3;
+  filtersCopy = filters;
   v7 = MEMORY[0x277CD9EA0];
-  v8 = a4;
+  viewCopy = view;
   v9 = [v7 alloc];
   v10 = [v9 initWithType:*MEMORY[0x277CDA2C0]];
   v11 = objc_alloc(MEMORY[0x277CD9EA0]);
@@ -265,10 +265,10 @@ LABEL_10:
   v49[0] = *(MEMORY[0x277CD9DA0] + 52);
   *(v49 + 12) = *(MEMORY[0x277CD9DA0] + 64);
   darkMode = self->darkMode;
-  v15 = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
+  isProductOfDifferentColors = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
   if (darkMode)
   {
-    if (v15)
+    if (isProductOfDifferentColors)
     {
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"DarkMatrixValue-%d", self->deviceColor];
     }
@@ -288,41 +288,41 @@ LABEL_10:
       v17 = @"DarkBiasValue";
     }
 
-    v18 = [v6 objectForKey:v16];
+    v18 = [filtersCopy objectForKey:v16];
     [v18 floatValue];
     v20 = v19;
 
-    v21 = [v6 objectForKey:v17];
+    v21 = [filtersCopy objectForKey:v17];
     [v21 floatValue];
     v23 = v22;
 
     if ((v23 == 0.0 || v20 == 0.0) && [(HPSBatteryStatusView *)self isProductOfDifferentColors])
     {
       v39 = @"DarkBiasValue-%d";
-      v40 = v8;
+      v40 = viewCopy;
       v24 = @"DarkMatrixValue-%d";
 LABEL_22:
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:v24, -[HPSBatteryStatusView defaultFiltersID](self, "defaultFiltersID")];
 
       v30 = [MEMORY[0x277CCACA8] stringWithFormat:v39, -[HPSBatteryStatusView defaultFiltersID](self, "defaultFiltersID")];
 
-      v31 = [v6 objectForKey:v29];
+      v31 = [filtersCopy objectForKey:v29];
       [v31 floatValue];
       v20 = v32;
 
-      v33 = [v6 objectForKey:v30];
+      v33 = [filtersCopy objectForKey:v30];
       [v33 floatValue];
       v23 = v34;
 
       v16 = v29;
       v17 = v30;
-      v8 = v40;
+      viewCopy = v40;
     }
   }
 
   else
   {
-    if (v15)
+    if (isProductOfDifferentColors)
     {
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"LightMatrixValue-%d", self->deviceColor];
     }
@@ -342,18 +342,18 @@ LABEL_22:
       v17 = @"LightBiasValue";
     }
 
-    v25 = [v6 objectForKey:v16];
+    v25 = [filtersCopy objectForKey:v16];
     [v25 floatValue];
     v20 = v26;
 
-    v27 = [v6 objectForKey:v17];
+    v27 = [filtersCopy objectForKey:v17];
     [v27 floatValue];
     v23 = v28;
 
     if ((v23 == 0.0 || v20 == 0.0) && [(HPSBatteryStatusView *)self isProductOfDifferentColors])
     {
       v39 = @"LightBiasValue-%d";
-      v40 = v8;
+      v40 = viewCopy;
       v24 = @"LightMatrixValue-%d";
       goto LABEL_22;
     }
@@ -377,28 +377,28 @@ LABEL_22:
 
   [v13 addObject:v10];
   [v13 addObject:v12];
-  v38 = [v8 layer];
+  layer = [viewCopy layer];
 
-  [v38 setFilters:v13];
+  [layer setFilters:v13];
 }
 
-- (id)getDeviceCaseIcon:(unsigned int)a3
+- (id)getDeviceCaseIcon:(unsigned int)icon
 {
   v4 = 0;
   v31[1] = *MEMORY[0x277D85DE8];
-  if (a3 <= 8210)
+  if (icon <= 8210)
   {
-    if (a3 <= 8206)
+    if (icon <= 8206)
     {
-      if (a3 == 8194)
+      if (icon == 8194)
       {
         v6 = @"airpods.chargingcase.fill";
         goto LABEL_26;
       }
 
-      if (a3 != 8203)
+      if (icon != 8203)
       {
-        if (a3 != 8206)
+        if (icon != 8206)
         {
           goto LABEL_30;
         }
@@ -411,13 +411,13 @@ LABEL_22:
       goto LABEL_26;
     }
 
-    if (a3 == 8207)
+    if (icon == 8207)
     {
       v6 = @"airpods.chargingcase.wireless.fill";
       goto LABEL_26;
     }
 
-    if (a3 != 8209)
+    if (icon != 8209)
     {
       v5 = 8210;
       goto LABEL_18;
@@ -426,14 +426,14 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if (a3 > 8220)
+  if (icon > 8220)
   {
-    if (a3 == 8221)
+    if (icon == 8221)
     {
       goto LABEL_22;
     }
 
-    if (a3 == 8228)
+    if (icon == 8228)
     {
 LABEL_20:
       v6 = @"airpodspro.chargingcase.wireless.fill";
@@ -442,7 +442,7 @@ LABEL_20:
 
     v5 = 8239;
 LABEL_18:
-    if (a3 != v5)
+    if (icon != v5)
     {
       goto LABEL_30;
     }
@@ -453,8 +453,8 @@ LABEL_26:
     v8 = [objc_alloc(MEMORY[0x277D1B150]) initWithSystemColor:12];
     v9 = [objc_alloc(MEMORY[0x277D1B150]) initWithSystemColor:11];
     v10 = objc_alloc(MEMORY[0x277D1B150]);
-    v11 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v12 = [v10 initWithCGColor:{objc_msgSend(v11, "CGColor")}];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    v12 = [v10 initWithCGColor:{objc_msgSend(secondarySystemBackgroundColor, "CGColor")}];
 
     v13 = objc_alloc_init(MEMORY[0x277D1B158]);
     if (self->darkMode)
@@ -482,13 +482,13 @@ LABEL_26:
 
     [v13 setRenderingMode:3];
     v18 = [v7 imageForGraphicSymbolDescriptor:v13];
-    v19 = [v18 CGImage];
+    cGImage = [v18 CGImage];
     v20 = PSBlankIconImage();
     [v20 size];
     v22 = v21;
     v24 = v23;
 
-    v25 = [MEMORY[0x277D755B8] imageWithCGImage:v19];
+    v25 = [MEMORY[0x277D755B8] imageWithCGImage:cGImage];
     v33.width = v22;
     v33.height = v24;
     UIGraphicsBeginImageContextWithOptions(v33, 0, 0.0);
@@ -499,7 +499,7 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  switch(a3)
+  switch(icon)
   {
     case 0x2013u:
       v6 = @"airpods.gen3.chargingcase.wireless.fill";
@@ -518,10 +518,10 @@ LABEL_30:
   return v4;
 }
 
-- (id)getAssetsDictionary:(unsigned int)a3
+- (id)getAssetsDictionary:(unsigned int)dictionary
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  switch(a3)
+  switch(dictionary)
   {
     case 0x2002u:
     case 0x200Fu:
@@ -3309,13 +3309,13 @@ LABEL_10:
 - (void)setupViews
 {
   v306 = *MEMORY[0x277D85DE8];
-  v3 = [(HPSBatteryStatusView *)self subviews];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_12];
+  subviews = [(HPSBatteryStatusView *)self subviews];
+  [subviews enumerateObjectsUsingBlock:&__block_literal_global_12];
 
-  v4 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  v5 = [v4 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  productId = [classicDevice productId];
 
-  v6 = [(HPSBatteryStatusView *)self getAssetsDictionary:v5];
+  v6 = [(HPSBatteryStatusView *)self getAssetsDictionary:productId];
   if (!v6)
   {
     v7 = sharedBluetoothSettingsLogComponent();
@@ -3329,15 +3329,15 @@ LABEL_10:
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(HPSBatteryStatusView *)self heightAnchor];
-  v9 = [v8 constraintEqualToConstant:234.0];
+  heightAnchor = [(HPSBatteryStatusView *)self heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:234.0];
   [v7 addObject:v9];
 
   v301 = 0;
-  v10 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  [v10 getDeviceColor:&v301];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  [classicDevice2 getDeviceColor:&v301];
 
-  self->deviceColor = [(HPSBatteryStatusView *)self bestDeviceColor:v301 productID:v5];
+  self->deviceColor = [(HPSBatteryStatusView *)self bestDeviceColor:v301 productID:productId];
   v11 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -3348,15 +3348,15 @@ LABEL_10:
     *&v303[4] = 1024;
     *&v303[6] = untethered;
     v304 = 1024;
-    v305 = v5;
+    v305 = productId;
     _os_log_impl(&dword_251143000, v11, OS_LOG_TYPE_DEFAULT, "Battery Status: device color: %u untethered: %d pid: %d", buf, 0x14u);
   }
 
   v14 = self->untethered;
-  v15 = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
+  isProductOfDifferentColors = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
   if (!v14)
   {
-    if (v15)
+    if (isProductOfDifferentColors)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%d", self->productIdString, self->deviceColor];
     }
@@ -3418,50 +3418,50 @@ LABEL_10:
 
     [(HPSBatteryStatusView *)self applyFilters:v6 imageView:self->deviceImageView];
     [(UIImageView *)self->deviceImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v41 = [(UIImageView *)self->deviceImageView heightAnchor];
-    v42 = [v41 constraintEqualToConstant:108.0];
+    heightAnchor2 = [(UIImageView *)self->deviceImageView heightAnchor];
+    v42 = [heightAnchor2 constraintEqualToConstant:108.0];
     [v7 addObject:v42];
 
     [(UIImageView *)self->deviceImageView setContentMode:1];
     [(HPSBatteryStatusView *)self addSubview:self->deviceImageView];
-    LOBYTE(v41) = [(HPSBatteryStatusView *)self _batteryLevelCombined];
+    LOBYTE(heightAnchor2) = [(HPSBatteryStatusView *)self _batteryLevelCombined];
     v43 = [HPSBatteryGroupView alloc];
     [(HPSBatteryStatusView *)self size];
     v45 = v44;
     v46 = self->status.battIsChargingSingle != 0;
-    v47 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
-    v48 = [(HPSBatteryGroupView *)v43 initWithFrame:v41 batteryPercent:v46 isCharging:0 glyph:0 batteryLevelDescription:v47 batteryIconView:0.0, 0.0, v45, 30.0];
+    batteryIconViewInstance = [(HPSBatteryStatusView *)self batteryIconViewInstance];
+    v48 = [(HPSBatteryGroupView *)v43 initWithFrame:heightAnchor2 batteryPercent:v46 isCharging:0 glyph:0 batteryLevelDescription:batteryIconViewInstance batteryIconView:0.0, 0.0, v45, 30.0];
     [(HPSBatteryStatusView *)self setDeviceBatteryLevelSingleView:v48];
 
-    v49 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    [v49 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deviceBatteryLevelSingleView = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    [deviceBatteryLevelSingleView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v50 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    [v50 setSemanticContentAttribute:3];
+    deviceBatteryLevelSingleView2 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    [deviceBatteryLevelSingleView2 setSemanticContentAttribute:3];
 
-    v51 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    [(HPSBatteryStatusView *)self addSubview:v51];
+    deviceBatteryLevelSingleView3 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    [(HPSBatteryStatusView *)self addSubview:deviceBatteryLevelSingleView3];
 
-    v52 = [(UIImageView *)self->deviceImageView centerYAnchor];
-    v53 = [(HPSBatteryStatusView *)self bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:-136.0];
+    centerYAnchor = [(UIImageView *)self->deviceImageView centerYAnchor];
+    bottomAnchor = [(HPSBatteryStatusView *)self bottomAnchor];
+    v54 = [centerYAnchor constraintEqualToAnchor:bottomAnchor constant:-136.0];
     [v7 addObject:v54];
 
-    v55 = [(UIImageView *)self->deviceImageView centerXAnchor];
-    v56 = [(HPSBatteryStatusView *)self centerXAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    centerXAnchor = [(UIImageView *)self->deviceImageView centerXAnchor];
+    centerXAnchor2 = [(HPSBatteryStatusView *)self centerXAnchor];
+    v57 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v7 addObject:v57];
 
-    v58 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    v59 = [v58 centerXAnchor];
-    v60 = [(UIImageView *)self->deviceImageView centerXAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    deviceBatteryLevelSingleView4 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    centerXAnchor3 = [deviceBatteryLevelSingleView4 centerXAnchor];
+    centerXAnchor4 = [(UIImageView *)self->deviceImageView centerXAnchor];
+    v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v7 addObject:v61];
 
-    v62 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    v63 = [v62 bottomAnchor];
-    v64 = [(HPSBatteryStatusView *)self bottomAnchor];
-    [v63 constraintEqualToAnchor:v64 constant:-12.0];
+    deviceBatteryLevelSingleView5 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    bottomAnchor2 = [deviceBatteryLevelSingleView5 bottomAnchor];
+    bottomAnchor3 = [(HPSBatteryStatusView *)self bottomAnchor];
+    [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-12.0];
     v66 = v65 = v23;
     [v7 addObject:v66];
 LABEL_103:
@@ -3470,9 +3470,9 @@ LABEL_103:
     goto LABEL_104;
   }
 
-  v297 = v5;
+  v297 = productId;
   productIdString = self->productIdString;
-  if (v15)
+  if (isProductOfDifferentColors)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%d", productIdString, @"Left", self->deviceColor];
   }
@@ -3483,9 +3483,9 @@ LABEL_103:
   }
   v18 = ;
   v298 = v7;
-  v19 = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
+  isProductOfDifferentColors2 = [(HPSBatteryStatusView *)self isProductOfDifferentColors];
   v20 = self->productIdString;
-  if (v19)
+  if (isProductOfDifferentColors2)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%d", v20, @"Right", self->deviceColor];
   }
@@ -3695,31 +3695,31 @@ LABEL_54:
     [v164 floatValue];
     v166 = v165;
 
-    v167 = [v87 heightAnchor];
-    [v167 constraintEqualToConstant:v81];
+    heightAnchor3 = [v87 heightAnchor];
+    [heightAnchor3 constraintEqualToConstant:v81];
     v169 = v168 = v87;
     [v298 addObject:v169];
 
-    v170 = [v168 widthAnchor];
+    widthAnchor = [v168 widthAnchor];
     v171 = [v6 objectForKey:@"UnifiedSpacingBetweenBuds"];
     [v171 floatValue];
-    v173 = [v170 constraintEqualToConstant:(v172 + (v86 * 2.0))];
+    v173 = [widthAnchor constraintEqualToConstant:(v172 + (v86 * 2.0))];
     [v298 addObject:v173];
 
     v174 = 1;
     [(UIImageView *)self->leftImageView setContentMode:1];
-    v175 = [(UIImageView *)self->leftImageView heightAnchor];
-    v176 = [v175 constraintEqualToConstant:v81];
+    heightAnchor4 = [(UIImageView *)self->leftImageView heightAnchor];
+    v176 = [heightAnchor4 constraintEqualToConstant:v81];
     [v298 addObject:v176];
 
     [(UIImageView *)self->rightImageView setContentMode:1];
-    v177 = [(UIImageView *)self->rightImageView heightAnchor];
-    v178 = [v177 constraintEqualToConstant:v81];
+    heightAnchor5 = [(UIImageView *)self->rightImageView heightAnchor];
+    v178 = [heightAnchor5 constraintEqualToConstant:v81];
     [v298 addObject:v178];
 
     [v168 addSubview:self->leftImageView];
     [v168 addSubview:self->rightImageView];
-    v179 = [(HPSBatteryStatusView *)self _batteryLevelCombined];
+    _batteryLevelCombined = [(HPSBatteryStatusView *)self _batteryLevelCombined];
     v180 = [HPSBatteryGroupView alloc];
     [(HPSBatteryStatusView *)self size];
     v182 = v181;
@@ -3729,37 +3729,37 @@ LABEL_54:
     }
 
     v183 = v95 + v163;
-    v184 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
-    v185 = [(HPSBatteryGroupView *)v180 initWithFrame:v179 batteryPercent:v174 isCharging:0 glyph:0 batteryLevelDescription:v184 batteryIconView:0.0, 0.0, v182, 30.0];
+    batteryIconViewInstance2 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
+    v185 = [(HPSBatteryGroupView *)v180 initWithFrame:_batteryLevelCombined batteryPercent:v174 isCharging:0 glyph:0 batteryLevelDescription:batteryIconViewInstance2 batteryIconView:0.0, 0.0, v182, 30.0];
     [(HPSBatteryStatusView *)self setDeviceBatteryLevelSingleView:v185];
 
-    v186 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    [v186 setSemanticContentAttribute:3];
+    deviceBatteryLevelSingleView6 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    [deviceBatteryLevelSingleView6 setSemanticContentAttribute:3];
 
-    if (v179)
+    if (_batteryLevelCombined)
     {
-      v187 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-      [v187 setTranslatesAutoresizingMaskIntoConstraints:0];
+      deviceBatteryLevelSingleView7 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+      [deviceBatteryLevelSingleView7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v188 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-      [(HPSBatteryStatusView *)self addSubview:v188];
+      deviceBatteryLevelSingleView8 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+      [(HPSBatteryStatusView *)self addSubview:deviceBatteryLevelSingleView8];
     }
 
     v153 = v183 + v166;
-    v189 = [(UIImageView *)self->leftImageView leadingAnchor];
-    v190 = [v299 leadingAnchor];
-    v191 = [v189 constraintEqualToAnchor:v190];
+    leadingAnchor = [(UIImageView *)self->leftImageView leadingAnchor];
+    leadingAnchor2 = [v299 leadingAnchor];
+    v191 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v7 = v298;
     [v298 addObject:v191];
 
-    v192 = [(UIImageView *)self->rightImageView centerXAnchor];
-    v193 = [(UIImageView *)self->leftImageView centerXAnchor];
+    centerXAnchor5 = [(UIImageView *)self->rightImageView centerXAnchor];
+    centerXAnchor6 = [(UIImageView *)self->leftImageView centerXAnchor];
     v194 = [v6 objectForKey:@"UnifiedSpacingBetweenBuds"];
     [v194 floatValue];
-    v196 = [v192 constraintEqualToAnchor:v193 constant:(v195 + v86)];
+    v196 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6 constant:(v195 + v86)];
     [v298 addObject:v196];
 
-    if (!v179)
+    if (!_batteryLevelCombined)
     {
       v159 = v18;
       v160 = v297;
@@ -3767,15 +3767,15 @@ LABEL_54:
       goto LABEL_79;
     }
 
-    v197 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
-    v198 = [v197 centerXAnchor];
-    v199 = [(UIImageView *)self->leftImageView centerXAnchor];
+    deviceBatteryLevelSingleView9 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    centerXAnchor7 = [deviceBatteryLevelSingleView9 centerXAnchor];
+    centerXAnchor8 = [(UIImageView *)self->leftImageView centerXAnchor];
     v200 = [v6 objectForKey:@"UnifiedSpacingBetweenBuds"];
     [v200 floatValue];
-    v202 = [v198 constraintEqualToAnchor:v199 constant:((v201 + v86) * 0.5)];
+    v202 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8 constant:((v201 + v86) * 0.5)];
     [v298 addObject:v202];
 
-    v158 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
+    deviceBatteryLevelSingleView10 = [(HPSBatteryStatusView *)self deviceBatteryLevelSingleView];
     v159 = v18;
     v160 = v297;
     v144 = 0x277CCA000;
@@ -3791,25 +3791,25 @@ LABEL_54:
     [v99 floatValue];
     v101 = v100;
 
-    v102 = [v87 heightAnchor];
-    v103 = [v102 constraintEqualToConstant:v81];
+    heightAnchor6 = [v87 heightAnchor];
+    v103 = [heightAnchor6 constraintEqualToConstant:v81];
     v7 = v298;
     [v298 addObject:v103];
 
-    v104 = [v299 widthAnchor];
+    widthAnchor2 = [v299 widthAnchor];
     v105 = [v6 objectForKey:@"SeparateSpacingBetweenBuds"];
     [v105 floatValue];
-    v107 = [v104 constraintEqualToConstant:(v106 + (v86 * 2.0))];
+    v107 = [widthAnchor2 constraintEqualToConstant:(v106 + (v86 * 2.0))];
     [v298 addObject:v107];
 
     [(UIImageView *)self->leftImageView setContentMode:1];
-    v108 = [(UIImageView *)self->leftImageView heightAnchor];
-    v109 = [v108 constraintEqualToConstant:v81];
+    heightAnchor7 = [(UIImageView *)self->leftImageView heightAnchor];
+    v109 = [heightAnchor7 constraintEqualToConstant:v81];
     [v298 addObject:v109];
 
     [(UIImageView *)self->rightImageView setContentMode:1];
-    v110 = [(UIImageView *)self->rightImageView heightAnchor];
-    v111 = [v110 constraintEqualToConstant:v81];
+    heightAnchor8 = [(UIImageView *)self->rightImageView heightAnchor];
+    v111 = [heightAnchor8 constraintEqualToConstant:v81];
     [v298 addObject:v111];
 
     [v299 addSubview:self->leftImageView];
@@ -3822,15 +3822,15 @@ LABEL_54:
     v116 = self->status.battIsChargingLeft != 0;
     v117 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v118 = [v117 localizedStringForKey:@"ACCESSORY_ABOUT_SERIAL_NUMBER_LEFT" value:&stru_286339F58 table:@"DeviceConfig"];
-    v119 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
-    v120 = [(HPSBatteryGroupView *)v113 initWithFrame:battLevelLeft batteryPercent:v116 isCharging:0 glyph:v118 batteryLevelDescription:v119 batteryIconView:0.0, 0.0, v115, 30.0];
+    batteryIconViewInstance3 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
+    v120 = [(HPSBatteryGroupView *)v113 initWithFrame:battLevelLeft batteryPercent:v116 isCharging:0 glyph:v118 batteryLevelDescription:batteryIconViewInstance3 batteryIconView:0.0, 0.0, v115, 30.0];
     [(HPSBatteryStatusView *)self setDeviceBatteryLevelLeftView:v120];
 
-    v121 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
-    [v121 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deviceBatteryLevelLeftView = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
+    [deviceBatteryLevelLeftView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v122 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
-    [v122 setSemanticContentAttribute:3];
+    deviceBatteryLevelLeftView2 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
+    [deviceBatteryLevelLeftView2 setSemanticContentAttribute:3];
 
     v123 = [HPSBatteryGroupView alloc];
     [(HPSBatteryStatusView *)self size];
@@ -3838,54 +3838,54 @@ LABEL_54:
     v126 = self->status.battIsChargingRight != 0;
     v127 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v128 = [v127 localizedStringForKey:@"ACCESSORY_ABOUT_SERIAL_NUMBER_RIGHT" value:&stru_286339F58 table:@"DeviceConfig"];
-    v129 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
-    v130 = [(HPSBatteryGroupView *)v123 initWithFrame:battLevelRight batteryPercent:v126 isCharging:0 glyph:v128 batteryLevelDescription:v129 batteryIconView:0.0, 0.0, v125, 30.0];
+    batteryIconViewInstance4 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
+    v130 = [(HPSBatteryGroupView *)v123 initWithFrame:battLevelRight batteryPercent:v126 isCharging:0 glyph:v128 batteryLevelDescription:batteryIconViewInstance4 batteryIconView:0.0, 0.0, v125, 30.0];
     [(HPSBatteryStatusView *)self setDeviceBatteryLevelRightView:v130];
 
-    v131 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
-    [v131 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deviceBatteryLevelRightView = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
+    [deviceBatteryLevelRightView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v132 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
-    [v132 setSemanticContentAttribute:3];
+    deviceBatteryLevelRightView2 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
+    [deviceBatteryLevelRightView2 setSemanticContentAttribute:3];
 
     if (battLevelLeft)
     {
-      v133 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
-      [v299 addSubview:v133];
+      deviceBatteryLevelLeftView3 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
+      [v299 addSubview:deviceBatteryLevelLeftView3];
     }
 
     if (battLevelRight)
     {
-      v134 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
-      [v299 addSubview:v134];
+      deviceBatteryLevelRightView3 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
+      [v299 addSubview:deviceBatteryLevelRightView3];
     }
 
     v135 = v95 + v98;
-    v136 = [(UIImageView *)self->leftImageView leadingAnchor];
-    v137 = [v299 leadingAnchor];
-    v138 = [v136 constraintEqualToAnchor:v137];
+    leadingAnchor3 = [(UIImageView *)self->leftImageView leadingAnchor];
+    leadingAnchor4 = [v299 leadingAnchor];
+    v138 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v298 addObject:v138];
 
-    v139 = [(UIImageView *)self->rightImageView centerXAnchor];
-    v140 = [(UIImageView *)self->leftImageView centerXAnchor];
+    centerXAnchor9 = [(UIImageView *)self->rightImageView centerXAnchor];
+    centerXAnchor10 = [(UIImageView *)self->leftImageView centerXAnchor];
     v141 = [v6 objectForKey:@"SeparateSpacingBetweenBuds"];
     [v141 floatValue];
-    v143 = [v139 constraintEqualToAnchor:v140 constant:(v142 + v86)];
+    v143 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10 constant:(v142 + v86)];
     [v298 addObject:v143];
 
     v144 = 0x277CCA000uLL;
     if (battLevelLeft)
     {
-      v145 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
-      v146 = [v145 centerXAnchor];
-      v147 = [(UIImageView *)self->leftImageView centerXAnchor];
-      v148 = [v146 constraintEqualToAnchor:v147];
+      deviceBatteryLevelLeftView4 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
+      centerXAnchor11 = [deviceBatteryLevelLeftView4 centerXAnchor];
+      centerXAnchor12 = [(UIImageView *)self->leftImageView centerXAnchor];
+      v148 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
       [v298 addObject:v148];
 
-      v149 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
-      v150 = [v149 bottomAnchor];
-      v151 = [(HPSBatteryStatusView *)self bottomAnchor];
-      v152 = [v150 constraintEqualToAnchor:v151 constant:-12.0];
+      deviceBatteryLevelLeftView5 = [(HPSBatteryStatusView *)self deviceBatteryLevelLeftView];
+      bottomAnchor4 = [deviceBatteryLevelLeftView5 bottomAnchor];
+      bottomAnchor5 = [(HPSBatteryStatusView *)self bottomAnchor];
+      v152 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-12.0];
       [v298 addObject:v152];
     }
 
@@ -3897,20 +3897,20 @@ LABEL_54:
       goto LABEL_79;
     }
 
-    v154 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
-    v155 = [v154 centerXAnchor];
-    v156 = [(UIImageView *)self->rightImageView centerXAnchor];
-    v157 = [v155 constraintEqualToAnchor:v156];
+    deviceBatteryLevelRightView4 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
+    centerXAnchor13 = [deviceBatteryLevelRightView4 centerXAnchor];
+    centerXAnchor14 = [(UIImageView *)self->rightImageView centerXAnchor];
+    v157 = [centerXAnchor13 constraintEqualToAnchor:centerXAnchor14];
     [v298 addObject:v157];
 
-    v158 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
+    deviceBatteryLevelSingleView10 = [(HPSBatteryStatusView *)self deviceBatteryLevelRightView];
     v159 = v18;
     v160 = v297;
   }
 
-  v203 = [v158 bottomAnchor];
-  v204 = [(HPSBatteryStatusView *)self bottomAnchor];
-  v205 = [v203 constraintEqualToAnchor:v204 constant:-12.0];
+  bottomAnchor6 = [deviceBatteryLevelSingleView10 bottomAnchor];
+  bottomAnchor7 = [(HPSBatteryStatusView *)self bottomAnchor];
+  v205 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-12.0];
   [v7 addObject:v205];
 
 LABEL_79:
@@ -3959,8 +3959,8 @@ LABEL_85:
     [v211 size];
     v224 = v223;
     [(UIImageView *)self->caseImageView setContentMode:1];
-    v225 = [(UIImageView *)self->caseImageView heightAnchor];
-    v226 = [v225 constraintEqualToConstant:v220];
+    heightAnchor9 = [(UIImageView *)self->caseImageView heightAnchor];
+    v226 = [heightAnchor9 constraintEqualToConstant:v220];
     [v7 addObject:v226];
 
     v294 = v211;
@@ -3982,21 +3982,21 @@ LABEL_85:
     v233 = v232;
     battLevelCase = self->status.battLevelCase;
     v235 = self->status.battIsChargingCase != 0;
-    v236 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
-    v237 = [(HPSBatteryGroupView *)v231 initWithFrame:battLevelCase batteryPercent:v235 isCharging:v230 glyph:0 batteryLevelDescription:v236 batteryIconView:0.0, 0.0, v233, 30.0];
+    batteryIconViewInstance5 = [(HPSBatteryStatusView *)self batteryIconViewInstance];
+    v237 = [(HPSBatteryGroupView *)v231 initWithFrame:battLevelCase batteryPercent:v235 isCharging:v230 glyph:0 batteryLevelDescription:batteryIconViewInstance5 batteryIconView:0.0, 0.0, v233, 30.0];
     [(HPSBatteryStatusView *)self setDeviceBatteryLevelCaseView:v237];
 
-    v238 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
-    [v238 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deviceBatteryLevelCaseView = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
+    [deviceBatteryLevelCaseView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v239 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
-    [v239 setSemanticContentAttribute:3];
+    deviceBatteryLevelCaseView2 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
+    [deviceBatteryLevelCaseView2 setSemanticContentAttribute:3];
 
     v240 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v240 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v240 setSemanticContentAttribute:3];
-    v241 = [v240 heightAnchor];
-    v242 = v241;
+    heightAnchor10 = [v240 heightAnchor];
+    v242 = heightAnchor10;
     if (v220 <= v81)
     {
       v243 = v81;
@@ -4007,15 +4007,15 @@ LABEL_85:
       v243 = v220;
     }
 
-    v244 = [v241 constraintEqualToConstant:v243];
+    v244 = [heightAnchor10 constraintEqualToConstant:v243];
     [v7 addObject:v244];
 
     if (v297 == 8230)
     {
-      v245 = [v240 centerXAnchor];
+      centerXAnchor15 = [v240 centerXAnchor];
       v246 = v299;
-      v247 = [v299 centerXAnchor];
-      v248 = [v245 constraintEqualToAnchor:v247];
+      centerXAnchor16 = [v299 centerXAnchor];
+      v248 = [centerXAnchor15 constraintEqualToAnchor:centerXAnchor16];
       [v7 addObject:v248];
     }
 
@@ -4023,70 +4023,70 @@ LABEL_85:
     {
       v249 = v222;
       v250 = v153 + (v220 / v249) * v224;
-      v245 = [v240 widthAnchor];
-      v247 = [v245 constraintEqualToConstant:v250];
-      [v7 addObject:v247];
+      centerXAnchor15 = [v240 widthAnchor];
+      centerXAnchor16 = [centerXAnchor15 constraintEqualToConstant:v250];
+      [v7 addObject:centerXAnchor16];
       v246 = v299;
     }
 
     [v240 addSubview:v246];
     [v240 addSubview:self->caseImageView];
     [(HPSBatteryStatusView *)self addSubview:v240];
-    v251 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
-    [(HPSBatteryStatusView *)self addSubview:v251];
+    deviceBatteryLevelCaseView3 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
+    [(HPSBatteryStatusView *)self addSubview:deviceBatteryLevelCaseView3];
 
-    v252 = [v240 centerYAnchor];
-    v253 = [(HPSBatteryStatusView *)self bottomAnchor];
-    v254 = [v252 constraintEqualToAnchor:v253 constant:-136.0];
+    centerYAnchor2 = [v240 centerYAnchor];
+    bottomAnchor8 = [(HPSBatteryStatusView *)self bottomAnchor];
+    v254 = [centerYAnchor2 constraintEqualToAnchor:bottomAnchor8 constant:-136.0];
     [v7 addObject:v254];
 
-    v255 = [v246 leadingAnchor];
-    v256 = [v240 leadingAnchor];
-    v257 = [v255 constraintEqualToAnchor:v256];
+    leadingAnchor5 = [v246 leadingAnchor];
+    leadingAnchor6 = [v240 leadingAnchor];
+    v257 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v7 addObject:v257];
 
-    v258 = [v246 centerXAnchor];
-    v259 = [v240 centerXAnchor];
-    v260 = [v258 constraintEqualToAnchor:v259];
+    centerXAnchor17 = [v246 centerXAnchor];
+    centerXAnchor18 = [v240 centerXAnchor];
+    v260 = [centerXAnchor17 constraintEqualToAnchor:centerXAnchor18];
     [v7 addObject:v260];
 
-    v261 = [v246 centerYAnchor];
-    v262 = [v240 centerYAnchor];
-    v263 = [v261 constraintEqualToAnchor:v262];
+    centerYAnchor3 = [v246 centerYAnchor];
+    centerYAnchor4 = [v240 centerYAnchor];
+    v263 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v7 addObject:v263];
 
-    v264 = [v240 centerXAnchor];
-    v265 = [(HPSBatteryStatusView *)self centerXAnchor];
-    v266 = [v264 constraintEqualToAnchor:v265];
+    centerXAnchor19 = [v240 centerXAnchor];
+    centerXAnchor20 = [(HPSBatteryStatusView *)self centerXAnchor];
+    v266 = [centerXAnchor19 constraintEqualToAnchor:centerXAnchor20];
     [v7 addObject:v266];
 
-    v267 = [v240 centerYAnchor];
-    v268 = [(HPSBatteryStatusView *)self centerYAnchor];
-    v269 = [v267 constraintEqualToAnchor:v268];
+    centerYAnchor5 = [v240 centerYAnchor];
+    centerYAnchor6 = [(HPSBatteryStatusView *)self centerYAnchor];
+    v269 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v7 addObject:v269];
 
-    v270 = [(UIImageView *)self->caseImageView trailingAnchor];
-    v271 = [v240 trailingAnchor];
-    v272 = [v270 constraintEqualToAnchor:v271];
+    trailingAnchor = [(UIImageView *)self->caseImageView trailingAnchor];
+    trailingAnchor2 = [v240 trailingAnchor];
+    v272 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v7 addObject:v272];
 
-    v273 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
-    v274 = [v273 centerXAnchor];
-    v275 = [(UIImageView *)self->caseImageView centerXAnchor];
-    v276 = [v274 constraintEqualToAnchor:v275];
+    deviceBatteryLevelCaseView4 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
+    centerXAnchor21 = [deviceBatteryLevelCaseView4 centerXAnchor];
+    centerXAnchor22 = [(UIImageView *)self->caseImageView centerXAnchor];
+    v276 = [centerXAnchor21 constraintEqualToAnchor:centerXAnchor22];
     [v7 addObject:v276];
 
-    v277 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
-    v278 = [v277 bottomAnchor];
-    v279 = [(HPSBatteryStatusView *)self bottomAnchor];
-    v280 = [v278 constraintEqualToAnchor:v279 constant:-12.0];
+    deviceBatteryLevelCaseView5 = [(HPSBatteryStatusView *)self deviceBatteryLevelCaseView];
+    bottomAnchor9 = [deviceBatteryLevelCaseView5 bottomAnchor];
+    bottomAnchor10 = [(HPSBatteryStatusView *)self bottomAnchor];
+    v280 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:-12.0];
     [v7 addObject:v280];
 
-    v62 = v295;
+    deviceBatteryLevelSingleView5 = v295;
     v17 = v296;
-    v63 = v292;
+    bottomAnchor2 = v292;
     v65 = v293;
-    v64 = v246;
+    bottomAnchor3 = v246;
     v66 = v300;
     goto LABEL_103;
   }
@@ -4140,51 +4140,51 @@ LABEL_104:
 
 - (BOOL)isProductOfDifferentColors
 {
-  v2 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  v3 = [v2 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  productId = [classicDevice productId];
 
-  return ((v3 - 8195) < 0x2D) & (0x100C1498E7CDuLL >> (v3 - 3));
+  return ((productId - 8195) < 0x2D) & (0x100C1498E7CDuLL >> (productId - 3));
 }
 
 - (unsigned)defaultFiltersID
 {
-  v2 = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
-  v3 = [v2 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->currentDevice classicDevice];
+  productId = [classicDevice productId];
 
-  return ((v3 - 8204) & 0xFFFFFFFB) == 0;
+  return ((productId - 8204) & 0xFFFFFFFB) == 0;
 }
 
-- (unsigned)bestDeviceColor:(unsigned int)a3 productID:(unsigned int)a4
+- (unsigned)bestDeviceColor:(unsigned int)color productID:(unsigned int)d
 {
-  v4 = a4 - 10;
-  if (a4 - 8202 <= 0x25)
+  v4 = d - 10;
+  if (d - 8202 <= 0x25)
   {
     if (((1 << v4) & 0x2000000182) != 0)
     {
-      v5 = a3 & 0xF;
-      if ((~a3 & 0xF) == 0)
+      v5 = color & 0xF;
+      if ((~color & 0xF) == 0)
       {
         v5 = 0;
       }
 
-      if (a3 >> 4 == 15)
+      if (color >> 4 == 15)
       {
-        LOBYTE(a3) = v5;
+        LOBYTE(color) = v5;
       }
 
       else
       {
-        LOBYTE(a3) = a3 >> 4;
+        LOBYTE(color) = color >> 4;
       }
     }
 
     else if (((1 << v4) & 0x200001) != 0)
     {
-      LOBYTE(a3) = a3 & 0x1F;
+      LOBYTE(color) = color & 0x1F;
     }
   }
 
-  return a3;
+  return color;
 }
 
 - (unsigned)_batteryLevelCombined
@@ -4234,11 +4234,11 @@ LABEL_104:
   return v2;
 }
 
-- (id)combinedBatteryValue:(id)a3
+- (id)combinedBatteryValue:(id)value
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2511D3A38(v4);
+  valueCopy = value;
+  selfCopy = self;
+  v6 = sub_2511D3A38(valueCopy);
 
   return v6;
 }

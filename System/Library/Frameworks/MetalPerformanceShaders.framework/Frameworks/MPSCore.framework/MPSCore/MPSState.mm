@@ -9,7 +9,7 @@
 - (MPSState)initWithResource:(id)resource;
 - (MPSState)initWithResources:(NSArray *)resources;
 - (MPSStateResourceType)resourceTypeAtIndex:(NSUInteger)index;
-- (MPSStateTextureInfo)textureInfoAtIndex:(SEL)a3;
+- (MPSStateTextureInfo)textureInfoAtIndex:(SEL)index;
 - (NSUInteger)bufferSizeAtIndex:(NSUInteger)index;
 - (NSUInteger)resourceSize;
 - (id)debugDescription;
@@ -292,7 +292,7 @@ LABEL_17:
     result->_readCount = 0;
     result->_label = 0;
     MPSAutoBuffer::InitDeferredUsingTextureCache(&result->_resources, bufferSize, cmdBuf, v8, v9);
-    v12 = [a1 alloc];
+    v12 = [self alloc];
     v16 = objc_msgSend_initWithResource_(v12, v13, 0, v14, v15);
     if (v16)
     {
@@ -378,7 +378,7 @@ LABEL_17:
     result[1]._resources = 0;
     LOWORD(result[1]._resourceCount) = 0;
     MPSAutoTexture::InitDeferredUsingTextureCache(&result->_resources, descriptor, cmdBuf, MPSImageFeatureChannelFormatNone, 0);
-    v11 = [a1 alloc];
+    v11 = [self alloc];
     v15 = objc_msgSend_initWithResource_(v11, v12, 0, v13, v14);
     if (v15)
     {
@@ -448,7 +448,7 @@ LABEL_17:
 
 + (MPSState)temporaryStateWithCommandBuffer:(id)commandBuffer resourceList:(MPSStateResourceList *)resourceList
 {
-  result = objc_msgSend_temporaryStateWithCommandBuffer_(a1, a2, commandBuffer, resourceList, v4);
+  result = objc_msgSend_temporaryStateWithCommandBuffer_(self, a2, commandBuffer, resourceList, v4);
   if (result)
   {
     result->_resourceCount = 0;
@@ -504,7 +504,7 @@ LABEL_17:
 
 + (MPSState)temporaryStateWithCommandBuffer:(id)cmdBuf
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   result = objc_msgSend_initWithResource_(v4, v5, 0, v6, v7);
   if (result)
   {
@@ -773,7 +773,7 @@ LABEL_12:
 {
   if ((self->_flags & 1) != 0 && self->_readCount && MTLReportFailureTypeEnabled())
   {
-    v18 = self;
+    selfCopy = self;
     v19 = objc_msgSend_label(self, v14, v15, v16, v17);
     MTLReportFailure();
   }
@@ -847,7 +847,7 @@ LABEL_20:
 LABEL_21:
   v20.receiver = self;
   v20.super_class = MPSState;
-  [(MPSState *)&v20 dealloc:v18];
+  [(MPSState *)&v20 dealloc:selfCopy];
 }
 
 - (void)setReadCount:(NSUInteger)readCount
@@ -1136,42 +1136,42 @@ LABEL_4:
   return 2;
 }
 
-- (MPSStateTextureInfo)textureInfoAtIndex:(SEL)a3
+- (MPSStateTextureInfo)textureInfoAtIndex:(SEL)index
 {
   if (self->_resourceCount <= index)
   {
-    v35 = self;
-    v36 = index;
+    selfCopy = self;
+    indexCopy = index;
     v37 = MTLReportFailureTypeEnabled();
-    index = v36;
+    index = indexCopy;
     v38 = v37;
-    self = v35;
+    self = selfCopy;
     if (v38)
     {
       v39 = objc_opt_class();
       v45 = NSStringFromClass(v39);
       MTLReportFailure();
-      self = v35;
-      index = v36;
+      self = selfCopy;
+      index = indexCopy;
     }
   }
 
   if (*(self->_resources + 36 * index) != 2)
   {
-    v40 = self;
-    v41 = index;
+    selfCopy2 = self;
+    indexCopy2 = index;
     v42 = MTLReportFailureTypeEnabled();
-    index = v41;
+    index = indexCopy2;
     v43 = v42;
-    self = v40;
+    self = selfCopy2;
     if (v43)
     {
       v44 = objc_opt_class();
       v45 = NSStringFromClass(v44);
-      v46 = v41;
+      v46 = indexCopy2;
       MTLReportFailure();
-      self = v40;
-      index = v41;
+      self = selfCopy2;
+      index = indexCopy2;
     }
   }
 
@@ -1197,7 +1197,7 @@ LABEL_4:
 
   if (explicit)
   {
-    retstr->width = objc_msgSend_width(explicit, a3, index, v4, v5);
+    retstr->width = objc_msgSend_width(explicit, index, index, v4, v5);
     v15 = atomic_load_explicit(v8, memory_order_acquire);
     if ((v8[56] & 2) == 0)
     {
@@ -1209,7 +1209,7 @@ LABEL_9:
 
   else
   {
-    retstr->width = objc_msgSend_width(*(v10 + 5), a3, index, v4, v5);
+    retstr->width = objc_msgSend_width(*(v10 + 5), index, index, v4, v5);
     v15 = atomic_load_explicit(v8, memory_order_acquire);
     if ((v8[56] & 2) == 0)
     {
@@ -1349,36 +1349,36 @@ LABEL_34:
 {
   if (self->_resourceCount <= index)
   {
-    v8 = self;
+    selfCopy = self;
     v9 = index;
     v10 = MTLReportFailureTypeEnabled();
     index = v9;
     v11 = v10;
-    self = v8;
+    self = selfCopy;
     if (v11)
     {
       v12 = objc_opt_class();
       NSStringFromClass(v12);
       MTLReportFailure();
-      self = v8;
+      self = selfCopy;
       index = v9;
     }
   }
 
   if (*(self->_resources + 36 * index) != 1)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = index;
     v15 = MTLReportFailureTypeEnabled();
     index = v14;
     v16 = v15;
-    self = v13;
+    self = selfCopy2;
     if (v16)
     {
       v17 = objc_opt_class();
       NSStringFromClass(v17);
       MTLReportFailure();
-      self = v13;
+      self = selfCopy2;
       index = v14;
     }
   }
@@ -1397,21 +1397,21 @@ LABEL_34:
 {
   if (self->_resourceCount <= index)
   {
-    v10 = self;
+    selfCopy = self;
     v11 = index;
     v12 = allocateMemory;
     v13 = MTLReportFailureTypeEnabled();
     allocateMemory = v12;
     index = v11;
     v14 = v13;
-    self = v10;
+    self = selfCopy;
     if (v14)
     {
       v15 = objc_opt_class();
       NSStringFromClass(v15);
       MTLReportFailure();
       allocateMemory = v12;
-      self = v10;
+      self = selfCopy;
       index = v11;
     }
   }

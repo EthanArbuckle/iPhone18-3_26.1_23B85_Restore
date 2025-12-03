@@ -3,25 +3,25 @@
 - (void)_addGestureRecognizers;
 - (void)_createGestureRecognizersIfNecessary;
 - (void)_removeGestureRecognizers;
-- (void)didMoveToView:(id)a3;
-- (void)longPressObserved:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)longPressObserved:(id)observed;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UITextTouchObservingInteraction
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     [(UITextTouchObservingInteraction *)self _removeGestureRecognizers];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
-  if (a3)
+  objc_storeWeak(&self->_view, view);
+  if (view)
   {
 
     [(UITextTouchObservingInteraction *)self _addGestureRecognizers];
@@ -31,23 +31,23 @@
 - (void)_addGestureRecognizers
 {
   [(UITextTouchObservingInteraction *)self _createGestureRecognizersIfNecessary];
-  v4 = [(UITextTouchObservingInteraction *)self view];
-  v3 = [(UITextTouchObservingInteraction *)self longPressGesture];
-  [v4 addGestureRecognizer:v3];
+  view = [(UITextTouchObservingInteraction *)self view];
+  longPressGesture = [(UITextTouchObservingInteraction *)self longPressGesture];
+  [view addGestureRecognizer:longPressGesture];
 }
 
 - (void)_removeGestureRecognizers
 {
-  v4 = [(UITextTouchObservingInteraction *)self view];
-  v3 = [(UITextTouchObservingInteraction *)self longPressGesture];
-  [v4 removeGestureRecognizer:v3];
+  view = [(UITextTouchObservingInteraction *)self view];
+  longPressGesture = [(UITextTouchObservingInteraction *)self longPressGesture];
+  [view removeGestureRecognizer:longPressGesture];
 }
 
 - (void)_createGestureRecognizersIfNecessary
 {
-  v3 = [(UITextTouchObservingInteraction *)self longPressGesture];
+  longPressGesture = [(UITextTouchObservingInteraction *)self longPressGesture];
 
-  if (!v3)
+  if (!longPressGesture)
   {
     v5 = [(UILongPressGestureRecognizer *)[_UITouchObservingLongPress alloc] initWithTarget:self action:sel_longPressObserved_];
     [(UIGestureRecognizer *)v5 setEnabled:1];
@@ -64,12 +64,12 @@
   }
 }
 
-- (void)longPressObserved:(id)a3
+- (void)longPressObserved:(id)observed
 {
-  v3 = [a3 state];
-  if ((v3 - 3) >= 3)
+  state = [observed state];
+  if ((state - 3) >= 3)
   {
-    if (v3 != 1)
+    if (state != 1)
     {
       return;
     }

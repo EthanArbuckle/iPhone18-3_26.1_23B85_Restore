@@ -1,31 +1,31 @@
 @interface _HKSampleIteratorQueryServerConfiguration
-- (_HKSampleIteratorQueryServerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_HKSampleIteratorQueryServerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKSampleIteratorQueryServerConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _HKSampleIteratorQueryServerConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:zone];
   [v4 setQueryCursor:self->_queryCursor];
   [v4 setLimit:self->_limit];
   return v4;
 }
 
-- (_HKSampleIteratorQueryServerConfiguration)initWithCoder:(id)a3
+- (_HKSampleIteratorQueryServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HKSampleIteratorQueryServerConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_limit = [v4 decodeIntegerForKey:@"limit"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryCursor"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"limit"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryCursor"];
     queryCursor = v5->_queryCursor;
     v5->_queryCursor = v6;
   }
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKSampleIteratorQueryServerConfiguration;
-  v4 = a3;
-  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_limit forKey:{@"limit", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_queryCursor forKey:@"queryCursor"];
+  coderCopy = coder;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_limit forKey:{@"limit", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_queryCursor forKey:@"queryCursor"];
 }
 
 @end

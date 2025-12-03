@@ -1,18 +1,18 @@
 @interface MKApplicationDatabase
-- (BOOL)_addAppStoreIdentifier:(id)a3;
-- (BOOL)addIdentifier:(id)a3;
+- (BOOL)_addAppStoreIdentifier:(id)identifier;
+- (BOOL)addIdentifier:(id)identifier;
 - (MKApplicationDatabase)init;
 - (id)appStoreIdentifiers;
 - (id)identifiers;
 - (int64_t)countForAppStoreIdentifiers;
-- (void)addAppStoreIdentifier:(id)a3;
-- (void)addIdentifiers:(id)a3;
+- (void)addAppStoreIdentifier:(id)identifier;
+- (void)addIdentifiers:(id)identifiers;
 - (void)close;
 - (void)create;
 - (void)dealloc;
 - (void)drop;
-- (void)open:(id)a3;
-- (void)query:(id)a3;
+- (void)open:(id)open;
+- (void)query:(id)query;
 @end
 
 @implementation MKApplicationDatabase
@@ -30,9 +30,9 @@
     v5 = NSHomeDirectory();
     v6 = [v5 stringByAppendingPathComponent:v4];
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v12 = 0;
-    [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
+    [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
     v8 = v12;
 
     if (v8)
@@ -59,10 +59,10 @@
   [(MKApplicationDatabase *)&v3 dealloc];
 }
 
-- (void)open:(id)a3
+- (void)open:(id)open
 {
-  v5 = a3;
-  if (sqlite3_open([a3 UTF8String], &self->_database))
+  openCopy = open;
+  if (sqlite3_open([open UTF8String], &self->_database))
   {
     v6 = +[MKLog log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -94,12 +94,12 @@
   }
 }
 
-- (void)query:(id)a3
+- (void)query:(id)query
 {
   ppStmt = 0;
   database = self->_database;
-  v5 = a3;
-  if (sqlite3_prepare_v2(database, [a3 UTF8String], -1, &ppStmt, 0))
+  queryCopy = query;
+  if (sqlite3_prepare_v2(database, [query UTF8String], -1, &ppStmt, 0))
   {
     v6 = +[MKLog log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -137,16 +137,16 @@
   [(MKApplicationDatabase *)self query:@"DROP TABLE IF EXISTS applications;"];
 }
 
-- (void)addIdentifiers:(id)a3
+- (void)addIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(MKApplicationDatabase *)self begin];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -186,9 +186,9 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addIdentifier:(id)a3
+- (BOOL)addIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   database = self->_database;
   p_database = &self->_database;
   if (database)
@@ -224,7 +224,7 @@ LABEL_11:
 
     else
     {
-      sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0);
       if (sqlite3_step(ppStmt) == 101)
       {
         v14 = sqlite3_last_insert_rowid(*p_database) != -1;
@@ -323,11 +323,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)addAppStoreIdentifier:(id)a3
+- (void)addAppStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MKApplicationDatabase *)self begin];
-  v5 = [(MKApplicationDatabase *)self _addAppStoreIdentifier:v4];
+  v5 = [(MKApplicationDatabase *)self _addAppStoreIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -342,9 +342,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)_addAppStoreIdentifier:(id)a3
+- (BOOL)_addAppStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   database = self->_database;
   p_database = &self->_database;
   if (database)
@@ -380,7 +380,7 @@ LABEL_11:
 
     else
     {
-      sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0);
       if (sqlite3_step(ppStmt) == 101)
       {
         v14 = sqlite3_last_insert_rowid(*p_database) != -1;

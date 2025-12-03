@@ -6,9 +6,9 @@
 
 - (BOOL)hasBodyElement
 {
-  v1 = [a1 DOMDocument];
-  v2 = [v1 documentElement];
-  return !v1 || v2 == 0;
+  dOMDocument = [self DOMDocument];
+  documentElement = [dOMDocument documentElement];
+  return !dOMDocument || documentElement == 0;
 }
 
 @end

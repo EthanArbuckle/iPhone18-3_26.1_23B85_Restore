@@ -1,8 +1,8 @@
 @interface TTSMauiVocalizerBuffer
 - (TTSMauiVocalizerBuffer)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)computeMarkers:(id)a3;
-- (void)fillInOutDataForBuffer:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)computeMarkers:(id)markers;
+- (void)fillInOutDataForBuffer:(id *)buffer;
 - (void)rawAudioBufferPointer;
 - (void)reset;
 @end
@@ -32,10 +32,10 @@
   return v3;
 }
 
-- (void)computeMarkers:(id)a3
+- (void)computeMarkers:(id)markers
 {
-  v18 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  markersCopy = markers;
+  array = [MEMORY[0x277CBEB18] array];
   if (self->markerCount)
   {
     v5 = 0;
@@ -62,15 +62,15 @@
         v10 = *(p_szValue - 5);
         v11 = objc_alloc_init(MEMORY[0x277D70430]);
         [v11 setWordRange:{v10 >> 1, v8 >> 1}];
-        if (v18)
+        if (markersCopy)
         {
-          v12 = [v11 wordRange];
-          v14 = [v18 translateRangeInTransformedString:{v12, v13}];
+          wordRange = [v11 wordRange];
+          v14 = [markersCopy translateRangeInTransformedString:{wordRange, v13}];
           [v11 setWordRange:{v14, v15}];
         }
       }
 
-      [v4 addObject:v11];
+      [array addObject:v11];
 
 LABEL_12:
       ++v5;
@@ -80,37 +80,37 @@ LABEL_12:
     while (self->markerCount > v5);
   }
 
-  [(TTSMauiVocalizerBuffer *)self setMarkers:v4];
+  [(TTSMauiVocalizerBuffer *)self setMarkers:array];
 }
 
 - (void)rawAudioBufferPointer
 {
-  v2 = [(TTSMauiVocalizerBuffer *)self audioBuffer];
-  v3 = *([v2 mutableAudioBufferList] + 16);
+  audioBuffer = [(TTSMauiVocalizerBuffer *)self audioBuffer];
+  v3 = *([audioBuffer mutableAudioBufferList] + 16);
 
   return v3;
 }
 
 - (void)reset
 {
-  v3 = [(TTSMauiVocalizerBuffer *)self audioBuffer];
-  [v3 setFrameLength:0];
+  audioBuffer = [(TTSMauiVocalizerBuffer *)self audioBuffer];
+  [audioBuffer setFrameLength:0];
 
   [(TTSMauiVocalizerBuffer *)self setMarkers:MEMORY[0x277CBEBF8]];
   self->markerCount = 0;
 }
 
-- (void)fillInOutDataForBuffer:(id *)a3
+- (void)fillInOutDataForBuffer:(id *)buffer
 {
-  a3->var4 = self->markerBuffer;
-  a3->var2 = [(TTSMauiVocalizerBuffer *)self rawAudioBufferPointer];
-  a3->var3 = 1792;
-  v5 = [(TTSMauiVocalizerBuffer *)self audioBuffer];
-  v6 = [v5 format];
-  v7 = v6;
-  if (v6)
+  buffer->var4 = self->markerBuffer;
+  buffer->var2 = [(TTSMauiVocalizerBuffer *)self rawAudioBufferPointer];
+  buffer->var3 = 1792;
+  audioBuffer = [(TTSMauiVocalizerBuffer *)self audioBuffer];
+  format = [audioBuffer format];
+  v7 = format;
+  if (format)
   {
-    [v6 streamDescription];
+    [format streamDescription];
     v8 = (v9 << 8);
   }
 
@@ -119,19 +119,19 @@ LABEL_12:
     v8 = 0;
   }
 
-  a3->var1 = v8;
+  buffer->var1 = v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TTSMauiVocalizerBuffer);
   memcpy(v4->markerBuffer, self->markerBuffer, 0x708uLL);
-  v5 = [(TTSMauiVocalizerBuffer *)self audioBuffer];
-  v6 = [v5 copy];
+  audioBuffer = [(TTSMauiVocalizerBuffer *)self audioBuffer];
+  v6 = [audioBuffer copy];
   [(TTSMauiVocalizerBuffer *)v4 setAudioBuffer:v6];
 
-  v7 = [(TTSMauiVocalizerBuffer *)self markers];
-  [(TTSMauiVocalizerBuffer *)v4 setMarkers:v7];
+  markers = [(TTSMauiVocalizerBuffer *)self markers];
+  [(TTSMauiVocalizerBuffer *)v4 setMarkers:markers];
 
   markerCount = v4->markerCount;
   if (markerCount)

@@ -1,24 +1,24 @@
 @interface GKTTRLogRequestInfo
 + (id)secureCodedPropertyKeys;
-- (GKTTRLogRequestInfo)initWithPlayersAndPushTokens:(id)a3 radarID:(id)a4 requesterPlayerID:(id)a5;
+- (GKTTRLogRequestInfo)initWithPlayersAndPushTokens:(id)tokens radarID:(id)d requesterPlayerID:(id)iD;
 @end
 
 @implementation GKTTRLogRequestInfo
 
-- (GKTTRLogRequestInfo)initWithPlayersAndPushTokens:(id)a3 radarID:(id)a4 requesterPlayerID:(id)a5
+- (GKTTRLogRequestInfo)initWithPlayersAndPushTokens:(id)tokens radarID:(id)d requesterPlayerID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokensCopy = tokens;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = GKTTRLogRequestInfo;
   v11 = [(GKTTRLogRequestInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(GKTTRLogRequestInfo *)v11 setPlayersAndPushTokens:v8];
-    [(GKTTRLogRequestInfo *)v12 setRadarID:v9];
-    [(GKTTRLogRequestInfo *)v12 setRequesterPlayerID:v10];
+    [(GKTTRLogRequestInfo *)v11 setPlayersAndPushTokens:tokensCopy];
+    [(GKTTRLogRequestInfo *)v12 setRadarID:dCopy];
+    [(GKTTRLogRequestInfo *)v12 setRequesterPlayerID:iDCopy];
   }
 
   return v12;

@@ -1,12 +1,12 @@
 @interface RMSubscribedStatusKeyPathUpdater
 + (RMSubscribedStatusKeyPathUpdater)sharedUpdater;
-- (BOOL)_updateSubscribedStatusKeyPathsWithFetchPredicate:(id)a3;
+- (BOOL)_updateSubscribedStatusKeyPathsWithFetchPredicate:(id)predicate;
 - (BOOL)notifyStatusDidChangeForDeclarations;
-- (BOOL)notifyStatusDidChangeForKeyPath:(id)a3;
-- (BOOL)notifyStatusDidChangeForKeyPaths:(id)a3;
-- (BOOL)notifyStatusDidChangeForKeyPaths:(id)a3 managementSourceIdentifier:(id)a4;
-- (BOOL)notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:(id)a3;
-- (RMSubscribedStatusKeyPathUpdater)initWithPersistentContainer:(id)a3;
+- (BOOL)notifyStatusDidChangeForKeyPath:(id)path;
+- (BOOL)notifyStatusDidChangeForKeyPaths:(id)paths;
+- (BOOL)notifyStatusDidChangeForKeyPaths:(id)paths managementSourceIdentifier:(id)identifier;
+- (BOOL)notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:(id)d;
+- (RMSubscribedStatusKeyPathUpdater)initWithPersistentContainer:(id)container;
 @end
 
 @implementation RMSubscribedStatusKeyPathUpdater
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (RMSubscribedStatusKeyPathUpdater)initWithPersistentContainer:(id)a3
+- (RMSubscribedStatusKeyPathUpdater)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = RMSubscribedStatusKeyPathUpdater;
   v6 = [(RMSubscribedStatusKeyPathUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
@@ -46,23 +46,23 @@
   return self;
 }
 
-- (BOOL)notifyStatusDidChangeForKeyPath:(id)a3
+- (BOOL)notifyStatusDidChangeForKeyPath:(id)path
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:path];
   LOBYTE(self) = [(RMSubscribedStatusKeyPathUpdater *)self notifyStatusDidChangeForKeyPaths:v4];
 
   return self;
 }
 
-- (BOOL)notifyStatusDidChangeForKeyPaths:(id)a3
+- (BOOL)notifyStatusDidChangeForKeyPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v3;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v6)
   {
@@ -79,20 +79,20 @@
         }
 
         v10 = *(*(&v38 + 1) + 8 * v9);
-        v11 = [v10 pathExtension];
-        v12 = [v11 length];
+        pathExtension = [v10 pathExtension];
+        v12 = [pathExtension length];
 
         if (v12)
         {
           while (([v4 containsObject:v10] & 1) == 0)
           {
             [v4 addObject:v10];
-            v13 = [v10 stringByDeletingPathExtension];
+            stringByDeletingPathExtension = [v10 stringByDeletingPathExtension];
 
-            v14 = [v13 pathExtension];
-            v15 = [v14 length];
+            pathExtension2 = [stringByDeletingPathExtension pathExtension];
+            v15 = [pathExtension2 length];
 
-            v10 = v13;
+            v10 = stringByDeletingPathExtension;
             if (!v15)
             {
               goto LABEL_11;
@@ -100,9 +100,9 @@
           }
         }
 
-        v13 = v10;
+        stringByDeletingPathExtension = v10;
 LABEL_11:
-        [v4 addObject:v13];
+        [v4 addObject:stringByDeletingPathExtension];
 
         v9 = v9 + 1;
       }
@@ -196,16 +196,16 @@ LABEL_11:
   return v34;
 }
 
-- (BOOL)notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:(id)a3
+- (BOOL)notifyStatusDidChangeForKeyPathsByManagementSourceObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008E620;
   v8[3] = &unk_1000D3380;
   v9 = objc_opt_new();
   v5 = v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = [NSCompoundPredicate orPredicateWithSubpredicates:v5];
 
@@ -213,11 +213,11 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)notifyStatusDidChangeForKeyPaths:(id)a3 managementSourceIdentifier:(id)a4
+- (BOOL)notifyStatusDidChangeForKeyPaths:(id)paths managementSourceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [NSPredicate predicateWithFormat:@"%K == %@", @"managementSource.identifier", a4];
-  v8 = v6;
+  pathsCopy = paths;
+  identifier = [NSPredicate predicateWithFormat:@"%K == %@", @"managementSource.identifier", identifier];
+  v8 = pathsCopy;
   v9 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -240,20 +240,20 @@ LABEL_11:
         }
 
         v15 = *(*(&v26 + 1) + 8 * v14);
-        v16 = [v15 pathExtension];
-        v17 = [v16 length];
+        pathExtension = [v15 pathExtension];
+        v17 = [pathExtension length];
 
         if (v17)
         {
           while (([v9 containsObject:v15] & 1) == 0)
           {
             [v9 addObject:v15];
-            v18 = [v15 stringByDeletingPathExtension];
+            stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
 
-            v19 = [v18 pathExtension];
-            v20 = [v19 length];
+            pathExtension2 = [stringByDeletingPathExtension pathExtension];
+            v20 = [pathExtension2 length];
 
-            v15 = v18;
+            v15 = stringByDeletingPathExtension;
             if (!v20)
             {
               goto LABEL_11;
@@ -261,9 +261,9 @@ LABEL_11:
           }
         }
 
-        v18 = v15;
+        stringByDeletingPathExtension = v15;
 LABEL_11:
-        [v9 addObject:v18];
+        [v9 addObject:stringByDeletingPathExtension];
 
         v14 = v14 + 1;
       }
@@ -277,7 +277,7 @@ LABEL_11:
 
   v21 = [NSPredicate predicateWithFormat:@"%K IN %@", @"keyPath", v9, v26];
 
-  v30[0] = v7;
+  v30[0] = identifier;
   v30[1] = v21;
   v22 = [NSArray arrayWithObjects:v30 count:2];
   v23 = [NSCompoundPredicate andPredicateWithSubpredicates:v22];
@@ -286,23 +286,23 @@ LABEL_11:
   return v24;
 }
 
-- (BOOL)_updateSubscribedStatusKeyPathsWithFetchPredicate:(id)a3
+- (BOOL)_updateSubscribedStatusKeyPathsWithFetchPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
-  v6 = [(RMSubscribedStatusKeyPathUpdater *)self persistentContainer];
-  v7 = [v6 newBackgroundContext];
+  persistentContainer = [(RMSubscribedStatusKeyPathUpdater *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10008E370;
   v18 = &unk_1000D1B58;
-  v8 = v4;
+  v8 = predicateCopy;
   v19 = v8;
   v9 = v5;
   v20 = v9;
-  v10 = v7;
+  v10 = newBackgroundContext;
   v21 = v10;
   [v10 performBlockAndWait:&v15];
   v11 = [v9 count];

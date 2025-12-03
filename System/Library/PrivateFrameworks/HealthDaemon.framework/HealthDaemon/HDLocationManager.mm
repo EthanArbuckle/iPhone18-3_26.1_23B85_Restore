@@ -2,20 +2,20 @@
 - (HDLocationManager)init;
 - (HDLocationManagerUnitTestDelegate)unitTestDelegate;
 - (id)_mainQueue_newLocationManager;
-- (id)takeLocationUpdatingAssertionForOwnerIdentifier:(id)a3 desiredAccuracy:(double)a4;
+- (id)takeLocationUpdatingAssertionForOwnerIdentifier:(id)identifier desiredAccuracy:(double)accuracy;
 - (void)_mainQueue_releaseLocationUpdatingAssertion;
-- (void)_mainQueue_takeLocationUpdatingAssertionWithAccuracy:(double)a3;
+- (void)_mainQueue_takeLocationUpdatingAssertionWithAccuracy:(double)accuracy;
 - (void)_mainQueue_updateLocationManager;
-- (void)_unitTest_didInvalidateAssertion:(id)a3;
-- (void)_unitTest_didTakeAssertion:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
+- (void)_unitTest_didInvalidateAssertion:(id)assertion;
+- (void)_unitTest_didTakeAssertion:(id)assertion;
+- (void)addObserver:(id)observer;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setLocationManagerConfiguration:(void *)a1;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)removeObserver:(id)observer;
+- (void)setLocationManagerConfiguration:(void *)configuration;
 @end
 
 @implementation HDLocationManager
@@ -43,30 +43,30 @@
   return v2;
 }
 
-- (void)setLocationManagerConfiguration:(void *)a1
+- (void)setLocationManagerConfiguration:(void *)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
     if (v3)
     {
       v5 = _Block_copy(v3);
-      v6 = a1[5];
-      a1[5] = v5;
+      v6 = configuration[5];
+      configuration[5] = v5;
     }
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, configuration);
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __53__HDLocationManager_setLocationManagerConfiguration___block_invoke;
       v9[3] = &unk_278615D68;
       objc_copyWeak(&v10, &location);
       v7 = _Block_copy(v9);
-      v8 = a1[5];
-      a1[5] = v7;
+      v8 = configuration[5];
+      configuration[5] = v7;
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -90,11 +90,11 @@
   [(HDLocationManager *)&v5 dealloc];
 }
 
-- (id)takeLocationUpdatingAssertionForOwnerIdentifier:(id)a3 desiredAccuracy:(double)a4
+- (id)takeLocationUpdatingAssertionForOwnerIdentifier:(id)identifier desiredAccuracy:(double)accuracy
 {
   v6 = MEMORY[0x277D10AB8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierLocationUpdating" ownerIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierLocationUpdating" ownerIdentifier:identifierCopy];
 
   if ([(HDAssertionManager *)self->_assertionManager takeAssertion:v8])
   {
@@ -103,7 +103,7 @@
     block[2] = __85__HDLocationManager_takeLocationUpdatingAssertionForOwnerIdentifier_desiredAccuracy___block_invoke;
     block[3] = &unk_278614E78;
     block[4] = self;
-    v14 = a4;
+    accuracyCopy = accuracy;
     v9 = v8;
     v13 = v9;
     dispatch_async(MEMORY[0x277D85CD0], block);
@@ -127,9 +127,9 @@ uint64_t __85__HDLocationManager_takeLocationUpdatingAssertionForOwnerIdentifier
   return [v2 _unitTest_didTakeAssertion:v3];
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
-  v7 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = [(HDAssertionManager *)self->_assertionManager activeAssertionsForIdentifier:@"HDWorkoutSessionAssertionIdentifierLocationUpdating"];
   v6 = [v5 count];
@@ -140,7 +140,7 @@ uint64_t __85__HDLocationManager_takeLocationUpdatingAssertionForOwnerIdentifier
   }
 
   [(HDLocationManager *)self _mainQueue_updateLocationManager];
-  [(HDLocationManager *)self _unitTest_didInvalidateAssertion:v7];
+  [(HDLocationManager *)self _unitTest_didInvalidateAssertion:invalidatedCopy];
 }
 
 id __53__HDLocationManager_setLocationManagerConfiguration___block_invoke(uint64_t a1)
@@ -192,7 +192,7 @@ id __53__HDLocationManager_setLocationManagerConfiguration___block_invoke(uint64
   }
 }
 
-- (void)_mainQueue_takeLocationUpdatingAssertionWithAccuracy:(double)a3
+- (void)_mainQueue_takeLocationUpdatingAssertionWithAccuracy:(double)accuracy
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(HDLocationManager *)self _mainQueue_updateLocationManager];
@@ -203,7 +203,7 @@ id __53__HDLocationManager_setLocationManagerConfiguration___block_invoke(uint64
     self->_inUseAssertion = v5;
   }
 
-  [(CLLocationManager *)self->_locationManager setDesiredAccuracy:a3];
+  [(CLLocationManager *)self->_locationManager setDesiredAccuracy:accuracy];
   locationManager = self->_locationManager;
 
   [(CLLocationManager *)locationManager startUpdatingLocation];
@@ -218,17 +218,17 @@ id __53__HDLocationManager_setLocationManagerConfiguration___block_invoke(uint64
   self->_inUseAssertion = 0;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HDLocationManager_locationManagerDidChangeAuthorization___block_invoke;
   v7[3] = &unk_278615D90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = authorizationCopy;
+  v6 = authorizationCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
@@ -240,44 +240,44 @@ void __59__HDLocationManager_locationManagerDidChangeAuthorization___block_invok
   [v4 healthLocationManager:v2 didChangeAuthorizationStatus:{objc_msgSend(v3, "authorizationStatus")}];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   observers = self->_observers;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HDLocationManager_locationManager_didUpdateLocations___block_invoke;
   v8[3] = &unk_278615D90;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = locationsCopy;
+  v7 = locationsCopy;
   [(HKObserverSet *)observers notifyObservers:v8];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   observers = self->_observers;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HDLocationManager_locationManager_didFailWithError___block_invoke;
   v8[3] = &unk_278615D90;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   [(HKObserverSet *)observers notifyObservers:v8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__HDLocationManager_addObserver___block_invoke;
   v6[3] = &unk_278613920;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -289,16 +289,16 @@ uint64_t __33__HDLocationManager_addObserver___block_invoke(uint64_t a1)
   return [v2 _mainQueue_updateLocationManager];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__HDLocationManager_removeObserver___block_invoke;
   v6[3] = &unk_278613920;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -310,29 +310,29 @@ uint64_t __36__HDLocationManager_removeObserver___block_invoke(uint64_t a1)
   return [v2 _mainQueue_updateLocationManager];
 }
 
-- (void)_unitTest_didTakeAssertion:(id)a3
+- (void)_unitTest_didTakeAssertion:(id)assertion
 {
-  v7 = a3;
+  assertionCopy = assertion;
   WeakRetained = objc_loadWeakRetained(&self->_unitTestDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_unitTestDelegate);
-    [v6 _unitTest_healthLocationManager:self didTakeAssertion:v7];
+    [v6 _unitTest_healthLocationManager:self didTakeAssertion:assertionCopy];
   }
 }
 
-- (void)_unitTest_didInvalidateAssertion:(id)a3
+- (void)_unitTest_didInvalidateAssertion:(id)assertion
 {
-  v7 = a3;
+  assertionCopy = assertion;
   WeakRetained = objc_loadWeakRetained(&self->_unitTestDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_unitTestDelegate);
-    [v6 _unitTest_healthLocationManager:self didInvalidateAssertion:v7];
+    [v6 _unitTest_healthLocationManager:self didInvalidateAssertion:assertionCopy];
   }
 }
 

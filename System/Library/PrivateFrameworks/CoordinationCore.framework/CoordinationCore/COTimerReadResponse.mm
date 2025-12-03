@@ -1,12 +1,12 @@
 @interface COTimerReadResponse
 - (COTimerReadResponse)init;
-- (COTimerReadResponse)initWithCoder:(id)a3;
-- (COTimerReadResponse)initWithFilteredTimers:(id)a3;
+- (COTimerReadResponse)initWithCoder:(id)coder;
+- (COTimerReadResponse)initWithFilteredTimers:(id)timers;
 - (COTimerReadResponse)initWithSkipInMerge;
-- (COTimerReadResponse)initWithTimers:(id)a3;
-- (COTimerReadResponse)initWithTimers:(id)a3 deletes:(id)a4;
-- (id)initNotModifiedWithDeletes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COTimerReadResponse)initWithTimers:(id)timers;
+- (COTimerReadResponse)initWithTimers:(id)timers deletes:(id)deletes;
+- (id)initNotModifiedWithDeletes:(id)deletes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COTimerReadResponse
@@ -26,13 +26,13 @@
   return v2;
 }
 
-- (COTimerReadResponse)initWithTimers:(id)a3
+- (COTimerReadResponse)initWithTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   v5 = [(COTimerReadResponse *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [timersCopy copy];
     timers = v5->_timers;
     v5->_timers = v6;
   }
@@ -40,9 +40,9 @@
   return v5;
 }
 
-- (COTimerReadResponse)initWithFilteredTimers:(id)a3
+- (COTimerReadResponse)initWithFilteredTimers:(id)timers
 {
-  result = [(COTimerReadResponse *)self initWithTimers:a3];
+  result = [(COTimerReadResponse *)self initWithTimers:timers];
   if (result)
   {
     result->_filtered = 1;
@@ -51,13 +51,13 @@
   return result;
 }
 
-- (COTimerReadResponse)initWithTimers:(id)a3 deletes:(id)a4
+- (COTimerReadResponse)initWithTimers:(id)timers deletes:(id)deletes
 {
-  v6 = a4;
-  v7 = [(COTimerReadResponse *)self initWithTimers:a3];
+  deletesCopy = deletes;
+  v7 = [(COTimerReadResponse *)self initWithTimers:timers];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [deletesCopy copy];
     deletes = v7->_deletes;
     v7->_deletes = v8;
   }
@@ -65,9 +65,9 @@
   return v7;
 }
 
-- (id)initNotModifiedWithDeletes:(id)a3
+- (id)initNotModifiedWithDeletes:(id)deletes
 {
-  result = [(COTimerReadResponse *)self initWithTimers:MEMORY[0x277CBEBF8] deletes:a3];
+  result = [(COTimerReadResponse *)self initWithTimers:MEMORY[0x277CBEBF8] deletes:deletes];
   if (result)
   {
     *(result + 18) = 1;
@@ -91,22 +91,22 @@
   return v3;
 }
 
-- (COTimerReadResponse)initWithCoder:(id)a3
+- (COTimerReadResponse)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = COTimerReadResponse;
-  v5 = [(COMeshResponse *)&v28 initWithCoder:v4];
+  v5 = [(COMeshResponse *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = v5;
-    v5->_filtered = [v4 containsValueForKey:@"filtered"];
-    v6->_notModified = [v4 containsValueForKey:@"unmodified"];
-    v6->_skipInMerge = [v4 containsValueForKey:@"skip"];
-    if ([v4 containsValueForKey:@"deletes"])
+    v5->_filtered = [coderCopy containsValueForKey:@"filtered"];
+    v6->_notModified = [coderCopy containsValueForKey:@"unmodified"];
+    v6->_skipInMerge = [coderCopy containsValueForKey:@"skip"];
+    if ([coderCopy containsValueForKey:@"deletes"])
     {
-      v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deletes"];
+      v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deletes"];
       deletes = v6->_deletes;
       v6->_deletes = v7;
     }
@@ -114,7 +114,7 @@
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"timers"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"timers"];
     timers = v6->_timers;
     v6->_timers = v12;
 
@@ -186,34 +186,34 @@ LABEL_17:
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = COTimerReadResponse;
-  [(COMeshResponse *)&v7 encodeWithCoder:v4];
-  v5 = [(COTimerReadResponse *)self timers];
-  [v4 encodeObject:v5 forKey:@"timers"];
+  [(COMeshResponse *)&v7 encodeWithCoder:coderCopy];
+  timers = [(COTimerReadResponse *)self timers];
+  [coderCopy encodeObject:timers forKey:@"timers"];
 
   if ([(COTimerReadResponse *)self isFiltered])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
   }
 
-  v6 = [(COTimerReadResponse *)self deletes];
-  if (v6)
+  deletes = [(COTimerReadResponse *)self deletes];
+  if (deletes)
   {
-    [v4 encodeObject:v6 forKey:@"deletes"];
+    [coderCopy encodeObject:deletes forKey:@"deletes"];
   }
 
   if ([(COTimerReadResponse *)self skipInMerge])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"skip"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"skip"];
   }
 
   if ([(COTimerReadResponse *)self notModified])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"unmodified"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"unmodified"];
   }
 }
 

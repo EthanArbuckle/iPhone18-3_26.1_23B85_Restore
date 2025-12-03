@@ -6,12 +6,12 @@
 
 - (BOOL)ic_containsQuery
 {
-  v2 = [a1 text];
-  v3 = [v2 length];
+  text = [self text];
+  v3 = [text length];
 
-  v4 = [a1 searchTextField];
-  v5 = [v4 tokens];
-  v6 = [v5 count];
+  searchTextField = [self searchTextField];
+  tokens = [searchTextField tokens];
+  v6 = [tokens count];
 
   return (v3 | v6) != 0;
 }

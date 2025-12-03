@@ -1,41 +1,41 @@
 @interface DTXConnection
-+ (id)connectionToAddress:(id)a3;
++ (id)connectionToAddress:(id)address;
 + (void)initialize;
-+ (void)observeDecompressionExceptionLogging:(id)a3;
-+ (void)registerTransport:(Class)a3 forScheme:(id)a4;
-- (BOOL)_addHandler:(id)a3 forMessage:(unsigned int)a4 channel:(id)a5;
-- (BOOL)publishCapability:(id)a3 withVersion:(int)a4 forClass:(Class)a5 error:(id *)a6;
-- (BOOL)sendMessage:(id)a3 fromChannel:(id)a4 sendMode:(int)a5 syncWithReply:(BOOL)a6 replyHandler:(id)a7;
-- (DTXConnection)initWithTransport:(id)a3;
++ (void)observeDecompressionExceptionLogging:(id)logging;
++ (void)registerTransport:(Class)transport forScheme:(id)scheme;
+- (BOOL)_addHandler:(id)handler forMessage:(unsigned int)message channel:(id)channel;
+- (BOOL)publishCapability:(id)capability withVersion:(int)version forClass:(Class)class error:(id *)error;
+- (BOOL)sendMessage:(id)message fromChannel:(id)channel sendMode:(int)mode syncWithReply:(BOOL)reply replyHandler:(id)handler;
+- (DTXConnection)initWithTransport:(id)transport;
 - (NSString)description;
-- (double)preflightSynchronouslyWithTimeout:(double)a3;
-- (id)_makeProxyChannelWithRemoteInterface:(id)a3 remoteInterfaceName:(id)a4 exportedInterface:(id)a5 exportedInterfaceName:(id)a6;
-- (id)_sendHeartbeatAsyncWithTimeout:(double)a3;
+- (double)preflightSynchronouslyWithTimeout:(double)timeout;
+- (id)_makeProxyChannelWithRemoteInterface:(id)interface remoteInterfaceName:(id)name exportedInterface:(id)exportedInterface exportedInterfaceName:(id)interfaceName;
+- (id)_sendHeartbeatAsyncWithTimeout:(double)timeout;
 - (id)localCapabilities;
-- (id)makeChannelWithIdentifier:(id)a3;
-- (id)makeProxyChannelWithRemoteInterface:(id)a3 exportedInterface:(id)a4;
+- (id)makeChannelWithIdentifier:(id)identifier;
+- (id)makeProxyChannelWithRemoteInterface:(id)interface exportedInterface:(id)exportedInterface;
 - (id)remoteCapabilityVersions;
-- (int)remoteCapabilityVersion:(id)a3;
-- (void)_cancelInternal:(id)a3;
-- (void)_channelCanceled:(unsigned int)a3;
+- (int)remoteCapabilityVersion:(id)version;
+- (void)_cancelInternal:(id)internal;
+- (void)_channelCanceled:(unsigned int)canceled;
 - (void)_handleMissingRemoteCapabilities;
-- (void)_handleProxyRequestForInterface:(id)a3 interfaceName:(id)a4 peerInterface:(id)a5 peerInterfaceName:(id)a6 handler:(id)a7;
-- (void)_notifyOfPublishedCapabilities:(id)a3;
-- (void)_requestChannelWithCode:(unsigned int)a3 identifier:(id)a4;
-- (void)_routeMessage:(id)a3;
-- (void)_scheduleMessage:(id)a3 toChannel:(id)a4;
+- (void)_handleProxyRequestForInterface:(id)interface interfaceName:(id)name peerInterface:(id)peerInterface peerInterfaceName:(id)interfaceName handler:(id)handler;
+- (void)_notifyOfPublishedCapabilities:(id)capabilities;
+- (void)_requestChannelWithCode:(unsigned int)code identifier:(id)identifier;
+- (void)_routeMessage:(id)message;
+- (void)_scheduleMessage:(id)message toChannel:(id)channel;
 - (void)_setupWireProtocols;
-- (void)_unregisterChannel:(id)a3;
-- (void)cancelWithSerializedTransport:(id)a3;
+- (void)_unregisterChannel:(id)channel;
+- (void)cancelWithSerializedTransport:(id)transport;
 - (void)dealloc;
-- (void)handleProxyRequestForInterface:(id)a3 peerInterface:(id)a4 handler:(id)a5;
-- (void)publishServicesInImagePath:(id)a3;
-- (void)registerCapabilityOverrideBlock:(id)a3;
-- (void)replaceCompressorForDecompression:(id)a3;
+- (void)handleProxyRequestForInterface:(id)interface peerInterface:(id)peerInterface handler:(id)handler;
+- (void)publishServicesInImagePath:(id)path;
+- (void)registerCapabilityOverrideBlock:(id)block;
+- (void)replaceCompressorForDecompression:(id)decompression;
 - (void)resume;
-- (void)setChannelHandler:(id)a3;
-- (void)setMaximumEnqueueSize:(unint64_t)a3;
-- (void)setRemoteTracer:(BOOL)a3;
+- (void)setChannelHandler:(id)handler;
+- (void)setMaximumEnqueueSize:(unint64_t)size;
+- (void)setRemoteTracer:(BOOL)tracer;
 - (void)suspend;
 @end
 
@@ -44,7 +44,7 @@
 + (void)initialize
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_opt_class();
     v2 = dispatch_queue_create("connection transport registry guard", 0);
@@ -110,29 +110,29 @@
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerTransport:(Class)a3 forScheme:(id)a4
++ (void)registerTransport:(Class)transport forScheme:(id)scheme
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  schemeCopy = scheme;
+  v6 = schemeCopy;
+  if (transport && schemeCopy)
   {
     v7 = qword_2814DB5C8;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_247F45514;
     v8[3] = &unk_278EEE9D0;
-    v10 = a3;
-    v9 = v5;
+    transportCopy = transport;
+    v9 = schemeCopy;
     dispatch_sync(v7, v8);
   }
 }
 
-- (void)publishServicesInImagePath:(id)a3
+- (void)publishServicesInImagePath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = v4;
-  if (v4 && objc_msgSend_length(v4, v5, v6))
+  pathCopy = path;
+  v7 = pathCopy;
+  if (pathCopy && objc_msgSend_length(pathCopy, v5, v6))
   {
     v8 = qword_2814DB5E8;
     if (os_log_type_enabled(qword_2814DB5E8, OS_LOG_TYPE_INFO))
@@ -157,7 +157,7 @@
     v31[1] = 3221225472;
     v32 = sub_247F45CC4;
     v33 = &unk_278EEE9F8;
-    v34 = self;
+    selfCopy = self;
     v30 = v31;
     v18 = objc_getProtocol("DTTapServiceDelegate");
     if (!v18)
@@ -237,11 +237,11 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)connectionToAddress:(id)a3
++ (id)connectionToAddress:(id)address
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = v4;
+  addressCopy = address;
+  v5 = [self alloc];
+  v6 = addressCopy;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -289,7 +289,7 @@ LABEL_26:
   v20[3] = &unk_278EEEA70;
   v12 = v10;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -309,19 +309,19 @@ LABEL_26:
   _Block_object_dispose(&v24, 8);
 }
 
-- (DTXConnection)initWithTransport:(id)a3
+- (DTXConnection)initWithTransport:(id)transport
 {
-  v5 = a3;
+  transportCopy = transport;
   v67.receiver = self;
   v67.super_class = DTXConnection;
   v6 = [(DTXConnection *)&v67 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (transportCopy)
     {
-      objc_storeStrong(&v6->_controlTransport, a3);
-      v10 = objc_msgSend_permittedBlockCompressionTypes(v5, v8, v9);
+      objc_storeStrong(&v6->_controlTransport, transport);
+      v10 = objc_msgSend_permittedBlockCompressionTypes(transportCopy, v8, v9);
       v11 = *(v7 + 40);
       *(v7 + 40) = v10;
 
@@ -420,7 +420,7 @@ LABEL_26:
       v61 = *(v7 + 232);
       *(v7 + 232) = BlockCompressor;
 
-      if (objc_msgSend_supportedDirections(v5, v62, v63) == 2)
+      if (objc_msgSend_supportedDirections(transportCopy, v62, v63) == 2)
       {
         *(v7 + 208) = 2;
       }
@@ -459,29 +459,29 @@ LABEL_26:
   return objc_msgSend_stringWithFormat_(v3, v6, @"<%s %p : x%d>", Name, self, self->_connectionIndex);
 }
 
-- (void)setMaximumEnqueueSize:(unint64_t)a3
+- (void)setMaximumEnqueueSize:(unint64_t)size
 {
-  if (*MEMORY[0x277D85FA0] <= a3)
+  if (*MEMORY[0x277D85FA0] <= size)
   {
-    v4 = a3;
-    objc_msgSend_setTotalSize_(self->_resourceTracker, a2, a3);
+    sizeCopy = size;
+    objc_msgSend_setTotalSize_(self->_resourceTracker, a2, size);
   }
 
   else
   {
-    v4 = *MEMORY[0x277D85FA0];
+    sizeCopy = *MEMORY[0x277D85FA0];
     objc_msgSend_setTotalSize_(self->_resourceTracker, a2, *MEMORY[0x277D85FA0]);
   }
 
-  objc_msgSend_setMaxChunkSize_(self->_resourceTracker, v5, v4 >> 3);
+  objc_msgSend_setMaxChunkSize_(self->_resourceTracker, v5, sizeCopy >> 3);
   v9 = objc_msgSend_resourceTracker(self->_controlTransport, v6, v7);
-  objc_msgSend_setTotalSize_(v9, v8, v4);
+  objc_msgSend_setTotalSize_(v9, v8, sizeCopy);
 }
 
-- (BOOL)publishCapability:(id)a3 withVersion:(int)a4 forClass:(Class)a5 error:(id *)a6
+- (BOOL)publishCapability:(id)capability withVersion:(int)version forClass:(Class)class error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  capabilityCopy = capability;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -493,21 +493,21 @@ LABEL_26:
   v22 = 3221225472;
   v23 = sub_247F47170;
   v24 = &unk_278EEEAC0;
-  v25 = self;
+  selfCopy = self;
   v27 = &v30;
-  v29 = a4;
-  v12 = v10;
+  versionCopy = version;
+  v12 = capabilityCopy;
   v26 = v12;
-  v28 = a5;
+  classCopy = class;
   dispatch_sync(handler_queue, &v21);
   v14 = v31[5];
-  if (a6 && v14)
+  if (error && v14)
   {
     v15 = MEMORY[0x277CCA9B8];
     v36 = *MEMORY[0x277CCA450];
     v37[0] = v14;
-    v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v37, &v36, 1, v21, v22, v23, v24, v25);
-    *a6 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"DTXConnection", 2, v16);
+    v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v37, &v36, 1, v21, v22, v23, v24, selfCopy);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"DTXConnection", 2, v16);
 
     v14 = v31[5];
   }
@@ -541,7 +541,7 @@ LABEL_26:
   return v3;
 }
 
-- (id)_sendHeartbeatAsyncWithTimeout:(double)a3
+- (id)_sendHeartbeatAsyncWithTimeout:(double)timeout
 {
   v5 = objc_opt_new();
   v17[0] = 0;
@@ -554,7 +554,7 @@ LABEL_26:
   v13[1] = 3221225472;
   v13[2] = sub_247F476F4;
   v13[3] = &unk_278EEEAE8;
-  v16 = a3;
+  timeoutCopy = timeout;
   v15 = v17;
   v13[4] = self;
   v8 = v5;
@@ -568,14 +568,14 @@ LABEL_26:
   return v11;
 }
 
-- (double)preflightSynchronouslyWithTimeout:(double)a3
+- (double)preflightSynchronouslyWithTimeout:(double)timeout
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v5 = dispatch_semaphore_create(0);
-  v8 = objc_msgSend__sendHeartbeatAsyncWithTimeout_(self, v6, v7, a3);
+  v8 = objc_msgSend__sendHeartbeatAsyncWithTimeout_(self, v6, v7, timeout);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_247F479D4;
@@ -615,9 +615,9 @@ LABEL_26:
   _Block_object_dispose(&v6, 8);
 }
 
-- (int)remoteCapabilityVersion:(id)a3
+- (int)remoteCapabilityVersion:(id)version
 {
-  v6 = a3;
+  versionCopy = version;
   remoteCapabilityVersions = self->_remoteCapabilityVersions;
   if (!remoteCapabilityVersions)
   {
@@ -627,7 +627,7 @@ LABEL_26:
 
   v8 = objc_msgSend_null(MEMORY[0x277CBEB68], v4, v5);
 
-  if (remoteCapabilityVersions == v8 || (objc_msgSend_objectForKey_(self->_remoteCapabilityVersions, v9, v6), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (remoteCapabilityVersions == v8 || (objc_msgSend_objectForKey_(self->_remoteCapabilityVersions, v9, versionCopy), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v14 = 0x80000000;
   }
@@ -641,11 +641,11 @@ LABEL_26:
   return v14;
 }
 
-- (void)registerCapabilityOverrideBlock:(id)a3
+- (void)registerCapabilityOverrideBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     handler_queue = self->_handler_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -653,7 +653,7 @@ LABEL_26:
     v7[2] = sub_247F47CDC;
     v7[3] = &unk_278EEE5F0;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(handler_queue, v7);
   }
 }
@@ -706,27 +706,27 @@ LABEL_26:
   dispatch_sync(handler_queue, block);
 }
 
-- (void)setChannelHandler:(id)a3
+- (void)setChannelHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handler_queue = self->_handler_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F48464;
   v7[3] = &unk_278EEE5F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(handler_queue, v7);
 }
 
-- (void)cancelWithSerializedTransport:(id)a3
+- (void)cancelWithSerializedTransport:(id)transport
 {
-  v5 = a3;
-  v7 = v5;
-  if (v5)
+  transportCopy = transport;
+  v7 = transportCopy;
+  if (transportCopy)
   {
-    objc_msgSend__cancelInternal_(self, v4, v5);
+    objc_msgSend__cancelInternal_(self, v4, transportCopy);
   }
 
   else
@@ -736,32 +736,32 @@ LABEL_26:
   }
 }
 
-- (void)_cancelInternal:(id)a3
+- (void)_cancelInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   receive_queue = self->_receive_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F485BC;
   v7[3] = &unk_278EEE5F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = internalCopy;
+  v6 = internalCopy;
   dispatch_async(receive_queue, v7);
 }
 
-- (BOOL)sendMessage:(id)a3 fromChannel:(id)a4 sendMode:(int)a5 syncWithReply:(BOOL)a6 replyHandler:(id)a7
+- (BOOL)sendMessage:(id)message fromChannel:(id)channel sendMode:(int)mode syncWithReply:(BOOL)reply replyHandler:(id)handler
 {
-  v8 = a6;
+  replyCopy = reply;
   v98 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v16 = a7;
+  messageCopy = message;
+  channelCopy = channel;
+  handlerCopy = handler;
   v17 = 0;
-  if (v12 && kDTXInterruptionMessage != v12)
+  if (messageCopy && kDTXInterruptionMessage != messageCopy)
   {
-    v83 = v8;
-    v18 = objc_msgSend_serializedLength(v12, v14, v15);
+    v83 = replyCopy;
+    v18 = objc_msgSend_serializedLength(messageCopy, v14, v15);
     v21 = v18;
     logMessageCallstackSizeThreshold = self->_logMessageCallstackSizeThreshold;
     if (logMessageCallstackSizeThreshold && v18 > logMessageCallstackSizeThreshold && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -778,7 +778,7 @@ LABEL_26:
 
     if (v21 >= self->_compressionMinSizeThreshold && self->_remoteCompressionCapabilityVersion >= 1)
     {
-      compressionTypeForUnspecified = objc_msgSend_compressionTypeHint(v13, v19, v20);
+      compressionTypeForUnspecified = objc_msgSend_compressionTypeHint(channelCopy, v19, v20);
       if (compressionTypeForUnspecified <= 1)
       {
         compressionTypeForUnspecified = self->_compressionTypeForUnspecified;
@@ -800,24 +800,24 @@ LABEL_26:
               remoteCompressionCapabilityVersion = 2;
             }
 
-            objc_msgSend_compressWithCompressor_usingType_forCompatibilityWithVersion_(v12, v19, self->_compressor, compressionTypeForUnspecified, remoteCompressionCapabilityVersion);
+            objc_msgSend_compressWithCompressor_usingType_forCompatibilityWithVersion_(messageCopy, v19, self->_compressor, compressionTypeForUnspecified, remoteCompressionCapabilityVersion);
           }
         }
       }
     }
 
-    if (kDTXAckBarrierMessage == v12)
+    if (kDTXAckBarrierMessage == messageCopy)
     {
       v35 = objc_msgSend_message(DTXMessage, v19, v20);
 
       objc_msgSend__makeBarrier(v35, v36, v37);
-      v12 = v35;
+      messageCopy = v35;
     }
 
-    objc_msgSend__makeImmutable(v12, v19, v20);
-    v40 = objc_msgSend_serializedLength(v12, v38, v39);
+    objc_msgSend__makeImmutable(messageCopy, v19, v20);
+    v40 = objc_msgSend_serializedLength(messageCopy, v38, v39);
     v42 = v40;
-    if (v12 == kDTXBarrierMessage)
+    if (messageCopy == kDTXBarrierMessage)
     {
       v43 = 0;
     }
@@ -827,7 +827,7 @@ LABEL_26:
       v43 = v40;
     }
 
-    if (a5)
+    if (mode)
     {
       v44 = 0;
       v45 = objc_msgSend_acquireSize_(self->_resourceTracker, v41, 0);
@@ -842,10 +842,10 @@ LABEL_26:
     if (v45)
     {
       v48 = v45;
-      v82 = v13;
-      if (objc_msgSend_conversationIndex(v12, v46, v47))
+      v82 = channelCopy;
+      if (objc_msgSend_conversationIndex(messageCopy, v46, v47))
       {
-        if (objc_msgSend_deserialized(v12, v49, v50))
+        if (objc_msgSend_deserialized(messageCopy, v49, v50))
         {
           v53 = 0;
           v54 = objc_msgSend_channelCode(v82, v51, v52);
@@ -853,29 +853,29 @@ LABEL_26:
 
         else
         {
-          v48 = objc_msgSend_identifier(v12, v51, v52);
-          v53 = objc_msgSend_conversationIndex(v12, v58, v59) << 32;
-          v54 = objc_msgSend_channelCode(v12, v60, v61);
+          v48 = objc_msgSend_identifier(messageCopy, v51, v52);
+          v53 = objc_msgSend_conversationIndex(messageCopy, v58, v59) << 32;
+          v54 = objc_msgSend_channelCode(messageCopy, v60, v61);
         }
       }
 
       else
       {
-        v57 = v13;
+        v57 = channelCopy;
         v53 = 0;
         v54 = objc_msgSend_channelCode(v57, v49, v50);
       }
 
       v62 = v54;
       v63 = 0x100000000;
-      v81 = v16;
-      if (!v16 && (objc_msgSend_isDispatch(v12, v55, v56) & v83) == 0)
+      v81 = handlerCopy;
+      if (!handlerCopy && (objc_msgSend_isDispatch(messageCopy, v55, v56) & v83) == 0)
       {
         v63 = 0;
       }
 
       v64 = v63 | v62;
-      if (a5 == 1)
+      if (mode == 1)
       {
         v65 = dispatch_semaphore_create(0);
       }
@@ -885,21 +885,21 @@ LABEL_26:
         v65 = 0;
       }
 
-      v67 = v12 == kDTXBarrierMessage || v12 == kDTXHeartbeatMessage;
+      v67 = messageCopy == kDTXBarrierMessage || messageCopy == kDTXHeartbeatMessage;
       v84[0] = MEMORY[0x277D85DD0];
       v84[1] = 3221225472;
       v84[2] = sub_247F49054;
       v84[3] = &unk_278EEEC78;
       v84[4] = self;
       v88 = v42;
-      v92 = a5 == 2;
+      v92 = mode == 2;
       v93 = v67;
-      v12 = v12;
+      messageCopy = messageCopy;
       v68 = v53 | v48;
-      v85 = v12;
+      v85 = messageCopy;
       v90 = v68;
       v91 = v64;
-      v13 = v82;
+      channelCopy = v82;
       v69 = v82;
       v86 = v69;
       v89 = v44;
@@ -908,15 +908,15 @@ LABEL_26:
       v72 = MEMORY[0x24C1C0D80](v84);
       if (self->_tracer)
       {
-        v73 = objc_msgSend_descriptionWithRoutingInformation_(v12, v71, v68, v64);
+        v73 = objc_msgSend_descriptionWithRoutingInformation_(messageCopy, v71, v68, v64);
         sub_247F48190("  sent  ", self, v69, v73);
       }
 
       if (v83 && v63)
       {
         v76 = pthread_getspecific(qword_2814DB5E0);
-        v16 = v81;
-        if (v76 == v69 && v12 != kDTXBarrierMessage)
+        handlerCopy = v81;
+        if (v76 == v69 && messageCopy != kDTXBarrierMessage)
         {
           objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v74, @"DTXConnectionException", @"API misuse: client attempted to synchronously send a message and wait for response while already executing in channel's asynchronous handler context.");
         }
@@ -941,7 +941,7 @@ LABEL_26:
 
       else
       {
-        v16 = v81;
+        handlerCopy = v81;
         (v72)[2](v72, v81);
         if (!v70)
         {
@@ -965,14 +965,14 @@ LABEL_56:
   return v17;
 }
 
-- (BOOL)_addHandler:(id)a3 forMessage:(unsigned int)a4 channel:(id)a5
+- (BOOL)_addHandler:(id)handler forMessage:(unsigned int)message channel:(id)channel
 {
-  v8 = a3;
-  v9 = a5;
-  v12 = v9;
-  if (v8)
+  handlerCopy = handler;
+  channelCopy = channel;
+  v12 = channelCopy;
+  if (handlerCopy)
   {
-    if (!v9)
+    if (!channelCopy)
     {
       v12 = self->_defaultChannel;
     }
@@ -982,7 +982,7 @@ LABEL_56:
     v29 = 0x2020000000;
     v30 = 1;
     v13 = objc_msgSend_channelCode(v12, v10, v11);
-    v15 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v14, a4 | (v13 << 32));
+    v15 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v14, message | (v13 << 32));
     handler_queue = self->_handler_queue;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -994,8 +994,8 @@ LABEL_56:
     v12 = v12;
     v21 = v12;
     v22 = v15;
-    v23 = v8;
-    v26 = a4;
+    v23 = handlerCopy;
+    messageCopy = message;
     v17 = v15;
     dispatch_sync(handler_queue, v20);
     v18 = *(v28 + 24);
@@ -1011,18 +1011,18 @@ LABEL_56:
   return v18 & 1;
 }
 
-- (void)_routeMessage:(id)a3
+- (void)_routeMessage:(id)message
 {
-  v4 = a3;
-  v26 = v4;
-  if (kDTXInterruptionMessage == v4)
+  messageCopy = message;
+  v26 = messageCopy;
+  if (kDTXInterruptionMessage == messageCopy)
   {
     objc_msgSend_cancel(self, v5, v6);
   }
 
   else
   {
-    v7 = objc_msgSend_conversationIndex(v4, v5, v6);
+    v7 = objc_msgSend_conversationIndex(messageCopy, v5, v6);
     v10 = objc_msgSend_channelCode(v26, v8, v9);
     if (v7)
     {
@@ -1068,20 +1068,20 @@ LABEL_56:
   }
 }
 
-- (void)_scheduleMessage:(id)a3 toChannel:(id)a4
+- (void)_scheduleMessage:(id)message toChannel:(id)channel
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = a4;
+  messageCopy = message;
+  channelCopy = channel;
   if (self->_tracer)
   {
-    v10 = objc_msgSend_description(v6, v7, v8);
-    sub_247F48190("received", self, v9, v10);
+    v10 = objc_msgSend_description(messageCopy, v7, v8);
+    sub_247F48190("received", self, channelCopy, v10);
   }
 
-  if (v9)
+  if (channelCopy)
   {
-    if (objc_msgSend_isBarrier(v6, v7, v8))
+    if (objc_msgSend_isBarrier(messageCopy, v7, v8))
     {
       incomingResourceTracker = self->_incomingResourceTracker;
       v93[0] = MEMORY[0x277D85DD0];
@@ -1089,36 +1089,36 @@ LABEL_56:
       v93[2] = sub_247F4A0F0;
       v93[3] = &unk_278EEE6E0;
       v93[4] = self;
-      v94 = v9;
-      objc_msgSend__scheduleMessage_tracker_withHandler_(v94, v14, v6, incomingResourceTracker, v93);
+      v94 = channelCopy;
+      objc_msgSend__scheduleMessage_tracker_withHandler_(v94, v14, messageCopy, incomingResourceTracker, v93);
     }
 
-    else if (objc_msgSend_isDispatch(v6, v11, v12))
+    else if (objc_msgSend_isDispatch(messageCopy, v11, v12))
     {
       v35 = objc_autoreleasePoolPush();
-      if (self->_defaultChannel == v9 && objc_msgSend_shouldInvokeWithTarget_(v6, v34, self))
+      if (self->_defaultChannel == channelCopy && objc_msgSend_shouldInvokeWithTarget_(messageCopy, v34, self))
       {
         v36 = pthread_getspecific(qword_2814DB5E0);
         pthread_setspecific(qword_2814DB5E0, self->_defaultChannel);
-        objc_msgSend_invokeWithTarget_replyChannel_validator_(v6, v37, self, v9, 0);
+        objc_msgSend_invokeWithTarget_replyChannel_validator_(messageCopy, v37, self, channelCopy, 0);
         pthread_setspecific(qword_2814DB5E0, v36);
         v38 = self->_incomingResourceTracker;
-        v41 = objc_msgSend_cost(v6, v39, v40);
+        v41 = objc_msgSend_cost(messageCopy, v39, v40);
         objc_msgSend_releaseSize_(v38, v42, v41);
       }
 
       else
       {
-        objc_msgSend__scheduleMessage_tracker_withHandler_(v9, v34, v6, self->_incomingResourceTracker, 0);
+        objc_msgSend__scheduleMessage_tracker_withHandler_(channelCopy, v34, messageCopy, self->_incomingResourceTracker, 0);
       }
 
       objc_autoreleasePoolPop(v35);
     }
 
-    else if (objc_msgSend_conversationIndex(v6, v32, v33))
+    else if (objc_msgSend_conversationIndex(messageCopy, v32, v33))
     {
-      v45 = objc_msgSend_conversationIndex(v6, v43, v44);
-      v48 = objc_msgSend_channelCode(v6, v46, v47);
+      v45 = objc_msgSend_conversationIndex(messageCopy, v43, v44);
+      v48 = objc_msgSend_channelCode(messageCopy, v46, v47);
       if (v45)
       {
         v51 = v48;
@@ -1130,18 +1130,18 @@ LABEL_56:
       }
 
       v52 = MEMORY[0x277CCABB0];
-      v53 = objc_msgSend_identifier(v6, v49, v50);
+      v53 = objc_msgSend_identifier(messageCopy, v49, v50);
       v55 = objc_msgSend_numberWithUnsignedLongLong_(v52, v54, v53 | (v51 << 32));
       v59 = objc_msgSend_objectForKey_(self->_handlersByIdentifier, v56, v55);
       if (v59)
       {
-        objc_msgSend__scheduleMessage_tracker_withHandler_(v9, v57, v6, self->_incomingResourceTracker, v59);
+        objc_msgSend__scheduleMessage_tracker_withHandler_(channelCopy, v57, messageCopy, self->_incomingResourceTracker, v59);
         objc_msgSend_removeObjectForKey_(self->_handlersByIdentifier, v60, v55);
       }
 
       else
       {
-        if (objc_msgSend_expectsReply(v6, v57, v58))
+        if (objc_msgSend_expectsReply(messageCopy, v57, v58))
         {
           v69 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v67, @"DTXMissingReplyBlockException", @"Peer was not expecting a reply for the provided message and dropped it", 0);
           v70 = MEMORY[0x277CCA9B8];
@@ -1150,20 +1150,20 @@ LABEL_56:
           v96 = v73;
           v75 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v74, &v96, &v95, 1);
           v77 = objc_msgSend_errorWithDomain_code_userInfo_(v70, v76, @"DTXConnection", 1, v75);
-          v79 = objc_msgSend_newReplyWithError_(v6, v78, v77);
+          v79 = objc_msgSend_newReplyWithError_(messageCopy, v78, v77);
 
-          objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v80, v79, v9, 2, 0, 0);
+          objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v80, v79, channelCopy, 2, 0, 0);
         }
 
         v81 = self->_incomingResourceTracker;
-        v82 = objc_msgSend_cost(v6, v67, v68);
+        v82 = objc_msgSend_cost(messageCopy, v67, v68);
         objc_msgSend_releaseSize_(v81, v83, v82);
       }
     }
 
     else
     {
-      if (!v6)
+      if (!messageCopy)
       {
         v61 = objc_msgSend_mutableCopy(self->_handlersByIdentifier, v43, v44);
         handlersByIdentifier = self->_handlersByIdentifier;
@@ -1171,10 +1171,10 @@ LABEL_56:
         v86 = 3221225472;
         v87 = sub_247F4A150;
         v88 = &unk_278EEECC8;
-        v89 = v9;
+        v89 = channelCopy;
         v63 = v61;
         v90 = v63;
-        v91 = self;
+        selfCopy = self;
         v92 = 0;
         objc_msgSend_enumerateKeysAndObjectsUsingBlock_(handlersByIdentifier, v64, &v85);
         v65 = self->_handlersByIdentifier;
@@ -1182,13 +1182,13 @@ LABEL_56:
         v66 = v63;
       }
 
-      objc_msgSend__scheduleMessage_tracker_withHandler_(v9, v43, v6, self->_incomingResourceTracker, 0, v85, v86, v87, v88);
+      objc_msgSend__scheduleMessage_tracker_withHandler_(channelCopy, v43, messageCopy, self->_incomingResourceTracker, 0, v85, v86, v87, v88);
     }
   }
 
   else
   {
-    if (objc_msgSend_expectsReply(v6, v7, v8))
+    if (objc_msgSend_expectsReply(messageCopy, v7, v8))
     {
       v17 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v15, @"DTXMissingChannelException", @"Unable to invoke message sent to invalid channel", 0);
       v18 = MEMORY[0x277CCA9B8];
@@ -1197,22 +1197,22 @@ LABEL_56:
       v98[0] = v21;
       v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v22, v98, &v97, 1);
       v25 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v24, @"DTXConnection", 1, v23);
-      v27 = objc_msgSend_newReplyWithError_(v6, v26, v25);
+      v27 = objc_msgSend_newReplyWithError_(messageCopy, v26, v25);
 
       objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v28, v27, 0, 2, 0, 0);
     }
 
     v29 = self->_incomingResourceTracker;
-    v30 = objc_msgSend_cost(v6, v15, v16);
+    v30 = objc_msgSend_cost(messageCopy, v15, v16);
     objc_msgSend_releaseSize_(v29, v31, v30);
   }
 
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (id)makeChannelWithIdentifier:(id)a3
+- (id)makeChannelWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1231,7 +1231,7 @@ LABEL_56:
   v21 = &v23;
   v22 = &v27;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v20 = v6;
   dispatch_sync(handler_queue, block);
   v8 = objc_msgSend_messageWithSelector_typesAndArguments_(DTXMessage, v7, sel__requestChannelWithCode_identifier_, 3, *(v24 + 6), 11, v6, 0);
@@ -1254,20 +1254,20 @@ LABEL_56:
   return v14;
 }
 
-- (void)setRemoteTracer:(BOOL)a3
+- (void)setRemoteTracer:(BOOL)tracer
 {
-  self->_remoteTracer = a3;
-  v5 = objc_msgSend_messageWithSelector_typesAndArguments_(DTXMessage, a2, sel__setTracerState_, 3, a3, 0);
+  self->_remoteTracer = tracer;
+  v5 = objc_msgSend_messageWithSelector_typesAndArguments_(DTXMessage, a2, sel__setTracerState_, 3, tracer, 0);
   objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v4, v5, 0, 2, 0, 0);
 }
 
-- (void)_unregisterChannel:(id)a3
+- (void)_unregisterChannel:(id)channel
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  channelCopy = channel;
+  v7 = channelCopy;
+  if (channelCopy)
   {
-    v8 = objc_msgSend_channelCode(v4, v5, v6);
+    v8 = objc_msgSend_channelCode(channelCopy, v5, v6);
     v10 = objc_msgSend_messageWithSelector_typesAndArguments_(DTXMessage, v9, sel__channelCanceled_, 3, v8, 0);
     objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v11, v10, 0, 2, 0, 0);
     objc_msgSend_sendMessage_fromChannel_sendMode_syncWithReply_replyHandler_(self, v12, kDTXBarrierMessage, 0, 2, 0, 0);
@@ -1277,25 +1277,25 @@ LABEL_56:
     block[2] = sub_247F4A7C8;
     block[3] = &unk_278EEED18;
     v15 = v7;
-    v16 = self;
+    selfCopy = self;
     dispatch_async(receive_queue, block);
   }
 }
 
-- (void)_requestChannelWithCode:(unsigned int)a3 identifier:(id)a4
+- (void)_requestChannelWithCode:(unsigned int)code identifier:(id)identifier
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_autoreleasePoolPush();
-  v8 = -a3;
+  v8 = -code;
   v9 = [DTXChannel alloc];
-  v11 = objc_msgSend_initWithConnection_channelIdentifier_label_(v9, v10, self, v8, v6);
+  v11 = objc_msgSend_initWithConnection_channelIdentifier_label_(v9, v10, self, v8, identifierCopy);
   objc_msgSend_suspend(v11, v12, v13);
   objc_msgSend_setCompressionTypeHint_(v11, v14, self->_newChannelCompressionHint);
   v16 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v15, v8);
   objc_msgSend_setObject_forKey_(self->_unconfiguredChannelsByCode, v17, v11, v16);
   v55 = MEMORY[0x24C1C0D80](self->_channelHandler);
-  v19 = objc_msgSend_componentsSeparatedByString_(v6, v18, @":");
+  v19 = objc_msgSend_componentsSeparatedByString_(identifierCopy, v18, @":");
   if (objc_msgSend_count(v19, v20, v21) == 3 && (objc_msgSend_objectAtIndex_(v19, v22, 0), v23 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v23, v24, @"dtxproxy"), v23, isEqualToString))
   {
     v27 = objc_msgSend_objectAtIndex_(v19, v26, 1);
@@ -1386,7 +1386,7 @@ LABEL_18:
       if (os_log_type_enabled(qword_2814DB5B8, OS_LOG_TYPE_ERROR))
       {
         *v68 = 138543362;
-        v69 = v6;
+        v69 = identifierCopy;
         _os_log_impl(&dword_247F3D000, v50, OS_LOG_TYPE_ERROR, "Protocol handler unavailable for specified channel: %{public}@", v68, 0xCu);
       }
 
@@ -1404,8 +1404,8 @@ LABEL_18:
     v56[3] = &unk_278EEED40;
     v60 = v55;
     v57 = v11;
-    v58 = v6;
-    v59 = self;
+    v58 = identifierCopy;
+    selfCopy = self;
     objc_msgSend__scheduleBlock_(v57, v45, v56);
   }
 
@@ -1415,7 +1415,7 @@ LABEL_18:
     if (os_log_type_enabled(qword_2814DB5B8, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&dword_247F3D000, v47, OS_LOG_TYPE_ERROR, "No channel handler specified; channel canceled. %{public}@", &buf, 0xCu);
     }
 
@@ -1426,11 +1426,11 @@ LABEL_18:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyOfPublishedCapabilities:(id)a3
+- (void)_notifyOfPublishedCapabilities:(id)capabilities
 {
   p_remoteCapabilityVersions = &self->_remoteCapabilityVersions;
   remoteCapabilityVersions = self->_remoteCapabilityVersions;
-  v6 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v6 = objc_msgSend_mutableCopy(capabilities, a2, capabilities);
   v7 = v6;
   v8 = p_remoteCapabilityVersions[1];
   if (v8)
@@ -1465,9 +1465,9 @@ LABEL_18:
   }
 }
 
-- (void)_channelCanceled:(unsigned int)a3
+- (void)_channelCanceled:(unsigned int)canceled
 {
-  objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], a2, -a3);
+  objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], a2, -canceled);
   v14 = p_channelsByCode = &self->_channelsByCode;
   v6 = objc_msgSend_objectForKey_(self->_channelsByCode, v5, v14);
   if (v6)
@@ -1495,34 +1495,34 @@ LABEL_18:
 LABEL_6:
 }
 
-- (void)handleProxyRequestForInterface:(id)a3 peerInterface:(id)a4 handler:(id)a5
+- (void)handleProxyRequestForInterface:(id)interface peerInterface:(id)peerInterface handler:(id)handler
 {
-  proto = a3;
-  v8 = a4;
-  v9 = a5;
+  proto = interface;
+  peerInterfaceCopy = peerInterface;
+  handlerCopy = handler;
   v11 = NSStringFromProtocol(proto);
-  if (v8)
+  if (peerInterfaceCopy)
   {
-    v12 = NSStringFromProtocol(v8);
-    objc_msgSend__handleProxyRequestForInterface_interfaceName_peerInterface_peerInterfaceName_handler_(self, v13, proto, v11, v8, v12, v9);
+    v12 = NSStringFromProtocol(peerInterfaceCopy);
+    objc_msgSend__handleProxyRequestForInterface_interfaceName_peerInterface_peerInterfaceName_handler_(self, v13, proto, v11, peerInterfaceCopy, v12, handlerCopy);
   }
 
   else
   {
-    objc_msgSend__handleProxyRequestForInterface_interfaceName_peerInterface_peerInterfaceName_handler_(self, v10, proto, v11, 0, 0, v9);
+    objc_msgSend__handleProxyRequestForInterface_interfaceName_peerInterface_peerInterfaceName_handler_(self, v10, proto, v11, 0, 0, handlerCopy);
   }
 }
 
-- (void)_handleProxyRequestForInterface:(id)a3 interfaceName:(id)a4 peerInterface:(id)a5 peerInterfaceName:(id)a6 handler:(id)a7
+- (void)_handleProxyRequestForInterface:(id)interface interfaceName:(id)name peerInterface:(id)peerInterface peerInterfaceName:(id)interfaceName handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  interfaceCopy = interface;
+  nameCopy = name;
+  peerInterfaceCopy = peerInterface;
+  interfaceNameCopy = interfaceName;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1531,7 +1531,7 @@ LABEL_6:
   else
   {
     sub_247F59E4C();
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1539,10 +1539,10 @@ LABEL_6:
 
   sub_247F59EC0();
 LABEL_3:
-  if ((v14 == 0) != (v15 == 0))
+  if ((peerInterfaceCopy == 0) != (interfaceNameCopy == 0))
   {
     sub_247F59F34();
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
@@ -1552,7 +1552,7 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v16)
+  if (!handlerCopy)
   {
     goto LABEL_9;
   }
@@ -1563,48 +1563,48 @@ LABEL_5:
   v23[1] = 3221225472;
   v23[2] = sub_247F4B774;
   v23[3] = &unk_278EEED90;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = self;
-  v29 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = interfaceCopy;
+  v25 = nameCopy;
+  v26 = peerInterfaceCopy;
+  v27 = interfaceNameCopy;
+  selfCopy = self;
+  v29 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = interfaceNameCopy;
+  v20 = peerInterfaceCopy;
+  v21 = nameCopy;
+  v22 = interfaceCopy;
   dispatch_sync(handler_queue, v23);
 }
 
-- (id)makeProxyChannelWithRemoteInterface:(id)a3 exportedInterface:(id)a4
+- (id)makeProxyChannelWithRemoteInterface:(id)interface exportedInterface:(id)exportedInterface
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = NSStringFromProtocol(v6);
-  if (v7)
+  interfaceCopy = interface;
+  exportedInterfaceCopy = exportedInterface;
+  v9 = NSStringFromProtocol(interfaceCopy);
+  if (exportedInterfaceCopy)
   {
-    v10 = NSStringFromProtocol(v7);
-    v12 = objc_msgSend__makeProxyChannelWithRemoteInterface_remoteInterfaceName_exportedInterface_exportedInterfaceName_(self, v11, v6, v9, v7, v10);
+    v10 = NSStringFromProtocol(exportedInterfaceCopy);
+    v12 = objc_msgSend__makeProxyChannelWithRemoteInterface_remoteInterfaceName_exportedInterface_exportedInterfaceName_(self, v11, interfaceCopy, v9, exportedInterfaceCopy, v10);
   }
 
   else
   {
-    v12 = objc_msgSend__makeProxyChannelWithRemoteInterface_remoteInterfaceName_exportedInterface_exportedInterfaceName_(self, v8, v6, v9, 0, 0);
+    v12 = objc_msgSend__makeProxyChannelWithRemoteInterface_remoteInterfaceName_exportedInterface_exportedInterfaceName_(self, v8, interfaceCopy, v9, 0, 0);
   }
 
   return v12;
 }
 
-- (id)_makeProxyChannelWithRemoteInterface:(id)a3 remoteInterfaceName:(id)a4 exportedInterface:(id)a5 exportedInterfaceName:(id)a6
+- (id)_makeProxyChannelWithRemoteInterface:(id)interface remoteInterfaceName:(id)name exportedInterface:(id)exportedInterface exportedInterfaceName:(id)interfaceName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v14 = a6;
-  if (v10)
+  interfaceCopy = interface;
+  nameCopy = name;
+  exportedInterfaceCopy = exportedInterface;
+  interfaceNameCopy = interfaceName;
+  if (interfaceCopy)
   {
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1613,7 +1613,7 @@ LABEL_5:
   else
   {
     sub_247F5A01C();
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1621,15 +1621,15 @@ LABEL_5:
 
   sub_247F5A090();
 LABEL_3:
-  if ((v12 == 0) != (v14 == 0))
+  if ((exportedInterfaceCopy == 0) != (interfaceNameCopy == 0))
   {
     sub_247F5A104();
   }
 
   v15 = @"*";
-  if (v14)
+  if (interfaceNameCopy)
   {
-    v16 = v14;
+    v16 = interfaceNameCopy;
   }
 
   else
@@ -1637,32 +1637,32 @@ LABEL_3:
     v16 = @"*";
   }
 
-  if (v11)
+  if (nameCopy)
   {
-    v15 = v11;
+    v15 = nameCopy;
   }
 
   v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, @"%@:%@:%@", @"dtxproxy", v16, v15);
   v19 = objc_msgSend_makeChannelWithIdentifier_(self, v18, v17);
   v20 = [DTXProxyChannel alloc];
-  v22 = objc_msgSend_initWithChannel_remoteProtocol_localProtocol_(v20, v21, v19, v10, v12);
+  v22 = objc_msgSend_initWithChannel_remoteProtocol_localProtocol_(v20, v21, v19, interfaceCopy, exportedInterfaceCopy);
 
   return v22;
 }
 
-+ (void)observeDecompressionExceptionLogging:(id)a3
++ (void)observeDecompressionExceptionLogging:(id)logging
 {
-  v3 = MEMORY[0x24C1C0D80](a3, a2);
+  v3 = MEMORY[0x24C1C0D80](logging, a2);
   v4 = qword_27EE80D38;
   qword_27EE80D38 = v3;
 }
 
-- (void)replaceCompressorForDecompression:(id)a3
+- (void)replaceCompressorForDecompression:(id)decompression
 {
   incomingParser = self->_incomingParser;
   if (incomingParser)
   {
-    MEMORY[0x2821F9670](incomingParser, sel_replaceCompressor_, a3);
+    MEMORY[0x2821F9670](incomingParser, sel_replaceCompressor_, decompression);
   }
 }
 

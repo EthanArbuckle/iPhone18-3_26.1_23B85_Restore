@@ -1,41 +1,41 @@
 @interface AWDMMCSHttpInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addHttpError:(id)a3;
-- (void)addTcpInfo:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addHttpError:(id)error;
+- (void)addTcpInfo:(id)info;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdaptiveTcpReadTimeout:(BOOL)a3;
-- (void)setHasAdaptiveTcpWriteTimeout:(BOOL)a3;
-- (void)setHasAllowsCellular:(BOOL)a3;
-- (void)setHasAllowsPowerNapScheduling:(BOOL)a3;
-- (void)setHasCancelled:(BOOL)a3;
-- (void)setHasConnectionReused:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasFastFail:(BOOL)a3;
-- (void)setHasFinalTryInRequest:(BOOL)a3;
-- (void)setHasForceNondiscretionary:(BOOL)a3;
-- (void)setHasHttpStatus:(BOOL)a3;
-- (void)setHasInlineEdgeComplete:(BOOL)a3;
-- (void)setHasLocatorPort:(BOOL)a3;
-- (void)setHasNetworkServiceType:(BOOL)a3;
-- (void)setHasPowerPluggedInAtEnd:(BOOL)a3;
-- (void)setHasPowerPluggedInAtStart:(BOOL)a3;
-- (void)setHasPowerPluggedInWhenQueued:(BOOL)a3;
-- (void)setHasProxyUsed:(BOOL)a3;
-- (void)setHasQualityOfService:(BOOL)a3;
-- (void)setHasRequestSize:(BOOL)a3;
-- (void)setHasRequiresPowerPluggedIn:(BOOL)a3;
-- (void)setHasResponseReceivedDuration:(BOOL)a3;
-- (void)setHasResponseSize:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasTimedOut:(BOOL)a3;
-- (void)setHasTransactionComplete:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdaptiveTcpReadTimeout:(BOOL)timeout;
+- (void)setHasAdaptiveTcpWriteTimeout:(BOOL)timeout;
+- (void)setHasAllowsCellular:(BOOL)cellular;
+- (void)setHasAllowsPowerNapScheduling:(BOOL)scheduling;
+- (void)setHasCancelled:(BOOL)cancelled;
+- (void)setHasConnectionReused:(BOOL)reused;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasFastFail:(BOOL)fail;
+- (void)setHasFinalTryInRequest:(BOOL)request;
+- (void)setHasForceNondiscretionary:(BOOL)nondiscretionary;
+- (void)setHasHttpStatus:(BOOL)status;
+- (void)setHasInlineEdgeComplete:(BOOL)complete;
+- (void)setHasLocatorPort:(BOOL)port;
+- (void)setHasNetworkServiceType:(BOOL)type;
+- (void)setHasPowerPluggedInAtEnd:(BOOL)end;
+- (void)setHasPowerPluggedInAtStart:(BOOL)start;
+- (void)setHasPowerPluggedInWhenQueued:(BOOL)queued;
+- (void)setHasProxyUsed:(BOOL)used;
+- (void)setHasQualityOfService:(BOOL)service;
+- (void)setHasRequestSize:(BOOL)size;
+- (void)setHasRequiresPowerPluggedIn:(BOOL)in;
+- (void)setHasResponseReceivedDuration:(BOOL)duration;
+- (void)setHasResponseSize:(BOOL)size;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasTimedOut:(BOOL)out;
+- (void)setHasTransactionComplete:(BOOL)complete;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMMCSHttpInfo
@@ -55,9 +55,9 @@
   [(AWDMMCSHttpInfo *)&v3 dealloc];
 }
 
-- (void)setHasLocatorPort:(BOOL)a3
+- (void)setHasLocatorPort:(BOOL)port
 {
-  if (a3)
+  if (port)
   {
     v3 = 256;
   }
@@ -70,9 +70,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasConnectionReused:(BOOL)a3
+- (void)setHasConnectionReused:(BOOL)reused
 {
-  if (a3)
+  if (reused)
   {
     v3 = 0x8000;
   }
@@ -85,9 +85,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }
@@ -100,9 +100,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasResponseReceivedDuration:(BOOL)a3
+- (void)setHasResponseReceivedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -115,9 +115,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasHttpStatus:(BOOL)a3
+- (void)setHasHttpStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 128;
   }
@@ -130,9 +130,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 64;
   }
@@ -145,9 +145,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasRequestSize:(BOOL)a3
+- (void)setHasRequestSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 1024;
   }
@@ -160,9 +160,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasResponseSize:(BOOL)a3
+- (void)setHasResponseSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2048;
   }
@@ -175,9 +175,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTransactionComplete:(BOOL)a3
+- (void)setHasTransactionComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 0x4000000;
   }
@@ -190,9 +190,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasTimedOut:(BOOL)a3
+- (void)setHasTimedOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 0x2000000;
   }
@@ -205,9 +205,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasCancelled:(BOOL)a3
+- (void)setHasCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 0x4000;
   }
@@ -220,7 +220,7 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)addTcpInfo:(id)a3
+- (void)addTcpInfo:(id)info
 {
   tcpInfos = self->_tcpInfos;
   if (!tcpInfos)
@@ -229,10 +229,10 @@
     self->_tcpInfos = tcpInfos;
   }
 
-  [(NSMutableArray *)tcpInfos addObject:a3];
+  [(NSMutableArray *)tcpInfos addObject:info];
 }
 
-- (void)addHttpError:(id)a3
+- (void)addHttpError:(id)error
 {
   httpErrors = self->_httpErrors;
   if (!httpErrors)
@@ -241,12 +241,12 @@
     self->_httpErrors = httpErrors;
   }
 
-  [(NSMutableArray *)httpErrors addObject:a3];
+  [(NSMutableArray *)httpErrors addObject:error];
 }
 
-- (void)setHasRequiresPowerPluggedIn:(BOOL)a3
+- (void)setHasRequiresPowerPluggedIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 0x1000000;
   }
@@ -259,9 +259,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasAllowsPowerNapScheduling:(BOOL)a3
+- (void)setHasAllowsPowerNapScheduling:(BOOL)scheduling
 {
-  if (a3)
+  if (scheduling)
   {
     v3 = 0x2000;
   }
@@ -274,9 +274,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasAllowsCellular:(BOOL)a3
+- (void)setHasAllowsCellular:(BOOL)cellular
 {
-  if (a3)
+  if (cellular)
   {
     v3 = 4096;
   }
@@ -289,9 +289,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasForceNondiscretionary:(BOOL)a3
+- (void)setHasForceNondiscretionary:(BOOL)nondiscretionary
 {
-  if (a3)
+  if (nondiscretionary)
   {
     v3 = 0x40000;
   }
@@ -304,9 +304,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasFastFail:(BOOL)a3
+- (void)setHasFastFail:(BOOL)fail
 {
-  if (a3)
+  if (fail)
   {
     v3 = 0x10000;
   }
@@ -319,9 +319,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasQualityOfService:(BOOL)a3
+- (void)setHasQualityOfService:(BOOL)service
 {
-  if (a3)
+  if (service)
   {
     v3 = 512;
   }
@@ -334,9 +334,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasProxyUsed:(BOOL)a3
+- (void)setHasProxyUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 0x800000;
   }
@@ -349,9 +349,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasFinalTryInRequest:(BOOL)a3
+- (void)setHasFinalTryInRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x20000;
   }
@@ -364,9 +364,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasInlineEdgeComplete:(BOOL)a3
+- (void)setHasInlineEdgeComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 0x80000;
   }
@@ -379,9 +379,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasAdaptiveTcpReadTimeout:(BOOL)a3
+- (void)setHasAdaptiveTcpReadTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 16;
   }
@@ -394,9 +394,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasAdaptiveTcpWriteTimeout:(BOOL)a3
+- (void)setHasAdaptiveTcpWriteTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 32;
   }
@@ -409,9 +409,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasPowerPluggedInWhenQueued:(BOOL)a3
+- (void)setHasPowerPluggedInWhenQueued:(BOOL)queued
 {
-  if (a3)
+  if (queued)
   {
     v3 = 0x400000;
   }
@@ -424,9 +424,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasPowerPluggedInAtStart:(BOOL)a3
+- (void)setHasPowerPluggedInAtStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x200000;
   }
@@ -439,9 +439,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasPowerPluggedInAtEnd:(BOOL)a3
+- (void)setHasPowerPluggedInAtEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 0x100000;
   }
@@ -454,9 +454,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasNetworkServiceType:(BOOL)a3
+- (void)setHasNetworkServiceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -479,12 +479,12 @@
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   locatorScheme = self->_locatorScheme;
   if (locatorScheme)
   {
-    [v3 setObject:locatorScheme forKey:@"locatorScheme"];
+    [dictionary setObject:locatorScheme forKey:@"locatorScheme"];
   }
 
   locatorHostname = self->_locatorHostname;
@@ -922,7 +922,7 @@ LABEL_58:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v57 = *MEMORY[0x29EDCA608];
   if (self->_locatorScheme)
@@ -1376,23 +1376,23 @@ LABEL_54:
   v23 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_locatorScheme)
   {
-    [a3 setLocatorScheme:?];
+    [to setLocatorScheme:?];
   }
 
   if (self->_locatorHostname)
   {
-    [a3 setLocatorHostname:?];
+    [to setLocatorHostname:?];
   }
 
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
-    *(a3 + 26) = self->_locatorPort;
-    *(a3 + 42) |= 0x100u;
+    *(to + 26) = self->_locatorPort;
+    *(to + 42) |= 0x100u;
     has = self->_has;
     if ((*&has & 0x8000) == 0)
     {
@@ -1411,8 +1411,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 155) = self->_connectionReused;
-  *(a3 + 42) |= 0x8000u;
+  *(to + 155) = self->_connectionReused;
+  *(to + 42) |= 0x8000u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1426,8 +1426,8 @@ LABEL_8:
   }
 
 LABEL_55:
-  *(a3 + 4) = self->_startTime;
-  *(a3 + 42) |= 8u;
+  *(to + 4) = self->_startTime;
+  *(to + 42) |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1441,8 +1441,8 @@ LABEL_9:
   }
 
 LABEL_56:
-  *(a3 + 3) = self->_responseReceivedDuration;
-  *(a3 + 42) |= 4u;
+  *(to + 3) = self->_responseReceivedDuration;
+  *(to + 42) |= 4u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1456,26 +1456,26 @@ LABEL_10:
   }
 
 LABEL_57:
-  *(a3 + 1) = self->_duration;
-  *(a3 + 42) |= 1u;
+  *(to + 1) = self->_duration;
+  *(to + 42) |= 1u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_11:
-    *(a3 + 18) = self->_httpStatus;
-    *(a3 + 42) |= 0x80u;
+    *(to + 18) = self->_httpStatus;
+    *(to + 42) |= 0x80u;
   }
 
 LABEL_12:
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x40) != 0)
   {
-    *(a3 + 12) = self->_errorCode;
-    *(a3 + 42) |= 0x40u;
+    *(to + 12) = self->_errorCode;
+    *(to + 42) |= 0x40u;
     v6 = self->_has;
     if ((*&v6 & 0x400) == 0)
     {
@@ -1494,8 +1494,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  *(a3 + 33) = self->_requestSize;
-  *(a3 + 42) |= 0x400u;
+  *(to + 33) = self->_requestSize;
+  *(to + 42) |= 0x400u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1509,8 +1509,8 @@ LABEL_17:
   }
 
 LABEL_61:
-  *(a3 + 34) = self->_responseSize;
-  *(a3 + 42) |= 0x800u;
+  *(to + 34) = self->_responseSize;
+  *(to + 42) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x4000000) == 0)
   {
@@ -1521,8 +1521,8 @@ LABEL_18:
     }
 
 LABEL_63:
-    *(a3 + 165) = self->_timedOut;
-    *(a3 + 42) |= 0x2000000u;
+    *(to + 165) = self->_timedOut;
+    *(to + 42) |= 0x2000000u;
     if ((*&self->_has & 0x4000) == 0)
     {
       goto LABEL_21;
@@ -1532,8 +1532,8 @@ LABEL_63:
   }
 
 LABEL_62:
-  *(a3 + 166) = self->_transactionComplete;
-  *(a3 + 42) |= 0x4000000u;
+  *(to + 166) = self->_transactionComplete;
+  *(to + 42) |= 0x4000000u;
   v6 = self->_has;
   if ((*&v6 & 0x2000000) != 0)
   {
@@ -1544,54 +1544,54 @@ LABEL_19:
   if ((*&v6 & 0x4000) != 0)
   {
 LABEL_20:
-    *(a3 + 154) = self->_cancelled;
-    *(a3 + 42) |= 0x4000u;
+    *(to + 154) = self->_cancelled;
+    *(to + 42) |= 0x4000u;
   }
 
 LABEL_21:
   if ([(AWDMMCSHttpInfo *)self tcpInfosCount])
   {
-    [a3 clearTcpInfos];
-    v7 = [(AWDMMCSHttpInfo *)self tcpInfosCount];
-    if (v7)
+    [to clearTcpInfos];
+    tcpInfosCount = [(AWDMMCSHttpInfo *)self tcpInfosCount];
+    if (tcpInfosCount)
     {
-      v8 = v7;
+      v8 = tcpInfosCount;
       for (i = 0; i != v8; ++i)
       {
-        [a3 addTcpInfo:{-[AWDMMCSHttpInfo tcpInfoAtIndex:](self, "tcpInfoAtIndex:", i)}];
+        [to addTcpInfo:{-[AWDMMCSHttpInfo tcpInfoAtIndex:](self, "tcpInfoAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDMMCSHttpInfo *)self httpErrorsCount])
   {
-    [a3 clearHttpErrors];
-    v10 = [(AWDMMCSHttpInfo *)self httpErrorsCount];
-    if (v10)
+    [to clearHttpErrors];
+    httpErrorsCount = [(AWDMMCSHttpInfo *)self httpErrorsCount];
+    if (httpErrorsCount)
     {
-      v11 = v10;
+      v11 = httpErrorsCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addHttpError:{-[AWDMMCSHttpInfo httpErrorAtIndex:](self, "httpErrorAtIndex:", j)}];
+        [to addHttpError:{-[AWDMMCSHttpInfo httpErrorAtIndex:](self, "httpErrorAtIndex:", j)}];
       }
     }
   }
 
   if (self->_interfaceIdentifier)
   {
-    [a3 setInterfaceIdentifier:?];
+    [to setInterfaceIdentifier:?];
   }
 
   if (self->_locatorPeerAddress)
   {
-    [a3 setLocatorPeerAddress:?];
+    [to setLocatorPeerAddress:?];
   }
 
   v13 = self->_has;
   if ((*&v13 & 0x1000000) != 0)
   {
-    *(a3 + 164) = self->_requiresPowerPluggedIn;
-    *(a3 + 42) |= 0x1000000u;
+    *(to + 164) = self->_requiresPowerPluggedIn;
+    *(to + 42) |= 0x1000000u;
     v13 = self->_has;
     if ((*&v13 & 0x2000) == 0)
     {
@@ -1610,8 +1610,8 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  *(a3 + 153) = self->_allowsPowerNapScheduling;
-  *(a3 + 42) |= 0x2000u;
+  *(to + 153) = self->_allowsPowerNapScheduling;
+  *(to + 42) |= 0x2000u;
   v13 = self->_has;
   if ((*&v13 & 0x1000) == 0)
   {
@@ -1625,8 +1625,8 @@ LABEL_36:
   }
 
 LABEL_67:
-  *(a3 + 152) = self->_allowsCellular;
-  *(a3 + 42) |= 0x1000u;
+  *(to + 152) = self->_allowsCellular;
+  *(to + 42) |= 0x1000u;
   v13 = self->_has;
   if ((*&v13 & 0x40000) == 0)
   {
@@ -1640,8 +1640,8 @@ LABEL_37:
   }
 
 LABEL_68:
-  *(a3 + 158) = self->_forceNondiscretionary;
-  *(a3 + 42) |= 0x40000u;
+  *(to + 158) = self->_forceNondiscretionary;
+  *(to + 42) |= 0x40000u;
   v13 = self->_has;
   if ((*&v13 & 0x10000) == 0)
   {
@@ -1655,8 +1655,8 @@ LABEL_38:
   }
 
 LABEL_69:
-  *(a3 + 156) = self->_fastFail;
-  *(a3 + 42) |= 0x10000u;
+  *(to + 156) = self->_fastFail;
+  *(to + 42) |= 0x10000u;
   v13 = self->_has;
   if ((*&v13 & 0x200) == 0)
   {
@@ -1670,8 +1670,8 @@ LABEL_39:
   }
 
 LABEL_70:
-  *(a3 + 32) = self->_qualityOfService;
-  *(a3 + 42) |= 0x200u;
+  *(to + 32) = self->_qualityOfService;
+  *(to + 42) |= 0x200u;
   v13 = self->_has;
   if ((*&v13 & 0x800000) == 0)
   {
@@ -1685,8 +1685,8 @@ LABEL_40:
   }
 
 LABEL_71:
-  *(a3 + 163) = self->_proxyUsed;
-  *(a3 + 42) |= 0x800000u;
+  *(to + 163) = self->_proxyUsed;
+  *(to + 42) |= 0x800000u;
   v13 = self->_has;
   if ((*&v13 & 0x20000) == 0)
   {
@@ -1700,8 +1700,8 @@ LABEL_41:
   }
 
 LABEL_72:
-  *(a3 + 157) = self->_finalTryInRequest;
-  *(a3 + 42) |= 0x20000u;
+  *(to + 157) = self->_finalTryInRequest;
+  *(to + 42) |= 0x20000u;
   v13 = self->_has;
   if ((*&v13 & 0x80000) == 0)
   {
@@ -1715,8 +1715,8 @@ LABEL_42:
   }
 
 LABEL_73:
-  *(a3 + 159) = self->_inlineEdgeComplete;
-  *(a3 + 42) |= 0x80000u;
+  *(to + 159) = self->_inlineEdgeComplete;
+  *(to + 42) |= 0x80000u;
   v13 = self->_has;
   if ((*&v13 & 0x10) == 0)
   {
@@ -1730,8 +1730,8 @@ LABEL_43:
   }
 
 LABEL_74:
-  *(a3 + 10) = self->_adaptiveTcpReadTimeout;
-  *(a3 + 42) |= 0x10u;
+  *(to + 10) = self->_adaptiveTcpReadTimeout;
+  *(to + 42) |= 0x10u;
   v13 = self->_has;
   if ((*&v13 & 0x20) == 0)
   {
@@ -1745,8 +1745,8 @@ LABEL_44:
   }
 
 LABEL_75:
-  *(a3 + 11) = self->_adaptiveTcpWriteTimeout;
-  *(a3 + 42) |= 0x20u;
+  *(to + 11) = self->_adaptiveTcpWriteTimeout;
+  *(to + 42) |= 0x20u;
   v13 = self->_has;
   if ((*&v13 & 0x400000) == 0)
   {
@@ -1760,8 +1760,8 @@ LABEL_45:
   }
 
 LABEL_76:
-  *(a3 + 162) = self->_powerPluggedInWhenQueued;
-  *(a3 + 42) |= 0x400000u;
+  *(to + 162) = self->_powerPluggedInWhenQueued;
+  *(to + 42) |= 0x400000u;
   v13 = self->_has;
   if ((*&v13 & 0x200000) == 0)
   {
@@ -1775,35 +1775,35 @@ LABEL_46:
   }
 
 LABEL_77:
-  *(a3 + 161) = self->_powerPluggedInAtStart;
-  *(a3 + 42) |= 0x200000u;
+  *(to + 161) = self->_powerPluggedInAtStart;
+  *(to + 42) |= 0x200000u;
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_47:
-    *(a3 + 160) = self->_powerPluggedInAtEnd;
-    *(a3 + 42) |= 0x100000u;
+    *(to + 160) = self->_powerPluggedInAtEnd;
+    *(to + 42) |= 0x100000u;
   }
 
 LABEL_48:
   if (self->_networkUsed)
   {
-    [a3 setNetworkUsed:?];
+    [to setNetworkUsed:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_networkServiceType;
-    *(a3 + 42) |= 2u;
+    *(to + 2) = self->_networkServiceType;
+    *(to + 42) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 112) = [(NSString *)self->_locatorScheme copyWithZone:a3];
-  *(v5 + 88) = [(NSString *)self->_locatorHostname copyWithZone:a3];
+  *(v5 + 112) = [(NSString *)self->_locatorScheme copyWithZone:zone];
+  *(v5 + 88) = [(NSString *)self->_locatorHostname copyWithZone:zone];
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
@@ -1883,7 +1883,7 @@ LABEL_7:
 
 LABEL_8:
 
-  *(v5 + 56) = [(NSString *)self->_errorDomain copyWithZone:a3];
+  *(v5 + 56) = [(NSString *)self->_errorDomain copyWithZone:zone];
   v7 = self->_has;
   if ((*&v7 & 0x40) != 0)
   {
@@ -1981,7 +1981,7 @@ LABEL_15:
           objc_enumerationMutation(tcpInfos);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTcpInfo:v13];
       }
 
@@ -2010,7 +2010,7 @@ LABEL_15:
           objc_enumerationMutation(httpErrors);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:zone];
         [v5 addHttpError:v19];
       }
 
@@ -2020,8 +2020,8 @@ LABEL_15:
     while (v16);
   }
 
-  *(v5 + 80) = [(NSString *)self->_interfaceIdentifier copyWithZone:a3];
-  *(v5 + 96) = [(NSString *)self->_locatorPeerAddress copyWithZone:a3];
+  *(v5 + 80) = [(NSString *)self->_interfaceIdentifier copyWithZone:zone];
+  *(v5 + 96) = [(NSString *)self->_locatorPeerAddress copyWithZone:zone];
   v20 = self->_has;
   if ((*&v20 & 0x1000000) != 0)
   {
@@ -2221,7 +2221,7 @@ LABEL_43:
 
 LABEL_44:
 
-  *(v5 + 120) = [(NSString *)self->_networkUsed copyWithZone:a3];
+  *(v5 + 120) = [(NSString *)self->_networkUsed copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v5 + 16) = self->_networkServiceType;
@@ -2232,16 +2232,16 @@ LABEL_44:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   locatorScheme = self->_locatorScheme;
-  if (locatorScheme | *(a3 + 14))
+  if (locatorScheme | *(equal + 14))
   {
     v5 = [(NSString *)locatorScheme isEqual:?];
     if (!v5)
@@ -2251,7 +2251,7 @@ LABEL_44:
   }
 
   locatorHostname = self->_locatorHostname;
-  if (locatorHostname | *(a3 + 11))
+  if (locatorHostname | *(equal + 11))
   {
     v5 = [(NSString *)locatorHostname isEqual:?];
     if (!v5)
@@ -2261,10 +2261,10 @@ LABEL_44:
   }
 
   has = self->_has;
-  v9 = *(a3 + 42);
+  v9 = *(equal + 42);
   if ((*&has & 0x100) != 0)
   {
-    if ((v9 & 0x100) == 0 || self->_locatorPort != *(a3 + 26))
+    if ((v9 & 0x100) == 0 || self->_locatorPort != *(equal + 26))
     {
       goto LABEL_194;
     }
@@ -2282,16 +2282,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v10 = *(a3 + 155);
+    v10 = *(equal + 155);
     if (self->_connectionReused)
     {
-      if ((*(a3 + 155) & 1) == 0)
+      if ((*(equal + 155) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 155))
+    else if (*(equal + 155))
     {
       goto LABEL_194;
     }
@@ -2304,7 +2304,7 @@ LABEL_44:
 
   if ((*&has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_startTime != *(a3 + 4))
+    if ((v9 & 8) == 0 || self->_startTime != *(equal + 4))
     {
       goto LABEL_194;
     }
@@ -2317,7 +2317,7 @@ LABEL_44:
 
   if ((*&has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_responseReceivedDuration != *(a3 + 3))
+    if ((v9 & 4) == 0 || self->_responseReceivedDuration != *(equal + 3))
     {
       goto LABEL_194;
     }
@@ -2330,7 +2330,7 @@ LABEL_44:
 
   if (*&has)
   {
-    if ((v9 & 1) == 0 || self->_duration != *(a3 + 1))
+    if ((v9 & 1) == 0 || self->_duration != *(equal + 1))
     {
       goto LABEL_194;
     }
@@ -2343,7 +2343,7 @@ LABEL_44:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_httpStatus != *(a3 + 18))
+    if ((v9 & 0x80) == 0 || self->_httpStatus != *(equal + 18))
     {
       goto LABEL_194;
     }
@@ -2355,7 +2355,7 @@ LABEL_44:
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(a3 + 7))
+  if (errorDomain | *(equal + 7))
   {
     v5 = [(NSString *)errorDomain isEqual:?];
     if (!v5)
@@ -2366,10 +2366,10 @@ LABEL_44:
     has = self->_has;
   }
 
-  v12 = *(a3 + 42);
+  v12 = *(equal + 42);
   if ((*&has & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_errorCode != *(a3 + 12))
+    if ((v12 & 0x40) == 0 || self->_errorCode != *(equal + 12))
     {
       goto LABEL_194;
     }
@@ -2382,7 +2382,7 @@ LABEL_44:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v12 & 0x400) == 0 || self->_requestSize != *(a3 + 33))
+    if ((v12 & 0x400) == 0 || self->_requestSize != *(equal + 33))
     {
       goto LABEL_194;
     }
@@ -2395,7 +2395,7 @@ LABEL_44:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_responseSize != *(a3 + 34))
+    if ((v12 & 0x800) == 0 || self->_responseSize != *(equal + 34))
     {
       goto LABEL_194;
     }
@@ -2413,16 +2413,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v19 = *(a3 + 166);
+    v19 = *(equal + 166);
     if (self->_transactionComplete)
     {
-      if ((*(a3 + 166) & 1) == 0)
+      if ((*(equal + 166) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 166))
+    else if (*(equal + 166))
     {
       goto LABEL_194;
     }
@@ -2440,16 +2440,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v20 = *(a3 + 165);
+    v20 = *(equal + 165);
     if (self->_timedOut)
     {
-      if ((*(a3 + 165) & 1) == 0)
+      if ((*(equal + 165) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 165))
+    else if (*(equal + 165))
     {
       goto LABEL_194;
     }
@@ -2467,16 +2467,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v21 = *(a3 + 154);
+    v21 = *(equal + 154);
     if (self->_cancelled)
     {
-      if ((*(a3 + 154) & 1) == 0)
+      if ((*(equal + 154) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 154))
+    else if (*(equal + 154))
     {
       goto LABEL_194;
     }
@@ -2488,7 +2488,7 @@ LABEL_44:
   }
 
   tcpInfos = self->_tcpInfos;
-  if (tcpInfos | *(a3 + 18))
+  if (tcpInfos | *(equal + 18))
   {
     v5 = [(NSMutableArray *)tcpInfos isEqual:?];
     if (!v5)
@@ -2498,7 +2498,7 @@ LABEL_44:
   }
 
   httpErrors = self->_httpErrors;
-  if (httpErrors | *(a3 + 8))
+  if (httpErrors | *(equal + 8))
   {
     v5 = [(NSMutableArray *)httpErrors isEqual:?];
     if (!v5)
@@ -2508,7 +2508,7 @@ LABEL_44:
   }
 
   interfaceIdentifier = self->_interfaceIdentifier;
-  if (interfaceIdentifier | *(a3 + 10))
+  if (interfaceIdentifier | *(equal + 10))
   {
     v5 = [(NSString *)interfaceIdentifier isEqual:?];
     if (!v5)
@@ -2518,7 +2518,7 @@ LABEL_44:
   }
 
   locatorPeerAddress = self->_locatorPeerAddress;
-  if (locatorPeerAddress | *(a3 + 12))
+  if (locatorPeerAddress | *(equal + 12))
   {
     v5 = [(NSString *)locatorPeerAddress isEqual:?];
     if (!v5)
@@ -2528,7 +2528,7 @@ LABEL_44:
   }
 
   v17 = self->_has;
-  v18 = *(a3 + 42);
+  v18 = *(equal + 42);
   if ((*&v17 & 0x1000000) != 0)
   {
     if ((v18 & 0x1000000) == 0)
@@ -2536,16 +2536,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v22 = *(a3 + 164);
+    v22 = *(equal + 164);
     if (self->_requiresPowerPluggedIn)
     {
-      if ((*(a3 + 164) & 1) == 0)
+      if ((*(equal + 164) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 164))
+    else if (*(equal + 164))
     {
       goto LABEL_194;
     }
@@ -2563,16 +2563,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v23 = *(a3 + 153);
+    v23 = *(equal + 153);
     if (self->_allowsPowerNapScheduling)
     {
-      if ((*(a3 + 153) & 1) == 0)
+      if ((*(equal + 153) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 153))
+    else if (*(equal + 153))
     {
       goto LABEL_194;
     }
@@ -2590,16 +2590,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v24 = *(a3 + 152);
+    v24 = *(equal + 152);
     if (self->_allowsCellular)
     {
-      if ((*(a3 + 152) & 1) == 0)
+      if ((*(equal + 152) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 152))
+    else if (*(equal + 152))
     {
       goto LABEL_194;
     }
@@ -2617,16 +2617,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v25 = *(a3 + 158);
+    v25 = *(equal + 158);
     if (self->_forceNondiscretionary)
     {
-      if ((*(a3 + 158) & 1) == 0)
+      if ((*(equal + 158) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 158))
+    else if (*(equal + 158))
     {
       goto LABEL_194;
     }
@@ -2644,16 +2644,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v26 = *(a3 + 156);
+    v26 = *(equal + 156);
     if (self->_fastFail)
     {
-      if ((*(a3 + 156) & 1) == 0)
+      if ((*(equal + 156) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 156))
+    else if (*(equal + 156))
     {
       goto LABEL_194;
     }
@@ -2666,7 +2666,7 @@ LABEL_44:
 
   if ((*&v17 & 0x200) != 0)
   {
-    if ((v18 & 0x200) == 0 || self->_qualityOfService != *(a3 + 32))
+    if ((v18 & 0x200) == 0 || self->_qualityOfService != *(equal + 32))
     {
       goto LABEL_194;
     }
@@ -2684,16 +2684,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v27 = *(a3 + 163);
+    v27 = *(equal + 163);
     if (self->_proxyUsed)
     {
-      if ((*(a3 + 163) & 1) == 0)
+      if ((*(equal + 163) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 163))
+    else if (*(equal + 163))
     {
       goto LABEL_194;
     }
@@ -2711,16 +2711,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v28 = *(a3 + 157);
+    v28 = *(equal + 157);
     if (self->_finalTryInRequest)
     {
-      if ((*(a3 + 157) & 1) == 0)
+      if ((*(equal + 157) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 157))
+    else if (*(equal + 157))
     {
       goto LABEL_194;
     }
@@ -2738,16 +2738,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v29 = *(a3 + 159);
+    v29 = *(equal + 159);
     if (self->_inlineEdgeComplete)
     {
-      if ((*(a3 + 159) & 1) == 0)
+      if ((*(equal + 159) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 159))
+    else if (*(equal + 159))
     {
       goto LABEL_194;
     }
@@ -2760,7 +2760,7 @@ LABEL_44:
 
   if ((*&v17 & 0x10) != 0)
   {
-    if ((v18 & 0x10) == 0 || self->_adaptiveTcpReadTimeout != *(a3 + 10))
+    if ((v18 & 0x10) == 0 || self->_adaptiveTcpReadTimeout != *(equal + 10))
     {
       goto LABEL_194;
     }
@@ -2773,7 +2773,7 @@ LABEL_44:
 
   if ((*&v17 & 0x20) != 0)
   {
-    if ((v18 & 0x20) == 0 || self->_adaptiveTcpWriteTimeout != *(a3 + 11))
+    if ((v18 & 0x20) == 0 || self->_adaptiveTcpWriteTimeout != *(equal + 11))
     {
       goto LABEL_194;
     }
@@ -2791,16 +2791,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v30 = *(a3 + 162);
+    v30 = *(equal + 162);
     if (self->_powerPluggedInWhenQueued)
     {
-      if ((*(a3 + 162) & 1) == 0)
+      if ((*(equal + 162) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 162))
+    else if (*(equal + 162))
     {
       goto LABEL_194;
     }
@@ -2818,16 +2818,16 @@ LABEL_44:
       goto LABEL_194;
     }
 
-    v31 = *(a3 + 161);
+    v31 = *(equal + 161);
     if (self->_powerPluggedInAtStart)
     {
-      if ((*(a3 + 161) & 1) == 0)
+      if ((*(equal + 161) & 1) == 0)
       {
         goto LABEL_194;
       }
     }
 
-    else if (*(a3 + 161))
+    else if (*(equal + 161))
     {
       goto LABEL_194;
     }
@@ -2842,16 +2842,16 @@ LABEL_44:
   {
     if ((v18 & 0x100000) != 0)
     {
-      v34 = *(a3 + 160);
+      v34 = *(equal + 160);
       if (self->_powerPluggedInAtEnd)
       {
-        if ((*(a3 + 160) & 1) == 0)
+        if ((*(equal + 160) & 1) == 0)
         {
           goto LABEL_194;
         }
       }
 
-      else if (*(a3 + 160))
+      else if (*(equal + 160))
       {
         goto LABEL_194;
       }
@@ -2871,7 +2871,7 @@ LABEL_194:
 
 LABEL_186:
   networkUsed = self->_networkUsed;
-  if (networkUsed | *(a3 + 15))
+  if (networkUsed | *(equal + 15))
   {
     v5 = [(NSString *)networkUsed isEqual:?];
     if (!v5)
@@ -2882,11 +2882,11 @@ LABEL_186:
     v17 = self->_has;
   }
 
-  v33 = *(a3 + 42);
+  v33 = *(equal + 42);
   LOBYTE(v5) = (v33 & 2) == 0;
   if ((*&v17 & 2) != 0)
   {
-    if ((v33 & 2) == 0 || self->_networkServiceType != *(a3 + 2))
+    if ((v33 & 2) == 0 || self->_networkServiceType != *(equal + 2))
     {
       goto LABEL_194;
     }
@@ -3269,25 +3269,25 @@ LABEL_56:
   return v40 ^ v41 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 14))
+  if (*(from + 14))
   {
     [(AWDMMCSHttpInfo *)self setLocatorScheme:?];
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDMMCSHttpInfo *)self setLocatorHostname:?];
   }
 
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 0x100) != 0)
   {
-    self->_locatorPort = *(a3 + 26);
+    self->_locatorPort = *(from + 26);
     *&self->_has |= 0x100u;
-    v5 = *(a3 + 42);
+    v5 = *(from + 42);
     if ((v5 & 0x8000) == 0)
     {
 LABEL_7:
@@ -3305,9 +3305,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_connectionReused = *(a3 + 155);
+  self->_connectionReused = *(from + 155);
   *&self->_has |= 0x8000u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -3320,9 +3320,9 @@ LABEL_8:
   }
 
 LABEL_61:
-  self->_startTime = *(a3 + 4);
+  self->_startTime = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -3335,9 +3335,9 @@ LABEL_9:
   }
 
 LABEL_62:
-  self->_responseReceivedDuration = *(a3 + 3);
+  self->_responseReceivedDuration = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 42);
+  v5 = *(from + 42);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -3350,27 +3350,27 @@ LABEL_10:
   }
 
 LABEL_63:
-  self->_duration = *(a3 + 1);
+  self->_duration = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 42) & 0x80) != 0)
+  if ((*(from + 42) & 0x80) != 0)
   {
 LABEL_11:
-    self->_httpStatus = *(a3 + 18);
+    self->_httpStatus = *(from + 18);
     *&self->_has |= 0x80u;
   }
 
 LABEL_12:
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDMMCSHttpInfo *)self setErrorDomain:?];
   }
 
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x40) != 0)
   {
-    self->_errorCode = *(a3 + 12);
+    self->_errorCode = *(from + 12);
     *&self->_has |= 0x40u;
-    v6 = *(a3 + 42);
+    v6 = *(from + 42);
     if ((v6 & 0x400) == 0)
     {
 LABEL_16:
@@ -3388,9 +3388,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  self->_requestSize = *(a3 + 33);
+  self->_requestSize = *(from + 33);
   *&self->_has |= 0x400u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x800) == 0)
   {
 LABEL_17:
@@ -3403,9 +3403,9 @@ LABEL_17:
   }
 
 LABEL_67:
-  self->_responseSize = *(a3 + 34);
+  self->_responseSize = *(from + 34);
   *&self->_has |= 0x800u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x4000000) == 0)
   {
 LABEL_18:
@@ -3418,9 +3418,9 @@ LABEL_18:
   }
 
 LABEL_68:
-  self->_transactionComplete = *(a3 + 166);
+  self->_transactionComplete = *(from + 166);
   *&self->_has |= 0x4000000u;
-  v6 = *(a3 + 42);
+  v6 = *(from + 42);
   if ((v6 & 0x2000000) == 0)
   {
 LABEL_19:
@@ -3433,12 +3433,12 @@ LABEL_19:
   }
 
 LABEL_69:
-  self->_timedOut = *(a3 + 165);
+  self->_timedOut = *(from + 165);
   *&self->_has |= 0x2000000u;
-  if ((*(a3 + 42) & 0x4000) != 0)
+  if ((*(from + 42) & 0x4000) != 0)
   {
 LABEL_20:
-    self->_cancelled = *(a3 + 154);
+    self->_cancelled = *(from + 154);
     *&self->_has |= 0x4000u;
   }
 
@@ -3447,7 +3447,7 @@ LABEL_21:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = *(a3 + 18);
+  v7 = *(from + 18);
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {
@@ -3475,7 +3475,7 @@ LABEL_21:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = *(a3 + 8);
+  v12 = *(from + 8);
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
@@ -3499,22 +3499,22 @@ LABEL_21:
     while (v14);
   }
 
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
     [(AWDMMCSHttpInfo *)self setInterfaceIdentifier:?];
   }
 
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(AWDMMCSHttpInfo *)self setLocatorPeerAddress:?];
   }
 
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x1000000) != 0)
   {
-    self->_requiresPowerPluggedIn = *(a3 + 164);
+    self->_requiresPowerPluggedIn = *(from + 164);
     *&self->_has |= 0x1000000u;
-    v17 = *(a3 + 42);
+    v17 = *(from + 42);
     if ((v17 & 0x2000) == 0)
     {
 LABEL_41:
@@ -3532,9 +3532,9 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  self->_allowsPowerNapScheduling = *(a3 + 153);
+  self->_allowsPowerNapScheduling = *(from + 153);
   *&self->_has |= 0x2000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x1000) == 0)
   {
 LABEL_42:
@@ -3547,9 +3547,9 @@ LABEL_42:
   }
 
 LABEL_73:
-  self->_allowsCellular = *(a3 + 152);
+  self->_allowsCellular = *(from + 152);
   *&self->_has |= 0x1000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x40000) == 0)
   {
 LABEL_43:
@@ -3562,9 +3562,9 @@ LABEL_43:
   }
 
 LABEL_74:
-  self->_forceNondiscretionary = *(a3 + 158);
+  self->_forceNondiscretionary = *(from + 158);
   *&self->_has |= 0x40000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x10000) == 0)
   {
 LABEL_44:
@@ -3577,9 +3577,9 @@ LABEL_44:
   }
 
 LABEL_75:
-  self->_fastFail = *(a3 + 156);
+  self->_fastFail = *(from + 156);
   *&self->_has |= 0x10000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x200) == 0)
   {
 LABEL_45:
@@ -3592,9 +3592,9 @@ LABEL_45:
   }
 
 LABEL_76:
-  self->_qualityOfService = *(a3 + 32);
+  self->_qualityOfService = *(from + 32);
   *&self->_has |= 0x200u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x800000) == 0)
   {
 LABEL_46:
@@ -3607,9 +3607,9 @@ LABEL_46:
   }
 
 LABEL_77:
-  self->_proxyUsed = *(a3 + 163);
+  self->_proxyUsed = *(from + 163);
   *&self->_has |= 0x800000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x20000) == 0)
   {
 LABEL_47:
@@ -3622,9 +3622,9 @@ LABEL_47:
   }
 
 LABEL_78:
-  self->_finalTryInRequest = *(a3 + 157);
+  self->_finalTryInRequest = *(from + 157);
   *&self->_has |= 0x20000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x80000) == 0)
   {
 LABEL_48:
@@ -3637,9 +3637,9 @@ LABEL_48:
   }
 
 LABEL_79:
-  self->_inlineEdgeComplete = *(a3 + 159);
+  self->_inlineEdgeComplete = *(from + 159);
   *&self->_has |= 0x80000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x10) == 0)
   {
 LABEL_49:
@@ -3652,9 +3652,9 @@ LABEL_49:
   }
 
 LABEL_80:
-  self->_adaptiveTcpReadTimeout = *(a3 + 10);
+  self->_adaptiveTcpReadTimeout = *(from + 10);
   *&self->_has |= 0x10u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x20) == 0)
   {
 LABEL_50:
@@ -3667,9 +3667,9 @@ LABEL_50:
   }
 
 LABEL_81:
-  self->_adaptiveTcpWriteTimeout = *(a3 + 11);
+  self->_adaptiveTcpWriteTimeout = *(from + 11);
   *&self->_has |= 0x20u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x400000) == 0)
   {
 LABEL_51:
@@ -3682,9 +3682,9 @@ LABEL_51:
   }
 
 LABEL_82:
-  self->_powerPluggedInWhenQueued = *(a3 + 162);
+  self->_powerPluggedInWhenQueued = *(from + 162);
   *&self->_has |= 0x400000u;
-  v17 = *(a3 + 42);
+  v17 = *(from + 42);
   if ((v17 & 0x200000) == 0)
   {
 LABEL_52:
@@ -3697,24 +3697,24 @@ LABEL_52:
   }
 
 LABEL_83:
-  self->_powerPluggedInAtStart = *(a3 + 161);
+  self->_powerPluggedInAtStart = *(from + 161);
   *&self->_has |= 0x200000u;
-  if ((*(a3 + 42) & 0x100000) != 0)
+  if ((*(from + 42) & 0x100000) != 0)
   {
 LABEL_53:
-    self->_powerPluggedInAtEnd = *(a3 + 160);
+    self->_powerPluggedInAtEnd = *(from + 160);
     *&self->_has |= 0x100000u;
   }
 
 LABEL_54:
-  if (*(a3 + 15))
+  if (*(from + 15))
   {
     [(AWDMMCSHttpInfo *)self setNetworkUsed:?];
   }
 
-  if ((*(a3 + 168) & 2) != 0)
+  if ((*(from + 168) & 2) != 0)
   {
-    self->_networkServiceType = *(a3 + 2);
+    self->_networkServiceType = *(from + 2);
     *&self->_has |= 2u;
   }
 

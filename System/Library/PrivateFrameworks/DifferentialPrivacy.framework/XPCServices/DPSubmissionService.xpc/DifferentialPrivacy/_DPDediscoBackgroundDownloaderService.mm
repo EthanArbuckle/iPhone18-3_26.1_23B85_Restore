@@ -1,22 +1,22 @@
 @interface _DPDediscoBackgroundDownloaderService
-- (_DPDediscoBackgroundDownloaderService)initWithURL:(id)a3;
+- (_DPDediscoBackgroundDownloaderService)initWithURL:(id)l;
 - (id)downloadConfigSynchronously;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
 - (void)startDownload;
 @end
 
 @implementation _DPDediscoBackgroundDownloaderService
 
-- (_DPDediscoBackgroundDownloaderService)initWithURL:(id)a3
+- (_DPDediscoBackgroundDownloaderService)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = _DPDediscoBackgroundDownloaderService;
   v6 = [(_DPDediscoBackgroundDownloaderService *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = [NSString stringWithFormat:@"%@%ld", @"com.apple.DPSubmissionService.BackgroundDownload", ++qword_10007E770];
     v9 = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:v8];
     v10 = +[NSOperationQueue currentQueue];
@@ -39,9 +39,9 @@
 - (id)downloadConfigSynchronously
 {
   [(_DPDediscoBackgroundDownloaderService *)self startDownload];
-  v3 = [(_DPDediscoBackgroundDownloaderService *)self wait];
+  wait = [(_DPDediscoBackgroundDownloaderService *)self wait];
   v4 = dispatch_time(0, 15000000000);
-  v5 = dispatch_semaphore_wait(v3, v4);
+  v5 = dispatch_semaphore_wait(wait, v4);
 
   if (v5)
   {
@@ -52,12 +52,12 @@
     }
   }
 
-  v7 = [(_DPDediscoBackgroundDownloaderService *)self backgroundSession];
-  [v7 invalidateAndCancel];
+  backgroundSession = [(_DPDediscoBackgroundDownloaderService *)self backgroundSession];
+  [backgroundSession invalidateAndCancel];
 
-  v8 = [(_DPDediscoBackgroundDownloaderService *)self data];
+  data = [(_DPDediscoBackgroundDownloaderService *)self data];
 
-  return v8;
+  return data;
 }
 
 - (void)startDownload
@@ -71,32 +71,32 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Downloading config file from url %@ ...", &v8, 0xCu);
   }
 
-  v5 = [(_DPDediscoBackgroundDownloaderService *)self backgroundSession];
+  backgroundSession = [(_DPDediscoBackgroundDownloaderService *)self backgroundSession];
   v6 = [(_DPDediscoBackgroundDownloaderService *)self url];
-  v7 = [v5 downloadTaskWithURL:v6];
+  v7 = [backgroundSession downloadTaskWithURL:v6];
 
   [v7 resume];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 error];
-  if (v9)
+  taskCopy = task;
+  lCopy = l;
+  error = [taskCopy error];
+  if (error)
   {
     if ([(_DPDediscoBackgroundDownloaderService *)self maxRetries])
     {
-      v10 = [v7 response];
+      response = [taskCopy response];
       v11 = +[_DPLog service];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
-        v19 = [v10 statusCode];
+        statusCode = [response statusCode];
         v20 = 2112;
-        v21 = v9;
+        v21 = error;
         v22 = 2048;
-        v23 = [(_DPDediscoBackgroundDownloaderService *)self maxRetries];
+        maxRetries = [(_DPDediscoBackgroundDownloaderService *)self maxRetries];
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Client failed to download config file with status code %ld and error: %@. %ld retries left.", buf, 0x20u);
       }
 
@@ -106,10 +106,10 @@
 
     else
     {
-      v10 = +[_DPLog service];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      response = +[_DPLog service];
+      if (os_log_type_enabled(response, OS_LOG_TYPE_ERROR))
       {
-        sub_10004E148(v10);
+        sub_10004E148(response);
       }
     }
   }
@@ -123,23 +123,23 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Download finished successfully.", buf, 2u);
     }
 
-    v13 = [v8 path];
+    path = [lCopy path];
     v17 = 0;
-    v14 = [NSData dataWithContentsOfFile:v13 options:0 error:&v17];
-    v10 = v17;
+    v14 = [NSData dataWithContentsOfFile:path options:0 error:&v17];
+    response = v17;
     [(_DPDediscoBackgroundDownloaderService *)self setData:v14];
 
-    if (v10)
+    if (response)
     {
       v15 = +[_DPLog service];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_10004E18C(v10, v15);
+        sub_10004E18C(response, v15);
       }
     }
 
-    v16 = [(_DPDediscoBackgroundDownloaderService *)self wait];
-    dispatch_semaphore_signal(v16);
+    wait = [(_DPDediscoBackgroundDownloaderService *)self wait];
+    dispatch_semaphore_signal(wait);
   }
 }
 

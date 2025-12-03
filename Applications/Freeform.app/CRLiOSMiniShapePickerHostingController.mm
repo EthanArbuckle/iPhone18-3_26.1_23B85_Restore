@@ -1,15 +1,15 @@
 @interface CRLiOSMiniShapePickerHostingController
 - (NSArray)decoratorOverlayRenderables;
-- (_TtC8Freeform38CRLiOSMiniShapePickerHostingController)initWithCoder:(id)a3;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8Freeform38CRLiOSMiniShapePickerHostingController)initWithCoder:(id)coder;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)willBeginZoomingOperation;
 @end
 
 @implementation CRLiOSMiniShapePickerHostingController
 
-- (_TtC8Freeform38CRLiOSMiniShapePickerHostingController)initWithCoder:(id)a3
+- (_TtC8Freeform38CRLiOSMiniShapePickerHostingController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Freeform38CRLiOSMiniShapePickerHostingController_associatedBoardItems) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Freeform38CRLiOSMiniShapePickerHostingController_interactiveCanvasController) = 0;
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLiOSMiniShapePickerHostingController();
   v4 = v7.receiver;
-  [(CRLiOSMiniShapePickerHostingController *)&v7 viewDidAppear:v3];
+  [(CRLiOSMiniShapePickerHostingController *)&v7 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC8Freeform38CRLiOSMiniShapePickerHostingController_interactiveCanvasController];
   if (v5)
   {
@@ -33,18 +33,18 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100D41460(a3);
+  selfCopy = self;
+  sub_100D41460(disappear);
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   type metadata accessor for CRLChangeRecord();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100D41884(v5, v7);
@@ -62,7 +62,7 @@
 
 - (void)willBeginZoomingOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D41DD0();
 }
 

@@ -2,16 +2,16 @@
 - (BuddyProximityAutomatedDeviceEnrollmentController)init;
 - (BuddyProximityAutomatedDeviceEnrollmentControllerDelegate)delegate;
 - (NSString)deviceClass;
-- (void)activateUsingWiFiWithCompletion:(id)a3;
+- (void)activateUsingWiFiWithCompletion:(id)completion;
 - (void)beginAdvertising;
-- (void)configuratorPairingSuccessfulWithViewModel:(id)a3;
-- (void)dismissProximityPinCodeWithError:(id)a3;
-- (void)displayProximityPinCode:(id)a3;
+- (void)configuratorPairingSuccessfulWithViewModel:(id)model;
+- (void)dismissProximityPinCodeWithError:(id)error;
+- (void)displayProximityPinCode:(id)code;
 - (void)displayShutdownUI;
 - (void)endAdvertising;
-- (void)enrollmentCompleteWithViewModel:(id)a3;
-- (void)enrollmentHasStatusUpdateWithViewModel:(id)a3;
-- (void)fetchActivationStateWithCompletion:(id)a3;
+- (void)enrollmentCompleteWithViewModel:(id)model;
+- (void)enrollmentHasStatusUpdateWithViewModel:(id)model;
+- (void)fetchActivationStateWithCompletion:(id)completion;
 - (void)pairingEndedByUser;
 - (void)shutdownButtonTapped;
 @end
@@ -61,19 +61,19 @@
   [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)v2 shutdown];
 }
 
-- (void)dismissProximityPinCodeWithError:(id)a3
+- (void)dismissProximityPinCodeWithError:(id)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F0FA0;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -82,19 +82,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)displayProximityPinCode:(id)a3
+- (void)displayProximityPinCode:(id)code
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F1248;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -103,19 +103,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)configuratorPairingSuccessfulWithViewModel:(id)a3
+- (void)configuratorPairingSuccessfulWithViewModel:(id)model
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F14F0;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -124,19 +124,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)enrollmentHasStatusUpdateWithViewModel:(id)a3
+- (void)enrollmentHasStatusUpdateWithViewModel:(id)model
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F17A4;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -145,52 +145,52 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchActivationStateWithCompletion:(id)a3
+- (void)fetchActivationStateWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = location[0];
-  v4 = [(BuddyProximityAutomatedDeviceEnrollmentController *)v6 wifiActivator];
-  v3[2](v3, [(BuddyNonInteractiveDeviceActivator *)v4 isActivated]);
+  wifiActivator = [(BuddyProximityAutomatedDeviceEnrollmentController *)selfCopy wifiActivator];
+  v3[2](v3, [(BuddyNonInteractiveDeviceActivator *)wifiActivator isActivated]);
 
   objc_storeStrong(location, 0);
 }
 
-- (void)activateUsingWiFiWithCompletion:(id)a3
+- (void)activateUsingWiFiWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityAutomatedDeviceEnrollmentController *)v11 wifiActivator];
+  objc_storeStrong(location, completion);
+  wifiActivator = [(BuddyProximityAutomatedDeviceEnrollmentController *)selfCopy wifiActivator];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F1AB8;
   v8 = &unk_10032B460;
   v9 = location[0];
-  [(BuddyNonInteractiveDeviceActivator *)v3 activateWithCompletion:&v4];
+  [(BuddyNonInteractiveDeviceActivator *)wifiActivator activateWithCompletion:&v4];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)enrollmentCompleteWithViewModel:(id)a3
+- (void)enrollmentCompleteWithViewModel:(id)model
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyProximityAutomatedDeviceEnrollmentController *)v11 setCompletionViewModel:location[0]];
+  objc_storeStrong(location, model);
+  [(BuddyProximityAutomatedDeviceEnrollmentController *)selfCopy setCompletionViewModel:location[0]];
   v3 = &_dispatch_main_q;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001F1C18;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);
@@ -199,7 +199,7 @@
 
 - (void)displayShutdownUI
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -207,7 +207,7 @@
   v5 = 0;
   v6 = sub_1001F1E78;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
@@ -222,7 +222,7 @@
 
 - (void)pairingEndedByUser
 {
-  v6 = self;
+  selfCopy = self;
   aSelector = a2;
   oslog = _BYLoggingFacility();
   v3 = OS_LOG_TYPE_DEFAULT;
@@ -236,7 +236,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyProximityAutomatedDeviceEnrollmentController *)v6 endAdvertising];
+  [(BuddyProximityAutomatedDeviceEnrollmentController *)selfCopy endAdvertising];
 }
 
 - (BuddyProximityAutomatedDeviceEnrollmentControllerDelegate)delegate

@@ -1,10 +1,10 @@
 @interface DIDocUploadSessionClient
 - (DIDocUploadSessionClient)init;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)cancelUploads;
 - (void)dealloc;
 - (void)init;
-- (void)uploadDocData:(id)a3 uploadSettings:(id)a4 completion:(id)a5;
+- (void)uploadDocData:(id)data uploadSettings:(id)settings completion:(id)completion;
 @end
 
 @implementation DIDocUploadSessionClient
@@ -32,18 +32,18 @@
     [(DIDocUploadSessionClient *)v4 setServerConnection:v6];
 
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_282E7D1E0];
-    v8 = [(DIDocUploadSessionClient *)v4 serverConnection];
-    [v8 setRemoteObjectInterface:v7];
+    serverConnection = [(DIDocUploadSessionClient *)v4 serverConnection];
+    [serverConnection setRemoteObjectInterface:v7];
 
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [(DIDocUploadSessionClient *)v4 serverConnection];
-    v13 = [v12 remoteObjectInterface];
-    [v13 setClasses:v11 forSelector:sel_uploadDocData_uploadSettings_completion_ argumentIndex:0 ofReply:0];
+    serverConnection2 = [(DIDocUploadSessionClient *)v4 serverConnection];
+    remoteObjectInterface = [serverConnection2 remoteObjectInterface];
+    [remoteObjectInterface setClasses:v11 forSelector:sel_uploadDocData_uploadSettings_completion_ argumentIndex:0 ofReply:0];
 
-    v14 = [(DIDocUploadSessionClient *)v4 serverConnection];
-    [v14 activate];
+    serverConnection3 = [(DIDocUploadSessionClient *)v4 serverConnection];
+    [serverConnection3 activate];
   }
 
   return v4;
@@ -56,11 +56,11 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)uploadDocData:(id)a3 uploadSettings:(id)a4 completion:(id)a5
+- (void)uploadDocData:(id)data uploadSettings:(id)settings completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
+  dataCopy = data;
   v11 = DIV_LOG_CLIENT_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -71,7 +71,7 @@
   v17[1] = 3221225472;
   v17[2] = __68__DIDocUploadSessionClient_uploadDocData_uploadSettings_completion___block_invoke;
   v17[3] = &unk_278320C10;
-  v12 = v8;
+  v12 = completionCopy;
   v18 = v12;
   v13 = [(DIDocUploadSessionClient *)self remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -81,7 +81,7 @@
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 uploadDocData:v10 uploadSettings:v9 completion:v15];
+  [v13 uploadDocData:dataCopy uploadSettings:settingsCopy completion:v15];
 }
 
 void __68__DIDocUploadSessionClient_uploadDocData_uploadSettings_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -116,18 +116,18 @@ void __68__DIDocUploadSessionClient_uploadDocData_uploadSettings_completion___bl
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DIDocUploadSessionClient *)self serverConnection];
+  handlerCopy = handler;
+  serverConnection = [(DIDocUploadSessionClient *)self serverConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__DIDocUploadSessionClient_remoteObjectProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_278320C60;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [serverConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }

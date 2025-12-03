@@ -1,17 +1,17 @@
 @interface ASDAudioDeviceDSPConfiguration
-- (ASDAudioDeviceDSPConfiguration)initWithDictionary:(id)a3 resourcePath:(id)a4 name:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ASDAudioDeviceDSPConfiguration)initWithDictionary:(id)dictionary resourcePath:(id)path name:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation ASDAudioDeviceDSPConfiguration
 
-- (ASDAudioDeviceDSPConfiguration)initWithDictionary:(id)a3 resourcePath:(id)a4 name:(id)a5
+- (ASDAudioDeviceDSPConfiguration)initWithDictionary:(id)dictionary resourcePath:(id)path name:(id)name
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  nameCopy = name;
   v92.receiver = self;
   v92.super_class = ASDAudioDeviceDSPConfiguration;
   v11 = [(ASDAudioDeviceDSPConfiguration *)&v92 init];
@@ -21,16 +21,16 @@
     goto LABEL_65;
   }
 
-  objc_storeStrong(&v11->_name, a5);
+  objc_storeStrong(&v11->_name, name);
   v13 = [MEMORY[0x277CBEB58] set];
   v14 = [MEMORY[0x277CBEB58] set];
   obj = [MEMORY[0x277CBEB18] array];
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v16 = v8;
+  v16 = dictionaryCopy;
   v17 = [v16 countByEnumeratingWithState:&v88 objects:v96 count:16];
   if (!v17)
   {
@@ -40,7 +40,7 @@ LABEL_63:
     objc_storeStrong(&v12->_dspDeviceProperties, v14);
     v61 = obj;
     objc_storeStrong(&v12->_inputDSP, obj);
-    objc_storeStrong(&v12->_outputDSP, v15);
+    objc_storeStrong(&v12->_outputDSP, array);
     goto LABEL_64;
   }
 
@@ -48,14 +48,14 @@ LABEL_63:
   v74 = v14;
   v75 = v13;
   v64 = v12;
-  v65 = v10;
-  v66 = v8;
+  v65 = nameCopy;
+  v66 = dictionaryCopy;
   v19 = 1;
-  v72 = v15;
+  v72 = array;
   v73 = *v89;
   v20 = obj;
   v71 = v16;
-  v68 = v9;
+  v68 = pathCopy;
   do
   {
     v21 = 0;
@@ -109,13 +109,13 @@ LABEL_63:
               v32 = [v29 objectForKeyedSubscript:@"Value"];
               v33 = [(ASDProperty *)v31 initWithAddress:v30 value:v32];
 
-              v34 = [(ASDProperty *)v33 address];
-              if (!v34 || (v35 = v34, [(ASDProperty *)v33 value], v36 = objc_claimAutoreleasedReturnValue(), v36, v35, !v36))
+              address = [(ASDProperty *)v33 address];
+              if (!address || (v35 = address, [(ASDProperty *)v33 value], v36 = objc_claimAutoreleasedReturnValue(), v36, v35, !v36))
               {
 
 LABEL_25:
                 v19 = 0;
-                v9 = v68;
+                pathCopy = v68;
                 v18 = v69;
                 v20 = obj;
                 v16 = v71;
@@ -139,7 +139,7 @@ LABEL_25:
             break;
           }
 
-          v9 = v68;
+          pathCopy = v68;
           v18 = v69;
           v20 = obj;
           v16 = v71;
@@ -185,7 +185,7 @@ LABEL_33:
               goto LABEL_53;
             }
 
-            v19 = [[ASDStreamDSPConfiguration alloc] initWithDictionary:v45 resourcePath:v9];
+            v19 = [[ASDStreamDSPConfiguration alloc] initWithDictionary:v45 resourcePath:pathCopy];
             if (!v19)
             {
               goto LABEL_54;
@@ -217,12 +217,12 @@ LABEL_33:
         {
 LABEL_58:
 
-          v10 = v65;
-          v8 = v66;
+          nameCopy = v65;
+          dictionaryCopy = v66;
           v12 = v64;
           v14 = v74;
           v13 = v75;
-          v15 = v72;
+          array = v72;
           goto LABEL_59;
         }
 
@@ -253,7 +253,7 @@ LABEL_45:
               break;
             }
 
-            v19 = [[ASDStreamDSPConfiguration alloc] initWithDictionary:v50 resourcePath:v9];
+            v19 = [[ASDStreamDSPConfiguration alloc] initWithDictionary:v50 resourcePath:pathCopy];
             if (!v19)
             {
               goto LABEL_54;
@@ -296,12 +296,12 @@ LABEL_26:
   while (v51);
 
   v52 = v19;
-  v10 = v65;
-  v8 = v66;
+  nameCopy = v65;
+  dictionaryCopy = v66;
   v12 = v64;
   v14 = v74;
   v13 = v75;
-  v15 = v72;
+  array = v72;
   if (v52)
   {
     goto LABEL_63;
@@ -323,10 +323,10 @@ LABEL_65:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -336,29 +336,29 @@ LABEL_65:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ASDAudioDeviceDSPConfiguration *)v5 name];
-      v7 = [(ASDAudioDeviceDSPConfiguration *)self name];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      name = [(ASDAudioDeviceDSPConfiguration *)v5 name];
+      name2 = [(ASDAudioDeviceDSPConfiguration *)self name];
+      if ([name isEqual:name2])
       {
-        v8 = [(ASDAudioDeviceDSPConfiguration *)v5 underlyingDeviceProperties];
-        v9 = [(ASDAudioDeviceDSPConfiguration *)self underlyingDeviceProperties];
-        if ([v8 isEqual:v9])
+        underlyingDeviceProperties = [(ASDAudioDeviceDSPConfiguration *)v5 underlyingDeviceProperties];
+        underlyingDeviceProperties2 = [(ASDAudioDeviceDSPConfiguration *)self underlyingDeviceProperties];
+        if ([underlyingDeviceProperties isEqual:underlyingDeviceProperties2])
         {
-          v10 = [(ASDAudioDeviceDSPConfiguration *)v5 dspDeviceProperties];
-          v11 = [(ASDAudioDeviceDSPConfiguration *)self dspDeviceProperties];
-          if ([v10 isEqual:v11])
+          dspDeviceProperties = [(ASDAudioDeviceDSPConfiguration *)v5 dspDeviceProperties];
+          dspDeviceProperties2 = [(ASDAudioDeviceDSPConfiguration *)self dspDeviceProperties];
+          if ([dspDeviceProperties isEqual:dspDeviceProperties2])
           {
-            v12 = [(ASDAudioDeviceDSPConfiguration *)v5 inputDSP];
-            v13 = [(ASDAudioDeviceDSPConfiguration *)self inputDSP];
-            v20 = v12;
-            v14 = v12;
-            v15 = v13;
-            if ([v14 isEqual:v13])
+            inputDSP = [(ASDAudioDeviceDSPConfiguration *)v5 inputDSP];
+            inputDSP2 = [(ASDAudioDeviceDSPConfiguration *)self inputDSP];
+            v20 = inputDSP;
+            v14 = inputDSP;
+            v15 = inputDSP2;
+            if ([v14 isEqual:inputDSP2])
             {
-              v19 = [(ASDAudioDeviceDSPConfiguration *)v5 outputDSP];
-              v18 = [(ASDAudioDeviceDSPConfiguration *)self outputDSP];
-              v16 = [v19 isEqual:v18];
+              outputDSP = [(ASDAudioDeviceDSPConfiguration *)v5 outputDSP];
+              outputDSP2 = [(ASDAudioDeviceDSPConfiguration *)self outputDSP];
+              v16 = [outputDSP isEqual:outputDSP2];
             }
 
             else
@@ -396,16 +396,16 @@ LABEL_65:
 
 - (unint64_t)hash
 {
-  v3 = [(ASDAudioDeviceDSPConfiguration *)self name];
-  v4 = [v3 hash];
-  v5 = [(ASDAudioDeviceDSPConfiguration *)self underlyingDeviceProperties];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(ASDAudioDeviceDSPConfiguration *)self dspDeviceProperties];
-  v8 = [v7 hash];
-  v9 = [(ASDAudioDeviceDSPConfiguration *)self inputDSP];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(ASDAudioDeviceDSPConfiguration *)self outputDSP];
-  v12 = [v11 hash];
+  name = [(ASDAudioDeviceDSPConfiguration *)self name];
+  v4 = [name hash];
+  underlyingDeviceProperties = [(ASDAudioDeviceDSPConfiguration *)self underlyingDeviceProperties];
+  v6 = [underlyingDeviceProperties hash] ^ v4;
+  dspDeviceProperties = [(ASDAudioDeviceDSPConfiguration *)self dspDeviceProperties];
+  v8 = [dspDeviceProperties hash];
+  inputDSP = [(ASDAudioDeviceDSPConfiguration *)self inputDSP];
+  v10 = v6 ^ v8 ^ [inputDSP hash];
+  outputDSP = [(ASDAudioDeviceDSPConfiguration *)self outputDSP];
+  v12 = [outputDSP hash];
 
   return v10 ^ v12;
 }

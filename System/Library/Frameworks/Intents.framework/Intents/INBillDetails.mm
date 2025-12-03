@@ -1,13 +1,13 @@
 @interface INBillDetails
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INBillDetails)initWithBillType:(INBillType)billType paymentStatus:(INPaymentStatus)paymentStatus billPayee:(INBillPayee *)billPayee amountDue:(INCurrencyAmount *)amountDue minimumDue:(INCurrencyAmount *)minimumDue lateFee:(INCurrencyAmount *)lateFee dueDate:(NSDateComponents *)dueDate paymentDate:(NSDateComponents *)paymentDate;
-- (INBillDetails)initWithCoder:(id)a3;
+- (INBillDetails)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INBillDetails
@@ -27,52 +27,52 @@
   v25[0] = billPayee;
   v24[1] = @"amountDue";
   amountDue = self->_amountDue;
-  v5 = amountDue;
+  null = amountDue;
   if (!amountDue)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v5;
-  v25[1] = v5;
+  v21 = null;
+  v25[1] = null;
   v24[2] = @"minimumDue";
   minimumDue = self->_minimumDue;
-  v7 = minimumDue;
+  null2 = minimumDue;
   if (!minimumDue)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v7;
-  v25[2] = v7;
+  v20 = null2;
+  v25[2] = null2;
   v24[3] = @"lateFee";
   lateFee = self->_lateFee;
-  v9 = lateFee;
+  null3 = lateFee;
   if (!lateFee)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v9;
-  v25[3] = v9;
+  v19 = null3;
+  v25[3] = null3;
   v24[4] = @"dueDate";
   dueDate = self->_dueDate;
-  v11 = dueDate;
+  null4 = dueDate;
   if (!dueDate)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v11;
+  v25[4] = null4;
   v24[5] = @"paymentDate";
   paymentDate = self->_paymentDate;
-  v13 = paymentDate;
+  null5 = paymentDate;
   if (!paymentDate)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v13;
+  v25[5] = null5;
   v24[6] = @"billType";
   v14 = [MEMORY[0x1E696AD98] numberWithInteger:self->_billType];
   v25[6] = v14;
@@ -147,42 +147,42 @@ LABEL_18:
   return v16;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INBillDetails;
   v6 = [(INBillDetails *)&v11 description];
-  v7 = [(INBillDetails *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INBillDetails *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_billPayee];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"billPayee"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_billPayee];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"billPayee"];
 
-  v9 = [v6 encodeObject:self->_amountDue];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"amountDue"];
+  v9 = [encoderCopy encodeObject:self->_amountDue];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"amountDue"];
 
-  v10 = [v6 encodeObject:self->_minimumDue];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"minimumDue"];
+  v10 = [encoderCopy encodeObject:self->_minimumDue];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"minimumDue"];
 
-  v11 = [v6 encodeObject:self->_lateFee];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"lateFee"];
+  v11 = [encoderCopy encodeObject:self->_lateFee];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"lateFee"];
 
-  v12 = [v6 encodeObject:self->_dueDate];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"dueDate"];
+  v12 = [encoderCopy encodeObject:self->_dueDate];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"dueDate"];
 
-  v13 = [v6 encodeObject:self->_paymentDate];
+  v13 = [encoderCopy encodeObject:self->_paymentDate];
 
-  [v7 if_setObjectIfNonNil:v13 forKey:@"paymentDate"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"paymentDate"];
   v14 = self->_billType - 1;
   if (v14 > 0x15)
   {
@@ -195,7 +195,7 @@ LABEL_18:
   }
 
   v16 = v15;
-  [v7 if_setObjectIfNonNil:v16 forKey:@"billType"];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"billType"];
 
   v17 = self->_paymentStatus - 1;
   if (v17 > 4)
@@ -209,45 +209,45 @@ LABEL_18:
   }
 
   v19 = v18;
-  [v7 if_setObjectIfNonNil:v19 forKey:@"paymentStatus"];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"paymentStatus"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   billPayee = self->_billPayee;
-  v5 = a3;
-  [v5 encodeObject:billPayee forKey:@"billPayee"];
-  [v5 encodeObject:self->_amountDue forKey:@"amountDue"];
-  [v5 encodeObject:self->_minimumDue forKey:@"minimumDue"];
-  [v5 encodeObject:self->_lateFee forKey:@"lateFee"];
-  [v5 encodeObject:self->_dueDate forKey:@"dueDate"];
-  [v5 encodeObject:self->_paymentDate forKey:@"paymentDate"];
-  [v5 encodeInteger:self->_billType forKey:@"billType"];
-  [v5 encodeInteger:self->_paymentStatus forKey:@"paymentStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:billPayee forKey:@"billPayee"];
+  [coderCopy encodeObject:self->_amountDue forKey:@"amountDue"];
+  [coderCopy encodeObject:self->_minimumDue forKey:@"minimumDue"];
+  [coderCopy encodeObject:self->_lateFee forKey:@"lateFee"];
+  [coderCopy encodeObject:self->_dueDate forKey:@"dueDate"];
+  [coderCopy encodeObject:self->_paymentDate forKey:@"paymentDate"];
+  [coderCopy encodeInteger:self->_billType forKey:@"billType"];
+  [coderCopy encodeInteger:self->_paymentStatus forKey:@"paymentStatus"];
 }
 
-- (INBillDetails)initWithCoder:(id)a3
+- (INBillDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billPayee"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountDue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lateFee"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
-  v11 = [v4 decodeIntegerForKey:@"billType"];
-  v12 = [v4 decodeIntegerForKey:@"paymentStatus"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billPayee"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountDue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lateFee"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
+  v11 = [coderCopy decodeIntegerForKey:@"billType"];
+  v12 = [coderCopy decodeIntegerForKey:@"paymentStatus"];
 
   v13 = [(INBillDetails *)self initWithBillType:v11 paymentStatus:v12 billPayee:v5 amountDue:v6 minimumDue:v7 lateFee:v8 dueDate:v9 paymentDate:v10];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -257,7 +257,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       billPayee = self->_billPayee;
       v12 = (billPayee == v5->_billPayee || [(INBillPayee *)billPayee isEqual:?]) && ((amountDue = self->_amountDue, amountDue == v5->_amountDue) || [(INCurrencyAmount *)amountDue isEqual:?]) && ((minimumDue = self->_minimumDue, minimumDue == v5->_minimumDue) || [(INCurrencyAmount *)minimumDue isEqual:?]) && ((lateFee = self->_lateFee, lateFee == v5->_lateFee) || [(INCurrencyAmount *)lateFee isEqual:?]) && ((dueDate = self->_dueDate, dueDate == v5->_dueDate) || [(NSDateComponents *)dueDate isEqual:?]) && ((paymentDate = self->_paymentDate, paymentDate == v5->_paymentDate) || [(NSDateComponents *)paymentDate isEqual:?]) && self->_billType == v5->_billType && self->_paymentStatus == v5->_paymentStatus;
     }
@@ -331,45 +331,45 @@ LABEL_18:
   return v22;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"billPayee"];
-    v33 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"billPayee"];
+    v33 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v32 = a1;
+    selfCopy = self;
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"amountDue"];
-    v13 = [v7 decodeObjectOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"amountDue"];
+    v13 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
     v14 = objc_opt_class();
-    v15 = [v8 objectForKeyedSubscript:@"minimumDue"];
-    v16 = [v7 decodeObjectOfClass:v14 from:v15];
+    v15 = [fromCopy objectForKeyedSubscript:@"minimumDue"];
+    v16 = [decoderCopy decodeObjectOfClass:v14 from:v15];
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"lateFee"];
-    v19 = [v7 decodeObjectOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"lateFee"];
+    v19 = [decoderCopy decodeObjectOfClass:v17 from:v18];
 
     v20 = objc_opt_class();
-    v21 = [v8 objectForKeyedSubscript:@"dueDate"];
-    v22 = [v7 decodeObjectOfClass:v20 from:v21];
+    v21 = [fromCopy objectForKeyedSubscript:@"dueDate"];
+    v22 = [decoderCopy decodeObjectOfClass:v20 from:v21];
 
     v23 = objc_opt_class();
-    v24 = [v8 objectForKeyedSubscript:@"paymentDate"];
-    v25 = [v7 decodeObjectOfClass:v23 from:v24];
+    v24 = [fromCopy objectForKeyedSubscript:@"paymentDate"];
+    v25 = [decoderCopy decodeObjectOfClass:v23 from:v24];
 
-    v26 = [v8 objectForKeyedSubscript:@"billType"];
+    v26 = [fromCopy objectForKeyedSubscript:@"billType"];
     v27 = INBillTypeWithString(v26);
 
-    v28 = [v8 objectForKeyedSubscript:@"paymentStatus"];
+    v28 = [fromCopy objectForKeyedSubscript:@"paymentStatus"];
     v29 = INPaymentStatusWithString(v28);
 
-    v30 = [[v32 alloc] initWithBillType:v27 paymentStatus:v29 billPayee:v33 amountDue:v13 minimumDue:v16 lateFee:v19 dueDate:v22 paymentDate:v25];
+    v30 = [[selfCopy alloc] initWithBillType:v27 paymentStatus:v29 billPayee:v33 amountDue:v13 minimumDue:v16 lateFee:v19 dueDate:v22 paymentDate:v25];
   }
 
   else

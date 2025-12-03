@@ -1,21 +1,21 @@
 @interface CUIKReminderEntityAnnotation
-+ (id)annotationWithReminderIntegrationEvent:(id)a3;
-+ (id)entityIdentifierForReminderIntegrationEvent:(id)a3;
++ (id)annotationWithReminderIntegrationEvent:(id)event;
++ (id)entityIdentifierForReminderIntegrationEvent:(id)event;
 - (CUIKReminderEntityAnnotation)init;
 @end
 
 @implementation CUIKReminderEntityAnnotation
 
-+ (id)annotationWithReminderIntegrationEvent:(id)a3
++ (id)annotationWithReminderIntegrationEvent:(id)event
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_2429A5924(v4);
+  eventCopy = event;
+  v5 = sub_2429A5924(eventCopy);
 
   return v5;
 }
 
-+ (id)entityIdentifierForReminderIntegrationEvent:(id)a3
++ (id)entityIdentifierForReminderIntegrationEvent:(id)event
 {
   swift_getObjCClassMetadata();
   v4 = sub_2429B7270();
@@ -27,8 +27,8 @@
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v17 - v11;
-  v13 = a3;
-  sub_2429A5BE4(v13, v12);
+  eventCopy = event;
+  sub_2429A5BE4(eventCopy, v12);
   if ((*(v5 + 48))(v12, 1, v4) == 1)
   {
 

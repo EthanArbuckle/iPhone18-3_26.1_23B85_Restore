@@ -1,21 +1,21 @@
 @interface NSUUID
-+ (id)uuidFromString:(id)a3;
++ (id)uuidFromString:(id)string;
 @end
 
 @implementation NSUUID
 
-+ (id)uuidFromString:(id)a3
++ (id)uuidFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] < 0xC)
+  stringCopy = string;
+  if ([stringCopy length] < 0xC)
   {
-    v5 = [NSString stringWithFormat:@"%@%@%@%@", v3, v3, v3, v3];
-    v4 = [v5 dataUsingEncoding:4];
+    stringCopy = [NSString stringWithFormat:@"%@%@%@%@", stringCopy, stringCopy, stringCopy, stringCopy];
+    v4 = [stringCopy dataUsingEncoding:4];
   }
 
   else
   {
-    v4 = [v3 dataUsingEncoding:4];
+    v4 = [stringCopy dataUsingEncoding:4];
   }
 
   if ([v4 length] < 0xC)
@@ -25,7 +25,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v10 = v3;
+      v10 = stringCopy;
       LOWORD(v11[0]) = 2112;
       *(v11 + 2) = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Input string is not valid, string, %@, UUID, %@", buf, 0x16u);
@@ -35,7 +35,7 @@
   else
   {
     [v4 getBytes:buf range:{0, 12}];
-    v11[0] = [v3 hash];
+    v11[0] = [stringCopy hash];
     v6 = [[NSUUID alloc] initWithUUIDBytes:buf];
   }
 

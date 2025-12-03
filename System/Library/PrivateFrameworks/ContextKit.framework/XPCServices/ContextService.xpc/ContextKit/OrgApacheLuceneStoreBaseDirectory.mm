@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneStoreBaseDirectory
 - (id)description;
-- (id)obtainLockWithNSString:(id)a3;
+- (id)obtainLockWithNSString:(id)string;
 - (void)dealloc;
 - (void)ensureOpen;
 @end
 
 @implementation OrgApacheLuceneStoreBaseDirectory
 
-- (id)obtainLockWithNSString:(id)a3
+- (id)obtainLockWithNSString:(id)string
 {
   lockFactory = self->lockFactory_;
   if (!lockFactory)
@@ -15,7 +15,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneStoreLockFactory *)lockFactory obtainLockWithOrgApacheLuceneStoreDirectory:self withNSString:a3];
+  return [(OrgApacheLuceneStoreLockFactory *)lockFactory obtainLockWithOrgApacheLuceneStoreDirectory:self withNSString:string];
 }
 
 - (void)ensureOpen

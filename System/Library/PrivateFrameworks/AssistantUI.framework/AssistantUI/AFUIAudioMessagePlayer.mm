@@ -6,9 +6,9 @@
 
 - (id)_audioURL
 {
-  v3 = [(AFUIAudioPlayer *)self delegate];
-  v4 = [(AFUIAudioPlayer *)self playbackCommand];
-  v5 = [v3 audioPlayer:self audioURLForCommand:v4];
+  delegate = [(AFUIAudioPlayer *)self delegate];
+  playbackCommand = [(AFUIAudioPlayer *)self playbackCommand];
+  v5 = [delegate audioPlayer:self audioURLForCommand:playbackCommand];
 
   return v5;
 }

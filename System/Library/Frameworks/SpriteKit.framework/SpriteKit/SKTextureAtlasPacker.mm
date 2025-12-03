@@ -1,22 +1,22 @@
 @interface SKTextureAtlasPacker
-+ (CGImage)copyProcessedImageSource:(id)a3;
-- (BOOL)isFullyOpaque:(CGImage *)a3;
-- (CGImage)copyRotateCGImage:(CGImage *)a3 direction:(BOOL)a4;
-- (CGRect)calcNonAlphaArea:(CGImage *)a3;
++ (CGImage)copyProcessedImageSource:(id)source;
+- (BOOL)isFullyOpaque:(CGImage *)opaque;
+- (CGImage)copyRotateCGImage:(CGImage *)image direction:(BOOL)direction;
+- (CGRect)calcNonAlphaArea:(CGImage *)area;
 - (id)generateMetaData;
-- (id)getTextureFileList:(id)a3 modDate:(id *)a4;
-- (id)partitionTextureFilesByResolution:(id)a3;
-- (id)processPackedTextureAtlas:(const void *)a3 suffix:(id)a4 packer:(shared_ptr<MaxRectTexturePacker>)a5 sortedTrimArray:(const void *)a6 sortedTextureArray:(const void *)a7;
-- (void)generateTextureAtlasImages:(id)a3 outputDictionary:(id *)a4 forcePOT:(BOOL)a5;
+- (id)getTextureFileList:(id)list modDate:(id *)date;
+- (id)partitionTextureFilesByResolution:(id)resolution;
+- (id)processPackedTextureAtlas:(const void *)atlas suffix:(id)suffix packer:(shared_ptr<MaxRectTexturePacker>)packer sortedTrimArray:(const void *)array sortedTextureArray:(const void *)textureArray;
+- (void)generateTextureAtlasImages:(id)images outputDictionary:(id *)dictionary forcePOT:(BOOL)t;
 @end
 
 @implementation SKTextureAtlasPacker
 
-- (CGImage)copyRotateCGImage:(CGImage *)a3 direction:(BOOL)a4
+- (CGImage)copyRotateCGImage:(CGImage *)image direction:(BOOL)direction
 {
-  v4 = a4;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  directionCopy = direction;
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v8 = malloc_type_malloc(vcvtd_n_u64_f64(Width * Height, 2uLL), 0x100004077774924uLL);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v10 = CGBitmapContextCreate(v8, Height, Width, 8uLL, vcvtd_n_u64_f64(Height, 2uLL), DeviceRGB, 0x4001u);
@@ -27,7 +27,7 @@
   v18.size.height = Width;
   CGContextClearRect(v10, v18);
   v11 = 1.0;
-  if (v4)
+  if (directionCopy)
   {
     v12 = -1.0;
   }
@@ -37,7 +37,7 @@
     v12 = 1.0;
   }
 
-  if (v4)
+  if (directionCopy)
   {
     v13 = 0.0;
   }
@@ -51,7 +51,7 @@
   v17.a = 0.0;
   v17.b = v12;
   v17.c = v11;
-  if (v4)
+  if (directionCopy)
   {
     v14 = Width;
   }
@@ -69,22 +69,22 @@
   v19.origin.y = 0.0;
   v19.size.width = Width;
   v19.size.height = Height;
-  CGContextDrawImage(v10, v19, a3);
+  CGContextDrawImage(v10, v19, image);
   Image = CGBitmapContextCreateImage(v10);
   CGContextRelease(v10);
   free(v8);
   return Image;
 }
 
-- (CGRect)calcNonAlphaArea:(CGImage *)a3
+- (CGRect)calcNonAlphaArea:(CGImage *)area
 {
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(area);
   Model = CGColorSpaceGetModel(ColorSpace);
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
-  Width = CGImageGetWidth(a3);
+  Width = CGImageGetWidth(area);
   v9 = Width;
-  Height = CGImageGetHeight(a3);
+  Height = CGImageGetHeight(area);
   v11 = v6;
   v12 = Height;
   v13 = v7;
@@ -105,7 +105,7 @@
     v52.origin.y = 0.0;
     v52.size.width = Width;
     v52.size.height = v12;
-    CGContextDrawImage(v19, v52, a3);
+    CGContextDrawImage(v19, v52, area);
     v13 = v7;
     v15 = v12;
     if (v16)
@@ -275,7 +275,7 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)isFullyOpaque:(CGImage *)a3
+- (BOOL)isFullyOpaque:(CGImage *)opaque
 {
   [(SKTextureAtlasPacker *)self calcNonAlphaArea:?];
   v5 = v4;
@@ -294,7 +294,7 @@ LABEL_17:
   v25.origin.y = 0.0;
   v25.size.width = v9;
   v25.size.height = v11;
-  CGContextDrawImage(v14, v25, a3);
+  CGContextDrawImage(v14, v25, opaque);
   LODWORD(v15) = v7;
   if (v7 + v11 > v7)
   {
@@ -348,16 +348,16 @@ LABEL_2:
   return v16;
 }
 
-- (id)partitionTextureFilesByResolution:(id)a3
+- (id)partitionTextureFilesByResolution:(id)resolution
 {
   v32 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  resolutionCopy = resolution;
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v19;
+  obj = resolutionCopy;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
@@ -372,8 +372,8 @@ LABEL_2:
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [v6 lowercaseString];
-        v8 = [v7 stringByDeletingPathExtension];
+        lowercaseString = [v6 lowercaseString];
+        stringByDeletingPathExtension = [lowercaseString stringByDeletingPathExtension];
 
         v24 = 0u;
         v25 = 0u;
@@ -394,7 +394,7 @@ LABEL_2:
               }
 
               v13 = *(*(&v22 + 1) + 8 * j);
-              if ([v8 hasSuffix:v13])
+              if ([stringByDeletingPathExtension hasSuffix:v13])
               {
                 v14 = v13;
                 goto LABEL_16;
@@ -445,18 +445,18 @@ LABEL_16:
   return v3;
 }
 
-- (id)getTextureFileList:(id)a3 modDate:(id *)a4
+- (id)getTextureFileList:(id)list modDate:(id *)date
 {
   v35 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v22 = [MEMORY[0x277CCAA00] defaultManager];
+  listCopy = list;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = *MEMORY[0x277CBE7B0];
   v26 = *MEMORY[0x277CBE868];
   v4 = *MEMORY[0x277CBE8E8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE868], *MEMORY[0x277CBE7B0], 0}];
-  v19 = [v22 enumeratorAtURL:v21 includingPropertiesForKeys:v5 options:4 errorHandler:0];
+  v19 = [defaultManager enumeratorAtURL:listCopy includingPropertiesForKeys:v5 options:4 errorHandler:0];
 
-  v23 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -504,10 +504,10 @@ LABEL_16:
 
         if (([v12 BOOLValue] & 1) == 0)
         {
-          v16 = [v11 lowercaseString];
-          if (([v16 hasSuffix:@".jpg"] & 1) != 0 || objc_msgSend(v16, "hasSuffix:", @".png"))
+          lowercaseString = [v11 lowercaseString];
+          if (([lowercaseString hasSuffix:@".jpg"] & 1) != 0 || objc_msgSend(lowercaseString, "hasSuffix:", @".png"))
           {
-            [v23 addObject:v10];
+            [array addObject:v10];
           }
         }
       }
@@ -518,13 +518,13 @@ LABEL_16:
     while (v7);
   }
 
-  if (a4)
+  if (date)
   {
     v17 = v6;
-    *a4 = v6;
+    *date = v6;
   }
 
-  return v23;
+  return array;
 }
 
 - (id)generateMetaData
@@ -537,20 +537,20 @@ LABEL_16:
   return v2;
 }
 
-- (id)processPackedTextureAtlas:(const void *)a3 suffix:(id)a4 packer:(shared_ptr<MaxRectTexturePacker>)a5 sortedTrimArray:(const void *)a6 sortedTextureArray:(const void *)a7
+- (id)processPackedTextureAtlas:(const void *)atlas suffix:(id)suffix packer:(shared_ptr<MaxRectTexturePacker>)packer sortedTrimArray:(const void *)array sortedTextureArray:(const void *)textureArray
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v68 = a4;
-  v70 = [MEMORY[0x277CBEB18] arrayWithCapacity:(*(a3 + 1) - *a3) >> 4];
-  if (*(a3 + 1) != *a3)
+  var1 = packer.var1;
+  var0 = packer.var0;
+  suffixCopy = suffix;
+  v70 = [MEMORY[0x277CBEB18] arrayWithCapacity:(*(atlas + 1) - *atlas) >> 4];
+  if (*(atlas + 1) != *atlas)
   {
     v8 = 0;
-    v69 = a3;
+    atlasCopy = atlas;
     while (1)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = (*a3 + 16 * v8);
+      v10 = (*atlas + 16 * v8);
       v11 = *v10;
       rect = v10[1];
       v12 = malloc_type_malloc(vcvtd_n_u64_f64(*v10 * rect, 2uLL), 0x100004077774924uLL);
@@ -563,7 +563,7 @@ LABEL_16:
       v96.size.height = rect;
       CGContextClearRect(point_8, v96);
       v73 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v14 = NSStringFromCGSize(*(*a3 + 16 * v8));
+      v14 = NSStringFromCGSize(*(*atlas + 16 * v8));
       [v73 setObject:v14 forKey:@"size"];
       v72 = v9;
 
@@ -587,8 +587,8 @@ LABEL_53:
 
       objc_autoreleasePoolPop(v72);
       ++v8;
-      a3 = v69;
-      if (v8 >= (v69[1] - *v69) >> 4)
+      atlas = atlasCopy;
+      if (v8 >= (atlasCopy[1] - *atlasCopy) >> 4)
       {
         goto LABEL_54;
       }
@@ -610,7 +610,7 @@ LABEL_53:
       v22 = *(v20 + 8);
       v24 = *(v20 + 16);
       v23 = *(v20 + 24);
-      v25 = *a6 + 32 * v91;
+      v25 = *array + 32 * v91;
       v26 = *v25;
       if (*(v25 + 31) < 0)
       {
@@ -628,9 +628,9 @@ LABEL_53:
       v29 = MEMORY[0x277CCACA8];
       v30 = SHIBYTE(v89.__r_.__value_.__r.__words[2]);
       v31 = v89.__r_.__value_.__r.__words[0];
-      v32 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+      defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
       v33 = v30 >= 0 ? &v89 : v31;
-      v34 = [v29 stringWithCString:v33 encoding:v32];
+      v34 = [v29 stringWithCString:v33 encoding:defaultCStringEncoding];
       v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v35 setObject:v34 forKey:@"name"];
       v36 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
@@ -905,10 +905,10 @@ LABEL_54:
   return v70;
 }
 
-+ (CGImage)copyProcessedImageSource:(id)a3
++ (CGImage)copyProcessedImageSource:(id)source
 {
-  v3 = a3;
-  if (!v3)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     goto LABEL_9;
   }
@@ -919,7 +919,7 @@ LABEL_54:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = CGImageSourceCreateWithURL(v3, 0);
+      v5 = CGImageSourceCreateWithURL(sourceCopy, 0);
       v6 = v5;
       if (v5)
       {
@@ -934,7 +934,7 @@ LABEL_54:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v3;
+        v7 = sourceCopy;
         v8 = MEMORY[0x277D755B8];
         v9 = SKGetResourceBundle();
         v10 = [v8 imageNamed:v7 inBundle:v9];
@@ -949,21 +949,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  ImageAtIndex = CGImageRetain([(__CFURL *)v3 CGImage]);
+  ImageAtIndex = CGImageRetain([(__CFURL *)sourceCopy CGImage]);
 LABEL_10:
 
   return ImageAtIndex;
 }
 
-- (void)generateTextureAtlasImages:(id)a3 outputDictionary:(id *)a4 forcePOT:(BOOL)a5
+- (void)generateTextureAtlasImages:(id)images outputDictionary:(id *)dictionary forcePOT:(BOOL)t
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 allKeys];
-  v27 = a4;
-  v31 = [(SKTextureAtlasPacker *)self partitionTextureFilesByResolution:v8];
+  imagesCopy = images;
+  allKeys = [imagesCopy allKeys];
+  dictionaryCopy = dictionary;
+  v31 = [(SKTextureAtlasPacker *)self partitionTextureFilesByResolution:allKeys];
 
-  v9 = [(SKTextureAtlasPacker *)self generateMetaData];
+  generateMetaData = [(SKTextureAtlasPacker *)self generateMetaData];
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v53 = 0u;
   v54 = 0u;
@@ -1017,7 +1017,7 @@ LABEL_10:
               v17 = *(*(&v44 + 1) + 8 * j);
               __p = 0uLL;
               v43 = 0;
-              v18 = [v7 objectForKey:v17];
+              v18 = [imagesCopy objectForKey:v17];
               image = [SKTextureAtlasPacker copyProcessedImageSource:v18];
 
               v19 = v17;
@@ -1092,9 +1092,9 @@ LABEL_10:
     while (v32);
   }
 
-  [v9 setObject:v28 forKey:@"images"];
-  v26 = v9;
-  *v27 = v9;
+  [generateMetaData setObject:v28 forKey:@"images"];
+  v26 = generateMetaData;
+  *dictionaryCopy = generateMetaData;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CKTypingChatItem
 + (id)defaultIndicatorLayer;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKTypingIndicatorLayerProtocol)indicatorLayer;
 - (UIEdgeInsets)contentInsets;
 - (char)transcriptOrientation;
@@ -41,15 +41,15 @@
   }
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
   +[CKTypingIndicatorLayer defaultSize];
@@ -58,8 +58,8 @@
   +[CKTypingIndicatorLayer largeBubbleFrame];
   v13 = v9 - v12;
   v15 = v11 - v14;
-  v16 = [(CKTypingChatItem *)self indicatorLayer];
-  [v16 bounds];
+  indicatorLayer = [(CKTypingChatItem *)self indicatorLayer];
+  [indicatorLayer bounds];
   v18 = v17;
   v20 = v19;
 

@@ -1,15 +1,15 @@
 @interface CKBalloonImageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 @end
 
 @implementation CKBalloonImageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKBalloonImageView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CKBalloonImageView" hasInstanceMethod:@"stickerAccessibilityDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKBalloonImageView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CKBalloonImageView" hasInstanceMethod:@"stickerAccessibilityDescription" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityIdentifier

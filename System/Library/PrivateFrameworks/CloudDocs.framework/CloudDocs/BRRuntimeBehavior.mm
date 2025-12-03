@@ -61,11 +61,11 @@ void __32__BRRuntimeBehavior_isSeedBuild__block_invoke()
 
 + (BOOL)isRunningInDaemonBundle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.bird"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.bird"];
+  return mainBundle;
 }
 
 @end

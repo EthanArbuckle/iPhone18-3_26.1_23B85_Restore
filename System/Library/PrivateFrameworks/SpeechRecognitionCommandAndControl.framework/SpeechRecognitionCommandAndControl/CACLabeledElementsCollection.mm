@@ -1,39 +1,39 @@
 @interface CACLabeledElementsCollection
-+ (BOOL)canShowElementActionsForElement:(id)a3;
++ (BOOL)canShowElementActionsForElement:(id)element;
 + (id)_elementActionManager;
-+ (id)labeledElementsFromTextMarkerRanges:(id)a3 axElement:(id)a4;
++ (id)labeledElementsFromTextMarkerRanges:(id)ranges axElement:(id)element;
 - (BOOL)isCollecting;
 - (BOOL)isEmpty;
 - (CACLabeledElementsCollection)init;
-- (id)_initWithCollection:(id)a3;
+- (id)_initWithCollection:(id)collection;
 - (id)collectedElements;
-- (id)collectedElementsWithTitle:(id)a3;
-- (id)collectedElementsWithTrait:(unint64_t)a3;
+- (id)collectedElementsWithTitle:(id)title;
+- (id)collectedElementsWithTrait:(unint64_t)trait;
 - (id)copyListOfCollectedElementsSorted;
 - (id)copyTableOfCollectedElementsByTitle;
 - (id)copyTableOfCollectedElementsByTrait;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newlyCollectedElements;
 - (unint64_t)collectionCount;
-- (void)addLabeledElementWithItemElement:(id)a3 orderingPriority:(int64_t)a4 elementsByTitle:(id)a5 elementsByTrait:(id)a6 elementsSorted:(id)a7;
+- (void)addLabeledElementWithItemElement:(id)element orderingPriority:(int64_t)priority elementsByTitle:(id)title elementsByTrait:(id)trait elementsSorted:(id)sorted;
 - (void)cancelCollecting;
 - (void)resetCollectedFlagForAllElements;
-- (void)updateWithAXElements:(id)a3;
+- (void)updateWithAXElements:(id)elements;
 @end
 
 @implementation CACLabeledElementsCollection
 
-+ (id)labeledElementsFromTextMarkerRanges:(id)a3 axElement:(id)a4
++ (id)labeledElementsFromTextMarkerRanges:(id)ranges axElement:(id)element
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  rangesCopy = ranges;
+  elementCopy = element;
   v7 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v5;
+  v8 = rangesCopy;
   v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
@@ -54,8 +54,8 @@
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v18 nsRange];
-        [v6 rectForRange:{v19, v20}];
+        nsRange = [v18 nsRange];
+        [elementCopy rectForRange:{nsRange, v20}];
         x = v39.origin.x;
         y = v39.origin.y;
         width = v39.size.width;
@@ -66,7 +66,7 @@
         v41.size.height = v15;
         if (!CGRectEqualToRect(v39, v41))
         {
-          [v6 visibleFrame];
+          [elementCopy visibleFrame];
           v42.origin.x = v25;
           v42.origin.y = v26;
           v42.size.width = v27;
@@ -77,11 +77,11 @@
           v40.size.height = height;
           if (CGRectIntersectsRect(v40, v42))
           {
-            v29 = [[CACLabeledElement alloc] initWithElement:v6 recognitionStrings:0 rectangle:x, y, width, height];
-            v30 = v29;
-            if (v29)
+            height = [[CACLabeledElement alloc] initWithElement:elementCopy recognitionStrings:0 rectangle:x, y, width, height];
+            v30 = height;
+            if (height)
             {
-              [(CACLabeledElement *)v29 setTextMarkerRange:v18];
+              [(CACLabeledElement *)height setTextMarkerRange:v18];
               [(CACLabeledElement *)v30 setNumber:v16];
               [v7 addObject:v30];
               ++v16;
@@ -120,21 +120,21 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
   _elementActionManager_sElementActionManager_1 = v1;
 }
 
-+ (BOOL)canShowElementActionsForElement:(id)a3
++ (BOOL)canShowElementActionsForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = +[CACDisplayManager sharedManager];
-  v6 = [v5 carPlayConnected];
+  carPlayConnected = [v5 carPlayConnected];
 
-  if (v6)
+  if (carPlayConnected)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [a1 _elementActionManager];
-    v7 = [v8 canShowActionsForElement:v4];
+    _elementActionManager = [self _elementActionManager];
+    v7 = [_elementActionManager canShowActionsForElement:elementCopy];
   }
 
   return v7;
@@ -158,46 +158,46 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
     cachedElementsByTrait = v3->_cachedElementsByTrait;
     v3->_cachedElementsByTrait = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cachedElementsSorted = v3->_cachedElementsSorted;
-    v3->_cachedElementsSorted = v8;
+    v3->_cachedElementsSorted = array;
   }
 
   return v3;
 }
 
-- (id)_initWithCollection:(id)a3
+- (id)_initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = CACLabeledElementsCollection;
   v5 = [(CACLabeledElementsCollection *)&v16 init];
   if (v5)
   {
-    v6 = [v4 axElements];
-    v7 = [v6 copy];
+    axElements = [collectionCopy axElements];
+    v7 = [axElements copy];
     axElements = v5->_axElements;
     v5->_axElements = v7;
 
-    v9 = [v4 copyTableOfCollectedElementsByTitle];
+    copyTableOfCollectedElementsByTitle = [collectionCopy copyTableOfCollectedElementsByTitle];
     cachedElementsByTitle = v5->_cachedElementsByTitle;
-    v5->_cachedElementsByTitle = v9;
+    v5->_cachedElementsByTitle = copyTableOfCollectedElementsByTitle;
 
-    v11 = [v4 copyTableOfCollectedElementsByTrait];
+    copyTableOfCollectedElementsByTrait = [collectionCopy copyTableOfCollectedElementsByTrait];
     cachedElementsByTrait = v5->_cachedElementsByTrait;
-    v5->_cachedElementsByTrait = v11;
+    v5->_cachedElementsByTrait = copyTableOfCollectedElementsByTrait;
 
-    v13 = [v4 copyListOfCollectedElementsSorted];
+    copyListOfCollectedElementsSorted = [collectionCopy copyListOfCollectedElementsSorted];
     cachedElementsSorted = v5->_cachedElementsSorted;
-    v5->_cachedElementsSorted = v13;
+    v5->_cachedElementsSorted = copyListOfCollectedElementsSorted;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 _initWithCollection:self];
 }
@@ -216,40 +216,40 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
 
 - (BOOL)isCollecting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentCollectionTransactionID != 0.0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentCollectionTransactionID != 0.0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_cachedElementsByTitle count]== 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_cachedElementsByTitle count]== 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)updateWithAXElements:(id)a3
+- (void)updateWithAXElements:(id)elements
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementsCopy = elements;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = self;
-  objc_sync_enter(v7);
-  v7->_currentCollectionTransactionID = v6;
-  v7->_cachedCollectionTransactionID = v6;
-  v8 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_currentCollectionTransactionID = v6;
+  selfCopy->_cachedCollectionTransactionID = v6;
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = elementsCopy;
   v9 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v9)
   {
@@ -263,7 +263,7 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        [(NSArray *)v8 addObjectsFromArray:*(*(&v36 + 1) + 8 * i)];
+        [(NSArray *)array addObjectsFromArray:*(*(&v36 + 1) + 8 * i)];
       }
 
       v9 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -272,16 +272,16 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
     while (v9);
   }
 
-  axElements = v7->_axElements;
-  v7->_axElements = v8;
+  axElements = selfCopy->_axElements;
+  selfCopy->_axElements = array;
 
-  v7->_areElementsNumbered = 0;
-  objc_sync_exit(v7);
+  selfCopy->_areElementsNumbered = 0;
+  objc_sync_exit(selfCopy);
 
   v13 = objc_opt_new();
   v14 = objc_opt_new();
   v15 = objc_opt_new();
-  if (v7->_currentCollectionTransactionID != v6)
+  if (selfCopy->_currentCollectionTransactionID != v6)
   {
     goto LABEL_29;
   }
@@ -296,14 +296,14 @@ void __53__CACLabeledElementsCollection__elementActionManager__block_invoke()
   {
 
 LABEL_29:
-    objc_sync_enter(v7);
+    objc_sync_enter(selfCopy);
 LABEL_30:
-    [(NSMutableDictionary *)v7->_cachedElementsByTitle removeAllObjects];
-    [(NSMutableDictionary *)v7->_cachedElementsByTitle addEntriesFromDictionary:v13];
-    [(NSMutableDictionary *)v7->_cachedElementsByTrait removeAllObjects];
-    [(NSMutableDictionary *)v7->_cachedElementsByTrait addEntriesFromDictionary:v14];
-    [(NSMutableArray *)v7->_cachedElementsSorted removeAllObjects];
-    [(NSMutableArray *)v7->_cachedElementsSorted addObjectsFromArray:v15];
+    [(NSMutableDictionary *)selfCopy->_cachedElementsByTitle removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_cachedElementsByTitle addEntriesFromDictionary:v13];
+    [(NSMutableDictionary *)selfCopy->_cachedElementsByTrait removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_cachedElementsByTrait addEntriesFromDictionary:v14];
+    [(NSMutableArray *)selfCopy->_cachedElementsSorted removeAllObjects];
+    [(NSMutableArray *)selfCopy->_cachedElementsSorted addObjectsFromArray:v15];
     goto LABEL_31;
   }
 
@@ -338,8 +338,8 @@ LABEL_30:
               objc_enumerationMutation(v19);
             }
 
-            [(CACLabeledElementsCollection *)v7 addLabeledElementWithItemElement:*(*(&v28 + 1) + 8 * k) orderingPriority:v16 elementsByTitle:v13 elementsByTrait:v14 elementsSorted:v15];
-            if (v7->_currentCollectionTransactionID != v6)
+            [(CACLabeledElementsCollection *)selfCopy addLabeledElementWithItemElement:*(*(&v28 + 1) + 8 * k) orderingPriority:v16 elementsByTitle:v13 elementsByTrait:v14 elementsSorted:v15];
+            if (selfCopy->_currentCollectionTransactionID != v6)
             {
               v24 = 1;
               goto LABEL_24;
@@ -366,33 +366,33 @@ LABEL_24:
 
   while (v27);
 
-  objc_sync_enter(v7);
+  objc_sync_enter(selfCopy);
   if ((v24 & 1) == 0)
   {
     goto LABEL_30;
   }
 
 LABEL_31:
-  if (v7->_currentCollectionTransactionID == v6)
+  if (selfCopy->_currentCollectionTransactionID == v6)
   {
-    v7->_currentCollectionTransactionID = 0.0;
+    selfCopy->_currentCollectionTransactionID = 0.0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)collectionCount
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSMutableDictionary *)v2->_cachedElementsByTitle allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_cachedElementsByTitle allValues];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -403,46 +403,46 @@ LABEL_31:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v4 += [*(*(&v9 + 1) + 8 * v7++) count];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (id)collectedElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = self;
-  objc_sync_enter(v4);
-  [v3 addObjectsFromArray:v4->_cachedElementsSorted];
-  objc_sync_exit(v4);
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [array addObjectsFromArray:selfCopy->_cachedElementsSorted];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return array;
 }
 
 - (id)newlyCollectedElements
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = self;
-  objc_sync_enter(v4);
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CACLabeledElementsCollection *)v4 collectedElements];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  collectedElements = [(CACLabeledElementsCollection *)selfCopy collectedElements];
+  v6 = [collectedElements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -452,39 +452,39 @@ LABEL_31:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(collectedElements);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if (([v9 hasBeenCollected] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
           [v9 setHasBeenCollected:1];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [collectedElements countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return array;
 }
 
 - (void)resetCollectedFlagForAllElements
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(CACLabeledElementsCollection *)v2 collectedElements];
-  v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  collectedElements = [(CACLabeledElementsCollection *)selfCopy collectedElements];
+  v4 = [collectedElements countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
     v5 = *v8;
@@ -495,33 +495,33 @@ LABEL_31:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(collectedElements);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setHasBeenCollected:0];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [collectedElements countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)copyTableOfCollectedElementsByTitle
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4->_cachedElementsByTitle;
+  v5 = selfCopy->_cachedElementsByTitle;
   v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -536,7 +536,7 @@ LABEL_31:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v4->_cachedElementsByTitle objectForKey:v9, v13];
+        v10 = [(NSMutableDictionary *)selfCopy->_cachedElementsByTitle objectForKey:v9, v13];
         v11 = [v10 copy];
 
         [v3 setObject:v11 forKey:v9];
@@ -548,32 +548,32 @@ LABEL_31:
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v3;
 }
 
 - (id)copyListOfCollectedElementsSorted
 {
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
-  [v3 addObjectsFromArray:v4->_cachedElementsSorted];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v3 addObjectsFromArray:selfCopy->_cachedElementsSorted];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)collectedElementsWithTitle:(id)a3
+- (id)collectedElementsWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  cachedElementsByTitle = v5->_cachedElementsByTitle;
-  v7 = [v4 lowercaseString];
-  v8 = [(NSMutableDictionary *)cachedElementsByTitle objectForKey:v7];
+  titleCopy = title;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedElementsByTitle = selfCopy->_cachedElementsByTitle;
+  lowercaseString = [titleCopy lowercaseString];
+  v8 = [(NSMutableDictionary *)cachedElementsByTitle objectForKey:lowercaseString];
   v9 = [v8 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -582,13 +582,13 @@ LABEL_31:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4->_cachedElementsByTrait;
+  v5 = selfCopy->_cachedElementsByTrait;
   v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -603,7 +603,7 @@ LABEL_31:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v4->_cachedElementsByTrait objectForKey:v9, v13];
+        v10 = [(NSMutableDictionary *)selfCopy->_cachedElementsByTrait objectForKey:v9, v13];
         v11 = [v10 copy];
 
         [v3 setObject:v11 forKey:v9];
@@ -615,38 +615,38 @@ LABEL_31:
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v3;
 }
 
-- (id)collectedElementsWithTrait:(unint64_t)a3
+- (id)collectedElementsWithTrait:(unint64_t)trait
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  cachedElementsByTrait = v4->_cachedElementsByTrait;
-  v6 = [(CACLabeledElementsCollection *)v4 _keyFromTrait:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedElementsByTrait = selfCopy->_cachedElementsByTrait;
+  v6 = [(CACLabeledElementsCollection *)selfCopy _keyFromTrait:trait];
   v7 = [(NSMutableDictionary *)cachedElementsByTrait objectForKey:v6];
   v8 = [v7 copy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)addLabeledElementWithItemElement:(id)a3 orderingPriority:(int64_t)a4 elementsByTitle:(id)a5 elementsByTrait:(id)a6 elementsSorted:(id)a7
+- (void)addLabeledElementWithItemElement:(id)element orderingPriority:(int64_t)priority elementsByTitle:(id)title elementsByTrait:(id)trait elementsSorted:(id)sorted
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v41 = a6;
-  v39 = a7;
+  elementCopy = element;
+  titleCopy = title;
+  traitCopy = trait;
+  sortedCopy = sorted;
   v14 = MEMORY[0x277CBEB18];
-  v42 = v12;
-  v15 = [v12 recognitionStrings];
-  if (v15)
+  v42 = elementCopy;
+  recognitionStrings = [elementCopy recognitionStrings];
+  if (recognitionStrings)
   {
-    v16 = [v12 recognitionStrings];
-    v43 = [v14 arrayWithArray:v16];
+    recognitionStrings2 = [elementCopy recognitionStrings];
+    v43 = [v14 arrayWithArray:recognitionStrings2];
   }
 
   else
@@ -662,7 +662,7 @@ LABEL_31:
     {
       v19 = +[CACAppElementsEvaluationManager sharedManager];
       v20 = [v43 objectAtIndex:v18];
-      v21 = [v19 isRecognitionString:v20 supportedForElement:v12];
+      v21 = [v19 isRecognitionString:v20 supportedForElement:elementCopy];
 
       if (v21)
       {
@@ -681,14 +681,14 @@ LABEL_31:
   }
 
   v22 = [CACLabeledElement alloc];
-  [v12 visibleFrame];
-  v23 = [(CACLabeledElement *)v22 initWithElement:v12 recognitionStrings:v17 rectangle:?];
+  [elementCopy visibleFrame];
+  v23 = [(CACLabeledElement *)v22 initWithElement:elementCopy recognitionStrings:v17 rectangle:?];
   if (v23)
   {
     obj = self;
     objc_sync_enter(obj);
-    v24 = [(CACLabeledElement *)v23 element];
-    if ([CACLabeledElementsCollection canShowElementActionsForElement:v24])
+    element = [(CACLabeledElement *)v23 element];
+    if ([CACLabeledElementsCollection canShowElementActionsForElement:element])
     {
       v25 = 2;
     }
@@ -700,7 +700,7 @@ LABEL_31:
 
     [(CACLabeledElement *)v23 setBadgeIndicatorMask:v25];
 
-    [(CACLabeledElement *)v23 setOrderingPriority:a4];
+    [(CACLabeledElement *)v23 setOrderingPriority:priority];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -720,17 +720,17 @@ LABEL_31:
           }
 
           v30 = *(*(&v44 + 1) + 8 * i);
-          v31 = [v30 lowercaseString];
-          v32 = [v13 objectForKey:v31];
+          lowercaseString = [v30 lowercaseString];
+          array = [titleCopy objectForKey:lowercaseString];
 
-          if (!v32)
+          if (!array)
           {
-            v32 = [MEMORY[0x277CBEB18] array];
-            v33 = [v30 lowercaseString];
-            [v13 setObject:v32 forKey:v33];
+            array = [MEMORY[0x277CBEB18] array];
+            lowercaseString2 = [v30 lowercaseString];
+            [titleCopy setObject:array forKey:lowercaseString2];
           }
 
-          [v32 addObject:v23];
+          [array addObject:v23];
         }
 
         v27 = [v26 countByEnumeratingWithState:&v44 objects:v48 count:16];
@@ -739,22 +739,22 @@ LABEL_31:
       while (v27);
     }
 
-    v34 = [v42 traits];
+    traits = [v42 traits];
     v35 = 1;
     v36 = 64;
     do
     {
-      if ((v35 & v34) != 0)
+      if ((v35 & traits) != 0)
       {
         v37 = [(CACLabeledElementsCollection *)obj _keyFromTrait:v35];
-        v38 = [v41 objectForKey:v37];
-        if (!v38)
+        array2 = [traitCopy objectForKey:v37];
+        if (!array2)
         {
-          v38 = [MEMORY[0x277CBEB18] array];
-          [v41 setObject:v38 forKey:v37];
+          array2 = [MEMORY[0x277CBEB18] array];
+          [traitCopy setObject:array2 forKey:v37];
         }
 
-        [v38 addObject:v23];
+        [array2 addObject:v23];
       }
 
       v35 *= 2;
@@ -762,7 +762,7 @@ LABEL_31:
     }
 
     while (v36);
-    [v39 addObject:v23];
+    [sortedCopy addObject:v23];
     objc_sync_exit(obj);
   }
 }

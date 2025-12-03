@@ -1,24 +1,24 @@
 @interface LSMacApplicationIdentityBookmark
-- (BOOL)isEqual:(id)a3;
-- (LSMacApplicationIdentityBookmark)initWithCoder:(id)a3;
-- (id)initWithURL:(void *)a3 bundleIdentifier:;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LSMacApplicationIdentityBookmark)initWithCoder:(id)coder;
+- (id)initWithURL:(void *)l bundleIdentifier:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSMacApplicationIdentityBookmark
 
-- (id)initWithURL:(void *)a3 bundleIdentifier:
+- (id)initWithURL:(void *)l bundleIdentifier:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = v7;
-  if (!a1)
+  lCopy = l;
+  v8 = lCopy;
+  if (!self)
   {
     v10 = 0;
     goto LABEL_9;
   }
 
-  if (!(v6 | v7))
+  if (!(v6 | lCopy))
   {
     v12 = _LSDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -30,7 +30,7 @@
     goto LABEL_8;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = LSMacApplicationIdentityBookmark;
   v9 = objc_msgSendSuper2(&v21, sel_init);
   v10 = v9;
@@ -38,7 +38,7 @@
   {
     objc_storeStrong(v9 + 1, a2);
     v11 = [v8 copy];
-    a1 = v10[2];
+    self = v10[2];
     v10[2] = v11;
 LABEL_8:
   }
@@ -48,11 +48,11 @@ LABEL_9:
   return v10;
 }
 
-- (LSMacApplicationIdentityBookmark)initWithCoder:(id)a3
+- (LSMacApplicationIdentityBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
   if (!(v5 | v6))
   {
     goto LABEL_5;
@@ -76,20 +76,20 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v4 encodeObject:self->_URL forKey:@"URL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(NSURL *)self->_URL isEqual:v5[1]])
     {
       v6 = [(NSString *)self->_bundleIdentifier isEqual:v5[2]];

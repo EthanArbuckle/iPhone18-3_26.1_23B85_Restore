@@ -1,33 +1,33 @@
 @interface ICASOnboardingScreenType
-- (ICASOnboardingScreenType)initWithOnboardingScreenType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASOnboardingScreenType)initWithOnboardingScreenType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASOnboardingScreenType
 
-- (ICASOnboardingScreenType)initWithOnboardingScreenType:(int64_t)a3
+- (ICASOnboardingScreenType)initWithOnboardingScreenType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASOnboardingScreenType;
   result = [(ICASOnboardingScreenType *)&v5 init];
   if (result)
   {
-    result->_onboardingScreenType = a3;
+    result->_onboardingScreenType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASOnboardingScreenType *)self onboardingScreenType];
+  onboardingScreenType = [(ICASOnboardingScreenType *)self onboardingScreenType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (onboardingScreenType == 1)
   {
     v4 = @"welcome";
   }
 
-  if (v3 == 2)
+  if (onboardingScreenType == 2)
   {
     return @"whatsNew";
   }

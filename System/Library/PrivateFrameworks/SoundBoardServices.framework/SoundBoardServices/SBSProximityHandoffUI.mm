@@ -1,7 +1,7 @@
 @interface SBSProximityHandoffUI
-- (SBSProximityHandoffUI)initWithTarget:(id)a3;
+- (SBSProximityHandoffUI)initWithTarget:(id)target;
 - (SBSProximityHandoffUIDelegate)delegate;
-- (void)completeWithHandoffType:(unint64_t)a3;
+- (void)completeWithHandoffType:(unint64_t)type;
 - (void)dealloc;
 - (void)handoffCancelled;
 - (void)handoffCompleted;
@@ -36,8 +36,8 @@
     _os_log_impl(&dword_26B246000, v3, OS_LOG_TYPE_DEFAULT, "Proximity Handoff UI Service updating.", v5, 2u);
   }
 
-  v4 = [(SBSProximityHandoffUI *)self delegate];
-  [v4 proximityHandoffUI:self stateTransition:3];
+  delegate = [(SBSProximityHandoffUI *)self delegate];
+  [delegate proximityHandoffUI:self stateTransition:3];
 }
 
 - (void)handoffStarted
@@ -49,8 +49,8 @@
     _os_log_impl(&dword_26B246000, v3, OS_LOG_TYPE_DEFAULT, "Proximity Handoff UI Service started.", v5, 2u);
   }
 
-  v4 = [(SBSProximityHandoffUI *)self delegate];
-  [v4 proximityHandoffUI:self stateTransition:2];
+  delegate = [(SBSProximityHandoffUI *)self delegate];
+  [delegate proximityHandoffUI:self stateTransition:2];
 }
 
 - (void)handoffInactive
@@ -62,8 +62,8 @@
     _os_log_impl(&dword_26B246000, v3, OS_LOG_TYPE_DEFAULT, "Proximity Handoff UI Service inactive.", v5, 2u);
   }
 
-  v4 = [(SBSProximityHandoffUI *)self delegate];
-  [v4 proximityHandoffUI:self stateTransition:4];
+  delegate = [(SBSProximityHandoffUI *)self delegate];
+  [delegate proximityHandoffUI:self stateTransition:4];
 }
 
 - (void)handoffCompleted
@@ -75,8 +75,8 @@
     _os_log_impl(&dword_26B246000, v3, OS_LOG_TYPE_DEFAULT, "Proximity Handoff UI Service completed.", v5, 2u);
   }
 
-  v4 = [(SBSProximityHandoffUI *)self delegate];
-  [v4 proximityHandoffUI:self stateTransition:1];
+  delegate = [(SBSProximityHandoffUI *)self delegate];
+  [delegate proximityHandoffUI:self stateTransition:1];
 }
 
 - (void)handoffCancelled
@@ -88,11 +88,11 @@
     _os_log_impl(&dword_26B246000, v3, OS_LOG_TYPE_DEFAULT, "Proximity Handoff UI Service cancelled.", v5, 2u);
   }
 
-  v4 = [(SBSProximityHandoffUI *)self delegate];
-  [v4 proximityHandoffUI:self stateTransition:0];
+  delegate = [(SBSProximityHandoffUI *)self delegate];
+  [delegate proximityHandoffUI:self stateTransition:0];
 }
 
-- (void)completeWithHandoffType:(unint64_t)a3
+- (void)completeWithHandoffType:(unint64_t)type
 {
   v11[1] = *MEMORY[0x277D85DE8];
   sbProxy = self->_sbProxy;
@@ -111,26 +111,26 @@
     [(SBSImplementer *)self->_sbProxy handoffSetDeviceAsStereoLeader:1 withOptions:v7];
   }
 
-  [(SBSImplementer *)self->_sbProxy handoffCompleteWithHandoffType:a3];
+  [(SBSImplementer *)self->_sbProxy handoffCompleteWithHandoffType:type];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SBSProximityHandoffUI)initWithTarget:(id)a3
+- (SBSProximityHandoffUI)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSProximityHandoffUI;
   v5 = [(SBSProximityHandoffUI *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:v5 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

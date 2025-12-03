@@ -1,19 +1,19 @@
 @interface CNVCardParser
-+ (BOOL)isTagSyntacticallyValid:(id)a3;
-+ (BOOL)parseFirstResultInData:(id)a3 resultBuilder:(id)a4;
++ (BOOL)isTagSyntacticallyValid:(id)valid;
++ (BOOL)parseFirstResultInData:(id)data resultBuilder:(id)builder;
 + (id)newParameterSelectorMap;
 + (id)newParsingSelectorMap;
 + (id)os_log;
-+ (id)parseData:(id)a3 options:(id)a4 resultFactory:(id)a5;
-+ (id)parseData:(id)a3 resultFactory:(id)a4;
-+ (unint64_t)countOfCardsInData:(id)a3;
-+ (unint64_t)inferredStringEncodingFromData:(id)a3;
++ (id)parseData:(id)data options:(id)options resultFactory:(id)factory;
++ (id)parseData:(id)data resultFactory:(id)factory;
++ (unint64_t)countOfCardsInData:(id)data;
++ (unint64_t)inferredStringEncodingFromData:(id)data;
 - (BOOL)advancePastSemicolon;
-- (BOOL)parseExtension:(id)a3;
-- (BOOL)parseInstantMessageValueWithService:(id)a3;
+- (BOOL)parseExtension:(id)extension;
+- (BOOL)parseInstantMessageValueWithService:(id)service;
 - (BOOL)parseLine;
-- (BOOL)parseNextResultUsingResultBuilder:(id)a3;
-- (BOOL)parseValueUsingSelector:(SEL)a3;
+- (BOOL)parseNextResultUsingResultBuilder:(id)builder;
+- (BOOL)parseValueUsingSelector:(SEL)selector;
 - (BOOL)parse_ADR;
 - (BOOL)parse_BDAY;
 - (BOOL)parse_CALURI;
@@ -58,38 +58,38 @@
 - (BOOL)parse_X_SOCIALPROFILE;
 - (BOOL)parse_X_WALLPAPER;
 - (BOOL)parse_X_WATCH_WALLPAPER_IMAGE_DATA;
-- (BOOL)valueIsEmpty:(id)a3;
-- (CNVCardParser)initWithData:(id)a3;
-- (CNVCardParser)initWithData:(id)a3 options:(id)a4;
-- (id)fallbackLabelForProperty:(id)a3;
-- (id)firstCustomLabelForProperty:(id)a3 types:(id)a4;
-- (id)firstParameterWithName:(id)a3;
-- (id)firstValueForKey:(id)a3 inExtension:(id)a4;
-- (id)firstValueForKey:(id)a3 inExtensionGroup:(id)a4;
-- (id)firstValueForParameterWithName:(id)a3;
-- (id)genericLabelForProperty:(id)a3;
-- (id)makeLineWithLabel:(id)a3 value:(id)a4;
-- (id)makeLineWithValue:(id)a3 forProperty:(id)a4;
+- (BOOL)valueIsEmpty:(id)empty;
+- (CNVCardParser)initWithData:(id)data;
+- (CNVCardParser)initWithData:(id)data options:(id)options;
+- (id)fallbackLabelForProperty:(id)property;
+- (id)firstCustomLabelForProperty:(id)property types:(id)types;
+- (id)firstParameterWithName:(id)name;
+- (id)firstValueForKey:(id)key inExtension:(id)extension;
+- (id)firstValueForKey:(id)key inExtensionGroup:(id)group;
+- (id)firstValueForParameterWithName:(id)name;
+- (id)genericLabelForProperty:(id)property;
+- (id)makeLineWithLabel:(id)label value:(id)value;
+- (id)makeLineWithValue:(id)value forProperty:(id)property;
 - (id)nextParameterInCurrentLine;
-- (id)nextResultWithFactory:(id)a3 progressLength:(int64_t *)a4;
-- (id)parameterValuesForName:(id)a3;
+- (id)nextResultWithFactory:(id)factory progressLength:(int64_t *)length;
+- (id)parameterValuesForName:(id)name;
 - (id)parseArrayValue;
 - (id)parseParameterValues;
 - (id)parseParameters;
 - (id)parseRemainingLine;
 - (id)parseStringValue;
-- (id)parseUnknownValueStartingAtPosition:(unint64_t)a3;
+- (id)parseUnknownValueStartingAtPosition:(unint64_t)position;
 - (id)phoneLabel;
-- (id)pool_nextResultWithFactory:(id)a3 progressLength:(int64_t *)a4;
-- (id)resultsWithFactory:(id)a3;
+- (id)pool_nextResultWithFactory:(id)factory progressLength:(int64_t *)length;
+- (id)resultsWithFactory:(id)factory;
 - (id)typeParameters;
 - (void)cleanUpCardState;
-- (void)parameter_CHARSET:(id)a3;
-- (void)parameter_ENCODING:(id)a3;
+- (void)parameter_CHARSET:(id)t;
+- (void)parameter_ENCODING:(id)g;
 - (void)parseLine;
 - (void)processExtensionValues;
-- (void)reportMultiValueLines:(id)a3 forProperty:(id)a4;
-- (void)reportValue:(id)a3 forProperty:(id)a4;
+- (void)reportMultiValueLines:(id)lines forProperty:(id)property;
+- (void)reportValue:(id)value forProperty:(id)property;
 - (void)reportValues;
 @end
 
@@ -114,23 +114,23 @@ uint64_t __23__CNVCardParser_os_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (unint64_t)countOfCardsInData:(id)a3
++ (unint64_t)countOfCardsInData:(id)data
 {
-  v3 = [CNVCardRangeFinder allRangesInData:a3];
-  v4 = [v3 left];
-  v5 = [v4 count];
+  v3 = [CNVCardRangeFinder allRangesInData:data];
+  left = [v3 left];
+  v5 = [left count];
 
   return v5;
 }
 
-+ (BOOL)parseFirstResultInData:(id)a3 resultBuilder:(id)a4
++ (BOOL)parseFirstResultInData:(id)data resultBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithData:v7];
+  builderCopy = builder;
+  dataCopy = data;
+  v8 = [[self alloc] initWithData:dataCopy];
 
-  LOBYTE(v7) = [v8 parseNextResultUsingResultBuilder:v6];
-  return v7;
+  LOBYTE(dataCopy) = [v8 parseNextResultUsingResultBuilder:builderCopy];
+  return dataCopy;
 }
 
 + (id)newParsingSelectorMap
@@ -219,36 +219,36 @@ uint64_t __23__CNVCardParser_os_log__block_invoke()
   return v2;
 }
 
-- (CNVCardParser)initWithData:(id)a3
+- (CNVCardParser)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(CNVCardReadingOptions);
-  v6 = [(CNVCardParser *)self initWithData:v4 options:v5];
+  v6 = [(CNVCardParser *)self initWithData:dataCopy options:v5];
 
   return v6;
 }
 
-- (CNVCardParser)initWithData:(id)a3 options:(id)a4
+- (CNVCardParser)initWithData:(id)data options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   v28.receiver = self;
   v28.super_class = CNVCardParser;
   v9 = [(CNVCardParser *)&v28 init];
   v10 = v9;
   v11 = 0;
-  if (v7 && v9)
+  if (dataCopy && v9)
   {
-    if ([v7 length] && (v12 = -[CNVCardLexer initWithData:]([CNVCardLexer alloc], "initWithData:", v7), lexer = v10->_lexer, v10->_lexer = v12, lexer, v10->_lexer))
+    if ([dataCopy length] && (v12 = -[CNVCardLexer initWithData:]([CNVCardLexer alloc], "initWithData:", dataCopy), lexer = v10->_lexer, v10->_lexer = v12, lexer, v10->_lexer))
     {
-      objc_storeStrong(&v10->_data, a3);
-      objc_storeStrong(&v10->_options, a4);
-      v14 = [v8 propertiesToFetch];
-      v15 = [_TtC5vCard19CNVCardTagInclusion policyWithTags:v14];
+      objc_storeStrong(&v10->_data, data);
+      objc_storeStrong(&v10->_options, options);
+      propertiesToFetch = [optionsCopy propertiesToFetch];
+      v15 = [_TtC5vCard19CNVCardTagInclusion policyWithTags:propertiesToFetch];
       tagInclusionPolicy = v10->_tagInclusionPolicy;
       v10->_tagInclusionPolicy = v15;
 
-      v10->_defaultEncoding = [objc_opt_class() inferredStringEncodingFromData:v7];
+      v10->_defaultEncoding = [objc_opt_class() inferredStringEncodingFromData:dataCopy];
       v17 = objc_alloc_init(CNVCardMutableNameComponents);
       nameComponents = v10->_nameComponents;
       v10->_nameComponents = v17;
@@ -262,13 +262,13 @@ uint64_t __23__CNVCardParser_os_log__block_invoke()
       dateComponentsParser = v10->_dateComponentsParser;
       v10->_dateComponentsParser = v21;
 
-      v23 = [objc_opt_class() newParsingSelectorMap];
+      newParsingSelectorMap = [objc_opt_class() newParsingSelectorMap];
       parsingSelectorMap = v10->_parsingSelectorMap;
-      v10->_parsingSelectorMap = v23;
+      v10->_parsingSelectorMap = newParsingSelectorMap;
 
-      v25 = [objc_opt_class() newParameterSelectorMap];
+      newParameterSelectorMap = [objc_opt_class() newParameterSelectorMap];
       parameterSelectorMap = v10->_parameterSelectorMap;
-      v10->_parameterSelectorMap = v25;
+      v10->_parameterSelectorMap = newParameterSelectorMap;
 
       v11 = v10;
     }
@@ -282,85 +282,85 @@ uint64_t __23__CNVCardParser_os_log__block_invoke()
   return v11;
 }
 
-+ (id)parseData:(id)a3 resultFactory:(id)a4
++ (id)parseData:(id)data resultFactory:(id)factory
 {
-  v6 = a4;
-  v7 = a3;
+  factoryCopy = factory;
+  dataCopy = data;
   v8 = objc_alloc_init(CNVCardReadingOptions);
-  v9 = [a1 parseData:v7 options:v8 resultFactory:v6];
+  v9 = [self parseData:dataCopy options:v8 resultFactory:factoryCopy];
 
   return v9;
 }
 
-+ (id)parseData:(id)a3 options:(id)a4 resultFactory:(id)a5
++ (id)parseData:(id)data options:(id)options resultFactory:(id)factory
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [CNVCardParsingConcurrencyStrategy strategyForOptions:v8];
-  v11 = [v10 parseData:v9 options:v8 resultFactory:v7];
+  factoryCopy = factory;
+  optionsCopy = options;
+  dataCopy = data;
+  v10 = [CNVCardParsingConcurrencyStrategy strategyForOptions:optionsCopy];
+  v11 = [v10 parseData:dataCopy options:optionsCopy resultFactory:factoryCopy];
 
   return v11;
 }
 
-- (id)resultsWithFactory:(id)a3
+- (id)resultsWithFactory:(id)factory
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  factoryCopy = factory;
+  array = [MEMORY[0x277CBEB18] array];
   if (![(CNVCardParser *)self atEOF])
   {
     do
     {
-      v6 = [v5 count];
-      v7 = [(CNVCardParser *)self options];
-      v8 = [v7 contactLimit];
+      v6 = [array count];
+      options = [(CNVCardParser *)self options];
+      contactLimit = [options contactLimit];
 
-      if (v6 >= v8)
+      if (v6 >= contactLimit)
       {
         break;
       }
 
-      v9 = [(CNVCardParser *)self nextResultWithFactory:v4 progressLength:0];
+      v9 = [(CNVCardParser *)self nextResultWithFactory:factoryCopy progressLength:0];
       if (!v9)
       {
         break;
       }
 
       v10 = v9;
-      [v5 addObject:v9];
+      [array addObject:v9];
     }
 
     while (![(CNVCardParser *)self atEOF]);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)nextResultWithFactory:(id)a3 progressLength:(int64_t *)a4
+- (id)nextResultWithFactory:(id)factory progressLength:(int64_t *)length
 {
-  v7 = a3;
-  v4 = v7;
+  factoryCopy = factory;
+  v4 = factoryCopy;
   v5 = CNResultWithAutoreleasePool();
 
   return v5;
 }
 
-- (id)pool_nextResultWithFactory:(id)a3 progressLength:(int64_t *)a4
+- (id)pool_nextResultWithFactory:(id)factory progressLength:(int64_t *)length
 {
-  v6 = a3;
+  factoryCopy = factory;
   if (![(CNVCardParser *)self atEOF])
   {
-    v8 = [v6 makeBuilder];
-    v9 = [(CNVCardParser *)self currentPosition];
-    v10 = [(CNVCardParser *)self parseNextResultUsingResultBuilder:v8];
+    makeBuilder = [factoryCopy makeBuilder];
+    currentPosition = [(CNVCardParser *)self currentPosition];
+    v10 = [(CNVCardParser *)self parseNextResultUsingResultBuilder:makeBuilder];
     self->_hasImportErrors = !v10;
-    if (a4)
+    if (length)
     {
-      *a4 = [(CNVCardParser *)self currentPosition]- v9;
+      *length = [(CNVCardParser *)self currentPosition]- currentPosition;
       if (self->_hasImportErrors)
       {
 LABEL_6:
-        v7 = 0;
+        build = 0;
 LABEL_9:
 
         goto LABEL_10;
@@ -372,44 +372,44 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v7 = [v8 build];
+    build = [makeBuilder build];
     goto LABEL_9;
   }
 
-  v7 = 0;
-  if (a4)
+  build = 0;
+  if (length)
   {
-    *a4 = 0;
+    *length = 0;
   }
 
 LABEL_10:
 
-  return v7;
+  return build;
 }
 
-- (BOOL)parseNextResultUsingResultBuilder:(id)a3
+- (BOOL)parseNextResultUsingResultBuilder:(id)builder
 {
-  v5 = a3;
-  objc_storeStrong(&self->_resultBuilder, a3);
+  builderCopy = builder;
+  objc_storeStrong(&self->_resultBuilder, builder);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   extensions = self->_extensions;
   self->_extensions = v6;
 
   [(CNVCardLexer *)self->_lexer advanceToString];
-  v8 = [(CNVCardLexer *)self->_lexer readNextToken];
-  if ((v8 - 32769) <= 1)
+  readNextToken = [(CNVCardLexer *)self->_lexer readNextToken];
+  if ((readNextToken - 32769) <= 1)
   {
     do
     {
-      v8 = [(CNVCardLexer *)self->_lexer readNextToken];
+      readNextToken = [(CNVCardLexer *)self->_lexer readNextToken];
     }
 
-    while ((v8 - 32769) < 2);
+    while ((readNextToken - 32769) < 2);
   }
 
-  if (v8 != 5)
+  if (readNextToken != 5)
   {
-    if (v8 != 65537)
+    if (readNextToken != 65537)
     {
       v9 = +[CNVCardLogging vCard];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -565,9 +565,9 @@ LABEL_26:
   [(NSMutableArray *)unknowns removeAllObjects];
 }
 
-+ (unint64_t)inferredStringEncodingFromData:(id)a3
++ (unint64_t)inferredStringEncodingFromData:(id)data
 {
-  v3 = [CNVCardDataAnalyzer analyzeData:a3];
+  v3 = [CNVCardDataAnalyzer analyzeData:data];
   if (v3)
   {
     if (v3 == 2483028224)
@@ -607,14 +607,14 @@ LABEL_26:
   v6 = [v5 count];
   if (!v6)
   {
-    v8 = 0;
+    lastObject = 0;
 LABEL_23:
     v19 = 0;
     goto LABEL_24;
   }
 
   v7 = v6;
-  v8 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   if (v7 == 2)
   {
     v9 = [v5 objectAtIndex:0];
@@ -623,15 +623,15 @@ LABEL_23:
     self->_grouping = v10;
   }
 
-  if (!v8 || ([v8 _cn_caseInsensitiveIsEqual:@"END"] & 1) != 0)
+  if (!lastObject || ([lastObject _cn_caseInsensitiveIsEqual:@"END"] & 1) != 0)
   {
     goto LABEL_23;
   }
 
-  if ([(CNVCardTagInclusionPolicy *)self->_tagInclusionPolicy shouldParseTag:v8]&& (v12 = [(CNVCardParser *)self parsingSelectorForTag:v8]) != 0 && (v13 = v12, (objc_opt_respondsToSelector() & 1) != 0))
+  if ([(CNVCardTagInclusionPolicy *)self->_tagInclusionPolicy shouldParseTag:lastObject]&& (v12 = [(CNVCardParser *)self parsingSelectorForTag:lastObject]) != 0 && (v13 = v12, (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v14 = [(CNVCardParser *)self parseParameters];
-    v15 = [v14 copy];
+    parseParameters = [(CNVCardParser *)self parseParameters];
+    v15 = [parseParameters copy];
     itemParameters = self->_itemParameters;
     self->_itemParameters = v15;
 
@@ -650,10 +650,10 @@ LABEL_19:
   else if ([(CNVCardTagInclusionPolicy *)self->_tagInclusionPolicy shouldCaptureUnknownTags])
   {
     v17 = [(CNVCardParser *)self parseUnknownValueStartingAtPosition:self->_startingPositionOfCurrentProperty];
-    if ([objc_opt_class() isTagSyntacticallyValid:v8])
+    if ([objc_opt_class() isTagSyntacticallyValid:lastObject])
     {
       v18 = objc_alloc_init(CNVCardUnknownPropertyDescription);
-      [(CNVCardUnknownPropertyDescription *)v18 setPropertyName:v8];
+      [(CNVCardUnknownPropertyDescription *)v18 setPropertyName:lastObject];
       [(CNVCardUnknownPropertyDescription *)v18 setOriginalLine:v17];
       [(NSMutableArray *)self->_unknowns addObject:v18];
     }
@@ -681,16 +681,16 @@ LABEL_24:
   return v19;
 }
 
-+ (BOOL)isTagSyntacticallyValid:(id)a3
++ (BOOL)isTagSyntacticallyValid:(id)valid
 {
   v3 = isTagSyntacticallyValid__cn_once_token_9;
-  v4 = a3;
+  validCopy = valid;
   if (v3 != -1)
   {
     +[CNVCardParser isTagSyntacticallyValid:];
   }
 
-  v5 = [v4 _cn_containsCharacterInSet:isTagSyntacticallyValid__cn_once_object_9];
+  v5 = [validCopy _cn_containsCharacterInSet:isTagSyntacticallyValid__cn_once_object_9];
 
   return v5 ^ 1;
 }
@@ -703,11 +703,11 @@ void __41__CNVCardParser_isTagSyntacticallyValid___block_invoke()
   isTagSyntacticallyValid__cn_once_object_9 = v0;
 }
 
-- (BOOL)parseValueUsingSelector:(SEL)a3
+- (BOOL)parseValueUsingSelector:(SEL)selector
 {
   v5 = [(CNVCardParser *)self methodForSelector:?];
 
-  return v5(self, a3);
+  return v5(self, selector);
 }
 
 - (BOOL)parse_ADR
@@ -765,8 +765,8 @@ void __41__CNVCardParser_isTagSyntacticallyValid___block_invoke()
 
 - (BOOL)parse_EMAIL
 {
-  v3 = [(CNVCardParser *)self parseRemainingLine];
-  v4 = [(CNVCardParser *)self makeLineWithValue:v3 forProperty:@"Email"];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  v4 = [(CNVCardParser *)self makeLineWithValue:parseRemainingLine forProperty:@"Email"];
   emails = self->_emails;
   if (!emails)
   {
@@ -785,23 +785,23 @@ void __41__CNVCardParser_isTagSyntacticallyValid___block_invoke()
 
 - (BOOL)parse_FN
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setFormattedName:v3];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setFormattedName:parseStringValue];
 
   return 1;
 }
 
 - (BOOL)parse_IMPP
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSArray *)self->_itemParameters _cn_firstObjectPassingTest:&__block_literal_global_402];
-  v4 = [v3 values];
-  v5 = [v4 firstObject];
+  values = [v3 values];
+  firstObject = [values firstObject];
 
-  v6 = [CNVCardInstantMessageParser serviceForString:v5];
-  LOBYTE(v2) = [(CNVCardParser *)v2 parseInstantMessageValueWithService:v6];
+  v6 = [CNVCardInstantMessageParser serviceForString:firstObject];
+  LOBYTE(selfCopy) = [(CNVCardParser *)selfCopy parseInstantMessageValueWithService:v6];
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __27__CNVCardParser_parse_IMPP__block_invoke(uint64_t a1, void *a2)
@@ -824,40 +824,40 @@ uint64_t __27__CNVCardParser_parse_IMPP__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)parse_N
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setLastName:v3];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setLastName:parseStringValue];
 
   [(CNVCardParser *)self advancePastSemicolon];
-  v4 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setFirstName:v4];
+  parseStringValue2 = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setFirstName:parseStringValue2];
 
   [(CNVCardParser *)self advancePastSemicolon];
-  v5 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setMiddleName:v5];
+  parseStringValue3 = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setMiddleName:parseStringValue3];
 
   [(CNVCardParser *)self advancePastSemicolon];
-  v6 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setTitle:v6];
+  parseStringValue4 = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setTitle:parseStringValue4];
 
   [(CNVCardParser *)self advancePastSemicolon];
-  v7 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setSuffix:v7];
+  parseStringValue5 = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setSuffix:parseStringValue5];
 
   v8 = *MEMORY[0x277CFBD30];
-  v9 = [(CNVCardNameComponents *)self->_nameComponents lastName];
-  if ((*(v8 + 16))(v8, v9))
+  lastName = [(CNVCardNameComponents *)self->_nameComponents lastName];
+  if ((*(v8 + 16))(v8, lastName))
   {
-    v10 = [(CNVCardNameComponents *)self->_nameComponents firstName];
-    if ((*(v8 + 16))(v8, v10))
+    firstName = [(CNVCardNameComponents *)self->_nameComponents firstName];
+    if ((*(v8 + 16))(v8, firstName))
     {
-      v11 = [(CNVCardNameComponents *)self->_nameComponents middleName];
-      if ((*(v8 + 16))(v8, v11))
+      middleName = [(CNVCardNameComponents *)self->_nameComponents middleName];
+      if ((*(v8 + 16))(v8, middleName))
       {
-        v12 = [(CNVCardNameComponents *)self->_nameComponents title];
-        if ((*(v8 + 16))(v8, v12))
+        title = [(CNVCardNameComponents *)self->_nameComponents title];
+        if ((*(v8 + 16))(v8, title))
         {
-          v13 = [(CNVCardNameComponents *)self->_nameComponents suffix];
-          self->_fullNameHasZeroLength = (*(v8 + 16))(v8, v13);
+          suffix = [(CNVCardNameComponents *)self->_nameComponents suffix];
+          self->_fullNameHasZeroLength = (*(v8 + 16))(v8, suffix);
         }
 
         else
@@ -888,16 +888,16 @@ uint64_t __27__CNVCardParser_parse_IMPP__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)parse_NICKNAME
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:v3 forProperty:@"Nickname"];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:parseStringValue forProperty:@"Nickname"];
 
   return 1;
 }
 
 - (BOOL)parse_NOTE
 {
-  v3 = [(CNVCardParser *)self parseRemainingLine];
-  v4 = [v3 mutableCopy];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  v4 = [parseRemainingLine mutableCopy];
   notes = self->_notes;
   self->_notes = v4;
 
@@ -906,23 +906,23 @@ uint64_t __27__CNVCardParser_parse_IMPP__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)parse_ORG
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardMutableNameComponents *)self->_nameComponents setCompanyName:v3];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardMutableNameComponents *)self->_nameComponents setCompanyName:parseStringValue];
 
   [(CNVCardParser *)self advancePastSemicolon];
-  v4 = [(CNVCardParser *)self parseStringValue];
-  [(CNVCardParser *)self reportValue:v4 forProperty:@"ABDepartment"];
+  parseStringValue2 = [(CNVCardParser *)self parseStringValue];
+  [(CNVCardParser *)self reportValue:parseStringValue2 forProperty:@"ABDepartment"];
 
   return 1;
 }
 
 - (BOOL)parse_X_PHONETIC_ORG
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"OrganizationPhonetic"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"OrganizationPhonetic"];
 
-  return v2;
+  return selfCopy;
 }
 
 void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -942,38 +942,38 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_WALLPAPER
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v4 forProperty:@"wallpaper"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:parseStringValue options:0];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:v4 forProperty:@"wallpaper"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_WATCH_WALLPAPER_IMAGE_DATA
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v4 forProperty:@"watchWallpaperImageData"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:parseStringValue options:0];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:v4 forProperty:@"watchWallpaperImageData"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_IMAGE_BACKGROUND_COLORS_DATA
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v4 forProperty:@"imageBackgroundColorsData"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:parseStringValue options:0];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:v4 forProperty:@"imageBackgroundColorsData"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_TEL
 {
-  v3 = [(CNVCardParser *)self parseRemainingLine];
-  v4 = [(CNVCardParser *)self makeLineWithValue:v3 forProperty:@"Phone"];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  v4 = [(CNVCardParser *)self makeLineWithValue:parseRemainingLine forProperty:@"Phone"];
   phones = self->_phones;
   if (!phones)
   {
@@ -991,11 +991,11 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_TITLE
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
   v4 = (*(*MEMORY[0x277CFBD30] + 16))();
   if ((v4 & 1) == 0)
   {
-    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:v3 forProperty:@"JobTitle"];
+    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:parseStringValue forProperty:@"JobTitle"];
   }
 
   return v4 ^ 1;
@@ -1003,17 +1003,17 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_UID
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [v3 copy];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [parseStringValue copy];
   carddavUID = self->_carddavUID;
   self->_carddavUID = v4;
 
   if ([(CNVCardLexer *)self->_lexer peekAtNextToken]== 4097)
   {
     [(CNVCardLexer *)self->_lexer advanceToPeekPoint];
-    v6 = [(CNVCardParser *)self parseStringValue];
-    v7 = v6;
-    if (v6 && [v6 length])
+    parseStringValue2 = [(CNVCardParser *)self parseStringValue];
+    v7 = parseStringValue2;
+    if (parseStringValue2 && [parseStringValue2 length])
     {
       [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:v7 forProperty:@"externalUUID"];
     }
@@ -1051,11 +1051,11 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_VERSION
 {
-  v3 = [(CNVCardParser *)self parseRemainingLine];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
   v4 = (*(*MEMORY[0x277CFBD30] + 16))();
   if ((v4 & 1) == 0)
   {
-    self->_30vCard = [v3 _cn_caseInsensitiveIsEqual:@"3.0"];
+    self->_30vCard = [parseRemainingLine _cn_caseInsensitiveIsEqual:@"3.0"];
   }
 
   return v4 ^ 1;
@@ -1090,7 +1090,7 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
   if (v4)
   {
     v5 = [(CNVCardParsedResultBuilder *)self->_resultBuilder valueForProperty:@"ABPersonFlags"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
     v7 = +[CNVCardUserDefaults defaultNameOrdering];
     v8 = [v3 objectAtIndex:0];
@@ -1099,19 +1099,19 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
     {
       v10 = [v8 compare:@"LAST" options:1];
 
-      v11 = v6 & 0xFFFFFFFFFFFFFFC7 | 0x10;
+      v11 = integerValue & 0xFFFFFFFFFFFFFFC7 | 0x10;
     }
 
     else
     {
       v10 = [v8 compare:@"FIRST" options:1];
 
-      v11 = v6 & 0xFFFFFFFFFFFFFFC7 | 0x20;
+      v11 = integerValue & 0xFFFFFFFFFFFFFFC7 | 0x20;
     }
 
     if (v10)
     {
-      v12 = v6;
+      v12 = integerValue;
     }
 
     else
@@ -1129,8 +1129,8 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_ABPHOTO
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [CNVCardXABPHOTOParser valueWithName:v3];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [CNVCardXABPHOTOParser valueWithName:parseStringValue];
   if (v4)
   {
     [(CNVCardParsedResultBuilder *)self->_resultBuilder setImageData:v4 forReference:&stru_288651EC0 clipRects:MEMORY[0x277CBEBF8]];
@@ -1141,10 +1141,10 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_ABRELATEDNAMES
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    v4 = [(CNVCardParser *)self makeLineWithValue:v3 forProperty:@"ABRelatedNames"];
+    v4 = [(CNVCardParser *)self makeLineWithValue:parseStringValue forProperty:@"ABRelatedNames"];
     relatedNames = self->_relatedNames;
     if (!relatedNames)
     {
@@ -1173,10 +1173,10 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
     if (!v6)
     {
       v7 = [(CNVCardParsedResultBuilder *)self->_resultBuilder valueForProperty:@"ABPersonFlags"];
-      v8 = [v7 integerValue];
+      integerValue = [v7 integerValue];
 
       resultBuilder = self->_resultBuilder;
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8 & 0xFFFFFFFFFFFFFFF8 | 1];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue & 0xFFFFFFFFFFFFFFF8 | 1];
       [(CNVCardParsedResultBuilder *)resultBuilder setValue:v10 forProperty:@"ABPersonFlags"];
     }
   }
@@ -1186,8 +1186,8 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_ABUID
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [v3 copy];
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [parseStringValue copy];
   uid = self->_uid;
   self->_uid = v4;
 
@@ -1227,81 +1227,81 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_IMAGEHASH
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v4 forProperty:@"imageHash"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:parseStringValue options:0];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:v4 forProperty:@"imageHash"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_IMAGETYPE
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"imageType"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"imageType"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_MAIDENNAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseRemainingLine];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"MaidenName"];
+  selfCopy = self;
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseRemainingLine forProperty:@"MaidenName"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_PHONETIC_FIRST_NAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"FirstPhonetic"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"FirstPhonetic"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_PHONETIC_LAST_NAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"LastPhonetic"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"LastPhonetic"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_PHONETIC_MIDDLE_NAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"MiddlePhonetic"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"MiddlePhonetic"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_PRONUNCIATION_FIRST_NAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"FirstPronunciation"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"FirstPronunciation"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_PRONUNCIATION_LAST_NAME
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"LastPronunciation"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"LastPronunciation"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_ADDRESSING_GRAMMAR
 {
-  v3 = [(CNVCardParser *)self parseRemainingLine];
-  v4 = [(CNVCardParser *)self makeLineWithValue:v3 forProperty:@"AddressingGrammar"];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  v4 = [(CNVCardParser *)self makeLineWithValue:parseRemainingLine forProperty:@"AddressingGrammar"];
   addressingGrammars = self->_addressingGrammars;
   if (!addressingGrammars)
   {
@@ -1341,42 +1341,42 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_X_ADDRESSBOOKSERVER_PHONEME_DATA
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"PhonemeData"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"PhonemeData"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_APPLE_LIKENESS_SOURCE
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"PreferredLikenessSource"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"PreferredLikenessSource"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_APPLE_LIKENESS_SERVICE_IDENTIFIER
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"PreferredApplePersonaIdentifier"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"PreferredApplePersonaIdentifier"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_X_APPLE_GUARDIAN_WHITELISTED
 {
-  v3 = [(CNVCardParser *)self parseStringValue];
-  if ([v3 isEqualToString:@"false"])
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  if ([parseStringValue isEqualToString:@"false"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:v3 forProperty:@"GuardianWhitelisted"];
+    v4 = [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:parseStringValue forProperty:@"GuardianWhitelisted"];
   }
 
   return v4;
@@ -1389,7 +1389,7 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
   if (v4)
   {
     v5 = [(CNVCardParsedResultBuilder *)self->_resultBuilder valueForProperty:@"ABPersonFlags"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
     v7 = [v3 objectAtIndex:0];
     v8 = [v7 compare:@"AUTOUPDATE" options:1];
@@ -1406,24 +1406,24 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
         if (v12)
         {
-          v13 = v6 & 0xFFFFFFFFFFFFFF3FLL;
+          v13 = integerValue & 0xFFFFFFFFFFFFFF3FLL;
         }
 
         else
         {
-          v13 = v6 | 0xC0;
+          v13 = integerValue | 0xC0;
         }
       }
 
       else
       {
-        v13 = v6 & 0xFFFFFFFFFFFFFF3FLL | 0x80;
+        v13 = integerValue & 0xFFFFFFFFFFFFFF3FLL | 0x80;
       }
     }
 
     else
     {
-      v13 = v6 & 0xFFFFFFFFFFFFFF3FLL | 0x40;
+      v13 = integerValue & 0xFFFFFFFFFFFFFF3FLL | 0x40;
     }
 
     resultBuilder = self->_resultBuilder;
@@ -1436,26 +1436,26 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
 - (BOOL)parse_VND_63_POSTER_IDENTIFIER
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v3 forProperty:@"posterIdentifier"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:parseStringValue forProperty:@"posterIdentifier"];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parse_VND_63_SENSITIVE_CONTENT_CONFIG
 {
-  v2 = self;
-  v3 = [(CNVCardParser *)self parseStringValue];
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(CNVCardParsedResultBuilder *)v2->_resultBuilder setValue:v4 forProperty:@"sensitiveContentConfiguration"];
+  selfCopy = self;
+  parseStringValue = [(CNVCardParser *)self parseStringValue];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:parseStringValue options:0];
+  LOBYTE(selfCopy) = [(CNVCardParsedResultBuilder *)selfCopy->_resultBuilder setValue:v4 forProperty:@"sensitiveContentConfiguration"];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)parseInstantMessageValueWithService:(id)a3
+- (BOOL)parseInstantMessageValueWithService:(id)service
 {
-  v4 = [CNVCardInstantMessageParser valueWithService:a3 existingHandles:self->_instantMessagingAddresses parser:self];
+  v4 = [CNVCardInstantMessageParser valueWithService:service existingHandles:self->_instantMessagingAddresses parser:self];
   if (v4)
   {
     v5 = [(CNVCardParser *)self makeLineWithValue:v4 forProperty:@"InstantMessage"];
@@ -1475,33 +1475,33 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
   return 1;
 }
 
-- (BOOL)parseExtension:(id)a3
+- (BOOL)parseExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(CNVCardParser *)self parseArrayValue];
-  if (v5)
+  extensionCopy = extension;
+  parseArrayValue = [(CNVCardParser *)self parseArrayValue];
+  if (parseArrayValue)
   {
     grouping = self->_grouping;
     if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
     {
-      v7 = [(NSMutableDictionary *)self->_extensions objectForKey:self->_grouping];
-      if (!v7)
+      dictionary = [(NSMutableDictionary *)self->_extensions objectForKey:self->_grouping];
+      if (!dictionary)
       {
-        v7 = [MEMORY[0x277CBEB38] dictionary];
-        [(NSMutableDictionary *)self->_extensions setObject:v7 forKey:self->_grouping];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [(NSMutableDictionary *)self->_extensions setObject:dictionary forKey:self->_grouping];
       }
 
-      [v7 setObject:v5 forKey:v4];
+      [dictionary setObject:parseArrayValue forKey:extensionCopy];
     }
   }
 
   return 1;
 }
 
-- (id)firstValueForKey:(id)a3 inExtensionGroup:(id)a4
+- (id)firstValueForKey:(id)key inExtensionGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  groupCopy = group;
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
     v8 = 0;
@@ -1509,31 +1509,31 @@ void __28__CNVCardParser_parse_PHOTO__block_invoke(uint64_t a1, void *a2, void *
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_extensions objectForKey:v7];
-    v8 = [(CNVCardParser *)self firstValueForKey:v6 inExtension:v9];
+    v9 = [(NSMutableDictionary *)self->_extensions objectForKey:groupCopy];
+    v8 = [(CNVCardParser *)self firstValueForKey:keyCopy inExtension:v9];
   }
 
   return v8;
 }
 
-- (id)firstValueForKey:(id)a3 inExtension:(id)a4
+- (id)firstValueForKey:(id)key inExtension:(id)extension
 {
-  v4 = [a4 objectForKey:a3];
-  v5 = [v4 firstObject];
+  v4 = [extension objectForKey:key];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)firstParameterWithName:(id)a3
+- (id)firstParameterWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   itemParameters = self->_itemParameters;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__CNVCardParser_firstParameterWithName___block_invoke;
   v9[3] = &unk_27A710C78;
-  v10 = v4;
-  v6 = v4;
+  v10 = nameCopy;
+  v6 = nameCopy;
   v7 = [(NSArray *)itemParameters _cn_firstObjectPassingTest:v9];
 
   return v7;
@@ -1547,14 +1547,14 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (id)firstValueForParameterWithName:(id)a3
+- (id)firstValueForParameterWithName:(id)name
 {
-  v3 = [(CNVCardParser *)self firstParameterWithName:a3];
+  v3 = [(CNVCardParser *)self firstParameterWithName:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 values];
-    v6 = [v5 firstObject];
+    values = [v3 values];
+    firstObject = [values firstObject];
 
     if ((*(*MEMORY[0x277CFBD30] + 16))())
     {
@@ -1563,7 +1563,7 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
 
     else
     {
-      v7 = v6;
+      v7 = firstObject;
     }
 
     v8 = v7;
@@ -1593,11 +1593,11 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (id)parameterValuesForName:(id)a3
+- (id)parameterValuesForName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  nameCopy = name;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1618,13 +1618,13 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 _cn_caseInsensitiveIsEqual:v4];
+        name = [v11 name];
+        v13 = [name _cn_caseInsensitiveIsEqual:nameCopy];
 
         if (v13)
         {
-          v14 = [v11 values];
-          [v5 addObjectsFromArray:v14];
+          values = [v11 values];
+          [array addObjectsFromArray:values];
         }
       }
 
@@ -1636,25 +1636,25 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)makeLineWithValue:(id)a3 forProperty:(id)a4
+- (id)makeLineWithValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = [(CNVCardParser *)self genericLabelForProperty:a4];
-  v8 = [(CNVCardParser *)self makeLineWithLabel:v7 value:v6];
+  valueCopy = value;
+  v7 = [(CNVCardParser *)self genericLabelForProperty:property];
+  v8 = [(CNVCardParser *)self makeLineWithLabel:v7 value:valueCopy];
 
   return v8;
 }
 
-- (id)makeLineWithLabel:(id)a3 value:(id)a4
+- (id)makeLineWithLabel:(id)label value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CNVCardParsedLine alloc] initWithName:v7];
+  valueCopy = value;
+  labelCopy = label;
+  v8 = [[CNVCardParsedLine alloc] initWithName:labelCopy];
 
-  [(CNVCardParsedLine *)v8 setValue:v6];
+  [(CNVCardParsedLine *)v8 setValue:valueCopy];
   [(CNVCardParsedLine *)v8 setParameters:self->_itemParameters];
   [(CNVCardParsedLine *)v8 setGrouping:self->_grouping];
   [(CNVCardParsedLine *)v8 setIsPrimary:[(NSArray *)self->_itemParameters _cn_any:&__block_literal_global_456]];
@@ -1664,46 +1664,46 @@ uint64_t __40__CNVCardParser_firstParameterWithName___block_invoke(uint64_t a1, 
 
 - (id)parseParameters
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CNVCardLexer *)self->_lexer readNextToken];
-  if (v4 == 8193)
+  array = [MEMORY[0x277CBEB18] array];
+  readNextToken = [(CNVCardLexer *)self->_lexer readNextToken];
+  if (readNextToken == 8193)
   {
 LABEL_15:
-    v12 = v3;
+    v12 = array;
   }
 
   else
   {
-    v5 = v4;
+    readNextToken2 = readNextToken;
     while ([(CNVCardLexer *)self->_lexer errorCount]<= 10)
     {
-      if (v5 == 4097)
+      if (readNextToken2 == 4097)
       {
-        v6 = [(CNVCardParser *)self nextParameterInCurrentLine];
-        [v3 addObject:v6];
-        v7 = [v6 name];
-        v8 = [(CNVCardParser *)self handlerSelectorForParameterName:v7];
+        nextParameterInCurrentLine = [(CNVCardParser *)self nextParameterInCurrentLine];
+        [array addObject:nextParameterInCurrentLine];
+        name = [nextParameterInCurrentLine name];
+        v8 = [(CNVCardParser *)self handlerSelectorForParameterName:name];
 
         if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v9 = [v6 values];
-          v10 = [v9 firstObject];
+          values = [nextParameterInCurrentLine values];
+          firstObject = [values firstObject];
 
           v11 = [(CNVCardParser *)self methodForSelector:v8];
           if (v11)
           {
-            v11(self, v8, v10);
+            v11(self, v8, firstObject);
           }
         }
       }
 
-      else if (v5 == 32769 || v5 == 65537)
+      else if (readNextToken2 == 32769 || readNextToken2 == 65537)
       {
         goto LABEL_15;
       }
 
-      v5 = [(CNVCardLexer *)self->_lexer readNextToken];
-      if (v5 == 8193)
+      readNextToken2 = [(CNVCardLexer *)self->_lexer readNextToken];
+      if (readNextToken2 == 8193)
       {
         goto LABEL_15;
       }
@@ -1720,33 +1720,33 @@ LABEL_15:
   v3 = [(CNVCardLexer *)self->_lexer nextStringInEncoding:1 quotedPrintable:0 stopTokens:46080 trim:1 maximumValueLength:[(CNVCardReadingOptions *)self->_options maximumValueLength]];
   if (([(__CFString *)v3 _cn_caseInsensitiveIsEqual:@"QUOTED-PRINTABLE"]& 1) != 0)
   {
-    v4 = &unk_28865B680;
+    parseParameterValues = &unk_28865B680;
   }
 
   else
   {
     if (![(__CFString *)v3 _cn_caseInsensitiveIsEqual:@"BASE64"])
     {
-      v4 = 0;
+      parseParameterValues = 0;
       v5 = 1;
       goto LABEL_7;
     }
 
-    v4 = &unk_28865B698;
+    parseParameterValues = &unk_28865B698;
   }
 
   v5 = 0;
   v3 = @"ENCODING";
 LABEL_7:
-  v6 = [(CNVCardLexer *)self->_lexer peekAtNextToken];
-  if (v5 && v6 == 1025)
+  peekAtNextToken = [(CNVCardLexer *)self->_lexer peekAtNextToken];
+  if (v5 && peekAtNextToken == 1025)
   {
-    v4 = [(CNVCardParser *)self parseParameterValues];
+    parseParameterValues = [(CNVCardParser *)self parseParameterValues];
   }
 
-  if (v4)
+  if (parseParameterValues)
   {
-    v7 = v4;
+    v7 = parseParameterValues;
   }
 
   else
@@ -1778,17 +1778,17 @@ LABEL_7:
   return v5;
 }
 
-- (void)parameter_CHARSET:(id)a3
+- (void)parameter_CHARSET:(id)t
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  tCopy = t;
+  v5 = tCopy;
+  if (!tCopy)
   {
     v6 = 4;
     goto LABEL_7;
   }
 
-  if ([(__CFString *)v4 _cn_caseInsensitiveIsEqual:@"UTF-7"])
+  if ([(__CFString *)tCopy _cn_caseInsensitiveIsEqual:@"UTF-7"])
   {
     v6 = 4000100;
 LABEL_7:
@@ -1821,10 +1821,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)parameter_ENCODING:(id)a3
+- (void)parameter_ENCODING:(id)g
 {
-  v5 = a3;
-  if ([v5 _cn_caseInsensitiveIsEqual:@"QUOTED-PRINTABLE"])
+  gCopy = g;
+  if ([gCopy _cn_caseInsensitiveIsEqual:@"QUOTED-PRINTABLE"])
   {
     v4 = 312;
 LABEL_5:
@@ -1832,13 +1832,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v5 _cn_caseInsensitiveIsEqual:@"b"])
+  if ([gCopy _cn_caseInsensitiveIsEqual:@"b"])
   {
     v4 = 313;
     goto LABEL_5;
   }
 
-  if ([v5 _cn_caseInsensitiveIsEqual:@"BASE64"])
+  if ([gCopy _cn_caseInsensitiveIsEqual:@"BASE64"])
   {
     v4 = 313;
     goto LABEL_5;
@@ -1859,26 +1859,26 @@ LABEL_6:
 
   [(CNVCardParser *)self processNameValues];
   [(CNVCardParser *)self processExtensionValues];
-  v4 = [(CNVCardNameComponents *)self->_nameComponents firstName];
-  [(CNVCardParser *)self reportValue:v4 forProperty:@"First"];
+  firstName = [(CNVCardNameComponents *)self->_nameComponents firstName];
+  [(CNVCardParser *)self reportValue:firstName forProperty:@"First"];
 
-  v5 = [(CNVCardNameComponents *)self->_nameComponents lastName];
-  [(CNVCardParser *)self reportValue:v5 forProperty:@"Last"];
+  lastName = [(CNVCardNameComponents *)self->_nameComponents lastName];
+  [(CNVCardParser *)self reportValue:lastName forProperty:@"Last"];
 
-  v6 = [(CNVCardNameComponents *)self->_nameComponents middleName];
-  [(CNVCardParser *)self reportValue:v6 forProperty:@"Middle"];
+  middleName = [(CNVCardNameComponents *)self->_nameComponents middleName];
+  [(CNVCardParser *)self reportValue:middleName forProperty:@"Middle"];
 
-  v7 = [(CNVCardNameComponents *)self->_nameComponents title];
-  [(CNVCardParser *)self reportValue:v7 forProperty:@"Title"];
+  title = [(CNVCardNameComponents *)self->_nameComponents title];
+  [(CNVCardParser *)self reportValue:title forProperty:@"Title"];
 
-  v8 = [(CNVCardNameComponents *)self->_nameComponents suffix];
-  [(CNVCardParser *)self reportValue:v8 forProperty:@"Suffix"];
+  suffix = [(CNVCardNameComponents *)self->_nameComponents suffix];
+  [(CNVCardParser *)self reportValue:suffix forProperty:@"Suffix"];
 
-  v9 = [(CNVCardNameComponents *)self->_nameComponents companyName];
-  [(CNVCardParser *)self reportValue:v9 forProperty:@"Organization"];
+  companyName = [(CNVCardNameComponents *)self->_nameComponents companyName];
+  [(CNVCardParser *)self reportValue:companyName forProperty:@"Organization"];
 
-  v10 = [(CNVCardNameComponents *)self->_nameComponents companyName];
-  if ((*(v3 + 16))(v3, v10))
+  companyName2 = [(CNVCardNameComponents *)self->_nameComponents companyName];
+  if ((*(v3 + 16))(v3, companyName2))
   {
     goto LABEL_6;
   }
@@ -1887,10 +1887,10 @@ LABEL_6:
 
   if (fullNameHasZeroLength)
   {
-    v10 = [(CNVCardParsedResultBuilder *)self->_resultBuilder valueForProperty:@"ABPersonFlags"];
-    v12 = [v10 integerValue];
+    companyName2 = [(CNVCardParsedResultBuilder *)self->_resultBuilder valueForProperty:@"ABPersonFlags"];
+    integerValue = [companyName2 integerValue];
     resultBuilder = self->_resultBuilder;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:v12 & 0xFFFFFFFFFFFFFFF8 | 1];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue & 0xFFFFFFFFFFFFFFF8 | 1];
     [(CNVCardParsedResultBuilder *)resultBuilder setValue:v14 forProperty:@"ABPersonFlags"];
 
 LABEL_6:
@@ -1927,41 +1927,41 @@ LABEL_6:
 - (void)processExtensionValues
 {
   addresses = self->_addresses;
-  v4 = [(CNVCardParser *)self validCountryCodes];
-  [CNVCardADRParser processExtensionValuesForLines:addresses validCountryCodes:v4 parser:self];
+  validCountryCodes = [(CNVCardParser *)self validCountryCodes];
+  [CNVCardADRParser processExtensionValuesForLines:addresses validCountryCodes:validCountryCodes parser:self];
 
   socialProfiles = self->_socialProfiles;
 
   [CNVCardXSOCIALPROFILEParser processExtensionValuesForLines:socialProfiles parser:self];
 }
 
-- (void)reportValue:(id)a3 forProperty:(id)a4
+- (void)reportValue:(id)value forProperty:(id)property
 {
-  v7 = a3;
-  v6 = a4;
-  if (![(CNVCardParser *)self valueIsEmpty:v7])
+  valueCopy = value;
+  propertyCopy = property;
+  if (![(CNVCardParser *)self valueIsEmpty:valueCopy])
   {
-    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:v7 forProperty:v6];
+    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValue:valueCopy forProperty:propertyCopy];
   }
 }
 
-- (void)reportMultiValueLines:(id)a3 forProperty:(id)a4
+- (void)reportMultiValueLines:(id)lines forProperty:(id)property
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  linesCopy = lines;
+  propertyCopy = property;
+  if ([linesCopy count])
   {
-    v24 = v7;
-    v27 = [MEMORY[0x277CBEB18] array];
-    v26 = [MEMORY[0x277CBEB18] array];
-    v25 = [MEMORY[0x277CBEB18] array];
+    v24 = propertyCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = v6;
-    obj = v6;
+    v23 = linesCopy;
+    obj = linesCopy;
     v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v8)
     {
@@ -1978,17 +1978,17 @@ LABEL_6:
           }
 
           v13 = *(*(&v29 + 1) + 8 * i);
-          v14 = [v13 value];
-          if (![(CNVCardParser *)self valueIsEmpty:v14])
+          value = [v13 value];
+          if (![(CNVCardParser *)self valueIsEmpty:value])
           {
-            v15 = [v13 grouping];
-            v16 = [(CNVCardParser *)self firstValueForKey:@"X-ABLabel" inExtensionGroup:v15];
+            grouping = [v13 grouping];
+            v16 = [(CNVCardParser *)self firstValueForKey:@"X-ABLabel" inExtensionGroup:grouping];
 
             if ((*(v11 + 16))(v11, v16))
             {
-              v17 = [v13 name];
+              name = [v13 name];
 
-              v16 = v17;
+              v16 = name;
             }
 
             if ([(CNVCardParser *)self valueIsEmpty:v16])
@@ -1998,11 +1998,11 @@ LABEL_6:
               v16 = v18;
             }
 
-            v19 = [MEMORY[0x277CBEB68] null];
-            [v27 _cn_addObject:v14 orPlaceholder:v19];
+            null = [MEMORY[0x277CBEB68] null];
+            [array _cn_addObject:value orPlaceholder:null];
 
-            v20 = [MEMORY[0x277CBEB68] null];
-            [v26 _cn_addObject:v16 orPlaceholder:v20];
+            null2 = [MEMORY[0x277CBEB68] null];
+            [array2 _cn_addObject:v16 orPlaceholder:null2];
 
             if ([v13 isPrimary])
             {
@@ -2014,7 +2014,7 @@ LABEL_6:
               v21 = MEMORY[0x277CBEC28];
             }
 
-            [v25 addObject:v21];
+            [array3 addObject:v21];
           }
         }
 
@@ -2024,24 +2024,24 @@ LABEL_6:
       while (v9);
     }
 
-    v7 = v24;
-    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValues:v27 labels:v26 isPrimaries:v25 forProperty:v24];
+    propertyCopy = v24;
+    [(CNVCardParsedResultBuilder *)self->_resultBuilder setValues:array labels:array2 isPrimaries:array3 forProperty:v24];
 
-    v6 = v23;
+    linesCopy = v23;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)valueIsEmpty:(id)a3
+- (BOOL)valueIsEmpty:(id)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v6 = 1;
-  if (v3)
+  if (emptyCopy)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v4 != v3 && *MEMORY[0x277CBEEE8] != v3)
+    if (null != emptyCopy && *MEMORY[0x277CBEEE8] != emptyCopy)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -2055,13 +2055,13 @@ LABEL_6:
   return v6;
 }
 
-- (id)genericLabelForProperty:(id)a3
+- (id)genericLabelForProperty:(id)property
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Phone"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"Phone"])
   {
-    v5 = [(CNVCardParser *)self phoneLabel];
+    phoneLabel = [(CNVCardParser *)self phoneLabel];
   }
 
   else
@@ -2076,7 +2076,7 @@ LABEL_6:
     {
       v8 = v7;
       v9 = *v19;
-      v17 = self;
+      selfCopy = self;
 LABEL_5:
       v10 = 0;
       while (1)
@@ -2113,7 +2113,7 @@ LABEL_5:
         if (v8 == ++v10)
         {
           v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
-          self = v17;
+          self = selfCopy;
           if (v8)
           {
             goto LABEL_5;
@@ -2125,17 +2125,17 @@ LABEL_5:
 
       v14 = CNVCardLabelHome;
 LABEL_22:
-      v5 = *v14;
+      phoneLabel = *v14;
       v12 = v6;
       goto LABEL_23;
     }
 
 LABEL_14:
 
-    v12 = [(CNVCardParser *)self firstCustomLabelForProperty:v4 types:v6];
+    v12 = [(CNVCardParser *)self firstCustomLabelForProperty:propertyCopy types:v6];
     if ((*(*MEMORY[0x277CFBD30] + 16))())
     {
-      v13 = [(CNVCardParser *)self fallbackLabelForProperty:v4];
+      v13 = [(CNVCardParser *)self fallbackLabelForProperty:propertyCopy];
     }
 
     else
@@ -2144,18 +2144,18 @@ LABEL_14:
       v12 = v13;
     }
 
-    v5 = v13;
+    phoneLabel = v13;
 LABEL_23:
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return phoneLabel;
 }
 
-- (id)fallbackLabelForProperty:(id)a3
+- (id)fallbackLabelForProperty:(id)property
 {
-  v3 = [a3 isEqual:@"URLs"];
+  v3 = [property isEqual:@"URLs"];
   v4 = CNVCardLabelURLHomePage;
   if (!v3)
   {
@@ -2317,19 +2317,19 @@ LABEL_28:
   return v17;
 }
 
-- (id)firstCustomLabelForProperty:(id)a3 types:(id)a4
+- (id)firstCustomLabelForProperty:(id)property types:(id)types
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"SocialProfile"])
+  propertyCopy = property;
+  typesCopy = types;
+  if ([propertyCopy isEqualToString:@"SocialProfile"])
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   else
   {
     v8 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_28865B6B0];
-    if ([v5 isEqualToString:@"Email"])
+    if ([propertyCopy isEqualToString:@"Email"])
     {
       [v8 addObject:@"INTERNET"];
     }
@@ -2340,11 +2340,11 @@ LABEL_28:
     v12[3] = &unk_27A710D20;
     v13 = v8;
     v9 = v8;
-    v10 = [v6 _cn_filter:v12];
-    v7 = [v10 firstObject];
+    v10 = [typesCopy _cn_filter:v12];
+    firstObject = [v10 firstObject];
   }
 
-  return v7;
+  return firstObject;
 }
 
 uint64_t __51__CNVCardParser_firstCustomLabelForProperty_types___block_invoke(uint64_t a1, void *a2)
@@ -2367,20 +2367,20 @@ uint64_t __51__CNVCardParser_firstCustomLabelForProperty_types___block_invoke(ui
   encoding = self->_encoding;
   quotedPrintable = self->_quotedPrintable;
   lexer = self->_lexer;
-  v5 = [(CNVCardReadingOptions *)self->_options maximumValueLength];
+  maximumValueLength = [(CNVCardReadingOptions *)self->_options maximumValueLength];
 
-  return [(CNVCardLexer *)lexer nextStringInEncoding:encoding quotedPrintable:quotedPrintable stopTokens:36864 trim:1 maximumValueLength:v5];
+  return [(CNVCardLexer *)lexer nextStringInEncoding:encoding quotedPrintable:quotedPrintable stopTokens:36864 trim:1 maximumValueLength:maximumValueLength];
 }
 
 - (BOOL)advancePastSemicolon
 {
-  v3 = [(CNVCardLexer *)self->_lexer peekAtNextToken];
-  if (v3 == 4097)
+  peekAtNextToken = [(CNVCardLexer *)self->_lexer peekAtNextToken];
+  if (peekAtNextToken == 4097)
   {
     [(CNVCardLexer *)self->_lexer advanceToPeekPoint];
   }
 
-  return v3 == 4097;
+  return peekAtNextToken == 4097;
 }
 
 - (id)parseRemainingLine
@@ -2395,21 +2395,21 @@ uint64_t __51__CNVCardParser_firstCustomLabelForProperty_types___block_invoke(ui
 {
   encoding = self->_encoding;
   lexer = self->_lexer;
-  v4 = [(CNVCardReadingOptions *)self->_options maximumValueLength];
+  maximumValueLength = [(CNVCardReadingOptions *)self->_options maximumValueLength];
 
-  return [(CNVCardLexer *)lexer nextArraySeperatedByToken:4096 stoppingAt:0x8000 inEncoding:encoding maximumValueLength:v4];
+  return [(CNVCardLexer *)lexer nextArraySeperatedByToken:4096 stoppingAt:0x8000 inEncoding:encoding maximumValueLength:maximumValueLength];
 }
 
-- (id)parseUnknownValueStartingAtPosition:(unint64_t)a3
+- (id)parseUnknownValueStartingAtPosition:(unint64_t)position
 {
-  v5 = [(CNVCardParser *)self parseRemainingLine];
-  v6 = [(CNVCardParser *)self currentPosition];
-  v7 = v6 - a3;
-  v8 = [(CNVCardLexer *)self->_lexer stringWithRange:a3 encoding:v6 - a3, self->_encoding];
+  parseRemainingLine = [(CNVCardParser *)self parseRemainingLine];
+  currentPosition = [(CNVCardParser *)self currentPosition];
+  v7 = currentPosition - position;
+  v8 = [(CNVCardLexer *)self->_lexer stringWithRange:position encoding:currentPosition - position, self->_encoding];
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
-    v9 = [(CNVCardLexer *)self->_lexer dataWithRange:a3, v7];
-    v10 = [v9 base64EncodedStringWithOptions:0];
+    newlineCharacterSet = [(CNVCardLexer *)self->_lexer dataWithRange:position, v7];
+    v10 = [newlineCharacterSet base64EncodedStringWithOptions:0];
 
     v11 = v10;
     v8 = v11;
@@ -2417,8 +2417,8 @@ uint64_t __51__CNVCardParser_firstCustomLabelForProperty_types___block_invoke(ui
 
   else
   {
-    v9 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v11 = [v8 stringByTrimmingCharactersInSet:v9];
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v11 = [v8 stringByTrimmingCharactersInSet:newlineCharacterSet];
   }
 
   v12 = v11;

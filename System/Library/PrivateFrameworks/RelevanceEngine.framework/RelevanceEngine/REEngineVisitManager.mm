@@ -1,60 +1,60 @@
 @interface REEngineVisitManager
 - (BOOL)_wantsVisits;
-- (REEngineVisitManager)initWithRelevanceEngine:(id)a3 locationManager:(id)a4;
-- (void)_beginMonitoringVisitsForManager:(id)a3;
-- (void)_handleVisitUpdate:(id)a3 location:(id)a4;
+- (REEngineVisitManager)initWithRelevanceEngine:(id)engine locationManager:(id)manager;
+- (void)_beginMonitoringVisitsForManager:(id)manager;
+- (void)_handleVisitUpdate:(id)update location:(id)location;
 - (void)_updateVisitStatus;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation REEngineVisitManager
 
-- (REEngineVisitManager)initWithRelevanceEngine:(id)a3 locationManager:(id)a4
+- (REEngineVisitManager)initWithRelevanceEngine:(id)engine locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = REEngineVisitManager;
-  v8 = [(RERelevanceEngineSubsystem *)&v14 initWithRelevanceEngine:v6];
+  v8 = [(RERelevanceEngineSubsystem *)&v14 initWithRelevanceEngine:engineCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     v10 = objc_opt_new();
     observers = v9->_observers;
     v9->_observers = v10;
 
-    v12 = [v6 logger];
-    [v12 addLoggable:v9];
+    logger = [engineCopy logger];
+    [logger addLoggable:v9];
   }
 
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  [(REObserverStore *)self->_observers addObserver:a3];
+  [(REObserverStore *)self->_observers addObserver:observer];
 
   [(REEngineVisitManager *)self _updateVisitStatus];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(REObserverStore *)self->_observers removeObserver:a3];
+  [(REObserverStore *)self->_observers removeObserver:observer];
 
   [(REEngineVisitManager *)self _updateVisitStatus];
 }
 
 - (void)_updateVisitStatus
 {
-  v3 = [(RERelevanceEngineSubsystem *)self queue];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__REEngineVisitManager__updateVisitStatus__block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __42__REEngineVisitManager__updateVisitStatus__block_invoke(uint64_t a1)
@@ -89,30 +89,30 @@ uint64_t __42__REEngineVisitManager__updateVisitStatus__block_invoke(uint64_t a1
 
 - (BOOL)_wantsVisits
 {
-  v3 = [(RERelevanceEngineSubsystem *)self isRunning];
-  if (v3)
+  isRunning = [(RERelevanceEngineSubsystem *)self isRunning];
+  if (isRunning)
   {
-    LOBYTE(v3) = [(REObserverStore *)self->_observers count]!= 0;
+    LOBYTE(isRunning) = [(REObserverStore *)self->_observers count]!= 0;
   }
 
-  return v3;
+  return isRunning;
 }
 
-- (void)_handleVisitUpdate:(id)a3 location:(id)a4
+- (void)_handleVisitUpdate:(id)update location:(id)location
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [(RERelevanceEngineSubsystem *)self queue];
+  locationCopy = location;
+  v7 = [update copy];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__REEngineVisitManager__handleVisitUpdate_location___block_invoke;
   block[3] = &unk_2785FB070;
   v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v14 = locationCopy;
+  v9 = locationCopy;
   v10 = v7;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 void __52__REEngineVisitManager__handleVisitUpdate_location___block_invoke(uint64_t a1)
@@ -150,16 +150,16 @@ void __52__REEngineVisitManager__handleVisitUpdate_location___block_invoke(uint6
   }
 }
 
-- (void)_beginMonitoringVisitsForManager:(id)a3
+- (void)_beginMonitoringVisitsForManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__REEngineVisitManager__beginMonitoringVisitsForManager___block_invoke;
   v5[3] = &unk_2785FBC28;
   objc_copyWeak(&v6, &location);
-  [v4 startVisitUpdatesWithHandler:v5];
+  [managerCopy startVisitUpdatesWithHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

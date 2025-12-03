@@ -1,22 +1,22 @@
 @interface EGSubgraphPort
-- (EGSubgraphPort)initWithName:(id)a3;
+- (EGSubgraphPort)initWithName:(id)name;
 - (NSString)description;
 - (void)dealloc;
-- (void)registerDestination:(id)a3;
-- (void)registerSource:(id)a3;
-- (void)setParentGraph:(id)a3;
+- (void)registerDestination:(id)destination;
+- (void)registerSource:(id)source;
+- (void)setParentGraph:(id)graph;
 @end
 
 @implementation EGSubgraphPort
 
-- (EGSubgraphPort)initWithName:(id)a3
+- (EGSubgraphPort)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = EGSubgraphPort;
   v4 = [(EGSubgraphPort *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
     v4->_destinations = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
@@ -44,28 +44,28 @@
   return v3;
 }
 
-- (void)registerSource:(id)a3
+- (void)registerSource:(id)source
 {
-  if (!a3)
+  if (!source)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil source! Forbidden", self, v5, v6];
+    source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil source! Forbidden", self, v5, v6];
     goto LABEL_6;
   }
 
   source = self->_source;
   if (source)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register %@ when it was already connected via %@! Forbidden", self, a3, source];
+    source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register %@ when it was already connected via %@! Forbidden", self, source, source];
 LABEL_6:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v4 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:source userInfo:0]);
   }
 
-  self->_source = a3;
+  self->_source = source;
 }
 
-- (void)registerDestination:(id)a3
+- (void)registerDestination:(id)destination
 {
-  if (!a3)
+  if (!destination)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to register a nil destination! Forbidden", self];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v5 userInfo:0]);
@@ -76,15 +76,15 @@ LABEL_6:
   [(NSMutableArray *)destinations addObject:?];
 }
 
-- (void)setParentGraph:(id)a3
+- (void)setParentGraph:(id)graph
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, a3, objc_loadWeak(&self->_parentGraph)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, graph, objc_loadWeak(&self->_parentGraph)), 0}];
     objc_exception_throw(v5);
   }
 
-  objc_storeWeak(&self->_parentGraph, a3);
+  objc_storeWeak(&self->_parentGraph, graph);
 }
 
 @end

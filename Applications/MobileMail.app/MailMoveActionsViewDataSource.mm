@@ -1,32 +1,32 @@
 @interface MailMoveActionsViewDataSource
-- (id)sectionDataForMailActionsViewController:(id)a3;
+- (id)sectionDataForMailActionsViewController:(id)controller;
 @end
 
 @implementation MailMoveActionsViewDataSource
 
-- (id)sectionDataForMailActionsViewController:(id)a3
+- (id)sectionDataForMailActionsViewController:(id)controller
 {
   if ([(MailActionsViewDataSource *)self isTargetValid])
   {
-    v20 = [(MailActionsViewDataSource *)self presentationSource];
-    v4 = [(MailActionsViewDataSource *)self completion];
-    v5 = [(MailActionsViewDataSource *)self predictedMailbox];
-    v6 = [v5 resultIfAvailable];
+    presentationSource = [(MailActionsViewDataSource *)self presentationSource];
+    completion = [(MailActionsViewDataSource *)self completion];
+    predictedMailbox = [(MailActionsViewDataSource *)self predictedMailbox];
+    resultIfAvailable = [predictedMailbox resultIfAvailable];
 
-    v7 = [(MailActionsViewDataSource *)self moveToPredictionTriageInteractionDelegate];
-    v8 = [(MailActionsViewDataSource *)self presentingViewControllerForTransferUI];
-    v9 = [(MailActionsViewDataSource *)self target];
-    v10 = [v9 messageListItem];
-    v21 = v10;
+    moveToPredictionTriageInteractionDelegate = [(MailActionsViewDataSource *)self moveToPredictionTriageInteractionDelegate];
+    presentingViewControllerForTransferUI = [(MailActionsViewDataSource *)self presentingViewControllerForTransferUI];
+    target = [(MailActionsViewDataSource *)self target];
+    messageListItem = [target messageListItem];
+    v21 = messageListItem;
     v11 = [NSArray arrayWithObjects:&v21 count:1];
 
-    v12 = [(MailActionsViewDataSource *)self scene];
-    v13 = [v12 undoManager];
+    scene = [(MailActionsViewDataSource *)self scene];
+    undoManager = [scene undoManager];
 
-    v14 = [MFMoveToPredictionTriageInteraction interactionWithMessageListItems:v11 undoManager:v13 origin:[(MailActionsViewDataSource *)self origin] actor:2 presentationSource:v20 delegate:v7 presentingViewController:v8 predictedMailbox:v6];
+    v14 = [MFMoveToPredictionTriageInteraction interactionWithMessageListItems:v11 undoManager:undoManager origin:[(MailActionsViewDataSource *)self origin] actor:2 presentationSource:presentationSource delegate:moveToPredictionTriageInteractionDelegate presentingViewController:presentingViewControllerForTransferUI predictedMailbox:resultIfAvailable];
     v15 = objc_opt_new();
     v16 = [MFCardActionSectionData alloc];
-    v17 = [v14 cardActionsWithCompletion:v4];
+    v17 = [v14 cardActionsWithCompletion:completion];
     v18 = [(MFCardActionSectionData *)v16 initWithActions:v17 viewLayout:2];
     [v15 addObject:v18];
   }

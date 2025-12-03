@@ -1,147 +1,147 @@
 @interface LargeDayViewController
-- (BOOL)_allEventsHaveSameAddressWithFirstArray:(id)a3 secondArray:(id)a4;
-- (BOOL)_eventEndDateIsPassed:(id)a3;
-- (BOOL)_eventIntersectsDayViewControllerActiveDate:(id)a3;
+- (BOOL)_allEventsHaveSameAddressWithFirstArray:(id)array secondArray:(id)secondArray;
+- (BOOL)_eventEndDateIsPassed:(id)passed;
+- (BOOL)_eventIntersectsDayViewControllerActiveDate:(id)date;
 - (BOOL)_eventViewControllerForModelSelectedEventIsAlreadyShown;
 - (BOOL)_isTransitioningTraitCollection;
-- (BOOL)_selectEvent:(id)a3 animated:(BOOL)a4 context:(int)a5;
-- (BOOL)_selectEvents:(id)a3 animated:(BOOL)a4 context:(int)a5;
-- (BOOL)_showsEventViewControllerAsFullScreen:(id)a3;
+- (BOOL)_selectEvent:(id)event animated:(BOOL)animated context:(int)context;
+- (BOOL)_selectEvents:(id)events animated:(BOOL)animated context:(int)context;
+- (BOOL)_showsEventViewControllerAsFullScreen:(id)screen;
 - (BOOL)allowChangingDate;
 - (BOOL)canSpaciallyEditOccurrences;
-- (BOOL)comparePointersOfArray:(id)a3 withArray:(id)a4;
-- (BOOL)dayViewControllerShouldEndGestureEditingOnTap:(id)a3;
-- (BOOL)didSelectEvent:(id)a3 userInitiated:(BOOL)a4;
-- (BOOL)didSelectEvents:(id)a3 userInitiated:(BOOL)a4;
-- (BOOL)eventViewControllerEditButtonTemporarilyDisabled:(id)a3;
+- (BOOL)comparePointersOfArray:(id)array withArray:(id)withArray;
+- (BOOL)dayViewControllerShouldEndGestureEditingOnTap:(id)tap;
+- (BOOL)didSelectEvent:(id)event userInitiated:(BOOL)initiated;
+- (BOOL)didSelectEvents:(id)events userInitiated:(BOOL)initiated;
+- (BOOL)eventViewControllerEditButtonTemporarilyDisabled:(id)disabled;
 - (BOOL)eventViewControllerShouldHideDeleteButton;
-- (BOOL)eventViewDelegateShouldCreateOwnEditViewController:(id)a3;
-- (BOOL)eventViewDelegateShouldHandlePresentationOfEditViewController:(id)a3;
+- (BOOL)eventViewDelegateShouldCreateOwnEditViewController:(id)controller;
+- (BOOL)eventViewDelegateShouldHandlePresentationOfEditViewController:(id)controller;
 - (BOOL)mainViewControllerCanChangeSelectedDate;
 - (BOOL)mainViewControllerCanChangeSelectedEvent;
-- (BOOL)performModalDialogsIfNeededWithContinue:(id)a3;
+- (BOOL)performModalDialogsIfNeededWithContinue:(id)continue;
 - (BOOL)shouldAdaptEventViewControllers;
 - (BOOL)shouldInvalidateManagedNavigationControllerOnPresentationDismissal;
 - (BOOL)shouldJournalMainViewControllerParent;
 - (BOOL)wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
 - (Class)managedNavigationControllerType;
 - (EKEvent)modelSelectedEvent;
-- (LargeDayViewController)initWithDay:(id)a3 model:(id)a4 window:(id)a5;
+- (LargeDayViewController)initWithDay:(id)day model:(id)model window:(id)window;
 - (NSArray)modelSelectedEvents;
 - (double)_splitViewWidth;
 - (double)_totalWidth;
 - (double)detailsLeftInsetAdjustment;
 - (double)detailsRightInsetAdjustment;
-- (id)_clonedViewForSelectedOccurrence:(id)a3;
+- (id)_clonedViewForSelectedOccurrence:(id)occurrence;
 - (id)_fallbackSizingContextWindow;
 - (id)_selectedOccurrenceView;
 - (id)cellFactory;
 - (id)managedNavigationController;
-- (id)selectedCopyViewForOccurrenceView:(id)a3;
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5 keepNavigationStack:(BOOL)a6;
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4;
+- (id)selectedCopyViewForOccurrenceView:(id)view;
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated keepNavigationStack:(BOOL)stack;
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated;
 - (id)shownEventEditViewController;
 - (id)spacialEditDownIncrement;
 - (id)spacialEditLeftIncrement;
 - (id)spacialEditRightIncrement;
 - (id)spacialEditUpIncrement;
-- (int64_t)orientationForSize:(CGSize)a3;
+- (int64_t)orientationForSize:(CGSize)size;
 - (int64_t)presentationStyleOverrideForChildViewControllers;
 - (int64_t)viewInterfaceOrientation;
 - (void)_adjustSelectedOccurrences;
-- (void)_autoSelectEventWithAnimatedScroll:(BOOL)a3;
-- (void)_beginAutoScrollingAutoSelectingWithContext:(int)a3;
+- (void)_autoSelectEventWithAnimatedScroll:(BOOL)scroll;
+- (void)_beginAutoScrollingAutoSelectingWithContext:(int)context;
 - (void)_clearSplitViewNavigationController;
 - (void)_configureSidebarConfigurationOfManagedNavigationController;
 - (void)_createSplitView;
-- (void)_dismissEditorAndSaveIfPossibleWhileChangingDate:(BOOL)a3 animated:(BOOL)a4;
-- (void)_editingDidCompleteWithAction:(int64_t)a3 changingDate:(BOOL)a4 dismissEditor:(BOOL)a5 editorToDismiss:(id)a6;
-- (void)_eventStoreChanged:(id)a3;
+- (void)_dismissEditorAndSaveIfPossibleWhileChangingDate:(BOOL)date animated:(BOOL)animated;
+- (void)_editingDidCompleteWithAction:(int64_t)action changingDate:(BOOL)date dismissEditor:(BOOL)editor editorToDismiss:(id)dismiss;
+- (void)_eventStoreChanged:(id)changed;
 - (void)_layOutSplitDividerFrame;
 - (void)_layoutDayArea;
 - (void)_layoutDayViewPane;
 - (void)_layoutEventDetailsPane;
 - (void)_layoutForSplitViews;
-- (void)_occurrenceViewDidEndSelection:(id)a3;
+- (void)_occurrenceViewDidEndSelection:(id)selection;
 - (void)_reselectedEventIfNeeded;
 - (void)_resetSplitView;
-- (void)_selectNextEventInForwardDirection:(BOOL)a3;
-- (void)_selectedDateChangedToDate:(id)a3;
-- (void)_selectedOccurrencesChanged:(id)a3;
+- (void)_selectNextEventInForwardDirection:(BOOL)direction;
+- (void)_selectedDateChangedToDate:(id)date;
+- (void)_selectedOccurrencesChanged:(id)changed;
 - (void)_setDayViewToSplitViewVisibleState;
-- (void)_setModal:(BOOL)a3;
+- (void)_setModal:(BOOL)modal;
 - (void)_setSplitViewPosition;
 - (void)_setUpCustomAppearances;
 - (void)_setUpGesturesAndModalMode;
-- (void)_showEventsWithoutChangingDate:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6;
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4;
-- (void)_splitViewNavigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)_showEventsWithoutChangingDate:(id)date animated:(BOOL)animated showComments:(BOOL)comments context:(id)context;
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated;
+- (void)_splitViewNavigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
 - (void)_teardownSidebarConfigurationOfManagedNavigationController;
 - (void)asyncLoadAndLayoutCompleted;
 - (void)clearNoContentConfiguration;
-- (void)dataReloadedWithTrigger:(int)a3;
-- (void)dayViewDidChangeSelectedDate:(id)a3;
+- (void)dataReloadedWithTrigger:(int)trigger;
+- (void)dayViewDidChangeSelectedDate:(id)date;
 - (void)dealloc;
 - (void)didBeginMovingOccurrenceWithGesture;
-- (void)displayedOccurrencesChangedWithTrigger:(int)a3;
+- (void)displayedOccurrencesChangedWithTrigger:(int)trigger;
 - (void)endedHorizontalDeceleration;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewController:(id)a3 requestsDisplayOfDeleteAlert:(id)a4;
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5;
-- (void)eventViewControllerDidBeginEditingEventWithEditViewController:(id)a3;
-- (void)eventViewControllerModifiedEventWithoutEditing:(id)a3;
-- (void)eventViewControllerWillBeginEditingEvent:(id)a3;
-- (void)eventViewControllerWillFinishEditingEvent:(id)a3 deleted:(BOOL)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewController:(id)controller requestsDisplayOfDeleteAlert:(id)alert;
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated;
+- (void)eventViewControllerDidBeginEditingEventWithEditViewController:(id)controller;
+- (void)eventViewControllerModifiedEventWithoutEditing:(id)editing;
+- (void)eventViewControllerWillBeginEditingEvent:(id)event;
+- (void)eventViewControllerWillFinishEditingEvent:(id)event deleted:(BOOL)deleted;
 - (void)finishedPinchingDayView;
 - (void)handleCloseKeyCommand;
-- (void)handleGestureCommittingOccurrence:(id)a3;
+- (void)handleGestureCommittingOccurrence:(id)occurrence;
 - (void)isPinchingDayView;
 - (void)loadView;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)occurrencesWereSpaciallyEditedFromDate:(id)a3 toDate:(id)a4;
-- (void)scrubberDidChangeSelectedDate:(id)a3;
-- (void)setModelSelectedEvent:(id)a3;
-- (void)setModelSelectedEvents:(id)a3;
-- (void)setupUIForTraitCollection:(id)a3;
-- (void)showEditViewController:(id)a3;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)occurrencesWereSpaciallyEditedFromDate:(id)date toDate:(id)toDate;
+- (void)scrubberDidChangeSelectedDate:(id)date;
+- (void)setModelSelectedEvent:(id)event;
+- (void)setModelSelectedEvents:(id)events;
+- (void)setupUIForTraitCollection:(id)collection;
+- (void)showEditViewController:(id)controller;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
 - (void)showNextOccurrenceOfSelectableItem;
 - (void)showPreviousOccurrenceOfSelectableItem;
-- (void)showReminderDetail:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 keepNavigationStack:(BOOL)a6 completion:(id)a7;
+- (void)showReminderDetail:(id)detail;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated keepNavigationStack:(BOOL)stack completion:(id)completion;
 - (void)updateNavigationBarDisplayedDateString;
-- (void)updateNavigationBarDisplayedDateStringWithDate:(id)a3;
+- (void)updateNavigationBarDisplayedDateStringWithDate:(id)date;
 - (void)updateNoContentConfiguration;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)wasAllowedToChangeDate;
-- (void)wasBlockedFromChangingDate:(id)a3;
+- (void)wasBlockedFromChangingDate:(id)date;
 @end
 
 @implementation LargeDayViewController
 
-- (LargeDayViewController)initWithDay:(id)a3 model:(id)a4 window:(id)a5
+- (LargeDayViewController)initWithDay:(id)day model:(id)model window:(id)window
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dayCopy = day;
+  modelCopy = model;
+  windowCopy = window;
   v21.receiver = self;
   v21.super_class = LargeDayViewController;
-  v11 = [(DayViewController *)&v21 initWithDay:v8 model:v9 window:v10];
+  v11 = [(DayViewController *)&v21 initWithDay:dayCopy model:modelCopy window:windowCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [(DayViewController *)v11 dayView];
-    [v13 setGutterWidth:0.0];
+    dayView = [(DayViewController *)v11 dayView];
+    [dayView setGutterWidth:0.0];
 
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v12 selector:"_occurrenceViewDidEndSelection:" name:EKDayOccurrenceViewDidEndSelectionNotification object:0];
@@ -163,39 +163,39 @@
   return v12;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(LargeDayViewController *)self isViewLoaded])
   {
-    v8 = [(LargeDayViewController *)self view];
-    v9 = [v8 window];
+    view = [(LargeDayViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
       if (EKUIIsSizeExtended())
       {
-        v10 = [(DayViewController *)self dayScrubberController];
-        v11 = [v10 view];
-        v12 = [v11 preservesSuperviewLayoutMargins];
+        dayScrubberController = [(DayViewController *)self dayScrubberController];
+        view2 = [dayScrubberController view];
+        preservesSuperviewLayoutMargins = [view2 preservesSuperviewLayoutMargins];
 
-        if ((v12 & 1) == 0)
+        if ((preservesSuperviewLayoutMargins & 1) == 0)
         {
-          v13 = [(DayViewController *)self dayScrubberController];
-          v14 = [v13 view];
-          [v14 setPreservesSuperviewLayoutMargins:1];
+          dayScrubberController2 = [(DayViewController *)self dayScrubberController];
+          view3 = [dayScrubberController2 view];
+          [view3 setPreservesSuperviewLayoutMargins:1];
 
-          v15 = [(DayViewController *)self dayScrubberController];
-          v16 = [v15 view];
-          [v16 setNeedsLayout];
+          dayScrubberController3 = [(DayViewController *)self dayScrubberController];
+          view4 = [dayScrubberController3 view];
+          [view4 setNeedsLayout];
         }
       }
 
       v17.receiver = self;
       v17.super_class = LargeDayViewController;
-      [(DayViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+      [(DayViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
     }
   }
 }
@@ -215,17 +215,17 @@
   v4.receiver = self;
   v4.super_class = LargeDayViewController;
   [(DayViewController *)&v4 loadView];
-  v3 = [(DayViewController *)self dayView];
-  [v3 setShouldAutoscrollAfterAppearance:0];
+  dayView = [(DayViewController *)self dayView];
+  [dayView setShouldAutoscrollAfterAppearance:0];
 }
 
 - (BOOL)_isTransitioningTraitCollection
 {
-  v3 = [(LargeDayViewController *)self navigationController];
+  navigationController = [(LargeDayViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(LargeDayViewController *)self navigationController];
-    v5 = [v4 performSelector:"isTransitioningTraitCollection"] != 0;
+    navigationController2 = [(LargeDayViewController *)self navigationController];
+    v5 = [navigationController2 performSelector:"isTransitioningTraitCollection"] != 0;
   }
 
   else
@@ -238,56 +238,56 @@
 
 - (NSArray)modelSelectedEvents
 {
-  v2 = [(MainViewController *)self model];
-  v3 = [v2 selectedOccurrences];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
 
-  return v3;
+  return selectedOccurrences;
 }
 
 - (EKEvent)modelSelectedEvent
 {
-  v2 = [(MainViewController *)self model];
-  v3 = [v2 selectedOccurrences];
-  v4 = [v3 firstObject];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  firstObject = [selectedOccurrences firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)setModelSelectedEvent:(id)a3
+- (void)setModelSelectedEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedOccurrence];
+  eventCopy = event;
+  model = [(MainViewController *)self model];
+  selectedOccurrence = [model selectedOccurrence];
 
-  if (v5 == v8)
+  if (selectedOccurrence == eventCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 isEqual:v8];
+    v6 = [selectedOccurrence isEqual:eventCopy];
   }
 
-  v7 = [(MainViewController *)self model];
-  [v7 setSelectedOccurrence:v8 forceChange:v6];
+  model2 = [(MainViewController *)self model];
+  [model2 setSelectedOccurrence:eventCopy forceChange:v6];
 
-  if (!v8)
+  if (!eventCopy)
   {
     *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = 0;
   }
 }
 
-- (BOOL)_allEventsHaveSameAddressWithFirstArray:(id)a3 secondArray:(id)a4
+- (BOOL)_allEventsHaveSameAddressWithFirstArray:(id)array secondArray:(id)secondArray
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  secondArrayCopy = secondArray;
   Mutable = CFSetCreateMutable(0, 0, 0);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
@@ -316,7 +316,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v6;
+  v14 = secondArrayCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v15)
   {
@@ -357,12 +357,12 @@
   return v20;
 }
 
-- (void)setModelSelectedEvents:(id)a3
+- (void)setModelSelectedEvents:(id)events
 {
-  v13 = a3;
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedOccurrences];
-  v6 = [(LargeDayViewController *)self _allEventsHaveSameAddressWithFirstArray:v5 secondArray:v13];
+  eventsCopy = events;
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  v6 = [(LargeDayViewController *)self _allEventsHaveSameAddressWithFirstArray:selectedOccurrences secondArray:eventsCopy];
 
   if (v6)
   {
@@ -371,17 +371,17 @@
 
   else
   {
-    v8 = [(MainViewController *)self model];
-    v9 = [v8 selectedOccurrences];
-    v10 = [NSSet setWithArray:v9];
-    v11 = [NSSet setWithArray:v13];
+    model2 = [(MainViewController *)self model];
+    selectedOccurrences2 = [model2 selectedOccurrences];
+    v10 = [NSSet setWithArray:selectedOccurrences2];
+    v11 = [NSSet setWithArray:eventsCopy];
     v7 = [v10 isEqualToSet:v11];
   }
 
-  v12 = [(MainViewController *)self model];
-  [v12 setSelectedOccurrences:v13 forceChange:v7];
+  model3 = [(MainViewController *)self model];
+  [model3 setSelectedOccurrences:eventsCopy forceChange:v7];
 
-  if (!v13)
+  if (!eventsCopy)
   {
     *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = 0;
   }
@@ -396,10 +396,10 @@
 
 - (BOOL)allowChangingDate
 {
-  v3 = [(LargeDayViewController *)self shownEventEditViewController];
-  v4 = [v3 willPresentDialogOnSave];
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  willPresentDialogOnSave = [shownEventEditViewController willPresentDialogOnSave];
 
-  if (v4)
+  if (willPresentDialogOnSave)
   {
     return 0;
   }
@@ -411,31 +411,31 @@
 
 - (void)wasAllowedToChangeDate
 {
-  v2 = [(LargeDayViewController *)self shownEventEditViewController];
-  [v2 completeAndSaveWithContinueBlock:0];
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  [shownEventEditViewController completeAndSaveWithContinueBlock:0];
 }
 
-- (void)wasBlockedFromChangingDate:(id)a3
+- (void)wasBlockedFromChangingDate:(id)date
 {
-  v7 = a3;
-  v4 = [(LargeDayViewController *)self shownEventEditViewController];
-  v5 = [v4 willPresentDialogOnSave];
+  dateCopy = date;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  willPresentDialogOnSave = [shownEventEditViewController willPresentDialogOnSave];
 
-  if (v5)
+  if (willPresentDialogOnSave)
   {
-    v6 = [(LargeDayViewController *)self shownEventEditViewController];
-    [v6 completeAndSaveWithContinueBlock:v7];
+    shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+    [shownEventEditViewController2 completeAndSaveWithContinueBlock:dateCopy];
   }
 }
 
 - (void)isPinchingDayView
 {
-  v3 = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
+  _selectedOccurrenceFrontmostClonedViews = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [_selectedOccurrenceFrontmostClonedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -447,7 +447,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_selectedOccurrenceFrontmostClonedViews);
         }
 
         [*(*(&v11 + 1) + 8 * v7) setReduceLayoutProcessingForAnimation:1];
@@ -455,25 +455,25 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [_selectedOccurrenceFrontmostClonedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(DayViewController *)self dayView];
-  v9 = [v8 currentDayView];
-  v10 = [v9 dayContent];
-  [v10 layoutIfNeeded];
+  dayView = [(DayViewController *)self dayView];
+  currentDayView = [dayView currentDayView];
+  dayContent = [currentDayView dayContent];
+  [dayContent layoutIfNeeded];
 
   [(LargeDayViewController *)self _adjustSelectedOccurrences];
 }
 
 - (void)finishedPinchingDayView
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 selectedOccurrences];
-  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v4 animated:0 autoScroll:1 resetSelection:1];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:selectedOccurrences animated:0 autoScroll:1 resetSelection:1];
 
   [(LargeDayViewController *)self _adjustSelectedOccurrences];
 }
@@ -484,8 +484,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(DayViewController *)self _selectedOccurrenceViews];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+  v3 = [_selectedOccurrenceViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -496,23 +496,23 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_selectedOccurrenceViews);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
-        v8 = [v7 selectedCopy];
+        selectedCopy = [v7 selectedCopy];
         [v7 frame];
-        [v8 setFrame:?];
+        [selectedCopy setFrame:?];
         [v7 travelTimeSubviewHeightInPoints];
-        [v8 setTravelTimeSubviewHeightInPoints:?];
+        [selectedCopy setTravelTimeSubviewHeightInPoints:?];
         [v7 bottomPinningProximity];
-        [v8 setBottomPinningProximity:?];
+        [selectedCopy setBottomPinningProximity:?];
         [v7 topPinningProximity];
-        [v8 setTopPinningProximity:?];
-        [v8 requestContentIfNeeded:16 completion:0];
+        [selectedCopy setTopPinningProximity:?];
+        [selectedCopy requestContentIfNeeded:16 completion:0];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [_selectedOccurrenceViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -521,17 +521,17 @@
 
 - (BOOL)_eventViewControllerForModelSelectedEventIsAlreadyShown
 {
-  v3 = [(LargeDayViewController *)self modelSelectedEvents];
-  v4 = [(MainViewController *)self shownEventViewController];
-  v5 = [v4 event];
+  modelSelectedEvents = [(LargeDayViewController *)self modelSelectedEvents];
+  shownEventViewController = [(MainViewController *)self shownEventViewController];
+  event = [shownEventViewController event];
 
-  v6 = [(MainViewController *)self shownExpandedReminderStackViewController];
-  v7 = [v6 events];
+  shownExpandedReminderStackViewController = [(MainViewController *)self shownExpandedReminderStackViewController];
+  events = [shownExpandedReminderStackViewController events];
 
-  if ([v3 count] == 1)
+  if ([modelSelectedEvents count] == 1)
   {
-    v8 = [v3 firstObject];
-    v9 = [v5 isEqual:v8];
+    firstObject = [modelSelectedEvents firstObject];
+    v9 = [event isEqual:firstObject];
   }
 
   else
@@ -539,30 +539,30 @@
     v9 = 0;
   }
 
-  v10 = [NSSet setWithArray:v3];
-  v11 = [NSSet setWithArray:v7];
+  v10 = [NSSet setWithArray:modelSelectedEvents];
+  v11 = [NSSet setWithArray:events];
   v12 = [v10 isEqualToSet:v11];
 
-  if (v3 && ((v9 | v12) & 1) != 0 && !self->_changingDate)
+  if (modelSelectedEvents && ((v9 | v12) & 1) != 0 && !self->_changingDate)
   {
     LOBYTE(v16) = 1;
   }
 
   else
   {
-    v13 = [(LargeDayViewController *)self managedNavigationController];
-    v14 = [v13 enqueuedViewControllers];
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    enqueuedViewControllers = [managedNavigationController enqueuedViewControllers];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = v14;
+    v15 = enqueuedViewControllers;
     v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v16)
     {
-      v25 = v7;
-      v26 = v5;
+      v25 = events;
+      v26 = event;
       v17 = *v28;
       while (2)
       {
@@ -578,11 +578,11 @@
           if (objc_opt_isKindOfClass())
           {
             v20 = v19;
-            v21 = [v20 event];
-            if ([v3 count] == 1)
+            event2 = [v20 event];
+            if ([modelSelectedEvents count] == 1)
             {
-              v22 = [v3 firstObject];
-              v23 = [v21 isEqual:v22];
+              firstObject2 = [modelSelectedEvents firstObject];
+              v23 = [event2 isEqual:firstObject2];
 
               if (v23)
               {
@@ -604,23 +604,23 @@
       }
 
 LABEL_20:
-      v7 = v25;
-      v5 = v26;
+      events = v25;
+      event = v26;
     }
   }
 
   return v16;
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 keepNavigationStack:(BOOL)a6 completion:(id)a7
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated keepNavigationStack:(BOOL)stack completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(MainViewController *)self shownEventViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
+  shownEventViewController = [(MainViewController *)self shownEventViewController];
 
-  if (!a6)
+  if (!stack)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -631,12 +631,12 @@ LABEL_20:
       if (v18)
       {
         v19 = v17;
-        v20 = [v12 event];
-        v21 = [v20 title];
+        event = [controllerCopy event];
+        title = [event title];
         *buf = 136315394;
         v60 = "[LargeDayViewController showViewController:sender:animated:keepNavigationStack:completion:]";
         v61 = 2112;
-        v62 = v21;
+        v62 = title;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%s: Asked to show a view controller for event %@. Clearing sidebar nav stack first.", buf, 0x16u);
       }
     }
@@ -648,10 +648,10 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s: Not an EKEventViewController.", buf, 0xCu);
     }
 
-    v22 = [(LargeDayViewController *)self presentedViewController];
-    if (v22)
+    presentedViewController = [(LargeDayViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v23 = [(LargeDayViewController *)self presentedViewController];
+      presentedViewController2 = [(LargeDayViewController *)self presentedViewController];
       objc_opt_class();
       v24 = objc_opt_isKindOfClass();
     }
@@ -661,14 +661,14 @@ LABEL_20:
       v24 = 0;
     }
 
-    v25 = [(LargeDayViewController *)self managedNavigationController];
-    [v25 enqueueStackResetOperationDismissingPresentations:v24 & 1 cancelOperations:0 completionBlock:0];
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    [managedNavigationController enqueueStackResetOperationDismissingPresentations:v24 & 1 cancelOperations:0 completionBlock:0];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [(LargeDayViewController *)self view];
+    view = [(LargeDayViewController *)self view];
     if (EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors())
     {
       v27 = +[UIDevice currentDevice];
@@ -676,7 +676,7 @@ LABEL_20:
 
       if (!v28)
       {
-        v29 = [[EKUIManagedNavigationController alloc] initWithRootViewController:v12];
+        v29 = [[EKUIManagedNavigationController alloc] initWithRootViewController:controllerCopy];
         [v29 setModalPresentationDelegate:self];
         [v29 setForceCanBeDirectlyManagedToNo:1];
         objc_initWeak(buf, v29);
@@ -691,11 +691,11 @@ LABEL_20:
         v31 = [UIAction actionWithTitle:&stru_1002133B8 image:0 identifier:0 handler:v55];
         v32 = [v30 initWithBarButtonSystemItem:0 primaryAction:v31];
 
-        v33 = [v12 navigationItem];
-        [v33 setLeftBarButtonItem:v32];
+        navigationItem = [controllerCopy navigationItem];
+        [navigationItem setLeftBarButtonItem:v32];
 
-        v34 = [(LargeDayViewController *)self navigationController];
-        [v34 presentAdaptiveModalViewController:v29 animated:1 completion:0];
+        navigationController = [(LargeDayViewController *)self navigationController];
+        [navigationController presentAdaptiveModalViewController:v29 animated:1 completion:0];
 
         objc_destroyWeak(&v57);
         objc_destroyWeak(&v56);
@@ -713,19 +713,19 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 setPreferModalPresentation:0];
+    [controllerCopy setPreferModalPresentation:0];
   }
 
   [(LargeDayViewController *)self _fallbackSizingContextWindow];
-  v29 = v35 = v15 == 0;
+  v29 = v35 = shownEventViewController == 0;
   if (v29)
   {
     EKUIPushFallbackSizingContextWithViewHierarchy();
     v54.receiver = self;
     v54.super_class = LargeDayViewController;
-    [(MainViewController *)&v54 showViewController:v12 sender:v13 animated:v9 completion:v14];
-    v36 = [(LargeDayViewController *)self viewControllerToShowFrom];
-    [(LargeDayViewController *)self _splitViewNavigationController:v36 willShowViewController:v12 animated:v35 completion:0];
+    [(MainViewController *)&v54 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
+    viewControllerToShowFrom = [(LargeDayViewController *)self viewControllerToShowFrom];
+    [(LargeDayViewController *)self _splitViewNavigationController:viewControllerToShowFrom willShowViewController:controllerCopy animated:v35 completion:0];
 
     EKUIPopFallbackSizingContextWithViewHierarchy();
   }
@@ -734,30 +734,30 @@ LABEL_20:
   {
     v54.receiver = self;
     v54.super_class = LargeDayViewController;
-    [(MainViewController *)&v54 showViewController:v12 sender:v13 animated:v9 completion:v14];
-    v37 = [(LargeDayViewController *)self viewControllerToShowFrom];
-    [(LargeDayViewController *)self _splitViewNavigationController:v37 willShowViewController:v12 animated:v35 completion:0];
+    [(MainViewController *)&v54 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
+    viewControllerToShowFrom2 = [(LargeDayViewController *)self viewControllerToShowFrom];
+    [(LargeDayViewController *)self _splitViewNavigationController:viewControllerToShowFrom2 willShowViewController:controllerCopy animated:v35 completion:0];
   }
 
-  if ([v12 conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditView])
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditView])
   {
-    v38 = [(LargeDayViewController *)self view];
+    view2 = [(LargeDayViewController *)self view];
     v39 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
     if (!v39)
     {
-      v40 = v12;
-      v41 = [v40 event];
-      v42 = [(MainViewController *)self model];
-      v43 = [v42 selectedOccurrence];
-      v44 = v43 == v41;
+      v40 = controllerCopy;
+      event2 = [v40 event];
+      model = [(MainViewController *)self model];
+      selectedOccurrence = [model selectedOccurrence];
+      v44 = selectedOccurrence == event2;
 
-      if (v44 || (-[MainViewController model](self, "model"), v45 = objc_claimAutoreleasedReturnValue(), [v45 setSelectedOccurrence:v41], v45, -[MainViewController model](self, "model"), v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "selectedOccurrence"), v47 = objc_claimAutoreleasedReturnValue(), v48 = v47 == v41, v47, v46, v48))
+      if (v44 || (-[MainViewController model](self, "model"), v45 = objc_claimAutoreleasedReturnValue(), [v45 setSelectedOccurrence:event2], v45, -[MainViewController model](self, "model"), v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "selectedOccurrence"), v47 = objc_claimAutoreleasedReturnValue(), v48 = v47 == event2, v47, v46, v48))
       {
-        v49 = [(DayViewController *)self gestureController];
-        v50 = [v49 draggingView];
-        v51 = [v50 occurrence];
-        v52 = v51 == v41;
+        gestureController = [(DayViewController *)self gestureController];
+        draggingView = [gestureController draggingView];
+        occurrence = [draggingView occurrence];
+        v52 = occurrence == event2;
 
         if (!v52)
         {
@@ -765,32 +765,32 @@ LABEL_20:
         }
       }
 
-      v53 = [(DayViewController *)self dayView];
-      [v53 setCurrentEditor:v40];
+      dayView = [(DayViewController *)self dayView];
+      [dayView setCurrentEditor:v40];
     }
   }
 
 LABEL_28:
 }
 
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5 keepNavigationStack:(BOOL)a6
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated keepNavigationStack:(BOOL)stack
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (-[LargeDayViewController _eventViewControllerForModelSelectedEventIsAlreadyShown](self, "_eventViewControllerForModelSelectedEventIsAlreadyShown") && ([v10 isReminderIntegrationEvent] & 1) == 0)
+  stackCopy = stack;
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  if (-[LargeDayViewController _eventViewControllerForModelSelectedEventIsAlreadyShown](self, "_eventViewControllerForModelSelectedEventIsAlreadyShown") && ([eventCopy isReminderIntegrationEvent] & 1) == 0)
   {
     v17 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v18 = v17;
-      v19 = [(LargeDayViewController *)self modelSelectedEvent];
-      v20 = [v19 title];
+      modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+      title = [modelSelectedEvent title];
       *buf = 136315394;
       v35 = "[LargeDayViewController showDetailViewControllerForEvent:context:animated:keepNavigationStack:]";
       v36 = 2112;
-      v37 = v20;
+      v37 = title;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s: Asked to show a view controller for event %@, but it is already on the managed navigation controller.", buf, 0x16u);
     }
 
@@ -799,21 +799,21 @@ LABEL_28:
 
   else
   {
-    v12 = [(MainViewController *)self augmentEventDetailsContext:v11];
+    v12 = [(MainViewController *)self augmentEventDetailsContext:contextCopy];
     LOBYTE(v33) = 0;
-    v13 = [EKEventViewController eventDetailViewControllerWithEvent:v10 delegate:self context:v12 canvasView:0 allowInlinePreview:0 previewInline:0 minimalMode:v33];
+    v13 = [EKEventViewController eventDetailViewControllerWithEvent:eventCopy delegate:self context:v12 canvasView:0 allowInlinePreview:0 previewInline:0 minimalMode:v33];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v13 setIsLargeDayView:1];
     }
 
-    if (!v6)
+    if (!stackCopy)
     {
-      v14 = [(LargeDayViewController *)self presentedViewController];
-      if (v14)
+      presentedViewController = [(LargeDayViewController *)self presentedViewController];
+      if (presentedViewController)
       {
-        v15 = [(LargeDayViewController *)self presentedViewController];
+        presentedViewController2 = [(LargeDayViewController *)self presentedViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -823,41 +823,41 @@ LABEL_28:
         isKindOfClass = 0;
       }
 
-      v21 = [(LargeDayViewController *)self managedNavigationController];
-      [v21 enqueueStackResetOperationDismissingPresentations:isKindOfClass & 1 cancelOperations:0 completionBlock:0];
+      managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+      [managedNavigationController enqueueStackResetOperationDismissingPresentations:isKindOfClass & 1 cancelOperations:0 completionBlock:0];
     }
 
-    [(LargeDayViewController *)self showViewController:v13 sender:self animated:v7 keepNavigationStack:v6 completion:0];
+    [(LargeDayViewController *)self showViewController:v13 sender:self animated:animatedCopy keepNavigationStack:stackCopy completion:0];
     [*(&self->_lastEventShowed + 2) bounds];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [v13 view];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    view = [v13 view];
+    [view setFrame:{v23, v25, v27, v29}];
 
-    v31 = [v13 view];
-    [v31 setAutoresizingMask:18];
+    view2 = [v13 view];
+    [view2 setAutoresizingMask:18];
   }
 
   return v13;
 }
 
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated
 {
-  v5 = a3;
+  eventsCopy = events;
   if ([(LargeDayViewController *)self _eventViewControllerForModelSelectedEventIsAlreadyShown])
   {
     v6 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [(LargeDayViewController *)self modelSelectedEvent];
-      v9 = [v8 title];
+      modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+      title = [modelSelectedEvent title];
       v26 = 136315394;
       v27 = "[LargeDayViewController showDetailViewControllerForEvents:animated:]";
       v28 = 2112;
-      v29 = v9;
+      v29 = title;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s: Asked to show a view controller for event %@, but it is already on the managed navigation controller.", &v26, 0x16u);
     }
 
@@ -866,11 +866,11 @@ LABEL_28:
 
   else
   {
-    v10 = [[EKExpandedReminderStackViewController alloc] initWithEvents:v5 delegate:self];
-    v11 = [(LargeDayViewController *)self presentedViewController];
-    if (v11)
+    v10 = [[EKExpandedReminderStackViewController alloc] initWithEvents:eventsCopy delegate:self];
+    presentedViewController = [(LargeDayViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v12 = [(LargeDayViewController *)self presentedViewController];
+      presentedViewController2 = [(LargeDayViewController *)self presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -880,8 +880,8 @@ LABEL_28:
       isKindOfClass = 0;
     }
 
-    v14 = [(LargeDayViewController *)self managedNavigationController];
-    [v14 enqueueStackResetOperationDismissingPresentations:isKindOfClass & 1 cancelOperations:0 completionBlock:0];
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    [managedNavigationController enqueueStackResetOperationDismissingPresentations:isKindOfClass & 1 cancelOperations:0 completionBlock:0];
 
     [(LargeDayViewController *)self showViewController:v10 sender:self animated:0 completion:0];
     [*(&self->_lastEventShowed + 2) bounds];
@@ -889,25 +889,25 @@ LABEL_28:
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [v10 view];
-    [v23 setFrame:{v16, v18, v20, v22}];
+    view = [v10 view];
+    [view setFrame:{v16, v18, v20, v22}];
 
-    v24 = [v10 view];
-    [v24 setAutoresizingMask:18];
+    view2 = [v10 view];
+    [view2 setAutoresizingMask:18];
   }
 
   return v10;
 }
 
-- (BOOL)dayViewControllerShouldEndGestureEditingOnTap:(id)a3
+- (BOOL)dayViewControllerShouldEndGestureEditingOnTap:(id)tap
 {
-  v4 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (v4)
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController)
   {
-    v5 = [(LargeDayViewController *)self shownEventEditViewController];
-    v6 = [v5 willPresentDialogOnSave];
+    shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+    willPresentDialogOnSave = [shownEventEditViewController2 willPresentDialogOnSave];
 
-    v7 = v6 ^ 1;
+    v7 = willPresentDialogOnSave ^ 1;
   }
 
   else
@@ -931,12 +931,12 @@ LABEL_28:
 - (void)asyncLoadAndLayoutCompleted
 {
   [(LargeDayViewController *)self _adjustSelectedOccurrences];
-  v3 = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
+  _selectedOccurrenceFrontmostClonedViews = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [_selectedOccurrenceFrontmostClonedViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -947,37 +947,37 @@ LABEL_28:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_selectedOccurrenceFrontmostClonedViews);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 superview];
-        [v9 bringSubviewToFront:v8];
+        superview = [v8 superview];
+        [superview bringSubviewToFront:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_selectedOccurrenceFrontmostClonedViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)selectedCopyViewForOccurrenceView:(id)a3
+- (id)selectedCopyViewForOccurrenceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v5 = [(DayViewController *)self _selectedOccurrenceViews];
+  _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000F2E1C;
   v20[3] = &unk_100211778;
   v22 = &v23;
-  v6 = v4;
+  v6 = viewCopy;
   v21 = v6;
-  [v5 enumerateObjectsUsingBlock:v20];
+  [_selectedOccurrenceViews enumerateObjectsUsingBlock:v20];
 
   if (v24[3])
   {
@@ -1005,9 +1005,9 @@ LABEL_28:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v6 occurrence];
-          v13 = [v11 occurrence];
-          v14 = [v12 isEqual:v13];
+          occurrence = [v6 occurrence];
+          occurrence2 = [v11 occurrence];
+          v14 = [occurrence isEqual:occurrence2];
 
           if (v14)
           {
@@ -1040,15 +1040,15 @@ LABEL_13:
   v6.super_class = LargeDayViewController;
   [(DayViewController *)&v6 viewDidLoad];
   [(LargeDayViewController *)self _createSplitView];
-  v3 = [(DayViewController *)self dayView];
-  [v3 setAnimateAllDayAreaHeight:0];
+  dayView = [(DayViewController *)self dayView];
+  [dayView setAnimateAllDayAreaHeight:0];
 
-  v4 = [(DayViewController *)self dayView];
-  [v4 setNotifyWhenTapOtherEventDuringDragging:1];
+  dayView2 = [(DayViewController *)self dayView];
+  [dayView2 setNotifyWhenTapOtherEventDuringDragging:1];
 
   [(LargeDayViewController *)self _setUpCustomAppearances];
-  v5 = [(DayViewController *)self dayScrubberController];
-  [v5 setEventSpringLoadingEnabled:1];
+  dayScrubberController = [(DayViewController *)self dayScrubberController];
+  [dayScrubberController setEventSpringLoadingEnabled:1];
 
   [(LargeDayViewController *)self updateNoContentConfiguration];
 }
@@ -1063,7 +1063,7 @@ LABEL_13:
 
 - (int64_t)presentationStyleOverrideForChildViewControllers
 {
-  v2 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v3 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   if (v3)
@@ -1077,12 +1077,12 @@ LABEL_13:
   }
 }
 
-- (void)setupUIForTraitCollection:(id)a3
+- (void)setupUIForTraitCollection:(id)collection
 {
   if (!*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6))
   {
-    v5 = [(LargeDayViewController *)self _fallbackSizingContextWindow];
-    if (v5)
+    _fallbackSizingContextWindow = [(LargeDayViewController *)self _fallbackSizingContextWindow];
+    if (_fallbackSizingContextWindow)
     {
       EKUIPushFallbackSizingContextWithViewHierarchy();
       [(LargeDayViewController *)self viewWillAppear:0];
@@ -1098,16 +1098,16 @@ LABEL_13:
 
 - (id)_fallbackSizingContextWindow
 {
-  v3 = [(LargeDayViewController *)self view];
-  v4 = [v3 window];
+  view = [(LargeDayViewController *)self view];
+  window = [view window];
 
-  if (!v4)
+  if (!window)
   {
-    v5 = [(LargeDayViewController *)self navigationController];
-    v6 = [v5 view];
-    v4 = [v6 window];
+    navigationController = [(LargeDayViewController *)self navigationController];
+    view2 = [navigationController view];
+    window = [view2 window];
 
-    if (!v4)
+    if (!window)
     {
       EKUIHasFallbackSizingContext();
     }
@@ -1115,61 +1115,61 @@ LABEL_13:
 
   EKUIMultiwindowAssert();
 
-  return v4;
+  return window;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   if (!*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6))
   {
     v20.receiver = self;
     v20.super_class = LargeDayViewController;
-    [(DayViewController *)&v20 viewWillAppear:a3];
-    v4 = [(LargeDayViewController *)self presentedViewController];
-    if (!v4 || (v5 = *(&self->_lastEventShowed + 2), v4, !v5))
+    [(DayViewController *)&v20 viewWillAppear:appear];
+    presentedViewController = [(LargeDayViewController *)self presentedViewController];
+    if (!presentedViewController || (v5 = *(&self->_lastEventShowed + 2), presentedViewController, !v5))
     {
       [(LargeDayViewController *)self _configureSidebarConfigurationOfManagedNavigationController];
     }
 
     [(LargeDayViewController *)self _layoutDayArea];
-    v6 = [(DayViewController *)self dayView];
-    v7 = [v6 view];
-    [v7 setClipsToBounds:1];
+    dayView = [(DayViewController *)self dayView];
+    view = [dayView view];
+    [view setClipsToBounds:1];
 
     v8 = +[NSNotificationCenter defaultCenter];
-    v9 = [(MainViewController *)self model];
-    v10 = [v9 eventStore];
-    [v8 addObserver:self selector:"_eventStoreChanged:" name:EKEventStoreChangedNotification object:v10];
+    model = [(MainViewController *)self model];
+    eventStore = [model eventStore];
+    [v8 addObserver:self selector:"_eventStoreChanged:" name:EKEventStoreChangedNotification object:eventStore];
 
     *(&self->_dividerView + 2) = 2;
-    v11 = [(LargeDayViewController *)self view];
+    view2 = [(LargeDayViewController *)self view];
     v12 = EKUIIsExtended();
 
     if (v12)
     {
-      v13 = [(DayViewController *)self dayScrubberController];
-      v14 = [v13 view];
-      v15 = [v14 preservesSuperviewLayoutMargins];
+      dayScrubberController = [(DayViewController *)self dayScrubberController];
+      view3 = [dayScrubberController view];
+      preservesSuperviewLayoutMargins = [view3 preservesSuperviewLayoutMargins];
 
-      if ((v15 & 1) == 0)
+      if ((preservesSuperviewLayoutMargins & 1) == 0)
       {
-        v16 = [(DayViewController *)self dayScrubberController];
-        v17 = [v16 view];
-        [v17 setPreservesSuperviewLayoutMargins:1];
+        dayScrubberController2 = [(DayViewController *)self dayScrubberController];
+        view4 = [dayScrubberController2 view];
+        [view4 setPreservesSuperviewLayoutMargins:1];
 
-        v18 = [(DayViewController *)self dayScrubberController];
-        v19 = [v18 view];
-        [v19 setNeedsLayout];
+        dayScrubberController3 = [(DayViewController *)self dayScrubberController];
+        view5 = [dayScrubberController3 view];
+        [view5 setNeedsLayout];
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = LargeDayViewController;
-  [(DayViewController *)&v13 viewDidAppear:a3];
+  [(DayViewController *)&v13 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -1177,22 +1177,22 @@ LABEL_13:
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = [(DayViewController *)self day];
-    v9 = [v8 date];
+    date = [v8 date];
     *buf = 138543618;
     v15 = v7;
     v16 = 2114;
-    v17 = v9;
+    v17 = date;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 
   if (![(LargeDayViewController *)self _eventViewControllerForModelSelectedEventIsAlreadyShown]&& self->_userInteractedWithSplitviewPane)
   {
-    v10 = [(LargeDayViewController *)self modelSelectedEvents];
-    v11 = v10;
-    if (v10 && [v10 count])
+    modelSelectedEvents = [(LargeDayViewController *)self modelSelectedEvents];
+    v11 = modelSelectedEvents;
+    if (modelSelectedEvents && [modelSelectedEvents count])
     {
-      v12 = [(LargeDayViewController *)self modelSelectedEvents];
-      [(LargeDayViewController *)self showEvents:v12 animated:0 showMode:1 context:0];
+      modelSelectedEvents2 = [(LargeDayViewController *)self modelSelectedEvents];
+      [(LargeDayViewController *)self showEvents:modelSelectedEvents2 animated:0 showMode:1 context:0];
     }
 
     else
@@ -1205,34 +1205,34 @@ LABEL_13:
   *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6) = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6) = 0;
-  v5 = [(LargeDayViewController *)self presentedViewController];
+  presentedViewController = [(LargeDayViewController *)self presentedViewController];
 
-  if (!v5)
+  if (!presentedViewController)
   {
     [(LargeDayViewController *)self _teardownSidebarConfigurationOfManagedNavigationController];
   }
 
   v6 = +[NSNotificationCenter defaultCenter];
-  v7 = [(MainViewController *)self model];
-  v8 = [v7 eventStore];
-  [v6 removeObserver:self name:EKEventStoreChangedNotification object:v8];
+  model = [(MainViewController *)self model];
+  eventStore = [model eventStore];
+  [v6 removeObserver:self name:EKEventStoreChangedNotification object:eventStore];
 
   [v6 removeObserver:self name:UIKeyboardWillShowNotification object:0];
   [v6 removeObserver:self name:UIKeyboardWillHideNotification object:0];
   v9.receiver = self;
   v9.super_class = LargeDayViewController;
-  [(LargeDayViewController *)&v9 viewWillDisappear:v3];
+  [(LargeDayViewController *)&v9 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = LargeDayViewController;
-  [(DayViewController *)&v4 viewDidDisappear:a3];
+  [(DayViewController *)&v4 viewDidDisappear:disappear];
   [(LargeDayViewController *)self _setModal:0];
 }
 
@@ -1241,27 +1241,27 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = LargeDayViewController;
   [(DayViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(DayViewController *)self dayScrubberController];
-  v4 = [v3 view];
-  [v4 setNeedsLayout];
+  dayScrubberController = [(DayViewController *)self dayScrubberController];
+  view = [dayScrubberController view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(LargeDayViewController *)self parentViewController];
+  parentViewController = [(LargeDayViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
     v8.receiver = self;
     v8.super_class = LargeDayViewController;
     [(LargeDayViewController *)&v8 viewDidLayoutSubviews];
-    v4 = [(LargeDayViewController *)self view];
-    v5 = [(DayViewController *)self dayView];
-    v6 = [v5 view];
-    [v4 sendSubviewToBack:v6];
+    view = [(LargeDayViewController *)self view];
+    dayView = [(DayViewController *)self dayView];
+    view2 = [dayView view];
+    [view sendSubviewToBack:view2];
 
-    v7 = [(LargeDayViewController *)self _fallbackSizingContextWindow];
-    if (v7)
+    _fallbackSizingContextWindow = [(LargeDayViewController *)self _fallbackSizingContextWindow];
+    if (_fallbackSizingContextWindow)
     {
       EKUIPushFallbackSizingContextWithViewHierarchy();
       [(LargeDayViewController *)self _layoutDayArea];
@@ -1277,52 +1277,52 @@ LABEL_13:
 
 - (void)updateNavigationBarDisplayedDateString
 {
-  v3 = [(DayViewController *)self dayView];
-  if (v3)
+  dayView = [(DayViewController *)self dayView];
+  if (dayView)
   {
-    v4 = v3;
-    v5 = [(DayViewController *)self dayView];
-    v6 = [v5 displayDate];
+    v4 = dayView;
+    dayView2 = [(DayViewController *)self dayView];
+    displayDate = [dayView2 displayDate];
 
-    if (v6)
+    if (displayDate)
     {
-      v7 = [(DayViewController *)self dayView];
-      v8 = [v7 displayDate];
-      v9 = [(MainViewController *)self model];
-      v10 = [v9 calendar];
-      v11 = [v10 timeZone];
-      v12 = [EKCalendarDate calendarDateWithDateComponents:v8 timeZone:v11];
+      dayView3 = [(DayViewController *)self dayView];
+      displayDate2 = [dayView3 displayDate];
+      model = [(MainViewController *)self model];
+      calendar = [model calendar];
+      timeZone = [calendar timeZone];
+      v12 = [EKCalendarDate calendarDateWithDateComponents:displayDate2 timeZone:timeZone];
 
       [(LargeDayViewController *)self updateNavigationBarDisplayedDateStringWithDate:v12];
     }
   }
 }
 
-- (void)updateNavigationBarDisplayedDateStringWithDate:(id)a3
+- (void)updateNavigationBarDisplayedDateStringWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(LargeDayViewController *)self navigationController];
-  [v5 setNavBarStringFromDate:v4 includeMonth:1 includeYear:1];
+  dateCopy = date;
+  navigationController = [(LargeDayViewController *)self navigationController];
+  [navigationController setNavBarStringFromDate:dateCopy includeMonth:1 includeYear:1];
 }
 
 - (Class)managedNavigationControllerType
 {
-  v3 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v4 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   if (v4)
   {
-    v5 = objc_opt_class();
+    managedNavigationControllerType = objc_opt_class();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = LargeDayViewController;
-    v5 = [(MainViewController *)&v7 managedNavigationControllerType];
+    managedNavigationControllerType = [(MainViewController *)&v7 managedNavigationControllerType];
   }
 
-  return v5;
+  return managedNavigationControllerType;
 }
 
 - (id)managedNavigationController
@@ -1334,19 +1334,19 @@ LABEL_13:
 
   v5.receiver = self;
   v5.super_class = LargeDayViewController;
-  v3 = [(MainViewController *)&v5 managedNavigationController];
+  managedNavigationController = [(MainViewController *)&v5 managedNavigationController];
 
-  return v3;
+  return managedNavigationController;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [v4 setWeekdayHeaderFillsHalfWidth:0];
-  [v4 setWeekdayHeaderVisible:0];
-  [v4 setTodayButtonVisible:CalSolariumEnabled() ^ 1];
-  [v4 setDateStringVisible:CalSolariumEnabled() ^ 1];
-  [v4 setDividerLineVisible:1];
+  paletteCopy = palette;
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  [paletteCopy setWeekdayHeaderVisible:0];
+  [paletteCopy setTodayButtonVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDateStringVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDividerLineVisible:1];
   if (CalSolariumEnabled())
   {
     v5 = 0;
@@ -1357,21 +1357,21 @@ LABEL_13:
     v5 = 2;
   }
 
-  [v4 setFocusBannerPlacement:v5];
-  v11 = [(DayViewController *)self dayScrubberController];
-  v6 = [(LargeDayViewController *)self ekui_futureTraitCollection];
-  [v11 setShowsWeekNumberWhenEnabled:{objc_msgSend(v6, "horizontalSizeClass") == 2}];
+  [paletteCopy setFocusBannerPlacement:v5];
+  dayScrubberController = [(DayViewController *)self dayScrubberController];
+  ekui_futureTraitCollection = [(LargeDayViewController *)self ekui_futureTraitCollection];
+  [dayScrubberController setShowsWeekNumberWhenEnabled:{objc_msgSend(ekui_futureTraitCollection, "horizontalSizeClass") == 2}];
 
-  [v4 setDayScrubberController:v11];
-  v7 = [v11 view];
-  [v7 setNeedsLayout];
+  [paletteCopy setDayScrubberController:dayScrubberController];
+  view = [dayScrubberController view];
+  [view setNeedsLayout];
 
-  [v4 sizeToFit];
-  [v4 frame];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v9 = v8;
-  v10 = [v4 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v10 setPreferredHeight:v9];
+  [containingPalette setPreferredHeight:v9];
 }
 
 - (BOOL)shouldAdaptEventViewControllers
@@ -1381,17 +1381,17 @@ LABEL_13:
     return 1;
   }
 
-  v4 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (v4)
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(MainViewController *)self shownEventViewController];
-    v6 = [v5 presentedViewController];
-    v3 = v6 != 0;
+    shownEventViewController = [(MainViewController *)self shownEventViewController];
+    presentedViewController = [shownEventViewController presentedViewController];
+    v3 = presentedViewController != 0;
   }
 
   return v3;
@@ -1399,16 +1399,16 @@ LABEL_13:
 
 - (BOOL)shouldJournalMainViewControllerParent
 {
-  v3 = [(LargeDayViewController *)self presentedViewController];
+  presentedViewController = [(LargeDayViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   result = 1;
   if (isKindOfClass)
   {
-    v5 = [(LargeDayViewController *)self presentedViewController];
-    v6 = [v5 viewControllers];
-    v7 = [v6 firstObject];
+    presentedViewController2 = [(LargeDayViewController *)self presentedViewController];
+    viewControllers = [presentedViewController2 viewControllers];
+    firstObject = [viewControllers firstObject];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
@@ -1423,46 +1423,46 @@ LABEL_13:
 
 - (BOOL)shouldInvalidateManagedNavigationControllerOnPresentationDismissal
 {
-  v2 = self;
-  v3 = [(LargeDayViewController *)self presentedViewController];
-  v4 = [(LargeDayViewController *)v2 managedNavigationController];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  presentedViewController = [(LargeDayViewController *)self presentedViewController];
+  managedNavigationController = [(LargeDayViewController *)selfCopy managedNavigationController];
+  LOBYTE(selfCopy) = presentedViewController == managedNavigationController;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedEvent
 {
-  v2 = [(LargeDayViewController *)self shownEventEditViewController];
-  v3 = v2 == 0;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  v3 = shownEventEditViewController == 0;
 
   return v3;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedDate
 {
-  v2 = [(LargeDayViewController *)self shownEventEditViewController];
-  v3 = v2 == 0;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  v3 = shownEventEditViewController == 0;
 
   return v3;
 }
 
-- (void)_selectNextEventInForwardDirection:(BOOL)a3
+- (void)_selectNextEventInForwardDirection:(BOOL)direction
 {
-  v5 = [(DayViewController *)self dayView];
-  v6 = [v5 currentDayView];
+  dayView = [(DayViewController *)self dayView];
+  currentDayView = [dayView currentDayView];
 
-  if (!v6)
+  if (!currentDayView)
   {
     goto LABEL_8;
   }
 
   v7 = [EKDayOccurrenceViewIterator alloc];
-  v8 = [v6 allOccurrenceViews];
-  v9 = [(LargeDayViewController *)self modelSelectedEvent];
-  v10 = [v7 initWithOccurrenceViews:v8 selectedEvent:v9];
+  allOccurrenceViews = [currentDayView allOccurrenceViews];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+  v10 = [v7 initWithOccurrenceViews:allOccurrenceViews selectedEvent:modelSelectedEvent];
 
-  if (a3)
+  if (direction)
   {
     [v10 next];
   }
@@ -1475,12 +1475,12 @@ LABEL_13:
 
   if (v13)
   {
-    v11 = [v13 occurrence];
+    occurrence = [v13 occurrence];
 
-    if (v11)
+    if (occurrence)
     {
-      v12 = [v13 occurrence];
-      [(LargeDayViewController *)self showEvent:v12 animated:1 showMode:1 context:0];
+      occurrence2 = [v13 occurrence];
+      [(LargeDayViewController *)self showEvent:occurrence2 animated:1 showMode:1 context:0];
     }
   }
 
@@ -1493,38 +1493,38 @@ LABEL_8:
 
 - (void)showNextOccurrenceOfSelectableItem
 {
-  v3 = [(LargeDayViewController *)self modelSelectedEvent];
-  v5 = [v3 nextOccurrence];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+  nextOccurrence = [modelSelectedEvent nextOccurrence];
 
-  v4 = v5;
-  if (v5)
+  v4 = nextOccurrence;
+  if (nextOccurrence)
   {
-    [(LargeDayViewController *)self showEvent:v5 animated:1 showMode:1 context:0];
-    v4 = v5;
+    [(LargeDayViewController *)self showEvent:nextOccurrence animated:1 showMode:1 context:0];
+    v4 = nextOccurrence;
   }
 }
 
 - (void)showPreviousOccurrenceOfSelectableItem
 {
-  v3 = [(LargeDayViewController *)self modelSelectedEvent];
-  v5 = [v3 previousOccurrence];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+  previousOccurrence = [modelSelectedEvent previousOccurrence];
 
-  v4 = v5;
-  if (v5)
+  v4 = previousOccurrence;
+  if (previousOccurrence)
   {
-    [(LargeDayViewController *)self showEvent:v5 animated:1 showMode:1 context:0];
-    v4 = v5;
+    [(LargeDayViewController *)self showEvent:previousOccurrence animated:1 showMode:1 context:0];
+    v4 = previousOccurrence;
   }
 }
 
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MainViewController *)self model];
-  v10 = [v7 selectedDate];
+  animatedCopy = animated;
+  directionCopy = direction;
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  if (v5)
+  if (directionCopy)
   {
     v8 = 1;
   }
@@ -1534,17 +1534,17 @@ LABEL_8:
     v8 = -1;
   }
 
-  v9 = [v10 calendarDateByAddingDays:v8];
-  [(DayViewController *)self selectDate:v9 animated:v4];
+  v9 = [selectedDate calendarDateByAddingDays:v8];
+  [(DayViewController *)self selectDate:v9 animated:animatedCopy];
 }
 
 - (BOOL)wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder
 {
-  v3 = [(MainViewController *)self shownEventViewController];
-  if (v3)
+  shownEventViewController = [(MainViewController *)self shownEventViewController];
+  if (shownEventViewController)
   {
-    v4 = [(LargeDayViewController *)self shownEventEditViewController];
-    v5 = v4 == 0;
+    shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+    v5 = shownEventEditViewController == 0;
   }
 
   else
@@ -1559,51 +1559,51 @@ LABEL_8:
 {
   if (!*(&self->_lastEventShowed + 2))
   {
-    v3 = [(LargeDayViewController *)self managedNavigationController];
-    v4 = [v3 parentViewController];
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    parentViewController = [managedNavigationController parentViewController];
 
-    if (v4 != self)
+    if (parentViewController != self)
     {
-      v5 = [(LargeDayViewController *)self managedNavigationController];
-      [(LargeDayViewController *)self addChildViewController:v5];
+      managedNavigationController2 = [(LargeDayViewController *)self managedNavigationController];
+      [(LargeDayViewController *)self addChildViewController:managedNavigationController2];
 
-      v6 = [(LargeDayViewController *)self managedNavigationController];
-      [v6 didMoveToParentViewController:self];
+      managedNavigationController3 = [(LargeDayViewController *)self managedNavigationController];
+      [managedNavigationController3 didMoveToParentViewController:self];
     }
 
     v7 = [LargeDayNavigationWrapperView alloc];
-    v8 = [(LargeDayViewController *)self managedNavigationController];
-    v9 = [v8 view];
-    v10 = [(LargeDayNavigationWrapperView *)v7 initWithNavigationView:v9];
+    managedNavigationController4 = [(LargeDayViewController *)self managedNavigationController];
+    view = [managedNavigationController4 view];
+    v10 = [(LargeDayNavigationWrapperView *)v7 initWithNavigationView:view];
     v11 = *(&self->_lastEventShowed + 2);
     *(&self->_lastEventShowed + 2) = v10;
 
     [*(&self->_lastEventShowed + 2) setClipsToBounds:1];
-    v12 = [(LargeDayViewController *)self view];
-    [v12 addSubview:*(&self->_lastEventShowed + 2)];
+    view2 = [(LargeDayViewController *)self view];
+    [view2 addSubview:*(&self->_lastEventShowed + 2)];
   }
 
-  v13 = [(LargeDayViewController *)self managedNavigationController];
-  [v13 setDelegate:self];
+  managedNavigationController5 = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController5 setDelegate:self];
 
-  v15 = [(LargeDayViewController *)self managedNavigationController];
-  v14 = [v15 traitOverrides];
-  [v14 setHorizontalSizeClass:1];
+  managedNavigationController6 = [(LargeDayViewController *)self managedNavigationController];
+  traitOverrides = [managedNavigationController6 traitOverrides];
+  [traitOverrides setHorizontalSizeClass:1];
 }
 
 - (void)_teardownSidebarConfigurationOfManagedNavigationController
 {
   [(LargeDayViewController *)self _dismissEditorAndSaveIfPossibleWhileChangingDate:1 animated:0];
   [(LargeDayViewController *)self _clearSplitViewNavigationController];
-  v3 = [(LargeDayViewController *)self managedNavigationController];
-  [v3 removeFromParentViewController];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController removeFromParentViewController];
 
-  v4 = [(LargeDayViewController *)self managedNavigationController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  managedNavigationController2 = [(LargeDayViewController *)self managedNavigationController];
+  view = [managedNavigationController2 view];
+  [view removeFromSuperview];
 
-  v6 = [(LargeDayViewController *)self managedNavigationController];
-  [v6 setDelegate:0];
+  managedNavigationController3 = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController3 setDelegate:0];
 
   [*(&self->_lastEventShowed + 2) removeFromSuperview];
   v7 = *(&self->_lastEventShowed + 2);
@@ -1612,15 +1612,15 @@ LABEL_8:
 
 - (void)_createSplitView
 {
-  v3 = [(LargeDayViewController *)self managedNavigationController];
-  v4 = [v3 view];
-  [v4 setClipsToBounds:1];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  view = [managedNavigationController view];
+  [view setClipsToBounds:1];
 
-  v5 = [(LargeDayViewController *)self managedNavigationController];
-  [(LargeDayViewController *)self addChildViewController:v5];
+  managedNavigationController2 = [(LargeDayViewController *)self managedNavigationController];
+  [(LargeDayViewController *)self addChildViewController:managedNavigationController2];
 
-  v6 = [(LargeDayViewController *)self managedNavigationController];
-  [v6 didMoveToParentViewController:self];
+  managedNavigationController3 = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController3 didMoveToParentViewController:self];
 
   v7 = objc_opt_new();
   v8 = *(&self->_navigationWrapperView + 2);
@@ -1629,18 +1629,18 @@ LABEL_8:
   v9 = +[UIColor separatorColor];
   [*(&self->_navigationWrapperView + 2) setBackgroundColor:v9];
 
-  v10 = [(LargeDayViewController *)self view];
-  [v10 addSubview:*(&self->_navigationWrapperView + 2)];
+  view2 = [(LargeDayViewController *)self view];
+  [view2 addSubview:*(&self->_navigationWrapperView + 2)];
 }
 
 - (void)_resetSplitView
 {
-  v3 = [(LargeDayViewController *)self shownEventEditViewController];
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
 
-  if (v3)
+  if (shownEventEditViewController)
   {
-    v4 = [(DayViewController *)self dayView];
-    [v4 setCurrentEditor:0];
+    dayView = [(DayViewController *)self dayView];
+    [dayView setCurrentEditor:0];
   }
 
   [(LargeDayViewController *)self _clearSplitViewNavigationController];
@@ -1652,35 +1652,35 @@ LABEL_8:
   [(LargeDayViewController *)self _setSplitViewPosition];
   [(LargeDayViewController *)self _layoutForSplitViews];
   [(LargeDayViewController *)self _layOutSplitDividerFrame];
-  v3 = [(DayViewController *)self dayView];
-  v4 = [v3 gestureController];
-  v5 = [v4 draggingView];
+  dayView = [(DayViewController *)self dayView];
+  gestureController = [dayView gestureController];
+  draggingView = [gestureController draggingView];
 
-  if (v5)
+  if (draggingView)
   {
-    v7 = [(DayViewController *)self dayView];
-    v6 = [v7 gestureController];
-    [v6 updateDraggingOccurrenceForced:0 animated:0];
+    dayView2 = [(DayViewController *)self dayView];
+    gestureController2 = [dayView2 gestureController];
+    [gestureController2 updateDraggingOccurrenceForced:0 animated:0];
   }
 }
 
 - (void)_setDayViewToSplitViewVisibleState
 {
-  v3 = [(LargeDayViewController *)self view];
-  [v3 bounds];
+  view = [(LargeDayViewController *)self view];
+  [view bounds];
   [(LargeDayViewController *)self splitterSpace];
 
   CalRoundToScreenScale();
   v5 = v4;
-  v6 = [(DayViewController *)self dayView];
-  v7 = [v6 view];
-  [v7 frame];
+  dayView = [(DayViewController *)self dayView];
+  view2 = [dayView view];
+  [view2 frame];
   v9 = v8;
   v11 = v10;
 
-  v13 = [(DayViewController *)self dayView];
-  v12 = [v13 view];
-  [v12 setFrame:{0.0, v9, v5, v11}];
+  dayView2 = [(DayViewController *)self dayView];
+  view3 = [dayView2 view];
+  [view3 setFrame:{0.0, v9, v5, v11}];
 }
 
 - (void)_layOutSplitDividerFrame
@@ -1691,8 +1691,8 @@ LABEL_8:
   v5 = 0.0;
   if (CalCanvasPocketEnabled())
   {
-    v6 = [(LargeDayViewController *)self view];
-    [v6 safeAreaInsets];
+    view = [(LargeDayViewController *)self view];
+    [view safeAreaInsets];
     v5 = v7;
   }
 
@@ -1700,13 +1700,13 @@ LABEL_8:
   v9 = v8;
   if ((CalInterfaceIsLeftToRight() & 1) == 0)
   {
-    v10 = [(LargeDayViewController *)self view];
-    [v10 bounds];
+    view2 = [(LargeDayViewController *)self view];
+    [view2 bounds];
     v9 = v11 - v9;
   }
 
-  v12 = [(LargeDayViewController *)self view];
-  [v12 bounds];
+  view3 = [(LargeDayViewController *)self view];
+  [view3 bounds];
   v14 = v13 - v5;
 
   v15 = *(&self->_navigationWrapperView + 2);
@@ -1723,33 +1723,33 @@ LABEL_8:
 
 - (void)_layoutDayViewPane
 {
-  v3 = [(DayViewController *)self dayView];
-  v4 = [v3 view];
-  [v4 frame];
+  dayView = [(DayViewController *)self dayView];
+  view = [dayView view];
+  [view frame];
 
   [(LargeDayViewController *)self _dayViewWidthWhenSplit];
   v6 = v5;
-  v7 = [(LargeDayViewController *)self view];
-  [v7 bounds];
+  view2 = [(LargeDayViewController *)self view];
+  [view2 bounds];
   v9 = v8;
 
   v10 = 0.0;
   if ((CalInterfaceIsLeftToRight() & 1) == 0)
   {
-    v11 = [(LargeDayViewController *)self view];
-    [v11 bounds];
+    view3 = [(LargeDayViewController *)self view];
+    [view3 bounds];
     v10 = v12 - v6;
   }
 
-  v13 = [(DayViewController *)self dayView];
-  [v13 setFrame:v10 gutterWidth:{0.0, v6, v9, 0.0}];
+  dayView2 = [(DayViewController *)self dayView];
+  [dayView2 setFrame:v10 gutterWidth:{0.0, v6, v9, 0.0}];
 }
 
 - (void)_layoutEventDetailsPane
 {
-  v3 = [(DayViewController *)self dayView];
-  v4 = [v3 view];
-  [v4 frame];
+  dayView = [(DayViewController *)self dayView];
+  view = [dayView view];
+  [view frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1759,8 +1759,8 @@ LABEL_8:
   v14 = 0.0;
   if (CalCanvasPocketEnabled())
   {
-    v15 = [(LargeDayViewController *)self view];
-    [v15 safeAreaInsets];
+    view2 = [(LargeDayViewController *)self view];
+    [view2 safeAreaInsets];
     v14 = v16;
   }
 
@@ -1777,18 +1777,18 @@ LABEL_8:
 
   [(LargeDayViewController *)self _splitViewWidth];
   v20 = v19;
-  v21 = [(LargeDayViewController *)self view];
-  [v21 bounds];
+  view3 = [(LargeDayViewController *)self view];
+  [view3 bounds];
   v23 = v22 - v14;
 
   [*(&self->_lastEventShowed + 2) setFrame:{v13, v14, v20, v23}];
-  v24 = [(MainViewController *)self shownEventViewController];
+  shownEventViewController = [(MainViewController *)self shownEventViewController];
 
-  if (v24)
+  if (shownEventViewController)
   {
-    v25 = [(MainViewController *)self shownEventViewController];
-    v26 = [v25 view];
-    [v26 layoutMargins];
+    shownEventViewController2 = [(MainViewController *)self shownEventViewController];
+    view4 = [shownEventViewController2 view];
+    [view4 layoutMargins];
     v28 = v27;
     v30 = v29;
 
@@ -1815,9 +1815,9 @@ LABEL_8:
       v34 = v38;
     }
 
-    v41 = [(MainViewController *)self shownEventViewController];
-    v40 = [v41 view];
-    [v40 setLayoutMargins:{v28, v39, v30, v34}];
+    shownEventViewController3 = [(MainViewController *)self shownEventViewController];
+    view5 = [shownEventViewController3 view];
+    [view5 setLayoutMargins:{v28, v39, v30, v34}];
   }
 }
 
@@ -1838,8 +1838,8 @@ LABEL_8:
 
 - (double)_totalWidth
 {
-  v3 = [(LargeDayViewController *)self view];
-  [v3 bounds];
+  view = [(LargeDayViewController *)self view];
+  [view bounds];
   v5 = v4;
   [(LargeDayViewController *)self splitterSpace];
   v7 = v5 - v6;
@@ -1859,47 +1859,47 @@ LABEL_8:
 {
   self->_changingDate = 1;
   objc_initWeak(&location, self);
-  v3 = [(LargeDayViewController *)self managedNavigationController];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000F4EF4;
   v4[3] = &unk_100210850;
   objc_copyWeak(&v5, &location);
-  [v3 enqueueStackResetOperationDismissingPresentations:1 cancelOperations:0 completionBlock:v4];
+  [managedNavigationController enqueueStackResetOperationDismissingPresentations:1 cancelOperations:0 completionBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  v9 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (!v9 || (v10 = v9, -[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isBeingDismissed], v11, v10, v12))
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (!shownEventEditViewController || (v10 = shownEventEditViewController, -[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isBeingDismissed], v11, v10, v12))
   {
-    v13 = [(MainViewController *)self window];
+    window = [(MainViewController *)self window];
     EKUIPushFallbackSizingContextWithViewHierarchy();
 
-    [(LargeDayViewController *)self _splitViewNavigationController:v15 willShowViewController:v8 animated:v5 completion:0];
-    v14 = [(MainViewController *)self window];
+    [(LargeDayViewController *)self _splitViewNavigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy completion:0];
+    window2 = [(MainViewController *)self window];
     EKUIPopFallbackSizingContextWithViewHierarchy();
   }
 }
 
-- (void)_splitViewNavigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_splitViewNavigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(LargeDayViewController *)self managedNavigationController];
-  v14 = [v10 isEqual:v13];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  v14 = [controllerCopy isEqual:managedNavigationController];
 
   if (v14)
   {
-    if (v7)
+    if (animatedCopy)
     {
       v15 = 0.15;
     }
@@ -1909,17 +1909,17 @@ LABEL_8:
       v15 = 0.0;
     }
 
-    v16 = [v10 viewControllers];
-    v17 = [v16 count] < 2;
+    viewControllers = [controllerCopy viewControllers];
+    v17 = [viewControllers count] < 2;
 
-    [v10 setNavigationBarHidden:v17 animated:0];
-    if (v11 || ([v10 viewControllers], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "count"), v34, v35) && (objc_msgSend(v10, "topViewController"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    [controllerCopy setNavigationBarHidden:v17 animated:0];
+    if (viewControllerCopy || ([controllerCopy viewControllers], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "count"), v34, v35) && (objc_msgSend(controllerCopy, "topViewController"), (viewControllerCopy = objc_claimAutoreleasedReturnValue()) != 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = [v11 view];
-        [v18 layoutMargins];
+        view = [viewControllerCopy view];
+        [view layoutMargins];
         v20 = v19;
         v22 = v21;
 
@@ -1931,12 +1931,12 @@ LABEL_8:
         v28 = v27;
         [(LargeDayViewController *)self rightSplitViewSideInset];
         v30 = v28 + v29;
-        v31 = [v11 view];
-        [v31 setLayoutMargins:{v20, v30, v22, v26}];
+        view2 = [viewControllerCopy view];
+        [view2 setLayoutMargins:{v20, v30, v22, v26}];
       }
 
-      v32 = [v11 toolbarItems];
-      [v10 setToolbarHidden:{objc_msgSend(v32, "count") == 0}];
+      toolbarItems = [viewControllerCopy toolbarItems];
+      [controllerCopy setToolbarHidden:{objc_msgSend(toolbarItems, "count") == 0}];
 
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
@@ -1948,13 +1948,13 @@ LABEL_8:
       v39[2] = sub_1000F541C;
       v39[3] = &unk_10020EDB0;
       v33 = &v40;
-      v40 = v12;
+      v40 = completionCopy;
       [UIView animateWithDuration:v41 animations:v39 completion:v15];
     }
 
     else
     {
-      [v10 setToolbarHidden:1];
+      [controllerCopy setToolbarHidden:1];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_1000F5434;
@@ -1965,16 +1965,16 @@ LABEL_8:
       v36[2] = sub_1000F543C;
       v36[3] = &unk_10020EDB0;
       v33 = &v37;
-      v37 = v12;
+      v37 = completionCopy;
       [UIView animateWithDuration:v38 animations:v36 completion:v15];
-      v11 = 0;
+      viewControllerCopy = 0;
     }
   }
 }
 
-- (int64_t)orientationForSize:(CGSize)a3
+- (int64_t)orientationForSize:(CGSize)size
 {
-  if ([(LargeDayViewController *)self usePortraitLayoutForSize:a3.width, a3.height])
+  if ([(LargeDayViewController *)self usePortraitLayoutForSize:size.width, size.height])
   {
     return 1;
   }
@@ -1987,7 +1987,7 @@ LABEL_8:
 
 - (int64_t)viewInterfaceOrientation
 {
-  v3 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy())
   {
     v4 = 4;
@@ -1996,13 +1996,13 @@ LABEL_6:
     return v4;
   }
 
-  v5 = [(LargeDayViewController *)self view];
+  view2 = [(LargeDayViewController *)self view];
   IsCompact = EKUICurrentHeightSizeClassIsCompact();
 
   if ((IsCompact & 1) == 0)
   {
-    v3 = [(LargeDayViewController *)self view];
-    [v3 frame];
+    view = [(LargeDayViewController *)self view];
+    [view frame];
     v4 = [(LargeDayViewController *)self orientationForSize:v7, v8];
     goto LABEL_6;
   }
@@ -2012,7 +2012,7 @@ LABEL_6:
 
 - (double)detailsLeftInsetAdjustment
 {
-  v2 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v3 = EKUICurrentWindowInterfaceParadigm();
 
   result = 1.0;
@@ -2026,7 +2026,7 @@ LABEL_6:
 
 - (double)detailsRightInsetAdjustment
 {
-  v3 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v4 = EKUICurrentWindowInterfaceParadigm();
 
   result = -1.0;
@@ -2039,30 +2039,30 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_selectEvent:(id)a3 animated:(BOOL)a4 context:(int)a5
+- (BOOL)_selectEvent:(id)event animated:(BOOL)animated context:(int)context
 {
-  LODWORD(v5) = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(DayViewController *)self gestureController];
-  v10 = [v9 dragGestureInProgress];
+  LODWORD(shownEventEditViewController7) = context;
+  animatedCopy = animated;
+  eventCopy = event;
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  if ((v10 & 1) == 0)
+  if ((dragGestureInProgress & 1) == 0)
   {
-    v11 = [(LargeDayViewController *)self shownEventEditViewController];
-    v12 = v11;
-    if (v5 == 1 && v11)
+    shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+    v12 = shownEventEditViewController;
+    if (shownEventEditViewController7 == 1 && shownEventEditViewController)
     {
-      v13 = [(LargeDayViewController *)self shownEventEditViewController];
-      v14 = [v13 event];
-      v15 = [v14 uniqueId];
-      v16 = [v8 uniqueId];
-      v17 = [v15 isEqualToString:v16];
+      shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+      event = [shownEventEditViewController2 event];
+      uniqueId = [event uniqueId];
+      uniqueId2 = [eventCopy uniqueId];
+      v17 = [uniqueId isEqualToString:uniqueId2];
 
       if (v17)
       {
 
-        v8 = 0;
+        eventCopy = 0;
         v18 = 1;
         goto LABEL_11;
       }
@@ -2072,26 +2072,26 @@ LABEL_6:
     {
     }
 
-    if (!v8 || v5 != 1)
+    if (!eventCopy || shownEventEditViewController7 != 1)
     {
 LABEL_12:
-      v19 = [(LargeDayViewController *)self shownEventEditViewController];
-      v20 = [v19 event];
+      shownEventEditViewController3 = [(LargeDayViewController *)self shownEventEditViewController];
+      event2 = [shownEventEditViewController3 event];
 
-      if (v8 || !v20)
+      if (eventCopy || !event2)
       {
-        v22 = [v20 uniqueID];
-        v23 = [v8 uniqueID];
-        if (v22 == v23)
+        uniqueID = [event2 uniqueID];
+        uniqueID2 = [eventCopy uniqueID];
+        if (uniqueID == uniqueID2)
         {
           v21 = 1;
         }
 
         else
         {
-          v24 = [v20 uniqueID];
-          v25 = [v8 uniqueID];
-          v21 = [v24 isEqualToString:v25];
+          uniqueID3 = [event2 uniqueID];
+          uniqueID4 = [eventCopy uniqueID];
+          v21 = [uniqueID3 isEqualToString:uniqueID4];
         }
       }
 
@@ -2100,44 +2100,44 @@ LABEL_12:
         v21 = 0;
       }
 
-      v26 = [(LargeDayViewController *)self shownEventEditViewController];
-      v27 = v26;
-      if (!v26 || v21)
+      shownEventEditViewController4 = [(LargeDayViewController *)self shownEventEditViewController];
+      v27 = shownEventEditViewController4;
+      if (!shownEventEditViewController4 || v21)
       {
       }
 
       else
       {
-        v28 = [(LargeDayViewController *)self shownEventEditViewController];
-        v29 = [v28 isBeingDismissed];
+        shownEventEditViewController5 = [(LargeDayViewController *)self shownEventEditViewController];
+        isBeingDismissed = [shownEventEditViewController5 isBeingDismissed];
 
-        if ((v29 & 1) == 0)
+        if ((isBeingDismissed & 1) == 0)
         {
-          if (v5 == 1)
+          if (shownEventEditViewController7 == 1)
           {
-            v30 = [(LargeDayViewController *)self shownEventEditViewController];
-            v31 = [v30 willPresentDialogOnSave];
+            shownEventEditViewController6 = [(LargeDayViewController *)self shownEventEditViewController];
+            willPresentDialogOnSave = [shownEventEditViewController6 willPresentDialogOnSave];
 
-            if (v31)
+            if (willPresentDialogOnSave)
             {
-              v5 = [(LargeDayViewController *)self shownEventEditViewController];
+              shownEventEditViewController7 = [(LargeDayViewController *)self shownEventEditViewController];
               v44[0] = _NSConcreteStackBlock;
               v44[1] = 3221225472;
               v44[2] = sub_1000F5B48;
               v44[3] = &unk_1002117C0;
               v44[4] = self;
-              v45 = v8;
-              v47 = v6;
+              v45 = eventCopy;
+              v47 = animatedCopy;
               v46 = 1;
-              [v5 completeAndSaveWithContinueBlock:v44];
+              [shownEventEditViewController7 completeAndSaveWithContinueBlock:v44];
 
-              LOBYTE(v5) = 0;
+              LOBYTE(shownEventEditViewController7) = 0;
 LABEL_47:
 
               goto LABEL_48;
             }
 
-            if (!v8)
+            if (!eventCopy)
             {
               *(&self->_dividerView + 2) = 1;
             }
@@ -2147,60 +2147,60 @@ LABEL_47:
         }
       }
 
-      v32 = [(DayViewController *)self _selectedOccurrenceViews];
-      if ([v32 count] == 1)
+      _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+      if ([_selectedOccurrenceViews count] == 1)
       {
-        v33 = [(DayViewController *)self _selectedOccurrenceViews];
-        v34 = [v33 firstObject];
+        _selectedOccurrenceViews2 = [(DayViewController *)self _selectedOccurrenceViews];
+        firstObject = [_selectedOccurrenceViews2 firstObject];
       }
 
       else
       {
-        v34 = 0;
+        firstObject = 0;
       }
 
-      v35 = [v34 occurrence];
-      v36 = [v35 isEqual:v8];
+      occurrence = [firstObject occurrence];
+      v36 = [occurrence isEqual:eventCopy];
 
       if (v36)
       {
-        if (([v8 hasChanges] & 1) == 0)
+        if (([eventCopy hasChanges] & 1) == 0)
         {
           [(LargeDayViewController *)self _adjustSelectedOccurrences];
         }
 
-        LOBYTE(v5) = 1;
+        LOBYTE(shownEventEditViewController7) = 1;
       }
 
       else
       {
         [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsRespectingModelSelected];
-        if (v8)
+        if (eventCopy)
         {
-          *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = v5 != 1;
-          [(LargeDayViewController *)self setModelSelectedEvent:v8];
-          v37 = v5 != 2;
-          v48 = v8;
-          LOBYTE(v5) = 1;
+          *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = shownEventEditViewController7 != 1;
+          [(LargeDayViewController *)self setModelSelectedEvent:eventCopy];
+          v37 = shownEventEditViewController7 != 2;
+          v48 = eventCopy;
+          LOBYTE(shownEventEditViewController7) = 1;
           v38 = [NSArray arrayWithObjects:&v48 count:1];
-          [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v38 animated:v6 autoScroll:v37 resetSelection:1];
+          [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v38 animated:animatedCopy autoScroll:v37 resetSelection:1];
         }
 
         else
         {
-          v39 = [(MainViewController *)self shownEventViewController];
-          if (v39 || ([(LargeDayViewController *)self shownEventEditViewController], (v39 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MainViewController *)self shownContactViewController], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
+          shownEventViewController = [(MainViewController *)self shownEventViewController];
+          if (shownEventViewController || ([(LargeDayViewController *)self shownEventEditViewController], (shownEventViewController = objc_claimAutoreleasedReturnValue()) != 0) || ([(MainViewController *)self shownContactViewController], (shownEventViewController = objc_claimAutoreleasedReturnValue()) != 0))
           {
           }
 
           else
           {
-            v5 = [(MainViewController *)self shownExpandedReminderStackViewController];
+            shownEventEditViewController7 = [(MainViewController *)self shownExpandedReminderStackViewController];
 
-            if (!v5)
+            if (!shownEventEditViewController7)
             {
               v41 = 0.15;
-              if (!v6)
+              if (!animatedCopy)
               {
                 v41 = 0.0;
               }
@@ -2215,7 +2215,7 @@ LABEL_47:
             }
           }
 
-          if (v6)
+          if (animatedCopy)
           {
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
@@ -2230,7 +2230,7 @@ LABEL_47:
             [(LargeDayViewController *)self _resetSplitView];
           }
 
-          LOBYTE(v5) = 0;
+          LOBYTE(shownEventEditViewController7) = 0;
         }
       }
 
@@ -2245,41 +2245,41 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  LOBYTE(v5) = 0;
+  LOBYTE(shownEventEditViewController7) = 0;
 LABEL_48:
 
-  return v5;
+  return shownEventEditViewController7;
 }
 
-- (BOOL)_selectEvents:(id)a3 animated:(BOOL)a4 context:(int)a5
+- (BOOL)_selectEvents:(id)events animated:(BOOL)animated context:(int)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(DayViewController *)self gestureController];
-  v10 = [v9 dragGestureInProgress];
+  animatedCopy = animated;
+  eventsCopy = events;
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  if ((v10 & 1) == 0)
+  if ((dragGestureInProgress & 1) == 0)
   {
-    v12 = [(LargeDayViewController *)self shownEventEditViewController];
-    v13 = v12;
-    v70 = a5;
-    if (a5 == 1 && v12 && [v8 count] == 1)
+    shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+    v13 = shownEventEditViewController;
+    contextCopy = context;
+    if (context == 1 && shownEventEditViewController && [eventsCopy count] == 1)
     {
-      v14 = [(LargeDayViewController *)self shownEventEditViewController];
-      v15 = [v14 event];
-      v16 = [v15 uniqueId];
-      v17 = [v8 firstObject];
-      [v17 uniqueId];
-      v19 = v18 = v6;
-      v20 = [v16 isEqualToString:v19];
+      shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+      event = [shownEventEditViewController2 event];
+      uniqueId = [event uniqueId];
+      firstObject = [eventsCopy firstObject];
+      [firstObject uniqueId];
+      v19 = v18 = animatedCopy;
+      v20 = [uniqueId isEqualToString:v19];
 
-      v6 = v18;
-      a5 = 1;
+      animatedCopy = v18;
+      context = 1;
 
       if (v20)
       {
 
-        v8 = 0;
+        eventsCopy = 0;
         v21 = 1;
         goto LABEL_13;
       }
@@ -2289,21 +2289,21 @@ LABEL_48:
     {
     }
 
-    if (!v8 || a5 != 1 || ![v8 count])
+    if (!eventsCopy || context != 1 || ![eventsCopy count])
     {
 LABEL_14:
-      v22 = [(LargeDayViewController *)self shownEventEditViewController];
-      v23 = [v22 event];
+      shownEventEditViewController3 = [(LargeDayViewController *)self shownEventEditViewController];
+      event2 = [shownEventEditViewController3 event];
 
-      v24 = [(MainViewController *)self shownExpandedReminderStackViewController];
-      v25 = [v24 events];
+      shownExpandedReminderStackViewController = [(MainViewController *)self shownExpandedReminderStackViewController];
+      events = [shownExpandedReminderStackViewController events];
 
-      if (v23)
+      if (event2)
       {
-        if (v8)
+        if (eventsCopy)
         {
-          v26 = [v8 count] == 0;
-          if (!v25)
+          v26 = [eventsCopy count] == 0;
+          if (!events)
           {
             goto LABEL_24;
           }
@@ -2312,7 +2312,7 @@ LABEL_14:
         else
         {
           v26 = 1;
-          if (!v25)
+          if (!events)
           {
             goto LABEL_24;
           }
@@ -2322,17 +2322,17 @@ LABEL_14:
       else
       {
         v26 = 0;
-        if (!v25)
+        if (!events)
         {
           goto LABEL_24;
         }
       }
 
-      if ([v25 count])
+      if ([events count])
       {
-        if (v8)
+        if (eventsCopy)
         {
-          v27 = [v8 count] == 0;
+          v27 = [eventsCopy count] == 0;
         }
 
         else
@@ -2341,17 +2341,17 @@ LABEL_14:
         }
 
 LABEL_25:
-        v71 = v25;
-        if (v26 || [v8 count] != 1)
+        v71 = events;
+        if (v26 || [eventsCopy count] != 1)
         {
           v35 = 0;
           if (!v27)
           {
 LABEL_34:
-            v37 = [NSSet setWithArray:v25];
-            if (v8)
+            v37 = [NSSet setWithArray:events];
+            if (eventsCopy)
             {
-              v38 = v8;
+              v38 = eventsCopy;
             }
 
             else
@@ -2363,36 +2363,36 @@ LABEL_34:
             v36 = [v37 isEqualToSet:v39];
 
 LABEL_38:
-            v40 = [(LargeDayViewController *)self shownEventEditViewController];
-            v41 = v40;
-            if ((v40 == 0) | v35 & 1)
+            shownEventEditViewController4 = [(LargeDayViewController *)self shownEventEditViewController];
+            v41 = shownEventEditViewController4;
+            if ((shownEventEditViewController4 == 0) | v35 & 1)
             {
             }
 
             else
             {
-              v42 = [(LargeDayViewController *)self shownEventEditViewController];
-              v43 = [v42 isBeingDismissed];
+              shownEventEditViewController5 = [(LargeDayViewController *)self shownEventEditViewController];
+              isBeingDismissed = [shownEventEditViewController5 isBeingDismissed];
 
-              if ((v43 & 1) == 0)
+              if ((isBeingDismissed & 1) == 0)
               {
-                if (v70 == 1)
+                if (contextCopy == 1)
                 {
-                  v44 = [(LargeDayViewController *)self shownEventEditViewController];
-                  v45 = [v44 willPresentDialogOnSave];
+                  shownEventEditViewController6 = [(LargeDayViewController *)self shownEventEditViewController];
+                  willPresentDialogOnSave = [shownEventEditViewController6 willPresentDialogOnSave];
 
-                  if (v45)
+                  if (willPresentDialogOnSave)
                   {
-                    v46 = [(LargeDayViewController *)self shownEventEditViewController];
+                    shownEventEditViewController7 = [(LargeDayViewController *)self shownEventEditViewController];
                     v74[0] = _NSConcreteStackBlock;
                     v74[1] = 3221225472;
                     v74[2] = sub_1000F6350;
                     v74[3] = &unk_1002117C0;
                     v74[4] = self;
-                    v75 = v8;
-                    v77 = v6;
+                    v75 = eventsCopy;
+                    v77 = animatedCopy;
                     v76 = 1;
-                    [v46 completeAndSaveWithContinueBlock:v74];
+                    [shownEventEditViewController7 completeAndSaveWithContinueBlock:v74];
 
                     v11 = 0;
 LABEL_80:
@@ -2400,88 +2400,88 @@ LABEL_80:
                     goto LABEL_81;
                   }
 
-                  if (!v8 || ![v8 count])
+                  if (!eventsCopy || ![eventsCopy count])
                   {
                     *(&self->_dividerView + 2) = 1;
                   }
                 }
 
-                else if (v8)
+                else if (eventsCopy)
                 {
-                  [v8 count];
+                  [eventsCopy count];
                 }
 
                 [(LargeDayViewController *)self _dismissEditorAndSaveIfPossibleWhileChangingDate:0 animated:0];
               }
             }
 
-            v47 = [(MainViewController *)self shownExpandedReminderStackViewController];
-            if ((v47 == 0) | v36 & 1)
+            shownExpandedReminderStackViewController2 = [(MainViewController *)self shownExpandedReminderStackViewController];
+            if ((shownExpandedReminderStackViewController2 == 0) | v36 & 1)
             {
               goto LABEL_57;
             }
 
-            v48 = [(MainViewController *)self shownExpandedReminderStackViewController];
-            v49 = [v48 isBeingDismissed];
+            shownExpandedReminderStackViewController3 = [(MainViewController *)self shownExpandedReminderStackViewController];
+            isBeingDismissed2 = [shownExpandedReminderStackViewController3 isBeingDismissed];
 
-            if (v49)
+            if (isBeingDismissed2)
             {
               goto LABEL_58;
             }
 
-            if (v8)
+            if (eventsCopy)
             {
-              v50 = [v8 count];
-              if (v70 != 1 || v50)
+              v50 = [eventsCopy count];
+              if (contextCopy != 1 || v50)
               {
                 goto LABEL_56;
               }
             }
 
-            else if (v70 != 1)
+            else if (contextCopy != 1)
             {
               goto LABEL_56;
             }
 
             *(&self->_dividerView + 2) = 1;
 LABEL_56:
-            v47 = [(MainViewController *)self shownExpandedReminderStackViewController];
-            v51 = [v47 presentingViewController];
-            [v51 dismissViewControllerAnimated:1 completion:0];
+            shownExpandedReminderStackViewController2 = [(MainViewController *)self shownExpandedReminderStackViewController];
+            presentingViewController = [shownExpandedReminderStackViewController2 presentingViewController];
+            [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
 LABEL_57:
 LABEL_58:
-            v52 = [(DayViewController *)self _selectedOccurrenceViews];
-            if ([v52 count] == 1)
+            _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+            if ([_selectedOccurrenceViews count] == 1)
             {
-              v53 = [(DayViewController *)self _selectedOccurrenceViews];
-              v54 = [v53 firstObject];
+              _selectedOccurrenceViews2 = [(DayViewController *)self _selectedOccurrenceViews];
+              firstObject2 = [_selectedOccurrenceViews2 firstObject];
             }
 
             else
             {
-              v54 = 0;
+              firstObject2 = 0;
             }
 
-            v55 = [v54 occurrences];
-            v56 = v55;
-            if (v8 && v55)
+            occurrences = [firstObject2 occurrences];
+            v56 = occurrences;
+            if (eventsCopy && occurrences)
             {
-              v57 = v23;
-              v58 = [v54 occurrences];
-              v59 = [NSSet setWithArray:v58];
-              v60 = [NSSet setWithArray:v8];
+              v57 = event2;
+              occurrences2 = [firstObject2 occurrences];
+              v59 = [NSSet setWithArray:occurrences2];
+              v60 = [NSSet setWithArray:eventsCopy];
               v61 = [v59 isEqualToSet:v60];
 
               if (v61)
               {
-                v23 = v57;
-                if ([v8 count] == 1)
+                event2 = v57;
+                if ([eventsCopy count] == 1)
                 {
-                  v62 = [v8 firstObject];
-                  v63 = [v62 hasChanges];
+                  firstObject3 = [eventsCopy firstObject];
+                  hasChanges = [firstObject3 hasChanges];
 
-                  if ((v63 & 1) == 0)
+                  if ((hasChanges & 1) == 0)
                   {
                     [(LargeDayViewController *)self _adjustSelectedOccurrences];
                   }
@@ -2491,41 +2491,41 @@ LABEL_58:
               }
 
               [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsRespectingModelSelected];
-              v23 = v57;
+              event2 = v57;
             }
 
             else
             {
 
               [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsRespectingModelSelected];
-              if (!v8)
+              if (!eventsCopy)
               {
                 goto LABEL_72;
               }
             }
 
-            if ([v8 count])
+            if ([eventsCopy count])
             {
-              *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = v70 != 1;
-              [(LargeDayViewController *)self setModelSelectedEvents:v8];
-              [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v8 animated:v6 autoScroll:v70 != 2 resetSelection:1];
+              *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = contextCopy != 1;
+              [(LargeDayViewController *)self setModelSelectedEvents:eventsCopy];
+              [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:eventsCopy animated:animatedCopy autoScroll:contextCopy != 2 resetSelection:1];
               goto LABEL_79;
             }
 
 LABEL_72:
-            v64 = [(MainViewController *)self shownEventViewController];
-            if (v64 || ([(LargeDayViewController *)self shownEventEditViewController], (v64 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MainViewController *)self shownContactViewController], (v64 = objc_claimAutoreleasedReturnValue()) != 0))
+            shownEventViewController = [(MainViewController *)self shownEventViewController];
+            if (shownEventViewController || ([(LargeDayViewController *)self shownEventEditViewController], (shownEventViewController = objc_claimAutoreleasedReturnValue()) != 0) || ([(MainViewController *)self shownContactViewController], (shownEventViewController = objc_claimAutoreleasedReturnValue()) != 0))
             {
             }
 
             else
             {
-              v66 = [(MainViewController *)self shownExpandedReminderStackViewController];
+              shownExpandedReminderStackViewController4 = [(MainViewController *)self shownExpandedReminderStackViewController];
 
-              if (!v66)
+              if (!shownExpandedReminderStackViewController4)
               {
                 v67 = 0.15;
-                if (!v6)
+                if (!animatedCopy)
                 {
                   v67 = 0.0;
                 }
@@ -2540,7 +2540,7 @@ LABEL_72:
               }
             }
 
-            if (v6)
+            if (animatedCopy)
             {
               block[0] = _NSConcreteStackBlock;
               block[1] = 3221225472;
@@ -2564,31 +2564,31 @@ LABEL_79:
 
         else
         {
-          v69 = v6;
-          v28 = [v23 uniqueID];
-          v29 = [v8 firstObject];
-          v30 = [v29 uniqueID];
-          if (v28 == v30)
+          v69 = animatedCopy;
+          uniqueID = [event2 uniqueID];
+          firstObject4 = [eventsCopy firstObject];
+          uniqueID2 = [firstObject4 uniqueID];
+          if (uniqueID == uniqueID2)
           {
             v35 = 1;
           }
 
           else
           {
-            [v23 uniqueID];
-            v31 = v68 = v28;
-            v32 = [v8 firstObject];
-            [v32 uniqueID];
-            v34 = v33 = v23;
+            [event2 uniqueID];
+            v31 = v68 = uniqueID;
+            firstObject5 = [eventsCopy firstObject];
+            [firstObject5 uniqueID];
+            v34 = v33 = event2;
             v35 = [v31 isEqualToString:v34];
 
-            v23 = v33;
-            v25 = v71;
+            event2 = v33;
+            events = v71;
 
-            v28 = v68;
+            uniqueID = v68;
           }
 
-          v6 = v69;
+          animatedCopy = v69;
           if (!v27)
           {
             goto LABEL_34;
@@ -2618,33 +2618,33 @@ LABEL_81:
 
 - (id)_selectedOccurrenceView
 {
-  v3 = [(DayViewController *)self _selectedOccurrenceViews];
-  if ([v3 count] == 1)
+  _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+  if ([_selectedOccurrenceViews count] == 1)
   {
-    v4 = [(DayViewController *)self _selectedOccurrenceViews];
-    v5 = [v4 firstObject];
+    _selectedOccurrenceViews2 = [(DayViewController *)self _selectedOccurrenceViews];
+    firstObject = [_selectedOccurrenceViews2 firstObject];
   }
 
   else
   {
-    v4 = [(DayViewController *)self dayView];
-    v6 = [(LargeDayViewController *)self modelSelectedEvent];
-    v5 = [v4 occurrenceViewForEvent:v6 includeNextAndPreviousDays:0];
+    _selectedOccurrenceViews2 = [(DayViewController *)self dayView];
+    modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+    firstObject = [_selectedOccurrenceViews2 occurrenceViewForEvent:modelSelectedEvent includeNextAndPreviousDays:0];
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_clonedViewForSelectedOccurrence:(id)a3
+- (id)_clonedViewForSelectedOccurrence:(id)occurrence
 {
-  v5 = a3;
+  occurrenceCopy = occurrence;
   v6 = objc_opt_new();
-  v7 = [(DayViewController *)self timedDayViewContentGridSubviews];
-  [v6 addObjectsFromArray:v7];
+  timedDayViewContentGridSubviews = [(DayViewController *)self timedDayViewContentGridSubviews];
+  [v6 addObjectsFromArray:timedDayViewContentGridSubviews];
 
-  v8 = [(DayViewController *)self allDayView];
-  v9 = [v8 subviews];
-  [v6 addObjectsFromArray:v9];
+  allDayView = [(DayViewController *)self allDayView];
+  subviews = [allDayView subviews];
+  [v6 addObjectsFromArray:subviews];
 
   v13 = 0;
   v14 = &v13;
@@ -2666,17 +2666,17 @@ LABEL_81:
   return v10;
 }
 
-- (void)_occurrenceViewDidEndSelection:(id)a3
+- (void)_occurrenceViewDidEndSelection:(id)selection
 {
-  v9 = [a3 object];
-  v4 = [v9 occurrence];
-  v5 = [(LargeDayViewController *)self _clonedViewForSelectedOccurrence:v4];
+  object = [selection object];
+  occurrence = [object occurrence];
+  v5 = [(LargeDayViewController *)self _clonedViewForSelectedOccurrence:occurrence];
 
   if (v5)
   {
-    v6 = [v9 occurrence];
-    v7 = [v5 occurrence];
-    v8 = [v6 isEqual:v7];
+    occurrence2 = [object occurrence];
+    occurrence3 = [v5 occurrence];
+    v8 = [occurrence2 isEqual:occurrence3];
 
     if (v8)
     {
@@ -2687,108 +2687,108 @@ LABEL_81:
 
 - (void)_reselectedEventIfNeeded
 {
-  v3 = [(LargeDayViewController *)self modelSelectedEvents];
+  modelSelectedEvents = [(LargeDayViewController *)self modelSelectedEvents];
 
-  if (v3)
+  if (modelSelectedEvents)
   {
-    v4 = [(LargeDayViewController *)self modelSelectedEvents];
-    [(LargeDayViewController *)self _selectEvents:v4 animated:0 context:0];
+    modelSelectedEvents2 = [(LargeDayViewController *)self modelSelectedEvents];
+    [(LargeDayViewController *)self _selectEvents:modelSelectedEvents2 animated:0 context:0];
   }
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v7 = a4;
-  v13 = a3;
-  v10 = a6;
-  v11 = a3;
-  v12 = [NSArray arrayWithObjects:&v13 count:1];
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  eventCopy2 = event;
+  v12 = [NSArray arrayWithObjects:&eventCopy count:1];
 
-  [(LargeDayViewController *)self showEvents:v12 animated:v7 showMode:a5 context:v10, v13];
+  [(LargeDayViewController *)self showEvents:v12 animated:animatedCopy showMode:mode context:contextCopy, eventCopy];
 }
 
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v21 = a3;
-  v10 = a6;
-  v11 = [(DayViewController *)self gestureController];
-  v12 = [v11 dragGestureInProgress];
+  animatedCopy = animated;
+  eventsCopy = events;
+  contextCopy = context;
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  if ((v12 & 1) == 0)
+  if ((dragGestureInProgress & 1) == 0)
   {
-    [(LargeDayViewController *)self setModelSelectedEvents:v21];
-    if ([v21 count] == 1)
+    [(LargeDayViewController *)self setModelSelectedEvents:eventsCopy];
+    if ([eventsCopy count] == 1)
     {
-      v13 = [v21 firstObject];
-      v14 = v13;
-      if (a5 == 3)
+      firstObject = [eventsCopy firstObject];
+      v14 = firstObject;
+      if (mode == 3)
       {
-        [(DayViewController *)self beginEditingOccurrence:v13 creationMethod:3];
+        [(DayViewController *)self beginEditingOccurrence:firstObject creationMethod:3];
 LABEL_5:
 
         goto LABEL_10;
       }
 
-      if (([v13 isNew] & 1) == 0 && !-[LargeDayViewController _eventIntersectsDayViewControllerActiveDate:](self, "_eventIntersectsDayViewControllerActiveDate:", v14))
+      if (([firstObject isNew] & 1) == 0 && !-[LargeDayViewController _eventIntersectsDayViewControllerActiveDate:](self, "_eventIntersectsDayViewControllerActiveDate:", v14))
       {
-        v15 = [(LargeDayViewController *)self shownEventEditViewController];
+        shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
 
-        if (v15)
+        if (shownEventEditViewController)
         {
           [(LargeDayViewController *)self _dismissEditorAndSaveIfPossibleWhileChangingDate:1 animated:0];
         }
 
-        v16 = [v14 startDate];
-        v17 = [(MainViewController *)self model];
-        v18 = [v17 calendar];
-        v19 = [v18 timeZone];
-        v20 = [EKCalendarDate calendarDateWithDate:v16 timeZone:v19];
-        [(DayViewController *)self selectDate:v20 animated:v8];
+        startDate = [v14 startDate];
+        model = [(MainViewController *)self model];
+        calendar = [model calendar];
+        timeZone = [calendar timeZone];
+        v20 = [EKCalendarDate calendarDateWithDate:startDate timeZone:timeZone];
+        [(DayViewController *)self selectDate:v20 animated:animatedCopy];
 
         goto LABEL_5;
       }
     }
 
-    [(LargeDayViewController *)self _showEventsWithoutChangingDate:v21 animated:v8 showComments:a5 == 2 context:v10];
+    [(LargeDayViewController *)self _showEventsWithoutChangingDate:eventsCopy animated:animatedCopy showComments:mode == 2 context:contextCopy];
   }
 
 LABEL_10:
 }
 
-- (void)_showEventsWithoutChangingDate:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6
+- (void)_showEventsWithoutChangingDate:(id)date animated:(BOOL)animated showComments:(BOOL)comments context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v15 = a3;
-  v10 = a6;
-  v11 = [(DayViewController *)self gestureController];
-  v12 = [v11 dragGestureInProgress];
+  commentsCopy = comments;
+  animatedCopy = animated;
+  dateCopy = date;
+  contextCopy = context;
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  if ((v12 & 1) == 0)
+  if ((dragGestureInProgress & 1) == 0)
   {
-    [(LargeDayViewController *)self _selectEvents:v15 animated:v8 context:0];
-    if (v15)
+    [(LargeDayViewController *)self _selectEvents:dateCopy animated:animatedCopy context:0];
+    if (dateCopy)
     {
-      if ([v15 count] != 1 || (objc_msgSend(v15, "firstObject"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isNew"), v13, (v14 & 1) == 0))
+      if ([dateCopy count] != 1 || (objc_msgSend(dateCopy, "firstObject"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isNew"), v13, (v14 & 1) == 0))
       {
-        [(DayViewController *)self presentDetailsForEvents:v15 animated:v8 showComments:v7 context:v10];
+        [(DayViewController *)self presentDetailsForEvents:dateCopy animated:animatedCopy showComments:commentsCopy context:contextCopy];
       }
     }
   }
 }
 
-- (BOOL)didSelectEvents:(id)a3 userInitiated:(BOOL)a4
+- (BOOL)didSelectEvents:(id)events userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  initiatedCopy = initiated;
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (initiatedCopy)
   {
-    if (v6)
+    if (eventsCopy)
     {
-      v8 = [(LargeDayViewController *)self modelSelectedEvents];
-      v9 = [NSSet setWithArray:v8];
+      modelSelectedEvents = [(LargeDayViewController *)self modelSelectedEvents];
+      v9 = [NSSet setWithArray:modelSelectedEvents];
       v10 = [NSSet setWithArray:v7];
       v11 = [v9 isEqualToSet:v10];
 
@@ -2818,9 +2818,9 @@ LABEL_10:
         }
 
 LABEL_26:
-        v26 = [(MainViewController *)self model];
-        v27 = [v26 selectedOccurrences];
-        v28 = [v27 count];
+        model = [(MainViewController *)self model];
+        selectedOccurrences = [model selectedOccurrences];
+        v28 = [selectedOccurrences count];
 
         v14 = 1;
         v15 = 1;
@@ -2855,7 +2855,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v6 || (-[MainViewController model](self, "model"), v16 = objc_claimAutoreleasedReturnValue(), [v16 selectedOccurrences], v17 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v17), v18 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v7), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "isEqualToSet:", v19), v19, v18, v17, v16, (v20 & 1) == 0))
+  if (!eventsCopy || (-[MainViewController model](self, "model"), v16 = objc_claimAutoreleasedReturnValue(), [v16 selectedOccurrences], v17 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v17), v18 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v7), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "isEqualToSet:", v19), v19, v18, v17, v16, (v20 & 1) == 0))
   {
     v21 = [(LargeDayViewController *)self _selectEvents:v7 animated:1 context:0];
     v30 = 0u;
@@ -2913,14 +2913,14 @@ LABEL_30:
   return v21;
 }
 
-- (BOOL)didSelectEvent:(id)a3 userInitiated:(BOOL)a4
+- (BOOL)didSelectEvent:(id)event userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  if (a3)
+  initiatedCopy = initiated;
+  if (event)
   {
-    v10 = a3;
-    v6 = a3;
-    v7 = [NSArray arrayWithObjects:&v10 count:1];
+    eventCopy = event;
+    eventCopy2 = event;
+    v7 = [NSArray arrayWithObjects:&eventCopy count:1];
   }
 
   else
@@ -2928,44 +2928,44 @@ LABEL_30:
     v7 = 0;
   }
 
-  v8 = [(LargeDayViewController *)self didSelectEvents:v7 userInitiated:v4, v10];
+  eventCopy = [(LargeDayViewController *)self didSelectEvents:v7 userInitiated:initiatedCopy, eventCopy];
 
-  return v8;
+  return eventCopy;
 }
 
-- (BOOL)_showsEventViewControllerAsFullScreen:(id)a3
+- (BOOL)_showsEventViewControllerAsFullScreen:(id)screen
 {
-  v4 = [a3 isBirthday];
-  if (v4)
+  isBirthday = [screen isBirthday];
+  if (isBirthday)
   {
-    v5 = [(LargeDayViewController *)self view];
+    view = [(LargeDayViewController *)self view];
     v6 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
-    LOBYTE(v4) = v6;
+    LOBYTE(isBirthday) = v6;
   }
 
-  return v4;
+  return isBirthday;
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v17 = a3;
-  v6 = [(LargeDayViewController *)self shownEventEditViewController];
+  controllerCopy = controller;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
 
-  if (v6)
+  if (shownEventEditViewController)
   {
-    [(LargeDayViewController *)self _editingDidCompleteWithAction:2 * (a4 == 2) changingDate:0 dismissEditor:1 editorToDismiss:0];
+    [(LargeDayViewController *)self _editingDidCompleteWithAction:2 * (action == 2) changingDate:0 dismissEditor:1 editorToDismiss:0];
   }
 
-  v7 = [v17 event];
-  v8 = [v7 refreshIfRefreshableAndNotify:1];
-  v9 = [v7 participationStatus];
-  v10 = [v7 eventStore];
-  if ([v10 showDeclinedEvents])
+  event = [controllerCopy event];
+  v8 = [event refreshIfRefreshableAndNotify:1];
+  participationStatus = [event participationStatus];
+  eventStore = [event eventStore];
+  if ([eventStore showDeclinedEvents])
   {
-    v11 = [v7 calendar];
-    v12 = [v11 source];
-    v13 = [v12 sourceType] != 1;
+    calendar = [event calendar];
+    source = [calendar source];
+    v13 = [source sourceType] != 1;
   }
 
   else
@@ -2973,19 +2973,19 @@ LABEL_30:
     v13 = 0;
   }
 
-  v14 = v9 != 3;
+  v14 = participationStatus != 3;
 
-  if (((a4 == 1) & v8) != 1 || !v14 && !v13)
+  if (((action == 1) & v8) != 1 || !v14 && !v13)
   {
-    [v17 setDelegate:0];
+    [controllerCopy setDelegate:0];
     [(LargeDayViewController *)self _clearSplitViewNavigationController];
-    v15 = [(DayViewController *)self dayView];
-    [v15 setCurrentEditor:0];
+    dayView = [(DayViewController *)self dayView];
+    [dayView setCurrentEditor:0];
 
     [(DayViewController *)self _cleanupSelectedOccurrenceCloneViews];
     [(LargeDayViewController *)self setModelSelectedEvent:0];
     [(LargeDayViewController *)self _selectEvent:0 animated:0 context:0];
-    v16 = a4 == 2 ? v8 : 1;
+    v16 = action == 2 ? v8 : 1;
     if ((v16 & 1) == 0)
     {
       *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 2) = 1;
@@ -2993,120 +2993,120 @@ LABEL_30:
   }
 }
 
-- (void)eventViewController:(id)a3 requestsDisplayOfDeleteAlert:(id)a4
+- (void)eventViewController:(id)controller requestsDisplayOfDeleteAlert:(id)alert
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [v6 popoverPresentationController];
-  [v7 setPermittedArrowDirections:2];
+  controllerCopy = controller;
+  alertCopy = alert;
+  popoverPresentationController = [alertCopy popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:2];
 
-  v8 = [v6 popoverPresentationController];
-  [v8 setCanOverlapSourceViewRect:0];
+  popoverPresentationController2 = [alertCopy popoverPresentationController];
+  [popoverPresentationController2 setCanOverlapSourceViewRect:0];
 
   if (CalSystemSolariumEnabled())
   {
-    v9 = [v25 toolbarItems];
-    v10 = [v9 firstObject];
-    v11 = [v6 popoverPresentationController];
-    [v11 setBarButtonItem:v10];
+    toolbarItems = [controllerCopy toolbarItems];
+    firstObject = [toolbarItems firstObject];
+    popoverPresentationController3 = [alertCopy popoverPresentationController];
+    [popoverPresentationController3 setBarButtonItem:firstObject];
   }
 
   else
   {
-    v12 = [v25 navigationController];
-    v13 = [v12 toolbar];
-    [v13 bounds];
+    navigationController = [controllerCopy navigationController];
+    toolbar = [navigationController toolbar];
+    [toolbar bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [v6 popoverPresentationController];
-    [v22 setSourceRect:{v15, v17, v19, v21}];
+    popoverPresentationController4 = [alertCopy popoverPresentationController];
+    [popoverPresentationController4 setSourceRect:{v15, v17, v19, v21}];
 
-    v9 = [v25 navigationController];
-    v10 = [v9 toolbar];
-    v11 = [v6 popoverPresentationController];
-    [v11 setSourceView:v10];
+    toolbarItems = [controllerCopy navigationController];
+    firstObject = [toolbarItems toolbar];
+    popoverPresentationController3 = [alertCopy popoverPresentationController];
+    [popoverPresentationController3 setSourceView:firstObject];
   }
 
-  v23 = [(LargeDayViewController *)self presentedViewController];
+  presentedViewController = [(LargeDayViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [(LargeDayViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(LargeDayViewController *)self presentViewController:alertCopy animated:1 completion:0];
   }
 }
 
-- (void)scrubberDidChangeSelectedDate:(id)a3
+- (void)scrubberDidChangeSelectedDate:(id)date
 {
   v5.receiver = self;
   v5.super_class = LargeDayViewController;
-  v4 = a3;
-  [(DayViewController *)&v5 scrubberDidChangeSelectedDate:v4];
-  [(LargeDayViewController *)self _selectedDateChangedToDate:v4, v5.receiver, v5.super_class];
+  dateCopy = date;
+  [(DayViewController *)&v5 scrubberDidChangeSelectedDate:dateCopy];
+  [(LargeDayViewController *)self _selectedDateChangedToDate:dateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)dayViewDidChangeSelectedDate:(id)a3
+- (void)dayViewDidChangeSelectedDate:(id)date
 {
   v5.receiver = self;
   v5.super_class = LargeDayViewController;
-  v4 = a3;
-  [(DayViewController *)&v5 dayViewDidChangeSelectedDate:v4];
-  [(LargeDayViewController *)self _selectedDateChangedToDate:v4, v5.receiver, v5.super_class];
+  dateCopy = date;
+  [(DayViewController *)&v5 dayViewDidChangeSelectedDate:dateCopy];
+  [(LargeDayViewController *)self _selectedDateChangedToDate:dateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_selectedDateChangedToDate:(id)a3
+- (void)_selectedDateChangedToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 calendar];
-  v7 = [v6 timeZone];
-  v11 = [EKCalendarDate calendarDateWithDate:v4 timeZone:v7];
+  dateCopy = date;
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
+  timeZone = [calendar timeZone];
+  v11 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   [(LargeDayViewController *)self updateNavigationBarDisplayedDateStringWithDate:v11];
-  v8 = [(LargeDayViewController *)self shownEventEditViewController];
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
 
-  if (v8)
+  if (shownEventEditViewController)
   {
     *(&self->_dividerView + 2) = 0;
     [(LargeDayViewController *)self _dismissEditorAndSaveIfPossibleWhileChangingDate:1 animated:0];
   }
 
-  v9 = [(LargeDayViewController *)self navigationController];
-  v10 = [v9 extendedLaunchFinished];
+  navigationController = [(LargeDayViewController *)self navigationController];
+  extendedLaunchFinished = [navigationController extendedLaunchFinished];
 
-  if (v10)
+  if (extendedLaunchFinished)
   {
     *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 2) = 0;
     [(LargeDayViewController *)self _beginAutoScrollingAutoSelectingWithContext:0];
   }
 }
 
-- (BOOL)_eventIntersectsDayViewControllerActiveDate:(id)a3
+- (BOOL)_eventIntersectsDayViewControllerActiveDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
-    v6 = [v4 calendar];
-    if ([v6 isHidden])
+    calendar = [dateCopy calendar];
+    if ([calendar isHidden])
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [v5 startCalendarDate];
+      startCalendarDate = [v5 startCalendarDate];
       v9 = [(DayViewController *)self day];
-      v10 = [v9 calendarDateForEndOfDay];
-      if ([v8 compare:v10] == -1)
+      calendarDateForEndOfDay = [v9 calendarDateForEndOfDay];
+      if ([startCalendarDate compare:calendarDateForEndOfDay] == -1)
       {
-        v11 = [v5 endCalendarDate];
+        endCalendarDate = [v5 endCalendarDate];
         v12 = [(DayViewController *)self day];
-        v13 = [v12 calendarDateForDay];
-        v7 = [v11 compare:v13] == 1;
+        calendarDateForDay = [v12 calendarDateForDay];
+        v7 = [endCalendarDate compare:calendarDateForDay] == 1;
       }
 
       else
@@ -3124,16 +3124,16 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)_eventEndDateIsPassed:(id)a3
+- (BOOL)_eventEndDateIsPassed:(id)passed
 {
-  v3 = [a3 endDate];
+  endDate = [passed endDate];
   v4 = CUIKNowDate();
-  v5 = [v3 compare:v4] == -1;
+  v5 = [endDate compare:v4] == -1;
 
   return v5;
 }
 
-- (void)_autoSelectEventWithAnimatedScroll:(BOOL)a3
+- (void)_autoSelectEventWithAnimatedScroll:(BOOL)scroll
 {
   if (self->_userSelectedEmptySpace)
   {
@@ -3141,11 +3141,11 @@ LABEL_30:
     return;
   }
 
-  v4 = a3;
-  v5 = [(DayViewController *)self gestureController];
-  v6 = [v5 dragGestureInProgress];
+  scrollCopy = scroll;
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  if ((v6 & 1) == 0)
+  if ((dragGestureInProgress & 1) == 0)
   {
     v28 = [(DayViewController *)self day];
     if (*&self->_clearingSplitViewNavigationController && ![(LargeDayViewController *)self _isTransitioningTraitCollection])
@@ -3158,46 +3158,46 @@ LABEL_30:
 
     else
     {
-      v7 = [(LargeDayViewController *)self shownEventEditViewController];
-      v8 = [v7 event];
-      v9 = [v8 isNew];
+      shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+      event = [shownEventEditViewController event];
+      isNew = [event isNew];
 
-      if (v9)
+      if (isNew)
       {
 LABEL_18:
-        v21 = [(LargeDayViewController *)self shownEventEditViewController];
-        v22 = [v21 event];
-        v23 = [v22 isNew];
+        shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+        event2 = [shownEventEditViewController2 event];
+        isNew2 = [event2 isNew];
 
-        if ((v23 & 1) == 0)
+        if ((isNew2 & 1) == 0)
         {
-          v24 = [(MainViewController *)self model];
-          v25 = [v24 selectedOccurrences];
-          [(LargeDayViewController *)self _showEventsWithoutChangingDate:v25 animated:v4 showComments:0 context:0];
+          model = [(MainViewController *)self model];
+          selectedOccurrences = [model selectedOccurrences];
+          [(LargeDayViewController *)self _showEventsWithoutChangingDate:selectedOccurrences animated:scrollCopy showComments:0 context:0];
         }
 
-        v26 = [(LargeDayViewController *)self modelSelectedEvent];
+        modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
 
-        if (!v26)
+        if (!modelSelectedEvent)
         {
-          v27 = [(DayViewController *)self dayView];
-          [v27 scrollToNow:v4];
+          dayView = [(DayViewController *)self dayView];
+          [dayView scrollToNow:scrollCopy];
         }
 
         return;
       }
 
-      v10 = [(LargeDayViewController *)self modelSelectedEvent];
+      modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
 
-      if (v10)
+      if (modelSelectedEvent2)
       {
-        v11 = [(LargeDayViewController *)self modelSelectedEvent];
-        v12 = [(LargeDayViewController *)self _eventIntersectsDayViewControllerActiveDate:v11];
+        modelSelectedEvent3 = [(LargeDayViewController *)self modelSelectedEvent];
+        v12 = [(LargeDayViewController *)self _eventIntersectsDayViewControllerActiveDate:modelSelectedEvent3];
 
         if (v12)
         {
-          v13 = [(LargeDayViewController *)self modelSelectedEvent];
-          v14 = [(LargeDayViewController *)self _showsEventViewControllerAsFullScreen:v13];
+          modelSelectedEvent4 = [(LargeDayViewController *)self modelSelectedEvent];
+          v14 = [(LargeDayViewController *)self _showsEventViewControllerAsFullScreen:modelSelectedEvent4];
 
           if (!v14)
           {
@@ -3205,22 +3205,22 @@ LABEL_18:
           }
         }
 
-        v15 = [(LargeDayViewController *)self shownEventEditViewController];
+        shownEventEditViewController3 = [(LargeDayViewController *)self shownEventEditViewController];
 
-        if (v15)
+        if (shownEventEditViewController3)
         {
           [(LargeDayViewController *)self _dismissEditorAndSaveIfPossibleWhileChangingDate:1 animated:0];
         }
       }
 
       *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 3) = 1;
-      v16 = [(DayViewController *)self dayView];
-      v17 = [v16 preferredEventsToSelectOnDate:v28];
+      dayView2 = [(DayViewController *)self dayView];
+      v17 = [dayView2 preferredEventsToSelectOnDate:v28];
 
       if ([v17 count] == 1)
       {
-        v18 = [v17 firstObject];
-        v19 = [(LargeDayViewController *)self _showsEventViewControllerAsFullScreen:v18];
+        firstObject = [v17 firstObject];
+        v19 = [(LargeDayViewController *)self _showsEventViewControllerAsFullScreen:firstObject];
 
         if (v19)
         {
@@ -3229,8 +3229,8 @@ LABEL_18:
         }
       }
 
-      v20 = [(MainViewController *)self model];
-      [v20 setSelectedOccurrences:v17];
+      model2 = [(MainViewController *)self model];
+      [model2 setSelectedOccurrences:v17];
     }
 
     goto LABEL_18;
@@ -3239,15 +3239,15 @@ LABEL_18:
 
 - (BOOL)canSpaciallyEditOccurrences
 {
-  v3 = [(LargeDayViewController *)self shownEventEditViewController];
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
 
-  if (v3)
+  if (shownEventEditViewController)
   {
     return 0;
   }
 
-  v5 = [(LargeDayViewController *)self presentedViewController];
-  v4 = v5 == 0;
+  presentedViewController = [(LargeDayViewController *)self presentedViewController];
+  v4 = presentedViewController == 0;
 
   return v4;
 }
@@ -3306,102 +3306,102 @@ LABEL_18:
   return v3;
 }
 
-- (void)occurrencesWereSpaciallyEditedFromDate:(id)a3 toDate:(id)a4
+- (void)occurrencesWereSpaciallyEditedFromDate:(id)date toDate:(id)toDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MainViewController *)self model];
-  v9 = [v8 calendar];
-  v10 = [v9 isDate:v7 inSameDayAsDate:v6];
+  toDateCopy = toDate;
+  dateCopy = date;
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
+  v10 = [calendar isDate:dateCopy inSameDayAsDate:toDateCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(LargeDayViewController *)self modelSelectedEvent];
-    [(LargeDayViewController *)self showEvent:v11 animated:1 showMode:1 context:0];
+    modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+    [(LargeDayViewController *)self showEvent:modelSelectedEvent animated:1 showMode:1 context:0];
   }
 }
 
-- (void)showReminderDetail:(id)a3
+- (void)showReminderDetail:(id)detail
 {
-  v6 = a3;
-  v4 = [(MainViewController *)self model];
-  [v4 setSelectedOccurrence:v6];
+  detailCopy = detail;
+  model = [(MainViewController *)self model];
+  [model setSelectedOccurrence:detailCopy];
 
-  v5 = [(LargeDayViewController *)self showDetailViewControllerForEvent:v6 context:0 animated:1 keepNavigationStack:1];
+  v5 = [(LargeDayViewController *)self showDetailViewControllerForEvent:detailCopy context:0 animated:1 keepNavigationStack:1];
 }
 
-- (BOOL)eventViewDelegateShouldHandlePresentationOfEditViewController:(id)a3
+- (BOOL)eventViewDelegateShouldHandlePresentationOfEditViewController:(id)controller
 {
-  v3 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v4 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   return v4;
 }
 
-- (BOOL)eventViewDelegateShouldCreateOwnEditViewController:(id)a3
+- (BOOL)eventViewDelegateShouldCreateOwnEditViewController:(id)controller
 {
-  v3 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v4 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   return v4;
 }
 
-- (void)_setModal:(BOOL)a3
+- (void)_setModal:(BOOL)modal
 {
-  if (*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) != a3)
+  if (*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) != modal)
   {
-    v4 = a3;
-    *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) = a3;
-    v5 = [(DayViewController *)self dayView];
-    [v5 setDisableGestureDayChange:v4];
+    modalCopy = modal;
+    *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) = modal;
+    dayView = [(DayViewController *)self dayView];
+    [dayView setDisableGestureDayChange:modalCopy];
   }
 }
 
-- (void)showEditViewController:(id)a3
+- (void)showEditViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (!v5 || (v6 = v5, -[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 event], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "event"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v6, v8 != v9))
+  controllerCopy = controller;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (!shownEventEditViewController || (v6 = shownEventEditViewController, -[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 event], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(controllerCopy, "event"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v6, v8 != v9))
   {
     *(&self->_dividerView + 2) = 2;
-    v10 = [(LargeDayViewController *)self view];
+    view = [(LargeDayViewController *)self view];
     v11 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
     if (v11)
     {
-      if (v4)
+      if (controllerCopy)
       {
-        [v4 setInternalEditViewDelegate:self];
+        [controllerCopy setInternalEditViewDelegate:self];
 LABEL_11:
-        [v4 setModalPresentationDelegate:self];
-        v21 = [(MainViewController *)self shownEventViewController];
-        [v21 dismissViewControllerAnimated:0 completion:0];
+        [controllerCopy setModalPresentationDelegate:self];
+        shownEventViewController = [(MainViewController *)self shownEventViewController];
+        [shownEventViewController dismissViewControllerAnimated:0 completion:0];
 
-        v22 = [(LargeDayViewController *)self shownEventEditViewController];
-        v23 = [v22 presentingViewController];
-        [v23 dismissViewControllerAnimated:0 completion:0];
+        shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+        presentingViewController = [shownEventEditViewController2 presentingViewController];
+        [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-        v24 = [(LargeDayViewController *)self navigationController];
-        [v24 presentAdaptiveModalViewController:v4 animated:1 completion:0];
+        navigationController = [(LargeDayViewController *)self navigationController];
+        [navigationController presentAdaptiveModalViewController:controllerCopy animated:1 completion:0];
 
         goto LABEL_12;
       }
 
-      v18 = [(MainViewController *)self shownEventViewController];
-      v19 = [v18 event];
+      shownEventViewController2 = [(MainViewController *)self shownEventViewController];
+      event = [shownEventViewController2 event];
 
-      if (v19)
+      if (event)
       {
 LABEL_10:
-        v4 = [EKEventEditViewController eventOrIntegrationViewControllerWithEvent:v19 creationMethod:0 viewStart:0 eventEditViewDelegate:self];
+        controllerCopy = [EKEventEditViewController eventOrIntegrationViewControllerWithEvent:event creationMethod:0 viewStart:0 eventEditViewDelegate:self];
 
         goto LABEL_11;
       }
 
-      v20 = [(LargeDayViewController *)self modelSelectedEvent];
-      if (v20)
+      modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+      if (modelSelectedEvent)
       {
-        v19 = v20;
+        event = modelSelectedEvent;
         goto LABEL_10;
       }
 
@@ -3413,26 +3413,26 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "[%s] couldn't get a valid event.", &v26, 0xCu);
       }
 
-      v4 = 0;
+      controllerCopy = 0;
     }
 
     else
     {
-      v12 = [v4 event];
-      [(LargeDayViewController *)self _selectEvent:v12 animated:0 context:0];
+      event2 = [controllerCopy event];
+      [(LargeDayViewController *)self _selectEvent:event2 animated:0 context:0];
 
-      [(LargeDayViewController *)self _customizeEventEditorForSplitViewAppearance:v4];
+      [(LargeDayViewController *)self _customizeEventEditorForSplitViewAppearance:controllerCopy];
       [(LargeDayViewController *)self _clearSplitViewNavigationController];
-      v13 = [(LargeDayViewController *)self managedNavigationController];
-      [v13 showViewController:v4 sender:self animated:1 completion:0];
+      managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+      [managedNavigationController showViewController:controllerCopy sender:self animated:1 completion:0];
 
-      v14 = [v4 toolbarItems];
-      v15 = [v14 count] == 0;
-      v16 = [(LargeDayViewController *)self managedNavigationController];
-      [v16 setToolbarHidden:v15];
+      toolbarItems = [controllerCopy toolbarItems];
+      v15 = [toolbarItems count] == 0;
+      managedNavigationController2 = [(LargeDayViewController *)self managedNavigationController];
+      [managedNavigationController2 setToolbarHidden:v15];
 
-      v17 = [(DayViewController *)self dayView];
-      [v17 setCurrentEditor:v4];
+      dayView = [(DayViewController *)self dayView];
+      [dayView setCurrentEditor:controllerCopy];
 
       [(LargeDayViewController *)self _setUpGesturesAndModalMode];
     }
@@ -3443,103 +3443,103 @@ LABEL_12:
 
 - (BOOL)eventViewControllerShouldHideDeleteButton
 {
-  v2 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v3 = EKUICurrentWindowInterfaceParadigm() == 8;
 
   return v3;
 }
 
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
+  viewControllerCopy = viewController;
   *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 4) = 1;
-  v6 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v7 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   if (v7)
   {
-    [(LargeDayViewController *)self showEditViewController:v8];
+    [(LargeDayViewController *)self showEditViewController:viewControllerCopy];
   }
 }
 
-- (void)eventViewControllerWillBeginEditingEvent:(id)a3
+- (void)eventViewControllerWillBeginEditingEvent:(id)event
 {
   *(&self->_dividerView + 2) = 2;
-  v4 = [(LargeDayViewController *)self view];
+  view = [(LargeDayViewController *)self view];
   v5 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   if (!v5)
   {
-    v6 = [(LargeDayViewController *)self modelSelectedEvent];
+    modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
 
-    if (v6)
+    if (modelSelectedEvent)
     {
       [(LargeDayViewController *)self _setUpGesturesAndModalMode];
     }
   }
 
-  v8 = [(LargeDayViewController *)self navigationController];
-  v7 = [v8 todayBarButtonItem];
-  [v7 setEnabled:0];
+  navigationController = [(LargeDayViewController *)self navigationController];
+  todayBarButtonItem = [navigationController todayBarButtonItem];
+  [todayBarButtonItem setEnabled:0];
 }
 
-- (BOOL)eventViewControllerEditButtonTemporarilyDisabled:(id)a3
+- (BOOL)eventViewControllerEditButtonTemporarilyDisabled:(id)disabled
 {
-  v3 = [(DayViewController *)self gestureController];
-  v4 = [v3 dragGestureInProgress];
+  gestureController = [(DayViewController *)self gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  return v4;
+  return dragGestureInProgress;
 }
 
 - (void)_setUpGesturesAndModalMode
 {
-  v3 = [(DayViewController *)self gestureController];
-  v4 = [(LargeDayViewController *)self modelSelectedEvent];
-  [v3 liftUpOccurrenceForEditingEvent:v4];
+  gestureController = [(DayViewController *)self gestureController];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+  [gestureController liftUpOccurrenceForEditingEvent:modelSelectedEvent];
 
   [(LargeDayViewController *)self _setModal:1];
 }
 
-- (void)eventViewControllerDidBeginEditingEventWithEditViewController:(id)a3
+- (void)eventViewControllerDidBeginEditingEventWithEditViewController:(id)controller
 {
-  v9 = a3;
-  v4 = [(LargeDayViewController *)self view];
+  controllerCopy = controller;
+  view = [(LargeDayViewController *)self view];
   v5 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
   if (!v5)
   {
-    [(LargeDayViewController *)self _customizeEventEditorForSplitViewAppearance:v9];
-    v6 = [(DayViewController *)self dayView];
-    [v6 setCurrentEditor:v9];
+    [(LargeDayViewController *)self _customizeEventEditorForSplitViewAppearance:controllerCopy];
+    dayView = [(DayViewController *)self dayView];
+    [dayView setCurrentEditor:controllerCopy];
   }
 
-  v7 = [(LargeDayViewController *)self navigationController];
-  v8 = [v7 todayBarButtonItem];
-  [v8 setEnabled:0];
+  navigationController = [(LargeDayViewController *)self navigationController];
+  todayBarButtonItem = [navigationController todayBarButtonItem];
+  [todayBarButtonItem setEnabled:0];
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(LargeDayViewController *)self modelSelectedEvent];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
   v19.receiver = self;
   v19.super_class = LargeDayViewController;
-  [(DayViewController *)&v19 eventEditViewController:v8 didCompleteWithAction:a4 dismissController:0];
-  if (!v10 && *(&self->_dividerView + 2) == 1 && *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 2))
+  [(DayViewController *)&v19 eventEditViewController:controllerCopy didCompleteWithAction:action dismissController:0];
+  if (!modelSelectedEvent && *(&self->_dividerView + 2) == 1 && *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 2))
   {
     [(LargeDayViewController *)self setModelSelectedEvent:0];
   }
 
-  [(LargeDayViewController *)self _editingDidCompleteWithAction:a4 changingDate:0 dismissEditor:1 editorToDismiss:v8];
-  if (v9)
+  [(LargeDayViewController *)self _editingDidCompleteWithAction:action changingDate:0 dismissEditor:1 editorToDismiss:controllerCopy];
+  if (handlerCopy)
   {
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000F85F8;
     v16 = &unk_10020EBC8;
-    v17 = self;
-    v18 = v9;
+    selfCopy = self;
+    v18 = handlerCopy;
     v11 = objc_retainBlock(&v13);
   }
 
@@ -3552,12 +3552,12 @@ LABEL_12:
   [(LargeDayViewController *)self _splitViewNavigationController:v12 willShowViewController:0 animated:1 completion:v11];
 }
 
-- (void)eventViewControllerWillFinishEditingEvent:(id)a3 deleted:(BOOL)a4
+- (void)eventViewControllerWillFinishEditingEvent:(id)event deleted:(BOOL)deleted
 {
-  if (a4)
+  if (deleted)
   {
-    v5 = [(MainViewController *)self shownEventViewController];
-    [v5 setEditorHideTransition:0];
+    shownEventViewController = [(MainViewController *)self shownEventViewController];
+    [shownEventViewController setEditorHideTransition:0];
 
     v6 = 2;
   }
@@ -3570,56 +3570,56 @@ LABEL_12:
   [(LargeDayViewController *)self _editingDidCompleteWithAction:v6 changingDate:0 dismissEditor:0 editorToDismiss:0];
 }
 
-- (void)_editingDidCompleteWithAction:(int64_t)a3 changingDate:(BOOL)a4 dismissEditor:(BOOL)a5 editorToDismiss:(id)a6
+- (void)_editingDidCompleteWithAction:(int64_t)action changingDate:(BOOL)date dismissEditor:(BOOL)editor editorToDismiss:(id)dismiss
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4 || *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 5);
-  v12 = [(DayViewController *)self gestureController];
-  [v12 endForcedStart:0];
+  editorCopy = editor;
+  dismissCopy = dismiss;
+  v11 = date || *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 5);
+  gestureController = [(DayViewController *)self gestureController];
+  [gestureController endForcedStart:0];
 
-  v13 = [(DayViewController *)self dayView];
-  [v13 externallyEndedGestureDragging];
+  dayView = [(DayViewController *)self dayView];
+  [dayView externallyEndedGestureDragging];
 
-  v14 = [(DayViewController *)self dayView];
-  [v14 setGestureOccurrenceSuperview:0];
+  dayView2 = [(DayViewController *)self dayView];
+  [dayView2 setGestureOccurrenceSuperview:0];
 
   [(LargeDayViewController *)self _setModal:0];
-  v15 = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
-  if ([v15 count] == 1)
+  _selectedOccurrenceFrontmostClonedViews = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
+  if ([_selectedOccurrenceFrontmostClonedViews count] == 1)
   {
-    v16 = [v15 firstObject];
-    if (v16)
+    firstObject = [_selectedOccurrenceFrontmostClonedViews firstObject];
+    if (firstObject)
     {
-      v17 = v16;
-      [v16 setAlpha:1.0];
+      v17 = firstObject;
+      [firstObject setAlpha:1.0];
       [v17 setDimmed:0];
       [(LargeDayViewController *)self _adjustSelectedOccurrences];
     }
   }
 
-  if (v6)
+  if (editorCopy)
   {
-    v18 = [(LargeDayViewController *)self managedNavigationController];
-    v19 = v18;
-    if (v10)
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    v19 = managedNavigationController;
+    if (dismissCopy)
     {
-      v20 = [v10 presentingViewController];
+      selfCopy = [dismissCopy presentingViewController];
     }
 
     else
     {
-      v22 = [(LargeDayViewController *)v18 presentedViewController];
+      presentedViewController = [(LargeDayViewController *)managedNavigationController presentedViewController];
 
-      if (v22)
+      if (presentedViewController)
       {
 LABEL_12:
-        v23 = [(LargeDayViewController *)v19 presentedViewController];
+        presentedViewController2 = [(LargeDayViewController *)v19 presentedViewController];
         v24 = objc_opt_class();
 
-        if (v10 || ([(LargeDayViewController *)self shownEventEditViewController], (v29 = objc_claimAutoreleasedReturnValue()) != 0) && (v30 = v29, v31 = objc_opt_class(), v30, v24 == v31))
+        if (dismissCopy || ([(LargeDayViewController *)self shownEventEditViewController], (v29 = objc_claimAutoreleasedReturnValue()) != 0) && (v30 = v29, v31 = objc_opt_class(), v30, v24 == v31))
         {
-          v25 = [(LargeDayViewController *)self view];
+          view = [(LargeDayViewController *)self view];
           v26 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
           if (v26)
@@ -3630,8 +3630,8 @@ LABEL_12:
 
           else
           {
-            v32 = [(MainViewController *)self shownEventViewController];
-            v27 = v32 != 0 && !v11;
+            shownEventViewController = [(MainViewController *)self shownEventViewController];
+            v27 = shownEventViewController != 0 && !v11;
 
             v28 = 6;
           }
@@ -3658,39 +3658,39 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      v20 = self;
+      selfCopy = self;
     }
 
-    v21 = v20;
+    v21 = selfCopy;
 
     v19 = v21;
     goto LABEL_12;
   }
 
 LABEL_24:
-  if (*(&self->_dividerView + 2) == 2 && a3 <= 2)
+  if (*(&self->_dividerView + 2) == 2 && action <= 2)
   {
-    *(&self->_dividerView + 2) = dword_1001F85F8[a3];
+    *(&self->_dividerView + 2) = dword_1001F85F8[action];
   }
 
-  v34 = [(LargeDayViewController *)self modelSelectedEvent];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
 
-  if (!v34)
+  if (!modelSelectedEvent)
   {
     goto LABEL_30;
   }
 
-  v35 = [(LargeDayViewController *)self modelSelectedEvent];
-  v36 = [v35 isNew];
+  modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
+  isNew = [modelSelectedEvent2 isNew];
 
-  if (!a3 && (v36 & 1) != 0)
+  if (!action && (isNew & 1) != 0)
   {
     goto LABEL_30;
   }
 
-  if (a3 == 2 || v11)
+  if (action == 2 || v11)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
 LABEL_30:
       if (*(&self->_dividerView + 2))
@@ -3710,65 +3710,65 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v40 = [(MainViewController *)self shownEventViewController];
-  if (v40 && (v41 = v40, -[MainViewController shownEventViewController](self, "shownEventViewController"), v42 = objc_claimAutoreleasedReturnValue(), [v42 event], v43 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvent](self, "modelSelectedEvent"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v43, "isEqual:", v44), v44, v43, v42, v41, (v45 & 1) != 0))
+  shownEventViewController2 = [(MainViewController *)self shownEventViewController];
+  if (shownEventViewController2 && (v41 = shownEventViewController2, -[MainViewController shownEventViewController](self, "shownEventViewController"), v42 = objc_claimAutoreleasedReturnValue(), [v42 event], v43 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvent](self, "modelSelectedEvent"), v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v43, "isEqual:", v44), v44, v43, v42, v41, (v45 & 1) != 0))
   {
-    if (a3)
+    if (action)
     {
       goto LABEL_33;
     }
 
-    v46 = [(MainViewController *)self shownEventViewController];
-    [v46 setNeedsReload];
+    shownEventViewController3 = [(MainViewController *)self shownEventViewController];
+    [shownEventViewController3 setNeedsReload];
   }
 
   else
   {
-    v46 = [(LargeDayViewController *)self modelSelectedEvent];
-    [(LargeDayViewController *)self showEvent:v46 animated:1 showMode:1 context:0];
+    shownEventViewController3 = [(LargeDayViewController *)self modelSelectedEvent];
+    [(LargeDayViewController *)self showEvent:shownEventViewController3 animated:1 showMode:1 context:0];
   }
 
 LABEL_33:
-  v37 = [(DayViewController *)self dayView];
-  [v37 setCurrentEditor:0];
+  dayView3 = [(DayViewController *)self dayView];
+  [dayView3 setCurrentEditor:0];
 
-  v38 = [(LargeDayViewController *)self modelSelectedEvent];
+  modelSelectedEvent3 = [(LargeDayViewController *)self modelSelectedEvent];
   if (!v11)
   {
-    switch(a3)
+    switch(action)
     {
       case 0:
-        v39 = [(DayViewController *)self dayView];
-        [v39 editorDidCancelEditingEvent:v38];
+        dayView4 = [(DayViewController *)self dayView];
+        [dayView4 editorDidCancelEditingEvent:modelSelectedEvent3];
         goto LABEL_48;
       case 2:
-        v39 = [(DayViewController *)self dayView];
-        [v39 editorDidDeleteEvent:v38];
+        dayView4 = [(DayViewController *)self dayView];
+        [dayView4 editorDidDeleteEvent:modelSelectedEvent3];
         goto LABEL_48;
       case 1:
-        v39 = [(DayViewController *)self dayView];
-        [v39 editorDidSaveEvent:v38];
+        dayView4 = [(DayViewController *)self dayView];
+        [dayView4 editorDidSaveEvent:modelSelectedEvent3];
 LABEL_48:
 
         break;
     }
   }
 
-  v47 = [(LargeDayViewController *)self navigationController];
-  v48 = [v47 todayBarButtonItem];
-  [v48 setEnabled:1];
+  navigationController = [(LargeDayViewController *)self navigationController];
+  todayBarButtonItem = [navigationController todayBarButtonItem];
+  [todayBarButtonItem setEnabled:1];
 }
 
-- (void)eventViewControllerModifiedEventWithoutEditing:(id)a3
+- (void)eventViewControllerModifiedEventWithoutEditing:(id)editing
 {
-  v4 = [a3 event];
-  [(LargeDayViewController *)self setModelSelectedEvent:v4];
+  event = [editing event];
+  [(LargeDayViewController *)self setModelSelectedEvent:event];
 }
 
-- (void)handleGestureCommittingOccurrence:(id)a3
+- (void)handleGestureCommittingOccurrence:(id)occurrence
 {
-  v4 = a3;
-  [(LargeDayViewController *)self showEvent:v4 animated:0 showMode:1 context:0];
+  occurrenceCopy = occurrence;
+  [(LargeDayViewController *)self showEvent:occurrenceCopy animated:0 showMode:1 context:0];
   objc_initWeak(&location, self);
   objc_initWeak(&from, *(&self->_lastEventShowed + 2));
   v8 = _NSConcreteStackBlock;
@@ -3788,8 +3788,8 @@ LABEL_48:
   else
   {
     [*(&self->_lastEventShowed + 2) setHidden:1];
-    v7 = [(LargeDayViewController *)self managedNavigationController];
-    [v7 enqueueBlock:v5];
+    managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+    [managedNavigationController enqueueBlock:v5];
   }
 
   objc_destroyWeak(&v13);
@@ -3798,28 +3798,28 @@ LABEL_48:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)comparePointersOfArray:(id)a3 withArray:(id)a4
+- (BOOL)comparePointersOfArray:(id)array withArray:(id)withArray
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  arrayCopy = array;
+  withArrayCopy = withArray;
+  v7 = withArrayCopy;
+  if (!(arrayCopy | withArrayCopy))
   {
     goto LABEL_2;
   }
 
-  if ((v5 == 0) != (v6 == 0) || (v9 = [v5 count], v9 != objc_msgSend(v7, "count")))
+  if ((arrayCopy == 0) != (withArrayCopy == 0) || (v9 = [arrayCopy count], v9 != objc_msgSend(v7, "count")))
   {
     v8 = 0;
     goto LABEL_12;
   }
 
-  if ([v5 count])
+  if ([arrayCopy count])
   {
     v10 = 0;
     do
     {
-      v11 = [v5 objectAtIndex:v10];
+      v11 = [arrayCopy objectAtIndex:v10];
       v12 = [v7 objectAtIndex:v10];
 
       v8 = v11 == v12;
@@ -3831,7 +3831,7 @@ LABEL_48:
       ++v10;
     }
 
-    while (v10 < [v5 count]);
+    while (v10 < [arrayCopy count]);
   }
 
   else
@@ -3845,40 +3845,40 @@ LABEL_12:
   return v8;
 }
 
-- (void)dataReloadedWithTrigger:(int)a3
+- (void)dataReloadedWithTrigger:(int)trigger
 {
   [(DayViewController *)self _cleanupSelectedOccurrenceCloneViews];
-  v5 = [(LargeDayViewController *)self modelSelectedEvent];
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
 
-  if (!v5)
+  if (!modelSelectedEvent)
   {
     return;
   }
 
-  v6 = [(DayViewController *)self dayView];
-  v7 = [(LargeDayViewController *)self modelSelectedEvent];
-  v22 = [v6 occurrenceViewForEvent:v7];
+  dayView = [(DayViewController *)self dayView];
+  modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
+  v22 = [dayView occurrenceViewForEvent:modelSelectedEvent2];
 
-  v8 = [v22 occurrences];
+  occurrences = [v22 occurrences];
   if (v22)
   {
-    v9 = [(LargeDayViewController *)self modelSelectedEvents];
-    v10 = [(LargeDayViewController *)self comparePointersOfArray:v8 withArray:v9];
+    modelSelectedEvents = [(LargeDayViewController *)self modelSelectedEvents];
+    v10 = [(LargeDayViewController *)self comparePointersOfArray:occurrences withArray:modelSelectedEvents];
 
     if (v10)
     {
-      [(LargeDayViewController *)self setModelSelectedEvents:v8];
+      [(LargeDayViewController *)self setModelSelectedEvents:occurrences];
     }
   }
 
-  v11 = [(LargeDayViewController *)self shownEventEditViewController];
-  v16 = !v11 || ([v11 event], v13 = v12 = v11;
-  v17 = [(MainViewController *)self shownExpandedReminderStackViewController];
-  v18 = v17;
-  if (v17)
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  v16 = !shownEventEditViewController || ([shownEventEditViewController event], v13 = v12 = shownEventEditViewController;
+  shownExpandedReminderStackViewController = [(MainViewController *)self shownExpandedReminderStackViewController];
+  v18 = shownExpandedReminderStackViewController;
+  if (shownExpandedReminderStackViewController)
   {
-    v19 = [v17 events];
-    v20 = [(LargeDayViewController *)self comparePointersOfArray:v8 withArray:v19];
+    events = [shownExpandedReminderStackViewController events];
+    v20 = [(LargeDayViewController *)self comparePointersOfArray:occurrences withArray:events];
 
     if (v20)
     {
@@ -3899,27 +3899,27 @@ LABEL_12:
   if (v16)
   {
 LABEL_15:
-    v21 = [(LargeDayViewController *)self modelSelectedEvents];
-    [(LargeDayViewController *)self _selectEvents:v21 animated:0 context:2 * (a3 == 1)];
+    modelSelectedEvents2 = [(LargeDayViewController *)self modelSelectedEvents];
+    [(LargeDayViewController *)self _selectEvents:modelSelectedEvents2 animated:0 context:2 * (trigger == 1)];
   }
 
 LABEL_16:
 }
 
-- (void)_eventStoreChanged:(id)a3
+- (void)_eventStoreChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:EKEventStoreChangeTypeUserInfoKey];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:EKEventStoreChangeTypeUserInfoKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 != 2)
+  if (unsignedIntegerValue != 2)
   {
-    v7 = [(LargeDayViewController *)self modelSelectedEvent];
-    if (v7)
+    modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+    if (modelSelectedEvent)
     {
-      v8 = v7;
-      v9 = [(LargeDayViewController *)self modelSelectedEvent];
-      v10 = [v9 refreshIfRefreshableAndNotify:1];
+      v8 = modelSelectedEvent;
+      modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
+      v10 = [modelSelectedEvent2 refreshIfRefreshableAndNotify:1];
 
       if ((v10 & 1) == 0)
       {
@@ -3931,20 +3931,20 @@ LABEL_16:
   }
 }
 
-- (void)displayedOccurrencesChangedWithTrigger:(int)a3
+- (void)displayedOccurrencesChangedWithTrigger:(int)trigger
 {
   self->_userInteractedWithSplitviewPane = 1;
   [(LargeDayViewController *)self dataReloadedWithTrigger:?];
-  v7 = [(LargeDayViewController *)self view];
-  v5 = [v7 window];
-  if (v5)
+  view = [(LargeDayViewController *)self view];
+  window = [view window];
+  if (window)
   {
     v6 = *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6);
 
     if (v6 == 1)
     {
 
-      [(LargeDayViewController *)self _beginAutoScrollingAutoSelectingWithContext:2 * (a3 == 1)];
+      [(LargeDayViewController *)self _beginAutoScrollingAutoSelectingWithContext:2 * (trigger == 1)];
     }
   }
 
@@ -3953,11 +3953,11 @@ LABEL_16:
   }
 }
 
-- (void)_beginAutoScrollingAutoSelectingWithContext:(int)a3
+- (void)_beginAutoScrollingAutoSelectingWithContext:(int)context
 {
-  v3 = *&a3;
-  v5 = [(LargeDayViewController *)self modelSelectedEvent];
-  v6 = [(LargeDayViewController *)self _eventIntersectsDayViewControllerActiveDate:v5];
+  v3 = *&context;
+  modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+  v6 = [(LargeDayViewController *)self _eventIntersectsDayViewControllerActiveDate:modelSelectedEvent];
 
   if (!*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 2))
   {
@@ -3966,33 +3966,33 @@ LABEL_16:
       goto LABEL_4;
     }
 
-    v9 = [(MainViewController *)self shownEventViewController];
-    if (v9 && (v10 = v9, -[MainViewController shownEventViewController](self, "shownEventViewController"), v11 = objc_claimAutoreleasedReturnValue(), [v11 event], v12 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvent](self, "modelSelectedEvent"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v11, v10, v14))
+    shownEventViewController = [(MainViewController *)self shownEventViewController];
+    if (shownEventViewController && (v10 = shownEventViewController, -[MainViewController shownEventViewController](self, "shownEventViewController"), v11 = objc_claimAutoreleasedReturnValue(), [v11 event], v12 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvent](self, "modelSelectedEvent"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, v11, v10, v14))
     {
-      v15 = [(LargeDayViewController *)self modelSelectedEvent];
-      [(LargeDayViewController *)self _selectEvent:v15 animated:0 context:v3];
+      modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
+      [(LargeDayViewController *)self _selectEvent:modelSelectedEvent2 animated:0 context:v3];
     }
 
     else
     {
-      v16 = [(MainViewController *)self shownExpandedReminderStackViewController];
-      if (!v16 || (v17 = v16, -[MainViewController shownExpandedReminderStackViewController](self, "shownExpandedReminderStackViewController"), v18 = objc_claimAutoreleasedReturnValue(), [v18 events], v19 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v19), v20 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvents](self, "modelSelectedEvents"), v21 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v21), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v20, "isEqualToSet:", v22), v22, v21, v20, v19, v18, v17, !v23))
+      shownExpandedReminderStackViewController = [(MainViewController *)self shownExpandedReminderStackViewController];
+      if (!shownExpandedReminderStackViewController || (v17 = shownExpandedReminderStackViewController, -[MainViewController shownExpandedReminderStackViewController](self, "shownExpandedReminderStackViewController"), v18 = objc_claimAutoreleasedReturnValue(), [v18 events], v19 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v19), v20 = objc_claimAutoreleasedReturnValue(), -[LargeDayViewController modelSelectedEvents](self, "modelSelectedEvents"), v21 = objc_claimAutoreleasedReturnValue(), +[NSSet setWithArray:](NSSet, "setWithArray:", v21), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v20, "isEqualToSet:", v22), v22, v21, v20, v19, v18, v17, !v23))
       {
 LABEL_4:
         [(LargeDayViewController *)self _autoSelectEventWithAnimatedScroll:*(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 6)];
         goto LABEL_5;
       }
 
-      v15 = [(LargeDayViewController *)self modelSelectedEvents];
-      [(LargeDayViewController *)self _selectEvents:v15 animated:0 context:v3];
+      modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvents];
+      [(LargeDayViewController *)self _selectEvents:modelSelectedEvent2 animated:0 context:v3];
     }
   }
 
 LABEL_5:
-  v7 = [(LargeDayViewController *)self managedNavigationController];
-  v8 = [v7 _contentUnavailableConfiguration];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  _contentUnavailableConfiguration = [managedNavigationController _contentUnavailableConfiguration];
 
-  if (v8)
+  if (_contentUnavailableConfiguration)
   {
 
     [(LargeDayViewController *)self updateNoContentConfiguration];
@@ -4001,9 +4001,9 @@ LABEL_5:
 
 - (void)updateNoContentConfiguration
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 selectedOccurrences];
-  v5 = [v4 count];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  v5 = [selectedOccurrences count];
 
   if (v5)
   {
@@ -4014,12 +4014,12 @@ LABEL_5:
 
   else
   {
-    v8 = [(DayViewController *)self dayView];
-    v9 = [v8 currentDayContainsOccurrences];
+    dayView = [(DayViewController *)self dayView];
+    currentDayContainsOccurrences = [dayView currentDayContainsOccurrences];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = v10;
-    if (v9)
+    if (currentDayContainsOccurrences)
     {
       v11 = @"No Event Selected";
     }
@@ -4034,36 +4034,36 @@ LABEL_5:
 
   v12 = +[UIContentUnavailableConfiguration emptyConfiguration];
   [v12 setText:v15];
-  v13 = [(LargeDayViewController *)self managedNavigationController];
-  [v13 _setContentUnavailableConfiguration:v12];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController _setContentUnavailableConfiguration:v12];
 
-  v14 = [(LargeDayViewController *)self managedNavigationController];
-  [v14 setNavigationBarHidden:1 animated:0];
+  managedNavigationController2 = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController2 setNavigationBarHidden:1 animated:0];
 }
 
 - (void)clearNoContentConfiguration
 {
-  v2 = [(LargeDayViewController *)self managedNavigationController];
-  [v2 _setContentUnavailableConfiguration:0];
+  managedNavigationController = [(LargeDayViewController *)self managedNavigationController];
+  [managedNavigationController _setContentUnavailableConfiguration:0];
 }
 
-- (BOOL)performModalDialogsIfNeededWithContinue:(id)a3
+- (BOOL)performModalDialogsIfNeededWithContinue:(id)continue
 {
-  v4 = a3;
-  v5 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (v5 && (modalEditing = self->_modalEditing, v5, !modalEditing) && (-[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 willPresentDialogOnSave], v7, v8))
+  continueCopy = continue;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController && (modalEditing = self->_modalEditing, shownEventEditViewController, !modalEditing) && (-[LargeDayViewController shownEventEditViewController](self, "shownEventEditViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 willPresentDialogOnSave], v7, v8))
   {
     v9 = 1;
     self->_modalEditing = 1;
-    v10 = [(LargeDayViewController *)self shownEventEditViewController];
-    [v10 completeAndSaveWithContinueBlock:v4];
+    shownEventEditViewController2 = [(LargeDayViewController *)self shownEventEditViewController];
+    [shownEventEditViewController2 completeAndSaveWithContinueBlock:continueCopy];
 
     self->_modalEditing = 0;
   }
 
   else
   {
-    v4[2](v4);
+    continueCopy[2](continueCopy);
     v9 = 0;
   }
 
@@ -4074,71 +4074,71 @@ LABEL_5:
 {
   v5.receiver = self;
   v5.super_class = LargeDayViewController;
-  v2 = [(MainViewController *)&v5 shownEventEditViewController];
+  shownEventEditViewController = [(MainViewController *)&v5 shownEventEditViewController];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v2 presentedOverWholeApp])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([shownEventEditViewController presentedOverWholeApp])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v2;
+    v3 = shownEventEditViewController;
   }
 
   return v3;
 }
 
-- (void)_dismissEditorAndSaveIfPossibleWhileChangingDate:(BOOL)a3 animated:(BOOL)a4
+- (void)_dismissEditorAndSaveIfPossibleWhileChangingDate:(BOOL)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (!v7 || self->_modalEditing)
+  animatedCopy = animated;
+  dateCopy = date;
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (!shownEventEditViewController || self->_modalEditing)
   {
     goto LABEL_23;
   }
 
-  v24 = v7;
-  if ([v7 hasUnsavedChanges])
+  v24 = shownEventEditViewController;
+  if ([shownEventEditViewController hasUnsavedChanges])
   {
-    v8 = 0;
+    existsInStore = 0;
   }
 
   else
   {
-    v9 = [v24 event];
-    v8 = [v9 existsInStore];
+    event = [v24 event];
+    existsInStore = [event existsInStore];
   }
 
-  if ([v24 willPresentDialogOnSave] & 1) != 0 || (v8)
+  if ([v24 willPresentDialogOnSave] & 1) != 0 || (existsInStore)
   {
     self->_modalEditing = 1;
     [v24 setIgnoreUnsavedChanges:1];
     [v24 cancelEditing];
-    [(LargeDayViewController *)self _editingDidCompleteWithAction:0 changingDate:v5 dismissEditor:1 editorToDismiss:0];
+    [(LargeDayViewController *)self _editingDidCompleteWithAction:0 changingDate:dateCopy dismissEditor:1 editorToDismiss:0];
     [v24 setIgnoreUnsavedChanges:0];
 LABEL_22:
-    v7 = v24;
+    shownEventEditViewController = v24;
     goto LABEL_23;
   }
 
-  if (v4)
+  if (animatedCopy)
   {
-    v10 = [(MainViewController *)self shownEventViewController];
-    if (v10)
+    shownEventViewController = [(MainViewController *)self shownEventViewController];
+    if (shownEventViewController)
     {
-      v11 = v10;
-      v12 = [(LargeDayViewController *)self modelSelectedEvent];
-      if (v12)
+      v11 = shownEventViewController;
+      modelSelectedEvent = [(LargeDayViewController *)self modelSelectedEvent];
+      if (modelSelectedEvent)
       {
-        v13 = v12;
-        v14 = [(MainViewController *)self shownEventViewController];
-        v15 = [v14 event];
-        v16 = [v15 uniqueId];
-        v17 = [(LargeDayViewController *)self modelSelectedEvent];
-        v18 = [v17 uniqueId];
-        v23 = [v16 isEqualToString:v18];
+        v13 = modelSelectedEvent;
+        shownEventViewController2 = [(MainViewController *)self shownEventViewController];
+        event2 = [shownEventViewController2 event];
+        uniqueId = [event2 uniqueId];
+        modelSelectedEvent2 = [(LargeDayViewController *)self modelSelectedEvent];
+        uniqueId2 = [modelSelectedEvent2 uniqueId];
+        v23 = [uniqueId isEqualToString:uniqueId2];
 
         if (v23)
         {
@@ -4153,13 +4153,13 @@ LABEL_22:
     }
   }
 
-  v20 = [(MainViewController *)self shownEventViewController];
-  [v20 setEditorHideTransition:0];
+  shownEventViewController3 = [(MainViewController *)self shownEventViewController];
+  [shownEventViewController3 setEditorHideTransition:0];
 
   v19 = 0;
 LABEL_16:
   v21 = 1;
-  if (!v5)
+  if (!dateCopy)
   {
     v21 = *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 5);
   }
@@ -4172,13 +4172,13 @@ LABEL_16:
   }
 
   [v24 completeAndSaveWithContinueBlock:0];
-  v7 = v24;
+  shownEventEditViewController = v24;
   *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 5) = 0;
   self->_modalEditing = 0;
   if ((v19 & 1) == 0)
   {
-    v22 = [(MainViewController *)self shownEventViewController];
-    [v22 setEditorHideTransition:6];
+    shownEventViewController4 = [(MainViewController *)self shownEventViewController];
+    [shownEventViewController4 setEditorHideTransition:6];
 
     goto LABEL_22;
   }
@@ -4188,36 +4188,36 @@ LABEL_23:
 
 - (void)didBeginMovingOccurrenceWithGesture
 {
-  v8 = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
-  if ([v8 count] == 1)
+  _selectedOccurrenceFrontmostClonedViews = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
+  if ([_selectedOccurrenceFrontmostClonedViews count] == 1)
   {
-    v3 = [(DayViewController *)self _selectedOccurrenceViews];
-    v4 = [v3 count];
+    _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+    v4 = [_selectedOccurrenceViews count];
 
     if (v4 == 1)
     {
-      v5 = [v8 firstObject];
-      [v5 setAlpha:0.0];
+      firstObject = [_selectedOccurrenceFrontmostClonedViews firstObject];
+      [firstObject setAlpha:0.0];
 
-      v6 = [(DayViewController *)self _selectedOccurrenceViews];
-      v7 = [v6 firstObject];
-      [v7 setAlpha:1.0];
+      _selectedOccurrenceViews2 = [(DayViewController *)self _selectedOccurrenceViews];
+      firstObject2 = [_selectedOccurrenceViews2 firstObject];
+      [firstObject2 setAlpha:1.0];
     }
   }
 }
 
 - (void)handleCloseKeyCommand
 {
-  v3 = [(LargeDayViewController *)self shownEventEditViewController];
-  if (v3)
+  shownEventEditViewController = [(LargeDayViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController)
   {
   }
 
   else
   {
-    v4 = [(MainViewController *)self shownEventViewController];
+    shownEventViewController = [(MainViewController *)self shownEventViewController];
 
-    if (v4)
+    if (shownEventViewController)
     {
 
       [(LargeDayViewController *)self _selectEvent:0 animated:1 context:0];
@@ -4225,21 +4225,21 @@ LABEL_23:
   }
 }
 
-- (void)_selectedOccurrencesChanged:(id)a3
+- (void)_selectedOccurrencesChanged:(id)changed
 {
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedOccurrences];
-  v6 = [NSSet setWithArray:v5];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  v6 = [NSSet setWithArray:selectedOccurrences];
 
   [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsRespectingModelSelected];
-  v7 = [(DayViewController *)self gestureController];
-  v8 = [v7 event];
-  v9 = [v6 containsObject:v8];
+  gestureController = [(DayViewController *)self gestureController];
+  event = [gestureController event];
+  v9 = [v6 containsObject:event];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(DayViewController *)self gestureController];
-    [v10 endForcedStart:0];
+    gestureController2 = [(DayViewController *)self gestureController];
+    [gestureController2 endForcedStart:0];
   }
 
   v37 = 0u;
@@ -4289,16 +4289,16 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v17 = [(MainViewController *)self shownEventViewController];
-  if (v17 || ([(LargeDayViewController *)self shownEventEditViewController], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  shownEventViewController = [(MainViewController *)self shownEventViewController];
+  if (shownEventViewController || ([(LargeDayViewController *)self shownEventEditViewController], (shownEventViewController = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
     goto LABEL_21;
   }
 
-  v32 = [(MainViewController *)self shownExpandedReminderStackViewController];
+  shownExpandedReminderStackViewController = [(MainViewController *)self shownExpandedReminderStackViewController];
 
-  if (!v32)
+  if (!shownExpandedReminderStackViewController)
   {
     goto LABEL_20;
   }
@@ -4309,8 +4309,8 @@ LABEL_21:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = [(DayViewController *)self _selectedOccurrenceViews];
-  v20 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+  v20 = [_selectedOccurrenceViews countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v20)
   {
     v21 = v20;
@@ -4321,37 +4321,37 @@ LABEL_21:
       {
         if (*v34 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(_selectedOccurrenceViews);
         }
 
         v24 = *(*(&v33 + 1) + 8 * j);
-        v25 = [v24 occurrence];
+        occurrence = [v24 occurrence];
 
-        if (v25)
+        if (occurrence)
         {
-          v26 = [v24 occurrence];
-          [v18 removeObject:v26];
+          occurrence2 = [v24 occurrence];
+          [v18 removeObject:occurrence2];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v21 = [_selectedOccurrenceViews countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v21);
   }
 
-  v27 = [(DayViewController *)self gestureController];
-  v28 = [v27 event];
+  gestureController3 = [(DayViewController *)self gestureController];
+  event2 = [gestureController3 event];
 
-  if (v28)
+  if (event2)
   {
-    v29 = [(DayViewController *)self gestureController];
-    v30 = [v29 event];
-    [v18 removeObject:v30];
+    gestureController4 = [(DayViewController *)self gestureController];
+    event3 = [gestureController4 event];
+    [v18 removeObject:event3];
   }
 
-  v31 = [v18 allObjects];
-  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v31 animated:1 autoScroll:0 resetSelection:0];
+  allObjects = [v18 allObjects];
+  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:allObjects animated:1 autoScroll:0 resetSelection:0];
 }
 
 @end

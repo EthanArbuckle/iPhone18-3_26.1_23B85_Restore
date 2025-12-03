@@ -2,15 +2,15 @@
 - (CACornerRadii)customCornerRadii;
 - (NSString)label;
 - (NSString)subLabel;
-- (_PSViewMarkerLayer)initWithLayer:(id)a3;
+- (_PSViewMarkerLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
-- (void)removeLabelWithAlignment:(int64_t)a3;
-- (void)setAlternateColor:(id)a3;
-- (void)setCustomCornerRadii:(CACornerRadii *)a3;
-- (void)setLabel:(id)a3;
-- (void)setLabel:(id)a3 subLabel:(id)a4 withAlignment:(int64_t)a5;
-- (void)setLabelAlignment:(int64_t)a3;
-- (void)setSubLabel:(id)a3;
+- (void)removeLabelWithAlignment:(int64_t)alignment;
+- (void)setAlternateColor:(id)color;
+- (void)setCustomCornerRadii:(CACornerRadii *)radii;
+- (void)setLabel:(id)label;
+- (void)setLabel:(id)label subLabel:(id)subLabel withAlignment:(int64_t)alignment;
+- (void)setLabelAlignment:(int64_t)alignment;
+- (void)setSubLabel:(id)label;
 @end
 
 @implementation _PSViewMarkerLayer
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v4 = sub_18B0F51B0();
   v5 = (self + OBJC_IVAR____PSViewMarkerLayer_label);
   *v5 = v4;
   v5[1] = v6;
-  v7 = self;
+  selfCopy = self;
 
   sub_18B0EE080();
 }
@@ -50,9 +50,9 @@
   return v2;
 }
 
-- (void)setSubLabel:(id)a3
+- (void)setSubLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_18B0F51B0();
   }
@@ -66,25 +66,25 @@
   v6 = (self + OBJC_IVAR____PSViewMarkerLayer_subLabel);
   *v6 = v4;
   v6[1] = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_18B0EE270();
 }
 
-- (void)setAlternateColor:(id)a3
+- (void)setAlternateColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____PSViewMarkerLayer_alternateColor);
-  *(self + OBJC_IVAR____PSViewMarkerLayer_alternateColor) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____PSViewMarkerLayer_alternateColor) = color;
+  colorCopy = color;
+  selfCopy = self;
 
   sub_18B0EE41C();
 }
 
-- (void)setLabelAlignment:(int64_t)a3
+- (void)setLabelAlignment:(int64_t)alignment
 {
-  v4 = self;
-  sub_18B0EE6D8(a3);
+  selfCopy = self;
+  sub_18B0EE6D8(alignment);
 }
 
 - (CACornerRadii)customCornerRadii
@@ -99,17 +99,17 @@
   return self;
 }
 
-- (void)setCustomCornerRadii:(CACornerRadii *)a3
+- (void)setCustomCornerRadii:(CACornerRadii *)radii
 {
-  var1 = a3->var1;
-  var0 = a3->var0;
+  var1 = radii->var1;
+  var0 = radii->var0;
   v10 = var1;
-  var3 = a3->var3;
-  var2 = a3->var2;
+  var3 = radii->var3;
+  var2 = radii->var2;
   v12 = var3;
-  v8 = self;
+  selfCopy = self;
   sub_18B0EEA04(&var0);
-  v5 = (v8 + OBJC_IVAR____PSViewMarkerLayer_customCornerRadii);
+  v5 = (selfCopy + OBJC_IVAR____PSViewMarkerLayer_customCornerRadii);
   v6 = v10;
   *v5 = var0;
   v5[1] = v6;
@@ -118,7 +118,7 @@
   v5[3] = v7;
 }
 
-- (_PSViewMarkerLayer)initWithLayer:(id)a3
+- (_PSViewMarkerLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_18B0F52A0();
@@ -130,18 +130,18 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B0EF7BC();
 }
 
-- (void)setLabel:(id)a3 subLabel:(id)a4 withAlignment:(int64_t)a5
+- (void)setLabel:(id)label subLabel:(id)subLabel withAlignment:(int64_t)alignment
 {
   v8 = sub_18B0F51B0();
   v10 = v9;
-  if (a4)
+  if (subLabel)
   {
     v11 = sub_18B0F51B0();
-    a4 = v12;
+    subLabel = v12;
   }
 
   else
@@ -149,14 +149,14 @@
     v11 = 0;
   }
 
-  v13 = self;
-  sub_18B0EFD04(v8, v10, v11, a4, a5);
+  selfCopy = self;
+  sub_18B0EFD04(v8, v10, v11, subLabel, alignment);
 }
 
-- (void)removeLabelWithAlignment:(int64_t)a3
+- (void)removeLabelWithAlignment:(int64_t)alignment
 {
-  v4 = self;
-  sub_18B0F03FC(a3);
+  selfCopy = self;
+  sub_18B0F03FC(alignment);
 }
 
 @end

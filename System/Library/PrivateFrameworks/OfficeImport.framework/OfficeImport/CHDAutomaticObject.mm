@@ -2,7 +2,7 @@
 + (id)automaticEffects;
 + (id)automaticFill;
 + (id)automaticStroke;
-- (CHDAutomaticObject)initWithName:(id)a3;
+- (CHDAutomaticObject)initWithName:(id)name;
 - (id)description;
 @end
 
@@ -44,16 +44,16 @@
   return v3;
 }
 
-- (CHDAutomaticObject)initWithName:(id)a3
+- (CHDAutomaticObject)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = CHDAutomaticObject;
   v6 = [(CHDAutomaticObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mName, a3);
+    objc_storeStrong(&v6->mName, name);
   }
 
   return v7;

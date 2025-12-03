@@ -1,7 +1,7 @@
 @interface NSEntityMigrationPolicy
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)sInstance entityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError *)error;
 - (BOOL)createRelationshipsForDestinationInstance:(NSManagedObject *)dInstance entityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError *)error;
-- (id)_nonNilValueOrDefaultValueForAttribute:(id)a3 source:(id)a4 destination:(id)a5;
+- (id)_nonNilValueOrDefaultValueForAttribute:(id)attribute source:(id)source destination:(id)destination;
 @end
 
 @implementation NSEntityMigrationPolicy
@@ -9,21 +9,21 @@
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)sInstance entityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = [(NSEntityMapping *)mapping destinationEntityName];
-  if (v10)
+  destinationEntityName = [(NSEntityMapping *)mapping destinationEntityName];
+  if (destinationEntityName)
   {
-    v10 = [NSEntityDescription insertNewObjectForEntityForName:v10 inManagedObjectContext:[(NSMigrationManager *)manager destinationContext]];
-    if (v10)
+    destinationEntityName = [NSEntityDescription insertNewObjectForEntityForName:destinationEntityName inManagedObjectContext:[(NSMigrationManager *)manager destinationContext]];
+    if (destinationEntityName)
     {
-      v11 = v10;
-      v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{manager, @"manager", sInstance, @"source", v10, @"destination", mapping, @"entityMapping", self, @"entityPolicy", 0}];
+      v11 = destinationEntityName;
+      v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{manager, @"manager", sInstance, @"source", destinationEntityName, @"destination", mapping, @"entityMapping", self, @"entityPolicy", 0}];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v24 = mapping;
-      v13 = [(NSEntityMapping *)mapping attributeMappings];
-      v14 = [(NSArray *)v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      attributeMappings = [(NSEntityMapping *)mapping attributeMappings];
+      v14 = [(NSArray *)attributeMappings countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
         v15 = v14;
@@ -35,7 +35,7 @@
           {
             if (*v26 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(attributeMappings);
             }
 
             v18 = *(*(&v25 + 1) + 8 * v17);
@@ -61,7 +61,7 @@
           }
 
           while (v15 != v17);
-          v21 = [(NSArray *)v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v21 = [(NSArray *)attributeMappings countByEnumeratingWithState:&v25 objects:v29 count:16];
           v15 = v21;
         }
 
@@ -69,19 +69,19 @@
       }
 
       [(NSMigrationManager *)manager associateSourceInstance:sInstance withDestinationInstance:v11 forEntityMapping:v24];
-      LOBYTE(v10) = 1;
+      LOBYTE(destinationEntityName) = 1;
     }
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v10;
+  return destinationEntityName;
 }
 
 - (BOOL)createRelationshipsForDestinationInstance:(NSManagedObject *)dInstance entityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = [(NSEntityMapping *)mapping name];
-  v11 = -[NSMigrationManager sourceInstancesForEntityMappingNamed:destinationInstances:](manager, "sourceInstancesForEntityMappingNamed:destinationInstances:", v10, [MEMORY[0x1E695DEC8] arrayWithObject:dInstance]);
+  name = [(NSEntityMapping *)mapping name];
+  v11 = -[NSMigrationManager sourceInstancesForEntityMappingNamed:destinationInstances:](manager, "sourceInstancesForEntityMappingNamed:destinationInstances:", name, [MEMORY[0x1E695DEC8] arrayWithObject:dInstance]);
   if ([(NSArray *)v11 count])
   {
     if ([(NSArray *)v11 count]>= 2)
@@ -105,8 +105,8 @@ LABEL_73:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v21 = [(NSEntityMapping *)mapping relationshipMappings];
-    v22 = [(NSArray *)v21 countByEnumeratingWithState:&v50 objects:v54 count:16];
+    relationshipMappings = [(NSEntityMapping *)mapping relationshipMappings];
+    v22 = [(NSArray *)relationshipMappings countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (!v22)
     {
       goto LABEL_63;
@@ -120,7 +120,7 @@ LABEL_11:
     {
       if (*v51 != v24)
       {
-        objc_enumerationMutation(v21);
+        objc_enumerationMutation(relationshipMappings);
       }
 
       v26 = *(*(&v50 + 1) + 8 * v25);
@@ -141,10 +141,10 @@ LABEL_11:
       }
 
       v28 = [(NSMigrationManager *)manager destinationEntityForEntityMapping:mapping];
-      v29 = [v26 name];
+      name2 = [v26 name];
       if (v28)
       {
-        v30 = [(NSDictionary *)[(NSEntityDescription *)v28 propertiesByName] objectForKey:v29];
+        v30 = [(NSDictionary *)[(NSEntityDescription *)v28 propertiesByName] objectForKey:name2];
       }
 
       else
@@ -281,7 +281,7 @@ LABEL_48:
           goto LABEL_64;
         }
 
-        v35 = [v32 anyObject];
+        anyObject = [v32 anyObject];
       }
 
       else
@@ -346,16 +346,16 @@ LABEL_72:
           goto LABEL_8;
         }
 
-        v35 = [v32 lastObject];
+        anyObject = [v32 lastObject];
       }
 
-      v32 = v35;
+      v32 = anyObject;
 LABEL_38:
       -[NSManagedObject setValue:forKey:](dInstance, "setValue:forKey:", v32, [v26 name]);
 LABEL_54:
       if (v23 == ++v25)
       {
-        v39 = [(NSArray *)v21 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        v39 = [(NSArray *)relationshipMappings countByEnumeratingWithState:&v50 objects:v54 count:16];
         v23 = v39;
         if (!v39)
         {
@@ -390,10 +390,10 @@ LABEL_74:
   return result;
 }
 
-- (id)_nonNilValueOrDefaultValueForAttribute:(id)a3 source:(id)a4 destination:(id)a5
+- (id)_nonNilValueOrDefaultValueForAttribute:(id)attribute source:(id)source destination:(id)destination
 {
-  v6 = -[NSEntityDescription _attributeNamed:]([a5 entity], a3);
-  result = [a4 valueForKey:{objc_msgSend(objc_msgSend(objc_msgSend(a4, "entity"), "_propertyWithRenamingIdentifier:", objc_msgSend(v6, "renamingIdentifier")), "name")}];
+  v6 = -[NSEntityDescription _attributeNamed:]([destination entity], attribute);
+  result = [source valueForKey:{objc_msgSend(objc_msgSend(objc_msgSend(source, "entity"), "_propertyWithRenamingIdentifier:", objc_msgSend(v6, "renamingIdentifier")), "name")}];
   if (!result)
   {
 

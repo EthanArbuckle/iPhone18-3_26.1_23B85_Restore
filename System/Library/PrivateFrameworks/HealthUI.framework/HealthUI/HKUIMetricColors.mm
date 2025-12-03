@@ -3,11 +3,11 @@
 + (id)allergiesClinicalColors;
 + (id)bodyMeasurementColors;
 + (id)carePlansClinicalColors;
-+ (id)categoryColorsWithColor:(id)a3;
++ (id)categoryColorsWithColor:(id)color;
 + (id)clinicalNotesClinicalColors;
 + (id)conditionsClinicalColors;
 + (id)defaultClinicalColors;
-+ (id)defaultContextViewColorsUsingColor:(id)a3;
++ (id)defaultContextViewColorsUsingColor:(id)color;
 + (id)devicesClinicalColors;
 + (id)disabledContextViewColor;
 + (id)hearingHealthColors;
@@ -25,7 +25,7 @@
 + (id)reproductiveHealthColors;
 + (id)respiratoryColors;
 + (id)sleepColors;
-+ (id)sleepColorsForSleepAnalysis:(int64_t)a3;
++ (id)sleepColorsForSleepAnalysis:(int64_t)analysis;
 + (id)socialHistoryClinicalColors;
 + (id)symptomsColors;
 + (id)unknownCategoryClinicalColors;
@@ -39,14 +39,14 @@
 + (id)vitalsColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
-  [v2 setKeyColor:v3];
+  hk_vitalsKeyColor = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+  [v2 setKeyColor:hk_vitalsKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -54,14 +54,14 @@
 + (id)activityColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_activityKeyColor];
-  [v2 setKeyColor:v3];
+  hk_activityKeyColor = [MEMORY[0x1E69DC888] hk_activityKeyColor];
+  [v2 setKeyColor:hk_activityKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -69,14 +69,14 @@
 + (id)bodyMeasurementColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_bodyMeasurementsKeyColor];
-  [v2 setKeyColor:v3];
+  hk_bodyMeasurementsKeyColor = [MEMORY[0x1E69DC888] hk_bodyMeasurementsKeyColor];
+  [v2 setKeyColor:hk_bodyMeasurementsKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -84,14 +84,14 @@
 + (id)mindfulnessColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_mindfulnessKeyColor];
-  [v2 setKeyColor:v3];
+  hk_mindfulnessKeyColor = [MEMORY[0x1E69DC888] hk_mindfulnessKeyColor];
+  [v2 setKeyColor:hk_mindfulnessKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillDarkColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillDarkColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -99,14 +99,14 @@
 + (id)mobilityColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_mobilityKeyColor];
-  [v2 setKeyColor:v3];
+  hk_mobilityKeyColor = [MEMORY[0x1E69DC888] hk_mobilityKeyColor];
+  [v2 setKeyColor:hk_mobilityKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillDarkColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillDarkColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -114,14 +114,14 @@
 + (id)nutritionColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_nutritionKeyColor];
-  [v2 setKeyColor:v3];
+  hk_nutritionKeyColor = [MEMORY[0x1E69DC888] hk_nutritionKeyColor];
+  [v2 setKeyColor:hk_nutritionKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillDarkColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillDarkColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -129,14 +129,14 @@
 + (id)pregnancyColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_pregnancyKeyColor];
-  [v2 setKeyColor:v3];
+  hk_pregnancyKeyColor = [MEMORY[0x1E69DC888] hk_pregnancyKeyColor];
+  [v2 setKeyColor:hk_pregnancyKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillDarkColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillDarkColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -144,14 +144,14 @@
 + (id)reproductiveHealthColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_reproductiveHealthKeyColor];
-  [v2 setKeyColor:v3];
+  hk_reproductiveHealthKeyColor = [MEMORY[0x1E69DC888] hk_reproductiveHealthKeyColor];
+  [v2 setKeyColor:hk_reproductiveHealthKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -159,29 +159,29 @@
 + (id)sleepColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_sleepKeyColor];
-  [v2 setKeyColor:v3];
+  hk_sleepKeyColor = [MEMORY[0x1E69DC888] hk_sleepKeyColor];
+  [v2 setKeyColor:hk_sleepKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
 
-+ (id)sleepColorsForSleepAnalysis:(int64_t)a3
++ (id)sleepColorsForSleepAnalysis:(int64_t)analysis
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:a3];
+  v5 = [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:analysis];
   [v4 setKeyColor:v5];
 
-  v6 = [MEMORY[0x1E69DC888] hk_sleepPrimaryTextColorForSleepAnalysis:a3];
+  v6 = [MEMORY[0x1E69DC888] hk_sleepPrimaryTextColorForSleepAnalysis:analysis];
   [v4 setContextViewPrimaryTextColor:v6];
 
-  v7 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v4 setContextViewSecondaryTextColor:v7];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v4 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v4;
 }
@@ -189,14 +189,14 @@
 + (id)hearingHealthColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_hearingHealthKeyColor];
-  [v2 setKeyColor:v3];
+  hk_hearingHealthKeyColor = [MEMORY[0x1E69DC888] hk_hearingHealthKeyColor];
+  [v2 setKeyColor:hk_hearingHealthKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -204,14 +204,14 @@
 + (id)respiratoryColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_respiratoryKeyColor];
-  [v2 setKeyColor:v3];
+  hk_respiratoryKeyColor = [MEMORY[0x1E69DC888] hk_respiratoryKeyColor];
+  [v2 setKeyColor:hk_respiratoryKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillDarkColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillDarkColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillDarkColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -219,14 +219,14 @@
 + (id)otherColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_otherKeyColor];
-  [v2 setKeyColor:v3];
+  hk_otherKeyColor = [MEMORY[0x1E69DC888] hk_otherKeyColor];
+  [v2 setKeyColor:hk_otherKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -234,44 +234,44 @@
 + (id)symptomsColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_symptomsKeyColor];
-  [v2 setKeyColor:v3];
+  hk_symptomsKeyColor = [MEMORY[0x1E69DC888] hk_symptomsKeyColor];
+  [v2 setKeyColor:hk_symptomsKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v2 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
 
-+ (id)categoryColorsWithColor:(id)a3
++ (id)categoryColorsWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setKeyColor:v3];
+  [v4 setKeyColor:colorCopy];
 
-  v5 = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
-  [v4 setContextViewPrimaryTextColor:v5];
+  hk_chartOverlayPillLightColor = [MEMORY[0x1E69DC888] hk_chartOverlayPillLightColor];
+  [v4 setContextViewPrimaryTextColor:hk_chartOverlayPillLightColor];
 
-  v6 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v4 setContextViewSecondaryTextColor:v6];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v4 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v4;
 }
 
-+ (id)defaultContextViewColorsUsingColor:(id)a3
++ (id)defaultContextViewColorsUsingColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setKeyColor:v3];
+  [v4 setKeyColor:colorCopy];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultPrimaryTextColor];
-  [v4 setContextViewPrimaryTextColor:v5];
+  hk_defaultPrimaryTextColor = [MEMORY[0x1E69DC888] hk_defaultPrimaryTextColor];
+  [v4 setContextViewPrimaryTextColor:hk_defaultPrimaryTextColor];
 
-  v6 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v4 setContextViewSecondaryTextColor:v6];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v4 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v4;
 }
@@ -279,14 +279,14 @@
 + (id)disabledContextViewColor
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] systemGray4Color];
-  [v2 setKeyColor:v3];
+  systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+  [v2 setKeyColor:systemGray4Color];
 
-  v4 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewPrimaryTextColor:hk_defaultSecondaryTextColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor2 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor2];
 
   return v2;
 }
@@ -294,14 +294,14 @@
 + (id)workoutContextViewColors
 {
   v2 = objc_alloc_init(objc_opt_class());
-  v3 = [MEMORY[0x1E69DC888] hk_workoutKeyColor];
-  [v2 setKeyColor:v3];
+  hk_workoutKeyColor = [MEMORY[0x1E69DC888] hk_workoutKeyColor];
+  [v2 setKeyColor:hk_workoutKeyColor];
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setContextViewPrimaryTextColor:v4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setContextViewPrimaryTextColor:whiteColor];
 
-  v5 = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
-  [v2 setContextViewSecondaryTextColor:v5];
+  hk_defaultSecondaryTextColor = [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
+  [v2 setContextViewSecondaryTextColor:hk_defaultSecondaryTextColor];
 
   return v2;
 }
@@ -334,128 +334,128 @@ id __51__HKUIMetricColors_Clinical__defaultClinicalColors__block_invoke(uint64_t
 
 + (id)allergiesClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_allergiesClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_allergiesClinicalKeyColor = [MEMORY[0x1E69DC888] hk_allergiesClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_allergiesClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)carePlansClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_carePlansClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_carePlansClinicalKeyColor = [MEMORY[0x1E69DC888] hk_carePlansClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_carePlansClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)clinicalNotesClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_clinicalNotesClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_clinicalNotesClinicalKeyColor = [MEMORY[0x1E69DC888] hk_clinicalNotesClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_clinicalNotesClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)conditionsClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_conditionsClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_conditionsClinicalKeyColor = [MEMORY[0x1E69DC888] hk_conditionsClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_conditionsClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)devicesClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_devicesClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_devicesClinicalKeyColor = [MEMORY[0x1E69DC888] hk_devicesClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_devicesClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)immunizationsClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_immunizationsClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_immunizationsClinicalKeyColor = [MEMORY[0x1E69DC888] hk_immunizationsClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_immunizationsClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)insuranceClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_insuranceClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_insuranceClinicalKeyColor = [MEMORY[0x1E69DC888] hk_insuranceClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_insuranceClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)labResultsClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_labResultsClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_labResultsClinicalKeyColor = [MEMORY[0x1E69DC888] hk_labResultsClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_labResultsClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)medicationsClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_medicationsClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_medicationsClinicalKeyColor = [MEMORY[0x1E69DC888] hk_medicationsClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_medicationsClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)medicationTrackingColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_medicationTrackingKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_medicationTrackingKeyColor = [MEMORY[0x1E69DC888] hk_medicationTrackingKeyColor];
+  [defaultClinicalColors setKeyColor:hk_medicationTrackingKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)proceduresClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_proceduresClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_proceduresClinicalKeyColor = [MEMORY[0x1E69DC888] hk_proceduresClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_proceduresClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)socialHistoryClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_socialHistoryClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_socialHistoryClinicalKeyColor = [MEMORY[0x1E69DC888] hk_socialHistoryClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_socialHistoryClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)vitalsClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_vitalsClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_vitalsClinicalKeyColor = [MEMORY[0x1E69DC888] hk_vitalsClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_vitalsClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 + (id)unknownCategoryClinicalColors
 {
-  v2 = [a1 defaultClinicalColors];
-  v3 = [MEMORY[0x1E69DC888] hk_unknownCategoryClinicalKeyColor];
-  [v2 setKeyColor:v3];
+  defaultClinicalColors = [self defaultClinicalColors];
+  hk_unknownCategoryClinicalKeyColor = [MEMORY[0x1E69DC888] hk_unknownCategoryClinicalKeyColor];
+  [defaultClinicalColors setKeyColor:hk_unknownCategoryClinicalKeyColor];
 
-  return v2;
+  return defaultClinicalColors;
 }
 
 @end

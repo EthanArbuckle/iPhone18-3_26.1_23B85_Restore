@@ -1,49 +1,49 @@
 @interface HMDNaturalLightingCurve
 + (id)logCategory;
-+ (int64_t)colorTemperatureMiredsFromKelvins:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDNaturalLightingCurve)initWithCoder:(id)a3;
-- (HMDNaturalLightingCurve)initWithCurve:(id)a3 minimumColorTemperature:(int64_t)a4 maximumColorTemperature:(int64_t)a5;
-- (HMDNaturalLightingCurve)initWithVersion:(unint64_t)a3 transitionPoints:(id)a4 minimumBrightness:(int64_t)a5 maximumBrightness:(int64_t)a6 minimumColorTemperature:(int64_t)a7 maximumColorTemperature:(int64_t)a8;
++ (int64_t)colorTemperatureMiredsFromKelvins:(int64_t)kelvins;
+- (BOOL)isEqual:(id)equal;
+- (HMDNaturalLightingCurve)initWithCoder:(id)coder;
+- (HMDNaturalLightingCurve)initWithCurve:(id)curve minimumColorTemperature:(int64_t)temperature maximumColorTemperature:(int64_t)colorTemperature;
+- (HMDNaturalLightingCurve)initWithVersion:(unint64_t)version transitionPoints:(id)points minimumBrightness:(int64_t)brightness maximumBrightness:(int64_t)maximumBrightness minimumColorTemperature:(int64_t)temperature maximumColorTemperature:(int64_t)colorTemperature;
 - (id)attributeDescriptions;
-- (id)colorTemperatureForBrightness:(int64_t)a3 millisecondsElapsedSinceStartOfDay:(unint64_t)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)transitionPointsWithMillisecondsElapsedSinceStartOfDay:(unint64_t)a3;
+- (id)colorTemperatureForBrightness:(int64_t)brightness millisecondsElapsedSinceStartOfDay:(unint64_t)day;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)transitionPointsWithMillisecondsElapsedSinceStartOfDay:(unint64_t)day;
 - (unint64_t)checksum;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDNaturalLightingCurve
 
-- (id)transitionPointsWithMillisecondsElapsedSinceStartOfDay:(unint64_t)a3
+- (id)transitionPointsWithMillisecondsElapsedSinceStartOfDay:(unint64_t)day
 {
-  v4 = self;
-  v5 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v6 = [(HMDNaturalLightingCurve *)v4 minimumBrightness];
-  v7 = [(HMDNaturalLightingCurve *)v4 maximumBrightness];
+  selfCopy = self;
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  minimumBrightness = [(HMDNaturalLightingCurve *)selfCopy minimumBrightness];
+  maximumBrightness = [(HMDNaturalLightingCurve *)selfCopy maximumBrightness];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v8 = v5;
+  v8 = transitionPoints;
   v9 = [v8 countByEnumeratingWithState:&v83 objects:v91 count:16];
   if (v9)
   {
     v10 = v9;
-    v75 = v7;
-    v76 = v6;
+    v75 = maximumBrightness;
+    v76 = minimumBrightness;
     v11 = 0;
-    v12 = 0;
+    dayCopy = 0;
     v13 = 0;
     v14 = *v84;
-    v79 = v4;
+    v79 = selfCopy;
     obj = v8;
 LABEL_3:
     v15 = 0;
     v16 = v11;
     v77 = &v10[v11];
-    v17 = v12;
+    v17 = dayCopy;
     v18 = v13;
     while (1)
     {
@@ -54,17 +54,17 @@ LABEL_3:
       }
 
       v19 = *(*(&v83 + 1) + 8 * v15);
-      v20 = [v19 targetCompletionDuration];
-      v21 = [v20 value];
-      v12 = [v21 unsignedLongLongValue] + v17;
+      targetCompletionDuration = [v19 targetCompletionDuration];
+      value = [targetCompletionDuration value];
+      dayCopy = [value unsignedLongLongValue] + v17;
 
-      if (v12 == a3)
+      if (dayCopy == day)
       {
         break;
       }
 
       v22 = v82;
-      if (v17 <= a3 && v12 > a3)
+      if (v17 <= day && dayCopy > day)
       {
         goto LABEL_15;
       }
@@ -73,14 +73,14 @@ LABEL_3:
 
       ++v16;
       ++v15;
-      v17 = v12;
+      v17 = dayCopy;
       v18 = v13;
       if (v10 == v15)
       {
         v8 = obj;
         v10 = [obj countByEnumeratingWithState:&v83 objects:v91 count:16];
         v11 = v77;
-        v4 = v79;
+        selfCopy = v79;
         if (v10)
         {
           goto LABEL_3;
@@ -90,7 +90,7 @@ LABEL_3:
       }
     }
 
-    v12 = a3;
+    dayCopy = day;
     v22 = v82;
 LABEL_15:
     v23 = v19;
@@ -98,21 +98,21 @@ LABEL_15:
 
     if (!v23)
     {
-      v4 = v79;
+      selfCopy = v79;
       goto LABEL_22;
     }
 
-    v24 = &v12[-a3];
-    if (&v12[-a3] >= 0)
+    v24 = &dayCopy[-day];
+    if (&dayCopy[-day] >= 0)
     {
       v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [obj count] + 1);
-      if (v12 == a3)
+      if (dayCopy == day)
       {
         v26 = [[HAPTLVUnsignedNumberValue alloc] initWithValue:&off_1000337A8];
         v27 = [HAPCharacteristicValueLinearDerivedTransitionPoint alloc];
-        v28 = [v23 scale];
-        v29 = [v23 offset];
-        v30 = [v27 initWithScale:v28 offset:v29 targetCompletionDuration:v26 startDelayDuration:0];
+        scale = [v23 scale];
+        offset = [v23 offset];
+        v30 = [v27 initWithScale:scale offset:offset targetCompletionDuration:v26 startDelayDuration:0];
 
         [v25 addObject:v30];
         for (i = v16 + 1; i < [obj count]; ++i)
@@ -133,8 +133,8 @@ LABEL_15:
 
       else if (v22)
       {
-        v42 = [v23 targetCompletionDuration];
-        [v42 value];
+        targetCompletionDuration2 = [v23 targetCompletionDuration];
+        [targetCompletionDuration2 value];
         v44 = v43 = v22;
         v45 = ([v44 unsignedLongLongValue] - v24);
 
@@ -148,9 +148,9 @@ LABEL_15:
         v51 = [HAPCharacteristicValueLinearDerivedTransitionPoint transitionPointWithPreviousTransitionPoint:v49 nextTransitionPoint:v23 timeElapsedSincePreviousTransitionPoint:v45 minimumBrightness:v76 maximumBrightness:v75];
         [v25 addObject:?];
         v52 = [HAPCharacteristicValueLinearDerivedTransitionPoint alloc];
-        v53 = [v23 scale];
-        v54 = [v23 offset];
-        v55 = [v52 initWithScale:v53 offset:v54 targetCompletionDuration:v48 startDelayDuration:0];
+        scale2 = [v23 scale];
+        offset2 = [v23 offset];
+        v55 = [v52 initWithScale:scale2 offset:offset2 targetCompletionDuration:v48 startDelayDuration:0];
 
         v78 = v55;
         [v25 addObject:v55];
@@ -171,12 +171,12 @@ LABEL_15:
 
         v62 = [HAPCharacteristicValueLinearDerivedTransitionPoint alloc];
         v63 = v51;
-        v64 = [v51 scale];
-        v65 = [v51 offset];
+        scale3 = [v51 scale];
+        offset3 = [v51 offset];
         v66 = [HAPTLVUnsignedNumberValue alloc];
         v67 = [NSNumber numberWithUnsignedLongLong:v80];
         v68 = [v66 initWithValue:v67];
-        v69 = [v62 initWithScale:v64 offset:v65 targetCompletionDuration:v68 startDelayDuration:0];
+        v69 = [v62 initWithScale:scale3 offset:offset3 targetCompletionDuration:v68 startDelayDuration:0];
 
         [v25 addObject:v69];
         v22 = v82;
@@ -193,7 +193,7 @@ LABEL_15:
           *buf = 138543618;
           v88 = v73;
           v89 = 2048;
-          v90 = a3;
+          dayCopy3 = day;
           _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_ERROR, "%{public}@Next transition point for current time: %llums not found", buf, 0x16u);
         }
 
@@ -214,7 +214,7 @@ LABEL_15:
       *buf = 138543618;
       v88 = v41;
       v89 = 2048;
-      v90 = &v12[-a3];
+      dayCopy3 = &dayCopy[-day];
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "%{public}@Time to reach next transition point is negative: %lldms", buf, 0x16u);
     }
 
@@ -229,7 +229,7 @@ LABEL_13:
     v22 = v13;
 LABEL_22:
     v33 = objc_autoreleasePoolPush();
-    v34 = v4;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -237,7 +237,7 @@ LABEL_22:
       *buf = 138543618;
       v88 = v36;
       v89 = 2048;
-      v90 = a3;
+      dayCopy3 = day;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%{public}@Next transition point for current time: %llums not found", buf, 0x16u);
     }
 
@@ -250,34 +250,34 @@ LABEL_45:
   return v37;
 }
 
-- (id)colorTemperatureForBrightness:(int64_t)a3 millisecondsElapsedSinceStartOfDay:(unint64_t)a4
+- (id)colorTemperatureForBrightness:(int64_t)brightness millisecondsElapsedSinceStartOfDay:(unint64_t)day
 {
-  v7 = [(HMDNaturalLightingCurve *)self transitionPointsWithMillisecondsElapsedSinceStartOfDay:a4];
-  v8 = [v7 firstObject];
+  v7 = [(HMDNaturalLightingCurve *)self transitionPointsWithMillisecondsElapsedSinceStartOfDay:day];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     v10 = 0;
     goto LABEL_11;
   }
 
-  if ([(HMDNaturalLightingCurve *)self minimumBrightness]> a3)
+  if ([(HMDNaturalLightingCurve *)self minimumBrightness]> brightness)
   {
-    v9 = [(HMDNaturalLightingCurve *)self minimumBrightness];
+    minimumBrightness = [(HMDNaturalLightingCurve *)self minimumBrightness];
 LABEL_7:
-    a3 = v9;
+    brightness = minimumBrightness;
     goto LABEL_8;
   }
 
-  if ([(HMDNaturalLightingCurve *)self maximumBrightness]< a3)
+  if ([(HMDNaturalLightingCurve *)self maximumBrightness]< brightness)
   {
-    v9 = [(HMDNaturalLightingCurve *)self maximumBrightness];
+    minimumBrightness = [(HMDNaturalLightingCurve *)self maximumBrightness];
     goto LABEL_7;
   }
 
 LABEL_8:
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -285,14 +285,14 @@ LABEL_8:
     v16 = 138543874;
     v17 = v14;
     v18 = 2048;
-    v19 = a4;
+    dayCopy = day;
     v20 = 2112;
-    v21 = v8;
+    v21 = firstObject;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@Transition point for milliseconds elapsed since start of day %llums is %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 colorTemperatureForBrightness:a3]);
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject colorTemperatureForBrightness:brightness]);
 LABEL_11:
 
   return v10;
@@ -306,8 +306,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  v4 = [transitionPoints countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -319,30 +319,30 @@ LABEL_11:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transitionPoints);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
         *data = [v8 colorTemperatureForBrightness:{-[HMDNaturalLightingCurve minimumBrightness](self, "minimumBrightness")}];
         CC_SHA256_Update(&c, data, 4u);
-        LODWORD(v11) = [v8 colorTemperatureForBrightness:{-[HMDNaturalLightingCurve maximumBrightness](self, "maximumBrightness")}];
-        CC_SHA256_Update(&c, &v11, 4u);
+        LODWORD(colorTemperatureNotifyIntervalThresholdInMilliseconds) = [v8 colorTemperatureForBrightness:{-[HMDNaturalLightingCurve maximumBrightness](self, "maximumBrightness")}];
+        CC_SHA256_Update(&c, &colorTemperatureNotifyIntervalThresholdInMilliseconds, 4u);
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v5 = [transitionPoints countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [(HMDNaturalLightingCurve *)self colorTemperatureNotifyValueChangeThreshold];
-  CC_SHA256_Update(&c, &v12, 4u);
-  v11 = [(HMDNaturalLightingCurve *)self colorTemperatureNotifyIntervalThresholdInMilliseconds];
-  CC_SHA256_Update(&c, &v11, 8u);
-  v10 = [(HMDNaturalLightingCurve *)self colorTemperatureUpdateIntervalInMilliseconds];
-  CC_SHA256_Update(&c, &v10, 8u);
+  colorTemperatureNotifyValueChangeThreshold = [(HMDNaturalLightingCurve *)self colorTemperatureNotifyValueChangeThreshold];
+  CC_SHA256_Update(&c, &colorTemperatureNotifyValueChangeThreshold, 4u);
+  colorTemperatureNotifyIntervalThresholdInMilliseconds = [(HMDNaturalLightingCurve *)self colorTemperatureNotifyIntervalThresholdInMilliseconds];
+  CC_SHA256_Update(&c, &colorTemperatureNotifyIntervalThresholdInMilliseconds, 8u);
+  colorTemperatureUpdateIntervalInMilliseconds = [(HMDNaturalLightingCurve *)self colorTemperatureUpdateIntervalInMilliseconds];
+  CC_SHA256_Update(&c, &colorTemperatureUpdateIntervalInMilliseconds, 8u);
   CC_SHA256_Final(data, &c);
   return *data;
 }
@@ -362,14 +362,14 @@ LABEL_11:
   v34 = [v5 initWithName:@"Maximum Brightness" value:v35];
   v40[2] = v34;
   v6 = [HMFAttributeDescription alloc];
-  v33 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v32 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v33 count]);
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  v32 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [transitionPoints count]);
   v31 = [v6 initWithName:@"Transition Points Count" value:v32];
   v40[3] = v31;
   v7 = [HMFAttributeDescription alloc];
-  v30 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v29 = [v30 firstObject];
-  v28 = [v7 initWithName:@"Transition Start Point" value:v29];
+  transitionPoints2 = [(HMDNaturalLightingCurve *)self transitionPoints];
+  firstObject = [transitionPoints2 firstObject];
+  v28 = [v7 initWithName:@"Transition Start Point" value:firstObject];
   v40[4] = v28;
   v8 = [HMFAttributeDescription alloc];
   v27 = [NSNumber numberWithInteger:[(HMDNaturalLightingCurve *)self minimumColorTemperature]];
@@ -400,12 +400,12 @@ LABEL_11:
   return v23;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDMutableNaturalLightingCurve allocWithZone:a3];
-  v5 = [(HMDNaturalLightingCurve *)self version];
-  v6 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v7 = [(HMDNaturalLightingCurve *)v4 initWithVersion:v5 transitionPoints:v6 minimumBrightness:[(HMDNaturalLightingCurve *)self minimumBrightness] maximumBrightness:[(HMDNaturalLightingCurve *)self maximumBrightness] minimumColorTemperature:[(HMDNaturalLightingCurve *)self minimumColorTemperature] maximumColorTemperature:[(HMDNaturalLightingCurve *)self maximumColorTemperature]];
+  v4 = [HMDMutableNaturalLightingCurve allocWithZone:zone];
+  version = [(HMDNaturalLightingCurve *)self version];
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  v7 = [(HMDNaturalLightingCurve *)v4 initWithVersion:version transitionPoints:transitionPoints minimumBrightness:[(HMDNaturalLightingCurve *)self minimumBrightness] maximumBrightness:[(HMDNaturalLightingCurve *)self maximumBrightness] minimumColorTemperature:[(HMDNaturalLightingCurve *)self minimumColorTemperature] maximumColorTemperature:[(HMDNaturalLightingCurve *)self maximumColorTemperature]];
 
   [(HMDNaturalLightingCurve *)v7 setColorTemperatureNotifyIntervalThresholdInMilliseconds:[(HMDNaturalLightingCurve *)self colorTemperatureNotifyIntervalThresholdInMilliseconds]];
   [(HMDNaturalLightingCurve *)v7 setColorTemperatureNotifyValueChangeThreshold:[(HMDNaturalLightingCurve *)self colorTemperatureNotifyValueChangeThreshold]];
@@ -425,11 +425,11 @@ LABEL_11:
   return v3;
 }
 
-+ (int64_t)colorTemperatureMiredsFromKelvins:(int64_t)a3
++ (int64_t)colorTemperatureMiredsFromKelvins:(int64_t)kelvins
 {
-  if (a3)
+  if (kelvins)
   {
-    return 1000000 / a3;
+    return 1000000 / kelvins;
   }
 
   v4 = _HMFPreconditionFailure();
@@ -438,26 +438,26 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNaturalLightingCurve *)self version];
-  v4 = [(HMDNaturalLightingCurve *)self minimumBrightness]^ v3;
+  version = [(HMDNaturalLightingCurve *)self version];
+  v4 = [(HMDNaturalLightingCurve *)self minimumBrightness]^ version;
   v5 = v4 ^ [(HMDNaturalLightingCurve *)self maximumBrightness];
-  v6 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v7 = [v6 count];
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  v7 = [transitionPoints count];
 
   v8 = v5 ^ v7 ^ [(HMDNaturalLightingCurve *)self minimumColorTemperature];
-  v9 = [(HMDNaturalLightingCurve *)self maximumColorTemperature];
-  v10 = v9 ^ [(HMDNaturalLightingCurve *)self colorTemperatureNotifyIntervalThresholdInMilliseconds];
+  maximumColorTemperature = [(HMDNaturalLightingCurve *)self maximumColorTemperature];
+  v10 = maximumColorTemperature ^ [(HMDNaturalLightingCurve *)self colorTemperatureNotifyIntervalThresholdInMilliseconds];
   v11 = v10 ^ [(HMDNaturalLightingCurve *)self colorTemperatureUpdateIntervalInMilliseconds];
   return v8 ^ v11 ^ [(HMDNaturalLightingCurve *)self colorTemperatureNotifyValueChangeThreshold];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -469,12 +469,12 @@ LABEL_11:
   v7 = v6;
   if (v6 && (v8 = [v6 version], v8 == -[HMDNaturalLightingCurve version](self, "version")) && (v9 = objc_msgSend(v7, "minimumBrightness"), v9 == -[HMDNaturalLightingCurve minimumBrightness](self, "minimumBrightness")) && (v10 = objc_msgSend(v7, "maximumBrightness"), v10 == -[HMDNaturalLightingCurve maximumBrightness](self, "maximumBrightness")))
   {
-    v11 = [v7 transitionPoints];
-    v12 = [(HMDNaturalLightingCurve *)self transitionPoints];
-    if ([v11 isEqual:v12] && (v13 = objc_msgSend(v7, "minimumColorTemperature"), v13 == -[HMDNaturalLightingCurve minimumColorTemperature](self, "minimumColorTemperature")) && (v14 = objc_msgSend(v7, "maximumColorTemperature"), v14 == -[HMDNaturalLightingCurve maximumColorTemperature](self, "maximumColorTemperature")) && (v15 = objc_msgSend(v7, "colorTemperatureNotifyIntervalThresholdInMilliseconds"), v15 == -[HMDNaturalLightingCurve colorTemperatureNotifyIntervalThresholdInMilliseconds](self, "colorTemperatureNotifyIntervalThresholdInMilliseconds")) && (v16 = objc_msgSend(v7, "colorTemperatureNotifyValueChangeThreshold"), v16 == -[HMDNaturalLightingCurve colorTemperatureNotifyValueChangeThreshold](self, "colorTemperatureNotifyValueChangeThreshold")))
+    transitionPoints = [v7 transitionPoints];
+    transitionPoints2 = [(HMDNaturalLightingCurve *)self transitionPoints];
+    if ([transitionPoints isEqual:transitionPoints2] && (v13 = objc_msgSend(v7, "minimumColorTemperature"), v13 == -[HMDNaturalLightingCurve minimumColorTemperature](self, "minimumColorTemperature")) && (v14 = objc_msgSend(v7, "maximumColorTemperature"), v14 == -[HMDNaturalLightingCurve maximumColorTemperature](self, "maximumColorTemperature")) && (v15 = objc_msgSend(v7, "colorTemperatureNotifyIntervalThresholdInMilliseconds"), v15 == -[HMDNaturalLightingCurve colorTemperatureNotifyIntervalThresholdInMilliseconds](self, "colorTemperatureNotifyIntervalThresholdInMilliseconds")) && (v16 = objc_msgSend(v7, "colorTemperatureNotifyValueChangeThreshold"), v16 == -[HMDNaturalLightingCurve colorTemperatureNotifyValueChangeThreshold](self, "colorTemperatureNotifyValueChangeThreshold")))
     {
-      v17 = [v7 colorTemperatureUpdateIntervalInMilliseconds];
-      v18 = v17 == [(HMDNaturalLightingCurve *)self colorTemperatureUpdateIntervalInMilliseconds];
+      colorTemperatureUpdateIntervalInMilliseconds = [v7 colorTemperatureUpdateIntervalInMilliseconds];
+      v18 = colorTemperatureUpdateIntervalInMilliseconds == [(HMDNaturalLightingCurve *)self colorTemperatureUpdateIntervalInMilliseconds];
     }
 
     else
@@ -491,24 +491,24 @@ LABEL_11:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMDNaturalLightingCurve version](self forKey:{"version"), @"HNLCurve.vk"}];
-  [v4 encodeInteger:-[HMDNaturalLightingCurve minimumBrightness](self forKey:{"minimumBrightness"), @"HNLCurve.mibk"}];
-  [v4 encodeInteger:-[HMDNaturalLightingCurve maximumBrightness](self forKey:{"maximumBrightness"), @"HNLCurve.mabk"}];
-  [v4 encodeInteger:-[HMDNaturalLightingCurve minimumColorTemperature](self forKey:{"minimumColorTemperature"), @"HNLCurve.mictk"}];
-  [v4 encodeInteger:-[HMDNaturalLightingCurve maximumColorTemperature](self forKey:{"maximumColorTemperature"), @"HNLCurve.mactk"}];
-  [v4 encodeInteger:-[HMDNaturalLightingCurve colorTemperatureNotifyValueChangeThreshold](self forKey:{"colorTemperatureNotifyValueChangeThreshold"), @"HNLCurve.ctnvctk"}];
-  [v4 encodeInt64:-[HMDNaturalLightingCurve colorTemperatureNotifyIntervalThresholdInMilliseconds](self forKey:{"colorTemperatureNotifyIntervalThresholdInMilliseconds"), @"HNLCurve.ctnitk"}];
-  [v4 encodeInt64:-[HMDNaturalLightingCurve colorTemperatureUpdateIntervalInMilliseconds](self forKey:{"colorTemperatureUpdateIntervalInMilliseconds"), @"HNLCurve.ctuik"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve version](self forKey:{"version"), @"HNLCurve.vk"}];
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve minimumBrightness](self forKey:{"minimumBrightness"), @"HNLCurve.mibk"}];
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve maximumBrightness](self forKey:{"maximumBrightness"), @"HNLCurve.mabk"}];
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve minimumColorTemperature](self forKey:{"minimumColorTemperature"), @"HNLCurve.mictk"}];
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve maximumColorTemperature](self forKey:{"maximumColorTemperature"), @"HNLCurve.mactk"}];
+  [coderCopy encodeInteger:-[HMDNaturalLightingCurve colorTemperatureNotifyValueChangeThreshold](self forKey:{"colorTemperatureNotifyValueChangeThreshold"), @"HNLCurve.ctnvctk"}];
+  [coderCopy encodeInt64:-[HMDNaturalLightingCurve colorTemperatureNotifyIntervalThresholdInMilliseconds](self forKey:{"colorTemperatureNotifyIntervalThresholdInMilliseconds"), @"HNLCurve.ctnitk"}];
+  [coderCopy encodeInt64:-[HMDNaturalLightingCurve colorTemperatureUpdateIntervalInMilliseconds](self forKey:{"colorTemperatureUpdateIntervalInMilliseconds"), @"HNLCurve.ctuik"}];
   v5 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(HMDNaturalLightingCurve *)self transitionPoints];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  transitionPoints = [(HMDNaturalLightingCurve *)self transitionPoints];
+  v7 = [transitionPoints countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -520,7 +520,7 @@ LABEL_11:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transitionPoints);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
@@ -530,7 +530,7 @@ LABEL_11:
         if (!v12)
         {
           v14 = objc_autoreleasePoolPush();
-          v15 = self;
+          selfCopy = self;
           v16 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
@@ -554,7 +554,7 @@ LABEL_11:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v29 count:16];
+      v8 = [transitionPoints countByEnumeratingWithState:&v19 objects:v29 count:16];
       if (v8)
       {
         continue;
@@ -564,15 +564,15 @@ LABEL_11:
     }
   }
 
-  v6 = [v5 copy];
-  [v4 encodeObject:v6 forKey:@"HNLCurve.tpk"];
+  transitionPoints = [v5 copy];
+  [coderCopy encodeObject:transitionPoints forKey:@"HNLCurve.tpk"];
 LABEL_13:
 }
 
-- (HMDNaturalLightingCurve)initWithCoder:(id)a3
+- (HMDNaturalLightingCurve)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HNLCurve.vk"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HNLCurve.vk"];
   if (v5 != 1)
   {
     v18 = v5;
@@ -600,7 +600,7 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v6 = [v4 decodeIntegerForKey:@"HNLCurve.mabk"];
+  v6 = [coderCopy decodeIntegerForKey:@"HNLCurve.mabk"];
   if (v6 <= 0)
   {
     v12 = objc_autoreleasePoolPush();
@@ -622,7 +622,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [v4 decodeIntegerForKey:@"HNLCurve.mibk"];
+  v7 = [coderCopy decodeIntegerForKey:@"HNLCurve.mibk"];
   v8 = v7;
   if (v7 <= 0)
   {
@@ -666,7 +666,7 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v9 = [v4 decodeIntegerForKey:@"HNLCurve.mictk"];
+  v9 = [coderCopy decodeIntegerForKey:@"HNLCurve.mictk"];
   if (v9 <= 0)
   {
     v12 = objc_autoreleasePoolPush();
@@ -686,7 +686,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v10 = [v4 decodeIntegerForKey:@"HNLCurve.mactk"];
+  v10 = [coderCopy decodeIntegerForKey:@"HNLCurve.mactk"];
   if (!v10)
   {
     v12 = objc_autoreleasePoolPush();
@@ -731,7 +731,7 @@ LABEL_24:
 LABEL_25:
 
     objc_autoreleasePoolPop(v12);
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
@@ -741,7 +741,7 @@ LABEL_25:
   v26 = [NSArray arrayWithObjects:v55 count:2];
   v27 = [NSSet setWithArray:v26];
 
-  v28 = [v4 decodeObjectOfClasses:v27 forKey:@"HNLCurve.tpk"];
+  v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"HNLCurve.tpk"];
   if (v28)
   {
     v43 = v9;
@@ -789,7 +789,7 @@ LABEL_25:
             }
 
             objc_autoreleasePoolPop(v37);
-            v24 = 0;
+            selfCopy = 0;
             v28 = v45;
             v27 = v46;
             v36 = v48;
@@ -813,15 +813,15 @@ LABEL_25:
     if ([v48 count])
     {
       self = [(HMDNaturalLightingCurve *)self initWithVersion:1 transitionPoints:v48 minimumBrightness:v8 maximumBrightness:v6 minimumColorTemperature:v43 maximumColorTemperature:v44];
-      -[HMDNaturalLightingCurve setColorTemperatureNotifyValueChangeThreshold:](self, "setColorTemperatureNotifyValueChangeThreshold:", [v4 decodeIntegerForKey:@"HNLCurve.ctnvctk"]);
-      -[HMDNaturalLightingCurve setColorTemperatureNotifyIntervalThresholdInMilliseconds:](self, "setColorTemperatureNotifyIntervalThresholdInMilliseconds:", [v4 decodeInt64ForKey:@"HNLCurve.ctnitk"]);
-      -[HMDNaturalLightingCurve setColorTemperatureUpdateIntervalInMilliseconds:](self, "setColorTemperatureUpdateIntervalInMilliseconds:", [v4 decodeInt64ForKey:@"HNLCurve.ctuik"]);
-      v24 = self;
+      -[HMDNaturalLightingCurve setColorTemperatureNotifyValueChangeThreshold:](self, "setColorTemperatureNotifyValueChangeThreshold:", [coderCopy decodeIntegerForKey:@"HNLCurve.ctnvctk"]);
+      -[HMDNaturalLightingCurve setColorTemperatureNotifyIntervalThresholdInMilliseconds:](self, "setColorTemperatureNotifyIntervalThresholdInMilliseconds:", [coderCopy decodeInt64ForKey:@"HNLCurve.ctnitk"]);
+      -[HMDNaturalLightingCurve setColorTemperatureUpdateIntervalInMilliseconds:](self, "setColorTemperatureUpdateIntervalInMilliseconds:", [coderCopy decodeInt64ForKey:@"HNLCurve.ctuik"]);
+      selfCopy = self;
     }
 
     else
     {
-      v24 = 0;
+      selfCopy = 0;
     }
 
     v28 = v45;
@@ -843,32 +843,32 @@ LABEL_46:
     }
 
     objc_autoreleasePoolPop(v40);
-    v24 = 0;
+    selfCopy = 0;
   }
 
 LABEL_26:
-  return v24;
+  return selfCopy;
 }
 
-- (HMDNaturalLightingCurve)initWithCurve:(id)a3 minimumColorTemperature:(int64_t)a4 maximumColorTemperature:(int64_t)a5
+- (HMDNaturalLightingCurve)initWithCurve:(id)curve minimumColorTemperature:(int64_t)temperature maximumColorTemperature:(int64_t)colorTemperature
 {
-  v7 = a3;
-  v8 = [v7 transitionPoints];
-  v41 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+  curveCopy = curve;
+  transitionPoints = [curveCopy transitionPoints];
+  v41 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [transitionPoints count]);
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [v7 transitionPoints];
+  obj = [curveCopy transitionPoints];
   v42 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   v9 = 0;
   v10 = 0;
   if (v42)
   {
     v40 = *v44;
-    v36 = a5;
-    v37 = v7;
+    colorTemperatureCopy = colorTemperature;
+    v37 = curveCopy;
     do
     {
       v11 = 0;
@@ -880,61 +880,61 @@ LABEL_26:
         }
 
         v12 = *(*(&v43 + 1) + 8 * v11);
-        v13 = [v12 colorTemperatureForBrightness:{objc_msgSend(v7, "minimumBrightness")}];
+        v13 = [v12 colorTemperatureForBrightness:{objc_msgSend(curveCopy, "minimumBrightness")}];
         v14 = v13;
-        if (v13 <= a4)
+        if (v13 <= temperature)
         {
-          v15 = a4;
+          temperatureCopy = temperature;
         }
 
         else
         {
-          v15 = v13;
+          temperatureCopy = v13;
         }
 
-        if (v13 <= a5)
+        if (v13 <= colorTemperature)
         {
-          v16 = v15;
-        }
-
-        else
-        {
-          v16 = a5;
-        }
-
-        v17 = [v12 colorTemperatureForBrightness:{objc_msgSend(v7, "maximumBrightness")}];
-        if (v17 <= a4)
-        {
-          v18 = a4;
+          colorTemperatureCopy2 = temperatureCopy;
         }
 
         else
         {
-          v18 = v17;
+          colorTemperatureCopy2 = colorTemperature;
         }
 
-        if (v17 <= a5)
+        v17 = [v12 colorTemperatureForBrightness:{objc_msgSend(curveCopy, "maximumBrightness")}];
+        if (v17 <= temperature)
         {
-          v19 = v18;
+          temperatureCopy2 = temperature;
         }
 
         else
         {
-          v19 = a5;
+          temperatureCopy2 = v17;
         }
 
-        if (v17 > a5 || v17 < a4 || v14 > a5 || v14 < a4)
+        if (v17 <= colorTemperature)
         {
-          v39 = [v7 minimumBrightness];
-          v23 = [v7 maximumBrightness];
-          v24 = [v12 targetCompletionDuration];
-          v25 = [v24 value];
-          v26 = [v25 unsignedLongLongValue];
-          v27 = v23;
-          a5 = v36;
-          v28 = [HAPCharacteristicValueLinearDerivedTransitionPoint transitionPointWithMinimumBrightness:v39 minimumBrightnessColorTemperature:v16 maximumBrightness:v27 maximumBrightnessColorTemperature:v19 targetCompletionDuration:v26];
+          colorTemperatureCopy3 = temperatureCopy2;
+        }
 
-          v7 = v37;
+        else
+        {
+          colorTemperatureCopy3 = colorTemperature;
+        }
+
+        if (v17 > colorTemperature || v17 < temperature || v14 > colorTemperature || v14 < temperature)
+        {
+          minimumBrightness = [curveCopy minimumBrightness];
+          maximumBrightness = [curveCopy maximumBrightness];
+          targetCompletionDuration = [v12 targetCompletionDuration];
+          value = [targetCompletionDuration value];
+          unsignedLongLongValue = [value unsignedLongLongValue];
+          v27 = maximumBrightness;
+          colorTemperature = colorTemperatureCopy;
+          v28 = [HAPCharacteristicValueLinearDerivedTransitionPoint transitionPointWithMinimumBrightness:minimumBrightness minimumBrightnessColorTemperature:colorTemperatureCopy2 maximumBrightness:v27 maximumBrightnessColorTemperature:colorTemperatureCopy3 targetCompletionDuration:unsignedLongLongValue];
+
+          curveCopy = v37;
         }
 
         else
@@ -943,14 +943,14 @@ LABEL_26:
         }
 
         [v41 addObject:v28];
-        if (v16 >= v19)
+        if (colorTemperatureCopy2 >= colorTemperatureCopy3)
         {
-          v29 = v19;
+          v29 = colorTemperatureCopy3;
         }
 
         else
         {
-          v29 = v16;
+          v29 = colorTemperatureCopy2;
         }
 
         if (v10 >= v29)
@@ -973,14 +973,14 @@ LABEL_26:
           v10 = v30;
         }
 
-        if (v19 <= v16)
+        if (colorTemperatureCopy3 <= colorTemperatureCopy2)
         {
-          v31 = v16;
+          v31 = colorTemperatureCopy2;
         }
 
         else
         {
-          v31 = v19;
+          v31 = colorTemperatureCopy3;
         }
 
         if (v9 <= v31)
@@ -1013,32 +1013,32 @@ LABEL_26:
     while (v42);
   }
 
-  v33 = -[HMDNaturalLightingCurve initWithVersion:transitionPoints:minimumBrightness:maximumBrightness:minimumColorTemperature:maximumColorTemperature:](self, "initWithVersion:transitionPoints:minimumBrightness:maximumBrightness:minimumColorTemperature:maximumColorTemperature:", [v7 version], v41, objc_msgSend(v7, "minimumBrightness"), objc_msgSend(v7, "maximumBrightness"), v10, v9);
-  -[HMDNaturalLightingCurve setColorTemperatureNotifyIntervalThresholdInMilliseconds:](v33, "setColorTemperatureNotifyIntervalThresholdInMilliseconds:", [v7 colorTemperatureNotifyIntervalThresholdInMilliseconds]);
-  -[HMDNaturalLightingCurve setColorTemperatureNotifyValueChangeThreshold:](v33, "setColorTemperatureNotifyValueChangeThreshold:", [v7 colorTemperatureNotifyValueChangeThreshold]);
-  -[HMDNaturalLightingCurve setColorTemperatureUpdateIntervalInMilliseconds:](v33, "setColorTemperatureUpdateIntervalInMilliseconds:", [v7 colorTemperatureUpdateIntervalInMilliseconds]);
+  v33 = -[HMDNaturalLightingCurve initWithVersion:transitionPoints:minimumBrightness:maximumBrightness:minimumColorTemperature:maximumColorTemperature:](self, "initWithVersion:transitionPoints:minimumBrightness:maximumBrightness:minimumColorTemperature:maximumColorTemperature:", [curveCopy version], v41, objc_msgSend(curveCopy, "minimumBrightness"), objc_msgSend(curveCopy, "maximumBrightness"), v10, v9);
+  -[HMDNaturalLightingCurve setColorTemperatureNotifyIntervalThresholdInMilliseconds:](v33, "setColorTemperatureNotifyIntervalThresholdInMilliseconds:", [curveCopy colorTemperatureNotifyIntervalThresholdInMilliseconds]);
+  -[HMDNaturalLightingCurve setColorTemperatureNotifyValueChangeThreshold:](v33, "setColorTemperatureNotifyValueChangeThreshold:", [curveCopy colorTemperatureNotifyValueChangeThreshold]);
+  -[HMDNaturalLightingCurve setColorTemperatureUpdateIntervalInMilliseconds:](v33, "setColorTemperatureUpdateIntervalInMilliseconds:", [curveCopy colorTemperatureUpdateIntervalInMilliseconds]);
 
   return v33;
 }
 
-- (HMDNaturalLightingCurve)initWithVersion:(unint64_t)a3 transitionPoints:(id)a4 minimumBrightness:(int64_t)a5 maximumBrightness:(int64_t)a6 minimumColorTemperature:(int64_t)a7 maximumColorTemperature:(int64_t)a8
+- (HMDNaturalLightingCurve)initWithVersion:(unint64_t)version transitionPoints:(id)points minimumBrightness:(int64_t)brightness maximumBrightness:(int64_t)maximumBrightness minimumColorTemperature:(int64_t)temperature maximumColorTemperature:(int64_t)colorTemperature
 {
-  v14 = a4;
+  pointsCopy = points;
   v20.receiver = self;
   v20.super_class = HMDNaturalLightingCurve;
   v15 = [(HMDNaturalLightingCurve *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    v15->_version = a3;
-    v17 = [v14 copy];
+    v15->_version = version;
+    v17 = [pointsCopy copy];
     transitionPoints = v16->_transitionPoints;
     v16->_transitionPoints = v17;
 
-    v16->_minimumBrightness = a5;
-    v16->_maximumBrightness = a6;
-    v16->_minimumColorTemperature = a7;
-    v16->_maximumColorTemperature = a8;
+    v16->_minimumBrightness = brightness;
+    v16->_maximumBrightness = maximumBrightness;
+    v16->_minimumColorTemperature = temperature;
+    v16->_maximumColorTemperature = colorTemperature;
   }
 
   return v16;

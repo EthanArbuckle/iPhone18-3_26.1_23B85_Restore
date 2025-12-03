@@ -1,16 +1,16 @@
 @interface _MPMiddlewareChainBuilderProxy
-+ (id)allocWithProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (SEL)_methodDescriptionFromProtocolHierarchy:(const char *)a3 selector:;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
++ (id)allocWithProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (SEL)_methodDescriptionFromProtocolHierarchy:(const char *)hierarchy selector:;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _MPMiddlewareChainBuilderProxy
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  [(_MPMiddlewareChainBuilderProxy *)self _methodDescriptionFromProtocolHierarchy:a3 selector:?];
+  [(_MPMiddlewareChainBuilderProxy *)self _methodDescriptionFromProtocolHierarchy:selector selector:?];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:v3];
@@ -24,14 +24,14 @@
   return v4;
 }
 
-- (SEL)_methodDescriptionFromProtocolHierarchy:(const char *)a3 selector:
+- (SEL)_methodDescriptionFromProtocolHierarchy:(const char *)hierarchy selector:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = v5;
-    MethodDescription = protocol_getMethodDescription(v7, a3, 0, 1);
+    MethodDescription = protocol_getMethodDescription(v7, hierarchy, 0, 1);
     if (MethodDescription.types)
     {
       name = MethodDescription.name;
@@ -39,7 +39,7 @@
 
     else
     {
-      v10 = protocol_getMethodDescription(v7, a3, 1, 1);
+      v10 = protocol_getMethodDescription(v7, hierarchy, 1, 1);
       name = v10.name;
 
       if (!v10.types)
@@ -50,7 +50,7 @@
         {
           for (i = 0; i < outCount; ++i)
           {
-            name = [(_MPMiddlewareChainBuilderProxy *)a1 _methodDescriptionFromProtocolHierarchy:a3 selector:?];
+            name = [(_MPMiddlewareChainBuilderProxy *)self _methodDescriptionFromProtocolHierarchy:hierarchy selector:?];
             if (v13)
             {
               break;
@@ -71,42 +71,42 @@
   return name;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(_MPMiddlewareChainBuilderProxy *)self methodSignatureForSelector:a3];
+  v3 = [(_MPMiddlewareChainBuilderProxy *)self methodSignatureForSelector:selector];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [v4 methodSignature];
-  if ([v5 numberOfArguments] > 1)
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  if ([methodSignature numberOfArguments] > 1)
   {
     v8 = 0;
-    [v4 getArgument:&v8 atIndex:{objc_msgSend(v5, "numberOfArguments") - 1}];
-    v6 = [v4 selector];
-    [v8 setBuilderSelector:v6];
-    v7 = [v8 nextObject];
-    [v4 invokeWithTarget:v7];
+    [invocationCopy getArgument:&v8 atIndex:{objc_msgSend(methodSignature, "numberOfArguments") - 1}];
+    selector = [invocationCopy selector];
+    [v8 setBuilderSelector:selector];
+    nextObject = [v8 nextObject];
+    [invocationCopy invokeWithTarget:nextObject];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _MPMiddlewareChainBuilderProxy;
-    [(_MPMiddlewareChainBuilderProxy *)&v9 forwardInvocation:v4];
+    [(_MPMiddlewareChainBuilderProxy *)&v9 forwardInvocation:invocationCopy];
   }
 }
 
-+ (id)allocWithProtocol:(id)a3
++ (id)allocWithProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  protocolCopy = protocol;
+  v5 = [self alloc];
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = protocolCopy;
 
   return v5;
 }

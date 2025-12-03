@@ -1,32 +1,32 @@
 @interface BAXSafeCategory
 + (Class)baxTargetClass;
-+ (void)_baxAddCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5;
++ (void)_baxAddCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass;
 + (void)_baxInitializeSafeCategory;
-+ (void)_baxInstallSafeCategoryOnClass:(Class)a3;
-+ (void)_baxInstallSafeCategoryOnClassNamed:(id)a3;
++ (void)_baxInstallSafeCategoryOnClass:(Class)class;
++ (void)_baxInstallSafeCategoryOnClassNamed:(id)named;
 @end
 
 @implementation BAXSafeCategory
 
 + (Class)baxTargetClass
 {
-  v2 = [a1 baxTargetClassName];
-  v3 = NSClassFromString(v2);
+  baxTargetClassName = [self baxTargetClassName];
+  v3 = NSClassFromString(baxTargetClassName);
 
   return v3;
 }
 
 + (void)_baxInitializeSafeCategory
 {
-  v3 = [a1 baxTargetClassName];
-  [a1 _baxInstallSafeCategoryOnClassNamed:v3];
+  baxTargetClassName = [self baxTargetClassName];
+  [self _baxInstallSafeCategoryOnClassNamed:baxTargetClassName];
 }
 
-+ (void)_baxAddCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5
++ (void)_baxAddCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass
 {
-  v5 = a5;
-  Name = method_getName(a3);
-  InstanceMethod = class_getInstanceMethod(a4, Name);
+  isClassCopy = isClass;
+  Name = method_getName(method);
+  InstanceMethod = class_getInstanceMethod(class, Name);
   v11 = InstanceMethod;
   if (InstanceMethod)
   {
@@ -38,11 +38,11 @@
     Implementation = 0;
   }
 
-  v13 = method_getImplementation(a3);
-  TypeEncoding = method_getTypeEncoding(a3);
-  if (!class_addMethod(a4, Name, v13, TypeEncoding))
+  v13 = method_getImplementation(method);
+  TypeEncoding = method_getTypeEncoding(method);
+  if (!class_addMethod(class, Name, v13, TypeEncoding))
   {
-    v15 = method_getImplementation(a3);
+    v15 = method_getImplementation(method);
     method_setImplementation(v11, v15);
   }
 
@@ -50,14 +50,14 @@
   {
     if (Implementation)
     {
-      Superclass = class_getSuperclass(a1);
+      Superclass = class_getSuperclass(self);
       if (Superclass)
       {
         Class = Superclass;
         v18 = class_getSuperclass(Superclass);
-        if (v18 == [a1 baxBaseSafeCategoryClass])
+        if (v18 == [self baxBaseSafeCategoryClass])
         {
-          if (v5)
+          if (isClassCopy)
           {
             Class = object_getClass(Class);
           }
@@ -74,9 +74,9 @@
   }
 }
 
-+ (void)_baxInstallSafeCategoryOnClassNamed:(id)a3
++ (void)_baxInstallSafeCategoryOnClassNamed:(id)named
 {
-  v4 = NSClassFromString(a3);
+  v4 = NSClassFromString(named);
   v5 = v4;
   if (qword_26DD0 == -1)
   {
@@ -95,15 +95,15 @@
     }
   }
 
-  [a1 _baxInstallSafeCategoryOnClass:v5];
+  [self _baxInstallSafeCategoryOnClass:v5];
 }
 
-+ (void)_baxInstallSafeCategoryOnClass:(Class)a3
++ (void)_baxInstallSafeCategoryOnClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     outCount = 0;
-    v5 = class_copyProtocolList(a1, &outCount);
+    v5 = class_copyProtocolList(self, &outCount);
     if (v5)
     {
       v6 = v5;
@@ -111,7 +111,7 @@
       {
         for (i = 0; i < outCount; ++i)
         {
-          class_addProtocol(a3, v6[i]);
+          class_addProtocol(class, v6[i]);
           if (qword_26DD0 != -1)
           {
             sub_12F78();
@@ -123,7 +123,7 @@
     }
 
     v17 = 0;
-    v8 = class_copyMethodList(a1, &v17);
+    v8 = class_copyMethodList(self, &v17);
     if (v8)
     {
       v9 = v8;
@@ -137,14 +137,14 @@
             break;
           }
 
-          [a1 _baxAddCategoryMethod:v11 toClass:a3 isClass:0];
+          [self _baxAddCategoryMethod:v11 toClass:class isClass:0];
         }
       }
 
       free(v9);
     }
 
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     v13 = class_copyMethodList(Class, &v17);
     if (v13)
     {
@@ -161,7 +161,7 @@
 
           if (method_getName(v16) != "load")
           {
-            [a1 _baxAddCategoryMethod:v14[k] toClass:object_getClass(a3) isClass:1];
+            [self _baxAddCategoryMethod:v14[k] toClass:object_getClass(class) isClass:1];
           }
         }
       }

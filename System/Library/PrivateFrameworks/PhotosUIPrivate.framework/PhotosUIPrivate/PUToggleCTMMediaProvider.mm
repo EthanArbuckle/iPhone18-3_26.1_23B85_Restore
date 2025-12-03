@@ -1,37 +1,37 @@
 @interface PUToggleCTMMediaProvider
-- (PUToggleCTMMediaProvider)initWithViewModel:(id)a3 mediaProvider:(id)a4;
-- (id)_imageWithSize:(CGSize)a3 string:(id)a4;
+- (PUToggleCTMMediaProvider)initWithViewModel:(id)model mediaProvider:(id)provider;
+- (id)_imageWithSize:(CGSize)size string:(id)string;
 - (id)_requestOptions;
-- (id)_resourceOfType:(int64_t)a3 forAsset:(id)a4;
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int)a3;
+- (id)_resourceOfType:(int64_t)type forAsset:(id)asset;
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int)request;
 @end
 
 @implementation PUToggleCTMMediaProvider
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
-  v3 = *&a3;
+  v3 = *&request;
   [(PUMediaProvider *)self->_mediaProvider cancelImageRequest:?];
   v4 = MEMORY[0x1E69788C8];
 
   [v4 cancelLivePhotoRequestWithRequestID:v3];
 }
 
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(PUMediaProvider *)self->_mediaProvider requestAsynchronousVideoURLForAsset:v8 options:v9 resultHandler:v10];
+    v11 = [(PUMediaProvider *)self->_mediaProvider requestAsynchronousVideoURLForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   else
@@ -42,14 +42,14 @@
   return v11;
 }
 
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(PUMediaProvider *)self->_mediaProvider requestAVAssetForVideo:v8 options:v9 resultHandler:v10];
+    v11 = [(PUMediaProvider *)self->_mediaProvider requestAVAssetForVideo:videoCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   else
@@ -60,36 +60,36 @@
   return v11;
 }
 
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v37[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:v13]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:assetCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = v13;
+    v16 = assetCopy;
     v17 = [(PUToggleCTMMediaProvider *)self _ctmImageResourceForAsset:v16];
     v18 = [(PUToggleCTMMediaProvider *)self _ctmPairedVideoResourceForAsset:v16];
-    v19 = [v17 privateFileURL];
-    v20 = [v18 privateFileURL];
-    v21 = v20;
-    if (v19 && v20)
+    privateFileURL = [v17 privateFileURL];
+    privateFileURL2 = [v18 privateFileURL];
+    v21 = privateFileURL2;
+    if (privateFileURL && privateFileURL2)
     {
       v29 = v17;
       v22 = MEMORY[0x1E69788C8];
-      v37[0] = v19;
-      v37[1] = v20;
+      v37[0] = privateFileURL;
+      v37[1] = privateFileURL2;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
       v30 = 0;
-      v24 = [v22 livePhotoWithResourceFileURLs:v23 targetSize:a5 contentMode:1 skipValidation:0 prefersHDR:&v30 error:{width, height}];
+      v24 = [v22 livePhotoWithResourceFileURLs:v23 targetSize:mode contentMode:1 skipValidation:0 prefersHDR:&v30 error:{width, height}];
       v25 = v30;
 
       if (v24)
       {
-        v15[2](v15, v24, 0);
+        handlerCopy[2](handlerCopy, v24, 0);
         v17 = v29;
       }
 
@@ -123,34 +123,34 @@
       }
     }
 
-    v26 = 0;
+    height = 0;
   }
 
   else
   {
-    v26 = [(PUMediaProvider *)self->_mediaProvider requestLivePhotoForAsset:v13 targetSize:a5 contentMode:v14 options:v15 resultHandler:width, height];
+    height = [(PUMediaProvider *)self->_mediaProvider requestLivePhotoForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:width, height];
   }
 
-  return v26;
+  return height;
 }
 
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:v8]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:videoCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [(PUToggleCTMMediaProvider *)self _ctmVideoResourceForAsset:v8];
-    v12 = [v11 privateFileURL];
-    if (v12)
+    v11 = [(PUToggleCTMMediaProvider *)self _ctmVideoResourceForAsset:videoCopy];
+    privateFileURL = [v11 privateFileURL];
+    if (privateFileURL)
     {
-      v13 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:v12];
+      v13 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:privateFileURL];
       if (v13)
       {
         v14 = v13;
-        v10[2](v10, v13, 0);
+        handlerCopy[2](handlerCopy, v13, 0);
       }
 
       else
@@ -183,35 +183,35 @@
 
   else
   {
-    v15 = [(PUMediaProvider *)self->_mediaProvider requestPlayerItemForVideo:v8 options:v9 resultHandler:v10];
+    v15 = [(PUMediaProvider *)self->_mediaProvider requestPlayerItemForVideo:videoCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   return v15;
 }
 
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:v8]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:assetCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = v8;
+    v11 = assetCopy;
     v12 = [(PUToggleCTMMediaProvider *)self _ctmImageResourceForAsset:v11];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 privateFileURL];
-      if (v14)
+      privateFileURL = [v12 privateFileURL];
+      if (privateFileURL)
       {
         v26[0] = *MEMORY[0x1E6978E28];
-        v15 = [v13 uniformTypeIdentifier];
-        v16 = v15;
+        uniformTypeIdentifier = [v13 uniformTypeIdentifier];
+        v16 = uniformTypeIdentifier;
         v17 = &stru_1F2AC6818;
-        if (v15)
+        if (uniformTypeIdentifier)
         {
-          v17 = v15;
+          v17 = uniformTypeIdentifier;
         }
 
         v27[0] = v17;
@@ -219,7 +219,7 @@
         v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "imageOrientation")}];
         v27[1] = v18;
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-        v10[2](v10, v14, v19);
+        handlerCopy[2](handlerCopy, privateFileURL, v19);
       }
 
       else
@@ -238,12 +238,12 @@
 
     else
     {
-      v14 = PLOneUpGetLog();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      privateFileURL = PLOneUpGetLog();
+      if (os_log_type_enabled(privateFileURL, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
         v23 = v11;
-        _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "Missing CTM resource for asset:%@", &v22, 0xCu);
+        _os_log_impl(&dword_1B36F3000, privateFileURL, OS_LOG_TYPE_DEFAULT, "Missing CTM resource for asset:%@", &v22, 0xCu);
       }
     }
 
@@ -252,30 +252,30 @@
 
   else
   {
-    v20 = [(PUMediaProvider *)self->_mediaProvider requestImageURLForAsset:v8 options:v9 resultHandler:v10];
+    v20 = [(PUMediaProvider *)self->_mediaProvider requestImageURLForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   return v20;
 }
 
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:v8]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:assetCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = v8;
+    v11 = assetCopy;
     v12 = [(PUToggleCTMMediaProvider *)self _ctmImageResourceForAsset:v11];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 privateFileURL];
-      if (v14 && (v15 = objc_alloc(MEMORY[0x1E695DEF0]), -[NSObject path](v14, "path"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 initWithContentsOfFile:v16], v16, v17))
+      privateFileURL = [v12 privateFileURL];
+      if (privateFileURL && (v15 = objc_alloc(MEMORY[0x1E695DEF0]), -[NSObject path](privateFileURL, "path"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 initWithContentsOfFile:v16], v16, v17))
       {
-        v18 = [v13 uniformTypeIdentifier];
-        v10[2](v10, v17, v18, [v11 imageOrientation], 0);
+        uniformTypeIdentifier = [v13 uniformTypeIdentifier];
+        handlerCopy[2](handlerCopy, v17, uniformTypeIdentifier, [v11 imageOrientation], 0);
       }
 
       else
@@ -286,7 +286,7 @@
           v21 = 138412546;
           v22 = v13;
           v23 = 2112;
-          v24 = v14;
+          v24 = privateFileURL;
           _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_DEFAULT, "Error retrieving data for resource:%@ fileURL:%@", &v21, 0x16u);
         }
       }
@@ -294,12 +294,12 @@
 
     else
     {
-      v14 = PLOneUpGetLog();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      privateFileURL = PLOneUpGetLog();
+      if (os_log_type_enabled(privateFileURL, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
         v22 = v11;
-        _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "Missing CTM resource for asset:%@", &v21, 0xCu);
+        _os_log_impl(&dword_1B36F3000, privateFileURL, OS_LOG_TYPE_DEFAULT, "Missing CTM resource for asset:%@", &v21, 0xCu);
       }
     }
 
@@ -308,44 +308,44 @@
 
   else
   {
-    v19 = [(PUMediaProvider *)self->_mediaProvider requestImageDataForAsset:v8 options:v9 resultHandler:v10];
+    v19 = [(PUMediaProvider *)self->_mediaProvider requestImageDataForAsset:assetCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   return v19;
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:v13])
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(PUToggleCTMMediaProvider *)self _shouldToggleCTMForAsset:assetCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && height > 150.0)
     {
-      v16 = v13;
+      v16 = assetCopy;
       v17 = [(PUToggleCTMMediaProvider *)self _ctmImageResourceForAsset:v16];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 privateFileURL];
-        if (!v19 || (v20 = objc_alloc(MEMORY[0x1E69DCAB8]), [v19 path], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "initWithContentsOfFile:", v21), v21, !v22))
+        privateFileURL = [v17 privateFileURL];
+        if (!privateFileURL || (v20 = objc_alloc(MEMORY[0x1E69DCAB8]), [privateFileURL path], v21 = objc_claimAutoreleasedReturnValue(), height2 = objc_msgSend(v20, "initWithContentsOfFile:", v21), v21, !height2))
         {
-          v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error creating image for resource:%@ fileURL:%@", v18, v19];
+          height2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error creating image for resource:%@ fileURL:%@", v18, privateFileURL];
           v23 = PLOneUpGetLog();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v29 = v22;
+            v29 = height2;
             _os_log_impl(&dword_1B36F3000, v23, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
           }
 
-          v24 = [(PUToggleCTMMediaProvider *)self _imageWithSize:v22 string:width, height];
-          v15[2](v15, v24, 0);
+          height = [(PUToggleCTMMediaProvider *)self _imageWithSize:height2 string:width, height];
+          handlerCopy[2](handlerCopy, height, 0);
 
           goto LABEL_15;
         }
@@ -361,22 +361,22 @@
           _os_log_impl(&dword_1B36F3000, v26, OS_LOG_TYPE_DEFAULT, "Missing CTM resource for asset:%@", buf, 0xCu);
         }
 
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No matching CTM resource type for asset:%@", v16];
-        v22 = [(PUToggleCTMMediaProvider *)self _imageWithSize:v19 string:width, height];
+        privateFileURL = [MEMORY[0x1E696AEC0] stringWithFormat:@"No matching CTM resource type for asset:%@", v16];
+        height2 = [(PUToggleCTMMediaProvider *)self _imageWithSize:privateFileURL string:width, height];
       }
 
-      v15[2](v15, v22, 0);
+      handlerCopy[2](handlerCopy, height2, 0);
 LABEL_15:
 
-      v25 = 0;
+      height3 = 0;
       goto LABEL_16;
     }
   }
 
-  v25 = [(PUMediaProvider *)self->_mediaProvider requestImageForAsset:v13 targetSize:a5 contentMode:v14 options:v15 resultHandler:width, height];
+  height3 = [(PUMediaProvider *)self->_mediaProvider requestImageForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:width, height];
 LABEL_16:
 
-  return v25;
+  return height3;
 }
 
 - (id)_requestOptions
@@ -387,14 +387,14 @@ LABEL_16:
   return v2;
 }
 
-- (id)_resourceOfType:(int64_t)a3 forAsset:(id)a4
+- (id)_resourceOfType:(int64_t)type forAsset:(id)asset
 {
-  v5 = [MEMORY[0x1E69786D8] assetResourcesForAsset:a4];
+  v5 = [MEMORY[0x1E69786D8] assetResourcesForAsset:asset];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__PUToggleCTMMediaProvider__resourceOfType_forAsset___block_invoke;
   v9[3] = &__block_descriptor_40_e32_B32__0__PHAssetResource_8Q16_B24l;
-  v9[4] = a3;
+  v9[4] = type;
   v6 = [v5 indexOfObjectPassingTest:v9];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -409,18 +409,18 @@ LABEL_16:
   return v7;
 }
 
-- (id)_imageWithSize:(CGSize)a3 string:(id)a4
+- (id)_imageWithSize:(CGSize)size string:(id)string
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
   v7 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{width, height}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__PUToggleCTMMediaProvider__imageWithSize_string___block_invoke;
   v11[3] = &unk_1E7B7C7B0;
-  v12 = v6;
-  v8 = v6;
+  v12 = stringCopy;
+  v8 = stringCopy;
   v9 = [v7 imageWithActions:v11];
 
   return v9;
@@ -443,18 +443,18 @@ void __50__PUToggleCTMMediaProvider__imageWithSize_string___block_invoke(uint64_
   [v2 drawInRect:v13 withAttributes:{v5, v7, v9, v11}];
 }
 
-- (PUToggleCTMMediaProvider)initWithViewModel:(id)a3 mediaProvider:(id)a4
+- (PUToggleCTMMediaProvider)initWithViewModel:(id)model mediaProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PUToggleCTMMediaProvider;
   v9 = [(PUToggleCTMMediaProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
-    objc_storeStrong(&v10->_mediaProvider, a4);
+    objc_storeStrong(&v9->_viewModel, model);
+    objc_storeStrong(&v10->_mediaProvider, provider);
   }
 
   return v10;

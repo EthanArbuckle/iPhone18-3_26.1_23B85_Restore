@@ -1,55 +1,55 @@
 @interface CLIndoorProvider
-+ (id)getAvailabilityTilePathFromWorkdir:(id)a3;
-+ (id)makeReason:(id)a3 withCode:(int64_t)a4 withFailure:(id)a5;
-+ (id)makeReason:(id)a3 withCode:(int64_t)a4 withInfo:(id)a5;
-- (BOOL)onQueueProcessCompletedFetch:(id)a3;
++ (id)getAvailabilityTilePathFromWorkdir:(id)workdir;
++ (id)makeReason:(id)reason withCode:(int64_t)code withFailure:(id)failure;
++ (id)makeReason:(id)reason withCode:(int64_t)code withInfo:(id)info;
+- (BOOL)onQueueProcessCompletedFetch:(id)fetch;
 - (CLIndoorProvider)init;
-- (CLIndoorProvider)initWithConnection:(id)a3;
+- (CLIndoorProvider)initWithConnection:(id)connection;
 - (CLIndoorTilePrefetcher)prefetcher;
 - (NSXPCConnection)xpcConnection;
 - (id).cxx_construct;
-- (id)getAvailabilityTileParserAndSetParams:(id)a3;
+- (id)getAvailabilityTileParserAndSetParams:(id)params;
 - (id)initializeServiceApi;
-- (id)locationRequests:(id)a3 usingAvailabilityTile:(const void *)a4 forAction:(unsigned __int8)a5;
+- (id)locationRequests:(id)requests usingAvailabilityTile:(const void *)tile forAction:(unsigned __int8)action;
 - (optional<SelectedLocations>)selectedLocation;
 - (shared_ptr<ITileDb>)fsDb;
-- (void)changeLocationGroups:(id)a3;
-- (void)clVisionNotificationARSessionStateAvailable:(id)a3;
-- (void)clVisionNotificationAvailable:(id)a3;
-- (void)clVisionNotificationVIOEstimationAvailable:(id)a3;
-- (void)clVisionNotificationVLLocalizationResultAvailable:(id)a3;
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3;
+- (void)changeLocationGroups:(id)groups;
+- (void)clVisionNotificationARSessionStateAvailable:(id)available;
+- (void)clVisionNotificationAvailable:(id)available;
+- (void)clVisionNotificationVIOEstimationAvailable:(id)available;
+- (void)clVisionNotificationVLLocalizationResultAvailable:(id)available;
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available;
 - (void)dealloc;
-- (void)foregroundRequestCompleted:(id)a3;
-- (void)foregroundRequestCompleted:(id)a3 withError:(id)a4;
+- (void)foregroundRequestCompleted:(id)completed;
+- (void)foregroundRequestCompleted:(id)completed withError:(id)error;
 - (void)foregroundTileDownloadComplete;
-- (void)gpsEstimateAvailable:(id)a3;
-- (void)gpsSignalQualityAvailable:(id)a3;
-- (void)initializeIndoorUniverse:(id)a3 atLocation:(id)a4;
+- (void)gpsEstimateAvailable:(id)available;
+- (void)gpsSignalQualityAvailable:(id)available;
+- (void)initializeIndoorUniverse:(id)universe atLocation:(id)location;
 - (void)mutableDeferredState;
-- (void)notify:(id)a3 failedWithReason:(id)a4;
+- (void)notify:(id)notify failedWithReason:(id)reason;
 - (void)notifyProxyOfDownloadError;
-- (void)notifyProxyOfDownloadError:(id)a3;
+- (void)notifyProxyOfDownloadError:(id)error;
 - (void)onConnectionQueueShutdown;
-- (void)onQueueInterruptDownloads:(int)a3;
-- (void)onQueueLocalizeOnSelection:(const void *)a3 withParameterOverrides:(optional<proto::params::LocalizerParameters>)a4;
-- (void)onQueueNotify:(const void *)a3 onFloor:(const void *)a4;
-- (void)onQueueNotifyLocationContext:(BOOL)a3 withLocationContext:(int)a4;
-- (void)onQueueSelectedLocationDownloadCompleted:(const void *)a3 forAction:(unsigned __int8)a4;
-- (void)outdoorLocationAvailable:(id)a3;
-- (void)playbackDatarun:(id)a3;
+- (void)onQueueInterruptDownloads:(int)downloads;
+- (void)onQueueLocalizeOnSelection:(const void *)selection withParameterOverrides:(optional<proto::params::LocalizerParameters>)overrides;
+- (void)onQueueNotify:(const void *)notify onFloor:(const void *)floor;
+- (void)onQueueNotifyLocationContext:(BOOL)context withLocationContext:(int)locationContext;
+- (void)onQueueSelectedLocationDownloadCompleted:(const void *)completed forAction:(unsigned __int8)action;
+- (void)outdoorLocationAvailable:(id)available;
+- (void)playbackDatarun:(id)datarun;
 - (void)requestForegroundTileDownload;
-- (void)requestLocationTilesForGroup:(id)a3 usingAvailabilityTile:(const void *)a4 forAction:(unsigned __int8)a5;
-- (void)setApiKey:(id)a3;
-- (void)setApiKey:(id)a3 onServer:(id)a4;
-- (void)setFsDb:(shared_ptr<ITileDb>)a3;
-- (void)setLocationGroups:(id)a3;
-- (void)setSelectedLocation:(optional<SelectedLocations>)a3;
+- (void)requestLocationTilesForGroup:(id)group usingAvailabilityTile:(const void *)tile forAction:(unsigned __int8)action;
+- (void)setApiKey:(id)key;
+- (void)setApiKey:(id)key onServer:(id)server;
+- (void)setFsDb:(shared_ptr<ITileDb>)db;
+- (void)setLocationGroups:(id)groups;
+- (void)setSelectedLocation:(optional<SelectedLocations>)location;
 - (void)startLocalizer;
-- (void)startUpdatingLocationAtLocation:(id)a3;
-- (void)startUpdatingLocationDeferred:(id)a3;
+- (void)startUpdatingLocationAtLocation:(id)location;
+- (void)startUpdatingLocationDeferred:(id)deferred;
 - (void)stopLocalizer;
-- (void)updateUniverseIfAllowedAndNecessary:(id *)a3;
+- (void)updateUniverseIfAllowedAndNecessary:(id *)necessary;
 @end
 
 @implementation CLIndoorProvider
@@ -93,9 +93,9 @@
   return 0;
 }
 
-- (CLIndoorProvider)initWithConnection:(id)a3
+- (CLIndoorProvider)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v55.receiver = self;
   v55.super_class = CLIndoorProvider;
   v5 = [(CLIndoorProvider *)&v55 init];
@@ -109,18 +109,18 @@
     v6 = qword_10045B078;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v4 serviceName];
-      v8 = v7;
-      v9 = [v7 UTF8String];
-      v10 = [v4 processIdentifier];
+      serviceName = [connectionCopy serviceName];
+      v8 = serviceName;
+      uTF8String = [serviceName UTF8String];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 136315394;
-      *&buf[4] = v9;
+      *&buf[4] = uTF8String;
       *&buf[12] = 1024;
-      *&buf[14] = v10;
+      *&buf[14] = processIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Initting w/ NSXPCConnection serviceName = %s pid = %d", buf, 0x12u);
     }
 
-    objc_storeWeak(&v5->_xpcConnection, v4);
+    objc_storeWeak(&v5->_xpcConnection, connectionCopy);
     if (qword_10045B070 != -1)
     {
       sub_100387B98();
@@ -233,8 +233,8 @@ LABEL_19:
     if (sub_100005C94(buf, &buf[12]) >= 1)
     {
       to = sub_10000AEA0();
-      LOWORD(v54) = v37;
-      if ((sub_100008F80(&to, &v54 + 1) & 1) == 0)
+      LOWORD(_queue) = v37;
+      if ((sub_100008F80(&to, &_queue + 1) & 1) == 0)
       {
         v38 = sub_100007FA8();
         sub_10000AEB0(v38, 3);
@@ -247,9 +247,9 @@ LABEL_19:
     v50[2] = sub_100356E80;
     v50[3] = &unk_10044B168;
     objc_copyWeak(&to, &location);
-    v54 = [v4 _queue];
+    _queue = [connectionCopy _queue];
     objc_copyWeak(v51, &to);
-    v51[1] = v54;
+    v51[1] = _queue;
     *buf = off_10044B338;
     v39 = objc_retainBlock(v50);
     if (v5->_localizerObserver.m_initialized)
@@ -277,9 +277,9 @@ LABEL_19:
     v47[2] = sub_100357110;
     v47[3] = &unk_10044B198;
     objc_copyWeak(&to, &from);
-    v54 = [v4 _queue];
+    _queue = [connectionCopy _queue];
     objc_copyWeak(v48, &to);
-    v48[1] = v54;
+    v48[1] = _queue;
     *buf = off_10044B3B8;
     v42 = objc_retainBlock(v47);
     if (v5->_possibleLocationObserver.m_initialized)
@@ -303,7 +303,7 @@ LABEL_19:
     objc_destroyWeak(&to);
     objc_initWeak(&v46, v5);
     objc_copyWeak(&to, &v46);
-    v54 = [v4 _queue];
+    _queue = [connectionCopy _queue];
     operator new();
   }
 
@@ -322,9 +322,9 @@ LABEL_19:
   return &self->_deferredState.m_storage.dummy_.aligner_ + 7;
 }
 
-- (void)setFsDb:(shared_ptr<ITileDb>)a3
+- (void)setFsDb:(shared_ptr<ITileDb>)db
 {
-  ptr = a3.__ptr_;
+  ptr = db.__ptr_;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -373,8 +373,8 @@ LABEL_19:
     return;
   }
 
-  v11 = [(CLIndoorProvider *)self xpcConnection];
-  if (v11)
+  xpcConnection = [(CLIndoorProvider *)self xpcConnection];
+  if (xpcConnection)
   {
     *buf = *(&self->_deferredState.m_storage.dummy_.aligner_ + 7);
     v14 = 0;
@@ -422,17 +422,17 @@ LABEL_19:
   }
 }
 
-- (void)onQueueNotify:(const void *)a3 onFloor:(const void *)a4
+- (void)onQueueNotify:(const void *)notify onFloor:(const void *)floor
 {
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
   if (WeakRetained && self->_localizationActive)
   {
-    v8 = sub_100356144(*(a3 + 131));
-    sub_10034BD8C(&self->_pipelinedFixCrossCheckMetrics.fSamplingFactor, a3, v8, self->_lastGpsPositionAvailable, self->_lastGpsReceivedTime.__rep_, a4);
-    v9 = sub_100356144(*(a3 + 131));
-    sub_10034BD8C(&self->_pipelinedFixCrossCheckMetrics.fSamplingFactor, a3, v9, self->_lastNonGpsPositionAvailable, self->_lastNonGpsReceivedTime.__rep_, a4);
+    v8 = sub_100356144(*(notify + 131));
+    sub_10034BD8C(&self->_pipelinedFixCrossCheckMetrics.fSamplingFactor, notify, v8, self->_lastGpsPositionAvailable, self->_lastGpsReceivedTime.__rep_, floor);
+    v9 = sub_100356144(*(notify + 131));
+    sub_10034BD8C(&self->_pipelinedFixCrossCheckMetrics.fSamplingFactor, notify, v9, self->_lastNonGpsPositionAvailable, self->_lastNonGpsReceivedTime.__rep_, floor);
     v10 = sub_10010C670();
-    if (*(a3 + 131) == 4)
+    if (*(notify + 131) == 4)
     {
       if (self->_lastGpsPositionAvailable)
       {
@@ -440,13 +440,13 @@ LABEL_19:
         rep = self->_lastGpsReceivedTime.__rep_;
         if ((v10 - rep) / 1000000000.0 < sub_10025137C(&self->_params.m_storage.dummy_.aligner_ + 7))
         {
-          v17 = [CLIndoorLocation fromPoseEstimate:a3 andGpsEstimate:self->_lastGpsPositionAvailable];
+          v17 = [CLIndoorLocation fromPoseEstimate:notify andGpsEstimate:self->_lastGpsPositionAvailable];
 LABEL_16:
           v18 = v17;
           if (!v17)
           {
-            v20 = [NSError errorWithDomain:@"com.apple.pipelined" code:-1 userInfo:&__NSDictionary0__struct];
-            [(CLIndoorProvider *)self notify:WeakRetained failedWithReason:v20];
+            remoteObjectProxy = [NSError errorWithDomain:@"com.apple.pipelined" code:-1 userInfo:&__NSDictionary0__struct];
+            [(CLIndoorProvider *)self notify:WeakRetained failedWithReason:remoteObjectProxy];
 LABEL_35:
 
             goto LABEL_36;
@@ -455,11 +455,11 @@ LABEL_35:
           ptr = self->_sensorLogger.__ptr_;
           if (ptr)
           {
-            sub_1000CF258(ptr, a3);
+            sub_1000CF258(ptr, notify);
           }
 
-          v20 = [WeakRetained remoteObjectProxy];
-          v21 = *(a3 + 74);
+          remoteObjectProxy = [WeakRetained remoteObjectProxy];
+          v21 = *(notify + 74);
           if ((v21 - 1) < 3)
           {
             goto LABEL_20;
@@ -482,17 +482,17 @@ LABEL_35:
               }
 
 LABEL_20:
-              if ((*(a3 + 755) & 0x20) != 0)
+              if ((*(notify + 755) & 0x20) != 0)
               {
-                if (!*(a3 + 75))
+                if (!*(notify + 75))
                 {
-                  [v20 indoorGivesUpWithLocation:0];
+                  [remoteObjectProxy indoorGivesUpWithLocation:0];
                 }
               }
 
               else
               {
-                [v20 indoorIsUncertainWithLocation:0];
+                [remoteObjectProxy indoorIsUncertainWithLocation:0];
               }
             }
 
@@ -507,10 +507,10 @@ LABEL_34:
           [v18 location];
           if (v23 > 0.0)
           {
-            [v20 indoorDidUpdateToLocation:v18 fromLocation:self->_latestFix];
+            [remoteObjectProxy indoorDidUpdateToLocation:v18 fromLocation:self->_latestFix];
             [v18 location];
             [(CLIndoorProvider *)self updateUniverseIfAllowedAndNecessary:buf];
-            sub_10034DA20(&self->_localizationSessionMetrics, a3);
+            sub_10034DA20(&self->_localizationSessionMetrics, notify);
             goto LABEL_34;
           }
 
@@ -586,16 +586,16 @@ LABEL_40:
       }
     }
 
-    v17 = [CLIndoorLocation fromPoseEstimate:a3];
+    v17 = [CLIndoorLocation fromPoseEstimate:notify];
     goto LABEL_16;
   }
 
 LABEL_36:
 }
 
-- (void)onQueueNotifyLocationContext:(BOOL)a3 withLocationContext:(int)a4
+- (void)onQueueNotifyLocationContext:(BOOL)context withLocationContext:(int)locationContext
 {
-  if (a4 == 1)
+  if (locationContext == 1)
   {
     v5 = sub_10033987C();
     v6 = atomic_load(v5 + 26);
@@ -656,7 +656,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Connection state %p invalidated", buf, 0xCu);
   }
 
@@ -689,16 +689,16 @@ LABEL_8:
   {
     v4 = +[CLIndoorServiceDelegate versionString];
     v10 = 136315138;
-    v11 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Request to shutdown %s", &v10, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
-  v6 = [WeakRetained _queue];
-  v7 = v6;
-  if (v6)
+  _queue = [WeakRetained _queue];
+  v7 = _queue;
+  if (_queue)
   {
-    dispatch_assert_queue_V2(v6);
+    dispatch_assert_queue_V2(_queue);
     if (qword_10045B070 != -1)
     {
       sub_100387B98();
@@ -730,9 +730,9 @@ LABEL_8:
   }
 }
 
-- (void)setApiKey:(id)a3
+- (void)setApiKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -756,10 +756,10 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)setApiKey:(id)a3 onServer:(id)a4
+- (void)setApiKey:(id)key onServer:(id)server
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  serverCopy = server;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -789,13 +789,13 @@ LABEL_4:
   [(CLIndoorProvider *)self notifyProxyOfDownloadError:?];
 }
 
-- (void)notifyProxyOfDownloadError:(id)a3
+- (void)notifyProxyOfDownloadError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
-  v6 = [WeakRetained _queue];
+  _queue = [WeakRetained _queue];
 
-  if (!v6)
+  if (!_queue)
   {
     if (qword_10045B070 == -1)
     {
@@ -831,30 +831,30 @@ LABEL_4:
   v11[2] = sub_100358998;
   v11[3] = &unk_10044B1D0;
   objc_copyWeak(&v13, &location);
-  v12 = v4;
-  dispatch_after(v9, v6, v11);
+  v12 = errorCopy;
+  dispatch_after(v9, _queue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 LABEL_6:
 }
 
-- (void)notify:(id)a3 failedWithReason:(id)a4
+- (void)notify:(id)notify failedWithReason:(id)reason
 {
-  v6 = a4;
-  v5 = [a3 remoteObjectProxy];
-  [v5 indoorDidFailWithError:v6];
+  reasonCopy = reason;
+  remoteObjectProxy = [notify remoteObjectProxy];
+  [remoteObjectProxy indoorDidFailWithError:reasonCopy];
 }
 
-+ (id)makeReason:(id)a3 withCode:(int64_t)a4 withFailure:(id)a5
++ (id)makeReason:(id)reason withCode:(int64_t)code withFailure:(id)failure
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  reasonCopy = reason;
+  failureCopy = failure;
+  v10 = failureCopy;
+  if (failureCopy)
   {
     v14 = NSLocalizedFailureReasonErrorKey;
-    v15 = v9;
+    v15 = failureCopy;
     v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   }
 
@@ -863,22 +863,22 @@ LABEL_6:
     v11 = &__NSDictionary0__struct;
   }
 
-  v12 = [a1 makeReason:v8 withCode:a4 withInfo:v11];
+  v12 = [self makeReason:reasonCopy withCode:code withInfo:v11];
 
   return v12;
 }
 
-+ (id)makeReason:(id)a3 withCode:(int64_t)a4 withInfo:(id)a5
++ (id)makeReason:(id)reason withCode:(int64_t)code withInfo:(id)info
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count] + 1);
-  [v9 setObject:v7 forKey:NSLocalizedDescriptionKey];
+  reasonCopy = reason;
+  infoCopy = info;
+  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [infoCopy count] + 1);
+  [v9 setObject:reasonCopy forKey:NSLocalizedDescriptionKey];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v8;
+  v10 = infoCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -903,7 +903,7 @@ LABEL_6:
     while (v11);
   }
 
-  v16 = [NSError errorWithDomain:@"com.apple.pipelined" code:a4 userInfo:v9];
+  v16 = [NSError errorWithDomain:@"com.apple.pipelined" code:code userInfo:v9];
 
   return v16;
 }
@@ -943,17 +943,17 @@ LABEL_6:
   return v3;
 }
 
-+ (id)getAvailabilityTilePathFromWorkdir:(id)a3
++ (id)getAvailabilityTilePathFromWorkdir:(id)workdir
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByAppendingPathComponent:@"locationd/indoor_tiles/availability.pb"];
+  uRLByDeletingLastPathComponent = [workdir URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"locationd/indoor_tiles/availability.pb"];
 
   return v4;
 }
 
-- (id)getAvailabilityTileParserAndSetParams:(id)a3
+- (id)getAvailabilityTileParserAndSetParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -963,13 +963,13 @@ LABEL_6:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
-    v14[0] = [v4 UTF8String];
+    v14[0] = [paramsCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "@IndoorAvl, load, getAvailabilityTileParserAndSetParams because %s", buf, 0xCu);
   }
 
   v6 = [CLAvailabilityTileParser alloc];
-  v7 = [(CLIndoorProvider *)self workdir];
-  v8 = [CLIndoorProvider getAvailabilityTilePathFromWorkdir:v7];
+  workdir = [(CLIndoorProvider *)self workdir];
+  v8 = [CLIndoorProvider getAvailabilityTilePathFromWorkdir:workdir];
   v9 = [(CLAvailabilityTileParser *)v6 initWithTilePathIncrementalIO:v8];
 
   if (v9)
@@ -1012,16 +1012,16 @@ LABEL_13:
   return 0;
 }
 
-- (id)locationRequests:(id)a3 usingAvailabilityTile:(const void *)a4 forAction:(unsigned __int8)a5
+- (id)locationRequests:(id)requests usingAvailabilityTile:(const void *)tile forAction:(unsigned __int8)action
 {
-  v60 = a5;
-  v5 = a3;
+  actionCopy = action;
+  requestsCopy = requests;
   v69 = +[NSMutableArray array];
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v5;
+  obj = requestsCopy;
   v64 = [obj countByEnumeratingWithState:&v86 objects:v99 count:16];
   if (v64)
   {
@@ -1054,7 +1054,7 @@ LABEL_13:
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v66 = *(a4 + 1);
+        v66 = *(tile + 1);
         v7 = [v66 countByEnumeratingWithState:&v79 objects:v98 count:16];
         if (v7)
         {
@@ -1119,7 +1119,7 @@ LABEL_31:
 
               if (-[CLIndoorProvider isRegionalEnabled](self, "isRegionalEnabled") || [v10 locationContext] != 1)
               {
-                v72 = [v10 getLocationIds];
+                getLocationIds = [v10 getLocationIds];
                 if (qword_10045B070 != -1)
                 {
                   sub_100387B98();
@@ -1134,7 +1134,7 @@ LABEL_31:
                     v20 = __p;
                   }
 
-                  v21 = 0xAAAAAAAAAAAAAAABLL * ((v72[1] - *v72) >> 3);
+                  v21 = 0xAAAAAAAAAAAAAAABLL * ((getLocationIds[1] - *getLocationIds) >> 3);
                   *buf = 136380931;
                   v91 = v20;
                   v92 = 2050;
@@ -1142,9 +1142,9 @@ LABEL_31:
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "TileLookup, groupId, %{private}s, %{public}lu", buf, 0x16u);
                 }
 
-                v23 = *v72;
-                v22 = v72[1];
-                if (v22 != *v72)
+                v23 = *getLocationIds;
+                v22 = getLocationIds[1];
+                if (v22 != *getLocationIds)
                 {
                   v24 = 0;
                   for (k = 0; k < 0xAAAAAAAAAAAAAAABLL * ((v22 - v23) >> 3); ++k)
@@ -1279,11 +1279,11 @@ LABEL_72:
           {
             v35 = [v69 count];
             v36 = v70;
-            v37 = [v70 UTF8String];
+            uTF8String = [v70 UTF8String];
             *buf = 134218755;
             v91 = v35;
             v92 = 2081;
-            v93 = v37;
+            v93 = uTF8String;
             v94 = 2048;
             v95 = 0;
             v96 = 2048;
@@ -1308,9 +1308,9 @@ LABEL_81:
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
             v42 = v70;
-            v43 = [v70 UTF8String];
+            uTF8String2 = [v70 UTF8String];
             *buf = 136380675;
-            v91 = v43;
+            v91 = uTF8String2;
             v38 = v34;
             v39 = OS_LOG_TYPE_ERROR;
             v40 = "Couldn't find any floors within %{private}s in availability tile.";
@@ -1383,7 +1383,7 @@ LABEL_91:
     }
   }
 
-  if (v60 != 0 || (v73 & 1) == 0)
+  if (actionCopy != 0 || (v73 & 1) == 0)
   {
     goto LABEL_107;
   }
@@ -1423,7 +1423,7 @@ LABEL_107:
   v55 = qword_10045B078;
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [*(a4 + 1) count];
+    v56 = [*(tile + 1) count];
     v57 = [obj count];
     v58 = [v69 count];
     *buf = 134349568;
@@ -1438,10 +1438,10 @@ LABEL_107:
   return v69;
 }
 
-- (void)requestLocationTilesForGroup:(id)a3 usingAvailabilityTile:(const void *)a4 forAction:(unsigned __int8)a5
+- (void)requestLocationTilesForGroup:(id)group usingAvailabilityTile:(const void *)tile forAction:(unsigned __int8)action
 {
-  v8 = a3;
-  v20 = a5;
+  groupCopy = group;
+  actionCopy = action;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -1450,14 +1450,14 @@ LABEL_107:
   v9 = qword_10045B078;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 allObjects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    allObjects = [groupCopy allObjects];
+    v11 = [allObjects componentsJoinedByString:{@", "}];
     LODWORD(buf.__r_.__value_.__l.__data_) = 136380675;
     *(buf.__r_.__value_.__r.__words + 4) = [v11 UTF8String];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "async fetch location tiles for group %{private}s", &buf, 0xCu);
   }
 
-  v12 = [(CLIndoorProvider *)self locationRequests:v8 usingAvailabilityTile:a4 forAction:v20];
+  v12 = [(CLIndoorProvider *)self locationRequests:groupCopy usingAvailabilityTile:tile forAction:actionCopy];
   if (![v12 count])
   {
     if (qword_10045B070 != -1)
@@ -1474,7 +1474,7 @@ LABEL_107:
   }
 
   v14 = [v12 count];
-  v15 = [v8 description];
+  v15 = [groupCopy description];
   v16 = v15;
   if (v15)
   {
@@ -1496,7 +1496,7 @@ LABEL_17:
       }
 
       sub_100050F78(" ,action: ", &v27);
-      sub_100368994(&v20, &v28);
+      sub_100368994(&actionCopy, &v28);
       sub_1000E661C(v22, &buf, 4);
       if (SHIBYTE(v28.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -1572,18 +1572,18 @@ LABEL_29:
     operator delete(__p[0]);
   }
 
-  v17 = [[CLIndoorForegroundFetchRequest alloc] initWithFloorRequests:v12 forAction:v20];
+  v17 = [[CLIndoorForegroundFetchRequest alloc] initWithFloorRequests:v12 forAction:actionCopy];
   [(CLIndoorProvider *)self setCurrentForegroundFetchRequest:v17];
 
   [(CLIndoorProvider *)self requestForegroundTileDownload];
 }
 
-- (void)changeLocationGroups:(id)a3
+- (void)changeLocationGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   if (self->_serviceLocalizer.__ptr_ && [(CLIndoorProvider *)self localizationStarted])
   {
-    [(CLIndoorProvider *)self setLocationGroups:v4];
+    [(CLIndoorProvider *)self setLocationGroups:groupsCopy];
 LABEL_4:
 
     return;
@@ -1612,31 +1612,31 @@ LABEL_4:
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "WARNING: Ignoring changeLocationGroup request - not localizing yet", v6, 2u);
 }
 
-- (void)onQueueSelectedLocationDownloadCompleted:(const void *)a3 forAction:(unsigned __int8)a4
+- (void)onQueueSelectedLocationDownloadCompleted:(const void *)completed forAction:(unsigned __int8)action
 {
-  if (a4 == 1)
+  if (action == 1)
   {
     if (self->_serviceLocalizer.__ptr_)
     {
       v19[0] = 0;
-      v6 = *(a3 + 1);
-      v20[0] = *a3;
+      v6 = *(completed + 1);
+      v20[0] = *completed;
       v20[1] = v6;
       if (v6)
       {
         atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
       }
 
-      sub_10035B044(v21, a3 + 16);
-      v7 = *(a3 + 8);
-      v21[5] = *(a3 + 7);
+      sub_10035B044(v21, completed + 16);
+      v7 = *(completed + 8);
+      v21[5] = *(completed + 7);
       v21[6] = v7;
       if (v7)
       {
         atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
       }
 
-      v22 = *(a3 + 72);
+      v22 = *(completed + 72);
       v19[0] = 1;
       [(CLIndoorProvider *)self setSelectedLocation:v19];
       if (v19[0] == 1)
@@ -1647,8 +1647,8 @@ LABEL_4:
 
       ptr = self->_serviceLocalizer.__ptr_;
       v9 = sub_10010C670();
-      (*(*ptr + 48))(ptr, v9, a3);
-      sub_1001F10C8(a3, &v16);
+      (*(*ptr + 48))(ptr, v9, completed);
+      sub_1001F10C8(completed, &v16);
       v10.n128_f64[0] = sub_10034D9F0(&self->_localizationSessionMetrics, v18);
       v11 = __p;
       if (__p)
@@ -1681,7 +1681,7 @@ LABEL_4:
     }
   }
 
-  else if (!a4)
+  else if (!action)
   {
     v23[0] = 0;
     if (self->_paramOverrides.m_initialized)
@@ -1690,7 +1690,7 @@ LABEL_4:
       v23[0] = 1;
     }
 
-    [(CLIndoorProvider *)self onQueueLocalizeOnSelection:a3 withParameterOverrides:v23];
+    [(CLIndoorProvider *)self onQueueLocalizeOnSelection:completed withParameterOverrides:v23];
     if (v23[0] == 1)
     {
       sub_10014E2CC(v24);
@@ -1700,21 +1700,21 @@ LABEL_4:
 
 - (void)foregroundTileDownloadComplete
 {
-  v3 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
-  v30 = [v3 floorRequests];
+  currentForegroundFetchRequest = [(CLIndoorProvider *)self currentForegroundFetchRequest];
+  floorRequests = [currentForegroundFetchRequest floorRequests];
 
-  v4 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
-  v29 = [v4 action];
+  currentForegroundFetchRequest2 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
+  action = [currentForegroundFetchRequest2 action];
 
   v5 = objc_autoreleasePoolPush();
   [(CLIndoorProvider *)self setCurrentForegroundFetchRequest:0];
   objc_autoreleasePoolPop(v5);
-  if ([(CLIndoorProvider *)self onQueueProcessCompletedFetch:v30])
+  if ([(CLIndoorProvider *)self onQueueProcessCompletedFetch:floorRequests])
   {
     *v41 = 0u;
     v42 = 0u;
     v43 = 1.0;
-    prime = vcvtps_u32_f32([v30 count] / 1.0);
+    prime = vcvtps_u32_f32([floorRequests count] / 1.0);
     if (prime == 1)
     {
       prime = 2;
@@ -1763,21 +1763,21 @@ LABEL_14:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = v30;
+    v16 = floorRequests;
     if ([v16 countByEnumeratingWithState:&v37 objects:v47 count:16])
     {
       *v38;
       *v38;
-      v17 = [**(&v37 + 1) floorUuid];
-      v18 = v17;
-      [v17 UTF8String];
+      floorUuid = [**(&v37 + 1) floorUuid];
+      v18 = floorUuid;
+      [floorUuid UTF8String];
       sub_1001180E4();
     }
 
     ptr = self->_fsDb.__ptr_;
     sub_10035B044(__p, v41);
     sub_1001F0D28(buf, ptr, __p);
-    [(CLIndoorProvider *)self onQueueSelectedLocationDownloadCompleted:buf forAction:v29];
+    [(CLIndoorProvider *)self onQueueSelectedLocationDownloadCompleted:buf forAction:action];
     sub_10035B188(buf);
     v20 = v36;
     while (v20)
@@ -1844,19 +1844,19 @@ LABEL_14:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = v30;
+    v8 = floorRequests;
     if ([v8 countByEnumeratingWithState:&v31 objects:v45 count:16])
     {
       *v32;
       *v32;
       v9 = self->_fsDb.__ptr_;
-      v10 = [**(&v31 + 1) floorUuid];
-      v11 = v10;
-      [v10 UTF8String];
+      floorUuid2 = [**(&v31 + 1) floorUuid];
+      v11 = floorUuid2;
+      [floorUuid2 UTF8String];
       sub_1001180E4();
     }
 
-    v12 = [[CLIndoorForegroundFetchRequest alloc] initWithFloorRequests:v8 forAction:v29];
+    v12 = [[CLIndoorForegroundFetchRequest alloc] initWithFloorRequests:v8 forAction:action];
     [(CLIndoorProvider *)self setCurrentForegroundFetchRequest:v12];
 
     [(CLIndoorProvider *)self requestForegroundTileDownload];
@@ -1884,10 +1884,10 @@ LABEL_14:
   [WeakRetained allDownloadItemsCompleted];
 }
 
-- (void)foregroundRequestCompleted:(id)a3
+- (void)foregroundRequestCompleted:(id)completed
 {
-  v4 = a3;
-  if (!v4)
+  completedCopy = completed;
+  if (!completedCopy)
   {
     sub_1000474A4(buf, "");
     sub_100383A74(__p, buf);
@@ -1902,18 +1902,18 @@ LABEL_14:
   v5 = qword_10045B078;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 requestUUID];
-    v7 = [v6 UUIDString];
-    v8 = v7;
+    requestUUID = [completedCopy requestUUID];
+    uUIDString = [requestUUID UUIDString];
+    v8 = uUIDString;
     *buf = 136315138;
-    v17 = [v7 UTF8String];
+    uTF8String = [uUIDString UTF8String];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "download request finished for UUID: %s", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
-  v10 = [WeakRetained _queue];
+  _queue = [WeakRetained _queue];
 
-  if (v10)
+  if (_queue)
   {
     objc_initWeak(buf, self);
     block[0] = _NSConcreteStackBlock;
@@ -1921,8 +1921,8 @@ LABEL_14:
     block[2] = sub_10035B598;
     block[3] = &unk_10044B1D0;
     objc_copyWeak(&v14, buf);
-    v13 = v4;
-    dispatch_async(v10, block);
+    v13 = completedCopy;
+    dispatch_async(_queue, block);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
@@ -1944,10 +1944,10 @@ LABEL_14:
   }
 }
 
-- (void)foregroundRequestCompleted:(id)a3 withError:(id)a4
+- (void)foregroundRequestCompleted:(id)completed withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  errorCopy = error;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -1956,10 +1956,10 @@ LABEL_14:
   v8 = qword_10045B078;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 requestUUID];
-    v10 = [v9 UUIDString];
-    v11 = [v10 UTF8String];
-    v12 = [v7 description];
+    requestUUID = [completedCopy requestUUID];
+    uUIDString = [requestUUID UUIDString];
+    uTF8String = [uUIDString UTF8String];
+    v12 = [errorCopy description];
     v13 = v12;
     if (v12)
     {
@@ -1984,7 +1984,7 @@ LABEL_14:
     }
 
     *buf = 136315394;
-    v25 = v11;
+    v25 = uTF8String;
     v26 = 2080;
     v27 = v14;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "download request finished for UUID: %s with an error %s", buf, 0x16u);
@@ -1995,9 +1995,9 @@ LABEL_14:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
-  v16 = [WeakRetained _queue];
+  _queue = [WeakRetained _queue];
 
-  if (v16)
+  if (_queue)
   {
     objc_initWeak(__p, self);
     v18[0] = _NSConcreteStackBlock;
@@ -2006,9 +2006,9 @@ LABEL_14:
     v18[3] = &unk_10044B258;
     objc_copyWeak(&v21, __p);
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
-    dispatch_async(v16, v18);
+    v19 = completedCopy;
+    v20 = errorCopy;
+    dispatch_async(_queue, v18);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(__p);
@@ -2059,23 +2059,23 @@ LABEL_14:
   v4 = qword_10045B078;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
-    v6 = [v5 floorRequests];
+    currentForegroundFetchRequest = [(CLIndoorProvider *)self currentForegroundFetchRequest];
+    floorRequests = [currentForegroundFetchRequest floorRequests];
     LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
-    *(buf.__r_.__value_.__r.__words + 4) = [v6 count];
+    *(buf.__r_.__value_.__r.__words + 4) = [floorRequests count];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Starting foreground downloads for %lu floors", &buf, 0xCu);
   }
 
-  v7 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
-  v8 = [v7 floorRequests];
-  v9 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
-  v10 = [v9 uuid];
-  [WeakRetained requestForegroundFetchForFloors:v8 withRequestUUID:v10];
+  currentForegroundFetchRequest2 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
+  floorRequests2 = [currentForegroundFetchRequest2 floorRequests];
+  currentForegroundFetchRequest3 = [(CLIndoorProvider *)self currentForegroundFetchRequest];
+  uuid = [currentForegroundFetchRequest3 uuid];
+  [WeakRetained requestForegroundFetchForFloors:floorRequests2 withRequestUUID:uuid];
 }
 
-- (BOOL)onQueueProcessCompletedFetch:(id)a3
+- (BOOL)onQueueProcessCompletedFetch:(id)fetch
 {
-  v39 = a3;
+  fetchCopy = fetch;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -2091,12 +2091,12 @@ LABEL_14:
   v49 = 0;
   v50 = 0;
   v51 = 0;
-  sub_10035C4EC(&v49, [v39 count]);
+  sub_10035C4EC(&v49, [fetchCopy count]);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v39;
+  obj = fetchCopy;
   v4 = [obj countByEnumeratingWithState:&v45 objects:v62 count:16];
   if (v4)
   {
@@ -2111,10 +2111,10 @@ LABEL_14:
         }
 
         v7 = *(*(&v45 + 1) + 8 * i);
-        v8 = [v7 floorUuid];
-        v9 = v8;
-        v10 = [v8 UTF8String];
-        v11 = strlen(v10);
+        floorUuid = [v7 floorUuid];
+        v9 = floorUuid;
+        uTF8String = [floorUuid UTF8String];
+        v11 = strlen(uTF8String);
         if (v11 > 0x7FFFFFFFFFFFFFF7)
         {
           sub_10000D39C();
@@ -2129,14 +2129,14 @@ LABEL_14:
         v44 = v11;
         if (v11)
         {
-          memmove(&__dst, v10, v11);
+          memmove(&__dst, uTF8String, v11);
         }
 
         *(&__dst + v12) = 0;
-        v13 = [v7 venueUuid];
-        v14 = v13;
-        v15 = [v13 UTF8String];
-        v16 = strlen(v15);
+        venueUuid = [v7 venueUuid];
+        v14 = venueUuid;
+        uTF8String2 = [venueUuid UTF8String];
+        v16 = strlen(uTF8String2);
         if (v16 > 0x7FFFFFFFFFFFFFF7)
         {
           sub_10000D39C();
@@ -2151,7 +2151,7 @@ LABEL_14:
         v42 = v16;
         if (v16)
         {
-          memmove(&__p, v15, v16);
+          memmove(&__p, uTF8String2, v16);
         }
 
         __p.n128_u8[v17] = 0;
@@ -2348,11 +2348,11 @@ LABEL_69:
   return 1;
 }
 
-- (void)playbackDatarun:(id)a3
+- (void)playbackDatarun:(id)datarun
 {
-  v4 = a3;
-  v5 = [(CLIndoorProvider *)self xpcConnection];
-  if (v5)
+  datarunCopy = datarun;
+  xpcConnection = [(CLIndoorProvider *)self xpcConnection];
+  if (xpcConnection)
   {
     ptr = self->_fsDb.__ptr_;
     if (!ptr)
@@ -2375,9 +2375,9 @@ LABEL_69:
 
     v7 = (*(*ptr + 240))(ptr);
     sub_100353C18(v14, v7, 0);
-    if (v4)
+    if (datarunCopy)
     {
-      [v4 ps_STLString];
+      [datarunCopy ps_STLString];
     }
 
     else
@@ -2440,11 +2440,11 @@ LABEL_12:
       v23[0] = NSLocalizedDescriptionKey;
       v23[1] = @"datarunid";
       v24[0] = @"datarun not found";
-      v24[1] = v4;
+      v24[1] = datarunCopy;
       v9 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
       v10 = [NSError errorWithDomain:@"com.apple.pipelined" code:-1 userInfo:v9];
 
-      [(CLIndoorProvider *)self notify:v5 failedWithReason:v10];
+      [(CLIndoorProvider *)self notify:xpcConnection failedWithReason:v10];
       if (v19 < 0)
       {
         operator delete(v18);
@@ -2492,9 +2492,9 @@ LABEL_15:
 LABEL_21:
 }
 
-- (void)setLocationGroups:(id)a3
+- (void)setLocationGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   if (!self->_fsDb.__ptr_)
   {
     sub_1000474A4(__p, "");
@@ -2558,8 +2558,8 @@ LABEL_21:
   v6 = qword_10045B078;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    allObjects = [groupsCopy allObjects];
+    v8 = [allObjects componentsJoinedByString:{@", "}];
     v9 = v8;
     *buf = 136380675;
     *&buf[4] = [v8 UTF8String];
@@ -2568,12 +2568,12 @@ LABEL_21:
 
   sub_100364B68(__p, "setLocationGroups:");
   context = objc_autoreleasePoolPush();
-  v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [groupsCopy count]);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v4;
+  v11 = groupsCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v12)
   {
@@ -2606,23 +2606,23 @@ LABEL_21:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = [v10 count];
-    v18 = [v10 allObjects];
-    v19 = [v18 componentsJoinedByString:{@", "}];
+    allObjects2 = [v10 allObjects];
+    v19 = [allObjects2 componentsJoinedByString:{@", "}];
     v20 = v19;
-    v21 = [v19 UTF8String];
+    uTF8String = [v19 UTF8String];
     *buf = 134349315;
     *&buf[4] = v17;
     *&buf[12] = 2081;
-    *&buf[14] = v21;
+    *&buf[14] = uTF8String;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Universe size: %{public}lu with locationGroupIds: %{private}s", buf, 0x16u);
   }
 
-  v22 = [(CLIndoorUniverse *)self->_indoorUniverse getAvailabilityData];
-  *buf = *v22;
-  *&buf[8] = v22[1];
-  v23 = *(v22 + 48);
-  v24 = *(v22 + 2);
-  *&buf[16] = *(v22 + 1);
+  getAvailabilityData = [(CLIndoorUniverse *)self->_indoorUniverse getAvailabilityData];
+  *buf = *getAvailabilityData;
+  *&buf[8] = getAvailabilityData[1];
+  v23 = *(getAvailabilityData + 48);
+  v24 = *(getAvailabilityData + 2);
+  *&buf[16] = *(getAvailabilityData + 1);
   v35 = v24;
   v36 = v23;
   v25 = [NSSet setWithSet:v10];
@@ -2645,7 +2645,7 @@ LABEL_21:
   return 0;
 }
 
-- (void)onQueueLocalizeOnSelection:(const void *)a3 withParameterOverrides:(optional<proto::params::LocalizerParameters>)a4
+- (void)onQueueLocalizeOnSelection:(const void *)selection withParameterOverrides:(optional<proto::params::LocalizerParameters>)overrides
 {
   [(CLIndoorProvider *)self selectedLocation];
   if (buf[0] != 1)
@@ -2654,7 +2654,7 @@ LABEL_21:
   }
 
   [(CLIndoorProvider *)self selectedLocation];
-  v6 = sub_1001F0D2C(a3, v16);
+  v6 = sub_1001F0D2C(selection, v16);
   if (v15 == 1)
   {
     sub_10035B188(v16);
@@ -2681,24 +2681,24 @@ LABEL_6:
     }
 
     v11[0] = 0;
-    v8 = *(a3 + 1);
-    v12[0] = *a3;
+    v8 = *(selection + 1);
+    v12[0] = *selection;
     v12[1] = v8;
     if (v8)
     {
       atomic_fetch_add_explicit((v8 + 8), 1uLL, memory_order_relaxed);
     }
 
-    sub_10035B044(v13, a3 + 16);
-    v9 = *(a3 + 8);
-    v13[5] = *(a3 + 7);
+    sub_10035B044(v13, selection + 16);
+    v9 = *(selection + 8);
+    v13[5] = *(selection + 7);
     v13[6] = v9;
     if (v9)
     {
       atomic_fetch_add_explicit((v9 + 8), 1uLL, memory_order_relaxed);
     }
 
-    v14 = *(a3 + 72);
+    v14 = *(selection + 72);
     v11[0] = 1;
     [(CLIndoorProvider *)self setSelectedLocation:v11];
     if (v11[0] == 1)
@@ -2731,9 +2731,9 @@ LABEL_18:
   }
 }
 
-- (void)startUpdatingLocationDeferred:(id)a3
+- (void)startUpdatingLocationDeferred:(id)deferred
 {
-  v4 = a3;
+  deferredCopy = deferred;
   if (self->_deferredState.m_initialized)
   {
     sub_1000474A4(v27, "");
@@ -2752,7 +2752,7 @@ LABEL_18:
     sub_10003F5D0(v18);
   }
 
-  if ([v4 isStaleFix:std::chrono::steady_clock::now().__d_.__rep_])
+  if ([deferredCopy isStaleFix:std::chrono::steady_clock::now().__d_.__rep_])
   {
     if (qword_10045B070 != -1)
     {
@@ -2762,13 +2762,13 @@ LABEL_18:
     v5 = qword_10045B078;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      if (v4)
+      if (deferredCopy)
       {
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v6 = *(v38 + 12);
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v7 = *(&v31 + 1);
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v8 = *(&v19 + 4);
       }
 
@@ -2813,19 +2813,19 @@ LABEL_18:
     }
 
     sub_100364B68(__p, "deferred startUpdatingLocationAtLocation - location");
-    v13 = [(CLIndoorProvider *)self mutableDeferredState];
-    v14 = v13;
+    mutableDeferredState = [(CLIndoorProvider *)self mutableDeferredState];
+    v14 = mutableDeferredState;
     v15 = *__p;
-    if (*(v13 + 8) == 1)
+    if (*(mutableDeferredState + 8) == 1)
     {
       *__p = 0;
-      v16 = v13[2];
-      v13[2] = v15;
+      v16 = mutableDeferredState[2];
+      mutableDeferredState[2] = v15;
     }
 
     else
     {
-      v13[2] = *__p;
+      mutableDeferredState[2] = *__p;
       *(v14 + 3) = *&__p[8];
       v17 = *__p;
       v14[5] = *&__p[24];
@@ -2847,13 +2847,13 @@ LABEL_18:
     v9 = qword_10045B078;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      if (v4)
+      if (deferredCopy)
       {
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v10 = *&__p[4];
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v11 = *(&v27[1] + 4);
-        [v4 gpsLocation];
+        [deferredCopy gpsLocation];
         v12 = *(&v19 + 4);
       }
 
@@ -2897,13 +2897,13 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[CLIndoorProvider] startUpdatingLocationDeferred. Starting at latlon: %{sensitive}.8lf,%{sensitive}.8lf, %{public}.2lf", buf, 0x20u);
     }
 
-    [(CLIndoorProvider *)self startUpdatingLocationAtLocation:v4];
+    [(CLIndoorProvider *)self startUpdatingLocationAtLocation:deferredCopy];
   }
 }
 
-- (void)startUpdatingLocationAtLocation:(id)a3
+- (void)startUpdatingLocationAtLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   if (self->_indoorUniverse)
   {
     sub_1000474A4(__p, "");
@@ -2922,7 +2922,7 @@ LABEL_18:
     sub_10003F5D0(v49);
   }
 
-  if (!v5)
+  if (!locationCopy)
   {
     sub_1000474A4(__p, "");
     sub_1001FE188("startUpdatingLocationAtLocation needs a valid location", buf);
@@ -2941,7 +2941,7 @@ LABEL_18:
   }
 
   p_lastOutdoorPositionAvailable = &self->_lastOutdoorPositionAvailable;
-  objc_storeStrong(&self->_lastOutdoorPositionAvailable, a3);
+  objc_storeStrong(&self->_lastOutdoorPositionAvailable, location);
   if (self->_fsDb.__ptr_)
   {
     if (qword_10045B070 != -1)
@@ -2958,8 +2958,8 @@ LABEL_18:
 
     sub_100364B68(__p, "startUpdatingLocationAtLocation:");
     context = objc_autoreleasePoolPush();
-    v8 = [(CLIndoorProvider *)self initializeServiceApi];
-    if (v8)
+    initializeServiceApi = [(CLIndoorProvider *)self initializeServiceApi];
+    if (initializeServiceApi)
     {
       v9 = 0;
       v10 = 6;
@@ -3011,7 +3011,7 @@ LABEL_18:
 
       if (!self->_indoorUniverse)
       {
-        [(CLIndoorProvider *)self initializeIndoorUniverse:v12 atLocation:v5];
+        [(CLIndoorProvider *)self initializeIndoorUniverse:v12 atLocation:locationCopy];
       }
 
       v49[0] = +[NSMutableSet set];
@@ -3048,16 +3048,16 @@ LABEL_18:
         v15 = qword_10045B078;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = [(CLIndoorProvider *)self localizationActive];
-          v43 = [(CLIndoorProvider *)self localizationStarted];
+          localizationActive = [(CLIndoorProvider *)self localizationActive];
+          localizationStarted = [(CLIndoorProvider *)self localizationStarted];
           v42 = self->_serviceLocalizer.__ptr_ != 0;
           v16 = [v49[0] count];
-          v17 = [v49[0] allObjects];
-          v18 = [v17 componentsJoinedByString:{@", "}];
+          allObjects = [v49[0] allObjects];
+          v18 = [allObjects componentsJoinedByString:{@", "}];
           LODWORD(buf[0].__r_.__value_.__l.__data_) = 67110403;
-          HIDWORD(buf[0].__r_.__value_.__r.__words[0]) = v44;
+          HIDWORD(buf[0].__r_.__value_.__r.__words[0]) = localizationActive;
           LOWORD(buf[0].__r_.__value_.__r.__words[1]) = 1024;
-          *(&buf[0].__r_.__value_.__r.__words[1] + 2) = v43;
+          *(&buf[0].__r_.__value_.__r.__words[1] + 2) = localizationStarted;
           HIWORD(buf[0].__r_.__value_.__r.__words[1]) = 1024;
           LODWORD(buf[0].__r_.__value_.__r.__words[2]) = v42;
           WORD2(buf[0].__r_.__value_.__r.__words[2]) = 1024;
@@ -3069,12 +3069,12 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[CLIndoorProvider] Start state %d,%d,%d, didUpdate, %d, Universe size: %{public}lu with locationGroupIds: %{private}@", buf, 0x2Eu);
         }
 
-        v19 = [(CLIndoorUniverse *)self->_indoorUniverse getAvailabilityData];
-        buf[0].__r_.__value_.__r.__words[0] = *v19;
-        buf[0].__r_.__value_.__l.__size_ = v19[1];
-        v20 = *(v19 + 48);
-        v21 = *(v19 + 2);
-        *&buf[0].__r_.__value_.__r.__words[2] = *(v19 + 1);
+        getAvailabilityData = [(CLIndoorUniverse *)self->_indoorUniverse getAvailabilityData];
+        buf[0].__r_.__value_.__r.__words[0] = *getAvailabilityData;
+        buf[0].__r_.__value_.__l.__size_ = getAvailabilityData[1];
+        v20 = *(getAvailabilityData + 48);
+        v21 = *(getAvailabilityData + 2);
+        *&buf[0].__r_.__value_.__r.__words[2] = *(getAvailabilityData + 1);
         *&buf[1].__r_.__value_.__r.__words[1] = v21;
         LOBYTE(v51) = v20;
         v22 = [NSSet setWithSet:v49[0]];
@@ -3112,19 +3112,19 @@ LABEL_18:
       self->_indoorUniverse = 0;
 
       sub_100364B68(buf, "deferred startUpdatingLocationAtLocation - universe");
-      v26 = [(CLIndoorProvider *)self mutableDeferredState];
-      v33 = v26;
+      mutableDeferredState = [(CLIndoorProvider *)self mutableDeferredState];
+      v33 = mutableDeferredState;
       v34 = buf[0].__r_.__value_.__r.__words[0];
-      if (*(v26 + 8) == 1)
+      if (*(mutableDeferredState + 8) == 1)
       {
         buf[0].__r_.__value_.__r.__words[0] = 0;
-        v35 = v26[2];
-        v26[2] = v34;
+        v35 = mutableDeferredState[2];
+        mutableDeferredState[2] = v34;
       }
 
       else
       {
-        v26[2] = buf[0].__r_.__value_.__l.__data_;
+        mutableDeferredState[2] = buf[0].__r_.__value_.__l.__data_;
         *(v33 + 3) = *&buf[0].__r_.__value_.__r.__words[1];
         v33[5] = buf[1].__r_.__value_.__l.__data_;
         v39 = buf[0].__r_.__value_.__r.__words[0];
@@ -3202,19 +3202,19 @@ LABEL_60:
   }
 
   sub_100364B68(buf, "deferred startUpdatingLocationAtLocation - locked");
-  v29 = [(CLIndoorProvider *)self mutableDeferredState];
-  v30 = v29;
+  mutableDeferredState2 = [(CLIndoorProvider *)self mutableDeferredState];
+  v30 = mutableDeferredState2;
   v31 = buf[0].__r_.__value_.__r.__words[0];
-  if (*(v29 + 8) == 1)
+  if (*(mutableDeferredState2 + 8) == 1)
   {
     buf[0].__r_.__value_.__r.__words[0] = 0;
-    v32 = v29[2];
-    v29[2] = v31;
+    v32 = mutableDeferredState2[2];
+    mutableDeferredState2[2] = v31;
   }
 
   else
   {
-    v29[2] = buf[0].__r_.__value_.__l.__data_;
+    mutableDeferredState2[2] = buf[0].__r_.__value_.__l.__data_;
     *(v30 + 3) = *&buf[0].__r_.__value_.__r.__words[1];
     v30[5] = buf[1].__r_.__value_.__l.__data_;
     v37 = buf[0].__r_.__value_.__r.__words[0];
@@ -3335,7 +3335,7 @@ LABEL_70:
   }
 }
 
-- (void)onQueueInterruptDownloads:(int)a3
+- (void)onQueueInterruptDownloads:(int)downloads
 {
   v4 = objc_autoreleasePoolPush();
   [(CLIndoorProvider *)self setCurrentForegroundFetchRequest:0];
@@ -3367,12 +3367,12 @@ LABEL_70:
     v4 = qword_10045B078;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CLIndoorProvider *)self localizationActive];
-      v6 = [(CLIndoorProvider *)self localizationStarted];
+      localizationActive = [(CLIndoorProvider *)self localizationActive];
+      localizationStarted = [(CLIndoorProvider *)self localizationStarted];
       *buf = 67109376;
-      *&buf[4] = v5;
+      *&buf[4] = localizationActive;
       LOWORD(v21) = 1024;
-      *(&v21 + 2) = v6;
+      *(&v21 + 2) = localizationStarted;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "estimation stopped. active=%d, started = %d", buf, 0xEu);
     }
 
@@ -3449,10 +3449,10 @@ LABEL_70:
   }
 }
 
-- (void)initializeIndoorUniverse:(id)a3 atLocation:(id)a4
+- (void)initializeIndoorUniverse:(id)universe atLocation:(id)location
 {
-  v17 = a3;
-  v6 = a4;
+  universeCopy = universe;
+  locationCopy = location;
   if (self->_indoorUniverse)
   {
     sub_1000474A4(v21, "");
@@ -3478,14 +3478,14 @@ LABEL_70:
   sub_100005B18(__p);
   if (data == data >> 31 || (v9 = sub_1000DD41C(), sub_100003AE8(v9), v10 = __p[0].__r_.__value_.__l.__data_, sub_100005B18(__p), v10 == v10 >> 31))
   {
-    if (v6)
+    if (locationCopy)
     {
       v11 = [GeographicCoordinate alloc];
-      [v6 gpsLocation];
+      [locationCopy gpsLocation];
       v12 = *(__p[0].__r_.__value_.__r.__words + 4);
-      [v6 gpsLocation];
+      [locationCopy gpsLocation];
       v13 = *&v21[12];
-      [v6 gpsLocation];
+      [locationCopy gpsLocation];
       v14 = [(GeographicCoordinate *)v11 initWithLatitude:v12 longitude:v13 andAltitude:*(&v20[3] + 4)];
     }
 
@@ -3494,15 +3494,15 @@ LABEL_70:
       v14 = 0;
     }
 
-    v15 = [NSSet setWithArray:v19, v17];
-    [(CLAvailableVenuesStateMachine *)self->_avlVenuesStateMachine setDisabledVenues:v15];
+    universeCopy = [NSSet setWithArray:v19, universeCopy];
+    [(CLAvailableVenuesStateMachine *)self->_avlVenuesStateMachine setDisabledVenues:universeCopy];
 
     [(CLAvailableVenuesStateMachine *)self->_avlVenuesStateMachine clearLastFix];
     [(CLAvailableVenuesStateMachine *)self->_avlVenuesStateMachine getNearbyLocationGroupsForTile:v18 withUpdatedPos:v14];
     objc_claimAutoreleasedReturnValue();
-    v16 = [v18 getAvlTile];
+    getAvlTile = [v18 getAvlTile];
     v20[0] = off_10044B408;
-    sub_100170224(v16, __p);
+    sub_100170224(getAvlTile, __p);
     operator new();
   }
 
@@ -3528,7 +3528,7 @@ LABEL_6:
   sub_10003F5D0(v20);
 }
 
-- (void)updateUniverseIfAllowedAndNecessary:(id *)a3
+- (void)updateUniverseIfAllowedAndNecessary:(id *)necessary
 {
   if (self->_serviceLocalizer.__ptr_ && [(CLIndoorProvider *)self localizationStarted])
   {
@@ -3546,9 +3546,9 @@ LABEL_6:
     v9[1] = 3321888768;
     v9[2] = sub_100361C38;
     v9[3] = &unk_10044B2A8;
-    v7 = self;
-    v10 = v7;
-    [(CLIndoorUniverse *)indoorUniverse updateLocalizerUniverseIfAllowed:v5 fromLocation:a3 withUniverseUpdatedHandler:v9];
+    selfCopy = self;
+    v10 = selfCopy;
+    [(CLIndoorUniverse *)indoorUniverse updateLocalizerUniverseIfAllowed:v5 fromLocation:necessary withUniverseUpdatedHandler:v9];
   }
 
   else
@@ -3567,10 +3567,10 @@ LABEL_6:
   }
 }
 
-- (void)outdoorLocationAvailable:(id)a3
+- (void)outdoorLocationAvailable:(id)available
 {
-  v5 = a3;
-  objc_storeStrong(&self->_lastOutdoorPositionAvailable, a3);
+  availableCopy = available;
+  objc_storeStrong(&self->_lastOutdoorPositionAvailable, available);
   v41 = 0u;
   memset(v42, 0, 28);
   v39 = 0u;
@@ -3608,10 +3608,10 @@ LABEL_6:
     v9 = v35;
     v11 = __val[0];
     ptr = self->_serviceLocalizer.__ptr_;
-    v13 = [(CLIndoorProvider *)self localizationStarted];
+    localizationStarted = [(CLIndoorProvider *)self localizationStarted];
     *buf = 134546689;
     *&buf[4] = v10;
-    if (v13)
+    if (localizationStarted)
     {
       v14 = 1;
     }
@@ -3677,22 +3677,22 @@ LABEL_6:
     if ((buf[23] & 0x80000000) != 0)
     {
       operator delete(*buf);
-      if (v5)
+      if (availableCopy)
       {
         goto LABEL_14;
       }
     }
 
-    else if (v5)
+    else if (availableCopy)
     {
 LABEL_14:
-      [v5 gpsLocationPrivate];
+      [availableCopy gpsLocationPrivate];
       v17 = *&buf[40];
 LABEL_17:
       sub_10013D0FC(v25, v17);
-      if (v5)
+      if (availableCopy)
       {
-        [v5 gpsLocationPrivate];
+        [availableCopy gpsLocationPrivate];
         v18 = *&buf[44];
       }
 
@@ -3703,9 +3703,9 @@ LABEL_17:
       }
 
       sub_10013D110(v25, v18);
-      if (v5)
+      if (availableCopy)
       {
-        [v5 gpsLocationPrivate];
+        [availableCopy gpsLocationPrivate];
         v19 = *&v44;
       }
 
@@ -3742,8 +3742,8 @@ LABEL_17:
 
       if (self->_deferredState.m_initialized)
       {
-        v22 = [(CLIndoorProvider *)self xpcConnection];
-        if (v22)
+        xpcConnection = [(CLIndoorProvider *)self xpcConnection];
+        if (xpcConnection)
         {
           *buf = *(&self->_deferredState.m_storage.dummy_.aligner_ + 7);
           buf[8] = 0;
@@ -3805,13 +3805,13 @@ LABEL_53:
   nullsub_76(&v33);
 }
 
-- (void)gpsEstimateAvailable:(id)a3
+- (void)gpsEstimateAvailable:(id)available
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ([v5 gpsLocation], v56 != 1) && (objc_msgSend(v6, "gpsLocation"), v25 != 9))
+  availableCopy = available;
+  v6 = availableCopy;
+  if (!availableCopy || ([availableCopy gpsLocation], v56 != 1) && (objc_msgSend(v6, "gpsLocation"), v25 != 9))
   {
-    objc_storeStrong(&self->_lastNonGpsPositionAvailable, a3);
+    objc_storeStrong(&self->_lastNonGpsPositionAvailable, available);
     v9 = 0;
     self->_lastNonGpsReceivedTime.__rep_ = sub_10010C670();
     if (!self->_serviceLocalizer.__ptr_)
@@ -3953,7 +3953,7 @@ LABEL_29:
     operator new();
   }
 
-  objc_storeStrong(&self->_lastGpsPositionAvailable, a3);
+  objc_storeStrong(&self->_lastGpsPositionAvailable, available);
   self->_lastGpsReceivedTime.__rep_ = sub_10010C670();
   if (qword_10045B070 != -1)
   {
@@ -3989,9 +3989,9 @@ LABEL_14:
   }
 }
 
-- (void)gpsSignalQualityAvailable:(id)a3
+- (void)gpsSignalQualityAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (self->_serviceLocalizer.__ptr_)
   {
     goto LABEL_2;
@@ -4022,21 +4022,21 @@ LABEL_5:
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Ignoring GPS signal quality - not localizing yet", v6, 2u);
 }
 
-- (void)clVisionNotificationAvailable:(id)a3
+- (void)clVisionNotificationAvailable:(id)available
 {
-  v4 = a3;
-  v5 = v4;
+  availableCopy = available;
+  v5 = availableCopy;
   if (self->_serviceLocalizer.__ptr_)
   {
-    v6 = [v4 notificationType];
-    if (v6)
+    notificationType = [availableCopy notificationType];
+    if (notificationType)
     {
-      if (v6 == 1)
+      if (notificationType == 1)
       {
         [(CLIndoorProvider *)self clVisionNotificationVIOEstimationAvailable:v5];
       }
 
-      else if (v6 == 2)
+      else if (notificationType == 2)
       {
         [(CLIndoorProvider *)self clVisionNotificationVLLocalizationResultAvailable:v5];
       }
@@ -4075,9 +4075,9 @@ LABEL_9:
   _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Ignoring CLVision notification - not localizing yet", v8, 2u);
 }
 
-- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)a3
+- (void)clpOutdoorEstimatorLogEntryNotificationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (self->_serviceLocalizer.__ptr_)
   {
     if (qword_10045B070 == -1)
@@ -4104,9 +4104,9 @@ LABEL_9:
 LABEL_6:
     sub_10031A37C(v13);
     sub_10006D430(v12);
-    if (v4)
+    if (availableCopy)
     {
-      [v4 serializedOutdoorEstimatorLogEntry];
+      [availableCopy serializedOutdoorEstimatorLogEntry];
     }
 
     else
@@ -4151,9 +4151,9 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)clVisionNotificationARSessionStateAvailable:(id)a3
+- (void)clVisionNotificationARSessionStateAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (qword_10045B070 != -1)
   {
     sub_100387BC0();
@@ -4163,19 +4163,19 @@ LABEL_16:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     buf = 134349056;
-    buf_4 = [v4 arSessionState];
+    buf_4 = [availableCopy arSessionState];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Receiving CLVision notification - ARSessionState %{public}lu", &buf, 0xCu);
   }
 
-  v6 = [v4 arSessionState];
-  if (v6)
+  arSessionState = [availableCopy arSessionState];
+  if (arSessionState)
   {
-    if (v6 == 1)
+    if (arSessionState == 1)
     {
       v7 = 1;
     }
 
-    else if (v6 == 2)
+    else if (arSessionState == 2)
     {
       v7 = 2;
     }
@@ -4190,9 +4190,9 @@ LABEL_16:
       v8 = qword_10045B078;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v9 = [v4 arSessionState];
+        arSessionState2 = [availableCopy arSessionState];
         buf = 134349056;
-        buf_4 = v9;
+        buf_4 = arSessionState2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Invalid arSessionState %{public}lu", &buf, 0xCu);
       }
 
@@ -4213,9 +4213,9 @@ LABEL_16:
   operator new();
 }
 
-- (void)clVisionNotificationVIOEstimationAvailable:(id)a3
+- (void)clVisionNotificationVIOEstimationAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (qword_10045B070 == -1)
   {
     v5 = qword_10045B078;
@@ -4234,9 +4234,9 @@ LABEL_16:
 LABEL_4:
       sub_10031A37C(v10);
       sub_10005810C(v9);
-      if (v4)
+      if (availableCopy)
       {
-        [v4 serializedVIOEstimation];
+        [availableCopy serializedVIOEstimation];
       }
 
       else
@@ -4263,9 +4263,9 @@ LABEL_4:
   goto LABEL_4;
 }
 
-- (void)clVisionNotificationVLLocalizationResultAvailable:(id)a3
+- (void)clVisionNotificationVLLocalizationResultAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (qword_10045B070 == -1)
   {
     v5 = qword_10045B078;
@@ -4284,9 +4284,9 @@ LABEL_4:
 LABEL_4:
       sub_10031A37C(v10);
       sub_100058258(v9);
-      if (v4)
+      if (availableCopy)
       {
-        [v4 serializedVLLocalizationResult];
+        [availableCopy serializedVLLocalizationResult];
       }
 
       else
@@ -4341,7 +4341,7 @@ LABEL_4:
   *v2 = 0;
   if (self->_selectedLocation.m_initialized)
   {
-    v4 = self;
+    selfCopy = self;
     isa = self[1].super.isa;
     *(v3 + 1) = *(&self->_selectedLocation.m_storage.dummy_.aligner_ + 7);
     *(v3 + 2) = isa;
@@ -4351,15 +4351,15 @@ LABEL_4:
     }
 
     self = sub_10035B044((v3 + 24), &self[1]._deferredState);
-    v6 = *&v4[1]._anon_11[39];
-    *(v3 + 8) = *&v4[1]._anon_11[31];
+    v6 = *&selfCopy[1]._anon_11[39];
+    *(v3 + 8) = *&selfCopy[1]._anon_11[31];
     *(v3 + 9) = v6;
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
     }
 
-    v3[80] = v4[1]._floorEnvironmentLoader.__ptr_;
+    v3[80] = selfCopy[1]._floorEnvironmentLoader.__ptr_;
     *v3 = 1;
   }
 
@@ -4371,16 +4371,16 @@ LABEL_4:
   return result;
 }
 
-- (void)setSelectedLocation:(optional<SelectedLocations>)a3
+- (void)setSelectedLocation:(optional<SelectedLocations>)location
 {
-  v4 = **&a3.m_initialized;
+  v4 = **&location.m_initialized;
   if (self->_selectedLocation.m_initialized)
   {
-    if (**&a3.m_initialized)
+    if (**&location.m_initialized)
     {
       p_selectedLocation = &self->_selectedLocation;
 
-      sub_100244ACC(p_selectedLocation, (*&a3.m_initialized + 8));
+      sub_100244ACC(p_selectedLocation, (*&location.m_initialized + 8));
     }
 
     else
@@ -4390,18 +4390,18 @@ LABEL_4:
     }
   }
 
-  else if (**&a3.m_initialized)
+  else if (**&location.m_initialized)
   {
-    v6 = *(*&a3.m_initialized + 16);
-    *(&self->_selectedLocation.m_storage.dummy_.aligner_ + 7) = *(*&a3.m_initialized + 8);
+    v6 = *(*&location.m_initialized + 16);
+    *(&self->_selectedLocation.m_storage.dummy_.aligner_ + 7) = *(*&location.m_initialized + 8);
     self[1].super.isa = v6;
     if (v6)
     {
       atomic_fetch_add_explicit(v6 + 1, 1uLL, memory_order_relaxed);
     }
 
-    v7 = *&a3.m_initialized;
-    sub_10035B044(&self[1]._deferredState, *&a3.m_initialized + 24);
+    v7 = *&location.m_initialized;
+    sub_10035B044(&self[1]._deferredState, *&location.m_initialized + 24);
     v8 = *(v7 + 72);
     *&self[1]._anon_11[31] = *(v7 + 64);
     *&self[1]._anon_11[39] = v8;

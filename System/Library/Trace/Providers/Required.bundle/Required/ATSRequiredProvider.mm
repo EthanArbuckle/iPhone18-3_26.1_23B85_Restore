@@ -1,37 +1,37 @@
 @interface ATSRequiredProvider
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4;
-- (id)describeChunk:(ktrace_chunk *)a3;
-- (void)_appendSyscallMapToFile:(ktrace_file *)a3;
-- (void)didStopTracingToFile:(ktrace_file *)a3;
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error;
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error;
+- (id)describeChunk:(ktrace_chunk *)chunk;
+- (void)_appendSyscallMapToFile:(ktrace_file *)file;
+- (void)didStopTracingToFile:(ktrace_file *)file;
 - (void)emitVnodePathTracepointsIfEnabled;
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3;
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file;
 @end
 
 @implementation ATSRequiredProvider
 
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error
 {
-  objc_storeStrong(&self->_logger, a3);
-  v8 = a3;
-  v9 = [[ATSIORegCapture alloc] initWithLogger:v8];
+  objc_storeStrong(&self->_logger, logger);
+  loggerCopy = logger;
+  v9 = [[ATSIORegCapture alloc] initWithLogger:loggerCopy];
   ioRegCapture = self->_ioRegCapture;
   self->_ioRegCapture = v9;
 
-  v11 = [[ATSSignpostPlistCapture alloc] initWithLogger:v8];
+  v11 = [[ATSSignpostPlistCapture alloc] initWithLogger:loggerCopy];
   signpostPlistCapture = self->_signpostPlistCapture;
   self->_signpostPlistCapture = v11;
 
-  v13 = [[ATSSymbolsMapCapture alloc] initWithLogger:v8];
+  v13 = [[ATSSymbolsMapCapture alloc] initWithLogger:loggerCopy];
   symbolsMapCapture = self->_symbolsMapCapture;
   self->_symbolsMapCapture = v13;
 
   return 1;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error
 {
-  v5 = [[ATSGraphicsCapture alloc] initWithLogger:self->_logger config:a3];
+  v5 = [[ATSGraphicsCapture alloc] initWithLogger:self->_logger config:configuration];
   graphicsCapture = self->_graphicsCapture;
   self->_graphicsCapture = v5;
 
@@ -40,27 +40,27 @@
   return 1;
 }
 
-- (void)didStopTracingToFile:(ktrace_file *)a3
+- (void)didStopTracingToFile:(ktrace_file *)file
 {
   [(ATSGraphicsCapture *)self->_graphicsCapture disableGFXTracingIfNeeded];
-  [(ATSSymbolsMapCapture *)self->_symbolsMapCapture addChunksToFile:a3];
+  [(ATSSymbolsMapCapture *)self->_symbolsMapCapture addChunksToFile:file];
 
-  [(ATSRequiredProvider *)self _appendSyscallMapToFile:a3];
+  [(ATSRequiredProvider *)self _appendSyscallMapToFile:file];
 }
 
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file
 {
   [(ATSIORegCapture *)self->_ioRegCapture addChunksToFile:?];
-  [(ATSSignpostPlistCapture *)self->_signpostPlistCapture addChunksToFile:a3];
+  [(ATSSignpostPlistCapture *)self->_signpostPlistCapture addChunksToFile:file];
   if (self->_foundLostEvents)
   {
     [(KTProviderLogger *)self->_logger warnWithMessage:@"Trace has lost events. Trace may not contain full data needed to visualize in tools."];
   }
 
-  _ats_postprocessing_complete_write_processmaps(a3);
+  _ats_postprocessing_complete_write_processmaps(file);
 }
 
-- (id)describeChunk:(ktrace_chunk *)a3
+- (id)describeChunk:(ktrace_chunk *)chunk
 {
   v4 = ktrace_chunk_tag();
   if ((v4 - 20584) >= 3)
@@ -83,7 +83,7 @@
   return v5;
 }
 
-- (void)_appendSyscallMapToFile:(ktrace_file *)a3
+- (void)_appendSyscallMapToFile:(ktrace_file *)file
 {
   v4 = [NSData dataWithContentsOfFile:@"/usr/share/misc/syscalls.json"];
   v6 = v4;

@@ -1,19 +1,19 @@
 @interface USUIInterventionScreenBullet
-+ (id)bullet:(id)a3 imageName:(id)a4 emoji:(id)a5;
++ (id)bullet:(id)bullet imageName:(id)name emoji:(id)emoji;
 @end
 
 @implementation USUIInterventionScreenBullet
 
-+ (id)bullet:(id)a3 imageName:(id)a4 emoji:(id)a5
++ (id)bullet:(id)bullet imageName:(id)name emoji:(id)emoji
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  emojiCopy = emoji;
+  nameCopy = name;
+  bulletCopy = bullet;
   v10 = objc_opt_new();
-  [v10 setText:v9];
+  [v10 setText:bulletCopy];
 
-  [v10 setImageName:v8];
-  [v10 setEmoji:v7];
+  [v10 setImageName:nameCopy];
+  [v10 setEmoji:emojiCopy];
 
   return v10;
 }

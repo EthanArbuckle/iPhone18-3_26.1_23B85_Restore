@@ -1,17 +1,17 @@
 @interface CKAppGrabberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKAppGrabberViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKAppGrabberViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKAppGrabberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_pluginTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
-  [v3 validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_chevronView" withType:"_UIGrabber"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_pluginTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_chevronView" withType:"_UIGrabber"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,8 +24,8 @@
   v3 = [(CKAppGrabberViewAccessibility *)self safeValueForKey:@"_pluginTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v5];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   objc_initWeak(&location, self);
   v6 = [(CKAppGrabberViewAccessibility *)self safeUIViewForKey:@"_chevronView"];
   [v6 setIsAccessibilityElement:1];
@@ -58,11 +58,11 @@ id __75__CKAppGrabberViewAccessibility__accessibilityLoadAccessibilityInformatio
   return accessibilityLocalizedString(v3);
 }
 
-- (CKAppGrabberViewAccessibility)initWithFrame:(CGRect)a3
+- (CKAppGrabberViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CKAppGrabberViewAccessibility;
-  v3 = [(CKAppGrabberViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKAppGrabberViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CKAppGrabberViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

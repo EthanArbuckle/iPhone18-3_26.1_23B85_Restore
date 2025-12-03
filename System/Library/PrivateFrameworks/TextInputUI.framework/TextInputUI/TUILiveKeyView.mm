@@ -1,105 +1,105 @@
 @interface TUILiveKeyView
-- (BOOL)keyIsControlType:(id)a3;
-- (BOOL)keyIsSpaceType:(id)a3;
-- (BOOL)keyIsStringType:(id)a3;
-- (TUILiveKeyView)initWithKey:(id)a3 renderTraits:(id)a4 displayContents:(id)a5 inheritedFactory:(id)a6;
+- (BOOL)keyIsControlType:(id)type;
+- (BOOL)keyIsSpaceType:(id)type;
+- (BOOL)keyIsStringType:(id)type;
+- (TUILiveKeyView)initWithKey:(id)key renderTraits:(id)traits displayContents:(id)contents inheritedFactory:(id)factory;
 - (UIEdgeInsets)backgroundInsets;
 - (UIEdgeInsets)drawingInsets;
-- (UIEdgeInsets)edgeInsetInterpolationFromStart:(UIEdgeInsets)a3 end:(UIEdgeInsets)a4 atTime:(double)a5;
+- (UIEdgeInsets)edgeInsetInterpolationFromStart:(UIEdgeInsets)start end:(UIEdgeInsets)end atTime:(double)time;
 - (id)controlKeyColor;
 - (id)controlShadowColor;
 - (id)fontForLabel;
-- (id)fontForSymbolStyle:(id)a3;
+- (id)fontForSymbolStyle:(id)style;
 - (id)highlightedControlKeyColor;
 - (id)highlightedKeyCapColor;
-- (id)imageWithName:(id)a3;
+- (id)imageWithName:(id)name;
 - (id)keyCapColor;
-- (id)labelForKeyCap:(id)a3;
-- (id)nameFromControlType:(int)a3;
-- (id)roundedRectForRect:(CGRect)a3 radius:(double)a4;
+- (id)labelForKeyCap:(id)cap;
+- (id)nameFromControlType:(int)type;
+- (id)roundedRectForRect:(CGRect)rect radius:(double)radius;
 - (id)shadowColor;
-- (id)shadowPathForRect:(CGRect)a3;
-- (id)symbolImageConfigForRenderTraits:(id)a3 traitCollection:(id)a4;
+- (id)shadowPathForRect:(CGRect)rect;
+- (id)symbolImageConfigForRenderTraits:(id)traits traitCollection:(id)collection;
 - (void)createDualStringLabels;
 - (void)keyWithLabel;
 - (void)keyWithSymbolView;
 - (void)makeKeyBackgrounds;
-- (void)updateBackgroundWithInsets:(UIEdgeInsets)a3;
-- (void)updateFontSize:(double)a3;
-- (void)updateForTransitionProgress:(double)a3;
-- (void)updateKeyStyle:(int64_t)a3;
+- (void)updateBackgroundWithInsets:(UIEdgeInsets)insets;
+- (void)updateFontSize:(double)size;
+- (void)updateForTransitionProgress:(double)progress;
+- (void)updateKeyStyle:(int64_t)style;
 - (void)updateLabelInsets;
-- (void)updateLabelText:(id)a3 secondaryStrings:(id)a4;
-- (void)updateLabelWeight:(unint64_t)a3;
-- (void)updateRenderTraits:(id)a3 displayContents:(id)a4;
+- (void)updateLabelText:(id)text secondaryStrings:(id)strings;
+- (void)updateLabelWeight:(unint64_t)weight;
+- (void)updateRenderTraits:(id)traits displayContents:(id)contents;
 - (void)updateSymbolInsets;
 @end
 
 @implementation TUILiveKeyView
 
-- (id)nameFromControlType:(int)a3
+- (id)nameFromControlType:(int)type
 {
-  if (a3 <= 22)
+  if (type <= 22)
   {
     v3 = &stru_1F03BA8F8;
     v13 = @"return";
-    if (a3 != 21)
+    if (type != 21)
     {
       v13 = 0;
     }
 
-    if (a3 != 14)
+    if (type != 14)
     {
       v3 = v13;
     }
 
     v14 = @"emoji.face.grinning";
     v15 = @"globe";
-    if (a3 != 13)
+    if (type != 13)
     {
       v15 = 0;
     }
 
-    if (a3 != 9)
+    if (type != 9)
     {
       v14 = v15;
     }
 
-    if (a3 <= 13)
+    if (type <= 13)
     {
       v3 = v14;
     }
 
     v8 = @"mic";
     v16 = @"keyboard.chevron.compact.down";
-    if (a3 != 5)
+    if (type != 5)
     {
       v16 = 0;
     }
 
-    if (a3 != 4)
+    if (type != 4)
     {
       v8 = v16;
     }
 
     v17 = @"command";
     v18 = @"delete.left";
-    if (a3 != 3)
+    if (type != 3)
     {
       v18 = 0;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v17 = v18;
     }
 
-    if (a3 <= 3)
+    if (type <= 3)
     {
       v8 = v17;
     }
 
-    v12 = a3 <= 8;
+    v12 = type <= 8;
   }
 
   else
@@ -107,68 +107,68 @@
     v3 = @"mic";
     v4 = @"scribble";
     v5 = @"keyboard";
-    if (a3 != 54)
+    if (type != 54)
     {
       v5 = 0;
     }
 
-    if (a3 != 53)
+    if (type != 53)
     {
       v4 = v5;
     }
 
-    if (a3 != 52)
+    if (type != 52)
     {
       v3 = v4;
     }
 
     v6 = @"arrow.forward";
     v7 = @"capslock";
-    if (a3 != 51)
+    if (type != 51)
     {
       v7 = 0;
     }
 
-    if (a3 != 46)
+    if (type != 46)
     {
       v6 = v7;
     }
 
-    if (a3 <= 51)
+    if (type <= 51)
     {
       v3 = v6;
     }
 
     v8 = @"mic";
     v9 = @"arrow.backward";
-    if (a3 != 45)
+    if (type != 45)
     {
       v9 = 0;
     }
 
-    if (a3 != 31)
+    if (type != 31)
     {
       v8 = v9;
     }
 
     v10 = @"shift";
     v11 = @"arrow.right.to.line";
-    if (a3 != 26)
+    if (type != 26)
     {
       v11 = 0;
     }
 
-    if (a3 != 23)
+    if (type != 23)
     {
       v10 = v11;
     }
 
-    if (a3 <= 30)
+    if (type <= 30)
     {
       v8 = v10;
     }
 
-    v12 = a3 <= 45;
+    v12 = type <= 45;
   }
 
   if (v12)
@@ -182,26 +182,26 @@
   }
 }
 
-- (BOOL)keyIsControlType:(id)a3
+- (BOOL)keyIsControlType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 interactionType] == 4 || objc_msgSend(v3, "interactionType") == 5 || objc_msgSend(v3, "interactionType") == 6 || objc_msgSend(v3, "interactionType") == 9 || objc_msgSend(v3, "interactionType") == 10 || objc_msgSend(v3, "interactionType") == 11 || objc_msgSend(v3, "interactionType") == 13 || objc_msgSend(v3, "interactionType") == 14 || objc_msgSend(v3, "interactionType") == 37 || objc_msgSend(v3, "interactionType") == 38 || objc_msgSend(v3, "interactionType") == 17;
+  typeCopy = type;
+  v4 = [typeCopy interactionType] == 4 || objc_msgSend(typeCopy, "interactionType") == 5 || objc_msgSend(typeCopy, "interactionType") == 6 || objc_msgSend(typeCopy, "interactionType") == 9 || objc_msgSend(typeCopy, "interactionType") == 10 || objc_msgSend(typeCopy, "interactionType") == 11 || objc_msgSend(typeCopy, "interactionType") == 13 || objc_msgSend(typeCopy, "interactionType") == 14 || objc_msgSend(typeCopy, "interactionType") == 37 || objc_msgSend(typeCopy, "interactionType") == 38 || objc_msgSend(typeCopy, "interactionType") == 17;
 
   return v4;
 }
 
-- (BOOL)keyIsSpaceType:(id)a3
+- (BOOL)keyIsSpaceType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 interactionType] == 15 || objc_msgSend(v3, "displayType") == 25;
+  typeCopy = type;
+  v4 = [typeCopy interactionType] == 15 || objc_msgSend(typeCopy, "displayType") == 25;
 
   return v4;
 }
 
-- (BOOL)keyIsStringType:(id)a3
+- (BOOL)keyIsStringType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 interactionType] == 1 || objc_msgSend(v3, "interactionType") == 2 || objc_msgSend(v3, "interactionType") == 16;
+  typeCopy = type;
+  v4 = [typeCopy interactionType] == 1 || objc_msgSend(typeCopy, "interactionType") == 2 || objc_msgSend(typeCopy, "interactionType") == 16;
 
   return v4;
 }
@@ -378,82 +378,82 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)updateForTransitionProgress:(double)a3
+- (void)updateForTransitionProgress:(double)progress
 {
-  v5 = [(TUILiveKeyView *)self animationProperties];
-  [v5 startingPrimaryLabelInsets];
+  animationProperties = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties startingPrimaryLabelInsets];
   v7 = v6;
-  v8 = [(TUILiveKeyView *)self animationProperties];
-  [v8 endingPrimaryLabelInsets];
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v7 end:v9 atTime:a3];
+  animationProperties2 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties2 endingPrimaryLabelInsets];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v7 end:v9 atTime:progress];
   v11 = v10;
-  v12 = [(TUILiveKeyView *)self labelBottom];
-  [v12 setConstant:v11];
+  labelBottom = [(TUILiveKeyView *)self labelBottom];
+  [labelBottom setConstant:v11];
 
-  v13 = [(TUILiveKeyView *)self animationProperties];
-  [v13 startingCornerRadius];
+  animationProperties3 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties3 startingCornerRadius];
   v15 = v14;
-  v16 = [(TUILiveKeyView *)self animationProperties];
-  [v16 endingCornerRadius];
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v15 end:v17 atTime:a3];
+  animationProperties4 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties4 endingCornerRadius];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v15 end:v17 atTime:progress];
   v19 = v18;
-  v20 = [(TUILiveKeyView *)self keyCapBackground];
-  v21 = [v20 layer];
-  [v21 setCornerRadius:v19];
+  keyCapBackground = [(TUILiveKeyView *)self keyCapBackground];
+  layer = [keyCapBackground layer];
+  [layer setCornerRadius:v19];
 
-  v22 = [(TUILiveKeyView *)self animationProperties];
-  [v22 startingBackgroundInsets];
+  animationProperties5 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties5 startingBackgroundInsets];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(TUILiveKeyView *)self animationProperties];
-  [v31 endingBackgroundInsets];
-  [(TUILiveKeyView *)self edgeInsetInterpolationFromStart:v24 end:v26 atTime:v28, v30, v32, v33, v34, v35, *&a3];
+  animationProperties6 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties6 endingBackgroundInsets];
+  [(TUILiveKeyView *)self edgeInsetInterpolationFromStart:v24 end:v26 atTime:v28, v30, v32, v33, v34, v35, *&progress];
   [(TUILiveKeyView *)self updateBackgroundWithInsets:?];
 
-  v36 = [(TUILiveKeyView *)self animationProperties];
-  [v36 startingFontSize];
+  animationProperties7 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties7 startingFontSize];
   v38 = v37;
-  v39 = [(TUILiveKeyView *)self animationProperties];
-  [v39 endingFontSize];
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v38 end:v40 atTime:a3];
+  animationProperties8 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties8 endingFontSize];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v38 end:v40 atTime:progress];
   [(TUILiveKeyView *)self updateFontSize:?];
 
-  v41 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  secondaryKeyLabel = [(TUILiveKeyView *)self secondaryKeyLabel];
 
-  if (v41)
+  if (secondaryKeyLabel)
   {
-    v42 = [(TUILiveKeyView *)self secondaryKeyLabel];
-    v43 = [(TUILiveKeyView *)self secondaryKeyLabel];
-    v44 = [v43 font];
-    v45 = [(TUILiveKeyView *)self animationProperties];
-    [v45 startingSecondaryFontSize];
+    secondaryKeyLabel2 = [(TUILiveKeyView *)self secondaryKeyLabel];
+    secondaryKeyLabel3 = [(TUILiveKeyView *)self secondaryKeyLabel];
+    font = [secondaryKeyLabel3 font];
+    animationProperties9 = [(TUILiveKeyView *)self animationProperties];
+    [animationProperties9 startingSecondaryFontSize];
     v47 = v46;
-    v48 = [(TUILiveKeyView *)self animationProperties];
-    [v48 endingSecondaryFontSize];
-    [(TUILiveKeyView *)self linearInterpolationFromStart:v47 end:v49 atTime:a3];
-    v50 = [v44 fontWithSize:?];
-    [v42 setFont:v50];
+    animationProperties10 = [(TUILiveKeyView *)self animationProperties];
+    [animationProperties10 endingSecondaryFontSize];
+    [(TUILiveKeyView *)self linearInterpolationFromStart:v47 end:v49 atTime:progress];
+    v50 = [font fontWithSize:?];
+    [secondaryKeyLabel2 setFont:v50];
 
-    v54 = [(TUILiveKeyView *)self secondaryKeyLabel];
-    [(TUILiveKeyView *)self linearInterpolationFromStart:0.0 end:1.0 atTime:a3];
+    secondaryKeyLabel4 = [(TUILiveKeyView *)self secondaryKeyLabel];
+    [(TUILiveKeyView *)self linearInterpolationFromStart:0.0 end:1.0 atTime:progress];
     v52 = v51;
-    [(TUILiveKeyView *)self linearInterpolationFromStart:0.5 end:0.0 atTime:a3];
-    [v54 setAlpha:v52 - v53];
+    [(TUILiveKeyView *)self linearInterpolationFromStart:0.5 end:0.0 atTime:progress];
+    [secondaryKeyLabel4 setAlpha:v52 - v53];
   }
 }
 
-- (id)shadowPathForRect:(CGRect)a3
+- (id)shadowPathForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E69DC728] bezierPath];
-  v9 = [(TUILiveKeyView *)self traits];
-  v10 = [v9 geometry];
-  [v10 roundRectRadius];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  traits = [(TUILiveKeyView *)self traits];
+  geometry = [traits geometry];
+  [geometry roundRectRadius];
   v12 = v11;
 
   v18.origin.x = x;
@@ -461,8 +461,8 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
   v18.size.width = width;
   v18.size.height = height;
   v13 = CGRectGetMaxY(v18) - v12;
-  [v8 moveToPoint:{x, v13}];
-  [v8 addArcWithCenter:0 radius:? startAngle:? endAngle:? clockwise:?];
+  [bezierPath moveToPoint:{x, v13}];
+  [bezierPath addArcWithCenter:0 radius:? startAngle:? endAngle:? clockwise:?];
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
@@ -472,32 +472,32 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
-  [v8 addLineToPoint:{v14, CGRectGetMaxY(v20)}];
+  [bezierPath addLineToPoint:{v14, CGRectGetMaxY(v20)}];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  [v8 addArcWithCenter:0 radius:CGRectGetMaxX(v21) - v12 startAngle:v13 endAngle:v12 clockwise:{1.57079633, 0.0}];
+  [bezierPath addArcWithCenter:0 radius:CGRectGetMaxX(v21) - v12 startAngle:v13 endAngle:v12 clockwise:{1.57079633, 0.0}];
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
   v15 = v13 + 1.0;
-  [v8 addArcWithCenter:1 radius:CGRectGetMaxX(v22) - v12 startAngle:v15 endAngle:v12 clockwise:{0.0, 1.57079633}];
+  [bezierPath addArcWithCenter:1 radius:CGRectGetMaxX(v22) - v12 startAngle:v15 endAngle:v12 clockwise:{0.0, 1.57079633}];
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
-  [v8 addLineToPoint:{x + v12, CGRectGetMaxY(v23) + 1.0}];
-  [v8 addArcWithCenter:1 radius:x + v12 startAngle:v15 endAngle:v12 clockwise:{1.57079633, 3.14159265}];
-  [v8 closePath];
+  [bezierPath addLineToPoint:{x + v12, CGRectGetMaxY(v23) + 1.0}];
+  [bezierPath addArcWithCenter:1 radius:x + v12 startAngle:v15 endAngle:v12 clockwise:{1.57079633, 3.14159265}];
+  [bezierPath closePath];
 
-  return v8;
+  return bezierPath;
 }
 
-- (id)roundedRectForRect:(CGRect)a3 radius:(double)a4
+- (id)roundedRectForRect:(CGRect)rect radius:(double)radius
 {
-  v4 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:a3.origin.x cornerRadius:{a3.origin.y, a3.size.width, a3.size.height, a4}];
+  v4 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:rect.origin.x cornerRadius:{rect.origin.y, rect.size.width, rect.size.height, radius}];
   [v4 fillWithBlendMode:7 alpha:0.5];
 
   return v4;
@@ -514,9 +514,9 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(TUILiveKeyView *)self keyStyle];
+    keyStyle = [(TUILiveKeyView *)self keyStyle];
     v3 = 7.0;
-    if (v6 == 3)
+    if (keyStyle == 3)
     {
       v4 = 7.0;
     }
@@ -527,7 +527,7 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
     }
 
     v5 = 2.0;
-    if (v6 != 3)
+    if (keyStyle != 3)
     {
       v5 = 3.0;
     }
@@ -552,8 +552,8 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(TUILiveKeyView *)self keyStyle];
-    if (v6 == 3)
+    keyStyle = [(TUILiveKeyView *)self keyStyle];
+    if (keyStyle == 3)
     {
       v3 = 2.0;
     }
@@ -564,7 +564,7 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
     }
 
     v5 = 7.0;
-    if (v6 == 3)
+    if (keyStyle == 3)
     {
       v4 = 7.0;
     }
@@ -583,196 +583,196 @@ id __29__TUILiveKeyView_keyCapColor__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)updateLabelWeight:(unint64_t)a3
+- (void)updateLabelWeight:(unint64_t)weight
 {
   v87[2] = *MEMORY[0x1E69E9840];
-  v5 = [(TUILiveKeyView *)self keyCapBackground];
+  keyCapBackground = [(TUILiveKeyView *)self keyCapBackground];
 
-  if (v5)
+  if (keyCapBackground)
   {
     if ([(TUILiveKeyView *)self keyStyle]== 1 || [(TUILiveKeyView *)self keyStyle]== 4)
     {
-      a3 = -1;
+      weight = -1;
     }
 
-    v6 = [(TUILiveKeyView *)self horizontalContentConstraint];
-    v7 = [v6 isActive];
+    horizontalContentConstraint = [(TUILiveKeyView *)self horizontalContentConstraint];
+    isActive = [horizontalContentConstraint isActive];
 
-    if (v7)
+    if (isActive)
     {
       v8 = MEMORY[0x1E696ACD8];
-      v9 = [(TUILiveKeyView *)self horizontalContentConstraint];
-      v87[0] = v9;
-      v10 = [(TUILiveKeyView *)self verticalContentConstraint];
-      v87[1] = v10;
+      horizontalContentConstraint2 = [(TUILiveKeyView *)self horizontalContentConstraint];
+      v87[0] = horizontalContentConstraint2;
+      verticalContentConstraint = [(TUILiveKeyView *)self verticalContentConstraint];
+      v87[1] = verticalContentConstraint;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
       [v8 deactivateConstraints:v11];
     }
 
-    v12 = [(TUILiveKeyView *)self keyLabel];
-    v13 = v12;
-    switch(a3)
+    keyLabel = [(TUILiveKeyView *)self keyLabel];
+    v13 = keyLabel;
+    switch(weight)
     {
       case 8uLL:
-        [v12 setTextAlignment:2];
+        [keyLabel setTextAlignment:2];
 
-        v49 = [(TUILiveKeyView *)self symbolImageView];
-        if (!v49)
+        symbolImageView = [(TUILiveKeyView *)self symbolImageView];
+        if (!symbolImageView)
         {
           goto LABEL_23;
         }
 
-        v50 = v49;
-        v51 = [(TUILiveKeyView *)self symbolImageView];
-        v52 = [v51 superview];
+        v50 = symbolImageView;
+        symbolImageView2 = [(TUILiveKeyView *)self symbolImageView];
+        superview = [symbolImageView2 superview];
 
-        if (!v52)
+        if (!superview)
         {
           goto LABEL_23;
         }
 
-        v53 = [(TUILiveKeyView *)self keyCapBackground];
-        v54 = [v53 rightAnchor];
-        v55 = [(TUILiveKeyView *)self symbolImageView];
-        v56 = [v55 rightAnchor];
-        v57 = [(TUILiveKeyView *)self animationProperties];
-        [v57 startingPrimaryLabelInsets];
-        v59 = [v54 constraintEqualToAnchor:v56 constant:v58];
+        keyCapBackground2 = [(TUILiveKeyView *)self keyCapBackground];
+        rightAnchor = [keyCapBackground2 rightAnchor];
+        symbolImageView3 = [(TUILiveKeyView *)self symbolImageView];
+        rightAnchor2 = [symbolImageView3 rightAnchor];
+        animationProperties = [(TUILiveKeyView *)self animationProperties];
+        [animationProperties startingPrimaryLabelInsets];
+        v59 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v58];
         [(TUILiveKeyView *)self setHorizontalContentConstraint:v59];
 
-        v60 = [(TUILiveKeyView *)self keyCapBackground];
-        v61 = [v60 bottomAnchor];
-        v62 = [(TUILiveKeyView *)self symbolImageView];
-        v63 = [v62 bottomAnchor];
-        v64 = [(TUILiveKeyView *)self animationProperties];
-        [v64 startingPrimaryLabelInsets];
-        v66 = [v61 constraintEqualToAnchor:v63 constant:v65];
+        keyCapBackground3 = [(TUILiveKeyView *)self keyCapBackground];
+        bottomAnchor = [keyCapBackground3 bottomAnchor];
+        symbolImageView4 = [(TUILiveKeyView *)self symbolImageView];
+        bottomAnchor2 = [symbolImageView4 bottomAnchor];
+        animationProperties2 = [(TUILiveKeyView *)self animationProperties];
+        [animationProperties2 startingPrimaryLabelInsets];
+        v66 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v65];
         [(TUILiveKeyView *)self setVerticalContentConstraint:v66];
 
         v28 = MEMORY[0x1E696ACD8];
-        v29 = [(TUILiveKeyView *)self horizontalContentConstraint];
-        v84 = v29;
+        horizontalContentConstraint3 = [(TUILiveKeyView *)self horizontalContentConstraint];
+        v84 = horizontalContentConstraint3;
         v30 = &v84;
         break;
       case 4uLL:
-        [v12 setTextAlignment:0];
+        [keyLabel setTextAlignment:0];
 
-        v31 = [(TUILiveKeyView *)self symbolImageView];
-        if (!v31)
+        symbolImageView5 = [(TUILiveKeyView *)self symbolImageView];
+        if (!symbolImageView5)
         {
           goto LABEL_23;
         }
 
-        v32 = v31;
-        v33 = [(TUILiveKeyView *)self symbolImageView];
-        v34 = [v33 superview];
+        v32 = symbolImageView5;
+        symbolImageView6 = [(TUILiveKeyView *)self symbolImageView];
+        superview2 = [symbolImageView6 superview];
 
-        if (!v34)
+        if (!superview2)
         {
           goto LABEL_23;
         }
 
-        v35 = [(TUILiveKeyView *)self symbolImageView];
-        v36 = [v35 leftAnchor];
-        v37 = [(TUILiveKeyView *)self keyCapBackground];
-        v38 = [v37 leftAnchor];
-        v39 = [(TUILiveKeyView *)self animationProperties];
-        [v39 startingPrimaryLabelInsets];
-        v41 = [v36 constraintEqualToAnchor:v38 constant:v40];
+        symbolImageView7 = [(TUILiveKeyView *)self symbolImageView];
+        leftAnchor = [symbolImageView7 leftAnchor];
+        keyCapBackground4 = [(TUILiveKeyView *)self keyCapBackground];
+        leftAnchor2 = [keyCapBackground4 leftAnchor];
+        animationProperties3 = [(TUILiveKeyView *)self animationProperties];
+        [animationProperties3 startingPrimaryLabelInsets];
+        v41 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v40];
         [(TUILiveKeyView *)self setHorizontalContentConstraint:v41];
 
-        v42 = [(TUILiveKeyView *)self keyCapBackground];
-        v43 = [v42 bottomAnchor];
-        v44 = [(TUILiveKeyView *)self symbolImageView];
-        v45 = [v44 bottomAnchor];
-        v46 = [(TUILiveKeyView *)self animationProperties];
-        [v46 startingPrimaryLabelInsets];
-        v48 = [v43 constraintEqualToAnchor:v45 constant:v47];
+        keyCapBackground5 = [(TUILiveKeyView *)self keyCapBackground];
+        bottomAnchor3 = [keyCapBackground5 bottomAnchor];
+        symbolImageView8 = [(TUILiveKeyView *)self symbolImageView];
+        bottomAnchor4 = [symbolImageView8 bottomAnchor];
+        animationProperties4 = [(TUILiveKeyView *)self animationProperties];
+        [animationProperties4 startingPrimaryLabelInsets];
+        v48 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v47];
         [(TUILiveKeyView *)self setVerticalContentConstraint:v48];
 
         v28 = MEMORY[0x1E696ACD8];
-        v29 = [(TUILiveKeyView *)self horizontalContentConstraint];
-        v85 = v29;
+        horizontalContentConstraint3 = [(TUILiveKeyView *)self horizontalContentConstraint];
+        v85 = horizontalContentConstraint3;
         v30 = &v85;
         break;
       case 0xFFFFFFFFFFFFFFFFLL:
-        [v12 setTextAlignment:1];
+        [keyLabel setTextAlignment:1];
 
-        v14 = [(TUILiveKeyView *)self symbolImageView];
-        if (!v14)
+        symbolImageView9 = [(TUILiveKeyView *)self symbolImageView];
+        if (!symbolImageView9)
         {
           goto LABEL_23;
         }
 
-        v15 = v14;
-        v16 = [(TUILiveKeyView *)self symbolImageView];
-        v17 = [v16 superview];
+        v15 = symbolImageView9;
+        symbolImageView10 = [(TUILiveKeyView *)self symbolImageView];
+        superview3 = [symbolImageView10 superview];
 
-        if (!v17)
+        if (!superview3)
         {
           goto LABEL_23;
         }
 
-        v18 = [(TUILiveKeyView *)self symbolImageView];
-        v19 = [v18 centerXAnchor];
-        v20 = [(TUILiveKeyView *)self keyCapBackground];
-        v21 = [v20 centerXAnchor];
-        v22 = [v19 constraintEqualToAnchor:v21];
+        symbolImageView11 = [(TUILiveKeyView *)self symbolImageView];
+        centerXAnchor = [symbolImageView11 centerXAnchor];
+        keyCapBackground6 = [(TUILiveKeyView *)self keyCapBackground];
+        centerXAnchor2 = [keyCapBackground6 centerXAnchor];
+        v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [(TUILiveKeyView *)self setHorizontalContentConstraint:v22];
 
-        v23 = [(TUILiveKeyView *)self symbolImageView];
-        v24 = [v23 centerYAnchor];
-        v25 = [(TUILiveKeyView *)self keyCapBackground];
-        v26 = [v25 centerYAnchor];
-        v27 = [v24 constraintEqualToAnchor:v26];
+        symbolImageView12 = [(TUILiveKeyView *)self symbolImageView];
+        centerYAnchor = [symbolImageView12 centerYAnchor];
+        keyCapBackground7 = [(TUILiveKeyView *)self keyCapBackground];
+        centerYAnchor2 = [keyCapBackground7 centerYAnchor];
+        v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [(TUILiveKeyView *)self setVerticalContentConstraint:v27];
 
         v28 = MEMORY[0x1E696ACD8];
-        v29 = [(TUILiveKeyView *)self horizontalContentConstraint];
-        v86 = v29;
+        horizontalContentConstraint3 = [(TUILiveKeyView *)self horizontalContentConstraint];
+        v86 = horizontalContentConstraint3;
         v30 = &v86;
         break;
       default:
-        [v12 setTextAlignment:1];
+        [keyLabel setTextAlignment:1];
 
-        v67 = [(TUILiveKeyView *)self symbolImageView];
-        if (!v67)
+        symbolImageView13 = [(TUILiveKeyView *)self symbolImageView];
+        if (!symbolImageView13)
         {
           goto LABEL_23;
         }
 
-        v68 = v67;
-        v69 = [(TUILiveKeyView *)self symbolImageView];
-        v70 = [v69 superview];
+        v68 = symbolImageView13;
+        symbolImageView14 = [(TUILiveKeyView *)self symbolImageView];
+        superview4 = [symbolImageView14 superview];
 
-        if (!v70)
+        if (!superview4)
         {
           goto LABEL_23;
         }
 
-        v71 = [(TUILiveKeyView *)self symbolImageView];
-        v72 = [v71 centerXAnchor];
-        v73 = [(TUILiveKeyView *)self keyCapBackground];
-        v74 = [v73 centerXAnchor];
-        v75 = [v72 constraintEqualToAnchor:v74];
+        symbolImageView15 = [(TUILiveKeyView *)self symbolImageView];
+        centerXAnchor3 = [symbolImageView15 centerXAnchor];
+        keyCapBackground8 = [(TUILiveKeyView *)self keyCapBackground];
+        centerXAnchor4 = [keyCapBackground8 centerXAnchor];
+        v75 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         [(TUILiveKeyView *)self setHorizontalContentConstraint:v75];
 
-        v76 = [(TUILiveKeyView *)self symbolImageView];
-        v77 = [v76 centerYAnchor];
-        v78 = [(TUILiveKeyView *)self keyCapBackground];
-        v79 = [v78 centerYAnchor];
-        v80 = [v77 constraintEqualToAnchor:v79];
+        symbolImageView16 = [(TUILiveKeyView *)self symbolImageView];
+        centerYAnchor3 = [symbolImageView16 centerYAnchor];
+        keyCapBackground9 = [(TUILiveKeyView *)self keyCapBackground];
+        centerYAnchor4 = [keyCapBackground9 centerYAnchor];
+        v80 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         [(TUILiveKeyView *)self setVerticalContentConstraint:v80];
 
         v28 = MEMORY[0x1E696ACD8];
-        v29 = [(TUILiveKeyView *)self horizontalContentConstraint];
-        v83 = v29;
+        horizontalContentConstraint3 = [(TUILiveKeyView *)self horizontalContentConstraint];
+        v83 = horizontalContentConstraint3;
         v30 = &v83;
         break;
     }
 
-    v81 = [(TUILiveKeyView *)self verticalContentConstraint];
-    v30[1] = v81;
+    verticalContentConstraint2 = [(TUILiveKeyView *)self verticalContentConstraint];
+    v30[1] = verticalContentConstraint2;
     v82 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
     [v28 activateConstraints:v82];
 
@@ -806,12 +806,12 @@ LABEL_23:
     }
   }
 
-  v4 = [(TUILiveKeyView *)self labelBottom];
-  [v4 setConstant:v3];
+  labelBottom = [(TUILiveKeyView *)self labelBottom];
+  [labelBottom setConstant:v3];
 
-  v5 = [(TUILiveKeyView *)self keyStyle];
-  v6 = [(TUILiveKeyView *)self layoutType];
-  if (v5 == 2 || v6 == 3)
+  keyStyle = [(TUILiveKeyView *)self keyStyle];
+  layoutType = [(TUILiveKeyView *)self layoutType];
+  if (keyStyle == 2 || layoutType == 3)
   {
     v8 = 6.0;
   }
@@ -821,34 +821,34 @@ LABEL_23:
     v8 = 3.0;
   }
 
-  v9 = [(TUILiveKeyView *)self labelTrailing];
-  [v9 setConstant:v8];
+  labelTrailing = [(TUILiveKeyView *)self labelTrailing];
+  [labelTrailing setConstant:v8];
 }
 
-- (void)updateLabelText:(id)a3 secondaryStrings:(id)a4
+- (void)updateLabelText:(id)text secondaryStrings:(id)strings
 {
-  v10 = a3;
+  textCopy = text;
   [(TUILiveKeyView *)self setKeyCap:?];
-  v5 = [(TUILiveKeyView *)self keyLabel];
+  keyLabel = [(TUILiveKeyView *)self keyLabel];
 
-  if (v5)
+  if (keyLabel)
   {
     if ([(TUILiveKeyView *)self layoutType]== 4)
     {
-      v6 = [(TUILiveKeyView *)self keyLabel];
-      v7 = v6;
+      keyLabel2 = [(TUILiveKeyView *)self keyLabel];
+      v7 = keyLabel2;
       v8 = @" ";
 LABEL_6:
-      [v6 setText:v8];
+      [keyLabel2 setText:v8];
 
       goto LABEL_7;
     }
 
     if ([(TUILiveKeyView *)self layoutType]== 2 || [(TUILiveKeyView *)self layoutType]== 3 && ([(TUILiveKeyView *)self imageName], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      v6 = [(TUILiveKeyView *)self keyLabel];
-      v7 = v6;
-      v8 = v10;
+      keyLabel2 = [(TUILiveKeyView *)self keyLabel];
+      v7 = keyLabel2;
+      v8 = textCopy;
       goto LABEL_6;
     }
   }
@@ -856,56 +856,56 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)updateFontSize:(double)a3
+- (void)updateFontSize:(double)size
 {
   [(TUILiveKeyView *)self fontSize];
   if (v5 == 0.0)
   {
-    v6 = [(TUILiveKeyView *)self fontForLabel];
-    v7 = [(TUILiveKeyView *)self keyLabel];
-    [v7 setFont:v6];
+    fontForLabel = [(TUILiveKeyView *)self fontForLabel];
+    keyLabel = [(TUILiveKeyView *)self keyLabel];
+    [keyLabel setFont:fontForLabel];
   }
 
   else
   {
     [(TUILiveKeyView *)self fontSize];
-    if (vabdd_f64(a3, v8) < 1.0)
+    if (vabdd_f64(size, v8) < 1.0)
     {
       return;
     }
 
-    v6 = [(TUILiveKeyView *)self keyLabel];
-    v7 = [v6 font];
-    v9 = [v7 fontWithSize:a3];
-    v10 = [(TUILiveKeyView *)self keyLabel];
-    [v10 setFont:v9];
+    fontForLabel = [(TUILiveKeyView *)self keyLabel];
+    keyLabel = [fontForLabel font];
+    v9 = [keyLabel fontWithSize:size];
+    keyLabel2 = [(TUILiveKeyView *)self keyLabel];
+    [keyLabel2 setFont:v9];
   }
 
-  [(TUILiveKeyView *)self setFontSize:a3];
+  [(TUILiveKeyView *)self setFontSize:size];
 }
 
-- (id)fontForSymbolStyle:(id)a3
+- (id)fontForSymbolStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 fontName];
-  [v3 fontSize];
+  styleCopy = style;
+  fontName = [styleCopy fontName];
+  [styleCopy fontSize];
   v6 = v5;
-  [v3 fontWeight];
+  [styleCopy fontWeight];
   v8 = v7;
-  [v3 fontWidth];
+  [styleCopy fontWidth];
   v10 = v9;
-  v11 = [v3 keycapsFallback];
+  keycapsFallback = [styleCopy keycapsFallback];
 
-  v12 = UIKBCreateCTFont(v4, v11, v6, v8, v10);
+  v12 = UIKBCreateCTFont(fontName, keycapsFallback, v6, v8, v10);
 
   return v12;
 }
 
 - (id)fontForLabel
 {
-  v3 = [(TUILiveKeyView *)self traits];
-  v4 = [v3 symbolStyle];
-  v5 = [(TUILiveKeyView *)self fontForSymbolStyle:v4];
+  traits = [(TUILiveKeyView *)self traits];
+  symbolStyle = [traits symbolStyle];
+  v5 = [(TUILiveKeyView *)self fontForSymbolStyle:symbolStyle];
 
   return v5;
 }
@@ -913,12 +913,12 @@ LABEL_7:
 - (void)createDualStringLabels
 {
   v73[6] = *MEMORY[0x1E69E9840];
-  v3 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  secondaryKeyLabel = [(TUILiveKeyView *)self secondaryKeyLabel];
 
-  if (!v3)
+  if (!secondaryKeyLabel)
   {
-    v4 = [(TUILiveKeyView *)self keyLabel];
-    [v4 removeFromSuperview];
+    keyLabel = [(TUILiveKeyView *)self keyLabel];
+    [keyLabel removeFromSuperview];
 
     [(TUILiveKeyView *)self setKeyLabel:0];
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -928,40 +928,40 @@ LABEL_7:
     [(TUILiveKeyView *)self setSecondaryKeyLabel:v5];
   }
 
-  v6 = [(TUILiveKeyView *)self fontForLabel];
-  v7 = [(TUILiveKeyView *)self secondaryKeyLabel];
-  [v7 setFont:v6];
+  fontForLabel = [(TUILiveKeyView *)self fontForLabel];
+  secondaryKeyLabel2 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  [secondaryKeyLabel2 setFont:fontForLabel];
 
-  v8 = [(TUILiveKeyView *)self traits];
-  v9 = [v8 secondarySymbolStyles];
-  v10 = [v9 firstObject];
+  traits = [(TUILiveKeyView *)self traits];
+  secondarySymbolStyles = [traits secondarySymbolStyles];
+  firstObject = [secondarySymbolStyles firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = [v10 textColor];
+    textColor = [firstObject textColor];
 
-    if (v11)
+    if (textColor)
     {
-      [v10 textOpacity];
+      [firstObject textOpacity];
       v13 = v12;
       v14 = MEMORY[0x1E69DC888];
-      v15 = [v10 textColor];
-      v16 = [v14 colorWithCGColor:UIKBGetNamedColor(v15)];
+      textColor2 = [firstObject textColor];
+      v16 = [v14 colorWithCGColor:UIKBGetNamedColor(textColor2)];
       v17 = [v16 colorWithAlphaComponent:v13];
-      v18 = [(TUILiveKeyView *)self secondaryKeyLabel];
-      [v18 setTextColor:v17];
+      secondaryKeyLabel3 = [(TUILiveKeyView *)self secondaryKeyLabel];
+      [secondaryKeyLabel3 setTextColor:v17];
     }
 
-    v19 = [(TUILiveKeyView *)self fontForSymbolStyle:v10];
-    v20 = [(TUILiveKeyView *)self secondaryKeyLabel];
-    [v20 setFont:v19];
+    v19 = [(TUILiveKeyView *)self fontForSymbolStyle:firstObject];
+    secondaryKeyLabel4 = [(TUILiveKeyView *)self secondaryKeyLabel];
+    [secondaryKeyLabel4 setFont:v19];
   }
 
-  v21 = [(TUILiveKeyView *)self keyLabel];
+  keyLabel2 = [(TUILiveKeyView *)self keyLabel];
 
-  if (v21)
+  if (keyLabel2)
   {
-    if (v3)
+    if (secondaryKeyLabel)
     {
       goto LABEL_16;
     }
@@ -972,20 +972,20 @@ LABEL_7:
     v22 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v22 setTextAlignment:1];
-    v23 = [(TUILiveKeyView *)self fontForLabel];
-    [v22 setFont:v23];
+    fontForLabel2 = [(TUILiveKeyView *)self fontForLabel];
+    [v22 setFont:fontForLabel2];
 
-    v24 = [(TUILiveKeyView *)self traits];
-    v25 = [v24 symbolStyle];
-    v26 = [v25 textColor];
+    traits2 = [(TUILiveKeyView *)self traits];
+    symbolStyle = [traits2 symbolStyle];
+    textColor3 = [symbolStyle textColor];
 
-    if (v26)
+    if (textColor3)
     {
       v27 = MEMORY[0x1E69DC888];
-      v28 = [(TUILiveKeyView *)self traits];
-      v29 = [v28 symbolStyle];
-      v30 = [v29 textColor];
-      v31 = [v27 colorWithCGColor:UIKBGetNamedColor(v30)];
+      traits3 = [(TUILiveKeyView *)self traits];
+      symbolStyle2 = [traits3 symbolStyle];
+      textColor4 = [symbolStyle2 textColor];
+      v31 = [v27 colorWithCGColor:UIKBGetNamedColor(textColor4)];
       [v22 setTextColor:v31];
     }
 
@@ -993,120 +993,120 @@ LABEL_7:
     [(TUILiveKeyView *)self setKeyLabel:v22];
   }
 
-  v32 = [(TUILiveKeyView *)self labelBottom];
-  v33 = [v32 isActive];
+  labelBottom = [(TUILiveKeyView *)self labelBottom];
+  isActive = [labelBottom isActive];
 
-  if (v33)
+  if (isActive)
   {
-    v34 = [(TUILiveKeyView *)self labelBottom];
-    [v34 setActive:0];
+    labelBottom2 = [(TUILiveKeyView *)self labelBottom];
+    [labelBottom2 setActive:0];
   }
 
-  v35 = [(TUILiveKeyView *)self keyLabel];
-  v36 = [v35 bottomAnchor];
-  v37 = [(TUILiveKeyView *)self keyCapBackground];
-  v38 = [v37 bottomAnchor];
-  v39 = [(TUILiveKeyView *)self animationProperties];
-  [v39 startingPrimaryLabelInsets];
-  v41 = [v36 constraintEqualToAnchor:v38 constant:v40];
+  keyLabel3 = [(TUILiveKeyView *)self keyLabel];
+  bottomAnchor = [keyLabel3 bottomAnchor];
+  keyCapBackground = [(TUILiveKeyView *)self keyCapBackground];
+  bottomAnchor2 = [keyCapBackground bottomAnchor];
+  animationProperties = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties startingPrimaryLabelInsets];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v40];
   [(TUILiveKeyView *)self setLabelBottom:v41];
 
-  v71 = [(TUILiveKeyView *)self secondaryKeyLabel];
-  v69 = [v71 topAnchor];
-  v70 = [(TUILiveKeyView *)self keyCapBackground];
-  v68 = [v70 topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  secondaryKeyLabel5 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  topAnchor = [secondaryKeyLabel5 topAnchor];
+  keyCapBackground2 = [(TUILiveKeyView *)self keyCapBackground];
+  topAnchor2 = [keyCapBackground2 topAnchor];
+  v67 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v73[0] = v67;
-  v66 = [(TUILiveKeyView *)self secondaryKeyLabel];
-  v64 = [v66 centerXAnchor];
-  v65 = [(TUILiveKeyView *)self keyCapBackground];
-  v63 = [v65 centerXAnchor];
-  [v10 textOffset];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:?];
+  secondaryKeyLabel6 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  centerXAnchor = [secondaryKeyLabel6 centerXAnchor];
+  keyCapBackground3 = [(TUILiveKeyView *)self keyCapBackground];
+  centerXAnchor2 = [keyCapBackground3 centerXAnchor];
+  [firstObject textOffset];
+  v62 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:?];
   v73[1] = v62;
-  v61 = [(TUILiveKeyView *)self keyLabel];
-  v59 = [v61 centerXAnchor];
-  v60 = [(TUILiveKeyView *)self keyCapBackground];
-  v57 = [v60 centerXAnchor];
-  v58 = [(TUILiveKeyView *)self traits];
-  v56 = [v58 symbolStyle];
-  [v56 textOffset];
-  v55 = [v59 constraintEqualToAnchor:v57 constant:?];
+  keyLabel4 = [(TUILiveKeyView *)self keyLabel];
+  centerXAnchor3 = [keyLabel4 centerXAnchor];
+  keyCapBackground4 = [(TUILiveKeyView *)self keyCapBackground];
+  centerXAnchor4 = [keyCapBackground4 centerXAnchor];
+  traits4 = [(TUILiveKeyView *)self traits];
+  symbolStyle3 = [traits4 symbolStyle];
+  [symbolStyle3 textOffset];
+  v55 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:?];
   v73[2] = v55;
-  v54 = [(TUILiveKeyView *)self keyLabel];
-  v52 = [v54 topAnchor];
-  v42 = [(TUILiveKeyView *)self keyCapBackground];
-  v43 = [v42 topAnchor];
-  v44 = [(TUILiveKeyView *)self animationProperties];
-  [v44 startingPrimaryLabelInsets];
-  [v52 constraintEqualToAnchor:v43 constant:?];
-  v45 = v72 = v10;
+  keyLabel5 = [(TUILiveKeyView *)self keyLabel];
+  topAnchor3 = [keyLabel5 topAnchor];
+  keyCapBackground5 = [(TUILiveKeyView *)self keyCapBackground];
+  topAnchor4 = [keyCapBackground5 topAnchor];
+  animationProperties2 = [(TUILiveKeyView *)self animationProperties];
+  [animationProperties2 startingPrimaryLabelInsets];
+  [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
+  v45 = v72 = firstObject;
   v73[3] = v45;
-  v46 = [(TUILiveKeyView *)self labelBottom];
-  v73[4] = v46;
-  v47 = [(TUILiveKeyView *)self secondaryKeyLabel];
-  v48 = [v47 heightAnchor];
-  v49 = [(TUILiveKeyView *)self keyCapBackground];
-  v50 = [v49 heightAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50 multiplier:0.5];
+  labelBottom3 = [(TUILiveKeyView *)self labelBottom];
+  v73[4] = labelBottom3;
+  secondaryKeyLabel7 = [(TUILiveKeyView *)self secondaryKeyLabel];
+  heightAnchor = [secondaryKeyLabel7 heightAnchor];
+  keyCapBackground6 = [(TUILiveKeyView *)self keyCapBackground];
+  heightAnchor2 = [keyCapBackground6 heightAnchor];
+  v51 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
   v73[5] = v51;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:6];
 
-  v10 = v72;
+  firstObject = v72;
   [MEMORY[0x1E696ACD8] activateConstraints:v53];
 
 LABEL_16:
 }
 
-- (id)labelForKeyCap:(id)a3
+- (id)labelForKeyCap:(id)cap
 {
   v34[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCC10];
-  v5 = a3;
+  capCopy = cap;
   v6 = objc_alloc_init(v4);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setTextAlignment:1];
-  [v6 setText:v5];
+  [v6 setText:capCopy];
 
-  v7 = [(TUILiveKeyView *)self fontForLabel];
-  [v6 setFont:v7];
+  fontForLabel = [(TUILiveKeyView *)self fontForLabel];
+  [v6 setFont:fontForLabel];
 
-  v8 = [(TUILiveKeyView *)self traits];
-  v9 = [v8 symbolStyle];
-  v10 = [v9 textColor];
+  traits = [(TUILiveKeyView *)self traits];
+  symbolStyle = [traits symbolStyle];
+  textColor = [symbolStyle textColor];
 
-  if (v10)
+  if (textColor)
   {
     v11 = MEMORY[0x1E69DC888];
-    v12 = [(TUILiveKeyView *)self traits];
-    v13 = [v12 symbolStyle];
-    v14 = [v13 textColor];
-    v15 = [v11 colorWithCGColor:UIKBGetNamedColor(v14)];
+    traits2 = [(TUILiveKeyView *)self traits];
+    symbolStyle2 = [traits2 symbolStyle];
+    textColor2 = [symbolStyle2 textColor];
+    v15 = [v11 colorWithCGColor:UIKBGetNamedColor(textColor2)];
     [v6 setTextColor:v15];
   }
 
   [(TUILiveKeyView *)self addSubview:v6];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = [v6 topAnchor];
-  v18 = [(TUILiveKeyView *)self topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor = [v6 topAnchor];
+  topAnchor2 = [(TUILiveKeyView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v20 = [(TUILiveKeyView *)self bottomAnchor];
-  v21 = [v6 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor = [(TUILiveKeyView *)self bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   v34[0] = v19;
   v34[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   [v16 addObjectsFromArray:v23];
 
-  v24 = [v6 leadingAnchor];
-  v25 = [(TUILiveKeyView *)self leadingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:0.0];
+  leadingAnchor = [v6 leadingAnchor];
+  leadingAnchor2 = [(TUILiveKeyView *)self leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
 
-  v27 = [(TUILiveKeyView *)self trailingAnchor];
-  v28 = [v6 trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:0.0];
+  trailingAnchor = [(TUILiveKeyView *)self trailingAnchor];
+  trailingAnchor2 = [v6 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
 
   v33[0] = v26;
   v33[1] = v29;
@@ -1114,9 +1114,9 @@ LABEL_16:
   [v16 addObjectsFromArray:v30];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v16];
-  v31 = [(TUILiveKeyView *)self labelBottom];
+  labelBottom = [(TUILiveKeyView *)self labelBottom];
 
-  if (!v31)
+  if (!labelBottom)
   {
     [(TUILiveKeyView *)self setLabelBottom:v22];
     [(TUILiveKeyView *)self setLabelLeading:v26];
@@ -1130,30 +1130,30 @@ LABEL_16:
 
 - (void)keyWithLabel
 {
-  v3 = [(TUILiveKeyView *)self keyLabel];
+  keyLabel = [(TUILiveKeyView *)self keyLabel];
 
-  if (!v3)
+  if (!keyLabel)
   {
-    v4 = [(TUILiveKeyView *)self keyCap];
-    v5 = [(TUILiveKeyView *)self labelForKeyCap:v4];
+    keyCap = [(TUILiveKeyView *)self keyCap];
+    v5 = [(TUILiveKeyView *)self labelForKeyCap:keyCap];
     [(TUILiveKeyView *)self setKeyLabel:v5];
   }
 
-  v6 = [(TUILiveKeyView *)self keyCap];
-  [(TUILiveKeyView *)self updateLabelText:v6];
+  keyCap2 = [(TUILiveKeyView *)self keyCap];
+  [(TUILiveKeyView *)self updateLabelText:keyCap2];
 }
 
-- (id)symbolImageConfigForRenderTraits:(id)a3 traitCollection:(id)a4
+- (id)symbolImageConfigForRenderTraits:(id)traits traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 symbolStyle];
-  v8 = MEMORY[0x193AE8160]([v7 fontWeightForSymbolImage]);
+  traitsCopy = traits;
+  collectionCopy = collection;
+  symbolStyle = [traitsCopy symbolStyle];
+  v8 = MEMORY[0x193AE8160]([symbolStyle fontWeightForSymbolImage]);
 
   if (!v8)
   {
-    v9 = [v5 symbolStyle];
-    v10 = MEMORY[0x193AE8160]([v9 fontWeight]);
+    symbolStyle2 = [traitsCopy symbolStyle];
+    v10 = MEMORY[0x193AE8160]([symbolStyle2 fontWeight]);
 
     if (v10)
     {
@@ -1166,50 +1166,50 @@ LABEL_16:
     }
   }
 
-  v11 = [v5 symbolStyle];
-  [v11 fontSizeForSymbolImage];
+  symbolStyle3 = [traitsCopy symbolStyle];
+  [symbolStyle3 fontSizeForSymbolImage];
   v13 = v12;
 
   if (v13 == 0.0)
   {
-    v14 = [v5 symbolStyle];
-    [v14 fontSize];
+    symbolStyle4 = [traitsCopy symbolStyle];
+    [symbolStyle4 fontSize];
     v13 = v15;
   }
 
   v16 = MEMORY[0x1E69DCAD8];
-  v17 = [v5 symbolStyle];
-  v18 = [v16 configurationWithPointSize:v8 weight:objc_msgSend(v17 scale:{"symbolScale"), v13}];
+  symbolStyle5 = [traitsCopy symbolStyle];
+  v18 = [v16 configurationWithPointSize:v8 weight:objc_msgSend(symbolStyle5 scale:{"symbolScale"), v13}];
 
-  v19 = [v18 configurationWithTraitCollection:v6];
+  v19 = [v18 configurationWithTraitCollection:collectionCopy];
 
   return v19;
 }
 
-- (id)imageWithName:(id)a3
+- (id)imageWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TUILiveKeyView *)self traits];
-  v6 = [(TUILiveKeyView *)self traitCollection];
-  v7 = [(TUILiveKeyView *)self symbolImageConfigForRenderTraits:v5 traitCollection:v6];
+  nameCopy = name;
+  traits = [(TUILiveKeyView *)self traits];
+  traitCollection = [(TUILiveKeyView *)self traitCollection];
+  v7 = [(TUILiveKeyView *)self symbolImageConfigForRenderTraits:traits traitCollection:traitCollection];
 
-  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4 withConfiguration:v7];
+  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy withConfiguration:v7];
 
   return v8;
 }
 
 - (void)updateSymbolInsets
 {
-  v3 = [(TUILiveKeyView *)self keyStyle];
-  v4 = [(TUILiveKeyView *)self symbolImageView];
-  v5 = [v4 image];
-  [v5 baselineOffsetFromBottom];
+  keyStyle = [(TUILiveKeyView *)self keyStyle];
+  symbolImageView = [(TUILiveKeyView *)self symbolImageView];
+  image = [symbolImageView image];
+  [image baselineOffsetFromBottom];
   v7 = v6;
 
-  v8 = [(TUILiveKeyView *)self traits];
-  v9 = [v8 symbolStyle];
-  [v9 textOffset];
-  if (v3 == 1)
+  traits = [(TUILiveKeyView *)self traits];
+  symbolStyle = [traits symbolStyle];
+  [symbolStyle textOffset];
+  if (keyStyle == 1)
   {
     v11 = -v10;
   }
@@ -1219,7 +1219,7 @@ LABEL_16:
     v11 = v10;
   }
 
-  if (v3 == 1)
+  if (keyStyle == 1)
   {
     v12 = -2.0;
   }
@@ -1229,107 +1229,107 @@ LABEL_16:
     v12 = -3.0;
   }
 
-  v13 = [(TUILiveKeyView *)self traits];
-  v14 = [v13 symbolStyle];
-  [v14 textOffset];
+  traits2 = [(TUILiveKeyView *)self traits];
+  symbolStyle2 = [traits2 symbolStyle];
+  [symbolStyle2 textOffset];
   v16 = v15;
 
-  v17 = [(TUILiveKeyView *)self horizontalContentConstraint];
-  [v17 setConstant:v11 + v12];
+  horizontalContentConstraint = [(TUILiveKeyView *)self horizontalContentConstraint];
+  [horizontalContentConstraint setConstant:v11 + v12];
 
-  v18 = [(TUILiveKeyView *)self verticalContentConstraint];
-  [v18 setConstant:v16 + v7 * -0.5];
+  verticalContentConstraint = [(TUILiveKeyView *)self verticalContentConstraint];
+  [verticalContentConstraint setConstant:v16 + v7 * -0.5];
 }
 
 - (void)keyWithSymbolView
 {
-  v3 = [(TUILiveKeyView *)self symbolImageView];
+  symbolImageView = [(TUILiveKeyView *)self symbolImageView];
 
-  if (!v3)
+  if (!symbolImageView)
   {
-    v8 = [(TUILiveKeyView *)self imageName];
+    imageName = [(TUILiveKeyView *)self imageName];
 
-    if (!v8)
+    if (!imageName)
     {
       goto LABEL_8;
     }
 
-    v9 = [(TUILiveKeyView *)self imageName];
-    v6 = [(TUILiveKeyView *)self imageWithName:v9];
+    imageName2 = [(TUILiveKeyView *)self imageName];
+    v6 = [(TUILiveKeyView *)self imageWithName:imageName2];
 
     v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
     [(TUILiveKeyView *)self setSymbolImageView:v10];
 
-    v11 = [(TUILiveKeyView *)self symbolImageView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    symbolImageView2 = [(TUILiveKeyView *)self symbolImageView];
+    [symbolImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(TUILiveKeyView *)self symbolImageView];
-    [v12 setContentMode:1];
+    symbolImageView3 = [(TUILiveKeyView *)self symbolImageView];
+    [symbolImageView3 setContentMode:1];
 
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    v14 = [(TUILiveKeyView *)self symbolImageView];
-    [v14 setTintColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    symbolImageView4 = [(TUILiveKeyView *)self symbolImageView];
+    [symbolImageView4 setTintColor:labelColor];
 
-    v7 = [(TUILiveKeyView *)self symbolImageView];
-    [(TUILiveKeyView *)self addSubview:v7];
+    symbolImageView5 = [(TUILiveKeyView *)self symbolImageView];
+    [(TUILiveKeyView *)self addSubview:symbolImageView5];
     goto LABEL_7;
   }
 
   if ([(TUILiveKeyView *)self usesImage])
   {
-    v4 = [(TUILiveKeyView *)self imageName];
+    imageName3 = [(TUILiveKeyView *)self imageName];
 
-    if (v4)
+    if (imageName3)
     {
-      v5 = [(TUILiveKeyView *)self imageName];
-      v6 = [(TUILiveKeyView *)self imageWithName:v5];
+      imageName4 = [(TUILiveKeyView *)self imageName];
+      v6 = [(TUILiveKeyView *)self imageWithName:imageName4];
 
-      v7 = [(TUILiveKeyView *)self symbolImageView];
-      [v7 setImage:v6];
+      symbolImageView5 = [(TUILiveKeyView *)self symbolImageView];
+      [symbolImageView5 setImage:v6];
 LABEL_7:
     }
   }
 
 LABEL_8:
-  v15 = [(TUILiveKeyView *)self symbolImageView];
+  symbolImageView6 = [(TUILiveKeyView *)self symbolImageView];
 
-  if (v15)
+  if (symbolImageView6)
   {
     v16 = MEMORY[0x1E69DC888];
-    v21 = [(TUILiveKeyView *)self traits];
-    v17 = [v21 symbolStyle];
-    v18 = [v17 textColor];
-    v19 = [v16 colorWithCGColor:UIKBGetNamedColor(v18)];
-    v20 = [(TUILiveKeyView *)self symbolImageView];
-    [v20 setTintColor:v19];
+    traits = [(TUILiveKeyView *)self traits];
+    symbolStyle = [traits symbolStyle];
+    textColor = [symbolStyle textColor];
+    v19 = [v16 colorWithCGColor:UIKBGetNamedColor(textColor)];
+    symbolImageView7 = [(TUILiveKeyView *)self symbolImageView];
+    [symbolImageView7 setTintColor:v19];
   }
 }
 
-- (void)updateBackgroundWithInsets:(UIEdgeInsets)a3
+- (void)updateBackgroundWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-  v9 = [v8 count];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  keyCapBackgroundConstraints = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+  v9 = [keyCapBackgroundConstraints count];
 
   if (v9 == 4)
   {
-    v10 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    keyCapBackgroundConstraints2 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    v11 = [keyCapBackgroundConstraints2 objectAtIndexedSubscript:0];
     [v11 setConstant:top];
 
-    v12 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-    v13 = [v12 objectAtIndexedSubscript:1];
+    keyCapBackgroundConstraints3 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    v13 = [keyCapBackgroundConstraints3 objectAtIndexedSubscript:1];
     [v13 setConstant:left];
 
-    v14 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-    v15 = [v14 objectAtIndexedSubscript:2];
+    keyCapBackgroundConstraints4 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    v15 = [keyCapBackgroundConstraints4 objectAtIndexedSubscript:2];
     [v15 setConstant:bottom];
 
-    v17 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-    v16 = [v17 objectAtIndexedSubscript:3];
+    keyCapBackgroundConstraints5 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    v16 = [keyCapBackgroundConstraints5 objectAtIndexedSubscript:3];
     [v16 setConstant:right];
   }
 }
@@ -1337,77 +1337,77 @@ LABEL_8:
 - (void)makeKeyBackgrounds
 {
   v85[4] = *MEMORY[0x1E69E9840];
-  v3 = [(TUILiveKeyView *)self renderConfig];
-  v84 = [v3 colorAdaptiveBackground];
+  renderConfig = [(TUILiveKeyView *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-  v4 = [(TUILiveKeyView *)self keyCapBackground];
+  keyCapBackground = [(TUILiveKeyView *)self keyCapBackground];
 
-  if (!v4)
+  if (!keyCapBackground)
   {
-    v5 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    keyCapBackgroundConstraints = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
 
-    if (v5)
+    if (keyCapBackgroundConstraints)
     {
       v6 = MEMORY[0x1E696ACD8];
-      v7 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-      [v6 deactivateConstraints:v7];
+      keyCapBackgroundConstraints2 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+      [v6 deactivateConstraints:keyCapBackgroundConstraints2];
     }
 
     v8 = objc_alloc(MEMORY[0x1E69DD250]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(TUILiveKeyView *)self setKeyCapBackground:v9];
 
-    v10 = [(TUILiveKeyView *)self keyCapBackground];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    keyCapBackground2 = [(TUILiveKeyView *)self keyCapBackground];
+    [keyCapBackground2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(TUILiveKeyView *)self keyCapBackground];
-    [(TUILiveKeyView *)self addSubview:v11];
+    keyCapBackground3 = [(TUILiveKeyView *)self keyCapBackground];
+    [(TUILiveKeyView *)self addSubview:keyCapBackground3];
 
-    v83 = [(TUILiveKeyView *)self keyCapBackground];
-    v82 = [v83 topAnchor];
-    v81 = [(TUILiveKeyView *)self topAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    keyCapBackground4 = [(TUILiveKeyView *)self keyCapBackground];
+    topAnchor = [keyCapBackground4 topAnchor];
+    topAnchor2 = [(TUILiveKeyView *)self topAnchor];
+    v80 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v85[0] = v80;
-    v79 = [(TUILiveKeyView *)self keyCapBackground];
-    v78 = [v79 leftAnchor];
-    v77 = [(TUILiveKeyView *)self leftAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77];
+    keyCapBackground5 = [(TUILiveKeyView *)self keyCapBackground];
+    leftAnchor = [keyCapBackground5 leftAnchor];
+    leftAnchor2 = [(TUILiveKeyView *)self leftAnchor];
+    v76 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v85[1] = v76;
-    v12 = [(TUILiveKeyView *)self bottomAnchor];
-    v13 = [(TUILiveKeyView *)self keyCapBackground];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [(TUILiveKeyView *)self bottomAnchor];
+    keyCapBackground6 = [(TUILiveKeyView *)self keyCapBackground];
+    bottomAnchor2 = [keyCapBackground6 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v85[2] = v15;
-    v16 = [(TUILiveKeyView *)self rightAnchor];
-    v17 = [(TUILiveKeyView *)self keyCapBackground];
-    v18 = [v17 rightAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    rightAnchor = [(TUILiveKeyView *)self rightAnchor];
+    keyCapBackground7 = [(TUILiveKeyView *)self keyCapBackground];
+    rightAnchor2 = [keyCapBackground7 rightAnchor];
+    v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v85[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:4];
     [(TUILiveKeyView *)self setKeyCapBackgroundConstraints:v20];
 
     v21 = MEMORY[0x1E696ACD8];
-    v22 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
-    [v21 activateConstraints:v22];
+    keyCapBackgroundConstraints3 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    [v21 activateConstraints:keyCapBackgroundConstraints3];
   }
 
-  v23 = [(TUILiveKeyView *)self traits];
-  v24 = [v23 geometry];
-  [v24 roundRectRadius];
+  traits = [(TUILiveKeyView *)self traits];
+  geometry = [traits geometry];
+  [geometry roundRectRadius];
   v26 = v25;
-  v27 = [(TUILiveKeyView *)self keyCapBackground];
-  v28 = [v27 layer];
-  [v28 setCornerRadius:v26];
+  keyCapBackground8 = [(TUILiveKeyView *)self keyCapBackground];
+  layer = [keyCapBackground8 layer];
+  [layer setCornerRadius:v26];
 
-  v29 = [(TUILiveKeyView *)self traits];
-  v30 = [v29 layeredBackgroundGradient];
-  if (!v30 || (-[TUILiveKeyView traits](self, "traits"), v23 = objc_claimAutoreleasedReturnValue(), ([v23 usesDarkAppearance] & 1) != 0))
+  traits2 = [(TUILiveKeyView *)self traits];
+  layeredBackgroundGradient = [traits2 layeredBackgroundGradient];
+  if (!layeredBackgroundGradient || (-[TUILiveKeyView traits](self, "traits"), traits = objc_claimAutoreleasedReturnValue(), ([traits usesDarkAppearance] & 1) != 0))
   {
-    v34 = [(TUILiveKeyView *)self traits];
-    v35 = [v34 backgroundGradient];
-    v33 = [v35 flatColorName];
+    traits3 = [(TUILiveKeyView *)self traits];
+    backgroundGradient = [traits3 backgroundGradient];
+    flatColorName = [backgroundGradient flatColorName];
 
-    if (!v30)
+    if (!layeredBackgroundGradient)
     {
       goto LABEL_10;
     }
@@ -1415,54 +1415,54 @@ LABEL_8:
 
   else
   {
-    v31 = [(TUILiveKeyView *)self traits];
-    v32 = [v31 layeredBackgroundGradient];
-    v33 = [v32 flatColorName];
+    traits4 = [(TUILiveKeyView *)self traits];
+    layeredBackgroundGradient2 = [traits4 layeredBackgroundGradient];
+    flatColorName = [layeredBackgroundGradient2 flatColorName];
   }
 
 LABEL_10:
-  if (!v33)
+  if (!flatColorName)
   {
-    v36 = [(TUILiveKeyView *)self renderConfig];
-    if ([v36 colorAdaptiveBackground])
+    renderConfig2 = [(TUILiveKeyView *)self renderConfig];
+    if ([renderConfig2 colorAdaptiveBackground])
     {
-      v33 = @"UIKBColorWhite";
+      flatColorName = @"UIKBColorWhite";
       v37 = @"UIKBColorWhite";
     }
 
     else
     {
-      v38 = [(TUILiveKeyView *)self traits];
-      v39 = [v38 usesDarkAppearance];
+      traits5 = [(TUILiveKeyView *)self traits];
+      usesDarkAppearance = [traits5 usesDarkAppearance];
       v40 = @"UIKBColorWhite";
-      if (v39)
+      if (usesDarkAppearance)
       {
         v40 = @"UIKBColorWhite_Alpha30";
       }
 
-      v33 = v40;
+      flatColorName = v40;
     }
   }
 
-  UIKBGetNamedColor(v33);
-  v41 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(v33)];
-  v42 = [(TUILiveKeyView *)self traits];
-  v43 = [v42 backgroundGradient];
-  v44 = [v43 flatColorName];
-  v45 = v44;
-  if (v44)
+  UIKBGetNamedColor(flatColorName);
+  v41 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(flatColorName)];
+  traits6 = [(TUILiveKeyView *)self traits];
+  backgroundGradient2 = [traits6 backgroundGradient];
+  flatColorName2 = [backgroundGradient2 flatColorName];
+  v45 = flatColorName2;
+  if (flatColorName2)
   {
-    v46 = v44;
+    flatColorName3 = flatColorName2;
   }
 
   else
   {
-    v47 = [(TUILiveKeyView *)self traits];
-    v48 = [v47 layeredForegroundGradient];
-    v46 = [v48 flatColorName];
+    traits7 = [(TUILiveKeyView *)self traits];
+    layeredForegroundGradient = [traits7 layeredForegroundGradient];
+    flatColorName3 = [layeredForegroundGradient flatColorName];
   }
 
-  if (!v46)
+  if (!flatColorName3)
   {
     v49 = UIKBColorBlue;
     if (!UIAccessibilityIsReduceTransparencyEnabled() && !UIAccessibilityDarkerSystemColorsEnabled())
@@ -1470,53 +1470,53 @@ LABEL_10:
       v49 = UIKBColorKeyBlueKeyBackground;
     }
 
-    v46 = *v49;
+    flatColorName3 = *v49;
   }
 
-  v50 = [(TUILiveKeyView *)self usesBlueBackground];
+  usesBlueBackground = [(TUILiveKeyView *)self usesBlueBackground];
   v51 = v41;
-  if (v50)
+  if (usesBlueBackground)
   {
-    v51 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(v46)];
+    v51 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(flatColorName3)];
   }
 
-  v52 = [(TUILiveKeyView *)self keyCapBackground];
-  [v52 setBackgroundColor:v51];
+  keyCapBackground9 = [(TUILiveKeyView *)self keyCapBackground];
+  [keyCapBackground9 setBackgroundColor:v51];
 
-  if (v50)
+  if (usesBlueBackground)
   {
   }
 
-  v53 = [(TUILiveKeyView *)self traits];
-  if ([v53 blendForm] == 10)
+  traits8 = [(TUILiveKeyView *)self traits];
+  if ([traits8 blendForm] == 10)
   {
 
 LABEL_32:
-    v56 = [(TUILiveKeyView *)self keyCapBackground];
-    v57 = [v56 layer];
-    v58 = [(TUILiveKeyView *)self traits];
-    v59 = [v58 extraFiltersForType:*MEMORY[0x1E6979D78]];
-    [v57 setFilters:v59];
+    keyCapBackground10 = [(TUILiveKeyView *)self keyCapBackground];
+    layer2 = [keyCapBackground10 layer];
+    traits9 = [(TUILiveKeyView *)self traits];
+    v59 = [traits9 extraFiltersForType:*MEMORY[0x1E6979D78]];
+    [layer2 setFilters:v59];
 
     [(TUILiveKeyView *)self backgroundInsets];
     [(TUILiveKeyView *)self updateBackgroundWithInsets:?];
     goto LABEL_33;
   }
 
-  v54 = [(TUILiveKeyView *)self traits];
-  v55 = [v54 blendForm];
+  traits10 = [(TUILiveKeyView *)self traits];
+  blendForm = [traits10 blendForm];
 
-  if (v55 == 11)
+  if (blendForm == 11)
   {
     goto LABEL_32;
   }
 
   [(TUILiveKeyView *)self backgroundInsets];
   [(TUILiveKeyView *)self updateBackgroundWithInsets:?];
-  if ((v84 & 1) == 0)
+  if ((colorAdaptiveBackground & 1) == 0)
   {
-    v60 = [(TUILiveKeyView *)self renderConfig];
-    if ([v60 lightKeyboard])
+    renderConfig3 = [(TUILiveKeyView *)self renderConfig];
+    if ([renderConfig3 lightKeyboard])
     {
       v61 = @"UIKBColorBlack_Alpha35";
     }
@@ -1527,20 +1527,20 @@ LABEL_32:
     }
 
     v62 = UIKBGetNamedColor(v61);
-    v63 = [(TUILiveKeyView *)self keyCapBackground];
-    v64 = [v63 layer];
-    [v64 setShadowColor:v62];
+    keyCapBackground11 = [(TUILiveKeyView *)self keyCapBackground];
+    layer3 = [keyCapBackground11 layer];
+    [layer3 setShadowColor:v62];
 
-    v65 = [(TUILiveKeyView *)self keyCapBackground];
-    v66 = [v65 layer];
-    [v66 setShadowOffset:{0.0, 1.0}];
+    keyCapBackground12 = [(TUILiveKeyView *)self keyCapBackground];
+    layer4 = [keyCapBackground12 layer];
+    [layer4 setShadowOffset:{0.0, 1.0}];
 
-    v67 = [(TUILiveKeyView *)self keyCapBackground];
-    v68 = [v67 layer];
-    [v68 setShadowRadius:1.0];
+    keyCapBackground13 = [(TUILiveKeyView *)self keyCapBackground];
+    layer5 = [keyCapBackground13 layer];
+    [layer5 setShadowRadius:1.0];
 
-    v69 = [(TUILiveKeyView *)self renderConfig];
-    if ([v69 lightKeyboard])
+    renderConfig4 = [(TUILiveKeyView *)self renderConfig];
+    if ([renderConfig4 lightKeyboard])
     {
       v70 = 0.35;
     }
@@ -1550,88 +1550,88 @@ LABEL_32:
       v70 = 0.4;
     }
 
-    v71 = [(TUILiveKeyView *)self keyCapBackground];
-    v72 = [v71 layer];
+    keyCapBackground14 = [(TUILiveKeyView *)self keyCapBackground];
+    layer6 = [keyCapBackground14 layer];
     *&v73 = v70;
-    [v72 setShadowOpacity:v73];
+    [layer6 setShadowOpacity:v73];
 
-    v74 = [(TUILiveKeyView *)self keyCapBackground];
-    v75 = [v74 layer];
-    [v75 setShadowPathIsBounds:1];
+    keyCapBackground15 = [(TUILiveKeyView *)self keyCapBackground];
+    layer7 = [keyCapBackground15 layer];
+    [layer7 setShadowPathIsBounds:1];
   }
 
 LABEL_33:
 }
 
-- (void)updateRenderTraits:(id)a3 displayContents:(id)a4
+- (void)updateRenderTraits:(id)traits displayContents:(id)contents
 {
-  v52 = a3;
-  v7 = a4;
-  if (self->_traits != v52)
+  traitsCopy = traits;
+  contentsCopy = contents;
+  if (self->_traits != traitsCopy)
   {
-    objc_storeStrong(&self->_traits, a3);
+    objc_storeStrong(&self->_traits, traits);
     if ([(TUILiveKeyView *)self layoutType]!= 3)
     {
       goto LABEL_18;
     }
 
-    v8 = [(TUILiveKeyView *)self renderConfig];
-    v9 = [v8 controlKeyBackgroundName];
-    if (v9)
+    renderConfig = [(TUILiveKeyView *)self renderConfig];
+    controlKeyBackgroundName = [renderConfig controlKeyBackgroundName];
+    if (controlKeyBackgroundName)
     {
     }
 
     else
     {
-      v10 = [(TUILiveKeyView *)self usesBlueBackground];
+      usesBlueBackground = [(TUILiveKeyView *)self usesBlueBackground];
 
-      if (!v10)
+      if (!usesBlueBackground)
       {
         goto LABEL_18;
       }
     }
 
-    v11 = [(UIKBRenderTraits *)v52 backgroundGradient];
-    v12 = [v11 flatColorName];
+    backgroundGradient = [(UIKBRenderTraits *)traitsCopy backgroundGradient];
+    flatColorName = [backgroundGradient flatColorName];
 
-    if (!v12)
+    if (!flatColorName)
     {
-      v13 = [(TUILiveKeyView *)self renderConfig];
-      if ([v13 colorAdaptiveBackground])
+      renderConfig2 = [(TUILiveKeyView *)self renderConfig];
+      if ([renderConfig2 colorAdaptiveBackground])
       {
-        v12 = @"UIKBColorWhite";
+        flatColorName = @"UIKBColorWhite";
         v14 = @"UIKBColorWhite";
       }
 
       else
       {
-        v15 = [(TUILiveKeyView *)self traits];
-        v16 = [v15 usesDarkAppearance];
+        traits = [(TUILiveKeyView *)self traits];
+        usesDarkAppearance = [traits usesDarkAppearance];
         v17 = @"UIKBColorWhite";
-        if (v16)
+        if (usesDarkAppearance)
         {
           v17 = @"UIKBColorWhite_Alpha30";
         }
 
-        v12 = v17;
+        flatColorName = v17;
       }
     }
 
-    v18 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(v12)];
-    v19 = [(TUILiveKeyView *)self keyCapBackground];
-    [v19 setBackgroundColor:v18];
+    v18 = [MEMORY[0x1E69DC888] colorWithCGColor:UIKBGetNamedColor(flatColorName)];
+    keyCapBackground = [(TUILiveKeyView *)self keyCapBackground];
+    [keyCapBackground setBackgroundColor:v18];
 
-    v20 = [(TUILiveKeyView *)self traits];
-    if ([v20 blendForm] == 10)
+    traits2 = [(TUILiveKeyView *)self traits];
+    if ([traits2 blendForm] == 10)
     {
     }
 
     else
     {
-      v21 = [(TUILiveKeyView *)self traits];
-      v22 = [v21 blendForm];
+      traits3 = [(TUILiveKeyView *)self traits];
+      blendForm = [traits3 blendForm];
 
-      if (v22 != 11)
+      if (blendForm != 11)
       {
 LABEL_17:
 
@@ -1639,15 +1639,15 @@ LABEL_18:
         [(TUILiveKeyView *)self usesImage];
         if ([(TUILiveKeyView *)self usesImage])
         {
-          v27 = [(UIKBRenderTraits *)v52 symbolStyle];
-          if ([v27 usesSymbolImage])
+          symbolStyle = [(UIKBRenderTraits *)traitsCopy symbolStyle];
+          if ([symbolStyle usesSymbolImage])
           {
-            v28 = [v7 displayStringImage];
-            if (v28)
+            displayStringImage = [contentsCopy displayStringImage];
+            if (displayStringImage)
             {
-              if ([v7 stringKeycapOverImage])
+              if ([contentsCopy stringKeycapOverImage])
               {
-                v29 = [v7 forceImageKeycap] ^ 1;
+                v29 = [contentsCopy forceImageKeycap] ^ 1;
               }
 
               else
@@ -1669,26 +1669,26 @@ LABEL_18:
 
           if ([(TUILiveKeyView *)self usesImage]&& (v29 & 1) == 0)
           {
-            v45 = [(TUILiveKeyView *)self keyLabel];
+            keyLabel = [(TUILiveKeyView *)self keyLabel];
 
-            if (v45)
+            if (keyLabel)
             {
-              v46 = [(TUILiveKeyView *)self keyLabel];
-              [v46 removeFromSuperview];
+              keyLabel2 = [(TUILiveKeyView *)self keyLabel];
+              [keyLabel2 removeFromSuperview];
             }
 
-            v34 = [v7 displayStringImage];
-            [(TUILiveKeyView *)self setImageName:v34];
+            displayStringImage2 = [contentsCopy displayStringImage];
+            [(TUILiveKeyView *)self setImageName:displayStringImage2];
 LABEL_46:
 
             [(TUILiveKeyView *)self backgroundInsets];
             [(TUILiveKeyView *)self updateBackgroundWithInsets:?];
-            v47 = [(UIKBRenderTraits *)v52 geometry];
-            [v47 roundRectRadius];
+            geometry = [(UIKBRenderTraits *)traitsCopy geometry];
+            [geometry roundRectRadius];
             v49 = v48;
-            v50 = [(TUILiveKeyView *)self keyCapBackground];
-            v51 = [v50 layer];
-            [v51 setCornerRadius:v49];
+            keyCapBackground2 = [(TUILiveKeyView *)self keyCapBackground];
+            layer = [keyCapBackground2 layer];
+            [layer setCornerRadius:v49];
 
             goto LABEL_47;
           }
@@ -1699,53 +1699,53 @@ LABEL_46:
           [(TUILiveKeyView *)self usesImage];
         }
 
-        v30 = [(TUILiveKeyView *)self symbolImageView];
+        symbolImageView = [(TUILiveKeyView *)self symbolImageView];
 
-        if (v30)
+        if (symbolImageView)
         {
-          v31 = [(TUILiveKeyView *)self symbolImageView];
-          [v31 removeFromSuperview];
+          symbolImageView2 = [(TUILiveKeyView *)self symbolImageView];
+          [symbolImageView2 removeFromSuperview];
         }
 
-        v32 = [v7 displayString];
-        v33 = v32;
-        if (v32)
+        displayString = [contentsCopy displayString];
+        v33 = displayString;
+        if (displayString)
         {
-          v34 = v32;
+          displayStringImage2 = displayString;
         }
 
         else
         {
-          v35 = [v7 fallbackContents];
-          v34 = [v35 displayString];
+          fallbackContents = [contentsCopy fallbackContents];
+          displayStringImage2 = [fallbackContents displayString];
         }
 
-        v36 = [v7 secondaryDisplayStrings];
-        if ([v34 length])
+        secondaryDisplayStrings = [contentsCopy secondaryDisplayStrings];
+        if ([displayStringImage2 length])
         {
-          v37 = [v36 count];
-          v38 = [(TUILiveKeyView *)self keyCap];
+          v37 = [secondaryDisplayStrings count];
+          keyCap = [(TUILiveKeyView *)self keyCap];
           if (v37)
           {
-            [(TUILiveKeyView *)self updateLabelText:v38 secondaryStrings:v36];
+            [(TUILiveKeyView *)self updateLabelText:keyCap secondaryStrings:secondaryDisplayStrings];
           }
 
           else
           {
-            [(TUILiveKeyView *)self updateLabelText:v38];
+            [(TUILiveKeyView *)self updateLabelText:keyCap];
           }
         }
 
-        v39 = [(UIKBRenderTraits *)v52 symbolStyle];
-        [v39 fontSize];
+        symbolStyle2 = [(UIKBRenderTraits *)traitsCopy symbolStyle];
+        [symbolStyle2 fontSize];
         v41 = v40;
         [(TUILiveKeyView *)self fontSize];
         v43 = v42;
 
         if (v41 != v43)
         {
-          v44 = [(UIKBRenderTraits *)v52 symbolStyle];
-          [v44 fontSize];
+          symbolStyle3 = [(UIKBRenderTraits *)traitsCopy symbolStyle];
+          [symbolStyle3 fontSize];
           [(TUILiveKeyView *)self updateFontSize:?];
         }
 
@@ -1753,11 +1753,11 @@ LABEL_46:
       }
     }
 
-    v23 = [(TUILiveKeyView *)self keyCapBackground];
-    v24 = [v23 layer];
-    v25 = [(TUILiveKeyView *)self traits];
-    v26 = [v25 extraFiltersForType:*MEMORY[0x1E6979D78]];
-    [v24 setFilters:v26];
+    keyCapBackground3 = [(TUILiveKeyView *)self keyCapBackground];
+    layer2 = [keyCapBackground3 layer];
+    traits4 = [(TUILiveKeyView *)self traits];
+    v26 = [traits4 extraFiltersForType:*MEMORY[0x1E6979D78]];
+    [layer2 setFilters:v26];
 
     goto LABEL_17;
   }
@@ -1765,28 +1765,28 @@ LABEL_46:
 LABEL_47:
 }
 
-- (void)updateKeyStyle:(int64_t)a3
+- (void)updateKeyStyle:(int64_t)style
 {
-  if (self->_keyStyle != a3)
+  if (self->_keyStyle != style)
   {
-    self->_keyStyle = a3;
-    v4 = [(TUILiveKeyView *)self keyLabel];
+    self->_keyStyle = style;
+    keyLabel = [(TUILiveKeyView *)self keyLabel];
 
-    if (v4)
+    if (keyLabel)
     {
       [(TUILiveKeyView *)self updateLabelInsets];
     }
 
-    v5 = [(TUILiveKeyView *)self symbolImageView];
+    symbolImageView = [(TUILiveKeyView *)self symbolImageView];
 
-    if (v5)
+    if (symbolImageView)
     {
       [(TUILiveKeyView *)self updateSymbolInsets];
     }
 
-    v6 = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
+    keyCapBackgroundConstraints = [(TUILiveKeyView *)self keyCapBackgroundConstraints];
 
-    if (v6)
+    if (keyCapBackgroundConstraints)
     {
       [(TUILiveKeyView *)self backgroundInsets];
 
@@ -1795,21 +1795,21 @@ LABEL_47:
   }
 }
 
-- (UIEdgeInsets)edgeInsetInterpolationFromStart:(UIEdgeInsets)a3 end:(UIEdgeInsets)a4 atTime:(double)a5
+- (UIEdgeInsets)edgeInsetInterpolationFromStart:(UIEdgeInsets)start end:(UIEdgeInsets)end atTime:(double)time
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  v8 = a3.right;
-  v9 = a3.bottom;
-  v10 = a3.left;
-  [(TUILiveKeyView *)self linearInterpolationFromStart:a3.top end:a4.top atTime:a5];
+  right = end.right;
+  bottom = end.bottom;
+  left = end.left;
+  v8 = start.right;
+  v9 = start.bottom;
+  v10 = start.left;
+  [(TUILiveKeyView *)self linearInterpolationFromStart:start.top end:end.top atTime:time];
   v13 = v12;
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v10 end:left atTime:a5];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v10 end:left atTime:time];
   v15 = v14;
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v9 end:bottom atTime:a5];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v9 end:bottom atTime:time];
   v17 = v16;
-  [(TUILiveKeyView *)self linearInterpolationFromStart:v8 end:right atTime:a5];
+  [(TUILiveKeyView *)self linearInterpolationFromStart:v8 end:right atTime:time];
   v19 = v18;
   v20 = v13;
   v21 = v15;
@@ -1821,46 +1821,46 @@ LABEL_47:
   return result;
 }
 
-- (TUILiveKeyView)initWithKey:(id)a3 renderTraits:(id)a4 displayContents:(id)a5 inheritedFactory:(id)a6
+- (TUILiveKeyView)initWithKey:(id)key renderTraits:(id)traits displayContents:(id)contents inheritedFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  keyCopy = key;
+  traitsCopy = traits;
+  contentsCopy = contents;
+  factoryCopy = factory;
   v39.receiver = self;
   v39.super_class = TUILiveKeyView;
   v15 = [(TUILiveKeyView *)&v39 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v15)
   {
-    v16 = [v13 displayString];
-    v17 = v16;
-    if (!v16)
+    displayString = [contentsCopy displayString];
+    displayString2 = displayString;
+    if (!displayString)
     {
-      v6 = [v13 fallbackContents];
-      v17 = [v6 displayString];
+      fallbackContents = [contentsCopy fallbackContents];
+      displayString2 = [fallbackContents displayString];
     }
 
-    objc_storeStrong(&v15->_keyCap, v17);
-    if (!v16)
+    objc_storeStrong(&v15->_keyCap, displayString2);
+    if (!displayString)
     {
     }
 
-    v15->_keyStyle = [v11 style];
+    v15->_keyStyle = [keyCopy style];
     v15->_isShowingHighlight = 0;
     v15->_fontSize = 0.0;
-    if ([v11 style] == -1)
+    if ([keyCopy style] == -1)
     {
       v15->_keyStyle = 2;
     }
 
-    objc_storeStrong(&v15->_traits, a4);
-    v18 = [v12 symbolStyle];
-    if ([v18 usesSymbolImage])
+    objc_storeStrong(&v15->_traits, traits);
+    symbolStyle = [traitsCopy symbolStyle];
+    if ([symbolStyle usesSymbolImage])
     {
-      v19 = [v13 displayStringImage];
-      if (v19)
+      displayStringImage = [contentsCopy displayStringImage];
+      if (displayStringImage)
       {
-        v20 = [v13 stringKeycapOverImage] ^ 1;
+        v20 = [contentsCopy stringKeycapOverImage] ^ 1;
       }
 
       else
@@ -1868,7 +1868,7 @@ LABEL_47:
         v20 = 0;
       }
 
-      if (([v14 preferStringKeycapOverImage] & 1) == 0)
+      if (([factoryCopy preferStringKeycapOverImage] & 1) == 0)
       {
         if (v20)
         {
@@ -1882,18 +1882,18 @@ LABEL_47:
     else
     {
 
-      if (![v14 preferStringKeycapOverImage])
+      if (![factoryCopy preferStringKeycapOverImage])
       {
         goto LABEL_18;
       }
     }
 
-    if ([v13 forceImageKeycap])
+    if ([contentsCopy forceImageKeycap])
     {
 LABEL_16:
-      v21 = [v13 displayStringImage];
+      displayStringImage2 = [contentsCopy displayStringImage];
       imageName = v15->_imageName;
-      v15->_imageName = v21;
+      v15->_imageName = displayStringImage2;
 
       v23 = 1;
       goto LABEL_19;
@@ -1902,68 +1902,68 @@ LABEL_16:
 LABEL_18:
     v23 = 0;
 LABEL_19:
-    v24 = [v11 backingTree];
-    v25 = [v24 displayType];
+    backingTree = [keyCopy backingTree];
+    displayType = [backingTree displayType];
 
-    if (v25 == 23)
+    if (displayType == 23)
     {
       v15->_isShift = 1;
     }
 
     v15->_usesBlueBackground = 0;
-    if ([v11 layoutType] != 3)
+    if ([keyCopy layoutType] != 3)
     {
-      if ([v11 layoutType] == 4)
+      if ([keyCopy layoutType] == 4)
       {
         v15->_layoutType = 4;
         v15->_layoutShape = 0;
-        v29 = [v11 backingTree];
-        v30 = [v29 name];
-        [(TUILiveKeyView *)v15 setAccessibilityIdentifier:v30];
+        backingTree2 = [keyCopy backingTree];
+        name = [backingTree2 name];
+        [(TUILiveKeyView *)v15 setAccessibilityIdentifier:name];
       }
 
       else
       {
-        if ([v11 layoutShape] == -1)
+        if ([keyCopy layoutShape] == -1)
         {
-          v34 = 0;
+          layoutShape = 0;
         }
 
         else
         {
-          v34 = [v11 layoutShape];
+          layoutShape = [keyCopy layoutShape];
         }
 
-        v15->_layoutShape = v34;
-        if ([v11 layoutType] == -1)
+        v15->_layoutShape = layoutShape;
+        if ([keyCopy layoutType] == -1)
         {
           v15->_layoutType = 2;
         }
 
         else
         {
-          v15->_layoutType = [v11 layoutType];
+          v15->_layoutType = [keyCopy layoutType];
         }
       }
 
       goto LABEL_35;
     }
 
-    v38 = v14;
-    v26 = [v12 backgroundGradient];
-    v27 = [v26 flatColorName];
-    if ([v27 containsString:@"Blue"])
+    v38 = factoryCopy;
+    backgroundGradient = [traitsCopy backgroundGradient];
+    flatColorName = [backgroundGradient flatColorName];
+    if ([flatColorName containsString:@"Blue"])
     {
-      v28 = v12;
+      v28 = traitsCopy;
     }
 
     else
     {
-      v28 = v12;
-      [v12 layeredForegroundGradient];
+      v28 = traitsCopy;
+      [traitsCopy layeredForegroundGradient];
       v31 = v37 = v23;
-      v32 = [v31 flatColorName];
-      v33 = [v32 containsString:@"Blue"];
+      flatColorName2 = [v31 flatColorName];
+      v33 = [flatColorName2 containsString:@"Blue"];
 
       v23 = v37;
       if (!v33)
@@ -1971,11 +1971,11 @@ LABEL_19:
 LABEL_28:
         v15->_layoutType = 3;
         v15->_layoutShape = 0;
-        v12 = v28;
-        v14 = v38;
+        traitsCopy = v28;
+        factoryCopy = v38;
 LABEL_35:
-        v35 = [v14 renderConfig];
-        [(TUILiveKeyView *)v15 setRenderConfig:v35];
+        renderConfig = [factoryCopy renderConfig];
+        [(TUILiveKeyView *)v15 setRenderConfig:renderConfig];
 
         v15->_usesImage = v23;
         [(TUILiveKeyView *)v15 setBackgroundColor:0];

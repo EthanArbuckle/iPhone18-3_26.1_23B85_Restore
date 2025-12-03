@@ -1,22 +1,22 @@
 @interface CDXClientSession
 - (BOOL)retransmitEvent;
-- (BOOL)sendData:(id)a3 toParticipants:(id)a4;
-- (BOOL)sendRaw:(id)a3 toParticipants:(id)a4;
-- (CDXClientSession)initWithCDXClient:(id)a3 ticket:(id)a4 sessionKey:(id)a5;
-- (id)decrypt:(id)a3 ticket:(id)a4;
-- (id)encrypt:(id)a3;
+- (BOOL)sendData:(id)data toParticipants:(id)participants;
+- (BOOL)sendRaw:(id)raw toParticipants:(id)participants;
+- (CDXClientSession)initWithCDXClient:(id)client ticket:(id)ticket sessionKey:(id)key;
+- (id)decrypt:(id)decrypt ticket:(id)ticket;
+- (id)encrypt:(id)encrypt;
 - (void)dealloc;
 - (void)invalidate;
-- (void)recvRaw:(id)a3 ticket:(id)a4;
+- (void)recvRaw:(id)raw ticket:(id)ticket;
 - (void)resetRetransmitTimer;
 - (void)retransmitEvent;
-- (void)setTicket:(id)a3;
+- (void)setTicket:(id)ticket;
 - (void)stopRetransmitTimer;
 @end
 
 @implementation CDXClientSession
 
-- (CDXClientSession)initWithCDXClient:(id)a3 ticket:(id)a4 sessionKey:(id)a5
+- (CDXClientSession)initWithCDXClient:(id)client ticket:(id)ticket sessionKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -24,12 +24,12 @@
   v8 = [(CDXClientSession *)&v17 init];
   if (v8)
   {
-    v8->CDXClient_ = a3;
-    v9 = malloc_type_malloc(2 * [a4 CDXTicketPCNT], 0x1000040BDFB0063uLL);
+    v8->CDXClient_ = client;
+    v9 = malloc_type_malloc(2 * [ticket CDXTicketPCNT], 0x1000040BDFB0063uLL);
     v8->ack_ = v9;
-    bzero(v9, 2 * [a4 CDXTicketPCNT]);
-    v8->ticket_ = [a4 copyWithZone:{-[CDXClientSession zone](v8, "zone")}];
-    v10 = [a5 copyWithZone:{-[CDXClientSession zone](v8, "zone")}];
+    bzero(v9, 2 * [ticket CDXTicketPCNT]);
+    v8->ticket_ = [ticket copyWithZone:{-[CDXClientSession zone](v8, "zone")}];
+    v10 = [key copyWithZone:{-[CDXClientSession zone](v8, "zone")}];
     v11 = v10;
     v8->sessionKey_ = v10;
     memset(md, 170, 16);
@@ -88,7 +88,7 @@
 - (BOOL)retransmitEvent
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -158,7 +158,7 @@ LABEL_13:
         WORD2(v28) = 2112;
         *(&v28 + 6) = v4;
         HIWORD(v28) = 2048;
-        v29 = self;
+        selfCopy3 = self;
         LOWORD(v30) = 1024;
         *(&v30 + 2) = v15;
         v9 = "CDXClient [%s] %s:%d %@(%p) retransmitAttempts = %d";
@@ -180,7 +180,7 @@ LABEL_13:
       WORD2(v28) = 2112;
       *(&v28 + 6) = v4;
       HIWORD(v28) = 2048;
-      v29 = self;
+      selfCopy3 = self;
       LOWORD(v30) = 1024;
       *(&v30 + 2) = v16;
       _os_log_debug_impl(&dword_24E50C000, v13, OS_LOG_TYPE_DEBUG, "CDXClient [%s] %s:%d %@(%p) retransmitAttempts = %d", v27, 0x36u);
@@ -223,8 +223,8 @@ LABEL_18:
 {
   if (!self->retransmitTimer_)
   {
-    v3 = [self->CDXClient_ queue];
-    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
+    queue = [self->CDXClient_ queue];
+    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     self->retransmitTimer_ = v4;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -270,27 +270,27 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
   [(CDXClientSession *)&v3 dealloc];
 }
 
-- (void)setTicket:(id)a3
+- (void)setTicket:(id)ticket
 {
-  if ([a3 CDXTicketWellFormed] && -[NSData CDXTicketIsRelatedToTicket:](self->ticket_, "CDXTicketIsRelatedToTicket:", a3))
+  if ([ticket CDXTicketWellFormed] && -[NSData CDXTicketIsRelatedToTicket:](self->ticket_, "CDXTicketIsRelatedToTicket:", ticket))
   {
     ticket = self->ticket_;
-    self->ticket_ = [a3 copyWithZone:{-[CDXClientSession zone](self, "zone")}];
+    self->ticket_ = [ticket copyWithZone:{-[CDXClientSession zone](self, "zone")}];
   }
 }
 
-- (id)decrypt:(id)a3 ticket:(id)a4
+- (id)decrypt:(id)decrypt ticket:(id)ticket
 {
-  v4 = a3;
+  decryptCopy = decrypt;
   iv[2] = *MEMORY[0x277D85DE8];
   v19 = 0;
   if (self->sessionKey_)
   {
-    v7 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(a3, "length") + 16}];
-    iv[0] = *([a4 bytes] + 4);
-    iv[1] = *([a4 bytes] + 4);
-    LOBYTE(iv[0]) |= [a4 CDXTicketPID];
-    v8 = CCCrypt(1u, 0, 1u, -[NSData bytes](self->sessionKeyPrepped_, "bytes"), -[NSData length](self->sessionKeyPrepped_, "length"), iv, [v4 bytes], objc_msgSend(v4, "length"), objc_msgSend(v7, "mutableBytes"), objc_msgSend(v7, "length"), &v19);
+    v7 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(decrypt, "length") + 16}];
+    iv[0] = *([ticket bytes] + 4);
+    iv[1] = *([ticket bytes] + 4);
+    LOBYTE(iv[0]) |= [ticket CDXTicketPID];
+    v8 = CCCrypt(1u, 0, 1u, -[NSData bytes](self->sessionKeyPrepped_, "bytes"), -[NSData length](self->sessionKeyPrepped_, "length"), iv, [decryptCopy bytes], objc_msgSend(decryptCopy, "length"), objc_msgSend(v7, "mutableBytes"), objc_msgSend(v7, "length"), &v19);
     if (v8)
     {
       v9 = v8;
@@ -315,41 +315,41 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
         }
       }
 
-      v12 = [(CDXClientSession *)self CDXClient];
+      cDXClient = [(CDXClientSession *)self CDXClient];
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277CCA590];
       v20[0] = *MEMORY[0x277CCA450];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decryption failed. (CCCrypt error %d)", v9];
       v20[1] = @"CDXTicket";
       v21[0] = v15;
-      v21[1] = a4;
-      -[CDXClient setError:](v12, "setError:", [v13 errorWithDomain:v14 code:v9 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v21, v20, 2)}]);
-      v4 = 0;
+      v21[1] = ticket;
+      -[CDXClient setError:](cDXClient, "setError:", [v13 errorWithDomain:v14 code:v9 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v21, v20, 2)}]);
+      decryptCopy = 0;
     }
 
     else
     {
       [v7 setLength:v19];
-      v4 = v7;
+      decryptCopy = v7;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v4;
+  return decryptCopy;
 }
 
-- (id)encrypt:(id)a3
+- (id)encrypt:(id)encrypt
 {
-  v3 = a3;
+  encryptCopy = encrypt;
   iv[2] = *MEMORY[0x277D85DE8];
   v17 = 0;
   if (self->sessionKey_)
   {
-    v5 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(a3, "length") + 16}];
+    v5 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(encrypt, "length") + 16}];
     iv[0] = *([(NSData *)self->ticket_ bytes]+ 4);
     iv[1] = *([(NSData *)self->ticket_ bytes]+ 4);
     LOBYTE(iv[0]) |= [(NSData *)self->ticket_ CDXTicketPID];
-    v6 = CCCrypt(0, 0, 1u, -[NSData bytes](self->sessionKeyPrepped_, "bytes"), -[NSData length](self->sessionKeyPrepped_, "length"), iv, [v3 bytes], objc_msgSend(v3, "length"), objc_msgSend(v5, "mutableBytes"), objc_msgSend(v5, "length"), &v17);
+    v6 = CCCrypt(0, 0, 1u, -[NSData bytes](self->sessionKeyPrepped_, "bytes"), -[NSData length](self->sessionKeyPrepped_, "length"), iv, [encryptCopy bytes], objc_msgSend(encryptCopy, "length"), objc_msgSend(v5, "mutableBytes"), objc_msgSend(v5, "length"), &v17);
     if (v6)
     {
       v7 = v6;
@@ -374,7 +374,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
         }
       }
 
-      v10 = [(CDXClientSession *)self CDXClient];
+      cDXClient = [(CDXClientSession *)self CDXClient];
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277CCA590];
       v18[0] = *MEMORY[0x277CCA450];
@@ -382,47 +382,47 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
       v18[1] = @"CDXTicket";
       v19[0] = v13;
       v19[1] = [(CDXClientSession *)self ticket];
-      -[CDXClient setError:](v10, "setError:", [v11 errorWithDomain:v12 code:v7 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 2)}]);
-      v3 = 0;
+      -[CDXClient setError:](cDXClient, "setError:", [v11 errorWithDomain:v12 code:v7 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 2)}]);
+      encryptCopy = 0;
     }
 
     else
     {
       [v5 setLength:v17];
-      v3 = v5;
+      encryptCopy = v5;
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v3;
+  return encryptCopy;
 }
 
-- (BOOL)sendRaw:(id)a3 toParticipants:(id)a4
+- (BOOL)sendRaw:(id)raw toParticipants:(id)participants
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB28] data];
-  v8 = [(CDXClientSession *)self encrypt:a3];
+  data = [MEMORY[0x277CBEB28] data];
+  v8 = [(CDXClientSession *)self encrypt:raw];
   if (v8)
   {
     v9 = v8;
-    [v7 appendData:self->ticket_];
-    if (a4)
+    [data appendData:self->ticket_];
+    if (participants)
     {
-      v10 = [v7 mutableBytes];
-      v11 = (v10 + [v7 length]);
-      v12 = [(NSData *)self->ticket_ CDXTicketPCNT];
-      v13 = [v7 mutableCDXTicket];
-      *v13 |= 2u;
-      v14 = (v12 + 7) / 8;
-      [v7 increaseLengthBy:v14];
+      mutableBytes = [data mutableBytes];
+      v11 = (mutableBytes + [data length]);
+      cDXTicketPCNT = [(NSData *)self->ticket_ CDXTicketPCNT];
+      mutableCDXTicket = [data mutableCDXTicket];
+      *mutableCDXTicket |= 2u;
+      v14 = (cDXTicketPCNT + 7) / 8;
+      [data increaseLengthBy:v14];
       bzero(v11, v14);
-      if (v12 >= 1)
+      if (cDXTicketPCNT >= 1)
       {
         v15 = 0;
-        v16 = v12 & 0x7FFFFFFF;
+        v16 = cDXTicketPCNT & 0x7FFFFFFF;
         do
         {
-          if ([a4 containsIndex:v15])
+          if ([participants containsIndex:v15])
           {
             *(v11 + (v15 >> 3)) |= 0x80u >> (v15 & 7);
           }
@@ -434,7 +434,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
       }
     }
 
-    [v7 appendData:v9];
+    [data appendData:v9];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v18 = MEMORY[0x277CE5818];
     if (ErrorLogLevelForModule >= 8)
@@ -446,7 +446,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          [v7 length];
+          [data length];
           *v32 = 136315906;
           *&v32[4] = v19;
           OUTLINED_FUNCTION_1();
@@ -457,7 +457,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
 
       else if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [v7 length];
+        [data length];
         *v32 = 136315906;
         *&v32[4] = v19;
         OUTLINED_FUNCTION_1();
@@ -466,7 +466,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
       }
     }
 
-    if ([v7 length] < 0x5DC)
+    if ([data length] < 0x5DC)
     {
       goto LABEL_23;
     }
@@ -485,7 +485,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
         goto LABEL_23;
       }
 
-      [v7 length];
+      [data length];
       *v32 = 136316162;
       *&v32[4] = v22;
       OUTLINED_FUNCTION_1();
@@ -515,7 +515,7 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
         goto LABEL_23;
       }
 
-      [v7 length];
+      [data length];
       *v32 = 136316674;
       *&v32[4] = v29;
       OUTLINED_FUNCTION_1();
@@ -526,40 +526,40 @@ void __40__CDXClientSession_resetRetransmitTimer__block_invoke_2(uint64_t a1)
 
     _os_log_error_impl(v24, v27, OS_LOG_TYPE_ERROR, v25, v26, v28);
 LABEL_23:
-    LOBYTE(v8) = [v7 length] <= 0x5DB && -[CDXClient sendRaw:](self->CDXClient_, "sendRaw:", v7);
+    LOBYTE(v8) = [data length] <= 0x5DB && -[CDXClient sendRaw:](self->CDXClient_, "sendRaw:", data);
   }
 
   v30 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)sendData:(id)a3 toParticipants:(id)a4
+- (BOOL)sendData:(id)data toParticipants:(id)participants
 {
   v52 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!data)
   {
     goto LABEL_40;
   }
 
-  if (a4)
+  if (participants)
   {
-    v9 = [a4 count];
+    v9 = [participants count];
     if (!v9)
     {
       goto LABEL_29;
     }
   }
 
-  v10 = [MEMORY[0x277CBEB28] data];
-  [v10 increaseLengthBy:8];
-  [v10 appendData:a3];
-  v11 = [v10 mutableBytes];
-  *v11 = 512;
+  data = [MEMORY[0x277CBEB28] data];
+  [data increaseLengthBy:8];
+  [data appendData:data];
+  mutableBytes = [data mutableBytes];
+  *mutableBytes = 512;
   v12 = self->seq_ + 1;
   self->seq_ = v12;
-  *(v11 + 4) = v12;
-  *(v11 + 2) = bswap32([v10 length] - 8) >> 16;
-  if (!a4)
+  *(mutableBytes + 4) = v12;
+  *(mutableBytes + 2) = bswap32([data length] - 8) >> 16;
+  if (!participants)
   {
     self->ack_[self->pid_] = self->seq_;
   }
@@ -585,10 +585,10 @@ LABEL_23:
     if (OUTLINED_FUNCTION_13())
     {
       v15 = [-[CDXClientSession description](self "description")];
-      v16 = *(v11 + 4);
-      if (a4)
+      v16 = *(mutableBytes + 4);
+      if (participants)
       {
-        v17 = [objc_msgSend(a4 "description")];
+        v17 = [objc_msgSend(participants "description")];
       }
 
       else
@@ -612,14 +612,14 @@ LABEL_23:
     }
   }
 
-  if ([a4 count] == 1)
+  if ([participants count] == 1)
   {
-    v18 = [a4 firstIndex];
-    if (v18 < [(NSData *)self->ticket_ CDXTicketPCNT])
+    firstIndex = [participants firstIndex];
+    if (firstIndex < [(NSData *)self->ticket_ CDXTicketPCNT])
     {
-      *(v11 + 1) |= 1u;
+      *(mutableBytes + 1) |= 1u;
       ack = self->ack_;
-      *(v11 + 6) = ack[[a4 firstIndex]];
+      *(mutableBytes + 6) = ack[[participants firstIndex]];
     }
   }
 
@@ -631,7 +631,7 @@ LABEL_23:
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        [v10 length];
+        [data length];
         *v43 = 136315906;
         *&v43[4] = v20;
         OUTLINED_FUNCTION_0();
@@ -643,7 +643,7 @@ LABEL_23:
 
     else if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [v10 length];
+      [data length];
       *v43 = 136315906;
       *&v43[4] = v20;
       OUTLINED_FUNCTION_0();
@@ -653,7 +653,7 @@ LABEL_23:
     }
   }
 
-  if ([v10 length] >= 0x5DC)
+  if ([data length] >= 0x5DC)
   {
     if (objc_opt_class() == self)
     {
@@ -672,7 +672,7 @@ LABEL_40:
         goto LABEL_29;
       }
 
-      [v10 length];
+      [data length];
       *v43 = 136316162;
       *&v43[4] = v34;
       OUTLINED_FUNCTION_0();
@@ -703,7 +703,7 @@ LABEL_40:
         goto LABEL_29;
       }
 
-      [v10 length];
+      [data length];
       *v43 = 136316674;
       *&v43[4] = v41;
       OUTLINED_FUNCTION_0();
@@ -717,12 +717,12 @@ LABEL_40:
   }
 
   v26 = self->lastSent_;
-  self->lastSent_ = [v10 copyWithZone:{-[CDXClientSession zone](self, "zone")}];
+  self->lastSent_ = [data copyWithZone:{-[CDXClientSession zone](self, "zone")}];
   [(CDXClientSession *)self resetRetransmitTimer];
   participantsInFlight = self->participantsInFlight_;
-  if (a4)
+  if (participants)
   {
-    v28 = [a4 mutableCopyWithZone:{-[CDXClientSession zone](self, "zone")}];
+    v28 = [participants mutableCopyWithZone:{-[CDXClientSession zone](self, "zone")}];
   }
 
   else
@@ -732,17 +732,17 @@ LABEL_40:
 
   self->participantsInFlight_ = v28;
 
-  LOBYTE(v9) = [(CDXClientSession *)self sendRaw:v10 toParticipants:a4];
+  LOBYTE(v9) = [(CDXClientSession *)self sendRaw:data toParticipants:participants];
 LABEL_29:
   v29 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)recvRaw:(id)a3 ticket:(id)a4
+- (void)recvRaw:(id)raw ticket:(id)ticket
 {
   v80 = *MEMORY[0x277D85DE8];
-  v10 = [a4 CDXTicketPID];
-  v11 = [(CDXClientSession *)self decrypt:a3 ticket:a4];
+  cDXTicketPID = [ticket CDXTicketPID];
+  v11 = [(CDXClientSession *)self decrypt:raw ticket:ticket];
   if (v11)
   {
     v12 = v11;
@@ -776,20 +776,20 @@ LABEL_29:
           v74 = 2080;
           Name = sel_getName(a2);
           v76 = 1024;
-          v77 = v10;
+          v77 = cDXTicketPID;
           v78 = 2080;
           v79 = [objc_msgSend(v12 "description")];
-          _os_log_impl(&dword_24E50C000, a3, OS_LOG_TYPE_DEFAULT, "CDXClient [%s] %s:%d %s: %s PID=%d, %s", buf, 0x40u);
+          _os_log_impl(&dword_24E50C000, raw, OS_LOG_TYPE_DEFAULT, "CDXClient [%s] %s:%d %s: %s PID=%d, %s", buf, 0x40u);
           v14 = MEMORY[0x277CE5818];
         }
       }
 
-      v15 = [v12 bytes];
-      if (!*v15)
+      bytes = [v12 bytes];
+      if (!*bytes)
       {
-        v16 = v15;
+        v16 = bytes;
         v17 = Te2 + 488;
-        if (v15[1])
+        if (bytes[1])
         {
           if (VRTraceGetErrorLogLevelForModule() >= 6)
           {
@@ -855,7 +855,7 @@ LABEL_29:
               }
             }
 
-            [(NSMutableIndexSet *)self->participantsInFlight_ removeIndex:v10];
+            [(NSMutableIndexSet *)self->participantsInFlight_ removeIndex:cDXTicketPID];
             if (![(NSMutableIndexSet *)self->participantsInFlight_ count])
             {
               [(CDXClientSession *)self stopRetransmitTimer];
@@ -870,8 +870,8 @@ LABEL_29:
           {
             v45 = *(v16 + 2);
             ack = self->ack_;
-            v47 = v10;
-            if (v45 <= ack[v10])
+            v47 = cDXTicketPID;
+            if (v45 <= ack[cDXTicketPID])
             {
               if (VRTraceGetErrorLogLevelForModule() >= 6)
               {
@@ -892,11 +892,11 @@ LABEL_29:
 
             else
             {
-              ack[v10] = v45;
+              ack[cDXTicketPID] = v45;
               inboundHandler = self->inboundHandler_;
               if (inboundHandler)
               {
-                inboundHandler[2](inboundHandler, v10, v12);
+                inboundHandler[2](inboundHandler, cDXTicketPID, v12);
               }
 
               if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -915,12 +915,12 @@ LABEL_29:
                 }
               }
 
-              -[CDXClientSessionDelegate CDXClientSession:receivedData:from:](self->delegate_, "CDXClientSession:receivedData:from:", self, [v12 subdataWithRange:{8, objc_msgSend(v12, "length") - 8}], v10);
+              -[CDXClientSessionDelegate CDXClientSession:receivedData:from:](self->delegate_, "CDXClientSession:receivedData:from:", self, [v12 subdataWithRange:{8, objc_msgSend(v12, "length") - 8}], cDXTicketPID);
             }
 
             v63 = 256;
             v64 = self->seq_;
-            v65 = self->ack_[v10];
+            v65 = self->ack_[cDXTicketPID];
             if (VRTraceGetErrorLogLevelForModule() >= 8)
             {
               v58 = VRTraceErrorLogLevelToCSTR();
@@ -966,7 +966,7 @@ LABEL_29:
   v13 = *MEMORY[0x277D85DE8];
   v2 = *(a2 + 56);
   v7 = 136315906;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2080;
   OUTLINED_FUNCTION_3();
   v10 = 338;

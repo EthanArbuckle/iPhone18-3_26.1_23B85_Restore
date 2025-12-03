@@ -1,30 +1,30 @@
 @interface HMDUserPushCache
 - (BOOL)isExpired;
 - (HMDUserPushCache)init;
-- (HMDUserPushCache)initWithDevice:(id)a3;
+- (HMDUserPushCache)initWithDevice:(id)device;
 @end
 
 @implementation HMDUserPushCache
 
 - (BOOL)isExpired
 {
-  v2 = [(HMDUserPushCache *)self expirationDate];
-  [v2 timeIntervalSinceNow];
+  expirationDate = [(HMDUserPushCache *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v4 = v3 < 0.0;
 
   return v4;
 }
 
-- (HMDUserPushCache)initWithDevice:(id)a3
+- (HMDUserPushCache)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = HMDUserPushCache;
   v6 = [(HMDUserPushCache *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:userPushCacheTimeInterval];
     expirationDate = v7->_expirationDate;
     v7->_expirationDate = v8;

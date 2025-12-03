@@ -1,75 +1,75 @@
 @interface MPStyleManager
 + (id)sharedManager;
-+ (void)loadStyleManagerWithPaths:(id)a3;
++ (void)loadStyleManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (BOOL)authorOnAspectRatioChangeForStyleID:(id)a3;
-- (BOOL)canCancelAuthoringForStyleID:(id)a3;
-- (BOOL)canUseClusteringForStyleID:(id)a3;
-- (BOOL)easeKenBurnsForStyleID:(id)a3;
-- (BOOL)hasImagesForLayerID:(id)a3 forStyleID:(id)a4;
-- (BOOL)isDynamicForStyleID:(id)a3;
-- (BOOL)needsFaceDetectionForStyleID:(id)a3;
-- (BOOL)needsReauthorOnAspectRatioChange:(id)a3;
-- (BOOL)needsStyleUpdateOnSlideChangeForStyleID:(id)a3;
-- (BOOL)needsTimingUpdateOnSlideChangeForStyleID:(id)a3;
-- (BOOL)needsToBeLiveForStyleID:(id)a3;
-- (BOOL)supportsRandomTransitionForStyleID:(id)a3;
-- (CGColor)backgroundCGColorForStyleID:(id)a3;
-- (CGSize)defaultSizeForZIndex:(int64_t)a3 ofStyle:(id)a4;
-- (MPStyleManager)initWithPaths:(id)a3;
-- (double)allowUserDefinedDurationForStyleID:(id)a3;
-- (double)basePeriodForLayerIndex:(int64_t)a3 ofStyle:(id)a4;
-- (double)defaultAutoKenBurnsLikelihoodForEffect:(id)a3 withPreset:(id)a4 ofStyle:(id)a5;
-- (double)defaultAutoKenBurnsLikelihoodForZIndex:(int64_t)a3 ofStyle:(id)a4;
-- (double)defaultEffectDurationForLayer:(int64_t)a3 ofStyle:(id)a4;
-- (double)defaultFilterLikelihoodForZIndex:(int64_t)a3 ofStyle:(id)a4;
-- (double)defaultTransitionDurationForLayer:(int64_t)a3 ofStyle:(id)a4 withAspectRatio:(double)a5;
-- (double)delayFaceDetectionForStyleID:(id)a3;
-- (double)displayDurationFactorForEffectID:(id)a3 inStyleID:(id)a4;
-- (double)displayDurationFactorForStyleID:(id)a3;
-- (double)minimumDurationForEffectID:(id)a3 forStyleID:(id)a4;
-- (double)minimumEffectDurationForStyleID:(id)a3;
-- (double)navigationIncrementForStyleID:(id)a3;
-- (double)posterTimeForStyleID:(id)a3;
-- (double)shortestDurationForEffectID:(id)a3 forStyleID:(id)a4;
-- (double)shortestEffectDurationForStyleID:(id)a3;
-- (id)_containerDescriptionForLayerAtIndex:(int64_t)a3 ofStyle:(id)a4;
-- (id)backgroundColorLayersForStyleID:(id)a3;
-- (id)defaultColorSchemeForStyleID:(id)a3;
-- (id)defaultPositionForZIndex:(int64_t)a3 ofStyle:(id)a4;
-- (id)demoDocumentWithImages:(id)a3 properties:(id)a4 count:(int64_t)a5 options:(id)a6;
-- (id)effectIDsForStyleID:(id)a3;
-- (id)effectPresetIDsForLayerIndex:(int64_t)a3 ofStyleID:(id)a4;
-- (id)effectPresetIDsForStyleID:(id)a3;
-- (id)effectPresetsForLayerIndex:(int64_t)a3 ofStyleID:(id)a4;
-- (id)framesForStyleID:(id)a3;
-- (id)interstitialEffectLayoutForStyleID:(id)a3;
-- (id)interstitialEffectLayoutsForStyleID:(id)a3;
-- (id)layerIDForLayerIndex:(int64_t)a3 ofStyle:(id)a4;
-- (id)localizedNameForStyleID:(id)a3;
-- (id)localizedNameForStyleID:(id)a3 withLanguage:(id)a4;
-- (id)previewPathForStyleID:(id)a3;
-- (id)resourcePathForStyleID:(id)a3;
-- (id)songPathsForStyleID:(id)a3;
-- (id)thumbnailPathForStyleID:(id)a3;
-- (id)thumbnailPathForStyleID:(id)a3 scaleFactor:(double)a4;
-- (id)titleEffectLayoutForStyleID:(id)a3;
-- (id)titleEffectLayoutsForStyleID:(id)a3;
-- (id)transitionsForStyleID:(id)a3;
-- (id)versionOfStyleID:(id)a3;
-- (int64_t)antialiasLevelForStyleID:(id)a3;
-- (int64_t)defaultAutoKenBurnsLevelForEffect:(id)a3 withPreset:(id)a4 ofStyle:(id)a5;
-- (int64_t)defaultAutoKenBurnsLevelForZIndex:(int64_t)a3 ofStyle:(id)a4;
-- (int64_t)dynamicBatchSizeForStyleID:(id)a3;
-- (int64_t)indexOfMainLayerForStyleID:(id)a3;
-- (int64_t)indexOfTitleEffectLayerForStyleID:(id)a3;
-- (int64_t)kenBurnsOffsetTypeForStyleID:(id)a3;
-- (int64_t)layerIndexForLayerID:(id)a3 ofStyle:(id)a4;
-- (int64_t)numberOfSlidesToPreloadForStyleID:(id)a3;
-- (unint64_t)mediaPresentationOrderForStyleID:(id)a3;
-- (unint64_t)regionOfInterestPickModeForStyleID:(id)a3;
-- (unint64_t)reorderModeForStyleID:(id)a3;
-- (unint64_t)subtitleOrderForStyleID:(id)a3;
+- (BOOL)authorOnAspectRatioChangeForStyleID:(id)d;
+- (BOOL)canCancelAuthoringForStyleID:(id)d;
+- (BOOL)canUseClusteringForStyleID:(id)d;
+- (BOOL)easeKenBurnsForStyleID:(id)d;
+- (BOOL)hasImagesForLayerID:(id)d forStyleID:(id)iD;
+- (BOOL)isDynamicForStyleID:(id)d;
+- (BOOL)needsFaceDetectionForStyleID:(id)d;
+- (BOOL)needsReauthorOnAspectRatioChange:(id)change;
+- (BOOL)needsStyleUpdateOnSlideChangeForStyleID:(id)d;
+- (BOOL)needsTimingUpdateOnSlideChangeForStyleID:(id)d;
+- (BOOL)needsToBeLiveForStyleID:(id)d;
+- (BOOL)supportsRandomTransitionForStyleID:(id)d;
+- (CGColor)backgroundCGColorForStyleID:(id)d;
+- (CGSize)defaultSizeForZIndex:(int64_t)index ofStyle:(id)style;
+- (MPStyleManager)initWithPaths:(id)paths;
+- (double)allowUserDefinedDurationForStyleID:(id)d;
+- (double)basePeriodForLayerIndex:(int64_t)index ofStyle:(id)style;
+- (double)defaultAutoKenBurnsLikelihoodForEffect:(id)effect withPreset:(id)preset ofStyle:(id)style;
+- (double)defaultAutoKenBurnsLikelihoodForZIndex:(int64_t)index ofStyle:(id)style;
+- (double)defaultEffectDurationForLayer:(int64_t)layer ofStyle:(id)style;
+- (double)defaultFilterLikelihoodForZIndex:(int64_t)index ofStyle:(id)style;
+- (double)defaultTransitionDurationForLayer:(int64_t)layer ofStyle:(id)style withAspectRatio:(double)ratio;
+- (double)delayFaceDetectionForStyleID:(id)d;
+- (double)displayDurationFactorForEffectID:(id)d inStyleID:(id)iD;
+- (double)displayDurationFactorForStyleID:(id)d;
+- (double)minimumDurationForEffectID:(id)d forStyleID:(id)iD;
+- (double)minimumEffectDurationForStyleID:(id)d;
+- (double)navigationIncrementForStyleID:(id)d;
+- (double)posterTimeForStyleID:(id)d;
+- (double)shortestDurationForEffectID:(id)d forStyleID:(id)iD;
+- (double)shortestEffectDurationForStyleID:(id)d;
+- (id)_containerDescriptionForLayerAtIndex:(int64_t)index ofStyle:(id)style;
+- (id)backgroundColorLayersForStyleID:(id)d;
+- (id)defaultColorSchemeForStyleID:(id)d;
+- (id)defaultPositionForZIndex:(int64_t)index ofStyle:(id)style;
+- (id)demoDocumentWithImages:(id)images properties:(id)properties count:(int64_t)count options:(id)options;
+- (id)effectIDsForStyleID:(id)d;
+- (id)effectPresetIDsForLayerIndex:(int64_t)index ofStyleID:(id)d;
+- (id)effectPresetIDsForStyleID:(id)d;
+- (id)effectPresetsForLayerIndex:(int64_t)index ofStyleID:(id)d;
+- (id)framesForStyleID:(id)d;
+- (id)interstitialEffectLayoutForStyleID:(id)d;
+- (id)interstitialEffectLayoutsForStyleID:(id)d;
+- (id)layerIDForLayerIndex:(int64_t)index ofStyle:(id)style;
+- (id)localizedNameForStyleID:(id)d;
+- (id)localizedNameForStyleID:(id)d withLanguage:(id)language;
+- (id)previewPathForStyleID:(id)d;
+- (id)resourcePathForStyleID:(id)d;
+- (id)songPathsForStyleID:(id)d;
+- (id)thumbnailPathForStyleID:(id)d;
+- (id)thumbnailPathForStyleID:(id)d scaleFactor:(double)factor;
+- (id)titleEffectLayoutForStyleID:(id)d;
+- (id)titleEffectLayoutsForStyleID:(id)d;
+- (id)transitionsForStyleID:(id)d;
+- (id)versionOfStyleID:(id)d;
+- (int64_t)antialiasLevelForStyleID:(id)d;
+- (int64_t)defaultAutoKenBurnsLevelForEffect:(id)effect withPreset:(id)preset ofStyle:(id)style;
+- (int64_t)defaultAutoKenBurnsLevelForZIndex:(int64_t)index ofStyle:(id)style;
+- (int64_t)dynamicBatchSizeForStyleID:(id)d;
+- (int64_t)indexOfMainLayerForStyleID:(id)d;
+- (int64_t)indexOfTitleEffectLayerForStyleID:(id)d;
+- (int64_t)kenBurnsOffsetTypeForStyleID:(id)d;
+- (int64_t)layerIndexForLayerID:(id)d ofStyle:(id)style;
+- (int64_t)numberOfSlidesToPreloadForStyleID:(id)d;
+- (unint64_t)mediaPresentationOrderForStyleID:(id)d;
+- (unint64_t)regionOfInterestPickModeForStyleID:(id)d;
+- (unint64_t)reorderModeForStyleID:(id)d;
+- (unint64_t)subtitleOrderForStyleID:(id)d;
 - (void)dealloc;
 - (void)reloadBundles;
 @end
@@ -81,13 +81,13 @@
   result = qword_1EF3A0;
   if (!qword_1EF3A0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF3A0)
     {
       qword_1EF3A0 = [[MPStyleManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF3A0;
   }
 
@@ -98,11 +98,11 @@
 {
   if (qword_1EF3A0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF3A0 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -117,16 +117,16 @@
   [(MPStyleManager *)&v3 dealloc];
 }
 
-- (id)versionOfStyleID:(id)a3
+- (id)versionOfStyleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:d];
 
   return [v3 objectForKey:@"version"];
 }
 
-- (BOOL)needsFaceDetectionForStyleID:(id)a3
+- (BOOL)needsFaceDetectionForStyleID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"needsFaceDetection"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"needsFaceDetection"}];
   if (!v3)
   {
     return 1;
@@ -135,9 +135,9 @@
   return [v3 BOOLValue];
 }
 
-- (double)delayFaceDetectionForStyleID:(id)a3
+- (double)delayFaceDetectionForStyleID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"delayFaceDetection"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"delayFaceDetection"}];
   if (!v3)
   {
     return 0.0;
@@ -147,9 +147,9 @@
   return result;
 }
 
-- (BOOL)needsToBeLiveForStyleID:(id)a3
+- (BOOL)needsToBeLiveForStyleID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"needsToBeLive"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"needsToBeLive"}];
   if (v3)
   {
 
@@ -159,9 +159,9 @@
   return v3;
 }
 
-- (BOOL)isDynamicForStyleID:(id)a3
+- (BOOL)isDynamicForStyleID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"isDynamic"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"isDynamic"}];
   if (v3)
   {
 
@@ -171,9 +171,9 @@
   return v3;
 }
 
-- (int64_t)dynamicBatchSizeForStyleID:(id)a3
+- (int64_t)dynamicBatchSizeForStyleID:(id)d
 {
-  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"dynamicBatchSize"}];
+  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"dynamicBatchSize"}];
   if (result)
   {
 
@@ -183,7 +183,7 @@
   return result;
 }
 
-- (id)localizedNameForStyleID:(id)a3
+- (id)localizedNameForStyleID:(id)d
 {
   v5 = +[NSLocale preferredLanguages];
   if (v5 && (v6 = v5, [(NSArray *)v5 count]))
@@ -201,18 +201,18 @@
     [(MPStyleManager *)self reloadBundles];
   }
 
-  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"localizedStyleName"}];
+  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"localizedStyleName"}];
   if (!result)
   {
-    return a3;
+    return d;
   }
 
   return result;
 }
 
-- (id)localizedNameForStyleID:(id)a3 withLanguage:(id)a4
+- (id)localizedNameForStyleID:(id)d withLanguage:(id)language
 {
-  v5 = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mStyles "objectForKey:{"objectForKey:", @"resources", "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.lproj/LocalizedDescription.plist", a4)}")]);
+  v5 = +[NSDictionary dictionaryWithContentsOfFile:](NSDictionary, "dictionaryWithContentsOfFile:", [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mStyles "objectForKey:{"objectForKey:", @"resources", "stringByAppendingPathComponent:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.lproj/LocalizedDescription.plist", language)}")]);
   if (v5)
   {
     v5 = [(NSDictionary *)v5 objectForKey:@"_LOCALIZABLE_"];
@@ -221,24 +221,24 @@
   result = [(NSDictionary *)v5 objectForKey:@"localizedStyleName"];
   if (!result)
   {
-    return a3;
+    return d;
   }
 
   return result;
 }
 
-- (id)thumbnailPathForStyleID:(id)a3
+- (id)thumbnailPathForStyleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:d];
 
   return [v3 objectForKey:@"thumbnail"];
 }
 
-- (id)thumbnailPathForStyleID:(id)a3 scaleFactor:(double)a4
+- (id)thumbnailPathForStyleID:(id)d scaleFactor:(double)factor
 {
-  v5 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"thumbnail"}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"thumbnail"}];
   v6 = v5;
-  if (a4 > 1.0)
+  if (factor > 1.0)
   {
     v7 = [objc_msgSend(objc_msgSend(v5 "stringByDeletingPathExtension")];
     if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
@@ -250,24 +250,24 @@
   return v6;
 }
 
-- (id)previewPathForStyleID:(id)a3
+- (id)previewPathForStyleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:d];
 
   return [v3 objectForKey:@"preview"];
 }
 
-- (id)resourcePathForStyleID:(id)a3
+- (id)resourcePathForStyleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyles objectForKey:d];
 
   return [v3 objectForKey:@"resources"];
 }
 
-- (id)framesForStyleID:(id)a3
+- (id)framesForStyleID:(id)d
 {
   v5 = +[NSMutableSet set];
-  v6 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"layout"}];
+  v6 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -301,10 +301,10 @@
   return v5;
 }
 
-- (id)effectPresetIDsForStyleID:(id)a3
+- (id)effectPresetIDsForStyleID:(id)d
 {
   v5 = +[NSMutableSet set];
-  v6 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"layout"}];
+  v6 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -338,9 +338,9 @@
   return v5;
 }
 
-- (id)effectPresetsForLayerIndex:(int64_t)a3 ofStyleID:(id)a4
+- (id)effectPresetsForLayerIndex:(int64_t)index ofStyleID:(id)d
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -364,7 +364,7 @@
       }
 
       v11 = [v5 objectForKey:*(*(&v14 + 1) + 8 * i)];
-      if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == a3)
+      if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == index)
       {
         v12 = [v11 objectForKey:@"effectPresets"];
         if ([v12 count])
@@ -381,9 +381,9 @@
   return v8;
 }
 
-- (CGColor)backgroundCGColorForStyleID:(id)a3
+- (CGColor)backgroundCGColorForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"backgroundColor"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"backgroundColor"}];
   if (!v3 || (v4 = [MPUtilities CGColorFromString:v3]) == 0)
   {
     v5 = [MPUtilities newColorSpaceForDevice:0];
@@ -394,14 +394,14 @@
   return v4;
 }
 
-- (id)effectIDsForStyleID:(id)a3
+- (id)effectIDsForStyleID:(id)d
 {
   v5 = +[NSMutableSet set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"layout"}];
+  obj = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v16 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v16)
   {
@@ -474,14 +474,14 @@
   return v5;
 }
 
-- (id)transitionsForStyleID:(id)a3
+- (id)transitionsForStyleID:(id)d
 {
   v5 = +[NSMutableSet set];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"layout"}];
+  obj = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v16 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v16)
   {
@@ -553,16 +553,16 @@
   return v5;
 }
 
-- (id)songPathsForStyleID:(id)a3
+- (id)songPathsForStyleID:(id)d
 {
-  v3 = [objc_msgSend(-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"songs", "copy"}];
+  v3 = [objc_msgSend(-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"songs", "copy"}];
 
   return v3;
 }
 
-- (int64_t)indexOfMainLayerForStyleID:(id)a3
+- (int64_t)indexOfMainLayerForStyleID:(id)d
 {
-  v3 = [(MPStyleManager *)self descriptionForStyleID:a3];
+  v3 = [(MPStyleManager *)self descriptionForStyleID:d];
   v4 = [v3 objectForKey:@"mainLayer"];
   if (v4)
   {
@@ -579,7 +579,7 @@
   return [v6 integerValue];
 }
 
-- (int64_t)indexOfTitleEffectLayerForStyleID:(id)a3
+- (int64_t)indexOfTitleEffectLayerForStyleID:(id)d
 {
   v4 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v4)
@@ -597,23 +597,23 @@
   return [v6 integerValue];
 }
 
-- (id)titleEffectLayoutsForStyleID:(id)a3
+- (id)titleEffectLayoutsForStyleID:(id)d
 {
-  v3 = [(MPStyleManager *)self descriptionForStyleID:a3];
+  v3 = [(MPStyleManager *)self descriptionForStyleID:d];
 
   return [v3 objectForKey:@"titleEffects"];
 }
 
-- (id)interstitialEffectLayoutsForStyleID:(id)a3
+- (id)interstitialEffectLayoutsForStyleID:(id)d
 {
-  v3 = [(MPStyleManager *)self descriptionForStyleID:a3];
+  v3 = [(MPStyleManager *)self descriptionForStyleID:d];
 
   return [v3 objectForKey:@"interstitialEffects"];
 }
 
-- (id)interstitialEffectLayoutForStyleID:(id)a3
+- (id)interstitialEffectLayoutForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"interstitialEffects"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"interstitialEffects"}];
   v4 = [v3 count];
   if (v4 < 1)
   {
@@ -625,9 +625,9 @@
   return [v3 objectAtIndex:v5];
 }
 
-- (id)titleEffectLayoutForStyleID:(id)a3
+- (id)titleEffectLayoutForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"titleEffects"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"titleEffects"}];
   v4 = [v3 count];
   if (v4 < 1)
   {
@@ -639,14 +639,14 @@
   return [v3 objectAtIndex:v5];
 }
 
-- (double)shortestEffectDurationForStyleID:(id)a3
+- (double)shortestEffectDurationForStyleID:(id)d
 {
   v5 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v7 = v6;
   if (v6 < 0.0)
   {
-    v8 = [(MPStyleManager *)self effectPresetIDsForLayerIndex:v5 ofStyleID:a3];
+    v8 = [(MPStyleManager *)self effectPresetIDsForLayerIndex:v5 ofStyleID:d];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -695,7 +695,7 @@
   return fmax(v7 * v16, 0.0);
 }
 
-- (double)shortestDurationForEffectID:(id)a3 forStyleID:(id)a4
+- (double)shortestDurationForEffectID:(id)d forStyleID:(id)iD
 {
   v6 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
@@ -716,7 +716,7 @@
   return fmax(v8 * v11, 0.0);
 }
 
-- (double)minimumDurationForEffectID:(id)a3 forStyleID:(id)a4
+- (double)minimumDurationForEffectID:(id)d forStyleID:(id)iD
 {
   [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   if (v6 == 0.0)
@@ -734,7 +734,7 @@
   return fmax(v8, 0.0);
 }
 
-- (double)minimumEffectDurationForStyleID:(id)a3
+- (double)minimumEffectDurationForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   v13 = 0u;
@@ -781,7 +781,7 @@
   return fmax(v7, 0.0);
 }
 
-- (BOOL)supportsRandomTransitionForStyleID:(id)a3
+- (BOOL)supportsRandomTransitionForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v3)
@@ -793,21 +793,21 @@
   return v3;
 }
 
-- (id)defaultColorSchemeForStyleID:(id)a3
+- (id)defaultColorSchemeForStyleID:(id)d
 {
   v3 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
 
   return [v3 objectForKey:@"defaultColorScheme"];
 }
 
-- (BOOL)authorOnAspectRatioChangeForStyleID:(id)a3
+- (BOOL)authorOnAspectRatioChangeForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
 
   return [v3 BOOLValue];
 }
 
-- (unint64_t)subtitleOrderForStyleID:(id)a3
+- (unint64_t)subtitleOrderForStyleID:(id)d
 {
   result = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (result)
@@ -819,7 +819,7 @@
   return result;
 }
 
-- (int64_t)numberOfSlidesToPreloadForStyleID:(id)a3
+- (int64_t)numberOfSlidesToPreloadForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (!v3)
@@ -830,7 +830,7 @@
   return [v3 integerValue];
 }
 
-- (BOOL)needsTimingUpdateOnSlideChangeForStyleID:(id)a3
+- (BOOL)needsTimingUpdateOnSlideChangeForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v3)
@@ -842,7 +842,7 @@
   return v3;
 }
 
-- (BOOL)needsStyleUpdateOnSlideChangeForStyleID:(id)a3
+- (BOOL)needsStyleUpdateOnSlideChangeForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v3)
@@ -854,7 +854,7 @@
   return v3;
 }
 
-- (BOOL)needsReauthorOnAspectRatioChange:(id)a3
+- (BOOL)needsReauthorOnAspectRatioChange:(id)change
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (!v3)
@@ -865,9 +865,9 @@
   return [v3 BOOLValue];
 }
 
-- (double)posterTimeForStyleID:(id)a3
+- (double)posterTimeForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"posterTime"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"posterTime"}];
   if (!v3)
   {
     return -1.0;
@@ -877,7 +877,7 @@
   return result;
 }
 
-- (BOOL)canUseClusteringForStyleID:(id)a3
+- (BOOL)canUseClusteringForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (!v3)
@@ -888,7 +888,7 @@
   return [v3 BOOLValue];
 }
 
-+ (void)loadStyleManagerWithPaths:(id)a3
++ (void)loadStyleManagerWithPaths:(id)paths
 {
   if (qword_1EF3A0)
   {
@@ -896,12 +896,12 @@
     qword_1EF3A0 = 0;
   }
 
-  qword_1EF3A0 = [[MPStyleManager alloc] initWithPaths:a3];
+  qword_1EF3A0 = [[MPStyleManager alloc] initWithPaths:paths];
 }
 
-- (unint64_t)mediaPresentationOrderForStyleID:(id)a3
+- (unint64_t)mediaPresentationOrderForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"mediaPresentationOrder"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"mediaPresentationOrder"}];
   if (!v3)
   {
     return 2;
@@ -910,9 +910,9 @@
   return [v3 integerValue];
 }
 
-- (id)demoDocumentWithImages:(id)a3 properties:(id)a4 count:(int64_t)a5 options:(id)a6
+- (id)demoDocumentWithImages:(id)images properties:(id)properties count:(int64_t)count options:(id)options
 {
-  v11 = [a6 objectForKey:kMPAuthoringStyleID];
+  v11 = [options objectForKey:kMPAuthoringStyleID];
   if (v11)
   {
     v12 = v11;
@@ -927,30 +927,30 @@
   v14 = [v13 objectForKey:@"demoSlideCount"];
   if (v14)
   {
-    v15 = [v14 integerValue];
+    countCopy = [v14 integerValue];
   }
 
   else
   {
-    v15 = &dword_0 + 2;
+    countCopy = &dword_0 + 2;
   }
 
-  if (a5 != -1)
+  if (count != -1)
   {
-    v15 = a5;
-    if ([a3 count] <= a5)
+    countCopy = count;
+    if ([images count] <= count)
     {
-      v15 = [a3 count];
+      countCopy = [images count];
     }
   }
 
-  if ([a3 count] >= v15)
+  if ([images count] >= countCopy)
   {
-    a3 = [a3 objectsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, v15)}];
+    images = [images objectsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, countCopy)}];
   }
 
   v16 = objc_alloc_init(MPDocument);
-  [(MPDocument *)v16 _setMediaProperties:a4];
+  [(MPDocument *)v16 _setMediaProperties:properties];
   v17 = [NSMutableDictionary dictionaryWithDictionary:[(MPDocument *)v16 documentAttributeForKey:kMPDocumentAuthoringOptions]];
   v18 = [NSNumber numberWithBool:0];
   [(NSMutableDictionary *)v17 setObject:v18 forKey:kMPAuthoringUseTitleEffect];
@@ -968,21 +968,21 @@
     [(NSMutableDictionary *)v17 addEntriesFromDictionary:v23];
   }
 
-  if (a6)
+  if (options)
   {
-    [(NSMutableDictionary *)v17 addEntriesFromDictionary:a6];
+    [(NSMutableDictionary *)v17 addEntriesFromDictionary:options];
   }
 
   [(MPDocument *)v16 setDocumentAttribute:v17 forKey:kMPDocumentAuthoringOptions];
-  [(MPDocument *)v16 addVideoPaths:a3];
+  [(MPDocument *)v16 addVideoPaths:images];
   [(MPDocument *)v16 applyStyle:v12];
 
   return v16;
 }
 
-- (int64_t)antialiasLevelForStyleID:(id)a3
+- (int64_t)antialiasLevelForStyleID:(id)d
 {
-  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{a3), "objectForKey:", @"antialiasLevel"}];
+  result = [-[NSMutableDictionary objectForKey:](self->mStyles objectForKey:{d), "objectForKey:", @"antialiasLevel"}];
   if (result)
   {
 
@@ -992,13 +992,13 @@
   return result;
 }
 
-- (double)displayDurationFactorForStyleID:(id)a3
+- (double)displayDurationFactorForStyleID:(id)d
 {
-  v5 = [a3 hasSuffix:@"Mobile"];
+  v5 = [d hasSuffix:@"Mobile"];
   result = 1.0;
   if (v5)
   {
-    v7 = -[MPStyleManager effectPresetIDsForLayerIndex:ofStyleID:](self, "effectPresetIDsForLayerIndex:ofStyleID:", [+[MPStyleManager sharedManager](MPStyleManager sharedManager], a3);
+    v7 = -[MPStyleManager effectPresetIDsForLayerIndex:ofStyleID:](self, "effectPresetIDsForLayerIndex:ofStyleID:", [+[MPStyleManager sharedManager](MPStyleManager sharedManager], d);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -1043,9 +1043,9 @@
   return result;
 }
 
-- (double)displayDurationFactorForEffectID:(id)a3 inStyleID:(id)a4
+- (double)displayDurationFactorForEffectID:(id)d inStyleID:(id)iD
 {
-  v5 = [a3 hasPrefix:{@"HangingPictures", a4}];
+  v5 = [d hasPrefix:{@"HangingPictures", iD}];
   result = 1.0;
   if (v5)
   {
@@ -1055,9 +1055,9 @@
   return result;
 }
 
-- (int64_t)kenBurnsOffsetTypeForStyleID:(id)a3
+- (int64_t)kenBurnsOffsetTypeForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "valueForKey:", @"kenBurnsOffsetType"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "valueForKey:", @"kenBurnsOffsetType"}];
   if (!v3)
   {
     return -1;
@@ -1066,9 +1066,9 @@
   return [v3 integerValue];
 }
 
-- (BOOL)easeKenBurnsForStyleID:(id)a3
+- (BOOL)easeKenBurnsForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "valueForKey:", @"easeKenBurns"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "valueForKey:", @"easeKenBurns"}];
   if (v3)
   {
 
@@ -1078,9 +1078,9 @@
   return v3;
 }
 
-- (CGSize)defaultSizeForZIndex:(int64_t)a3 ofStyle:(id)a4
+- (CGSize)defaultSizeForZIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1102,7 +1102,7 @@
         }
 
         v11 = [v5 objectForKey:*(*(&v16 + 1) + 8 * v10)];
-        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == a3)
+        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == index)
         {
           v13 = [v11 objectForKey:@"size"];
           width = 2.0;
@@ -1138,7 +1138,7 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)reorderModeForStyleID:(id)a3
+- (unint64_t)reorderModeForStyleID:(id)d
 {
   result = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (result)
@@ -1150,9 +1150,9 @@ LABEL_12:
   return result;
 }
 
-- (id)defaultPositionForZIndex:(int64_t)a3 ofStyle:(id)a4
+- (id)defaultPositionForZIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1173,7 +1173,7 @@ LABEL_12:
         }
 
         v10 = [v5 objectForKey:*(*(&v11 + 1) + 8 * v9)];
-        if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == a3)
+        if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == index)
         {
           return [v10 objectForKey:@"position"];
         }
@@ -1196,9 +1196,9 @@ LABEL_12:
   return result;
 }
 
-- (double)defaultFilterLikelihoodForZIndex:(int64_t)a3 ofStyle:(id)a4
+- (double)defaultFilterLikelihoodForZIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1219,7 +1219,7 @@ LABEL_12:
         }
 
         v11 = [v5 objectForKey:*(*(&v15 + 1) + 8 * i)];
-        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == a3)
+        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == index)
         {
           v12 = [v11 objectForKey:@"filterLikelihood"];
           if (v12)
@@ -1245,9 +1245,9 @@ LABEL_12:
   return v7;
 }
 
-- (double)defaultAutoKenBurnsLikelihoodForZIndex:(int64_t)a3 ofStyle:(id)a4
+- (double)defaultAutoKenBurnsLikelihoodForZIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1268,7 +1268,7 @@ LABEL_12:
         }
 
         v11 = [v5 objectForKey:*(*(&v14 + 1) + 8 * i)];
-        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == a3)
+        if ([objc_msgSend(v11 objectForKey:{@"zIndex", "integerValue"}] == index)
         {
           v12 = [v11 objectForKey:@"autoKenBurnsLikelihood"];
           result = -1.0;
@@ -1303,9 +1303,9 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)defaultAutoKenBurnsLevelForZIndex:(int64_t)a3 ofStyle:(id)a4
+- (int64_t)defaultAutoKenBurnsLevelForZIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1325,7 +1325,7 @@ LABEL_3:
       }
 
       v10 = [v5 objectForKey:*(*(&v13 + 1) + 8 * v9)];
-      if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == a3)
+      if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == index)
       {
         break;
       }
@@ -1356,9 +1356,9 @@ LABEL_3:
   return 1;
 }
 
-- (double)defaultAutoKenBurnsLikelihoodForEffect:(id)a3 withPreset:(id)a4 ofStyle:(id)a5
+- (double)defaultAutoKenBurnsLikelihoodForEffect:(id)effect withPreset:(id)preset ofStyle:(id)style
 {
-  v7 = [(MPStyleManager *)self descriptionForStyleID:a5];
+  v7 = [(MPStyleManager *)self descriptionForStyleID:style];
   v8 = [v7 objectForKey:@"layout"];
   v9 = [v7 objectForKey:@"mainLayer"];
   if (v9)
@@ -1396,9 +1396,9 @@ LABEL_3:
 
       v17 = *(*(&v22 + 1) + 8 * i);
       v18 = [v17 valueForKey:@"presetID"];
-      if ([v18 hasPrefix:a3])
+      if ([v18 hasPrefix:effect])
       {
-        if ([v18 hasSuffix:a4])
+        if ([v18 hasSuffix:preset])
         {
           v19 = [v17 objectForKey:@"autoKenBurnsLikelihood"];
           if (v19)
@@ -1417,9 +1417,9 @@ LABEL_3:
   return v15;
 }
 
-- (int64_t)defaultAutoKenBurnsLevelForEffect:(id)a3 withPreset:(id)a4 ofStyle:(id)a5
+- (int64_t)defaultAutoKenBurnsLevelForEffect:(id)effect withPreset:(id)preset ofStyle:(id)style
 {
-  v7 = [(MPStyleManager *)self descriptionForStyleID:a5];
+  v7 = [(MPStyleManager *)self descriptionForStyleID:style];
   v8 = [v7 objectForKey:@"layout"];
   v9 = [v7 objectForKey:@"mainLayer"];
   if (v9)
@@ -1445,7 +1445,7 @@ LABEL_3:
 
   v13 = v12;
   v14 = *v22;
-  v15 = &dword_0 + 1;
+  integerValue = &dword_0 + 1;
   do
   {
     for (i = 0; i != v13; i = i + 1)
@@ -1457,14 +1457,14 @@ LABEL_3:
 
       v17 = *(*(&v21 + 1) + 8 * i);
       v18 = [v17 valueForKey:@"presetID"];
-      if ([v18 hasPrefix:a3])
+      if ([v18 hasPrefix:effect])
       {
-        if ([v18 hasSuffix:a4])
+        if ([v18 hasSuffix:preset])
         {
           v19 = [v17 objectForKey:@"autoKenBurnsLevel"];
           if (v19)
           {
-            v15 = [v19 integerValue];
+            integerValue = [v19 integerValue];
           }
         }
       }
@@ -1474,13 +1474,13 @@ LABEL_3:
   }
 
   while (v13);
-  return v15;
+  return integerValue;
 }
 
-- (id)effectPresetIDsForLayerIndex:(int64_t)a3 ofStyleID:(id)a4
+- (id)effectPresetIDsForLayerIndex:(int64_t)index ofStyleID:(id)d
 {
   v6 = +[NSMutableSet set];
-  v7 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v7 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"layout"}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -1501,7 +1501,7 @@ LABEL_3:
         }
 
         v12 = [v7 objectForKey:*(*(&v25 + 1) + 8 * v11)];
-        if ([objc_msgSend(v12 objectForKey:{@"zIndex", "integerValue"}] == a3)
+        if ([objc_msgSend(v12 objectForKey:{@"zIndex", "integerValue"}] == index)
         {
           v13 = [v12 objectForKey:@"effectPresets"];
           v21 = 0u;
@@ -1553,9 +1553,9 @@ LABEL_3:
   return v6;
 }
 
-- (double)defaultEffectDurationForLayer:(int64_t)a3 ofStyle:(id)a4
+- (double)defaultEffectDurationForLayer:(int64_t)layer ofStyle:(id)style
 {
-  v4 = [(MPStyleManager *)self _containerDescriptionForLayerAtIndex:a3 ofStyle:a4];
+  v4 = [(MPStyleManager *)self _containerDescriptionForLayerAtIndex:layer ofStyle:style];
   if (!v4)
   {
     return -1.0;
@@ -1573,9 +1573,9 @@ LABEL_3:
   return result;
 }
 
-- (double)defaultTransitionDurationForLayer:(int64_t)a3 ofStyle:(id)a4 withAspectRatio:(double)a5
+- (double)defaultTransitionDurationForLayer:(int64_t)layer ofStyle:(id)style withAspectRatio:(double)ratio
 {
-  v6 = [(MPStyleManager *)self _containerDescriptionForLayerAtIndex:a3 ofStyle:a4];
+  v6 = [(MPStyleManager *)self _containerDescriptionForLayerAtIndex:layer ofStyle:style];
   if (!v6)
   {
     return -1.0;
@@ -1583,7 +1583,7 @@ LABEL_3:
 
   v7 = v6;
   v8 = -1.0;
-  if (a5 < 1.0)
+  if (ratio < 1.0)
   {
     v9 = [v6 objectForKey:@"recommendedPortraitTransitionDuration"];
     if (v9)
@@ -1607,9 +1607,9 @@ LABEL_3:
   return result;
 }
 
-- (double)basePeriodForLayerIndex:(int64_t)a3 ofStyle:(id)a4
+- (double)basePeriodForLayerIndex:(int64_t)index ofStyle:(id)style
 {
-  v4 = [-[MPStyleManager _containerDescriptionForLayerAtIndex:ofStyle:](self _containerDescriptionForLayerAtIndex:a3 ofStyle:{a4), "objectForKey:", @"basePeriod"}];
+  v4 = [-[MPStyleManager _containerDescriptionForLayerAtIndex:ofStyle:](self _containerDescriptionForLayerAtIndex:index ofStyle:{style), "objectForKey:", @"basePeriod"}];
   if (!v4)
   {
     return 1.0;
@@ -1619,16 +1619,16 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)layerIndexForLayerID:(id)a3 ofStyle:(id)a4
+- (int64_t)layerIndexForLayerID:(id)d ofStyle:(id)style
 {
   v4 = [objc_msgSend(objc_msgSend(objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
 
   return [v4 integerValue];
 }
 
-- (id)layerIDForLayerIndex:(int64_t)a3 ofStyle:(id)a4
+- (id)layerIDForLayerIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1651,7 +1651,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([objc_msgSend(objc_msgSend(v5 objectForKey:{v10), "objectForKey:", @"zIndex", "integerValue"}] == a3)
+    if ([objc_msgSend(objc_msgSend(v5 objectForKey:{v10), "objectForKey:", @"zIndex", "integerValue"}] == index)
     {
       return v10;
     }
@@ -1669,9 +1669,9 @@ LABEL_3:
   }
 }
 
-- (id)backgroundColorLayersForStyleID:(id)a3
+- (id)backgroundColorLayersForStyleID:(id)d
 {
-  v3 = [(MPStyleManager *)self descriptionForStyleID:a3];
+  v3 = [(MPStyleManager *)self descriptionForStyleID:d];
   v4 = [v3 objectForKey:@"backgroundColorLayer"];
   if (v4)
   {
@@ -1686,21 +1686,21 @@ LABEL_3:
   }
 }
 
-- (unint64_t)regionOfInterestPickModeForStyleID:(id)a3
+- (unint64_t)regionOfInterestPickModeForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"roiPickMode"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"roiPickMode"}];
 
   return [v3 integerValue];
 }
 
-- (BOOL)canCancelAuthoringForStyleID:(id)a3
+- (BOOL)canCancelAuthoringForStyleID:(id)d
 {
-  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a3), "objectForKey:", @"canCancelAuthoring"}];
+  v3 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{d), "objectForKey:", @"canCancelAuthoring"}];
 
   return [v3 BOOLValue];
 }
 
-- (BOOL)hasImagesForLayerID:(id)a3 forStyleID:(id)a4
+- (BOOL)hasImagesForLayerID:(id)d forStyleID:(id)iD
 {
   v4 = [objc_msgSend(objc_msgSend(objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (!v4 || (v5 = [v4 BOOLValue]) != 0)
@@ -1711,7 +1711,7 @@ LABEL_3:
   return v5;
 }
 
-- (double)navigationIncrementForStyleID:(id)a3
+- (double)navigationIncrementForStyleID:(id)d
 {
   v3 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (!v3)
@@ -1723,16 +1723,16 @@ LABEL_3:
   return result;
 }
 
-- (double)allowUserDefinedDurationForStyleID:(id)a3
+- (double)allowUserDefinedDurationForStyleID:(id)d
 {
   v4 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   result = 0.0;
   if ((v4 & 1) == 0)
   {
-    v6 = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager sharedManager];
-    if (v6)
+    sharedManager = [objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager sharedManager];
+    if (sharedManager)
     {
-      return [v6 BOOLValue];
+      return [sharedManager BOOLValue];
     }
 
     else
@@ -1744,7 +1744,7 @@ LABEL_3:
   return result;
 }
 
-- (MPStyleManager)initWithPaths:(id)a3
+- (MPStyleManager)initWithPaths:(id)paths
 {
   v9.receiver = self;
   v9.super_class = MPStyleManager;
@@ -1753,9 +1753,9 @@ LABEL_3:
   {
     v5 = +[NSMutableArray array];
     v6 = v5;
-    if (a3)
+    if (paths)
     {
-      [v5 addObjectsFromArray:a3];
+      [v5 addObjectsFromArray:paths];
     }
 
     else
@@ -1778,12 +1778,12 @@ LABEL_3:
 
 - (void)reloadBundles
 {
-  v2 = self;
+  selfCopy = self;
   mCurrentLocale = self->mCurrentLocale;
   if (mCurrentLocale)
   {
 
-    v2->mCurrentLocale = 0;
+    selfCopy->mCurrentLocale = 0;
   }
 
   v4 = +[NSLocale preferredLanguages];
@@ -1797,26 +1797,26 @@ LABEL_3:
     v6 = &stru_1AC858;
   }
 
-  v2->mCurrentLocale = &v6->isa;
-  mStyles = v2->mStyles;
+  selfCopy->mCurrentLocale = &v6->isa;
+  mStyles = selfCopy->mStyles;
   if (mStyles)
   {
 
-    v2->mStyles = 0;
+    selfCopy->mStyles = 0;
   }
 
-  v2->mStyles = objc_alloc_init(NSMutableDictionary);
+  selfCopy->mStyles = objc_alloc_init(NSMutableDictionary);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v2->mPaths;
+  obj = selfCopy->mPaths;
   v42 = [(NSArray *)obj countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v42)
   {
     v8 = &kCTUnderlineColorAttributeName_ptr;
     v41 = *v65;
-    v44 = v2;
+    v44 = selfCopy;
     do
     {
       v9 = 0;
@@ -1835,7 +1835,7 @@ LABEL_3:
           v11 = [NSPropertyListSerialization propertyListWithData:v10 options:2 format:0 error:0];
           if (v11)
           {
-            [(NSMutableDictionary *)v2->mStyles addEntriesFromDictionary:v11];
+            [(NSMutableDictionary *)selfCopy->mStyles addEntriesFromDictionary:v11];
           }
         }
 
@@ -1955,7 +1955,7 @@ LABEL_3:
 
                         [v25 setObject:v54 forKey:@"songs"];
                         [v25 setObject:v52 forKey:@"beats"];
-                        v2 = v44;
+                        selfCopy = v44;
                         [(NSMutableDictionary *)v44->mStyles setObject:v25 forKey:v47];
                         v8 = &kCTUnderlineColorAttributeName_ptr;
                       }
@@ -1989,9 +1989,9 @@ LABEL_3:
   }
 }
 
-- (id)_containerDescriptionForLayerAtIndex:(int64_t)a3 ofStyle:(id)a4
+- (id)_containerDescriptionForLayerAtIndex:(int64_t)index ofStyle:(id)style
 {
-  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{a4), "objectForKey:", @"layout"}];
+  v5 = [-[MPStyleManager descriptionForStyleID:](self descriptionForStyleID:{style), "objectForKey:", @"layout"}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -2014,7 +2014,7 @@ LABEL_3:
     }
 
     v10 = [v5 objectForKey:*(*(&v12 + 1) + 8 * v9)];
-    if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == a3)
+    if ([objc_msgSend(v10 objectForKey:{@"zIndex", "integerValue"}] == index)
     {
       return v10;
     }

@@ -6,7 +6,7 @@
 
 - (id)magnitudesWithLevelMultiplier:()AVS count:
 {
-  v6 = llround(log2([a1 frameLength]));
+  v6 = llround(log2([self frameLength]));
   v7 = (1 << v6) + ((1 << v6) >> 31);
   fftsetup = vDSP_create_fftsetup(v6, 0);
   __Z.realp = malloc_type_calloc(v7 >> 1, 4uLL, 0x100004052888210uLL);
@@ -15,7 +15,7 @@
   v10 = malloc_type_calloc(v9, 4uLL, 0x100004052888210uLL);
   v11 = malloc_type_calloc(v9, 4uLL, 0x100004052888210uLL);
   vDSP_hann_window(v11, v9, 2);
-  MEMORY[0x23EF159F0](*[a1 floatChannelData], 1, v11, 1, v10, 1, v9);
+  MEMORY[0x23EF159F0](*[self floatChannelData], 1, v11, 1, v10, 1, v9);
   vDSP_ctoz(v10, 2, &__Z, 1, v7 >> 1);
   vDSP_fft_zrip(fftsetup, &__Z, 1, v6, 1);
   v12 = malloc_type_calloc(v7 >> 1, 4uLL, 0x100004052888210uLL);
@@ -23,7 +23,7 @@
   MEMORY[0x23EF15A00](v12, 1, &kAdjust0DB, v12, 1, v7 >> 1);
   __B = 1.0;
   vDSP_vdbcon(v12, 1, &__B, v12, 1, v7 >> 1, 0);
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v6 != 31)
   {
     v14 = 0;
@@ -44,7 +44,7 @@
       if (v18 == v14)
       {
         v21 = [MEMORY[0x277CCABB0] numberWithDouble:v17 * a2];
-        [v13 addObject:v21];
+        [array addObject:v21];
 
         v14 = 0;
         v17 = 0.0;
@@ -64,7 +64,7 @@
   free(v11);
   free(v12);
 
-  return v13;
+  return array;
 }
 
 @end

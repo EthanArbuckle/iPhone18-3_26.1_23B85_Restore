@@ -1,15 +1,15 @@
 @interface HFReorderableItemList
 - (BOOL)isEmpty;
-- (BOOL)sortedIdentifiersWithIdentifier1:(id)a3 identifier2:(id)a4;
-- (BOOL)sortedItemsWithItem1:(id)a3 item2:(id)a4;
-- (HFReorderableItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4;
-- (id)saveWithSender:(id)a3;
-- (void)setSortedItems:(id)a3;
+- (BOOL)sortedIdentifiersWithIdentifier1:(id)identifier1 identifier2:(id)identifier2;
+- (BOOL)sortedItemsWithItem1:(id)item1 item2:(id)item2;
+- (HFReorderableItemList)initWithApplicationDataContainer:(id)container category:(id)category;
+- (id)saveWithSender:(id)sender;
+- (void)setSortedItems:(id)items;
 @end
 
 @implementation HFReorderableItemList
 
-- (HFReorderableItemList)initWithApplicationDataContainer:(id)a3 category:(id)a4
+- (HFReorderableItemList)initWithApplicationDataContainer:(id)container category:(id)category
 {
   v4 = sub_20DD64EB4();
   v6 = v5;
@@ -17,24 +17,24 @@
   return ReorderableItemList.init(applicationDataContainer:category:)(v7, v4, v6);
 }
 
-- (BOOL)sortedItemsWithItem1:(id)a3 item2:(id)a4
+- (BOOL)sortedItemsWithItem1:(id)item1 item2:(id)item2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_20DA48634(v6, v7);
+  item1Copy = item1;
+  item2Copy = item2;
+  selfCopy = self;
+  v9 = sub_20DA48634(item1Copy, item2Copy);
 
   return v9 & 1;
 }
 
-- (BOOL)sortedIdentifiersWithIdentifier1:(id)a3 identifier2:(id)a4
+- (BOOL)sortedIdentifiersWithIdentifier1:(id)identifier1 identifier2:(id)identifier2
 {
   v5 = sub_20DD64EB4();
   v7 = v6;
   v8 = sub_20DD64EB4();
   v10 = v9;
   v11 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0xA8);
-  v12 = self;
+  selfCopy = self;
   v13 = v11(v5, v7, v8, v10);
   if (v13 != 2)
   {
@@ -63,10 +63,10 @@ LABEL_7:
   return (*(&self->super.super.isa + v3))[2] == 0;
 }
 
-- (void)setSortedItems:(id)a3
+- (void)setSortedItems:(id)items
 {
   v4 = sub_20DD64FD4();
-  v6 = self;
+  selfCopy = self;
   v5 = sub_20DA49700(v4);
 
   if (v5)
@@ -75,11 +75,11 @@ LABEL_7:
   }
 }
 
-- (id)saveWithSender:(id)a3
+- (id)saveWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_20DD654E4();
     swift_unknownObjectRelease();
@@ -88,7 +88,7 @@ LABEL_7:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_20DA49EBC(v8);

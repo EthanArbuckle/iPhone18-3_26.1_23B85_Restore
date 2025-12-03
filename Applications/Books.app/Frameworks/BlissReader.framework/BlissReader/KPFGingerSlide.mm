@@ -2,53 +2,53 @@
 - (BOOL)decrementCurrentEventIndex;
 - (BOOL)incrementCurrentEventIndex;
 - (BOOL)nextEventContainsMovie;
-- (CGImage)CGImageForTextureName:(id)a3 session:(id)a4;
-- (CGImage)newImageForTextureName:(id)a3;
-- (CGSize)textureSizeForName:(id)a3;
+- (CGImage)CGImageForTextureName:(id)name session:(id)session;
+- (CGImage)newImageForTextureName:(id)name;
+- (CGSize)textureSizeForName:(id)name;
 - (KPFGingerEvent)currentEvent;
 - (KPFGingerEvent)nextEvent;
-- (KPFGingerSlide)initWithSlideDictionary:(id)a3 slideTag:(id)a4 baseResourcePath:(id)a5 drmContext:(id)a6;
-- (id)movieNameForTextureName:(id)a3;
+- (KPFGingerSlide)initWithSlideDictionary:(id)dictionary slideTag:(id)tag baseResourcePath:(id)path drmContext:(id)context;
+- (id)movieNameForTextureName:(id)name;
 - (id)p_effectsArray;
 - (id)p_eventsArray;
 - (id)p_hyperlinksArray;
 - (id)p_texturesDictionary;
-- (id)p_urlForMovie:(id)a3;
-- (id)p_urlForResource:(id)a3;
+- (id)p_urlForMovie:(id)movie;
+- (id)p_urlForResource:(id)resource;
 - (unint64_t)eventCount;
-- (void)animateSlideWithSession:(id)a3;
+- (void)animateSlideWithSession:(id)session;
 - (void)dealloc;
-- (void)newMovieForTextureName:(id)a3 movieDict:(id)a4 withObjectID:(id)a5;
-- (void)p_movieEndCallback:(id)a3;
+- (void)newMovieForTextureName:(id)name movieDict:(id)dict withObjectID:(id)d;
+- (void)p_movieEndCallback:(id)callback;
 - (void)pauseMediaPlayback;
-- (void)playMovieForObjectID:(id)a3 afterDelay:(double)a4;
-- (void)renderCurrentEventWithSession:(id)a3;
-- (void)renderHyperLinkedSlideWithSlideTag:(id)a3 withSession:(id)a4;
-- (void)renderSlideWithSession:(id)a3;
+- (void)playMovieForObjectID:(id)d afterDelay:(double)delay;
+- (void)renderCurrentEventWithSession:(id)session;
+- (void)renderHyperLinkedSlideWithSlideTag:(id)tag withSession:(id)session;
+- (void)renderSlideWithSession:(id)session;
 - (void)resumeMediaPlayback;
 - (void)stopAllMovies;
-- (void)stopMovieForObjectID:(id)a3;
+- (void)stopMovieForObjectID:(id)d;
 - (void)teardown;
 @end
 
 @implementation KPFGingerSlide
 
-- (KPFGingerSlide)initWithSlideDictionary:(id)a3 slideTag:(id)a4 baseResourcePath:(id)a5 drmContext:(id)a6
+- (KPFGingerSlide)initWithSlideDictionary:(id)dictionary slideTag:(id)tag baseResourcePath:(id)path drmContext:(id)context
 {
   v13.receiver = self;
   v13.super_class = KPFGingerSlide;
   v10 = [(KPFGingerSlide *)&v13 init];
   if (v10)
   {
-    v10->mSlideTag = a4;
-    v10->mBaseResourcePath = a5;
+    v10->mSlideTag = tag;
+    v10->mBaseResourcePath = path;
     v10->mCurrentEventIndex = 0;
     v10->mCurrentEvent = 0;
-    v10->mDrmContext = a6;
+    v10->mDrmContext = context;
     v10->mTextureCache = objc_alloc_init(NSMutableDictionary);
-    v11 = a3;
-    v10->mKPFDictionary = v11;
-    if (v11)
+    dictionaryCopy = dictionary;
+    v10->mKPFDictionary = dictionaryCopy;
+    if (dictionaryCopy)
     {
       v10->mEventCount = [-[KPFGingerSlide p_eventsArray](v10 "p_eventsArray")];
     }
@@ -89,8 +89,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(NSMutableDictionary *)self->mMoviesDict allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->mMoviesDict allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -102,7 +102,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) stop];
@@ -110,7 +110,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -121,12 +121,12 @@
 
 - (unint64_t)eventCount
 {
-  v2 = [(KPFGingerSlide *)self p_eventsArray];
+  p_eventsArray = [(KPFGingerSlide *)self p_eventsArray];
 
-  return [v2 count];
+  return [p_eventsArray count];
 }
 
-- (void)renderSlideWithSession:(id)a3
+- (void)renderSlideWithSession:(id)session
 {
   self->mCurrentEventIndex = 0;
   [(KPFGingerEvent *)self->mCurrentEvent tearDown];
@@ -138,19 +138,19 @@
   self->mHyperLinkedEvent = 0;
   [(NSMutableDictionary *)self->mMoviesDict removeAllObjects];
 
-  [(KPFGingerSlide *)self renderCurrentEventWithSession:a3];
+  [(KPFGingerSlide *)self renderCurrentEventWithSession:session];
 }
 
-- (void)renderHyperLinkedSlideWithSlideTag:(id)a3 withSession:(id)a4
+- (void)renderHyperLinkedSlideWithSlideTag:(id)tag withSession:(id)session
 {
-  v7 = [(KPFGingerSlide *)self p_hyperlinksArray];
-  if ([v7 count])
+  p_hyperlinksArray = [(KPFGingerSlide *)self p_hyperlinksArray];
+  if ([p_hyperlinksArray count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [p_hyperlinksArray countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -162,22 +162,22 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(p_hyperlinksArray);
           }
 
-          v12 = [objc_msgSend(*(*(&v14 + 1) + 8 * v11) objectForKey:{@"events", "objectForKey:", a3}];
+          v12 = [objc_msgSend(*(*(&v14 + 1) + 8 * v11) objectForKey:{@"events", "objectForKey:", tag}];
           if (v12)
           {
             v13 = [[KPFGingerEvent alloc] initWithDictionary:v12];
             self->mHyperLinkedEvent = v13;
-            [(KPFGingerEvent *)v13 renderEventWithSession:a4];
+            [(KPFGingerEvent *)v13 renderEventWithSession:session];
           }
 
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [p_hyperlinksArray countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -185,11 +185,11 @@
   }
 }
 
-- (void)animateSlideWithSession:(id)a3
+- (void)animateSlideWithSession:(id)session
 {
-  v4 = [(KPFGingerSlide *)self currentEvent];
+  currentEvent = [(KPFGingerSlide *)self currentEvent];
 
-  [(KPFGingerEvent *)v4 animateWithSession:a3];
+  [(KPFGingerEvent *)currentEvent animateWithSession:session];
 }
 
 - (KPFGingerEvent)currentEvent
@@ -227,16 +227,16 @@
 
 - (BOOL)nextEventContainsMovie
 {
-  v2 = [(KPFGingerSlide *)self nextEvent];
+  nextEvent = [(KPFGingerSlide *)self nextEvent];
 
-  return [(KPFGingerEvent *)v2 containsMovie];
+  return [(KPFGingerEvent *)nextEvent containsMovie];
 }
 
 - (BOOL)incrementCurrentEventIndex
 {
   v3 = self->mCurrentEventIndex + 1;
-  v4 = [(KPFGingerSlide *)self eventCount];
-  if (v3 < v4)
+  eventCount = [(KPFGingerSlide *)self eventCount];
+  if (v3 < eventCount)
   {
     ++self->mCurrentEventIndex;
     [(KPFGingerEvent *)self->mCurrentEvent tearDown];
@@ -257,7 +257,7 @@
     }
   }
 
-  return v3 < v4;
+  return v3 < eventCount;
 }
 
 - (BOOL)decrementCurrentEventIndex
@@ -277,14 +277,14 @@
   return mCurrentEventIndex != 0;
 }
 
-- (void)renderCurrentEventWithSession:(id)a3
+- (void)renderCurrentEventWithSession:(id)session
 {
-  v4 = [(KPFGingerSlide *)self currentEvent];
+  currentEvent = [(KPFGingerSlide *)self currentEvent];
 
-  [(KPFGingerEvent *)v4 renderEventWithSession:a3];
+  [(KPFGingerEvent *)currentEvent renderEventWithSession:session];
 }
 
-- (CGSize)textureSizeForName:(id)a3
+- (CGSize)textureSizeForName:(id)name
 {
   v3 = [-[KPFGingerSlide p_texturesDictionary](self "p_texturesDictionary")];
   [objc_msgSend(v3 objectForKey:{@"width", "floatValue"}];
@@ -297,7 +297,7 @@
   return result;
 }
 
-- (CGImage)newImageForTextureName:(id)a3
+- (CGImage)newImageForTextureName:(id)name
 {
   v3 = CGImageSourceCreateWithURL(-[KPFGingerSlide p_urlForResource:](self, "p_urlForResource:", [objc_msgSend(-[KPFGingerSlide p_texturesDictionary](self "p_texturesDictionary")]), 0);
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v3, 0, 0);
@@ -305,12 +305,12 @@
   return ImageAtIndex;
 }
 
-- (CGImage)CGImageForTextureName:(id)a3 session:(id)a4
+- (CGImage)CGImageForTextureName:(id)name session:(id)session
 {
   [(NSMutableDictionary *)self->mTextureCache removeAllObjects];
   v7 = objc_autoreleasePoolPush();
-  v8 = [(NSMutableDictionary *)self->mTextureCache objectForKey:a3];
-  if (a3 && !v8)
+  v8 = [(NSMutableDictionary *)self->mTextureCache objectForKey:name];
+  if (name && !v8)
   {
     v9 = [-[KPFGingerSlide p_texturesDictionary](self "p_texturesDictionary")];
     v10 = [v9 objectForKey:@"url"];
@@ -320,13 +320,13 @@
     if (self->mDrmContext)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = [a4 cachedDataForKPFFileURL:{v13, 0}];
+      v15 = [session cachedDataForKPFFileURL:{v13, 0}];
       if (!v15)
       {
         v15 = [(PFDContext *)self->mDrmContext dataWithContentsOfURL:v13 error:&v28];
         if (v15)
         {
-          [a4 setCachedData:v15 forKPFFileURL:v13];
+          [session setCachedData:v15 forKPFFileURL:v13];
         }
       }
 
@@ -363,7 +363,7 @@
       CGContextDrawPDFPage(v25, Page);
       CGContextRestoreGState(v25);
       Image = CGBitmapContextCreateImage(v25);
-      [(NSMutableDictionary *)self->mTextureCache setObject:Image forKey:a3];
+      [(NSMutableDictionary *)self->mTextureCache setObject:Image forKey:name];
       CGImageRelease(Image);
     }
 
@@ -373,37 +373,37 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  return [(NSMutableDictionary *)self->mTextureCache objectForKey:a3];
+  return [(NSMutableDictionary *)self->mTextureCache objectForKey:name];
 }
 
-- (id)movieNameForTextureName:(id)a3
+- (id)movieNameForTextureName:(id)name
 {
   v3 = [-[KPFGingerSlide p_texturesDictionary](self "p_texturesDictionary")];
 
   return [v3 objectForKey:@"movie"];
 }
 
-- (void)newMovieForTextureName:(id)a3 movieDict:(id)a4 withObjectID:(id)a5
+- (void)newMovieForTextureName:(id)name movieDict:(id)dict withObjectID:(id)d
 {
-  v8 = [a4 objectForKeyedSubscript:@"asset"];
+  v8 = [dict objectForKeyedSubscript:@"asset"];
   v9 = -[KPFGingerSlide p_urlForMovie:](self, "p_urlForMovie:", [objc_msgSend(-[KPFGingerSlide p_texturesDictionary](self "p_texturesDictionary")]);
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"volume", "floatValue"}];
-  v11 = -[KPFMovie initWithURL:looping:volume:name:audioOnly:drmContext:]([KPFMovie alloc], "initWithURL:looping:volume:name:audioOnly:drmContext:", v9, 0, v8, [objc_msgSend(a4 objectForKey:{@"isAudioOnly", "BOOLValue"}], self->mDrmContext, v10);
+  [objc_msgSend(dict objectForKeyedSubscript:{@"volume", "floatValue"}];
+  v11 = -[KPFMovie initWithURL:looping:volume:name:audioOnly:drmContext:]([KPFMovie alloc], "initWithURL:looping:volume:name:audioOnly:drmContext:", v9, 0, v8, [objc_msgSend(dict objectForKey:{@"isAudioOnly", "BOOLValue"}], self->mDrmContext, v10);
   [(KPFMovie *)v11 registerForMovieEndCallback:"p_movieEndCallback:" target:self];
-  [(NSMutableDictionary *)self->mMoviesDict setObject:v11 forKey:a5];
+  [(NSMutableDictionary *)self->mMoviesDict setObject:v11 forKey:d];
 }
 
-- (void)playMovieForObjectID:(id)a3 afterDelay:(double)a4
+- (void)playMovieForObjectID:(id)d afterDelay:(double)delay
 {
-  v5 = [(NSMutableDictionary *)self->mMoviesDict objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->mMoviesDict objectForKey:d];
   if (v5)
   {
 
-    [v5 playAfterDelay:a4];
+    [v5 playAfterDelay:delay];
   }
 }
 
-- (void)stopMovieForObjectID:(id)a3
+- (void)stopMovieForObjectID:(id)d
 {
   v5 = [(NSMutableDictionary *)self->mMoviesDict objectForKey:?];
   if (v5)
@@ -411,7 +411,7 @@
     [v5 stop];
     mMoviesDict = self->mMoviesDict;
 
-    [(NSMutableDictionary *)mMoviesDict removeObjectForKey:a3];
+    [(NSMutableDictionary *)mMoviesDict removeObjectForKey:d];
   }
 }
 
@@ -421,8 +421,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->mMoviesDict allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->mMoviesDict allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -434,7 +434,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) stop];
@@ -442,7 +442,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -457,8 +457,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->mMoviesDict allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->mMoviesDict allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -470,7 +470,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) pause];
@@ -478,7 +478,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -493,8 +493,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->mMoviesDict allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->mMoviesDict allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -506,7 +506,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) resume];
@@ -514,7 +514,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -523,23 +523,23 @@
   self->mMediaPlaybackIsPaused = 0;
 }
 
-- (void)p_movieEndCallback:(id)a3
+- (void)p_movieEndCallback:(id)callback
 {
-  [a3 stop];
-  v5 = [-[NSMutableDictionary allKeysForObject:](self->mMoviesDict allKeysForObject:{a3), "objectAtIndexedSubscript:", 0}];
+  [callback stop];
+  v5 = [-[NSMutableDictionary allKeysForObject:](self->mMoviesDict allKeysForObject:{callback), "objectAtIndexedSubscript:", 0}];
   mMoviesDict = self->mMoviesDict;
 
   [(NSMutableDictionary *)mMoviesDict removeObjectForKey:v5];
 }
 
-- (id)p_urlForResource:(id)a3
+- (id)p_urlForResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     return 0;
   }
 
-  v4 = [[[NSURL fileURLWithPath:?]isDirectory:"URLByAppendingPathComponent:isDirectory:" standardizedURL:a3];
+  v4 = [[[NSURL fileURLWithPath:?]isDirectory:"URLByAppendingPathComponent:isDirectory:" standardizedURL:resource];
   if ([(NSString *)[(NSURL *)v4 path] hasPrefix:self->mBaseResourcePath])
   {
     return v4;
@@ -551,9 +551,9 @@
   }
 }
 
-- (id)p_urlForMovie:(id)a3
+- (id)p_urlForMovie:(id)movie
 {
-  if (!a3)
+  if (!movie)
   {
     return 0;
   }

@@ -16,12 +16,12 @@
   }
 
   v4 = v3;
-  v5 = [v4 sample];
-  v6 = [v5 dataType];
+  sample = [v4 sample];
+  dataType = [sample dataType];
 
   if (_HKValidDataTypeCode())
   {
-    v7 = [MEMORY[0x277CCD720] dataTypeWithCode:v6];
+    v7 = [MEMORY[0x277CCD720] dataTypeWithCode:dataType];
     v8 = [objc_alloc(objc_msgSend(v7 "dataObjectClass"))];
     if ([v8 conformsToProtocol:&unk_283D45200])
     {

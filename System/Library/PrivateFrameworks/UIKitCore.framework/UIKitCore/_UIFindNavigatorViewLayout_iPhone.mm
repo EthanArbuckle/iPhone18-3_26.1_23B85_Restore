@@ -1,12 +1,12 @@
 @interface _UIFindNavigatorViewLayout_iPhone
 - (CGRect)preferredVerticalStackViewFrame;
 - (CGSize)preferredContentSize;
-- (_UIFindNavigatorViewLayout_iPhone)initWithFrame:(CGRect)a3;
+- (_UIFindNavigatorViewLayout_iPhone)initWithFrame:(CGRect)frame;
 - (void)_setAndActivateConstraints;
 - (void)addGlassfindAndReplacePlatter;
 - (void)layoutSubviews;
 - (void)prepareForLayout;
-- (void)setReplaceFieldVisible:(BOOL)a3;
+- (void)setReplaceFieldVisible:(BOOL)visible;
 @end
 
 @implementation _UIFindNavigatorViewLayout_iPhone
@@ -23,25 +23,25 @@
   [(UIView *)self->_findAndReplacePlatter _setCornerRadius:30.0];
   [(UIView *)self->_verticalStackView addSubview:self->_findAndReplacePlatter];
   v15 = MEMORY[0x1E69977A0];
-  v21 = [(UIView *)self->_verticalStackView topAnchor];
-  v20 = [(UIView *)self->_findAndReplacePlatter topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:9.0];
+  topAnchor = [(UIView *)self->_verticalStackView topAnchor];
+  topAnchor2 = [(UIView *)self->_findAndReplacePlatter topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
   v22[0] = v19;
-  v18 = [(UIView *)self->_verticalStackView leadingAnchor];
-  v17 = [(UIView *)self->_findAndReplacePlatter leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:9.0];
+  leadingAnchor = [(UIView *)self->_verticalStackView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_findAndReplacePlatter leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:9.0];
   v22[1] = v16;
-  v14 = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
-  v13 = [(UIView *)self->_verticalStackView bottomAnchor];
-  v12 = [v14 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_verticalStackView bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[2] = v12;
-  v5 = [(UIView *)self->_findAndReplacePlatter trailingAnchor];
-  v6 = [(UIView *)self->_verticalStackView trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [(UIView *)self->_findAndReplacePlatter trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_verticalStackView trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[3] = v7;
-  v8 = [(UIView *)self->_replaceStackView bottomAnchor];
-  v9 = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor3 = [(UIView *)self->_replaceStackView bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
+  v10 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v22[4] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:5];
   [v15 activateConstraints:v11];
@@ -49,18 +49,18 @@
   [(UIView *)self->_verticalStackView sendSubviewToBack:self->_findAndReplacePlatter];
 }
 
-- (_UIFindNavigatorViewLayout_iPhone)initWithFrame:(CGRect)a3
+- (_UIFindNavigatorViewLayout_iPhone)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = _UIFindNavigatorViewLayout_iPhone;
-  v3 = [(UIView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 _inheritedRenderConfig];
-    v6 = [v5 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)v3 _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v6)
+    if (colorAdaptiveBackground)
     {
       v7 = [UIStackView alloc];
       v8 = *MEMORY[0x1E695F058];
@@ -89,10 +89,10 @@
     verticalStackView = v4->_verticalStackView;
     v4->_verticalStackView = v14;
 
-    v16 = [(UIView *)v4 _inheritedRenderConfig];
-    v17 = [v16 colorAdaptiveBackground];
+    _inheritedRenderConfig2 = [(UIView *)v4 _inheritedRenderConfig];
+    colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
     v18 = 12.0;
-    if (v17)
+    if (colorAdaptiveBackground2)
     {
       v18 = 9.0;
     }
@@ -101,10 +101,10 @@
 
     [(UIStackView *)v4->_verticalStackView setAxis:1];
     [(UIStackView *)v4->_verticalStackView setDistribution:1];
-    v19 = [(UIView *)v4 _inheritedRenderConfig];
-    v20 = [v19 colorAdaptiveBackground];
+    _inheritedRenderConfig3 = [(UIView *)v4 _inheritedRenderConfig];
+    colorAdaptiveBackground3 = [_inheritedRenderConfig3 colorAdaptiveBackground];
 
-    if (v20)
+    if (colorAdaptiveBackground3)
     {
       [(UIStackView *)v4->_horizontalStackView addArrangedSubview:v4->_verticalStackView];
     }
@@ -118,8 +118,8 @@
     findStackView = v4->_findStackView;
     v4->_findStackView = v21;
 
-    v23 = [(UIView *)v4 _inheritedRenderConfig];
-    if ([v23 colorAdaptiveBackground])
+    _inheritedRenderConfig4 = [(UIView *)v4 _inheritedRenderConfig];
+    if ([_inheritedRenderConfig4 colorAdaptiveBackground])
     {
       v24 = 9.0;
     }
@@ -137,8 +137,8 @@
     replaceStackView = v4->_replaceStackView;
     v4->_replaceStackView = v25;
 
-    v27 = [(UIView *)v4 _inheritedRenderConfig];
-    if ([v27 colorAdaptiveBackground])
+    _inheritedRenderConfig5 = [(UIView *)v4 _inheritedRenderConfig];
+    if ([_inheritedRenderConfig5 colorAdaptiveBackground])
     {
       v28 = 9.0;
     }
@@ -156,10 +156,10 @@
     nextPrevStackView = v4->_nextPrevStackView;
     v4->_nextPrevStackView = v29;
 
-    v31 = [(UIView *)v4 _inheritedRenderConfig];
-    v32 = [v31 colorAdaptiveBackground];
+    _inheritedRenderConfig6 = [(UIView *)v4 _inheritedRenderConfig];
+    colorAdaptiveBackground4 = [_inheritedRenderConfig6 colorAdaptiveBackground];
 
-    if (v32)
+    if (colorAdaptiveBackground4)
     {
       v33 = [[_UIViewGlass alloc] initWithVariant:0];
       [(UIView *)v4->_nextPrevStackView _setBackground:v33];
@@ -196,17 +196,17 @@
 
   else
   {
-    v7 = [(UIView *)self _inheritedRenderConfig];
-    v8 = [v7 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v8)
+    if (colorAdaptiveBackground)
     {
       v6 = v6 * 1.2;
     }
   }
 
-  v9 = [(UIView *)self superview];
-  [v9 safeAreaInsets];
+  superview = [(UIView *)self superview];
+  [superview safeAreaInsets];
   v11 = v6 + v10;
 
   v12 = v4;
@@ -216,32 +216,32 @@
   return result;
 }
 
-- (void)setReplaceFieldVisible:(BOOL)a3
+- (void)setReplaceFieldVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v18.receiver = self;
   v18.super_class = _UIFindNavigatorViewLayout_iPhone;
   [(_UIFindNavigatorViewLayout *)&v18 setReplaceFieldVisible:?];
   replaceStackView = self->_replaceStackView;
-  if (v3)
+  if (visibleCopy)
   {
     [(UIView *)replaceStackView setHidden:0];
-    v6 = [(UIView *)self _inheritedRenderConfig];
-    -[NSLayoutConstraint setActive:](self->_doneSpaceConstraint, "setActive:", [v6 colorAdaptiveBackground] ^ 1);
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    -[NSLayoutConstraint setActive:](self->_doneSpaceConstraint, "setActive:", [_inheritedRenderConfig colorAdaptiveBackground] ^ 1);
 
     [(NSLayoutConstraint *)self->_replaceButtonWidthConstraint setActive:1];
-    v7 = [(UIView *)self _inheritedRenderConfig];
-    -[UIView setHidden:](self->_nextPrevSpacerView, "setHidden:", [v7 colorAdaptiveBackground]);
+    _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+    -[UIView setHidden:](self->_nextPrevSpacerView, "setHidden:", [_inheritedRenderConfig2 colorAdaptiveBackground]);
 
-    v8 = [(UIView *)self _inheritedRenderConfig];
-    v9 = [v8 colorAdaptiveBackground];
+    _inheritedRenderConfig3 = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig3 colorAdaptiveBackground];
 
-    if (v9)
+    if (colorAdaptiveBackground)
     {
-      v10 = [(UIView *)self traitCollection];
-      v11 = [v10 userInterfaceIdiom];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (!v11)
+      if (!userInterfaceIdiom)
       {
         v12 = [[_UIViewGlass alloc] initWithVariant:0];
         [(UIView *)self->_findAndReplacePlatter _setBackground:v12];
@@ -253,11 +253,11 @@
         v15 = 17.0;
 LABEL_7:
         [(UIView *)*p_nextPrevStackView _setCornerRadius:v15];
-        [(NSLayoutConstraint *)self->_replaceStackBottomAnchorConstraint setActive:v3];
-        [(NSLayoutConstraint *)self->_verticalStackBottomAnchorConstraint setActive:v3];
-        [(NSLayoutConstraint *)self->_verticalStackLeadingAnchorConstraint setActive:v3];
-        [(NSLayoutConstraint *)self->_verticalStackHeightConstraint setActive:v3 ^ 1];
-        [(NSLayoutConstraint *)self->_nextPrevStackTrailingAnchorConstraint setActive:v3 ^ 1];
+        [(NSLayoutConstraint *)self->_replaceStackBottomAnchorConstraint setActive:visibleCopy];
+        [(NSLayoutConstraint *)self->_verticalStackBottomAnchorConstraint setActive:visibleCopy];
+        [(NSLayoutConstraint *)self->_verticalStackLeadingAnchorConstraint setActive:visibleCopy];
+        [(NSLayoutConstraint *)self->_verticalStackHeightConstraint setActive:visibleCopy ^ 1];
+        [(NSLayoutConstraint *)self->_nextPrevStackTrailingAnchorConstraint setActive:visibleCopy ^ 1];
       }
     }
   }
@@ -268,10 +268,10 @@ LABEL_7:
     [(NSLayoutConstraint *)self->_doneSpaceConstraint setActive:0];
     [(NSLayoutConstraint *)self->_replaceButtonWidthConstraint setActive:0];
     [(UIView *)self->_nextPrevSpacerView setHidden:1];
-    v16 = [(UIView *)self _inheritedRenderConfig];
-    v17 = [v16 colorAdaptiveBackground];
+    _inheritedRenderConfig4 = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground2 = [_inheritedRenderConfig4 colorAdaptiveBackground];
 
-    if (v17)
+    if (colorAdaptiveBackground2)
     {
       [(UIView *)self->_findAndReplacePlatter _setBackground:0];
       p_nextPrevStackView = &self->_nextPrevStackView;
@@ -286,24 +286,24 @@ LABEL_7:
 
 - (void)prepareForLayout
 {
-  v3 = [(_UIFindNavigatorViewLayout_iPhone *)self usesSmallScreenStyle];
-  v4 = [(UIView *)self _inheritedRenderConfig];
-  v5 = [v4 colorAdaptiveBackground];
+  usesSmallScreenStyle = [(_UIFindNavigatorViewLayout_iPhone *)self usesSmallScreenStyle];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
   v6 = MEMORY[0x1E695F058];
-  if (v5)
+  if (colorAdaptiveBackground)
   {
     horizontalStackView = self->_horizontalStackView;
-    v8 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    [(UIStackView *)horizontalStackView addArrangedSubview:v8];
+    doneButton = [(_UIFindNavigatorViewLayout *)self doneButton];
+    [(UIStackView *)horizontalStackView addArrangedSubview:doneButton];
 
     v9 = [[UIView alloc] initWithFrame:*v6, v6[1], v6[2], v6[3]];
     horizontalSpacerView = self->_horizontalSpacerView;
     self->_horizontalSpacerView = v9;
 
     [(UIStackView *)self->_horizontalStackView addArrangedSubview:self->_horizontalSpacerView];
-    v11 = [(UIView *)self->_horizontalSpacerView widthAnchor];
-    v12 = [v11 constraintEqualToConstant:9.0];
+    widthAnchor = [(UIView *)self->_horizontalSpacerView widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:9.0];
     [v12 setActive:1];
 
     [(UIStackView *)self->_horizontalStackView addArrangedSubview:self->_verticalStackView];
@@ -312,32 +312,32 @@ LABEL_7:
   else
   {
     findStackView = self->_findStackView;
-    v14 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    [(UIStackView *)findStackView addArrangedSubview:v14];
+    doneButton2 = [(_UIFindNavigatorViewLayout *)self doneButton];
+    [(UIStackView *)findStackView addArrangedSubview:doneButton2];
   }
 
   v15 = self->_findStackView;
-  v16 = [(_UIFindNavigatorViewLayout *)self searchTextField];
-  [(UIStackView *)v15 addArrangedSubview:v16];
+  searchTextField = [(_UIFindNavigatorViewLayout *)self searchTextField];
+  [(UIStackView *)v15 addArrangedSubview:searchTextField];
 
   nextPrevStackView = self->_nextPrevStackView;
-  v18 = [(_UIFindNavigatorViewLayout *)self previousResultButton];
-  [(UIStackView *)nextPrevStackView addArrangedSubview:v18];
+  previousResultButton = [(_UIFindNavigatorViewLayout *)self previousResultButton];
+  [(UIStackView *)nextPrevStackView addArrangedSubview:previousResultButton];
 
   v19 = self->_nextPrevStackView;
-  if (v3)
+  if (usesSmallScreenStyle)
   {
     [(UIStackView *)self->_nextPrevStackView addArrangedSubview:self->_nextPrevSpacerView];
     v20 = self->_nextPrevStackView;
-    v21 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
-    [(UIStackView *)v20 addArrangedSubview:v21];
+    nextResultButton = [(_UIFindNavigatorViewLayout *)self nextResultButton];
+    [(UIStackView *)v20 addArrangedSubview:nextResultButton];
 
     [(UIView *)self->_nextPrevStackView _setTouchInsets:0.0, -8.0, 0.0, -8.0];
-    v22 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
-    [v22 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
+    nextResultButton2 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
+    [nextResultButton2 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
 
-    v23 = [(_UIFindNavigatorViewLayout *)self previousResultButton];
-    [v23 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
+    previousResultButton2 = [(_UIFindNavigatorViewLayout *)self previousResultButton];
+    [previousResultButton2 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
 
     [(UIStackView *)self->_findStackView addArrangedSubview:self->_nextPrevStackView];
     v24 = self->_findStackView;
@@ -347,95 +347,95 @@ LABEL_7:
 
   else
   {
-    v26 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
-    [(UIStackView *)v19 addArrangedSubview:v26];
+    nextResultButton3 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
+    [(UIStackView *)v19 addArrangedSubview:nextResultButton3];
 
     [(UIStackView *)self->_findStackView addArrangedSubview:self->_nextPrevStackView];
   }
 
   v71 = [[UIView alloc] initWithFrame:*v6, v6[1], v6[2], v6[3]];
-  v27 = [(UIView *)self _inheritedRenderConfig];
-  v28 = [v27 colorAdaptiveBackground];
+  _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-  if ((v28 & 1) == 0)
+  if ((colorAdaptiveBackground2 & 1) == 0)
   {
     [(UIStackView *)self->_replaceStackView addArrangedSubview:v71];
   }
 
   replaceStackView = self->_replaceStackView;
-  v30 = [(_UIFindNavigatorViewLayout *)self replaceTextField];
-  [(UIStackView *)replaceStackView addArrangedSubview:v30];
+  replaceTextField = [(_UIFindNavigatorViewLayout *)self replaceTextField];
+  [(UIStackView *)replaceStackView addArrangedSubview:replaceTextField];
 
   v31 = self->_replaceStackView;
-  v32 = [(_UIFindNavigatorViewLayout *)self replaceButton];
-  [(UIStackView *)v31 addArrangedSubview:v32];
+  replaceButton = [(_UIFindNavigatorViewLayout *)self replaceButton];
+  [(UIStackView *)v31 addArrangedSubview:replaceButton];
 
-  v33 = [(_UIFindNavigatorViewLayout *)self replaceButton];
-  [v33 setHidden:0];
+  replaceButton2 = [(_UIFindNavigatorViewLayout *)self replaceButton];
+  [replaceButton2 setHidden:0];
 
-  v34 = [(_UIFindNavigatorViewLayout *)self replaceTextField];
-  [v34 setHidden:0];
+  replaceTextField2 = [(_UIFindNavigatorViewLayout *)self replaceTextField];
+  [replaceTextField2 setHidden:0];
 
-  if (v3)
+  if (usesSmallScreenStyle)
   {
     v35 = self->_replaceStackView;
     v36 = makeSpacerView();
     [(UIStackView *)v35 addArrangedSubview:v36];
   }
 
-  v37 = [(UIView *)v71 widthAnchor];
-  v38 = [(_UIFindNavigatorViewLayout *)self doneButton];
-  v39 = [v38 widthAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  widthAnchor2 = [(UIView *)v71 widthAnchor];
+  doneButton3 = [(_UIFindNavigatorViewLayout *)self doneButton];
+  widthAnchor3 = [doneButton3 widthAnchor];
+  v40 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   doneSpaceConstraint = self->_doneSpaceConstraint;
   self->_doneSpaceConstraint = v40;
 
-  v42 = [(UIView *)self->_nextPrevStackView widthAnchor];
-  v43 = [(_UIFindNavigatorViewLayout *)self replaceButton];
-  v44 = [v43 widthAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  widthAnchor4 = [(UIView *)self->_nextPrevStackView widthAnchor];
+  replaceButton3 = [(_UIFindNavigatorViewLayout *)self replaceButton];
+  widthAnchor5 = [replaceButton3 widthAnchor];
+  v45 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   replaceButtonWidthConstraint = self->_replaceButtonWidthConstraint;
   self->_replaceButtonWidthConstraint = v45;
 
   [(_UIFindNavigatorViewLayout_iPhone *)self _setAndActivateConstraints];
-  v47 = [(UIView *)self _inheritedRenderConfig];
-  LODWORD(v43) = [v47 colorAdaptiveBackground];
+  _inheritedRenderConfig3 = [(UIView *)self _inheritedRenderConfig];
+  LODWORD(replaceButton3) = [_inheritedRenderConfig3 colorAdaptiveBackground];
 
-  if (v43)
+  if (replaceButton3)
   {
     v48 = objc_opt_new();
     [v48 setGroupBackdrops:1];
     [(UIView *)self _setBackground:v48];
     [(_UIFindNavigatorViewLayout_iPhone *)self addGlassfindAndReplacePlatter];
-    v49 = [(UIView *)self->_replaceStackView bottomAnchor];
-    v50 = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:-9.0];
+    bottomAnchor = [(UIView *)self->_replaceStackView bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_findAndReplacePlatter bottomAnchor];
+    v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-9.0];
     replaceStackBottomAnchorConstraint = self->_replaceStackBottomAnchorConstraint;
     self->_replaceStackBottomAnchorConstraint = v51;
 
-    v53 = [(UIView *)self->_verticalStackView bottomAnchor];
-    v54 = [(UIView *)self->_horizontalStackView bottomAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:-9.0];
+    bottomAnchor3 = [(UIView *)self->_verticalStackView bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_horizontalStackView bottomAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-9.0];
     verticalStackBottomAnchorConstraint = self->_verticalStackBottomAnchorConstraint;
     self->_verticalStackBottomAnchorConstraint = v55;
 
-    v57 = [(UIView *)self->_verticalStackView leadingAnchor];
-    v58 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    v59 = [v58 trailingAnchor];
-    v60 = [v57 constraintEqualToAnchor:v59 constant:18.0];
+    leadingAnchor = [(UIView *)self->_verticalStackView leadingAnchor];
+    doneButton4 = [(_UIFindNavigatorViewLayout *)self doneButton];
+    trailingAnchor = [doneButton4 trailingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:18.0];
     verticalStackLeadingAnchorConstraint = self->_verticalStackLeadingAnchorConstraint;
     self->_verticalStackLeadingAnchorConstraint = v60;
 
-    v62 = [(UIView *)self->_findStackView heightAnchor];
-    v63 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    v64 = [v63 heightAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
+    heightAnchor = [(UIView *)self->_findStackView heightAnchor];
+    doneButton5 = [(_UIFindNavigatorViewLayout *)self doneButton];
+    heightAnchor2 = [doneButton5 heightAnchor];
+    v65 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     verticalStackHeightConstraint = self->_verticalStackHeightConstraint;
     self->_verticalStackHeightConstraint = v65;
 
-    v67 = [(UIView *)self->_nextPrevStackView trailingAnchor];
-    v68 = [(UIView *)self->_horizontalStackView trailingAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    trailingAnchor2 = [(UIView *)self->_nextPrevStackView trailingAnchor];
+    trailingAnchor3 = [(UIView *)self->_horizontalStackView trailingAnchor];
+    v69 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     nextPrevStackTrailingAnchorConstraint = self->_nextPrevStackTrailingAnchorConstraint;
     self->_nextPrevStackTrailingAnchorConstraint = v69;
   }
@@ -445,68 +445,68 @@ LABEL_7:
 {
   v49[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69977A0];
-  v4 = [(_UIFindNavigatorViewLayout *)self nextResultButton];
-  v5 = [v4 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:28.0];
+  nextResultButton = [(_UIFindNavigatorViewLayout *)self nextResultButton];
+  widthAnchor = [nextResultButton widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:28.0];
   v49[0] = v6;
-  v7 = [(_UIFindNavigatorViewLayout *)self previousResultButton];
-  v8 = [v7 widthAnchor];
-  v9 = [v8 constraintEqualToConstant:28.0];
+  previousResultButton = [(_UIFindNavigatorViewLayout *)self previousResultButton];
+  widthAnchor2 = [previousResultButton widthAnchor];
+  v9 = [widthAnchor2 constraintEqualToConstant:28.0];
   v49[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
   [v3 activateConstraints:v10];
 
-  v11 = [(UIView *)self _inheritedRenderConfig];
-  LODWORD(v5) = [v11 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  LODWORD(widthAnchor) = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v5)
+  if (widthAnchor)
   {
     [(UIStackView *)self->_horizontalStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     v35 = MEMORY[0x1E69977A0];
-    v47 = [(UIView *)self->_horizontalStackView topAnchor];
-    v46 = [(UIView *)self topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor = [(UIView *)self->_horizontalStackView topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v48[0] = v45;
-    v44 = [(UIView *)self->_horizontalStackView leadingAnchor];
-    v43 = [(UIView *)self leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:9.0];
+    leadingAnchor = [(UIView *)self->_horizontalStackView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:9.0];
     v48[1] = v42;
-    v41 = [(UIView *)self bottomAnchor];
-    v40 = [(UIView *)self->_horizontalStackView bottomAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:9.0];
+    bottomAnchor = [(UIView *)self bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_horizontalStackView bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:9.0];
     v48[2] = v39;
-    v38 = [(UIView *)self trailingAnchor];
-    v37 = [(UIView *)self->_horizontalStackView trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:9.0];
+    trailingAnchor = [(UIView *)self trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_horizontalStackView trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:9.0];
     v48[3] = v36;
-    v34 = [(UIView *)self->_verticalStackView leadingAnchor];
-    v33 = [(UIView *)self->_horizontalSpacerView trailingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leadingAnchor3 = [(UIView *)self->_verticalStackView leadingAnchor];
+    trailingAnchor3 = [(UIView *)self->_horizontalSpacerView trailingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
     v48[4] = v32;
-    v31 = [(UIView *)self->_verticalStackView bottomAnchor];
-    v30 = [(UIView *)self->_horizontalStackView bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    bottomAnchor3 = [(UIView *)self->_verticalStackView bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_horizontalStackView bottomAnchor];
+    v29 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v48[5] = v29;
-    v28 = [(UIView *)self->_verticalStackView trailingAnchor];
-    v27 = [(UIView *)self->_horizontalStackView trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    trailingAnchor4 = [(UIView *)self->_verticalStackView trailingAnchor];
+    trailingAnchor5 = [(UIView *)self->_horizontalStackView trailingAnchor];
+    v26 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v48[6] = v26;
-    v25 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    v24 = [v25 heightAnchor];
-    v23 = [v24 constraintEqualToConstant:48.0];
+    doneButton = [(_UIFindNavigatorViewLayout *)self doneButton];
+    heightAnchor = [doneButton heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:48.0];
     v48[7] = v23;
-    v22 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    v12 = [v22 widthAnchor];
-    v13 = [(_UIFindNavigatorViewLayout *)self doneButton];
-    v14 = [v13 heightAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    doneButton2 = [(_UIFindNavigatorViewLayout *)self doneButton];
+    widthAnchor3 = [doneButton2 widthAnchor];
+    doneButton3 = [(_UIFindNavigatorViewLayout *)self doneButton];
+    heightAnchor2 = [doneButton3 heightAnchor];
+    v15 = [widthAnchor3 constraintEqualToAnchor:heightAnchor2];
     v48[8] = v15;
-    v16 = [(UIView *)self->_nextPrevStackView widthAnchor];
-    v17 = [v16 constraintEqualToConstant:80.0];
+    widthAnchor4 = [(UIView *)self->_nextPrevStackView widthAnchor];
+    v17 = [widthAnchor4 constraintEqualToConstant:80.0];
     v48[9] = v17;
-    v18 = [(_UIFindNavigatorViewLayout *)self replaceButton];
-    v19 = [v18 widthAnchor];
-    v20 = [v19 constraintEqualToConstant:80.0];
+    replaceButton = [(_UIFindNavigatorViewLayout *)self replaceButton];
+    widthAnchor5 = [replaceButton widthAnchor];
+    v20 = [widthAnchor5 constraintEqualToConstant:80.0];
     v48[10] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:11];
     [v35 activateConstraints:v21];
@@ -533,10 +533,10 @@ LABEL_7:
   v9.receiver = self;
   v9.super_class = _UIFindNavigatorViewLayout_iPhone;
   [(UIView *)&v9 layoutSubviews];
-  v3 = [(UIView *)self _inheritedRenderConfig];
-  v4 = [v3 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v4)
+  if (colorAdaptiveBackground)
   {
     if ([(_UIFindNavigatorViewLayout *)self replaceFieldVisible])
     {
@@ -548,14 +548,14 @@ LABEL_7:
       v5 = 23.0;
     }
 
-    v6 = [(_UIFindNavigatorViewLayout *)self searchTextField];
-    [v6 _setCornerRadius:v5];
+    searchTextField = [(_UIFindNavigatorViewLayout *)self searchTextField];
+    [searchTextField _setCornerRadius:v5];
   }
 
-  v7 = [(UIView *)self _inheritedRenderConfig];
-  v8 = [v7 colorAdaptiveBackground];
+  _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-  if ((v8 & 1) == 0)
+  if ((colorAdaptiveBackground2 & 1) == 0)
   {
     [(_UIFindNavigatorViewLayout_iPhone *)self preferredVerticalStackViewFrame];
     [(UIView *)self->_verticalStackView setFrame:?];

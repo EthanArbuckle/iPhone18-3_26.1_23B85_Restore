@@ -1,20 +1,20 @@
 @interface SAAttributionTag
-+ (id)getAccessBundleIdForTag:(unint64_t)a3 onVolumeName:(const char *)a4;
-+ (id)getBundleIdForTag:(unint64_t)a3 onVolumeName:(const char *)a4;
-+ (void)enableAttributionTagging:(id)a3;
-+ (void)processAttributionTagsForVol:(id)a3 withBlock:(id)a4;
++ (id)getAccessBundleIdForTag:(unint64_t)tag onVolumeName:(const char *)name;
++ (id)getBundleIdForTag:(unint64_t)tag onVolumeName:(const char *)name;
++ (void)enableAttributionTagging:(id)tagging;
++ (void)processAttributionTagsForVol:(id)vol withBlock:(id)block;
 @end
 
 @implementation SAAttributionTag
 
-+ (void)enableAttributionTagging:(id)a3
++ (void)enableAttributionTagging:(id)tagging
 {
-  v3 = a3;
+  taggingCopy = tagging;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  v4 = [taggingCopy countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -26,7 +26,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(taggingCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -50,29 +50,29 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v5 = [taggingCopy countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (void)processAttributionTagsForVol:(id)a3 withBlock:(id)a4
++ (void)processAttributionTagsForVol:(id)vol withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  volCopy = vol;
+  blockCopy = block;
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_100040394(v5, v7);
+    sub_100040394(volCopy, v7);
   }
 
   v8 = malloc_type_malloc(0x169540uLL, 0x100004005247EF8uLL);
   if (v8)
   {
     v9 = v8;
-    v17 = v5;
-    v10 = [v5 cStringUsingEncoding:1];
+    v17 = volCopy;
+    v10 = [volCopy cStringUsingEncoding:1];
     v18 = 0;
     v19 = 0;
     while (1)
@@ -94,7 +94,7 @@
           if (*v13 && *(v13 - 2))
           {
             v14 = [NSString stringWithUTF8String:v13];
-            (*(v6 + 2))(v6, v14, *(v13 - 2), *(v13 - 1), *(v13 - 3), *(v13 - 5));
+            (*(blockCopy + 2))(blockCopy, v14, *(v13 - 2), *(v13 - 1), *(v13 - 3), *(v13 - 5));
 
             v11 = v19;
           }
@@ -120,7 +120,7 @@
 
 LABEL_20:
     free(v9);
-    v5 = v17;
+    volCopy = v17;
   }
 
   else
@@ -133,13 +133,13 @@ LABEL_20:
   }
 }
 
-+ (id)getBundleIdForTag:(unint64_t)a3 onVolumeName:(const char *)a4
++ (id)getBundleIdForTag:(unint64_t)tag onVolumeName:(const char *)name
 {
   memset(v10, 0, sizeof(v10));
   v9 = 0u;
   v8 = 0u;
-  v7 = a3;
-  if (fsctl(a4, 0xC1284A72uLL, &v7, 1u))
+  tagCopy = tag;
+  if (fsctl(name, 0xC1284A72uLL, &tagCopy, 1u))
   {
     v4 = SALog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -158,7 +158,7 @@ LABEL_20:
   return v5;
 }
 
-+ (id)getAccessBundleIdForTag:(unint64_t)a3 onVolumeName:(const char *)a4
++ (id)getAccessBundleIdForTag:(unint64_t)tag onVolumeName:(const char *)name
 {
   v6 = malloc_type_malloc(0x1EF0uLL, 0x10000400E1E4D96uLL);
   if (!v6)
@@ -189,7 +189,7 @@ LABEL_20:
   LODWORD(v16[0]) = 6;
   DWORD2(v17) = 30;
   v18 = v6;
-  if (fsctl(a4, 0xC0F84A7EuLL, v16, 0))
+  if (fsctl(name, 0xC0F84A7EuLL, v16, 0))
   {
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -221,7 +221,7 @@ LABEL_13:
   v14 = v18 + 8;
   do
   {
-    if (*(v14 - 8) == a3)
+    if (*(v14 - 8) == tag)
     {
       v15 = [NSString stringWithCString:v14 encoding:4];
 

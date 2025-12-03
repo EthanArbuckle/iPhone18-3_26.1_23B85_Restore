@@ -1,66 +1,66 @@
 @interface TSPDirectoryPackage
-+ (BOOL)isValidPackageAtURL:(id)a3;
-+ (id)componentFileURLForPackageURL:(id)a3 packageLocator:(id)a4;
-+ (id)objectArchiveURLForPackageURL:(id)a3;
-+ (id)zipArchiveURLFromPackageURL:(id)a3;
-- (BOOL)hasDataAtRelativePath:(id)a3;
-- (id)dataAtRelativePath:(id)a3 allowDecryption:(BOOL)a4 error:(id *)a5;
-- (id)newDataStorageAtRelativePath:(id)a3 decryptionInfo:(id)a4 materializedLength:(unint64_t)a5 packageURL:(id)a6 lastModificationDate:(id *)a7;
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5;
-- (id)newRawDataReadChannelAtRelativePath:(id)a3;
-- (id)newRawReadChannelForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 error:(id *)a5;
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4;
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4;
-- (void)prepareForDocumentReplacementWithSuccess:(BOOL)a3 forSafeSave:(BOOL)a4 originalURL:(id)a5;
++ (BOOL)isValidPackageAtURL:(id)l;
++ (id)componentFileURLForPackageURL:(id)l packageLocator:(id)locator;
++ (id)objectArchiveURLForPackageURL:(id)l;
++ (id)zipArchiveURLFromPackageURL:(id)l;
+- (BOOL)hasDataAtRelativePath:(id)path;
+- (id)dataAtRelativePath:(id)path allowDecryption:(BOOL)decryption error:(id *)error;
+- (id)newDataStorageAtRelativePath:(id)path decryptionInfo:(id)info materializedLength:(unint64_t)length packageURL:(id)l lastModificationDate:(id *)date;
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error;
+- (id)newRawDataReadChannelAtRelativePath:(id)path;
+- (id)newRawReadChannelForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive error:(id *)error;
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error;
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive;
+- (void)prepareForDocumentReplacementWithSuccess:(BOOL)success forSafeSave:(BOOL)save originalURL:(id)l;
 @end
 
 @implementation TSPDirectoryPackage
 
-+ (id)objectArchiveURLForPackageURL:(id)a3
++ (id)objectArchiveURLForPackageURL:(id)l
 {
-  v3 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(a3, a2, @"Index.zip", 0);
+  v3 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(l, a2, @"Index.zip", 0);
 
   return v3;
 }
 
-+ (id)componentFileURLForPackageURL:(id)a3 packageLocator:(id)a4
++ (id)componentFileURLForPackageURL:(id)l packageLocator:(id)locator
 {
-  v5 = a3;
-  v7 = objc_msgSend_stringByAppendingPathExtension_(a4, v6, @"iwa");
-  v9 = objc_msgSend_URLByAppendingPathComponent_(v5, v8, v7);
+  lCopy = l;
+  v7 = objc_msgSend_stringByAppendingPathExtension_(locator, v6, @"iwa");
+  v9 = objc_msgSend_URLByAppendingPathComponent_(lCopy, v8, v7);
 
   return v9;
 }
 
-+ (BOOL)isValidPackageAtURL:(id)a3
++ (BOOL)isValidPackageAtURL:(id)l
 {
-  v3 = objc_msgSend_objectArchiveURLForPackageURL_(a1, a2, a3);
+  v3 = objc_msgSend_objectArchiveURLForPackageURL_(self, a2, l);
   v5 = objc_msgSend_checkResourceIsReachableAndReturnError_(v3, v4, 0);
 
   return v5;
 }
 
-+ (id)zipArchiveURLFromPackageURL:(id)a3
++ (id)zipArchiveURLFromPackageURL:(id)l
 {
-  v3 = objc_msgSend_objectArchiveURLForPackageURL_(a1, a2, a3);
+  v3 = objc_msgSend_objectArchiveURLForPackageURL_(self, a2, l);
 
   return v3;
 }
 
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = v6;
+  archiveCopy = archive;
+  locatorCopy = locator;
+  v9 = locatorCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = sub_2769D33A0;
   v31 = sub_2769D33B0;
   v32 = 0;
-  if (v4)
+  if (archiveCopy)
   {
-    if (!v6)
+    if (!locatorCopy)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPDirectoryPackage packageEntryInfoForComponentLocator:isStoredOutsideObjectArchive:]");
@@ -86,7 +86,7 @@
   {
     v23.receiver = self;
     v23.super_class = TSPDirectoryPackage;
-    v20 = [(TSPPackage *)&v23 packageEntryInfoForComponentLocator:v6 isStoredOutsideObjectArchive:0];
+    v20 = [(TSPPackage *)&v23 packageEntryInfoForComponentLocator:locatorCopy isStoredOutsideObjectArchive:0];
     v19 = v28[5];
     v28[5] = v20;
   }
@@ -97,11 +97,11 @@
   return v21;
 }
 
-- (id)newRawReadChannelForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 error:(id *)a5
+- (id)newRawReadChannelForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v11 = v8;
+  archiveCopy = archive;
+  locatorCopy = locator;
+  v11 = locatorCopy;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -114,9 +114,9 @@
   v35 = sub_2769D33A0;
   v36 = sub_2769D33B0;
   v37 = 0;
-  if (v6)
+  if (archiveCopy)
   {
-    if (!v8)
+    if (!locatorCopy)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSPDirectoryPackage newRawReadChannelForComponentLocator:isStoredOutsideObjectArchive:error:]");
@@ -144,16 +144,16 @@
     v26.receiver = self;
     v26.super_class = TSPDirectoryPackage;
     obj = 0;
-    v22 = [(TSPPackage *)&v26 newRawReadChannelForComponentLocator:v8 isStoredOutsideObjectArchive:0 error:&obj];
+    v22 = [(TSPPackage *)&v26 newRawReadChannelForComponentLocator:locatorCopy isStoredOutsideObjectArchive:0 error:&obj];
     objc_storeStrong(&v37, obj);
     v21 = v39[5];
     v39[5] = v22;
   }
 
   v23 = v39[5];
-  if (a5 && !v23)
+  if (error && !v23)
   {
-    *a5 = v33[5];
+    *error = v33[5];
     v23 = v39[5];
   }
 
@@ -164,17 +164,17 @@
   return v24;
 }
 
-- (id)newDataStorageAtRelativePath:(id)a3 decryptionInfo:(id)a4 materializedLength:(unint64_t)a5 packageURL:(id)a6 lastModificationDate:(id *)a7
+- (id)newDataStorageAtRelativePath:(id)path decryptionInfo:(id)info materializedLength:(unint64_t)length packageURL:(id)l lastModificationDate:(id *)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  pathCopy = path;
+  infoCopy = info;
+  lCopy = l;
   v15 = [TSPDirectoryPackageDataStorage alloc];
-  v17 = objc_msgSend_initWithPath_package_decryptionInfo_materializedLength_(v15, v16, v12, self, v13, a5);
+  v17 = objc_msgSend_initWithPath_package_decryptionInfo_materializedLength_(v15, v16, pathCopy, self, infoCopy, length);
   v19 = v17;
-  if (a7 && v17)
+  if (date && v17)
   {
-    v20 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v14, v18, v12, 0);
+    v20 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(lCopy, v18, pathCopy, 0);
     v29 = 0;
     v21 = *MEMORY[0x277CBE7B0];
     v28 = 0;
@@ -193,16 +193,16 @@
     }
 
     v26 = v24;
-    *a7 = v24;
+    *date = v24;
   }
 
   return v19;
 }
 
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPDirectoryPackage packageEntryInfoAtRelativePath:error:]");
@@ -229,16 +229,16 @@
   v22[1] = 3221225472;
   v22[2] = sub_2769D4554;
   v22[3] = &unk_27A6E3AF0;
-  v17 = v8;
+  v17 = pathCopy;
   v23 = v17;
   v24 = &v26;
   v25 = &v32;
   objc_msgSend_performReadUsingAccessor_(v16, v18, v22);
 
   v19 = v33[5];
-  if (a4 && !v19)
+  if (error && !v19)
   {
-    *a4 = v27[5];
+    *error = v27[5];
     v19 = v33[5];
   }
 
@@ -250,10 +250,10 @@
   return v20;
 }
 
-- (id)dataAtRelativePath:(id)a3 allowDecryption:(BOOL)a4 error:(id *)a5
+- (id)dataAtRelativePath:(id)path allowDecryption:(BOOL)decryption error:(id *)error
 {
-  v6 = a4;
-  v10 = a3;
+  decryptionCopy = decryption;
+  pathCopy = path;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -266,14 +266,14 @@
   v30 = sub_2769D33A0;
   v31 = sub_2769D33B0;
   v32 = 0;
-  if (v6 && (objc_msgSend_decryptionKey(self, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (decryptionCopy && (objc_msgSend_decryptionKey(self, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v13 = (v28 + 5);
     v12 = v28[5];
     v21.receiver = self;
     v21.super_class = TSPDirectoryPackage;
     obj = v12;
-    v14 = [(TSPPackage *)&v21 dataAtRelativePath:v10 allowDecryption:1 error:&obj];
+    v14 = [(TSPPackage *)&v21 dataAtRelativePath:pathCopy allowDecryption:1 error:&obj];
     objc_storeStrong(v13, obj);
     v15 = v34[5];
     v34[5] = v14;
@@ -286,7 +286,7 @@
     v23[1] = 3221225472;
     v23[2] = sub_2769D490C;
     v23[3] = &unk_27A6E3AF0;
-    v24 = v10;
+    v24 = pathCopy;
     v25 = &v33;
     v26 = &v27;
     objc_msgSend_performReadUsingAccessor_(v16, v17, v23);
@@ -295,9 +295,9 @@
   }
 
   v18 = v34[5];
-  if (a5 && !v18)
+  if (error && !v18)
   {
-    *a5 = v28[5];
+    *error = v28[5];
     v18 = v34[5];
   }
 
@@ -309,9 +309,9 @@
   return v19;
 }
 
-- (id)newRawDataReadChannelAtRelativePath:(id)a3
+- (id)newRawDataReadChannelAtRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -323,7 +323,7 @@
   v12[1] = 3221225472;
   v12[2] = sub_2769D4B20;
   v12[3] = &unk_27A6E3AC8;
-  v8 = v4;
+  v8 = pathCopy;
   v13 = v8;
   v14 = &v15;
   objc_msgSend_performReadUsingAccessor_(v7, v9, v12);
@@ -334,9 +334,9 @@
   return v10;
 }
 
-- (BOOL)hasDataAtRelativePath:(id)a3
+- (BOOL)hasDataAtRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -346,32 +346,32 @@
   v11[1] = 3221225472;
   v11[2] = sub_2769D4CD8;
   v11[3] = &unk_27A6E3AC8;
-  v8 = v4;
+  v8 = pathCopy;
   v12 = v8;
   v13 = &v14;
   objc_msgSend_performReadUsingAccessor_(v7, v9, v11);
 
-  LOBYTE(v4) = *(v15 + 24);
+  LOBYTE(pathCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = [TSPDocumentProperties alloc];
-  v9 = objc_msgSend_initWithDocumentURL_allowMissingPropertyList_error_(v7, v8, v6, 0, a5);
+  v9 = objc_msgSend_initWithDocumentURL_allowMissingPropertyList_error_(v7, v8, lCopy, 0, error);
 
   return v9;
 }
 
-- (void)prepareForDocumentReplacementWithSuccess:(BOOL)a3 forSafeSave:(BOOL)a4 originalURL:(id)a5
+- (void)prepareForDocumentReplacementWithSuccess:(BOOL)success forSafeSave:(BOOL)save originalURL:(id)l
 {
-  v5 = a3;
-  v7 = a5;
-  v10 = v7;
-  if (v5 && objc_msgSend_tsu_volumeRenameOpenFail(v7, v8, v9))
+  successCopy = success;
+  lCopy = l;
+  v10 = lCopy;
+  if (successCopy && objc_msgSend_tsu_volumeRenameOpenFail(lCopy, v8, v9))
   {
     v13 = objc_msgSend_zipArchive(self, v11, v12);
     v38 = 0;

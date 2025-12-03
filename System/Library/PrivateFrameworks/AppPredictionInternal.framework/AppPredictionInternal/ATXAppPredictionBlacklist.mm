@@ -1,17 +1,17 @@
 @interface ATXAppPredictionBlacklist
 + (ATXAppPredictionBlacklist)sharedInstance;
 - (ATXAppPredictionBlacklist)init;
-- (ATXAppPredictionBlacklist)initWithUserDefaults:(id)a3 globals:(id)a4;
+- (ATXAppPredictionBlacklist)initWithUserDefaults:(id)defaults globals:(id)globals;
 - (id)disabledBundleIds;
-- (int)registerPrefsChangeHandler:(id)a3;
+- (int)registerPrefsChangeHandler:(id)handler;
 - (void)_createBlacklistFromPreferencesDisabledApps;
 - (void)_listenForUpdates;
 - (void)_performMigrationsIfNeeded;
-- (void)_resetBlacklistWithSet:(id)a3;
+- (void)_resetBlacklistWithSet:(id)set;
 - (void)_updateBlacklist;
 - (void)_updateBlacklistFromGlobalsBlacklistedApps;
 - (void)dealloc;
-- (void)deregisterPrefsChangeHandlerWithToken:(int)a3;
+- (void)deregisterPrefsChangeHandlerWithToken:(int)token;
 @end
 
 @implementation ATXAppPredictionBlacklist
@@ -26,10 +26,10 @@
   return v6;
 }
 
-- (ATXAppPredictionBlacklist)initWithUserDefaults:(id)a3 globals:(id)a4
+- (ATXAppPredictionBlacklist)initWithUserDefaults:(id)defaults globals:(id)globals
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  globalsCopy = globals;
   v19.receiver = self;
   v19.super_class = ATXAppPredictionBlacklist;
   v9 = [(ATXAppPredictionBlacklist *)&v19 init];
@@ -48,8 +48,8 @@
     notificationQueue = v9->_notificationQueue;
     v9->_notificationQueue = v16;
 
-    objc_storeStrong(&v9->_userDefaults, a3);
-    objc_storeStrong(&v9->_globals, a4);
+    objc_storeStrong(&v9->_userDefaults, defaults);
+    objc_storeStrong(&v9->_globals, globals);
     [(ATXAppPredictionBlacklist *)v9 _performMigrationsIfNeeded];
     [(ATXAppPredictionBlacklist *)v9 _updateBlacklist];
     [(ATXAppPredictionBlacklist *)v9 _listenForUpdates];
@@ -84,8 +84,8 @@ void __43__ATXAppPredictionBlacklist_sharedInstance__block_invoke()
 {
   if (self->_blacklistNotificationToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_blacklistNotificationToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_blacklistNotificationToken];
   }
 
   v4.receiver = self;
@@ -124,9 +124,9 @@ uint64_t __46__ATXAppPredictionBlacklist_disabledBundleIds__block_invoke(uint64_
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (int)registerPrefsChangeHandler:(id)a3
+- (int)registerPrefsChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -137,7 +137,7 @@ uint64_t __46__ATXAppPredictionBlacklist_disabledBundleIds__block_invoke(uint64_
   v8[2] = __56__ATXAppPredictionBlacklist_registerPrefsChangeHandler___block_invoke;
   v8[3] = &unk_27859BFC8;
   v10 = &v11;
-  v6 = v4;
+  v6 = handlerCopy;
   v9 = v6;
   [(_PASLock *)lock runWithLockAcquired:v8];
   LODWORD(lock) = *(v12 + 6);
@@ -159,14 +159,14 @@ void __56__ATXAppPredictionBlacklist_registerPrefsChangeHandler___block_invoke(u
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)deregisterPrefsChangeHandlerWithToken:(int)a3
+- (void)deregisterPrefsChangeHandlerWithToken:(int)token
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__ATXAppPredictionBlacklist_deregisterPrefsChangeHandlerWithToken___block_invoke;
   v4[3] = &__block_descriptor_36_e32_v16__0__ATXGuardedAppBlacklist_8l;
-  v5 = a3;
+  tokenCopy = token;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
@@ -182,14 +182,14 @@ void __67__ATXAppPredictionBlacklist_deregisterPrefsChangeHandlerWithToken___blo
   objc_initWeak(&location, self);
   if (!self->_blacklistNotificationToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__ATXAppPredictionBlacklist__listenForUpdates__block_invoke;
     v6[3] = &unk_27859C010;
     objc_copyWeak(&v7, &location);
     v6[4] = self;
-    v4 = [v3 addObserverForName:@"com.apple.spotlightui.prefschanged" object:0 queue:0 usingBlock:v6];
+    v4 = [defaultCenter addObserverForName:@"com.apple.spotlightui.prefschanged" object:0 queue:0 usingBlock:v6];
     blacklistNotificationToken = self->_blacklistNotificationToken;
     self->_blacklistNotificationToken = v4;
 
@@ -461,16 +461,16 @@ void __71__ATXAppPredictionBlacklist__updateBlacklistFromGlobalsBlacklistedApps_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetBlacklistWithSet:(id)a3
+- (void)_resetBlacklistWithSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ATXAppPredictionBlacklist__resetBlacklistWithSet___block_invoke;
   v7[3] = &unk_27859C038;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

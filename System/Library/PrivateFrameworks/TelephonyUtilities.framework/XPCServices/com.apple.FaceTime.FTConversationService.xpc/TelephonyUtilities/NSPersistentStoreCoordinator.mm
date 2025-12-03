@@ -1,35 +1,35 @@
 @interface NSPersistentStoreCoordinator
-- (BOOL)destroyPersistentStoreWithDescription:(id)a3 error:(id *)a4;
+- (BOOL)destroyPersistentStoreWithDescription:(id)description error:(id *)error;
 @end
 
 @implementation NSPersistentStoreCoordinator
 
-- (BOOL)destroyPersistentStoreWithDescription:(id)a3 error:(id *)a4
+- (BOOL)destroyPersistentStoreWithDescription:(id)description error:(id *)error
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (_TUIsInternalInstall())
   {
-    v25 = a4;
-    v7 = [v6 URL];
-    v8 = [v7 lastPathComponent];
-    v9 = [v8 stringByDeletingPathExtension];
-    v10 = [v9 stringByAppendingString:@"-corrupt"];
+    errorCopy = error;
+    v7 = [descriptionCopy URL];
+    lastPathComponent = [v7 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v10 = [stringByDeletingPathExtension stringByAppendingString:@"-corrupt"];
 
-    v11 = [v7 pathExtension];
-    if (v11)
+    pathExtension = [v7 pathExtension];
+    if (pathExtension)
     {
-      v12 = [v10 stringByAppendingPathExtension:v11];
+      v12 = [v10 stringByAppendingPathExtension:pathExtension];
 
       v10 = v12;
     }
 
-    v13 = [v7 URLByDeletingLastPathComponent];
-    v14 = [v13 URLByAppendingPathComponent:v10 isDirectory:0];
+    uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
+    v14 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v10 isDirectory:0];
 
-    v15 = [v6 options];
-    v16 = [v6 type];
+    options = [descriptionCopy options];
+    type = [descriptionCopy type];
     v26 = 0;
-    v17 = [(NSPersistentStoreCoordinator *)self replacePersistentStoreAtURL:v14 destinationOptions:v15 withPersistentStoreFromURL:v7 sourceOptions:v15 storeType:v16 error:&v26];
+    v17 = [(NSPersistentStoreCoordinator *)self replacePersistentStoreAtURL:v14 destinationOptions:options withPersistentStoreFromURL:v7 sourceOptions:options storeType:type error:&v26];
     v18 = v26;
 
     if ((v17 & 1) == 0)
@@ -37,17 +37,17 @@
       v19 = FTCServiceLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        sub_10000CBC0(v6, v18, v19);
+        sub_10000CBC0(descriptionCopy, v18, v19);
       }
     }
 
-    a4 = v25;
+    error = errorCopy;
   }
 
-  v20 = [v6 URL];
-  v21 = [v6 type];
-  v22 = [v6 options];
-  v23 = [(NSPersistentStoreCoordinator *)self destroyPersistentStoreAtURL:v20 withType:v21 options:v22 error:a4];
+  v20 = [descriptionCopy URL];
+  type2 = [descriptionCopy type];
+  options2 = [descriptionCopy options];
+  v23 = [(NSPersistentStoreCoordinator *)self destroyPersistentStoreAtURL:v20 withType:type2 options:options2 error:error];
 
   return v23;
 }

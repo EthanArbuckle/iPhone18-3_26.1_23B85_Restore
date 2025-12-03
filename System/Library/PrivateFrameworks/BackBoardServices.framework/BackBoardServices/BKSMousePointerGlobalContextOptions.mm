@@ -1,39 +1,39 @@
 @interface BKSMousePointerGlobalContextOptions
 + (BKSMousePointerGlobalContextOptions)new;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 - (BKSMousePointerGlobalContextOptions)init;
-- (BKSMousePointerGlobalContextOptions)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSMousePointerGlobalContextOptions)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_initWithCopyOf:(void *)a1;
+- (void)_initWithCopyOf:(void *)of;
 @end
 
 @implementation BKSMousePointerGlobalContextOptions
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableMousePointerGlobalContextOptions alloc];
 
   return [(BKSMousePointerGlobalContextOptions *)v4 _initWithCopyOf:?];
 }
 
-- (void)_initWithCopyOf:(void *)a1
+- (void)_initWithCopyOf:(void *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSMousePointerGlobalContextOptions *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSMousePointerGlobalContextOptions *)of _init];
+    of = _init;
+    if (_init)
     {
-      *(v4 + 8) = v3[8];
+      *(_init + 8) = v3[8];
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (id)_init
@@ -85,18 +85,18 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMousePointerGlobalContextOptions alloc];
 
   return [(BKSMousePointerGlobalContextOptions *)v4 _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[8] == self->_pinOnButtonDown;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[8] == self->_pinOnButtonDown;
 
   return v5;
 }
@@ -112,13 +112,13 @@
   return (0x94D049BB133111EBLL * (v2 ^ (v2 >> 27))) ^ ((0x94D049BB133111EBLL * (v2 ^ (v2 >> 27))) >> 31);
 }
 
-- (BKSMousePointerGlobalContextOptions)initWithCoder:(id)a3
+- (BKSMousePointerGlobalContextOptions)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = BKSMousePointerGlobalContextOptions;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSMousePointerGlobalContextOptions *)&v7 init];
-  v5 = [v3 decodeBoolForKey:{@"pinOnButtonDown", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeBoolForKey:{@"pinOnButtonDown", v7.receiver, v7.super_class}];
 
   v4->_pinOnButtonDown = v5;
   return v4;
@@ -170,13 +170,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSMousePointerGlobalContextOptions *)[BKSMutableMousePointerGlobalContextOptions alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSMousePointerGlobalContextOptions *)[BKSMutableMousePointerGlobalContextOptions alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

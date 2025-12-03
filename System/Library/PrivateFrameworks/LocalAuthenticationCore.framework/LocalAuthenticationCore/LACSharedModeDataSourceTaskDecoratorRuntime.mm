@@ -1,15 +1,15 @@
 @interface LACSharedModeDataSourceTaskDecoratorRuntime
-- (BOOL)isEqual:(id)a3;
-- (LACSharedModeDataSourceTaskDecoratorRuntime)initWithMinValue:(double)a3 maxValue:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (LACSharedModeDataSourceTaskDecoratorRuntime)initWithMinValue:(double)value maxValue:(double)maxValue;
 - (id)description;
 - (void)halveMaxValue;
 @end
 
 @implementation LACSharedModeDataSourceTaskDecoratorRuntime
 
-- (LACSharedModeDataSourceTaskDecoratorRuntime)initWithMinValue:(double)a3 maxValue:(double)a4
+- (LACSharedModeDataSourceTaskDecoratorRuntime)initWithMinValue:(double)value maxValue:(double)maxValue
 {
-  if (a3 > a4)
+  if (value > maxValue)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Runtime minValue must be less than or equal to maxValue"];
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -21,10 +21,10 @@
   result = [(LACSharedModeDataSourceTaskDecoratorRuntime *)&v8 init];
   if (result)
   {
-    result->_minValue = a3;
-    result->_maxValue = a4;
-    result->_effectiveMaxValue = a4;
-    result->_effectiveMinValue = a3;
+    result->_minValue = value;
+    result->_maxValue = maxValue;
+    result->_effectiveMaxValue = maxValue;
+    result->_effectiveMinValue = value;
   }
 
   return result;
@@ -41,13 +41,13 @@
   self->_effectiveMaxValue = minValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(LACSharedModeDataSourceTaskDecoratorRuntime *)self minValue];
     v7 = v6;
     [v5 minValue];

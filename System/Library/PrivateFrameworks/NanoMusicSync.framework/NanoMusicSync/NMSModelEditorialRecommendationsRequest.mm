@@ -1,25 +1,25 @@
 @interface NMSModelEditorialRecommendationsRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation NMSModelEditorialRecommendationsRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NMSModelEditorialRecommendationsRequestOperation alloc];
   v6 = [(NMSModelEditorialRecommendationsRequest *)self copy];
-  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:v4];
+  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NMSModelEditorialRecommendationsRequest;
-  v4 = [(MPModelStoreBrowseRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPModelStoreBrowseRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

@@ -1,7 +1,7 @@
 @interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructurePassSampleBufferAttachmentDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -29,7 +29,7 @@
   [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSampleBuffer:self->_sampleBuffer];
@@ -38,9 +38,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -51,24 +51,24 @@
     v18 = v4;
     v19 = v3;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v12) = 0;
       return v12;
     }
 
-    v13 = [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)self sampleBuffer];
-    if (v13 == [a3 sampleBuffer] || (v12 = objc_msgSend(-[MTLAccelerationStructurePassSampleBufferAttachmentDescriptor sampleBuffer](self, "sampleBuffer"), "isEqual:", objc_msgSend(a3, "sampleBuffer"))) != 0)
+    sampleBuffer = [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)self sampleBuffer];
+    if (sampleBuffer == [equal sampleBuffer] || (v12 = objc_msgSend(-[MTLAccelerationStructurePassSampleBufferAttachmentDescriptor sampleBuffer](self, "sampleBuffer"), "isEqual:", objc_msgSend(equal, "sampleBuffer"))) != 0)
     {
       v14 = [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)self startOfEncoderSampleIndex:v6];
-      if (v14 != [a3 startOfEncoderSampleIndex])
+      if (v14 != [equal startOfEncoderSampleIndex])
       {
         goto LABEL_3;
       }
 
-      v15 = [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)self endOfEncoderSampleIndex];
-      LOBYTE(v12) = v15 == [a3 endOfEncoderSampleIndex];
+      endOfEncoderSampleIndex = [(MTLAccelerationStructurePassSampleBufferAttachmentDescriptor *)self endOfEncoderSampleIndex];
+      LOBYTE(v12) = endOfEncoderSampleIndex == [equal endOfEncoderSampleIndex];
     }
   }
 

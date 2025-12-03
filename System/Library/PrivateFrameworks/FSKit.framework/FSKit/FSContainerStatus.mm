@@ -1,29 +1,29 @@
 @interface FSContainerStatus
 + (FSContainerStatus)active;
 + (FSContainerStatus)ready;
-+ (id)activeWithStatus:(id)a3;
-+ (id)blockedWithStatus:(id)a3;
-+ (id)notReadyWithStatus:(id)a3;
-+ (id)readyWithStatus:(id)a3;
-- (FSContainerStatus)initWithState:(int64_t)a3 status:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)activeWithStatus:(id)status;
++ (id)blockedWithStatus:(id)status;
++ (id)notReadyWithStatus:(id)status;
++ (id)readyWithStatus:(id)status;
+- (FSContainerStatus)initWithState:(int64_t)state status:(id)status;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FSContainerStatus
 
-- (FSContainerStatus)initWithState:(int64_t)a3 status:(id)a4
+- (FSContainerStatus)initWithState:(int64_t)state status:(id)status
 {
-  v6 = a4;
+  statusCopy = status;
   v11.receiver = self;
   v11.super_class = FSContainerStatus;
   v7 = [(FSContainerStatus *)&v11 self];
 
   if (v7)
   {
-    v7->_state = a3;
-    if (v6)
+    v7->_state = state;
+    if (statusCopy)
     {
-      v8 = [v6 copy];
+      v8 = [statusCopy copy];
     }
 
     else
@@ -40,53 +40,53 @@
 
 + (FSContainerStatus)active
 {
-  v2 = [[a1 alloc] initWithState:3 status:0];
+  v2 = [[self alloc] initWithState:3 status:0];
 
   return v2;
 }
 
-+ (id)activeWithStatus:(id)a3
++ (id)activeWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:3 status:v4];
+  statusCopy = status;
+  v5 = [[self alloc] initWithState:3 status:statusCopy];
 
   return v5;
 }
 
-+ (id)blockedWithStatus:(id)a3
++ (id)blockedWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:1 status:v4];
+  statusCopy = status;
+  v5 = [[self alloc] initWithState:1 status:statusCopy];
 
   return v5;
 }
 
-+ (id)notReadyWithStatus:(id)a3
++ (id)notReadyWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:0 status:v4];
+  statusCopy = status;
+  v5 = [[self alloc] initWithState:0 status:statusCopy];
 
   return v5;
 }
 
 + (FSContainerStatus)ready
 {
-  v2 = [[a1 alloc] initWithState:2 status:0];
+  v2 = [[self alloc] initWithState:2 status:0];
 
   return v2;
 }
 
-+ (id)readyWithStatus:(id)a3
++ (id)readyWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithState:2 status:v4];
+  statusCopy = status;
+  v5 = [[self alloc] initWithState:2 status:statusCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   state = self->_state;
   status = self->_status;
 

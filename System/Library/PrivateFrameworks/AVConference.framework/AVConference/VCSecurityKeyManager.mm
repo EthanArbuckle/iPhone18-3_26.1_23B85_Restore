@@ -1,27 +1,27 @@
 @interface VCSecurityKeyManager
-- (BOOL)addSecurityKeyMaterial:(id)a3 securityKeyMode:(char)a4;
-- (BOOL)associateMKI:(id)a3 withParticipantID:(unint64_t)a4;
+- (BOOL)addSecurityKeyMaterial:(id)material securityKeyMode:(char)mode;
+- (BOOL)associateMKI:(id)i withParticipantID:(unint64_t)d;
 - (BOOL)startTimers;
-- (VCSecurityKeyManager)initWithDelegate:(id)a3 options:(const tagVCSecurityKeyManagerOptions *)a4;
+- (VCSecurityKeyManager)initWithDelegate:(id)delegate options:(const tagVCSecurityKeyManagerOptions *)options;
 - (double)firstExpirationTime;
 - (double)pruneAllExpiredKeys;
-- (id)copyMKMWithPrefix:(id)a3 forParticipantID:(unint64_t)a4;
+- (id)copyMKMWithPrefix:(id)prefix forParticipantID:(unint64_t)d;
 - (id)delegate;
 - (id)getLatestRecvKeyMaterial;
-- (id)getRecvKeyMaterialWithIndex:(id)a3;
-- (id)getSendKeyMaterialWithIndex:(id)a3;
-- (id)latestSendKeyMaterialWithSecurityKeyMode:(char)a3;
-- (void)adjustMKILength:(id)a3 securityKeyMode:(char)a4;
+- (id)getRecvKeyMaterialWithIndex:(id)index;
+- (id)getSendKeyMaterialWithIndex:(id)index;
+- (id)latestSendKeyMaterialWithSecurityKeyMode:(char)mode;
+- (void)adjustMKILength:(id)length securityKeyMode:(char)mode;
 - (void)dealloc;
-- (void)detectInabilityToDecryptSymptom:(id)a3 prefix:(id)a4;
+- (void)detectInabilityToDecryptSymptom:(id)symptom prefix:(id)prefix;
 - (void)handlePruneTimerEventAndReschedule;
-- (void)notifyEncryptionInfoChange:(id)a3 securityKeyMode:(char)a4;
-- (void)pruneRecvKeyMaterialWithDelay:(double)a3;
-- (void)pruneSendKeyMaterialWithDelay:(double)a3;
+- (void)notifyEncryptionInfoChange:(id)change securityKeyMode:(char)mode;
+- (void)pruneRecvKeyMaterialWithDelay:(double)delay;
+- (void)pruneSendKeyMaterialWithDelay:(double)delay;
 - (void)releaseTimers;
-- (void)replaceMKIWithShortMKI:(id)a3;
-- (void)scheduleEncryptionRollTimerWithDelay:(double)a3;
-- (void)schedulePruneTimer:(double)a3;
+- (void)replaceMKIWithShortMKI:(id)i;
+- (void)scheduleEncryptionRollTimerWithDelay:(double)delay;
+- (void)schedulePruneTimer:(double)timer;
 - (void)start;
 - (void)startTimers;
 - (void)stop;
@@ -30,7 +30,7 @@
 
 @implementation VCSecurityKeyManager
 
-- (VCSecurityKeyManager)initWithDelegate:(id)a3 options:(const tagVCSecurityKeyManagerOptions *)a4
+- (VCSecurityKeyManager)initWithDelegate:(id)delegate options:(const tagVCSecurityKeyManagerOptions *)options
 {
   v32 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -39,7 +39,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, a3);
+    objc_storeWeak(&v6->_delegate, delegate);
     v7->_sendKeys = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_receiveKeys = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_prunePendingReceiveKeys = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -49,10 +49,10 @@
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v7->_keyManagerQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCSecurityKeyManager.keyManagerQueue", 0, CustomRootQueue);
     v7->_unknownKeyIndexList = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a4)
+    if (options)
     {
-      v7->_shortMKIForOneToOneEnabled = a4->var0;
-      v7->_shortMKIForGFTEnabled = a4->var1;
+      v7->_shortMKIForOneToOneEnabled = options->var0;
+      v7->_shortMKIForGFTEnabled = options->var1;
     }
 
     v7->_forceRemoteMKMMissing = [VCDefaults BOOLeanValueForKey:@"forceRemoteMKMMissing" defaultValue:0];
@@ -73,7 +73,7 @@
           v24 = 1024;
           v25 = 123;
           v26 = 2048;
-          v27 = a3;
+          delegateCopy = delegate;
           v13 = " [%s] %s:%d security delegate %p";
           v14 = v12;
           v15 = 38;
@@ -108,11 +108,11 @@ LABEL_14:
           v24 = 1024;
           v25 = 123;
           v26 = 2112;
-          v27 = v10;
+          delegateCopy = v10;
           v28 = 2048;
           v29 = v7;
           v30 = 2048;
-          v31 = a3;
+          delegateCopy2 = delegate;
           v13 = " [%s] %s:%d %@(%p) security delegate %p";
           v14 = v17;
           v15 = 58;
@@ -178,7 +178,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) deallocating";
         v7 = v10;
         v8 = 48;
@@ -547,13 +547,13 @@ void __35__VCSecurityKeyManager_startTimers__block_invoke_57(uint64_t a1)
   }
 }
 
-- (BOOL)addSecurityKeyMaterial:(id)a3 securityKeyMode:(char)a4
+- (BOOL)addSecurityKeyMaterial:(id)material securityKeyMode:(char)mode
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"SecurityKeyIndex"];
+  v7 = [material objectForKeyedSubscript:@"SecurityKeyIndex"];
   if (v7)
   {
-    v8 = [a3 objectForKeyedSubscript:@"SecurityKeyIndex"];
+    v8 = [material objectForKeyedSubscript:@"SecurityKeyIndex"];
     keyManagerQueue = self->_keyManagerQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -561,8 +561,8 @@ void __35__VCSecurityKeyManager_startTimers__block_invoke_57(uint64_t a1)
     block[3] = &unk_1E85F5E38;
     block[4] = self;
     block[5] = v8;
-    block[6] = a3;
-    v13 = a4;
+    block[6] = material;
+    modeCopy = mode;
     dispatch_sync(keyManagerQueue, block);
   }
 
@@ -871,7 +871,7 @@ LABEL_36:
   }
 }
 
-- (id)getSendKeyMaterialWithIndex:(id)a3
+- (id)getSendKeyMaterialWithIndex:(id)index
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -886,7 +886,7 @@ LABEL_36:
   v6[2] = __52__VCSecurityKeyManager_getSendKeyMaterialWithIndex___block_invoke;
   v6[3] = &unk_1E85F6638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = index;
   v6[6] = &v7;
   dispatch_sync(keyManagerQueue, v6);
   v4 = v8[5];
@@ -1048,7 +1048,7 @@ LABEL_15:
   }
 }
 
-- (id)getRecvKeyMaterialWithIndex:(id)a3
+- (id)getRecvKeyMaterialWithIndex:(id)index
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1063,7 +1063,7 @@ LABEL_15:
   v6[2] = __52__VCSecurityKeyManager_getRecvKeyMaterialWithIndex___block_invoke;
   v6[3] = &unk_1E85F6638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = index;
   v6[6] = &v7;
   dispatch_sync(keyManagerQueue, v6);
   v4 = v8[5];
@@ -1156,12 +1156,12 @@ LABEL_12:
   }
 }
 
-- (void)notifyEncryptionInfoChange:(id)a3 securityKeyMode:(char)a4
+- (void)notifyEncryptionInfoChange:(id)change securityKeyMode:(char)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
-  [(VCSecurityKeyManager *)self adjustMKILength:v6 securityKeyMode:v4];
+  v6 = [change mutableCopy];
+  [(VCSecurityKeyManager *)self adjustMKILength:v6 securityKeyMode:modeCopy];
   [-[VCSecurityKeyManager delegate](self "delegate")];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -1184,10 +1184,10 @@ LABEL_12:
   }
 }
 
-- (void)replaceMKIWithShortMKI:(id)a3
+- (void)replaceMKIWithShortMKI:(id)i
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"SecurityShortKeyIndexLength"];
+  v4 = [i objectForKeyedSubscript:@"SecurityShortKeyIndexLength"];
   if (![v4 unsignedIntValue] && VCFeatureFlagManager_PQCU1Enabled())
   {
     v4 = &unk_1F579A998;
@@ -1195,9 +1195,9 @@ LABEL_12:
 
   v18[0] = 0;
   v18[1] = 0;
-  VCMediaKeyIndex_FullKeyBytes([a3 objectForKeyedSubscript:@"SecurityKeyIndex"], v18);
+  VCMediaKeyIndex_FullKeyBytes([i objectForKeyedSubscript:@"SecurityKeyIndex"], v18);
   v5 = -[VCMediaKeyIndex initWithBytes:bufferSize:uniquePrefixLength:]([VCMediaKeyIndex alloc], "initWithBytes:bufferSize:uniquePrefixLength:", v18, 16, [v4 unsignedLongLongValue]);
-  [a3 setObject:v5 forKeyedSubscript:@"SecurityKeyIndex"];
+  [i setObject:v5 forKeyedSubscript:@"SecurityKeyIndex"];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -1219,13 +1219,13 @@ LABEL_12:
   }
 }
 
-- (void)adjustMKILength:(id)a3 securityKeyMode:(char)a4
+- (void)adjustMKILength:(id)length securityKeyMode:(char)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v19 = *MEMORY[0x1E69E9840];
-  if (a4 > 0)
+  if (mode > 0)
   {
-    if (a4 == 1)
+    if (mode == 1)
     {
       if (!self->_shortMKIForOneToOneEnabled && !VCFeatureFlagManager_PQCU1Enabled() || !VCFeatureFlagManager_U1AuthTagEnabled())
       {
@@ -1235,15 +1235,15 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if (a4 != 3)
+    if (mode != 3)
     {
       return;
     }
   }
 
-  else if (a4 != -1)
+  else if (mode != -1)
   {
-    if (a4 || !self->_shortMKIForGFTEnabled || !VCFeatureFlagManager_UseTLE())
+    if (mode || !self->_shortMKIForGFTEnabled || !VCFeatureFlagManager_UseTLE())
     {
       return;
     }
@@ -1252,7 +1252,7 @@ LABEL_15:
     if (VCFeatureFlagManager_UseShortMKI())
     {
 
-      [(VCSecurityKeyManager *)self replaceMKIWithShortMKI:a3];
+      [(VCSecurityKeyManager *)self replaceMKIWithShortMKI:length];
     }
 
     return;
@@ -1271,15 +1271,15 @@ LABEL_15:
       v13 = 1024;
       v14 = 361;
       v15 = 1024;
-      v16 = v4;
+      v16 = modeCopy;
       v17 = 2112;
-      v18 = a3;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d MKI length adjustment for invalid key mode=%d requested for keyMaterial=%@", &v9, 0x2Cu);
     }
   }
 }
 
-- (id)latestSendKeyMaterialWithSecurityKeyMode:(char)a3
+- (id)latestSendKeyMaterialWithSecurityKeyMode:(char)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1295,7 +1295,7 @@ LABEL_15:
   v6[3] = &unk_1E85F7890;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  modeCopy = mode;
   dispatch_sync(keyManagerQueue, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1550,12 +1550,12 @@ LABEL_15:
   }
 }
 
-- (void)pruneSendKeyMaterialWithDelay:(double)a3
+- (void)pruneSendKeyMaterialWithDelay:(double)delay
 {
   block[6] = *MEMORY[0x1E69E9840];
   v5 = micro();
   self->_isSendKeysCleanUpPending = 1;
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   keyManagerQueue = self->_keyManagerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1812,12 +1812,12 @@ LABEL_42:
   return result;
 }
 
-- (void)pruneRecvKeyMaterialWithDelay:(double)a3
+- (void)pruneRecvKeyMaterialWithDelay:(double)delay
 {
   block[6] = *MEMORY[0x1E69E9840];
   v5 = micro();
   self->_isReceiveKeysCleanUpPending = 1;
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   keyManagerQueue = self->_keyManagerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2072,13 +2072,13 @@ LABEL_31:
   v3 = micro();
   if ([(NSMutableDictionary *)self->_prunePendingReceiveKeys count])
   {
-    v4 = [(NSMutableDictionary *)self->_prunePendingReceiveKeys allKeys];
+    allKeys = [(NSMutableDictionary *)self->_prunePendingReceiveKeys allKeys];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = v4;
-    v28 = [v4 countByEnumeratingWithState:&v49 objects:v48 count:16];
+    obj = allKeys;
+    v28 = [allKeys countByEnumeratingWithState:&v49 objects:v48 count:16];
     if (v28)
     {
       v5 = 1.79769313e308;
@@ -2097,13 +2097,13 @@ LABEL_31:
           v29 = v6;
           if ([v7 count])
           {
-            v8 = [v7 allKeys];
+            allKeys2 = [v7 allKeys];
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v30 = v8;
-            v9 = [v8 countByEnumeratingWithState:&v44 objects:v43 count:16];
+            v30 = allKeys2;
+            v9 = [allKeys2 countByEnumeratingWithState:&v44 objects:v43 count:16];
             if (v9)
             {
               v10 = v9;
@@ -2170,7 +2170,7 @@ LABEL_26:
                           v37 = 2112;
                           v38 = v17;
                           v39 = 2048;
-                          v40 = self;
+                          selfCopy = self;
                           v41 = 2112;
                           v42 = v13;
                           v20 = v19;
@@ -2219,12 +2219,12 @@ LABEL_26:
 - (double)firstExpirationTime
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_prunePendingReceiveKeys allKeys];
+  allKeys = [(NSMutableDictionary *)self->_prunePendingReceiveKeys allKeys];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (!v4)
   {
     return 1.79769313e308;
@@ -2239,16 +2239,16 @@ LABEL_26:
     {
       if (*v24 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = [(NSMutableDictionary *)self->_prunePendingReceiveKeys objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
-      v10 = [v9 allKeys];
+      allKeys2 = [v9 allKeys];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v11 = [allKeys2 countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (v11)
       {
         v12 = v11;
@@ -2259,7 +2259,7 @@ LABEL_26:
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allKeys2);
             }
 
             [objc_msgSend(v9 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * j)), "doubleValue"}];
@@ -2269,21 +2269,21 @@ LABEL_26:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v17 count:16];
+          v12 = [allKeys2 countByEnumeratingWithState:&v18 objects:v17 count:16];
         }
 
         while (v12);
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v23 objects:v22 count:16];
   }
 
   while (v5);
   return v7;
 }
 
-- (void)schedulePruneTimer:(double)a3
+- (void)schedulePruneTimer:(double)timer
 {
   v32 = *MEMORY[0x1E69E9840];
   if (self->_isRunning)
@@ -2294,11 +2294,11 @@ LABEL_26:
       if (VRTraceGetErrorLogLevelForModule() < 7 || (v9 = VRTraceErrorLogLevelToCSTR(), v10 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
       {
 LABEL_16:
-        if (a3 != 1.79769313e308 && v5 < a3)
+        if (timer != 1.79769313e308 && v5 < timer)
         {
           dispatch_suspend(self->_pruneTimer);
           pruneTimer = self->_pruneTimer;
-          v17 = dispatch_time(0, ((a3 - v5) * 1000000000.0));
+          v17 = dispatch_time(0, ((timer - v5) * 1000000000.0));
           dispatch_source_set_timer(pruneTimer, v17, 0xFFFFFFFFFFFFFFFFLL, 0);
           dispatch_resume(self->_pruneTimer);
         }
@@ -2315,7 +2315,7 @@ LABEL_16:
       v24 = 2048;
       v25 = v5;
       v26 = 2048;
-      v27 = a3;
+      timerCopy = timer;
       v11 = " [%s] %s:%d schedulePruneTimer: currentTime=%f, firstExpirationTime=%f";
       v12 = v10;
       v13 = 48;
@@ -2354,11 +2354,11 @@ LABEL_16:
       v24 = 2112;
       v25 = *&v6;
       v26 = 2048;
-      v27 = *&self;
+      timerCopy = *&self;
       v28 = 2048;
       v29 = v5;
       v30 = 2048;
-      v31 = a3;
+      timerCopy2 = timer;
       v11 = " [%s] %s:%d %@(%p) schedulePruneTimer: currentTime=%f, firstExpirationTime=%f";
       v12 = v15;
       v13 = 68;
@@ -2440,7 +2440,7 @@ LABEL_11:
         v17 = 2112;
         v18 = v3;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) pruneTimerEvent fired";
         v7 = v10;
         v8 = 48;
@@ -2450,14 +2450,14 @@ LABEL_11:
   }
 }
 
-- (void)scheduleEncryptionRollTimerWithDelay:(double)a3
+- (void)scheduleEncryptionRollTimerWithDelay:(double)delay
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_isRunning)
   {
     dispatch_suspend(self->_encryptionKeyRollTimer);
     encryptionKeyRollTimer = self->_encryptionKeyRollTimer;
-    v6 = dispatch_time(0, (a3 * 1000000000.0));
+    v6 = dispatch_time(0, (delay * 1000000000.0));
     dispatch_source_set_timer(encryptionKeyRollTimer, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_encryptionKeyRollTimer);
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2473,7 +2473,7 @@ LABEL_11:
         v18 = 1024;
         v19 = 546;
         v20 = 2048;
-        v21 = a3;
+        delayCopy = delay;
         v9 = " [%s] %s:%d Scheduled encryption roll timeout delta=%f seconds";
         v10 = v8;
         v11 = 38;
@@ -2503,16 +2503,16 @@ LABEL_8:
   }
 }
 
-- (BOOL)associateMKI:(id)a3 withParticipantID:(unint64_t)a4
+- (BOOL)associateMKI:(id)i withParticipantID:(unint64_t)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!i)
   {
     [VCSecurityKeyManager associateMKI:&v7 withParticipantID:?];
     return v7;
   }
 
-  if (!a4)
+  if (!d)
   {
     [VCSecurityKeyManager associateMKI:&v7 withParticipantID:?];
     return v7;
@@ -2523,8 +2523,8 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __55__VCSecurityKeyManager_associateMKI_withParticipantID___block_invoke;
   block[3] = &unk_1E85F50D8;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = i;
+  block[6] = d;
   block[4] = self;
   dispatch_async(keyManagerQueue, block);
   return 1;
@@ -2647,14 +2647,14 @@ LABEL_20:
   return [v22 schedulePruneTimer:?];
 }
 
-- (void)detectInabilityToDecryptSymptom:(id)a3 prefix:(id)a4
+- (void)detectInabilityToDecryptSymptom:(id)symptom prefix:(id)prefix
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = [a3 count];
+  v6 = [symptom count];
   unknownKeyIndexList = self->_unknownKeyIndexList;
   if (v6)
   {
-    [(NSMutableArray *)unknownKeyIndexList removeObject:a4];
+    [(NSMutableArray *)unknownKeyIndexList removeObject:prefix];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -2677,9 +2677,9 @@ LABEL_20:
       *&v30[22] = 1024;
       LODWORD(v31) = 593;
       WORD2(v31) = 2112;
-      *(&v31 + 6) = a4;
+      *(&v31 + 6) = prefix;
       HIWORD(v31) = 1024;
-      LODWORD(v32) = v12;
+      LODWORD(selfCopy2) = v12;
       v13 = " [%s] %s:%d Found prefix '%@' in receive keys array of %d elements";
       v14 = v11;
       v15 = 44;
@@ -2719,9 +2719,9 @@ LABEL_20:
       WORD2(v31) = 2112;
       *(&v31 + 6) = v8;
       HIWORD(v31) = 2048;
-      v32 = self;
+      selfCopy2 = self;
       LOWORD(v33) = 2112;
-      *(&v33 + 2) = a4;
+      *(&v33 + 2) = prefix;
       WORD5(v33) = 1024;
       HIDWORD(v33) = v18;
       v13 = " [%s] %s:%d %@(%p) Found prefix '%@' in receive keys array of %d elements";
@@ -2735,7 +2735,7 @@ LABEL_17:
     return;
   }
 
-  if (([(NSMutableArray *)unknownKeyIndexList containsObject:a4]& 1) == 0)
+  if (([(NSMutableArray *)unknownKeyIndexList containsObject:prefix]& 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -2759,9 +2759,9 @@ LABEL_17:
       *&v30[22] = 1024;
       LODWORD(v31) = 583;
       WORD2(v31) = 2112;
-      *(&v31 + 6) = a4;
+      *(&v31 + 6) = prefix;
       HIWORD(v31) = 1024;
-      LODWORD(v32) = v21;
+      LODWORD(selfCopy2) = v21;
       v22 = " [%s] %s:%d Cannot find prefix '%@' in receive keys array of %d elements";
       v23 = v20;
       v24 = 44;
@@ -2801,9 +2801,9 @@ LABEL_17:
       WORD2(v31) = 2112;
       *(&v31 + 6) = v9;
       HIWORD(v31) = 2048;
-      v32 = self;
+      selfCopy2 = self;
       LOWORD(v33) = 2112;
-      *(&v33 + 2) = a4;
+      *(&v33 + 2) = prefix;
       WORD5(v33) = 1024;
       HIDWORD(v33) = v29;
       v22 = " [%s] %s:%d %@(%p) Cannot find prefix '%@' in receive keys array of %d elements";
@@ -2813,7 +2813,7 @@ LABEL_17:
 
     _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, v22, v30, v24);
 LABEL_24:
-    [(NSMutableArray *)self->_unknownKeyIndexList addObject:a4, *v30, *&v30[16], v31, v32, v33];
+    [(NSMutableArray *)self->_unknownKeyIndexList addObject:prefix, *v30, *&v30[16], v31, selfCopy2, v33];
   }
 
   lastKeyIndexNotReceived = self->_lastKeyIndexNotReceived;
@@ -2830,7 +2830,7 @@ LABEL_24:
   }
 }
 
-- (id)copyMKMWithPrefix:(id)a3 forParticipantID:(unint64_t)a4
+- (id)copyMKMWithPrefix:(id)prefix forParticipantID:(unint64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -2844,10 +2844,10 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __59__VCSecurityKeyManager_copyMKMWithPrefix_forParticipantID___block_invoke;
   block[3] = &unk_1E85F8628;
-  block[4] = a3;
+  block[4] = prefix;
   block[5] = self;
   block[6] = &v11;
-  block[7] = a4;
+  block[7] = d;
   dispatch_sync(keyManagerQueue, block);
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -3202,7 +3202,7 @@ LABEL_42:
 
 - (void)startTimers
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -3226,7 +3226,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

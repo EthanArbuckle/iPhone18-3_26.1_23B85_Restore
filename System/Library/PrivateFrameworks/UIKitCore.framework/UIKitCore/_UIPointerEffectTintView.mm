@@ -1,31 +1,31 @@
 @interface _UIPointerEffectTintView
-- (_UIPointerEffectTintView)initWithTintColorMatrixProvider:(id)a3;
+- (_UIPointerEffectTintView)initWithTintColorMatrixProvider:(id)provider;
 - (void)_updateAlpha;
 - (void)_updateBackgroundEffects;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
-- (void)setDisabled:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setPressed:(BOOL)pressed;
 @end
 
 @implementation _UIPointerEffectTintView
 
-- (_UIPointerEffectTintView)initWithTintColorMatrixProvider:(id)a3
+- (_UIPointerEffectTintView)initWithTintColorMatrixProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = _UIPointerEffectTintView;
   v5 = [(UIVisualEffectView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     tintColorMatrixProvider = v5->_tintColorMatrixProvider;
     v5->_tintColorMatrixProvider = v6;
 
     [(_UIPointerEffectTintView *)v5 _updateBackgroundEffects];
     [(_UIPointerEffectTintView *)v5 _updateAlpha];
     [(UIView *)v5 setUserInteractionEnabled:0];
-    v8 = [(UIView *)v5 layer];
-    [v8 setAllowsHitTesting:0];
+    layer = [(UIView *)v5 layer];
+    [layer setAllowsHitTesting:0];
   }
 
   return v5;
@@ -33,9 +33,9 @@
 
 - (void)_updateAlpha
 {
-  v3 = [(_UIPointerEffectTintView *)self isDisabled];
+  isDisabled = [(_UIPointerEffectTintView *)self isDisabled];
   v4 = 0.0;
-  if (!v3)
+  if (!isDisabled)
   {
     [(_UIPointerEffectTintView *)self isPressed];
     PSContentOverlayIntensityForLuminanceAndUsage();
@@ -65,27 +65,27 @@
   [(UIVisualEffectView *)self setBackgroundEffects:v6];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(_UIPointerEffectTintView *)self _updateAlpha];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(_UIPointerEffectTintView *)self _updateAlpha];
   }
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
-  self->_luminance = a4;
+  self->_luminance = level;
   [(_UIPointerEffectTintView *)self _updateBackgroundEffects];
 
   [(_UIPointerEffectTintView *)self _updateAlpha];

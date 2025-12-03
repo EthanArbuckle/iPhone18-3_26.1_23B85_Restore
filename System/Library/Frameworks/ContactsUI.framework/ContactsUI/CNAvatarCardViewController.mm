@@ -3,45 +3,45 @@
 - (BOOL)bypassActionValidation;
 - (BOOL)dismissesBeforePerforming;
 - (BOOL)transitioningImageVisible;
-- (CGRect)_photoFrameInView:(id)a3;
+- (CGRect)_photoFrameInView:(id)view;
 - (CGRect)transitioningContentFrame;
 - (CGRect)transitioningFrame;
 - (CGRect)transitioningImageFrame;
 - (CNAvatarCardActionListController)actionListController;
 - (CNAvatarCardActionListOrbSupport)actionListViewController;
 - (CNAvatarCardController)cardController;
-- (CNAvatarCardViewController)initWithContacts:(id)a3;
+- (CNAvatarCardViewController)initWithContacts:(id)contacts;
 - (CNAvatarCardViewControllerDelegate)delegate;
 - (NSArray)actionCategories;
 - (UIImage)transitioningImage;
 - (id)actionsView;
-- (id)cardActionsView:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5;
-- (id)viewControllerForCardActionsView:(id)a3;
+- (id)cardActionsView:(id)view orderedPropertiesForProperties:(id)properties category:(id)category;
+- (id)viewControllerForCardActionsView:(id)view;
 - (void)_updatePreferredSize;
-- (void)cardActionsView:(id)a3 didShowActions:(id)a4;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)cardActionsView:(id)view didShowActions:(id)actions;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)didAddActionsViewToHierarchy;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)refreshActions;
-- (void)setActionCategories:(id)a3;
-- (void)setActionsReversed:(BOOL)a3;
-- (void)setBypassActionValidation:(BOOL)a3;
-- (void)setDismissesBeforePerforming:(BOOL)a3;
-- (void)setHeaderOnTop:(BOOL)a3;
-- (void)setTransitioningImageVisible:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActionCategories:(id)categories;
+- (void)setActionsReversed:(BOOL)reversed;
+- (void)setBypassActionValidation:(BOOL)validation;
+- (void)setDismissesBeforePerforming:(BOOL)performing;
+- (void)setHeaderOnTop:(BOOL)top;
+- (void)setTransitioningImageVisible:(BOOL)visible;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateActionsControllerHeightConstraint;
 - (void)updateActionsViewBackgroundColor;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willAddActionsViewToHierarchy;
 @end
 
@@ -61,25 +61,25 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v5 = a4;
-  v6 = [(CNAvatarCardViewController *)self cardController];
-  [v6 updateWithMenuItems:v5];
+  menuCopy = menu;
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  [cardController updateWithMenuItems:menuCopy];
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   [(CNAvatarCardViewController *)self dismissAnimated:1];
   v6 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v7 = [v5 performActionWithContext:v6];
+  v7 = [actionCopy performActionWithContext:v6];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__CNAvatarCardViewController_contactActionsController_didSelectAction___block_invoke;
   v12[3] = &unk_1E74E5980;
-  v8 = v5;
+  v8 = actionCopy;
   v13 = v8;
   [v7 addSuccessBlock:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -93,37 +93,37 @@
 
 - (BOOL)transitioningImageVisible
 {
-  v2 = [(CNAvatarCardViewController *)self cardController];
-  v3 = [v2 headerView];
-  v4 = [v3 photoView];
-  v5 = [v4 isHidden];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  photoView = [headerView photoView];
+  isHidden = [photoView isHidden];
 
-  return v5 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setTransitioningImageVisible:(BOOL)a3
+- (void)setTransitioningImageVisible:(BOOL)visible
 {
-  v3 = a3;
-  v6 = [(CNAvatarCardViewController *)self cardController];
-  v4 = [v6 headerView];
-  v5 = [v4 photoView];
-  [v5 setHidden:!v3];
+  visibleCopy = visible;
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  photoView = [headerView photoView];
+  [photoView setHidden:!visibleCopy];
 }
 
 - (CGRect)transitioningImageFrame
 {
-  v3 = [(CNAvatarCardViewController *)self cardController];
-  v4 = [v3 headerView];
-  v5 = [v4 photoView];
-  v6 = [v5 avatarView];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  photoView = [headerView photoView];
+  avatarView = [photoView avatarView];
 
-  [v6 contentImageFrame];
+  [avatarView contentImageFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CNAvatarCardViewController *)self transitioningView];
-  [v6 convertRect:v15 toView:{v8, v10, v12, v14}];
+  transitioningView = [(CNAvatarCardViewController *)self transitioningView];
+  [avatarView convertRect:transitioningView toView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -142,27 +142,27 @@
 
 - (UIImage)transitioningImage
 {
-  v2 = [(CNAvatarCardViewController *)self cardController];
-  v3 = [v2 headerView];
-  v4 = [v3 photoView];
-  v5 = [v4 avatarView];
-  v6 = [v5 contentImage];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  photoView = [headerView photoView];
+  avatarView = [photoView avatarView];
+  contentImage = [avatarView contentImage];
 
-  return v6;
+  return contentImage;
 }
 
 - (CGRect)transitioningContentFrame
 {
-  v3 = [(CNAvatarCardViewController *)self actionsView];
-  [v3 bounds];
+  actionsView = [(CNAvatarCardViewController *)self actionsView];
+  [actionsView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CNAvatarCardViewController *)self actionsView];
-  v13 = [(CNAvatarCardViewController *)self transitioningView];
-  [v12 convertRect:v13 toView:{v5, v7, v9, v11}];
+  actionsView2 = [(CNAvatarCardViewController *)self actionsView];
+  transitioningView = [(CNAvatarCardViewController *)self transitioningView];
+  [actionsView2 convertRect:transitioningView toView:{v5, v7, v9, v11}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -181,21 +181,21 @@
 
 - (CGRect)transitioningFrame
 {
-  v3 = [(CNAvatarCardViewController *)self cardController];
-  v4 = [v3 headerView];
-  [v4 bounds];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  [headerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CNAvatarCardViewController *)self view];
-  [v11 bounds];
+  view = [(CNAvatarCardViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v28);
 
-  v13 = [(CNAvatarCardViewController *)self transitioningView];
-  v14 = [(CNAvatarCardViewController *)self cardController];
-  v15 = [v14 headerView];
-  [v13 convertRect:v15 fromView:{v6, v8, Width, v10}];
+  transitioningView = [(CNAvatarCardViewController *)self transitioningView];
+  cardController2 = [(CNAvatarCardViewController *)self cardController];
+  headerView2 = [cardController2 headerView];
+  [transitioningView convertRect:headerView2 fromView:{v6, v8, Width, v10}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -212,22 +212,22 @@
   return result;
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
-  if (!a3)
+  animatedCopy = animated;
+  if (!animated)
   {
-    v5 = [(CNAvatarCardViewController *)self view];
-    [v5 setHidden:1];
+    view = [(CNAvatarCardViewController *)self view];
+    [view setHidden:1];
   }
 
-  v6 = [(CNAvatarCardViewController *)self cardController];
+  cardController = [(CNAvatarCardViewController *)self cardController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CNAvatarCardViewController_dismissAnimated___block_invoke;
   v7[3] = &unk_1E74E6A88;
   v7[4] = self;
-  [v6 dismissAnimated:v3 completionHandler:v7];
+  [cardController dismissAnimated:animatedCopy completionHandler:v7];
 }
 
 void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1)
@@ -236,42 +236,42 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   [v1 setHidden:0];
 }
 
-- (id)viewControllerForCardActionsView:(id)a3
+- (id)viewControllerForCardActionsView:(id)view
 {
   if ([(CNAvatarCardViewController *)self dismissesBeforePerforming])
   {
-    v4 = [(CNAvatarCardViewController *)self cardController];
-    v5 = [v4 delegate];
-    v6 = [(CNAvatarCardViewController *)self cardController];
-    v7 = [v5 presentingViewControllerForAvatarCardController:v6];
+    cardController = [(CNAvatarCardViewController *)self cardController];
+    delegate = [cardController delegate];
+    cardController2 = [(CNAvatarCardViewController *)self cardController];
+    selfCopy = [delegate presentingViewControllerForAvatarCardController:cardController2];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)cardActionsView:(id)a3 didShowActions:(id)a4
+- (void)cardActionsView:(id)view didShowActions:(id)actions
 {
-  [(CNAvatarCardViewController *)self _updatePreferredSize:a3];
-  v5 = [(CNAvatarCardViewController *)self presentationController];
-  [v5 systemLayoutFittingSizeDidChangeForChildContentContainer:self];
+  [(CNAvatarCardViewController *)self _updatePreferredSize:view];
+  presentationController = [(CNAvatarCardViewController *)self presentationController];
+  [presentationController systemLayoutFittingSizeDidChangeForChildContentContainer:self];
 }
 
-- (id)cardActionsView:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5
+- (id)cardActionsView:(id)view orderedPropertiesForProperties:(id)properties category:(id)category
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CNAvatarCardViewController *)self delegate];
+  propertiesCopy = properties;
+  categoryCopy = category;
+  delegate = [(CNAvatarCardViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CNAvatarCardViewController *)self delegate];
-    v12 = [v11 cardViewController:self orderedPropertiesForProperties:v7 category:v8];
+    delegate2 = [(CNAvatarCardViewController *)self delegate];
+    v12 = [delegate2 cardViewController:self orderedPropertiesForProperties:propertiesCopy category:categoryCopy];
   }
 
   else
@@ -284,86 +284,86 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
 
 - (void)refreshActions
 {
-  v2 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v2 refreshActions];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView refreshActions];
 }
 
 - (void)_updatePreferredSize
 {
-  v3 = [(CNAvatarCardViewController *)self view];
-  [v3 frame];
+  view = [(CNAvatarCardViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v22);
 
-  v5 = [(CNAvatarCardViewController *)self view];
+  view2 = [(CNAvatarCardViewController *)self view];
   LODWORD(v6) = 1148846080;
   LODWORD(v7) = 1112014848;
-  [v5 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
+  [view2 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
   v9 = v8;
 
-  v10 = [(CNAvatarCardViewController *)self view];
-  [v10 frame];
+  view3 = [(CNAvatarCardViewController *)self view];
+  [view3 frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CNAvatarCardViewController *)self view];
-  [v17 setFrame:{v12, v14, v16, v9}];
+  view4 = [(CNAvatarCardViewController *)self view];
+  [view4 setFrame:{v12, v14, v16, v9}];
 
   [(CNAvatarCardViewController *)self setPreferredContentSize:0.0, v9];
-  v18 = [(CNAvatarCardViewController *)self delegate];
+  delegate = [(CNAvatarCardViewController *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(CNAvatarCardViewController *)self delegate];
-    [v20 cardViewControllerDidUpdatePreferredSize:self];
+    delegate2 = [(CNAvatarCardViewController *)self delegate];
+    [delegate2 cardViewControllerDidUpdatePreferredSize:self];
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = CNAvatarCardViewController;
-  v4 = a3;
-  [(CNAvatarCardViewController *)&v7 preferredContentSizeDidChangeForChildContentContainer:v4];
+  containerCopy = container;
+  [(CNAvatarCardViewController *)&v7 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   v5 = [(CNAvatarCardViewController *)self actionsController:v7.receiver];
-  v6 = [v5 viewController];
+  viewController = [v5 viewController];
 
-  if (v6 == v4)
+  if (viewController == containerCopy)
   {
     [(CNAvatarCardViewController *)self updateActionsControllerHeightConstraint];
     [(CNAvatarCardViewController *)self _updatePreferredSize];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CNAvatarCardViewController;
-  [(CNAvatarCardViewController *)&v5 viewDidDisappear:a3];
+  [(CNAvatarCardViewController *)&v5 viewDidDisappear:disappear];
   [(CNAvatarCardViewController *)self setVisible:0];
-  v4 = [(CNAvatarCardViewController *)self actionsController];
-  [v4 cancelModels];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
+  [actionsController cancelModels];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CNAvatarCardViewController;
-  [(CNAvatarCardViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(CNAvatarCardViewController *)self actionListViewController];
-  [v4 stopTrackingRollover];
+  [(CNAvatarCardViewController *)&v5 viewWillDisappear:disappear];
+  actionListViewController = [(CNAvatarCardViewController *)self actionListViewController];
+  [actionListViewController stopTrackingRollover];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CNAvatarCardViewController;
-  [(CNAvatarCardViewController *)&v7 viewDidAppear:a3];
-  v4 = [(CNAvatarCardViewController *)self actionListViewController];
-  v5 = [(CNAvatarCardViewController *)self cardController];
-  v6 = [v5 rolloverGestureRecognizer];
-  [v4 startTrackingRolloverWithGestureRecognizer:v6];
+  [(CNAvatarCardViewController *)&v7 viewDidAppear:appear];
+  actionListViewController = [(CNAvatarCardViewController *)self actionListViewController];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  rolloverGestureRecognizer = [cardController rolloverGestureRecognizer];
+  [actionListViewController startTrackingRolloverWithGestureRecognizer:rolloverGestureRecognizer];
 }
 
 - (void)updateActionsViewBackgroundColor
@@ -379,77 +379,77 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   }
 
   v7 = v5;
-  v6 = [(CNAvatarCardViewController *)self actionsView];
-  [v6 setBackgroundColor:v7];
+  actionsView = [(CNAvatarCardViewController *)self actionsView];
+  [actionsView setBackgroundColor:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CNAvatarCardViewController;
-  [(CNAvatarCardViewController *)&v4 traitCollectionDidChange:a3];
+  [(CNAvatarCardViewController *)&v4 traitCollectionDidChange:change];
   [(CNAvatarCardViewController *)self updateActionsViewBackgroundColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CNAvatarCardViewController;
-  [(CNAvatarCardViewController *)&v5 viewWillAppear:a3];
+  [(CNAvatarCardViewController *)&v5 viewWillAppear:appear];
   [(CNAvatarCardViewController *)self setVisible:1];
   [(CNAvatarCardViewController *)self _updatePreferredSize];
-  v4 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v4 reset];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView reset];
 }
 
 - (void)updateActionsControllerHeightConstraint
 {
-  v3 = [(CNAvatarCardViewController *)self actionsController];
-  v4 = [v3 viewController];
-  [v4 preferredContentSize];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
+  viewController = [actionsController viewController];
+  [viewController preferredContentSize];
   v6 = v5;
 
-  v7 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
-  [v7 setConstant:v6];
+  actionsViewControllerHeightConstraint = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
+  [actionsViewControllerHeightConstraint setConstant:v6];
 }
 
 - (void)didAddActionsViewToHierarchy
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAvatarCardViewController *)self actionsController];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
 
-  if (v3)
+  if (actionsController)
   {
-    v4 = [(CNAvatarCardViewController *)self actionsController];
-    v5 = [v4 viewController];
-    [v5 didMoveToParentViewController:self];
+    actionsController2 = [(CNAvatarCardViewController *)self actionsController];
+    viewController = [actionsController2 viewController];
+    [viewController didMoveToParentViewController:self];
 
-    v6 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
+    actionsViewControllerHeightConstraint = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
 
-    if (v6)
+    if (actionsViewControllerHeightConstraint)
     {
       v7 = MEMORY[0x1E696ACD8];
-      v8 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
-      v21[0] = v8;
+      actionsViewControllerHeightConstraint2 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
+      v21[0] = actionsViewControllerHeightConstraint2;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       [v7 deactivateConstraints:v9];
     }
 
     v10 = MEMORY[0x1E696ACD8];
-    v11 = [(CNAvatarCardViewController *)self actionsController];
-    v12 = [v11 viewController];
-    v13 = [v12 view];
-    v14 = [v10 constraintWithItem:v13 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
+    actionsController3 = [(CNAvatarCardViewController *)self actionsController];
+    viewController2 = [actionsController3 viewController];
+    view = [viewController2 view];
+    v14 = [v10 constraintWithItem:view attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     [(CNAvatarCardViewController *)self setActionsViewControllerHeightConstraint:v14];
 
-    v15 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
+    actionsViewControllerHeightConstraint3 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
     LODWORD(v16) = 1144750080;
-    [v15 setPriority:v16];
+    [actionsViewControllerHeightConstraint3 setPriority:v16];
 
     [(CNAvatarCardViewController *)self updateActionsControllerHeightConstraint];
     v17 = MEMORY[0x1E696ACD8];
-    v18 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
-    v20 = v18;
+    actionsViewControllerHeightConstraint4 = [(CNAvatarCardViewController *)self actionsViewControllerHeightConstraint];
+    v20 = actionsViewControllerHeightConstraint4;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     [v17 activateConstraints:v19];
   }
@@ -457,21 +457,21 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
 
 - (void)willAddActionsViewToHierarchy
 {
-  v3 = [(CNAvatarCardViewController *)self actionsController];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
 
-  if (v3)
+  if (actionsController)
   {
-    v5 = [(CNAvatarCardViewController *)self actionsController];
-    v4 = [v5 viewController];
-    [(CNAvatarCardViewController *)self addChildViewController:v4];
+    actionsController2 = [(CNAvatarCardViewController *)self actionsController];
+    viewController = [actionsController2 viewController];
+    [(CNAvatarCardViewController *)self addChildViewController:viewController];
   }
 }
 
 - (CNAvatarCardActionListController)actionListController
 {
-  v3 = [(CNAvatarCardViewController *)self actionsController];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
 
-  if (v3)
+  if (actionsController)
   {
     [(CNAvatarCardViewController *)self actionsController];
   }
@@ -487,80 +487,80 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
 
 - (CNAvatarCardActionListOrbSupport)actionListViewController
 {
-  v3 = [(CNAvatarCardViewController *)self actionsController];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
 
-  if (v3)
+  if (actionsController)
   {
-    v4 = [(CNAvatarCardViewController *)self actionsController];
-    v5 = [v4 displayedController];
+    actionsController2 = [(CNAvatarCardViewController *)self actionsController];
+    displayedController = [actionsController2 displayedController];
   }
 
   else
   {
-    v5 = [(CNAvatarCardViewController *)self legacyContactActionsView];
+    displayedController = [(CNAvatarCardViewController *)self legacyContactActionsView];
   }
 
-  return v5;
+  return displayedController;
 }
 
 - (id)actionsView
 {
-  v3 = [(CNAvatarCardViewController *)self actionsController];
+  actionsController = [(CNAvatarCardViewController *)self actionsController];
 
-  if (v3)
+  if (actionsController)
   {
-    v4 = [(CNAvatarCardViewController *)self actionsController];
-    v5 = [v4 displayedController];
-    v6 = [v5 view];
+    actionsController2 = [(CNAvatarCardViewController *)self actionsController];
+    displayedController = [actionsController2 displayedController];
+    view = [displayedController view];
   }
 
   else
   {
-    v6 = [(CNAvatarCardViewController *)self legacyContactActionsView];
+    view = [(CNAvatarCardViewController *)self legacyContactActionsView];
   }
 
-  return v6;
+  return view;
 }
 
 - (BOOL)bypassActionValidation
 {
-  v2 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  v3 = [v2 bypassActionValidation];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  bypassActionValidation = [legacyContactActionsView bypassActionValidation];
 
-  return v3;
+  return bypassActionValidation;
 }
 
-- (void)setBypassActionValidation:(BOOL)a3
+- (void)setBypassActionValidation:(BOOL)validation
 {
-  v3 = a3;
-  v4 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v4 setBypassActionValidation:v3];
+  validationCopy = validation;
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView setBypassActionValidation:validationCopy];
 }
 
 - (NSArray)actionCategories
 {
-  v2 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  v3 = [v2 actionCategories];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  actionCategories = [legacyContactActionsView actionCategories];
 
-  return v3;
+  return actionCategories;
 }
 
-- (void)setActionCategories:(id)a3
+- (void)setActionCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v5 setActionCategories:v4];
+  categoriesCopy = categories;
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView setActionCategories:categoriesCopy];
 }
 
-- (CGRect)_photoFrameInView:(id)a3
+- (CGRect)_photoFrameInView:(id)view
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardViewController *)self cardController];
-  v6 = [v5 headerView];
-  v7 = [v6 photoView];
+  viewCopy = view;
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  photoView = [headerView photoView];
 
-  [v7 bounds];
-  [v4 convertRect:v7 fromView:?];
+  [photoView bounds];
+  [viewCopy convertRect:photoView fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -579,52 +579,52 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
 
 - (BOOL)dismissesBeforePerforming
 {
-  v2 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  v3 = [v2 dismissesBeforePerforming];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  dismissesBeforePerforming = [legacyContactActionsView dismissesBeforePerforming];
 
-  return v3;
+  return dismissesBeforePerforming;
 }
 
-- (void)setDismissesBeforePerforming:(BOOL)a3
+- (void)setDismissesBeforePerforming:(BOOL)performing
 {
-  v3 = a3;
-  v4 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v4 setDismissesBeforePerforming:v3];
+  performingCopy = performing;
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView setDismissesBeforePerforming:performingCopy];
 }
 
 - (BOOL)actionsReversed
 {
-  v2 = [(CNAvatarCardViewController *)self actionListController];
-  v3 = [v2 actionsReversed];
+  actionListController = [(CNAvatarCardViewController *)self actionListController];
+  actionsReversed = [actionListController actionsReversed];
 
-  return v3;
+  return actionsReversed;
 }
 
-- (void)setActionsReversed:(BOOL)a3
+- (void)setActionsReversed:(BOOL)reversed
 {
-  v3 = a3;
-  v4 = [(CNAvatarCardViewController *)self actionListController];
-  [v4 setActionsReversed:v3];
+  reversedCopy = reversed;
+  actionListController = [(CNAvatarCardViewController *)self actionListController];
+  [actionListController setActionsReversed:reversedCopy];
 }
 
-- (void)setHeaderOnTop:(BOOL)a3
+- (void)setHeaderOnTop:(BOOL)top
 {
-  if (self->_headerOnTop != a3)
+  if (self->_headerOnTop != top)
   {
-    self->_headerOnTop = a3;
-    v4 = [(CNAvatarCardViewController *)self view];
-    [v4 setNeedsUpdateConstraints];
+    self->_headerOnTop = top;
+    view = [(CNAvatarCardViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(CNAvatarCardViewController *)self cardController];
-  v5 = [v4 headerView];
-  [v5 updateFontSizes];
+  cardController = [(CNAvatarCardViewController *)self cardController];
+  headerView = [cardController headerView];
+  [headerView updateFontSizes];
 
-  v6 = [(CNAvatarCardViewController *)self legacyContactActionsView];
-  [v6 reset];
+  legacyContactActionsView = [(CNAvatarCardViewController *)self legacyContactActionsView];
+  [legacyContactActionsView reset];
 }
 
 - (void)updateViewConstraints
@@ -634,20 +634,20 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   v15.super_class = CNAvatarCardViewController;
   [(CNAvatarCardViewController *)&v15 updateViewConstraints];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CNAvatarCardViewController *)self verticalConstraints];
-  [v3 deactivateConstraints:v4];
+  verticalConstraints = [(CNAvatarCardViewController *)self verticalConstraints];
+  [v3 deactivateConstraints:verticalConstraints];
 
   if ([(CNAvatarCardViewController *)self hasHeader])
   {
     v18[0] = @"headerContainerView";
-    v5 = [(CNAvatarCardViewController *)self headerContainerView];
-    v19[0] = v5;
+    headerContainerView = [(CNAvatarCardViewController *)self headerContainerView];
+    v19[0] = headerContainerView;
     v18[1] = @"actionsView";
-    v6 = [(CNAvatarCardViewController *)self actionsView];
-    v19[1] = v6;
+    actionsView = [(CNAvatarCardViewController *)self actionsView];
+    v19[1] = actionsView;
     v18[2] = @"effectView";
-    v7 = [(CNAvatarCardViewController *)self effectView];
-    v19[2] = v7;
+    effectView = [(CNAvatarCardViewController *)self effectView];
+    v19[2] = effectView;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
     if ([(CNAvatarCardViewController *)self headerOnTop])
@@ -666,8 +666,8 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   else
   {
     v16 = @"effectView";
-    v11 = [(CNAvatarCardViewController *)self effectView];
-    v17 = v11;
+    effectView2 = [(CNAvatarCardViewController *)self effectView];
+    v17 = effectView2;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
     v10 = MEMORY[0x1E696ACD8];
@@ -678,8 +678,8 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   [(CNAvatarCardViewController *)self setVerticalConstraints:v12];
 
   v13 = MEMORY[0x1E696ACD8];
-  v14 = [(CNAvatarCardViewController *)self verticalConstraints];
-  [v13 activateConstraints:v14];
+  verticalConstraints2 = [(CNAvatarCardViewController *)self verticalConstraints];
+  [v13 activateConstraints:verticalConstraints2];
 }
 
 - (void)viewDidLoad
@@ -688,10 +688,10 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   v64.receiver = self;
   v64.super_class = CNAvatarCardViewController;
   [(CNAvatarCardViewController *)&v64 viewDidLoad];
-  v3 = [(CNAvatarCardViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(CNAvatarCardViewController *)self view];
+  [view setBackgroundColor:0];
   [(CNAvatarCardViewController *)self willAddActionsViewToHierarchy];
-  v4 = 0;
+  headerView = 0;
   v5 = 0;
   if ([(CNAvatarCardViewController *)self hasHeader])
   {
@@ -699,26 +699,26 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
     v6 = +[CNUIColorRepository contactStyleDefaultBackgroundColor];
     [v5 setBackgroundColor:v6];
 
-    v7 = [v5 layer];
-    [v7 setCornerRadius:13.0];
+    layer = [v5 layer];
+    [layer setCornerRadius:13.0];
 
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:v5];
+    [view addSubview:v5];
     [(CNAvatarCardViewController *)self setHeaderContainerView:v5];
-    v8 = [(CNAvatarCardViewController *)self cardController];
-    v4 = [v8 headerView];
+    cardController = [(CNAvatarCardViewController *)self cardController];
+    headerView = [cardController headerView];
 
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v4];
+    [headerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v5 addSubview:headerView];
   }
 
-  v9 = [(CNAvatarCardViewController *)self actionsView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v9 layer];
-  [v10 setCornerRadius:13.0];
+  actionsView = [(CNAvatarCardViewController *)self actionsView];
+  [actionsView setTranslatesAutoresizingMaskIntoConstraints:0];
+  layer2 = [actionsView layer];
+  [layer2 setCornerRadius:13.0];
 
-  v60 = v9;
-  [v9 setClipsToBounds:1];
+  v60 = actionsView;
+  [actionsView setClipsToBounds:1];
   [(CNAvatarCardViewController *)self updateActionsViewBackgroundColor];
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
   v12 = *MEMORY[0x1E695F058];
@@ -730,32 +730,32 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   v17 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v13, v14, v15}];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v16 addSubview:v17];
-  v18 = [(CNAvatarCardViewController *)self actionsView];
-  [v17 addSubview:v18];
+  actionsView2 = [(CNAvatarCardViewController *)self actionsView];
+  [v17 addSubview:actionsView2];
 
-  v19 = [(CNAvatarCardViewController *)self actionsView];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionsView3 = [(CNAvatarCardViewController *)self actionsView];
+  [actionsView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  [v3 addSubview:v16];
+  [view addSubview:v16];
   [(CNAvatarCardViewController *)self didAddActionsViewToHierarchy];
   [(CNAvatarCardViewController *)self setEffectView:v16];
   [(CNAvatarCardViewController *)self setActionsListView:v16];
-  v20 = [MEMORY[0x1E695DF70] array];
-  if (v5 && v4)
+  array = [MEMORY[0x1E695DF70] array];
+  if (v5 && headerView)
   {
     v67[0] = @"headerContainerView";
     v67[1] = @"headerView";
     v68[0] = v5;
-    v68[1] = v4;
+    v68[1] = headerView;
     v67[2] = @"actionsView";
-    v21 = [(CNAvatarCardViewController *)self actionsView];
-    v68[2] = v21;
+    actionsView4 = [(CNAvatarCardViewController *)self actionsView];
+    v68[2] = actionsView4;
     v68[3] = v16;
     v67[3] = @"effectView";
     v67[4] = @"vibrancyView";
     v67[5] = @"view";
     v68[4] = v17;
-    v68[5] = v3;
+    v68[5] = view;
     v22 = MEMORY[0x1E695DF20];
     v23 = v68;
     v24 = v67;
@@ -765,14 +765,14 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
   else
   {
     v65[0] = @"actionsView";
-    v21 = [(CNAvatarCardViewController *)self actionsView];
-    v66[0] = v21;
+    actionsView4 = [(CNAvatarCardViewController *)self actionsView];
+    v66[0] = actionsView4;
     v66[1] = v16;
     v65[1] = @"effectView";
     v65[2] = @"vibrancyView";
     v65[3] = @"view";
     v66[2] = v17;
-    v66[3] = v3;
+    v66[3] = view;
     v22 = MEMORY[0x1E695DF20];
     v23 = v66;
     v24 = v65;
@@ -781,94 +781,94 @@ void __46__CNAvatarCardViewController_dismissAnimated___block_invoke(uint64_t a1
 
   v26 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
   v59 = v17;
-  v61 = v4;
+  v61 = headerView;
   v62 = v5;
-  v63 = v3;
+  v63 = view;
 
   if ([(CNAvatarCardViewController *)self hasHeader])
   {
     v27 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-0-[headerView]-(margin)-|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-    [v20 addObjectsFromArray:v27];
+    [array addObjectsFromArray:v27];
 
-    v28 = [(CNAvatarCardViewController *)self headerContainerView];
-    v29 = [v28 leftAnchor];
-    v30 = [(CNAvatarCardViewController *)self view];
-    v31 = [v30 safeAreaLayoutGuide];
-    v32 = [v31 leftAnchor];
+    headerContainerView = [(CNAvatarCardViewController *)self headerContainerView];
+    leftAnchor = [headerContainerView leftAnchor];
+    view2 = [(CNAvatarCardViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    leftAnchor2 = [safeAreaLayoutGuide leftAnchor];
     [(CNAvatarCardViewController *)self borderMargin];
-    v33 = [v29 constraintEqualToAnchor:v32 constant:?];
-    [v20 addObject:v33];
+    v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:?];
+    [array addObject:v33];
 
-    v34 = [(CNAvatarCardViewController *)self headerContainerView];
-    v35 = [v34 rightAnchor];
-    v36 = [(CNAvatarCardViewController *)self view];
-    v37 = [v36 safeAreaLayoutGuide];
-    v38 = [v37 rightAnchor];
+    headerContainerView2 = [(CNAvatarCardViewController *)self headerContainerView];
+    rightAnchor = [headerContainerView2 rightAnchor];
+    view3 = [(CNAvatarCardViewController *)self view];
+    safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+    rightAnchor2 = [safeAreaLayoutGuide2 rightAnchor];
     [(CNAvatarCardViewController *)self borderMargin];
-    v40 = [v35 constraintEqualToAnchor:v38 constant:-v39];
-    [v20 addObject:v40];
+    v40 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v39];
+    [array addObject:v40];
 
     v41 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[headerView]|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-    [v20 addObjectsFromArray:v41];
+    [array addObjectsFromArray:v41];
   }
 
-  v42 = [(CNAvatarCardViewController *)self effectView];
-  v43 = [v42 leftAnchor];
-  v44 = [(CNAvatarCardViewController *)self view];
-  v45 = [v44 safeAreaLayoutGuide];
-  v46 = [v45 leftAnchor];
+  effectView = [(CNAvatarCardViewController *)self effectView];
+  leftAnchor3 = [effectView leftAnchor];
+  view4 = [(CNAvatarCardViewController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide3 leftAnchor];
   [(CNAvatarCardViewController *)self borderMargin];
-  v47 = [v43 constraintEqualToAnchor:v46 constant:?];
-  [v20 addObject:v47];
+  v47 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:?];
+  [array addObject:v47];
 
-  v48 = [(CNAvatarCardViewController *)self effectView];
-  v49 = [v48 rightAnchor];
-  v50 = [(CNAvatarCardViewController *)self view];
-  v51 = [v50 safeAreaLayoutGuide];
-  v52 = [v51 rightAnchor];
+  effectView2 = [(CNAvatarCardViewController *)self effectView];
+  rightAnchor3 = [effectView2 rightAnchor];
+  view5 = [(CNAvatarCardViewController *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide4 rightAnchor];
   [(CNAvatarCardViewController *)self borderMargin];
-  v54 = [v49 constraintEqualToAnchor:v52 constant:-v53];
-  [v20 addObject:v54];
+  v54 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-v53];
+  [array addObject:v54];
 
   v55 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[vibrancyView]-0-|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-  [v20 addObjectsFromArray:v55];
+  [array addObjectsFromArray:v55];
 
   v56 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-0-[vibrancyView]-0-|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-  [v20 addObjectsFromArray:v56];
+  [array addObjectsFromArray:v56];
 
   v57 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[actionsView]-0-|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-  [v20 addObjectsFromArray:v57];
+  [array addObjectsFromArray:v57];
 
   v58 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-0-[actionsView]-0-|" options:0 metrics:&unk_1F0D4BB60 views:v26];
-  [v20 addObjectsFromArray:v58];
+  [array addObjectsFromArray:v58];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v20];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   [v63 setNeedsUpdateConstraints];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNAvatarCardViewController;
   [(CNAvatarCardViewController *)&v4 dealloc];
 }
 
-- (CNAvatarCardViewController)initWithContacts:(id)a3
+- (CNAvatarCardViewController)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v16.receiver = self;
   v16.super_class = CNAvatarCardViewController;
   v5 = [(CNAvatarCardViewController *)&v16 initWithNibName:0 bundle:0];
-  if ([v4 count] > 1)
+  if ([contactsCopy count] > 1)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 firstObject];
-  if ([v6 isUnknown])
+  firstObject = [contactsCopy firstObject];
+  if ([firstObject isUnknown])
   {
 
 LABEL_5:
@@ -876,28 +876,28 @@ LABEL_5:
     v10 = [(CNAvatarCardActionsView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CNAvatarCardActionsView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNAvatarCardActionsView *)v10 setDelegate:v5];
-    [(CNAvatarCardActionsView *)v10 setContacts:v4];
+    [(CNAvatarCardActionsView *)v10 setContacts:contactsCopy];
     [(CNAvatarCardViewController *)v5 setLegacyContactActionsView:v10];
     goto LABEL_6;
   }
 
-  v7 = [v4 firstObject];
-  v8 = [v7 isSuggestedMe];
+  firstObject2 = [contactsCopy firstObject];
+  isSuggestedMe = [firstObject2 isSuggestedMe];
 
-  if (v8)
+  if (isSuggestedMe)
   {
     goto LABEL_5;
   }
 
-  if ([v4 count] != 1)
+  if ([contactsCopy count] != 1)
   {
     goto LABEL_7;
   }
 
   v13 = [CNContactActionsController alloc];
-  v14 = [v4 firstObject];
+  firstObject3 = [contactsCopy firstObject];
   v15 = +[CNContactActionsController supportedActionTypes];
-  v10 = [(CNContactActionsController *)v13 initWithContact:v14 actionTypes:v15];
+  v10 = [(CNContactActionsController *)v13 initWithContact:firstObject3 actionTypes:v15];
 
   [(CNAvatarCardActionsView *)v10 setDisplayMenuIconAtTopLevel:1];
   [(CNAvatarCardActionsView *)v10 setDelegate:v5];
@@ -907,8 +907,8 @@ LABEL_6:
 LABEL_7:
   [(CNAvatarCardViewController *)v5 setBorderMargin:10.0];
   [(CNAvatarCardViewController *)v5 setModalPresentationStyle:4];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:v5 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v5 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   return v5;
 }

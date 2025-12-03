@@ -3,61 +3,61 @@
 - (NSArray)responseDeletedKeys;
 - (NSArray)responseUpdatedKeys;
 - (NSString)responseDomainVersion;
-- (SBKSyncRequestHandler)initWithBagContext:(id)a3;
-- (SBKSyncRequestHandler)initWithBagContext:(id)a3 accountIdentifier:(id)a4;
-- (id)responseDataForResponseKey:(id)a3;
-- (id)transaction:(id)a3 keyValuePairForUpdatedKey:(id)a4;
+- (SBKSyncRequestHandler)initWithBagContext:(id)context;
+- (SBKSyncRequestHandler)initWithBagContext:(id)context accountIdentifier:(id)identifier;
+- (id)responseDataForResponseKey:(id)key;
+- (id)transaction:(id)transaction keyValuePairForUpdatedKey:(id)key;
 - (void)_onQueue_clearTransactionResponseData;
 - (void)clearTransactionResponseData;
-- (void)setResponseDomainVersion:(id)a3;
-- (void)startTransactionWithSyncAnchor:(id)a3 keysToUpdate:(id)a4 keysToDelete:(id)a5 finishedBlock:(id)a6;
-- (void)transaction:(id)a3 processDeletedKey:(id)a4 isDirty:(BOOL *)a5;
-- (void)transaction:(id)a3 processUpdatedKey:(id)a4 data:(id)a5 conflict:(BOOL)a6 isDirty:(BOOL *)a7;
-- (void)transaction:(id)a3 willProcessResponseData:(id)a4;
+- (void)setResponseDomainVersion:(id)version;
+- (void)startTransactionWithSyncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete finishedBlock:(id)block;
+- (void)transaction:(id)transaction processDeletedKey:(id)key isDirty:(BOOL *)dirty;
+- (void)transaction:(id)transaction processUpdatedKey:(id)key data:(id)data conflict:(BOOL)conflict isDirty:(BOOL *)dirty;
+- (void)transaction:(id)transaction willProcessResponseData:(id)data;
 @end
 
 @implementation SBKSyncRequestHandler
 
-- (id)transaction:(id)a3 keyValuePairForUpdatedKey:(id)a4
+- (id)transaction:(id)transaction keyValuePairForUpdatedKey:(id)key
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBKSyncRequestHandler.m" lineNumber:158 description:@"subclass must supply key-value pair by implementing the SBKSyncTransactionProcessing protocol"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBKSyncRequestHandler.m" lineNumber:158 description:@"subclass must supply key-value pair by implementing the SBKSyncTransactionProcessing protocol"];
 
   return 0;
 }
 
-- (void)transaction:(id)a3 processDeletedKey:(id)a4 isDirty:(BOOL *)a5
+- (void)transaction:(id)transaction processDeletedKey:(id)key isDirty:(BOOL *)dirty
 {
-  v7 = a4;
+  keyCopy = key;
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__SBKSyncRequestHandler_transaction_processDeletedKey_isDirty___block_invoke;
   v10[3] = &unk_279D23150;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = keyCopy;
+  v9 = keyCopy;
   dispatch_sync(queue, v10);
-  *a5 = 0;
+  *dirty = 0;
 }
 
-- (void)transaction:(id)a3 processUpdatedKey:(id)a4 data:(id)a5 conflict:(BOOL)a6 isDirty:(BOOL *)a7
+- (void)transaction:(id)transaction processUpdatedKey:(id)key data:(id)data conflict:(BOOL)conflict isDirty:(BOOL *)dirty
 {
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  dataCopy = data;
   queue = self->_queue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__SBKSyncRequestHandler_transaction_processUpdatedKey_data_conflict_isDirty___block_invoke;
   v16[3] = &unk_279D23240;
-  v19 = a6;
+  conflictCopy = conflict;
   v16[4] = self;
-  v17 = v12;
-  v18 = v11;
-  v14 = v11;
-  v15 = v12;
+  v17 = dataCopy;
+  v18 = keyCopy;
+  v14 = keyCopy;
+  v15 = dataCopy;
   dispatch_sync(queue, v16);
-  *a7 = 0;
+  *dirty = 0;
 }
 
 uint64_t __77__SBKSyncRequestHandler_transaction_processUpdatedKey_data_conflict_isDirty___block_invoke(uint64_t a1)
@@ -90,17 +90,17 @@ uint64_t __77__SBKSyncRequestHandler_transaction_processUpdatedKey_data_conflict
   return result;
 }
 
-- (void)transaction:(id)a3 willProcessResponseData:(id)a4
+- (void)transaction:(id)transaction willProcessResponseData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SBKSyncRequestHandler_transaction_willProcessResponseData___block_invoke;
   v8[3] = &unk_279D23150;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = dataCopy;
+  v7 = dataCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -120,26 +120,26 @@ void __61__SBKSyncRequestHandler_transaction_willProcessResponseData___block_inv
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTransactionWithSyncAnchor:(id)a3 keysToUpdate:(id)a4 keysToDelete:(id)a5 finishedBlock:(id)a6
+- (void)startTransactionWithSyncAnchor:(id)anchor keysToUpdate:(id)update keysToDelete:(id)delete finishedBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 copy];
+  anchorCopy = anchor;
+  updateCopy = update;
+  deleteCopy = delete;
+  v13 = [block copy];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__SBKSyncRequestHandler_startTransactionWithSyncAnchor_keysToUpdate_keysToDelete_finishedBlock___block_invoke;
   block[3] = &unk_279D23218;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v20 = anchorCopy;
+  v21 = updateCopy;
+  v22 = deleteCopy;
   v23 = v13;
   v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = deleteCopy;
+  v17 = updateCopy;
+  v18 = anchorCopy;
   dispatch_async(queue, block);
 }
 
@@ -202,16 +202,16 @@ uint64_t __96__SBKSyncRequestHandler_startTransactionWithSyncAnchor_keysToUpdate
   [(NSMutableDictionary *)responseDataByKey removeAllObjects];
 }
 
-- (id)responseDataForResponseKey:(id)a3
+- (id)responseDataForResponseKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__SBKSyncRequestHandler_responseDataForResponseKey___block_invoke;
   v10[3] = &unk_279D231A0;
   v10[4] = self;
-  v11 = v4;
+  v11 = keyCopy;
   v6 = v10;
   v15 = 0;
   v16 = &v15;
@@ -225,7 +225,7 @@ uint64_t __96__SBKSyncRequestHandler_startTransactionWithSyncAnchor_keysToUpdate
   block[3] = &unk_279D23290;
   v13 = v6;
   v14 = &v15;
-  v7 = v4;
+  v7 = keyCopy;
   dispatch_sync(queue, block);
   v8 = v16[5];
 
@@ -350,78 +350,78 @@ uint64_t __96__SBKSyncRequestHandler_startTransactionWithSyncAnchor_keysToUpdate
   return v4;
 }
 
-- (void)setResponseDomainVersion:(id)a3
+- (void)setResponseDomainVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__SBKSyncRequestHandler_setResponseDomainVersion___block_invoke;
   v8[3] = &unk_279D23150;
   v8[4] = self;
-  v9 = v4;
+  v9 = versionCopy;
   v6 = v8;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = ___serialSetValue_block_invoke;
   block[3] = &unk_279D23268;
   v11 = v6;
-  v7 = v4;
+  v7 = versionCopy;
   dispatch_sync(queue, block);
 }
 
-- (SBKSyncRequestHandler)initWithBagContext:(id)a3 accountIdentifier:(id)a4
+- (SBKSyncRequestHandler)initWithBagContext:(id)context accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = SBKSyncRequestHandler;
-  v8 = [(SBKRequestHandler *)&v28 initWithBagContext:v6];
+  v8 = [(SBKRequestHandler *)&v28 initWithBagContext:contextCopy];
   if (v8)
   {
     v9 = dispatch_queue_create("com.apple.storebookkeeper.SBKSyncRequestHandler", 0);
     queue = v8->_queue;
     v8->_queue = v9;
 
-    v11 = [MEMORY[0x277D69A20] defaultStore];
-    v12 = [v11 accountWithUniqueIdentifier:v7];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    v12 = [defaultStore accountWithUniqueIdentifier:identifierCopy];
 
     v13 = [SBKTransactionController alloc];
-    v14 = [v6 domain];
-    v15 = [v6 syncRequestURL];
-    v16 = [(SBKTransactionController *)v13 initWithDomain:v14 requestURL:v15 forAccount:v12];
+    domain = [contextCopy domain];
+    syncRequestURL = [contextCopy syncRequestURL];
+    v16 = [(SBKTransactionController *)v13 initWithDomain:domain requestURL:syncRequestURL forAccount:v12];
     transactionController = v8->_transactionController;
     v8->_transactionController = v16;
 
     responseData = v8->_responseData;
     v8->_responseData = 0;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     responseUpdatedKeys = v8->_responseUpdatedKeys;
-    v8->_responseUpdatedKeys = v19;
+    v8->_responseUpdatedKeys = array;
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     responseDeletedKeys = v8->_responseDeletedKeys;
-    v8->_responseDeletedKeys = v21;
+    v8->_responseDeletedKeys = array2;
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     responseConflictedKeys = v8->_responseConflictedKeys;
-    v8->_responseConflictedKeys = v23;
+    v8->_responseConflictedKeys = array3;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     responseDataByKey = v8->_responseDataByKey;
-    v8->_responseDataByKey = v25;
+    v8->_responseDataByKey = dictionary;
   }
 
   return v8;
 }
 
-- (SBKSyncRequestHandler)initWithBagContext:(id)a3
+- (SBKSyncRequestHandler)initWithBagContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = SBKStoreAccount();
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(SBKSyncRequestHandler *)self initWithBagContext:v4 accountIdentifier:v6];
+  uniqueIdentifier = [v5 uniqueIdentifier];
+  v7 = [(SBKSyncRequestHandler *)self initWithBagContext:contextCopy accountIdentifier:uniqueIdentifier];
 
   return v7;
 }

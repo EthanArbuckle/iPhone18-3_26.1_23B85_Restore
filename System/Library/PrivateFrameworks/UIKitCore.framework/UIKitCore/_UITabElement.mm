@@ -1,8 +1,8 @@
 @interface _UITabElement
 + (id)_searchElement;
 - (UIViewController)_viewController;
-- (_UITabElement)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5;
-- (void)_setViewController:(id)a3;
+- (_UITabElement)initWithIdentifier:(id)identifier title:(id)title image:(id)image;
+- (void)_setViewController:(id)controller;
 @end
 
 @implementation _UITabElement
@@ -21,18 +21,18 @@
   return WeakRetained;
 }
 
-- (void)_setViewController:(id)a3
+- (void)_setViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->__viewController);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->__viewController, obj);
-    v6 = [(UITab *)self _isBridgedItem];
+    _isBridgedItem = [(UITab *)self _isBridgedItem];
     v5 = obj;
-    if (!v6)
+    if (!_isBridgedItem)
     {
       [(UITab *)self _updateLinkedTabBarItem];
       v5 = obj;
@@ -40,11 +40,11 @@
   }
 }
 
-- (_UITabElement)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5
+- (_UITabElement)initWithIdentifier:(id)identifier title:(id)title image:(id)image
 {
   v6.receiver = self;
   v6.super_class = _UITabElement;
-  return [(UITab *)&v6 initWithTitle:a4 image:a5 identifier:a3 viewControllerProvider:0];
+  return [(UITab *)&v6 initWithTitle:title image:image identifier:identifier viewControllerProvider:0];
 }
 
 @end

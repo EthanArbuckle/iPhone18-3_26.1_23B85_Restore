@@ -1,52 +1,52 @@
 @interface OfferPlatterComponent
 - (BOOL)isHighlighted;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OfferPlatterComponent
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_C90E4();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_C916C(a3);
+  selfCopy = self;
+  sub_C916C(highlighted);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_C9710(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_C9710(change);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_C99CC();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_C9B30();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v7 = self;
-  v9 = sub_CA918(width, v8, a4);
+  width = size.width;
+  selfCopy = self;
+  v9 = sub_CA918(width, v8, priority);
   v11 = v10;
 
   v12 = v9;

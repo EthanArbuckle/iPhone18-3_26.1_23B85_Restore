@@ -1,16 +1,16 @@
 @interface HMDDeviceSetupConfiguringController
 + (id)logCategory;
 - (BOOL)_shouldRegisterRequest;
-- (HMDDeviceSetupConfiguringController)initWithDiagnosticInfoControllerInternal:(id)a3;
-- (HMDDeviceSetupConfiguringController)initWithQueue:(id)a3 rpCompanionLinkClientFactory:(id)a4 diagnosticInfoController:(id)a5;
-- (id)_activeDevicesWithMediaRouteIdentifier:(id)a3;
-- (void)_queryWithRequestID:(id)a3 mediaRouteIdentifier:(id)a4 rpDevice:(id)a5 additionalKeys:(id)a6 withCompletion:(id)a7;
-- (void)_registerRequest:(id)a3;
-- (void)_registerRequest:(id)a3 after:(int64_t)a4;
+- (HMDDeviceSetupConfiguringController)initWithDiagnosticInfoControllerInternal:(id)internal;
+- (HMDDeviceSetupConfiguringController)initWithQueue:(id)queue rpCompanionLinkClientFactory:(id)factory diagnosticInfoController:(id)controller;
+- (id)_activeDevicesWithMediaRouteIdentifier:(id)identifier;
+- (void)_queryWithRequestID:(id)d mediaRouteIdentifier:(id)identifier rpDevice:(id)device additionalKeys:(id)keys withCompletion:(id)completion;
+- (void)_registerRequest:(id)request;
+- (void)_registerRequest:(id)request after:(int64_t)after;
 - (void)_setupCompanionLinkClient;
-- (void)_setupRPClientAfter:(int64_t)a3;
+- (void)_setupRPClientAfter:(int64_t)after;
 - (void)_tearDownCompanionLinkClient;
-- (void)queryConfiguringState:(id)a3 additionalKeys:(id)a4 withCompletion:(id)a5;
+- (void)queryConfiguringState:(id)state additionalKeys:(id)keys withCompletion:(id)completion;
 - (void)registerRequestID;
 - (void)setupRPClient;
 @end
@@ -73,16 +73,16 @@ void __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_
   return v3;
 }
 
-- (void)_setupRPClientAfter:(int64_t)a3
+- (void)_setupRPClientAfter:(int64_t)after
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:after];
     *buf = 138543618;
     v15 = v8;
     v16 = 2112;
@@ -91,14 +91,14 @@ void __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = dispatch_time(0, 1000000000 * a3);
-  v11 = [(HMDDeviceSetupConfiguringController *)v6 workQueue];
+  v10 = dispatch_time(0, 1000000000 * after);
+  workQueue = [(HMDDeviceSetupConfiguringController *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMDDeviceSetupConfiguringController__setupRPClientAfter___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_after(v10, v11, block);
+  block[4] = selfCopy;
+  dispatch_after(v10, workQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -133,33 +133,33 @@ uint64_t __59__HMDDeviceSetupConfiguringController__setupRPClientAfter___block_i
 - (void)_setupCompanionLinkClient
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDDeviceSetupConfiguringController *)self rpCompanionLinkClientFactory];
-  v5 = v4[2]();
+  rpCompanionLinkClientFactory = [(HMDDeviceSetupConfiguringController *)self rpCompanionLinkClientFactory];
+  v5 = rpCompanionLinkClientFactory[2]();
   [(HMDDeviceSetupConfiguringController *)self setClient:v5];
 
-  v6 = [(HMDDeviceSetupConfiguringController *)self client];
+  client = [(HMDDeviceSetupConfiguringController *)self client];
 
-  if (v6)
+  if (client)
   {
-    v7 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-    v8 = [(HMDDeviceSetupConfiguringController *)self client];
-    [v8 setDispatchQueue:v7];
+    workQueue2 = [(HMDDeviceSetupConfiguringController *)self workQueue];
+    client2 = [(HMDDeviceSetupConfiguringController *)self client];
+    [client2 setDispatchQueue:workQueue2];
 
-    v9 = [(HMDDeviceSetupConfiguringController *)self client];
-    [v9 setControlFlags:14];
+    client3 = [(HMDDeviceSetupConfiguringController *)self client];
+    [client3 setControlFlags:14];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
       v14 = MEMORY[0x277CCABB0];
-      v15 = [(HMDDeviceSetupConfiguringController *)v11 client];
-      v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(v15, "controlFlags")}];
+      client4 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+      v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(client4, "controlFlags")}];
       *buf = 138543618;
       v40 = v13;
       v41 = 2112;
@@ -168,54 +168,54 @@ uint64_t __59__HMDDeviceSetupConfiguringController__setupRPClientAfter___block_i
     }
 
     objc_autoreleasePoolPop(v10);
-    objc_initWeak(buf, v11);
+    objc_initWeak(buf, selfCopy);
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke;
     v37[3] = &unk_278686B80;
     objc_copyWeak(&v38, buf);
-    v17 = [(HMDDeviceSetupConfiguringController *)v11 client];
-    [v17 setInvalidationHandler:v37];
+    client5 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    [client5 setInvalidationHandler:v37];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke_19;
     v35[3] = &unk_278686B80;
     objc_copyWeak(&v36, buf);
-    v18 = [(HMDDeviceSetupConfiguringController *)v11 client];
-    [v18 setInterruptionHandler:v35];
+    client6 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    [client6 setInterruptionHandler:v35];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke_20;
     v33[3] = &unk_27867CA08;
     objc_copyWeak(&v34, buf);
-    v19 = [(HMDDeviceSetupConfiguringController *)v11 client];
-    [v19 setDeviceFoundHandler:v33];
+    client7 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    [client7 setDeviceFoundHandler:v33];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke_22;
     v31[3] = &unk_27867CA08;
     objc_copyWeak(&v32, buf);
-    v20 = [(HMDDeviceSetupConfiguringController *)v11 client];
-    [v20 setDeviceLostHandler:v31];
+    client8 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    [client8 setDeviceLostHandler:v31];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke_23;
     v29[3] = &unk_27867CA30;
     objc_copyWeak(&v30, buf);
-    v21 = [(HMDDeviceSetupConfiguringController *)v11 client];
-    [v21 setDeviceChangedHandler:v29];
+    client9 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    [client9 setDeviceChangedHandler:v29];
 
-    v22 = [(HMDDeviceSetupConfiguringController *)v11 client];
+    client10 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_invoke_25;
     v28[3] = &unk_27868A250;
-    v28[4] = v11;
-    [v22 activateWithCompletion:v28];
+    v28[4] = selfCopy;
+    [client10 activateWithCompletion:v28];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v32);
@@ -228,7 +228,7 @@ uint64_t __59__HMDDeviceSetupConfiguringController__setupRPClientAfter___block_i
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -239,7 +239,7 @@ uint64_t __59__HMDDeviceSetupConfiguringController__setupRPClientAfter___block_i
     }
 
     objc_autoreleasePoolPop(v23);
-    [(HMDDeviceSetupConfiguringController *)v24 _setupRPClientAfter:120];
+    [(HMDDeviceSetupConfiguringController *)selfCopy2 _setupRPClientAfter:120];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -349,25 +349,25 @@ void __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_
 
 - (BOOL)_shouldRegisterRequest
 {
-  v2 = [(HMDDeviceSetupConfiguringController *)self diagnosticInfoController];
-  v3 = v2 != 0;
+  diagnosticInfoController = [(HMDDeviceSetupConfiguringController *)self diagnosticInfoController];
+  v3 = diagnosticInfoController != 0;
 
   return v3;
 }
 
-- (void)_registerRequest:(id)a3
+- (void)_registerRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDDeviceSetupConfiguringController *)self client];
+  client = [(HMDDeviceSetupConfiguringController *)self client];
 
-  if (!v6)
+  if (!client)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -381,13 +381,13 @@ void __64__HMDDeviceSetupConfiguringController__setupCompanionLinkClient__block_
     goto LABEL_12;
   }
 
-  v7 = [(HMDDeviceSetupConfiguringController *)self diagnosticInfoController];
+  diagnosticInfoController = [(HMDDeviceSetupConfiguringController *)self diagnosticInfoController];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (!v7)
+  if (!diagnosticInfoController)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -406,25 +406,25 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [(HMDDeviceSetupConfiguringController *)v9 client];
-    v14 = [v13 activeDevices];
+    client2 = [(HMDDeviceSetupConfiguringController *)selfCopy2 client];
+    activeDevices = [client2 activeDevices];
     *buf = 138543874;
     v25 = v12;
     v26 = 2112;
-    v27 = v4;
+    v27 = requestCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = activeDevices;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Registering request %@ with handler for active devices %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v15 = [(HMDDeviceSetupConfiguringController *)v9 client];
+  client3 = [(HMDDeviceSetupConfiguringController *)selfCopy2 client];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__HMDDeviceSetupConfiguringController__registerRequest___block_invoke;
   v23[3] = &unk_27867C828;
-  v23[4] = v9;
-  [v15 registerRequestID:v4 options:0 handler:v23];
+  v23[4] = selfCopy2;
+  [client3 registerRequestID:requestCopy options:0 handler:v23];
 
 LABEL_13:
   v22 = *MEMORY[0x277D85DE8];
@@ -502,20 +502,20 @@ void __56__HMDDeviceSetupConfiguringController__registerRequest___block_invoke(u
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_activeDevicesWithMediaRouteIdentifier:(id)a3
+- (id)_activeDevicesWithMediaRouteIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDDeviceSetupConfiguringController *)self client];
+  client = [(HMDDeviceSetupConfiguringController *)self client];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
-  if (v6)
+  if (client)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -523,29 +523,29 @@ void __56__HMDDeviceSetupConfiguringController__registerRequest___block_invoke(u
       *buf = 138543618;
       v31 = v11;
       v32 = 2112;
-      v33 = v4;
+      v33 = identifierCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Discovering RPCompanionLinkDevice matching identifier %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDDeviceSetupConfiguringController *)v8 client];
-    v13 = [v12 activeDevices];
+    client2 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    activeDevices = [client2 activeDevices];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRouteIdentifier___block_invoke;
     v28[3] = &unk_27867C800;
-    v14 = v4;
+    v14 = identifierCopy;
     v29 = v14;
-    v15 = [v13 na_filter:v28];
+    v15 = [activeDevices na_filter:v28];
 
-    v16 = [(HMDDeviceSetupConfiguringController *)v8 client];
-    v17 = [v16 activeDevices];
+    client3 = [(HMDDeviceSetupConfiguringController *)selfCopy client];
+    activeDevices2 = [client3 activeDevices];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRouteIdentifier___block_invoke_2;
     v26 = &unk_27867C800;
     v27 = v14;
-    v18 = [v17 na_filter:&v23];
+    v18 = [activeDevices2 na_filter:&v23];
     v19 = [v15 arrayByAddingObjectsFromArray:{v18, v23, v24, v25, v26}];
   }
 
@@ -613,11 +613,11 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
 - (void)_tearDownCompanionLinkClient
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -628,36 +628,36 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDDeviceSetupConfiguringController *)v5 setClient:0];
+  [(HMDDeviceSetupConfiguringController *)selfCopy setClient:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryWithRequestID:(id)a3 mediaRouteIdentifier:(id)a4 rpDevice:(id)a5 additionalKeys:(id)a6 withCompletion:(id)a7
+- (void)_queryWithRequestID:(id)d mediaRouteIdentifier:(id)identifier rpDevice:(id)device additionalKeys:(id)keys withCompletion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-  dispatch_assert_queue_V2(v17);
+  dCopy = d;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  keysCopy = keys;
+  completionCopy = completion;
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v14)
+  if (deviceCopy)
   {
-    v18 = [(HMDDeviceSetupConfiguringController *)self rpCompanionLinkClientFactory];
-    v19 = v18[2]();
+    rpCompanionLinkClientFactory = [(HMDDeviceSetupConfiguringController *)self rpCompanionLinkClientFactory];
+    v19 = rpCompanionLinkClientFactory[2]();
 
     if (v19)
     {
-      v36 = v13;
-      v20 = [(HMDDeviceSetupConfiguringController *)self workQueue];
-      [v19 setDispatchQueue:v20];
+      v36 = identifierCopy;
+      workQueue2 = [(HMDDeviceSetupConfiguringController *)self workQueue];
+      [v19 setDispatchQueue:workQueue2];
 
-      [v19 setDestinationDevice:v14];
-      v21 = [MEMORY[0x277CCAD78] UUID];
+      [v19 setDestinationDevice:deviceCopy];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -665,11 +665,11 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
         *buf = 138544130;
         v43 = v25;
         v44 = 2112;
-        v45 = v21;
+        v45 = uUID;
         v46 = 2112;
-        v47 = v12;
+        v47 = dCopy;
         v48 = 2112;
-        v49 = v14;
+        v49 = deviceCopy;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Send (messageRequestID %@) handlerID: %@ message to (device '%@')", buf, 0x2Au);
       }
 
@@ -678,21 +678,21 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
       v37[1] = 3221225472;
       v37[2] = __119__HMDDeviceSetupConfiguringController__queryWithRequestID_mediaRouteIdentifier_rpDevice_additionalKeys_withCompletion___block_invoke;
       v37[3] = &unk_2786862E8;
-      v37[4] = v23;
-      v41 = v16;
+      v37[4] = selfCopy;
+      v41 = completionCopy;
       v38 = v19;
-      v39 = v15;
-      v40 = v21;
-      v26 = v21;
+      v39 = keysCopy;
+      v40 = uUID;
+      v26 = uUID;
       [v38 activateWithCompletion:v37];
 
-      v13 = v36;
+      identifierCopy = v36;
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -704,14 +704,14 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
 
       objc_autoreleasePoolPop(v31);
       v26 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-      (*(v16 + 2))(v16, 0, v26);
+      (*(completionCopy + 2))(completionCopy, 0, v26);
     }
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -723,7 +723,7 @@ unint64_t __78__HMDDeviceSetupConfiguringController__activeDevicesWithMediaRoute
 
     objc_autoreleasePoolPop(v27);
     v19 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
-    (*(v16 + 2))(v16, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -874,35 +874,35 @@ uint64_t __119__HMDDeviceSetupConfiguringController__queryWithRequestID_mediaRou
   return result;
 }
 
-- (void)_registerRequest:(id)a3 after:(int64_t)a4
+- (void)_registerRequest:(id)request after:(int64_t)after
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:after];
     *buf = 138543874;
     v17 = v10;
     v18 = 2112;
-    v19 = v6;
+    v19 = requestCopy;
     v20 = 2112;
     v21 = v11;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Register requestID: %@ after %@ seconds", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = dispatch_time(0, 1000000000 * a4);
-  v13 = [(HMDDeviceSetupConfiguringController *)v8 workQueue];
+  v12 = dispatch_time(0, 1000000000 * after);
+  workQueue = [(HMDDeviceSetupConfiguringController *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HMDDeviceSetupConfiguringController__registerRequest_after___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v8;
-  dispatch_after(v12, v13, block);
+  block[4] = selfCopy;
+  dispatch_after(v12, workQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -912,16 +912,16 @@ uint64_t __119__HMDDeviceSetupConfiguringController__queryWithRequestID_mediaRou
   v12 = *MEMORY[0x277D85DE8];
   if ([(HMDDeviceSetupConfiguringController *)self _shouldRegisterRequest])
   {
-    v3 = [(HMDDeviceSetupConfiguringController *)self requestIDRegistrationDelay];
+    requestIDRegistrationDelay = [(HMDDeviceSetupConfiguringController *)self requestIDRegistrationDelay];
     v4 = *MEMORY[0x277D85DE8];
 
-    [(HMDDeviceSetupConfiguringController *)self _registerRequest:@"com.apple.HomeKit.HMDDeviceSetupConfiguringStateRequestID" after:v3];
+    [(HMDDeviceSetupConfiguringController *)self _registerRequest:@"com.apple.HomeKit.HMDDeviceSetupConfiguringStateRequestID" after:requestIDRegistrationDelay];
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -936,24 +936,24 @@ uint64_t __119__HMDDeviceSetupConfiguringController__queryWithRequestID_mediaRou
   }
 }
 
-- (void)queryConfiguringState:(id)a3 additionalKeys:(id)a4 withCompletion:(id)a5
+- (void)queryConfiguringState:(id)state additionalKeys:(id)keys withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  stateCopy = state;
+  keysCopy = keys;
+  completionCopy = completion;
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __91__HMDDeviceSetupConfiguringController_queryConfiguringState_additionalKeys_withCompletion___block_invoke;
   v15[3] = &unk_278689AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = stateCopy;
+  v17 = keysCopy;
+  v18 = completionCopy;
+  v12 = keysCopy;
+  v13 = completionCopy;
+  v14 = stateCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __91__HMDDeviceSetupConfiguringController_queryConfiguringState_additionalKeys_withCompletion___block_invoke(uint64_t a1)
@@ -1010,29 +1010,29 @@ void __91__HMDDeviceSetupConfiguringController_queryConfiguringState_additionalK
 
 - (void)setupRPClient
 {
-  v3 = [(HMDDeviceSetupConfiguringController *)self workQueue];
+  workQueue = [(HMDDeviceSetupConfiguringController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMDDeviceSetupConfiguringController_setupRPClient__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (HMDDeviceSetupConfiguringController)initWithQueue:(id)a3 rpCompanionLinkClientFactory:(id)a4 diagnosticInfoController:(id)a5
+- (HMDDeviceSetupConfiguringController)initWithQueue:(id)queue rpCompanionLinkClientFactory:(id)factory diagnosticInfoController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  factoryCopy = factory;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = HMDDeviceSetupConfiguringController;
   v12 = [(HMDDeviceSetupConfiguringController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_diagnosticInfoController, a5);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_diagnosticInfoController, controller);
+    v14 = _Block_copy(factoryCopy);
     rpCompanionLinkClientFactory = v13->_rpCompanionLinkClientFactory;
     v13->_rpCompanionLinkClientFactory = v14;
 
@@ -1043,12 +1043,12 @@ void __91__HMDDeviceSetupConfiguringController_queryConfiguringState_additionalK
   return v13;
 }
 
-- (HMDDeviceSetupConfiguringController)initWithDiagnosticInfoControllerInternal:(id)a3
+- (HMDDeviceSetupConfiguringController)initWithDiagnosticInfoControllerInternal:(id)internal
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v6 = a3;
+  internalCopy = internal;
   v7 = dispatch_queue_create("HMDDeviceSetupConfiguringController_Queue", v5);
-  v8 = [(HMDDeviceSetupConfiguringController *)self initWithQueue:v7 rpCompanionLinkClientFactory:&__block_literal_global_166990 diagnosticInfoController:v6];
+  v8 = [(HMDDeviceSetupConfiguringController *)self initWithQueue:v7 rpCompanionLinkClientFactory:&__block_literal_global_166990 diagnosticInfoController:internalCopy];
 
   return v8;
 }

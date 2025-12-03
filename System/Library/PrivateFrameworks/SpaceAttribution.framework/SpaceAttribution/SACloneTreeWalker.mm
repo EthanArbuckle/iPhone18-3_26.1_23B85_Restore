@@ -1,22 +1,22 @@
 @interface SACloneTreeWalker
-+ (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 forVolPath:(id)a5;
-+ (id)getBundleIDsByPathForNodeID:(unint64_t)a3 forFsid:(fsid)a4 andPathList:(id)a5;
-+ (id)getBundleIDsOfInode:(unint64_t)a3 withDirKey:(unint64_t)a4 andTag:(unint64_t)a5 inVolume:(statfs *)a6 usingPathList:(id)a7 andVolumesInfo:(id)a8 volumePath:(id)a9;
-+ (id)getDirInfoByDirKey:(unint64_t)a3 inVolume:(statfs *)a4 volumesInfo:(id)a5 volumePath:(id)a6;
-+ (void)addAttributedCloneToBundleIDs:(id)a3 withCloneSize:(int64_t)a4 withPurgeableSize:(unint64_t)a5 onCloneData:(id)a6;
-+ (void)addCachePurgeableClones:(unint64_t)a3 bundleIDs:(id)a4 onCloneData:(id)a5;
-+ (void)addClonePathOfCloneID:(unint64_t)a3 FSId:(fsid *)a4 dataSize:(unint64_t)a5 purgeableSize:(unint64_t)a6 dirStatKey:(unint64_t)a7 attributionTag:(unint64_t)a8 bundleIDs:(id)a9 cloneData:(id)a10;
-+ (void)addPurgeableCloneOfSize:(unint64_t)a3 isPurgeable:(BOOL)a4 withDirInfo:(id)a5 onCloneData:(id)a6;
-+ (void)newFromAPFS:(unint64_t)a3 inVolume:(statfs *)a4 reply:(id)a5;
-+ (void)processCloneMapOnVol:(id)a3 pathList:(id)a4 appSizeBreakdownList:(id)a5 volumesInfo:(id)a6 collectClonesPaths:(BOOL)a7 reply:(id)a8;
-+ (void)updateAppSizeBreakdownList:(unint64_t)a3 FSId:(fsid *)a4 dataSize:(unint64_t)a5 attributionTag:(unint64_t)a6 bundleIDs:(id)a7 appSizeBreakdownList:(id)a8 pathList:(id)a9;
++ (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD forVolPath:(id)path;
++ (id)getBundleIDsByPathForNodeID:(unint64_t)d forFsid:(fsid)fsid andPathList:(id)list;
++ (id)getBundleIDsOfInode:(unint64_t)inode withDirKey:(unint64_t)key andTag:(unint64_t)tag inVolume:(statfs *)volume usingPathList:(id)list andVolumesInfo:(id)info volumePath:(id)path;
++ (id)getDirInfoByDirKey:(unint64_t)key inVolume:(statfs *)volume volumesInfo:(id)info volumePath:(id)path;
++ (void)addAttributedCloneToBundleIDs:(id)ds withCloneSize:(int64_t)size withPurgeableSize:(unint64_t)purgeableSize onCloneData:(id)data;
++ (void)addCachePurgeableClones:(unint64_t)clones bundleIDs:(id)ds onCloneData:(id)data;
++ (void)addClonePathOfCloneID:(unint64_t)d FSId:(fsid *)id dataSize:(unint64_t)size purgeableSize:(unint64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag bundleIDs:(id)ds cloneData:(id)self0;
++ (void)addPurgeableCloneOfSize:(unint64_t)size isPurgeable:(BOOL)purgeable withDirInfo:(id)info onCloneData:(id)data;
++ (void)newFromAPFS:(unint64_t)s inVolume:(statfs *)volume reply:(id)reply;
++ (void)processCloneMapOnVol:(id)vol pathList:(id)list appSizeBreakdownList:(id)breakdownList volumesInfo:(id)info collectClonesPaths:(BOOL)paths reply:(id)reply;
++ (void)updateAppSizeBreakdownList:(unint64_t)list FSId:(fsid *)id dataSize:(unint64_t)size attributionTag:(unint64_t)tag bundleIDs:(id)ds appSizeBreakdownList:(id)breakdownList pathList:(id)pathList;
 @end
 
 @implementation SACloneTreeWalker
 
-+ (void)newFromAPFS:(unint64_t)a3 inVolume:(statfs *)a4 reply:(id)a5
++ (void)newFromAPFS:(unint64_t)s inVolume:(statfs *)volume reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v27 = 0u;
   v26 = 0u;
   v25 = 0u;
@@ -34,8 +34,8 @@
   v12 = 0u;
   v10 = 1;
   v11 = 33;
-  v13 = a3;
-  if (fsctl(a4->f_mntonname, 0xC1104A71uLL, &v10, 1u))
+  sCopy = s;
+  if (fsctl(volume->f_mntonname, 0xC1104A71uLL, &v10, 1u))
   {
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -44,23 +44,23 @@
     }
 
     v9 = [NSError errorWithDomain:NSCocoaErrorDomain code:4866 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v9);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v9);
   }
 
   else
   {
-    (*(v7 + 2))(v7, (v11 >> 2) & 1, (v11 >> 3) & 1, 0);
+    (*(replyCopy + 2))(replyCopy, (v11 >> 2) & 1, (v11 >> 3) & 1, 0);
   }
 }
 
-+ (id)getBundleIDsByPathForNodeID:(unint64_t)a3 forFsid:(fsid)a4 andPathList:(id)a5
++ (id)getBundleIDsByPathForNodeID:(unint64_t)d forFsid:(fsid)fsid andPathList:(id)list
 {
-  v10 = a4;
-  v6 = a5;
-  v7 = [SASupport getPathOfNodeID:a3 FSid:&v10];
+  fsidCopy = fsid;
+  listCopy = list;
+  v7 = [SASupport getPathOfNodeID:d FSid:&fsidCopy];
   if (v7)
   {
-    v8 = [v6 getBundleIDsForSuccessorPath:v7];
+    v8 = [listCopy getBundleIDsForSuccessorPath:v7];
   }
 
   else
@@ -71,170 +71,170 @@
   return v8;
 }
 
-+ (id)getDirInfoByDirKey:(unint64_t)a3 inVolume:(statfs *)a4 volumesInfo:(id)a5 volumePath:(id)a6
++ (id)getDirInfoByDirKey:(unint64_t)key inVolume:(statfs *)volume volumesInfo:(id)info volumePath:(id)path
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [NSNumber numberWithUnsignedLongLong:a3];
-  v11 = [v9 getDirCacheElementForDirKey:v10 volumePath:v8 climbUpDSHierarchy:1 cacheDiscoveredDirElement:1];
+  pathCopy = path;
+  infoCopy = info;
+  v10 = [NSNumber numberWithUnsignedLongLong:key];
+  v11 = [infoCopy getDirCacheElementForDirKey:v10 volumePath:pathCopy climbUpDSHierarchy:1 cacheDiscoveredDirElement:1];
 
   return v11;
 }
 
-+ (id)getBundleIDsOfInode:(unint64_t)a3 withDirKey:(unint64_t)a4 andTag:(unint64_t)a5 inVolume:(statfs *)a6 usingPathList:(id)a7 andVolumesInfo:(id)a8 volumePath:(id)a9
++ (id)getBundleIDsOfInode:(unint64_t)inode withDirKey:(unint64_t)key andTag:(unint64_t)tag inVolume:(statfs *)volume usingPathList:(id)list andVolumesInfo:(id)info volumePath:(id)path
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  if (a4)
+  listCopy = list;
+  infoCopy = info;
+  pathCopy = path;
+  if (key)
   {
-    v18 = [a1 getDirInfoByDirKey:a4 inVolume:a6 volumesInfo:v16 volumePath:v17];
+    v18 = [self getDirInfoByDirKey:key inVolume:volume volumesInfo:infoCopy volumePath:pathCopy];
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 bundleIDs];
+      bundleIDs = [v18 bundleIDs];
 
-      if (v20)
+      if (bundleIDs)
       {
-        v21 = [v19 bundleIDs];
+        bundleIDs2 = [v19 bundleIDs];
 
         goto LABEL_11;
       }
     }
   }
 
-  if (!a5 || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", a5), v22 = objc_claimAutoreleasedReturnValue(), [v16 getBundleIDForTagHash:v22 volumePath:v17], v21 = objc_claimAutoreleasedReturnValue(), v22, !v21))
+  if (!tag || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", tag), v22 = objc_claimAutoreleasedReturnValue(), [infoCopy getBundleIDForTagHash:v22 volumePath:pathCopy], bundleIDs2 = objc_claimAutoreleasedReturnValue(), v22, !bundleIDs2))
   {
-    v23 = [a1 getBundleIDsByPathForNodeID:a3 forFsid:*&a6->f_fsid andPathList:v15];
+    v23 = [self getBundleIDsByPathForNodeID:inode forFsid:*&volume->f_fsid andPathList:listCopy];
     if (v23)
     {
-      v21 = v23;
+      bundleIDs2 = v23;
     }
 
     else
     {
-      v21 = @"com.apple.fakeapp.SystemData";
+      bundleIDs2 = @"com.apple.fakeapp.SystemData";
     }
   }
 
 LABEL_11:
 
-  return v21;
+  return bundleIDs2;
 }
 
-+ (void)addClonePathOfCloneID:(unint64_t)a3 FSId:(fsid *)a4 dataSize:(unint64_t)a5 purgeableSize:(unint64_t)a6 dirStatKey:(unint64_t)a7 attributionTag:(unint64_t)a8 bundleIDs:(id)a9 cloneData:(id)a10
++ (void)addClonePathOfCloneID:(unint64_t)d FSId:(fsid *)id dataSize:(unint64_t)size purgeableSize:(unint64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag bundleIDs:(id)ds cloneData:(id)self0
 {
-  v20 = a9;
-  v16 = a10;
-  v17 = [SASupport getPathOfNodeID:a3 FSid:a4];
+  dsCopy = ds;
+  dataCopy = data;
+  v17 = [SASupport getPathOfNodeID:d FSid:id];
   if (v17)
   {
-    v18 = [SACloneInfo newWithDataSize:a5 cloneSize:a5 purgeableSize:a6 dirStatKey:a7 attributionTag:a8 clonePath:v17];
-    v19 = [v16 objectForKeyedSubscript:v20];
+    v18 = [SACloneInfo newWithDataSize:size cloneSize:size purgeableSize:purgeableSize dirStatKey:key attributionTag:tag clonePath:v17];
+    v19 = [dataCopy objectForKeyedSubscript:dsCopy];
     [v19 addCloneInfo:v18];
   }
 }
 
-+ (void)updateAppSizeBreakdownList:(unint64_t)a3 FSId:(fsid *)a4 dataSize:(unint64_t)a5 attributionTag:(unint64_t)a6 bundleIDs:(id)a7 appSizeBreakdownList:(id)a8 pathList:(id)a9
++ (void)updateAppSizeBreakdownList:(unint64_t)list FSId:(fsid *)id dataSize:(unint64_t)size attributionTag:(unint64_t)tag bundleIDs:(id)ds appSizeBreakdownList:(id)breakdownList pathList:(id)pathList
 {
-  v18 = a7;
-  v14 = a8;
-  v15 = a9;
-  v16 = [SASupport getPathOfNodeID:a3 FSid:a4];
+  dsCopy = ds;
+  breakdownListCopy = breakdownList;
+  pathListCopy = pathList;
+  v16 = [SASupport getPathOfNodeID:list FSid:id];
   if (v16)
   {
-    if (a6)
+    if (tag)
     {
-      [v14 updateTagsWithCloneSize:a5 bundleIDs:v18];
+      [breakdownListCopy updateTagsWithCloneSize:size bundleIDs:dsCopy];
     }
 
     else
     {
-      v17 = [v15 findAncestorOfPath:v16];
-      [v14 updatePath:v17 cloneSize:a5 bundleIDs:v18];
+      v17 = [pathListCopy findAncestorOfPath:v16];
+      [breakdownListCopy updatePath:v17 cloneSize:size bundleIDs:dsCopy];
     }
   }
 }
 
-+ (void)addCachePurgeableClones:(unint64_t)a3 bundleIDs:(id)a4 onCloneData:(id)a5
++ (void)addCachePurgeableClones:(unint64_t)clones bundleIDs:(id)ds onCloneData:(id)data
 {
-  v11 = a4;
-  v7 = a5;
-  if (v11)
+  dsCopy = ds;
+  dataCopy = data;
+  if (dsCopy)
   {
-    v8 = [SACloneSize newWithDataSize:0 cloneSize:0 purgeableSize:0 cacheFixUp:a3];
-    v9 = [v7 objectForKeyedSubscript:v11];
+    v8 = [SACloneSize newWithDataSize:0 cloneSize:0 purgeableSize:0 cacheFixUp:clones];
+    v9 = [dataCopy objectForKeyedSubscript:dsCopy];
 
     if (v9)
     {
-      v10 = [v7 objectForKeyedSubscript:v11];
+      v10 = [dataCopy objectForKeyedSubscript:dsCopy];
       [v10 updateWithSizeInfo:v8];
     }
 
     else
     {
-      [v7 setObject:v8 forKeyedSubscript:v11];
+      [dataCopy setObject:v8 forKeyedSubscript:dsCopy];
     }
   }
 }
 
-+ (void)addAttributedCloneToBundleIDs:(id)a3 withCloneSize:(int64_t)a4 withPurgeableSize:(unint64_t)a5 onCloneData:(id)a6
++ (void)addAttributedCloneToBundleIDs:(id)ds withCloneSize:(int64_t)size withPurgeableSize:(unint64_t)purgeableSize onCloneData:(id)data
 {
-  v9 = a6;
-  v10 = a3;
-  v13 = [SACloneSize newWithDataSize:a4 cloneSize:a4 purgeableSize:a5 cacheFixUp:0];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  dataCopy = data;
+  dsCopy = ds;
+  v13 = [SACloneSize newWithDataSize:size cloneSize:size purgeableSize:purgeableSize cacheFixUp:0];
+  v11 = [dataCopy objectForKeyedSubscript:dsCopy];
 
   if (v11)
   {
-    v12 = [v9 objectForKeyedSubscript:v10];
+    v12 = [dataCopy objectForKeyedSubscript:dsCopy];
 
     [v12 updateWithSizeInfo:v13];
-    v10 = v12;
+    dsCopy = v12;
   }
 
   else
   {
-    [v9 setObject:v13 forKeyedSubscript:v10];
+    [dataCopy setObject:v13 forKeyedSubscript:dsCopy];
   }
 }
 
-+ (void)addPurgeableCloneOfSize:(unint64_t)a3 isPurgeable:(BOOL)a4 withDirInfo:(id)a5 onCloneData:(id)a6
++ (void)addPurgeableCloneOfSize:(unint64_t)size isPurgeable:(BOOL)purgeable withDirInfo:(id)info onCloneData:(id)data
 {
-  v7 = a4;
-  v16 = a5;
-  v9 = a6;
-  if (v16)
+  purgeableCopy = purgeable;
+  infoCopy = info;
+  dataCopy = data;
+  if (infoCopy)
   {
-    v10 = [v16 bundleIDs];
+    bundleIDs = [infoCopy bundleIDs];
 
-    if (v10)
+    if (bundleIDs)
     {
       v11 = objc_opt_new();
-      if ([v16 purgeable])
+      if ([infoCopy purgeable])
       {
-        if (![v16 cacheFolder] || v7)
+        if (![infoCopy cacheFolder] || purgeableCopy)
         {
 LABEL_8:
-          [v11 setDataSize:{objc_msgSend(v11, "dataSize") + a3}];
-          v12 = [v16 bundleIDs];
-          v13 = [v9 objectForKeyedSubscript:v12];
+          [v11 setDataSize:{objc_msgSend(v11, "dataSize") + size}];
+          bundleIDs2 = [infoCopy bundleIDs];
+          v13 = [dataCopy objectForKeyedSubscript:bundleIDs2];
 
-          v14 = [v16 bundleIDs];
+          bundleIDs3 = [infoCopy bundleIDs];
           if (v13)
           {
-            v15 = [v9 objectForKeyedSubscript:v14];
+            v15 = [dataCopy objectForKeyedSubscript:bundleIDs3];
             [v15 updateWithSizeInfo:v11];
           }
 
           else
           {
-            [v9 setObject:v11 forKeyedSubscript:v14];
+            [dataCopy setObject:v11 forKeyedSubscript:bundleIDs3];
           }
         }
       }
 
-      else if (v7)
+      else if (purgeableCopy)
       {
         goto LABEL_8;
       }
@@ -242,23 +242,23 @@ LABEL_8:
   }
 }
 
-+ (void)processCloneMapOnVol:(id)a3 pathList:(id)a4 appSizeBreakdownList:(id)a5 volumesInfo:(id)a6 collectClonesPaths:(BOOL)a7 reply:(id)a8
++ (void)processCloneMapOnVol:(id)vol pathList:(id)list appSizeBreakdownList:(id)breakdownList volumesInfo:(id)info collectClonesPaths:(BOOL)paths reply:(id)reply
 {
-  v9 = a7;
-  v14 = a3;
-  v69 = a4;
-  v70 = a5;
-  v75 = a6;
-  v15 = a8;
+  pathsCopy = paths;
+  volCopy = vol;
+  listCopy = list;
+  breakdownListCopy = breakdownList;
+  infoCopy = info;
+  replyCopy = reply;
   v16 = SALog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003DA60(v14, v16);
+    sub_10003DA60(volCopy, v16);
   }
 
   bzero(&v82, 0x878uLL);
   v71 = [NSMutableDictionary dictionaryWithCapacity:100];
-  if (statfs([v14 UTF8String], &v82))
+  if (statfs([volCopy UTF8String], &v82))
   {
     v17 = *__error();
     v18 = SALog();
@@ -271,7 +271,7 @@ LABEL_8:
     v20 = v17;
 LABEL_7:
     v21 = [NSError errorWithDomain:v19 code:v20 userInfo:0];
-    v15[2](v15, 0, v21);
+    replyCopy[2](replyCopy, 0, v21);
 
     v22 = 0;
     v23 = 0;
@@ -310,9 +310,9 @@ LABEL_7:
   }
 
   v57 = v26;
-  v58 = v15;
+  v58 = replyCopy;
   v73 = 0;
-  v74 = v14;
+  v74 = volCopy;
   v33 = 0;
   v34 = 0;
   v23 = 0;
@@ -320,7 +320,7 @@ LABEL_7:
   v68 = 0;
   v66 = 0;
   v22 = 0;
-  v35 = !v9;
+  v35 = !pathsCopy;
   v36 = 0;
   v59 = v35;
   v72 = 1;
@@ -358,32 +358,32 @@ LABEL_7:
         v54 = 0;
       }
 
-      v14 = v74;
-      v55 = [a1 getBundleIDsOfInode:v73 withDirKey:v67 andTag:v68 inVolume:&v82 usingPathList:v69 andVolumesInfo:v75 volumePath:v74];
+      volCopy = v74;
+      v55 = [self getBundleIDsOfInode:v73 withDirKey:v67 andTag:v68 inVolume:&v82 usingPathList:listCopy andVolumesInfo:infoCopy volumePath:v74];
 
-      [a1 addAttributedCloneToBundleIDs:v55 withCloneSize:v53 withPurgeableSize:v54 onCloneData:v71];
-      if (!((v70 == 0) | v72 & 1))
+      [self addAttributedCloneToBundleIDs:v55 withCloneSize:v53 withPurgeableSize:v54 onCloneData:v71];
+      if (!((breakdownListCopy == 0) | v72 & 1))
       {
-        [a1 updateAppSizeBreakdownList:v73 FSId:&v82.f_fsid dataSize:v53 attributionTag:v68 bundleIDs:v55 appSizeBreakdownList:v70 pathList:v69];
+        [self updateAppSizeBreakdownList:v73 FSId:&v82.f_fsid dataSize:v53 attributionTag:v68 bundleIDs:v55 appSizeBreakdownList:breakdownListCopy pathList:listCopy];
       }
 
       if (((v59 | v72) & 1) == 0)
       {
-        [a1 addClonePathOfCloneID:v73 FSId:&v82.f_fsid dataSize:v53 purgeableSize:v54 dirStatKey:v66 attributionTag:v68 bundleIDs:v55 cloneData:v71];
+        [self addClonePathOfCloneID:v73 FSId:&v82.f_fsid dataSize:v53 purgeableSize:v54 dirStatKey:v66 attributionTag:v68 bundleIDs:v55 cloneData:v71];
       }
 
       v24 = 0;
       v22 = v55;
       v26 = v57;
-      v15 = v58;
+      replyCopy = v58;
       goto LABEL_15;
     }
 
     if (HIDWORD(v80) < 0x18)
     {
-      v14 = v74;
+      volCopy = v74;
       v26 = v57;
-      v15 = v58;
+      replyCopy = v58;
       if (!HIDWORD(v80))
       {
         v56 = SALog();
@@ -427,17 +427,17 @@ LABEL_7:
             v34 = 0;
           }
 
-          v22 = [a1 getBundleIDsOfInode:v73 withDirKey:v67 andTag:v68 inVolume:&v82 usingPathList:v69 andVolumesInfo:v75 volumePath:v74];
+          v22 = [self getBundleIDsOfInode:v73 withDirKey:v67 andTag:v68 inVolume:&v82 usingPathList:listCopy andVolumesInfo:infoCopy volumePath:v74];
 
-          [a1 addAttributedCloneToBundleIDs:v22 withCloneSize:v42 withPurgeableSize:v34 onCloneData:v71];
-          if (!((v70 == 0) | v72 & 1))
+          [self addAttributedCloneToBundleIDs:v22 withCloneSize:v42 withPurgeableSize:v34 onCloneData:v71];
+          if (!((breakdownListCopy == 0) | v72 & 1))
           {
-            [a1 updateAppSizeBreakdownList:v73 FSId:&v82.f_fsid dataSize:v42 attributionTag:v68 bundleIDs:v22 appSizeBreakdownList:v70 pathList:v69];
+            [self updateAppSizeBreakdownList:v73 FSId:&v82.f_fsid dataSize:v42 attributionTag:v68 bundleIDs:v22 appSizeBreakdownList:breakdownListCopy pathList:listCopy];
           }
 
           if (((v59 | v72) & 1) == 0)
           {
-            [a1 addClonePathOfCloneID:v73 FSId:&v82.f_fsid dataSize:v42 purgeableSize:v34 dirStatKey:v66 attributionTag:v68 bundleIDs:v22 cloneData:v71];
+            [self addClonePathOfCloneID:v73 FSId:&v82.f_fsid dataSize:v42 purgeableSize:v34 dirStatKey:v66 attributionTag:v68 bundleIDs:v22 cloneData:v71];
           }
 
           v66 = 0;
@@ -476,30 +476,30 @@ LABEL_69:
       while (2)
       {
         v46 = *(v44 - 1);
-        v45 = *v44;
+        bundleIDs2 = *v44;
         v33 = *(v44 - 3);
         v47 = *(v44 - 2);
 
         if (v46)
         {
-          v23 = [a1 getDirInfoByDirKey:v46 inVolume:&v82 volumesInfo:v75 volumePath:v74];
+          v23 = [self getDirInfoByDirKey:v46 inVolume:&v82 volumesInfo:infoCopy volumePath:v74];
           if (v23)
           {
-            [a1 addPurgeableCloneOfSize:v34 isPurgeable:v45 & 1 withDirInfo:v23 onCloneData:v71];
-            if ([v23 cacheFolder] && (v45 & 1) != 0)
+            [self addPurgeableCloneOfSize:v34 isPurgeable:bundleIDs2 & 1 withDirInfo:v23 onCloneData:v71];
+            if ([v23 cacheFolder] && (bundleIDs2 & 1) != 0)
             {
-              v48 = [v23 bundleIDs];
-              [a1 addCachePurgeableClones:v34 bundleIDs:v48 onCloneData:v71];
+              bundleIDs = [v23 bundleIDs];
+              [self addCachePurgeableClones:v34 bundleIDs:bundleIDs onCloneData:v71];
             }
 
-            LOBYTE(v45) = [v23 purgeable] | v45;
-            if (v70 && (v45 & 1) != 0)
+            LOBYTE(bundleIDs2) = [v23 purgeable] | bundleIDs2;
+            if (breakdownListCopy && (bundleIDs2 & 1) != 0)
             {
               v49 = *(v44 - 2);
-              v45 = [v23 bundleIDs];
-              [a1 updateAppSizeBreakdownList:v33 FSId:&v82.f_fsid dataSize:v34 attributionTag:v49 bundleIDs:v45 appSizeBreakdownList:v70 pathList:v69];
+              bundleIDs2 = [v23 bundleIDs];
+              [self updateAppSizeBreakdownList:v33 FSId:&v82.f_fsid dataSize:v34 attributionTag:v49 bundleIDs:bundleIDs2 appSizeBreakdownList:breakdownListCopy pathList:listCopy];
 
-              LOBYTE(v45) = 1;
+              LOBYTE(bundleIDs2) = 1;
             }
           }
         }
@@ -509,23 +509,23 @@ LABEL_69:
           v23 = 0;
         }
 
-        if (v47 && (v45 & 1) != 0)
+        if (v47 && (bundleIDs2 & 1) != 0)
         {
-          [v75 addPurgeableTaggedClone:v47 size:v34 volumePath:v74];
+          [infoCopy addPurgeableTaggedClone:v47 size:v34 volumePath:v74];
         }
 
         if (v23 || *(v44 - 2))
         {
           v22 = 0;
-          if (v45)
+          if (bundleIDs2)
           {
             goto LABEL_68;
           }
 
 LABEL_59:
-          v50 = [v23 bundleIDs];
+          bundleIDs3 = [v23 bundleIDs];
           v51 = v73 - 1;
-          if (v47 || v50)
+          if (v47 || bundleIDs3)
           {
 
             if (v51 < v33)
@@ -552,8 +552,8 @@ LABEL_59:
           goto LABEL_68;
         }
 
-        v22 = [a1 getBundleIDsByPathForNodeID:v33 forFsid:*&v82.f_fsid andPathList:v69];
-        if ((v45 & 1) == 0)
+        v22 = [self getBundleIDsByPathForNodeID:v33 forFsid:*&v82.f_fsid andPathList:listCopy];
+        if ((bundleIDs2 & 1) == 0)
         {
           goto LABEL_59;
         }
@@ -578,9 +578,9 @@ LABEL_70:
 
   while (!v52);
   v28 = v52;
-  v14 = v74;
+  volCopy = v74;
   v26 = v57;
-  v15 = v58;
+  replyCopy = v58;
 LABEL_11:
   v29 = SALog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -594,15 +594,15 @@ LABEL_14:
   v24 = [NSError errorWithDomain:v30 code:v31 userInfo:0];
 LABEL_15:
   free(v26);
-  (v15)[2](v15, v71, 0);
+  (replyCopy)[2](replyCopy, v71, 0);
 LABEL_16:
 }
 
-+ (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 forVolPath:(id)a5
++ (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD forVolPath:(id)path
 {
-  v7 = a5;
+  pathCopy = path;
   bzero(&v28, 0x878uLL);
-  if (statfs([v7 UTF8String], &v28))
+  if (statfs([pathCopy UTF8String], &v28))
   {
     v8 = *__error();
     v9 = SALog();
@@ -635,7 +635,7 @@ LABEL_4:
   v12 = -1;
   v24 = 0;
   v25 = -1;
-  v22[1] = a4;
+  v22[1] = iD;
   v23 = 0;
   if (fsctl(v28.f_mntonname, 0xC0384A74uLL, v22, 1u))
   {
@@ -656,7 +656,7 @@ LABEL_7:
       {
         v15 = 0;
         v16 = 24;
-        while (*&v27[v15] == a4)
+        while (*&v27[v15] == iD)
         {
           v17 = *&v27[v15 + 16];
           if (v17)
@@ -669,7 +669,7 @@ LABEL_7:
               if ((*v18 & 1) == 0 && v14 < v12)
               {
                 v12 = *(v18 - 3);
-                if (v14 < a3)
+                if (v14 < d)
                 {
                   break;
                 }
@@ -711,7 +711,7 @@ LABEL_15:
 LABEL_28:
   if (v12)
   {
-    v20 = v12 == a3;
+    v20 = v12 == d;
   }
 
   else

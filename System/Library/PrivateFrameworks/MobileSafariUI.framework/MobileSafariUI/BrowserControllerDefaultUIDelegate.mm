@@ -1,110 +1,110 @@
 @interface BrowserControllerDefaultUIDelegate
-- (BOOL)automationOverlayControllerShouldAllowUserInteraction:(id)a3;
-- (BOOL)browserControllerIsFullscreen:(id)a3;
-- (BOOL)browserControllerShouldIncreaseTopPaddingForStartPage:(id)a3;
-- (BOOL)browserControllerShouldUpdateSnapshotForActiveTab:(id)a3;
-- (BrowserControllerDefaultUIDelegate)initWithBrowserController:(id)a3;
-- (CGPoint)browserControllerWindowLastTapLocation:(id)a3;
-- (CGRect)browserControllerWindowFrame:(id)a3;
-- (double)browserControllerCatalogViewPopoverWidth:(id)a3;
-- (double)browserControllerStatusBarWidth:(id)a3;
-- (id)browserController:(id)a3 tabSnapshotContentProviderForTabDocument:(id)a4;
-- (id)browserControllerCatalogViewController:(id)a3;
-- (id)browserControllerContentContainerView:(id)a3;
-- (id)browserControllerFocusItemContainer:(id)a3;
-- (id)browserControllerNavigationBar:(id)a3;
-- (id)browserControllerPreferredFocusEnvironments:(id)a3;
-- (id)browserControllerTabBarManager:(id)a3;
-- (id)browserControllerTabContentContainerView:(id)a3;
-- (id)browserControllerTabHoverPreview:(id)a3;
-- (id)createTabOverviewForBrowserController:(id)a3;
-- (id)sidebarUIProxyForBrowserController:(id)a3;
-- (void)_browserController:(id)a3 animateLinkImage:(CGImage *)a4 fromRect:(CGRect)a5 inView:(id)a6 toBarItem:(int64_t)a7 withCompletion:(id)a8;
+- (BOOL)automationOverlayControllerShouldAllowUserInteraction:(id)interaction;
+- (BOOL)browserControllerIsFullscreen:(id)fullscreen;
+- (BOOL)browserControllerShouldIncreaseTopPaddingForStartPage:(id)page;
+- (BOOL)browserControllerShouldUpdateSnapshotForActiveTab:(id)tab;
+- (BrowserControllerDefaultUIDelegate)initWithBrowserController:(id)controller;
+- (CGPoint)browserControllerWindowLastTapLocation:(id)location;
+- (CGRect)browserControllerWindowFrame:(id)frame;
+- (double)browserControllerCatalogViewPopoverWidth:(id)width;
+- (double)browserControllerStatusBarWidth:(id)width;
+- (id)browserController:(id)controller tabSnapshotContentProviderForTabDocument:(id)document;
+- (id)browserControllerCatalogViewController:(id)controller;
+- (id)browserControllerContentContainerView:(id)view;
+- (id)browserControllerFocusItemContainer:(id)container;
+- (id)browserControllerNavigationBar:(id)bar;
+- (id)browserControllerPreferredFocusEnvironments:(id)environments;
+- (id)browserControllerTabBarManager:(id)manager;
+- (id)browserControllerTabContentContainerView:(id)view;
+- (id)browserControllerTabHoverPreview:(id)preview;
+- (id)createTabOverviewForBrowserController:(id)controller;
+- (id)sidebarUIProxyForBrowserController:(id)controller;
+- (void)_browserController:(id)controller animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item withCompletion:(id)completion;
 - (void)_setUpAutomationOverlay;
 - (void)_tearDownAutomationOverlay;
-- (void)_windowDidResignKeyWindow:(id)a3;
-- (void)automationOverlayController:(id)a3 didChangeAllowsUserInteraction:(BOOL)a4;
-- (void)automationOverlayControllerDidCancelAutomation:(id)a3;
-- (void)automationOverlayControllerDidDisableAutomation:(id)a3;
-- (void)browserController:(id)a3 animateSafariIconLinkFromPoint:(CGPoint)a4 inView:(id)a5 withCompletionHandler:(id)a6;
-- (void)browserController:(id)a3 didChangeFromFavoritesState:(int64_t)a4;
-- (void)browserController:(id)a3 didChangeReaderVisibilityForTabDocument:(id)a4;
-- (void)browserController:(id)a3 didDisconnectFromScene:(id)a4;
-- (void)browserController:(id)a3 scrollViewDidScroll:(id)a4;
-- (void)browserController:(id)a3 setCatalogViewController:(id)a4;
-- (void)browserController:(id)a3 updateViewForActiveTabDocument:(id)a4;
-- (void)browserController:(id)a3 willConnectToScene:(id)a4 session:(id)a5 options:(id)a6;
-- (void)browserControllerContentContainerViewFrameDidChange:(id)a3;
-- (void)browserControllerDidEndObfuscating:(id)a3;
-- (void)browserControllerLayOutCatalogView:(id)a3;
-- (void)browserControllerShouldUpdateUnifiedBarVisibility:(id)a3;
-- (void)browserControllerStartPageUpdatePolicyDidChange:(id)a3;
-- (void)browserControllerUpdateInactiveAudibleTabs:(id)a3;
-- (void)browserControllerWillBeginObfuscating:(id)a3;
-- (void)safariWindow:(id)a3 statusBarChangedFromHeight:(double)a4 toHeight:(double)a5;
-- (void)updateTabViewPinchRecognizerForBrowserController:(id)a3;
+- (void)_windowDidResignKeyWindow:(id)window;
+- (void)automationOverlayController:(id)controller didChangeAllowsUserInteraction:(BOOL)interaction;
+- (void)automationOverlayControllerDidCancelAutomation:(id)automation;
+- (void)automationOverlayControllerDidDisableAutomation:(id)automation;
+- (void)browserController:(id)controller animateSafariIconLinkFromPoint:(CGPoint)point inView:(id)view withCompletionHandler:(id)handler;
+- (void)browserController:(id)controller didChangeFromFavoritesState:(int64_t)state;
+- (void)browserController:(id)controller didChangeReaderVisibilityForTabDocument:(id)document;
+- (void)browserController:(id)controller didDisconnectFromScene:(id)scene;
+- (void)browserController:(id)controller scrollViewDidScroll:(id)scroll;
+- (void)browserController:(id)controller setCatalogViewController:(id)viewController;
+- (void)browserController:(id)controller updateViewForActiveTabDocument:(id)document;
+- (void)browserController:(id)controller willConnectToScene:(id)scene session:(id)session options:(id)options;
+- (void)browserControllerContentContainerViewFrameDidChange:(id)change;
+- (void)browserControllerDidEndObfuscating:(id)obfuscating;
+- (void)browserControllerLayOutCatalogView:(id)view;
+- (void)browserControllerShouldUpdateUnifiedBarVisibility:(id)visibility;
+- (void)browserControllerStartPageUpdatePolicyDidChange:(id)change;
+- (void)browserControllerUpdateInactiveAudibleTabs:(id)tabs;
+- (void)browserControllerWillBeginObfuscating:(id)obfuscating;
+- (void)safariWindow:(id)window statusBarChangedFromHeight:(double)height toHeight:(double)toHeight;
+- (void)updateTabViewPinchRecognizerForBrowserController:(id)controller;
 @end
 
 @implementation BrowserControllerDefaultUIDelegate
 
-- (BrowserControllerDefaultUIDelegate)initWithBrowserController:(id)a3
+- (BrowserControllerDefaultUIDelegate)initWithBrowserController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = BrowserControllerDefaultUIDelegate;
   v6 = [(BrowserControllerDefaultUIDelegate *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_browserController, a3);
+    objc_storeStrong(&v6->_browserController, controller);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)browserController:(id)a3 willConnectToScene:(id)a4 session:(id)a5 options:(id)a6
+- (void)browserController:(id)controller willConnectToScene:(id)scene session:(id)session options:(id)options
 {
-  v23 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   window = self->_window;
   if (window)
   {
-    [(MobileSafariWindow *)window setWindowScene:v10];
+    [(MobileSafariWindow *)window setWindowScene:sceneCopy];
     [(MobileSafariWindow *)self->_window makeKeyAndVisible];
   }
 
   else
   {
-    v14 = [[MobileSafariWindow alloc] initWithWindowScene:v10];
+    v14 = [[MobileSafariWindow alloc] initWithWindowScene:sceneCopy];
     v15 = self->_window;
     self->_window = v14;
 
     [(MobileSafariWindow *)self->_window setSafariWindowDelegate:self];
-    v16 = [MEMORY[0x277D75348] sf_safariAccentColor];
-    [(MobileSafariWindow *)self->_window setTintColor:v16];
+    sf_safariAccentColor = [MEMORY[0x277D75348] sf_safariAccentColor];
+    [(MobileSafariWindow *)self->_window setTintColor:sf_safariAccentColor];
 
     [(MobileSafariWindow *)self->_window setOpaque:0];
-    v17 = [(MobileSafariWindow *)self->_window layer];
-    [v17 setHitTestsAsOpaque:1];
+    layer = [(MobileSafariWindow *)self->_window layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v18 = [v23 rootViewController];
+    rootViewController = [controllerCopy rootViewController];
     if ([MEMORY[0x277D49A08] isSolariumEnabled])
     {
-      v19 = [[BrowserSplitViewController alloc] initWithBrowserController:v23];
+      v19 = [[BrowserSplitViewController alloc] initWithBrowserController:controllerCopy];
       splitViewController = self->_splitViewController;
       self->_splitViewController = v19;
 
       v21 = self->_splitViewController;
-      v18 = v21;
+      rootViewController = v21;
     }
 
-    [(MobileSafariWindow *)self->_window setRootViewController:v18];
+    [(MobileSafariWindow *)self->_window setRootViewController:rootViewController];
     [(MobileSafariWindow *)self->_window makeKeyAndVisible];
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:self selector:sel__windowDidResignKeyWindow_ name:*MEMORY[0x277D77298] object:self->_window];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowDidResignKeyWindow_ name:*MEMORY[0x277D77298] object:self->_window];
   }
 
   if ([(BrowserController *)self->_browserController isControlledByAutomation])
@@ -113,9 +113,9 @@
   }
 }
 
-- (void)browserController:(id)a3 didDisconnectFromScene:(id)a4
+- (void)browserController:(id)controller didDisconnectFromScene:(id)scene
 {
-  [(MobileSafariWindow *)self->_window setWindowScene:0, a4];
+  [(MobileSafariWindow *)self->_window setWindowScene:0, scene];
   if ([(BrowserController *)self->_browserController isControlledByAutomation])
   {
 
@@ -123,7 +123,7 @@
   }
 }
 
-- (void)browserControllerWillBeginObfuscating:(id)a3
+- (void)browserControllerWillBeginObfuscating:(id)obfuscating
 {
   if (!self->_obfuscationWindow)
   {
@@ -133,7 +133,7 @@
   }
 }
 
-- (void)browserControllerDidEndObfuscating:(id)a3
+- (void)browserControllerDidEndObfuscating:(id)obfuscating
 {
   obfuscationWindow = self->_obfuscationWindow;
   if (obfuscationWindow)
@@ -144,23 +144,23 @@
   }
 }
 
-- (id)sidebarUIProxyForBrowserController:(id)a3
+- (id)sidebarUIProxyForBrowserController:(id)controller
 {
   splitViewController = self->_splitViewController;
   if (splitViewController)
   {
-    v4 = splitViewController;
+    rootViewController = splitViewController;
   }
 
   else
   {
-    v4 = [(BrowserController *)self->_browserController rootViewController];
+    rootViewController = [(BrowserController *)self->_browserController rootViewController];
   }
 
-  return v4;
+  return rootViewController;
 }
 
-- (CGRect)browserControllerWindowFrame:(id)a3
+- (CGRect)browserControllerWindowFrame:(id)frame
 {
   [(MobileSafariWindow *)self->_window frame];
   result.size.height = v6;
@@ -170,14 +170,14 @@
   return result;
 }
 
-- (double)browserControllerStatusBarWidth:(id)a3
+- (double)browserControllerStatusBarWidth:(id)width
 {
   [(MobileSafariWindow *)self->_window bounds];
 
   return CGRectGetWidth(*&v3);
 }
 
-- (CGPoint)browserControllerWindowLastTapLocation:(id)a3
+- (CGPoint)browserControllerWindowLastTapLocation:(id)location
 {
   [(MobileSafariWindow *)self->_window lastTapLocation];
   result.y = v4;
@@ -185,123 +185,123 @@
   return result;
 }
 
-- (void)browserController:(id)a3 scrollViewDidScroll:(id)a4
+- (void)browserController:(id)controller scrollViewDidScroll:(id)scroll
 {
   browserController = self->_browserController;
-  v5 = a4;
-  v6 = [(BrowserController *)browserController rootViewController];
-  [v6 scrollViewDidScroll:v5];
+  scrollCopy = scroll;
+  rootViewController = [(BrowserController *)browserController rootViewController];
+  [rootViewController scrollViewDidScroll:scrollCopy];
 }
 
-- (id)browserControllerContentContainerView:(id)a3
+- (id)browserControllerContentContainerView:(id)view
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  v4 = [v3 contentContainerView];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  contentContainerView = [rootViewController contentContainerView];
 
-  return v4;
+  return contentContainerView;
 }
 
-- (id)browserControllerTabContentContainerView:(id)a3
+- (id)browserControllerTabContentContainerView:(id)view
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  v4 = [v3 contentContainerView];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  contentContainerView = [rootViewController contentContainerView];
 
-  return v4;
+  return contentContainerView;
 }
 
-- (void)updateTabViewPinchRecognizerForBrowserController:(id)a3
+- (void)updateTabViewPinchRecognizerForBrowserController:(id)controller
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  [v3 updateTabViewPinchRecognizer];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  [rootViewController updateTabViewPinchRecognizer];
 }
 
-- (id)browserControllerCatalogViewController:(id)a3
+- (id)browserControllerCatalogViewController:(id)controller
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  v4 = [v3 catalogViewController];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  catalogViewController = [rootViewController catalogViewController];
 
-  return v4;
+  return catalogViewController;
 }
 
-- (void)browserController:(id)a3 setCatalogViewController:(id)a4
+- (void)browserController:(id)controller setCatalogViewController:(id)viewController
 {
   browserController = self->_browserController;
-  v5 = a4;
-  v6 = [(BrowserController *)browserController rootViewController];
-  [v6 setCatalogViewController:v5];
+  viewControllerCopy = viewController;
+  rootViewController = [(BrowserController *)browserController rootViewController];
+  [rootViewController setCatalogViewController:viewControllerCopy];
 }
 
-- (void)browserControllerLayOutCatalogView:(id)a3
+- (void)browserControllerLayOutCatalogView:(id)view
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  [v3 layOutCatalogView];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  [rootViewController layOutCatalogView];
 }
 
-- (double)browserControllerCatalogViewPopoverWidth:(id)a3
+- (double)browserControllerCatalogViewPopoverWidth:(id)width
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  v4 = [v3 contentContainerView];
-  [v4 bounds];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  contentContainerView = [rootViewController contentContainerView];
+  [contentContainerView bounds];
   Width = CGRectGetWidth(v9);
-  [v3 horizontalMarginForCatalogViewInPopover];
+  [rootViewController horizontalMarginForCatalogViewInPopover];
   v7 = Width - v6;
 
   return v7;
 }
 
-- (id)browserControllerNavigationBar:(id)a3
+- (id)browserControllerNavigationBar:(id)bar
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  v4 = [v3 topBar];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  topBar = [rootViewController topBar];
 
-  return v4;
+  return topBar;
 }
 
-- (BOOL)browserControllerShouldUpdateSnapshotForActiveTab:(id)a3
+- (BOOL)browserControllerShouldUpdateSnapshotForActiveTab:(id)tab
 {
-  v3 = [(BrowserController *)self->_browserController tabCollectionViewProvider];
-  v4 = [v3 tabThumbnailCollectionView];
-  v5 = [v4 presentationState] == 1 || objc_msgSend(v4, "presentationState") == 2;
+  tabCollectionViewProvider = [(BrowserController *)self->_browserController tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
+  v5 = [tabThumbnailCollectionView presentationState] == 1 || objc_msgSend(tabThumbnailCollectionView, "presentationState") == 2;
 
   return v5;
 }
 
-- (id)browserController:(id)a3 tabSnapshotContentProviderForTabDocument:(id)a4
+- (id)browserController:(id)controller tabSnapshotContentProviderForTabDocument:(id)document
 {
-  v5 = a4;
-  v6 = [a3 rootViewController];
-  v7 = [v6 snapshotContentProviderForTab:v5];
+  documentCopy = document;
+  rootViewController = [controller rootViewController];
+  v7 = [rootViewController snapshotContentProviderForTab:documentCopy];
 
   return v7;
 }
 
-- (void)browserControllerContentContainerViewFrameDidChange:(id)a3
+- (void)browserControllerContentContainerViewFrameDidChange:(id)change
 {
-  v3 = [(BrowserController *)self->_browserController rootViewController];
-  [v3 updateViewsAfterContentContainerViewBoundsChange];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  [rootViewController updateViewsAfterContentContainerViewBoundsChange];
 }
 
-- (void)browserControllerStartPageUpdatePolicyDidChange:(id)a3
+- (void)browserControllerStartPageUpdatePolicyDidChange:(id)change
 {
-  v4 = [(BrowserController *)self->_browserController rootViewController];
-  v3 = [v4 catalogViewController];
-  [v3 startPageUpdatePolicyDidChange];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  catalogViewController = [rootViewController catalogViewController];
+  [catalogViewController startPageUpdatePolicyDidChange];
 }
 
-- (BOOL)browserControllerShouldIncreaseTopPaddingForStartPage:(id)a3
+- (BOOL)browserControllerShouldIncreaseTopPaddingForStartPage:(id)page
 {
-  v4 = [(BrowserController *)self->_browserController rootViewController];
-  v5 = [v4 capsuleCollectionViewLayout];
+  rootViewController = [(BrowserController *)self->_browserController rootViewController];
+  capsuleCollectionViewLayout = [rootViewController capsuleCollectionViewLayout];
 
-  if (v5 && [v5 integerValue] == 2)
+  if (capsuleCollectionViewLayout && [capsuleCollectionViewLayout integerValue] == 2)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(BrowserController *)self->_browserController rootViewController];
-    if ([v7 usingUnifiedBar])
+    rootViewController2 = [(BrowserController *)self->_browserController rootViewController];
+    if ([rootViewController2 usingUnifiedBar])
     {
       v6 = [(BrowserController *)self->_browserController tabBarDisplayMode]== 2;
     }
@@ -315,127 +315,127 @@
   return v6;
 }
 
-- (void)browserController:(id)a3 updateViewForActiveTabDocument:(id)a4
+- (void)browserController:(id)controller updateViewForActiveTabDocument:(id)document
 {
-  v5 = a4;
-  v6 = [a3 rootViewController];
-  [v6 updateViewForTabDocument:v5];
+  documentCopy = document;
+  rootViewController = [controller rootViewController];
+  [rootViewController updateViewForTabDocument:documentCopy];
 }
 
-- (id)browserControllerTabBarManager:(id)a3
+- (id)browserControllerTabBarManager:(id)manager
 {
-  v3 = [a3 rootViewController];
-  v4 = [v3 tabBarManager];
+  rootViewController = [manager rootViewController];
+  tabBarManager = [rootViewController tabBarManager];
 
-  return v4;
+  return tabBarManager;
 }
 
-- (id)browserControllerTabHoverPreview:(id)a3
+- (id)browserControllerTabHoverPreview:(id)preview
 {
-  v3 = [a3 rootViewController];
-  v4 = [v3 tabHoverPreview];
+  rootViewController = [preview rootViewController];
+  tabHoverPreview = [rootViewController tabHoverPreview];
 
-  return v4;
+  return tabHoverPreview;
 }
 
-- (void)browserControllerShouldUpdateUnifiedBarVisibility:(id)a3
+- (void)browserControllerShouldUpdateUnifiedBarVisibility:(id)visibility
 {
-  v3 = [a3 rootViewController];
-  [v3 updateUnifiedBarVisibility];
+  rootViewController = [visibility rootViewController];
+  [rootViewController updateUnifiedBarVisibility];
 }
 
-- (id)browserControllerFocusItemContainer:(id)a3
+- (id)browserControllerFocusItemContainer:(id)container
 {
-  v3 = [a3 rootViewController];
-  v4 = [v3 view];
+  rootViewController = [container rootViewController];
+  view = [rootViewController view];
 
-  return v4;
+  return view;
 }
 
-- (id)browserControllerPreferredFocusEnvironments:(id)a3
+- (id)browserControllerPreferredFocusEnvironments:(id)environments
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 rootViewController];
-  v6[0] = v3;
+  rootViewController = [environments rootViewController];
+  v6[0] = rootViewController;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   return v4;
 }
 
-- (void)browserControllerUpdateInactiveAudibleTabs:(id)a3
+- (void)browserControllerUpdateInactiveAudibleTabs:(id)tabs
 {
-  v4 = [a3 tabController];
-  v3 = [v4 activeTabDocument];
-  [v3 updateGlobalMediaStateIcon];
+  tabController = [tabs tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  [activeTabDocument updateGlobalMediaStateIcon];
 }
 
-- (id)createTabOverviewForBrowserController:(id)a3
+- (id)createTabOverviewForBrowserController:(id)controller
 {
-  v3 = [a3 rootViewController];
-  v4 = [v3 setUpTabSwitcherViewController];
+  rootViewController = [controller rootViewController];
+  setUpTabSwitcherViewController = [rootViewController setUpTabSwitcherViewController];
 
-  return v4;
+  return setUpTabSwitcherViewController;
 }
 
-- (void)browserController:(id)a3 didChangeFromFavoritesState:(int64_t)a4
+- (void)browserController:(id)controller didChangeFromFavoritesState:(int64_t)state
 {
-  v4 = [a3 rootViewController];
-  [v4 browserControllerDidChangeFavoritesState];
+  rootViewController = [controller rootViewController];
+  [rootViewController browserControllerDidChangeFavoritesState];
 }
 
-- (void)browserController:(id)a3 didChangeReaderVisibilityForTabDocument:(id)a4
+- (void)browserController:(id)controller didChangeReaderVisibilityForTabDocument:(id)document
 {
-  v4 = [a3 rootViewController];
-  [v4 updateCapsuleMinimizationStyle];
+  rootViewController = [controller rootViewController];
+  [rootViewController updateCapsuleMinimizationStyle];
 }
 
-- (BOOL)browserControllerIsFullscreen:(id)a3
+- (BOOL)browserControllerIsFullscreen:(id)fullscreen
 {
-  v4 = a3;
+  fullscreenCopy = fullscreen;
   splitViewController = self->_splitViewController;
   if (splitViewController)
   {
-    v6 = splitViewController;
+    rootViewController = splitViewController;
   }
 
   else
   {
-    v6 = [(BrowserController *)self->_browserController rootViewController];
+    rootViewController = [(BrowserController *)self->_browserController rootViewController];
   }
 
-  v7 = v6;
-  v8 = [(BrowserSplitViewController *)v6 view];
-  if ([v8 _sf_isFullScreenWidth])
+  v7 = rootViewController;
+  view = [(BrowserSplitViewController *)rootViewController view];
+  if ([view _sf_isFullScreenWidth])
   {
-    v9 = [v8 _sf_isFullScreenHeight];
+    _sf_isFullScreenHeight = [view _sf_isFullScreenHeight];
   }
 
   else
   {
-    v9 = 0;
+    _sf_isFullScreenHeight = 0;
   }
 
-  return v9;
+  return _sf_isFullScreenHeight;
 }
 
-- (void)safariWindow:(id)a3 statusBarChangedFromHeight:(double)a4 toHeight:(double)a5
+- (void)safariWindow:(id)window statusBarChangedFromHeight:(double)height toHeight:(double)toHeight
 {
   v17 = *MEMORY[0x277D85DE8];
   v8 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = a4;
+    heightCopy = height;
     v15 = 2048;
-    v16 = a5;
+    toHeightCopy = toHeight;
     _os_log_impl(&dword_215819000, v8, OS_LOG_TYPE_DEFAULT, "Status bar height changed from %.f to %.f", buf, 0x16u);
   }
 
-  v9 = [(BrowserController *)self->_browserController tabController];
-  v10 = [v9 activeTabDocument];
-  v11 = [v10 webViewIsFullscreen];
+  tabController = [(BrowserController *)self->_browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  webViewIsFullscreen = [activeTabDocument webViewIsFullscreen];
 
-  if (v11)
+  if (webViewIsFullscreen)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -451,13 +451,13 @@
   }
 }
 
-- (void)_windowDidResignKeyWindow:(id)a3
+- (void)_windowDidResignKeyWindow:(id)window
 {
-  v4 = [(BrowserController *)self->_browserController tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 webViewIsFullscreen];
+  tabController = [(BrowserController *)self->_browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  webViewIsFullscreen = [activeTabDocument webViewIsFullscreen];
 
-  if (v6)
+  if (webViewIsFullscreen)
   {
     browserController = self->_browserController;
 
@@ -468,8 +468,8 @@
 - (void)_setUpAutomationOverlay
 {
   v3 = [AutomationOverlayWindow alloc];
-  v4 = [(MobileSafariWindow *)self->_window windowScene];
-  v5 = [(AutomationOverlayWindow *)v3 initWithWindowScene:v4];
+  windowScene = [(MobileSafariWindow *)self->_window windowScene];
+  v5 = [(AutomationOverlayWindow *)v3 initWithWindowScene:windowScene];
   windowForAutomationOverlay = self->_windowForAutomationOverlay;
   self->_windowForAutomationOverlay = v5;
 
@@ -486,33 +486,33 @@
   self->_windowForAutomationOverlay = 0;
 }
 
-- (BOOL)automationOverlayControllerShouldAllowUserInteraction:(id)a3
+- (BOOL)automationOverlayControllerShouldAllowUserInteraction:(id)interaction
 {
   v3 = +[Application sharedApplication];
-  v4 = [v3 automationController];
-  v5 = [v4 automationSession];
+  automationController = [v3 automationController];
+  automationSession = [automationController automationSession];
 
-  if (v5)
+  if (automationSession)
   {
-    v6 = [v5 isSimulatingUserInteraction];
+    isSimulatingUserInteraction = [automationSession isSimulatingUserInteraction];
   }
 
   else
   {
-    v6 = 0;
+    isSimulatingUserInteraction = 0;
   }
 
-  return v6;
+  return isSimulatingUserInteraction;
 }
 
-- (void)browserController:(id)a3 animateSafariIconLinkFromPoint:(CGPoint)a4 inView:(id)a5 withCompletionHandler:(id)a6
+- (void)browserController:(id)controller animateSafariIconLinkFromPoint:(CGPoint)point inView:(id)view withCompletionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v17 = a5;
-  v11 = a6;
-  v12 = a3;
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v17 wantsSmallLinkIcon])
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  handlerCopy = handler;
+  controllerCopy = controller;
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([viewCopy wantsSmallLinkIcon])
   {
     v13 = SFSmallSafariIconLinkImage();
   }
@@ -524,55 +524,55 @@
 
   v14 = v13;
   [v13 size];
-  -[BrowserControllerDefaultUIDelegate _browserController:animateLinkImage:fromRect:inView:toBarItem:withCompletion:](self, "_browserController:animateLinkImage:fromRect:inView:toBarItem:withCompletion:", v12, [v14 CGImage], v17, 3, v11, floor(x - v15 * 0.5), floor(y - v16 * 0.5), v15, v16);
+  -[BrowserControllerDefaultUIDelegate _browserController:animateLinkImage:fromRect:inView:toBarItem:withCompletion:](self, "_browserController:animateLinkImage:fromRect:inView:toBarItem:withCompletion:", controllerCopy, [v14 CGImage], viewCopy, 3, handlerCopy, floor(x - v15 * 0.5), floor(y - v16 * 0.5), v15, v16);
 }
 
-- (void)_browserController:(id)a3 animateLinkImage:(CGImage *)a4 fromRect:(CGRect)a5 inView:(id)a6 toBarItem:(int64_t)a7 withCompletion:(id)a8
+- (void)_browserController:(id)controller animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item withCompletion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
-  v41 = a6;
-  v17 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __115__BrowserControllerDefaultUIDelegate__browserController_animateLinkImage_fromRect_inView_toBarItem_withCompletion___block_invoke;
   aBlock[3] = &unk_2781D4D90;
-  v18 = v17;
+  v18 = completionCopy;
   v51 = v18;
   v19 = _Block_copy(aBlock);
-  [v16 showBars];
-  v20 = [v16 rootViewController];
-  if (a7 != 3 || ([v16 sidebarUIProxy], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isShowingSidebar"), v21, !v22))
+  [controllerCopy showBars];
+  rootViewController = [controllerCopy rootViewController];
+  if (item != 3 || ([controllerCopy sidebarUIProxy], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isShowingSidebar"), v21, !v22))
   {
-    CGImageRetain(a4);
-    objc_initWeak(&location, v16);
+    CGImageRetain(image);
+    objc_initWeak(&location, controllerCopy);
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __115__BrowserControllerDefaultUIDelegate__browserController_animateLinkImage_fromRect_inView_toBarItem_withCompletion___block_invoke_3;
     v42[3] = &unk_2781D8598;
     objc_copyWeak(v45, &location);
-    v45[1] = a7;
-    v45[2] = a4;
+    v45[1] = item;
+    v45[2] = image;
     v45[3] = *&x;
     v45[4] = *&y;
     v45[5] = *&width;
     v45[6] = *&height;
-    v43 = v41;
+    v43 = viewCopy;
     v44 = v19;
     v34 = _Block_copy(v42);
-    v35 = [v16 tabBarManager];
-    v36 = [v35 inlineTabBar];
-    if (v36)
+    tabBarManager = [controllerCopy tabBarManager];
+    inlineTabBar = [tabBarManager inlineTabBar];
+    if (inlineTabBar)
     {
-      v37 = [v20 dynamicBarAnimator];
-      v38 = [v37 isInSteadyState];
+      dynamicBarAnimator = [rootViewController dynamicBarAnimator];
+      isInSteadyState = [dynamicBarAnimator isInSteadyState];
 
-      if ((v38 & 1) == 0)
+      if ((isInSteadyState & 1) == 0)
       {
-        [v16 setAnimationPendingDynamicBarAnimatorSteadyState:v34];
+        [controllerCopy setAnimationPendingDynamicBarAnimatorSteadyState:v34];
 LABEL_9:
 
         objc_destroyWeak(v45);
@@ -585,20 +585,20 @@ LABEL_9:
     {
     }
 
-    v39 = [v20 view];
-    [v39 layoutIfNeeded];
+    view = [rootViewController view];
+    [view layoutIfNeeded];
 
     v34[2](v34);
     goto LABEL_9;
   }
 
-  v23 = [v16 sidebarUIProxy];
-  v24 = [v23 leadingSidebarButtonItem];
-  v25 = [v24 customView];
+  sidebarUIProxy = [controllerCopy sidebarUIProxy];
+  leadingSidebarButtonItem = [sidebarUIProxy leadingSidebarButtonItem];
+  customView = [leadingSidebarButtonItem customView];
 
-  [v16 beginIgnoringUserInteraction:@"animateLinkImage"];
+  [controllerCopy beginIgnoringUserInteraction:@"animateLinkImage"];
   v26 = MEMORY[0x277D75D18];
-  [v25 bounds];
+  [customView bounds];
   v40 = v27;
   v29 = v28;
   v31 = v30;
@@ -608,8 +608,8 @@ LABEL_9:
   v47[2] = __115__BrowserControllerDefaultUIDelegate__browserController_animateLinkImage_fromRect_inView_toBarItem_withCompletion___block_invoke_2;
   v47[3] = &unk_2781D5D28;
   v49 = v19;
-  v48 = v16;
-  [v26 _sf_animateLinkImage:a4 withAnimation:1 fromRect:v41 inView:v25 toRect:0 inView:v47 afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v40, v29, v31, v33}];
+  v48 = controllerCopy;
+  [v26 _sf_animateLinkImage:image withAnimation:1 fromRect:viewCopy inView:customView toRect:0 inView:v47 afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v40, v29, v31, v33}];
 
 LABEL_10:
 }
@@ -686,10 +686,10 @@ uint64_t __115__BrowserControllerDefaultUIDelegate__browserController_animateLin
   return [v2 endIgnoringUserInteraction:@"animateLinkImage"];
 }
 
-- (void)automationOverlayController:(id)a3 didChangeAllowsUserInteraction:(BOOL)a4
+- (void)automationOverlayController:(id)controller didChangeAllowsUserInteraction:(BOOL)interaction
 {
   windowForAutomationOverlay = self->_windowForAutomationOverlay;
-  if (a4)
+  if (interaction)
   {
     [windowForAutomationOverlay setHidden:1];
     windowForAutomationOverlay = self->_window;
@@ -698,18 +698,18 @@ uint64_t __115__BrowserControllerDefaultUIDelegate__browserController_animateLin
   [windowForAutomationOverlay makeKeyAndVisible];
 }
 
-- (void)automationOverlayControllerDidDisableAutomation:(id)a3
+- (void)automationOverlayControllerDidDisableAutomation:(id)automation
 {
   v4 = +[Application sharedApplication];
-  v3 = [v4 automationController];
-  [v3 setAllowsRemoteAutomation:0];
+  automationController = [v4 automationController];
+  [automationController setAllowsRemoteAutomation:0];
 }
 
-- (void)automationOverlayControllerDidCancelAutomation:(id)a3
+- (void)automationOverlayControllerDidCancelAutomation:(id)automation
 {
   v4 = +[Application sharedApplication];
-  v3 = [v4 automationController];
-  [v3 terminateSession];
+  automationController = [v4 automationController];
+  [automationController terminateSession];
 }
 
 @end

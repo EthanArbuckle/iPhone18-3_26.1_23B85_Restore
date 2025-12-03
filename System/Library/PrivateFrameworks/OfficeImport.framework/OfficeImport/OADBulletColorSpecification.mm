@@ -1,18 +1,18 @@
 @interface OADBulletColorSpecification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OADBulletColorSpecification
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mColor = self->mColor;
-    v6 = [v4 color];
-    v7 = [(OADColor *)mColor isEqual:v6];
+    color = [equalCopy color];
+    v7 = [(OADColor *)mColor isEqual:color];
   }
 
   else

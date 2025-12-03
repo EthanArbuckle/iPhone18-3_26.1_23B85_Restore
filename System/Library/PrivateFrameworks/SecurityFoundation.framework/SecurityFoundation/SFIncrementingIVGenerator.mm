@@ -1,9 +1,9 @@
 @interface SFIncrementingIVGenerator
 - (NSData)messageID;
-- (SFIncrementingIVGenerator)initWithMessageID:(id)a3;
+- (SFIncrementingIVGenerator)initWithMessageID:(id)d;
 - (SFIncrementingIVGenerator)initWithRandomMessageID;
-- (id)generateIVWithLength:(int64_t)a3 error:(id *)a4;
-- (void)setMessageID:(id)a3;
+- (id)generateIVWithLength:(int64_t)length error:(id *)error;
+- (void)setMessageID:(id)d;
 @end
 
 @implementation SFIncrementingIVGenerator
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (SFIncrementingIVGenerator)initWithMessageID:(id)a3
+- (SFIncrementingIVGenerator)initWithMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = SFIncrementingIVGenerator;
   v5 = [(SFIncrementingIVGenerator *)&v12 init];
@@ -35,7 +35,7 @@
     incrementingIVGeneratorInternal = v5->_incrementingIVGeneratorInternal;
     v5->_incrementingIVGeneratorInternal = v6;
 
-    v8 = [v4 mutableCopy];
+    v8 = [dCopy mutableCopy];
     v9 = v5->_incrementingIVGeneratorInternal;
     v10 = v9[1];
     v9[1] = v8;
@@ -51,9 +51,9 @@
   return v2;
 }
 
-- (void)setMessageID:(id)a3
+- (void)setMessageID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   incrementingIVGeneratorInternal = self->_incrementingIVGeneratorInternal;
   v6 = incrementingIVGeneratorInternal[1];
   incrementingIVGeneratorInternal[1] = v4;
@@ -61,10 +61,10 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)generateIVWithLength:(int64_t)a3 error:(id *)a4
+- (id)generateIVWithLength:(int64_t)length error:(id *)error
 {
   incrementingIVGeneratorInternal = self->_incrementingIVGeneratorInternal;
-  if (*(incrementingIVGeneratorInternal + 2) >= a3)
+  if (*(incrementingIVGeneratorInternal + 2) >= length)
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:6 userInfo:0];
     incrementingIVGeneratorInternal = self->_incrementingIVGeneratorInternal;
@@ -75,30 +75,30 @@
     v8 = 0;
   }
 
-  if (a3 - 1 >= [*(incrementingIVGeneratorInternal + 1) length])
+  if (length - 1 >= [*(incrementingIVGeneratorInternal + 1) length])
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:7 userInfo:0];
 
     v8 = v9;
   }
 
-  if (a4 && v8)
+  if (error && v8)
   {
     v10 = v8;
     v11 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
   {
-    v11 = [*(self->_incrementingIVGeneratorInternal + 1) subdataWithRange:{objc_msgSend(*(self->_incrementingIVGeneratorInternal + 1), "length") - a3, a3}];
+    v11 = [*(self->_incrementingIVGeneratorInternal + 1) subdataWithRange:{objc_msgSend(*(self->_incrementingIVGeneratorInternal + 1), "length") - length, length}];
     v13 = [*(self->_incrementingIVGeneratorInternal + 1) length];
-    v14 = [*(self->_incrementingIVGeneratorInternal + 1) mutableBytes];
-    v15 = (*(v14 + v13 - 1))++ + 1;
+    mutableBytes = [*(self->_incrementingIVGeneratorInternal + 1) mutableBytes];
+    v15 = (*(mutableBytes + v13 - 1))++ + 1;
     if ((v15 & 0x100) != 0 && v13 != 1)
     {
       v16 = 1 - v13;
-      v17 = (v13 + v14 - 2);
+      v17 = (v13 + mutableBytes - 2);
       do
       {
         v18 = [*(self->_incrementingIVGeneratorInternal + 1) length] + v16;

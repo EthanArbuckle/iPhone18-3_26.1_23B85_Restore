@@ -1,31 +1,31 @@
 @interface OPTINSchemaOPTINClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (OPTINSchemaOPTINClientEvent)initWithDictionary:(id)a3;
-- (OPTINSchemaOPTINClientEvent)initWithJSON:(id)a3;
+- (OPTINSchemaOPTINClientEvent)initWithDictionary:(id)dictionary;
+- (OPTINSchemaOPTINClientEvent)initWithJSON:(id)n;
 - (OPTINSchemaOPTINInconsistentStateDetected)inconsistentStateDetected;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (void)deleteInconsistentStateDetected;
-- (void)setInconsistentStateDetected:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setInconsistentStateDetected:(id)detected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OPTINSchemaOPTINClientEvent
 
-- (OPTINSchemaOPTINClientEvent)initWithDictionary:(id)a3
+- (OPTINSchemaOPTINClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = OPTINSchemaOPTINClientEvent;
   v5 = [(OPTINSchemaOPTINClientEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"inconsistentStateDetected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"inconsistentStateDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (OPTINSchemaOPTINClientEvent)initWithJSON:(id)a3
+- (OPTINSchemaOPTINClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(OPTINSchemaOPTINClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(OPTINSchemaOPTINClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(OPTINSchemaOPTINClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,43 +75,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_inconsistentStateDetected)
   {
-    v4 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    inconsistentStateDetected = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+    dictionaryRepresentation = [inconsistentStateDetected dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"inconsistentStateDetected"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"inconsistentStateDetected"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"inconsistentStateDetected"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"inconsistentStateDetected"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type])
+    if (whichEvent_Type == [equalCopy whichEvent_Type])
     {
-      v6 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
-      v7 = [v4 inconsistentStateDetected];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      inconsistentStateDetected = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+      inconsistentStateDetected2 = [equalCopy inconsistentStateDetected];
+      v8 = inconsistentStateDetected2;
+      if ((inconsistentStateDetected != 0) != (inconsistentStateDetected2 == 0))
       {
-        v9 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
-        if (!v9)
+        inconsistentStateDetected3 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+        if (!inconsistentStateDetected3)
         {
 
 LABEL_11:
@@ -119,10 +119,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
-        v12 = [v4 inconsistentStateDetected];
-        v13 = [v11 isEqual:v12];
+        v10 = inconsistentStateDetected3;
+        inconsistentStateDetected4 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+        inconsistentStateDetected5 = [equalCopy inconsistentStateDetected];
+        v13 = [inconsistentStateDetected4 isEqual:inconsistentStateDetected5];
 
         if (v13)
         {
@@ -142,14 +142,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+  toCopy = to;
+  inconsistentStateDetected = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
 
-  if (v4)
+  if (inconsistentStateDetected)
   {
-    v5 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
+    inconsistentStateDetected2 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -179,16 +179,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)setInconsistentStateDetected:(id)a3
+- (void)setInconsistentStateDetected:(id)detected
 {
   v3 = 101;
-  if (!a3)
+  if (!detected)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_inconsistentStateDetected, a3);
+  objc_storeStrong(&self->_inconsistentStateDetected, detected);
 }
 
 - (id)qualifiedMessageName
@@ -204,17 +204,17 @@ LABEL_9:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = OPTINSchemaOPTINClientEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(OPTINSchemaOPTINClientEvent *)self inconsistentStateDetected:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(OPTINSchemaOPTINClientEvent *)self deleteInconsistentStateDetected];
   }
@@ -245,9 +245,9 @@ LABEL_9:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"inconsistentStateDetected";
   }

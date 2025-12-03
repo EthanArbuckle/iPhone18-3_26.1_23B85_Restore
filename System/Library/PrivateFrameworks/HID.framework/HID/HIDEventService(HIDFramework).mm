@@ -12,15 +12,15 @@
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 unsignedLongLongValue];
+    unsignedLongLongValue = [v0 unsignedLongLongValue];
   }
 
   else
   {
-    v2 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 - (id)propertyForKey:()HIDFramework

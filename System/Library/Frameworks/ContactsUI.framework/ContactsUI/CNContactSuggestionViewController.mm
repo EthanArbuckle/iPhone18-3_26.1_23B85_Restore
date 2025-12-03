@@ -1,25 +1,25 @@
 @interface CNContactSuggestionViewController
-+ (id)viewControllerWithDataSource:(id)a3;
++ (id)viewControllerWithDataSource:(id)source;
 - (BOOL)shouldShowAddRejectActions;
 - (BOOL)shouldShowPreview;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)alertMessageForIgnoreContactDetail;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)titleForIgnoreContactDetail;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)addToContact:(id)a3;
-- (void)ignore:(id)a3;
-- (void)setAction:(id)a3;
-- (void)showSource:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)addToContact:(id)contact;
+- (void)ignore:(id)ignore;
+- (void)setAction:(id)action;
+- (void)showSource:(id)source;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updatePreview;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNContactSuggestionViewController
@@ -29,11 +29,11 @@
   v3 = CNContactsUIBundle();
   v4 = [v3 localizedStringForKey:@"SUGGESTION_IGNORE_ALERT_CONTROLLER_INFO_DETAIL" value:&stru_1F0CE7398 table:@"Localized"];
 
-  v5 = [(CNContactSuggestionViewController *)self propertyCell];
-  v6 = [v5 propertyItem];
-  v7 = [v6 group];
-  v8 = [v7 property];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695C330]];
+  propertyCell = [(CNContactSuggestionViewController *)self propertyCell];
+  propertyItem = [propertyCell propertyItem];
+  group = [propertyItem group];
+  property = [group property];
+  v9 = [property isEqualToString:*MEMORY[0x1E695C330]];
 
   if (v9)
   {
@@ -42,11 +42,11 @@
 
   else
   {
-    v11 = [(CNContactSuggestionViewController *)self propertyCell];
-    v12 = [v11 propertyItem];
-    v13 = [v12 group];
-    v14 = [v13 property];
-    v15 = [v14 isEqualToString:*MEMORY[0x1E695C208]];
+    propertyCell2 = [(CNContactSuggestionViewController *)self propertyCell];
+    propertyItem2 = [propertyCell2 propertyItem];
+    group2 = [propertyItem2 group];
+    property2 = [group2 property];
+    v15 = [property2 isEqualToString:*MEMORY[0x1E695C208]];
 
     if (v15)
     {
@@ -55,11 +55,11 @@
 
     else
     {
-      v16 = [(CNContactSuggestionViewController *)self propertyCell];
-      v17 = [v16 propertyItem];
-      v18 = [v17 group];
-      v19 = [v18 property];
-      v20 = [v19 isEqualToString:*MEMORY[0x1E695C360]];
+      propertyCell3 = [(CNContactSuggestionViewController *)self propertyCell];
+      propertyItem3 = [propertyCell3 propertyItem];
+      group3 = [propertyItem3 group];
+      property3 = [group3 property];
+      v20 = [property3 isEqualToString:*MEMORY[0x1E695C360]];
 
       if (v20)
       {
@@ -68,11 +68,11 @@
 
       else
       {
-        v21 = [(CNContactSuggestionViewController *)self propertyCell];
-        v22 = [v21 propertyItem];
-        v23 = [v22 group];
-        v24 = [v23 property];
-        v25 = [v24 isEqualToString:@"birthdays"];
+        propertyCell4 = [(CNContactSuggestionViewController *)self propertyCell];
+        propertyItem4 = [propertyCell4 propertyItem];
+        group4 = [propertyItem4 group];
+        property4 = [group4 property];
+        v25 = [property4 isEqualToString:@"birthdays"];
 
         if (!v25)
         {
@@ -98,11 +98,11 @@ LABEL_10:
   v3 = CNContactsUIBundle();
   v4 = [v3 localizedStringForKey:@"SUGGESTION_IGNORE_CONTACT_DETAIL_BUTTON_DETAIL" value:&stru_1F0CE7398 table:@"Localized"];
 
-  v5 = [(CNContactSuggestionViewController *)self propertyCell];
-  v6 = [v5 propertyItem];
-  v7 = [v6 group];
-  v8 = [v7 property];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695C330]];
+  propertyCell = [(CNContactSuggestionViewController *)self propertyCell];
+  propertyItem = [propertyCell propertyItem];
+  group = [propertyItem group];
+  property = [group property];
+  v9 = [property isEqualToString:*MEMORY[0x1E695C330]];
 
   if (v9)
   {
@@ -111,11 +111,11 @@ LABEL_10:
 
   else
   {
-    v11 = [(CNContactSuggestionViewController *)self propertyCell];
-    v12 = [v11 propertyItem];
-    v13 = [v12 group];
-    v14 = [v13 property];
-    v15 = [v14 isEqualToString:*MEMORY[0x1E695C208]];
+    propertyCell2 = [(CNContactSuggestionViewController *)self propertyCell];
+    propertyItem2 = [propertyCell2 propertyItem];
+    group2 = [propertyItem2 group];
+    property2 = [group2 property];
+    v15 = [property2 isEqualToString:*MEMORY[0x1E695C208]];
 
     if (v15)
     {
@@ -124,11 +124,11 @@ LABEL_10:
 
     else
     {
-      v16 = [(CNContactSuggestionViewController *)self propertyCell];
-      v17 = [v16 propertyItem];
-      v18 = [v17 group];
-      v19 = [v18 property];
-      v20 = [v19 isEqualToString:*MEMORY[0x1E695C360]];
+      propertyCell3 = [(CNContactSuggestionViewController *)self propertyCell];
+      propertyItem3 = [propertyCell3 propertyItem];
+      group3 = [propertyItem3 group];
+      property3 = [group3 property];
+      v20 = [property3 isEqualToString:*MEMORY[0x1E695C360]];
 
       if (v20)
       {
@@ -137,11 +137,11 @@ LABEL_10:
 
       else
       {
-        v21 = [(CNContactSuggestionViewController *)self propertyCell];
-        v22 = [v21 propertyItem];
-        v23 = [v22 group];
-        v24 = [v23 property];
-        v25 = [v24 isEqualToString:@"birthdays"];
+        propertyCell4 = [(CNContactSuggestionViewController *)self propertyCell];
+        propertyItem4 = [propertyCell4 propertyItem];
+        group4 = [propertyItem4 group];
+        property4 = [group4 property];
+        v25 = [property4 isEqualToString:@"birthdays"];
 
         if (!v25)
         {
@@ -162,20 +162,20 @@ LABEL_10:
   return v4;
 }
 
-- (void)showSource:(id)a3
+- (void)showSource:(id)source
 {
-  v3 = [(CNContactSuggestionViewController *)self action];
-  [v3 setSelectedChoice:3];
+  action = [(CNContactSuggestionViewController *)self action];
+  [action setSelectedChoice:3];
 }
 
-- (void)ignore:(id)a3
+- (void)ignore:(id)ignore
 {
-  v4 = a3;
+  ignoreCopy = ignore;
   objc_initWeak(&location, self);
-  v5 = [(CNContactSuggestionViewController *)self titleForIgnoreContactDetail];
+  titleForIgnoreContactDetail = [(CNContactSuggestionViewController *)self titleForIgnoreContactDetail];
   v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v7 = [(CNContactSuggestionViewController *)self alertMessageForIgnoreContactDetail];
-  [v6 setMessage:v7];
+  alertMessageForIgnoreContactDetail = [(CNContactSuggestionViewController *)self alertMessageForIgnoreContactDetail];
+  [v6 setMessage:alertMessageForIgnoreContactDetail];
 
   v8 = MEMORY[0x1E69DC648];
   v14 = MEMORY[0x1E69E9820];
@@ -183,7 +183,7 @@ LABEL_10:
   v16 = __44__CNContactSuggestionViewController_ignore___block_invoke;
   v17 = &unk_1E74E4B28;
   objc_copyWeak(&v18, &location);
-  v9 = [v8 actionWithTitle:v5 style:2 handler:&v14];
+  v9 = [v8 actionWithTitle:titleForIgnoreContactDetail style:2 handler:&v14];
   [v6 addAction:{v9, v14, v15, v16, v17}];
 
   v10 = MEMORY[0x1E69DC648];
@@ -205,36 +205,36 @@ void __44__CNContactSuggestionViewController_ignore___block_invoke(uint64_t a1)
   [v1 setSelectedChoice:2];
 }
 
-- (void)addToContact:(id)a3
+- (void)addToContact:(id)contact
 {
-  v3 = [(CNContactSuggestionViewController *)self action];
-  [v3 setSelectedChoice:1];
+  action = [(CNContactSuggestionViewController *)self action];
+  [action setSelectedChoice:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CNContactSuggestionViewController;
-  [(CNContactSuggestionViewController *)&v4 viewDidDisappear:a3];
+  [(CNContactSuggestionViewController *)&v4 viewDidDisappear:disappear];
   if (([(CNContactSuggestionViewController *)self isBeingDismissed]& 1) != 0 || [(CNContactSuggestionViewController *)self isMovingFromParentViewController])
   {
     [(CNContactSuggestionViewController *)self setAction:0];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 section] || objc_msgSend(v6, "row"))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "row"))
   {
-    if ([v6 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_10;
     }
 
-    v7 = [(CNContactSuggestionViewController *)self dataSource];
-    v8 = [v7 url];
+    dataSource = [(CNContactSuggestionViewController *)self dataSource];
+    v8 = [dataSource url];
 
     if (v8)
     {
@@ -244,7 +244,7 @@ void __44__CNContactSuggestionViewController_ignore___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v9 cellForRowAtIndexPath:v6];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldPerformDefaultAction])
     {
       [v8 performDefaultAction];
@@ -252,88 +252,88 @@ void __44__CNContactSuggestionViewController_ignore___block_invoke(uint64_t a1)
   }
 
 LABEL_10:
-  [v9 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v27 = a4;
-  v7 = a5;
-  if ([v7 section] || objc_msgSend(v7, "row") != 1)
+  cellCopy = cell;
+  pathCopy = path;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "row") != 1)
   {
-    if ([v7 section] || objc_msgSend(v7, "row") != 2)
+    if ([pathCopy section] || objc_msgSend(pathCopy, "row") != 2)
     {
-      if ([v7 section] != 1)
+      if ([pathCopy section] != 1)
       {
         goto LABEL_10;
       }
 
-      [v27 setPreservesSuperviewLayoutMargins:0];
-      v21 = [(CNContactSuggestionViewController *)self propertyCell];
-      [v21 layoutMargins];
+      [cellCopy setPreservesSuperviewLayoutMargins:0];
+      propertyCell = [(CNContactSuggestionViewController *)self propertyCell];
+      [propertyCell layoutMargins];
       v23 = v22;
-      v24 = [(CNContactSuggestionViewController *)self fromLeadingMargin];
-      [v24 setConstant:v23];
+      fromLeadingMargin = [(CNContactSuggestionViewController *)self fromLeadingMargin];
+      [fromLeadingMargin setConstant:v23];
 
-      v12 = [(CNContactSuggestionViewController *)self propertyCell];
-      [v12 layoutMargins];
+      propertyCell2 = [(CNContactSuggestionViewController *)self propertyCell];
+      [propertyCell2 layoutMargins];
       v14 = v25;
-      v15 = [(CNContactSuggestionViewController *)self dateTrailingMargin];
+      dateTrailingMargin = [(CNContactSuggestionViewController *)self dateTrailingMargin];
     }
 
     else
     {
-      v16 = [(CNContactSuggestionViewController *)self propertyCell];
-      [v16 layoutMargins];
+      propertyCell3 = [(CNContactSuggestionViewController *)self propertyCell];
+      [propertyCell3 layoutMargins];
       v18 = v17;
-      v19 = [(CNContactSuggestionViewController *)self ignoreLeadingMargin];
-      [v19 setConstant:v18];
+      ignoreLeadingMargin = [(CNContactSuggestionViewController *)self ignoreLeadingMargin];
+      [ignoreLeadingMargin setConstant:v18];
 
-      v12 = [(CNContactSuggestionViewController *)self propertyCell];
-      [v12 layoutMargins];
+      propertyCell2 = [(CNContactSuggestionViewController *)self propertyCell];
+      [propertyCell2 layoutMargins];
       v14 = v20;
-      v15 = [(CNContactSuggestionViewController *)self ignoreTrailingMargin];
+      dateTrailingMargin = [(CNContactSuggestionViewController *)self ignoreTrailingMargin];
     }
   }
 
   else
   {
-    v8 = [(CNContactSuggestionViewController *)self propertyCell];
-    [v8 layoutMargins];
+    propertyCell4 = [(CNContactSuggestionViewController *)self propertyCell];
+    [propertyCell4 layoutMargins];
     v10 = v9;
-    v11 = [(CNContactSuggestionViewController *)self addToContactLeadingMargin];
-    [v11 setConstant:v10];
+    addToContactLeadingMargin = [(CNContactSuggestionViewController *)self addToContactLeadingMargin];
+    [addToContactLeadingMargin setConstant:v10];
 
-    v12 = [(CNContactSuggestionViewController *)self propertyCell];
-    [v12 layoutMargins];
+    propertyCell2 = [(CNContactSuggestionViewController *)self propertyCell];
+    [propertyCell2 layoutMargins];
     v14 = v13;
-    v15 = [(CNContactSuggestionViewController *)self addToContactTrailingMargin];
+    dateTrailingMargin = [(CNContactSuggestionViewController *)self addToContactTrailingMargin];
   }
 
-  v26 = v15;
-  [v15 setConstant:v14];
+  v26 = dateTrailingMargin;
+  [dateTrailingMargin setConstant:v14];
 
 LABEL_10:
-  [v27 _cnui_applyContactStyle];
+  [cellCopy _cnui_applyContactStyle];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = a4;
-  v5 = ![v4 section] && !objc_msgSend(v4, "row") || objc_msgSend(v4, "section") == 1;
+  pathCopy = path;
+  v5 = ![pathCopy section] && !objc_msgSend(pathCopy, "row") || objc_msgSend(pathCopy, "section") == 1;
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 section] || objc_msgSend(v7, "row")) && objc_msgSend(v7, "section") != 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (([pathCopy section] || objc_msgSend(pathCopy, "row")) && objc_msgSend(pathCopy, "section") != 1)
   {
     v11.receiver = self;
     v11.super_class = CNContactSuggestionViewController;
-    [(CNContactSuggestionViewController *)&v11 tableView:v6 heightForRowAtIndexPath:v7];
+    [(CNContactSuggestionViewController *)&v11 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v8 = v9;
   }
 
@@ -345,16 +345,16 @@ LABEL_10:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] || objc_msgSend(v7, "row"))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "row"))
   {
     v10.receiver = self;
     v10.super_class = CNContactSuggestionViewController;
-    v8 = [(CNContactSuggestionViewController *)&v10 tableView:v6 cellForRowAtIndexPath:v7];
-    if ([v7 section] == 1)
+    v8 = [(CNContactSuggestionViewController *)&v10 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+    if ([pathCopy section] == 1)
     {
       [(CNContactSuggestionViewController *)self updatePreview];
     }
@@ -372,33 +372,33 @@ LABEL_10:
 
 - (BOOL)shouldShowAddRejectActions
 {
-  v3 = [(CNContactSuggestionViewController *)self action];
-  v4 = [v3 propertyItem];
-  v5 = [v4 contact];
-  if ([v5 isSuggested])
+  action = [(CNContactSuggestionViewController *)self action];
+  propertyItem = [action propertyItem];
+  contact = [propertyItem contact];
+  if ([contact isSuggested])
   {
-    v6 = [(CNContactSuggestionViewController *)self action];
-    v7 = [v6 propertyItem];
-    v8 = [v7 contact];
-    v9 = [v8 isSuggestedMe];
+    action2 = [(CNContactSuggestionViewController *)self action];
+    propertyItem2 = [action2 propertyItem];
+    contact2 = [propertyItem2 contact];
+    isSuggestedMe = [contact2 isSuggestedMe];
   }
 
   else
   {
-    v9 = 1;
+    isSuggestedMe = 1;
   }
 
-  return v9;
+  return isSuggestedMe;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
 
-  if ([(CNContactSuggestionViewController *)self shouldShowAddRejectActions:a3])
+  if ([(CNContactSuggestionViewController *)self shouldShowAddRejectActions:view])
   {
     return 3;
   }
@@ -406,7 +406,7 @@ LABEL_10:
   return 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(CNContactSuggestionViewController *)self shouldShowPreview])
   {
@@ -419,16 +419,16 @@ LABEL_10:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1 && (v5 = *MEMORY[0x1E6996568], -[CNContactSuggestionViewController dataSource](self, "dataSource", a3), v6 = objc_claimAutoreleasedReturnValue(), [v6 appName], v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(v5) = (*(v5 + 16))(v5, v7), v7, v6, (v5 & 1) == 0))
+  if (section == 1 && (v5 = *MEMORY[0x1E6996568], -[CNContactSuggestionViewController dataSource](self, "dataSource", view), v6 = objc_claimAutoreleasedReturnValue(), [v6 appName], v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(v5) = (*(v5 + 16))(v5, v7), v7, v6, (v5 & 1) == 0))
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = CNContactsUIBundle();
     v11 = [v10 localizedStringForKey:@"SUGGESTION_RELATED_INFO_FROM_APP" value:&stru_1F0CE7398 table:@"Localized"];
-    v12 = [(CNContactSuggestionViewController *)self dataSource];
-    v13 = [v12 appName];
-    v8 = [v9 stringWithFormat:v11, v13];
+    dataSource = [(CNContactSuggestionViewController *)self dataSource];
+    appName = [dataSource appName];
+    v8 = [v9 stringWithFormat:v11, appName];
   }
 
   else
@@ -441,33 +441,33 @@ LABEL_10:
 
 - (void)updatePreview
 {
-  v3 = [(CNContactSuggestionViewController *)self dataSource];
-  v4 = [v3 formattedSnippet];
-  v5 = [(CNContactSuggestionViewController *)self contentLabel];
-  [v5 setAttributedText:v4];
+  dataSource = [(CNContactSuggestionViewController *)self dataSource];
+  formattedSnippet = [dataSource formattedSnippet];
+  contentLabel = [(CNContactSuggestionViewController *)self contentLabel];
+  [contentLabel setAttributedText:formattedSnippet];
 
-  v6 = [(CNContactSuggestionViewController *)self dataSource];
-  v7 = [v6 title];
-  v8 = [(CNContactSuggestionViewController *)self subjectLabel];
-  [v8 setText:v7];
+  dataSource2 = [(CNContactSuggestionViewController *)self dataSource];
+  title = [dataSource2 title];
+  subjectLabel = [(CNContactSuggestionViewController *)self subjectLabel];
+  [subjectLabel setText:title];
 
-  v9 = [(CNContactSuggestionViewController *)self dataSource];
-  v10 = [v9 date];
-  v11 = [(CNContactSuggestionViewController *)self dateLabel];
-  [v11 setText:v10];
+  dataSource3 = [(CNContactSuggestionViewController *)self dataSource];
+  date = [dataSource3 date];
+  dateLabel = [(CNContactSuggestionViewController *)self dateLabel];
+  [dateLabel setText:date];
 
-  v14 = [(CNContactSuggestionViewController *)self dataSource];
-  v12 = [v14 with];
-  v13 = [(CNContactSuggestionViewController *)self withLabel];
-  [v13 setText:v12];
+  dataSource4 = [(CNContactSuggestionViewController *)self dataSource];
+  with = [dataSource4 with];
+  withLabel = [(CNContactSuggestionViewController *)self withLabel];
+  [withLabel setText:with];
 }
 
 - (BOOL)shouldShowPreview
 {
-  v3 = [(CNContactSuggestionViewController *)self dataSource];
-  v4 = [v3 type];
+  dataSource = [(CNContactSuggestionViewController *)self dataSource];
+  type = [dataSource type];
 
-  if (v4 == 5)
+  if (type == 5)
   {
     LOBYTE(v5) = 0;
   }
@@ -475,25 +475,25 @@ LABEL_10:
   else
   {
     v6 = *MEMORY[0x1E6996568];
-    v7 = [(CNContactSuggestionViewController *)self dataSource];
-    v8 = [v7 formattedSnippet];
-    v9 = [v8 string];
-    if ((*(v6 + 16))(v6, v9))
+    dataSource2 = [(CNContactSuggestionViewController *)self dataSource];
+    formattedSnippet = [dataSource2 formattedSnippet];
+    string = [formattedSnippet string];
+    if ((*(v6 + 16))(v6, string))
     {
-      v10 = [(CNContactSuggestionViewController *)self dataSource];
-      v11 = [v10 title];
-      if ((*(v6 + 16))(v6, v11))
+      dataSource3 = [(CNContactSuggestionViewController *)self dataSource];
+      title = [dataSource3 title];
+      if ((*(v6 + 16))(v6, title))
       {
-        v12 = [(CNContactSuggestionViewController *)self dataSource];
-        v13 = [v12 date];
-        if ((*(v6 + 16))(v6, v13))
+        dataSource4 = [(CNContactSuggestionViewController *)self dataSource];
+        date = [dataSource4 date];
+        if ((*(v6 + 16))(v6, date))
         {
-          v16 = [(CNContactSuggestionViewController *)self dataSource];
-          [v16 with];
-          v14 = v17 = v12;
+          dataSource5 = [(CNContactSuggestionViewController *)self dataSource];
+          [dataSource5 with];
+          v14 = v17 = dataSource4;
           v5 = (*(v6 + 16))(v6, v14) ^ 1;
 
-          v12 = v17;
+          dataSource4 = v17;
         }
 
         else
@@ -517,34 +517,34 @@ LABEL_10:
   return v5;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_action, a3);
-    v6 = [(CNContactSuggestionViewController *)self tableView];
-    [v6 reloadData];
+    v7 = actionCopy;
+    objc_storeStrong(&self->_action, action);
+    tableView = [(CNContactSuggestionViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = v7;
+    actionCopy = v7;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CNContactSuggestionViewController;
-  [(CNContactSuggestionViewController *)&v10 viewWillAppear:a3];
-  v4 = [(CNContactSuggestionViewController *)self addToContactButton];
-  v5 = [v4 titleLabel];
-  v6 = [v5 tintColorOverride];
-  v7 = [(CNContactSuggestionViewController *)self addToContactButton];
-  [v7 setTintColor:v6];
+  [(CNContactSuggestionViewController *)&v10 viewWillAppear:appear];
+  addToContactButton = [(CNContactSuggestionViewController *)self addToContactButton];
+  titleLabel = [addToContactButton titleLabel];
+  tintColorOverride = [titleLabel tintColorOverride];
+  addToContactButton2 = [(CNContactSuggestionViewController *)self addToContactButton];
+  [addToContactButton2 setTintColor:tintColorOverride];
 
-  v8 = [(CNContactSuggestionViewController *)self ignoreButton];
-  v9 = [(CNContactSuggestionViewController *)self titleForIgnoreContactDetail];
-  [v8 setTitle:v9 forState:0];
+  ignoreButton = [(CNContactSuggestionViewController *)self ignoreButton];
+  titleForIgnoreContactDetail = [(CNContactSuggestionViewController *)self titleForIgnoreContactDetail];
+  [ignoreButton setTitle:titleForIgnoreContactDetail forState:0];
 }
 
 - (void)viewDidLoad
@@ -555,17 +555,17 @@ LABEL_10:
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v3 _scaledValueForValue:44.0];
   v5 = v4;
-  v6 = [(CNContactSuggestionViewController *)self tableView];
-  [v6 setEstimatedRowHeight:v5];
+  tableView = [(CNContactSuggestionViewController *)self tableView];
+  [tableView setEstimatedRowHeight:v5];
 
   v7 = CNContactsUIBundle();
   v8 = [v7 localizedStringForKey:@"SUGGESTION_REVIEW_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-  v9 = [(CNContactSuggestionViewController *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem = [(CNContactSuggestionViewController *)self navigationItem];
+  [navigationItem setTitle:v8];
 
-  v10 = [(CNContactSuggestionViewController *)self contentLabel];
-  v11 = [v10 text];
-  if ([v11 isNaturallyRTL])
+  contentLabel = [(CNContactSuggestionViewController *)self contentLabel];
+  text = [contentLabel text];
+  if ([text isNaturallyRTL])
   {
     v12 = 2;
   }
@@ -575,50 +575,50 @@ LABEL_10:
     v12 = 0;
   }
 
-  v13 = [(CNContactSuggestionViewController *)self contentLabel];
-  [v13 setTextAlignment:v12];
+  contentLabel2 = [(CNContactSuggestionViewController *)self contentLabel];
+  [contentLabel2 setTextAlignment:v12];
 
-  v14 = [(CNContactSuggestionViewController *)self tableView];
-  [v14 _cnui_applyContactStyle];
+  tableView2 = [(CNContactSuggestionViewController *)self tableView];
+  [tableView2 _cnui_applyContactStyle];
 
-  v15 = [(CNContactSuggestionViewController *)self withLabel];
-  [v15 _cnui_applyContactStyle];
+  withLabel = [(CNContactSuggestionViewController *)self withLabel];
+  [withLabel _cnui_applyContactStyle];
 
   v16 = +[CNContactStyle currentStyle];
-  v17 = [v16 textColor];
-  v18 = [(CNContactSuggestionViewController *)self withLabel];
-  [v18 setTextColor:v17];
+  textColor = [v16 textColor];
+  withLabel2 = [(CNContactSuggestionViewController *)self withLabel];
+  [withLabel2 setTextColor:textColor];
 
   v19 = +[CNContactStyle currentStyle];
-  v20 = [v19 suggestedValueTextColor];
-  v21 = [(CNContactSuggestionViewController *)self dateLabel];
-  [v21 setTextColor:v20];
+  suggestedValueTextColor = [v19 suggestedValueTextColor];
+  dateLabel = [(CNContactSuggestionViewController *)self dateLabel];
+  [dateLabel setTextColor:suggestedValueTextColor];
 
   v22 = +[CNContactStyle currentStyle];
-  v23 = [v22 suggestedValueTextColor];
-  v24 = [(CNContactSuggestionViewController *)self subjectLabel];
-  [v24 setTextColor:v23];
+  suggestedValueTextColor2 = [v22 suggestedValueTextColor];
+  subjectLabel = [(CNContactSuggestionViewController *)self subjectLabel];
+  [subjectLabel setTextColor:suggestedValueTextColor2];
 
   v25 = +[CNContactStyle currentStyle];
-  v26 = [v25 suggestedValueTextColor];
-  v27 = [(CNContactSuggestionViewController *)self contentLabel];
-  [v27 setTextColor:v26];
+  suggestedValueTextColor3 = [v25 suggestedValueTextColor];
+  contentLabel3 = [(CNContactSuggestionViewController *)self contentLabel];
+  [contentLabel3 setTextColor:suggestedValueTextColor3];
 
-  v28 = [(CNContactSuggestionViewController *)self navigationItem];
-  [v28 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(CNContactSuggestionViewController *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 }
 
-+ (id)viewControllerWithDataSource:(id)a3
++ (id)viewControllerWithDataSource:(id)source
 {
   v3 = MEMORY[0x1E69DCFB8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = CNContactsUIBundle();
   v6 = [v3 storyboardWithName:@"Suggestion" bundle:v5];
-  v7 = [v6 instantiateInitialViewController];
+  instantiateInitialViewController = [v6 instantiateInitialViewController];
 
-  [v7 setDataSource:v4];
+  [instantiateInitialViewController setDataSource:sourceCopy];
 
-  return v7;
+  return instantiateInitialViewController;
 }
 
 @end

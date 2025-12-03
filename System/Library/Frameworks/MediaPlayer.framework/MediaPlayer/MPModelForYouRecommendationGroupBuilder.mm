@@ -1,19 +1,19 @@
 @interface MPModelForYouRecommendationGroupBuilder
 + (id)allSupportedGroupProperties;
-- (MPModelForYouRecommendationGroupBuilder)initWithRequestedGroupPropertySet:(id)a3 requestedItemPropertySet:(id)a4 storeItemMetadataResults:(id)a5 flatSectionedItems:(id)a6;
-- (id)modelObjectForRecommendationDictionary:(id)a3 userIdentity:(id)a4;
+- (MPModelForYouRecommendationGroupBuilder)initWithRequestedGroupPropertySet:(id)set requestedItemPropertySet:(id)propertySet storeItemMetadataResults:(id)results flatSectionedItems:(id)items;
+- (id)modelObjectForRecommendationDictionary:(id)dictionary userIdentity:(id)identity;
 @end
 
 @implementation MPModelForYouRecommendationGroupBuilder
 
-- (id)modelObjectForRecommendationDictionary:(id)a3 userIdentity:(id)a4
+- (id)modelObjectForRecommendationDictionary:(id)dictionary userIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identityCopy = identity;
   if ((*&self->_requestedGroupProperties & 1) == 0)
   {
-    v8 = [(MPPropertySet *)self->_requestedGroupPropertySet properties];
-    if ([v8 containsObject:@"MPModelForYouRecommendationGroupPropertyGroupType"])
+    properties = [(MPPropertySet *)self->_requestedGroupPropertySet properties];
+    if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyGroupType"])
     {
       v9 = 2;
     }
@@ -24,7 +24,7 @@
     }
 
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFD | v9;
-    if ([v8 containsObject:@"MPModelForYouRecommendationGroupPropertyLastUpdatedDate"])
+    if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyLastUpdatedDate"])
     {
       v10 = 4;
     }
@@ -35,7 +35,7 @@
     }
 
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xFB | v10;
-    if ([v8 containsObject:@"MPModelForYouRecommendationGroupPropertyTitle"])
+    if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyTitle"])
     {
       v11 = 8;
     }
@@ -46,7 +46,7 @@
     }
 
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xF7 | v11;
-    if ([v8 containsObject:@"MPModelForYouRecommendationGroupPropertyLoadAdditionalContentURL"])
+    if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyLoadAdditionalContentURL"])
     {
       v12 = 32;
     }
@@ -57,7 +57,7 @@
     }
 
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xDF | v12;
-    if ([v8 containsObject:@"MPModelForYouRecommendationGroupPropertyRefreshURL"])
+    if ([properties containsObject:@"MPModelForYouRecommendationGroupPropertyRefreshURL"])
     {
       v13 = 64;
     }
@@ -68,8 +68,8 @@
     }
 
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xBF | v13;
-    v14 = [(MPPropertySet *)self->_requestedItemPropertySet relationships];
-    v15 = [v14 objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
+    relationships = [(MPPropertySet *)self->_requestedItemPropertySet relationships];
+    v15 = [relationships objectForKey:@"MPModelForYouRecommendationItemRelationshipSubgroup"];
     *&self->_requestedGroupProperties = *&self->_requestedGroupProperties & 0xEF | (16 * (v15 != 0));
 
     v16 = [[MPModelForYouRecommendationItemBuilder alloc] initWithRequestedPropertySet:self->_requestedItemPropertySet storeItemMetadataResults:self->_storeItemMetadataResults flatSectionedItems:self->_flatSectionedItems];
@@ -99,22 +99,22 @@
     *&self->_requestedGroupProperties = requestedGroupProperties | 1;
   }
 
-  v25 = [v6 objectForKey:@"recoId"];
+  v25 = [dictionaryCopy objectForKey:@"recoId"];
   if (_NSIsNSString())
   {
     v26 = v25;
     if ([v26 length])
     {
-      v27 = [v7 accountDSID];
+      accountDSID = [identityCopy accountDSID];
       v28 = [MPIdentifierSet alloc];
       v29 = +[MPModelForYouRecommendationGroupKind identityKind];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __95__MPModelForYouRecommendationGroupBuilder_modelObjectForRecommendationDictionary_userIdentity___block_invoke;
       v39[3] = &unk_1E767EE00;
-      v40 = v27;
+      v40 = accountDSID;
       v41 = v26;
-      v30 = v27;
+      v30 = accountDSID;
       v31 = [(MPIdentifierSet *)v28 initWithSource:@"ForYou" modelKind:v29 block:v39];
 
       v32 = [MPModelForYouRecommendationGroup alloc];
@@ -122,9 +122,9 @@
       v35[1] = 3221225472;
       v35[2] = __95__MPModelForYouRecommendationGroupBuilder_modelObjectForRecommendationDictionary_userIdentity___block_invoke_3;
       v35[3] = &unk_1E767CFD8;
-      v36 = v6;
-      v37 = self;
-      v38 = v7;
+      v36 = dictionaryCopy;
+      selfCopy = self;
+      v38 = identityCopy;
       v33 = [(MPModelObject *)v32 initWithIdentifiers:v31 block:v35];
     }
 
@@ -482,30 +482,30 @@ LABEL_60:
   }
 }
 
-- (MPModelForYouRecommendationGroupBuilder)initWithRequestedGroupPropertySet:(id)a3 requestedItemPropertySet:(id)a4 storeItemMetadataResults:(id)a5 flatSectionedItems:(id)a6
+- (MPModelForYouRecommendationGroupBuilder)initWithRequestedGroupPropertySet:(id)set requestedItemPropertySet:(id)propertySet storeItemMetadataResults:(id)results flatSectionedItems:(id)items
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  setCopy = set;
+  propertySetCopy = propertySet;
+  resultsCopy = results;
+  itemsCopy = items;
   v22.receiver = self;
   v22.super_class = MPModelForYouRecommendationGroupBuilder;
   v14 = [(MPModelForYouRecommendationGroupBuilder *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [setCopy copy];
     requestedGroupPropertySet = v14->_requestedGroupPropertySet;
     v14->_requestedGroupPropertySet = v15;
 
-    v17 = [v11 copy];
+    v17 = [propertySetCopy copy];
     requestedItemPropertySet = v14->_requestedItemPropertySet;
     v14->_requestedItemPropertySet = v17;
 
-    v19 = [v12 copy];
+    v19 = [resultsCopy copy];
     storeItemMetadataResults = v14->_storeItemMetadataResults;
     v14->_storeItemMetadataResults = v19;
 
-    objc_storeStrong(&v14->_flatSectionedItems, a6);
+    objc_storeStrong(&v14->_flatSectionedItems, items);
   }
 
   return v14;

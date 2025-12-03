@@ -1,28 +1,28 @@
 @interface NRXPCProxy
 + (BOOL)requireAnEntitlement;
-- (BOOL)hasEntitlement:(id)a3;
-- (NRXPCProxy)initWithConnection:(id)a3 delegate:(id)a4 xpcTarget:(id)a5 entitlementBitmask:(unsigned int)a6;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (NRXPCProxy)initWithConnection:(id)connection delegate:(id)delegate xpcTarget:(id)target entitlementBitmask:(unsigned int)bitmask;
 - (void)_invalidate;
 @end
 
 @implementation NRXPCProxy
 
-- (NRXPCProxy)initWithConnection:(id)a3 delegate:(id)a4 xpcTarget:(id)a5 entitlementBitmask:(unsigned int)a6
+- (NRXPCProxy)initWithConnection:(id)connection delegate:(id)delegate xpcTarget:(id)target entitlementBitmask:(unsigned int)bitmask
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  targetCopy = target;
   v14 = [(NRXPCProxy *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_connection, a3);
-    objc_storeWeak(&v15->_delegate, v12);
-    objc_storeStrong(&v15->_target, a5);
-    v15->_entitlementBitmask = a6;
-    v16 = [v11 processName];
+    objc_storeStrong(&v14->_connection, connection);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_target, target);
+    v15->_entitlementBitmask = bitmask;
+    processName = [connectionCopy processName];
     appPath = v15->_appPath;
-    v15->_appPath = v16;
+    v15->_appPath = processName;
   }
 
   return v15;
@@ -30,17 +30,17 @@
 
 + (BOOL)requireAnEntitlement
 {
-  v2 = [a1 entitlements];
-  [v2 count];
+  entitlements = [self entitlements];
+  [entitlements count];
 
   return 0;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained hasEntitlement:v4 withBitmask:self->_entitlementBitmask];
+  LOBYTE(self) = [WeakRetained hasEntitlement:entitlementCopy withBitmask:self->_entitlementBitmask];
 
   return self;
 }

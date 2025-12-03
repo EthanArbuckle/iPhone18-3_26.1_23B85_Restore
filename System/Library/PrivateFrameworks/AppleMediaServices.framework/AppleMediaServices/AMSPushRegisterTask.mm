@@ -1,32 +1,32 @@
 @interface AMSPushRegisterTask
-- (AMSPushRegisterTask)initWithAccount:(id)a3 token:(id)a4 environment:(id)a5 bag:(id)a6;
+- (AMSPushRegisterTask)initWithAccount:(id)account token:(id)token environment:(id)environment bag:(id)bag;
 - (id)performTask;
 @end
 
 @implementation AMSPushRegisterTask
 
-- (AMSPushRegisterTask)initWithAccount:(id)a3 token:(id)a4 environment:(id)a5 bag:(id)a6
+- (AMSPushRegisterTask)initWithAccount:(id)account token:(id)token environment:(id)environment bag:(id)bag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  tokenCopy = token;
+  environmentCopy = environment;
+  bagCopy = bag;
   v22.receiver = self;
   v22.super_class = AMSPushRegisterTask;
   v15 = [(AMSTask *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_account, account);
+    v17 = [tokenCopy copy];
     token = v16->_token;
     v16->_token = v17;
 
-    v19 = [v13 copy];
+    v19 = [environmentCopy copy];
     environment = v16->_environment;
     v16->_environment = v19;
 
-    objc_storeStrong(&v16->_bag, a6);
+    objc_storeStrong(&v16->_bag, bag);
   }
 
   return v16;
@@ -34,13 +34,13 @@
 
 - (id)performTask
 {
-  v3 = [(AMSPushRegisterTask *)self environment];
+  environment = [(AMSPushRegisterTask *)self environment];
 
-  if (v3)
+  if (environment)
   {
-    v4 = [(AMSPushRegisterTask *)self token];
+    token = [(AMSPushRegisterTask *)self token];
 
-    if (v4)
+    if (token)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;

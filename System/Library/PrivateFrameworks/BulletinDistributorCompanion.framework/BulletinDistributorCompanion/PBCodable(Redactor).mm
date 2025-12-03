@@ -9,13 +9,13 @@
 {
   v52 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 _isRedactable:v4])
+  if ([self _isRedactable:v4])
   {
     v32 = v4;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 dictionaryRepresentation];
-      v6 = [v5 mutableCopy];
+      dictionaryRepresentation = [v4 dictionaryRepresentation];
+      v6 = [dictionaryRepresentation mutableCopy];
     }
 
     else
@@ -92,9 +92,9 @@
           v19 = [v6 objectForKeyedSubscript:v18];
           if (v19)
           {
-            if ([a1 _isRedactable:v19])
+            if ([self _isRedactable:v19])
             {
-              v20 = [a1 _redact:v19];
+              v20 = [self _redact:v19];
               [v6 setObject:v20 forKeyedSubscript:v18];
             }
 
@@ -129,9 +129,9 @@
                     }
 
                     v28 = *(*(&v37 + 1) + 8 * j);
-                    if ([a1 _isRedactable:v28])
+                    if ([self _isRedactable:v28])
                     {
-                      v29 = [a1 _redact:v28];
+                      v29 = [self _redact:v28];
                       [v23 addObject:v29];
                     }
 

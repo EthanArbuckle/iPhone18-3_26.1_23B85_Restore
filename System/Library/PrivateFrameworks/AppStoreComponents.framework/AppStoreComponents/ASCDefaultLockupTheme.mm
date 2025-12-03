@@ -1,13 +1,13 @@
 @interface ASCDefaultLockupTheme
 + (ASCDefaultLockupTheme)sharedTheme;
-+ (CGSize)preferredIconSizeForSize:(id)a3 compatibleWithTraitCollection:(id)a4;
-+ (id)headingLabelColorForView:(id)a3;
-+ (id)headingLabelFontForSize:(id)a3 compatibleWithTraitCollection:(id)a4;
-+ (id)subtitleLabelFontForView:(id)a3 compatibleWithTraitCollection:(id)a4;
-+ (id)titleLabelFontForView:(id)a3 compatibleWithTraitCollection:(id)a4;
-+ (int64_t)preferredLabelAlignmentForSize:(id)a3;
-+ (void)updateOfferStatusLabelColorForView:(id)a3;
-- (void)applyToLockupContentView:(id)a3 compatibleWithTraitCollection:(id)a4;
++ (CGSize)preferredIconSizeForSize:(id)size compatibleWithTraitCollection:(id)collection;
++ (id)headingLabelColorForView:(id)view;
++ (id)headingLabelFontForSize:(id)size compatibleWithTraitCollection:(id)collection;
++ (id)subtitleLabelFontForView:(id)view compatibleWithTraitCollection:(id)collection;
++ (id)titleLabelFontForView:(id)view compatibleWithTraitCollection:(id)collection;
++ (int64_t)preferredLabelAlignmentForSize:(id)size;
++ (void)updateOfferStatusLabelColorForView:(id)view;
+- (void)applyToLockupContentView:(id)view compatibleWithTraitCollection:(id)collection;
 @end
 
 @implementation ASCDefaultLockupTheme
@@ -31,10 +31,10 @@ uint64_t __36__ASCDefaultLockupTheme_sharedTheme__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (CGSize)preferredIconSizeForSize:(id)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)preferredIconSizeForSize:(id)size compatibleWithTraitCollection:(id)collection
 {
-  v5 = a3;
-  IconSize = ASCLockupViewSizeGetIconSize(v5, [a4 horizontalSizeClass]);
+  sizeCopy = size;
+  IconSize = ASCLockupViewSizeGetIconSize(sizeCopy, [collection horizontalSizeClass]);
   v8 = v7;
 
   v9 = IconSize;
@@ -44,19 +44,19 @@ uint64_t __36__ASCDefaultLockupTheme_sharedTheme__block_invoke()
   return result;
 }
 
-+ (int64_t)preferredLabelAlignmentForSize:(id)a3
++ (int64_t)preferredLabelAlignmentForSize:(id)size
 {
-  v3 = a3;
-  if (ASCLockupViewSizeIsMini(v3, v4) & 1) != 0 || (ASCLockupViewSizeIsSmall(v3, v5) & 1) != 0 || (ASCLockupViewSizeIsMedium(v3, v6) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(v3, v7) & 1) != 0 || (ASCLockupViewSizeIsMediumOfferButton(v3, v8))
+  sizeCopy = size;
+  if (ASCLockupViewSizeIsMini(sizeCopy, v4) & 1) != 0 || (ASCLockupViewSizeIsSmall(sizeCopy, v5) & 1) != 0 || (ASCLockupViewSizeIsMedium(sizeCopy, v6) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(sizeCopy, v7) & 1) != 0 || (ASCLockupViewSizeIsMediumOfferButton(sizeCopy, v8))
   {
     v10 = 4;
   }
 
   else
   {
-    if ((ASCLockupViewSizeIsLargeAppShowcase(v3, v9) & 1) == 0 && (ASCLockupViewSizeIsLargeAppAd(v3, v12) & 1) == 0)
+    if ((ASCLockupViewSizeIsLargeAppShowcase(sizeCopy, v9) & 1) == 0 && (ASCLockupViewSizeIsLargeAppAd(sizeCopy, v12) & 1) == 0)
     {
-      ASCUnknownEnumCase(@"ASCLockupViewSize", v3);
+      ASCUnknownEnumCase(@"ASCLockupViewSize", sizeCopy);
     }
 
     v10 = 1;
@@ -65,10 +65,10 @@ uint64_t __36__ASCDefaultLockupTheme_sharedTheme__block_invoke()
   return v10;
 }
 
-+ (id)headingLabelColorForView:(id)a3
++ (id)headingLabelColorForView:(id)view
 {
-  v3 = [a3 lockupSize];
-  if (ASCLockupViewSizeIsMini(v3, v4))
+  lockupSize = [view lockupSize];
+  if (ASCLockupViewSizeIsMini(lockupSize, v4))
   {
     +[ASCSemanticColor primaryLabel];
   }
@@ -82,39 +82,39 @@ uint64_t __36__ASCDefaultLockupTheme_sharedTheme__block_invoke()
   return v5;
 }
 
-+ (id)headingLabelFontForSize:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)headingLabelFontForSize:(id)size compatibleWithTraitCollection:(id)collection
 {
-  v5 = a4;
-  if (ASCLockupViewSizeIsMini(a3, v6))
+  collectionCopy = collection;
+  if (ASCLockupViewSizeIsMini(size, v6))
   {
-    [MEMORY[0x277D74300] asc_fontDerivedFromTextStyle:*MEMORY[0x277D76938] byApplyingFontWeight:v5 compatibleWithTraitCollection:*MEMORY[0x277D74410]];
+    [MEMORY[0x277D74300] asc_fontDerivedFromTextStyle:*MEMORY[0x277D76938] byApplyingFontWeight:collectionCopy compatibleWithTraitCollection:*MEMORY[0x277D74410]];
   }
 
   else
   {
-    [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*MEMORY[0x277D76968] withTraits:0x8000 compatibleWithTraitCollection:v5];
+    [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*MEMORY[0x277D76968] withTraits:0x8000 compatibleWithTraitCollection:collectionCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)titleLabelFontForView:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)titleLabelFontForView:(id)view compatibleWithTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lockupSize];
-  if (ASCLockupViewSizeIsMini(v7, v8))
+  viewCopy = view;
+  collectionCopy = collection;
+  lockupSize = [viewCopy lockupSize];
+  if (ASCLockupViewSizeIsMini(lockupSize, v8))
   {
     v10 = MEMORY[0x277D74300];
     v11 = *MEMORY[0x277D769D0];
     v12 = *MEMORY[0x277D74410];
 LABEL_8:
-    v17 = [v10 asc_preferredFontForTextStyle:v11 withTraits:v12 compatibleWithTraitCollection:v6];
+    v17 = [v10 asc_preferredFontForTextStyle:v11 withTraits:v12 compatibleWithTraitCollection:collectionCopy];
     goto LABEL_9;
   }
 
-  if ((ASCLockupViewSizeIsSmall(v7, v9) & 1) != 0 || (ASCLockupViewSizeIsMedium(v7, v13) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(v7, v14) & 1) != 0 || ASCLockupViewSizeIsMediumOfferButton(v7, v15))
+  if ((ASCLockupViewSizeIsSmall(lockupSize, v9) & 1) != 0 || (ASCLockupViewSizeIsMedium(lockupSize, v13) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(lockupSize, v14) & 1) != 0 || ASCLockupViewSizeIsMediumOfferButton(lockupSize, v15))
   {
     v10 = MEMORY[0x277D74300];
     v11 = *MEMORY[0x277D76918];
@@ -122,142 +122,142 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ((ASCLockupViewSizeIsLargeAppShowcase(v7, v16) & 1) == 0 && !ASCLockupViewSizeIsLargeAppAd(v7, v20))
+  if ((ASCLockupViewSizeIsLargeAppShowcase(lockupSize, v16) & 1) == 0 && !ASCLockupViewSizeIsLargeAppAd(lockupSize, v20))
   {
-    ASCUnknownEnumCase(@"ASCLockupViewSize", v7);
+    ASCUnknownEnumCase(@"ASCLockupViewSize", lockupSize);
   }
 
-  v17 = [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*MEMORY[0x277D76A20] compatibleWithTraitCollection:v6];
+  v17 = [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*MEMORY[0x277D76A20] compatibleWithTraitCollection:collectionCopy];
 LABEL_9:
   v18 = v17;
 
   return v18;
 }
 
-+ (id)subtitleLabelFontForView:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)subtitleLabelFontForView:(id)view compatibleWithTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lockupSize];
-  if (ASCLockupViewSizeIsMini(v7, v8))
+  viewCopy = view;
+  collectionCopy = collection;
+  lockupSize = [viewCopy lockupSize];
+  if (ASCLockupViewSizeIsMini(lockupSize, v8))
   {
     v10 = MEMORY[0x277D76938];
   }
 
-  else if (ASCLockupViewSizeIsSmall(v7, v9) & 1) != 0 || (ASCLockupViewSizeIsMedium(v7, v11) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(v7, v12) & 1) != 0 || (ASCLockupViewSizeIsMediumOfferButton(v7, v13))
+  else if (ASCLockupViewSizeIsSmall(lockupSize, v9) & 1) != 0 || (ASCLockupViewSizeIsMedium(lockupSize, v11) & 1) != 0 || (ASCLockupViewSizeIsSmallOfferButton(lockupSize, v12) & 1) != 0 || (ASCLockupViewSizeIsMediumOfferButton(lockupSize, v13))
   {
     v10 = MEMORY[0x277D76968];
   }
 
   else
   {
-    if ((ASCLockupViewSizeIsLargeAppShowcase(v7, v14) & 1) == 0 && (ASCLockupViewSizeIsLargeAppAd(v7, v17) & 1) == 0)
+    if ((ASCLockupViewSizeIsLargeAppShowcase(lockupSize, v14) & 1) == 0 && (ASCLockupViewSizeIsLargeAppAd(lockupSize, v17) & 1) == 0)
     {
-      ASCUnknownEnumCase(@"ASCLockupViewSize", v7);
+      ASCUnknownEnumCase(@"ASCLockupViewSize", lockupSize);
     }
 
     v10 = MEMORY[0x277D769D0];
   }
 
-  v15 = [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*v10 compatibleWithTraitCollection:v6];
+  v15 = [MEMORY[0x277D74300] asc_preferredFontForTextStyle:*v10 compatibleWithTraitCollection:collectionCopy];
 
   return v15;
 }
 
-+ (void)updateOfferStatusLabelColorForView:(id)a3
++ (void)updateOfferStatusLabelColorForView:(id)view
 {
-  v3 = [a3 offerStatusLabelIfLoaded];
-  [v3 _setTextColorFollowsTintColor:1];
+  offerStatusLabelIfLoaded = [view offerStatusLabelIfLoaded];
+  [offerStatusLabelIfLoaded _setTextColorFollowsTintColor:1];
 }
 
-- (void)applyToLockupContentView:(id)a3 compatibleWithTraitCollection:(id)a4
+- (void)applyToLockupContentView:(id)view compatibleWithTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
-  v45 = [v6 lockupSize];
-  [ASCDefaultLockupTheme preferredIconSizeForSize:v45 compatibleWithTraitCollection:v5];
+  collectionCopy = collection;
+  viewCopy = view;
+  lockupSize = [viewCopy lockupSize];
+  [ASCDefaultLockupTheme preferredIconSizeForSize:lockupSize compatibleWithTraitCollection:collectionCopy];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 iconArtworkView];
-  [v11 setPreferredSize:{v8, v10}];
+  iconArtworkView = [viewCopy iconArtworkView];
+  [iconArtworkView setPreferredSize:{v8, v10}];
 
-  v12 = [ASCDefaultLockupTheme preferredLabelAlignmentForSize:v45];
-  v13 = [ASCDefaultLockupTheme headingLabelFontForSize:v45 compatibleWithTraitCollection:v5];
-  v14 = [v6 headingLabelIfLoaded];
-  [v14 setFont:v13];
+  v12 = [ASCDefaultLockupTheme preferredLabelAlignmentForSize:lockupSize];
+  v13 = [ASCDefaultLockupTheme headingLabelFontForSize:lockupSize compatibleWithTraitCollection:collectionCopy];
+  headingLabelIfLoaded = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded setFont:v13];
 
-  v15 = [ASCDefaultLockupTheme headingLabelColorForView:v6];
-  v16 = [v6 headingLabelIfLoaded];
-  [v16 setTextColor:v15];
+  v15 = [ASCDefaultLockupTheme headingLabelColorForView:viewCopy];
+  headingLabelIfLoaded2 = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded2 setTextColor:v15];
 
-  v17 = [v6 headingLabelIfLoaded];
-  [v17 setTextAlignment:v12];
+  headingLabelIfLoaded3 = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded3 setTextAlignment:v12];
 
-  v18 = [v6 headingLabelIfLoaded];
-  [v18 setNumberOfLines:1];
+  headingLabelIfLoaded4 = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded4 setNumberOfLines:1];
 
-  v19 = [v6 headingLabelIfLoaded];
-  [v19 setLineBreakMode:4];
+  headingLabelIfLoaded5 = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded5 setLineBreakMode:4];
 
-  v20 = [ASCDefaultLockupTheme titleLabelFontForView:v6 compatibleWithTraitCollection:v5];
-  v21 = [v6 titleLabel];
-  [v21 setFont:v20];
+  v20 = [ASCDefaultLockupTheme titleLabelFontForView:viewCopy compatibleWithTraitCollection:collectionCopy];
+  titleLabel = [viewCopy titleLabel];
+  [titleLabel setFont:v20];
 
-  v22 = [v6 titleLabel];
-  [v22 setTextAlignment:v12];
+  titleLabel2 = [viewCopy titleLabel];
+  [titleLabel2 setTextAlignment:v12];
 
   v23 = +[ASCSemanticColor loading];
-  v24 = [v6 titleLabel];
-  [v24 setSkeletonColor:v23];
+  titleLabel3 = [viewCopy titleLabel];
+  [titleLabel3 setSkeletonColor:v23];
 
   v25 = +[ASCSemanticColor primaryLabel];
-  v26 = [v6 titleLabel];
-  [v26 setTextColor:v25];
+  titleLabel4 = [viewCopy titleLabel];
+  [titleLabel4 setTextColor:v25];
 
-  v27 = [ASCDefaultLockupTheme numberOfLinesInTitleForSize:v45 compatibleWithTraitCollection:v5];
-  v28 = [v6 titleLabel];
-  [v28 setNumberOfLines:v27];
+  v27 = [ASCDefaultLockupTheme numberOfLinesInTitleForSize:lockupSize compatibleWithTraitCollection:collectionCopy];
+  titleLabel5 = [viewCopy titleLabel];
+  [titleLabel5 setNumberOfLines:v27];
 
-  v29 = [v6 titleLabel];
-  [v29 setLineBreakMode:4];
+  titleLabel6 = [viewCopy titleLabel];
+  [titleLabel6 setLineBreakMode:4];
 
-  v30 = [ASCDefaultLockupTheme subtitleLabelFontForView:v6 compatibleWithTraitCollection:v5];
-  v31 = [v6 subtitleLabel];
-  [v31 setFont:v30];
+  v30 = [ASCDefaultLockupTheme subtitleLabelFontForView:viewCopy compatibleWithTraitCollection:collectionCopy];
+  subtitleLabel = [viewCopy subtitleLabel];
+  [subtitleLabel setFont:v30];
 
-  v32 = [v6 subtitleLabel];
-  [v32 setTextAlignment:v12];
+  subtitleLabel2 = [viewCopy subtitleLabel];
+  [subtitleLabel2 setTextAlignment:v12];
 
   v33 = +[ASCSemanticColor loading];
-  v34 = [v6 subtitleLabel];
-  [v34 setSkeletonColor:v33];
+  subtitleLabel3 = [viewCopy subtitleLabel];
+  [subtitleLabel3 setSkeletonColor:v33];
 
   v35 = +[ASCSemanticColor secondaryLabel];
-  v36 = [v6 subtitleLabel];
-  [v36 setTextColor:v35];
+  subtitleLabel4 = [viewCopy subtitleLabel];
+  [subtitleLabel4 setTextColor:v35];
 
-  v37 = [ASCDefaultLockupTheme numberOfLinesInSubtitleForSize:v45 compatibleWithTraitCollection:v5];
-  v38 = [v6 subtitleLabel];
-  [v38 setNumberOfLines:v37];
+  v37 = [ASCDefaultLockupTheme numberOfLinesInSubtitleForSize:lockupSize compatibleWithTraitCollection:collectionCopy];
+  subtitleLabel5 = [viewCopy subtitleLabel];
+  [subtitleLabel5 setNumberOfLines:v37];
 
-  v39 = [v6 subtitleLabel];
-  [v39 setLineBreakMode:4];
+  subtitleLabel6 = [viewCopy subtitleLabel];
+  [subtitleLabel6 setLineBreakMode:4];
 
-  [ASCDefaultLockupTheme updateOfferStatusLabelColorForView:v6];
-  v40 = [ASCDefaultLockupTheme offerStatusLabelFontForSize:v45 compatibleWithTraitCollection:v5];
+  [ASCDefaultLockupTheme updateOfferStatusLabelColorForView:viewCopy];
+  v40 = [ASCDefaultLockupTheme offerStatusLabelFontForSize:lockupSize compatibleWithTraitCollection:collectionCopy];
 
-  v41 = [v6 offerStatusLabelIfLoaded];
-  [v41 setFont:v40];
+  offerStatusLabelIfLoaded = [viewCopy offerStatusLabelIfLoaded];
+  [offerStatusLabelIfLoaded setFont:v40];
 
-  v42 = [v6 offerStatusLabelIfLoaded];
-  [v42 setTextAlignment:v12];
+  offerStatusLabelIfLoaded2 = [viewCopy offerStatusLabelIfLoaded];
+  [offerStatusLabelIfLoaded2 setTextAlignment:v12];
 
-  v43 = [v6 offerStatusLabelIfLoaded];
-  [v43 setNumberOfLines:1];
+  offerStatusLabelIfLoaded3 = [viewCopy offerStatusLabelIfLoaded];
+  [offerStatusLabelIfLoaded3 setNumberOfLines:1];
 
-  v44 = [v6 offerStatusLabelIfLoaded];
+  offerStatusLabelIfLoaded4 = [viewCopy offerStatusLabelIfLoaded];
 
-  [v44 setLineBreakMode:4];
+  [offerStatusLabelIfLoaded4 setLineBreakMode:4];
 }
 
 @end

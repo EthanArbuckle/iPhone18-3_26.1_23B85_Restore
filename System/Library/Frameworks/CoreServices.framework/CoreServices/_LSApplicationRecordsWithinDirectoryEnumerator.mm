@@ -1,52 +1,52 @@
 @interface _LSApplicationRecordsWithinDirectoryEnumerator
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5;
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4;
-- (_LSApplicationRecordsWithinDirectoryEnumerator)initWithContext:(LSContext *)a3 directoryURL:(id)a4 volumeURL:(id)a5 enumerationOptions:(unint64_t)a6 filteringOptions:(unint64_t)a7;
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context;
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error;
+- (_LSApplicationRecordsWithinDirectoryEnumerator)initWithContext:(LSContext *)context directoryURL:(id)l volumeURL:(id)rL enumerationOptions:(unint64_t)options filteringOptions:(unint64_t)filteringOptions;
 - (id).cxx_construct;
 @end
 
 @implementation _LSApplicationRecordsWithinDirectoryEnumerator
 
-- (_LSApplicationRecordsWithinDirectoryEnumerator)initWithContext:(LSContext *)a3 directoryURL:(id)a4 volumeURL:(id)a5 enumerationOptions:(unint64_t)a6 filteringOptions:(unint64_t)a7
+- (_LSApplicationRecordsWithinDirectoryEnumerator)initWithContext:(LSContext *)context directoryURL:(id)l volumeURL:(id)rL enumerationOptions:(unint64_t)options filteringOptions:(unint64_t)filteringOptions
 {
   v16.receiver = self;
   v16.super_class = _LSApplicationRecordsWithinDirectoryEnumerator;
-  v11 = [(_LSDBEnumerator *)&v16 _initWithContext:a3];
+  v11 = [(_LSDBEnumerator *)&v16 _initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    v17 = a5;
-    std::__variant_detail::__assignment<std::__variant_detail::__traits<unsigned int,NSURL * {__strong},NSError * {__strong}>>::__assign_alt[abi:nn200100]<1ul,NSURL * {__strong},NSURL * const {__strong}&>((v11 + 11), v11 + 11, &v17);
-    v13 = [a4 copy];
+    rLCopy = rL;
+    std::__variant_detail::__assignment<std::__variant_detail::__traits<unsigned int,NSURL * {__strong},NSError * {__strong}>>::__assign_alt[abi:nn200100]<1ul,NSURL * {__strong},NSURL * const {__strong}&>((v11 + 11), v11 + 11, &rLCopy);
+    v13 = [l copy];
     directoryURL = v12->_directoryURL;
     v12->_directoryURL = v13;
 
-    v12->_enumerationOptions = a6;
-    v12->_filteringOptions = a7;
+    v12->_enumerationOptions = options;
+    v12->_filteringOptions = filteringOptions;
   }
 
   return v12;
 }
 
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error
 {
   self->_bundleIdentifiersOrUnits.__end_ = self->_bundleIdentifiersOrUnits.__begin_;
-  v7 = LaunchServices::AppRecordEnumeration::VolumeContainerResolutionAdapter::resolve(&self->_volumeContainerAdapter, a3);
+  v7 = LaunchServices::AppRecordEnumeration::VolumeContainerResolutionAdapter::resolve(&self->_volumeContainerAdapter, context);
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   else
   {
     v10 = ~LODWORD(self->_enumerationOptions) & 0xD0;
-    [(_LSDatabase *)a3->db store];
-    v11 = [(_LSDatabase *)a3->db schema];
+    [(_LSDatabase *)context->db store];
+    schema = [(_LSDatabase *)context->db schema];
     if (v10)
     {
       _CSStringBindingEnumerateAllBindings();
@@ -54,11 +54,11 @@
 
     else
     {
-      v12 = *(v11 + 4);
+      v12 = *(schema + 4);
       _CSStoreEnumerateUnits();
     }
 
-    v13 = [[FSNode alloc] initWithURL:self->_directoryURL flags:34 error:a4];
+    v13 = [[FSNode alloc] initWithURL:self->_directoryURL flags:34 error:error];
     v14 = v13;
     if (v13)
     {
@@ -72,35 +72,35 @@
   return v8 == 0;
 }
 
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context
 {
   begin = self->_bundleIdentifiersOrUnits.__begin_;
   v7 = self->_bundleIdentifiersOrUnits.__end_ - begin;
-  if (v7 > a4)
+  if (v7 > index)
   {
     v11 = ~LODWORD(self->_enumerationOptions);
-    v12 = begin[a4];
-    db = a5->db;
+    v12 = begin[index];
+    db = context->db;
     if ((v11 & 0xD0) == 0)
     {
-      v14 = _LSBundleGet(db, begin[a4]);
+      v14 = _LSBundleGet(db, begin[index]);
       if (!v14)
       {
 LABEL_15:
         v17 = 0;
 LABEL_21:
-        v24 = *a3;
-        *a3 = v17;
+        v24 = *object;
+        *object = v17;
 
-        return v7 > a4;
+        return v7 > index;
       }
 
       if (!self->_volumeContainerAdapter.volumeURLOrContainerOrError.__impl_.__index)
       {
         v16 = v14;
-        if (LaunchServices::AppRecordEnumeration::evaluateBundleNoIOCommon(v12, v14, self->_enumerationOptions, v15) && [(_LSApplicationRecordsWithinDirectoryEnumerator *)self _preflightPathOfBundleWithContext:a5 bundleUnit:v12 bundleData:v16])
+        if (LaunchServices::AppRecordEnumeration::evaluateBundleNoIOCommon(v12, v14, self->_enumerationOptions, v15) && [(_LSApplicationRecordsWithinDirectoryEnumerator *)self _preflightPathOfBundleWithContext:context bundleUnit:v12 bundleData:v16])
         {
-          [(_LSApplicationRecordsWithinDirectoryEnumerator *)self _createPostflightedApplicationRecordWithContext:a5 bundleUnit:v12 bundleData:v16];
+          [(_LSApplicationRecordsWithinDirectoryEnumerator *)self _createPostflightedApplicationRecordWithContext:context bundleUnit:v12 bundleData:v16];
           if (v31 == 1)
           {
             v17 = v30;
@@ -145,12 +145,12 @@ LABEL_25:
       enumerationOptions = self->_enumerationOptions;
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      LaunchServices::AppRecordEnumeration::findAppByIdentifierForEnumerator(a5, v18, 2, enumerationOptions, v23, v20, &v29, &v28);
+      LaunchServices::AppRecordEnumeration::findAppByIdentifierForEnumerator(context, v18, 2, enumerationOptions, v23, v20, &v29, &v28);
 
       v17 = 0;
       if (v29 && v28)
       {
-        [_LSApplicationRecordsWithinDirectoryEnumerator _createPostflightedApplicationRecordWithContext:"_createPostflightedApplicationRecordWithContext:bundleUnit:bundleData:" bundleUnit:a5 bundleData:?];
+        [_LSApplicationRecordsWithinDirectoryEnumerator _createPostflightedApplicationRecordWithContext:"_createPostflightedApplicationRecordWithContext:bundleUnit:bundleData:" bundleUnit:context bundleData:?];
         if (v31 == 1)
         {
           v17 = v30;
@@ -172,7 +172,7 @@ LABEL_25:
     goto LABEL_21;
   }
 
-  return v7 > a4;
+  return v7 > index;
 }
 
 - (id).cxx_construct

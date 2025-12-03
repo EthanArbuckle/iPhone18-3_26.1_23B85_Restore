@@ -18,9 +18,9 @@
 
 - (id)pstnAddress
 {
-  v2 = [(NSString *)self mf_uncommentedAddress];
-  v3 = [(__CFString *)v2 rangeOfString:@"@"];
-  v4 = [(__CFString *)v2 length];
+  mf_uncommentedAddress = [(NSString *)self mf_uncommentedAddress];
+  v3 = [(__CFString *)mf_uncommentedAddress rangeOfString:@"@"];
+  v4 = [(__CFString *)mf_uncommentedAddress length];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = v4;
@@ -28,13 +28,13 @@
 
   if (v3)
   {
-    if (![(__CFString *)v2 compare:@"blocked" options:1 range:0, v3]|| ![(__CFString *)v2 compare:@"unknown" options:1 range:0, v3])
+    if (![(__CFString *)mf_uncommentedAddress compare:@"blocked" options:1 range:0, v3]|| ![(__CFString *)mf_uncommentedAddress compare:@"unknown" options:1 range:0, v3])
     {
       v11 = 0;
       goto LABEL_47;
     }
 
-    v5 = [(__CFString *)v2 rangeOfString:@"/" options:8 range:0, v3];
+    v5 = [(__CFString *)mf_uncommentedAddress rangeOfString:@"/" options:8 range:0, v3];
     v7 = 0;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -47,10 +47,10 @@
       v7 = &v5[v6];
     }
 
-    v8 = [(__CFString *)v2 rangeOfString:@"/" options:0 range:v7, v3];
+    v8 = [(__CFString *)mf_uncommentedAddress rangeOfString:@"/" options:0 range:v7, v3];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v3 = (v8 - v7), v8 != v7))
     {
-      v9 = [(__CFString *)v2 rangeOfString:@"=" options:0 range:v7, v3];
+      v9 = [(__CFString *)mf_uncommentedAddress rangeOfString:@"=" options:0 range:v7, v3];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v3 = 0;
@@ -59,7 +59,7 @@
 
       v12 = &v9[v10];
       v13 = &v3[v7 - &v9[v10]];
-      v3 = [(__CFString *)v2 substringWithRange:&v9[v10], v13];
+      v3 = [(__CFString *)mf_uncommentedAddress substringWithRange:&v9[v10], v13];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -68,11 +68,11 @@
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      theString = v2;
+      theString = mf_uncommentedAddress;
       v43 = v12;
       v44 = v13;
-      CharactersPtr = CFStringGetCharactersPtr(v2);
-      v14 = CharactersPtr ? 0 : CFStringGetCStringPtr(v2, 0x600u);
+      CharactersPtr = CFStringGetCharactersPtr(mf_uncommentedAddress);
+      v14 = CharactersPtr ? 0 : CFStringGetCStringPtr(mf_uncommentedAddress, 0x600u);
       v45 = 0;
       v46 = 0;
       v42 = v14;

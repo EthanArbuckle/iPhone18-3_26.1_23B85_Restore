@@ -1,60 +1,60 @@
 @interface _SBSteppedAnimationTimingFunction
-+ (id)timingFunctionWithTimingFunction:(id)a3 constrainedToIntervalBetween:(double)a4 and:(double)a5;
++ (id)timingFunctionWithTimingFunction:(id)function constrainedToIntervalBetween:(double)between and:(double)and;
 - (SBNormalizedTransitionInterval)constrainedRange;
-- (_SBSteppedAnimationTimingFunction)initWithTimingFunction:(id)a3 constrainedToIntervalBetween:(double)a4 and:(double)a5;
-- (double)valueAtPercentage:(double)a3;
+- (_SBSteppedAnimationTimingFunction)initWithTimingFunction:(id)function constrainedToIntervalBetween:(double)between and:(double)and;
+- (double)valueAtPercentage:(double)percentage;
 @end
 
 @implementation _SBSteppedAnimationTimingFunction
 
-+ (id)timingFunctionWithTimingFunction:(id)a3 constrainedToIntervalBetween:(double)a4 and:(double)a5
++ (id)timingFunctionWithTimingFunction:(id)function constrainedToIntervalBetween:(double)between and:(double)and
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithTimingFunction:v8 constrainedToIntervalBetween:a4 and:a5];
+  functionCopy = function;
+  v9 = [[self alloc] initWithTimingFunction:functionCopy constrainedToIntervalBetween:between and:and];
 
   return v9;
 }
 
-- (_SBSteppedAnimationTimingFunction)initWithTimingFunction:(id)a3 constrainedToIntervalBetween:(double)a4 and:(double)a5
+- (_SBSteppedAnimationTimingFunction)initWithTimingFunction:(id)function constrainedToIntervalBetween:(double)between and:(double)and
 {
-  v10 = a3;
+  functionCopy = function;
   v14.receiver = self;
   v14.super_class = _SBSteppedAnimationTimingFunction;
   v11 = [(_SBSteppedAnimationTimingFunction *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_timingFunction, a3);
-    if (a4 >= a5)
+    objc_storeStrong(&v11->_timingFunction, function);
+    if (between >= and)
     {
-      [(_SBSteppedAnimationTimingFunction *)a2 initWithTimingFunction:v12 constrainedToIntervalBetween:a4 and:a5];
+      [(_SBSteppedAnimationTimingFunction *)a2 initWithTimingFunction:v12 constrainedToIntervalBetween:between and:and];
     }
 
-    v12->_constrainedRange.start = fmin(fmax(a4, 0.0), 1.0);
-    v12->_constrainedRange.duration = fmin(fmax(a5, 0.0), 1.0) - a4;
+    v12->_constrainedRange.start = fmin(fmax(between, 0.0), 1.0);
+    v12->_constrainedRange.duration = fmin(fmax(and, 0.0), 1.0) - between;
   }
 
   return v12;
 }
 
-- (double)valueAtPercentage:(double)a3
+- (double)valueAtPercentage:(double)percentage
 {
   timingFunction = self->_timingFunction;
   start = self->_constrainedRange.start;
-  v8 = 0.0;
-  if (start <= a3)
+  percentageCopy = 0.0;
+  if (start <= percentage)
   {
     duration = self->_constrainedRange.duration;
-    v8 = 1.0;
-    if (start + duration >= a3)
+    percentageCopy = 1.0;
+    if (start + duration >= percentage)
     {
-      a3 = (fmin(fmax(a3, 0.0), 1.0) - start) / duration;
-      v8 = a3;
+      percentage = (fmin(fmax(percentage, 0.0), 1.0) - start) / duration;
+      percentageCopy = percentage;
     }
   }
 
-  *&a3 = v8;
-  [(CAMediaTimingFunction *)timingFunction _solveForInput:a3, v3, v4];
+  *&percentage = percentageCopy;
+  [(CAMediaTimingFunction *)timingFunction _solveForInput:percentage, v3, v4];
   return v10;
 }
 

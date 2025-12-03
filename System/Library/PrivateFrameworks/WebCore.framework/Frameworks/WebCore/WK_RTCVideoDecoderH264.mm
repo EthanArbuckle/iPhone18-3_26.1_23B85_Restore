@@ -2,16 +2,16 @@
 - (WK_RTCVideoDecoderH264)init;
 - (id).cxx_construct;
 - (int)resetDecompressionSession;
-- (int64_t)decode:(id)a3 missingFrames:(BOOL)a4 codecSpecificInfo:(id)a5 renderTimeMs:(int64_t)a6;
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5;
+- (int64_t)decode:(id)decode missingFrames:(BOOL)frames codecSpecificInfo:(id)info renderTimeMs:(int64_t)ms;
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp;
 - (int64_t)releaseDecoder;
-- (int64_t)setAVCFormat:(const char *)a3 size:(unint64_t)a4 width:(unsigned __int16)a5 height:(unsigned __int16)a6;
+- (int64_t)setAVCFormat:(const char *)format size:(unint64_t)size width:(unsigned __int16)width height:(unsigned __int16)height;
 - (void)dealloc;
 - (void)destroyDecompressionSession;
 - (void)flush;
-- (void)processFrame:(id)a3 reorderSize:(unint64_t)a4;
-- (void)setCallback:(id)a3;
-- (void)setVideoFormat:(opaqueCMFormatDescription *)a3;
+- (void)processFrame:(id)frame reorderSize:(unint64_t)size;
+- (void)setCallback:(id)callback;
+- (void)setVideoFormat:(opaqueCMFormatDescription *)format;
 @end
 
 @implementation WK_RTCVideoDecoderH264
@@ -44,18 +44,18 @@
   [(WK_RTCVideoDecoderH264 *)&v3 dealloc];
 }
 
-- (int64_t)decode:(id)a3 missingFrames:(BOOL)a4 codecSpecificInfo:(id)a5 renderTimeMs:(int64_t)a6
+- (int64_t)decode:(id)decode missingFrames:(BOOL)frames codecSpecificInfo:(id)info renderTimeMs:(int64_t)ms
 {
-  v7 = a3;
-  v8 = [v7 buffer];
-  v9 = [v8 bytes];
-  v10 = [v7 buffer];
-  v11 = -[WK_RTCVideoDecoderH264 decodeData:size:timeStamp:](self, "decodeData:size:timeStamp:", v9, [v10 length], objc_msgSend(v7, "timeStamp"));
+  decodeCopy = decode;
+  buffer = [decodeCopy buffer];
+  bytes = [buffer bytes];
+  buffer2 = [decodeCopy buffer];
+  v11 = -[WK_RTCVideoDecoderH264 decodeData:size:timeStamp:](self, "decodeData:size:timeStamp:", bytes, [buffer2 length], objc_msgSend(decodeCopy, "timeStamp"));
 
   return v11;
 }
 
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp
 {
   if (self->_error)
   {
@@ -68,7 +68,7 @@
     return -1;
   }
 
-  if (!a3 || !a4)
+  if (!data || !size)
   {
     if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)2>() & 1) == 0)
     {
@@ -78,7 +78,7 @@
     return -1;
   }
 
-  if (self->_useAVC || (v15 = a4, v16 = a3, VideoFormatDescription = webrtc::CreateVideoFormatDescription(a3, a4), a3 = v16, a4 = v15, !VideoFormatDescription))
+  if (self->_useAVC || (v15 = size, v16 = data, VideoFormatDescription = webrtc::CreateVideoFormatDescription(data, size), data = v16, size = v15, !VideoFormatDescription))
   {
 LABEL_12:
     videoFormat = self->_videoFormat;
@@ -95,11 +95,11 @@ LABEL_12:
     sampleBuffer = 0;
     if (self->_useAVC)
     {
-      v21 = a3;
+      dataCopy = data;
       destinationBuffer = 0;
       v22 = *MEMORY[0x277CBECE8];
-      v23 = a4;
-      if (CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, a4, *MEMORY[0x277CBECE8], 0, 0, a4, 1u, &destinationBuffer))
+      sizeCopy = size;
+      if (CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, size, *MEMORY[0x277CBECE8], 0, 0, size, 1u, &destinationBuffer))
       {
         if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
         {
@@ -110,7 +110,7 @@ LABEL_12:
       }
 
       v40 = destinationBuffer;
-      if (CMBlockBufferReplaceDataBytes(v21, destinationBuffer, 0, v23))
+      if (CMBlockBufferReplaceDataBytes(dataCopy, destinationBuffer, 0, sizeCopy))
       {
         if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
         {
@@ -159,7 +159,7 @@ LABEL_40:
       }
     }
 
-    else if (!webrtc::H264AnnexBBufferToCMSampleBuffer(a3, a4, videoFormat, &sampleBuffer, self->_memoryPool, v5))
+    else if (!webrtc::H264AnnexBBufferToCMSampleBuffer(data, size, videoFormat, &sampleBuffer, self->_memoryPool, v5))
     {
       return -1;
     }
@@ -175,8 +175,8 @@ LABEL_40:
   if (CMFormatDescriptionEqual(v18, self->_videoFormat) || ([(WK_RTCVideoDecoderH264 *)self setVideoFormat:v18], (v38 = [(WK_RTCVideoDecoderH264 *)self resetDecompressionSession]) == 0))
   {
     CFRelease(v18);
-    a4 = v15;
-    a3 = v16;
+    size = v15;
+    data = v16;
     goto LABEL_12;
   }
 
@@ -185,10 +185,10 @@ LABEL_40:
   return v39;
 }
 
-- (int64_t)setAVCFormat:(const char *)a3 size:(unint64_t)a4 width:(unsigned __int16)a5 height:(unsigned __int16)a6
+- (int64_t)setAVCFormat:(const char *)format size:(unint64_t)size width:(unsigned __int16)width height:(unsigned __int16)height
 {
-  LOWORD(v6) = a6;
-  v11 = webrtc::ComputeH264InfoFromAVC(a3, a4);
+  LOWORD(v6) = height;
+  v11 = webrtc::ComputeH264InfoFromAVC(format, size);
   if ((v11 & 0x1000000000000) != 0)
   {
     v6 = v11 >> 16;
@@ -197,17 +197,17 @@ LABEL_40:
     pthread_mutex_lock(&self->_reorderQueue._reorderQueueLock.impl_.mutex_);
     self->_reorderQueue._reorderSize = v12;
     pthread_mutex_unlock(&self->_reorderQueue._reorderQueueLock.impl_.mutex_);
-    a5 = v13;
+    width = v13;
   }
 
   keys = @"avcC";
-  values = CFDataCreate(*MEMORY[0x277CBECE8], a3, a4);
+  values = CFDataCreate(*MEMORY[0x277CBECE8], format, size);
   v14 = MEMORY[0x277CBF138];
   v15 = MEMORY[0x277CBF150];
   cf = CFDictionaryCreate(0, &keys, &values, 1, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v16 = CFDictionaryCreate(0, MEMORY[0x277CC03B0], &cf, 1, v14, v15);
   formatDescriptionOut = 0;
-  v17 = CMVideoFormatDescriptionCreate(0, 0x61766331u, a5, v6, v16, &formatDescriptionOut);
+  v17 = CMVideoFormatDescriptionCreate(0, 0x61766331u, width, v6, v16, &formatDescriptionOut);
   CFRelease(values);
   CFRelease(cf);
   CFRelease(v16);
@@ -251,9 +251,9 @@ LABEL_40:
   return result;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  self->_callback = MEMORY[0x2743DACF0](a3, a2);
+  self->_callback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
@@ -355,32 +355,32 @@ LABEL_40:
   }
 }
 
-- (void)setVideoFormat:(opaqueCMFormatDescription *)a3
+- (void)setVideoFormat:(opaqueCMFormatDescription *)format
 {
   videoFormat = self->_videoFormat;
-  if (videoFormat != a3)
+  if (videoFormat != format)
   {
     if (videoFormat)
     {
       CFRelease(videoFormat);
     }
 
-    self->_videoFormat = a3;
-    if (a3)
+    self->_videoFormat = format;
+    if (format)
     {
 
-      CFRetain(a3);
+      CFRetain(format);
     }
   }
 }
 
-- (void)processFrame:(id)a3 reorderSize:(unint64_t)a4
+- (void)processFrame:(id)frame reorderSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_reorderQueue._reorderQueue.__size_ | a4)
+  frameCopy = frame;
+  v7 = frameCopy;
+  if (self->_reorderQueue._reorderQueue.__size_ | size)
   {
-    webrtc::RTCVideoFrameReorderQueue::append(&self->_reorderQueue, v6);
+    webrtc::RTCVideoFrameReorderQueue::append(&self->_reorderQueue, frameCopy);
   }
 
   (*(self->_callback + 2))();

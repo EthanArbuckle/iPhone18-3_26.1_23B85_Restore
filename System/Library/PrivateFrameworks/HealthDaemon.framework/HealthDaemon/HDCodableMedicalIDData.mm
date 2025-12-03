@@ -1,61 +1,61 @@
 @interface HDCodableMedicalIDData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBloodType:(id)a3;
+- (int)StringAsBloodType:(id)type;
 - (int)bloodType;
 - (unint64_t)hash;
-- (void)addAllergiesList:(id)a3;
-- (void)addClinicalContacts:(id)a3;
-- (void)addConditionsList:(id)a3;
-- (void)addEmergencyContacts:(id)a3;
-- (void)addMedicationsList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllergiesListVersion:(BOOL)a3;
-- (void)setHasAllergiesListVersionModifiedDate:(BOOL)a3;
-- (void)setHasAllergyInfoModifiedDate:(BOOL)a3;
-- (void)setHasBloodType:(BOOL)a3;
-- (void)setHasBloodTypeModifiedDate:(BOOL)a3;
-- (void)setHasClinicalContactsModifiedDate:(BOOL)a3;
-- (void)setHasConditionsListModifiedDate:(BOOL)a3;
-- (void)setHasConditionsListVersion:(BOOL)a3;
-- (void)setHasConditionsListVersionModifiedDate:(BOOL)a3;
-- (void)setHasDateSaved:(BOOL)a3;
-- (void)setHasEmergencyContactsModifiedDate:(BOOL)a3;
-- (void)setHasGregorianBirthdayModifiedDate:(BOOL)a3;
-- (void)setHasHeightModifiedDate:(BOOL)a3;
-- (void)setHasIsDisabled:(BOOL)a3;
-- (void)setHasIsDisabledModifiedDate:(BOOL)a3;
-- (void)setHasIsOrganDonor:(BOOL)a3;
-- (void)setHasIsOrganDonorModifiedDate:(BOOL)a3;
-- (void)setHasMedicalConditionsModifiedDate:(BOOL)a3;
-- (void)setHasMedicalNotesModifiedDate:(BOOL)a3;
-- (void)setHasMedicationInfoModifiedDate:(BOOL)a3;
-- (void)setHasMedicationsListModifiedDate:(BOOL)a3;
-- (void)setHasMedicationsListVersion:(BOOL)a3;
-- (void)setHasMedicationsListVersionModifiedDate:(BOOL)a3;
-- (void)setHasNameModifiedDate:(BOOL)a3;
-- (void)setHasPictureDataModifiedDate:(BOOL)a3;
-- (void)setHasPregnancyEstimatedDueDate:(BOOL)a3;
-- (void)setHasPregnancyEstimatedDueDateModifiedDate:(BOOL)a3;
-- (void)setHasPregnancyStartDate:(BOOL)a3;
-- (void)setHasPregnancyStartDateModifiedDate:(BOOL)a3;
-- (void)setHasPrimaryLanguageCodeModifiedDate:(BOOL)a3;
-- (void)setHasSchemaVersion:(BOOL)a3;
-- (void)setHasShareDuringEmergency:(BOOL)a3;
-- (void)setHasShareDuringEmergencyModifiedDate:(BOOL)a3;
-- (void)setHasWeightModifiedDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllergiesList:(id)list;
+- (void)addClinicalContacts:(id)contacts;
+- (void)addConditionsList:(id)list;
+- (void)addEmergencyContacts:(id)contacts;
+- (void)addMedicationsList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllergiesListVersion:(BOOL)version;
+- (void)setHasAllergiesListVersionModifiedDate:(BOOL)date;
+- (void)setHasAllergyInfoModifiedDate:(BOOL)date;
+- (void)setHasBloodType:(BOOL)type;
+- (void)setHasBloodTypeModifiedDate:(BOOL)date;
+- (void)setHasClinicalContactsModifiedDate:(BOOL)date;
+- (void)setHasConditionsListModifiedDate:(BOOL)date;
+- (void)setHasConditionsListVersion:(BOOL)version;
+- (void)setHasConditionsListVersionModifiedDate:(BOOL)date;
+- (void)setHasDateSaved:(BOOL)saved;
+- (void)setHasEmergencyContactsModifiedDate:(BOOL)date;
+- (void)setHasGregorianBirthdayModifiedDate:(BOOL)date;
+- (void)setHasHeightModifiedDate:(BOOL)date;
+- (void)setHasIsDisabled:(BOOL)disabled;
+- (void)setHasIsDisabledModifiedDate:(BOOL)date;
+- (void)setHasIsOrganDonor:(BOOL)donor;
+- (void)setHasIsOrganDonorModifiedDate:(BOOL)date;
+- (void)setHasMedicalConditionsModifiedDate:(BOOL)date;
+- (void)setHasMedicalNotesModifiedDate:(BOOL)date;
+- (void)setHasMedicationInfoModifiedDate:(BOOL)date;
+- (void)setHasMedicationsListModifiedDate:(BOOL)date;
+- (void)setHasMedicationsListVersion:(BOOL)version;
+- (void)setHasMedicationsListVersionModifiedDate:(BOOL)date;
+- (void)setHasNameModifiedDate:(BOOL)date;
+- (void)setHasPictureDataModifiedDate:(BOOL)date;
+- (void)setHasPregnancyEstimatedDueDate:(BOOL)date;
+- (void)setHasPregnancyEstimatedDueDateModifiedDate:(BOOL)date;
+- (void)setHasPregnancyStartDate:(BOOL)date;
+- (void)setHasPregnancyStartDateModifiedDate:(BOOL)date;
+- (void)setHasPrimaryLanguageCodeModifiedDate:(BOOL)date;
+- (void)setHasSchemaVersion:(BOOL)version;
+- (void)setHasShareDuringEmergency:(BOOL)emergency;
+- (void)setHasShareDuringEmergencyModifiedDate:(BOOL)date;
+- (void)setHasWeightModifiedDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicalIDData
 
-- (void)setHasDateSaved:(BOOL)a3
+- (void)setHasDateSaved:(BOOL)saved
 {
   v3 = 512;
-  if (!a3)
+  if (!saved)
   {
     v3 = 0;
   }
@@ -63,10 +63,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasSchemaVersion:(BOOL)a3
+- (void)setHasSchemaVersion:(BOOL)version
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -74,10 +74,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDisabled:(BOOL)a3
+- (void)setHasIsDisabled:(BOOL)disabled
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!disabled)
   {
     v3 = 0;
   }
@@ -85,10 +85,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDisabledModifiedDate:(BOOL)a3
+- (void)setHasIsDisabledModifiedDate:(BOOL)date
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -96,10 +96,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasPictureDataModifiedDate:(BOOL)a3
+- (void)setHasPictureDataModifiedDate:(BOOL)date
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -107,10 +107,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasNameModifiedDate:(BOOL)a3
+- (void)setHasNameModifiedDate:(BOOL)date
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -118,10 +118,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasGregorianBirthdayModifiedDate:(BOOL)a3
+- (void)setHasGregorianBirthdayModifiedDate:(BOOL)date
 {
   v3 = 2048;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -129,10 +129,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasHeightModifiedDate:(BOOL)a3
+- (void)setHasHeightModifiedDate:(BOOL)date
 {
   v3 = 4096;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -140,10 +140,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasWeightModifiedDate:(BOOL)a3
+- (void)setHasWeightModifiedDate:(BOOL)date
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -164,10 +164,10 @@
   }
 }
 
-- (void)setHasBloodType:(BOOL)a3
+- (void)setHasBloodType:(BOOL)type
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -175,50 +175,50 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (int)StringAsBloodType:(id)a3
+- (int)StringAsBloodType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotSet"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"NotSet"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APositive"])
+  else if ([typeCopy isEqualToString:@"APositive"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANegative"])
+  else if ([typeCopy isEqualToString:@"ANegative"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BPositive"])
+  else if ([typeCopy isEqualToString:@"BPositive"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BNegative"])
+  else if ([typeCopy isEqualToString:@"BNegative"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ABPositive"])
+  else if ([typeCopy isEqualToString:@"ABPositive"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ABNegative"])
+  else if ([typeCopy isEqualToString:@"ABNegative"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"OPositive"])
+  else if ([typeCopy isEqualToString:@"OPositive"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ONegative"])
+  else if ([typeCopy isEqualToString:@"ONegative"])
   {
     v4 = 8;
   }
@@ -231,10 +231,10 @@
   return v4;
 }
 
-- (void)setHasBloodTypeModifiedDate:(BOOL)a3
+- (void)setHasBloodTypeModifiedDate:(BOOL)date
 {
   v3 = 16;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -242,10 +242,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasIsOrganDonor:(BOOL)a3
+- (void)setHasIsOrganDonor:(BOOL)donor
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!donor)
   {
     v3 = 0;
   }
@@ -253,10 +253,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasIsOrganDonorModifiedDate:(BOOL)a3
+- (void)setHasIsOrganDonorModifiedDate:(BOOL)date
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -264,28 +264,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)addEmergencyContacts:(id)a3
+- (void)addEmergencyContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   emergencyContacts = self->_emergencyContacts;
-  v8 = v4;
+  v8 = contactsCopy;
   if (!emergencyContacts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_emergencyContacts;
     self->_emergencyContacts = v6;
 
-    v4 = v8;
+    contactsCopy = v8;
     emergencyContacts = self->_emergencyContacts;
   }
 
-  [(NSMutableArray *)emergencyContacts addObject:v4];
+  [(NSMutableArray *)emergencyContacts addObject:contactsCopy];
 }
 
-- (void)setHasEmergencyContactsModifiedDate:(BOOL)a3
+- (void)setHasEmergencyContactsModifiedDate:(BOOL)date
 {
   v3 = 1024;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -293,28 +293,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)addClinicalContacts:(id)a3
+- (void)addClinicalContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   clinicalContacts = self->_clinicalContacts;
-  v8 = v4;
+  v8 = contactsCopy;
   if (!clinicalContacts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_clinicalContacts;
     self->_clinicalContacts = v6;
 
-    v4 = v8;
+    contactsCopy = v8;
     clinicalContacts = self->_clinicalContacts;
   }
 
-  [(NSMutableArray *)clinicalContacts addObject:v4];
+  [(NSMutableArray *)clinicalContacts addObject:contactsCopy];
 }
 
-- (void)setHasClinicalContactsModifiedDate:(BOOL)a3
+- (void)setHasClinicalContactsModifiedDate:(BOOL)date
 {
   v3 = 32;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -322,10 +322,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasMedicalConditionsModifiedDate:(BOOL)a3
+- (void)setHasMedicalConditionsModifiedDate:(BOOL)date
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -333,10 +333,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasMedicalNotesModifiedDate:(BOOL)a3
+- (void)setHasMedicalNotesModifiedDate:(BOOL)date
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -344,10 +344,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasAllergyInfoModifiedDate:(BOOL)a3
+- (void)setHasAllergyInfoModifiedDate:(BOOL)date
 {
   v3 = 8;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -355,10 +355,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasMedicationInfoModifiedDate:(BOOL)a3
+- (void)setHasMedicationInfoModifiedDate:(BOOL)date
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -366,10 +366,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasShareDuringEmergency:(BOOL)a3
+- (void)setHasShareDuringEmergency:(BOOL)emergency
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!emergency)
   {
     v3 = 0;
   }
@@ -377,10 +377,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareDuringEmergencyModifiedDate:(BOOL)a3
+- (void)setHasShareDuringEmergencyModifiedDate:(BOOL)date
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -388,10 +388,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasPrimaryLanguageCodeModifiedDate:(BOOL)a3
+- (void)setHasPrimaryLanguageCodeModifiedDate:(BOOL)date
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -399,10 +399,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasPregnancyStartDate:(BOOL)a3
+- (void)setHasPregnancyStartDate:(BOOL)date
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -410,10 +410,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasPregnancyStartDateModifiedDate:(BOOL)a3
+- (void)setHasPregnancyStartDateModifiedDate:(BOOL)date
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -421,10 +421,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasPregnancyEstimatedDueDate:(BOOL)a3
+- (void)setHasPregnancyEstimatedDueDate:(BOOL)date
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -432,10 +432,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasPregnancyEstimatedDueDateModifiedDate:(BOOL)a3
+- (void)setHasPregnancyEstimatedDueDateModifiedDate:(BOOL)date
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -443,28 +443,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)addMedicationsList:(id)a3
+- (void)addMedicationsList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   medicationsLists = self->_medicationsLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!medicationsLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_medicationsLists;
     self->_medicationsLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     medicationsLists = self->_medicationsLists;
   }
 
-  [(NSMutableArray *)medicationsLists addObject:v4];
+  [(NSMutableArray *)medicationsLists addObject:listCopy];
 }
 
-- (void)setHasMedicationsListModifiedDate:(BOOL)a3
+- (void)setHasMedicationsListModifiedDate:(BOOL)date
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -472,10 +472,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasMedicationsListVersion:(BOOL)a3
+- (void)setHasMedicationsListVersion:(BOOL)version
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -483,10 +483,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasMedicationsListVersionModifiedDate:(BOOL)a3
+- (void)setHasMedicationsListVersionModifiedDate:(BOOL)date
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -494,28 +494,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)addAllergiesList:(id)a3
+- (void)addAllergiesList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   allergiesLists = self->_allergiesLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!allergiesLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_allergiesLists;
     self->_allergiesLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     allergiesLists = self->_allergiesLists;
   }
 
-  [(NSMutableArray *)allergiesLists addObject:v4];
+  [(NSMutableArray *)allergiesLists addObject:listCopy];
 }
 
-- (void)setHasAllergiesListVersion:(BOOL)a3
+- (void)setHasAllergiesListVersion:(BOOL)version
 {
   v3 = 2;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -523,10 +523,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasAllergiesListVersionModifiedDate:(BOOL)a3
+- (void)setHasAllergiesListVersionModifiedDate:(BOOL)date
 {
   v3 = 4;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -534,28 +534,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)addConditionsList:(id)a3
+- (void)addConditionsList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   conditionsLists = self->_conditionsLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!conditionsLists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_conditionsLists;
     self->_conditionsLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     conditionsLists = self->_conditionsLists;
   }
 
-  [(NSMutableArray *)conditionsLists addObject:v4];
+  [(NSMutableArray *)conditionsLists addObject:listCopy];
 }
 
-- (void)setHasConditionsListModifiedDate:(BOOL)a3
+- (void)setHasConditionsListModifiedDate:(BOOL)date
 {
   v3 = 64;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -563,10 +563,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasConditionsListVersion:(BOOL)a3
+- (void)setHasConditionsListVersion:(BOOL)version
 {
   v3 = 128;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -574,10 +574,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasConditionsListVersionModifiedDate:(BOOL)a3
+- (void)setHasConditionsListVersionModifiedDate:(BOOL)date
 {
   v3 = 256;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -591,8 +591,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicalIDData;
   v4 = [(HDCodableMedicalIDData *)&v8 description];
-  v5 = [(HDCodableMedicalIDData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicalIDData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -600,12 +600,12 @@
 - (id)dictionaryRepresentation
 {
   v125 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   medicalIDBytes = self->_medicalIDBytes;
   if (medicalIDBytes)
   {
-    [v3 setObject:medicalIDBytes forKey:@"medicalIDBytes"];
+    [dictionary setObject:medicalIDBytes forKey:@"medicalIDBytes"];
   }
 
   has = self->_has;
@@ -686,8 +686,8 @@ LABEL_8:
   gregorianBirthday = self->_gregorianBirthday;
   if (gregorianBirthday)
   {
-    v13 = [(HDCodableDateComponents *)gregorianBirthday dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"gregorianBirthday"];
+    dictionaryRepresentation = [(HDCodableDateComponents *)gregorianBirthday dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"gregorianBirthday"];
   }
 
   if ((*(&self->_has + 1) & 8) != 0)
@@ -699,8 +699,8 @@ LABEL_8:
   height = self->_height;
   if (height)
   {
-    v16 = [(HDCodableQuantity *)height dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"height"];
+    dictionaryRepresentation2 = [(HDCodableQuantity *)height dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"height"];
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
@@ -712,8 +712,8 @@ LABEL_8:
   weight = self->_weight;
   if (weight)
   {
-    v19 = [(HDCodableQuantity *)weight dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"weight"];
+    dictionaryRepresentation3 = [(HDCodableQuantity *)weight dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"weight"];
   }
 
   v20 = self->_has;
@@ -815,8 +815,8 @@ LABEL_32:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v116 + 1) + 8 * i) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation4 = [*(*(&v116 + 1) + 8 * i) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation4];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v116 objects:v124 count:16];
@@ -856,8 +856,8 @@ LABEL_32:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v112 + 1) + 8 * j) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation5 = [*(*(&v112 + 1) + 8 * j) dictionaryRepresentation];
+          [v30 addObject:dictionaryRepresentation5];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v112 objects:v123 count:16];
@@ -1047,8 +1047,8 @@ LABEL_80:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v108 + 1) + 8 * k) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation6 = [*(*(&v108 + 1) + 8 * k) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation6];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v108 objects:v122 count:16];
@@ -1117,8 +1117,8 @@ LABEL_93:
             objc_enumerationMutation(v60);
           }
 
-          v65 = [*(*(&v104 + 1) + 8 * m) dictionaryRepresentation];
-          [v59 addObject:v65];
+          dictionaryRepresentation7 = [*(*(&v104 + 1) + 8 * m) dictionaryRepresentation];
+          [v59 addObject:dictionaryRepresentation7];
         }
 
         v62 = [(NSMutableArray *)v60 countByEnumeratingWithState:&v104 objects:v121 count:16];
@@ -1187,8 +1187,8 @@ LABEL_106:
             objc_enumerationMutation(v69);
           }
 
-          v74 = [*(*(&v100 + 1) + 8 * n) dictionaryRepresentation];
-          [v68 addObject:v74];
+          dictionaryRepresentation8 = [*(*(&v100 + 1) + 8 * n) dictionaryRepresentation];
+          [v68 addObject:dictionaryRepresentation8];
         }
 
         v71 = [(NSMutableArray *)v69 countByEnumeratingWithState:&v100 objects:v120 count:16];
@@ -1244,10 +1244,10 @@ LABEL_119:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_medicalIDBytes)
   {
     PBDataWriterWriteDataField();
@@ -1830,21 +1830,21 @@ LABEL_109:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v33 = v4;
+  toCopy = to;
+  v33 = toCopy;
   if (self->_medicalIDBytes)
   {
-    [v4 setMedicalIDBytes:?];
-    v4 = v33;
+    [toCopy setMedicalIDBytes:?];
+    toCopy = v33;
   }
 
   has = self->_has;
   if ((*&has & 0x200) != 0)
   {
-    *(v4 + 10) = *&self->_dateSaved;
-    *(v4 + 404) |= 0x200uLL;
+    *(toCopy + 10) = *&self->_dateSaved;
+    *(toCopy + 404) |= 0x200uLL;
     has = self->_has;
     if ((*&has & 0x100000000) == 0)
     {
@@ -1863,8 +1863,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 96) = self->_schemaVersion;
-  *(v4 + 404) |= 0x100000000uLL;
+  *(toCopy + 96) = self->_schemaVersion;
+  *(toCopy + 404) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -1878,75 +1878,75 @@ LABEL_6:
   }
 
 LABEL_99:
-  v4[400] = self->_isDisabled;
-  *(v4 + 404) |= 0x200000000uLL;
+  toCopy[400] = self->_isDisabled;
+  *(toCopy + 404) |= 0x200000000uLL;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_7:
-    *(v4 + 14) = *&self->_isDisabledModifiedDate;
-    *(v4 + 404) |= 0x2000uLL;
+    *(toCopy + 14) = *&self->_isDisabledModifiedDate;
+    *(toCopy + 404) |= 0x2000uLL;
   }
 
 LABEL_8:
   if (self->_pictureData)
   {
     [v33 setPictureData:?];
-    v4 = v33;
+    toCopy = v33;
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
-    *(v4 + 24) = *&self->_pictureDataModifiedDate;
-    *(v4 + 404) |= 0x800000uLL;
+    *(toCopy + 24) = *&self->_pictureDataModifiedDate;
+    *(toCopy + 404) |= 0x800000uLL;
   }
 
   if (self->_name)
   {
     [v33 setName:?];
-    v4 = v33;
+    toCopy = v33;
   }
 
   if ((*(&self->_has + 2) & 0x40) != 0)
   {
-    *(v4 + 23) = *&self->_nameModifiedDate;
-    *(v4 + 404) |= 0x400000uLL;
+    *(toCopy + 23) = *&self->_nameModifiedDate;
+    *(toCopy + 404) |= 0x400000uLL;
   }
 
   if (self->_gregorianBirthday)
   {
     [v33 setGregorianBirthday:?];
-    v4 = v33;
+    toCopy = v33;
   }
 
   if ((*(&self->_has + 1) & 8) != 0)
   {
-    *(v4 + 12) = *&self->_gregorianBirthdayModifiedDate;
-    *(v4 + 404) |= 0x800uLL;
+    *(toCopy + 12) = *&self->_gregorianBirthdayModifiedDate;
+    *(toCopy + 404) |= 0x800uLL;
   }
 
   if (self->_height)
   {
     [v33 setHeight:?];
-    v4 = v33;
+    toCopy = v33;
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
-    *(v4 + 13) = *&self->_heightModifiedDate;
-    *(v4 + 404) |= 0x1000uLL;
+    *(toCopy + 13) = *&self->_heightModifiedDate;
+    *(toCopy + 404) |= 0x1000uLL;
   }
 
   if (self->_weight)
   {
     [v33 setWeight:?];
-    v4 = v33;
+    toCopy = v33;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x40000000) != 0)
   {
-    *(v4 + 31) = *&self->_weightModifiedDate;
-    *(v4 + 404) |= 0x40000000uLL;
+    *(toCopy + 31) = *&self->_weightModifiedDate;
+    *(toCopy + 404) |= 0x40000000uLL;
     v6 = self->_has;
     if ((*&v6 & 0x80000000) == 0)
     {
@@ -1965,8 +1965,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  *(v4 + 68) = self->_bloodType;
-  *(v4 + 404) |= 0x80000000uLL;
+  *(toCopy + 68) = self->_bloodType;
+  *(toCopy + 404) |= 0x80000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -1977,8 +1977,8 @@ LABEL_29:
     }
 
 LABEL_104:
-    *(v4 + 15) = self->_isOrganDonor;
-    *(v4 + 404) |= 0x4000uLL;
+    *(toCopy + 15) = self->_isOrganDonor;
+    *(toCopy + 404) |= 0x4000uLL;
     if ((*&self->_has & 0x8000) == 0)
     {
       goto LABEL_32;
@@ -1988,8 +1988,8 @@ LABEL_104:
   }
 
 LABEL_103:
-  *(v4 + 5) = *&self->_bloodTypeModifiedDate;
-  *(v4 + 404) |= 0x10uLL;
+  *(toCopy + 5) = *&self->_bloodTypeModifiedDate;
+  *(toCopy + 404) |= 0x10uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000) != 0)
   {
@@ -2000,18 +2000,18 @@ LABEL_30:
   if ((*&v6 & 0x8000) != 0)
   {
 LABEL_31:
-    *(v4 + 16) = *&self->_isOrganDonorModifiedDate;
-    *(v4 + 404) |= 0x8000uLL;
+    *(toCopy + 16) = *&self->_isOrganDonorModifiedDate;
+    *(toCopy + 404) |= 0x8000uLL;
   }
 
 LABEL_32:
   if ([(HDCodableMedicalIDData *)self emergencyContactsCount])
   {
     [v33 clearEmergencyContacts];
-    v7 = [(HDCodableMedicalIDData *)self emergencyContactsCount];
-    if (v7)
+    emergencyContactsCount = [(HDCodableMedicalIDData *)self emergencyContactsCount];
+    if (emergencyContactsCount)
     {
-      v8 = v7;
+      v8 = emergencyContactsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(HDCodableMedicalIDData *)self emergencyContactsAtIndex:i];
@@ -2029,10 +2029,10 @@ LABEL_32:
   if ([(HDCodableMedicalIDData *)self clinicalContactsCount])
   {
     [v33 clearClinicalContacts];
-    v11 = [(HDCodableMedicalIDData *)self clinicalContactsCount];
-    if (v11)
+    clinicalContactsCount = [(HDCodableMedicalIDData *)self clinicalContactsCount];
+    if (clinicalContactsCount)
     {
-      v12 = v11;
+      v12 = clinicalContactsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(HDCodableMedicalIDData *)self clinicalContactsAtIndex:j];
@@ -2195,10 +2195,10 @@ LABEL_70:
   if ([(HDCodableMedicalIDData *)self medicationsListsCount])
   {
     [v33 clearMedicationsLists];
-    v18 = [(HDCodableMedicalIDData *)self medicationsListsCount];
-    if (v18)
+    medicationsListsCount = [(HDCodableMedicalIDData *)self medicationsListsCount];
+    if (medicationsListsCount)
     {
-      v19 = v18;
+      v19 = medicationsListsCount;
       for (k = 0; k != v19; ++k)
       {
         v21 = [(HDCodableMedicalIDData *)self medicationsListAtIndex:k];
@@ -2246,10 +2246,10 @@ LABEL_78:
   if ([(HDCodableMedicalIDData *)self allergiesListsCount])
   {
     [v33 clearAllergiesLists];
-    v23 = [(HDCodableMedicalIDData *)self allergiesListsCount];
-    if (v23)
+    allergiesListsCount = [(HDCodableMedicalIDData *)self allergiesListsCount];
+    if (allergiesListsCount)
     {
-      v24 = v23;
+      v24 = allergiesListsCount;
       for (m = 0; m != v24; ++m)
       {
         v26 = [(HDCodableMedicalIDData *)self allergiesListAtIndex:m];
@@ -2297,10 +2297,10 @@ LABEL_86:
   if ([(HDCodableMedicalIDData *)self conditionsListsCount])
   {
     [v33 clearConditionsLists];
-    v28 = [(HDCodableMedicalIDData *)self conditionsListsCount];
-    if (v28)
+    conditionsListsCount = [(HDCodableMedicalIDData *)self conditionsListsCount];
+    if (conditionsListsCount)
     {
-      v29 = v28;
+      v29 = conditionsListsCount;
       for (n = 0; n != v29; ++n)
       {
         v31 = [(HDCodableMedicalIDData *)self conditionsListAtIndex:n];
@@ -2344,11 +2344,11 @@ LABEL_93:
 LABEL_94:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v93 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_medicalIDBytes copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_medicalIDBytes copyWithZone:zone];
   v7 = *(v5 + 328);
   *(v5 + 328) = v6;
 
@@ -2400,7 +2400,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSData *)self->_pictureData copyWithZone:a3];
+  v9 = [(NSData *)self->_pictureData copyWithZone:zone];
   v10 = *(v5 + 368);
   *(v5 + 368) = v9;
 
@@ -2410,7 +2410,7 @@ LABEL_6:
     *(v5 + 404) |= 0x800000uLL;
   }
 
-  v11 = [(NSString *)self->_name copyWithZone:a3];
+  v11 = [(NSString *)self->_name copyWithZone:zone];
   v12 = *(v5 + 360);
   *(v5 + 360) = v11;
 
@@ -2420,7 +2420,7 @@ LABEL_6:
     *(v5 + 404) |= 0x400000uLL;
   }
 
-  v13 = [(HDCodableDateComponents *)self->_gregorianBirthday copyWithZone:a3];
+  v13 = [(HDCodableDateComponents *)self->_gregorianBirthday copyWithZone:zone];
   v14 = *(v5 + 304);
   *(v5 + 304) = v13;
 
@@ -2430,7 +2430,7 @@ LABEL_6:
     *(v5 + 404) |= 0x800uLL;
   }
 
-  v15 = [(HDCodableQuantity *)self->_height copyWithZone:a3];
+  v15 = [(HDCodableQuantity *)self->_height copyWithZone:zone];
   v16 = *(v5 + 312);
   *(v5 + 312) = v15;
 
@@ -2440,7 +2440,7 @@ LABEL_6:
     *(v5 + 404) |= 0x1000uLL;
   }
 
-  v17 = [(HDCodableQuantity *)self->_weight copyWithZone:a3];
+  v17 = [(HDCodableQuantity *)self->_weight copyWithZone:zone];
   v18 = *(v5 + 392);
   *(v5 + 392) = v17;
 
@@ -2527,7 +2527,7 @@ LABEL_20:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v84 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v84 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addEmergencyContacts:v25];
 
         ++v24;
@@ -2566,7 +2566,7 @@ LABEL_20:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v80 + 1) + 8 * v30) copyWithZone:a3];
+        v31 = [*(*(&v80 + 1) + 8 * v30) copyWithZone:zone];
         [v5 addClinicalContacts:v31];
 
         ++v30;
@@ -2585,7 +2585,7 @@ LABEL_20:
     *(v5 + 404) |= 0x20uLL;
   }
 
-  v32 = [(NSString *)self->_medicalConditions copyWithZone:a3];
+  v32 = [(NSString *)self->_medicalConditions copyWithZone:zone];
   v33 = *(v5 + 320);
   *(v5 + 320) = v32;
 
@@ -2595,7 +2595,7 @@ LABEL_20:
     *(v5 + 404) |= 0x10000uLL;
   }
 
-  v34 = [(NSString *)self->_medicalNotes copyWithZone:a3];
+  v34 = [(NSString *)self->_medicalNotes copyWithZone:zone];
   v35 = *(v5 + 336);
   *(v5 + 336) = v34;
 
@@ -2605,7 +2605,7 @@ LABEL_20:
     *(v5 + 404) |= 0x20000uLL;
   }
 
-  v36 = [(NSString *)self->_allergyInfo copyWithZone:a3];
+  v36 = [(NSString *)self->_allergyInfo copyWithZone:zone];
   v37 = *(v5 + 264);
   *(v5 + 264) = v36;
 
@@ -2615,7 +2615,7 @@ LABEL_20:
     *(v5 + 404) |= 8uLL;
   }
 
-  v38 = [(NSString *)self->_medicationInfo copyWithZone:a3];
+  v38 = [(NSString *)self->_medicationInfo copyWithZone:zone];
   v39 = *(v5 + 344);
   *(v5 + 344) = v38;
 
@@ -2652,7 +2652,7 @@ LABEL_47:
   }
 
 LABEL_48:
-  v41 = [(NSString *)self->_primaryLanguageCode copyWithZone:a3];
+  v41 = [(NSString *)self->_primaryLanguageCode copyWithZone:zone];
   v42 = *(v5 + 376);
   *(v5 + 376) = v41;
 
@@ -2739,7 +2739,7 @@ LABEL_54:
           objc_enumerationMutation(v44);
         }
 
-        v49 = [*(*(&v76 + 1) + 8 * v48) copyWithZone:a3];
+        v49 = [*(*(&v76 + 1) + 8 * v48) copyWithZone:zone];
         [v5 addMedicationsList:v49];
 
         ++v48;
@@ -2805,7 +2805,7 @@ LABEL_65:
           objc_enumerationMutation(v51);
         }
 
-        v56 = [*(*(&v72 + 1) + 8 * v55) copyWithZone:a3];
+        v56 = [*(*(&v72 + 1) + 8 * v55) copyWithZone:zone];
         [v5 addAllergiesList:v56];
 
         ++v55;
@@ -2871,7 +2871,7 @@ LABEL_76:
           objc_enumerationMutation(v58);
         }
 
-        v63 = [*(*(&v68 + 1) + 8 * v62) copyWithZone:{a3, v68}];
+        v63 = [*(*(&v68 + 1) + 8 * v62) copyWithZone:{zone, v68}];
         [v5 addConditionsList:v63];
 
         ++v62;
@@ -2926,16 +2926,16 @@ LABEL_87:
   return v65;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_230;
   }
 
   medicalIDBytes = self->_medicalIDBytes;
-  if (medicalIDBytes | *(v4 + 41))
+  if (medicalIDBytes | *(equalCopy + 41))
   {
     if (![(NSData *)medicalIDBytes isEqual:?])
     {
@@ -2944,10 +2944,10 @@ LABEL_87:
   }
 
   has = self->_has;
-  v7 = *(v4 + 404);
+  v7 = *(equalCopy + 404);
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_dateSaved != *(v4 + 10))
+    if ((v7 & 0x200) == 0 || self->_dateSaved != *(equalCopy + 10))
     {
       goto LABEL_230;
     }
@@ -2960,7 +2960,7 @@ LABEL_87:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v7 & 0x100000000) == 0 || self->_schemaVersion != *(v4 + 96))
+    if ((v7 & 0x100000000) == 0 || self->_schemaVersion != *(equalCopy + 96))
     {
       goto LABEL_230;
     }
@@ -2978,16 +2978,16 @@ LABEL_87:
       goto LABEL_230;
     }
 
-    v8 = v4[400];
+    v8 = equalCopy[400];
     if (self->_isDisabled)
     {
-      if ((v4[400] & 1) == 0)
+      if ((equalCopy[400] & 1) == 0)
       {
         goto LABEL_230;
       }
     }
 
-    else if (v4[400])
+    else if (equalCopy[400])
     {
       goto LABEL_230;
     }
@@ -3000,7 +3000,7 @@ LABEL_87:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_isDisabledModifiedDate != *(v4 + 14))
+    if ((v7 & 0x2000) == 0 || self->_isDisabledModifiedDate != *(equalCopy + 14))
     {
       goto LABEL_230;
     }
@@ -3012,7 +3012,7 @@ LABEL_87:
   }
 
   pictureData = self->_pictureData;
-  if (pictureData | *(v4 + 46))
+  if (pictureData | *(equalCopy + 46))
   {
     if (![(NSData *)pictureData isEqual:?])
     {
@@ -3020,12 +3020,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v7 & 0x800000) == 0 || self->_pictureDataModifiedDate != *(v4 + 24))
+    if ((v7 & 0x800000) == 0 || self->_pictureDataModifiedDate != *(equalCopy + 24))
     {
       goto LABEL_230;
     }
@@ -3037,7 +3037,7 @@ LABEL_87:
   }
 
   name = self->_name;
-  if (name | *(v4 + 45))
+  if (name | *(equalCopy + 45))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -3045,12 +3045,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_nameModifiedDate != *(v4 + 23))
+    if ((v7 & 0x400000) == 0 || self->_nameModifiedDate != *(equalCopy + 23))
     {
       goto LABEL_230;
     }
@@ -3062,7 +3062,7 @@ LABEL_87:
   }
 
   gregorianBirthday = self->_gregorianBirthday;
-  if (gregorianBirthday | *(v4 + 38))
+  if (gregorianBirthday | *(equalCopy + 38))
   {
     if (![(HDCodableDateComponents *)gregorianBirthday isEqual:?])
     {
@@ -3070,12 +3070,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_gregorianBirthdayModifiedDate != *(v4 + 12))
+    if ((v7 & 0x800) == 0 || self->_gregorianBirthdayModifiedDate != *(equalCopy + 12))
     {
       goto LABEL_230;
     }
@@ -3087,7 +3087,7 @@ LABEL_87:
   }
 
   height = self->_height;
-  if (height | *(v4 + 39))
+  if (height | *(equalCopy + 39))
   {
     if (![(HDCodableQuantity *)height isEqual:?])
     {
@@ -3095,12 +3095,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_heightModifiedDate != *(v4 + 13))
+    if ((v7 & 0x1000) == 0 || self->_heightModifiedDate != *(equalCopy + 13))
     {
       goto LABEL_230;
     }
@@ -3112,7 +3112,7 @@ LABEL_87:
   }
 
   weight = self->_weight;
-  if (weight | *(v4 + 49))
+  if (weight | *(equalCopy + 49))
   {
     if (![(HDCodableQuantity *)weight isEqual:?])
     {
@@ -3120,12 +3120,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v7 & 0x40000000) == 0 || self->_weightModifiedDate != *(v4 + 31))
+    if ((v7 & 0x40000000) == 0 || self->_weightModifiedDate != *(equalCopy + 31))
     {
       goto LABEL_230;
     }
@@ -3138,7 +3138,7 @@ LABEL_87:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v7 & 0x80000000) == 0 || self->_bloodType != *(v4 + 68))
+    if ((v7 & 0x80000000) == 0 || self->_bloodType != *(equalCopy + 68))
     {
       goto LABEL_230;
     }
@@ -3151,7 +3151,7 @@ LABEL_87:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_bloodTypeModifiedDate != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_bloodTypeModifiedDate != *(equalCopy + 5))
     {
       goto LABEL_230;
     }
@@ -3164,7 +3164,7 @@ LABEL_87:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_isOrganDonor != *(v4 + 15))
+    if ((v7 & 0x4000) == 0 || self->_isOrganDonor != *(equalCopy + 15))
     {
       goto LABEL_230;
     }
@@ -3177,7 +3177,7 @@ LABEL_87:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_isOrganDonorModifiedDate != *(v4 + 16))
+    if ((v7 & 0x8000) == 0 || self->_isOrganDonorModifiedDate != *(equalCopy + 16))
     {
       goto LABEL_230;
     }
@@ -3189,7 +3189,7 @@ LABEL_87:
   }
 
   emergencyContacts = self->_emergencyContacts;
-  if (emergencyContacts | *(v4 + 37))
+  if (emergencyContacts | *(equalCopy + 37))
   {
     if (![(NSMutableArray *)emergencyContacts isEqual:?])
     {
@@ -3197,12 +3197,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_emergencyContactsModifiedDate != *(v4 + 11))
+    if ((v7 & 0x400) == 0 || self->_emergencyContactsModifiedDate != *(equalCopy + 11))
     {
       goto LABEL_230;
     }
@@ -3214,7 +3214,7 @@ LABEL_87:
   }
 
   clinicalContacts = self->_clinicalContacts;
-  if (clinicalContacts | *(v4 + 35))
+  if (clinicalContacts | *(equalCopy + 35))
   {
     if (![(NSMutableArray *)clinicalContacts isEqual:?])
     {
@@ -3222,12 +3222,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_clinicalContactsModifiedDate != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_clinicalContactsModifiedDate != *(equalCopy + 6))
     {
       goto LABEL_230;
     }
@@ -3239,7 +3239,7 @@ LABEL_87:
   }
 
   medicalConditions = self->_medicalConditions;
-  if (medicalConditions | *(v4 + 40))
+  if (medicalConditions | *(equalCopy + 40))
   {
     if (![(NSString *)medicalConditions isEqual:?])
     {
@@ -3247,12 +3247,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_medicalConditionsModifiedDate != *(v4 + 17))
+    if ((v7 & 0x10000) == 0 || self->_medicalConditionsModifiedDate != *(equalCopy + 17))
     {
       goto LABEL_230;
     }
@@ -3264,7 +3264,7 @@ LABEL_87:
   }
 
   medicalNotes = self->_medicalNotes;
-  if (medicalNotes | *(v4 + 42))
+  if (medicalNotes | *(equalCopy + 42))
   {
     if (![(NSString *)medicalNotes isEqual:?])
     {
@@ -3272,12 +3272,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_medicalNotesModifiedDate != *(v4 + 18))
+    if ((v7 & 0x20000) == 0 || self->_medicalNotesModifiedDate != *(equalCopy + 18))
     {
       goto LABEL_230;
     }
@@ -3289,7 +3289,7 @@ LABEL_87:
   }
 
   allergyInfo = self->_allergyInfo;
-  if (allergyInfo | *(v4 + 33))
+  if (allergyInfo | *(equalCopy + 33))
   {
     if (![(NSString *)allergyInfo isEqual:?])
     {
@@ -3297,12 +3297,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_allergyInfoModifiedDate != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_allergyInfoModifiedDate != *(equalCopy + 4))
     {
       goto LABEL_230;
     }
@@ -3314,7 +3314,7 @@ LABEL_87:
   }
 
   medicationInfo = self->_medicationInfo;
-  if (medicationInfo | *(v4 + 43))
+  if (medicationInfo | *(equalCopy + 43))
   {
     if (![(NSString *)medicationInfo isEqual:?])
     {
@@ -3322,12 +3322,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_medicationInfoModifiedDate != *(v4 + 19))
+    if ((v7 & 0x40000) == 0 || self->_medicationInfoModifiedDate != *(equalCopy + 19))
     {
       goto LABEL_230;
     }
@@ -3345,16 +3345,16 @@ LABEL_87:
       goto LABEL_230;
     }
 
-    v20 = v4[401];
+    v20 = equalCopy[401];
     if (self->_shareDuringEmergency)
     {
-      if ((v4[401] & 1) == 0)
+      if ((equalCopy[401] & 1) == 0)
       {
         goto LABEL_230;
       }
     }
 
-    else if (v4[401])
+    else if (equalCopy[401])
     {
       goto LABEL_230;
     }
@@ -3367,7 +3367,7 @@ LABEL_87:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v7 & 0x20000000) == 0 || self->_shareDuringEmergencyModifiedDate != *(v4 + 30))
+    if ((v7 & 0x20000000) == 0 || self->_shareDuringEmergencyModifiedDate != *(equalCopy + 30))
     {
       goto LABEL_230;
     }
@@ -3379,7 +3379,7 @@ LABEL_87:
   }
 
   primaryLanguageCode = self->_primaryLanguageCode;
-  if (primaryLanguageCode | *(v4 + 47))
+  if (primaryLanguageCode | *(equalCopy + 47))
   {
     if (![(NSString *)primaryLanguageCode isEqual:?])
     {
@@ -3387,12 +3387,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v7 & 0x10000000) == 0 || self->_primaryLanguageCodeModifiedDate != *(v4 + 29))
+    if ((v7 & 0x10000000) == 0 || self->_primaryLanguageCodeModifiedDate != *(equalCopy + 29))
     {
       goto LABEL_230;
     }
@@ -3405,7 +3405,7 @@ LABEL_87:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v7 & 0x4000000) == 0 || self->_pregnancyStartDate != *(v4 + 27))
+    if ((v7 & 0x4000000) == 0 || self->_pregnancyStartDate != *(equalCopy + 27))
     {
       goto LABEL_230;
     }
@@ -3418,7 +3418,7 @@ LABEL_87:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v7 & 0x8000000) == 0 || self->_pregnancyStartDateModifiedDate != *(v4 + 28))
+    if ((v7 & 0x8000000) == 0 || self->_pregnancyStartDateModifiedDate != *(equalCopy + 28))
     {
       goto LABEL_230;
     }
@@ -3431,7 +3431,7 @@ LABEL_87:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v7 & 0x1000000) == 0 || self->_pregnancyEstimatedDueDate != *(v4 + 25))
+    if ((v7 & 0x1000000) == 0 || self->_pregnancyEstimatedDueDate != *(equalCopy + 25))
     {
       goto LABEL_230;
     }
@@ -3444,7 +3444,7 @@ LABEL_87:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v7 & 0x2000000) == 0 || self->_pregnancyEstimatedDueDateModifiedDate != *(v4 + 26))
+    if ((v7 & 0x2000000) == 0 || self->_pregnancyEstimatedDueDateModifiedDate != *(equalCopy + 26))
     {
       goto LABEL_230;
     }
@@ -3456,7 +3456,7 @@ LABEL_87:
   }
 
   medicationsLists = self->_medicationsLists;
-  if (medicationsLists | *(v4 + 44))
+  if (medicationsLists | *(equalCopy + 44))
   {
     if (![(NSMutableArray *)medicationsLists isEqual:?])
     {
@@ -3464,12 +3464,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_medicationsListModifiedDate != *(v4 + 20))
+    if ((v7 & 0x80000) == 0 || self->_medicationsListModifiedDate != *(equalCopy + 20))
     {
       goto LABEL_230;
     }
@@ -3482,7 +3482,7 @@ LABEL_87:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_medicationsListVersion != *(v4 + 21))
+    if ((v7 & 0x100000) == 0 || self->_medicationsListVersion != *(equalCopy + 21))
     {
       goto LABEL_230;
     }
@@ -3495,7 +3495,7 @@ LABEL_87:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_medicationsListVersionModifiedDate != *(v4 + 22))
+    if ((v7 & 0x200000) == 0 || self->_medicationsListVersionModifiedDate != *(equalCopy + 22))
     {
       goto LABEL_230;
     }
@@ -3507,7 +3507,7 @@ LABEL_87:
   }
 
   allergiesLists = self->_allergiesLists;
-  if (allergiesLists | *(v4 + 32))
+  if (allergiesLists | *(equalCopy + 32))
   {
     if (![(NSMutableArray *)allergiesLists isEqual:?])
     {
@@ -3515,12 +3515,12 @@ LABEL_87:
     }
 
     has = self->_has;
-    v7 = *(v4 + 404);
+    v7 = *(equalCopy + 404);
   }
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_allergiesListModifiedDate != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_allergiesListModifiedDate != *(equalCopy + 1))
     {
       goto LABEL_230;
     }
@@ -3533,7 +3533,7 @@ LABEL_87:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_allergiesListVersion != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_allergiesListVersion != *(equalCopy + 2))
     {
       goto LABEL_230;
     }
@@ -3546,7 +3546,7 @@ LABEL_87:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_allergiesListVersionModifiedDate != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_allergiesListVersionModifiedDate != *(equalCopy + 3))
     {
       goto LABEL_230;
     }
@@ -3558,12 +3558,12 @@ LABEL_87:
   }
 
   conditionsLists = self->_conditionsLists;
-  if (conditionsLists | *(v4 + 36))
+  if (conditionsLists | *(equalCopy + 36))
   {
     if ([(NSMutableArray *)conditionsLists isEqual:?])
     {
       has = self->_has;
-      v7 = *(v4 + 404);
+      v7 = *(equalCopy + 404);
       goto LABEL_215;
     }
 
@@ -3575,7 +3575,7 @@ LABEL_230:
 LABEL_215:
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_conditionsListModifiedDate != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_conditionsListModifiedDate != *(equalCopy + 7))
     {
       goto LABEL_230;
     }
@@ -3588,7 +3588,7 @@ LABEL_215:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_conditionsListVersion != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_conditionsListVersion != *(equalCopy + 8))
     {
       goto LABEL_230;
     }
@@ -3601,7 +3601,7 @@ LABEL_215:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_conditionsListVersionModifiedDate != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_conditionsListVersionModifiedDate != *(equalCopy + 9))
     {
       goto LABEL_230;
     }
@@ -4673,21 +4673,21 @@ LABEL_229:
   return v197 ^ v198 ^ v196 ^ v195 ^ v194 ^ v193 ^ v192 ^ v191 ^ v190 ^ v189 ^ v188 ^ v187 ^ v186 ^ v185 ^ v184 ^ v183 ^ v182 ^ v181 ^ v180 ^ v179 ^ v178 ^ v177 ^ v176 ^ v175 ^ v174 ^ v173 ^ v172 ^ v171 ^ v170 ^ v169 ^ v168 ^ v167 ^ v166 ^ v165 ^ v164 ^ v163 ^ v162 ^ v161 ^ v117 ^ v160 ^ v124 ^ v159 ^ v131 ^ v132 ^ v136 ^ v140 ^ v144 ^ v145 ^ v149 ^ v153 ^ v157;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 41))
+  fromCopy = from;
+  if (*(fromCopy + 41))
   {
     [(HDCodableMedicalIDData *)self setMedicalIDBytes:?];
   }
 
-  v5 = *(v4 + 404);
+  v5 = *(fromCopy + 404);
   if ((v5 & 0x200) != 0)
   {
-    self->_dateSaved = *(v4 + 10);
+    self->_dateSaved = *(fromCopy + 10);
     *&self->_has |= 0x200uLL;
-    v5 = *(v4 + 404);
+    v5 = *(fromCopy + 404);
     if ((v5 & 0x100000000) == 0)
     {
 LABEL_5:
@@ -4705,9 +4705,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_schemaVersion = *(v4 + 96);
+  self->_schemaVersion = *(fromCopy + 96);
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 404);
+  v5 = *(fromCopy + 404);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_6:
@@ -4720,40 +4720,40 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_isDisabled = v4[400];
+  self->_isDisabled = fromCopy[400];
   *&self->_has |= 0x200000000uLL;
-  if ((*(v4 + 404) & 0x2000) != 0)
+  if ((*(fromCopy + 404) & 0x2000) != 0)
   {
 LABEL_7:
-    self->_isDisabledModifiedDate = *(v4 + 14);
+    self->_isDisabledModifiedDate = *(fromCopy + 14);
     *&self->_has |= 0x2000uLL;
   }
 
 LABEL_8:
-  if (*(v4 + 46))
+  if (*(fromCopy + 46))
   {
     [(HDCodableMedicalIDData *)self setPictureData:?];
   }
 
-  if (v4[406] < 0)
+  if (fromCopy[406] < 0)
   {
-    self->_pictureDataModifiedDate = *(v4 + 24);
+    self->_pictureDataModifiedDate = *(fromCopy + 24);
     *&self->_has |= 0x800000uLL;
   }
 
-  if (*(v4 + 45))
+  if (*(fromCopy + 45))
   {
     [(HDCodableMedicalIDData *)self setName:?];
   }
 
-  if ((v4[406] & 0x40) != 0)
+  if ((fromCopy[406] & 0x40) != 0)
   {
-    self->_nameModifiedDate = *(v4 + 23);
+    self->_nameModifiedDate = *(fromCopy + 23);
     *&self->_has |= 0x400000uLL;
   }
 
   gregorianBirthday = self->_gregorianBirthday;
-  v7 = *(v4 + 38);
+  v7 = *(fromCopy + 38);
   if (gregorianBirthday)
   {
     if (v7)
@@ -4767,14 +4767,14 @@ LABEL_8:
     [(HDCodableMedicalIDData *)self setGregorianBirthday:?];
   }
 
-  if ((v4[405] & 8) != 0)
+  if ((fromCopy[405] & 8) != 0)
   {
-    self->_gregorianBirthdayModifiedDate = *(v4 + 12);
+    self->_gregorianBirthdayModifiedDate = *(fromCopy + 12);
     *&self->_has |= 0x800uLL;
   }
 
   height = self->_height;
-  v9 = *(v4 + 39);
+  v9 = *(fromCopy + 39);
   if (height)
   {
     if (v9)
@@ -4788,14 +4788,14 @@ LABEL_8:
     [(HDCodableMedicalIDData *)self setHeight:?];
   }
 
-  if ((v4[405] & 0x10) != 0)
+  if ((fromCopy[405] & 0x10) != 0)
   {
-    self->_heightModifiedDate = *(v4 + 13);
+    self->_heightModifiedDate = *(fromCopy + 13);
     *&self->_has |= 0x1000uLL;
   }
 
   weight = self->_weight;
-  v11 = *(v4 + 49);
+  v11 = *(fromCopy + 49);
   if (weight)
   {
     if (v11)
@@ -4809,12 +4809,12 @@ LABEL_8:
     [(HDCodableMedicalIDData *)self setWeight:?];
   }
 
-  v12 = *(v4 + 404);
+  v12 = *(fromCopy + 404);
   if ((v12 & 0x40000000) != 0)
   {
-    self->_weightModifiedDate = *(v4 + 31);
+    self->_weightModifiedDate = *(fromCopy + 31);
     *&self->_has |= 0x40000000uLL;
-    v12 = *(v4 + 404);
+    v12 = *(fromCopy + 404);
     if ((v12 & 0x80000000) == 0)
     {
 LABEL_41:
@@ -4832,9 +4832,9 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  self->_bloodType = *(v4 + 68);
+  self->_bloodType = *(fromCopy + 68);
   *&self->_has |= 0x80000000uLL;
-  v12 = *(v4 + 404);
+  v12 = *(fromCopy + 404);
   if ((v12 & 0x10) == 0)
   {
 LABEL_42:
@@ -4847,9 +4847,9 @@ LABEL_42:
   }
 
 LABEL_125:
-  self->_bloodTypeModifiedDate = *(v4 + 5);
+  self->_bloodTypeModifiedDate = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v12 = *(v4 + 404);
+  v12 = *(fromCopy + 404);
   if ((v12 & 0x4000) == 0)
   {
 LABEL_43:
@@ -4862,12 +4862,12 @@ LABEL_43:
   }
 
 LABEL_126:
-  self->_isOrganDonor = *(v4 + 15);
+  self->_isOrganDonor = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  if ((*(v4 + 404) & 0x8000) != 0)
+  if ((*(fromCopy + 404) & 0x8000) != 0)
   {
 LABEL_44:
-    self->_isOrganDonorModifiedDate = *(v4 + 16);
+    self->_isOrganDonorModifiedDate = *(fromCopy + 16);
     *&self->_has |= 0x8000uLL;
   }
 
@@ -4876,7 +4876,7 @@ LABEL_45:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v13 = *(v4 + 37);
+  v13 = *(fromCopy + 37);
   v14 = [v13 countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (v14)
   {
@@ -4900,9 +4900,9 @@ LABEL_45:
     while (v15);
   }
 
-  if ((v4[405] & 4) != 0)
+  if ((fromCopy[405] & 4) != 0)
   {
-    self->_emergencyContactsModifiedDate = *(v4 + 11);
+    self->_emergencyContactsModifiedDate = *(fromCopy + 11);
     *&self->_has |= 0x400uLL;
   }
 
@@ -4910,7 +4910,7 @@ LABEL_45:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v18 = *(v4 + 35);
+  v18 = *(fromCopy + 35);
   v19 = [v18 countByEnumeratingWithState:&v56 objects:v67 count:16];
   if (v19)
   {
@@ -4934,56 +4934,56 @@ LABEL_45:
     while (v20);
   }
 
-  if ((v4[404] & 0x20) != 0)
+  if ((fromCopy[404] & 0x20) != 0)
   {
-    self->_clinicalContactsModifiedDate = *(v4 + 6);
+    self->_clinicalContactsModifiedDate = *(fromCopy + 6);
     *&self->_has |= 0x20uLL;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
     [(HDCodableMedicalIDData *)self setMedicalConditions:?];
   }
 
-  if (v4[406])
+  if (fromCopy[406])
   {
-    self->_medicalConditionsModifiedDate = *(v4 + 17);
+    self->_medicalConditionsModifiedDate = *(fromCopy + 17);
     *&self->_has |= 0x10000uLL;
   }
 
-  if (*(v4 + 42))
+  if (*(fromCopy + 42))
   {
     [(HDCodableMedicalIDData *)self setMedicalNotes:?];
   }
 
-  if ((v4[406] & 2) != 0)
+  if ((fromCopy[406] & 2) != 0)
   {
-    self->_medicalNotesModifiedDate = *(v4 + 18);
+    self->_medicalNotesModifiedDate = *(fromCopy + 18);
     *&self->_has |= 0x20000uLL;
   }
 
-  if (*(v4 + 33))
+  if (*(fromCopy + 33))
   {
     [(HDCodableMedicalIDData *)self setAllergyInfo:?];
   }
 
-  if ((v4[404] & 8) != 0)
+  if ((fromCopy[404] & 8) != 0)
   {
-    self->_allergyInfoModifiedDate = *(v4 + 4);
+    self->_allergyInfoModifiedDate = *(fromCopy + 4);
     *&self->_has |= 8uLL;
   }
 
-  if (*(v4 + 43))
+  if (*(fromCopy + 43))
   {
     [(HDCodableMedicalIDData *)self setMedicationInfo:?];
   }
 
-  v23 = *(v4 + 404);
+  v23 = *(fromCopy + 404);
   if ((v23 & 0x40000) != 0)
   {
-    self->_medicationInfoModifiedDate = *(v4 + 19);
+    self->_medicationInfoModifiedDate = *(fromCopy + 19);
     *&self->_has |= 0x40000uLL;
-    v23 = *(v4 + 404);
+    v23 = *(fromCopy + 404);
     if ((v23 & 0x400000000) == 0)
     {
 LABEL_79:
@@ -5001,27 +5001,27 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  self->_shareDuringEmergency = v4[401];
+  self->_shareDuringEmergency = fromCopy[401];
   *&self->_has |= 0x400000000uLL;
-  if ((*(v4 + 404) & 0x20000000) != 0)
+  if ((*(fromCopy + 404) & 0x20000000) != 0)
   {
 LABEL_80:
-    self->_shareDuringEmergencyModifiedDate = *(v4 + 30);
+    self->_shareDuringEmergencyModifiedDate = *(fromCopy + 30);
     *&self->_has |= 0x20000000uLL;
   }
 
 LABEL_81:
-  if (*(v4 + 47))
+  if (*(fromCopy + 47))
   {
     [(HDCodableMedicalIDData *)self setPrimaryLanguageCode:?];
   }
 
-  v24 = *(v4 + 404);
+  v24 = *(fromCopy + 404);
   if ((v24 & 0x10000000) != 0)
   {
-    self->_primaryLanguageCodeModifiedDate = *(v4 + 29);
+    self->_primaryLanguageCodeModifiedDate = *(fromCopy + 29);
     *&self->_has |= 0x10000000uLL;
-    v24 = *(v4 + 404);
+    v24 = *(fromCopy + 404);
     if ((v24 & 0x4000000) == 0)
     {
 LABEL_85:
@@ -5039,9 +5039,9 @@ LABEL_85:
     goto LABEL_85;
   }
 
-  self->_pregnancyStartDate = *(v4 + 27);
+  self->_pregnancyStartDate = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v24 = *(v4 + 404);
+  v24 = *(fromCopy + 404);
   if ((v24 & 0x8000000) == 0)
   {
 LABEL_86:
@@ -5054,9 +5054,9 @@ LABEL_86:
   }
 
 LABEL_133:
-  self->_pregnancyStartDateModifiedDate = *(v4 + 28);
+  self->_pregnancyStartDateModifiedDate = *(fromCopy + 28);
   *&self->_has |= 0x8000000uLL;
-  v24 = *(v4 + 404);
+  v24 = *(fromCopy + 404);
   if ((v24 & 0x1000000) == 0)
   {
 LABEL_87:
@@ -5069,12 +5069,12 @@ LABEL_87:
   }
 
 LABEL_134:
-  self->_pregnancyEstimatedDueDate = *(v4 + 25);
+  self->_pregnancyEstimatedDueDate = *(fromCopy + 25);
   *&self->_has |= 0x1000000uLL;
-  if ((*(v4 + 404) & 0x2000000) != 0)
+  if ((*(fromCopy + 404) & 0x2000000) != 0)
   {
 LABEL_88:
-    self->_pregnancyEstimatedDueDateModifiedDate = *(v4 + 26);
+    self->_pregnancyEstimatedDueDateModifiedDate = *(fromCopy + 26);
     *&self->_has |= 0x2000000uLL;
   }
 
@@ -5083,7 +5083,7 @@ LABEL_89:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v25 = *(v4 + 44);
+  v25 = *(fromCopy + 44);
   v26 = [v25 countByEnumeratingWithState:&v52 objects:v66 count:16];
   if (v26)
   {
@@ -5107,12 +5107,12 @@ LABEL_89:
     while (v27);
   }
 
-  v30 = *(v4 + 404);
+  v30 = *(fromCopy + 404);
   if ((v30 & 0x80000) != 0)
   {
-    self->_medicationsListModifiedDate = *(v4 + 20);
+    self->_medicationsListModifiedDate = *(fromCopy + 20);
     *&self->_has |= 0x80000uLL;
-    v30 = *(v4 + 404);
+    v30 = *(fromCopy + 404);
     if ((v30 & 0x100000) == 0)
     {
 LABEL_98:
@@ -5130,12 +5130,12 @@ LABEL_98:
     goto LABEL_98;
   }
 
-  self->_medicationsListVersion = *(v4 + 21);
+  self->_medicationsListVersion = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  if ((*(v4 + 404) & 0x200000) != 0)
+  if ((*(fromCopy + 404) & 0x200000) != 0)
   {
 LABEL_99:
-    self->_medicationsListVersionModifiedDate = *(v4 + 22);
+    self->_medicationsListVersionModifiedDate = *(fromCopy + 22);
     *&self->_has |= 0x200000uLL;
   }
 
@@ -5144,7 +5144,7 @@ LABEL_100:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v31 = *(v4 + 32);
+  v31 = *(fromCopy + 32);
   v32 = [v31 countByEnumeratingWithState:&v48 objects:v65 count:16];
   if (v32)
   {
@@ -5168,12 +5168,12 @@ LABEL_100:
     while (v33);
   }
 
-  v36 = *(v4 + 404);
+  v36 = *(fromCopy + 404);
   if (v36)
   {
-    self->_allergiesListModifiedDate = *(v4 + 1);
+    self->_allergiesListModifiedDate = *(fromCopy + 1);
     *&self->_has |= 1uLL;
-    v36 = *(v4 + 404);
+    v36 = *(fromCopy + 404);
     if ((v36 & 2) == 0)
     {
 LABEL_109:
@@ -5191,12 +5191,12 @@ LABEL_109:
     goto LABEL_109;
   }
 
-  self->_allergiesListVersion = *(v4 + 2);
+  self->_allergiesListVersion = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  if ((*(v4 + 404) & 4) != 0)
+  if ((*(fromCopy + 404) & 4) != 0)
   {
 LABEL_110:
-    self->_allergiesListVersionModifiedDate = *(v4 + 3);
+    self->_allergiesListVersionModifiedDate = *(fromCopy + 3);
     *&self->_has |= 4uLL;
   }
 
@@ -5205,7 +5205,7 @@ LABEL_111:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v37 = *(v4 + 36);
+  v37 = *(fromCopy + 36);
   v38 = [v37 countByEnumeratingWithState:&v44 objects:v64 count:16];
   if (v38)
   {
@@ -5229,7 +5229,7 @@ LABEL_111:
     while (v39);
   }
 
-  v42 = *(v4 + 404);
+  v42 = *(fromCopy + 404);
   if ((v42 & 0x40) == 0)
   {
     if ((v42 & 0x80) == 0)
@@ -5238,9 +5238,9 @@ LABEL_111:
     }
 
 LABEL_143:
-    self->_conditionsListVersion = *(v4 + 8);
+    self->_conditionsListVersion = *(fromCopy + 8);
     *&self->_has |= 0x80uLL;
-    if ((*(v4 + 404) & 0x100) == 0)
+    if ((*(fromCopy + 404) & 0x100) == 0)
     {
       goto LABEL_122;
     }
@@ -5248,9 +5248,9 @@ LABEL_143:
     goto LABEL_121;
   }
 
-  self->_conditionsListModifiedDate = *(v4 + 7);
+  self->_conditionsListModifiedDate = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v42 = *(v4 + 404);
+  v42 = *(fromCopy + 404);
   if ((v42 & 0x80) != 0)
   {
     goto LABEL_143;
@@ -5260,7 +5260,7 @@ LABEL_120:
   if ((v42 & 0x100) != 0)
   {
 LABEL_121:
-    self->_conditionsListVersionModifiedDate = *(v4 + 9);
+    self->_conditionsListVersionModifiedDate = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
   }
 

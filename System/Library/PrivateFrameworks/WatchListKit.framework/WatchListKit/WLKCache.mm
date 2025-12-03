@@ -1,12 +1,12 @@
 @interface WLKCache
 - (WLKCache)init;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)countLimit;
-- (void)_onQueueRemoveObjectForKey:(id)a3;
+- (void)_onQueueRemoveObjectForKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setCountLimit:(unint64_t)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setCountLimit:(unint64_t)limit;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation WLKCache
@@ -23,19 +23,19 @@
     v2->_accessQueue = v3;
 
     v2->_countLimit = 0;
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     stack = v2->_stack;
-    v2->_stack = v5;
+    v2->_stack = array;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dictionary = v2->_dictionary;
-    v2->_dictionary = v7;
+    v2->_dictionary = dictionary;
   }
 
   return v2;
 }
 
-- (void)setCountLimit:(unint64_t)a3
+- (void)setCountLimit:(unint64_t)limit
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -43,7 +43,7 @@
   v4[2] = __26__WLKCache_setCountLimit___block_invoke;
   v4[3] = &unk_279E5F258;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = limit;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -83,9 +83,9 @@ void __26__WLKCache_setCountLimit___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -97,10 +97,10 @@ void __26__WLKCache_setCountLimit___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __25__WLKCache_objectForKey___block_invoke;
   block[3] = &unk_279E5F2A8;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -119,17 +119,17 @@ uint64_t __25__WLKCache_objectForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (!objectCopy)
   {
     [WLKCache setObject:forKey:];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = keyCopy;
+  if (!keyCopy)
   {
     [WLKCache setObject:forKey:];
   }
@@ -140,9 +140,9 @@ uint64_t __25__WLKCache_objectForKey___block_invoke(void *a1)
   block[2] = __29__WLKCache_setObject_forKey___block_invoke;
   block[3] = &unk_279E5F2D0;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v13 = keyCopy;
+  v14 = objectCopy;
+  v10 = objectCopy;
   v11 = v8;
   dispatch_sync(accessQueue, block);
 }
@@ -186,17 +186,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__WLKCache_removeObjectForKey___block_invoke;
   v7[3] = &unk_279E5E5F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -219,15 +219,15 @@ uint64_t __28__WLKCache_removeAllObjects__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)_onQueueRemoveObjectForKey:(id)a3
+- (void)_onQueueRemoveObjectForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v4 = [(NSMutableDictionary *)self->_dictionary objectForKey:v5];
+  v4 = [(NSMutableDictionary *)self->_dictionary objectForKey:keyCopy];
   if (v4)
   {
-    [(NSMutableArray *)self->_stack removeObject:v5];
-    [(NSMutableDictionary *)self->_dictionary removeObjectForKey:v5];
+    [(NSMutableArray *)self->_stack removeObject:keyCopy];
+    [(NSMutableDictionary *)self->_dictionary removeObjectForKey:keyCopy];
   }
 }
 

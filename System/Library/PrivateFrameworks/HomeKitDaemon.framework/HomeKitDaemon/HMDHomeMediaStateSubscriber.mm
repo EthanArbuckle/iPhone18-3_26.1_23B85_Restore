@@ -1,22 +1,22 @@
 @interface HMDHomeMediaStateSubscriber
 + (id)logCategory;
 + (id)shortDescription;
-- (HMDHomeMediaStateSubscriber)initWithHomeUUID:(id)a3 workQueue:(id)a4 dataSource:(id)a5 remoteSubscriptionProvider:(id)a6 localSubscriptionProvider:(id)a7;
+- (HMDHomeMediaStateSubscriber)initWithHomeUUID:(id)d workQueue:(id)queue dataSource:(id)source remoteSubscriptionProvider:(id)provider localSubscriptionProvider:(id)subscriptionProvider;
 - (HMDHomeMediaStateSubscriberDataSource)dataSource;
 - (id)logIdentifier;
 - (id)nonCurrentAccessoryUUIDs;
-- (id)topicsForAccessoryUUID:(void *)a1 homeUUID:(void *)a2;
-- (void)_localSubscribeForAppleMediaState:(void *)a3 forAccessories:;
-- (void)_subscribeForAppleMediaState:(void *)a3 forAccessories:(void *)a4 subscriptionToken:;
+- (id)topicsForAccessoryUUID:(void *)d homeUUID:(void *)iD;
+- (void)_localSubscribeForAppleMediaState:(void *)state forAccessories:;
+- (void)_subscribeForAppleMediaState:(void *)state forAccessories:(void *)accessories subscriptionToken:;
 - (void)localSubscribeForAppleMediaState;
-- (void)localSubscribeForAppleMediaStateForAccessory:(id)a3;
+- (void)localSubscribeForAppleMediaStateForAccessory:(id)accessory;
 - (void)localUnsubscribeForAppleMediaState;
-- (void)localUnsubscribeForAppleMediaStateForAccessory:(id)a3;
-- (void)processEvent:(void *)a3 topic:;
-- (void)subscribeForAppleMediaStateForAccessory:(id)a3 subscriptionToken:(id)a4;
-- (void)subscribeForAppleMediaStateWithSubscriptionToken:(id)a3;
-- (void)unsubscribeForAppleMediaStateForAccessory:(id)a3 subscriptionToken:(id)a4;
-- (void)unsubscribeForAppleMediaStateWithSubscriptionToken:(id)a3;
+- (void)localUnsubscribeForAppleMediaStateForAccessory:(id)accessory;
+- (void)processEvent:(void *)event topic:;
+- (void)subscribeForAppleMediaStateForAccessory:(id)accessory subscriptionToken:(id)token;
+- (void)subscribeForAppleMediaStateWithSubscriptionToken:(id)token;
+- (void)unsubscribeForAppleMediaStateForAccessory:(id)accessory subscriptionToken:(id)token;
+- (void)unsubscribeForAppleMediaStateWithSubscriptionToken:(id)token;
 @end
 
 @implementation HMDHomeMediaStateSubscriber
@@ -30,27 +30,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeMediaStateSubscriber *)self homeUUID];
-  v3 = [v2 UUIDString];
+  homeUUID = [(HMDHomeMediaStateSubscriber *)self homeUUID];
+  uUIDString = [homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)processEvent:(void *)a3 topic:
+- (void)processEvent:(void *)event topic:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
-    v7 = [a1 workQueue];
+    workQueue = [self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__HMDHomeMediaStateSubscriber_processEvent_topic___block_invoke;
     block[3] = &unk_27868A010;
-    block[4] = a1;
+    block[4] = self;
     v9 = v5;
-    v10 = v6;
-    dispatch_async(v7, block);
+    v10 = eventCopy;
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -491,19 +491,19 @@ LABEL_63:
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSubscribeForAppleMediaStateForAccessory:(id)a3
+- (void)localSubscribeForAppleMediaStateForAccessory:(id)accessory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeMediaStateSubscriber *)self dataSource];
-  v6 = v5;
-  if (v5)
+  accessoryCopy = accessory;
+  dataSource = [(HMDHomeMediaStateSubscriber *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 currentAccessoryUUIDsForMediaStateSubscriber:self];
-    if (v7 && ([v4 uuid], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hmf_isEqualToUUID:", v7), v8, v9))
+    v7 = [dataSource currentAccessoryUUIDsForMediaStateSubscriber:self];
+    if (v7 && ([accessoryCopy uuid], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hmf_isEqualToUUID:", v7), v8, v9))
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -511,7 +511,7 @@ LABEL_63:
         *buf = 138543618;
         v23 = v13;
         v24 = 2112;
-        v25 = v4;
+        v25 = accessoryCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Skipping local subscribe to media state for current accessory : %@", buf, 0x16u);
       }
 
@@ -520,21 +520,21 @@ LABEL_63:
 
     else
     {
-      v14 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+      workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccessory___block_invoke;
       v20[3] = &unk_27868A750;
       v20[4] = self;
-      v21 = v4;
-      dispatch_async(v14, v20);
+      v21 = accessoryCopy;
+      dispatch_async(workQueue, v20);
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -542,7 +542,7 @@ LABEL_63:
       *buf = 138543618;
       v23 = v18;
       v24 = 2112;
-      v25 = v4;
+      v25 = accessoryCopy;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Unable to locally subscribe to media state for accessory : %@, nil data source", buf, 0x16u);
     }
 
@@ -564,34 +564,34 @@ void __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccess
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_localSubscribeForAppleMediaState:(void *)a3 forAccessories:
+- (void)_localSubscribeForAppleMediaState:(void *)state forAccessories:
 {
   v31 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v4 = [a1 workQueue];
-    dispatch_assert_queue_V2(v4);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v20;
+    v7 = stateCopy;
     v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
       v9 = *v27;
       if (a2)
       {
-        v10 = v5;
+        v10 = array;
       }
 
       else
       {
-        v10 = v6;
+        v10 = array2;
       }
 
       do
@@ -605,8 +605,8 @@ void __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccess
           }
 
           v12 = *(*(&v26 + 1) + 8 * v11);
-          v13 = [a1 homeUUID];
-          v14 = [HMDHomeMediaStateSubscriber topicsForAccessoryUUID:v12 homeUUID:v13];
+          homeUUID = [self homeUUID];
+          v14 = [HMDHomeMediaStateSubscriber topicsForAccessoryUUID:v12 homeUUID:homeUUID];
 
           [v10 addObjectsFromArray:v14];
           ++v11;
@@ -619,12 +619,12 @@ void __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccess
       while (v8);
     }
 
-    if ([v5 count] || objc_msgSend(v6, "count"))
+    if ([array count] || objc_msgSend(array2, "count"))
     {
-      objc_initWeak(&location, a1);
-      v15 = [a1 localSubscriptionProvider];
-      v16 = [v5 copy];
-      v17 = [v6 copy];
+      objc_initWeak(&location, self);
+      localSubscriptionProvider = [self localSubscriptionProvider];
+      v16 = [array copy];
+      v17 = [array2 copy];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __80__HMDHomeMediaStateSubscriber__localSubscribeForAppleMediaState_forAccessories___block_invoke;
@@ -632,7 +632,7 @@ void __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccess
       objc_copyWeak(&v23, &location);
       v24 = a2;
       v22 = v7;
-      [v15 changeRegistrationsForConsumer:a1 topicFilterAdditions:v16 topicFilterRemovals:v17 completion:v21];
+      [localSubscriptionProvider changeRegistrationsForConsumer:self topicFilterAdditions:v16 topicFilterRemovals:v17 completion:v21];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -642,16 +642,16 @@ void __76__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaStateForAccess
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)topicsForAccessoryUUID:(void *)a1 homeUUID:(void *)a2
+- (id)topicsForAccessoryUUID:(void *)d homeUUID:(void *)iD
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD16F0];
   v4 = *MEMORY[0x277CCEA68];
-  v5 = a2;
-  v6 = a1;
-  v7 = [v3 topicFromSuffixID:v4 homeUUID:v5 accessoryUUID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  v7 = [v3 topicFromSuffixID:v4 homeUUID:iDCopy accessoryUUID:dCopy];
   v12[0] = v7;
-  v8 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA90] homeUUID:v5 accessoryUUID:v6];
+  v8 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA90] homeUUID:iDCopy accessoryUUID:dCopy];
 
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
@@ -722,19 +722,19 @@ uint64_t __80__HMDHomeMediaStateSubscriber__localSubscribeForAppleMediaState_for
   return [v1 hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v3];
 }
 
-- (void)localUnsubscribeForAppleMediaStateForAccessory:(id)a3
+- (void)localUnsubscribeForAppleMediaStateForAccessory:(id)accessory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeMediaStateSubscriber *)self dataSource];
-  v6 = v5;
-  if (v5)
+  accessoryCopy = accessory;
+  dataSource = [(HMDHomeMediaStateSubscriber *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 currentAccessoryUUIDsForMediaStateSubscriber:self];
-    if (v7 && ([v4 uuid], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hmf_isEqualToUUID:", v7), v8, v9))
+    v7 = [dataSource currentAccessoryUUIDsForMediaStateSubscriber:self];
+    if (v7 && ([accessoryCopy uuid], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hmf_isEqualToUUID:", v7), v8, v9))
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -742,7 +742,7 @@ uint64_t __80__HMDHomeMediaStateSubscriber__localSubscribeForAppleMediaState_for
         *buf = 138543618;
         v23 = v13;
         v24 = 2112;
-        v25 = v4;
+        v25 = accessoryCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Skipping local unsubscribe to media state for current accessory : %@", buf, 0x16u);
       }
 
@@ -751,21 +751,21 @@ uint64_t __80__HMDHomeMediaStateSubscriber__localSubscribeForAppleMediaState_for
 
     else
     {
-      v14 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+      workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __78__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaStateForAccessory___block_invoke;
       v20[3] = &unk_27868A750;
       v20[4] = self;
-      v21 = v4;
-      dispatch_async(v14, v20);
+      v21 = accessoryCopy;
+      dispatch_async(workQueue, v20);
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -773,7 +773,7 @@ uint64_t __80__HMDHomeMediaStateSubscriber__localSubscribeForAppleMediaState_for
       *buf = 138543618;
       v23 = v18;
       v24 = 2112;
-      v25 = v4;
+      v25 = accessoryCopy;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Unable to locally unsubscribe to media state for accessory : %@, nil data source", buf, 0x16u);
     }
 
@@ -797,13 +797,13 @@ void __78__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaStateForAcce
 
 - (void)localUnsubscribeForAppleMediaState
 {
-  v3 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+  workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaState__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __65__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaState__block_invoke(uint64_t a1)
@@ -814,18 +814,18 @@ void __65__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaState__block
 
 - (id)nonCurrentAccessoryUUIDs
 {
-  v1 = a1;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 dataSource];
-    v3 = v2;
-    if (v2)
+    dataSource = [self dataSource];
+    v3 = dataSource;
+    if (dataSource)
     {
-      v4 = [v2 appleMediaAccessoryUUIDsForMediaStateSubscriber:v1];
+      v4 = [dataSource appleMediaAccessoryUUIDsForMediaStateSubscriber:selfCopy];
       if ([v4 count])
       {
-        v5 = [v3 currentAccessoryUUIDsForMediaStateSubscriber:v1];
+        v5 = [v3 currentAccessoryUUIDsForMediaStateSubscriber:selfCopy];
         v6 = v5;
         if (v5)
         {
@@ -841,19 +841,19 @@ void __65__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaState__block
 
         v4 = v4;
 
-        v1 = v4;
+        selfCopy = v4;
       }
 
       else
       {
-        v1 = MEMORY[0x277CBEBF8];
+        selfCopy = MEMORY[0x277CBEBF8];
       }
     }
 
     else
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = v1;
+      v9 = selfCopy;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -864,24 +864,24 @@ void __65__HMDHomeMediaStateSubscriber_localUnsubscribeForAppleMediaState__block
       }
 
       objc_autoreleasePoolPop(v8);
-      v1 = MEMORY[0x277CBEBF8];
+      selfCopy = MEMORY[0x277CBEBF8];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)localSubscribeForAppleMediaState
 {
-  v3 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+  workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_invoke(uint64_t a1)
@@ -890,20 +890,20 @@ void __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_i
   [(HMDHomeMediaStateSubscriber *)*(a1 + 32) _localSubscribeForAppleMediaState:v2 forAccessories:?];
 }
 
-- (void)unsubscribeForAppleMediaStateForAccessory:(id)a3 subscriptionToken:(id)a4
+- (void)unsubscribeForAppleMediaStateForAccessory:(id)accessory subscriptionToken:(id)token
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeMediaStateSubscriber *)self dataSource];
-  v9 = v8;
-  if (v8)
+  accessoryCopy = accessory;
+  tokenCopy = token;
+  dataSource = [(HMDHomeMediaStateSubscriber *)self dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    v10 = [v8 currentAccessoryUUIDsForMediaStateSubscriber:self];
-    if (v10 && ([v6 uuid], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hmf_isEqualToUUID:", v10), v11, v12))
+    v10 = [dataSource currentAccessoryUUIDsForMediaStateSubscriber:self];
+    if (v10 && ([accessoryCopy uuid], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hmf_isEqualToUUID:", v10), v11, v12))
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -911,7 +911,7 @@ void __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_i
         *buf = 138543618;
         v27 = v16;
         v28 = 2112;
-        v29 = v6;
+        v29 = accessoryCopy;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Skipping unsubscribe to media state for current accessory : %@", buf, 0x16u);
       }
 
@@ -920,22 +920,22 @@ void __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_i
 
     else
     {
-      v17 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+      workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory_subscriptionToken___block_invoke;
       block[3] = &unk_27868A010;
       block[4] = self;
-      v24 = v6;
-      v25 = v7;
-      dispatch_async(v17, block);
+      v24 = accessoryCopy;
+      v25 = tokenCopy;
+      dispatch_async(workQueue, block);
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -943,7 +943,7 @@ void __63__HMDHomeMediaStateSubscriber_localSubscribeForAppleMediaState__block_i
       *buf = 138543618;
       v27 = v21;
       v28 = 2112;
-      v29 = v6;
+      v29 = accessoryCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unable to unsubscribe to media state for accessory : %@, nil data source", buf, 0x16u);
     }
 
@@ -965,23 +965,23 @@ void __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeForAppleMediaState:(void *)a3 forAccessories:(void *)a4 subscriptionToken:
+- (void)_subscribeForAppleMediaState:(void *)state forAccessories:(void *)accessories subscriptionToken:
 {
   v45 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v34 = a4;
-  if (a1)
+  stateCopy = state;
+  accessoriesCopy = accessories;
+  if (self)
   {
-    v7 = [a1 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v32 = [MEMORY[0x277CBEB18] array];
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v30;
+    obj = stateCopy;
     v8 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v8)
     {
@@ -997,11 +997,11 @@ void __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory
           }
 
           v11 = *(*(&v40 + 1) + 8 * v10);
-          v12 = [a1 homeUUID];
-          v13 = [HMDHomeMediaStateSubscriber topicsForAccessoryUUID:v11 homeUUID:v12];
+          homeUUID = [self homeUUID];
+          v13 = [HMDHomeMediaStateSubscriber topicsForAccessoryUUID:v11 homeUUID:homeUUID];
 
-          v14 = [a1 subscribedAccessoriesToTokenMap];
-          v15 = [v14 objectForKeyedSubscript:v11];
+          subscribedAccessoriesToTokenMap = [self subscribedAccessoriesToTokenMap];
+          v15 = [subscribedAccessoriesToTokenMap objectForKeyedSubscript:v11];
           v16 = v15;
           if (a2)
           {
@@ -1010,31 +1010,31 @@ void __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory
             if (v17)
             {
               v18 = [MEMORY[0x277CBEB58] set];
-              v19 = [a1 subscribedAccessoriesToTokenMap];
-              [v19 setObject:v18 forKeyedSubscript:v11];
+              subscribedAccessoriesToTokenMap2 = [self subscribedAccessoriesToTokenMap];
+              [subscribedAccessoriesToTokenMap2 setObject:v18 forKeyedSubscript:v11];
 
-              [v32 addObjectsFromArray:v13];
+              [array addObjectsFromArray:v13];
             }
 
-            v20 = [a1 subscribedAccessoriesToTokenMap];
-            v21 = [v20 objectForKeyedSubscript:v11];
-            [v21 addObject:v34];
+            subscribedAccessoriesToTokenMap3 = [self subscribedAccessoriesToTokenMap];
+            v21 = [subscribedAccessoriesToTokenMap3 objectForKeyedSubscript:v11];
+            [v21 addObject:accessoriesCopy];
           }
 
           else
           {
-            [v15 removeObject:v34];
+            [v15 removeObject:accessoriesCopy];
 
-            v22 = [a1 subscribedAccessoriesToTokenMap];
-            v23 = [v22 objectForKeyedSubscript:v11];
+            subscribedAccessoriesToTokenMap4 = [self subscribedAccessoriesToTokenMap];
+            v23 = [subscribedAccessoriesToTokenMap4 objectForKeyedSubscript:v11];
             v24 = [v23 count] == 0;
 
             if (v24)
             {
-              v25 = [a1 subscribedAccessoriesToTokenMap];
-              [v25 setObject:0 forKeyedSubscript:v11];
+              subscribedAccessoriesToTokenMap5 = [self subscribedAccessoriesToTokenMap];
+              [subscribedAccessoriesToTokenMap5 setObject:0 forKeyedSubscript:v11];
 
-              [v31 addObjectsFromArray:v13];
+              [array2 addObjectsFromArray:v13];
             }
           }
 
@@ -1048,12 +1048,12 @@ void __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory
       while (v8);
     }
 
-    if ([v32 count] || objc_msgSend(v31, "count"))
+    if ([array count] || objc_msgSend(array2, "count"))
     {
-      objc_initWeak(&location, a1);
-      v26 = [a1 remoteSubscriptionProvider];
-      v27 = [v32 copy];
-      v28 = [v31 copy];
+      objc_initWeak(&location, self);
+      remoteSubscriptionProvider = [self remoteSubscriptionProvider];
+      v27 = [array copy];
+      v28 = [array2 copy];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __93__HMDHomeMediaStateSubscriber__subscribeForAppleMediaState_forAccessories_subscriptionToken___block_invoke;
@@ -1061,7 +1061,7 @@ void __91__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateForAccessory
       objc_copyWeak(&v37, &location);
       v38 = a2;
       v36 = obj;
-      [v26 changeRegistrationsForConsumer:a1 topicFilterAdditions:v27 topicFilterRemovals:v28 completion:v35];
+      [remoteSubscriptionProvider changeRegistrationsForConsumer:self topicFilterAdditions:v27 topicFilterRemovals:v28 completion:v35];
 
       objc_destroyWeak(&v37);
       objc_destroyWeak(&location);
@@ -1132,20 +1132,20 @@ uint64_t __93__HMDHomeMediaStateSubscriber__subscribeForAppleMediaState_forAcces
   return [v1 hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v3];
 }
 
-- (void)subscribeForAppleMediaStateForAccessory:(id)a3 subscriptionToken:(id)a4
+- (void)subscribeForAppleMediaStateForAccessory:(id)accessory subscriptionToken:(id)token
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeMediaStateSubscriber *)self dataSource];
-  v9 = v8;
-  if (v8)
+  accessoryCopy = accessory;
+  tokenCopy = token;
+  dataSource = [(HMDHomeMediaStateSubscriber *)self dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    v10 = [v8 currentAccessoryUUIDsForMediaStateSubscriber:self];
-    if (v10 && ([v6 uuid], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hmf_isEqualToUUID:", v10), v11, v12))
+    v10 = [dataSource currentAccessoryUUIDsForMediaStateSubscriber:self];
+    if (v10 && ([accessoryCopy uuid], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hmf_isEqualToUUID:", v10), v11, v12))
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -1153,7 +1153,7 @@ uint64_t __93__HMDHomeMediaStateSubscriber__subscribeForAppleMediaState_forAcces
         *buf = 138543618;
         v27 = v16;
         v28 = 2112;
-        v29 = v6;
+        v29 = accessoryCopy;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Skipping subscribe to media state for current accessory : %@", buf, 0x16u);
       }
 
@@ -1162,22 +1162,22 @@ uint64_t __93__HMDHomeMediaStateSubscriber__subscribeForAppleMediaState_forAcces
 
     else
     {
-      v17 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+      workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __89__HMDHomeMediaStateSubscriber_subscribeForAppleMediaStateForAccessory_subscriptionToken___block_invoke;
       block[3] = &unk_27868A010;
       block[4] = self;
-      v24 = v6;
-      v25 = v7;
-      dispatch_async(v17, block);
+      v24 = accessoryCopy;
+      v25 = tokenCopy;
+      dispatch_async(workQueue, block);
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1185,7 +1185,7 @@ uint64_t __93__HMDHomeMediaStateSubscriber__subscribeForAppleMediaState_forAcces
       *buf = 138543618;
       v27 = v21;
       v28 = 2112;
-      v29 = v6;
+      v29 = accessoryCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unable to subscribe to media state for accessory : %@, nil data source", buf, 0x16u);
     }
 
@@ -1207,18 +1207,18 @@ void __89__HMDHomeMediaStateSubscriber_subscribeForAppleMediaStateForAccessory_s
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeForAppleMediaStateWithSubscriptionToken:(id)a3
+- (void)unsubscribeForAppleMediaStateWithSubscriptionToken:(id)token
 {
-  v4 = a3;
-  v5 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+  tokenCopy = token;
+  workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateWithSubscriptionToken___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __82__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateWithSubscriptionToken___block_invoke(uint64_t a1)
@@ -1227,18 +1227,18 @@ void __82__HMDHomeMediaStateSubscriber_unsubscribeForAppleMediaStateWithSubscrip
   [(HMDHomeMediaStateSubscriber *)*(a1 + 32) _subscribeForAppleMediaState:v2 forAccessories:*(a1 + 40) subscriptionToken:?];
 }
 
-- (void)subscribeForAppleMediaStateWithSubscriptionToken:(id)a3
+- (void)subscribeForAppleMediaStateWithSubscriptionToken:(id)token
 {
-  v4 = a3;
-  v5 = [(HMDHomeMediaStateSubscriber *)self workQueue];
+  tokenCopy = token;
+  workQueue = [(HMDHomeMediaStateSubscriber *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__HMDHomeMediaStateSubscriber_subscribeForAppleMediaStateWithSubscriptionToken___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __80__HMDHomeMediaStateSubscriber_subscribeForAppleMediaStateWithSubscriptionToken___block_invoke(uint64_t a1)
@@ -1247,30 +1247,30 @@ void __80__HMDHomeMediaStateSubscriber_subscribeForAppleMediaStateWithSubscripti
   [(HMDHomeMediaStateSubscriber *)*(a1 + 32) _subscribeForAppleMediaState:v2 forAccessories:*(a1 + 40) subscriptionToken:?];
 }
 
-- (HMDHomeMediaStateSubscriber)initWithHomeUUID:(id)a3 workQueue:(id)a4 dataSource:(id)a5 remoteSubscriptionProvider:(id)a6 localSubscriptionProvider:(id)a7
+- (HMDHomeMediaStateSubscriber)initWithHomeUUID:(id)d workQueue:(id)queue dataSource:(id)source remoteSubscriptionProvider:(id)provider localSubscriptionProvider:(id)subscriptionProvider
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  queueCopy = queue;
+  sourceCopy = source;
+  providerCopy = provider;
+  subscriptionProviderCopy = subscriptionProvider;
   v23.receiver = self;
   v23.super_class = HMDHomeMediaStateSubscriber;
   v17 = [(HMDHomeMediaStateSubscriber *)&v23 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     homeUUID = v17->_homeUUID;
     v17->_homeUUID = v18;
 
-    objc_storeStrong(&v17->_workQueue, a4);
-    objc_storeStrong(&v17->_remoteSubscriptionProvider, a6);
-    objc_storeStrong(&v17->_localSubscriptionProvider, a7);
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v17->_workQueue, queue);
+    objc_storeStrong(&v17->_remoteSubscriptionProvider, provider);
+    objc_storeStrong(&v17->_localSubscriptionProvider, subscriptionProvider);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     subscribedAccessoriesToTokenMap = v17->_subscribedAccessoriesToTokenMap;
-    v17->_subscribedAccessoriesToTokenMap = v20;
+    v17->_subscribedAccessoriesToTokenMap = dictionary;
 
-    objc_storeWeak(&v17->_dataSource, v14);
+    objc_storeWeak(&v17->_dataSource, sourceCopy);
   }
 
   return v17;

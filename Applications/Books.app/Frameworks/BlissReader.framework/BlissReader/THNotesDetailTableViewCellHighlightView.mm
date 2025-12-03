@@ -1,9 +1,9 @@
 @interface THNotesDetailTableViewCellHighlightView
 - (CGSize)intrinsicContentSize;
 - (void)dealloc;
-- (void)p_updateLayersAnimated:(BOOL)a3;
-- (void)populateWithHighlgihtLayer:(id)a3 editingHighlightLayer:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)p_updateLayersAnimated:(BOOL)animated;
+- (void)populateWithHighlgihtLayer:(id)layer editingHighlightLayer:(id)highlightLayer;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 @end
 
 @implementation THNotesDetailTableViewCellHighlightView
@@ -39,31 +39,31 @@
   return result;
 }
 
-- (void)populateWithHighlgihtLayer:(id)a3 editingHighlightLayer:(id)a4
+- (void)populateWithHighlgihtLayer:(id)layer editingHighlightLayer:(id)highlightLayer
 {
-  self->mHighlightLayer = a3;
+  self->mHighlightLayer = layer;
   [-[THNotesDetailTableViewCellHighlightView layer](self "layer")];
-  self->mEditingHighlightLayer = a4;
+  self->mEditingHighlightLayer = highlightLayer;
   [-[THNotesDetailTableViewCellHighlightView layer](self "layer")];
   [(THNotesDetailTableViewCellHighlightView *)self p_updateLayersAnimated:0];
 
   [(THNotesDetailTableViewCellHighlightView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->mEditing != a3)
+  if (self->mEditing != editing)
   {
-    self->mEditing = a3;
-    [(THNotesDetailTableViewCellHighlightView *)self p_updateLayersAnimated:a4];
+    self->mEditing = editing;
+    [(THNotesDetailTableViewCellHighlightView *)self p_updateLayersAnimated:animated];
 
     [(THNotesDetailTableViewCellHighlightView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)p_updateLayersAnimated:(BOOL)a3
+- (void)p_updateLayersAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v5 = [CABasicAnimation animationWithKeyPath:@"opacity"];
     [(CABasicAnimation *)v5 setFromValue:[NSNumber numberWithFloat:0.0]];

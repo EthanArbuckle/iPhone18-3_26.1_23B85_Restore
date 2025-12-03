@@ -2,12 +2,12 @@
 + (id)conditionalFormattingRuleTypeEnumMap;
 + (id)operatorStringEnumMap;
 + (id)timePeriodEnumMap;
-+ (int)edOperatorFromXmlOperatorString:(id)a3;
-+ (int)edRuleTypeFromXmlRuleTypeString:(id)a3;
-+ (int)edTimePeriodFromXmlTimePeriodString:(id)a3;
++ (int)edOperatorFromXmlOperatorString:(id)string;
++ (int)edRuleTypeFromXmlRuleTypeString:(id)string;
++ (int)edTimePeriodFromXmlTimePeriodString:(id)string;
 + (void)conditionalFormattingRuleTypeEnumMap;
 + (void)operatorStringEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 x14:(BOOL)a4 edConditionalFormatting:(id)a5 edReference:(id)a6 state:(id)a7;
++ (void)readFrom:(_xmlNode *)from x14:(BOOL)x14 edConditionalFormatting:(id)formatting edReference:(id)reference state:(id)state;
 + (void)timePeriodEnumMap;
 @end
 
@@ -82,26 +82,26 @@ void __67__EXConditionalFormattingRule_conditionalFormattingRuleTypeEnumMap__blo
   +[EXConditionalFormattingRule conditionalFormattingRuleTypeEnumMap]::sConditionalFormattingRuleTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 x14:(BOOL)a4 edConditionalFormatting:(id)a5 edReference:(id)a6 state:(id)a7
++ (void)readFrom:(_xmlNode *)from x14:(BOOL)x14 edConditionalFormatting:(id)formatting edReference:(id)reference state:(id)state
 {
-  v40 = a4;
-  v11 = a5;
-  v41 = a6;
-  v12 = a7;
-  v13 = v12;
-  if (!a3)
+  x14Copy = x14;
+  formattingCopy = formatting;
+  referenceCopy = reference;
+  stateCopy = state;
+  v13 = stateCopy;
+  if (!from)
   {
     goto LABEL_47;
   }
 
-  v14 = [v12 resources];
-  v15 = [EDConditionalFormattingRule conditionalFormattingRuleWithResources:v14];
+  resources = [stateCopy resources];
+  v15 = [EDConditionalFormattingRule conditionalFormattingRuleWithResources:resources];
 
-  [v11 addRule:v15];
+  [formattingCopy addRule:v15];
   v49 = 0;
-  CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v49);
+  CXOptionalStringAttribute(from, CXNoNamespace, "type", &v49);
   v16 = v49;
-  v17 = [a1 edRuleTypeFromXmlRuleTypeString:v16];
+  v17 = [self edRuleTypeFromXmlRuleTypeString:v16];
   [v15 setType:v17];
   if (!v17)
   {
@@ -109,13 +109,13 @@ void __67__EXConditionalFormattingRule_conditionalFormattingRuleTypeEnumMap__blo
   }
 
   v38 = v16;
-  v39 = v11;
+  v39 = formattingCopy;
   v48 = 0;
-  v18 = CXOptionalStringAttribute(a3, CXNoNamespace, "operator", &v48);
+  v18 = CXOptionalStringAttribute(from, CXNoNamespace, "operator", &v48);
   v19 = v48;
   if (v18)
   {
-    v20 = [a1 edOperatorFromXmlOperatorString:v19];
+    v20 = [self edOperatorFromXmlOperatorString:v19];
   }
 
   else if (v17 > 10)
@@ -155,31 +155,31 @@ void __67__EXConditionalFormattingRule_conditionalFormattingRuleTypeEnumMap__blo
 LABEL_6:
   v47 = 0;
   v37 = v19;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "priority", &v47))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "priority", &v47))
   {
     [v15 setPriority:v47];
   }
 
   v46 = 0;
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "stopIfTrue", &v46))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "stopIfTrue", &v46))
   {
     [v15 setStopIfTrue:v46];
   }
 
-  v36 = a1;
-  if (v40)
+  selfCopy = self;
+  if (x14Copy)
   {
-    v21 = EXMainNamespace;
+    eXSpreadsheetMLNamespace = EXMainNamespace;
     v22 = "f";
   }
 
   else
   {
-    v21 = [v13 EXSpreadsheetMLNamespace];
+    eXSpreadsheetMLNamespace = [v13 EXSpreadsheetMLNamespace];
     v22 = "formula";
   }
 
-  Child = OCXFindChild(a3, v21, v22);
+  Child = OCXFindChild(from, eXSpreadsheetMLNamespace, v22);
   v24 = 1;
   while (1)
   {
@@ -203,33 +203,33 @@ LABEL_23:
 
   if (v28)
   {
-    [v28 setRowBaseOrOffset:{objc_msgSend(v41, "firstRow")}];
-    [v28 setColumnBaseOrOffset:{objc_msgSend(v41, "firstColumn")}];
+    [v28 setRowBaseOrOffset:{objc_msgSend(referenceCopy, "firstRow")}];
+    [v28 setColumnBaseOrOffset:{objc_msgSend(referenceCopy, "firstColumn")}];
     [v28 setForceNonBaseFormula:1];
     [v28 convertTokensToShared];
-    v29 = [v13 currentSheet];
-    [v15 addFormula:v28 worksheet:v29];
+    currentSheet = [v13 currentSheet];
+    [v15 addFormula:v28 worksheet:currentSheet];
   }
 
   if (v25)
   {
-    Child = OCXFindNextChild(Child, v21, v22);
+    Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace, v22);
     goto LABEL_23;
   }
 
 LABEL_24:
-  if (v40)
+  if (x14Copy)
   {
     v30 = v37;
     v16 = v38;
-    v31 = [EXDifferentialStyle edDifferentialStyleFromXmlDifferentialStyleElement:OCXFindChild(a3 state:EXXL2010Namespace, "dxf"), v13];
+    v31 = [EXDifferentialStyle edDifferentialStyleFromXmlDifferentialStyleElement:OCXFindChild(from state:EXXL2010Namespace, "dxf"), v13];
     [v15 setDifferentialStyle:v31];
   }
 
   else
   {
     v45 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "dxfId", &v45))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "dxfId", &v45))
     {
       [v15 setDifferentialStyleIndex:v45];
     }
@@ -238,40 +238,40 @@ LABEL_24:
     v16 = v38;
   }
 
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "aboveAverage", &v46))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "aboveAverage", &v46))
   {
     [v15 setAboveAverage:v46];
   }
 
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "bottom", &v46))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "bottom", &v46))
   {
     [v15 setBottom:v46];
   }
 
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "equalAverage", &v46))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "equalAverage", &v46))
   {
     [v15 setEqualAverage:v46];
   }
 
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "percent", &v46))
+  if (CXOptionalBoolAttribute(from, CXNoNamespace, "percent", &v46))
   {
     [v15 setPercent:v46];
   }
 
   v45 = 0;
-  if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "rank", &v45))
+  if (CXOptionalUnsignedLongAttribute(from, CXNoNamespace, "rank", &v45))
   {
     [v15 setRank:v45];
   }
 
   v44 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "stdDev", &v44))
+  if (CXOptionalLongAttribute(from, CXNoNamespace, "stdDev", &v44))
   {
     [v15 setStdDev:v44];
   }
 
   v43 = 0;
-  v32 = CXOptionalStringAttribute(a3, CXNoNamespace, "text", &v43);
+  v32 = CXOptionalStringAttribute(from, CXNoNamespace, "text", &v43);
   v33 = v43;
   if (v32)
   {
@@ -279,26 +279,26 @@ LABEL_24:
   }
 
   v42 = 0;
-  v34 = CXOptionalStringAttribute(a3, CXNoNamespace, "timePeriod", &v42);
+  v34 = CXOptionalStringAttribute(from, CXNoNamespace, "timePeriod", &v42);
   v35 = v42;
   if (v34)
   {
-    [v15 setTimePeriod:{objc_msgSend(v36, "edTimePeriodFromXmlTimePeriodString:", v35)}];
+    [v15 setTimePeriod:{objc_msgSend(selfCopy, "edTimePeriodFromXmlTimePeriodString:", v35)}];
   }
 
-  v11 = v39;
+  formattingCopy = v39;
 LABEL_46:
 
 LABEL_47:
 }
 
-+ (int)edRuleTypeFromXmlRuleTypeString:(id)a3
++ (int)edRuleTypeFromXmlRuleTypeString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 conditionalFormattingRuleTypeEnumMap];
-    v6 = [v5 valueForString:v4];
+    conditionalFormattingRuleTypeEnumMap = [self conditionalFormattingRuleTypeEnumMap];
+    v6 = [conditionalFormattingRuleTypeEnumMap valueForString:stringCopy];
 
     if (v6 == 9 || v6 == 5 || v6 == 12)
     {
@@ -329,13 +329,13 @@ LABEL_47:
   return v10;
 }
 
-+ (int)edOperatorFromXmlOperatorString:(id)a3
++ (int)edOperatorFromXmlOperatorString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 operatorStringEnumMap];
-    v6 = [v5 valueForString:v4];
+    operatorStringEnumMap = [self operatorStringEnumMap];
+    v6 = [operatorStringEnumMap valueForString:stringCopy];
 
     if (v6 == -130883970)
     {
@@ -356,13 +356,13 @@ LABEL_47:
   return v7;
 }
 
-+ (int)edTimePeriodFromXmlTimePeriodString:(id)a3
++ (int)edTimePeriodFromXmlTimePeriodString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 timePeriodEnumMap];
-    v6 = [v5 valueForString:v4];
+    timePeriodEnumMap = [self timePeriodEnumMap];
+    v6 = [timePeriodEnumMap valueForString:stringCopy];
 
     if (v6 == -130883970)
     {

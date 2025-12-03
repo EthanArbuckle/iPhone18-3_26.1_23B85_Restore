@@ -10,7 +10,7 @@
   v6 = a4;
   if ([v6 length])
   {
-    [a1 setValue:v7 forKey:v6];
+    [self setValue:v7 forKey:v6];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface VKARWalkingCameraController
 - ($F24F406B2B787EFB06265DBA3D28CBD5)centerCoordinate;
-- (VKARWalkingCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)a6 animationRunner:(id)a7 runLoopController:(void *)a8 cameraDelegate:(void *)a9 arLogic:elevationLogic:;
+- (VKARWalkingCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:(void *)controller cameraDelegate:(void *)delegate arLogic:elevationLogic:;
 - (double)distanceFromCenterCoordinate;
 - (double)heading;
 - (double)pitch;
 - (id).cxx_construct;
-- (id)_buildDebugString:(void *)a3;
+- (id)_buildDebugString:(void *)string;
 - (void)_updateClipPlanes;
-- (void)_updateDebugOverlay:(void *)a3;
-- (void)pushGesture:(void *)a3;
-- (void)setAltitude:(double)a3;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCenterCoordinate:(id)a3;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setDistanceFromCenterCoordinate:(double)a3;
-- (void)setHeading:(double)a3;
-- (void)setPitch:(double)a3;
-- (void)setVkCamera:(id)a3;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
+- (void)_updateDebugOverlay:(void *)overlay;
+- (void)pushGesture:(void *)gesture;
+- (void)setAltitude:(double)altitude;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCenterCoordinate:(id)coordinate;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setDistanceFromCenterCoordinate:(double)coordinate;
+- (void)setHeading:(double)heading;
+- (void)setPitch:(double)pitch;
+- (void)setVkCamera:(id)camera;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
 @end
 
 @implementation VKARWalkingCameraController
@@ -52,10 +52,10 @@
   return v2 * 57.2957795;
 }
 
-- (void)setPitch:(double)a3
+- (void)setPitch:(double)pitch
 {
   [(VKCameraController *)self camera];
-  gdc::Camera::setPitch(v4, COERCE__INT64(a3 * 0.0174532925));
+  gdc::Camera::setPitch(v4, COERCE__INT64(pitch * 0.0174532925));
   if (v5)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v5);
@@ -74,23 +74,23 @@
   return v2 * 57.2957795;
 }
 
-- (void)setHeading:(double)a3
+- (void)setHeading:(double)heading
 {
   [(VKCameraController *)self camera];
-  gdc::Camera::setHeading(v4, COERCE__INT64(a3 * 0.0174532925));
+  gdc::Camera::setHeading(v4, COERCE__INT64(heading * 0.0174532925));
   if (v5)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v5);
   }
 }
 
-- (void)setAltitude:(double)a3
+- (void)setAltitude:(double)altitude
 {
   [(VKCameraController *)self camera];
   [(VKCameraController *)self camera];
   v5 = gdc::Camera::pitch(v7);
   v6 = cos(*v5);
-  gdc::Camera::setDistanceFromTarget(v9, COERCE__INT64(v6 * a3));
+  gdc::Camera::setDistanceFromTarget(v9, COERCE__INT64(v6 * altitude));
   if (v8)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v8);
@@ -114,10 +114,10 @@
   return v2;
 }
 
-- (void)setDistanceFromCenterCoordinate:(double)a3
+- (void)setDistanceFromCenterCoordinate:(double)coordinate
 {
   [(VKCameraController *)self camera];
-  gdc::Camera::setDistanceFromTarget(v4, *&a3);
+  gdc::Camera::setDistanceFromTarget(v4, *&coordinate);
   if (v5)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v5);
@@ -147,10 +147,10 @@
   return result;
 }
 
-- (void)setCenterCoordinate:(id)a3
+- (void)setCenterCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  v6 = vmulq_f64(a3, vdupq_n_s64(0x3F91DF46A2529D39uLL));
+  var1 = coordinate.var1;
+  v6 = vmulq_f64(coordinate, vdupq_n_s64(0x3F91DF46A2529D39uLL));
   v7 = 0;
   [(VKCameraController *)self camera];
   gdc::Camera::setTarget(v4, &v6);
@@ -160,10 +160,10 @@
   }
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  v3 = *(a3.__ptr_ + 1);
-  v5 = *a3.__ptr_;
+  v3 = *(camera.__ptr_ + 1);
+  v5 = *camera.__ptr_;
   v6 = v3;
   if (v3)
   {
@@ -172,90 +172,90 @@
 
   v4.receiver = self;
   v4.super_class = VKARWalkingCameraController;
-  [(VKScreenCameraController *)&v4 setCamera:&v5, a3.__cntrl_];
+  [(VKScreenCameraController *)&v4 setCamera:&v5, camera.__cntrl_];
   if (v6)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v6);
   }
 }
 
-- (void)setVkCamera:(id)a3
+- (void)setVkCamera:(id)camera
 {
   v3.receiver = self;
   v3.super_class = VKARWalkingCameraController;
-  [(VKScreenCameraController *)&v3 setVkCamera:a3];
+  [(VKScreenCameraController *)&v3 setVkCamera:camera];
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  [(VKARWalkingCameraController *)self setCenterCoordinate:a8, a9, a10, a3.var0, a3.var1, a4, a5, a6, a7];
-  [(VKARWalkingCameraController *)self setAltitude:a4];
-  [(VKARWalkingCameraController *)self setHeading:a5];
+  [(VKARWalkingCameraController *)self setCenterCoordinate:style, curve, completion, coordinate.var0, coordinate.var1, altitude, yaw, pitch, duration];
+  [(VKARWalkingCameraController *)self setAltitude:altitude];
+  [(VKARWalkingCameraController *)self setHeading:yaw];
 
-  [(VKARWalkingCameraController *)self setPitch:a6];
+  [(VKARWalkingCameraController *)self setPitch:pitch];
 }
 
-- (void)_updateDebugOverlay:(void *)a3
+- (void)_updateDebugOverlay:(void *)overlay
 {
-  v3 = md::LayoutContext::debugConsoleForId(a3, 7);
+  v3 = md::LayoutContext::debugConsoleForId(overlay, 7);
   if (v3)
   {
     ggl::DebugConsole::begin(v3);
   }
 }
 
-- (id)_buildDebugString:(void *)a3
+- (id)_buildDebugString:(void *)string
 {
   v43 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v37 = self;
+  selfCopy = self;
   v5 = *(self->_arLogic + 20);
   md::LabelExternalPointFeature::incident(v5);
   objc_claimAutoreleasedReturnValue();
   if (v5)
   {
-    v6 = [v5 currentFrame];
-    v7 = [v6 camera];
-    md::MDARCamera::MDARCamera(&v41, v7);
+    currentFrame = [v5 currentFrame];
+    camera = [currentFrame camera];
+    md::MDARCamera::MDARCamera(&v41, camera);
 
-    v8 = [v5 currentFrame];
-    v9 = [v8 camera];
-    v10 = +[MDARSession stringWithARTrackingState:](MDARSession, "stringWithARTrackingState:", [v9 trackingState]);
-    v11 = [v5 currentFrame];
-    v12 = [v11 camera];
-    v13 = +[MDARSession stringWithARTrackingStateReason:](MDARSession, "stringWithARTrackingStateReason:", [v12 trackingStateReason]);
+    currentFrame2 = [v5 currentFrame];
+    camera2 = [currentFrame2 camera];
+    v10 = +[MDARSession stringWithARTrackingState:](MDARSession, "stringWithARTrackingState:", [camera2 trackingState]);
+    currentFrame3 = [v5 currentFrame];
+    camera3 = [currentFrame3 camera];
+    v13 = +[MDARSession stringWithARTrackingStateReason:](MDARSession, "stringWithARTrackingStateReason:", [camera3 trackingStateReason]);
     [v4 appendFormat:@"tracking_state:\n\tstate:%@\n\treason:%@\n", v10, v13];
 
-    v36 = [v5 currentFrame];
-    v14 = [v36 geoTrackingStatus];
-    v15 = +[MDARSession stringWithARGeoTrackingState:](MDARSession, "stringWithARGeoTrackingState:", [v14 state]);
-    v16 = [v5 currentFrame];
-    v17 = [v16 geoTrackingStatus];
-    v18 = +[MDARSession stringWithARGeoTrackingStateReason:](MDARSession, "stringWithARGeoTrackingStateReason:", [v17 stateReason]);
-    v19 = [v5 currentFrame];
-    v20 = [v19 geoTrackingStatus];
-    v21 = +[MDARSession stringWithARGeoTrackingAccuracy:](MDARSession, "stringWithARGeoTrackingAccuracy:", [v20 accuracy]);
+    currentFrame4 = [v5 currentFrame];
+    geoTrackingStatus = [currentFrame4 geoTrackingStatus];
+    v15 = +[MDARSession stringWithARGeoTrackingState:](MDARSession, "stringWithARGeoTrackingState:", [geoTrackingStatus state]);
+    currentFrame5 = [v5 currentFrame];
+    geoTrackingStatus2 = [currentFrame5 geoTrackingStatus];
+    v18 = +[MDARSession stringWithARGeoTrackingStateReason:](MDARSession, "stringWithARGeoTrackingStateReason:", [geoTrackingStatus2 stateReason]);
+    currentFrame6 = [v5 currentFrame];
+    geoTrackingStatus3 = [currentFrame6 geoTrackingStatus];
+    v21 = +[MDARSession stringWithARGeoTrackingAccuracy:](MDARSession, "stringWithARGeoTrackingAccuracy:", [geoTrackingStatus3 accuracy]);
     [v4 appendFormat:@"geo_tracking_status:\n\tstate:%@\n\treason:%@\n\taccuracy:%@\n", v15, v18, v21];
 
-    v22 = [v5 currentFrame];
-    [v22 heading];
+    currentFrame7 = [v5 currentFrame];
+    [currentFrame7 heading];
     [v4 appendFormat:@"heading: %.2f\n", v23];
 
-    v24 = [v5 currentFrame];
-    [v24 rawHeading];
+    currentFrame8 = [v5 currentFrame];
+    [currentFrame8 rawHeading];
     [v4 appendFormat:@"raw_heading: %.2f\n", v25];
 
-    v26 = [v5 currentFrame];
-    v27 = [v26 location];
-    v28 = [v5 currentFrame];
-    if (v27)
+    currentFrame9 = [v5 currentFrame];
+    location = [currentFrame9 location];
+    currentFrame10 = [v5 currentFrame];
+    if (location)
     {
-      [v28 location];
+      [currentFrame10 location];
     }
 
     else
     {
-      [v28 rawLocation];
+      [currentFrame10 rawLocation];
     }
     v29 = ;
 
@@ -273,17 +273,17 @@
     v41 = &unk_1F2A4EB10;
   }
 
-  [v4 appendFormat:@"ar_coordinate: %.8f, %.8f, %.8f\n", *&v37->_coordinate.latitude._value, *&v37->_coordinate.longitude._value, *&v37->_coordinate.altitude._value];
+  [v4 appendFormat:@"ar_coordinate: %.8f, %.8f, %.8f\n", *&selfCopy->_coordinate.latitude._value, *&selfCopy->_coordinate.longitude._value, *&selfCopy->_coordinate.altitude._value];
   v33 = +[VKDebugSettings sharedSettings];
   [v33 arCameraElevationOffset];
   [v4 appendFormat:@"debug_altitude_offset: %.8f\n", v34];
 
-  [v4 appendFormat:@"pitch:%.2f\nroll:%.f\nyaw:%.2f\n", v37->_eulerAngles.pitch._value * 57.2957795, v37->_eulerAngles.roll._value * 57.2957795, v37->_eulerAngles.yaw._value * 57.2957795];
+  [v4 appendFormat:@"pitch:%.2f\nroll:%.f\nyaw:%.2f\n", selfCopy->_eulerAngles.pitch._value * 57.2957795, selfCopy->_eulerAngles.roll._value * 57.2957795, selfCopy->_eulerAngles.yaw._value * 57.2957795];
 
   return v4;
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v47 = *MEMORY[0x1E69E9840];
   elevationLogic = self->_elevationLogic;
@@ -309,30 +309,30 @@
   {
     if (v7)
     {
-      v9 = [v7 currentFrame];
-      v10 = v9;
-      if (v9)
+      currentFrame = [v7 currentFrame];
+      v10 = currentFrame;
+      if (currentFrame)
       {
-        v11 = [v9 camera];
+        camera = [currentFrame camera];
       }
 
       else
       {
-        v11 = 0;
+        camera = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      camera = 0;
       v10 = 0;
     }
 
-    v12 = [(VKARWalkingCameraController *)self _locationProvider];
-    v13 = v12;
-    if (v12)
+    _locationProvider = [(VKARWalkingCameraController *)self _locationProvider];
+    v13 = _locationProvider;
+    if (_locationProvider)
     {
-      (*(*v12 + 16))(v12, a4, v10, &self->_rotationCorrectionQuaternion, &self->_gestures);
+      (*(*_locationProvider + 16))(_locationProvider, context, v10, &self->_rotationCorrectionQuaternion, &self->_gestures);
       v14 = (*(*v13 + 24))(v13);
       v15 = *(v14 + 16);
       *&self->_coordinate.latitude._value = *v14;
@@ -341,16 +341,16 @@
 
     else
     {
-      md::LayoutContext::frameState(a4);
+      md::LayoutContext::frameState(context);
       v17 = *(v16 + 72);
       *&self->_coordinate.latitude._value = vmulq_f64(*(v16 + 56), vdupq_n_s64(0x404CA5DC1A63C1F8uLL));
       self->_coordinate.altitude._value = v17;
     }
 
-    if (v11)
+    if (camera)
     {
-      v18 = [v10 camera];
-      md::MDARCamera::MDARCamera(&v42, v18);
+      camera2 = [v10 camera];
+      md::MDARCamera::MDARCamera(&v42, camera2);
 
       v19 = *(self->_arLogic + 22) - 1;
       v20 = 0.0;
@@ -431,7 +431,7 @@
     }
 
     [(VKARWalkingCameraController *)self _updateClipPlanes];
-    [(VKARWalkingCameraController *)self _updateDebugOverlay:a4];
+    [(VKARWalkingCameraController *)self _updateDebugOverlay:context];
     self->_gestures.__end_ = self->_gestures.__begin_;
   }
 }
@@ -447,7 +447,7 @@
   }
 }
 
-- (void)pushGesture:(void *)a3
+- (void)pushGesture:(void *)gesture
 {
   p_gestures = &self->_gestures;
   end = self->_gestures.__end_;
@@ -490,11 +490,11 @@
     v12 = 8 * ((end - p_gestures->__begin_) >> 3);
     *v12 = 0;
     *(v12 + 16) = -1;
-    v13 = *(a3 + 4);
+    v13 = *(gesture + 4);
     if (v13 != -1)
     {
       v19 = v12;
-      (off_1F2A4EAF0[v13])(&v19, a3);
+      (off_1F2A4EAF0[v13])(&v19, gesture);
       *(v12 + 16) = v13;
     }
 
@@ -538,11 +538,11 @@
   {
     *end = 0;
     *(end + 4) = -1;
-    v6 = *(a3 + 4);
+    v6 = *(gesture + 4);
     if (v6 != -1)
     {
       v19 = end;
-      (off_1F2A4EAF0[v6])(&v19, a3);
+      (off_1F2A4EAF0[v6])(&v19, gesture);
       *(end + 4) = v6;
     }
 
@@ -553,20 +553,20 @@
   p_gestures->__end_ = v7;
 }
 
-- (VKARWalkingCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)a6 animationRunner:(id)a7 runLoopController:(void *)a8 cameraDelegate:(void *)a9 arLogic:elevationLogic:
+- (VKARWalkingCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:(void *)controller cameraDelegate:(void *)delegate arLogic:elevationLogic:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
   v31 = *MEMORY[0x1E69E9840];
-  v15 = a6;
+  accessCopy = access;
   v28.receiver = self;
   v28.super_class = VKARWalkingCameraController;
-  v16 = [(VKScreenCameraController *)&v28 initWithMapDataAccess:cntrl animationRunner:a4 runLoopController:a5 cameraDelegate:v15];
+  v16 = [(VKScreenCameraController *)&v28 initWithMapDataAccess:cntrl animationRunner:context runLoopController:a5 cameraDelegate:accessCopy];
   v17 = v16;
   if (v16)
   {
-    v16->_arLogic = a7;
-    v16->_elevationLogic = a8;
+    v16->_arLogic = runner;
+    v16->_elevationLogic = controller;
     v25[1] = 0;
     v25[2] = 0;
     v25[0] = 0x3FF0000000000000;

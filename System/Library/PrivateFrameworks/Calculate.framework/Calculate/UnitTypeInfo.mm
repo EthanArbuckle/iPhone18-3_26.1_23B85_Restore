@@ -2,7 +2,7 @@
 - ($71D83D51AB0F57F7CF166351F850C832)decompositionCoefficient;
 - (UnitCounts)decomposition;
 - (UnitInfo)baseUnit;
-- (void)setDecomposition:(UnitCounts *)a3;
+- (void)setDecomposition:(UnitCounts *)decomposition;
 @end
 
 @implementation UnitTypeInfo
@@ -14,19 +14,19 @@
   return WeakRetained;
 }
 
-- (void)setDecomposition:(UnitCounts *)a3
+- (void)setDecomposition:(UnitCounts *)decomposition
 {
-  v3 = *&a3->types[0].unitID;
-  v4 = *&a3->types[2].unitID;
-  v5 = *&a3->types[6].unitID;
-  *&self->_decomposition.types[4].unitID = *&a3->types[4].unitID;
+  v3 = *&decomposition->types[0].unitID;
+  v4 = *&decomposition->types[2].unitID;
+  v5 = *&decomposition->types[6].unitID;
+  *&self->_decomposition.types[4].unitID = *&decomposition->types[4].unitID;
   *&self->_decomposition.types[6].unitID = v5;
   *&self->_decomposition.types[0].unitID = v3;
   *&self->_decomposition.types[2].unitID = v4;
-  v6 = *&a3->types[8].unitID;
-  v7 = *&a3->types[10].unitID;
-  v8 = *&a3->types[14].unitID;
-  *&self->_decomposition.types[12].unitID = *&a3->types[12].unitID;
+  v6 = *&decomposition->types[8].unitID;
+  v7 = *&decomposition->types[10].unitID;
+  v8 = *&decomposition->types[14].unitID;
+  *&self->_decomposition.types[12].unitID = *&decomposition->types[12].unitID;
   *&self->_decomposition.types[14].unitID = v8;
   *&self->_decomposition.types[8].unitID = v6;
   *&self->_decomposition.types[10].unitID = v7;

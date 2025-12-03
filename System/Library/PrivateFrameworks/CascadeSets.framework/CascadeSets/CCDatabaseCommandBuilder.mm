@@ -1,7 +1,7 @@
 @interface CCDatabaseCommandBuilder
 - (CCDatabaseCommandBuilder)init;
-- (CCDatabaseCommandBuilder)initWithTableName:(id)a3;
-- (void)setCommandCriterion:(id)a3;
+- (CCDatabaseCommandBuilder)initWithTableName:(id)name;
+- (void)setCommandCriterion:(id)criterion;
 @end
 
 @implementation CCDatabaseCommandBuilder
@@ -12,13 +12,13 @@
   objc_exception_throw(v2);
 }
 
-- (CCDatabaseCommandBuilder)initWithTableName:(id)a3
+- (CCDatabaseCommandBuilder)initWithTableName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CCDatabaseCommandBuilder;
   v5 = [(CCDatabaseCommandBuilder *)&v12 init];
-  if (!v5 || (v6 = [v4 copy], tableName = v5->_tableName, v5->_tableName = v6, tableName, (v8 = v5->_tableName) != 0) && -[NSString length](v8, "length"))
+  if (!v5 || (v6 = [nameCopy copy], tableName = v5->_tableName, v5->_tableName = v6, tableName, (v8 = v5->_tableName) != 0) && -[NSString length](v8, "length"))
   {
     v9 = v5;
   }
@@ -37,9 +37,9 @@
   return v9;
 }
 
-- (void)setCommandCriterion:(id)a3
+- (void)setCommandCriterion:(id)criterion
 {
-  v4 = [a3 copy];
+  v4 = [criterion copy];
   criterion = self->_criterion;
   self->_criterion = v4;
 

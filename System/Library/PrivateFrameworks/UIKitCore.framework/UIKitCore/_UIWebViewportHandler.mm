@@ -6,19 +6,19 @@
 - (CGSize)availableViewSize;
 - (_UIWebViewportConfiguration)rawViewConfiguration;
 - (double)integralInitialScale;
-- (double)integralScaleForScale:(double)a3 keepingPointFixed:(CGPoint *)a4;
+- (double)integralScaleForScale:(double)scale keepingPointFixed:(CGPoint *)fixed;
 - (float)initialScale;
 - (float)minimumScale;
-- (float)minimumScaleForViewSize:(CGSize)a3;
+- (float)minimumScaleForViewSize:(CGSize)size;
 - (float)viewportHeight;
 - (float)viewportWidth;
 - (void)_resolveViewSizeRelativeLengths;
-- (void)applyWebKitViewportArgumentsSize:(CGSize)a3 initialScale:(float)a4 minimumScale:(float)a5 maximumScale:(float)a6 allowsUserScaling:(float)a7 allowsShrinkToFit:(float)a8 viewportFit:(id)a9;
+- (void)applyWebKitViewportArgumentsSize:(CGSize)size initialScale:(float)scale minimumScale:(float)minimumScale maximumScale:(float)maximumScale allowsUserScaling:(float)scaling allowsShrinkToFit:(float)fit viewportFit:(id)viewportFit;
 - (void)clearWebKitViewportConfigurationFlags;
-- (void)overrideViewportConfiguration:(const _UIWebViewportConfiguration *)a3;
-- (void)resetViewportConfiguration:(const _UIWebViewportConfiguration *)a3;
-- (void)setAvailableViewSize:(CGSize)a3 updateConfigurationSize:(BOOL)a4;
-- (void)update:(id)a3;
+- (void)overrideViewportConfiguration:(const _UIWebViewportConfiguration *)configuration;
+- (void)resetViewportConfiguration:(const _UIWebViewportConfiguration *)configuration;
+- (void)setAvailableViewSize:(CGSize)size updateConfigurationSize:(BOOL)configurationSize;
+- (void)update:(id)update;
 @end
 
 @implementation _UIWebViewportHandler
@@ -55,9 +55,9 @@
     v5 = self->_availableViewSize.height / height;
   }
 
-  v8 = [(_UIWebViewportHandler *)self shouldIgnoreScalingConstraints];
+  shouldIgnoreScalingConstraints = [(_UIWebViewportHandler *)self shouldIgnoreScalingConstraints];
   v9 = 68;
-  if (v8)
+  if (shouldIgnoreScalingConstraints)
   {
     v9 = 36;
   }
@@ -182,9 +182,9 @@
   return self;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v5 = [(_UIWebViewportHandler *)self allowsUserScaling];
+  allowsUserScaling = [(_UIWebViewportHandler *)self allowsUserScaling];
   [(_UIWebViewportHandler *)self initialScale];
   v7 = v6;
   [(_UIWebViewportHandler *)self minimumScale];
@@ -195,11 +195,11 @@
   v13 = v12;
   [(_UIWebViewportHandler *)self viewportHeight];
   v15 = v14;
-  v16 = [(_UIWebViewportHandler *)self avoidsUnsafeArea];
+  avoidsUnsafeArea = [(_UIWebViewportHandler *)self avoidsUnsafeArea];
   self->_isInUpdateBlock = 1;
-  (*(a3 + 2))(a3);
+  (*(update + 2))(update);
   self->_isInUpdateBlock = 0;
-  if (!self->_initialConfigurationHasBeenSentToDelegate || v5 != [(_UIWebViewportHandler *)self allowsUserScaling]|| ([(_UIWebViewportHandler *)self initialScale], v7 != v17) || ([(_UIWebViewportHandler *)self minimumScale], v9 != v18) || ([(_UIWebViewportHandler *)self maximumScale], v11 != v19))
+  if (!self->_initialConfigurationHasBeenSentToDelegate || allowsUserScaling != [(_UIWebViewportHandler *)self allowsUserScaling]|| ([(_UIWebViewportHandler *)self initialScale], v7 != v17) || ([(_UIWebViewportHandler *)self minimumScale], v9 != v18) || ([(_UIWebViewportHandler *)self maximumScale], v11 != v19))
   {
     [(_UIWebViewportHandlerDelegate *)self->_delegate viewportHandlerDidChangeScales:self];
   }
@@ -212,19 +212,19 @@
     [(_UIWebViewportHandlerDelegate *)self->_delegate viewportHandler:self didChangeViewportSize:v21, v22];
   }
 
-  v23 = [(_UIWebViewportHandler *)self avoidsUnsafeArea];
-  if (v16 != v23)
+  avoidsUnsafeArea2 = [(_UIWebViewportHandler *)self avoidsUnsafeArea];
+  if (avoidsUnsafeArea != avoidsUnsafeArea2)
   {
-    [(_UIWebViewportHandlerDelegate *)self->_delegate viewportHandler:self didChangeAvoidsUnsafeArea:v23];
+    [(_UIWebViewportHandlerDelegate *)self->_delegate viewportHandler:self didChangeAvoidsUnsafeArea:avoidsUnsafeArea2];
   }
 
   self->_initialConfigurationHasBeenSentToDelegate = 1;
 }
 
-- (void)setAvailableViewSize:(CGSize)a3 updateConfigurationSize:(BOOL)a4
+- (void)setAvailableViewSize:(CGSize)size updateConfigurationSize:(BOOL)configurationSize
 {
-  self->_availableViewSize = a3;
-  if (a4)
+  self->_availableViewSize = size;
+  if (configurationSize)
   {
     [(_UIWebViewportHandler *)self _resolveViewSizeRelativeLengths];
   }
@@ -343,12 +343,12 @@ LABEL_24:
   }
 }
 
-- (void)applyWebKitViewportArgumentsSize:(CGSize)a3 initialScale:(float)a4 minimumScale:(float)a5 maximumScale:(float)a6 allowsUserScaling:(float)a7 allowsShrinkToFit:(float)a8 viewportFit:(id)a9
+- (void)applyWebKitViewportArgumentsSize:(CGSize)size initialScale:(float)scale minimumScale:(float)minimumScale maximumScale:(float)maximumScale allowsUserScaling:(float)scaling allowsShrinkToFit:(float)fit viewportFit:(id)viewportFit
 {
-  width = a3.width;
-  if (a5 >= 0.0)
+  width = size.width;
+  if (minimumScale >= 0.0)
   {
-    minimumScale = fmaxf(a5, 0.1);
+    minimumScale = fmaxf(minimumScale, 0.1);
     if (minimumScale > 10.0)
     {
       minimumScale = 10.0;
@@ -359,7 +359,7 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  if (a5 == -1.0)
+  if (minimumScale == -1.0)
   {
     minimumScale = self->_defaultConfiguration.minimumScale;
     self->_configuration.minimumScale = minimumScale;
@@ -371,16 +371,16 @@ LABEL_7:
 
   minimumScale = self->_configuration.minimumScale;
 LABEL_8:
-  if (a6 >= 0.0)
+  if (maximumScale >= 0.0)
   {
-    if (minimumScale >= a6)
+    if (minimumScale >= maximumScale)
     {
       maximumScale = minimumScale;
     }
 
     else
     {
-      maximumScale = a6;
+      maximumScale = maximumScale;
     }
 
     if (maximumScale > 10.0)
@@ -393,7 +393,7 @@ LABEL_8:
 
   else
   {
-    if (a6 != -1.0)
+    if (maximumScale != -1.0)
     {
       goto LABEL_18;
     }
@@ -405,11 +405,11 @@ LABEL_8:
   self->_configuration.maximumScale = maximumScale;
   self->_webkitDefinedConfigurationFlags = v17;
 LABEL_18:
-  if (a4 >= 0.0)
+  if (scale >= 0.0)
   {
-    if (minimumScale < a4)
+    if (minimumScale < scale)
     {
-      minimumScale = a4;
+      minimumScale = scale;
     }
 
     if (minimumScale > self->_configuration.maximumScale)
@@ -423,7 +423,7 @@ LABEL_18:
 
   else
   {
-    if (a4 != -1.0)
+    if (scale != -1.0)
     {
       goto LABEL_27;
     }
@@ -435,20 +435,20 @@ LABEL_18:
   self->_webkitDefinedConfigurationFlags = v18;
 LABEL_27:
   self->_viewportArgumentsSize.width = width;
-  self->_viewportArgumentsSize.height = a3.height;
+  self->_viewportArgumentsSize.height = size.height;
   [(_UIWebViewportHandler *)self _resolveViewSizeRelativeLengths];
   v19 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom]& 0xFFFFFFFFFFFFFFFBLL;
   v21 = width == 320.0 && v19 == 1;
   self->_classicViewportMode = v21;
-  if (a7 >= 0.0)
+  if (scaling >= 0.0)
   {
-    self->_configuration.allowsUserScaling = a7 != 0.0;
+    self->_configuration.allowsUserScaling = scaling != 0.0;
     v22 = self->_webkitDefinedConfigurationFlags | 0x40;
   }
 
   else
   {
-    if (a7 != -1.0)
+    if (scaling != -1.0)
     {
       goto LABEL_38;
     }
@@ -459,14 +459,14 @@ LABEL_27:
 
   self->_webkitDefinedConfigurationFlags = v22;
 LABEL_38:
-  if (a8 >= 0.0)
+  if (fit >= 0.0)
   {
-    self->_configuration.allowsShrinkToFit = a8 != 0.0;
+    self->_configuration.allowsShrinkToFit = fit != 0.0;
     v23 = self->_webkitDefinedConfigurationFlags | 0x80;
     goto LABEL_42;
   }
 
-  if (a8 == -1.0)
+  if (fit == -1.0)
   {
     self->_configuration.allowsShrinkToFit = self->_defaultConfiguration.allowsShrinkToFit;
     v23 = self->_webkitDefinedConfigurationFlags & 0xFFFFFF7F;
@@ -474,9 +474,9 @@ LABEL_42:
     self->_webkitDefinedConfigurationFlags = v23;
   }
 
-  if (a9 && ([a9 isEqualToString:@"auto"] & 1) == 0)
+  if (viewportFit && ([viewportFit isEqualToString:@"auto"] & 1) == 0)
   {
-    self->_configuration.avoidsUnsafeArea = [a9 isEqualToString:@"cover"] ^ 1;
+    self->_configuration.avoidsUnsafeArea = [viewportFit isEqualToString:@"cover"] ^ 1;
     v24 = self->_webkitDefinedConfigurationFlags | 0x100;
   }
 
@@ -497,18 +497,18 @@ LABEL_42:
   self->_viewportArgumentsSize = _Q0;
 }
 
-- (void)overrideViewportConfiguration:(const _UIWebViewportConfiguration *)a3
+- (void)overrideViewportConfiguration:(const _UIWebViewportConfiguration *)configuration
 {
-  v3 = *&a3->initialScale;
-  self->_configuration.size = a3->size;
+  v3 = *&configuration->initialScale;
+  self->_configuration.size = configuration->size;
   *&self->_configuration.initialScale = v3;
 }
 
-- (void)resetViewportConfiguration:(const _UIWebViewportConfiguration *)a3
+- (void)resetViewportConfiguration:(const _UIWebViewportConfiguration *)configuration
 {
   self->_initialConfigurationHasBeenSentToDelegate = 0;
-  v3 = *&a3->initialScale;
-  self->_defaultConfiguration.size = a3->size;
+  v3 = *&configuration->initialScale;
+  self->_defaultConfiguration.size = configuration->size;
   *&self->_defaultConfiguration.initialScale = v3;
   __asm { FMOV            V0.2D, #-1.0 }
 
@@ -613,36 +613,36 @@ LABEL_11:
   return result;
 }
 
-- (double)integralScaleForScale:(double)a3 keepingPointFixed:(CGPoint *)a4
+- (double)integralScaleForScale:(double)scale keepingPointFixed:(CGPoint *)fixed
 {
   width = self->_documentBounds.size.width;
   if (width == 0.0)
   {
-    v5 = 1.0;
-    if (a3 != 0.0)
+    scaleCopy = 1.0;
+    if (scale != 0.0)
     {
-      v5 = a3;
+      scaleCopy = scale;
     }
   }
 
   else
   {
-    v5 = round(width * a3) / width;
+    scaleCopy = round(width * scale) / width;
   }
 
-  if (a3 != 0.0 && a4 != 0)
+  if (scale != 0.0 && fixed != 0)
   {
-    *a4 = vrndaq_f64(vdivq_f64(vmulq_n_f64(*a4, v5), vdupq_lane_s64(*&a3, 0)));
+    *fixed = vrndaq_f64(vdivq_f64(vmulq_n_f64(*fixed, scaleCopy), vdupq_lane_s64(*&scale, 0)));
   }
 
-  return v5;
+  return scaleCopy;
 }
 
-- (float)minimumScaleForViewSize:(CGSize)a3
+- (float)minimumScaleForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_configuration.initialScale != -1.0 || ((p_availableViewSize = &self->_availableViewSize, self->_availableViewSize.width == a3.width) ? (v7 = self->_availableViewSize.height == a3.height) : (v7 = 0), v7))
+  height = size.height;
+  width = size.width;
+  if (self->_configuration.initialScale != -1.0 || ((p_availableViewSize = &self->_availableViewSize, self->_availableViewSize.width == size.width) ? (v7 = self->_availableViewSize.height == size.height) : (v7 = 0), v7))
   {
 
     [(_UIWebViewportHandler *)self minimumScale];
@@ -653,7 +653,7 @@ LABEL_11:
     v17 = *p_availableViewSize;
     v9 = self->_documentBounds.size.width;
     v8 = self->_documentBounds.size.height;
-    self->_availableViewSize = a3;
+    self->_availableViewSize = size;
     [(_UIWebViewportHandler *)self viewportWidth];
     v11 = self->_documentBounds.size.width;
     v12 = v10;

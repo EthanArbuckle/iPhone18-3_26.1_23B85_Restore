@@ -1,14 +1,14 @@
 @interface MRUMediaSuggestionCollectionViewCell
-- (MRUMediaSuggestionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MRUMediaSuggestionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setArtworkImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setArtworkImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconImage:(id)image;
+- (void)setLayout:(int64_t)layout;
+- (void)setSelected:(BOOL)selected;
+- (void)setStylingProvider:(id)provider;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateIconView;
 - (void)updateVisiblity;
@@ -17,12 +17,12 @@
 
 @implementation MRUMediaSuggestionCollectionViewCell
 
-- (MRUMediaSuggestionCollectionViewCell)initWithFrame:(CGRect)a3
+- (MRUMediaSuggestionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = MRUMediaSuggestionCollectionViewCell;
-  v3 = [(MRUMediaSuggestionCollectionViewCell *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUMediaSuggestionCollectionViewCell *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MRUArtworkView alloc];
@@ -34,20 +34,20 @@
     artworkView = v3->_artworkView;
     v3->_artworkView = v9;
 
-    v11 = [(MRUArtworkView *)v3->_artworkView pointerInteraction];
-    [v11 setEnabled:1];
+    pointerInteraction = [(MRUArtworkView *)v3->_artworkView pointerInteraction];
+    [pointerInteraction setEnabled:1];
 
     [(MRUArtworkView *)v3->_artworkView setStyle:4];
     [(MRUArtworkView *)v3->_artworkView setUserInteractionEnabled:0];
-    v12 = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
-    [v12 addSubview:v3->_artworkView];
+    contentView = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_artworkView];
 
     v13 = objc_alloc_init(MRUShadowView);
     iconShadowView = v3->_iconShadowView;
     v3->_iconShadowView = v13;
 
-    v15 = [MEMORY[0x1E69DC888] blackColor];
-    [(MRUShadowView *)v3->_iconShadowView setColor:v15];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(MRUShadowView *)v3->_iconShadowView setColor:blackColor];
 
     HIDWORD(v16) = 1070176665;
     *&v16 = 0.2;
@@ -72,8 +72,8 @@
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:1];
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
-    v23 = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
-    [v23 addSubview:v3->_titleLabel];
+    contentView2 = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_titleLabel];
 
     v24 = objc_alloc_init(MEMORY[0x1E698E7E0]);
     subtitleLabel = v3->_subtitleLabel;
@@ -81,8 +81,8 @@
 
     [(BSUIEmojiLabelView *)v3->_subtitleLabel setNumberOfLines:1];
     [(BSUIEmojiLabelView *)v3->_subtitleLabel setTextAlignment:1];
-    v26 = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
-    [v26 addSubview:v3->_subtitleLabel];
+    contentView3 = [(MRUMediaSuggestionCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_subtitleLabel];
 
     v34[0] = objc_opt_class();
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
@@ -210,60 +210,60 @@
   [(BSUIEmojiLabelView *)self->_subtitleLabel setFrame:v55, v56, CGRectGetWidth(v72), v54];
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
-  objc_storeStrong(&self->_artworkImage, a3);
-  v5 = a3;
-  [(MRUArtworkView *)self->_artworkView setArtworkImage:v5];
+  objc_storeStrong(&self->_artworkImage, image);
+  imageCopy = image;
+  [(MRUArtworkView *)self->_artworkView setArtworkImage:imageCopy];
 
   [(MRUMediaSuggestionCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  objc_storeStrong(&self->_iconImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_iconView setImage:v5];
+  objc_storeStrong(&self->_iconImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_iconView setImage:imageCopy];
 
   [(MRUMediaSuggestionCollectionViewCell *)self setNeedsLayout];
 
   [(MRUMediaSuggestionCollectionViewCell *)self updateVisiblity];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MRUMediaSuggestionCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_subtitle, a3);
-  v5 = a3;
-  [(BSUIEmojiLabelView *)self->_subtitleLabel setText:v5];
+  objc_storeStrong(&self->_subtitle, subtitle);
+  subtitleCopy = subtitle;
+  [(BSUIEmojiLabelView *)self->_subtitleLabel setText:subtitleCopy];
 
   [(MRUMediaSuggestionCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  objc_storeStrong(&self->_stylingProvider, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_stylingProvider, provider);
+  providerCopy = provider;
   [(MRUMediaSuggestionCollectionViewCell *)self updateVisualStyling];
-  v6 = [(MRUMediaSuggestionCollectionViewCell *)self artworkView];
-  [v6 setStylingProvider:v5];
+  artworkView = [(MRUMediaSuggestionCollectionViewCell *)self artworkView];
+  [artworkView setStylingProvider:providerCopy];
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
     v9 = v3;
-    self->_layout = a3;
-    if (a3 == 1)
+    self->_layout = layout;
+    if (layout == 1)
     {
       v8 = 5;
     }
@@ -279,19 +279,19 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = MRUMediaSuggestionCollectionViewCell;
-  [(MRUMediaSuggestionCollectionViewCell *)&v4 setHighlighted:a3];
+  [(MRUMediaSuggestionCollectionViewCell *)&v4 setHighlighted:highlighted];
   [(MRUMediaSuggestionCollectionViewCell *)self updateVisiblity];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = MRUMediaSuggestionCollectionViewCell;
-  [(MRUMediaSuggestionCollectionViewCell *)&v4 setSelected:a3];
+  [(MRUMediaSuggestionCollectionViewCell *)&v4 setSelected:selected];
   [(MRUMediaSuggestionCollectionViewCell *)self updateVisiblity];
 }
 
@@ -299,27 +299,27 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   subtitleLabel = self->_subtitleLabel;
-  v8 = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:1 toView:subtitleLabel traitCollection:v8];
+  traitCollection2 = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:1 toView:subtitleLabel traitCollection:traitCollection2];
 
   v9 = self->_stylingProvider;
-  v11 = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
-  v10 = [(MRUVisualStylingProvider *)v9 colorForStyle:0 traitCollection:v11];
+  traitCollection3 = [(MRUMediaSuggestionCollectionViewCell *)self traitCollection];
+  v10 = [(MRUVisualStylingProvider *)v9 colorForStyle:0 traitCollection:traitCollection3];
   [(UIActivityIndicatorView *)self->_activityView setColor:v10];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_suggestionsTitleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_suggestionsTitleFont = [MEMORY[0x1E69DB878] mru_suggestionsTitleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_suggestionsTitleFont];
 
-  v4 = [MEMORY[0x1E69DB878] mru_suggestionsSubtitleFont];
-  [(BSUIEmojiLabelView *)self->_subtitleLabel setFont:v4];
+  mru_suggestionsSubtitleFont = [MEMORY[0x1E69DB878] mru_suggestionsSubtitleFont];
+  [(BSUIEmojiLabelView *)self->_subtitleLabel setFont:mru_suggestionsSubtitleFont];
 
   [(MRUMediaSuggestionCollectionViewCell *)self setNeedsLayout];
 }
@@ -365,9 +365,9 @@
     goto LABEL_10;
   }
 
-  v5 = [(MRUMediaSuggestionCollectionViewCell *)self isSelected];
+  isSelected = [(MRUMediaSuggestionCollectionViewCell *)self isSelected];
   activityView = self->_activityView;
-  if (v5)
+  if (isSelected)
   {
     [(UIActivityIndicatorView *)activityView startAnimating];
 LABEL_10:

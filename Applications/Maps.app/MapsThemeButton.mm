@@ -3,11 +3,11 @@
 - (void)_updateTintColor;
 - (void)_updateTitleColor;
 - (void)didMoveToWindow;
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setImageProvider:(id)a3;
-- (void)setTintColorProvider:(id)a3;
-- (void)setTitleColorProvider:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state;
+- (void)setImageProvider:(id)provider;
+- (void)setTintColorProvider:(id)provider;
+- (void)setTitleColorProvider:(id)provider;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTheme;
 @end
 
@@ -18,9 +18,9 @@
   v4.receiver = self;
   v4.super_class = MapsThemeButton;
   [(MapsThemeButton *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeButton *)self window];
+  window = [(MapsThemeButton *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeButton *)self updateTheme];
   }
@@ -32,32 +32,32 @@
   [(MapsThemeButton *)self _updateTitleColor];
   [(MapsThemeButton *)self _updateTintColor];
   v4 = +[MapsTheme sharedTheme];
-  v3 = [v4 disabledTitleColor];
-  [(MapsThemeButton *)self setTitleColor:v3 forState:2];
+  disabledTitleColor = [v4 disabledTitleColor];
+  [(MapsThemeButton *)self setTitleColor:disabledTitleColor forState:2];
 }
 
 - (void)_updateImage
 {
-  v3 = [(MapsThemeButton *)self imageProvider];
+  imageProvider = [(MapsThemeButton *)self imageProvider];
 
-  if (v3)
+  if (imageProvider)
   {
-    v6 = [(MapsThemeButton *)self imageProvider];
+    imageProvider2 = [(MapsThemeButton *)self imageProvider];
     v4 = +[MapsTheme sharedTheme];
-    v5 = v6[2](v6, v4);
+    v5 = imageProvider2[2](imageProvider2, v4);
     [(MapsThemeButton *)self setImage:v5 forState:0];
   }
 }
 
 - (void)_updateTitleColor
 {
-  v3 = [(MapsThemeButton *)self titleColorProvider];
+  titleColorProvider = [(MapsThemeButton *)self titleColorProvider];
 
-  if (v3)
+  if (titleColorProvider)
   {
-    v4 = [(MapsThemeButton *)self titleColorProvider];
+    titleColorProvider2 = [(MapsThemeButton *)self titleColorProvider];
     v5 = +[MapsTheme sharedTheme];
-    v6 = (v4)[2](v4, v5);
+    v6 = (titleColorProvider2)[2](titleColorProvider2, v5);
 
     [(MapsThemeButton *)self setTitleColor:v6 forState:0];
     v7 = [(MapsThemeButton *)self attributedTitleForState:0];
@@ -78,22 +78,22 @@
 
 - (void)_updateTintColor
 {
-  v3 = [(MapsThemeButton *)self tintColorProvider];
+  tintColorProvider = [(MapsThemeButton *)self tintColorProvider];
 
-  if (v3)
+  if (tintColorProvider)
   {
-    v6 = [(MapsThemeButton *)self tintColorProvider];
+    tintColorProvider2 = [(MapsThemeButton *)self tintColorProvider];
     v4 = +[MapsTheme sharedTheme];
-    v5 = v6[2](v6, v4);
+    v5 = tintColorProvider2[2](tintColorProvider2, v4);
     [(MapsThemeButton *)self setTintColor:v5];
   }
 }
 
-- (void)setTintColorProvider:(id)a3
+- (void)setTintColorProvider:(id)provider
 {
-  if (self->_tintColorProvider != a3)
+  if (self->_tintColorProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     tintColorProvider = self->_tintColorProvider;
     self->_tintColorProvider = v4;
 
@@ -101,19 +101,19 @@
   }
 }
 
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = MapsThemeButton;
-  [(MapsThemeButton *)&v5 setAttributedTitle:a3 forState:a4];
+  [(MapsThemeButton *)&v5 setAttributedTitle:title forState:state];
   [(MapsThemeButton *)self _updateTitleColor];
 }
 
-- (void)setTitleColorProvider:(id)a3
+- (void)setTitleColorProvider:(id)provider
 {
-  if (self->_titleColorProvider != a3)
+  if (self->_titleColorProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     titleColorProvider = self->_titleColorProvider;
     self->_titleColorProvider = v4;
 
@@ -121,11 +121,11 @@
   }
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  if (self->_imageProvider != a3)
+  if (self->_imageProvider != provider)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(provider);
     imageProvider = self->_imageProvider;
     self->_imageProvider = v4;
 
@@ -133,26 +133,26 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeButton;
-  [(MapsThemeButton *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeButton traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeButton *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeButton traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeButton *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeButton *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeButton *)self updateTheme];
     }

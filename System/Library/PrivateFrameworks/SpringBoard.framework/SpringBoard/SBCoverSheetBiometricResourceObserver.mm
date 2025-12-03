@@ -1,30 +1,30 @@
 @interface SBCoverSheetBiometricResourceObserver
 - (BOOL)pearlMatchEnabledAndPossible;
-- (SBCoverSheetBiometricResourceObserver)initWithBiometricResource:(id)a3;
+- (SBCoverSheetBiometricResourceObserver)initWithBiometricResource:(id)resource;
 - (SBPearlMatchingStateProviderDelegate)delegate;
 - (SBUIBiometricResource)biometricResource;
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4;
-- (void)setSeenMatchResultSinceScreenOn:(BOOL)a3;
-- (void)setSeenMatchResultSinceScreenOn:(int)a3 notifyDelegate:;
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event;
+- (void)setSeenMatchResultSinceScreenOn:(BOOL)on;
+- (void)setSeenMatchResultSinceScreenOn:(int)on notifyDelegate:;
 @end
 
 @implementation SBCoverSheetBiometricResourceObserver
 
 - (BOOL)pearlMatchEnabledAndPossible
 {
-  v2 = [(SBCoverSheetBiometricResourceObserver *)self biometricResource];
-  v3 = [v2 hasBiometricAuthenticationCapabilityEnabled];
-  v4 = [v2 biometricLockoutState];
-  v5 = [v2 isPearlDetectEnabled];
+  biometricResource = [(SBCoverSheetBiometricResourceObserver *)self biometricResource];
+  hasBiometricAuthenticationCapabilityEnabled = [biometricResource hasBiometricAuthenticationCapabilityEnabled];
+  biometricLockoutState = [biometricResource biometricLockoutState];
+  isPearlDetectEnabled = [biometricResource isPearlDetectEnabled];
   v6 = MGGetBoolAnswer();
   if (v6)
   {
-    LOBYTE(v6) = [v2 isFingerDetectEnabled];
+    LOBYTE(v6) = [biometricResource isFingerDetectEnabled];
   }
 
-  if (v3)
+  if (hasBiometricAuthenticationCapabilityEnabled)
   {
-    v7 = (v4 == 0) & (v5 | v6);
+    v7 = (biometricLockoutState == 0) & (isPearlDetectEnabled | v6);
   }
 
   else
@@ -42,28 +42,28 @@
   return WeakRetained;
 }
 
-- (SBCoverSheetBiometricResourceObserver)initWithBiometricResource:(id)a3
+- (SBCoverSheetBiometricResourceObserver)initWithBiometricResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v8.receiver = self;
   v8.super_class = SBCoverSheetBiometricResourceObserver;
   v5 = [(SBCoverSheetBiometricResourceObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SBCoverSheetBiometricResourceObserver *)v5 setBiometricResource:v4];
-    [v4 addObserver:v6];
+    [(SBCoverSheetBiometricResourceObserver *)v5 setBiometricResource:resourceCopy];
+    [resourceCopy addObserver:v6];
     [(SBCoverSheetBiometricResourceObserver *)v6 reset];
   }
 
   return v6;
 }
 
-- (void)setSeenMatchResultSinceScreenOn:(BOOL)a3
+- (void)setSeenMatchResultSinceScreenOn:(BOOL)on
 {
-  if (self->_seenMatchResultSinceScreenOn != a3)
+  if (self->_seenMatchResultSinceScreenOn != on)
   {
-    self->_seenMatchResultSinceScreenOn = a3;
+    self->_seenMatchResultSinceScreenOn = on;
   }
 }
 
@@ -74,55 +74,55 @@
   return WeakRetained;
 }
 
-- (void)setSeenMatchResultSinceScreenOn:(int)a3 notifyDelegate:
+- (void)setSeenMatchResultSinceScreenOn:(int)on notifyDelegate:
 {
   if (result)
   {
     v4 = result;
     result = [result setSeenMatchResultSinceScreenOn:a2];
-    if (a3)
+    if (on)
     {
-      v5 = [v4 delegate];
-      if (v5)
+      delegate = [v4 delegate];
+      if (delegate)
       {
-        v6 = v5;
-        v5 = objc_opt_respondsToSelector();
-        if (v5)
+        v6 = delegate;
+        delegate = objc_opt_respondsToSelector();
+        if (delegate)
         {
-          v5 = [v6 pearlMatchingStateProviderStateChangedForMatchFailure:v4];
+          delegate = [v6 pearlMatchingStateProviderStateChangedForMatchFailure:v4];
         }
       }
 
-      return MEMORY[0x2821F9730](v5);
+      return MEMORY[0x2821F9730](delegate);
     }
   }
 
   return result;
 }
 
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 <= 0x1A)
+  resourceCopy = resource;
+  if (event <= 0x1A)
   {
-    if (((1 << a4) & 0x18) != 0)
+    if (((1 << event) & 0x18) != 0)
     {
       if (!self)
       {
         goto LABEL_6;
       }
 
-      v7 = v6;
+      v7 = resourceCopy;
       [(SBCoverSheetBiometricResourceObserver *)self setSeenMatchResultSinceScreenOn:1];
       goto LABEL_5;
     }
 
-    if (((1 << a4) & 0x6008E00) != 0)
+    if (((1 << event) & 0x6008E00) != 0)
     {
-      v7 = v6;
+      v7 = resourceCopy;
       [(SBCoverSheetBiometricResourceObserver *)self setSeenMatchResultSinceScreenOn:1 notifyDelegate:?];
 LABEL_5:
-      v6 = v7;
+      resourceCopy = v7;
     }
   }
 

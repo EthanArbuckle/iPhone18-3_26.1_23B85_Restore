@@ -1,12 +1,12 @@
 @interface _NSCoreManagedObjectID
-+ (Class)classWithStore:(id)a3 andEntity:(id)a4;
++ (Class)classWithStore:(id)store andEntity:(id)entity;
 + (id)_storeInfo1;
-+ (id)managedObjectIDFromURIRepresentation:(id)a3;
-+ (id)managedObjectIDFromUTF8String:(const char *)a3 length:(unint64_t)a4;
-+ (unsigned)allocateBatch:(id *)a3 count:(unsigned int)a4;
++ (id)managedObjectIDFromURIRepresentation:(id)representation;
++ (id)managedObjectIDFromUTF8String:(const char *)string length:(unint64_t)length;
++ (unsigned)allocateBatch:(id *)batch count:(unsigned int)count;
 + (void)_storeDeallocated;
 + (void)initialize;
-+ (void)setObjectStoreIdentifier:(id)a3;
++ (void)setObjectStoreIdentifier:(id)identifier;
 - (BOOL)_isPersistentStoreAlive;
 - (id)URIRepresentation;
 - (id)_storeIdentifier;
@@ -27,10 +27,10 @@
   {
     if (self)
     {
-      v4 = [(_NSCoreManagedObjectID *)self _storeIdentifier];
-      if (v4)
+      _storeIdentifier = [(_NSCoreManagedObjectID *)self _storeIdentifier];
+      if (_storeIdentifier)
       {
-        v5 = v4;
+        v5 = _storeIdentifier;
       }
 
       else
@@ -57,9 +57,9 @@
 
       v12 = v9 + 1;
       relativeURLBytes[v9] = 47;
-      v13 = [(_NSCoreManagedObjectID *)self entityName];
-      v14 = [v13 length];
-      if (v14 && (v15 = v14, [v13 getCharacters:v26 range:{0, v14}], v15 >= 1))
+      entityName = [(_NSCoreManagedObjectID *)self entityName];
+      v14 = [entityName length];
+      if (v14 && (v15 = v14, [entityName getCharacters:v26 range:{0, v14}], v15 >= 1))
       {
         v16 = v26;
         do
@@ -97,8 +97,8 @@
 
   else
   {
-    v10 = [(NSManagedObjectID *)self _retainedURIString];
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+    _retainedURIString = [(NSManagedObjectID *)self _retainedURIString];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:_retainedURIString];
   }
 
   v22 = v11;
@@ -110,10 +110,10 @@
 
 + (void)initialize
 {
-  if (objc_getClass("_NSCoreManagedObjectID") == a1)
+  if (objc_getClass("_NSCoreManagedObjectID") == self)
   {
     objc_opt_self();
-    object_getIndexedIvars(a1);
+    object_getIndexedIvars(self);
     v3 = *MEMORY[0x1E695E480];
     qword_1ED4BE988 = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
     qword_1ED4BE990 = CFArrayCreateMutable(v3, 0, 0);
@@ -121,10 +121,10 @@
   }
 }
 
-+ (Class)classWithStore:(id)a3 andEntity:(id)a4
++ (Class)classWithStore:(id)store andEntity:(id)entity
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = [objc_msgSend(a4 "name")];
+  v7 = [objc_msgSend(entity "name")];
   if (!v7 || !*v7)
   {
     v41 = MEMORY[0x1E695DF30];
@@ -133,7 +133,7 @@
     goto LABEL_46;
   }
 
-  if (!a3)
+  if (!store)
   {
     v41 = MEMORY[0x1E695DF30];
     v42 = *MEMORY[0x1E695D940];
@@ -142,9 +142,9 @@ LABEL_46:
     objc_exception_throw([v41 exceptionWithName:v42 reason:v43 userInfo:0]);
   }
 
-  v8 = [a1 generatedNameSuffix];
-  v9 = v8;
-  v10 = *v8;
+  generatedNameSuffix = [self generatedNameSuffix];
+  v9 = generatedNameSuffix;
+  v10 = *generatedNameSuffix;
   if (v10 == 54)
   {
     v11 = 1;
@@ -155,7 +155,7 @@ LABEL_46:
     v11 = 2 * (v10 == 105);
   }
 
-  snprintf(__str, 0x100uLL, "_NSObjectID_%s_%x", v8, 0);
+  snprintf(__str, 0x100uLL, "_NSObjectID_%s_%x", generatedNameSuffix, 0);
   os_unfair_lock_lock(&_MergedGlobals_69);
   v47 = 0u;
   v48 = 0u;
@@ -187,7 +187,7 @@ LABEL_9:
           break;
         }
 
-        if (v19 == a4 && IndexedIvars[2] == a3)
+        if (v19 == entity && IndexedIvars[2] == store)
         {
           break;
         }
@@ -237,7 +237,7 @@ LABEL_29:
 
     while (1)
     {
-      ClassPair = objc_allocateClassPair(a1, __str, 0x40uLL);
+      ClassPair = objc_allocateClassPair(self, __str, 0x40uLL);
       if (ClassPair)
       {
         break;
@@ -274,25 +274,25 @@ LABEL_29:
   {
     v34 = v33;
     *v33 = 0;
-    v33[2] = a3;
+    v33[2] = store;
     v33[5] = 0;
-    v35 = [objc_msgSend(a3 "identifier")];
+    v35 = [objc_msgSend(store "identifier")];
     if (v35)
     {
       v36 = v35;
       v34[5] = CFRetain(v35);
     }
 
-    v34[1] = a4;
+    v34[1] = entity;
     v34[6] = 0;
     v34[3] = 0;
-    *(v34 + 8) = [objc_msgSend(a4 "name")] & 0x3F;
-    if ([a1 isSubclassOfClass:objc_opt_class()])
+    *(v34 + 8) = [objc_msgSend(entity "name")] & 0x3F;
+    if ([self isSubclassOfClass:objc_opt_class()])
     {
       v37 = 3;
     }
 
-    else if ([a1 isSubclassOfClass:objc_opt_class()])
+    else if ([self isSubclassOfClass:objc_opt_class()])
     {
       v37 = 2;
     }
@@ -303,9 +303,9 @@ LABEL_29:
     }
 
     *(v34 + 1) = v37;
-    if (a4)
+    if (entity)
     {
-      v38 = *(a4 + 40);
+      v38 = *(entity + 40);
     }
 
     else
@@ -321,20 +321,20 @@ LABEL_29:
   return v17;
 }
 
-+ (unsigned)allocateBatch:(id *)a3 count:(unsigned int)a4
++ (unsigned)allocateBatch:(id *)batch count:(unsigned int)count
 {
-  v5 = _PFAllocateObjects(a1, a3, a4, 0);
-  atomic_fetch_add_explicit(object_getIndexedIvars(a1), v5, memory_order_relaxed);
+  v5 = _PFAllocateObjects(self, batch, count, 0);
+  atomic_fetch_add_explicit(object_getIndexedIvars(self), v5, memory_order_relaxed);
   return v5;
 }
 
-+ (id)managedObjectIDFromUTF8String:(const char *)a3 length:(unint64_t)a4
++ (id)managedObjectIDFromUTF8String:(const char *)string length:(unint64_t)length
 {
   __endptr = 0;
-  v7 = strtouq(a3, &__endptr, 0);
+  v7 = strtouq(string, &__endptr, 0);
   if (__endptr)
   {
-    v8 = __endptr == a3;
+    v8 = __endptr == string;
   }
 
   else
@@ -344,22 +344,22 @@ LABEL_29:
 
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
-    v10 = [[a1 alloc] initWithObject:v9];
+    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:string length:length encoding:4];
+    v10 = [[self alloc] initWithObject:v9];
   }
 
   else
   {
     v11 = v7;
-    if ([a1 isSubclassOfClass:objc_opt_class()])
+    if ([self isSubclassOfClass:objc_opt_class()])
     {
-      v12 = [[a1 alloc] initWithPK64:v11];
+      v12 = [[self alloc] initWithPK64:v11];
     }
 
     else
     {
       v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:v11];
-      v14 = [[a1 alloc] initWithObject:v13];
+      v14 = [[self alloc] initWithObject:v13];
 
       v12 = v14;
     }
@@ -370,11 +370,11 @@ LABEL_29:
   return v10;
 }
 
-+ (id)managedObjectIDFromURIRepresentation:(id)a3
++ (id)managedObjectIDFromURIRepresentation:(id)representation
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_msgSend(objc_msgSend(a3 "path")];
-  IndexedIvars = object_getIndexedIvars(a1);
+  v6 = [objc_msgSend(objc_msgSend(representation "path")];
+  IndexedIvars = object_getIndexedIvars(self);
   v8 = IndexedIvars[2];
   v9 = [v6 characterAtIndex:0];
   v10 = [v6 substringFromIndex:1];
@@ -383,9 +383,9 @@ LABEL_29:
     v16 = 0;
     if (+[_PFRoutines convertCString:toUnsignedInt64:withBase:](_PFRoutines, [v10 UTF8String], &v16, 0))
     {
-      if ([a1 isSubclassOfClass:objc_opt_class()])
+      if ([self isSubclassOfClass:objc_opt_class()])
       {
-        v12 = [a1 alloc];
+        v12 = [self alloc];
         v11 = [v12 initWithPK64:v16];
         if (v11)
         {
@@ -397,7 +397,7 @@ LABEL_29:
       {
         v13 = objc_alloc(MEMORY[0x1E696AD98]);
         v14 = [v13 initWithUnsignedLongLong:v16];
-        v11 = [[a1 alloc] initWithObject:v14];
+        v11 = [[self alloc] initWithObject:v14];
 
         if (v11)
         {
@@ -406,7 +406,7 @@ LABEL_29:
       }
     }
 
-    v11 = [[a1 alloc] initWithObject:v10];
+    v11 = [[self alloc] initWithObject:v10];
   }
 
 LABEL_9:
@@ -415,25 +415,25 @@ LABEL_9:
   return v11;
 }
 
-+ (void)setObjectStoreIdentifier:(id)a3
++ (void)setObjectStoreIdentifier:(id)identifier
 {
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   v5 = IndexedIvars[5];
-  if (v5 != a3)
+  if (v5 != identifier)
   {
     if (v5)
     {
       CFRelease(v5);
     }
 
-    v6 = CFRetain([a3 copy]);
+    v6 = CFRetain([identifier copy]);
     IndexedIvars[5] = v6;
   }
 }
 
 + (id)_storeInfo1
 {
-  result = object_getIndexedIvars(a1);
+  result = object_getIndexedIvars(self);
   if (result)
   {
     return *(result + 6);
@@ -444,7 +444,7 @@ LABEL_9:
 
 + (void)_storeDeallocated
 {
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   if (IndexedIvars)
   {
     IndexedIvars[6] = 0;
@@ -467,9 +467,9 @@ LABEL_9:
 
 - (id)entityName
 {
-  v2 = [(_NSCoreManagedObjectID *)self entity];
+  entity = [(_NSCoreManagedObjectID *)self entity];
 
-  return [v2 name];
+  return [entity name];
 }
 
 - (id)persistentStore

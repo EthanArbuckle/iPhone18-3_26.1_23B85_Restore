@@ -1,16 +1,16 @@
 @interface ASItemOperationsTask
 - (ASItemOperationsTask)init;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
-- (id)replacementObjectForEmailItem:(id)a3;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
+- (id)replacementObjectForEmailItem:(id)item;
 - (id)requestBody;
 - (int)_mimeSupportCode;
 - (int)bodyType;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)finishWithError:(id)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)finishWithError:(id)error;
 - (void)requestBody;
-- (void)setCommands:(id)a3;
-- (void)setStreamingMailMessage:(id)a3;
+- (void)setCommands:(id)commands;
+- (void)setStreamingMailMessage:(id)message;
 @end
 
 @implementation ASItemOperationsTask
@@ -42,14 +42,14 @@
   }
 }
 
-- (void)setCommands:(id)a3
+- (void)setCommands:(id)commands
 {
-  v5 = a3;
-  if (self->_commands != v5)
+  commandsCopy = commands;
+  if (self->_commands != commandsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_commands, a3);
-    v5 = v6;
+    v6 = commandsCopy;
+    objc_storeStrong(&self->_commands, commands);
+    commandsCopy = v6;
   }
 }
 
@@ -68,15 +68,15 @@
 - (id)requestBody
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(ASTask *)self taskManager];
-  v5 = [v4 protocol];
+  taskManager = [(ASTask *)self taskManager];
+  protocol = [taskManager protocol];
 
-  if (([v5 supportsItemOperationsCommand] & 1) == 0)
+  if (([protocol supportsItemOperationsCommand] & 1) == 0)
   {
     [(ASItemOperationsTask *)a2 requestBody];
   }
 
-  v23 = v5;
+  v23 = protocol;
   v6 = objc_opt_new();
   [v6 switchToCodePage:20];
   [v6 openTag:5];
@@ -103,14 +103,14 @@
         [v6 switchToCodePage:20];
         [v6 openTag:6];
         [v6 appendTag:7 withStringContent:@"Mailbox"];
-        v13 = [v12 collectionID];
-        if (v13 && (v14 = v13, [v12 serverID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+        collectionID = [v12 collectionID];
+        if (collectionID && (v14 = collectionID, [v12 serverID], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
         {
           [v6 switchToCodePage:0];
-          v16 = [v12 collectionID];
-          [v6 appendTag:18 withStringContent:v16];
+          collectionID2 = [v12 collectionID];
+          [v6 appendTag:18 withStringContent:collectionID2];
 
-          v17 = [v12 serverID];
+          serverID = [v12 serverID];
           v18 = v6;
           v19 = 13;
         }
@@ -118,12 +118,12 @@
         else
         {
           [v6 switchToCodePage:15];
-          v17 = [v12 longID];
+          serverID = [v12 longID];
           v18 = v6;
           v19 = 24;
         }
 
-        [v18 appendTag:v19 withStringContent:v17];
+        [v18 appendTag:v19 withStringContent:serverID];
 
         [v6 switchToCodePage:20];
         [v6 openProspectiveTag:8];
@@ -153,23 +153,23 @@
   }
 
   [v6 closeTag:5];
-  v20 = [v6 data];
+  data = [v6 data];
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return data;
 }
 
-- (id)replacementObjectForEmailItem:(id)a3
+- (id)replacementObjectForEmailItem:(id)item
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v11[0] = v4;
+  v11[0] = itemCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v7 = [WeakRetained itemOperationsTask:self hasPartialResponses:v6];
 
-  v8 = v4;
+  v8 = itemCopy;
   if (v7)
   {
 
@@ -182,21 +182,21 @@
   return v8;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 20;
-  *a3 = 5;
-  *a5 = 13;
+  *page = 20;
+  *token = 5;
+  *statusToken = 13;
   return 1;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (v5)
+  if (currentlyParsingItem)
   {
     goto LABEL_4;
   }
@@ -209,9 +209,9 @@ LABEL_3:
     self->_numReplacedItems = 0;
 
 LABEL_4:
-    v7 = [(ASTask *)self currentlyParsingItem];
+    currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
 
-    if (!v7)
+    if (!currentlyParsingItem2)
     {
       goto LABEL_16;
     }
@@ -234,29 +234,29 @@ LABEL_4:
     v31[3] = &unk_278FC7D98;
     v31[4] = self;
     v12 = MEMORY[0x24C2119B0](v31);
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASItemOperationsResponse.ASArray.ASItemOperationsFetchResult.ASDictionary.ASDictionary.%d", 69899];
-    v33 = v13;
+    69899 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASItemOperationsResponse.ASArray.ASItemOperationsFetchResult.ASDictionary.ASDictionary.%d", 69899];
+    v33 = 69899;
     v14 = MEMORY[0x24C2119B0](v12);
     v34 = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
-    v16 = [(ASTask *)self currentlyParsingItem];
-    v17 = [(ASTask *)self taskManager];
-    v18 = [v17 account];
-    [v16 parseASParseContext:v4 root:0 parent:0 callbackDict:v11 streamCallbackDict:v15 account:v18];
+    currentlyParsingItem3 = [(ASTask *)self currentlyParsingItem];
+    taskManager = [(ASTask *)self taskManager];
+    account = [taskManager account];
+    [currentlyParsingItem3 parseASParseContext:contextCopy root:0 parent:0 callbackDict:v11 streamCallbackDict:v15 account:account];
 
     currentlyParsingItem = self->super._currentlyParsingItem;
     if (currentlyParsingItem)
     {
-      v20 = [(ASItem *)currentlyParsingItem parsingState];
-      if (v20 > 4)
+      parsingState = [(ASItem *)currentlyParsingItem parsingState];
+      if (parsingState > 4)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = dword_24A14DCA0[v20];
+        v10 = dword_24A14DCA0[parsingState];
       }
     }
 
@@ -270,21 +270,21 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (![v4 hasNumberOfTokensRemaining:2])
+  if (![contextCopy hasNumberOfTokensRemaining:2])
   {
     goto LABEL_17;
   }
 
-  if ([v4 currentByte])
+  if ([contextCopy currentByte])
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to item operations code page"];
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASItemOperationsTask.m", 190, objc_msgSend(v4, "curOffset")];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASItemOperationsTask.m", 190, objc_msgSend(contextCopy, "curOffset")];
     v23 = DALoggingwithCategory();
     v24 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v23, v24))
     {
       *buf = 134217984;
-      v38 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v23, v24, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -295,27 +295,27 @@ LABEL_17:
     }
 
     *buf = 138412290;
-    v38 = v21;
+    curOffset = v21;
     goto LABEL_25;
   }
 
-  [v4 advanceOffsetByAmount:1];
-  if ([v4 currentByte] == 20)
+  [contextCopy advanceOffsetByAmount:1];
+  if ([contextCopy currentByte] == 20)
   {
-    [v4 advanceOffsetByAmount:1];
-    [v4 setCodePage:20];
+    [contextCopy advanceOffsetByAmount:1];
+    [contextCopy setCodePage:20];
     self->super._haveSwitchedCodePage = 1;
     goto LABEL_3;
   }
 
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to item operations code page"];
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASItemOperationsTask.m", 190, objc_msgSend(v4, "curOffset")];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASItemOperationsTask.m", 190, objc_msgSend(contextCopy, "curOffset")];
   v30 = DALoggingwithCategory();
   v24 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v30, v24))
   {
     *buf = 134217984;
-    v38 = [v4 curOffset];
+    curOffset = [contextCopy curOffset];
     _os_log_impl(&dword_24A0AC000, v30, v24, "Failure at index %lld:", buf, 0xCu);
   }
 
@@ -323,33 +323,33 @@ LABEL_17:
   if (os_log_type_enabled(v25, v24))
   {
     *buf = 138412290;
-    v38 = v21;
+    curOffset = v21;
 LABEL_25:
     _os_log_impl(&dword_24A0AC000, v25, v24, "failure reason was %@", buf, 0xCu);
   }
 
 LABEL_26:
 
-  [v4 setParseErrorReason:v22];
+  [contextCopy setParseErrorReason:v22];
 LABEL_16:
-  v26 = [v4 parseErrorReason];
-  v27 = v26 == 0;
+  parseErrorReason = [contextCopy parseErrorReason];
+  v27 = parseErrorReason == 0;
 
 LABEL_18:
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
-  if (!v4)
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
+  if (!errorCopy)
   {
-    v11 = [(ASTask *)self currentlyParsingItem];
-    v8 = v11;
-    if (v11 && [v11 parsingState]== 2)
+    currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+    v8 = currentlyParsingItem;
+    if (currentlyParsingItem && [currentlyParsingItem parsingState]== 2)
     {
       v12 = DALoggingwithCategory();
       v13 = *(MEMORY[0x277D03988] + 6);
@@ -367,12 +367,12 @@ LABEL_18:
         _os_log_impl(&dword_24A0AC000, v12, v13, "%@ Parsed response of %@ (%d items downloaded and replaced while parsing)", buf, 0x1Cu);
       }
 
-      v17 = [v8 status];
-      v6 = -[ASItemOperationsTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v17 intValue]);
+      status = [v8 status];
+      v6 = -[ASItemOperationsTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
 
       if (v6 == 2)
       {
-        v18 = [v8 fetchResponses];
+        fetchResponses = [v8 fetchResponses];
         goto LABEL_19;
       }
     }
@@ -405,13 +405,13 @@ LABEL_18:
       *buf = 138412546;
       v33 = objc_opt_class();
       v34 = 2112;
-      v35 = v4;
+      v35 = errorCopy;
       v10 = v33;
       _os_log_impl(&dword_24A0AC000, v8, v9, "%@ failed: %@", buf, 0x16u);
     }
 
 LABEL_15:
-    v18 = 0;
+    fetchResponses = 0;
     goto LABEL_19;
   }
 
@@ -424,24 +424,24 @@ LABEL_15:
     _os_log_impl(&dword_24A0AC000, v8, v21, "%@ cancelled", buf, 0xCu);
   }
 
-  v18 = 0;
+  fetchResponses = 0;
   v6 = -1;
 LABEL_19:
 
-  if (![(ASTask *)self attemptRetryWithStatus:v6 error:v4])
+  if (![(ASTask *)self attemptRetryWithStatus:v6 error:errorCopy])
   {
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __40__ASItemOperationsTask_finishWithError___block_invoke;
     v27 = &unk_278FC7D70;
-    v28 = self;
+    selfCopy = self;
     v31 = v6;
-    v29 = v4;
-    v30 = v18;
+    v29 = errorCopy;
+    v30 = fetchResponses;
     [(ASTask *)self finishWithError:v29 afterDelegateCallout:&v24];
   }
 
-  [(ASTask *)self setCurrentlyParsingItem:0, v24, v25, v26, v27, v28];
+  [(ASTask *)self setCurrentlyParsingItem:0, v24, v25, v26, v27, selfCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -452,10 +452,10 @@ void __40__ASItemOperationsTask_finishWithError___block_invoke(void *a1)
   [WeakRetained itemOperationsTask:a1[4] completedWithStatus:a1[7] error:a1[5] responses:a1[6]];
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0x12)
+  if (status >= 0x12)
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 3);
@@ -466,7 +466,7 @@ void __40__ASItemOperationsTask_finishWithError___block_invoke(void *a1)
       v10 = 138412546;
       v11 = v8;
       v12 = 1024;
-      v13 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
     }
 
@@ -475,28 +475,28 @@ void __40__ASItemOperationsTask_finishWithError___block_invoke(void *a1)
 
   else
   {
-    result = qword_24A14DCB8[a3];
+    result = qword_24A14DCB8[status];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)setStreamingMailMessage:(id)a3
+- (void)setStreamingMailMessage:(id)message
 {
-  v5 = a3;
-  if (self->_streamingMailMessage != v5)
+  messageCopy = message;
+  if (self->_streamingMailMessage != messageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_streamingMailMessage, a3);
-    v5 = v6;
+    v6 = messageCopy;
+    objc_storeStrong(&self->_streamingMailMessage, message);
+    messageCopy = v6;
   }
 }
 
 - (void)requestBody
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"ASItemOperationsTask.m" lineNumber:82 description:{@"We were asked to fetch an email with ItemOperations, but our protocol %@ doesn't support that", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ASItemOperationsTask.m" lineNumber:82 description:{@"We were asked to fetch an email with ItemOperations, but our protocol %@ doesn't support that", a3}];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface DDIDSService
-- (BOOL)_sendIDSMessage:(id)a3;
-- (BOOL)hasDestination:(id)a3;
+- (BOOL)_sendIDSMessage:(id)message;
+- (BOOL)hasDestination:(id)destination;
 - (DAIDSMessageReceiver)receiver;
-- (DDIDSService)initWithServiceType:(int64_t)a3;
+- (DDIDSService)initWithServiceType:(int64_t)type;
 - (NSString)description;
-- (id)_destinationFromID:(id)a3;
-- (id)_selfTokenFromID:(id)a3;
-- (void)availableDestinationsWithCompletion:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (id)_destinationFromID:(id)d;
+- (id)_selfTokenFromID:(id)d;
+- (void)availableDestinationsWithCompletion:(id)completion;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation DDIDSService
 
-- (DDIDSService)initWithServiceType:(int64_t)a3
+- (DDIDSService)initWithServiceType:(int64_t)type
 {
   v11.receiver = self;
   v11.super_class = DDIDSService;
@@ -36,18 +36,18 @@
   return v3;
 }
 
-- (void)availableDestinationsWithCompletion:(id)a3
+- (void)availableDestinationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(DDIDSService *)self service];
-  v7 = [v6 devices];
+  service = [(DDIDSService *)self service];
+  devices = [service devices];
 
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v8 = [devices countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -59,7 +59,7 @@
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devices);
         }
 
         v12 = [[DAIDSDestination alloc] initWithIDSDevice:*(*(&v28 + 1) + 8 * v11)];
@@ -69,14 +69,14 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v9 = [devices countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(DDIDSService *)self service];
-  v14 = [v13 linkedDevicesWithRelationship:2];
+  service2 = [(DDIDSService *)self service];
+  v14 = [service2 linkedDevicesWithRelationship:2];
 
   v26 = 0u;
   v27 = 0u;
@@ -114,18 +114,18 @@
   }
 
   v23 = [NSSet setWithArray:v5];
-  v4[2](v4, v23);
+  completionCopy[2](completionCopy, v23);
 }
 
-- (BOOL)hasDestination:(id)a3
+- (BOOL)hasDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(DDIDSService *)self service];
-  v6 = [v5 linkedDevicesWithRelationship:2];
+  destinationCopy = destination;
+  service = [(DDIDSService *)self service];
+  v6 = [service linkedDevicesWithRelationship:2];
 
-  v7 = [(DDIDSService *)self service];
-  v8 = [v7 devices];
-  v9 = [v8 arrayByAddingObjectsFromArray:v6];
+  service2 = [(DDIDSService *)self service];
+  devices = [service2 devices];
+  v9 = [devices arrayByAddingObjectsFromArray:v6];
 
   v17 = 0u;
   v18 = 0u;
@@ -145,7 +145,7 @@
           objc_enumerationMutation(v10);
         }
 
-        if ([v4 isEqual:{*(*(&v15 + 1) + 8 * i), v15}])
+        if ([destinationCopy isEqual:{*(*(&v15 + 1) + 8 * i), v15}])
         {
           LOBYTE(v11) = 1;
           goto LABEL_11;
@@ -167,62 +167,62 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_sendIDSMessage:(id)a3
+- (BOOL)_sendIDSMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 peerResponseIdentifier];
+  peerResponseIdentifier = [messageCopy peerResponseIdentifier];
 
-  if (v6)
+  if (peerResponseIdentifier)
   {
-    v7 = [v4 peerResponseIdentifier];
-    [v5 setObject:v7 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+    peerResponseIdentifier2 = [messageCopy peerResponseIdentifier];
+    [v5 setObject:peerResponseIdentifier2 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
   }
 
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 expectsResponse]);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messageCopy expectsResponse]);
   [v5 setObject:v8 forKeyedSubscript:IDSSendMessageOptionExpectsPeerResponseKey];
 
   [v5 setObject:&off_10001DA30 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionEnforceRemoteTimeoutsKey];
-  v9 = [(DDIDSService *)self service];
-  v10 = [v4 dictionary];
-  v11 = [v4 destination];
-  v12 = [v11 idsDestination];
-  v13 = [NSSet setWithObject:v12];
+  service = [(DDIDSService *)self service];
+  dictionary = [messageCopy dictionary];
+  destination = [messageCopy destination];
+  idsDestination = [destination idsDestination];
+  v13 = [NSSet setWithObject:idsDestination];
   v31 = 0;
   v32 = 0;
-  v14 = [v9 sendMessage:v10 toDestinations:v13 priority:300 options:v5 identifier:&v32 error:&v31];
+  v14 = [service sendMessage:dictionary toDestinations:v13 priority:300 options:v5 identifier:&v32 error:&v31];
   v15 = v32;
   v26 = v31;
 
   if (v14)
   {
-    v16 = [(DDIDSService *)self queue];
+    queue = [(DDIDSService *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000C4C8;
     block[3] = &unk_10001CAD0;
-    v17 = v4;
+    v17 = messageCopy;
     v28 = v17;
     v18 = v15;
     v29 = v18;
-    v30 = self;
-    dispatch_async(v16, block);
+    selfCopy = self;
+    dispatch_async(queue, block);
 
     v19 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v17 peerResponseIdentifier];
+      peerResponseIdentifier3 = [v17 peerResponseIdentifier];
       *buf = 138412802;
       v34 = v18;
       v35 = 2112;
       v36 = v17;
       v37 = 2112;
-      v38 = v20;
+      v38 = peerResponseIdentifier3;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] > Outgoing message: %@, peer response identifier: %@", buf, 0x20u);
     }
 
-    v21 = v28;
+    response2 = v28;
     v22 = v26;
     goto LABEL_11;
   }
@@ -234,93 +234,93 @@ LABEL_11:
     *buf = 138412802;
     v34 = v15;
     v35 = 2112;
-    v36 = v4;
+    v36 = messageCopy;
     v37 = 2112;
     v38 = v26;
     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%@] Failed to send IDS message: %@, error: %@", buf, 0x20u);
   }
 
-  v24 = [v4 response];
+  response = [messageCopy response];
 
-  if (v24)
+  if (response)
   {
-    v21 = [v4 response];
-    (v21)[2](v21, 0, v26, 0, 0);
+    response2 = [messageCopy response];
+    (response2)[2](response2, 0, v26, 0, 0);
 LABEL_11:
   }
 
   return v14;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(DDIDSService *)self _destinationFromID:v11];
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [(DDIDSService *)self _destinationFromID:dCopy];
   if (v13)
   {
-    v14 = [[DDIDSIncomingMessage alloc] initWithIncomingDictionary:v10 destination:v13];
+    v14 = [[DDIDSIncomingMessage alloc] initWithIncomingDictionary:messageCopy destination:v13];
     if (!v14)
     {
-      v15 = DiagnosticLogHandleForCategory();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      incomingResponseIdentifier = DiagnosticLogHandleForCategory();
+      if (os_log_type_enabled(incomingResponseIdentifier, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v12 outgoingResponseIdentifier];
+        outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
         *buf = 138412546;
-        v41 = v24;
+        v41 = outgoingResponseIdentifier;
         v42 = 2112;
-        v43 = v10;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%@] Invalid incoming message: %@", buf, 0x16u);
+        v43 = messageCopy;
+        _os_log_impl(&_mh_execute_header, incomingResponseIdentifier, OS_LOG_TYPE_DEFAULT, "[%@] Invalid incoming message: %@", buf, 0x16u);
       }
 
       goto LABEL_20;
     }
 
-    v15 = [v12 incomingResponseIdentifier];
-    if (v15)
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+    if (incomingResponseIdentifier)
     {
       v16 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v41 = v15;
+        v41 = incomingResponseIdentifier;
         v42 = 2112;
-        v43 = v10;
+        v43 = messageCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%@] < Incoming response message: %@", buf, 0x16u);
       }
 
-      v17 = [(DDIDSService *)self messageStorage];
-      v18 = [v17 objectForKeyedSubscript:v15];
+      messageStorage = [(DDIDSService *)self messageStorage];
+      v18 = [messageStorage objectForKeyedSubscript:incomingResponseIdentifier];
 
-      v19 = [(DDIDSService *)self messageStorage];
-      [v19 removeObjectForKey:v15];
+      messageStorage2 = [(DDIDSService *)self messageStorage];
+      [messageStorage2 removeObjectForKey:incomingResponseIdentifier];
 
-      v20 = [v18 response];
+      response = [v18 response];
 
-      if (v20)
+      if (response)
       {
-        v21 = [v18 response];
-        v22 = [(DDIDSIncomingMessage *)v14 message];
-        v23 = [(DDIDSIncomingMessage *)v14 data];
-        (*(v21 + 16))(v21, 1, 0, v22, v23);
+        response2 = [v18 response];
+        message = [(DDIDSIncomingMessage *)v14 message];
+        data = [(DDIDSIncomingMessage *)v14 data];
+        (*(response2 + 16))(response2, 1, 0, message, data);
       }
 
       else
       {
-        v21 = DiagnosticLogHandleForCategory();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        response2 = DiagnosticLogHandleForCategory();
+        if (os_log_type_enabled(response2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v41 = v15;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%@] No response handler for message. Dropping response.", buf, 0xCu);
+          v41 = incomingResponseIdentifier;
+          _os_log_impl(&_mh_execute_header, response2, OS_LOG_TYPE_DEFAULT, "[%@] No response handler for message. Dropping response.", buf, 0xCu);
         }
       }
     }
 
     else
     {
-      v25 = [(DDIDSService *)self receiver];
+      receiver = [(DDIDSService *)self receiver];
       v26 = objc_opt_respondsToSelector();
 
       if ((v26 & 1) == 0)
@@ -333,31 +333,31 @@ LABEL_20:
       v27 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v12 outgoingResponseIdentifier];
-        v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 expectsPeerResponse]);
+        outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+        v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [contextCopy expectsPeerResponse]);
         *buf = 138412802;
-        v41 = v28;
+        v41 = outgoingResponseIdentifier2;
         v42 = 2112;
-        v43 = v10;
+        v43 = messageCopy;
         v44 = 2112;
         v45 = v29;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%@] < New incoming message: %@, expects response: %@", buf, 0x20u);
       }
 
-      v34 = [(DDIDSService *)self receiver];
-      v30 = [(DDIDSIncomingMessage *)v14 message];
-      v31 = [(DDIDSIncomingMessage *)v14 data];
-      v32 = [(DDIDSIncomingMessage *)v14 destination];
-      v33 = [v12 expectsPeerResponse];
+      receiver2 = [(DDIDSService *)self receiver];
+      message2 = [(DDIDSIncomingMessage *)v14 message];
+      data2 = [(DDIDSIncomingMessage *)v14 data];
+      destination = [(DDIDSIncomingMessage *)v14 destination];
+      expectsPeerResponse = [contextCopy expectsPeerResponse];
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_10000CC88;
       v35[3] = &unk_10001CAF8;
       v36 = v14;
-      v37 = v12;
-      v38 = v10;
-      v39 = self;
-      [v34 receiveMessage:v30 data:v31 fromDestination:v32 expectsResponse:v33 response:v35];
+      v37 = contextCopy;
+      v38 = messageCopy;
+      selfCopy = self;
+      [receiver2 receiveMessage:message2 data:data2 fromDestination:destination expectsResponse:expectsPeerResponse response:v35];
 
       v18 = v36;
     }
@@ -368,21 +368,21 @@ LABEL_20:
   v14 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(&v14->super, OS_LOG_TYPE_ERROR))
   {
-    sub_10000E41C(v12);
+    sub_10000E41C(contextCopy);
   }
 
 LABEL_21:
 }
 
-- (id)_destinationFromID:(id)a3
+- (id)_destinationFromID:(id)d
 {
-  v4 = [(DDIDSService *)self _selfTokenFromID:a3];
-  v5 = [(DDIDSService *)self service];
-  v6 = [v5 linkedDevicesWithRelationship:2];
+  v4 = [(DDIDSService *)self _selfTokenFromID:d];
+  service = [(DDIDSService *)self service];
+  v6 = [service linkedDevicesWithRelationship:2];
 
-  v7 = [(DDIDSService *)self service];
-  v8 = [v7 devices];
-  v9 = [v8 arrayByAddingObjectsFromArray:v6];
+  service2 = [(DDIDSService *)self service];
+  devices = [service2 devices];
+  v9 = [devices arrayByAddingObjectsFromArray:v6];
 
   v23 = 0u;
   v24 = 0u;
@@ -446,13 +446,13 @@ LABEL_12:
   return v19;
 }
 
-- (id)_selfTokenFromID:(id)a3
+- (id)_selfTokenFromID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (([v3 containsString:@"self-token:"] & 1) == 0)
+  dCopy = d;
+  v4 = dCopy;
+  if (([dCopy containsString:@"self-token:"] & 1) == 0)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [dCopy mutableCopy];
     [v5 replaceOccurrencesOfString:@"token" withString:@"self-token" options:1 range:{0, objc_msgSend(v5, "length")}];
     v4 = [v5 copy];
   }
@@ -462,8 +462,8 @@ LABEL_12:
 
 - (NSString)description
 {
-  v2 = [(DDIDSService *)self service];
-  v3 = [v2 description];
+  service = [(DDIDSService *)self service];
+  v3 = [service description];
   v4 = [NSString stringWithFormat:@"%@", v3];
 
   return v4;

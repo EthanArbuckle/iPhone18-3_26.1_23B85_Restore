@@ -1,14 +1,14 @@
 @interface SOKerberosServer
-+ (id)serverWithString:(id)a3;
-- (SOKerberosServer)initWithHost:(id)a3 port:(id)a4 protocol:(id)a5 path:(id)a6;
++ (id)serverWithString:(id)string;
+- (SOKerberosServer)initWithHost:(id)host port:(id)port protocol:(id)protocol path:(id)path;
 @end
 
 @implementation SOKerberosServer
 
-+ (id)serverWithString:(id)a3
++ (id)serverWithString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 hasPrefix:@"tcp/"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString hasPrefix:@"tcp/"])
   {
     v4 = @"tcp";
 LABEL_5:
@@ -16,27 +16,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:@"udp/"])
+  if ([lowercaseString hasPrefix:@"udp/"])
   {
     v4 = @"udp";
     goto LABEL_5;
   }
 
-  if ([v3 hasPrefix:@"http://"])
+  if ([lowercaseString hasPrefix:@"http://"])
   {
     v4 = @"http";
     v5 = 7;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:@"http/"])
+  if ([lowercaseString hasPrefix:@"http/"])
   {
     v4 = @"http";
     v5 = 5;
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:@"kkdcp://"])
+  if ([lowercaseString hasPrefix:@"kkdcp://"])
   {
     v4 = @"kkdcp";
     v5 = 8;
@@ -46,15 +46,15 @@ LABEL_5:
   v4 = 0;
   v5 = 0;
   v16 = 0;
-  if (([v3 containsString:@"://"] & 1) == 0)
+  if (([lowercaseString containsString:@"://"] & 1) == 0)
   {
 LABEL_6:
-    if ([v3 length] <= v5)
+    if ([lowercaseString length] <= v5)
     {
-      v15 = SO_LOG_SOKerberosServer();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      host5 = SO_LOG_SOKerberosServer();
+      if (os_log_type_enabled(host5, OS_LOG_TYPE_ERROR))
       {
-        [SOKerberosServer serverWithString:v15];
+        [SOKerberosServer serverWithString:host5];
       }
 
       v16 = 0;
@@ -62,22 +62,22 @@ LABEL_6:
     }
 
     v50 = v4;
-    v6 = [v3 substringFromIndex:v5];
+    v6 = [lowercaseString substringFromIndex:v5];
     v7 = objc_alloc(MEMORY[0x277CCACE0]);
     v8 = [@"host://" stringByAppendingString:v6];
     v9 = [v7 initWithString:v8];
 
-    v10 = [v9 host];
-    if ([v10 hasPrefix:@"["])
+    host = [v9 host];
+    if ([host hasPrefix:@"["])
     {
-      v11 = [v9 host];
-      v12 = [v11 hasSuffix:@"]"];
+      host2 = [v9 host];
+      v12 = [host2 hasSuffix:@"]"];
 
       if (v12)
       {
-        v13 = [v9 host];
-        v14 = [v9 host];
-        v15 = [v13 substringWithRange:{1, objc_msgSend(v14, "length") - 2}];
+        host3 = [v9 host];
+        host4 = [v9 host];
+        host5 = [host3 substringWithRange:{1, objc_msgSend(host4, "length") - 2}];
 
         goto LABEL_17;
       }
@@ -87,42 +87,42 @@ LABEL_6:
     {
     }
 
-    v15 = [v9 host];
+    host5 = [v9 host];
 LABEL_17:
-    v17 = [v9 port];
-    v18 = [v17 stringValue];
+    port = [v9 port];
+    stringValue = [port stringValue];
 
-    v19 = [v9 path];
-    if ([v19 isEqualToString:&stru_285206D08])
+    path = [v9 path];
+    if ([path isEqualToString:&stru_285206D08])
     {
-      v20 = 0;
+      path2 = 0;
     }
 
     else
     {
-      v20 = [v9 path];
+      path2 = [v9 path];
     }
 
-    v21 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-    v22 = [v21 invertedSet];
-    v23 = [v15 rangeOfCharacterFromSet:v22];
+    uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+    invertedSet = [uRLHostAllowedCharacterSet invertedSet];
+    v23 = [host5 rangeOfCharacterFromSet:invertedSet];
 
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v18 && ([MEMORY[0x277CCA900] decimalDigitCharacterSet], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "invertedSet"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v18, "rangeOfCharacterFromSet:", v25), v25, v24, v26 != 0x7FFFFFFFFFFFFFFFLL))
+      if (stringValue && ([MEMORY[0x277CCA900] decimalDigitCharacterSet], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "invertedSet"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(stringValue, "rangeOfCharacterFromSet:", v25), v25, v24, v26 != 0x7FFFFFFFFFFFFFFFLL))
       {
         v30 = SO_LOG_SOKerberosServer();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          [(SOKerberosServer *)v18 serverWithString:v30, v37, v38, v39, v40, v41, v42];
+          [(SOKerberosServer *)stringValue serverWithString:v30, v37, v38, v39, v40, v41, v42];
         }
       }
 
       else
       {
-        if (!v20 || ([MEMORY[0x277CCA900] URLPathAllowedCharacterSet], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "invertedSet"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v20, "rangeOfCharacterFromSet:", v28), v28, v27, v29 == 0x7FFFFFFFFFFFFFFFLL))
+        if (!path2 || ([MEMORY[0x277CCA900] URLPathAllowedCharacterSet], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "invertedSet"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(path2, "rangeOfCharacterFromSet:", v28), v28, v27, v29 == 0x7FFFFFFFFFFFFFFFLL))
         {
-          v16 = [[SOKerberosServer alloc] initWithHost:v15 port:v18 protocol:v50 path:v20];
+          v16 = [[SOKerberosServer alloc] initWithHost:host5 port:stringValue protocol:v50 path:path2];
 LABEL_37:
 
 LABEL_38:
@@ -132,7 +132,7 @@ LABEL_38:
         v30 = SO_LOG_SOKerberosServer();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          [(SOKerberosServer *)v20 serverWithString:v30, v43, v44, v45, v46, v47, v48];
+          [(SOKerberosServer *)path2 serverWithString:v30, v43, v44, v45, v46, v47, v48];
         }
       }
     }
@@ -142,7 +142,7 @@ LABEL_38:
       v30 = SO_LOG_SOKerberosServer();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        [(SOKerberosServer *)v15 serverWithString:v30, v31, v32, v33, v34, v35, v36];
+        [(SOKerberosServer *)host5 serverWithString:v30, v31, v32, v33, v34, v35, v36];
       }
     }
 
@@ -155,22 +155,22 @@ LABEL_39:
   return v16;
 }
 
-- (SOKerberosServer)initWithHost:(id)a3 port:(id)a4 protocol:(id)a5 path:(id)a6
+- (SOKerberosServer)initWithHost:(id)host port:(id)port protocol:(id)protocol path:(id)path
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  hostCopy = host;
+  portCopy = port;
+  protocolCopy = protocol;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = SOKerberosServer;
   v15 = [(SOKerberosServer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_host, a3);
-    objc_storeStrong(&v16->_port, a4);
-    objc_storeStrong(&v16->_protocol, a5);
-    objc_storeStrong(&v16->_path, a6);
+    objc_storeStrong(&v15->_host, host);
+    objc_storeStrong(&v16->_port, port);
+    objc_storeStrong(&v16->_protocol, protocol);
+    objc_storeStrong(&v16->_path, path);
   }
 
   return v16;

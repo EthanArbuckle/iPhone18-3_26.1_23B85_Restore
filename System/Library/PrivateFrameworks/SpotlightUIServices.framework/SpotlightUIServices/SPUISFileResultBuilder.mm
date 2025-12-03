@@ -1,11 +1,11 @@
 @interface SPUISFileResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (CGSize)defaultThumbnailSizeIsCompact:(BOOL)a3;
-+ (id)stringWithModificationDate:(id)a3 creationDate:(id)a4;
-+ (id)stringWithPageCount:(id)a3;
-- (SPUISFileResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (CGSize)defaultThumbnailSizeIsCompact:(BOOL)compact;
++ (id)stringWithModificationDate:(id)date creationDate:(id)creationDate;
++ (id)stringWithPageCount:(id)count;
+- (SPUISFileResultBuilder)initWithResult:(id)result;
 - (id)buildAppTopHitEntityCardSection;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildButtonItems;
 - (id)buildCommand;
 - (id)buildCompactCardSection;
@@ -20,40 +20,40 @@
 
 @implementation SPUISFileResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 resultBundleId];
-  v8.receiver = a1;
+  resultCopy = result;
+  resultBundleId = [resultCopy resultBundleId];
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SPUISFileResultBuilder;
-  LOBYTE(a1) = objc_msgSendSuper2(&v8, sel_supportsResult_, v4);
+  LOBYTE(self) = objc_msgSendSuper2(&v8, sel_supportsResult_, resultCopy);
 
-  if (a1 & 1) != 0 || ([v5 hasPrefix:@"com.apple.CloudDocs"])
+  if (self & 1) != 0 || ([resultBundleId hasPrefix:@"com.apple.CloudDocs"])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+    v6 = [resultBundleId isEqualToString:@"com.apple.FileProvider.LocalStorage"];
   }
 
   return v6;
 }
 
-+ (id)stringWithModificationDate:(id)a3 creationDate:(id)a4
++ (id)stringWithModificationDate:(id)date creationDate:(id)creationDate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dateCopy = date;
+  creationDateCopy = creationDate;
+  v7 = creationDateCopy;
+  if (dateCopy)
   {
-    v8 = v5;
+    v8 = dateCopy;
   }
 
   else
   {
-    v8 = v6;
+    v8 = creationDateCopy;
   }
 
   if (v8)
@@ -71,34 +71,34 @@
   return v11;
 }
 
-+ (id)stringWithPageCount:(id)a3
++ (id)stringWithPageCount:(id)count
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  countCopy = count;
   v5 = [SPUISUtilities localizedStringForKey:@"PAGES_FORMAT"];
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  countCopy = [v3 localizedStringWithFormat:v5, countCopy];
 
-  return v6;
+  return countCopy;
 }
 
-- (SPUISFileResultBuilder)initWithResult:(id)a3
+- (SPUISFileResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v27.receiver = self;
   v27.super_class = SPUISFileResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v27 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v27 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setCreationDate:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setModificationDate:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC2D10] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC2D10] withType:objc_opt_class()];
     [(SPUISResultBuilder *)v5 setLastUsedDate:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2A80] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2A80] withType:objc_opt_class()];
     if (v9)
     {
       [(SPUISResultBuilder *)v5 setCoreSpotlightId:v9];
@@ -106,41 +106,41 @@
 
     else
     {
-      v10 = [v4 identifier];
-      [(SPUISResultBuilder *)v5 setCoreSpotlightId:v10];
+      identifier = [resultCopy identifier];
+      [(SPUISResultBuilder *)v5 setCoreSpotlightId:identifier];
     }
 
-    v11 = [v4 fileProviderIdentifier];
-    if (v11)
+    fileProviderIdentifier = [resultCopy fileProviderIdentifier];
+    if (fileProviderIdentifier)
     {
-      [(SPUISFileResultBuilder *)v5 setFileProviderId:v11];
+      [(SPUISFileResultBuilder *)v5 setFileProviderId:fileProviderIdentifier];
     }
 
     else
     {
-      v12 = [v4 valueForAttribute:*MEMORY[0x277CC2B38] withType:objc_opt_class()];
+      v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC2B38] withType:objc_opt_class()];
       [(SPUISFileResultBuilder *)v5 setFileProviderId:v12];
     }
 
-    v13 = [v4 fileProviderDomainIdentifier];
-    if (v13)
+    fileProviderDomainIdentifier = [resultCopy fileProviderDomainIdentifier];
+    if (fileProviderDomainIdentifier)
     {
-      [(SPUISFileResultBuilder *)v5 setFileProviderDomainId:v13];
+      [(SPUISFileResultBuilder *)v5 setFileProviderDomainId:fileProviderDomainIdentifier];
     }
 
     else
     {
-      v14 = [v4 valueForAttribute:*MEMORY[0x277CC2770] withType:objc_opt_class()];
+      v14 = [resultCopy valueForAttribute:*MEMORY[0x277CC2770] withType:objc_opt_class()];
       [(SPUISFileResultBuilder *)v5 setFileProviderDomainId:v14];
     }
 
-    v15 = [v4 valueForAttribute:*MEMORY[0x277CC2CF0] withType:objc_opt_class()];
+    v15 = [resultCopy valueForAttribute:*MEMORY[0x277CC2CF0] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setKind:v15];
 
-    v16 = [v4 valueForAttribute:*MEMORY[0x277CC31E0] withType:objc_opt_class()];
+    v16 = [resultCopy valueForAttribute:*MEMORY[0x277CC31E0] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setThumbnailURL:v16];
 
-    v17 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setName:v17];
 
     v18 = +[SPUISUtilities isMacOS];
@@ -150,20 +150,20 @@
       v19 = MEMORY[0x277CC2B48];
     }
 
-    v20 = [v4 valueForAttribute:*v19 withType:objc_opt_class()];
+    v20 = [resultCopy valueForAttribute:*v19 withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setSizeInBytes:v20];
 
-    v21 = [v4 valueForAttribute:*MEMORY[0x277CC2E08] withType:objc_opt_class()];
+    v21 = [resultCopy valueForAttribute:*MEMORY[0x277CC2E08] withType:objc_opt_class()];
     [(SPUISFileResultBuilder *)v5 setPageCount:v21];
 
-    v22 = [v4 contentType];
-    [(SPUISFileResultBuilder *)v5 setContentType:v22];
+    contentType = [resultCopy contentType];
+    [(SPUISFileResultBuilder *)v5 setContentType:contentType];
 
-    v23 = [(SPUISFileResultBuilder *)v5 contentType];
-    v24 = [*MEMORY[0x277CE1D80] identifier];
-    -[SPUISFileResultBuilder setIsFolder:](v5, "setIsFolder:", [v23 isEqualToString:v24]);
+    contentType2 = [(SPUISFileResultBuilder *)v5 contentType];
+    identifier2 = [*MEMORY[0x277CE1D80] identifier];
+    -[SPUISFileResultBuilder setIsFolder:](v5, "setIsFolder:", [contentType2 isEqualToString:identifier2]);
 
-    v25 = [v4 valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
+    v25 = [resultCopy valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
     [(SPUISResultBuilder *)v5 setFilePath:v25];
   }
 
@@ -173,82 +173,82 @@
 - (id)buildButtonItems
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISFileResultBuilder *)self openFileProviderItemCommand];
-  if (v3 && ![(SPUISFileResultBuilder *)self isFolder])
+  openFileProviderItemCommand = [(SPUISFileResultBuilder *)self openFileProviderItemCommand];
+  if (openFileProviderItemCommand && ![(SPUISFileResultBuilder *)self isFolder])
   {
-    [v3 setShouldRevealFile:1];
+    [openFileProviderItemCommand setShouldRevealFile:1];
     v5 = objc_opt_new();
-    [v5 setCommand:v3];
+    [v5 setCommand:openFileProviderItemCommand];
     v9[0] = v5;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
+    buildButtonItems = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISFileResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v8 buildButtonItems];
+    buildButtonItems = [(SPUISResultBuilder *)&v8 buildButtonItems];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return buildButtonItems;
 }
 
 - (id)buildCompactCardSection
 {
   v12.receiver = self;
   v12.super_class = SPUISFileResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
+  buildCompactCardSection = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
   v4 = objc_opt_class();
-  v5 = [(SPUISFileResultBuilder *)self modificationDate];
-  v6 = [(SPUISFileResultBuilder *)self creationDate];
-  v7 = [v4 stringWithModificationDate:v5 creationDate:v6];
+  modificationDate = [(SPUISFileResultBuilder *)self modificationDate];
+  creationDate = [(SPUISFileResultBuilder *)self creationDate];
+  v7 = [v4 stringWithModificationDate:modificationDate creationDate:creationDate];
 
   if (v7)
   {
-    v8 = [v3 descriptions];
+    descriptions = [buildCompactCardSection descriptions];
     v9 = [MEMORY[0x277D4C598] textWithString:v7];
-    v10 = [v8 arrayByAddingObject:v9];
-    [v3 setDescriptions:v10];
+    v10 = [descriptions arrayByAddingObject:v9];
+    [buildCompactCardSection setDescriptions:v10];
   }
 
-  return v3;
+  return buildCompactCardSection;
 }
 
 - (id)buildThumbnail
 {
-  v3 = [(SPUISResultBuilder *)self filePath];
-  if ([v3 length])
+  filePath = [(SPUISResultBuilder *)self filePath];
+  if ([filePath length])
   {
 
     goto LABEL_3;
   }
 
-  v11 = [(SPUISResultBuilder *)self coreSpotlightId];
-  if (v11)
+  coreSpotlightId = [(SPUISResultBuilder *)self coreSpotlightId];
+  if (coreSpotlightId)
   {
-    v12 = v11;
-    v13 = [(SPUISFileResultBuilder *)self fileProviderId];
+    v12 = coreSpotlightId;
+    fileProviderId = [(SPUISFileResultBuilder *)self fileProviderId];
 
-    if (v13)
+    if (fileProviderId)
     {
 LABEL_3:
-      v4 = objc_opt_new();
-      v5 = [(SPUISResultBuilder *)self coreSpotlightId];
-      [v4 setCoreSpotlightIdentifier:v5];
+      buildThumbnail = objc_opt_new();
+      coreSpotlightId2 = [(SPUISResultBuilder *)self coreSpotlightId];
+      [buildThumbnail setCoreSpotlightIdentifier:coreSpotlightId2];
 
-      v6 = [(SPUISFileResultBuilder *)self fileProviderId];
-      [v4 setFileProviderIdentifier:v6];
+      fileProviderId2 = [(SPUISFileResultBuilder *)self fileProviderId];
+      [buildThumbnail setFileProviderIdentifier:fileProviderId2];
 
-      v7 = [(SPUISResultBuilder *)self filePath];
+      filePath2 = [(SPUISResultBuilder *)self filePath];
 
-      if (v7)
+      if (filePath2)
       {
         v8 = MEMORY[0x277CBEBC0];
-        v9 = [(SPUISResultBuilder *)self filePath];
-        v10 = [v8 fileURLWithPath:v9 isDirectory:{-[SPUISFileResultBuilder isFolder](self, "isFolder")}];
-        [v4 setFilePath:v10];
+        filePath3 = [(SPUISResultBuilder *)self filePath];
+        v10 = [v8 fileURLWithPath:filePath3 isDirectory:{-[SPUISFileResultBuilder isFolder](self, "isFolder")}];
+        [buildThumbnail setFilePath:v10];
       }
 
       goto LABEL_12;
@@ -267,15 +267,15 @@ LABEL_3:
 
   v16.receiver = self;
   v16.super_class = SPUISFileResultBuilder;
-  v4 = [(SPUISResultBuilder *)&v16 buildThumbnail];
+  buildThumbnail = [(SPUISResultBuilder *)&v16 buildThumbnail];
 LABEL_12:
 
-  return v4;
+  return buildThumbnail;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   if ([(SPUISFileResultBuilder *)self isFolder])
   {
     goto LABEL_3;
@@ -287,54 +287,54 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  v7 = [(SPUISResultBuilder *)self filePath];
-  if (v7)
+  filePath = [(SPUISResultBuilder *)self filePath];
+  if (filePath)
   {
   }
 
   else
   {
-    v5 = [(SPUISResultBuilder *)self coreSpotlightId];
-    if (!v5)
+    coreSpotlightId = [(SPUISResultBuilder *)self coreSpotlightId];
+    if (!coreSpotlightId)
     {
       goto LABEL_4;
     }
 
-    v16 = [(SPUISFileResultBuilder *)self fileProviderId];
+    fileProviderId = [(SPUISFileResultBuilder *)self fileProviderId];
 
-    if (!v16)
+    if (!fileProviderId)
     {
 LABEL_3:
-      v5 = 0;
+      coreSpotlightId = 0;
       goto LABEL_4;
     }
   }
 
-  v5 = objc_opt_new();
-  v8 = [(SPUISResultBuilder *)self coreSpotlightId];
-  [v5 setCoreSpotlightIdentifier:v8];
+  coreSpotlightId = objc_opt_new();
+  coreSpotlightId2 = [(SPUISResultBuilder *)self coreSpotlightId];
+  [coreSpotlightId setCoreSpotlightIdentifier:coreSpotlightId2];
 
-  v9 = [(SPUISFileResultBuilder *)self fileProviderId];
-  [v5 setFileProviderIdentifier:v9];
+  fileProviderId2 = [(SPUISFileResultBuilder *)self fileProviderId];
+  [coreSpotlightId setFileProviderIdentifier:fileProviderId2];
 
-  v10 = [(SPUISResultBuilder *)self filePath];
+  filePath2 = [(SPUISResultBuilder *)self filePath];
 
-  if (v10)
+  if (filePath2)
   {
     v11 = MEMORY[0x277D4C550];
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [(SPUISResultBuilder *)self filePath];
-    v14 = [v12 fileURLWithPath:v13 isDirectory:{-[SPUISFileResultBuilder isFolder](self, "isFolder")}];
+    filePath3 = [(SPUISResultBuilder *)self filePath];
+    v14 = [v12 fileURLWithPath:filePath3 isDirectory:{-[SPUISFileResultBuilder isFolder](self, "isFolder")}];
     v15 = [v11 punchoutWithURL:v14];
-    [v5 setPunchout:v15];
+    [coreSpotlightId setPunchout:v15];
   }
 
 LABEL_4:
 
-  return v5;
+  return coreSpotlightId;
 }
 
-+ (CGSize)defaultThumbnailSizeIsCompact:(BOOL)a3
++ (CGSize)defaultThumbnailSizeIsCompact:(BOOL)compact
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -352,70 +352,70 @@ LABEL_4:
     goto LABEL_11;
   }
 
-  v4 = [(SPUISResultBuilder *)self uniformType];
-  if (v4)
+  uniformType = [(SPUISResultBuilder *)self uniformType];
+  if (uniformType)
   {
   }
 
   else
   {
-    v5 = [(SPUISFileResultBuilder *)self kind];
+    kind = [(SPUISFileResultBuilder *)self kind];
 
-    if (!v5)
+    if (!kind)
     {
       goto LABEL_9;
     }
   }
 
-  v6 = [(SPUISResultBuilder *)self uniformType];
-  v7 = [v6 localizedDescription];
-  if (v7)
+  uniformType2 = [(SPUISResultBuilder *)self uniformType];
+  localizedDescription = [uniformType2 localizedDescription];
+  if (localizedDescription)
   {
-    v8 = v7;
+    kind2 = localizedDescription;
   }
 
   else
   {
-    v8 = [(SPUISFileResultBuilder *)self kind];
+    kind2 = [(SPUISFileResultBuilder *)self kind];
 
-    if (!v8)
+    if (!kind2)
     {
       goto LABEL_9;
     }
   }
 
-  [v3 addObject:v8];
+  [v3 addObject:kind2];
 
 LABEL_9:
-  v9 = [(SPUISFileResultBuilder *)self sizeInBytes];
+  sizeInBytes = [(SPUISFileResultBuilder *)self sizeInBytes];
 
-  if (v9)
+  if (sizeInBytes)
   {
-    v10 = [(SPUISFileResultBuilder *)self sizeInBytes];
-    v11 = +[SPUISNumberFormatManager stringFromByteCount:](SPUISNumberFormatManager, "stringFromByteCount:", [v10 longLongValue]);
+    sizeInBytes2 = [(SPUISFileResultBuilder *)self sizeInBytes];
+    v11 = +[SPUISNumberFormatManager stringFromByteCount:](SPUISNumberFormatManager, "stringFromByteCount:", [sizeInBytes2 longLongValue]);
     [v3 addObject:v11];
   }
 
 LABEL_11:
   if ([(SPUISResultBuilder *)self isForBrowseMode]&& ([(SPUISResultBuilder *)self lastUsedDate], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = +[SPUISDateFormatManager shortDateTimeFormatter];
-    v14 = [(SPUISResultBuilder *)self lastUsedDate];
-    v15 = [v13 stringFromDate:v14];
+    modificationDate2 = +[SPUISDateFormatManager shortDateTimeFormatter];
+    lastUsedDate = [(SPUISResultBuilder *)self lastUsedDate];
+    v15 = [modificationDate2 stringFromDate:lastUsedDate];
   }
 
   else
   {
-    v16 = [(SPUISFileResultBuilder *)self modificationDate];
+    modificationDate = [(SPUISFileResultBuilder *)self modificationDate];
 
-    if (!v16)
+    if (!modificationDate)
     {
       goto LABEL_17;
     }
 
     v17 = objc_opt_class();
-    v13 = [(SPUISFileResultBuilder *)self modificationDate];
-    v15 = [v17 stringWithModificationDate:v13 creationDate:0];
+    modificationDate2 = [(SPUISFileResultBuilder *)self modificationDate];
+    v15 = [v17 stringWithModificationDate:modificationDate2 creationDate:0];
   }
 
   [v3 addObject:v15];
@@ -446,20 +446,20 @@ LABEL_17:
 
 - (id)buildCommand
 {
-  v3 = [(SPUISFileResultBuilder *)self openFileProviderItemCommand];
-  if (!v3)
+  openFileProviderItemCommand = [(SPUISFileResultBuilder *)self openFileProviderItemCommand];
+  if (!openFileProviderItemCommand)
   {
-    v3 = [(SPUISFileResultBuilder *)self buildPunchoutCommandForFile];
+    openFileProviderItemCommand = [(SPUISFileResultBuilder *)self buildPunchoutCommandForFile];
   }
 
-  return v3;
+  return openFileProviderItemCommand;
 }
 
 - (id)buildFillToolParameterCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISResultBuilder *)self filePath];
-  [v3 setFilePath:v4];
+  filePath = [(SPUISResultBuilder *)self filePath];
+  [v3 setFilePath:filePath];
 
   return v3;
 }
@@ -470,14 +470,14 @@ LABEL_17:
   {
     v4 = objc_opt_new();
     [v4 setEntityType:6];
-    v6 = [(SPUISResultBuilder *)self filePath];
-    [v4 setEntityIdentifier:v6];
+    filePath = [(SPUISResultBuilder *)self filePath];
+    [v4 setEntityIdentifier:filePath];
 
-    v7 = [(SPUISFileResultBuilder *)self buildThumbnail];
-    [v4 setTokenImage:v7];
+    buildThumbnail = [(SPUISFileResultBuilder *)self buildThumbnail];
+    [v4 setTokenImage:buildThumbnail];
 
-    v8 = [(SPUISResultBuilder *)self result];
-    v9 = [v8 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    result = [(SPUISResultBuilder *)self result];
+    v9 = [result valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [v4 setTokenString:v9];
   }
 
@@ -491,34 +491,34 @@ LABEL_17:
 
 - (id)openFileProviderItemCommand
 {
-  v3 = [(SPUISFileResultBuilder *)self fileProviderId];
-  if (v3)
+  fileProviderId = [(SPUISFileResultBuilder *)self fileProviderId];
+  if (fileProviderId)
   {
-    v4 = [(SPUISResultBuilder *)self coreSpotlightId];
+    coreSpotlightId = [(SPUISResultBuilder *)self coreSpotlightId];
 
-    if (v4)
+    if (coreSpotlightId)
     {
-      v3 = objc_opt_new();
-      v5 = [(SPUISResultBuilder *)self coreSpotlightId];
-      [v3 setCoreSpotlightIdentifier:v5];
+      fileProviderId = objc_opt_new();
+      coreSpotlightId2 = [(SPUISResultBuilder *)self coreSpotlightId];
+      [fileProviderId setCoreSpotlightIdentifier:coreSpotlightId2];
 
-      v6 = [(SPUISFileResultBuilder *)self fileProviderId];
-      [v3 setFileProviderIdentifier:v6];
+      fileProviderId2 = [(SPUISFileResultBuilder *)self fileProviderId];
+      [fileProviderId setFileProviderIdentifier:fileProviderId2];
     }
 
     else
     {
-      v3 = 0;
+      fileProviderId = 0;
     }
   }
 
-  return v3;
+  return fileProviderId;
 }
 
 - (id)buildPunchoutCommandForFile
 {
-  v2 = [(SPUISResultBuilder *)self result];
-  v3 = [v2 url];
+  result = [(SPUISResultBuilder *)self result];
+  v3 = [result url];
 
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277D4C550] punchoutWithURL:v3];
@@ -531,30 +531,30 @@ LABEL_17:
 {
   v5.receiver = self;
   v5.super_class = SPUISFileResultBuilder;
-  v2 = [(SPUISResultBuilder *)&v5 buildAppTopHitEntityCardSection];
-  v3 = [v2 thumbnail];
-  [v3 setCornerRoundingStyle:1];
+  buildAppTopHitEntityCardSection = [(SPUISResultBuilder *)&v5 buildAppTopHitEntityCardSection];
+  thumbnail = [buildAppTopHitEntityCardSection thumbnail];
+  [thumbnail setCornerRoundingStyle:1];
 
-  return v2;
+  return buildAppTopHitEntityCardSection;
 }
 
 - (void)buildThumbnail
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a1 result];
-  v5 = [a1 result];
-  v6 = [v5 fileProviderDomainIdentifier];
-  v7 = [a1 result];
-  v8 = [v7 fileProviderIdentifier];
-  v9 = [a1 filePath];
+  result = [self result];
+  result2 = [self result];
+  fileProviderDomainIdentifier = [result2 fileProviderDomainIdentifier];
+  result3 = [self result];
+  fileProviderIdentifier = [result3 fileProviderIdentifier];
+  filePath = [self filePath];
   v11 = 138413058;
-  v12 = v4;
+  v12 = result;
   v13 = 2112;
-  v14 = v6;
+  v14 = fileProviderDomainIdentifier;
   v15 = 2112;
-  v16 = v8;
+  v16 = fileProviderIdentifier;
   v17 = 2112;
-  v18 = v9;
+  v18 = filePath;
   _os_log_error_impl(&dword_26B882000, a2, OS_LOG_TYPE_ERROR, "SPUISFileResultBuilder: missing info for SFQuickLookThumbnailImage: %@\nresult.fileProviderDomainIdentifier: %@\nresult.fileProviderIdentifier: %@\nfilePath: %@", &v11, 0x2Au);
 
   v10 = *MEMORY[0x277D85DE8];

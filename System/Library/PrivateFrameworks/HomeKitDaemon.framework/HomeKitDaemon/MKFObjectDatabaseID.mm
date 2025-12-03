@@ -1,14 +1,14 @@
 @interface MKFObjectDatabaseID
-- (BOOL)isEqual:(id)a3;
-- (MKFObjectDatabaseID)initWithMKFObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MKFObjectDatabaseID)initWithMKFObject:(id)object;
 @end
 
 @implementation MKFObjectDatabaseID
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -41,17 +41,17 @@
   return v7;
 }
 
-- (MKFObjectDatabaseID)initWithMKFObject:(id)a3
+- (MKFObjectDatabaseID)initWithMKFObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = MKFObjectDatabaseID;
   v5 = [(MKFObjectDatabaseID *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectID];
+    objectID = [objectCopy objectID];
     objectID = v5->_objectID;
-    v5->_objectID = v6;
+    v5->_objectID = objectID;
   }
 
   return v5;

@@ -7,16 +7,16 @@
 
 + (id)date
 {
-  v0 = [MEMORY[0x1E695DF00] date];
-  v1 = [v0 pbDate];
+  date = [MEMORY[0x1E695DF00] date];
+  pbDate = [date pbDate];
 
-  return v1;
+  return pbDate;
 }
 
 - (BOOL)isLaterThan:()FCAdditions
 {
   v4 = a3;
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   v6 = v5;
   [v4 timeIntervalSince1970];
   v8 = v7;

@@ -1,28 +1,28 @@
 @interface CTEmailAddress
-+ (id)emailAddress:(id)a3;
-- (CTEmailAddress)initWithAddress:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)emailAddress:(id)address;
+- (CTEmailAddress)initWithAddress:(id)address;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CTEmailAddress
 
-+ (id)emailAddress:(id)a3
++ (id)emailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAddress:v4];
+  addressCopy = address;
+  v5 = [[self alloc] initWithAddress:addressCopy];
 
   return v5;
 }
 
-- (CTEmailAddress)initWithAddress:(id)a3
+- (CTEmailAddress)initWithAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = CTEmailAddress;
   v5 = [(CTEmailAddress *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     address = v5->_address;
     v5->_address = v6;
   }
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTEmailAddress allocWithZone:a3];
+  v4 = [CTEmailAddress allocWithZone:zone];
   address = self->_address;
 
   return [(CTEmailAddress *)v4 initWithAddress:address];

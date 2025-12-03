@@ -12,16 +12,16 @@
 
 - (BOOL)isNamedGroup
 {
-  if (![a1 isGroup])
+  if (![self isGroup])
   {
     return 0;
   }
 
-  v2 = [a1 displayString];
-  v3 = v2;
-  if (v2)
+  displayString = [self displayString];
+  v3 = displayString;
+  if (displayString)
   {
-    v4 = [v2 length] != 0;
+    v4 = [displayString length] != 0;
   }
 
   else
@@ -34,12 +34,12 @@
 
 - (uint64_t)isNotAChildOfUnifiedRecipient
 {
-  v2 = [a1 children];
-  if ([v2 count])
+  children = [self children];
+  if ([children count])
   {
-    v3 = [a1 isGroup];
+    isGroup = [self isGroup];
 
-    if ((v3 & 1) == 0)
+    if ((isGroup & 1) == 0)
     {
       return 1;
     }
@@ -54,16 +54,16 @@
 
 - (BOOL)isUnnamedGroup
 {
-  if (![a1 isGroup])
+  if (![self isGroup])
   {
     return 0;
   }
 
-  v2 = [a1 displayString];
-  if (v2)
+  displayString = [self displayString];
+  if (displayString)
   {
-    v3 = [a1 displayString];
-    v4 = [v3 length] == 0;
+    displayString2 = [self displayString];
+    v4 = [displayString2 length] == 0;
   }
 
   else
@@ -76,18 +76,18 @@
 
 - (uint64_t)copyPhoneNumber
 {
-  if (![a1 isPhone])
+  if (![self isPhone])
   {
     return 0;
   }
 
-  v2 = [a1 address];
-  if (!v2)
+  address = [self address];
+  if (!address)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = address;
   v4 = MEMORY[0x193AF4FE0](1);
   v5 = CFPhoneNumberCreate();
   if (v4)
@@ -100,15 +100,15 @@
 
 - (id)rawAddress
 {
-  v2 = [a1 uncommentedAddress];
-  if (v2)
+  uncommentedAddress = [self uncommentedAddress];
+  if (uncommentedAddress)
   {
-    [a1 uncommentedAddress];
+    [self uncommentedAddress];
   }
 
   else
   {
-    [a1 normalizedAddress];
+    [self normalizedAddress];
   }
   v3 = ;
 
@@ -117,10 +117,10 @@
 
 - (id)IDSCanonicalAddress
 {
-  v2 = [a1 rawAddress];
+  rawAddress = [self rawAddress];
   v3 = IMStripFormattingFromAddress();
 
-  v4 = [a1 IDSCanonicalAddressForAddress:v3];
+  v4 = [self IDSCanonicalAddressForAddress:v3];
 
   return v4;
 }
@@ -128,7 +128,7 @@
 - (id)IDSCanonicalAddressForAddress:()Additions
 {
   v4 = a3;
-  if ([a1 kind] == 1 || objc_msgSend(a1, "isPhone"))
+  if ([self kind] == 1 || objc_msgSend(self, "isPhone"))
   {
     v5 = IDSCopyIDForPhoneNumber();
 LABEL_8:
@@ -137,7 +137,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![a1 kind] || objc_msgSend(a1, "kind") == 2 || (v6 = objc_msgSend(a1, "isEmail"), v7 = v4, v6))
+  if (![self kind] || objc_msgSend(self, "kind") == 2 || (v6 = objc_msgSend(self, "isEmail"), v7 = v4, v6))
   {
     v5 = MEMORY[0x193AF5170](v4);
     goto LABEL_8;

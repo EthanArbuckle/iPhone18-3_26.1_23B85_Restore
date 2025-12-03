@@ -1,6 +1,6 @@
 @interface CKMessageEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKMessageEntryViewAccessibility)initWithFrame:(CGRect)a3 marginInsets:(UIEdgeInsets)a4 shouldAllowImpact:(BOOL)a5 shouldShowSendButton:(BOOL)a6 shouldShowSubject:(BOOL)a7 shouldShowPluginButtons:(BOOL)a8 shouldShowCharacterCount:(BOOL)a9 traitCollection:(id)a10 shouldDisableAttachments:(BOOL)a11 shouldUseNonEmojiKeyboard:(BOOL)a12 shouldUseNonHandwritingKeyboard:(BOOL)a13 shouldDisableKeyboardStickers:(BOOL)a14 shouldAllowPollSuggestions:(BOOL)a15 translationLanguage:(id)a16;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKMessageEntryViewAccessibility)initWithFrame:(CGRect)frame marginInsets:(UIEdgeInsets)insets shouldAllowImpact:(BOOL)impact shouldShowSendButton:(BOOL)button shouldShowSubject:(BOOL)subject shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count traitCollection:(id)self0 shouldDisableAttachments:(BOOL)self1 shouldUseNonEmojiKeyboard:(BOOL)self2 shouldUseNonHandwritingKeyboard:(BOOL)self3 shouldDisableKeyboardStickers:(BOOL)self4 shouldAllowPollSuggestions:(BOOL)self5 translationLanguage:(id)self6;
 - (id)_axSendButtonKey;
 - (void)_accessibilityApplyAudioButtonLabel;
 - (void)_accessibilityApplyEmojiButtonLabel;
@@ -8,45 +8,45 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySendButtonLabel;
 - (void)_postSentAnnouncementIfNeeded;
-- (void)audioMessageRecordingViewDidCancel:(id)a3;
-- (void)keyCommandSend:(id)a3;
-- (void)touchUpInsideSendButton:(id)a3;
+- (void)audioMessageRecordingViewDidCancel:(id)cancel;
+- (void)keyCommandSend:(id)send;
+- (void)touchUpInsideSendButton:(id)button;
 - (void)updateEntryView;
 @end
 
 @implementation CKMessageEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"initWithFrame:marginInsets:shouldAllowImpact:shouldShowSendButton:shouldShowSubject:shouldShowPluginButtons:shouldShowCharacterCount:traitCollection:shouldDisableAttachments:shouldUseNonEmojiKeyboard:shouldUseNonHandwritingKeyboard:shouldDisableKeyboardStickers:shouldAllowPollSuggestions:translationLanguage:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{UIEdgeInsets=dddd}", "B", "B", "B", "B", "B", "@", "B", "B", "B", "B", "B", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"keyCommandSend:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"hasRecording" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"updateEntryView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"touchUpInsideSendButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKActionMenuController" hasInstanceMethod:@"isActionMenuVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"audioButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"videoMessageRecordingViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceVariable:@"_presented" withType:"B"];
-  [v3 validateClass:@"CKMessageEntryRecordedAudioView" hasInstanceMethod:@"waveformImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKActionMenuController" hasInstanceMethod:@"actionMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKRecordActionMenuItem" isKindOfClass:@"CKActionMenuItemView"];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"shouldAllowImpactSend" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"inputDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"sendButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"glassSendButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"emojiButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"audioMessageRecordingViewDidCancel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"IMService"];
-  [v3 validateClass:@"IMService" hasClassMethod:@"iMessageService" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"sendButtonColor" withFullSignature:{"c", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"sendingService" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserSwitcherFooterView" hasInstanceMethod:@"appStripCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKInlineReplyChatController"];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"initWithFrame:marginInsets:shouldAllowImpact:shouldShowSendButton:shouldShowSubject:shouldShowPluginButtons:shouldShowCharacterCount:traitCollection:shouldDisableAttachments:shouldUseNonEmojiKeyboard:shouldUseNonHandwritingKeyboard:shouldDisableKeyboardStickers:shouldAllowPollSuggestions:translationLanguage:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{UIEdgeInsets=dddd}", "B", "B", "B", "B", "B", "@", "B", "B", "B", "B", "B", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"keyCommandSend:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"hasRecording" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"updateEntryView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"touchUpInsideSendButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuController" hasInstanceMethod:@"isActionMenuVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"audioButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"videoMessageRecordingViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceVariable:@"_presented" withType:"B"];
+  [validationsCopy validateClass:@"CKMessageEntryRecordedAudioView" hasInstanceMethod:@"waveformImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuController" hasInstanceMethod:@"actionMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKRecordActionMenuItem" isKindOfClass:@"CKActionMenuItemView"];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"shouldAllowImpactSend" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"inputDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"sendButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"glassSendButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"emojiButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"audioMessageRecordingViewDidCancel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"IMService"];
+  [validationsCopy validateClass:@"IMService" hasClassMethod:@"iMessageService" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"sendButtonColor" withFullSignature:{"c", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"sendingService" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserSwitcherFooterView" hasInstanceMethod:@"appStripCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKInlineReplyChatController"];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityApplyAudioButtonLabel
@@ -74,8 +74,8 @@
 
 - (void)_accessibilitySendButtonLabel
 {
-  v3 = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
-  v4 = [(CKMessageEntryViewAccessibility *)self safeUIViewForKey:v3];
+  _axSendButtonKey = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
+  v4 = [(CKMessageEntryViewAccessibility *)self safeUIViewForKey:_axSendButtonKey];
 
   [v4 setIsAccessibilityElement:1];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
@@ -119,22 +119,22 @@ id __64__CKMessageEntryViewAccessibility__accessibilitySendButtonLabel__block_in
   if (v4)
   {
     v5 = [v4 safeValueForKey:@"sendButtonColor"];
-    v6 = [v5 integerValue];
-    v7 = v6;
+    integerValue = [v5 integerValue];
+    v7 = integerValue;
 
-    if (v6 == 6)
+    if (integerValue == 6)
     {
       v8 = @"send.message.button.hint.business.chat";
     }
 
-    else if (v6 == 1)
+    else if (integerValue == 1)
     {
       v8 = @"send.message.button.hint.imessage";
     }
 
     else
     {
-      if (v6)
+      if (integerValue)
       {
         v9 = 0;
         goto LABEL_11;
@@ -188,8 +188,8 @@ LABEL_20:
   v15 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:v14];
   [v15 setAccessibilityHint:v9];
 
-  v16 = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
-  v17 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:v16];
+  _axSendButtonKey = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
+  v17 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:_axSendButtonKey];
   [v17 _accessibilitySetElementHelp:v9];
 }
 
@@ -202,8 +202,8 @@ LABEL_20:
   v3 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:@"_characterCountLabel"];
   [v3 setAccessibilityIdentifier:@"CharacterCount"];
 
-  v4 = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
-  v5 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:v4];
+  _axSendButtonKey = [(CKMessageEntryViewAccessibility *)self _axSendButtonKey];
+  v5 = [(CKMessageEntryViewAccessibility *)self safeValueForKey:_axSendButtonKey];
   [v5 setAccessibilityIdentifier:@"sendButton"];
 
   [(CKMessageEntryViewAccessibility *)self _accessibilitySendButtonLabel];
@@ -212,17 +212,17 @@ LABEL_20:
   [(CKMessageEntryViewAccessibility *)self _accessibilityApplyEmojiButtonLabel];
 }
 
-- (CKMessageEntryViewAccessibility)initWithFrame:(CGRect)a3 marginInsets:(UIEdgeInsets)a4 shouldAllowImpact:(BOOL)a5 shouldShowSendButton:(BOOL)a6 shouldShowSubject:(BOOL)a7 shouldShowPluginButtons:(BOOL)a8 shouldShowCharacterCount:(BOOL)a9 traitCollection:(id)a10 shouldDisableAttachments:(BOOL)a11 shouldUseNonEmojiKeyboard:(BOOL)a12 shouldUseNonHandwritingKeyboard:(BOOL)a13 shouldDisableKeyboardStickers:(BOOL)a14 shouldAllowPollSuggestions:(BOOL)a15 translationLanguage:(id)a16
+- (CKMessageEntryViewAccessibility)initWithFrame:(CGRect)frame marginInsets:(UIEdgeInsets)insets shouldAllowImpact:(BOOL)impact shouldShowSendButton:(BOOL)button shouldShowSubject:(BOOL)subject shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count traitCollection:(id)self0 shouldDisableAttachments:(BOOL)self1 shouldUseNonEmojiKeyboard:(BOOL)self2 shouldUseNonHandwritingKeyboard:(BOOL)self3 shouldDisableKeyboardStickers:(BOOL)self4 shouldAllowPollSuggestions:(BOOL)self5 translationLanguage:(id)self6
 {
   v19.receiver = self;
   v19.super_class = CKMessageEntryViewAccessibility;
-  *(&v18 + 3) = __PAIR16__(a15, a14);
-  *(&v18 + 1) = __PAIR16__(a13, a12);
-  LOBYTE(v18) = a11;
-  v16 = [(CKMessageEntryViewAccessibility *)&v19 initWithFrame:a5 marginInsets:a6 shouldAllowImpact:a7 shouldShowSendButton:a8 shouldShowSubject:a9 shouldShowPluginButtons:a10 shouldShowCharacterCount:a3.origin.x traitCollection:a3.origin.y shouldDisableAttachments:a3.size.width shouldUseNonEmojiKeyboard:a3.size.height shouldUseNonHandwritingKeyboard:a4.top shouldDisableKeyboardStickers:a4.left shouldAllowPollSuggestions:a4.bottom translationLanguage:a4.right, v18, a16];
-  [(CKMessageEntryViewAccessibility *)v16 _accessibilityLoadAccessibilityInformation];
+  *(&v18 + 3) = __PAIR16__(suggestions, stickers);
+  *(&v18 + 1) = __PAIR16__(handwritingKeyboard, keyboard);
+  LOBYTE(v18) = attachments;
+  language = [(CKMessageEntryViewAccessibility *)&v19 initWithFrame:impact marginInsets:button shouldAllowImpact:subject shouldShowSendButton:buttons shouldShowSubject:count shouldShowPluginButtons:collection shouldShowCharacterCount:frame.origin.x traitCollection:frame.origin.y shouldDisableAttachments:frame.size.width shouldUseNonEmojiKeyboard:frame.size.height shouldUseNonHandwritingKeyboard:insets.top shouldDisableKeyboardStickers:insets.left shouldAllowPollSuggestions:insets.bottom translationLanguage:insets.right, v18, language];
+  [(CKMessageEntryViewAccessibility *)language _accessibilityLoadAccessibilityInformation];
 
-  return v16;
+  return language;
 }
 
 - (void)updateEntryView
@@ -233,20 +233,20 @@ LABEL_20:
   [(CKMessageEntryViewAccessibility *)self _accessibilityApplySendButtonHint];
 }
 
-- (void)keyCommandSend:(id)a3
+- (void)keyCommandSend:(id)send
 {
   v14 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [*MEMORY[0x29EDC8008] _accessibilityResponderElement];
-  if (UIAccessibilityIsVoiceOverRunning() && (v9[0] = MEMORY[0x29EDCA5F8], v9[1] = 3221225472, v9[2] = __50__CKMessageEntryViewAccessibility_keyCommandSend___block_invoke, v9[3] = &unk_29F2B0E70, v9[4] = self, [v5 _accessibilityFindViewAncestor:v9 startWithSelf:1], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  sendCopy = send;
+  _accessibilityResponderElement = [*MEMORY[0x29EDC8008] _accessibilityResponderElement];
+  if (UIAccessibilityIsVoiceOverRunning() && (v9[0] = MEMORY[0x29EDCA5F8], v9[1] = 3221225472, v9[2] = __50__CKMessageEntryViewAccessibility_keyCommandSend___block_invoke, v9[3] = &unk_29F2B0E70, v9[4] = self, [_accessibilityResponderElement _accessibilityFindViewAncestor:v9 startWithSelf:1], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v7 = AXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v5;
+      v11 = _accessibilityResponderElement;
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_29BCB0000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring key command because I'm not the focused element: %@ %@", buf, 0x16u);
     }
   }
@@ -255,23 +255,23 @@ LABEL_20:
   {
     v8.receiver = self;
     v8.super_class = CKMessageEntryViewAccessibility;
-    [(CKMessageEntryViewAccessibility *)&v8 keyCommandSend:v4];
+    [(CKMessageEntryViewAccessibility *)&v8 keyCommandSend:sendCopy];
   }
 }
 
-- (void)touchUpInsideSendButton:(id)a3
+- (void)touchUpInsideSendButton:(id)button
 {
   v4.receiver = self;
   v4.super_class = CKMessageEntryViewAccessibility;
-  [(CKMessageEntryViewAccessibility *)&v4 touchUpInsideSendButton:a3];
+  [(CKMessageEntryViewAccessibility *)&v4 touchUpInsideSendButton:button];
   [(CKMessageEntryViewAccessibility *)self _postSentAnnouncementIfNeeded];
 }
 
-- (void)audioMessageRecordingViewDidCancel:(id)a3
+- (void)audioMessageRecordingViewDidCancel:(id)cancel
 {
   v3.receiver = self;
   v3.super_class = CKMessageEntryViewAccessibility;
-  [(CKMessageEntryViewAccessibility *)&v3 audioMessageRecordingViewDidCancel:a3];
+  [(CKMessageEntryViewAccessibility *)&v3 audioMessageRecordingViewDidCancel:cancel];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
@@ -287,8 +287,8 @@ LABEL_20:
 
 - (id)_axSendButtonKey
 {
-  v2 = [MEMORY[0x29EDC5590] sharedFeatureFlags];
-  if ([v2 isEntryViewRefreshEnabled])
+  mEMORY[0x29EDC5590] = [MEMORY[0x29EDC5590] sharedFeatureFlags];
+  if ([mEMORY[0x29EDC5590] isEntryViewRefreshEnabled])
   {
     v3 = @"_glassSendButton";
   }

@@ -1,6 +1,6 @@
 @interface EDMigrateCategoryTypeUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDMigrateCategoryTypeUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __39__EDMigrateCategoryTypeUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_69 != -1)
   {
     dispatch_once(&log_onceToken_69, block);
@@ -30,12 +30,12 @@ void __39__EDMigrateCategoryTypeUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_69 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 columnExists:@"model_category" inTable:@"message_global_data" type:0])
+  connectionCopy = connection;
+  if ([connectionCopy columnExists:@"model_category" inTable:@"message_global_data" type:0])
   {
-    v4 = sqlite3_exec([v3 sqlDB], "UPDATE message_global_data SET model_category = null;", 0, 0, 0);
+    v4 = sqlite3_exec([connectionCopy sqlDB], "UPDATE message_global_data SET model_category = null;", 0, 0, 0);
     if (v4)
     {
       goto LABEL_19;
@@ -52,9 +52,9 @@ void __39__EDMigrateCategoryTypeUpgradeStep_log__block_invoke(uint64_t a1)
     }
   }
 
-  if ([v3 columnExists:@"model_subcategory" inTable:@"message_global_data" type:0])
+  if ([connectionCopy columnExists:@"model_subcategory" inTable:@"message_global_data" type:0])
   {
-    v4 = sqlite3_exec([v3 sqlDB], "UPDATE message_global_data SET model_subcategory = null;", 0, 0, 0);
+    v4 = sqlite3_exec([connectionCopy sqlDB], "UPDATE message_global_data SET model_subcategory = null;", 0, 0, 0);
     if (v4)
     {
       goto LABEL_19;
@@ -71,7 +71,7 @@ void __39__EDMigrateCategoryTypeUpgradeStep_log__block_invoke(uint64_t a1)
     }
   }
 
-  if ([v3 columnExists:@"model_high_impact" inTable:@"message_global_data" type:0])
+  if ([connectionCopy columnExists:@"model_high_impact" inTable:@"message_global_data" type:0])
   {
     v7 = +[EDMigrateCategoryTypeUpgradeStep log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -83,7 +83,7 @@ void __39__EDMigrateCategoryTypeUpgradeStep_log__block_invoke(uint64_t a1)
     goto LABEL_18;
   }
 
-  v4 = sqlite3_exec([v3 sqlDB], "ALTER TABLE message_global_data ADD COLUMN model_high_impact INTEGER NOT NULL DEFAULT 0;", 0, 0, 0);
+  v4 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE message_global_data ADD COLUMN model_high_impact INTEGER NOT NULL DEFAULT 0;", 0, 0, 0);
   if (!v4)
   {
 LABEL_18:

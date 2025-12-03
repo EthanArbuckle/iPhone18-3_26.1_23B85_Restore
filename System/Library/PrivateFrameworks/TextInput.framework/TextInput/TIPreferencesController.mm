@@ -1,64 +1,64 @@
 @interface TIPreferencesController
 + (id)sharedPreferencesController;
-+ (void)registerPreferredLanguagesForInputModes:(id)a3 replacingInputModes:(id)a4;
-- (BOOL)BOOLForKey:(int)a3;
-- (BOOL)BOOLForPreferenceKey:(id)a3;
-- (BOOL)_isOneTimeAction:(id)a3;
++ (void)registerPreferredLanguagesForInputModes:(id)modes replacingInputModes:(id)inputModes;
+- (BOOL)BOOLForKey:(int)key;
+- (BOOL)BOOLForPreferenceKey:(id)key;
+- (BOOL)_isOneTimeAction:(id)action;
 - (BOOL)allEnabledInputModesAreValid;
 - (BOOL)automaticMinimizationEnabled;
-- (BOOL)isKeyLockedDown:(int)a3;
-- (BOOL)isPreferenceKeyLockedDown:(id)a3;
-- (BOOL)oneTimeActionCompleted:(id)a3;
+- (BOOL)isKeyLockedDown:(int)down;
+- (BOOL)isPreferenceKeyLockedDown:(id)down;
+- (BOOL)oneTimeActionCompleted:(id)completed;
 - (CGPoint)floatingKeyboardPosition;
 - (CGPoint)keyboardPosition;
 - (TIPreferencesController)init;
-- (id)_configuredPreferencesForDomain:(id)a3;
-- (id)valueForKey:(int)a3;
-- (id)valueForPreferenceKey:(id)a3;
-- (int)MCValueForManagedPreferenceKey:(id)a3;
+- (id)_configuredPreferencesForDomain:(id)domain;
+- (id)valueForKey:(int)key;
+- (id)valueForPreferenceKey:(id)key;
+- (int)MCValueForManagedPreferenceKey:(id)key;
 - (unint64_t)floatingKeyboardDockedEdge;
-- (void)_configureDomain:(id)a3 notification:(id)a4;
+- (void)_configureDomain:(id)domain notification:(id)notification;
 - (void)_configureDomains;
-- (void)_configureKey:(id)a3 domain:(id)a4 defaultValue:(id)a5 fallbackKey:(id)a6 isAnalyzed:(BOOL)a7 isCloudSetting:(BOOL)a8 isWatchSync:(BOOL)a9;
+- (void)_configureKey:(id)key domain:(id)domain defaultValue:(id)value fallbackKey:(id)fallbackKey isAnalyzed:(BOOL)analyzed isCloudSetting:(BOOL)setting isWatchSync:(BOOL)sync;
 - (void)_configurePreferences;
-- (void)_pushValue:(id)a3 toPreference:(id)a4 domain:(id)a5;
+- (void)_pushValue:(id)value toPreference:(id)preference domain:(id)domain;
 - (void)clearSynchronizePreferencesTimer;
 - (void)dealloc;
-- (void)didSeeHardwareKeyboard:(id)a3;
-- (void)didTriggerOneTimeAction:(id)a3;
-- (void)didUnseeHardwareKeyboard:(id)a3;
+- (void)didSeeHardwareKeyboard:(id)keyboard;
+- (void)didTriggerOneTimeAction:(id)action;
+- (void)didUnseeHardwareKeyboard:(id)keyboard;
 - (void)idleInit;
-- (void)managedKeyboardSettingDidChange:(id)a3;
-- (void)preferencesChangedCallback:(id)a3;
-- (void)profileSettingDidChange:(id)a3;
-- (void)registerRemoteDeviceWithIDSIdentifier:(id)a3 user:(id)a4;
+- (void)managedKeyboardSettingDidChange:(id)change;
+- (void)preferencesChangedCallback:(id)callback;
+- (void)profileSettingDidChange:(id)change;
+- (void)registerRemoteDeviceWithIDSIdentifier:(id)identifier user:(id)user;
 - (void)resetDictationTipsToDefaultSettings;
-- (void)setAutomaticMinimizationEnabled:(BOOL)a3;
-- (void)setFloatingKeyboardDockedEdge:(unint64_t)a3;
-- (void)setFloatingKeyboardPosition:(CGPoint)a3;
-- (void)setInputModeSelectionSequence:(id)a3;
-- (void)setInputModes:(id)a3;
-- (void)setKeyboardPosition:(CGPoint)a3;
-- (void)setKeyboardShownByTouch:(BOOL)a3;
-- (void)setPredictionEnabled:(BOOL)a3;
-- (void)setValue:(id)a3 forKey:(int)a4;
-- (void)setValue:(id)a3 forManagedPreferenceKey:(id)a4 asyncWithCompletion:(id)a5;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4 asyncIfManaged:(BOOL)a5;
-- (void)setautocorrectionEnabled:(BOOL)a3;
-- (void)synchronizeDomainIfNeedsGet:(id)a3;
+- (void)setAutomaticMinimizationEnabled:(BOOL)enabled;
+- (void)setFloatingKeyboardDockedEdge:(unint64_t)edge;
+- (void)setFloatingKeyboardPosition:(CGPoint)position;
+- (void)setInputModeSelectionSequence:(id)sequence;
+- (void)setInputModes:(id)modes;
+- (void)setKeyboardPosition:(CGPoint)position;
+- (void)setKeyboardShownByTouch:(BOOL)touch;
+- (void)setPredictionEnabled:(BOOL)enabled;
+- (void)setValue:(id)value forKey:(int)key;
+- (void)setValue:(id)value forManagedPreferenceKey:(id)key asyncWithCompletion:(id)completion;
+- (void)setValue:(id)value forPreferenceKey:(id)key asyncIfManaged:(BOOL)managed;
+- (void)setautocorrectionEnabled:(BOOL)enabled;
+- (void)synchronizeDomainIfNeedsGet:(id)get;
 - (void)synchronizePreferences;
 - (void)touchSynchronizePreferencesTimer;
-- (void)updateCompactAssistantBarPersistentLocation:(unint64_t)a3;
-- (void)updateDictationTipDisplayCount:(id)a3 dictationTipKey:(id)a4;
-- (void)updateEnableProKeyboard:(BOOL)a3;
-- (void)updateInputModes:(id)a3;
-- (void)updateKeyboardHandBias:(id)a3;
-- (void)updateKeyboardIsFloating:(BOOL)a3;
-- (void)updateKeyboardIsSplit:(BOOL)a3 locked:(BOOL)a4;
-- (void)updateLastUsedDictionaryLanguageInMultilingualKeyboard:(id)a3 activeDictationlanguage:(id)a4;
-- (void)updateLastUsedInputMode:(id)a3;
-- (void)updateLastUsedLayout:(id)a3;
-- (void)updateVisceral:(id)a3;
+- (void)updateCompactAssistantBarPersistentLocation:(unint64_t)location;
+- (void)updateDictationTipDisplayCount:(id)count dictationTipKey:(id)key;
+- (void)updateEnableProKeyboard:(BOOL)keyboard;
+- (void)updateInputModes:(id)modes;
+- (void)updateKeyboardHandBias:(id)bias;
+- (void)updateKeyboardIsFloating:(BOOL)floating;
+- (void)updateKeyboardIsSplit:(BOOL)split locked:(BOOL)locked;
+- (void)updateLastUsedDictionaryLanguageInMultilingualKeyboard:(id)keyboard activeDictationlanguage:(id)dictationlanguage;
+- (void)updateLastUsedInputMode:(id)mode;
+- (void)updateLastUsedLayout:(id)layout;
+- (void)updateVisceral:(id)visceral;
 @end
 
 @implementation TIPreferencesController
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = __54__TIPreferencesController_sharedPreferencesController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferencesController_once != -1)
   {
     dispatch_once(&sharedPreferencesController_once, block);
@@ -325,7 +325,7 @@ uint64_t __54__TIPreferencesController_sharedPreferencesController__block_invoke
 
 - (void)idleInit
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -345,9 +345,9 @@ uint64_t __54__TIPreferencesController_sharedPreferencesController__block_invoke
     goto LABEL_8;
   }
 
-  [v3 addObserver:self selector:sel_managedKeyboardSettingDidChange_ name:*v4 object:0];
+  [defaultCenter addObserver:self selector:sel_managedKeyboardSettingDidChange_ name:*v4 object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -364,7 +364,7 @@ uint64_t __54__TIPreferencesController_sharedPreferencesController__block_invoke
   _Block_object_dispose(&v9, 8);
   if (v7)
   {
-    [v6 addObserver:self selector:sel_profileSettingDidChange_ name:*v7 object:0];
+    [defaultCenter2 addObserver:self selector:sel_profileSettingDidChange_ name:*v7 object:0];
   }
 
   else
@@ -376,17 +376,17 @@ LABEL_8:
   }
 }
 
-- (void)registerRemoteDeviceWithIDSIdentifier:(id)a3 user:(id)a4
+- (void)registerRemoteDeviceWithIDSIdentifier:(id)identifier user:(id)user
 {
-  v6 = a4;
-  [(TIPreferencesController *)self setValue:a3 forPreferenceKey:@"RemoteDeviceIDSIdentifier"];
-  [(TIPreferencesController *)self setValue:v6 forPreferenceKey:@"PersonaUniqueIdentifierSelf"];
+  userCopy = user;
+  [(TIPreferencesController *)self setValue:identifier forPreferenceKey:@"RemoteDeviceIDSIdentifier"];
+  [(TIPreferencesController *)self setValue:userCopy forPreferenceKey:@"PersonaUniqueIdentifierSelf"];
 }
 
 - (void)resetDictationTipsToDefaultSettings
 {
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [(TIPreferencesController *)self setValue:v3 forPreferenceKey:@"DictationTipLastShownDate"];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(TIPreferencesController *)self setValue:distantPast forPreferenceKey:@"DictationTipLastShownDate"];
 
   [(TIPreferencesController *)self setValue:&unk_1EF7DC500 forPreferenceKey:@"DictationTipsDisplayCountLimit"];
   [(TIPreferencesController *)self setValue:&unk_1EF7DC488 forPreferenceKey:@"DictationReplacementCommandTipShownCount"];
@@ -402,80 +402,80 @@ LABEL_8:
   [(TIPreferencesController *)self setValue:&unk_1EF7DC488 forPreferenceKey:@"DictationClearAllCommandTipShownCount"];
 }
 
-- (void)updateDictationTipDisplayCount:(id)a3 dictationTipKey:(id)a4
+- (void)updateDictationTipDisplayCount:(id)count dictationTipKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"DictationReplacementCommandTipShownCount"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationDeletionCommandTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationInsertionCommandTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationEmojiCommandTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationSelectionCommandTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationStopCommandTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationModelessInputTipShownCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"DictationSendMessageCommandTipShownCount") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DictationClearAllCommandTipShownCount"))
+  countCopy = count;
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"DictationReplacementCommandTipShownCount"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationDeletionCommandTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationInsertionCommandTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationEmojiCommandTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationSelectionCommandTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationStopCommandTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationModelessInputTipShownCount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DictationSendMessageCommandTipShownCount") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"DictationClearAllCommandTipShownCount"))
   {
-    [(TIPreferencesController *)self setValue:v7 forPreferenceKey:v6];
+    [(TIPreferencesController *)self setValue:countCopy forPreferenceKey:keyCopy];
   }
 }
 
-- (void)updateEnableProKeyboard:(BOOL)a3
+- (void)updateEnableProKeyboard:(BOOL)keyboard
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:keyboard];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardUseProLayout"];
 }
 
-- (void)updateVisceral:(id)a3
+- (void)updateVisceral:(id)visceral
 {
-  v4 = a3;
+  visceralCopy = visceral;
   if (_os_feature_enabled_impl())
   {
-    [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardVisceral"];
+    [(TIPreferencesController *)self setValue:visceralCopy forPreferenceKey:@"KeyboardVisceral"];
   }
 }
 
-- (void)updateKeyboardHandBias:(id)a3
+- (void)updateKeyboardHandBias:(id)bias
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"None"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Left") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"Right"))
+  biasCopy = bias;
+  if (([biasCopy isEqualToString:@"None"] & 1) != 0 || (objc_msgSend(biasCopy, "isEqualToString:", @"Left") & 1) != 0 || objc_msgSend(biasCopy, "isEqualToString:", @"Right"))
   {
-    [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardBias"];
+    [(TIPreferencesController *)self setValue:biasCopy forPreferenceKey:@"KeyboardBias"];
   }
 }
 
-- (void)updateCompactAssistantBarPersistentLocation:(unint64_t)a3
+- (void)updateCompactAssistantBarPersistentLocation:(unint64_t)location
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:location];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"CompactAssistantBarPersistentLocation"];
 }
 
-- (void)updateKeyboardIsFloating:(BOOL)a3
+- (void)updateKeyboardIsFloating:(BOOL)floating
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:floating];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardIsFloating"];
 }
 
-- (void)updateKeyboardIsSplit:(BOOL)a3 locked:(BOOL)a4
+- (void)updateKeyboardIsSplit:(BOOL)split locked:(BOOL)locked
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  lockedCopy = locked;
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:split];
   [(TIPreferencesController *)self setValue:v6 forPreferenceKey:@"UIKeyboardPersistentSplitProgress"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:lockedCopy];
   [(TIPreferencesController *)self setValue:v7 forPreferenceKey:@"UIKeyboardPersistentSplitLock"];
 }
 
-- (void)setFloatingKeyboardDockedEdge:(unint64_t)a3
+- (void)setFloatingKeyboardDockedEdge:(unint64_t)edge
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardFloatingDockedEdge"];
 }
 
 - (unint64_t)floatingKeyboardDockedEdge
 {
   v2 = [(TIPreferencesController *)self valueForPreferenceKey:@"KeyboardFloatingDockedEdge"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setFloatingKeyboardPosition:(CGPoint)a3
+- (void)setFloatingKeyboardPosition:(CGPoint)position
 {
-  y = a3.y;
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3.x];
+  y = position.y;
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:position.x];
   [(TIPreferencesController *)self setValue:v5 forPreferenceKey:@"KeyboardFloatingPersistentHorizontalOffset"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:y];
@@ -500,10 +500,10 @@ LABEL_8:
   return result;
 }
 
-- (void)setKeyboardPosition:(CGPoint)a3
+- (void)setKeyboardPosition:(CGPoint)position
 {
-  y = a3.y;
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3.x];
+  y = position.y;
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:position.x];
   [(TIPreferencesController *)self setValue:v5 forPreferenceKey:@"UIKeyboardPersistentHorizontalOffset"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:y];
@@ -526,81 +526,81 @@ LABEL_8:
   return result;
 }
 
-- (void)didUnseeHardwareKeyboard:(id)a3
+- (void)didUnseeHardwareKeyboard:(id)keyboard
 {
-  v6 = a3;
+  keyboardCopy = keyboard;
   v4 = [(TIPreferencesController *)self valueForPreferenceKey:@"KeyboardHardwareKeyboardsSeen"];
-  if ([v4 containsObject:v6])
+  if ([v4 containsObject:keyboardCopy])
   {
     v5 = [v4 mutableCopy];
-    [v5 removeObject:v6];
+    [v5 removeObject:keyboardCopy];
     [(TIPreferencesController *)self setValue:v5 forPreferenceKey:@"KeyboardHardwareKeyboardsSeen"];
   }
 }
 
-- (void)didSeeHardwareKeyboard:(id)a3
+- (void)didSeeHardwareKeyboard:(id)keyboard
 {
-  v6 = a3;
+  keyboardCopy = keyboard;
   v4 = [(TIPreferencesController *)self valueForPreferenceKey:@"KeyboardHardwareKeyboardsSeen"];
-  if (([v4 containsObject:v6] & 1) == 0)
+  if (([v4 containsObject:keyboardCopy] & 1) == 0)
   {
     if (v4)
     {
-      v5 = [v4 arrayByAddingObject:v6];
+      v5 = [v4 arrayByAddingObject:keyboardCopy];
 
       v4 = v5;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObject:v6];
+      v4 = [MEMORY[0x1E695DEC8] arrayWithObject:keyboardCopy];
     }
 
     [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardHardwareKeyboardsSeen"];
   }
 }
 
-- (void)setKeyboardShownByTouch:(BOOL)a3
+- (void)setKeyboardShownByTouch:(BOOL)touch
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:touch];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"SoftwareKeyboardShownByTouch"];
 }
 
-- (void)setAutomaticMinimizationEnabled:(BOOL)a3
+- (void)setAutomaticMinimizationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [(TIPreferencesController *)self BOOLForPreferenceKey:@"SuppressAutomaticMinimization"];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3 & ~v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy & ~v5];
   [(TIPreferencesController *)self setValue:v6 forPreferenceKey:@"AutomaticMinimizationEnabled"];
 }
 
-- (void)setautocorrectionEnabled:(BOOL)a3
+- (void)setautocorrectionEnabled:(BOOL)enabled
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardAutocorrection"];
 }
 
-- (void)setPredictionEnabled:(BOOL)a3
+- (void)setPredictionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   [(TIPreferencesController *)self setValue:v5 forPreferenceKey:@"KeyboardPrediction"];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [(TIPreferencesController *)self setValue:v6 forPreferenceKey:@"KeyboardShowPredictionBar"];
 }
 
-- (void)setInputModeSelectionSequence:(id)a3
+- (void)setInputModeSelectionSequence:(id)sequence
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] <= 3)
+  sequenceCopy = sequence;
+  if ([sequenceCopy count] <= 3)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v4;
+    v5 = sequenceCopy;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -643,14 +643,14 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)updateLastUsedDictionaryLanguageInMultilingualKeyboard:(id)a3 activeDictationlanguage:(id)a4
+- (void)updateLastUsedDictionaryLanguageInMultilingualKeyboard:(id)keyboard activeDictationlanguage:(id)dictationlanguage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [v6 count])
+  keyboardCopy = keyboard;
+  dictationlanguageCopy = dictationlanguage;
+  if (dictationlanguageCopy && [keyboardCopy count])
   {
-    v8 = [v6 sortedArrayUsingSelector:sel_compare_];
+    v8 = [keyboardCopy sortedArrayUsingSelector:sel_compare_];
     v9 = [v8 componentsJoinedByString:{@", "}];
     if ([v9 length])
     {
@@ -658,16 +658,16 @@ LABEL_12:
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 mutableCopy];
+        dictionary = [v10 mutableCopy];
       }
 
       else
       {
-        v12 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v13 = v12;
-      [v12 setObject:v7 forKey:v9];
+      v13 = dictionary;
+      [dictionary setObject:dictationlanguageCopy forKey:v9];
       [(TIPreferencesController *)self setValue:v13 forPreferenceKey:@"ActiveMultilingualKeyboardDictationMappings"];
     }
 
@@ -687,19 +687,19 @@ LABEL_12:
   }
 }
 
-- (void)updateLastUsedLayout:(id)a3
+- (void)updateLastUsedLayout:(id)layout
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutCopy = layout;
   v5 = +[TIInputModeController sharedInputModeController];
-  v6 = [v5 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v5 enabledInputModeIdentifiers];
 
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(enabledInputModeIdentifiers, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = enabledInputModeIdentifiers;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -754,35 +754,35 @@ LABEL_12:
     }
 
     v19 = v18;
-    v20 = TIInputModeGetNormalizedIdentifier(v4);
-    [v19 setObject:v4 forKey:v20];
+    v20 = TIInputModeGetNormalizedIdentifier(layoutCopy);
+    [v19 setObject:layoutCopy forKey:v20];
 
     [(TIPreferencesController *)self setValue:v19 forPreferenceKey:@"KeyboardLayoutLastUsedForKeyboard"];
   }
 }
 
-- (void)updateLastUsedInputMode:(id)a3
+- (void)updateLastUsedInputMode:(id)mode
 {
-  [(TIPreferencesController *)self setValue:a3 forPreferenceKey:@"KeyboardLastUsed"];
+  [(TIPreferencesController *)self setValue:mode forPreferenceKey:@"KeyboardLastUsed"];
   v4 = objc_opt_new();
   [(TIPreferencesController *)self setValue:v4 forPreferenceKey:@"KeyboardInputModeUpdateDate"];
 }
 
-- (void)didTriggerOneTimeAction:(id)a3
+- (void)didTriggerOneTimeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(TIPreferencesController *)self _isOneTimeAction:?])
   {
-    [(TIPreferencesController *)self setValue:MEMORY[0x1E695E118] forPreferenceKey:v4];
+    [(TIPreferencesController *)self setValue:MEMORY[0x1E695E118] forPreferenceKey:actionCopy];
   }
 }
 
-- (BOOL)oneTimeActionCompleted:(id)a3
+- (BOOL)oneTimeActionCompleted:(id)completed
 {
-  v4 = a3;
-  if ([(TIPreferencesController *)self _isOneTimeAction:v4])
+  completedCopy = completed;
+  if ([(TIPreferencesController *)self _isOneTimeAction:completedCopy])
   {
-    v5 = [(TIPreferencesController *)self BOOLForPreferenceKey:v4];
+    v5 = [(TIPreferencesController *)self BOOLForPreferenceKey:completedCopy];
   }
 
   else
@@ -793,17 +793,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_isOneTimeAction:(id)a3
+- (BOOL)_isOneTimeAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UIKeyboardDidShowInternationalInfoIntroduction"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DidShowGestureKeyboardIntroduction") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DidShowContinuousPathIntroduction") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"KeyboardDidShowProductivityTutorial") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"KeyboardDidShowGenmojiTip") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HardwareKeyboardLastSeen") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationReplacementCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationDeletionCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationInsertionCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationEmojiCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationSelectionCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DictationStopCommandTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DidShowInlineCompletionEducationTip") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ModelessInputTipShown") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MultilingualKeyboardTip"))
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"UIKeyboardDidShowInternationalInfoIntroduction"] & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DidShowGestureKeyboardIntroduction") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DidShowContinuousPathIntroduction") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"KeyboardDidShowProductivityTutorial") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"KeyboardDidShowGenmojiTip") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"HardwareKeyboardLastSeen") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationReplacementCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationDeletionCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationInsertionCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationEmojiCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationSelectionCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DictationStopCommandTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"DidShowInlineCompletionEducationTip") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"ModelessInputTipShown") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"MultilingualKeyboardTip"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"MultilingualSettingTip"];
+    v4 = [actionCopy isEqualToString:@"MultilingualSettingTip"];
   }
 
   return v4;
@@ -863,11 +863,11 @@ LABEL_13:
   return v10;
 }
 
-- (void)setInputModes:(id)a3
+- (void)setInputModes:(id)modes
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DFB8] orderedSetWithArray:a3];
-  v5 = [v4 array];
+  v4 = [MEMORY[0x1E695DFB8] orderedSetWithArray:modes];
+  array = [v4 array];
   v6 = [(TIPreferencesController *)self valueForPreferenceKey:@"AppleKeyboards"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
@@ -878,35 +878,35 @@ LABEL_13:
     _os_log_debug_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%s  updateInputModes: oldInputModes = %@", &v7, 0x16u);
   }
 
-  [objc_opt_class() registerPreferredLanguagesForInputModes:v5 replacingInputModes:v6];
-  [(TIPreferencesController *)self setValue:v5 forPreferenceKey:@"AppleKeyboards"];
+  [objc_opt_class() registerPreferredLanguagesForInputModes:array replacingInputModes:v6];
+  [(TIPreferencesController *)self setValue:array forPreferenceKey:@"AppleKeyboards"];
 }
 
-- (void)updateInputModes:(id)a3
+- (void)updateInputModes:(id)modes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modesCopy = modes;
   if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    if (v4)
+    if (modesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v10 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_9:
-    [(TIPreferencesController *)v10 setValue:v9 forPreferenceKey:@"AppleKeyboardsExpanded"];
+    [(TIPreferencesController *)selfCopy2 setValue:v9 forPreferenceKey:@"AppleKeyboardsExpanded"];
     goto LABEL_10;
   }
 
   v11 = 136315394;
   v12 = "[TIPreferencesController updateInputModes:]";
   v13 = 2112;
-  v14 = v4;
+  v14 = modesCopy;
   _os_log_debug_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%s  updateInputModes: Called with inputModes = %@", &v11, 0x16u);
-  if (!v4)
+  if (!modesCopy)
   {
     goto LABEL_8;
   }
@@ -914,9 +914,9 @@ LABEL_9:
 LABEL_3:
   if (![(TIPreferencesController *)self BOOLForPreferenceKey:@"AppleKeyboardsExpanded"])
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 localeIdentifier];
-    v7 = TIGetDefaultInputModesForLanguage(v6);
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v7 = TIGetDefaultInputModesForLanguage(localeIdentifier);
     v8 = [v7 count];
 
     if (!v8)
@@ -925,29 +925,29 @@ LABEL_3:
     }
 
     v9 = &unk_1EF7DC548;
-    v10 = self;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
 LABEL_10:
-  [(TIPreferencesController *)self setInputModes:v4];
+  [(TIPreferencesController *)self setInputModes:modesCopy];
 }
 
-- (BOOL)isKeyLockedDown:(int)a3
+- (BOOL)isKeyLockedDown:(int)down
 {
-  v4 = preferenceKeyForEnumKey(a3);
+  v4 = preferenceKeyForEnumKey(down);
   LOBYTE(self) = [(TIPreferencesController *)self isPreferenceKeyLockedDown:v4];
 
   return self;
 }
 
-- (BOOL)isPreferenceKeyLockedDown:(id)a3
+- (BOOL)isPreferenceKeyLockedDown:(id)down
 {
-  v3 = managedConfigurationFeatureForPreferenceKey(a3);
+  v3 = managedConfigurationFeatureForPreferenceKey(down);
   if (v3)
   {
-    v4 = [getMCProfileConnectionClass() sharedConnection];
-    v5 = [v4 isSettingLockedDownByRestrictions:v3];
+    sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+    v5 = [sharedConnection isSettingLockedDownByRestrictions:v3];
   }
 
   else
@@ -958,120 +958,120 @@ LABEL_10:
   return v5;
 }
 
-- (void)setValue:(id)a3 forManagedPreferenceKey:(id)a4 asyncWithCompletion:(id)a5
+- (void)setValue:(id)value forManagedPreferenceKey:(id)key asyncWithCompletion:(id)completion
 {
-  v20 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [getMCProfileConnectionClass() sharedConnection];
-  if ([v7 isEqualToString:@"KeyboardAutocorrection"])
+  valueCopy = value;
+  keyCopy = key;
+  completionCopy = completion;
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  if ([keyCopy isEqualToString:@"KeyboardAutocorrection"])
   {
-    if (!v8)
+    if (!completionCopy)
     {
-      [v9 setAutoCorrectionAllowed:{objc_msgSend(v20, "BOOLValue")}];
+      [sharedConnection setAutoCorrectionAllowed:{objc_msgSend(valueCopy, "BOOLValue")}];
       goto LABEL_32;
     }
 
     v10 = objc_opt_respondsToSelector();
-    v11 = [v20 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     if (v10)
     {
-      [v9 setAutoCorrectionAllowed:v11 completion:v8];
+      [sharedConnection setAutoCorrectionAllowed:bOOLValue completion:completionCopy];
       goto LABEL_32;
     }
 
-    [v9 setAutoCorrectionAllowed:v11];
+    [sharedConnection setAutoCorrectionAllowed:bOOLValue];
   }
 
-  else if ([v7 isEqualToString:@"KeyboardPrediction"])
+  else if ([keyCopy isEqualToString:@"KeyboardPrediction"])
   {
-    if (!v8)
+    if (!completionCopy)
     {
-      [v9 setPredictiveKeyboardAllowed:{objc_msgSend(v20, "BOOLValue")}];
+      [sharedConnection setPredictiveKeyboardAllowed:{objc_msgSend(valueCopy, "BOOLValue")}];
       goto LABEL_32;
     }
 
     v12 = objc_opt_respondsToSelector();
-    v13 = [v20 BOOLValue];
+    bOOLValue2 = [valueCopy BOOLValue];
     if (v12)
     {
-      [v9 setPredictiveKeyboardAllowed:v13 completion:v8];
+      [sharedConnection setPredictiveKeyboardAllowed:bOOLValue2 completion:completionCopy];
       goto LABEL_32;
     }
 
-    [v9 setPredictiveKeyboardAllowed:v13];
+    [sharedConnection setPredictiveKeyboardAllowed:bOOLValue2];
   }
 
-  else if ([v7 isEqualToString:@"KeyboardCheckSpelling"])
+  else if ([keyCopy isEqualToString:@"KeyboardCheckSpelling"])
   {
-    if (!v8)
+    if (!completionCopy)
     {
-      [v9 setSpellCheckAllowed:{objc_msgSend(v20, "BOOLValue")}];
+      [sharedConnection setSpellCheckAllowed:{objc_msgSend(valueCopy, "BOOLValue")}];
       goto LABEL_32;
     }
 
     v14 = objc_opt_respondsToSelector();
-    v15 = [v20 BOOLValue];
+    bOOLValue3 = [valueCopy BOOLValue];
     if (v14)
     {
-      [v9 setSpellCheckAllowed:v15 completion:v8];
+      [sharedConnection setSpellCheckAllowed:bOOLValue3 completion:completionCopy];
       goto LABEL_32;
     }
 
-    [v9 setSpellCheckAllowed:v15];
+    [sharedConnection setSpellCheckAllowed:bOOLValue3];
   }
 
-  else if ([v7 isEqualToString:@"SmartQuotesEnabled"])
+  else if ([keyCopy isEqualToString:@"SmartQuotesEnabled"])
   {
-    if (!v8)
+    if (!completionCopy)
     {
-      [v9 setSmartPunctuationAllowed:{objc_msgSend(v20, "BOOLValue")}];
+      [sharedConnection setSmartPunctuationAllowed:{objc_msgSend(valueCopy, "BOOLValue")}];
       goto LABEL_32;
     }
 
     v16 = objc_opt_respondsToSelector();
-    v17 = [v20 BOOLValue];
+    bOOLValue4 = [valueCopy BOOLValue];
     if (v16)
     {
-      [v9 setSmartPunctuationAllowed:v17 completion:v8];
+      [sharedConnection setSmartPunctuationAllowed:bOOLValue4 completion:completionCopy];
       goto LABEL_32;
     }
 
-    [v9 setSmartPunctuationAllowed:v17];
+    [sharedConnection setSmartPunctuationAllowed:bOOLValue4];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"KeyboardContinuousPathEnabled"])
+    if (![keyCopy isEqualToString:@"KeyboardContinuousPathEnabled"])
     {
       goto LABEL_32;
     }
 
-    if (!v8)
+    if (!completionCopy)
     {
-      [v9 setContinuousPathKeyboardAllowed:{objc_msgSend(v20, "BOOLValue")}];
+      [sharedConnection setContinuousPathKeyboardAllowed:{objc_msgSend(valueCopy, "BOOLValue")}];
       goto LABEL_32;
     }
 
     v18 = objc_opt_respondsToSelector();
-    v19 = [v20 BOOLValue];
+    bOOLValue5 = [valueCopy BOOLValue];
     if (v18)
     {
-      [v9 setContinuousPathKeyboardAllowed:v19 completion:v8];
+      [sharedConnection setContinuousPathKeyboardAllowed:bOOLValue5 completion:completionCopy];
       goto LABEL_32;
     }
 
-    [v9 setContinuousPathKeyboardAllowed:v19];
+    [sharedConnection setContinuousPathKeyboardAllowed:bOOLValue5];
   }
 
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_32:
 }
 
-- (int)MCValueForManagedPreferenceKey:(id)a3
+- (int)MCValueForManagedPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = managedConfigurationFeatureForPreferenceKey(v4);
+  keyCopy = key;
+  v5 = managedConfigurationFeatureForPreferenceKey(keyCopy);
   if (v5)
   {
     cachedMCRestrictedValue = self->_cachedMCRestrictedValue;
@@ -1084,7 +1084,7 @@ LABEL_32:
       cachedMCRestrictedValue = self->_cachedMCRestrictedValue;
     }
 
-    v9 = [(NSCache *)cachedMCRestrictedValue objectForKey:v4];
+    v9 = [(NSCache *)cachedMCRestrictedValue objectForKey:keyCopy];
     v10 = v9;
     if (v9)
     {
@@ -1093,12 +1093,12 @@ LABEL_32:
 
     else
     {
-      v12 = [getMCProfileConnectionClass() sharedConnection];
-      v11 = [v12 effectiveBoolValueForSetting:v5];
+      sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+      v11 = [sharedConnection effectiveBoolValueForSetting:v5];
 
       v13 = self->_cachedMCRestrictedValue;
       v14 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-      v15 = [v4 copy];
+      v15 = [keyCopy copy];
       [(NSCache *)v13 setObject:v14 forKey:v15];
     }
   }
@@ -1111,11 +1111,11 @@ LABEL_32:
   return v11;
 }
 
-- (void)setValue:(id)a3 forKey:(int)a4
+- (void)setValue:(id)value forKey:(int)key
 {
-  v6 = a3;
-  v7 = preferenceKeyForEnumKey(a4);
-  [(TIPreferencesController *)self setValue:v6 forPreferenceKey:v7];
+  valueCopy = value;
+  v7 = preferenceKeyForEnumKey(key);
+  [(TIPreferencesController *)self setValue:valueCopy forPreferenceKey:v7];
 }
 
 - (void)touchSynchronizePreferencesTimer
@@ -1123,7 +1123,7 @@ LABEL_32:
   if ([(NSTimer *)self->_synchronizePreferencesTimer isValid])
   {
     synchronizePreferencesTimer = self->_synchronizePreferencesTimer;
-    v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.5];
+    mainRunLoop = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.5];
     [(NSTimer *)synchronizePreferencesTimer setFireDate:?];
   }
 
@@ -1133,8 +1133,8 @@ LABEL_32:
     v5 = self->_synchronizePreferencesTimer;
     self->_synchronizePreferencesTimer = v4;
 
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v6 addTimer:self->_synchronizePreferencesTimer forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_synchronizePreferencesTimer forMode:*MEMORY[0x1E695D918]];
   }
 }
 
@@ -1175,27 +1175,27 @@ void __49__TIPreferencesController_synchronizePreferences__block_invoke(uint64_t
   }
 }
 
-- (void)synchronizeDomainIfNeedsGet:(id)a3
+- (void)synchronizeDomainIfNeedsGet:(id)get
 {
-  v4 = a3;
-  if ([v4 needsGetSync])
+  getCopy = get;
+  if ([getCopy needsGetSync])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    [v4 setNeedsGetSync:0];
-    v6 = [v4 domain];
-    CFPreferencesSynchronize(v6, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [getCopy setNeedsGetSync:0];
+    domain = [getCopy domain];
+    CFPreferencesSynchronize(domain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
 
-    configuredPreferences = v5->_configuredPreferences;
+    configuredPreferences = selfCopy->_configuredPreferences;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__TIPreferencesController_synchronizeDomainIfNeedsGet___block_invoke;
     v8[3] = &unk_1E6F4D3F8;
-    v9 = v4;
-    v10 = v5;
+    v9 = getCopy;
+    v10 = selfCopy;
     [(NSMutableDictionary *)configuredPreferences enumerateKeysAndObjectsUsingBlock:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1225,51 +1225,51 @@ void __55__TIPreferencesController_synchronizeDomainIfNeedsGet___block_invoke(ui
   self->_synchronizePreferencesTimer = 0;
 }
 
-- (BOOL)BOOLForKey:(int)a3
+- (BOOL)BOOLForKey:(int)key
 {
-  v3 = [(TIPreferencesController *)self valueForKey:*&a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(TIPreferencesController *)self valueForKey:*&key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)valueForKey:(int)a3
+- (id)valueForKey:(int)key
 {
-  v4 = preferenceKeyForEnumKey(a3);
+  v4 = preferenceKeyForEnumKey(key);
   v5 = [(TIPreferencesController *)self valueForPreferenceKey:v4];
 
   return v5;
 }
 
-- (void)_pushValue:(id)a3 toPreference:(id)a4 domain:(id)a5
+- (void)_pushValue:(id)value toPreference:(id)preference domain:(id)domain
 {
-  if (a4 && a5)
+  if (preference && domain)
   {
-    v8 = a5;
-    v9 = a3;
-    v10 = [a4 key];
-    v11 = [v8 domain];
-    CFPreferencesSetAppValue(v10, v9, v11);
+    domainCopy = domain;
+    valueCopy = value;
+    v10 = [preference key];
+    domain = [domainCopy domain];
+    CFPreferencesSetAppValue(v10, valueCopy, domain);
 
-    [v8 setNeedsSetSync:1];
+    [domainCopy setNeedsSetSync:1];
 
     [(TIPreferencesController *)self touchSynchronizePreferencesTimer];
   }
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4 asyncIfManaged:(BOOL)a5
+- (void)setValue:(id)value forPreferenceKey:(id)key asyncIfManaged:(BOOL)managed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  managedCopy = managed;
+  valueCopy = value;
+  keyCopy = key;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __68__TIPreferencesController_setValue_forPreferenceKey_asyncIfManaged___block_invoke;
   v19[3] = &unk_1E6F4D3A8;
   v19[4] = self;
-  v10 = v9;
+  v10 = keyCopy;
   v20 = v10;
-  v11 = v8;
+  v11 = valueCopy;
   v21 = v11;
   v12 = MEMORY[0x1866068F0](v19);
   v13 = isManagedPreferenceKey(v10);
@@ -1278,14 +1278,14 @@ void __55__TIPreferencesController_synchronizeDomainIfNeedsGet___block_invoke(ui
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!managedCopy)
   {
     [(TIPreferencesController *)self setValue:v11 forManagedPreferenceKey:v10];
 LABEL_6:
-    v14 = self;
-    objc_sync_enter(v14);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v12[2](v12);
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_7;
   }
@@ -1437,27 +1437,27 @@ void __68__TIPreferencesController_setValue_forPreferenceKey_asyncIfManaged___bl
   objc_sync_exit(obj);
 }
 
-- (BOOL)BOOLForPreferenceKey:(id)a3
+- (BOOL)BOOLForPreferenceKey:(id)key
 {
-  v3 = [(TIPreferencesController *)self valueForPreferenceKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(TIPreferencesController *)self valueForPreferenceKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)valueForPreferenceKey:(id)a3
+- (id)valueForPreferenceKey:(id)key
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (isManagedPreferenceKey(v4) && [(TIPreferencesController *)self MCValueForManagedPreferenceKey:v4]== 2)
+  keyCopy = key;
+  if (isManagedPreferenceKey(keyCopy) && [(TIPreferencesController *)self MCValueForManagedPreferenceKey:keyCopy]== 2)
   {
     v5 = MEMORY[0x1E695E110];
     goto LABEL_19;
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_configuredPreferences objectForKey:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableDictionary *)selfCopy->_configuredPreferences objectForKey:keyCopy];
   v8 = v7;
   if (!v7)
   {
@@ -1465,24 +1465,24 @@ void __68__TIPreferencesController_setValue_forPreferenceKey_asyncIfManaged___bl
     goto LABEL_18;
   }
 
-  configuredDomains = v6->_configuredDomains;
-  v10 = [v7 domain];
-  v11 = [(NSMutableDictionary *)configuredDomains objectForKey:v10];
+  configuredDomains = selfCopy->_configuredDomains;
+  domain = [v7 domain];
+  v11 = [(NSMutableDictionary *)configuredDomains objectForKey:domain];
 
-  [(TIPreferencesController *)v6 synchronizeDomainIfNeedsGet:v11];
+  [(TIPreferencesController *)selfCopy synchronizeDomainIfNeedsGet:v11];
   v30[0] = @"TypologyEnabledByProfile";
   v30[1] = @"CustomerTypologyEnabledByDiagnosticExtension";
   v30[2] = @"KeyboardTransformerLMForAutocorrection";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
-  v13 = [v8 domain];
-  if ([v13 isEqualToString:@"com.apple.keyboard"] && !-[TIPreferencesController isInternalInstall](v6, "isInternalInstall"))
+  domain2 = [v8 domain];
+  if ([domain2 isEqualToString:@"com.apple.keyboard"] && !-[TIPreferencesController isInternalInstall](selfCopy, "isInternalInstall"))
   {
     v28 = [v8 key];
     v29 = [v12 containsObject:v28];
 
     if ((v29 & 1) == 0)
     {
-      v21 = [v8 defaultValue];
+      defaultValue = [v8 defaultValue];
       goto LABEL_15;
     }
   }
@@ -1491,74 +1491,74 @@ void __68__TIPreferencesController_setValue_forPreferenceKey_asyncIfManaged___bl
   {
   }
 
-  v14 = [v8 currentValue];
+  currentValue = [v8 currentValue];
 
-  if (!v14)
+  if (!currentValue)
   {
     v15 = [v8 key];
-    v16 = [v11 domain];
-    v17 = CFPreferencesCopyAppValue(v15, v16);
+    domain3 = [v11 domain];
+    v17 = CFPreferencesCopyAppValue(v15, domain3);
 
     [v8 setCurrentValue:v17];
   }
 
-  v18 = [v8 currentValue];
-  if (v18)
+  currentValue2 = [v8 currentValue];
+  if (currentValue2)
   {
   }
 
   else
   {
-    v23 = [v8 fallbackKey];
+    fallbackKey = [v8 fallbackKey];
 
-    if (v23)
+    if (fallbackKey)
     {
-      configuredPreferences = v6->_configuredPreferences;
-      v25 = [v8 fallbackKey];
-      v26 = [(NSMutableDictionary *)configuredPreferences objectForKey:v25];
+      configuredPreferences = selfCopy->_configuredPreferences;
+      fallbackKey2 = [v8 fallbackKey];
+      v26 = [(NSMutableDictionary *)configuredPreferences objectForKey:fallbackKey2];
 
       if (v26)
       {
         v27 = [v26 key];
-        v5 = [(TIPreferencesController *)v6 valueForPreferenceKey:v27];
+        v5 = [(TIPreferencesController *)selfCopy valueForPreferenceKey:v27];
 
         goto LABEL_16;
       }
     }
   }
 
-  v19 = [v8 currentValue];
+  currentValue3 = [v8 currentValue];
 
-  if (!v19)
+  if (!currentValue3)
   {
-    v20 = [v8 defaultValue];
-    [v8 setCurrentValue:v20];
+    defaultValue2 = [v8 defaultValue];
+    [v8 setCurrentValue:defaultValue2];
   }
 
-  v21 = [v8 currentValue];
+  defaultValue = [v8 currentValue];
 LABEL_15:
-  v5 = v21;
+  v5 = defaultValue;
 LABEL_16:
 
 LABEL_18:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
 LABEL_19:
 
   return v5;
 }
 
-- (id)_configuredPreferencesForDomain:(id)a3
+- (id)_configuredPreferencesForDomain:(id)domain
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  domainCopy = domain;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)self->_configuredPreferences allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_configuredPreferences allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1569,46 +1569,46 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 domain];
-        v13 = [v12 isEqual:v4];
+        domain = [v11 domain];
+        v13 = [domain isEqual:domainCopy];
 
         if (v13)
         {
           v14 = [v11 key];
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)_configureKey:(id)a3 domain:(id)a4 defaultValue:(id)a5 fallbackKey:(id)a6 isAnalyzed:(BOOL)a7 isCloudSetting:(BOOL)a8 isWatchSync:(BOOL)a9
+- (void)_configureKey:(id)key domain:(id)domain defaultValue:(id)value fallbackKey:(id)fallbackKey isAnalyzed:(BOOL)analyzed isCloudSetting:(BOOL)setting isWatchSync:(BOOL)sync
 {
-  v9 = a8;
-  v10 = a7;
-  v30 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(NSMutableDictionary *)self->_configuredPreferences objectForKey:v30];
+  settingCopy = setting;
+  analyzedCopy = analyzed;
+  keyCopy = key;
+  domainCopy = domain;
+  valueCopy = value;
+  fallbackKeyCopy = fallbackKey;
+  v18 = [(NSMutableDictionary *)self->_configuredPreferences objectForKey:keyCopy];
   if (v18)
   {
     v19 = v18;
-    v20 = [v18 defaultValue];
-    if (v20)
+    defaultValue = [v18 defaultValue];
+    if (defaultValue)
     {
-      v21 = [v19 defaultValue];
-      [v21 isEqual:v16];
+      defaultValue2 = [v19 defaultValue];
+      [defaultValue2 isEqual:valueCopy];
     }
   }
 
@@ -1621,51 +1621,51 @@ LABEL_19:
       self->_configuredPreferences = v22;
     }
 
-    v19 = [_TIPreference preferenceWithKey:v30 domain:v15 defaultValue:v16 fallbackKey:v17 isAnalyzed:v10];
-    [v19 setIsCloudSetting:v9];
-    [v19 setIsWatchSync:a9];
-    [(NSMutableDictionary *)self->_configuredPreferences setObject:v19 forKey:v30];
-    if (v10)
+    v19 = [_TIPreference preferenceWithKey:keyCopy domain:domainCopy defaultValue:valueCopy fallbackKey:fallbackKeyCopy isAnalyzed:analyzedCopy];
+    [v19 setIsCloudSetting:settingCopy];
+    [v19 setIsWatchSync:sync];
+    [(NSMutableDictionary *)self->_configuredPreferences setObject:v19 forKey:keyCopy];
+    if (analyzedCopy)
     {
-      v24 = [v19 changedAtKey];
-      [(TIPreferencesController *)self _configureKey:v24 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      changedAtKey = [v19 changedAtKey];
+      [(TIPreferencesController *)self _configureKey:changedAtKey domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
 
-      v25 = [v19 analyzedAtKey];
-      [(TIPreferencesController *)self _configureKey:v25 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      analyzedAtKey = [v19 analyzedAtKey];
+      [(TIPreferencesController *)self _configureKey:analyzedAtKey domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
 
-      v26 = [v19 previousValueKey];
-      [(TIPreferencesController *)self _configureKey:v26 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      previousValueKey = [v19 previousValueKey];
+      [(TIPreferencesController *)self _configureKey:previousValueKey domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
 
-      v27 = [v19 buildAtChangeKey];
-      [(TIPreferencesController *)self _configureKey:v27 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      buildAtChangeKey = [v19 buildAtChangeKey];
+      [(TIPreferencesController *)self _configureKey:buildAtChangeKey domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
 
-      v28 = [v19 approxDateOfBuildInstall];
-      [(TIPreferencesController *)self _configureKey:v28 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      approxDateOfBuildInstall = [v19 approxDateOfBuildInstall];
+      [(TIPreferencesController *)self _configureKey:approxDateOfBuildInstall domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
 
-      v29 = [v19 buildAtLastAnalysis];
-      [(TIPreferencesController *)self _configureKey:v29 domain:v15 defaultValue:0 fallbackKey:0 isAnalyzed:0];
+      buildAtLastAnalysis = [v19 buildAtLastAnalysis];
+      [(TIPreferencesController *)self _configureKey:buildAtLastAnalysis domain:domainCopy defaultValue:0 fallbackKey:0 isAnalyzed:0];
     }
 
-    [(TIPreferencesController *)self _configureDomain:v15 notification:0];
+    [(TIPreferencesController *)self _configureDomain:domainCopy notification:0];
   }
 }
 
-- (void)_configureDomain:(id)a3 notification:(id)a4
+- (void)_configureDomain:(id)domain notification:(id)notification
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_configuredDomains objectForKey:v13];
+  domainCopy = domain;
+  notificationCopy = notification;
+  v7 = [(NSMutableDictionary *)self->_configuredDomains objectForKey:domainCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 notification];
+    notification = [v7 notification];
 
-    if (v6 && !v9)
+    if (notificationCopy && !notification)
     {
-      [v8 setNotification:v6];
+      [v8 setNotification:notificationCopy];
 LABEL_8:
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      CFNotificationCenterAddObserver(DarwinNotifyCenter, self, NotificationCallback, v6, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+      CFNotificationCenterAddObserver(DarwinNotifyCenter, self, NotificationCallback, notificationCopy, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
   }
 
@@ -1678,9 +1678,9 @@ LABEL_8:
       self->_configuredDomains = v10;
     }
 
-    v8 = [_TIPreferenceDomain domainWithName:v13 notification:v6];
-    [(NSMutableDictionary *)self->_configuredDomains setObject:v8 forKey:v13];
-    if (v6)
+    v8 = [_TIPreferenceDomain domainWithName:domainCopy notification:notificationCopy];
+    [(NSMutableDictionary *)self->_configuredDomains setObject:v8 forKey:domainCopy];
+    if (notificationCopy)
     {
       goto LABEL_8;
     }
@@ -1689,11 +1689,11 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(TIPreferencesController *)self actionWhenIdle];
-  [v3 invalidate];
+  actionWhenIdle = [(TIPreferencesController *)self actionWhenIdle];
+  [actionWhenIdle invalidate];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   configuredDomains = self->_configuredDomains;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1717,7 +1717,7 @@ void __34__TIPreferencesController_dealloc__block_invoke(uint64_t a1, uint64_t a
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v6, name, 0);
 }
 
-- (void)profileSettingDidChange:(id)a3
+- (void)profileSettingDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1739,7 +1739,7 @@ uint64_t __51__TIPreferencesController_profileSettingDidChange___block_invoke(ui
   return [v2 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (void)managedKeyboardSettingDidChange:(id)a3
+- (void)managedKeyboardSettingDidChange:(id)change
 {
   [(NSCache *)self->_cachedMCRestrictedValue removeAllObjects];
   v4[0] = MEMORY[0x1E69E9820];
@@ -1759,24 +1759,24 @@ void __59__TIPreferencesController_managedKeyboardSettingDidChange___block_invok
   [v3 postNotificationName:@"AppleKeyboardsContinuousPathSettingsChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)preferencesChangedCallback:(id)a3
+- (void)preferencesChangedCallback:(id)callback
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v4 notification];
+    notification = [callbackCopy notification];
     v15 = 136315650;
     v16 = "[TIPreferencesController preferencesChangedCallback:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = callbackCopy;
     v19 = 2112;
-    v20 = v14;
+    v20 = notification;
     _os_log_debug_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%s  preferencesChangedCallback: Triggering preferencesChangedCallback for domain %@ with notification %@", &v15, 0x20u);
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  [v4 lastSynchronizedTime];
+  [callbackCopy lastSynchronizedTime];
   if (Current - v6 > 1.0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -1784,12 +1784,12 @@ void __59__TIPreferencesController_managedKeyboardSettingDidChange___block_invok
       v15 = 136315394;
       v16 = "[TIPreferencesController preferencesChangedCallback:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = callbackCopy;
       _os_log_debug_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%s  preferencesChangedCallback: preferencesChangedCallback updating sync signal for domain %@", &v15, 0x16u);
     }
 
-    v7 = [v4 domain];
-    v8 = [v7 isEqualToString:@".GlobalPreferences"];
+    domain = [callbackCopy domain];
+    v8 = [domain isEqualToString:@".GlobalPreferences"];
 
     if (v8)
     {
@@ -1803,11 +1803,11 @@ void __59__TIPreferencesController_managedKeyboardSettingDidChange___block_invok
         v15 = 136315394;
         v16 = "[TIPreferencesController preferencesChangedCallback:]";
         v17 = 2112;
-        v18 = v4;
+        v18 = callbackCopy;
         _os_log_debug_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "%s  preferencesChangedCallback: Marking domain %@ as needs to be synced.", &v15, 0x16u);
       }
 
-      [v4 setNeedsGetSync:1];
+      [callbackCopy setNeedsGetSync:1];
     }
 
     if ([(TIPreferencesController *)self ignoreNextSyncNotification])
@@ -1817,22 +1817,22 @@ void __59__TIPreferencesController_managedKeyboardSettingDidChange___block_invok
 
     else
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"TIPreferencesControllerChangedNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"TIPreferencesControllerChangedNotification" object:self];
     }
   }
 
-  v10 = [v4 domain];
-  v11 = [v10 isEqualToString:@"com.apple.keyboard"];
+  domain2 = [callbackCopy domain];
+  v11 = [domain2 isEqualToString:@"com.apple.keyboard"];
 
   if (v11)
   {
     [(TIPreferencesController *)self setIsInternalInstall:MGGetBoolAnswer()];
   }
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  v13 = [v4 notification];
-  [v12 postNotificationName:v13 object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  notification2 = [callbackCopy notification];
+  [defaultCenter2 postNotificationName:notification2 object:0];
 }
 
 void __54__TIPreferencesController_preferencesChangedCallback___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1851,11 +1851,11 @@ void __54__TIPreferencesController_preferencesChangedCallback___block_invoke(uin
   [v3 setNeedsGetSync:1];
 }
 
-+ (void)registerPreferredLanguagesForInputModes:(id)a3 replacingInputModes:(id)a4
++ (void)registerPreferredLanguagesForInputModes:(id)modes replacingInputModes:(id)inputModes
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  modesCopy = modes;
+  inputModesCopy = inputModes;
   v50[0] = 0;
   if (!IntlPreferencesLibraryCore_frameworkLibrary)
   {
@@ -1891,7 +1891,7 @@ LABEL_4:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v9 = v6;
+  v9 = inputModesCopy;
   v10 = [v9 countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v10)
   {
@@ -1924,7 +1924,7 @@ LABEL_4:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = v5;
+  v16 = modesCopy;
   v17 = [v16 countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v17)
   {

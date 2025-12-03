@@ -34,8 +34,8 @@
   objc_storeStrong(&location, v2);
   if (v2)
   {
-    v3 = [[BYTelephonyStateNotifier alloc] initForNotifying];
-    [location setTelephonyStateNotifier:v3];
+    initForNotifying = [[BYTelephonyStateNotifier alloc] initForNotifying];
+    [location setTelephonyStateNotifier:initForNotifying];
   }
 
   v4 = location;
@@ -45,7 +45,7 @@
 
 - (void)allowSIMUnlock
 {
-  v8 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -58,13 +58,13 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(BuddySIMManager *)v8 telephonyStateNotifier];
-  [(BYTelephonyStateNotifier *)v4 notifySIMUnlockStateChangedTo:1];
+  telephonyStateNotifier = [(BuddySIMManager *)selfCopy telephonyStateNotifier];
+  [(BYTelephonyStateNotifier *)telephonyStateNotifier notifySIMUnlockStateChangedTo:1];
 }
 
 - (void)disallowSIMUnlock
 {
-  v8 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -77,8 +77,8 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(BuddySIMManager *)v8 telephonyStateNotifier];
-  [(BYTelephonyStateNotifier *)v4 notifySIMUnlockStateChangedTo:2];
+  telephonyStateNotifier = [(BuddySIMManager *)selfCopy telephonyStateNotifier];
+  [(BYTelephonyStateNotifier *)telephonyStateNotifier notifySIMUnlockStateChangedTo:2];
 }
 
 @end

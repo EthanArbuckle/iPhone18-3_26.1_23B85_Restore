@@ -1,12 +1,12 @@
 @interface NTKKaleidoscopeResourceManager
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3;
-+ (void)_deallocInstance:(id)a3;
-- (NTKKaleidoscopeResourceManager)initWithPixelFormat:(unint64_t)a3;
-- (id)_pipelineStateForShaderType:(unint64_t)a3 vertexName:(id)a4 fragmentName:(id)a5 inLibrary:(id)a6 archive:(id)a7 allowsBlending:(BOOL)a8;
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format;
++ (void)_deallocInstance:(id)instance;
+- (NTKKaleidoscopeResourceManager)initWithPixelFormat:(unint64_t)format;
+- (id)_pipelineStateForShaderType:(unint64_t)type vertexName:(id)name fragmentName:(id)fragmentName inLibrary:(id)library archive:(id)archive allowsBlending:(BOOL)blending;
 - (void)_asyncDeallocInstance;
 - (void)_loadMTLBufferData;
 - (void)_loadPrograms;
-- (void)_queue_setupPipelineForType:(unint64_t)a3 vertexName:(id)a4 fragmentName:(id)a5 inLibrary:(id)a6 archive:(id)a7;
+- (void)_queue_setupPipelineForType:(unint64_t)type vertexName:(id)name fragmentName:(id)fragmentName inLibrary:(id)library archive:(id)archive;
 - (void)addClient;
 - (void)dealloc;
 - (void)removeClient;
@@ -14,21 +14,21 @@
 
 @implementation NTKKaleidoscopeResourceManager
 
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_10003C6E0)
   {
-    v5 = [[NTKKaleidoscopeResourceManager alloc] initWithPixelFormat:a3];
+    v5 = [[NTKKaleidoscopeResourceManager alloc] initWithPixelFormat:format];
     v6 = qword_10003C6E0;
     qword_10003C6E0 = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v7 = qword_10003C6E0;
-  if (*(qword_10003C6E0 + 32) != a3)
+  if (*(qword_10003C6E0 + 32) != format)
   {
     sub_1000244E8();
   }
@@ -36,9 +36,9 @@
   return v7;
 }
 
-+ (void)_deallocInstance:(id)a3
++ (void)_deallocInstance:(id)instance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v3 = qword_10003C6E0;
   qword_10003C6E0 = 0;
@@ -46,7 +46,7 @@
   objc_sync_exit(obj);
 }
 
-- (NTKKaleidoscopeResourceManager)initWithPixelFormat:(unint64_t)a3
+- (NTKKaleidoscopeResourceManager)initWithPixelFormat:(unint64_t)format
 {
   v10.receiver = self;
   v10.super_class = NTKKaleidoscopeResourceManager;
@@ -57,7 +57,7 @@
     bundle = v4->_bundle;
     v4->_bundle = v5;
 
-    v4->_viewMtlPixelFormat = a3;
+    v4->_viewMtlPixelFormat = format;
     v7 = +[CLKUIMetalResourceManager sharedDevice];
     device = v4->_device;
     v4->_device = v7;
@@ -103,26 +103,26 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NTKKaleidoscopeResourceManager *)v2 _asyncDeallocInstance];
+    [(NTKKaleidoscopeResourceManager *)selfCopy _asyncDeallocInstance];
   }
 }
 
 - (void)_loadMTLBufferData
 {
   v3 = [(MTLDevice *)self->_device newBufferWithLength:128 options:0];
-  v4 = [v3 contents];
-  *v4->f32 = xmmword_100027E48;
-  *v4[2].f32 = unk_100027E58;
-  v5 = v4 + 5;
+  contents = [v3 contents];
+  *contents->f32 = xmmword_100027E48;
+  *contents[2].f32 = unk_100027E58;
+  v5 = contents + 5;
   v6 = 17;
   v7 = 6;
   v8 = vdup_n_s32(0x3F866666u);
@@ -142,33 +142,33 @@
   self->_mtlBuffer = v3;
 }
 
-- (id)_pipelineStateForShaderType:(unint64_t)a3 vertexName:(id)a4 fragmentName:(id)a5 inLibrary:(id)a6 archive:(id)a7 allowsBlending:(BOOL)a8
+- (id)_pipelineStateForShaderType:(unint64_t)type vertexName:(id)name fragmentName:(id)fragmentName inLibrary:(id)library archive:(id)archive allowsBlending:(BOOL)blending
 {
-  v8 = a8;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = *(&off_100034FE0 + a3);
+  blendingCopy = blending;
+  nameCopy = name;
+  fragmentNameCopy = fragmentName;
+  libraryCopy = library;
+  archiveCopy = archive;
+  v18 = *(&off_100034FE0 + type);
   v19 = @"off";
-  if (v8)
+  if (blendingCopy)
   {
     v19 = @"on";
   }
 
-  v20 = [NSString stringWithFormat:@"%@_blend_%@", *(&off_100034FE0 + a3), v19];
-  v51 = v8;
+  v20 = [NSString stringWithFormat:@"%@_blend_%@", *(&off_100034FE0 + type), v19];
+  v51 = blendingCopy;
   v21 = objc_opt_new();
   [v21 setConstantValue:&v51 type:53 atIndex:0];
   v22 = +[MTLFunctionDescriptor functionDescriptor];
-  v50 = v14;
-  [v22 setName:v14];
+  v50 = nameCopy;
+  [v22 setName:nameCopy];
   [v22 setConstantValues:v21];
-  v23 = [v17 newFunctionInLibrary:v16 withDescriptor:v22];
-  v49 = v15;
-  [v22 setName:v15];
-  v47 = v16;
-  v24 = [v17 newFunctionInLibrary:v16 withDescriptor:v22];
+  v23 = [archiveCopy newFunctionInLibrary:libraryCopy withDescriptor:v22];
+  v49 = fragmentNameCopy;
+  [v22 setName:fragmentNameCopy];
+  v47 = libraryCopy;
+  v24 = [archiveCopy newFunctionInLibrary:libraryCopy withDescriptor:v22];
   v25 = objc_alloc_init(MTLRenderPipelineDescriptor);
   v48 = v20;
   [v25 setLabel:v20];
@@ -176,42 +176,42 @@
   [v25 setVertexFunction:v23];
   [v25 setFragmentFunction:v24];
   viewMtlPixelFormat = self->_viewMtlPixelFormat;
-  v27 = [v25 colorAttachments];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  colorAttachments = [v25 colorAttachments];
+  v28 = [colorAttachments objectAtIndexedSubscript:0];
   [v28 setPixelFormat:viewMtlPixelFormat];
 
-  if (v8)
+  if (blendingCopy)
   {
-    v29 = [v25 colorAttachments];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v25 colorAttachments];
+    v30 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v30 setBlendingEnabled:1];
 
-    v31 = [v25 colorAttachments];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    colorAttachments3 = [v25 colorAttachments];
+    v32 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v32 setRgbBlendOperation:0];
 
-    v33 = [v25 colorAttachments];
-    v34 = [v33 objectAtIndexedSubscript:0];
+    colorAttachments4 = [v25 colorAttachments];
+    v34 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v34 setAlphaBlendOperation:0];
 
-    v35 = [v25 colorAttachments];
-    v36 = [v35 objectAtIndexedSubscript:0];
+    colorAttachments5 = [v25 colorAttachments];
+    v36 = [colorAttachments5 objectAtIndexedSubscript:0];
     [v36 setSourceRGBBlendFactor:4];
 
-    v37 = [v25 colorAttachments];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    colorAttachments6 = [v25 colorAttachments];
+    v38 = [colorAttachments6 objectAtIndexedSubscript:0];
     [v38 setSourceAlphaBlendFactor:4];
 
-    v39 = [v25 colorAttachments];
-    v40 = [v39 objectAtIndexedSubscript:0];
+    colorAttachments7 = [v25 colorAttachments];
+    v40 = [colorAttachments7 objectAtIndexedSubscript:0];
     [v40 setDestinationRGBBlendFactor:5];
 
-    v41 = [v25 colorAttachments];
-    v42 = [v41 objectAtIndexedSubscript:0];
+    colorAttachments8 = [v25 colorAttachments];
+    v42 = [colorAttachments8 objectAtIndexedSubscript:0];
     [v42 setDestinationAlphaBlendFactor:5];
   }
 
-  v43 = [v17 newRenderPipelineStateForDevice:self->_device withDescriptor:v25];
+  v43 = [archiveCopy newRenderPipelineStateForDevice:self->_device withDescriptor:v25];
   if (!v43)
   {
     sub_100024514();
@@ -222,18 +222,18 @@
   return v44;
 }
 
-- (void)_queue_setupPipelineForType:(unint64_t)a3 vertexName:(id)a4 fragmentName:(id)a5 inLibrary:(id)a6 archive:(id)a7
+- (void)_queue_setupPipelineForType:(unint64_t)type vertexName:(id)name fragmentName:(id)fragmentName inLibrary:(id)library archive:(id)archive
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [(NTKKaleidoscopeResourceManager *)self _pipelineStateForShaderType:a3 vertexName:v15 fragmentName:v14 inLibrary:v13 archive:v12 allowsBlending:0];
-  v17 = self + 16 * a3;
+  archiveCopy = archive;
+  libraryCopy = library;
+  fragmentNameCopy = fragmentName;
+  nameCopy = name;
+  v16 = [(NTKKaleidoscopeResourceManager *)self _pipelineStateForShaderType:type vertexName:nameCopy fragmentName:fragmentNameCopy inLibrary:libraryCopy archive:archiveCopy allowsBlending:0];
+  v17 = self + 16 * type;
   v18 = *(v17 + 5);
   *(v17 + 5) = v16;
 
-  v19 = [(NTKKaleidoscopeResourceManager *)self _pipelineStateForShaderType:a3 vertexName:v15 fragmentName:v14 inLibrary:v13 archive:v12 allowsBlending:1];
+  v19 = [(NTKKaleidoscopeResourceManager *)self _pipelineStateForShaderType:type vertexName:nameCopy fragmentName:fragmentNameCopy inLibrary:libraryCopy archive:archiveCopy allowsBlending:1];
 
   v20 = *(v17 + 6);
   *(v17 + 6) = v19;

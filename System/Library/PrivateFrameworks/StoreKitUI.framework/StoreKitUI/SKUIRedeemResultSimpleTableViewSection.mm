@@ -1,15 +1,15 @@
 @interface SKUIRedeemResultSimpleTableViewSection
-- (SKUIRedeemResultSimpleTableViewSection)initWithView:(id)a3;
+- (SKUIRedeemResultSimpleTableViewSection)initWithView:(id)view;
 - (UIEdgeInsets)contentInsets;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SKUIRedeemResultSimpleTableViewSection
 
-- (SKUIRedeemResultSimpleTableViewSection)initWithView:(id)a3
+- (SKUIRedeemResultSimpleTableViewSection)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemResultSimpleTableViewSection initWithView:];
@@ -21,15 +21,15 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"SKUIRRSTVC", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"SKUIRRSTVC", path}];
   if (!v5)
   {
     v5 = [[SKUIRedeemResultSimpleTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SKUIRRSTVC"];
@@ -42,13 +42,13 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 backgroundColor];
-  [v7 setBackgroundColor:v8];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 
-  [(UIView *)self->_view setBackgroundColor:v8];
+  [(UIView *)self->_view setBackgroundColor:backgroundColor];
 }
 
 - (UIEdgeInsets)contentInsets

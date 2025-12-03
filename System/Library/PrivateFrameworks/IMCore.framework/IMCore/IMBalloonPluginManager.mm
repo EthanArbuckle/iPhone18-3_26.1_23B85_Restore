@@ -1,64 +1,64 @@
 @interface IMBalloonPluginManager
-+ (BOOL)_allowExtensionWithIdentifier:(id)a3;
-+ (BOOL)_isExtensionBlocklisted:(id)a3;
++ (BOOL)_allowExtensionWithIdentifier:(id)identifier;
++ (BOOL)_isExtensionBlocklisted:(id)blocklisted;
 + (BOOL)_shouldAddFindMyToBlockList;
 + (BOOL)_shouldAddGenPlaygroundToBlockList;
 + (BOOL)_shouldAddSafetyMonitorToBlockList;
 + (id)_extensionBlocklist;
 + (id)balloonProviderBundlePathURL;
-+ (id)precacheBalloonAppExtensionsForExtensions:(id)a3;
++ (id)precacheBalloonAppExtensionsForExtensions:(id)extensions;
 + (id)sharedInstance;
 + (id)signpostLogHandle;
-- (BOOL)_shouldSkipUpdatingPluginBundleIdentifier:(id)a3;
-- (Class)dataSourceClassForBundleID:(id)a3;
+- (BOOL)_shouldSkipUpdatingPluginBundleIdentifier:(id)identifier;
+- (Class)dataSourceClassForBundleID:(id)d;
 - (IMBalloonPluginManager)init;
 - (id)_appProxyBundleIdentifiersForAppPlugins;
-- (id)_currentlyInstalledExtensionsExcludingExtensionPoint:(id)a3;
-- (id)_extensionWithIdentifier:(id)a3;
-- (id)_fallBackMessagesExtensionPluginForBundleID:(id)a3;
+- (id)_currentlyInstalledExtensionsExcludingExtensionPoint:(id)point;
+- (id)_extensionWithIdentifier:(id)identifier;
+- (id)_fallBackMessagesExtensionPluginForBundleID:(id)d;
 - (id)_identifiersForAppPlugins;
-- (id)_infoPlistPathForPluginCreatingFolderIfNeeded:(id)a3;
-- (id)_insertPluginForAppBundle:(id)a3 balloonProviderBundle:(id)a4;
-- (id)_insertPluginForExtension:(id)a3 balloonProviderBundle:(id)a4 precachedBalloonAppExtensions:(id)a5 timingCollection:(id)a6;
-- (id)_loadAppExtensionDataSourcesForExtensionPoint:(id)a3;
-- (id)_metadataForPluginIdentifier:(id)a3;
-- (id)_pluginPlistPath:(id)a3;
+- (id)_infoPlistPathForPluginCreatingFolderIfNeeded:(id)needed;
+- (id)_insertPluginForAppBundle:(id)bundle balloonProviderBundle:(id)providerBundle;
+- (id)_insertPluginForExtension:(id)extension balloonProviderBundle:(id)bundle precachedBalloonAppExtensions:(id)extensions timingCollection:(id)collection;
+- (id)_loadAppExtensionDataSourcesForExtensionPoint:(id)point;
+- (id)_metadataForPluginIdentifier:(id)identifier;
+- (id)_pluginPlistPath:(id)path;
 - (id)_pluginsForWhichWeHaveMetadata;
 - (id)_proxyIdentifiersForPlugins;
 - (id)allPlugins;
-- (id)balloonPluginForBundleID:(id)a3;
-- (id)conversationID:(id)a3 appID:(id)a4;
-- (id)dataSourceForPluginPayload:(id)a3;
-- (id)existingDataSourceForMessageGUID:(id)a3 bundleID:(id)a4;
-- (id)localParticipantIdentifierForAppID:(id)a3 conversationID:(id)a4;
-- (id)recipientIDForRecipient:(id)a3 appID:(id)a4;
+- (id)balloonPluginForBundleID:(id)d;
+- (id)conversationID:(id)d appID:(id)iD;
+- (id)dataSourceForPluginPayload:(id)payload;
+- (id)existingDataSourceForMessageGUID:(id)d bundleID:(id)iD;
+- (id)localParticipantIdentifierForAppID:(id)d conversationID:(id)iD;
+- (id)recipientIDForRecipient:(id)recipient appID:(id)d;
 - (id)signpostLogHandle;
-- (id)systemBundleIdentifierForPluginIdentifier:(id)a3;
+- (id)systemBundleIdentifierForPluginIdentifier:(id)identifier;
 - (void)_clearPluginMetadataForUninstalledApps;
-- (void)_deleteMetaDataForPlugins:(id)a3;
-- (void)_findPluginsInPathInternal:(id)a3;
-- (void)_findPluginsInPaths:(id)a3;
+- (void)_deleteMetaDataForPlugins:(id)plugins;
+- (void)_findPluginsInPathInternal:(id)internal;
+- (void)_findPluginsInPaths:(id)paths;
 - (void)_loadAllDataSources;
 - (void)_loadAppBundleDataSources;
 - (void)_loadAppExtensionDataSources;
 - (void)_moveExtensionDataSourcesFromMessagesExtensionPluginToAppExtensions;
 - (void)_postDeferredInstalledAppsChangedNotificationIfNecessary;
 - (void)_postInstalledAppsChangedNotification;
-- (void)_removePluginsForIdentifiers:(id)a3;
+- (void)_removePluginsForIdentifiers:(id)identifiers;
 - (void)_removePluginsWithDelay;
-- (void)_setPluginsToRemoveAndCallSelectorWithDelay:(id)a3;
-- (void)_storeMetadata:(id)a3 _forPlugin:(id)a4;
-- (void)_transferUpdated:(id)a3;
-- (void)_updatePluginsForBundles:(id)a3;
-- (void)_updatePluginsForExtensions:(id)a3 extensionPoint:(id)a4 precachedBalloonAppExtensions:(id)a5;
+- (void)_setPluginsToRemoveAndCallSelectorWithDelay:(id)delay;
+- (void)_storeMetadata:(id)metadata _forPlugin:(id)plugin;
+- (void)_transferUpdated:(id)updated;
+- (void)_updatePluginsForBundles:(id)bundles;
+- (void)_updatePluginsForExtensions:(id)extensions extensionPoint:(id)point precachedBalloonAppExtensions:(id)appExtensions;
 - (void)dealloc;
-- (void)insertDataSource:(id)a3 forGUID:(id)a4;
-- (void)insertPlugin:(id)a3;
-- (void)loadExtensionWithIdentifierIfNeeded:(id)a3;
-- (void)pluginChatItem:(id)a3 didRelenquishNonResuableController:(id)a4 contextIdentifier:(id)a5;
-- (void)pluginChatItem:(id)a3 didRelinquishReusableController:(id)a4 contextIdentifier:(id)a5;
-- (void)pluginChatItemRequestedReleaseDataSource:(id)a3;
-- (void)removePluginWithBundleID:(id)a3;
+- (void)insertDataSource:(id)source forGUID:(id)d;
+- (void)insertPlugin:(id)plugin;
+- (void)loadExtensionWithIdentifierIfNeeded:(id)needed;
+- (void)pluginChatItem:(id)item didRelenquishNonResuableController:(id)controller contextIdentifier:(id)identifier;
+- (void)pluginChatItem:(id)item didRelinquishReusableController:(id)controller contextIdentifier:(id)identifier;
+- (void)pluginChatItemRequestedReleaseDataSource:(id)source;
+- (void)removePluginWithBundleID:(id)d;
 @end
 
 @implementation IMBalloonPluginManager
@@ -356,7 +356,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A8257D94;
   block[3] = &unk_1E78102B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED767660 != -1)
   {
     dispatch_once(&qword_1ED767660, block);
@@ -629,44 +629,44 @@
   return v9;
 }
 
-- (void)insertPlugin:(id)a3
+- (void)insertPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   v14 = objc_msgSend_model(self, v5, v6);
   v9 = objc_msgSend_pluginsMap(v14, v7, v8);
-  v12 = objc_msgSend_identifier(v4, v10, v11);
-  objc_msgSend_setPlugin_forIdentifier_(v9, v13, v4, v12);
+  v12 = objc_msgSend_identifier(pluginCopy, v10, v11);
+  objc_msgSend_setPlugin_forIdentifier_(v9, v13, pluginCopy, v12);
 }
 
-- (void)pluginChatItem:(id)a3 didRelinquishReusableController:(id)a4 contextIdentifier:(id)a5
+- (void)pluginChatItem:(id)item didRelinquishReusableController:(id)controller contextIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = objc_msgSend_type(v10, v11, v12);
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  itemCopy = item;
+  v13 = objc_msgSend_type(itemCopy, v11, v12);
   v16 = objc_msgSend_balloonPluginForBundleID_(self, v14, v13);
 
-  objc_msgSend_moveController_toReusePoolFromChatItem_contextIdentifier_(v16, v15, v9, v10, v8);
+  objc_msgSend_moveController_toReusePoolFromChatItem_contextIdentifier_(v16, v15, controllerCopy, itemCopy, identifierCopy);
 }
 
-- (void)pluginChatItem:(id)a3 didRelenquishNonResuableController:(id)a4 contextIdentifier:(id)a5
+- (void)pluginChatItem:(id)item didRelenquishNonResuableController:(id)controller contextIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = objc_msgSend_type(v10, v11, v12);
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  itemCopy = item;
+  v13 = objc_msgSend_type(itemCopy, v11, v12);
   v16 = objc_msgSend_balloonPluginForBundleID_(self, v14, v13);
 
-  objc_msgSend_removeController_forChatItem_contextIdentifier_(v16, v15, v9, v10, v8);
+  objc_msgSend_removeController_forChatItem_contextIdentifier_(v16, v15, controllerCopy, itemCopy, identifierCopy);
 }
 
-- (void)pluginChatItemRequestedReleaseDataSource:(id)a3
+- (void)pluginChatItemRequestedReleaseDataSource:(id)source
 {
-  v4 = a3;
-  v7 = objc_msgSend_type(v4, v5, v6);
+  sourceCopy = source;
+  v7 = objc_msgSend_type(sourceCopy, v5, v6);
   v10 = objc_msgSend_balloonPluginForBundleID_(self, v8, v7);
 
-  objc_msgSend_removeDataSourceForChatItem_(v10, v9, v4);
+  objc_msgSend_removeDataSourceForChatItem_(v10, v9, sourceCopy);
 }
 
 - (void)dealloc
@@ -687,12 +687,12 @@
   [(IMBalloonPluginManager *)&v19 dealloc];
 }
 
-- (id)_pluginPlistPath:(id)a3
+- (id)_pluginPlistPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_model(self, v5, v6);
   v10 = objc_msgSend_pluginMetaDataFolder(v7, v8, v9);
-  v13 = objc_msgSend_lastPathComponent(v4, v11, v12);
+  v13 = objc_msgSend_lastPathComponent(pathCopy, v11, v12);
 
   v15 = objc_msgSend_stringByAppendingPathExtension_(v13, v14, @"plist");
   v17 = objc_msgSend_stringByAppendingPathComponent_(v10, v16, v15);
@@ -700,27 +700,27 @@
   return v17;
 }
 
-- (id)_infoPlistPathForPluginCreatingFolderIfNeeded:(id)a3
+- (id)_infoPlistPathForPluginCreatingFolderIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v7 = objc_msgSend_model(self, v5, v6);
   v10 = objc_msgSend_pluginMetaDataFolder(v7, v8, v9);
   IMSharedHelperEnsureDirectoryExistsAtPath();
 
-  v12 = objc_msgSend__pluginPlistPath_(self, v11, v4);
+  v12 = objc_msgSend__pluginPlistPath_(self, v11, neededCopy);
 
   return v12;
 }
 
-- (id)_metadataForPluginIdentifier:(id)a3
+- (id)_metadataForPluginIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = objc_msgSend_model(self, v4, v5);
     v10 = objc_msgSend_pluginIDToMetadataCache(v7, v8, v9);
-    v12 = objc_msgSend_objectForKey_(v10, v11, v6);
+    v12 = objc_msgSend_objectForKey_(v10, v11, identifierCopy);
 
     if (!v12)
     {
@@ -730,13 +730,13 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v40 = 138412290;
-          v41 = v6;
+          v41 = identifierCopy;
           _os_log_impl(&dword_1A823F000, v16, OS_LOG_TYPE_INFO, "Reading plugin metadata from disk for ID %@", &v40, 0xCu);
         }
       }
 
       v17 = MEMORY[0x1E695DF20];
-      v18 = objc_msgSend__infoPlistPathForPluginCreatingFolderIfNeeded_(self, v15, v6);
+      v18 = objc_msgSend__infoPlistPathForPluginCreatingFolderIfNeeded_(self, v15, identifierCopy);
       v12 = objc_msgSend_dictionaryWithContentsOfFile_(v17, v19, v18);
 
       if (!v12)
@@ -748,7 +748,7 @@
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
             v40 = 138412290;
-            v41 = v6;
+            v41 = identifierCopy;
             _os_log_impl(&dword_1A823F000, v20, OS_LOG_TYPE_INFO, "No metadataForPluginIdentifer %@", &v40, 0xCu);
           }
         }
@@ -761,7 +761,7 @@
       v26 = objc_msgSend_pluginIDToMetadataCache(v23, v24, v25);
       v29 = objc_msgSend_mutableCopy(v26, v27, v28);
 
-      objc_msgSend_setObject_forKey_(v29, v30, v12, v6);
+      objc_msgSend_setObject_forKey_(v29, v30, v12, identifierCopy);
       v33 = objc_msgSend_model(self, v31, v32);
       v36 = objc_msgSend_copy(v29, v34, v35);
       objc_msgSend_setPluginIDToMetadataCache_(v33, v37, v36);
@@ -778,15 +778,15 @@
   return v12;
 }
 
-- (void)_storeMetadata:(id)a3 _forPlugin:(id)a4
+- (void)_storeMetadata:(id)metadata _forPlugin:(id)plugin
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6 && v7)
+  metadataCopy = metadata;
+  pluginCopy = plugin;
+  v9 = pluginCopy;
+  if (metadataCopy && pluginCopy)
   {
-    v10 = objc_msgSend__infoPlistPathForPluginCreatingFolderIfNeeded_(self, v8, v7);
+    v10 = objc_msgSend__infoPlistPathForPluginCreatingFolderIfNeeded_(self, v8, pluginCopy);
     v13 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v11, v12);
     v15 = objc_msgSend_fileExistsAtPath_(v13, v14, v10);
 
@@ -811,13 +811,13 @@
       }
     }
 
-    if ((objc_msgSend_writeToFile_atomically_(v6, v16, v10, 1) & 1) == 0 && IMOSLoggingEnabled())
+    if ((objc_msgSend_writeToFile_atomically_(metadataCopy, v16, v10, 1) & 1) == 0 && IMOSLoggingEnabled())
     {
       v24 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v56 = v6;
+        v56 = metadataCopy;
         v57 = 2112;
         v58 = v10;
         v59 = 2112;
@@ -830,7 +830,7 @@
     v28 = objc_msgSend_pluginIDToMetadataCache(v25, v26, v27);
     v31 = objc_msgSend_mutableCopy(v28, v29, v30);
 
-    objc_msgSend_setObject_forKey_(v31, v32, v6, v9);
+    objc_msgSend_setObject_forKey_(v31, v32, metadataCopy, v9);
     v35 = objc_msgSend_model(self, v33, v34);
     v38 = objc_msgSend_copy(v31, v36, v37);
     objc_msgSend_setPluginIDToMetadataCache_(v35, v39, v38);
@@ -863,7 +863,7 @@
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v56 = v6;
+      v56 = metadataCopy;
       v57 = 2112;
       v58 = v9;
       _os_log_impl(&dword_1A823F000, v49, OS_LOG_TYPE_INFO, "IMBalloonPluginManager invalid args to _storeMetadata %@ identifier %@", buf, 0x16u);
@@ -873,14 +873,14 @@
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localParticipantIdentifierForAppID:(id)a3 conversationID:(id)a4
+- (id)localParticipantIdentifierForAppID:(id)d conversationID:(id)iD
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  dCopy = d;
+  iDCopy = iD;
+  if (dCopy)
   {
-    v9 = objc_msgSend__metadataForPluginIdentifier_(self, v7, v6);
+    v9 = objc_msgSend__metadataForPluginIdentifier_(self, v7, dCopy);
     Mutable = objc_msgSend_mutableCopy(v9, v10, v11);
 
     v14 = objc_msgSend_objectForKey_(Mutable, v13, @"localID");
@@ -897,7 +897,7 @@
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           v33 = 138412290;
-          v34 = v6;
+          v34 = dCopy;
           _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_INFO, "Generating local ID for app %@", &v33, 0xCu);
         }
       }
@@ -911,7 +911,7 @@
       }
 
       objc_msgSend_setObject_forKey_(Mutable, v26, v17, @"localID");
-      objc_msgSend__storeMetadata__forPlugin_(self, v27, Mutable, v6);
+      objc_msgSend__storeMetadata__forPlugin_(self, v27, Mutable, dCopy);
     }
 
     if (IMOSLoggingEnabled())
@@ -922,7 +922,7 @@
         v33 = 138412546;
         v34 = v17;
         v35 = 2112;
-        v36 = v6;
+        v36 = dCopy;
         _os_log_impl(&dword_1A823F000, v28, OS_LOG_TYPE_INFO, "localID %@ for appID %@", &v33, 0x16u);
       }
     }
@@ -952,18 +952,18 @@
   return v19;
 }
 
-- (id)recipientIDForRecipient:(id)a3 appID:(id)a4
+- (id)recipientIDForRecipient:(id)recipient appID:(id)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6 && v7)
+  recipientCopy = recipient;
+  dCopy = d;
+  v9 = dCopy;
+  if (recipientCopy && dCopy)
   {
-    v10 = objc_msgSend__metadataForPluginIdentifier_(self, v8, v7);
+    v10 = objc_msgSend__metadataForPluginIdentifier_(self, v8, dCopy);
     Mutable = objc_msgSend_mutableCopy(v10, v11, v12);
 
-    v15 = objc_msgSend_objectForKey_(Mutable, v14, v6);
+    v15 = objc_msgSend_objectForKey_(Mutable, v14, recipientCopy);
     if (objc_msgSend_length(v15, v16, v17))
     {
       v18 = v15;
@@ -990,7 +990,7 @@
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       }
 
-      objc_msgSend_setObject_forKey_(Mutable, v27, v18, v6);
+      objc_msgSend_setObject_forKey_(Mutable, v27, v18, recipientCopy);
       objc_msgSend__storeMetadata__forPlugin_(self, v28, Mutable, v9);
     }
 
@@ -1023,7 +1023,7 @@
         v36 = 2112;
         v37 = v9;
         v38 = 2112;
-        v39 = v6;
+        v39 = recipientCopy;
         _os_log_impl(&dword_1A823F000, v19, OS_LOG_TYPE_INFO, "IMBalloonPluginManager %s appID: %@ recipient: %@ ", &v34, 0x20u);
       }
     }
@@ -1036,18 +1036,18 @@
   return v20;
 }
 
-- (id)conversationID:(id)a3 appID:(id)a4
+- (id)conversationID:(id)d appID:(id)iD
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  iDCopy = iD;
+  v9 = iDCopy;
+  if (dCopy && iDCopy)
   {
-    v10 = objc_msgSend__metadataForPluginIdentifier_(self, v8, v7);
+    v10 = objc_msgSend__metadataForPluginIdentifier_(self, v8, iDCopy);
     Mutable = objc_msgSend_mutableCopy(v10, v11, v12);
 
-    v15 = objc_msgSend_objectForKey_(Mutable, v14, v6);
+    v15 = objc_msgSend_objectForKey_(Mutable, v14, dCopy);
     if (objc_msgSend_length(v15, v16, v17))
     {
       v18 = v15;
@@ -1074,7 +1074,7 @@
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       }
 
-      objc_msgSend_setObject_forKey_(Mutable, v27, v18, v6);
+      objc_msgSend_setObject_forKey_(Mutable, v27, v18, dCopy);
       objc_msgSend__storeMetadata__forPlugin_(self, v28, Mutable, v9);
     }
 
@@ -1107,7 +1107,7 @@
         v36 = 2112;
         v37 = v9;
         v38 = 2112;
-        v39 = v6;
+        v39 = dCopy;
         _os_log_impl(&dword_1A823F000, v19, OS_LOG_TYPE_INFO, "IMBalloonPluginManager %s appID: %@ recipient: %@ ", &v34, 0x20u);
       }
     }
@@ -1251,17 +1251,17 @@
   return v33;
 }
 
-- (void)_deleteMetaDataForPlugins:(id)a3
+- (void)_deleteMetaDataForPlugins:(id)plugins
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pluginsCopy = plugins;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v46 = v4;
+      v46 = pluginsCopy;
       _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_INFO, "_deleteMetaDataForPlugins %@", buf, 0xCu);
     }
   }
@@ -1270,7 +1270,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v4;
+  obj = pluginsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v41, v49, 16);
   if (v8)
   {
@@ -1345,9 +1345,9 @@
   objc_msgSend__deleteMetaDataForPlugins_(self, v12, v10);
 }
 
-- (id)_currentlyInstalledExtensionsExcludingExtensionPoint:(id)a3
+- (id)_currentlyInstalledExtensionsExcludingExtensionPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v7 = objc_msgSend_set(MEMORY[0x1E695DFA8], v5, v6);
   v10 = objc_msgSend_model(self, v8, v9);
   v13 = objc_msgSend_pluginsMap(v10, v11, v12);
@@ -1356,10 +1356,10 @@
   v23[1] = 3221225472;
   v23[2] = sub_1A82E89E8;
   v23[3] = &unk_1E7811B90;
-  v24 = v4;
+  v24 = pointCopy;
   v17 = v7;
   v25 = v17;
-  v18 = v4;
+  v18 = pointCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v16, v19, v23);
 
   v20 = v25;
@@ -1368,13 +1368,13 @@
   return v17;
 }
 
-- (void)loadExtensionWithIdentifierIfNeeded:(id)a3
+- (void)loadExtensionWithIdentifierIfNeeded:(id)needed
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   v7 = objc_msgSend_model(self, v5, v6);
   v10 = objc_msgSend_pluginsMap(v7, v8, v9);
-  v12 = objc_msgSend_pluginForIdentifier_(v10, v11, v4);
+  v12 = objc_msgSend_pluginForIdentifier_(v10, v11, neededCopy);
 
   if (v12)
   {
@@ -1384,7 +1384,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v36 = v4;
+        v36 = neededCopy;
         _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Plugin already loaded: %@", buf, 0xCu);
       }
     }
@@ -1392,7 +1392,7 @@
 
   else
   {
-    v15 = objc_msgSend_componentsSeparatedByString_(v4, v13, @":");
+    v15 = objc_msgSend_componentsSeparatedByString_(neededCopy, v13, @":");
     v18 = objc_msgSend_lastObject(v15, v16, v17);
 
     v20 = objc_msgSend__extensionWithIdentifier_(self, v19, v18);
@@ -1413,7 +1413,7 @@
       {
         v32 = objc_msgSend_extensionPointIdentifier(v20, v30, v31);
         *buf = 138412546;
-        v36 = v4;
+        v36 = neededCopy;
         v37 = 2112;
         v38 = v32;
         _os_log_impl(&dword_1A823F000, v29, OS_LOG_TYPE_INFO, "IMBalloonPluginManager asked to load an extension that is not an iMessage app. Identifier: %@ extensionPointIdentifier: %@", buf, 0x16u);
@@ -1424,12 +1424,12 @@
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_extensionWithIdentifier:(id)a3
+- (id)_extensionWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v5 = objc_msgSend_extensionWithIdentifier_error_(MEMORY[0x1E696ABD0], v4, v3, &v10);
+  v5 = objc_msgSend_extensionWithIdentifier_error_(MEMORY[0x1E696ABD0], v4, identifierCopy, &v10);
   v6 = v10;
   if (!v5 && IMOSLoggingEnabled())
   {
@@ -1437,7 +1437,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v12 = v3;
+      v12 = identifierCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "IMBalloonPluginManager failed to find extension with extension identifier: %@", buf, 0xCu);
     }
   }
@@ -1447,10 +1447,10 @@
   return v5;
 }
 
-- (id)_loadAppExtensionDataSourcesForExtensionPoint:(id)a3
+- (id)_loadAppExtensionDataSourcesForExtensionPoint:(id)point
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pointCopy = point;
   if (byte_1EB2EA240)
   {
     v5 = 0;
@@ -1459,10 +1459,10 @@
   else
   {
     v6 = objc_alloc_init(MEMORY[0x1E69A6170]);
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"beginMatchingExtensionsWithAttributes_%@", v4);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"beginMatchingExtensionsWithAttributes_%@", pointCopy);
     objc_msgSend_startTimingForKey_(v6, v9, v8);
     v25 = *MEMORY[0x1E696A2F8];
-    v26[0] = v4;
+    v26[0] = pointCopy;
     v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v10, v26, &v25, 1);
     objc_initWeak(&location, self);
     v12 = MEMORY[0x1E696ABD0];
@@ -1474,9 +1474,9 @@
     v19 = v13;
     v14 = v8;
     v20 = v14;
-    v21 = v4;
+    v21 = pointCopy;
     objc_copyWeak(&v23, &location);
-    v22 = self;
+    selfCopy = self;
     v5 = objc_msgSend_beginMatchingExtensionsWithAttributes_completion_(v12, v15, v11, v18);
     objc_destroyWeak(&v23);
 
@@ -1488,35 +1488,35 @@
   return v5;
 }
 
-- (void)_setPluginsToRemoveAndCallSelectorWithDelay:(id)a3
+- (void)_setPluginsToRemoveAndCallSelectorWithDelay:(id)delay
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delayCopy = delay;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = delayCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Setting plugins to remove with delay: %@", &v15, 0xCu);
     }
   }
 
   v8 = objc_msgSend_model(self, v5, v6);
-  v11 = objc_msgSend_copy(v4, v9, v10);
+  v11 = objc_msgSend_copy(delayCopy, v9, v10);
   objc_msgSend_setPluginsToRemoveAfterExtensionsUpdate_(v8, v12, v11);
 
   objc_msgSend_performSelector_withObject_afterDelay_(self, v13, sel__removePluginsWithDelay, 0, 1.0);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldSkipUpdatingPluginBundleIdentifier:(id)a3
+- (BOOL)_shouldSkipUpdatingPluginBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   IsLockedDown = objc_msgSend_deviceIsLockedDown(MEMORY[0x1E69A8020], v4, v5);
-  isEqualToString = objc_msgSend_isEqualToString_(v3, v7, *MEMORY[0x1E69A68F8]);
-  v10 = objc_msgSend_isEqualToString_(v3, v9, *MEMORY[0x1E69A6928]);
+  isEqualToString = objc_msgSend_isEqualToString_(identifierCopy, v7, *MEMORY[0x1E69A68F8]);
+  v10 = objc_msgSend_isEqualToString_(identifierCopy, v9, *MEMORY[0x1E69A6928]);
   v13 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v11, v12);
   if (objc_msgSend_isStickersAppEnabled(v13, v14, v15))
   {
@@ -1536,7 +1536,7 @@
   v24 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v18, v19);
   if (IsLockedDown & 1 | ((objc_msgSend_isWaldoEnabled(v24, v25, v26) & 1) == 0))
   {
-    v28 = objc_msgSend_isEqualToString_(v3, v27, *MEMORY[0x1E69A6938]);
+    v28 = objc_msgSend_isEqualToString_(identifierCopy, v27, *MEMORY[0x1E69A6938]);
 
     if (v28)
     {
@@ -1562,7 +1562,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v44 = objc_msgSend_isEqualToString_(v3, v39, *MEMORY[0x1E69A6930]);
+    v44 = objc_msgSend_isEqualToString_(identifierCopy, v39, *MEMORY[0x1E69A6930]);
 
     if ((v44 & 1) == 0)
     {
@@ -1572,7 +1572,7 @@ LABEL_14:
 
   else
   {
-    v42 = objc_msgSend_isEqualToString_(v3, v34, *MEMORY[0x1E69A6930]);
+    v42 = objc_msgSend_isEqualToString_(identifierCopy, v34, *MEMORY[0x1E69A6930]);
 
     if ((v42 & 1) == 0)
     {
@@ -1587,9 +1587,9 @@ LABEL_15:
   return v43;
 }
 
-- (void)_updatePluginsForBundles:(id)a3
+- (void)_updatePluginsForBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x1E695DFD0], v5, self, sel__removePluginsWithDelay, 0);
   v8 = objc_msgSend__appProxyBundleIdentifiersForAppPlugins(self, v6, v7);
   v11 = objc_msgSend__proxyIdentifiersForPlugins(self, v9, v10);
@@ -1599,7 +1599,7 @@ LABEL_15:
   v74 = sub_1A8259B50;
   v75 = sub_1A825AED4;
   v12 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v15 = objc_msgSend_count(v4, v13, v14);
+  v15 = objc_msgSend_count(bundlesCopy, v13, v14);
   v76 = objc_msgSend_initWithCapacity_(v12, v16, v15);
   v69[0] = 0;
   v69[1] = v69;
@@ -1645,7 +1645,7 @@ LABEL_15:
   v52 = v26;
   v57 = v66;
   v58 = v65;
-  objc_msgSend_enumerateObjectsUsingBlock_(v4, v27, v50);
+  objc_msgSend_enumerateObjectsUsingBlock_(bundlesCopy, v27, v50);
   v30 = objc_msgSend_model(self, v28, v29);
   v33 = objc_msgSend_copy(v60[5], v31, v32);
   objc_msgSend_setPluginsToRemoveAfterExtensionsUpdate_(v30, v34, v33);
@@ -1684,15 +1684,15 @@ LABEL_15:
   _Block_object_dispose(&v71, 8);
 }
 
-- (void)_updatePluginsForExtensions:(id)a3 extensionPoint:(id)a4 precachedBalloonAppExtensions:(id)a5
+- (void)_updatePluginsForExtensions:(id)extensions extensionPoint:(id)point precachedBalloonAppExtensions:(id)appExtensions
 {
   v134 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v89 = v8;
-  v12 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFA8], v11, v8);
-  v14 = objc_msgSend__currentlyInstalledExtensionsExcludingExtensionPoint_(self, v13, v9);
+  extensionsCopy = extensions;
+  pointCopy = point;
+  appExtensionsCopy = appExtensions;
+  v89 = extensionsCopy;
+  v12 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFA8], v11, extensionsCopy);
+  v14 = objc_msgSend__currentlyInstalledExtensionsExcludingExtensionPoint_(self, v13, pointCopy);
   objc_msgSend_unionSet_(v12, v15, v14);
   objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x1E695DFD0], v16, self, sel__removePluginsWithDelay, 0);
   v19 = objc_msgSend__appProxyBundleIdentifiersForAppPlugins(self, v17, v18);
@@ -1750,9 +1750,9 @@ LABEL_15:
   v97 = &v120;
   v98 = v118;
   v91 = v36;
-  v92 = self;
+  selfCopy = self;
   v99 = v116;
-  v37 = v10;
+  v37 = appExtensionsCopy;
   v93 = v37;
   v38 = v22;
   v94 = v38;
@@ -1800,7 +1800,7 @@ LABEL_15:
 
   objc_msgSend__moveExtensionDataSourcesFromMessagesExtensionPluginToAppExtensions(self, v51, v52);
   objc_msgSend__postInstalledAppsChangedNotification(self, v63, v64);
-  if ((byte_1EB2EA240 & 1) == 0 && objc_msgSend_isEqualToString_(v9, v65, *MEMORY[0x1E69A7118]))
+  if ((byte_1EB2EA240 & 1) == 0 && objc_msgSend_isEqualToString_(pointCopy, v65, *MEMORY[0x1E69A7118]))
   {
     v68 = objc_msgSend_sharedInstance(MEMORY[0x1E69A8168], v66, v67);
     v69 = MEMORY[0x1E696AD98];
@@ -1829,14 +1829,14 @@ LABEL_15:
   v88 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_insertPluginForAppBundle:(id)a3 balloonProviderBundle:(id)a4
+- (id)_insertPluginForAppBundle:(id)bundle balloonProviderBundle:(id)providerBundle
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  bundleCopy = bundle;
+  providerBundleCopy = providerBundle;
+  if (bundleCopy)
   {
     v8 = [IMBalloonAppExtension alloc];
-    v10 = objc_msgSend_initWithPluginBundle_appBundle_(v8, v9, v7, v6);
+    v10 = objc_msgSend_initWithPluginBundle_appBundle_(v8, v9, providerBundleCopy, bundleCopy);
     v13 = objc_msgSend_identifier(v10, v11, v12);
 
     if (v13)
@@ -1856,11 +1856,11 @@ LABEL_15:
   return v10;
 }
 
-+ (BOOL)_allowExtensionWithIdentifier:(id)a3
++ (BOOL)_allowExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_sharedInstanceForBagType_(MEMORY[0x1E69A53F0], v5, 1);
-  isServerBlocklistedBundleIdentifier_serverBag = objc_msgSend__isServerBlocklistedBundleIdentifier_serverBag_(a1, v7, v4, v6);
+  isServerBlocklistedBundleIdentifier_serverBag = objc_msgSend__isServerBlocklistedBundleIdentifier_serverBag_(self, v7, identifierCopy, v6);
 
   if (isServerBlocklistedBundleIdentifier_serverBag)
   {
@@ -1869,25 +1869,25 @@ LABEL_15:
 
   else
   {
-    v10 = objc_msgSend__isExtensionBlocklisted_(a1, v9, v4) ^ 1;
+    v10 = objc_msgSend__isExtensionBlocklisted_(self, v9, identifierCopy) ^ 1;
   }
 
   return v10;
 }
 
-+ (id)precacheBalloonAppExtensionsForExtensions:(id)a3
++ (id)precacheBalloonAppExtensionsForExtensions:(id)extensions
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionsCopy = extensions;
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v28 = objc_msgSend_balloonProviderBundlePathURL(a1, v5, v6);
+  v28 = objc_msgSend_balloonProviderBundlePathURL(self, v5, v6);
   v7 = objc_alloc(MEMORY[0x1E696AAE8]);
   v9 = objc_msgSend_initWithURL_(v7, v8, v28);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v4;
+  v10 = extensionsCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v30, v36, 16);
   if (v14)
   {
@@ -1903,7 +1903,7 @@ LABEL_15:
 
         v17 = *(*(&v30 + 1) + 8 * i);
         v19 = objc_msgSend_identifier(v17, v12, v13);
-        if (v19 && objc_msgSend__allowExtensionWithIdentifier_(a1, v18, v19))
+        if (v19 && objc_msgSend__allowExtensionWithIdentifier_(self, v18, v19))
         {
           v20 = [IMBalloonAppExtension alloc];
           v22 = objc_msgSend_initWithPluginBundle_extension_(v20, v21, v9, v17);
@@ -1943,22 +1943,22 @@ LABEL_15:
   return v29;
 }
 
-- (id)_insertPluginForExtension:(id)a3 balloonProviderBundle:(id)a4 precachedBalloonAppExtensions:(id)a5 timingCollection:(id)a6
+- (id)_insertPluginForExtension:(id)extension balloonProviderBundle:(id)bundle precachedBalloonAppExtensions:(id)extensions timingCollection:(id)collection
 {
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v16 = objc_msgSend_identifier(v10, v14, v15);
-  if (!v10 || (v17 = objc_opt_class(), !objc_msgSend__allowExtensionWithIdentifier_(v17, v18, v16)))
+  extensionCopy = extension;
+  bundleCopy = bundle;
+  extensionsCopy = extensions;
+  collectionCopy = collection;
+  v16 = objc_msgSend_identifier(extensionCopy, v14, v15);
+  if (!extensionCopy || (v17 = objc_opt_class(), !objc_msgSend__allowExtensionWithIdentifier_(v17, v18, v16)))
   {
     v21 = 0;
     goto LABEL_20;
   }
 
-  objc_msgSend_startTimingForKey_(v13, v19, @"createPlugin");
-  v21 = objc_msgSend_objectForKeyedSubscript_(v12, v20, v16);
+  objc_msgSend_startTimingForKey_(collectionCopy, v19, @"createPlugin");
+  v21 = objc_msgSend_objectForKeyedSubscript_(extensionsCopy, v20, v16);
   v22 = IMOSLoggingEnabled();
   if (v21)
   {
@@ -1988,7 +1988,7 @@ LABEL_15:
     }
 
     v27 = [IMBalloonAppExtension alloc];
-    v21 = objc_msgSend_initWithPluginBundle_extension_(v27, v28, v11, v10);
+    v21 = objc_msgSend_initWithPluginBundle_extension_(v27, v28, bundleCopy, extensionCopy);
   }
 
   v29 = objc_msgSend_identifier(v21, v23, v24);
@@ -2020,7 +2020,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  objc_msgSend_stopTimingForKey_(v13, v35, @"createPlugin");
+  objc_msgSend_stopTimingForKey_(collectionCopy, v35, @"createPlugin");
 LABEL_20:
 
   v47 = *MEMORY[0x1E69E9840];
@@ -2028,11 +2028,11 @@ LABEL_20:
   return v21;
 }
 
-- (void)removePluginWithBundleID:(id)a3
+- (void)removePluginWithBundleID:(id)d
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_length(v4, v5, v6);
+  dCopy = d;
+  v7 = objc_msgSend_length(dCopy, v5, v6);
   v8 = IMOSLoggingEnabled();
   if (v7)
   {
@@ -2042,20 +2042,20 @@ LABEL_20:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v31 = 138412290;
-        v32 = v4;
+        v32 = dCopy;
         _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Explicitly removing plugin with bundleID: %@", &v31, 0xCu);
       }
     }
 
     v12 = objc_msgSend_model(self, v9, v10);
     v15 = objc_msgSend_pluginsMap(v12, v13, v14);
-    v17 = objc_msgSend_pluginForIdentifier_(v15, v16, v4);
+    v17 = objc_msgSend_pluginForIdentifier_(v15, v16, dCopy);
 
     if (v17)
     {
       v20 = objc_msgSend_model(self, v18, v19);
       v23 = objc_msgSend_pluginsMap(v20, v21, v22);
-      objc_msgSend_removePluginWithIdentifier_(v23, v24, v4);
+      objc_msgSend_removePluginWithIdentifier_(v23, v24, dCopy);
 
       objc_msgSend__clearPluginMetadataForUninstalledApps(self, v25, v26);
       objc_msgSend__postInstalledAppsChangedNotification(self, v27, v28);
@@ -2112,9 +2112,9 @@ LABEL_20:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removePluginsForIdentifiers:(id)a3
+- (void)_removePluginsForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v7 = objc_msgSend__proxyIdentifiersForPlugins(self, v5, v6);
   v26 = 0;
   v27 = &v26;
@@ -2128,9 +2128,9 @@ LABEL_20:
   v22[3] = &unk_1E7811C78;
   v10 = v7;
   v23 = v10;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
-  objc_msgSend_enumerateObjectsUsingBlock_(v4, v11, v22);
+  objc_msgSend_enumerateObjectsUsingBlock_(identifiersCopy, v11, v22);
   v14 = objc_msgSend_model(self, v12, v13);
   v17 = objc_msgSend_pluginsMap(v14, v15, v16);
   v20 = objc_msgSend_copy(v27[5], v18, v19);
@@ -2139,32 +2139,32 @@ LABEL_20:
   _Block_object_dispose(&v26, 8);
 }
 
-+ (BOOL)_isExtensionBlocklisted:(id)a3
++ (BOOL)_isExtensionBlocklisted:(id)blocklisted
 {
-  v4 = a3;
-  if (objc_msgSend_isRunningPPT(a1, v5, v6) & 1) != 0 || (IMGetDomainBoolForKey())
+  blocklistedCopy = blocklisted;
+  if (objc_msgSend_isRunningPPT(self, v5, v6) & 1) != 0 || (IMGetDomainBoolForKey())
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend__extensionBlocklist(a1, v7, v8);
-    v9 = objc_msgSend_containsObject_(v10, v11, v4);
+    v10 = objc_msgSend__extensionBlocklist(self, v7, v8);
+    v9 = objc_msgSend_containsObject_(v10, v11, blocklistedCopy);
   }
 
   return v9;
 }
 
-- (void)_findPluginsInPaths:(id)a3
+- (void)_findPluginsInPaths:(id)paths
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v63 = objc_alloc_init(MEMORY[0x1E69A6170]);
   objc_msgSend_startTimingForKey_(v63, v5, @"loadPlugins");
-  v65 = self;
+  selfCopy = self;
   v8 = objc_msgSend_signpostLogHandle(self, v6, v7);
-  v11 = objc_msgSend_signpostLogHandle(v65, v9, v10);
+  v11 = objc_msgSend_signpostLogHandle(selfCopy, v9, v10);
   v12 = os_signpost_id_make_with_pointer(v11, "findPluginsInPaths");
 
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
@@ -2178,7 +2178,7 @@ LABEL_20:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v4;
+  obj = pathsCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v67, v73, 16);
   if (v17)
   {
@@ -2204,7 +2204,7 @@ LABEL_20:
             goto LABEL_39;
           }
 
-          v30 = objc_msgSend_model(v65, v27, v28);
+          v30 = objc_msgSend_model(selfCopy, v27, v28);
           v33 = objc_msgSend_pluginsMap(v30, v31, v32);
           v35 = objc_msgSend_pluginForIdentifier_(v33, v34, v29);
           v36 = v35 == 0;
@@ -2255,14 +2255,14 @@ LABEL_39:
 
   if (objc_msgSend_count(v64, v43, v44))
   {
-    v47 = objc_msgSend_model(v65, v45, v46);
+    v47 = objc_msgSend_model(selfCopy, v45, v46);
     v50 = objc_msgSend_pluginsMap(v47, v48, v49);
     v53 = objc_msgSend_copy(v64, v51, v52);
     objc_msgSend_updateWithMap_(v50, v54, v53);
   }
 
-  v55 = objc_msgSend_signpostLogHandle(v65, v45, v46);
-  v58 = objc_msgSend_signpostLogHandle(v65, v56, v57);
+  v55 = objc_msgSend_signpostLogHandle(selfCopy, v45, v46);
+  v58 = objc_msgSend_signpostLogHandle(selfCopy, v56, v57);
   v59 = os_signpost_id_make_with_pointer(v58, "findPluginsInPaths");
 
   if (v59 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v55))
@@ -2286,10 +2286,10 @@ LABEL_39:
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_findPluginsInPathInternal:(id)a3
+- (void)_findPluginsInPathInternal:(id)internal
 {
   v64 = *MEMORY[0x1E69E9840];
-  v53 = a3;
+  internalCopy = internal;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -2303,7 +2303,7 @@ LABEL_39:
   v54 = objc_alloc_init(MEMORY[0x1E69A6170]);
   objc_msgSend_startTimingForKey_(v54, v5, @"loadPlugins");
   v52 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v7 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v6, v53);
+  v7 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v6, internalCopy);
   v9 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v52, v8, v7, 0, 7, &unk_1F1B6E4C0);
 
   v55 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v10, v11);
@@ -2409,18 +2409,18 @@ LABEL_23:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (Class)dataSourceClassForBundleID:(id)a3
+- (Class)dataSourceClassForBundleID:(id)d
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  dCopy = d;
+  v6 = dCopy;
+  if (!dCopy)
   {
     v17 = 0;
     goto LABEL_20;
   }
 
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v5, *MEMORY[0x1E69A6A18]);
+  isEqualToString = objc_msgSend_isEqualToString_(dCopy, v5, *MEMORY[0x1E69A6A18]);
   if (isEqualToString)
   {
     v10 = objc_msgSend_model(self, v7, v8);
@@ -2501,11 +2501,11 @@ LABEL_20:
   return v17;
 }
 
-- (id)_fallBackMessagesExtensionPluginForBundleID:(id)a3
+- (id)_fallBackMessagesExtensionPluginForBundleID:(id)d
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4 && (v7 = *MEMORY[0x1E69A69F0], !objc_msgSend_rangeOfString_(v4, v5, *MEMORY[0x1E69A69F0])))
+  dCopy = d;
+  v6 = dCopy;
+  if (dCopy && (v7 = *MEMORY[0x1E69A69F0], !objc_msgSend_rangeOfString_(dCopy, v5, *MEMORY[0x1E69A69F0])))
   {
     v11 = objc_msgSend_model(self, v8, v9);
     v14 = objc_msgSend_pluginsMap(v11, v12, v13);
@@ -2520,11 +2520,11 @@ LABEL_20:
   return v10;
 }
 
-- (id)dataSourceForPluginPayload:(id)a3
+- (id)dataSourceForPluginPayload:(id)payload
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_pluginBundleID(v4, v5, v6);
+  payloadCopy = payload;
+  v7 = objc_msgSend_pluginBundleID(payloadCopy, v5, v6);
 
   if (!v7)
   {
@@ -2554,16 +2554,16 @@ LABEL_20:
 
   v20 = objc_msgSend_model(self, v8, v9);
   v23 = objc_msgSend_pluginsMap(v20, v21, v22);
-  v26 = objc_msgSend_pluginBundleID(v4, v24, v25);
+  v26 = objc_msgSend_pluginBundleID(payloadCopy, v24, v25);
   v28 = objc_msgSend_pluginForIdentifier_(v23, v27, v26);
 
   if (!v28)
   {
-    v31 = objc_msgSend_pluginBundleID(v4, v29, v30);
+    v31 = objc_msgSend_pluginBundleID(payloadCopy, v29, v30);
     v28 = objc_msgSend__fallBackMessagesExtensionPluginForBundleID_(self, v32, v31);
   }
 
-  v33 = objc_msgSend_pluginBundleID(v4, v29, v30);
+  v33 = objc_msgSend_pluginBundleID(payloadCopy, v29, v30);
   if (v33)
   {
     v34 = v28 == 0;
@@ -2581,34 +2581,34 @@ LABEL_20:
     v37 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
-      v40 = objc_msgSend_pluginBundleID(v4, v38, v39);
+      v40 = objc_msgSend_pluginBundleID(payloadCopy, v38, v39);
       *buf = 138412290;
       *&buf[4] = v40;
       _os_log_impl(&dword_1A823F000, v37, OS_LOG_TYPE_INFO, "IMBalloonPluginManager. Did not find any plugin for id %@", buf, 0xCu);
     }
   }
 
-  v41 = objc_msgSend_dataSourceForPluginPayload_(v28, v36, v4);
+  v41 = objc_msgSend_dataSourceForPluginPayload_(v28, v36, payloadCopy);
 
   v42 = *MEMORY[0x1E69E9840];
 
   return v41;
 }
 
-- (id)existingDataSourceForMessageGUID:(id)a3 bundleID:(id)a4
+- (id)existingDataSourceForMessageGUID:(id)d bundleID:(id)iD
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = a4;
-  if (v9)
+  dCopy = d;
+  iDCopy = iD;
+  if (iDCopy)
   {
     v10 = objc_msgSend_model(self, v7, v8);
     v13 = objc_msgSend_pluginsMap(v10, v11, v12);
-    v15 = objc_msgSend_pluginForIdentifier_(v13, v14, v9);
+    v15 = objc_msgSend_pluginForIdentifier_(v13, v14, iDCopy);
 
     if (!v15)
     {
-      v15 = objc_msgSend__fallBackMessagesExtensionPluginForBundleID_(self, v16, v9);
+      v15 = objc_msgSend__fallBackMessagesExtensionPluginForBundleID_(self, v16, iDCopy);
       if (!v15)
       {
         if (IMOSLoggingEnabled())
@@ -2617,7 +2617,7 @@ LABEL_20:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             v21 = 138412290;
-            v22 = v9;
+            v22 = iDCopy;
             _os_log_impl(&dword_1A823F000, v17, OS_LOG_TYPE_INFO, "IMBalloonPluginManager. Did not find any plugin for id %@", &v21, 0xCu);
           }
         }
@@ -2626,7 +2626,7 @@ LABEL_20:
       }
     }
 
-    v18 = objc_msgSend_existingDataSourceForMessageGUID_(v15, v16, v6);
+    v18 = objc_msgSend_existingDataSourceForMessageGUID_(v15, v16, dCopy);
   }
 
   else
@@ -2639,23 +2639,23 @@ LABEL_20:
   return v18;
 }
 
-- (void)insertDataSource:(id)a3 forGUID:(id)a4
+- (void)insertDataSource:(id)source forGUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v19 = objc_msgSend_bundleID(v7, v8, v9);
+  dCopy = d;
+  sourceCopy = source;
+  v19 = objc_msgSend_bundleID(sourceCopy, v8, v9);
   v12 = objc_msgSend_model(self, v10, v11);
   v15 = objc_msgSend_pluginsMap(v12, v13, v14);
   v17 = objc_msgSend_pluginForIdentifier_(v15, v16, v19);
 
-  objc_msgSend_insertDataSource_forGUID_(v17, v18, v7, v6);
+  objc_msgSend_insertDataSource_forGUID_(v17, v18, sourceCopy, dCopy);
 }
 
-- (id)balloonPluginForBundleID:(id)a3
+- (id)balloonPluginForBundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
 LABEL_8:
     v12 = 0;
@@ -2664,11 +2664,11 @@ LABEL_8:
 
   v7 = objc_msgSend_model(self, v4, v5);
   v10 = objc_msgSend_pluginsMap(v7, v8, v9);
-  v12 = objc_msgSend_pluginForIdentifier_(v10, v11, v6);
+  v12 = objc_msgSend_pluginForIdentifier_(v10, v11, dCopy);
 
   if (!v12)
   {
-    v12 = objc_msgSend__fallBackMessagesExtensionPluginForBundleID_(self, v13, v6);
+    v12 = objc_msgSend__fallBackMessagesExtensionPluginForBundleID_(self, v13, dCopy);
     if (!v12)
     {
       if (IMOSLoggingEnabled())
@@ -2677,7 +2677,7 @@ LABEL_8:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v17 = 138412290;
-          v18 = v6;
+          v18 = dCopy;
           _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "IMBalloonPluginManager. Did not find any plugin for id %@", &v17, 0xCu);
         }
       }
@@ -2693,14 +2693,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)systemBundleIdentifierForPluginIdentifier:(id)a3
+- (id)systemBundleIdentifierForPluginIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v7 = objc_msgSend_model(self, v5, v6);
     v10 = objc_msgSend_pluginsMap(v7, v8, v9);
-    v12 = objc_msgSend_pluginForIdentifier_(v10, v11, v4);
+    v12 = objc_msgSend_pluginForIdentifier_(v10, v11, identifierCopy);
 
     v15 = objc_msgSend_appBundle(v12, v13, v14);
     v18 = objc_msgSend_bundleIdentifier(v15, v16, v17);
@@ -2714,9 +2714,9 @@ LABEL_9:
   return v18;
 }
 
-- (void)_transferUpdated:(id)a3
+- (void)_transferUpdated:(id)updated
 {
-  v12 = objc_msgSend_object(a3, a2, a3);
+  v12 = objc_msgSend_object(updated, a2, updated);
   if (objc_msgSend_transferState(v12, v4, v5) == 5)
   {
     v8 = objc_msgSend_messageGUID(v12, v6, v7);

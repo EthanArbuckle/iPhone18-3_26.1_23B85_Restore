@@ -6,8 +6,8 @@
 - (NSString)userFriendlyAccessoryLocalizedLowercaseDescription;
 - (id)_moveToNextStep;
 - (id)description;
-- (id)titleForAccessoryWithDefaultValue:(id)a3;
-- (void)setAccessory:(id)a3;
+- (id)titleForAccessoryWithDefaultValue:(id)value;
+- (void)setAccessory:(id)accessory;
 @end
 
 @implementation HSAccessoryTuple
@@ -16,50 +16,50 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(HSAccessoryTuple *)self userFriendlyAccessoryLocalizedCapitalizedDescription];
+  userFriendlyAccessoryLocalizedCapitalizedDescription = [(HSAccessoryTuple *)self userFriendlyAccessoryLocalizedCapitalizedDescription];
   v6 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:[(HSAccessoryTuple *)self currentStep]];
-  v7 = [(HSAccessoryTuple *)self accessory];
-  v8 = [NSString stringWithFormat:@"%@ <accessoryCategoryOrPrimaryServiceType %@, currentStep %@, accessory %@>", v4, v5, v6, v7];
+  accessory = [(HSAccessoryTuple *)self accessory];
+  v8 = [NSString stringWithFormat:@"%@ <accessoryCategoryOrPrimaryServiceType %@, currentStep %@, accessory %@>", v4, userFriendlyAccessoryLocalizedCapitalizedDescription, v6, accessory];
 
   return v8;
 }
 
 - (HMAccessory)accessory
 {
-  v2 = [(HSAccessoryTuple *)self configuration];
-  v3 = [v2 addedAccessory];
+  configuration = [(HSAccessoryTuple *)self configuration];
+  addedAccessory = [configuration addedAccessory];
 
-  return v3;
+  return addedAccessory;
 }
 
-- (void)setAccessory:(id)a3
+- (void)setAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HSAccessoryTuple *)self configuration];
-  [v5 setAddedAccessory:v4];
+  accessoryCopy = accessory;
+  configuration = [(HSAccessoryTuple *)self configuration];
+  [configuration setAddedAccessory:accessoryCopy];
 }
 
 - (NSString)accessoryCategoryOrPrimaryServiceType
 {
-  v3 = [(HSAccessoryTuple *)self accessory];
-  v4 = [v3 hf_categoryOrPrimaryServiceType];
-  v5 = v4;
-  if (v4)
+  accessory = [(HSAccessoryTuple *)self accessory];
+  hf_categoryOrPrimaryServiceType = [accessory hf_categoryOrPrimaryServiceType];
+  v5 = hf_categoryOrPrimaryServiceType;
+  if (hf_categoryOrPrimaryServiceType)
   {
-    v6 = v4;
+    v6 = hf_categoryOrPrimaryServiceType;
   }
 
   else
   {
-    v7 = [(HSAccessoryTuple *)self configuration];
-    v8 = [v7 setupDescription];
-    v9 = [v8 category];
-    v10 = [v9 categoryType];
-    v11 = v10;
+    configuration = [(HSAccessoryTuple *)self configuration];
+    setupDescription = [configuration setupDescription];
+    category = [setupDescription category];
+    categoryType = [category categoryType];
+    v11 = categoryType;
     v12 = HMAccessoryCategoryTypeOther;
-    if (v10)
+    if (categoryType)
     {
-      v12 = v10;
+      v12 = categoryType;
     }
 
     v6 = v12;
@@ -70,74 +70,74 @@
 
 - (NSString)userFriendlyAccessoryLocalizedCapitalizedDescription
 {
-  v3 = [(HSAccessoryTuple *)self accessory];
-  v4 = v3;
-  if (v3)
+  accessory = [(HSAccessoryTuple *)self accessory];
+  v4 = accessory;
+  if (accessory)
   {
-    v5 = [v3 hf_userFriendlyLocalizedCapitalizedDescription];
+    hf_userFriendlyLocalizedCapitalizedDescription = [accessory hf_userFriendlyLocalizedCapitalizedDescription];
   }
 
   else
   {
-    v6 = [(HSAccessoryTuple *)self accessoryCategoryOrPrimaryServiceType];
-    v5 = [HMAccessory hf_userFriendlyLocalizedCapitalizedDescription:v6];
+    accessoryCategoryOrPrimaryServiceType = [(HSAccessoryTuple *)self accessoryCategoryOrPrimaryServiceType];
+    hf_userFriendlyLocalizedCapitalizedDescription = [HMAccessory hf_userFriendlyLocalizedCapitalizedDescription:accessoryCategoryOrPrimaryServiceType];
   }
 
-  return v5;
+  return hf_userFriendlyLocalizedCapitalizedDescription;
 }
 
 - (NSString)userFriendlyAccessoryLocalizedLowercaseDescription
 {
-  v3 = [(HSAccessoryTuple *)self accessory];
-  v4 = v3;
-  if (v3)
+  accessory = [(HSAccessoryTuple *)self accessory];
+  v4 = accessory;
+  if (accessory)
   {
-    v5 = [v3 hf_userFriendlyLocalizedLowercaseDescription];
+    hf_userFriendlyLocalizedLowercaseDescription = [accessory hf_userFriendlyLocalizedLowercaseDescription];
   }
 
   else
   {
-    v6 = [(HSAccessoryTuple *)self accessoryCategoryOrPrimaryServiceType];
-    v5 = [HMAccessory hf_userFriendlyLocalizedLowercaseDescription:v6];
+    accessoryCategoryOrPrimaryServiceType = [(HSAccessoryTuple *)self accessoryCategoryOrPrimaryServiceType];
+    hf_userFriendlyLocalizedLowercaseDescription = [HMAccessory hf_userFriendlyLocalizedLowercaseDescription:accessoryCategoryOrPrimaryServiceType];
   }
 
-  return v5;
+  return hf_userFriendlyLocalizedLowercaseDescription;
 }
 
 - (NSString)titleForAccessory
 {
-  v3 = [(HSAccessoryTuple *)self userFriendlyAccessoryLocalizedCapitalizedDescription];
-  v4 = [(HSAccessoryTuple *)self titleForAccessoryWithDefaultValue:v3];
+  userFriendlyAccessoryLocalizedCapitalizedDescription = [(HSAccessoryTuple *)self userFriendlyAccessoryLocalizedCapitalizedDescription];
+  v4 = [(HSAccessoryTuple *)self titleForAccessoryWithDefaultValue:userFriendlyAccessoryLocalizedCapitalizedDescription];
 
   return v4;
 }
 
-- (id)titleForAccessoryWithDefaultValue:(id)a3
+- (id)titleForAccessoryWithDefaultValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HSAccessoryTuple *)self configuration];
-  v6 = [v5 userGivenAccessoryName];
+  valueCopy = value;
+  configuration = [(HSAccessoryTuple *)self configuration];
+  userGivenAccessoryName = [configuration userGivenAccessoryName];
 
-  if (v6)
+  if (userGivenAccessoryName)
   {
-    v7 = [(HSAccessoryTuple *)self configuration];
-    v8 = [v7 userGivenAccessoryName];
+    configuration2 = [(HSAccessoryTuple *)self configuration];
+    userGivenAccessoryName2 = [configuration2 userGivenAccessoryName];
     goto LABEL_22;
   }
 
-  v9 = [(HSAccessoryTuple *)self accessory];
-  v7 = [v9 hf_primaryService];
+  accessory = [(HSAccessoryTuple *)self accessory];
+  configuration2 = [accessory hf_primaryService];
 
-  v10 = [(HSAccessoryTuple *)self accessory];
-  v11 = [v10 configuredName];
+  accessory2 = [(HSAccessoryTuple *)self accessory];
+  configuredName = [accessory2 configuredName];
 
-  v12 = [v7 serviceType];
-  v13 = [v12 isEqualToString:HMServiceTypeTelevision];
+  serviceType = [configuration2 serviceType];
+  v13 = [serviceType isEqualToString:HMServiceTypeTelevision];
 
   if (!v13)
   {
-    v14 = v11;
-    if (!v11)
+    configuredName2 = configuredName;
+    if (!configuredName)
     {
       goto LABEL_7;
     }
@@ -145,48 +145,48 @@
     goto LABEL_10;
   }
 
-  v14 = [v7 configuredName];
+  configuredName2 = [configuration2 configuredName];
 
-  v15 = [(HSAccessoryTuple *)self configuration];
-  v16 = [v15 home];
-  v17 = [v16 roomForEntireHome];
-  v18 = [v17 name];
+  configuration3 = [(HSAccessoryTuple *)self configuration];
+  home = [configuration3 home];
+  roomForEntireHome = [home roomForEntireHome];
+  name = [roomForEntireHome name];
 
-  LOBYTE(v16) = [v14 isEqualToString:v18];
-  v19 = [(HSAccessoryTuple *)self configuration];
-  v20 = [v19 roomName];
-  v21 = [v14 isEqualToString:v20];
+  LOBYTE(home) = [configuredName2 isEqualToString:name];
+  configuration4 = [(HSAccessoryTuple *)self configuration];
+  roomName = [configuration4 roomName];
+  v21 = [configuredName2 isEqualToString:roomName];
 
-  if ((v16 & 1) == 0 && !v21)
+  if ((home & 1) == 0 && !v21)
   {
 
-    if (!v14)
+    if (!configuredName2)
     {
 LABEL_7:
-      v22 = [(HSAccessoryTuple *)self configuration];
-      v23 = [v22 setupDescription];
-      v24 = [v23 hf_marketingName];
-      v25 = v24;
-      if (v24)
+      configuration5 = [(HSAccessoryTuple *)self configuration];
+      setupDescription = [configuration5 setupDescription];
+      hf_marketingName = [setupDescription hf_marketingName];
+      v25 = hf_marketingName;
+      if (hf_marketingName)
       {
-        v18 = v24;
+        name = hf_marketingName;
       }
 
       else
       {
-        v33 = [(HSAccessoryTuple *)self configuration];
-        v26 = [v33 setupDescription];
-        v27 = [v26 accessoryName];
-        v28 = v27;
-        if (v27)
+        configuration6 = [(HSAccessoryTuple *)self configuration];
+        setupDescription2 = [configuration6 setupDescription];
+        accessoryName = [setupDescription2 accessoryName];
+        v28 = accessoryName;
+        if (accessoryName)
         {
-          v18 = v27;
+          name = accessoryName;
         }
 
         else
         {
-          v29 = [(HSAccessoryTuple *)self accessory];
-          v18 = [v29 name];
+          accessory3 = [(HSAccessoryTuple *)self accessory];
+          name = [accessory3 name];
         }
       }
 
@@ -194,9 +194,9 @@ LABEL_7:
     }
 
 LABEL_10:
-    v18 = v14;
+    name = configuredName2;
 LABEL_17:
-    v30 = [HFUtilities sanitizeAutoGeneratedHomeKitName:v18];
+    v30 = [HFUtilities sanitizeAutoGeneratedHomeKitName:name];
     if ([v30 length])
     {
       v31 = v30;
@@ -204,20 +204,20 @@ LABEL_17:
 
     else
     {
-      v31 = v4;
+      v31 = valueCopy;
     }
 
-    v8 = v31;
+    userGivenAccessoryName2 = v31;
 
     goto LABEL_21;
   }
 
-  v8 = v4;
+  userGivenAccessoryName2 = valueCopy;
 LABEL_21:
 
 LABEL_22:
 
-  return v8;
+  return userGivenAccessoryName2;
 }
 
 - (id)_moveToNextStep
@@ -229,10 +229,10 @@ LABEL_22:
 
   else
   {
-    v4 = [(HSAccessoryTuple *)self stateMachine];
-    v5 = [(HSAccessoryTuple *)self currentStep];
-    v6 = [(HSAccessoryTuple *)self configuration];
-    -[HSAccessoryTuple setCurrentStep:](self, "setCurrentStep:", [v4 stepFollowingStep:v5 withConfiguration:v6]);
+    stateMachine = [(HSAccessoryTuple *)self stateMachine];
+    currentStep = [(HSAccessoryTuple *)self currentStep];
+    configuration = [(HSAccessoryTuple *)self configuration];
+    -[HSAccessoryTuple setCurrentStep:](self, "setCurrentStep:", [stateMachine stepFollowingStep:currentStep withConfiguration:configuration]);
 
     v7 = [HSSetupContentProvider stringForHSProxCardSetupUIStep:[(HSAccessoryTuple *)self currentStep]];
     v8 = HFLogForCategory();
@@ -243,16 +243,16 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Calculating potential skip of: %@", buf, 0xCu);
     }
 
-    v9 = [(HSAccessoryTuple *)self stateMachine];
-    v10 = [(HSAccessoryTuple *)self currentStep];
-    v11 = [(HSAccessoryTuple *)self configuration];
-    v12 = [v9 shouldSkipStep:v10 withConfiguration:v11];
+    stateMachine2 = [(HSAccessoryTuple *)self stateMachine];
+    currentStep2 = [(HSAccessoryTuple *)self currentStep];
+    configuration2 = [(HSAccessoryTuple *)self configuration];
+    v12 = [stateMachine2 shouldSkipStep:currentStep2 withConfiguration:configuration2];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100063648;
     v15[3] = &unk_1000C71B0;
     v16 = v7;
-    v17 = self;
+    selfCopy = self;
     v13 = v7;
     v3 = [v12 flatMap:v15];
   }

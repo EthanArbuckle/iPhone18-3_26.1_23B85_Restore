@@ -1,15 +1,15 @@
 @interface SBPressPrecedenceArbiter
 - (BOOL)_shouldArbitrateLockAndVolumeHardwareButtonPriorities;
-- (SBPressPrecedenceArbiter)initWithHomeButtonType:(int64_t)a3;
+- (SBPressPrecedenceArbiter)initWithHomeButtonType:(int64_t)type;
 - (unint64_t)_currentButtonPriority;
-- (void)_applyButtonPriority:(unint64_t)a3;
+- (void)_applyButtonPriority:(unint64_t)priority;
 - (void)_updateButtonPriority;
-- (void)setHardwareButtons:(id)a3;
+- (void)setHardwareButtons:(id)buttons;
 @end
 
 @implementation SBPressPrecedenceArbiter
 
-- (SBPressPrecedenceArbiter)initWithHomeButtonType:(int64_t)a3
+- (SBPressPrecedenceArbiter)initWithHomeButtonType:(int64_t)type
 {
   v12.receiver = self;
   v12.super_class = SBPressPrecedenceArbiter;
@@ -18,11 +18,11 @@
   if (v4)
   {
     v4->_volumeAndLockButtonPriority = -1;
-    v4->_homeButtonType = a3;
-    v6 = [(SBPressPrecedenceArbiter *)v4 _shouldArbitrateLockAndVolumeHardwareButtonPriorities];
+    v4->_homeButtonType = type;
+    _shouldArbitrateLockAndVolumeHardwareButtonPriorities = [(SBPressPrecedenceArbiter *)v4 _shouldArbitrateLockAndVolumeHardwareButtonPriorities];
     v7 = SBLogButtonsCombo();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (_shouldArbitrateLockAndVolumeHardwareButtonPriorities)
     {
       if (v8)
       {
@@ -34,13 +34,13 @@
       [v7 addObserver:v5];
       v5->_isAudioPlayingSomewhere = [v7 isAudioSessionPlaying];
       [(SBPressPrecedenceArbiter *)v5 _updateButtonPrioritiesForNotification:0];
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A48] object:0];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBFrontmostDisplayChangedNotification" object:0];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A20] object:0];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A18] object:0];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBApplicationsRegisteredForVolumeButtonEventsChangedNotification" object:0];
-      [v9 addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBApplicationsRegisteredForLockButtonEventsChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A48] object:0];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBFrontmostDisplayChangedNotification" object:0];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A20] object:0];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:*MEMORY[0x277D67A18] object:0];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBApplicationsRegisteredForVolumeButtonEventsChangedNotification" object:0];
+      [defaultCenter addObserver:v5 selector:sel__updateButtonPrioritiesForNotification_ name:@"SBApplicationsRegisteredForLockButtonEventsChangedNotification" object:0];
     }
 
     else if (v8)
@@ -53,9 +53,9 @@
   return v5;
 }
 
-- (void)setHardwareButtons:(id)a3
+- (void)setHardwareButtons:(id)buttons
 {
-  objc_storeStrong(&self->_hardwareButtons, a3);
+  objc_storeStrong(&self->_hardwareButtons, buttons);
   volumeAndLockButtonPriority = self->_volumeAndLockButtonPriority;
 
   [(SBPressPrecedenceArbiter *)self _applyButtonPriority:volumeAndLockButtonPriority];
@@ -77,18 +77,18 @@
 - (void)_updateButtonPriority
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(SBPressPrecedenceArbiter *)self _currentButtonPriority];
+  _currentButtonPriority = [(SBPressPrecedenceArbiter *)self _currentButtonPriority];
   v4 = SBLogButtonsCombo();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3 > 2)
+    if (_currentButtonPriority > 2)
     {
       v5 = @"<unknown>";
     }
 
     else
     {
-      v5 = off_2783AFB70[v3];
+      v5 = off_2783AFB70[_currentButtonPriority];
     }
 
     v6 = 138543362;
@@ -96,16 +96,16 @@
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "lock/volume priority is:%{public}@", &v6, 0xCu);
   }
 
-  if (v3 != self->_volumeAndLockButtonPriority)
+  if (_currentButtonPriority != self->_volumeAndLockButtonPriority)
   {
-    [(SBPressPrecedenceArbiter *)self _applyButtonPriority:v3];
+    [(SBPressPrecedenceArbiter *)self _applyButtonPriority:_currentButtonPriority];
   }
 }
 
-- (void)_applyButtonPriority:(unint64_t)a3
+- (void)_applyButtonPriority:(unint64_t)priority
 {
   v19 = *MEMORY[0x277D85DE8];
-  self->_volumeAndLockButtonPriority = a3;
+  self->_volumeAndLockButtonPriority = priority;
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
   v14 = 0u;
   v15 = 0u;
@@ -127,8 +127,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) preemptablePressGestureRecognizers];
-        [v4 addObjectsFromArray:v10];
+        preemptablePressGestureRecognizers = [*(*(&v14 + 1) + 8 * v9) preemptablePressGestureRecognizers];
+        [v4 addObjectsFromArray:preemptablePressGestureRecognizers];
 
         ++v9;
       }
@@ -163,19 +163,19 @@
 - (unint64_t)_currentButtonPriority
 {
   v3 = +[SBLockScreenManager sharedInstanceIfExists];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
   v5 = +[SBBacklightController sharedInstance];
-  v6 = [v5 screenIsOn];
+  screenIsOn = [v5 screenIsOn];
 
   v7 = +[SBWorkspace mainWorkspace];
-  v8 = [v7 transientOverlayPresentationManager];
-  v9 = [v8 hasActivePresentation];
+  transientOverlayPresentationManager = [v7 transientOverlayPresentationManager];
+  hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-  if (v4)
+  if (isUILocked)
   {
     v10 = 1;
-    if (((v6 | v9) & 1) == 0)
+    if (((screenIsOn | hasActivePresentation) & 1) == 0)
     {
       v10 = 2;
     }
@@ -193,16 +193,16 @@
 
   else
   {
-    v12 = [SBApp appsRegisteredForLockButtonEvents];
-    v13 = [v12 firstObject];
+    appsRegisteredForLockButtonEvents = [SBApp appsRegisteredForLockButtonEvents];
+    firstObject = [appsRegisteredForLockButtonEvents firstObject];
 
-    v14 = [SBApp appsRegisteredForVolumeEvents];
-    v15 = [v14 firstObject];
+    appsRegisteredForVolumeEvents = [SBApp appsRegisteredForVolumeEvents];
+    firstObject2 = [appsRegisteredForVolumeEvents firstObject];
 
-    HasMatchingApplication = SBWorkspaceUnlockedEnvironmentLayoutStateHasMatchingApplication(v13);
-    if (v13)
+    HasMatchingApplication = SBWorkspaceUnlockedEnvironmentLayoutStateHasMatchingApplication(firstObject);
+    if (firstObject)
     {
-      v17 = v13 == v15;
+      v17 = firstObject == firstObject2;
     }
 
     else

@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneIndexDocValues
 + (id)emptySortedSet;
-+ (id)singletonWithOrgApacheLuceneIndexNumericDocValues:(id)a3 withOrgApacheLuceneUtilBits:(id)a4;
-+ (id)singletonWithOrgApacheLuceneIndexSortedDocValues:(id)a3;
++ (id)singletonWithOrgApacheLuceneIndexNumericDocValues:(id)values withOrgApacheLuceneUtilBits:(id)bits;
++ (id)singletonWithOrgApacheLuceneIndexSortedDocValues:(id)values;
 @end
 
 @implementation OrgApacheLuceneIndexDocValues
@@ -14,16 +14,16 @@
   return v3;
 }
 
-+ (id)singletonWithOrgApacheLuceneIndexSortedDocValues:(id)a3
++ (id)singletonWithOrgApacheLuceneIndexSortedDocValues:(id)values
 {
-  v3 = new_OrgApacheLuceneIndexSingletonSortedSetDocValues_initWithOrgApacheLuceneIndexSortedDocValues_(a3);
+  v3 = new_OrgApacheLuceneIndexSingletonSortedSetDocValues_initWithOrgApacheLuceneIndexSortedDocValues_(values);
 
   return v3;
 }
 
-+ (id)singletonWithOrgApacheLuceneIndexNumericDocValues:(id)a3 withOrgApacheLuceneUtilBits:(id)a4
++ (id)singletonWithOrgApacheLuceneIndexNumericDocValues:(id)values withOrgApacheLuceneUtilBits:(id)bits
 {
-  v4 = new_OrgApacheLuceneIndexSingletonSortedNumericDocValues_initWithOrgApacheLuceneIndexNumericDocValues_withOrgApacheLuceneUtilBits_(a3, a4);
+  v4 = new_OrgApacheLuceneIndexSingletonSortedNumericDocValues_initWithOrgApacheLuceneIndexNumericDocValues_withOrgApacheLuceneUtilBits_(values, bits);
 
   return v4;
 }

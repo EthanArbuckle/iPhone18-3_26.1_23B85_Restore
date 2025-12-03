@@ -1,40 +1,40 @@
 @interface HDClinicalAccountUpdateLastFetchDateJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithCoder:(id)a3;
-- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithLastFetchDate:(id)a3 wasFullFetch:(BOOL)a4 accountIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithCoder:(id)coder;
+- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithLastFetchDate:(id)date wasFullFetch:(BOOL)fetch accountIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDClinicalAccountUpdateLastFetchDateJournalEntry
 
-- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithLastFetchDate:(id)a3 wasFullFetch:(BOOL)a4 accountIdentifier:(id)a5
+- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithLastFetchDate:(id)date wasFullFetch:(BOOL)fetch accountIdentifier:(id)identifier
 {
-  v8 = a3;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = HDClinicalAccountUpdateLastFetchDateJournalEntry;
-  v9 = [(HDClinicalAccountEntityUpdateJournalEntry *)&v13 initWithAccountIdentifier:a5];
+  v9 = [(HDClinicalAccountEntityUpdateJournalEntry *)&v13 initWithAccountIdentifier:identifier];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dateCopy copy];
     lastFetchDate = v9->_lastFetchDate;
     v9->_lastFetchDate = v10;
 
-    v9->_wasFullFetch = a4;
+    v9->_wasFullFetch = fetch;
   }
 
   return v9;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  obj = entriesCopy;
+  v7 = [entriesCopy countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v7)
   {
     v9 = v7;
@@ -51,25 +51,25 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 lastFetchDate];
-        v14 = [v12 wasFullFetch];
-        v15 = [v12 accountIdentifier];
-        v16 = [v6 database];
+        lastFetchDate = [v12 lastFetchDate];
+        wasFullFetch = [v12 wasFullFetch];
+        accountIdentifier = [v12 accountIdentifier];
+        database = [profileCopy database];
         v23 = 0;
-        LOBYTE(v14) = [HDClinicalAccountEntity updateAccountLastFetchDate:v13 wasFullFetch:v14 identifier:v15 profile:v6 healthDatabase:v16 error:&v23];
+        LOBYTE(wasFullFetch) = [HDClinicalAccountEntity updateAccountLastFetchDate:lastFetchDate wasFullFetch:wasFullFetch identifier:accountIdentifier profile:profileCopy healthDatabase:database error:&v23];
         v17 = v23;
 
-        if ((v14 & 1) == 0)
+        if ((wasFullFetch & 1) == 0)
         {
-          v18 = [v17 hk_isDatabaseAccessibilityError];
+          hk_isDatabaseAccessibilityError = [v17 hk_isDatabaseAccessibilityError];
           _HKInitializeLogging();
           v19 = HKLogHealthRecords;
-          if (v18)
+          if (hk_isDatabaseAccessibilityError)
           {
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v29 = a1;
+              selfCopy = self;
               v30 = 2114;
               v31 = v17;
               _os_log_error_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "%{public}@ failed to update journaled clinical account last fetch date: %{public}@", buf, 0x16u);
@@ -79,7 +79,7 @@
           else if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
           {
             *buf = v20;
-            v29 = v17;
+            selfCopy = v17;
             _os_log_fault_impl(&dword_0, v19, OS_LOG_TYPE_FAULT, "HDClinicalAccountUpdateLastFetchDateJournalEntry failed to update journaled clinical account last fetch date: %{public}@", buf, 0xCu);
           }
         }
@@ -92,47 +92,47 @@
   }
 }
 
-- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithCoder:(id)a3
+- (HDClinicalAccountUpdateLastFetchDateJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchDate"];
-  if (v5 && ([v4 containsValueForKey:@"wasFullFetch"] & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchDate"];
+  if (v5 && ([coderCopy containsValueForKey:@"wasFullFetch"] & 1) != 0)
   {
     v11.receiver = self;
     v11.super_class = HDClinicalAccountUpdateLastFetchDateJournalEntry;
-    v6 = [(HDClinicalAccountEntityUpdateJournalEntry *)&v11 initWithCoder:v4];
+    v6 = [(HDClinicalAccountEntityUpdateJournalEntry *)&v11 initWithCoder:coderCopy];
     if (v6)
     {
       v7 = [v5 copy];
       lastFetchDate = v6->_lastFetchDate;
       v6->_lastFetchDate = v7;
 
-      v6->_wasFullFetch = [v4 decodeBoolForKey:@"wasFullFetch"];
+      v6->_wasFullFetch = [coderCopy decodeBoolForKey:@"wasFullFetch"];
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDClinicalAccountUpdateLastFetchDateJournalEntry *)self lastFetchDate];
-  [v4 encodeObject:v5 forKey:@"lastFetchDate"];
+  coderCopy = coder;
+  lastFetchDate = [(HDClinicalAccountUpdateLastFetchDateJournalEntry *)self lastFetchDate];
+  [coderCopy encodeObject:lastFetchDate forKey:@"lastFetchDate"];
 
-  [v4 encodeBool:-[HDClinicalAccountUpdateLastFetchDateJournalEntry wasFullFetch](self forKey:{"wasFullFetch"), @"wasFullFetch"}];
+  [coderCopy encodeBool:-[HDClinicalAccountUpdateLastFetchDateJournalEntry wasFullFetch](self forKey:{"wasFullFetch"), @"wasFullFetch"}];
   v6.receiver = self;
   v6.super_class = HDClinicalAccountUpdateLastFetchDateJournalEntry;
-  [(HDClinicalAccountEntityUpdateJournalEntry *)&v6 encodeWithCoder:v4];
+  [(HDClinicalAccountEntityUpdateJournalEntry *)&v6 encodeWithCoder:coderCopy];
 }
 
 @end

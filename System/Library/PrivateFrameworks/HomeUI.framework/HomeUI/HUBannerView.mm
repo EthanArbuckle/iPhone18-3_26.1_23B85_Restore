@@ -1,34 +1,34 @@
 @interface HUBannerView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HUBannerView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HUBannerView)initWithFrame:(CGRect)frame;
 - (HUBannerViewDelegate)delegate;
 - (NSString)description;
-- (void)_dismissButtonTapped:(id)a3;
-- (void)_footerViewTapped:(id)a3;
+- (void)_dismissButtonTapped:(id)tapped;
+- (void)_footerViewTapped:(id)tapped;
 - (void)_subclass_updateConstraints;
 - (void)layoutOptionsDidChange;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLayoutOptions:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLayoutOptions:(id)options;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUBannerView
 
-- (HUBannerView)initWithFrame:(CGRect)a3
+- (HUBannerView)initWithFrame:(CGRect)frame
 {
   v50.receiver = self;
   v50.super_class = HUBannerView;
-  v3 = [(HUBannerView *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUBannerView *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(HUBannerView *)v3 setClipsToBounds:1];
-    v5 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-    [(HUBannerView *)v4 setBackgroundColor:v5];
+    tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+    [(HUBannerView *)v4 setBackgroundColor:tableCellGroupedBackgroundColor];
 
     v6 = [MEMORY[0x277D75220] buttonWithType:7];
     dismissButton = v4->_dismissButton;
@@ -81,8 +81,8 @@
     descriptionLabel = v4->_descriptionLabel;
     v4->_descriptionLabel = v23;
 
-    v25 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v4->_descriptionLabel setTextColor:v25];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v4->_descriptionLabel setTextColor:systemGrayColor];
 
     [(UILabel *)v4->_descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_descriptionLabel setAdjustsFontForContentSizeCategory:1];
@@ -91,8 +91,8 @@
     lineView = v4->_lineView;
     v4->_lineView = v26;
 
-    v28 = [MEMORY[0x277D75348] tableSeparatorLightColor];
-    [(UIView *)v4->_lineView setBackgroundColor:v28];
+    tableSeparatorLightColor = [MEMORY[0x277D75348] tableSeparatorLightColor];
+    [(UIView *)v4->_lineView setBackgroundColor:tableSeparatorLightColor];
     [(UIView *)v4->_lineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUBannerView *)v4 addSubview:v4->_lineView];
     v29 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v10, v11, v12}];
@@ -100,18 +100,18 @@
     v4->_footerView = v29;
 
     v31 = v4->_footerView;
-    v32 = [(HUBannerView *)v4 backgroundColor];
-    [(UIView *)v31 setBackgroundColor:v32];
+    backgroundColor = [(HUBannerView *)v4 backgroundColor];
+    [(UIView *)v31 setBackgroundColor:backgroundColor];
 
     [(UIView *)v4->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v33 = [(HUBannerView *)v4 layoutOptions];
-    [v33 cellCornerRadius];
+    layoutOptions = [(HUBannerView *)v4 layoutOptions];
+    [layoutOptions cellCornerRadius];
     v35 = v34;
-    v36 = [(UIView *)v4->_footerView layer];
-    [v36 setCornerRadius:v35];
+    layer = [(UIView *)v4->_footerView layer];
+    [layer setCornerRadius:v35];
 
-    v37 = [(UIView *)v4->_footerView layer];
-    [v37 setMaskedCorners:12];
+    layer2 = [(UIView *)v4->_footerView layer];
+    [layer2 setMaskedCorners:12];
 
     [(HUBannerView *)v4 addSubview:v4->_footerView];
     v38 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v9, v10, v11, v12}];
@@ -120,8 +120,8 @@
 
     [(UILabel *)v4->_footerViewLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_footerViewLabel setAdjustsFontForContentSizeCategory:1];
-    v40 = [MEMORY[0x277D75348] hf_keyColor];
-    [(UILabel *)v4->_footerViewLabel setTextColor:v40];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    [(UILabel *)v4->_footerViewLabel setTextColor:hf_keyColor];
 
     [(UIView *)v4->_footerView addSubview:v4->_footerViewLabel];
     v41 = objc_alloc_init(MEMORY[0x277D75220]);
@@ -131,12 +131,12 @@
     [(UIButton *)v4->_continueButton setHidden:1];
     v43 = v4->_continueButton;
     v44 = HUCommonImageNamed();
-    v45 = [v44 imageFlippedForRightToLeftLayoutDirection];
-    [(UIButton *)v43 setImage:v45 forState:0];
+    imageFlippedForRightToLeftLayoutDirection = [v44 imageFlippedForRightToLeftLayoutDirection];
+    [(UIButton *)v43 setImage:imageFlippedForRightToLeftLayoutDirection forState:0];
 
     v46 = v4->_continueButton;
-    v47 = [MEMORY[0x277D75348] tableSeparatorLightColor];
-    [(UIButton *)v46 setTintColor:v47];
+    tableSeparatorLightColor2 = [MEMORY[0x277D75348] tableSeparatorLightColor];
+    [(UIButton *)v46 setTintColor:tableSeparatorLightColor2];
 
     [(UIButton *)v4->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_footerView addSubview:v4->_continueButton];
@@ -148,12 +148,12 @@
   return v4;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_layoutOptions] & 1) == 0)
+  optionsCopy = options;
+  if (([optionsCopy isEqual:self->_layoutOptions] & 1) == 0)
   {
-    objc_storeStrong(&self->_layoutOptions, a3);
+    objc_storeStrong(&self->_layoutOptions, options);
     [(HUBannerView *)self layoutOptionsDidChange];
   }
 }
@@ -168,16 +168,16 @@
 
 - (void)_subclass_updateConstraints
 {
-  v3 = [(HUBannerView *)self layoutConstraints];
+  layoutConstraints = [(HUBannerView *)self layoutConstraints];
 
-  if (!v3)
+  if (!layoutConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     objc_opt_class();
-    v5 = [(HUBannerView *)self layoutOptions];
+    layoutOptions = [(HUBannerView *)self layoutOptions];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = layoutOptions;
     }
 
     else
@@ -187,104 +187,104 @@
 
     v7 = v6;
 
-    v8 = [(HUBannerView *)self dismissButton];
-    v9 = [v8 topAnchor];
-    v10 = [(HUBannerView *)self topAnchor];
+    dismissButton = [(HUBannerView *)self dismissButton];
+    topAnchor = [dismissButton topAnchor];
+    topAnchor2 = [(HUBannerView *)self topAnchor];
     if (v7)
     {
       [v7 dismissButtonTopInset];
-      v11 = [v9 constraintEqualToAnchor:v10 constant:?];
-      [v4 addObject:v11];
+      v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
+      [array addObject:v11];
 
-      v12 = [(HUBannerView *)self dismissButton];
-      v13 = [v12 trailingAnchor];
-      v14 = [(HUBannerView *)self trailingAnchor];
+      dismissButton2 = [(HUBannerView *)self dismissButton];
+      trailingAnchor = [dismissButton2 trailingAnchor];
+      trailingAnchor2 = [(HUBannerView *)self trailingAnchor];
       [v7 dismissButtonTrailingInset];
-      v16 = [v13 constraintEqualToAnchor:v14 constant:-v15];
-      [v4 addObject:v16];
+      v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v15];
+      [array addObject:v16];
 
-      v17 = [(HUBannerView *)self dismissButton];
-      v18 = [v17 heightAnchor];
+      dismissButton3 = [(HUBannerView *)self dismissButton];
+      heightAnchor = [dismissButton3 heightAnchor];
       [v7 dismissButtonHeightAndWidth];
-      v19 = [v18 constraintEqualToConstant:?];
-      [v4 addObject:v19];
+      v19 = [heightAnchor constraintEqualToConstant:?];
+      [array addObject:v19];
 
-      v20 = [(HUBannerView *)self dismissButton];
-      v21 = [v20 widthAnchor];
+      dismissButton4 = [(HUBannerView *)self dismissButton];
+      widthAnchor = [dismissButton4 widthAnchor];
       [v7 dismissButtonHeightAndWidth];
-      v23 = v21;
+      widthAnchor2 = widthAnchor;
     }
 
     else
     {
-      v24 = [v9 constraintEqualToAnchor:v10];
-      [v4 addObject:v24];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
+      [array addObject:v24];
 
-      v25 = [(HUBannerView *)self dismissButton];
-      v26 = [v25 trailingAnchor];
-      v27 = [(HUBannerView *)self trailingAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
-      [v4 addObject:v28];
+      dismissButton5 = [(HUBannerView *)self dismissButton];
+      trailingAnchor3 = [dismissButton5 trailingAnchor];
+      trailingAnchor4 = [(HUBannerView *)self trailingAnchor];
+      v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+      [array addObject:v28];
 
-      v29 = [(HUBannerView *)self dismissButton];
-      v30 = [v29 heightAnchor];
-      v31 = [v30 constraintEqualToConstant:0.0];
-      [v4 addObject:v31];
+      dismissButton6 = [(HUBannerView *)self dismissButton];
+      heightAnchor2 = [dismissButton6 heightAnchor];
+      v31 = [heightAnchor2 constraintEqualToConstant:0.0];
+      [array addObject:v31];
 
-      v20 = [(HUBannerView *)self dismissButton];
-      v23 = [v20 widthAnchor];
-      v21 = v23;
+      dismissButton4 = [(HUBannerView *)self dismissButton];
+      widthAnchor2 = [dismissButton4 widthAnchor];
+      widthAnchor = widthAnchor2;
       v22 = 0.0;
     }
 
-    v32 = [v23 constraintEqualToConstant:v22];
-    [v4 addObject:v32];
+    v32 = [widthAnchor2 constraintEqualToConstant:v22];
+    [array addObject:v32];
 
-    v33 = [(HUBannerView *)self iconView];
-    v34 = [v33 leadingAnchor];
-    v35 = [(HUBannerView *)self leadingAnchor];
-    v36 = [(HUBannerView *)self layoutOptions];
-    [v36 leadingInset];
-    v37 = [v34 constraintEqualToAnchor:v35 constant:?];
-    [v4 addObject:v37];
+    iconView = [(HUBannerView *)self iconView];
+    leadingAnchor = [iconView leadingAnchor];
+    leadingAnchor2 = [(HUBannerView *)self leadingAnchor];
+    layoutOptions2 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions2 leadingInset];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
+    [array addObject:v37];
 
-    v38 = [(HUBannerView *)self iconImageView];
-    v39 = [v38 leadingAnchor];
-    v40 = [(HUBannerView *)self iconView];
-    v41 = [v40 leadingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
-    [v4 addObject:v42];
+    iconImageView = [(HUBannerView *)self iconImageView];
+    leadingAnchor3 = [iconImageView leadingAnchor];
+    iconView2 = [(HUBannerView *)self iconView];
+    leadingAnchor4 = [iconView2 leadingAnchor];
+    v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array addObject:v42];
 
-    v43 = [(HUBannerView *)self iconView];
-    v44 = [v43 topAnchor];
-    v45 = [(HUBannerView *)self topAnchor];
-    v46 = [(HUBannerView *)self layoutOptions];
-    [v46 titleTopInset];
-    v47 = [v44 constraintEqualToAnchor:v45 constant:?];
-    [v4 addObject:v47];
+    iconView3 = [(HUBannerView *)self iconView];
+    topAnchor3 = [iconView3 topAnchor];
+    topAnchor4 = [(HUBannerView *)self topAnchor];
+    layoutOptions3 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions3 titleTopInset];
+    v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
+    [array addObject:v47];
 
-    v48 = [(HUBannerView *)self iconImageView];
-    v49 = [v48 topAnchor];
-    v50 = [(HUBannerView *)self iconView];
-    v51 = [v50 topAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
-    [v4 addObject:v52];
+    iconImageView2 = [(HUBannerView *)self iconImageView];
+    topAnchor5 = [iconImageView2 topAnchor];
+    iconView4 = [(HUBannerView *)self iconView];
+    topAnchor6 = [iconView4 topAnchor];
+    layoutOptions5 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+    [array addObject:layoutOptions5];
 
-    v53 = [(HUBannerView *)self iconView];
-    v54 = [v53 heightAnchor];
-    v55 = [(HUBannerView *)self layoutOptions];
-    [v55 iconHeight];
-    v56 = [v54 constraintEqualToConstant:?];
-    [v4 addObject:v56];
+    iconView5 = [(HUBannerView *)self iconView];
+    heightAnchor3 = [iconView5 heightAnchor];
+    layoutOptions4 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions4 iconHeight];
+    v56 = [heightAnchor3 constraintEqualToConstant:?];
+    [array addObject:v56];
 
-    v57 = [(HUBannerView *)self iconImageView];
-    v58 = [v57 heightAnchor];
-    v59 = [(HUBannerView *)self iconImageView];
-    v60 = [v59 image];
-    if (v60)
+    iconImageView3 = [(HUBannerView *)self iconImageView];
+    heightAnchor4 = [iconImageView3 heightAnchor];
+    iconImageView4 = [(HUBannerView *)self iconImageView];
+    image = [iconImageView4 image];
+    if (image)
     {
-      v52 = [(HUBannerView *)self layoutOptions];
-      [v52 iconHeight];
+      layoutOptions5 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions5 iconHeight];
     }
 
     else
@@ -292,31 +292,31 @@
       v61 = 0.0;
     }
 
-    v62 = [v58 constraintEqualToConstant:v61];
-    [v4 addObject:v62];
+    v62 = [heightAnchor4 constraintEqualToConstant:v61];
+    [array addObject:v62];
 
-    if (v60)
+    if (image)
     {
     }
 
-    v63 = [(HUBannerView *)self iconView];
-    v64 = [v63 widthAnchor];
-    v65 = [(HUBannerView *)self iconView];
-    v66 = [v65 heightAnchor];
-    v67 = [v64 constraintEqualToAnchor:v66];
-    [v4 addObject:v67];
+    iconView6 = [(HUBannerView *)self iconView];
+    widthAnchor3 = [iconView6 widthAnchor];
+    iconView7 = [(HUBannerView *)self iconView];
+    heightAnchor5 = [iconView7 heightAnchor];
+    v67 = [widthAnchor3 constraintEqualToAnchor:heightAnchor5];
+    [array addObject:v67];
 
-    v68 = [(HUBannerView *)self iconImageView];
-    v69 = [v68 widthAnchor];
-    v70 = [(HUBannerView *)self iconImageView];
-    v71 = [v70 heightAnchor];
-    v72 = [v69 constraintEqualToAnchor:v71];
-    [v4 addObject:v72];
+    iconImageView5 = [(HUBannerView *)self iconImageView];
+    widthAnchor4 = [iconImageView5 widthAnchor];
+    iconImageView6 = [(HUBannerView *)self iconImageView];
+    heightAnchor6 = [iconImageView6 heightAnchor];
+    v72 = [widthAnchor4 constraintEqualToAnchor:heightAnchor6];
+    [array addObject:v72];
 
     objc_opt_class();
-    v73 = [(HUBannerView *)self item];
-    v74 = [v73 latestResults];
-    v75 = [v74 objectForKeyedSubscript:*MEMORY[0x277D13F38]];
+    item = [(HUBannerView *)self item];
+    latestResults = [item latestResults];
+    v75 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F38]];
     if (objc_opt_isKindOfClass())
     {
       v76 = v75;
@@ -341,153 +341,153 @@
       v79 = 1.0;
     }
 
-    v80 = [(HUBannerView *)self supplementaryIconView];
-    v81 = [v80 widthAnchor];
-    v82 = [(HUBannerView *)self iconView];
-    v83 = [v82 widthAnchor];
-    v84 = [v81 constraintEqualToAnchor:v83];
-    [v4 addObject:v84];
+    supplementaryIconView = [(HUBannerView *)self supplementaryIconView];
+    widthAnchor5 = [supplementaryIconView widthAnchor];
+    iconView8 = [(HUBannerView *)self iconView];
+    widthAnchor6 = [iconView8 widthAnchor];
+    v84 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
+    [array addObject:v84];
 
-    v85 = [(HUBannerView *)self supplementaryIconView];
-    v86 = [v85 heightAnchor];
-    v87 = [(HUBannerView *)self iconView];
-    v88 = [v87 heightAnchor];
-    v89 = [v86 constraintEqualToAnchor:v88 multiplier:v79];
-    [v4 addObject:v89];
+    supplementaryIconView2 = [(HUBannerView *)self supplementaryIconView];
+    heightAnchor7 = [supplementaryIconView2 heightAnchor];
+    iconView9 = [(HUBannerView *)self iconView];
+    heightAnchor8 = [iconView9 heightAnchor];
+    v89 = [heightAnchor7 constraintEqualToAnchor:heightAnchor8 multiplier:v79];
+    [array addObject:v89];
 
-    v90 = [(HUBannerView *)self supplementaryIconView];
-    v91 = [v90 bottomAnchor];
-    v92 = [(HUBannerView *)self iconView];
-    v93 = [v92 bottomAnchor];
-    v94 = [v91 constraintEqualToAnchor:v93];
-    [v4 addObject:v94];
+    supplementaryIconView3 = [(HUBannerView *)self supplementaryIconView];
+    bottomAnchor = [supplementaryIconView3 bottomAnchor];
+    iconView10 = [(HUBannerView *)self iconView];
+    bottomAnchor2 = [iconView10 bottomAnchor];
+    v94 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v94];
 
-    v95 = [(HUBannerView *)self supplementaryIconImageView];
-    v96 = [v95 widthAnchor];
-    v97 = [(HUBannerView *)self iconImageView];
-    v98 = [v97 widthAnchor];
-    v99 = [v96 constraintEqualToAnchor:v98];
-    [v4 addObject:v99];
+    supplementaryIconImageView = [(HUBannerView *)self supplementaryIconImageView];
+    widthAnchor7 = [supplementaryIconImageView widthAnchor];
+    iconImageView7 = [(HUBannerView *)self iconImageView];
+    widthAnchor8 = [iconImageView7 widthAnchor];
+    v99 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
+    [array addObject:v99];
 
-    v100 = [(HUBannerView *)self supplementaryIconImageView];
-    v101 = [v100 heightAnchor];
-    v102 = [(HUBannerView *)self iconImageView];
-    v103 = [v102 heightAnchor];
-    v104 = [v101 constraintEqualToAnchor:v103 multiplier:v79];
-    [v4 addObject:v104];
+    supplementaryIconImageView2 = [(HUBannerView *)self supplementaryIconImageView];
+    heightAnchor9 = [supplementaryIconImageView2 heightAnchor];
+    iconImageView8 = [(HUBannerView *)self iconImageView];
+    heightAnchor10 = [iconImageView8 heightAnchor];
+    v104 = [heightAnchor9 constraintEqualToAnchor:heightAnchor10 multiplier:v79];
+    [array addObject:v104];
 
-    v105 = [(HUBannerView *)self supplementaryIconImageView];
-    v106 = [v105 bottomAnchor];
-    v107 = [(HUBannerView *)self iconImageView];
-    v108 = [v107 bottomAnchor];
-    v109 = [v106 constraintEqualToAnchor:v108];
-    [v4 addObject:v109];
+    supplementaryIconImageView3 = [(HUBannerView *)self supplementaryIconImageView];
+    bottomAnchor3 = [supplementaryIconImageView3 bottomAnchor];
+    iconImageView9 = [(HUBannerView *)self iconImageView];
+    bottomAnchor4 = [iconImageView9 bottomAnchor];
+    v109 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v109];
 
-    v110 = [(HUBannerView *)self traitCollection];
-    v111 = [v110 preferredContentSizeCategory];
+    traitCollection = [(HUBannerView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
     v112 = *MEMORY[0x277D767F8];
 
-    v113 = [(HUBannerView *)self titleLabel];
-    v114 = [v113 topAnchor];
-    if (v111 >= v112)
+    titleLabel = [(HUBannerView *)self titleLabel];
+    topAnchor7 = [titleLabel topAnchor];
+    if (preferredContentSizeCategory >= v112)
     {
-      v124 = [(HUBannerView *)self iconView];
-      v125 = [v124 bottomAnchor];
-      v126 = [(HUBannerView *)self layoutOptions];
-      [v126 verticalSpacingForLipElements];
-      v127 = [v114 constraintEqualToAnchor:v125 constant:?];
-      [v4 addObject:v127];
+      iconView11 = [(HUBannerView *)self iconView];
+      bottomAnchor5 = [iconView11 bottomAnchor];
+      layoutOptions6 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions6 verticalSpacingForLipElements];
+      v127 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:?];
+      [array addObject:v127];
 
-      v118 = [(HUBannerView *)self titleLabel];
-      v119 = [v118 leadingAnchor];
-      v120 = [(HUBannerView *)self leadingAnchor];
-      v121 = [(HUBannerView *)self layoutOptions];
-      [v121 leadingInset];
-      v122 = [v119 constraintEqualToAnchor:v120 constant:?];
-      [v4 addObject:v122];
+      titleLabel2 = [(HUBannerView *)self titleLabel];
+      leadingAnchor5 = [titleLabel2 leadingAnchor];
+      leadingAnchor6 = [(HUBannerView *)self leadingAnchor];
+      layoutOptions7 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions7 leadingInset];
+      layoutOptions9 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
+      [array addObject:layoutOptions9];
     }
 
     else
     {
-      v115 = [(HUBannerView *)self topAnchor];
-      v116 = [(HUBannerView *)self layoutOptions];
-      [v116 titleTopInset];
-      v117 = [v114 constraintEqualToAnchor:v115 constant:?];
-      [v4 addObject:v117];
+      topAnchor8 = [(HUBannerView *)self topAnchor];
+      layoutOptions8 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions8 titleTopInset];
+      v117 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:?];
+      [array addObject:v117];
 
-      v118 = [(HUBannerView *)self titleLabel];
-      v119 = [v118 leadingAnchor];
-      v120 = [(HUBannerView *)self iconView];
-      v121 = [v120 trailingAnchor];
-      v122 = [(HUBannerView *)self layoutOptions];
-      [v122 horizontalItemSpacing];
-      v123 = [v119 constraintEqualToAnchor:v121 constant:?];
-      [v4 addObject:v123];
+      titleLabel2 = [(HUBannerView *)self titleLabel];
+      leadingAnchor5 = [titleLabel2 leadingAnchor];
+      leadingAnchor6 = [(HUBannerView *)self iconView];
+      layoutOptions7 = [leadingAnchor6 trailingAnchor];
+      layoutOptions9 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions9 horizontalItemSpacing];
+      v123 = [leadingAnchor5 constraintEqualToAnchor:layoutOptions7 constant:?];
+      [array addObject:v123];
     }
 
-    v128 = [(HUBannerView *)self titleLabel];
-    v129 = [v128 trailingAnchor];
-    v130 = [(HUBannerView *)self trailingAnchor];
-    v131 = [(HUBannerView *)self layoutOptions];
-    [v131 trailingInset];
-    v133 = [v129 constraintEqualToAnchor:v130 constant:-v132];
-    [v4 addObject:v133];
+    titleLabel3 = [(HUBannerView *)self titleLabel];
+    trailingAnchor5 = [titleLabel3 trailingAnchor];
+    trailingAnchor6 = [(HUBannerView *)self trailingAnchor];
+    layoutOptions10 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions10 trailingInset];
+    v133 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v132];
+    [array addObject:v133];
 
-    v134 = [(HUBannerView *)self descriptionLabel];
-    v135 = [v134 topAnchor];
-    v136 = [(HUBannerView *)self titleLabel];
-    v137 = [v136 bottomAnchor];
-    v138 = [(HUBannerView *)self layoutOptions];
-    [v138 verticalLabelSpacing];
-    v139 = [v135 constraintEqualToAnchor:v137 constant:?];
-    [v4 addObject:v139];
+    descriptionLabel = [(HUBannerView *)self descriptionLabel];
+    topAnchor9 = [descriptionLabel topAnchor];
+    titleLabel4 = [(HUBannerView *)self titleLabel];
+    bottomAnchor6 = [titleLabel4 bottomAnchor];
+    layoutOptions11 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions11 verticalLabelSpacing];
+    v139 = [topAnchor9 constraintEqualToAnchor:bottomAnchor6 constant:?];
+    [array addObject:v139];
 
-    v140 = [(HUBannerView *)self traitCollection];
-    v141 = [v140 preferredContentSizeCategory];
+    traitCollection2 = [(HUBannerView *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
 
-    v142 = [(HUBannerView *)self descriptionLabel];
-    v143 = [v142 leadingAnchor];
-    if (v141 >= v112)
+    descriptionLabel2 = [(HUBannerView *)self descriptionLabel];
+    leadingAnchor7 = [descriptionLabel2 leadingAnchor];
+    if (preferredContentSizeCategory2 >= v112)
     {
-      v144 = [(HUBannerView *)self leadingAnchor];
-      v145 = [(HUBannerView *)self layoutOptions];
-      [v145 leadingInset];
-      v146 = [v143 constraintEqualToAnchor:v144 constant:?];
-      [v4 addObject:v146];
+      leadingAnchor8 = [(HUBannerView *)self leadingAnchor];
+      layoutOptions12 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions12 leadingInset];
+      layoutOptions13 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:?];
+      [array addObject:layoutOptions13];
     }
 
     else
     {
-      v144 = [(HUBannerView *)self iconView];
-      v145 = [v144 trailingAnchor];
-      v146 = [(HUBannerView *)self layoutOptions];
-      [v146 horizontalItemSpacing];
-      v147 = [v143 constraintEqualToAnchor:v145 constant:?];
-      [v4 addObject:v147];
+      leadingAnchor8 = [(HUBannerView *)self iconView];
+      layoutOptions12 = [leadingAnchor8 trailingAnchor];
+      layoutOptions13 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions13 horizontalItemSpacing];
+      v147 = [leadingAnchor7 constraintEqualToAnchor:layoutOptions12 constant:?];
+      [array addObject:v147];
     }
 
-    v148 = [(HUBannerView *)self descriptionLabel];
-    v149 = [v148 trailingAnchor];
-    v150 = [(HUBannerView *)self trailingAnchor];
-    v151 = [(HUBannerView *)self layoutOptions];
-    [v151 trailingInset];
-    v153 = [v149 constraintEqualToAnchor:v150 constant:-v152];
-    [v4 addObject:v153];
+    descriptionLabel3 = [(HUBannerView *)self descriptionLabel];
+    trailingAnchor7 = [descriptionLabel3 trailingAnchor];
+    trailingAnchor8 = [(HUBannerView *)self trailingAnchor];
+    layoutOptions14 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions14 trailingInset];
+    v153 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-v152];
+    [array addObject:v153];
 
-    v154 = [(HUBannerView *)self lineView];
-    if ([v154 isHidden])
+    lineView = [(HUBannerView *)self lineView];
+    if ([lineView isHidden])
     {
-      v155 = [(HUBannerView *)self footerView];
-      v156 = [v155 isHidden];
+      footerView = [(HUBannerView *)self footerView];
+      isHidden = [footerView isHidden];
 
-      if (v156)
+      if (isHidden)
       {
-        v157 = [(HUBannerView *)self descriptionLabel];
-        v158 = [v157 bottomAnchor];
-        v159 = [(HUBannerView *)self bottomAnchor];
-        v160 = [(HUBannerView *)self layoutOptions];
-        [v160 verticalSpacingForLineView];
-        v162 = [v158 constraintEqualToAnchor:v159 constant:-v161];
+        descriptionLabel4 = [(HUBannerView *)self descriptionLabel];
+        bottomAnchor7 = [descriptionLabel4 bottomAnchor];
+        bottomAnchor8 = [(HUBannerView *)self bottomAnchor];
+        layoutOptions15 = [(HUBannerView *)self layoutOptions];
+        [layoutOptions15 verticalSpacingForLineView];
+        v162 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-v161];
         goto LABEL_34;
       }
     }
@@ -496,139 +496,139 @@
     {
     }
 
-    v163 = [(HUBannerView *)self lineView];
-    v164 = [v163 topAnchor];
-    v165 = [(HUBannerView *)self descriptionLabel];
-    v166 = [v165 bottomAnchor];
-    v167 = [(HUBannerView *)self layoutOptions];
-    [v167 verticalSpacingForLineView];
-    v168 = [v164 constraintEqualToAnchor:v166 constant:?];
-    [v4 addObject:v168];
+    lineView2 = [(HUBannerView *)self lineView];
+    topAnchor10 = [lineView2 topAnchor];
+    descriptionLabel5 = [(HUBannerView *)self descriptionLabel];
+    bottomAnchor9 = [descriptionLabel5 bottomAnchor];
+    layoutOptions16 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions16 verticalSpacingForLineView];
+    v168 = [topAnchor10 constraintEqualToAnchor:bottomAnchor9 constant:?];
+    [array addObject:v168];
 
-    v169 = [(HUBannerView *)self lineView];
-    v170 = [v169 leadingAnchor];
-    v171 = [(HUBannerView *)self descriptionLabel];
-    v172 = [v171 leadingAnchor];
-    v173 = [v170 constraintEqualToAnchor:v172];
-    [v4 addObject:v173];
+    lineView3 = [(HUBannerView *)self lineView];
+    leadingAnchor9 = [lineView3 leadingAnchor];
+    descriptionLabel6 = [(HUBannerView *)self descriptionLabel];
+    leadingAnchor10 = [descriptionLabel6 leadingAnchor];
+    v173 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
+    [array addObject:v173];
 
-    v174 = [(HUBannerView *)self lineView];
-    v175 = [v174 trailingAnchor];
-    v176 = [(HUBannerView *)self trailingAnchor];
-    v177 = [v175 constraintEqualToAnchor:v176];
-    [v4 addObject:v177];
+    lineView4 = [(HUBannerView *)self lineView];
+    trailingAnchor9 = [lineView4 trailingAnchor];
+    trailingAnchor10 = [(HUBannerView *)self trailingAnchor];
+    v177 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
+    [array addObject:v177];
 
-    v178 = [(HUBannerView *)self lineView];
-    v179 = [v178 heightAnchor];
-    v180 = [v179 constraintEqualToConstant:1.0];
-    [v4 addObject:v180];
+    lineView5 = [(HUBannerView *)self lineView];
+    heightAnchor11 = [lineView5 heightAnchor];
+    v180 = [heightAnchor11 constraintEqualToConstant:1.0];
+    [array addObject:v180];
 
-    v181 = [(HUBannerView *)self footerView];
-    v182 = [v181 topAnchor];
-    v183 = [(HUBannerView *)self lineView];
-    v184 = [v183 bottomAnchor];
-    v185 = [v182 constraintEqualToAnchor:v184];
-    [v4 addObject:v185];
+    footerView2 = [(HUBannerView *)self footerView];
+    topAnchor11 = [footerView2 topAnchor];
+    lineView6 = [(HUBannerView *)self lineView];
+    bottomAnchor10 = [lineView6 bottomAnchor];
+    v185 = [topAnchor11 constraintEqualToAnchor:bottomAnchor10];
+    [array addObject:v185];
 
-    v186 = [(HUBannerView *)self footerView];
-    v187 = [v186 leadingAnchor];
-    v188 = [(HUBannerView *)self leadingAnchor];
-    v189 = [v187 constraintEqualToAnchor:v188];
-    [v4 addObject:v189];
+    footerView3 = [(HUBannerView *)self footerView];
+    leadingAnchor11 = [footerView3 leadingAnchor];
+    leadingAnchor12 = [(HUBannerView *)self leadingAnchor];
+    v189 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
+    [array addObject:v189];
 
-    v190 = [(HUBannerView *)self footerView];
-    v191 = [v190 trailingAnchor];
-    v192 = [(HUBannerView *)self trailingAnchor];
-    v193 = [v191 constraintEqualToAnchor:v192];
-    [v4 addObject:v193];
+    footerView4 = [(HUBannerView *)self footerView];
+    trailingAnchor11 = [footerView4 trailingAnchor];
+    trailingAnchor12 = [(HUBannerView *)self trailingAnchor];
+    v193 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
+    [array addObject:v193];
 
-    v194 = [(HUBannerView *)self footerView];
-    v195 = [v194 bottomAnchor];
-    v196 = [(HUBannerView *)self bottomAnchor];
-    v197 = [v195 constraintEqualToAnchor:v196];
-    [v4 addObject:v197];
+    footerView5 = [(HUBannerView *)self footerView];
+    bottomAnchor11 = [footerView5 bottomAnchor];
+    bottomAnchor12 = [(HUBannerView *)self bottomAnchor];
+    v197 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
+    [array addObject:v197];
 
-    v198 = [(HUBannerView *)self footerViewLabel];
-    v199 = [v198 topAnchor];
-    v200 = [(HUBannerView *)self footerView];
-    v201 = [v200 topAnchor];
-    v202 = [(HUBannerView *)self layoutOptions];
-    [v202 verticalSpacingForLipElements];
-    v203 = [v199 constraintEqualToAnchor:v201 constant:?];
-    [v4 addObject:v203];
+    footerViewLabel = [(HUBannerView *)self footerViewLabel];
+    topAnchor12 = [footerViewLabel topAnchor];
+    footerView6 = [(HUBannerView *)self footerView];
+    topAnchor13 = [footerView6 topAnchor];
+    layoutOptions17 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions17 verticalSpacingForLipElements];
+    v203 = [topAnchor12 constraintEqualToAnchor:topAnchor13 constant:?];
+    [array addObject:v203];
 
-    v204 = [(HUBannerView *)self footerViewLabel];
-    v205 = [v204 leadingAnchor];
-    v206 = [(HUBannerView *)self descriptionLabel];
-    v207 = [v206 leadingAnchor];
-    v208 = [v205 constraintEqualToAnchor:v207];
-    [v4 addObject:v208];
+    footerViewLabel2 = [(HUBannerView *)self footerViewLabel];
+    leadingAnchor13 = [footerViewLabel2 leadingAnchor];
+    descriptionLabel7 = [(HUBannerView *)self descriptionLabel];
+    leadingAnchor14 = [descriptionLabel7 leadingAnchor];
+    v208 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
+    [array addObject:v208];
 
-    v209 = [(HUBannerView *)self footerViewLabel];
-    v210 = [v209 trailingAnchor];
-    v211 = [(HUBannerView *)self continueButton];
-    if ([v211 isHidden])
+    footerViewLabel3 = [(HUBannerView *)self footerViewLabel];
+    trailingAnchor13 = [footerViewLabel3 trailingAnchor];
+    continueButton = [(HUBannerView *)self continueButton];
+    if ([continueButton isHidden])
     {
-      v212 = [(HUBannerView *)self footerView];
-      [v212 trailingAnchor];
+      footerView7 = [(HUBannerView *)self footerView];
+      [footerView7 trailingAnchor];
     }
 
     else
     {
-      v212 = [(HUBannerView *)self continueButton];
-      [v212 leadingAnchor];
+      footerView7 = [(HUBannerView *)self continueButton];
+      [footerView7 leadingAnchor];
     }
     v213 = ;
-    v214 = [(HUBannerView *)self layoutOptions];
-    [v214 trailingInset];
-    v216 = [v210 constraintLessThanOrEqualToAnchor:v213 constant:-v215];
-    [v4 addObject:v216];
+    layoutOptions18 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions18 trailingInset];
+    v216 = [trailingAnchor13 constraintLessThanOrEqualToAnchor:v213 constant:-v215];
+    [array addObject:v216];
 
-    v217 = [(HUBannerView *)self footerViewLabel];
-    v218 = [v217 bottomAnchor];
-    v219 = [(HUBannerView *)self footerView];
-    v220 = [v219 bottomAnchor];
-    v221 = [(HUBannerView *)self layoutOptions];
-    [v221 verticalSpacingForLipElements];
-    v223 = [v218 constraintEqualToAnchor:v220 constant:-v222];
-    [v4 addObject:v223];
+    footerViewLabel4 = [(HUBannerView *)self footerViewLabel];
+    bottomAnchor13 = [footerViewLabel4 bottomAnchor];
+    footerView8 = [(HUBannerView *)self footerView];
+    bottomAnchor14 = [footerView8 bottomAnchor];
+    layoutOptions19 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions19 verticalSpacingForLipElements];
+    v223 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14 constant:-v222];
+    [array addObject:v223];
 
-    v224 = [(HUBannerView *)self continueButton];
-    LOBYTE(v217) = [v224 isHidden];
+    continueButton2 = [(HUBannerView *)self continueButton];
+    LOBYTE(footerViewLabel4) = [continueButton2 isHidden];
 
-    if (v217)
+    if (footerViewLabel4)
     {
       goto LABEL_35;
     }
 
-    v225 = [(HUBannerView *)self continueButton];
-    v226 = [v225 centerXAnchor];
-    v227 = [(HUBannerView *)self footerViewLabel];
-    v228 = [v227 centerXAnchor];
-    v229 = [v226 constraintEqualToAnchor:v228];
-    [v4 addObject:v229];
+    continueButton3 = [(HUBannerView *)self continueButton];
+    centerXAnchor = [continueButton3 centerXAnchor];
+    footerViewLabel5 = [(HUBannerView *)self footerViewLabel];
+    centerXAnchor2 = [footerViewLabel5 centerXAnchor];
+    v229 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v229];
 
-    v230 = [(HUBannerView *)self continueButton];
-    v231 = [v230 trailingAnchor];
-    v232 = [(HUBannerView *)self footerView];
-    v233 = [v232 trailingAnchor];
-    v234 = [(HUBannerView *)self layoutOptions];
-    [v234 trailingInset];
-    v236 = [v231 constraintEqualToAnchor:v233 constant:-v235];
-    [v4 addObject:v236];
+    continueButton4 = [(HUBannerView *)self continueButton];
+    trailingAnchor14 = [continueButton4 trailingAnchor];
+    footerView9 = [(HUBannerView *)self footerView];
+    trailingAnchor15 = [footerView9 trailingAnchor];
+    layoutOptions20 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions20 trailingInset];
+    v236 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:-v235];
+    [array addObject:v236];
 
-    v157 = [(HUBannerView *)self continueButton];
-    v158 = [v157 centerYAnchor];
-    v159 = [(HUBannerView *)self footerView];
-    v160 = [v159 centerYAnchor];
-    v162 = [v158 constraintEqualToAnchor:v160];
+    descriptionLabel4 = [(HUBannerView *)self continueButton];
+    bottomAnchor7 = [descriptionLabel4 centerYAnchor];
+    bottomAnchor8 = [(HUBannerView *)self footerView];
+    layoutOptions15 = [bottomAnchor8 centerYAnchor];
+    v162 = [bottomAnchor7 constraintEqualToAnchor:layoutOptions15];
 LABEL_34:
     v237 = v162;
-    [v4 addObject:v162];
+    [array addObject:v162];
 
 LABEL_35:
-    [MEMORY[0x277CCAAD0] activateConstraints:v4];
-    [(HUBannerView *)self setLayoutConstraints:v4];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
+    [(HUBannerView *)self setLayoutConstraints:array];
   }
 
   v239.receiver = self;
@@ -636,9 +636,9 @@ LABEL_35:
   [(HUBannerView *)&v239 updateConstraints];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (![(HUBannerView *)self disableHighlighting])
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -646,10 +646,10 @@ LABEL_35:
     v9[2] = __40__HUBannerView_setHighlighted_animated___block_invoke;
     v9[3] = &unk_277DB7EE0;
     v9[4] = self;
-    v10 = a3;
+    highlightedCopy = highlighted;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0.15];
     }
@@ -679,39 +679,39 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
 
 - (void)layoutOptionsDidChange
 {
-  v3 = [(HUBannerView *)self layoutOptions];
-  v4 = [v3 font];
-  v5 = [(HUBannerView *)self titleLabel];
-  [v5 setFont:v4];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
+  font = [layoutOptions font];
+  titleLabel = [(HUBannerView *)self titleLabel];
+  [titleLabel setFont:font];
 
-  v6 = [(HUBannerView *)self layoutOptions];
-  v7 = [v6 descriptionFont];
-  v8 = [(HUBannerView *)self descriptionLabel];
-  [v8 setFont:v7];
+  layoutOptions2 = [(HUBannerView *)self layoutOptions];
+  descriptionFont = [layoutOptions2 descriptionFont];
+  descriptionLabel = [(HUBannerView *)self descriptionLabel];
+  [descriptionLabel setFont:descriptionFont];
 
-  v9 = [(HUBannerView *)self layoutOptions];
-  [v9 cellCornerRadius];
+  layoutOptions3 = [(HUBannerView *)self layoutOptions];
+  [layoutOptions3 cellCornerRadius];
   [(HUBannerView *)self _setContinuousCornerRadius:?];
 
-  v10 = [(HUBannerView *)self layoutOptions];
-  [v10 cellCornerRadius];
+  layoutOptions4 = [(HUBannerView *)self layoutOptions];
+  [layoutOptions4 cellCornerRadius];
   v12 = v11;
-  v13 = [(HUBannerView *)self footerView];
-  v14 = [v13 layer];
-  [v14 setCornerRadius:v12];
+  footerView = [(HUBannerView *)self footerView];
+  layer = [footerView layer];
+  [layer setCornerRadius:v12];
 
-  v15 = [(HUBannerView *)self layoutOptions];
-  v16 = [v15 footerViewLabelFont];
-  v17 = [(HUBannerView *)self footerViewLabel];
-  [v17 setFont:v16];
+  layoutOptions5 = [(HUBannerView *)self layoutOptions];
+  footerViewLabelFont = [layoutOptions5 footerViewLabelFont];
+  footerViewLabel = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel setFont:footerViewLabelFont];
 
-  v18 = [(HUBannerView *)self layoutConstraints];
+  layoutConstraints = [(HUBannerView *)self layoutConstraints];
 
-  if (v18)
+  if (layoutConstraints)
   {
     v19 = MEMORY[0x277CCAAD0];
-    v20 = [(HUBannerView *)self layoutConstraints];
-    [v19 deactivateConstraints:v20];
+    layoutConstraints2 = [(HUBannerView *)self layoutConstraints];
+    [v19 deactivateConstraints:layoutConstraints2];
   }
 
   [(HUBannerView *)self setLayoutConstraints:0];
@@ -721,152 +721,152 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
 
 - (void)prepareForReuse
 {
-  v3 = [(HUBannerView *)self layoutOptions];
-  v4 = [v3 font];
-  v5 = [(HUBannerView *)self titleLabel];
-  [v5 setFont:v4];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
+  font = [layoutOptions font];
+  titleLabel = [(HUBannerView *)self titleLabel];
+  [titleLabel setFont:font];
 
-  v6 = [(HUBannerView *)self layoutOptions];
-  v7 = [v6 descriptionFont];
-  v8 = [(HUBannerView *)self descriptionLabel];
-  [v8 setFont:v7];
+  layoutOptions2 = [(HUBannerView *)self layoutOptions];
+  descriptionFont = [layoutOptions2 descriptionFont];
+  descriptionLabel = [(HUBannerView *)self descriptionLabel];
+  [descriptionLabel setFont:descriptionFont];
 
-  v9 = [(HUBannerView *)self layoutOptions];
-  v10 = [v9 footerViewLabelFont];
-  v11 = [(HUBannerView *)self footerViewLabel];
-  [v11 setFont:v10];
+  layoutOptions3 = [(HUBannerView *)self layoutOptions];
+  footerViewLabelFont = [layoutOptions3 footerViewLabelFont];
+  footerViewLabel = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel setFont:footerViewLabelFont];
 
-  v12 = [(HUBannerView *)self iconImageView];
-  [v12 setImage:0];
+  iconImageView = [(HUBannerView *)self iconImageView];
+  [iconImageView setImage:0];
 
-  v13 = [(HUBannerView *)self iconView];
-  [v13 updateWithIconDescriptor:0 displayStyle:1 animated:0];
+  iconView = [(HUBannerView *)self iconView];
+  [iconView updateWithIconDescriptor:0 displayStyle:1 animated:0];
 
-  v14 = [(HUBannerView *)self supplementaryIconImageView];
-  [v14 setImage:0];
+  supplementaryIconImageView = [(HUBannerView *)self supplementaryIconImageView];
+  [supplementaryIconImageView setImage:0];
 
-  v15 = [(HUBannerView *)self supplementaryIconView];
-  [v15 updateWithIconDescriptor:0 displayStyle:1 animated:0];
+  supplementaryIconView = [(HUBannerView *)self supplementaryIconView];
+  [supplementaryIconView updateWithIconDescriptor:0 displayStyle:1 animated:0];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v82[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HUBannerView *)self item];
-  v6 = [v5 latestResults];
+  item = [(HUBannerView *)self item];
+  latestResults = [item latestResults];
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v8 = [(HUBannerView *)self titleLabel];
-  [v8 setText:v7];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  titleLabel = [(HUBannerView *)self titleLabel];
+  [titleLabel setText:v7];
 
-  v9 = [(HUBannerView *)self layoutOptions];
-  v10 = [v9 maxNumberOfTitleLines];
-  v11 = [(HUBannerView *)self titleLabel];
-  [v11 setNumberOfLines:v10];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
+  maxNumberOfTitleLines = [layoutOptions maxNumberOfTitleLines];
+  titleLabel2 = [(HUBannerView *)self titleLabel];
+  [titleLabel2 setNumberOfLines:maxNumberOfTitleLines];
 
-  v12 = [(HUBannerView *)self titleLabel];
-  [v12 sizeToFit];
+  titleLabel3 = [(HUBannerView *)self titleLabel];
+  [titleLabel3 sizeToFit];
 
-  v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   v81[0] = *MEMORY[0x277D740A8];
-  v14 = [(HUBannerView *)self descriptionLabel];
-  v15 = [v14 font];
-  v82[0] = v15;
+  descriptionLabel = [(HUBannerView *)self descriptionLabel];
+  font = [descriptionLabel font];
+  v82[0] = font;
   v81[1] = *MEMORY[0x277D740C0];
-  v16 = [(HUBannerView *)self descriptionLabel];
-  v17 = [v16 textColor];
-  v82[1] = v17;
+  descriptionLabel2 = [(HUBannerView *)self descriptionLabel];
+  textColor = [descriptionLabel2 textColor];
+  v82[1] = textColor;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:2];
 
   if ([v13 prefersDynamicString])
   {
-    v19 = [(HUBannerView *)self descriptionLabel];
-    [v19 bounds];
-    v22 = [v13 dynamicStringForSize:v18 attributes:{v20, v21}];
-    v23 = [(HUBannerView *)self descriptionLabel];
-    [v23 setAttributedText:v22];
+    descriptionLabel3 = [(HUBannerView *)self descriptionLabel];
+    [descriptionLabel3 bounds];
+    descriptionLabel5 = [v13 dynamicStringForSize:v18 attributes:{v20, v21}];
+    descriptionLabel4 = [(HUBannerView *)self descriptionLabel];
+    [descriptionLabel4 setAttributedText:descriptionLabel5];
   }
 
   else
   {
-    v19 = [v13 stringWithAttributes:v18];
-    v22 = [(HUBannerView *)self descriptionLabel];
-    [v22 setAttributedText:v19];
+    descriptionLabel3 = [v13 stringWithAttributes:v18];
+    descriptionLabel5 = [(HUBannerView *)self descriptionLabel];
+    [descriptionLabel5 setAttributedText:descriptionLabel3];
   }
 
-  v24 = [(HUBannerView *)self layoutOptions];
-  v25 = [v24 maxNumberOfDescriptionLines];
-  v26 = [(HUBannerView *)self descriptionLabel];
-  [v26 setNumberOfLines:v25];
+  layoutOptions2 = [(HUBannerView *)self layoutOptions];
+  maxNumberOfDescriptionLines = [layoutOptions2 maxNumberOfDescriptionLines];
+  descriptionLabel6 = [(HUBannerView *)self descriptionLabel];
+  [descriptionLabel6 setNumberOfLines:maxNumberOfDescriptionLines];
 
-  v27 = [(HUBannerView *)self descriptionLabel];
-  [v27 sizeToFit];
+  descriptionLabel7 = [(HUBannerView *)self descriptionLabel];
+  [descriptionLabel7 sizeToFit];
 
-  v28 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
-  v29 = [(HUBannerView *)self footerViewLabel];
-  [v29 setText:v28];
+  v28 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+  footerViewLabel = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel setText:v28];
 
-  v30 = [(HUBannerView *)self footerViewLabel];
-  [v30 setAccessibilityIdentifier:@"Home.Banners.Cells.Footer.Text"];
+  footerViewLabel2 = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel2 setAccessibilityIdentifier:@"Home.Banners.Cells.Footer.Text"];
 
-  v31 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DF0]];
+  v31 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DF0]];
   if (v31)
   {
-    v32 = [(HUBannerView *)self footerViewLabel];
-    [v32 setTextColor:v31];
+    footerViewLabel3 = [(HUBannerView *)self footerViewLabel];
+    [footerViewLabel3 setTextColor:v31];
   }
 
-  v33 = [(HUBannerView *)self item];
-  v34 = [v33 latestResults];
-  v35 = [v34 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
+  item2 = [(HUBannerView *)self item];
+  latestResults2 = [item2 latestResults];
+  v35 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
 
   v80 = v18;
   if (v35)
   {
-    v36 = [(HUBannerView *)self iconImageView];
-    [v36 setContentMode:1];
+    iconImageView = [(HUBannerView *)self iconImageView];
+    [iconImageView setContentMode:1];
 
-    v37 = [(HUBannerView *)self iconImageView];
-    [v37 setImage:v35];
+    iconImageView2 = [(HUBannerView *)self iconImageView];
+    [iconImageView2 setImage:v35];
 
-    v38 = [(HUBannerView *)self iconImageView];
-    [v38 setHidden:0];
+    iconImageView3 = [(HUBannerView *)self iconImageView];
+    [iconImageView3 setHidden:0];
 
-    v39 = [(HUBannerView *)self iconView];
-    [v39 setHidden:1];
+    iconView = [(HUBannerView *)self iconView];
+    [iconView setHidden:1];
 
-    v40 = [(HUBannerView *)self item];
-    v41 = [v40 latestResults];
-    v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
+    item3 = [(HUBannerView *)self item];
+    latestResults3 = [item3 latestResults];
+    v42 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
 
     if (v42)
     {
-      v43 = [(HUBannerView *)self iconImageView];
-      [v43 setTintColor:v42];
+      iconImageView4 = [(HUBannerView *)self iconImageView];
+      [iconImageView4 setTintColor:v42];
     }
 
-    v44 = [(HUBannerView *)self item];
-    v45 = [v44 latestResults];
-    v46 = [v45 objectForKeyedSubscript:*MEMORY[0x277D13F40]];
+    item4 = [(HUBannerView *)self item];
+    latestResults4 = [item4 latestResults];
+    v46 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13F40]];
 
-    v47 = [(HUBannerView *)self supplementaryIconImageView];
-    v48 = v47;
+    supplementaryIconImageView = [(HUBannerView *)self supplementaryIconImageView];
+    v48 = supplementaryIconImageView;
     if (v46)
     {
-      [v47 setContentMode:1];
+      [supplementaryIconImageView setContentMode:1];
 
-      v49 = [(HUBannerView *)self supplementaryIconImageView];
-      [v49 setImage:v46];
+      supplementaryIconImageView2 = [(HUBannerView *)self supplementaryIconImageView];
+      [supplementaryIconImageView2 setImage:v46];
 
       if (v42)
       {
-        v50 = [(HUBannerView *)self supplementaryIconImageView];
-        [v50 setTintColor:v42];
+        supplementaryIconImageView3 = [(HUBannerView *)self supplementaryIconImageView];
+        [supplementaryIconImageView3 setTintColor:v42];
       }
 
-      v47 = [(HUBannerView *)self supplementaryIconImageView];
-      v48 = v47;
+      supplementaryIconImageView = [(HUBannerView *)self supplementaryIconImageView];
+      v48 = supplementaryIconImageView;
       v51 = 0;
     }
 
@@ -878,40 +878,40 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
 
   else
   {
-    v52 = [(HUBannerView *)self item];
-    v53 = [v52 latestResults];
-    v42 = [v53 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+    item5 = [(HUBannerView *)self item];
+    latestResults5 = [item5 latestResults];
+    v42 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
     objc_opt_class();
-    v79 = v3;
+    v79 = animationCopy;
     if (objc_opt_isKindOfClass())
     {
       v54 = MEMORY[0x277D14440];
       v55 = v42;
       v56 = [v54 alloc];
       [v55 packageIdentifier];
-      v58 = v57 = v3;
+      v58 = v57 = animationCopy;
 
-      v59 = [v56 initWithPackageIdentifier:v58 state:*MEMORY[0x277D13758]];
-      v60 = [(HUBannerView *)self iconView];
-      [v60 updateWithIconDescriptor:v59 displayStyle:1 animated:v57];
+      iconView3 = [v56 initWithPackageIdentifier:v58 state:*MEMORY[0x277D13758]];
+      iconView2 = [(HUBannerView *)self iconView];
+      [iconView2 updateWithIconDescriptor:iconView3 displayStyle:1 animated:v57];
     }
 
     else
     {
-      v59 = [(HUBannerView *)self iconView];
-      [v59 updateWithIconDescriptor:v42 displayStyle:1 animated:v3];
+      iconView3 = [(HUBannerView *)self iconView];
+      [iconView3 updateWithIconDescriptor:v42 displayStyle:1 animated:animationCopy];
     }
 
-    v61 = [(HUBannerView *)self iconView];
-    [v61 setHidden:0];
+    iconView4 = [(HUBannerView *)self iconView];
+    [iconView4 setHidden:0];
 
-    v62 = [(HUBannerView *)self iconImageView];
-    [v62 setHidden:1];
+    iconImageView5 = [(HUBannerView *)self iconImageView];
+    [iconImageView5 setHidden:1];
 
-    v63 = [(HUBannerView *)self item];
-    v64 = [v63 latestResults];
-    v46 = [v64 objectForKeyedSubscript:*MEMORY[0x277D13F30]];
+    item6 = [(HUBannerView *)self item];
+    latestResults6 = [item6 latestResults];
+    v46 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13F30]];
 
     if (v46)
     {
@@ -921,42 +921,42 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
         v65 = MEMORY[0x277D14440];
         v66 = v42;
         v67 = [v65 alloc];
-        v68 = [v66 packageIdentifier];
+        packageIdentifier = [v66 packageIdentifier];
 
-        v69 = [v67 initWithPackageIdentifier:v68 state:*MEMORY[0x277D13758]];
-        v70 = [(HUBannerView *)self supplementaryIconView];
-        [v70 updateWithIconDescriptor:v69 displayStyle:1 animated:v79];
+        supplementaryIconView2 = [v67 initWithPackageIdentifier:packageIdentifier state:*MEMORY[0x277D13758]];
+        supplementaryIconView = [(HUBannerView *)self supplementaryIconView];
+        [supplementaryIconView updateWithIconDescriptor:supplementaryIconView2 displayStyle:1 animated:v79];
       }
 
       else
       {
-        v69 = [(HUBannerView *)self supplementaryIconView];
-        [v69 updateWithIconDescriptor:v46 displayStyle:1 animated:v79];
+        supplementaryIconView2 = [(HUBannerView *)self supplementaryIconView];
+        [supplementaryIconView2 updateWithIconDescriptor:v46 displayStyle:1 animated:v79];
       }
     }
 
-    v47 = [(HUBannerView *)self supplementaryIconView];
-    v48 = v47;
+    supplementaryIconImageView = [(HUBannerView *)self supplementaryIconView];
+    v48 = supplementaryIconImageView;
     v51 = v46 == 0;
   }
 
-  [v47 setHidden:v51];
+  [supplementaryIconImageView setHidden:v51];
 
-  v71 = [(HUBannerView *)self footerViewLabel];
-  v72 = [v71 text];
-  v73 = [(HUBannerView *)self lineView];
-  [v73 setHidden:v72 == 0];
+  footerViewLabel4 = [(HUBannerView *)self footerViewLabel];
+  text = [footerViewLabel4 text];
+  lineView = [(HUBannerView *)self lineView];
+  [lineView setHidden:text == 0];
 
-  v74 = [(HUBannerView *)self footerViewLabel];
-  v75 = [v74 text];
-  v76 = [(HUBannerView *)self footerView];
-  [v76 setHidden:v75 == 0];
+  footerViewLabel5 = [(HUBannerView *)self footerViewLabel];
+  text2 = [footerViewLabel5 text];
+  footerView = [(HUBannerView *)self footerView];
+  [footerView setHidden:text2 == 0];
 
-  v77 = [(HUBannerView *)self footerViewLabel];
-  [v77 setNumberOfLines:0];
+  footerViewLabel6 = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel6 setNumberOfLines:0];
 
-  v78 = [(HUBannerView *)self footerViewLabel];
-  [v78 setLineBreakMode:0];
+  footerViewLabel7 = [(HUBannerView *)self footerViewLabel];
+  [footerViewLabel7 setLineBreakMode:0];
 
   [(HUBannerView *)self setNeedsUpdateConstraints];
 }
@@ -964,74 +964,74 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUBannerView *)self titleLabel];
-  v5 = [v4 text];
+  titleLabel = [(HUBannerView *)self titleLabel];
+  text = [titleLabel text];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v3 appendString:v5 withName:v7];
+  [v3 appendString:text withName:v7];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)_dismissButtonTapped:(id)a3
+- (void)_dismissButtonTapped:(id)tapped
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[HUBannerView _dismissButtonTapped:]";
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped dismiss button", &v9, 0x16u);
   }
 
-  v6 = [(HUBannerView *)self delegate];
+  delegate = [(HUBannerView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUBannerView *)self delegate];
-    [v8 bannerView:self dismissButtonTapped:v4];
+    delegate2 = [(HUBannerView *)self delegate];
+    [delegate2 bannerView:self dismissButtonTapped:tappedCopy];
   }
 }
 
-- (void)_footerViewTapped:(id)a3
+- (void)_footerViewTapped:(id)tapped
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[HUBannerView _footerViewTapped:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = tappedCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped footer view %@", &v9, 0x20u);
   }
 
-  v6 = [(HUBannerView *)self delegate];
+  delegate = [(HUBannerView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUBannerView *)self delegate];
-    [v8 bannerView:self footerViewTapped:v4];
+    delegate2 = [(HUBannerView *)self delegate];
+    [delegate2 bannerView:self footerViewTapped:tappedCopy];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = [a4 view];
-  v6 = [(HUBannerView *)self footerView];
-  if (v5 == v6)
+  view = [touch view];
+  footerView = [(HUBannerView *)self footerView];
+  if (view == footerView)
   {
-    v8 = [(HUBannerView *)self delegate];
+    delegate = [(HUBannerView *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -1039,7 +1039,7 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
       return 0;
     }
 
-    v10 = [(HUBannerView *)self delegate];
+    delegate2 = [(HUBannerView *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -1047,9 +1047,9 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
       return 1;
     }
 
-    v5 = [(HUBannerView *)self delegate];
-    v6 = [(HUBannerView *)self footerView];
-    v7 = [v5 bannerView:self shouldReceiveFooterViewTaps:v6];
+    view = [(HUBannerView *)self delegate];
+    footerView = [(HUBannerView *)self footerView];
+    v7 = [view bannerView:self shouldReceiveFooterViewTaps:footerView];
   }
 
   else
@@ -1060,67 +1060,67 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(HUBannerView *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
+  height = size.height;
+  width = size.width;
+  traitCollection = [(HUBannerView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v12 = *MEMORY[0x277D767F8];
 
-  v13 = [(HUBannerView *)self layoutOptions];
-  [v13 leadingInset];
+  layoutOptions = [(HUBannerView *)self layoutOptions];
+  [layoutOptions leadingInset];
   v15 = v14;
-  v16 = [(HUBannerView *)self layoutOptions];
-  v17 = v16;
-  if (v11 >= v12)
+  layoutOptions2 = [(HUBannerView *)self layoutOptions];
+  v17 = layoutOptions2;
+  if (preferredContentSizeCategory >= v12)
   {
-    [v16 trailingInset];
+    [layoutOptions2 trailingInset];
     v25 = v15 + v26;
   }
 
   else
   {
-    [v16 iconWidth];
+    [layoutOptions2 iconWidth];
     v19 = v15 + v18;
-    v20 = [(HUBannerView *)self layoutOptions];
-    [v20 horizontalItemSpacing];
+    layoutOptions3 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions3 horizontalItemSpacing];
     v22 = v19 + v21;
-    v23 = [(HUBannerView *)self layoutOptions];
-    [v23 trailingInset];
+    layoutOptions4 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions4 trailingInset];
     v25 = v22 + v24;
   }
 
   v27 = width - v25;
-  v28 = [(HUBannerView *)self titleLabel];
-  *&v29 = a4;
-  *&v30 = a5;
-  [v28 systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v29, v30}];
+  titleLabel = [(HUBannerView *)self titleLabel];
+  *&v29 = priority;
+  *&v30 = fittingPriority;
+  [titleLabel systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v29, v30}];
   v32 = v31;
 
-  v33 = [(HUBannerView *)self layoutOptions];
-  [v33 verticalLabelSpacing];
+  layoutOptions5 = [(HUBannerView *)self layoutOptions];
+  [layoutOptions5 verticalLabelSpacing];
   v35 = ceil(v32) + 0.0 + v34;
 
-  v36 = [(HUBannerView *)self descriptionLabel];
-  *&v37 = a4;
-  *&v38 = a5;
-  [v36 systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v37, v38}];
+  descriptionLabel = [(HUBannerView *)self descriptionLabel];
+  *&v37 = priority;
+  *&v38 = fittingPriority;
+  [descriptionLabel systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v37, v38}];
   v40 = v39;
 
   v41 = v35 + ceil(v40);
-  if (v11 < v12)
+  if (preferredContentSizeCategory < v12)
   {
-    v42 = [(HUBannerView *)self footerViewLabel];
-    v43 = [v42 text];
-    if ([v43 length])
+    footerViewLabel = [(HUBannerView *)self footerViewLabel];
+    text = [footerViewLabel text];
+    if ([text length])
     {
     }
 
     else
     {
-      v44 = [(HUBannerView *)self layoutOptions];
-      [v44 iconHeight];
+      layoutOptions6 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions6 iconHeight];
       v46 = v45;
 
       if (v46 <= v41)
@@ -1128,61 +1128,61 @@ void __40__HUBannerView_setHighlighted_animated___block_invoke(uint64_t a1)
         goto LABEL_10;
       }
 
-      v42 = [(HUBannerView *)self layoutOptions];
-      [v42 iconHeight];
+      footerViewLabel = [(HUBannerView *)self layoutOptions];
+      [footerViewLabel iconHeight];
       v41 = v47;
     }
   }
 
 LABEL_10:
-  v48 = [(HUBannerView *)self layoutOptions];
-  [v48 titleTopInset];
+  layoutOptions7 = [(HUBannerView *)self layoutOptions];
+  [layoutOptions7 titleTopInset];
   v50 = v41 + v49;
 
-  if (v11 >= v12)
+  if (preferredContentSizeCategory >= v12)
   {
-    v51 = [(HUBannerView *)self layoutOptions];
-    [v51 iconHeight];
+    layoutOptions8 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions8 iconHeight];
     v53 = v52;
-    v54 = [(HUBannerView *)self layoutOptions];
-    [v54 verticalSpacingForLipElements];
+    layoutOptions9 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions9 verticalSpacingForLipElements];
     v50 = v50 + v53 + v55;
   }
 
-  v56 = [(HUBannerView *)self footerViewLabel];
-  v57 = [v56 text];
-  v58 = [v57 length];
+  footerViewLabel2 = [(HUBannerView *)self footerViewLabel];
+  text2 = [footerViewLabel2 text];
+  v58 = [text2 length];
 
   if (v58)
   {
-    v59 = [(HUBannerView *)self layoutOptions];
-    [v59 verticalSpacingForLineView];
+    layoutOptions10 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions10 verticalSpacingForLineView];
     v61 = v50 + v60 + 1.0;
 
-    v62 = [(HUBannerView *)self footerViewLabel];
-    *&v63 = a4;
-    *&v64 = a5;
-    [v62 systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v63, v64}];
+    footerViewLabel3 = [(HUBannerView *)self footerViewLabel];
+    *&v63 = priority;
+    *&v64 = fittingPriority;
+    [footerViewLabel3 systemLayoutSizeFittingSize:v27 withHorizontalFittingPriority:height verticalFittingPriority:{v63, v64}];
     v66 = v65;
 
-    v67 = [(HUBannerView *)self layoutOptions];
-    [v67 verticalSpacingForLipElements];
+    layoutOptions11 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions11 verticalSpacingForLipElements];
     v50 = v61 + ceil(v66) + v68 * 2.0;
 LABEL_14:
 
     goto LABEL_17;
   }
 
-  if (v11 < v12)
+  if (preferredContentSizeCategory < v12)
   {
-    v69 = [(HUBannerView *)self layoutOptions];
-    [v69 iconHeight];
+    layoutOptions12 = [(HUBannerView *)self layoutOptions];
+    [layoutOptions12 iconHeight];
     v71 = v70;
 
     if (v41 >= v71)
     {
-      v67 = [(HUBannerView *)self layoutOptions];
-      [v67 verticalSpacingForLineView];
+      layoutOptions11 = [(HUBannerView *)self layoutOptions];
+      [layoutOptions11 verticalSpacingForLineView];
       v50 = v50 + v74 + 1.0;
       goto LABEL_14;
     }
@@ -1196,14 +1196,14 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
-  v8 = a6 - 3;
-  if ((a6 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  lCopy = l;
+  v8 = interaction - 3;
+  if ((interaction - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v9 = [MEMORY[0x277D148E8] sharedInstance];
-    v10 = [v9 openURL:v7];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v10 = [mEMORY[0x277D148E8] openURL:lCopy];
   }
 
   return v8 < 0xFFFFFFFFFFFFFFFELL;

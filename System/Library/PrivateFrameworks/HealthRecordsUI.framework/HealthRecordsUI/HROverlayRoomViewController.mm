@@ -1,44 +1,44 @@
 @interface HROverlayRoomViewController
-+ (void)determineChartabilityOfOntologyConcept:(id)a3 withApplicationItems:(id)a4 completion:(id)a5;
-+ (void)determineChartabilityOfUserConcept:(id)a3 records:(id)a4 withApplicationItems:(id)a5 completion:(id)a6;
++ (void)determineChartabilityOfOntologyConcept:(id)concept withApplicationItems:(id)items completion:(id)completion;
++ (void)determineChartabilityOfUserConcept:(id)concept records:(id)records withApplicationItems:(id)items completion:(id)completion;
 - (BOOL)supportsShowAllFilters;
-- (HROverlayRoomViewController)initWithOntologyConcept:(id)a3 configuration:(id)a4 displayDate:(id)a5 masterDataSource:(id)a6 seriesDataSources:(id)a7 outOfRangeDataSource:(id)a8 noRangeDataSource:(id)a9 overlayMode:(int64_t)a10 applicationItems:(id)a11;
-- (HROverlayRoomViewController)initWithUserConcept:(id)a3 configuration:(id)a4 displayDate:(id)a5 masterDataSource:(id)a6 seriesDataSources:(id)a7 outOfRangeDataSource:(id)a8 noRangeDataSource:(id)a9 overlayMode:(int64_t)a10 applicationItems:(id)a11;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (HROverlayRoomViewController)initWithOntologyConcept:(id)concept configuration:(id)configuration displayDate:(id)date masterDataSource:(id)source seriesDataSources:(id)sources outOfRangeDataSource:(id)dataSource noRangeDataSource:(id)rangeDataSource overlayMode:(int64_t)self0 applicationItems:(id)self1;
+- (HROverlayRoomViewController)initWithUserConcept:(id)concept configuration:(id)configuration displayDate:(id)date masterDataSource:(id)source seriesDataSources:(id)sources outOfRangeDataSource:(id)dataSource noRangeDataSource:(id)rangeDataSource overlayMode:(int64_t)self0 applicationItems:(id)self1;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
 @end
 
 @implementation HROverlayRoomViewController
 
-- (HROverlayRoomViewController)initWithOntologyConcept:(id)a3 configuration:(id)a4 displayDate:(id)a5 masterDataSource:(id)a6 seriesDataSources:(id)a7 outOfRangeDataSource:(id)a8 noRangeDataSource:(id)a9 overlayMode:(int64_t)a10 applicationItems:(id)a11
+- (HROverlayRoomViewController)initWithOntologyConcept:(id)concept configuration:(id)configuration displayDate:(id)date masterDataSource:(id)source seriesDataSources:(id)sources outOfRangeDataSource:(id)dataSource noRangeDataSource:(id)rangeDataSource overlayMode:(int64_t)self0 applicationItems:(id)self1
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v32 = a4;
-  obj = a6;
-  v18 = a6;
-  v19 = a7;
-  v31 = a8;
-  v30 = a9;
+  conceptCopy = concept;
+  configurationCopy = configuration;
+  obj = source;
+  sourceCopy = source;
+  sourcesCopy = sources;
+  dataSourceCopy = dataSource;
+  rangeDataSourceCopy = rangeDataSource;
   v34.receiver = self;
   v34.super_class = HROverlayRoomViewController;
-  v20 = [(HKOverlayRoomViewController *)&v34 initWithDisplayDate:a5 applicationItems:a11 factorDisplayTypes:0 mode:a10];
+  v20 = [(HKOverlayRoomViewController *)&v34 initWithDisplayDate:date applicationItems:items factorDisplayTypes:0 mode:mode];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_ontologyConcept, a3);
-    objc_storeStrong(&v21->_configuration, a4);
+    objc_storeStrong(&v20->_ontologyConcept, concept);
+    objc_storeStrong(&v21->_configuration, configuration);
     objc_storeStrong(&v21->_masterDataSource, obj);
-    v22 = [v19 copy];
+    v22 = [sourcesCopy copy];
     seriesDataSources = v21->_seriesDataSources;
     v21->_seriesDataSources = v22;
 
-    objc_storeStrong(&v21->_outOfRangeDataSource, a8);
-    objc_storeStrong(&v21->_noRangeDataSource, a9);
-    v24 = [objc_opt_class() _verticalAxis];
-    v25 = [v18 chartDisplayTypeWithVerticalAxis:v24];
+    objc_storeStrong(&v21->_outOfRangeDataSource, dataSource);
+    objc_storeStrong(&v21->_noRangeDataSource, rangeDataSource);
+    _verticalAxis = [objc_opt_class() _verticalAxis];
+    v25 = [sourceCopy chartDisplayTypeWithVerticalAxis:_verticalAxis];
     v35[0] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
     displayTypes = v21->_displayTypes;
@@ -48,33 +48,33 @@
   return v21;
 }
 
-- (HROverlayRoomViewController)initWithUserConcept:(id)a3 configuration:(id)a4 displayDate:(id)a5 masterDataSource:(id)a6 seriesDataSources:(id)a7 outOfRangeDataSource:(id)a8 noRangeDataSource:(id)a9 overlayMode:(int64_t)a10 applicationItems:(id)a11
+- (HROverlayRoomViewController)initWithUserConcept:(id)concept configuration:(id)configuration displayDate:(id)date masterDataSource:(id)source seriesDataSources:(id)sources outOfRangeDataSource:(id)dataSource noRangeDataSource:(id)rangeDataSource overlayMode:(int64_t)self0 applicationItems:(id)self1
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v32 = a4;
-  obj = a6;
-  v18 = a6;
-  v19 = a7;
-  v31 = a8;
-  v30 = a9;
+  conceptCopy = concept;
+  configurationCopy = configuration;
+  obj = source;
+  sourceCopy = source;
+  sourcesCopy = sources;
+  dataSourceCopy = dataSource;
+  rangeDataSourceCopy = rangeDataSource;
   v34.receiver = self;
   v34.super_class = HROverlayRoomViewController;
-  v20 = [(HKOverlayRoomViewController *)&v34 initWithDisplayDate:a5 applicationItems:a11 factorDisplayTypes:0 mode:a10];
+  v20 = [(HKOverlayRoomViewController *)&v34 initWithDisplayDate:date applicationItems:items factorDisplayTypes:0 mode:mode];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_userConcept, a3);
-    objc_storeStrong(&v21->_configuration, a4);
+    objc_storeStrong(&v20->_userConcept, concept);
+    objc_storeStrong(&v21->_configuration, configuration);
     objc_storeStrong(&v21->_masterDataSource, obj);
-    v22 = [v19 copy];
+    v22 = [sourcesCopy copy];
     seriesDataSources = v21->_seriesDataSources;
     v21->_seriesDataSources = v22;
 
-    objc_storeStrong(&v21->_outOfRangeDataSource, a8);
-    objc_storeStrong(&v21->_noRangeDataSource, a9);
-    v24 = [objc_opt_class() _verticalAxis];
-    v25 = [v18 chartDisplayTypeWithVerticalAxis:v24];
+    objc_storeStrong(&v21->_outOfRangeDataSource, dataSource);
+    objc_storeStrong(&v21->_noRangeDataSource, rangeDataSource);
+    _verticalAxis = [objc_opt_class() _verticalAxis];
+    v25 = [sourceCopy chartDisplayTypeWithVerticalAxis:_verticalAxis];
     v35[0] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
     displayTypes = v21->_displayTypes;
@@ -84,25 +84,25 @@
   return v21;
 }
 
-+ (void)determineChartabilityOfOntologyConcept:(id)a3 withApplicationItems:(id)a4 completion:(id)a5
++ (void)determineChartabilityOfOntologyConcept:(id)concept withApplicationItems:(id)items completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 healthStore];
-  v11 = [v7 identifier];
+  conceptCopy = concept;
+  itemsCopy = items;
+  completionCopy = completion;
+  healthStore = [itemsCopy healthStore];
+  identifier = [conceptCopy identifier];
   v12 = *MEMORY[0x1E696B718];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __102__HROverlayRoomViewController_determineChartabilityOfOntologyConcept_withApplicationItems_completion___block_invoke;
   v16[3] = &unk_1E83DCD08;
-  v18 = v8;
-  v19 = v9;
-  v17 = v7;
-  v13 = v8;
-  v14 = v9;
-  v15 = v7;
-  [v10 fetchRecordsForConceptId:v11 keyPath:v12 completion:v16];
+  v18 = itemsCopy;
+  v19 = completionCopy;
+  v17 = conceptCopy;
+  v13 = itemsCopy;
+  v14 = completionCopy;
+  v15 = conceptCopy;
+  [healthStore fetchRecordsForConceptId:identifier keyPath:v12 completion:v16];
 }
 
 void __102__HROverlayRoomViewController_determineChartabilityOfOntologyConcept_withApplicationItems_completion___block_invoke(id *a1, void *a2)
@@ -162,24 +162,24 @@ void __102__HROverlayRoomViewController_determineChartabilityOfOntologyConcept_w
   }
 }
 
-+ (void)determineChartabilityOfUserConcept:(id)a3 records:(id)a4 withApplicationItems:(id)a5 completion:(id)a6
++ (void)determineChartabilityOfUserConcept:(id)concept records:(id)records withApplicationItems:(id)items completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  conceptCopy = concept;
+  itemsCopy = items;
+  completionCopy = completion;
+  recordsCopy = records;
   v13 = objc_alloc_init(_TtC15HealthRecordsUI35MedicalRecordChartabilityDeterminer);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_records_withApplicationItems_completion___block_invoke;
   v17[3] = &unk_1E83DCCE0;
-  v19 = v10;
-  v20 = v11;
-  v18 = v9;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  [(MedicalRecordChartabilityDeterminer *)v13 determineChartabilityForUserConcept:v15 records:v12 completion:v17];
+  v19 = itemsCopy;
+  v20 = completionCopy;
+  v18 = conceptCopy;
+  v14 = itemsCopy;
+  v15 = conceptCopy;
+  v16 = completionCopy;
+  [(MedicalRecordChartabilityDeterminer *)v13 determineChartabilityForUserConcept:v15 records:recordsCopy completion:v17];
 }
 
 void __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_records_withApplicationItems_completion___block_invoke(id *a1, void *a2)
@@ -249,58 +249,58 @@ void __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_recor
   v3 = objc_alloc([(MedicalRecordChartConfiguration *)self->_configuration chartControllerClass]);
   displayTypes = self->_displayTypes;
   v17 = v3;
-  v20 = [(HKOverlayRoomViewController *)self applicationItems];
-  v15 = [v20 healthStore];
-  v19 = [(HKOverlayRoomViewController *)self applicationItems];
-  v4 = [v19 unitController];
-  v18 = [(HKOverlayRoomViewController *)self applicationItems];
-  v5 = [v18 dateCache];
-  v6 = [(HKOverlayRoomViewController *)self applicationItems];
-  v7 = [v6 chartDataCacheController];
-  v8 = [(HKOverlayRoomViewController *)self applicationItems];
-  v9 = [v8 timeScopeController];
-  v10 = [(HKOverlayRoomViewController *)self applicationItems];
-  v11 = [v10 sampleDateRangeController];
-  v12 = [(HKOverlayRoomViewController *)self displayDate];
-  v13 = [v17 initWithDisplayTypes:displayTypes healthStore:v15 unitPreferenceController:v4 dateCache:v5 chartDataCacheController:v7 selectedTimeScopeController:v9 sampleTypeDateRangeController:v11 initialXValue:v12 currentCalendarOverride:0 options:1280];
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
+  applicationItems2 = [(HKOverlayRoomViewController *)self applicationItems];
+  unitController = [applicationItems2 unitController];
+  applicationItems3 = [(HKOverlayRoomViewController *)self applicationItems];
+  dateCache = [applicationItems3 dateCache];
+  applicationItems4 = [(HKOverlayRoomViewController *)self applicationItems];
+  chartDataCacheController = [applicationItems4 chartDataCacheController];
+  applicationItems5 = [(HKOverlayRoomViewController *)self applicationItems];
+  timeScopeController = [applicationItems5 timeScopeController];
+  applicationItems6 = [(HKOverlayRoomViewController *)self applicationItems];
+  sampleDateRangeController = [applicationItems6 sampleDateRangeController];
+  displayDate = [(HKOverlayRoomViewController *)self displayDate];
+  v13 = [v17 initWithDisplayTypes:displayTypes healthStore:healthStore unitPreferenceController:unitController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:timeScopeController sampleTypeDateRangeController:sampleDateRangeController initialXValue:displayDate currentCalendarOverride:0 options:1280];
 
   [v13 addChartViewObserver:v13];
 
   return v13;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
-  v4 = [(HKConcept *)self->_ontologyConcept localizedPreferredName];
-  v5 = v4;
-  if (v4)
+  localizedPreferredName = [(HKConcept *)self->_ontologyConcept localizedPreferredName];
+  v5 = localizedPreferredName;
+  if (localizedPreferredName)
   {
-    v6 = v4;
+    title = localizedPreferredName;
   }
 
   else
   {
-    v6 = [(HROverlayRoomViewController *)self title];
+    title = [(HROverlayRoomViewController *)self title];
   }
 
-  v7 = v6;
+  v7 = title;
 
   return v7;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = [objc_opt_class() _verticalAxis];
-  if (a3 == 1)
+  _verticalAxis = [objc_opt_class() _verticalAxis];
+  if (mode == 1)
   {
-    v8 = [MEMORY[0x1E69A4518] chartFilterDefaultForSingle];
+    chartFilterDefaultForSingle = [MEMORY[0x1E69A4518] chartFilterDefaultForSingle];
     v9 = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69A4518] chartFilterDefaultForMultiple];
+    chartFilterDefaultForSingle = [MEMORY[0x1E69A4518] chartFilterDefaultForMultiple];
     v9 = -1;
   }
 
@@ -310,7 +310,7 @@ void __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_recor
     v11 = [_TtC15HealthRecordsUI32MedicalRecordChartOverlayContext alloc];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = [v12 localizedStringForKey:@"RECORDS_OUT_OF_RANGE" value:&stru_1F4D16E38 table:@"HealthUI-Localizable"];
-    v14 = [(MedicalRecordChartOverlayContext *)v11 initWithTitle:v13 dataSource:self->_outOfRangeDataSource defaultColors:v8 selectedColors:0 verticalAxis:v7];
+    v14 = [(MedicalRecordChartOverlayContext *)v11 initWithTitle:v13 dataSource:self->_outOfRangeDataSource defaultColors:chartFilterDefaultForSingle selectedColors:0 verticalAxis:_verticalAxis];
 
     [v10 addObject:v14];
   }
@@ -320,7 +320,7 @@ void __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_recor
     v15 = [_TtC15HealthRecordsUI32MedicalRecordChartOverlayContext alloc];
     v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v17 = [v16 localizedStringForKey:@"RECORDS_NO_RANGE" value:&stru_1F4D16E38 table:@"HealthUI-Localizable"];
-    v18 = [(MedicalRecordChartOverlayContext *)v15 initWithTitle:v17 dataSource:self->_noRangeDataSource defaultColors:v8 selectedColors:0 verticalAxis:v7];
+    v18 = [(MedicalRecordChartOverlayContext *)v15 initWithTitle:v17 dataSource:self->_noRangeDataSource defaultColors:chartFilterDefaultForSingle selectedColors:0 verticalAxis:_verticalAxis];
 
     [v10 addObject:v18];
   }
@@ -332,8 +332,8 @@ void __106__HROverlayRoomViewController_determineChartabilityOfUserConcept_recor
     v27[1] = 3221225472;
     v27[2] = __103__HROverlayRoomViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke;
     v27[3] = &unk_1E83DCD30;
-    v28 = v8;
-    v29 = v7;
+    v28 = chartFilterDefaultForSingle;
+    v29 = _verticalAxis;
     v20 = [(NSArray *)seriesDataSources hk_map:v27];
     [v10 addObjectsFromArray:v20];
   }
@@ -359,11 +359,11 @@ _TtC15HealthRecordsUI32MedicalRecordChartOverlayContext *__103__HROverlayRoomVie
   return v6;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [objc_alloc(objc_opt_class()) initWithOntologyConcept:self->_ontologyConcept configuration:self->_configuration displayDate:v9 masterDataSource:self->_masterDataSource seriesDataSources:self->_seriesDataSources outOfRangeDataSource:self->_outOfRangeDataSource noRangeDataSource:self->_noRangeDataSource overlayMode:a3 applicationItems:v8];
+  itemsCopy = items;
+  dateCopy = date;
+  v10 = [objc_alloc(objc_opt_class()) initWithOntologyConcept:self->_ontologyConcept configuration:self->_configuration displayDate:dateCopy masterDataSource:self->_masterDataSource seriesDataSources:self->_seriesDataSources outOfRangeDataSource:self->_outOfRangeDataSource noRangeDataSource:self->_noRangeDataSource overlayMode:mode applicationItems:itemsCopy];
 
   return v10;
 }

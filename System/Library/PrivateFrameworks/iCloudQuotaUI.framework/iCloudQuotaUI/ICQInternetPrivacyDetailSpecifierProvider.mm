@@ -1,14 +1,14 @@
 @interface ICQInternetPrivacyDetailSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (ICQInternetPrivacyDetailDelegate)detailDelegate;
-- (ICQInternetPrivacyDetailSpecifierProvider)initWithAccountManager:(id)a3;
-- (ICQInternetPrivacyDetailSpecifierProvider)initWithViewModel:(id)a3 accountManager:(id)a4;
+- (ICQInternetPrivacyDetailSpecifierProvider)initWithAccountManager:(id)manager;
+- (ICQInternetPrivacyDetailSpecifierProvider)initWithViewModel:(id)model accountManager:(id)manager;
 - (NSArray)specifiers;
 - (UIViewController)presenter;
 - (id)_IPAddressLocationSpecifier;
 - (id)_bannerSpecifiers;
 - (id)_explanationSpecifiers;
-- (id)_serviceEnabledForSpecifier:(id)a3;
+- (id)_serviceEnabledForSpecifier:(id)specifier;
 - (id)_serviceEnabledSpecifier;
 - (id)_switchOffAlert;
 - (id)_switchOffUnsupportedCellularAlert;
@@ -17,12 +17,12 @@
 - (id)_turnOffUnsupportedWifiAlert;
 - (id)_turnOnDNSAlert;
 - (id)_turnOnSafariAlert;
-- (void)_IPAddressLocationSpecifierWasTapped:(id)a3;
+- (void)_IPAddressLocationSpecifierWasTapped:(id)tapped;
 - (void)_openSystemStatusSpecifierWasTapped;
 - (void)_pausePrivateRelay;
 - (void)_refreshStatusAndPostNotification;
 - (void)_reloadSpecifiers;
-- (void)_setServiceEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)_setServiceEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)_startFetchingBannerModels;
 - (void)_turnOffCellularSpecifierWasTapped;
 - (void)_turnOffWifiSpecifierWasTapped;
@@ -33,41 +33,41 @@
 - (void)_unsupportedCellularLearnMoreSpecifierWasTapped;
 - (void)_unsupportedRegionLearnMoreSpecifierWasTapped;
 - (void)_unsupportedWiFiLearnMoreSpecifierWasTapped;
-- (void)_updateEnableStatusTo:(BOOL)a3;
+- (void)_updateEnableStatusTo:(BOOL)to;
 - (void)presentIncompatibleSitesHelp;
 @end
 
 @implementation ICQInternetPrivacyDetailSpecifierProvider
 
-- (ICQInternetPrivacyDetailSpecifierProvider)initWithViewModel:(id)a3 accountManager:(id)a4
+- (ICQInternetPrivacyDetailSpecifierProvider)initWithViewModel:(id)model accountManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = ICQInternetPrivacyDetailSpecifierProvider;
   v9 = [(ICQInternetPrivacyDetailSpecifierProvider *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
-    objc_storeStrong(&v10->_accountManager, a4);
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
+    objc_storeStrong(&v9->_viewModel, model);
+    objc_storeStrong(&v10->_accountManager, manager);
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v13 = [v8 accounts];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
-    v15 = [v14 aa_altDSID];
-    v16 = v15;
-    if (v15)
+    accounts = [managerCopy accounts];
+    v14 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    aa_altDSID = [v14 aa_altDSID];
+    v16 = aa_altDSID;
+    if (aa_altDSID)
     {
-      v17 = v15;
+      aa_altDSID2 = aa_altDSID;
     }
 
     else
     {
-      v18 = [MEMORY[0x277CB8F48] defaultStore];
-      v19 = [v18 aa_primaryAppleAccount];
-      v17 = [v19 aa_altDSID];
+      defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+      aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+      aa_altDSID2 = [aa_primaryAppleAccount aa_altDSID];
     }
 
     v20 = MEMORY[0x277CFB450];
@@ -76,7 +76,7 @@
     v22[2] = __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accountManager___block_invoke;
     v22[3] = &unk_27A65AD68;
     v23 = v10;
-    [v20 requestGeoClassificationForFeatureID:@"networking.privacy.subscriber" bundleID:v12 altDSID:v17 ignoreCache:0 completion:v22];
+    [v20 requestGeoClassificationForFeatureID:@"networking.privacy.subscriber" bundleID:bundleIdentifier altDSID:aa_altDSID2 ignoreCache:0 completion:v22];
   }
 
   return v10;
@@ -93,14 +93,14 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
   return [v5 _startFetchingBannerModels];
 }
 
-- (ICQInternetPrivacyDetailSpecifierProvider)initWithAccountManager:(id)a3
+- (ICQInternetPrivacyDetailSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -113,13 +113,13 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
   if (!specifiers)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _explanationSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    _explanationSpecifiers = [(ICQInternetPrivacyDetailSpecifierProvider *)self _explanationSpecifiers];
+    [v4 addObjectsFromArray:_explanationSpecifiers];
 
     if ([(NSArray *)self->_banners count])
     {
-      v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _bannerSpecifiers];
-      [v4 addObjectsFromArray:v6];
+      _bannerSpecifiers = [(ICQInternetPrivacyDetailSpecifierProvider *)self _bannerSpecifiers];
+      [v4 addObjectsFromArray:_bannerSpecifiers];
     }
 
     v7 = [v4 copy];
@@ -144,9 +144,9 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
 - (id)_serviceEnabledSpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [v4 switchTitle];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:sel__setServiceEnabled_forSpecifier_ get:sel__serviceEnabledForSpecifier_ detail:0 cell:6 edit:0];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  switchTitle = [viewModel switchTitle];
+  v6 = [v3 preferenceSpecifierNamed:switchTitle target:self set:sel__setServiceEnabled_forSpecifier_ get:sel__serviceEnabledForSpecifier_ detail:0 cell:6 edit:0];
 
   [v6 setButtonAction:sel__setServiceEnabled_forSpecifier_];
 
@@ -156,9 +156,9 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
 - (id)_IPAddressLocationSpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [v4 IPAddressLocationTitle];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:2 edit:0];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  iPAddressLocationTitle = [viewModel IPAddressLocationTitle];
+  v6 = [v3 preferenceSpecifierNamed:iPAddressLocationTitle target:self set:0 get:0 detail:0 cell:2 edit:0];
 
   [v6 setControllerLoadAction:sel__IPAddressLocationSpecifierWasTapped_];
 
@@ -173,32 +173,32 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
   v5 = NSStringFromClass(v4);
   [v3 setProperty:v5 forKey:*MEMORY[0x277D3FF48]];
 
-  v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v7 = [v6 privateRelayPausedMessage];
-  v8 = [v7 mutableCopy];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  privateRelayPausedMessage = [viewModel privateRelayPausedMessage];
+  v8 = [privateRelayPausedMessage mutableCopy];
 
-  v9 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v10 = [v9 incompatibleSitesMessage];
-  [v8 appendString:v10];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  incompatibleSitesMessage = [viewModel2 incompatibleSitesMessage];
+  [v8 appendString:incompatibleSitesMessage];
 
   [v8 appendString:@" "];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 learnMoreLinkTitle];
-  [v8 appendString:v12];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  learnMoreLinkTitle = [viewModel3 learnMoreLinkTitle];
+  [v8 appendString:learnMoreLinkTitle];
 
   v45 = v8;
   v13 = [v8 copy];
   [v3 setProperty:v13 forKey:*MEMORY[0x277D3FF70]];
 
-  v14 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v15 = [v14 privateRelayPausedMessage];
-  v16 = [v15 length];
-  v17 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v18 = [v17 incompatibleSitesMessage];
-  v19 = v16 + [v18 length];
-  v20 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v21 = [v20 learnMoreLinkTitle];
-  v22 = [v21 length];
+  viewModel4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  privateRelayPausedMessage2 = [viewModel4 privateRelayPausedMessage];
+  v16 = [privateRelayPausedMessage2 length];
+  viewModel5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  incompatibleSitesMessage2 = [viewModel5 incompatibleSitesMessage];
+  v19 = v16 + [incompatibleSitesMessage2 length];
+  viewModel6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  learnMoreLinkTitle2 = [viewModel6 learnMoreLinkTitle];
+  v22 = [learnMoreLinkTitle2 length];
 
   v47.location = v19 + 1;
   v47.length = v22;
@@ -211,18 +211,18 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
   [v3 setProperty:@"presentIncompatibleSitesHelp" forKey:*MEMORY[0x277D3FF50]];
   [v44 addObject:v3];
   v25 = MEMORY[0x277D3FAD8];
-  v26 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v27 = [v26 explanationTitle];
-  v28 = [v25 preferenceSpecifierNamed:v27 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  viewModel7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  explanationTitle = [viewModel7 explanationTitle];
+  v28 = [v25 preferenceSpecifierNamed:explanationTitle target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v28 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  v29 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v30 = [v29 explanationTitle];
-  [v28 setProperty:v30 forKey:*MEMORY[0x277D40170]];
+  viewModel8 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  explanationTitle2 = [viewModel8 explanationTitle];
+  [v28 setProperty:explanationTitle2 forKey:*MEMORY[0x277D40170]];
 
-  v31 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v32 = [v31 explanationMessage];
-  [v28 setProperty:v32 forKey:*MEMORY[0x277D40160]];
+  viewModel9 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  explanationMessage = [viewModel9 explanationMessage];
+  [v28 setProperty:explanationMessage forKey:*MEMORY[0x277D40160]];
 
   v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v34 = [v33 localizedStringForKey:@"ABOUT_PRIVATE_RELAY_LINK_URL" value:&stru_28844FC60 table:@"Localizable"];
@@ -236,18 +236,18 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
   [v28 setProperty:v37 forKey:*MEMORY[0x277D3FFC0]];
   [v28 setProperty:&unk_288479C60 forKey:*MEMORY[0x277D3FD78]];
   [v44 addObject:v28];
-  v38 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  LODWORD(v27) = [v38 isEnabled];
+  viewModel10 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  LODWORD(explanationTitle) = [viewModel10 isEnabled];
 
-  if (v27)
+  if (explanationTitle)
   {
-    v39 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _IPAddressLocationSpecifier];
-    [v44 addObject:v39];
+    _IPAddressLocationSpecifier = [(ICQInternetPrivacyDetailSpecifierProvider *)self _IPAddressLocationSpecifier];
+    [v44 addObject:_IPAddressLocationSpecifier];
   }
 
-  v40 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _serviceEnabledSpecifier];
+  _serviceEnabledSpecifier = [(ICQInternetPrivacyDetailSpecifierProvider *)self _serviceEnabledSpecifier];
   enableSwitchSpecifer = self->_enableSwitchSpecifer;
-  self->_enableSwitchSpecifer = v40;
+  self->_enableSwitchSpecifer = _serviceEnabledSpecifier;
 
   [v44 addObject:self->_enableSwitchSpecifer];
   v42 = [v44 copy];
@@ -257,15 +257,15 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider_initWithViewModel_accou
 
 - (id)_bannerSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   banners = self->_banners;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __62__ICQInternetPrivacyDetailSpecifierProvider__bannerSpecifiers__block_invoke;
   v11 = &unk_27A65BFF8;
-  v12 = v3;
-  v13 = self;
-  v5 = v3;
+  v12 = array;
+  selfCopy = self;
+  v5 = array;
   [(NSArray *)banners enumerateObjectsUsingBlock:&v8];
   v6 = [v5 copy];
 
@@ -383,13 +383,13 @@ LABEL_22:
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __71__ICQInternetPrivacyDetailSpecifierProvider__startFetchingBannerModels__block_invoke;
   v5[3] = &unk_27A65C020;
   v5[4] = self;
-  [v4 fetchBannerModels:v5];
+  [viewModel fetchBannerModels:v5];
 }
 
 uint64_t __71__ICQInternetPrivacyDetailSpecifierProvider__startFetchingBannerModels__block_invoke(uint64_t a1, uint64_t a2)
@@ -411,9 +411,9 @@ uint64_t __71__ICQInternetPrivacyDetailSpecifierProvider__startFetchingBannerMod
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v6, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _turnOnSafariAlert];
-  [v4 showAlert:v5];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  _turnOnSafariAlert = [(ICQInternetPrivacyDetailSpecifierProvider *)self _turnOnSafariAlert];
+  [detailDelegate showAlert:_turnOnSafariAlert];
 }
 
 - (void)_turnOnDNSSpecifierWasTapped
@@ -427,9 +427,9 @@ uint64_t __71__ICQInternetPrivacyDetailSpecifierProvider__startFetchingBannerMod
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v6, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _turnOnDNSAlert];
-  [v4 showAlert:v5];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  _turnOnDNSAlert = [(ICQInternetPrivacyDetailSpecifierProvider *)self _turnOnDNSAlert];
+  [detailDelegate showAlert:_turnOnDNSAlert];
 }
 
 - (void)_turnOffWifiSpecifierWasTapped
@@ -443,15 +443,15 @@ uint64_t __71__ICQInternetPrivacyDetailSpecifierProvider__startFetchingBannerMod
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", buf, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 wiFiName];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  wiFiName = [viewModel2 wiFiName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__ICQInternetPrivacyDetailSpecifierProvider__turnOffWifiSpecifierWasTapped__block_invoke;
   v7[3] = &unk_27A65AFF0;
   v7[4] = self;
-  [v4 enableWifi:0 onNetworkName:v6 completion:v7];
+  [viewModel enableWifi:0 onNetworkName:wiFiName completion:v7];
 }
 
 void __75__ICQInternetPrivacyDetailSpecifierProvider__turnOffWifiSpecifierWasTapped__block_invoke(uint64_t a1, uint64_t a2)
@@ -476,15 +476,15 @@ void __75__ICQInternetPrivacyDetailSpecifierProvider__turnOffWifiSpecifierWasTap
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", buf, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 cellularName];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  cellularName = [viewModel2 cellularName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__ICQInternetPrivacyDetailSpecifierProvider__turnOffCellularSpecifierWasTapped__block_invoke;
   v7[3] = &unk_27A65AFF0;
   v7[4] = self;
-  [v4 enableCellular:0 onNetworkName:v6 completion:v7];
+  [viewModel enableCellular:0 onNetworkName:cellularName completion:v7];
 }
 
 void __79__ICQInternetPrivacyDetailSpecifierProvider__turnOffCellularSpecifierWasTapped__block_invoke(uint64_t a1, uint64_t a2)
@@ -509,15 +509,15 @@ void __79__ICQInternetPrivacyDetailSpecifierProvider__turnOffCellularSpecifierWa
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", buf, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 wiFiName];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  wiFiName = [viewModel2 wiFiName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__ICQInternetPrivacyDetailSpecifierProvider__turnOnWifiSpecifierWasTapped__block_invoke;
   v7[3] = &unk_27A65AFF0;
   v7[4] = self;
-  [v4 enableWifi:1 onNetworkName:v6 completion:v7];
+  [viewModel enableWifi:1 onNetworkName:wiFiName completion:v7];
 }
 
 uint64_t __74__ICQInternetPrivacyDetailSpecifierProvider__turnOnWifiSpecifierWasTapped__block_invoke(uint64_t result, uint64_t a2)
@@ -541,15 +541,15 @@ uint64_t __74__ICQInternetPrivacyDetailSpecifierProvider__turnOnWifiSpecifierWas
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", buf, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 cellularName];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  cellularName = [viewModel2 cellularName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifierWasTapped__block_invoke;
   v7[3] = &unk_27A65AFF0;
   v7[4] = self;
-  [v4 enableCellular:1 onNetworkName:v6 completion:v7];
+  [viewModel enableCellular:1 onNetworkName:cellularName completion:v7];
 }
 
 uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifierWasTapped__block_invoke(uint64_t result, uint64_t a2)
@@ -573,8 +573,8 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v5, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v4 presentSystemStatus];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate presentSystemStatus];
 }
 
 - (void)_unsupportedWiFiLearnMoreSpecifierWasTapped
@@ -588,8 +588,8 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v5, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v4 presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportednetwork"];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportednetwork"];
 }
 
 - (void)_unsupportedCellularLearnMoreSpecifierWasTapped
@@ -603,8 +603,8 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v5, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v4 presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportednetwork"];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportednetwork"];
 }
 
 - (void)_unsupportedRegionLearnMoreSpecifierWasTapped
@@ -618,11 +618,11 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Tap action: %s", &v5, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v4 presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportedregion"];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate presentLearnMoreFrom:@"com.apple.icloud.privaterelay.learnmoreunsupportedregion"];
 }
 
-- (void)_IPAddressLocationSpecifierWasTapped:(id)a3
+- (void)_IPAddressLocationSpecifierWasTapped:(id)tapped
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -634,23 +634,23 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
   }
 
   v5 = objc_alloc_init(ICQInternetPrivacyLocationSharingViewController);
-  v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  [(ICQInternetPrivacyLocationSharingViewController *)v5 setViewModel:v6];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  [(ICQInternetPrivacyLocationSharingViewController *)v5 setViewModel:viewModel];
 
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self delegate];
-  [v7 specifierProvider:self showViewController:v5];
+  delegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:v5];
 }
 
-- (id)_serviceEnabledForSpecifier:(id)a3
+- (id)_serviceEnabledForSpecifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-    v6 = [v5 isEnabled];
+    viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+    isEnabled = [viewModel isEnabled];
     v7 = @"NO";
-    if (v6)
+    if (isEnabled)
     {
       v7 = @"YES";
     }
@@ -661,15 +661,15 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
   }
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v10 = [v8 numberWithBool:{objc_msgSend(v9, "isEnabled")}];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  v10 = [v8 numberWithBool:{objc_msgSend(viewModel2, "isEnabled")}];
 
   return v10;
 }
 
-- (void)_setServiceEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setServiceEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([enabled BOOLValue])
   {
 
     [(ICQInternetPrivacyDetailSpecifierProvider *)self _updateEnableStatusTo:1];
@@ -686,14 +686,14 @@ uint64_t __78__ICQInternetPrivacyDetailSpecifierProvider__turnOnCellularSpecifie
       v10[3] = &unk_27A65C048;
       v10[4] = self;
       [(NSArray *)banners enumerateObjectsUsingBlock:v10];
-      v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-      v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _switchOffAlert];
-      [v6 showAlert:v7];
+      detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+      _switchOffAlert = [(ICQInternetPrivacyDetailSpecifierProvider *)self _switchOffAlert];
+      [detailDelegate showAlert:_switchOffAlert];
     }
 
-    v8 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-    v9 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _switchOffAlert];
-    [v8 showAlert:v9];
+    detailDelegate2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+    _switchOffAlert2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self _switchOffAlert];
+    [detailDelegate2 showAlert:_switchOffAlert2];
   }
 }
 
@@ -735,23 +735,23 @@ LABEL_6:
   }
 
   v4 = MEMORY[0x277D75110];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v7 = [v6 wiFiName];
-  v8 = [v5 unsupportedTurnOffAlertTitleFor:v7];
-  v9 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v10 = [v9 unsupportedTurnOffWifiAlertMessage];
-  v11 = [v4 alertControllerWithTitle:v8 message:v10 preferredStyle:1];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  wiFiName = [viewModel2 wiFiName];
+  v8 = [viewModel unsupportedTurnOffAlertTitleFor:wiFiName];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffWifiAlertMessage = [viewModel3 unsupportedTurnOffWifiAlertMessage];
+  v11 = [v4 alertControllerWithTitle:v8 message:unsupportedTurnOffWifiAlertMessage preferredStyle:1];
 
   v12 = MEMORY[0x277D750F8];
-  v13 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v14 = [v13 unsupportedTurnOffAlertOk];
+  viewModel4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffAlertOk = [viewModel4 unsupportedTurnOffAlertOk];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__ICQInternetPrivacyDetailSpecifierProvider__turnOffUnsupportedWifiAlert__block_invoke;
   v17[3] = &unk_27A65B1A0;
   v17[4] = self;
-  v15 = [v12 actionWithTitle:v14 style:1 handler:v17];
+  v15 = [v12 actionWithTitle:unsupportedTurnOffAlertOk style:1 handler:v17];
 
   [v11 addAction:v15];
 
@@ -776,21 +776,21 @@ void __73__ICQInternetPrivacyDetailSpecifierProvider__turnOffUnsupportedWifiAler
   }
 
   v4 = MEMORY[0x277D75110];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 unsupportedTurnOffCellularAlertTitle];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 unsupportedTurnOffCellularAlertMessage];
-  v9 = [v4 alertControllerWithTitle:v6 message:v8 preferredStyle:1];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffCellularAlertTitle = [viewModel unsupportedTurnOffCellularAlertTitle];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffCellularAlertMessage = [viewModel2 unsupportedTurnOffCellularAlertMessage];
+  v9 = [v4 alertControllerWithTitle:unsupportedTurnOffCellularAlertTitle message:unsupportedTurnOffCellularAlertMessage preferredStyle:1];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 unsupportedTurnOffAlertOk];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffAlertOk = [viewModel3 unsupportedTurnOffAlertOk];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__ICQInternetPrivacyDetailSpecifierProvider__turnOffUnsupportedCellularAlert__block_invoke;
   v15[3] = &unk_27A65B1A0;
   v15[4] = self;
-  v13 = [v10 actionWithTitle:v12 style:1 handler:v15];
+  v13 = [v10 actionWithTitle:unsupportedTurnOffAlertOk style:1 handler:v15];
 
   [v9 addAction:v13];
 
@@ -815,48 +815,48 @@ void __77__ICQInternetPrivacyDetailSpecifierProvider__turnOffUnsupportedCellular
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 unsupportedWifiSwitchOffAlertMessage];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 wiFiName];
-  v9 = [v4 stringWithFormat:v6, v8];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedWifiSwitchOffAlertMessage = [viewModel unsupportedWifiSwitchOffAlertMessage];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  wiFiName = [viewModel2 wiFiName];
+  v9 = [v4 stringWithFormat:unsupportedWifiSwitchOffAlertMessage, wiFiName];
 
   v10 = MEMORY[0x277D75110];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 unsupportedSwitchOffAlertTitle];
-  v13 = [v10 alertControllerWithTitle:v12 message:v9 preferredStyle:1];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffAlertTitle = [viewModel3 unsupportedSwitchOffAlertTitle];
+  v13 = [v10 alertControllerWithTitle:unsupportedSwitchOffAlertTitle message:v9 preferredStyle:1];
 
   v14 = MEMORY[0x277D750F8];
-  v15 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v16 = [v15 unsupportedSwitchOffNetworkOnly];
+  viewModel4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffNetworkOnly = [viewModel4 unsupportedSwitchOffNetworkOnly];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __75__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedWifiAlert__block_invoke;
   v29[3] = &unk_27A65B1A0;
   v29[4] = self;
-  v17 = [v14 actionWithTitle:v16 style:0 handler:v29];
+  v17 = [v14 actionWithTitle:unsupportedSwitchOffNetworkOnly style:0 handler:v29];
 
   [v13 addAction:v17];
   v18 = MEMORY[0x277D750F8];
-  v19 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v20 = [v19 unsupportedSwitchOffCompletely];
+  viewModel5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffCompletely = [viewModel5 unsupportedSwitchOffCompletely];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __75__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedWifiAlert__block_invoke_3;
   v28[3] = &unk_27A65B1A0;
   v28[4] = self;
-  v21 = [v18 actionWithTitle:v20 style:0 handler:v28];
+  v21 = [v18 actionWithTitle:unsupportedSwitchOffCompletely style:0 handler:v28];
 
   [v13 addAction:v21];
   v22 = MEMORY[0x277D750F8];
-  v23 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v24 = [v23 unsupportedSwitchOffCancel];
+  viewModel6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffCancel = [viewModel6 unsupportedSwitchOffCancel];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __75__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedWifiAlert__block_invoke_4;
   v27[3] = &unk_27A65B1A0;
   v27[4] = self;
-  v25 = [v22 actionWithTitle:v24 style:1 handler:v27];
+  v25 = [v22 actionWithTitle:unsupportedSwitchOffCancel style:1 handler:v27];
 
   [v13 addAction:v25];
 
@@ -917,48 +917,48 @@ uint64_t __75__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedWi
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 unsupportedCellularSwitchOffAlertMessage];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 cellularName];
-  v9 = [v4 stringWithFormat:v6, v8];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedCellularSwitchOffAlertMessage = [viewModel unsupportedCellularSwitchOffAlertMessage];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  cellularName = [viewModel2 cellularName];
+  v9 = [v4 stringWithFormat:unsupportedCellularSwitchOffAlertMessage, cellularName];
 
   v10 = MEMORY[0x277D75110];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 unsupportedSwitchOffAlertTitle];
-  v13 = [v10 alertControllerWithTitle:v12 message:v9 preferredStyle:1];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffAlertTitle = [viewModel3 unsupportedSwitchOffAlertTitle];
+  v13 = [v10 alertControllerWithTitle:unsupportedSwitchOffAlertTitle message:v9 preferredStyle:1];
 
   v14 = MEMORY[0x277D750F8];
-  v15 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v16 = [v15 unsupportedSwitchOffProviderOnly];
+  viewModel4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffProviderOnly = [viewModel4 unsupportedSwitchOffProviderOnly];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCellularAlert__block_invoke;
   v29[3] = &unk_27A65B1A0;
   v29[4] = self;
-  v17 = [v14 actionWithTitle:v16 style:0 handler:v29];
+  v17 = [v14 actionWithTitle:unsupportedSwitchOffProviderOnly style:0 handler:v29];
 
   [v13 addAction:v17];
   v18 = MEMORY[0x277D750F8];
-  v19 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v20 = [v19 unsupportedSwitchOffCompletely];
+  viewModel5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffCompletely = [viewModel5 unsupportedSwitchOffCompletely];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCellularAlert__block_invoke_3;
   v28[3] = &unk_27A65B1A0;
   v28[4] = self;
-  v21 = [v18 actionWithTitle:v20 style:0 handler:v28];
+  v21 = [v18 actionWithTitle:unsupportedSwitchOffCompletely style:0 handler:v28];
 
   [v13 addAction:v21];
   v22 = MEMORY[0x277D750F8];
-  v23 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v24 = [v23 unsupportedSwitchOffCancel];
+  viewModel6 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffCancel = [viewModel6 unsupportedSwitchOffCancel];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCellularAlert__block_invoke_4;
   v27[3] = &unk_27A65B1A0;
   v27[4] = self;
-  v25 = [v22 actionWithTitle:v24 style:1 handler:v27];
+  v25 = [v22 actionWithTitle:unsupportedSwitchOffCancel style:1 handler:v27];
 
   [v13 addAction:v25];
 
@@ -1019,43 +1019,43 @@ uint64_t __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCe
   }
 
   v4 = MEMORY[0x277D75110];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 switchOffAlertTitle];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 switchOffAlertMessage];
-  v9 = [v4 alertControllerWithTitle:v6 message:v8 preferredStyle:1];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  switchOffAlertTitle = [viewModel switchOffAlertTitle];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  switchOffAlertMessage = [viewModel2 switchOffAlertMessage];
+  v9 = [v4 alertControllerWithTitle:switchOffAlertTitle message:switchOffAlertMessage preferredStyle:1];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 switchOffAlertPause];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  switchOffAlertPause = [viewModel3 switchOffAlertPause];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __60__ICQInternetPrivacyDetailSpecifierProvider__switchOffAlert__block_invoke;
   v25[3] = &unk_27A65B1A0;
   v25[4] = self;
-  v13 = [v10 actionWithTitle:v12 style:0 handler:v25];
+  v13 = [v10 actionWithTitle:switchOffAlertPause style:0 handler:v25];
 
   [v9 addAction:v13];
   v14 = MEMORY[0x277D750F8];
-  v15 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v16 = [v15 switchOffAlertTurnOff];
+  viewModel4 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  switchOffAlertTurnOff = [viewModel4 switchOffAlertTurnOff];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__ICQInternetPrivacyDetailSpecifierProvider__switchOffAlert__block_invoke_2;
   v24[3] = &unk_27A65B1A0;
   v24[4] = self;
-  v17 = [v14 actionWithTitle:v16 style:2 handler:v24];
+  v17 = [v14 actionWithTitle:switchOffAlertTurnOff style:2 handler:v24];
 
   [v9 addAction:v17];
   v18 = MEMORY[0x277D750F8];
-  v19 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v20 = [v19 unsupportedSwitchOffCancel];
+  viewModel5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedSwitchOffCancel = [viewModel5 unsupportedSwitchOffCancel];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __60__ICQInternetPrivacyDetailSpecifierProvider__switchOffAlert__block_invoke_3;
   v23[3] = &unk_27A65B1A0;
   v23[4] = self;
-  v21 = [v18 actionWithTitle:v20 style:1 handler:v23];
+  v21 = [v18 actionWithTitle:unsupportedSwitchOffCancel style:1 handler:v23];
 
   [v9 addAction:v21];
 
@@ -1064,8 +1064,8 @@ uint64_t __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCe
 
 - (void)presentIncompatibleSitesHelp
 {
-  v2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v2 presentIncompatibleSitesHelp];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate presentIncompatibleSitesHelp];
 }
 
 - (id)_turnOnSafariAlert
@@ -1080,21 +1080,21 @@ uint64_t __79__ICQInternetPrivacyDetailSpecifierProvider__switchOffUnsupportedCe
   }
 
   v4 = MEMORY[0x277D75110];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 turnOnSafariAlertTitle];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 turnOnSafariAlertMessage];
-  v9 = [v4 alertControllerWithTitle:v6 message:v8 preferredStyle:1];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  turnOnSafariAlertTitle = [viewModel turnOnSafariAlertTitle];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  turnOnSafariAlertMessage = [viewModel2 turnOnSafariAlertMessage];
+  v9 = [v4 alertControllerWithTitle:turnOnSafariAlertTitle message:turnOnSafariAlertMessage preferredStyle:1];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 unsupportedTurnOffAlertOk];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffAlertOk = [viewModel3 unsupportedTurnOffAlertOk];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__ICQInternetPrivacyDetailSpecifierProvider__turnOnSafariAlert__block_invoke;
   v15[3] = &unk_27A65B1A0;
   v15[4] = self;
-  v13 = [v10 actionWithTitle:v12 style:1 handler:v15];
+  v13 = [v10 actionWithTitle:unsupportedTurnOffAlertOk style:1 handler:v15];
 
   [v9 addAction:v13];
 
@@ -1134,21 +1134,21 @@ void __63__ICQInternetPrivacyDetailSpecifierProvider__turnOnSafariAlert__block_i
   }
 
   v4 = MEMORY[0x277D75110];
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v6 = [v5 turnOnDNSAlertTitle];
-  v7 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v8 = [v7 turnOnDNSAlertMessage];
-  v9 = [v4 alertControllerWithTitle:v6 message:v8 preferredStyle:1];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  turnOnDNSAlertTitle = [viewModel turnOnDNSAlertTitle];
+  viewModel2 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  turnOnDNSAlertMessage = [viewModel2 turnOnDNSAlertMessage];
+  v9 = [v4 alertControllerWithTitle:turnOnDNSAlertTitle message:turnOnDNSAlertMessage preferredStyle:1];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
-  v12 = [v11 unsupportedTurnOffAlertOk];
+  viewModel3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  unsupportedTurnOffAlertOk = [viewModel3 unsupportedTurnOffAlertOk];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__ICQInternetPrivacyDetailSpecifierProvider__turnOnDNSAlert__block_invoke;
   v15[3] = &unk_27A65B1A0;
   v15[4] = self;
-  v13 = [v10 actionWithTitle:v12 style:1 handler:v15];
+  v13 = [v10 actionWithTitle:unsupportedTurnOffAlertOk style:1 handler:v15];
 
   [v9 addAction:v13];
 
@@ -1197,13 +1197,13 @@ void __62__ICQInternetPrivacyDetailSpecifierProvider__reloadSpecifiers__block_in
 - (void)_pausePrivateRelay
 {
   objc_initWeak(&location, self);
-  v3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__ICQInternetPrivacyDetailSpecifierProvider__pausePrivateRelay__block_invoke;
   v4[3] = &unk_27A65C098;
   objc_copyWeak(&v5, &location);
-  [v3 pausePrivateRelayUntilTomorrow:v4];
+  [viewModel pausePrivateRelayUntilTomorrow:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1223,17 +1223,17 @@ void __63__ICQInternetPrivacyDetailSpecifierProvider__pausePrivateRelay__block_i
   }
 }
 
-- (void)_updateEnableStatusTo:(BOOL)a3
+- (void)_updateEnableStatusTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   objc_initWeak(&location, self);
-  v5 = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
+  viewModel = [(ICQInternetPrivacyDetailSpecifierProvider *)self viewModel];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__ICQInternetPrivacyDetailSpecifierProvider__updateEnableStatusTo___block_invoke;
   v6[3] = &unk_27A65C098;
   objc_copyWeak(&v7, &location);
-  [v5 setEnabled:v3 completion:v6];
+  [viewModel setEnabled:toCopy completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1256,8 +1256,8 @@ void __67__ICQInternetPrivacyDetailSpecifierProvider__updateEnableStatusTo___blo
 - (void)_refreshStatusAndPostNotification
 {
   [(ICQInternetPrivacyDetailSpecifierProvider *)self _startFetchingBannerModels];
-  v3 = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
-  [v3 statusDidChange];
+  detailDelegate = [(ICQInternetPrivacyDetailSpecifierProvider *)self detailDelegate];
+  [detailDelegate statusDidChange];
 }
 
 - (AAUISpecifierProviderDelegate)delegate

@@ -2,13 +2,13 @@
 - (NSString)debugDescription;
 - (NSString)plainString;
 - (_TtC8Freeform15CRLWPTextString)init;
-- (_TtC8Freeform15CRLWPTextString)initWithAttributedString:(id)a3;
-- (_TtC8Freeform15CRLWPTextString)initWithString:(id)a3;
+- (_TtC8Freeform15CRLWPTextString)initWithAttributedString:(id)string;
+- (_TtC8Freeform15CRLWPTextString)initWithString:(id)string;
 @end
 
 @implementation CRLWPTextString
 
-- (_TtC8Freeform15CRLWPTextString)initWithString:(id)a3
+- (_TtC8Freeform15CRLWPTextString)initWithString:(id)string
 {
   ObjectType = swift_getObjectType();
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -21,16 +21,16 @@
   return [(CRLWPTextString *)&v9 init];
 }
 
-- (_TtC8Freeform15CRLWPTextString)initWithAttributedString:(id)a3
+- (_TtC8Freeform15CRLWPTextString)initWithAttributedString:(id)string
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC8Freeform15CRLWPTextString_text;
-  *v6 = a3;
+  *v6 = string;
   *(v6 + 1) = 0;
   v6[16] = 1;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  stringCopy = string;
   return [(CRLWPTextString *)&v9 init];
 }
 
@@ -41,8 +41,8 @@
   if (self->text[OBJC_IVAR____TtC8Freeform15CRLWPTextString_text + 8])
   {
     sub_1008ACCB4(*(&self->super.isa + OBJC_IVAR____TtC8Freeform15CRLWPTextString_text), v2, 1);
-    v5 = self;
-    v6 = [v3 string];
+    selfCopy = self;
+    string = [v3 string];
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     sub_1007EF850(v3, v2, 1);
@@ -63,7 +63,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform15CRLWPTextString_text);
   v3 = *&self->text[OBJC_IVAR____TtC8Freeform15CRLWPTextString_text];
   v4 = self->text[OBJC_IVAR____TtC8Freeform15CRLWPTextString_text + 8];
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     sub_1008ACCB4(v2, v3, 1);

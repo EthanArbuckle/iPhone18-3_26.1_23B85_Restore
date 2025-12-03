@@ -1,21 +1,21 @@
 @interface SCROBrailleUIVisualRepresentation
 - (NSDictionary)dictionaryForUIMessage;
 - (SCROBrailleUIVisualRepresentation)init;
-- (SCROBrailleUIVisualRepresentation)initWithLines:(id)a3 focusedIndex:(int64_t)a4 isList:(BOOL)a5;
+- (SCROBrailleUIVisualRepresentation)initWithLines:(id)lines focusedIndex:(int64_t)index isList:(BOOL)list;
 @end
 
 @implementation SCROBrailleUIVisualRepresentation
 
-- (SCROBrailleUIVisualRepresentation)initWithLines:(id)a3 focusedIndex:(int64_t)a4 isList:(BOOL)a5
+- (SCROBrailleUIVisualRepresentation)initWithLines:(id)lines focusedIndex:(int64_t)index isList:(BOOL)list
 {
   type metadata accessor for SCROBrailleUICaptionableBrailleLine(self);
   v7 = sub_264982874();
-  return sub_264968AD4(v7, a4, a5);
+  return sub_264968AD4(v7, index, list);
 }
 
 - (NSDictionary)dictionaryForUIMessage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SCROBrailleUIVisualRepresentation.dictionaryForUIMessage.getter();
 
   return v3;

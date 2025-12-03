@@ -4,23 +4,23 @@
 - (BOOL)isEyeTracking;
 - (BOOL)isHeadTracking;
 - (BOOL)needsRecalibration;
-- (CGPoint)_motionTrackerInputSourceTrackedEyesAtPoint:(CGPoint)a3;
-- (CGPoint)clampPointToDisplay:(CGPoint)a3;
-- (CGPoint)clampPointToDisplay:(CGPoint)a3 withOffset:(double)a4;
+- (CGPoint)_motionTrackerInputSourceTrackedEyesAtPoint:(CGPoint)point;
+- (CGPoint)clampPointToDisplay:(CGPoint)display;
+- (CGPoint)clampPointToDisplay:(CGPoint)display withOffset:(double)offset;
 - (CGRect)rotatedScreenBounds;
 - (SCATMotionTrackerInputSource)init;
-- (id)_actionForExpression:(unint64_t)a3;
-- (id)_axActionForCameraSwitchType:(unint64_t)a3;
-- (id)_axSwitchForCameraSwitchType:(unint64_t)a3;
+- (id)_actionForExpression:(unint64_t)expression;
+- (id)_axActionForCameraSwitchType:(unint64_t)type;
+- (id)_axSwitchForCameraSwitchType:(unint64_t)type;
 - (id)currentDisplayManager;
 - (id)mainDisplayManager;
 - (void)_cleanUpIdleTimerAssertion;
 - (void)_cleanUpPowerAssertionIfNecessary;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
-- (void)_motionTrackerInputSourceTrackedFaceAtPoint:(CGPoint)a3;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
+- (void)_motionTrackerInputSourceTrackedFaceAtPoint:(CGPoint)point;
 - (void)_powerAssertionTimerFired;
-- (void)_setError:(id)a3;
-- (void)_setExpressions:(id)a3;
+- (void)_setError:(id)error;
+- (void)_setExpressions:(id)expressions;
 - (void)_setUpIdleTimerAssertion;
 - (void)_setUpPowerAssertionIfNecessary;
 - (void)_setupEyeTracking;
@@ -38,14 +38,14 @@
 - (void)didDismissCalibrationUI;
 - (void)didShowCalibrationUI;
 - (void)dismissEyeTrackingCalibration;
-- (void)motionTracker:(id)a3 updatedState:(id)a4;
-- (void)overrideLookAtPoint:(CGPoint)a3;
-- (void)setAllowedTrackingTypes:(id)a3;
-- (void)setIsTrackingInputActive:(BOOL)a3;
-- (void)setJoystickModeMovementThreshold:(double)a3;
-- (void)setMotionTrackingMode:(unint64_t)a3;
-- (void)setNeedsRecalibration:(BOOL)a3;
-- (void)setSensitivity:(double)a3;
+- (void)motionTracker:(id)tracker updatedState:(id)state;
+- (void)overrideLookAtPoint:(CGPoint)point;
+- (void)setAllowedTrackingTypes:(id)types;
+- (void)setIsTrackingInputActive:(BOOL)active;
+- (void)setJoystickModeMovementThreshold:(double)threshold;
+- (void)setMotionTrackingMode:(unint64_t)mode;
+- (void)setNeedsRecalibration:(BOOL)recalibration;
+- (void)setSensitivity:(double)sensitivity;
 - (void)startRunning;
 - (void)stopRunning;
 - (void)willShowCalibrationUI;
@@ -87,14 +87,14 @@
   return v3;
 }
 
-- (void)setAllowedTrackingTypes:(id)a3
+- (void)setAllowedTrackingTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = SWCHLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = typesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating Motion Tracker allowed types: %@", buf, 0xCu);
   }
 
@@ -110,7 +110,7 @@
     v7 = 0;
   }
 
-  [(AXSSMotionTrackingInputConfiguration *)self->__motionTrackerConfig setAllowedTrackingTypes:v4];
+  [(AXSSMotionTrackingInputConfiguration *)self->__motionTrackerConfig setAllowedTrackingTypes:typesCopy];
   v8 = self->__motionTracker;
   if (v8)
   {
@@ -125,16 +125,16 @@
 
 - (BOOL)isHeadTracking
 {
-  v2 = [(SCATMotionTrackerInputSource *)self allowedTrackingTypes];
-  v3 = [v2 containsObject:&off_1001E5670];
+  allowedTrackingTypes = [(SCATMotionTrackerInputSource *)self allowedTrackingTypes];
+  v3 = [allowedTrackingTypes containsObject:&off_1001E5670];
 
   return v3;
 }
 
 - (BOOL)isEyeTracking
 {
-  v2 = [(SCATMotionTrackerInputSource *)self allowedTrackingTypes];
-  v3 = [v2 containsObject:&off_1001E5688];
+  allowedTrackingTypes = [(SCATMotionTrackerInputSource *)self allowedTrackingTypes];
+  v3 = [allowedTrackingTypes containsObject:&off_1001E5688];
 
   return v3;
 }
@@ -156,35 +156,35 @@
   return [(ASTUIGazeEnrollmentManager *)gazeEnrollmentManager enrollmentComplete];
 }
 
-- (void)setMotionTrackingMode:(unint64_t)a3
+- (void)setMotionTrackingMode:(unint64_t)mode
 {
-  v4 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-  [v4 setMotionTrackingMode:a3];
+  _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+  [_motionTracker setMotionTrackingMode:mode];
 }
 
-- (void)setSensitivity:(double)a3
+- (void)setSensitivity:(double)sensitivity
 {
-  v4 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-  [v4 setSensitivity:a3];
+  _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+  [_motionTracker setSensitivity:sensitivity];
 }
 
-- (void)setJoystickModeMovementThreshold:(double)a3
+- (void)setJoystickModeMovementThreshold:(double)threshold
 {
-  v4 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-  [v4 setJoystickModeMovementThreshold:a3];
+  _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+  [_motionTracker setJoystickModeMovementThreshold:threshold];
 }
 
-- (void)overrideLookAtPoint:(CGPoint)a3
+- (void)overrideLookAtPoint:(CGPoint)point
 {
-  v5 = [NSValue valueWithPoint:a3.x, a3.y];
-  v4 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-  [v4 setLookAtPoint:v5];
+  v5 = [NSValue valueWithPoint:point.x, point.y];
+  _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+  [_motionTracker setLookAtPoint:v5];
 }
 
 - (void)dismissEyeTrackingCalibration
 {
-  v2 = [(SCATMotionTrackerInputSource *)self currentDisplayManager];
-  [v2 dismissCalibrationUI];
+  currentDisplayManager = [(SCATMotionTrackerInputSource *)self currentDisplayManager];
+  [currentDisplayManager dismissCalibrationUI];
 }
 
 - (void)_setupMotionTracking
@@ -238,8 +238,8 @@
 {
   [(SCATMotionTrackerInputSource *)self _setupMotionTracking];
   v3 = [NSSet setWithObjects:&off_1001E5670, 0];
-  v4 = [(AXSSMotionTracker *)self->__motionTracker inputConfiguration];
-  [v4 setAllowedTrackingTypes:v3];
+  inputConfiguration = [(AXSSMotionTracker *)self->__motionTracker inputConfiguration];
+  [inputConfiguration setAllowedTrackingTypes:v3];
 
   [(SCATMotionTrackerInputSource *)self _updateCameraSwitchCache];
   [(SCATMotionTrackerInputSource *)self _updateMotionTrackerExpressionConfig];
@@ -299,8 +299,8 @@
   }
 
   v10 = +[HNDHandManager sharedManager];
-  v11 = [v10 mainDisplayManager];
-  [v11 addEyeTrackingUIDelegate:self];
+  mainDisplayManager = [v10 mainDisplayManager];
+  [mainDisplayManager addEyeTrackingUIDelegate:self];
 
   v12 = +[ASTUIGazeEnrollmentManager sharedManager];
   gazeEnrollmentManager = self->_gazeEnrollmentManager;
@@ -314,8 +314,8 @@
   [(SCATMotionTrackerInputSource *)self _setupEyeTracking];
   [(SCATMotionTrackerInputSource *)self _setupMotionTracking];
   v3 = [NSSet setWithObjects:&off_1001E5688, 0];
-  v4 = [(AXSSMotionTracker *)self->__motionTracker inputConfiguration];
-  [v4 setAllowedTrackingTypes:v3];
+  inputConfiguration = [(AXSSMotionTracker *)self->__motionTracker inputConfiguration];
+  [inputConfiguration setAllowedTrackingTypes:v3];
 
   motionTracker = self->__motionTracker;
 
@@ -327,11 +327,11 @@
   pointSmoother = self->_pointSmoother;
   self->_pointSmoother = 0;
 
-  v4 = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
-  [v4 removeEyeTrackingUIDelegate:self];
+  mainDisplayManager = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
+  [mainDisplayManager removeEyeTrackingUIDelegate:self];
 
-  v5 = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
-  [v5 setGazePointManager:0];
+  mainDisplayManager2 = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
+  [mainDisplayManager2 setGazePointManager:0];
 
   [(ASTUIGazeEnrollmentManager *)self->_gazeEnrollmentManager resetGazeEnrollment];
   gazeEnrollmentManager = self->_gazeEnrollmentManager;
@@ -400,10 +400,10 @@
   }
 }
 
-- (id)_actionForExpression:(unint64_t)a3
+- (id)_actionForExpression:(unint64_t)expression
 {
   v5 = +[AXSwitch expressionToSwitchTypeMapping];
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:expression];
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -419,23 +419,23 @@
   return v8;
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v5 = a3;
-  if ([v5 isEqual:self->__error])
+  errorCopy = error;
+  if ([errorCopy isEqual:self->__error])
   {
     goto LABEL_12;
   }
 
-  objc_storeStrong(&self->__error, a3);
-  if (!v5)
+  objc_storeStrong(&self->__error, error);
+  if (!errorCopy)
   {
     goto LABEL_12;
   }
 
-  v6 = [v5 code];
-  v7 = v6;
-  v8 = v6 < 0xA;
+  code = [errorCopy code];
+  v7 = code;
+  v8 = code < 0xA;
   if (![(SCATMotionTrackerInputSource *)self isEyeTracking])
   {
     goto LABEL_6;
@@ -453,13 +453,13 @@
   else if (!v9)
   {
 LABEL_6:
-    v10 = [(SCATInputSource *)self delegate];
+    delegate = [(SCATInputSource *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(SCATInputSource *)self delegate];
-      [v12 motionTrackerInputSource:self failedToTrackFaceWithError:v5];
+      delegate2 = [(SCATInputSource *)self delegate];
+      [delegate2 motionTrackerInputSource:self failedToTrackFaceWithError:errorCopy];
     }
 
     goto LABEL_12;
@@ -477,23 +477,23 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)_setExpressions:(id)a3
+- (void)_setExpressions:(id)expressions
 {
-  v4 = a3;
+  expressionsCopy = expressions;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000D95EC;
   v16[3] = &unk_1001D7420;
   v16[4] = self;
   v5 = objc_retainBlock(v16);
-  if (([(NSSet *)self->__expressions isEqual:v4]& 1) == 0)
+  if (([(NSSet *)self->__expressions isEqual:expressionsCopy]& 1) == 0)
   {
     expressions = self->__expressions;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000D96C0;
     v13[3] = &unk_1001D35A0;
-    v7 = v4;
+    v7 = expressionsCopy;
     v14 = v7;
     v8 = v5;
     v15 = v8;
@@ -511,13 +511,13 @@ LABEL_12:
   }
 }
 
-- (void)motionTracker:(id)a3 updatedState:(id)a4
+- (void)motionTracker:(id)tracker updatedState:(id)state
 {
-  v5 = a4;
-  if ([v5 hasFace])
+  stateCopy = state;
+  if ([stateCopy hasFace])
   {
-    v6 = [v5 error];
-    [(SCATMotionTrackerInputSource *)self setIsTrackingInputActive:v6 == 0];
+    error = [stateCopy error];
+    [(SCATMotionTrackerInputSource *)self setIsTrackingInputActive:error == 0];
   }
 
   else
@@ -525,12 +525,12 @@ LABEL_12:
     [(SCATMotionTrackerInputSource *)self setIsTrackingInputActive:0];
   }
 
-  if ([v5 hasFace])
+  if ([stateCopy hasFace])
   {
-    v11 = v5;
+    v11 = stateCopy;
     AXPerformBlockAsynchronouslyOnMainThread();
-    v7 = [v11 expressions];
-    v8 = [v7 copy];
+    expressions = [v11 expressions];
+    v8 = [expressions copy];
     [(SCATMotionTrackerInputSource *)self _setExpressions:v8];
 
     [(SCATMotionTrackerInputSource *)self _setError:0];
@@ -541,15 +541,15 @@ LABEL_12:
     v9 = +[NSSet set];
     [(SCATMotionTrackerInputSource *)self _setExpressions:v9];
 
-    v10 = [v5 error];
-    [(SCATMotionTrackerInputSource *)self _setError:v10];
+    error2 = [stateCopy error];
+    [(SCATMotionTrackerInputSource *)self _setError:error2];
   }
 }
 
-- (void)_motionTrackerInputSourceTrackedFaceAtPoint:(CGPoint)a3
+- (void)_motionTrackerInputSourceTrackedFaceAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(SCATMotionTrackerInputSource *)self isEyeTracking]&& AXDeviceSupportsOnDeviceEyeTracking())
   {
     [(SCATMotionTrackerInputSource *)self _motionTrackerInputSourceTrackedEyesAtPoint:x, y];
@@ -562,19 +562,19 @@ LABEL_12:
 
   v8 = v6;
   v9 = v7;
-  v10 = [(SCATInputSource *)self delegate];
+  delegate = [(SCATInputSource *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(SCATInputSource *)self delegate];
-    [v12 motionTrackerInputSource:self didReceivePoint:{v8, v9}];
+    delegate2 = [(SCATInputSource *)self delegate];
+    [delegate2 motionTrackerInputSource:self didReceivePoint:{v8, v9}];
   }
 }
 
-- (void)setIsTrackingInputActive:(BOOL)a3
+- (void)setIsTrackingInputActive:(BOOL)active
 {
-  if (self->_isTrackingInputActive != a3)
+  if (self->_isTrackingInputActive != active)
   {
     v5 = SWCHLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -585,28 +585,28 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MotionTrackingInput isTrackingInputActive: %@", &v7, 0xCu);
     }
 
-    self->_isTrackingInputActive = a3;
+    self->_isTrackingInputActive = active;
     [(SCATMotionTrackerInputSource *)self setLastTimePointReceived:mach_absolute_time()];
   }
 }
 
-- (CGPoint)_motionTrackerInputSourceTrackedEyesAtPoint:(CGPoint)a3
+- (CGPoint)_motionTrackerInputSourceTrackedEyesAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(SCATMotionTrackerInputSource *)self isEyeTracking]&& AXDeviceSupportsOnDeviceEyeTracking())
   {
-    v6 = [(SCATMotionTrackerInputSource *)self pointSmoother];
-    [v6 addPoint:{x, y}];
+    pointSmoother = [(SCATMotionTrackerInputSource *)self pointSmoother];
+    [pointSmoother addPoint:{x, y}];
 
-    v7 = [(SCATMotionTrackerInputSource *)self pointSmoother];
-    [v7 point];
+    pointSmoother2 = [(SCATMotionTrackerInputSource *)self pointSmoother];
+    [pointSmoother2 point];
     v9 = v8;
     v11 = v10;
 
     if ([(SCATMotionTrackerInputSource *)self shouldShowUncalibratedPoints])
     {
-      v12 = self;
+      selfCopy2 = self;
       v13 = 0;
     }
 
@@ -632,11 +632,11 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Eye Tracking needs to recalibrate.", v21, 2u);
       }
 
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1;
     }
 
-    [(SCATMotionTrackerInputSource *)v12 setNeedsRecalibration:v13];
+    [(SCATMotionTrackerInputSource *)selfCopy2 setNeedsRecalibration:v13];
 LABEL_10:
     [(SCATMotionTrackerInputSource *)self clampPointToDisplay:v9, v11];
     x = v16;
@@ -650,22 +650,22 @@ LABEL_10:
   return result;
 }
 
-- (id)_axActionForCameraSwitchType:(unint64_t)a3
+- (id)_axActionForCameraSwitchType:(unint64_t)type
 {
-  v3 = [(SCATMotionTrackerInputSource *)self _axSwitchForCameraSwitchType:a3];
+  v3 = [(SCATMotionTrackerInputSource *)self _axSwitchForCameraSwitchType:type];
   v4 = [SCATActionItem fromSwitch:v3 longPress:0];
 
   return v4;
 }
 
-- (id)_axSwitchForCameraSwitchType:(unint64_t)a3
+- (id)_axSwitchForCameraSwitchType:(unint64_t)type
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(SCATMotionTrackerInputSource *)self cachedCameraPointPickerSwitches];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  cachedCameraPointPickerSwitches = [(SCATMotionTrackerInputSource *)self cachedCameraPointPickerSwitches];
+  v5 = [cachedCameraPointPickerSwitches countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -677,16 +677,16 @@ LABEL_10:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cachedCameraPointPickerSwitches);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 source];
-        if ([v11 isEqualToString:v8])
+        source = [v10 source];
+        if ([source isEqualToString:v8])
         {
-          v12 = [v10 cameraSwitch];
+          cameraSwitch = [v10 cameraSwitch];
 
-          if (v12 == a3)
+          if (cameraSwitch == type)
           {
             v13 = v10;
             goto LABEL_13;
@@ -698,7 +698,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [cachedCameraPointPickerSwitches countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -710,10 +710,10 @@ LABEL_13:
   return v13;
 }
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v6 = a3;
-  v5 = v6;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
   HNDTestingSetLastFiredAction(v5);
 }
@@ -721,15 +721,15 @@ LABEL_13:
 - (void)_updateCameraSwitchCache
 {
   v4 = +[AXSettings sharedInstance];
-  v3 = [v4 assistiveTouchCameraPointPickerSwitches];
-  [(SCATMotionTrackerInputSource *)self setCachedCameraPointPickerSwitches:v3];
+  assistiveTouchCameraPointPickerSwitches = [v4 assistiveTouchCameraPointPickerSwitches];
+  [(SCATMotionTrackerInputSource *)self setCachedCameraPointPickerSwitches:assistiveTouchCameraPointPickerSwitches];
 }
 
 - (void)_updateMotionTrackerExpressionConfig
 {
-  v3 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-  v4 = [v3 expressionConfiguration];
-  v5 = [v4 copy];
+  _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+  expressionConfiguration = [_motionTracker expressionConfiguration];
+  v5 = [expressionConfiguration copy];
 
   if (!v5)
   {
@@ -757,21 +757,21 @@ LABEL_13:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
         v14 = [v6 objectForKeyedSubscript:v12];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-        v16 = [(SCATMotionTrackerInputSource *)self _axSwitchForCameraSwitchType:v15];
+        v16 = [(SCATMotionTrackerInputSource *)self _axSwitchForCameraSwitchType:unsignedIntegerValue2];
         v17 = v16;
         if (v16)
         {
-          v18 = [v16 expressionSensitivity];
-          if (v18)
+          expressionSensitivity = [v16 expressionSensitivity];
+          if (expressionSensitivity)
           {
-            v19 = v18;
-            if ([v5 sensitivityForFacialExpression:v13] != v18)
+            v19 = expressionSensitivity;
+            if ([v5 sensitivityForFacialExpression:unsignedIntegerValue] != expressionSensitivity)
             {
-              [v5 setSensitivity:v19 forFacialExpression:v13];
+              [v5 setSensitivity:v19 forFacialExpression:unsignedIntegerValue];
               v9 = 1;
             }
           }
@@ -784,30 +784,30 @@ LABEL_13:
     while (v8);
     if (v9)
     {
-      v20 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-      [v20 setExpressionConfiguration:v5];
+      _motionTracker2 = [(SCATMotionTrackerInputSource *)self _motionTracker];
+      [_motionTracker2 setExpressionConfiguration:v5];
     }
   }
 }
 
 - (BOOL)needsRecalibration
 {
-  v2 = [(SCATMotionTrackerInputSource *)self isEyeTracking];
-  if (v2)
+  isEyeTracking = [(SCATMotionTrackerInputSource *)self isEyeTracking];
+  if (isEyeTracking)
   {
     v3 = +[HNDHandManager sharedManager];
-    v4 = [v3 mainDisplayManager];
-    v5 = [v4 needsRecalibration];
+    mainDisplayManager = [v3 mainDisplayManager];
+    needsRecalibration = [mainDisplayManager needsRecalibration];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(isEyeTracking) = needsRecalibration;
   }
 
-  return v2;
+  return isEyeTracking;
 }
 
-- (void)setNeedsRecalibration:(BOOL)a3
+- (void)setNeedsRecalibration:(BOOL)recalibration
 {
-  if (a3)
+  if (recalibration)
   {
     v4 = SWCHLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -816,8 +816,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Recalibrating SCAT Motion Tracker", buf, 2u);
     }
 
-    v5 = [(SCATMotionTrackerInputSource *)self _motionTracker];
-    [v5 recalibrateFace];
+    _motionTracker = [(SCATMotionTrackerInputSource *)self _motionTracker];
+    [_motionTracker recalibrateFace];
   }
 
   if ([(SCATMotionTrackerInputSource *)self isEyeTracking])
@@ -831,42 +831,42 @@ LABEL_13:
 
 - (BOOL)didForceDimissCalibration
 {
-  v2 = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
-  v3 = [v2 didForceDimissCalibration];
+  mainDisplayManager = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
+  didForceDimissCalibration = [mainDisplayManager didForceDimissCalibration];
 
-  return v3;
+  return didForceDimissCalibration;
 }
 
 - (id)mainDisplayManager
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 mainDisplayManager];
+  mainDisplayManager = [v2 mainDisplayManager];
 
-  return v3;
+  return mainDisplayManager;
 }
 
 - (id)currentDisplayManager
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 currentDisplayManager];
+  currentDisplayManager = [v2 currentDisplayManager];
 
-  return v3;
+  return currentDisplayManager;
 }
 
-- (CGPoint)clampPointToDisplay:(CGPoint)a3
+- (CGPoint)clampPointToDisplay:(CGPoint)display
 {
-  [(SCATMotionTrackerInputSource *)self clampPointToDisplay:a3.x withOffset:a3.y, 0.0];
+  [(SCATMotionTrackerInputSource *)self clampPointToDisplay:display.x withOffset:display.y, 0.0];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)clampPointToDisplay:(CGPoint)a3 withOffset:(double)a4
+- (CGPoint)clampPointToDisplay:(CGPoint)display withOffset:(double)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(SCATMotionTrackerInputSource *)self currentDisplayManager];
-  [v7 screenBounds];
+  y = display.y;
+  x = display.x;
+  currentDisplayManager = [(SCATMotionTrackerInputSource *)self currentDisplayManager];
+  [currentDisplayManager screenBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -876,12 +876,12 @@ LABEL_13:
   v24.origin.y = v11;
   v24.size.width = v13;
   v24.size.height = v15;
-  v16 = CGRectGetMinX(v24) + a4;
+  v16 = CGRectGetMinX(v24) + offset;
   v25.origin.x = v9;
   v25.origin.y = v11;
   v25.size.width = v13;
   v25.size.height = v15;
-  v17 = CGRectGetMaxX(v25) - a4;
+  v17 = CGRectGetMaxX(v25) - offset;
   if (x < v17)
   {
     v17 = x;
@@ -901,12 +901,12 @@ LABEL_13:
   v26.origin.y = v11;
   v26.size.width = v13;
   v26.size.height = v15;
-  v19 = CGRectGetMinY(v26) + a4;
+  v19 = CGRectGetMinY(v26) + offset;
   v27.origin.x = v9;
   v27.origin.y = v11;
   v27.size.width = v13;
   v27.size.height = v15;
-  v20 = CGRectGetMaxY(v27) - a4;
+  v20 = CGRectGetMaxY(v27) - offset;
   if (y < v20)
   {
     v20 = y;
@@ -930,8 +930,8 @@ LABEL_13:
 
 - (CGRect)rotatedScreenBounds
 {
-  v2 = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
-  [v2 screenBounds];
+  mainDisplayManager = [(SCATMotionTrackerInputSource *)self mainDisplayManager];
+  [mainDisplayManager screenBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1026,8 +1026,8 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: successfully obtained power assertion.", &v8, 0xCu);
       }
 
-      v6 = [(SCATMotionTrackerInputSource *)self powerAssertionTimer];
-      [v6 invalidate];
+      powerAssertionTimer = [(SCATMotionTrackerInputSource *)self powerAssertionTimer];
+      [powerAssertionTimer invalidate];
 
       v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"_powerAssertionTimerFired" selector:0 userInfo:1 repeats:30.0];
       [(SCATMotionTrackerInputSource *)self setPowerAssertionTimer:v7];
@@ -1075,8 +1075,8 @@ LABEL_13:
     [(SCATMotionTrackerInputSource *)self setPowerAssertionID:0];
   }
 
-  v4 = [(SCATMotionTrackerInputSource *)self powerAssertionTimer];
-  [v4 invalidate];
+  powerAssertionTimer = [(SCATMotionTrackerInputSource *)self powerAssertionTimer];
+  [powerAssertionTimer invalidate];
 
   [(SCATMotionTrackerInputSource *)self setPowerAssertionTimer:0];
 }
@@ -1112,8 +1112,8 @@ LABEL_13:
 
     v5 = v4;
     _Block_object_dispose(&v9, 8);
-    v6 = [v4 sharedInstance];
-    v7 = [v6 acquireAssertionToDisableIdleTimerWithReason:@"LiveCaptions"];
+    sharedInstance = [v4 sharedInstance];
+    v7 = [sharedInstance acquireAssertionToDisableIdleTimerWithReason:@"LiveCaptions"];
     disableIdleTimerAssertion = self->_disableIdleTimerAssertion;
     self->_disableIdleTimerAssertion = v7;
 

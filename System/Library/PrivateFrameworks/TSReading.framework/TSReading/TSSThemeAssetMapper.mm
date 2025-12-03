@@ -1,10 +1,10 @@
 @interface TSSThemeAssetMapper
-- (BOOL)p_hasCachedMappingsForPresetsOfKind:(id)a3;
+- (BOOL)p_hasCachedMappingsForPresetsOfKind:(id)kind;
 - (TSSThemeAssetMapper)init;
-- (TSSThemeAssetMapper)initWithFromTheme:(id)a3 toTheme:(id)a4;
-- (id)mapPresetsWithKindFromPreset:(id)a3;
-- (id)mapStyle:(id)a3;
-- (id)mappedAssetForAsset:(id)a3;
+- (TSSThemeAssetMapper)initWithFromTheme:(id)theme toTheme:(id)toTheme;
+- (id)mapPresetsWithKindFromPreset:(id)preset;
+- (id)mapStyle:(id)style;
+- (id)mappedAssetForAsset:(id)asset;
 - (void)dealloc;
 @end
 
@@ -17,15 +17,15 @@
   [(TSSThemeAssetMapper *)&v3 dealloc];
 }
 
-- (TSSThemeAssetMapper)initWithFromTheme:(id)a3 toTheme:(id)a4
+- (TSSThemeAssetMapper)initWithFromTheme:(id)theme toTheme:(id)toTheme
 {
   v8.receiver = self;
   v8.super_class = TSSThemeAssetMapper;
   v6 = [(TSSThemeAssetMapper *)&v8 init];
   if (v6)
   {
-    v6->mFromTheme = a3;
-    v6->mToTheme = a4;
+    v6->mFromTheme = theme;
+    v6->mToTheme = toTheme;
     v6->mAssetMap = [objc_alloc(MEMORY[0x277D6C2B0]) initForThemeAssetMapperWithCapacity:0];
   }
 
@@ -34,14 +34,14 @@
 
 - (TSSThemeAssetMapper)init
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSThemeAssetMapper init]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSThemeAssetMapper.m"), 76, @"-init not supported, call designated initializer instead."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSThemeAssetMapper.m"), 76, @"-init not supported, call designated initializer instead."}];
 
   return 0;
 }
 
-- (id)mappedAssetForAsset:(id)a3
+- (id)mappedAssetForAsset:(id)asset
 {
   v5 = [(TSUCustomCallBackDictionary *)self->mAssetMap objectForKeyedSubscript:?];
   if (v5)
@@ -49,15 +49,15 @@
     return v5;
   }
 
-  if ([a3 conformsToProtocol:&unk_287E2B800])
+  if ([asset conformsToProtocol:&unk_287E2B800])
   {
-    v7 = [a3 presetKind];
-    if (String != v7 && ![(TSSThemeAssetMapper *)self p_hasCachedMappingsForPresetsOfKind:v7])
+    presetKind = [asset presetKind];
+    if (String != presetKind && ![(TSSThemeAssetMapper *)self p_hasCachedMappingsForPresetsOfKind:presetKind])
     {
-      v8 = (objc_opt_respondsToSelector() & 1) != 0 ? [a3 mapThemePresetsSelector] : sel_mapPresetsWithKindFromPreset_;
-      v9 = [(TSSThemeAssetMapper *)self performSelector:v8 withObject:a3];
+      v8 = (objc_opt_respondsToSelector() & 1) != 0 ? [asset mapThemePresetsSelector] : sel_mapPresetsWithKindFromPreset_;
+      v9 = [(TSSThemeAssetMapper *)self performSelector:v8 withObject:asset];
       [(TSSThemeAssetMapper *)self cacheAssetMappings:v9];
-      v5 = [v9 objectForKeyedSubscript:a3];
+      v5 = [v9 objectForKeyedSubscript:asset];
       if (v5)
       {
         return v5;
@@ -70,25 +70,25 @@
     return 0;
   }
 
-  v6 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [a3 mapThemeAssetSelector], a3);
+  v6 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [asset mapThemeAssetSelector], asset);
   if (v6)
   {
-    [(TSSThemeAssetMapper *)self cacheMappingFromAsset:a3 toAsset:v6];
+    [(TSSThemeAssetMapper *)self cacheMappingFromAsset:asset toAsset:v6];
   }
 
   return v6;
 }
 
-- (id)mapPresetsWithKindFromPreset:(id)a3
+- (id)mapPresetsWithKindFromPreset:(id)preset
 {
-  v4 = [a3 presetKind];
-  if (String == v4)
+  presetKind = [preset presetKind];
+  if (String == presetKind)
   {
     goto LABEL_18;
   }
 
-  v5 = v4;
-  v6 = [[(TSSThemeAssetMapper *)self fromTheme] presetsOfKind:v4];
+  v5 = presetKind;
+  v6 = [[(TSSThemeAssetMapper *)self fromTheme] presetsOfKind:presetKind];
   v7 = [[(TSSThemeAssetMapper *)self toTheme] presetsOfKind:v5];
   v8 = v7;
   if (v6)
@@ -155,15 +155,15 @@ LABEL_19:
   return v11;
 }
 
-- (id)mapStyle:(id)a3
+- (id)mapStyle:(id)style
 {
-  v5 = [(TSSTheme *)self->mFromTheme stylesheet];
-  if (v5 == [a3 stylesheet])
+  stylesheet = [(TSSTheme *)self->mFromTheme stylesheet];
+  if (stylesheet == [style stylesheet])
   {
     v8 = 0;
     v12 = 0;
-    v6 = a3;
-    if (a3)
+    styleCopy = style;
+    if (style)
     {
       goto LABEL_7;
     }
@@ -182,24 +182,24 @@ LABEL_23:
       return 0;
     }
 
-    v6 = 0;
+    styleCopy = 0;
     v8 = v12;
     goto LABEL_13;
   }
 
-  v6 = [a3 parent];
-  v7 = [a3 overridePropertyMap];
-  v8 = v7;
-  if (!v6)
+  styleCopy = [style parent];
+  overridePropertyMap = [style overridePropertyMap];
+  v8 = overridePropertyMap;
+  if (!styleCopy)
   {
-    v12 = v7;
+    v12 = overridePropertyMap;
     goto LABEL_11;
   }
 
   while (1)
   {
-    v9 = [v6 stylesheet];
-    if (v9 == [(TSSTheme *)self->mFromTheme stylesheet])
+    stylesheet2 = [styleCopy stylesheet];
+    if (stylesheet2 == [(TSSTheme *)self->mFromTheme stylesheet])
     {
       break;
     }
@@ -207,11 +207,11 @@ LABEL_23:
     v10 = TSUObjectReferenceDescription();
     v11 = TSUObjectReferenceDescription();
     NSLog(@"Mapping style %@ whose ancestor %@ is not in the original theme stylesheet.", v10, v11);
-    v12 = [objc_msgSend(v6 "overridePropertyMap")];
+    v12 = [objc_msgSend(styleCopy "overridePropertyMap")];
     [v12 addValuesFromPropertyMap:v8];
-    v6 = [v6 parent];
+    styleCopy = [styleCopy parent];
     v8 = v12;
-    if (!v6)
+    if (!styleCopy)
     {
       goto LABEL_11;
     }
@@ -221,19 +221,19 @@ LABEL_7:
   if (objc_opt_respondsToSelector())
   {
 LABEL_13:
-    v14 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [a3 mapThemeStyleSelector], v6);
+    v14 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [style mapThemeStyleSelector], styleCopy);
     goto LABEL_14;
   }
 
-  v13 = [v6 styleIdentifier];
-  if (!v13)
+  styleIdentifier = [styleCopy styleIdentifier];
+  if (!styleIdentifier)
   {
     v17 = TSUObjectReferenceDescription();
     NSLog(@"Original theme style %@ has no identifier.", v17);
     goto LABEL_22;
   }
 
-  v14 = [(TSSStylesheet *)[[(TSSThemeAssetMapper *)self toTheme] stylesheet] styleWithIdentifier:v13];
+  v14 = [(TSSStylesheet *)[[(TSSThemeAssetMapper *)self toTheme] stylesheet] styleWithIdentifier:styleIdentifier];
 LABEL_14:
   v16 = v14;
   if (!v14)
@@ -245,7 +245,7 @@ LABEL_14:
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [a3 mapThemePropertyMapSelector], v8);
+      v8 = -[TSSThemeAssetMapper performSelector:withObject:](self, "performSelector:withObject:", [style mapThemePropertyMapSelector], v8);
     }
 
     v16 = [objc_msgSend(-[TSPObject documentRoot](self->mFromTheme "documentRoot")];
@@ -258,9 +258,9 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)p_hasCachedMappingsForPresetsOfKind:(id)a3
+- (BOOL)p_hasCachedMappingsForPresetsOfKind:(id)kind
 {
-  v4 = [(TSSTheme *)self->mFromTheme presetOfKind:a3 index:0];
+  v4 = [(TSSTheme *)self->mFromTheme presetOfKind:kind index:0];
   if (!v4 || (v5 = [(TSUCustomCallBackDictionary *)self->mAssetMap objectForKeyedSubscript:v4]) != 0)
   {
     LOBYTE(v5) = 1;

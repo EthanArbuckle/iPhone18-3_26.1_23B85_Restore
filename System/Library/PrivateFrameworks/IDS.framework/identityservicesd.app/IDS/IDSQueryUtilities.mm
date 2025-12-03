@@ -1,41 +1,41 @@
 @interface IDSQueryUtilities
-+ (id)URIToQueryFrom:(id)a3 withPreferredFromURI:(id)a4;
-+ (id)accountToQueryFrom:(id)a3 fromURI:(id)a4 destinationStrings:(id)a5 allowLocalAccount:(BOOL)a6 respectFromURI:(BOOL)a7;
-+ (id)accountToQueryFrom:(id)a3 fromURI:(id)a4 destinationURIs:(id)a5 allowLocalAccount:(BOOL)a6 respectFromURI:(BOOL)a7;
-+ (id)prefixedAliasStringToQueryFrom:(id)a3 withPreferredFromURI:(id)a4;
++ (id)URIToQueryFrom:(id)from withPreferredFromURI:(id)i;
++ (id)accountToQueryFrom:(id)from fromURI:(id)i destinationStrings:(id)strings allowLocalAccount:(BOOL)account respectFromURI:(BOOL)rI;
++ (id)accountToQueryFrom:(id)from fromURI:(id)i destinationURIs:(id)is allowLocalAccount:(BOOL)account respectFromURI:(BOOL)rI;
++ (id)prefixedAliasStringToQueryFrom:(id)from withPreferredFromURI:(id)i;
 @end
 
 @implementation IDSQueryUtilities
 
-+ (id)accountToQueryFrom:(id)a3 fromURI:(id)a4 destinationURIs:(id)a5 allowLocalAccount:(BOOL)a6 respectFromURI:(BOOL)a7
++ (id)accountToQueryFrom:(id)from fromURI:(id)i destinationURIs:(id)is allowLocalAccount:(BOOL)account respectFromURI:(BOOL)rI
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a5 __imArrayByApplyingBlock:&stru_100BD9408];
-  v15 = [a1 accountToQueryFrom:v13 fromURI:v12 destinationStrings:v14 allowLocalAccount:v8 respectFromURI:v7];
+  rICopy = rI;
+  accountCopy = account;
+  iCopy = i;
+  fromCopy = from;
+  v14 = [is __imArrayByApplyingBlock:&stru_100BD9408];
+  v15 = [self accountToQueryFrom:fromCopy fromURI:iCopy destinationStrings:v14 allowLocalAccount:accountCopy respectFromURI:rICopy];
 
   return v15;
 }
 
-+ (id)accountToQueryFrom:(id)a3 fromURI:(id)a4 destinationStrings:(id)a5 allowLocalAccount:(BOOL)a6 respectFromURI:(BOOL)a7
++ (id)accountToQueryFrom:(id)from fromURI:(id)i destinationStrings:(id)strings allowLocalAccount:(BOOL)account respectFromURI:(BOOL)rI
 {
-  v59 = a6;
-  v60 = a7;
-  v9 = a3;
-  v64 = a4;
-  v10 = a5;
+  accountCopy = account;
+  rICopy = rI;
+  fromCopy = from;
+  iCopy = i;
+  stringsCopy = strings;
   v65 = objc_alloc_init(NSMutableArray);
-  v61 = v10;
-  v11 = [v10 __imArrayByApplyingBlock:&stru_100BD9428];
+  v61 = stringsCopy;
+  v11 = [stringsCopy __imArrayByApplyingBlock:&stru_100BD9428];
   v66 = [v11 mutableCopy];
 
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v9;
+  obj = fromCopy;
   v12 = [obj countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v12)
   {
@@ -57,18 +57,18 @@
         {
           v18 = v17;
 
-          v19 = [v18 unprefixedURIStringsFromRegistration];
+          unprefixedURIStringsFromRegistration = [v18 unprefixedURIStringsFromRegistration];
           v73[0] = _NSConcreteStackBlock;
           v73[1] = 3221225472;
           v73[2] = sub_10036C894;
           v73[3] = &unk_100BD9450;
           v73[4] = v18;
           v20 = [NSPredicate predicateWithBlock:v73];
-          v21 = [v19 filteredArrayUsingPredicate:v20];
+          v21 = [unprefixedURIStringsFromRegistration filteredArrayUsingPredicate:v20];
 
           v13 = [v21 count] != 0;
-          v22 = [v18 unprefixedURIStringsFromRegistration];
-          [v66 removeObjectsInArray:v22];
+          unprefixedURIStringsFromRegistration2 = [v18 unprefixedURIStringsFromRegistration];
+          [v66 removeObjectsInArray:unprefixedURIStringsFromRegistration2];
 
           v14 = v18;
         }
@@ -100,7 +100,7 @@
   }
 
   v62 = [v66 count];
-  if (!v64)
+  if (!iCopy)
   {
     goto LABEL_51;
   }
@@ -116,13 +116,13 @@
 LABEL_28:
 
 LABEL_39:
-    if (v60)
+    if (rICopy)
     {
       v38 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v64;
+        v79 = iCopy;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Did not find account matching fromURI to respect %@ -- returning nil", buf, 0xCu);
       }
 
@@ -144,18 +144,18 @@ LABEL_39:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v79 = v64;
+      v79 = iCopy;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Did not find account matching fromURI %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
       MarcoLogMadridLevel();
-      v50 = v64;
+      v50 = iCopy;
       IMLogString();
       if (_IMWillLog())
       {
-        v50 = v64;
+        v50 = iCopy;
         _IMAlwaysLog();
       }
     }
@@ -208,30 +208,30 @@ LABEL_51:
     {
       if ([v65 count])
       {
-        v45 = [v65 firstObject];
+        firstObject = [v65 firstObject];
 LABEL_81:
-        v27 = v45;
+        v27 = firstObject;
 LABEL_82:
         v47 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v27 smallDescription];
+          smallDescription = [v27 smallDescription];
           *buf = 138412290;
-          v79 = v48;
+          v79 = smallDescription;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Selected account {registeredAccount: %@}", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled())
         {
-          v52 = [v27 smallDescription];
+          smallDescription2 = [v27 smallDescription];
           MarcoLogMadridLevel();
 
-          v53 = [v27 smallDescription];
+          smallDescription3 = [v27 smallDescription];
           IMLogString();
 
           if (_IMWillLog())
           {
-            v54 = [v27 smallDescription];
+            smallDescription4 = [v27 smallDescription];
             _IMAlwaysLog();
           }
         }
@@ -239,7 +239,7 @@ LABEL_82:
         goto LABEL_87;
       }
 
-      if (v59 && [v68 isEnabled])
+      if (accountCopy && [v68 isEnabled])
       {
         v27 = v68;
         v46 = OSLogHandleForIDSCategory();
@@ -269,7 +269,7 @@ LABEL_82:
       }
     }
 
-    v45 = v14;
+    firstObject = v14;
     goto LABEL_81;
   }
 
@@ -284,18 +284,18 @@ LABEL_19:
     }
 
     v27 = *(*(&v69 + 1) + 8 * v26);
-    v28 = [v27 unprefixedURIStringsFromRegistration];
-    v29 = [(__CFString *)v64 prefixedURI];
-    v30 = [v29 _stripFZIDPrefix];
-    if (![v28 containsObject:v30])
+    unprefixedURIStringsFromRegistration3 = [v27 unprefixedURIStringsFromRegistration];
+    prefixedURI = [(__CFString *)iCopy prefixedURI];
+    _stripFZIDPrefix = [prefixedURI _stripFZIDPrefix];
+    if (![unprefixedURIStringsFromRegistration3 containsObject:_stripFZIDPrefix])
     {
 
       goto LABEL_26;
     }
 
-    v31 = [v27 isUsableForSending];
+    isUsableForSending = [v27 isUsableForSending];
 
-    if (v31)
+    if (isUsableForSending)
     {
       break;
     }
@@ -334,25 +334,25 @@ LABEL_26:
   v35 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [v34 smallDescription];
+    smallDescription5 = [v34 smallDescription];
     *buf = 138412546;
-    v79 = v64;
+    v79 = iCopy;
     v80 = 2112;
-    v81 = v36;
+    v81 = smallDescription5;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Selected account matching fromURI %@ {%@}", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled())
   {
-    v56 = [v34 smallDescription];
+    smallDescription6 = [v34 smallDescription];
     MarcoLogMadridLevel();
 
-    v57 = [v34 smallDescription];
+    smallDescription7 = [v34 smallDescription];
     IMLogString();
 
     if (_IMWillLog())
     {
-      v58 = [v34 smallDescription];
+      smallDescription8 = [v34 smallDescription];
       _IMAlwaysLog();
     }
   }
@@ -364,52 +364,52 @@ LABEL_87:
   return v27;
 }
 
-+ (id)prefixedAliasStringToQueryFrom:(id)a3 withPreferredFromURI:(id)a4
++ (id)prefixedAliasStringToQueryFrom:(id)from withPreferredFromURI:(id)i
 {
-  v4 = [a1 URIToQueryFrom:a3 withPreferredFromURI:a4];
-  v5 = [v4 prefixedURI];
+  v4 = [self URIToQueryFrom:from withPreferredFromURI:i];
+  prefixedURI = [v4 prefixedURI];
 
-  return v5;
+  return prefixedURI;
 }
 
-+ (id)URIToQueryFrom:(id)a3 withPreferredFromURI:(id)a4
++ (id)URIToQueryFrom:(id)from withPreferredFromURI:(id)i
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 accountType] == 2)
+  fromCopy = from;
+  iCopy = i;
+  if ([fromCopy accountType] == 2)
   {
     v7 = [IDSURI alloc];
-    v8 = [v5 loginID];
-    v9 = [v5 service];
-    v10 = [v9 identifier];
-    v11 = [v7 initWithPrefixedURI:v8 withServiceLoggingHint:v10];
+    loginID = [fromCopy loginID];
+    service = [fromCopy service];
+    identifier = [service identifier];
+    v11 = [v7 initWithPrefixedURI:loginID withServiceLoggingHint:identifier];
   }
 
   else
   {
-    v12 = [v5 service];
-    v13 = [v12 identifier];
+    service2 = [fromCopy service];
+    identifier2 = [service2 identifier];
     _IDSPrefersPhoneNumbersForServiceIdentifier();
 
-    if ([v5 shouldRegisterUsingDSHandle])
+    if ([fromCopy shouldRegisterUsingDSHandle])
     {
-      v14 = [v5 primaryRegistration];
-      v8 = [v14 dsHandle];
+      primaryRegistration = [fromCopy primaryRegistration];
+      loginID = [primaryRegistration dsHandle];
     }
 
     else
     {
-      v8 = 0;
+      loginID = 0;
     }
 
-    v15 = [v6 unprefixedURI];
-    v16 = [v5 unprefixedURIStringsFromRegistration];
-    v9 = _IDSCopyCallerIDWithSelfMessagingHint();
+    unprefixedURI = [iCopy unprefixedURI];
+    unprefixedURIStringsFromRegistration = [fromCopy unprefixedURIStringsFromRegistration];
+    service = _IDSCopyCallerIDWithSelfMessagingHint();
 
     v17 = [IDSURI alloc];
-    v10 = [v5 service];
-    v18 = [v10 identifier];
-    v11 = [v17 initWithUnprefixedURI:v9 withServiceLoggingHint:v18];
+    identifier = [fromCopy service];
+    v10Identifier = [identifier identifier];
+    v11 = [v17 initWithUnprefixedURI:service withServiceLoggingHint:v10Identifier];
   }
 
   return v11;

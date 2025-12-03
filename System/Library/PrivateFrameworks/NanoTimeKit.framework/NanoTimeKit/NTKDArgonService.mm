@@ -3,7 +3,7 @@
 + (void)cleanUpStaleBundlesEventually;
 - (BOOL)_argonIsComplete;
 - (BOOL)_handleDailyQuery;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_baseCriteriaForArgonActivities;
 - (id)_criteriaForDailyRefreshActiviy;
 - (id)_criteriaForFirstQueryActivity;
@@ -11,26 +11,26 @@
 - (void)_checkInForDailyQueryActivity;
 - (void)_checkInForFirstQueryActivity;
 - (void)_handleFirstQuery;
-- (void)_push_sendNotificationForContent:(id)a3 requestIdentifier:(id)a4 toNotificationCenter:(id)a5 identifier:(id)a6 bundle:(id)a7 completion:(id)a8;
-- (void)_push_userNotification_faceBundleManagerDidUpdate:(id)a3;
+- (void)_push_sendNotificationForContent:(id)content requestIdentifier:(id)identifier toNotificationCenter:(id)center identifier:(id)a6 bundle:(id)bundle completion:(id)completion;
+- (void)_push_userNotification_faceBundleManagerDidUpdate:(id)update;
 - (void)_queue_push_userNotification_processWaitingNotifications;
-- (void)_recordEventOfNotification:(id)a3 action:(int64_t)a4;
+- (void)_recordEventOfNotification:(id)notification action:(int64_t)action;
 - (void)_setupUserNotificationCenter;
-- (void)argonManager:(id)a3 didExtractKeyDescriptor:(id)a4 toPath:(id)a5;
-- (void)argonManager:(id)a3 didRemoveExtractedArgonFolderAtPath:(id)a4;
-- (void)argonManager:(id)a3 failedToExtractKeyDescriptor:(id)a4 error:(id)a5;
-- (void)argonManagerDidRefresh:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)ingestKeyDescriptor:(id)a3 withMethod:(unint64_t)a4 completion:(id)a5;
-- (void)knownKeyDescriptors:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)push_postNotificationForKeyDescriptor:(id)a3 completion:(id)a4;
+- (void)argonManager:(id)manager didExtractKeyDescriptor:(id)descriptor toPath:(id)path;
+- (void)argonManager:(id)manager didRemoveExtractedArgonFolderAtPath:(id)path;
+- (void)argonManager:(id)manager failedToExtractKeyDescriptor:(id)descriptor error:(id)error;
+- (void)argonManagerDidRefresh:(id)refresh;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)ingestKeyDescriptor:(id)descriptor withMethod:(unint64_t)method completion:(id)completion;
+- (void)knownKeyDescriptors:(id)descriptors;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)push_postNotificationForKeyDescriptor:(id)descriptor completion:(id)completion;
 - (void)push_updatePushConnection;
-- (void)queryForNewFaces:(id)a3;
-- (void)requestCurrentEnvironment:(id)a3;
-- (void)requestResetOnNextLaunch:(id)a3;
-- (void)setCurrentEnvironment:(int64_t)a3 completion:(id)a4;
+- (void)queryForNewFaces:(id)faces;
+- (void)requestCurrentEnvironment:(id)environment;
+- (void)requestResetOnNextLaunch:(id)launch;
+- (void)setCurrentEnvironment:(int64_t)environment completion:(id)completion;
 - (void)start;
 @end
 
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __33__NTKDArgonService_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken != -1)
   {
     dispatch_once(&sharedService_onceToken, block);
@@ -68,20 +68,20 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
   v2 = [(NTKDArgonService *)&v59 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v3 addObserver:v2 selector:sel__addFaceActionTappedFromNotification_ name:@"NTKFaceSupportAddFaceNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__addFaceActionTappedFromNotification_ name:@"NTKFaceSupportAddFaceNotification" object:0];
 
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v4 addObserver:v2 selector:sel__viewFaceActionTappedFromNotification_ name:@"NTKFaceSupportViewFaceNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__viewFaceActionTappedFromNotification_ name:@"NTKFaceSupportViewFaceNotification" object:0];
 
-    v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v5 addObserver:v2 selector:sel__viewWhatsNewActionTappedFromNotification_ name:@"NTKFaceSupportViewWhatsNewNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__viewWhatsNewActionTappedFromNotification_ name:@"NTKFaceSupportViewWhatsNewNotification" object:0];
 
     v52 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.NanoTimeKit.face"];
     [v52 registerDefaults:&unk_2841899F8];
     [(NTKDArgonService *)v2 setUserDefaults:v52];
-    v6 = [(NTKDArgonService *)v2 userDefaults];
-    v7 = [v6 BOOLForKey:@"ResetFaceSupportOnNextLaunch"];
+    userDefaults = [(NTKDArgonService *)v2 userDefaults];
+    v7 = [userDefaults BOOLForKey:@"ResetFaceSupportOnNextLaunch"];
 
     if (v7)
     {
@@ -92,8 +92,8 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
         _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Reset requested.", buf, 2u);
       }
 
-      v9 = [(NTKDArgonService *)v2 userDefaults];
-      [v9 removeObjectForKey:@"ResetFaceSupportOnNextLaunch"];
+      userDefaults2 = [(NTKDArgonService *)v2 userDefaults];
+      [userDefaults2 removeObjectForKey:@"ResetFaceSupportOnNextLaunch"];
     }
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -115,8 +115,8 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
 
     if (v7)
     {
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      [v16 removeItemAtPath:v14 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtPath:v14 error:0];
     }
 
     v17 = [[NTKFaceSupportNotificationActionEventRecorder alloc] initWithFilePath:v14];
@@ -135,8 +135,8 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
 
     if (v7)
     {
-      v21 = [MEMORY[0x277CCAA00] defaultManager];
-      [v21 removeItemAtPath:v50 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 removeItemAtPath:v50 error:0];
     }
 
     v49 = NTKFaceSupportArchiveSourceDirectory();
@@ -150,16 +150,16 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
 
     if (v7)
     {
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
-      [v23 removeItemAtPath:v49 error:0];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager3 removeItemAtPath:v49 error:0];
     }
 
     v24 = NTKArgonExtractorBasePath();
     v25 = NTKArgonExtractorBuildVersion();
     v48 = [v24 stringByAppendingPathComponent:v25];
     v51 = [v24 stringByAppendingPathComponent:@"ExtractionInProgress"];
-    v26 = [MEMORY[0x277CCAA00] defaultManager];
-    [v26 removeItemAtPath:v51 error:0];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager4 removeItemAtPath:v51 error:0];
 
     v27 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -173,15 +173,15 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
 
     if (v7)
     {
-      v28 = [MEMORY[0x277CCAA00] defaultManager];
-      [v28 removeItemAtPath:v48 error:0];
+      defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager5 removeItemAtPath:v48 error:0];
     }
 
     v29 = BSCurrentUserDirectory();
     v47 = [v29 stringByAppendingPathComponent:@"/Library/NanoTimeKit/FaceSupport/Assets"];
 
-    v30 = [MEMORY[0x277CCAA00] defaultManager];
-    v31 = [v30 removeItemAtPath:v47 error:0];
+    defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
+    v31 = [defaultManager6 removeItemAtPath:v47 error:0];
 
     if (v31)
     {
@@ -255,8 +255,8 @@ void __33__NTKDArgonService_sharedService__block_invoke(uint64_t a1)
     }
 
     [v52 addObserver:v2 forKeyPath:@"FaceSupportNotifications" options:0 context:{&NTKDArgonServiceKVOContext, v45}];
-    v43 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v43 addObserver:v2 selector:sel__push_userNotification_faceBundleManagerDidUpdate_ name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
+    defaultCenter4 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__push_userNotification_faceBundleManagerDidUpdate_ name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
   }
 
   return v2;
@@ -436,14 +436,14 @@ void __25__NTKDArgonService__init__block_invoke_167(uint64_t a1, int a2, void *a
   [(NTKDArgonService *)self push_updatePushConnection];
   [objc_opt_class() cleanUpStaleBundlesEventually];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(NTKDArgonService *)self manager];
+  manager = [(NTKDArgonService *)self manager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__NTKDArgonService_start__block_invoke_172;
   v7[3] = &unk_27877DB10;
   v8 = v4;
   v6 = v4;
-  [v5 extractKnownKeyDescriptorsIfNeededWithCompletion:v7];
+  [manager extractKnownKeyDescriptorsIfNeededWithCompletion:v7];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -641,25 +641,25 @@ LABEL_19:
 LABEL_35:
 }
 
-- (void)requestResetOnNextLaunch:(id)a3
+- (void)requestResetOnNextLaunch:(id)launch
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKDArgonService *)self userDefaults];
-  [v5 setBool:1 forKey:@"ResetFaceSupportOnNextLaunch"];
+  launchCopy = launch;
+  userDefaults = [(NTKDArgonService *)self userDefaults];
+  [userDefaults setBool:1 forKey:@"ResetFaceSupportOnNextLaunch"];
 
   v6 = NTKArgonExtractorBuildVersion();
   v7 = NTKArgonExtractorBasePath();
   v8 = [v7 stringByAppendingPathComponent:v6];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 stringWithFormat:@"reset.%@.%@", v6, v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v9 stringWithFormat:@"reset.%@.%@", v6, uUIDString];
 
   v13 = [v7 stringByAppendingPathComponent:v12];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0;
-  v15 = [v14 moveItemAtPath:v8 toPath:v13 error:&v19];
+  v15 = [defaultManager moveItemAtPath:v8 toPath:v13 error:&v19];
   v16 = v19;
 
   v17 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
@@ -683,31 +683,31 @@ LABEL_35:
     _os_log_error_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_ERROR, "Reset: Failed to rename %{public}@ to %{public}@: %{public}@", buf, 0x20u);
   }
 
-  v4[2](v4, v15);
+  launchCopy[2](launchCopy, v15);
 }
 
-- (void)knownKeyDescriptors:(id)a3
+- (void)knownKeyDescriptors:(id)descriptors
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [(NTKDArgonService *)self manager];
-  v8 = [v7 keyDatabase];
+  descriptorsCopy = descriptors;
+  array = [v4 array];
+  manager = [(NTKDArgonService *)self manager];
+  keyDatabase = [manager keyDatabase];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__NTKDArgonService_knownKeyDescriptors___block_invoke;
   v11[3] = &unk_27877E8B8;
-  v12 = v6;
-  v9 = v6;
-  [v8 enumerateKeyDescriptors:v11];
+  v12 = array;
+  v9 = array;
+  [keyDatabase enumerateKeyDescriptors:v11];
 
   v10 = [v9 copy];
-  v5[2](v5, v10);
+  descriptorsCopy[2](descriptorsCopy, v10);
 }
 
-- (void)requestCurrentEnvironment:(id)a3
+- (void)requestCurrentEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if (CFPreferencesGetAppBooleanValue(@"ArgonSandbox", @"com.apple.NanoTimeKit.face", 0))
   {
     v3 = 2;
@@ -718,24 +718,24 @@ LABEL_35:
     v3 = 1;
   }
 
-  v4[2](v4, v3, 0);
+  environmentCopy[2](environmentCopy, v3, 0);
 }
 
-- (void)setCurrentEnvironment:(int64_t)a3 completion:(id)a4
+- (void)setCurrentEnvironment:(int64_t)environment completion:(id)completion
 {
   v4 = MEMORY[0x277CBED28];
-  if (a3 != 2)
+  if (environment != 2)
   {
     v4 = MEMORY[0x277CBED10];
   }
 
   v5 = *v4;
-  v6 = a4;
+  completionCopy = completion;
   CFPreferencesSetAppValue(@"ArgonSandbox", v5, @"com.apple.NanoTimeKit.face");
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)argonManagerDidRefresh:(id)a3
+- (void)argonManagerDidRefresh:(id)refresh
 {
   v3 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -744,40 +744,40 @@ LABEL_35:
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Argon did refresh", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 postNotificationName:@"NTKArgonManagerDidRefreshNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKArgonManagerDidRefreshNotificationName" object:0];
 }
 
-- (void)argonManager:(id)a3 didExtractKeyDescriptor:(id)a4 toPath:(id)a5
+- (void)argonManager:(id)manager didExtractKeyDescriptor:(id)descriptor toPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  descriptorCopy = descriptor;
+  pathCopy = path;
   v8 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 fileName];
+    fileName = [descriptorCopy fileName];
     *buf = 138412546;
-    v18 = v9;
+    v18 = fileName;
     v19 = 2112;
-    v20 = v7;
+    v20 = pathCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Argon extracted descriptor %@ to path %@", buf, 0x16u);
   }
 
-  v10 = [v6 fileName];
+  fileName2 = [descriptorCopy fileName];
   v11 = +[NTKFaceSupportUnlockAttemptEventRecorder sharedRecorder];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__NTKDArgonService_argonManager_didExtractKeyDescriptor_toPath___block_invoke;
   v15[3] = &unk_27877E938;
-  v16 = v10;
-  v12 = v10;
+  v16 = fileName2;
+  v12 = fileName2;
   [v11 endRecordingForIdentifier:v12 status:1 errorCode:0 completion:v15];
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 postNotificationName:@"NTKArgonManagerDidUpdateNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKArgonManagerDidUpdateNotificationName" object:0];
 
-  v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v14 postNotificationName:@"NTKArgonManagerDidUpdateNotificationName" object:0];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 postNotificationName:@"NTKArgonManagerDidUpdateNotificationName" object:0];
 }
 
 void __64__NTKDArgonService_argonManager_didExtractKeyDescriptor_toPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -798,20 +798,20 @@ void __64__NTKDArgonService_argonManager_didExtractKeyDescriptor_toPath___block_
   }
 }
 
-- (void)argonManager:(id)a3 failedToExtractKeyDescriptor:(id)a4 error:(id)a5
+- (void)argonManager:(id)manager failedToExtractKeyDescriptor:(id)descriptor error:(id)error
 {
-  v6 = a5;
-  v7 = [a4 fileName];
+  errorCopy = error;
+  fileName = [descriptor fileName];
   v8 = +[NTKFaceSupportUnlockAttemptEventRecorder sharedRecorder];
-  v9 = [v6 code];
+  code = [errorCopy code];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__NTKDArgonService_argonManager_failedToExtractKeyDescriptor_error___block_invoke;
   v11[3] = &unk_27877E938;
-  v12 = v7;
-  v10 = v7;
-  [v8 endRecordingForIdentifier:v10 status:3 errorCode:v9 completion:v11];
+  v12 = fileName;
+  v10 = fileName;
+  [v8 endRecordingForIdentifier:v10 status:3 errorCode:code completion:v11];
 }
 
 void __68__NTKDArgonService_argonManager_failedToExtractKeyDescriptor_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -832,9 +832,9 @@ void __68__NTKDArgonService_argonManager_failedToExtractKeyDescriptor_error___bl
   }
 }
 
-- (void)argonManager:(id)a3 didRemoveExtractedArgonFolderAtPath:(id)a4
+- (void)argonManager:(id)manager didRemoveExtractedArgonFolderAtPath:(id)path
 {
-  v4 = a4;
+  pathCopy = path;
   v5 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -842,10 +842,10 @@ void __68__NTKDArgonService_argonManager_failedToExtractKeyDescriptor_error___bl
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -854,19 +854,19 @@ void __68__NTKDArgonService_argonManager_failedToExtractKeyDescriptor_error___bl
   }
 
   v8 = NTKFaceSupportServerInterface();
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
   v9 = +[NTKDArgonServiceXPCWrapper sharedXPCWrapper];
-  [v6 setExportedObject:v9];
+  [connectionCopy setExportedObject:v9];
 
-  objc_initWeak(buf, v6);
+  objc_initWeak(buf, connectionCopy);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke;
   v11[3] = &unk_27877DC58;
   objc_copyWeak(&v12, buf);
-  [v6 setInvalidationHandler:v11];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v11];
+  [connectionCopy resume];
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 
@@ -879,9 +879,9 @@ void __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke(ui
   [WeakRetained setExportedObject:0];
 }
 
-- (void)queryForNewFaces:(id)a3
+- (void)queryForNewFaces:(id)faces
 {
-  v4 = a3;
+  facesCopy = faces;
   v5 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -891,40 +891,40 @@ void __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke(ui
 
   if ([(NTKDArgonService *)self _argonIsComplete])
   {
-    v4[2](v4, 0);
+    facesCopy[2](facesCopy, 0);
   }
 
   else
   {
-    v6 = [(NTKDArgonService *)self manager];
-    [v6 refreshWithReason:3];
+    manager = [(NTKDArgonService *)self manager];
+    [manager refreshWithReason:3];
 
-    if (v4)
+    if (facesCopy)
     {
-      v4[2](v4, 1);
+      facesCopy[2](facesCopy, 1);
     }
   }
 }
 
-- (void)ingestKeyDescriptor:(id)a3 withMethod:(unint64_t)a4 completion:(id)a5
+- (void)ingestKeyDescriptor:(id)descriptor withMethod:(unint64_t)method completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v10 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v8;
+    v29 = descriptorCopy;
     v30 = 2048;
-    v31 = a4;
+    methodCopy = method;
     _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "Ingesting key descriptor %@ with method %lu…", buf, 0x16u);
   }
 
-  v11 = [(NTKDArgonService *)self manager];
-  v12 = [v11 keyDatabase];
+  manager = [(NTKDArgonService *)self manager];
+  keyDatabase = [manager keyDatabase];
   v27 = 0;
-  v13 = [v12 addKeyDescriptor:v8 error:&v27];
+  v13 = [keyDatabase addKeyDescriptor:descriptorCopy error:&v27];
   v14 = v27;
   v15 = v14;
   if (v13)
@@ -933,7 +933,7 @@ void __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke(ui
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v8;
+      v29 = descriptorCopy;
       _os_log_impl(&dword_22D9C5000, v16, OS_LOG_TYPE_DEFAULT, "Key was added %@", buf, 0xCu);
     }
 
@@ -941,21 +941,21 @@ void __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke(ui
     v25[1] = 3221225472;
     v25[2] = __62__NTKDArgonService_ingestKeyDescriptor_withMethod_completion___block_invoke;
     v25[3] = &unk_27877E960;
-    v26 = v9;
-    [v11 extractKnownKeyDescriptorsIfNeededWithCompletion:v25];
+    v26 = completionCopy;
+    [manager extractKnownKeyDescriptorsIfNeededWithCompletion:v25];
   }
 
   else
   {
-    v17 = [v14 code];
+    code = [v14 code];
     v18 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-    if (v17 == 1)
+    if (code == 1)
     {
       if (v19)
       {
         *buf = 138412290;
-        v29 = v8;
+        v29 = descriptorCopy;
         _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_DEFAULT, "Key was already added %@", buf, 0xCu);
       }
     }
@@ -965,27 +965,27 @@ void __55__NTKDArgonService_listener_shouldAcceptNewConnection___block_invoke(ui
       if (v19)
       {
         *buf = 138412546;
-        v29 = v8;
+        v29 = descriptorCopy;
         v30 = 2112;
-        v31 = v15;
+        methodCopy = v15;
         _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_DEFAULT, "Key was NOT added %@ - %@", buf, 0x16u);
       }
 
       v18 = +[NTKFaceSupportUnlockAttemptEventRecorder sharedRecorder];
-      v20 = [v8 fileName];
-      v21 = [v15 code];
+      fileName = [descriptorCopy fileName];
+      code2 = [v15 code];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __62__NTKDArgonService_ingestKeyDescriptor_withMethod_completion___block_invoke_186;
       v23[3] = &unk_27877E938;
-      v24 = v20;
-      v22 = v20;
-      [v18 endRecordingForIdentifier:v22 status:4 errorCode:v21 completion:v23];
+      v24 = fileName;
+      v22 = fileName;
+      [v18 endRecordingForIdentifier:v22 status:4 errorCode:code2 completion:v23];
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, v17 == 1, v15);
+      (*(completionCopy + 2))(completionCopy, code == 1, v15);
     }
   }
 }
@@ -1035,19 +1035,19 @@ void __62__NTKDArgonService_ingestKeyDescriptor_withMethod_completion___block_in
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Checking in for first-run activity…", buf, 2u);
   }
 
-  v4 = [(NTKDArgonService *)self _criteriaForFirstQueryActivity];
+  _criteriaForFirstQueryActivity = [(NTKDArgonService *)self _criteriaForFirstQueryActivity];
   objc_initWeak(buf, self);
-  v5 = [@"com.apple.nanotimekit.facesupport.launchQuery" UTF8String];
+  uTF8String = [@"com.apple.nanotimekit.facesupport.launchQuery" UTF8String];
   v6 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __49__NTKDArgonService__checkInForFirstQueryActivity__block_invoke;
   handler[3] = &unk_27877E988;
   v9 = @"com.apple.nanotimekit.facesupport.launchQuery";
-  v7 = v4;
+  v7 = _criteriaForFirstQueryActivity;
   v10 = v7;
   objc_copyWeak(&v11, buf);
-  xpc_activity_register(v5, v6, handler);
+  xpc_activity_register(uTF8String, v6, handler);
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(buf);
@@ -1125,19 +1125,19 @@ void __49__NTKDArgonService__checkInForFirstQueryActivity__block_invoke(uint64_t
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Checking in for first-daily activity…", buf, 2u);
   }
 
-  v4 = [(NTKDArgonService *)self _criteriaForDailyRefreshActiviy];
+  _criteriaForDailyRefreshActiviy = [(NTKDArgonService *)self _criteriaForDailyRefreshActiviy];
   objc_initWeak(buf, self);
-  v5 = [@"com.apple.nanotimekit.facesupport.dailyQuery" UTF8String];
+  uTF8String = [@"com.apple.nanotimekit.facesupport.dailyQuery" UTF8String];
   v6 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke;
   handler[3] = &unk_27877E988;
   v9 = @"com.apple.nanotimekit.facesupport.dailyQuery";
-  v7 = v4;
+  v7 = _criteriaForDailyRefreshActiviy;
   v10 = v7;
   objc_copyWeak(&v11, buf);
-  xpc_activity_register(v5, v6, handler);
+  xpc_activity_register(uTF8String, v6, handler);
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(buf);
@@ -1230,22 +1230,22 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
 
 - (id)_criteriaForFirstQueryActivity
 {
-  v2 = [(NTKDArgonService *)self _baseCriteriaForArgonActivities];
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86360], 0);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86230], 1);
+  _baseCriteriaForArgonActivities = [(NTKDArgonService *)self _baseCriteriaForArgonActivities];
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D86360], 0);
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D86230], 1);
 
-  return v2;
+  return _baseCriteriaForArgonActivities;
 }
 
 - (id)_criteriaForDailyRefreshActiviy
 {
-  v2 = [(NTKDArgonService *)self _baseCriteriaForArgonActivities];
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86288], *MEMORY[0x277D86298] != 0);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86360], 1);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D86230], 0);
-  xpc_dictionary_set_BOOL(v2, *MEMORY[0x277D863A8], 1);
+  _baseCriteriaForArgonActivities = [(NTKDArgonService *)self _baseCriteriaForArgonActivities];
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D86288], *MEMORY[0x277D86298] != 0);
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D86360], 1);
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D86230], 0);
+  xpc_dictionary_set_BOOL(_baseCriteriaForArgonActivities, *MEMORY[0x277D863A8], 1);
 
-  return v2;
+  return _baseCriteriaForArgonActivities;
 }
 
 - (void)_handleFirstQuery
@@ -1259,18 +1259,18 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
 
   if ([(NTKDArgonService *)self _argonIsComplete])
   {
-    v4 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    manager = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+    if (os_log_type_enabled(manager, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "Skipping first Argon download - already complete!", v5, 2u);
+      _os_log_impl(&dword_22D9C5000, manager, OS_LOG_TYPE_DEFAULT, "Skipping first Argon download - already complete!", v5, 2u);
     }
   }
 
   else
   {
-    v4 = [(NTKDArgonService *)self manager];
-    [v4 refreshWithReason:1];
+    manager = [(NTKDArgonService *)self manager];
+    [manager refreshWithReason:1];
   }
 }
 
@@ -1283,38 +1283,38 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Performing periodic Argon download…", buf, 2u);
   }
 
-  v4 = [(NTKDArgonService *)self _argonIsComplete];
-  if (v4)
+  _argonIsComplete = [(NTKDArgonService *)self _argonIsComplete];
+  if (_argonIsComplete)
   {
-    v5 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    currentDevice = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+    if (os_log_type_enabled(currentDevice, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Skipping Argon download - it's done!", v9, 2u);
+      _os_log_impl(&dword_22D9C5000, currentDevice, OS_LOG_TYPE_DEFAULT, "Skipping Argon download - it's done!", v9, 2u);
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBBAE8] currentDevice];
-    if (([v5 isPaired]& 1) != 0)
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    if (([currentDevice isPaired]& 1) != 0)
     {
-      v6 = [(NTKDArgonService *)self manager];
-      [v6 refreshWithReason:2];
+      manager = [(NTKDArgonService *)self manager];
+      [manager refreshWithReason:2];
     }
 
     else
     {
-      v6 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      manager = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+      if (os_log_type_enabled(manager, OS_LOG_TYPE_DEFAULT))
       {
         *v8 = 0;
-        _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Skipping Argon download - no device paired!", v8, 2u);
+        _os_log_impl(&dword_22D9C5000, manager, OS_LOG_TYPE_DEFAULT, "Skipping Argon download - no device paired!", v8, 2u);
       }
     }
   }
 
-  return !v4;
+  return !_argonIsComplete;
 }
 
 - (BOOL)_argonIsComplete
@@ -1322,20 +1322,20 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
   v37 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(NTKDArgonService *)self manager];
-  v6 = [v5 extractor];
-  v7 = [v6 sourcePath];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  manager = [(NTKDArgonService *)self manager];
+  extractor = [manager extractor];
+  sourcePath = [extractor sourcePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v35 = 0;
-  v9 = [v8 contentsOfDirectoryAtPath:v7 error:&v35];
+  v9 = [defaultManager contentsOfDirectoryAtPath:sourcePath error:&v35];
   v10 = v35;
 
   if (v9)
   {
     v24 = v10;
-    v25 = v7;
-    v26 = v6;
-    v27 = v5;
+    v25 = sourcePath;
+    v26 = extractor;
+    v27 = manager;
     v28 = v4;
     v33 = 0u;
     v34 = 0u;
@@ -1357,8 +1357,8 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [v16 pathExtension];
-          v18 = [v17 isEqualToString:@"aea"];
+          pathExtension = [v16 pathExtension];
+          v18 = [pathExtension isEqualToString:@"aea"];
 
           if (v18)
           {
@@ -1372,7 +1372,7 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
       while (v13);
     }
 
-    v19 = [MEMORY[0x277CBBAE8] currentDevice];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
     v20 = +[NTKFaceBundleManager sharedManager];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -1381,21 +1381,21 @@ void __49__NTKDArgonService__checkInForDailyQueryActivity__block_invoke(id *a1, 
     v4 = v28;
     v21 = v28;
     v30 = v21;
-    [v20 enumerateFaceBundlesOnDevice:v19 withBlock:v29];
+    [v20 enumerateFaceBundlesOnDevice:currentDevice withBlock:v29];
 
     [v3 minusSet:v21];
     v22 = [v3 count] == 0;
 
-    v6 = v26;
-    v5 = v27;
+    extractor = v26;
+    manager = v27;
     v10 = v24;
-    v7 = v25;
+    sourcePath = v25;
   }
 
   else
   {
-    v19 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    currentDevice = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+    if (os_log_type_enabled(currentDevice, OS_LOG_TYPE_ERROR))
     {
       [NTKDArgonService _argonIsComplete];
     }
@@ -1423,12 +1423,12 @@ void __36__NTKDArgonService__argonIsComplete__block_invoke(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &NTKDArgonServiceKVOContext)
+  if (context == &NTKDArgonServiceKVOContext)
   {
 
-    [(NTKDArgonService *)self push_updatePushConnection:a3];
+    [(NTKDArgonService *)self push_updatePushConnection:path];
   }
 
   else
@@ -1437,19 +1437,19 @@ void __36__NTKDArgonService__argonIsComplete__block_invoke(uint64_t a1)
     v10 = v7;
     v8.receiver = self;
     v8.super_class = NTKDArgonService;
-    [(NTKDArgonService *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(NTKDArgonService *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_recordEventOfNotification:(id)a3 action:(int64_t)a4
+- (void)_recordEventOfNotification:(id)notification action:(int64_t)action
 {
-  v6 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x277CBBAE8] currentDevice];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
     v8 = +[NTKFaceBundleManager sharedManager];
-    v9 = [v8 faceBundleForBundleIdentifier:v6 onDevice:v7];
+    v9 = [v8 faceBundleForBundleIdentifier:object onDevice:currentDevice];
     if (v9)
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1457,21 +1457,21 @@ void __36__NTKDArgonService__argonIsComplete__block_invoke(uint64_t a1)
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 fileName];
-        v14 = [(NTKDArgonService *)self actionRecorder];
+        fileName = [v11 fileName];
+        actionRecorder = [(NTKDArgonService *)self actionRecorder];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __54__NTKDArgonService__recordEventOfNotification_action___block_invoke;
         v16[3] = &unk_27877E9B0;
-        v17 = v13;
-        v15 = v13;
-        [v14 endPresentationForIdentifier:v15 withAction:a4 completion:v16];
+        v17 = fileName;
+        v15 = fileName;
+        [actionRecorder endPresentationForIdentifier:v15 withAction:action completion:v16];
       }
 
       else
       {
-        v14 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        actionRecorder = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+        if (os_log_type_enabled(actionRecorder, OS_LOG_TYPE_ERROR))
         {
           [NTKDArgonService _recordEventOfNotification:action:];
         }
@@ -1490,8 +1490,8 @@ void __36__NTKDArgonService__argonIsComplete__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    currentDevice = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+    if (os_log_type_enabled(currentDevice, OS_LOG_TYPE_ERROR))
     {
       [NTKDArgonService _recordEventOfNotification:action:];
     }
@@ -1516,7 +1516,7 @@ void __54__NTKDArgonService__recordEventOfNotification_action___block_invoke(uin
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v4 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1526,11 +1526,11 @@ void __54__NTKDArgonService__recordEventOfNotification_action___block_invoke(uin
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v5 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v6 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1538,8 +1538,8 @@ void __54__NTKDArgonService__recordEventOfNotification_action___block_invoke(uin
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Argon recieved a push message.", buf, 2u);
   }
 
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKey:@"d"];
+  userInfo = [messageCopy userInfo];
+  v8 = [userInfo objectForKey:@"d"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1548,35 +1548,35 @@ void __54__NTKDArgonService__recordEventOfNotification_action___block_invoke(uin
 
     if (v10)
     {
-      v11 = [v10 fileName];
+      fileName = [v10 fileName];
       v12 = +[NTKFaceSupportUnlockAttemptEventRecorder sharedRecorder];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __57__NTKDArgonService_connection_didReceiveIncomingMessage___block_invoke;
       v28[3] = &unk_27877E820;
-      v13 = v11;
+      v13 = fileName;
       v29 = v13;
       [v12 beginRecordingForIdentifier:v13 method:1 completion:v28];
 
       v14 = +[NTKFaceSupportNotificationPresentationEventRecorder sharedRecorder];
-      v15 = [v10 fileName];
-      v16 = [v7 objectForKey:@"t"];
+      fileName2 = [v10 fileName];
+      v16 = [userInfo objectForKey:@"t"];
       [v16 doubleValue];
       v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __57__NTKDArgonService_connection_didReceiveIncomingMessage___block_invoke_213;
       v26[3] = &unk_27877E820;
-      v27 = v15;
-      v18 = v15;
+      v27 = fileName2;
+      v18 = fileName2;
       [v14 beginPresentationForIdentifier:v18 pushDate:v17 completion:v26];
 
       v19 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v10 fileName];
+        fileName3 = [v10 fileName];
         *buf = 138412290;
-        v31 = v20;
+        v31 = fileName3;
         _os_log_impl(&dword_22D9C5000, v19, OS_LOG_TYPE_DEFAULT, "Argon found a key descriptor in message named %@.", buf, 0xCu);
       }
 
@@ -1691,22 +1691,22 @@ void __57__NTKDArgonService_connection_didReceiveIncomingMessage___block_invoke_
   }
 }
 
-- (void)_push_userNotification_faceBundleManagerDidUpdate:(id)a3
+- (void)_push_userNotification_faceBundleManagerDidUpdate:(id)update
 {
-  v4 = [(NTKDArgonService *)self userNotificationQueue];
+  userNotificationQueue = [(NTKDArgonService *)self userNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__NTKDArgonService__push_userNotification_faceBundleManagerDidUpdate___block_invoke;
   block[3] = &unk_27877DB10;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(userNotificationQueue, block);
 }
 
 - (void)_queue_push_userNotification_processWaitingNotifications
 {
   OUTLINED_FUNCTION_8();
-  v1 = [v0 fileName];
-  v7 = [objc_opt_class() identifier];
+  fileName = [v0 fileName];
+  identifier = [objc_opt_class() identifier];
   OUTLINED_FUNCTION_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
 }
@@ -1854,21 +1854,21 @@ void __76__NTKDArgonService__queue_push_userNotification_processWaitingNotificat
   }
 }
 
-- (void)push_postNotificationForKeyDescriptor:(id)a3 completion:(id)a4
+- (void)push_postNotificationForKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKDArgonService *)self userNotificationQueue];
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  userNotificationQueue = [(NTKDArgonService *)self userNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__NTKDArgonService_push_postNotificationForKeyDescriptor_completion___block_invoke;
   block[3] = &unk_27877EAA0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = descriptorCopy;
+  v9 = completionCopy;
+  v10 = descriptorCopy;
+  dispatch_async(userNotificationQueue, block);
 }
 
 void __69__NTKDArgonService_push_postNotificationForKeyDescriptor_completion___block_invoke(uint64_t a1)
@@ -1924,29 +1924,29 @@ void __69__NTKDArgonService_push_postNotificationForKeyDescriptor_completion___b
 - (void)push_updatePushConnection
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__NTKDArgonService_push_updatePushConnection__block_invoke;
   block[3] = &unk_27877DB10;
-  block[4] = v2;
+  block[4] = selfCopy;
   if (push_updatePushConnection_onceToken != -1)
   {
     dispatch_once(&push_updatePushConnection_onceToken, block);
   }
 
-  v3 = [(NTKDArgonService *)v2 pushQueue];
-  if (!v3)
+  pushQueue = [(NTKDArgonService *)selfCopy pushQueue];
+  if (!pushQueue)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v3 = dispatch_queue_create("com.apple.nanotimekit.facesupport.service.push", v4);
+    pushQueue = dispatch_queue_create("com.apple.nanotimekit.facesupport.service.push", v4);
 
-    [(NTKDArgonService *)v2 setPushQueue:v3];
+    [(NTKDArgonService *)selfCopy setPushQueue:pushQueue];
   }
 
-  v5 = [(NTKDArgonService *)v2 pushConnection];
-  if (!v5)
+  pushConnection = [(NTKDArgonService *)selfCopy pushConnection];
+  if (!pushConnection)
   {
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"ArgonSandbox", @"com.apple.NanoTimeKit.face", 0);
     v7 = MEMORY[0x277CEE9F0];
@@ -1956,21 +1956,21 @@ void __69__NTKDArgonService_push_postNotificationForKeyDescriptor_completion___b
     }
 
     v8 = *v7;
-    v5 = [objc_alloc(MEMORY[0x277CEEA10]) initWithEnvironmentName:v8 namedDelegatePort:@"com.apple.aps.nanotimekit.facesupport" queue:v3];
-    [v5 setDelegate:v2];
-    [(NTKDArgonService *)v2 setPushConnection:v5];
+    pushConnection = [objc_alloc(MEMORY[0x277CEEA10]) initWithEnvironmentName:v8 namedDelegatePort:@"com.apple.aps.nanotimekit.facesupport" queue:pushQueue];
+    [pushConnection setDelegate:selfCopy];
+    [(NTKDArgonService *)selfCopy setPushConnection:pushConnection];
   }
 
   v9 = +[NTKArgonChannelID currentChannelID];
   v10 = [objc_alloc(MEMORY[0x277CD9D98]) initWithChannelID:v9];
   v24[0] = @"com.apple.aps.nanotimekit.facesupport";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-  [v5 setEnabledTopics:v11 ignoredTopics:MEMORY[0x277CBEBF8]];
+  [pushConnection setEnabledTopics:v11 ignoredTopics:MEMORY[0x277CBEBF8]];
 
-  v12 = [MEMORY[0x277CBBAE8] currentDevice];
-  if ([v12 isPaired])
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  if ([currentDevice isPaired])
   {
-    v13 = [v12 supportsPDRCapability:4094027452];
+    v13 = [currentDevice supportsPDRCapability:4094027452];
   }
 
   else
@@ -1978,11 +1978,11 @@ void __69__NTKDArgonService_push_postNotificationForKeyDescriptor_completion___b
     v13 = 0;
   }
 
-  v14 = [(NTKDArgonService *)v2 userDefaults];
-  v15 = [v14 BOOLForKey:@"FaceSupportNotifications"];
+  userDefaults = [(NTKDArgonService *)selfCopy userDefaults];
+  v15 = [userDefaults BOOLForKey:@"FaceSupportNotifications"];
   if (v13)
   {
-    [v5 subscribeToChannel:v10 forTopic:@"com.apple.aps.nanotimekit.facesupport"];
+    [pushConnection subscribeToChannel:v10 forTopic:@"com.apple.aps.nanotimekit.facesupport"];
     v16 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -1999,7 +1999,7 @@ LABEL_20:
   else
   {
     v18 = v15;
-    [v5 unsubscribeFromChannel:v10 forTopic:@"com.apple.aps.nanotimekit.facesupport"];
+    [pushConnection unsubscribeFromChannel:v10 forTopic:@"com.apple.aps.nanotimekit.facesupport"];
     if (v18)
     {
       v16 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
@@ -2029,7 +2029,7 @@ LABEL_20:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __45__NTKDArgonService_push_updatePushConnection__block_invoke(uint64_t a1)
@@ -2038,31 +2038,31 @@ void __45__NTKDArgonService_push_updatePushConnection__block_invoke(uint64_t a1)
   [v2 addObserver:*(a1 + 32) selector:sel_push_deviceChanged_ name:*MEMORY[0x277CBB640] object:0];
 }
 
-- (void)_push_sendNotificationForContent:(id)a3 requestIdentifier:(id)a4 toNotificationCenter:(id)a5 identifier:(id)a6 bundle:(id)a7 completion:(id)a8
+- (void)_push_sendNotificationForContent:(id)content requestIdentifier:(id)identifier toNotificationCenter:(id)center identifier:(id)a6 bundle:(id)bundle completion:(id)completion
 {
-  v14 = a4;
+  identifierCopy = identifier;
   v15 = a6;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = [a3 mutableCopy];
-  v20 = [objc_opt_class() identifier];
-  v21 = [v19 userInfo];
-  v22 = v21;
-  if (!v21)
+  completionCopy = completion;
+  bundleCopy = bundle;
+  centerCopy = center;
+  v19 = [content mutableCopy];
+  identifier = [objc_opt_class() identifier];
+  userInfo = [v19 userInfo];
+  v22 = userInfo;
+  if (!userInfo)
   {
-    v21 = MEMORY[0x277CBEC10];
+    userInfo = MEMORY[0x277CBEC10];
   }
 
-  v23 = [v21 mutableCopy];
+  v23 = [userInfo mutableCopy];
 
-  [v23 setObject:v20 forKey:@"bid"];
+  [v23 setObject:identifier forKey:@"bid"];
   v24 = objc_opt_class();
 
-  v25 = [v24 argon_defaultNotificationAction];
-  if (v25)
+  argon_defaultNotificationAction = [v24 argon_defaultNotificationAction];
+  if (argon_defaultNotificationAction)
   {
-    if (v25 != 1)
+    if (argon_defaultNotificationAction != 1)
     {
       goto LABEL_8;
     }
@@ -2081,7 +2081,7 @@ LABEL_8:
   [v19 setUserInfo:v27];
 
   v28 = [MEMORY[0x277CE2020] triggerWithTimeInterval:0 repeats:1.0];
-  if (!v14)
+  if (!identifierCopy)
   {
     v29 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2089,23 +2089,23 @@ LABEL_8:
       [NTKDArgonService _push_sendNotificationForContent:v29 requestIdentifier:? toNotificationCenter:? identifier:? bundle:? completion:?];
     }
 
-    v30 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v30 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    identifierCopy = [uUID UUIDString];
   }
 
-  v31 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v14 content:v19 trigger:v28];
+  v31 = [MEMORY[0x277CE1FC0] requestWithIdentifier:identifierCopy content:v19 trigger:v28];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __121__NTKDArgonService__push_sendNotificationForContent_requestIdentifier_toNotificationCenter_identifier_bundle_completion___block_invoke;
   v35[3] = &unk_27877EAC8;
   v36 = v15;
   v37 = v19;
-  v38 = self;
-  v39 = v16;
-  v32 = v16;
+  selfCopy = self;
+  v39 = completionCopy;
+  v32 = completionCopy;
   v33 = v19;
   v34 = v15;
-  [v18 addNotificationRequest:v31 withCompletionHandler:v35];
+  [centerCopy addNotificationRequest:v31 withCompletionHandler:v35];
 }
 
 void __121__NTKDArgonService__push_sendNotificationForContent_requestIdentifier_toNotificationCenter_identifier_bundle_completion___block_invoke(uint64_t a1, void *a2)

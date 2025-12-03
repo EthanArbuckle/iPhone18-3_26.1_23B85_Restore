@@ -1,44 +1,44 @@
 @interface KeyInSlot
-- (KeyInSlot)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KeyInSlot)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KeyInSlot
 
-- (KeyInSlot)initWithCoder:(id)a3
+- (KeyInSlot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = KeyInSlot;
-  v5 = [(NFTrustObject *)&v10 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = sub_10001F2FC();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"keyUniqueIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"keyUniqueIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v7;
 
-    v5->_numQuery = [v4 decodeIntForKey:@"numQuery"];
+    v5->_numQuery = [coderCopy decodeIntForKey:@"numQuery"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_keyIdentifier forKey:@"keyUniqueIdentifier"];
+    [coder encodeObject:self->_keyIdentifier forKey:@"keyUniqueIdentifier"];
     numQuery = self->_numQuery;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"keyUniqueIdentifier"];
+    [coder encodeObject:0 forKey:@"keyUniqueIdentifier"];
     numQuery = 0;
   }
 
-  [a3 encodeInteger:numQuery forKey:@"numQuery"];
+  [coder encodeInteger:numQuery forKey:@"numQuery"];
 }
 
 @end

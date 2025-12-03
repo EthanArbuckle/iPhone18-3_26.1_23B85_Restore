@@ -1,27 +1,27 @@
 @interface SHAsyncLibrary.SHAsyncLibraryDelegate
 - (_TtCC9ShazamKit14SHAsyncLibrary22SHAsyncLibraryDelegate)init;
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4;
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5;
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot;
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers;
 @end
 
 @implementation SHAsyncLibrary.SHAsyncLibraryDelegate
 
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_230FA0B2C(v6);
+  snapshotCopy = snapshot;
+  selfCopy = self;
+  sub_230FA0B2C(snapshotCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers
 {
   v7 = sub_230FDB7FC();
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  sub_230FA1684(v8, v7);
+  errorCopy = error;
+  selfCopy = self;
+  sub_230FA1684(errorCopy, v7);
   swift_unknownObjectRelease();
 }
 

@@ -1,26 +1,26 @@
 @interface BWMetadataSynchronizerNode
 + (void)initialize;
-- (BWMetadataSynchronizerNode)initWithArraysOfMetadataInputs:(id)a3 propagateSampleBufferAttachmentKeys:(id)a4 propagateSampleBufferMetadataDictKeys:(id)a5 syncMetadataByPortType:(id)a6 syncOnlyIfMetadataEnabledForKeys:(id)a7;
-- (BWMetadataSynchronizerNode)initWithMetadataInputs:(id)a3 propagateSampleBufferAttachmentKeys:(id)a4 propagateSampleBufferMetadataDictKeys:(id)a5 syncMetadataByPortType:(id)a6 syncOnlyIfMetadataEnabledForKeys:(id)a7;
+- (BWMetadataSynchronizerNode)initWithArraysOfMetadataInputs:(id)inputs propagateSampleBufferAttachmentKeys:(id)keys propagateSampleBufferMetadataDictKeys:(id)dictKeys syncMetadataByPortType:(id)type syncOnlyIfMetadataEnabledForKeys:(id)forKeys;
+- (BWMetadataSynchronizerNode)initWithMetadataInputs:(id)inputs propagateSampleBufferAttachmentKeys:(id)keys propagateSampleBufferMetadataDictKeys:(id)dictKeys syncMetadataByPortType:(id)type syncOnlyIfMetadataEnabledForKeys:(id)forKeys;
 - (CMTime)_purgeAllPurgeableMetadataBuffers;
 - (uint64_t)_tryToEmitImageBufferWithAllMetadata:(uint64_t)result;
 - (unint64_t)_printState;
 - (void)_attachedMediaKeysForMetadataInput:(void *)result;
 - (void)_purgeAllBuffers;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMetadataSynchronizerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -29,7 +29,7 @@
   }
 }
 
-- (BWMetadataSynchronizerNode)initWithArraysOfMetadataInputs:(id)a3 propagateSampleBufferAttachmentKeys:(id)a4 propagateSampleBufferMetadataDictKeys:(id)a5 syncMetadataByPortType:(id)a6 syncOnlyIfMetadataEnabledForKeys:(id)a7
+- (BWMetadataSynchronizerNode)initWithArraysOfMetadataInputs:(id)inputs propagateSampleBufferAttachmentKeys:(id)keys propagateSampleBufferMetadataDictKeys:(id)dictKeys syncMetadataByPortType:(id)type syncOnlyIfMetadataEnabledForKeys:(id)forKeys
 {
   v38.receiver = self;
   v38.super_class = BWMetadataSynchronizerNode;
@@ -39,7 +39,7 @@
     return v12;
   }
 
-  if (!a3)
+  if (!inputs)
   {
     [BWMetadataSynchronizerNode initWithArraysOfMetadataInputs:propagateSampleBufferAttachmentKeys:propagateSampleBufferMetadataDictKeys:syncMetadataByPortType:syncOnlyIfMetadataEnabledForKeys:];
 LABEL_33:
@@ -47,13 +47,13 @@ LABEL_33:
     return 0;
   }
 
-  v12->_syncMetadataByPortType = a6;
-  v12->_syncOnlyIfMetadataEnabledForKeys = a7;
-  v12->_propagateSampleBufferAttachmentKeys = a4;
-  v12->_propagateSampleBufferMetadataDictKeys = a5;
+  v12->_syncMetadataByPortType = type;
+  v12->_syncOnlyIfMetadataEnabledForKeys = forKeys;
+  v12->_propagateSampleBufferAttachmentKeys = keys;
+  v12->_propagateSampleBufferMetadataDictKeys = dictKeys;
   v12->_bufferServicingLock._os_unfair_lock_opaque = 0;
-  v33 = a3;
-  v13 = [a3 count] + 1;
+  inputsCopy = inputs;
+  v13 = [inputs count] + 1;
   v14 = malloc_type_calloc(v13, 0x28uLL, 0x10A0040EE0660CCuLL);
   v12->_inputsStorage = v14;
   if (!v14)
@@ -73,8 +73,8 @@ LABEL_33:
     {
       if (v15)
       {
-        v18 = -[BWMetadataSynchronizerNode _attachedMediaKeysForMetadataInput:](v12, [v33 objectAtIndexedSubscript:v15 - 1]);
-        if ([objc_msgSend(objc_msgSend(v33 objectAtIndexedSubscript:{v15 - 1), "objectAtIndexedSubscript:", 0), "isEqualToString:", v32}])
+        v18 = -[BWMetadataSynchronizerNode _attachedMediaKeysForMetadataInput:](v12, [inputsCopy objectAtIndexedSubscript:v15 - 1]);
+        if ([objc_msgSend(objc_msgSend(inputsCopy objectAtIndexedSubscript:{v15 - 1), "objectAtIndexedSubscript:", 0), "isEqualToString:", v32}])
         {
           v19 = 1885564004;
         }
@@ -210,14 +210,14 @@ LABEL_33:
   [(BWNode *)&v7 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(BWNode *)self outputs];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  outputs = [(BWNode *)self outputs];
+  v9 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -228,11 +228,11 @@ LABEL_33:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputs);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+        v14 = [v13 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
         if (v14)
         {
           v15 = v14;
@@ -243,7 +243,7 @@ LABEL_33:
             {
               if ([v15 isEqualToString:@"PrimaryFormat"])
               {
-                v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v13, a5];
+                v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v13, key];
                 objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v17 userInfo:0]);
               }
 
@@ -251,21 +251,21 @@ LABEL_33:
               [v13 _setMediaProperties:v16 forAttachedMediaKey:v15];
             }
 
-            [(BWNodeOutputMediaProperties *)v16 setResolvedFormat:a3];
+            [(BWNodeOutputMediaProperties *)v16 setResolvedFormat:format];
           }
         }
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v10 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (![a5 index])
+  if (![input index])
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
     if (![(BWNodeOutput *)self->super._output liveFormat])
@@ -277,7 +277,7 @@ LABEL_33:
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if ([(BWNode *)self allInputsHaveReachedState:0])
@@ -288,26 +288,26 @@ LABEL_33:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  [(BWNodeOutput *)self->super._output emitNodeError:a3];
+  [(BWNodeOutput *)self->super._output emitNodeError:error];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if (![a4 index])
+  if (![input index])
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    [(BWNodeOutput *)self->super._output emitDroppedSample:a3];
+    [(BWNodeOutput *)self->super._output emitDroppedSample:sample];
 
     os_unfair_lock_unlock(&self->_bufferServicingLock);
   }
 }
 
-- (BWMetadataSynchronizerNode)initWithMetadataInputs:(id)a3 propagateSampleBufferAttachmentKeys:(id)a4 propagateSampleBufferMetadataDictKeys:(id)a5 syncMetadataByPortType:(id)a6 syncOnlyIfMetadataEnabledForKeys:(id)a7
+- (BWMetadataSynchronizerNode)initWithMetadataInputs:(id)inputs propagateSampleBufferAttachmentKeys:(id)keys propagateSampleBufferMetadataDictKeys:(id)dictKeys syncMetadataByPortType:(id)type syncOnlyIfMetadataEnabledForKeys:(id)forKeys
 {
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v13)
@@ -317,7 +317,7 @@ LABEL_33:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v22 = OUTLINED_FUNCTION_6_17(v13, v14, v15, v16, v17, v18, v19, v20, a4, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 0);
+    v22 = OUTLINED_FUNCTION_6_17(v13, v14, v15, v16, v17, v18, v19, v20, keys, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 0);
     if (v22)
     {
       v23 = v22;
@@ -329,7 +329,7 @@ LABEL_33:
         {
           if (*v54 != v24)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(inputs);
           }
 
           v36 = *(*(&v53 + 1) + 8 * v25);
@@ -344,7 +344,7 @@ LABEL_33:
       while (v23);
     }
 
-    self = [(BWMetadataSynchronizerNode *)self initWithArraysOfMetadataInputs:v21 propagateSampleBufferAttachmentKeys:v35 propagateSampleBufferMetadataDictKeys:a5 syncMetadataByPortType:a6 syncOnlyIfMetadataEnabledForKeys:a7];
+    self = [(BWMetadataSynchronizerNode *)self initWithArraysOfMetadataInputs:v21 propagateSampleBufferAttachmentKeys:v35 propagateSampleBufferMetadataDictKeys:dictKeys syncMetadataByPortType:type syncOnlyIfMetadataEnabledForKeys:forKeys];
   }
 
   return self;
@@ -354,10 +354,10 @@ LABEL_33:
 {
   if (result)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    if (v3)
+    array = [MEMORY[0x1E695DF70] array];
+    if (array)
     {
-      v4 = v3;
+      v4 = array;
       if ([a2 count])
       {
         v5 = 0;
@@ -792,22 +792,22 @@ LABEL_26:
   return result;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
   }
 
   else
   {
-    v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     v9 = [v8 objectForKeyedSubscript:*off_1E798B540];
-    if (![a4 index] || (syncMetadataByPortType = self->_syncMetadataByPortType) == 0 || -[NSArray containsObject:](-[NSDictionary allKeys](syncMetadataByPortType, "allKeys"), "containsObject:", v9))
+    if (![input index] || (syncMetadataByPortType = self->_syncMetadataByPortType) == 0 || -[NSArray containsObject:](-[NSDictionary allKeys](syncMetadataByPortType, "allKeys"), "containsObject:", v9))
     {
-      if (![a4 index])
+      if (![input index])
       {
         v55 = 0u;
         v56 = 0u;
@@ -831,7 +831,7 @@ LABEL_26:
               v23 = [objc_msgSend(v8 objectForKeyedSubscript:{*(*(&v53 + 1) + 8 * i)), "BOOLValue"}];
               if ((v23 & 1) == 0)
               {
-                [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+                [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
                 return;
               }
             }
@@ -849,7 +849,7 @@ LABEL_26:
 
       os_unfair_lock_lock(&self->_bufferServicingLock);
       memset(&v51, 0, sizeof(v51));
-      msn_getOriginalPTSForSampleBuffer(a3, &v51);
+      msn_getOriginalPTSForSampleBuffer(buffer, &v51);
       v50 = *&v8[40 * OUTLINED_FUNCTION_12_9() + 16];
       time1 = v51;
       time2 = v50;
@@ -871,7 +871,7 @@ LABEL_26:
         Count = CMSimpleQueueGetCount(v31);
         if (Count == CMSimpleQueueGetCapacity(v31))
         {
-          if ([a4 index])
+          if ([input index])
           {
             cfb = CMSimpleQueueDequeue(v31);
             v36 = -1;
@@ -880,7 +880,7 @@ LABEL_26:
               ++v36;
             }
 
-            while ([self->_inputsStorage[objc_msgSend(a4 "index")].var0] > v36);
+            while ([self->_inputsStorage[objc_msgSend(input "index")].var0] > v36);
             if (cfb)
             {
               CFRelease(cfb);
@@ -897,14 +897,14 @@ LABEL_26:
               ++v35;
             }
 
-            while ([self->_inputsStorage[objc_msgSend(a4 "index")].var0] > v35);
+            while ([self->_inputsStorage[objc_msgSend(input "index")].var0] > v35);
             [(BWMetadataSynchronizerNode *)self _tryToEmitImageBufferWithAllMetadata:?];
           }
         }
 
-        if (a3)
+        if (buffer)
         {
-          v33 = CFRetain(a3);
+          v33 = CFRetain(buffer);
         }
 
         else
@@ -915,9 +915,9 @@ LABEL_26:
         if (CMSimpleQueueEnqueue(v31, v33))
         {
           FigDebugAssert3();
-          if (a3)
+          if (buffer)
           {
-            CFRelease(a3);
+            CFRelease(buffer);
           }
         }
 
@@ -938,7 +938,7 @@ LABEL_26:
   if (result)
   {
     v1 = result;
-    v2 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     result = [objc_msgSend(v1 "inputs")];
     if (result)
     {
@@ -954,15 +954,15 @@ LABEL_26:
         Count = CMSimpleQueueGetCount(v7);
         v9 = OUTLINED_FUNCTION_3_16();
         Capacity = CMSimpleQueueGetCapacity(v9);
-        [v2 appendFormat:@" [%d] = {", v3];
+        [string appendFormat:@" [%d] = {", v3];
         if (Head)
         {
           v13 = CMGetAttachment(Head, key, 0);
           msn_getOriginalPTSForSampleBuffer(Head, &time);
-          [v2 appendFormat:@" %d/%d head: PTS %.4lf %@", Count, Capacity, CMTimeGetSeconds(&time), objc_msgSend(v13, "objectForKeyedSubscript:", v11)];
+          [string appendFormat:@" %d/%d head: PTS %.4lf %@", Count, Capacity, CMTimeGetSeconds(&time), objc_msgSend(v13, "objectForKeyedSubscript:", v11)];
         }
 
-        [v2 appendFormat:@"}"];
+        [string appendFormat:@"}"];
         ++v3;
         result = [objc_msgSend(v1 "inputs")];
         v4 += 40;

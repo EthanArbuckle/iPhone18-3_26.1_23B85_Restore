@@ -1,67 +1,67 @@
 @interface LACDTOFailureProcessor
-- (BOOL)_checkErrorRequiresUI:(id)a3;
-- (BOOL)canProcessRequest:(id)a3;
-- (LACDTOFailureProcessor)initWithReplyQueue:(id)a3 ui:(id)a4;
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)_checkErrorRequiresUI:(id)i;
+- (BOOL)canProcessRequest:(id)request;
+- (LACDTOFailureProcessor)initWithReplyQueue:(id)queue ui:(id)ui;
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACDTOFailureProcessor
 
-- (LACDTOFailureProcessor)initWithReplyQueue:(id)a3 ui:(id)a4
+- (LACDTOFailureProcessor)initWithReplyQueue:(id)queue ui:(id)ui
 {
-  v6 = a4;
+  uiCopy = ui;
   v10.receiver = self;
   v10.super_class = LACDTOFailureProcessor;
   v7 = [(LACDTOFailureProcessor *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_ui, a4);
+    objc_storeStrong(&v7->_ui, ui);
   }
 
   return v8;
 }
 
-- (BOOL)canProcessRequest:(id)a3
+- (BOOL)canProcessRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 options];
+  requestCopy = request;
+  options = [requestCopy options];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:1000];
-  v6 = [v4 objectForKey:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [options objectForKey:v5];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v3 options];
+    options2 = [requestCopy options];
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:1039];
-    v11 = [v9 objectForKey:v10];
-    v12 = [v11 BOOLValue];
+    v11 = [options2 objectForKey:v10];
+    bOOLValue2 = [v11 BOOLValue];
 
-    v8 = v12 ^ 1;
+    v8 = bOOLValue2 ^ 1;
   }
 
   return v8;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
-  v7 = a5;
-  v8 = [LACEvaluationResult resultWithNext:a3];
-  (*(a5 + 2))(v7, v8);
+  completionCopy = completion;
+  v8 = [LACEvaluationResult resultWithNext:request];
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[LACDTOFailureProcessor canProcessRequest:](self, "canProcessRequest:", v8) && ([v9 error], v11 = objc_claimAutoreleasedReturnValue(), v11, v11) && (objc_msgSend(v9, "error"), v12 = objc_claimAutoreleasedReturnValue(), v13 = -[LACDTOFailureProcessor _checkErrorRequiresUI:](self, "_checkErrorRequiresUI:", v12), v12, v13))
+  requestCopy = request;
+  resultCopy = result;
+  completionCopy = completion;
+  if (-[LACDTOFailureProcessor canProcessRequest:](self, "canProcessRequest:", requestCopy) && ([resultCopy error], v11 = objc_claimAutoreleasedReturnValue(), v11, v11) && (objc_msgSend(resultCopy, "error"), v12 = objc_claimAutoreleasedReturnValue(), v13 = -[LACDTOFailureProcessor _checkErrorRequiresUI:](self, "_checkErrorRequiresUI:", v12), v12, v13))
   {
     v14 = LACLogDTO();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -75,14 +75,14 @@
     v16[1] = 3221225472;
     v16[2] = __63__LACDTOFailureProcessor_postProcessRequest_result_completion___block_invoke;
     v16[3] = &unk_1E7A95998;
-    v18 = v10;
-    v17 = v9;
-    [(LACUserInterfacePresenting *)ui presentUIForIdentifier:5 request:v8 completion:v16];
+    v18 = completionCopy;
+    v17 = resultCopy;
+    [(LACUserInterfacePresenting *)ui presentUIForIdentifier:5 request:requestCopy completion:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, v9);
+    (*(completionCopy + 2))(completionCopy, resultCopy);
   }
 }
 
@@ -104,12 +104,12 @@ void __63__LACDTOFailureProcessor_postProcessRequest_result_completion___block_i
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_checkErrorRequiresUI:(id)a3
+- (BOOL)_checkErrorRequiresUI:(id)i
 {
-  v3 = a3;
-  if (v3)
+  iCopy = i;
+  if (iCopy)
   {
-    v4 = [LACError error:v3 hasCode:-1 subcode:32]|| [LACError error:v3 hasCode:-8 subcode:15]|| [LACError error:v3 hasCode:-8 subcode:29]|| [LACError error:v3 hasCode:-8 subcode:4]|| [LACError error:v3 hasCode:-8 subcode:-1]|| [LACError error:v3 hasCode:-4 subcode:12]|| [LACError error:v3 hasCode:-4 subcode:18];
+    v4 = [LACError error:iCopy hasCode:-1 subcode:32]|| [LACError error:iCopy hasCode:-8 subcode:15]|| [LACError error:iCopy hasCode:-8 subcode:29]|| [LACError error:iCopy hasCode:-8 subcode:4]|| [LACError error:iCopy hasCode:-8 subcode:-1]|| [LACError error:iCopy hasCode:-4 subcode:12]|| [LACError error:iCopy hasCode:-4 subcode:18];
   }
 
   else

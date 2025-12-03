@@ -1,27 +1,27 @@
 @interface CMHistoricalDataStore
-- (BOOL)_setConfiguration:(id)a3;
+- (BOOL)_setConfiguration:(id)configuration;
 - (BOOL)queryConfigurationFromDaemon;
 - (BOOL)tokenSanityChecks;
 - (CMHistoricalDataStore)init;
 - (const)tableNameFromToken;
-- (id)parseCardioTypeFromSql:(sqlite3_stmt *)a3 datatype:(unint64_t)a4;
-- (id)parseMobilityTypeFromSql:(sqlite3_stmt *)a3 dataype:(unint64_t)a4;
-- (id)tableNameForCardioType:(unint64_t)a3;
-- (id)tableNameForCurrentType:(unint64_t)a3;
-- (id)tableNameForMobilityType:(unint64_t)a3;
+- (id)parseCardioTypeFromSql:(sqlite3_stmt *)sql datatype:(unint64_t)datatype;
+- (id)parseMobilityTypeFromSql:(sqlite3_stmt *)sql dataype:(unint64_t)dataype;
+- (id)tableNameForCardioType:(unint64_t)type;
+- (id)tableNameForCurrentType:(unint64_t)type;
+- (id)tableNameForMobilityType:(unint64_t)type;
 - (id)tableNames;
 - (int)isDbOpenAndValid;
-- (int)populateArray:(id)a3 fromSql:(sqlite3_stmt *)a4 query:(id)a5;
-- (unint64_t)getRecordIdForTable:(const char *)a3 ascending:(BOOL)a4;
-- (void)_cacheTableNamesForToken:(id)a3;
+- (int)populateArray:(id)array fromSql:(sqlite3_stmt *)sql query:(id)query;
+- (unint64_t)getRecordIdForTable:(const char *)table ascending:(BOOL)ascending;
+- (void)_cacheTableNamesForToken:(id)token;
 - (void)cacheAllRecordIds;
 - (void)closeDBConnection;
 - (void)dealloc;
-- (void)fetchCardioSamplesFrom:(double)a3 to:(double)a4 queryToken:(id)a5 withHandler:(id)a6;
-- (void)fetchMobilitySamplesFrom:(double)a3 to:(double)a4 queryToken:(id)a5 withHandler:(id)a6;
-- (void)initializeWithToken:(id)a3 type:(unint64_t)a4 start:(double)a5 end:(double)a6;
+- (void)fetchCardioSamplesFrom:(double)from to:(double)to queryToken:(id)token withHandler:(id)handler;
+- (void)fetchMobilitySamplesFrom:(double)from to:(double)to queryToken:(id)token withHandler:(id)handler;
+- (void)initializeWithToken:(id)token type:(unint64_t)type start:(double)start end:(double)end;
 - (void)markCursorDone;
-- (void)nextHistoricalFetchWithCount:(unint64_t)a3 withHandler:(id)a4;
+- (void)nextHistoricalFetchWithCount:(unint64_t)count withHandler:(id)handler;
 - (void)resetToken;
 @end
 
@@ -68,12 +68,12 @@
   return 1;
 }
 
-- (void)fetchCardioSamplesFrom:(double)a3 to:(double)a4 queryToken:(id)a5 withHandler:(id)a6
+- (void)fetchCardioSamplesFrom:(double)from to:(double)to queryToken:(id)token withHandler:(id)handler
 {
   v88 = *MEMORY[0x1E69E9840];
-  if (!a6)
+  if (!handler)
   {
-    v65 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a5);
+    v65 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, token);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v65, v66, a2, self, @"CMHistoricalDataStore.mm", 140, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -86,11 +86,11 @@
   if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v83 = a3;
+    fromCopy3 = from;
     v84 = 2048;
-    v85 = a4;
+    toCopy3 = to;
     v86 = 2112;
-    v87 = *&a5;
+    v87 = *&token;
     _os_log_impl(&dword_19B41C000, v11, OS_LOG_TYPE_DEFAULT, "[HistoricalFetch] Fetching cardio samples from: %f to: %f. Received token: %@", buf, 0x20u);
   }
 
@@ -104,11 +104,11 @@
     }
 
     v76 = 134218498;
-    v77 = a3;
+    fromCopy4 = from;
     v78 = 2048;
-    v79 = a4;
+    toCopy4 = to;
     v80 = 2112;
-    v81 = *&a5;
+    v81 = *&token;
     v13 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHistoricalDataStore fetchCardioSamplesFrom:to:queryToken:withHandler:]", "CoreLocation: %s\n", v13);
     if (v13 != buf)
@@ -126,13 +126,13 @@
     v44 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v18, &v75, &v74, 1);
     v43 = objc_msgSend_CMErrorWithCode_userInfo_(CMErrorUtils, v45, 103, v44);
 LABEL_46:
-    (*(a6 + 2))(a6, v14, 0, 1, v43);
+    (*(handler + 2))(handler, v14, 0, 1, v43);
     goto LABEL_47;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   v22 = Current;
-  if (a4 <= a3 || Current < a3)
+  if (to <= from || Current < from)
   {
     if (qword_1EAFE2AA8 != -1)
     {
@@ -143,9 +143,9 @@ LABEL_46:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v83 = a3;
+      fromCopy3 = from;
       v84 = 2048;
-      v85 = a4;
+      toCopy3 = to;
       v86 = 2048;
       v87 = v22;
       _os_log_impl(&dword_19B41C000, v46, OS_LOG_TYPE_ERROR, "[HistoricalFetch] Error: invalid timestamps start:%f,end:%f,now:%f", buf, 0x20u);
@@ -161,9 +161,9 @@ LABEL_46:
       }
 
       v76 = 134218496;
-      v77 = a3;
+      fromCopy4 = from;
       v78 = 2048;
-      v79 = a4;
+      toCopy4 = to;
       v80 = 2048;
       v81 = v22;
       v49 = _os_log_send_and_compose_impl();
@@ -185,7 +185,7 @@ LABEL_45:
   isDbOpenAndValid = objc_msgSend_isDbOpenAndValid(self, v19, v20);
   if (!isDbOpenAndValid)
   {
-    objc_msgSend_initializeWithToken_type_start_end_(self, v24, a5, 0, a3, a4);
+    objc_msgSend_initializeWithToken_type_start_end_(self, v24, token, 0, from, to);
     if (objc_msgSend_tokenSanityChecks(self, v53, v54))
     {
       v67[0] = MEMORY[0x1E69E9820];
@@ -193,7 +193,7 @@ LABEL_45:
       v67[2] = sub_19B5B1064;
       v67[3] = &unk_1E75329B0;
       v67[5] = self;
-      v67[6] = a6;
+      v67[6] = handler;
       v67[4] = v14;
       objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v55, 0, v67);
       goto LABEL_47;
@@ -220,9 +220,9 @@ LABEL_45:
     {
       *&v35 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v33, v34));
       *buf = 138478083;
-      v83 = *&v35;
+      fromCopy3 = *&v35;
       v84 = 1026;
-      LODWORD(v85) = v26;
+      LODWORD(toCopy3) = v26;
       _os_log_impl(&dword_19B41C000, v32, OS_LOG_TYPE_ERROR, "[HistoricalFetch] Unable to open file at path %{private}@; return code %{public}d", buf, 0x12u);
     }
 
@@ -236,9 +236,9 @@ LABEL_45:
       }
 
       v76 = 138478083;
-      v77 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v38, v39));
+      fromCopy4 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v38, v39));
       v78 = 1026;
-      LODWORD(v79) = v26;
+      LODWORD(toCopy4) = v26;
       v40 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 0, "[CMHistoricalDataStore fetchCardioSamplesFrom:to:queryToken:withHandler:]", "CoreLocation: %s\n", v40);
       if (v40 != buf)
@@ -264,9 +264,9 @@ LABEL_45:
   {
     *&v59 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v57, v58));
     *buf = 138478083;
-    v83 = *&v59;
+    fromCopy3 = *&v59;
     v84 = 1026;
-    LODWORD(v85) = v26;
+    LODWORD(toCopy3) = v26;
     _os_log_impl(&dword_19B41C000, v56, OS_LOG_TYPE_ERROR, "[HistoricalFetch] No file found at path %{private}@; return code %{public}d", buf, 0x12u);
   }
 
@@ -280,9 +280,9 @@ LABEL_45:
     }
 
     v76 = 138478083;
-    v77 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v61, v62));
+    fromCopy4 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v61, v62));
     v78 = 1026;
-    LODWORD(v79) = v26;
+    LODWORD(toCopy4) = v26;
     v63 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 0, "[CMHistoricalDataStore fetchCardioSamplesFrom:to:queryToken:withHandler:]", "CoreLocation: %s\n", v63);
     if (v63 != buf)
@@ -291,18 +291,18 @@ LABEL_45:
     }
   }
 
-  (*(a6 + 2))(a6, v14, 0, 1, 0);
+  (*(handler + 2))(handler, v14, 0, 1, 0);
 LABEL_47:
   objc_autoreleasePoolPop(v15);
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMobilitySamplesFrom:(double)a3 to:(double)a4 queryToken:(id)a5 withHandler:(id)a6
+- (void)fetchMobilitySamplesFrom:(double)from to:(double)to queryToken:(id)token withHandler:(id)handler
 {
   v74 = *MEMORY[0x1E69E9840];
-  if (!a6)
+  if (!handler)
   {
-    v51 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a5);
+    v51 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, token);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v51, v52, a2, self, @"CMHistoricalDataStore.mm", 249, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -315,11 +315,11 @@ LABEL_47:
   if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v69 = a3;
+    fromCopy3 = from;
     v70 = 2048;
-    v71 = a4;
+    toCopy3 = to;
     v72 = 2112;
-    v73 = *&a5;
+    v73 = *&token;
     _os_log_impl(&dword_19B41C000, v11, OS_LOG_TYPE_DEFAULT, "[HistoricalFetch] Fetching mobility samples from: %f to: %f. Received token: %@", buf, 0x20u);
   }
 
@@ -333,11 +333,11 @@ LABEL_47:
     }
 
     v62 = 134218498;
-    v63 = a3;
+    fromCopy4 = from;
     v64 = 2048;
-    v65 = a4;
+    toCopy4 = to;
     v66 = 2112;
-    v67 = *&a5;
+    v67 = *&token;
     v13 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHistoricalDataStore fetchMobilitySamplesFrom:to:queryToken:withHandler:]", "CoreLocation: %s\n", v13);
     if (v13 != buf)
@@ -352,7 +352,7 @@ LABEL_47:
   {
     Current = CFAbsoluteTimeGetCurrent();
     v22 = Current;
-    if (a4 <= a3 || Current < a3)
+    if (to <= from || Current < from)
     {
       if (qword_1EAFE2AA8 != -1)
       {
@@ -363,9 +363,9 @@ LABEL_47:
       if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218496;
-        v69 = a3;
+        fromCopy3 = from;
         v70 = 2048;
-        v71 = a4;
+        toCopy3 = to;
         v72 = 2048;
         v73 = v22;
         _os_log_impl(&dword_19B41C000, v40, OS_LOG_TYPE_ERROR, "[HistoricalFetch] Error: invalid timestamps start:%f,end:%f,now:%f", buf, 0x20u);
@@ -381,9 +381,9 @@ LABEL_47:
         }
 
         v62 = 134218496;
-        v63 = a3;
+        fromCopy4 = from;
         v64 = 2048;
-        v65 = a4;
+        toCopy4 = to;
         v66 = 2048;
         v67 = v22;
         v43 = _os_log_send_and_compose_impl();
@@ -415,9 +415,9 @@ LABEL_47:
         {
           *&v29 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v27, v28));
           *buf = 138478083;
-          v69 = *&v29;
+          fromCopy3 = *&v29;
           v70 = 1026;
-          LODWORD(v71) = v25;
+          LODWORD(toCopy3) = v25;
           _os_log_impl(&dword_19B41C000, v26, OS_LOG_TYPE_ERROR, "[HistoricalFetch] Unable to open file at path %{private}@; return code %{public}d", buf, 0x12u);
         }
 
@@ -431,9 +431,9 @@ LABEL_47:
           }
 
           v62 = 138478083;
-          v63 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v32, v33));
+          fromCopy4 = COERCE_DOUBLE(objc_msgSend_coldDBPath(self, v32, v33));
           v64 = 1026;
-          LODWORD(v65) = v25;
+          LODWORD(toCopy4) = v25;
           v34 = _os_log_send_and_compose_impl();
           sub_19B6BB7CC("Generic", 1, 0, 0, "[CMHistoricalDataStore fetchMobilitySamplesFrom:to:queryToken:withHandler:]", "CoreLocation: %s\n", v34);
           if (v34 != buf)
@@ -449,7 +449,7 @@ LABEL_47:
         goto LABEL_45;
       }
 
-      objc_msgSend_initializeWithToken_type_start_end_(self, v24, a5, 1, a3, a4);
+      objc_msgSend_initializeWithToken_type_start_end_(self, v24, token, 1, from, to);
       if (objc_msgSend_tokenSanityChecks(self, v47, v48))
       {
         v53[0] = MEMORY[0x1E69E9820];
@@ -457,7 +457,7 @@ LABEL_47:
         v53[2] = sub_19B5B1E78;
         v53[3] = &unk_1E75329B0;
         v53[5] = self;
-        v53[6] = a6;
+        v53[6] = handler;
         v53[4] = v14;
         objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v49, 0, v53);
         goto LABEL_46;
@@ -480,13 +480,13 @@ LABEL_47:
   }
 
 LABEL_45:
-  (*(a6 + 2))(a6, v14, 0, 1, v37);
+  (*(handler + 2))(handler, v14, 0, 1, v37);
 LABEL_46:
   objc_autoreleasePoolPop(v15);
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)nextHistoricalFetchWithCount:(unint64_t)a3 withHandler:(id)a4
+- (void)nextHistoricalFetchWithCount:(unint64_t)count withHandler:(id)handler
 {
   v171 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2AA8 != -1)
@@ -510,7 +510,7 @@ LABEL_46:
     *buf = 136315394;
     *v170 = v10;
     *&v170[8] = 2048;
-    *&v170[10] = a3;
+    *&v170[10] = count;
     _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEBUG, "[HistoricalFetch] Next %s fetch with count: %lu", buf, 0x16u);
   }
 
@@ -536,7 +536,7 @@ LABEL_46:
     v161 = 136315394;
     *v162 = v16;
     *&v162[8] = 2048;
-    *&v162[10] = a3;
+    *&v162[10] = count;
     v17 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHistoricalDataStore nextHistoricalFetchWithCount:withHandler:]", "CoreLocation: %s\n", v17);
     if (v17 != buf)
@@ -592,14 +592,14 @@ LABEL_46:
     v33 = objc_msgSend_CMErrorWithCode_userInfo_(CMErrorUtils, v32, 109, v31);
 LABEL_55:
     v87 = v33;
-    v88 = *(a4 + 2);
-    v89 = a4;
+    v88 = *(handler + 2);
+    handlerCopy4 = handler;
     v90 = 0;
 LABEL_56:
     v91 = 0;
     v92 = 1;
 LABEL_57:
-    v88(v89, v90, v91, v92, v87);
+    v88(handlerCopy4, v90, v91, v92, v87);
     goto LABEL_58;
   }
 
@@ -643,10 +643,10 @@ LABEL_57:
   }
 
   v34 = objc_msgSend_tableNames(self, v19, v20);
-  if (objc_msgSend_count(v34, v35, v36) <= a3)
+  if (objc_msgSend_count(v34, v35, v36) <= count)
   {
-    v88 = *(a4 + 2);
-    v89 = a4;
+    v88 = *(handler + 2);
+    handlerCopy4 = handler;
     v90 = 0;
     v91 = 0;
     v92 = 1;
@@ -703,8 +703,8 @@ LABEL_57:
     v154[1] = 3221225472;
     v154[2] = sub_19B5B3290;
     v154[3] = &unk_1E75329D8;
-    v154[4] = a4;
-    objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v100, a3 + 1, v154);
+    v154[4] = handler;
+    objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v100, count + 1, v154);
     goto LABEL_58;
   }
 
@@ -725,8 +725,8 @@ LABEL_57:
     v153[1] = 3221225472;
     v153[2] = sub_19B5B32A0;
     v153[3] = &unk_1E75329D8;
-    v153[4] = a4;
-    objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v101, a3 + 1, v153);
+    v153[4] = handler;
+    objc_msgSend_nextHistoricalFetchWithCount_withHandler_(self, v101, count + 1, v153);
     goto LABEL_58;
   }
 
@@ -849,8 +849,8 @@ LABEL_57:
       v156 = @"Unknown database error.";
       v127 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v125, &v156, &v155, 1);
       v87 = objc_msgSend_CMErrorWithCode_userInfo_(CMErrorUtils, v128, 103, v127);
-      v88 = *(a4 + 2);
-      v89 = a4;
+      v88 = *(handler + 2);
+      handlerCopy4 = handler;
       v90 = v116;
       goto LABEL_56;
     }
@@ -864,8 +864,8 @@ LABEL_57:
       objc_msgSend_markCursorDone(self, v149, v150);
     }
 
-    v88 = *(a4 + 2);
-    v89 = a4;
+    v88 = *(handler + 2);
+    handlerCopy4 = handler;
     v90 = v116;
     v91 = v143;
     v92 = 0;
@@ -916,21 +916,21 @@ LABEL_60:
   v134 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v132, &v158, &v157, 1);
   v136 = objc_msgSend_CMErrorWithCode_userInfo_(CMErrorUtils, v135, 103, v134);
   objc_msgSend_removeAllObjects(v116, v137, v138);
-  (*(a4 + 2))(a4, v116, 0, 1, v136);
+  (*(handler + 2))(handler, v116, 0, 1, v136);
 LABEL_58:
   v93 = *MEMORY[0x1E69E9840];
 }
 
-- (int)populateArray:(id)a3 fromSql:(sqlite3_stmt *)a4 query:(id)a5
+- (int)populateArray:(id)array fromSql:(sqlite3_stmt *)sql query:(id)query
 {
   v97 = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_tables(self->fToken, a2, a3);
+  v9 = objc_msgSend_tables(self->fToken, a2, array);
   v11 = objc_msgSend_objectAtIndexedSubscript_(v9, v10, 0);
   v14 = objc_msgSend_recordId(v11, v12, v13);
   Current = CFAbsoluteTimeGetCurrent();
   v18 = objc_msgSend_tables(self->fToken, v16, v17);
   v20 = objc_msgSend_objectAtIndexedSubscript_(v18, v19, 0);
-  v23 = sqlite3_step(a4);
+  v23 = sqlite3_step(sql);
   if (v23 != 100)
   {
     goto LABEL_11;
@@ -938,27 +938,27 @@ LABEL_58:
 
   do
   {
-    v24 = sqlite3_column_int(a4, 0);
+    v24 = sqlite3_column_int(sql, 0);
     Type = objc_msgSend_fetchType(self->fToken, v25, v26);
     if (Type == 1)
     {
       v34 = objc_msgSend_datatype(v20, v28, v29);
-      v32 = objc_msgSend_parseMobilityTypeFromSql_dataype_(self, v35, a4, v34);
+      v32 = objc_msgSend_parseMobilityTypeFromSql_dataype_(self, v35, sql, v34);
       goto LABEL_6;
     }
 
     if (!Type)
     {
       v30 = objc_msgSend_datatype(v20, v28, v29);
-      v32 = objc_msgSend_parseCardioTypeFromSql_datatype_(self, v31, a4, v30);
+      v32 = objc_msgSend_parseCardioTypeFromSql_datatype_(self, v31, sql, v30);
 LABEL_6:
-      objc_msgSend_addObject_(a3, v33, v32);
+      objc_msgSend_addObject_(array, v33, v32);
       goto LABEL_8;
     }
 
-    objc_msgSend_addObject_(a3, v28, 0);
+    objc_msgSend_addObject_(array, v28, 0);
 LABEL_8:
-    v36 = sqlite3_step(a4);
+    v36 = sqlite3_step(sql);
   }
 
   while (v36 == 100);
@@ -1069,7 +1069,7 @@ LABEL_36:
       v66 = "Cardio";
     }
 
-    v67 = objc_msgSend_count(a3, v64, v65);
+    v67 = objc_msgSend_count(array, v64, v65);
     v70 = objc_msgSend_tableNameFromToken(self, v68, v69);
     *buf = 68291586;
     v74 = 0;
@@ -1094,7 +1094,7 @@ LABEL_36:
     v93 = 2050;
     v94 = v60;
     v95 = 2114;
-    v96 = a5;
+    queryCopy = query;
     _os_log_impl(&dword_19B41C000, v61, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:[HistoricalFetch] Query complete, type:%{public, location:escape_only}s, duration:%{public}f, numSamples:%{public}u, start:%{public}f, end:%{public}f, returnCode:%{public}d, table:%{public, location:escape_only}s, recordId (pre-query):%{public}lu, recordId (post-query):%{public}lu, query:%{public, location:escape_only}@}", buf, 0x6Eu);
   }
 
@@ -1102,17 +1102,17 @@ LABEL_36:
   return v23;
 }
 
-- (id)parseCardioTypeFromSql:(sqlite3_stmt *)a3 datatype:(unint64_t)a4
+- (id)parseCardioTypeFromSql:(sqlite3_stmt *)sql datatype:(unint64_t)datatype
 {
   result = 0;
   v32 = *MEMORY[0x1E69E9840];
-  if (a4 > 3)
+  if (datatype > 3)
   {
-    if (a4 > 5)
+    if (datatype > 5)
     {
-      if (a4 == 6)
+      if (datatype == 6)
       {
-        objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessInputsSessionMetrics, a2, a3);
+        objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessInputsSessionMetrics, a2, sql);
         v5 = [CMCardioFitnessInputsSessionMetrics alloc];
         v10 = v22;
         v11 = v23;
@@ -1122,9 +1122,9 @@ LABEL_36:
         goto LABEL_20;
       }
 
-      if (a4 == 7)
+      if (datatype == 7)
       {
-        objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessSummary, a2, a3);
+        objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessSummary, a2, sql);
         v5 = [CMCardioFitnessSummary alloc];
         v16 = v28;
         v17 = v29;
@@ -1144,9 +1144,9 @@ LABEL_36:
       goto LABEL_21;
     }
 
-    if (a4 == 4)
+    if (datatype == 4)
     {
-      objc_msgSend_inputFromPreparedStatement_(CMVO2MaxInputs, a2, a3);
+      objc_msgSend_inputFromPreparedStatement_(CMVO2MaxInputs, a2, sql);
       v5 = [CMVO2MaxInputs alloc];
       v12 = v24;
       v13 = v25;
@@ -1158,7 +1158,7 @@ LABEL_36:
       goto LABEL_20;
     }
 
-    objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessResults, a2, a3);
+    objc_msgSend_inputFromPreparedStatement_(CMCardioFitnessResults, a2, sql);
     v5 = [CMCardioFitnessResults alloc];
     v14 = v26;
     v15 = v27;
@@ -1172,11 +1172,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 > 1)
+  if (datatype > 1)
   {
-    if (a4 == 2)
+    if (datatype == 2)
     {
-      objc_msgSend_inputFromPreparedStatement_(CMWorkoutPhysicalEffort, a2, a3);
+      objc_msgSend_inputFromPreparedStatement_(CMWorkoutPhysicalEffort, a2, sql);
       v5 = [CMWorkoutPhysicalEffort alloc];
       v8 = v20;
       v9 = v21;
@@ -1185,7 +1185,7 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    objc_msgSend_inputFromPreparedStatement_(CMRecoverySession, a2, a3);
+    objc_msgSend_inputFromPreparedStatement_(CMRecoverySession, a2, sql);
     v5 = [CMRecoverySession alloc];
     v14 = v26;
     v15 = v27;
@@ -1194,18 +1194,18 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!datatype)
   {
-    objc_msgSend_inputFromPreparedStatement_(CMPedestrianGrade, a2, a3);
+    objc_msgSend_inputFromPreparedStatement_(CMPedestrianGrade, a2, sql);
     v5 = [CMPedestrianGrade alloc];
     v8 = v20;
     *&v9 = v21;
     goto LABEL_20;
   }
 
-  if (a4 == 1)
+  if (datatype == 1)
   {
-    objc_msgSend_inputFromPreparedStatement_(CMRecoveryHeartRate, a2, a3);
+    objc_msgSend_inputFromPreparedStatement_(CMRecoveryHeartRate, a2, sql);
     v5 = [CMRecoveryHeartRate alloc];
 LABEL_12:
     v8 = v20;
@@ -1219,19 +1219,19 @@ LABEL_21:
   return result;
 }
 
-- (id)parseMobilityTypeFromSql:(sqlite3_stmt *)a3 dataype:(unint64_t)a4
+- (id)parseMobilityTypeFromSql:(sqlite3_stmt *)sql dataype:(unint64_t)dataype
 {
   result = 0;
-  if (a4 <= 1)
+  if (dataype <= 1)
   {
-    if (a4)
+    if (dataype)
     {
-      if (a4 != 1)
+      if (dataype != 1)
       {
         return result;
       }
 
-      objc_msgSend_inputFromPreparedStatement_(CMPredictedDistanceBout, a2, a3);
+      objc_msgSend_inputFromPreparedStatement_(CMPredictedDistanceBout, a2, sql);
       v9 = [CMPredictedDistanceBout alloc];
       v23 = v37;
       v24 = v38;
@@ -1246,7 +1246,7 @@ LABEL_21:
 
     else
     {
-      objc_msgSend_inputFromPreparedStatement_(CMWalkingBoutMobilityMetrics, a2, a3);
+      objc_msgSend_inputFromPreparedStatement_(CMWalkingBoutMobilityMetrics, a2, sql);
       v17 = [CMWalkingBoutMobilityMetrics alloc];
       v29 = v43;
       v30 = v44;
@@ -1268,10 +1268,10 @@ LABEL_21:
 
   else
   {
-    switch(a4)
+    switch(dataype)
     {
       case 2uLL:
-        objc_msgSend_inputFromPreparedStatement_(CMSmoothGaitMetrics, a2, a3);
+        objc_msgSend_inputFromPreparedStatement_(CMSmoothGaitMetrics, a2, sql);
         v11 = [CMSmoothGaitMetrics alloc];
         v19 = v33;
         v20 = v34;
@@ -1279,8 +1279,8 @@ LABEL_21:
         v8 = objc_msgSend_initWithSample_(v11, v12, &v19);
         break;
       case 3uLL:
-        v13 = sqlite3_column_int(a3, 0);
-        objc_msgSend_inputFromPreparedStatement_(CMPredictedDistanceBoutMobilityCalibration, v14, a3);
+        v13 = sqlite3_column_int(sql, 0);
+        objc_msgSend_inputFromPreparedStatement_(CMPredictedDistanceBoutMobilityCalibration, v14, sql);
         v15 = [CMPredictedDistanceBoutMobilityCalibration alloc];
         v19 = v33;
         v20 = v34;
@@ -1296,7 +1296,7 @@ LABEL_21:
         v34 = 0u;
         v35 = 0u;
         v33 = 0u;
-        objc_msgSend_inputFromPreparedStatement_(CMStrideCalibrationEntry, a2, a3);
+        objc_msgSend_inputFromPreparedStatement_(CMStrideCalibrationEntry, a2, sql);
         v6 = [CMStrideCalibrationEntry alloc];
         v23 = v37;
         v24 = v38;
@@ -1502,10 +1502,10 @@ LABEL_28:
   return result;
 }
 
-- (void)initializeWithToken:(id)a3 type:(unint64_t)a4 start:(double)a5 end:(double)a6
+- (void)initializeWithToken:(id)token type:(unint64_t)type start:(double)start end:(double)end
 {
   v65 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!token)
   {
     if (qword_1EAFE2AA8 != -1)
     {
@@ -1516,7 +1516,7 @@ LABEL_28:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v58 = *&a4;
+      startCopy = *&type;
       _os_log_impl(&dword_19B41C000, v31, OS_LOG_TYPE_DEFAULT, "[HistoricalFetch] Generating new token for type=%lu", buf, 0xCu);
     }
 
@@ -1537,9 +1537,9 @@ LABEL_28:
       }
     }
 
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         fToken = self->fToken;
         goto LABEL_44;
@@ -1556,8 +1556,8 @@ LABEL_28:
     fToken = v36;
     self->fToken = fToken;
 LABEL_44:
-    objc_msgSend_setStartTime_(fToken, v33, v34, a5);
-    objc_msgSend_setEndTime_(self->fToken, v52, v53, a6);
+    objc_msgSend_setStartTime_(fToken, v33, v34, start);
+    objc_msgSend_setEndTime_(self->fToken, v52, v53, end);
     objc_msgSend_cacheAllRecordIds(self, v54, v55);
 LABEL_45:
     v56 = *MEMORY[0x1E69E9840];
@@ -1567,18 +1567,18 @@ LABEL_45:
   v10 = self->fToken;
   if (v10)
   {
-    objc_msgSend_startTime(v10, a2, a3, a4);
-    objc_msgSend_setStartTime_(a3, v11, v12);
+    objc_msgSend_startTime(v10, a2, token, type);
+    objc_msgSend_setStartTime_(token, v11, v12);
     objc_msgSend_endTime(self->fToken, v13, v14);
-    objc_msgSend_setEndTime_(a3, v15, v16);
+    objc_msgSend_setEndTime_(token, v15, v16);
 
     self->fToken = 0;
   }
 
-  v17 = a3;
-  self->fToken = v17;
-  v20 = fabs(a6) == INFINITY;
-  if (fabs(a5) == INFINITY && v20)
+  tokenCopy = token;
+  self->fToken = tokenCopy;
+  v20 = fabs(end) == INFINITY;
+  if (fabs(start) == INFINITY && v20)
   {
     if (qword_1EAFE2AA8 != -1)
     {
@@ -1592,9 +1592,9 @@ LABEL_45:
       v41 = v40;
       objc_msgSend_endTime(self->fToken, v42, v43);
       *buf = 134218752;
-      v58 = a5;
+      startCopy = start;
       v59 = 2048;
-      v60 = a6;
+      endCopy = end;
       v61 = 2048;
       v62 = v41;
       v63 = 2048;
@@ -1624,21 +1624,21 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  objc_msgSend_startTime(v17, v18, v19);
-  if (v24 > a5)
+  objc_msgSend_startTime(tokenCopy, v18, v19);
+  if (v24 > start)
   {
     objc_msgSend_startTime(self->fToken, v22, v23);
-    a5 = v25;
+    start = v25;
   }
 
-  objc_msgSend_setStartTime_(self->fToken, v22, v23, a5);
+  objc_msgSend_setStartTime_(self->fToken, v22, v23, start);
   v28 = self->fToken;
   v29 = *MEMORY[0x1E69E9840];
 
-  objc_msgSend_setEndTime_(v28, v26, v27, a6);
+  objc_msgSend_setEndTime_(v28, v26, v27, end);
 }
 
-- (unint64_t)getRecordIdForTable:(const char *)a3 ascending:(BOOL)a4
+- (unint64_t)getRecordIdForTable:(const char *)table ascending:(BOOL)ascending
 {
   v63 = *MEMORY[0x1E69E9840];
   if (!self->fDb)
@@ -1671,7 +1671,7 @@ LABEL_45:
     goto LABEL_39;
   }
 
-  v4 = a4;
+  ascendingCopy = ascending;
   ppStmt = 0;
   Current = CFAbsoluteTimeGetCurrent();
   objc_msgSend_startTime(self->fToken, v8, v9);
@@ -1689,14 +1689,14 @@ LABEL_45:
     Current = v18;
   }
 
-  if (v4)
+  if (ascendingCopy)
   {
-    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"SELECT id FROM %s WHERE startTime >= %f AND startTime <= %f ORDER BY id %s LIMIT 1", a3, *&v12, *&Current, "ASC");
+    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"SELECT id FROM %s WHERE startTime >= %f AND startTime <= %f ORDER BY id %s LIMIT 1", table, *&v12, *&Current, "ASC");
   }
 
   else
   {
-    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"SELECT id FROM %s WHERE startTime >= %f AND startTime <= %f ORDER BY id %s LIMIT 1", a3, *&v12, *&Current, "DESC");
+    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"SELECT id FROM %s WHERE startTime >= %f AND startTime <= %f ORDER BY id %s LIMIT 1", table, *&v12, *&Current, "DESC");
   }
 
   v22 = v19;
@@ -1715,7 +1715,7 @@ LABEL_45:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
     {
       *buf = 136381187;
-      v60 = a3;
+      tableCopy8 = table;
       v61 = 1024;
       *v62 = v26;
       *&v62[4] = 2112;
@@ -1739,7 +1739,7 @@ LABEL_110:
     dispatch_once(&qword_1EAFE2AA8, &unk_1F0E3A2E0);
 LABEL_38:
     v55 = 136381187;
-    v56 = a3;
+    tableCopy9 = table;
     v57 = 1024;
     *v58 = v26;
     *&v58[4] = 2112;
@@ -1770,7 +1770,7 @@ LABEL_41:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
     {
       *buf = 136381187;
-      v60 = a3;
+      tableCopy8 = table;
       v61 = 1024;
       *v62 = v26;
       *&v62[4] = 2112;
@@ -1807,7 +1807,7 @@ LABEL_41:
       if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
-        v60 = a3;
+        tableCopy8 = table;
         _os_log_impl(&dword_19B41C000, v39, OS_LOG_TYPE_ERROR, "[HistoricalFetch] %s: Invalid rowId", buf, 0xCu);
       }
 
@@ -1824,7 +1824,7 @@ LABEL_41:
       }
 
       v55 = 136315138;
-      v56 = a3;
+      tableCopy9 = table;
       v41 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 0, "[CMHistoricalDataStore getRecordIdForTable:ascending:]", "CoreLocation: %s\n");
     }
@@ -1840,7 +1840,7 @@ LABEL_41:
       if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315138;
-        v60 = a3;
+        tableCopy8 = table;
         _os_log_impl(&dword_19B41C000, v42, OS_LOG_TYPE_DEBUG, "[HistoricalFetch] %s: No records found", buf, 0xCu);
       }
 
@@ -1857,7 +1857,7 @@ LABEL_41:
       }
 
       v55 = 136315138;
-      v56 = a3;
+      tableCopy9 = table;
       v41 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHistoricalDataStore getRecordIdForTable:ascending:]", "CoreLocation: %s\n");
     }
@@ -1872,7 +1872,7 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  v35 = (v38 - v4);
+  v35 = (v38 - ascendingCopy);
 LABEL_74:
   v44 = sqlite3_finalize(ppStmt);
   if (v44)
@@ -1887,7 +1887,7 @@ LABEL_74:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_ERROR))
     {
       *buf = 136380931;
-      v60 = a3;
+      tableCopy8 = table;
       v61 = 1024;
       *v62 = v45;
       _os_log_impl(&dword_19B41C000, v46, OS_LOG_TYPE_ERROR, "[HistoricalFetch] Error on table %{private}s finalize (code=%d)", buf, 0x12u);
@@ -1903,7 +1903,7 @@ LABEL_74:
       }
 
       v55 = 136380931;
-      v56 = a3;
+      tableCopy9 = table;
       v57 = 1024;
       *v58 = v45;
       v48 = _os_log_send_and_compose_impl();
@@ -1923,7 +1923,7 @@ LABEL_74:
   v49 = qword_1EAFE2AB0;
   if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_DEBUG))
   {
-    if (v4)
+    if (ascendingCopy)
     {
       v50 = "first";
     }
@@ -1934,11 +1934,11 @@ LABEL_74:
     }
 
     *buf = 136315651;
-    v60 = v50;
+    tableCopy8 = v50;
     v61 = 2048;
     *v62 = v35;
     *&v62[8] = 2081;
-    *&v62[10] = a3;
+    *&v62[10] = table;
     _os_log_impl(&dword_19B41C000, v49, OS_LOG_TYPE_DEBUG, "[HistoricalFetch] Caching %s record id %lu for table %{private}s", buf, 0x20u);
   }
 
@@ -1951,7 +1951,7 @@ LABEL_74:
       dispatch_once(&qword_1EAFE2AA8, &unk_1F0E3A2E0);
     }
 
-    if (v4)
+    if (ascendingCopy)
     {
       v52 = "first";
     }
@@ -1962,11 +1962,11 @@ LABEL_74:
     }
 
     v55 = 136315651;
-    v56 = v52;
+    tableCopy9 = v52;
     v57 = 2048;
     *v58 = v35;
     *&v58[8] = 2081;
-    *&v58[10] = a3;
+    *&v58[10] = table;
     v53 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHistoricalDataStore getRecordIdForTable:ascending:]", "CoreLocation: %s\n", v53);
     if (v53 != buf)
@@ -2178,31 +2178,31 @@ LABEL_42:
   return result;
 }
 
-- (id)tableNameForMobilityType:(unint64_t)a3
+- (id)tableNameForMobilityType:(unint64_t)type
 {
-  v3 = a3;
-  v4 = objc_msgSend_mobilityTableNames(self, a2, a3);
+  typeCopy = type;
+  v4 = objc_msgSend_mobilityTableNames(self, a2, type);
 
-  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, v3);
+  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, typeCopy);
 }
 
-- (id)tableNameForCardioType:(unint64_t)a3
+- (id)tableNameForCardioType:(unint64_t)type
 {
-  v3 = a3;
-  v4 = objc_msgSend_cardioTableNames(self, a2, a3);
+  typeCopy = type;
+  v4 = objc_msgSend_cardioTableNames(self, a2, type);
 
-  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, v3);
+  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, typeCopy);
 }
 
-- (id)tableNameForCurrentType:(unint64_t)a3
+- (id)tableNameForCurrentType:(unint64_t)type
 {
-  v3 = a3;
-  v4 = objc_msgSend_tableNames(self, a2, a3);
+  typeCopy = type;
+  v4 = objc_msgSend_tableNames(self, a2, type);
 
-  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, v3);
+  return objc_msgSend_objectAtIndexedSubscript_(v4, v5, typeCopy);
 }
 
-- (BOOL)_setConfiguration:(id)a3
+- (BOOL)_setConfiguration:(id)configuration
 {
   v51 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -2235,9 +2235,9 @@ LABEL_42:
     goto LABEL_74;
   }
 
-  v6 = objc_msgSend_objectForKeyedSubscript_(a3, v5, @"CMColdStorageDatabasePath");
-  v8 = objc_msgSend_objectForKeyedSubscript_(a3, v7, @"CMColdStorageMobilityTableNames");
-  v10 = objc_msgSend_objectForKeyedSubscript_(a3, v9, @"CMColdStorageCardioTableNames");
+  v6 = objc_msgSend_objectForKeyedSubscript_(configuration, v5, @"CMColdStorageDatabasePath");
+  v8 = objc_msgSend_objectForKeyedSubscript_(configuration, v7, @"CMColdStorageMobilityTableNames");
+  v10 = objc_msgSend_objectForKeyedSubscript_(configuration, v9, @"CMColdStorageCardioTableNames");
   if (!v6 || (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || !v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || !v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (qword_1EAFE2AA8 != -1)
@@ -2249,7 +2249,7 @@ LABEL_42:
     if (os_log_type_enabled(qword_1EAFE2AB0, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      *v46 = a3;
+      *v46 = configuration;
       _os_log_impl(&dword_19B41C000, v30, OS_LOG_TYPE_FAULT, "Malformed datastore configuration: %@. Ignoring and trying again.", buf, 0xCu);
     }
 
@@ -2350,7 +2350,7 @@ LABEL_39:
     }
   }
 
-  self->fConfiguration = a3;
+  self->fConfiguration = configuration;
   if (qword_1EAFE2AA8 != -1)
   {
     dispatch_once(&qword_1EAFE2AA8, &unk_1F0E3A2E0);
@@ -2389,17 +2389,17 @@ LABEL_40:
   return result;
 }
 
-- (void)_cacheTableNamesForToken:(id)a3
+- (void)_cacheTableNamesForToken:(id)token
 {
-  v5 = objc_msgSend_tables(a3, a2, a3);
+  v5 = objc_msgSend_tables(token, a2, token);
   if (objc_msgSend_count(v5, v6, v7))
   {
     v10 = 0;
     while (1)
     {
-      v11 = objc_msgSend_tables(a3, v8, v9);
+      v11 = objc_msgSend_tables(token, v8, v9);
       v13 = objc_msgSend_objectAtIndexedSubscript_(v11, v12, v10);
-      Type = objc_msgSend_fetchType(a3, v14, v15);
+      Type = objc_msgSend_fetchType(token, v14, v15);
       if (Type == 1)
       {
         break;
@@ -2414,7 +2414,7 @@ LABEL_7:
       }
 
       ++v10;
-      v25 = objc_msgSend_tables(a3, v17, v18);
+      v25 = objc_msgSend_tables(token, v17, v18);
       if (objc_msgSend_count(v25, v26, v27) <= v10)
       {
         return;

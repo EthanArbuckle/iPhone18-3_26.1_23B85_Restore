@@ -1,25 +1,25 @@
 @interface MTAStopwatchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetLapButtonTraitsForMode:(unint64_t)a3;
-- (void)didAddLap:(double)a3;
+- (void)_axSetLapButtonTraitsForMode:(unint64_t)mode;
+- (void)didAddLap:(double)lap;
 - (void)lapLapTimer;
 - (void)loadView;
-- (void)setMode:(unint64_t)a3;
+- (void)setMode:(unint64_t)mode;
 - (void)startLapTimer;
 @end
 
 @implementation MTAStopwatchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAStopwatchViewController" hasInstanceVariable:@"_mode" withType:"Q"];
-  [v3 validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"stopwatchController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"setMode:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"MTAStopwatchController" hasInstanceMethod:@"lapControlButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAStopwatchController" hasInstanceMethod:@"startStopButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchViewController" hasInstanceVariable:@"_mode" withType:"Q"];
+  [validationsCopy validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"stopwatchController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchViewController" hasInstanceMethod:@"setMode:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchController" hasInstanceMethod:@"lapControlButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAStopwatchController" hasInstanceMethod:@"startStopButton" withFullSignature:{"@", 0}];
 }
 
 - (void)startLapTimer
@@ -61,7 +61,7 @@
   [(MTAStopwatchViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)didAddLap:(double)a3
+- (void)didAddLap:(double)lap
 {
   v3.receiver = self;
   v3.super_class = MTAStopwatchViewControllerAccessibility;
@@ -80,15 +80,15 @@ void __53__MTAStopwatchViewControllerAccessibility_didAddLap___block_invoke(uint
   UIAccessibilityPostNotification(v1, v3);
 }
 
-- (void)_axSetLapButtonTraitsForMode:(unint64_t)a3
+- (void)_axSetLapButtonTraitsForMode:(unint64_t)mode
 {
   v4 = [(MTAStopwatchViewControllerAccessibility *)self safeValueForKey:@"stopwatchController"];
   v8 = [v4 safeUIViewForKey:@"lapControlButton"];
 
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v5 = [v8 accessibilityTraits];
-    v6 = *MEMORY[0x29EDC7FA8] | v5;
+    accessibilityTraits = [v8 accessibilityTraits];
+    v6 = *MEMORY[0x29EDC7FA8] | accessibilityTraits;
   }
 
   else
@@ -100,12 +100,12 @@ void __53__MTAStopwatchViewControllerAccessibility_didAddLap___block_invoke(uint
   [v8 setAccessibilityTraits:v6];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = MTAStopwatchViewControllerAccessibility;
   [(MTAStopwatchViewControllerAccessibility *)&v5 setMode:?];
-  [(MTAStopwatchViewControllerAccessibility *)self _axSetLapButtonTraitsForMode:a3];
+  [(MTAStopwatchViewControllerAccessibility *)self _axSetLapButtonTraitsForMode:mode];
 }
 
 @end

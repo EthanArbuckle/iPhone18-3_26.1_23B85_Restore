@@ -1,21 +1,21 @@
 @interface WFLinkVisualIntelligenceCameraAction
-- (BOOL)visibleForUse:(int64_t)a3;
+- (BOOL)visibleForUse:(int64_t)use;
 - (id)icon;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 - (id)requiredResources;
 - (id)staccatoNameOverride;
-- (void)prepareToProcessWithCompletionHandler:(id)a3;
+- (void)prepareToProcessWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFLinkVisualIntelligenceCameraAction
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69E0A90] currentDevice];
-  v6 = [v5 isChineseRegionDevice];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  isChineseRegionDevice = [currentDevice isChineseRegionDevice];
 
-  if (v6)
+  if (isChineseRegionDevice)
   {
     v7 = getWFActionsLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -32,27 +32,27 @@
   {
     v10.receiver = self;
     v10.super_class = WFLinkVisualIntelligenceCameraAction;
-    result = [(WFAppIntentExecutionAction *)&v10 visibleForUse:a3];
+    result = [(WFAppIntentExecutionAction *)&v10 visibleForUse:use];
   }
 
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)prepareToProcessWithCompletionHandler:(id)a3
+- (void)prepareToProcessWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFAction *)self runningDelegate];
-  v6 = [v5 currentRunningContextForAction:self];
-  v7 = [v6 runSource];
+  handlerCopy = handler;
+  runningDelegate = [(WFAction *)self runningDelegate];
+  v6 = [runningDelegate currentRunningContextForAction:self];
+  runSource = [v6 runSource];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(WFAction *)self resourceManager];
-  v9 = [v8 resourceObjectsOfClass:objc_opt_class()];
+  resourceManager = [(WFAction *)self resourceManager];
+  v9 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
 
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
@@ -69,7 +69,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v16 + 1) + 8 * v13++) configureWithRunSource:v7];
+        [*(*(&v16 + 1) + 8 * v13++) configureWithRunSource:runSource];
       }
 
       while (v11 != v13);
@@ -81,7 +81,7 @@
 
   v15.receiver = self;
   v15.super_class = WFLinkVisualIntelligenceCameraAction;
-  [(WFAction *)&v15 prepareToProcessWithCompletionHandler:v4];
+  [(WFAction *)&v15 prepareToProcessWithCompletionHandler:handlerCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -90,8 +90,8 @@
 {
   v6.receiver = self;
   v6.super_class = WFLinkVisualIntelligenceCameraAction;
-  v2 = [(WFAction *)&v6 requiredResources];
-  v3 = [v2 mutableCopy];
+  requiredResources = [(WFAction *)&v6 requiredResources];
+  v3 = [requiredResources mutableCopy];
 
   v4 = objc_alloc_init(_TtC11WorkflowKit46WFVisualIntelligenceCameraAvailabilityResource);
   [v3 addObject:v4];
@@ -101,10 +101,10 @@
 
 - (id)staccatoNameOverride
 {
-  v3 = [(WFAction *)self defaultLocalizationContext];
+  defaultLocalizationContext = [(WFAction *)self defaultLocalizationContext];
   v6.receiver = self;
   v6.super_class = WFLinkVisualIntelligenceCameraAction;
-  v4 = [(WFLinkAction *)&v6 localizedNameWithContext:v3];
+  v4 = [(WFLinkAction *)&v6 localizedNameWithContext:defaultLocalizationContext];
 
   return v4;
 }
@@ -120,11 +120,11 @@
   return v6;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"WFLinkVisualIntelligenceCameraAction - Action Name", @"Open Visual Intelligence");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

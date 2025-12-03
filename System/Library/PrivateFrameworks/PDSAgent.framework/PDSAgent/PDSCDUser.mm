@@ -1,6 +1,6 @@
 @interface PDSCDUser
-+ (id)insertIntoManagedObjectContext:(id)a3;
-+ (id)userFromUser:(id)a3 insertIntoManagedObjectContext:(id)a4;
++ (id)insertIntoManagedObjectContext:(id)context;
++ (id)userFromUser:(id)user insertIntoManagedObjectContext:(id)context;
 - (id)user;
 @end
 
@@ -11,8 +11,8 @@
   if ([(PDSCDUser *)self userType]== 1)
   {
     v3 = objc_alloc(MEMORY[0x277D37AD0]);
-    v4 = [(PDSCDUser *)self userID];
-    v5 = [v3 initWithUserID:v4 userType:{-[PDSCDUser userType](self, "userType")}];
+    userID = [(PDSCDUser *)self userID];
+    v5 = [v3 initWithUserID:userID userType:{-[PDSCDUser userType](self, "userType")}];
   }
 
   else
@@ -23,25 +23,25 @@
   return v5;
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3
++ (id)insertIntoManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
-  v6 = [v4 entityForName:@"PDSCDUser" inManagedObjectContext:v5];
-  v7 = [[a1 alloc] initWithEntity:v6 insertIntoManagedObjectContext:v5];
+  contextCopy = context;
+  v6 = [v4 entityForName:@"PDSCDUser" inManagedObjectContext:contextCopy];
+  v7 = [[self alloc] initWithEntity:v6 insertIntoManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (id)userFromUser:(id)a3 insertIntoManagedObjectContext:(id)a4
++ (id)userFromUser:(id)user insertIntoManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = [a1 insertIntoManagedObjectContext:a4];
-  v8 = [v6 userID];
-  [v7 setUserID:v8];
+  userCopy = user;
+  v7 = [self insertIntoManagedObjectContext:context];
+  userID = [userCopy userID];
+  [v7 setUserID:userID];
 
-  v9 = [v6 userType];
-  [v7 setUserType:v9];
+  userType = [userCopy userType];
+  [v7 setUserType:userType];
 
   return v7;
 }

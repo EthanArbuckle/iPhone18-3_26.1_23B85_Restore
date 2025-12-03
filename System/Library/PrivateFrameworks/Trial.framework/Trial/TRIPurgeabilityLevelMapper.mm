@@ -1,95 +1,95 @@
 @interface TRIPurgeabilityLevelMapper
-+ (id)purgeabilityLevelFromCacheDeleteUrgency:(int)a3;
-+ (int)availableSpaceClassFromPurgeabilityLevel:(int)a3;
-- (TRIPurgeabilityLevelMapper)initWithPaths:(id)a3 namespaceMetadataStorage:(id)a4;
-- (int)availableSpaceClassForFactorNames:(id)a3 namespaceName:(id)a4;
-- (int)purgeabilityLevelForNamespace:(id)a3;
++ (id)purgeabilityLevelFromCacheDeleteUrgency:(int)urgency;
++ (int)availableSpaceClassFromPurgeabilityLevel:(int)level;
+- (TRIPurgeabilityLevelMapper)initWithPaths:(id)paths namespaceMetadataStorage:(id)storage;
+- (int)availableSpaceClassForFactorNames:(id)names namespaceName:(id)name;
+- (int)purgeabilityLevelForNamespace:(id)namespace;
 @end
 
 @implementation TRIPurgeabilityLevelMapper
 
-- (TRIPurgeabilityLevelMapper)initWithPaths:(id)a3 namespaceMetadataStorage:(id)a4
+- (TRIPurgeabilityLevelMapper)initWithPaths:(id)paths namespaceMetadataStorage:(id)storage
 {
-  v7 = a3;
-  v8 = a4;
+  pathsCopy = paths;
+  storageCopy = storage;
   v12.receiver = self;
   v12.super_class = TRIPurgeabilityLevelMapper;
   v9 = [(TRIPurgeabilityLevelMapper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paths, a3);
-    objc_storeStrong(&v10->_namespaceMetadataStorage, a4);
+    objc_storeStrong(&v9->_paths, paths);
+    objc_storeStrong(&v10->_namespaceMetadataStorage, storage);
   }
 
   return v10;
 }
 
-+ (id)purgeabilityLevelFromCacheDeleteUrgency:(int)a3
++ (id)purgeabilityLevelFromCacheDeleteUrgency:(int)urgency
 {
-  if ((a3 - 1) > 3)
+  if ((urgency - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_27885DE98 + (a3 - 1));
+    return *(&off_27885DE98 + (urgency - 1));
   }
 }
 
-+ (int)availableSpaceClassFromPurgeabilityLevel:(int)a3
++ (int)availableSpaceClassFromPurgeabilityLevel:(int)level
 {
-  if ((a3 - 1) > 2)
+  if ((level - 1) > 2)
   {
     return 1;
   }
 
   else
   {
-    return dword_22EADCA2C[a3 - 1];
+    return dword_22EADCA2C[level - 1];
   }
 }
 
-- (int)purgeabilityLevelForNamespace:(id)a3
+- (int)purgeabilityLevelForNamespace:(id)namespace
 {
   paths = self->_paths;
-  v4 = a3;
-  v5 = [(TRIPaths *)paths namespaceDescriptorsDefaultDir];
-  v6 = [TRINamespaceDescriptor loadWithNamespaceName:v4 fromDirectory:v5];
+  namespaceCopy = namespace;
+  namespaceDescriptorsDefaultDir = [(TRIPaths *)paths namespaceDescriptorsDefaultDir];
+  v6 = [TRINamespaceDescriptor loadWithNamespaceName:namespaceCopy fromDirectory:namespaceDescriptorsDefaultDir];
 
   if (v6)
   {
-    v7 = [v6 purgeabilityLevel];
+    purgeabilityLevel = [v6 purgeabilityLevel];
   }
 
   else
   {
-    v7 = 3;
+    purgeabilityLevel = 3;
   }
 
-  return v7;
+  return purgeabilityLevel;
 }
 
-- (int)availableSpaceClassForFactorNames:(id)a3 namespaceName:(id)a4
+- (int)availableSpaceClassForFactorNames:(id)names namespaceName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TRIClientNamespaceMetadataStoring *)self->_namespaceMetadataStorage loadNamespaceMetadataForNamespaceName:v7 error:0];
+  namesCopy = names;
+  nameCopy = name;
+  v8 = [(TRIClientNamespaceMetadataStoring *)self->_namespaceMetadataStorage loadNamespaceMetadataForNamespaceName:nameCopy error:0];
   v9 = v8;
-  if (v6 && v8)
+  if (namesCopy && v8)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v6;
+    v10 = namesCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
-      v21 = self;
+      selfCopy = self;
       LODWORD(v13) = 0;
       v14 = *v24;
       while (2)
@@ -103,12 +103,12 @@
 
           v16 = *(*(&v23 + 1) + 8 * i);
           v22 = 0;
-          v17 = [v9 factorNamePurgeabilityLevels];
-          LOBYTE(v16) = [v17 getEnum:&v22 forKey:v16];
+          factorNamePurgeabilityLevels = [v9 factorNamePurgeabilityLevels];
+          LOBYTE(v16) = [factorNamePurgeabilityLevels getEnum:&v22 forKey:v16];
 
           if ((v16 & 1) == 0)
           {
-            v13 = [(TRIPurgeabilityLevelMapper *)v21 purgeabilityLevelForNamespace:v7];
+            v13 = [(TRIPurgeabilityLevelMapper *)selfCopy purgeabilityLevelForNamespace:nameCopy];
             goto LABEL_18;
           }
 
@@ -143,7 +143,7 @@ LABEL_18:
 
   else
   {
-    v13 = [(TRIPurgeabilityLevelMapper *)self purgeabilityLevelForNamespace:v7];
+    v13 = [(TRIPurgeabilityLevelMapper *)self purgeabilityLevelForNamespace:nameCopy];
   }
 
   v18 = [TRIPurgeabilityLevelMapper availableSpaceClassFromPurgeabilityLevel:v13];

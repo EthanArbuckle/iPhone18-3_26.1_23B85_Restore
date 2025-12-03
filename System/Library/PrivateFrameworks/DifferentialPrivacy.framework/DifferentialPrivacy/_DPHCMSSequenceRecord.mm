@@ -1,6 +1,6 @@
 @interface _DPHCMSSequenceRecord
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
 - (id)description;
 @end
 
@@ -20,13 +20,13 @@
   return v8;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = _DPHCMSSequenceRecord, [(_DPCMSSequenceRecord *)&v8 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = _DPHCMSSequenceRecord, [(_DPCMSSequenceRecord *)&v8 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
+    v5 = objectCopy;
     [v5 setSequenceBitIndex:{-[_DPHCMSSequenceRecord sequenceBitIndex](self, "sequenceBitIndex")}];
 
     v6 = 1;
@@ -40,13 +40,13 @@
   return v6;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = _DPHCMSSequenceRecord, [(_DPCMSSequenceRecord *)&v7 copyFromManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = _DPHCMSSequenceRecord, [(_DPCMSSequenceRecord *)&v7 copyFromManagedObject:objectCopy]))
   {
-    -[_DPHCMSSequenceRecord setSequenceBitIndex:](self, "setSequenceBitIndex:", [v4 sequenceBitIndex]);
+    -[_DPHCMSSequenceRecord setSequenceBitIndex:](self, "setSequenceBitIndex:", [objectCopy sequenceBitIndex]);
     v5 = 1;
   }
 

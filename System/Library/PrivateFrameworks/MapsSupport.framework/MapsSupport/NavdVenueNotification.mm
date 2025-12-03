@@ -1,15 +1,15 @@
 @interface NavdVenueNotification
 + (void)hide;
-+ (void)showWithMapItem:(id)a3 airport:(id)a4;
++ (void)showWithMapItem:(id)item airport:(id)airport;
 @end
 
 @implementation NavdVenueNotification
 
-+ (void)showWithMapItem:(id)a3 airport:(id)a4
++ (void)showWithMapItem:(id)item airport:(id)airport
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[GEOMapURLBuilder URLForInternalBusiness:id:provider:](GEOMapURLBuilder, "URLForInternalBusiness:id:provider:", 0, [v5 _muid], 0);
+  itemCopy = item;
+  airportCopy = airport;
+  v7 = +[GEOMapURLBuilder URLForInternalBusiness:id:provider:](GEOMapURLBuilder, "URLForInternalBusiness:id:provider:", 0, [itemCopy _muid], 0);
   v8 = GEOFindOrCreateLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
   if (v7)
@@ -21,11 +21,11 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Venue notication URL : %@", &v13, 0xCu);
     }
 
-    if (![v6 length])
+    if (![airportCopy length])
     {
-      v10 = [v5 name];
+      name = [itemCopy name];
 
-      v6 = v10;
+      airportCopy = name;
     }
 
     v8 = objc_alloc_init(NavdNotificationManager);

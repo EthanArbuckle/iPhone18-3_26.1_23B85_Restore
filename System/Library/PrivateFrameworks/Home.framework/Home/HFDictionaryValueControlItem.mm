@@ -1,34 +1,34 @@
 @interface HFDictionaryValueControlItem
-+ (id)defaultMainTextColorForCharacteristicType:(id)a3;
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3;
-- (HFDictionaryValueControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFDictionaryValueControlItem)initWithValueSource:(id)a3 characteristicType:(id)a4 displayResults:(id)a5;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (void)getStatus:(id *)a3 mainTextColor:(id *)a4 supplementaryDescription:(id *)a5 withBatchReadResponse:(id)a6;
++ (id)defaultMainTextColorForCharacteristicType:(id)type;
+- (BOOL)canCopyWithCharacteristicOptions:(id)options;
+- (HFDictionaryValueControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFDictionaryValueControlItem)initWithValueSource:(id)source characteristicType:(id)type displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resultsForBatchReadResponse:(id)response;
+- (void)getStatus:(id *)status mainTextColor:(id *)color supplementaryDescription:(id *)description withBatchReadResponse:(id)response;
 @end
 
 @implementation HFDictionaryValueControlItem
 
-- (HFDictionaryValueControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFDictionaryValueControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_characteristicType_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFDictionaryValueControlItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFDictionaryValueControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDictionaryValueControlItem.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFDictionaryValueControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (HFDictionaryValueControlItem)initWithValueSource:(id)a3 characteristicType:(id)a4 displayResults:(id)a5
+- (HFDictionaryValueControlItem)initWithValueSource:(id)source characteristicType:(id)type displayResults:(id)results
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  typeCopy = type;
   v10 = MEMORY[0x277CBEB58];
-  v11 = a5;
+  resultsCopy = results;
   v12 = objc_alloc_init(v10);
-  [v12 addObject:v9];
+  [v12 addObject:typeCopy];
   v13 = *MEMORY[0x277CCFAB0];
   v30[0] = *MEMORY[0x277CCFAA8];
   v30[1] = v13;
@@ -39,8 +39,8 @@
   v26[1] = 3221225472;
   v26[2] = __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_displayResults___block_invoke;
   v26[3] = &unk_277DF3130;
-  v27 = v8;
-  v15 = v8;
+  v27 = sourceCopy;
+  v15 = sourceCopy;
   v16 = [v12 na_filter:v26];
   v17 = [HFControlItemCharacteristicOptions alloc];
   v28 = &unk_2825240F0;
@@ -50,11 +50,11 @@
 
   v25.receiver = self;
   v25.super_class = HFDictionaryValueControlItem;
-  v20 = [(HFControlItem *)&v25 initWithValueSource:v15 characteristicOptions:v19 displayResults:v11];
+  v20 = [(HFControlItem *)&v25 initWithValueSource:v15 characteristicOptions:v19 displayResults:resultsCopy];
 
   characteristicType = v20->_characteristicType;
-  v20->_characteristicType = v9;
-  v22 = v9;
+  v20->_characteristicType = typeCopy;
+  v22 = typeCopy;
 
   v23 = *MEMORY[0x277D85DE8];
   return v20;
@@ -68,35 +68,35 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
   return v3;
 }
 
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3
+- (BOOL)canCopyWithCharacteristicOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self characteristicOptions];
-  v6 = [v4 isEqual:v5];
+  optionsCopy = options;
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v6 = [optionsCopy isEqual:characteristicOptions];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HFControlItem *)self valueSource];
-  v6 = [(HFDictionaryValueControlItem *)self characteristicType];
-  v7 = [(HFControlItem *)self displayResults];
-  v8 = [v4 initWithValueSource:v5 characteristicType:v6 displayResults:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  valueSource = [(HFControlItem *)self valueSource];
+  characteristicType = [(HFDictionaryValueControlItem *)self characteristicType];
+  displayResults = [(HFControlItem *)self displayResults];
+  v8 = [v4 initWithValueSource:valueSource characteristicType:characteristicType displayResults:displayResults];
 
   return v8;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFDictionaryValueControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFDictionaryValueControlItem *)self canCopyWithCharacteristicOptions:options])
   {
     v7 = [HFDictionaryValueControlItem alloc];
-    v8 = [(HFDictionaryValueControlItem *)self characteristicType];
-    v9 = [(HFControlItem *)self displayResults];
-    v10 = [(HFDictionaryValueControlItem *)v7 initWithValueSource:v6 characteristicType:v8 displayResults:v9];
+    characteristicType = [(HFDictionaryValueControlItem *)self characteristicType];
+    displayResults = [(HFControlItem *)self displayResults];
+    v10 = [(HFDictionaryValueControlItem *)v7 initWithValueSource:sourceCopy characteristicType:characteristicType displayResults:displayResults];
 
     [(HFItem *)v10 copyLatestResultsFromItem:self];
   }
@@ -109,18 +109,18 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
   return v10;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v40.receiver = self;
   v40.super_class = HFDictionaryValueControlItem;
-  v5 = [(HFControlItem *)&v40 resultsForBatchReadResponse:v4];
+  v5 = [(HFControlItem *)&v40 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
   v38 = 0;
   v39 = 0;
   v37 = 0;
-  [(HFDictionaryValueControlItem *)self getStatus:&v39 mainTextColor:&v38 supplementaryDescription:&v37 withBatchReadResponse:v4];
+  [(HFDictionaryValueControlItem *)self getStatus:&v39 mainTextColor:&v38 supplementaryDescription:&v37 withBatchReadResponse:responseCopy];
   v7 = v39;
   v8 = v38;
   v9 = v37;
@@ -142,12 +142,12 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
 
   v33 = v9;
   objc_opt_class();
-  v10 = [(HFControlItem *)self valueSource];
-  v11 = [v10 allServices];
-  v12 = [v11 anyObject];
+  valueSource = [(HFControlItem *)self valueSource];
+  allServices = [valueSource allServices];
+  anyObject = [allServices anyObject];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = anyObject;
   }
 
   else
@@ -157,26 +157,26 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
 
   v14 = v13;
 
-  v15 = [v14 hf_iconDescriptor];
-  v16 = [HFCharacteristicValueDisplayMetadata displayMetadataForService:v14 characteristicReadResponse:v4];
+  hf_iconDescriptor = [v14 hf_iconDescriptor];
+  v16 = [HFCharacteristicValueDisplayMetadata displayMetadataForService:v14 characteristicReadResponse:responseCopy];
   objc_opt_class();
   v35 = v8;
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v16 primaryState];
+    primaryState = [v16 primaryState];
     v18 = &HFCAPackageStateOn;
-    if (v17 != 2)
+    if (primaryState != 2)
     {
       v18 = &HFCAPackageStateOff;
     }
 
-    v19 = *v18;
+    identifier2 = *v18;
     v20 = [HFServiceIconFactory iconModifiersForService:v14];
     v21 = [HFCAPackageIconDescriptor alloc];
-    v22 = [v15 identifier];
-    v23 = [(HFCAPackageIconDescriptor *)v21 initWithPackageIdentifier:v22 state:v19 modifiers:v20];
+    identifier = [hf_iconDescriptor identifier];
+    v23 = [(HFCAPackageIconDescriptor *)v21 initWithPackageIdentifier:identifier state:identifier2 modifiers:v20];
 
-    v15 = v20;
+    hf_iconDescriptor = v20;
   }
 
   else
@@ -184,15 +184,15 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v15 iconDescriptorForPrimaryState:{objc_msgSend(v16, "primaryState", v9, v8, v7)}];
+      v24 = [hf_iconDescriptor iconDescriptorForPrimaryState:{objc_msgSend(v16, "primaryState", v9, v8, v7)}];
       if (!v24)
       {
-        v19 = 0;
+        identifier2 = 0;
         goto LABEL_21;
       }
 
       v25 = v24;
-      v19 = v25;
+      identifier2 = v25;
     }
 
     else
@@ -204,23 +204,23 @@ BOOL __86__HFDictionaryValueControlItem_initWithValueSource_characteristicType_d
       }
 
       v26 = [HFPrimaryStateIconDescriptor alloc];
-      v19 = [v15 identifier];
-      v25 = -[HFPrimaryStateIconDescriptor initWithIdentifier:primaryState:](v26, "initWithIdentifier:primaryState:", v19, [v16 primaryState]);
+      identifier2 = [hf_iconDescriptor identifier];
+      v25 = -[HFPrimaryStateIconDescriptor initWithIdentifier:primaryState:](v26, "initWithIdentifier:primaryState:", identifier2, [v16 primaryState]);
     }
 
     v23 = v25;
   }
 
-  v15 = v23;
+  hf_iconDescriptor = v23;
 LABEL_21:
 
 LABEL_22:
-  [v6 na_safeSetObject:v15 forKey:{@"controlIcon", v33}];
-  v27 = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
-  v28 = [(HFControlItem *)self valueSource];
-  v29 = [v28 primaryServiceDescriptor];
-  v30 = [v29 serviceType];
-  v31 = [v27 containsObject:v30];
+  [v6 na_safeSetObject:hf_iconDescriptor forKey:{@"controlIcon", v33}];
+  hf_sensorServiceTypes = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource2 primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
+  v31 = [hf_sensorServiceTypes containsObject:serviceType];
 
   if (v31)
   {
@@ -230,10 +230,10 @@ LABEL_22:
   return v6;
 }
 
-- (void)getStatus:(id *)a3 mainTextColor:(id *)a4 supplementaryDescription:(id *)a5 withBatchReadResponse:(id)a6
+- (void)getStatus:(id *)status mainTextColor:(id *)color supplementaryDescription:(id *)description withBatchReadResponse:(id)response
 {
   v112 = *MEMORY[0x277D85DE8];
-  v73 = a6;
+  responseCopy = response;
   v96 = 0;
   v97 = &v96;
   v98 = 0x3032000000;
@@ -258,12 +258,12 @@ LABEL_22:
   aBlock[3] = &unk_277DFBEE0;
   aBlock[4] = &v96;
   aBlock[5] = &v90;
-  aBlock[8] = a4;
-  aBlock[9] = a5;
+  aBlock[8] = color;
+  aBlock[9] = description;
   aBlock[6] = &v84;
-  aBlock[7] = a3;
+  aBlock[7] = status;
   v72 = _Block_copy(aBlock);
-  v78 = [(HFControlItem *)self characteristicValuesByTypeForBatchReadResponse:v73];
+  v78 = [(HFControlItem *)self characteristicValuesByTypeForBatchReadResponse:responseCopy];
   v10 = *MEMORY[0x277CCFAB0];
   v110[0] = *MEMORY[0x277CCFAA8];
   v9 = v110[0];
@@ -350,9 +350,9 @@ LABEL_3:
     v76 = 0;
   }
 
-  v28 = [(HFControlItem *)self valueSource];
-  v29 = [v28 primaryServiceDescriptor];
-  v30 = [v29 serviceType];
+  valueSource = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
 
   v31 = MEMORY[0x277CCF938];
   v32 = MEMORY[0x277CCF978];
@@ -374,14 +374,14 @@ LABEL_3:
     v39 = v97[5];
     v97[5] = v38;
 
-    v40 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     v41 = v91[5];
-    v91[5] = v40;
+    v91[5] = systemRedColor;
   }
 
   else
   {
-    v76 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:v30];
+    v76 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:serviceType];
     v42 = [v78 objectForKey:v76];
     objc_opt_class();
     v37 = v42;
@@ -399,8 +399,8 @@ LABEL_3:
 
     if (v41)
     {
-      v44 = [(HFControlItem *)self valueSource];
-      v45 = [v44 metadataForCharacteristicType:v76];
+      valueSource2 = [(HFControlItem *)self valueSource];
+      v45 = [valueSource2 metadataForCharacteristicType:v76];
 
       v46 = *MEMORY[0x277CCF7A0];
       v104[0] = *MEMORY[0x277CCFA80];
@@ -462,7 +462,7 @@ LABEL_3:
   v102[10] = *MEMORY[0x277CCF850];
   v103[10] = @"HumiditySensor";
   v61 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:v102 count:11];
-  v62 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:v30];
+  v62 = [MEMORY[0x277CD1D90] hf_sensorCharacteristicTypeForServiceType:serviceType];
   v63 = MEMORY[0x277CCACA8];
   v64 = [v61 objectForKey:v62];
   v65 = [v63 stringWithFormat:@"HFServiceType%@", v64];
@@ -507,20 +507,20 @@ void *__103__HFDictionaryValueControlItem_getStatus_mainTextColor_supplementaryD
   return result;
 }
 
-+ (id)defaultMainTextColorForCharacteristicType:(id)a3
++ (id)defaultMainTextColorForCharacteristicType:(id)type
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = *MEMORY[0x277CCF770];
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 labelColor];
-  v12[0] = v5;
+  typeCopy = type;
+  labelColor = [v3 labelColor];
+  v12[0] = labelColor;
   v11[1] = *MEMORY[0x277CCF830];
-  v6 = [MEMORY[0x277D75348] systemYellowColor];
-  v12[1] = v6;
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v12[1] = systemYellowColor;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v8 = [v7 objectForKey:v4];
+  v8 = [v7 objectForKey:typeCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 

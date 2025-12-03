@@ -1,23 +1,23 @@
 @interface SKUIErrorHelper
-+ (id)errorWithSafeUserInfo:(id)a3;
++ (id)errorWithSafeUserInfo:(id)info;
 @end
 
 @implementation SKUIErrorHelper
 
-+ (id)errorWithSafeUserInfo:(id)a3
++ (id)errorWithSafeUserInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
     v4 = [NSMutableDictionary alloc];
-    v5 = [v3 userInfo];
-    v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    userInfo = [infoCopy userInfo];
+    v6 = [v4 initWithCapacity:{objc_msgSend(userInfo, "count")}];
 
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v7 = [v3 userInfo];
+    userInfo2 = [infoCopy userInfo];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_1000060F4;
@@ -25,17 +25,17 @@
     v17 = &v18;
     v8 = v6;
     v16 = v8;
-    [v7 enumerateKeysAndObjectsUsingBlock:&v12];
+    [userInfo2 enumerateKeysAndObjectsUsingBlock:&v12];
 
     if (v19[3])
     {
-      v9 = [v3 domain];
-      v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v9, [v3 code], v8);
+      domain = [infoCopy domain];
+      v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [infoCopy code], v8);
     }
 
     else
     {
-      v10 = v3;
+      v10 = infoCopy;
     }
 
     _Block_object_dispose(&v18, 8);

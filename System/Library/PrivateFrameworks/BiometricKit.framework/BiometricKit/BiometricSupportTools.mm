@@ -1,39 +1,39 @@
 @interface BiometricSupportTools
-+ (id)dateFromNanoTime:(unint64_t)a3 nanoseconds:(unsigned int *)a4;
-+ (void)analyticsOSLogNSDictionary:(id)a3 forEvent:(id)a4 toLogPath:(id)a5 withPrefix:(id)a6;
++ (id)dateFromNanoTime:(unint64_t)time nanoseconds:(unsigned int *)nanoseconds;
++ (void)analyticsOSLogNSDictionary:(id)dictionary forEvent:(id)event toLogPath:(id)path withPrefix:(id)prefix;
 @end
 
 @implementation BiometricSupportTools
 
-+ (id)dateFromNanoTime:(unint64_t)a3 nanoseconds:(unsigned int *)a4
++ (id)dateFromNanoTime:(unint64_t)time nanoseconds:(unsigned int *)nanoseconds
 {
-  result = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:a3 / 1000000000.0];
-  if (a4)
+  result = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:time / 1000000000.0];
+  if (nanoseconds)
   {
-    *a4 = a3 % 0x3B9ACA00;
+    *nanoseconds = time % 0x3B9ACA00;
   }
 
   return result;
 }
 
-+ (void)analyticsOSLogNSDictionary:(id)a3 forEvent:(id)a4 toLogPath:(id)a5 withPrefix:(id)a6
++ (void)analyticsOSLogNSDictionary:(id)dictionary forEvent:(id)event toLogPath:(id)path withPrefix:(id)prefix
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v35 = a4;
-  v10 = a5;
-  v11 = a6;
+  dictionaryCopy = dictionary;
+  eventCopy = event;
+  pathCopy = path;
+  prefixCopy = prefix;
   v32 = os_transaction_create();
-  v12 = [v9 description];
+  v12 = [dictionaryCopy description];
   v13 = [v12 length];
   v44 = 0;
   v45 = 0;
   v43 = 0;
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue = dispatch_queue_create("com.apple.biometrickit.analyticsFileLog", 0);
   if (queue)
   {
-    if (v11)
+    if (prefixCopy)
     {
       goto LABEL_3;
     }
@@ -42,7 +42,7 @@
   else
   {
     +[BiometricSupportTools analyticsOSLogNSDictionary:forEvent:toLogPath:withPrefix:];
-    if (v11)
+    if (prefixCopy)
     {
       goto LABEL_3;
     }
@@ -52,7 +52,7 @@
 LABEL_3:
   if (isInternalBuild_onceToken == -1)
   {
-    if (!v10)
+    if (!pathCopy)
     {
       goto LABEL_8;
     }
@@ -61,7 +61,7 @@ LABEL_3:
   else
   {
     +[BiometricSupportTools analyticsOSLogNSDictionary:forEvent:toLogPath:withPrefix:];
-    if (!v10)
+    if (!pathCopy)
     {
       goto LABEL_8;
     }
@@ -80,20 +80,20 @@ LABEL_3:
       v47 = __Block_byref_object_copy__1;
       *v48 = __Block_byref_object_dispose__1;
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [MEMORY[0x1E695DF00] date];
-      [v18 timeIntervalSince1970];
-      *&v48[8] = [v17 stringWithFormat:@"%@/%d_%@.plist", v10, v19, v35];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
+      *&v48[8] = [v17 stringWithFormat:@"%@/%d_%@.plist", pathCopy, v19, eventCopy];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __82__BiometricSupportTools_analyticsOSLogNSDictionary_forEvent_toLogPath_withPrefix___block_invoke;
       block[3] = &unk_1E8304380;
       v37 = v32;
-      v38 = v10;
+      v38 = pathCopy;
       v42 = buf;
-      v39 = v35;
-      v40 = v11;
-      v41 = v9;
+      v39 = eventCopy;
+      v40 = prefixCopy;
+      v41 = dictionaryCopy;
       dispatch_async(queue, block);
 
       _Block_object_dispose(buf, 8);
@@ -108,7 +108,7 @@ LABEL_8:
     {
       [v12 getParagraphStart:&v45 end:&v44 contentsEnd:&v43 forRange:{v20, 0}];
       v21 = [v12 substringWithRange:{v45, v43 - v45}];
-      [v14 addObject:v21];
+      [array addObject:v21];
 
       v20 = v44;
     }
@@ -116,20 +116,20 @@ LABEL_8:
     while (v44 < v13);
   }
 
-  v34 = v11;
-  v30 = v10;
-  v33 = [v14 count] / 0x19uLL + 1;
-  v22 = [MEMORY[0x1E696AD60] string];
-  if ([v14 count])
+  v34 = prefixCopy;
+  v30 = pathCopy;
+  v33 = [array count] / 0x19uLL + 1;
+  string = [MEMORY[0x1E696AD60] string];
+  if ([array count])
   {
     v23 = 0;
     v24 = 1;
     do
     {
-      v25 = [v14 objectAtIndexedSubscript:v23];
-      [v22 appendString:v25];
+      v25 = [array objectAtIndexedSubscript:v23];
+      [string appendString:v25];
 
-      [v22 appendString:@"\n"];
+      [string appendString:@"\n"];
       if (v24 - 1 < v23 / 0x19)
       {
         if (__osLog)
@@ -147,26 +147,26 @@ LABEL_8:
           *buf = 138413314;
           *&buf[4] = v34;
           *&buf[12] = 2112;
-          *&buf[14] = v35;
+          *&buf[14] = eventCopy;
           *&buf[22] = 2048;
           v47 = v24;
           *v48 = 2048;
           *&v48[2] = v33;
           *&v48[10] = 2112;
-          *&v48[12] = v22;
+          *&v48[12] = string;
           _os_log_impl(&dword_1C82AD000, v26, OS_LOG_TYPE_DEBUG, "%@: sendEvent: %@ (print %ld of %ld): \n%@\n", buf, 0x34u);
         }
 
-        v27 = [MEMORY[0x1E696AD60] string];
+        string2 = [MEMORY[0x1E696AD60] string];
 
         ++v24;
-        v22 = v27;
+        string = string2;
       }
 
       ++v23;
     }
 
-    while (v23 < [v14 count]);
+    while (v23 < [array count]);
   }
 
   else
@@ -189,13 +189,13 @@ LABEL_8:
     *buf = 138413314;
     *&buf[4] = v34;
     *&buf[12] = 2112;
-    *&buf[14] = v35;
+    *&buf[14] = eventCopy;
     *&buf[22] = 2048;
     v47 = v24;
     *v48 = 2048;
     *&v48[2] = v33;
     *&v48[10] = 2112;
-    *&v48[12] = v22;
+    *&v48[12] = string;
     _os_log_impl(&dword_1C82AD000, v28, OS_LOG_TYPE_DEBUG, "%@: sendEvent: %@ (print %ld of %ld): \n%@\n", buf, 0x34u);
   }
 

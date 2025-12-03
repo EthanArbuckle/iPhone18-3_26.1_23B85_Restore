@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (PPPeopleSuggester)init;
 - (double)_cacheEntryAgeThresholdSecondsSince1970;
-- (id)_rankedContactIdentifiersMatchingName:(id)a3;
+- (id)_rankedContactIdentifiersMatchingName:(id)name;
 - (void)_sweepCache;
 @end
 
@@ -124,10 +124,10 @@ void __32__PPPeopleSuggester__sweepCache__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)_rankedContactIdentifiersMatchingName:(id)a3
+- (id)_rankedContactIdentifiersMatchingName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -135,9 +135,9 @@ void __32__PPPeopleSuggester__sweepCache__block_invoke(uint64_t a1, void *a2)
   v22 = __Block_byref_object_dispose__10779;
   v23 = 0;
   v6 = @"nilKey";
-  if (v4)
+  if (nameCopy)
   {
-    v6 = v4;
+    v6 = nameCopy;
   }
 
   v7 = v6;
@@ -150,7 +150,7 @@ void __32__PPPeopleSuggester__sweepCache__block_invoke(uint64_t a1, void *a2)
   v14 = v9;
   v10 = v7;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   [(_PASLock *)lock runWithLockAcquired:v13];
   v11 = v19[5];
@@ -308,12 +308,12 @@ void __59__PPPeopleSuggester__rankedContactIdentifiersMatchingName___block_invok
   v2 = [(PPPeopleSuggester *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D3A0D8] defaultConfiguration];
+    defaultConfiguration = [MEMORY[0x277D3A0D8] defaultConfiguration];
     v4 = +[PPConfiguration sharedInstance];
-    [v3 setMaximumNumberOfSuggestions:{objc_msgSend(v4, "peopleSuggesterMax")}];
+    [defaultConfiguration setMaximumNumberOfSuggestions:{objc_msgSend(v4, "peopleSuggesterMax")}];
 
     v5 = objc_opt_new();
-    v6 = [objc_alloc(MEMORY[0x277D3A0D0]) initWithConfiguration:v3];
+    v6 = [objc_alloc(MEMORY[0x277D3A0D0]) initWithConfiguration:defaultConfiguration];
     v7 = *(v5 + 8);
     *(v5 + 8) = v6;
 
@@ -322,9 +322,9 @@ void __59__PPPeopleSuggester__rankedContactIdentifiersMatchingName___block_invok
     *(v5 + 16) = v8;
 
     [*(v5 + 16) setCountLimit:4];
-    v10 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v11 = *(v5 + 24);
-    *(v5 + 24) = v10;
+    *(v5 + 24) = distantPast;
 
     v12 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v5];
     lock = v2->_lock;

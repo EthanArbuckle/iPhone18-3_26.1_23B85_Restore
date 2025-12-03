@@ -66,7 +66,7 @@
   y = v24.origin.y;
   width = v24.size.width;
   height = v24.size.height;
-  v13 = [(CIPixellate *)self _kernel];
+  _kernel = [(CIPixellate *)self _kernel];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __26__CIPixellate_outputImage__block_invoke;
@@ -76,7 +76,7 @@
   inputImage = self->inputImage;
   v21[0] = [CIVector vectorWithX:v18 Y:v17];
   v21[1] = v5;
-  return [v13 applyWithExtent:v19 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 2), x, y, width, height}];
+  return [_kernel applyWithExtent:v19 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 2), x, y, width, height}];
 }
 
 double __26__CIPixellate_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

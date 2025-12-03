@@ -1,19 +1,19 @@
 @interface BeaconSharingTrampoline
 - (_TtC12searchpartyd23BeaconSharingTrampoline)init;
-- (void)checkDataIntegrityWithShareIdentifier:(id)a3 completion:(id)a4;
-- (void)share:(id)a3 recipients:(id)a4 shareType:(unint64_t)a5 completion:(id)a6;
-- (void)sharingLimitsWithCompletion:(id)a3;
-- (void)startRefreshingSharesWithCompletion:(id)a3;
-- (void)stopRefreshingSharesWithCompletion:(id)a3;
-- (void)updatedCircleIdentifiers:(id)a3 completion:(id)a4;
+- (void)checkDataIntegrityWithShareIdentifier:(id)identifier completion:(id)completion;
+- (void)share:(id)share recipients:(id)recipients shareType:(unint64_t)type completion:(id)completion;
+- (void)sharingLimitsWithCompletion:(id)completion;
+- (void)startRefreshingSharesWithCompletion:(id)completion;
+- (void)stopRefreshingSharesWithCompletion:(id)completion;
+- (void)updatedCircleIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation BeaconSharingTrampoline
 
-- (void)share:(id)a3 recipients:(id)a4 shareType:(unint64_t)a5 completion:(id)a6
+- (void)share:(id)share recipients:(id)recipients shareType:(unint64_t)type completion:(id)completion
 {
-  v32 = self;
-  v33 = a5;
+  selfCopy = self;
+  typeCopy = type;
   v7 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
@@ -25,7 +25,7 @@
   v13 = &v28 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v12);
   v15 = &v28 - v14;
-  v16 = _Block_copy(a6);
+  v16 = _Block_copy(completion);
   v29 = v15;
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100008BB8(0, &qword_101698D00, SPHandle_ptr);
@@ -44,8 +44,8 @@
   v24 = swift_allocObject();
   *(v24 + 2) = 0;
   *(v24 + 3) = 0;
-  v25 = v32;
-  *(v24 + 4) = v33;
+  v25 = selfCopy;
+  *(v24 + 4) = typeCopy;
   *(v24 + 5) = v25;
   (*(v10 + 32))(&v24[v22], v13, v21);
   *&v24[v23] = v28;
@@ -59,32 +59,32 @@
   (*(v10 + 8))(v29, v21);
 }
 
-- (void)startRefreshingSharesWithCompletion:(id)a3
+- (void)startRefreshingSharesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v4;
   v5 = *sub_1000035D0((&self->super.isa + OBJC_IVAR____TtC12searchpartyd23BeaconSharingTrampoline_implementation), *&self->implementation[OBJC_IVAR____TtC12searchpartyd23BeaconSharingTrampoline_implementation + 16]);
-  v6 = self;
+  selfCopy = self;
   sub_1001B9924(v5, sub_1001BE468);
 }
 
-- (void)stopRefreshingSharesWithCompletion:(id)a3
+- (void)stopRefreshingSharesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1001B9B28(v5, v4);
+  selfCopy = self;
+  sub_1001B9B28(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)updatedCircleIdentifiers:(id)a3 completion:(id)a4
+- (void)updatedCircleIdentifiers:(id)identifiers completion:(id)completion
 {
   v6 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   type metadata accessor for UUID();
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
@@ -98,11 +98,11 @@
   v14[5] = v11;
   v14[6] = sub_1001BE468;
   v14[7] = v12;
-  v15 = self;
+  selfCopy = self;
   sub_10025EDD4(0, 0, v9, &unk_101390B60, v14);
 }
 
-- (void)checkDataIntegrityWithShareIdentifier:(id)a3 completion:(id)a4
+- (void)checkDataIntegrityWithShareIdentifier:(id)identifier completion:(id)completion
 {
   v7 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v8 = *(*(v7 - 8) + 64);
@@ -115,8 +115,8 @@
   v15 = &v27 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v14);
   v17 = &v27 - v16;
-  v18 = _Block_copy(a4);
-  if (a3)
+  v18 = _Block_copy(completion);
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = type metadata accessor for UUID();
@@ -143,20 +143,20 @@
   v25 = (v24 + ((v13 + v23 + 7) & 0xFFFFFFFFFFFFFFF8));
   *v25 = sub_1001BC47C;
   v25[1] = v21;
-  v26 = self;
+  selfCopy = self;
 
   sub_10025EDD4(0, 0, v10, &unk_101390B28, v24);
 
   sub_10000B3A8(v17, &qword_1016980D0, &unk_10138F3B0);
 }
 
-- (void)sharingLimitsWithCompletion:(id)a3
+- (void)sharingLimitsWithCompletion:(id)completion
 {
   v4 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v12 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();

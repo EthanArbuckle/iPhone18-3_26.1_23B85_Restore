@@ -1,79 +1,79 @@
 @interface HMDHouseholdMetricsMessagingProvider
 + (id)logCategory;
-- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)a3;
-- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)a3 messageDispatcher:(id)a4;
-- (void)deregisterForMessage:(id)a3;
-- (void)registerForMessage:(id)a3 selector:(SEL)a4;
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPayload:(id)a5 responseHandler:(id)a6;
+- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)receiver;
+- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)receiver messageDispatcher:(id)dispatcher;
+- (void)deregisterForMessage:(id)message;
+- (void)registerForMessage:(id)message selector:(SEL)selector;
+- (void)sendMessage:(id)message toDevice:(id)device withPayload:(id)payload responseHandler:(id)handler;
 @end
 
 @implementation HMDHouseholdMetricsMessagingProvider
 
-- (void)deregisterForMessage:(id)a3
+- (void)deregisterForMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
-  v5 = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
-  [v6 deregisterForMessage:v4 receiver:v5];
+  messageCopy = message;
+  messageDispatcher = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
+  receiver = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
+  [messageDispatcher deregisterForMessage:messageCopy receiver:receiver];
 }
 
-- (void)registerForMessage:(id)a3 selector:(SEL)a4
+- (void)registerForMessage:(id)message selector:(SEL)selector
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
-  v8 = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
+  messageCopy = message;
+  messageDispatcher = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
+  receiver = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
   v9 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
   v12[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [v7 registerForMessage:v6 receiver:v8 policies:v10 selector:a4];
+  [messageDispatcher registerForMessage:messageCopy receiver:receiver policies:v10 selector:selector];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPayload:(id)a5 responseHandler:(id)a6
+- (void)sendMessage:(id)message toDevice:(id)device withPayload:(id)payload responseHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  payloadCopy = payload;
+  deviceCopy = device;
+  messageCopy = message;
   v14 = [HMDRemoteDeviceMessageDestination alloc];
-  v15 = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
-  v16 = [v15 messageTargetUUID];
-  v19 = [(HMDRemoteDeviceMessageDestination *)v14 initWithTarget:v16 device:v12];
+  receiver = [(HMDHouseholdMetricsMessagingProvider *)self receiver];
+  messageTargetUUID = [receiver messageTargetUUID];
+  v19 = [(HMDRemoteDeviceMessageDestination *)v14 initWithTarget:messageTargetUUID device:deviceCopy];
 
-  v17 = [objc_alloc(MEMORY[0x277D0F848]) initWithName:v13 destination:v19 payload:v11];
+  v17 = [objc_alloc(MEMORY[0x277D0F848]) initWithName:messageCopy destination:v19 payload:payloadCopy];
   [v17 setTimeout:0.0];
   [v17 setSecureRemote:1];
-  [v17 setResponseHandler:v10];
+  [v17 setResponseHandler:handlerCopy];
 
   [v17 setRemoteRestriction:9];
-  v18 = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
-  [v18 sendMessage:v17 completionHandler:0];
+  messageDispatcher = [(HMDHouseholdMetricsMessagingProvider *)self messageDispatcher];
+  [messageDispatcher sendMessage:v17 completionHandler:0];
 }
 
-- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)a3 messageDispatcher:(id)a4
+- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)receiver messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
+  receiverCopy = receiver;
+  dispatcherCopy = dispatcher;
   v12.receiver = self;
   v12.super_class = HMDHouseholdMetricsMessagingProvider;
   v9 = [(HMDHouseholdMetricsMessagingProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_receiver, a3);
-    objc_storeStrong(&v10->_messageDispatcher, a4);
+    objc_storeStrong(&v9->_receiver, receiver);
+    objc_storeStrong(&v10->_messageDispatcher, dispatcher);
   }
 
   return v10;
 }
 
-- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)a3
+- (HMDHouseholdMetricsMessagingProvider)initWithReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   v5 = +[HMDMessageDispatcher defaultDispatcher];
-  v6 = [(HMDHouseholdMetricsMessagingProvider *)self initWithReceiver:v4 messageDispatcher:v5];
+  v6 = [(HMDHouseholdMetricsMessagingProvider *)self initWithReceiver:receiverCopy messageDispatcher:v5];
 
   return v6;
 }

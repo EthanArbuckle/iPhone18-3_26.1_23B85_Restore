@@ -1,17 +1,17 @@
 @interface MPPropertySet
-+ (MPPropertySet)propertySetWithProperties:(id)a3;
-+ (MPPropertySet)propertySetWithRelationships:(id)a3;
++ (MPPropertySet)propertySetWithProperties:(id)properties;
++ (MPPropertySet)propertySetWithRelationships:(id)relationships;
 + (id)emptyPropertySet;
-- (BOOL)containsPropertySet:(id)a3;
-- (MPPropertySet)initWithCoder:(id)a3;
-- (MPPropertySet)initWithProperties:(id)a3 relationships:(id)a4;
+- (BOOL)containsPropertySet:(id)set;
+- (MPPropertySet)initWithCoder:(id)coder;
+- (MPPropertySet)initWithProperties:(id)properties relationships:(id)relationships;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)_stateDumpObject;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)propertySetByCombiningWithPropertySet:(id)a3;
-- (id)propertySetByIntersectingWithPropertySet:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)propertySetByCombiningWithPropertySet:(id)set;
+- (id)propertySetByIntersectingWithPropertySet:(id)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPPropertySet
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __33__MPPropertySet_emptyPropertySet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (emptyPropertySet_onceToken != -1)
   {
     dispatch_once(&emptyPropertySet_onceToken, block);
@@ -104,34 +104,34 @@ void __33__MPPropertySet_emptyPropertySet__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)propertySetByIntersectingWithPropertySet:(id)a3
+- (id)propertySetByIntersectingWithPropertySet:(id)set
 {
-  v4 = a3;
-  if (v4)
+  setCopy = set;
+  if (setCopy)
   {
     v5 = [(NSSet *)self->_properties mutableCopy];
-    [v5 intersectSet:v4[1]];
+    [v5 intersectSet:setCopy[1]];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     relationships = self->_relationships;
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __58__MPPropertySet_propertySetByIntersectingWithPropertySet___block_invoke;
     v16 = &unk_1E767FBA0;
-    v17 = v4;
+    v17 = setCopy;
     v18 = v6;
     v8 = v6;
     [(NSDictionary *)relationships enumerateKeysAndObjectsUsingBlock:&v13];
     v9 = objc_alloc(objc_opt_class());
-    v10 = [v5 allObjects];
-    v11 = [v9 initWithProperties:v10 relationships:v8];
+    allObjects = [v5 allObjects];
+    emptyPropertySet = [v9 initWithProperties:allObjects relationships:v8];
   }
 
   else
   {
-    v11 = [objc_opt_class() emptyPropertySet];
+    emptyPropertySet = [objc_opt_class() emptyPropertySet];
   }
 
-  return v11;
+  return emptyPropertySet;
 }
 
 void __58__MPPropertySet_propertySetByIntersectingWithPropertySet___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -178,20 +178,20 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)propertySetByCombiningWithPropertySet:(id)a3
+- (id)propertySetByCombiningWithPropertySet:(id)set
 {
-  v4 = a3;
-  if (v4)
+  setCopy = set;
+  if (setCopy)
   {
     v5 = [(NSSet *)self->_properties mutableCopy];
-    [v5 unionSet:v4[1]];
+    [v5 unionSet:setCopy[1]];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     relationships = self->_relationships;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __55__MPPropertySet_propertySetByCombiningWithPropertySet___block_invoke;
     v22[3] = &unk_1E767FBA0;
-    v8 = v4;
+    v8 = setCopy;
     v23 = v8;
     v9 = v6;
     v24 = v9;
@@ -201,21 +201,21 @@ LABEL_9:
     v17 = 3221225472;
     v18 = __55__MPPropertySet_propertySetByCombiningWithPropertySet___block_invoke_2;
     v19 = &unk_1E767FBA0;
-    v20 = self;
+    selfCopy = self;
     v21 = v9;
     v11 = v9;
     [v10 enumerateKeysAndObjectsUsingBlock:&v16];
     v12 = objc_alloc(objc_opt_class());
-    v13 = [v5 allObjects];
-    v14 = [v12 initWithProperties:v13 relationships:v11];
+    allObjects = [v5 allObjects];
+    selfCopy2 = [v12 initWithProperties:allObjects relationships:v11];
   }
 
   else
   {
-    v14 = self;
+    selfCopy2 = self;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
 void __55__MPPropertySet_propertySetByCombiningWithPropertySet___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -241,29 +241,29 @@ void __55__MPPropertySet_propertySetByCombiningWithPropertySet___block_invoke_2(
   }
 }
 
-- (BOOL)containsPropertySet:(id)a3
+- (BOOL)containsPropertySet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
+  setCopy = set;
+  v5 = setCopy;
   v6 = 1;
-  if (v4)
+  if (setCopy)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v7 = [v4 properties];
-    v8 = v7;
-    if (v7)
+    properties = [setCopy properties];
+    v8 = properties;
+    if (properties)
     {
-      v9 = [v7 isSubsetOfSet:self->_properties];
+      v9 = [properties isSubsetOfSet:self->_properties];
       *(v15 + 24) = v9;
       if (v9)
       {
 LABEL_4:
-        v10 = [v5 relationships];
-        v11 = v10;
-        if (v10)
+        relationships = [v5 relationships];
+        v11 = relationships;
+        if (relationships)
         {
           v13[0] = MEMORY[0x1E69E9820];
           v13[1] = 3221225472;
@@ -271,7 +271,7 @@ LABEL_4:
           v13[3] = &unk_1E767FB78;
           v13[4] = self;
           v13[5] = &v14;
-          [v10 enumerateKeysAndObjectsUsingBlock:v13];
+          [relationships enumerateKeysAndObjectsUsingBlock:v13];
         }
 
         v6 = *(v15 + 24);
@@ -305,54 +305,54 @@ void __37__MPPropertySet_containsPropertySet___block_invoke(uint64_t a1, uint64_
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MPMutablePropertySet alloc];
-  v5 = [(NSSet *)self->_properties allObjects];
-  v6 = [(MPMutablePropertySet *)v4 initWithProperties:v5 relationships:self->_relationships];
+  allObjects = [(NSSet *)self->_properties allObjects];
+  v6 = [(MPMutablePropertySet *)v4 initWithProperties:allObjects relationships:self->_relationships];
 
   return v6;
 }
 
-+ (MPPropertySet)propertySetWithRelationships:(id)a3
++ (MPPropertySet)propertySetWithRelationships:(id)relationships
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProperties:0 relationships:v4];
+  relationshipsCopy = relationships;
+  v5 = [[self alloc] initWithProperties:0 relationships:relationshipsCopy];
 
   return v5;
 }
 
-+ (MPPropertySet)propertySetWithProperties:(id)a3
++ (MPPropertySet)propertySetWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProperties:v4 relationships:0];
+  propertiesCopy = properties;
+  v5 = [[self alloc] initWithProperties:propertiesCopy relationships:0];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   properties = self->_properties;
-  v6 = a3;
-  v5 = [(NSSet *)properties allObjects];
-  [v6 encodeObject:v5 forKey:@"MPPropertySetProperties"];
+  coderCopy = coder;
+  allObjects = [(NSSet *)properties allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"MPPropertySetProperties"];
 
-  [v6 encodeObject:self->_relationships forKey:@"MPPropertySetRelationships"];
+  [coderCopy encodeObject:self->_relationships forKey:@"MPPropertySetRelationships"];
 }
 
-- (MPPropertySet)initWithCoder:(id)a3
+- (MPPropertySet)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"MPPropertySetProperties"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"MPPropertySetProperties"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v5 decodeObjectOfClasses:v12 forKey:@"MPPropertySetRelationships"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"MPPropertySetRelationships"];
 
   v14 = [(MPPropertySet *)self initWithProperties:v8 relationships:v13];
   return v14;
@@ -569,18 +569,18 @@ void __33__MPPropertySet_debugDescription__block_invoke(uint64_t a1, void *a2, v
   [v9 appendFormat:@"%@: %@%@", v14, v11, v13];
 }
 
-- (MPPropertySet)initWithProperties:(id)a3 relationships:(id)a4
+- (MPPropertySet)initWithProperties:(id)properties relationships:(id)relationships
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  relationshipsCopy = relationships;
   v16.receiver = self;
   v16.super_class = MPPropertySet;
   v8 = [(MPPropertySet *)&v16 init];
   if (v8)
   {
-    if (v6)
+    if (propertiesCopy)
     {
-      v9 = v6;
+      v9 = propertiesCopy;
     }
 
     else
@@ -592,7 +592,7 @@ void __33__MPPropertySet_debugDescription__block_invoke(uint64_t a1, void *a2, v
     properties = v8->_properties;
     v8->_properties = v10;
 
-    v12 = [v7 copy];
+    v12 = [relationshipsCopy copy];
     v13 = v12;
     if (v12)
     {

@@ -1,15 +1,15 @@
 @interface PBUndoInteractionHUDTextPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBUndoInteractionHUDTextPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBUndoInteractionHUDTextPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 - (void)dealloc;
 @end
 
 @implementation PBUndoInteractionHUDTextPasteButtonDrawing
 
-- (PBUndoInteractionHUDTextPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBUndoInteractionHUDTextPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v35.receiver = self;
   v35.super_class = PBUndoInteractionHUDTextPasteButtonDrawing;
   v8 = [(PBUndoInteractionHUDTextPasteButtonDrawing *)&v35 init];
@@ -19,17 +19,17 @@
   }
 
   v9 = [UISPasteVariant variantForSecureName:0x10000];
-  v10 = [v6 newFontForTextStyle:_UISKBUndoInteractiveControlLabelTextStyle attributes:0];
-  v11 = [v6 localization];
-  v12 = [v9 localizedStringForLocalization:v11];
+  v10 = [styleCopy newFontForTextStyle:_UISKBUndoInteractiveControlLabelTextStyle attributes:0];
+  localization = [styleCopy localization];
+  v12 = [v9 localizedStringForLocalization:localization];
 
   v37[0] = v10;
   v36[0] = kCTFontAttributeName;
   v36[1] = kCTForegroundColorAttributeName;
-  v37[1] = [v6 tintColor];
+  v37[1] = [styleCopy tintColor];
   v13 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
   CFRelease(v10);
-  v14 = [[UISTextLineDrawing alloc] initWithString:v12 attributes:v13 lineBreakMode:2 textAlignment:0 width:NAN scale:{objc_msgSend(v6, "displayScale")}];
+  v14 = [[UISTextLineDrawing alloc] initWithString:v12 attributes:v13 lineBreakMode:2 textAlignment:0 width:NAN scale:{objc_msgSend(styleCopy, "displayScale")}];
   v15 = *(v8 + 1);
   *(v8 + 1) = v14;
 
@@ -37,7 +37,7 @@
   v32 = v17;
   v33 = v16;
   v18 = v16 + 32.0;
-  [v7 minWidth];
+  [tagCopy minWidth];
   v20.f64[0] = v33;
   if (v18 >= v19)
   {

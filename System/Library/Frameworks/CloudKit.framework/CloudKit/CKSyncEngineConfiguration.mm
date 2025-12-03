@@ -2,14 +2,14 @@
 - (CKSyncEngineAsyncDelegate)asyncDelegate;
 - (CKSyncEngineConfiguration)init;
 - (CKSyncEngineConfiguration)initWithDatabase:(CKDatabase *)database stateSerialization:(CKSyncEngineStateSerialization *)stateSerialization delegate:(id)delegate;
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 dataSource:(id)a4 metadata:(id)a5;
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 stateSerialization:(id)a4;
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 stateSerialization:(id)a4 asyncDelegate:(id)a5;
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database dataSource:(id)source metadata:(id)metadata;
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database stateSerialization:(id)serialization;
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database stateSerialization:(id)serialization asyncDelegate:(id)delegate;
 - (CKSyncEngineDataSource)dataSource;
 - (NSData)metadata;
 - (id)delegate;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation CKSyncEngineConfiguration
@@ -21,12 +21,12 @@
   objc_exception_throw(v4);
 }
 
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 stateSerialization:(id)a4
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database stateSerialization:(id)serialization
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  serializationCopy = serialization;
   v31 = 0;
-  v9 = _CKCheckArgument("database", v7, 0, 0, 0, &v31);
+  v9 = _CKCheckArgument("database", databaseCopy, 0, 0, 0, &v31);
   v10 = v31;
   if ((v9 & 1) == 0)
   {
@@ -46,8 +46,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_database, a3);
-    v15 = objc_msgSend_copy(v8, v13, v14);
+    objc_storeStrong(&v11->_database, database);
+    v15 = objc_msgSend_copy(serializationCopy, v13, v14);
     stateSerialization = v12->_stateSerialization;
     v12->_stateSerialization = v15;
 
@@ -64,13 +64,13 @@
   return v12;
 }
 
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 stateSerialization:(id)a4 asyncDelegate:(id)a5
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database stateSerialization:(id)serialization asyncDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  serializationCopy = serialization;
+  delegateCopy = delegate;
   v28 = 0;
-  v11 = _CKCheckArgument("asyncDelegate", v10, 0, 0, 0, &v28);
+  v11 = _CKCheckArgument("asyncDelegate", delegateCopy, 0, 0, 0, &v28);
   v12 = v28;
   if ((v11 & 1) == 0)
   {
@@ -84,11 +84,11 @@
     objc_exception_throw(v26);
   }
 
-  v14 = objc_msgSend_initWithDatabase_stateSerialization_(self, v13, v8, v9);
+  v14 = objc_msgSend_initWithDatabase_stateSerialization_(self, v13, databaseCopy, serializationCopy);
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak((v14 + 48), v10);
+    objc_storeWeak((v14 + 48), delegateCopy);
   }
 
   return v15;
@@ -124,28 +124,28 @@
   return v15;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v46 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_database(self, v4, v5);
-  objc_msgSend_addProperty_value_shouldRedact_(v46, v7, @"database", v6, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"database", v6, 0);
 
   v8 = MEMORY[0x1E696AD98];
   v11 = objc_msgSend_priority(self, v9, v10);
   v13 = objc_msgSend_numberWithInteger_(v8, v12, v11);
-  objc_msgSend_addProperty_value_shouldRedact_(v46, v14, @"priority", v13, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v14, @"priority", v13, 0);
 
   v17 = objc_msgSend_stateSerialization(self, v15, v16);
 
   if (v17)
   {
     v20 = objc_msgSend_stateSerialization(self, v18, v19);
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v21, @"state", v20, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v21, @"state", v20, 0);
   }
 
   if ((objc_msgSend_automaticSyncingEnabled(self, v18, v19) & 1) == 0)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v22, @"automaticSyncingEnabled", MEMORY[0x1E695E110], 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v22, @"automaticSyncingEnabled", MEMORY[0x1E695E110], 0);
   }
 
   v24 = objc_msgSend_xpcActivityCriteriaOverrides(self, v22, v23);
@@ -153,7 +153,7 @@
   if (v24)
   {
     v27 = objc_msgSend_xpcActivityCriteriaOverrides(self, v25, v26);
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v28, @"xpcActivityCriteriaOverrides", v27, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"xpcActivityCriteriaOverrides", v27, 0);
   }
 
   v29 = objc_msgSend_apsMachServiceName(self, v25, v26);
@@ -161,7 +161,7 @@
   if (v29)
   {
     v32 = objc_msgSend_apsMachServiceName(self, v30, v31);
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v33, @"apsMachServiceName", v32, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v33, @"apsMachServiceName", v32, 0);
   }
 
   v34 = objc_msgSend_subscriptionID(self, v30, v31);
@@ -169,7 +169,7 @@
   if (v34)
   {
     v37 = objc_msgSend_subscriptionID(self, v35, v36);
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v38, @"subscriptionID", v37, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v38, @"subscriptionID", v37, 0);
   }
 
   if (objc_msgSend_useOpportunisticPushTopic(self, v35, v36))
@@ -177,17 +177,17 @@
     v41 = MEMORY[0x1E696AD98];
     v42 = objc_msgSend_useOpportunisticPushTopic(self, v39, v40);
     v44 = objc_msgSend_numberWithBool_(v41, v43, v42);
-    objc_msgSend_addProperty_value_shouldRedact_(v46, v45, @"useOpportunisticPushTopic", v44, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v45, @"useOpportunisticPushTopic", v44, 0);
   }
 }
 
-- (CKSyncEngineConfiguration)initWithDatabase:(id)a3 dataSource:(id)a4 metadata:(id)a5
+- (CKSyncEngineConfiguration)initWithDatabase:(id)database dataSource:(id)source metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databaseCopy = database;
+  sourceCopy = source;
+  metadataCopy = metadata;
   v31 = 0;
-  v11 = _CKCheckArgument("dataSource", v9, 0, 0, 0, &v31);
+  v11 = _CKCheckArgument("dataSource", sourceCopy, 0, 0, 0, &v31);
   v12 = v31;
   if ((v11 & 1) == 0)
   {
@@ -201,9 +201,9 @@
     objc_exception_throw(v29);
   }
 
-  if (!v10)
+  if (!metadataCopy)
   {
-    v18 = objc_msgSend_initWithDatabase_stateSerialization_(self, v13, v8, 0);
+    v18 = objc_msgSend_initWithDatabase_stateSerialization_(self, v13, databaseCopy, 0);
     if (!v18)
     {
       goto LABEL_5;
@@ -213,13 +213,13 @@
   }
 
   v14 = [CKSyncEngineStateSerialization alloc];
-  v16 = objc_msgSend_initWithData_(v14, v15, v10);
-  v18 = objc_msgSend_initWithDatabase_stateSerialization_(self, v17, v8, v16);
+  v16 = objc_msgSend_initWithData_(v14, v15, metadataCopy);
+  v18 = objc_msgSend_initWithDatabase_stateSerialization_(self, v17, databaseCopy, v16);
 
   if (v18)
   {
 LABEL_4:
-    objc_storeWeak(&v18->_dataSource, v9);
+    objc_storeWeak(&v18->_dataSource, sourceCopy);
   }
 
 LABEL_5:
@@ -235,11 +235,11 @@ LABEL_5:
   return v6;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [CKSyncEngineStateSerialization alloc];
-  v8 = objc_msgSend_initWithData_(v5, v6, v4);
+  v8 = objc_msgSend_initWithData_(v5, v6, metadataCopy);
 
   objc_msgSend_setStateSerialization_(self, v7, v8);
 }

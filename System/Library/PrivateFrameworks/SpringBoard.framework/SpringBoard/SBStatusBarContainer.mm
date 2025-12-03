@@ -1,7 +1,7 @@
 @interface SBStatusBarContainer
 - (SBStatusBarReusePool)reusePool;
 - (UIStatusBar)statusBar;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)dealloc;
@@ -11,8 +11,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SBStatusBarContainer *)self reusePool];
-  [v3 _removeStatusBarContainer:self];
+  reusePool = [(SBStatusBarContainer *)self reusePool];
+  [reusePool _removeStatusBarContainer:self];
 
   v4.receiver = self;
   v4.super_class = SBStatusBarContainer;
@@ -35,10 +35,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBStatusBarContainer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStatusBarContainer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -50,7 +50,7 @@
   v8[3] = &unk_2783A92D8;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -65,12 +65,12 @@ void __50__SBStatusBarContainer_succinctDescriptionBuilder__block_invoke(uint64_
   v4 = [v3 appendObject:WeakRetained withName:@"status bar"];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStatusBarContainer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStatusBarContainer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

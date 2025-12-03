@@ -2,12 +2,12 @@
 - (BWSmartStyleInfoMetadataNode)init;
 - (uint64_t)_emptyMetadataBlockBuffer;
 - (uint64_t)init;
-- (void)_emitSmartStyleInfoBoxedMetadataForSampleBuffer:(void *)a3 metadata:(uint64_t)a4 time:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_emitSmartStyleInfoBoxedMetadataForSampleBuffer:(void *)buffer metadata:(uint64_t)metadata time:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSmartStyleInfoMetadataNode
@@ -113,36 +113,36 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:a3];
+  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:d];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
   [(BWNodeOutput *)boxedMetadataOutput makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:d, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:d];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v12, 0, sizeof(v12));
-  CMSampleBufferGetPresentationTimeStamp(&v12, a3);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  CMSampleBufferGetPresentationTimeStamp(&v12, buffer);
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    v6 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    v6 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (v6)
     {
       v7 = v6;
       if (CFEqual(v6, @"Start") || CFEqual(v7, @"Resume"))
       {
         self->_previousGeneratedMetadataBufferWasEmpty = 0;
-        v8 = CMGetAttachment(a3, @"RecordingSettings", 0);
+        v8 = CMGetAttachment(buffer, @"RecordingSettings", 0);
         if (v8)
         {
           self->_currentRecordingSupportsReversibility = [v8 smartStyleReversibilitySupported];
@@ -151,7 +151,7 @@
     }
 
     sampleBufferOut = 0;
-    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], a3, &sampleBufferOut))
+    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], buffer, &sampleBufferOut))
     {
       v10 = v12;
       [(BWNodeOutput *)self->_boxedMetadataOutput emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219BFF0 pts:&v10]];
@@ -170,11 +170,11 @@
 
   else if (self->_currentRecordingSupportsReversibility)
   {
-    v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (v9)
     {
       v10 = v12;
-      [(BWSmartStyleInfoMetadataNode *)self _emitSmartStyleInfoBoxedMetadataForSampleBuffer:a3 metadata:v9 time:&v10];
+      [(BWSmartStyleInfoMetadataNode *)self _emitSmartStyleInfoBoxedMetadataForSampleBuffer:buffer metadata:v9 time:&v10];
     }
   }
 
@@ -184,34 +184,34 @@
     [(BWNodeOutput *)self->_boxedMetadataOutput emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219C1D0 pts:&v10]];
   }
 
-  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:buffer];
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:sample, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:a3];
+  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:sample];
 }
 
-- (void)_emitSmartStyleInfoBoxedMetadataForSampleBuffer:(void *)a3 metadata:(uint64_t)a4 time:
+- (void)_emitSmartStyleInfoBoxedMetadataForSampleBuffer:(void *)buffer metadata:(uint64_t)metadata time:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   v37 = 0;
   v38 = 0;
-  if ((*(a4 + 12) & 1) == 0)
+  if ((*(metadata + 12) & 1) == 0)
   {
     Data = 0;
     goto LABEL_26;
   }
 
-  v8 = *(a1 + 153);
-  v9 = [a3 count];
+  v8 = *(self + 153);
+  v9 = [buffer count];
   v10 = MEMORY[0x1E695E480];
   if (!v9)
   {
@@ -240,7 +240,7 @@
 
   v16 = BWSampleBufferGetAttachedMedia(a2, 0x1F21AB070);
   v17 = CMGetAttachment(v16, *off_1E798A3C8, 0);
-  v18 = BWSmartStyleInfoDictionary(a3, a3, v17, ImageBuffer, 0, 0, 0, v13, 1u);
+  v18 = BWSmartStyleInfoDictionary(buffer, buffer, v17, ImageBuffer, 0, 0, 0, v13, 1u);
   if (![v18 count])
   {
 LABEL_23:
@@ -252,14 +252,14 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    v30 = [(BWSmartStyleInfoMetadataNode *)a1 _emptyMetadataBlockBuffer];
-    if (!v30)
+    _emptyMetadataBlockBuffer = [(BWSmartStyleInfoMetadataNode *)self _emptyMetadataBlockBuffer];
+    if (!_emptyMetadataBlockBuffer)
     {
       v38 = 0;
       goto LABEL_26;
     }
 
-    v31 = CFRetain(v30);
+    v31 = CFRetain(_emptyMetadataBlockBuffer);
     v38 = v31;
     if (!v31)
     {
@@ -304,7 +304,7 @@ LABEL_40:
 
   v25 = v24;
   *v24 = bswap32(v23);
-  *(v24 + 1) = *(a1 + 168);
+  *(v24 + 1) = *(self + 168);
   v39.location = 0;
   v39.length = v22;
   CFDataGetBytes(Data, v39, v24 + 8);
@@ -328,9 +328,9 @@ LABEL_40:
   v28 = 0;
 LABEL_18:
   memcpy(&error, MEMORY[0x1E6960CF0], sizeof(error));
-  error.presentationTimeStamp = *a4;
+  error.presentationTimeStamp = *metadata;
   sampleSizeArray = CMBlockBufferGetDataLength(v27);
-  v29 = CMSampleBufferCreate(*v10, v38, 1u, 0, 0, *(a1 + 144), 1, 1, &error, 1, &sampleSizeArray, &v37);
+  v29 = CMSampleBufferCreate(*v10, v38, 1u, 0, 0, *(self + 144), 1, 1, &error, 1, &sampleSizeArray, &v37);
   if (v29)
   {
     v33 = v29;
@@ -342,8 +342,8 @@ LABEL_18:
 
   if (v37)
   {
-    [*(a1 + 136) emitSampleBuffer:?];
-    *(a1 + 153) = v28;
+    [*(self + 136) emitSampleBuffer:?];
+    *(self + 153) = v28;
     if (!Data)
     {
       goto LABEL_28;
@@ -353,9 +353,9 @@ LABEL_18:
   }
 
 LABEL_26:
-  *&error.duration.value = *a4;
-  error.duration.epoch = *(a4 + 16);
-  [*(a1 + 136) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219BFF0, &error, blockBufferOut)}];
+  *&error.duration.value = *metadata;
+  error.duration.epoch = *(metadata + 16);
+  [*(self + 136) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219BFF0, &error, blockBufferOut)}];
   if (Data)
   {
 LABEL_27:

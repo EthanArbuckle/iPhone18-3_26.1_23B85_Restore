@@ -3,18 +3,18 @@
 - (CXAbstractProviderDelegate)delegate;
 - (CXActionDelegateInternal)internalActionDelegate;
 - (NSArray)pendingTransactions;
-- (id)_pendingActionWithUUID:(id)a3;
-- (void)_performDelegateCallback:(id)a3;
-- (void)_syncSetDelegate:(id)a3 queue:(id)a4;
+- (id)_pendingActionWithUUID:(id)d;
+- (void)_performDelegateCallback:(id)callback;
+- (void)_syncSetDelegate:(id)delegate queue:(id)queue;
 - (void)_updatePendingTransactions;
-- (void)actionCompleted:(id)a3;
-- (void)handleConnectionInterruptionForProvider:(id)a3;
+- (void)actionCompleted:(id)completed;
+- (void)handleConnectionInterruptionForProvider:(id)provider;
 - (void)invalidate;
-- (void)performDelegateCallback:(id)a3;
-- (void)provider:(id)a3 commitTransaction:(id)a4;
-- (void)provider:(id)a3 handleTimeoutForAction:(id)a4;
-- (void)sendDidBeginForProvider:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)performDelegateCallback:(id)callback;
+- (void)provider:(id)provider commitTransaction:(id)transaction;
+- (void)provider:(id)provider handleTimeoutForAction:(id)action;
+- (void)sendDidBeginForProvider:(id)provider;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation CXAbstractProvider
@@ -36,14 +36,14 @@
 - (void)_updatePendingTransactions
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CXAbstractProvider *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXAbstractProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CXAbstractProvider *)self mutablePendingTransactions];
-  v5 = [v4 copy];
+  mutablePendingTransactions = [(CXAbstractProvider *)self mutablePendingTransactions];
+  v5 = [mutablePendingTransactions copy];
 
-  v6 = [(CXAbstractProvider *)self mutablePendingTransactions];
-  [v6 removeAllObjects];
+  mutablePendingTransactions2 = [(CXAbstractProvider *)self mutablePendingTransactions];
+  [mutablePendingTransactions2 removeAllObjects];
 
   v19 = 0u;
   v20 = 0u;
@@ -69,19 +69,19 @@
         v13 = *(*(&v17 + 1) + 8 * i);
         if ([v13 isComplete])
         {
-          v14 = CXDefaultLog();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          mutablePendingTransactions3 = CXDefaultLog();
+          if (os_log_type_enabled(mutablePendingTransactions3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v16;
             v22 = v13;
-            _os_log_impl(&dword_1B47F3000, v14, OS_LOG_TYPE_DEFAULT, "Removing transaction from list of pending transactions because it is now complete: %@", buf, 0xCu);
+            _os_log_impl(&dword_1B47F3000, mutablePendingTransactions3, OS_LOG_TYPE_DEFAULT, "Removing transaction from list of pending transactions because it is now complete: %@", buf, 0xCu);
           }
         }
 
         else
         {
-          v14 = [(CXAbstractProvider *)self mutablePendingTransactions];
-          [v14 addObject:v13];
+          mutablePendingTransactions3 = [(CXAbstractProvider *)self mutablePendingTransactions];
+          [mutablePendingTransactions3 addObject:v13];
         }
       }
 
@@ -106,26 +106,26 @@
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutablePendingTransactions = v2->_mutablePendingTransactions;
-    v2->_mutablePendingTransactions = v6;
+    v2->_mutablePendingTransactions = array;
   }
 
   return v2;
 }
 
-- (void)actionCompleted:(id)a3
+- (void)actionCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(CXAbstractProvider *)self queue];
+  completedCopy = completed;
+  queue = [(CXAbstractProvider *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CXAbstractProvider_actionCompleted___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completedCopy;
+  v6 = completedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __38__CXAbstractProvider_actionCompleted___block_invoke(uint64_t a1)
@@ -177,21 +177,21 @@ void __38__CXAbstractProvider_actionCompleted___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXAbstractProvider *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CXAbstractProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__CXAbstractProvider_setDelegate_queue___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __40__CXAbstractProvider_setDelegate_queue___block_invoke(uint64_t a1)
@@ -212,21 +212,21 @@ uint64_t __40__CXAbstractProvider_setDelegate_queue___block_invoke(uint64_t a1)
   return [v3 setDelegateQueue:v2];
 }
 
-- (void)_syncSetDelegate:(id)a3 queue:(id)a4
+- (void)_syncSetDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXAbstractProvider *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CXAbstractProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__CXAbstractProvider__syncSetDelegate_queue___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_sync(queue, block);
 }
 
 uint64_t __45__CXAbstractProvider__syncSetDelegate_queue___block_invoke(uint64_t a1)
@@ -254,7 +254,7 @@ uint64_t __45__CXAbstractProvider__syncSetDelegate_queue___block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B47F3000, v3, OS_LOG_TYPE_DEFAULT, "Asked to invalidate provider %@ (this is a no-op)", &v5, 0xCu);
   }
 
@@ -269,14 +269,14 @@ uint64_t __45__CXAbstractProvider__syncSetDelegate_queue___block_invoke(uint64_t
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(CXAbstractProvider *)self queue];
+  queue = [(CXAbstractProvider *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CXAbstractProvider_pendingTransactions__block_invoke;
   v6[3] = &unk_1E7C06E28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -294,12 +294,12 @@ void __41__CXAbstractProvider_pendingTransactions__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)_pendingActionWithUUID:(id)a3
+- (id)_pendingActionWithUUID:(id)d
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXAbstractProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CXAbstractProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v29 = 0u;
   v30 = 0u;
@@ -325,8 +325,8 @@ void __41__CXAbstractProvider_pendingTransactions__block_invoke(uint64_t a1)
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v9 actions];
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        actions = [v9 actions];
+        v11 = [actions countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -339,13 +339,13 @@ LABEL_8:
           {
             if (*v24 != v14)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(actions);
             }
 
             v13 = *(*(&v23 + 1) + 8 * v15);
 
-            v17 = [v13 UUID];
-            v18 = [v17 isEqual:v4];
+            uUID = [v13 UUID];
+            v18 = [uUID isEqual:dCopy];
 
             if (v18)
             {
@@ -356,7 +356,7 @@ LABEL_8:
             v16 = v13;
             if (v12 == v15)
             {
-              v12 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v12 = [actions countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v12)
               {
                 goto LABEL_8;
@@ -392,31 +392,31 @@ LABEL_20:
   return v13;
 }
 
-- (void)performDelegateCallback:(id)a3
+- (void)performDelegateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(CXAbstractProvider *)self queue];
+  callbackCopy = callback;
+  queue = [(CXAbstractProvider *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CXAbstractProvider_performDelegateCallback___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_performDelegateCallback:(id)a3
+- (void)_performDelegateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(CXAbstractProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callbackCopy = callback;
+  queue = [(CXAbstractProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CXAbstractProvider *)self delegateQueue];
-  v7 = v6;
-  if (v6)
+  delegateQueue = [(CXAbstractProvider *)self delegateQueue];
+  v7 = delegateQueue;
+  if (delegateQueue)
   {
-    dispatch_async(v6, v4);
+    dispatch_async(delegateQueue, callbackCopy);
   }
 
   else
@@ -430,16 +430,16 @@ LABEL_20:
   }
 }
 
-- (void)sendDidBeginForProvider:(id)a3
+- (void)sendDidBeginForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CXAbstractProvider_sendDidBeginForProvider___block_invoke;
   v6[3] = &unk_1E7C06BE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = providerCopy;
+  v5 = providerCopy;
   [(CXAbstractProvider *)self performDelegateCallback:v6];
 }
 
@@ -452,16 +452,16 @@ void __46__CXAbstractProvider_sendDidBeginForProvider___block_invoke(uint64_t a1
   }
 }
 
-- (void)handleConnectionInterruptionForProvider:(id)a3
+- (void)handleConnectionInterruptionForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__CXAbstractProvider_handleConnectionInterruptionForProvider___block_invoke;
   v6[3] = &unk_1E7C06BE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = providerCopy;
+  v5 = providerCopy;
   [(CXAbstractProvider *)self performDelegateCallback:v6];
 }
 
@@ -479,21 +479,21 @@ void __62__CXAbstractProvider_handleConnectionInterruptionForProvider___block_in
   }
 }
 
-- (void)provider:(id)a3 commitTransaction:(id)a4
+- (void)provider:(id)provider commitTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXAbstractProvider *)self queue];
+  providerCopy = provider;
+  transactionCopy = transaction;
+  queue = [(CXAbstractProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CXAbstractProvider_provider_commitTransaction___block_invoke;
   block[3] = &unk_1E7C06C80;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = transactionCopy;
+  selfCopy = self;
+  v14 = providerCopy;
+  v9 = providerCopy;
+  v10 = transactionCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__CXAbstractProvider_provider_commitTransaction___block_invoke(id *a1)
@@ -620,21 +620,21 @@ void __49__CXAbstractProvider_provider_commitTransaction___block_invoke_7(uint64
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provider:(id)a3 handleTimeoutForAction:(id)a4
+- (void)provider:(id)provider handleTimeoutForAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXAbstractProvider *)self queue];
+  providerCopy = provider;
+  actionCopy = action;
+  queue = [(CXAbstractProvider *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CXAbstractProvider_provider_handleTimeoutForAction___block_invoke;
   block[3] = &unk_1E7C06C80;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = actionCopy;
+  selfCopy = self;
+  v14 = providerCopy;
+  v9 = providerCopy;
+  v10 = actionCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__CXAbstractProvider_provider_handleTimeoutForAction___block_invoke(uint64_t a1)

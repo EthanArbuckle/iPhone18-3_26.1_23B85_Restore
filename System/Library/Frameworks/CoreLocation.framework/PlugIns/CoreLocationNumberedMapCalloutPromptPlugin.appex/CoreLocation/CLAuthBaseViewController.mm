@@ -1,9 +1,9 @@
 @interface CLAuthBaseViewController
 - (CLLocationManager)locManager;
-- (double)_accessibilityMaximumWidthForScreenSize:(CGSize)a3;
+- (double)_accessibilityMaximumWidthForScreenSize:(CGSize)size;
 - (id)allowedClassesForUnarchiving;
 - (id)extensionInputItems;
-- (void)configureMapViewWithHeightOverride:(double)a3;
+- (void)configureMapViewWithHeightOverride:(double)override;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
@@ -25,37 +25,37 @@
   [(CLAuthBaseViewController *)self setLocManager:v3];
 
   [(CLAuthBaseViewController *)self setPreferredContentSize:270.0, 0.01];
-  v4 = [(CLAuthBaseViewController *)self extensionInputItems];
-  v5 = [v4 firstObject];
+  extensionInputItems = [(CLAuthBaseViewController *)self extensionInputItems];
+  firstObject = [extensionInputItems firstObject];
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"clientName"];
+  userInfo = [firstObject userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"clientName"];
   [(CLAuthBaseViewController *)self setAppName:v7];
 
-  v8 = [v5 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"clientDictionary"];
+  userInfo2 = [firstObject userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"clientDictionary"];
   [(CLAuthBaseViewController *)self setClientDict:v9];
 
-  v10 = [(CLAuthBaseViewController *)self clientDict];
+  clientDict = [(CLAuthBaseViewController *)self clientDict];
 
-  if (v10)
+  if (clientDict)
   {
-    v11 = [(CLAuthBaseViewController *)self clientDict];
-    [(CLAuthBaseViewController *)self setAuthMask:[CLLocationManager entityAuthorizationForLocationDictionary:v11]];
+    clientDict2 = [(CLAuthBaseViewController *)self clientDict];
+    [(CLAuthBaseViewController *)self setAuthMask:[CLLocationManager entityAuthorizationForLocationDictionary:clientDict2]];
 
-    v12 = [(CLAuthBaseViewController *)self clientDict];
-    v13 = [v12 objectForKey:@"BundleId"];
+    clientDict3 = [(CLAuthBaseViewController *)self clientDict];
+    v13 = [clientDict3 objectForKey:@"BundleId"];
     [(CLAuthBaseViewController *)self setBundleId:v13];
   }
 
-  v14 = [v5 userInfo];
-  v15 = [v14 objectForKeyedSubscript:@"archivedPayload"];
+  userInfo3 = [firstObject userInfo];
+  v15 = [userInfo3 objectForKeyedSubscript:@"archivedPayload"];
 
   if (v15)
   {
     v16 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v15 error:0];
-    v17 = [(CLAuthBaseViewController *)self allowedClassesForUnarchiving];
-    v18 = [v16 decodeObjectOfClasses:v17 forKey:NSKeyedArchiveRootObjectKey];
+    allowedClassesForUnarchiving = [(CLAuthBaseViewController *)self allowedClassesForUnarchiving];
+    v18 = [v16 decodeObjectOfClasses:allowedClassesForUnarchiving forKey:NSKeyedArchiveRootObjectKey];
     [(CLAuthBaseViewController *)self setLocationDictionary:v18];
   }
 
@@ -74,36 +74,36 @@
 
 - (id)extensionInputItems
 {
-  v2 = [(CLAuthBaseViewController *)self extensionContext];
-  v3 = [v2 inputItems];
+  extensionContext = [(CLAuthBaseViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  return v3;
+  return inputItems;
 }
 
-- (double)_accessibilityMaximumWidthForScreenSize:(CGSize)a3
+- (double)_accessibilityMaximumWidthForScreenSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  return a3.width + -64.0;
+  return size.width + -64.0;
 }
 
-- (void)configureMapViewWithHeightOverride:(double)a3
+- (void)configureMapViewWithHeightOverride:(double)override
 {
   v5 = +[UIWindow keyWindow];
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v6 preferredContentSizeCategory];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v41 = *&v7;
+    v41 = *&preferredContentSizeCategory;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "#BaseViewController loadView<Start> %@", buf, 0xCu);
   }
 
-  if ([v7 containsString:@"Accessibility"])
+  if ([preferredContentSizeCategory containsString:@"Accessibility"])
   {
     [v5 size];
     [(CLAuthBaseViewController *)self _accessibilityMaximumWidthForScreenSize:?];
@@ -116,9 +116,9 @@
   }
 
   v10 = +[UIDevice currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (v5)
     {
@@ -171,67 +171,67 @@
     }
   }
 
-  [(CLAuthBaseViewController *)self setPreferredContentSize:v9, a3];
+  [(CLAuthBaseViewController *)self setPreferredContentSize:v9, override];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
     v41 = v9;
     v42 = 2048;
-    v43 = a3;
+    overrideCopy = override;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "#BaseViewController mapViewDimensions %.5f %.5f", buf, 0x16u);
   }
 
-  v18 = [(CLAuthBaseViewController *)self locManager];
-  v19 = v18 == 0;
+  locManager = [(CLAuthBaseViewController *)self locManager];
+  v19 = locManager == 0;
 
   if (v19)
   {
-    v21 = [[MKMapView alloc] initWithFrame:{0.0, 0.0, v9, a3}];
-    [(CLAuthBaseViewController *)self setMapView:v21];
+    locManager2 = [[MKMapView alloc] initWithFrame:{0.0, 0.0, v9, override}];
+    [(CLAuthBaseViewController *)self setMapView:locManager2];
   }
 
   else
   {
     v20 = [MKMapView alloc];
-    v21 = [(CLAuthBaseViewController *)self locManager];
-    v22 = [v20 initWithFrame:v21 locationManager:{0.0, 0.0, v9, a3}];
+    locManager2 = [(CLAuthBaseViewController *)self locManager];
+    v22 = [v20 initWithFrame:locManager2 locationManager:{0.0, 0.0, v9, override}];
     [(CLAuthBaseViewController *)self setMapView:v22];
   }
 
-  [(CLAuthBaseViewController *)self setMapViewHeight:a3];
-  v23 = [(CLAuthBaseViewController *)self mapView];
-  [v23 _setShowsAppleLogo:0];
+  [(CLAuthBaseViewController *)self setMapViewHeight:override];
+  mapView = [(CLAuthBaseViewController *)self mapView];
+  [mapView _setShowsAppleLogo:0];
 
-  v24 = [(CLAuthBaseViewController *)self mapView];
-  [v24 setDelegate:self];
+  mapView2 = [(CLAuthBaseViewController *)self mapView];
+  [mapView2 setDelegate:self];
 
-  v25 = [(CLAuthBaseViewController *)self mapView];
-  [v25 setMapType:105];
+  mapView3 = [(CLAuthBaseViewController *)self mapView];
+  [mapView3 setMapType:105];
 
-  v26 = [(CLAuthBaseViewController *)self mapView];
-  [v26 setUserInteractionEnabled:0];
+  mapView4 = [(CLAuthBaseViewController *)self mapView];
+  [mapView4 setUserInteractionEnabled:0];
 
-  v27 = [(CLAuthBaseViewController *)self mapView];
-  [v27 setShowsAttribution:0];
+  mapView5 = [(CLAuthBaseViewController *)self mapView];
+  [mapView5 setShowsAttribution:0];
 
   if (_os_feature_enabled_impl())
   {
-    v28 = [(CLAuthBaseViewController *)self mapView];
-    v29 = [v28 layer];
-    [v29 setCornerRadius:SBSUIUserNotificationContentCornerRadius];
+    mapView6 = [(CLAuthBaseViewController *)self mapView];
+    layer = [mapView6 layer];
+    [layer setCornerRadius:SBSUIUserNotificationContentCornerRadius];
 
-    v30 = [(CLAuthBaseViewController *)self mapView];
-    v31 = [v30 layer];
-    [v31 setMasksToBounds:1];
+    mapView7 = [(CLAuthBaseViewController *)self mapView];
+    layer2 = [mapView7 layer];
+    [layer2 setMasksToBounds:1];
 
-    v32 = [(CLAuthBaseViewController *)self mapView];
-    v33 = [v32 layer];
-    [v33 setMaskedCorners:15];
+    mapView8 = [(CLAuthBaseViewController *)self mapView];
+    layer3 = [mapView8 layer];
+    [layer3 setMaskedCorners:15];
   }
 
-  v34 = [(CLAuthBaseViewController *)self view];
-  v35 = [(CLAuthBaseViewController *)self mapView];
-  [v34 addSubview:v35];
+  view = [(CLAuthBaseViewController *)self view];
+  mapView9 = [(CLAuthBaseViewController *)self mapView];
+  [view addSubview:mapView9];
 }
 
 - (CLLocationManager)locManager
@@ -241,9 +241,9 @@
 
   if (locManager == v4)
   {
-    v5 = [(CLAuthBaseViewController *)self demandCreateLocationManager];
+    demandCreateLocationManager = [(CLAuthBaseViewController *)self demandCreateLocationManager];
     v6 = self->_locManager;
-    self->_locManager = v5;
+    self->_locManager = demandCreateLocationManager;
   }
 
   v7 = self->_locManager;
@@ -253,28 +253,28 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(CLAuthBaseViewController *)self view];
-  [v3 frame];
+  view = [(CLAuthBaseViewController *)self view];
+  [view frame];
   v5 = v4;
-  v6 = [(CLAuthBaseViewController *)self view];
-  [v6 frame];
+  view2 = [(CLAuthBaseViewController *)self view];
+  [view2 frame];
   v8 = v7;
-  v9 = [(CLAuthBaseViewController *)self view];
-  [v9 frame];
+  view3 = [(CLAuthBaseViewController *)self view];
+  [view3 frame];
   v11 = v10;
   [(CLAuthBaseViewController *)self mapViewHeight];
   v13 = v12;
-  v14 = [(CLAuthBaseViewController *)self mapView];
-  [v14 setFrame:{v5, v8, v11, v13}];
+  mapView = [(CLAuthBaseViewController *)self mapView];
+  [mapView setFrame:{v5, v8, v11, v13}];
 
-  v15 = [(CLAuthBaseViewController *)self mapView];
+  mapView2 = [(CLAuthBaseViewController *)self mapView];
 
-  if (v15)
+  if (mapView2)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v16 = [(CLAuthBaseViewController *)self mapView];
-      [v16 frame];
+      mapView3 = [(CLAuthBaseViewController *)self mapView];
+      [mapView3 frame];
       v18 = v17;
       [(CLAuthBaseViewController *)self mapViewHeight];
       v20 = 134218240;

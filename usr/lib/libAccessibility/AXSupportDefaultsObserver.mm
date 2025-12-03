@@ -1,8 +1,8 @@
 @interface AXSupportDefaultsObserver
 - (AXSupportDefaultsObserver)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startObservingPreference:(__CFString *)a3 andPerformBlock:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startObservingPreference:(__CFString *)preference andPerformBlock:(id)block;
 @end
 
 @implementation AXSupportDefaultsObserver
@@ -78,14 +78,14 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startObservingPreference:(__CFString *)a3 andPerformBlock:(id)a4
+- (void)startObservingPreference:(__CFString *)preference andPerformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E696AF00] currentThread];
-  v9 = [v8 isMainThread];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if ((v9 & 1) == 0)
+  if ((isMainThread & 1) == 0)
   {
     v10 = AXSupportLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -95,23 +95,23 @@
   }
 
   observedPrefs = self->_observedPrefs;
-  v12 = a3;
-  [(NSMutableSet *)observedPrefs addObject:v12];
-  v13 = [[AXDefaultsObserverExecuteBlockNotificationAction alloc] initWithBlock:v6];
+  preferenceCopy = preference;
+  [(NSMutableSet *)observedPrefs addObject:preferenceCopy];
+  v13 = [[AXDefaultsObserverExecuteBlockNotificationAction alloc] initWithBlock:blockCopy];
   [(NSMutableArray *)self->_actions addObject:v13];
-  [(NSUserDefaults *)self->_axDomain addObserver:self forKeyPath:v12 options:3 context:v13];
+  [(NSUserDefaults *)self->_axDomain addObserver:self forKeyPath:preferenceCopy options:3 context:v13];
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context)
   {
-    v13 = [MEMORY[0x1E696B098] valueWithPointer:a6];
+    v13 = [MEMORY[0x1E696B098] valueWithPointer:context];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -128,14 +128,14 @@
     v15 = v13;
     v25 = v15;
     dispatch_sync(lastNotificationsQueue, block);
-    v16 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
-    v17 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    if (([v28[5] isEqual:v12] & 1) == 0 && (objc_msgSend(v16, "isEqual:", v17) & 1) == 0)
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    v17 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    if (([v28[5] isEqual:changeCopy] & 1) == 0 && (objc_msgSend(v16, "isEqual:", v17) & 1) == 0)
     {
-      [a6 performForChangedDefault:v10];
-      if (v12)
+      [context performForChangedDefault:pathCopy];
+      if (changeCopy)
       {
-        v18 = [v12 copy];
+        v18 = [changeCopy copy];
         v19 = self->_lastNotificationsQueue;
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;

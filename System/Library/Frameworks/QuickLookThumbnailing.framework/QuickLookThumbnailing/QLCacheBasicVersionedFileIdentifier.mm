@@ -1,39 +1,39 @@
 @interface QLCacheBasicVersionedFileIdentifier
-- (QLCacheBasicVersionedFileIdentifier)initWithFileIdentifier:(id)a3 version:(id)a4;
-- (QLCacheBasicVersionedFileIdentifier)initWithThumbnailRequest:(id)a3;
+- (QLCacheBasicVersionedFileIdentifier)initWithFileIdentifier:(id)identifier version:(id)version;
+- (QLCacheBasicVersionedFileIdentifier)initWithThumbnailRequest:(id)request;
 @end
 
 @implementation QLCacheBasicVersionedFileIdentifier
 
-- (QLCacheBasicVersionedFileIdentifier)initWithFileIdentifier:(id)a3 version:(id)a4
+- (QLCacheBasicVersionedFileIdentifier)initWithFileIdentifier:(id)identifier version:(id)version
 {
   v5.receiver = self;
   v5.super_class = QLCacheBasicVersionedFileIdentifier;
-  return [(QLCacheVersionedFileIdentifier *)&v5 initWithFileIdentifier:a3 version:a4];
+  return [(QLCacheVersionedFileIdentifier *)&v5 initWithFileIdentifier:identifier version:version];
 }
 
-- (QLCacheBasicVersionedFileIdentifier)initWithThumbnailRequest:(id)a3
+- (QLCacheBasicVersionedFileIdentifier)initWithThumbnailRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 isUbiquitous])
+  requestCopy = request;
+  if ([requestCopy isUbiquitous])
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v6 = [v4 basicFileIdentifier];
-    v7 = [v6 fileIdentifier];
+    basicFileIdentifier = [requestCopy basicFileIdentifier];
+    fileIdentifier = [basicFileIdentifier fileIdentifier];
     v8 = [QLThumbnailVersion alloc];
-    v9 = [v4 quicklookSandboxWrapper];
-    v10 = [v9 url];
+    quicklookSandboxWrapper = [requestCopy quicklookSandboxWrapper];
+    v10 = [quicklookSandboxWrapper url];
     v11 = [(QLThumbnailVersion *)v8 initWithFileURL:v10 automaticallyGenerated:1];
-    self = [(QLCacheBasicVersionedFileIdentifier *)self initWithFileIdentifier:v7 version:v11];
+    self = [(QLCacheBasicVersionedFileIdentifier *)self initWithFileIdentifier:fileIdentifier version:v11];
 
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

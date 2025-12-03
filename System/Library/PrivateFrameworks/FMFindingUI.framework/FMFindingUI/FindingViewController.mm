@@ -1,16 +1,16 @@
 @interface FindingViewController
 - (NSString)description;
-- (_TtC11FMFindingUI21FindingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11FMFindingUI21FindingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FindingViewController
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5100E8();
 
   v3 = sub_24A62EBE4();
@@ -20,22 +20,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A510414();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24A510890(a3);
+  selfCopy = self;
+  sub_24A510890(appear);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 2;
   }
@@ -46,7 +46,7 @@
   }
 }
 
-- (_TtC11FMFindingUI21FindingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FMFindingUI21FindingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

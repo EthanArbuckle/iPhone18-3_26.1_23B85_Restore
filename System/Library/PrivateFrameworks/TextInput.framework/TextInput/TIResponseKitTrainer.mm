@@ -1,13 +1,13 @@
 @interface TIResponseKitTrainer
-+ (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4;
++ (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler;
 @end
 
 @implementation TIResponseKitTrainer
 
-+ (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4
++ (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v5 = a4;
+  clientCopy = client;
+  handlerCopy = handler;
   if (performTrainingForClient_withCompletionHandler__onceToken != -1)
   {
     dispatch_once(&performTrainingForClient_withCompletionHandler__onceToken, &__block_literal_global_9089);
@@ -23,7 +23,7 @@
   v9 = v8;
   if (v8)
   {
-    [v8 performTrainingForClient:v10 withCompletionHandler:v5];
+    [v8 performTrainingForClient:clientCopy withCompletionHandler:handlerCopy];
   }
 }
 

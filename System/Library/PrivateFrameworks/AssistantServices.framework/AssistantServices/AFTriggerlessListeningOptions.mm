@@ -1,9 +1,9 @@
 @interface AFTriggerlessListeningOptions
-- (AFTriggerlessListeningOptions)initWithCoder:(id)a3;
-- (id)_initWithShowUIDuringListening:(BOOL)a3 playAlertBeforeListening:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFTriggerlessListeningOptions)initWithCoder:(id)coder;
+- (id)_initWithShowUIDuringListening:(BOOL)listening playAlertBeforeListening:(BOOL)beforeListening;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFTriggerlessListeningOptions
@@ -20,42 +20,42 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setShowUIDuringListening:self->_showUIDuringListening];
   [v4 setPlayAlertBeforeListening:self->_playAlertBeforeListening];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   showUIDuringListening = self->_showUIDuringListening;
-  v5 = a3;
-  [v5 encodeBool:showUIDuringListening forKey:@"_showUIDuringListening"];
-  [v5 encodeBool:self->_playAlertBeforeListening forKey:@"_playAlertBeforeListening"];
+  coderCopy = coder;
+  [coderCopy encodeBool:showUIDuringListening forKey:@"_showUIDuringListening"];
+  [coderCopy encodeBool:self->_playAlertBeforeListening forKey:@"_playAlertBeforeListening"];
 }
 
-- (AFTriggerlessListeningOptions)initWithCoder:(id)a3
+- (AFTriggerlessListeningOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AFTriggerlessListeningOptions *)self init];
   if (v5)
   {
-    v5->_showUIDuringListening = [v4 decodeBoolForKey:@"_showUIDuringListening"];
-    v5->_playAlertBeforeListening = [v4 decodeBoolForKey:@"_playAlertBeforeListening"];
+    v5->_showUIDuringListening = [coderCopy decodeBoolForKey:@"_showUIDuringListening"];
+    v5->_playAlertBeforeListening = [coderCopy decodeBoolForKey:@"_playAlertBeforeListening"];
   }
 
   return v5;
 }
 
-- (id)_initWithShowUIDuringListening:(BOOL)a3 playAlertBeforeListening:(BOOL)a4
+- (id)_initWithShowUIDuringListening:(BOOL)listening playAlertBeforeListening:(BOOL)beforeListening
 {
   result = [(AFTriggerlessListeningOptions *)self init];
   if (result)
   {
-    *(result + 8) = a3;
-    *(result + 9) = a4;
+    *(result + 8) = listening;
+    *(result + 9) = beforeListening;
   }
 
   return result;

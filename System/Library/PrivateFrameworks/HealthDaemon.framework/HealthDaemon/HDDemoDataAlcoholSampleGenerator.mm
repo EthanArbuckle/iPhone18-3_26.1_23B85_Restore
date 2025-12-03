@@ -1,13 +1,13 @@
 @interface HDDemoDataAlcoholSampleGenerator
-- (BOOL)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 foodSampleGenerator:(id)a7 statisticsSampleGenerator:(id)a8 bodySampleGenerator:(id)a9 objectCollection:(id)a10;
+- (BOOL)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date foodSampleGenerator:(id)generator statisticsSampleGenerator:(id)sampleGenerator bodySampleGenerator:(id)bodySampleGenerator objectCollection:(id)self0;
 - (HDDemoDataAlcoholSampleGenerator)init;
-- (HDDemoDataAlcoholSampleGenerator)initWithCoder:(id)a3;
-- (double)_computeNumDrinksTodayForDemoPerson:(void *)a3 atTime:(double)a4 statisticsSampleGenerator:;
-- (double)bloodAlcoholContentForDemoPerson:(void *)a3 atTime:(double)a4 numberOfDrinks:(double)a5 drinkTime:(double)a6 bodySampleGenerator:;
-- (void)_saveBAC:(void *)a3 toObjectCollection:(double)a4 sampleDate:;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (HDDemoDataAlcoholSampleGenerator)initWithCoder:(id)coder;
+- (double)_computeNumDrinksTodayForDemoPerson:(void *)person atTime:(double)time statisticsSampleGenerator:;
+- (double)bloodAlcoholContentForDemoPerson:(void *)person atTime:(double)time numberOfDrinks:(double)drinks drinkTime:(double)drinkTime bodySampleGenerator:;
+- (void)_saveBAC:(void *)c toObjectCollection:(double)collection sampleDate:;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataAlcoholSampleGenerator
@@ -25,136 +25,136 @@
   return result;
 }
 
-- (HDDemoDataAlcoholSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataAlcoholSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HDDemoDataAlcoholSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v8 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"HDDemoDataAlcoholSampleGeneratorNextCheckInTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataAlcoholSampleGeneratorNextCheckInTimeKey"];
     v5->_nextCheckInTime = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDemoDataAlcoholSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"HDDemoDataAlcoholSampleGeneratorNextCheckInTimeKey" forKey:{self->_nextCheckInTime, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"HDDemoDataAlcoholSampleGeneratorNextCheckInTimeKey" forKey:{self->_nextCheckInTime, v5.receiver, v5.super_class}];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v10.receiver = self;
   v10.super_class = HDDemoDataAlcoholSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v10 setupWithDemoDataGenerator:v4];
+  [(HDDemoDataBaseSampleGenerator *)&v10 setupWithDemoDataGenerator:generatorCopy];
   if (![(HDDemoDataBaseSampleGenerator *)self createdFromNSKeyedUnarchiver])
   {
-    v5 = [v4 foodSampleGenerator];
-    v6 = [v4 demoPerson];
-    v7 = [v4 demoPerson];
-    [v7 dinnerTime];
-    [v5 _computeMealTimeForDemoPerson:v6 fromTime:4 mealTimeType:0.0 timeMean:v8 stdDev:0.0243055556];
+    foodSampleGenerator = [generatorCopy foodSampleGenerator];
+    demoPerson = [generatorCopy demoPerson];
+    demoPerson2 = [generatorCopy demoPerson];
+    [demoPerson2 dinnerTime];
+    [foodSampleGenerator _computeMealTimeForDemoPerson:demoPerson fromTime:4 mealTimeType:0.0 timeMean:v8 stdDev:0.0243055556];
     self->_nextCheckInTime = v9;
   }
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v21.receiver = self;
   v21.super_class = HDDemoDataAlcoholSampleGenerator;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v21 generateObjectsForDemoPerson:v14 fromTime:v13 toTime:v12 currentDate:a5 objectCollection:a5];
+  collectionCopy = collection;
+  dateCopy = date;
+  personCopy = person;
+  [(HDDemoDataBaseSampleGenerator *)&v21 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
   v15 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator:v21.receiver];
-  v16 = [v15 foodSampleGenerator];
-  v17 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v18 = [v17 statisticsSampleGenerator];
-  v19 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v20 = [v19 bodySampleGenerator];
-  [(HDDemoDataAlcoholSampleGenerator *)self generateObjectsForDemoPerson:v14 fromTime:v13 toTime:v16 currentDate:v18 foodSampleGenerator:v20 statisticsSampleGenerator:v12 bodySampleGenerator:a4 objectCollection:a5];
+  foodSampleGenerator = [v15 foodSampleGenerator];
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
+  demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  bodySampleGenerator = [demoDataGenerator2 bodySampleGenerator];
+  [(HDDemoDataAlcoholSampleGenerator *)self generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:foodSampleGenerator currentDate:statisticsSampleGenerator foodSampleGenerator:bodySampleGenerator statisticsSampleGenerator:collectionCopy bodySampleGenerator:time objectCollection:toTime];
 }
 
-- (BOOL)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 foodSampleGenerator:(id)a7 statisticsSampleGenerator:(id)a8 bodySampleGenerator:(id)a9 objectCollection:(id)a10
+- (BOOL)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date foodSampleGenerator:(id)generator statisticsSampleGenerator:(id)sampleGenerator bodySampleGenerator:(id)bodySampleGenerator objectCollection:(id)self0
 {
-  v18 = a3;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  if (([v18 resultsTrackingType] == 2 || objc_msgSend(v18, "profileType") == 4) && self->_nextCheckInTime <= a5)
+  personCopy = person;
+  dateCopy = date;
+  generatorCopy = generator;
+  sampleGeneratorCopy = sampleGenerator;
+  bodySampleGeneratorCopy = bodySampleGenerator;
+  collectionCopy = collection;
+  if (([personCopy resultsTrackingType] == 2 || objc_msgSend(personCopy, "profileType") == 4) && self->_nextCheckInTime <= toTime)
   {
     if (qword_280D67C40 != -1)
     {
       dispatch_once(&qword_280D67C40, &__block_literal_global_114);
     }
 
-    v25 = a5;
-    [v18 dinnerTime];
+    toTimeCopy2 = toTime;
+    [personCopy dinnerTime];
     v27 = v26;
-    [v18 mealTimeSampleNoiseStdDev];
-    [v20 _computeMealTimeForDemoPerson:v18 fromTime:4 mealTimeType:a5 timeMean:v27 stdDev:v28];
-    v30 = v29 + a5;
-    if (v30 <= a5)
+    [personCopy mealTimeSampleNoiseStdDev];
+    [generatorCopy _computeMealTimeForDemoPerson:personCopy fromTime:4 mealTimeType:toTime timeMean:v27 stdDev:v28];
+    v30 = v29 + toTime;
+    if (v30 <= toTime)
     {
-      v42 = [(HDDemoDataAlcoholSampleGenerator *)self _computeNumDrinksTodayForDemoPerson:v18 atTime:v21 statisticsSampleGenerator:a5];
+      v42 = [(HDDemoDataAlcoholSampleGenerator *)self _computeNumDrinksTodayForDemoPerson:personCopy atTime:sampleGeneratorCopy statisticsSampleGenerator:toTime];
       v43 = v42;
-      if (v30 > a4)
+      if (v30 > time)
       {
         v44 = [MEMORY[0x277CCD7E8] quantityWithUnit:qword_280D67C30 doubleValue:v42];
-        v45 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_280D67C38 quantity:v44 startDate:v19 endDate:v19];
-        [v23 addObjectFromPhone:v45];
+        v45 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_280D67C38 quantity:v44 startDate:dateCopy endDate:dateCopy];
+        [collectionCopy addObjectFromPhone:v45];
 
-        v25 = a5;
+        toTimeCopy2 = toTime;
       }
 
-      v38 = self;
-      v39 = v18;
-      v40 = a5;
+      selfCopy2 = self;
+      v39 = personCopy;
+      toTimeCopy4 = toTime;
       v41 = v43;
       v37 = v30;
     }
 
     else
     {
-      v31 = [(HDDemoDataAlcoholSampleGenerator *)self _computeNumDrinksTodayForDemoPerson:v18 atTime:v21 statisticsSampleGenerator:a5 + -1.0];
+      v31 = [(HDDemoDataAlcoholSampleGenerator *)self _computeNumDrinksTodayForDemoPerson:personCopy atTime:sampleGeneratorCopy statisticsSampleGenerator:toTime + -1.0];
       if (v31 <= 0.0)
       {
         goto LABEL_15;
       }
 
       v32 = v31;
-      [v18 dinnerTime];
+      [personCopy dinnerTime];
       v34 = v33;
-      [v18 mealTimeSampleNoiseStdDev];
-      [v20 _computeMealTimeForDemoPerson:v18 fromTime:4 mealTimeType:a5 + -1.0 timeMean:v34 stdDev:v35];
-      v37 = v36 + (v25 - 1);
-      v38 = self;
-      v39 = v18;
-      v40 = a5;
+      [personCopy mealTimeSampleNoiseStdDev];
+      [generatorCopy _computeMealTimeForDemoPerson:personCopy fromTime:4 mealTimeType:toTime + -1.0 timeMean:v34 stdDev:v35];
+      v37 = v36 + (toTimeCopy2 - 1);
+      selfCopy2 = self;
+      v39 = personCopy;
+      toTimeCopy4 = toTime;
       v41 = v32;
     }
 
-    v46 = [(HDDemoDataAlcoholSampleGenerator *)v38 bloodAlcoholContentForDemoPerson:v39 atTime:v22 numberOfDrinks:v40 drinkTime:v41 bodySampleGenerator:v37];
-    [(HDDemoDataAlcoholSampleGenerator *)self _saveBAC:v23 toObjectCollection:v19 sampleDate:v46];
+    v46 = [(HDDemoDataAlcoholSampleGenerator *)selfCopy2 bloodAlcoholContentForDemoPerson:v39 atTime:bodySampleGeneratorCopy numberOfDrinks:toTimeCopy4 drinkTime:v41 bodySampleGenerator:v37];
+    [(HDDemoDataAlcoholSampleGenerator *)self _saveBAC:collectionCopy toObjectCollection:dateCopy sampleDate:v46];
     if (v46 > 0.03)
     {
-      v47 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v48 = [v47 statisticsSampleGenerator];
-      [v18 genericSampleTimeNoiseStdDev];
-      [v48 computeNoiseFromTime:a5 stdDev:v49];
+      demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
+      [personCopy genericSampleTimeNoiseStdDev];
+      [statisticsSampleGenerator computeNoiseFromTime:toTime stdDev:v49];
       v51 = v50 + 0.03125;
 
-      v52 = v51 + a5;
+      v52 = v51 + toTime;
 LABEL_16:
       self->_nextCheckInTime = v52;
       v24 = 1;
@@ -162,11 +162,11 @@ LABEL_16:
     }
 
 LABEL_15:
-    [v18 dinnerTime];
+    [personCopy dinnerTime];
     v54 = v53;
-    [v18 mealTimeSampleNoiseStdDev];
-    [v20 _computeMealTimeForDemoPerson:v18 fromTime:4 mealTimeType:(v25 + 1) timeMean:v54 stdDev:v55];
-    v52 = v56 + (v25 + 1);
+    [personCopy mealTimeSampleNoiseStdDev];
+    [generatorCopy _computeMealTimeForDemoPerson:personCopy fromTime:4 mealTimeType:(toTimeCopy2 + 1) timeMean:v54 stdDev:v55];
+    v52 = v56 + (toTimeCopy2 + 1);
     goto LABEL_16;
   }
 
@@ -197,19 +197,19 @@ uint64_t __176__HDDemoDataAlcoholSampleGenerator_generateObjectsForDemoPerson_fr
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (double)_computeNumDrinksTodayForDemoPerson:(void *)a3 atTime:(double)a4 statisticsSampleGenerator:
+- (double)_computeNumDrinksTodayForDemoPerson:(void *)person atTime:(double)time statisticsSampleGenerator:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
+  personCopy = person;
+  v9 = personCopy;
   v10 = 0.0;
-  if (a1)
+  if (self)
   {
-    v11 = a4;
-    [v8 pseudoRandomDoubleFromTime:v11 + 0.1];
+    timeCopy = time;
+    [personCopy pseudoRandomDoubleFromTime:timeCopy + 0.1];
     if (v12 < 0.33)
     {
-      [v9 pseudoRandomDoubleFromTime:v11];
+      [v9 pseudoRandomDoubleFromTime:timeCopy];
       v10 = floor(v13 * 3.0) + 1.0;
     }
   }
@@ -217,36 +217,36 @@ uint64_t __176__HDDemoDataAlcoholSampleGenerator_generateObjectsForDemoPerson_fr
   return v10;
 }
 
-- (double)bloodAlcoholContentForDemoPerson:(void *)a3 atTime:(double)a4 numberOfDrinks:(double)a5 drinkTime:(double)a6 bodySampleGenerator:
+- (double)bloodAlcoholContentForDemoPerson:(void *)person atTime:(double)time numberOfDrinks:(double)drinks drinkTime:(double)drinkTime bodySampleGenerator:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v8 = (a4 - a6) * 86400.0;
+  v8 = (time - drinkTime) * 86400.0;
   v9 = a2;
-  [a3 lastWeightInKg];
+  [person lastWeightInKg];
   v11 = v10;
-  v12 = [v9 biologicalSex];
+  biologicalSex = [v9 biologicalSex];
 
-  [HDDemoDataFormula computeBloodAlcoholContentForNumDrinks:v12 elapsedTime:a5 weight:v8 sex:v11];
+  [HDDemoDataFormula computeBloodAlcoholContentForNumDrinks:biologicalSex elapsedTime:drinks weight:v8 sex:v11];
   return (v13 * 100.0) / 100.0;
 }
 
-- (void)_saveBAC:(void *)a3 toObjectCollection:(double)a4 sampleDate:
+- (void)_saveBAC:(void *)c toObjectCollection:(double)collection sampleDate:
 {
   v10 = a2;
-  v7 = a3;
-  if (a1)
+  cCopy = c;
+  if (self)
   {
     if (qword_280D67C58 != -1)
     {
       dispatch_once(&qword_280D67C58, &__block_literal_global_309);
     }
 
-    v8 = [MEMORY[0x277CCD7E8] quantityWithUnit:qword_280D67C48 doubleValue:a4 / 100.0];
-    v9 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_280D67C50 quantity:v8 startDate:v7 endDate:v7];
+    v8 = [MEMORY[0x277CCD7E8] quantityWithUnit:qword_280D67C48 doubleValue:collection / 100.0];
+    v9 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_280D67C50 quantity:v8 startDate:cCopy endDate:cCopy];
     [v10 addObjectFromPhone:v9];
   }
 }

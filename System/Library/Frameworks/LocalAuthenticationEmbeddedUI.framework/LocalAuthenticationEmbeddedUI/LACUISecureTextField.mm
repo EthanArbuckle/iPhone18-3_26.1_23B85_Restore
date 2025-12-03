@@ -1,11 +1,11 @@
 @interface LACUISecureTextField
 - (LACUISecureTextField)init;
-- (LACUISecureTextField)initWithCoder:(id)a3;
-- (LACUISecureTextField)initWithFrame:(CGRect)a3;
+- (LACUISecureTextField)initWithCoder:(id)coder;
+- (LACUISecureTextField)initWithFrame:(CGRect)frame;
 - (NSString)placeholder;
 - (NSString)text;
-- (void)setPlaceholder:(id)a3;
-- (void)setText:(id)a3;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setText:(id)text;
 @end
 
 @implementation LACUISecureTextField
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (LACUISecureTextField)initWithFrame:(CGRect)a3
+- (LACUISecureTextField)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LACUISecureTextField;
-  v3 = [(LACUISecureTextField *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LACUISecureTextField *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,11 +38,11 @@
   return v4;
 }
 
-- (LACUISecureTextField)initWithCoder:(id)a3
+- (LACUISecureTextField)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LACUISecureTextField;
-  v3 = [(LACUISecureTextField *)&v6 initWithCoder:a3];
+  v3 = [(LACUISecureTextField *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -56,32 +56,32 @@
 {
   v4.receiver = self;
   v4.super_class = LACUISecureTextField;
-  v2 = [(LACUITextField *)&v4 text];
+  text = [(LACUITextField *)&v4 text];
 
-  return v2;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = LACUISecureTextField;
-  [(LACUITextField *)&v3 setText:a3];
+  [(LACUITextField *)&v3 setText:text];
 }
 
 - (NSString)placeholder
 {
   v4.receiver = self;
   v4.super_class = LACUISecureTextField;
-  v2 = [(LACUITextField *)&v4 placeholder];
+  placeholder = [(LACUITextField *)&v4 placeholder];
 
-  return v2;
+  return placeholder;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   v3.receiver = self;
   v3.super_class = LACUISecureTextField;
-  [(LACUITextField *)&v3 setPlaceholder:a3];
+  [(LACUITextField *)&v3 setPlaceholder:placeholder];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MPModelStoreBrowseSectionUniformContentItemTypeResolver
 - (id).cxx_construct;
 - (int64_t)uniformContentItemType;
-- (void)addContentItemType:(int64_t)a3;
+- (void)addContentItemType:(int64_t)type;
 @end
 
 @implementation MPModelStoreBrowseSectionUniformContentItemTypeResolver
@@ -98,9 +98,9 @@ LABEL_23:
   return left;
 }
 
-- (void)addContentItemType:(int64_t)a3
+- (void)addContentItemType:(int64_t)type
 {
-  v11 = a3;
+  typeCopy = type;
   p_end_node = &self->_contentItemTypeOccurrences.__tree_.__end_node_;
   left = self->_contentItemTypeOccurrences.__tree_.__end_node_.__left_;
   p_contentItemTypeOccurrences = &self->_contentItemTypeOccurrences;
@@ -112,28 +112,28 @@ LABEL_23:
   v7 = p_end_node;
   do
   {
-    if (left[4].__left_ >= a3)
+    if (left[4].__left_ >= type)
     {
       v7 = left;
     }
 
-    left = left[left[4].__left_ < a3].__left_;
+    left = left[left[4].__left_ < type].__left_;
   }
 
   while (left);
-  if (v7 != p_end_node && v7[4].__left_ <= a3)
+  if (v7 != p_end_node && v7[4].__left_ <= type)
   {
     v10 = v7[5].__left_;
-    v12 = &v11;
-    v8 = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(p_contentItemTypeOccurrences, a3);
+    v12 = &typeCopy;
+    v8 = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(p_contentItemTypeOccurrences, type);
     v9 = v10 + 1;
   }
 
   else
   {
 LABEL_8:
-    v12 = &v11;
-    v8 = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(p_contentItemTypeOccurrences, a3);
+    v12 = &typeCopy;
+    v8 = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(p_contentItemTypeOccurrences, type);
     v9 = 1;
   }
 

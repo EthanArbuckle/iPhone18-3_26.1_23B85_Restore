@@ -1,70 +1,70 @@
 @interface AVTImageStore
-+ (id)resourceURLForItem:(id)a3 scope:(id)a4 baseURL:(id)a5 encoder:(id)a6;
-+ (void)clearContentAtLocation:(id)a3 logger:(id)a4;
-- (AVTImageStore)initWithEnvironment:(id)a3 validateImages:(BOOL)a4 location:(id)a5;
-- (AVTImageStore)initWithEnvironment:(id)a3 validateImages:(BOOL)a4 location:(id)a5 encoder:(id)a6;
-- (BOOL)applyFileProtectionForResourceAtURL:(id)a3 error:(id *)a4;
-- (BOOL)copyImagesForPersistentIdentifierPrefix:(id)a3 toPersistentIdentifierPrefix:(id)a4 error:(id *)a5;
-- (BOOL)createDirectoryIfNeeded:(id *)a3;
-- (BOOL)deleteImagesForItemsWithPersistentIdentifierPrefix:(id)a3 error:(id *)a4;
-- (BOOL)resourceExistsInCacheForItem:(id)a3 scope:(id)a4;
-- (BOOL)saveImage:(id)a3 withImageData:(id)a4 forItem:(id)a5 scope:(id)a6 error:(id *)a7;
-- (id)_imageForItem:(id)a3 scope:(id)a4 cacheMissHandler:(id)a5;
-- (id)imageForItem:(id)a3 scope:(id)a4 error:(id *)a5;
-- (id)resourceURLForItem:(id)a3 scope:(id)a4;
-- (void)performStateWork:(id)a3;
++ (id)resourceURLForItem:(id)item scope:(id)scope baseURL:(id)l encoder:(id)encoder;
++ (void)clearContentAtLocation:(id)location logger:(id)logger;
+- (AVTImageStore)initWithEnvironment:(id)environment validateImages:(BOOL)images location:(id)location;
+- (AVTImageStore)initWithEnvironment:(id)environment validateImages:(BOOL)images location:(id)location encoder:(id)encoder;
+- (BOOL)applyFileProtectionForResourceAtURL:(id)l error:(id *)error;
+- (BOOL)copyImagesForPersistentIdentifierPrefix:(id)prefix toPersistentIdentifierPrefix:(id)identifierPrefix error:(id *)error;
+- (BOOL)createDirectoryIfNeeded:(id *)needed;
+- (BOOL)deleteImagesForItemsWithPersistentIdentifierPrefix:(id)prefix error:(id *)error;
+- (BOOL)resourceExistsInCacheForItem:(id)item scope:(id)scope;
+- (BOOL)saveImage:(id)image withImageData:(id)data forItem:(id)item scope:(id)scope error:(id *)error;
+- (id)_imageForItem:(id)item scope:(id)scope cacheMissHandler:(id)handler;
+- (id)imageForItem:(id)item scope:(id)scope error:(id *)error;
+- (id)resourceURLForItem:(id)item scope:(id)scope;
+- (void)performStateWork:(id)work;
 @end
 
 @implementation AVTImageStore
 
-+ (void)clearContentAtLocation:(id)a3 logger:(id)a4
++ (void)clearContentAtLocation:(id)location logger:(id)logger
 {
-  v5 = a4;
+  loggerCopy = logger;
   v6 = MEMORY[0x1E696AC08];
-  v7 = a3;
+  locationCopy = location;
   v8 = objc_alloc_init(v6);
   v13 = 0;
-  v9 = [v8 removeItemAtURL:v7 error:&v13];
+  v9 = [v8 removeItemAtURL:locationCopy error:&v13];
 
   v10 = v13;
   v11 = v10;
   if ((v9 & 1) == 0)
   {
     v12 = [v10 description];
-    [v5 logFileSystemError:v12];
+    [loggerCopy logFileSystemError:v12];
   }
 }
 
-+ (id)resourceURLForItem:(id)a3 scope:(id)a4 baseURL:(id)a5 encoder:(id)a6
++ (id)resourceURLForItem:(id)item scope:(id)scope baseURL:(id)l encoder:(id)encoder
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [a3 persistentIdentifierForScope:a4];
-  v12 = [v10 URLByAppendingPathComponent:v11];
+  encoderCopy = encoder;
+  lCopy = l;
+  v11 = [item persistentIdentifierForScope:scope];
+  v12 = [lCopy URLByAppendingPathComponent:v11];
 
-  v13 = [v9 fileExtension];
+  fileExtension = [encoderCopy fileExtension];
 
-  v14 = [v12 URLByAppendingPathExtension:v13];
+  v14 = [v12 URLByAppendingPathExtension:fileExtension];
 
   return v14;
 }
 
-- (AVTImageStore)initWithEnvironment:(id)a3 validateImages:(BOOL)a4 location:(id)a5
+- (AVTImageStore)initWithEnvironment:(id)environment validateImages:(BOOL)images location:(id)location
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  imagesCopy = images;
+  locationCopy = location;
+  environmentCopy = environment;
   v10 = objc_alloc_init(AVTATXImageIOImageEncoder);
-  v11 = [(AVTImageStore *)self initWithEnvironment:v9 validateImages:v5 location:v8 encoder:v10];
+  v11 = [(AVTImageStore *)self initWithEnvironment:environmentCopy validateImages:imagesCopy location:locationCopy encoder:v10];
 
   return v11;
 }
 
-- (AVTImageStore)initWithEnvironment:(id)a3 validateImages:(BOOL)a4 location:(id)a5 encoder:(id)a6
+- (AVTImageStore)initWithEnvironment:(id)environment validateImages:(BOOL)images location:(id)location encoder:(id)encoder
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  environmentCopy = environment;
+  locationCopy = location;
+  encoderCopy = encoder;
   v26.receiver = self;
   v26.super_class = AVTImageStore;
   v13 = [(AVTImageStore *)&v26 init];
@@ -74,38 +74,38 @@
     fileManager = v13->_fileManager;
     v13->_fileManager = v14;
 
-    v16 = [v11 copy];
+    v16 = [locationCopy copy];
     location = v13->_location;
     v13->_location = v16;
 
-    objc_storeStrong(&v13->_imageEncoder, a6);
-    v18 = [v10 lockProvider];
-    v19 = (v18)[2](v18, "com.apple.AvatarUI.AVTImageStore.stateLock");
+    objc_storeStrong(&v13->_imageEncoder, encoder);
+    lockProvider = [environmentCopy lockProvider];
+    v19 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTImageStore.stateLock");
     stateLock = v13->_stateLock;
     v13->_stateLock = v19;
 
-    v21 = [v10 logger];
+    logger = [environmentCopy logger];
     logger = v13->_logger;
-    v13->_logger = v21;
+    v13->_logger = logger;
 
     v23 = v13->_logger;
-    v24 = [(NSURL *)v13->_location path];
-    [(AVTUILogger *)v23 logCreatingImageStoreForPath:v24];
+    path = [(NSURL *)v13->_location path];
+    [(AVTUILogger *)v23 logCreatingImageStoreForPath:path];
 
-    v13->_validateImages = a4;
+    v13->_validateImages = images;
   }
 
   return v13;
 }
 
-- (void)performStateWork:(id)a3
+- (void)performStateWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTImageStore *)self stateLock];
-  dispatch_sync(v5, v4);
+  workCopy = work;
+  stateLock = [(AVTImageStore *)self stateLock];
+  dispatch_sync(stateLock, workCopy);
 }
 
-- (BOOL)createDirectoryIfNeeded:(id *)a3
+- (BOOL)createDirectoryIfNeeded:(id *)needed
 {
   v13 = 0;
   v14 = &v13;
@@ -126,9 +126,9 @@
   v6[6] = &v7;
   [(AVTImageStore *)self performStateWork:v6];
   v4 = *(v14 + 24);
-  if (a3 && (v14[3] & 1) == 0)
+  if (needed && (v14[3] & 1) == 0)
   {
-    *a3 = v8[5];
+    *needed = v8[5];
     v4 = *(v14 + 24);
   }
 
@@ -163,30 +163,30 @@ void __41__AVTImageStore_createDirectoryIfNeeded___block_invoke(uint64_t a1)
   }
 }
 
-- (id)resourceURLForItem:(id)a3 scope:(id)a4
+- (id)resourceURLForItem:(id)item scope:(id)scope
 {
-  v6 = a4;
-  v7 = a3;
+  scopeCopy = scope;
+  itemCopy = item;
   v8 = objc_opt_class();
-  v9 = [(AVTImageStore *)self location];
-  v10 = [(AVTImageStore *)self imageEncoder];
-  v11 = [v8 resourceURLForItem:v7 scope:v6 baseURL:v9 encoder:v10];
+  location = [(AVTImageStore *)self location];
+  imageEncoder = [(AVTImageStore *)self imageEncoder];
+  v11 = [v8 resourceURLForItem:itemCopy scope:scopeCopy baseURL:location encoder:imageEncoder];
 
   return v11;
 }
 
-- (BOOL)saveImage:(id)a3 withImageData:(id)a4 forItem:(id)a5 scope:(id)a6 error:(id *)a7
+- (BOOL)saveImage:(id)image withImageData:(id)data forItem:(id)item scope:(id)scope error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([(AVTImageStore *)self createDirectoryIfNeeded:a7])
+  imageCopy = image;
+  dataCopy = data;
+  itemCopy = item;
+  scopeCopy = scope;
+  if ([(AVTImageStore *)self createDirectoryIfNeeded:error])
   {
-    v16 = [(AVTImageStore *)self resourceURLForItem:v14 scope:v15];
-    v17 = [(AVTImageStore *)self logger];
-    v18 = [v16 path];
-    [v17 logImageStoreBeginSavingImageForPath:v18];
+    v16 = [(AVTImageStore *)self resourceURLForItem:itemCopy scope:scopeCopy];
+    logger = [(AVTImageStore *)self logger];
+    path = [v16 path];
+    [logger logImageStoreBeginSavingImageForPath:path];
 
     if ([(AVTImageStore *)self validateImages])
     {
@@ -195,16 +195,16 @@ void __41__AVTImageStore_createDirectoryIfNeeded___block_invoke(uint64_t a1)
       if (v19)
       {
         v37 = 0;
-        v21 = [v19 validateImageIsNotTransparent:v12 error:&v37];
+        v21 = [v19 validateImageIsNotTransparent:imageCopy error:&v37];
         v22 = v37;
         v23 = v22;
         if ((v21 & 1) == 0)
         {
-          if (a7)
+          if (error)
           {
             v34 = v22;
             v25 = 0;
-            *a7 = v23;
+            *error = v23;
           }
 
           else
@@ -217,13 +217,13 @@ void __41__AVTImageStore_createDirectoryIfNeeded___block_invoke(uint64_t a1)
 
         v35 = v22;
         v24 = 0;
-        if (v13)
+        if (dataCopy)
         {
 LABEL_12:
           v36 = v20;
           if (objc_opt_respondsToSelector())
           {
-            v27 = [v14 persistentDataHashForScope:v15];
+            v27 = [itemCopy persistentDataHashForScope:scopeCopy];
             if (v24)
             {
               goto LABEL_17;
@@ -239,15 +239,15 @@ LABEL_12:
             }
           }
 
-          v28 = [v16 absoluteString];
-          v29 = [v36 validateImageDataIsNotDuplicate:v13 forFileName:v28 avatarDataHash:v27];
+          absoluteString = [v16 absoluteString];
+          v29 = [v36 validateImageDataIsNotDuplicate:dataCopy forFileName:absoluteString avatarDataHash:v27];
 
           if ((v29 & 1) == 0)
           {
-            if (a7)
+            if (error)
             {
               [MEMORY[0x1E698E338] errorWithCode:607 userInfo:0];
-              *a7 = v25 = 0;
+              *error = v25 = 0;
             }
 
             else
@@ -265,7 +265,7 @@ LABEL_22:
           }
 
 LABEL_17:
-          if ([v14 requiresEncryption])
+          if ([itemCopy requiresEncryption])
           {
             v30 = AVTDefaultFileProtectionDataWritingOptions() | 1;
           }
@@ -275,30 +275,30 @@ LABEL_17:
             v30 = 1;
           }
 
-          v25 = [v13 writeToURL:v16 options:v30 error:a7];
-          v31 = [(AVTImageStore *)self logger];
-          v32 = [v16 path];
-          [v31 logImageStoreDoneSavingImageForPath:v32];
+          v25 = [dataCopy writeToURL:v16 options:v30 error:error];
+          logger2 = [(AVTImageStore *)self logger];
+          path2 = [v16 path];
+          [logger2 logImageStoreDoneSavingImageForPath:path2];
 
           goto LABEL_21;
         }
 
 LABEL_11:
-        v26 = [(AVTImageStore *)self imageEncoder];
-        v13 = [v26 dataFromImage:v12];
+        imageEncoder = [(AVTImageStore *)self imageEncoder];
+        dataCopy = [imageEncoder dataFromImage:imageCopy];
 
-        if (!v13)
+        if (!dataCopy)
         {
-          if (a7)
+          if (error)
           {
             [MEMORY[0x1E698E338] errorWithCode:604 userInfo:0];
-            v13 = 0;
-            *a7 = v25 = 0;
+            dataCopy = 0;
+            *error = v25 = 0;
           }
 
           else
           {
-            v13 = 0;
+            dataCopy = 0;
             v25 = 0;
           }
 
@@ -319,7 +319,7 @@ LABEL_11:
     }
 
     v24 = 1;
-    if (v13)
+    if (dataCopy)
     {
       goto LABEL_12;
     }
@@ -333,23 +333,23 @@ LABEL_23:
   return v25;
 }
 
-- (BOOL)deleteImagesForItemsWithPersistentIdentifierPrefix:(id)a3 error:(id *)a4
+- (BOOL)deleteImagesForItemsWithPersistentIdentifierPrefix:(id)prefix error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AVTImageStore *)self fileManager];
-  v8 = [(AVTImageStore *)self location];
-  v9 = [v8 path];
-  v10 = [v7 fileExistsAtPath:v9];
+  prefixCopy = prefix;
+  fileManager = [(AVTImageStore *)self fileManager];
+  location = [(AVTImageStore *)self location];
+  path = [location path];
+  v10 = [fileManager fileExistsAtPath:path];
 
   if (v10)
   {
-    v11 = [(AVTImageStore *)self logger];
-    [v11 logDeletingImagesWithIdentifierPrefix:v6];
+    logger = [(AVTImageStore *)self logger];
+    [logger logDeletingImagesWithIdentifierPrefix:prefixCopy];
 
-    v12 = [(AVTImageStore *)self fileManager];
-    v13 = [(AVTImageStore *)self location];
-    v14 = [v12 contentsOfDirectoryAtURL:v13 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:a4];
+    fileManager2 = [(AVTImageStore *)self fileManager];
+    location2 = [(AVTImageStore *)self location];
+    v14 = [fileManager2 contentsOfDirectoryAtURL:location2 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:error];
 
     if (v14)
     {
@@ -374,13 +374,13 @@ LABEL_23:
             }
 
             v20 = *(*(&v28 + 1) + 8 * i);
-            v21 = [v20 lastPathComponent];
-            v22 = [v21 hasPrefix:v6];
+            lastPathComponent = [v20 lastPathComponent];
+            v22 = [lastPathComponent hasPrefix:prefixCopy];
 
             if (v22)
             {
-              v23 = [(AVTImageStore *)self fileManager];
-              v24 = [v23 removeItemAtURL:v20 error:a4];
+              fileManager3 = [(AVTImageStore *)self fileManager];
+              v24 = [fileManager3 removeItemAtURL:v20 error:error];
 
               if (!v24)
               {
@@ -424,21 +424,21 @@ LABEL_16:
   return v25;
 }
 
-- (BOOL)copyImagesForPersistentIdentifierPrefix:(id)a3 toPersistentIdentifierPrefix:(id)a4 error:(id *)a5
+- (BOOL)copyImagesForPersistentIdentifierPrefix:(id)prefix toPersistentIdentifierPrefix:(id)identifierPrefix error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v35 = a4;
-  v9 = [(AVTImageStore *)self fileManager];
-  v10 = [(AVTImageStore *)self location];
-  v11 = [v10 path];
-  v12 = [v9 fileExistsAtPath:v11];
+  prefixCopy = prefix;
+  identifierPrefixCopy = identifierPrefix;
+  fileManager = [(AVTImageStore *)self fileManager];
+  location = [(AVTImageStore *)self location];
+  path = [location path];
+  v12 = [fileManager fileExistsAtPath:path];
 
   if (v12)
   {
-    v13 = [(AVTImageStore *)self fileManager];
-    v14 = [(AVTImageStore *)self location];
-    v15 = [v13 contentsOfDirectoryAtURL:v14 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:a5];
+    fileManager2 = [(AVTImageStore *)self fileManager];
+    location2 = [(AVTImageStore *)self location];
+    v15 = [fileManager2 contentsOfDirectoryAtURL:location2 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:error];
 
     if (!v15)
     {
@@ -455,7 +455,7 @@ LABEL_16:
     {
       v18 = v17;
       v33 = v15;
-      v34 = a5;
+      errorCopy = error;
       v19 = 0;
       v20 = *v37;
       while (2)
@@ -468,19 +468,19 @@ LABEL_16:
           }
 
           v22 = *(*(&v36 + 1) + 8 * i);
-          v23 = [v22 lastPathComponent];
-          v24 = [v23 hasPrefix:v8];
+          lastPathComponent = [v22 lastPathComponent];
+          v24 = [lastPathComponent hasPrefix:prefixCopy];
 
           if (v24)
           {
-            v25 = [v22 lastPathComponent];
-            v26 = [v25 stringByReplacingOccurrencesOfString:v8 withString:v35];
+            lastPathComponent2 = [v22 lastPathComponent];
+            v26 = [lastPathComponent2 stringByReplacingOccurrencesOfString:prefixCopy withString:identifierPrefixCopy];
 
-            v27 = [v22 URLByDeletingLastPathComponent];
-            v28 = [v27 URLByAppendingPathComponent:v26];
+            uRLByDeletingLastPathComponent = [v22 URLByDeletingLastPathComponent];
+            v28 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v26];
 
-            v29 = [(AVTImageStore *)self fileManager];
-            v30 = [v29 copyItemAtURL:v22 toURL:v28 error:v34];
+            fileManager3 = [(AVTImageStore *)self fileManager];
+            v30 = [fileManager3 copyItemAtURL:v22 toURL:v28 error:errorCopy];
 
             if ((v30 & 1) == 0)
             {
@@ -504,7 +504,7 @@ LABEL_16:
       }
 
       v15 = v33;
-      a5 = v34;
+      error = errorCopy;
       if (v19)
       {
         v31 = 1;
@@ -516,10 +516,10 @@ LABEL_16:
     {
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
-      *a5 = v31 = 0;
+      *error = v31 = 0;
     }
 
     else
@@ -531,10 +531,10 @@ LABEL_22:
 LABEL_23:
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
-    *a5 = v31 = 0;
+    *error = v31 = 0;
   }
 
   else
@@ -545,32 +545,32 @@ LABEL_23:
   return v31;
 }
 
-- (id)imageForItem:(id)a3 scope:(id)a4 error:(id *)a5
+- (id)imageForItem:(id)item scope:(id)scope error:(id *)error
 {
-  v8 = a3;
-  v9 = [(AVTImageStore *)self resourceURLForItem:v8 scope:a4];
-  v10 = [v8 requiresEncryption];
+  itemCopy = item;
+  v9 = [(AVTImageStore *)self resourceURLForItem:itemCopy scope:scope];
+  requiresEncryption = [itemCopy requiresEncryption];
 
-  if (v10 && ![(AVTImageStore *)self applyFileProtectionForResourceAtURL:v9 error:a5])
+  if (requiresEncryption && ![(AVTImageStore *)self applyFileProtectionForResourceAtURL:v9 error:error])
   {
     v12 = 0;
   }
 
   else
   {
-    v11 = [(AVTImageStore *)self imageEncoder];
-    v12 = [v11 imageFromURL:v9 error:a5];
+    imageEncoder = [(AVTImageStore *)self imageEncoder];
+    v12 = [imageEncoder imageFromURL:v9 error:error];
   }
 
   return v12;
 }
 
-- (BOOL)applyFileProtectionForResourceAtURL:(id)a3 error:(id *)a4
+- (BOOL)applyFileProtectionForResourceAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTImageStore *)self fileManager];
-  v8 = [v6 path];
-  v9 = [v7 attributesOfItemAtPath:v8 error:a4];
+  lCopy = l;
+  fileManager = [(AVTImageStore *)self fileManager];
+  path = [lCopy path];
+  v9 = [fileManager attributesOfItemAtPath:path error:error];
 
   if (v9)
   {
@@ -579,7 +579,7 @@ LABEL_23:
     v12 = AVTDefaultFileProtectionType();
     v13 = [v11 isEqual:v12];
 
-    if ((v13 & 1) != 0 || (v14 = [v9 mutableCopy], AVTDefaultFileProtectionType(), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setObject:forKeyedSubscript:", v15, v10), v15, -[AVTImageStore fileManager](self, "fileManager"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "path"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "setAttributes:ofItemAtPath:error:", v14, v17, a4), v17, v16, v14, v18))
+    if ((v13 & 1) != 0 || (v14 = [v9 mutableCopy], AVTDefaultFileProtectionType(), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setObject:forKeyedSubscript:", v15, v10), v15, -[AVTImageStore fileManager](self, "fileManager"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "setAttributes:ofItemAtPath:error:", v14, v17, error), v17, v16, v14, v18))
     {
       LOBYTE(v18) = 1;
     }
@@ -593,11 +593,11 @@ LABEL_23:
   return v18;
 }
 
-- (id)_imageForItem:(id)a3 scope:(id)a4 cacheMissHandler:(id)a5
+- (id)_imageForItem:(id)item scope:(id)scope cacheMissHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  scopeCopy = scope;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
     v31 = 0;
@@ -616,11 +616,11 @@ LABEL_23:
     v21[3] = &unk_1E7F3D520;
     v25 = &v31;
     v21[4] = self;
-    v11 = v8;
+    v11 = itemCopy;
     v22 = v11;
-    v12 = v9;
+    v12 = scopeCopy;
     v23 = v12;
-    v24 = v10;
+    v24 = handlerCopy;
     v26 = &v27;
     [(AVTImageStore *)self performStateWork:v21];
     if (*(v28 + 24) == 1)
@@ -631,9 +631,9 @@ LABEL_23:
       v15 = v20;
       if (!v14)
       {
-        v16 = [(AVTImageStore *)self logger];
+        logger = [(AVTImageStore *)self logger];
         v17 = [v15 description];
-        [v16 logImageStoreSavingError:v17 code:{objc_msgSend(v15, "code")}];
+        [logger logImageStoreSavingError:v17 code:{objc_msgSend(v15, "code")}];
       }
     }
 
@@ -643,9 +643,9 @@ LABEL_23:
     _Block_object_dispose(&v31, 8);
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v18 = (*(v10 + 2))(v10, v8, v9);
+    v18 = (*(handlerCopy + 2))(handlerCopy, itemCopy, scopeCopy);
   }
 
   else
@@ -706,12 +706,12 @@ void __54__AVTImageStore__imageForItem_scope_cacheMissHandler___block_invoke(uin
   }
 }
 
-- (BOOL)resourceExistsInCacheForItem:(id)a3 scope:(id)a4
+- (BOOL)resourceExistsInCacheForItem:(id)item scope:(id)scope
 {
-  v5 = [(AVTImageStore *)self resourceURLForItem:a3 scope:a4];
-  v6 = [(AVTImageStore *)self fileManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  v5 = [(AVTImageStore *)self resourceURLForItem:item scope:scope];
+  fileManager = [(AVTImageStore *)self fileManager];
+  path = [v5 path];
+  v8 = [fileManager fileExistsAtPath:path];
 
   return v8;
 }

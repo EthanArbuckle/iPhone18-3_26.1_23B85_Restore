@@ -1,94 +1,94 @@
 @interface IAMWebProcessPlugInLoadDelegate
-- (void)setWebProcessJSOContentPages:(id)a3;
-- (void)setWebProcessJSOState:(int64_t)a3;
+- (void)setWebProcessJSOContentPages:(id)pages;
+- (void)setWebProcessJSOState:(int64_t)state;
 - (void)webProcessJSODidCallClose;
-- (void)webProcessJSODidCallOpen:(id)a3 options:(id)a4;
-- (void)webProcessJSODidCallPerformAction:(id)a3 options:(id)a4;
-- (void)webProcessJSODidReportEvent:(id)a3;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
+- (void)webProcessJSODidCallOpen:(id)open options:(id)options;
+- (void)webProcessJSODidCallPerformAction:(id)action options:(id)options;
+- (void)webProcessJSODidReportEvent:(id)event;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
 @end
 
 @implementation IAMWebProcessPlugInLoadDelegate
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
-  v17 = a4;
-  v7 = a5;
-  v8 = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
+  frameCopy = frame;
+  worldCopy = world;
+  currentJSContext = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
 
-  if (!v8)
+  if (!currentJSContext)
   {
-    v9 = [v17 jsContextForWorld:v7];
+    v9 = [frameCopy jsContextForWorld:worldCopy];
     [(IAMWebProcessPlugInLoadDelegate *)self setCurrentJSContext:v9];
 
     v10 = objc_opt_new();
     [(IAMWebProcessPlugInLoadDelegate *)self setWebProcessJSO:v10];
 
-    v11 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
-    [v11 setDelegate:self];
+    webProcessJSO = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+    [webProcessJSO setDelegate:self];
 
-    v12 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
-    v13 = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
-    [v13 setObject:v12 forKeyedSubscript:@"inappmessages"];
+    webProcessJSO2 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+    currentJSContext2 = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
+    [currentJSContext2 setObject:webProcessJSO2 forKeyedSubscript:@"inappmessages"];
 
-    v14 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
-    v15 = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
-    [v14 initializeInContext:v15];
+    webProcessJSO3 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+    currentJSContext3 = [(IAMWebProcessPlugInLoadDelegate *)self currentJSContext];
+    [webProcessJSO3 initializeInContext:currentJSContext3];
 
-    v16 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-    [v16 webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame];
+    webProcessDelegate = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+    [webProcessDelegate webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame];
   }
 }
 
-- (void)webProcessJSODidReportEvent:(id)a3
+- (void)webProcessJSODidReportEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v5 webProcessJSODidReportEvent:v4];
+  eventCopy = event;
+  webProcessDelegate = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessJSODidReportEvent:eventCopy];
 }
 
-- (void)webProcessJSODidCallPerformAction:(id)a3 options:(id)a4
+- (void)webProcessJSODidCallPerformAction:(id)action options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v8 webProcessJSODidCallPerformAction:v7 options:v6];
+  optionsCopy = options;
+  actionCopy = action;
+  webProcessDelegate = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessJSODidCallPerformAction:actionCopy options:optionsCopy];
 }
 
-- (void)webProcessJSODidCallOpen:(id)a3 options:(id)a4
+- (void)webProcessJSODidCallOpen:(id)open options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v8 webProcessJSODidCallOpen:v7 options:v6];
+  optionsCopy = options;
+  openCopy = open;
+  webProcessDelegate = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessJSODidCallOpen:openCopy options:optionsCopy];
 }
 
 - (void)webProcessJSODidCallClose
 {
-  v2 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v2 webProcessJSODidCallClose];
+  webProcessDelegate = [(IAMWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessJSODidCallClose];
 }
 
-- (void)setWebProcessJSOContentPages:(id)a3
+- (void)setWebProcessJSOContentPages:(id)pages
 {
-  v6 = a3;
-  v4 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+  pagesCopy = pages;
+  webProcessJSO = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
 
-  if (v4)
+  if (webProcessJSO)
   {
-    v5 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
-    [v5 setContentPages:v6];
+    webProcessJSO2 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+    [webProcessJSO2 setContentPages:pagesCopy];
   }
 }
 
-- (void)setWebProcessJSOState:(int64_t)a3
+- (void)setWebProcessJSOState:(int64_t)state
 {
-  v5 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+  webProcessJSO = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
 
-  if (v5)
+  if (webProcessJSO)
   {
-    v6 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
-    [v6 setState:a3];
+    webProcessJSO2 = [(IAMWebProcessPlugInLoadDelegate *)self webProcessJSO];
+    [webProcessJSO2 setState:state];
   }
 }
 

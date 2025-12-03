@@ -1,13 +1,13 @@
 @interface DADAccessManager
 + (id)sharedManager;
-- (BOOL)isAccountID:(id)a3 folderID:(id)a4 watchedByClientBesides:(id)a5;
+- (BOOL)isAccountID:(id)d folderID:(id)iD watchedByClientBesides:(id)besides;
 - (DADAccessManager)init;
 - (id)_init;
 - (id)stateString;
 - (void)_setupServerConnection;
-- (void)addPersistentClientWithAccountID:(id)a3 clientID:(id)a4 watchedIDs:(id)a5;
+- (void)addPersistentClientWithAccountID:(id)d clientID:(id)iD watchedIDs:(id)ds;
 - (void)dealloc;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation DADAccessManager
@@ -20,7 +20,7 @@
   if (os_log_type_enabled(v2, *MEMORY[0x277D03988]))
   {
     v4 = 138412290;
-    v5 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_248524000, v2, v3, "Couldn't checkin with our port. Aborting.\nIf running from the command line make sure you don't already have %@ registered with launchd.", &v4, 0xCu);
   }
 
@@ -321,16 +321,16 @@ LABEL_52:
 
 + (id)sharedManager
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!gManager)
   {
-    v3 = [[v2 alloc] _init];
+    _init = [[selfCopy alloc] _init];
     v4 = gManager;
-    gManager = v3;
+    gManager = _init;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = gManager;
 
@@ -347,51 +347,51 @@ LABEL_52:
   [(DADAccessManager *)&v4 dealloc];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(DADAccessManager *)v5 clients];
+    clients = [(DADAccessManager *)selfCopy clients];
     v11 = 138412546;
-    v12 = v4;
+    v12 = clientCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = clients;
     _os_log_impl(&dword_248524000, v6, v7, "DADAccessManager REMOVING client %@ from Current Clients %@", &v11, 0x16u);
   }
 
-  if (v4)
+  if (clientCopy)
   {
-    v9 = [(DADAccessManager *)v5 clients];
-    [v9 removeObject:v4];
+    clients2 = [(DADAccessManager *)selfCopy clients];
+    [clients2 removeObject:clientCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPersistentClientWithAccountID:(id)a3 clientID:(id)a4 watchedIDs:(id)a5
+- (void)addPersistentClientWithAccountID:(id)d clientID:(id)iD watchedIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v9)
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (iDCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [(DADAccessManager *)v11 clients];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    clients = [(DADAccessManager *)selfCopy clients];
+    v13 = [clients countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v13)
     {
       v14 = *v25;
@@ -401,11 +401,11 @@ LABEL_52:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(clients);
           }
 
-          v16 = [*(*(&v24 + 1) + 8 * i) clientBundleID];
-          v17 = [v16 isEqualToString:v9];
+          clientBundleID = [*(*(&v24 + 1) + 8 * i) clientBundleID];
+          v17 = [clientBundleID isEqualToString:iDCopy];
 
           if (v17)
           {
@@ -414,7 +414,7 @@ LABEL_52:
             if (os_log_type_enabled(v21, v22))
             {
               *buf = 138412290;
-              v29 = v9;
+              v29 = iDCopy;
               _os_log_impl(&dword_248524000, v21, v22, "Found an existing DADClient with the same bundle id, not changing the folder list. The client ID is: %@", buf, 0xCu);
             }
 
@@ -423,7 +423,7 @@ LABEL_52:
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v13 = [clients countByEnumeratingWithState:&v24 objects:v30 count:16];
         if (v13)
         {
           continue;
@@ -439,39 +439,39 @@ LABEL_52:
   if (os_log_type_enabled(v18, v19))
   {
     *buf = 138412290;
-    v29 = v9;
+    v29 = iDCopy;
     _os_log_impl(&dword_248524000, v18, v19, "Add DADClient for client %@", buf, 0xCu);
   }
 
-  v20 = [[DADClient alloc] initWithClientID:v9];
-  v12 = [(DADAccessManager *)v11 clients];
-  [v12 addObject:v20];
+  v20 = [[DADClient alloc] initWithClientID:iDCopy];
+  clients = [(DADAccessManager *)selfCopy clients];
+  [clients addObject:v20];
 LABEL_17:
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   if (v20)
   {
-    [(DADClient *)v20 beginMonitoringPersistentFolders:v10 forAccount:v8];
+    [(DADClient *)v20 beginMonitoringPersistentFolders:dsCopy forAccount:dCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAccountID:(id)a3 folderID:(id)a4 watchedByClientBesides:(id)a5
+- (BOOL)isAccountID:(id)d folderID:(id)iD watchedByClientBesides:(id)besides
 {
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
+  dCopy = d;
+  iDCopy = iD;
+  besidesCopy = besides;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v10;
-  v11 = [(DADAccessManager *)v10 clients];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = selfCopy;
+  clients = [(DADAccessManager *)selfCopy clients];
+  v12 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = *v24;
@@ -481,22 +481,22 @@ LABEL_17:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(clients);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 clientUniqueID];
-        v17 = [v9 clientUniqueID];
-        v18 = [v16 isEqualToString:v17];
+        clientUniqueID = [v15 clientUniqueID];
+        clientUniqueID2 = [besidesCopy clientUniqueID];
+        v18 = [clientUniqueID isEqualToString:clientUniqueID2];
 
-        if (v18 & 1) == 0 && ([v15 isMonitoringAccountID:v22 folderID:v8])
+        if (v18 & 1) == 0 && ([v15 isMonitoringAccountID:dCopy folderID:iDCopy])
         {
           LOBYTE(v12) = 1;
           goto LABEL_12;
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         continue;
@@ -517,12 +517,12 @@ LABEL_12:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DADAccessManager *)v4 clients];
-  v6 = [v5 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clients = [(DADAccessManager *)selfCopy clients];
+  v6 = [clients copy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -542,11 +542,11 @@ LABEL_12:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 outstandingStopMonitoringAgentRequests];
-        if (v12)
+        outstandingStopMonitoringAgentRequests = [v11 outstandingStopMonitoringAgentRequests];
+        if (outstandingStopMonitoringAgentRequests)
         {
-          v13 = [v11 clientName];
-          [v3 appendFormat:@"Client %@ (%i) has %lu outstanding stop requests\n", v13, objc_msgSend(v11, "clientPID"), v12];
+          clientName = [v11 clientName];
+          [v3 appendFormat:@"Client %@ (%i) has %lu outstanding stop requests\n", clientName, objc_msgSend(v11, "clientPID"), outstandingStopMonitoringAgentRequests];
         }
       }
 

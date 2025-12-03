@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitSpeed == a1)
+  if (NSUnitSpeed == self)
   {
     objc_opt_class();
   }

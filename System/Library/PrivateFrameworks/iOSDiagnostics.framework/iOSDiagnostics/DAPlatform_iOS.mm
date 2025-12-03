@@ -4,7 +4,7 @@
 - (void)dimCheckerBoardDisplay;
 - (void)exitCheckerBoard;
 - (void)hideSceneStatusBar;
-- (void)sceneStatusBarStyle:(int64_t)a3;
+- (void)sceneStatusBarStyle:(int64_t)style;
 - (void)showSceneStatusBar;
 - (void)undimCheckerBoardDisplay;
 @end
@@ -36,12 +36,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CBSUtilities proxyServer: %@", &v16, 0xCu);
   }
 
-  v4 = [v2 server];
-  v5 = [v2 port];
-  v6 = v5;
-  if (v4)
+  server = [v2 server];
+  port = [v2 port];
+  v6 = port;
+  if (server)
   {
-    v7 = v5 == 0;
+    v7 = port == 0;
   }
 
   else
@@ -53,19 +53,19 @@
   if (!v7)
   {
     v9 = +[ASTEnvironment currentEnvironment];
-    [v9 setSOCKSProxyServer:v4];
+    [v9 setSOCKSProxyServer:server];
     [v9 setSOCKSProxyPort:v6];
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = +[ASTEnvironment currentEnvironment];
-      v12 = [v11 SOCKSProxyServer];
+      sOCKSProxyServer = [v11 SOCKSProxyServer];
       v13 = +[ASTEnvironment currentEnvironment];
-      v14 = [v13 SOCKSProxyPort];
+      sOCKSProxyPort = [v13 SOCKSProxyPort];
       v16 = 138412546;
-      v17 = v12;
+      v17 = sOCKSProxyServer;
       v18 = 2112;
-      v19 = v14;
+      v19 = sOCKSProxyPort;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set ASTEnvironment to %@, %@", &v16, 0x16u);
     }
   }
@@ -113,7 +113,7 @@
   }
 }
 
-- (void)sceneStatusBarStyle:(int64_t)a3
+- (void)sceneStatusBarStyle:(int64_t)style
 {
   if ([(DAPlatform_iOS *)self isCheckerBoardActive])
   {
@@ -121,11 +121,11 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = a3;
+      styleCopy = style;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CBSUtilities: sceneStatusBarStyle %li", &v5, 0xCu);
     }
 
-    [CBSUtilities sceneStatusBarStyle:a3];
+    [CBSUtilities sceneStatusBarStyle:style];
   }
 }
 

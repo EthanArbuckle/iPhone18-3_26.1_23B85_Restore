@@ -1,10 +1,10 @@
 @interface FBSShutdownOptions
 - (FBSShutdownOptions)init;
-- (FBSShutdownOptions)initWithReason:(id)a3;
+- (FBSShutdownOptions)initWithReason:(id)reason;
 - (NSCopying)localContext;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -23,7 +23,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSShutdownOptions.m";
     v16 = 1024;
@@ -37,10 +37,10 @@
   _bs_set_crash_log_message();
 }
 
-- (FBSShutdownOptions)initWithReason:(id)a3
+- (FBSShutdownOptions)initWithReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(FBSShutdownOptions *)a2 initWithReason:?];
   }
@@ -50,7 +50,7 @@
   v6 = [(FBSShutdownOptions *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [reasonCopy copy];
     reason = v6->_reason;
     v6->_reason = v7;
   }
@@ -58,17 +58,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [FBSShutdownOptions alloc];
-  v6 = [(NSString *)self->_reason copyWithZone:a3];
+  v6 = [(NSString *)self->_reason copyWithZone:zone];
   v7 = [(FBSShutdownOptions *)v5 initWithReason:v6];
 
   [(FBSShutdownOptions *)v7 setRebootType:self->_rebootType];
   [(FBSShutdownOptions *)v7 setSource:self->_source];
   [(FBSShutdownOptions *)v7 setLPEMOption:self->_LPEMOption];
   WeakRetained = objc_loadWeakRetained(&self->_localContext);
-  v9 = [WeakRetained copyWithZone:a3];
+  v9 = [WeakRetained copyWithZone:zone];
   [(FBSShutdownOptions *)v7 setLocalContext:v9];
 
   return v7;
@@ -76,30 +76,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSShutdownOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSShutdownOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSShutdownOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSShutdownOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSShutdownOptions *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(FBSShutdownOptions *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__FBSShutdownOptions_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyProem:v9];
   v7 = v5;
 

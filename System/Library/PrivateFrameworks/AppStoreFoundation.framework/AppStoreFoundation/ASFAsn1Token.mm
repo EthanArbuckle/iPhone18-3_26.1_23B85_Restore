@@ -1,11 +1,11 @@
 @interface ASFAsn1Token
-+ (ASFAsn1OSToken)readTokenFromBuffer:(char)a3 opaque:(void *)a4 length:;
-+ (id)readTokenFromBuffer:(void *)a3 length:;
++ (ASFAsn1OSToken)readTokenFromBuffer:(char)buffer opaque:(void *)opaque length:;
++ (id)readTokenFromBuffer:(void *)buffer length:;
 @end
 
 @implementation ASFAsn1Token
 
-+ (ASFAsn1OSToken)readTokenFromBuffer:(char)a3 opaque:(void *)a4 length:
++ (ASFAsn1OSToken)readTokenFromBuffer:(char)buffer opaque:(void *)opaque length:
 {
   v5 = a2;
   objc_opt_self();
@@ -60,9 +60,9 @@
 
   v16 = [v11 subdataWithRange:{v46, v15}];
 
-  if (a4)
+  if (opaque)
   {
-    *a4 = v14 + v8 + v15;
+    *opaque = v14 + v8 + v15;
   }
 
   if (v47)
@@ -206,7 +206,7 @@ LABEL_32:
         v37 = v33->super.mData;
         v33->super.mData = v36;
 
-        if (a3)
+        if (buffer)
         {
           v38 = 0;
         }
@@ -235,11 +235,11 @@ LABEL_38:
   return v21;
 }
 
-+ (id)readTokenFromBuffer:(void *)a3 length:
++ (id)readTokenFromBuffer:(void *)buffer length:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [ASFAsn1Token readTokenFromBuffer:v4 opaque:0 length:a3];
+  v5 = [ASFAsn1Token readTokenFromBuffer:v4 opaque:0 length:buffer];
 
   return v5;
 }

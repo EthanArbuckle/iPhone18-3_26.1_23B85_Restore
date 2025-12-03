@@ -1,18 +1,18 @@
 @interface CNAutocompleteUsageMonitor
-+ (void)userIgnoredResultsForRequest:(id)a3 afterDelay:(double)a4;
++ (void)userIgnoredResultsForRequest:(id)request afterDelay:(double)delay;
 - (CNAutocompleteUsageMonitor)init;
-- (CNAutocompleteUsageMonitor)initWithProbeProvider:(id)a3;
-- (void)userIgnoredResultsOfBatch:(unint64_t)a3 forRequest:(id)a4 afterDelay:(double)a5;
-- (void)userSawNumberOfResults:(unint64_t)a3 forBatch:(unint64_t)a4 includingNumberOfSuggestions:(unint64_t)a5 forRequest:(id)a6;
+- (CNAutocompleteUsageMonitor)initWithProbeProvider:(id)provider;
+- (void)userIgnoredResultsOfBatch:(unint64_t)batch forRequest:(id)request afterDelay:(double)delay;
+- (void)userSawNumberOfResults:(unint64_t)results forBatch:(unint64_t)batch includingNumberOfSuggestions:(unint64_t)suggestions forRequest:(id)request;
 @end
 
 @implementation CNAutocompleteUsageMonitor
 
-+ (void)userIgnoredResultsForRequest:(id)a3 afterDelay:(double)a4
++ (void)userIgnoredResultsForRequest:(id)request afterDelay:(double)delay
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
-  [v7 userIgnoredResultsOfBatch:0 forRequest:v6 afterDelay:a4];
+  requestCopy = request;
+  v7 = objc_alloc_init(self);
+  [v7 userIgnoredResultsOfBatch:0 forRequest:requestCopy afterDelay:delay];
 }
 
 - (CNAutocompleteUsageMonitor)init
@@ -23,71 +23,71 @@
   return v4;
 }
 
-- (CNAutocompleteUsageMonitor)initWithProbeProvider:(id)a3
+- (CNAutocompleteUsageMonitor)initWithProbeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CNAutocompleteUsageMonitor;
   v6 = [(CNAutocompleteUsageMonitor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_probeProvider, a3);
+    objc_storeStrong(&v6->_probeProvider, provider);
   }
 
   return v7;
 }
 
-- (void)userIgnoredResultsOfBatch:(unint64_t)a3 forRequest:(id)a4 afterDelay:(double)a5
+- (void)userIgnoredResultsOfBatch:(unint64_t)batch forRequest:(id)request afterDelay:(double)delay
 {
-  v8 = a4;
-  v9 = [(CNAutocompleteUsageMonitor *)self probeProvider];
-  v12 = [v9 usageMonitorProbe];
+  requestCopy = request;
+  probeProvider = [(CNAutocompleteUsageMonitor *)self probeProvider];
+  usageMonitorProbe = [probeProvider usageMonitorProbe];
 
   v10 = *MEMORY[0x277CFBD30];
-  v11 = [v8 searchString];
+  searchString = [requestCopy searchString];
 
-  LODWORD(v10) = (*(v10 + 16))(v10, v11);
+  LODWORD(v10) = (*(v10 + 16))(v10, searchString);
   if (v10)
   {
-    [v12 recordUserIgnoredPredictionAfterDelay:a5];
+    [usageMonitorProbe recordUserIgnoredPredictionAfterDelay:delay];
   }
 
   else
   {
-    [v12 recordUserIgnoredPrefixedResultAfterDelay:a3 batch:a5];
+    [usageMonitorProbe recordUserIgnoredPrefixedResultAfterDelay:batch batch:delay];
   }
 
-  [v12 sendData];
+  [usageMonitorProbe sendData];
 }
 
-- (void)userSawNumberOfResults:(unint64_t)a3 forBatch:(unint64_t)a4 includingNumberOfSuggestions:(unint64_t)a5 forRequest:(id)a6
+- (void)userSawNumberOfResults:(unint64_t)results forBatch:(unint64_t)batch includingNumberOfSuggestions:(unint64_t)suggestions forRequest:(id)request
 {
-  v9 = a6;
-  v10 = [(CNAutocompleteUsageMonitor *)self probeProvider];
-  v14 = [v10 usageMonitorProbe];
+  requestCopy = request;
+  probeProvider = [(CNAutocompleteUsageMonitor *)self probeProvider];
+  usageMonitorProbe = [probeProvider usageMonitorProbe];
 
   v11 = *MEMORY[0x277CFBD30];
-  v12 = [v9 searchString];
+  searchString = [requestCopy searchString];
 
-  LODWORD(v11) = (*(v11 + 16))(v11, v12);
+  LODWORD(v11) = (*(v11 + 16))(v11, searchString);
   if (v11)
   {
-    [v14 recordUserSawPredictions];
+    [usageMonitorProbe recordUserSawPredictions];
   }
 
-  if (a5)
+  if (suggestions)
   {
-    [v14 recordUserSawResultsConsideredSuggestion:a5];
+    [usageMonitorProbe recordUserSawResultsConsideredSuggestion:suggestions];
   }
 
-  v13 = a3 - a5;
-  if (a3 != a5)
+  v13 = results - suggestions;
+  if (results != suggestions)
   {
-    [v14 recordUserSawCuratedResults:v13];
+    [usageMonitorProbe recordUserSawCuratedResults:v13];
   }
 
-  [v14 sendData];
+  [usageMonitorProbe sendData];
 }
 
 @end

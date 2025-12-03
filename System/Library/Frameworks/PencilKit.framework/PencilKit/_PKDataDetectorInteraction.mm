@@ -1,40 +1,40 @@
 @interface _PKDataDetectorInteraction
-- (BOOL)handleTapAtPoint:(CGPoint)a3;
+- (BOOL)handleTapAtPoint:(CGPoint)point;
 - (CGAffineTransform)drawingTransform;
 - (CGAffineTransform)highlightPreviewTransform;
 - (CGAffineTransform)highlightTransform;
 - (CGRect)sourceRect;
 - (UIView)view;
-- (_PKDataDetectorInteraction)initWithRecognitionController:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)dataDetectorHitTest:(CGPoint)a3;
-- (id)itemWithIdentifier:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)didMoveToView:(id)a3;
-- (void)setDrawingTransform:(CGAffineTransform *)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlightPreviewTransform:(CGAffineTransform *)a3;
-- (void)setHighlightTransform:(CGAffineTransform *)a3;
-- (void)tapHandler:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (_PKDataDetectorInteraction)initWithRecognitionController:(id)controller;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)dataDetectorHitTest:(CGPoint)test;
+- (id)itemWithIdentifier:(id)identifier;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)didMoveToView:(id)view;
+- (void)setDrawingTransform:(CGAffineTransform *)transform;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlightPreviewTransform:(CGAffineTransform *)transform;
+- (void)setHighlightTransform:(CGAffineTransform *)transform;
+- (void)tapHandler:(id)handler;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _PKDataDetectorInteraction
 
-- (_PKDataDetectorInteraction)initWithRecognitionController:(id)a3
+- (_PKDataDetectorInteraction)initWithRecognitionController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = _PKDataDetectorInteraction;
   v6 = [(_PKDataDetectorInteraction *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recognitionController, a3);
-    v8 = [v5 dataDetectorController];
+    objc_storeStrong(&v6->_recognitionController, controller);
+    dataDetectorController = [controllerCopy dataDetectorController];
     dataDetectorController = v7->_dataDetectorController;
-    v7->_dataDetectorController = v8;
+    v7->_dataDetectorController = dataDetectorController;
 
     v10 = MEMORY[0x1E695EFD0];
     v11 = *MEMORY[0x1E695EFD0];
@@ -57,21 +57,21 @@
   return v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled == a3)
+  if (self->_enabled == enabled)
   {
     return;
   }
 
-  v3 = a3;
-  self->_enabled = a3;
+  enabledCopy = enabled;
+  self->_enabled = enabled;
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:?];
-  v5 = [(_PKDataDetectorInteraction *)self view];
-  if (!v5 || !v3)
+  view = [(_PKDataDetectorInteraction *)self view];
+  if (!view || !enabledCopy)
   {
 
-    if (v3)
+    if (enabledCopy)
     {
       return;
     }
@@ -83,7 +83,7 @@
 
   if (menuInteraction)
   {
-    if (v3)
+    if (enabledCopy)
     {
       return;
     }
@@ -94,8 +94,8 @@ LABEL_8:
       return;
     }
 
-    v7 = [(_PKDataDetectorInteraction *)self view];
-    [v7 removeInteraction:self->_menuInteraction];
+    view2 = [(_PKDataDetectorInteraction *)self view];
+    [view2 removeInteraction:self->_menuInteraction];
 
     v8 = self->_menuInteraction;
     self->_menuInteraction = 0;
@@ -106,25 +106,25 @@ LABEL_8:
   v10 = self->_menuInteraction;
   self->_menuInteraction = v9;
 
-  v11 = [(_PKDataDetectorInteraction *)self view];
-  [(UIContextMenuInteraction *)v11 addInteraction:self->_menuInteraction];
-  v8 = v11;
+  view3 = [(_PKDataDetectorInteraction *)self view];
+  [(UIContextMenuInteraction *)view3 addInteraction:self->_menuInteraction];
+  v8 = view3;
 LABEL_12:
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(_PKDataDetectorInteraction *)self view];
-  if (v4)
+  view = [(_PKDataDetectorInteraction *)self view];
+  if (view)
   {
-    v5 = v4;
-    v6 = [(_PKDataDetectorInteraction *)self menuInteraction];
+    v5 = view;
+    menuInteraction = [(_PKDataDetectorInteraction *)self menuInteraction];
 
-    if (v6)
+    if (menuInteraction)
     {
-      v7 = [(_PKDataDetectorInteraction *)self view];
-      v8 = [(_PKDataDetectorInteraction *)self menuInteraction];
-      [v7 removeInteraction:v8];
+      view2 = [(_PKDataDetectorInteraction *)self view];
+      menuInteraction2 = [(_PKDataDetectorInteraction *)self menuInteraction];
+      [view2 removeInteraction:menuInteraction2];
 
       menuInteraction = self->_menuInteraction;
       self->_menuInteraction = 0;
@@ -132,12 +132,12 @@ LABEL_12:
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v9 = a3;
-  [(_PKDataDetectorInteraction *)self setView:v9];
-  v4 = v9;
-  if (v9)
+  viewCopy = view;
+  [(_PKDataDetectorInteraction *)self setView:viewCopy];
+  v4 = viewCopy;
+  if (viewCopy)
   {
     if ([(_PKDataDetectorInteraction *)self isEnabled])
     {
@@ -145,7 +145,7 @@ LABEL_12:
       menuInteraction = self->_menuInteraction;
       self->_menuInteraction = v5;
 
-      [v9 addInteraction:self->_menuInteraction];
+      [viewCopy addInteraction:self->_menuInteraction];
     }
 
     v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tapHandler_];
@@ -153,24 +153,24 @@ LABEL_12:
     self->_tapGestureRecognizer = v7;
 
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:[(_PKDataDetectorInteraction *)self isEnabled]];
-    [v9 addGestureRecognizer:self->_tapGestureRecognizer];
-    v4 = v9;
+    [viewCopy addGestureRecognizer:self->_tapGestureRecognizer];
+    v4 = viewCopy;
   }
 }
 
-- (id)dataDetectorHitTest:(CGPoint)a3
+- (id)dataDetectorHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
-  v4 = [(_PKDataDetectorInteraction *)self view];
-  if ([v4 isHidden])
+  y = test.y;
+  x = test.x;
+  view = [(_PKDataDetectorInteraction *)self view];
+  if ([view isHidden])
   {
   }
 
   else
   {
-    v5 = [(_PKDataDetectorInteraction *)self view];
-    [v5 alpha];
+    view2 = [(_PKDataDetectorInteraction *)self view];
+    [view2 alpha];
     v7 = v6;
 
     if (v7 > 0.0)
@@ -193,16 +193,16 @@ LABEL_7:
   return v8;
 }
 
-- (id)itemWithIdentifier:(id)a3
+- (id)itemWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(_PKDataDetectorController *)self->_dataDetectorController currentItems];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  currentItems = [(_PKDataDetectorController *)self->_dataDetectorController currentItems];
+  v6 = [currentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -213,7 +213,7 @@ LABEL_7:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -221,8 +221,8 @@ LABEL_7:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:v4];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:identifierCopy];
 
           if (v13)
           {
@@ -231,7 +231,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [currentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -243,21 +243,21 @@ LABEL_12:
   return v11;
 }
 
-- (void)tapHandler:(id)a3
+- (void)tapHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_PKDataDetectorInteraction *)self view];
-  [v4 locationInView:v5];
+  handlerCopy = handler;
+  view = [(_PKDataDetectorInteraction *)self view];
+  [handlerCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
   [(_PKDataDetectorInteraction *)self handleTapAtPoint:v7, v9];
 }
 
-- (BOOL)handleTapAtPoint:(CGPoint)a3
+- (BOOL)handleTapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(_PKDataDetectorInteraction *)self dataDetectorHitTest:?];
   v7 = v6;
   if (v6)
@@ -267,37 +267,37 @@ LABEL_12:
     v9 = v8;
     [v7 _frame];
     CGAffineTransformMakeTranslation(&v21, v9, v10);
-    v11 = [(_PKDataDetectorInteraction *)self menuInteraction];
-    v12 = [(_PKDataDetectorInteraction *)self view];
+    menuInteraction = [(_PKDataDetectorInteraction *)self menuInteraction];
+    view = [(_PKDataDetectorInteraction *)self view];
     [(_PKDataDetectorInteraction *)self drawingTransform];
     [(_PKDataDetectorInteraction *)self highlightTransform];
     [(_PKDataDetectorInteraction *)self sourceRect];
     v18 = v21;
-    [v7 handleTapForMenuForInteraction:v11 location:v12 view:&v18 viewTransform:v20 drawingTransform:v19 highlightTransform:x sourceRect:{y, v13, v14, v15, v16}];
+    [v7 handleTapForMenuForInteraction:menuInteraction location:view view:&v18 viewTransform:v20 drawingTransform:v19 highlightTransform:x sourceRect:{y, v13, v14, v15, v16}];
   }
 
   return v7 != 0;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_PKDataDetectorInteraction *)self dataDetectorHitTest:a3];
-  v8 = [(_PKDataDetectorInteraction *)self menuInteraction];
-  v9 = [(_PKDataDetectorInteraction *)self view];
-  v10 = [v7 identifier];
+  y = location.y;
+  x = location.x;
+  v7 = [(_PKDataDetectorInteraction *)self dataDetectorHitTest:interaction];
+  menuInteraction = [(_PKDataDetectorInteraction *)self menuInteraction];
+  view = [(_PKDataDetectorInteraction *)self view];
+  identifier = [v7 identifier];
   [(_PKDataDetectorInteraction *)self sourceRect];
-  v15 = [v7 contextMenuInteraction:v8 configurationForMenuAtLocation:v9 view:v10 identifier:x sourceRect:{y, v11, v12, v13, v14}];
+  v15 = [v7 contextMenuInteraction:menuInteraction configurationForMenuAtLocation:view view:identifier identifier:x sourceRect:{y, v11, v12, v13, v14}];
 
   return v15;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_PKDataDetectorInteraction *)self itemWithIdentifier:a5];
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  v10 = [(_PKDataDetectorInteraction *)self itemWithIdentifier:identifier];
   [v10 _frame];
   v12 = v11;
   v14 = v13;
@@ -313,21 +313,21 @@ LABEL_12:
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
-  v23 = [(_PKDataDetectorInteraction *)self view];
-  v24 = [v10 contextMenuInteraction:v9 configuration:v8 highlightPreviewInContainerView:v23 frame:{x, y, width, height}];
+  view = [(_PKDataDetectorInteraction *)self view];
+  v24 = [v10 contextMenuInteraction:interactionCopy configuration:configurationCopy highlightPreviewInContainerView:view frame:{x, y, width, height}];
 
   return v24;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 identifier];
-  v12 = [(_PKDataDetectorInteraction *)self itemWithIdentifier:v11];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  identifier = [configurationCopy identifier];
+  v12 = [(_PKDataDetectorInteraction *)self itemWithIdentifier:identifier];
 
-  [v12 contextMenuInteraction:v10 willPerformPreviewActionForMenuWithConfiguration:v9 animator:v8];
+  [v12 contextMenuInteraction:interactionCopy willPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
 - (CGAffineTransform)drawingTransform
@@ -339,11 +339,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setDrawingTransform:(CGAffineTransform *)a3
+- (void)setDrawingTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_drawingTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_drawingTransform.tx = *&transform->tx;
   *&self->_drawingTransform.c = v4;
   *&self->_drawingTransform.a = v3;
 }
@@ -357,11 +357,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setHighlightTransform:(CGAffineTransform *)a3
+- (void)setHighlightTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_highlightTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_highlightTransform.tx = *&transform->tx;
   *&self->_highlightTransform.c = v4;
   *&self->_highlightTransform.a = v3;
 }
@@ -375,11 +375,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setHighlightPreviewTransform:(CGAffineTransform *)a3
+- (void)setHighlightPreviewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_highlightPreviewTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_highlightPreviewTransform.tx = *&transform->tx;
   *&self->_highlightPreviewTransform.c = v4;
   *&self->_highlightPreviewTransform.a = v3;
 }

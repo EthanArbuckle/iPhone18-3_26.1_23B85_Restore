@@ -1,50 +1,50 @@
 @interface DMCAccountNotificationPlugin
-- (void)_logAccountModification:(id)a3 changeType:(int)a4 accountStore:(id)a5;
-- (void)_managedAppleAccount:(id)a3 modifiedFromOldAccount:(id)a4 inStore:(id)a5;
-- (void)_postNotification:(id)a3;
-- (void)_updateUsernameOfRMAccountWithAppleAccount:(id)a3 inStore:(id)a4;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)_logAccountModification:(id)modification changeType:(int)type accountStore:(id)store;
+- (void)_managedAppleAccount:(id)account modifiedFromOldAccount:(id)oldAccount inStore:(id)store;
+- (void)_postNotification:(id)notification;
+- (void)_updateUsernameOfRMAccountWithAppleAccount:(id)account inStore:(id)store;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation DMCAccountNotificationPlugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v20 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 1)
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  if (type == 1)
   {
-    v17 = self;
-    v18 = v20;
+    selfCopy2 = self;
+    v18 = accountCopy;
     v19 = 1;
     goto LABEL_10;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
-    v17 = self;
-    v18 = v11;
+    selfCopy2 = self;
+    v18 = oldAccountCopy;
     v19 = 3;
 LABEL_10:
-    [(DMCAccountNotificationPlugin *)v17 _logAccountModification:v18 changeType:v19 accountStore:v10];
+    [(DMCAccountNotificationPlugin *)selfCopy2 _logAccountModification:v18 changeType:v19 accountStore:storeCopy];
     goto LABEL_11;
   }
 
-  if (a4 == 2 && (+[DMCMultiUserModeUtilities inSharediPadUserSession]& 1) == 0)
+  if (type == 2 && (+[DMCMultiUserModeUtilities inSharediPadUserSession]& 1) == 0)
   {
-    v12 = v20;
-    v13 = [v12 accountType];
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+    v12 = accountCopy;
+    accountType = [v12 accountType];
+    identifier = [accountType identifier];
+    v15 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
     if (v15)
     {
-      v16 = [v12 dmc_remoteManagingAccountIdentifier];
+      dmc_remoteManagingAccountIdentifier = [v12 dmc_remoteManagingAccountIdentifier];
 
-      if (v16)
+      if (dmc_remoteManagingAccountIdentifier)
       {
-        [(DMCAccountNotificationPlugin *)self _managedAppleAccount:v12 modifiedFromOldAccount:v11 inStore:v10];
+        [(DMCAccountNotificationPlugin *)self _managedAppleAccount:v12 modifiedFromOldAccount:oldAccountCopy inStore:storeCopy];
       }
     }
 
@@ -56,23 +56,23 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_logAccountModification:(id)a3 changeType:(int)a4 accountStore:(id)a5
+- (void)_logAccountModification:(id)modification changeType:(int)type accountStore:(id)store
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 accountType];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:ACAccountTypeIdentifierRemoteManagement];
+  modificationCopy = modification;
+  storeCopy = store;
+  accountType = [modificationCopy accountType];
+  identifier = [accountType identifier];
+  v11 = [identifier isEqualToString:ACAccountTypeIdentifierRemoteManagement];
 
   if (v11)
   {
     goto LABEL_4;
   }
 
-  v12 = v7;
-  v13 = [v12 accountType];
-  v14 = [v13 identifier];
-  v15 = [v14 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+  v12 = modificationCopy;
+  accountType2 = [v12 accountType];
+  identifier2 = [accountType2 identifier];
+  v15 = [identifier2 isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
   if ((v15 & 1) == 0)
   {
@@ -80,30 +80,30 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v16 = [v12 dmc_remoteManagingAccountIdentifier];
+  dmc_remoteManagingAccountIdentifier = [v12 dmc_remoteManagingAccountIdentifier];
 
-  if (v16)
+  if (dmc_remoteManagingAccountIdentifier)
   {
 LABEL_4:
-    v17 = [v7 accountType];
-    v18 = [v17 identifier];
-    v19 = v18;
+    accountType3 = [modificationCopy accountType];
+    identifier3 = [accountType3 identifier];
+    v19 = identifier3;
     v20 = @"deleted";
-    if (a4 == 1)
+    if (type == 1)
     {
       v20 = @"added";
     }
 
-    v34 = [NSString stringWithFormat:@"%@ account %@", v18, v20];
+    v34 = [NSString stringWithFormat:@"%@ account %@", identifier3, v20];
 
     v21 = objc_opt_new();
     v22 = DMCEventsTopicAccounts;
     v35[0] = @"Account Identifier";
-    v23 = [v7 identifier];
-    v24 = v23;
-    if (v23)
+    identifier4 = [modificationCopy identifier];
+    v24 = identifier4;
+    if (identifier4)
     {
-      v25 = v23;
+      v25 = identifier4;
     }
 
     else
@@ -113,12 +113,12 @@ LABEL_4:
 
     v36[0] = v25;
     v35[1] = @"Type";
-    v26 = [v7 accountType];
-    v27 = [v26 identifier];
-    v28 = v27;
-    if (v27)
+    accountType4 = [modificationCopy accountType];
+    identifier5 = [accountType4 identifier];
+    v28 = identifier5;
+    if (identifier5)
     {
-      v29 = v27;
+      v29 = identifier5;
     }
 
     else
@@ -128,27 +128,27 @@ LABEL_4:
 
     v36[1] = v29;
     v35[2] = @"Total RM Account #";
-    [v8 dmc_RemoteManagementAccounts];
-    v31 = v30 = v8;
+    [storeCopy dmc_RemoteManagementAccounts];
+    v31 = v30 = storeCopy;
     v32 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v31 count]);
     v36[2] = v32;
     v33 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:3];
     [v21 logRegularEventForTopic:v22 reason:v34 details:v33];
 
-    v8 = v30;
+    storeCopy = v30;
   }
 
 LABEL_14:
 }
 
-- (void)_managedAppleAccount:(id)a3 modifiedFromOldAccount:(id)a4 inStore:(id)a5
+- (void)_managedAppleAccount:(id)account modifiedFromOldAccount:(id)oldAccount inStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dmc_mdmServerToken];
-  v12 = [v9 dmc_mdmServerToken];
-  v13 = [v11 isEqualToString:v12];
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  storeCopy = store;
+  dmc_mdmServerToken = [accountCopy dmc_mdmServerToken];
+  dmc_mdmServerToken2 = [oldAccountCopy dmc_mdmServerToken];
+  v13 = [dmc_mdmServerToken isEqualToString:dmc_mdmServerToken2];
 
   if (v13)
   {
@@ -165,9 +165,9 @@ LABEL_14:
     [(DMCAccountNotificationPlugin *)self _postNotification:MDMManagedAppleAccountLongLivedTokenChangedNotification];
   }
 
-  v15 = [v8 username];
-  v16 = [v9 username];
-  v17 = [v15 isEqualToString:v16];
+  username = [accountCopy username];
+  username2 = [oldAccountCopy username];
+  v17 = [username isEqualToString:username2];
 
   if ((v17 & 1) == 0)
   {
@@ -178,23 +178,23 @@ LABEL_14:
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "DMCAccountNotificationPlugin: username of AppleAccount has changed.", v19, 2u);
     }
 
-    [(DMCAccountNotificationPlugin *)self _updateUsernameOfRMAccountWithAppleAccount:v8 inStore:v10];
+    [(DMCAccountNotificationPlugin *)self _updateUsernameOfRMAccountWithAppleAccount:accountCopy inStore:storeCopy];
   }
 }
 
-- (void)_updateUsernameOfRMAccountWithAppleAccount:(id)a3 inStore:(id)a4
+- (void)_updateUsernameOfRMAccountWithAppleAccount:(id)account inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dmc_altDSID];
-  v8 = [v6 dmc_remoteManagementAccountForAltDSID:v7];
+  accountCopy = account;
+  storeCopy = store;
+  dmc_altDSID = [accountCopy dmc_altDSID];
+  v8 = [storeCopy dmc_remoteManagementAccountForAltDSID:dmc_altDSID];
 
   if (v8)
   {
-    v9 = [v5 username];
-    [v8 setUsername:v9];
+    username = [accountCopy username];
+    [v8 setUsername:username];
 
-    [v6 saveVerifiedAccount:v8 withCompletionHandler:&stru_4138];
+    [storeCopy saveVerifiedAccount:v8 withCompletionHandler:&stru_4138];
   }
 
   else
@@ -203,31 +203,31 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [v5 dmc_altDSID];
+      dmc_altDSID2 = [accountCopy dmc_altDSID];
       v13 = 138543362;
-      v14 = v12;
+      v14 = dmc_altDSID2;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "DMCAccountNotificationPlugin: Failed to find RM account with altDSID: %{public}@", &v13, 0xCu);
     }
   }
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = *DMCLogObjects();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = notificationCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "DMC account plugin posting notification: %{public}@", &v6, 0xCu);
   }
 
-  notify_post([v3 UTF8String]);
+  notify_post([notificationCopy UTF8String]);
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = notificationCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "DMC account plugin posted notification: %{public}@", &v6, 0xCu);
   }
 }

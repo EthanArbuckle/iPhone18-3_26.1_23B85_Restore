@@ -1,33 +1,33 @@
 @interface STPersistLocalAppsOperation
-+ (BOOL)_shouldSkipApplicationWithParentURLResourceValues:(id)a3;
-- (STPersistLocalAppsOperation)initWithPersistenceController:(id)a3 installedApps:(id)a4 backgroundActivity:(id)a5;
-- (id)_collectInstalledApps:(id)a3;
-- (void)_collectAppMetadata:(id)a3;
++ (BOOL)_shouldSkipApplicationWithParentURLResourceValues:(id)values;
+- (STPersistLocalAppsOperation)initWithPersistenceController:(id)controller installedApps:(id)apps backgroundActivity:(id)activity;
+- (id)_collectInstalledApps:(id)apps;
+- (void)_collectAppMetadata:(id)metadata;
 - (void)main;
 @end
 
 @implementation STPersistLocalAppsOperation
 
-- (STPersistLocalAppsOperation)initWithPersistenceController:(id)a3 installedApps:(id)a4 backgroundActivity:(id)a5
+- (STPersistLocalAppsOperation)initWithPersistenceController:(id)controller installedApps:(id)apps backgroundActivity:(id)activity
 {
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  activityCopy = activity;
   v14.receiver = self;
   v14.super_class = STPersistLocalAppsOperation;
-  v11 = [(STPersistenceOperation *)&v14 initWithPersistenceController:a3];
+  v11 = [(STPersistenceOperation *)&v14 initWithPersistenceController:controller];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_predeterminedInstalledAppIdentifiers, a4);
-    objc_storeStrong(&v12->_backgroundActivity, a5);
+    objc_storeStrong(&v11->_predeterminedInstalledAppIdentifiers, apps);
+    objc_storeStrong(&v12->_backgroundActivity, activity);
   }
 
   return v12;
 }
 
-- (id)_collectInstalledApps:(id)a3
+- (id)_collectInstalledApps:(id)apps
 {
-  v33 = a3;
+  appsCopy = apps;
   v34 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
@@ -55,34 +55,34 @@
 
         v9 = *(*(&v38 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v6[357] appMonitor];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+        appMonitor = [v6[357] appMonitor];
+        if (os_log_type_enabled(appMonitor, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
           v44 = v9;
-          _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Found applicationRecord %@", buf, 0xCu);
+          _os_log_debug_impl(&_mh_execute_header, appMonitor, OS_LOG_TYPE_DEBUG, "Found applicationRecord %@", buf, 0xCu);
         }
 
-        v12 = [v9 compatibilityObject];
-        v13 = [v12 applicationType];
+        compatibilityObject = [v9 compatibilityObject];
+        applicationType = [compatibilityObject applicationType];
 
-        if (([v13 isEqualToString:v37] & 1) == 0 && !objc_msgSend(v13, "isEqualToString:", v36))
+        if (([applicationType isEqualToString:v37] & 1) == 0 && !objc_msgSend(applicationType, "isEqualToString:", v36))
         {
           v15 = v6;
           v16 = v3;
-          v14 = [v9 bundleIdentifier];
-          v17 = [v9 appTags];
-          v18 = [v17 containsObject:@"hidden"];
+          bundleIdentifier = [v9 bundleIdentifier];
+          appTags = [v9 appTags];
+          v18 = [appTags containsObject:@"hidden"];
 
           if (v18)
           {
-            v19 = [v15[357] appMonitor];
+            appMonitor2 = [v15[357] appMonitor];
             v3 = v16;
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+            if (os_log_type_enabled(appMonitor2, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v44 = v14;
-              v20 = v19;
+              v44 = bundleIdentifier;
+              v20 = appMonitor2;
               v21 = "Ignoring app %@ (hidden by SBAppTags)";
               goto LABEL_36;
             }
@@ -92,13 +92,13 @@
 
           if ([v9 isLaunchProhibited])
           {
-            v19 = [v15[357] appMonitor];
+            appMonitor2 = [v15[357] appMonitor];
             v3 = v16;
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+            if (os_log_type_enabled(appMonitor2, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v44 = v14;
-              v20 = v19;
+              v44 = bundleIdentifier;
+              v20 = appMonitor2;
               v21 = "Ignoring app %@ (is an iMessage app)";
 LABEL_36:
               _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, v21, buf, 0xCu);
@@ -114,15 +114,15 @@ LABEL_25:
           }
 
           v3 = v16;
-          if ([v14 hasPrefix:@"com.apple.webapp"])
+          if ([bundleIdentifier hasPrefix:@"com.apple.webapp"])
           {
             v6 = v15;
-            v22 = [v15[357] appMonitor];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+            appMonitor3 = [v15[357] appMonitor];
+            if (os_log_type_enabled(appMonitor3, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v44 = v14;
-              v23 = v22;
+              v44 = bundleIdentifier;
+              v23 = appMonitor3;
               v24 = "Ignoring app %@ (is a web clip)";
               goto LABEL_41;
             }
@@ -130,31 +130,31 @@ LABEL_25:
 
           else
           {
-            v25 = [v9 appClipMetadata];
+            appClipMetadata = [v9 appClipMetadata];
 
-            if (!v25)
+            if (!appClipMetadata)
             {
-              v26 = [v9 applicationState];
-              v27 = [v26 isRestricted];
+              applicationState = [v9 applicationState];
+              isRestricted = [applicationState isRestricted];
 
-              if (v27)
+              if (isRestricted)
               {
-                v28 = [v15[357] appMonitor];
-                if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+                appMonitor4 = [v15[357] appMonitor];
+                if (os_log_type_enabled(appMonitor4, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v44 = v14;
-                  _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Ignoring app %@ (hidden by restrictions)", buf, 0xCu);
+                  v44 = bundleIdentifier;
+                  _os_log_debug_impl(&_mh_execute_header, appMonitor4, OS_LOG_TYPE_DEBUG, "Ignoring app %@ (hidden by restrictions)", buf, 0xCu);
                 }
               }
 
               else
               {
-                if (!v14)
+                if (!bundleIdentifier)
                 {
-                  v29 = [v15[357] appMonitor];
+                  appMonitor5 = [v15[357] appMonitor];
                   v3 = v16;
-                  if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+                  if (os_log_type_enabled(appMonitor5, OS_LOG_TYPE_DEBUG))
                   {
                     sub_100119878(v42, v9);
                   }
@@ -162,7 +162,7 @@ LABEL_25:
                   goto LABEL_18;
                 }
 
-                [v34 addObject:v14];
+                [v34 addObject:bundleIdentifier];
               }
 
               v3 = v16;
@@ -170,12 +170,12 @@ LABEL_25:
             }
 
             v6 = v15;
-            v22 = [v15[357] appMonitor];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+            appMonitor3 = [v15[357] appMonitor];
+            if (os_log_type_enabled(appMonitor3, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v44 = v14;
-              v23 = v22;
+              v44 = bundleIdentifier;
+              v23 = appMonitor3;
               v24 = "Ignoring app %@ (is an app clip)";
 LABEL_41:
               _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, v24, buf, 0xCu);
@@ -185,14 +185,14 @@ LABEL_41:
           goto LABEL_25;
         }
 
-        v14 = [v6[357] appMonitor];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        bundleIdentifier = [v6[357] appMonitor];
+        if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
           v44 = v9;
           v45 = 2112;
-          v46 = v13;
-          _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Ignoring application record %@ with type %@ (is internal or hidden)", buf, 0x16u);
+          v46 = applicationType;
+          _os_log_debug_impl(&_mh_execute_header, bundleIdentifier, OS_LOG_TYPE_DEBUG, "Ignoring application record %@ with type %@ (is internal or hidden)", buf, 0x16u);
         }
 
 LABEL_26:
@@ -214,9 +214,9 @@ LABEL_26:
   return v31;
 }
 
-+ (BOOL)_shouldSkipApplicationWithParentURLResourceValues:(id)a3
++ (BOOL)_shouldSkipApplicationWithParentURLResourceValues:(id)values
 {
-  v3 = [a3 objectForKeyedSubscript:NSURLContentTypeKey];
+  v3 = [values objectForKeyedSubscript:NSURLContentTypeKey];
   v4 = v3;
   if (v3)
   {
@@ -231,53 +231,53 @@ LABEL_26:
   return v5;
 }
 
-- (void)_collectAppMetadata:(id)a3
+- (void)_collectAppMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
+  metadataCopy = metadata;
+  bundleIdentifier = [metadataCopy bundleIdentifier];
   v24 = 0;
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v24];
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v24];
   v6 = v24;
   if (v5)
   {
     v7 = [v5 URL];
-    v8 = [v5 compatibilityObject];
-    v9 = [v8 applicationType];
-    v10 = [v9 isEqualToString:@"User"];
+    compatibilityObject = [v5 compatibilityObject];
+    applicationType = [compatibilityObject applicationType];
+    v10 = [applicationType isEqualToString:@"User"];
 
     if (v10)
     {
-      v11 = [v5 iTunesMetadata];
-      v12 = [v11 distributorInfo];
-      v13 = [v12 distributorID];
-      [v3 setDistributorID:v13];
+      iTunesMetadata = [v5 iTunesMetadata];
+      distributorInfo = [iTunesMetadata distributorInfo];
+      distributorID = [distributorInfo distributorID];
+      [metadataCopy setDistributorID:distributorID];
 
-      v14 = [v5 iTunesMetadata];
-      v15 = [v14 distributorInfo];
-      [v3 setDistributorIsThirdParty:{objc_msgSend(v15, "distributorIsThirdParty")}];
+      iTunesMetadata2 = [v5 iTunesMetadata];
+      distributorInfo2 = [iTunesMetadata2 distributorInfo];
+      [metadataCopy setDistributorIsThirdParty:{objc_msgSend(distributorInfo2, "distributorIsThirdParty")}];
 
-      v16 = [v5 iTunesMetadata];
-      v17 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v16 storeItemIdentifier]);
-      [v3 setAdamID:v17];
+      iTunesMetadata3 = [v5 iTunesMetadata];
+      v17 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata3 storeItemIdentifier]);
+      [metadataCopy setAdamID:v17];
 
-      v18 = [v5 iTunesMetadata];
-      v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v18 versionIdentifier]);
-      [v3 setVersionIdentifier:v19];
+      iTunesMetadata4 = [v5 iTunesMetadata];
+      v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata4 versionIdentifier]);
+      [metadataCopy setVersionIdentifier:v19];
 
-      v20 = [v5 iTunesMetadata];
-      v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v20 betaVersionIdentifier]);
-      [v3 setBetaVersionIdentifier:v21];
+      iTunesMetadata5 = [v5 iTunesMetadata];
+      v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata5 betaVersionIdentifier]);
+      [metadataCopy setBetaVersionIdentifier:v21];
 
       if ([v5 isProfileValidated])
       {
-        v22 = [v5 localizedName];
-        [v3 setDisplayName:v22];
+        localizedName = [v5 localizedName];
+        [metadataCopy setDisplayName:localizedName];
 
-        [v3 updateIconDataWithURL:v7];
+        [metadataCopy updateIconDataWithURL:v7];
         v23 = +[STLog appMonitor];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          sub_1001199EC(v3);
+          sub_1001199EC(metadataCopy);
         }
       }
 
@@ -319,14 +319,14 @@ LABEL_26:
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(STOperation *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(STOperation *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v6 = [(STPersistenceOperation *)self persistenceController];
-  v7 = [v6 newBackgroundContext];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
-  [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-  [v7 setName:@"STPersistLocalAppsOperation"];
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  [newBackgroundContext setName:@"STPersistLocalAppsOperation"];
   v8 = +[STLog appMonitor];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -334,23 +334,23 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Beginning new app save activity", buf, 2u);
   }
 
-  v9 = [(STPersistLocalAppsOperation *)self predeterminedInstalledAppIdentifiers];
+  predeterminedInstalledAppIdentifiers = [(STPersistLocalAppsOperation *)self predeterminedInstalledAppIdentifiers];
 
-  if (v9)
+  if (predeterminedInstalledAppIdentifiers)
   {
     [(STPersistLocalAppsOperation *)self predeterminedInstalledAppIdentifiers];
   }
 
   else
   {
-    [(STPersistLocalAppsOperation *)self _collectInstalledApps:v7];
+    [(STPersistLocalAppsOperation *)self _collectInstalledApps:newBackgroundContext];
   }
   v10 = ;
   if ([v10 count])
   {
-    v11 = [(STPersistLocalAppsOperation *)self backgroundActivity];
-    v12 = v11;
-    if (v11 && [v11 shouldDefer])
+    backgroundActivity = [(STPersistLocalAppsOperation *)self backgroundActivity];
+    v12 = backgroundActivity;
+    if (backgroundActivity && [backgroundActivity shouldDefer])
     {
       [(STPersistLocalAppsOperation *)self endOperationWithResultObject:&off_1001B22A8];
     }
@@ -361,8 +361,8 @@ LABEL_26:
       v14[1] = 3221225472;
       v14[2] = sub_10005403C;
       v14[3] = &unk_1001A3E08;
-      v15 = v7;
-      v16 = self;
+      v15 = newBackgroundContext;
+      selfCopy = self;
       v17 = v10;
       v18 = v12;
       [v15 performBlockAndWait:v14];

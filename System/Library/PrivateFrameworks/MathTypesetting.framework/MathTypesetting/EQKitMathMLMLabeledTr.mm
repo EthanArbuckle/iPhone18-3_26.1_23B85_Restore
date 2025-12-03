@@ -1,21 +1,21 @@
 @interface EQKitMathMLMLabeledTr
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 @end
 
 @implementation EQKitMathMLMLabeledTr
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  [a4 pushState:3];
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
-  [a4 popState];
+  [parser pushState:3];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:node];
+  [parser popState];
   if ([v7 count])
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v7];
     [v8 removeObjectAtIndex:0];
     v11.receiver = self;
     v11.super_class = EQKitMathMLMLabeledTr;
-    v9 = [(EQKitMathMLMTr *)&v11 initWithChildren:v8 node:a3];
+    v9 = [(EQKitMathMLMTr *)&v11 initWithChildren:v8 node:node];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface StepByStepUtilities
-+ (id)findSourceBaseByName:(id)a3 fromParamDict:(id)a4;
-+ (id)findSourceBaseByRadioName:(id)a3 fromParamDict:(id)a4;
-+ (id)findSourceConfigByName:(id)a3 fromParamDict:(id)a4;
-+ (id)findSourceNetworkByName:(id)a3 fromParamDict:(id)a4;
-+ (id)getProductLocalizedStringWithFormat:(id)a3 fromParamDict:(id)a4;
-+ (id)nameForNetworkOrDevice:(id)a3;
-+ (id)productIDForNetworkOrDevice:(id)a3;
-+ (id)selectorChoiceToReplaceOption:(int)a3;
-+ (int)getDeviceKindFromParamDict:(id)a3;
-+ (int)matrixTagToSelectorChoice:(int64_t)a3;
-+ (int64_t)autoGuessRecommendationToMatrixTag:(id)a3;
-+ (int64_t)selectorChoiceToMatrixTag:(int)a3;
-+ (unsigned)getProductIDFromParamDict:(id)a3;
-+ (void)formatRecommendation:(id)a3 fromParamDict:(id)a4 forStep:(int)a5 restoreString:(id *)a6 restoreSpecificString:(id *)a7 dontRecommendString:(id *)a8;
++ (id)findSourceBaseByName:(id)name fromParamDict:(id)dict;
++ (id)findSourceBaseByRadioName:(id)name fromParamDict:(id)dict;
++ (id)findSourceConfigByName:(id)name fromParamDict:(id)dict;
++ (id)findSourceNetworkByName:(id)name fromParamDict:(id)dict;
++ (id)getProductLocalizedStringWithFormat:(id)format fromParamDict:(id)dict;
++ (id)nameForNetworkOrDevice:(id)device;
++ (id)productIDForNetworkOrDevice:(id)device;
++ (id)selectorChoiceToReplaceOption:(int)option;
++ (int)getDeviceKindFromParamDict:(id)dict;
++ (int)matrixTagToSelectorChoice:(int64_t)choice;
++ (int64_t)autoGuessRecommendationToMatrixTag:(id)tag;
++ (int64_t)selectorChoiceToMatrixTag:(int)tag;
++ (unsigned)getProductIDFromParamDict:(id)dict;
++ (void)formatRecommendation:(id)recommendation fromParamDict:(id)dict forStep:(int)step restoreString:(id *)string restoreSpecificString:(id *)specificString dontRecommendString:(id *)recommendString;
 @end
 
 @implementation StepByStepUtilities
 
-+ (unsigned)getProductIDFromParamDict:(id)a3
++ (unsigned)getProductIDFromParamDict:(id)dict
 {
-  v4 = objc_msgSend_objectForKey_(a3, a2, @"kSBSKey_TargetBase");
+  v4 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_TargetBase");
   if (v4)
   {
 
@@ -28,15 +28,15 @@
 
   else
   {
-    v14 = objc_msgSend_objectForKey_(a3, v5, @"kSBSKey_TargetNetwork");
+    v14 = objc_msgSend_objectForKey_(dict, v5, @"kSBSKey_TargetNetwork");
 
     return objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v13, v14);
   }
 }
 
-+ (int)getDeviceKindFromParamDict:(id)a3
++ (int)getDeviceKindFromParamDict:(id)dict
 {
-  v4 = objc_msgSend_objectForKey_(a3, a2, @"kSBSKey_TargetBase");
+  v4 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_TargetBase");
   if (v4)
   {
 
@@ -45,19 +45,19 @@
 
   else
   {
-    v14 = objc_msgSend_objectForKey_(a3, v5, @"kSBSKey_TargetNetwork");
+    v14 = objc_msgSend_objectForKey_(dict, v5, @"kSBSKey_TargetNetwork");
 
     return objc_msgSend_scanInfoDeviceKind_(WiFiUtils, v13, v14);
   }
 }
 
-+ (id)getProductLocalizedStringWithFormat:(id)a3 fromParamDict:(id)a4
++ (id)getProductLocalizedStringWithFormat:(id)format fromParamDict:(id)dict
 {
   v7 = MEMORY[0x277CCACA8];
-  ProductIDFromParamDict = objc_msgSend_getProductIDFromParamDict_(a1, a2, a4);
-  DeviceKindFromParamDict = objc_msgSend_getDeviceKindFromParamDict_(a1, v9, a4);
+  ProductIDFromParamDict = objc_msgSend_getProductIDFromParamDict_(self, a2, dict);
+  DeviceKindFromParamDict = objc_msgSend_getDeviceKindFromParamDict_(self, v9, dict);
   v11 = sub_23EB6CE6C(ProductIDFromParamDict, DeviceKindFromParamDict);
-  valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v7, v12, a3, @"%@", 0, v11);
+  valid = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v7, v12, format, @"%@", 0, v11);
   if (!valid)
   {
     return &stru_285145FE8;
@@ -68,14 +68,14 @@
   return sub_23EB6CD3C(valid, v14);
 }
 
-+ (id)findSourceBaseByName:(id)a3 fromParamDict:(id)a4
++ (id)findSourceBaseByName:(id)name fromParamDict:(id)dict
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_objectForKey_(a4, a2, @"kSBSKey_BrowseRecordList", 0);
+  v5 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_BrowseRecordList", 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v16, v20, 16);
   if (!v7)
   {
@@ -95,7 +95,7 @@ LABEL_3:
 
     v12 = *(*(&v16 + 1) + 8 * v11);
     v13 = objc_msgSend_objectForKey_(v12, v8, @"name");
-    if (objc_msgSend_isEqualToString_(v13, v14, a3))
+    if (objc_msgSend_isEqualToString_(v13, v14, name))
     {
       return v12;
     }
@@ -113,14 +113,14 @@ LABEL_3:
   }
 }
 
-+ (id)findSourceBaseByRadioName:(id)a3 fromParamDict:(id)a4
++ (id)findSourceBaseByRadioName:(id)name fromParamDict:(id)dict
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_objectForKey_(a4, a2, @"kSBSKey_BrowseRecordList", 0);
+  v5 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_BrowseRecordList", 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v16, v20, 16);
   if (!v7)
   {
@@ -140,7 +140,7 @@ LABEL_3:
 
     v12 = *(*(&v16 + 1) + 8 * v11);
     v13 = objc_msgSend_objectForKey_(v12, v8, @"name");
-    if (objc_msgSend_isEqualToString_(v13, v14, a3))
+    if (objc_msgSend_isEqualToString_(v13, v14, name))
     {
       return v12;
     }
@@ -158,14 +158,14 @@ LABEL_3:
   }
 }
 
-+ (id)findSourceNetworkByName:(id)a3 fromParamDict:(id)a4
++ (id)findSourceNetworkByName:(id)name fromParamDict:(id)dict
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_objectForKey_(a4, a2, @"kSBSKey_NetworkScanRecordList", 0);
+  v5 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_NetworkScanRecordList", 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v16, v20, 16);
   if (!v7)
   {
@@ -185,7 +185,7 @@ LABEL_3:
 
     v12 = *(*(&v16 + 1) + 8 * v11);
     v13 = objc_msgSend_objectForKey_(v12, v8, @"SSID_STR");
-    if (objc_msgSend_isEqualToString_(v13, v14, a3))
+    if (objc_msgSend_isEqualToString_(v13, v14, name))
     {
       return v12;
     }
@@ -203,14 +203,14 @@ LABEL_3:
   }
 }
 
-+ (id)findSourceConfigByName:(id)a3 fromParamDict:(id)a4
++ (id)findSourceConfigByName:(id)name fromParamDict:(id)dict
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_objectForKey_(a4, a2, @"kSBSKey_PreviousConfigurationList", 0);
+  v5 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_PreviousConfigurationList", 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v16, v20, 16);
   if (!v7)
   {
@@ -230,7 +230,7 @@ LABEL_3:
 
     v12 = *(*(&v16 + 1) + 8 * v11);
     v13 = objc_msgSend_objectForKey_(v12, v8, @"device");
-    if (objc_msgSend_isEqualToString_(v13, v14, a3))
+    if (objc_msgSend_isEqualToString_(v13, v14, name))
     {
       return v12;
     }
@@ -248,33 +248,33 @@ LABEL_3:
   }
 }
 
-+ (id)selectorChoiceToReplaceOption:(int)a3
++ (id)selectorChoiceToReplaceOption:(int)option
 {
-  if ((a3 - 311) > 3)
+  if ((option - 311) > 3)
   {
     return @"Restore";
   }
 
   else
   {
-    return off_278C692D8[a3 - 311];
+    return off_278C692D8[option - 311];
   }
 }
 
-+ (int64_t)selectorChoiceToMatrixTag:(int)a3
++ (int64_t)selectorChoiceToMatrixTag:(int)tag
 {
   v3 = 1131570529;
-  if (a3 == 200)
+  if (tag == 200)
   {
     v3 = 1165522021;
   }
 
-  if (a3 == 300)
+  if (tag == 300)
   {
     v3 = 1382379628;
   }
 
-  if (a3 == 400)
+  if (tag == 400)
   {
     return 1382380404;
   }
@@ -285,9 +285,9 @@ LABEL_3:
   }
 }
 
-+ (int)matrixTagToSelectorChoice:(int64_t)a3
++ (int)matrixTagToSelectorChoice:(int64_t)choice
 {
-  if (a3 == 1165522021)
+  if (choice == 1165522021)
   {
     v3 = 200;
   }
@@ -297,12 +297,12 @@ LABEL_3:
     v3 = 100;
   }
 
-  if (a3 == 1382379628)
+  if (choice == 1382379628)
   {
     v3 = 300;
   }
 
-  if (a3 == 1382380404)
+  if (choice == 1382380404)
   {
     return 400;
   }
@@ -313,23 +313,23 @@ LABEL_3:
   }
 }
 
-+ (int64_t)autoGuessRecommendationToMatrixTag:(id)a3
++ (int64_t)autoGuessRecommendationToMatrixTag:(id)tag
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"BSSetupRecommend_OfferCreate"))
+  if (objc_msgSend_isEqualToString_(tag, a2, @"BSSetupRecommend_OfferCreate"))
   {
     return 1131570529;
   }
 
   v5 = 1165522021;
-  if ((objc_msgSend_isEqualToString_(a3, v4, @"BSSetupRecommend_OfferExtendOverEthernet") & 1) == 0 && (objc_msgSend_isEqualToString_(a3, v6, @"BSSetupRecommend_OfferExtendWirelessly") & 1) == 0 && (objc_msgSend_isEqualToString_(a3, v7, @"BSSetupRecommend_OfferJoinNetwork") & 1) == 0 && (objc_msgSend_isEqualToString_(a3, v8, @"BSSetupRecommend_AskUserChooseBaseWired") & 1) == 0 && (objc_msgSend_isEqualToString_(a3, v9, @"BSSetupRecommend_AskUserChooseBaseWireless") & 1) == 0 && (objc_msgSend_isEqualToString_(a3, v10, @"BSSetupRecommend_AskUserChooseNetworkToJoin") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(tag, v4, @"BSSetupRecommend_OfferExtendOverEthernet") & 1) == 0 && (objc_msgSend_isEqualToString_(tag, v6, @"BSSetupRecommend_OfferExtendWirelessly") & 1) == 0 && (objc_msgSend_isEqualToString_(tag, v7, @"BSSetupRecommend_OfferJoinNetwork") & 1) == 0 && (objc_msgSend_isEqualToString_(tag, v8, @"BSSetupRecommend_AskUserChooseBaseWired") & 1) == 0 && (objc_msgSend_isEqualToString_(tag, v9, @"BSSetupRecommend_AskUserChooseBaseWireless") & 1) == 0 && (objc_msgSend_isEqualToString_(tag, v10, @"BSSetupRecommend_AskUserChooseNetworkToJoin") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(a3, v11, @"BSSetupRecommend_OfferReplace"))
+    if (objc_msgSend_isEqualToString_(tag, v11, @"BSSetupRecommend_OfferReplace"))
     {
       return 1382379628;
     }
 
     v5 = 1131570529;
-    if (objc_msgSend_isEqualToString_(a3, v12, @"BSSetupRecommend_OfferReplaceConfiguration"))
+    if (objc_msgSend_isEqualToString_(tag, v12, @"BSSetupRecommend_OfferReplaceConfiguration"))
     {
       return 1382379628;
     }
@@ -338,15 +338,15 @@ LABEL_3:
   return v5;
 }
 
-+ (void)formatRecommendation:(id)a3 fromParamDict:(id)a4 forStep:(int)a5 restoreString:(id *)a6 restoreSpecificString:(id *)a7 dontRecommendString:(id *)a8
++ (void)formatRecommendation:(id)recommendation fromParamDict:(id)dict forStep:(int)step restoreString:(id *)string restoreSpecificString:(id *)specificString dontRecommendString:(id *)recommendString
 {
-  v13 = a3;
-  if (a3 || (v14 = objc_msgSend_objectForKey_(a4, a2, @"kSBSKey_RestoreRecommendation"), (v13 = v14) != 0))
+  recommendationCopy = recommendation;
+  if (recommendation || (v14 = objc_msgSend_objectForKey_(dict, a2, @"kSBSKey_RestoreRecommendation"), (recommendationCopy = v14) != 0))
   {
-    v59 = a8;
-    v15 = objc_msgSend_objectForKey_(v13, a2, @"BSAutoGuess_Recommendation");
-    v17 = objc_msgSend_objectForKey_(v13, v16, @"BSAutoGuess_RestoreData");
-    v19 = objc_msgSend_objectForKey_(v13, v18, @"BSAutoGuess_RestoreNetworkMode");
+    recommendStringCopy = recommendString;
+    v15 = objc_msgSend_objectForKey_(recommendationCopy, a2, @"BSAutoGuess_Recommendation");
+    v17 = objc_msgSend_objectForKey_(recommendationCopy, v16, @"BSAutoGuess_RestoreData");
+    v19 = objc_msgSend_objectForKey_(recommendationCopy, v18, @"BSAutoGuess_RestoreNetworkMode");
     v22 = objc_msgSend_integerValue(v19, v20, v21);
     isEqualToString = objc_msgSend_isEqualToString_(v15, v23, @"BSSetupRecommend_OfferRestore");
     valid = 0;
@@ -356,14 +356,14 @@ LABEL_3:
       {
         if (objc_msgSend_length(v17, v24, v25))
         {
-          if (a5 == 16)
+          if (step == 16)
           {
-            ProductLocalizedStringWithFormat_fromParamDict = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"WillRestoreToCreateNetworkSpecific%@", a4);
+            ProductLocalizedStringWithFormat_fromParamDict = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"WillRestoreToCreateNetworkSpecific%@", dict);
           }
 
           else
           {
-            ProductLocalizedStringWithFormat_fromParamDict = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"CanRestoreToCreateNetworkSpecific%@", a4);
+            ProductLocalizedStringWithFormat_fromParamDict = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"CanRestoreToCreateNetworkSpecific%@", dict);
           }
 
           v45 = sub_23EB6CD3C(ProductLocalizedStringWithFormat_fromParamDict, qword_27E383800);
@@ -375,7 +375,7 @@ LABEL_3:
           valid = 0;
         }
 
-        v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"CanRestoreToCreateNetwork%@", a4);
+        v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v43, @"CanRestoreToCreateNetwork%@", dict);
         goto LABEL_49;
       }
 
@@ -387,14 +387,14 @@ LABEL_3:
 
       if (objc_msgSend_length(v17, v24, v25))
       {
-        if (a5 == 16)
+        if (step == 16)
         {
-          v33 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToJoinNetworkSpecific%@", a4);
+          v33 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToJoinNetworkSpecific%@", dict);
         }
 
         else
         {
-          v33 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToJoinNetworkSpecific%@", a4);
+          v33 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToJoinNetworkSpecific%@", dict);
         }
 
         v34 = sub_23EB6CD3C(v33, qword_27E383800);
@@ -414,14 +414,14 @@ LABEL_3:
     {
       if (objc_msgSend_length(v17, v24, v25))
       {
-        if (a5 == 16)
+        if (step == 16)
         {
-          v36 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToWirelessDisabledSpecific%@", a4);
+          v36 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToWirelessDisabledSpecific%@", dict);
         }
 
         else
         {
-          v36 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToWirelessDisabledSpecific%@", a4);
+          v36 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToWirelessDisabledSpecific%@", dict);
         }
 
         v37 = sub_23EB6CD3C(v36, qword_27E383800);
@@ -443,14 +443,14 @@ LABEL_3:
       {
         if (objc_msgSend_length(v17, v24, v25))
         {
-          if (a5 == 16)
+          if (step == 16)
           {
-            v40 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"WillRestoreToExtendNetworkSpecific%@", a4);
+            v40 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"WillRestoreToExtendNetworkSpecific%@", dict);
           }
 
           else
           {
-            v40 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"CanRestoreToExtendNetworkSpecific%@", a4);
+            v40 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"CanRestoreToExtendNetworkSpecific%@", dict);
           }
 
           v41 = sub_23EB6CD3C(v40, qword_27E383800);
@@ -462,7 +462,7 @@ LABEL_3:
           valid = 0;
         }
 
-        v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"CanRestoreToExtendNetwork%@", a4);
+        v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v39, @"CanRestoreToExtendNetwork%@", dict);
         goto LABEL_49;
       }
 
@@ -474,14 +474,14 @@ LABEL_3:
 
       if (objc_msgSend_length(v17, v24, v25))
       {
-        if (a5 == 16)
+        if (step == 16)
         {
-          v30 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToExtendNetworkSpecific%@", a4);
+          v30 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"WillRestoreToExtendNetworkSpecific%@", dict);
         }
 
         else
         {
-          v30 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToExtendNetworkSpecific%@", a4);
+          v30 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, @"CanRestoreToExtendNetworkSpecific%@", dict);
         }
 
         v31 = sub_23EB6CD3C(v30, qword_27E383800);
@@ -497,14 +497,14 @@ LABEL_3:
       v48 = @"WillRestoreToExtendNetwork%@";
     }
 
-    if (a5 == 16)
+    if (step == 16)
     {
-      v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, v48, a4);
+      v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, v48, dict);
     }
 
     else
     {
-      v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, v47, a4);
+      v49 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v29, v47, dict);
     }
 
 LABEL_49:
@@ -517,15 +517,15 @@ LABEL_51:
       goto LABEL_61;
     }
 
-    v50 = objc_msgSend_objectForKey_(v13, v24, @"BSAutoGuess_NoRestoreReason");
+    v50 = objc_msgSend_objectForKey_(recommendationCopy, v24, @"BSAutoGuess_NoRestoreReason");
     v53 = objc_msgSend_integerValue(v50, v51, v52);
     switch(v53)
     {
       case 4:
-        v58 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v54, @"CannotRecommendRestoreDHCPRangeConflict%@", a4);
+        v58 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v54, @"CannotRecommendRestoreDHCPRangeConflict%@", dict);
         break;
       case 3:
-        v58 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v54, @"CannotRecommendRestoreDisabledNoWanLink%@", a4);
+        v58 = objc_msgSend_getProductLocalizedStringWithFormat_fromParamDict_(StepByStepUtilities, v54, @"CannotRecommendRestoreDisabledNoWanLink%@", dict);
         break;
       case 2:
         v14 = 0;
@@ -537,8 +537,8 @@ LABEL_51:
         }
 
 LABEL_61:
-        a8 = v59;
-        if (!a6)
+        recommendString = recommendStringCopy;
+        if (!string)
         {
           goto LABEL_63;
         }
@@ -554,39 +554,39 @@ LABEL_61:
 
   valid = 0;
   v28 = 0;
-  if (a6)
+  if (string)
   {
 LABEL_62:
-    *a6 = v28;
+    *string = v28;
   }
 
 LABEL_63:
-  if (a7)
+  if (specificString)
   {
-    *a7 = valid;
+    *specificString = valid;
   }
 
-  if (a8)
+  if (recommendString)
   {
-    *a8 = v14;
+    *recommendString = v14;
   }
 }
 
-+ (id)nameForNetworkOrDevice:(id)a3
++ (id)nameForNetworkOrDevice:(id)device
 {
-  v4 = objc_msgSend_valueForKey_(a3, a2, @"SSID_STR");
+  v4 = objc_msgSend_valueForKey_(device, a2, @"SSID_STR");
   if (objc_msgSend_length(v4, v5, v6))
   {
     return v4;
   }
 
-  return objc_msgSend_valueForKey_(a3, v7, @"name");
+  return objc_msgSend_valueForKey_(device, v7, @"name");
 }
 
-+ (id)productIDForNetworkOrDevice:(id)a3
++ (id)productIDForNetworkOrDevice:(id)device
 {
   v3 = MEMORY[0x277CCABB0];
-  v5 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a3);
+  v5 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, device);
 
   return objc_msgSend_numberWithInteger_(v3, v4, v5);
 }

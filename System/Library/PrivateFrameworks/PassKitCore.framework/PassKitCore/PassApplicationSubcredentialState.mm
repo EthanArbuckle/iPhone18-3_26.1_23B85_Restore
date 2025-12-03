@@ -1,20 +1,20 @@
 @interface PassApplicationSubcredentialState
-- (PassApplicationSubcredentialState)initWithSubcredential:(id)a3;
+- (PassApplicationSubcredentialState)initWithSubcredential:(id)subcredential;
 @end
 
 @implementation PassApplicationSubcredentialState
 
-- (PassApplicationSubcredentialState)initWithSubcredential:(id)a3
+- (PassApplicationSubcredentialState)initWithSubcredential:(id)subcredential
 {
-  v4 = a3;
+  subcredentialCopy = subcredential;
   v9.receiver = self;
   v9.super_class = PassApplicationSubcredentialState;
   v5 = [(PassApplicationSubcredentialState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 aliroGroupResolvingKeys];
+    aliroGroupResolvingKeys = [subcredentialCopy aliroGroupResolvingKeys];
     aliroGroupResolvingKeys = v5->_aliroGroupResolvingKeys;
-    v5->_aliroGroupResolvingKeys = v6;
+    v5->_aliroGroupResolvingKeys = aliroGroupResolvingKeys;
   }
 
   return v5;

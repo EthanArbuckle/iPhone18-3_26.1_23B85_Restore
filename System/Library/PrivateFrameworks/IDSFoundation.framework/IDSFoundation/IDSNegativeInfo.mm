@@ -1,19 +1,19 @@
 @interface IDSNegativeInfo
-- (IDSNegativeInfo)initWithTime:(double)a3 count:(int64_t)a4;
+- (IDSNegativeInfo)initWithTime:(double)time count:(int64_t)count;
 - (id)description;
 @end
 
 @implementation IDSNegativeInfo
 
-- (IDSNegativeInfo)initWithTime:(double)a3 count:(int64_t)a4
+- (IDSNegativeInfo)initWithTime:(double)time count:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = IDSNegativeInfo;
   result = [(IDSNegativeInfo *)&v7 init];
   if (result)
   {
-    result->_time = a3;
-    result->_count = a4;
+    result->_time = time;
+    result->_count = count;
   }
 
   return result;

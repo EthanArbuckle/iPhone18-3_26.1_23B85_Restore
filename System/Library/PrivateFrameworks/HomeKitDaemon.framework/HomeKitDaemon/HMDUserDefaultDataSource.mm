@@ -1,19 +1,19 @@
 @interface HMDUserDefaultDataSource
-- (BOOL)isCurrentUser:(id)a3;
+- (BOOL)isCurrentUser:(id)user;
 - (BOOL)isThisDeviceDesignatedFMFDevice;
 - (HMDUserDefaultDataSource)init;
 - (NSNotificationCenter)notificationCenter;
 - (NSString)fmfDeviceName;
-- (id)userDataBackingStoreControllerWithDelegate:(id)a3 queue:(id)a4 zoneName:(id)a5 shareMessenger:(id)a6;
-- (id)userDataControllerWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 isCurrentUser:(BOOL)a10;
-- (void)applyVoucherForModel:(id)a3 withModelID:(id)a4 eventType:(int64_t)a5 storeType:(unint64_t)a6;
+- (id)userDataBackingStoreControllerWithDelegate:(id)delegate queue:(id)queue zoneName:(id)name shareMessenger:(id)messenger;
+- (id)userDataControllerWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController isCurrentUser:(BOOL)self0;
+- (void)applyVoucherForModel:(id)model withModelID:(id)d eventType:(int64_t)type storeType:(unint64_t)storeType;
 @end
 
 @implementation HMDUserDefaultDataSource
 
-- (id)userDataControllerWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 isCurrentUser:(BOOL)a10
+- (id)userDataControllerWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController isCurrentUser:(BOOL)self0
 {
-  LODWORD(v32) = a10;
+  LODWORD(v32) = user;
   v33 = sub_22A4DB7DC();
   v14 = *(v33 - 8);
   v15 = *(v14 + 64);
@@ -25,15 +25,15 @@
   sub_22A4DB79C();
   v31 = objc_allocWithZone(HMDUserDataController);
   swift_unknownObjectRetain();
-  v21 = a4;
+  sourceCopy = source;
   swift_unknownObjectRetain();
-  v22 = a5;
+  queueCopy = queue;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   v23 = sub_22A4DB77C();
   v24 = sub_22A4DB77C();
   LOBYTE(v29) = v32;
-  v32 = [v31 initWithDelegate:a3 dataSource:v21 queue:v22 userID:v23 homeID:v24 sharedSettingsController:a8 privateSettingsController:a9 isCurrentUser:v29];
+  v32 = [v31 initWithDelegate:delegate dataSource:sourceCopy queue:queueCopy userID:v23 homeID:v24 sharedSettingsController:controller privateSettingsController:settingsController isCurrentUser:v29];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
@@ -49,24 +49,24 @@
   return v27;
 }
 
-- (id)userDataBackingStoreControllerWithDelegate:(id)a3 queue:(id)a4 zoneName:(id)a5 shareMessenger:(id)a6
+- (id)userDataBackingStoreControllerWithDelegate:(id)delegate queue:(id)queue zoneName:(id)name shareMessenger:(id)messenger
 {
   sub_22A4DD5EC();
   v9 = objc_opt_self();
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 defaultDatabase];
+  queueCopy = queue;
+  messengerCopy = messenger;
+  defaultDatabase = [v9 defaultDatabase];
   v13 = objc_allocWithZone(HMDUserSettingsBackingStoreController);
   v14 = sub_22A4DD5AC();
 
-  v15 = [v13 initWithDelegate:a3 queue:v10 zoneName:v14 database:v12 shareMessenger:v11];
+  v15 = [v13 initWithDelegate:delegate queue:queueCopy zoneName:v14 database:defaultDatabase shareMessenger:messengerCopy];
   swift_unknownObjectRelease();
 
   return v15;
 }
 
-- (void)applyVoucherForModel:(id)a3 withModelID:(id)a4 eventType:(int64_t)a5 storeType:(unint64_t)a6
+- (void)applyVoucherForModel:(id)model withModelID:(id)d eventType:(int64_t)type storeType:(unint64_t)storeType
 {
   v9 = sub_22A4DB7DC();
   v10 = *(v9 - 8);
@@ -75,28 +75,28 @@
   v13 = &v19 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB79C();
   v14 = objc_opt_self();
-  v15 = a3;
-  v16 = [v14 sharedInstance];
+  modelCopy = model;
+  sharedInstance = [v14 sharedInstance];
   v17 = sub_22A4DB77C();
-  v18 = [v16 applyVoucherForModel:v15 withModelID:v17 eventType:a5 storeType:a6];
+  v18 = [sharedInstance applyVoucherForModel:modelCopy withModelID:v17 eventType:type storeType:storeType];
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (BOOL)isCurrentUser:(id)a3
+- (BOOL)isCurrentUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_22979D468(v4);
+  userCopy = user;
+  selfCopy = self;
+  v6 = sub_22979D468(userCopy);
 
   return v6 & 1;
 }
 
 - (NSNotificationCenter)notificationCenter
 {
-  v2 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
 
-  return v2;
+  return defaultCenter;
 }
 
 - (BOOL)isThisDeviceDesignatedFMFDevice

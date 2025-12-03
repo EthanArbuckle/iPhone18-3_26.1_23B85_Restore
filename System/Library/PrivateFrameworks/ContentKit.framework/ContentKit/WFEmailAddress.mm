@@ -1,19 +1,19 @@
 @interface WFEmailAddress
-+ (BOOL)stringContainsEmailAddresses:(id)a3;
-+ (id)addressWithEmailAddress:(id)a3 label:(id)a4;
-+ (id)addressesWithMailtoURL:(id)a3;
-+ (id)addressesWithTextCheckingResult:(id)a3;
-+ (id)emailAddressesInString:(id)a3 error:(id *)a4;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)stringContainsEmailAddresses:(id)addresses;
++ (id)addressWithEmailAddress:(id)address label:(id)label;
++ (id)addressesWithMailtoURL:(id)l;
++ (id)addressesWithTextCheckingResult:(id)result;
++ (id)emailAddressesInString:(id)string error:(id *)error;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedLabel;
-- (WFEmailAddress)initWithAddress:(id)a3 label:(id)a4;
-- (WFEmailAddress)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFEmailAddress)initWithAddress:(id)address label:(id)label;
+- (WFEmailAddress)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)wfSerializedRepresentation;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFEmailAddress
@@ -21,75 +21,75 @@
 - (id)wfSerializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFEmailAddress *)self address];
-  [v3 setObject:v4 forKey:@"link.contentkit.emailaddress"];
+  address = [(WFEmailAddress *)self address];
+  [v3 setObject:address forKey:@"link.contentkit.emailaddress"];
 
   [v3 setValue:self->_label forKey:@"link.contentkit.emaillabel"];
 
   return v3;
 }
 
-- (WFEmailAddress)initWithCoder:(id)a3
+- (WFEmailAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     self = [(WFEmailAddress *)self initWithAddress:v5 label:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEmailAddress *)self address];
-  [v4 encodeObject:v5 forKey:@"address"];
+  coderCopy = coder;
+  address = [(WFEmailAddress *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
-  v6 = [(WFEmailAddress *)self label];
-  [v4 encodeObject:v6 forKey:@"label"];
+  label = [(WFEmailAddress *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFEmailAddress *)self address];
-  v6 = [v4 initWithAddress:v5 label:0];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  address = [(WFEmailAddress *)self address];
+  v6 = [v4 initWithAddress:address label:0];
 
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WFEmailAddress *)self address];
-  v6 = [v4 address];
+  compareCopy = compare;
+  address = [(WFEmailAddress *)self address];
+  address2 = [compareCopy address];
 
-  v7 = [v5 compare:v6];
+  v7 = [address compare:address2];
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFEmailAddress *)self address];
-  v3 = [v2 hash];
+  address = [(WFEmailAddress *)self address];
+  v3 = [address hash];
 
   return v3 ^ 0xCAFEBEEFLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -99,9 +99,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFEmailAddress *)self address];
-      v6 = [(WFEmailAddress *)v4 address];
-      v7 = [v5 isEqual:v6];
+      address = [(WFEmailAddress *)self address];
+      address2 = [(WFEmailAddress *)equalCopy address];
+      v7 = [address isEqual:address2];
     }
 
     else
@@ -115,10 +115,10 @@
 
 - (NSString)localizedLabel
 {
-  v2 = [(WFEmailAddress *)self label];
-  if (v2)
+  label = [(WFEmailAddress *)self label];
+  if (label)
   {
-    v3 = [WFContactLabeledValue localizedStringForLabel:v2];
+    v3 = [WFContactLabeledValue localizedStringForLabel:label];
   }
 
   else
@@ -129,20 +129,20 @@
   return v3;
 }
 
-- (WFEmailAddress)initWithAddress:(id)a3 label:(id)a4
+- (WFEmailAddress)initWithAddress:(id)address label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = WFEmailAddress;
   v8 = [(WFEmailAddress *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [addressCopy copy];
     address = v8->_address;
     v8->_address = v9;
 
-    v11 = [v7 copy];
+    v11 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v11;
 
@@ -152,34 +152,34 @@
   return v8;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.emailaddress"];
-  v6 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.emaillabel"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.emailaddress"];
+  v6 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.emaillabel"];
 
-  v7 = [[a1 alloc] initWithAddress:v5 label:v6];
+  v7 = [[self alloc] initWithAddress:v5 label:v6];
 
   return v7;
 }
 
-+ (id)addressWithEmailAddress:(id)a3 label:(id)a4
++ (id)addressWithEmailAddress:(id)address label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAddress:v7 label:v6];
+  labelCopy = label;
+  addressCopy = address;
+  v8 = [[self alloc] initWithAddress:addressCopy label:labelCopy];
 
   return v8;
 }
 
-+ (id)addressesWithMailtoURL:(id)a3
++ (id)addressesWithMailtoURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_new();
-  v6 = [v4 absoluteString];
-  v7 = [v4 scheme];
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  v8 = [v6 substringFromIndex:{objc_msgSend(v7, "length") + 1}];
+  v8 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length") + 1}];
 
   if ([v8 hasPrefix:@"//"])
   {
@@ -203,7 +203,7 @@
   else
   {
     v12 = [v8 componentsSeparatedByString:@"?"];
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     if ([v12 count] >= 2)
     {
       v14 = [v12 objectAtIndexedSubscript:0];
@@ -211,10 +211,10 @@
 
       v15 = [v12 objectAtIndexedSubscript:1];
 
-      v13 = v15;
+      firstObject = v15;
     }
 
-    v16 = [MEMORY[0x277CBEBC0] dc_dictionaryFromQueryString:v13];
+    v16 = [MEMORY[0x277CBEBC0] dc_dictionaryFromQueryString:firstObject];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __41__WFEmailAddress_addressesWithMailtoURL___block_invoke_2;
@@ -227,7 +227,7 @@
   v19[1] = 3221225472;
   v19[2] = __41__WFEmailAddress_addressesWithMailtoURL___block_invoke_3;
   v19[3] = &__block_descriptor_40_e37___WFEmailAddress_24__0__NSString_8Q16l;
-  v19[4] = a1;
+  v19[4] = self;
   v17 = [v10 if_map:v19];
 
   return v17;
@@ -292,15 +292,15 @@ void __41__WFEmailAddress_addressesWithMailtoURL___block_invoke_2(uint64_t a1, v
   }
 }
 
-+ (id)addressesWithTextCheckingResult:(id)a3
++ (id)addressesWithTextCheckingResult:(id)result
 {
-  v4 = [a3 URL];
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"mailto"];
+  v4 = [result URL];
+  scheme = [v4 scheme];
+  v6 = [scheme isEqualToString:@"mailto"];
 
   if (v6)
   {
-    v7 = [a1 addressesWithMailtoURL:v4];
+    v7 = [self addressesWithMailtoURL:v4];
   }
 
   else
@@ -311,29 +311,29 @@ void __41__WFEmailAddress_addressesWithMailtoURL___block_invoke_2(uint64_t a1, v
   return v7;
 }
 
-+ (BOOL)stringContainsEmailAddresses:(id)a3
++ (BOOL)stringContainsEmailAddresses:(id)addresses
 {
-  v3 = [a1 emailAddressesInString:a3 error:0];
+  v3 = [self emailAddressesInString:addresses error:0];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-+ (id)emailAddressesInString:(id)a3 error:(id *)a4
++ (id)emailAddressesInString:(id)string error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
     v7 = objc_opt_new();
-    v8 = [WFDataDetector resultsForString:v6 ofTypes:32 error:a4];
-    v9 = [v8 textCheckingResults];
+    v8 = [WFDataDetector resultsForString:stringCopy ofTypes:32 error:error];
+    textCheckingResults = [v8 textCheckingResults];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v9;
+    v10 = textCheckingResults;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -348,7 +348,7 @@ void __41__WFEmailAddress_addressesWithMailtoURL___block_invoke_2(uint64_t a1, v
             objc_enumerationMutation(v10);
           }
 
-          v15 = [a1 addressesWithTextCheckingResult:{*(*(&v17 + 1) + 8 * i), v17}];
+          v15 = [self addressesWithTextCheckingResult:{*(*(&v17 + 1) + 8 * i), v17}];
           [v7 addObjectsFromArray:v15];
         }
 

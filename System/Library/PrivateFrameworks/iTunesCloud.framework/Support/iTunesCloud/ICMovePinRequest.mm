@@ -1,7 +1,7 @@
 @interface ICMovePinRequest
-- (ICMovePinRequest)initWithEntityType:(int64_t)a3 insertAfterPositionUUID:(id)a4 newLocationUUID:(id)a5 positionIndex:(unsigned int)a6 cloudID:(int64_t)a7 cloudLibraryID:(id)a8 databaseID:(unsigned int)a9 databaseRevision:(unsigned int)a10;
-- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)a3;
-- (id)canonicalResponseForResponse:(id)a3;
+- (ICMovePinRequest)initWithEntityType:(int64_t)type insertAfterPositionUUID:(id)d newLocationUUID:(id)iD positionIndex:(unsigned int)index cloudID:(int64_t)cloudID cloudLibraryID:(id)libraryID databaseID:(unsigned int)databaseID databaseRevision:(unsigned int)self0;
+- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)revision;
+- (id)canonicalResponseForResponse:(id)response;
 - (id)description;
 @end
 
@@ -18,20 +18,20 @@
   return v7;
 }
 
-- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)a3
+- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)revision
 {
   v3 = ICDAAPUtilitiesCreateDataForContainer();
 
   return v3;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v4 = [(ICDResponse *)ICPinOperationResponse responseWithResponse:a3];
-  v5 = [v4 responseData];
-  if ([v5 length])
+  v4 = [(ICDResponse *)ICPinOperationResponse responseWithResponse:response];
+  responseData = [v4 responseData];
+  if ([responseData length])
   {
-    v6 = [NSInputStream inputStreamWithData:v5];
+    v6 = [NSInputStream inputStreamWithData:responseData];
     v7 = [[DKDAAPParser alloc] initWithStream:v6];
     v8 = [[ICPinOperationResponseParserDelegate alloc] initWithEntityType:self->_entityType pinAction:1];
     [v7 setDelegate:v8];
@@ -43,35 +43,35 @@
   return v4;
 }
 
-- (ICMovePinRequest)initWithEntityType:(int64_t)a3 insertAfterPositionUUID:(id)a4 newLocationUUID:(id)a5 positionIndex:(unsigned int)a6 cloudID:(int64_t)a7 cloudLibraryID:(id)a8 databaseID:(unsigned int)a9 databaseRevision:(unsigned int)a10
+- (ICMovePinRequest)initWithEntityType:(int64_t)type insertAfterPositionUUID:(id)d newLocationUUID:(id)iD positionIndex:(unsigned int)index cloudID:(int64_t)cloudID cloudLibraryID:(id)libraryID databaseID:(unsigned int)databaseID databaseRevision:(unsigned int)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = [NSString stringWithFormat:@"databases/%u/edit", a9];
+  dCopy = d;
+  iDCopy = iD;
+  libraryIDCopy = libraryID;
+  databaseID = [NSString stringWithFormat:@"databases/%u/edit", databaseID];
   v29.receiver = self;
   v29.super_class = ICMovePinRequest;
-  v20 = [(ICDRequest *)&v29 initWithAction:v19];
+  v20 = [(ICDRequest *)&v29 initWithAction:databaseID];
 
   if (v20)
   {
-    v20->_positionIndex = a6;
-    v20->_cloudID = a7;
-    v20->_entityType = a3;
-    v21 = [v18 copy];
+    v20->_positionIndex = index;
+    v20->_cloudID = cloudID;
+    v20->_entityType = type;
+    v21 = [libraryIDCopy copy];
     cloudLibraryID = v20->_cloudLibraryID;
     v20->_cloudLibraryID = v21;
 
-    v23 = [v16 copy];
+    v23 = [dCopy copy];
     insertAfterPositionUUID = v20->_insertAfterPositionUUID;
     v20->_insertAfterPositionUUID = v23;
 
-    v25 = [v17 copy];
+    v25 = [iDCopy copy];
     newReferencePositionUUID = v20->_newReferencePositionUUID;
     v20->_newReferencePositionUUID = v25;
 
     [(ICDRequest *)v20 setMethod:1];
-    v27 = [(ICMovePinRequest *)v20 _bodyDataWithServerDatabaseRevision:a10];
+    v27 = [(ICMovePinRequest *)v20 _bodyDataWithServerDatabaseRevision:revision];
     [(ICDRequest *)v20 setBodyData:v27];
   }
 

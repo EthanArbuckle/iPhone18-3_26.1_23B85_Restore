@@ -1,42 +1,42 @@
 @interface _NMCSimpleTileRequester
-- (_NMCSimpleTileRequester)initWithTileRequest:(id)a3 forOriginalRequests:(id)a4 delegateQueue:(id)a5 delegate:(id)a6;
-- (id)checksumMethodForIncomingTileDataWithKey:(uint64_t)a1;
-- (id)localizationURLForTileKey:(uint64_t)a1;
-- (id)urlForTileKey:(uint64_t)a1;
+- (_NMCSimpleTileRequester)initWithTileRequest:(id)request forOriginalRequests:(id)requests delegateQueue:(id)queue delegate:(id)delegate;
+- (id)checksumMethodForIncomingTileDataWithKey:(uint64_t)key;
+- (id)localizationURLForTileKey:(uint64_t)key;
+- (id)urlForTileKey:(uint64_t)key;
 @end
 
 @implementation _NMCSimpleTileRequester
 
-- (_NMCSimpleTileRequester)initWithTileRequest:(id)a3 forOriginalRequests:(id)a4 delegateQueue:(id)a5 delegate:(id)a6
+- (_NMCSimpleTileRequester)initWithTileRequest:(id)request forOriginalRequests:(id)requests delegateQueue:(id)queue delegate:(id)delegate
 {
-  v11 = a4;
+  requestsCopy = requests;
   v16.receiver = self;
   v16.super_class = _NMCSimpleTileRequester;
-  v12 = [(_NMCSimpleTileRequester *)&v16 initWithTileRequest:a3 delegateQueue:a5 delegate:a6];
+  v12 = [(_NMCSimpleTileRequester *)&v16 initWithTileRequest:request delegateQueue:queue delegate:delegate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requests, a4);
+    objc_storeStrong(&v12->_requests, requests);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (id)urlForTileKey:(uint64_t)a1
+- (id)urlForTileKey:(uint64_t)key
 {
-  v2 = [*(a1 + 144) objectForKey:?];
+  v2 = [*(key + 144) objectForKey:?];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 baseURL];
-    v5 = [NSURL URLWithString:v4];
+    baseURL = [v2 baseURL];
+    v5 = [NSURL URLWithString:baseURL];
 
     if (v5)
     {
       v6 = [GEOURLWithHeaders alloc];
-      v7 = [v3 baseHeaders];
-      v8 = sub_10000AC24(v7);
+      baseHeaders = [v3 baseHeaders];
+      v8 = sub_10000AC24(baseHeaders);
       v9 = sub_10000AE50(v8);
     }
 
@@ -54,20 +54,20 @@
   return v9;
 }
 
-- (id)localizationURLForTileKey:(uint64_t)a1
+- (id)localizationURLForTileKey:(uint64_t)key
 {
-  v2 = [*(a1 + 144) objectForKey:?];
+  v2 = [*(key + 144) objectForKey:?];
   v3 = v2;
   if (v2 && [v2 hasLocalizationURL])
   {
-    v4 = [v3 localizationURL];
-    v5 = [NSURL URLWithString:v4];
+    localizationURL = [v3 localizationURL];
+    v5 = [NSURL URLWithString:localizationURL];
 
     if (v5)
     {
       v6 = [GEOURLWithHeaders alloc];
-      v7 = [v3 localizationHeaders];
-      v8 = sub_10000AC24(v7);
+      localizationHeaders = [v3 localizationHeaders];
+      v8 = sub_10000AC24(localizationHeaders);
       v9 = sub_10000AE50(v8);
     }
 
@@ -85,21 +85,21 @@
   return v9;
 }
 
-- (id)checksumMethodForIncomingTileDataWithKey:(uint64_t)a1
+- (id)checksumMethodForIncomingTileDataWithKey:(uint64_t)key
 {
-  v1 = [*(a1 + 144) objectForKey:?];
+  v1 = [*(key + 144) objectForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 checksumMethod];
+    checksumMethod = [v1 checksumMethod];
   }
 
   else
   {
-    v3 = 0;
+    checksumMethod = 0;
   }
 
-  return v3;
+  return checksumMethod;
 }
 
 @end

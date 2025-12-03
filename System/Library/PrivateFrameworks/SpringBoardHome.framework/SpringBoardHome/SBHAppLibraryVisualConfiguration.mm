@@ -1,12 +1,12 @@
 @interface SBHAppLibraryVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)expandedCategoryPodIconSpacing;
 - (CGSize)landscapeCategoryPodIconSpacing;
 - (CGSize)portraitCategoryPodIconSpacing;
 - (SBHAppLibraryVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -47,7 +47,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v6 = v5;
@@ -58,19 +58,19 @@
     *(v5 + 88) = self->_expandedCategoryPodIconSpacing;
     v5[8] = self->_usesInsetPlatterSearchAppearance;
     *(v5 + 2) = *&self->_searchContinuousCornerRadius;
-    v7 = [(SBHSearchVisualConfiguration *)self->_extendedSearchVisualConfiguration copyWithZone:a3];
+    v7 = [(SBHSearchVisualConfiguration *)self->_extendedSearchVisualConfiguration copyWithZone:zone];
     v8 = v6[3];
     v6[3] = v7;
 
-    v9 = [(SBHSearchVisualConfiguration *)self->_standardSearchVisualConfiguration copyWithZone:a3];
+    v9 = [(SBHSearchVisualConfiguration *)self->_standardSearchVisualConfiguration copyWithZone:zone];
     v10 = v6[4];
     v6[4] = v9;
 
-    v11 = [(SBHSearchVisualConfiguration *)self->_compactSearchVisualConfiguration copyWithZone:a3];
+    v11 = [(SBHSearchVisualConfiguration *)self->_compactSearchVisualConfiguration copyWithZone:zone];
     v12 = v6[5];
     v6[5] = v11;
 
-    v13 = [(SBHSearchVisualConfiguration *)self->_activeSearchVisualConfiguration copyWithZone:a3];
+    v13 = [(SBHSearchVisualConfiguration *)self->_activeSearchVisualConfiguration copyWithZone:zone];
     v14 = v6[6];
     v6[6] = v13;
   }
@@ -78,10 +78,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -93,7 +93,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       v9 = self->_portraitCategoryPodIconSpacing.width == v7->_portraitCategoryPodIconSpacing.width && self->_portraitCategoryPodIconSpacing.height == v7->_portraitCategoryPodIconSpacing.height;
       if (v9 && (self->_landscapeCategoryPodIconSpacing.width == v7->_landscapeCategoryPodIconSpacing.width ? (v10 = self->_landscapeCategoryPodIconSpacing.height == v7->_landscapeCategoryPodIconSpacing.height) : (v10 = 0), v10 && (self->_expandedCategoryPodIconSpacing.width == v7->_expandedCategoryPodIconSpacing.width ? (v11 = self->_expandedCategoryPodIconSpacing.height == v7->_expandedCategoryPodIconSpacing.height) : (v11 = 0), v11 && self->_usesInsetPlatterSearchAppearance == v7->_usesInsetPlatterSearchAppearance && self->_searchContinuousCornerRadius == v7->_searchContinuousCornerRadius && BSEqualObjects() && BSEqualObjects() && BSEqualObjects())))
@@ -130,45 +130,45 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHAppLibraryVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHAppLibraryVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHAppLibraryVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHAppLibraryVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHAppLibraryVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHAppLibraryVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHAppLibraryVisualConfiguration *)self portraitCategoryPodIconSpacing];
-  v5 = [v4 appendSize:@"portraitCategoryPodIconSpacing" withName:?];
+  v5 = [succinctDescriptionBuilder appendSize:@"portraitCategoryPodIconSpacing" withName:?];
   [(SBHAppLibraryVisualConfiguration *)self landscapeCategoryPodIconSpacing];
-  v6 = [v4 appendSize:@"landscapeCategoryPodIconSpacing" withName:?];
+  v6 = [succinctDescriptionBuilder appendSize:@"landscapeCategoryPodIconSpacing" withName:?];
   [(SBHAppLibraryVisualConfiguration *)self expandedCategoryPodIconSpacing];
-  v7 = [v4 appendSize:@"expandedCategoryPodIconSpacing" withName:?];
-  v8 = [v4 appendBool:-[SBHAppLibraryVisualConfiguration usesInsetPlatterSearchAppearance](self withName:{"usesInsetPlatterSearchAppearance"), @"usesInsetPlatterSearchAppearance"}];
+  v7 = [succinctDescriptionBuilder appendSize:@"expandedCategoryPodIconSpacing" withName:?];
+  v8 = [succinctDescriptionBuilder appendBool:-[SBHAppLibraryVisualConfiguration usesInsetPlatterSearchAppearance](self withName:{"usesInsetPlatterSearchAppearance"), @"usesInsetPlatterSearchAppearance"}];
   [(SBHAppLibraryVisualConfiguration *)self searchContinuousCornerRadius];
-  v9 = [v4 appendFloat:@"searchContinuousCornerRadius" withName:?];
-  v10 = [(SBHAppLibraryVisualConfiguration *)self extendedSearchVisualConfiguration];
-  v11 = [v4 appendObject:v10 withName:@"extendedSearchVisualConfiguration"];
+  v9 = [succinctDescriptionBuilder appendFloat:@"searchContinuousCornerRadius" withName:?];
+  extendedSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self extendedSearchVisualConfiguration];
+  v11 = [succinctDescriptionBuilder appendObject:extendedSearchVisualConfiguration withName:@"extendedSearchVisualConfiguration"];
 
-  v12 = [(SBHAppLibraryVisualConfiguration *)self standardSearchVisualConfiguration];
-  v13 = [v4 appendObject:v12 withName:@"standardSearchVisualConfiguration"];
+  standardSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self standardSearchVisualConfiguration];
+  v13 = [succinctDescriptionBuilder appendObject:standardSearchVisualConfiguration withName:@"standardSearchVisualConfiguration"];
 
-  v14 = [(SBHAppLibraryVisualConfiguration *)self compactSearchVisualConfiguration];
-  v15 = [v4 appendObject:v14 withName:@"compactSearchVisualConfiguration"];
+  compactSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self compactSearchVisualConfiguration];
+  v15 = [succinctDescriptionBuilder appendObject:compactSearchVisualConfiguration withName:@"compactSearchVisualConfiguration"];
 
-  v16 = [(SBHAppLibraryVisualConfiguration *)self activeSearchVisualConfiguration];
-  v17 = [v4 appendObject:v16 withName:@"activeSearchVisualConfiguration"];
+  activeSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self activeSearchVisualConfiguration];
+  v17 = [succinctDescriptionBuilder appendObject:activeSearchVisualConfiguration withName:@"activeSearchVisualConfiguration"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)portraitCategoryPodIconSpacing

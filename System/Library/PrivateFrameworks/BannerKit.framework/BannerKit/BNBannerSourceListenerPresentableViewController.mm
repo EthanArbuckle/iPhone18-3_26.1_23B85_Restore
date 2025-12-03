@@ -1,31 +1,31 @@
 @interface BNBannerSourceListenerPresentableViewController
 - (BNBannerSourceListenerPresentableDelegate)delegate;
-- (BNBannerSourceListenerPresentableViewController)initWithPresentable:(id)a3;
-- (BNBannerSourceListenerPresentableViewController)initWithSpecification:(id)a3 serviceDomain:(id)a4 readyCompletion:(id)a5;
+- (BNBannerSourceListenerPresentableViewController)initWithPresentable:(id)presentable;
+- (BNBannerSourceListenerPresentableViewController)initWithSpecification:(id)specification serviceDomain:(id)domain readyCompletion:(id)completion;
 - (BOOL)_isPresentableContextInterfaceAvailable;
-- (BOOL)bannerSourcePresentableContext:(id)a3 isConnectingProcessAuthorized:(id)a4 error:(id *)a5;
-- (id)_initWithPresentableIdentification:(id)a3 presentableBehavior:(int64_t)a4 contentBehavior:(int64_t)a5 serviceDomain:(id)a6 readyCompletion:(id)a7;
+- (BOOL)bannerSourcePresentableContext:(id)context isConnectingProcessAuthorized:(id)authorized error:(id *)error;
+- (id)_initWithPresentableIdentification:(id)identification presentableBehavior:(int64_t)behavior contentBehavior:(int64_t)contentBehavior serviceDomain:(id)domain readyCompletion:(id)completion;
 - (id)readyCompletion;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_setBannerAppearState:(int)a3 forPresentable:(id)a4 reason:(id)a5;
-- (void)_setReadyCompletion:(id)a3;
-- (void)_setUserInteractionWillBegin:(BOOL)a3 forPresentable:(id)a4;
-- (void)addPresentableObserver:(id)a3;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_setBannerAppearState:(int)state forPresentable:(id)presentable reason:(id)reason;
+- (void)_setReadyCompletion:(id)completion;
+- (void)_setUserInteractionWillBegin:(BOOL)begin forPresentable:(id)presentable;
+- (void)addPresentableObserver:(id)observer;
 - (void)dealloc;
-- (void)handleTemplateContentEvent:(int64_t)a3;
+- (void)handleTemplateContentEvent:(int64_t)event;
 - (void)invalidate;
 - (void)loadView;
 - (void)makeReadyIfPossible;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)removePresentableObserver:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)removePresentableObserver:(id)observer;
+- (void)setDelegate:(id)delegate;
 - (void)setHostNeedsUpdate;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
 - (void)viewDidLoad;
 @end
 
@@ -69,21 +69,21 @@
 
 - (void)makeReadyIfPossible
 {
-  v3 = [(BNBannerSourceListenerPresentableViewController *)self readyCompletion];
-  if (v3)
+  readyCompletion = [(BNBannerSourceListenerPresentableViewController *)self readyCompletion];
+  if (readyCompletion)
   {
-    v4 = v3;
-    v5 = [(BNBannerSourceListenerPresentableViewController *)self isReady];
+    v4 = readyCompletion;
+    isReady = [(BNBannerSourceListenerPresentableViewController *)self isReady];
 
-    if (v5)
+    if (isReady)
     {
-      v7 = [(BNBannerSourceListenerPresentableViewController *)self readyCompletion];
+      readyCompletion2 = [(BNBannerSourceListenerPresentableViewController *)self readyCompletion];
       [(BNBannerSourceListenerPresentableViewController *)self _setReadyCompletion:0];
-      v6 = v7;
-      if (v7)
+      v6 = readyCompletion2;
+      if (readyCompletion2)
       {
-        (*(v7 + 16))(v7, self, 0);
-        v6 = v7;
+        (*(readyCompletion2 + 16))(readyCompletion2, self, 0);
+        v6 = readyCompletion2;
       }
     }
   }
@@ -96,67 +96,67 @@
   return v2;
 }
 
-- (id)_initWithPresentableIdentification:(id)a3 presentableBehavior:(int64_t)a4 contentBehavior:(int64_t)a5 serviceDomain:(id)a6 readyCompletion:(id)a7
+- (id)_initWithPresentableIdentification:(id)identification presentableBehavior:(int64_t)behavior contentBehavior:(int64_t)contentBehavior serviceDomain:(id)domain readyCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  identificationCopy = identification;
+  domainCopy = domain;
+  completionCopy = completion;
   v28.receiver = self;
   v28.super_class = BNBannerSourceListenerPresentableViewController;
   v15 = [(BNBannerSourceListenerPresentableViewController *)&v28 initWithNibName:0 bundle:0];
   if (v15)
   {
-    if (!v12)
+    if (!identificationCopy)
     {
       [BNBannerSourceListenerPresentableViewController _initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:];
     }
 
-    v16 = [v12 requesterIdentifier];
-    v17 = [v16 copy];
+    requesterIdentifier = [identificationCopy requesterIdentifier];
+    v17 = [requesterIdentifier copy];
     requesterIdentifier = v15->_requesterIdentifier;
     v15->_requesterIdentifier = v17;
 
-    v19 = [v12 requestIdentifier];
-    v20 = [v19 copy];
+    requestIdentifier = [identificationCopy requestIdentifier];
+    v20 = [requestIdentifier copy];
     requestIdentifier = v15->_requestIdentifier;
     v15->_requestIdentifier = v20;
 
-    v22 = [v12 uniquePresentableIdentifier];
-    v23 = [v22 copy];
+    uniquePresentableIdentifier = [identificationCopy uniquePresentableIdentifier];
+    v23 = [uniquePresentableIdentifier copy];
     uniquePresentableIdentifier = v15->_uniquePresentableIdentifier;
     v15->_uniquePresentableIdentifier = v23;
 
-    v15->_presentableBehavior = a4;
-    v15->_contentBehavior = a5;
-    v25 = [v13 copy];
+    v15->_presentableBehavior = behavior;
+    v15->_contentBehavior = contentBehavior;
+    v25 = [domainCopy copy];
     serviceDomain = v15->_serviceDomain;
     v15->_serviceDomain = v25;
 
     v15->_draggingDismissalEnabled = kBNPresentableContextIsDraggingDismissalEnabledDefault;
     v15->_draggingInteractionEnabled = kBNPresentableContextIsDraggingInteractionEnabledDefault;
     v15->_touchOutsideDismissalEnabled = kBNPresentableContextIsTouchOutsideDismissalEnabledDefault;
-    [(BNBannerSourceListenerPresentableViewController *)v15 _setReadyCompletion:v14];
+    [(BNBannerSourceListenerPresentableViewController *)v15 _setReadyCompletion:completionCopy];
   }
 
   return v15;
 }
 
-- (BNBannerSourceListenerPresentableViewController)initWithSpecification:(id)a3 serviceDomain:(id)a4 readyCompletion:(id)a5
+- (BNBannerSourceListenerPresentableViewController)initWithSpecification:(id)specification serviceDomain:(id)domain readyCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  specificationCopy = specification;
+  domainCopy = domain;
+  completionCopy = completion;
+  if (specificationCopy)
   {
-    if (v9)
+    if (domainCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [BNBannerSourceListenerPresentableViewController initWithSpecification:serviceDomain:readyCompletion:];
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -165,13 +165,13 @@ LABEL_8:
   }
 
   [BNBannerSourceListenerPresentableViewController initWithSpecification:serviceDomain:readyCompletion:];
-  if (!v9)
+  if (!domainCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
@@ -183,44 +183,44 @@ LABEL_4:
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v8;
+    v15 = specificationCopy;
     _os_log_impl(&dword_1C42DC000, v11, OS_LOG_TYPE_DEFAULT, "Hosted presentable initialized with presentable specification: %{public}@", &v14, 0xCu);
   }
 
-  v12 = -[BNBannerSourceListenerPresentableViewController _initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:](self, "_initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:", v8, [v8 presentableBehavior], objc_msgSend(v8, "contentBehavior"), v9, v10);
+  v12 = -[BNBannerSourceListenerPresentableViewController _initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:](self, "_initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:", specificationCopy, [specificationCopy presentableBehavior], objc_msgSend(specificationCopy, "contentBehavior"), domainCopy, completionCopy);
 
   return v12;
 }
 
-- (BNBannerSourceListenerPresentableViewController)initWithPresentable:(id)a3
+- (BNBannerSourceListenerPresentableViewController)initWithPresentable:(id)presentable
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  presentableCopy = presentable;
+  if (!presentableCopy)
   {
     [BNBannerSourceListenerPresentableViewController initWithPresentable:];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 providesTemplateContent] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([presentableCopy providesTemplateContent] & 1) == 0)
   {
-    [BNBannerSourceListenerPresentableViewController initWithPresentable:v5];
+    [BNBannerSourceListenerPresentableViewController initWithPresentable:presentableCopy];
   }
 
   v6 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = BNEffectivePresentableDescription(v5);
+    v8 = BNEffectivePresentableDescription(presentableCopy);
     v12 = 138543362;
     v13 = v8;
     _os_log_impl(&dword_1C42DC000, v7, OS_LOG_TYPE_DEFAULT, "Hosted presentable initialized with template presentable: %{public}@", &v12, 0xCu);
   }
 
-  v9 = -[BNBannerSourceListenerPresentableViewController _initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:](self, "_initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:", v5, [v5 presentableBehavior], 1, 0, 0);
+  v9 = -[BNBannerSourceListenerPresentableViewController _initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:](self, "_initWithPresentableIdentification:presentableBehavior:contentBehavior:serviceDomain:readyCompletion:", presentableCopy, [presentableCopy presentableBehavior], 1, 0, 0);
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 129, a3);
+    objc_storeStrong(v9 + 129, presentable);
     if (objc_opt_respondsToSelector())
     {
       [(BNPresentable *)v10->_presentable setPresentableContext:v10];
@@ -244,15 +244,15 @@ LABEL_4:
   v4.receiver = self;
   v4.super_class = BNBannerSourceListenerPresentableViewController;
   [(BNBannerSourceListenerPresentableViewController *)&v4 viewDidLoad];
-  v3 = [(BNBannerSourceListenerPresentableViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(BNBannerSourceListenerPresentableViewController *)self view];
+  [view setClipsToBounds:1];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_delegate, v6);
-  if (!self->_presentable && (objc_opt_respondsToSelector() & 1) != 0 && [v6 bannerSourceListenerPresentableShouldEnablePresentableContextInterface:self])
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  if (!self->_presentable && (objc_opt_respondsToSelector() & 1) != 0 && [delegateCopy bannerSourceListenerPresentableShouldEnablePresentableContextInterface:self])
   {
     v4 = [[BNBannerSourcePresentableContext alloc] initWithPresentableIdentification:self contentBehavior:self->_contentBehavior serviceDomain:self->_serviceDomain];
     presentableContext = self->_presentableContext;
@@ -262,7 +262,7 @@ LABEL_4:
   }
 }
 
-- (void)handleTemplateContentEvent:(int64_t)a3
+- (void)handleTemplateContentEvent:(int64_t)event
 {
   p_presentable = &self->_presentable;
   if (self->_presentable)
@@ -280,129 +280,129 @@ LABEL_4:
 
   v5 = *p_presentable;
 
-  [v5 handleTemplateContentEvent:a3];
+  [v5 handleTemplateContentEvent:event];
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = BNEffectivePresentableDescription(v4);
+    v7 = BNEffectivePresentableDescription(bannerCopy);
     *buf = 138543362;
     v12 = v7;
     _os_log_impl(&dword_1C42DC000, v6, OS_LOG_TYPE_DEFAULT, "Hosted presentable will appear as banner: %{public}@", buf, 0xCu);
   }
 
-  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:1 forPresentable:v4 reason:0];
+  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:1 forPresentable:bannerCopy reason:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__BNBannerSourceListenerPresentableViewController_presentableWillAppearAsBanner___block_invoke;
   v9[3] = &unk_1E81E47D8;
-  v10 = v4;
-  v8 = v4;
+  v10 = bannerCopy;
+  v8 = bannerCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableWillAppearAsBanner_ usingBlock:v9];
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = BNEffectivePresentableDescription(v4);
+    v7 = BNEffectivePresentableDescription(bannerCopy);
     *buf = 138543362;
     v12 = v7;
     _os_log_impl(&dword_1C42DC000, v6, OS_LOG_TYPE_DEFAULT, "Hosted presentable did appear as banner: %{public}@", buf, 0xCu);
   }
 
-  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:2 forPresentable:v4 reason:0];
+  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:2 forPresentable:bannerCopy reason:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__BNBannerSourceListenerPresentableViewController_presentableDidAppearAsBanner___block_invoke;
   v9[3] = &unk_1E81E47D8;
-  v10 = v4;
-  v8 = v4;
+  v10 = bannerCopy;
+  v8 = bannerCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableDidAppearAsBanner_ usingBlock:v9];
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = BNEffectivePresentableDescription(v6);
+    v10 = BNEffectivePresentableDescription(bannerCopy);
     *buf = 138543618;
     v17 = v10;
     v18 = 2114;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&dword_1C42DC000, v9, OS_LOG_TYPE_DEFAULT, "Hosted presentable will disappear as banner: %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:3 forPresentable:v6 reason:v7];
+  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:3 forPresentable:bannerCopy reason:reasonCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__BNBannerSourceListenerPresentableViewController_presentableWillDisappearAsBanner_withReason___block_invoke;
   v13[3] = &unk_1E81E4788;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = bannerCopy;
+  v15 = reasonCopy;
+  v11 = reasonCopy;
+  v12 = bannerCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableWillDisappearAsBanner_withReason_ usingBlock:v13];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = BNEffectivePresentableDescription(v6);
+    v10 = BNEffectivePresentableDescription(bannerCopy);
     *buf = 138543618;
     v17 = v10;
     v18 = 2114;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&dword_1C42DC000, v9, OS_LOG_TYPE_DEFAULT, "Hosted presentable did disappear as banner: %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:0 forPresentable:v6 reason:v7];
+  [(BNBannerSourceListenerPresentableViewController *)self _setBannerAppearState:0 forPresentable:bannerCopy reason:reasonCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__BNBannerSourceListenerPresentableViewController_presentableDidDisappearAsBanner_withReason___block_invoke;
   v13[3] = &unk_1E81E4788;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = bannerCopy;
+  v15 = reasonCopy;
+  v11 = reasonCopy;
+  v12 = bannerCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableDidDisappearAsBanner_withReason_ usingBlock:v13];
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = BNLogContextHost;
   if (os_log_type_enabled(BNLogContextHost, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = BNEffectivePresentableDescription(v6);
+    v10 = BNEffectivePresentableDescription(bannerCopy);
     *buf = 138543618;
     v17 = v10;
     v18 = 2114;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&dword_1C42DC000, v9, OS_LOG_TYPE_DEFAULT, "Hosted presentable will NOT appear as banner: %{public}@ (%{public}@)", buf, 0x16u);
   }
 
@@ -410,57 +410,57 @@ LABEL_4:
   {
     if (objc_opt_respondsToSelector())
     {
-      [(BNPresentable *)self->_presentable presentableWillNotAppearAsBanner:self->_presentable withReason:v7];
+      [(BNPresentable *)self->_presentable presentableWillNotAppearAsBanner:self->_presentable withReason:reasonCopy];
     }
   }
 
   else
   {
-    [(BNBannerSourcePresentableContext *)self->_presentableContext handlePresentableWillNotAppearWithReason:v7];
+    [(BNBannerSourcePresentableContext *)self->_presentableContext handlePresentableWillNotAppearWithReason:reasonCopy];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__BNBannerSourceListenerPresentableViewController_presentableWillNotAppearAsBanner_withReason___block_invoke;
   v13[3] = &unk_1E81E4788;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = bannerCopy;
+  v15 = reasonCopy;
+  v11 = reasonCopy;
+  v12 = bannerCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableWillNotAppearAsBanner_withReason_ usingBlock:v13];
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
-  [(BNBannerSourceListenerPresentableViewController *)self _setUserInteractionWillBegin:1 forPresentable:v4];
+  presentableCopy = presentable;
+  [(BNBannerSourceListenerPresentableViewController *)self _setUserInteractionWillBegin:1 forPresentable:presentableCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __99__BNBannerSourceListenerPresentableViewController_userInteractionWillBeginForBannerForPresentable___block_invoke;
   v6[3] = &unk_1E81E47D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionWillBeginForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
-  [(BNBannerSourceListenerPresentableViewController *)self _setUserInteractionWillBegin:0 forPresentable:v4];
+  presentableCopy = presentable;
+  [(BNBannerSourceListenerPresentableViewController *)self _setUserInteractionWillBegin:0 forPresentable:presentableCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __96__BNBannerSourceListenerPresentableViewController_userInteractionDidEndForBannerForPresentable___block_invoke;
   v6[3] = &unk_1E81E47D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(BNBannerSourceListenerPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionDidEndForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)addPresentableObserver:(id)a3
+- (void)addPresentableObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
@@ -473,16 +473,16 @@ LABEL_4:
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)removePresentableObserver:(id)a3
+- (void)removePresentableObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -492,13 +492,13 @@ LABEL_4:
   }
 }
 
-- (BOOL)bannerSourcePresentableContext:(id)a3 isConnectingProcessAuthorized:(id)a4 error:(id *)a5
+- (BOOL)bannerSourcePresentableContext:(id)context isConnectingProcessAuthorized:(id)authorized error:(id *)error
 {
-  v7 = a4;
+  authorizedCopy = authorized;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [WeakRetained bannerSourceListenerPresentable:self isConnectingProcessAuthorized:v7 error:a5];
+    v9 = [WeakRetained bannerSourceListenerPresentable:self isConnectingProcessAuthorized:authorizedCopy error:error];
   }
 
   else
@@ -513,44 +513,44 @@ LABEL_4:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(BNPresentable *)self->_presentable isDraggingDismissalEnabled];
+    isDraggingDismissalEnabled = [(BNPresentable *)self->_presentable isDraggingDismissalEnabled];
   }
 
   else
   {
-    v3 = kBNPresentableContextIsDraggingDismissalEnabledDefault;
+    isDraggingDismissalEnabled = kBNPresentableContextIsDraggingDismissalEnabledDefault;
   }
 
-  self->_draggingDismissalEnabled = v3;
+  self->_draggingDismissalEnabled = isDraggingDismissalEnabled;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(BNPresentable *)self->_presentable isDraggingInteractionEnabled];
+    isDraggingInteractionEnabled = [(BNPresentable *)self->_presentable isDraggingInteractionEnabled];
   }
 
   else
   {
-    v4 = kBNPresentableContextIsDraggingInteractionEnabledDefault;
+    isDraggingInteractionEnabled = kBNPresentableContextIsDraggingInteractionEnabledDefault;
   }
 
-  self->_draggingInteractionEnabled = v4;
+  self->_draggingInteractionEnabled = isDraggingInteractionEnabled;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(BNPresentable *)self->_presentable isTouchOutsideDismissalEnabled];
+    isTouchOutsideDismissalEnabled = [(BNPresentable *)self->_presentable isTouchOutsideDismissalEnabled];
   }
 
   else
   {
-    v5 = kBNPresentableContextIsTouchOutsideDismissalEnabledDefault;
+    isTouchOutsideDismissalEnabled = kBNPresentableContextIsTouchOutsideDismissalEnabledDefault;
   }
 
-  self->_touchOutsideDismissalEnabled = v5;
+  self->_touchOutsideDismissalEnabled = isTouchOutsideDismissalEnabled;
 }
 
-- (void)_setBannerAppearState:(int)a3 forPresentable:(id)a4 reason:(id)a5
+- (void)_setBannerAppearState:(int)state forPresentable:(id)presentable reason:(id)reason
 {
-  v6 = *&a3;
-  v9 = a4;
-  v8 = a5;
+  v6 = *&state;
+  presentableCopy = presentable;
+  reasonCopy = reason;
   self->_bannerAppearState = v6;
   if (self->_presentable)
   {
@@ -566,7 +566,7 @@ LABEL_4:
 
       else if (v6 == 3 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [(BNPresentable *)self->_presentable presentableWillDisappearAsBanner:self->_presentable withReason:v8];
+        [(BNPresentable *)self->_presentable presentableWillDisappearAsBanner:self->_presentable withReason:reasonCopy];
       }
     }
 
@@ -580,23 +580,23 @@ LABEL_4:
 
     else if (objc_opt_respondsToSelector())
     {
-      [(BNPresentable *)self->_presentable presentableDidDisappearAsBanner:self->_presentable withReason:v8];
+      [(BNPresentable *)self->_presentable presentableDidDisappearAsBanner:self->_presentable withReason:reasonCopy];
     }
   }
 
   else
   {
-    [(BNBannerSourcePresentableContext *)self->_presentableContext updatePresentableAppearState:v6 reason:v8];
+    [(BNBannerSourcePresentableContext *)self->_presentableContext updatePresentableAppearState:v6 reason:reasonCopy];
   }
 }
 
-- (void)_setUserInteractionWillBegin:(BOOL)a3 forPresentable:(id)a4
+- (void)_setUserInteractionWillBegin:(BOOL)begin forPresentable:(id)presentable
 {
-  v4 = a3;
-  v6 = a4;
+  beginCopy = begin;
+  presentableCopy = presentable;
   if (self->_presentable)
   {
-    if (v4)
+    if (beginCopy)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -612,7 +612,7 @@ LABEL_4:
 
   else
   {
-    [(BNBannerSourcePresentableContext *)self->_presentableContext updateUserInteractionWillBegin:v4];
+    [(BNBannerSourcePresentableContext *)self->_presentableContext updateUserInteractionWillBegin:beginCopy];
   }
 }
 
@@ -623,20 +623,20 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)_setReadyCompletion:(id)a3
+- (void)_setReadyCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   readyCompletion = self->_readyCompletion;
   self->_readyCompletion = v4;
 
   MEMORY[0x1EEE66BB8](v4, readyCompletion);
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5 && [(NSHashTable *)self->_observers count])
+  blockCopy = block;
+  if (blockCopy && [(NSHashTable *)self->_observers count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -661,7 +661,7 @@ LABEL_4:
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;

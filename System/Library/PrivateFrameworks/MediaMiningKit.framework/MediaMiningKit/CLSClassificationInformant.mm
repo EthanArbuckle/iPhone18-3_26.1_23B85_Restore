@@ -1,18 +1,18 @@
 @interface CLSClassificationInformant
-- (double)_confidenceForCount:(unint64_t)a3 mu:(double)a4 sigma:(double)a5;
-- (id)_gatherSceneCluesForInvestigation:(id)a3 signalModelProviderBlock:(id)a4 informantKey:(id)a5 progressBlock:(id)a6;
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4;
+- (double)_confidenceForCount:(unint64_t)count mu:(double)mu sigma:(double)sigma;
+- (id)_gatherSceneCluesForInvestigation:(id)investigation signalModelProviderBlock:(id)block informantKey:(id)key progressBlock:(id)progressBlock;
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block;
 @end
 
 @implementation CLSClassificationInformant
 
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  investigationCopy = investigation;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(blockCopy);
   v10 = v8;
   v24 = 0;
   v25 = &v24;
@@ -25,7 +25,7 @@
   v11 = v9;
   v22 = v11;
   v23 = &v24;
-  v12 = [(CLSClassificationInformant *)self _gatherSceneCluesForInvestigation:v6 signalModelProviderBlock:&__block_literal_global_7717 informantKey:@"kCLSClassificationInformantKey" progressBlock:v21];
+  v12 = [(CLSClassificationInformant *)self _gatherSceneCluesForInvestigation:investigationCopy signalModelProviderBlock:&__block_literal_global_7717 informantKey:@"kCLSClassificationInformantKey" progressBlock:v21];
   [v10 addObjectsFromArray:v12];
   if (*(v25 + 24) == 1)
   {
@@ -45,7 +45,7 @@
     v18 = &unk_2788A8AA8;
     v19 = v11;
     v20 = &v24;
-    v13 = [(CLSClassificationInformant *)self _gatherSceneCluesForInvestigation:v6 signalModelProviderBlock:&__block_literal_global_50 informantKey:@"kCLSClassificationEntityNetInformantKey" progressBlock:&v15];
+    v13 = [(CLSClassificationInformant *)self _gatherSceneCluesForInvestigation:investigationCopy signalModelProviderBlock:&__block_literal_global_50 informantKey:@"kCLSClassificationEntityNetInformantKey" progressBlock:&v15];
     [v10 addObjectsFromArray:{v13, v15, v16, v17, v18}];
     if (*(v25 + 24) == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -110,14 +110,14 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
   return v3;
 }
 
-- (id)_gatherSceneCluesForInvestigation:(id)a3 signalModelProviderBlock:(id)a4 informantKey:(id)a5 progressBlock:(id)a6
+- (id)_gatherSceneCluesForInvestigation:(id)investigation signalModelProviderBlock:(id)block informantKey:(id)key progressBlock:(id)progressBlock
 {
   v101 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v58 = a5;
-  v11 = a6;
-  v12 = _Block_copy(v11);
+  investigationCopy = investigation;
+  blockCopy = block;
+  keyCopy = key;
+  progressBlockCopy = progressBlock;
+  v12 = _Block_copy(progressBlockCopy);
   v92 = 0;
   v93 = &v92;
   v94 = 0x2020000000;
@@ -125,24 +125,24 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
   v13 = [MEMORY[0x277CCA940] set];
   v14 = [MEMORY[0x277CCA940] set];
   v15 = [MEMORY[0x277CCA940] set];
-  v54 = v11;
+  v54 = progressBlockCopy;
   v16 = [MEMORY[0x277CCA940] set];
   v17 = [MEMORY[0x277CCA940] set];
-  v65 = [v9 numberOfItems];
+  numberOfItems = [investigationCopy numberOfItems];
   v67 = v16;
   obja = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = v15;
   v71 = v12;
   v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v20 = [v9 helper];
-  v21 = [v9 feeder];
+  helper = [investigationCopy helper];
+  feeder = [investigationCopy feeder];
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __116__CLSClassificationInformant__gatherSceneCluesForInvestigation_signalModelProviderBlock_informantKey_progressBlock___block_invoke;
   v79[3] = &unk_2788A8A38;
-  v53 = v10;
+  v53 = blockCopy;
   v89 = v53;
-  v55 = v20;
+  v55 = helper;
   v80 = v55;
   v60 = v17;
   v81 = v60;
@@ -154,7 +154,7 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
   v84 = v62;
   v61 = v67;
   v85 = v61;
-  v52 = v9;
+  v52 = investigationCopy;
   v86 = v52;
   v63 = obja;
   v87 = v63;
@@ -163,7 +163,7 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
   v72 = v71;
   v90 = v72;
   v91 = &v92;
-  [v21 enumerateItemsUsingBlock:v79];
+  [feeder enumerateItemsUsingBlock:v79];
 
   if (*(v93 + 24) == 1)
   {
@@ -179,18 +179,18 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
 
   else
   {
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
     obj = v56;
     v24 = [obj countByEnumeratingWithState:&v75 objects:v98 count:16];
-    v57 = v23;
+    v57 = array;
     if (v24)
     {
-      v25 = vcvtd_n_f64_u64(v65, 1uLL);
-      v26 = -(v25 - v65 * 0.68);
+      v25 = vcvtd_n_f64_u64(numberOfItems, 1uLL);
+      v26 = -(v25 - numberOfItems * 0.68);
       v64 = *v76;
       while (2)
       {
@@ -217,9 +217,9 @@ id __72__CLSClassificationInformant_gatherCluesForInvestigation_progressBlock___
             v37 = [v62 countForObject:v28];
             v38 = [v61 countForObject:v28];
             v39 = [v60 countForObject:v28];
-            v40 = [v34 level];
+            level = [v34 level];
             v41 = [v59 objectForKeyedSubscript:v28];
-            v42 = [CLSOutputClue clueWithValue:v41 forKey:v58 confidence:v33 * v36 relevance:v40];
+            v42 = [CLSOutputClue clueWithValue:v41 forKey:keyCopy confidence:v33 * v36 relevance:level];
             v96[0] = @"numberOfAssetsd";
             v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v29];
             v97[0] = v43;
@@ -501,12 +501,12 @@ void __116__CLSClassificationInformant__gatherSceneCluesForInvestigation_signalM
   [*(a1 + 40) addObject:v6];
 }
 
-- (double)_confidenceForCount:(unint64_t)a3 mu:(double)a4 sigma:(double)a5
+- (double)_confidenceForCount:(unint64_t)count mu:(double)mu sigma:(double)sigma
 {
-  v5 = a3;
-  if (a4 != 0.0 && v5 < a4)
+  countCopy = count;
+  if (mu != 0.0 && countCopy < mu)
   {
-    return exp(-((v5 - a4) * (v5 - a4)) / (a5 * a5 + a5 * a5));
+    return exp(-((countCopy - mu) * (countCopy - mu)) / (sigma * sigma + sigma * sigma));
   }
 
   else

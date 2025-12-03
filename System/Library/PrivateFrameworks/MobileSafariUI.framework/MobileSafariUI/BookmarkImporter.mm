@@ -1,24 +1,24 @@
 @interface BookmarkImporter
-- (BookmarkImporter)initWithBookmarkCollection:(id)a3;
-- (id)_builtInBookmarkItemWithTemplate:(id)a3 forLocale:(id)a4 deviceClass:(int64_t)a5;
-- (id)_builtinBookmarkWithInfo:(id)a3 asCarrierBookmark:(BOOL)a4;
-- (id)_builtinFavoritesForLocale:(id)a3 deviceClass:(int64_t)a4;
-- (id)_googleChannelReplacementStringForDeviceClass:(int64_t)a3;
+- (BookmarkImporter)initWithBookmarkCollection:(id)collection;
+- (id)_builtInBookmarkItemWithTemplate:(id)template forLocale:(id)locale deviceClass:(int64_t)class;
+- (id)_builtinBookmarkWithInfo:(id)info asCarrierBookmark:(BOOL)bookmark;
+- (id)_builtinFavoritesForLocale:(id)locale deviceClass:(int64_t)class;
+- (id)_googleChannelReplacementStringForDeviceClass:(int64_t)class;
 - (id)_lastImportedCarrierBookmarksInfo;
 - (id)_myAccountBookmarkInfo;
 - (id)_oldDeletedStaticBookmarks;
 - (id)_uniqueYouTubeBookmarkFolderName;
-- (id)test_builtinFavoritesForLocale:(id)a3 deviceClass:(int64_t)a4;
+- (id)test_builtinFavoritesForLocale:(id)locale deviceClass:(int64_t)class;
 - (int64_t)_currentDeviceClass;
-- (void)_appendBookmarksFromSource:(id)a3 toParent:(int)a4;
-- (void)_appendBuiltinBookmarkWithInfo:(id)a3 toParent:(int)a4 asCarrierBookmark:(BOOL)a5;
+- (void)_appendBookmarksFromSource:(id)source toParent:(int)parent;
+- (void)_appendBuiltinBookmarkWithInfo:(id)info toParent:(int)parent asCarrierBookmark:(BOOL)bookmark;
 - (void)_clearOldDeletedStaticBookmarks;
-- (void)_getCarrierBundleBuiltinBookmarkInfoWithCompletion:(id)a3;
-- (void)_importBuiltinBookmarksWithCarrierBookmarkInfo:(id)a3;
+- (void)_getCarrierBundleBuiltinBookmarkInfoWithCompletion:(id)completion;
+- (void)_importBuiltinBookmarksWithCarrierBookmarkInfo:(id)info;
 - (void)_importCarrierBookmarksIfNecessary;
 - (void)_importFavoritesFolderBuiltinBookmarks;
 - (void)_importRootFolderBuiltinBookmarks;
-- (void)_setLastImportedCarrierBookmarksInfo:(id)a3;
+- (void)_setLastImportedCarrierBookmarksInfo:(id)info;
 - (void)importBuiltinBookmarks;
 - (void)migrateYouTubeBookmarks;
 @end
@@ -48,16 +48,16 @@ void __42__BookmarkImporter_importBuiltinBookmarks__block_invoke(uint64_t a1, vo
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (BookmarkImporter)initWithBookmarkCollection:(id)a3
+- (BookmarkImporter)initWithBookmarkCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v10.receiver = self;
   v10.super_class = BookmarkImporter;
   v6 = [(BookmarkImporter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     v8 = v7;
   }
 
@@ -69,8 +69,8 @@ void __42__BookmarkImporter_importBuiltinBookmarks__block_invoke(uint64_t a1, vo
   oldDeletedStaticBookmarks = self->_oldDeletedStaticBookmarks;
   if (!oldDeletedStaticBookmarks)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 objectForKey:@"DeletedStaticBookmarks"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"DeletedStaticBookmarks"];
     v6 = self->_oldDeletedStaticBookmarks;
     self->_oldDeletedStaticBookmarks = v5;
 
@@ -85,15 +85,15 @@ void __42__BookmarkImporter_importBuiltinBookmarks__block_invoke(uint64_t a1, vo
   oldDeletedStaticBookmarks = self->_oldDeletedStaticBookmarks;
   self->_oldDeletedStaticBookmarks = 0;
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 removeObjectForKey:@"DeletedStaticBookmarks"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"DeletedStaticBookmarks"];
 }
 
-- (id)_builtinFavoritesForLocale:(id)a3 deviceClass:(int64_t)a4
+- (id)_builtinFavoritesForLocale:(id)locale deviceClass:(int64_t)class
 {
   v44[8] = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v29 = [v30 objectForKey:*MEMORY[0x277CBE690]];
+  localeCopy = locale;
+  v29 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
   if (![(__CFString *)v29 length])
   {
 
@@ -229,8 +229,8 @@ LABEL_10:
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:v7];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
   v9 = MEMORY[0x277CBEAC0];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 pathForResource:@"BuiltInBookmarkItems" ofType:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle pathForResource:@"BuiltInBookmarkItems" ofType:@"plist"];
   v12 = [v9 dictionaryWithContentsOfFile:v11];
 
   v33 = 0u;
@@ -252,7 +252,7 @@ LABEL_10:
         }
 
         v17 = [v12 objectForKey:*(*(&v31 + 1) + 8 * i)];
-        v18 = [(BookmarkImporter *)self _builtInBookmarkItemWithTemplate:v17 forLocale:v30 deviceClass:a4];
+        v18 = [(BookmarkImporter *)self _builtInBookmarkItemWithTemplate:v17 forLocale:localeCopy deviceClass:class];
 
         if (v18)
         {
@@ -269,16 +269,16 @@ LABEL_10:
   return v8;
 }
 
-- (id)test_builtinFavoritesForLocale:(id)a3 deviceClass:(int64_t)a4
+- (id)test_builtinFavoritesForLocale:(id)locale deviceClass:(int64_t)class
 {
-  v4 = [(BookmarkImporter *)self _builtinFavoritesForLocale:a3 deviceClass:a4];
+  v4 = [(BookmarkImporter *)self _builtinFavoritesForLocale:locale deviceClass:class];
 
   return v4;
 }
 
-- (id)_googleChannelReplacementStringForDeviceClass:(int64_t)a3
+- (id)_googleChannelReplacementStringForDeviceClass:(int64_t)class
 {
-  if (a3)
+  if (class)
   {
     return @"ipad_bm";
   }
@@ -289,22 +289,22 @@ LABEL_10:
   }
 }
 
-- (id)_builtInBookmarkItemWithTemplate:(id)a3 forLocale:(id)a4 deviceClass:(int64_t)a5
+- (id)_builtInBookmarkItemWithTemplate:(id)template forLocale:(id)locale deviceClass:(int64_t)class
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v27 = v8;
-  if (!v8)
+  templateCopy = template;
+  localeCopy = locale;
+  v27 = templateCopy;
+  if (!templateCopy)
   {
     v14 = 0;
     goto LABEL_33;
   }
 
-  v23 = [v8 objectForKey:@"LocalizedTitle"];
-  v24 = [v8 objectForKey:@"LocalizedURL"];
-  v22 = [v26 objectForKey:*MEMORY[0x277CBE690]];
-  v25 = [v26 objectForKey:*MEMORY[0x277CBE6C8]];
+  v23 = [templateCopy objectForKey:@"LocalizedTitle"];
+  v24 = [templateCopy objectForKey:@"LocalizedURL"];
+  v22 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
+  v25 = [localeCopy objectForKey:*MEMORY[0x277CBE6C8]];
   v9 = [v22 length];
   v10 = [v25 length];
   v28 = 0;
@@ -352,15 +352,15 @@ LABEL_10:
 
   else
   {
-    v28 = [v8 objectForKey:@"Title"];
+    v28 = [templateCopy objectForKey:@"Title"];
     if (!v12)
     {
 LABEL_22:
-      v12 = [v8 objectForKey:@"URL"];
+      v12 = [templateCopy objectForKey:@"URL"];
     }
   }
 
-  [v8 objectForKey:@"URLQueryStringParameterKeys"];
+  [templateCopy objectForKey:@"URLQueryStringParameterKeys"];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -380,7 +380,7 @@ LABEL_22:
 
         if ([*(*(&v29 + 1) + 8 * i) isEqualToString:@"$GOOGLE_CHANNEL"])
         {
-          v19 = [(BookmarkImporter *)self _googleChannelReplacementStringForDeviceClass:a5];
+          v19 = [(BookmarkImporter *)self _googleChannelReplacementStringForDeviceClass:class];
           v20 = [v12 stringByReplacingOccurrencesOfString:@"$GOOGLE_CHANNEL" withString:v19];
 
           v12 = v20;
@@ -404,12 +404,12 @@ LABEL_33:
   return v14;
 }
 
-- (void)_getCarrierBundleBuiltinBookmarkInfoWithCompletion:(id)a3
+- (void)_getCarrierBundleBuiltinBookmarkInfoWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if ((MGGetBoolAnswer() & 1) == 0)
   {
-    v3[2](v3, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   v4 = dispatch_get_global_queue(9, 0);
@@ -417,8 +417,8 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = __71__BookmarkImporter__getCarrierBundleBuiltinBookmarkInfoWithCompletion___block_invoke;
   block[3] = &unk_2781D6330;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -558,7 +558,7 @@ void __71__BookmarkImporter__getCarrierBundleBuiltinBookmarkInfoWithCompletion__
 - (id)_myAccountBookmarkInfo
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -580,12 +580,12 @@ void __71__BookmarkImporter__getCarrierBundleBuiltinBookmarkInfoWithCompletion__
         v7 = *(*(&v17 + 1) + 8 * i);
         v8 = [v7 safari_stringForKey:@"MyAccountURLTitle_Localized"];
         v9 = [v7 safari_stringForKey:@"MyAccountURL"];
-        v10 = [v9 safari_bestURLForUserTypedString];
-        v11 = [v10 absoluteString];
+        safari_bestURLForUserTypedString = [v9 safari_bestURLForUserTypedString];
+        absoluteString = [safari_bestURLForUserTypedString absoluteString];
 
         if (v8)
         {
-          v12 = v11 == 0;
+          v12 = absoluteString == 0;
         }
 
         else
@@ -596,19 +596,19 @@ void __71__BookmarkImporter__getCarrierBundleBuiltinBookmarkInfoWithCompletion__
         if (v12)
         {
 
-          v14 = v3;
-          v3 = 0;
+          v14 = array;
+          array = 0;
           goto LABEL_14;
         }
 
         v21[0] = @"Title";
         v21[1] = @"URL";
         v22[0] = v8;
-        v22[1] = v11;
+        v22[1] = absoluteString;
         v21[2] = @"BookmarkType";
         v22[2] = @"CarrierBookmark";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
-        [(NSArray *)v3 addObject:v13];
+        [(NSArray *)array addObject:v13];
       }
 
       v4 = [(NSArray *)obj countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -624,21 +624,21 @@ void __71__BookmarkImporter__getCarrierBundleBuiltinBookmarkInfoWithCompletion__
   v14 = obj;
 LABEL_14:
 
-  return v3;
+  return array;
 }
 
-- (id)_builtinBookmarkWithInfo:(id)a3 asCarrierBookmark:(BOOL)a4
+- (id)_builtinBookmarkWithInfo:(id)info asCarrierBookmark:(BOOL)bookmark
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277D499F0] currentDevice];
-  v8 = [v7 deviceClass];
+  infoCopy = info;
+  currentDevice = [MEMORY[0x277D499F0] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  v9 = v8 != 3;
-  if (v8 == 3)
+  v9 = deviceClass != 3;
+  if (deviceClass == 3)
   {
     v10 = @"iPadTitle";
 LABEL_5:
-    v11 = [v6 objectForKey:v10];
+    v11 = [infoCopy objectForKey:v10];
     if (v11)
     {
       goto LABEL_9;
@@ -647,7 +647,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v8 == 1)
+  if (deviceClass == 1)
   {
     v10 = @"iPhoneTitle";
     goto LABEL_5;
@@ -655,10 +655,10 @@ LABEL_5:
 
   v9 = 0;
 LABEL_8:
-  v11 = [v6 objectForKey:@"Title"];
+  v11 = [infoCopy objectForKey:@"Title"];
 LABEL_9:
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 localizedStringForKey:v11 value:&stru_2827BF158 table:@"BuiltinBookmarks"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = [mainBundle localizedStringForKey:v11 value:&stru_2827BF158 table:@"BuiltinBookmarks"];
 
   if (!v13)
   {
@@ -671,26 +671,26 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v14 = [v6 objectForKey:@"IsFolder"];
-  v15 = [v14 BOOLValue];
+  v14 = [infoCopy objectForKey:@"IsFolder"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v16 = objc_alloc(MEMORY[0x277D7B5A0]);
-    v17 = [(WebBookmarkCollection *)self->_collection configuration];
-    v18 = [v16 initFolderWithParentID:0 collectionType:{objc_msgSend(v17, "collectionType")}];
+    configuration = [(WebBookmarkCollection *)self->_collection configuration];
+    v18 = [v16 initFolderWithParentID:0 collectionType:{objc_msgSend(configuration, "collectionType")}];
 
     [v18 setTitle:v13];
     goto LABEL_26;
   }
 
-  if (v8 == 3)
+  if (deviceClass == 3)
   {
-    v20 = [v6 objectForKey:@"iPadURL"];
+    v20 = [infoCopy objectForKey:@"iPadURL"];
     if (v9)
     {
 LABEL_17:
-      v21 = [v6 objectForKey:@"iPhoneURL"];
+      v21 = [infoCopy objectForKey:@"iPhoneURL"];
 
       v20 = v21;
       if (v21)
@@ -717,7 +717,7 @@ LABEL_17:
   }
 
 LABEL_21:
-  v20 = [v6 objectForKey:@"URL"];
+  v20 = [infoCopy objectForKey:@"URL"];
   if (!v20)
   {
     v26 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -732,9 +732,9 @@ LABEL_14:
   }
 
 LABEL_22:
-  v22 = [v6 safari_stringForKey:@"BookmarkType"];
+  v22 = [infoCopy safari_stringForKey:@"BookmarkType"];
   v23 = v22;
-  if (a4 || [v22 isEqualToString:@"CarrierBookmark"])
+  if (bookmark || [v22 isEqualToString:@"CarrierBookmark"])
   {
     v24 = [objc_alloc(MEMORY[0x277D7B5A0]) initCarrierBookmarkWithTitle:v13 address:v20];
   }
@@ -756,20 +756,20 @@ LABEL_26:
   return v18;
 }
 
-- (void)_appendBookmarksFromSource:(id)a3 toParent:(int)a4
+- (void)_appendBookmarksFromSource:(id)source toParent:(int)parent
 {
-  v4 = *&a4;
+  v4 = *&parent;
   v35 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"CarrierBundle"])
+  if ([source isEqualToString:@"CarrierBundle"])
   {
-    v18 = [(BookmarkImporter *)self _myAccountBookmarkInfo];
-    if ([v18 count])
+    _myAccountBookmarkInfo = [(BookmarkImporter *)self _myAccountBookmarkInfo];
+    if ([_myAccountBookmarkInfo count])
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = v18;
+      v6 = _myAccountBookmarkInfo;
       v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v7)
       {
@@ -858,27 +858,27 @@ LABEL_26:
   }
 }
 
-- (void)_appendBuiltinBookmarkWithInfo:(id)a3 toParent:(int)a4 asCarrierBookmark:(BOOL)a5
+- (void)_appendBuiltinBookmarkWithInfo:(id)info toParent:(int)parent asCarrierBookmark:(BOOL)bookmark
 {
-  v5 = a5;
-  v6 = *&a4;
+  bookmarkCopy = bookmark;
+  v6 = *&parent;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 safari_stringForKey:@"BookmarkType"];
+  infoCopy = info;
+  v9 = [infoCopy safari_stringForKey:@"BookmarkType"];
   v10 = [v9 isEqualToString:@"BookmarkArray"];
 
   if (v10)
   {
-    if (!v5)
+    if (!bookmarkCopy)
     {
-      v11 = [v8 safari_stringForKey:@"BookmarkArraySource"];
+      v11 = [infoCopy safari_stringForKey:@"BookmarkArraySource"];
       [(BookmarkImporter *)self _appendBookmarksFromSource:v11 toParent:v6];
     }
   }
 
   else
   {
-    v12 = [(BookmarkImporter *)self _builtinBookmarkWithInfo:v8 asCarrierBookmark:v5];
+    v12 = [(BookmarkImporter *)self _builtinBookmarkWithInfo:infoCopy asCarrierBookmark:bookmarkCopy];
     if (v12 && (-[BookmarkImporter _oldDeletedStaticBookmarks](self, "_oldDeletedStaticBookmarks"), v13 = objc_claimAutoreleasedReturnValue(), [v12 address], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "containsObject:", v14), v14, v13, (v15 & 1) == 0))
     {
       [(WebBookmarkCollection *)self->_collection moveBookmark:v12 toFolderWithID:v6];
@@ -889,7 +889,7 @@ LABEL_26:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v17 = [v8 objectForKey:{@"Bookmarks", 0}];
+        v17 = [infoCopy objectForKey:{@"Bookmarks", 0}];
         v18 = [v17 countByEnumeratingWithState:&v21 objects:v27 count:16];
         if (v18)
         {
@@ -904,7 +904,7 @@ LABEL_26:
                 objc_enumerationMutation(v17);
               }
 
-              -[BookmarkImporter _appendBuiltinBookmarkWithInfo:toParent:asCarrierBookmark:](self, "_appendBuiltinBookmarkWithInfo:toParent:asCarrierBookmark:", *(*(&v21 + 1) + 8 * v20++), [v12 identifier], v5);
+              -[BookmarkImporter _appendBuiltinBookmarkWithInfo:toParent:asCarrierBookmark:](self, "_appendBuiltinBookmarkWithInfo:toParent:asCarrierBookmark:", *(*(&v21 + 1) + 8 * v20++), [v12 identifier], bookmarkCopy);
             }
 
             while (v18 != v20);
@@ -932,8 +932,8 @@ LABEL_26:
 - (void)_importRootFolderBuiltinBookmarks
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 URLForResource:@"BuiltinBookmarks" withExtension:@"plist"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle URLForResource:@"BuiltinBookmarks" withExtension:@"plist"];
 
   v5 = [MEMORY[0x277CBEB18] arrayWithContentsOfURL:v4];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -944,8 +944,8 @@ LABEL_26:
     _os_log_impl(&dword_215819000, v6, OS_LOG_TYPE_INFO, "Importing %zd root level built-in bookmarks", buf, 0xCu);
   }
 
-  v7 = [(WebBookmarkCollection *)self->_collection rootBookmark];
-  v8 = [v7 identifier];
+  rootBookmark = [(WebBookmarkCollection *)self->_collection rootBookmark];
+  identifier = [rootBookmark identifier];
 
   v15 = 0u;
   v16 = 0u;
@@ -966,7 +966,7 @@ LABEL_26:
           objc_enumerationMutation(v9);
         }
 
-        [(BookmarkImporter *)self _appendBuiltinBookmarkWithInfo:*(*(&v13 + 1) + 8 * v12++) toParent:v8 asCarrierBookmark:0, v13];
+        [(BookmarkImporter *)self _appendBuiltinBookmarkWithInfo:*(*(&v13 + 1) + 8 * v12++) toParent:identifier asCarrierBookmark:0, v13];
       }
 
       while (v10 != v12);
@@ -980,16 +980,16 @@ LABEL_26:
 - (void)_importCarrierBookmarksIfNecessary
 {
   carrierBookmarkInfo = self->_carrierBookmarkInfo;
-  v4 = [(BookmarkImporter *)self _lastImportedCarrierBookmarksInfo];
-  LOBYTE(carrierBookmarkInfo) = [(NSArray *)carrierBookmarkInfo isEqual:v4];
+  _lastImportedCarrierBookmarksInfo = [(BookmarkImporter *)self _lastImportedCarrierBookmarksInfo];
+  LOBYTE(carrierBookmarkInfo) = [(NSArray *)carrierBookmarkInfo isEqual:_lastImportedCarrierBookmarksInfo];
 
   if ((carrierBookmarkInfo & 1) == 0)
   {
     [(WebBookmarkCollection *)self->_collection clearCarrierBookmarks];
-    v5 = [(WebBookmarkCollection *)self->_collection rootBookmark];
-    v6 = [v5 identifier];
+    rootBookmark = [(WebBookmarkCollection *)self->_collection rootBookmark];
+    identifier = [rootBookmark identifier];
 
-    [(BookmarkImporter *)self _appendBookmarksFromSource:@"CarrierBundle" toParent:v6];
+    [(BookmarkImporter *)self _appendBookmarksFromSource:@"CarrierBundle" toParent:identifier];
   }
 }
 
@@ -1039,13 +1039,13 @@ LABEL_10:
   return v5;
 }
 
-- (void)_setLastImportedCarrierBookmarksInfo:(id)a3
+- (void)_setLastImportedCarrierBookmarksInfo:(id)info
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:200 options:0 error:0];
+    v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:infoCopy format:200 options:0 error:0];
   }
 
   else
@@ -1058,17 +1058,17 @@ LABEL_10:
 
 - (int64_t)_currentDeviceClass
 {
-  v2 = [MEMORY[0x277D499F0] currentDevice];
-  v3 = [v2 deviceClass];
+  currentDevice = [MEMORY[0x277D499F0] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  return v3 == 3;
+  return deviceClass == 3;
 }
 
 - (void)_importFavoritesFolderBuiltinBookmarks
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(WebBookmarkCollection *)self->_collection bookmarksBarBookmark];
-  if (!v3)
+  bookmarksBarBookmark = [(WebBookmarkCollection *)self->_collection bookmarksBarBookmark];
+  if (!bookmarksBarBookmark)
   {
     v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1077,18 +1077,18 @@ LABEL_10:
     }
   }
 
-  v5 = [v3 identifier];
+  identifier = [bookmarksBarBookmark identifier];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    LODWORD(v22) = v5;
+    LODWORD(v22) = identifier;
     _os_log_impl(&dword_215819000, v6, OS_LOG_TYPE_INFO, "Attempting to import built-in favorites into favorite folder with identifier %d", buf, 8u);
   }
 
-  v7 = [(BookmarkImporter *)self _currentDeviceClass];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [(BookmarkImporter *)self _builtinFavoritesForLocale:v8 deviceClass:v7];
+  _currentDeviceClass = [(BookmarkImporter *)self _currentDeviceClass];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [(BookmarkImporter *)self _builtinFavoritesForLocale:currentLocale deviceClass:_currentDeviceClass];
 
   v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1117,7 +1117,7 @@ LABEL_10:
           objc_enumerationMutation(v12);
         }
 
-        [(BookmarkImporter *)self _appendBuiltinBookmarkWithInfo:*(*(&v16 + 1) + 8 * i) toParent:v5 asCarrierBookmark:0, v16];
+        [(BookmarkImporter *)self _appendBuiltinBookmarkWithInfo:*(*(&v16 + 1) + 8 * i) toParent:identifier asCarrierBookmark:0, v16];
       }
 
       v13 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1127,12 +1127,12 @@ LABEL_10:
   }
 }
 
-- (void)_importBuiltinBookmarksWithCarrierBookmarkInfo:(id)a3
+- (void)_importBuiltinBookmarksWithCarrierBookmarkInfo:(id)info
 {
-  v5 = a3;
-  objc_storeStrong(&self->_carrierBookmarkInfo, a3);
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v6 BOOLForKey:@"DidImportBuiltinBookmarks"])
+  infoCopy = info;
+  objc_storeStrong(&self->_carrierBookmarkInfo, info);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"DidImportBuiltinBookmarks"])
   {
     v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1187,10 +1187,10 @@ LABEL_10:
         [(BookmarkImporter *)self _importCarrierBookmarksIfNecessary];
       }
 
-      v12 = [(WebBookmarkCollection *)self->_collection bookmarksBarList];
-      v13 = [v12 bookmarkCount];
+      bookmarksBarList = [(WebBookmarkCollection *)self->_collection bookmarksBarList];
+      bookmarkCount = [bookmarksBarList bookmarkCount];
 
-      if (!v13)
+      if (!bookmarkCount)
       {
         v14 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1204,7 +1204,7 @@ LABEL_10:
 
       [MEMORY[0x277D7B5A8] unlockSync];
       [(BookmarkImporter *)self _clearOldDeletedStaticBookmarks];
-      [v6 setBool:1 forKey:@"DidImportBuiltinBookmarks"];
+      [standardUserDefaults setBool:1 forKey:@"DidImportBuiltinBookmarks"];
     }
 
     else
@@ -1244,13 +1244,13 @@ LABEL_10:
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 title];
-        v9 = v8 == 0;
+        title = [v7 title];
+        v9 = title == 0;
 
         if (!v9)
         {
-          v10 = [v7 title];
-          [v2 addObject:v10];
+          title2 = [v7 title];
+          [v2 addObject:title2];
         }
       }
 
@@ -1260,12 +1260,12 @@ LABEL_10:
     while (v4);
   }
 
-  v11 = [MEMORY[0x277D499F0] currentDevice];
-  v12 = [v11 userAssignedName];
+  currentDevice = [MEMORY[0x277D499F0] currentDevice];
+  userAssignedName = [currentDevice userAssignedName];
 
-  if (v12)
+  if (userAssignedName)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"YouTube – %@", v12];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"YouTube – %@", userAssignedName];
   }
 
   else
@@ -1289,14 +1289,14 @@ LABEL_10:
 - (void)migrateYouTubeBookmarks
 {
   v33 = *MEMORY[0x277D85DE8];
-  v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (([v24 BOOLForKey:@"DidMigrateYouTubeBookmarks"] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"DidMigrateYouTubeBookmarks"] & 1) == 0)
   {
     v3 = SafariNonContaineredLibraryPath();
     v23 = [v3 stringByAppendingPathComponent:@"Preferences/com.apple.youtube.dp.plist"];
 
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v22 fileExistsAtPath:v23])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v23])
     {
       v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v23];
       v21 = v4;
@@ -1309,11 +1309,11 @@ LABEL_10:
           if ([MEMORY[0x277D7B5A8] lockSync])
           {
             v5 = objc_alloc(MEMORY[0x277D7B5A0]);
-            v6 = [(WebBookmarkCollection *)self->_collection configuration];
-            v26 = [v5 initFolderWithParentID:0 collectionType:{objc_msgSend(v6, "collectionType")}];
+            configuration = [(WebBookmarkCollection *)self->_collection configuration];
+            v26 = [v5 initFolderWithParentID:0 collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-            v7 = [(BookmarkImporter *)self _uniqueYouTubeBookmarkFolderName];
-            [v26 setTitle:v7];
+            _uniqueYouTubeBookmarkFolderName = [(BookmarkImporter *)self _uniqueYouTubeBookmarkFolderName];
+            [v26 setTitle:_uniqueYouTubeBookmarkFolderName];
 
             [(WebBookmarkCollection *)self->_collection saveBookmark:v26];
             v29 = 0u;
@@ -1338,8 +1338,8 @@ LABEL_10:
                   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"youtu.be/%@", v11];
                   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"http://youtu.be/%@", v11];
                   v14 = objc_alloc(MEMORY[0x277D7B5A0]);
-                  v15 = [(WebBookmarkCollection *)self->_collection configuration];
-                  v16 = [v14 initWithTitle:v12 address:v13 collectionType:{objc_msgSend(v15, "collectionType")}];
+                  configuration2 = [(WebBookmarkCollection *)self->_collection configuration];
+                  v16 = [v14 initWithTitle:v12 address:v13 collectionType:{objc_msgSend(configuration2, "collectionType")}];
 
                   -[WebBookmarkCollection moveBookmark:toFolderWithID:](self->_collection, "moveBookmark:toFolderWithID:", v16, [v26 identifier]);
                   [(WebBookmarkCollection *)self->_collection saveBookmark:v16];
@@ -1352,8 +1352,8 @@ LABEL_10:
             }
 
             [MEMORY[0x277D7B5A8] unlockSync];
-            v17 = [MEMORY[0x277CCAA00] defaultManager];
-            v18 = [v17 _web_removeFileOnlyAtPath:v23];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            v18 = [defaultManager2 _web_removeFileOnlyAtPath:v23];
 
             if ((v18 & 1) == 0)
             {
@@ -1364,7 +1364,7 @@ LABEL_10:
               }
             }
 
-            [v24 setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
+            [standardUserDefaults setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
           }
 
           SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v31);
@@ -1372,19 +1372,19 @@ LABEL_10:
 
         else
         {
-          [v24 setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
+          [standardUserDefaults setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
         }
       }
 
       else
       {
-        [v24 setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
+        [standardUserDefaults setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
       }
     }
 
     else
     {
-      [v24 setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
+      [standardUserDefaults setBool:1 forKey:@"DidMigrateYouTubeBookmarks"];
     }
   }
 }

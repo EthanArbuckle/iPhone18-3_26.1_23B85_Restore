@@ -1,71 +1,71 @@
 @interface BuddyAppleIDSignInController
-+ (id)federatedAuthSignInControllerInNavigationController:(id)a3 mode:(int)a4 passcodeCacheManager:(id)a5 featureFlags:(id)a6;
-+ (id)newAppleAccountPasswordCellWithPlaceholder:(id)a3 delegate:(id)a4;
++ (id)federatedAuthSignInControllerInNavigationController:(id)controller mode:(int)mode passcodeCacheManager:(id)manager featureFlags:(id)flags;
++ (id)newAppleAccountPasswordCellWithPlaceholder:(id)placeholder delegate:(id)delegate;
 + (id)newAppleAccountTableView;
-+ (id)newAppleAccountUsernameCellWithPlaceholder:(id)a3 delegate:(id)a4;
++ (id)newAppleAccountUsernameCellWithPlaceholder:(id)placeholder delegate:(id)delegate;
 - (BOOL)_scrollViewContentIsUnderTray;
 - (BOOL)isFooterObscuredByButtonTray;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (BuddyAppleIDSignInController)initWithMode:(int)a3 featureFlags:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (BuddyAppleIDSignInController)initWithMode:(int)mode featureFlags:(id)flags;
 - (NSString)username;
 - (double)headerViewBottomToTableViewTopPadding;
 - (double)rowHeight;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_serverFriendlyDisplayNameForCurrentUserName:(id)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_serverFriendlyDisplayNameForCurrentUserName:(id)name;
 - (id)_subTitleText;
-- (id)_subtitleTextForMode:(int)a3;
-- (id)_titleTextForAuthMode:(int)a3;
-- (id)_userFriendlyDisplayNameForCurrentUserName:(id)a3;
+- (id)_subtitleTextForMode:(int)mode;
+- (id)_titleTextForAuthMode:(int)mode;
+- (id)_userFriendlyDisplayNameForCurrentUserName:(id)name;
 - (id)passwordCell;
-- (id)stringWithUsernameFormattedIntoString:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)stringWithUsernameFormattedIntoString:(id)string;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)topSectionFooterView;
 - (id)usernameCell;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_continueButtonTapped;
-- (void)_loginOptionsTapped:(id)a3;
+- (void)_loginOptionsTapped:(id)tapped;
 - (void)_setContinueButtonEnabledOrDisabled;
 - (void)_signInToAccount;
-- (void)_textChanged:(id)a3;
-- (void)addFooterLinkWithTitle:(id)a3 handler:(id)a4;
+- (void)_textChanged:(id)changed;
+- (void)addFooterLinkWithTitle:(id)title handler:(id)handler;
 - (void)dealloc;
 - (void)ensureUsernameTextFieldIsVisible;
 - (void)loadView;
-- (void)setDetailText:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFooterText:(id)a3;
-- (void)setIsUsernameEditable:(BOOL)a3;
-- (void)setKeyboardFrame:(CGRect)a3;
-- (void)setShowsPasswordAsField:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUsername:(id)a3;
-- (void)setiForgotText:(id)a3 handler:(id)a4;
-- (void)viewControllerSpinnerManagerDidStopAnimatingSpinner:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDetailText:(id)text;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFooterText:(id)text;
+- (void)setIsUsernameEditable:(BOOL)editable;
+- (void)setKeyboardFrame:(CGRect)frame;
+- (void)setShowsPasswordAsField:(BOOL)field animated:(BOOL)animated;
+- (void)setUsername:(id)username;
+- (void)setiForgotText:(id)text handler:(id)handler;
+- (void)viewControllerSpinnerManagerDidStopAnimatingSpinner:(id)spinner;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAppleIDSignInController
 
-+ (id)federatedAuthSignInControllerInNavigationController:(id)a3 mode:(int)a4 passcodeCacheManager:(id)a5 featureFlags:(id)a6
++ (id)federatedAuthSignInControllerInNavigationController:(id)controller mode:(int)mode passcodeCacheManager:(id)manager featureFlags:(id)flags
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, controller);
+  modeCopy = mode;
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, manager);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, flags);
   v9 = [BuddyAppleIDSignInController alloc];
-  val = [(BuddyAppleIDSignInController *)v9 initWithMode:v26 featureFlags:v24];
+  val = [(BuddyAppleIDSignInController *)v9 initWithMode:modeCopy featureFlags:v24];
   objc_initWeak(&from, val);
   v10 = val;
   v13 = _NSConcreteStackBlock;
@@ -76,7 +76,7 @@
   objc_copyWeak(&v20, &from);
   v18 = location[0];
   v19 = v25;
-  v21 = v26;
+  v21 = modeCopy;
   [v10 setAuthModeHandler:&v13];
   v11 = val;
   objc_storeStrong(&v19, 0);
@@ -90,66 +90,66 @@
   return v11;
 }
 
-- (BuddyAppleIDSignInController)initWithMode:(int)a3 featureFlags:(id)a4
+- (BuddyAppleIDSignInController)initWithMode:(int)mode featureFlags:(id)flags
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  modeCopy = mode;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v21;
-  v5 = [v21 _titleTextForAuthMode:v19];
-  v6 = [v21 _subtitleTextForMode:v19];
-  v21 = 0;
+  objc_storeStrong(&location, flags);
+  v4 = selfCopy;
+  v5 = [selfCopy _titleTextForAuthMode:modeCopy];
+  v6 = [selfCopy _subtitleTextForMode:modeCopy];
+  selfCopy = 0;
   v17.receiver = v4;
   v17.super_class = BuddyAppleIDSignInController;
-  v21 = [(BuddyAppleIDSignInController *)&v17 initWithTitle:v5 detailText:v6 icon:0 adoptTableViewScrollView:1];
-  objc_storeStrong(&v21, v21);
+  selfCopy = [(BuddyAppleIDSignInController *)&v17 initWithTitle:v5 detailText:v6 icon:0 adoptTableViewScrollView:1];
+  objc_storeStrong(&selfCopy, selfCopy);
 
-  if (v21)
+  if (selfCopy)
   {
-    *(v21 + 10) = v19;
-    *(v21 + 49) = 1;
-    *(v21 + 45) = 1;
-    *(v21 + 46) = 0;
-    *(v21 + 47) = 1;
-    objc_storeStrong(v21 + 10, location);
+    *(selfCopy + 10) = modeCopy;
+    *(selfCopy + 49) = 1;
+    *(selfCopy + 45) = 1;
+    *(selfCopy + 46) = 0;
+    *(selfCopy + 47) = 1;
+    objc_storeStrong(selfCopy + 10, location);
     v7 = dispatch_get_global_queue(25, 0);
     v10 = _NSConcreteStackBlock;
     v11 = -1073741824;
     v12 = 0;
     v13 = sub_100171C28;
     v14 = &unk_10032D458;
-    v16 = v19;
-    v15 = v21;
+    v16 = modeCopy;
+    v15 = selfCopy;
     dispatch_async(v7, &v10);
 
     objc_storeStrong(&v15, 0);
   }
 
-  v8 = v21;
+  v8 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyAppleIDSignInController;
   [(BuddyAppleIDSignInController *)&v3 dealloc];
 }
 
-- (id)_titleTextForAuthMode:(int)a3
+- (id)_titleTextForAuthMode:(int)mode
 {
-  if (a3)
+  if (mode)
   {
-    switch(a3)
+    switch(mode)
     {
       case 1:
         goto LABEL_11;
@@ -193,12 +193,12 @@ LABEL_11:
   return v10;
 }
 
-- (id)stringWithUsernameFormattedIntoString:(id)a3
+- (id)stringWithUsernameFormattedIntoString:(id)string
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v36 = 0;
   if ([location[0] length])
   {
@@ -209,8 +209,8 @@ LABEL_11:
     v33 = 0;
     v3 = location[0];
     obj = 0;
-    v4 = [(BuddyAppleIDSignInController *)v38 username];
-    v5 = [NSString stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@" error:&obj, v4];
+    username = [(BuddyAppleIDSignInController *)selfCopy username];
+    v5 = [NSString stringWithValidatedFormat:v3 validFormatSpecifiers:@"%@" error:&obj, username];
     objc_storeStrong(&v33, obj);
     v32 = v5;
 
@@ -229,9 +229,9 @@ LABEL_11:
 
         else if (v33)
         {
-          v28 = [v33 domain];
+          domain = [v33 domain];
           v27 = 1;
-          v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v28, [v33 code]);
+          v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v33 code]);
           v26 = v6;
           v25 = 1;
         }
@@ -267,9 +267,9 @@ LABEL_11:
     v12 = v36;
     v36 = v11;
 
-    v13 = [v36 string];
-    v14 = [(BuddyAppleIDSignInController *)v38 username];
-    v15 = [v13 rangeOfString:v14];
+    string = [v36 string];
+    username2 = [(BuddyAppleIDSignInController *)selfCopy username];
+    v15 = [string rangeOfString:username2];
     v24 = v16;
     v23 = v15;
 
@@ -279,8 +279,8 @@ LABEL_11:
       v22 = [UIFont fontWithDescriptor:v17 size:0.0];
 
       [v36 addAttribute:NSFontAttributeName value:v22 range:{v23, v24}];
-      v18 = [(BuddyAppleIDSignInController *)v38 username];
-      v21 = [AKUsernameFormatter formattedUsernameFromUsername:v18];
+      username3 = [(BuddyAppleIDSignInController *)selfCopy username];
+      v21 = [AKUsernameFormatter formattedUsernameFromUsername:username3];
 
       [v36 replaceCharactersInRange:v23 withString:{v24, v21}];
       objc_storeStrong(&v21, 0);
@@ -299,19 +299,19 @@ LABEL_11:
   return v19;
 }
 
-- (id)_subtitleTextForMode:(int)a3
+- (id)_subtitleTextForMode:(int)mode
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = a3;
+  modeCopy = mode;
   v40 = 0;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [(UIDevice *)v3 sf_isChinaRegionCellularDevice];
+    sf_isChinaRegionCellularDevice = [(UIDevice *)v3 sf_isChinaRegionCellularDevice];
 
     v5 = [NSAttributedString alloc];
-    if (v4)
+    if (sf_isChinaRegionCellularDevice)
     {
       v6 = [NSBundle bundleForClass:objc_opt_class()];
       v7 = [(NSBundle *)v6 localizedStringForKey:@"APPLEID_SIGN_IN_CELLULAR_NOTICE" value:&stru_10032F900 table:@"AppleIDAuth"];
@@ -328,9 +328,9 @@ LABEL_11:
     v40 = v8;
   }
 
-  else if (v41 >= 2)
+  else if (modeCopy >= 2)
   {
-    switch(v41)
+    switch(modeCopy)
     {
       case 2u:
         v33 = [NSAttributedString alloc];
@@ -351,14 +351,14 @@ LABEL_11:
 
         break;
       case 4u:
-        v10 = [(BuddyAppleIDSignInController *)v43 username];
-        v11 = [(NSString *)v10 length];
+        username = [(BuddyAppleIDSignInController *)selfCopy username];
+        v11 = [(NSString *)username length];
 
         if (v11)
         {
           v12 = [NSBundle bundleForClass:objc_opt_class()];
           v13 = [(NSBundle *)v12 localizedStringForKey:@"ICLOUD_UPGRADE_TEXT_%@" value:&stru_10032F900 table:@"AppleIDAuth"];
-          v14 = [(BuddyAppleIDSignInController *)v43 stringWithUsernameFormattedIntoString:v13];
+          v14 = [(BuddyAppleIDSignInController *)selfCopy stringWithUsernameFormattedIntoString:v13];
           v15 = v40;
           v40 = v14;
         }
@@ -374,8 +374,8 @@ LABEL_11:
 
         break;
       case 7u:
-        v16 = [(BuddyAppleIDSignInController *)v43 username];
-        v17 = [(NSString *)v16 length];
+        username2 = [(BuddyAppleIDSignInController *)selfCopy username];
+        v17 = [(NSString *)username2 length];
 
         if (v17)
         {
@@ -391,38 +391,38 @@ LABEL_11:
     }
   }
 
-  v38 = [v40 string];
+  string = [v40 string];
   objc_storeStrong(&v40, 0);
 
-  return v38;
+  return string;
 }
 
 - (id)_subTitleText
 {
-  v2 = [(BuddyAppleIDSignInController *)self detailText];
+  detailText = [(BuddyAppleIDSignInController *)self detailText];
 
-  if (v2)
+  if (detailText)
   {
-    v5 = [(BuddyAppleIDSignInController *)self detailText];
+    detailText2 = [(BuddyAppleIDSignInController *)self detailText];
   }
 
   else
   {
-    v5 = [(BuddyAppleIDSignInController *)self _subtitleTextForMode:self->_mode];
+    detailText2 = [(BuddyAppleIDSignInController *)self _subtitleTextForMode:self->_mode];
   }
 
-  return v5;
+  return detailText2;
 }
 
-- (void)setiForgotText:(id)a3 handler:(id)a4
+- (void)setiForgotText:(id)text handler:(id)handler
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  [(BFFLinkLabelFooterView *)v26->_topSectionFooterView removeAllLinks];
+  objc_storeStrong(&v24, handler);
+  [(BFFLinkLabelFooterView *)selfCopy->_topSectionFooterView removeAllLinks];
   if ([location[0] length] && v24)
   {
     v22 = UIFontTextStyleBody;
@@ -454,9 +454,9 @@ LABEL_11:
     v15 = [v11 initWithString:v12 attributes:v14];
     [v21 appendAttributedString:v15];
 
-    v16 = [(BuddyAppleIDSignInController *)v26 topSectionFooterView];
+    topSectionFooterView = [(BuddyAppleIDSignInController *)selfCopy topSectionFooterView];
     v17 = [v21 copy];
-    [v16 addFooterLinkWithAttributedTitle:v17 handler:v24];
+    [topSectionFooterView addFooterLinkWithAttributedTitle:v17 handler:v24];
 
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v19, 0);
@@ -475,29 +475,29 @@ LABEL_11:
   objc_storeStrong(location, 0);
 }
 
-- (void)addFooterLinkWithTitle:(id)a3 handler:(id)a4
+- (void)addFooterLinkWithTitle:(id)title handler:(id)handler
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyAppleIDSignInController *)v8 topSectionFooterView];
-  [v5 addLinkWithTitle:location[0] handler:v6];
+  objc_storeStrong(&v6, handler);
+  topSectionFooterView = [(BuddyAppleIDSignInController *)selfCopy topSectionFooterView];
+  [topSectionFooterView addLinkWithTitle:location[0] handler:v6];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDSignInController *)v5 topSectionFooterView];
-  [v3 setLabelText:location[0]];
+  objc_storeStrong(location, text);
+  topSectionFooterView = [(BuddyAppleIDSignInController *)selfCopy topSectionFooterView];
+  [topSectionFooterView setLabelText:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -516,28 +516,28 @@ LABEL_11:
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3 != self->_enabled)
+  if (enabled != self->_enabled)
   {
-    self->_enabled = a3;
-    v3 = [(UITableViewCell *)self->_usernameCell editableTextField];
-    [v3 setEnabled:a3];
+    self->_enabled = enabled;
+    editableTextField = [(UITableViewCell *)self->_usernameCell editableTextField];
+    [editableTextField setEnabled:enabled];
 
-    v4 = [(UITableViewCell *)self->_passwordCell editableTextField];
-    [v4 setEnabled:a3];
+    editableTextField2 = [(UITableViewCell *)self->_passwordCell editableTextField];
+    [editableTextField2 setEnabled:enabled];
 
-    [(BFFLinkLabelFooterView *)self->_topSectionFooterView setEnabled:a3];
-    if (a3)
+    [(BFFLinkLabelFooterView *)self->_topSectionFooterView setEnabled:enabled];
+    if (enabled)
     {
       [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"BUDDY_APPLEID_SIGN_IN_PAGE"];
     }
 
     else
     {
-      v5 = [(BuddyAppleIDSignInController *)self navigationController];
-      v6 = [v5 topViewController];
-      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v6 identifier:@"BUDDY_APPLEID_SIGN_IN_PAGE"];
+      navigationController = [(BuddyAppleIDSignInController *)self navigationController];
+      topViewController = [navigationController topViewController];
+      [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:topViewController identifier:@"BUDDY_APPLEID_SIGN_IN_PAGE"];
     }
   }
 }
@@ -555,9 +555,9 @@ LABEL_11:
   {
     v12 = +[UIApplication sharedApplication];
     v11 = 1;
-    v10 = [(UIApplication *)v12 preferredContentSizeCategory];
+    preferredContentSizeCategory = [(UIApplication *)v12 preferredContentSizeCategory];
     v9 = 1;
-    v5 = !UIContentSizeCategoryIsAccessibilityCategory(v10);
+    v5 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   if (v9)
@@ -582,7 +582,7 @@ LABEL_11:
 
 + (id)newAppleAccountTableView
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [location[0] setRowHeight:UITableViewAutomaticDimension];
@@ -599,59 +599,59 @@ LABEL_11:
 
 - (void)loadView
 {
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
   v35.receiver = self;
   v35.super_class = BuddyAppleIDSignInController;
   [(BuddyAppleIDSignInController *)&v35 loadView];
   v2 = +[BuddyAppleIDSignInController newAppleAccountTableView];
-  [(BuddyAppleIDSignInController *)v37 setTableView:v2];
+  [(BuddyAppleIDSignInController *)selfCopy setTableView:v2];
 
-  v3 = v37;
-  v4 = [(BuddyAppleIDSignInController *)v37 tableView];
-  [v4 setDelegate:v3];
+  v3 = selfCopy;
+  tableView = [(BuddyAppleIDSignInController *)selfCopy tableView];
+  [tableView setDelegate:v3];
 
-  v5 = v37;
-  v6 = [(BuddyAppleIDSignInController *)v37 tableView];
-  [v6 setDataSource:v5];
+  v5 = selfCopy;
+  tableView2 = [(BuddyAppleIDSignInController *)selfCopy tableView];
+  [tableView2 setDataSource:v5];
 
-  v7 = [(BuddyAppleIDSignInController *)v37 tableView];
-  [(BuddyAppleIDSignInController *)v37 rowHeight];
-  [v7 setRowHeight:?];
+  tableView3 = [(BuddyAppleIDSignInController *)selfCopy tableView];
+  [(BuddyAppleIDSignInController *)selfCopy rowHeight];
+  [tableView3 setRowHeight:?];
 
-  v8 = [(BuddyAppleIDSignInController *)v37 featureFlags];
-  LOBYTE(v6) = [(BuddyFeatureFlags *)v8 isSolariumEnabled]^ 1;
+  featureFlags = [(BuddyAppleIDSignInController *)selfCopy featureFlags];
+  LOBYTE(tableView2) = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled]^ 1;
 
-  if (v6)
+  if (tableView2)
   {
-    v9 = [(BuddyAppleIDSignInController *)v37 tableView];
-    [v9 setContentInsetAdjustmentBehavior:2];
+    tableView4 = [(BuddyAppleIDSignInController *)selfCopy tableView];
+    [tableView4 setContentInsetAdjustmentBehavior:2];
   }
 
   v10 = 0;
-  if (v37->_mode != 4)
+  if (selfCopy->_mode != 4)
   {
-    v10 = v37->_mode != 6;
+    v10 = selfCopy->_mode != 6;
   }
 
-  [(BuddyAppleIDSignInController *)v37 setShowsUsernameAsField:v10];
-  v37->_showsPasswordAsField = !v37->_showsUsernameAsField;
+  [(BuddyAppleIDSignInController *)selfCopy setShowsUsernameAsField:v10];
+  selfCopy->_showsPasswordAsField = !selfCopy->_showsUsernameAsField;
   v11 = 1;
-  if (v37->_mode != 1)
+  if (selfCopy->_mode != 1)
   {
     v11 = 1;
-    if (v37->_mode != 5)
+    if (selfCopy->_mode != 5)
     {
-      v11 = v37->_mode == 4;
+      v11 = selfCopy->_mode == 4;
     }
   }
 
-  [(BuddyAppleIDSignInController *)v37 setShowsInfoSection:v11];
-  objc_initWeak(&location, v37);
-  if (v37->_mode == 6 || v37->_mode == 4)
+  [(BuddyAppleIDSignInController *)selfCopy setShowsInfoSection:v11];
+  objc_initWeak(&location, selfCopy);
+  if (selfCopy->_mode == 6 || selfCopy->_mode == 4)
   {
-    v33 = v37->_mode == 4;
-    v12 = v37;
+    v33 = selfCopy->_mode == 4;
+    v12 = selfCopy;
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [(NSBundle *)v13 localizedStringForKey:@"SKIP_LINK" value:&stru_10032F900 table:@"AppleIDAuth"];
     v26 = _NSConcreteStackBlock;
@@ -665,16 +665,16 @@ LABEL_11:
 
     if (!v33)
     {
-      v15 = [(BuddyAppleIDSignInController *)v37 topSectionFooterView];
-      [v15 setWantsSideBySideLayout:1];
+      topSectionFooterView = [(BuddyAppleIDSignInController *)selfCopy topSectionFooterView];
+      [topSectionFooterView setWantsSideBySideLayout:1];
     }
 
     objc_destroyWeak(&v31);
   }
 
-  else if (v37->_mode == 3)
+  else if (selfCopy->_mode == 3)
   {
-    v16 = v37;
+    v16 = selfCopy;
     v17 = [NSBundle bundleForClass:objc_opt_class()];
     v18 = [(NSBundle *)v17 localizedStringForKey:@"SKIP_LINK" value:&stru_10032F900 table:@"AppleIDAuth"];
     v21 = _NSConcreteStackBlock;
@@ -687,26 +687,26 @@ LABEL_11:
     objc_destroyWeak(&v25);
   }
 
-  if (v37->_mode == 5)
+  if (selfCopy->_mode == 5)
   {
-    v19 = [(BuddyAppleIDSignInController *)v37 topSectionFooterView];
-    [v19 setFlexibleHeight:10.0];
+    topSectionFooterView2 = [(BuddyAppleIDSignInController *)selfCopy topSectionFooterView];
+    [topSectionFooterView2 setFlexibleHeight:10.0];
   }
 
   v20 = [NSNotificationCenter defaultCenter:v21];
-  [(NSNotificationCenter *)v20 addObserver:v37 selector:"_textChanged:" name:UITextFieldTextDidChangeNotification object:0];
+  [(NSNotificationCenter *)v20 addObserver:selfCopy selector:"_textChanged:" name:UITextFieldTextDidChangeNotification object:0];
 
   objc_destroyWeak(&location);
 }
 
 - (void)viewDidLoad
 {
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
   v38.receiver = self;
   v38.super_class = BuddyAppleIDSignInController;
   [(BuddyAppleIDSignInController *)&v38 viewDidLoad];
-  if (v40->_mode != 8)
+  if (selfCopy->_mode != 8)
   {
     v2 = [[OBAnimationState alloc] initWithStateName:@"State 1" darkStateName:@"Dark 1" transitionDuration:0.01 transitionSpeed:1.0];
     v42[0] = v2;
@@ -714,74 +714,74 @@ LABEL_11:
     v42[1] = v3;
     location = [NSArray arrayWithObjects:v42 count:2];
 
-    v4 = [(BuddyAppleIDSignInController *)v40 buddy_animationController:@"AppleID" animatedStates:location startAtFirstState:1];
-    [(BuddyAppleIDSignInController *)v40 setAnimationController:v4];
+    v4 = [(BuddyAppleIDSignInController *)selfCopy buddy_animationController:@"AppleID" animatedStates:location startAtFirstState:1];
+    [(BuddyAppleIDSignInController *)selfCopy setAnimationController:v4];
 
-    v5 = [(BuddyAppleIDSignInController *)v40 headerView];
-    v6 = [v5 animationView];
-    [v6 defaultScale];
+    headerView = [(BuddyAppleIDSignInController *)selfCopy headerView];
+    animationView = [headerView animationView];
+    [animationView defaultScale];
     v8 = v7 + 0.0299999993;
-    v9 = [(BuddyAppleIDSignInController *)v40 headerView];
-    v10 = [v9 animationView];
-    [v10 setScale:v8];
+    headerView2 = [(BuddyAppleIDSignInController *)selfCopy headerView];
+    animationView2 = [headerView2 animationView];
+    [animationView2 setScale:v8];
 
     objc_storeStrong(&location, 0);
   }
 
   v11 = +[OBBoldTrayButton boldButton];
-  [(BuddyAppleIDSignInController *)v40 setContinueButton:v11];
+  [(BuddyAppleIDSignInController *)selfCopy setContinueButton:v11];
 
-  v12 = [(BuddyAppleIDSignInController *)v40 continueButton];
+  continueButton = [(BuddyAppleIDSignInController *)selfCopy continueButton];
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [(NSBundle *)v13 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"AppleIDAuth"];
-  [(OBBoldTrayButton *)v12 setTitle:v14 forState:0];
+  [(OBBoldTrayButton *)continueButton setTitle:v14 forState:0];
 
-  v15 = [(BuddyAppleIDSignInController *)v40 continueButton];
-  [(OBBoldTrayButton *)v15 addTarget:v40 action:"_continueButtonTapped" forEvents:64];
+  continueButton2 = [(BuddyAppleIDSignInController *)selfCopy continueButton];
+  [(OBBoldTrayButton *)continueButton2 addTarget:selfCopy action:"_continueButtonTapped" forEvents:64];
 
-  [(BuddyAppleIDSignInController *)v40 _setContinueButtonEnabledOrDisabled];
-  if (v40->_mode == 2 || v40->_mode == 3)
+  [(BuddyAppleIDSignInController *)selfCopy _setContinueButtonEnabledOrDisabled];
+  if (selfCopy->_mode == 2 || selfCopy->_mode == 3)
   {
-    [(BuddyAppleIDSignInController *)v40 setShouldAdjustScrollViewInsetForKeyboard:1];
+    [(BuddyAppleIDSignInController *)selfCopy setShouldAdjustScrollViewInsetForKeyboard:1];
   }
 
   else
   {
-    v16 = [(BuddyAppleIDSignInController *)v40 buttonTray];
+    buttonTray = [(BuddyAppleIDSignInController *)selfCopy buttonTray];
     v41 = BYPrivacyAppleIDIdentifier;
     v17 = [NSArray arrayWithObjects:&v41 count:1];
-    [v16 setPrivacyLinkForBundles:v17];
+    [buttonTray setPrivacyLinkForBundles:v17];
 
-    [(BuddyAppleIDSignInController *)v40 setShouldAdjustScrollViewInsetForKeyboard:1];
-    v18 = [(BuddyAppleIDSignInController *)v40 buttonTray];
-    v19 = [(BuddyAppleIDSignInController *)v40 continueButton];
-    [v18 addButton:v19];
+    [(BuddyAppleIDSignInController *)selfCopy setShouldAdjustScrollViewInsetForKeyboard:1];
+    buttonTray2 = [(BuddyAppleIDSignInController *)selfCopy buttonTray];
+    continueButton3 = [(BuddyAppleIDSignInController *)selfCopy continueButton];
+    [buttonTray2 addButton:continueButton3];
   }
 
-  v20 = [(BuddyAppleIDSignInController *)v40 loginOptionsConstructor];
+  loginOptionsConstructor = [(BuddyAppleIDSignInController *)selfCopy loginOptionsConstructor];
 
-  if (v20)
+  if (loginOptionsConstructor)
   {
     v36 = +[OBLinkTrayButton linkButton];
     v35 = 0;
-    v21 = [(BuddyAppleIDSignInController *)v40 loginOptionsConstructor];
+    loginOptionsConstructor2 = [(BuddyAppleIDSignInController *)selfCopy loginOptionsConstructor];
     obj = 0;
-    v22 = v21[2](v21, v36, &obj);
+    v22 = loginOptionsConstructor2[2](loginOptionsConstructor2, v36, &obj);
     objc_storeStrong(&v35, obj);
-    [(BuddyAppleIDSignInController *)v40 setLoginOptionsAction:v22];
+    [(BuddyAppleIDSignInController *)selfCopy setLoginOptionsAction:v22];
 
     [v36 setTitle:v35 forState:0];
-    [v36 addTarget:v40 action:"_loginOptionsTapped:" forEvents:64];
-    v23 = [(BuddyAppleIDSignInController *)v40 buttonTray];
-    [v23 addButton:v36];
+    [v36 addTarget:selfCopy action:"_loginOptionsTapped:" forEvents:64];
+    buttonTray3 = [(BuddyAppleIDSignInController *)selfCopy buttonTray];
+    [buttonTray3 addButton:v36];
 
     objc_storeStrong(&v35, 0);
     objc_storeStrong(&v36, 0);
   }
 
-  v24 = [(BuddyAppleIDSignInController *)v40 _titleText];
-  v25 = [(BuddyAppleIDSignInController *)v40 navigationItem];
-  [v25 setBackButtonTitle:v24];
+  _titleText = [(BuddyAppleIDSignInController *)selfCopy _titleText];
+  navigationItem = [(BuddyAppleIDSignInController *)selfCopy navigationItem];
+  [navigationItem setBackButtonTitle:_titleText];
 
   v26 = dispatch_time(0, 1500000000);
   v27 = &_dispatch_main_q;
@@ -790,68 +790,68 @@ LABEL_11:
   v30 = 0;
   v31 = sub_100174BD4;
   v32 = &unk_10032B0D0;
-  v33 = v40;
+  v33 = selfCopy;
   dispatch_after(v26, v27, &block);
 
   objc_storeStrong(&v33, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  appearCopy = appear;
   oslog = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100082D54(buf, v11->_mode);
+    sub_100082D54(buf, selfCopy->_mode);
     _os_log_impl(&_mh_execute_header, oslog, v7, "SignInController showing mode %i", buf, 8u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v6.receiver = v11;
+  v6.receiver = selfCopy;
   v6.super_class = BuddyAppleIDSignInController;
-  [(BuddyAppleIDSignInController *)&v6 viewWillAppear:v9];
-  v3 = [(BuddyAppleIDSignInController *)v11 view];
-  [v3 setNeedsLayout];
+  [(BuddyAppleIDSignInController *)&v6 viewWillAppear:appearCopy];
+  view = [(BuddyAppleIDSignInController *)selfCopy view];
+  [view setNeedsLayout];
 
-  v4 = [(BuddyAppleIDSignInController *)v11 view];
-  [v4 layoutIfNeeded];
+  view2 = [(BuddyAppleIDSignInController *)selfCopy view];
+  [view2 layoutIfNeeded];
 
-  v5 = [(BuddyAppleIDSignInController *)v11 animationController];
-  [(OBAnimationController *)v5 startAnimation];
+  animationController = [(BuddyAppleIDSignInController *)selfCopy animationController];
+  [(OBAnimationController *)animationController startAnimation];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = BuddyAppleIDSignInController;
-  [(BuddyAppleIDSignInController *)&v12 viewDidAppear:a3];
-  if (v15->_mode != 1 && v15->_mode != 5 && v15->_mode != 4)
+  [(BuddyAppleIDSignInController *)&v12 viewDidAppear:appear];
+  if (selfCopy->_mode != 1 && selfCopy->_mode != 5 && selfCopy->_mode != 4)
   {
-    v3 = [(UITableViewCell *)v15->_usernameCell editableTextField];
-    v4 = [v3 text];
+    editableTextField = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
+    text = [editableTextField text];
     v5 = 1;
-    if (![v4 length])
+    if (![text length])
     {
-      v5 = v15->_usernameCell == 0;
+      v5 = selfCopy->_usernameCell == 0;
     }
 
     if (v5)
     {
-      v6 = [(UITableViewCell *)v15->_passwordCell editableTextField];
+      editableTextField2 = [(UITableViewCell *)selfCopy->_passwordCell editableTextField];
     }
 
     else
     {
-      v6 = [(UITableViewCell *)v15->_usernameCell editableTextField];
+      editableTextField2 = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
     }
 
-    [v6 becomeFirstResponder];
+    [editableTextField2 becomeFirstResponder];
   }
 
   v10 = 0;
@@ -870,83 +870,83 @@ LABEL_11:
 
   if (v7)
   {
-    v9 = [(BuddyAppleIDSignInController *)v15 tableView];
-    [v9 flashScrollIndicators];
+    tableView = [(BuddyAppleIDSignInController *)selfCopy tableView];
+    [tableView flashScrollIndicators];
   }
 
-  if (v15->_appearanceHandler)
+  if (selfCopy->_appearanceHandler)
   {
-    (*(v15->_appearanceHandler + 2))();
+    (*(selfCopy->_appearanceHandler + 2))();
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   [(BuddyAppleIDSignInController *)self setEnabled:1];
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyAppleIDSignInController;
-  [(BuddyAppleIDSignInController *)&v3 viewDidDisappear:v4];
+  [(BuddyAppleIDSignInController *)&v3 viewDidDisappear:disappearCopy];
 }
 
-- (void)_loginOptionsTapped:(id)a3
+- (void)_loginOptionsTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDSignInController *)v5 loginOptionsAction];
-  v3[2](v3);
+  objc_storeStrong(location, tapped);
+  loginOptionsAction = [(BuddyAppleIDSignInController *)selfCopy loginOptionsAction];
+  loginOptionsAction[2](loginOptionsAction);
 
   objc_storeStrong(location, 0);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, path);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return UITableViewAutomaticDimension;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 2;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, view);
+  if (section)
   {
     v11 = 0;
   }
 
   else
   {
-    v5 = [(BuddyAppleIDSignInController *)v10 showsUsernameAsField];
-    v6 = 0;
-    if (v5)
+    showsUsernameAsField = [(BuddyAppleIDSignInController *)selfCopy showsUsernameAsField];
+    showsPasswordAsField = 0;
+    if (showsUsernameAsField)
     {
-      v6 = [(BuddyAppleIDSignInController *)v10 showsPasswordAsField];
+      showsPasswordAsField = [(BuddyAppleIDSignInController *)selfCopy showsPasswordAsField];
     }
 
-    if (v6)
+    if (showsPasswordAsField)
     {
       v7 = 2;
     }
@@ -963,26 +963,26 @@ LABEL_11:
   return v11;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  if (a4)
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  if (section)
   {
-    if (v9 == 1)
+    if (sectionCopy == 1)
     {
       v7 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       v12 = v7;
@@ -999,7 +999,7 @@ LABEL_11:
 
   else
   {
-    v12 = v11->_topSectionFooterView;
+    v12 = selfCopy->_topSectionFooterView;
     v8 = 1;
   }
 
@@ -1009,26 +1009,26 @@ LABEL_11:
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0.0;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v53 = a4;
-  if (a4)
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  if (section)
   {
-    [(BuddyAppleIDSignInController *)v55 keyboardFrame];
+    [(BuddyAppleIDSignInController *)selfCopy keyboardFrame];
     v58.size.height = CGRectZero.size.height;
     v58.size.width = CGRectZero.size.width;
     v58.origin.y = CGRectZero.origin.y;
@@ -1040,63 +1040,63 @@ LABEL_11:
 
     else
     {
-      v17 = [location[0] tableFooterView];
-      v18 = [(BuddyAppleIDSignInController *)v55 buttonTray];
-      v19 = [v18 superview];
-      v20 = v17 == v19;
+      tableFooterView = [location[0] tableFooterView];
+      buttonTray = [(BuddyAppleIDSignInController *)selfCopy buttonTray];
+      superview = [buttonTray superview];
+      v20 = tableFooterView == superview;
 
-      if (v53 != 1 || v20 || (sub_100175ABC() & 1) == 0)
+      if (sectionCopy != 1 || v20 || (sub_100175ABC() & 1) == 0)
       {
         goto LABEL_23;
       }
 
-      v21 = [(BuddyAppleIDSignInController *)v55 view];
-      [v21 layoutMargins];
+      view = [(BuddyAppleIDSignInController *)selfCopy view];
+      [view layoutMargins];
 
-      v22 = [(BuddyAppleIDSignInController *)v55 navigationController];
-      v23 = [v22 navigationBar];
-      [v23 bounds];
+      navigationController = [(BuddyAppleIDSignInController *)selfCopy navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar bounds];
       v49 = v24;
 
       v48 = 0.0;
-      v25 = [location[0] tableFooterView];
-      [v25 bounds];
+      tableFooterView2 = [location[0] tableFooterView];
+      [tableFooterView2 bounds];
       v27 = v26;
 
       if (v27 == 0.0)
       {
-        v28 = [(BuddyAppleIDSignInController *)v55 buttonTray];
-        [v28 bounds];
+        buttonTray2 = [(BuddyAppleIDSignInController *)selfCopy buttonTray];
+        [buttonTray2 bounds];
         v48 = v29;
       }
 
-      v30 = [location[0] tableHeaderView];
-      [v30 bounds];
+      tableHeaderView = [location[0] tableHeaderView];
+      [tableHeaderView bounds];
       v32 = v31;
 
       v47 = v32;
-      v33 = [(BuddyAppleIDSignInController *)v55 usernameCell];
-      [v33 bounds];
+      usernameCell = [(BuddyAppleIDSignInController *)selfCopy usernameCell];
+      [usernameCell bounds];
       v35 = v34;
 
       v46 = 0.0;
-      if (v55->_showsPasswordAsField)
+      if (selfCopy->_showsPasswordAsField)
       {
-        v36 = [(BuddyAppleIDSignInController *)v55 passwordCell];
-        [v36 bounds];
+        passwordCell = [(BuddyAppleIDSignInController *)selfCopy passwordCell];
+        [passwordCell bounds];
         v46 = v37;
       }
 
-      [(BFFLinkLabelFooterView *)v55->_topSectionFooterView bounds];
+      [(BFFLinkLabelFooterView *)selfCopy->_topSectionFooterView bounds];
       v45 = v49 + v47 + v35 + v46 + v38 + v48;
-      v39 = [(BuddyAppleIDSignInController *)v55 view];
-      [v39 bounds];
+      view2 = [(BuddyAppleIDSignInController *)selfCopy view];
+      [view2 bounds];
       v41 = v40;
 
       if (v41 > v45)
       {
-        v42 = [(BuddyAppleIDSignInController *)v55 view];
-        [v42 bounds];
+        view3 = [(BuddyAppleIDSignInController *)selfCopy view];
+        [view3 bounds];
         v56 = v43 - v45;
       }
 
@@ -1111,7 +1111,7 @@ LABEL_23:
   else
   {
     memset(__b, 0, sizeof(__b));
-    [(BFFLinkLabelFooterView *)v55->_topSectionFooterView margins];
+    [(BFFLinkLabelFooterView *)selfCopy->_topSectionFooterView margins];
     __b[0] = v5;
     __b[1] = v6;
     __b[2] = v7;
@@ -1149,12 +1149,12 @@ LABEL_23:
       __b[0] = 16.0;
     }
 
-    [(BFFLinkLabelFooterView *)v55->_topSectionFooterView setMargins:__b[0], __b[1], __b[2], __b[3]];
+    [(BFFLinkLabelFooterView *)selfCopy->_topSectionFooterView setMargins:__b[0], __b[1], __b[2], __b[3]];
     [location[0] bounds];
     [location[0] separatorInset];
     [location[0] layoutMargins];
     [location[0] layoutMargins];
-    topSectionFooterView = v55->_topSectionFooterView;
+    topSectionFooterView = selfCopy->_topSectionFooterView;
     [location[0] bounds];
     sub_100175B40();
     [(BFFLinkLabelFooterView *)topSectionFooterView sizeThatFits:v14, v15];
@@ -1165,16 +1165,16 @@ LABEL_23:
   return v56;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, path);
   v12 = 0;
-  if (![(BuddyAppleIDSignInController *)v15 showsUsernameAsField])
+  if (![(BuddyAppleIDSignInController *)selfCopy showsUsernameAsField])
   {
     goto LABEL_5;
   }
@@ -1187,16 +1187,16 @@ LABEL_23:
     }
 
 LABEL_5:
-    v7 = [(BuddyAppleIDSignInController *)v15 passwordCell];
+    passwordCell = [(BuddyAppleIDSignInController *)selfCopy passwordCell];
     v8 = v12;
-    v12 = v7;
+    v12 = passwordCell;
 
     goto LABEL_6;
   }
 
-  v5 = [(BuddyAppleIDSignInController *)v15 usernameCell];
+  usernameCell = [(BuddyAppleIDSignInController *)selfCopy usernameCell];
   v6 = v12;
-  v12 = v5;
+  v12 = usernameCell;
 
 LABEL_6:
   v9 = +[UIColor secondarySystemBackgroundColor];
@@ -1209,33 +1209,33 @@ LABEL_6:
   return v10;
 }
 
-+ (id)newAppleAccountUsernameCellWithPlaceholder:(id)a3 delegate:(id)a4
++ (id)newAppleAccountUsernameCellWithPlaceholder:(id)placeholder delegate:(id)delegate
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, placeholder);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, delegate);
   v10 = [[BuddyAppleIDSignInTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   [v10 setSelectionStyle:0];
-  v9 = [v10 editableTextField];
-  [v9 setPlaceholder:location[0]];
-  [v9 setAutocorrectionType:1];
-  [v9 setAutocapitalizationType:0];
-  [v9 setDelegate:v11];
-  [v9 setKeyboardType:7];
-  [v9 setReturnKeyType:11];
-  [v9 setTextContentType:UITextContentTypeUsername];
-  [v9 setEnablesReturnKeyAutomatically:1];
+  editableTextField = [v10 editableTextField];
+  [editableTextField setPlaceholder:location[0]];
+  [editableTextField setAutocorrectionType:1];
+  [editableTextField setAutocapitalizationType:0];
+  [editableTextField setDelegate:v11];
+  [editableTextField setKeyboardType:7];
+  [editableTextField setReturnKeyType:11];
+  [editableTextField setTextContentType:UITextContentTypeUsername];
+  [editableTextField setEnablesReturnKeyAutomatically:1];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v9 setFont:v5];
+  [editableTextField setFont:v5];
 
   v6 = +[UIColor _labelColor];
-  [v9 setTextColor:v6];
+  [editableTextField setTextColor:v6];
 
   v7 = v10;
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&editableTextField, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
@@ -1244,13 +1244,13 @@ LABEL_6:
 
 - (id)usernameCell
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_usernameCell)
   {
     v2 = [NSBundle bundleForClass:objc_opt_class()];
     v3 = v2;
-    if (v10->_phoneNumberSupported)
+    if (selfCopy->_phoneNumberSupported)
     {
       v4 = @"SIGN_IN_EMAIL_OR_PHONE";
     }
@@ -1262,32 +1262,32 @@ LABEL_6:
 
     location[0] = [(NSBundle *)v2 localizedStringForKey:v4 value:&stru_10032F900 table:@"AppleIDAuth"];
 
-    v5 = [BuddyAppleIDSignInController newAppleAccountUsernameCellWithPlaceholder:location[0] delegate:v10];
-    usernameCell = v10->_usernameCell;
-    v10->_usernameCell = v5;
+    v5 = [BuddyAppleIDSignInController newAppleAccountUsernameCellWithPlaceholder:location[0] delegate:selfCopy];
+    usernameCell = selfCopy->_usernameCell;
+    selfCopy->_usernameCell = v5;
 
     objc_storeStrong(location, 0);
   }
 
-  v7 = v10->_usernameCell;
+  v7 = selfCopy->_usernameCell;
 
   return v7;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppleIDSignInController *)v8 usernameCell];
-  v4 = [v3 editableTextField];
-  [v4 setText:location[0]];
+  objc_storeStrong(location, username);
+  usernameCell = [(BuddyAppleIDSignInController *)selfCopy usernameCell];
+  editableTextField = [usernameCell editableTextField];
+  [editableTextField setText:location[0]];
 
-  [(BuddyAppleIDSignInController *)v8 _setContinueButtonEnabledOrDisabled];
-  v5 = [(BuddyAppleIDSignInController *)v8 headerView];
-  v6 = [(BuddyAppleIDSignInController *)v8 _subTitleText];
-  [v5 setDetailText:v6];
+  [(BuddyAppleIDSignInController *)selfCopy _setContinueButtonEnabledOrDisabled];
+  headerView = [(BuddyAppleIDSignInController *)selfCopy headerView];
+  _subTitleText = [(BuddyAppleIDSignInController *)selfCopy _subTitleText];
+  [headerView setDetailText:_subTitleText];
 
   objc_storeStrong(location, 0);
 }
@@ -1295,49 +1295,49 @@ LABEL_6:
 - (NSString)username
 {
   v2 = [(BuddyAppleIDSignInController *)self usernameCell:a2];
-  v3 = [v2 editableTextField];
-  v4 = [v3 text];
+  editableTextField = [v2 editableTextField];
+  text = [editableTextField text];
 
-  return v4;
+  return text;
 }
 
-- (void)setIsUsernameEditable:(BOOL)a3
+- (void)setIsUsernameEditable:(BOOL)editable
 {
-  if (self->_isUsernameEditable != a3)
+  if (self->_isUsernameEditable != editable)
   {
-    self->_isUsernameEditable = a3;
-    v3 = [(BuddyAppleIDSignInController *)self usernameCell];
-    v4 = [v3 editableTextField];
-    [v4 setUserInteractionEnabled:a3];
+    self->_isUsernameEditable = editable;
+    usernameCell = [(BuddyAppleIDSignInController *)self usernameCell];
+    editableTextField = [usernameCell editableTextField];
+    [editableTextField setUserInteractionEnabled:editable];
   }
 }
 
-+ (id)newAppleAccountPasswordCellWithPlaceholder:(id)a3 delegate:(id)a4
++ (id)newAppleAccountPasswordCellWithPlaceholder:(id)placeholder delegate:(id)delegate
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, placeholder);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, delegate);
   v10 = [[BuddyAppleIDSignInTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   [v10 setSelectionStyle:0];
-  v9 = [v10 editableTextField];
-  [v9 setPlaceholder:location[0]];
-  [v9 setSecureTextEntry:1];
-  [v9 setAutocorrectionType:1];
-  [v9 setAutocapitalizationType:0];
-  [v9 setDelegate:v11];
-  [v9 setReturnKeyType:11];
-  [v9 setEnablesReturnKeyAutomatically:1];
+  editableTextField = [v10 editableTextField];
+  [editableTextField setPlaceholder:location[0]];
+  [editableTextField setSecureTextEntry:1];
+  [editableTextField setAutocorrectionType:1];
+  [editableTextField setAutocapitalizationType:0];
+  [editableTextField setDelegate:v11];
+  [editableTextField setReturnKeyType:11];
+  [editableTextField setEnablesReturnKeyAutomatically:1];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v9 setFont:v5];
+  [editableTextField setFont:v5];
 
   v6 = +[UIColor _labelColor];
-  [v9 setTextColor:v6];
+  [editableTextField setTextColor:v6];
 
   v7 = v10;
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&editableTextField, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
@@ -1369,24 +1369,24 @@ LABEL_6:
 
   else
   {
-    v2 = [(BuddyAppleIDSignInController *)self username];
-    v3 = [(BuddyAppleIDSignInController *)self _userFriendlyDisplayNameForCurrentUserName:v2];
+    username = [(BuddyAppleIDSignInController *)self username];
+    v3 = [(BuddyAppleIDSignInController *)self _userFriendlyDisplayNameForCurrentUserName:username];
     [(BuddyAppleIDSignInController *)self setUsername:v3];
 
-    v4 = [(BuddyAppleIDSignInController *)self authModeHandler];
-    v5 = [(BuddyAppleIDSignInController *)self username];
-    v6 = [(BuddyAppleIDSignInController *)self _serverFriendlyDisplayNameForCurrentUserName:v5];
-    v4[2](v4, v6);
+    authModeHandler = [(BuddyAppleIDSignInController *)self authModeHandler];
+    username2 = [(BuddyAppleIDSignInController *)self username];
+    v6 = [(BuddyAppleIDSignInController *)self _serverFriendlyDisplayNameForCurrentUserName:username2];
+    authModeHandler[2](authModeHandler, v6);
   }
 }
 
-- (id)_serverFriendlyDisplayNameForCurrentUserName:(id)a3
+- (id)_serverFriendlyDisplayNameForCurrentUserName:(id)name
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v9->_phoneNumberSupported || ([location[0] containsString:@"@"] & 1) != 0)
+  objc_storeStrong(location, name);
+  if (!selfCopy->_phoneNumberSupported || ([location[0] containsString:@"@"] & 1) != 0)
   {
     v10 = location[0];
   }
@@ -1408,13 +1408,13 @@ LABEL_6:
   return v3;
 }
 
-- (id)_userFriendlyDisplayNameForCurrentUserName:(id)a3
+- (id)_userFriendlyDisplayNameForCurrentUserName:(id)name
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v9->_phoneNumberSupported || ([location[0] containsString:@"@"] & 1) != 0 || ((v7 = objc_alloc_init(AAFPhoneNumberFormatter), v6 = objc_msgSend(v7, "displayFormatFor:", location[0]), (objc_msgSend(v6, "isEqualToString:", location[0]) & 1) != 0) ? (v5 = 0) : (v10 = v6, v5 = 1), objc_storeStrong(&v6, 0), objc_storeStrong(&v7, 0), !v5))
+  objc_storeStrong(location, name);
+  if (!selfCopy->_phoneNumberSupported || ([location[0] containsString:@"@"] & 1) != 0 || ((v7 = objc_alloc_init(AAFPhoneNumberFormatter), v6 = objc_msgSend(v7, "displayFormatFor:", location[0]), (objc_msgSend(v6, "isEqualToString:", location[0]) & 1) != 0) ? (v5 = 0) : (v10 = v6, v5 = 1), objc_storeStrong(&v6, 0), objc_storeStrong(&v7, 0), !v5))
   {
     v10 = location[0];
   }
@@ -1427,7 +1427,7 @@ LABEL_6:
 
 - (void)_signInToAccount
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -1435,77 +1435,77 @@ LABEL_6:
   v5 = 0;
   v6 = sub_1001768BC;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, return);
   v3 = location[0];
-  v4 = [(UITableViewCell *)v29->_usernameCell editableTextField];
+  editableTextField = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
 
-  if (v3 == v4)
+  if (v3 == editableTextField)
   {
-    v5 = [(UITableViewCell *)v29->_usernameCell editableTextField];
-    v6 = [v5 text];
+    editableTextField2 = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
+    text = [editableTextField2 text];
     v7 = +[NSCharacterSet whitespaceCharacterSet];
-    v8 = [v6 stringByTrimmingCharactersInSet:v7];
-    lastEnteredUsername = v29->_lastEnteredUsername;
-    v29->_lastEnteredUsername = v8;
+    v8 = [text stringByTrimmingCharactersInSet:v7];
+    lastEnteredUsername = selfCopy->_lastEnteredUsername;
+    selfCopy->_lastEnteredUsername = v8;
 
-    if (!v29->_showsPasswordAsField)
+    if (!selfCopy->_showsPasswordAsField)
     {
-      v10 = v29;
-      v11 = v29;
-      v12 = [(BuddyAppleIDSignInController *)v29 username];
-      v13 = [(BuddyAppleIDSignInController *)v11 _userFriendlyDisplayNameForCurrentUserName:v12];
+      v10 = selfCopy;
+      v11 = selfCopy;
+      username = [(BuddyAppleIDSignInController *)selfCopy username];
+      v13 = [(BuddyAppleIDSignInController *)v11 _userFriendlyDisplayNameForCurrentUserName:username];
       [(BuddyAppleIDSignInController *)v10 setUsername:v13];
 
-      v14 = [(BuddyAppleIDSignInController *)v29 authModeHandler];
-      v15 = v29;
-      v16 = [(BuddyAppleIDSignInController *)v29 username];
-      v17 = [(BuddyAppleIDSignInController *)v15 _serverFriendlyDisplayNameForCurrentUserName:v16];
-      v14[2](v14, v17);
+      authModeHandler = [(BuddyAppleIDSignInController *)selfCopy authModeHandler];
+      v15 = selfCopy;
+      username2 = [(BuddyAppleIDSignInController *)selfCopy username];
+      v17 = [(BuddyAppleIDSignInController *)v15 _serverFriendlyDisplayNameForCurrentUserName:username2];
+      authModeHandler[2](authModeHandler, v17);
     }
 
     goto LABEL_11;
   }
 
   v18 = location[0];
-  v19 = [(UITableViewCell *)v29->_passwordCell editableTextField];
+  editableTextField3 = [(UITableViewCell *)selfCopy->_passwordCell editableTextField];
 
-  if (v18 != v19)
+  if (v18 != editableTextField3)
   {
 LABEL_11:
     v30 = 1;
     goto LABEL_12;
   }
 
-  v20 = [(UITableViewCell *)v29->_passwordCell editableTextField];
-  v21 = [v20 text];
-  v22 = [v21 length];
+  editableTextField4 = [(UITableViewCell *)selfCopy->_passwordCell editableTextField];
+  text2 = [editableTextField4 text];
+  v22 = [text2 length];
 
   if (v22)
   {
-    v23 = [(UITableViewCell *)v29->_usernameCell editableTextField];
-    v24 = [v23 text];
-    v25 = [v24 length];
+    editableTextField5 = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
+    text3 = [editableTextField5 text];
+    v25 = [text3 length];
 
     if (v25)
     {
-      [(BuddyAppleIDSignInController *)v29 _signInToAccount];
+      [(BuddyAppleIDSignInController *)selfCopy _signInToAccount];
     }
 
     else
     {
-      v26 = [(UITableViewCell *)v29->_usernameCell editableTextField];
-      [v26 becomeFirstResponder];
+      editableTextField6 = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
+      [editableTextField6 becomeFirstResponder];
     }
 
     goto LABEL_11;
@@ -1517,36 +1517,36 @@ LABEL_12:
   return v30 & 1;
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_detailText, location[0]);
-  v3 = [(BuddyAppleIDSignInController *)v6 headerView];
-  v4 = [(BuddyAppleIDSignInController *)v6 _subTitleText];
-  [v3 setDetailText:v4];
+  objc_storeStrong(location, text);
+  objc_storeStrong(&selfCopy->_detailText, location[0]);
+  headerView = [(BuddyAppleIDSignInController *)selfCopy headerView];
+  _subTitleText = [(BuddyAppleIDSignInController *)selfCopy _subTitleText];
+  [headerView setDetailText:_subTitleText];
 
   objc_storeStrong(location, 0);
 }
 
 - (void)ensureUsernameTextFieldIsVisible
 {
-  v16 = self;
+  selfCopy = self;
   location[7] = a2;
-  v2 = [(BuddyAppleIDSignInController *)self animationController];
-  v3 = v2 == 0;
+  animationController = [(BuddyAppleIDSignInController *)self animationController];
+  v3 = animationController == 0;
 
-  if (!v3 && [(BuddyAppleIDSignInController *)v16 isFooterObscuredByButtonTray])
+  if (!v3 && [(BuddyAppleIDSignInController *)selfCopy isFooterObscuredByButtonTray])
   {
-    v4 = [(BuddyAppleIDSignInController *)v16 tableView];
-    [v4 contentOffset];
+    tableView = [(BuddyAppleIDSignInController *)selfCopy tableView];
+    [tableView contentOffset];
     location[5] = v5;
     location[6] = v6;
     v7 = *&v6;
-    v8 = [(BuddyAppleIDSignInController *)v16 tableView];
-    [v8 adjustedContentInset];
+    tableView2 = [(BuddyAppleIDSignInController *)selfCopy tableView];
+    [tableView2 adjustedContentInset];
     location[1] = v9;
     location[2] = v10;
     location[3] = v11;
@@ -1556,8 +1556,8 @@ LABEL_12:
     if (v13 <= 0.0)
     {
       location[0] = [NSIndexPath indexPathForRow:0 inSection:0];
-      v14 = [(BuddyAppleIDSignInController *)v16 tableView];
-      [v14 scrollToRowAtIndexPath:location[0] atScrollPosition:3 animated:1];
+      tableView3 = [(BuddyAppleIDSignInController *)selfCopy tableView];
+      [tableView3 scrollToRowAtIndexPath:location[0] atScrollPosition:3 animated:1];
 
       objc_storeStrong(location, 0);
     }
@@ -1566,24 +1566,24 @@ LABEL_12:
 
 - (BOOL)isFooterObscuredByButtonTray
 {
-  v2 = [(BuddyAppleIDSignInController *)self tableView];
-  [v2 rectForFooterInSection:0];
+  tableView = [(BuddyAppleIDSignInController *)self tableView];
+  [tableView rectForFooterInSection:0];
   v27 = v3;
   v26 = v4;
   v29 = v5;
   v28 = v6;
 
-  v7 = [(BuddyAppleIDSignInController *)self tableView];
-  [v7 convertRect:0 toView:{v26, v27, v28, v29}];
+  tableView2 = [(BuddyAppleIDSignInController *)self tableView];
+  [tableView2 convertRect:0 toView:{v26, v27, v28, v29}];
   rect.origin.y = v8;
   rect.origin.x = v9;
   rect.size.height = v10;
   rect.size.width = v11;
 
-  v12 = [(BuddyAppleIDSignInController *)self buttonTray];
-  v13 = [(BuddyAppleIDSignInController *)self buttonTray];
-  [v13 bounds];
-  [v12 convertRect:0 toView:{v14, v15, v16, v17, *&v14, *&v15, *&v16, *&v17}];
+  buttonTray = [(BuddyAppleIDSignInController *)self buttonTray];
+  buttonTray2 = [(BuddyAppleIDSignInController *)self buttonTray];
+  [buttonTray2 bounds];
+  [buttonTray convertRect:0 toView:{v14, v15, v16, v17, *&v14, *&v15, *&v16, *&v17}];
   v24.origin.y = v18;
   v24.origin.x = v19;
   v24.size.height = v20;
@@ -1593,72 +1593,72 @@ LABEL_12:
   return MaxY > CGRectGetMinY(v24);
 }
 
-- (void)viewControllerSpinnerManagerDidStopAnimatingSpinner:(id)a3
+- (void)viewControllerSpinnerManagerDidStopAnimatingSpinner:(id)spinner
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyAppleIDSignInController *)v4 _setContinueButtonEnabledOrDisabled];
+  objc_storeStrong(location, spinner);
+  [(BuddyAppleIDSignInController *)selfCopy _setContinueButtonEnabledOrDisabled];
   objc_storeStrong(location, 0);
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] object];
-  v7 = [(UITableViewCell *)v10->_passwordCell editableTextField];
-  v6 = [(UITableViewCell *)v10->_usernameCell editableTextField];
-  if (v8 == v6 && v10->_showsPasswordAsField)
+  objc_storeStrong(location, changed);
+  object = [location[0] object];
+  editableTextField = [(UITableViewCell *)selfCopy->_passwordCell editableTextField];
+  editableTextField2 = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
+  if (object == editableTextField2 && selfCopy->_showsPasswordAsField)
   {
-    v3 = [v6 text];
+    text = [editableTextField2 text];
     v4 = +[NSCharacterSet whitespaceCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    v5 = [text stringByTrimmingCharactersInSet:v4];
 
-    if (([v5 isEqualToString:v10->_lastEnteredUsername] & 1) == 0)
+    if (([v5 isEqualToString:selfCopy->_lastEnteredUsername] & 1) == 0)
     {
-      [(BuddyAppleIDSignInController *)v10 setShowsPasswordAsField:0 animated:1];
+      [(BuddyAppleIDSignInController *)selfCopy setShowsPasswordAsField:0 animated:1];
     }
 
     objc_storeStrong(&v5, 0);
   }
 
-  if (v8 == v7 || v8 == v6)
+  if (object == editableTextField || object == editableTextField2)
   {
-    [(BuddyAppleIDSignInController *)v10 _setContinueButtonEnabledOrDisabled];
+    [(BuddyAppleIDSignInController *)selfCopy _setContinueButtonEnabledOrDisabled];
   }
 
-  objc_storeStrong(&v6, 0);
-  objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&editableTextField2, 0);
+  objc_storeStrong(&editableTextField, 0);
+  objc_storeStrong(&object, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_setContinueButtonEnabledOrDisabled
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = [(UITableViewCell *)self->_passwordCell editableTextField];
-  location = [(UITableViewCell *)v15->_usernameCell editableTextField];
+  location = [(UITableViewCell *)selfCopy->_usernameCell editableTextField];
   v11 = 0;
   v9 = 0;
   v7 = 0;
   v5 = 0;
-  if (v15->_showsPasswordAsField || (v12 = [location text], v11 = 1, v2 = 1, !objc_msgSend(v12, "length")))
+  if (selfCopy->_showsPasswordAsField || (v12 = [location text], v11 = 1, v2 = 1, !objc_msgSend(v12, "length")))
   {
-    if (v15->_showsUsernameAsField || (v10 = [v14[0] text], v9 = 1, v2 = 1, !objc_msgSend(v10, "length")))
+    if (selfCopy->_showsUsernameAsField || (v10 = [v14[0] text], v9 = 1, v2 = 1, !objc_msgSend(v10, "length")))
     {
-      v8 = [location text];
+      text = [location text];
       v7 = 1;
       v2 = 0;
-      if ([v8 length])
+      if ([text length])
       {
-        v6 = [v14[0] text];
+        text2 = [v14[0] text];
         v5 = 1;
-        v2 = [v6 length] != 0;
+        v2 = [text2 length] != 0;
       }
     }
   }
@@ -1680,27 +1680,27 @@ LABEL_12:
   }
 
   v3 = v2;
-  v4 = [(BuddyAppleIDSignInController *)v15 continueButton];
-  [(OBBoldTrayButton *)v4 setEnabled:v3];
+  continueButton = [(BuddyAppleIDSignInController *)selfCopy continueButton];
+  [(OBBoldTrayButton *)continueButton setEnabled:v3];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(v14, 0);
 }
 
-- (void)setShowsPasswordAsField:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsPasswordAsField:(BOOL)field animated:(BOOL)animated
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
-  v28 = a4;
-  if (a3 != self->_showsPasswordAsField)
+  fieldCopy = field;
+  animatedCopy = animated;
+  if (field != self->_showsPasswordAsField)
   {
-    v31->_showsPasswordAsField = v29;
-    v4 = [NSIndexPath indexPathForRow:v31->_showsUsernameAsField inSection:0];
+    selfCopy->_showsPasswordAsField = fieldCopy;
+    v4 = [NSIndexPath indexPathForRow:selfCopy->_showsUsernameAsField inSection:0];
     v32 = v4;
     location = [NSArray arrayWithObjects:&v32 count:1];
 
-    if (v28)
+    if (animatedCopy)
     {
       v5 = 100;
     }
@@ -1711,21 +1711,21 @@ LABEL_12:
     }
 
     v26 = v5;
-    if (v29 && v31->_showsUsernameAsField)
+    if (fieldCopy && selfCopy->_showsUsernameAsField)
     {
       v19 = _NSConcreteStackBlock;
       v20 = -1073741824;
       v21 = 0;
       v22 = sub_1001778C8;
       v23 = &unk_10032B838;
-      v24 = v31;
+      v24 = selfCopy;
       v25 = location;
       v13 = _NSConcreteStackBlock;
       v14 = -1073741824;
       v15 = 0;
       v16 = sub_10017795C;
       v17 = &unk_10032B2E0;
-      v18 = v31;
+      v18 = selfCopy;
       [UIView animateWithDuration:&v19 animations:&v13 completion:0.2];
       objc_storeStrong(&v18, 0);
       objc_storeStrong(&v25, 0);
@@ -1739,7 +1739,7 @@ LABEL_12:
       v8 = 0;
       v9 = sub_1001779B4;
       v10 = &unk_10032DDD0;
-      v11 = v31;
+      v11 = selfCopy;
       v12[0] = location;
       v12[1] = v26;
       [UIView animateWithDuration:&v6 animations:&stru_10032DDF0 completion:0.2];
@@ -1755,9 +1755,9 @@ LABEL_12:
 {
   v16 = 0.0;
   v2 = +[BYDevice currentDevice];
-  v3 = [v2 type];
+  type = [v2 type];
 
-  if (v3 == 1)
+  if (type == 1)
   {
     return 15.0;
   }
@@ -1834,26 +1834,26 @@ LABEL_12:
   return v16;
 }
 
-- (void)setKeyboardFrame:(CGRect)a3
+- (void)setKeyboardFrame:(CGRect)frame
 {
-  v8 = a3;
-  v7 = self;
+  frameCopy = frame;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyAppleIDSignInController;
-  [(BuddyAppleIDSignInController *)&v5 setKeyboardFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v3 = [(BuddyAppleIDSignInController *)v7 tableView];
+  [(BuddyAppleIDSignInController *)&v5 setKeyboardFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  tableView = [(BuddyAppleIDSignInController *)selfCopy tableView];
   v4 = [NSIndexSet indexSetWithIndex:1];
-  [v3 _reloadSectionHeaderFooters:v4 withRowAnimation:5];
+  [tableView _reloadSectionHeaderFooters:v4 withRowAnimation:5];
 }
 
 - (BOOL)_scrollViewContentIsUnderTray
 {
-  v2 = [(BuddyAppleIDSignInController *)self tableView];
-  v3 = [v2 tableFooterView];
-  v4 = [(BuddyAppleIDSignInController *)self buttonTray];
-  v5 = [v4 superview];
-  v6 = v3 == v5;
+  tableView = [(BuddyAppleIDSignInController *)self tableView];
+  tableFooterView = [tableView tableFooterView];
+  buttonTray = [(BuddyAppleIDSignInController *)self buttonTray];
+  superview = [buttonTray superview];
+  v6 = tableFooterView == superview;
 
   v25 = v6;
   if (sub_100175ABC())
@@ -1867,17 +1867,17 @@ LABEL_12:
   }
 
   v24 = v7;
-  v8 = [(BuddyAppleIDSignInController *)self view];
+  view = [(BuddyAppleIDSignInController *)self view];
   [(BFFLinkLabelFooterView *)self->_topSectionFooterView frame];
   v20 = v9;
   v19 = v10;
   v22 = v11;
   v21 = v12;
-  v13 = [(BuddyAppleIDSignInController *)self tableView];
-  [v8 convertRect:v13 fromView:{v19, v20, v21, v22}];
+  tableView2 = [(BuddyAppleIDSignInController *)self tableView];
+  [view convertRect:tableView2 fromView:{v19, v20, v21, v22}];
   v14 = CGRectGetMaxY(v27) - v24;
-  v15 = [(BuddyAppleIDSignInController *)self buttonTray];
-  [v15 frame];
+  buttonTray2 = [(BuddyAppleIDSignInController *)self buttonTray];
+  [buttonTray2 frame];
   v17 = v14 > v16;
 
   v23 = v17;

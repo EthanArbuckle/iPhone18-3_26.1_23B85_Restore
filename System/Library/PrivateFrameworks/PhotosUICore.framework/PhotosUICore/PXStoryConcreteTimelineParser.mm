@@ -1,24 +1,24 @@
 @interface PXStoryConcreteTimelineParser
 - (BOOL)isAtEnd;
 - (PXStoryConcreteTimelineParser)init;
-- (PXStoryConcreteTimelineParser)initWithConfiguration:(id)a3;
+- (PXStoryConcreteTimelineParser)initWithConfiguration:(id)configuration;
 - (id)parseNextBestTimeline;
-- (void)_adjustTimeline:(id)a3 andAppendTimeline:(id)a4;
+- (void)_adjustTimeline:(id)timeline andAppendTimeline:(id)appendTimeline;
 @end
 
 @implementation PXStoryConcreteTimelineParser
 
-- (void)_adjustTimeline:(id)a3 andAppendTimeline:(id)a4
+- (void)_adjustTimeline:(id)timeline andAppendTimeline:(id)appendTimeline
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 numberOfSegments] >= 1 && objc_msgSend(v7, "numberOfSegments") >= 1)
+  timelineCopy = timeline;
+  appendTimelineCopy = appendTimeline;
+  if ([timelineCopy numberOfSegments] >= 1 && objc_msgSend(appendTimelineCopy, "numberOfSegments") >= 1)
   {
-    v8 = [MEMORY[0x1E69C08A0] standardConfiguration];
-    [(PXStoryMutableConcreteTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline setTimeline:v6];
-    v9 = [(PXStoryBaseTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline lastSegmentIdentifier];
-    [(PXStoryMutableConcreteTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline appendTimeline:v7];
-    v10 = -[PXStoryConcreteTimeline identifierForSegmentAtIndex:](self->_candidateAccumulatedTimelineWithNextBestTimeline, "identifierForSegmentAtIndex:", [v6 numberOfSegments]);
+    standardConfiguration = [MEMORY[0x1E69C08A0] standardConfiguration];
+    [(PXStoryMutableConcreteTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline setTimeline:timelineCopy];
+    lastSegmentIdentifier = [(PXStoryBaseTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline lastSegmentIdentifier];
+    [(PXStoryMutableConcreteTimeline *)self->_candidateAccumulatedTimelineWithNextBestTimeline appendTimeline:appendTimelineCopy];
+    v10 = -[PXStoryConcreteTimeline identifierForSegmentAtIndex:](self->_candidateAccumulatedTimelineWithNextBestTimeline, "identifierForSegmentAtIndex:", [timelineCopy numberOfSegments]);
     v35 = 0;
     v33 = 0u;
     v34 = 0u;
@@ -35,7 +35,7 @@
     candidateAccumulatedTimelineWithNextBestTimeline = self->_candidateAccumulatedTimelineWithNextBestTimeline;
     if (candidateAccumulatedTimelineWithNextBestTimeline)
     {
-      [(PXStoryConcreteTimeline *)candidateAccumulatedTimelineWithNextBestTimeline infoForSegmentWithIdentifier:v9];
+      [(PXStoryConcreteTimeline *)candidateAccumulatedTimelineWithNextBestTimeline infoForSegmentWithIdentifier:lastSegmentIdentifier];
       v12 = v26;
     }
 
@@ -44,23 +44,23 @@
       v12 = 0;
     }
 
-    v13 = [(PXStoryConcreteTimelineParser *)self allowedTransitionKinds];
-    if ([v13 count] && !objc_msgSend(v13, "containsIndex:", v12) || !+[PXStoryTransitionProducer isSupportedTransitionWithKind:fromSegmentIdentifier:toSegmentIdentifier:inTimeline:](PXStoryTransitionProducer, "isSupportedTransitionWithKind:fromSegmentIdentifier:toSegmentIdentifier:inTimeline:", v12, v9, v10, self->_candidateAccumulatedTimelineWithNextBestTimeline))
+    allowedTransitionKinds = [(PXStoryConcreteTimelineParser *)self allowedTransitionKinds];
+    if ([allowedTransitionKinds count] && !objc_msgSend(allowedTransitionKinds, "containsIndex:", v12) || !+[PXStoryTransitionProducer isSupportedTransitionWithKind:fromSegmentIdentifier:toSegmentIdentifier:inTimeline:](PXStoryTransitionProducer, "isSupportedTransitionWithKind:fromSegmentIdentifier:toSegmentIdentifier:inTimeline:", v12, lastSegmentIdentifier, v10, self->_candidateAccumulatedTimelineWithNextBestTimeline))
     {
-      v14 = [v6 numberOfSegments] - 1;
+      v14 = [timelineCopy numberOfSegments] - 1;
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___block_invoke;
       v18 = &unk_1E773D3A0;
-      v19 = self;
-      v20 = v13;
-      v21 = v8;
+      selfCopy = self;
+      v20 = allowedTransitionKinds;
+      v21 = standardConfiguration;
       v22 = v12;
-      [v6 modifyInfoForSegmentAtIndex:v14 usingBlock:&v15];
+      [timelineCopy modifyInfoForSegmentAtIndex:v14 usingBlock:&v15];
     }
   }
 
-  [v6 appendTimeline:{v7, v15, v16, v17, v18, v19}];
+  [timelineCopy appendTimeline:{appendTimelineCopy, v15, v16, v17, v18, selfCopy}];
 }
 
 double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___block_invoke(uint64_t a1, uint64_t a2)
@@ -102,15 +102,15 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
 
 - (BOOL)isAtEnd
 {
-  v2 = [(PXStoryConcreteTimelineParser *)self scanner];
-  v3 = [v2 isAtEnd];
+  scanner = [(PXStoryConcreteTimelineParser *)self scanner];
+  isAtEnd = [scanner isAtEnd];
 
-  return v3;
+  return isAtEnd;
 }
 
 - (id)parseNextBestTimeline
 {
-  v4 = [(PXStoryConcreteTimelineParser *)self scanner];
+  scanner = [(PXStoryConcreteTimelineParser *)self scanner];
   [(PXStoryConcreteTimelineParser *)self parseTimeLimit];
   v6 = v5;
   if (v5 <= 0.0)
@@ -126,11 +126,11 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
 
-  v10 = [(PXStoryConcreteTimelineParser *)self parseCountLimit];
-  v11 = v10;
-  if (v10 >= 1)
+  parseCountLimit = [(PXStoryConcreteTimelineParser *)self parseCountLimit];
+  v11 = parseCountLimit;
+  if (parseCountLimit >= 1)
   {
-    v12 = v10;
+    v12 = parseCountLimit;
   }
 
   else
@@ -138,32 +138,32 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v13 = [(PXStoryConcreteTimelineParser *)self preferredInitialDisplayAssetResourceIndex];
+  preferredInitialDisplayAssetResourceIndex = [(PXStoryConcreteTimelineParser *)self preferredInitialDisplayAssetResourceIndex];
   v14 = 0;
   if (v11 > 0 || v6 > 0.0)
   {
-    v16 = v13;
-    v36 = v13 - 1;
-    if ((v13 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+    v16 = preferredInitialDisplayAssetResourceIndex;
+    v36 = preferredInitialDisplayAssetResourceIndex - 1;
+    if ((preferredInitialDisplayAssetResourceIndex - 1) <= 0x7FFFFFFFFFFFFFFDLL)
     {
-      if ([v4 isAtBeginning] && (objc_msgSend(v4, "isAtEnd") & 1) == 0)
+      if ([scanner isAtBeginning] && (objc_msgSend(scanner, "isAtEnd") & 1) == 0)
       {
         v51 = 0u;
         v52 = 0u;
         *buf = 0u;
-        if (v4)
+        if (scanner)
         {
-          [v4 scanState];
+          [scanner scanState];
         }
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __54__PXStoryConcreteTimelineParser_parseNextBestTimeline__block_invoke;
         aBlock[3] = &unk_1E773D330;
-        v34 = v4;
+        v34 = scanner;
         v35 = a2;
         v47 = v34;
-        v48 = self;
+        selfCopy = self;
         v49 = a2;
         v17 = _Block_copy(aBlock);
         v17[2](v17, v16);
@@ -172,11 +172,11 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
         {
           v19 = v18;
           accumulatedBestTimeline = self->_accumulatedBestTimeline;
-          v21 = [(PXStoryConcreteTimelineParser *)self resourcesDataSource];
-          v22 = [(PXStoryConcreteTimeline *)accumulatedBestTimeline indexesOfResourcesWithKind:1 inResourcesDataSource:v21 forClipsInSegmentWithIdentifier:[(PXStoryBaseTimeline *)self->_accumulatedBestTimeline lastSegmentIdentifier]];
-          v23 = [v22 lastIndex];
+          resourcesDataSource = [(PXStoryConcreteTimelineParser *)self resourcesDataSource];
+          v22 = [(PXStoryConcreteTimeline *)accumulatedBestTimeline indexesOfResourcesWithKind:1 inResourcesDataSource:resourcesDataSource forClipsInSegmentWithIdentifier:[(PXStoryBaseTimeline *)self->_accumulatedBestTimeline lastSegmentIdentifier]];
+          lastIndex = [v22 lastIndex];
 
-          if (v23 == v36)
+          if (lastIndex == v36)
           {
             break;
           }
@@ -195,7 +195,7 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
         v44 = v51;
         v45 = v52;
         v41 = v24;
-        v42 = self;
+        selfCopy2 = self;
         v14 = _Block_copy(v40);
 
         a2 = v35;
@@ -211,7 +211,7 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
   v25 = 1;
   do
   {
-    if ([v4 isAtEnd])
+    if ([scanner isAtEnd])
     {
       break;
     }
@@ -222,7 +222,7 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
     v39[2] = __54__PXStoryConcreteTimelineParser_parseNextBestTimeline__block_invoke_4;
     v39[3] = &unk_1E773D308;
     v39[4] = self;
-    if (([v4 scanBestSubtimelineFollowingTimeline:v26 loggingOptions:0 resultHandler:v39] & 1) == 0)
+    if (([scanner scanBestSubtimelineFollowingTimeline:v26 loggingOptions:0 resultHandler:v39] & 1) == 0)
     {
       v32 = PLStoryGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -231,9 +231,9 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
         _os_log_impl(&dword_1A3C1C000, v32, OS_LOG_TYPE_ERROR, "failed to scan next subtimeline", buf, 2u);
       }
 
-      [v4 scanBestSubtimelineFollowingTimeline:self->_accumulatedBestTimeline loggingOptions:1 resultHandler:&__block_literal_global_144217];
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineParser.m" lineNumber:112 description:@"couldn't scan next subtimeline"];
+      [scanner scanBestSubtimelineFollowingTimeline:self->_accumulatedBestTimeline loggingOptions:1 resultHandler:&__block_literal_global_144217];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineParser.m" lineNumber:112 description:@"couldn't scan next subtimeline"];
 
       abort();
     }
@@ -242,7 +242,7 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
   }
 
   while (v27 < v9 && v25++ < v12);
-  if ([v4 isAtEnd])
+  if ([scanner isAtEnd])
   {
     nextBestTimeline = self->_accumulatedBestTimeline;
   }
@@ -253,9 +253,9 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
     v51 = 0u;
     v52 = 0u;
     *buf = 0u;
-    if (v4)
+    if (scanner)
     {
-      [v4 scanState];
+      [scanner scanState];
     }
 
     v38[0] = MEMORY[0x1E69E9820];
@@ -263,11 +263,11 @@ double __67__PXStoryConcreteTimelineParser__adjustTimeline_andAppendTimeline___b
     v38[2] = __54__PXStoryConcreteTimelineParser_parseNextBestTimeline__block_invoke_2_19;
     v38[3] = &unk_1E773D308;
     v38[4] = self;
-    [v4 scanFastestSubtimelineWithRemainingClipsResultHandler:v38];
+    [scanner scanFastestSubtimelineWithRemainingClipsResultHandler:v38];
     v37[0] = *buf;
     v37[1] = v51;
     v37[2] = v52;
-    [v4 setScanState:v37];
+    [scanner setScanState:v37];
     nextBestTimeline = self->_nextBestTimeline;
   }
 
@@ -306,38 +306,38 @@ uint64_t __54__PXStoryConcreteTimelineParser_parseNextBestTimeline__block_invoke
   return [*(*(a1 + 40) + 8) removeAllClipsAndSegments];
 }
 
-- (PXStoryConcreteTimelineParser)initWithConfiguration:(id)a3
+- (PXStoryConcreteTimelineParser)initWithConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = PXStoryConcreteTimelineParser;
   v5 = [(PXStoryConcreteTimelineParser *)&v18 init];
   if (v5)
   {
-    v6 = [[PXStoryConcreteSubtimelineScanner alloc] initWithConfiguration:v4];
+    v6 = [[PXStoryConcreteSubtimelineScanner alloc] initWithConfiguration:configurationCopy];
     scanner = v5->_scanner;
     v5->_scanner = v6;
 
-    v8 = [v4 resourcesDataSource];
+    resourcesDataSource = [configurationCopy resourcesDataSource];
     resourcesDataSource = v5->_resourcesDataSource;
-    v5->_resourcesDataSource = v8;
+    v5->_resourcesDataSource = resourcesDataSource;
 
     v5->_preferredInitialDisplayAssetResourceIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v10 = [v4 spec];
-    v11 = [v10 allowedTransitionKinds];
+    spec = [configurationCopy spec];
+    allowedTransitionKinds = [spec allowedTransitionKinds];
     allowedTransitionKinds = v5->_allowedTransitionKinds;
-    v5->_allowedTransitionKinds = v11;
+    v5->_allowedTransitionKinds = allowedTransitionKinds;
 
-    v13 = [v4 spec];
-    v5->_fallbackTransitionKind = [v13 fallbackTransitionKind];
+    spec2 = [configurationCopy spec];
+    v5->_fallbackTransitionKind = [spec2 fallbackTransitionKind];
 
     v14 = [objc_alloc(MEMORY[0x1E69C0838]) initWithSeed:0];
     randomNumberGenerator = v5->_randomNumberGenerator;
     v5->_randomNumberGenerator = v14;
 
-    v16 = [v4 spec];
-    [v16 viewportSize];
+    spec3 = [configurationCopy spec];
+    [spec3 viewportSize];
 
     PXSizeIsEmpty();
   }
@@ -356,8 +356,8 @@ PXStoryMutableConcreteTimeline *__55__PXStoryConcreteTimelineParser_initWithConf
 
 - (PXStoryConcreteTimelineParser)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineParser.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryConcreteTimelineParser init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineParser.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryConcreteTimelineParser init]"}];
 
   abort();
 }

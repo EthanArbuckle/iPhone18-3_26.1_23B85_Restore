@@ -1,5 +1,5 @@
 @interface VCIDRSchedulerPeriodGroup
-- (VCIDRSchedulerPeriodGroup)initWithPeriodCount:(unsigned int)a3 framesPerBasePeriod:(unsigned int)a4;
+- (VCIDRSchedulerPeriodGroup)initWithPeriodCount:(unsigned int)count framesPerBasePeriod:(unsigned int)period;
 - (id)computeScheduleItemList;
 - (void)computeStreamsIDRPosition;
 - (void)dealloc;
@@ -7,7 +7,7 @@
 
 @implementation VCIDRSchedulerPeriodGroup
 
-- (VCIDRSchedulerPeriodGroup)initWithPeriodCount:(unsigned int)a3 framesPerBasePeriod:(unsigned int)a4
+- (VCIDRSchedulerPeriodGroup)initWithPeriodCount:(unsigned int)count framesPerBasePeriod:(unsigned int)period
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -16,8 +16,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_basePeriodCount = a3;
-    v6->_framesPerBasePeriod = a4;
+    v6->_basePeriodCount = count;
+    v6->_framesPerBasePeriod = period;
     v6->_streams = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
@@ -160,8 +160,8 @@
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v24 = [v5 streams];
-        v10 = [v24 countByEnumeratingWithState:&v26 objects:v25 count:16];
+        streams = [v5 streams];
+        v10 = [streams countByEnumeratingWithState:&v26 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -183,7 +183,7 @@
             {
               if (*v27 != v12)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(streams);
               }
 
               v15 = *(*(&v26 + 1) + 8 * v14);
@@ -229,7 +229,7 @@
             }
 
             while (v11 != v14);
-            v11 = [v24 countByEnumeratingWithState:&v26 objects:v25 count:16];
+            v11 = [streams countByEnumeratingWithState:&v26 objects:v25 count:16];
           }
 
           while (v11);

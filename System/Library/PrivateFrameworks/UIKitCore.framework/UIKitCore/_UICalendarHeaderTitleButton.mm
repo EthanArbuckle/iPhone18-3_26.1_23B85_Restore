@@ -1,24 +1,24 @@
 @interface _UICalendarHeaderTitleButton
 - (CGAffineTransform)chevronTransform;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICalendarHeaderTitleButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICalendarHeaderTitleButton)initWithFrame:(CGRect)frame;
 - (void)_updateChevron;
 - (void)_updateFont;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setChevronTransform:(CGAffineTransform *)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFontDesign:(id)a3;
-- (void)updateTitles:(id)a3 isExpanded:(BOOL)a4;
+- (void)setChevronTransform:(CGAffineTransform *)transform;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFontDesign:(id)design;
+- (void)updateTitles:(id)titles isExpanded:(BOOL)expanded;
 @end
 
 @implementation _UICalendarHeaderTitleButton
 
-- (_UICalendarHeaderTitleButton)initWithFrame:(CGRect)a3
+- (_UICalendarHeaderTitleButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UICalendarHeaderTitleButton;
-  v3 = [(UIButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -37,11 +37,11 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = _UICalendarHeaderTitleButton;
-  [(UIButton *)&v4 setEnabled:a3];
+  [(UIButton *)&v4 setEnabled:enabled];
   [(_UICalendarHeaderTitleButton *)self _updateChevron];
 }
 
@@ -61,46 +61,46 @@
   return result;
 }
 
-- (void)setChevronTransform:(CGAffineTransform *)a3
+- (void)setChevronTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(UIView *)self->_chevron setTransform:v4];
 }
 
-- (void)setFontDesign:(id)a3
+- (void)setFontDesign:(id)design
 {
-  v5 = a3;
-  if (self->_fontDesign != v5)
+  designCopy = design;
+  if (self->_fontDesign != designCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fontDesign, a3);
+    v6 = designCopy;
+    objc_storeStrong(&self->_fontDesign, design);
     [(_UICalendarHeaderTitleButton *)self _updateFont];
-    v5 = v6;
+    designCopy = v6;
   }
 }
 
-- (void)updateTitles:(id)a3 isExpanded:(BOOL)a4
+- (void)updateTitles:(id)titles isExpanded:(BOOL)expanded
 {
-  v6 = a3;
-  v7 = [(UIView *)self traitCollection];
-  v11 = _UICalendarViewGetPlatformMetrics([v7 userInterfaceIdiom]);
+  titlesCopy = titles;
+  traitCollection = [(UIView *)self traitCollection];
+  v11 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTitles:v6];
-  if (a4)
+  [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTitles:titlesCopy];
+  if (expanded)
   {
-    v8 = [v11 expandedMonthYearLabelColor];
-    [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTextColor:v8];
+    expandedMonthYearLabelColor = [v11 expandedMonthYearLabelColor];
+    [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTextColor:expandedMonthYearLabelColor];
 
     [v11 expandedMonthYearChevronColor];
   }
 
   else
   {
-    v9 = [v11 monthYearLabelColor];
-    [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTextColor:v9];
+    monthYearLabelColor = [v11 monthYearLabelColor];
+    [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setTextColor:monthYearLabelColor];
 
     [v11 monthYearChevronColor];
   }
@@ -113,20 +113,20 @@
   v4.receiver = self;
   v4.super_class = _UICalendarHeaderTitleButton;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(UIButton *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self traitCollection];
-  v7 = _UICalendarViewGetPlatformMetrics([v6 userInterfaceIdiom]);
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [(UIImageView *)self->_chevron sizeThatFits:width, height];
   v10 = v9;
@@ -159,8 +159,8 @@
   v49.receiver = self;
   v49.super_class = _UICalendarHeaderTitleButton;
   [(UIButton *)&v49 layoutSubviews];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UICalendarViewGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [(UIView *)self bounds];
   v8 = v7;
@@ -183,14 +183,14 @@
 
   [(_UIDatePickerLinkedLabel *)self->_monthYearLabel sizeThatFits:v11 - v15 + -4.0, v12];
   v18 = v17;
-  v19 = [(UIView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   [v4 monthYearContainerEdgeInsets];
   v23 = v8 - v22;
   v25 = v10 - v24;
   v26 = v11 - (-v21 - v22);
   v27 = v12 - (-v20 - v24);
   v28 = v23;
-  if (v19)
+  if (_shouldReverseLayoutDirection)
   {
     v50.origin.x = v23;
     v50.origin.y = v25;
@@ -205,8 +205,8 @@
     v47 = v15;
     [(UIView *)self->_monthYearLabel layoutBelowIfNeeded];
     monthYearLabel = self->_monthYearLabel;
-    v30 = [(_UIDatePickerLinkedLabel *)monthYearLabel contentLayoutGuide];
-    [v30 layoutFrame];
+    contentLayoutGuide = [(_UIDatePickerLinkedLabel *)monthYearLabel contentLayoutGuide];
+    [contentLayoutGuide layoutFrame];
     [(UIView *)monthYearLabel convertRect:self toView:?];
     v32 = v31;
     v34 = v33;
@@ -227,7 +227,7 @@
     v41 = v34;
     v42 = v36;
     v43 = rect;
-    if (v19)
+    if (_shouldReverseLayoutDirection)
     {
       v44 = v47;
       v45 = CGRectGetMinX(*&v40) + -4.0 - v47;
@@ -274,18 +274,18 @@
 
 - (void)_updateFont
 {
-  v3 = [(UIView *)self traitCollection];
-  v11 = _UICalendarViewGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v11 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v4 = [v11 monthYearLabelFontProvider];
-  v5 = [(_UICalendarHeaderTitleButton *)self fontDesign];
-  v6 = [(UIView *)self traitCollection];
-  v7 = (v4)[2](v4, v5, v6);
+  monthYearLabelFontProvider = [v11 monthYearLabelFontProvider];
+  fontDesign = [(_UICalendarHeaderTitleButton *)self fontDesign];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = (monthYearLabelFontProvider)[2](monthYearLabelFontProvider, fontDesign, traitCollection2);
   [(_UIDatePickerLinkedLabel *)self->_monthYearLabel setFont:v7];
 
-  v8 = [v11 monthYearChevronSymbolConfiguration];
-  v9 = [(UIView *)self traitCollection];
-  v10 = (v8)[2](v8, v9);
+  monthYearChevronSymbolConfiguration = [v11 monthYearChevronSymbolConfiguration];
+  traitCollection3 = [(UIView *)self traitCollection];
+  v10 = (monthYearChevronSymbolConfiguration)[2](monthYearChevronSymbolConfiguration, traitCollection3);
   [(UIImageView *)self->_chevron setPreferredSymbolConfiguration:v10];
 }
 

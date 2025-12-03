@@ -1,24 +1,24 @@
 @interface NTKSeltzerFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (NTKSeltzerFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundImageViewAlphaForEditMode:(int64_t)a3;
-- (double)_complicationsAlphaForEditMode:(int64_t)a3;
-- (double)_dialViewAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewContainerViewAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewScaleForEditMode:(int64_t)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (NTKSeltzerFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundImageViewAlphaForEditMode:(int64_t)mode;
+- (double)_complicationsAlphaForEditMode:(int64_t)mode;
+- (double)_dialViewAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewContainerViewAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewScaleForEditMode:(int64_t)mode;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingAndRubberBandingForEditMode:(int64_t)a3;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingAndRubberBandingForEditMode:(int64_t)mode;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadBackgroundView;
 - (void)_loadCornerOverlayView;
 - (void)_loadDialView;
@@ -33,25 +33,25 @@
 - (void)_unloadTimeView;
 - (void)_unloadUI;
 - (void)_updateUI;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKSeltzerFaceView
 
-- (NTKSeltzerFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSeltzerFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKSeltzerFaceView;
-  v9 = [(NTKSeltzerFaceView *)&v14 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKSeltzerFaceView *)&v14 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     memset(v13, 0, sizeof(v13));
-    sub_4944(v8, v13);
+    sub_4944(deviceCopy, v13);
     v10 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v11 = [v10 initWithFaceView:v9 dialDiameter:v8 device:*&v13[0].receiver];
+    v11 = [v10 initWithFaceView:v9 dialDiameter:deviceCopy device:*&v13[0].receiver];
     [v11 setUsesNarrowTopSlots:1];
     [(NTKSeltzerFaceView *)v9 setComplicationFactory:v11];
   }
@@ -75,13 +75,13 @@
   [(NTKSeltzerFaceView *)&v3 _unloadSnapshotContentViews];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKSeltzerFaceView;
-  v6 = a3;
-  [(NTKSeltzerFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKSeltzerDialView *)self->_seltzerDialView setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKSeltzerFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKSeltzerDialView *)self->_seltzerDialView setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
 - (void)_applyDataMode
@@ -89,15 +89,15 @@
   v6.receiver = self;
   v6.super_class = NTKSeltzerFaceView;
   [(NTKSeltzerFaceView *)&v6 _applyDataMode];
-  v3 = [(NTKSeltzerFaceView *)self dataMode];
-  v4 = v3;
-  if (v3 == (&dword_0 + 1))
+  dataMode = [(NTKSeltzerFaceView *)self dataMode];
+  v4 = dataMode;
+  if (dataMode == (&dword_0 + 1))
   {
     v5 = 1;
     goto LABEL_6;
   }
 
-  if (v3 == &dword_4 || v3 == (&dword_0 + 3))
+  if (dataMode == &dword_4 || dataMode == (&dword_0 + 3))
   {
     v5 = 0;
 LABEL_6:
@@ -132,8 +132,8 @@ LABEL_6:
   backgroundImageView = self->_backgroundImageView;
   self->_backgroundImageView = v3;
 
-  v5 = [(NTKSeltzerFaceView *)self contentView];
-  [v5 addSubview:self->_backgroundImageView];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundImageView];
 }
 
 - (void)_unloadBackgroundView
@@ -146,19 +146,19 @@ LABEL_6:
 - (void)_loadCornerOverlayView
 {
   v3 = [NTKRoundedCornerOverlayView alloc];
-  v4 = [(NTKSeltzerFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKSeltzerFaceView *)self device];
-  v14 = [v3 initWithFrame:v13 forDeviceCornerRadius:{v6, v8, v10, v12}];
+  device = [(NTKSeltzerFaceView *)self device];
+  v14 = [v3 initWithFrame:device forDeviceCornerRadius:{v6, v8, v10, v12}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v14;
 
-  v16 = [(NTKSeltzerFaceView *)self contentView];
-  [v16 addSubview:self->_cornerOverlayView];
+  contentView2 = [(NTKSeltzerFaceView *)self contentView];
+  [contentView2 addSubview:self->_cornerOverlayView];
 }
 
 - (void)_unloadCornerOverlayView
@@ -170,17 +170,17 @@ LABEL_6:
 
 - (void)_loadTimeView
 {
-  v9 = [(NTKSeltzerFaceView *)self device];
-  sub_4944(v9, &v10);
+  device = [(NTKSeltzerFaceView *)self device];
+  sub_4944(device, &v10);
   v3 = *(&v10 + 1);
   v4 = [[UIView alloc] initWithFrame:{0.0, 0.0, v3, v3}];
   timeViewContainerView = self->_timeViewContainerView;
   self->_timeViewContainerView = v4;
 
-  v6 = [(NTKSeltzerFaceView *)self contentView];
-  [v6 addSubview:self->_timeViewContainerView];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView addSubview:self->_timeViewContainerView];
 
-  v7 = [[NTKSeltzerTimeView alloc] initWithFrame:0 style:v9 andDevice:0.0, 0.0, v3, v3];
+  v7 = [[NTKSeltzerTimeView alloc] initWithFrame:0 style:device andDevice:0.0, 0.0, v3, v3];
   seltzerTimeView = self->_seltzerTimeView;
   self->_seltzerTimeView = v7;
 
@@ -201,18 +201,18 @@ LABEL_6:
 
 - (void)_loadDialView
 {
-  v10 = [(NTKSeltzerFaceView *)self device];
-  sub_4944(v10, v11);
+  device = [(NTKSeltzerFaceView *)self device];
+  sub_4944(device, v11);
   v3 = v11[0];
   v4 = [NTKSeltzerDialView alloc];
   calendar = self->_calendar;
-  v6 = [(NTKSeltzerFaceView *)self colorPalette];
-  v7 = [(NTKSeltzerDialView *)v4 initWithFrame:v10 device:calendar calendar:v6 palette:0.0, 0.0, v3, v3];
+  colorPalette = [(NTKSeltzerFaceView *)self colorPalette];
+  v7 = [(NTKSeltzerDialView *)v4 initWithFrame:device device:calendar calendar:colorPalette palette:0.0, 0.0, v3, v3];
   seltzerDialView = self->_seltzerDialView;
   self->_seltzerDialView = v7;
 
-  v9 = [(NTKSeltzerFaceView *)self contentView];
-  [v9 addSubview:self->_seltzerDialView];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView addSubview:self->_seltzerDialView];
 }
 
 - (void)_unloadDialView
@@ -227,8 +227,8 @@ LABEL_6:
   v12.receiver = self;
   v12.super_class = NTKSeltzerFaceView;
   [(NTKSeltzerFaceView *)&v12 layoutSubviews];
-  v3 = [(NTKSeltzerFaceView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView bounds];
   CLKRectGetCenter();
   v5 = v4;
   v7 = v6;
@@ -251,11 +251,11 @@ LABEL_6:
   [(NTKSeltzerTimeView *)seltzerTimeView updateSunLocation];
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    [(NTKSeltzerFaceView *)self _faceEditingScaleForEditMode:15 slot:a4];
+    [(NTKSeltzerFaceView *)self _faceEditingScaleForEditMode:15 slot:slot];
     [(NTKSeltzerTimeView *)self->_seltzerTimeView bounds];
     CGRectGetWidth(v9);
     v5 = NTKKeylineViewWithCircle();
@@ -265,22 +265,22 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = NTKSeltzerFaceView;
-    v5 = [(NTKSeltzerFaceView *)&v7 _keylineViewForCustomEditMode:a3 slot:a4];
+    v5 = [(NTKSeltzerFaceView *)&v7 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v5;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v5 = [(NTKSeltzerFaceView *)self device:15];
     sub_4944(v5, &v18);
     v6 = *(&v18 + 1);
 
-    v7 = [(NTKSeltzerFaceView *)self contentView];
-    [v7 bounds];
+    contentView = [(NTKSeltzerFaceView *)self contentView];
+    [contentView bounds];
     CLKRectGetCenter();
     v9 = v8;
     v11 = v10;
@@ -294,7 +294,7 @@ LABEL_6:
   {
     v17.receiver = self;
     v17.super_class = NTKSeltzerFaceView;
-    [(NTKSeltzerFaceView *)&v17 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKSeltzerFaceView *)&v17 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
     v6 = v15;
   }
 
@@ -306,9 +306,9 @@ LABEL_6:
   return result;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     return 148;
   }
@@ -317,23 +317,23 @@ LABEL_6:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKSeltzerFaceView;
-  return [(NTKSeltzerFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:a3 slot:a4];
+  return [(NTKSeltzerFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:mode slot:slot];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = NTKSeltzerFaceView;
-  [(NTKSeltzerFaceView *)&v11 _configureComplicationView:v6 forSlot:a4];
-  v7 = v6;
+  [(NTKSeltzerFaceView *)&v11 _configureComplicationView:viewCopy forSlot:slot];
+  v7 = viewCopy;
   [v7 setFontStyle:1];
-  v8 = [(NTKSeltzerFaceView *)self colorPalette];
-  v9 = [v8 innerComplication];
-  [(NTKSeltzerFaceView *)self setComplicationColor:v9];
-  [(NTKSeltzerFaceView *)self setInterpolatedComplicationColor:v9];
-  v10 = [v8 outerComplication];
-  [(NTKSeltzerFaceView *)self setAlternateComplicationColor:v10];
+  colorPalette = [(NTKSeltzerFaceView *)self colorPalette];
+  innerComplication = [colorPalette innerComplication];
+  [(NTKSeltzerFaceView *)self setComplicationColor:innerComplication];
+  [(NTKSeltzerFaceView *)self setInterpolatedComplicationColor:innerComplication];
+  outerComplication = [colorPalette outerComplication];
+  [(NTKSeltzerFaceView *)self setAlternateComplicationColor:outerComplication];
 
   [v7 updateMonochromeColor];
 }
@@ -343,8 +343,8 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = NTKSeltzerFaceView;
   [(NTKSeltzerFaceView *)&v4 _prepareForEditing];
-  v3 = [(NTKSeltzerFaceView *)self contentView];
-  [v3 setClipsToBounds:1];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView setClipsToBounds:1];
 }
 
 - (void)_cleanupAfterEditing
@@ -352,73 +352,73 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = NTKSeltzerFaceView;
   [(NTKSeltzerFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKSeltzerFaceView *)self contentView];
-  [v3 setClipsToBounds:0];
+  contentView = [(NTKSeltzerFaceView *)self contentView];
+  [contentView setClipsToBounds:0];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   [(NTKSeltzerFaceView *)self _timeViewScaleForEditMode:?];
   memset(&v10, 0, sizeof(v10));
   CGAffineTransformMakeScale(&v10, v5, v5);
   v9 = v10;
   [(NTKSeltzerTimeView *)self->_seltzerTimeView setTransform:&v9];
-  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:a3];
+  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:mode];
   [(NTKSeltzerDialView *)self->_seltzerDialView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:a3];
+  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:mode];
   [(UIImageView *)self->_backgroundImageView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:a3];
+  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:mode];
   [(UIView *)self->_timeViewContainerView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:a3];
+  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:mode];
   v7 = v6;
-  v8 = [(NTKSeltzerFaceView *)self complicationContainerView];
-  [v8 setAlpha:v7];
+  complicationContainerView = [(NTKSeltzerFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v7];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKSeltzerFaceView *)self _timeViewScaleForEditMode:?];
-  [(NTKSeltzerFaceView *)self _timeViewScaleForEditMode:a5];
+  [(NTKSeltzerFaceView *)self _timeViewScaleForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   memset(&v13, 0, sizeof(v13));
   CGAffineTransformMakeScale(&v13, v8, v8);
   v12 = v13;
   [(NTKSeltzerTimeView *)self->_seltzerTimeView setTransform:&v12];
-  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:a4];
-  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:a5];
+  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:mode];
+  [(NTKSeltzerFaceView *)self _dialViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(NTKSeltzerDialView *)self->_seltzerDialView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:a4];
-  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:a5];
+  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:mode];
+  [(NTKSeltzerFaceView *)self _backgroundImageViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(UIImageView *)self->_backgroundImageView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:a4];
-  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:a5];
+  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:mode];
+  [(NTKSeltzerFaceView *)self _timeViewContainerViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(UIView *)self->_timeViewContainerView setAlpha:?];
-  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:a4];
-  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:a5];
+  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:mode];
+  [(NTKSeltzerFaceView *)self _complicationsAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v10 = v9;
-  v11 = [(NTKSeltzerFaceView *)self complicationContainerView];
-  [v11 setAlpha:v10];
+  complicationContainerView = [(NTKSeltzerFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v10];
 }
 
-- (double)_timeViewScaleForEditMode:(int64_t)a3
+- (double)_timeViewScaleForEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v4 = [(NTKSeltzerFaceView *)self device];
-    sub_4944(v4, &v7);
+    device = [(NTKSeltzerFaceView *)self device];
+    sub_4944(device, &v7);
     v5 = &v8;
     goto LABEL_5;
   }
 
   v3 = 1.0;
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v4 = [(NTKSeltzerFaceView *)self device];
-    sub_4944(v4, &v9);
+    device = [(NTKSeltzerFaceView *)self device];
+    sub_4944(device, &v9);
     v5 = &v10;
 LABEL_5:
     v3 = *v5;
@@ -427,12 +427,12 @@ LABEL_5:
   return v3;
 }
 
-- (double)_dialViewAlphaForEditMode:(int64_t)a3
+- (double)_dialViewAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3)
+  if (mode)
   {
-    if (a3 != 12)
+    if (mode != 12)
     {
       return NTKEditModeDimmedAlpha;
     }
@@ -441,10 +441,10 @@ LABEL_5:
   return result;
 }
 
-- (double)_backgroundImageViewAlphaForEditMode:(int64_t)a3
+- (double)_backgroundImageViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -452,10 +452,10 @@ LABEL_5:
   return result;
 }
 
-- (double)_timeViewContainerViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewContainerViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -463,10 +463,10 @@ LABEL_5:
   return result;
 }
 
-- (double)_complicationsAlphaForEditMode:(int64_t)a3
+- (double)_complicationsAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -474,7 +474,7 @@ LABEL_5:
   return result;
 }
 
-- (void)_applyBreathingAndRubberBandingForEditMode:(int64_t)a3
+- (void)_applyBreathingAndRubberBandingForEditMode:(int64_t)mode
 {
   breathingFraction = self->_breathingFraction;
   NTKLargeElementScaleForBreathingFraction();
@@ -483,25 +483,25 @@ LABEL_5:
   NTKScaleForRubberBandingFraction();
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeScale(&v15, v7 * v9, v7 * v9);
-  if (a3 == 10)
+  if (mode == 10)
   {
 LABEL_4:
     v14 = v15;
-    v10 = [(NTKSeltzerFaceView *)self contentView];
+    contentView = [(NTKSeltzerFaceView *)self contentView];
     v13 = v14;
-    [v10 setTransform:&v13];
+    [contentView setTransform:&v13];
 
     v12 = v15;
-    v11 = [(NTKSeltzerFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKSeltzerFaceView *)self complicationContainerView];
     v13 = v12;
-    [v11 setTransform:&v13];
+    [complicationContainerView setTransform:&v13];
 
     return;
   }
 
-  if (a3 != 15)
+  if (mode != 15)
   {
-    if (a3 != 12)
+    if (mode != 12)
     {
       return;
     }
@@ -513,45 +513,45 @@ LABEL_4:
   [(UIView *)self->_timeViewContainerView setTransform:&v13];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v11 = a3;
-  v8 = a5;
-  switch(a4)
+  optionCopy = option;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v10 = [(NTKSeltzerFaceView *)self colorPalette];
-      [(NTKSeltzerFaceView *)self _updateViewColorsWithPalette:v10];
+      colorPalette = [(NTKSeltzerFaceView *)self colorPalette];
+      [(NTKSeltzerFaceView *)self _updateViewColorsWithPalette:colorPalette];
 
       break;
     case 15:
-      -[NTKSeltzerTimeView setStyle:](self->_seltzerTimeView, "setStyle:", [v11 style]);
+      -[NTKSeltzerTimeView setStyle:](self->_seltzerTimeView, "setStyle:", [optionCopy style]);
       break;
     case 12:
-      v9 = [v11 calendar];
-      self->_calendar = v9;
-      [(NTKSeltzerDialView *)self->_seltzerDialView setCalendar:v9];
+      calendar = [optionCopy calendar];
+      self->_calendar = calendar;
+      [(NTKSeltzerDialView *)self->_seltzerDialView setCalendar:calendar];
       break;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v15 = a4;
-  v12 = a5;
-  v13 = a7;
-  switch(a6)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v14 = [(NTKSeltzerFaceView *)self interpolatedColorPalette];
-      [(NTKSeltzerFaceView *)self _updateViewColorsWithPalette:v14];
+      interpolatedColorPalette = [(NTKSeltzerFaceView *)self interpolatedColorPalette];
+      [(NTKSeltzerFaceView *)self _updateViewColorsWithPalette:interpolatedColorPalette];
 
       break;
     case 15:
-      -[NTKSeltzerTimeView applyTransitionFraction:fromStyle:toStyle:](self->_seltzerTimeView, "applyTransitionFraction:fromStyle:toStyle:", [v15 style], objc_msgSend(v12, "style"), a3);
+      -[NTKSeltzerTimeView applyTransitionFraction:fromStyle:toStyle:](self->_seltzerTimeView, "applyTransitionFraction:fromStyle:toStyle:", [optionCopy style], objc_msgSend(toOptionCopy, "style"), fraction);
       break;
     case 12:
-      -[NTKSeltzerDialView applyTransitionFraction:fromCalendar:toCalendar:](self->_seltzerDialView, "applyTransitionFraction:fromCalendar:toCalendar:", [v15 calendar], objc_msgSend(v12, "calendar"), a3);
+      -[NTKSeltzerDialView applyTransitionFraction:fromCalendar:toCalendar:](self->_seltzerDialView, "applyTransitionFraction:fromCalendar:toCalendar:", [optionCopy calendar], objc_msgSend(toOptionCopy, "calendar"), fraction);
       break;
   }
 }
@@ -563,20 +563,20 @@ LABEL_4:
   return v2;
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
   seltzerTimeView = self->_seltzerTimeView;
-  v5 = a3;
-  [(NTKSeltzerTimeView *)seltzerTimeView setPalette:v5];
-  v7 = [v5 innerComplication];
-  v6 = [v5 outerComplication];
+  paletteCopy = palette;
+  [(NTKSeltzerTimeView *)seltzerTimeView setPalette:paletteCopy];
+  innerComplication = [paletteCopy innerComplication];
+  outerComplication = [paletteCopy outerComplication];
 
-  [(NTKSeltzerFaceView *)self updateRichCornerComplicationsInnerColor:v7 outerColor:v6];
+  [(NTKSeltzerFaceView *)self updateRichCornerComplicationsInnerColor:innerComplication outerColor:outerComplication];
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     v6 = &off_10EC0;
   }
@@ -585,37 +585,37 @@ LABEL_4:
   {
     v9 = v4;
     v10 = v5;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NTKSeltzerFaceView;
-    v6 = objc_msgSendSuper2(&v8, "_swatchForEditModeDependsOnOptions:forDevice:", a3, a4);
+    v6 = objc_msgSendSuper2(&v8, "_swatchForEditModeDependsOnOptions:forDevice:", options, device);
   }
 
   return v6;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (qword_15CF8 != -1)
     {
       sub_9074();
     }
 
-    v10 = v8;
-    v11 = [v9 objectForKeyedSubscript:&off_10DA0];
+    v10 = optionCopy;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_10DA0];
     v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 style]);
-    v13 = [v11 identifier];
-    v14 = [NSString stringWithFormat:@"%@-%@", v12, v13];
+    identifier = [v11 identifier];
+    v14 = [NSString stringWithFormat:@"%@-%@", v12, identifier];
 
     v15 = [qword_15CF0 objectForKey:v14];
     if (!v15)
     {
       v16 = [NTKSeltzerFaceView alloc];
-      v17 = [(NTKSeltzerFaceView *)self device];
-      v18 = [(NTKSeltzerFaceView *)v16 initWithFaceStyle:44 forDevice:v17 clientIdentifier:0];
+      device = [(NTKSeltzerFaceView *)self device];
+      v18 = [(NTKSeltzerFaceView *)v16 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
       [(NTKSeltzerFaceView *)self frame];
       [(NTKSeltzerFaceView *)v18 setFrame:?];
@@ -627,18 +627,18 @@ LABEL_4:
 
       memset(v47, 0, 32);
       v46 = 0u;
-      v20 = [(NTKSeltzerFaceView *)self device];
-      sub_4944(v20, &v46);
+      device2 = [(NTKSeltzerFaceView *)self device];
+      sub_4944(device2, &v46);
 
-      v21 = [(NTKSeltzerFaceView *)v18 timeView];
-      [v21 bounds];
+      timeView = [(NTKSeltzerFaceView *)v18 timeView];
+      [timeView bounds];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
-      v30 = [v21 style];
+      style = [timeView style];
       v31 = v47 + 1;
-      if (!v30)
+      if (!style)
       {
         v31 = v47;
       }
@@ -657,12 +657,12 @@ LABEL_4:
       v40[1] = 3221225472;
       v40[2] = sub_4818;
       v40[3] = &unk_10510;
-      v41 = v21;
+      v41 = timeView;
       v42 = x;
       v43 = y;
       v44 = width;
       v45 = height;
-      v37 = v21;
+      v37 = timeView;
       v15 = [v36 imageWithActions:v40];
       [qword_15CF0 setObject:v15 forKey:v14];
     }
@@ -672,7 +672,7 @@ LABEL_4:
   {
     v39.receiver = self;
     v39.super_class = NTKSeltzerFaceView;
-    v15 = [(NTKSeltzerFaceView *)&v39 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKSeltzerFaceView *)&v39 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;

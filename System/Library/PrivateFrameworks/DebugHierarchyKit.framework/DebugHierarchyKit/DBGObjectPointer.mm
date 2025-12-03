@@ -1,31 +1,31 @@
 @interface DBGObjectPointer
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withAddress:(id)a3;
-- (DBGObjectPointer)initWithAddress:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withAddress:(id)address;
+- (DBGObjectPointer)initWithAddress:(id)address;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DBGObjectPointer
 
-+ (id)withAddress:(id)a3
++ (id)withAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAddress:v4];
+  addressCopy = address;
+  v5 = [[self alloc] initWithAddress:addressCopy];
 
   return v5;
 }
 
-- (DBGObjectPointer)initWithAddress:(id)a3
+- (DBGObjectPointer)initWithAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = DBGObjectPointer;
   v6 = [(DBGObjectPointer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objectPointer, a3);
+    objc_storeStrong(&v6->_objectPointer, address);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGObjectPointer *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGObjectPointer *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -49,21 +49,21 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [a1 withAddress:v8];
+    v9 = [self withAddress:valueCopy];
   }
 
   else
   {
     v9 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v9 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

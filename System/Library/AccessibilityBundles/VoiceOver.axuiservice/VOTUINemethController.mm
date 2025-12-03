@@ -1,19 +1,19 @@
 @interface VOTUINemethController
-- (VOTUINemethController)initWithCoder:(id)a3;
-- (VOTUINemethController)initWithDismissAction:(id)a3 setBrailleUnicodeTable:(id)a4 unsetBrailleUnicodeTable:(id)a5;
-- (VOTUINemethController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (VOTUINemethController)initWithCoder:(id)coder;
+- (VOTUINemethController)initWithDismissAction:(id)action setBrailleUnicodeTable:(id)table unsetBrailleUnicodeTable:(id)unicodeTable;
+- (VOTUINemethController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation VOTUINemethController
 
-- (VOTUINemethController)initWithDismissAction:(id)a3 setBrailleUnicodeTable:(id)a4 unsetBrailleUnicodeTable:(id)a5
+- (VOTUINemethController)initWithDismissAction:(id)action setBrailleUnicodeTable:(id)table unsetBrailleUnicodeTable:(id)unicodeTable
 {
-  v8 = _Block_copy(a3);
-  v9 = _Block_copy(a4);
-  v10 = _Block_copy(a5);
+  v8 = _Block_copy(action);
+  v9 = _Block_copy(table);
+  v10 = _Block_copy(unicodeTable);
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
   v12 = swift_allocObject();
@@ -34,7 +34,7 @@
   return [(VOTUINemethController *)&v18 initWithNibName:0 bundle:0];
 }
 
-- (VOTUINemethController)initWithCoder:(id)a3
+- (VOTUINemethController)initWithCoder:(id)coder
 {
   result = sub_2639C();
   __break(1u);
@@ -48,24 +48,24 @@
   [(VOTUINemethController *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2134C(a3);
+  selfCopy = self;
+  sub_2134C(appear);
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_21AB4(v8, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = sub_21AB4(controllerCopy, viewController);
 
   return v12;
 }
 
-- (VOTUINemethController)initWithNibName:(id)a3 bundle:(id)a4
+- (VOTUINemethController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

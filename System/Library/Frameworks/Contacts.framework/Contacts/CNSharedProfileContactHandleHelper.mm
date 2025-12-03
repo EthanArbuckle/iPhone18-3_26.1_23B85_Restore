@@ -1,10 +1,10 @@
 @interface CNSharedProfileContactHandleHelper
 + (id)log;
-- (BOOL)contact:(id)a3 containsEmailHandleString:(id)a4;
-- (BOOL)contact:(id)a3 containsHandleString:(id)a4;
-- (BOOL)contact:(id)a3 containsPhoneHandleString:(id)a4;
+- (BOOL)contact:(id)contact containsEmailHandleString:(id)string;
+- (BOOL)contact:(id)contact containsHandleString:(id)string;
+- (BOOL)contact:(id)contact containsPhoneHandleString:(id)string;
 - (CNSharedProfileContactHandleHelper)init;
-- (CNSharedProfileContactHandleHelper)initWithHandleStringClassifier:(id)a3;
+- (CNSharedProfileContactHandleHelper)initWithHandleStringClassifier:(id)classifier;
 @end
 
 @implementation CNSharedProfileContactHandleHelper
@@ -44,27 +44,27 @@ uint64_t __41__CNSharedProfileContactHandleHelper_log__block_invoke()
   return v2;
 }
 
-- (CNSharedProfileContactHandleHelper)initWithHandleStringClassifier:(id)a3
+- (CNSharedProfileContactHandleHelper)initWithHandleStringClassifier:(id)classifier
 {
-  v5 = a3;
+  classifierCopy = classifier;
   v10.receiver = self;
   v10.super_class = CNSharedProfileContactHandleHelper;
   v6 = [(CNSharedProfileContactHandleHelper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_classifier, a3);
+    objc_storeStrong(&v6->_classifier, classifier);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)contact:(id)a3 containsHandleString:(id)a4
+- (BOOL)contact:(id)contact containsHandleString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isKeyAvailable:@"emailAddresses"] || (objc_msgSend(v6, "isKeyAvailable:", @"phoneNumbers") & 1) == 0)
+  contactCopy = contact;
+  stringCopy = string;
+  if (![contactCopy isKeyAvailable:@"emailAddresses"] || (objc_msgSend(contactCopy, "isKeyAvailable:", @"phoneNumbers") & 1) == 0)
   {
     v8 = [objc_opt_class() log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@ uint64_t __41__CNSharedProfileContactHandleHelper_log__block_invoke()
     }
   }
 
-  v9 = [(CNSharedProfileContactHandleHelper *)self classifier];
-  v10 = [v9 typeOfHandleString:v7];
+  classifier = [(CNSharedProfileContactHandleHelper *)self classifier];
+  v10 = [classifier typeOfHandleString:stringCopy];
 
   if (v10)
   {
@@ -86,18 +86,18 @@ uint64_t __41__CNSharedProfileContactHandleHelper_log__block_invoke()
         goto LABEL_15;
       }
 
-      v11 = [(CNSharedProfileContactHandleHelper *)self contact:v6 containsEmailHandleString:v7];
+      v11 = [(CNSharedProfileContactHandleHelper *)self contact:contactCopy containsEmailHandleString:stringCopy];
       goto LABEL_13;
     }
 
 LABEL_12:
-    v11 = [(CNSharedProfileContactHandleHelper *)self contact:v6 containsPhoneHandleString:v7];
+    v11 = [(CNSharedProfileContactHandleHelper *)self contact:contactCopy containsPhoneHandleString:stringCopy];
 LABEL_13:
     v12 = v11;
     goto LABEL_15;
   }
 
-  if (![(CNSharedProfileContactHandleHelper *)self contact:v6 containsEmailHandleString:v7])
+  if (![(CNSharedProfileContactHandleHelper *)self contact:contactCopy containsEmailHandleString:stringCopy])
   {
     goto LABEL_12;
   }
@@ -108,16 +108,16 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)contact:(id)a3 containsEmailHandleString:(id)a4
+- (BOOL)contact:(id)contact containsEmailHandleString:(id)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  stringCopy = string;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a3 emailAddresses];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  emailAddresses = [contact emailAddresses];
+  v7 = [emailAddresses countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -129,21 +129,21 @@ LABEL_15:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) value];
-        v13 = (*(v10 + 16))(v10, v12);
+        value = [*(*(&v16 + 1) + 8 * i) value];
+        v13 = (*(v10 + 16))(v10, value);
 
-        LOBYTE(v12) = [v13 isEqualToString:v5];
-        if (v12)
+        LOBYTE(value) = [v13 isEqualToString:stringCopy];
+        if (value)
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [emailAddresses countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -159,16 +159,16 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)contact:(id)a3 containsPhoneHandleString:(id)a4
+- (BOOL)contact:(id)contact containsPhoneHandleString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  stringCopy = string;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 phoneNumbers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  phoneNumbers = [contact phoneNumbers];
+  v7 = [phoneNumbers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -178,21 +178,21 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) value];
-        v11 = [v10 unformattedInternationalStringValue];
+        value = [*(*(&v13 + 1) + 8 * i) value];
+        unformattedInternationalStringValue = [value unformattedInternationalStringValue];
 
-        LOBYTE(v10) = [v11 isEqualToString:v5];
-        if (v10)
+        LOBYTE(value) = [unformattedInternationalStringValue isEqualToString:stringCopy];
+        if (value)
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [phoneNumbers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;

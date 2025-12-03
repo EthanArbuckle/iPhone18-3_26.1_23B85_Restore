@@ -1,23 +1,23 @@
 @interface CCDServer
 - (NSOperationQueue)operationQueue;
-- (id)_operationForDeviceUploadRequest:(id)a3;
-- (id)_operationForEnrollmentRequest:(id)a3;
-- (id)_requestForDeviceUploadRequestType:(int64_t)a3 userCredentials:(id)a4;
-- (void)_addOperationToQueue:(id)a3;
-- (void)_startProcessForDeviceUploadRequest:(id)a3 completionBlock:(id)a4;
-- (void)_startProcessForEnrollmentRequest:(id)a3 certificateClientNameSuffix:(id)a4 completionBlock:(id)a5;
-- (void)fetchConfigurationAndActivateAnisetteWithCompletionBlock:(id)a3;
-- (void)fetchConfigurationWithCompletionBlock:(id)a3;
-- (void)fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:(id)a3;
-- (void)fetchConfigurationWithoutValidationWithCompletionBlock:(id)a3;
-- (void)makeEndMDMMigrationRequestWithServerUID:(id)a3 status:(id)a4 completionBlock:(id)a5;
-- (void)makeStartMDMMigrationRequestWithCompletionBlock:(id)a3;
-- (void)provisionallyEnrollWithNonce:(id)a3 completionBlock:(id)a4;
-- (void)retrieveDeviceUploadOrganizationsWithCredentials:(id)a3 completionBlock:(id)a4;
-- (void)retrieveDeviceUploadRequestTypesWithCredentials:(id)a3 completionBlock:(id)a4;
-- (void)retrieveDeviceUploadSoldToIdsForOrganization:(id)a3 credentials:(id)a4 completionBlock:(id)a5;
-- (void)submitDeviceUploadRequest:(id)a3 credentials:(id)a4 completionBlock:(id)a5;
-- (void)unenrollWithCompletionBlock:(id)a3;
+- (id)_operationForDeviceUploadRequest:(id)request;
+- (id)_operationForEnrollmentRequest:(id)request;
+- (id)_requestForDeviceUploadRequestType:(int64_t)type userCredentials:(id)credentials;
+- (void)_addOperationToQueue:(id)queue;
+- (void)_startProcessForDeviceUploadRequest:(id)request completionBlock:(id)block;
+- (void)_startProcessForEnrollmentRequest:(id)request certificateClientNameSuffix:(id)suffix completionBlock:(id)block;
+- (void)fetchConfigurationAndActivateAnisetteWithCompletionBlock:(id)block;
+- (void)fetchConfigurationWithCompletionBlock:(id)block;
+- (void)fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:(id)block;
+- (void)fetchConfigurationWithoutValidationWithCompletionBlock:(id)block;
+- (void)makeEndMDMMigrationRequestWithServerUID:(id)d status:(id)status completionBlock:(id)block;
+- (void)makeStartMDMMigrationRequestWithCompletionBlock:(id)block;
+- (void)provisionallyEnrollWithNonce:(id)nonce completionBlock:(id)block;
+- (void)retrieveDeviceUploadOrganizationsWithCredentials:(id)credentials completionBlock:(id)block;
+- (void)retrieveDeviceUploadRequestTypesWithCredentials:(id)credentials completionBlock:(id)block;
+- (void)retrieveDeviceUploadSoldToIdsForOrganization:(id)organization credentials:(id)credentials completionBlock:(id)block;
+- (void)submitDeviceUploadRequest:(id)request credentials:(id)credentials completionBlock:(id)block;
+- (void)unenrollWithCompletionBlock:(id)block;
 @end
 
 @implementation CCDServer
@@ -38,19 +38,19 @@
   return operationQueue;
 }
 
-- (void)provisionallyEnrollWithNonce:(id)a3 completionBlock:(id)a4
+- (void)provisionallyEnrollWithNonce:(id)nonce completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  nonceCopy = nonce;
   v8 = objc_opt_new();
-  [v8 setNonce:v7];
+  [v8 setNonce:nonceCopy];
 
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v8 completionBlock:v6];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v8 completionBlock:blockCopy];
 }
 
-- (void)fetchConfigurationWithCompletionBlock:(id)a3
+- (void)fetchConfigurationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CCDAuthKitUtilities shouldActivateAnisette];
   v6 = *(DEPLogObjects() + 8);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -62,7 +62,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Retrieving cloud configuration and mid", buf, 2u);
     }
 
-    [(CCDServer *)self fetchConfigurationAndActivateAnisetteWithCompletionBlock:v4];
+    [(CCDServer *)self fetchConfigurationAndActivateAnisetteWithCompletionBlock:blockCopy];
   }
 
   else
@@ -73,13 +73,13 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Only retrieving cloud configuration", v8, 2u);
     }
 
-    [(CCDServer *)self fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:v4];
+    [(CCDServer *)self fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:blockCopy];
   }
 }
 
-- (void)fetchConfigurationAndActivateAnisetteWithCompletionBlock:(id)a3
+- (void)fetchConfigurationAndActivateAnisetteWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
@@ -116,7 +116,7 @@
   v15[3] = &unk_10001CB08;
   v17 = v23;
   v18 = v31;
-  v5 = v4;
+  v5 = blockCopy;
   v16 = v5;
   v19 = v29;
   v20 = v27;
@@ -146,185 +146,185 @@
   _Block_object_dispose(v33, 8);
 }
 
-- (void)fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:(id)a3
+- (void)fetchConfigurationWithoutActivatingAnisetteWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:v4];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:blockCopy];
 }
 
-- (void)fetchConfigurationWithoutValidationWithCompletionBlock:(id)a3
+- (void)fetchConfigurationWithoutValidationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:v4];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:blockCopy];
 }
 
-- (void)unenrollWithCompletionBlock:(id)a3
+- (void)unenrollWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:v4];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:blockCopy];
 }
 
-- (void)makeStartMDMMigrationRequestWithCompletionBlock:(id)a3
+- (void)makeStartMDMMigrationRequestWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:v4];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v5 completionBlock:blockCopy];
 }
 
-- (void)makeEndMDMMigrationRequestWithServerUID:(id)a3 status:(id)a4 completionBlock:(id)a5
+- (void)makeEndMDMMigrationRequestWithServerUID:(id)d status:(id)status completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  statusCopy = status;
+  dCopy = d;
   v11 = objc_opt_new();
-  [v11 setServerUID:v10];
+  [v11 setServerUID:dCopy];
 
-  [v11 setStatus:v9];
-  [(CCDServer *)self _startProcessForEnrollmentRequest:v11 completionBlock:v8];
+  [v11 setStatus:statusCopy];
+  [(CCDServer *)self _startProcessForEnrollmentRequest:v11 completionBlock:blockCopy];
 }
 
-- (void)retrieveDeviceUploadOrganizationsWithCredentials:(id)a3 completionBlock:(id)a4
+- (void)retrieveDeviceUploadOrganizationsWithCredentials:(id)credentials completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CCDServer *)self _requestForDeviceUploadRequestType:0 userCredentials:a3];
-  [(CCDServer *)self _startProcessForDeviceUploadRequest:v7 completionBlock:v6];
+  blockCopy = block;
+  v7 = [(CCDServer *)self _requestForDeviceUploadRequestType:0 userCredentials:credentials];
+  [(CCDServer *)self _startProcessForDeviceUploadRequest:v7 completionBlock:blockCopy];
 }
 
-- (void)retrieveDeviceUploadRequestTypesWithCredentials:(id)a3 completionBlock:(id)a4
+- (void)retrieveDeviceUploadRequestTypesWithCredentials:(id)credentials completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CCDServer *)self _requestForDeviceUploadRequestType:1 userCredentials:a3];
-  [(CCDServer *)self _startProcessForDeviceUploadRequest:v7 completionBlock:v6];
+  blockCopy = block;
+  v7 = [(CCDServer *)self _requestForDeviceUploadRequestType:1 userCredentials:credentials];
+  [(CCDServer *)self _startProcessForDeviceUploadRequest:v7 completionBlock:blockCopy];
 }
 
-- (void)retrieveDeviceUploadSoldToIdsForOrganization:(id)a3 credentials:(id)a4 completionBlock:(id)a5
+- (void)retrieveDeviceUploadSoldToIdsForOrganization:(id)organization credentials:(id)credentials completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CCDServer *)self _requestForDeviceUploadRequestType:2 userCredentials:a4];
-  [v10 setOrganization:v9];
+  blockCopy = block;
+  organizationCopy = organization;
+  v10 = [(CCDServer *)self _requestForDeviceUploadRequestType:2 userCredentials:credentials];
+  [v10 setOrganization:organizationCopy];
 
-  [(CCDServer *)self _startProcessForDeviceUploadRequest:v10 completionBlock:v8];
+  [(CCDServer *)self _startProcessForDeviceUploadRequest:v10 completionBlock:blockCopy];
 }
 
-- (void)submitDeviceUploadRequest:(id)a3 credentials:(id)a4 completionBlock:(id)a5
+- (void)submitDeviceUploadRequest:(id)request credentials:(id)credentials completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CCDServer *)self _requestForDeviceUploadRequestType:3 userCredentials:a4];
-  [v10 setSubmitDeviceRequestPayload:v9];
+  blockCopy = block;
+  requestCopy = request;
+  v10 = [(CCDServer *)self _requestForDeviceUploadRequestType:3 userCredentials:credentials];
+  [v10 setSubmitDeviceRequestPayload:requestCopy];
 
-  [(CCDServer *)self _startProcessForDeviceUploadRequest:v10 completionBlock:v8];
+  [(CCDServer *)self _startProcessForDeviceUploadRequest:v10 completionBlock:blockCopy];
 }
 
-- (void)_startProcessForDeviceUploadRequest:(id)a3 completionBlock:(id)a4
+- (void)_startProcessForDeviceUploadRequest:(id)request completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CCDServer *)self _operationForDeviceUploadRequest:a3];
+  blockCopy = block;
+  v7 = [(CCDServer *)self _operationForDeviceUploadRequest:request];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000A9A0;
   v9[3] = &unk_10001CB58;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 setDeviceUploadCompletionBlock:v9];
   [(CCDServer *)self _addOperationToQueue:v7];
 }
 
-- (id)_requestForDeviceUploadRequestType:(int64_t)a3 userCredentials:(id)a4
+- (id)_requestForDeviceUploadRequestType:(int64_t)type userCredentials:(id)credentials
 {
-  v5 = a4;
-  if (a3 > 3)
+  credentialsCopy = credentials;
+  if (type > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = *off_10001CBA0[a3];
+    v6 = *off_10001CBA0[type];
     v7 = objc_opt_new();
   }
 
-  [v7 setUserCredentials:v5];
+  [v7 setUserCredentials:credentialsCopy];
 
   return v7;
 }
 
-- (id)_operationForDeviceUploadRequest:(id)a3
+- (id)_operationForDeviceUploadRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 requestType];
-  if (v4 > 3)
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  if (requestType > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = *off_10001CBC0[v4];
+    v5 = *off_10001CBC0[requestType];
     v6 = objc_opt_new();
   }
 
-  [v6 setTeslaRequest:v3];
+  [v6 setTeslaRequest:requestCopy];
 
   return v6;
 }
 
-- (void)_startProcessForEnrollmentRequest:(id)a3 certificateClientNameSuffix:(id)a4 completionBlock:(id)a5
+- (void)_startProcessForEnrollmentRequest:(id)request certificateClientNameSuffix:(id)suffix completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  requestCopy = request;
+  blockCopy = block;
+  suffixCopy = suffix;
   v11 = objc_opt_new();
-  [v11 setClientNameSuffix:v10];
+  [v11 setClientNameSuffix:suffixCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000ABD8;
   v14[3] = &unk_10001CB80;
-  v16 = self;
-  v17 = v9;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
+  selfCopy = self;
+  v17 = blockCopy;
+  v15 = requestCopy;
+  v12 = requestCopy;
+  v13 = blockCopy;
   [v11 setCertificateRetrievalCompletionBlock:v14];
   [(CCDServer *)self _addOperationToQueue:v11];
 }
 
-- (void)_addOperationToQueue:(id)a3
+- (void)_addOperationToQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = queueCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding operation to the queue: %@", &v7, 0xCu);
   }
 
-  v6 = [(CCDServer *)self operationQueue];
-  [v6 addOperation:v4];
+  operationQueue = [(CCDServer *)self operationQueue];
+  [operationQueue addOperation:queueCopy];
 }
 
-- (id)_operationForEnrollmentRequest:(id)a3
+- (id)_operationForEnrollmentRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 requestType];
-  if (v4 > 6)
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  if (requestType > 6)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = *off_10001CBE0[v4];
+    v5 = *off_10001CBE0[requestType];
     v6 = objc_opt_new();
   }
 
-  [v6 setTeslaRequest:v3];
+  [v6 setTeslaRequest:requestCopy];
 
   return v6;
 }

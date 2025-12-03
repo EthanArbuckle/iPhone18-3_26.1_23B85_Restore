@@ -1,47 +1,47 @@
 @interface UIDictationWordsSeeker
-+ (BOOL)_isSubstringArray:(id)a3 equalToSubstringArray:(id)a4;
-+ (id)_prepareAllWordsWithString:(id)a3 reverse:(BOOL)a4;
-- (BOOL)validateWordBoundariesInRange:(_NSRange)a3;
-- (UIDictationWordsSeeker)initWithString:(id)a3 substring:(id)a4 reverse:(BOOL)a5;
++ (BOOL)_isSubstringArray:(id)array equalToSubstringArray:(id)substringArray;
++ (id)_prepareAllWordsWithString:(id)string reverse:(BOOL)reverse;
+- (BOOL)validateWordBoundariesInRange:(_NSRange)range;
+- (UIDictationWordsSeeker)initWithString:(id)string substring:(id)substring reverse:(BOOL)reverse;
 - (_NSRange)_search;
-- (_NSRange)rangeOfSubstring:(id)a3 fullString:(id)a4 reverse:(BOOL)a5;
+- (_NSRange)rangeOfSubstring:(id)substring fullString:(id)string reverse:(BOOL)reverse;
 @end
 
 @implementation UIDictationWordsSeeker
 
-- (UIDictationWordsSeeker)initWithString:(id)a3 substring:(id)a4 reverse:(BOOL)a5
+- (UIDictationWordsSeeker)initWithString:(id)string substring:(id)substring reverse:(BOOL)reverse
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  reverseCopy = reverse;
+  stringCopy = string;
+  substringCopy = substring;
   v15.receiver = self;
   v15.super_class = UIDictationWordsSeeker;
   v10 = [(UIDictationWordsSeeker *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    [(UIDictationWordsSeeker *)v10 setReverse:v5];
-    v12 = [objc_opt_class() _prepareAllWordsWithString:v8 reverse:v5];
+    [(UIDictationWordsSeeker *)v10 setReverse:reverseCopy];
+    v12 = [objc_opt_class() _prepareAllWordsWithString:stringCopy reverse:reverseCopy];
     [(UIDictationWordsSeeker *)v11 setTargetStringWords:v12];
 
-    [(UIDictationWordsSeeker *)v11 setTargetString:v8];
-    v13 = [objc_opt_class() _prepareAllWordsWithString:v9 reverse:v5];
+    [(UIDictationWordsSeeker *)v11 setTargetString:stringCopy];
+    v13 = [objc_opt_class() _prepareAllWordsWithString:substringCopy reverse:reverseCopy];
     [(UIDictationWordsSeeker *)v11 setTargetSubstringWords:v13];
 
-    [(UIDictationWordsSeeker *)v11 setTargetSubstring:v9];
+    [(UIDictationWordsSeeker *)v11 setTargetSubstring:substringCopy];
   }
 
   return v11;
 }
 
-+ (id)_prepareAllWordsWithString:(id)a3 reverse:(BOOL)a4
++ (id)_prepareAllWordsWithString:(id)string reverse:(BOOL)reverse
 {
-  v4 = a4;
+  reverseCopy = reverse;
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [v6 length];
-  if (v4)
+  stringCopy = string;
+  array = [v5 array];
+  v8 = [stringCopy length];
+  if (reverseCopy)
   {
     v9 = 259;
   }
@@ -55,9 +55,9 @@
   v13[1] = 3221225472;
   v13[2] = __61__UIDictationWordsSeeker__prepareAllWordsWithString_reverse___block_invoke;
   v13[3] = &unk_1E7115940;
-  v14 = v7;
-  v10 = v7;
-  [v6 enumerateSubstringsInRange:0 options:v8 usingBlock:{v9, v13}];
+  v14 = array;
+  v10 = array;
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{v9, v13}];
 
   v11 = [MEMORY[0x1E695DEC8] arrayWithArray:v10];
 
@@ -79,14 +79,14 @@ void __61__UIDictationWordsSeeker__prepareAllWordsWithString_reverse___block_inv
   }
 }
 
-+ (BOOL)_isSubstringArray:(id)a3 equalToSubstringArray:(id)a4
++ (BOOL)_isSubstringArray:(id)array equalToSubstringArray:(id)substringArray
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  arrayCopy = array;
+  substringArrayCopy = substringArray;
+  v7 = [arrayCopy count];
+  if (v7 == [substringArrayCopy count])
   {
-    v8 = [v5 count];
+    v8 = [arrayCopy count];
     v9 = v8 - 1;
     if (v8 < 1)
     {
@@ -98,11 +98,11 @@ void __61__UIDictationWordsSeeker__prepareAllWordsWithString_reverse___block_inv
       v10 = 0;
       do
       {
-        v11 = [v5 objectAtIndex:v10];
-        v12 = [v11 string];
-        v13 = [v6 objectAtIndex:v10];
-        v14 = [v13 string];
-        v15 = [v12 compare:v14 options:129];
+        v11 = [arrayCopy objectAtIndex:v10];
+        string = [v11 string];
+        v13 = [substringArrayCopy objectAtIndex:v10];
+        string2 = [v13 string];
+        v15 = [string compare:string2 options:129];
         v16 = v15 == 0;
 
         if (v15)
@@ -123,21 +123,21 @@ void __61__UIDictationWordsSeeker__prepareAllWordsWithString_reverse___block_inv
   return v16;
 }
 
-- (BOOL)validateWordBoundariesInRange:(_NSRange)a3
+- (BOOL)validateWordBoundariesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(UIDictationWordsSeeker *)self targetString];
-  v8 = [v7 length];
-  v9 = [(UIDictationWordsSeeker *)self reverse];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
+  targetString = [(UIDictationWordsSeeker *)self targetString];
+  v8 = [targetString length];
+  reverse = [(UIDictationWordsSeeker *)self reverse];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__UIDictationWordsSeeker_validateWordBoundariesInRange___block_invoke;
   v15[3] = &unk_1E7115968;
   v17 = location;
   v18 = length;
-  if (v9)
+  if (reverse)
   {
     v10 = 259;
   }
@@ -147,12 +147,12 @@ void __61__UIDictationWordsSeeker__prepareAllWordsWithString_reverse___block_inv
     v10 = 3;
   }
 
-  v16 = v6;
-  v11 = v6;
-  [v7 enumerateSubstringsInRange:0 options:v8 usingBlock:{v10, v15}];
+  v16 = array;
+  v11 = array;
+  [targetString enumerateSubstringsInRange:0 options:v8 usingBlock:{v10, v15}];
   v12 = objc_opt_class();
-  v13 = [(UIDictationWordsSeeker *)self targetSubstringWords];
-  LOBYTE(v12) = [v12 _isSubstringArray:v11 equalToSubstringArray:v13];
+  targetSubstringWords = [(UIDictationWordsSeeker *)self targetSubstringWords];
+  LOBYTE(v12) = [v12 _isSubstringArray:v11 equalToSubstringArray:targetSubstringWords];
 
   return v12;
 }
@@ -179,8 +179,8 @@ void __56__UIDictationWordsSeeker_validateWordBoundariesInRange___block_invoke(u
 
 - (_NSRange)_search
 {
-  v3 = [(UIDictationWordsSeeker *)self targetStringWords];
-  v4 = [v3 count];
+  targetStringWords = [(UIDictationWordsSeeker *)self targetStringWords];
+  v4 = [targetStringWords count];
 
   v5 = v4 - 1;
   if (v4 - 1 < 0)
@@ -194,8 +194,8 @@ LABEL_13:
   {
     while (1)
     {
-      v6 = [(UIDictationWordsSeeker *)self targetSubstringWords];
-      v7 = [v6 count];
+      targetSubstringWords = [(UIDictationWordsSeeker *)self targetSubstringWords];
+      v7 = [targetSubstringWords count];
 
       v8 = v7 - 1;
       if (v8 < 0)
@@ -208,27 +208,27 @@ LABEL_13:
       v11 = v5;
       while (1)
       {
-        v12 = [(UIDictationWordsSeeker *)self targetStringWords];
-        v13 = [v12 objectAtIndex:v11];
-        v14 = [v13 string];
+        targetStringWords2 = [(UIDictationWordsSeeker *)self targetStringWords];
+        v13 = [targetStringWords2 objectAtIndex:v11];
+        string = [v13 string];
 
-        v15 = [(UIDictationWordsSeeker *)self targetSubstringWords];
-        v16 = [v15 objectAtIndex:v8];
-        v17 = [v16 string];
+        targetSubstringWords2 = [(UIDictationWordsSeeker *)self targetSubstringWords];
+        v16 = [targetSubstringWords2 objectAtIndex:v8];
+        string2 = [v16 string];
 
-        if ([v14 compare:v17 options:129])
+        if ([string compare:string2 options:129])
         {
           break;
         }
 
         if (!v9)
         {
-          v18 = [(UIDictationWordsSeeker *)self targetStringWords];
-          v9 = [v18 objectAtIndex:v11];
+          targetStringWords3 = [(UIDictationWordsSeeker *)self targetStringWords];
+          v9 = [targetStringWords3 objectAtIndex:v11];
         }
 
-        v19 = [(UIDictationWordsSeeker *)self targetStringWords];
-        v20 = [v19 objectAtIndex:v11];
+        targetStringWords4 = [(UIDictationWordsSeeker *)self targetStringWords];
+        v20 = [targetStringWords4 objectAtIndex:v11];
 
         v21 = v11-- < 1;
         if (!v21)
@@ -254,11 +254,11 @@ LABEL_13:
     v20 = 0;
     v9 = 0;
 LABEL_15:
-    v24 = [v9 range];
+    range = [v9 range];
     v26 = v25;
     v33.location = [v20 range];
     v33.length = v27;
-    v31.location = v24;
+    v31.location = range;
     v31.length = v26;
     v28 = NSUnionRange(v31, v33);
     location = v28.location;
@@ -272,23 +272,23 @@ LABEL_15:
   return result;
 }
 
-- (_NSRange)rangeOfSubstring:(id)a3 fullString:(id)a4 reverse:(BOOL)a5
+- (_NSRange)rangeOfSubstring:(id)substring fullString:(id)string reverse:(BOOL)reverse
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _prepareAllWordsWithString:v8 reverse:v5];
+  reverseCopy = reverse;
+  stringCopy = string;
+  substringCopy = substring;
+  v10 = [objc_opt_class() _prepareAllWordsWithString:stringCopy reverse:reverseCopy];
   [(UIDictationWordsSeeker *)self setTargetStringWords:v10];
 
-  [(UIDictationWordsSeeker *)self setTargetString:v8];
-  v11 = [objc_opt_class() _prepareAllWordsWithString:v9 reverse:v5];
+  [(UIDictationWordsSeeker *)self setTargetString:stringCopy];
+  v11 = [objc_opt_class() _prepareAllWordsWithString:substringCopy reverse:reverseCopy];
   [(UIDictationWordsSeeker *)self setTargetSubstringWords:v11];
 
-  [(UIDictationWordsSeeker *)self setTargetSubstring:v9];
+  [(UIDictationWordsSeeker *)self setTargetSubstring:substringCopy];
 
-  v12 = [(UIDictationWordsSeeker *)self _search];
+  _search = [(UIDictationWordsSeeker *)self _search];
   result.length = v13;
-  result.location = v12;
+  result.location = _search;
   return result;
 }
 

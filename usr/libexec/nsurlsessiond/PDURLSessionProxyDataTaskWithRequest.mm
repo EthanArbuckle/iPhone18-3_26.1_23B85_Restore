@@ -1,23 +1,23 @@
 @interface PDURLSessionProxyDataTaskWithRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyDataTaskWithRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = v4[4];
-  v11 = v4;
+  v6 = fromCopy[4];
+  v11 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -38,10 +38,10 @@
     [(PDURLSessionProxyDataTaskWithRequest *)self setTask:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   originalRequest = self->_originalRequest;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (originalRequest)
   {
     if (!v8)
@@ -62,10 +62,10 @@ LABEL_7:
     [(PDURLSessionProxyDataTaskWithRequest *)self setOriginalRequest:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   currentRequest = self->_currentRequest;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   if (currentRequest)
   {
     if (!v10)
@@ -86,11 +86,11 @@ LABEL_13:
     [(PDURLSessionProxyDataTaskWithRequest *)self setCurrentRequest:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_taskSequenceNumber = v4[1];
+    self->_taskSequenceNumber = fromCopy[1];
     *&self->_has |= 1u;
   }
 }
@@ -113,16 +113,16 @@ LABEL_19:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   task = self->_task;
-  if (task | *(v4 + 4))
+  if (task | *(equalCopy + 4))
   {
     if (![(PDURLSessionProxyTaskMessage *)task isEqual:?])
     {
@@ -131,7 +131,7 @@ LABEL_19:
   }
 
   originalRequest = self->_originalRequest;
-  if (originalRequest | *(v4 + 3))
+  if (originalRequest | *(equalCopy + 3))
   {
     if (![(PDURLSessionProxyRequest *)originalRequest isEqual:?])
     {
@@ -140,7 +140,7 @@ LABEL_19:
   }
 
   currentRequest = self->_currentRequest;
-  if (currentRequest | *(v4 + 2))
+  if (currentRequest | *(equalCopy + 2))
   {
     if (![(PDURLSessionProxyRequest *)currentRequest isEqual:?])
     {
@@ -148,10 +148,10 @@ LABEL_19:
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_taskSequenceNumber == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_taskSequenceNumber == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -166,18 +166,18 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(PDURLSessionProxyRequest *)self->_originalRequest copyWithZone:a3];
+  v8 = [(PDURLSessionProxyRequest *)self->_originalRequest copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(PDURLSessionProxyRequest *)self->_currentRequest copyWithZone:a3];
+  v10 = [(PDURLSessionProxyRequest *)self->_currentRequest copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -190,75 +190,75 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_originalRequest)
   {
     [v5 setOriginalRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_currentRequest)
   {
     [v5 setCurrentRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_taskSequenceNumber;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_taskSequenceNumber;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_originalRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_currentRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     taskSequenceNumber = self->_taskSequenceNumber;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -267,18 +267,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v26 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v26 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v26 & 0x7F) << v6;
@@ -296,11 +296,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -314,7 +314,7 @@ LABEL_38:
           objc_storeStrong(&self->PBRequest_opaque[v16], v15);
           v26 = 0;
           v27 = 0;
-          if (!PBReaderPlaceMark() || !sub_10005DE74(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_10005DE74(v15, from))
           {
             goto LABEL_47;
           }
@@ -334,18 +334,18 @@ LABEL_40:
           while (1)
           {
             LOBYTE(v26) = 0;
-            v20 = [a3 position] + 1;
-            if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+            v20 = [from position] + 1;
+            if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
             {
-              v22 = [a3 data];
-              [v22 getBytes:&v26 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v26 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v19 |= (v26 & 0x7F) << v17;
@@ -363,7 +363,7 @@ LABEL_40:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v23 = 0;
           }
@@ -387,7 +387,7 @@ LABEL_44:
           objc_storeStrong(&self->_task, v15);
           v26 = 0;
           v27 = 0;
-          if (!PBReaderPlaceMark() || !sub_10006CE20(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_10006CE20(v15, from))
           {
 LABEL_47:
 
@@ -411,13 +411,13 @@ LABEL_47:
       }
 
 LABEL_45:
-      v24 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v24 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -426,22 +426,22 @@ LABEL_45:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   originalRequest = self->_originalRequest;
   if (originalRequest)
   {
-    v7 = [(PDURLSessionProxyRequest *)originalRequest dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"originalRequest"];
+    dictionaryRepresentation2 = [(PDURLSessionProxyRequest *)originalRequest dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"originalRequest"];
   }
 
   currentRequest = self->_currentRequest;
   if (currentRequest)
   {
-    v9 = [(PDURLSessionProxyRequest *)currentRequest dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"currentRequest"];
+    dictionaryRepresentation3 = [(PDURLSessionProxyRequest *)currentRequest dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"currentRequest"];
   }
 
   if (*&self->_has)
@@ -458,8 +458,8 @@ LABEL_45:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyDataTaskWithRequest;
   v3 = [(PDURLSessionProxyDataTaskWithRequest *)&v7 description];
-  v4 = [(PDURLSessionProxyDataTaskWithRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyDataTaskWithRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

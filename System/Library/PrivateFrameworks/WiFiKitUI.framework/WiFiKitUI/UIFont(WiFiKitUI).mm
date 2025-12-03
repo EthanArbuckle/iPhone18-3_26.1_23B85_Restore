@@ -9,7 +9,7 @@
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:?];
   v9 = *MEMORY[0x277D74430];
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   v10[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v5 = [v2 fontDescriptorByAddingAttributes:v4];

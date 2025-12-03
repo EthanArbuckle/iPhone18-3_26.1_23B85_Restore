@@ -1,34 +1,34 @@
 @interface FSListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)initUsingInterface:(id)a3 clientClass:(Class)a4 queue:(id)a5 andProxy:(id)a6;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)initUsingInterface:(id)interface clientClass:(Class)class queue:(id)queue andProxy:(id)proxy;
 @end
 
 @implementation FSListener
 
-- (id)initUsingInterface:(id)a3 clientClass:(Class)a4 queue:(id)a5 andProxy:(id)a6
+- (id)initUsingInterface:(id)interface clientClass:(Class)class queue:(id)queue andProxy:(id)proxy
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  interfaceCopy = interface;
+  queueCopy = queue;
+  proxyCopy = proxy;
   v24.receiver = self;
   v24.super_class = FSListener;
   v14 = [(FSListener *)&v24 init];
   if (v14)
   {
-    if (a4 && v11 && v13 && ([v11 protocol], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[objc_class conformsToProtocol:](a4, "conformsToProtocol:", v15), v15, (v16 & 1) != 0))
+    if (class && interfaceCopy && proxyCopy && ([interfaceCopy protocol], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[objc_class conformsToProtocol:](class, "conformsToProtocol:", v15), v15, (v16 & 1) != 0))
     {
-      if (([(objc_class *)a4 conformsToProtocol:&unk_285E05EE8]& 1) != 0)
+      if (([(objc_class *)class conformsToProtocol:&unk_285E05EE8]& 1) != 0)
       {
-        v17 = [MEMORY[0x277CCAE98] anonymousListener];
+        anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
         listener = v14->_listener;
-        v14->_listener = v17;
+        v14->_listener = anonymousListener;
 
         [(NSXPCListener *)v14->_listener setDelegate:v14];
         [(NSXPCListener *)v14->_listener resume];
-        objc_storeStrong(&v14->_interface, a3);
-        objc_storeStrong(&v14->_clientClass, a4);
-        objc_storeStrong(&v14->_proxy, a6);
-        objc_storeStrong(&v14->_queue, a5);
+        objc_storeStrong(&v14->_interface, interface);
+        objc_storeStrong(&v14->_clientClass, class);
+        objc_storeStrong(&v14->_proxy, proxy);
+        objc_storeStrong(&v14->_queue, queue);
         goto LABEL_8;
       }
 
@@ -53,9 +53,9 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = fskit_std_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -63,14 +63,14 @@ LABEL_8:
     _os_log_impl(&dword_24A929000, v6, OS_LOG_TYPE_INFO, "handling incoming connection", v8, 2u);
   }
 
-  [v5 setExportedInterface:self->_interface];
-  [v5 setExportedObject:self->_proxy];
+  [connectionCopy setExportedInterface:self->_interface];
+  [connectionCopy setExportedObject:self->_proxy];
   if (self->_queue)
   {
-    [v5 _setQueue:?];
+    [connectionCopy _setQueue:?];
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   return 1;
 }

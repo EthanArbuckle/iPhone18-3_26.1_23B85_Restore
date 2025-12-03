@@ -1,26 +1,26 @@
 @interface DODMLASRSchemaDODMLASRTranscriptionMetrics
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRTranscriptionMetrics
 
-- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = DODMLASRSchemaDODMLASRTranscriptionMetrics;
   v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"train"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"train"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)v5 setTrain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dev"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dev"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)v5 setDev:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"test"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"test"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)v5 setTest:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"external"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"external"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRTranscriptionMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,74 +94,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dev)
   {
     v4 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dev];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dictionaryRepresentation = [v4 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dev"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dev"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dev"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dev"];
     }
   }
 
   if (self->_external)
   {
-    v7 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    external = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+    dictionaryRepresentation2 = [external dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"external"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"external"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"external"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"external"];
     }
   }
 
   if (self->_test)
   {
-    v10 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    test = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+    dictionaryRepresentation3 = [test dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"test"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"test"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"test"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"test"];
     }
   }
 
   if (self->_train)
   {
-    v13 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+    dictionaryRepresentation4 = [train dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"train"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"train"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"train"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"train"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -172,28 +172,28 @@
   return v4 ^ v5 ^ [(DODMLASRSchemaDODMLASRTranscriptMetadata *)self->_external hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
-  v6 = [v4 train];
-  if ((v5 != 0) == (v6 == 0))
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+  train2 = [equalCopy train];
+  if ((train != 0) == (train2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
-  if (v7)
+  train3 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+  if (train3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
-    v10 = [v4 train];
-    v11 = [v9 isEqual:v10];
+    v8 = train3;
+    train4 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+    train5 = [equalCopy train];
+    v11 = [train4 isEqual:train5];
 
     if (!v11)
     {
@@ -205,9 +205,9 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dev];
-  v6 = [v4 dev];
-  if ((v5 != 0) == (v6 == 0))
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dev];
+  train2 = [equalCopy dev];
+  if ((train != 0) == (train2 == 0))
   {
     goto LABEL_21;
   }
@@ -217,7 +217,7 @@
   {
     v13 = v12;
     v14 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dev];
-    v15 = [v4 dev];
+    v15 = [equalCopy dev];
     v16 = [v14 isEqual:v15];
 
     if (!v16)
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
-  v6 = [v4 test];
-  if ((v5 != 0) == (v6 == 0))
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+  train2 = [equalCopy test];
+  if ((train != 0) == (train2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
-  if (v17)
+  test = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+  if (test)
   {
-    v18 = v17;
-    v19 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
-    v20 = [v4 test];
-    v21 = [v19 isEqual:v20];
+    v18 = test;
+    test2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+    test3 = [equalCopy test];
+    v21 = [test2 isEqual:test3];
 
     if (!v21)
     {
@@ -255,12 +255,12 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
-  v6 = [v4 external];
-  if ((v5 != 0) != (v6 == 0))
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+  train2 = [equalCopy external];
+  if ((train != 0) != (train2 == 0))
   {
-    v22 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
-    if (!v22)
+    external = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+    if (!external)
     {
 
 LABEL_25:
@@ -268,10 +268,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
-    v25 = [v4 external];
-    v26 = [v24 isEqual:v25];
+    v23 = external;
+    external2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+    external3 = [equalCopy external];
+    v26 = [external2 isEqual:external3];
 
     if (v26)
     {
@@ -291,14 +291,14 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+  toCopy = to;
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
 
-  if (v4)
+  if (train)
   {
-    v5 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+    train2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
     PBDataWriterWriteSubmessage();
   }
 
@@ -310,64 +310,64 @@ LABEL_23:
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+  test = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
 
-  if (v8)
+  if (test)
   {
-    v9 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+    test2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+  external = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (external)
   {
-    v12 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+    external2 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = DODMLASRSchemaDODMLASRTranscriptionMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  train = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self train];
+  v7 = [train applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self deleteTrain];
   }
 
   v9 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self dev];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  v10 = [v9 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self deleteDev];
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  test = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self test];
+  v13 = [test applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self deleteTest];
   }
 
-  v15 = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  external = [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self external];
+  v16 = [external applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DODMLASRSchemaDODMLASRTranscriptionMetrics *)self deleteExternal];
   }

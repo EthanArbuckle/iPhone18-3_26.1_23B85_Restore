@@ -1,53 +1,53 @@
 @interface THWDetailSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)_thumbHitFrame;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (CGSize)timeLabelShadowOffsetForStyle:(int64_t)a3;
-- (THWDetailSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4 maxTrackWidth:(double)a5;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (CGSize)timeLabelShadowOffsetForStyle:(int64_t)style;
+- (THWDetailSlider)initWithFrame:(CGRect)frame style:(int64_t)style maxTrackWidth:(double)width;
 - (UIEdgeInsets)timeLabelInsets;
 - (UIImageView)thumbImageView;
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3;
-- (float)_scaleForVerticalPosition:(double)a3;
-- (id)_stringForCurrentTime:(double)a3;
-- (id)_stringForInverseCurrentTime:(double)a3;
-- (id)_stringForTime:(double)a3;
+- (float)_scaleForIdealValueForVerticalPosition:(double)position;
+- (float)_scaleForVerticalPosition:(double)position;
+- (id)_stringForCurrentTime:(double)time;
+- (id)_stringForInverseCurrentTime:(double)time;
+- (id)_stringForTime:(double)time;
 - (id)currentThumbImage;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)timeLabelFontForStyle:(int64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)timeLabelFontForStyle:(int64_t)style;
 - (void)_adjustMinScale;
-- (void)_autoscrubTick:(id)a3;
+- (void)_autoscrubTick:(id)tick;
 - (void)_commitValue;
 - (void)_resetScrubInfo;
-- (void)_setValueWhileTracking:(float)a3;
+- (void)_setValueWhileTracking:(float)tracking;
 - (void)_setupControlsForStyle;
 - (void)_updateForAvailableDuration;
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4;
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force;
 - (void)_updateTrackInset;
 - (void)cancelTracking;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAllowsScrubbing:(BOOL)a3;
+- (void)setAllowsScrubbing:(BOOL)scrubbing;
 - (void)setAvailableDuration:(double)duration;
-- (void)setDuration:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHideLeftNumericDisplay:(BOOL)a3;
-- (void)setHideRightNumericDisplay:(BOOL)a3;
-- (void)setMinTimeLabelWidth:(double)a3;
-- (void)setTimeLabelInsets:(UIEdgeInsets)a3;
-- (void)setTimeLabelStyle:(int64_t)a3;
-- (void)setValue:(float)a3;
+- (void)setDuration:(double)duration;
+- (void)setFrame:(CGRect)frame;
+- (void)setHideLeftNumericDisplay:(BOOL)display;
+- (void)setHideRightNumericDisplay:(BOOL)display;
+- (void)setMinTimeLabelWidth:(double)width;
+- (void)setTimeLabelInsets:(UIEdgeInsets)insets;
+- (void)setTimeLabelStyle:(int64_t)style;
+- (void)setValue:(float)value;
 @end
 
 @implementation THWDetailSlider
 
-- (THWDetailSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4 maxTrackWidth:(double)a5
+- (THWDetailSlider)initWithFrame:(CGRect)frame style:(int64_t)style maxTrackWidth:(double)width
 {
   v10.receiver = self;
   v10.super_class = THWDetailSlider;
-  v7 = [(THWDetailSlider *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(THWDetailSlider *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
@@ -55,8 +55,8 @@
     v7->_allowsDetailScrubbing = 1;
     v7->_detailScrubbingVerticalRange = 220.0;
     v7->_minTimeLabelWidth = 20.0;
-    v7->_maxTrackWidth = a5;
-    v7->_style = a4;
+    v7->_maxTrackWidth = width;
+    v7->_style = style;
     [(THWDetailSlider *)v7 _setupControlsForStyle];
   }
 
@@ -72,12 +72,12 @@
   [(THWDetailSlider *)&v3 dealloc];
 }
 
-- (void)setHideLeftNumericDisplay:(BOOL)a3
+- (void)setHideLeftNumericDisplay:(BOOL)display
 {
-  if (self->_hideLeftNumericDisplay != a3)
+  if (self->_hideLeftNumericDisplay != display)
   {
-    self->_hideLeftNumericDisplay = a3;
-    if (a3)
+    self->_hideLeftNumericDisplay = display;
+    if (display)
     {
       [(UILabel *)self->_currentTimeLabel removeFromSuperview];
 
@@ -88,12 +88,12 @@
   }
 }
 
-- (void)setHideRightNumericDisplay:(BOOL)a3
+- (void)setHideRightNumericDisplay:(BOOL)display
 {
-  if (self->_hideRightNumericDisplay != a3)
+  if (self->_hideRightNumericDisplay != display)
   {
-    self->_hideRightNumericDisplay = a3;
-    if (a3)
+    self->_hideRightNumericDisplay = display;
+    if (display)
     {
       [(UILabel *)self->_currentTimeInverseLabel removeFromSuperview];
 
@@ -104,10 +104,10 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(THWDetailSlider *)self _thumbHitFrame];
   v10.x = x;
   v10.y = y;
@@ -118,7 +118,7 @@
 
   v9.receiver = self;
   v9.super_class = THWDetailSlider;
-  return [(THWDetailSlider *)&v9 hitTest:a4 withEvent:x, y];
+  return [(THWDetailSlider *)&v9 hitTest:event withEvent:x, y];
 }
 
 - (void)layoutSubviews
@@ -197,11 +197,11 @@
   [(THWDetailSlider *)&v31 layoutSubviews];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = THWDetailSlider;
-  [(THWDetailSlider *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(THWDetailSlider *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   currentTime = self->_currentTime;
   *&currentTime = currentTime;
   [(THWDetailSlider *)self setValue:currentTime];
@@ -259,12 +259,12 @@
   return [(THWDetailSlider *)&v6 currentThumbImage];
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(THWDetailSlider *)self _updateTrackInset];
   v15.receiver = self;
   v15.super_class = THWDetailSlider;
@@ -296,18 +296,18 @@
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   style = self->_style;
   if (style == 4)
   {
     v18.receiver = self;
     v18.super_class = THWDetailSlider;
-    [(THWDetailSlider *)&v18 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, LODWORD(a5)];
+    [(THWDetailSlider *)&v18 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, LODWORD(value)];
     goto LABEL_7;
   }
 
@@ -315,7 +315,7 @@
   {
     v17.receiver = self;
     v17.super_class = THWDetailSlider;
-    [(THWDetailSlider *)&v17 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, LODWORD(a5)];
+    [(THWDetailSlider *)&v17 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, LODWORD(value)];
 LABEL_9:
     v15 = 3.0;
     return CGRectOffset(*&v11, 0.0, v15);
@@ -323,23 +323,23 @@ LABEL_9:
 
   if (style != 2)
   {
-    v21 = CGRectInset(a4, -2.0, 0.0);
+    v21 = CGRectInset(rect, -2.0, 0.0);
     v16.receiver = self;
     v16.super_class = THWDetailSlider;
-    [(THWDetailSlider *)&v16 thumbRectForBounds:x trackRect:y value:width, height, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height, LODWORD(a5)];
+    [(THWDetailSlider *)&v16 thumbRectForBounds:x trackRect:y value:width, height, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height, LODWORD(value)];
     goto LABEL_9;
   }
 
-  v20 = CGRectInset(a4, -3.0, 0.0);
+  v20 = CGRectInset(rect, -3.0, 0.0);
   v19.receiver = self;
   v19.super_class = THWDetailSlider;
-  [(THWDetailSlider *)&v19 thumbRectForBounds:x trackRect:y value:width, height, v20.origin.x, v20.origin.y, v20.size.width, v20.size.height, LODWORD(a5)];
+  [(THWDetailSlider *)&v19 thumbRectForBounds:x trackRect:y value:width, height, v20.origin.x, v20.origin.y, v20.size.width, v20.size.height, LODWORD(value)];
 LABEL_7:
   v15 = 2.0;
   return CGRectOffset(*&v11, 0.0, v15);
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
   if (!self->_isTracking)
   {
@@ -347,7 +347,7 @@ LABEL_7:
   }
 }
 
-- (void)_setValueWhileTracking:(float)a3
+- (void)_setValueWhileTracking:(float)tracking
 {
   duration = self->_duration;
   if (duration > 0.0)
@@ -358,7 +358,7 @@ LABEL_7:
     v21 = v5;
     v22 = v3;
     v23 = v4;
-    v11 = fmax(a3, 0.0);
+    v11 = fmax(tracking, 0.0);
     if (duration < v11)
     {
       v11 = duration;
@@ -387,10 +387,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_didBeginTracking = 0;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   v6 = v5;
   v8 = v7;
   [(THWDetailSlider *)self _thumbHitFrame];
@@ -420,7 +420,7 @@ LABEL_7:
   return v9;
 }
 
-- (void)_autoscrubTick:(id)a3
+- (void)_autoscrubTick:(id)tick
 {
   [(THWDetailSlider *)self maximumValue];
   v5 = v4;
@@ -474,9 +474,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   v7 = v6;
   v8 = v5;
   v9 = 1.0;
@@ -531,22 +531,22 @@ LABEL_32:
 
   if (v13)
   {
-    v14 = [(THWDetailSlider *)self window];
-    [(THWDetailSlider *)self convertPoint:v14 toView:v7, v8];
+    window = [(THWDetailSlider *)self window];
+    [(THWDetailSlider *)self convertPoint:window toView:v7, v8];
     v16 = v15;
     v18 = v17;
     autoscrubActive = self->_autoscrubActive;
-    v20 = [objc_msgSend(v14 "windowScene")] - 3;
+    v20 = [objc_msgSend(window "windowScene")] - 3;
     if (v20 < 2)
     {
       v16 = v18;
     }
 
-    [v14 bounds];
+    [window bounds];
     if (v20 > 1)
     {
       Width = CGRectGetWidth(*&v21);
-      if (v14)
+      if (window)
       {
 LABEL_22:
         Width = Width + -20.0;
@@ -590,7 +590,7 @@ LABEL_22:
     else
     {
       Width = CGRectGetHeight(*&v21);
-      if (v14)
+      if (window)
       {
         goto LABEL_22;
       }
@@ -601,7 +601,7 @@ LABEL_35:
     if (self->_autoscrubTimer)
     {
       [-[UIImageView layer](self->_glowDetailScrubImageView layer];
-      v32 = self;
+      selfCopy = self;
       [(NSTimer *)self->_autoscrubTimer invalidate];
 
       self->_autoscrubTimer = 0;
@@ -702,16 +702,16 @@ LABEL_57:
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = self;
+  selfCopy = self;
   [(NSTimer *)self->_autoscrubTimer invalidate];
 
   self->_autoscrubTimer = 0;
   self->_autoscrubActive = 0;
   self->_isTracking = 0;
   [(THWDetailSlider *)self _resetScrubInfo];
-  [a3 locationInView:self];
+  [touch locationInView:self];
   if (vabdd_f64(self->_lastCommittedLocationInView.x, v7) > 3.0)
   {
     [(THWDetailSlider *)self _commitValue];
@@ -727,7 +727,7 @@ LABEL_57:
 
 - (void)cancelTracking
 {
-  v3 = self;
+  selfCopy = self;
   [(NSTimer *)self->_autoscrubTimer invalidate];
 
   self->_autoscrubTimer = 0;
@@ -743,11 +743,11 @@ LABEL_57:
   }
 }
 
-- (void)setAllowsScrubbing:(BOOL)a3
+- (void)setAllowsScrubbing:(BOOL)scrubbing
 {
-  if (self->_allowsScrubbing != a3)
+  if (self->_allowsScrubbing != scrubbing)
   {
-    self->_allowsScrubbing = a3;
+    self->_allowsScrubbing = scrubbing;
     [(THWDetailSlider *)self setUserInteractionEnabled:?];
   }
 }
@@ -766,11 +766,11 @@ LABEL_57:
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (vabdd_f64(self->_duration, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_duration, duration) > 2.22044605e-16)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     self->_durationAllowsDetailScrubbing = [(THWDetailSlider *)self detailScrubbingAvailableForCurrentDuration];
     currentTime = self->_currentTime;
     if (currentTime >= self->_duration)
@@ -790,44 +790,44 @@ LABEL_57:
   }
 }
 
-- (void)setMinTimeLabelWidth:(double)a3
+- (void)setMinTimeLabelWidth:(double)width
 {
-  if (self->_minTimeLabelWidth != a3)
+  if (self->_minTimeLabelWidth != width)
   {
-    self->_minTimeLabelWidth = a3;
+    self->_minTimeLabelWidth = width;
     [(THWDetailSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeLabelInsets:(UIEdgeInsets)a3
+- (void)setTimeLabelInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_timeLabelInsets.top, v3), vceqq_f64(*&self->_timeLabelInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_timeLabelInsets = a3;
+    self->_timeLabelInsets = insets;
     [(THWDetailSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeLabelStyle:(int64_t)a3
+- (void)setTimeLabelStyle:(int64_t)style
 {
-  if (self->_timeLabelStyle != a3)
+  if (self->_timeLabelStyle != style)
   {
-    self->_timeLabelStyle = a3;
+    self->_timeLabelStyle = style;
     [(THWDetailSlider *)self setNeedsLayout];
   }
 }
 
-- (id)timeLabelFontForStyle:(int64_t)a3
+- (id)timeLabelFontForStyle:(int64_t)style
 {
   style = self->_style;
   if ((style - 1) < 2)
   {
     v4 = 12.0;
-    return [UIFont boldSystemFontOfSize:a3, v4];
+    return [UIFont boldSystemFontOfSize:style, v4];
   }
 
   if (style != 4)
@@ -842,13 +842,13 @@ LABEL_57:
       v4 = 14.0;
     }
 
-    return [UIFont boldSystemFontOfSize:a3, v4];
+    return [UIFont boldSystemFontOfSize:style, v4];
   }
 
-  return [UIFont systemFontOfSize:a3, 11.0];
+  return [UIFont systemFontOfSize:style, 11.0];
 }
 
-- (CGSize)timeLabelShadowOffsetForStyle:(int64_t)a3
+- (CGSize)timeLabelShadowOffsetForStyle:(int64_t)style
 {
   v3 = 1.0;
   if (self->_style != 2)
@@ -901,8 +901,8 @@ LABEL_57:
       [(THWDetailSlider *)self duration];
       v5 = [(THWDetailSlider *)self _stringForInverseCurrentTime:?];
       v22 = NSFontAttributeName;
-      v23 = [(UILabel *)self->_currentTimeInverseLabel font];
-      [v5 sizeWithAttributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v23, &v22, 1)}];
+      font = [(UILabel *)self->_currentTimeInverseLabel font];
+      [v5 sizeWithAttributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &font, &v22, 1)}];
       v4 = v6;
     }
 
@@ -911,15 +911,15 @@ LABEL_57:
       [(THWDetailSlider *)self duration];
       v7 = [(THWDetailSlider *)self _stringForCurrentTime:?];
       v20 = NSFontAttributeName;
-      v21 = [(UILabel *)self->_currentTimeLabel font];
-      [v7 sizeWithAttributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}];
+      font2 = [(UILabel *)self->_currentTimeLabel font];
+      [v7 sizeWithAttributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &font2, &v20, 1)}];
       v3 = v8;
     }
 
-    v9 = [(THWDetailSlider *)self hideLeftNumericDisplay];
+    hideLeftNumericDisplay = [(THWDetailSlider *)self hideLeftNumericDisplay];
     v10 = 2.0;
     v11 = 2.0;
-    if ((v9 & 1) == 0)
+    if ((hideLeftNumericDisplay & 1) == 0)
     {
       minTimeLabelWidth = self->_minTimeLabelWidth;
       if (minTimeLabelWidth < v3)
@@ -969,11 +969,11 @@ LABEL_57:
   self->_minScale = (Width / duration) / 10.0;
 }
 
-- (float)_scaleForVerticalPosition:(double)a3
+- (float)_scaleForVerticalPosition:(double)position
 {
   v5 = TSUPadUI();
   detailScrubbingVerticalRange = self->_detailScrubbingVerticalRange;
-  v7 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v7 = vabdd_f64(position, self->_beginLocationInView.y);
   if (detailScrubbingVerticalRange >= v7)
   {
     detailScrubbingVerticalRange = v7;
@@ -1032,10 +1032,10 @@ LABEL_57:
   return result;
 }
 
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3
+- (float)_scaleForIdealValueForVerticalPosition:(double)position
 {
   detailScrubbingVerticalRange = self->_detailScrubbingVerticalRange;
-  v4 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v4 = vabdd_f64(position, self->_beginLocationInView.y);
   if (detailScrubbingVerticalRange < v4)
   {
     v4 = self->_detailScrubbingVerticalRange;
@@ -1063,10 +1063,10 @@ LABEL_57:
   return fmaxf(v8, 0.0);
 }
 
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force
 {
-  v5 = floor(a3);
-  if (a4 || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
+  v5 = floor(time);
+  if (force || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
   {
     [(UILabel *)self->_currentTimeLabel setText:[(THWDetailSlider *)self _stringForCurrentTime:v5]];
     [(UILabel *)self->_currentTimeInverseLabel setText:[(THWDetailSlider *)self _stringForInverseCurrentTime:self->_duration - v5]];
@@ -1074,9 +1074,9 @@ LABEL_57:
   }
 }
 
-- (id)_stringForTime:(double)a3
+- (id)_stringForTime:(double)time
 {
-  v3 = floor(a3);
+  v3 = floor(time);
   v4 = floor(v3 / 60.0);
   v5 = v3 - v4 * 60.0;
   v6 = floor(v4 / 60.0);
@@ -1093,9 +1093,9 @@ LABEL_57:
   }
 }
 
-- (id)_stringForCurrentTime:(double)a3
+- (id)_stringForCurrentTime:(double)time
 {
-  if (self->_timeLabelStyle == 1 && vabdd_f64(self->_duration, a3) < 30.0)
+  if (self->_timeLabelStyle == 1 && vabdd_f64(self->_duration, time) < 30.0)
   {
     v3 = THBundle();
 
@@ -1105,15 +1105,15 @@ LABEL_57:
   else
   {
 
-    return [(THWDetailSlider *)self _stringForTime:a3];
+    return [(THWDetailSlider *)self _stringForTime:time];
   }
 }
 
-- (id)_stringForInverseCurrentTime:(double)a3
+- (id)_stringForInverseCurrentTime:(double)time
 {
   if (self->_timeLabelStyle == 1)
   {
-    if (fabs(a3) < 30.0)
+    if (fabs(time) < 30.0)
     {
       v3 = THBundle();
 
@@ -1125,7 +1125,7 @@ LABEL_57:
 
   else
   {
-    v5 = [(THWDetailSlider *)self _stringForCurrentTime:a3];
+    v5 = [(THWDetailSlider *)self _stringForCurrentTime:time];
   }
 
   return [@"-" stringByAppendingString:v5];
@@ -1142,9 +1142,9 @@ LABEL_57:
 {
   self->_scrubValue = 0;
   [(UIImageView *)[(THWDetailSlider *)self thumbImageView] setImage:[(THWDetailSlider *)self currentThumbImage]];
-  v3 = [(UIImageView *)self->_glowDetailScrubImageView layer];
+  layer = [(UIImageView *)self->_glowDetailScrubImageView layer];
 
-  [v3 removeAnimationForKey:@"pulseAnimation"];
+  [layer removeAnimationForKey:@"pulseAnimation"];
 }
 
 - (void)_commitValue

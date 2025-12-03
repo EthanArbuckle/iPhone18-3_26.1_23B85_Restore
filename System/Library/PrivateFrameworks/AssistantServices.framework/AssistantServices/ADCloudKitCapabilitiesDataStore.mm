@@ -1,77 +1,77 @@
 @interface ADCloudKitCapabilitiesDataStore
-- (ADCloudKitCapabilitiesDataStore)initWithHelper:(id)a3;
-- (id)_addMissingColumnsForTable:(id)a3 withDescription:(id)a4 inDatabase:(id)a5;
+- (ADCloudKitCapabilitiesDataStore)initWithHelper:(id)helper;
+- (id)_addMissingColumnsForTable:(id)table withDescription:(id)description inDatabase:(id)database;
 - (id)_databasePath;
-- (id)_fetchSQLiteRecordsOwnedByLocalDeviceFromTable:(id)a3;
-- (id)_preparedDatabaseWithError:(id *)a3;
-- (void)_deleteSQLiteRecordsWithCriterion:(id)a3 inTable:(id)a4;
-- (void)_writeSQLiteRecords:(id)a3 toTable:(id)a4;
-- (void)fetchDeviceTypesForAllLanguages:(id)a3;
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4;
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)synchronizeWithCompletion:(id)a3;
+- (id)_fetchSQLiteRecordsOwnedByLocalDeviceFromTable:(id)table;
+- (id)_preparedDatabaseWithError:(id *)error;
+- (void)_deleteSQLiteRecordsWithCriterion:(id)criterion inTable:(id)table;
+- (void)_writeSQLiteRecords:(id)records toTable:(id)table;
+- (void)fetchDeviceTypesForAllLanguages:(id)languages;
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion;
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)synchronizeWithCompletion:(id)completion;
 @end
 
 @implementation ADCloudKitCapabilitiesDataStore
 
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)fetchDeviceTypesForAllLanguages:(id)a3
+- (void)fetchDeviceTypesForAllLanguages:(id)languages
 {
-  if (a3)
+  if (languages)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(languages + 2))(languages, 0, 0);
   }
 }
 
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v16 = a6;
+  completionCopy = completion;
   helper = self->_helper;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(_ADCloudKitCapabilitiesDataStoreHelper *)helper tableDescription];
-  v13 = [v12 name];
+  dsCopy = ds;
+  recordsCopy = records;
+  tableDescription = [(_ADCloudKitCapabilitiesDataStoreHelper *)helper tableDescription];
+  name = [tableDescription name];
 
-  v14 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper sqliteRecordsForCKRecords:v11];
+  v14 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper sqliteRecordsForCKRecords:recordsCopy];
 
-  [(ADCloudKitCapabilitiesDataStore *)self _writeSQLiteRecords:v14 toTable:v13];
-  v15 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper deletionCriterionForCKRecordIDs:v10];
+  [(ADCloudKitCapabilitiesDataStore *)self _writeSQLiteRecords:v14 toTable:name];
+  v15 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper deletionCriterionForCKRecordIDs:dsCopy];
 
-  [(ADCloudKitCapabilitiesDataStore *)self _deleteSQLiteRecordsWithCriterion:v15 inTable:v13];
-  if (v16)
+  [(ADCloudKitCapabilitiesDataStore *)self _deleteSQLiteRecordsWithCriterion:v15 inTable:name];
+  if (completionCopy)
   {
-    v16[2](v16, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)synchronizeWithCompletion:(id)a3
+- (void)synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = +[ADCloudKitManager sharedManager];
-  v7 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper recordZoneName];
+  recordZoneName = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper recordZoneName];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001BE504;
   v10[3] = &unk_10051D600;
   v11 = v5;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v5;
-  [v6 saveRecordsWithDictionary:v9 inZone:v7 completion:v10];
+  [v6 saveRecordsWithDictionary:v9 inZone:recordZoneName completion:v10];
 }
 
-- (void)_deleteSQLiteRecordsWithCriterion:(id)a3 inTable:(id)a4
+- (void)_deleteSQLiteRecordsWithCriterion:(id)criterion inTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  criterionCopy = criterion;
+  tableCopy = table;
   v16 = 0;
   v8 = [(ADCloudKitCapabilitiesDataStore *)self _preparedDatabaseWithError:&v16];
   v9 = v16;
@@ -79,7 +79,7 @@
   if (v8)
   {
     v15 = v9;
-    v11 = [v8 deleteFromTableWithName:v7 indexedBy:0 criterion:v6 error:&v15];
+    v11 = [v8 deleteFromTableWithName:tableCopy indexedBy:0 criterion:criterionCopy error:&v15];
     v12 = v15;
 
     if ((v11 & 1) == 0)
@@ -112,10 +112,10 @@
   }
 }
 
-- (void)_writeSQLiteRecords:(id)a3 toTable:(id)a4
+- (void)_writeSQLiteRecords:(id)records toTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  tableCopy = table;
   v42 = 0;
   v8 = [(ADCloudKitCapabilitiesDataStore *)self _preparedDatabaseWithError:&v42];
   v9 = v42;
@@ -129,7 +129,7 @@
     if (v11)
     {
       v31 = v12;
-      v13 = [v6 mutableCopy];
+      v13 = [recordsCopy mutableCopy];
       if ([v13 count])
       {
         v32 = v13;
@@ -170,7 +170,7 @@
 
                 v20 = *(*(&v37 + 1) + 8 * v19);
                 v36 = 0;
-                v21 = [v8 insertIntoTableWithName:v7 record:v20 error:&v36];
+                v21 = [v8 insertIntoTableWithName:tableCopy record:v20 error:&v36];
                 v22 = v36;
                 if ((v21 & 1) == 0)
                 {
@@ -182,7 +182,7 @@
                     v45 = 2112;
                     v46 = v20;
                     v47 = 2112;
-                    v48 = v7;
+                    v48 = tableCopy;
                     v49 = 2112;
                     v50 = v22;
                     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s Failed to insert event record %@ into %@ table due to error %@", buf, 0x2Au);
@@ -270,23 +270,23 @@
   }
 }
 
-- (id)_fetchSQLiteRecordsOwnedByLocalDeviceFromTable:(id)a3
+- (id)_fetchSQLiteRecordsOwnedByLocalDeviceFromTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v20 = 0;
   v5 = [(ADCloudKitCapabilitiesDataStore *)self _preparedDatabaseWithError:&v20];
   v6 = v20;
   if (v5)
   {
     v7 = +[ADDeviceCircleManager sharedInstance];
-    v8 = [v7 localPeerInfo];
-    v9 = [v8 idsDeviceUniqueIdentifier];
+    localPeerInfo = [v7 localPeerInfo];
+    idsDeviceUniqueIdentifier = [localPeerInfo idsDeviceUniqueIdentifier];
 
-    v10 = [SiriCoreSQLiteQueryCriterion isQueryCriterionWithColumnName:@"device_id" value:v9 negation:0];
-    v11 = sub_1001BEF1C(v4, @"device_id");
-    v12 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper recordBuilder];
+    v10 = [SiriCoreSQLiteQueryCriterion isQueryCriterionWithColumnName:@"device_id" value:idsDeviceUniqueIdentifier negation:0];
+    v11 = sub_1001BEF1C(tableCopy, @"device_id");
+    recordBuilder = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper recordBuilder];
     v19 = v6;
-    v13 = [v5 selectRecordsFromTableWithName:v4 columnNames:0 behavior:0 indexedBy:v11 criterion:v10 order:0 range:0 recordBuilder:v12 error:&v19];
+    v13 = [v5 selectRecordsFromTableWithName:tableCopy columnNames:0 behavior:0 indexedBy:v11 criterion:v10 order:0 range:0 recordBuilder:recordBuilder error:&v19];
     v14 = v19;
 
     if (v14)
@@ -329,21 +329,21 @@
   return v16;
 }
 
-- (id)_addMissingColumnsForTable:(id)a3 withDescription:(id)a4 inDatabase:(id)a5
+- (id)_addMissingColumnsForTable:(id)table withDescription:(id)description inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v44 = a5;
-  v9 = [v7 columns];
-  v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v9 count]);
+  tableCopy = table;
+  descriptionCopy = description;
+  databaseCopy = database;
+  columns = [tableCopy columns];
+  v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [columns count]);
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v43 = v7;
-  v11 = [v7 columns];
-  v12 = [v11 countByEnumeratingWithState:&v54 objects:v68 count:16];
+  v43 = tableCopy;
+  columns2 = [tableCopy columns];
+  v12 = [columns2 countByEnumeratingWithState:&v54 objects:v68 count:16];
   if (v12)
   {
     v13 = v12;
@@ -354,29 +354,29 @@
       {
         if (*v55 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(columns2);
         }
 
-        v16 = [*(*(&v54 + 1) + 8 * i) name];
-        [v10 addObject:v16];
+        name = [*(*(&v54 + 1) + 8 * i) name];
+        [v10 addObject:name];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v54 objects:v68 count:16];
+      v13 = [columns2 countByEnumeratingWithState:&v54 objects:v68 count:16];
     }
 
     while (v13);
   }
 
-  v17 = [v8 columns];
-  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
+  columns3 = [descriptionCopy columns];
+  v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [columns3 count]);
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v42 = v8;
-  v19 = [v8 columns];
-  v20 = [v19 countByEnumeratingWithState:&v50 objects:v67 count:16];
+  v42 = descriptionCopy;
+  columns4 = [descriptionCopy columns];
+  v20 = [columns4 countByEnumeratingWithState:&v50 objects:v67 count:16];
   if (v20)
   {
     v21 = v20;
@@ -387,12 +387,12 @@
       {
         if (*v51 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(columns4);
         }
 
         v24 = *(*(&v50 + 1) + 8 * j);
-        v25 = [v24 name];
-        v26 = [v10 containsObject:v25];
+        name2 = [v24 name];
+        v26 = [v10 containsObject:name2];
 
         if ((v26 & 1) == 0)
         {
@@ -400,13 +400,13 @@
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v50 objects:v67 count:16];
+      v21 = [columns4 countByEnumeratingWithState:&v50 objects:v67 count:16];
     }
 
     while (v21);
   }
 
-  v27 = [v43 name];
+  name3 = [v43 name];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -431,7 +431,7 @@
 
         v35 = *(*(&v46 + 1) + 8 * v33);
         v45 = v34;
-        v36 = [v44 alterTableWithName:v27 addColumn:v35 error:&v45];
+        v36 = [databaseCopy alterTableWithName:name3 addColumn:v35 error:&v45];
         v31 = v45;
 
         if ((v36 & 1) == 0)
@@ -440,13 +440,13 @@
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
           {
             v40 = v37;
-            v41 = [v35 name];
+            name4 = [v35 name];
             *buf = 136315906;
             v59 = "[ADCloudKitCapabilitiesDataStore _addMissingColumnsForTable:withDescription:inDatabase:]";
             v60 = 2112;
-            v61 = v41;
+            v61 = name4;
             v62 = 2112;
-            v63 = v27;
+            v63 = name3;
             v64 = 2112;
             v65 = v31;
             _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "%s Failed to add column '%@' to '%@' table with error %@", buf, 0x2Au);
@@ -483,11 +483,11 @@ LABEL_31:
   return v38;
 }
 
-- (id)_preparedDatabaseWithError:(id *)a3
+- (id)_preparedDatabaseWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   database = self->_database;
@@ -498,15 +498,15 @@ LABEL_4:
     goto LABEL_57;
   }
 
-  v7 = [(ADCloudKitCapabilitiesDataStore *)self _databasePath];
+  _databasePath = [(ADCloudKitCapabilitiesDataStore *)self _databasePath];
   v8 = AFSiriLogContextDaemon;
-  v55 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v64 = "[ADCloudKitCapabilitiesDataStore _preparedDatabaseWithError:]";
     v65 = 2112;
-    v66 = v7;
+    v66 = _databasePath;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s path: %@", buf, 0x16u);
   }
 
@@ -516,7 +516,7 @@ LABEL_4:
   do
   {
     v12 = v10;
-    v10 = [[SiriCoreSQLiteDatabase alloc] initWithPath:v7 dataProtectionClass:2 options:3];
+    v10 = [[SiriCoreSQLiteDatabase alloc] initWithPath:_databasePath dataProtectionClass:2 options:3];
 
     v61 = 0;
     v13 = [v10 openWithError:&v61];
@@ -524,7 +524,7 @@ LABEL_4:
     if (v13)
     {
       v15 = +[NSFileManager defaultManager];
-      v16 = [v15 fileExistsAtPath:v7];
+      v16 = [v15 fileExistsAtPath:_databasePath];
 
       v17 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -532,7 +532,7 @@ LABEL_4:
         *buf = 136315650;
         v64 = "[ADCloudKitCapabilitiesDataStore _preparedDatabaseWithError:]";
         v65 = 2112;
-        v66 = v7;
+        v66 = _databasePath;
         v67 = 1024;
         LODWORD(v68) = v16;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s Database created at %@: %d", buf, 0x1Cu);
@@ -564,7 +564,7 @@ LABEL_13:
     v65 = 2048;
     v66 = v11;
     v67 = 2112;
-    v68 = v7;
+    v68 = _databasePath;
     v69 = 2112;
     v70 = v14;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Failed to open capabilities database (retry #%tu) at path %@ with error %@.", buf, 0x2Au);
@@ -584,7 +584,7 @@ LABEL_14:
       v65 = 2048;
       v66 = v11;
       v67 = 2112;
-      v68 = v7;
+      v68 = _databasePath;
       v69 = 2112;
       v70 = v14;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s Failed to perform integrity check on capabilities database (retry #%tu) at path %@ with error %@.", buf, 0x2Au);
@@ -601,11 +601,11 @@ LABEL_14:
 
 LABEL_17:
     [v10 closeWithError:0];
-    if (SiriCoreSQLiteDatabaseIsErrorUnrecoverable() && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 fileExistsAtPath:v7], v21, v22))
+    if (SiriCoreSQLiteDatabaseIsErrorUnrecoverable() && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 fileExistsAtPath:_databasePath], v21, v22))
     {
       v23 = +[NSFileManager defaultManager];
       v59 = v14;
-      v24 = [v23 removeItemAtPath:v7 error:&v59];
+      v24 = [v23 removeItemAtPath:_databasePath error:&v59];
       v9 = v59;
 
       if ((v24 & 1) == 0)
@@ -618,7 +618,7 @@ LABEL_17:
           v65 = 2048;
           v66 = v11;
           v67 = 2112;
-          v68 = v7;
+          v68 = _databasePath;
           v69 = 2112;
           v70 = v9;
           _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Failed to remove database (retry #%tu) at path %@ due to %@.", buf, 0x2Au);
@@ -638,20 +638,20 @@ LABEL_17:
   if (!v9)
   {
 LABEL_35:
-    v28 = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper tableDescription];
-    v29 = [v28 name];
-    v30 = [v10 fetchTableWithName:v29 error:0];
+    tableDescription = [(_ADCloudKitCapabilitiesDataStoreHelper *)self->_helper tableDescription];
+    name = [tableDescription name];
+    v30 = [v10 fetchTableWithName:name error:0];
 
     if (v30)
     {
-      v31 = [(ADCloudKitCapabilitiesDataStore *)self _addMissingColumnsForTable:v30 withDescription:v28 inDatabase:v10];
+      v31 = [(ADCloudKitCapabilitiesDataStore *)self _addMissingColumnsForTable:v30 withDescription:tableDescription inDatabase:v10];
       v32 = v31;
-      v33 = v55;
-      if (!v55 || !v31)
+      v33 = errorCopy;
+      if (!errorCopy || !v31)
       {
 LABEL_40:
         v54 = v30;
-        v56 = v28;
+        v56 = tableDescription;
         v53 = [SiriCoreSQLiteTableDescription alloc];
         v35 = [SiriCoreSQLiteColumnDescription uniqueTextColumnWithName:@"capabilities_type"];
         v62[0] = v35;
@@ -663,8 +663,8 @@ LABEL_40:
         v39 = [v53 initWithName:@"metadata" columns:v38 constraints:0];
 
         v40 = v39;
-        v41 = [v39 name];
-        v42 = [v10 fetchTableWithName:v41 error:0];
+        name2 = [v39 name];
+        v42 = [v10 fetchTableWithName:name2 error:0];
 
         if (v42)
         {
@@ -734,9 +734,9 @@ LABEL_46:
     else
     {
       v58 = 0;
-      v34 = [v10 createTable:v28 error:&v58];
+      v34 = [v10 createTable:tableDescription error:&v58];
       v32 = v58;
-      v33 = v55;
+      v33 = errorCopy;
       if (v34)
       {
         goto LABEL_40;
@@ -752,13 +752,13 @@ LABEL_46:
         v67 = 2112;
         v68 = v32;
         _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "%s Failed to create '%@' table with error %@", buf, 0x20u);
-        if (!v55)
+        if (!errorCopy)
         {
           goto LABEL_50;
         }
       }
 
-      else if (!v55)
+      else if (!errorCopy)
       {
 LABEL_50:
 
@@ -781,10 +781,10 @@ LABEL_50:
     _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Failed to prepare analytics database due to %@.", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v27 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_56:
@@ -798,21 +798,21 @@ LABEL_57:
 {
   v2 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
   v3 = [v2 URLByAppendingPathComponent:@"capabilities.db"];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
-- (ADCloudKitCapabilitiesDataStore)initWithHelper:(id)a3
+- (ADCloudKitCapabilitiesDataStore)initWithHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
   v9.receiver = self;
   v9.super_class = ADCloudKitCapabilitiesDataStore;
   v6 = [(ADCloudKitCapabilitiesDataStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_helper, a3);
+    objc_storeStrong(&v6->_helper, helper);
   }
 
   return v7;

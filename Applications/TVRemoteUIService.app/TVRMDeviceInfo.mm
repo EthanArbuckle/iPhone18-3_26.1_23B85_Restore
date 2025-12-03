@@ -3,13 +3,13 @@
 + (BOOL)needsLandscapeOrientationForCurrentDevice;
 + (UIEdgeInsets)contentEdgeInsets;
 + (double)expandedRoundedCornerRadius;
-+ (double)heightForCurrentDeviceWithOrientation:(int64_t)a3;
++ (double)heightForCurrentDeviceWithOrientation:(int64_t)orientation;
 + (double)widthForCurrentDevice;
 @end
 
 @implementation TVRMDeviceInfo
 
-+ (double)heightForCurrentDeviceWithOrientation:(int64_t)a3
++ (double)heightForCurrentDeviceWithOrientation:(int64_t)orientation
 {
   CCUIScreenBounds();
   v6 = v5;
@@ -17,11 +17,11 @@
   v10 = v9;
   v12 = v11;
   v13 = +[UIDevice currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-  if (v14)
+  if (userInterfaceIdiom)
   {
-    if ((a3 - 1) >= 2)
+    if ((orientation - 1) >= 2)
     {
       v34.origin.x = v6;
       v34.origin.y = v8;
@@ -38,7 +38,7 @@
 
   else
   {
-    if ([a1 needsLandscapeOrientationForCurrentDevice])
+    if ([self needsLandscapeOrientationForCurrentDevice])
     {
       v33.origin.x = v6;
       v33.origin.y = v8;
@@ -99,7 +99,7 @@
       }
     }
 
-    v30 = [a1 needsCompactLayoutForCurrentDevice];
+    needsCompactLayoutForCurrentDevice = [self needsCompactLayoutForCurrentDevice];
     v35.origin.x = v6;
     v35.origin.y = v8;
     v35.size.width = v10;
@@ -107,7 +107,7 @@
     Height = CGRectGetHeight(v35);
     v32 = Height + -128.0;
     result = Height + -96.0;
-    if (!v30)
+    if (!needsCompactLayoutForCurrentDevice)
     {
       return v32;
     }
@@ -124,20 +124,20 @@
   v8 = v7;
   v10 = v9;
   v11 = +[UIDevice currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-  if (v12)
+  if (userInterfaceIdiom)
   {
     return 360.0;
   }
 
-  v14 = [a1 needsLandscapeOrientationForCurrentDevice];
+  needsLandscapeOrientationForCurrentDevice = [self needsLandscapeOrientationForCurrentDevice];
   v15.origin.x = v4;
   v15.origin.y = v6;
   v15.size.width = v8;
   v15.size.height = v10;
   result = CGRectGetWidth(v15);
-  if (v14)
+  if (needsLandscapeOrientationForCurrentDevice)
   {
     return result + -128.0;
   }
@@ -156,10 +156,10 @@
 
   else
   {
-    v6 = [a1 needsLandscapeOrientationForCurrentDevice];
+    needsLandscapeOrientationForCurrentDevice = [self needsLandscapeOrientationForCurrentDevice];
 
     v7 = 27.0;
-    if ((v6 & 1) == 0)
+    if ((needsLandscapeOrientationForCurrentDevice & 1) == 0)
     {
       left = 27.0;
       goto LABEL_9;
@@ -169,9 +169,9 @@
   left = UIEdgeInsetsZero.left;
   right = UIEdgeInsetsZero.right;
   v10 = +[UIDevice currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     bottom = 27.0;
     v7 = 27.0;
@@ -182,7 +182,7 @@
     v7 = right;
   }
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     top = 27.0;
   }
@@ -212,8 +212,8 @@ LABEL_9:
   v14.size.height = height;
   v7 = CGRectGetHeight(v14);
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
-  v11 = v6 > v7 && v9 == 0;
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
+  v11 = v6 > v7 && userInterfaceIdiom == 0;
 
   return v11;
 }
@@ -255,9 +255,9 @@ LABEL_9:
 + (double)expandedRoundedCornerRadius
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
 
     _CCUIExpandedModuleContinuousCornerRadius();
@@ -266,8 +266,8 @@ LABEL_9:
   else if (+[TVRMDeviceInfo deviceHasRoundedCorners])
   {
     v4 = +[UIScreen mainScreen];
-    v5 = [v4 traitCollection];
-    [v5 displayCornerRadius];
+    traitCollection = [v4 traitCollection];
+    [traitCollection displayCornerRadius];
     v7 = v6;
 
     return v7;

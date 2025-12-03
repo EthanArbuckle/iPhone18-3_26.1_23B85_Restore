@@ -15,23 +15,23 @@
   v28[1] = @"";
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
-  v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v5 = [v4 mutableCopy];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v5 = [whitespaceCharacterSet mutableCopy];
 
   [v5 addCharactersInRange:{0x2000, 12}];
   [v5 addCharactersInString:@"  ᠎  　﻿"];
-  v6 = [a1 precomposedStringWithCanonicalMapping];
-  v7 = [v6 lowercaseString];
+  precomposedStringWithCanonicalMapping = [self precomposedStringWithCanonicalMapping];
+  lowercaseString = [precomposedStringWithCanonicalMapping lowercaseString];
 
-  v8 = [MEMORY[0x1E696AD60] string];
-  v9 = [v7 length];
+  string = [MEMORY[0x1E696AD60] string];
+  v9 = [lowercaseString length];
   if (v9)
   {
     LOBYTE(v10) = 0;
     for (i = 0; i != v9; ++i)
     {
       v12 = v10;
-      v13 = [v7 characterAtIndex:i];
+      v13 = [lowercaseString characterAtIndex:i];
       v26 = v13;
       v22 = 0;
       v23 = &v22;
@@ -42,9 +42,9 @@
       {
         if ((v12 & 1) == 0)
         {
-          if ([v8 length])
+          if ([string length])
           {
-            [v8 appendString:@" "];
+            [string appendString:@" "];
           }
 
           *(v23 + 24) = 1;
@@ -58,7 +58,7 @@
         v18[2] = __60__NSString_ParsecExtras__safari_normalizedParsecInputString__block_invoke;
         v18[3] = &unk_1E7FC9000;
         v21 = v26;
-        v14 = v8;
+        v14 = string;
         v19 = v14;
         v20 = &v22;
         [v17 enumerateKeysAndObjectsUsingBlock:v18];
@@ -73,7 +73,7 @@
     }
   }
 
-  return v8;
+  return string;
 }
 
 @end

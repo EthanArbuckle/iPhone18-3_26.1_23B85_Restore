@@ -3,8 +3,8 @@
 + (NSURL)defaultApplicationDocumentsURL;
 + (NSURL)locationBundleURL;
 + (id)defaultReminderDataContainerURL;
-+ (id)urlForIsolatedContainerWithIdentifier:(id)a3;
-+ (void)unitTest_setDefaultApplicationDocumentsURL:(id)a3;
++ (id)urlForIsolatedContainerWithIdentifier:(id)identifier;
++ (void)unitTest_setDefaultApplicationDocumentsURL:(id)l;
 @end
 
 @implementation RDPaths
@@ -23,7 +23,7 @@
 
 + (NSURL)defaultApplicationDocumentsURL
 {
-  if ([a1 isDataSeparationEnabled])
+  if ([self isDataSeparationEnabled])
   {
     if (qword_1009528D8 != -1)
     {
@@ -50,33 +50,33 @@
 
 + (id)defaultReminderDataContainerURL
 {
-  v2 = [a1 defaultApplicationDocumentsURL];
-  v3 = [v2 rem_URLByAppendingReminderDataContainerPathComponent];
+  defaultApplicationDocumentsURL = [self defaultApplicationDocumentsURL];
+  rem_URLByAppendingReminderDataContainerPathComponent = [defaultApplicationDocumentsURL rem_URLByAppendingReminderDataContainerPathComponent];
 
-  return v3;
+  return rem_URLByAppendingReminderDataContainerPathComponent;
 }
 
 + (BOOL)isDataSeparationEnabled
 {
   v2 = [RDFeatureFlagsObjCWrapper wrappedFeatureFlagsWithRawValue:@"dataSeparation"];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-+ (id)urlForIsolatedContainerWithIdentifier:(id)a3
++ (id)urlForIsolatedContainerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 defaultApplicationDocumentsURL];
-  v6 = [v5 URLByAppendingPathComponent:@"IsolatedContainers/" isDirectory:1];
-  v7 = [v6 URLByAppendingPathComponent:v4 isDirectory:1];
+  identifierCopy = identifier;
+  defaultApplicationDocumentsURL = [self defaultApplicationDocumentsURL];
+  v6 = [defaultApplicationDocumentsURL URLByAppendingPathComponent:@"IsolatedContainers/" isDirectory:1];
+  v7 = [v6 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   return v7;
 }
 
-+ (void)unitTest_setDefaultApplicationDocumentsURL:(id)a3
++ (void)unitTest_setDefaultApplicationDocumentsURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (qword_1009528D8 != -1)
   {
     sub_10075FC5C();
@@ -87,10 +87,10 @@
   block[1] = 3221225472;
   block[2] = sub_100067F48;
   block[3] = &unk_1008D9990;
-  v6 = v4;
+  v6 = lCopy;
   v8 = v6;
   dispatch_sync(v5, block);
-  if (([a1 isDataSeparationEnabled] & 1) == 0)
+  if (([self isDataSeparationEnabled] & 1) == 0)
   {
     [REMPaths unitTest_setLegacyApplicationDocumentsURL:v6];
   }

@@ -1,11 +1,11 @@
 @interface MPSNNReduceUnary
-- (MPSNNReduceUnary)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNNReduceUnary)initWithDevice:(id)a3 reduceOperation:(int)a4;
+- (MPSNNReduceUnary)initWithCoder:(id)coder device:(id)device;
 - (MPSNNReduceUnary)initWithDevice:(id)device;
+- (MPSNNReduceUnary)initWithDevice:(id)device reduceOperation:(int)operation;
 - (MTLRegion)clipRectSource;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setClipRectSource:(MTLRegion *)clipRectSource;
 @end
 
@@ -21,11 +21,11 @@
   return 0;
 }
 
-- (MPSNNReduceUnary)initWithDevice:(id)a3 reduceOperation:(int)a4
+- (MPSNNReduceUnary)initWithDevice:(id)device reduceOperation:(int)operation
 {
   v8.receiver = self;
   v8.super_class = MPSNNReduceUnary;
-  result = [(MPSCNNKernel *)&v8 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v8 initWithDevice:device];
   if (result)
   {
     v7 = *(MEMORY[0x277CD7200] + 16);
@@ -33,7 +33,7 @@
     *&result->_clipRectSource.origin.x = *MEMORY[0x277CD7200];
     *&result->_clipRectSource.origin.z = v7;
     *&result->_clipRectSource.size.height = v6;
-    result->_reduceOp = a4;
+    result->_reduceOp = operation;
     result->_weightValue = 1.0;
     result->super._encode = sub_239D22058;
     result->super._batchEncode = sub_239D222C4;
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (MPSNNReduceUnary)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNReduceUnary)initWithCoder:(id)coder device:(id)device
 {
   v58.receiver = self;
   v58.super_class = MPSNNReduceUnary;
-  v5 = [(MPSCNNKernel *)&v58 initWithCoder:a3 device:a4];
+  v5 = [(MPSCNNKernel *)&v58 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -60,14 +60,14 @@
     v5->super._encode = sub_239D22058;
     v5->super._batchEncode = sub_239D222C4;
     v5->super._encodeData = v5;
-    v5->_clipRectSource.origin.x = objc_msgSend_decodeInt64ForKey_(a3, v6, @"MPSNNReduce.clipRectSource.origin.x", v7, v8, v9, v10, v11);
-    v12->_clipRectSource.origin.y = objc_msgSend_decodeInt64ForKey_(a3, v13, @"MPSNNReduce.clipRectSource.origin.y", v14, v15, v16, v17, v18);
-    v12->_clipRectSource.origin.z = objc_msgSend_decodeInt64ForKey_(a3, v19, @"MPSNNReduce.clipRectSource.origin.z", v20, v21, v22, v23, v24);
-    v12->_clipRectSource.size.width = objc_msgSend_decodeInt64ForKey_(a3, v25, @"MPSNNReduce.clipRectSource.size.width", v26, v27, v28, v29, v30);
-    v12->_clipRectSource.size.height = objc_msgSend_decodeInt64ForKey_(a3, v31, @"MPSNNReduce.clipRectSource.size.height", v32, v33, v34, v35, v36);
-    v12->_clipRectSource.size.depth = objc_msgSend_decodeInt64ForKey_(a3, v37, @"MPSNNReduce.clipRectSource.size.depth", v38, v39, v40, v41, v42);
-    v12->_reduceOp = objc_msgSend_decodeInt64ForKey_(a3, v43, @"MPSNNReduce.reduceOp", v44, v45, v46, v47, v48);
-    objc_msgSend_decodeFloatForKey_(a3, v49, @"MPSNNReduce.weight", v50, v51, v52, v53, v54);
+    v5->_clipRectSource.origin.x = objc_msgSend_decodeInt64ForKey_(coder, v6, @"MPSNNReduce.clipRectSource.origin.x", v7, v8, v9, v10, v11);
+    v12->_clipRectSource.origin.y = objc_msgSend_decodeInt64ForKey_(coder, v13, @"MPSNNReduce.clipRectSource.origin.y", v14, v15, v16, v17, v18);
+    v12->_clipRectSource.origin.z = objc_msgSend_decodeInt64ForKey_(coder, v19, @"MPSNNReduce.clipRectSource.origin.z", v20, v21, v22, v23, v24);
+    v12->_clipRectSource.size.width = objc_msgSend_decodeInt64ForKey_(coder, v25, @"MPSNNReduce.clipRectSource.size.width", v26, v27, v28, v29, v30);
+    v12->_clipRectSource.size.height = objc_msgSend_decodeInt64ForKey_(coder, v31, @"MPSNNReduce.clipRectSource.size.height", v32, v33, v34, v35, v36);
+    v12->_clipRectSource.size.depth = objc_msgSend_decodeInt64ForKey_(coder, v37, @"MPSNNReduce.clipRectSource.size.depth", v38, v39, v40, v41, v42);
+    v12->_reduceOp = objc_msgSend_decodeInt64ForKey_(coder, v43, @"MPSNNReduce.reduceOp", v44, v45, v46, v47, v48);
+    objc_msgSend_decodeFloatForKey_(coder, v49, @"MPSNNReduce.weight", v50, v51, v52, v53, v54);
     v12->_weightValue = v55;
     return v12;
   }
@@ -82,28 +82,28 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v47.receiver = self;
   v47.super_class = MPSNNReduceUnary;
   [(MPSCNNKernel *)&v47 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_clipRectSource.origin.x, @"MPSNNReduce.clipRectSource.origin.x", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_clipRectSource.origin.y, @"MPSNNReduce.clipRectSource.origin.y", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_clipRectSource.origin.z, @"MPSNNReduce.clipRectSource.origin.z", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_clipRectSource.size.width, @"MPSNNReduce.clipRectSource.size.width", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, self->_clipRectSource.size.height, @"MPSNNReduce.clipRectSource.size.height", v26, v27, v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, self->_clipRectSource.size.depth, @"MPSNNReduce.clipRectSource.size.depth", v31, v32, v33, v34);
-  objc_msgSend_encodeInt64_forKey_(a3, v35, self->_reduceOp, @"MPSNNReduce.reduceOp", v36, v37, v38, v39);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_clipRectSource.origin.x, @"MPSNNReduce.clipRectSource.origin.x", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_clipRectSource.origin.y, @"MPSNNReduce.clipRectSource.origin.y", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_clipRectSource.origin.z, @"MPSNNReduce.clipRectSource.origin.z", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_clipRectSource.size.width, @"MPSNNReduce.clipRectSource.size.width", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, self->_clipRectSource.size.height, @"MPSNNReduce.clipRectSource.size.height", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, self->_clipRectSource.size.depth, @"MPSNNReduce.clipRectSource.size.depth", v31, v32, v33, v34);
+  objc_msgSend_encodeInt64_forKey_(coder, v35, self->_reduceOp, @"MPSNNReduce.reduceOp", v36, v37, v38, v39);
   *&v40 = self->_weightValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v41, @"MPSNNReduce.weight", v42, v43, v44, v45, v46, v40);
+  objc_msgSend_encodeFloat_forKey_(coder, v41, @"MPSNNReduce.weight", v42, v43, v44, v45, v46, v40);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNNReduceUnary;
-  result = [(MPSCNNKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     v7 = *&self->_clipRectSource.origin.z;

@@ -1,17 +1,17 @@
 @interface AAUICloudStorageOffersManager
-- (void)manager:(id)a3 didCompleteWithError:(id)a4;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)managerDidCancel:(id)a3;
-- (void)presentCloudStorageOffersPageFromNavigationController:(id)a3 requiredStorageThreshold:(id)a4 completionHandler:(id)a5;
+- (void)manager:(id)manager didCompleteWithError:(id)error;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)managerDidCancel:(id)cancel;
+- (void)presentCloudStorageOffersPageFromNavigationController:(id)controller requiredStorageThreshold:(id)threshold completionHandler:(id)handler;
 @end
 
 @implementation AAUICloudStorageOffersManager
 
-- (void)presentCloudStorageOffersPageFromNavigationController:(id)a3 requiredStorageThreshold:(id)a4 completionHandler:(id)a5
+- (void)presentCloudStorageOffersPageFromNavigationController:(id)controller requiredStorageThreshold:(id)threshold completionHandler:(id)handler
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = a3;
+  thresholdCopy = threshold;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v10 = objc_alloc_init(PSCloudStorageOffersManager);
   cloudStorageOffersManager = self->_cloudStorageOffersManager;
   self->_cloudStorageOffersManager = v10;
@@ -20,20 +20,20 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v13 doubleValue];
+    [thresholdCopy doubleValue];
     [(PSCloudStorageOffersManager *)self->_cloudStorageOffersManager setRequiredStorageThreshold:v12];
   }
 
-  [(AAUICloudStorageOffersManager *)self setCompletionHandler:v8];
-  [(PSCloudStorageOffersManager *)self->_cloudStorageOffersManager beginFlowWithNavigationController:v9 modally:1];
+  [(AAUICloudStorageOffersManager *)self setCompletionHandler:handlerCopy];
+  [(PSCloudStorageOffersManager *)self->_cloudStorageOffersManager beginFlowWithNavigationController:controllerCopy modally:1];
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, 0, a4);
+    completionHandler[2](completionHandler, 0, error);
     v6 = self->_completionHandler;
   }
 
@@ -48,7 +48,7 @@
   self->_cloudStorageOffersManager = 0;
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
@@ -68,12 +68,12 @@
   self->_cloudStorageOffersManager = 0;
 }
 
-- (void)manager:(id)a3 didCompleteWithError:(id)a4
+- (void)manager:(id)manager didCompleteWithError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, 0, a4);
+    completionHandler[2](completionHandler, 0, error);
     v6 = self->_completionHandler;
   }
 

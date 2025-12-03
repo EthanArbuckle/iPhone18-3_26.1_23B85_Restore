@@ -1,10 +1,10 @@
 @interface DEDUtils
 + (BOOL)isDebugRequestsEnabled;
 + (BOOL)isInternalInstall;
-+ (id)checkDefaultsForOverride:(id)a3;
-+ (id)deriveMacDeviceClassForProductType:(id)a3;
++ (id)checkDefaultsForOverride:(id)override;
++ (id)deriveMacDeviceClassForProductType:(id)type;
 + (id)deviceClass;
-+ (id)deviceClassForProductType:(id)a3;
++ (id)deviceClassForProductType:(id)type;
 + (id)deviceColor;
 + (id)deviceEnclosureColor;
 + (id)deviceHardwareCodename;
@@ -13,26 +13,26 @@
 + (id)deviceProductType;
 + (id)deviceSerialNumber;
 + (id)deviceUniformTypeIdentifier;
-+ (id)modelForProductType:(id)a3;
++ (id)modelForProductType:(id)type;
 + (id)osBuild;
 + (id)platform;
 + (id)sharedLog;
-+ (id)unauthenticatedDeviceSpecifierFormResponseID:(int64_t)a3 device:(id)a4;
++ (id)unauthenticatedDeviceSpecifierFormResponseID:(int64_t)d device:(id)device;
 + (id)uniqueDeviceSpecifier;
 + (int64_t)deviceType;
 @end
 
 @implementation DEDUtils
 
-+ (id)deviceClassForProductType:(id)a3
++ (id)deviceClassForProductType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy)
   {
     v6 = @"AppleTV";
-    if (([v4 containsString:@"AppleTV"] & 1) == 0)
+    if (([typeCopy containsString:@"AppleTV"] & 1) == 0)
     {
       v6 = @"iPhone";
       if (([v5 containsString:@"iPhone"] & 1) == 0)
@@ -50,7 +50,7 @@
 
             else if ([v5 containsString:@"Mac"])
             {
-              v6 = [a1 deriveMacDeviceClassForProductType:v5];
+              v6 = [self deriveMacDeviceClassForProductType:v5];
             }
 
             else
@@ -83,45 +83,45 @@
   return v7;
 }
 
-+ (id)deriveMacDeviceClassForProductType:(id)a3
++ (id)deriveMacDeviceClassForProductType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE1CB8] _typeWithDeviceModelCode:a3];
-  v4 = [v3 identifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"com.apple." withString:&stru_285B72378];
-  v6 = [v5 lowercaseString];
+  v3 = [MEMORY[0x277CE1CB8] _typeWithDeviceModelCode:type];
+  identifier = [v3 identifier];
+  v5 = [identifier stringByReplacingOccurrencesOfString:@"com.apple." withString:&stru_285B72378];
+  lowercaseString = [v5 lowercaseString];
 
-  if ([v6 containsString:@"macbookpro"])
+  if ([lowercaseString containsString:@"macbookpro"])
   {
     v7 = @"MacBookPro";
   }
 
-  else if ([v6 containsString:@"macbookair"])
+  else if ([lowercaseString containsString:@"macbookair"])
   {
     v7 = @"MacBookAir";
   }
 
-  else if ([v6 containsString:@"macbook"])
+  else if ([lowercaseString containsString:@"macbook"])
   {
     v7 = @"MacBook";
   }
 
-  else if ([v6 containsString:@"imac"])
+  else if ([lowercaseString containsString:@"imac"])
   {
     v7 = @"iMac";
   }
 
-  else if ([v6 containsString:@"macmini"])
+  else if ([lowercaseString containsString:@"macmini"])
   {
     v7 = @"Macmini";
   }
 
-  else if ([v6 containsString:@"macpro"])
+  else if ([lowercaseString containsString:@"macpro"])
   {
     v7 = @"MacPro";
   }
 
-  else if ([v6 containsString:@"macstudio"])
+  else if ([lowercaseString containsString:@"macstudio"])
   {
     v7 = @"MacStudio";
   }
@@ -132,7 +132,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = lowercaseString;
       _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "No Mac product mapping for [%{public}@]", &v11, 0xCu);
     }
 
@@ -143,16 +143,16 @@
   return v7;
 }
 
-+ (id)modelForProductType:(id)a3
++ (id)modelForProductType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_21;
   }
 
-  if ([v3 containsString:@"AppleTV"])
+  if ([typeCopy containsString:@"AppleTV"])
   {
     v5 = @"Apple TV";
     goto LABEL_22;
@@ -344,19 +344,19 @@ LABEL_7:
   }
 }
 
-+ (id)unauthenticatedDeviceSpecifierFormResponseID:(int64_t)a3 device:(id)a4
++ (id)unauthenticatedDeviceSpecifierFormResponseID:(int64_t)d device:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [v6 enclosureColor];
-  v8 = [v6 color];
-  v9 = [v6 deviceClass];
-  v10 = [v6 platform];
-  v11 = [v6 productType];
-  v12 = [v6 model];
+  deviceCopy = device;
+  enclosureColor = [deviceCopy enclosureColor];
+  color = [deviceCopy color];
+  deviceClass = [deviceCopy deviceClass];
+  platform = [deviceCopy platform];
+  productType = [deviceCopy productType];
+  model = [deviceCopy model];
 
-  v13 = [v5 arrayWithObjects:{v7, v8, v9, v10, v11, v12, 0}];
+  v13 = [v5 arrayWithObjects:{enclosureColor, color, deviceClass, platform, productType, model, 0}];
   v14 = [v13 componentsJoinedByString:@"-"];
 
   v15 = +[DEDUtils sharedLog];
@@ -367,7 +367,7 @@ LABEL_7:
     _os_log_impl(&dword_248AD7000, v15, OS_LOG_TYPE_DEFAULT, "uniquingString un-hashed [%@]", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unauthenticated-FR%li-%lu", a3, objc_msgSend(v14, "hash")];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unauthenticated-FR%li-%lu", d, objc_msgSend(v14, "hash")];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -528,16 +528,16 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    identifier = v2;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CE1CB8] _typeOfCurrentDevice];
-    v4 = [v5 identifier];
+    _typeOfCurrentDevice = [MEMORY[0x277CE1CB8] _typeOfCurrentDevice];
+    identifier = [_typeOfCurrentDevice identifier];
   }
 
-  return v4;
+  return identifier;
 }
 
 + (BOOL)isInternalInstall
@@ -570,29 +570,29 @@ void __29__DEDUtils_isInternalInstall__block_invoke()
 
 + (BOOL)isDebugRequestsEnabled
 {
-  v2 = [a1 isInternalInstall];
-  if (v2)
+  isInternalInstall = [self isInternalInstall];
+  if (isInternalInstall)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"showDebugRequests"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"showDebugRequests"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isInternalInstall) = v4;
   }
 
-  return v2;
+  return isInternalInstall;
 }
 
-+ (id)checkDefaultsForOverride:(id)a3
++ (id)checkDefaultsForOverride:(id)override
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  overrideCopy = override;
   if (!+[DEDUtils isInternalInstall])
   {
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 stringForKey:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults stringForKey:overrideCopy];
 
   if (!v5 || ([v5 isEqualToString:&stru_285B72378] & 1) != 0)
   {
@@ -606,7 +606,7 @@ LABEL_5:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = overrideCopy;
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "DED overriding platform value for %@", &v9, 0xCu);
   }
 

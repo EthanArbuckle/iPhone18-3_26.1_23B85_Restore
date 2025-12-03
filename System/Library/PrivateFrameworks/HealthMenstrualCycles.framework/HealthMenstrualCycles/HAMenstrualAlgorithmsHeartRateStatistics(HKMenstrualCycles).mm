@@ -16,8 +16,8 @@
     v7 = [v6 numberWithDouble:?];
     [v5 setLowerPercentile:v7];
 
-    v8 = [v4 sampleCount];
-    [v5 setSampleCount:v8];
+    sampleCount = [v4 sampleCount];
+    [v5 setSampleCount:sampleCount];
   }
 
   else

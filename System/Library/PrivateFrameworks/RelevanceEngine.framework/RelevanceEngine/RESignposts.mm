@@ -1,17 +1,17 @@
 @interface RESignposts
-+ (id)convertMetadataNSDictionaryToNSString:(id)a3;
-+ (void)traceEvent:(unint64_t)a3;
-+ (void)traceEvent:(unint64_t)a3 withMetadata:(id)a4;
++ (id)convertMetadataNSDictionaryToNSString:(id)string;
++ (void)traceEvent:(unint64_t)event;
++ (void)traceEvent:(unint64_t)event withMetadata:(id)metadata;
 @end
 
 @implementation RESignposts
 
-+ (void)traceEvent:(unint64_t)a3
++ (void)traceEvent:(unint64_t)event
 {
-  if ([a1 _isSignpostEventTypeEnabled:?])
+  if ([self _isSignpostEventTypeEnabled:?])
   {
     kdebug_trace();
-    switch(a3)
+    switch(event)
     {
       case 3uLL:
         v4 = RELogForDomain(0);
@@ -53,16 +53,16 @@ LABEL_11:
   }
 }
 
-+ (void)traceEvent:(unint64_t)a3 withMetadata:(id)a4
++ (void)traceEvent:(unint64_t)event withMetadata:(id)metadata
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (metadata)
   {
-    v5 = a4;
+    metadataCopy = metadata;
     kdebug_trace();
-    v6 = [RESignposts convertMetadataNSDictionaryToNSString:v5];
+    v6 = [RESignposts convertMetadataNSDictionaryToNSString:metadataCopy];
 
-    switch(a3)
+    switch(event)
     {
       case 3uLL:
         v7 = RELogForDomain(0);
@@ -111,9 +111,9 @@ LABEL_14:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)convertMetadataNSDictionaryToNSString:(id)a3
++ (id)convertMetadataNSDictionaryToNSString:(id)string
 {
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:2 error:0];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:string options:2 error:0];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
 
   return v4;

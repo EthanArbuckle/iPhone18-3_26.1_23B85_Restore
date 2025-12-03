@@ -1,8 +1,8 @@
 @interface _TUIElementMenuItemBuilder
 - (id)finalizeMenuItem;
-- (void)addImageModel:(id)a3 forRole:(id)a4;
-- (void)addText:(id)a3 forRole:(id)a4;
-- (void)addTrigger:(id)a3 withBehavior:(id)a4;
+- (void)addImageModel:(id)model forRole:(id)role;
+- (void)addText:(id)text forRole:(id)role;
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior;
 @end
 
 @implementation _TUIElementMenuItemBuilder
@@ -24,36 +24,36 @@
   return v5;
 }
 
-- (void)addTrigger:(id)a3 withBehavior:(id)a4
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior
 {
-  v7 = a4;
-  if ([a3 isEqualToString:@"press"])
+  behaviorCopy = behavior;
+  if ([trigger isEqualToString:@"press"])
   {
-    objc_storeStrong(&self->_action, a4);
+    objc_storeStrong(&self->_action, behavior);
   }
 }
 
-- (void)addText:(id)a3 forRole:(id)a4
+- (void)addText:(id)text forRole:(id)role
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"title"])
+  textCopy = text;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"title"])
   {
-    v8 = [v10 copy];
+    v8 = [textCopy copy];
     title = self->_title;
     self->_title = v8;
   }
 }
 
-- (void)addImageModel:(id)a3 forRole:(id)a4
+- (void)addImageModel:(id)model forRole:(id)role
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || [v7 isEqualToString:@"image"])
+  modelCopy = model;
+  roleCopy = role;
+  v8 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"image"])
   {
-    objc_storeStrong(&self->_imageModel, a3);
+    objc_storeStrong(&self->_imageModel, model);
   }
 }
 

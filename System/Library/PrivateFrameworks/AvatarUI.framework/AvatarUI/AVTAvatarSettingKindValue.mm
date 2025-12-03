@@ -1,17 +1,17 @@
 @interface AVTAvatarSettingKindValue
-+ (id)valueWithSettingKind:(id)a3;
++ (id)valueWithSettingKind:(id)kind;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)settingKind;
-- (AVTAvatarSettingKindValue)initWithSettingKind:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVTAvatarSettingKindValue)initWithSettingKind:(id)kind;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVTAvatarSettingKindValue
 
-- (AVTAvatarSettingKindValue)initWithSettingKind:(id)a3
+- (AVTAvatarSettingKindValue)initWithSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = kind.var1;
+  var0 = kind.var0;
   v6.receiver = self;
   v6.super_class = AVTAvatarSettingKindValue;
   result = [(AVTAvatarSettingKindValue *)&v6 init];
@@ -24,17 +24,17 @@
   return result;
 }
 
-+ (id)valueWithSettingKind:(id)a3
++ (id)valueWithSettingKind:(id)kind
 {
-  v3 = [[a1 alloc] initWithSettingKind:{a3.var0, a3.var1}];
+  v3 = [[self alloc] initWithSettingKind:{kind.var0, kind.var1}];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -44,10 +44,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AVTAvatarSettingKindValue *)self settingKind];
+      settingKind = [(AVTAvatarSettingKindValue *)self settingKind];
       v7 = v6;
-      v8 = [(AVTAvatarSettingKindValue *)v4 settingKind];
-      v11 = v7 == v9 && v5 == v8;
+      settingKind2 = [(AVTAvatarSettingKindValue *)equalCopy settingKind];
+      v11 = v7 == v9 && settingKind == settingKind2;
     }
 
     else
@@ -59,12 +59,12 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTAvatarSettingKindValue alloc];
-  v6 = [(AVTAvatarSettingKindValue *)self settingKind];
+  settingKind = [(AVTAvatarSettingKindValue *)self settingKind];
 
-  return [(AVTAvatarSettingKindValue *)v4 initWithSettingKind:v6, v5];
+  return [(AVTAvatarSettingKindValue *)v4 initWithSettingKind:settingKind, v5];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)settingKind

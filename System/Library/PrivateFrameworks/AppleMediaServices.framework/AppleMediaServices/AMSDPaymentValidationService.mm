@@ -1,8 +1,8 @@
 @interface AMSDPaymentValidationService
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 + (OS_dispatch_queue)sharedQueue;
 + (id)sharedService;
-- (void)paymentHardwareStatusHeaderWithCompletion:(id)a3;
+- (void)paymentHardwareStatusHeaderWithCompletion:(id)completion;
 @end
 
 @implementation AMSDPaymentValidationService
@@ -31,9 +31,9 @@
   return v3;
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -45,22 +45,22 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)paymentHardwareStatusHeaderWithCompletion:(id)a3
+- (void)paymentHardwareStatusHeaderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() sharedQueue];
+  completionCopy = completion;
+  sharedQueue = [objc_opt_class() sharedQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076E0C;
   v7[3] = &unk_1002B05B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.paymentvalidation" withQueue:v5 whilePerformingBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.paymentvalidation" withQueue:sharedQueue whilePerformingBlock:v7];
 }
 
 @end

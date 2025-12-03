@@ -1,8 +1,8 @@
 @interface UAFAutoAssetInstance
-+ (BOOL)clear:(id)a3 path:(id)a4;
-+ (BOOL)decomposeSaveFileURL:(id)a3 assetSetName:(id *)a4 atomicInstance:(id *)a5;
++ (BOOL)clear:(id)clear path:(id)path;
++ (BOOL)decomposeSaveFileURL:(id)l assetSetName:(id *)name atomicInstance:(id *)instance;
 + (id)instanceDirURL;
-+ (id)saveFileURL:(id)a3;
++ (id)saveFileURL:(id)l;
 @end
 
 @implementation UAFAutoAssetInstance
@@ -23,15 +23,15 @@
   return v3;
 }
 
-+ (id)saveFileURL:(id)a3
++ (id)saveFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[UAFAutoAssetInstance instanceDirURL];
 
   if (v4)
   {
     v5 = +[UAFAutoAssetInstance instanceDirURL];
-    v6 = [v5 URLByAppendingPathComponent:v3 isDirectory:0];
+    v6 = [v5 URLByAppendingPathComponent:lCopy isDirectory:0];
 
     v4 = [v6 URLByAppendingPathExtension:@"instance"];
   }
@@ -39,33 +39,33 @@
   return v4;
 }
 
-+ (BOOL)decomposeSaveFileURL:(id)a3 assetSetName:(id *)a4 atomicInstance:(id *)a5
++ (BOOL)decomposeSaveFileURL:(id)l assetSetName:(id *)name atomicInstance:(id *)instance
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  lCopy = l;
+  v8 = lCopy;
+  if (name)
   {
-    *a4 = 0;
+    *name = 0;
   }
 
-  if (a5)
+  if (instance)
   {
-    *a5 = 0;
+    *instance = 0;
   }
 
-  v9 = [v7 pathExtension];
-  v10 = [v9 isEqualToString:@"instance"];
+  pathExtension = [lCopy pathExtension];
+  v10 = [pathExtension isEqualToString:@"instance"];
 
   if (v10)
   {
-    v11 = [v8 lastPathComponent];
-    v12 = [v11 stringByDeletingPathExtension];
+    lastPathComponent = [v8 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v13 = [v12 rangeOfString:@"@" options:4];
+    v13 = [stringByDeletingPathExtension rangeOfString:@"@" options:4];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_11;
       }
@@ -74,25 +74,25 @@
     else
     {
       v16 = v13;
-      v15 = [v12 substringFromIndex:v13 + v14];
-      v17 = [v12 substringToIndex:v16];
+      v15 = [stringByDeletingPathExtension substringFromIndex:v13 + v14];
+      v17 = [stringByDeletingPathExtension substringToIndex:v16];
 
-      v12 = v17;
-      if (!a4)
+      stringByDeletingPathExtension = v17;
+      if (!name)
       {
 LABEL_11:
-        if (a5)
+        if (instance)
         {
           v19 = v15;
-          *a5 = v15;
+          *instance = v15;
         }
 
         goto LABEL_14;
       }
     }
 
-    v18 = v12;
-    *a4 = v12;
+    v18 = stringByDeletingPathExtension;
+    *name = stringByDeletingPathExtension;
     goto LABEL_11;
   }
 
@@ -101,14 +101,14 @@ LABEL_14:
   return v10;
 }
 
-+ (BOOL)clear:(id)a3 path:(id)a4
++ (BOOL)clear:(id)clear path:(id)path
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  clearCopy = clear;
+  pathCopy = path;
+  if (pathCopy)
   {
-    [MEMORY[0x1E695DFF8] URLWithString:v6];
+    [MEMORY[0x1E695DFF8] URLWithString:pathCopy];
   }
 
   else
@@ -118,11 +118,11 @@ LABEL_14:
   v7 = ;
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v47[0] = *MEMORY[0x1E695DBB8];
     v9 = 1;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
-    v11 = [v8 enumeratorAtURL:v7 includingPropertiesForKeys:v10 options:1 errorHandler:0];
+    v11 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:v10 options:1 errorHandler:0];
 
     v38 = 0u;
     v39 = 0u;
@@ -134,10 +134,10 @@ LABEL_14:
     {
       v13 = v12;
       v28 = v7;
-      v29 = v6;
+      v29 = pathCopy;
       v14 = 0;
       v15 = *v37;
-      v30 = v5;
+      v30 = clearCopy;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -153,19 +153,19 @@ LABEL_14:
           v18 = [UAFAutoAssetInstance decomposeSaveFileURL:v17 assetSetName:&v35 atomicInstance:&v34, v28];
           v19 = v35;
           v20 = v34;
-          if (v18 && (!v5 || [v19 isEqualToString:v5]))
+          if (v18 && (!clearCopy || [v19 isEqualToString:clearCopy]))
           {
             v32 = v20;
-            v21 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v33 = v14;
-            v22 = [v21 removeItemAtURL:v17 error:&v33];
+            v22 = [defaultManager2 removeItemAtURL:v17 error:&v33];
             v23 = v33;
 
             v24 = UAFGetLogCategory(&UAFLogContextClient);
             v25 = v24;
             if ((v22 & 1) == 0)
             {
-              v6 = v29;
+              pathCopy = v29;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
                 *buf = 136315650;
@@ -178,7 +178,7 @@ LABEL_14:
               }
 
               v9 = 0;
-              v5 = v30;
+              clearCopy = v30;
               goto LABEL_24;
             }
 
@@ -192,7 +192,7 @@ LABEL_14:
             }
 
             v14 = v23;
-            v5 = v30;
+            clearCopy = v30;
             v20 = v32;
           }
         }
@@ -208,7 +208,7 @@ LABEL_14:
 
       v9 = 1;
       v23 = v14;
-      v6 = v29;
+      pathCopy = v29;
 LABEL_24:
       v7 = v28;
     }

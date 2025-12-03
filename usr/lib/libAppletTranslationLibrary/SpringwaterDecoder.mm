@@ -1,35 +1,35 @@
 @interface SpringwaterDecoder
-+ (id)calculateCommutePlanUniqueId:(id)a3 withExpiry:(id)a4;
-+ (id)calculateTransactionSN:(id)a3 withTimeStamp:(id)a4 withEventCode:(id)a5 withSP:(id)a6 withContractPointer:(id)a7 withDifferentiator:(id)a8;
-+ (id)commutePlanWithIdAndExpiry:(id)a3 withExpiry:(id)a4 withUniqueId:(id)a5;
-+ (id)formatCommutePlanIdentifier:(id)a3 withTariffCode:(id)a4 withZoneList:(id)a5;
-+ (id)formatTransitDetailRaw:(id)a3;
-+ (id)getCardIdFromSelectResponse:(id)a3;
-+ (id)getInternalEnRouteStatus:(id)a3;
-+ (id)getTransitModality:(id)a3;
-+ (id)getUnvalidatableContracts:(id)a3;
-+ (void)stripContract:(id)a3;
++ (id)calculateCommutePlanUniqueId:(id)id withExpiry:(id)expiry;
++ (id)calculateTransactionSN:(id)n withTimeStamp:(id)stamp withEventCode:(id)code withSP:(id)p withContractPointer:(id)pointer withDifferentiator:(id)differentiator;
++ (id)commutePlanWithIdAndExpiry:(id)expiry withExpiry:(id)withExpiry withUniqueId:(id)id;
++ (id)formatCommutePlanIdentifier:(id)identifier withTariffCode:(id)code withZoneList:(id)list;
++ (id)formatTransitDetailRaw:(id)raw;
++ (id)getCardIdFromSelectResponse:(id)response;
++ (id)getInternalEnRouteStatus:(id)status;
++ (id)getTransitModality:(id)modality;
++ (id)getUnvalidatableContracts:(id)contracts;
++ (void)stripContract:(id)contract;
 - (id)generateEndEventFromHCI;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withError:(id *)a4;
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-- (id)parseHistory:(id)a3 withContracts:(id)a4;
-- (void)interpretTransactionEvent:(id)a3;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withError:(id *)error;
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
+- (id)parseHistory:(id)history withContracts:(id)contracts;
+- (void)interpretTransactionEvent:(id)event;
 @end
 
 @implementation SpringwaterDecoder
 
-- (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
+- (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
-  v12 = a9;
+  errorCopy = error;
   v112[1] = *MEMORY[0x277D85DE8];
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [TransceiverWrapper withTransceiver:a8];
+  keyCopy = key;
+  schemeCopy = scheme;
+  dataCopy = data;
+  v16 = [TransceiverWrapper withTransceiver:transceiver];
   v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v18 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v19 = [MEMORY[0x277CBEA90] dataWithHexString:v15];
+  v19 = [MEMORY[0x277CBEA90] dataWithHexString:dataCopy];
 
   v20 = SelectByNameCmd(v19);
 
@@ -39,11 +39,11 @@
   if (v22)
   {
     v23 = v22;
-    if (a9)
+    if (error)
     {
       v24 = v22;
-      v12 = 0;
-      *a9 = v23;
+      errorCopy = 0;
+      *error = v23;
     }
 
     goto LABEL_88;
@@ -57,8 +57,8 @@
 
     v79 = v21;
     v78 = [SpringwaterDecoder getCardIdFromSelectResponse:v21];
-    v26 = [v78 asHexString];
-    [v17 setObject:v26 forKeyedSubscript:@"cardId"];
+    asHexString = [v78 asHexString];
+    [v17 setObject:asHexString forKeyedSubscript:@"cardId"];
 
     v77 = +[SpringwaterDecoder SelectRemoteTicketingCmd];
     v76 = [v16 transceiveAndCheckSW:? error:?];
@@ -300,37 +300,37 @@
     v56 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v55 options:1 error:&v92];
     v23 = v92;
 
-    if (v13)
+    if (keyCopy)
     {
       v74 = v17;
       v91 = v23;
-      v57 = v13;
-      v12 = [_TtC24AppletTranslationLibrary17OpaqueDataService serializedHPKEWithData:v56 publicKey:v13 scheme:v14 error:&v91];
+      v57 = keyCopy;
+      errorCopy = [_TtC24AppletTranslationLibrary17OpaqueDataService serializedHPKEWithData:v56 publicKey:keyCopy scheme:schemeCopy error:&v91];
       v58 = v91;
 
-      if (a9)
+      if (error)
       {
         v18 = v54;
         if (v58)
         {
           v59 = v58;
-          *a9 = v58;
+          *error = v58;
         }
 
         v23 = v58;
-        v13 = v57;
+        keyCopy = v57;
         v17 = v74;
         goto LABEL_84;
       }
 
       v23 = v58;
-      v13 = v57;
+      keyCopy = v57;
       v17 = v74;
     }
 
     else
     {
-      v12 = v56;
+      errorCopy = v56;
     }
 
     v18 = v54;
@@ -350,12 +350,12 @@ LABEL_84:
 
   v61 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No response to SELECT received"];
   v62 = v61;
-  if (a9)
+  if (error)
   {
-    v63 = *a9;
+    v63 = *error;
     v64 = MEMORY[0x277CCA9B8];
     v65 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v66 = *MEMORY[0x277CCA7E8];
       v109[0] = *MEMORY[0x277CCA450];
@@ -379,29 +379,29 @@ LABEL_84:
     }
 
     v71 = [v67 dictionaryWithObjects:v68 forKeys:v69 count:v70];
-    *a9 = [v64 errorWithDomain:@"ATL" code:5 userInfo:v71];
+    *error = [v64 errorWithDomain:@"ATL" code:5 userInfo:v71];
 
     v21 = 0;
   }
 
   v23 = 0;
-  v12 = 0;
+  errorCopy = 0;
 LABEL_88:
 
   v72 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return errorCopy;
 }
 
-+ (id)formatCommutePlanIdentifier:(id)a3 withTariffCode:(id)a4 withZoneList:(id)a5
++ (id)formatCommutePlanIdentifier:(id)identifier withTariffCode:(id)code withZoneList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"ContractCounterStructure"];
+  identifierCopy = identifier;
+  codeCopy = code;
+  listCopy = list;
+  v10 = [identifierCopy objectForKeyedSubscript:@"ContractCounterStructure"];
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"ContractCounterLastLoadCount"];
+    v11 = [identifierCopy objectForKeyedSubscript:@"ContractCounterLastLoadCount"];
   }
 
   else
@@ -409,90 +409,90 @@ LABEL_88:
     v11 = 0;
   }
 
-  v12 = [v10 integerValue];
+  integerValue = [v10 integerValue];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v8 intValue];
-  v15 = [v9 intValue];
-  if (v12 == 3)
+  intValue = [codeCopy intValue];
+  intValue2 = [listCopy intValue];
+  if (integerValue == 3)
   {
-    [v13 stringWithFormat:@"%05d_%02X_%d", v14, v15, objc_msgSend(v11, "intValue")];
+    [v13 stringWithFormat:@"%05d_%02X_%d", intValue, intValue2, objc_msgSend(v11, "intValue")];
   }
 
   else
   {
-    [v13 stringWithFormat:@"%05d_%02X_1", v14, v15, v18];
+    [v13 stringWithFormat:@"%05d_%02X_1", intValue, intValue2, v18];
   }
   v16 = ;
 
   return v16;
 }
 
-+ (id)calculateTransactionSN:(id)a3 withTimeStamp:(id)a4 withEventCode:(id)a5 withSP:(id)a6 withContractPointer:(id)a7 withDifferentiator:(id)a8
++ (id)calculateTransactionSN:(id)n withTimeStamp:(id)stamp withEventCode:(id)code withSP:(id)p withContractPointer:(id)pointer withDifferentiator:(id)differentiator
 {
-  v14 = &unk_2843C67B8;
-  if (a8)
+  differentiatorCopy = &unk_2843C67B8;
+  if (differentiator)
   {
-    v14 = a8;
+    differentiatorCopy = differentiator;
   }
 
-  v15 = v14;
-  v31 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  v15 = differentiatorCopy;
+  differentiatorCopy2 = differentiator;
+  pointerCopy = pointer;
+  pCopy = p;
+  codeCopy = code;
+  stampCopy = stamp;
+  nCopy = n;
   v21 = +[HashHelper hashHelper];
-  v22 = [(HashHelper *)v21 addNumber:v20];
+  v22 = [(HashHelper *)v21 addNumber:nCopy];
 
-  v23 = [(HashHelper *)v22 addNumber:v19];
+  v23 = [(HashHelper *)v22 addNumber:stampCopy];
 
-  v24 = [(HashHelper *)v23 addNumber:v18];
+  v24 = [(HashHelper *)v23 addNumber:codeCopy];
 
-  v25 = [(HashHelper *)v24 addNumber:v17];
+  v25 = [(HashHelper *)v24 addNumber:pCopy];
 
-  v26 = [(HashHelper *)v25 addNumber:v16];
+  v26 = [(HashHelper *)v25 addNumber:pointerCopy];
 
   v27 = [(HashHelper *)v26 addNumber:v15];
 
-  v28 = [(HashHelper *)v27 getHash];
+  getHash = [(HashHelper *)v27 getHash];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v28, "u32BE:", 0)}];
+  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(getHash, "u32BE:", 0)}];
 
   return v29;
 }
 
-+ (id)calculateCommutePlanUniqueId:(id)a3 withExpiry:(id)a4
++ (id)calculateCommutePlanUniqueId:(id)id withExpiry:(id)expiry
 {
-  v5 = a4;
-  v6 = a3;
+  expiryCopy = expiry;
+  idCopy = id;
   v7 = +[HashHelper hashHelper];
-  v8 = [(HashHelper *)v7 addString:v6];
+  v8 = [(HashHelper *)v7 addString:idCopy];
 
-  v9 = [(HashHelper *)v8 addDateComponents:v5];
+  v9 = [(HashHelper *)v8 addDateComponents:expiryCopy];
 
-  v10 = [(HashHelper *)v9 getHash];
+  getHash = [(HashHelper *)v9 getHash];
 
-  v11 = [v10 asHexString];
+  asHexString = [getHash asHexString];
 
-  return v11;
+  return asHexString;
 }
 
-+ (id)commutePlanWithIdAndExpiry:(id)a3 withExpiry:(id)a4 withUniqueId:(id)a5
++ (id)commutePlanWithIdAndExpiry:(id)expiry withExpiry:(id)withExpiry withUniqueId:(id)id
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (id)
   {
     v23[0] = @"CommutePlanIdentifier";
     v23[1] = @"CommutePlanValidityEndDate";
-    v24[0] = a3;
-    v24[1] = a4;
+    v24[0] = expiry;
+    v24[1] = withExpiry;
     v23[2] = @"CommutePlanUniqueIdentifier";
-    v24[2] = a5;
+    v24[2] = id;
     v7 = MEMORY[0x277CBEAC0];
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    idCopy = id;
+    withExpiryCopy = withExpiry;
+    expiryCopy = expiry;
     v11 = v24;
     v12 = v23;
     v13 = v7;
@@ -503,12 +503,12 @@ LABEL_88:
   {
     v21[0] = @"CommutePlanIdentifier";
     v21[1] = @"CommutePlanValidityEndDate";
-    v22[0] = a3;
-    v22[1] = a4;
+    v22[0] = expiry;
+    v22[1] = withExpiry;
     v15 = MEMORY[0x277CBEAC0];
-    v8 = 0;
-    v16 = a4;
-    v17 = a3;
+    idCopy = 0;
+    withExpiryCopy2 = withExpiry;
+    expiryCopy2 = expiry;
     v11 = v22;
     v12 = v21;
     v13 = v15;
@@ -533,11 +533,11 @@ LABEL_88:
   }
 
   v3 = +[CalypsoDecoder sharedInstance];
-  v4 = [v3 getHciArray];
+  getHciArray = [v3 getHciArray];
 
   v5 = +[CalypsoDecoder sharedInstance];
-  v6 = [v5 getHciArray];
-  v7 = [v6 count];
+  getHciArray2 = [v5 getHciArray];
+  v7 = [getHciArray2 count];
 
   if (!v7)
   {
@@ -553,16 +553,16 @@ LABEL_88:
   }
 
   v8 = +[CalypsoDecoder sharedInstance];
-  v9 = [v8 getAppletAID];
+  getAppletAID = [v8 getAppletAID];
 
-  if (v9)
+  if (getAppletAID)
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v41 = v4;
-    v10 = v4;
+    v41 = getHciArray;
+    v10 = getHciArray;
     v11 = [v10 countByEnumeratingWithState:&v42 objects:v54 count:16];
     if (v11)
     {
@@ -605,25 +605,25 @@ LABEL_88:
     }
 
     v19 = +[CalypsoDecoder sharedInstance];
-    v20 = [v19 getErrorTransaction];
+    getErrorTransaction = [v19 getErrorTransaction];
 
-    if (v20)
+    if (getErrorTransaction)
     {
       v21 = ATLLogObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v22 = +[CalypsoDecoder sharedInstance];
-        v23 = [v22 getErrorCode];
+        getErrorCode = [v22 getErrorCode];
         *buf = 138412290;
-        v53 = v23;
+        v53 = getErrorCode;
         _os_log_impl(&dword_22EEF5000, v21, OS_LOG_TYPE_DEFAULT, "*** Error occurred during transaction. SpecialEvents ErrorCode = %@", buf, 0xCu);
       }
     }
 
     v24 = +[CalypsoDecoder sharedInstance];
-    v25 = [v24 getTransactionDetailRaw];
+    getTransactionDetailRaw = [v24 getTransactionDetailRaw];
 
-    if (!v25)
+    if (!getTransactionDetailRaw)
     {
       v26 = +[CalypsoDecoder sharedInstance];
       v27 = [MEMORY[0x277CBEA90] dataWithHexString:@"010000"];
@@ -634,8 +634,8 @@ LABEL_88:
     v50[0] = @"EventType";
     v50[1] = @"appletIdentifier";
     v28 = +[CalypsoDecoder sharedInstance];
-    v29 = [v28 getAppletAID];
-    v51[1] = v29;
+    getAppletAID2 = [v28 getAppletAID];
+    v51[1] = getAppletAID2;
     v51[2] = &unk_2843C67D0;
     v50[2] = @"Version";
     v50[3] = @"Interface";
@@ -654,15 +654,15 @@ LABEL_88:
     v48 = @"Transaction";
     v46 = @"TypeDetailRaw";
     v34 = +[CalypsoDecoder sharedInstance];
-    v35 = [v34 getTransactionDetailRaw];
-    v47 = v35;
+    getTransactionDetailRaw2 = [v34 getTransactionDetailRaw];
+    v47 = getTransactionDetailRaw2;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     v49 = v36;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     v51[7] = v37;
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:8];
 
-    v4 = v41;
+    getHciArray = v41;
 LABEL_27:
 
     goto LABEL_29;
@@ -676,22 +676,22 @@ LABEL_29:
   return v38;
 }
 
-- (void)interpretTransactionEvent:(id)a3
+- (void)interpretTransactionEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 sfi] != 8 && objc_msgSend(v4, "sfi") != 29)
+  eventCopy = event;
+  if ([eventCopy sfi] != 8 && objc_msgSend(eventCopy, "sfi") != 29)
   {
     goto LABEL_25;
   }
 
-  v5 = [v4 content];
-  v6 = 8 * [v5 length];
+  content = [eventCopy content];
+  v6 = 8 * [content length];
 
   if (v6 >= 0x35)
   {
-    v7 = [v4 content];
-    v8 = [IntercodeDecoder decodeEventEntry:v7];
+    content2 = [eventCopy content];
+    v8 = [IntercodeDecoder decodeEventEntry:content2];
 
     if (!v8)
     {
@@ -709,10 +709,10 @@ LABEL_13:
       if (v19)
       {
         v20 = +[CalypsoDecoder sharedInstance];
-        v21 = [v20 getErrorCode];
-        v22 = [v21 longLongValue];
+        getErrorCode = [v20 getErrorCode];
+        longLongValue = [getErrorCode longLongValue];
 
-        if ((v22 - 32) >= 2 && (v22 - 131) >= 2)
+        if ((longLongValue - 32) >= 2 && (longLongValue - 131) >= 2)
         {
           v23 = +[CalypsoDecoder sharedInstance];
           [v23 setErrorTransaction:1];
@@ -722,9 +722,9 @@ LABEL_13:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v25 = +[CalypsoDecoder sharedInstance];
-          v26 = [v25 getErrorCode];
+          getErrorCode2 = [v25 getErrorCode];
           v35 = 138412290;
-          v36 = v26;
+          selfCopy = getErrorCode2;
           _os_log_impl(&dword_22EEF5000, v24, OS_LOG_TYPE_DEFAULT, "*** SpecialEvent written with ErrorCode = %@", &v35, 0xCu);
         }
       }
@@ -736,27 +736,27 @@ LABEL_13:
     if (v10)
     {
       v11 = +[CalypsoDecoder sharedInstance];
-      v12 = [v11 getTransactionDetailRaw];
-      if (!v12)
+      getTransactionDetailRaw = [v11 getTransactionDetailRaw];
+      if (!getTransactionDetailRaw)
       {
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      v13 = v12;
+      v13 = getTransactionDetailRaw;
       v14 = +[CalypsoDecoder sharedInstance];
-      v15 = [v14 getTransactionDetailRaw];
+      getTransactionDetailRaw2 = [v14 getTransactionDetailRaw];
 
-      if (v10 != v15)
+      if (v10 != getTransactionDetailRaw2)
       {
         v11 = ATLLogObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v16 = +[CalypsoDecoder sharedInstance];
-          v17 = [v16 getTransactionDetailRaw];
+          getTransactionDetailRaw3 = [v16 getTransactionDetailRaw];
           v35 = 138412546;
-          v36 = v17;
+          selfCopy = getTransactionDetailRaw3;
           v37 = 2112;
           v38 = v10;
           _os_log_impl(&dword_22EEF5000, v11, OS_LOG_TYPE_DEFAULT, "Inconsistent transaction details received during a single transaction %@ -> %@", &v35, 0x16u);
@@ -778,19 +778,19 @@ LABEL_22:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     v28 = +[CalypsoDecoder sharedInstance];
-    v29 = [v28 getTransactionDetailRaw];
+    getTransactionDetailRaw4 = [v28 getTransactionDetailRaw];
     v30 = +[CalypsoDecoder sharedInstance];
-    v31 = [v30 getErrorTransaction];
+    getErrorTransaction = [v30 getErrorTransaction];
     v32 = +[CalypsoDecoder sharedInstance];
-    v33 = [v32 getErrorCode];
+    getErrorCode3 = [v32 getErrorCode];
     v35 = 138413058;
-    v36 = self;
+    selfCopy = self;
     v37 = 2112;
-    v38 = v29;
+    v38 = getTransactionDetailRaw4;
     v39 = 1024;
-    v40 = v31;
+    v40 = getErrorTransaction;
     v41 = 2112;
-    v42 = v33;
+    v42 = getErrorCode3;
     _os_log_impl(&dword_22EEF5000, v27, OS_LOG_TYPE_DEBUG, "*** (%@) transactionDetailRaw = %@, errorTransaction = %d, errorCode = %@", &v35, 0x26u);
   }
 
@@ -798,33 +798,33 @@ LABEL_25:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v106 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [MEMORY[0x277CBEA90] dataWithHexString:a4];
+  historyCopy = history;
+  v11 = [MEMORY[0x277CBEA90] dataWithHexString:applet];
   v12 = SelectByNameCmd(v11);
 
   v99 = 0;
-  v13 = [v10 transceiveAndCheckSW:v12 error:&v99];
+  v13 = [historyCopy transceiveAndCheckSW:v12 error:&v99];
   v14 = v99;
   v15 = v14;
   if (v13)
   {
-    v81 = a7;
+    errorCopy = error;
     v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
     v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
     v98 = v15;
-    v18 = [(SpringwaterDecoder *)self readAndDecodeContracts:v10 sfi:9 count:4 error:&v98];
+    v18 = [(SpringwaterDecoder *)self readAndDecodeContracts:historyCopy sfi:9 count:4 error:&v98];
     v19 = v98;
 
     if (v19)
     {
-      if (v81)
+      if (errorCopy)
       {
         v20 = v19;
         v21 = 0;
-        *v81 = v19;
+        *errorCopy = v19;
       }
 
       else
@@ -837,17 +837,17 @@ LABEL_25:
     {
       [v16 setObject:v18 forKeyedSubscript:@"ContractList"];
       v97 = 0;
-      v23 = [SpringwaterDecoder readAndDecodeHistory:v10 sfi:8 count:10 error:&v97];
+      v23 = [SpringwaterDecoder readAndDecodeHistory:historyCopy sfi:8 count:10 error:&v97];
       v24 = v97;
       if (v24)
       {
         v19 = v24;
         v25 = v23;
-        if (v81)
+        if (errorCopy)
         {
           v26 = v24;
           v21 = 0;
-          *v81 = v19;
+          *errorCopy = v19;
         }
 
         else
@@ -863,18 +863,18 @@ LABEL_25:
         v80 = [(SpringwaterDecoder *)self parseHistory:v23 withContracts:v18];
         v83 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
         v96 = 0;
-        v28 = [(SpringwaterDecoder *)self readAndDecodeContractList:v10 sfi:30 error:&v96];
+        v28 = [(SpringwaterDecoder *)self readAndDecodeContractList:historyCopy sfi:30 error:&v96];
         v29 = v96;
         v78 = v28;
         v79 = v23;
         if (v29)
         {
           v19 = v29;
-          if (v81)
+          if (errorCopy)
           {
             v30 = v29;
             v21 = 0;
-            *v81 = v19;
+            *errorCopy = v19;
           }
 
           else
@@ -889,7 +889,7 @@ LABEL_25:
           v74 = v16;
           v75 = v13;
           v76 = v12;
-          v77 = v10;
+          v77 = historyCopy;
           [v16 setObject:v28 forKeyedSubscript:@"BestContractList"];
           v31 = [SpringwaterDecoder getUnvalidatableContracts:v28];
           v32 = ATLLogObject();
@@ -977,9 +977,9 @@ LABEL_25:
                 }
 
                 v47 = [v35 objectForKeyedSubscript:@"ContractStatus"];
-                v48 = [v47 integerValue];
+                integerValue = [v47 integerValue];
 
-                if (v48 == 1 && ([MEMORY[0x277CCABB0] numberWithUnsignedShort:v33], v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "objectForKeyedSubscript:", v49), v50 = objc_claimAutoreleasedReturnValue(), v50, v49, !v50))
+                if (integerValue == 1 && ([MEMORY[0x277CCABB0] numberWithUnsignedShort:v33], v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "objectForKeyedSubscript:", v49), v50 = objc_claimAutoreleasedReturnValue(), v50, v49, !v50))
                 {
                   v51 = [v35 objectForKeyedSubscript:@"ContractValidityJourneysData"];
                   v52 = [v51 objectForKeyedSubscript:@"ContractCounterStructure"];
@@ -1025,7 +1025,7 @@ LABEL_25:
           v89 = 0u;
           v60 = v18;
           v61 = [v60 countByEnumeratingWithState:&v88 objects:v102 count:16];
-          v10 = v77;
+          historyCopy = v77;
           v13 = v75;
           v17 = v73;
           if (v61)
@@ -1059,11 +1059,11 @@ LABEL_25:
           if (v66)
           {
             v12 = v76;
-            if (v81)
+            if (errorCopy)
             {
               v67 = v66;
               v21 = 0;
-              *v81 = v19;
+              *errorCopy = v19;
             }
 
             else
@@ -1101,11 +1101,11 @@ LABEL_25:
     v15 = v19;
   }
 
-  else if (a7)
+  else if (error)
   {
     v22 = v14;
     v21 = 0;
-    *a7 = v15;
+    *error = v15;
   }
 
   else
@@ -1118,7 +1118,7 @@ LABEL_25:
   return v21;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withError:(id *)a4
+- (id)getAppletStateAndHistory:(id)history withError:(id *)error
 {
   v4 = ATLLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1130,13 +1130,13 @@ LABEL_25:
   return 0;
 }
 
-+ (id)getUnvalidatableContracts:(id)a3
++ (id)getUnvalidatableContracts:(id)contracts
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = v3;
-  v5 = [v3 objectForKeyedSubscript:@"BestContractList"];
+  contractsCopy = contracts;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v18 = contractsCopy;
+  v5 = [contractsCopy objectForKeyedSubscript:@"BestContractList"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1165,13 +1165,13 @@ LABEL_25:
         }
 
         v12 = [v10 objectForKeyedSubscript:@"BestContractPriority"];
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
-        if ((v13 & 0xFCu) >= 0xCuLL)
+        if ((integerValue & 0xFCu) >= 0xCuLL)
         {
           v14 = [v10 objectForKeyedSubscript:@"BestContractPriority"];
           v15 = [v10 objectForKeyedSubscript:@"BestContractPointer"];
-          [v4 setObject:v14 forKeyedSubscript:v15];
+          [dictionary setObject:v14 forKeyedSubscript:v15];
         }
       }
 
@@ -1183,29 +1183,29 @@ LABEL_25:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-+ (void)stripContract:(id)a3
++ (void)stripContract:(id)contract
 {
-  v3 = a3;
-  [v3 removeObjectForKey:@"ContractBitmap"];
-  [v3 removeObjectForKey:@"ContractTariff"];
-  [v3 removeObjectForKey:@"ContractPointerNumber"];
-  [v3 removeObjectForKey:@"ContractValidityStartDate"];
-  [v3 removeObjectForKey:@"ContractValidityEndDate"];
-  [v3 removeObjectForKey:@"ContractValidityStartTime"];
-  [v3 removeObjectForKey:@"ContractValidityEndTime"];
-  [v3 removeObjectForKey:@"ContractValidityInfoBitmap"];
+  contractCopy = contract;
+  [contractCopy removeObjectForKey:@"ContractBitmap"];
+  [contractCopy removeObjectForKey:@"ContractTariff"];
+  [contractCopy removeObjectForKey:@"ContractPointerNumber"];
+  [contractCopy removeObjectForKey:@"ContractValidityStartDate"];
+  [contractCopy removeObjectForKey:@"ContractValidityEndDate"];
+  [contractCopy removeObjectForKey:@"ContractValidityStartTime"];
+  [contractCopy removeObjectForKey:@"ContractValidityEndTime"];
+  [contractCopy removeObjectForKey:@"ContractValidityInfoBitmap"];
 }
 
-- (id)parseHistory:(id)a3 withContracts:(id)a4
+- (id)parseHistory:(id)history withContracts:(id)contracts
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v69 = a4;
-  v70 = v5;
-  v6 = [v5 count];
+  historyCopy = history;
+  contractsCopy = contracts;
+  v70 = historyCopy;
+  v6 = [historyCopy count];
   v68 = [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
   v71 = v6;
   if (v6)
@@ -1245,9 +1245,9 @@ LABEL_25:
       {
         v26 = [v70 objectAtIndexedSubscript:v7];
         v27 = [v26 objectForKeyedSubscript:@"EventCode"];
-        v28 = [v27 unsignedLongValue];
+        unsignedLongValue = [v27 unsignedLongValue];
 
-        v29 = v28 >> 4;
+        v29 = unsignedLongValue >> 4;
         v25 = 1;
         if (v29 != 1 && v29 != 4)
         {
@@ -1276,7 +1276,7 @@ LABEL_25:
       }
 
       v34 = [v9 objectForKeyedSubscript:@"EventLocationId"];
-      v35 = [v34 integerValue];
+      integerValue = [v34 integerValue];
 
       v36 = [v8 objectForKeyedSubscript:@"InternalEnRouteStatus"];
       if (v36 == @"Enter")
@@ -1290,9 +1290,9 @@ LABEL_25:
         v38 = v37 == @"CVPEnter";
       }
 
-      if (v38 && v35)
+      if (v38 && integerValue)
       {
-        v39 = [MEMORY[0x277CBEA90] dataWithIntBE:v35];
+        v39 = [MEMORY[0x277CBEA90] dataWithIntBE:integerValue];
         [v8 setObject:v39 forKeyedSubscript:@"StartStation"];
       }
 
@@ -1301,7 +1301,7 @@ LABEL_25:
       if (v40 == @"Exit")
       {
 
-        if (!v35)
+        if (!integerValue)
         {
           goto LABEL_22;
         }
@@ -1311,13 +1311,13 @@ LABEL_25:
       {
         v42 = [v8 objectForKeyedSubscript:@"InternalEnRouteStatus"];
 
-        if (v42 != @"CVPExit" || !v35)
+        if (v42 != @"CVPExit" || !integerValue)
         {
           goto LABEL_22;
         }
       }
 
-      v43 = [MEMORY[0x277CBEA90] dataWithIntBE:v35];
+      v43 = [MEMORY[0x277CBEA90] dataWithIntBE:integerValue];
       [v8 setObject:v43 forKeyedSubscript:@"EndStation"];
 
 LABEL_22:
@@ -1339,12 +1339,12 @@ LABEL_22:
       v51 = [v9 objectForKeyedSubscript:@"EventContractPointer"];
       v52 = [v51 unsignedIntValue] - 1;
 
-      v53 = [v69 objectAtIndex:v52];
+      v53 = [contractsCopy objectAtIndex:v52];
       v54 = [v53 objectForKeyedSubscript:@"ContractValidityJourneysData"];
       v55 = [v54 objectForKeyedSubscript:@"ContractCounterStructure"];
-      v56 = [v55 unsignedIntValue];
+      unsignedIntValue = [v55 unsignedIntValue];
 
-      if (v56 == 12)
+      if (unsignedIntValue == 12)
       {
         v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v25];
         v58 = [v53 objectForKeyedSubscript:@"CommutePlanIdentifier"];
@@ -1382,15 +1382,15 @@ LABEL_22:
   return v68;
 }
 
-+ (id)getTransitModality:(id)a3
++ (id)getTransitModality:(id)modality
 {
-  v3 = [a3 unsignedLongValue];
-  if (v3 == 89)
+  unsignedLongValue = [modality unsignedLongValue];
+  if (unsignedLongValue == 89)
   {
     return @"TransitOther";
   }
 
-  v5 = v3 >> 4;
+  v5 = unsignedLongValue >> 4;
   if (v5 <= 3)
   {
     if (v5 == 1)
@@ -1420,10 +1420,10 @@ LABEL_22:
   return @"Transit";
 }
 
-+ (id)formatTransitDetailRaw:(id)a3
++ (id)formatTransitDetailRaw:(id)raw
 {
-  v3 = [a3 unsignedLongValue];
-  v4 = (v3 & 0xF) - 2;
+  unsignedLongValue = [raw unsignedLongValue];
+  v4 = (unsignedLongValue & 0xF) - 2;
   if (v4 < 0xA && ((0x233u >> v4) & 1) != 0)
   {
     v5 = 0;
@@ -1433,7 +1433,7 @@ LABEL_22:
 
   else
   {
-    v8 = v3 >> 4;
+    v8 = unsignedLongValue >> 4;
     if (v8 == 14)
     {
       v9 = 4;
@@ -1495,7 +1495,7 @@ LABEL_22:
     }
 
     v7 = 1;
-    if ((v3 >> 4) <= 3uLL)
+    if ((unsignedLongValue >> 4) <= 3uLL)
     {
       v5 = 0;
     }
@@ -1505,7 +1505,7 @@ LABEL_22:
       v5 = v12;
     }
 
-    if ((v3 >> 4) <= 3uLL)
+    if ((unsignedLongValue >> 4) <= 3uLL)
     {
       v6 = v14;
     }
@@ -1524,9 +1524,9 @@ LABEL_22:
   return v15;
 }
 
-+ (id)getInternalEnRouteStatus:(id)a3
++ (id)getInternalEnRouteStatus:(id)status
 {
-  v3 = ([a3 unsignedLongValue] & 0xF) - 1;
+  v3 = ([status unsignedLongValue] & 0xF) - 1;
   if (v3 > 0xA)
   {
     return @"Unknown";
@@ -1538,11 +1538,11 @@ LABEL_22:
   }
 }
 
-+ (id)getCardIdFromSelectResponse:(id)a3
++ (id)getCardIdFromSelectResponse:(id)response
 {
-  v3 = a3;
-  v13[0] = [v3 bytes];
-  v4 = [v3 length];
+  responseCopy = response;
+  v13[0] = [responseCopy bytes];
+  v4 = [responseCopy length];
 
   v13[1] = v4;
   v10 = 0;

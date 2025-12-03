@@ -1,7 +1,7 @@
 @interface HeadphoneAudioNotificationModel
 + (_TtC6Bridge31HeadphoneAudioNotificationModel)shared;
 - (_TtC6Bridge31HeadphoneAudioNotificationModel)init;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation HeadphoneAudioNotificationModel
@@ -30,11 +30,11 @@
   return [(HeadphoneAudioNotificationModel *)&v4 init];
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   sub_1001379C4(&qword_1002BC338);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   HeadphoneAudioNotificationModel.setData(_:)(v4);
 }
 

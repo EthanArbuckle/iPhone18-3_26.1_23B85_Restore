@@ -1,12 +1,12 @@
 @interface SBFLegacyWallpaperWakeAnimator
 - (BOOL)_shouldHideWakeEffectViewAfterUpdate;
 - (UIVisualEffectView)wakeEffectView;
-- (id)_wakeEffectsForAnimatingWakeState:(int64_t)a3;
-- (id)_wakeEffectsForPersistentWakeState:(int64_t)a3;
-- (int64_t)_targetWakeStateForFadeIn:(BOOL)a3;
+- (id)_wakeEffectsForAnimatingWakeState:(int64_t)state;
+- (id)_wakeEffectsForPersistentWakeState:(int64_t)state;
+- (int64_t)_targetWakeStateForFadeIn:(BOOL)in;
 - (void)removeAllWakeEffects;
-- (void)setWakeEffectView:(id)a3;
-- (void)updateWakeEffectsForWake:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setWakeEffectView:(id)view;
+- (void)updateWakeEffectsForWake:(BOOL)wake animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBFLegacyWallpaperWakeAnimator
@@ -17,9 +17,9 @@
   [WeakRetained setBackgroundEffects:MEMORY[0x1E695E0F0]];
 }
 
-- (void)setWakeEffectView:(id)a3
+- (void)setWakeEffectView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_wakeEffectView);
 
   v5 = obj;
@@ -37,24 +37,24 @@
   }
 }
 
-- (void)updateWakeEffectsForWake:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateWakeEffectsForWake:(BOOL)wake animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  wakeCopy = wake;
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(SBFLegacyWallpaperWakeAnimator *)self _targetWakeStateForFadeIn:v6];
-  v10 = [(SBFLegacyWallpaperWakeAnimator *)self wakeState];
+  completionCopy = completion;
+  v9 = [(SBFLegacyWallpaperWakeAnimator *)self _targetWakeStateForFadeIn:wakeCopy];
+  wakeState = [(SBFLegacyWallpaperWakeAnimator *)self wakeState];
   v11 = SBLogScreenWake();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v27 = @"unknown";
-    if (v10 == 1)
+    if (wakeState == 1)
     {
       v27 = @"sleep";
     }
 
-    if (v10 == 2)
+    if (wakeState == 2)
     {
       v27 = @"awake";
     }
@@ -73,9 +73,9 @@
 
     v30 = v29;
     *buf = 67109890;
-    v42 = v6;
+    v42 = wakeCopy;
     v43 = 1024;
-    v44 = v5;
+    v44 = animatedCopy;
     v45 = 2112;
     v46 = v28;
     v47 = 2112;
@@ -83,25 +83,25 @@
     _os_log_debug_impl(&dword_1BEA11000, v11, OS_LOG_TYPE_DEBUG, "updateWakeEffectsForWake:%{BOOL}d animated:%{BOOL}d (%@ -> %@)", buf, 0x22u);
   }
 
-  if (v9 != v10)
+  if (v9 != wakeState)
   {
     [(SBFLegacyWallpaperWakeAnimator *)self setWakeState:v9];
     WeakRetained = objc_loadWeakRetained(&self->_wakeEffectView);
-    if (!v5)
+    if (!animatedCopy)
     {
       v13 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForAnimatingWakeState:v9];
       [WeakRetained setBackgroundEffects:v13];
       v17 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForPersistentWakeState:v9];
       [WeakRetained setBackgroundEffects:v17];
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       goto LABEL_15;
     }
 
-    v13 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForAnimatingWakeState:v10];
+    v13 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForAnimatingWakeState:wakeState];
     v14 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForAnimatingWakeState:v9];
     v15 = [(SBFLegacyWallpaperWakeAnimator *)self _wakeEffectsForPersistentWakeState:v9];
     v16 = +[SBFWakeAnimationDomain rootSettings];
@@ -109,7 +109,7 @@
     v32 = v14;
     if (v9 == 2)
     {
-      v18 = [v16 awakeWallpaperFilterSettings];
+      awakeWallpaperFilterSettings = [v16 awakeWallpaperFilterSettings];
     }
 
     else
@@ -120,10 +120,10 @@
         goto LABEL_14;
       }
 
-      v18 = [v16 sleepWallpaperFilterSettings];
+      awakeWallpaperFilterSettings = [v16 sleepWallpaperFilterSettings];
     }
 
-    v19 = v18;
+    v19 = awakeWallpaperFilterSettings;
 LABEL_14:
     [WeakRetained setHidden:0];
     [WeakRetained setBackgroundEffects:v13];
@@ -136,12 +136,12 @@ LABEL_14:
     v37 = v15;
     v20 = WeakRetained;
     v38 = v20;
-    v39 = v8;
+    v39 = completionCopy;
     v31 = v15;
     v21 = MEMORY[0x1BFB4D9B0](v36);
     v22 = MEMORY[0x1E698E7D0];
-    v23 = [v19 BSAnimationSettings];
-    v24 = [v22 factoryWithSettings:v23];
+    bSAnimationSettings = [v19 BSAnimationSettings];
+    v24 = [v22 factoryWithSettings:bSAnimationSettings];
 
     v25 = MEMORY[0x1E698E7D0];
     v33[0] = MEMORY[0x1E69E9820];
@@ -157,9 +157,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_16:
@@ -191,9 +191,9 @@ uint64_t __79__SBFLegacyWallpaperWakeAnimator_updateWakeEffectsForWake_animated_
   return result;
 }
 
-- (int64_t)_targetWakeStateForFadeIn:(BOOL)a3
+- (int64_t)_targetWakeStateForFadeIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     return 2;
   }
@@ -204,12 +204,12 @@ uint64_t __79__SBFLegacyWallpaperWakeAnimator_updateWakeEffectsForWake_animated_
   }
 }
 
-- (id)_wakeEffectsForAnimatingWakeState:(int64_t)a3
+- (id)_wakeEffectsForAnimatingWakeState:(int64_t)state
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = +[SBFWakeAnimationDomain rootSettings];
   v5 = v4;
-  switch(a3)
+  switch(state)
   {
     case 0:
       v8 = MEMORY[0x1E695E0F0];
@@ -237,12 +237,12 @@ LABEL_10:
   return v8;
 }
 
-- (id)_wakeEffectsForPersistentWakeState:(int64_t)a3
+- (id)_wakeEffectsForPersistentWakeState:(int64_t)state
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = +[SBFWakeAnimationDomain rootSettings];
   v5 = v4;
-  if (a3 == 1 && (v6 = MEMORY[0x1E69DC898], [v4 sleepColorBrightness], objc_msgSend(v6, "colorEffectBrightness:"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (state == 1 && (v6 = MEMORY[0x1E69DC898], [v4 sleepColorBrightness], objc_msgSend(v6, "colorEffectBrightness:"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v11[0] = v7;
@@ -259,10 +259,10 @@ LABEL_10:
 
 - (BOOL)_shouldHideWakeEffectViewAfterUpdate
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (UIVisualEffectView)wakeEffectView

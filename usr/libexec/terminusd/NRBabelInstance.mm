@@ -1,22 +1,22 @@
 @interface NRBabelInstance
-- (BOOL)purgeAllRoutesFromNeighbor:(id)a3;
-- (BOOL)purgeInterface:(id)a3;
+- (BOOL)purgeAllRoutesFromNeighbor:(id)neighbor;
+- (BOOL)purgeInterface:(id)interface;
 - (NRBabelInstance)init;
-- (id)copyNeighborWithAddr:(const in6_addr *)a3 babelInterface:(id)a4 isNewNeighbor:(BOOL *)a5;
-- (id)copyPendingOutgoingSeqnoReqWithPrefix:(id)a3 routerID:(unint64_t)a4 isNewPOSR:(BOOL *)a5;
+- (id)copyNeighborWithAddr:(const in6_addr *)addr babelInterface:(id)interface isNewNeighbor:(BOOL *)neighbor;
+- (id)copyPendingOutgoingSeqnoReqWithPrefix:(id)prefix routerID:(unint64_t)d isNewPOSR:(BOOL *)r;
 - (id)copyRouteString;
-- (id)copyRouteWithPrefix:(id)a3 neighbor:(id)a4;
-- (id)copySourceWithPrefix:(id)a3 routerID:(unint64_t)a4;
-- (id)createSelectedRoutesArrayForPrefix:(id)a3;
+- (id)copyRouteWithPrefix:(id)prefix neighbor:(id)neighbor;
+- (id)copySourceWithPrefix:(id)prefix routerID:(unint64_t)d;
+- (id)createSelectedRoutesArrayForPrefix:(id)prefix;
 - (id)description;
-- (void)addRouterID:(unint64_t)a3 toTLVs:(id)a4;
-- (void)addUpdateForRoute:(id)a3 interval:(unsigned __int16)a4 toTLVs:(id)a5;
+- (void)addRouterID:(unint64_t)d toTLVs:(id)vs;
+- (void)addUpdateForRoute:(id)route interval:(unsigned __int16)interval toTLVs:(id)vs;
 - (void)dealloc;
-- (void)handleIfBringupPathUpdate:(id)a3;
-- (void)sendImmediateRouteUpdateToNeighbor:(id)a3;
-- (void)setupAddress:(in6_addr *)a3;
+- (void)handleIfBringupPathUpdate:(id)update;
+- (void)sendImmediateRouteUpdateToNeighbor:(id)neighbor;
+- (void)setupAddress:(in6_addr *)address;
 - (void)setupInterfaces;
-- (void)updateFeasabilityDistanceForRoute:(id)a3;
+- (void)updateFeasabilityDistanceForRoute:(id)route;
 - (void)updateRoutes;
 @end
 
@@ -31,8 +31,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(NRBabelInstance *)self interfaces];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  interfaces = [(NRBabelInstance *)self interfaces];
+  v5 = [interfaces countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,7 +44,7 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interfaces);
         }
 
         [v3 appendFormat:@"\t%@\n", *(*(&v28 + 1) + 8 * v8)];
@@ -52,7 +52,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v6 = [interfaces countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v6);
@@ -63,8 +63,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(NRBabelInstance *)self neighbors];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  neighbors = [(NRBabelInstance *)self neighbors];
+  v10 = [neighbors countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -76,7 +76,7 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(neighbors);
         }
 
         [v3 appendFormat:@"\t%@\n", *(*(&v24 + 1) + 8 * v13)];
@@ -84,7 +84,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v11 = [neighbors countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v11);
@@ -95,8 +95,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(NRBabelInstance *)self routes];
-  v15 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  routes = [(NRBabelInstance *)self routes];
+  v15 = [routes countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -108,7 +108,7 @@
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(routes);
         }
 
         [v3 appendFormat:@"\t%@\n", *(*(&v20 + 1) + 8 * v18)];
@@ -116,7 +116,7 @@
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v16 = [routes countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v16);
@@ -148,13 +148,13 @@
   return v10;
 }
 
-- (void)sendImmediateRouteUpdateToNeighbor:(id)a3
+- (void)sendImmediateRouteUpdateToNeighbor:(id)neighbor
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  neighborCopy = neighbor;
+  v5 = neighborCopy;
+  if (neighborCopy)
   {
-    v23 = v4;
+    v23 = neighborCopy;
     v6 = [NSArray arrayWithObjects:&v23 count:1];
   }
 
@@ -164,7 +164,7 @@
   }
 
   v7 = v6;
-  v8 = [(NRBabelInstance *)self createUpdateTLVs];
+  createUpdateTLVs = [(NRBabelInstance *)self createUpdateTLVs];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -186,13 +186,13 @@
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = objc_alloc_init(NSMutableArray);
-        v16 = [v14 createIHUTLV];
-        [v15 addObject:v16];
+        createIHUTLV = [v14 createIHUTLV];
+        [v15 addObject:createIHUTLV];
 
-        v17 = [v14 createPersonalHelloTLV];
-        [v15 addObject:v17];
+        createPersonalHelloTLV = [v14 createPersonalHelloTLV];
+        [v15 addObject:createPersonalHelloTLV];
 
-        [v15 addObjectsFromArray:v8];
+        [v15 addObjectsFromArray:createUpdateTLVs];
         [v14 sendTLVs:v15];
         [v14 enqueueNextUpdate];
         [v14 enqueueNextIHU];
@@ -205,41 +205,41 @@
   }
 }
 
-- (void)updateFeasabilityDistanceForRoute:(id)a3
+- (void)updateFeasabilityDistanceForRoute:(id)route
 {
-  v12 = a3;
-  if ([v12 metric] != 0xFFFF)
+  routeCopy = route;
+  if ([routeCopy metric] != 0xFFFF)
   {
-    v4 = [v12 bPrefix];
-    v5 = -[NRBabelInstance copySourceWithPrefix:routerID:](self, "copySourceWithPrefix:routerID:", v4, [v12 routerID]);
+    bPrefix = [routeCopy bPrefix];
+    v5 = -[NRBabelInstance copySourceWithPrefix:routerID:](self, "copySourceWithPrefix:routerID:", bPrefix, [routeCopy routerID]);
 
     if (v5)
     {
-      -[NRBabelSource updateFeasabilityDistanceWithSeqno:metric:](v5, "updateFeasabilityDistanceWithSeqno:metric:", [v12 seqno], objc_msgSend(v12, "metric"));
+      -[NRBabelSource updateFeasabilityDistanceWithSeqno:metric:](v5, "updateFeasabilityDistanceWithSeqno:metric:", [routeCopy seqno], objc_msgSend(routeCopy, "metric"));
     }
 
     else
     {
       v6 = [NRBabelSource alloc];
-      v7 = [v12 bPrefix];
-      v8 = [v12 routerID];
-      v9 = [v12 seqno];
-      v10 = [v12 receivedMetric];
-      v11 = [v12 instance];
-      v5 = [(NRBabelSource *)v6 initWithPrefix:v7 routerID:v8 seqno:v9 metric:v10 instance:v11];
+      bPrefix2 = [routeCopy bPrefix];
+      routerID = [routeCopy routerID];
+      seqno = [routeCopy seqno];
+      receivedMetric = [routeCopy receivedMetric];
+      instance = [routeCopy instance];
+      v5 = [(NRBabelSource *)v6 initWithPrefix:bPrefix2 routerID:routerID seqno:seqno metric:receivedMetric instance:instance];
     }
 
     [(NRBabelSource *)v5 resetGCTimer];
   }
 }
 
-- (id)createSelectedRoutesArrayForPrefix:(id)a3
+- (id)createSelectedRoutesArrayForPrefix:(id)prefix
 {
-  v3 = a3;
-  if (![v3 plen])
+  prefixCopy = prefix;
+  if (![prefixCopy plen])
   {
 
-    v3 = 0;
+    prefixCopy = 0;
   }
 
   v4 = objc_alloc_init(NSMutableArray);
@@ -279,13 +279,13 @@
                 dispatch_once(&qword_100229100, &stru_1001FB6C8);
               }
 
-              v14 = self;
+              selfCopy = self;
               v15 = v10;
               _NRLogWithArgs();
             }
           }
 
-          else if (!v3 || ([v10 bPrefix], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v3, "isEqual:", v11), v11, v12))
+          else if (!prefixCopy || ([v10 bPrefix], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(prefixCopy, "isEqual:", v11), v11, v12))
           {
             [v4 addObject:v10];
           }
@@ -301,38 +301,38 @@
   return v4;
 }
 
-- (void)addUpdateForRoute:(id)a3 interval:(unsigned __int16)a4 toTLVs:(id)a5
+- (void)addUpdateForRoute:(id)route interval:(unsigned __int16)interval toTLVs:(id)vs
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  intervalCopy = interval;
+  routeCopy = route;
+  vsCopy = vs;
   v18 = 0uLL;
-  v9 = [v7 bPrefix];
-  [v9 writePrefix:&v18];
+  bPrefix = [routeCopy bPrefix];
+  [bPrefix writePrefix:&v18];
 
   if (v18 || *(&v18 + 4) != 0xFFFF000000000000)
   {
     LODWORD(v17) = 0;
     v13 = 8;
-    HIWORD(v13) = __rev16(v6);
-    v14 = __rev16([v7 seqno]);
-    v15 = __rev16([v7 metric]);
-    v10 = [v7 bPrefix];
-    v11 = [v10 writeToAE:&v13 + 2 plen:&v13 + 4 prefix:&v16];
+    HIWORD(v13) = __rev16(intervalCopy);
+    v14 = __rev16([routeCopy seqno]);
+    v15 = __rev16([routeCopy metric]);
+    bPrefix2 = [routeCopy bPrefix];
+    v11 = [bPrefix2 writeToAE:&v13 + 2 plen:&v13 + 4 prefix:&v16];
 
     BYTE1(v13) = v11 + 10;
     v12 = [[NSData alloc] initWithBytes:&v13 length:(v11 + 10) + 2];
-    [v8 addObject:v12];
+    [vsCopy addObject:v12];
   }
 }
 
-- (void)addRouterID:(unint64_t)a3 toTLVs:(id)a4
+- (void)addRouterID:(unint64_t)d toTLVs:(id)vs
 {
   v6 = 2566;
-  v7 = a3;
-  v4 = a4;
+  dCopy = d;
+  vsCopy = vs;
   v5 = [[NSData alloc] initWithBytes:&v6 length:12];
-  [v4 addObject:v5];
+  [vsCopy addObject:v5];
 }
 
 - (void)updateRoutes
@@ -342,7 +342,7 @@
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v61 = self;
+  selfCopy = self;
   v4 = self->_routes;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v83 objects:v92 count:16];
   if (v5)
@@ -359,13 +359,13 @@
         }
 
         v9 = *(*(&v83 + 1) + 8 * i);
-        v10 = [v9 bPrefix];
-        v11 = [v3 containsObject:v10];
+        bPrefix = [v9 bPrefix];
+        v11 = [v3 containsObject:bPrefix];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 bPrefix];
-          [v3 addObject:v12];
+          bPrefix2 = [v9 bPrefix];
+          [v3 addObject:bPrefix2];
         }
       }
 
@@ -399,7 +399,7 @@
         v76 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v16 = v61->_routes;
+        v16 = selfCopy->_routes;
         v17 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v75 objects:v90 count:16];
         if (v17)
         {
@@ -407,7 +407,7 @@
           v59 = j;
           v14 = 0;
           v19 = *v76;
-          v20 = -1;
+          metric = -1;
           do
           {
             for (k = 0; k != v18; k = k + 1)
@@ -418,14 +418,14 @@
               }
 
               v22 = *(*(&v75 + 1) + 8 * k);
-              v23 = [v22 bPrefix];
-              v24 = [v15 isContainedInPrefix:v23];
+              bPrefix3 = [v22 bPrefix];
+              v24 = [v15 isContainedInPrefix:bPrefix3];
 
-              if (v24 && [v22 metric] < v20)
+              if (v24 && [v22 metric] < metric)
               {
                 v25 = v22;
 
-                v20 = [v25 metric];
+                metric = [v25 metric];
                 v14 = v25;
               }
             }
@@ -468,7 +468,7 @@
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v26 = v61->_routes;
+  v26 = selfCopy->_routes;
   v27 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v71 objects:v89 count:16];
   if (v27)
   {
@@ -485,9 +485,9 @@
         }
 
         v32 = *(*(&v71 + 1) + 8 * m);
-        v33 = [v32 selected];
+        selected = [v32 selected];
         v34 = [v62 containsObject:v32];
-        if (v33 != v34)
+        if (selected != v34)
         {
           v35 = v34;
           [v32 setSelected:v34];
@@ -512,7 +512,7 @@
             v54 = v36;
             v55 = v32;
             v52 = 3256;
-            v53 = v61;
+            v53 = selfCopy;
             v50 = "";
             v51 = "[NRBabelInstance updateRoutes]";
             _NRLogWithArgs();
@@ -542,7 +542,7 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v37 = v61->_routes;
+  v37 = selfCopy->_routes;
   v38 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v67 objects:v88 count:16];
   if (v38)
   {
@@ -588,7 +588,7 @@
 
   if (v29)
   {
-    v43 = [[NSArray alloc] initWithArray:v61->_posrs];
+    v43 = [[NSArray alloc] initWithArray:selfCopy->_posrs];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
@@ -617,7 +617,7 @@
       while (v46);
     }
 
-    [(NRBabelInstance *)v61 sendImmediateRouteUpdateToAllNeighbors];
+    [(NRBabelInstance *)selfCopy sendImmediateRouteUpdateToAllNeighbors];
     v49 = v62;
   }
 
@@ -641,9 +641,9 @@
   }
 }
 
-- (BOOL)purgeInterface:(id)a3
+- (BOOL)purgeInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -665,8 +665,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 babelInterface];
-        v13 = [v12 isEqual:v4];
+        babelInterface = [v11 babelInterface];
+        v13 = [babelInterface isEqual:interfaceCopy];
 
         if (v13)
         {
@@ -688,9 +688,9 @@
   return v8 & 1;
 }
 
-- (BOOL)purgeAllRoutesFromNeighbor:(id)a3
+- (BOOL)purgeAllRoutesFromNeighbor:(id)neighbor
 {
-  v4 = a3;
+  neighborCopy = neighbor;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -712,12 +712,12 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 neighbor];
-        if ([v12 isEqual:v4])
+        neighbor = [v11 neighbor];
+        if ([neighbor isEqual:neighborCopy])
         {
-          v13 = [v11 receivedMetric];
+          receivedMetric = [v11 receivedMetric];
 
-          if (v13 != 0xFFFF)
+          if (receivedMetric != 0xFFFF)
           {
             [v11 setReceivedMetric:0xFFFFLL];
             v8 = 1;
@@ -743,9 +743,9 @@
   return v8 & 1;
 }
 
-- (id)copyPendingOutgoingSeqnoReqWithPrefix:(id)a3 routerID:(unint64_t)a4 isNewPOSR:(BOOL *)a5
+- (id)copyPendingOutgoingSeqnoReqWithPrefix:(id)prefix routerID:(unint64_t)d isNewPOSR:(BOOL *)r
 {
-  v8 = a3;
+  prefixCopy = prefix;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -765,7 +765,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 matchesPrefix:v8 routerID:{a4, v16}])
+        if ([v13 matchesPrefix:prefixCopy routerID:{d, v16}])
         {
           v10 = v13;
           goto LABEL_11;
@@ -784,14 +784,14 @@
 
 LABEL_11:
 
-  if (a5)
+  if (r)
   {
-    *a5 = v10 == 0;
+    *r = v10 == 0;
   }
 
   if (!v10)
   {
-    v14 = [[NRPendingOutgoingSeqnoReq alloc] initWithInstance:self prefix:v8 routerID:a4];
+    v14 = [[NRPendingOutgoingSeqnoReq alloc] initWithInstance:self prefix:prefixCopy routerID:d];
     if (v14)
     {
       v10 = v14;
@@ -822,10 +822,10 @@ LABEL_11:
   return v10;
 }
 
-- (id)copyRouteWithPrefix:(id)a3 neighbor:(id)a4
+- (id)copyRouteWithPrefix:(id)prefix neighbor:(id)neighbor
 {
-  v6 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  neighborCopy = neighbor;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -845,7 +845,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 matchesPrefix:v6 neighbor:{v7, v14}])
+        if ([v12 matchesPrefix:prefixCopy neighbor:{neighborCopy, v14}])
         {
           v9 = v12;
           goto LABEL_11;
@@ -867,9 +867,9 @@ LABEL_11:
   return v9;
 }
 
-- (id)copySourceWithPrefix:(id)a3 routerID:(unint64_t)a4
+- (id)copySourceWithPrefix:(id)prefix routerID:(unint64_t)d
 {
-  v6 = a3;
+  prefixCopy = prefix;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -890,7 +890,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 matchesPrefix:v6 routerID:{a4, v15}])
+        if ([v12 matchesPrefix:prefixCopy routerID:{d, v15}])
         {
           v13 = v12;
           goto LABEL_11;
@@ -913,9 +913,9 @@ LABEL_11:
   return v13;
 }
 
-- (id)copyNeighborWithAddr:(const in6_addr *)a3 babelInterface:(id)a4 isNewNeighbor:(BOOL *)a5
+- (id)copyNeighborWithAddr:(const in6_addr *)addr babelInterface:(id)interface isNewNeighbor:(BOOL *)neighbor
 {
-  v8 = a4;
+  interfaceCopy = interface;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -935,7 +935,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 matchesAddress:a3 babelInterface:{v8, v16}])
+        if ([v13 matchesAddress:addr babelInterface:{interfaceCopy, v16}])
         {
           v10 = v13;
           goto LABEL_11;
@@ -954,14 +954,14 @@ LABEL_11:
 
 LABEL_11:
 
-  if (a5)
+  if (neighbor)
   {
-    *a5 = v10 == 0;
+    *neighbor = v10 == 0;
   }
 
   if (!v10)
   {
-    v14 = [[NRBabelNeighbor alloc] initWithAddress:a3 babelInterface:v8];
+    v14 = [[NRBabelNeighbor alloc] initWithAddress:addr babelInterface:interfaceCopy];
     if (v14)
     {
       v10 = v14;
@@ -1120,7 +1120,7 @@ LABEL_13:
   [(NRBabelInstance *)&v3 dealloc];
 }
 
-- (void)setupAddress:(in6_addr *)a3
+- (void)setupAddress:(in6_addr *)address
 {
   if (qword_100229100 != -1)
   {
@@ -1396,9 +1396,9 @@ LABEL_50:
   objc_destroyWeak(&v43);
 }
 
-- (void)handleIfBringupPathUpdate:(id)a3
+- (void)handleIfBringupPathUpdate:(id)update
 {
-  path = a3;
+  path = update;
   if (nw_path_get_status(path) == nw_path_status_satisfied)
   {
     interface_index = nw_path_get_interface_index();

@@ -1,13 +1,13 @@
 @interface AVCCaptionsConfig
-+ (const)cStringFromUsage:(unsigned __int8)a3;
-+ (id)deserializeLocale:(id)a3;
-+ (id)serializeConfiguration:(id)a3;
-+ (id)serializeLocale:(id)a3;
-+ (id)stringFromUsage:(unsigned __int8)a3;
-+ (unsigned)callTypeFromServerCallType:(unsigned __int8)a3;
-+ (unsigned)taskHintFromServerTaskHint:(unsigned __int8)a3;
-+ (unsigned)usageFromServerUsage:(unsigned __int8)a3;
-- (AVCCaptionsConfig)initWithServerConfig:(id)a3;
++ (const)cStringFromUsage:(unsigned __int8)usage;
++ (id)deserializeLocale:(id)locale;
++ (id)serializeConfiguration:(id)configuration;
++ (id)serializeLocale:(id)locale;
++ (id)stringFromUsage:(unsigned __int8)usage;
++ (unsigned)callTypeFromServerCallType:(unsigned __int8)type;
++ (unsigned)taskHintFromServerTaskHint:(unsigned __int8)hint;
++ (unsigned)usageFromServerUsage:(unsigned __int8)usage;
+- (AVCCaptionsConfig)initWithServerConfig:(id)config;
 - (id)description;
 - (void)dealloc;
 @end
@@ -23,32 +23,32 @@
   [(AVCCaptionsConfig *)&v3 dealloc];
 }
 
-+ (const)cStringFromUsage:(unsigned __int8)a3
++ (const)cStringFromUsage:(unsigned __int8)usage
 {
-  if ((a3 - 1) < 6)
+  if ((usage - 1) < 6)
   {
-    return off_1E85F5630[(a3 - 1)];
+    return off_1E85F5630[(usage - 1)];
   }
 
-  v4 = a3;
+  usageCopy = usage;
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(AVCCaptionsConfig *)v5 cStringFromUsage:v4, v6];
+      [(AVCCaptionsConfig *)v5 cStringFromUsage:usageCopy, v6];
     }
   }
 
   return "Unknown";
 }
 
-+ (id)stringFromUsage:(unsigned __int8)a3
++ (id)stringFromUsage:(unsigned __int8)usage
 {
-  v3 = a3;
-  v4 = [a1 cStringFromUsage:?];
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v4, v3];
+  usageCopy = usage;
+  v4 = [self cStringFromUsage:?];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%hhu)", v4, usageCopy];
 }
 
 - (id)description
@@ -59,10 +59,10 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"{ %@ locale=%@ usage=%@ }", -[AVCCaptionsConfig description](&v3, sel_description), -[NSLocale localeIdentifier](self->_locale, "localeIdentifier"), +[AVCCaptionsConfig stringFromUsage:](AVCCaptionsConfig, "stringFromUsage:", self->_usage)];
 }
 
-- (AVCCaptionsConfig)initWithServerConfig:(id)a3
+- (AVCCaptionsConfig)initWithServerConfig:(id)config
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!config)
   {
     [(AVCCaptionsConfig(Internal) *)self initWithServerConfig:v7];
 LABEL_7:
@@ -78,21 +78,21 @@ LABEL_7:
   }
 
   v5 = v4;
-  v4->_locale = [objc_msgSend(a3 "locale")];
-  v5->_taskHint = +[AVCCaptionsConfig taskHintFromServerTaskHint:](AVCCaptionsConfig, "taskHintFromServerTaskHint:", [a3 taskHint]);
-  v5->_usage = +[AVCCaptionsConfig usageFromServerUsage:](AVCCaptionsConfig, "usageFromServerUsage:", [a3 usage]);
-  v5->_languageDetectorEnabled = [a3 languageDetectorEnabled];
-  v5->_languageDetectorReportingFrequency = [a3 languageDetectorReportingFrequency];
-  v5->_explicitLanguageFilterEnabled = [a3 isExplicitLanguageFilterEnabled];
-  v5->_callType = +[AVCCaptionsConfig callTypeFromServerCallType:](AVCCaptionsConfig, "callTypeFromServerCallType:", [a3 callType]);
-  v5->_formatForNewLinesEnabled = [a3 isFormatForNewLinesEnabled];
+  v4->_locale = [objc_msgSend(config "locale")];
+  v5->_taskHint = +[AVCCaptionsConfig taskHintFromServerTaskHint:](AVCCaptionsConfig, "taskHintFromServerTaskHint:", [config taskHint]);
+  v5->_usage = +[AVCCaptionsConfig usageFromServerUsage:](AVCCaptionsConfig, "usageFromServerUsage:", [config usage]);
+  v5->_languageDetectorEnabled = [config languageDetectorEnabled];
+  v5->_languageDetectorReportingFrequency = [config languageDetectorReportingFrequency];
+  v5->_explicitLanguageFilterEnabled = [config isExplicitLanguageFilterEnabled];
+  v5->_callType = +[AVCCaptionsConfig callTypeFromServerCallType:](AVCCaptionsConfig, "callTypeFromServerCallType:", [config callType]);
+  v5->_formatForNewLinesEnabled = [config isFormatForNewLinesEnabled];
   return v5;
 }
 
-+ (unsigned)usageFromServerUsage:(unsigned __int8)a3
++ (unsigned)usageFromServerUsage:(unsigned __int8)usage
 {
-  v3 = 0x6050403020101uLL >> (8 * a3);
-  if (a3 >= 7u)
+  v3 = 0x6050403020101uLL >> (8 * usage);
+  if (usage >= 7u)
   {
     LOBYTE(v3) = 1;
   }
@@ -100,9 +100,9 @@ LABEL_7:
   return v3 & 7;
 }
 
-+ (unsigned)taskHintFromServerTaskHint:(unsigned __int8)a3
++ (unsigned)taskHintFromServerTaskHint:(unsigned __int8)hint
 {
-  if (a3 == 2)
+  if (hint == 2)
   {
     return 2;
   }
@@ -113,11 +113,11 @@ LABEL_7:
   }
 }
 
-+ (unsigned)callTypeFromServerCallType:(unsigned __int8)a3
++ (unsigned)callTypeFromServerCallType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v15 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -132,22 +132,22 @@ LABEL_7:
         v11 = 1024;
         v12 = 126;
         v13 = 1024;
-        v14 = v3;
+        v14 = typeCopy;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Sever call type is not one of supported types, callType=%d", &v7, 0x22u);
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(typeCopy) = 1;
   }
 
-  return v3;
+  return typeCopy;
 }
 
-+ (id)serializeLocale:(id)a3
++ (id)serializeLocale:(id)locale
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:v6];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:locale requiringSecureCoding:1 error:v6];
   if (v3)
   {
     v4 = v6[0] == 0;
@@ -166,11 +166,11 @@ LABEL_7:
   return v3;
 }
 
-+ (id)deserializeLocale:(id)a3
++ (id)deserializeLocale:(id)locale
 {
-  if (a3)
+  if (locale)
   {
-    result = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:objc_msgSend(a3 error:{"mutableCopy"), 0}];
+    result = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:objc_msgSend(locale error:{"mutableCopy"), 0}];
     if (result)
     {
       return result;
@@ -199,10 +199,10 @@ LABEL_7:
   return 0;
 }
 
-+ (id)serializeConfiguration:(id)a3
++ (id)serializeConfiguration:(id)configuration
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [[VCCaptionsConfig alloc] initWithClientConfig:a3];
+  v3 = [[VCCaptionsConfig alloc] initWithClientConfig:configuration];
   if (!v3)
   {
     [AVCCaptionsConfig(Internal) serializeConfiguration:?];

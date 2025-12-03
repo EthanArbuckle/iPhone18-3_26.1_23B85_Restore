@@ -1,44 +1,44 @@
 @interface PNPPlatterAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PNPPlatterAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(PNPPlatterAnimator *)self isPresenting];
-  v6 = [v4 containerView];
+  transitionCopy = transition;
+  isPresenting = [(PNPPlatterAnimator *)self isPresenting];
+  containerView = [transitionCopy containerView];
   v7 = MEMORY[0x277D77248];
-  if (!v5)
+  if (!isPresenting)
   {
     v7 = MEMORY[0x277D77238];
   }
 
-  v8 = [v4 viewForKey:*v7];
+  v8 = [transitionCopy viewForKey:*v7];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __40__PNPPlatterAnimator_animateTransition___block_invoke;
   v25[3] = &unk_279A0A178;
-  v28 = v5;
+  v28 = isPresenting;
   v9 = v8;
   v26 = v9;
-  v10 = v6;
+  v10 = containerView;
   v27 = v10;
   v11 = MEMORY[0x25F8AE9F0](v25);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __40__PNPPlatterAnimator_animateTransition___block_invoke_3;
   v21[3] = &unk_279A0A178;
-  v24 = v5;
+  v24 = isPresenting;
   v12 = v9;
   v22 = v12;
-  v13 = v4;
+  v13 = transitionCopy;
   v23 = v13;
   v14 = MEMORY[0x25F8AE9F0](v21);
-  v15 = [v13 isAnimated];
+  isAnimated = [v13 isAnimated];
   v11[2](v11);
-  if (v15)
+  if (isAnimated)
   {
     v16 = MEMORY[0x277D75D18];
     v19[0] = MEMORY[0x277D85DD0];

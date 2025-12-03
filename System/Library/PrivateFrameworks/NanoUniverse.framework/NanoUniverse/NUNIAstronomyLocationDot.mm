@@ -1,14 +1,14 @@
 @interface NUNIAstronomyLocationDot
 - (NUNIAstronomyLocationDot)init;
-- (NUNIAstronomyLocationDot)initWithConfiguration:(id)a3;
-- (NUNIAstronomyLocationDot)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (NUNIAstronomyLocationDot)initWithConfiguration:(id)configuration;
+- (NUNIAstronomyLocationDot)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (void)_generateInnerDotImage;
 - (void)layoutSubviews;
-- (void)setInnerDotColor:(id)a3;
-- (void)setInnerDotDiameter:(double)a3;
-- (void)setOuterDotColor:(id)a3;
-- (void)setPulseDuration:(double)a3;
-- (void)startAnimationWithCompletionBlock:(id)a3;
+- (void)setInnerDotColor:(id)color;
+- (void)setInnerDotDiameter:(double)diameter;
+- (void)setOuterDotColor:(id)color;
+- (void)setPulseDuration:(double)duration;
+- (void)startAnimationWithCompletionBlock:(id)block;
 - (void)stopAnimation;
 @end
 
@@ -22,29 +22,29 @@
   return v4;
 }
 
-- (NUNIAstronomyLocationDot)initWithConfiguration:(id)a3
+- (NUNIAstronomyLocationDot)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 defaultSize];
-  v7 = [(NUNIAstronomyLocationDot *)self initWithFrame:v4 configuration:0.0, 0.0, v5, v6];
+  configurationCopy = configuration;
+  [configurationCopy defaultSize];
+  v7 = [(NUNIAstronomyLocationDot *)self initWithFrame:configurationCopy configuration:0.0, 0.0, v5, v6];
 
   return v7;
 }
 
-- (NUNIAstronomyLocationDot)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (NUNIAstronomyLocationDot)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = NUNIAstronomyLocationDot;
-  v11 = [(NUNIAstronomyLocationDot *)&v25 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NUNIAstronomyLocationDot *)&v25 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     v13 = +[NUNIAstronomyLocationDot _defaultColor];
     [(NUNIAstronomyLocationDotConfiguration *)v12->_configuration defaultOuterDotDiameter];
     v12->_outerDotDiameter = v14;
@@ -63,8 +63,8 @@
     outerDot = v12->_outerDot;
     v12->_outerDot = v21;
 
-    v23 = [(UIView *)v12->_outerDot layer];
-    [v23 setAnchorPoint:{0.5, 0.5}];
+    layer = [(UIView *)v12->_outerDot layer];
+    [layer setAnchorPoint:{0.5, 0.5}];
 
     [(NUNIAstronomyLocationDot *)v12 setOuterDotColor:v13];
     [(NUNIAstronomyLocationDot *)v12 setInnerDotColor:v13];
@@ -85,11 +85,11 @@
   v22.height = v6;
   UIGraphicsBeginImageContextWithOptions(v22, 0, v4);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v8 = [MEMORY[0x277D75348] blackColor];
-  v9 = [v8 CGColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  cGColor = [blackColor CGColor];
   v23.width = 0.50000006;
   v23.height = 0.866025388;
-  CGContextSetShadowWithColor(CurrentContext, v23, innerDotDiameter * 1.05, v9);
+  CGContextSetShadowWithColor(CurrentContext, v23, innerDotDiameter * 1.05, cGColor);
 
   [(NUNIAstronomyLocationDotConfiguration *)self->_configuration screenScale];
   v19 = v10;
@@ -111,44 +111,44 @@
   [(UIImageView *)self->_innerDotImageView setBounds:0.0, 0.0, v6, v6];
 }
 
-- (void)setOuterDotColor:(id)a3
+- (void)setOuterDotColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   outerDotColor = self->_outerDotColor;
-  v7 = v5;
+  v7 = colorCopy;
   if ((CLKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_outerDotColor, a3);
+    objc_storeStrong(&self->_outerDotColor, color);
     [(UIView *)self->_outerDot setBackgroundColor:v7];
   }
 }
 
-- (void)setInnerDotColor:(id)a3
+- (void)setInnerDotColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   innerDotColor = self->_innerDotColor;
-  v7 = v5;
+  v7 = colorCopy;
   if ((CLKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_innerDotColor, a3);
+    objc_storeStrong(&self->_innerDotColor, color);
     [(NUNIAstronomyLocationDot *)self _generateInnerDotImage];
   }
 }
 
-- (void)setInnerDotDiameter:(double)a3
+- (void)setInnerDotDiameter:(double)diameter
 {
-  if (self->_innerDotDiameter != a3)
+  if (self->_innerDotDiameter != diameter)
   {
-    self->_innerDotDiameter = a3;
+    self->_innerDotDiameter = diameter;
     [(NUNIAstronomyLocationDot *)self _generateInnerDotImage];
 
     [(NUNIAstronomyLocationDot *)self setNeedsLayout];
   }
 }
 
-- (void)setPulseDuration:(double)a3
+- (void)setPulseDuration:(double)duration
 {
-  self->_pulseDuration = a3;
+  self->_pulseDuration = duration;
   if (self->_animating)
   {
     [(NUNIAstronomyLocationDot *)self stopAnimation];
@@ -157,10 +157,10 @@
   }
 }
 
-- (void)startAnimationWithCompletionBlock:(id)a3
+- (void)startAnimationWithCompletionBlock:(id)block
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   [(NUNIAstronomyLocationDot *)self stopAnimation];
   self->_animating = 1;
   [(UIImageView *)self->_innerDotImageView setAlpha:1.0];
@@ -168,16 +168,16 @@
   [(UIView *)self->_outerDot setBounds:0.0, 0.0, self->_outerDotDiameter, self->_outerDotDiameter];
   if (self->_pulseDuration <= 0.0)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
     [MEMORY[0x277CD9FF0] begin];
-    [MEMORY[0x277CD9FF0] setCompletionBlock:v4];
+    [MEMORY[0x277CD9FF0] setCompletionBlock:blockCopy];
     v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
     [v5 setDuration:self->_pulseDuration];
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_innerDotDiameter / self->_outerDotDiameter];
@@ -199,20 +199,20 @@
     v12 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v9 :0.0 :v10 :v11];
     [v8 setTimingFunction:v12];
 
-    v13 = [MEMORY[0x277CD9E00] animation];
+    animation = [MEMORY[0x277CD9E00] animation];
     v18[0] = v5;
     v18[1] = v7;
     v18[2] = v8;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-    [v13 setAnimations:v14];
+    [animation setAnimations:v14];
 
-    [v13 setDuration:self->_pulseDuration];
+    [animation setDuration:self->_pulseDuration];
     LODWORD(v15) = 2.0;
-    [v13 setRepeatCount:v15];
-    [v13 setFrameInterval:0.0666666667];
-    [v13 setDiscretizesTime:1];
-    v16 = [(UIView *)self->_outerDot layer];
-    [v16 addAnimation:v13 forKey:@"pulse"];
+    [animation setRepeatCount:v15];
+    [animation setFrameInterval:0.0666666667];
+    [animation setDiscretizesTime:1];
+    layer = [(UIView *)self->_outerDot layer];
+    [layer addAnimation:animation forKey:@"pulse"];
 
     [MEMORY[0x277CD9FF0] commit];
   }
@@ -223,8 +223,8 @@
 - (void)stopAnimation
 {
   self->_animating = 0;
-  v2 = [(UIView *)self->_outerDot layer];
-  [v2 removeAnimationForKey:@"pulse"];
+  layer = [(UIView *)self->_outerDot layer];
+  [layer removeAnimationForKey:@"pulse"];
 }
 
 - (void)layoutSubviews
@@ -238,8 +238,8 @@
   v8 = v4;
   UIRectCenteredIntegralRectScale();
   [(UIView *)self->_outerDot setFrame:v8];
-  v5 = [(UIView *)self->_outerDot layer];
-  [v5 setCornerRadius:self->_outerDotDiameter * 0.5];
+  layer = [(UIView *)self->_outerDot layer];
+  [layer setCornerRadius:self->_outerDotDiameter * 0.5];
 
   innerDotImageView = self->_innerDotImageView;
   [(UIImageView *)innerDotImageView bounds];

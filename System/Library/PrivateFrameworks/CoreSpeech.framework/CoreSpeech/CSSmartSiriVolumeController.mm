@@ -1,12 +1,12 @@
 @interface CSSmartSiriVolumeController
 - (CSSmartSiriVolumeController)init;
 - (CSSmartSiriVolumeControllerDelegate)delegate;
-- (id)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4;
+- (id)getVolumeForTTSType:(unint64_t)type withContext:(id)context;
 - (void)_createSSVClientConnectionIfNeeded;
-- (void)didSmartSiriVolumeChangeForReason:(unint64_t)a3;
-- (void)setPermanentVolumeOffsetWithDirection:(BOOL)a3;
-- (void)setSmartSiriVolumeDirection:(BOOL)a3;
-- (void)setSmartSiriVolumePercentage:(float)a3;
+- (void)didSmartSiriVolumeChangeForReason:(unint64_t)reason;
+- (void)setPermanentVolumeOffsetWithDirection:(BOOL)direction;
+- (void)setSmartSiriVolumeDirection:(BOOL)direction;
+- (void)setSmartSiriVolumePercentage:(float)percentage;
 @end
 
 @implementation CSSmartSiriVolumeController
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (void)didSmartSiriVolumeChangeForReason:(unint64_t)a3
+- (void)didSmartSiriVolumeChangeForReason:(unint64_t)reason
 {
   v17 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -30,12 +30,12 @@
       v13 = 136315394;
       v14 = "[CSSmartSiriVolumeController didSmartSiriVolumeChangeForReason:]";
       v15 = 1026;
-      v16 = a3;
+      reasonCopy2 = reason;
       _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_DEFAULT, "%s Notifying SSV Client on Volume change for reason - %{public}d", &v13, 0x12u);
     }
 
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 didTTSVolumeChange:self forReason:a3];
+    [v10 didTTSVolumeChange:self forReason:reason];
   }
 
   else
@@ -46,7 +46,7 @@
       v13 = 136315394;
       v14 = "[CSSmartSiriVolumeController didSmartSiriVolumeChangeForReason:]";
       v15 = 1026;
-      v16 = a3;
+      reasonCopy2 = reason;
       _os_log_impl(&dword_222E4D000, v11, OS_LOG_TYPE_DEFAULT, "%s Dropped SSV Client notification for Volume change with reason - %{public}d", &v13, 0x12u);
     }
   }
@@ -79,7 +79,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPermanentVolumeOffsetWithDirection:(BOOL)a3
+- (void)setPermanentVolumeOffsetWithDirection:(BOOL)direction
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@
   v4[2] = __69__CSSmartSiriVolumeController_setPermanentVolumeOffsetWithDirection___block_invoke;
   v4[3] = &unk_2784C6390;
   v4[4] = self;
-  v5 = a3;
+  directionCopy = direction;
   dispatch_async(queue, v4);
 }
 
@@ -105,7 +105,7 @@ void *__69__CSSmartSiriVolumeController_setPermanentVolumeOffsetWithDirection___
   return result;
 }
 
-- (void)setSmartSiriVolumeDirection:(BOOL)a3
+- (void)setSmartSiriVolumeDirection:(BOOL)direction
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -113,7 +113,7 @@ void *__69__CSSmartSiriVolumeController_setPermanentVolumeOffsetWithDirection___
   v4[2] = __59__CSSmartSiriVolumeController_setSmartSiriVolumeDirection___block_invoke;
   v4[3] = &unk_2784C6390;
   v4[4] = self;
-  v5 = a3;
+  directionCopy = direction;
   dispatch_sync(queue, v4);
 }
 
@@ -131,7 +131,7 @@ void *__59__CSSmartSiriVolumeController_setSmartSiriVolumeDirection___block_invo
   return result;
 }
 
-- (void)setSmartSiriVolumePercentage:(float)a3
+- (void)setSmartSiriVolumePercentage:(float)percentage
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -139,7 +139,7 @@ void *__59__CSSmartSiriVolumeController_setSmartSiriVolumeDirection___block_invo
   v4[2] = __60__CSSmartSiriVolumeController_setSmartSiriVolumePercentage___block_invoke;
   v4[3] = &unk_2784C5998;
   v4[4] = self;
-  v5 = a3;
+  percentageCopy = percentage;
   dispatch_sync(queue, v4);
 }
 
@@ -157,9 +157,9 @@ void *__60__CSSmartSiriVolumeController_setSmartSiriVolumePercentage___block_inv
   return result;
 }
 
-- (id)getVolumeForTTSType:(unint64_t)a3 withContext:(id)a4
+- (id)getVolumeForTTSType:(unint64_t)type withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -172,10 +172,10 @@ void *__60__CSSmartSiriVolumeController_setSmartSiriVolumePercentage___block_inv
   v11[2] = __63__CSSmartSiriVolumeController_getVolumeForTTSType_withContext___block_invoke;
   v11[3] = &unk_2784C4BE0;
   v13 = &v15;
-  v14 = a3;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = contextCopy;
+  v8 = contextCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 

@@ -1,18 +1,18 @@
 @interface SKUITextHeaderSettingsHeaderFooterDescriptionView
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_concatenateTextFromLabelElements:(id)a3;
-+ (id)_labelWithLabelElements:(id)a3;
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_concatenateTextFromLabelElements:(id)elements;
++ (id)_labelWithLabelElements:(id)elements;
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUITextHeaderSettingsHeaderFooterDescriptionView
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -33,7 +33,7 @@
   return result;
 }
 
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -50,7 +50,7 @@
   return 0;
 }
 
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -62,9 +62,9 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
-  v7 = a4;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -77,12 +77,12 @@
     }
   }
 
-  v16 = [v7 viewElement];
-  v17 = [objc_opt_class() _labelElementsFromViewElement:v16];
-  v18 = [a1 _labelWithLabelElements:v17];
+  viewElement = [descriptionCopy viewElement];
+  v17 = [objc_opt_class() _labelElementsFromViewElement:viewElement];
+  v18 = [self _labelWithLabelElements:v17];
   v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
   [v18 setFont:v19];
-  [v18 sizeThatFits:{a3, 1.0}];
+  [v18 sizeThatFits:{width, 1.0}];
   v21 = v20;
   v23 = v22;
   [v18 setFrame:{0.0, 0.0, v20, v22}];
@@ -98,9 +98,9 @@
   return result;
 }
 
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -113,9 +113,9 @@
     }
   }
 
-  v15 = [v6 viewElement];
+  viewElement = [descriptionCopy viewElement];
   viewElement = self->_viewElement;
-  self->_viewElement = v15;
+  self->_viewElement = viewElement;
 
   v17 = [objc_opt_class() _labelElementsFromViewElement:self->_viewElement];
   label = self->_label;
@@ -134,7 +134,7 @@
   [(SKUITextHeaderSettingsHeaderFooterDescriptionView *)self setNeedsLayout];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -210,16 +210,16 @@
   [(UILabel *)self->_label setTextAlignment:v33];
 }
 
-+ (id)_concatenateTextFromLabelElements:(id)a3
++ (id)_concatenateTextFromLabelElements:(id)elements
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -234,10 +234,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) text];
-        v11 = [v10 string];
+        text = [*(*(&v14 + 1) + 8 * i) text];
+        string = [text string];
 
-        [v4 addObject:v11];
+        [v4 addObject:string];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -251,16 +251,16 @@
   return v12;
 }
 
-+ (id)_labelWithLabelElements:(id)a3
++ (id)_labelWithLabelElements:(id)elements
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  elementsCopy = elements;
   v6 = objc_alloc_init(v4);
   [v6 setNumberOfLines:0];
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   [v6 setTextColor:v7];
 
-  v8 = [a1 _concatenateTextFromLabelElements:v5];
+  v8 = [self _concatenateTextFromLabelElements:elementsCopy];
 
   [v6 setText:v8];
 

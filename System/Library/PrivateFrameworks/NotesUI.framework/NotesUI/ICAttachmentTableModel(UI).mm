@@ -11,38 +11,38 @@
 
 - (void)redactAuthorAttributionsToCurrentUser
 {
-  if ([a1 isMergeableDataDirty])
+  if ([self isMergeableDataDirty])
   {
-    [a1 writeMergeableData];
+    [self writeMergeableData];
   }
 
   v2 = objc_alloc(MEMORY[0x1E69B78F0]);
-  v3 = [a1 attachment];
-  v4 = [v3 mergeableData];
-  v5 = [a1 currentReplicaID];
-  v6 = [v2 initWithData:v4 replicaID:v5];
+  attachment = [self attachment];
+  mergeableData = [attachment mergeableData];
+  currentReplicaID = [self currentReplicaID];
+  v6 = [v2 initWithData:mergeableData replicaID:currentReplicaID];
 
-  v7 = [v6 table];
+  table = [v6 table];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__ICAttachmentTableModel_UI__redactAuthorAttributionsToCurrentUser__block_invoke;
   v10[3] = &unk_1E8469768;
   v11 = v6;
   v8 = v6;
-  [v7 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v10];
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v10];
 
-  v9 = [v8 serialize];
-  [a1 mergeWithMergeableData:v9];
+  serialize = [v8 serialize];
+  [self mergeWithMergeableData:serialize];
 
-  [a1 writeMergeableData];
+  [self writeMergeableData];
 }
 
 - (id)htmlString
 {
-  v2 = [a1 table];
-  v3 = [v2 isRightToLeft];
+  table = [self table];
+  isRightToLeft = [table isRightToLeft];
   v4 = @"ltr";
-  if (v3)
+  if (isRightToLeft)
   {
     v4 = @"rtl";
   }
@@ -51,15 +51,15 @@
 
   v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"<table cellspacing=0 cellpadding=0 style=border-collapse: collapse direction: %@>\n<tbody>\n", v5];;
 
-  v7 = [a1 table];
+  table2 = [self table];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__ICAttachmentTableModel_UI__htmlString__block_invoke;
   v11[3] = &unk_1E8469790;
   v8 = v6;
   v12 = v8;
-  v13 = a1;
-  [v7 enumerateRowsWithBlock:v11];
+  selfCopy = self;
+  [table2 enumerateRowsWithBlock:v11];
 
   [v8 appendString:@"</tbody>\n</table>"];
   v9 = v8;
@@ -69,8 +69,8 @@
 
 - (__CFString)attributesForSharingHTMLWithTagName:()UI textContent:
 {
-  v5 = [a1 htmlString];
-  *a4 = v5;
+  htmlString = [self htmlString];
+  *a4 = htmlString;
 
   return &stru_1F4F94F00;
 }
@@ -78,19 +78,19 @@
 - (id)activityItems
 {
   v2 = [ICTableLinkPresentationActivityItemSource alloc];
-  v3 = [a1 attachment];
-  v4 = [(ICTableLinkPresentationActivityItemSource *)v2 initWithAttachment:v3];
+  attachment = [self attachment];
+  v4 = [(ICTableLinkPresentationActivityItemSource *)v2 initWithAttachment:attachment];
 
   v5 = [MEMORY[0x1E695E0F0] arrayByAddingObject:v4];
   v6 = [ICAttachmentTableActivityItemSource alloc];
-  v7 = [a1 attachment];
-  v8 = [(ICAttachmentActivityItemSource *)v6 initWithAttachment:v7];
+  attachment2 = [self attachment];
+  v8 = [(ICAttachmentActivityItemSource *)v6 initWithAttachment:attachment2];
 
   v9 = [v5 arrayByAddingObject:v8];
 
   v10 = [ICAttachmentActivityItemSource alloc];
-  v11 = [a1 attachment];
-  v12 = [(ICAttachmentActivityItemSource *)v10 initWithAttachment:v11];
+  attachment3 = [self attachment];
+  v12 = [(ICAttachmentActivityItemSource *)v10 initWithAttachment:attachment3];
   v13 = [v9 arrayByAddingObject:v12];
 
   return v13;
@@ -101,19 +101,19 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   CGContextTranslateCTM(CurrentContext, a2, a3);
-  [a1 previewInAvailableSize:1 shouldDraw:{a4, a5}];
+  [self previewInAvailableSize:1 shouldDraw:{a4, a5}];
 
   CGContextRestoreGState(CurrentContext);
 }
 
 - (CGFloat)previewInAvailableSize:()UI shouldDraw:
 {
-  v9 = [MEMORY[0x1E69DC888] ic_systemGray4Color];
+  ic_systemGray4Color = [MEMORY[0x1E69DC888] ic_systemGray4Color];
   v10 = objc_alloc_init(ICConstantAvailableTableWidthProvider);
   [(ICConstantAvailableTableWidthProvider *)v10 setAvailableWidth:a2];
   v11 = [ICTableColumnWidthManager alloc];
-  v12 = [a1 table];
-  v13 = [(ICTableColumnWidthManager *)v11 initWithTable:v12 delegate:v10];
+  table = [self table];
+  v13 = [(ICTableColumnWidthManager *)v11 initWithTable:table delegate:v10];
 
   CurrentContext = UIGraphicsGetCurrentContext();
   v59 = 0;
@@ -128,28 +128,28 @@
   v54[1] = v54;
   v54[2] = 0x2020000000;
   v54[3] = 0;
-  v15 = [a1 table];
-  v16 = [v15 isRightToLeft];
+  table2 = [self table];
+  isRightToLeft = [table2 isRightToLeft];
 
-  v17 = [a1 table];
+  table3 = [self table];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __64__ICAttachmentTableModel_UI__previewInAvailableSize_shouldDraw___block_invoke;
   v41[3] = &unk_1E84697E0;
   v46 = &v55;
-  v52 = v16;
+  v52 = isRightToLeft;
   v49 = a2;
   v50 = a3;
-  v18 = v17;
+  v18 = table3;
   v42 = v18;
   v19 = v13;
   v43 = v19;
-  v44 = a1;
+  selfCopy = self;
   v53 = a5;
   v47 = &v59;
   v48 = v54;
   v51 = CurrentContext;
-  v20 = v9;
+  v20 = ic_systemGray4Color;
   v45 = v20;
   [v18 enumerateRowsWithBlock:v41];
   if (a5)
@@ -157,7 +157,7 @@
     v37 = 0;
     v38 = &v37;
     v21 = 0.0;
-    if (v16)
+    if (isRightToLeft)
     {
       v21 = a2;
     }
@@ -171,7 +171,7 @@
     v31 = &v37;
     v32 = &v59;
     v33 = CurrentContext;
-    v36 = v16;
+    v36 = isRightToLeft;
     v30 = v19;
     v34 = a2;
     v35 = a3;
@@ -179,7 +179,7 @@
     CGContextMoveToPoint(CurrentContext, v38[3], 0.0);
     CGContextAddLineToPoint(CurrentContext, v38[3], v60[3]);
     v22 = v60[3];
-    if (v16)
+    if (isRightToLeft)
     {
       CGContextMoveToPoint(CurrentContext, a2, v22);
       v23 = a2 - v56[3];

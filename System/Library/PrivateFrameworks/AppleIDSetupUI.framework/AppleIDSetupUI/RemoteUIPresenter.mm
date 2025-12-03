@@ -1,30 +1,30 @@
 @interface RemoteUIPresenter
 - (_TtC14AppleIDSetupUI17RemoteUIPresenter)init;
-- (id)accountsForAccountManager:(id)a3;
-- (void)remoteUIDidEndFlow:(id)a3;
-- (void)remoteUIDidHandleButton:(id)a3;
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)remoteUIWillLoadRequest:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
+- (void)remoteUIDidEndFlow:(id)flow;
+- (void)remoteUIDidHandleButton:(id)button;
+- (void)remoteUIDidReceiveHTTPResponse:(id)response;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)remoteUIWillLoadRequest:(id)request;
 @end
 
 @implementation RemoteUIPresenter
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50C7D0, &unk_240A315C0);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_240A305D0;
   v5 = *MEMORY[0x277CED1A0];
   *(inited + 32) = *MEMORY[0x277CED1A0];
-  v6 = a3;
+  managerCopy = manager;
   v7 = v5;
-  v8 = [v6 accountStore];
-  v9 = [v8 aa_primaryAppleAccount];
+  accountStore = [managerCopy accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v9)
+  if (aa_primaryAppleAccount)
   {
-    *(inited + 40) = v9;
+    *(inited + 40) = aa_primaryAppleAccount;
     sub_2409265DC(inited);
     swift_setDeallocating();
     sub_240919300(inited + 32, &qword_27E50B9D0, &unk_240A356C0);
@@ -45,14 +45,14 @@
   return result;
 }
 
-- (void)remoteUIWillLoadRequest:(id)a3
+- (void)remoteUIWillLoadRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_2409243EC(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_2409243EC(requestCopy);
 }
 
-- (void)remoteUIDidEndFlow:(id)a3
+- (void)remoteUIDidEndFlow:(id)flow
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14AppleIDSetupUI17RemoteUIPresenter_completionHandler);
   if (v3)
@@ -61,7 +61,7 @@
     v5 = OBJC_IVAR____TtC14AppleIDSetupUI17RemoteUIPresenter_authResults;
     swift_beginAccess();
     v7 = *(&self->super.isa + v5);
-    v8 = self;
+    selfCopy = self;
     sub_24090C23C(v3);
 
     v3(v9, 0);
@@ -70,14 +70,14 @@
   }
 }
 
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3
+- (void)remoteUIDidReceiveHTTPResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
-  sub_240924650(v4);
+  responseCopy = response;
+  selfCopy = self;
+  sub_240924650(responseCopy);
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   v4 = sub_240A2946C();
   v5 = *(v4 - 8);
@@ -88,10 +88,10 @@
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)remoteUIDidHandleButton:(id)a3
+- (void)remoteUIDidHandleButton:(id)button
 {
   v4 = sub_240A2BEBC();
-  v5 = self;
+  selfCopy = self;
   sub_240924A24(v4);
 }
 

@@ -1,23 +1,23 @@
 @interface WBSPasswordBreachRequestManager
-- (WBSPasswordBreachRequestManager)initWithContext:(id)a3;
-- (void)_buildRequestWithURL:(id)a3 headers:(id)a4 completionHandler:(id)a5;
-- (void)_fetchBucketAtURL:(id)a3 withClientBlindedHash:(id)a4 completionHandler:(id)a5;
-- (void)fetchHighFrequencyBucketWithCompletionHandler:(id)a3;
-- (void)fetchLowFrequencyBucketsForBucketIdentifiersAndClientBlindedHashes:(id)a3 completionHandler:(id)a4;
+- (WBSPasswordBreachRequestManager)initWithContext:(id)context;
+- (void)_buildRequestWithURL:(id)l headers:(id)headers completionHandler:(id)handler;
+- (void)_fetchBucketAtURL:(id)l withClientBlindedHash:(id)hash completionHandler:(id)handler;
+- (void)fetchHighFrequencyBucketWithCompletionHandler:(id)handler;
+- (void)fetchLowFrequencyBucketsForBucketIdentifiersAndClientBlindedHashes:(id)hashes completionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachRequestManager
 
-- (WBSPasswordBreachRequestManager)initWithContext:(id)a3
+- (WBSPasswordBreachRequestManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = WBSPasswordBreachRequestManager;
   v6 = [(WBSPasswordBreachRequestManager *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     fetchOperationQueue = v7->_fetchOperationQueue;
     v7->_fetchOperationQueue = v8;
@@ -26,9 +26,9 @@
     [(NSOperationQueue *)v7->_fetchOperationQueue setName:v10];
 
     v11 = MEMORY[0x1E695AC78];
-    v12 = [v5 configuration];
-    v13 = [v12 urlSessionConfiguration];
-    v14 = [v11 sessionWithConfiguration:v13 delegate:0 delegateQueue:v7->_fetchOperationQueue];
+    configuration = [contextCopy configuration];
+    urlSessionConfiguration = [configuration urlSessionConfiguration];
+    v14 = [v11 sessionWithConfiguration:urlSessionConfiguration delegate:0 delegateQueue:v7->_fetchOperationQueue];
     session = v7->_session;
     v7->_session = v14;
 
@@ -38,16 +38,16 @@
   return v7;
 }
 
-- (void)_fetchBucketAtURL:(id)a3 withClientBlindedHash:(id)a4 completionHandler:(id)a5
+- (void)_fetchBucketAtURL:(id)l withClientBlindedHash:(id)hash completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  lCopy = l;
+  hashCopy = hash;
+  handlerCopy = handler;
+  if ([hashCopy length])
   {
     v17 = @"x-req-p";
-    v11 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:v9];
+    v11 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:hashCopy];
     v18[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   }
@@ -62,9 +62,9 @@
   v15[2] = __93__WBSPasswordBreachRequestManager__fetchBucketAtURL_withClientBlindedHash_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF32A0;
   v15[4] = self;
-  v16 = v10;
-  v13 = v10;
-  [(WBSPasswordBreachRequestManager *)self _buildRequestWithURL:v8 headers:v12 completionHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  [(WBSPasswordBreachRequestManager *)self _buildRequestWithURL:lCopy headers:v12 completionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -183,17 +183,17 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_buildRequestWithURL:(id)a3 headers:(id)a4 completionHandler:(id)a5
+- (void)_buildRequestWithURL:(id)l headers:(id)headers completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695AC18] requestWithURL:a3];
+  headersCopy = headers;
+  handlerCopy = handler;
+  v9 = [MEMORY[0x1E695AC18] requestWithURL:l];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v7;
+  v10 = headersCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -219,40 +219,40 @@ LABEL_6:
     while (v12);
   }
 
-  v8[2](v8, v9);
+  handlerCopy[2](handlerCopy, v9);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHighFrequencyBucketWithCompletionHandler:(id)a3
+- (void)fetchHighFrequencyBucketWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v6 = [v5 highFrequencyBucketURL];
+  handlerCopy = handler;
+  configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+  highFrequencyBucketURL = [configuration highFrequencyBucketURL];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__WBSPasswordBreachRequestManager_fetchHighFrequencyBucketWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CF32C8;
-  v9 = v4;
-  v7 = v4;
-  [(WBSPasswordBreachRequestManager *)self _fetchBucketAtURL:v6 withClientBlindedHash:0 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WBSPasswordBreachRequestManager *)self _fetchBucketAtURL:highFrequencyBucketURL withClientBlindedHash:0 completionHandler:v8];
 }
 
-- (void)fetchLowFrequencyBucketsForBucketIdentifiersAndClientBlindedHashes:(id)a3 completionHandler:(id)a4
+- (void)fetchLowFrequencyBucketsForBucketIdentifiersAndClientBlindedHashes:(id)hashes completionHandler:(id)handler
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
+  hashesCopy = hashes;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
-  v30 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v9 = [v8 verboseSensitiveLoggingEnabled];
+  v30 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(hashesCopy, "count")}];
+  configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+  verboseSensitiveLoggingEnabled = [configuration verboseSensitiveLoggingEnabled];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = hashesCopy;
   v31 = [obj countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v31)
   {
@@ -271,42 +271,42 @@ LABEL_6:
         v12 = v7;
         dispatch_group_enter(v7);
         v13 = [obj objectForKeyedSubscript:v11];
-        if (v9)
+        if (verboseSensitiveLoggingEnabled)
         {
           v14 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             v20 = MEMORY[0x1E696AEC0];
             v21 = v14;
-            v22 = [v13 second];
-            v23 = [v20 safari_stringAsHexWithData:v22];
-            v24 = [v13 first];
+            second = [v13 second];
+            v23 = [v20 safari_stringAsHexWithData:second];
+            first = [v13 first];
             *buf = 138740483;
             v43 = v11;
             v44 = 2117;
             v45 = v23;
             v46 = 2117;
-            v47 = v24;
+            v47 = first;
             _os_log_debug_impl(&dword_1B8447000, v21, OS_LOG_TYPE_DEBUG, "Looking up password with UUID %{sensitive}@, client-blinded hash %{sensitive}@ in bucket %{sensitive}@", buf, 0x20u);
           }
         }
 
-        v15 = [(WBSPasswordBreachContext *)self->_context configuration];
-        v16 = [v15 lowFrequencyBucketURL];
-        v17 = [v13 first];
-        v18 = [v16 URLByAppendingPathComponent:v17];
+        configuration2 = [(WBSPasswordBreachContext *)self->_context configuration];
+        lowFrequencyBucketURL = [configuration2 lowFrequencyBucketURL];
+        first2 = [v13 first];
+        v18 = [lowFrequencyBucketURL URLByAppendingPathComponent:first2];
 
-        v19 = [v13 second];
+        second2 = [v13 second];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __120__WBSPasswordBreachRequestManager_fetchLowFrequencyBucketsForBucketIdentifiersAndClientBlindedHashes_completionHandler___block_invoke;
         v33[3] = &unk_1E7CF32F0;
-        v37 = v9;
+        v37 = verboseSensitiveLoggingEnabled;
         v34 = v30;
         v35 = v11;
         v7 = v12;
         v36 = v12;
-        [(WBSPasswordBreachRequestManager *)self _fetchBucketAtURL:v18 withClientBlindedHash:v19 completionHandler:v33];
+        [(WBSPasswordBreachRequestManager *)self _fetchBucketAtURL:v18 withClientBlindedHash:second2 completionHandler:v33];
 
         ++v10;
       }
@@ -318,11 +318,11 @@ LABEL_6:
     while (v31);
   }
 
-  v25 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v26 = dispatch_time(0, 1000000000 * [v25 lowFrequencyBucketFetchTimeout]);
+  configuration3 = [(WBSPasswordBreachContext *)self->_context configuration];
+  v26 = dispatch_time(0, 1000000000 * [configuration3 lowFrequencyBucketFetchTimeout]);
   dispatch_group_wait(v7, v26);
 
-  v28[2](v28, v30);
+  handlerCopy[2](handlerCopy, v30);
   v27 = *MEMORY[0x1E69E9840];
 }
 

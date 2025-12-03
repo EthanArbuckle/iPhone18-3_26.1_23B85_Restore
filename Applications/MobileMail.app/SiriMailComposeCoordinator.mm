@@ -1,15 +1,15 @@
 @interface SiriMailComposeCoordinator
 - (NSString)bodyWithoutSignature;
-- (void)onHostAction:(id)a3;
-- (void)setBccRecipients:(id)a3;
-- (void)setBody:(id)a3;
-- (void)setBodyWithoutSignature:(id)a3;
-- (void)setCcRecipients:(id)a3;
-- (void)setFocusedField:(id)a3;
-- (void)setSignature:(id)a3;
-- (void)setState:(id)a3;
-- (void)setSubject:(id)a3;
-- (void)setToRecipients:(id)a3;
+- (void)onHostAction:(id)action;
+- (void)setBccRecipients:(id)recipients;
+- (void)setBody:(id)body;
+- (void)setBodyWithoutSignature:(id)signature;
+- (void)setCcRecipients:(id)recipients;
+- (void)setFocusedField:(id)field;
+- (void)setSignature:(id)signature;
+- (void)setState:(id)state;
+- (void)setSubject:(id)subject;
+- (void)setToRecipients:(id)recipients;
 @end
 
 @implementation SiriMailComposeCoordinator
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (void)setBodyWithoutSignature:(id)a3
+- (void)setBodyWithoutSignature:(id)signature
 {
-  _objc_retain(a3);
+  _objc_retain(signature);
   _objc_retain(self);
-  if (a3)
+  if (signature)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v3;
-    _objc_release(a3);
+    _objc_release(signature);
     v6 = v4;
     v7 = v5;
   }
@@ -58,110 +58,110 @@
   _objc_release(self);
 }
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
-  _objc_retain(a3);
+  _objc_retain(subject);
   _objc_retain(self);
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044B060(v4, v5);
 
-  _objc_release(a3);
+  _objc_release(subject);
   _objc_release(self);
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  _objc_retain(a3);
+  _objc_retain(body);
   _objc_retain(self);
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044BB04(v4, v5);
 
-  _objc_release(a3);
+  _objc_release(body);
   _objc_release(self);
 }
 
-- (void)setSignature:(id)a3
+- (void)setSignature:(id)signature
 {
-  _objc_retain(a3);
+  _objc_retain(signature);
   _objc_retain(self);
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044C6E4(v4, v5);
 
-  _objc_release(a3);
+  _objc_release(signature);
   _objc_release(self);
 }
 
-- (void)setToRecipients:(id)a3
+- (void)setToRecipients:(id)recipients
 {
-  _objc_retain(a3);
+  _objc_retain(recipients);
   _objc_retain(self);
   sub_100451AA0();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044D06C(v4);
 
-  _objc_release(a3);
+  _objc_release(recipients);
   _objc_release(self);
 }
 
-- (void)setCcRecipients:(id)a3
+- (void)setCcRecipients:(id)recipients
 {
-  _objc_retain(a3);
+  _objc_retain(recipients);
   _objc_retain(self);
   sub_100451AA0();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044DBC0(v4);
 
-  _objc_release(a3);
+  _objc_release(recipients);
   _objc_release(self);
 }
 
-- (void)setBccRecipients:(id)a3
+- (void)setBccRecipients:(id)recipients
 {
-  _objc_retain(a3);
+  _objc_retain(recipients);
   _objc_retain(self);
   sub_100451AA0();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10044E60C(v4);
 
-  _objc_release(a3);
+  _objc_release(recipients);
   _objc_release(self);
 }
 
-- (void)setFocusedField:(id)a3
+- (void)setFocusedField:(id)field
 {
-  _objc_retain(a3);
+  _objc_retain(field);
   _objc_retain(self);
-  sub_10044F058(a3);
+  sub_10044F058(field);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(field);
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  _objc_retain(a3);
+  _objc_retain(state);
   _objc_retain(self);
-  sub_10044FAFC(a3);
+  sub_10044FAFC(state);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(state);
 }
 
-- (void)onHostAction:(id)a3
+- (void)onHostAction:(id)action
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  actionCopy = action;
   v10 = type metadata accessor for Notification();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v4 = __chkstk_darwin(v11);
+  v4 = __chkstk_darwin(actionCopy);
   v9 = &v5 - v6;
   _objc_retain(v4);
   _objc_retain(self);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100450914(v9);
   (*(v7 + 8))(v9, v10);
-  _objc_release(v11);
-  _objc_release(v12);
+  _objc_release(actionCopy);
+  _objc_release(selfCopy);
 }
 
 @end

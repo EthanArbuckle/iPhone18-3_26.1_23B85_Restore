@@ -1,11 +1,11 @@
 @interface WBSCloudKitOperationRetryManager
-- (BOOL)_shouldRetryOperationWithError:(id)a3 isItemPartialError:(BOOL)a4 getRetryInterval:(double *)a5 underlyingError:(id *)a6;
+- (BOOL)_shouldRetryOperationWithError:(id)error isItemPartialError:(BOOL)partialError getRetryInterval:(double *)interval underlyingError:(id *)underlyingError;
 - (OS_os_log)log;
 - (WBSCloudKitOperationRetryManager)init;
-- (WBSCloudKitOperationRetryManager)initWithLog:(id)a3;
+- (WBSCloudKitOperationRetryManager)initWithLog:(id)log;
 - (id)_logStringForOperationGroup;
-- (int64_t)scheduleRetryIfNeededForError:(id)a3 usingBlock:(id)a4;
-- (void)setScheduleQueue:(id)a3;
+- (int64_t)scheduleRetryIfNeededForError:(id)error usingBlock:(id)block;
+- (void)setScheduleQueue:(id)queue;
 @end
 
 @implementation WBSCloudKitOperationRetryManager
@@ -26,14 +26,14 @@
   return v3;
 }
 
-- (WBSCloudKitOperationRetryManager)initWithLog:(id)a3
+- (WBSCloudKitOperationRetryManager)initWithLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   v6 = [(WBSCloudKitOperationRetryManager *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_log, a3);
+    objc_storeStrong(&v6->_log, log);
     v8 = v7;
   }
 
@@ -53,34 +53,34 @@
   }
 }
 
-- (void)setScheduleQueue:(id)a3
+- (void)setScheduleQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v5 = MEMORY[0x1E69E96A0];
-    v4 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
   }
 
   scheduleQueue = self->_scheduleQueue;
   p_scheduleQueue = &self->_scheduleQueue;
-  if (scheduleQueue != v4)
+  if (scheduleQueue != queueCopy)
   {
-    v8 = v4;
-    objc_storeStrong(p_scheduleQueue, v4);
-    v4 = v8;
+    v8 = queueCopy;
+    objc_storeStrong(p_scheduleQueue, queueCopy);
+    queueCopy = v8;
   }
 }
 
-- (BOOL)_shouldRetryOperationWithError:(id)a3 isItemPartialError:(BOOL)a4 getRetryInterval:(double *)a5 underlyingError:(id *)a6
+- (BOOL)_shouldRetryOperationWithError:(id)error isItemPartialError:(BOOL)partialError getRetryInterval:(double *)interval underlyingError:(id *)underlyingError
 {
-  v10 = a3;
-  if ([v10 safari_isInCloudKitErrorDomain])
+  errorCopy = error;
+  if ([errorCopy safari_isInCloudKitErrorDomain])
   {
-    v11 = v10;
-    *a6 = v10;
-    v12 = [v11 code];
-    switch(v12)
+    v11 = errorCopy;
+    *underlyingError = errorCopy;
+    code = [v11 code];
+    switch(code)
     {
       case 1:
       case 5:
@@ -126,8 +126,8 @@
         v29 = __Block_byref_object_copy__5;
         v30 = __Block_byref_object_dispose__5;
         v31 = 0;
-        v18 = [v10 userInfo];
-        v19 = [v18 objectForKeyedSubscript:*MEMORY[0x1E695B7A0]];
+        userInfo = [errorCopy userInfo];
+        v19 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B7A0]];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __119__WBSCloudKitOperationRetryManager__shouldRetryOperationWithError_isItemPartialError_getRetryInterval_underlyingError___block_invoke;
@@ -135,13 +135,13 @@
         v21[4] = self;
         v23 = &v32;
         v24 = &v26;
-        v22 = v10;
+        v22 = errorCopy;
         v25 = &v36;
         [v19 enumerateKeysAndObjectsUsingBlock:v21];
 
-        *a6 = v27[5];
-        *a5 = v33[3];
-        a4 = *(v37 + 24);
+        *underlyingError = v27[5];
+        *interval = v33[3];
+        partialError = *(v37 + 24);
 
         _Block_object_dispose(&v26, 8);
         _Block_object_dispose(&v32, 8);
@@ -153,8 +153,8 @@
       case 7:
       case 23:
       case 34:
-        v13 = [v10 userInfo];
-        v14 = [v13 safari_numberForKey:*MEMORY[0x1E695B750]];
+        userInfo2 = [errorCopy userInfo];
+        v14 = [userInfo2 safari_numberForKey:*MEMORY[0x1E695B750]];
 
         if (v14)
         {
@@ -166,20 +166,20 @@
           v15 = 5.0;
         }
 
-        *a5 = v15;
+        *interval = v15;
 
-        a4 = 1;
+        partialError = 1;
         break;
       case 22:
         break;
       default:
-        v16 = v12 - 100;
-        if ((v12 - 100) > 0x3D || ((1 << v16) & 0x30040001C1F06001) == 0 && ((1 << v16) & 0x10000009C00) == 0)
+        v16 = code - 100;
+        if ((code - 100) > 0x3D || ((1 << v16) & 0x30040001C1F06001) == 0 && ((1 << v16) & 0x10000009C00) == 0)
         {
           v20 = [(WBSCloudKitOperationRetryManager *)self log];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
           {
-            [WBSCloudKitOperationRetryManager _shouldRetryOperationWithError:v10 isItemPartialError:v20 getRetryInterval:? underlyingError:?];
+            [WBSCloudKitOperationRetryManager _shouldRetryOperationWithError:errorCopy isItemPartialError:v20 getRetryInterval:? underlyingError:?];
           }
         }
 
@@ -190,10 +190,10 @@
   else
   {
 LABEL_8:
-    a4 = 0;
+    partialError = 0;
   }
 
-  return a4;
+  return partialError;
 }
 
 void __119__WBSCloudKitOperationRetryManager__shouldRetryOperationWithError_isItemPartialError_getRetryInterval_underlyingError___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -245,14 +245,14 @@ void __119__WBSCloudKitOperationRetryManager__shouldRetryOperationWithError_isIt
   }
 }
 
-- (int64_t)scheduleRetryIfNeededForError:(id)a3 usingBlock:(id)a4
+- (int64_t)scheduleRetryIfNeededForError:(id)error usingBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  blockCopy = block;
   if (self->_dateRetryWasFirstRequested)
   {
-    if (v6)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -260,16 +260,16 @@ void __119__WBSCloudKitOperationRetryManager__shouldRetryOperationWithError_isIt
 
   else
   {
-    v21 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateRetryWasFirstRequested = self->_dateRetryWasFirstRequested;
-    self->_dateRetryWasFirstRequested = v21;
+    self->_dateRetryWasFirstRequested = date;
 
-    if (v6)
+    if (errorCopy)
     {
 LABEL_3:
       v36 = 0;
       v37 = 0.0;
-      v8 = [(WBSCloudKitOperationRetryManager *)self _shouldRetryOperationWithError:v6 isItemPartialError:0 getRetryInterval:&v37 underlyingError:&v36];
+      v8 = [(WBSCloudKitOperationRetryManager *)self _shouldRetryOperationWithError:errorCopy isItemPartialError:0 getRetryInterval:&v37 underlyingError:&v36];
       v9 = v36;
       if (!v8)
       {
@@ -298,17 +298,17 @@ LABEL_22:
       {
         v14 = [(WBSCloudKitOperationRetryManager *)self log];
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-        if (v9 == v6)
+        if (v9 == errorCopy)
         {
           if (v15)
           {
-            v16 = [v6 safari_privacyPreservingDescription];
+            safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
             v31 = v37;
             timeout = self->_timeout;
             [(WBSCloudKitOperationRetryManager *)self _logStringForOperationGroup];
             v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             *buf = 138544130;
-            v39 = *&v16;
+            v39 = *&safari_privacyPreservingDescription;
             v40 = 2048;
             v41 = v31;
             v42 = 2048;
@@ -323,21 +323,21 @@ LABEL_22:
 
         else if (v15)
         {
-          v16 = [v9 safari_privacyPreservingDescription];
-          v17 = [v6 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription = [v9 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription2 = [errorCopy safari_privacyPreservingDescription];
           v18 = v37;
           v19 = self->_timeout;
-          v20 = [(WBSCloudKitOperationRetryManager *)self _logStringForOperationGroup];
+          _logStringForOperationGroup = [(WBSCloudKitOperationRetryManager *)self _logStringForOperationGroup];
           *buf = 138544386;
-          v39 = *&v16;
+          v39 = *&safari_privacyPreservingDescription;
           v40 = 2114;
-          v41 = *&v17;
+          v41 = *&safari_privacyPreservingDescription2;
           v42 = 2048;
           v43 = v18;
           v44 = 2048;
           v45 = v19;
           v46 = 2114;
-          v47 = v20;
+          v47 = _logStringForOperationGroup;
           _os_log_error_impl(&dword_1BB6F3000, v14, OS_LOG_TYPE_ERROR, "Operation failed due to error %{public}@, underlying error %{public}@; not retrying because retry interval (%f seconds) exceeds timeout (%f seconds)%{public}@", buf, 0x34u);
 
 LABEL_25:
@@ -350,21 +350,21 @@ LABEL_21:
       }
 
       v24 = dispatch_time(0, (v37 * 1000000000.0));
-      dispatch_after(v24, self->_scheduleQueue, v7);
+      dispatch_after(v24, self->_scheduleQueue, blockCopy);
       v14 = [(WBSCloudKitOperationRetryManager *)self log];
       v25 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-      if (v9 == v6)
+      if (v9 == errorCopy)
       {
         if (v25)
         {
           v34 = v37;
-          v27 = [v6 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription3 = [errorCopy safari_privacyPreservingDescription];
           [(WBSCloudKitOperationRetryManager *)self _logStringForOperationGroup];
           v35 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           *buf = 134218498;
           v39 = v34;
           v40 = 2114;
-          v41 = *&v27;
+          v41 = *&safari_privacyPreservingDescription3;
           v42 = 2114;
           v43 = v35;
           _os_log_error_impl(&dword_1BB6F3000, v14, OS_LOG_TYPE_ERROR, "Will retry operation in %f seconds due to error %{public}@%{public}@", buf, 0x20u);
@@ -376,15 +376,15 @@ LABEL_21:
       else if (v25)
       {
         v26 = v37;
-        v27 = [v9 safari_privacyPreservingDescription];
-        [v6 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription3 = [v9 safari_privacyPreservingDescription];
+        [errorCopy safari_privacyPreservingDescription];
         v28 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         [(WBSCloudKitOperationRetryManager *)self _logStringForOperationGroup];
         v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134218754;
         v39 = v26;
         v40 = 2114;
-        v41 = *&v27;
+        v41 = *&safari_privacyPreservingDescription3;
         v42 = 2114;
         v43 = v28;
         v44 = 2114;
@@ -411,8 +411,8 @@ LABEL_23:
   if (operationGroup)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(CKOperationGroup *)operationGroup safari_logDescription];
-    v5 = [v3 stringWithFormat:@" with %@", v4];
+    safari_logDescription = [(CKOperationGroup *)operationGroup safari_logDescription];
+    v5 = [v3 stringWithFormat:@" with %@", safari_logDescription];
   }
 
   else

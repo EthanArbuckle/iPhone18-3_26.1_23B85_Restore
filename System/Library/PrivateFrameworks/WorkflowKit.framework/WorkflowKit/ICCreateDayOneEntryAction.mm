@@ -1,19 +1,19 @@
 @interface ICCreateDayOneEntryAction
-- (void)getImagesFromInput:(id)a3 completionHandler:(id)a4;
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
+- (void)getImagesFromInput:(id)input completionHandler:(id)handler;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ICCreateDayOneEntryAction
 
-- (void)getImagesFromInput:(id)a3 completionHandler:(id)a4
+- (void)getImagesFromInput:(id)input completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6996CF0];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  inputCopy = input;
   v23[0] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v9 = [v5 requestForCoercingToContentClasses:v8 completionHandler:v6];
+  v9 = [v5 requestForCoercingToContentClasses:v8 completionHandler:handlerCopy];
 
   v10 = MEMORY[0x1E695DFB8];
   v11 = objc_opt_class();
@@ -29,32 +29,32 @@
   v18 = [v14 optionsWithDictionary:v17];
   [v9 setOptions:v18];
 
-  [v7 performCoercion:v9];
+  [inputCopy performCoercion:v9];
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  inputCopy = input;
+  parametersCopy = parameters;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __105__ICCreateDayOneEntryAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke;
   v22[3] = &unk_1E83806C0;
-  v23 = v13;
-  v24 = v12;
-  v27 = v15;
-  v28 = v16;
-  v25 = v14;
-  v26 = self;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v12;
-  v21 = v13;
+  v23 = parametersCopy;
+  v24 = inputCopy;
+  v27 = handlerCopy;
+  v28 = errorHandlerCopy;
+  v25 = interfaceCopy;
+  selfCopy = self;
+  v17 = errorHandlerCopy;
+  v18 = handlerCopy;
+  v19 = interfaceCopy;
+  v20 = inputCopy;
+  v21 = parametersCopy;
   [(ICCreateDayOneEntryAction *)self getImagesFromInput:v20 completionHandler:v22];
 }
 

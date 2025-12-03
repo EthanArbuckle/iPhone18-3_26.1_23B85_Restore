@@ -1,12 +1,12 @@
 @interface NLCSavedProfiles
 - (BOOL)createPresetProfiles;
-- (id)addNewProfile:(id)a3;
+- (id)addNewProfile:(id)profile;
 - (id)restoreRowToSelect;
 - (void)applyChanges;
 - (void)applySimulationStatusChanges;
 - (void)loadPreferences;
 - (void)refreshArrays;
-- (void)removeProfileWithName:(id)a3;
+- (void)removeProfileWithName:(id)name;
 @end
 
 @implementation NLCSavedProfiles
@@ -16,8 +16,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableArray);
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(NSMutableDictionary *)self->profileDictionary allKeys];
-  [v5 addObjectsFromArray:v6];
+  allKeys = [(NSMutableDictionary *)self->profileDictionary allKeys];
+  [v5 addObjectsFromArray:allKeys];
 
   v21 = 0u;
   v22 = 0u;
@@ -71,23 +71,23 @@
   [(NLCSavedProfiles *)self setAllProfilesArray:v17];
 }
 
-- (void)removeProfileWithName:(id)a3
+- (void)removeProfileWithName:(id)name
 {
   profileDictionary = self->profileDictionary;
-  v5 = a3;
-  [(NSMutableDictionary *)profileDictionary removeObjectForKey:v5];
+  nameCopy = name;
+  [(NSMutableDictionary *)profileDictionary removeObjectForKey:nameCopy];
   [(NLCSavedProfiles *)self refreshArrays];
-  LODWORD(profileDictionary) = [v5 isEqualToString:self->selectedProfileName];
+  LODWORD(profileDictionary) = [nameCopy isEqualToString:self->selectedProfileName];
 
   if (profileDictionary)
   {
-    v6 = [(NLCSavedProfiles *)self allProfilesArray];
-    v7 = [v6 count];
+    allProfilesArray = [(NLCSavedProfiles *)self allProfilesArray];
+    v7 = [allProfilesArray count];
 
     if (v7)
     {
-      v9 = [(NLCSavedProfiles *)self allProfilesArray];
-      v8 = [v9 objectAtIndex:0];
+      allProfilesArray2 = [(NLCSavedProfiles *)self allProfilesArray];
+      v8 = [allProfilesArray2 objectAtIndex:0];
       [(NLCSavedProfiles *)self setSelectedProfileName:v8];
     }
 
@@ -101,8 +101,8 @@
 
 - (id)restoreRowToSelect
 {
-  v3 = [(NLCSavedProfiles *)self simulatedProfileName];
-  if (v3 && (v4 = v3, v5 = [(NLCSavedProfiles *)self simulatorRunning], v4, v5))
+  simulatedProfileName = [(NLCSavedProfiles *)self simulatedProfileName];
+  if (simulatedProfileName && (v4 = simulatedProfileName, v5 = [(NLCSavedProfiles *)self simulatorRunning], v4, v5))
   {
     v6 = self->simulatedProfileName;
   }
@@ -186,7 +186,7 @@
   }
 
   v24 = CFPreferencesCopyAppValue(@"TimeAtLastRun", @"com.apple.network.prefPaneSimulate");
-  v25 = [v24 longValue];
+  longValue = [v24 longValue];
 
   v26 = +[NSProcessInfo processInfo];
   [v26 systemUptime];
@@ -194,7 +194,7 @@
 
   v29 = +[NSDate date];
   [v29 timeIntervalSince1970];
-  v31 = v30 - v25;
+  v31 = v30 - longValue;
 
   if (v31 > v28)
   {
@@ -248,10 +248,10 @@
   CFPreferencesAppSynchronize(@"com.apple.network.prefPaneSimulate");
 }
 
-- (id)addNewProfile:(id)a3
+- (id)addNewProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(NLCSavedProfiles *)self profileDictionaryWithName:v4];
+  profileCopy = profile;
+  v5 = [(NLCSavedProfiles *)self profileDictionaryWithName:profileCopy];
   if (v5)
   {
     v6 = v5;
@@ -275,7 +275,7 @@
     v20 = [NSArray arrayWithObjects:v19, v22, v16, v18, v17, v8, v9, v10, @"All", v11, v12, v13, 0];
 
     v14 = [[NSMutableDictionary alloc] initWithObjects:v20 forKeys:v21];
-    [(NSMutableDictionary *)self->profileDictionary setObject:v14 forKey:v4];
+    [(NSMutableDictionary *)self->profileDictionary setObject:v14 forKey:profileCopy];
     [(NLCSavedProfiles *)self refreshArrays];
     v6 = v14;
 

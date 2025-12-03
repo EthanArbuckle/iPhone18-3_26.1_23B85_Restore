@@ -19,7 +19,7 @@
 - (id)base64EncodedString
 {
   v5 = 0;
-  v1 = NewBase64Encode([a1 bytes], objc_msgSend(a1, "length"), 0, &v5);
+  v1 = NewBase64Encode([self bytes], objc_msgSend(self, "length"), 0, &v5);
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
   v3 = [v2 initWithBytes:v1 length:v5 encoding:1];
   free(v1);

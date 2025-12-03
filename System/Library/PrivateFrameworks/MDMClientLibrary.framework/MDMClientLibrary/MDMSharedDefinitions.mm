@@ -1,13 +1,13 @@
 @interface MDMSharedDefinitions
-+ (id)oidsAnonymous:(BOOL)a3 nonce:(BOOL)a4 coresidency:(BOOL)a5;
++ (id)oidsAnonymous:(BOOL)anonymous nonce:(BOOL)nonce coresidency:(BOOL)coresidency;
 @end
 
 @implementation MDMSharedDefinitions
 
-+ (id)oidsAnonymous:(BOOL)a3 nonce:(BOOL)a4 coresidency:(BOOL)a5
++ (id)oidsAnonymous:(BOOL)anonymous nonce:(BOOL)nonce coresidency:(BOOL)coresidency
 {
-  v5 = a5;
-  v6 = a4;
+  coresidencyCopy = coresidency;
+  nonceCopy = nonce;
   v46 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEB18];
   v38 = 0;
@@ -99,7 +99,7 @@
 
   v23 = [v8 arrayWithArray:v22];
 
-  if (!a3)
+  if (!anonymous)
   {
     v38 = 0;
     v39 = &v38;
@@ -149,7 +149,7 @@
     [v23 addObjectsFromArray:v31];
   }
 
-  if (v5 && [MEMORY[0x277D034F8] isMDACoResidencyEnabled])
+  if (coresidencyCopy && [MEMORY[0x277D034F8] isMDACoResidencyEnabled])
   {
     v38 = 0;
     v39 = &v38;
@@ -173,7 +173,7 @@
     [v23 addObject:*v32];
   }
 
-  if (!v6)
+  if (!nonceCopy)
   {
     goto LABEL_32;
   }

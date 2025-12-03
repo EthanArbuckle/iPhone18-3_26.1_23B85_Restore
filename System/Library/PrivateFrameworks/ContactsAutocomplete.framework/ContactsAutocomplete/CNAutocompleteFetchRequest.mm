@@ -1,24 +1,24 @@
 @interface CNAutocompleteFetchRequest
 + (id)makeTriageIdentifier;
 + (id)request;
-+ (id)searchablePropertiesForSearchType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
++ (id)searchablePropertiesForSearchType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
 - (BOOL)isZeroKeywordSearch;
 - (CNAutocompleteFetchRequest)init;
-- (CNAutocompleteFetchRequest)initWithCoder:(id)a3;
+- (CNAutocompleteFetchRequest)initWithCoder:(id)coder;
 - (NSArray)searchableProperties;
 - (NSString)sendingAddress;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)executeWithDelegate:(id)a3;
+- (id)executeWithDelegate:(id)delegate;
 - (id)includeDebugString;
 - (id)searchTypeDebugString;
 - (id)shouldIncludeGroupResultsDebugString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setSendingAddress:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSearchString:(id)string;
+- (void)setSendingAddress:(id)address;
 @end
 
 @implementation CNAutocompleteFetchRequest
@@ -42,9 +42,9 @@
     [(CNAutocompleteFetchRequest *)v3 setAddressableGroupResultStyle:0];
     [(CNAutocompleteFetchRequest *)v3 setSearchNames:MEMORY[0x277CBEBF8]];
     [(CNAutocompleteFetchRequest *)v3 setMaximumResultsCount:-1];
-    v4 = [objc_opt_class() makeTriageIdentifier];
+    makeTriageIdentifier = [objc_opt_class() makeTriageIdentifier];
     triageIdentifier = v3->_triageIdentifier;
-    v3->_triageIdentifier = v4;
+    v3->_triageIdentifier = makeTriageIdentifier;
 
     v6 = v3;
   }
@@ -59,8 +59,8 @@
     +[CNAutocompleteFetchRequest makeTriageIdentifier];
   }
 
-  v2 = [makeTriageIdentifier_cn_once_object_0 nextUnsignedInteger];
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"CNA-%04llu", v2];
+  nextUnsignedInteger = [makeTriageIdentifier_cn_once_object_0 nextUnsignedInteger];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"CNA-%04llu", nextUnsignedInteger];
 }
 
 uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
@@ -76,14 +76,14 @@ uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
   v3 = CNALoggingContextDebug();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CNAutocompleteFetchRequest *)self searchNames];
+    searchNames = [(CNAutocompleteFetchRequest *)self searchNames];
     v9 = 138477827;
-    v10 = v4;
+    v10 = searchNames;
     _os_log_impl(&dword_2155FE000, v3, OS_LOG_TYPE_DEFAULT, "ZKW: %{private}@", &v9, 0xCu);
   }
 
-  v5 = [(CNAutocompleteFetchRequest *)self searchNames];
-  v6 = [v5 _cn_none:*MEMORY[0x277CFBD38]];
+  searchNames2 = [(CNAutocompleteFetchRequest *)self searchNames];
+  v6 = [searchNames2 _cn_none:*MEMORY[0x277CFBD38]];
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
@@ -91,17 +91,17 @@ uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
 
 + (id)request
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (string)
   {
-    v4 = [a3 copy];
+    v4 = [string copy];
     v9[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [(CNAutocompleteFetchRequest *)self setSearchNames:v5];
@@ -118,18 +118,18 @@ uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNAutocompleteFetchRequest);
-  v5 = [(CNAutocompleteFetchRequest *)self searchNames];
-  [(CNAutocompleteFetchRequest *)v4 setSearchNames:v5];
+  searchNames = [(CNAutocompleteFetchRequest *)self searchNames];
+  [(CNAutocompleteFetchRequest *)v4 setSearchNames:searchNames];
 
-  v6 = [(CNAutocompleteFetchRequest *)self priorityDomainForSorting];
-  [(CNAutocompleteFetchRequest *)v4 setPriorityDomainForSorting:v6];
+  priorityDomainForSorting = [(CNAutocompleteFetchRequest *)self priorityDomainForSorting];
+  [(CNAutocompleteFetchRequest *)v4 setPriorityDomainForSorting:priorityDomainForSorting];
 
   [(CNAutocompleteFetchRequest *)v4 setSearchType:[(CNAutocompleteFetchRequest *)self searchType]];
-  v7 = [(CNAutocompleteFetchRequest *)self fetchContext];
-  [(CNAutocompleteFetchRequest *)v4 setFetchContext:v7];
+  fetchContext = [(CNAutocompleteFetchRequest *)self fetchContext];
+  [(CNAutocompleteFetchRequest *)v4 setFetchContext:fetchContext];
 
   [(CNAutocompleteFetchRequest *)v4 setIncludeContacts:[(CNAutocompleteFetchRequest *)self includeContacts]];
   [(CNAutocompleteFetchRequest *)v4 setIncludeRecents:[(CNAutocompleteFetchRequest *)self includeRecents]];
@@ -145,9 +145,9 @@ uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v12) = 1;
     return v12;
@@ -156,33 +156,33 @@ uint64_t __50__CNAutocompleteFetchRequest_makeTriageIdentifier__block_invoke()
   v19 = v4;
   v20 = v3;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_includeContacts != *(a3 + 48) || self->_includeRecents != *(a3 + 49) || self->_includeStewie != *(a3 + 50) || self->_includeLocalExtensions != *(a3 + 52) || self->_includeSuggestions != *(a3 + 51) || self->_includeDirectoryServers != *(a3 + 53) || self->_includeCalendarServers != *(a3 + 54) || self->_includePredictions != *(a3 + 55))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_includeContacts != *(equal + 48) || self->_includeRecents != *(equal + 49) || self->_includeStewie != *(equal + 50) || self->_includeLocalExtensions != *(equal + 52) || self->_includeSuggestions != *(equal + 51) || self->_includeDirectoryServers != *(equal + 53) || self->_includeCalendarServers != *(equal + 54) || self->_includePredictions != *(equal + 55))
   {
     goto LABEL_21;
   }
 
   searchNames = self->_searchNames;
-  if (!(searchNames | *(a3 + 1)) || (v12 = [(NSArray *)searchNames isEqual:?]) != 0)
+  if (!(searchNames | *(equal + 1)) || (v12 = [(NSArray *)searchNames isEqual:?]) != 0)
   {
-    if (self->_searchType != *(a3 + 3))
+    if (self->_searchType != *(equal + 3))
     {
       goto LABEL_21;
     }
 
     priorityDomainForSorting = self->_priorityDomainForSorting;
-    if (!(priorityDomainForSorting | *(a3 + 2)) || (v12 = [(NSString *)priorityDomainForSorting isEqual:?]) != 0)
+    if (!(priorityDomainForSorting | *(equal + 2)) || (v12 = [(NSString *)priorityDomainForSorting isEqual:?]) != 0)
     {
       fetchContext = self->_fetchContext;
-      if (!(fetchContext | *(a3 + 4)) || (v12 = [(CNAutocompleteFetchContext *)fetchContext isEqual:?]) != 0)
+      if (!(fetchContext | *(equal + 4)) || (v12 = [(CNAutocompleteFetchContext *)fetchContext isEqual:?]) != 0)
       {
         v15 = [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResults:v6];
-        if (v15 == [a3 shouldIncludeGroupResults])
+        if (v15 == [equal shouldIncludeGroupResults])
         {
-          v16 = [(CNAutocompleteFetchRequest *)self addressableGroupResultStyle];
-          if (v16 == [a3 addressableGroupResultStyle])
+          addressableGroupResultStyle = [(CNAutocompleteFetchRequest *)self addressableGroupResultStyle];
+          if (addressableGroupResultStyle == [equal addressableGroupResultStyle])
           {
-            v17 = [(CNAutocompleteFetchRequest *)self maximumResultsCount];
-            LOBYTE(v12) = v17 == [a3 maximumResultsCount];
+            maximumResultsCount = [(CNAutocompleteFetchRequest *)self maximumResultsCount];
+            LOBYTE(v12) = maximumResultsCount == [equal maximumResultsCount];
             return v12;
           }
         }
@@ -211,37 +211,37 @@ LABEL_21:
   v13 = self->_includeCalendarServers - v12 + 32 * v12;
   v14 = 31 * (self->_includePredictions - v13 + 32 * v13);
   v15 = v14 + [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResults];
-  v16 = [(CNAutocompleteFetchRequest *)self addressableGroupResultStyle];
-  if (v16 >= 0)
+  addressableGroupResultStyle = [(CNAutocompleteFetchRequest *)self addressableGroupResultStyle];
+  if (addressableGroupResultStyle >= 0)
   {
-    v17 = v16;
+    v17 = addressableGroupResultStyle;
   }
 
   else
   {
-    v17 = -v16;
+    v17 = -addressableGroupResultStyle;
   }
 
   return [(CNAutocompleteFetchRequest *)self maximumResultsCount]- (v17 - v15 + 32 * v15) + 32 * (v17 - v15 + 32 * v15) - 0x133EA9F605504431;
 }
 
-- (id)executeWithDelegate:(id)a3
+- (id)executeWithDelegate:(id)delegate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = CNALoggingContextDebug();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2155FE000, v5, OS_LOG_TYPE_DEFAULT, "Autocompleting “%@”", &v14, 0xCu);
   }
 
   v6 = +[CNAutocompleteSearchProviderFactory nonCachingProvider];
   v7 = +[CNAutocompleteProbeProviderFactory defaultProbeProvider];
   v8 = [CNAutocompleteStore alloc];
-  v9 = [MEMORY[0x277CFBEA8] globalAsyncScheduler];
-  v10 = [(CNAutocompleteStore *)v8 initWithDelegate:v4 searchProvider:v6 probeProvider:v7 scheduler:v9];
+  globalAsyncScheduler = [MEMORY[0x277CFBEA8] globalAsyncScheduler];
+  v10 = [(CNAutocompleteStore *)v8 initWithDelegate:delegateCopy searchProvider:v6 probeProvider:v7 scheduler:globalAsyncScheduler];
 
   v11 = [(CNAutocompleteStore *)v10 executeFetchRequest:self];
 
@@ -250,13 +250,13 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
-  v5 = [(CNAutocompleteFetchRequest *)self fetchContext];
-  if (v5)
+  fetchContext = [(CNAutocompleteFetchRequest *)self fetchContext];
+  if (fetchContext)
   {
-    v6 = [(CNAutocompleteFetchRequest *)self fetchContext];
-    v7 = [v6 isValid:a3];
+    fetchContext2 = [(CNAutocompleteFetchRequest *)self fetchContext];
+    v7 = [fetchContext2 isValid:valid];
   }
 
   else
@@ -267,17 +267,17 @@ LABEL_21:
   return v7;
 }
 
-+ (id)searchablePropertiesForSearchType:(unint64_t)a3
++ (id)searchablePropertiesForSearchType:(unint64_t)type
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3 > 5)
+  if (type > 5)
   {
     v8 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    if (((1 << a3) & 0x32) != 0)
+    if (((1 << type) & 0x32) != 0)
     {
       v3 = *MEMORY[0x277CBD098];
       v12[0] = *MEMORY[0x277CBCFC0];
@@ -288,7 +288,7 @@ LABEL_21:
       v6 = 3;
     }
 
-    else if (((1 << a3) & 9) != 0)
+    else if (((1 << type) & 9) != 0)
     {
       v13[0] = *MEMORY[0x277CBCFC0];
       v4 = MEMORY[0x277CBEA60];
@@ -317,44 +317,44 @@ LABEL_21:
 - (NSArray)searchableProperties
 {
   v3 = objc_opt_class();
-  v4 = [(CNAutocompleteFetchRequest *)self searchType];
+  searchType = [(CNAutocompleteFetchRequest *)self searchType];
 
-  return [v3 searchablePropertiesForSearchType:v4];
+  return [v3 searchablePropertiesForSearchType:searchType];
 }
 
-- (CNAutocompleteFetchRequest)initWithCoder:(id)a3
+- (CNAutocompleteFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CNAutocompleteFetchRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"searchNames"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"searchNames"];
     searchNames = v5->_searchNames;
     v5->_searchNames = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priorityDomainForSorting"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priorityDomainForSorting"];
     priorityDomainForSorting = v5->_priorityDomainForSorting;
     v5->_priorityDomainForSorting = v8;
 
-    v5->_searchType = [v4 decodeIntegerForKey:@"searchType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fetchContext"];
+    v5->_searchType = [coderCopy decodeIntegerForKey:@"searchType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fetchContext"];
     fetchContext = v5->_fetchContext;
     v5->_fetchContext = v10;
 
-    v5->_includeContacts = [v4 decodeBoolForKey:@"includeContacts"];
-    v5->_includeRecents = [v4 decodeBoolForKey:@"includeRecents"];
-    v5->_includeStewie = [v4 decodeBoolForKey:@"includeStewie"];
-    v5->_includeSuggestions = [v4 decodeBoolForKey:@"includeSuggestions"];
-    v5->_includeLocalExtensions = [v4 decodeBoolForKey:@"includeLocalExtensions"];
-    v5->_includeDirectoryServers = [v4 decodeBoolForKey:@"includeDirectoryServers"];
-    v5->_includeCalendarServers = [v4 decodeBoolForKey:@"includeCalendarServers"];
-    v5->_includePredictions = [v4 decodeBoolForKey:@"includePredictions"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shouldIncludeGroupResultsImpl"];
+    v5->_includeContacts = [coderCopy decodeBoolForKey:@"includeContacts"];
+    v5->_includeRecents = [coderCopy decodeBoolForKey:@"includeRecents"];
+    v5->_includeStewie = [coderCopy decodeBoolForKey:@"includeStewie"];
+    v5->_includeSuggestions = [coderCopy decodeBoolForKey:@"includeSuggestions"];
+    v5->_includeLocalExtensions = [coderCopy decodeBoolForKey:@"includeLocalExtensions"];
+    v5->_includeDirectoryServers = [coderCopy decodeBoolForKey:@"includeDirectoryServers"];
+    v5->_includeCalendarServers = [coderCopy decodeBoolForKey:@"includeCalendarServers"];
+    v5->_includePredictions = [coderCopy decodeBoolForKey:@"includePredictions"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shouldIncludeGroupResultsImpl"];
     shouldIncludeGroupResultsImpl = v5->_shouldIncludeGroupResultsImpl;
     v5->_shouldIncludeGroupResultsImpl = v12;
 
-    -[CNAutocompleteFetchRequest setAddressableGroupResultStyle:](v5, "setAddressableGroupResultStyle:", [v4 decodeIntegerForKey:@"addressableGroupResultStyle"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultsCount"];
+    -[CNAutocompleteFetchRequest setAddressableGroupResultStyle:](v5, "setAddressableGroupResultStyle:", [coderCopy decodeIntegerForKey:@"addressableGroupResultStyle"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultsCount"];
     v5->_maximumResultsCount = [v14 unsignedIntegerValue];
 
     v15 = v5;
@@ -363,100 +363,100 @@ LABEL_21:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   searchNames = self->_searchNames;
-  v5 = a3;
-  [v5 encodeObject:searchNames forKey:@"searchNames"];
-  [v5 encodeObject:self->_priorityDomainForSorting forKey:@"priorityDomainForSorting"];
-  [v5 encodeInteger:self->_searchType forKey:@"searchType"];
-  [v5 encodeObject:self->_fetchContext forKey:@"fetchContext"];
-  [v5 encodeBool:self->_includeContacts forKey:@"includeContacts"];
-  [v5 encodeBool:self->_includeRecents forKey:@"includeRecents"];
-  [v5 encodeBool:self->_includeStewie forKey:@"includeStewie"];
-  [v5 encodeBool:self->_includeSuggestions forKey:@"includeSuggestions"];
-  [v5 encodeBool:self->_includeLocalExtensions forKey:@"includeLocalExtensions"];
-  [v5 encodeBool:self->_includeDirectoryServers forKey:@"includeDirectoryServers"];
-  [v5 encodeBool:self->_includeCalendarServers forKey:@"includeCalendarServers"];
-  [v5 encodeBool:self->_includePredictions forKey:@"includePredictions"];
-  [v5 encodeObject:self->_shouldIncludeGroupResultsImpl forKey:@"shouldIncludeGroupResultsImpl"];
-  [v5 encodeInteger:-[CNAutocompleteFetchRequest addressableGroupResultStyle](self forKey:{"addressableGroupResultStyle"), @"addressableGroupResultStyle"}];
+  coderCopy = coder;
+  [coderCopy encodeObject:searchNames forKey:@"searchNames"];
+  [coderCopy encodeObject:self->_priorityDomainForSorting forKey:@"priorityDomainForSorting"];
+  [coderCopy encodeInteger:self->_searchType forKey:@"searchType"];
+  [coderCopy encodeObject:self->_fetchContext forKey:@"fetchContext"];
+  [coderCopy encodeBool:self->_includeContacts forKey:@"includeContacts"];
+  [coderCopy encodeBool:self->_includeRecents forKey:@"includeRecents"];
+  [coderCopy encodeBool:self->_includeStewie forKey:@"includeStewie"];
+  [coderCopy encodeBool:self->_includeSuggestions forKey:@"includeSuggestions"];
+  [coderCopy encodeBool:self->_includeLocalExtensions forKey:@"includeLocalExtensions"];
+  [coderCopy encodeBool:self->_includeDirectoryServers forKey:@"includeDirectoryServers"];
+  [coderCopy encodeBool:self->_includeCalendarServers forKey:@"includeCalendarServers"];
+  [coderCopy encodeBool:self->_includePredictions forKey:@"includePredictions"];
+  [coderCopy encodeObject:self->_shouldIncludeGroupResultsImpl forKey:@"shouldIncludeGroupResultsImpl"];
+  [coderCopy encodeInteger:-[CNAutocompleteFetchRequest addressableGroupResultStyle](self forKey:{"addressableGroupResultStyle"), @"addressableGroupResultStyle"}];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maximumResultsCount];
-  [v5 encodeObject:v6 forKey:@"maximumResultsCount"];
+  [coderCopy encodeObject:v6 forKey:@"maximumResultsCount"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(CNAutocompleteFetchRequest *)self searchNames];
-  v5 = [v3 appendName:@"search names" object:v4];
+  searchNames = [(CNAutocompleteFetchRequest *)self searchNames];
+  v5 = [v3 appendName:@"search names" object:searchNames];
 
-  v6 = [(CNAutocompleteFetchRequest *)self includeDebugString];
-  v7 = [v3 appendName:@"include" object:v6];
+  includeDebugString = [(CNAutocompleteFetchRequest *)self includeDebugString];
+  v7 = [v3 appendName:@"include" object:includeDebugString];
 
-  v8 = [(CNAutocompleteFetchRequest *)self searchTypeDebugString];
-  v9 = [v3 appendName:@"search type" object:v8];
+  searchTypeDebugString = [(CNAutocompleteFetchRequest *)self searchTypeDebugString];
+  v9 = [v3 appendName:@"search type" object:searchTypeDebugString];
 
-  v10 = [(CNAutocompleteFetchRequest *)self priorityDomainForSorting];
-  v11 = [v3 appendName:@"priority domain" object:v10];
+  priorityDomainForSorting = [(CNAutocompleteFetchRequest *)self priorityDomainForSorting];
+  v11 = [v3 appendName:@"priority domain" object:priorityDomainForSorting];
 
-  v12 = [(CNAutocompleteFetchRequest *)self fetchContext];
-  v13 = [v3 appendName:@"fetch context" object:v12];
+  fetchContext = [(CNAutocompleteFetchRequest *)self fetchContext];
+  v13 = [v3 appendName:@"fetch context" object:fetchContext];
 
-  v14 = [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResultsDebugString];
-  v15 = [v3 appendName:@"shouldIncludeGroupResults" object:v14];
+  shouldIncludeGroupResultsDebugString = [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResultsDebugString];
+  v15 = [v3 appendName:@"shouldIncludeGroupResults" object:shouldIncludeGroupResultsDebugString];
 
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 - (id)includeDebugString
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(CNAutocompleteFetchRequest *)self includeRecents])
   {
-    [v3 addObject:@"Recents"];
+    [array addObject:@"Recents"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeStewie])
   {
-    [v3 addObject:@"Stewie"];
+    [array addObject:@"Stewie"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeContacts])
   {
-    [v3 addObject:@"Contacts"];
+    [array addObject:@"Contacts"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeSuggestions])
   {
-    [v3 addObject:@"Suggestions"];
+    [array addObject:@"Suggestions"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeLocalExtensions])
   {
-    [v3 addObject:@"Local Extensions"];
+    [array addObject:@"Local Extensions"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeDirectoryServers])
   {
-    [v3 addObject:@"Directory Servers"];
+    [array addObject:@"Directory Servers"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includeCalendarServers])
   {
-    [v3 addObject:@"Calendar Servers"];
+    [array addObject:@"Calendar Servers"];
   }
 
   if ([(CNAutocompleteFetchRequest *)self includePredictions])
   {
-    [v3 addObject:@"Duet"];
+    [array addObject:@"Duet"];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v4 = [v3 componentsJoinedByString:@"+"];
+    v4 = [array componentsJoinedByString:@"+"];
   }
 
   else
@@ -469,23 +469,23 @@ LABEL_21:
 
 - (id)searchTypeDebugString
 {
-  v2 = [(CNAutocompleteFetchRequest *)self searchType];
-  if (v2 > 5)
+  searchType = [(CNAutocompleteFetchRequest *)self searchType];
+  if (searchType > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2781C40F0[v2];
+    return off_2781C40F0[searchType];
   }
 }
 
 - (id)shouldIncludeGroupResultsDebugString
 {
-  v3 = [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResults];
+  shouldIncludeGroupResults = [(CNAutocompleteFetchRequest *)self shouldIncludeGroupResults];
   v4 = @"NO";
-  if (v3)
+  if (shouldIncludeGroupResults)
   {
     v4 = @"YES";
   }
@@ -503,25 +503,25 @@ LABEL_21:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (%@)", v4, v5];
 }
 
-- (void)setSendingAddress:(id)a3
+- (void)setSendingAddress:(id)address
 {
-  v5 = a3;
-  v4 = [(CNAutocompleteFetchRequest *)self fetchContext];
-  if (!v4)
+  addressCopy = address;
+  fetchContext = [(CNAutocompleteFetchRequest *)self fetchContext];
+  if (!fetchContext)
   {
-    v4 = objc_alloc_init(CNAutocompleteFetchContext);
-    [(CNAutocompleteFetchRequest *)self setFetchContext:v4];
+    fetchContext = objc_alloc_init(CNAutocompleteFetchContext);
+    [(CNAutocompleteFetchRequest *)self setFetchContext:fetchContext];
   }
 
-  [(CNAutocompleteFetchContext *)v4 setSendingAddress:v5];
+  [(CNAutocompleteFetchContext *)fetchContext setSendingAddress:addressCopy];
 }
 
 - (NSString)sendingAddress
 {
-  v2 = [(CNAutocompleteFetchRequest *)self fetchContext];
-  v3 = [v2 sendingAddress];
+  fetchContext = [(CNAutocompleteFetchRequest *)self fetchContext];
+  sendingAddress = [fetchContext sendingAddress];
 
-  return v3;
+  return sendingAddress;
 }
 
 @end

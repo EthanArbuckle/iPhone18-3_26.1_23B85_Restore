@@ -1,33 +1,33 @@
 @interface CALNNotificationServerModule
-+ (id)_notificationStoragePathWithName:(id)a3;
++ (id)_notificationStoragePathWithName:(id)name;
 + (id)_protectedCalendarNotificationStorage;
 + (id)_protectedTriggeredEventNotificationDataStorage;
 + (id)_timeToLeaveRefreshStorage;
-+ (id)_timeToLeaveRefreshStoragePathWithName:(id)a3;
-+ (id)_triggeredEventNotificationDataStoragePathWithName:(id)a3;
++ (id)_timeToLeaveRefreshStoragePathWithName:(id)name;
++ (id)_triggeredEventNotificationDataStoragePathWithName:(id)name;
 + (id)_unprotectedCalendarNotificationStorage;
 + (id)_unprotectedTriggeredEventNotificationDataStorage;
 + (void)_migrateNotificationFiles;
-+ (void)_migrateNotificationFilesFromDirectory:(id)a3 toDirectory:(id)a4;
-+ (void)_setProtectedClassForStorageAtPath:(id)a3;
++ (void)_migrateNotificationFilesFromDirectory:(id)directory toDirectory:(id)toDirectory;
++ (void)_setProtectedClassForStorageAtPath:(id)path;
 - (CALNNotificationServerModule)init;
-- (id)_createCalendarNotificationServerWithUserNotificationCenterFactory:(id)a3 storage:(id)a4 eventStoreProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9;
-- (id)_createNotificationServerWithUserNotificationCenter:(id)a3 storage:(id)a4 eventStoreProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9;
-- (id)_createNotificationSourcesWithNotificationManager:(id)a3 eventStoreProvider:(id)a4 inboxNotificationProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9;
+- (id)_createCalendarNotificationServerWithUserNotificationCenterFactory:(id)factory storage:(id)storage eventStoreProvider:(id)provider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)refreshStorage;
+- (id)_createNotificationServerWithUserNotificationCenter:(id)center storage:(id)storage eventStoreProvider:(id)provider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)refreshStorage;
+- (id)_createNotificationSourcesWithNotificationManager:(id)manager eventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)storage;
 - (void)_registerSettingsCaptureHandlers;
-- (void)_reloadNotificationRecords:(id)a3 forNotificationServer:(id)a4;
+- (void)_reloadNotificationRecords:(id)records forNotificationServer:(id)server;
 - (void)_reloadNotificationsAfterFirstUnlock;
-- (void)_reloadNotificationsFromUnprotectedStorage:(id)a3 intoProtectedStorage:(id)a4 withStorageWrapper:(id)a5 forNotificationServer:(id)a6;
+- (void)_reloadNotificationsFromUnprotectedStorage:(id)storage intoProtectedStorage:(id)protectedStorage withStorageWrapper:(id)wrapper forNotificationServer:(id)server;
 - (void)_reloadTriggeredEventNotificationData;
-- (void)_updateLocaleReloadIfDifferent:(BOOL)a3;
+- (void)_updateLocaleReloadIfDifferent:(BOOL)different;
 - (void)_updateSourceClientIdentifiersIfNeeded;
 - (void)activate;
 - (void)deactivate;
 - (void)didRegisterForAlarms;
 - (void)protectedDataDidBecomeAvailable;
-- (void)receivedAlarmNamed:(id)a3;
-- (void)receivedNotificationNamed:(id)a3;
-- (void)refreshEventStoreInResponseToDatabaseChangeNotification:(id)a3;
+- (void)receivedAlarmNamed:(id)named;
+- (void)receivedNotificationNamed:(id)named;
+- (void)refreshEventStoreInResponseToDatabaseChangeNotification:(id)notification;
 - (void)updateIconsToNewVersionIfNeeded;
 @end
 
@@ -49,10 +49,10 @@
     }
 
     +[CALNNotificationServerModule _migrateNotificationFiles];
-    v47 = [MEMORY[0x277CF77B8] hasBeenUnlockedSinceBoot];
+    hasBeenUnlockedSinceBoot = [MEMORY[0x277CF77B8] hasBeenUnlockedSinceBoot];
     v4 = [CALNNotificationStorageWrapper alloc];
     v5 = objc_opt_class();
-    if (v47)
+    if (hasBeenUnlockedSinceBoot)
     {
       [v5 _protectedCalendarNotificationStorage];
     }
@@ -82,44 +82,44 @@
     v2->_inboxNotificationMonitor = v12;
 
     v14 = objc_alloc_init(_EKAlarmEngine);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    v16 = [[CALNEKAlarmEngineMonitor alloc] initWithAlarmEngine:v14 notificationCenter:v15];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v16 = [[CALNEKAlarmEngineMonitor alloc] initWithAlarmEngine:v14 notificationCenter:defaultCenter];
     v45 = v14;
-    v46 = v15;
-    v17 = [MEMORY[0x277CC5A18] shared];
-    LODWORD(v15) = [v17 syntheticTravelAdvisoriesEnabled];
+    v46 = defaultCenter;
+    mEMORY[0x277CC5A18] = [MEMORY[0x277CC5A18] shared];
+    LODWORD(defaultCenter) = [mEMORY[0x277CC5A18] syntheticTravelAdvisoriesEnabled];
 
     v18 = off_278D6EAC8;
-    if (!v15)
+    if (!defaultCenter)
     {
       v18 = off_278D6E8F0;
     }
 
-    v19 = [(__objc2_class *)*v18 sharedInstance];
-    v20 = [[EKTravelEngine alloc] initWithRouteHypothesizerProvider:v19];
+    sharedInstance = [(__objc2_class *)*v18 sharedInstance];
+    v20 = [[EKTravelEngine alloc] initWithRouteHypothesizerProvider:sharedInstance];
     v21 = [[CALNEKTravelEngine alloc] initWithTravelEngine:v20];
-    v22 = [objc_opt_class() _timeToLeaveRefreshStorage];
-    v43 = v19;
+    _timeToLeaveRefreshStorage = [objc_opt_class() _timeToLeaveRefreshStorage];
+    v43 = sharedInstance;
     v44 = v20;
-    v23 = [[CALNDefaultTimeToLeaveRefreshMonitor alloc] initWithStorage:v22];
+    v23 = [[CALNDefaultTimeToLeaveRefreshMonitor alloc] initWithStorage:_timeToLeaveRefreshStorage];
     v24 = +[CALNUNUserNotificationCenterFactory sharedInstance];
     v25 = +[CALNUNIconProvider sharedInstance];
     iconProvider = v2->_iconProvider;
     v2->_iconProvider = v25;
 
-    v27 = [(CALNNotificationServerModule *)v2 _createCalendarNotificationServerWithUserNotificationCenterFactory:v24 storage:v2->_calendarStorageWrapper eventStoreProvider:v2->_eventStoreProvider alarmEngineMonitor:v16 travelEngine:v21 timeToLeaveRefreshMonitor:v23 timeToLeaveRefreshStorage:v22];
+    v27 = [(CALNNotificationServerModule *)v2 _createCalendarNotificationServerWithUserNotificationCenterFactory:v24 storage:v2->_calendarStorageWrapper eventStoreProvider:v2->_eventStoreProvider alarmEngineMonitor:v16 travelEngine:v21 timeToLeaveRefreshMonitor:v23 timeToLeaveRefreshStorage:_timeToLeaveRefreshStorage];
     v28 = v27;
-    v29 = [v28 notificationSources];
+    notificationSources = [v28 notificationSources];
     objc_storeStrong(&v2->_calendarNotificationServer, v27);
     v30 = [CALNNotificationSourceRefresher alloc];
-    v31 = [(CALNNotificationServerModule *)v2 inboxNotificationMonitor];
-    v32 = [(CALNNotificationSourceRefresher *)v30 initWithSources:v29 notificationMonitor:v31 notificationManager:v28];
+    inboxNotificationMonitor = [(CALNNotificationServerModule *)v2 inboxNotificationMonitor];
+    v32 = [(CALNNotificationSourceRefresher *)v30 initWithSources:notificationSources notificationMonitor:inboxNotificationMonitor notificationManager:v28];
     notificationSourceRefresher = v2->_notificationSourceRefresher;
     v2->_notificationSourceRefresher = v32;
 
     v34 = [CALNCalendarAppBadgeUpdater alloc];
-    v35 = [(CALNNotificationServerModule *)v2 inboxNotificationMonitor];
-    v36 = [(CALNCalendarAppBadgeUpdater *)v34 initWithInboxNotificationMonitor:v35];
+    inboxNotificationMonitor2 = [(CALNNotificationServerModule *)v2 inboxNotificationMonitor];
+    v36 = [(CALNCalendarAppBadgeUpdater *)v34 initWithInboxNotificationMonitor:inboxNotificationMonitor2];
     calendarAppBadgeUpdater = v2->_calendarAppBadgeUpdater;
     v2->_calendarAppBadgeUpdater = v36;
 
@@ -133,13 +133,13 @@
     modules = v2->_modules;
     v2->_modules = v39;
 
-    if (v47)
+    if (hasBeenUnlockedSinceBoot)
     {
       [(CALNNotificationServerModule *)v2 _reloadTriggeredEventNotificationData];
       [(CALNTriggeredEventNotificationSource *)v2->_triggeredEventNotificationSource updateSnoozeOptionsForPostedNotifications];
     }
 
-    [(CALNNotificationServerModule *)v2 _updateLocaleReloadIfDifferent:v47];
+    [(CALNNotificationServerModule *)v2 _updateLocaleReloadIfDifferent:hasBeenUnlockedSinceBoot];
     [(CALNNotificationServerModule *)v2 _registerSettingsCaptureHandlers];
 
     objc_destroyWeak(&v49);
@@ -166,85 +166,85 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
 - (void)updateIconsToNewVersionIfNeeded
 {
   v3 = [CALNNotificationIconUpdater alloc];
-  v4 = [objc_opt_class() _protectedCalendarNotificationStorage];
-  v5 = [(CALNNotificationServerModule *)self iconProvider];
-  v6 = [(CALNNotificationServerModule *)self calendarNotificationServer];
-  v7 = [(CALNNotificationIconUpdater *)v3 initWithProtectedNotificationStorage:v4 iconIdentifierProvider:v5 notificationManager:v6];
+  _protectedCalendarNotificationStorage = [objc_opt_class() _protectedCalendarNotificationStorage];
+  iconProvider = [(CALNNotificationServerModule *)self iconProvider];
+  calendarNotificationServer = [(CALNNotificationServerModule *)self calendarNotificationServer];
+  v7 = [(CALNNotificationIconUpdater *)v3 initWithProtectedNotificationStorage:_protectedCalendarNotificationStorage iconIdentifierProvider:iconProvider notificationManager:calendarNotificationServer];
 
   [(CALNNotificationIconUpdater *)v7 updateNotificationIconsIfNeeded];
 }
 
-- (id)_createCalendarNotificationServerWithUserNotificationCenterFactory:(id)a3 storage:(id)a4 eventStoreProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9
+- (id)_createCalendarNotificationServerWithUserNotificationCenterFactory:(id)factory storage:(id)storage eventStoreProvider:(id)provider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)refreshStorage
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  refreshStorageCopy = refreshStorage;
+  refreshMonitorCopy = refreshMonitor;
+  engineCopy = engine;
+  monitorCopy = monitor;
+  providerCopy = provider;
+  storageCopy = storage;
+  factoryCopy = factory;
   v23 = [CALNUNUserNotificationCenter alloc];
-  v24 = [(CALNUNUserNotificationCenter *)v23 initWithBundleIdentifier:*MEMORY[0x277CF78A0] userNotificationCenterFactory:v22 storage:v21 iconProvider:self->_iconProvider];
+  v24 = [(CALNUNUserNotificationCenter *)v23 initWithBundleIdentifier:*MEMORY[0x277CF78A0] userNotificationCenterFactory:factoryCopy storage:storageCopy iconProvider:self->_iconProvider];
 
-  v25 = [(CALNNotificationServerModule *)self _createNotificationServerWithUserNotificationCenter:v24 storage:v21 eventStoreProvider:v20 alarmEngineMonitor:v19 travelEngine:v18 timeToLeaveRefreshMonitor:v17 timeToLeaveRefreshStorage:v16];
+  v25 = [(CALNNotificationServerModule *)self _createNotificationServerWithUserNotificationCenter:v24 storage:storageCopy eventStoreProvider:providerCopy alarmEngineMonitor:monitorCopy travelEngine:engineCopy timeToLeaveRefreshMonitor:refreshMonitorCopy timeToLeaveRefreshStorage:refreshStorageCopy];
 
   return v25;
 }
 
-- (id)_createNotificationServerWithUserNotificationCenter:(id)a3 storage:(id)a4 eventStoreProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9
+- (id)_createNotificationServerWithUserNotificationCenter:(id)center storage:(id)storage eventStoreProvider:(id)provider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)refreshStorage
 {
-  v27 = a9;
-  v28 = a8;
-  v26 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(CALNNotificationServerModule *)self inboxNotificationMonitor];
+  refreshStorageCopy = refreshStorage;
+  refreshMonitorCopy = refreshMonitor;
+  engineCopy = engine;
+  monitorCopy = monitor;
+  providerCopy = provider;
+  storageCopy = storage;
+  centerCopy = center;
+  inboxNotificationMonitor = [(CALNNotificationServerModule *)self inboxNotificationMonitor];
   v21 = +[CALNCalAnalyticsHandler sharedInstance];
   v22 = objc_alloc_init(MEMORY[0x277CF77B8]);
-  v23 = [[CALNNotificationServer alloc] initWithUserNotificationCenter:v19 storage:v18 analyticsHandler:v21 deviceLockObserver:v22];
+  v23 = [[CALNNotificationServer alloc] initWithUserNotificationCenter:centerCopy storage:storageCopy analyticsHandler:v21 deviceLockObserver:v22];
 
-  v24 = [(CALNNotificationServerModule *)self _createNotificationSourcesWithNotificationManager:v23 eventStoreProvider:v17 inboxNotificationProvider:v20 alarmEngineMonitor:v16 travelEngine:v26 timeToLeaveRefreshMonitor:v28 timeToLeaveRefreshStorage:v27];
+  v24 = [(CALNNotificationServerModule *)self _createNotificationSourcesWithNotificationManager:v23 eventStoreProvider:providerCopy inboxNotificationProvider:inboxNotificationMonitor alarmEngineMonitor:monitorCopy travelEngine:engineCopy timeToLeaveRefreshMonitor:refreshMonitorCopy timeToLeaveRefreshStorage:refreshStorageCopy];
 
   [(CALNNotificationServer *)v23 setNotificationSources:v24];
 
   return v23;
 }
 
-- (id)_createNotificationSourcesWithNotificationManager:(id)a3 eventStoreProvider:(id)a4 inboxNotificationProvider:(id)a5 alarmEngineMonitor:(id)a6 travelEngine:(id)a7 timeToLeaveRefreshMonitor:(id)a8 timeToLeaveRefreshStorage:(id)a9
+- (id)_createNotificationSourcesWithNotificationManager:(id)manager eventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider alarmEngineMonitor:(id)monitor travelEngine:(id)engine timeToLeaveRefreshMonitor:(id)refreshMonitor timeToLeaveRefreshStorage:(id)storage
 {
   v91[9] = *MEMORY[0x277D85DE8];
-  v67 = a9;
-  v63 = a8;
-  v61 = a7;
-  v65 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  storageCopy = storage;
+  refreshMonitorCopy = refreshMonitor;
+  engineCopy = engine;
+  monitorCopy = monitor;
+  notificationProviderCopy = notificationProvider;
+  providerCopy = provider;
+  managerCopy = manager;
   v18 = +[CALNDefaultEKCalendarNotificationReferenceProvider sharedInstance];
   v90 = +[CALNUNIconProvider sharedInstance];
   v88 = +[CALNNullRemoteMutator sharedInstance];
   v89 = +[CALNDataAccessExpressSharedConnection sharedConnection];
   v19 = +[CALNEKUIEventRepresentationProvider sharedInstance];
   v86 = +[CALNEKUIEventRepresentationProvider sharedInstance];
-  v20 = [MEMORY[0x277CF7808] sharedInstance];
+  mEMORY[0x277CF7808] = [MEMORY[0x277CF7808] sharedInstance];
   v21 = [CALNEventInvitationNotificationEKDataSource alloc];
-  v22 = [MEMORY[0x277CC59D8] calendarPreferences];
-  v81 = [(CALNEventInvitationNotificationEKDataSource *)v21 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 remoteMutator:v88 dataSourceEventRepresentationProvider:v19 preferences:v22];
+  calendarPreferences = [MEMORY[0x277CC59D8] calendarPreferences];
+  v81 = [(CALNEventInvitationNotificationEKDataSource *)v21 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 remoteMutator:v88 dataSourceEventRepresentationProvider:v19 preferences:calendarPreferences];
 
-  v78 = [[CALNEventInvitationNotificationSource alloc] initWithDataSource:v81 notificationManager:v17 iconIdentifierProvider:v90 dateProvider:v20];
+  v78 = [[CALNEventInvitationNotificationSource alloc] initWithDataSource:v81 notificationManager:managerCopy iconIdentifierProvider:v90 dateProvider:mEMORY[0x277CF7808]];
   v23 = [CALNEventInvitationResponseNotificationEKDataSource alloc];
-  v24 = [MEMORY[0x277CC59D8] calendarPreferences];
+  calendarPreferences2 = [MEMORY[0x277CC59D8] calendarPreferences];
   v87 = v19;
-  v80 = [(CALNEventInvitationResponseNotificationEKDataSource *)v23 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 dataSourceEventRepresentationProvider:v19 preferences:v24];
+  v80 = [(CALNEventInvitationResponseNotificationEKDataSource *)v23 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 dataSourceEventRepresentationProvider:v19 preferences:calendarPreferences2];
 
-  v73 = [[CALNEventInvitationResponseNotificationSource alloc] initWithDataSource:v80 notificationManager:v17 iconIdentifierProvider:v90 dateProvider:v20];
+  v73 = [[CALNEventInvitationResponseNotificationSource alloc] initWithDataSource:v80 notificationManager:managerCopy iconIdentifierProvider:v90 dateProvider:mEMORY[0x277CF7808]];
   v25 = [CALNEventCanceledNotificationEKDataSource alloc];
-  v26 = [MEMORY[0x277CC59D8] calendarPreferences];
-  v79 = [(CALNEventCanceledNotificationEKDataSource *)v25 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 remoteMutator:v88 dataSourceEventRepresentationProvider:v19 preferences:v26];
+  calendarPreferences3 = [MEMORY[0x277CC59D8] calendarPreferences];
+  v79 = [(CALNEventCanceledNotificationEKDataSource *)v25 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 remoteMutator:v88 dataSourceEventRepresentationProvider:v19 preferences:calendarPreferences3];
 
-  v69 = [[CALNEventCanceledNotificationSource alloc] initWithDataSource:v79 notificationManager:v17 iconIdentifierProvider:v90 dateProvider:v20];
+  v69 = [[CALNEventCanceledNotificationSource alloc] initWithDataSource:v79 notificationManager:managerCopy iconIdentifierProvider:v90 dateProvider:mEMORY[0x277CF7808]];
   v77 = +[CALNCLCoreLocationProvider sharedInstance];
   v75 = +[CALNEKTTLEventTracker sharedInstance];
   v76 = +[CALNEKFoundInAppsEventTracker sharedInstance];
@@ -255,15 +255,15 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
   v28 = +[CALNMSMailAccounts sharedInstance];
   v70 = [(CALNTriggeredEventNotificationMailtoURLProvider *)v27 initWithMailAccounts:v28];
 
-  v83 = [[CALNTriggeredEventNotificationEKDataSource alloc] initWithEventStoreProvider:v16 remoteMutator:v88 dataSourceEventRepresentationProvider:v19 coreLocationProvider:v77 ttlEventTracker:v75 alarmEngineMonitor:v65 travelEngine:v61 foundInAppsEventTracker:v76 suggestionsServiceLogger:v74 routeHypothesizerProvider:v72 timeToLeaveRefreshMonitor:v63 debugPreferences:v71 mailtoURLProvider:v70];
+  v83 = [[CALNTriggeredEventNotificationEKDataSource alloc] initWithEventStoreProvider:providerCopy remoteMutator:v88 dataSourceEventRepresentationProvider:v19 coreLocationProvider:v77 ttlEventTracker:v75 alarmEngineMonitor:monitorCopy travelEngine:engineCopy foundInAppsEventTracker:v76 suggestionsServiceLogger:v74 routeHypothesizerProvider:v72 timeToLeaveRefreshMonitor:refreshMonitorCopy debugPreferences:v71 mailtoURLProvider:v70];
   v66 = objc_alloc_init(CALNDefaultTravelAdvisoryAuthority);
-  v59 = [[CALNDefaultTriggeredEventNotificationTriggerHelper alloc] initWithTravelAdvisoryAuthority:v66 dateProvider:v20 eventStoreProvider:self->_eventStoreProvider];
-  v58 = [[CALNDefaultTriggeredEventNotificationTransitionProvider alloc] initWithTravelAdvisoryAuthority:v66 dateProvider:v20];
+  v59 = [[CALNDefaultTriggeredEventNotificationTriggerHelper alloc] initWithTravelAdvisoryAuthority:v66 dateProvider:mEMORY[0x277CF7808] eventStoreProvider:self->_eventStoreProvider];
+  v58 = [[CALNDefaultTriggeredEventNotificationTransitionProvider alloc] initWithTravelAdvisoryAuthority:v66 dateProvider:mEMORY[0x277CF7808]];
   v64 = objc_alloc_init(CALNCUIKTravelAdvisoryDescriptionGenerator);
-  v57 = [[CALNDefaultTriggeredEventNotificationBodyDescriptionProvider alloc] initWithTravelAdvisoryDescriptionGenerator:v64 dateProvider:v20];
-  v62 = [objc_alloc(MEMORY[0x277CC5AF0]) initWithDateProvider:v20];
+  v57 = [[CALNDefaultTriggeredEventNotificationBodyDescriptionProvider alloc] initWithTravelAdvisoryDescriptionGenerator:v64 dateProvider:mEMORY[0x277CF7808]];
+  v62 = [objc_alloc(MEMORY[0x277CC5AF0]) initWithDateProvider:mEMORY[0x277CF7808]];
   v55 = [[CALNEKTravelAdvisoryTimelinessAuthority alloc] initWithTravelAdvisoryTimelinessAuthority:v62];
-  v54 = [objc_opt_class() _unprotectedTriggeredEventNotificationDataStorage];
+  _unprotectedTriggeredEventNotificationDataStorage = [objc_opt_class() _unprotectedTriggeredEventNotificationDataStorage];
   v29 = [CALNDefaultAppURLHandler alloc];
   v30 = +[CALNLaunchServicesURLHandler sharedInstance];
   v53 = [(CALNDefaultAppURLHandler *)v29 initWithFallbackHandler:v30];
@@ -272,34 +272,34 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
   v60 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v60, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
   v56 = [[CALNXPCActivityScheduler alloc] initWithActivityIdentifier:@"com.apple.calendar.notification.snoozeRefresh" otherCriteria:v60];
-  v85 = v20;
-  v31 = [[CALNSchedulingSnoozeUpdateTimer alloc] initWithDateProvider:v20 scheduler:v56];
+  v85 = mEMORY[0x277CF7808];
+  v31 = [[CALNSchedulingSnoozeUpdateTimer alloc] initWithDateProvider:mEMORY[0x277CF7808] scheduler:v56];
   snoozeUpdateTimer = self->_snoozeUpdateTimer;
   self->_snoozeUpdateTimer = v31;
 
-  v33 = [[CALNTriggeredEventNotificationSource alloc] initWithDataSource:v83 notificationManager:v17 iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86 triggerHelper:v59 transitionProvider:v58 bodyDescriptionProvider:v57 travelAdvisoryTimelinessAuthority:v55 dateProvider:v20 notificationDataStorage:v54 urlHandler:v53 mapItemURLProvider:v52 timeToLeaveRefreshStorage:v67 snoozeUpdateTimer:self->_snoozeUpdateTimer];
+  v33 = [[CALNTriggeredEventNotificationSource alloc] initWithDataSource:v83 notificationManager:managerCopy iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86 triggerHelper:v59 transitionProvider:v58 bodyDescriptionProvider:v57 travelAdvisoryTimelinessAuthority:v55 dateProvider:mEMORY[0x277CF7808] notificationDataStorage:_unprotectedTriggeredEventNotificationDataStorage urlHandler:v53 mapItemURLProvider:v52 timeToLeaveRefreshStorage:storageCopy snoozeUpdateTimer:self->_snoozeUpdateTimer];
   triggeredEventNotificationSource = self->_triggeredEventNotificationSource;
   self->_triggeredEventNotificationSource = v33;
 
   v35 = [CALNSharedCalendarInvitationNotificationEKDataSource alloc];
-  v36 = [MEMORY[0x277CC59D8] calendarPreferences];
-  v68 = [(CALNSharedCalendarInvitationNotificationEKDataSource *)v35 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 dataAccessExpressConnection:v89 preferences:v36];
+  calendarPreferences4 = [MEMORY[0x277CC59D8] calendarPreferences];
+  v68 = [(CALNSharedCalendarInvitationNotificationEKDataSource *)v35 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 dataAccessExpressConnection:v89 preferences:calendarPreferences4];
 
-  v50 = [[CALNSharedCalendarInvitationNotificationSource alloc] initWithDataSource:v68 notificationManager:v17 iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86];
+  v50 = [[CALNSharedCalendarInvitationNotificationSource alloc] initWithDataSource:v68 notificationManager:managerCopy iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86];
   v37 = [CALNSharedCalendarInvitationResponseNotificationEKDataSource alloc];
-  v38 = [MEMORY[0x277CC59D8] calendarPreferences];
-  v51 = [(CALNSharedCalendarInvitationResponseNotificationEKDataSource *)v37 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 preferences:v38];
+  calendarPreferences5 = [MEMORY[0x277CC59D8] calendarPreferences];
+  v51 = [(CALNSharedCalendarInvitationResponseNotificationEKDataSource *)v37 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 preferences:calendarPreferences5];
 
-  v39 = [[CALNSharedCalendarInvitationResponseNotificationSource alloc] initWithDataSource:v51 notificationManager:v17 iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86];
+  v39 = [[CALNSharedCalendarInvitationResponseNotificationSource alloc] initWithDataSource:v51 notificationManager:managerCopy iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86];
   v40 = [CALNCalendarResourceChangedNotificationEKDataSource alloc];
-  v41 = [MEMORY[0x277CC59D8] calendarPreferences];
-  v42 = [(CALNCalendarResourceChangedNotificationEKDataSource *)v40 initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18 preferences:v41];
+  calendarPreferences6 = [MEMORY[0x277CC59D8] calendarPreferences];
+  v42 = [(CALNCalendarResourceChangedNotificationEKDataSource *)v40 initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18 preferences:calendarPreferences6];
 
-  v43 = [[CALNCalendarResourceChangedNotificationSource alloc] initWithDataSource:v42 notificationManager:v17 iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86 dateProvider:v20];
-  v44 = [[CALNSuggestedEventNotificationEKDataSource alloc] initWithEventStoreProvider:v16 inboxNotificationProvider:v15 notificationReferenceProvider:v18];
+  v43 = [[CALNCalendarResourceChangedNotificationSource alloc] initWithDataSource:v42 notificationManager:managerCopy iconIdentifierProvider:v90 sourceEventRepresentationProvider:v86 dateProvider:mEMORY[0x277CF7808]];
+  v44 = [[CALNSuggestedEventNotificationEKDataSource alloc] initWithEventStoreProvider:providerCopy inboxNotificationProvider:notificationProviderCopy notificationReferenceProvider:v18];
 
-  v45 = [[CALNSuggestedEventNotificationSource alloc] initWithDataSource:v44 notificationManager:v17 iconIdentifierProvider:v90];
-  v46 = [[CALNFakeNotificationSource alloc] initWithNotificationManager:v17 iconIdentifierProvider:v90 sourceIdentifierSuffix:@"calendar"];
+  v45 = [[CALNSuggestedEventNotificationSource alloc] initWithDataSource:v44 notificationManager:managerCopy iconIdentifierProvider:v90];
+  v46 = [[CALNFakeNotificationSource alloc] initWithNotificationManager:managerCopy iconIdentifierProvider:v90 sourceIdentifierSuffix:@"calendar"];
 
   v91[0] = v78;
   v91[1] = v73;
@@ -325,8 +325,8 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CALNNotificationServerModule *)self modules];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v4 = [modules countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -338,14 +338,14 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) activate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [modules countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -366,8 +366,8 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CALNNotificationServerModule *)self modules];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v3 = [modules countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -379,14 +379,14 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) deactivate];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [modules countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -395,22 +395,22 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namedCopy = named;
   v5 = os_transaction_create();
-  if ([v4 isEqualToString:*MEMORY[0x277CF7560]])
+  if ([namedCopy isEqualToString:*MEMORY[0x277CF7560]])
   {
-    [(CALNNotificationServerModule *)self refreshEventStoreInResponseToDatabaseChangeNotification:v4];
+    [(CALNNotificationServerModule *)self refreshEventStoreInResponseToDatabaseChangeNotification:namedCopy];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CALNNotificationServerModule *)self modules];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v7 = [modules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -422,35 +422,35 @@ id __36__CALNNotificationServerModule_init__block_invoke(uint64_t a1)
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modules);
         }
 
-        [*(*(&v14 + 1) + 8 * v10++) receivedNotificationNamed:v4];
+        [*(*(&v14 + 1) + 8 * v10++) receivedNotificationNamed:namedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [modules countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CF7908]])
+  if ([namedCopy isEqualToString:*MEMORY[0x277CF7908]])
   {
-    v11 = [(CALNNotificationServerModule *)self notificationSourceRefresher];
-    [v11 refreshNotifications];
+    notificationSourceRefresher = [(CALNNotificationServerModule *)self notificationSourceRefresher];
+    [notificationSourceRefresher refreshNotifications];
 
-    v12 = [(CALNNotificationServerModule *)self snoozeUpdateTimer];
-    [v12 significantTimeChange];
+    snoozeUpdateTimer = [(CALNNotificationServerModule *)self snoozeUpdateTimer];
+    [snoozeUpdateTimer significantTimeChange];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x277CC5928]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CC5970]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CF7578]))
+  if (([namedCopy isEqualToString:*MEMORY[0x277CC5928]] & 1) != 0 || (objc_msgSend(namedCopy, "isEqualToString:", *MEMORY[0x277CC5970]) & 1) != 0 || objc_msgSend(namedCopy, "isEqualToString:", *MEMORY[0x277CF7578]))
   {
-    v12 = [(CALNNotificationServerModule *)self notificationSourceRefresher];
-    [v12 refreshNotifications];
+    snoozeUpdateTimer = [(CALNNotificationServerModule *)self notificationSourceRefresher];
+    [snoozeUpdateTimer refreshNotifications];
     goto LABEL_16;
   }
 
@@ -459,16 +459,16 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshEventStoreInResponseToDatabaseChangeNotification:(id)a3
+- (void)refreshEventStoreInResponseToDatabaseChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_lastCreatedEventStore);
   if (WeakRetained)
   {
-    v6 = [(EKEphemeralCacheEventStoreProvider *)self->_eventStoreProvider eventStore];
+    eventStore = [(EKEphemeralCacheEventStoreProvider *)self->_eventStoreProvider eventStore];
     v7 = +[CALNLogSubsystem calendar];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6 == WeakRetained)
+    if (eventStore == WeakRetained)
     {
       if (v8)
       {
@@ -476,7 +476,7 @@ LABEL_17:
         _os_log_impl(&dword_242909000, v7, OS_LOG_TYPE_DEFAULT, "Got a database changed notification and we have an EKEventStore. Letting the event store handle the notification first.", v10, 2u);
       }
 
-      [WeakRetained handleExternalDatabaseChangeNotification:v4];
+      [WeakRetained handleExternalDatabaseChangeNotification:notificationCopy];
     }
 
     else
@@ -491,11 +491,11 @@ LABEL_17:
 
   else
   {
-    v6 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    eventStore = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(eventStore, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_242909000, v6, OS_LOG_TYPE_DEFAULT, "Not refreshing EKEventStore before handling database change notification because we don't have an EKEventStore right now.", v9, 2u);
+      _os_log_impl(&dword_242909000, eventStore, OS_LOG_TYPE_DEFAULT, "Not refreshing EKEventStore before handling database change notification because we don't have an EKEventStore right now.", v9, 2u);
     }
   }
 }
@@ -526,30 +526,30 @@ id __64__CALNNotificationServerModule__registerSettingsCaptureHandlers__block_in
   return v2;
 }
 
-- (void)_updateLocaleReloadIfDifferent:(BOOL)a3
+- (void)_updateLocaleReloadIfDifferent:(BOOL)different
 {
-  v3 = a3;
+  differentCopy = different;
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v7 = [MEMORY[0x277CF77A8] shared];
-  v8 = [v7 objectForKey:@"NotificationsLastLocale"];
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v8 = [mEMORY[0x277CF77A8] objectForKey:@"NotificationsLastLocale"];
 
-  if (([v6 isEqualToString:v8] & 1) == 0)
+  if (([localeIdentifier isEqualToString:v8] & 1) == 0)
   {
-    if (v3)
+    if (differentCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_invoke;
       block[3] = &unk_278D6F318;
       v13 = v8;
-      v14 = v6;
-      v15 = self;
+      v14 = localeIdentifier;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
-      v9 = v13;
+      mEMORY[0x277CF77A8]2 = v13;
     }
 
     else
@@ -560,12 +560,12 @@ id __64__CALNNotificationServerModule__registerSettingsCaptureHandlers__block_in
         *buf = 138543618;
         v17 = v8;
         v18 = 2114;
-        v19 = v6;
+        v19 = localeIdentifier;
         _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "Updating locale from %{public}@ to %{public}@", buf, 0x16u);
       }
 
-      v9 = [MEMORY[0x277CF77A8] shared];
-      [v9 setObject:v6 forKey:@"NotificationsLastLocale"];
+      mEMORY[0x277CF77A8]2 = [MEMORY[0x277CF77A8] shared];
+      [mEMORY[0x277CF77A8]2 setObject:localeIdentifier forKey:@"NotificationsLastLocale"];
     }
   }
 
@@ -636,22 +636,22 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
     _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Reloading calendar notifications after first unlock", v8, 2u);
   }
 
-  v4 = [(CALNNotificationServerModule *)self calendarNotificationServer];
-  v5 = [objc_opt_class() _unprotectedCalendarNotificationStorage];
-  v6 = [objc_opt_class() _protectedCalendarNotificationStorage];
-  v7 = [(CALNNotificationServerModule *)self calendarStorageWrapper];
-  [(CALNNotificationServerModule *)self _reloadNotificationsFromUnprotectedStorage:v5 intoProtectedStorage:v6 withStorageWrapper:v7 forNotificationServer:v4];
+  calendarNotificationServer = [(CALNNotificationServerModule *)self calendarNotificationServer];
+  _unprotectedCalendarNotificationStorage = [objc_opt_class() _unprotectedCalendarNotificationStorage];
+  _protectedCalendarNotificationStorage = [objc_opt_class() _protectedCalendarNotificationStorage];
+  calendarStorageWrapper = [(CALNNotificationServerModule *)self calendarStorageWrapper];
+  [(CALNNotificationServerModule *)self _reloadNotificationsFromUnprotectedStorage:_unprotectedCalendarNotificationStorage intoProtectedStorage:_protectedCalendarNotificationStorage withStorageWrapper:calendarStorageWrapper forNotificationServer:calendarNotificationServer];
 }
 
-- (void)_reloadNotificationsFromUnprotectedStorage:(id)a3 intoProtectedStorage:(id)a4 withStorageWrapper:(id)a5 forNotificationServer:(id)a6
+- (void)_reloadNotificationsFromUnprotectedStorage:(id)storage intoProtectedStorage:(id)protectedStorage withStorageWrapper:(id)wrapper forNotificationServer:(id)server
 {
-  v10 = a6;
-  v12 = a3;
-  [a5 setWrappedStorage:a4];
-  v11 = [v12 notificationRecords];
-  [(CALNNotificationServerModule *)self _reloadNotificationRecords:v11 forNotificationServer:v10];
+  serverCopy = server;
+  storageCopy = storage;
+  [wrapper setWrappedStorage:protectedStorage];
+  notificationRecords = [storageCopy notificationRecords];
+  [(CALNNotificationServerModule *)self _reloadNotificationRecords:notificationRecords forNotificationServer:serverCopy];
 
-  [(CALNNotificationServerModule *)self _removeNotificationsFromUnprotectedStorage:v12];
+  [(CALNNotificationServerModule *)self _removeNotificationsFromUnprotectedStorage:storageCopy];
 }
 
 - (void)didRegisterForAlarms
@@ -661,8 +661,8 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CALNNotificationServerModule *)self modules];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v3 = [modules countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -674,14 +674,14 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) didRegisterForAlarms];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [modules countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -690,17 +690,17 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedAlarmNamed:(id)a3
+- (void)receivedAlarmNamed:(id)named
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namedCopy = named;
   v5 = os_transaction_create();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CALNNotificationServerModule *)self modules];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v7 = [modules countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -712,14 +712,14 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modules);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) receivedAlarmNamed:v4];
+        [*(*(&v12 + 1) + 8 * v10++) receivedAlarmNamed:namedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [modules countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -737,8 +737,8 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(CALNNotificationServerModule *)self modules];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  modules = [(CALNNotificationServerModule *)self modules];
+  v5 = [modules countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -750,14 +750,14 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) protectedDataDidBecomeAvailable];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [modules countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -773,30 +773,30 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
 
 - (void)_updateSourceClientIdentifiersIfNeeded
 {
-  v3 = [MEMORY[0x277CF77A8] shared];
-  v4 = [v3 integerForKey:@"NotificationSourceClientIdentifierVersion"];
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v4 = [mEMORY[0x277CF77A8] integerForKey:@"NotificationSourceClientIdentifierVersion"];
 
   if (v4 != 1)
   {
-    v5 = [MEMORY[0x277CF77A8] shared];
-    [v5 setInteger:1 forKey:@"NotificationSourceClientIdentifierVersion"];
+    mEMORY[0x277CF77A8]2 = [MEMORY[0x277CF77A8] shared];
+    [mEMORY[0x277CF77A8]2 setInteger:1 forKey:@"NotificationSourceClientIdentifierVersion"];
 
-    v6 = [(CALNNotificationServerModule *)self notificationSourceRefresher];
-    [v6 refreshNotifications];
+    notificationSourceRefresher = [(CALNNotificationServerModule *)self notificationSourceRefresher];
+    [notificationSourceRefresher refreshNotifications];
   }
 }
 
-- (void)_reloadNotificationRecords:(id)a3 forNotificationServer:(id)a4
+- (void)_reloadNotificationRecords:(id)records forNotificationServer:(id)server
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recordsCopy = records;
+  serverCopy = server;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v34 objects:v44 count:16];
+  obj = recordsCopy;
+  v7 = [recordsCopy countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v7)
   {
     v9 = v7;
@@ -804,7 +804,7 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
     v11 = 0x278D6E000uLL;
     *&v8 = 138412546;
     v30 = v8;
-    v31 = v6;
+    v31 = serverCopy;
     do
     {
       v12 = 0;
@@ -817,39 +817,39 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
         }
 
         v13 = *(*(&v34 + 1) + 8 * v12);
-        v14 = [v13 sourceIdentifier];
-        v15 = [v6 notificationSourceForSourceIdentifier:v14];
+        sourceIdentifier = [v13 sourceIdentifier];
+        v15 = [serverCopy notificationSourceForSourceIdentifier:sourceIdentifier];
 
         if (v15)
         {
-          v16 = [v13 mutableCopy];
-          v17 = [v13 sourceClientIdentifier];
-          v18 = [v15 contentForNotificationWithSourceClientIdentifier:v17];
-          [v16 setContent:v18];
+          defaultCategory = [v13 mutableCopy];
+          sourceClientIdentifier = [v13 sourceClientIdentifier];
+          v18 = [v15 contentForNotificationWithSourceClientIdentifier:sourceClientIdentifier];
+          [defaultCategory setContent:v18];
 
-          v19 = [v16 copy];
-          [v6 updateRecord:v19];
+          v19 = [defaultCategory copy];
+          [serverCopy updateRecord:v19];
 
-          v20 = [*(v11 + 2344) calendar];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+          calendar = [*(v11 + 2344) calendar];
+          if (os_log_type_enabled(calendar, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v16 sourceIdentifier];
-            v22 = [v16 sourceClientIdentifier];
-            v23 = [v16 content];
-            [v23 title];
+            sourceIdentifier2 = [defaultCategory sourceIdentifier];
+            sourceClientIdentifier2 = [defaultCategory sourceClientIdentifier];
+            content = [defaultCategory content];
+            [content title];
             v24 = v11;
             v26 = v25 = v10;
             *buf = 138543874;
-            v39 = v21;
+            v39 = sourceIdentifier2;
             v40 = 2114;
-            v41 = v22;
+            v41 = sourceClientIdentifier2;
             v42 = 2112;
             v43 = v26;
-            _os_log_impl(&dword_242909000, v20, OS_LOG_TYPE_DEFAULT, "Reloaded notification record with source identifier = %{public}@, source client identifier = %{public}@, title = %@", buf, 0x20u);
+            _os_log_impl(&dword_242909000, calendar, OS_LOG_TYPE_DEFAULT, "Reloaded notification record with source identifier = %{public}@, source client identifier = %{public}@, title = %@", buf, 0x20u);
 
             v10 = v25;
             v11 = v24;
-            v6 = v31;
+            serverCopy = v31;
 
             v9 = v32;
           }
@@ -857,16 +857,16 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
 
         else
         {
-          v16 = [*(v11 + 2344) defaultCategory];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          defaultCategory = [*(v11 + 2344) defaultCategory];
+          if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v13 sourceClientIdentifier];
-            v28 = [v13 sourceIdentifier];
+            sourceClientIdentifier3 = [v13 sourceClientIdentifier];
+            sourceIdentifier3 = [v13 sourceIdentifier];
             *buf = v30;
-            v39 = v27;
+            v39 = sourceClientIdentifier3;
             v40 = 2114;
-            v41 = v28;
-            _os_log_error_impl(&dword_242909000, v16, OS_LOG_TYPE_ERROR, "Cannot reload notification with sourceClientIdentifier = %@. Failed to find notification source with sourceIdentifier = %{public}@.", buf, 0x16u);
+            v41 = sourceIdentifier3;
+            _os_log_error_impl(&dword_242909000, defaultCategory, OS_LOG_TYPE_ERROR, "Cannot reload notification with sourceClientIdentifier = %@. Failed to find notification source with sourceIdentifier = %{public}@.", buf, 0x16u);
           }
         }
 
@@ -883,25 +883,25 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_notificationStoragePathWithName:(id)a3
++ (id)_notificationStoragePathWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = CALNDefaultCalendarDirectory();
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:nameCopy];
 
   return v5;
 }
 
-+ (void)_setProtectedClassForStorageAtPath:(id)a3
++ (void)_setProtectedClassForStorageAtPath:(id)path
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = *MEMORY[0x277CCA1B0];
   v12[0] = *MEMORY[0x277CCA1A0];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v10 = 0;
-  v6 = [v4 setAttributes:v5 ofItemAtPath:v3 error:&v10];
+  v6 = [defaultManager setAttributes:v5 ofItemAtPath:pathCopy error:&v10];
   v7 = v10;
 
   if ((v6 & 1) == 0)
@@ -909,7 +909,7 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
     v8 = +[CALNLogSubsystem defaultCategory];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CALNNotificationServerModule *)v3 _setProtectedClassForStorageAtPath:v8];
+      [(CALNNotificationServerModule *)pathCopy _setProtectedClassForStorageAtPath:v8];
     }
   }
 
@@ -922,7 +922,7 @@ void __63__CALNNotificationServerModule__updateLocaleReloadIfDifferent___block_i
   block[1] = 3221225472;
   block[2] = __71__CALNNotificationServerModule__unprotectedCalendarNotificationStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_unprotectedCalendarNotificationStorage_onceToken != -1)
   {
     dispatch_once(&_unprotectedCalendarNotificationStorage_onceToken, block);
@@ -947,7 +947,7 @@ void __71__CALNNotificationServerModule__unprotectedCalendarNotificationStorage_
   block[1] = 3221225472;
   block[2] = __69__CALNNotificationServerModule__protectedCalendarNotificationStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_protectedCalendarNotificationStorage_onceToken != -1)
   {
     dispatch_once(&_protectedCalendarNotificationStorage_onceToken, block);
@@ -974,7 +974,7 @@ void __69__CALNNotificationServerModule__protectedCalendarNotificationStorage__b
   block[1] = 3221225472;
   block[2] = __81__CALNNotificationServerModule__unprotectedTriggeredEventNotificationDataStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_unprotectedTriggeredEventNotificationDataStorage_onceToken != -1)
   {
     dispatch_once(&_unprotectedTriggeredEventNotificationDataStorage_onceToken, block);
@@ -999,7 +999,7 @@ void __81__CALNNotificationServerModule__unprotectedTriggeredEventNotificationDa
   block[1] = 3221225472;
   block[2] = __79__CALNNotificationServerModule__protectedTriggeredEventNotificationDataStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_protectedTriggeredEventNotificationDataStorage_onceToken != -1)
   {
     dispatch_once(&_protectedTriggeredEventNotificationDataStorage_onceToken, block);
@@ -1020,11 +1020,11 @@ void __79__CALNNotificationServerModule__protectedTriggeredEventNotificationData
   [*(a1 + 32) _setProtectedClassForStorageAtPath:v4];
 }
 
-+ (id)_triggeredEventNotificationDataStoragePathWithName:(id)a3
++ (id)_triggeredEventNotificationDataStoragePathWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = CALNDefaultCalendarDirectory();
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:nameCopy];
 
   return v5;
 }
@@ -1035,7 +1035,7 @@ void __79__CALNNotificationServerModule__protectedTriggeredEventNotificationData
   block[1] = 3221225472;
   block[2] = __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_timeToLeaveRefreshStorage_onceToken != -1)
   {
     dispatch_once(&_timeToLeaveRefreshStorage_onceToken, block);
@@ -1054,11 +1054,11 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
   _timeToLeaveRefreshStorage_storage = v2;
 }
 
-+ (id)_timeToLeaveRefreshStoragePathWithName:(id)a3
++ (id)_timeToLeaveRefreshStoragePathWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = CALNDefaultCalendarDirectory();
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:nameCopy];
 
   return v5;
 }
@@ -1069,12 +1069,12 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
   v3 = CALNOldCalendarDirectory();
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = 0;
-    if ([v4 fileExistsAtPath:v3 isDirectory:&v7]&& (v7 & 1) != 0)
+    if ([defaultManager fileExistsAtPath:v3 isDirectory:&v7]&& (v7 & 1) != 0)
     {
       v5 = CALNDefaultCalendarDirectory();
-      [a1 _migrateNotificationFilesFromDirectory:v3 toDirectory:v5];
+      [self _migrateNotificationFilesFromDirectory:v3 toDirectory:v5];
     }
 
     else
@@ -1091,28 +1091,28 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
 
   else
   {
-    v4 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    defaultManager = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_DEBUG))
     {
-      +[(CALNNotificationServerModule *)v4];
+      +[(CALNNotificationServerModule *)defaultManager];
     }
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_migrateNotificationFilesFromDirectory:(id)a3 toDirectory:(id)a4
++ (void)_migrateNotificationFilesFromDirectory:(id)directory toDirectory:(id)toDirectory
 {
   v38 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v6 = a4;
-  v7 = [a1 _filesToMigrate];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  toDirectoryCopy = toDirectory;
+  _filesToMigrate = [self _filesToMigrate];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v7;
+  v9 = _filesToMigrate;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v10)
   {
@@ -1122,7 +1122,7 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
     v23 = v11;
     v25 = *v30;
     v26 = v9;
-    v24 = v6;
+    v24 = toDirectoryCopy;
     do
     {
       for (i = 0; i != v12; ++i)
@@ -1133,8 +1133,8 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v6 stringByAppendingPathComponent:{v15, v23}];
-        if ([v8 fileExistsAtPath:v16])
+        v16 = [toDirectoryCopy stringByAppendingPathComponent:{v15, v23}];
+        if ([defaultManager fileExistsAtPath:v16])
         {
           v17 = +[CALNLogSubsystem calendar];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1147,11 +1147,11 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
 
         else
         {
-          v17 = [v27 stringByAppendingPathComponent:v15];
-          if ([v8 fileExistsAtPath:v17])
+          v17 = [directoryCopy stringByAppendingPathComponent:v15];
+          if ([defaultManager fileExistsAtPath:v17])
           {
             v28 = 0;
-            v18 = [v8 moveItemAtPath:v17 toPath:v16 error:&v28];
+            v18 = [defaultManager moveItemAtPath:v17 toPath:v16 error:&v28];
             v19 = v28;
             v20 = +[CALNLogSubsystem calendar];
             v21 = v20;
@@ -1174,7 +1174,7 @@ void __58__CALNNotificationServerModule__timeToLeaveRefreshStorage__block_invoke
               _os_log_error_impl(&dword_242909000, v21, OS_LOG_TYPE_ERROR, "Error moving file %{public}@: %@", buf, 0x16u);
             }
 
-            v6 = v24;
+            toDirectoryCopy = v24;
             v13 = v25;
             v9 = v26;
           }

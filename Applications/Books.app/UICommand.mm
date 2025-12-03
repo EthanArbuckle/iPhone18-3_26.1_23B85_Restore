@@ -6,7 +6,7 @@
 
 - (NSString)books_themeID
 {
-  v2 = self;
+  selfCopy = self;
   UICommand.books_themeID.getter();
   v4 = v3;
 

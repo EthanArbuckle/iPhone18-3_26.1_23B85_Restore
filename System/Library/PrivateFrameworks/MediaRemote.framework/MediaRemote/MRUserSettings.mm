@@ -62,7 +62,7 @@
 - (NSArray)routeRecommendationEligibleApps;
 - (NSString)groupSessionNearbyContactDiscoveryDidChangeNotification;
 - (NSString)nearbyDeviceIdentifiersDidChangeNotification;
-- (double)_doubleValueForKey:(double)a3 usingDefaultValue:;
+- (double)_doubleValueForKey:(double)key usingDefaultValue:;
 - (double)checkXPCConnectionStatusDefaultResponseTimeout;
 - (double)electedPlayerInterval;
 - (double)externalDeviceArtificalConnectionDelay;
@@ -81,8 +81,8 @@
 - (double)wakingPlayerPathAssertionDuration;
 - (float)proximitySortingNearbyRadius;
 - (float)systemVolumeOverride;
-- (uint64_t)_BOOLValueForKey:(uint64_t)a3 usingDefaultValue:;
-- (uint64_t)_integerValueForKey:(uint64_t)a3 usingDefaultValue:;
+- (uint64_t)_BOOLValueForKey:(uint64_t)key usingDefaultValue:;
+- (uint64_t)_integerValueForKey:(uint64_t)key usingDefaultValue:;
 - (uint64_t)groupSessionBoopAdvertisementEnabled;
 - (unint64_t)checkXPCConnectionStatusDefaultInterval;
 - (unint64_t)maxStreamCapacity;
@@ -90,7 +90,7 @@
 - (void)_loadNearbyDeviceIdentifiers;
 - (void)_loadRoutePickerAirPlayAllowList;
 - (void)_loadRoutePickerAirPlayDenyList;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MRUserSettings
@@ -132,9 +132,9 @@ void __33__MRUserSettings_currentSettings__block_invoke()
 - (BOOL)supportMultiplayerHost
 {
   v2 = +[MRSharedSettings currentSettings];
-  v3 = [v2 isMultiplayerHost];
+  isMultiplayerHost = [v2 isMultiplayerHost];
 
-  return v3;
+  return isMultiplayerHost;
 }
 
 - (BOOL)verboseOriginClientLogging
@@ -183,8 +183,8 @@ uint64_t __38__MRUserSettings_sonicPodcastsEnabled__block_invoke(uint64_t a1)
 
 - (BOOL)supportOutputContextSync
 {
-  v3 = [(MRUserSettings *)self supportGenericAudioGroup];
-  if (self || v3)
+  supportGenericAudioGroup = [(MRUserSettings *)self supportGenericAudioGroup];
+  if (self || supportGenericAudioGroup)
   {
     return 1;
   }
@@ -240,9 +240,9 @@ uint64_t __38__MRUserSettings_sonicPodcastsEnabled__block_invoke(uint64_t a1)
 - (BOOL)canHostMultiplayerStream
 {
   v2 = +[MRSharedSettings currentSettings];
-  v3 = [v2 canHostMultiplayerStream];
+  canHostMultiplayerStream = [v2 canHostMultiplayerStream];
 
-  return v3;
+  return canHostMultiplayerStream;
 }
 
 - (BOOL)verboseOutputContextDataSourceLogging
@@ -420,9 +420,9 @@ uint64_t __43__MRUserSettings_calculateDiscoveryUpdates__block_invoke(uint64_t a
 - (BOOL)isMultiplayerAware
 {
   v2 = +[MRSharedSettings currentSettings];
-  v3 = [v2 isMultiplayerAware];
+  isMultiplayerAware = [v2 isMultiplayerAware];
 
-  return v3;
+  return isMultiplayerAware;
 }
 
 - (BOOL)supportRoutingContinuity
@@ -448,9 +448,9 @@ uint64_t __43__MRUserSettings_calculateDiscoveryUpdates__block_invoke(uint64_t a
 - (BOOL)removeLocalDevice
 {
   v2 = +[MRSharedSettings currentSettings];
-  v3 = [v2 supportNowPlayingSessionDataSource];
+  supportNowPlayingSessionDataSource = [v2 supportNowPlayingSessionDataSource];
 
-  return v3 ^ 1;
+  return supportNowPlayingSessionDataSource ^ 1;
 }
 
 - (double)mediaRecentlyPlayedInterval
@@ -965,26 +965,26 @@ void __56__MRUserSettings_destinationResolverReconRetryIntervals__block_invoke(u
 
 - (BOOL)showBluePill
 {
-  v3 = [(MRUserSettings *)self supportRouteRecommendations];
-  if (v3)
+  supportRouteRecommendations = [(MRUserSettings *)self supportRouteRecommendations];
+  if (supportRouteRecommendations)
   {
 
-    LOBYTE(v3) = [(MRUserSettings *)self _BOOLValueForKey:1 usingDefaultValue:?];
+    LOBYTE(supportRouteRecommendations) = [(MRUserSettings *)self _BOOLValueForKey:1 usingDefaultValue:?];
   }
 
-  return v3;
+  return supportRouteRecommendations;
 }
 
 - (BOOL)enableQueueHandOffForRouteRecommendations
 {
-  v3 = [(MRUserSettings *)self supportRouteRecommendations];
-  if (v3)
+  supportRouteRecommendations = [(MRUserSettings *)self supportRouteRecommendations];
+  if (supportRouteRecommendations)
   {
 
-    LOBYTE(v3) = [(MRUserSettings *)self _BOOLValueForKey:0 usingDefaultValue:?];
+    LOBYTE(supportRouteRecommendations) = [(MRUserSettings *)self _BOOLValueForKey:0 usingDefaultValue:?];
   }
 
-  return v3;
+  return supportRouteRecommendations;
 }
 
 - (BOOL)alwaysShowVolumeControls
@@ -1205,17 +1205,17 @@ void __56__MRUserSettings_destinationResolverReconRetryIntervals__block_invoke(u
 - (BOOL)groupSessionListenForProxyJoinRequests
 {
   v2 = +[MRSharedSettings currentSettings];
-  v3 = [v2 supportGroupSessionHome];
+  supportGroupSessionHome = [v2 supportGroupSessionHome];
 
-  return v3;
+  return supportGroupSessionHome;
 }
 
 - (BOOL)groupSessionBoopAdvertisementEnabled
 {
   v3 = +[MRSharedSettings currentSettings];
-  v4 = [v3 supportGroupSessionHomePodBoop];
+  supportGroupSessionHomePodBoop = [v3 supportGroupSessionHomePodBoop];
 
-  if (v4)
+  if (supportGroupSessionHomePodBoop)
   {
     IsAudioAccessory = MSVDeviceIsAudioAccessory();
     if (IsAudioAccessory)
@@ -1290,67 +1290,67 @@ void __56__MRUserSettings_destinationResolverReconRetryIntervals__block_invoke(u
   return staticWaveform___static;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (MRUserSettingsSystemVolumeCapabilitiesDidChangeContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (MRUserSettingsSystemVolumeCapabilitiesDidChangeContext == context)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v14 = defaultCenter;
     v15 = @"MRUserSettingsSystemVolumeCapabilitiesOverrideDidChange";
 LABEL_13:
-    [v13 postNotificationName:v15 object:self];
+    [defaultCenter postNotificationName:v15 object:self];
 
     goto LABEL_14;
   }
 
-  if (MRUserSettingsSystemVolumeDidChangeContext == a6)
+  if (MRUserSettingsSystemVolumeDidChangeContext == context)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v14 = defaultCenter;
     v15 = @"MRUserSettingsSystemVolumeOverrideDidChange";
     goto LABEL_13;
   }
 
-  if (MRUserSettingsGroupSessionNearbyDiscoveryContext == a6)
+  if (MRUserSettingsGroupSessionNearbyDiscoveryContext == context)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v14 = defaultCenter;
     v15 = @"MRGroupSessionNearbyContactDiscoveryDidChangeNotification";
     goto LABEL_13;
   }
 
-  if (MRUserSettingsRoutePickerAirPlayAllowListContext == a6)
+  if (MRUserSettingsRoutePickerAirPlayAllowListContext == context)
   {
     [(MRUserSettings *)self _loadRoutePickerAirPlayAllowList];
     goto LABEL_14;
   }
 
-  if (MRUserSettingsRoutePickerAirPlayDenyListContext == a6)
+  if (MRUserSettingsRoutePickerAirPlayDenyListContext == context)
   {
     [(MRUserSettings *)self _loadRoutePickerAirPlayDenyList];
     goto LABEL_14;
   }
 
-  if (MRUserSettingsNearbyDeviceIdentifiersContext == a6)
+  if (MRUserSettingsNearbyDeviceIdentifiersContext == context)
   {
     [MRUserSettings observeValueForKeyPath:? ofObject:? change:? context:?];
     goto LABEL_14;
   }
 
-  if (MRUserSettingsGroupSessionBoopContext == a6)
+  if (MRUserSettingsGroupSessionBoopContext == context)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = v13;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v14 = defaultCenter;
     v15 = @"MRUserSettingsGroupSessionBoopEnabledDidChangeNotification";
     goto LABEL_13;
   }
 
   v16.receiver = self;
   v16.super_class = MRUserSettings;
-  [(MRUserSettings *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(MRUserSettings *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_14:
 }
 
@@ -1369,25 +1369,25 @@ LABEL_14:
   return carPlayBannersEnabled___value;
 }
 
-- (uint64_t)_BOOLValueForKey:(uint64_t)a3 usingDefaultValue:
+- (uint64_t)_BOOLValueForKey:(uint64_t)key usingDefaultValue:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [OUTLINED_FUNCTION_12_2() objectForKey:?];
 
     if (v6)
     {
-      a3 = [OUTLINED_FUNCTION_12_2() BOOLForKey:?];
+      key = [OUTLINED_FUNCTION_12_2() BOOLForKey:?];
     }
   }
 
   else
   {
-    a3 = 0;
+    key = 0;
   }
 
-  return a3;
+  return key;
 }
 
 uint64_t __34__MRUserSettings_shouldLogArtwork__block_invoke(uint64_t a1)
@@ -1474,47 +1474,47 @@ uint64_t __52__MRUserSettings_verbosePlaybackQueueRequestLogging__block_invoke(u
   return result;
 }
 
-- (double)_doubleValueForKey:(double)a3 usingDefaultValue:
+- (double)_doubleValueForKey:(double)key usingDefaultValue:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 8) objectForKey:v5];
+    v6 = [*(self + 8) objectForKey:v5];
 
     if (v6)
     {
-      [*(a1 + 8) doubleForKey:v5];
-      a3 = v7;
+      [*(self + 8) doubleForKey:v5];
+      key = v7;
     }
   }
 
   else
   {
-    a3 = 0.0;
+    key = 0.0;
   }
 
-  return a3;
+  return key;
 }
 
-- (uint64_t)_integerValueForKey:(uint64_t)a3 usingDefaultValue:
+- (uint64_t)_integerValueForKey:(uint64_t)key usingDefaultValue:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [OUTLINED_FUNCTION_12_2() objectForKey:?];
 
     if (v6)
     {
-      a3 = [OUTLINED_FUNCTION_12_2() integerForKey:?];
+      key = [OUTLINED_FUNCTION_12_2() integerForKey:?];
     }
   }
 
   else
   {
-    a3 = 0;
+    key = 0;
   }
 
-  return a3;
+  return key;
 }
 
 uint64_t __80__MRUserSettings_nowPlayingAppStackShouldAutomaticallyForwardFailedPlayCommands__block_invoke(uint64_t a1)
@@ -1534,9 +1534,9 @@ uint64_t __56__MRUserSettings_notifyDevicesInHomeThatPlaybackStarted__block_invo
 - (void)_loadRoutePickerAirPlayAllowList
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) valueForKey:@"routepicker-airplay-allowlist"];
+    [*(self + 8) valueForKey:@"routepicker-airplay-allowlist"];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_11_4();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1546,8 +1546,8 @@ uint64_t __56__MRUserSettings_notifyDevicesInHomeThatPlaybackStarted__block_invo
       if (v1)
       {
         v5 = [OUTLINED_FUNCTION_7_1() arrayWithObjects:? count:?];
-        v6 = *(a1 + 16);
-        *(a1 + 16) = v5;
+        v6 = *(self + 16);
+        *(self + 16) = v5;
 
 LABEL_7:
         goto LABEL_8;
@@ -1556,7 +1556,7 @@ LABEL_7:
       v4 = 0;
     }
 
-    objc_storeStrong((a1 + 16), v4);
+    objc_storeStrong((self + 16), v4);
     goto LABEL_7;
   }
 
@@ -1567,9 +1567,9 @@ LABEL_8:
 - (void)_loadRoutePickerAirPlayDenyList
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) valueForKey:@"routepicker-airplay-denylist"];
+    [*(self + 8) valueForKey:@"routepicker-airplay-denylist"];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_11_4();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1579,8 +1579,8 @@ LABEL_8:
       if (v1)
       {
         v5 = [OUTLINED_FUNCTION_7_1() arrayWithObjects:? count:?];
-        v6 = *(a1 + 24);
-        *(a1 + 24) = v5;
+        v6 = *(self + 24);
+        *(self + 24) = v5;
 
 LABEL_7:
         goto LABEL_8;
@@ -1589,7 +1589,7 @@ LABEL_7:
       v4 = 0;
     }
 
-    objc_storeStrong((a1 + 24), v4);
+    objc_storeStrong((self + 24), v4);
     goto LABEL_7;
   }
 
@@ -1600,9 +1600,9 @@ LABEL_8:
 - (void)_loadNearbyDeviceIdentifiers
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) valueForKey:@"NearbyDeviceIdentifiers"];
+    [*(self + 8) valueForKey:@"NearbyDeviceIdentifiers"];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_11_4();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1612,8 +1612,8 @@ LABEL_8:
       if (v1)
       {
         v5 = [OUTLINED_FUNCTION_7_1() arrayWithObjects:? count:?];
-        v6 = *(a1 + 32);
-        *(a1 + 32) = v5;
+        v6 = *(self + 32);
+        *(self + 32) = v5;
 
 LABEL_7:
         goto LABEL_8;
@@ -1622,7 +1622,7 @@ LABEL_7:
       v4 = 0;
     }
 
-    objc_storeStrong((a1 + 32), v4);
+    objc_storeStrong((self + 32), v4);
     goto LABEL_7;
   }
 

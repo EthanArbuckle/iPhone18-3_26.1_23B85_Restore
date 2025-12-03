@@ -1,17 +1,17 @@
 @interface asn1SequenceToken
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7;
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque;
 - (id)nextToken;
 @end
 
 @implementation asn1SequenceToken
 
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque
 {
-  v9 = a4;
+  classCopy = class;
   v13.receiver = self;
   v13.super_class = asn1SequenceToken;
-  result = [(asn1SequenceToken *)&v13 init:a3];
-  if (a3 != 16 || v9)
+  result = [(asn1SequenceToken *)&v13 init:d];
+  if (d != 16 || classCopy)
   {
     v12 = result;
     return 0;
@@ -21,9 +21,9 @@
   {
     *(result + 8) = 0;
     *(result + 2) = 16;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
-    *(result + 5) = a6;
+    *(result + 3) = length;
+    *(result + 4) = content;
+    *(result + 5) = content;
   }
 
   return result;
@@ -32,8 +32,8 @@
 - (id)nextToken
 {
   mReadPointer = self->mReadPointer;
-  v4 = [(asn1Token *)self content];
-  if (mReadPointer >= &v4[[(asn1Token *)self length]])
+  content = [(asn1Token *)self content];
+  if (mReadPointer >= &content[[(asn1Token *)self length]])
   {
     return 0;
   }

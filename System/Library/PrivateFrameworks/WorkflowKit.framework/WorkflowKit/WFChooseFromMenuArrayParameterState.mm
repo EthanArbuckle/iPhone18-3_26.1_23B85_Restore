@@ -1,16 +1,16 @@
 @interface WFChooseFromMenuArrayParameterState
-- (WFChooseFromMenuArrayParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (WFChooseFromMenuArrayParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 @end
 
 @implementation WFChooseFromMenuArrayParameterState
 
-- (WFChooseFromMenuArrayParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFChooseFromMenuArrayParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(representationCopy, v11);
 
   if (v12)
   {
@@ -18,20 +18,20 @@
     v17 = 3221225472;
     v18 = __99__WFChooseFromMenuArrayParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke;
     v19 = &unk_1E837D9A0;
-    v20 = v8;
-    v21 = v9;
+    v20 = providerCopy;
+    v21 = parameterCopy;
     v13 = [v12 if_compactMap:&v16];
     self = [(WFArrayParameterState *)self initWithValues:v13, v16, v17, v18, v19];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 WFPropertyListParameterValue *__99__WFChooseFromMenuArrayParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke(uint64_t a1, void *a2)

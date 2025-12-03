@@ -1,7 +1,7 @@
 @interface CAPackageViewLayer
 - (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)init;
-- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithCoder:(id)a3;
-- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithLayer:(id)a3;
+- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithCoder:(id)coder;
+- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2A28C();
 }
 
@@ -22,7 +22,7 @@
   return [(CAPackageViewLayer *)&v3 init];
 }
 
-- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithLayer:(id)a3
+- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_B7C00();
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithCoder:(id)a3
+- (_TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer_packageLayer) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC13FindMyAppCoreP33_113F9C70DE74682402EA2ECCFF4D49EA18CAPackageViewLayer_fitToHeight) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CAPackageViewLayer();
-  v4 = a3;
-  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

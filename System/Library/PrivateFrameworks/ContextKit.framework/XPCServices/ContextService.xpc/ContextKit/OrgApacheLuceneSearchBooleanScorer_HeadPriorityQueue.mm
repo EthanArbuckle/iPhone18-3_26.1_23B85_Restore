@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneSearchBooleanScorer_HeadPriorityQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanScorer_HeadPriorityQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 6) < *(a4 + 6);
+  return *(id + 6) < *(withId + 6);
 }
 
 @end

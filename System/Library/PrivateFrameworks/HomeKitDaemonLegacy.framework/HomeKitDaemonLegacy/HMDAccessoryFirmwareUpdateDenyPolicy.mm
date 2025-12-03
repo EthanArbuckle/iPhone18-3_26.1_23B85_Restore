@@ -32,7 +32,7 @@ uint64_t __51__HMDAccessoryFirmwareUpdateDenyPolicy_logCategory__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
   [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:0];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {

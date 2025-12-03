@@ -1,28 +1,28 @@
 @interface WMCharacterRunMapper
-+ (void)addNonCollapsableSpanAt:(id)a3 withState:(id)a4;
-- (WMCharacterRunMapper)initWithText:(id)a3;
-- (WMCharacterRunMapper)initWithWDCharacterRun:(id)a3 parent:(id)a4;
++ (void)addNonCollapsableSpanAt:(id)at withState:(id)state;
+- (WMCharacterRunMapper)initWithText:(id)text;
+- (WMCharacterRunMapper)initWithWDCharacterRun:(id)run parent:(id)parent;
 - (id)baseStyle;
 - (id)boldStyle;
 - (id)copyCharacterStyle;
 - (int)defaultTabWidth;
 - (unsigned)countAndStripLeadingTabs;
-- (void)map1At:(id)a3 withState:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapSubstring:(id)a3 at:(id)a4;
-- (void)mapTabs:(unsigned int)a3 at:(id)a4 afterText:(id)a5;
+- (void)map1At:(id)at withState:(id)state;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapSubstring:(id)substring at:(id)at;
+- (void)mapTabs:(unsigned int)tabs at:(id)at afterText:(id)text;
 @end
 
 @implementation WMCharacterRunMapper
 
 - (id)copyCharacterStyle
 {
-  v3 = [(WDRun *)self->wdCharacterRun paragraph];
-  v4 = [v3 properties];
-  if ([v4 isBaseStyleOverridden])
+  paragraph = [(WDRun *)self->wdCharacterRun paragraph];
+  properties = [paragraph properties];
+  if ([properties isBaseStyleOverridden])
   {
-    v5 = [v4 baseStyle];
-    v6 = [[WMStyle alloc] initWithWDStyle:v5];
+    baseStyle = [properties baseStyle];
+    v6 = [[WMStyle alloc] initWithWDStyle:baseStyle];
   }
 
   else
@@ -30,11 +30,11 @@
     v6 = objc_alloc_init(WMStyle);
   }
 
-  v7 = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
-  if ([v7 isBaseStyleOverridden])
+  properties2 = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
+  if ([properties2 isBaseStyleOverridden])
   {
-    v8 = [v7 baseStyle];
-    v9 = [[WMStyle alloc] initWithWDStyle:v8];
+    baseStyle2 = [properties2 baseStyle];
+    v9 = [[WMStyle alloc] initWithWDStyle:baseStyle2];
     [(WMStyle *)v6 cascadeWithStyle:v9];
   }
 
@@ -50,11 +50,11 @@
     return 36;
   }
 
-  v4 = [(CMMapper *)self root];
+  root = [(CMMapper *)self root];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = ([v4 defaultTabWidth] / 20.0);
+    v5 = ([root defaultTabWidth] / 20.0);
     if (v5)
     {
       v6 = v5;
@@ -74,45 +74,45 @@
   return v6;
 }
 
-+ (void)addNonCollapsableSpanAt:(id)a3 withState:(id)a4
++ (void)addNonCollapsableSpanAt:(id)at withState:(id)state
 {
-  v6 = a3;
+  atCopy = at;
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 160];
   v5 = [OIXMLElement elementWithType:16];
   [v5 setStringValue:v4];
-  [v6 addChild:v5];
+  [atCopy addChild:v5];
 }
 
-- (WMCharacterRunMapper)initWithWDCharacterRun:(id)a3 parent:(id)a4
+- (WMCharacterRunMapper)initWithWDCharacterRun:(id)run parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  runCopy = run;
+  parentCopy = parent;
   v18.receiver = self;
   v18.super_class = WMCharacterRunMapper;
-  v9 = [(CMMapper *)&v18 initWithParent:v8];
+  v9 = [(CMMapper *)&v18 initWithParent:parentCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->wdCharacterRun, a3);
-    v11 = [(WMCharacterRunMapper *)v10 copyCharacterStyle];
+    objc_storeStrong(&v9->wdCharacterRun, run);
+    copyCharacterStyle = [(WMCharacterRunMapper *)v10 copyCharacterStyle];
     mStyle = v10->mStyle;
-    v10->mStyle = v11;
+    v10->mStyle = copyCharacterStyle;
 
     v13 = v10->mStyle;
-    v14 = [v7 properties];
-    [(WMStyle *)v13 addCharacterProperties:v14];
+    properties = [runCopy properties];
+    [(WMStyle *)v13 addCharacterProperties:properties];
 
-    v15 = [v7 string];
+    string = [runCopy string];
     mText = v10->mText;
-    v10->mText = v15;
+    v10->mText = string;
   }
 
   return v10;
 }
 
-- (WMCharacterRunMapper)initWithText:(id)a3
+- (WMCharacterRunMapper)initWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = WMCharacterRunMapper;
   v6 = [(CMMapper *)&v13 init];
@@ -123,7 +123,7 @@
     v6->wdCharacterRun = 0;
 
     objc_storeWeak(&v7->super.mParent, 0);
-    objc_storeStrong(&v7->mText, a3);
+    objc_storeStrong(&v7->mText, text);
     v9 = objc_alloc_init(WMStyle);
     mStyle = v7->mStyle;
     v7->mStyle = v9;
@@ -134,24 +134,24 @@
   return v7;
 }
 
-- (void)map1At:(id)a3 withState:(id)a4
+- (void)map1At:(id)at withState:(id)state
 {
-  v14 = a3;
-  v5 = [(WDCharacterRun *)self->wdCharacterRun string];
-  v6 = v5;
-  if (v5 && [v5 length])
+  atCopy = at;
+  string = [(WDCharacterRun *)self->wdCharacterRun string];
+  v6 = string;
+  if (string && [string length])
   {
     v7 = [OIXMLElement elementWithType:16];
-    [v14 addChild:v7];
-    v8 = [(WMCharacterRunMapper *)self countAndStripLeadingTabs];
+    [atCopy addChild:v7];
+    countAndStripLeadingTabs = [(WMCharacterRunMapper *)self countAndStripLeadingTabs];
     v9 = [OIXMLTextNode textNodeWithStringValue:v6];
     [v7 addChild:v9];
-    v10 = [(WMCharacterRunMapper *)self copyCharacterStyle];
-    v11 = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
-    [v10 addCharacterProperties:v11];
-    if (v8)
+    copyCharacterStyle = [(WMCharacterRunMapper *)self copyCharacterStyle];
+    properties = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
+    [copyCharacterStyle addCharacterProperties:properties];
+    if (countAndStripLeadingTabs)
     {
-      v12 = [(CMMapper *)self root];
+      root = [(CMMapper *)self root];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -159,27 +159,27 @@
         goto LABEL_8;
       }
 
-      v13 = -[CMLengthProperty initWithNumber:unit:]([CMLengthProperty alloc], "initWithNumber:unit:", 2, ([v12 defaultTabWidth] * v8));
-      [v10 addProperty:v13 forKey:0x286F081B0];
+      v13 = -[CMLengthProperty initWithNumber:unit:]([CMLengthProperty alloc], "initWithNumber:unit:", 2, ([root defaultTabWidth] * countAndStripLeadingTabs));
+      [copyCharacterStyle addProperty:v13 forKey:0x286F081B0];
     }
 
-    [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:v10];
+    [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:copyCharacterStyle];
 LABEL_8:
   }
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v33 = a3;
-  v6 = a4;
-  v7 = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
-  if ([v7 isDeletedOverridden] && (objc_msgSend(v7, "deleted") & 0xFFFFFF7F) == 1)
+  atCopy = at;
+  stateCopy = state;
+  properties = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
+  if ([properties isDeletedOverridden] && (objc_msgSend(properties, "deleted") & 0xFFFFFF7F) == 1)
   {
     self->mIsDeleted = 1;
     goto LABEL_53;
   }
 
-  if ([v7 isHiddenOverridden] && objc_msgSend(v7, "hidden") == 1)
+  if ([properties isHiddenOverridden] && objc_msgSend(properties, "hidden") == 1)
   {
     goto LABEL_53;
   }
@@ -208,12 +208,12 @@ LABEL_8:
     {
       if ([(NSString *)self->mText characterAtIndex:i]== 12)
       {
-        [v6 setCurrentPage:{objc_msgSend(v6, "currentPage") + 1}];
+        [stateCopy setCurrentPage:{objc_msgSend(stateCopy, "currentPage") + 1}];
       }
     }
   }
 
-  if ([v6 isOnPhone] && objc_msgSend(v6, "textLevel") <= 0)
+  if ([stateCopy isOnPhone] && objc_msgSend(stateCopy, "textLevel") <= 0)
   {
     v11 = [(CMStyle *)self->mStyle propertyForName:0x286EF73D0];
     v12 = v11;
@@ -221,9 +221,9 @@ LABEL_8:
     {
       [v11 value];
       v14 = v13;
-      v15 = [v12 unitType];
+      unitType = [v12 unitType];
       v16 = v14;
-      if (v15 == 1 || v15 == 4)
+      if (unitType == 1 || unitType == 4)
       {
 LABEL_23:
         if (v16 < 18.0)
@@ -254,7 +254,7 @@ LABEL_23:
         goto LABEL_31;
       }
 
-      if (v15 == 6)
+      if (unitType == 6)
       {
         v16 = v16 * 0.5;
         goto LABEL_23;
@@ -289,7 +289,7 @@ LABEL_31:
         v26 = [(NSString *)self->mText substringWithRange:v20, v23 - v20];
 
         v21 = v26;
-        [(WMCharacterRunMapper *)self mapSubstring:v26 at:v33];
+        [(WMCharacterRunMapper *)self mapSubstring:v26 at:atCopy];
         v20 = v25;
       }
 
@@ -317,7 +317,7 @@ LABEL_31:
 
       v20 = v27;
 LABEL_45:
-      [(WMCharacterRunMapper *)self mapTabs:v29 at:v33 afterText:v21];
+      [(WMCharacterRunMapper *)self mapTabs:v29 at:atCopy afterText:v21];
       v22 = v9 - v20;
       if (v9 == v20)
       {
@@ -339,7 +339,7 @@ LABEL_45:
     v32 = v31;
 
     v21 = v32;
-    [(WMCharacterRunMapper *)self mapSubstring:v32 at:v33];
+    [(WMCharacterRunMapper *)self mapSubstring:v32 at:atCopy];
   }
 
   else
@@ -352,23 +352,23 @@ LABEL_52:
 LABEL_53:
 }
 
-- (void)mapSubstring:(id)a3 at:(id)a4
+- (void)mapSubstring:(id)substring at:(id)at
 {
-  v11 = a3;
-  v6 = a4;
+  substringCopy = substring;
+  atCopy = at;
   if (self->mFontSizeBumpFactor < 11)
   {
-    v7 = [OIXMLElement elementWithType:16 stringValue:v11];
-    [v6 addChild:v7];
+    v7 = [OIXMLElement elementWithType:16 stringValue:substringCopy];
+    [atCopy addChild:v7];
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:self->mStyle];
   }
 
   else
   {
     v7 = [OIXMLElement elementWithType:16];
-    [v6 addChild:v7];
+    [atCopy addChild:v7];
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:self->mStyle];
-    v8 = [OIXMLElement elementWithType:16 stringValue:v11];
+    v8 = [OIXMLElement elementWithType:16 stringValue:substringCopy];
     mFontSizeBumpFactor = self->mFontSizeBumpFactor;
     if (mFontSizeBumpFactor == 17)
     {
@@ -395,17 +395,17 @@ LABEL_53:
   }
 }
 
-- (void)mapTabs:(unsigned int)a3 at:(id)a4 afterText:(id)a5
+- (void)mapTabs:(unsigned int)tabs at:(id)at afterText:(id)text
 {
-  v30 = a4;
-  v8 = a5;
-  v9 = [(WMCharacterRunMapper *)self defaultTabWidth];
-  v10 = v9;
-  if (v8)
+  atCopy = at;
+  textCopy = text;
+  defaultTabWidth = [(WMCharacterRunMapper *)self defaultTabWidth];
+  v10 = defaultTabWidth;
+  if (textCopy)
   {
-    v29 = v8;
-    v11 = [(CMStyle *)self->mStyle properties];
-    v12 = [v11 objectForKey:0x286EF73D0];
+    v29 = textCopy;
+    properties = [(CMStyle *)self->mStyle properties];
+    v12 = [properties objectForKey:0x286EF73D0];
 
     v28 = v12;
     if (v12)
@@ -419,58 +419,58 @@ LABEL_53:
       v14 = 10;
     }
 
-    v16 = [(CMStyle *)self->mStyle properties];
-    v17 = [v16 objectForKey:0x286EF73B0];
+    properties2 = [(CMStyle *)self->mStyle properties];
+    v17 = [properties2 objectForKey:0x286EF73B0];
 
     if (v17)
     {
-      v18 = [v17 value];
+      value = [v17 value];
     }
 
     else
     {
-      v18 = @"Arial";
+      value = @"Arial";
     }
 
-    v19 = [(CMStyle *)self->mStyle properties];
-    v20 = [v19 objectForKey:0x286EF7410];
+    properties3 = [(CMStyle *)self->mStyle properties];
+    v20 = [properties3 objectForKey:0x286EF7410];
 
-    LOBYTE(v19) = [v20 value];
-    v21 = [(CMStyle *)self->mStyle properties];
-    v22 = [v21 objectForKey:0x286EF7450];
+    LOBYTE(properties3) = [v20 value];
+    properties4 = [(CMStyle *)self->mStyle properties];
+    v22 = [properties4 objectForKey:0x286EF7450];
 
-    [v29 oi_sizeWithFontName:v18 size:v14 bold:v19 & 1 italic:{objc_msgSend(v22, "value") & 1}];
-    v15 = v23 / v10 * v10 - v23 + v10 * a3;
+    [v29 oi_sizeWithFontName:value size:v14 bold:properties3 & 1 italic:{objc_msgSend(v22, "value") & 1}];
+    v15 = v23 / v10 * v10 - v23 + v10 * tabs;
 
-    v8 = v29;
+    textCopy = v29;
   }
 
   else
   {
-    v15 = v9 * a3;
+    v15 = defaultTabWidth * tabs;
   }
 
   v24 = [OIXMLElement elementWithType:16];
-  [v30 addChild:v24];
+  [atCopy addChild:v24];
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"padding-left:%d", v15];;
   [(CMMapper *)self addAttribute:0x286EEA590 toNode:v24 value:v25];
-  v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8203];
-  v27 = [OIXMLTextNode textNodeWithStringValue:v26];
+  8203 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8203];
+  v27 = [OIXMLTextNode textNodeWithStringValue:8203];
 
   [v24 addChild:v27];
 }
 
 - (unsigned)countAndStripLeadingTabs
 {
-  v3 = [(WDCharacterRun *)self->wdCharacterRun string];
-  v4 = [v3 length];
+  string = [(WDCharacterRun *)self->wdCharacterRun string];
+  v4 = [string length];
   if (v4)
   {
     v5 = 0;
     v6 = 0;
     while (1)
     {
-      v7 = [v3 characterAtIndex:v5];
+      v7 = [string characterAtIndex:v5];
       if (v7 != 9 && v7 != 32)
       {
         break;
@@ -490,8 +490,8 @@ LABEL_53:
 
 LABEL_9:
         wdCharacterRun = self->wdCharacterRun;
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8203];
-        [(WDCharacterRun *)wdCharacterRun setString:v9];
+        8203 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8203];
+        [(WDCharacterRun *)wdCharacterRun setString:8203];
         goto LABEL_14;
       }
     }
@@ -507,8 +507,8 @@ LABEL_9:
     }
 
     v10 = self->wdCharacterRun;
-    v9 = [v3 substringWithRange:{v5, v4 - v5}];
-    [(WDCharacterRun *)v10 setString:v9];
+    8203 = [string substringWithRange:{v5, v4 - v5}];
+    [(WDCharacterRun *)v10 setString:8203];
 LABEL_14:
   }
 
@@ -533,30 +533,30 @@ LABEL_15:
 
 - (id)baseStyle
 {
-  v3 = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
-  if ([v3 isBaseStyleOverridden])
+  properties = [(WDRunWithCharacterProperties *)self->wdCharacterRun properties];
+  if ([properties isBaseStyleOverridden])
   {
-    v4 = [v3 baseStyle];
-    v5 = [[WMStyle alloc] initWithWDStyle:v4];
+    baseStyle = [properties baseStyle];
+    boldStyle = [[WMStyle alloc] initWithWDStyle:baseStyle];
   }
 
   else
   {
-    v4 = [(WDRun *)self->wdCharacterRun paragraph];
-    v6 = [v4 properties];
-    if ([v6 isBaseStyleOverridden])
+    baseStyle = [(WDRun *)self->wdCharacterRun paragraph];
+    properties2 = [baseStyle properties];
+    if ([properties2 isBaseStyleOverridden])
     {
-      v7 = [v6 baseStyle];
-      v5 = [[WMStyle alloc] initWithWDStyle:v7];
+      baseStyle2 = [properties2 baseStyle];
+      boldStyle = [[WMStyle alloc] initWithWDStyle:baseStyle2];
     }
 
     else
     {
-      v5 = [(WMCharacterRunMapper *)self boldStyle];
+      boldStyle = [(WMCharacterRunMapper *)self boldStyle];
     }
   }
 
-  return v5;
+  return boldStyle;
 }
 
 @end

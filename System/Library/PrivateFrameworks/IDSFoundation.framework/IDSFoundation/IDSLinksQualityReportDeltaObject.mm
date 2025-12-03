@@ -1,8 +1,8 @@
 @interface IDSLinksQualityReportDeltaObject
-+ (id)createWithJSON:(id)a3 error:(id *)a4;
++ (id)createWithJSON:(id)n error:(id *)error;
 - (IDSLinksQualityReportDeltaObject)init;
 - (IDSLinksQualityReportSyncTokenObject)syncToken;
-- (id)jsonWithError:(id *)a3;
+- (id)jsonWithError:(id *)error;
 @end
 
 @implementation IDSLinksQualityReportDeltaObject
@@ -32,9 +32,9 @@
   return result;
 }
 
-+ (id)createWithJSON:(id)a3 error:(id *)a4
++ (id)createWithJSON:(id)n error:(id *)error
 {
-  v4 = a3;
+  nCopy = n;
   v5 = sub_1A7E21A10();
   v7 = v6;
 
@@ -44,16 +44,16 @@
   return v8;
 }
 
-- (id)jsonWithError:(id *)a3
+- (id)jsonWithError:(id *)error
 {
   v3 = qword_1EB2B46F8;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  v5 = (v4 + OBJC_IVAR___IDSLinksQualityReportDeltaObject_delta);
+  v5 = (selfCopy + OBJC_IVAR___IDSLinksQualityReportDeltaObject_delta);
   swift_beginAccess();
   v11 = *v5;
   sub_1A7CD3B24(*v5);

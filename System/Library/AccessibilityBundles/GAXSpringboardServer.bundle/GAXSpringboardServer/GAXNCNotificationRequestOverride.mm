@@ -7,9 +7,9 @@
 - (BOOL)sb_shouldSuppressAlert
 {
   v4 = +[GAXSpringboard sharedInstance];
-  v5 = [v4 isActive];
+  isActive = [v4 isActive];
 
-  if (v5)
+  if (isActive)
   {
     v6 = GAXLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

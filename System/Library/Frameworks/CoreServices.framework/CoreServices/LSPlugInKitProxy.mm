@@ -1,26 +1,26 @@
 @interface LSPlugInKitProxy
-+ (id)containingBundleIdentifiersForPlugInBundleIdentifiers:(id)a3 error:(id *)a4;
-+ (id)plugInKitProxyForUUID:(id)a3 bundleIdentifier:(id)a4 pluginIdentifier:(id)a5 effectiveIdentifier:(id)a6 version:(id)a7 bundleURL:(id)a8;
-+ (id)pluginKitProxyForIdentifier:(id)a3;
-+ (id)pluginKitProxyForURL:(id)a3;
-+ (id)pluginKitProxyForUUID:(id)a3;
++ (id)containingBundleIdentifiersForPlugInBundleIdentifiers:(id)identifiers error:(id *)error;
++ (id)plugInKitProxyForUUID:(id)d bundleIdentifier:(id)identifier pluginIdentifier:(id)pluginIdentifier effectiveIdentifier:(id)effectiveIdentifier version:(id)version bundleURL:(id)l;
++ (id)pluginKitProxyForIdentifier:(id)identifier;
++ (id)pluginKitProxyForURL:(id)l;
++ (id)pluginKitProxyForUUID:(id)d;
 - (BOOL)_usesSystemPersona;
 - (BOOL)pluginCanProvideIcon;
 - (LSExtensionPoint)extensionPoint;
-- (LSPlugInKitProxy)initWithCoder:(id)a3;
+- (LSPlugInKitProxy)initWithCoder:(id)coder;
 - (NSDictionary)infoPlist;
 - (NSDictionary)pluginKitDictionary;
 - (NSNumber)platform;
 - (NSString)teamID;
-- (id)_initWithUUID:(id)a3 bundleIdentifier:(id)a4 pluginIdentifier:(id)a5 effectiveIdentifier:(id)a6 version:(id)a7 bundleURL:(id)a8;
-- (id)_localizedNameWithPreferredLocalizations:(id)a3 useShortNameOnly:(BOOL)a4;
+- (id)_initWithUUID:(id)d bundleIdentifier:(id)identifier pluginIdentifier:(id)pluginIdentifier effectiveIdentifier:(id)effectiveIdentifier version:(id)version bundleURL:(id)l;
+- (id)_localizedNameWithPreferredLocalizations:(id)localizations useShortNameOnly:(BOOL)only;
 - (id)_managedPersonas;
-- (id)_stringLocalizerForTable:(id)a3;
+- (id)_stringLocalizerForTable:(id)table;
 - (id)boundIconsDictionary;
 - (id)description;
-- (id)objectForInfoDictionaryKey:(id)a3 ofClass:(Class)a4 inScope:(unint64_t)a5;
+- (id)objectForInfoDictionaryKey:(id)key ofClass:(Class)class inScope:(unint64_t)scope;
 - (void)detach;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)extensionPoint;
 @end
 
@@ -28,31 +28,31 @@
 
 - (NSString)teamID
 {
-  v2 = [(LSPlugInKitProxy *)self containingBundle];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  containingBundle = [(LSPlugInKitProxy *)self containingBundle];
+  if (containingBundle && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 teamID];
+    teamID = [containingBundle teamID];
   }
 
   else
   {
-    v3 = 0;
+    teamID = 0;
   }
 
-  return v3;
+  return teamID;
 }
 
-+ (id)pluginKitProxyForUUID:(id)a3
++ (id)pluginKitProxyForUUID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__38;
   v16 = __Block_byref_object_dispose__38;
   v17 = 0;
-  v4 = [LSPlugInQuery pluginQueryWithUUID:v3];
+  v4 = [LSPlugInQuery pluginQueryWithUUID:dCopy];
   v5 = +[_LSQueryContext defaultContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v3;
+      v19 = dCopy;
       _os_log_impl(&dword_18162D000, v7, OS_LOG_TYPE_DEFAULT, "Failed to find plugin with UUID %@", buf, 0xCu);
     }
 
@@ -97,17 +97,17 @@ void __42__LSPlugInKitProxy_pluginKitProxyForUUID___block_invoke(uint64_t a1, vo
   objc_autoreleasePoolPop(v9);
 }
 
-+ (id)pluginKitProxyForIdentifier:(id)a3
++ (id)pluginKitProxyForIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__38;
   v28 = __Block_byref_object_dispose__38;
   v29 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
-  v4 = [LSPlugInQuery pluginQueryWithIdentifier:v3];
+  v4 = [LSPlugInQuery pluginQueryWithIdentifier:identifierCopy];
   v5 = +[_LSQueryContext defaultContext];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -152,9 +152,9 @@ LABEL_6:
 
         v8 = *(*(&v19 + 1) + 8 * v12);
 
-        v14 = [v8 pluginIdentifier];
-        v15 = [v8 originalIdentifier];
-        v16 = [v14 isEqualToString:v15];
+        pluginIdentifier = [v8 pluginIdentifier];
+        originalIdentifier = [v8 originalIdentifier];
+        v16 = [pluginIdentifier isEqualToString:originalIdentifier];
 
         if ((v16 & 1) == 0)
         {
@@ -210,16 +210,16 @@ void __48__LSPlugInKitProxy_pluginKitProxyForIdentifier___block_invoke(uint64_t 
   }
 }
 
-+ (id)pluginKitProxyForURL:(id)a3
++ (id)pluginKitProxyForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__38;
   v14 = __Block_byref_object_dispose__38;
   v15 = 0;
-  v4 = _LSCreateResolvedURL(v3);
+  v4 = _LSCreateResolvedURL(lCopy);
   v5 = [LSPlugInQuery pluginQueryWithURL:v4];
   v6 = +[_LSQueryContext defaultContext];
   v9[0] = MEMORY[0x1E69E9820];
@@ -256,15 +256,15 @@ void __41__LSPlugInKitProxy_pluginKitProxyForURL___block_invoke(uint64_t a1, voi
   objc_autoreleasePoolPop(v9);
 }
 
-+ (id)plugInKitProxyForUUID:(id)a3 bundleIdentifier:(id)a4 pluginIdentifier:(id)a5 effectiveIdentifier:(id)a6 version:(id)a7 bundleURL:(id)a8
++ (id)plugInKitProxyForUUID:(id)d bundleIdentifier:(id)identifier pluginIdentifier:(id)pluginIdentifier effectiveIdentifier:(id)effectiveIdentifier version:(id)version bundleURL:(id)l
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] _initWithUUID:v19 bundleIdentifier:v18 pluginIdentifier:v17 effectiveIdentifier:v16 version:v15 bundleURL:v14];
+  lCopy = l;
+  versionCopy = version;
+  effectiveIdentifierCopy = effectiveIdentifier;
+  pluginIdentifierCopy = pluginIdentifier;
+  identifierCopy = identifier;
+  dCopy = d;
+  v20 = [[self alloc] _initWithUUID:dCopy bundleIdentifier:identifierCopy pluginIdentifier:pluginIdentifierCopy effectiveIdentifier:effectiveIdentifierCopy version:versionCopy bundleURL:lCopy];
 
   return v20;
 }
@@ -319,34 +319,34 @@ void __91__LSPlugInKitProxy__initWithPlugin_andContext_applicationExtensionRecor
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithUUID:(id)a3 bundleIdentifier:(id)a4 pluginIdentifier:(id)a5 effectiveIdentifier:(id)a6 version:(id)a7 bundleURL:(id)a8
+- (id)_initWithUUID:(id)d bundleIdentifier:(id)identifier pluginIdentifier:(id)pluginIdentifier effectiveIdentifier:(id)effectiveIdentifier version:(id)version bundleURL:(id)l
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  dCopy = d;
+  pluginIdentifierCopy = pluginIdentifier;
+  effectiveIdentifierCopy = effectiveIdentifier;
+  lCopy = l;
   v32.receiver = self;
   v32.super_class = LSPlugInKitProxy;
-  v18 = [(LSBundleProxy *)&v32 _initWithBundleUnit:0 context:0 bundleType:6 bundleID:a4 localizedName:0 bundleContainerURL:0 dataContainerURL:0 resourcesDirectoryURL:v17 iconsDictionary:0 iconFileNames:0 version:a7];
+  v18 = [(LSBundleProxy *)&v32 _initWithBundleUnit:0 context:0 bundleType:6 bundleID:identifier localizedName:0 bundleContainerURL:0 dataContainerURL:0 resourcesDirectoryURL:lCopy iconsDictionary:0 iconFileNames:0 version:version];
   if (v18)
   {
-    v19 = v16 ? v16 : v15;
+    v19 = effectiveIdentifierCopy ? effectiveIdentifierCopy : pluginIdentifierCopy;
     v20 = [v19 copy];
     v21 = v18[23];
     v18[23] = v20;
 
-    v22 = [v15 copy];
+    v22 = [pluginIdentifierCopy copy];
     v23 = v18[24];
     v18[24] = v22;
 
-    v24 = [v14 copy];
+    v24 = [dCopy copy];
     v25 = v18[26];
     v18[26] = v24;
 
     *(v18 + 176) = 1;
-    if (v17)
+    if (lCopy)
     {
-      v26 = [[FSNode alloc] initWithURL:v17 flags:0 error:0];
+      v26 = [[FSNode alloc] initWithURL:lCopy flags:0 error:0];
       v27 = v26;
       if (v26)
       {
@@ -368,45 +368,45 @@ void __91__LSPlugInKitProxy__initWithPlugin_andContext_applicationExtensionRecor
   return v18;
 }
 
-- (LSPlugInKitProxy)initWithCoder:(id)a3
+- (LSPlugInKitProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = LSPlugInKitProxy;
-  v5 = [(LSBundleProxy *)&v23 initWithCoder:v4];
+  v5 = [(LSBundleProxy *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"pluginIdentifier"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"pluginIdentifier"];
     pluginIdentifier = v5->_pluginIdentifier;
     v5->_pluginIdentifier = v6;
 
-    v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"originalIdentifier"];
+    v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"originalIdentifier"];
     originalIdentifier = v5->_originalIdentifier;
     v5->_originalIdentifier = v8;
 
-    v10 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"protocol"];
+    v10 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"protocol"];
     protocol = v5->_protocol;
     v5->_protocol = v10;
 
-    v12 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"extensionPointID"];
+    v12 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"extensionPointID"];
     extensionPointID = v5->_extensionPointID;
     v5->_extensionPointID = v12;
 
-    v5->_platform = [v4 decodeInt32ForKey:@"platform"];
-    v14 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"pluginUUID"];
+    v5->_platform = [coderCopy decodeInt32ForKey:@"platform"];
+    v14 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"pluginUUID"];
     pluginUUID = v5->_pluginUUID;
     v5->_pluginUUID = v14;
 
-    v16 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
+    v16 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
     registrationDate = v5->_registrationDate;
     v5->_registrationDate = v16;
 
-    v18 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"containingBundle"];
+    v18 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"containingBundle"];
     containingBundle = v5->_containingBundle;
     v5->_containingBundle = v18;
 
-    v5->_onSystemPartition = [v4 decodeBoolForKey:@"isOnSystemPartition"];
-    v20 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"appexRecord"];
+    v5->_onSystemPartition = [coderCopy decodeBoolForKey:@"isOnSystemPartition"];
+    v20 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"appexRecord"];
     appexRecord = v5->_appexRecord;
     v5->_appexRecord = v20;
   }
@@ -414,51 +414,51 @@ void __91__LSPlugInKitProxy__initWithPlugin_andContext_applicationExtensionRecor
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = LSPlugInKitProxy;
-  v4 = a3;
-  [(LSBundleProxy *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_pluginIdentifier forKey:{@"pluginIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_originalIdentifier forKey:@"originalIdentifier"];
-  [v4 encodeObject:self->_protocol forKey:@"protocol"];
-  [v4 encodeObject:self->_extensionPointID forKey:@"extensionPointID"];
-  [v4 encodeInt32:self->_platform forKey:@"platform"];
-  [v4 encodeObject:self->_pluginUUID forKey:@"pluginUUID"];
-  [v4 encodeObject:self->_registrationDate forKey:@"registrationDate"];
-  [v4 encodeObject:self->_containingBundle forKey:@"containingBundle"];
-  [v4 encodeBool:self->_onSystemPartition forKey:@"isOnSystemPartition"];
-  [v4 encodeObject:self->_appexRecord forKey:@"appexRecord"];
+  coderCopy = coder;
+  [(LSBundleProxy *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_pluginIdentifier forKey:{@"pluginIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_originalIdentifier forKey:@"originalIdentifier"];
+  [coderCopy encodeObject:self->_protocol forKey:@"protocol"];
+  [coderCopy encodeObject:self->_extensionPointID forKey:@"extensionPointID"];
+  [coderCopy encodeInt32:self->_platform forKey:@"platform"];
+  [coderCopy encodeObject:self->_pluginUUID forKey:@"pluginUUID"];
+  [coderCopy encodeObject:self->_registrationDate forKey:@"registrationDate"];
+  [coderCopy encodeObject:self->_containingBundle forKey:@"containingBundle"];
+  [coderCopy encodeBool:self->_onSystemPartition forKey:@"isOnSystemPartition"];
+  [coderCopy encodeObject:self->_appexRecord forKey:@"appexRecord"];
 }
 
-- (id)objectForInfoDictionaryKey:(id)a3 ofClass:(Class)a4 inScope:(unint64_t)a5
+- (id)objectForInfoDictionaryKey:(id)key ofClass:(Class)class inScope:(unint64_t)scope
 {
-  v8 = a3;
+  keyCopy = key;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(LSBundleProxy *)self _infoDictionary];
+  _infoDictionary = [(LSBundleProxy *)self _infoDictionary];
   v11 = 0;
-  if (a5 == 2)
+  if (scope == 2)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  if (a5 != 1)
+  if (scope != 1)
   {
     v12 = 0;
     v13 = 0;
-    if (a5)
+    if (scope)
     {
       goto LABEL_13;
     }
 
-    v12 = [v10 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+    v12 = [_infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
     v11 = [v12 objectForKeyedSubscript:@"NSExtensionAttributes"];
-    v13 = [v11 objectForKey:v8];
+    v13 = [v11 objectForKey:keyCopy];
     if (v13)
     {
-      if (!a4)
+      if (!class)
       {
         goto LABEL_13;
       }
@@ -467,14 +467,14 @@ void __91__LSPlugInKitProxy__initWithPlugin_andContext_applicationExtensionRecor
     }
 
 LABEL_12:
-    v13 = [v10 objectForKey:v8 ofClass:a4];
+    v13 = [_infoDictionary objectForKey:keyCopy ofClass:class];
     goto LABEL_13;
   }
 
-  v12 = [v10 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
-  v13 = [v12 objectForKey:v8];
+  v12 = [_infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+  v13 = [v12 objectForKey:keyCopy];
   v11 = 0;
-  if (!a4)
+  if (!class)
   {
     goto LABEL_13;
   }
@@ -510,41 +510,41 @@ LABEL_13:
 
 - (NSDictionary)pluginKitDictionary
 {
-  v2 = [(LSBundleProxy *)self _infoDictionary];
-  v3 = [v2 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+  _infoDictionary = [(LSBundleProxy *)self _infoDictionary];
+  v3 = [_infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
   return v3;
 }
 
 - (NSDictionary)infoPlist
 {
-  v2 = [(LSBundleProxy *)self _infoDictionary];
-  v3 = [(_LSLazyPropertyList *)v2 propertyList];
+  _infoDictionary = [(LSBundleProxy *)self _infoDictionary];
+  propertyList = [(_LSLazyPropertyList *)_infoDictionary propertyList];
 
-  return v3;
+  return propertyList;
 }
 
 - (BOOL)pluginCanProvideIcon
 {
-  v3 = [(LSPlugInKitProxy *)self protocol];
-  v4 = [v3 isEqualToString:getIMMessagePayloadProviderExtensionPointName[0]()];
+  protocol = [(LSPlugInKitProxy *)self protocol];
+  v4 = [protocol isEqualToString:getIMMessagePayloadProviderExtensionPointName[0]()];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(LSPlugInKitProxy *)self containingBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.share"];
+  containingBundle = [(LSPlugInKitProxy *)self containingBundle];
+  bundleIdentifier = [containingBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.share"];
 
   if (v7)
   {
     return 1;
   }
 
-  v9 = [(LSPlugInKitProxy *)self containingBundle];
-  v8 = v9 == 0;
+  containingBundle2 = [(LSPlugInKitProxy *)self containingBundle];
+  v8 = containingBundle2 == 0;
 
   return v8;
 }
@@ -554,19 +554,19 @@ LABEL_13:
   extensionPointID = self->_extensionPointID;
   if (extensionPointID)
   {
-    v4 = extensionPointID;
+    protocol = extensionPointID;
 LABEL_4:
-    v5 = [(LSPlugInKitProxy *)self platform];
-    v6 = [v5 unsignedLongValue];
+    platform = [(LSPlugInKitProxy *)self platform];
+    unsignedLongValue = [platform unsignedLongValue];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
-    v8 = [LSExtensionPoint extensionPointForIdentifier:v4 platform:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:unsignedLongValue];
+    v8 = [LSExtensionPoint extensionPointForIdentifier:protocol platform:v7];
 
     goto LABEL_5;
   }
 
-  v4 = [(LSPlugInKitProxy *)self protocol];
-  if (v4)
+  protocol = [(LSPlugInKitProxy *)self protocol];
+  if (protocol)
   {
     goto LABEL_4;
   }
@@ -577,7 +577,7 @@ LABEL_4:
     [(LSPlugInKitProxy *)self extensionPoint];
   }
 
-  v4 = 0;
+  protocol = 0;
   v8 = 0;
 LABEL_5:
 
@@ -586,26 +586,26 @@ LABEL_5:
 
 - (id)boundIconsDictionary
 {
-  v2 = [(LSBundleProxy *)self _infoDictionary];
-  v3 = [v2 objectForKey:@"CFBundleIcons" ofClass:objc_opt_class()];
+  _infoDictionary = [(LSBundleProxy *)self _infoDictionary];
+  v3 = [_infoDictionary objectForKey:@"CFBundleIcons" ofClass:objc_opt_class()];
 
   return v3;
 }
 
-- (id)_stringLocalizerForTable:(id)a3
+- (id)_stringLocalizerForTable:(id)table
 {
   v16 = *MEMORY[0x1E69E9840];
   appexRecord = self->_appexRecord;
-  v5 = a3;
-  v6 = [(LSBundleRecord *)appexRecord platform];
-  v7 = [(LSBundleRecord *)self->_appexRecord SDKVersion];
-  _LSVersionNumberMakeWithString(v15, v7);
+  tableCopy = table;
+  platform = [(LSBundleRecord *)appexRecord platform];
+  sDKVersion = [(LSBundleRecord *)self->_appexRecord SDKVersion];
+  _LSVersionNumberMakeWithString(v15, sDKVersion);
   DYLDVersion = _LSVersionNumberGetDYLDVersion(v15);
 
-  v9 = [_LSStringLocalizer useLegacyLocalizationListForPlatform:v6 sdkVersion:DYLDVersion];
+  v9 = [_LSStringLocalizer useLegacyLocalizationListForPlatform:platform sdkVersion:DYLDVersion];
   v10 = [_LSStringLocalizer alloc];
-  v11 = [(LSBundleProxy *)self bundleURL];
-  v12 = [(_LSStringLocalizer *)v10 initWithBundleURL:v11 stringsFile:v5 legacyLocalizationList:v9];
+  bundleURL = [(LSBundleProxy *)self bundleURL];
+  v12 = [(_LSStringLocalizer *)v10 initWithBundleURL:bundleURL stringsFile:tableCopy legacyLocalizationList:v9];
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -618,29 +618,29 @@ LABEL_5:
   v11.receiver = self;
   v11.super_class = LSPlugInKitProxy;
   v4 = [(LSPlugInKitProxy *)&v11 description];
-  v5 = [(LSPlugInKitProxy *)self pluginIdentifier];
-  v6 = [(LSPlugInKitProxy *)self pluginUUID];
-  v7 = [v6 UUIDString];
-  v8 = [(LSBundleProxy *)self bundleVersion];
-  v9 = [v3 stringWithFormat:@"%@ pluginID=%@ UUID=%@ version=%@", v4, v5, v7, v8];
+  pluginIdentifier = [(LSPlugInKitProxy *)self pluginIdentifier];
+  pluginUUID = [(LSPlugInKitProxy *)self pluginUUID];
+  uUIDString = [pluginUUID UUIDString];
+  bundleVersion = [(LSBundleProxy *)self bundleVersion];
+  v9 = [v3 stringWithFormat:@"%@ pluginID=%@ UUID=%@ version=%@", v4, pluginIdentifier, uUIDString, bundleVersion];
 
   return v9;
 }
 
 - (id)_managedPersonas
 {
-  v2 = [(LSPlugInKitProxy *)self containingBundle];
-  v3 = [v2 _managedPersonas];
+  containingBundle = [(LSPlugInKitProxy *)self containingBundle];
+  _managedPersonas = [containingBundle _managedPersonas];
 
-  return v3;
+  return _managedPersonas;
 }
 
 - (BOOL)_usesSystemPersona
 {
-  v2 = [(LSPlugInKitProxy *)self containingBundle];
-  v3 = [v2 _usesSystemPersona];
+  containingBundle = [(LSPlugInKitProxy *)self containingBundle];
+  _usesSystemPersona = [containingBundle _usesSystemPersona];
 
-  return v3;
+  return _usesSystemPersona;
 }
 
 - (void)detach
@@ -651,16 +651,16 @@ LABEL_5:
   [(LSRecord *)appexRecord detach];
 }
 
-- (id)_localizedNameWithPreferredLocalizations:(id)a3 useShortNameOnly:(BOOL)a4
+- (id)_localizedNameWithPreferredLocalizations:(id)localizations useShortNameOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
+  onlyCopy = only;
+  localizationsCopy = localizations;
   appexRecord = self->_appexRecord;
-  if (v4)
+  if (onlyCopy)
   {
-    if (v6)
+    if (localizationsCopy)
     {
-      [(LSBundleRecord *)appexRecord localizedShortNameWithPreferredLocalizations:v6];
+      [(LSBundleRecord *)appexRecord localizedShortNameWithPreferredLocalizations:localizationsCopy];
     }
 
     else
@@ -669,9 +669,9 @@ LABEL_5:
     }
   }
 
-  else if (v6)
+  else if (localizationsCopy)
   {
-    [(LSBundleRecord *)appexRecord localizedNameWithPreferredLocalizations:v6];
+    [(LSBundleRecord *)appexRecord localizedNameWithPreferredLocalizations:localizationsCopy];
   }
 
   else
@@ -684,9 +684,9 @@ LABEL_5:
   return v9;
 }
 
-+ (id)containingBundleIdentifiersForPlugInBundleIdentifiers:(id)a3 error:(id *)a4
++ (id)containingBundleIdentifiersForPlugInBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -711,11 +711,11 @@ LABEL_5:
   v10[3] = &unk_1E6A19B10;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v6 mapPlugInBundleIdentifiersToContainingBundleIdentifiers:v5 completionHandler:v10];
+  [v6 mapPlugInBundleIdentifiersToContainingBundleIdentifiers:identifiersCopy completionHandler:v10];
   v7 = v19[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v7 = v19[5];
   }
 
@@ -745,7 +745,7 @@ void __108__LSPlugInKitProxy_ContainingBundleIdentifier__containingBundleIdentif
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18162D000, a2, OS_LOG_TYPE_ERROR, "Failed to get the extension point ID of plugin %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

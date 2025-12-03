@@ -1,10 +1,10 @@
 @interface MKHTTPParameters
-- (MKHTTPParameters)initWithDictionary:(id)a3;
+- (MKHTTPParameters)initWithDictionary:(id)dictionary;
 @end
 
 @implementation MKHTTPParameters
 
-- (MKHTTPParameters)initWithDictionary:(id)a3
+- (MKHTTPParameters)initWithDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = MKHTTPParameters;

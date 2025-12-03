@@ -1,6 +1,6 @@
 @interface PHImportException
-+ (id)logForAllExceptions:(id)a3;
-- (PHImportException)initWithType:(int64_t)a3 path:(id)a4 underlyingError:(id)a5 file:(char *)a6 line:(unint64_t)a7;
++ (id)logForAllExceptions:(id)exceptions;
+- (PHImportException)initWithType:(int64_t)type path:(id)path underlyingError:(id)error file:(char *)file line:(unint64_t)line;
 - (id)description;
 @end
 
@@ -80,37 +80,37 @@ LABEL_17:
   return v14;
 }
 
-- (PHImportException)initWithType:(int64_t)a3 path:(id)a4 underlyingError:(id)a5 file:(char *)a6 line:(unint64_t)a7
+- (PHImportException)initWithType:(int64_t)type path:(id)path underlyingError:(id)error file:(char *)file line:(unint64_t)line
 {
   v42 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
+  pathCopy = path;
+  errorCopy = error;
   v31.receiver = self;
   v31.super_class = PHImportException;
   v15 = [(PHImportException *)&v31 init];
   if (v15)
   {
-    v16 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     createDate = v15->_createDate;
-    v15->_createDate = v16;
+    v15->_createDate = date;
 
-    v15->_type = a3;
-    objc_storeStrong(&v15->_path, a4);
-    objc_storeStrong(&v15->_underlyingError, a5);
-    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-    v19 = [v18 lastPathComponent];
+    v15->_type = type;
+    objc_storeStrong(&v15->_path, path);
+    objc_storeStrong(&v15->_underlyingError, error);
+    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:file];
+    lastPathComponent = [v18 lastPathComponent];
     sourceCodeFile = v15->_sourceCodeFile;
-    v15->_sourceCodeFile = v19;
+    v15->_sourceCodeFile = lastPathComponent;
 
-    v15->_lineNumber = a7;
+    v15->_lineNumber = line;
     v21 = PLImportGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v14 localizedDescription];
-      v23 = v22;
-      if (v22)
+      localizedDescription = [errorCopy localizedDescription];
+      v23 = localizedDescription;
+      if (localizedDescription)
       {
-        v24 = v22;
+        v24 = localizedDescription;
       }
 
       else
@@ -137,7 +137,7 @@ LABEL_17:
       v34 = 2112;
       v35 = v27;
       v36 = 2112;
-      v37 = v13;
+      v37 = pathCopy;
       v38 = 2112;
       v39 = v28;
       v40 = 2048;
@@ -149,15 +149,15 @@ LABEL_17:
   return v15;
 }
 
-+ (id)logForAllExceptions:(id)a3
++ (id)logForAllExceptions:(id)exceptions
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 exceptions];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  exceptions = [exceptions exceptions];
+  v4 = [exceptions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -171,7 +171,7 @@ LABEL_17:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(exceptions);
         }
 
         v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v9, *(*(&v11 + 1) + 8 * v8)];
@@ -181,7 +181,7 @@ LABEL_17:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [exceptions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

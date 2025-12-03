@@ -8,11 +8,11 @@
 + (id)signInFlowLastControllerClassName;
 + (id)signInFlowMapping;
 + (id)tinkerBuddyFlowMapping;
-+ (void)addBundlesToTinkerFlowMapping:(id)a3;
++ (void)addBundlesToTinkerFlowMapping:(id)mapping;
 + (void)debugLiveActivities;
-+ (void)updateMappingForYorktown:(id)a3;
-- (BOOL)_controllerShouldMirrorToGizmo:(id)a3;
-- (BOOL)_shouldSkipForBetterTogether:(id)a3;
++ (void)updateMappingForYorktown:(id)yorktown;
+- (BOOL)_controllerShouldMirrorToGizmo:(id)gizmo;
+- (BOOL)_shouldSkipForBetterTogether:(id)together;
 - (BOOL)areLiveActivitiesAllowed;
 - (BOOL)canPairAgain;
 - (BOOL)doesLiveActivityProviderRequiresPairSyncNotifications;
@@ -24,84 +24,84 @@
 - (COSAppleIDSignInModel)appleIDSignInModel;
 - (COSLinkUpgradeMonitor)linkUpgradeMonitor;
 - (COSPairingCompatibility)pairingCompatiblity;
-- (COSSetupController)initWithMode:(unint64_t)a3;
+- (COSSetupController)initWithMode:(unint64_t)mode;
 - (COSSetupSoftwareUpdateManager)setupSoftwareUpdateManager;
-- (Class)_updateNextControllerForSignInFlow:(Class)a3 currentControllerClass:(Class)a4;
+- (Class)_updateNextControllerForSignInFlow:(Class)flow currentControllerClass:(Class)class;
 - (NRDevice)expressModeDevice;
 - (NSArray)expressModeControllers;
-- (id)_alertMessageForReason:(unint64_t)a3 andCode:(id)a4;
-- (id)_controllerFollowingControllerClass:(Class)a3;
-- (id)_controllerForClass:(Class)a3;
-- (id)_titleForViewController:(id)a3;
-- (id)_viewControllerForBuddyController:(id)a3;
+- (id)_alertMessageForReason:(unint64_t)reason andCode:(id)code;
+- (id)_controllerFollowingControllerClass:(Class)class;
+- (id)_controllerForClass:(Class)class;
+- (id)_titleForViewController:(id)controller;
+- (id)_viewControllerForBuddyController:(id)controller;
 - (id)lastLiveActivityProvider;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (id)setupFlowUserInfo;
-- (void)_buddyControllerDone:(id)a3 nextControllerClass:(Class)a4 nextController:(id)a5;
-- (void)_buddyControllerReleaseHold:(id)a3 andSkip:(BOOL)a4;
-- (void)_pushBuddyController:(id)a3 ontoNavigationController:(id)a4;
-- (void)_pushGizmoBuddyController:(id)a3;
-- (void)_transitionFromBuddyController:(id)a3 toBuddyController:(id)a4;
+- (void)_buddyControllerDone:(id)done nextControllerClass:(Class)class nextController:(id)controller;
+- (void)_buddyControllerReleaseHold:(id)hold andSkip:(BOOL)skip;
+- (void)_pushBuddyController:(id)controller ontoNavigationController:(id)navigationController;
+- (void)_pushGizmoBuddyController:(id)controller;
+- (void)_transitionFromBuddyController:(id)controller toBuddyController:(id)buddyController;
 - (void)activationServerResponded;
-- (void)appleIDSilentSignInControllerSignedAccountType:(unint64_t)a3 withSuccess:(BOOL)a4;
+- (void)appleIDSilentSignInControllerSignedAccountType:(unint64_t)type withSuccess:(BOOL)success;
 - (void)blockGoingBackFromCurrentController;
 - (void)buddyControllerCancelAnyHold;
-- (void)buddyControllerDoneForSignIn:(id)a3;
-- (void)buddyControllerHold:(id)a3 beforePresentingBuddyController:(id)a4;
-- (void)buddyControllerWillPushNextControllerClass:(Class)a3 outNextController:(id *)a4 ontoNavigationController:(id)a5;
+- (void)buddyControllerDoneForSignIn:(id)in;
+- (void)buddyControllerHold:(id)hold beforePresentingBuddyController:(id)controller;
+- (void)buddyControllerWillPushNextControllerClass:(Class)class outNextController:(id *)controller ontoNavigationController:(id)navigationController;
 - (void)checkInWithPairingMetricForSignInState;
-- (void)checkSafeToTransitionOnNavigationController:(id)a3 withCompletion:(id)a4;
+- (void)checkSafeToTransitionOnNavigationController:(id)controller withCompletion:(id)completion;
 - (void)cleanupHoldWaitTimer;
 - (void)clearIdleUserNotification;
-- (void)companionDidFinishHealthSharingOptIn:(BOOL)a3;
+- (void)companionDidFinishHealthSharingOptIn:(BOOL)in;
 - (void)completePairingMetricForAppTermination;
 - (void)dealloc;
-- (void)displayCompanionTooOldPairingFailureAlertWithDismissalHandler:(id)a3;
-- (void)displayPairingFailureAlertForMessage:(id)a3 title:(id)a4 failureCode:(id)a5 withCompletion:(id)a6;
-- (void)displayPairingFailureAlertForReason:(unint64_t)a3 withCompletion:(id)a4;
-- (void)displayPairingFailureWatchAlreadyPairedToCompanion:(id)a3 completion:(id)a4;
+- (void)displayCompanionTooOldPairingFailureAlertWithDismissalHandler:(id)handler;
+- (void)displayPairingFailureAlertForMessage:(id)message title:(id)title failureCode:(id)code withCompletion:(id)completion;
+- (void)displayPairingFailureAlertForReason:(unint64_t)reason withCompletion:(id)completion;
+- (void)displayPairingFailureWatchAlreadyPairedToCompanion:(id)companion completion:(id)completion;
 - (void)displayUnpairingInstructions;
-- (void)displayUnsupportedTinkerHardwareFailure:(id)a3;
-- (void)displayUnsupportedWatchPairingAlertToBetterTogetherDeviceWithCompletion:(id)a3;
-- (void)displayUnsupportedYorktownHardwareFailure:(id)a3;
-- (void)displayWatchAppearsPairedOrOffAlert:(id)a3;
+- (void)displayUnsupportedTinkerHardwareFailure:(id)failure;
+- (void)displayUnsupportedWatchPairingAlertToBetterTogetherDeviceWithCompletion:(id)completion;
+- (void)displayUnsupportedYorktownHardwareFailure:(id)failure;
+- (void)displayWatchAppearsPairedOrOffAlert:(id)alert;
 - (void)endLiveActivityIfNeeded;
-- (void)endLiveActivityWithEndStatus:(int64_t)a3;
+- (void)endLiveActivityWithEndStatus:(int64_t)status;
 - (void)finalCleanup;
-- (void)finishedActivating:(id)a3;
-- (void)gizmoDidFinishHealthSharingOptIn:(BOOL)a3;
+- (void)finishedActivating:(id)activating;
+- (void)gizmoDidFinishHealthSharingOptIn:(BOOL)in;
 - (void)invalidateState;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)passcodeCreationComplete;
 - (void)passcodeCreationFailed;
-- (void)popRUIObject:(id)a3 animated:(BOOL)a4;
-- (void)popViewController:(id)a3;
-- (void)postUserNotificationForController:(id)a3;
+- (void)popRUIObject:(id)object animated:(BOOL)animated;
+- (void)popViewController:(id)controller;
+- (void)postUserNotificationForController:(id)controller;
 - (void)prewarmVisualDetector;
-- (void)promptWhetherToResetPairing:(id)a3;
-- (void)promptWhetherToUpdateGizmo:(id)a3;
-- (void)pushRUIObject:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)promptWhetherToResetPairing:(id)pairing;
+- (void)promptWhetherToUpdateGizmo:(id)gizmo;
+- (void)pushRUIObject:(id)object animated:(BOOL)animated completion:(id)completion;
 - (void)reloadAppearance;
 - (void)run;
-- (void)saveCombinedPasswordBasediTunesStoreAccount:(id)a3 fromAccountStore:(id)a4;
-- (void)setPairingParentFamilyMember:(id)a3;
-- (void)setPairingReportManager:(id)a3;
-- (void)setTinkerFamilyMember:(id)a3;
-- (void)setTinkerUserName:(id)a3;
-- (void)showBusyIndicator:(BOOL)a3;
-- (void)showButtonTrayBusyIndicator:(BOOL)a3 forController:(id)a4;
+- (void)saveCombinedPasswordBasediTunesStoreAccount:(id)account fromAccountStore:(id)store;
+- (void)setPairingParentFamilyMember:(id)member;
+- (void)setPairingReportManager:(id)manager;
+- (void)setTinkerFamilyMember:(id)member;
+- (void)setTinkerUserName:(id)name;
+- (void)showBusyIndicator:(BOOL)indicator;
+- (void)showButtonTrayBusyIndicator:(BOOL)indicator forController:(id)controller;
 - (void)startLiveActivity;
 - (void)startPostActivationCompatiblePairingBackgroundTasks;
 - (void)startSilentAppleIDSignIn;
 - (void)tellAppConduitToInstallAllApps;
 - (void)tellWatchAgainToUpdateNRToNormalStateAfterRelaunchingForLanguageChange;
-- (void)updateActivelyPairingWatchBuddyStage:(unsigned int)a3;
+- (void)updateActivelyPairingWatchBuddyStage:(unsigned int)stage;
 - (void)updateActivityAndRegenerateImages;
-- (void)updateLiveActivityWithBuddyController:(id)a3;
-- (void)updateLiveActivityWithTitle:(id)a3 subtitle:(id)a4;
-- (void)updateLiveActivityWithViewController:(id)a3;
+- (void)updateLiveActivityWithBuddyController:(id)controller;
+- (void)updateLiveActivityWithTitle:(id)title subtitle:(id)subtitle;
+- (void)updateLiveActivityWithViewController:(id)controller;
 - (void)updateNanoRegistryToNormalState;
-- (void)updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3;
+- (void)updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion;
 @end
 
 @implementation COSSetupController
@@ -125,7 +125,7 @@
   }
 }
 
-- (COSSetupController)initWithMode:(unint64_t)a3
+- (COSSetupController)initWithMode:(unint64_t)mode
 {
   v22.receiver = self;
   v22.super_class = COSSetupController;
@@ -133,7 +133,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v6 = objc_alloc_init(NSMutableArray);
     buddyControllers = v5->_buddyControllers;
     v5->_buddyControllers = v6;
@@ -142,18 +142,18 @@
     navigationController = v5->_navigationController;
     v5->_navigationController = v8;
 
-    v10 = [(COSBuddyNavigationController *)v5->_navigationController view];
+    view = [(COSBuddyNavigationController *)v5->_navigationController view];
     v11 = +[UIColor blackColor];
-    [v10 setBackgroundColor:v11];
+    [view setBackgroundColor:v11];
 
     [(COSBuddyNavigationController *)v5->_navigationController setDelegate:v5];
-    v12 = [(COSBuddyNavigationController *)v5->_navigationController navigationBar];
-    [v12 setBarStyle:1];
+    navigationBar = [(COSBuddyNavigationController *)v5->_navigationController navigationBar];
+    [navigationBar setBarStyle:1];
 
     [(COSBuddyNavigationController *)v5->_navigationController setBuddyNavDelegate:v5];
-    v13 = [(COSBuddyNavigationController *)v5->_navigationController view];
+    view2 = [(COSBuddyNavigationController *)v5->_navigationController view];
     v14 = BPSSetupTintColor();
-    [v13 setTintColor:v14];
+    [view2 setTintColor:v14];
 
     [UINavigationBar _setUseCustomBackButtonAction:1];
     v27 = objc_opt_class();
@@ -165,8 +165,8 @@
     v18 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     [v16 setTitleTextAttributes:v18 forState:5];
 
-    v19 = [(COSBuddyNavigationController *)v5->_navigationController navigationBar];
-    sub_10002C794(v19);
+    navigationBar2 = [(COSBuddyNavigationController *)v5->_navigationController navigationBar];
+    sub_10002C794(navigationBar2);
 
     v20 = pbb_setupflow_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -217,8 +217,8 @@
     [v4 setObject:pairingParentFamilyMember forKey:BPSPairingFlowFamilyPairingParent];
   }
 
-  v8 = [UIApp bridgeController];
-  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isTinkerPairing]);
+  bridgeController = [UIApp bridgeController];
+  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bridgeController isTinkerPairing]);
 
   [v4 setObject:v9 forKey:BPSPairingFlowIsTinkerPairing];
   v10 = pbb_setupflow_log();
@@ -229,8 +229,8 @@
   }
 
   deviceRestoredFrom = self->_deviceRestoredFrom;
-  v12 = pbb_setupflow_log();
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+  pairingID = pbb_setupflow_log();
+  v13 = os_log_type_enabled(pairingID, OS_LOG_TYPE_DEFAULT);
   if (deviceRestoredFrom)
   {
     if (v13)
@@ -238,12 +238,12 @@
       v14 = self->_deviceRestoredFrom;
       v23 = 138412290;
       v24 = v14;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Setting Device to restore from to: %@", &v23, 0xCu);
+      _os_log_impl(&_mh_execute_header, pairingID, OS_LOG_TYPE_DEFAULT, "Setting Device to restore from to: %@", &v23, 0xCu);
     }
 
     [v4 setObject:self->_deviceRestoredFrom forKey:BPSPairingDeviceRestoredFrom];
-    v12 = [(NRDevice *)self->_deviceRestoredFrom pairingID];
-    [v4 setObject:v12 forKey:BPSPairingIDRestoredFrom];
+    pairingID = [(NRDevice *)self->_deviceRestoredFrom pairingID];
+    [v4 setObject:pairingID forKey:BPSPairingIDRestoredFrom];
   }
 
   else if (v13)
@@ -251,7 +251,7 @@
     v15 = self->_deviceRestoredFrom;
     v23 = 138412290;
     v24 = v15;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No Device to restore from to: %@", &v23, 0xCu);
+    _os_log_impl(&_mh_execute_header, pairingID, OS_LOG_TYPE_DEFAULT, "No Device to restore from to: %@", &v23, 0xCu);
   }
 
   backupRestoredFrom = self->_backupRestoredFrom;
@@ -289,8 +289,8 @@
 
 - (void)reloadAppearance
 {
-  v2 = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
-  sub_10002C794(v2);
+  navigationBar = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
+  sub_10002C794(navigationBar);
 }
 
 - (void)invalidateState
@@ -299,15 +299,15 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134217984;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating state (self: %p)", &v20, 0xCu);
   }
 
   if ([(COSSetupController *)self offerYorktownForCurrentPairing]&& self->_analyticsEnrollmentFailed)
   {
     [PBBridgeCAReporter recordDeviceEnrollmentResult:0 retryCount:self->_analyticsEnrollmentRetryCount];
-    v4 = [(COSSetupController *)self pairingReportManager];
-    [v4 addPairingTimeEventToPairingReportPlist:75 withValue:&off_100281B70 withError:0];
+    pairingReportManager = [(COSSetupController *)self pairingReportManager];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:75 withValue:&off_100281B70 withError:0];
   }
 
   self->_analyticsEnrollmentRetryCount = 0;
@@ -361,11 +361,11 @@
   [v15 setIsUpdatingGizmoInSetupFlow:0];
   [v15 setIsActivated:0];
   [v15 setIsLanguageAndLocaleFinished:0];
-  v16 = [v15 setupController];
-  [v16 setPairingReportManager:0];
+  setupController = [v15 setupController];
+  [setupController setPairingReportManager:0];
 
-  v17 = [v15 bridgeController];
-  [v17 endSetupTransaction];
+  bridgeController = [v15 bridgeController];
+  [bridgeController endSetupTransaction];
 
   [(COSRegistryDispatcher *)self->_alreadyPairedDispatcher invalidate];
   alreadyPairedDispatcher = self->_alreadyPairedDispatcher;
@@ -416,7 +416,7 @@
   v29[3] = &unk_100268A38;
   v11 = UIApp;
   v30 = v11;
-  v31 = self;
+  selfCopy = self;
   v12 = v10;
   v32 = v12;
   v13 = objc_retainBlock(v29);
@@ -486,7 +486,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SetupController deallocating (%p)", buf, 0xCu);
   }
 
@@ -536,7 +536,7 @@
 {
   v2 = sub_100009AB4();
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 status];
+  status = [v3 status];
 
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -549,7 +549,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Paired Devices %@ Status %@", &v9, 0x16u);
   }
 
-  v7 = v4 == 2 && [v2 count] != 0;
+  v7 = status == 2 && [v2 count] != 0;
   return v7;
 }
 
@@ -567,8 +567,8 @@
 
 - (BOOL)hasStartedPairing
 {
-  v2 = [(COSBuddyNavigationController *)self->_navigationController viewControllers];
-  v3 = [v2 count] != 0;
+  viewControllers = [(COSBuddyNavigationController *)self->_navigationController viewControllers];
+  v3 = [viewControllers count] != 0;
 
   return v3;
 }
@@ -589,9 +589,9 @@
   [(COSWatchUnpairInstructionsController *)self->_unpairInstructions presentWithController:self->_navigationController];
 }
 
-- (void)displayWatchAppearsPairedOrOffAlert:(id)a3
+- (void)displayWatchAppearsPairedOrOffAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"WATCH_IS_OFF_OR_ALREADY_PAIRED_ALERT_BODY" value:&stru_10026E598 table:@"Localizable"];
 
@@ -612,7 +612,7 @@
   v21[1] = 3221225472;
   v21[2] = sub_10008EA50;
   v21[3] = &unk_10026A380;
-  v12 = v3;
+  v12 = alertCopy;
   v22 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v21];
 
@@ -632,9 +632,9 @@
   [(COSBuddyNavigationController *)self->_navigationController presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)displayCompanionTooOldPairingFailureAlertWithDismissalHandler:(id)a3
+- (void)displayCompanionTooOldPairingFailureAlertWithDismissalHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"COMPANION_TOO_OLD_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable"];
   v6 = +[NSBundle mainBundle];
@@ -647,7 +647,7 @@
   v21[1] = 3221225472;
   v21[2] = sub_10008EDD0;
   v21[3] = &unk_10026A380;
-  v11 = v3;
+  v11 = handlerCopy;
   v22 = v11;
   v12 = [UIAlertAction actionWithTitle:v10 style:0 handler:v21];
 
@@ -673,9 +673,9 @@
   [(COSBuddyNavigationController *)self->_navigationController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)displayUnsupportedTinkerHardwareFailure:(id)a3
+- (void)displayUnsupportedTinkerHardwareFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"UNSUPPORTED_TINKER_HW_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
   v7 = [UIAlertController alertControllerWithTitle:v6 message:0 preferredStyle:1];
@@ -686,12 +686,12 @@
   v14[1] = 3221225472;
   v14[2] = sub_10008F090;
   v14[3] = &unk_10026A380;
-  v10 = v4;
+  v10 = failureCopy;
   v15 = v10;
   v11 = [UIAlertAction actionWithTitle:v9 style:1 handler:v14];
 
   [v7 addAction:v11];
-  v12 = [(COSBuddyNavigationController *)self->_navigationController presentedViewController];
+  presentedViewController = [(COSBuddyNavigationController *)self->_navigationController presentedViewController];
   objc_opt_class();
   LOBYTE(v8) = objc_opt_isKindOfClass();
 
@@ -709,17 +709,17 @@
   [(COSBuddyNavigationController *)self->_navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)setPairingParentFamilyMember:(id)a3
+- (void)setPairingParentFamilyMember:(id)member
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pairingParentFamilyMember, a3);
+  memberCopy = member;
+  objc_storeStrong(&self->_pairingParentFamilyMember, member);
   if (self->_pairingParentFamilyMember)
   {
     v6 = +[NRPairedDeviceRegistry sharedInstance];
-    v7 = [v5 iTunesAccountUsername];
-    v8 = [v5 altDSID];
-    v9 = [(COSSetupController *)self activePairingDevice];
-    [v6 pairingClientSetPairingParentName:v7 pairingParentAltDSID:v8 forDevice:v9 completion:&stru_10026A3A0];
+    iTunesAccountUsername = [memberCopy iTunesAccountUsername];
+    altDSID = [memberCopy altDSID];
+    activePairingDevice = [(COSSetupController *)self activePairingDevice];
+    [v6 pairingClientSetPairingParentName:iTunesAccountUsername pairingParentAltDSID:altDSID forDevice:activePairingDevice completion:&stru_10026A3A0];
   }
 
   else
@@ -733,9 +733,9 @@
   }
 }
 
-- (void)displayUnsupportedYorktownHardwareFailure:(id)a3
+- (void)displayUnsupportedYorktownHardwareFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"UNSUPPORTED_YORKTOWN_HW_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable-yorktown"];
   v7 = [UIAlertController alertControllerWithTitle:v6 message:0 preferredStyle:1];
@@ -746,12 +746,12 @@
   v14[1] = 3221225472;
   v14[2] = sub_10008F410;
   v14[3] = &unk_10026A380;
-  v10 = v4;
+  v10 = failureCopy;
   v15 = v10;
   v11 = [UIAlertAction actionWithTitle:v9 style:1 handler:v14];
 
   [v7 addAction:v11];
-  v12 = [(COSBuddyNavigationController *)self->_navigationController presentedViewController];
+  presentedViewController = [(COSBuddyNavigationController *)self->_navigationController presentedViewController];
   objc_opt_class();
   LOBYTE(v8) = objc_opt_isKindOfClass();
 
@@ -769,9 +769,9 @@
   [(COSBuddyNavigationController *)self->_navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)promptWhetherToUpdateGizmo:(id)a3
+- (void)promptWhetherToUpdateGizmo:(id)gizmo
 {
-  v3 = a3;
+  gizmoCopy = gizmo;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"OUT_OF_DATE_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable"];
   v6 = +[NSBundle mainBundle];
@@ -784,7 +784,7 @@
   v22[1] = 3221225472;
   v22[2] = sub_10008F6E0;
   v22[3] = &unk_10026A380;
-  v11 = v3;
+  v11 = gizmoCopy;
   v23 = v11;
   v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:v22];
   [v8 addAction:v12];
@@ -806,13 +806,13 @@
     sub_100188A30();
   }
 
-  v18 = [(COSSetupController *)self navigationController];
-  [v18 presentViewController:v8 animated:1 completion:0];
+  navigationController = [(COSSetupController *)self navigationController];
+  [navigationController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)displayUnsupportedWatchPairingAlertToBetterTogetherDeviceWithCompletion:(id)a3
+- (void)displayUnsupportedWatchPairingAlertToBetterTogetherDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"UNSUPPORTED_WATCH_PAIRED_TO_BETTER_TOGETHER_DEMO_DEVICE_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable"];
   v7 = [UIAlertController alertControllerWithTitle:v6 message:0 preferredStyle:1];
@@ -823,8 +823,8 @@
   v13[1] = 3221225472;
   v13[2] = sub_10008F8C0;
   v13[3] = &unk_10026A380;
-  v14 = v4;
-  v10 = v4;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = [UIAlertAction actionWithTitle:v9 style:1 handler:v13];
 
   [v7 addAction:v11];
@@ -849,10 +849,10 @@
   return result;
 }
 
-- (void)setPairingReportManager:(id)a3
+- (void)setPairingReportManager:(id)manager
 {
-  v7 = a3;
-  objc_storeStrong(&self->_pairingReportManager, a3);
+  managerCopy = manager;
+  objc_storeStrong(&self->_pairingReportManager, manager);
   if (sub_100009A74())
   {
     v5 = objc_alloc_init(COSInternalPairingDashboardViewController);
@@ -863,17 +863,17 @@
   }
 }
 
-- (void)displayPairingFailureAlertForReason:(unint64_t)a3 withCompletion:(id)a4
+- (void)displayPairingFailureAlertForReason:(unint64_t)reason withCompletion:(id)completion
 {
-  v12 = a4;
+  completionCopy = completion;
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 BOOLForKey:@"LiveOnCollection"];
 
   if (v7)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2]();
+      completionCopy[2]();
     }
   }
 
@@ -883,21 +883,21 @@
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"GENERIC_PAIRING_FAILURE_ALERT_TITLE" value:&stru_10026E598 table:@"Localizable"];
 
-    v11 = [(COSSetupController *)self _alertMessageForReason:a3 andCode:v8];
-    [(COSSetupController *)self displayPairingFailureAlertForMessage:v11 title:v10 failureCode:v8 withCompletion:v12];
+    v11 = [(COSSetupController *)self _alertMessageForReason:reason andCode:v8];
+    [(COSSetupController *)self displayPairingFailureAlertForMessage:v11 title:v10 failureCode:v8 withCompletion:completionCopy];
   }
 }
 
-- (id)_alertMessageForReason:(unint64_t)a3 andCode:(id)a4
+- (id)_alertMessageForReason:(unint64_t)reason andCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v6 = sub_100009A74();
   v7 = v6;
-  if (a3 > 5)
+  if (reason > 5)
   {
-    if (a3 <= 7)
+    if (reason <= 7)
     {
-      if (a3 != 6)
+      if (reason != 6)
       {
         goto LABEL_15;
       }
@@ -905,7 +905,7 @@
 
     else
     {
-      if (a3 == 8)
+      if (reason == 8)
       {
         if (v6)
         {
@@ -916,7 +916,7 @@
         goto LABEL_28;
       }
 
-      if (a3 == 9)
+      if (reason == 9)
       {
         if (v6)
         {
@@ -927,7 +927,7 @@
         goto LABEL_28;
       }
 
-      if (a3 != 10)
+      if (reason != 10)
       {
         goto LABEL_28;
       }
@@ -942,18 +942,18 @@
     goto LABEL_28;
   }
 
-  if (a3 <= 2)
+  if (reason <= 2)
   {
-    if (a3 == 1)
+    if (reason == 1)
     {
       v8 = +[NSBundle mainBundle];
-      v11 = [(__CFString *)v8 localizedStringForKey:@"PIN_INCORRECT_PAIRING_FAILURE_ALERT_BODY" value:&stru_10026E598 table:@"Localizable"];
+      codeCopy = [(__CFString *)v8 localizedStringForKey:@"PIN_INCORRECT_PAIRING_FAILURE_ALERT_BODY" value:&stru_10026E598 table:@"Localizable"];
 LABEL_32:
-      v10 = v11;
+      v10 = codeCopy;
       goto LABEL_33;
     }
 
-    if (a3 == 2)
+    if (reason == 2)
     {
       v8 = +[NSBundle mainBundle];
       v9 = SFLocalizableWAPIStringKeyForKey();
@@ -965,7 +965,7 @@ LABEL_33:
     }
   }
 
-  else if (a3 == 3)
+  else if (reason == 3)
   {
     if (v6)
     {
@@ -976,7 +976,7 @@ LABEL_33:
 
   else
   {
-    if (a3 != 4)
+    if (reason != 4)
     {
 LABEL_15:
       if (v6)
@@ -1000,14 +1000,14 @@ LABEL_28:
   v8 = [v12 localizedStringForKey:@"GENERIC_PAIRING_FAILURE_ALERT_BODY" value:&stru_10026E598 table:@"Localizable"];
 
   v13 = v7 ^ 1;
-  if (!v5)
+  if (!codeCopy)
   {
     v13 = 1;
   }
 
   if ((v13 & 1) == 0)
   {
-    v11 = [NSString stringWithFormat:@"[Internal] Your Apple Watch couldn't pair with your iPhone. Error code: %@", v5];
+    codeCopy = [NSString stringWithFormat:@"[Internal] Your Apple Watch couldn't pair with your iPhone. Error code: %@", codeCopy];
     goto LABEL_32;
   }
 
@@ -1016,17 +1016,17 @@ LABEL_34:
   return v8;
 }
 
-- (void)displayPairingFailureAlertForMessage:(id)a3 title:(id)a4 failureCode:(id)a5 withCompletion:(id)a6
+- (void)displayPairingFailureAlertForMessage:(id)message title:(id)title failureCode:(id)code withCompletion:(id)completion
 {
-  v8 = a6;
-  v9 = [UIAlertController alertControllerWithTitle:a4 message:a3 preferredStyle:1];
+  completionCopy = completion;
+  v9 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"GENERIC_PAIRING_FAILURE_ALERT_START_OVER" value:&stru_10026E598 table:@"Localizable"];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10008FFC4;
   v23[3] = &unk_10026A380;
-  v12 = v8;
+  v12 = completionCopy;
   v24 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v23];
   [v9 addAction:v13];
@@ -1060,12 +1060,12 @@ LABEL_34:
   [(COSBuddyNavigationController *)self->_navigationController presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)displayPairingFailureWatchAlreadyPairedToCompanion:(id)a3 completion:(id)a4
+- (void)displayPairingFailureWatchAlreadyPairedToCompanion:(id)companion completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  companionCopy = companion;
   v8 = +[NRPairedDeviceRegistry sharedInstance];
-  v9 = [[NSUUID alloc] initWithUUIDString:v7];
+  v9 = [[NSUUID alloc] initWithUUIDString:companionCopy];
 
   v10 = [v8 deviceForPairingID:v9];
 
@@ -1076,7 +1076,7 @@ LABEL_34:
   v35[4] = self;
   v29 = v10;
   v36 = v29;
-  v28 = v6;
+  v28 = completionCopy;
   v37 = v28;
   v11 = objc_retainBlock(v35);
   v12 = +[NSBundle mainBundle];
@@ -1115,34 +1115,34 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Presenting 'watch already paired' alert", buf, 2u);
   }
 
-  v26 = [(COSSetupController *)self navigationController];
-  v27 = [v26 visibleViewController];
-  [v27 presentViewController:v16 animated:1 completion:0];
+  navigationController = [(COSSetupController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
+  [visibleViewController presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)setTinkerUserName:(id)a3
+- (void)setTinkerUserName:(id)name
 {
-  objc_storeStrong(&self->_tinkerUserName, a3);
-  v4 = a3;
-  v7 = [UIApp activeWatch];
+  objc_storeStrong(&self->_tinkerUserName, name);
+  nameCopy = name;
+  activeWatch = [UIApp activeWatch];
   v5 = [NPSDomainAccessor alloc];
-  v6 = [v5 initWithDomain:kBridgeDomain pairedDevice:v7];
-  [v6 setObject:v4 forKey:@"kTinkerUserNameKey"];
+  v6 = [v5 initWithDomain:kBridgeDomain pairedDevice:activeWatch];
+  [v6 setObject:nameCopy forKey:@"kTinkerUserNameKey"];
 }
 
-- (void)setTinkerFamilyMember:(id)a3
+- (void)setTinkerFamilyMember:(id)member
 {
-  objc_storeStrong(&self->_tinkerFamilyMember, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_tinkerFamilyMember, member);
+  memberCopy = member;
   v6 = +[BPSTinkerSupport sharedInstance];
-  [v6 setTinkerFamilyMember:v5];
+  [v6 setTinkerFamilyMember:memberCopy];
 
-  v7 = [v5 firstName];
-  [(COSSetupController *)self setTinkerUserName:v7];
+  firstName = [memberCopy firstName];
+  [(COSSetupController *)self setTinkerUserName:firstName];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 bridgeController];
-  [v9 tellWatchToChangeDeviceNameFor:v5];
+  bridgeController = [v8 bridgeController];
+  [bridgeController tellWatchToChangeDeviceNameFor:memberCopy];
 
   v10 = +[NSNotificationCenter defaultCenter];
 
@@ -1151,37 +1151,37 @@ LABEL_34:
 
 + (id)buddyFlowMapping
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v4)
+  if (isTinkerPairing)
   {
-    [a1 tinkerBuddyFlowMapping];
+    [self tinkerBuddyFlowMapping];
   }
 
   else
   {
-    [a1 classicBuddyFlowMapping];
+    [self classicBuddyFlowMapping];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (void)addBundlesToTinkerFlowMapping:(id)a3
++ (void)addBundlesToTinkerFlowMapping:(id)mapping
 {
-  v89 = a3;
+  mappingCopy = mapping;
   if (NSClassFromString(@"HKBridgeSetupPrincipalClass"))
   {
     v3 = NSClassFromString(@"HKBridgeSetupPrincipalClass");
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    [v89 setObject:v3 forKeyedSubscript:v5];
+    [mappingCopy setObject:v3 forKeyedSubscript:v5];
 
     v6 = NSClassFromString(@"CHASActivitySetupMetricsCollectionViewController");
     v7 = NSClassFromString(@"HKBridgeSetupPrincipalClass");
     v8 = NSStringFromClass(v7);
-    [v89 setObject:v6 forKeyedSubscript:v8];
+    [mappingCopy setObject:v6 forKeyedSubscript:v8];
   }
 
   if (NSClassFromString(@"TextSettingsMiniFlowController") && NSClassFromString(@"AccessibilitySettingsMiniFlowController"))
@@ -1189,41 +1189,41 @@ LABEL_34:
     v9 = NSClassFromString(@"TextSettingsMiniFlowController");
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v89 setObject:v9 forKeyedSubscript:v11];
+    [mappingCopy setObject:v9 forKeyedSubscript:v11];
 
     v12 = NSClassFromString(@"AccessibilitySettingsMiniFlowController");
     v13 = NSClassFromString(@"TextSettingsMiniFlowController");
     v14 = NSStringFromClass(v13);
-    [v89 setObject:v12 forKeyedSubscript:v14];
+    [mappingCopy setObject:v12 forKeyedSubscript:v14];
 
     v15 = objc_opt_class();
     v16 = NSClassFromString(@"AccessibilitySettingsMiniFlowController");
     v17 = NSStringFromClass(v16);
-    [v89 setObject:v15 forKeyedSubscript:v17];
+    [mappingCopy setObject:v15 forKeyedSubscript:v17];
   }
 
   if (NSClassFromString(@"NCBSBridgeSetupController"))
   {
-    v18 = [v89 allKeysForObject:objc_opt_class()];
-    v19 = [v18 firstObject];
-    v20 = NSClassFromString(v19);
+    v18 = [mappingCopy allKeysForObject:objc_opt_class()];
+    firstObject = [v18 firstObject];
+    v20 = NSClassFromString(firstObject);
 
     v21 = NSClassFromString(@"NCBSBridgeSetupController");
     v22 = NSStringFromClass(v20);
-    [v89 setObject:v21 forKeyedSubscript:v22];
+    [mappingCopy setObject:v21 forKeyedSubscript:v22];
 
     v23 = objc_opt_class();
     v24 = NSClassFromString(@"NCBSBridgeSetupController");
     v25 = NSStringFromClass(v24);
-    [v89 setObject:v23 forKeyedSubscript:v25];
+    [mappingCopy setObject:v23 forKeyedSubscript:v25];
   }
 
-  v26 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v27 = [[NSUUID alloc] initWithUUIDString:@"6E76AC51-634C-415F-8491-C6784AF2C471"];
-  if ([v26 supportsCapability:v27])
+  if ([activeWatch supportsCapability:v27])
   {
     v28 = [[NSUUID alloc] initWithUUIDString:@"BD0302DD-00BC-43C2-81E9-48C038E6F8BB"];
-    v29 = [v26 supportsCapability:v28] ^ 1;
+    v29 = [activeWatch supportsCapability:v28] ^ 1;
   }
 
   else
@@ -1243,7 +1243,7 @@ LABEL_34:
 
   v31 = objc_opt_class();
   v32 = NSStringFromClass(v31);
-  v33 = [v89 objectForKeyedSubscript:v32];
+  v33 = [mappingCopy objectForKeyedSubscript:v32];
 
   if (!NSClassFromString(@"SCLSetupPrincipleClass"))
   {
@@ -1261,7 +1261,7 @@ LABEL_34:
   v35 = NSClassFromString(@"SCLSetupPrincipleClass");
   v36 = objc_opt_class();
   v37 = NSStringFromClass(v36);
-  [v89 setObject:v35 forKeyedSubscript:v37];
+  [mappingCopy setObject:v35 forKeyedSubscript:v37];
 
   if (v30)
   {
@@ -1269,14 +1269,14 @@ LABEL_34:
     v39 = NSClassFromString(@"SCLSetupPrincipleClass");
 LABEL_19:
     v40 = NSStringFromClass(v39);
-    [v89 setObject:v38 forKeyedSubscript:v40];
+    [mappingCopy setObject:v38 forKeyedSubscript:v40];
 
     v34 = @"CompanionAppViewSetup";
   }
 
   v41 = NSClassFromString(&v34->isa);
   v42 = NSStringFromClass(v41);
-  [v89 setObject:v33 forKeyedSubscript:v42];
+  [mappingCopy setObject:v33 forKeyedSubscript:v42];
 
 LABEL_21:
   if (NSClassFromString(@"NPHCellularSetupBridgeBuddyUIPrincipalClass"))
@@ -1284,30 +1284,30 @@ LABEL_21:
     v43 = NSClassFromString(@"NPHCellularSetupBridgeBuddyUIPrincipalClass");
     v44 = objc_opt_class();
     v45 = NSStringFromClass(v44);
-    [v89 setObject:v43 forKeyedSubscript:v45];
+    [mappingCopy setObject:v43 forKeyedSubscript:v45];
 
     v46 = objc_opt_class();
     v47 = NSClassFromString(@"NPHCellularSetupBridgeBuddyUIPrincipalClass");
     v48 = NSStringFromClass(v47);
-    [v89 setObject:v46 forKeyedSubscript:v48];
+    [mappingCopy setObject:v46 forKeyedSubscript:v48];
   }
 
   v49 = +[UIDevice currentDevice];
-  v50 = [v49 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v49 sf_isChinaRegionCellularDevice];
 
-  if (v50)
+  if (sf_isChinaRegionCellularDevice)
   {
     if (NSClassFromString(@"CKMPRBridgeBuddyUIPrincipalClass") && NSClassFromString(@"AccessibilitySettingsMiniFlowController"))
     {
       v51 = NSClassFromString(@"CKMPRBridgeBuddyUIPrincipalClass");
       v52 = NSClassFromString(@"AccessibilitySettingsMiniFlowController");
       v53 = NSStringFromClass(v52);
-      [v89 setObject:v51 forKeyedSubscript:v53];
+      [mappingCopy setObject:v51 forKeyedSubscript:v53];
 
       v54 = objc_opt_class();
       v55 = NSClassFromString(@"CKMPRBridgeBuddyUIPrincipalClass");
       v56 = NSStringFromClass(v55);
-      [v89 setObject:v54 forKeyedSubscript:v56];
+      [mappingCopy setObject:v54 forKeyedSubscript:v56];
     }
 
     if (NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController"))
@@ -1315,12 +1315,12 @@ LABEL_21:
       v57 = NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController");
       v58 = NSClassFromString(@"AccessibilitySettingsMiniFlowController");
       v59 = NSStringFromClass(v58);
-      [v89 setObject:v57 forKeyedSubscript:v59];
+      [mappingCopy setObject:v57 forKeyedSubscript:v59];
 
       v60 = NSClassFromString(@"CKMPRBridgeBuddyUIPrincipalClass");
       v61 = NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController");
       v62 = NSStringFromClass(v61);
-      [v89 setObject:v60 forKeyedSubscript:v62];
+      [mappingCopy setObject:v60 forKeyedSubscript:v62];
     }
   }
 
@@ -1329,22 +1329,22 @@ LABEL_21:
     v63 = NSClassFromString(@"HeartRateNotificationsViewController");
     v64 = objc_opt_class();
     v65 = NSStringFromClass(v64);
-    [v89 setObject:v63 forKeyedSubscript:v65];
+    [mappingCopy setObject:v63 forKeyedSubscript:v65];
 
     v66 = NSClassFromString(@"HeartRateNotificationsViewController");
     v67 = objc_opt_class();
     v68 = NSStringFromClass(v67);
-    [v89 setObject:v66 forKeyedSubscript:v68];
+    [mappingCopy setObject:v66 forKeyedSubscript:v68];
 
     v69 = NSClassFromString(@"HeartRateNotificationsViewController");
     v70 = objc_opt_class();
     v71 = NSStringFromClass(v70);
-    [v89 setObject:v69 forKeyedSubscript:v71];
+    [mappingCopy setObject:v69 forKeyedSubscript:v71];
 
     v72 = objc_opt_class();
     v73 = NSClassFromString(@"HeartRateNotificationsViewController");
     v74 = NSStringFromClass(v73);
-    [v89 setObject:v72 forKeyedSubscript:v74];
+    [mappingCopy setObject:v72 forKeyedSubscript:v74];
   }
 
   if (!NSClassFromString(@"BPSStingSetupPrincipalClass"))
@@ -1376,14 +1376,14 @@ LABEL_37:
   }
 
   v78 = NSStringFromClass(v77);
-  [v89 setObject:v76 forKeyedSubscript:v78];
+  [mappingCopy setObject:v76 forKeyedSubscript:v78];
 
   if (NSClassFromString(@"DepthSetupPrincipalClass"))
   {
     v79 = NSClassFromString(@"DepthSetupPrincipalClass");
     v80 = NSClassFromString(@"BPSStingSetupPrincipalClass");
     v81 = NSStringFromClass(v80);
-    [v89 setObject:v79 forKeyedSubscript:v81];
+    [mappingCopy setObject:v79 forKeyedSubscript:v81];
 
     goto LABEL_37;
   }
@@ -1393,7 +1393,7 @@ LABEL_37:
     v82 = NSClassFromString(@"CompanionAppViewSetup");
     v83 = NSClassFromString(@"BPSStingSetupPrincipalClass");
     v84 = NSStringFromClass(v83);
-    [v89 setObject:v82 forKeyedSubscript:v84];
+    [mappingCopy setObject:v82 forKeyedSubscript:v84];
 
     if (!NSClassFromString(@"DepthSetupPrincipalClass"))
     {
@@ -1405,14 +1405,14 @@ LABEL_42:
 LABEL_43:
     v85 = NSClassFromString(@"DepthSetupPrincipalClass");
     v86 = NSStringFromClass(v85);
-    [v89 setObject:v33 forKeyedSubscript:v86];
+    [mappingCopy setObject:v33 forKeyedSubscript:v86];
 
     goto LABEL_44;
   }
 
   v87 = NSClassFromString(@"BPSStingSetupPrincipalClass");
   v88 = NSStringFromClass(v87);
-  [v89 setObject:v33 forKeyedSubscript:v88];
+  [mappingCopy setObject:v33 forKeyedSubscript:v88];
 
   if (NSClassFromString(@"DepthSetupPrincipalClass"))
   {
@@ -1619,7 +1619,7 @@ LABEL_44:
   v58 = [NSDictionary dictionaryWithObjects:v103 forKeys:v102 count:48];
   v59 = [NSMutableDictionary dictionaryWithDictionary:v58];
 
-  [a1 addBundlesToTinkerFlowMapping:v59];
+  [self addBundlesToTinkerFlowMapping:v59];
 
   return v59;
 }
@@ -1723,7 +1723,7 @@ LABEL_44:
     [v2 setObject:v40 forKeyedSubscript:v42];
   }
 
-  v43 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   if (NSClassFromString(@"WGAEltonPhoneBuddyFlowPrincipalClass"))
   {
     v44 = NSClassFromString(@"WGAEltonPhoneBuddyFlowPrincipalClass");
@@ -1738,7 +1738,7 @@ LABEL_44:
   }
 
   v49 = [[NSUUID alloc] initWithUUIDString:@"BD0302DD-00BC-43C2-81E9-48C038E6F8BB"];
-  v50 = [v43 supportsCapability:v49];
+  v50 = [activeWatch supportsCapability:v49];
 
   if (NSClassFromString(@"CompanionAppViewSetup") && !((NSClassFromString(@"CompanionAppViewSetupViewController") == 0) | v50 & 1))
   {
@@ -1754,9 +1754,9 @@ LABEL_44:
   }
 
   v57 = +[UIDevice currentDevice];
-  v58 = [v57 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v57 sf_isChinaRegionCellularDevice];
 
-  if (v58 && NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController"))
+  if (sf_isChinaRegionCellularDevice && NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController"))
   {
     v59 = NSClassFromString(@"CKMPRiMessageContactsTransparencyViewController");
     v60 = objc_opt_class();
@@ -1937,13 +1937,13 @@ LABEL_44:
     [v49 setObject:v50 forKey:v52];
   }
 
-  v53 = [a1 signInFlowMapping];
-  [v49 addEntriesFromDictionary:v53];
+  signInFlowMapping = [self signInFlowMapping];
+  [v49 addEntriesFromDictionary:signInFlowMapping];
 
-  v54 = [a1 bundleFlowMapping];
-  [v49 addEntriesFromDictionary:v54];
+  bundleFlowMapping = [self bundleFlowMapping];
+  [v49 addEntriesFromDictionary:bundleFlowMapping];
 
-  [a1 updateMappingForYorktown:v49];
+  [self updateMappingForYorktown:v49];
 
   return v49;
 }
@@ -1983,62 +1983,62 @@ LABEL_44:
   return v13;
 }
 
-+ (void)updateMappingForYorktown:(id)a3
++ (void)updateMappingForYorktown:(id)yorktown
 {
-  v3 = a3;
+  yorktownCopy = yorktown;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 objectForKey:v5];
+  v6 = [yorktownCopy objectForKey:v5];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v3 removeObjectForKey:v8];
+  [yorktownCopy removeObjectForKey:v8];
 
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v3 setObject:v9 forKey:v11];
+  [yorktownCopy setObject:v9 forKey:v11];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v3 setObject:v6 forKey:v13];
+  [yorktownCopy setObject:v6 forKey:v13];
 
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [v3 objectForKey:v15];
+  v16 = [yorktownCopy objectForKey:v15];
 
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  [v3 removeObjectForKey:v18];
+  [yorktownCopy removeObjectForKey:v18];
 
   v19 = objc_opt_class();
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  [v3 setObject:v19 forKey:v21];
+  [yorktownCopy setObject:v19 forKey:v21];
 
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
-  [v3 setObject:v16 forKey:v23];
+  [yorktownCopy setObject:v16 forKey:v23];
 }
 
-- (Class)_updateNextControllerForSignInFlow:(Class)a3 currentControllerClass:(Class)a4
+- (Class)_updateNextControllerForSignInFlow:(Class)flow currentControllerClass:(Class)class
 {
-  v7 = [UIApp bridgeController];
-  v8 = [v7 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v8)
+  if (isTinkerPairing)
   {
-    v9 = a3;
+    flowCopy5 = flow;
     goto LABEL_20;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = a3;
-    if ([(objc_class *)v10 controllerAllowsPresentingSignInFlow])
+    flowCopy3 = flow;
+    if ([(objc_class *)flowCopy3 controllerAllowsPresentingSignInFlow])
     {
-      objc_storeStrong(&self->_controllerClassToPresentAfterSignIn, a3);
-      v10 = [objc_opt_class() signInFlowFirstControllerClass];
+      objc_storeStrong(&self->_controllerClassToPresentAfterSignIn, flow);
+      flowCopy3 = [objc_opt_class() signInFlowFirstControllerClass];
       v11 = pbb_setupflow_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -2053,11 +2053,11 @@ LABEL_44:
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = a3;
-    if ([(objc_class *)v10 controllerBlocksRunningBeforeSignInStep])
+    flowCopy3 = flow;
+    if ([(objc_class *)flowCopy3 controllerBlocksRunningBeforeSignInStep])
     {
-      objc_storeStrong(&self->_controllerClassToPresentAfterSignIn, a3);
-      v10 = [objc_opt_class() signInFlowFirstControllerClass];
+      objc_storeStrong(&self->_controllerClassToPresentAfterSignIn, flow);
+      flowCopy3 = [objc_opt_class() signInFlowFirstControllerClass];
       v11 = pbb_setupflow_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -2066,9 +2066,9 @@ LABEL_10:
         v18 = 136315650;
         v19 = "[COSSetupController _updateNextControllerForSignInFlow:currentControllerClass:]";
         v20 = 2112;
-        v21 = controllerClassToPresentAfterSignIn;
+        flowCopy4 = controllerClassToPresentAfterSignIn;
         v22 = 2112;
-        v23 = v10;
+        v23 = flowCopy3;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: updated: _controllerClassToPresentAfterSignIn: %@ nextControllerClass: %@", &v18, 0x20u);
       }
 
@@ -2077,49 +2077,49 @@ LABEL_11:
 
 LABEL_12:
 
-    a3 = v10;
+    flow = flowCopy3;
   }
 
-  v13 = NSStringFromClass(a4);
-  if (!a3)
+  v13 = NSStringFromClass(class);
+  if (!flow)
   {
-    v14 = [objc_opt_class() signInFlowLastControllerClassName];
-    v15 = [v13 isEqualToString:v14];
+    signInFlowLastControllerClassName = [objc_opt_class() signInFlowLastControllerClassName];
+    v15 = [v13 isEqualToString:signInFlowLastControllerClassName];
 
     if (v15)
     {
-      a3 = self->_controllerClassToPresentAfterSignIn;
+      flow = self->_controllerClassToPresentAfterSignIn;
       v16 = pbb_setupflow_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 136315394;
         v19 = "[COSSetupController _updateNextControllerForSignInFlow:currentControllerClass:]";
         v20 = 2112;
-        v21 = a3;
+        flowCopy4 = flow;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: updated controller after last sign-in class to nextControllerClass: %@", &v18, 0x16u);
       }
     }
 
     else
     {
-      a3 = 0;
+      flow = 0;
     }
   }
 
-  v9 = a3;
+  flowCopy5 = flow;
 
 LABEL_20:
 
-  return v9;
+  return flowCopy5;
 }
 
-- (id)_controllerFollowingControllerClass:(Class)a3
+- (id)_controllerFollowingControllerClass:(Class)class
 {
   v5 = +[COSSetupController buddyFlowMapping];
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v7 = [v5 objectForKey:v6];
 
-  v8 = [(COSSetupController *)self _updateNextControllerForSignInFlow:v7 currentControllerClass:a3];
+  v8 = [(COSSetupController *)self _updateNextControllerForSignInFlow:v7 currentControllerClass:class];
 
   if (PBShouldOfferBetterTogetherFlow() && self->_isDeKOTAFlow)
   {
@@ -2156,11 +2156,11 @@ LABEL_14:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 controllerNeedsToRunForBuddyControllerDelegate:self];
+    controllerNeedsToRun = [v8 controllerNeedsToRunForBuddyControllerDelegate:self];
     v12 = pbb_setupflow_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [NSNumber numberWithBool:v11];
+      v13 = [NSNumber numberWithBool:controllerNeedsToRun];
       *v24 = 138412290;
       *&v24[4] = v13;
       v14 = "controllerNeedsToRunForBuddyControllerDelegate: (%@)";
@@ -2175,11 +2175,11 @@ LABEL_18:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 controllerNeedsToRun];
+    controllerNeedsToRun = [v8 controllerNeedsToRun];
     v12 = pbb_setupflow_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [NSNumber numberWithBool:v11];
+      v13 = [NSNumber numberWithBool:controllerNeedsToRun];
       *v24 = 138412290;
       *&v24[4] = v13;
       v14 = "controllerNeedsToRun: (%@)";
@@ -2191,14 +2191,14 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  LOBYTE(v11) = 1;
+  LOBYTE(controllerNeedsToRun) = 1;
 LABEL_21:
   if ([(COSSetupController *)self expressMode])
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(COSSetupController *)self expressModeDevice];
-      v18 = [v8 skipControllerForExpressMode:v17];
+      expressModeDevice = [(COSSetupController *)self expressModeDevice];
+      v18 = [v8 skipControllerForExpressMode:expressModeDevice];
 
       v19 = pbb_setupflow_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2215,8 +2215,8 @@ LABEL_21:
       {
         if (objc_opt_respondsToSelector())
         {
-          v21 = [(COSSetupController *)self expressModeDevice];
-          [v8 doWorkForSkippedExpressSettingPane:v21];
+          expressModeDevice2 = [(COSSetupController *)self expressModeDevice];
+          [v8 doWorkForSkippedExpressSettingPane:expressModeDevice2];
         }
 
         goto LABEL_34;
@@ -2235,7 +2235,7 @@ LABEL_21:
     }
   }
 
-  if ((v11 & 1) == 0)
+  if ((controllerNeedsToRun & 1) == 0)
   {
 LABEL_34:
     v16 = [(COSSetupController *)self _controllerFollowingControllerClass:v8];
@@ -2284,9 +2284,9 @@ LABEL_35:
   if (!expressModeDevice)
   {
     v4 = +[COSBackupManager sharedBackupManager];
-    v5 = [v4 compatiblePairedDevices];
+    compatiblePairedDevices = [v4 compatiblePairedDevices];
 
-    v6 = [v5 sortedArrayUsingComparator:&stru_10026A478];
+    v6 = [compatiblePairedDevices sortedArrayUsingComparator:&stru_10026A478];
 
     self->_expressModeDevice = [v6 lastObject];
     expressModeDevice = self->_expressModeDevice;
@@ -2295,12 +2295,12 @@ LABEL_35:
   return expressModeDevice;
 }
 
-- (id)_controllerForClass:(Class)a3
+- (id)_controllerForClass:(Class)class
 {
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromClass(a3);
+    v6 = NSStringFromClass(class);
     v18 = 138412290;
     v19 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_controllerForClass: (%@)", &v18, 0xCu);
@@ -2310,28 +2310,28 @@ LABEL_35:
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(objc_class *)a3 controllerNeedsToRun];
+      controllerNeedsToRun = [(objc_class *)class controllerNeedsToRun];
       v11 = pbb_setupflow_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [NSNumber numberWithBool:v10];
+        v12 = [NSNumber numberWithBool:controllerNeedsToRun];
         v18 = 138412290;
         v19 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "controllerNeedsToRun: (%@)", &v18, 0xCu);
       }
 
-      if (!v10)
+      if (!controllerNeedsToRun)
       {
         goto LABEL_13;
       }
     }
 
 LABEL_12:
-    v13 = objc_alloc_init(a3);
+    v13 = objc_alloc_init(class);
     goto LABEL_14;
   }
 
-  v7 = [(objc_class *)a3 controllerNeedsToRunForBuddyControllerDelegate:self];
+  v7 = [(objc_class *)class controllerNeedsToRunForBuddyControllerDelegate:self];
   v8 = pbb_setupflow_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2347,7 +2347,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v13 = [(COSSetupController *)self _controllerFollowingControllerClass:a3];
+  v13 = [(COSSetupController *)self _controllerFollowingControllerClass:class];
 LABEL_14:
   v14 = v13;
   if (objc_opt_respondsToSelector())
@@ -2373,21 +2373,21 @@ LABEL_14:
   return v14;
 }
 
-- (id)_viewControllerForBuddyController:(id)a3
+- (id)_viewControllerForBuddyController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 viewController];
+    viewController = [controllerCopy viewController];
 LABEL_5:
-    v5 = v4;
+    v5 = viewController;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    viewController = controllerCopy;
     goto LABEL_5;
   }
 
@@ -2397,35 +2397,35 @@ LABEL_7:
   return v5;
 }
 
-- (void)_pushBuddyController:(id)a3 ontoNavigationController:(id)a4
+- (void)_pushBuddyController:(id)controller ontoNavigationController:(id)navigationController
 {
-  v6 = a3;
-  v7 = a4;
-  navigationController = v7;
-  if (!v7)
+  controllerCopy = controller;
+  navigationControllerCopy = navigationController;
+  navigationController = navigationControllerCopy;
+  if (!navigationControllerCopy)
   {
     navigationController = self->_navigationController;
   }
 
-  v9 = navigationController;
+  navigationControllerCopy2 = navigationController;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100093D3C;
   v14[3] = &unk_10026A4A0;
   objc_copyWeak(&v18, &location);
-  v10 = v6;
+  v10 = controllerCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = navigationControllerCopy2;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v12 = objc_retainBlock(v14);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v10 viewController];
-    if (v13)
+    viewController = [v10 viewController];
+    if (viewController)
     {
-      (v12[2])(v12, v13);
+      (v12[2])(v12, viewController);
     }
 
     else
@@ -2443,25 +2443,25 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_transitionFromBuddyController:(id)a3 toBuddyController:(id)a4
+- (void)_transitionFromBuddyController:(id)controller toBuddyController:(id)buddyController
 {
-  v5 = a4;
+  buddyControllerCopy = buddyController;
   if ((PBShouldOfferBetterTogetherFlow() & 1) != 0 || !self->_isDeKOTAFlow)
   {
-    v7 = [(COSSetupController *)self pairingReportManager];
+    pairingReportManager = [(COSSetupController *)self pairingReportManager];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 checkInWithController:v9 action:0];
+    [pairingReportManager checkInWithController:v9 action:0];
 
-    [(COSSetupController *)self _pushGizmoBuddyController:v5];
-    [(COSSetupController *)self _pushBuddyController:v5];
+    [(COSSetupController *)self _pushGizmoBuddyController:buddyControllerCopy];
+    [(COSSetupController *)self _pushBuddyController:buddyControllerCopy];
     v10 = 0;
     if ([(NSMutableArray *)self->_buddyControllers count]>= 2)
     {
       v10 = [(NSMutableArray *)self->_buddyControllers objectAtIndexedSubscript:[(NSMutableArray *)self->_buddyControllers count]- 2];
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v5 controllerAllowsNavigatingBackFrom] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v10, "controllerAllowsNavigatingBackTo") & 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![buddyControllerCopy controllerAllowsNavigatingBackFrom] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v10, "controllerAllowsNavigatingBackTo") & 1) == 0)
     {
       [(COSSetupController *)self blockGoingBackFromCurrentController];
     }
@@ -2480,35 +2480,35 @@ LABEL_7:
 
 - (void)blockGoingBackFromCurrentController
 {
-  v3 = [(COSBuddyNavigationController *)self->_navigationController viewControllers];
-  if ([v3 count] < 2)
+  viewControllers = [(COSBuddyNavigationController *)self->_navigationController viewControllers];
+  if ([viewControllers count] < 2)
   {
-    v4 = pbb_setupflow_log();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    lastObject = pbb_setupflow_log();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_DEFAULT))
     {
       buddyControllers = self->_buddyControllers;
       v11 = 138412546;
-      v12 = v3;
+      v12 = viewControllers;
       v13 = 2112;
       v14 = buddyControllers;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "No second-to-last view controller! navStack: %@\n _buddyControllers: %@", &v11, 0x16u);
+      _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_DEFAULT, "No second-to-last view controller! navStack: %@\n _buddyControllers: %@", &v11, 0x16u);
     }
   }
 
   else
   {
-    v4 = [v3 lastObject];
+    lastObject = [viewControllers lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setHidesBackButton:1];
+      [lastObject setHidesBackButton:1];
     }
 
-    v5 = [v4 navigationItem];
+    navigationItem = [lastObject navigationItem];
     v6 = sub_10002C85C(self, "promptWhetherToResetPairing:");
-    [v5 setLeftBarButtonItem:v6];
+    [navigationItem setLeftBarButtonItem:v6];
 
-    [v5 setLeftItemsSupplementBackButton:0];
+    [navigationItem setLeftItemsSupplementBackButton:0];
     v7 = pbb_setupflow_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -2521,23 +2521,23 @@ LABEL_7:
   }
 }
 
-- (void)checkSafeToTransitionOnNavigationController:(id)a3 withCompletion:(id)a4
+- (void)checkSafeToTransitionOnNavigationController:(id)controller withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000944F4;
   v17[3] = &unk_100268C18;
-  v7 = v5;
+  v7 = controllerCopy;
   v18 = v7;
-  v8 = v6;
+  v8 = completionCopy;
   v19 = v8;
   v9 = objc_retainBlock(v17);
-  v10 = [v7 topViewController];
-  v11 = [v10 presentedViewController];
+  topViewController = [v7 topViewController];
+  presentedViewController = [topViewController presentedViewController];
 
-  if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (presentedViewController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v12 = pbb_setupflow_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2546,13 +2546,13 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Dismissing alert before transition to next controller", buf, 2u);
     }
 
-    v13 = [v7 topViewController];
+    topViewController2 = [v7 topViewController];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100094670;
     v14[3] = &unk_100269120;
     v15 = v9;
-    [v13 dismissViewControllerAnimated:1 completion:v14];
+    [topViewController2 dismissViewControllerAnimated:1 completion:v14];
   }
 
   else
@@ -2561,25 +2561,25 @@ LABEL_7:
   }
 }
 
-- (void)_buddyControllerDone:(id)a3 nextControllerClass:(Class)a4 nextController:(id)a5
+- (void)_buddyControllerDone:(id)done nextControllerClass:(Class)class nextController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
+  doneCopy = done;
+  controllerCopy = controller;
   v10 = pbb_setupflow_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v9)
+    if (controllerCopy)
     {
-      [v9 description];
+      [controllerCopy description];
     }
 
     else
     {
-      NSStringFromClass(a4);
+      NSStringFromClass(class);
     }
     v11 = ;
     *buf = 138412546;
-    v24 = v8;
+    v24 = doneCopy;
     v25 = 2112;
     v26 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Controller Done: %@ -> Next: %@", buf, 0x16u);
@@ -2590,65 +2590,65 @@ LABEL_7:
   v19[2] = sub_1000948EC;
   v19[3] = &unk_10026A4F0;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = a4;
-  v12 = v9;
-  v13 = v8;
+  v20 = doneCopy;
+  v21 = controllerCopy;
+  classCopy = class;
+  v12 = controllerCopy;
+  v13 = doneCopy;
   v14 = objc_retainBlock(v19);
-  v15 = [(COSSetupController *)self navigationController];
+  navigationController = [(COSSetupController *)self navigationController];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100094BF0;
   v17[3] = &unk_100269120;
   v18 = v14;
   v16 = v14;
-  [(COSSetupController *)self checkSafeToTransitionOnNavigationController:v15 withCompletion:v17];
+  [(COSSetupController *)self checkSafeToTransitionOnNavigationController:navigationController withCompletion:v17];
 }
 
-- (void)buddyControllerHold:(id)a3 beforePresentingBuddyController:(id)a4
+- (void)buddyControllerHold:(id)hold beforePresentingBuddyController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_controllerDisplayedWhileOnHold, a3);
-  objc_storeStrong(&self->_nextControllerAfterHold, a4);
-  v9 = [(COSSetupController *)self pairingReportManager];
+  holdCopy = hold;
+  controllerCopy = controller;
+  objc_storeStrong(&self->_controllerDisplayedWhileOnHold, hold);
+  objc_storeStrong(&self->_nextControllerAfterHold, controller);
+  pairingReportManager = [(COSSetupController *)self pairingReportManager];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 checkInWithController:v11 action:1];
+  [pairingReportManager checkInWithController:v11 action:1];
 
-  v12 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
-  v13 = [v12 view];
-  [v13 setUserInteractionEnabled:0];
+  topViewController = [(COSBuddyNavigationController *)self->_navigationController topViewController];
+  view = [topViewController view];
+  [view setUserInteractionEnabled:0];
 
-  v14 = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
-  [v14 setUserInteractionEnabled:0];
+  navigationBar = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:0];
 
   v15 = [[UIActivityIndicatorView alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
   v16 = [[UIBarButtonItem alloc] initWithCustomView:v15];
-  v17 = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
-  v18 = [v17 topItem];
-  [v18 setRightBarButtonItem:v16 animated:1];
+  navigationBar2 = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
+  topItem = [navigationBar2 topItem];
+  [topItem setRightBarButtonItem:v16 animated:1];
   [v15 startAnimating];
-  [(COSSetupController *)self showButtonTrayBusyIndicator:1 forController:v7];
+  [(COSSetupController *)self showButtonTrayBusyIndicator:1 forController:holdCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v8 didEstablishHold];
+    [controllerCopy didEstablishHold];
   }
 
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___BPSBuddyControllerHolding] && objc_msgSend(v8, "holdWithWaitScreen"))
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___BPSBuddyControllerHolding] && objc_msgSend(controllerCopy, "holdWithWaitScreen"))
   {
-    [v8 waitScreenPushGracePeriod];
+    [controllerCopy waitScreenPushGracePeriod];
     v20 = v19;
-    v39 = [v8 localizedWaitScreenDescription];
-    v21 = [(COSSetupController *)self navigationController];
-    v22 = [v21 topViewController];
+    localizedWaitScreenDescription = [controllerCopy localizedWaitScreenDescription];
+    navigationController = [(COSSetupController *)self navigationController];
+    topViewController2 = [navigationController topViewController];
 
     v23 = pbb_setupflow_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v52 = v8;
+      v52 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Looks like Hold Wait Screen is needed for (%@)", buf, 0xCu);
     }
 
@@ -2672,11 +2672,11 @@ LABEL_7:
       v43[2] = sub_100095150;
       v43[3] = &unk_10026A518;
       objc_copyWeak(&v49, &location);
-      v44 = v22;
-      v45 = v39;
-      v46 = v8;
+      v44 = topViewController2;
+      v45 = localizedWaitScreenDescription;
+      v46 = controllerCopy;
       v47 = v15;
-      v48 = v7;
+      v48 = holdCopy;
       v26 = objc_retainBlock(v43);
       v27 = self->_holdWaitScreenBlock;
       self->_holdWaitScreenBlock = v26;
@@ -2746,24 +2746,24 @@ LABEL_7:
   self->_holdWaitScreenBlock = 0;
 }
 
-- (void)_buddyControllerReleaseHold:(id)a3 andSkip:(BOOL)a4
+- (void)_buddyControllerReleaseHold:(id)hold andSkip:(BOOL)skip
 {
-  v6 = a3;
+  holdCopy = hold;
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000958BC;
   v15[3] = &unk_100269F98;
   objc_copyWeak(&v18, &location);
-  v7 = v6;
-  v19 = a4;
+  v7 = holdCopy;
+  skipCopy = skip;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v8 = objc_retainBlock(v15);
-  v9 = [(COSSetupController *)self navigationController];
-  v10 = [v9 _isTransitioning];
+  navigationController = [(COSSetupController *)self navigationController];
+  _isTransitioning = [navigationController _isTransitioning];
 
-  if (v10)
+  if (_isTransitioning)
   {
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2795,9 +2795,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_shouldSkipForBetterTogether:(id)a3
+- (BOOL)_shouldSkipForBetterTogether:(id)together
 {
-  v4 = a3;
+  togetherCopy = together;
   if (PBShouldOfferBetterTogetherFlow() && self->_isDeKOTAFlow)
   {
     objc_opt_class();
@@ -2812,14 +2812,14 @@ LABEL_7:
   return v5 & 1;
 }
 
-- (void)postUserNotificationForController:(id)a3
+- (void)postUserNotificationForController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([objc_opt_class() isLiveActivityFeatureEnabled])
   {
-    if (v4)
+    if (controllerCopy)
     {
-      [(COSSetupController *)self updateLiveActivityWithBuddyController:v4];
+      [(COSSetupController *)self updateLiveActivityWithBuddyController:controllerCopy];
     }
 
     else
@@ -2854,9 +2854,9 @@ LABEL_7:
   [(COSSetupController *)self endLiveActivityIfNeeded];
 }
 
-- (void)buddyControllerDoneForSignIn:(id)a3
+- (void)buddyControllerDoneForSignIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   controllerClassToPresentAfterSignIn = self->_controllerClassToPresentAfterSignIn;
   if (!controllerClassToPresentAfterSignIn)
   {
@@ -2869,7 +2869,7 @@ LABEL_7:
     controllerClassToPresentAfterSignIn = self->_controllerClassToPresentAfterSignIn;
   }
 
-  [(COSSetupController *)self _buddyControllerDone:v4 nextControllerClass:controllerClassToPresentAfterSignIn nextController:0];
+  [(COSSetupController *)self _buddyControllerDone:inCopy nextControllerClass:controllerClassToPresentAfterSignIn nextController:0];
   v7 = self->_controllerClassToPresentAfterSignIn;
   self->_controllerClassToPresentAfterSignIn = 0;
 }
@@ -2887,32 +2887,32 @@ LABEL_7:
     self->_nextControllerAfterHold = 0;
   }
 
-  v5 = [(COSSetupController *)self navigationController];
-  v12 = [v5 navigationBar];
+  navigationController = [(COSSetupController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v6 = [v12 topItem];
-  [v6 setRightBarButtonItem:0 animated:1];
-  v7 = [(COSSetupController *)self navigationController];
-  v8 = [v7 topViewController];
-  v9 = [v8 view];
-  [v9 setUserInteractionEnabled:1];
+  topItem = [navigationBar topItem];
+  [topItem setRightBarButtonItem:0 animated:1];
+  navigationController2 = [(COSSetupController *)self navigationController];
+  topViewController = [navigationController2 topViewController];
+  view = [topViewController view];
+  [view setUserInteractionEnabled:1];
 
-  v10 = [(COSSetupController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 setUserInteractionEnabled:1];
+  navigationController3 = [(COSSetupController *)self navigationController];
+  navigationBar2 = [navigationController3 navigationBar];
+  [navigationBar2 setUserInteractionEnabled:1];
 }
 
-- (void)buddyControllerWillPushNextControllerClass:(Class)a3 outNextController:(id *)a4 ontoNavigationController:(id)a5
+- (void)buddyControllerWillPushNextControllerClass:(Class)class outNextController:(id *)controller ontoNavigationController:(id)navigationController
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100096640;
   v12[3] = &unk_10026A588;
   v12[4] = self;
-  v13 = a5;
-  v14 = a3;
-  v15 = a4;
-  v8 = v13;
+  navigationControllerCopy = navigationController;
+  classCopy = class;
+  controllerCopy = controller;
+  v8 = navigationControllerCopy;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10009670C;
@@ -2922,14 +2922,14 @@ LABEL_7:
   [(COSSetupController *)self checkSafeToTransitionOnNavigationController:v8 withCompletion:v10];
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v7 = a5;
+  viewControllerCopy = viewController;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 useFadePushAnimation];
+    useFadePushAnimation = [viewControllerCopy useFadePushAnimation];
     v9 = 0;
-    if (a4 == 1 && v8)
+    if (operation == 1 && useFadePushAnimation)
     {
       v9 = objc_opt_new();
     }
@@ -2943,19 +2943,19 @@ LABEL_7:
   return v9;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   if (self->_deferredHoldBlock)
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v7;
+      v15 = controllerCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = viewControllerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "navigationController: %@ viewController: %@", &v14, 0x16u);
     }
 
@@ -2974,38 +2974,38 @@ LABEL_7:
     }
   }
 
-  v12 = [v8 navigationItem];
-  v13 = [(COSSetupController *)self _titleForViewController:v8];
-  [v12 setBackButtonTitle:v13];
+  navigationItem = [viewControllerCopy navigationItem];
+  v13 = [(COSSetupController *)self _titleForViewController:viewControllerCopy];
+  [navigationItem setBackButtonTitle:v13];
 
-  [v12 setBackButtonDisplayMode:1];
-  [(COSSetupController *)self updateLiveActivityWithViewController:v8];
+  [navigationItem setBackButtonDisplayMode:1];
+  [(COSSetupController *)self updateLiveActivityWithViewController:viewControllerCopy];
 }
 
-- (id)_titleForViewController:(id)a3
+- (id)_titleForViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 title];
+  controllerCopy = controller;
+  title = [controllerCopy title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [v3 title];
+    title2 = [controllerCopy title];
 LABEL_7:
-    v6 = v5;
+    v6 = title2;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 titleString];
+    title2 = [controllerCopy titleString];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 navTitle];
+    title2 = [controllerCopy navTitle];
     goto LABEL_7;
   }
 
@@ -3015,9 +3015,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)promptWhetherToResetPairing:(id)a3
+- (void)promptWhetherToResetPairing:(id)pairing
 {
-  v18 = a3;
+  pairingCopy = pairing;
   v3 = pbb_setupflow_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -3093,52 +3093,52 @@ LABEL_8:
   self->_hasAddedPasscode = 1;
 }
 
-- (void)companionDidFinishHealthSharingOptIn:(BOOL)a3
+- (void)companionDidFinishHealthSharingOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
-    v4 = [(COSSetupController *)self topBuddyController];
-    [(COSSetupController *)self _buddyControllerDone:v4 nextControllerClass:objc_opt_class() nextController:0];
+    topBuddyController = [(COSSetupController *)self topBuddyController];
+    [(COSSetupController *)self _buddyControllerDone:topBuddyController nextControllerClass:objc_opt_class() nextController:0];
   }
 
   else
   {
     self->_didAllowTinkerHealthSharing = 0;
-    v4 = [(COSSetupController *)self topBuddyController];
+    topBuddyController = [(COSSetupController *)self topBuddyController];
     [(COSSetupController *)self buddyControllerDone:?];
   }
 }
 
-- (void)gizmoDidFinishHealthSharingOptIn:(BOOL)a3
+- (void)gizmoDidFinishHealthSharingOptIn:(BOOL)in
 {
-  v3 = a3;
-  self->_didAllowTinkerHealthSharing = a3;
-  v5 = [(COSSetupController *)self topBuddyController];
-  if (v3)
+  inCopy = in;
+  self->_didAllowTinkerHealthSharing = in;
+  topBuddyController = [(COSSetupController *)self topBuddyController];
+  if (inCopy)
   {
-    [(COSSetupController *)self _buddyControllerDone:v5 nextControllerClass:objc_opt_class() nextController:0];
+    [(COSSetupController *)self _buddyControllerDone:topBuddyController nextControllerClass:objc_opt_class() nextController:0];
   }
 
   else
   {
-    [(COSSetupController *)self buddyControllerDone:v5];
+    [(COSSetupController *)self buddyControllerDone:topBuddyController];
   }
 }
 
-- (void)pushRUIObject:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushRUIObject:(id)object animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000974C8;
   v18[3] = &unk_10026A618;
   objc_copyWeak(&v21, &location);
-  v10 = v8;
+  v10 = objectCopy;
   v19 = v10;
-  v22 = a4;
-  v11 = v9;
+  animatedCopy = animated;
+  v11 = completionCopy;
   v20 = v11;
   v12 = objc_retainBlock(v18);
   if ([(COSBuddyNavigationController *)self->_navigationController _isTransitioning])
@@ -3171,20 +3171,20 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)popRUIObject:(id)a3 animated:(BOOL)a4
+- (void)popRUIObject:(id)object animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
-  v7 = [(NSMutableArray *)self->_buddyControllers lastObject];
-  if ([v7 isMemberOfClass:objc_opt_class()] && (objc_msgSend(v7, "viewController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v6))
+  animatedCopy = animated;
+  topViewController = [(COSBuddyNavigationController *)self->_navigationController topViewController];
+  lastObject = [(NSMutableArray *)self->_buddyControllers lastObject];
+  if ([lastObject isMemberOfClass:objc_opt_class()] && (objc_msgSend(lastObject, "viewController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == topViewController))
   {
     v9 = pbb_setupflow_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = topViewController;
       v13 = 2112;
-      v14 = v7;
+      v14 = lastObject;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "POP: %@ vs %@", &v11, 0x16u);
     }
   }
@@ -3198,26 +3198,26 @@ LABEL_8:
     }
   }
 
-  v10 = [(COSBuddyNavigationController *)self->_navigationController popViewControllerAnimated:v4];
-  [(NSMutableArray *)self->_buddyControllers removeObject:v7];
+  v10 = [(COSBuddyNavigationController *)self->_navigationController popViewControllerAnimated:animatedCopy];
+  [(NSMutableArray *)self->_buddyControllers removeObject:lastObject];
 }
 
-- (void)showBusyIndicator:(BOOL)a3
+- (void)showBusyIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   customActivityIndicator = self->_customActivityIndicator;
-  if (!a3 || customActivityIndicator)
+  if (!indicator || customActivityIndicator)
   {
     [(UIActivityIndicatorView *)customActivityIndicator stopAnimating];
     [(UIActivityIndicatorView *)self->_customActivityIndicator removeFromSuperview];
-    v6 = self->_customActivityIndicator;
+    navigationBar = self->_customActivityIndicator;
     self->_customActivityIndicator = 0;
   }
 
   else
   {
-    v6 = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
-    [v6 size];
+    navigationBar = [(COSBuddyNavigationController *)self->_navigationController navigationBar];
+    [navigationBar size];
     v8 = v7;
     v10 = v9;
     v11 = [UIActivityIndicatorView alloc];
@@ -3231,7 +3231,7 @@ LABEL_8:
     v17 = +[UIColor blackColor];
     [(UIActivityIndicatorView *)v16 setBackgroundColor:v17];
 
-    [v6 addSubview:self->_customActivityIndicator];
+    [navigationBar addSubview:self->_customActivityIndicator];
     [(UIActivityIndicatorView *)self->_customActivityIndicator startAnimating];
   }
 
@@ -3243,20 +3243,20 @@ LABEL_8:
 
   else
   {
-    v20 = [(COSSetupController *)self buddyControllers];
-    v21 = [v20 lastObject];
+    buddyControllers = [(COSSetupController *)self buddyControllers];
+    lastObject = [buddyControllers lastObject];
 
-    v19 = v21;
+    v19 = lastObject;
   }
 
   v22 = v19;
-  [(COSSetupController *)self showButtonTrayBusyIndicator:v3 forController:v19];
+  [(COSSetupController *)self showButtonTrayBusyIndicator:indicatorCopy forController:v19];
 }
 
-- (void)showButtonTrayBusyIndicator:(BOOL)a3 forController:(id)a4
+- (void)showButtonTrayBusyIndicator:(BOOL)indicator forController:(id)controller
 {
-  v4 = a3;
-  v5 = a4;
+  indicatorCopy = indicator;
+  controllerCopy = controller;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100097C70;
@@ -3264,11 +3264,11 @@ LABEL_8:
   v6 = objc_opt_new();
   v21 = v6;
   v7 = objc_retainBlock(v20);
-  (v7[2])(v7, v5);
+  (v7[2])(v7, controllerCopy);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v5 viewController];
-    (v7[2])(v7, v8);
+    viewController = [controllerCopy viewController];
+    (v7[2])(v7, viewController);
   }
 
   v18 = 0u;
@@ -3291,16 +3291,16 @@ LABEL_8:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) buttonTray];
-        v15 = v14;
-        if (v4)
+        buttonTray = [*(*(&v16 + 1) + 8 * v13) buttonTray];
+        v15 = buttonTray;
+        if (indicatorCopy)
         {
-          [v14 showButtonsBusy];
+          [buttonTray showButtonsBusy];
         }
 
         else
         {
-          [v14 showButtonsAvailable];
+          [buttonTray showButtonsAvailable];
         }
 
         v13 = v13 + 1;
@@ -3314,9 +3314,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)_controllerShouldMirrorToGizmo:(id)a3
+- (BOOL)_controllerShouldMirrorToGizmo:(id)gizmo
 {
-  v3 = a3;
+  gizmoCopy = gizmo;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -3332,9 +3332,9 @@ LABEL_8:
   return v4 & 1;
 }
 
-- (void)popViewController:(id)a3
+- (void)popViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   kdebug_trace();
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3345,59 +3345,59 @@ LABEL_8:
   }
 
   [(COSSetupController *)self buddyControllerCancelAnyHold];
-  v6 = [(NSMutableArray *)self->_buddyControllers lastObject];
-  v7 = [(COSSetupController *)self _viewControllerForBuddyController:v6];
-  if (v7 == v4)
+  lastObject = [(NSMutableArray *)self->_buddyControllers lastObject];
+  v7 = [(COSSetupController *)self _viewControllerForBuddyController:lastObject];
+  if (v7 == controllerCopy)
   {
     [(NSMutableArray *)self->_buddyControllers removeLastObject];
   }
 
-  v8 = [(NSMutableArray *)self->_buddyControllers lastObject];
+  lastObject2 = [(NSMutableArray *)self->_buddyControllers lastObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setAppearingFromBackNavigation:1];
+    [lastObject2 setAppearingFromBackNavigation:1];
   }
 
-  if ([(COSSetupController *)self _controllerShouldMirrorToGizmo:v4])
+  if ([(COSSetupController *)self _controllerShouldMirrorToGizmo:controllerCopy])
   {
-    v9 = [UIApp bridgeController];
-    v10 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
-    [v9 tellGizmoToPopToControllerType:sub_10009809C(v10)];
+    bridgeController = [UIApp bridgeController];
+    topViewController = [(COSBuddyNavigationController *)self->_navigationController topViewController];
+    [bridgeController tellGizmoToPopToControllerType:sub_10009809C(topViewController)];
   }
 
   v11 = +[NRPairedDeviceRegistry sharedInstance];
-  v12 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
-  sub_10009809C(v12);
+  topViewController2 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
+  sub_10009809C(topViewController2);
   v13 = PBBuddyControllerDescription();
   [v11 pairingClientDidEnterPhase:v13];
 }
 
-- (void)_pushGizmoBuddyController:(id)a3
+- (void)_pushGizmoBuddyController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   kdebug_trace();
-  if ([(COSSetupController *)self _controllerShouldMirrorToGizmo:v7])
+  if ([(COSSetupController *)self _controllerShouldMirrorToGizmo:controllerCopy])
   {
-    v4 = [UIApp bridgeController];
-    [v4 tellGizmoToPushControllerType:sub_10009809C(v7)];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController tellGizmoToPushControllerType:sub_10009809C(controllerCopy)];
   }
 
   v5 = +[NRPairedDeviceRegistry sharedInstance];
-  sub_10009809C(v7);
+  sub_10009809C(controllerCopy);
   v6 = PBBuddyControllerDescription();
   [v5 pairingClientDidEnterPhase:v6];
 }
 
 - (void)activationServerResponded
 {
-  v2 = [(COSBuddyNavigationController *)self->_navigationController topViewController];
-  [PBBridgeCAReporter activationServerRespondedAtPage:sub_10009809C(v2)];
+  topViewController = [(COSBuddyNavigationController *)self->_navigationController topViewController];
+  [PBBridgeCAReporter activationServerRespondedAtPage:sub_10009809C(topViewController)];
 }
 
-- (void)finishedActivating:(id)a3
+- (void)finishedActivating:(id)activating
 {
-  v4 = a3;
+  activatingCopy = activating;
   if (PBLogPerformanceMetrics())
   {
     v5 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
@@ -3417,23 +3417,23 @@ LABEL_8:
   v9 = UIApp;
   [v9 setIsActivated:1];
   [v9 resetActivationFailureCountAndReport:1];
-  v10 = [UIApp setupController];
-  v11 = [v10 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v11 addPairingTimeEventToPairingReportPlist:13 withValue:&__kCFBooleanTrue withError:0];
-  [v11 checkInWithClosingPairingTimeEvent:18];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:13 withValue:&__kCFBooleanTrue withError:0];
+  [pairingReportManager checkInWithClosingPairingTimeEvent:18];
   [(COSSetupController *)self updateActivelyPairingWatchBuddyStage:1];
-  v12 = [v4 object];
+  object = [activatingCopy object];
 
-  if (v12)
+  if (object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v12 isEqualToString:PBBridgeWatchDemoDeviceString])
+      if ([object isEqualToString:PBBridgeWatchDemoDeviceString])
       {
-        v13 = [UIApp bridgeController];
-        [v13 sendDemoWatchWirelessCredentials];
+        bridgeController = [UIApp bridgeController];
+        [bridgeController sendDemoWatchWirelessCredentials];
 
         self->_isDeKOTAFlow = 1;
       }
@@ -3499,8 +3499,8 @@ LABEL_8:
 
   if (self->_alreadyStartPostActivationCompatiblePairingBackgroundTasks)
   {
-    v5 = pbb_activation_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    activeWatch = pbb_activation_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_ERROR))
     {
       sub_10018907C();
     }
@@ -3510,17 +3510,17 @@ LABEL_8:
   {
     self->_alreadyStartPostActivationCompatiblePairingBackgroundTasks = 1;
     [(COSSetupController *)self startSilentAppleIDSignIn];
-    v5 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v6 = [[NSUUID alloc] initWithUUIDString:@"4AA3FF3B-3224-42E6-995E-481F49AE9260"];
-    v7 = [v5 supportsCapability:v6];
+    v7 = [activeWatch supportsCapability:v6];
 
     if (v7)
     {
-      v8 = [sub_10000E07C() sharedInstance];
-      [v8 startRemoteProvisioning];
+      sharedInstance = [sub_10000E07C() sharedInstance];
+      [sharedInstance startRemoteProvisioning];
 
-      v9 = [sub_10000E07C() sharedInstance];
-      [v9 updateCellularPlansWithFetch:1];
+      sharedInstance2 = [sub_10000E07C() sharedInstance];
+      [sharedInstance2 updateCellularPlansWithFetch:1];
     }
   }
 }
@@ -3529,8 +3529,8 @@ LABEL_8:
 {
   if (!self->_alreadyStartPostActivationCompatiblePairingBackgroundTasks)
   {
-    v5 = pbb_accountsignin_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_accountsignin_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315138;
       v14 = "[COSSetupController startSilentAppleIDSignIn]";
@@ -3543,19 +3543,19 @@ LABEL_8:
     return;
   }
 
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v4)
+  if (isTinkerPairing)
   {
-    v5 = pbb_accountsignin_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_accountsignin_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315138;
       v14 = "[COSSetupController startSilentAppleIDSignIn]";
       v6 = "%s - Skipped for Satellite Pairing";
 LABEL_7:
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v6, &v13, 0xCu);
+      _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, v6, &v13, 0xCu);
       goto LABEL_8;
     }
 
@@ -3563,8 +3563,8 @@ LABEL_7:
   }
 
   v7 = +[COSCDPRepairController requiresiCDPRepair];
-  v5 = pbb_accountsignin_log();
-  v8 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+  activeWatch = pbb_accountsignin_log();
+  v8 = os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT);
   if (v7)
   {
     if (!v8)
@@ -3582,20 +3582,20 @@ LABEL_7:
   {
     v13 = 136315138;
     v14 = "[COSSetupController startSilentAppleIDSignIn]";
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v13, 0xCu);
+    _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "%s", &v13, 0xCu);
   }
 
   if (!self->_hasStartedSilentAppleIDSignIn)
   {
     self->_hasStartedSilentAppleIDSignIn = 1;
-    v5 = [UIApp activeWatch];
-    v9 = [UIApp setupController];
-    v10 = [v9 pairingReportManager];
+    activeWatch = [UIApp activeWatch];
+    setupController = [UIApp setupController];
+    pairingReportManager = [setupController pairingReportManager];
 
-    [v10 addPairingTimeEventToPairingReportPlist:19 withValue:&__kCFBooleanTrue withError:0];
-    [v10 checkInWithOpenPairingTimeEvent:44];
-    [v10 checkInWithOpenPairingTimeEvent:43];
-    v11 = [[COSAppleIDSilentSignInController alloc] initWithDelegate:self device:v5];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:19 withValue:&__kCFBooleanTrue withError:0];
+    [pairingReportManager checkInWithOpenPairingTimeEvent:44];
+    [pairingReportManager checkInWithOpenPairingTimeEvent:43];
+    v11 = [[COSAppleIDSilentSignInController alloc] initWithDelegate:self device:activeWatch];
     silentSignInController = self->_silentSignInController;
     self->_silentSignInController = v11;
 
@@ -3604,15 +3604,15 @@ LABEL_7:
   }
 }
 
-- (void)saveCombinedPasswordBasediTunesStoreAccount:(id)a3 fromAccountStore:(id)a4
+- (void)saveCombinedPasswordBasediTunesStoreAccount:(id)account fromAccountStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v8 = pbb_accountsignin_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = accountCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Saving iTunesStore account (%@) after successful password-based sign in for combined account", buf, 0xCu);
   }
 
@@ -3620,12 +3620,12 @@ LABEL_7:
   v11[1] = 3221225472;
   v11[2] = sub_100099188;
   v11[3] = &unk_1002682C8;
-  v12 = v6;
-  v9 = v6;
-  [COSiTunesStoreAuthController saveToPairedDeviceiTunesStoreAccount:v9 fromAccountStore:v7 completion:v11];
+  v12 = accountCopy;
+  v9 = accountCopy;
+  [COSiTunesStoreAuthController saveToPairedDeviceiTunesStoreAccount:v9 fromAccountStore:storeCopy completion:v11];
 
-  v10 = [(COSSetupController *)self appleIDSignInModel];
-  [v10 setHasSignedInToiTunesStore:1];
+  appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+  [appleIDSignInModel setHasSignedInToiTunesStore:1];
 }
 
 - (COSActivationResponseManager)activationManager
@@ -3676,33 +3676,33 @@ LABEL_7:
 
 - (void)checkInWithPairingMetricForSignInState
 {
-  v3 = [(COSSetupController *)self appleIDSignInModel];
-  v4 = [v3 hasSignedIntoAllServices];
+  appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+  hasSignedIntoAllServices = [appleIDSignInModel hasSignedIntoAllServices];
 
-  if (v4)
+  if (hasSignedIntoAllServices)
   {
-    v5 = [(COSSetupController *)self pairingReportManager];
-    [v5 addPairingTimeEventToPairingReportPlist:42 withValue:&__kCFBooleanTrue withError:0];
-    [v5 checkInWithClosingPairingTimeEvent:43];
+    pairingReportManager = [(COSSetupController *)self pairingReportManager];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:42 withValue:&__kCFBooleanTrue withError:0];
+    [pairingReportManager checkInWithClosingPairingTimeEvent:43];
   }
 }
 
 - (void)completePairingMetricForAppTermination
 {
-  v2 = [(COSSetupController *)self pairingReportManager];
-  [v2 completeMetricForAppTermination];
+  pairingReportManager = [(COSSetupController *)self pairingReportManager];
+  [pairingReportManager completeMetricForAppTermination];
 }
 
-- (void)appleIDSilentSignInControllerSignedAccountType:(unint64_t)a3 withSuccess:(BOOL)a4
+- (void)appleIDSilentSignInControllerSignedAccountType:(unint64_t)type withSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v6 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v8 = [(COSSetupController *)self appleIDSignInModel];
-      [v8 setHasSignedInToFaceTime:v4];
+      appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+      [appleIDSignInModel setHasSignedInToFaceTime:successCopy];
       v7 = 35;
       v6 = 36;
       v9 = 3;
@@ -3711,29 +3711,29 @@ LABEL_7:
     else
     {
       v7 = 0;
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
-      v8 = [(COSSetupController *)self appleIDSignInModel];
-      [v8 setHasSignedInToiTunesStore:v4];
+      appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+      [appleIDSignInModel setHasSignedInToiTunesStore:successCopy];
       v7 = 25;
       v6 = 26;
       v9 = 1;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
     v7 = 0;
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = [(COSSetupController *)self appleIDSignInModel];
-    [v8 setHasSignedInToiMessage:v4];
+    appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+    [appleIDSignInModel setHasSignedInToiMessage:successCopy];
     v7 = 30;
     v6 = 31;
     v9 = 2;
@@ -3741,47 +3741,47 @@ LABEL_7:
 
   else
   {
-    v8 = [(COSSetupController *)self appleIDSignInModel];
-    [v8 setHasSignedInToiCloud:v4];
+    appleIDSignInModel = [(COSSetupController *)self appleIDSignInModel];
+    [appleIDSignInModel setHasSignedInToiCloud:successCopy];
     v9 = 0;
     v7 = 20;
     v6 = 21;
   }
 
-  v10 = [(COSSetupController *)self appleIDSignInModel];
-  v11 = [v10 stateForServiceType:v9];
-  [v11 setSilentSignInSuccessful:v4];
+  appleIDSignInModel2 = [(COSSetupController *)self appleIDSignInModel];
+  v11 = [appleIDSignInModel2 stateForServiceType:v9];
+  [v11 setSilentSignInSuccessful:successCopy];
 
-  v12 = [(COSSetupController *)self appleIDSignInModel];
-  v13 = [v12 stateForServiceType:v9];
+  appleIDSignInModel3 = [(COSSetupController *)self appleIDSignInModel];
+  v13 = [appleIDSignInModel3 stateForServiceType:v9];
   [v13 setWaitingForSilentSigninToComplete:0];
 
 LABEL_11:
-  v14 = [UIApp setupController];
-  v22 = [v14 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  v15 = [NSNumber numberWithBool:v4];
-  [v22 addPairingTimeEventToPairingReportPlist:v7 withValue:v15 withError:0];
+  v15 = [NSNumber numberWithBool:successCopy];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:v7 withValue:v15 withError:0];
 
-  [v22 checkInWithClosingPairingTimeEvent:v6];
-  v16 = [(COSSetupController *)self appleIDSignInModel];
-  v17 = [v16 waitingForAnySilentSignInToComplete];
+  [pairingReportManager checkInWithClosingPairingTimeEvent:v6];
+  appleIDSignInModel4 = [(COSSetupController *)self appleIDSignInModel];
+  waitingForAnySilentSignInToComplete = [appleIDSignInModel4 waitingForAnySilentSignInToComplete];
 
-  if ((v17 & 1) == 0)
+  if ((waitingForAnySilentSignInToComplete & 1) == 0)
   {
     [(COSAppleIDSilentSignInController *)self->_silentSignInController setDelegate:0];
     silentSignInController = self->_silentSignInController;
     self->_silentSignInController = 0;
 
-    v19 = [(COSSetupController *)self appleIDSignInModel];
-    v20 = [v19 silentSignInSuccessfulForAll];
+    appleIDSignInModel5 = [(COSSetupController *)self appleIDSignInModel];
+    silentSignInSuccessfulForAll = [appleIDSignInModel5 silentSignInSuccessfulForAll];
 
-    if (v20)
+    if (silentSignInSuccessfulForAll)
     {
-      [v22 addPairingTimeEventToPairingReportPlist:40 withValue:&__kCFBooleanTrue withError:0];
+      [pairingReportManager addPairingTimeEventToPairingReportPlist:40 withValue:&__kCFBooleanTrue withError:0];
     }
 
-    [v22 checkInWithClosingPairingTimeEvent:44];
+    [pairingReportManager checkInWithClosingPairingTimeEvent:44];
   }
 
   v21 = +[NSNotificationCenter defaultCenter];
@@ -3799,9 +3799,9 @@ LABEL_11:
   dispatch_async(v3, block);
 }
 
-- (void)updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3
+- (void)updateStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
@@ -3809,8 +3809,8 @@ LABEL_11:
   block[2] = sub_1000998B0;
   block[3] = &unk_100268FF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -3853,15 +3853,15 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v4 = [UIApp activeWatch];
-  if (v4)
+  activeWatch = [UIApp activeWatch];
+  if (activeWatch)
   {
     v5 = PBIsEarlyPairedSyncSupportedForDevice();
     if (v5 && !self->_nrUpdatedToNormalState)
     {
       [(COSSetupController *)self tellAppConduitToInstallAllApps];
-      v9 = [UIApp bridgeController];
-      [v9 tellGizmoToUpdateNanoRegistryToNormalState];
+      bridgeController = [UIApp bridgeController];
+      [bridgeController tellGizmoToUpdateNanoRegistryToNormalState];
 
       v10 = pbb_setupflow_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3869,12 +3869,12 @@ LABEL_11:
         v12 = 136315394;
         v13 = "[COSSetupController updateNanoRegistryToNormalState]";
         v14 = 2112;
-        *v15 = v4;
+        *v15 = activeWatch;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s notifying device %@", &v12, 0x16u);
       }
 
       v11 = +[NRPairedDeviceRegistry sharedInstance];
-      [v11 notifyActivationCompleted:v4 withSuccess:1];
+      [v11 notifyActivationCompleted:activeWatch withSuccess:1];
 
       self->_nrUpdatedToNormalState = 1;
     }
@@ -3910,8 +3910,8 @@ LABEL_11:
 {
   if (self->_nrUpdatedToNormalState)
   {
-    v3 = [UIApp bridgeController];
-    [v3 tellGizmoToUpdateNanoRegistryToNormalState];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController tellGizmoToUpdateNanoRegistryToNormalState];
   }
 }
 
@@ -3930,9 +3930,9 @@ LABEL_11:
   return linkUpgradeMonitor;
 }
 
-- (void)updateActivelyPairingWatchBuddyStage:(unsigned int)a3
+- (void)updateActivelyPairingWatchBuddyStage:(unsigned int)stage
 {
-  v4 = self->_watchBuddyCompletedStages | a3;
+  v4 = self->_watchBuddyCompletedStages | stage;
   self->_watchBuddyCompletedStages = v4;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3992,21 +3992,21 @@ LABEL_11:
   v8 = &type metadata for FeatureFlags;
   v9 = sub_100144D98();
   v7[0] = 0;
-  v3 = self;
+  selfCopy = self;
   v4 = isFeatureEnabled(_:)();
   sub_10014A63C(v7);
-  v5 = 0;
+  hasStartedPairing = 0;
   if (v4)
   {
-    v5 = [(COSSetupController *)v3 hasStartedPairing];
+    hasStartedPairing = [(COSSetupController *)selfCopy hasStartedPairing];
   }
 
-  return v5;
+  return hasStartedPairing;
 }
 
 - (BOOL)doesLiveActivityProviderRequiresPairSyncNotifications
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100144F0C(&qword_1002BC550);
 
   return v3 & 1;
@@ -4014,58 +4014,58 @@ LABEL_11:
 
 - (void)startLiveActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014501C();
 }
 
-- (void)updateLiveActivityWithViewController:(id)a3
+- (void)updateLiveActivityWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  if ([(COSSetupController *)v5 areLiveActivitiesAllowed])
+  controllerCopy = controller;
+  selfCopy = self;
+  if ([(COSSetupController *)selfCopy areLiveActivitiesAllowed])
   {
-    sub_10014514C(v4);
+    sub_10014514C(controllerCopy);
   }
 }
 
-- (void)updateLiveActivityWithBuddyController:(id)a3
+- (void)updateLiveActivityWithBuddyController:(id)controller
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  if ([(COSSetupController *)v5 areLiveActivitiesAllowed])
+  selfCopy = self;
+  if ([(COSSetupController *)selfCopy areLiveActivitiesAllowed])
   {
-    sub_10014514C(a3);
+    sub_10014514C(controller);
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateLiveActivityWithTitle:(id)a3 subtitle:(id)a4
+- (void)updateLiveActivityWithTitle:(id)title subtitle:(id)subtitle
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100145C64();
 }
 
-- (void)endLiveActivityWithEndStatus:(int64_t)a3
+- (void)endLiveActivityWithEndStatus:(int64_t)status
 {
-  v4 = self;
-  sub_100145EB0(a3);
+  selfCopy = self;
+  sub_100145EB0(status);
 }
 
 - (void)endLiveActivityIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_100144F0C(&qword_1002BC558))
   {
-    [(COSSetupController *)v2 endLiveActivityWithEndStatus:1];
+    [(COSSetupController *)selfCopy endLiveActivityWithEndStatus:1];
   }
 }
 
 - (void)updateActivityAndRegenerateImages
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001461D4();
 }
 

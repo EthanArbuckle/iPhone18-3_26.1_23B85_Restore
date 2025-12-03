@@ -1,47 +1,47 @@
 @interface ASUSQLiteSchemaMigration
-- (ASUSQLiteSchemaMigration)initWithConnection:(id)a3;
-- (void)_executeStatement:(int)a3 canFailMigration:(void *)a4 bindings:;
+- (ASUSQLiteSchemaMigration)initWithConnection:(id)connection;
+- (void)_executeStatement:(int)statement canFailMigration:(void *)migration bindings:;
 @end
 
 @implementation ASUSQLiteSchemaMigration
 
-- (ASUSQLiteSchemaMigration)initWithConnection:(id)a3
+- (ASUSQLiteSchemaMigration)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ASUSQLiteSchemaMigration;
   v6 = [(ASUSQLiteSchemaMigration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_success = 1;
   }
 
   return v7;
 }
 
-- (void)_executeStatement:(int)a3 canFailMigration:(void *)a4 bindings:
+- (void)_executeStatement:(int)statement canFailMigration:(void *)migration bindings:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  migrationCopy = migration;
+  if (self)
   {
-    if (*(a1 + 24) == 1)
+    if (*(self + 24) == 1)
     {
-      v9 = *(a1 + 8);
+      v9 = *(self + 8);
       v13 = 0;
-      v10 = [v9 executeStatement:v7 error:&v13 bindings:v8];
+      v10 = [v9 executeStatement:v7 error:&v13 bindings:migrationCopy];
       v11 = v13;
       v12 = v13;
-      if (a3)
+      if (statement)
       {
-        *(a1 + 24) &= v10;
+        *(self + 24) &= v10;
       }
 
       if ((v10 & 1) == 0)
       {
-        objc_storeStrong((a1 + 16), v11);
+        objc_storeStrong((self + 16), v11);
       }
     }
 

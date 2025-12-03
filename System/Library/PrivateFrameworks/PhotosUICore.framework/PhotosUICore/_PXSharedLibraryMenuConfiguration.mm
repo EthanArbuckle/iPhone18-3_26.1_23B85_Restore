@@ -1,16 +1,16 @@
 @interface _PXSharedLibraryMenuConfiguration
-- (_PXSharedLibraryMenuConfiguration)initWithMenuBuilder:(id)a3;
+- (_PXSharedLibraryMenuConfiguration)initWithMenuBuilder:(id)builder;
 @end
 
 @implementation _PXSharedLibraryMenuConfiguration
 
-- (_PXSharedLibraryMenuConfiguration)initWithMenuBuilder:(id)a3
+- (_PXSharedLibraryMenuConfiguration)initWithMenuBuilder:(id)builder
 {
-  v6 = a3;
-  if (!v6)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUtilities.m" lineNumber:2039 description:{@"Invalid parameter not satisfying: %@", @"menuBuilder != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUtilities.m" lineNumber:2039 description:{@"Invalid parameter not satisfying: %@", @"menuBuilder != nil"}];
   }
 
   v11.receiver = self;
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_extraItemsMenuBuilder, a3);
+    objc_storeStrong(&v7->_extraItemsMenuBuilder, builder);
   }
 
   return v8;

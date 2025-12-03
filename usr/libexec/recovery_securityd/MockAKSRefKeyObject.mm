@@ -1,13 +1,13 @@
 @interface MockAKSRefKeyObject
-- (MockAKSRefKeyObject)initWithKeyData:(id)a3 parameters:(id)a4 error:(id *)a5;
+- (MockAKSRefKeyObject)initWithKeyData:(id)data parameters:(id)parameters error:(id *)error;
 @end
 
 @implementation MockAKSRefKeyObject
 
-- (MockAKSRefKeyObject)initWithKeyData:(id)a3 parameters:(id)a4 error:(id *)a5
+- (MockAKSRefKeyObject)initWithKeyData:(id)data parameters:(id)parameters error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  parametersCopy = parameters;
   v35.receiver = self;
   v35.super_class = MockAKSRefKeyObject;
   v10 = [(MockAKSRefKeyObject *)&v35 init];
@@ -16,13 +16,13 @@
     goto LABEL_7;
   }
 
-  v11 = [v8 copy];
+  v11 = [dataCopy copy];
   [(MockAKSRefKeyObject *)v10 setKeyData:v11];
 
   v12 = [[_SFAESKeySpecifier alloc] initWithBitSize:2];
   v13 = [_SFAESKey alloc];
-  v14 = [(MockAKSRefKeyObject *)v10 keyData];
-  v15 = [v13 initWithData:v14 specifier:v12 error:a5];
+  keyData = [(MockAKSRefKeyObject *)v10 keyData];
+  v15 = [v13 initWithData:keyData specifier:v12 error:error];
   [(MockAKSRefKeyObject *)v10 setKey:v15];
 
   v16 = [(MockAKSRefKeyObject *)v10 key];
@@ -32,18 +32,18 @@
     goto LABEL_11;
   }
 
-  v17 = [[MockAKSOptionalParameters alloc] initWithData:v9];
-  v18 = [(MockAKSOptionalParameters *)v17 externalData];
+  v17 = [[MockAKSOptionalParameters alloc] initWithData:parametersCopy];
+  externalData = [(MockAKSOptionalParameters *)v17 externalData];
 
-  if (v18)
+  if (externalData)
   {
     cf = 0;
-    v19 = [(MockAKSOptionalParameters *)v17 externalData];
-    v20 = [v19 bytes];
+    externalData2 = [(MockAKSOptionalParameters *)v17 externalData];
+    bytes = [externalData2 bytes];
 
-    v21 = [(MockAKSOptionalParameters *)v17 externalData];
-    v22 = [v21 length];
-    der_decode_plist(0, &cf, &v33, v20, v22 + v20, v23, v24, v25);
+    externalData3 = [(MockAKSOptionalParameters *)v17 externalData];
+    v22 = [externalData3 length];
+    der_decode_plist(0, &cf, &v33, bytes, v22 + bytes, v23, v24, v25);
 
     if (cf)
     {
@@ -51,9 +51,9 @@
       goto LABEL_6;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:@"foo" code:-536870206 userInfo:0];
+      *error = [NSError errorWithDomain:@"foo" code:-536870206 userInfo:0];
     }
 
 LABEL_11:
@@ -62,19 +62,19 @@ LABEL_11:
   }
 
 LABEL_6:
-  v26 = [(MockAKSOptionalParameters *)v17 externalData];
-  [(MockAKSRefKeyObject *)v10 setExternalData:v26];
+  externalData4 = [(MockAKSOptionalParameters *)v17 externalData];
+  [(MockAKSRefKeyObject *)v10 setExternalData:externalData4];
 
-  v27 = [(MockAKSOptionalParameters *)v17 acmHandle];
-  [(MockAKSRefKeyObject *)v10 setAcmHandle:v27];
+  acmHandle = [(MockAKSOptionalParameters *)v17 acmHandle];
+  [(MockAKSRefKeyObject *)v10 setAcmHandle:acmHandle];
 
   v28 = objc_alloc_init(MockAKSRefKey);
-  v29 = [(MockAKSRefKeyObject *)v10 keyData];
-  [(MockAKSRefKey *)v28 setKey:v29];
+  keyData2 = [(MockAKSRefKeyObject *)v10 keyData];
+  [(MockAKSRefKey *)v28 setKey:keyData2];
 
-  [(MockAKSRefKey *)v28 setOptionalParams:v9];
-  v30 = [(MockAKSRefKey *)v28 data];
-  [(MockAKSRefKeyObject *)v10 setBlob:v30];
+  [(MockAKSRefKey *)v28 setOptionalParams:parametersCopy];
+  data = [(MockAKSRefKey *)v28 data];
+  [(MockAKSRefKeyObject *)v10 setBlob:data];
 
 LABEL_7:
   v31 = v10;

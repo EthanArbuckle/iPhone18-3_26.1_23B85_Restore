@@ -6,7 +6,7 @@
 
 - (NSDictionary)dumpState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100289E10();
 
   return v3;

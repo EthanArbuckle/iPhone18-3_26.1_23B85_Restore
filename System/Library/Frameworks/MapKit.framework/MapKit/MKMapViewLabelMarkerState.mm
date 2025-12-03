@@ -1,19 +1,19 @@
 @interface MKMapViewLabelMarkerState
-+ (id)stateForLabelMarker:(id)a3;
++ (id)stateForLabelMarker:(id)marker;
 @end
 
 @implementation MKMapViewLabelMarkerState
 
-+ (id)stateForLabelMarker:(id)a3
++ (id)stateForLabelMarker:(id)marker
 {
-  if (a3)
+  if (marker)
   {
-    v3 = a3;
+    markerCopy = marker;
     v4 = objc_alloc_init(MKMapViewLabelMarkerState);
-    -[MKMapViewLabelMarkerState setVisible:](v4, "setVisible:", [v3 isVisible]);
-    v5 = [v3 pickedLabelBalloonBehavior];
+    -[MKMapViewLabelMarkerState setVisible:](v4, "setVisible:", [markerCopy isVisible]);
+    pickedLabelBalloonBehavior = [markerCopy pickedLabelBalloonBehavior];
 
-    [(MKMapViewLabelMarkerState *)v4 setBalloonBehavior:v5];
+    [(MKMapViewLabelMarkerState *)v4 setBalloonBehavior:pickedLabelBalloonBehavior];
   }
 
   else

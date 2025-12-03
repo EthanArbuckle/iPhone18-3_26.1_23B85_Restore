@@ -53,14 +53,14 @@
   v15 = [v10 initWithProperties:v22 relationships:v14];
   v36[1] = v15;
   v35[2] = *MEMORY[0x1E6970208];
-  v16 = [MEMORY[0x1E6970660] mqf_requiredItemPlaybackProperties];
-  v36[2] = v16;
+  mqf_requiredItemPlaybackProperties = [MEMORY[0x1E6970660] mqf_requiredItemPlaybackProperties];
+  v36[2] = mqf_requiredItemPlaybackProperties;
   v35[3] = *MEMORY[0x1E6970210];
-  v17 = [MEMORY[0x1E6970710] mqf_requiredItemPlaybackProperties];
-  v36[3] = v17;
+  mqf_requiredItemPlaybackProperties2 = [MEMORY[0x1E6970710] mqf_requiredItemPlaybackProperties];
+  v36[3] = mqf_requiredItemPlaybackProperties2;
   v35[4] = *MEMORY[0x1E6970228];
-  v18 = [MEMORY[0x1E6970798] mqf_requiredItemPlaybackProperties];
-  v36[4] = v18;
+  mqf_requiredItemPlaybackProperties3 = [MEMORY[0x1E6970798] mqf_requiredItemPlaybackProperties];
+  v36[4] = mqf_requiredItemPlaybackProperties3;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:5];
   v20 = [v0 initWithProperties:v25 relationships:v19];
 

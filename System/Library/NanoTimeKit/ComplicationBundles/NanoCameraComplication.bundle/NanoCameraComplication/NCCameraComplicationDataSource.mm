@@ -1,17 +1,17 @@
 @interface NCCameraComplicationDataSource
-+ (BOOL)_shouldUseFallbackImagesForDevice:(id)a3;
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)_shouldUseFallbackImagesForDevice:(id)device;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 + (id)localizedAppName;
-- (id)_complicationImageNamed:(id)a3;
+- (id)_complicationImageNamed:(id)named;
 - (id)_currentTimelineEntry;
-- (id)_fullColorImageProviderWithFallbackImageName:(id)a3;
-- (id)_imageProviderWithFallbackImageName:(id)a3;
-- (id)_templateForFamily:(int64_t)a3;
+- (id)_fullColorImageProviderWithFallbackImageName:(id)name;
+- (id)_imageProviderWithFallbackImageName:(id)name;
+- (id)_templateForFamily:(int64_t)family;
 - (id)currentSwitcherTemplate;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NCCameraComplicationDataSource
@@ -24,31 +24,31 @@
   return v3;
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.NanoCamera.NanoCameraWidget" containerBundleIdentifier:@"com.apple.NanoCamera" kind:@"NanoCameraWidget" intent:0];
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v5 = [[NSUUID alloc] initWithUUIDString:@"B9EB8122-4210-4EFC-A48A-1EFEA037CDF0"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [deviceCopy supportsCapability:v5];
 
   return v6;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = [[NSUUID alloc] initWithUUIDString:@"FAB030A8-8E57-49E3-AFE8-418FBB1F049A"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [deviceCopy supportsCapability:v6];
 
   if (v7)
   {
-    v8 = CLKComplicationFamilySimpleText == a3;
+    v8 = CLKComplicationFamilySimpleText == family;
   }
 
   else
@@ -61,15 +61,15 @@
     LOBYTE(v9) = 0;
   }
 
-  else if (CLKComplicationFamilyCircularMedium == a3)
+  else if (CLKComplicationFamilyCircularMedium == family)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v9 = 0x1795u >> a3;
-    if (a3 > 0xC)
+    v9 = 0x1795u >> family;
+    if (family > 0xC)
     {
       LOBYTE(v9) = 0;
     }
@@ -78,27 +78,27 @@
   return v9 & 1;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   [v7 setScheme:@"com.apple.NanoCamera"];
   v6 = [v7 URL];
-  v5[2](v5, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
 - (id)currentSwitcherTemplate
 {
-  v3 = [(NCCameraComplicationDataSource *)self family];
+  family = [(NCCameraComplicationDataSource *)self family];
 
-  return [(NCCameraComplicationDataSource *)self _templateForFamily:v3];
+  return [(NCCameraComplicationDataSource *)self _templateForFamily:family];
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NCCameraComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NCCameraComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
 - (id)_currentTimelineEntry
@@ -110,15 +110,15 @@
   return v5;
 }
 
-- (id)_templateForFamily:(int64_t)a3
+- (id)_templateForFamily:(int64_t)family
 {
-  if (CLKComplicationFamilySimpleText == a3)
+  if (CLKComplicationFamilySimpleText == family)
   {
     v3 = 0;
     goto LABEL_27;
   }
 
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v6 = [(NCCameraComplicationDataSource *)self _imageProviderWithFallbackImageName:@"CircularMedium"];
     v3 = [CLKComplicationTemplateCircularMediumSimpleImage templateWithImageProvider:v6];
@@ -129,11 +129,11 @@
     v3 = 0;
   }
 
-  if (a3 > 7)
+  if (family > 7)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      if (a3 == 10)
+      if (family == 10)
       {
         v7 = [(NCCameraComplicationDataSource *)self _fullColorImageProviderWithFallbackImageName:@"CircularMedium"];
         v13 = [CLKComplicationTemplateGraphicCircularImage templateWithImageProvider:v7];
@@ -146,7 +146,7 @@
 
       else
       {
-        if (a3 != 12)
+        if (family != 12)
         {
           goto LABEL_27;
         }
@@ -163,7 +163,7 @@
 
     else
     {
-      if (a3 != 8)
+      if (family != 8)
       {
         v9 = [(NCCameraComplicationDataSource *)self _fullColorImageProviderWithFallbackImageName:@"CircularMedium"];
         v10 = [CLKComplicationTemplateGraphicCircularImage templateWithImageProvider:v9];
@@ -193,9 +193,9 @@
 
   else
   {
-    if (a3 > 3)
+    if (family > 3)
     {
-      if (a3 == 4)
+      if (family == 4)
       {
         v7 = [(NCCameraComplicationDataSource *)self _imageProviderWithFallbackImageName:@"CircularSmall"];
         v8 = CLKComplicationTemplateCircularSmallSimpleImage;
@@ -203,7 +203,7 @@
 
       else
       {
-        if (a3 != 7)
+        if (family != 7)
         {
           goto LABEL_27;
         }
@@ -213,9 +213,9 @@
       }
     }
 
-    else if (a3)
+    else if (family)
     {
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_27;
       }
@@ -239,33 +239,33 @@ LABEL_27:
   return v3;
 }
 
-- (id)_complicationImageNamed:(id)a3
+- (id)_complicationImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [UIImage imageNamed:v3 inBundle:v4 withConfiguration:0];
+  v5 = [UIImage imageNamed:namedCopy inBundle:v4 withConfiguration:0];
 
   return v5;
 }
 
-- (id)_imageProviderWithFallbackImageName:(id)a3
+- (id)_imageProviderWithFallbackImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_class();
-  v6 = [(NCCameraComplicationDataSource *)self device];
-  LODWORD(v5) = [v5 _shouldUseFallbackImagesForDevice:v6];
+  device = [(NCCameraComplicationDataSource *)self device];
+  LODWORD(v5) = [v5 _shouldUseFallbackImagesForDevice:device];
 
   if (v5)
   {
-    v7 = [v4 stringByAppendingString:@"-Color"];
+    v7 = [nameCopy stringByAppendingString:@"-Color"];
     v8 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v7];
-    v9 = [v4 stringByAppendingString:@"-Background"];
+    v9 = [nameCopy stringByAppendingString:@"-Background"];
     v10 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v9];
-    v11 = [v4 stringByAppendingString:@"-Foreground"];
+    v11 = [nameCopy stringByAppendingString:@"-Foreground"];
     v12 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v11];
     v13 = [CLKImageProvider imageProviderWithOnePieceImage:v8 twoPieceImageBackground:v10 twoPieceImageForeground:v12];
 
-    v14 = [v4 stringByAppendingString:@"-Color"];
+    v14 = [nameCopy stringByAppendingString:@"-Color"];
     v15 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v14];
     [v13 setForegroundAccentImage:v15];
   }
@@ -283,22 +283,22 @@ LABEL_27:
   return v13;
 }
 
-- (id)_fullColorImageProviderWithFallbackImageName:(id)a3
+- (id)_fullColorImageProviderWithFallbackImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_class();
-  v6 = [(NCCameraComplicationDataSource *)self device];
-  LODWORD(v5) = [v5 _shouldUseFallbackImagesForDevice:v6];
+  device = [(NCCameraComplicationDataSource *)self device];
+  LODWORD(v5) = [v5 _shouldUseFallbackImagesForDevice:device];
 
   if (v5)
   {
-    v7 = [v4 stringByAppendingString:@"-Color"];
+    v7 = [nameCopy stringByAppendingString:@"-Color"];
     v17 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v7];
-    v18 = [v4 stringByAppendingString:@"-Color"];
+    v18 = [nameCopy stringByAppendingString:@"-Color"];
     v8 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v18];
-    v9 = [v4 stringByAppendingString:@"-Background"];
+    v9 = [nameCopy stringByAppendingString:@"-Background"];
     v10 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v9];
-    v11 = [v4 stringByAppendingString:@"-Foreground"];
+    v11 = [nameCopy stringByAppendingString:@"-Foreground"];
     v12 = [(NCCameraComplicationDataSource *)self _complicationImageNamed:v11];
     v13 = [CLKImageProvider imageProviderWithOnePieceImage:v8 twoPieceImageBackground:v10 twoPieceImageForeground:v12];
     v14 = [CLKFullColorImageProvider providerWithFullColorImage:v17 tintedImageProvider:v13];
@@ -317,11 +317,11 @@ LABEL_27:
   return v14;
 }
 
-+ (BOOL)_shouldUseFallbackImagesForDevice:(id)a3
++ (BOOL)_shouldUseFallbackImagesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [[NSUUID alloc] initWithUUIDString:@"436C3C42-1855-4417-BD50-BD3D1B870E0F"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [deviceCopy supportsCapability:v4];
 
   return v5 ^ 1;
 }

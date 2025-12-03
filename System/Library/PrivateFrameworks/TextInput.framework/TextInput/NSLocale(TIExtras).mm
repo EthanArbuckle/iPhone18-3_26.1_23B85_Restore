@@ -7,9 +7,9 @@
 + (id)localeForBundleLanguage:()TIExtras
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = [a3 preferredLocalizations];
-  v5 = [v4 firstObject];
-  v6 = [v3 canonicalLanguageIdentifierFromString:v5];
+  preferredLocalizations = [a3 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v6 = [v3 canonicalLanguageIdentifierFromString:firstObject];
 
   if (v6)
   {

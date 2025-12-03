@@ -1,56 +1,56 @@
 @interface CNVCardMutableImage
-+ (CGRect)scaleRect:(CGRect)a3 byFactor:(double)a4;
-+ (id)CGImageCreateWithData:(id)a3 maxSizeValue:(id)a4;
-+ (id)scaleCropRects:(id)a3 factor:(double)a4;
++ (CGRect)scaleRect:(CGRect)rect byFactor:(double)factor;
++ (id)CGImageCreateWithData:(id)data maxSizeValue:(id)value;
++ (id)scaleCropRects:(id)rects factor:(double)factor;
 - (BOOL)hasAlphaChannel;
 - (BOOL)isSourceLossless;
 - (BOOL)shouldReturnPNG;
 - (CGSize)originalSize;
 - (CGSize)size;
-- (CNVCardMutableImage)initWithData:(id)a3 cropRects:(id)a4 size:(CGSize)a5;
+- (CNVCardMutableImage)initWithData:(id)data cropRects:(id)rects size:(CGSize)size;
 - (NSNumber)compressionQuality;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cropRects;
 - (id)data;
-- (id)renderCGImage:(CGImage *)a3;
+- (id)renderCGImage:(CGImage *)image;
 - (void)dealloc;
-- (void)describePropertiesWithBuilder:(id)a3;
+- (void)describePropertiesWithBuilder:(id)builder;
 - (void)nts_initCGImage;
 - (void)nts_invalidateImageQuality;
 - (void)nts_invalidateImageSize;
 - (void)nts_updateRepresentation;
-- (void)setCompressionQuality:(id)a3;
+- (void)setCompressionQuality:(id)quality;
 @end
 
 @implementation CNVCardMutableImage
 
-- (CNVCardMutableImage)initWithData:(id)a3 cropRects:(id)a4 size:(CGSize)a5
+- (CNVCardMutableImage)initWithData:(id)data cropRects:(id)rects size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  rectsCopy = rects;
   v18.receiver = self;
   v18.super_class = CNVCardMutableImage;
-  v11 = [(CNVCardImage *)&v18 initWithData:v9 cropRects:v10 size:width, height];
-  if (v11)
+  height = [(CNVCardImage *)&v18 initWithData:dataCopy cropRects:rectsCopy size:width, height];
+  if (height)
   {
-    v12 = [v9 copy];
-    originalData = v11->_originalData;
-    v11->_originalData = v12;
+    v12 = [dataCopy copy];
+    originalData = height->_originalData;
+    height->_originalData = v12;
 
-    v14 = [v10 copy];
-    originalCropRects = v11->_originalCropRects;
-    v11->_originalCropRects = v14;
+    v14 = [rectsCopy copy];
+    originalCropRects = height->_originalCropRects;
+    height->_originalCropRects = v14;
 
-    v11->_originalSize.width = width;
-    v11->_originalSize.height = height;
-    v11->_CGImage = 0;
-    v11->_sourceImageFormatUTI = 0;
-    v16 = v11;
+    height->_originalSize.width = width;
+    height->_originalSize.height = height;
+    height->_CGImage = 0;
+    height->_sourceImageFormatUTI = 0;
+    v16 = height;
   }
 
-  return v11;
+  return height;
 }
 
 - (void)dealloc
@@ -72,21 +72,21 @@
   [(CNVCardMutableImage *)&v5 dealloc];
 }
 
-- (void)describePropertiesWithBuilder:(id)a3
+- (void)describePropertiesWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = CNVCardMutableImage;
-  [(CNVCardImage *)&v21 describePropertiesWithBuilder:v4];
+  [(CNVCardImage *)&v21 describePropertiesWithBuilder:builderCopy];
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(CNVCardMutableImage *)self originalData];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "length")}];
+  originalData = [(CNVCardMutableImage *)self originalData];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(originalData, "length")}];
   v9 = [v5 stringWithFormat:@"%@ bytes", v8];
-  v10 = [v4 appendName:@"originalData" object:v9];
+  v10 = [builderCopy appendName:@"originalData" object:v9];
 
-  v11 = [(CNVCardMutableImage *)self originalCropRects];
-  v12 = [v4 appendName:@"originalCropRects" object:v11];
+  originalCropRects = [(CNVCardMutableImage *)self originalCropRects];
+  v12 = [builderCopy appendName:@"originalCropRects" object:originalCropRects];
 
   v13 = MEMORY[0x277CCACA8];
   v14 = MEMORY[0x277CCABB0];
@@ -96,15 +96,15 @@
   [(CNVCardMutableImage *)self originalSize];
   v18 = [v16 numberWithDouble:v17];
   v19 = [v13 stringWithFormat:@"%@x%@", v15, v18];
-  v20 = [v4 appendName:@"originalSize" object:v19];
+  v20 = [builderCopy appendName:@"originalSize" object:v19];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNVCardImage alloc];
-  v5 = [(CNVCardMutableImage *)self data];
-  v6 = [(CNVCardMutableImage *)self cropRects];
-  v7 = [(CNVCardImage *)v4 initWithData:v5 cropRects:v6];
+  data = [(CNVCardMutableImage *)self data];
+  cropRects = [(CNVCardMutableImage *)self cropRects];
+  v7 = [(CNVCardImage *)v4 initWithData:data cropRects:cropRects];
 
   return v7;
 }
@@ -325,10 +325,10 @@ void __31__CNVCardMutableImage_setSize___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setCompressionQuality:(id)a3
+- (void)setCompressionQuality:(id)quality
 {
-  v4 = a3;
-  v3 = v4;
+  qualityCopy = quality;
+  v3 = qualityCopy;
   cn_runWithObjectLock();
 }
 
@@ -392,24 +392,24 @@ void __32__CNVCardMutableImage_cropRects__block_invoke(uint64_t a1)
       goto LABEL_17;
     }
 
-    v5 = [v3 imageRef];
-    self->_CGImage = v5;
-    if (!v5)
+    imageRef = [v3 imageRef];
+    self->_CGImage = imageRef;
+    if (!imageRef)
     {
       goto LABEL_17;
     }
 
-    CFRetain(v5);
+    CFRetain(imageRef);
     if (!self->_CGImage)
     {
       goto LABEL_17;
     }
 
-    v6 = [v4 sourceImageFormatUTI];
-    self->_sourceImageFormatUTI = v6;
-    if (v6)
+    sourceImageFormatUTI = [v4 sourceImageFormatUTI];
+    self->_sourceImageFormatUTI = sourceImageFormatUTI;
+    if (sourceImageFormatUTI)
     {
-      CFRetain(v6);
+      CFRetain(sourceImageFormatUTI);
     }
 
     if (self->_targetSizeValue)
@@ -490,10 +490,10 @@ LABEL_17:
   }
 }
 
-+ (id)CGImageCreateWithData:(id)a3 maxSizeValue:(id)a4
++ (id)CGImageCreateWithData:(id)data maxSizeValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  valueCopy = value;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -520,7 +520,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v9 = v7(v5, 0);
+  v9 = v7(dataCopy, 0);
   if (!v9)
   {
     v29 = 0;
@@ -550,7 +550,7 @@ LABEL_32:
 
   v14 = *v12;
   [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*v12];
-  if (v6)
+  if (valueCopy)
   {
     v32 = 0;
     v33 = &v32;
@@ -576,9 +576,9 @@ LABEL_33:
 
     v17 = *v15;
     v18 = MEMORY[0x277CCABB0];
-    [v6 sizeValue];
+    [valueCopy sizeValue];
     v20 = v19;
-    [v6 sizeValue];
+    [valueCopy sizeValue];
     if (v20 >= v21)
     {
       v22 = v20;
@@ -645,15 +645,15 @@ LABEL_26:
   return v29;
 }
 
-+ (id)scaleCropRects:(id)a3 factor:(double)a4
++ (id)scaleCropRects:(id)rects factor:(double)factor
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke;
   v6[3] = &__block_descriptor_48_e26___NSValue_16__0__NSValue_8l;
-  v6[4] = a1;
-  *&v6[5] = a4;
-  v4 = [a3 _cn_mapValues:v6];
+  v6[4] = self;
+  *&v6[5] = factor;
+  v4 = [rects _cn_mapValues:v6];
 
   return v4;
 }
@@ -670,12 +670,12 @@ uint64_t __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke(uint64_t
   return [v3 valueWithRect:{v9.origin.x, v9.origin.y, v9.size.width, v9.size.height}];
 }
 
-+ (CGRect)scaleRect:(CGRect)a3 byFactor:(double)a4
++ (CGRect)scaleRect:(CGRect)rect byFactor:(double)factor
 {
-  v4 = a3.origin.x * a4;
-  v5 = a3.origin.y * a4;
-  v6 = a3.size.width * a4;
-  v7 = a3.size.height * a4;
+  v4 = rect.origin.x * factor;
+  v5 = rect.origin.y * factor;
+  v6 = rect.size.width * factor;
+  v7 = rect.size.height * factor;
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -683,7 +683,7 @@ uint64_t __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke(uint64_t
   return result;
 }
 
-- (id)renderCGImage:(CGImage *)a3
+- (id)renderCGImage:(CGImage *)image
 {
   v28 = 0;
   v29 = &v28;
@@ -703,7 +703,7 @@ uint64_t __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke(uint64_t
 
   v6 = v5;
   _Block_object_dispose(&v28, 8);
-  v7 = [v5 imageWithCGImage:a3];
+  v7 = [v5 imageWithCGImage:image];
   if (!v7)
   {
     v16 = 0;
@@ -728,8 +728,8 @@ uint64_t __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke(uint64_t
 
   v9 = v8;
   _Block_object_dispose(&v28, 8);
-  v10 = [v8 context];
-  if (v10)
+  context = [v8 context];
+  if (context)
   {
     v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
     if ([(CNVCardMutableImage *)self shouldReturnPNG])
@@ -756,7 +756,7 @@ uint64_t __45__CNVCardMutableImage_scaleCropRects_factor___block_invoke(uint64_t
       _Block_object_dispose(&v28, 8);
       if (v12)
       {
-        v15 = [v10 PNGRepresentationOfImage:v7 format:*v12 colorSpace:objc_msgSend(v7 options:{"colorSpace"), v11}];
+        v15 = [context PNGRepresentationOfImage:v7 format:*v12 colorSpace:objc_msgSend(v7 options:{"colorSpace"), v11}];
 LABEL_18:
         v16 = v15;
 
@@ -792,7 +792,7 @@ LABEL_18:
       if (v18)
       {
         [v11 setObject:compressionQuality forKeyedSubscript:*v18];
-        v15 = [v10 JPEGRepresentationOfImage:v7 colorSpace:objc_msgSend(v7 options:{"colorSpace"), v11}];
+        v15 = [context JPEGRepresentationOfImage:v7 colorSpace:objc_msgSend(v7 options:{"colorSpace"), v11}];
         goto LABEL_18;
       }
     }

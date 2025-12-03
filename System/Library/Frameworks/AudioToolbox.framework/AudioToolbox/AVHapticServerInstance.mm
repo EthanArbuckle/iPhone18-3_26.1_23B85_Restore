@@ -1,46 +1,46 @@
 @interface AVHapticServerInstance
-- (AVHapticServerInstance)initWithMaster:(id)a3 id:(unint64_t)a4 connection:(id)a5 outError:(id *)a6;
-- (BOOL)handleClientApplicationStateChange:(id)a3;
-- (BOOL)handleClientApplicationStateChangeUsingAppState:(unint64_t)a3;
-- (BOOL)setupAudioSessionFromID:(unsigned int)a3 isShared:(BOOL)a4 error:(id *)a5;
+- (AVHapticServerInstance)initWithMaster:(id)master id:(unint64_t)id connection:(id)connection outError:(id *)error;
+- (BOOL)handleClientApplicationStateChange:(id)change;
+- (BOOL)handleClientApplicationStateChangeUsingAppState:(unint64_t)state;
+- (BOOL)setupAudioSessionFromID:(unsigned int)d isShared:(BOOL)shared error:(id *)error;
 - (id).cxx_construct;
-- (id)getAsyncDelegateForMethod:(SEL)a3 errorHandler:(id)a4;
-- (id)getSyncDelegateForMethod:(SEL)a3 errorHandler:(id)a4;
-- (void)allocateClientResources:(id)a3;
-- (void)configureWithOptions:(id)a3 reply:(id)a4;
-- (void)copyCustomAudioEvent:(unint64_t)a3 options:(id)a4 reply:(id)a5;
-- (void)createCustomAudioEvent:(id)a3 format:(id)a4 frames:(unint64_t)a5 options:(id)a6 reply:(id)a7;
+- (id)getAsyncDelegateForMethod:(SEL)method errorHandler:(id)handler;
+- (id)getSyncDelegateForMethod:(SEL)method errorHandler:(id)handler;
+- (void)allocateClientResources:(id)resources;
+- (void)configureWithOptions:(id)options reply:(id)reply;
+- (void)copyCustomAudioEvent:(unint64_t)event options:(id)options reply:(id)reply;
+- (void)createCustomAudioEvent:(id)event format:(id)format frames:(unint64_t)frames options:(id)options reply:(id)reply;
 - (void)dealloc;
-- (void)detachSequence:(unint64_t)a3;
-- (void)getHapticLatency:(id)a3;
-- (void)handleClientRouteChange:(id)a3;
+- (void)detachSequence:(unint64_t)sequence;
+- (void)getHapticLatency:(id)latency;
+- (void)handleClientRouteChange:(id)change;
 - (void)handleConnectionError;
-- (void)handleInterruptionForSession:(const void *)a3 command:(unsigned int)a4 dictionary:(id)a5;
-- (void)loadHapticEvent:(id)a3 reply:(id)a4;
-- (void)loadHapticSequenceFromData:(id)a3 reply:(id)a4;
-- (void)loadHapticSequenceFromEvents:(id)a3 reply:(id)a4;
-- (void)loadVibePattern:(id)a3 reply:(id)a4;
-- (void)muteClientForRingerSwitch:(BOOL)a3;
-- (void)notifyClientOnStopWithReason:(int64_t)a3 error:(id)a4;
+- (void)handleInterruptionForSession:(const void *)session command:(unsigned int)command dictionary:(id)dictionary;
+- (void)loadHapticEvent:(id)event reply:(id)reply;
+- (void)loadHapticSequenceFromData:(id)data reply:(id)reply;
+- (void)loadHapticSequenceFromEvents:(id)events reply:(id)reply;
+- (void)loadVibePattern:(id)pattern reply:(id)reply;
+- (void)muteClientForRingerSwitch:(BOOL)switch;
+- (void)notifyClientOnStopWithReason:(int64_t)reason error:(id)error;
 - (void)prepareHapticSequence:(caulk::inplace_function_detail::wrapper<-[AVHapticServerInstance)prepareHapticSequence:reply:]::$_1> reply:;
-- (void)prepareHapticSequence:(unint64_t)a3 reply:(id)a4;
-- (void)prewarm:(id)a3;
-- (void)queryCapabilities:(id)a3 reply:(id)a4;
-- (void)referenceCustomAudioEvent:(unint64_t)a3 reply:(id)a4;
+- (void)prepareHapticSequence:(unint64_t)sequence reply:(id)reply;
+- (void)prewarm:(id)prewarm;
+- (void)queryCapabilities:(id)capabilities reply:(id)reply;
+- (void)referenceCustomAudioEvent:(unint64_t)event reply:(id)reply;
 - (void)releaseChannels;
 - (void)releaseClientResources;
-- (void)releaseCustomAudioEvent:(unint64_t)a3 reply:(id)a4;
-- (void)removeChannel:(unint64_t)a3 reply:(id)a4;
+- (void)releaseCustomAudioEvent:(unint64_t)event reply:(id)reply;
+- (void)removeChannel:(unint64_t)channel reply:(id)reply;
 - (void)removeSessionListeners;
-- (void)requestChannels:(unint64_t)a3 reply:(id)a4;
-- (void)setChannelEventBehavior:(unint64_t)a3 behavior:(unint64_t)a4 reply:(id)a5;
-- (void)setPlayerBehavior:(unint64_t)a3 reply:(id)a4;
-- (void)setSequenceEventBehavior:(unint64_t)a3 behavior:(unint64_t)a4 channelIndex:(unint64_t)a5 reply:(id)a6;
-- (void)startRunning:(id)a3;
+- (void)requestChannels:(unint64_t)channels reply:(id)reply;
+- (void)setChannelEventBehavior:(unint64_t)behavior behavior:(unint64_t)a4 reply:(id)reply;
+- (void)setPlayerBehavior:(unint64_t)behavior reply:(id)reply;
+- (void)setSequenceEventBehavior:(unint64_t)behavior behavior:(unint64_t)a4 channelIndex:(unint64_t)index reply:(id)reply;
+- (void)startRunning:(id)running;
 - (void)stopPrewarm;
 - (void)stopRunning;
-- (void)stopRunning:(id)a3;
-- (void)unmuteClientAfterSessionInterruption:(float)a3;
+- (void)stopRunning:(id)running;
+- (void)unmuteClientAfterSessionInterruption:(float)interruption;
 @end
 
 @implementation AVHapticServerInstance
@@ -59,11 +59,11 @@
   return self;
 }
 
-- (void)setSequenceEventBehavior:(unint64_t)a3 behavior:(unint64_t)a4 channelIndex:(unint64_t)a5 reply:(id)a6
+- (void)setSequenceEventBehavior:(unint64_t)behavior behavior:(unint64_t)a4 channelIndex:(unint64_t)index reply:(id)reply
 {
-  v6 = a5;
+  indexCopy = index;
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  replyCopy = reply;
   if (kHSRVScope)
   {
     v11 = *kHSRVScope;
@@ -120,7 +120,7 @@ LABEL_18:
     atomic_fetch_add_explicit((*&v21[8] + 8), 1uLL, memory_order_relaxed);
   }
 
-  SequencerChannelForIndex = ClientEntry::getSequencerChannelForIndex(v16, a3, v6);
+  SequencerChannelForIndex = ClientEntry::getSequencerChannelForIndex(v16, behavior, indexCopy);
   if (SequencerChannelForIndex != -1)
   {
     ClientEntry::setChannelBehaviorForSynthChannel(v16, SequencerChannelForIndex, a4);
@@ -150,7 +150,7 @@ LABEL_15:
 LABEL_19:
   v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:v18 userInfo:{0, *v21}];
 LABEL_20:
-  v10[2](v10, v19);
+  replyCopy[2](replyCopy, v19);
 
   if (*&v21[8])
   {
@@ -160,10 +160,10 @@ LABEL_20:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setChannelEventBehavior:(unint64_t)a3 behavior:(unint64_t)a4 reply:(id)a5
+- (void)setChannelEventBehavior:(unint64_t)behavior behavior:(unint64_t)a4 reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  replyCopy = reply;
   if (kHSRVScope)
   {
     v9 = *kHSRVScope;
@@ -191,7 +191,7 @@ LABEL_20:
     v29 = 2048;
     v30 = clientID;
     v31 = 1024;
-    v32 = a4;
+    behaviorCopy = a4;
     _os_log_impl(&dword_1B9A08000, v9, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx behavior: %u", buf, 0x2Cu);
   }
 
@@ -241,14 +241,14 @@ LABEL_15:
     v29 = 2048;
     v30 = v17;
     v31 = 1024;
-    v32 = a3;
+    behaviorCopy = behavior;
     v33 = 1024;
     v34 = a4;
     _os_log_impl(&dword_1B9A08000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Channel behavior change: Client ID 0x%lx, channelID: 0x%x, behavior: %u", buf, 0x32u);
   }
 
 LABEL_20:
-  AssignedChannelWithID = ClientEntry::getAssignedChannelWithID(v21, a3);
+  AssignedChannelWithID = ClientEntry::getAssignedChannelWithID(v21, behavior);
   if (AssignedChannelWithID == -1)
   {
     v14 = -4804;
@@ -259,7 +259,7 @@ LABEL_20:
   v15 = 0;
 LABEL_22:
   v19 = v15;
-  v8[2](v8, v19);
+  replyCopy[2](replyCopy, v19);
 
   if (v22)
   {
@@ -269,10 +269,10 @@ LABEL_22:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeChannel:(unint64_t)a3 reply:(id)a4
+- (void)removeChannel:(unint64_t)channel reply:(id)reply
 {
   v85 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  replyCopy = reply;
   if (kHCHNScope)
   {
     v8 = *kHCHNScope;
@@ -300,7 +300,7 @@ LABEL_22:
     *&v77[14] = 2048;
     *&v77[16] = clientID;
     *&v77[24] = 1024;
-    v78 = a3;
+    channelCopy = channel;
     _os_log_impl(&dword_1B9A08000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx channelID: %u", buf, 0x2Cu);
   }
 
@@ -320,7 +320,7 @@ LABEL_8:
           v13 = *kHCHNScope;
           if (v13)
           {
-            v4 = v13;
+            channelCopy3 = v13;
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
             {
               v14 = *(v70 + 24);
@@ -333,8 +333,8 @@ LABEL_8:
               *&v77[14] = 1024;
               *&v77[16] = v14;
               *&v77[20] = 1024;
-              *&v77[22] = a3;
-              _os_log_impl(&dword_1B9A08000, v4, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: client ID: 0x%x, key: %u", buf, 0x28u);
+              *&v77[22] = channel;
+              _os_log_impl(&dword_1B9A08000, channelCopy3, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: client ID: 0x%x, key: %u", buf, 0x28u);
             }
           }
         }
@@ -378,27 +378,27 @@ LABEL_28:
           v22.i16[0] = vaddlv_u8(v22);
           if (v22.u32[0] > 1uLL)
           {
-            v4 = a3;
-            if (v21 <= a3)
+            channelCopy3 = channel;
+            if (v21 <= channel)
             {
-              v4 = a3 % v21;
+              channelCopy3 = channel % v21;
             }
           }
 
           else
           {
-            v4 = (v21 - 1) & a3;
+            channelCopy3 = (v21 - 1) & channel;
           }
 
-          v24 = *(*(v70 + 448) + 8 * v4);
+          v24 = *(*(v70 + 448) + 8 * channelCopy3);
           if (v24)
           {
             for (i = *v24; i; i = *i)
             {
               v26 = i[1];
-              if (v26 == a3)
+              if (v26 == channel)
               {
-                if (i[2] == a3)
+                if (i[2] == channel)
                 {
                   goto LABEL_134;
                 }
@@ -419,7 +419,7 @@ LABEL_28:
                   v26 &= v21 - 1;
                 }
 
-                if (v26 != v4)
+                if (v26 != channelCopy3)
                 {
                   break;
                 }
@@ -436,8 +436,8 @@ LABEL_28:
 
         v28 = caulk::rt_safe_memory_resource::rt_allocate(*MEMORY[0x1E69E3C08]);
         *v28 = 0;
-        *(v28 + 8) = a3;
-        *(v28 + 16) = a3;
+        *(v28 + 8) = channel;
+        *(v28 + 16) = channel;
         *(v28 + 24) = 0;
         v29 = (*(v70 + 472) + 1);
         v30 = *(v70 + 480);
@@ -445,7 +445,7 @@ LABEL_28:
         {
 LABEL_124:
           v60 = *(v70 + 448);
-          v61 = *(v60 + 8 * v4);
+          v61 = *(v60 + 8 * channelCopy3);
           if (v61)
           {
             *v28 = *v61;
@@ -455,7 +455,7 @@ LABEL_124:
           {
             *v28 = *(v70 + 464);
             *(v70 + 464) = v28;
-            *(v60 + 8 * v4) = v70 + 464;
+            *(v60 + 8 * channelCopy3) = v70 + 464;
             if (!*v28)
             {
               goto LABEL_133;
@@ -659,20 +659,20 @@ LABEL_163:
 LABEL_119:
         if ((v21 & (v21 - 1)) != 0)
         {
-          if (v21 <= a3)
+          if (v21 <= channel)
           {
-            v4 = a3 % v21;
+            channelCopy3 = channel % v21;
           }
 
           else
           {
-            v4 = a3;
+            channelCopy3 = channel;
           }
         }
 
         else
         {
-          v4 = (v21 - 1) & a3;
+          channelCopy3 = (v21 - 1) & channel;
         }
 
         goto LABEL_124;
@@ -726,8 +726,8 @@ LABEL_80:
       do
       {
         v48 = *(v46 + 32);
-        v49 = v48 >= a3;
-        v50 = v48 < a3;
+        v49 = v48 >= channel;
+        v50 = v48 < channel;
         if (v49)
         {
           v47 = v46;
@@ -737,7 +737,7 @@ LABEL_80:
       }
 
       while (v46);
-      if (v47 != v70 + 240 && *(v47 + 32) <= a3)
+      if (v47 != v70 + 240 && *(v47 + 32) <= channel)
       {
         if (*(v47 + 40) == -1)
         {
@@ -806,7 +806,7 @@ LABEL_88:
                 *&v77[4] = 2080;
                 *&v77[6] = "removeAssignedChannelWithID";
                 *&v77[14] = 1024;
-                *&v77[16] = a3;
+                *&v77[16] = channel;
                 _os_log_impl(&dword_1B9A08000, v54, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: ChannelID %u not found", buf, 0x22u);
               }
             }
@@ -877,7 +877,7 @@ LABEL_143:
 LABEL_23:
   v19 = v18;
 LABEL_136:
-  v7[2](v7, v19);
+  replyCopy[2](replyCopy, v19);
 
   if (v71)
   {
@@ -889,10 +889,10 @@ LABEL_136:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestChannels:(unint64_t)a3 reply:(id)a4
+- (void)requestChannels:(unint64_t)channels reply:(id)reply
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (kHCHNScope)
   {
     v7 = *kHCHNScope;
@@ -920,7 +920,7 @@ LABEL_136:
     *&buf[28] = 2048;
     *&buf[30] = clientID;
     *&buf[38] = 1024;
-    v41 = a3;
+    channelsCopy = channels;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx count: %u", buf, 0x2Cu);
   }
 
@@ -940,7 +940,7 @@ LABEL_8:
     goto LABEL_52;
   }
 
-  v34 = v6;
+  v34 = replyCopy;
   ClientEntry::getAssignedChannelIDs(buf, v35);
   v13 = *buf;
   v12 = *&buf[8];
@@ -951,26 +951,26 @@ LABEL_8:
 
   if (v12 == v13)
   {
-    if (a3 >> 31)
+    if (channels >> 31)
     {
       CAAssertRtn();
       CAAssertRtn();
     }
 
     [(AVHapticServer *)self->_master getChannelID];
-    v14 = a3;
+    channelsCopy2 = channels;
   }
 
   else
   {
     [(AVHapticServer *)self->_master getChannelID];
-    v14 = 1;
+    channelsCopy2 = 1;
   }
 
   __p = 0;
   v38 = 0;
   v39 = 0;
-  v33 = ClientEntry::requestAndInitializeSynthChannels(v35, &__p, v14);
+  v33 = ClientEntry::requestAndInitializeSynthChannels(v35, &__p, channelsCopy2);
   if (!v33)
   {
     if (kHCHNScope)
@@ -1023,9 +1023,9 @@ LABEL_27:
   std::__shared_mutex_base::lock_shared((v35 + 256));
   v19 = *(v35 + 248);
   std::__shared_mutex_base::unlock_shared((v35 + 256));
-  LODWORD(v20) = a3;
+  LODWORD(v20) = channels;
   *(v35 + 440) = v19 != 0;
-  v6 = v34;
+  replyCopy = v34;
   if (__p)
   {
     operator delete(__p);
@@ -1073,7 +1073,7 @@ LABEL_42:
   ClientEntry::getAssignedChannelIDs(&__p, v35);
   v24 = __p;
   v23 = v38;
-  if ((v38 - __p) >> 3 < a3)
+  if ((v38 - __p) >> 3 < channels)
   {
     v20 = (v38 - __p) >> 3;
   }
@@ -1197,10 +1197,10 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPlayerBehavior:(unint64_t)a3 reply:(id)a4
+- (void)setPlayerBehavior:(unint64_t)behavior reply:(id)reply
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (kHSRVScope)
   {
     v7 = *kHSRVScope;
@@ -1228,7 +1228,7 @@ LABEL_8:
     *&buf[28] = 2048;
     *&buf[30] = clientID;
     *&buf[38] = 1024;
-    LODWORD(v78) = a3;
+    LODWORD(v78) = behavior;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx behavior: %u", buf, 0x2Cu);
   }
 
@@ -1250,13 +1250,13 @@ LABEL_8:
     goto LABEL_31;
   }
 
-  v12 = [(AVHapticServer *)self->_master manager];
+  manager = [(AVHapticServer *)self->_master manager];
   if (v59)
   {
     atomic_fetch_add_explicit(&v59->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  if (a3 >= 0x400)
+  if (behavior >= 0x400)
   {
     if (kHSRVScope)
     {
@@ -1282,7 +1282,7 @@ LABEL_8:
       *&buf[18] = 2080;
       *&buf[20] = "setClientPlayerBehavior";
       *&buf[28] = 1024;
-      *&buf[30] = a3;
+      *&buf[30] = behavior;
       _os_log_impl(&dword_1B9A08000, v16, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Illegal or unsupported player behavior: 0x%x", buf, 0x22u);
     }
 
@@ -1301,7 +1301,7 @@ LABEL_29:
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  if ((~a3 & 0x11) == 0)
+  if ((~behavior & 0x11) == 0)
   {
     if (kHSRVScope)
     {
@@ -1335,7 +1335,7 @@ LABEL_41:
   }
 
   v56 = routeUsesReceiver;
-  v57 = a3 & 0x10;
+  v57 = behavior & 0x10;
   if (kHSRVScope)
   {
     v17 = *kHSRVScope;
@@ -1357,7 +1357,7 @@ LABEL_41:
     v24 = "audio-only";
     *buf = 136316162;
     *&buf[4] = "ServerManager.mm";
-    if ((a3 & 0x10) == 0)
+    if ((behavior & 0x10) == 0)
     {
       v24 = "haptics+audio";
     }
@@ -1367,7 +1367,7 @@ LABEL_41:
     *&buf[20] = "setClientPlayerBehavior";
     *&buf[28] = 2048;
     *&buf[18] = 2080;
-    if (a3)
+    if (behavior)
     {
       v24 = "haptics-only";
     }
@@ -1379,9 +1379,9 @@ LABEL_41:
   }
 
 LABEL_50:
-  v25 = (*(v58 + 96) & 0xFFFFFFFFFFFFFFFCLL | (2 * (a3 & 1)) | (v57 >> 4)) ^ 3;
+  v25 = (*(v58 + 96) & 0xFFFFFFFFFFFFFFFCLL | (2 * (behavior & 1)) | (v57 >> 4)) ^ 3;
   *(v58 + 96) = v25;
-  if ((~a3 & 5) != 0)
+  if ((~behavior & 5) != 0)
   {
     goto LABEL_59;
   }
@@ -1415,12 +1415,12 @@ LABEL_55:
   v25 = *(v58 + 96) | 0x40;
   *(v58 + 96) = v25;
 LABEL_59:
-  if (((v25 >> 2) & 1) == (a3 & 2) >> 1)
+  if (((v25 >> 2) & 1) == (behavior & 2) >> 1)
   {
     goto LABEL_75;
   }
 
-  *(v58 + 96) = v25 & 0xFFFFFFFFFFFFFFFBLL | (2 * (a3 & 2));
+  *(v58 + 96) = v25 & 0xFFFFFFFFFFFFFFFBLL | (2 * (behavior & 2));
   if (!kHSRVScope)
   {
     v29 = MEMORY[0x1E69E9C10];
@@ -1439,7 +1439,7 @@ LABEL_64:
       v32 = *(v58 + 24);
       *buf = 136316162;
       *&buf[12] = 1024;
-      if ((a3 & 2) == 0)
+      if ((behavior & 2) == 0)
       {
         v31 = "no longer";
       }
@@ -1460,7 +1460,7 @@ LABEL_64:
   *&buf[16] = ___ZN13ServerManager23setClientPlayerBehaviorENSt3__110shared_ptrI11ClientEntryEEmb_block_invoke;
   *&buf[24] = &unk_1F37C5070;
   *&buf[32] = &v60;
-  v78 = v12;
+  v78 = manager;
   v79 = v58;
   v80 = v59;
   if (v59)
@@ -1484,7 +1484,7 @@ LABEL_64:
   }
 
 LABEL_75:
-  v35 = a3 & 0x21;
+  v35 = behavior & 0x21;
   v36 = *(v58 + 96);
   if ((v35 != 0) == ((v36 >> 3) & 1))
   {
@@ -1509,7 +1509,7 @@ LABEL_80:
       *v64 = 136316674;
       v65 = "ServerManager.mm";
       v66 = 1024;
-      if ((a3 & 0x21) != 0)
+      if ((behavior & 0x21) != 0)
       {
         v39 = "Muting";
       }
@@ -1522,9 +1522,9 @@ LABEL_80:
       *&v71[8] = 2048;
       v72 = v40;
       v73 = 1024;
-      v74 = (a3 >> 5) & 1;
+      v74 = (behavior >> 5) & 1;
       v75 = 1024;
-      v76 = a3 & 1;
+      v76 = behavior & 1;
       _os_log_impl(&dword_1B9A08000, v37, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: %s audio on client ID 0x%lx due to player behaviors: MuteAudio %d, HapticsOnly %d", v64, 0x3Cu);
     }
   }
@@ -1560,7 +1560,7 @@ LABEL_80:
   ClientEntry::muteAudio(v58, v35 != 0, 6, 0.0);
   v36 = *(v58 + 96);
 LABEL_92:
-  v44 = a3 & 0x50;
+  v44 = behavior & 0x50;
   if ((v44 != 0) == ((v36 >> 4) & 1))
   {
     goto LABEL_109;
@@ -1586,7 +1586,7 @@ LABEL_97:
       v66 = 1024;
       v67 = 1339;
       v68 = 2080;
-      if ((a3 & 0x50) != 0)
+      if ((behavior & 0x50) != 0)
       {
         v48 = "Muting";
       }
@@ -1597,7 +1597,7 @@ LABEL_97:
       *&v71[8] = 2048;
       v72 = v47;
       v73 = 1024;
-      v74 = (a3 >> 6) & 1;
+      v74 = (behavior >> 6) & 1;
       v75 = 1024;
       v76 = v57 >> 4;
       _os_log_impl(&dword_1B9A08000, v45, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: %s haptics on client ID 0x%lx due to player behaviors: MuteHaptics %d, AudioOnly %d", v64, 0x3Cu);
@@ -1635,7 +1635,7 @@ LABEL_97:
   (*(*v58 + 48))(v58, 0.0);
   v36 = *(v58 + 96);
 LABEL_109:
-  if (a3 < 0x200 != ((v36 & 0x100) == 0))
+  if (behavior < 0x200 != ((v36 & 0x100) == 0))
   {
     if (kHMUTScope)
     {
@@ -1643,10 +1643,10 @@ LABEL_109:
       if (!v52)
       {
 LABEL_119:
-        *(v58 + 96) = *(v58 + 96) & 0xFFFFFFFFFFFFFEFFLL | ((a3 > 0x1FF) << 8);
+        *(v58 + 96) = *(v58 + 96) & 0xFFFFFFFFFFFFFEFFLL | ((behavior > 0x1FF) << 8);
         if (*(*(v58 + 224) + 321) == 1)
         {
-          (*(*v58 + 48))(v58, a3 < 0x200, 1, 0.0);
+          (*(*v58 + 48))(v58, behavior < 0x200, 1, 0.0);
         }
 
         goto LABEL_121;
@@ -1666,7 +1666,7 @@ LABEL_119:
       *v64 = 136316162;
       v65 = "ServerManager.mm";
       v66 = 1024;
-      if (a3 < 0x200)
+      if (behavior < 0x200)
       {
         v55 = "now";
       }
@@ -1685,12 +1685,12 @@ LABEL_119:
   }
 
 LABEL_121:
-  if ((a3 & 0x80) != 0)
+  if ((behavior & 0x80) != 0)
   {
     *(v58 + 104) = 1003;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((behavior & 0x100) != 0)
   {
     *(v58 + 108) = 1;
   }
@@ -1722,14 +1722,14 @@ LABEL_31:
     v19 = 0;
   }
 
-  v6[2](v6, v19);
+  replyCopy[2](replyCopy, v19);
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getHapticLatency:(id)a3
+- (void)getHapticLatency:(id)latency
 {
-  v4 = a3;
+  latencyCopy = latency;
   v5 = self->_master;
   objc_sync_enter(v5);
   master = self->_master;
@@ -1745,8 +1745,8 @@ LABEL_31:
     v12 = 0;
   }
 
-  v7 = [(AVHapticServer *)master manager];
-  v8 = (*(**(v7 + 232) + 120))(*(v7 + 232), (*(v11 + 96) >> 1) & 1, 9999999);
+  manager = [(AVHapticServer *)master manager];
+  v8 = (*(**(manager + 232) + 120))(*(manager + 232), (*(v11 + 96) >> 1) & 1, 9999999);
   if (v8 <= 0.0)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:-4806 userInfo:0];
@@ -1757,7 +1757,7 @@ LABEL_31:
     v9 = 0;
   }
 
-  v4[2](v4, v9, v8);
+  latencyCopy[2](latencyCopy, v9, v8);
 
   if (v12)
   {
@@ -1767,10 +1767,10 @@ LABEL_31:
   objc_sync_exit(v5);
 }
 
-- (void)stopRunning:(id)a3
+- (void)stopRunning:(id)running
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  runningCopy = running;
   if (kHSRVScope)
   {
     v5 = *kHSRVScope;
@@ -1919,7 +1919,7 @@ LABEL_8:
   v18 = v16;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = _Block_copy(v4);
+    v19 = _Block_copy(runningCopy);
     *buf = 136315906;
     v32 = "AVHapticServer.mm";
     v33 = 1024;
@@ -1932,7 +1932,7 @@ LABEL_8:
   }
 
 LABEL_39:
-  (*(v4 + 2))(v4, v15);
+  (*(runningCopy + 2))(runningCopy, v15);
   _Block_object_dispose(&v27, 8);
 
   v20 = *MEMORY[0x1E69E9840];
@@ -2130,10 +2130,10 @@ void __37__AVHapticServerInstance_stopRunning__block_invoke(uint64_t a1)
   }
 }
 
-- (void)startRunning:(id)a3
+- (void)startRunning:(id)running
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  runningCopy = running;
   if (kHSRVScope)
   {
     v5 = *kHSRVScope;
@@ -2219,7 +2219,7 @@ LABEL_24:
 
   [(AVHapticServerInstance *)self setWasRunningAndSuspended:0];
   objc_initWeak(&location, self);
-  v13 = [(AVHapticServerInstance *)self master];
+  master = [(AVHapticServerInstance *)self master];
   v24 = *buf;
   v25 = *&buf[8];
   if (*&buf[8])
@@ -2232,7 +2232,7 @@ LABEL_24:
   v22[2] = __39__AVHapticServerInstance_startRunning___block_invoke_2;
   v22[3] = &unk_1E7ECEC50;
   objc_copyWeak(&v23, &location);
-  v14 = [v13 doStartRunning:&v24 completedBlock:v22];
+  v14 = [master doStartRunning:&v24 completedBlock:v22];
   if (v25)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v25);
@@ -2276,15 +2276,15 @@ LABEL_25:
   v18 = v16;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = _Block_copy(v4);
+    v19 = _Block_copy(runningCopy);
     if (v15)
     {
-      v20 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
     }
 
     else
     {
-      v20 = @"(no err)";
+      localizedDescription = @"(no err)";
     }
 
     *buf = 136316162;
@@ -2296,7 +2296,7 @@ LABEL_25:
     v31 = 2048;
     v32 = v19;
     v33 = 2112;
-    v34 = v20;
+    v34 = localizedDescription;
     _os_log_impl(&dword_1B9A08000, v18, OS_LOG_TYPE_INFO, "%25s:%-5d %s: invoking callback %p: %@", buf, 0x30u);
     if (v15)
     {
@@ -2304,7 +2304,7 @@ LABEL_25:
   }
 
 LABEL_42:
-  (*(v4 + 2))(v4, v15);
+  (*(runningCopy + 2))(runningCopy, v15);
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -2535,10 +2535,10 @@ void __37__AVHapticServerInstance_stopPrewarm__block_invoke(uint64_t a1)
   }
 }
 
-- (void)prewarm:(id)a3
+- (void)prewarm:(id)prewarm
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prewarmCopy = prewarm;
   if (kHSRVScope)
   {
     v5 = *kHSRVScope;
@@ -2669,7 +2669,7 @@ LABEL_8:
   v16 = v14;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = _Block_copy(v4);
+    v17 = _Block_copy(prewarmCopy);
     *buf = 136316162;
     v30 = "AVHapticServer.mm";
     v31 = 1024;
@@ -2684,7 +2684,7 @@ LABEL_8:
   }
 
 LABEL_34:
-  (*(v4 + 2))(v4, v13);
+  (*(prewarmCopy + 2))(prewarmCopy, v13);
   if (v24)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v24);
@@ -2738,7 +2738,7 @@ uint64_t __34__AVHapticServerInstance_prewarm___block_invoke(uint64_t a1)
   return [*(a1 + 32) setPrewarmIncludesAudio:v6];
 }
 
-- (void)detachSequence:(unint64_t)a3
+- (void)detachSequence:(unint64_t)sequence
 {
   v21 = *MEMORY[0x1E69E9840];
   if (kHSRVScope)
@@ -2784,7 +2784,7 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v9 = [(AVHapticServer *)self->_master manager];
+  manager = [(AVHapticServer *)self->_master manager];
   if (v17)
   {
     atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -2813,13 +2813,13 @@ LABEL_17:
       *&buf[28] = 1024;
       *&buf[30] = v12;
       *&buf[34] = 1024;
-      *&buf[36] = a3;
+      *&buf[36] = sequence;
       _os_log_impl(&dword_1B9A08000, v10, OS_LOG_TYPE_INFO, "%25s:%-5d %s: client ID: 0x%x, asychronously detaching sequence with ID %u after 2-second delay", buf, 0x28u);
     }
   }
 
   v13 = dispatch_time(0, 2000000000);
-  v14 = v9[41];
+  v14 = manager[41];
   *buf = MEMORY[0x1E69E9820];
   *&buf[8] = 3321888768;
   *&buf[16] = ___ZN13ServerManager14detachSequenceENSt3__110shared_ptrI11ClientEntryEEm_block_invoke;
@@ -2831,7 +2831,7 @@ LABEL_17:
     atomic_fetch_add_explicit(&v17->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v20 = a3;
+  sequenceCopy = sequence;
   dispatch_after(v13, v14, buf);
   if (v19)
   {
@@ -2852,11 +2852,11 @@ LABEL_26:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prepareHapticSequence:(unint64_t)a3 reply:(id)a4
+- (void)prepareHapticSequence:(unint64_t)sequence reply:(id)reply
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v31[4] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  replyCopy = reply;
   if (kHSEQScope)
   {
     v8 = *kHSEQScope;
@@ -2884,7 +2884,7 @@ LABEL_26:
     v26 = 2048;
     v27 = clientID;
     v28 = 1024;
-    LODWORD(v29) = v4;
+    LODWORD(v29) = sequenceCopy;
     _os_log_impl(&dword_1B9A08000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx seqID: %u", buf, 0x2Cu);
   }
 
@@ -2896,7 +2896,7 @@ LABEL_8:
     if (v20)
     {
       objc_initWeak(&location, self);
-      v12 = [(AVHapticServer *)self->_master manager];
+      manager = [(AVHapticServer *)self->_master manager];
       v18[0] = v20;
       v18[1] = v21;
       if (v21)
@@ -2909,7 +2909,7 @@ LABEL_8:
       v30 = caulk::inplace_function<void ()(unsigned long),32ul,8ul,caulk::inplace_function_detail::vtable>::k_wrapper_vtable<[AVHapticServerInstance prepareHapticSequence:reply:]::$_1>;
       objc_moveWeak(v31, buf);
       v31[1] = *&v23[4];
-      ServerManager::prepareSequence(v12, v18, v4, &v30);
+      ServerManager::prepareSequence(manager, v18, sequenceCopy, &v30);
     }
   }
 
@@ -2930,7 +2930,7 @@ LABEL_8:
         v15 = v14;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v16 = _Block_copy(v7);
+          v16 = _Block_copy(replyCopy);
           *buf = 136316162;
           *v23 = "AVHapticServer.mm";
           *&v23[8] = 1024;
@@ -2947,7 +2947,7 @@ LABEL_8:
     }
   }
 
-  (*(v7 + 2))(v7, v13);
+  (*(replyCopy + 2))(replyCopy, v13);
   if (v21)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v21);
@@ -2960,11 +2960,11 @@ LABEL_8:
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = *a2;
-  WeakRetained = objc_loadWeakRetained(a1);
+  WeakRetained = objc_loadWeakRetained(self);
   if (WeakRetained)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [WeakRetained getAsyncDelegateForMethod:*(a1 + 8) errorHandler:&__block_literal_global_561];
+    v6 = [WeakRetained getAsyncDelegateForMethod:*(self + 8) errorHandler:&__block_literal_global_561];
     if (kHSRVScope)
     {
       v7 = *kHSRVScope;
@@ -3005,11 +3005,11 @@ LABEL_10:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadVibePattern:(id)a3 reply:(id)a4
+- (void)loadVibePattern:(id)pattern reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  patternCopy = pattern;
+  replyCopy = reply;
   if (kHSEQScope)
   {
     v8 = *kHSEQScope;
@@ -3037,7 +3037,7 @@ LABEL_10:
     v27 = 2048;
     v28 = clientID;
     v29 = 2048;
-    v30 = v6;
+    v30 = patternCopy;
     _os_log_impl(&dword_1B9A08000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx pattern: %p", buf, 0x30u);
   }
 
@@ -3066,7 +3066,7 @@ LABEL_17:
   }
 
   *buf = -1;
-  v12 = (*(*v20 + 56))(v20, v6, buf);
+  v12 = (*(*v20 + 56))(v20, patternCopy, buf);
   v13 = *buf;
   if (v21)
   {
@@ -3093,7 +3093,7 @@ LABEL_19:
         v17 = v16;
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v18 = _Block_copy(v7);
+          v18 = _Block_copy(replyCopy);
           *buf = 136316162;
           *&buf[4] = "AVHapticServer.mm";
           v23 = 1024;
@@ -3110,7 +3110,7 @@ LABEL_19:
     }
   }
 
-  (*(v7 + 2))(v7, v13, v15);
+  (*(replyCopy + 2))(replyCopy, v13, v15);
 
   if (v21)
   {
@@ -3120,11 +3120,11 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadHapticSequenceFromEvents:(id)a3 reply:(id)a4
+- (void)loadHapticSequenceFromEvents:(id)events reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  replyCopy = reply;
   if (kHSEQScope)
   {
     v8 = *kHSEQScope;
@@ -3153,7 +3153,7 @@ LABEL_19:
     v27 = 2048;
     v28 = clientID;
     v29 = 1024;
-    v30 = [(NSArray *)v6 count];
+    v30 = [(NSArray *)eventsCopy count];
     _os_log_impl(&dword_1B9A08000, v10, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx array of %u events", buf, 0x2Cu);
   }
 
@@ -3173,7 +3173,7 @@ LABEL_8:
       v21 = 0.0;
       *buf = -1;
       v20 = 0;
-      ClientEntry::loadAndAddSequence(v18, v6, buf, &v21, &v20);
+      ClientEntry::loadAndAddSequence(v18, eventsCopy, buf, &v21, &v20);
     }
   }
 
@@ -3194,7 +3194,7 @@ LABEL_8:
         v15 = v14;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v16 = _Block_copy(v7);
+          v16 = _Block_copy(replyCopy);
           *buf = 136316674;
           *&buf[4] = "AVHapticServer.mm";
           v24 = 1219;
@@ -3215,7 +3215,7 @@ LABEL_8:
     }
   }
 
-  (*(v7 + 2))(v7, -1, 0, v13, 0.0);
+  (*(replyCopy + 2))(replyCopy, -1, 0, v13, 0.0);
 
   if (v19)
   {
@@ -3225,11 +3225,11 @@ LABEL_8:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadHapticSequenceFromData:(id)a3 reply:(id)a4
+- (void)loadHapticSequenceFromData:(id)data reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  replyCopy = reply;
   if (kHSEQScope)
   {
     v8 = *kHSEQScope;
@@ -3258,9 +3258,9 @@ LABEL_8:
     v28 = 2048;
     *v29 = clientID;
     *&v29[8] = 2048;
-    *&v29[10] = v6;
+    *&v29[10] = dataCopy;
     *&v29[18] = 1024;
-    v30[0] = [v6 length];
+    v30[0] = [dataCopy length];
     _os_log_impl(&dword_1B9A08000, v10, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx data: %p length: %u", buf, 0x36u);
   }
 
@@ -3277,7 +3277,7 @@ LABEL_8:
         atomic_fetch_add_explicit(&v24->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v13 = v6;
+      v13 = dataCopy;
       if (kHSEQScope)
       {
         v14 = *kHSEQScope;
@@ -3338,7 +3338,7 @@ LABEL_21:
         v20 = v19;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v21 = _Block_copy(v7);
+          v21 = _Block_copy(replyCopy);
           *buf = 136316674;
           *&buf[4] = "AVHapticServer.mm";
           *&buf[14] = 1196;
@@ -3359,7 +3359,7 @@ LABEL_21:
     }
   }
 
-  (*(v7 + 2))(v7, -1, 0, v15, 0.0);
+  (*(replyCopy + 2))(replyCopy, -1, 0, v15, 0.0);
 
   if (v24)
   {
@@ -3369,11 +3369,11 @@ LABEL_21:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadHapticEvent:(id)a3 reply:(id)a4
+- (void)loadHapticEvent:(id)event reply:(id)reply
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  replyCopy = reply;
   if (kHSRVScope)
   {
     v8 = *kHSRVScope;
@@ -3401,7 +3401,7 @@ LABEL_21:
     v52 = 2048;
     v53 = clientID;
     v54 = 2048;
-    v55 = v6;
+    v55 = eventCopy;
     _os_log_impl(&dword_1B9A08000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx preset: %p", buf, 0x30u);
   }
 
@@ -3457,12 +3457,12 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v15 = [(AVHapticServer *)self->_master manager];
+  manager = [(AVHapticServer *)self->_master manager];
   os_unfair_recursive_lock_lock_with_options();
-  v16 = v15[29];
-  v44 = v6;
+  v16 = manager[29];
+  v44 = eventCopy;
   v45 = 0;
-  if (v6)
+  if (eventCopy)
   {
     v43 = 0;
     if (CACFDictionary::GetUInt32(&v44, @"TypeID", &v43))
@@ -3757,7 +3757,7 @@ LABEL_81:
   v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:PropertyInfo userInfo:0];
 LABEL_28:
   v19 = v18;
-  v7[2](v7, 0, v18);
+  replyCopy[2](replyCopy, 0, v18);
   if (v38)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v38);
@@ -3766,11 +3766,11 @@ LABEL_28:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releaseCustomAudioEvent:(unint64_t)a3 reply:(id)a4
+- (void)releaseCustomAudioEvent:(unint64_t)event reply:(id)reply
 {
-  v4 = a3;
+  eventCopy = event;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (kHCARScope)
   {
     v7 = *kHCARScope;
@@ -3798,7 +3798,7 @@ LABEL_28:
     v30 = 2048;
     *v31 = clientID;
     *&v31[8] = 1024;
-    LODWORD(v32) = v4;
+    LODWORD(v32) = eventCopy;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx, eventID %u", buf, 0x2Cu);
   }
 
@@ -3850,14 +3850,14 @@ LABEL_15:
     v30 = 1024;
     *v31 = v16;
     *&v31[4] = 1024;
-    *&v31[6] = v4;
+    *&v31[6] = eventCopy;
     _os_log_impl(&dword_1B9A08000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: client ID: 0x%x eventID %u", buf, 0x28u);
   }
 
 LABEL_20:
-  if (!ClientEntry::sendRealTimeCommand(v22, 2, v4))
+  if (!ClientEntry::sendRealTimeCommand(v22, 2, eventCopy))
   {
-    v17 = ClientEntry::handleReleaseCustomAudioEvent(v22, v4);
+    v17 = ClientEntry::handleReleaseCustomAudioEvent(v22, eventCopy);
     if (v17)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:v17 userInfo:0];
@@ -3884,7 +3884,7 @@ LABEL_24:
         v19 = v18;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v20 = _Block_copy(v6);
+          v20 = _Block_copy(replyCopy);
           *buf = 136316162;
           v25 = "AVHapticServer.mm";
           v26 = 1024;
@@ -3901,16 +3901,16 @@ LABEL_24:
     }
   }
 
-  (*(v6 + 2))(v6, v14);
+  (*(replyCopy + 2))(replyCopy, v14);
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)referenceCustomAudioEvent:(unint64_t)a3 reply:(id)a4
+- (void)referenceCustomAudioEvent:(unint64_t)event reply:(id)reply
 {
-  v4 = a3;
+  eventCopy = event;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   if (kHCARScope)
   {
     v7 = *kHCARScope;
@@ -3938,7 +3938,7 @@ LABEL_24:
     *&v25[14] = 2048;
     *&v25[16] = clientID;
     *&v25[24] = 1024;
-    LODWORD(v26) = v4;
+    LODWORD(v26) = eventCopy;
     _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] clientID: 0x%lx, eventID %u", buf, 0x2Cu);
   }
 
@@ -3971,7 +3971,7 @@ LABEL_8:
               *&v25[14] = 1024;
               *&v25[16] = v14;
               *&v25[20] = 1024;
-              *&v25[22] = v4;
+              *&v25[22] = eventCopy;
               _os_log_impl(&dword_1B9A08000, v13, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: client ID: 0x%x, eventID %u", buf, 0x28u);
             }
           }
@@ -4013,7 +4013,7 @@ LABEL_8:
         v18 = v17;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v19 = _Block_copy(v6);
+          v19 = _Block_copy(replyCopy);
           *buf = 136316162;
           *&buf[4] = "AVHapticServer.mm";
           v24 = 1024;
@@ -4030,17 +4030,17 @@ LABEL_8:
     }
   }
 
-  (*(v6 + 2))(v6, v16);
+  (*(replyCopy + 2))(replyCopy, v16);
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyCustomAudioEvent:(unint64_t)a3 options:(id)a4 reply:(id)a5
+- (void)copyCustomAudioEvent:(unint64_t)event options:(id)options reply:(id)reply
 {
-  v6 = a3;
+  eventCopy = event;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   if (kHCARScope)
   {
     v10 = *kHCARScope;
@@ -4109,7 +4109,7 @@ LABEL_26:
           *&v64[14] = 1024;
           *&v64[16] = v17;
           *&v64[20] = 1024;
-          *&v64[22] = v6;
+          *&v64[22] = eventCopy;
           _os_log_impl(&dword_1B9A08000, v16, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: client ID: 0x%x eventID %u", buf, 0x28u);
         }
       }
@@ -4134,14 +4134,14 @@ LABEL_26:
           *&v64[4] = 2080;
           *&v64[6] = "copyCustomAudioEvent";
           *&v64[14] = 1024;
-          *&v64[16] = v6;
+          *&v64[16] = eventCopy;
           _os_log_impl(&dword_1B9A08000, v20, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Requesting copy of event ID %u from synth", buf, 0x22u);
         }
       }
     }
   }
 
-  v51 = v8;
+  v51 = optionsCopy;
   std::mutex::lock((v18 + 1));
   v21 = *v18;
   v22 = *(*v18 + 328);
@@ -4176,7 +4176,7 @@ LABEL_26:
     *&v64[4] = 2080;
     *&v64[6] = "copyCustomAudioEvent";
     *&v64[14] = 1024;
-    *&v64[16] = v6;
+    *&v64[16] = eventCopy;
     _os_log_impl(&dword_1B9A08000, v24, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Adding new zone from a copy of the sampleID for audio event ID %u", buf, 0x22u);
   }
 
@@ -4229,7 +4229,7 @@ LABEL_30:
   {
 LABEL_59:
     inElement = 0;
-    if (HapticAudioUnit::getZoneWithVelocity((v21 + 56), v59[1], BYTE1(v6), &inElement))
+    if (HapticAudioUnit::getZoneWithVelocity((v21 + 56), v59[1], BYTE1(eventCopy), &inElement))
     {
       goto LABEL_64;
     }
@@ -4442,7 +4442,7 @@ LABEL_66:
   }
 
   v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:LayerWithKey userInfo:0];
-  v8 = v51;
+  optionsCopy = v51;
 LABEL_69:
   if (v53)
   {
@@ -4461,7 +4461,7 @@ LABEL_69:
         v38 = v37;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
-          v39 = _Block_copy(v9);
+          v39 = _Block_copy(replyCopy);
           *buf = 136316418;
           *&buf[4] = "AVHapticServer.mm";
           v63 = 1024;
@@ -4480,19 +4480,19 @@ LABEL_69:
     }
   }
 
-  (*(v9 + 2))(v9, v26, v25);
+  (*(replyCopy + 2))(replyCopy, v26, v25);
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createCustomAudioEvent:(id)a3 format:(id)a4 frames:(unint64_t)a5 options:(id)a6 reply:(id)a7
+- (void)createCustomAudioEvent:(id)event format:(id)format frames:(unint64_t)frames options:(id)options reply:(id)reply
 {
-  v9 = a5;
+  framesCopy = frames;
   v95 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v62 = a6;
-  v14 = a7;
+  eventCopy = event;
+  formatCopy = format;
+  optionsCopy = options;
+  replyCopy = reply;
   clientID = self->_clientID;
   LOBYTE(v65[0]) = 1;
   v65[1] = "AVHapticServerInstance_createCustomAudioEvent";
@@ -4532,7 +4532,7 @@ LABEL_8:
   v19 = self->_master;
   objc_sync_enter(v19);
   master = self->_master;
-  v61 = v13;
+  v61 = formatCopy;
   if (!master)
   {
     v64 = 0;
@@ -4548,10 +4548,10 @@ LABEL_26:
     goto LABEL_63;
   }
 
-  v21 = v12;
-  v60 = v12;
-  v58 = [v12 bytes];
-  v59 = [v13 streamDescription];
+  v21 = eventCopy;
+  v60 = eventCopy;
+  bytes = [eventCopy bytes];
+  streamDescription = [formatCopy streamDescription];
   if (kHCARScope)
   {
     if (*(kHCARScope + 8))
@@ -4606,13 +4606,13 @@ LABEL_26:
   v29 = *(*v25 + 328);
   v30 = *(*v25 + 340);
   inElement = 0;
-  v70 = v62;
+  v70 = optionsCopy;
   v71 = 0;
   v69 = 1;
   CACFDictionary::GetBool(&v70, @"UseVolumeEnvelope", &v69);
   v68 = 0;
   CACFDictionary::GetBool(&v70, @"LoopEnabled", &v68);
-  v56 = v9;
+  v56 = framesCopy;
   if (kHCARScope)
   {
     v31 = *kHCARScope;
@@ -4715,7 +4715,7 @@ LABEL_54:
             CustomZoneVelocity = HapticAudioUnit::getCustomZoneVelocity((v28 + 56), v39);
             if (CustomZoneVelocity != -1)
             {
-              v41 = *(v59 + 24);
+              v41 = *(streamDescription + 24);
               if (kHPRSScope)
               {
                 if (*(kHPRSScope + 8))
@@ -4725,7 +4725,7 @@ LABEL_54:
                   {
                     if (os_log_type_enabled(*kHPRSScope, OS_LOG_TYPE_DEBUG))
                     {
-                      v43 = *(v59 + 28);
+                      v43 = *(streamDescription + 28);
                       *buf = 136317186;
                       *&buf[4] = "HapticAudioUnit.cpp";
                       v88 = 1024;
@@ -4733,7 +4733,7 @@ LABEL_54:
                       *&v89[4] = 2080;
                       *&v89[6] = "addAudioSample";
                       *&v89[14] = 2048;
-                      *&v89[16] = v58;
+                      *&v89[16] = bytes;
                       *&v89[24] = 1024;
                       LODWORD(v90) = v41 * v56;
                       WORD2(v90) = 1024;
@@ -4751,11 +4751,11 @@ LABEL_54:
               }
 
               v78 = 0;
-              *v73 = v58;
+              *v73 = bytes;
               v74 = (v41 * v56);
-              v44 = *v59;
-              v45 = *(v59 + 16);
-              v77 = *(v59 + 32);
+              v44 = *streamDescription;
+              v45 = *(streamDescription + 16);
+              v77 = *(streamDescription + 32);
               v75 = v44;
               v76 = v45;
               LODWORD(v78) = v57;
@@ -4868,7 +4868,7 @@ LABEL_51:
   }
 
   v32 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:started userInfo:0];
-  v12 = v60;
+  eventCopy = v60;
 LABEL_63:
   if (v64)
   {
@@ -4887,7 +4887,7 @@ LABEL_63:
         v50 = v49;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
         {
-          v51 = _Block_copy(v14);
+          v51 = _Block_copy(replyCopy);
           *buf = 136316418;
           *&buf[4] = "AVHapticServer.mm";
           v88 = 1024;
@@ -4906,7 +4906,7 @@ LABEL_63:
     }
   }
 
-  (*(v14 + 2))(v14, v33, v32);
+  (*(replyCopy + 2))(replyCopy, v33, v32);
 
   XOSTransactor::endTransaction(v65);
   XOSTransactor::~XOSTransactor(v65);
@@ -5072,10 +5072,10 @@ void __48__AVHapticServerInstance_releaseClientResources__block_invoke(uint64_t 
   }
 }
 
-- (void)allocateClientResources:(id)a3
+- (void)allocateClientResources:(id)resources
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourcesCopy = resources;
   if (kHSRVScope)
   {
     v5 = *kHSRVScope;
@@ -5114,7 +5114,7 @@ LABEL_8:
   v11 = v40;
   if (!v10)
   {
-    (*(v4 + 2))(v4, 0, 0, v11);
+    (*(resourcesCopy + 2))(resourcesCopy, 0, 0, v11);
     goto LABEL_61;
   }
 
@@ -5133,7 +5133,7 @@ LABEL_18:
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.CoreHaptics" code:-4812 userInfo:0];
 
     v11 = v17;
-    (*(v4 + 2))(v4, 0, 0, v17);
+    (*(resourcesCopy + 2))(resourcesCopy, 0, 0, v17);
     goto LABEL_59;
   }
 
@@ -5275,7 +5275,7 @@ LABEL_40:
         v30 = v29;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
-          v31 = _Block_copy(v4);
+          v31 = _Block_copy(resourcesCopy);
           *buf = 136316418;
           v42 = "AVHapticServer.mm";
           v43 = 1024;
@@ -5295,7 +5295,7 @@ LABEL_40:
   }
 
   v32 = v37;
-  (*(v4 + 2))(v4, v37, v36, v28);
+  (*(resourcesCopy + 2))(resourcesCopy, v37, v36, v28);
   if (!kHSRVScope)
   {
     v33 = MEMORY[0x1E69E9C10];
@@ -5332,11 +5332,11 @@ LABEL_61:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryCapabilities:(id)a3 reply:(id)a4
+- (void)queryCapabilities:(id)capabilities reply:(id)reply
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  capabilitiesCopy = capabilities;
+  replyCopy = reply;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v64 = 0;
   v65 = &v64;
@@ -5344,7 +5344,7 @@ LABEL_61:
   v67 = __Block_byref_object_copy__4369;
   v68 = __Block_byref_object_dispose__4370;
   v69 = 0;
-  v9 = unk_1F37DEF88(v6, "objectForKey:", @"RequestedLocality");
+  v9 = unk_1F37DEF88(capabilitiesCopy, "objectForKey:", @"RequestedLocality");
   memset(&__p, 0, sizeof(__p));
   if ([v9 length])
   {
@@ -5456,23 +5456,23 @@ LABEL_35:
     v26 = v65[5];
     v65[5] = v25;
 
-    v7[2](v7, 0, v65[5]);
+    replyCopy[2](replyCopy, 0, v65[5]);
     v27 = v9;
     goto LABEL_104;
   }
 
-  v19 = unk_1F37DEF90(v6, "objectForKey:", @"RequestedPriority");
+  v19 = unk_1F37DEF90(capabilitiesCopy, "objectForKey:", @"RequestedPriority");
   v20 = v19;
   if (!v19)
   {
     goto LABEL_39;
   }
 
-  v21 = [v19 unsignedIntegerValue];
-  v22 = v21;
-  if (v21 > 1)
+  unsignedIntegerValue = [v19 unsignedIntegerValue];
+  v22 = unsignedIntegerValue;
+  if (unsignedIntegerValue > 1)
   {
-    switch(v21)
+    switch(unsignedIntegerValue)
     {
       case 2:
         v23 = v61;
@@ -5493,7 +5493,7 @@ LABEL_48:
     goto LABEL_65;
   }
 
-  if (!v21)
+  if (!unsignedIntegerValue)
   {
 LABEL_39:
     if (kHSRVScope)
@@ -5523,21 +5523,21 @@ LABEL_39:
     }
 
 LABEL_49:
-    v30 = unk_1F37DEF98(v6, "objectForKey:", @"RequestedPowerUsage");
+    v30 = unk_1F37DEF98(capabilitiesCopy, "objectForKey:", @"RequestedPowerUsage");
 
     if (v30)
     {
-      v31 = [v30 unsignedIntegerValue];
-      v32 = v31;
-      if (v31)
+      unsignedIntegerValue2 = [v30 unsignedIntegerValue];
+      v32 = unsignedIntegerValue2;
+      if (unsignedIntegerValue2)
       {
-        if (v31 == 11)
+        if (unsignedIntegerValue2 == 11)
         {
           *(v61 + 108) = 1;
           goto LABEL_73;
         }
 
-        if (v31 == 10)
+        if (unsignedIntegerValue2 == 10)
         {
           *(v61 + 108) = 0;
           goto LABEL_73;
@@ -5553,7 +5553,7 @@ LABEL_72:
             v39 = v65[5];
             v65[5] = v38;
 
-            v7[2](v7, 0, v65[5]);
+            replyCopy[2](replyCopy, 0, v65[5]);
             goto LABEL_73;
           }
         }
@@ -5608,7 +5608,7 @@ LABEL_72:
     }
 
 LABEL_73:
-    v40 = unk_1F37DEFA0(v6, "objectForKey:", @"AllowBackgroundHaptics");
+    v40 = unk_1F37DEFA0(capabilitiesCopy, "objectForKey:", @"AllowBackgroundHaptics");
 
     v41 = v40;
     if (v40)
@@ -5616,7 +5616,7 @@ LABEL_73:
       *(v61 + 220) = [v40 BOOLValue];
     }
 
-    v27 = unk_1F37DEFA8(v6, "objectForKey:", @"RequestedUsageCategory");
+    v27 = unk_1F37DEFA8(capabilitiesCopy, "objectForKey:", @"RequestedUsageCategory");
 
     if (!v27)
     {
@@ -5667,7 +5667,7 @@ LABEL_83:
             *&buf[18] = 2080;
             *&buf[20] = "[AVHapticServerInstance queryCapabilities:reply:]";
             v71 = 2112;
-            v72 = v6;
+            v72 = capabilitiesCopy;
             _os_log_impl(&dword_1B9A08000, v46, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: queries: %@", buf, 0x26u);
           }
         }
@@ -5701,8 +5701,8 @@ LABEL_83:
     }
 
     v54 = &v64;
-    unk_1F37DEFB0(v6, "enumerateKeysAndObjectsUsingBlock:", v52);
-    (v7)[2](v7, v47, v65[5]);
+    unk_1F37DEFB0(capabilitiesCopy, "enumerateKeysAndObjectsUsingBlock:", v52);
+    (replyCopy)[2](replyCopy, v47, v65[5]);
     if (SHIBYTE(v59.__r_.__value_.__r.__words[2]) < 0)
     {
       operator delete(v59.__r_.__value_.__l.__data_);
@@ -5721,7 +5721,7 @@ LABEL_83:
     goto LABEL_103;
   }
 
-  if (v21 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v23 = v61;
     v24 = 1000;
@@ -5758,7 +5758,7 @@ LABEL_110:
   v51 = v65[5];
   v65[5] = v50;
 
-  v7[2](v7, 0, v65[5]);
+  replyCopy[2](replyCopy, 0, v65[5]);
   v41 = v20;
   v27 = v9;
 LABEL_103:
@@ -6059,18 +6059,18 @@ LABEL_42:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithOptions:(id)a3 reply:(id)a4
+- (void)configureWithOptions:(id)options reply:(id)reply
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v37 = [v6 objectForKey:@"AudioSessionID"];
-  v36 = [v6 objectForKey:@"AudioSessionIsShared"];
-  v35 = [v6 objectForKey:@"BypassAudioSession"];
-  v8 = [v6 objectForKey:@"ClientProcessTaskToken"];
-  v9 = [v37 unsignedIntegerValue];
-  v10 = [v36 BOOLValue];
-  v11 = [v35 BOOLValue];
+  optionsCopy = options;
+  replyCopy = reply;
+  v37 = [optionsCopy objectForKey:@"AudioSessionID"];
+  v36 = [optionsCopy objectForKey:@"AudioSessionIsShared"];
+  v35 = [optionsCopy objectForKey:@"BypassAudioSession"];
+  v8 = [optionsCopy objectForKey:@"ClientProcessTaskToken"];
+  unsignedIntegerValue = [v37 unsignedIntegerValue];
+  bOOLValue = [v36 BOOLValue];
+  bOOLValue2 = [v35 BOOLValue];
   if (kHSRVScope)
   {
     v12 = *kHSRVScope;
@@ -6095,24 +6095,24 @@ LABEL_42:
     v43 = 1024;
     v46 = "[AVHapticServerInstance configureWithOptions:reply:]";
     v45 = 2080;
-    if (v10)
+    if (bOOLValue)
     {
       v14 = "shared";
     }
 
     v47 = 1024;
-    *v48 = v9;
+    *v48 = unsignedIntegerValue;
     *&v48[4] = 2080;
     *&v48[6] = v14;
     v49 = 1024;
-    v50 = v11;
+    v50 = bOOLValue2;
     _os_log_impl(&dword_1B9A08000, v12, OS_LOG_TYPE_INFO, "%25s:%-5d %s: [via xpc] called by client with sessionID: %u (%s), bypassAudioSession: %u", buf, 0x32u);
   }
 
 LABEL_10:
   if (v8)
   {
-    v15 = [v8 taskTokenDictionary];
+    taskTokenDictionary = [v8 taskTokenDictionary];
     v16 = xpc_dictionary_copy_mach_send();
   }
 
@@ -6164,7 +6164,7 @@ LABEL_27:
 LABEL_34:
         v24 = 0;
 LABEL_45:
-        v7[2](v7, v24);
+        replyCopy[2](replyCopy, v24);
         v31 = 0;
         goto LABEL_46;
       }
@@ -6200,7 +6200,7 @@ LABEL_45:
   }
 
   *(v39 + 216) = v16;
-  if (v11)
+  if (bOOLValue2)
   {
     if (kHSRVScope)
     {
@@ -6237,7 +6237,7 @@ LABEL_44:
   }
 
   v38 = 0;
-  v25 = [(AVHapticServerInstance *)self setupAudioSessionFromID:v9 isShared:v10 error:&v38];
+  v25 = [(AVHapticServerInstance *)self setupAudioSessionFromID:unsignedIntegerValue isShared:bOOLValue error:&v38];
   v26 = v38;
   if (v25)
   {
@@ -6277,7 +6277,7 @@ LABEL_53:
 
   v28 = 0;
 LABEL_54:
-  v7[2](v7, v28);
+  replyCopy[2](replyCopy, v28);
   v31 = v26;
 LABEL_46:
   if (v40)
@@ -6288,11 +6288,11 @@ LABEL_46:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setupAudioSessionFromID:(unsigned int)a3 isShared:(BOOL)a4 error:(id *)a5
+- (BOOL)setupAudioSessionFromID:(unsigned int)d isShared:(BOOL)shared error:(id *)error
 {
   v8 = *MEMORY[0x1E69E9840];
   memset(&buf, 0, sizeof(buf));
-  HapticSession::create_shared(number, a3, a4, &buf);
+  HapticSession::create_shared(number, d, shared, &buf);
 }
 
 - (void)handleConnectionError
@@ -6511,7 +6511,7 @@ LABEL_40:
   }
 
 LABEL_51:
-  v21 = [(AVHapticServer *)self->_master manager];
+  manager = [(AVHapticServer *)self->_master manager];
   v23 = v52;
   v22 = v53;
   if (v53)
@@ -6544,14 +6544,14 @@ LABEL_51:
     }
   }
 
-  std::__shared_mutex_base::lock((v21 + 3));
-  v27 = v21[1];
+  std::__shared_mutex_base::lock((manager + 3));
+  v27 = manager[1];
   v28 = 1;
-  *(v21 + 192) = 1;
+  *(manager + 192) = 1;
   if (v27)
   {
     v29 = *(v23 + 3);
-    v30 = (v21 + 1);
+    v30 = (manager + 1);
     v31 = v27;
     do
     {
@@ -6567,7 +6567,7 @@ LABEL_51:
     }
 
     while (v31);
-    if (v30 == (v21 + 1) || v29 < v30[4])
+    if (v30 == (manager + 1) || v29 < v30[4])
     {
       v28 = 1;
     }
@@ -6599,12 +6599,12 @@ LABEL_51:
         while (!v38);
       }
 
-      if (*v21 == v30)
+      if (*manager == v30)
       {
-        *v21 = v36;
+        *manager = v36;
       }
 
-      v21[2] = (v21[2] - 1);
+      manager[2] = (manager[2] - 1);
       std::__tree_remove[abi:ne200100]<std::__tree_node_base<void *> *>(v27, v30);
       v39 = v30[6];
       if (v39)
@@ -6617,8 +6617,8 @@ LABEL_51:
     }
   }
 
-  *(v21 + 192) = 0;
-  std::__shared_mutex_base::unlock((v21 + 3));
+  *(manager + 192) = 0;
+  std::__shared_mutex_base::unlock((manager + 3));
   if (v28)
   {
     if (kHSRVScope)
@@ -6825,18 +6825,18 @@ LABEL_9:
         v11 = *MEMORY[0x1E69AED90];
         v12 = self->_clientSession.__ptr_;
         FigNotificationCenterRemoveWeakListener();
-        v13 = [(AVHapticServerInstance *)self master];
+        master = [(AVHapticServerInstance *)self master];
         v14 = self->_listenerWrapper;
         v15 = (*(*self->_hapticSession.__ptr_ + 16))(self->_hapticSession.__ptr_);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __48__AVHapticServerInstance_removeSessionListeners__block_invoke;
         block[3] = &unk_1E7ECEC00;
-        v21 = v13;
+        v21 = master;
         v22 = v14;
         v23 = v15;
         v16 = v14;
-        v17 = v13;
+        v17 = master;
         dispatch_async(MEMORY[0x1E69E96A0], block);
         v18 = self->_listenerWrapper;
         self->_listenerWrapper = 0;
@@ -6872,19 +6872,19 @@ LABEL_10:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (AVHapticServerInstance)initWithMaster:(id)a3 id:(unint64_t)a4 connection:(id)a5 outError:(id *)a6
+- (AVHapticServerInstance)initWithMaster:(id)master id:(unint64_t)id connection:(id)connection outError:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  masterCopy = master;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = AVHapticServerInstance;
   v12 = [(AVHapticServerInstance *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_master, a3);
-    objc_storeStrong(&v13->_connection, a5);
-    v13->_clientID = a4;
+    objc_storeStrong(&v12->_master, master);
+    objc_storeStrong(&v13->_connection, connection);
+    v13->_clientID = id;
     *&v13->_clientSuspended = 0;
     v13->_runningInBackground = 0;
   }
@@ -6892,11 +6892,11 @@ LABEL_10:
   return v13;
 }
 
-- (void)handleInterruptionForSession:(const void *)a3 command:(unsigned int)a4 dictionary:(id)a5
+- (void)handleInterruptionForSession:(const void *)session command:(unsigned int)command dictionary:(id)dictionary
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!AQMESession::isSameAudioSession(&self->_aqmeSession, a3))
+  dictionaryCopy = dictionary;
+  if (!AQMESession::isSameAudioSession(&self->_aqmeSession, session))
   {
     goto LABEL_93;
   }
@@ -6928,7 +6928,7 @@ LABEL_10:
     v53 = 2048;
     v54 = clientID;
     v55 = 1024;
-    v56 = a4;
+    commandCopy = command;
     _os_log_impl(&dword_1B9A08000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Handling session interruption notification for client 0x%lx, interruption cmd: %u", buf, 0x2Cu);
   }
 
@@ -6947,17 +6947,17 @@ LABEL_9:
     goto LABEL_91;
   }
 
-  v43 = v8;
+  v43 = dictionaryCopy;
   v44 = 0;
   v41 = 0.5;
   v42 = 0.0;
-  if (a4 <= 3)
+  if (command <= 3)
   {
-    if (a4 <= 1)
+    if (command <= 1)
     {
-      if (a4)
+      if (command)
       {
-        if (a4 == 1)
+        if (command == 1)
         {
           if (!kHSRVScope)
           {
@@ -7023,7 +7023,7 @@ LABEL_82:
         v51 = 2080;
         v52 = "[AVHapticServerInstance handleInterruptionForSession:command:dictionary:]";
         v53 = 1024;
-        LODWORD(v54) = a4;
+        LODWORD(v54) = command;
         v17 = "%25s:%-5d %s: Ignoring cmd: 0x%x";
         v18 = v16;
         v19 = 34;
@@ -7055,7 +7055,7 @@ LABEL_82:
       goto LABEL_60;
     }
 
-    if (a4 == 2)
+    if (command == 2)
     {
       if (kHSRVScope)
       {
@@ -7119,9 +7119,9 @@ LABEL_38:
     goto LABEL_68;
   }
 
-  if (a4 > 5)
+  if (command > 5)
   {
-    if (a4 == 6)
+    if (command == 6)
     {
       if (!kHSRVScope || (*(kHSRVScope + 8) & 1) == 0 || (v38 = *kHSRVScope) == 0)
       {
@@ -7146,7 +7146,7 @@ LABEL_38:
 
     else
     {
-      if (a4 != 7)
+      if (command != 7)
       {
         goto LABEL_82;
       }
@@ -7177,7 +7177,7 @@ LABEL_89:
     goto LABEL_90;
   }
 
-  if (a4 != 4)
+  if (command != 4)
   {
     if (kHSRVScope)
     {
@@ -7292,7 +7292,7 @@ LABEL_93:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unmuteClientAfterSessionInterruption:(float)a3
+- (void)unmuteClientAfterSessionInterruption:(float)interruption
 {
   v29 = *MEMORY[0x1E69E9840];
   if (!self->_clientInterrupted)
@@ -7313,7 +7313,7 @@ LABEL_93:
         if (!v6)
         {
 LABEL_17:
-          v13 = [(AVHapticServer *)self->_master manager];
+          manager = [(AVHapticServer *)self->_master manager];
           v14 = v20;
           v18[0] = v19;
           v18[1] = v20;
@@ -7322,7 +7322,7 @@ LABEL_17:
             atomic_fetch_add_explicit(&v20->__shared_owners_, 1uLL, memory_order_relaxed);
           }
 
-          ServerManager::handleSessionInterruptionForEntry(a3, 1.0, v13, v18, 0, 1);
+          ServerManager::handleSessionInterruptionForEntry(interruption, 1.0, manager, v18, 0, 1);
           if (v14)
           {
             std::__shared_weak_count::__release_shared[abi:ne200100](v14);
@@ -7436,13 +7436,13 @@ LABEL_30:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)muteClientForRingerSwitch:(BOOL)a3
+- (void)muteClientForRingerSwitch:(BOOL)switch
 {
   v22 = *MEMORY[0x1E69E9840];
   master = self->_master;
   if (master)
   {
-    v5 = a3;
+    switchCopy = switch;
     [(AVHapticServer *)master entryWithID:self->_clientID];
     if (v10)
     {
@@ -7472,7 +7472,7 @@ LABEL_30:
               v18 = 2048;
               v19 = v8;
               v20 = 1024;
-              v21 = v5;
+              v21 = switchCopy;
               _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Client ID: 0x%lx, ringer switch: %d", buf, 0x2Cu);
             }
           }
@@ -7480,7 +7480,7 @@ LABEL_30:
       }
 
       os_unfair_recursive_lock_lock_with_options();
-      ClientEntry::muteAudio(v10, v5, 1, 0.0);
+      ClientEntry::muteAudio(v10, switchCopy, 1, 0.0);
       os_unfair_recursive_lock_unlock();
       if (v11)
       {
@@ -7502,10 +7502,10 @@ LABEL_30:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleClientApplicationStateChange:(id)a3
+- (BOOL)handleClientApplicationStateChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (kHSRVScope)
   {
     v5 = *kHSRVScope;
@@ -7537,7 +7537,7 @@ LABEL_30:
 
 LABEL_8:
   v8 = *MEMORY[0x1E69AFA58];
-  v9 = [v4 objectForKey:v8];
+  v9 = [changeCopy objectForKey:v8];
   v10 = -[AVHapticServerInstance handleClientApplicationStateChangeUsingAppState:](self, "handleClientApplicationStateChangeUsingAppState:", [v9 unsignedIntegerValue]);
   if (kHSRVScope)
   {
@@ -7568,10 +7568,10 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)handleClientApplicationStateChangeUsingAppState:(unint64_t)a3
+- (BOOL)handleClientApplicationStateChangeUsingAppState:(unint64_t)state
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (a3 == 8)
+  if (state == 8)
   {
     if (![(AVHapticServerInstance *)self runningInBackground])
     {
@@ -7591,7 +7591,7 @@ LABEL_8:
           if (!v8)
           {
 LABEL_100:
-            v41 = [(AVHapticServer *)self->_master manager];
+            manager = [(AVHapticServer *)self->_master manager];
             v42 = v72;
             v64[0] = v71;
             v64[1] = v72;
@@ -7600,7 +7600,7 @@ LABEL_100:
               atomic_fetch_add_explicit(&v72->__shared_owners_, 1uLL, memory_order_relaxed);
             }
 
-            ServerManager::handleAppBackgroundingForEntry(v41, v64, 0);
+            ServerManager::handleAppBackgroundingForEntry(manager, v64, 0);
             if (v42)
             {
               std::__shared_weak_count::__release_shared[abi:ne200100](v42);
@@ -7809,8 +7809,8 @@ LABEL_144:
     goto LABEL_134;
   }
 
-  v4 = a3;
-  if (a3 == 4)
+  stateCopy = state;
+  if (state == 4)
   {
     if ([(AVHapticServerInstance *)self runningInBackground])
     {
@@ -7893,7 +7893,7 @@ LABEL_87:
           [(AVHapticServer *)v36 entryWithID:self->_clientID];
           if (*buf)
           {
-            v37 = [(AVHapticServer *)self->_master manager];
+            manager2 = [(AVHapticServer *)self->_master manager];
             v38 = *&buf[8];
             v65[0] = *buf;
             v65[1] = *&buf[8];
@@ -7902,7 +7902,7 @@ LABEL_87:
               atomic_fetch_add_explicit((*&buf[8] + 8), 1uLL, memory_order_relaxed);
             }
 
-            ServerManager::handleAppBackgroundingForEntry(v37, v65, 1);
+            ServerManager::handleAppBackgroundingForEntry(manager2, v65, 1);
             if (v38)
             {
               std::__shared_weak_count::__release_shared[abi:ne200100](v38);
@@ -7945,7 +7945,7 @@ LABEL_87:
     goto LABEL_82;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     if (kHSRVScope)
     {
@@ -7964,7 +7964,7 @@ LABEL_87:
             v74 = 2080;
             v75 = "[AVHapticServerInstance handleClientApplicationStateChangeUsingAppState:]";
             v76 = 1024;
-            LODWORD(v77) = v4;
+            LODWORD(v77) = stateCopy;
             _os_log_impl(&dword_1B9A08000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: New app state %d ignored", buf, 0x22u);
           }
         }
@@ -8054,7 +8054,7 @@ LABEL_40:
       }
     }
 
-    v21 = [(AVHapticServer *)self->_master manager];
+    manager3 = [(AVHapticServer *)self->_master manager];
     v22 = v72;
     v70[0] = v71;
     v70[1] = v72;
@@ -8063,7 +8063,7 @@ LABEL_40:
       atomic_fetch_add_explicit(&v72->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    ServerManager::handleAppBackgroundingForEntry(v21, v70, 0);
+    ServerManager::handleAppBackgroundingForEntry(manager3, v70, 0);
     if (v22)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v22);
@@ -8239,10 +8239,10 @@ LABEL_146:
   return v55;
 }
 
-- (void)handleClientRouteChange:(id)a3
+- (void)handleClientRouteChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (kHSRVScope)
   {
     if (*(kHSRVScope + 8))
@@ -8269,7 +8269,7 @@ LABEL_146:
   }
 
   v8 = *MEMORY[0x1E69AED30];
-  v9 = [v4 objectForKey:v8];
+  v9 = [changeCopy objectForKey:v8];
   if (kHSRVScope)
   {
     if (*(kHSRVScope + 8))
@@ -8312,7 +8312,7 @@ LABEL_146:
     [(AVHapticServer *)master entryWithID:self->_clientID];
     if (v21)
     {
-      v14 = [(AVHapticServer *)self->_master manager];
+      manager = [(AVHapticServer *)self->_master manager];
       v20[0] = v21;
       v20[1] = v22;
       if (v22)
@@ -8321,7 +8321,7 @@ LABEL_146:
       }
 
       routeUsesReceiver = self->_routeUsesReceiver;
-      ServerManager::handleRouteChangeForEntry(v14, v20);
+      ServerManager::handleRouteChangeForEntry(manager, v20);
     }
   }
 
@@ -8364,10 +8364,10 @@ LABEL_146:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyClientOnStopWithReason:(int64_t)a3 error:(id)a4
+- (void)notifyClientOnStopWithReason:(int64_t)reason error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  errorCopy = error;
   v8 = [(AVHapticServerInstance *)self getAsyncDelegateForMethod:a2 errorHandler:&__block_literal_global_21];
   if (kHSRVScope)
   {
@@ -8387,7 +8387,7 @@ LABEL_146:
   v11 = v9;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v14 = 136316162;
     v15 = "AVHapticServer.mm";
     v16 = 1024;
@@ -8395,14 +8395,14 @@ LABEL_146:
     v18 = 2080;
     v19 = "[AVHapticServerInstance notifyClientOnStopWithReason:error:]";
     v20 = 1024;
-    v21 = a3;
+    reasonCopy = reason;
     v22 = 2112;
-    v23 = v12;
+    v23 = localizedDescription;
     _os_log_impl(&dword_1B9A08000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: <Calling clientStoppedForReason:%d error:'%@' on client delegate>", &v14, 0x2Cu);
   }
 
 LABEL_8:
-  [v8 clientStoppedForReason:a3 error:v7];
+  [v8 clientStoppedForReason:reason error:errorCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -8445,19 +8445,19 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getSyncDelegateForMethod:(SEL)a3 errorHandler:(id)a4
+- (id)getSyncDelegateForMethod:(SEL)method errorHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__AVHapticServerInstance_getSyncDelegateForMethod_errorHandler___block_invoke;
   v11[3] = &unk_1E7ECEB68;
-  v13[1] = a3;
+  v13[1] = method;
   objc_copyWeak(v13, &location);
-  v12 = v6;
-  v8 = v6;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
   v9 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   objc_destroyWeak(v13);
@@ -8516,19 +8516,19 @@ LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getAsyncDelegateForMethod:(SEL)a3 errorHandler:(id)a4
+- (id)getAsyncDelegateForMethod:(SEL)method errorHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__AVHapticServerInstance_getAsyncDelegateForMethod_errorHandler___block_invoke;
   v11[3] = &unk_1E7ECEB68;
-  v13[1] = a3;
+  v13[1] = method;
   objc_copyWeak(v13, &location);
-  v12 = v6;
-  v8 = v6;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
   v9 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
 
   objc_destroyWeak(v13);

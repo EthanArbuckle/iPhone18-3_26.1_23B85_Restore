@@ -1,43 +1,43 @@
 @interface ICBrowseAttachmentsSectionInfo
-- (ICBrowseAttachmentsSectionInfo)initWithSectionInfo:(id)a3 name:(id)a4 additionalObjects:(id)a5 sortDescriptors:(id)a6;
+- (ICBrowseAttachmentsSectionInfo)initWithSectionInfo:(id)info name:(id)name additionalObjects:(id)objects sortDescriptors:(id)descriptors;
 - (NSString)indexTitle;
 - (NSString)name;
 @end
 
 @implementation ICBrowseAttachmentsSectionInfo
 
-- (ICBrowseAttachmentsSectionInfo)initWithSectionInfo:(id)a3 name:(id)a4 additionalObjects:(id)a5 sortDescriptors:(id)a6
+- (ICBrowseAttachmentsSectionInfo)initWithSectionInfo:(id)info name:(id)name additionalObjects:(id)objects sortDescriptors:(id)descriptors
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  infoCopy = info;
+  nameCopy = name;
+  objectsCopy = objects;
+  descriptorsCopy = descriptors;
   v26.receiver = self;
   v26.super_class = ICBrowseAttachmentsSectionInfo;
   v15 = [(ICBrowseAttachmentsSectionInfo *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sectionInfo, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_sectionInfo, info);
+    v17 = [nameCopy copy];
     name = v16->_name;
     v16->_name = v17;
 
-    objc_storeStrong(&v16->_additionalObjects, a5);
-    v19 = [v11 objects];
-    if (v19)
+    objc_storeStrong(&v16->_additionalObjects, objects);
+    objects = [infoCopy objects];
+    if (objects)
     {
-      v20 = [v11 objects];
-      v21 = [v13 allObjects];
-      v22 = [v20 arrayByAddingObjectsFromArray:v21];
+      objects2 = [infoCopy objects];
+      allObjects = [objectsCopy allObjects];
+      allObjects2 = [objects2 arrayByAddingObjectsFromArray:allObjects];
     }
 
     else
     {
-      v22 = [v13 allObjects];
+      allObjects2 = [objectsCopy allObjects];
     }
 
-    v23 = [v22 sortedArrayUsingDescriptors:v14];
+    v23 = [allObjects2 sortedArrayUsingDescriptors:descriptorsCopy];
     sortedObjects = v16->_sortedObjects;
     v16->_sortedObjects = v23;
   }
@@ -47,9 +47,9 @@
 
 - (NSString)name
 {
-  v3 = [(NSFetchedResultsSectionInfo *)self->_sectionInfo name];
-  name = v3;
-  if (!v3)
+  name = [(NSFetchedResultsSectionInfo *)self->_sectionInfo name];
+  name = name;
+  if (!name)
   {
     if (self->_name)
     {
@@ -69,11 +69,11 @@
 
 - (NSString)indexTitle
 {
-  v2 = [(NSFetchedResultsSectionInfo *)self->_sectionInfo indexTitle];
-  v3 = v2;
-  if (v2)
+  indexTitle = [(NSFetchedResultsSectionInfo *)self->_sectionInfo indexTitle];
+  v3 = indexTitle;
+  if (indexTitle)
   {
-    v4 = v2;
+    v4 = indexTitle;
   }
 
   else

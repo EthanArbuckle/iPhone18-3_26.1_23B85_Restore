@@ -1,18 +1,18 @@
 @interface _OSHighBatteryDrainHighChargeDurationModel
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (_OSHighBatteryDrainHighChargeDurationModel)init;
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithConfiguration:(id)a3 error:(id *)a4;
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithMLModel:(id)a3;
-- (id)predictionFromActivity:(double)a3 n_events_prior:(double)a4 batt_weekday_percentile_prior:(double)a5 dist_from_total_mean:(double)a6 drain_since_last_plugin:(double)a7 max_batt_12:(double)a8 mean_activity:(double)a9 mean_daily_plugins:(double)a10 net_drain_since_max:(double)a11 recent_drain_1:(double)a12 recent_drain_15min:(double)a13 recent_drain_3:(double)a14 start_time_secs:(double)a15 user_mean_drain:(double)a16 value:(double)a17 error:(id *)a18;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithConfiguration:(id)configuration error:(id *)error;
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithMLModel:(id)model;
+- (id)predictionFromActivity:(double)activity n_events_prior:(double)n_events_prior batt_weekday_percentile_prior:(double)batt_weekday_percentile_prior dist_from_total_mean:(double)dist_from_total_mean drain_since_last_plugin:(double)drain_since_last_plugin max_batt_12:(double)max_batt_12 mean_activity:(double)mean_activity mean_daily_plugins:(double)self0 net_drain_since_max:(double)self1 recent_drain_1:(double)self2 recent_drain_15min:(double)self3 recent_drain_3:(double)self4 start_time_secs:(double)self5 user_mean_drain:(double)self6 value:(double)self7 error:(id *)self8;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation _OSHighBatteryDrainHighChargeDurationModel
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithMLModel:(id)a3
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = _OSHighBatteryDrainHighChargeDurationModel;
@@ -51,115 +51,115 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (_OSHighBatteryDrainHighChargeDurationModel)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithConfiguration:(id)a3 error:(id *)a4
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MLModel modelWithContentsOfURL:a3 error:a4];
+  v5 = [MLModel modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (_OSHighBatteryDrainHighChargeDurationModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MLModel modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MLModel modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(_OSHighBatteryDrainHighChargeDurationModel *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000442B4;
   v8[3] = &unk_100095698;
-  v9 = a5;
-  v7 = v9;
-  [MLModel loadContentsOfURL:a3 configuration:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [MLModel loadContentsOfURL:l configuration:configuration completionHandler:v8];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v7 = objc_alloc_init(MLPredictionOptions);
-  v8 = [(_OSHighBatteryDrainHighChargeDurationModel *)self predictionFromFeatures:v6 options:v7 error:a4];
+  v8 = [(_OSHighBatteryDrainHighChargeDurationModel *)self predictionFromFeatures:featuresCopy options:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [_OSHighBatteryDrainHighChargeDurationModelOutput alloc];
     v13 = [v11 featureValueForName:@"label"];
-    v14 = [v13 int64Value];
+    int64Value = [v13 int64Value];
     v15 = [v11 featureValueForName:@"classProbability"];
-    v16 = [v15 dictionaryValue];
-    v17 = [(_OSHighBatteryDrainHighChargeDurationModelOutput *)v12 initWithLabel:v14 classProbability:v16];
+    dictionaryValue = [v15 dictionaryValue];
+    v17 = [(_OSHighBatteryDrainHighChargeDurationModelOutput *)v12 initWithLabel:int64Value classProbability:dictionaryValue];
   }
 
   else
@@ -170,50 +170,50 @@
   return v17;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000445AC;
   v10[3] = &unk_1000956C0;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000447B4;
   v13[3] = &unk_1000956C0;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromActivity:(double)a3 n_events_prior:(double)a4 batt_weekday_percentile_prior:(double)a5 dist_from_total_mean:(double)a6 drain_since_last_plugin:(double)a7 max_batt_12:(double)a8 mean_activity:(double)a9 mean_daily_plugins:(double)a10 net_drain_since_max:(double)a11 recent_drain_1:(double)a12 recent_drain_15min:(double)a13 recent_drain_3:(double)a14 start_time_secs:(double)a15 user_mean_drain:(double)a16 value:(double)a17 error:(id *)a18
+- (id)predictionFromActivity:(double)activity n_events_prior:(double)n_events_prior batt_weekday_percentile_prior:(double)batt_weekday_percentile_prior dist_from_total_mean:(double)dist_from_total_mean drain_since_last_plugin:(double)drain_since_last_plugin max_batt_12:(double)max_batt_12 mean_activity:(double)mean_activity mean_daily_plugins:(double)self0 net_drain_since_max:(double)self1 recent_drain_1:(double)self2 recent_drain_15min:(double)self3 recent_drain_3:(double)self4 start_time_secs:(double)self5 user_mean_drain:(double)self6 value:(double)self7 error:(id *)self8
 {
-  v20 = [[_OSHighBatteryDrainHighChargeDurationModelInput alloc] initWithActivity:a3 n_events_prior:a4 batt_weekday_percentile_prior:a5 dist_from_total_mean:a6 drain_since_last_plugin:a7 max_batt_12:a8 mean_activity:a9 mean_daily_plugins:a10 net_drain_since_max:*&a11 recent_drain_1:*&a12 recent_drain_15min:*&a13 recent_drain_3:*&a14 start_time_secs:*&a15 user_mean_drain:*&a16 value:*&a17];
-  v21 = [(_OSHighBatteryDrainHighChargeDurationModel *)self predictionFromFeatures:v20 error:a18];
+  v20 = [[_OSHighBatteryDrainHighChargeDurationModelInput alloc] initWithActivity:activity n_events_prior:n_events_prior batt_weekday_percentile_prior:batt_weekday_percentile_prior dist_from_total_mean:dist_from_total_mean drain_since_last_plugin:drain_since_last_plugin max_batt_12:max_batt_12 mean_activity:mean_activity mean_daily_plugins:mean_daily_plugins net_drain_since_max:*&net_drain_since_max recent_drain_1:*&recent_drain_1 recent_drain_15min:*&recent_drain_15min recent_drain_3:*&recent_drain_3 start_time_secs:*&start_time_secs user_mean_drain:*&user_mean_drain value:*&value];
+  v21 = [(_OSHighBatteryDrainHighChargeDurationModel *)self predictionFromFeatures:v20 error:error];
 
   return v21;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:v8];
-  v11 = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:inputsCopy];
+  model = [(_OSHighBatteryDrainHighChargeDurationModel *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -221,26 +221,26 @@
     if ([v12 count] >= 1)
     {
       v23 = v10;
-      v24 = v9;
-      v25 = v8;
+      v24 = optionsCopy;
+      v25 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:v14];
         v16 = [_OSHighBatteryDrainHighChargeDurationModelOutput alloc];
         v17 = [v15 featureValueForName:@"label"];
-        v18 = [v17 int64Value];
+        int64Value = [v17 int64Value];
         v19 = [v15 featureValueForName:@"classProbability"];
-        v20 = [v19 dictionaryValue];
-        v21 = [(_OSHighBatteryDrainHighChargeDurationModelOutput *)v16 initWithLabel:v18 classProbability:v20];
+        dictionaryValue = [v19 dictionaryValue];
+        v21 = [(_OSHighBatteryDrainHighChargeDurationModelOutput *)v16 initWithLabel:int64Value classProbability:dictionaryValue];
 
         [v13 addObject:v21];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v24;
-      v8 = v25;
+      optionsCopy = v24;
+      inputsCopy = v25;
       v10 = v23;
     }
   }

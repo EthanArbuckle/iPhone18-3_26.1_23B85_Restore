@@ -1,31 +1,31 @@
 @interface _AXEFixedDurationQueueValueWithTimestamp
-+ (id)createWithValue:(id)a3 timestamp:(id)a4;
-- (_AXEFixedDurationQueueValueWithTimestamp)initWithValue:(id)a3 timestamp:(id)a4;
++ (id)createWithValue:(id)value timestamp:(id)timestamp;
+- (_AXEFixedDurationQueueValueWithTimestamp)initWithValue:(id)value timestamp:(id)timestamp;
 @end
 
 @implementation _AXEFixedDurationQueueValueWithTimestamp
 
-+ (id)createWithValue:(id)a3 timestamp:(id)a4
++ (id)createWithValue:(id)value timestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithValue:v7 timestamp:v6];
+  timestampCopy = timestamp;
+  valueCopy = value;
+  v8 = [[self alloc] initWithValue:valueCopy timestamp:timestampCopy];
 
   return v8;
 }
 
-- (_AXEFixedDurationQueueValueWithTimestamp)initWithValue:(id)a3 timestamp:(id)a4
+- (_AXEFixedDurationQueueValueWithTimestamp)initWithValue:(id)value timestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  timestampCopy = timestamp;
   v12.receiver = self;
   v12.super_class = _AXEFixedDurationQueueValueWithTimestamp;
   v9 = [(_AXEFixedDurationQueueValueWithTimestamp *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_value, a3);
-    objc_storeStrong(&v10->_timestamp, a4);
+    objc_storeStrong(&v9->_value, value);
+    objc_storeStrong(&v10->_timestamp, timestamp);
   }
 
   return v10;

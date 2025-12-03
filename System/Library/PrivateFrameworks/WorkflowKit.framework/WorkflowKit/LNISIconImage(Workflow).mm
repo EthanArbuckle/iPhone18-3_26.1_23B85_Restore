@@ -9,11 +9,11 @@
 - (id)serializedRepresentation
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "iconType")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "iconType")}];
   [v2 if_setObjectIfNonNil:v3 forKey:@"iconType"];
 
-  v4 = [a1 identifier];
-  [v2 if_setObjectIfNonNil:v4 forKey:@"identifier"];
+  identifier = [self identifier];
+  [v2 if_setObjectIfNonNil:identifier forKey:@"identifier"];
 
   return v2;
 }
@@ -72,41 +72,41 @@
 
       v13 = v12;
 
-      v14 = [v13 integerValue];
-      a1 = [a1 initWithIconType:v14 identifier:v10];
-      v9 = a1;
+      integerValue = [v13 integerValue];
+      self = [self initWithIconType:integerValue identifier:v10];
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)wf_image
 {
-  v2 = [a1 iconType];
-  if (v2 == 1)
+  iconType = [self iconType];
+  if (iconType == 1)
   {
     v6 = objc_alloc(getISIconClass());
-    v4 = [a1 identifier];
-    v5 = [v6 initWithType:v4];
+    identifier = [self identifier];
+    v5 = [v6 initWithType:identifier];
     goto LABEL_5;
   }
 
-  if (!v2)
+  if (!iconType)
   {
     v3 = objc_alloc(getISIconClass());
-    v4 = [a1 identifier];
-    v5 = [v3 initWithBundleIdentifier:v4];
+    identifier = [self identifier];
+    v5 = [v3 initWithBundleIdentifier:identifier];
 LABEL_5:
     v7 = v5;
 
@@ -157,19 +157,19 @@ LABEL_7:
   {
     v13 = [v8 imageDescriptorNamed:*v10];
     v14 = [v7 prepareImageForDescriptor:v13];
-    v15 = [v14 CGImage];
+    cGImage = [v14 CGImage];
     v16 = objc_alloc(MEMORY[0x1E69E0B58]);
     [v13 scale];
-    v17 = [v16 initWithCGImage:v15 scale:1 orientation:?];
+    v17 = [v16 initWithCGImage:cGImage scale:1 orientation:?];
 
     v18 = v17;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ISImageDescriptorName getkISImageDescriptorTableUIName(void)"];
-    [v19 handleFailureInFunction:v20 file:@"LNImage+Workflow.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v20 file:@"LNImage+Workflow.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

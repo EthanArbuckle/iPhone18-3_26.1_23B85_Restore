@@ -1,32 +1,32 @@
 @interface ODDSiriSchemaODDAnnounceProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAnnounceProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAnnounceProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDAnnounceProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAnnounceProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCarPlayStatus:(BOOL)a3;
-- (void)setHasIsAnnounceNotificationsEnabled:(BOOL)a3;
-- (void)setHasIsCarPlayMuted:(BOOL)a3;
-- (void)setHasIsEnabledForHeadphones:(BOOL)a3;
-- (void)setHasIsProximityCardSeen:(BOOL)a3;
-- (void)setHasIsReplyWithoutConfirmationEnabled:(BOOL)a3;
-- (void)setHasIsSpokenNotificationsControlCenterModuleEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCarPlayStatus:(BOOL)status;
+- (void)setHasIsAnnounceNotificationsEnabled:(BOOL)enabled;
+- (void)setHasIsCarPlayMuted:(BOOL)muted;
+- (void)setHasIsEnabledForHeadphones:(BOOL)headphones;
+- (void)setHasIsProximityCardSeen:(BOOL)seen;
+- (void)setHasIsReplyWithoutConfirmationEnabled:(BOOL)enabled;
+- (void)setHasIsSpokenNotificationsControlCenterModuleEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAnnounceProperties
 
-- (ODDSiriSchemaODDAnnounceProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAnnounceProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ODDSiriSchemaODDAnnounceProperties;
   v5 = [(ODDSiriSchemaODDAnnounceProperties *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAnnounceCallsEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAnnounceCallsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,49 +34,49 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"isAnnounceNotificationsEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isAnnounceNotificationsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsAnnounceNotificationsEnabled:](v5, "setIsAnnounceNotificationsEnabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isProximityCardSeen"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isProximityCardSeen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsProximityCardSeen:](v5, "setIsProximityCardSeen:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isReplyWithoutConfirmationEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isReplyWithoutConfirmationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsReplyWithoutConfirmationEnabled:](v5, "setIsReplyWithoutConfirmationEnabled:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isEnabledForHeadphones"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isEnabledForHeadphones"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsEnabledForHeadphones:](v5, "setIsEnabledForHeadphones:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isSpokenNotificationsControlCenterModuleEnabled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isSpokenNotificationsControlCenterModuleEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsSpokenNotificationsControlCenterModuleEnabled:](v5, "setIsSpokenNotificationsControlCenterModuleEnabled:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isCarPlayMuted"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isCarPlayMuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAnnounceProperties setIsCarPlayMuted:](v5, "setIsCarPlayMuted:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"carPlayStatus"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"carPlayStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAnnounceProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAnnounceProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAnnounceProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAnnounceProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAnnounceProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,7 +125,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has < 0)
   {
@@ -140,14 +140,14 @@
       v6 = off_1E78DC930[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"carPlayStatus"];
+    [dictionary setObject:v6 forKeyedSubscript:@"carPlayStatus"];
     has = self->_has;
   }
 
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isAnnounceCallsEnabled](self, "isAnnounceCallsEnabled")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isAnnounceCallsEnabled"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isAnnounceCallsEnabled"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -168,7 +168,7 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isAnnounceNotificationsEnabled](self, "isAnnounceNotificationsEnabled")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isAnnounceNotificationsEnabled"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isAnnounceNotificationsEnabled"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -184,7 +184,7 @@ LABEL_9:
 
 LABEL_19:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isCarPlayMuted](self, "isCarPlayMuted")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isCarPlayMuted"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isCarPlayMuted"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -200,7 +200,7 @@ LABEL_10:
 
 LABEL_20:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isEnabledForHeadphones](self, "isEnabledForHeadphones")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isEnabledForHeadphones"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isEnabledForHeadphones"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -216,7 +216,7 @@ LABEL_11:
 
 LABEL_21:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isProximityCardSeen](self, "isProximityCardSeen")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isProximityCardSeen"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isProximityCardSeen"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -232,19 +232,19 @@ LABEL_12:
 
 LABEL_22:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isReplyWithoutConfirmationEnabled](self, "isReplyWithoutConfirmationEnabled")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isReplyWithoutConfirmationEnabled"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isReplyWithoutConfirmationEnabled"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_13:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAnnounceProperties isSpokenNotificationsControlCenterModuleEnabled](self, "isSpokenNotificationsControlCenterModuleEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSpokenNotificationsControlCenterModuleEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSpokenNotificationsControlCenterModuleEnabled"];
   }
 
 LABEL_14:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -357,16 +357,16 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -375,13 +375,13 @@ LABEL_9:
   if (*&has)
   {
     isAnnounceCallsEnabled = self->_isAnnounceCallsEnabled;
-    if (isAnnounceCallsEnabled != [v4 isAnnounceCallsEnabled])
+    if (isAnnounceCallsEnabled != [equalCopy isAnnounceCallsEnabled])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -393,13 +393,13 @@ LABEL_9:
   if (v8)
   {
     isAnnounceNotificationsEnabled = self->_isAnnounceNotificationsEnabled;
-    if (isAnnounceNotificationsEnabled != [v4 isAnnounceNotificationsEnabled])
+    if (isAnnounceNotificationsEnabled != [equalCopy isAnnounceNotificationsEnabled])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -411,13 +411,13 @@ LABEL_9:
   if (v10)
   {
     isProximityCardSeen = self->_isProximityCardSeen;
-    if (isProximityCardSeen != [v4 isProximityCardSeen])
+    if (isProximityCardSeen != [equalCopy isProximityCardSeen])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -429,13 +429,13 @@ LABEL_9:
   if (v12)
   {
     isReplyWithoutConfirmationEnabled = self->_isReplyWithoutConfirmationEnabled;
-    if (isReplyWithoutConfirmationEnabled != [v4 isReplyWithoutConfirmationEnabled])
+    if (isReplyWithoutConfirmationEnabled != [equalCopy isReplyWithoutConfirmationEnabled])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -447,13 +447,13 @@ LABEL_9:
   if (v14)
   {
     isEnabledForHeadphones = self->_isEnabledForHeadphones;
-    if (isEnabledForHeadphones != [v4 isEnabledForHeadphones])
+    if (isEnabledForHeadphones != [equalCopy isEnabledForHeadphones])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -465,13 +465,13 @@ LABEL_9:
   if (v16)
   {
     isSpokenNotificationsControlCenterModuleEnabled = self->_isSpokenNotificationsControlCenterModuleEnabled;
-    if (isSpokenNotificationsControlCenterModuleEnabled != [v4 isSpokenNotificationsControlCenterModuleEnabled])
+    if (isSpokenNotificationsControlCenterModuleEnabled != [equalCopy isSpokenNotificationsControlCenterModuleEnabled])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -483,10 +483,10 @@ LABEL_9:
   if (v18)
   {
     isCarPlayMuted = self->_isCarPlayMuted;
-    if (isCarPlayMuted == [v4 isCarPlayMuted])
+    if (isCarPlayMuted == [equalCopy isCarPlayMuted])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_30;
     }
 
@@ -504,7 +504,7 @@ LABEL_30:
   if ((*&has & 0x80) != 0)
   {
     carPlayStatus = self->_carPlayStatus;
-    if (carPlayStatus != [v4 carPlayStatus])
+    if (carPlayStatus != [equalCopy carPlayStatus])
     {
       goto LABEL_34;
     }
@@ -516,9 +516,9 @@ LABEL_35:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -622,9 +622,9 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)setHasCarPlayStatus:(BOOL)a3
+- (void)setHasCarPlayStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x80;
   }
@@ -637,9 +637,9 @@ LABEL_9:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasIsCarPlayMuted:(BOOL)a3
+- (void)setHasIsCarPlayMuted:(BOOL)muted
 {
-  if (a3)
+  if (muted)
   {
     v3 = 64;
   }
@@ -652,9 +652,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsSpokenNotificationsControlCenterModuleEnabled:(BOOL)a3
+- (void)setHasIsSpokenNotificationsControlCenterModuleEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -667,9 +667,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsEnabledForHeadphones:(BOOL)a3
+- (void)setHasIsEnabledForHeadphones:(BOOL)headphones
 {
-  if (a3)
+  if (headphones)
   {
     v3 = 16;
   }
@@ -682,9 +682,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsReplyWithoutConfirmationEnabled:(BOOL)a3
+- (void)setHasIsReplyWithoutConfirmationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -697,9 +697,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsProximityCardSeen:(BOOL)a3
+- (void)setHasIsProximityCardSeen:(BOOL)seen
 {
-  if (a3)
+  if (seen)
   {
     v3 = 4;
   }
@@ -712,9 +712,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAnnounceNotificationsEnabled:(BOOL)a3
+- (void)setHasIsAnnounceNotificationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

@@ -1,8 +1,8 @@
 @interface LDAPGetDefaultSearchBaseTask
-- (id)daLevelErrorForLDAPError:(int)a3;
+- (id)daLevelErrorForLDAPError:(int)error;
 - (int)numDownloadedElements;
 - (void)_performQuery;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)performTask;
 @end
 
@@ -16,7 +16,7 @@
     [LDAPGetDefaultSearchBaseTask _performQuery];
   }
 
-  v3 = [(LDAPTask *)self ldConnection];
+  ldConnection = [(LDAPTask *)self ldConnection];
   rootdse = ldap_connection_read_rootdse();
 
   v5 = DALoggingwithCategory();
@@ -190,46 +190,46 @@ LABEL_28:
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(LDAPTask *)v5 isFinished])
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(LDAPTask *)selfCopy isFinished])
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(LDAPTask *)v5 setIsFinished:1];
-    objc_sync_exit(v5);
+    [(LDAPTask *)selfCopy setIsFinished:1];
+    objc_sync_exit(selfCopy);
 
-    v6 = [(LDAPTask *)v5 dateConnectionWentOut];
+    dateConnectionWentOut = [(LDAPTask *)selfCopy dateConnectionWentOut];
 
-    if (v6)
+    if (dateConnectionWentOut)
     {
-      v7 = [(LDAPTask *)v5 taskManager];
-      v8 = [v7 account];
-      v9 = [v8 statusReport];
-      v10 = [MEMORY[0x277CBEAA8] date];
-      v11 = [(LDAPTask *)v5 dateConnectionWentOut];
-      [v10 timeIntervalSinceDate:v11];
-      [v9 noteTimeSpentInNetworking:?];
+      taskManager = [(LDAPTask *)selfCopy taskManager];
+      account = [taskManager account];
+      statusReport = [account statusReport];
+      date = [MEMORY[0x277CBEAA8] date];
+      dateConnectionWentOut2 = [(LDAPTask *)selfCopy dateConnectionWentOut];
+      [date timeIntervalSinceDate:dateConnectionWentOut2];
+      [statusReport noteTimeSpentInNetworking:?];
 
-      [(LDAPTask *)v5 setDateConnectionWentOut:0];
+      [(LDAPTask *)selfCopy setDateConnectionWentOut:0];
     }
 
-    v12 = [(LDAPTask *)v5 ldConnection];
+    ldConnection = [(LDAPTask *)selfCopy ldConnection];
 
-    if (v12)
+    if (ldConnection)
     {
-      v13 = [(LDAPTask *)v5 ldConnection];
+      ldConnection2 = [(LDAPTask *)selfCopy ldConnection];
       ldap_connection_disconnect();
     }
 
-    v14 = [(LDAPTask *)v5 delegate];
-    if (v4)
+    delegate = [(LDAPTask *)selfCopy delegate];
+    if (errorCopy)
     {
       v15 = 79;
     }
@@ -239,36 +239,36 @@ LABEL_28:
       v15 = 2;
     }
 
-    v16 = [(LDAPGetDefaultSearchBaseTask *)v5 defaultNamingContext];
-    [v14 ldapGetDefaultSearchBaseTask:v5 completedWithStatus:v15 error:v4 defaultSearchBase:v16];
+    defaultNamingContext = [(LDAPGetDefaultSearchBaseTask *)selfCopy defaultNamingContext];
+    [delegate ldapGetDefaultSearchBaseTask:selfCopy completedWithStatus:v15 error:errorCopy defaultSearchBase:defaultNamingContext];
 
-    v17.receiver = v5;
+    v17.receiver = selfCopy;
     v17.super_class = LDAPGetDefaultSearchBaseTask;
-    [(LDAPTask *)&v17 finishWithError:v4];
+    [(LDAPTask *)&v17 finishWithError:errorCopy];
   }
 }
 
 - (int)numDownloadedElements
 {
-  v2 = [(LDAPGetDefaultSearchBaseTask *)self defaultNamingContext];
-  v3 = v2 != 0;
+  defaultNamingContext = [(LDAPGetDefaultSearchBaseTask *)self defaultNamingContext];
+  v3 = defaultNamingContext != 0;
 
   return v3;
 }
 
-- (id)daLevelErrorForLDAPError:(int)a3
+- (id)daLevelErrorForLDAPError:(int)error
 {
   v3 = 102;
-  if (a3 > 10000)
+  if (error > 10000)
   {
-    if ((a3 - 10001) < 3)
+    if ((error - 10001) < 3)
     {
 LABEL_7:
       v3 = 101;
       return [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D03700] code:v3 userInfo:0];
     }
 
-    if (a3 != 10004 && a3 != 10006)
+    if (error != 10004 && error != 10006)
     {
       goto LABEL_11;
     }
@@ -276,16 +276,16 @@ LABEL_7:
 
   else
   {
-    if (a3 > 0x32)
+    if (error > 0x32)
     {
 LABEL_11:
       v3 = 100;
       return [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D03700] code:v3 userInfo:0];
     }
 
-    if (((1 << a3) & 0x7000000002180) == 0)
+    if (((1 << error) & 0x7000000002180) == 0)
     {
-      if (a3 != 3)
+      if (error != 3)
       {
         goto LABEL_11;
       }

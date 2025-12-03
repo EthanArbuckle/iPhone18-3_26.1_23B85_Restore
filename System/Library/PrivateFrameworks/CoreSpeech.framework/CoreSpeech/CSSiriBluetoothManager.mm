@@ -1,19 +1,19 @@
 @interface CSSiriBluetoothManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)deviceWithAddress:(id)a3;
-- (void)prewarmDeviceWithIdentifier:(id)a3;
+- (id)deviceWithAddress:(id)address;
+- (void)prewarmDeviceWithIdentifier:(id)identifier;
 @end
 
 @implementation CSSiriBluetoothManager
 
-- (id)deviceWithAddress:(id)a3
+- (id)deviceWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 length] >= 0x12)
+  addressCopy = address;
+  v5 = addressCopy;
+  if ([addressCopy length] >= 0x12)
   {
-    v5 = [v4 substringToIndex:17];
+    v5 = [addressCopy substringToIndex:17];
   }
 
   v6 = [(CSSiriMobileBluetoothDeviceDataSource *)self->_dataSource deviceWithAddress:v5];
@@ -21,13 +21,13 @@
   return v6;
 }
 
-- (void)prewarmDeviceWithIdentifier:(id)a3
+- (void)prewarmDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v4;
-    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+    v7 = identifierCopy;
+    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
     if (v5)
     {
       [(CSSiriBluetoothManager *)self deviceWithUID:v5];
@@ -40,7 +40,7 @@
     v6 = ;
     [v6 prewarm];
 
-    v4 = v7;
+    identifierCopy = v7;
   }
 }
 

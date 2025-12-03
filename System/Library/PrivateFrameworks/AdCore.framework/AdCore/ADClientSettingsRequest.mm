@@ -1,15 +1,15 @@
 @interface ADClientSettingsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCurrentSearchLandingAdsSettingParams:(id)a3;
-- (void)addCurrentSettingParams:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCurrentSearchLandingAdsSettingParams:(id)params;
+- (void)addCurrentSettingParams:(id)params;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADClientSettingsRequest
@@ -32,40 +32,40 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   options_sOptions_2 = &unk_285104C90;
 }
 
-- (void)addCurrentSettingParams:(id)a3
+- (void)addCurrentSettingParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   currentSettingParams = self->_currentSettingParams;
-  v8 = v4;
+  v8 = paramsCopy;
   if (!currentSettingParams)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_currentSettingParams;
     self->_currentSettingParams = v6;
 
-    v4 = v8;
+    paramsCopy = v8;
     currentSettingParams = self->_currentSettingParams;
   }
 
-  [(NSMutableArray *)currentSettingParams addObject:v4];
+  [(NSMutableArray *)currentSettingParams addObject:paramsCopy];
 }
 
-- (void)addCurrentSearchLandingAdsSettingParams:(id)a3
+- (void)addCurrentSearchLandingAdsSettingParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   currentSearchLandingAdsSettingParams = self->_currentSearchLandingAdsSettingParams;
-  v8 = v4;
+  v8 = paramsCopy;
   if (!currentSearchLandingAdsSettingParams)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_currentSearchLandingAdsSettingParams;
     self->_currentSearchLandingAdsSettingParams = v6;
 
-    v4 = v8;
+    paramsCopy = v8;
     currentSearchLandingAdsSettingParams = self->_currentSearchLandingAdsSettingParams;
   }
 
-  [(NSMutableArray *)currentSearchLandingAdsSettingParams addObject:v4];
+  [(NSMutableArray *)currentSearchLandingAdsSettingParams addObject:paramsCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADClientSettingsRequest;
   v4 = [(ADClientSettingsRequest *)&v8 description];
-  v5 = [(ADClientSettingsRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADClientSettingsRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,12 +83,12 @@ void __34__ADClientSettingsRequest_options__block_invoke()
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   iAdIDString = self->_iAdIDString;
   if (iAdIDString)
   {
-    [v3 setObject:iAdIDString forKey:@"iAdIDString"];
+    [dictionary setObject:iAdIDString forKey:@"iAdIDString"];
   }
 
   if ([(NSMutableArray *)self->_currentSettingParams count])
@@ -113,8 +113,8 @@ void __34__ADClientSettingsRequest_options__block_invoke()
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -148,8 +148,8 @@ void __34__ADClientSettingsRequest_options__block_invoke()
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -166,10 +166,10 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_iAdIDString)
   {
     PBDataWriterWriteStringField();
@@ -242,50 +242,50 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_iAdIDString)
   {
-    [v12 setIAdIDString:?];
+    [toCopy setIAdIDString:?];
   }
 
   if ([(ADClientSettingsRequest *)self currentSettingParamsCount])
   {
-    [v12 clearCurrentSettingParams];
-    v4 = [(ADClientSettingsRequest *)self currentSettingParamsCount];
-    if (v4)
+    [toCopy clearCurrentSettingParams];
+    currentSettingParamsCount = [(ADClientSettingsRequest *)self currentSettingParamsCount];
+    if (currentSettingParamsCount)
     {
-      v5 = v4;
+      v5 = currentSettingParamsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ADClientSettingsRequest *)self currentSettingParamsAtIndex:i];
-        [v12 addCurrentSettingParams:v7];
+        [toCopy addCurrentSettingParams:v7];
       }
     }
   }
 
   if ([(ADClientSettingsRequest *)self currentSearchLandingAdsSettingParamsCount])
   {
-    [v12 clearCurrentSearchLandingAdsSettingParams];
-    v8 = [(ADClientSettingsRequest *)self currentSearchLandingAdsSettingParamsCount];
-    if (v8)
+    [toCopy clearCurrentSearchLandingAdsSettingParams];
+    currentSearchLandingAdsSettingParamsCount = [(ADClientSettingsRequest *)self currentSearchLandingAdsSettingParamsCount];
+    if (currentSearchLandingAdsSettingParamsCount)
     {
-      v9 = v8;
+      v9 = currentSearchLandingAdsSettingParamsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ADClientSettingsRequest *)self currentSearchLandingAdsSettingParamsAtIndex:j];
-        [v12 addCurrentSearchLandingAdsSettingParams:v11];
+        [toCopy addCurrentSearchLandingAdsSettingParams:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_iAdIDString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_iAdIDString copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -309,7 +309,7 @@ void __34__ADClientSettingsRequest_options__block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addCurrentSettingParams:v13];
 
         ++v12;
@@ -342,7 +342,7 @@ void __34__ADClientSettingsRequest_options__block_invoke()
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addCurrentSearchLandingAdsSettingParams:v19];
 
         ++v18;
@@ -359,13 +359,13 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((iAdIDString = self->_iAdIDString, !(iAdIDString | v4[3])) || -[NSString isEqual:](iAdIDString, "isEqual:")) && ((currentSettingParams = self->_currentSettingParams, !(currentSettingParams | v4[2])) || -[NSMutableArray isEqual:](currentSettingParams, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((iAdIDString = self->_iAdIDString, !(iAdIDString | equalCopy[3])) || -[NSString isEqual:](iAdIDString, "isEqual:")) && ((currentSettingParams = self->_currentSettingParams, !(currentSettingParams | equalCopy[2])) || -[NSMutableArray isEqual:](currentSettingParams, "isEqual:")))
   {
     currentSearchLandingAdsSettingParams = self->_currentSearchLandingAdsSettingParams;
-    if (currentSearchLandingAdsSettingParams | v4[1])
+    if (currentSearchLandingAdsSettingParams | equalCopy[1])
     {
       v8 = [(NSMutableArray *)currentSearchLandingAdsSettingParams isEqual:?];
     }
@@ -391,11 +391,11 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   return v4 ^ [(NSMutableArray *)self->_currentSearchLandingAdsSettingParams hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(ADClientSettingsRequest *)self setIAdIDString:?];
   }
@@ -404,7 +404,7 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -432,7 +432,7 @@ void __34__ADClientSettingsRequest_options__block_invoke()
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

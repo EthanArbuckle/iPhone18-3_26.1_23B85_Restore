@@ -1,53 +1,53 @@
 @interface SBPowerDownViewController
 - (BOOL)handleLockButtonPress;
-- (BOOL)passcodeEntryTransientOverlayViewController:(id)a3 authenticatePasscode:(id)a4;
-- (SBPowerDownViewController)initWithWindowSceneManager:(id)a3;
+- (BOOL)passcodeEntryTransientOverlayViewController:(id)controller authenticatePasscode:(id)passcode;
+- (SBPowerDownViewController)initWithWindowSceneManager:(id)manager;
 - (SBPowerDownViewControllerDelegate)delegate;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (id)passcodeEntryTransientOverlayViewControllerStatusSubtitleText;
 - (id)passcodeEntryTransientOverlayViewControllerStatusText;
-- (void)_setPasscodeVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setPasscodeVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)didTapTemporarilyDisableFindMy;
-- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)a3;
-- (void)powerDownViewRequestCancel:(id)a3;
-- (void)powerDownViewRequestPowerDown:(id)a3;
+- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)dismissal;
+- (void)powerDownViewRequestCancel:(id)cancel;
+- (void)powerDownViewRequestPowerDown:(id)down;
 - (void)showPowerDownFindMyAlert;
-- (void)showPowerDownFindMyAlertWithProceed:(id)a3 cancelCompletion:(id)a4;
+- (void)showPowerDownFindMyAlertWithProceed:(id)proceed cancelCompletion:(id)completion;
 - (void)userAcknowledgedFindMyInfo;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBPowerDownViewController
 
-- (SBPowerDownViewController)initWithWindowSceneManager:(id)a3
+- (SBPowerDownViewController)initWithWindowSceneManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBPowerDownViewController;
   v6 = [(SBPowerDownViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowSceneManager, a3);
+    objc_storeStrong(&v6->_windowSceneManager, manager);
   }
 
   return v7;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBPowerDownViewController;
-  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(SBPowerDownViewController *)self delegate];
+  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:disappear];
+  delegate = [(SBPowerDownViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 powerDownViewControllerDidDisappear:self];
+    [delegate powerDownViewControllerDidDisappear:self];
   }
 }
 
@@ -56,8 +56,8 @@
   v12.receiver = self;
   v12.super_class = SBPowerDownViewController;
   [(SBTransientOverlayViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(SBPowerDownViewController *)self view];
-  [v3 bounds];
+  view = [(SBPowerDownViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -71,77 +71,77 @@
   v16.receiver = self;
   v16.super_class = SBPowerDownViewController;
   [(SBTransientOverlayViewController *)&v16 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
   v4 = +[SBWallpaperController sharedInstance];
-  v5 = [v4 activeVariant];
-  [v4 contrastForVariant:v5];
+  activeVariant = [v4 activeVariant];
+  [v4 contrastForVariant:activeVariant];
   v7 = v6;
   v8 = MEMORY[0x277D76388];
-  v9 = [v4 averageColorForVariant:v5];
-  v10 = [v4 legibilitySettingsForVariant:v5];
+  v9 = [v4 averageColorForVariant:activeVariant];
+  v10 = [v4 legibilitySettingsForVariant:activeVariant];
   v11 = [v8 vibrantSettingsWithReferenceColor:v9 referenceContrast:v10 legibilitySettings:v7];
 
   v12 = [SBPowerDownView alloc];
-  [v3 bounds];
+  [contentView bounds];
   v13 = [(SBUIPowerDownView *)v12 initWithFrame:v11 vibrantSettings:?];
   powerDownView = self->_powerDownView;
   self->_powerDownView = v13;
 
   [(SBUIPowerDownView *)self->_powerDownView setDelegate:self];
-  [v3 addSubview:self->_powerDownView];
+  [contentView addSubview:self->_powerDownView];
   v15 = objc_alloc_init(MEMORY[0x277D49638]);
   [(SBPowerDownViewController *)self setBeaconManager:v15];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = SBPowerDownViewController;
-  [(SBPowerDownViewController *)&v9 viewWillAppear:a3];
-  v4 = [SBApp captureButtonRestrictionCoordinator];
+  [(SBPowerDownViewController *)&v9 viewWillAppear:appear];
+  captureButtonRestrictionCoordinator = [SBApp captureButtonRestrictionCoordinator];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 inhibitCaptureButtonActionAssertionWithReason:v6];
+  v7 = [captureButtonRestrictionCoordinator inhibitCaptureButtonActionAssertionWithReason:v6];
   powerDownCaptureButtonSuppressionAssertion = self->_powerDownCaptureButtonSuppressionAssertion;
   self->_powerDownCaptureButtonSuppressionAssertion = v7;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBPowerDownViewController;
-  [(SBPowerDownViewController *)&v5 viewWillDisappear:a3];
+  [(SBPowerDownViewController *)&v5 viewWillDisappear:disappear];
   [(BSInvalidatable *)self->_powerDownCaptureButtonSuppressionAssertion invalidate];
   powerDownCaptureButtonSuppressionAssertion = self->_powerDownCaptureButtonSuppressionAssertion;
   self->_powerDownCaptureButtonSuppressionAssertion = 0;
 }
 
-- (void)powerDownViewRequestCancel:(id)a3
+- (void)powerDownViewRequestCancel:(id)cancel
 {
-  v4 = [(SBPowerDownViewController *)self delegate];
+  delegate = [(SBPowerDownViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 powerDownViewControllerRequestsDismissal:self];
+    [delegate powerDownViewControllerRequestsDismissal:self];
   }
 }
 
-- (void)powerDownViewRequestPowerDown:(id)a3
+- (void)powerDownViewRequestPowerDown:(id)down
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__SBPowerDownViewController_powerDownViewRequestPowerDown___block_invoke;
   v8[3] = &unk_2783A8C18;
   v8[4] = self;
-  v4 = MEMORY[0x223D6F7F0](v8, a2, a3);
+  v4 = MEMORY[0x223D6F7F0](v8, a2, down);
   if ([(SBPowerDownViewController *)self userWantsFindMySuppressed])
   {
-    v5 = [(SBPowerDownViewController *)self beaconManager];
+    beaconManager = [(SBPowerDownViewController *)self beaconManager];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__SBPowerDownViewController_powerDownViewRequestPowerDown___block_invoke_2;
     v6[3] = &unk_2783A9348;
     v7 = v4;
-    [v5 setSuppressLPEMBeaconing:1 completion:v6];
+    [beaconManager setSuppressLPEMBeaconing:1 completion:v6];
   }
 
   else
@@ -169,23 +169,23 @@ void __59__SBPowerDownViewController_powerDownViewRequestPowerDown___block_invok
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)showPowerDownFindMyAlertWithProceed:(id)a3 cancelCompletion:(id)a4
+- (void)showPowerDownFindMyAlertWithProceed:(id)proceed cancelCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
+  proceedCopy = proceed;
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v9 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"POWER_DOWN_FIND_MY_TITLE"];
-  v24 = [v8 localizedStringForKey:v9 value:&stru_283094718 table:@"SpringBoard"];
+  v24 = [mainBundle localizedStringForKey:v9 value:&stru_283094718 table:@"SpringBoard"];
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
   v11 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"POWER_DOWN_FIND_MY"];
-  v12 = [v10 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
+  v12 = [mainBundle2 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle3 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
 
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle4 localizedStringForKey:@"CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
   v17 = [MEMORY[0x277D75110] alertControllerWithTitle:v24 message:v12 preferredStyle:1];
   v18 = MEMORY[0x277D750F8];
@@ -194,8 +194,8 @@ void __59__SBPowerDownViewController_powerDownViewRequestPowerDown___block_invok
   v27[2] = __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_cancelCompletion___block_invoke;
   v27[3] = &unk_2783A9370;
   v27[4] = self;
-  v28 = v6;
-  v19 = v6;
+  v28 = proceedCopy;
+  v19 = proceedCopy;
   v20 = [v18 actionWithTitle:v14 style:0 handler:v27];
   [v17 addAction:v20];
 
@@ -205,8 +205,8 @@ void __59__SBPowerDownViewController_powerDownViewRequestPowerDown___block_invok
   v25[2] = __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_cancelCompletion___block_invoke_3;
   v25[3] = &unk_2783A9370;
   v25[4] = self;
-  v26 = v7;
-  v22 = v7;
+  v26 = completionCopy;
+  v22 = completionCopy;
   v23 = [v21 actionWithTitle:v16 style:1 handler:v25];
   [v17 addAction:v23];
 
@@ -247,19 +247,19 @@ uint64_t __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_can
 
 - (void)showPowerDownFindMyAlert
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v4 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"POWER_DOWN_FIND_MY_TITLE"];
-  v5 = [v3 localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [mainBundle localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
 
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
   v7 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"POWER_DOWN_FIND_MY_DISABLE"];
-  v8 = [v6 localizedStringForKey:v7 value:&stru_283094718 table:@"SpringBoard"];
+  v8 = [mainBundle2 localizedStringForKey:v7 value:&stru_283094718 table:@"SpringBoard"];
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle3 localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
 
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle4 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
 
   v13 = [MEMORY[0x277D75110] alertControllerWithTitle:v5 message:v8 preferredStyle:1];
   v17[0] = MEMORY[0x277D85DD0];
@@ -283,8 +283,8 @@ uint64_t __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_can
 
 - (void)userAcknowledgedFindMyInfo
 {
-  v3 = [(SBPowerDownViewController *)self beaconManager];
-  [v3 setUserHasAcknowledgedFindMy:1 completion:&__block_literal_global_50];
+  beaconManager = [(SBPowerDownViewController *)self beaconManager];
+  [beaconManager setUserHasAcknowledgedFindMy:1 completion:&__block_literal_global_50];
 
   powerDownView = self->_powerDownView;
 
@@ -294,27 +294,27 @@ uint64_t __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_can
 - (void)didTapTemporarilyDisableFindMy
 {
   [(SBPowerDownViewController *)self userAcknowledgedFindMyInfo];
-  v3 = [SBApp authenticationController];
-  v4 = [v3 hasPasscodeSet];
+  authenticationController = [SBApp authenticationController];
+  hasPasscodeSet = [authenticationController hasPasscodeSet];
 
-  if (v4)
+  if (hasPasscodeSet)
   {
-    v5 = [(SBPowerDownViewController *)self userAuthController];
+    userAuthController = [(SBPowerDownViewController *)self userAuthController];
 
-    if (!v5)
+    if (!userAuthController)
     {
-      v6 = [SBApp authenticationController];
+      authenticationController2 = [SBApp authenticationController];
       userAuthController = self->_userAuthController;
-      self->_userAuthController = v6;
+      self->_userAuthController = authenticationController2;
 
-      v8 = [SBApp lockOutController];
+      lockOutController = [SBApp lockOutController];
       lockOutController = self->_lockOutController;
-      self->_lockOutController = v8;
+      self->_lockOutController = lockOutController;
     }
 
     v10 = [SBPasscodeEntryTransientOverlayViewController alloc];
-    v11 = [SBApp authenticationController];
-    v14 = [(SBPasscodeEntryTransientOverlayViewController *)v10 initWithAuthenticationController:v11];
+    authenticationController3 = [SBApp authenticationController];
+    v14 = [(SBPasscodeEntryTransientOverlayViewController *)v10 initWithAuthenticationController:authenticationController3];
 
     [(SBPowerDownViewController *)self setPasscodeEntryTransientOverlayViewController:v14];
     [(SBPasscodeEntryTransientOverlayViewController *)self->_passcodeEntryTransientOverlayViewController setDelegate:self];
@@ -331,29 +331,29 @@ uint64_t __82__SBPowerDownViewController_showPowerDownFindMyAlertWithProceed_can
   }
 }
 
-- (void)_setPasscodeVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPasscodeVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = +[SBWorkspace mainWorkspace];
-  [v6 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:v4 completion:0];
+  [v6 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:animatedCopy completion:0];
 
   passcodeEntryTransientOverlayViewController = self->_passcodeEntryTransientOverlayViewController;
   self->_passcodeEntryTransientOverlayViewController = 0;
 }
 
-- (BOOL)passcodeEntryTransientOverlayViewController:(id)a3 authenticatePasscode:(id)a4
+- (BOOL)passcodeEntryTransientOverlayViewController:(id)controller authenticatePasscode:(id)passcode
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__SBPowerDownViewController_passcodeEntryTransientOverlayViewController_authenticatePasscode___block_invoke;
   v10[3] = &unk_2783A9398;
   v10[4] = self;
-  v5 = a4;
+  passcodeCopy = passcode;
   v6 = MEMORY[0x223D6F7F0](v10);
-  v7 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:v5 source:0 handler:v6];
+  v7 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:passcodeCopy source:0 handler:v6];
 
-  v8 = [(SBPowerDownViewController *)self userAuthController];
-  [v8 processAuthenticationRequest:v7];
+  userAuthController = [(SBPowerDownViewController *)self userAuthController];
+  [userAuthController processAuthenticationRequest:v7];
 
   return 1;
 }
@@ -394,7 +394,7 @@ uint64_t __94__SBPowerDownViewController_passcodeEntryTransientOverlayViewContro
   return [*(a1 + 32) _setPasscodeVisible:0 animated:1];
 }
 
-- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)a3
+- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)dismissal
 {
   v4 = +[SBWorkspace mainWorkspace];
   [v4 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:1 completion:0];
@@ -402,16 +402,16 @@ uint64_t __94__SBPowerDownViewController_passcodeEntryTransientOverlayViewContro
 
 - (id)passcodeEntryTransientOverlayViewControllerStatusText
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_PASSCODE_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_PASSCODE_TITLE" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
 
 - (id)passcodeEntryTransientOverlayViewControllerStatusSubtitleText
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_PASSCODE_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"POWER_DOWN_FIND_MY_DISABLE_PASSCODE_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
@@ -638,8 +638,8 @@ void __81__SBPowerDownViewController_newTransientOverlayPresentationTransitionCo
 
 - (BOOL)handleLockButtonPress
 {
-  v2 = [MEMORY[0x277D67C98] sharedInstance];
-  [v2 _forceBioLockout];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  [mEMORY[0x277D67C98] _forceBioLockout];
 
   return 1;
 }

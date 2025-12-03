@@ -1,6 +1,6 @@
 @interface MTRApplicationLauncherClusterApplicationEPStruct
 - (MTRApplicationLauncherClusterApplicationEPStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRApplicationLauncherClusterApplicationEPStruct);
-  v5 = [(MTRApplicationLauncherClusterApplicationEPStruct *)self application];
-  [(MTRApplicationLauncherClusterApplicationEPStruct *)v4 setApplication:v5];
+  application = [(MTRApplicationLauncherClusterApplicationEPStruct *)self application];
+  [(MTRApplicationLauncherClusterApplicationEPStruct *)v4 setApplication:application];
 
-  v6 = [(MTRApplicationLauncherClusterApplicationEPStruct *)self endpoint];
-  [(MTRApplicationLauncherClusterApplicationEPStruct *)v4 setEndpoint:v6];
+  endpoint = [(MTRApplicationLauncherClusterApplicationEPStruct *)self endpoint];
+  [(MTRApplicationLauncherClusterApplicationEPStruct *)v4 setEndpoint:endpoint];
 
   return v4;
 }

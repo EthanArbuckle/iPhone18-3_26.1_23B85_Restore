@@ -32,14 +32,14 @@
     return 0;
   }
 
-  if ([objc_msgSend(a1 "UIBackgroundModes")])
+  if ([objc_msgSend(self "UIBackgroundModes")])
   {
     return 1;
   }
 
-  v3 = [a1 appTags];
+  appTags = [self appTags];
 
-  return [v3 containsObject:@"any-telephony"];
+  return [appTags containsObject:@"any-telephony"];
 }
 
 - (uint64_t)sr_supportsMessagingIntents
@@ -48,17 +48,17 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([objc_msgSend(a1 "supportedIntents")])
+    if ([objc_msgSend(self "supportedIntents")])
     {
       return 1;
     }
 
-    v4 = [a1 applicationExtensionRecords];
+    applicationExtensionRecords = [self applicationExtensionRecords];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    result = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    result = [applicationExtensionRecords countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (result)
     {
       v5 = result;
@@ -69,7 +69,7 @@ LABEL_10:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applicationExtensionRecords);
         }
 
         if ([objc_msgSend(*(*(&v8 + 1) + 8 * v7) "supportedIntents")])
@@ -79,7 +79,7 @@ LABEL_10:
 
         if (v5 == ++v7)
         {
-          v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+          v5 = [applicationExtensionRecords countByEnumeratingWithState:&v8 objects:v12 count:16];
           result = 0;
           if (v5)
           {
@@ -97,9 +97,9 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [a1 supportedIntents];
+      supportedIntents = [self supportedIntents];
 
-      return [v3 containsObject:@"INSendMessageIntent"];
+      return [supportedIntents containsObject:@"INSendMessageIntent"];
     }
 
     else
@@ -113,7 +113,7 @@ LABEL_10:
 
 - (uint64_t)sr_supportsDataGeneration
 {
-  v1 = [objc_msgSend(a1 "infoDictionary")];
+  v1 = [objc_msgSend(self "infoDictionary")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -127,36 +127,36 @@ LABEL_10:
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v2 = a1;
+  selfCopy = self;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [a1 containingBundleRecord];
+      containingBundleRecord = [self containingBundleRecord];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v2 = v3;
+        selfCopy = containingBundleRecord;
       }
 
       else
       {
-        v2 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  v4 = [objc_msgSend(v2 "iTunesMetadata")];
-  v5 = [objc_msgSend(v2 "iTunesMetadata")];
-  v6 = [v2 infoDictionary];
+  v4 = [objc_msgSend(selfCopy "iTunesMetadata")];
+  v5 = [objc_msgSend(selfCopy "iTunesMetadata")];
+  infoDictionary = [selfCopy infoDictionary];
   v7 = objc_opt_class();
-  v8 = [v6 objectForKey:@"SBMatchingApplicationGenres" ofClass:v7 valuesOfClass:objc_opt_class()];
+  v8 = [infoDictionary objectForKey:@"SBMatchingApplicationGenres" ofClass:v7 valuesOfClass:objc_opt_class()];
   if (_MergedGlobals_1 != -1)
   {
     dispatch_once(&_MergedGlobals_1, &__block_literal_global);
@@ -166,7 +166,7 @@ LABEL_10:
   if (os_log_type_enabled(qword_280AC73D8, OS_LOG_TYPE_INFO))
   {
     v11 = 138478595;
-    v12 = [a1 bundleIdentifier];
+    bundleIdentifier = [self bundleIdentifier];
     v13 = 2050;
     v14 = v4;
     v15 = 2113;

@@ -7,47 +7,47 @@
 - (void)execute
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request playlistToConvert];
-  v5 = [v4 identifiers];
+  playlistToConvert = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request playlistToConvert];
+  identifiers = [playlistToConvert identifiers];
 
-  v6 = [v5 personalizedStore];
-  v7 = [v6 cloudID];
+  personalizedStore = [identifiers personalizedStore];
+  cloudID = [personalizedStore cloudID];
 
-  v8 = [v5 library];
-  v9 = [v8 persistentID];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
   v10 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request playlistToConvert];
+    playlistToConvert2 = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request playlistToConvert];
     *buf = 138544130;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v11;
+    v22 = playlistToConvert2;
     v23 = 2048;
-    v24 = v9;
+    v24 = persistentID;
     v25 = 2048;
-    v26 = v7;
+    v26 = cloudID;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting collaboration using %{public}@ (pid=%lld, cloudID = %lld)", buf, 0x2Au);
   }
 
-  if (!v9)
+  if (!persistentID)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MPModelLibraryStartCollaborationChangeRequestOperation.m" lineNumber:30 description:@"Must provide a playlist in the library"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryStartCollaborationChangeRequestOperation.m" lineNumber:30 description:@"Must provide a playlist in the library"];
   }
 
   v12 = +[MPCloudController sharedCloudController];
-  v13 = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request collaborationSharingMode];
+  collaborationSharingMode = [(MPModelLibraryStartCollaborationChangeRequest *)self->_request collaborationSharingMode];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__MPModelLibraryStartCollaborationChangeRequestOperation_execute__block_invoke;
   v16[3] = &unk_1E767B718;
   v16[4] = self;
-  v17 = v5;
-  v18 = v9;
-  v14 = v5;
-  [v12 beginCollaborationUsingPlaylistWithPersistentID:v9 sharingMode:v13 completion:v16];
+  v17 = identifiers;
+  v18 = persistentID;
+  v14 = identifiers;
+  [v12 beginCollaborationUsingPlaylistWithPersistentID:persistentID sharingMode:collaborationSharingMode completion:v16];
 }
 
 void __65__MPModelLibraryStartCollaborationChangeRequestOperation_execute__block_invoke(uint64_t a1, uint64_t a2, void *a3)

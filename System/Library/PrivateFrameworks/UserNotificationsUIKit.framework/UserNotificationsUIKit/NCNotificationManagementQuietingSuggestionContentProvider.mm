@@ -1,24 +1,24 @@
 @interface NCNotificationManagementQuietingSuggestionContentProvider
-- (NCNotificationManagementQuietingSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6;
+- (NCNotificationManagementQuietingSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate;
 - (id)auxiliaryOptionActions;
-- (void)handleKeepAction:(id)a3;
+- (void)handleKeepAction:(id)action;
 @end
 
 @implementation NCNotificationManagementQuietingSuggestionContentProvider
 
-- (NCNotificationManagementQuietingSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6
+- (NCNotificationManagementQuietingSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate
 {
-  v10 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = NCNotificationManagementQuietingSuggestionContentProvider;
-  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:a3 bundleDisplayName:v10 managementDelegate:a5 suggestionDelegate:a6];
+  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   if (v11)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = NCUserNotificationsUIKitFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"NOTIFICATION_MANAGEMENT_SUGGESTION_EXPLANATION" value:&stru_282FE84F8 table:0];
-    v15 = [v12 stringWithFormat:v14, v10];
-    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:v15];
+    nameCopy = [v12 stringWithFormat:v14, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v11;
@@ -77,11 +77,11 @@ void __83__NCNotificationManagementQuietingSuggestionContentProvider_auxiliaryOp
   [WeakRetained handleManageAction:v4];
 }
 
-- (void)handleKeepAction:(id)a3
+- (void)handleKeepAction:(id)action
 {
-  v5 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v5 notificationManagementContentProvider:self keepNotificationsForSectionIdentifierForNotificationRequest:v4];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self keepNotificationsForSectionIdentifierForNotificationRequest:notificationRequest];
 }
 
 @end

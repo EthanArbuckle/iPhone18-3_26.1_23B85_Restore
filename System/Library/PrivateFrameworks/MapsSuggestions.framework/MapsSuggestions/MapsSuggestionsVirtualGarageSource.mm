@@ -1,19 +1,19 @@
 @interface MapsSuggestionsVirtualGarageSource
-- (MapsSuggestionsVirtualGarageSource)initWithVirtualGarage:(id)a3 delegate:(id)a4 name:(id)a5;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
+- (MapsSuggestionsVirtualGarageSource)initWithVirtualGarage:(id)garage delegate:(id)delegate name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MapsSuggestionsVirtualGarageSource
 
-- (MapsSuggestionsVirtualGarageSource)initWithVirtualGarage:(id)a3 delegate:(id)a4 name:(id)a5
+- (MapsSuggestionsVirtualGarageSource)initWithVirtualGarage:(id)garage delegate:(id)delegate name:(id)name
 {
-  v9 = a3;
+  garageCopy = garage;
   v15.receiver = self;
   v15.super_class = MapsSuggestionsVirtualGarageSource;
-  v10 = [(MapsSuggestionsBaseSource *)&v15 initWithDelegate:a4 name:a5];
+  v10 = [(MapsSuggestionsBaseSource *)&v15 initWithDelegate:delegate name:name];
   if (v10)
   {
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -21,18 +21,18 @@
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_virtualGarage, a3);
+    objc_storeStrong(&v10->_virtualGarage, garage);
   }
 
   return v10;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -54,9 +54,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v12 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -95,18 +95,18 @@ LABEL_11:
 
 LABEL_12:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v9 = [v6 oneVirtualGarage];
-  v10 = [v6 oneSourceDelegate];
-  self = [(MapsSuggestionsVirtualGarageSource *)self initWithVirtualGarage:v9 delegate:v10 name:v7];
+  oneVirtualGarage = [depotCopy oneVirtualGarage];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  self = [(MapsSuggestionsVirtualGarageSource *)self initWithVirtualGarage:oneVirtualGarage delegate:oneSourceDelegate2 name:nameCopy];
 
-  v11 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)start
@@ -207,16 +207,16 @@ void __42__MapsSuggestionsVirtualGarageSource_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
     *buf = 138412546;
-    v17 = v6;
+    v17 = uniqueName;
     v18 = 2080;
     v19 = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -236,7 +236,7 @@ void __42__MapsSuggestionsVirtualGarageSource_stop__block_invoke(uint64_t a1)
   v13[2] = __73__MapsSuggestionsVirtualGarageSource_updateSuggestionEntriesWithHandler___block_invoke;
   v13[3] = &unk_1E81F5CB0;
   objc_copyWeak(&v15, buf);
-  v9 = v4;
+  v9 = handlerCopy;
   v14 = v9;
   dispatch_async(queue, v13);
   GEOConfigGetDouble();

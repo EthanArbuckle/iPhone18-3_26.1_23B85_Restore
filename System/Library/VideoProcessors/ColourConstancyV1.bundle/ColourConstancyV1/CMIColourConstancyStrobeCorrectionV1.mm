@@ -1,15 +1,15 @@
 @interface CMIColourConstancyStrobeCorrectionV1
-- (CMIColourConstancyStrobeCorrectionV1)initWithMetalContext:(id)a3;
-- (int)_encodeStrobeCorrectionCalculate:(id)a3 strobeComponentRGBTexture:(id)a4 strobeBeamProfileGainRTexture:(id)a5 strobeBeamProfileScaleMinimum:(float)a6 strobeBeamProfileScaleMaximum:(float)a7 strobeBeamProfileComponentZeroThreshold:(float)a8 strobeBeamProfileComponentOneThreshold:(float)a9 outputStrobeCorrectedRGBTexture:(id)a10;
-- (int)applyStrobeCorrection:(id)a3 strobeComponentRGBTexture:(id)a4 strobeBeamProfileGainRTexture:(id)a5 outputStrobeCorrectedRGBTexture:(id)a6;
-- (int)prepareToProcessWithConfig:(id)a3;
+- (CMIColourConstancyStrobeCorrectionV1)initWithMetalContext:(id)context;
+- (int)_encodeStrobeCorrectionCalculate:(id)calculate strobeComponentRGBTexture:(id)texture strobeBeamProfileGainRTexture:(id)rTexture strobeBeamProfileScaleMinimum:(float)minimum strobeBeamProfileScaleMaximum:(float)maximum strobeBeamProfileComponentZeroThreshold:(float)threshold strobeBeamProfileComponentOneThreshold:(float)oneThreshold outputStrobeCorrectedRGBTexture:(id)self0;
+- (int)applyStrobeCorrection:(id)correction strobeComponentRGBTexture:(id)texture strobeBeamProfileGainRTexture:(id)rTexture outputStrobeCorrectedRGBTexture:(id)bTexture;
+- (int)prepareToProcessWithConfig:(id)config;
 @end
 
 @implementation CMIColourConstancyStrobeCorrectionV1
 
-- (CMIColourConstancyStrobeCorrectionV1)initWithMetalContext:(id)a3
+- (CMIColourConstancyStrobeCorrectionV1)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = CMIColourConstancyStrobeCorrectionV1;
   v6 = [(CMIColourConstancyStrobeCorrectionV1 *)&v12 init];
@@ -22,13 +22,13 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     sub_19E1C();
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v8 = [(FigMetalContext *)v7->_metalContext computePipelineStateFor:@"ColourConstancy::calculateStrobeCorrectionV1" constants:0];
   calculateStrobeCorrectionPipelineState = v7->_calculateStrobeCorrectionPipelineState;
   v7->_calculateStrobeCorrectionPipelineState = v8;
@@ -45,12 +45,12 @@ LABEL_5:
   return v10;
 }
 
-- (int)prepareToProcessWithConfig:(id)a3
+- (int)prepareToProcessWithConfig:(id)config
 {
-  v5 = a3;
-  if (v5)
+  configCopy = config;
+  if (configCopy)
   {
-    objc_storeStrong(&self->_config, a3);
+    objc_storeStrong(&self->_config, config);
     v6 = 0;
   }
 
@@ -63,17 +63,17 @@ LABEL_5:
   return v6;
 }
 
-- (int)_encodeStrobeCorrectionCalculate:(id)a3 strobeComponentRGBTexture:(id)a4 strobeBeamProfileGainRTexture:(id)a5 strobeBeamProfileScaleMinimum:(float)a6 strobeBeamProfileScaleMaximum:(float)a7 strobeBeamProfileComponentZeroThreshold:(float)a8 strobeBeamProfileComponentOneThreshold:(float)a9 outputStrobeCorrectedRGBTexture:(id)a10
+- (int)_encodeStrobeCorrectionCalculate:(id)calculate strobeComponentRGBTexture:(id)texture strobeBeamProfileGainRTexture:(id)rTexture strobeBeamProfileScaleMinimum:(float)minimum strobeBeamProfileScaleMaximum:(float)maximum strobeBeamProfileComponentZeroThreshold:(float)threshold strobeBeamProfileComponentOneThreshold:(float)oneThreshold outputStrobeCorrectedRGBTexture:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v32 = a7;
-  v33 = a6;
-  v30 = a9;
-  v31 = a8;
-  v21 = a10;
-  if (!v18)
+  calculateCopy = calculate;
+  textureCopy = texture;
+  rTextureCopy = rTexture;
+  maximumCopy = maximum;
+  minimumCopy = minimum;
+  oneThresholdCopy = oneThreshold;
+  thresholdCopy = threshold;
+  bTextureCopy = bTexture;
+  if (!calculateCopy)
   {
     sub_19FF4();
 LABEL_7:
@@ -81,28 +81,28 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v22 = [v18 computeCommandEncoder];
-  if (!v22)
+  computeCommandEncoder = [calculateCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_19F80();
     goto LABEL_7;
   }
 
-  v23 = v22;
-  [v22 setComputePipelineState:self->_calculateStrobeCorrectionPipelineState];
-  [v23 setTexture:v19 atIndex:0];
-  [v23 setTexture:v20 atIndex:1];
-  [v23 setTexture:v21 atIndex:2];
-  [v23 setBytes:&v33 length:4 atIndex:0];
-  [v23 setBytes:&v32 length:4 atIndex:1];
-  [v23 setBytes:&v31 length:4 atIndex:2];
-  [v23 setBytes:&v30 length:4 atIndex:3];
-  v24 = [(MTLComputePipelineState *)self->_calculateStrobeCorrectionPipelineState threadExecutionWidth];
-  v25 = [(MTLComputePipelineState *)self->_calculateStrobeCorrectionPipelineState maxTotalThreadsPerThreadgroup]/ v24;
-  v29[0] = [v21 width];
-  v29[1] = [v21 height];
+  v23 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_calculateStrobeCorrectionPipelineState];
+  [v23 setTexture:textureCopy atIndex:0];
+  [v23 setTexture:rTextureCopy atIndex:1];
+  [v23 setTexture:bTextureCopy atIndex:2];
+  [v23 setBytes:&minimumCopy length:4 atIndex:0];
+  [v23 setBytes:&maximumCopy length:4 atIndex:1];
+  [v23 setBytes:&thresholdCopy length:4 atIndex:2];
+  [v23 setBytes:&oneThresholdCopy length:4 atIndex:3];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_calculateStrobeCorrectionPipelineState threadExecutionWidth];
+  v25 = [(MTLComputePipelineState *)self->_calculateStrobeCorrectionPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  v29[0] = [bTextureCopy width];
+  v29[1] = [bTextureCopy height];
   v29[2] = 1;
-  v28[0] = v24;
+  v28[0] = threadExecutionWidth;
   v28[1] = v25;
   v28[2] = 1;
   [v23 dispatchThreads:v29 threadsPerThreadgroup:v28];
@@ -114,13 +114,13 @@ LABEL_4:
   return v26;
 }
 
-- (int)applyStrobeCorrection:(id)a3 strobeComponentRGBTexture:(id)a4 strobeBeamProfileGainRTexture:(id)a5 outputStrobeCorrectedRGBTexture:(id)a6
+- (int)applyStrobeCorrection:(id)correction strobeComponentRGBTexture:(id)texture strobeBeamProfileGainRTexture:(id)rTexture outputStrobeCorrectedRGBTexture:(id)bTexture
 {
   config = self->_config;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  bTextureCopy = bTexture;
+  rTextureCopy = rTexture;
+  textureCopy = texture;
+  correctionCopy = correction;
   [(CMIColourConstancyStrobeCorrectionConfigurationV1 *)config strobeBeamProfileScaleMinimum];
   v16 = v15;
   [(CMIColourConstancyStrobeCorrectionConfigurationV1 *)self->_config strobeBeamProfileScaleMaximum];
@@ -132,7 +132,7 @@ LABEL_4:
   LODWORD(v23) = v16;
   LODWORD(v24) = v18;
   LODWORD(v25) = v20;
-  v26 = [(CMIColourConstancyStrobeCorrectionV1 *)self _encodeStrobeCorrectionCalculate:v14 strobeComponentRGBTexture:v13 strobeBeamProfileGainRTexture:v12 strobeBeamProfileScaleMinimum:v11 strobeBeamProfileScaleMaximum:v23 strobeBeamProfileComponentZeroThreshold:v24 strobeBeamProfileComponentOneThreshold:v25 outputStrobeCorrectedRGBTexture:v22];
+  v26 = [(CMIColourConstancyStrobeCorrectionV1 *)self _encodeStrobeCorrectionCalculate:correctionCopy strobeComponentRGBTexture:textureCopy strobeBeamProfileGainRTexture:rTextureCopy strobeBeamProfileScaleMinimum:bTextureCopy strobeBeamProfileScaleMaximum:v23 strobeBeamProfileComponentZeroThreshold:v24 strobeBeamProfileComponentOneThreshold:v25 outputStrobeCorrectedRGBTexture:v22];
 
   if (v26)
   {

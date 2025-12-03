@@ -1,12 +1,12 @@
 @interface BWInferenceSchedulerFramebuffer
-- (BWInferenceSchedulerFramebuffer)initWithGraph:(id)a3 jobList:(id)a4;
+- (BWInferenceSchedulerFramebuffer)initWithGraph:(id)graph jobList:(id)list;
 - (void)dealloc;
-- (void)resetJobStatesWithPreventionBlock:(id)a3;
+- (void)resetJobStatesWithPreventionBlock:(id)block;
 @end
 
 @implementation BWInferenceSchedulerFramebuffer
 
-- (BWInferenceSchedulerFramebuffer)initWithGraph:(id)a3 jobList:(id)a4
+- (BWInferenceSchedulerFramebuffer)initWithGraph:(id)graph jobList:(id)list
 {
   v9.receiver = self;
   v9.super_class = BWInferenceSchedulerFramebuffer;
@@ -15,8 +15,8 @@
   if (v6)
   {
     v6->framebufferLock._os_unfair_lock_opaque = 0;
-    v6->_jobs = a4;
-    v7->_graph = a3;
+    v6->_jobs = list;
+    v7->_graph = graph;
   }
 
   return v7;
@@ -29,7 +29,7 @@
   [(BWInferenceSchedulerFramebuffer *)&v3 dealloc];
 }
 
-- (void)resetJobStatesWithPreventionBlock:(id)a3
+- (void)resetJobStatesWithPreventionBlock:(id)block
 {
   atomic_store(0, &self->failedJobStatus);
   v15 = 0u;
@@ -53,7 +53,7 @@
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = v9[21];
-        if ((*(a3 + 2))(a3, v9))
+        if ((*(block + 2))(block, v9))
         {
           v11 = 4;
         }

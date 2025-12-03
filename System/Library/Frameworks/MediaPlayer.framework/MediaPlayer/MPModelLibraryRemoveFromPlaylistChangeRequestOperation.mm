@@ -7,53 +7,53 @@
 - (void)execute
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request mediaLibrary];
-  v4 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request playlist];
-  v5 = [v4 identifiers];
-  v6 = [v5 library];
-  v7 = [v6 persistentID];
+  mediaLibrary = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request mediaLibrary];
+  playlist = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request playlist];
+  identifiers = [playlist identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  v8 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request entriesToRemove];
+  entriesToRemove = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self->_request entriesToRemove];
   v9 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v47 = self;
+    selfCopy = self;
     v48 = 2114;
-    v49 = v4;
+    v49 = playlist;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ removing tracks from playlist %{public}@", buf, 0x16u);
   }
 
-  if (!v7)
+  if (!persistentID)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRemoveFromPlaylistChangeRequestOperation.m" lineNumber:29 description:@"Must provide a playlist in the library"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRemoveFromPlaylistChangeRequestOperation.m" lineNumber:29 description:@"Must provide a playlist in the library"];
   }
 
-  v10 = [v3 playlistWithPersistentID:v7];
-  v33 = v3;
-  v31 = v7;
-  v32 = v4;
-  v34 = self;
+  v10 = [mediaLibrary playlistWithPersistentID:persistentID];
+  v33 = mediaLibrary;
+  v31 = persistentID;
+  v32 = playlist;
+  selfCopy2 = self;
   v30 = v10;
-  if ([v4 hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
+  if ([playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
   {
-    v11 = [v4 isCollaborative];
+    isCollaborative = [playlist isCollaborative];
   }
 
   else
   {
     v12 = [v10 valueForProperty:@"isCollaborative"];
-    v11 = [v12 BOOLValue];
+    isCollaborative = [v12 BOOLValue];
   }
 
-  v13 = [MEMORY[0x1E696AD50] indexSet];
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entriesToRemove, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v15 = v8;
+  v15 = entriesToRemove;
   v16 = [v15 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v16)
   {
@@ -69,18 +69,18 @@
         }
 
         v20 = *(*(&v41 + 1) + 8 * i);
-        [v13 addIndex:{objc_msgSend(v20, "position")}];
-        if (v11)
+        [indexSet addIndex:{objc_msgSend(v20, "position")}];
+        if (isCollaborative)
         {
-          v21 = [v20 universalIdentifier];
-          if (!v21)
+          universalIdentifier = [v20 universalIdentifier];
+          if (!universalIdentifier)
           {
             [MEMORY[0x1E696AAA8] currentHandler];
             v23 = v28 = v20;
-            [v23 handleFailureInMethod:a2 object:v34 file:@"MPModelLibraryRemoveFromPlaylistChangeRequestOperation.m" lineNumber:42 description:{@"No uuid for deleted entry %@", v28}];
+            [v23 handleFailureInMethod:a2 object:selfCopy2 file:@"MPModelLibraryRemoveFromPlaylistChangeRequestOperation.m" lineNumber:42 description:{@"No uuid for deleted entry %@", v28}];
           }
 
-          v22 = [MEMORY[0x1E69E43D0] paramsForRemovingTrackWithItemUUID:v21];
+          v22 = [MEMORY[0x1E69E43D0] paramsForRemovingTrackWithItemUUID:universalIdentifier];
           [v14 addObject:v22];
         }
       }
@@ -95,16 +95,16 @@
   v35[1] = 3221225472;
   v35[2] = __65__MPModelLibraryRemoveFromPlaylistChangeRequestOperation_execute__block_invoke;
   v35[3] = &unk_1E767B6A8;
-  v35[4] = v34;
+  v35[4] = selfCopy2;
   v36 = v32;
-  v40 = v11;
+  v40 = isCollaborative;
   v38 = v30;
   v39 = v31;
   v37 = v14;
   v24 = v30;
   v25 = v14;
   v26 = v32;
-  [v24 removeItems:MEMORY[0x1E695E0F0] atFilteredIndexes:v13 completionBlock:v35];
+  [v24 removeItems:MEMORY[0x1E695E0F0] atFilteredIndexes:indexSet completionBlock:v35];
 }
 
 void __65__MPModelLibraryRemoveFromPlaylistChangeRequestOperation_execute__block_invoke(uint64_t a1, char a2)

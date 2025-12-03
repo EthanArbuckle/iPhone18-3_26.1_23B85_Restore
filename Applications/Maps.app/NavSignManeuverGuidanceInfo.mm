@@ -1,29 +1,29 @@
 @interface NavSignManeuverGuidanceInfo
-+ (id)updatedGuidanceWithPreviousGuidance:(id)a3 currentGuidance:(id)a4;
-- (BOOL)matchesManeuver:(int)a3 minorTextAlternatives:(id)a4;
-- (BOOL)matchesManeuver:(int)a3 minorTextAlternatives:(id)a4 shieldInfo:(id)a5;
++ (id)updatedGuidanceWithPreviousGuidance:(id)guidance currentGuidance:(id)currentGuidance;
+- (BOOL)matchesManeuver:(int)maneuver minorTextAlternatives:(id)alternatives;
+- (BOOL)matchesManeuver:(int)maneuver minorTextAlternatives:(id)alternatives shieldInfo:(id)info;
 - (MKServerFormattedString)majorText;
 - (MKServerFormattedString)minorText;
-- (NavSignManeuverGuidanceInfo)initWithSignID:(id)a3 maneuverArtwork:(id)a4 majorTextAlternatives:(id)a5 minorTextAlternatives:(id)a6 shieldInfo:(id)a7;
+- (NavSignManeuverGuidanceInfo)initWithSignID:(id)d maneuverArtwork:(id)artwork majorTextAlternatives:(id)alternatives minorTextAlternatives:(id)textAlternatives shieldInfo:(id)info;
 - (id)description;
-- (void)_notifyObserversWithBlock:(id)a3;
+- (void)_notifyObserversWithBlock:(id)block;
 - (void)_setNeedsChangeNotification;
-- (void)setMajorText:(id)a3;
-- (void)setMajorTextAlternatives:(id)a3;
-- (void)setManeuverArtwork:(id)a3;
-- (void)setMinorText:(id)a3;
-- (void)setMinorTextAlternatives:(id)a3;
-- (void)setShieldInfo:(id)a3;
+- (void)setMajorText:(id)text;
+- (void)setMajorTextAlternatives:(id)alternatives;
+- (void)setManeuverArtwork:(id)artwork;
+- (void)setMinorText:(id)text;
+- (void)setMinorTextAlternatives:(id)alternatives;
+- (void)setShieldInfo:(id)info;
 @end
 
 @implementation NavSignManeuverGuidanceInfo
 
 - (MKServerFormattedString)majorText
 {
-  v2 = [(NavSignManeuverGuidanceInfo *)self majorTextAlternatives];
-  v3 = [v2 firstObject];
+  majorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self majorTextAlternatives];
+  firstObject = [majorTextAlternatives firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)_setNeedsChangeNotification
@@ -42,95 +42,95 @@
 
 - (MKServerFormattedString)minorText
 {
-  v2 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-  v3 = [v2 firstObject];
+  minorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+  firstObject = [minorTextAlternatives firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setShieldInfo:(id)a3
+- (void)setShieldInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   shieldInfo = self->_shieldInfo;
-  if (shieldInfo != v5)
+  if (shieldInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = [(NavSignShieldInfo *)shieldInfo isEqual:v5];
-    v5 = v8;
+    v8 = infoCopy;
+    v7 = [(NavSignShieldInfo *)shieldInfo isEqual:infoCopy];
+    infoCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_shieldInfo, a3);
+      objc_storeStrong(&self->_shieldInfo, info);
       [(NavSignManeuverGuidanceInfo *)self _setNeedsChangeNotification];
-      v5 = v8;
+      infoCopy = v8;
     }
   }
 }
 
-- (void)setMinorTextAlternatives:(id)a3
+- (void)setMinorTextAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   minorTextAlternatives = self->_minorTextAlternatives;
-  if (minorTextAlternatives != v4)
+  if (minorTextAlternatives != alternativesCopy)
   {
-    v9 = v4;
-    if (!v4 || (v6 = [(NSArray *)minorTextAlternatives isEqualToArray:v4], v4 = v9, (v6 & 1) == 0))
+    v9 = alternativesCopy;
+    if (!alternativesCopy || (v6 = [(NSArray *)minorTextAlternatives isEqualToArray:alternativesCopy], alternativesCopy = v9, (v6 & 1) == 0))
     {
-      v7 = [(NSArray *)v4 copy];
+      v7 = [(NSArray *)alternativesCopy copy];
       v8 = self->_minorTextAlternatives;
       self->_minorTextAlternatives = v7;
 
       [(NavSignManeuverGuidanceInfo *)self _setNeedsChangeNotification];
-      v4 = v9;
+      alternativesCopy = v9;
     }
   }
 }
 
-- (void)setMajorTextAlternatives:(id)a3
+- (void)setMajorTextAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   majorTextAlternatives = self->_majorTextAlternatives;
-  if (majorTextAlternatives != v4)
+  if (majorTextAlternatives != alternativesCopy)
   {
-    v9 = v4;
-    if (!v4 || (v6 = [(NSArray *)majorTextAlternatives isEqualToArray:v4], v4 = v9, (v6 & 1) == 0))
+    v9 = alternativesCopy;
+    if (!alternativesCopy || (v6 = [(NSArray *)majorTextAlternatives isEqualToArray:alternativesCopy], alternativesCopy = v9, (v6 & 1) == 0))
     {
-      v7 = [(NSArray *)v4 copy];
+      v7 = [(NSArray *)alternativesCopy copy];
       v8 = self->_majorTextAlternatives;
       self->_majorTextAlternatives = v7;
 
       [(NavSignManeuverGuidanceInfo *)self _setNeedsChangeNotification];
-      v4 = v9;
+      alternativesCopy = v9;
     }
   }
 }
 
-- (void)setManeuverArtwork:(id)a3
+- (void)setManeuverArtwork:(id)artwork
 {
-  v5 = a3;
+  artworkCopy = artwork;
   maneuverArtwork = self->_maneuverArtwork;
-  if (maneuverArtwork != v5)
+  if (maneuverArtwork != artworkCopy)
   {
-    v8 = v5;
-    v7 = [(GuidanceManeuverArtwork *)maneuverArtwork isEqual:v5];
-    v5 = v8;
+    v8 = artworkCopy;
+    v7 = [(GuidanceManeuverArtwork *)maneuverArtwork isEqual:artworkCopy];
+    artworkCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maneuverArtwork, a3);
+      objc_storeStrong(&self->_maneuverArtwork, artwork);
       [(NavSignManeuverGuidanceInfo *)self _setNeedsChangeNotification];
-      v5 = v8;
+      artworkCopy = v8;
     }
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -142,15 +142,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -162,11 +162,11 @@
   v17.receiver = self;
   v17.super_class = NavSignManeuverGuidanceInfo;
   v3 = [(NavSignManeuverGuidanceInfo *)&v17 description];
-  v4 = [(NavSignManeuverGuidanceInfo *)self signID];
-  v16 = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
-  v5 = [v16 maneuver];
+  signID = [(NavSignManeuverGuidanceInfo *)self signID];
+  maneuverArtwork = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
+  maneuver = [maneuverArtwork maneuver];
   v6 = @"NO_TURN";
-  switch(v5)
+  switch(maneuver)
   {
     case 0:
       break;
@@ -357,40 +357,40 @@
       v6 = @"TURN_AROUND";
       break;
     default:
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [NSString stringWithFormat:@"(unknown: %i)", maneuver];
       break;
   }
 
-  v7 = [(NavSignManeuverGuidanceInfo *)self majorTextAlternatives];
-  v8 = [v7 firstObject];
-  v9 = [v8 debugDescription];
-  v10 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-  v11 = [v10 firstObject];
-  v12 = [v11 debugDescription];
-  v13 = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
-  v15 = [NSString stringWithFormat:@"%@ signID: [%@] maneuver: [%@] major: [%@] minor: [%@] shield: [%@]", v3, v4, v6, v9, v12, v13];
+  majorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self majorTextAlternatives];
+  firstObject = [majorTextAlternatives firstObject];
+  v9 = [firstObject debugDescription];
+  minorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+  firstObject2 = [minorTextAlternatives firstObject];
+  v12 = [firstObject2 debugDescription];
+  shieldInfo = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
+  v15 = [NSString stringWithFormat:@"%@ signID: [%@] maneuver: [%@] major: [%@] minor: [%@] shield: [%@]", v3, signID, v6, v9, v12, shieldInfo];
 
   return v15;
 }
 
-- (BOOL)matchesManeuver:(int)a3 minorTextAlternatives:(id)a4
+- (BOOL)matchesManeuver:(int)maneuver minorTextAlternatives:(id)alternatives
 {
-  v6 = a4;
-  v7 = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
-  v8 = [v7 maneuver];
+  alternativesCopy = alternatives;
+  maneuverArtwork = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
+  maneuver = [maneuverArtwork maneuver];
 
-  if (v8 == a3)
+  if (maneuver == maneuver)
   {
-    v9 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-    if ([v9 count])
+    minorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+    if ([minorTextAlternatives count])
     {
-      v10 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-      v11 = [v10 isEqualToArray:v6];
+      minorTextAlternatives2 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+      v11 = [minorTextAlternatives2 isEqualToArray:alternativesCopy];
     }
 
     else
     {
-      v11 = [v6 count] == 0;
+      v11 = [alternativesCopy count] == 0;
     }
   }
 
@@ -402,22 +402,22 @@
   return v11;
 }
 
-- (BOOL)matchesManeuver:(int)a3 minorTextAlternatives:(id)a4 shieldInfo:(id)a5
+- (BOOL)matchesManeuver:(int)maneuver minorTextAlternatives:(id)alternatives shieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
-  v11 = [v10 maneuver];
+  alternativesCopy = alternatives;
+  infoCopy = info;
+  maneuverArtwork = [(NavSignManeuverGuidanceInfo *)self maneuverArtwork];
+  maneuver = [maneuverArtwork maneuver];
 
-  if (v11 != a3)
+  if (maneuver != maneuver)
   {
     goto LABEL_7;
   }
 
-  v12 = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
-  if (!v12)
+  shieldInfo = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
+  if (!shieldInfo)
   {
-    if (!v9)
+    if (!infoCopy)
     {
       goto LABEL_4;
     }
@@ -427,9 +427,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v13 = v12;
-  v14 = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
-  v15 = [v14 isEqual:v9];
+  v13 = shieldInfo;
+  shieldInfo2 = [(NavSignManeuverGuidanceInfo *)self shieldInfo];
+  v15 = [shieldInfo2 isEqual:infoCopy];
 
   if ((v15 & 1) == 0)
   {
@@ -437,29 +437,29 @@ LABEL_7:
   }
 
 LABEL_4:
-  v16 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-  if ([v16 count])
+  minorTextAlternatives = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+  if ([minorTextAlternatives count])
   {
-    v17 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
-    v18 = [v17 isEqualToArray:v8];
+    minorTextAlternatives2 = [(NavSignManeuverGuidanceInfo *)self minorTextAlternatives];
+    v18 = [minorTextAlternatives2 isEqualToArray:alternativesCopy];
   }
 
   else
   {
-    v18 = [v8 count] == 0;
+    v18 = [alternativesCopy count] == 0;
   }
 
 LABEL_10:
   return v18;
 }
 
-- (void)setMinorText:(id)a3
+- (void)setMinorText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v7 = v4;
+    v7 = textCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [(NavSignManeuverGuidanceInfo *)self setMinorTextAlternatives:v6];
   }
@@ -470,13 +470,13 @@ LABEL_10:
   }
 }
 
-- (void)setMajorText:(id)a3
+- (void)setMajorText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v7 = v4;
+    v7 = textCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [(NavSignManeuverGuidanceInfo *)self setMajorTextAlternatives:v6];
   }
@@ -487,30 +487,30 @@ LABEL_10:
   }
 }
 
-- (NavSignManeuverGuidanceInfo)initWithSignID:(id)a3 maneuverArtwork:(id)a4 majorTextAlternatives:(id)a5 minorTextAlternatives:(id)a6 shieldInfo:(id)a7
+- (NavSignManeuverGuidanceInfo)initWithSignID:(id)d maneuverArtwork:(id)artwork majorTextAlternatives:(id)alternatives minorTextAlternatives:(id)textAlternatives shieldInfo:(id)info
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  artworkCopy = artwork;
+  alternativesCopy = alternatives;
+  textAlternativesCopy = textAlternatives;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = NavSignManeuverGuidanceInfo;
   v18 = [(NavSignManeuverGuidanceInfo *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_signID, a3);
-    objc_storeStrong(&v19->_maneuverArtwork, a4);
-    v20 = [v15 copy];
+    objc_storeStrong(&v18->_signID, d);
+    objc_storeStrong(&v19->_maneuverArtwork, artwork);
+    v20 = [alternativesCopy copy];
     majorTextAlternatives = v19->_majorTextAlternatives;
     v19->_majorTextAlternatives = v20;
 
-    v22 = [v16 copy];
+    v22 = [textAlternativesCopy copy];
     minorTextAlternatives = v19->_minorTextAlternatives;
     v19->_minorTextAlternatives = v22;
 
-    objc_storeStrong(&v19->_shieldInfo, a7);
+    objc_storeStrong(&v19->_shieldInfo, info);
     v24 = +[NSHashTable weakObjectsHashTable];
     observers = v19->_observers;
     v19->_observers = v24;
@@ -519,30 +519,30 @@ LABEL_10:
   return v19;
 }
 
-+ (id)updatedGuidanceWithPreviousGuidance:(id)a3 currentGuidance:(id)a4
++ (id)updatedGuidanceWithPreviousGuidance:(id)guidance currentGuidance:(id)currentGuidance
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 signID];
-  v8 = [v6 signID];
-  v9 = [v7 isEqual:v8];
+  guidanceCopy = guidance;
+  currentGuidanceCopy = currentGuidance;
+  signID = [guidanceCopy signID];
+  signID2 = [currentGuidanceCopy signID];
+  v9 = [signID isEqual:signID2];
 
-  v10 = v6;
+  v10 = currentGuidanceCopy;
   if (v9)
   {
-    v11 = [v6 maneuverArtwork];
-    [v5 setManeuverArtwork:v11];
+    maneuverArtwork = [currentGuidanceCopy maneuverArtwork];
+    [guidanceCopy setManeuverArtwork:maneuverArtwork];
 
-    v12 = [v6 majorTextAlternatives];
-    [v5 setMajorTextAlternatives:v12];
+    majorTextAlternatives = [currentGuidanceCopy majorTextAlternatives];
+    [guidanceCopy setMajorTextAlternatives:majorTextAlternatives];
 
-    v13 = [v6 minorTextAlternatives];
-    [v5 setMinorTextAlternatives:v13];
+    minorTextAlternatives = [currentGuidanceCopy minorTextAlternatives];
+    [guidanceCopy setMinorTextAlternatives:minorTextAlternatives];
 
-    v14 = [v6 shieldInfo];
-    [v5 setShieldInfo:v14];
+    shieldInfo = [currentGuidanceCopy shieldInfo];
+    [guidanceCopy setShieldInfo:shieldInfo];
 
-    v10 = v5;
+    v10 = guidanceCopy;
   }
 
   v15 = v10;

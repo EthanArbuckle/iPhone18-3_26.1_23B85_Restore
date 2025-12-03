@@ -1,8 +1,8 @@
 @interface MOContextStringUpdateOptions
 - (MOContextStringUpdateOptions)init;
-- (MOContextStringUpdateOptions)initWithAppendMusicString:(BOOL)a3;
-- (MOContextStringUpdateOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOContextStringUpdateOptions)initWithAppendMusicString:(BOOL)string;
+- (MOContextStringUpdateOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MOContextStringUpdateOptions
@@ -14,30 +14,30 @@
   return [(MOContextStringUpdateOptions *)&v3 init];
 }
 
-- (MOContextStringUpdateOptions)initWithAppendMusicString:(BOOL)a3
+- (MOContextStringUpdateOptions)initWithAppendMusicString:(BOOL)string
 {
   v5.receiver = self;
   v5.super_class = MOContextStringUpdateOptions;
   result = [(MOContextStringUpdateOptions *)&v5 init];
   if (result)
   {
-    result->_appendMusicString = a3;
+    result->_appendMusicString = string;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextStringUpdateOptions alloc];
-  v5 = [(MOContextStringUpdateOptions *)self appendMusicString];
+  appendMusicString = [(MOContextStringUpdateOptions *)self appendMusicString];
 
-  return [(MOContextStringUpdateOptions *)v4 initWithAppendMusicString:v5];
+  return [(MOContextStringUpdateOptions *)v4 initWithAppendMusicString:appendMusicString];
 }
 
-- (MOContextStringUpdateOptions)initWithCoder:(id)a3
+- (MOContextStringUpdateOptions)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"appendMusicString"];
+  v4 = [coder decodeBoolForKey:@"appendMusicString"];
 
   return [(MOContextStringUpdateOptions *)self initWithAppendMusicString:v4];
 }

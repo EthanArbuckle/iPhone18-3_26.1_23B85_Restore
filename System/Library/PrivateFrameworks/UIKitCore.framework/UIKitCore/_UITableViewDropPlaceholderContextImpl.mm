@@ -1,31 +1,31 @@
 @interface _UITableViewDropPlaceholderContextImpl
-- (BOOL)commitInsertionWithDataSourceUpdates:(id)a3;
+- (BOOL)commitInsertionWithDataSourceUpdates:(id)updates;
 - (BOOL)deletePlaceholder;
-- (_UITableViewDropPlaceholderContextImpl)initWithDelegate:(id)a3 dragItem:(id)a4 reuseIdentifier:(id)a5 rowHeight:(double)a6 cellUpdateHandler:(id)a7;
+- (_UITableViewDropPlaceholderContextImpl)initWithDelegate:(id)delegate dragItem:(id)item reuseIdentifier:(id)identifier rowHeight:(double)height cellUpdateHandler:(id)handler;
 - (_UITableViewPlaceholderContextDelegate)delegate;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 @end
 
 @implementation _UITableViewDropPlaceholderContextImpl
 
-- (_UITableViewDropPlaceholderContextImpl)initWithDelegate:(id)a3 dragItem:(id)a4 reuseIdentifier:(id)a5 rowHeight:(double)a6 cellUpdateHandler:(id)a7
+- (_UITableViewDropPlaceholderContextImpl)initWithDelegate:(id)delegate dragItem:(id)item reuseIdentifier:(id)identifier rowHeight:(double)height cellUpdateHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  delegateCopy = delegate;
+  itemCopy = item;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = _UITableViewDropPlaceholderContextImpl;
   v16 = [(_UITableViewDropPlaceholderContextImpl *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_delegate, v12);
-    objc_storeStrong(&v17->_dragItem, a4);
-    objc_storeStrong(&v17->_reuseIdentifier, a5);
-    v17->_rowHeight = a6;
-    v18 = [v15 copy];
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_dragItem, item);
+    objc_storeStrong(&v17->_reuseIdentifier, identifier);
+    v17->_rowHeight = height;
+    v18 = [handlerCopy copy];
     cellUpdateHandler = v17->_cellUpdateHandler;
     v17->_cellUpdateHandler = v18;
   }
@@ -33,10 +33,10 @@
   return v17;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  animationsCopy = animations;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   animator = self->_animator;
   if (has_internal_diagnostics)
@@ -76,13 +76,13 @@ LABEL_9:
   }
 
 LABEL_3:
-  [(UIDragAnimating *)self->_animator addAnimations:v5];
+  [(UIDragAnimating *)self->_animator addAnimations:animationsCopy];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   animator = self->_animator;
   if (has_internal_diagnostics)
@@ -122,27 +122,27 @@ LABEL_9:
   }
 
 LABEL_3:
-  [(UIDragAnimating *)self->_animator addCompletion:v5];
+  [(UIDragAnimating *)self->_animator addCompletion:completionCopy];
 }
 
-- (BOOL)commitInsertionWithDataSourceUpdates:(id)a3
+- (BOOL)commitInsertionWithDataSourceUpdates:(id)updates
 {
-  v5 = a3;
-  if (!v5)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:406 description:@"Must provide a block of data source updates to run when committing the insertion of a placeholder."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:406 description:@"Must provide a block of data source updates to run when committing the insertion of a placeholder."];
   }
 
   if (pthread_main_np() != 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:409 description:{@"%@ must be called from the main queue!", v11}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:409 description:{@"%@ must be called from the main queue!", v11}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained commitPlaceholderInsertionWithContext:self dataSourceUpdates:v5];
+  v7 = [WeakRetained commitPlaceholderInsertionWithContext:self dataSourceUpdates:updatesCopy];
 
   return v7;
 }
@@ -151,9 +151,9 @@ LABEL_3:
 {
   if (pthread_main_np() != 1)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:417 description:{@"%@ must be called from the main queue!", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDropCoordinator.m" lineNumber:417 description:{@"%@ must be called from the main queue!", v8}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

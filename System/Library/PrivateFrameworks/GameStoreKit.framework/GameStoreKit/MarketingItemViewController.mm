@@ -1,17 +1,17 @@
 @interface MarketingItemViewController
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)a3 URL:(id)a4;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)a3 bagValue:(id)a4;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithCoder:(id)a3;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithMarketingItem:(id)a3 bag:(id)a4;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6;
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)bag URL:(id)l;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)bag bagValue:(id)value;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithCoder:(id)coder;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithMarketingItem:(id)item bag:(id)bag;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag;
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)type placement:(id)placement bag:(id)bag;
 - (void)viewDidLoad;
 @end
 
 @implementation MarketingItemViewController
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithCoder:(id)a3
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit27MarketingItemViewController_dynamicDelegate) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit27MarketingItemViewController_gridPresenter) = 0;
@@ -25,39 +25,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24F743D14();
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithMarketingItem:(id)a3 bag:(id)a4
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithMarketingItem:(id)item bag:(id)bag
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)type placement:(id)placement bag:(id)bag
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)a3 bagValue:(id)a4
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)bag bagValue:(id)value
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)a3 URL:(id)a4
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithBag:(id)bag URL:(id)l
 {
   v4 = sub_24F91F4A8();
   MEMORY[0x28223BE20](v4 - 8);
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (_TtC12GameStoreKit27MarketingItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameStoreKit27MarketingItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface TDLayerMapping
 - (id)copyDataFromAttributes;
-- (void)setAttributesFromCopyData:(id)a3;
+- (void)setAttributesFromCopyData:(id)data;
 @end
 
 @implementation TDLayerMapping
@@ -25,9 +25,9 @@
   return [v6 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [objc_msgSend(MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:{0), "objectForKey:", @"photoshopLayerIndex"}];
+  v4 = [objc_msgSend(MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:{0), "objectForKey:", @"photoshopLayerIndex"}];
   if (v4)
   {
 

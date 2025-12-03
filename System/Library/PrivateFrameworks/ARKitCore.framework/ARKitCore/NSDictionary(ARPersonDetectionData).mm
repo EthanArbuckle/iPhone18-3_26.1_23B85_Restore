@@ -11,7 +11,7 @@
   v7 = a3;
   v8 = objc_opt_new();
   [v8 addObject:v7];
-  v9 = [a1 _recursiveObjectForKey:v7 visited:v8];
+  v9 = [self _recursiveObjectForKey:v7 visited:v8];
   [v8 removeObject:v7];
 
   [v6 addObjectsFromArray:v8];
@@ -23,7 +23,7 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 objectForKey:a3];
+  v7 = [self objectForKey:a3];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,12 +52,12 @@
           if (([v6 containsObject:v14] & 1) == 0)
           {
             [v6 addObject:v14];
-            v15 = [a1 _recursiveObjectForKey:v14 visited:v6];
+            v15 = [self _recursiveObjectForKey:v14 visited:v6];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v16 = [v15 allObjects];
-              [v8 addObjectsFromArray:v16];
+              allObjects = [v15 allObjects];
+              [v8 addObjectsFromArray:allObjects];
             }
           }
         }

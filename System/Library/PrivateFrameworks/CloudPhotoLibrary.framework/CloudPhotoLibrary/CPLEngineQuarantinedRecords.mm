@@ -1,16 +1,16 @@
 @interface CPLEngineQuarantinedRecords
 + (unint64_t)quarantineRetryCount;
-- (BOOL)_quarantineRejectedRecords:(id)a3 error:(id *)a4;
-- (BOOL)bumpRejectedRecords:(id)a3 error:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)a3;
-- (BOOL)performMaintenanceWithError:(id *)a3;
-- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)a3 notify:(BOOL)a4 error:(id *)a5;
-- (BOOL)resetRejectedRecordsWithError:(id *)a3;
-- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)a3;
+- (BOOL)_quarantineRejectedRecords:(id)records error:(id *)error;
+- (BOOL)bumpRejectedRecords:(id)records error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)quarantined;
+- (BOOL)performMaintenanceWithError:(id *)error;
+- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)identifier notify:(BOOL)notify error:(id *)error;
+- (BOOL)resetRejectedRecordsWithError:(id *)error;
+- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)identifier;
 - (unint64_t)countOfQuarantinedRecords;
-- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)a3;
-- (void)_sendQuarantineFeedbackWithRecordClass:(Class)a3 reason:(id)a4;
+- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)identifier;
+- (void)_sendQuarantineFeedbackWithRecordClass:(Class)class reason:(id)reason;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -35,10 +35,10 @@
 
   if ([(NSMutableArray *)self->_quarantineMessages count])
   {
-    v4 = [(CPLEngineStorage *)self engineStore];
-    v5 = [v4 engineLibrary];
-    v6 = [v5 feedback];
-    [v6 reportMessages:self->_quarantineMessages];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    feedback = [engineLibrary feedback];
+    [feedback reportMessages:self->_quarantineMessages];
   }
 
   quarantineMessages = self->_quarantineMessages;
@@ -63,24 +63,24 @@
   self->_quarantineMessages = 0;
 }
 
-- (BOOL)performMaintenanceWithError:(id *)a3
+- (BOOL)performMaintenanceWithError:(id *)error
 {
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 statusCenter];
-  v7 = [v6 isEmpty];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  statusCenter = [engineStore statusCenter];
+  isEmpty = [statusCenter isEmpty];
 
-  if (v7)
+  if (isEmpty)
   {
-    v8 = [(CPLEngineStorage *)self platformObject];
+    platformObject = [(CPLEngineStorage *)self platformObject];
     v13 = 0;
-    v9 = [v8 removeRelatedRecordsFromQuarantineWithError:&v13];
+    v9 = [platformObject removeRelatedRecordsFromQuarantineWithError:&v13];
     v10 = v13;
 
-    if (a3 && (v9 & 1) == 0)
+    if (error && (v9 & 1) == 0)
     {
       v11 = v10;
       v9 = 0;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -93,7 +93,7 @@
   return v9;
 }
 
-- (BOOL)resetRejectedRecordsWithError:(id *)a3
+- (BOOL)resetRejectedRecordsWithError:(id *)error
 {
   if (self->_rejectedRecords)
   {
@@ -106,25 +106,25 @@
   return 1;
 }
 
-- (BOOL)bumpRejectedRecords:(id)a3 error:(id *)a4
+- (BOOL)bumpRejectedRecords:(id)records error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  recordsCopy = records;
   if (!+[CPLEngineQuarantinedRecords quarantineRetryCount])
   {
-    v14 = [(CPLEngineQuarantinedRecords *)self _quarantineRejectedRecords:v7 error:a4];
+    v14 = [(CPLEngineQuarantinedRecords *)self _quarantineRejectedRecords:recordsCopy error:error];
 LABEL_15:
     v15 = v14;
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!recordsCopy)
   {
-    v14 = [(CPLEngineQuarantinedRecords *)self resetRejectedRecordsWithError:a4];
+    v14 = [(CPLEngineQuarantinedRecords *)self resetRejectedRecordsWithError:error];
     goto LABEL_15;
   }
 
-  if (self->_rejectedRecords && ([v7 rejectsTheSameRecordsAs:?] & 1) != 0)
+  if (self->_rejectedRecords && ([recordsCopy rejectsTheSameRecordsAs:?] & 1) != 0)
   {
     self->_rejectedRecordsHasChanges = 1;
     v8 = self->_rejectedCount + 1;
@@ -134,10 +134,10 @@ LABEL_15:
       v9 = __CPLStorageOSLogDomain_22181();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v7 count];
+        v10 = [recordsCopy count];
         newRejectedCount = self->_newRejectedCount;
-        v11 = [v7 rejectedDescriptions];
-        v12 = [v11 componentsJoinedByString:@"\n\t"];
+        rejectedDescriptions = [recordsCopy rejectedDescriptions];
+        v12 = [rejectedDescriptions componentsJoinedByString:@"\n\t"];
         *buf = 134218498;
         v20 = v10;
         v21 = 2048;
@@ -157,7 +157,7 @@ LABEL_15:
 
     else
     {
-      if (![(CPLEngineQuarantinedRecords *)self _quarantineRejectedRecords:v7 error:a4])
+      if (![(CPLEngineQuarantinedRecords *)self _quarantineRejectedRecords:recordsCopy error:error])
       {
         v15 = 0;
         goto LABEL_16;
@@ -175,7 +175,7 @@ LABEL_15:
   {
     v15 = 1;
     self->_rejectedRecordsHasChanges = 1;
-    objc_storeStrong(&self->_newRejectedRecords, a3);
+    objc_storeStrong(&self->_newRejectedRecords, records);
     self->_newRejectedCount = 1;
   }
 
@@ -185,26 +185,26 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_quarantineRejectedRecords:(id)a3 error:(id *)a4
+- (BOOL)_quarantineRejectedRecords:(id)records error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self engineStore];
-  if ([v7 forceApplyPendingChangeSessionUpdateWithError:a4])
+  recordsCopy = records;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  if ([engineStore forceApplyPendingChangeSessionUpdateWithError:error])
   {
     v54 = 0;
     v55 = &v54;
     v56 = 0x2020000000;
     v57 = 1;
-    v8 = [v7 pushRepository];
+    pushRepository = [engineStore pushRepository];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v9 = __CPLStorageOSLogDomain_22181();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 count];
-        v11 = [v6 rejectedDescriptions];
-        v12 = [v11 componentsJoinedByString:@"\n\t"];
+        v10 = [recordsCopy count];
+        rejectedDescriptions = [recordsCopy rejectedDescriptions];
+        v12 = [rejectedDescriptions componentsJoinedByString:@"\n\t"];
         *buf = 134218242;
         *&buf[4] = v10;
         *&buf[12] = 2114;
@@ -213,7 +213,7 @@ LABEL_16:
       }
     }
 
-    v13 = [v6 count];
+    v13 = [recordsCopy count];
     Mutable = CFDictionaryCreateMutable(0, v13, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     v15 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     *buf = 0;
@@ -236,7 +236,7 @@ LABEL_16:
     v46[1] = 3221225472;
     v46[2] = __64__CPLEngineQuarantinedRecords__quarantineRejectedRecords_error___block_invoke_2;
     v46[3] = &unk_1E861FDF0;
-    v19 = v8;
+    v19 = pushRepository;
     v47 = v19;
     v20 = v16;
     v48 = v20;
@@ -254,7 +254,7 @@ LABEL_16:
     v43 = v24;
     v25 = v22;
     v45 = v25;
-    [v6 enumerateRecordsAndReasonsUsingBlock:v42];
+    [recordsCopy enumerateRecordsAndReasonsUsingBlock:v42];
     v36 = 0;
     v37 = &v36;
     v38 = 0x3032000000;
@@ -267,8 +267,8 @@ LABEL_16:
       v29[1] = 3221225472;
       v29[2] = __64__CPLEngineQuarantinedRecords__quarantineRejectedRecords_error___block_invoke_47;
       v29[3] = &unk_1E861FE40;
-      v30 = v6;
-      v31 = self;
+      v30 = recordsCopy;
+      selfCopy = self;
       v33 = &v54;
       v34 = buf;
       v35 = &v36;
@@ -276,7 +276,7 @@ LABEL_16:
       [(__CFDictionary *)v20 enumerateKeysAndObjectsUsingBlock:v29];
 
       v26 = *(v55 + 24);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -285,7 +285,7 @@ LABEL_16:
     else
     {
       v26 = 0;
-      if (!a4)
+      if (!error)
       {
 LABEL_13:
         _Block_object_dispose(&v36, 8);
@@ -298,7 +298,7 @@ LABEL_13:
 
     if ((v26 & 1) == 0)
     {
-      *a4 = v37[5];
+      *error = v37[5];
       v26 = *(v55 + 24);
     }
 
@@ -548,9 +548,9 @@ LABEL_11:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendQuarantineFeedbackWithRecordClass:(Class)a3 reason:(id)a4
+- (void)_sendQuarantineFeedbackWithRecordClass:(Class)class reason:(id)reason
 {
-  v13 = a4;
+  reasonCopy = reason;
   if (!self->_quarantineMessages)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -559,62 +559,62 @@ LABEL_11:
   }
 
   v8 = [CPLQuarantineFeedbackMessage alloc];
-  v9 = [(CPLEngineStorage *)self engineStore];
-  v10 = [v9 engineLibrary];
-  v11 = [v10 libraryIdentifier];
-  v12 = [(CPLQuarantineFeedbackMessage *)v8 initWithClass:a3 reason:v13 libraryIdentifier:v11];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  libraryIdentifier = [engineLibrary libraryIdentifier];
+  v12 = [(CPLQuarantineFeedbackMessage *)v8 initWithClass:class reason:reasonCopy libraryIdentifier:libraryIdentifier];
 
   [(NSMutableArray *)self->_quarantineMessages addObject:v12];
 }
 
-- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)a3
+- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 countOfQuarantinedRecordsInScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject countOfQuarantinedRecordsInScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (unint64_t)countOfQuarantinedRecords
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 countOfQuarantinedRecords];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  countOfQuarantinedRecords = [platformObject countOfQuarantinedRecords];
 
-  return v3;
+  return countOfQuarantinedRecords;
 }
 
-- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)a3
+- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 classForQuarantinedRecordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject classForQuarantinedRecordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)a3
+- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)quarantined
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 isRecordWithScopedIdentifierQuarantined:v4];
+  quarantinedCopy = quarantined;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject isRecordWithScopedIdentifierQuarantined:quarantinedCopy];
 
   return v6;
 }
 
-- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)a3 notify:(BOOL)a4 error:(id *)a5
+- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)identifier notify:(BOOL)notify error:(id *)error
 {
-  v6 = a4;
+  notifyCopy = notify;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   v19 = 0;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  v10 = [v9 removeQuarantinedRecordWithScopedIdentifier:v8 removed:&v19 error:a5];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v10 = [platformObject removeQuarantinedRecordWithScopedIdentifier:identifierCopy removed:&v19 error:error];
 
   v11 = 0;
   if (v10)
   {
-    if (v19 != 1 || !v6)
+    if (v19 != 1 || !notifyCopy)
     {
       v11 = 1;
     }
@@ -627,16 +627,16 @@ LABEL_11:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v21 = v8;
+          v21 = identifierCopy;
           _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "Removed %{public}@ from quarantine", buf, 0xCu);
         }
       }
 
-      v14 = [(CPLEngineStorage *)self engineStore];
-      v15 = [v14 statusCenter];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      statusCenter = [engineStore statusCenter];
 
-      v16 = [v15 recordViewForStatusWithScopedIdentifier:v8];
-      v11 = [v15 notifyStatusForRecordViewHasChanged:v16 persist:1 error:a5];
+      v16 = [statusCenter recordViewForStatusWithScopedIdentifier:identifierCopy];
+      v11 = [statusCenter notifyStatusForRecordViewHasChanged:v16 persist:1 error:error];
     }
   }
 
@@ -644,18 +644,18 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v10 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
-  return a6;
+  return error;
 }
 
 + (unint64_t)quarantineRetryCount
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"CPLQuarantineRetryCount"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"CPLQuarantineRetryCount"];
 
   return v3;
 }

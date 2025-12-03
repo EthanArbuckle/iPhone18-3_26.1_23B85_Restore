@@ -1,15 +1,15 @@
 @interface INPriceRange
-+ (id)_priceWithPriceRangeValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (INPriceRange)initWithCoder:(id)a3;
++ (id)_priceWithPriceRangeValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (INPriceRange)initWithCoder:(id)coder;
 - (INPriceRange)initWithMaximumPrice:(NSDecimalNumber *)maximumPrice currencyCode:(NSString *)currencyCode;
 - (INPriceRange)initWithMinimumPrice:(NSDecimalNumber *)minimumPrice currencyCode:(NSString *)currencyCode;
 - (INPriceRange)initWithRangeBetweenPrice:(NSDecimalNumber *)firstPrice andPrice:(NSDecimalNumber *)secondPrice currencyCode:(NSString *)currencyCode;
 - (id)_dictionaryRepresentation;
-- (id)_formattedStringWithLocale:(id)a3 componentsFormatString:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_formattedStringWithLocale:(id)locale componentsFormatString:(id)string;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPriceRange
@@ -19,31 +19,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"minimumPrice";
   minimumPrice = self->_minimumPrice;
-  v4 = minimumPrice;
+  null = minimumPrice;
   if (!minimumPrice)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"maximumPrice";
   maximumPrice = self->_maximumPrice;
-  v6 = maximumPrice;
+  null2 = maximumPrice;
   if (!maximumPrice)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"currencyCode";
   currencyCode = self->_currencyCode;
-  v8 = currencyCode;
+  null3 = currencyCode;
   if (!currencyCode)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (currencyCode)
   {
@@ -81,26 +81,26 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPriceRange;
   v6 = [(INPriceRange *)&v11 description];
-  v7 = [(INPriceRange *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPriceRange *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self == v5)
     {
       v12 = 1;
@@ -108,17 +108,17 @@ LABEL_10:
 
     else
     {
-      v6 = [(INPriceRange *)self minimumPrice];
-      v7 = [(INPriceRange *)v5 minimumPrice];
-      if ([v6 isEqual:v7])
+      minimumPrice = [(INPriceRange *)self minimumPrice];
+      minimumPrice2 = [(INPriceRange *)v5 minimumPrice];
+      if ([minimumPrice isEqual:minimumPrice2])
       {
-        v8 = [(INPriceRange *)self maximumPrice];
-        v9 = [(INPriceRange *)v5 maximumPrice];
-        if ([v8 isEqual:v9])
+        maximumPrice = [(INPriceRange *)self maximumPrice];
+        maximumPrice2 = [(INPriceRange *)v5 maximumPrice];
+        if ([maximumPrice isEqual:maximumPrice2])
         {
-          v10 = [(INPriceRange *)self currencyCode];
-          v11 = [(INPriceRange *)v5 currencyCode];
-          v12 = [v10 isEqualToString:v11];
+          currencyCode = [(INPriceRange *)self currencyCode];
+          currencyCode2 = [(INPriceRange *)v5 currencyCode];
+          v12 = [currencyCode isEqualToString:currencyCode2];
         }
 
         else
@@ -149,20 +149,20 @@ LABEL_10:
   return v4 ^ [(NSString *)self->_currencyCode hash];
 }
 
-- (id)_formattedStringWithLocale:(id)a3 componentsFormatString:(id)a4
+- (id)_formattedStringWithLocale:(id)locale componentsFormatString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  localeCopy = locale;
   v8 = objc_opt_new();
-  [v8 setLocale:v7];
+  [v8 setLocale:localeCopy];
 
-  v9 = [(INPriceRange *)self currencyCode];
-  [v8 setCurrencyCode:v9];
+  currencyCode = [(INPriceRange *)self currencyCode];
+  [v8 setCurrencyCode:currencyCode];
 
-  v10 = [(INPriceRange *)self minimumPrice];
-  if (v10)
+  minimumPrice = [(INPriceRange *)self minimumPrice];
+  if (minimumPrice)
   {
-    v11 = [v8 stringFromNumber:v10];
+    v11 = [v8 stringFromNumber:minimumPrice];
   }
 
   else
@@ -170,9 +170,9 @@ LABEL_10:
     v11 = &stru_1F01E0850;
   }
 
-  v12 = [(INPriceRange *)self minimumPrice];
-  v13 = [(INPriceRange *)self maximumPrice];
-  v14 = [v12 isEqual:v13];
+  minimumPrice2 = [(INPriceRange *)self minimumPrice];
+  maximumPrice = [(INPriceRange *)self maximumPrice];
+  v14 = [minimumPrice2 isEqual:maximumPrice];
 
   if (v14)
   {
@@ -184,37 +184,37 @@ LABEL_10:
     v16 = &stru_1F01E0850;
     [v8 setCurrencySymbol:&stru_1F01E0850];
     [v8 setInternationalCurrencySymbol:&stru_1F01E0850];
-    v17 = [(INPriceRange *)self maximumPrice];
-    if (v17)
+    maximumPrice2 = [(INPriceRange *)self maximumPrice];
+    if (maximumPrice2)
     {
-      v16 = [v8 stringFromNumber:v17];
+      v16 = [v8 stringFromNumber:maximumPrice2];
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:v6, v11, v16];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:stringCopy, v11, v16];
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INPriceRange *)self minimumPrice];
-  [v4 encodeObject:v5 forKey:@"firstPrice"];
+  coderCopy = coder;
+  minimumPrice = [(INPriceRange *)self minimumPrice];
+  [coderCopy encodeObject:minimumPrice forKey:@"firstPrice"];
 
-  v6 = [(INPriceRange *)self maximumPrice];
-  [v4 encodeObject:v6 forKey:@"secondPrice"];
+  maximumPrice = [(INPriceRange *)self maximumPrice];
+  [coderCopy encodeObject:maximumPrice forKey:@"secondPrice"];
 
-  v7 = [(INPriceRange *)self currencyCode];
-  [v4 encodeObject:v7 forKey:@"currencyCode"];
+  currencyCode = [(INPriceRange *)self currencyCode];
+  [coderCopy encodeObject:currencyCode forKey:@"currencyCode"];
 }
 
-- (INPriceRange)initWithCoder:(id)a3
+- (INPriceRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstPrice"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondPrice"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstPrice"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondPrice"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
 
   v8 = [(INPriceRange *)self initWithRangeBetweenPrice:v5 andPrice:v6 currencyCode:v7];
   return v8;
@@ -310,20 +310,20 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_priceWithPriceRangeValue:(id)a3
++ (id)_priceWithPriceRangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 minimumPrice];
-  v6 = INIntentSlotValueTransformFromDecimalNumberValue(v5);
+  valueCopy = value;
+  minimumPrice = [valueCopy minimumPrice];
+  v6 = INIntentSlotValueTransformFromDecimalNumberValue(minimumPrice);
 
-  v7 = [v4 maximumPrice];
-  v8 = INIntentSlotValueTransformFromDecimalNumberValue(v7);
+  maximumPrice = [valueCopy maximumPrice];
+  v8 = INIntentSlotValueTransformFromDecimalNumberValue(maximumPrice);
 
-  v9 = [v4 currencyCode];
+  currencyCode = [valueCopy currencyCode];
 
   if (v6 && v8)
   {
-    v10 = [[a1 alloc] initWithRangeBetweenPrice:v6 andPrice:v8 currencyCode:v9];
+    v10 = [[self alloc] initWithRangeBetweenPrice:v6 andPrice:v8 currencyCode:currencyCode];
 LABEL_8:
     v11 = v10;
     goto LABEL_9;
@@ -331,13 +331,13 @@ LABEL_8:
 
   if (v6)
   {
-    v10 = [[a1 alloc] initWithMinimumPrice:v6 currencyCode:v9];
+    v10 = [[self alloc] initWithMinimumPrice:v6 currencyCode:currencyCode];
     goto LABEL_8;
   }
 
   if (v8)
   {
-    v10 = [[a1 alloc] initWithMaximumPrice:v8 currencyCode:v9];
+    v10 = [[self alloc] initWithMaximumPrice:v8 currencyCode:currencyCode];
     goto LABEL_8;
   }
 
